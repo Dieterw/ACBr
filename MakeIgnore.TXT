@@ -55,3 +55,7 @@ ACBrFala*.res
 */tools/*
 */doc/*
 */boletos/*
+*.svn
+SVN*.*
+*.svn-work
+*.svn-base

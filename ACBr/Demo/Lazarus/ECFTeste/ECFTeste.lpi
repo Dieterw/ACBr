@@ -1,0 +1,641 @@
+<?xml version="1.0"?>
+<CONFIG>
+  <ProjectOptions>
+    <PathDelim Value="\"/>
+    <Version Value="7"/>
+    <General>
+      <Flags>
+        <LRSInOutputDirectory Value="False"/>
+      </Flags>
+      <MainUnit Value="0"/>
+      <TargetFileExt Value=".exe"/>
+      <UseXPManifest Value="True"/>
+      <ActiveEditorIndexAtStart Value="1"/>
+    </General>
+    <VersionInfo>
+      <ProjectVersion Value=""/>
+    </VersionInfo>
+    <PublishOptions>
+      <Version Value="2"/>
+      <DestinationDirectory Value="$(TestDir)\publishedproject\"/>
+      <IgnoreBinaries Value="False"/>
+      <IncludeFileFilter Value="*.(pas|pp|inc|lfm|lpr|lrs|lpi|lpk|sh|xml)"/>
+      <ExcludeFileFilter Value="*.(bak|ppu|ppw|o|so);*~;backup"/>
+    </PublishOptions>
+    <RunParams>
+      <local>
+        <FormatVersion Value="1"/>
+        <LaunchingApplication PathPlusParams="\usr\X11R6\bin\xterm -T 'Lazarus Run Output' -e $(LazarusDir)\tools\runwait.sh $(TargetCmdLine)"/>
+      </local>
+    </RunParams>
+    <RequiredPackages Count="3">
+      <Item1>
+        <PackageName Value="LCL"/>
+      </Item1>
+      <Item2>
+        <PackageName Value="ACBr_LCL"/>
+        <MinVersion Minor="8" Release="6" Valid="True"/>
+      </Item2>
+      <Item3>
+        <PackageName Value="TurboPowerIPro"/>
+      </Item3>
+    </RequiredPackages>
+    <Units Count="68">
+      <Unit0>
+        <Filename Value="ecfteste.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ECFTeste"/>
+        <CursorPos X="46" Y="26"/>
+        <TopLine Value="1"/>
+        <EditorIndex Value="1"/>
+        <UsageCount Value="47"/>
+        <Loaded Value="True"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="ecfteste1.pas"/>
+        <ComponentName Value="Form1"/>
+        <IsPartOfProject Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ECFTeste1"/>
+        <CursorPos X="22" Y="8"/>
+        <TopLine Value="1"/>
+        <EditorIndex Value="0"/>
+        <UsageCount Value="47"/>
+        <Loaded Value="True"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="ecfteste1.lfm"/>
+        <CursorPos X="37" Y="9"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="19"/>
+        <Loaded Value="True"/>
+        <SyntaxHighlighter Value="LFM"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="configuraserial.pas"/>
+        <ComponentName Value="frConfiguraSerial"/>
+        <IsPartOfProject Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ConfiguraSerial"/>
+        <CursorPos X="13" Y="39"/>
+        <TopLine Value="21"/>
+        <EditorIndex Value="2"/>
+        <UsageCount Value="47"/>
+        <Loaded Value="True"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="configuraserial.lfm"/>
+        <CursorPos X="4" Y="225"/>
+        <TopLine Value="199"/>
+        <UsageCount Value="9"/>
+        <SyntaxHighlighter Value="LFM"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="efetuapagamento.pas"/>
+        <ComponentName Value="frPagamento"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="EfetuaPagamento"/>
+        <CursorPos X="11" Y="8"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="47"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="efetuapagamento.lfm"/>
+        <CursorPos X="4" Y="194"/>
+        <TopLine Value="168"/>
+        <UsageCount Value="9"/>
+        <SyntaxHighlighter Value="LFM"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="relatorio.pas"/>
+        <ComponentName Value="frRelatorio"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="Relatorio"/>
+        <CursorPos X="25" Y="31"/>
+        <TopLine Value="8"/>
+        <UsageCount Value="47"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="relatorio.lfm"/>
+        <CursorPos X="4" Y="208"/>
+        <TopLine Value="182"/>
+        <UsageCount Value="9"/>
+        <SyntaxHighlighter Value="LFM"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="sobre.pas"/>
+        <ComponentName Value="frmSobre"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="Sobre"/>
+        <CursorPos X="1" Y="121"/>
+        <TopLine Value="100"/>
+        <UsageCount Value="47"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="sobre.lfm"/>
+        <CursorPos X="34" Y="10"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="9"/>
+        <SyntaxHighlighter Value="LFM"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="vendeitem.pas"/>
+        <ComponentName Value="frVendeItem"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="VendeItem"/>
+        <CursorPos X="30" Y="15"/>
+        <TopLine Value="8"/>
+        <UsageCount Value="47"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="vendeitem.lfm"/>
+        <CursorPos X="4" Y="222"/>
+        <TopLine Value="196"/>
+        <UsageCount Value="9"/>
+        <SyntaxHighlighter Value="LFM"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="..\..\..\..\lazarus\components\ACBr\source\Pascal\ACBrECF.pas"/>
+        <UnitName Value="ACBrECF"/>
+        <CursorPos X="16" Y="13"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="9"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="..\..\..\..\lazarus\components\richview\rvscroll.pas"/>
+        <UnitName Value="RVScroll"/>
+        <CursorPos X="64" Y="32"/>
+        <TopLine Value="19"/>
+        <UsageCount Value="9"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="..\..\..\..\lazarus\components\richview\rvlazintf.pas"/>
+        <UnitName Value="RVLazIntf"/>
+        <CursorPos X="33" Y="23"/>
+        <TopLine Value="10"/>
+        <UsageCount Value="9"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="..\..\..\..\lazarus\lcl\lcltype.pp"/>
+        <UnitName Value="LCLType"/>
+        <CursorPos X="12" Y="691"/>
+        <TopLine Value="676"/>
+        <UsageCount Value="9"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="..\..\..\synaser.pas"/>
+        <UnitName Value="synaser"/>
+        <CursorPos X="46" Y="2065"/>
+        <TopLine Value="2058"/>
+        <UsageCount Value="9"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="ecfteste1.lrs"/>
+        <CursorPos X="1" Y="1"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="9"/>
+      </Unit18>
+      <Unit19>
+        <Filename Value="ecfteste.rc"/>
+        <IsPartOfProject Value="True"/>
+        <CursorPos X="10" Y="1"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="41"/>
+        <SyntaxHighlighter Value="None"/>
+      </Unit19>
+      <Unit20>
+        <Filename Value="..\..\..\..\..\..\..\lazarus\components\turbopower_ipro\turbopoweripro.pas"/>
+        <UnitName Value="TurboPowerIPro"/>
+        <CursorPos X="28" Y="9"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="9"/>
+      </Unit20>
+      <Unit21>
+        <Filename Value="..\..\..\ACBrUtil.pas"/>
+        <UnitName Value="ACBrUtil"/>
+        <CursorPos X="36" Y="1348"/>
+        <TopLine Value="1347"/>
+        <UsageCount Value="9"/>
+      </Unit21>
+      <Unit22>
+        <Filename Value="..\..\..\ACBrRFD.pas"/>
+        <UnitName Value="ACBrRFD"/>
+        <CursorPos X="37" Y="9"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="9"/>
+      </Unit22>
+      <Unit23>
+        <Filename Value="usr\share\fpcsrc\rtl\linux\system.pp"/>
+        <UnitName Value="System"/>
+        <CursorPos X="2" Y="38"/>
+        <TopLine Value="13"/>
+        <UsageCount Value="9"/>
+      </Unit23>
+      <Unit24>
+        <Filename Value="..\..\..\ACBrBase.pas"/>
+        <UnitName Value="ACBrBase"/>
+        <CursorPos X="1" Y="1"/>
+        <TopLine Value="1"/>
+        <EditorIndex Value="4"/>
+        <UsageCount Value="19"/>
+        <Loaded Value="True"/>
+      </Unit24>
+      <Unit25>
+        <Filename Value="..\..\..\ACBrECFClass.pas"/>
+        <UnitName Value="ACBrECFClass"/>
+        <CursorPos X="22" Y="68"/>
+        <TopLine Value="49"/>
+        <UsageCount Value="18"/>
+      </Unit25>
+      <Unit26>
+        <Filename Value="..\..\..\ACBrECFEpson.pas"/>
+        <UnitName Value="ACBrECFEpson"/>
+        <CursorPos X="30" Y="52"/>
+        <TopLine Value="35"/>
+        <UsageCount Value="17"/>
+      </Unit26>
+      <Unit27>
+        <Filename Value="C:\lazarus\environmentoptions.xml"/>
+        <CursorPos X="10" Y="17"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="9"/>
+        <SyntaxHighlighter Value="XML"/>
+      </Unit27>
+      <Unit28>
+        <Filename Value="C:\lazarus\tools\install\win\environmentoptions-win32.xml"/>
+        <CursorPos X="67" Y="10"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="9"/>
+        <SyntaxHighlighter Value="XML"/>
+      </Unit28>
+      <Unit29>
+        <Filename Value="C:\lazarus\debugger\debugoptionsfrm.pas"/>
+        <ComponentName Value="DebuggerOptionsForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="DebugOptionsFrm"/>
+        <CursorPos X="41" Y="326"/>
+        <TopLine Value="324"/>
+        <UsageCount Value="9"/>
+      </Unit29>
+      <Unit30>
+        <Filename Value="C:\lazarus\ide\environmentopts.pp"/>
+        <ComponentName Value="EnvironmentOptionsDialog"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="EnvironmentOpts"/>
+        <CursorPos X="48" Y="92"/>
+        <TopLine Value="88"/>
+        <UsageCount Value="9"/>
+      </Unit30>
+      <Unit31>
+        <Filename Value="..\..\..\ACBrECF.pas"/>
+        <UnitName Value="ACBrECF"/>
+        <CursorPos X="27" Y="110"/>
+        <TopLine Value="100"/>
+        <EditorIndex Value="3"/>
+        <UsageCount Value="18"/>
+        <Loaded Value="True"/>
+      </Unit31>
+      <Unit32>
+        <Filename Value="C:\lazarus\fpc\2.2.2\source\rtl\win32\system.pp"/>
+        <UnitName Value="System"/>
+        <CursorPos X="35" Y="33"/>
+        <TopLine Value="14"/>
+        <UsageCount Value="10"/>
+      </Unit32>
+      <Unit33>
+        <Filename Value="..\..\..\ACBrConsts.pas"/>
+        <UnitName Value="ACBrConsts"/>
+        <CursorPos X="39" Y="113"/>
+        <TopLine Value="98"/>
+        <UsageCount Value="10"/>
+      </Unit33>
+      <Unit34>
+        <Filename Value="..\..\..\ACBrDevice.pas"/>
+        <UnitName Value="ACBrDevice"/>
+        <CursorPos X="1" Y="1"/>
+        <TopLine Value="1"/>
+        <EditorIndex Value="5"/>
+        <UsageCount Value="12"/>
+        <Loaded Value="True"/>
+      </Unit34>
+      <Unit35>
+        <Filename Value="..\..\..\ACBrCHQClass.pas"/>
+        <UnitName Value="ACBrCHQClass"/>
+        <CursorPos X="6" Y="46"/>
+        <TopLine Value="22"/>
+        <UsageCount Value="10"/>
+      </Unit35>
+      <Unit36>
+        <Filename Value="..\..\..\ACBrCHQ.pas"/>
+        <UnitName Value="ACBrCHQ"/>
+        <CursorPos X="28" Y="51"/>
+        <TopLine Value="48"/>
+        <UsageCount Value="10"/>
+      </Unit36>
+      <Unit37>
+        <Filename Value="..\..\..\ACBrCHQSchalter.pas"/>
+        <UnitName Value="ACBrCHQSchalter"/>
+        <CursorPos X="16" Y="71"/>
+        <TopLine Value="59"/>
+        <UsageCount Value="10"/>
+      </Unit37>
+      <Unit38>
+        <Filename Value="..\..\..\ACBrCHQPerto.pas"/>
+        <UnitName Value="ACBrCHQPerto"/>
+        <CursorPos X="26" Y="95"/>
+        <TopLine Value="86"/>
+        <UsageCount Value="10"/>
+      </Unit38>
+      <Unit39>
+        <Filename Value="..\..\..\ACBrECFBematech.pas"/>
+        <UnitName Value="ACBrECFBematech"/>
+        <CursorPos X="30" Y="106"/>
+        <TopLine Value="105"/>
+        <UsageCount Value="10"/>
+      </Unit39>
+      <Unit40>
+        <Filename Value="..\..\..\ACBrECFNaoFiscal.pas"/>
+        <UnitName Value="ACBrECFNaoFiscal"/>
+        <CursorPos X="30" Y="85"/>
+        <TopLine Value="72"/>
+        <UsageCount Value="10"/>
+      </Unit40>
+      <Unit41>
+        <Filename Value="..\..\..\ACBrECFDaruma.pas"/>
+        <UnitName Value="ACBrECFDaruma"/>
+        <CursorPos X="30" Y="143"/>
+        <TopLine Value="136"/>
+        <UsageCount Value="10"/>
+      </Unit41>
+      <Unit42>
+        <Filename Value="..\..\..\ACBrECFSchalter.pas"/>
+        <UnitName Value="ACBrECFSchalter"/>
+        <CursorPos X="30" Y="75"/>
+        <TopLine Value="65"/>
+        <UsageCount Value="10"/>
+      </Unit42>
+      <Unit43>
+        <Filename Value="..\..\..\ACBrECFMecaf.pas"/>
+        <UnitName Value="ACBrECFMecaf"/>
+        <CursorPos X="30" Y="88"/>
+        <TopLine Value="78"/>
+        <UsageCount Value="10"/>
+      </Unit43>
+      <Unit44>
+        <Filename Value="..\..\..\ACBrECFSweda.pas"/>
+        <UnitName Value="ACBrECFSweda"/>
+        <CursorPos X="30" Y="131"/>
+        <TopLine Value="129"/>
+        <UsageCount Value="10"/>
+      </Unit44>
+      <Unit45>
+        <Filename Value="..\..\..\ACBrECFDataRegis.pas"/>
+        <UnitName Value="ACBrECFDataRegis"/>
+        <CursorPos X="30" Y="94"/>
+        <TopLine Value="79"/>
+        <UsageCount Value="10"/>
+      </Unit45>
+      <Unit46>
+        <Filename Value="..\..\..\ACBrECFUrano.pas"/>
+        <UnitName Value="ACBrECFUrano"/>
+        <CursorPos X="30" Y="55"/>
+        <TopLine Value="37"/>
+        <UsageCount Value="10"/>
+      </Unit46>
+      <Unit47>
+        <Filename Value="..\..\..\ACBrECFYanco.pas"/>
+        <UnitName Value="ACBrECFYanco"/>
+        <CursorPos X="30" Y="62"/>
+        <TopLine Value="52"/>
+        <UsageCount Value="10"/>
+      </Unit47>
+      <Unit48>
+        <Filename Value="..\..\..\ACBrECFICash.pas"/>
+        <UnitName Value="ACBrECFICash"/>
+        <CursorPos X="30" Y="49"/>
+        <TopLine Value="41"/>
+        <UsageCount Value="10"/>
+      </Unit48>
+      <Unit49>
+        <Filename Value="..\..\..\ACBrECFQuattro.pas"/>
+        <UnitName Value="ACBrECFQuattro"/>
+        <CursorPos X="30" Y="53"/>
+        <TopLine Value="49"/>
+        <UsageCount Value="10"/>
+      </Unit49>
+      <Unit50>
+        <Filename Value="..\..\..\ACBrECFFiscNET.pas"/>
+        <UnitName Value="ACBrECFFiscNET"/>
+        <CursorPos X="30" Y="62"/>
+        <TopLine Value="55"/>
+        <UsageCount Value="10"/>
+      </Unit50>
+      <Unit51>
+        <Filename Value="..\..\..\ACBrECFNCR.pas"/>
+        <UnitName Value="ACBrECFNCR"/>
+        <CursorPos X="1" Y="39"/>
+        <TopLine Value="33"/>
+        <UsageCount Value="10"/>
+      </Unit51>
+      <Unit52>
+        <Filename Value="..\..\..\ACBrDISClass.pas"/>
+        <UnitName Value="ACBrDISClass"/>
+        <CursorPos X="12" Y="46"/>
+        <TopLine Value="30"/>
+        <UsageCount Value="10"/>
+      </Unit52>
+      <Unit53>
+        <Filename Value="..\..\..\ACBrDIS.pas"/>
+        <UnitName Value="ACBrDIS"/>
+        <CursorPos X="22" Y="54"/>
+        <TopLine Value="32"/>
+        <UsageCount Value="10"/>
+      </Unit53>
+      <Unit54>
+        <Filename Value="..\..\..\ACBrGAVClass.pas"/>
+        <UnitName Value="ACBrGAVClass"/>
+        <CursorPos X="16" Y="46"/>
+        <TopLine Value="23"/>
+        <UsageCount Value="10"/>
+      </Unit54>
+      <Unit55>
+        <Filename Value="..\..\..\ACBrGAV.pas"/>
+        <UnitName Value="ACBrGAV"/>
+        <CursorPos X="28" Y="54"/>
+        <TopLine Value="45"/>
+        <UsageCount Value="10"/>
+      </Unit55>
+      <Unit56>
+        <Filename Value="..\..\..\ACBrLCB.pas"/>
+        <UnitName Value="ACBrLCB"/>
+        <CursorPos X="26" Y="57"/>
+        <TopLine Value="43"/>
+        <UsageCount Value="10"/>
+      </Unit56>
+      <Unit57>
+        <Filename Value="..\..\..\ACBrValidador.pas"/>
+        <UnitName Value="ACBrValidador"/>
+        <CursorPos X="1" Y="1"/>
+        <TopLine Value="43"/>
+        <UsageCount Value="10"/>
+      </Unit57>
+      <Unit58>
+        <Filename Value="..\..\..\ACBrBAL.pas"/>
+        <UnitName Value="ACBrBAL"/>
+        <CursorPos X="24" Y="122"/>
+        <TopLine Value="109"/>
+        <UsageCount Value="10"/>
+      </Unit58>
+      <Unit59>
+        <Filename Value="..\..\..\ACBrBALClass.pas"/>
+        <UnitName Value="ACBrBALClass"/>
+        <CursorPos X="63" Y="44"/>
+        <TopLine Value="28"/>
+        <UsageCount Value="10"/>
+      </Unit59>
+      <Unit60>
+        <Filename Value="..\..\..\ACBrBALFilizola.pas"/>
+        <UnitName Value="ACBrBALFilizola"/>
+        <CursorPos X="1" Y="1"/>
+        <TopLine Value="49"/>
+        <UsageCount Value="10"/>
+      </Unit60>
+      <Unit61>
+        <Filename Value="..\..\..\ACBrCMC7.pas"/>
+        <UnitName Value="ACBrCMC7"/>
+        <CursorPos X="1" Y="1"/>
+        <TopLine Value="31"/>
+        <UsageCount Value="10"/>
+      </Unit61>
+      <Unit62>
+        <Filename Value="..\..\..\ACBrTER.pas"/>
+        <UnitName Value="ACBrTER"/>
+        <CursorPos X="34" Y="50"/>
+        <TopLine Value="31"/>
+        <UsageCount Value="10"/>
+      </Unit62>
+      <Unit63>
+        <Filename Value="..\..\..\ACBrTERClass.pas"/>
+        <UnitName Value="ACBrTERClass"/>
+        <CursorPos X="16" Y="47"/>
+        <TopLine Value="28"/>
+        <UsageCount Value="10"/>
+      </Unit63>
+      <Unit64>
+        <Filename Value="..\..\..\ACBrGAVImpressoraComum.pas"/>
+        <UnitName Value="ACBrGAVImpressoraComum"/>
+        <CursorPos X="16" Y="65"/>
+        <TopLine Value="36"/>
+        <UsageCount Value="10"/>
+      </Unit64>
+      <Unit65>
+        <Filename Value="..\..\..\ACBrETQClass.pas"/>
+        <UnitName Value="ACBrETQClass"/>
+        <CursorPos X="16" Y="47"/>
+        <TopLine Value="30"/>
+        <UsageCount Value="10"/>
+      </Unit65>
+      <Unit66>
+        <Filename Value="..\..\..\ACBrETQ.pas"/>
+        <UnitName Value="ACBrETQ"/>
+        <CursorPos X="16" Y="50"/>
+        <TopLine Value="43"/>
+        <UsageCount Value="10"/>
+      </Unit66>
+      <Unit67>
+        <Filename Value="..\..\..\ACBrETQPpla.pas"/>
+        <UnitName Value="ACBrETQPpla"/>
+        <CursorPos X="40" Y="47"/>
+        <TopLine Value="38"/>
+        <UsageCount Value="10"/>
+      </Unit67>
+    </Units>
+    <JumpHistory Count="11" HistoryIndex="10">
+      <Position1>
+        <Filename Value="..\..\..\ACBrBase.pas"/>
+        <Caret Line="232" Column="27" TopLine="220"/>
+      </Position1>
+      <Position2>
+        <Filename Value="..\..\..\ACBrBase.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
+      </Position2>
+      <Position3>
+        <Filename Value="..\..\..\ACBrBase.pas"/>
+        <Caret Line="130" Column="1" TopLine="110"/>
+      </Position3>
+      <Position4>
+        <Filename Value="..\..\..\ACBrECF.pas"/>
+        <Caret Line="1893" Column="23" TopLine="1888"/>
+      </Position4>
+      <Position5>
+        <Filename Value="..\..\..\ACBrECF.pas"/>
+        <Caret Line="135" Column="29" TopLine="115"/>
+      </Position5>
+      <Position6>
+        <Filename Value="ecfteste1.pas"/>
+        <Caret Line="2055" Column="25" TopLine="2047"/>
+      </Position6>
+      <Position7>
+        <Filename Value="configuraserial.pas"/>
+        <Caret Line="51" Column="36" TopLine="24"/>
+      </Position7>
+      <Position8>
+        <Filename Value="ecfteste1.pas"/>
+        <Caret Line="8" Column="31" TopLine="1"/>
+      </Position8>
+      <Position9>
+        <Filename Value="ecfteste1.pas"/>
+        <Caret Line="684" Column="19" TopLine="664"/>
+      </Position9>
+      <Position10>
+        <Filename Value="ecfteste.lpr"/>
+        <Caret Line="9" Column="37" TopLine="1"/>
+      </Position10>
+      <Position11>
+        <Filename Value="ecfteste.lpr"/>
+        <Caret Line="25" Column="60" TopLine="1"/>
+      </Position11>
+    </JumpHistory>
+  </ProjectOptions>
+  <CompilerOptions>
+    <Version Value="8"/>
+    <PathDelim Value="\"/>
+    <Linking>
+      <Options>
+        <Win32>
+          <GraphicApplication Value="True"/>
+        </Win32>
+      </Options>
+    </Linking>
+    <Other>
+      <CompilerPath Value="$(CompPath)"/>
+    </Other>
+  </CompilerOptions>
+  <Debugging>
+    <Exceptions Count="7">
+      <Item1>
+        <Name Value="ESynaSerError"/>
+      </Item1>
+      <Item2>
+        <Name Value="EACBrECFErro"/>
+      </Item2>
+      <Item3>
+        <Name Value="EACBrECFNaoInicializado"/>
+      </Item3>
+      <Item4>
+        <Name Value="Exception"/>
+      </Item4>
+      <Item5>
+        <Name Value="EStringListError"/>
+      </Item5>
+      <Item6>
+        <Name Value="EACBrECFSemResposta"/>
+      </Item6>
+      <Item7>
+        <Name Value="EACBrECFCMDInvalido"/>
+      </Item7>
+    </Exceptions>
+  </Debugging>
+</CONFIG>

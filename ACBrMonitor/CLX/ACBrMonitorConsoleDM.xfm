@@ -1,0 +1,67 @@
+object dm: Tdm
+  OldCreateOrder = False
+  OnCreate = DataModuleCreate
+  OnDestroy = DataModuleDestroy
+  Left = 239
+  Top = 180
+  Height = 143
+  Width = 406
+  object TcpServer: TIdTCPServer
+    Bindings = <>
+    CommandHandlers = <>
+    DefaultPort = 0
+    Greeting.NumericCode = 0
+    MaxConnectionReply.NumericCode = 0
+    OnConnect = TcpServerConnect
+    OnExecute = TcpServerExecute
+    OnDisconnect = TcpServerDisconnect
+    ReplyExceptionCode = 0
+    ReplyTexts = <>
+    ReplyUnknownCommand.NumericCode = 0
+    TerminateWaitTime = 1000
+    Left = 36
+    Top = 8
+  end
+  object ACBrCHQ1: TACBrCHQ
+    Porta = 'COM1'
+    Left = 36
+    Top = 72
+  end
+  object ACBrGAV1: TACBrGAV
+    Porta = 'COM1'
+    AberturaAntecipada = aaException
+    Left = 111
+    Top = 72
+  end
+  object ACBrDIS1: TACBrDIS
+    Porta = 'COM1'
+    IntervaloEnvioBytes = 3
+    Left = 186
+    Top = 72
+  end
+  object ACBrLCB1: TACBrLCB
+    Porta = 'Sem Leitor'
+    Sufixo = '#13'
+    ExcluirSufixo = False
+    Intervalo = 100
+    OnLeCodigo = ACBrLCB1LeCodigo
+    Left = 261
+    Top = 72
+  end
+  object ACBrRFD1: TACBrRFD
+    OnGetKeyRSA = ACBrRFD1GetKeyRSA
+    Left = 337
+    Top = 72
+  end
+  object ACBrBAL1: TACBrBAL
+    Porta = 'COM1'
+    MonitorarBalanca = True
+    Left = 336
+    Top = 12
+  end
+  object ACBrETQ1: TACBrETQ
+    Porta = 'LPT1'
+    Left = 264
+    Top = 16
+  end
+end

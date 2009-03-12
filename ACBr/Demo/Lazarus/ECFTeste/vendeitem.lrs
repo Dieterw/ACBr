@@ -1,0 +1,59 @@
+{ This is an automatically generated lazarus resource file }
+
+LazarusResources.Add('TfrVendeItem','FORMDATA',[
+  'TPF0'#12'TfrVendeItem'#11'frVendeItem'#4'Left'#3#144#1#6'Height'#3#254#0#3'T'
+  +'op'#3#215#0#5'Width'#3''#1#18'HorzScrollBar.Page'#3'~'#1#19'HorzScrollBar.'
+  +'Range'#3'I'#1#18'VertScrollBar.Page'#3#253#0#19'VertScrollBar.Range'#3#225#0
+  +#11'BorderStyle'#7#8'bsSingle'#7'Caption'#6#10'Vende Item'#12'ClientHeight'#3
+  +#254#0#11'ClientWidth'#3''#1#11'Font.Height'#2#245#9'Font.Name'#6#13'MS San'
+  +'s Serif'#8'Position'#7#16'poMainFormCenter'#0#6'TBevel'#6'Bevel2'#4'Left'#3
+  +#184#0#6'Height'#2'l'#3'Top'#2'k'#5'Width'#3#185#0#0#0#6'TLabel'#6'Label1'#4
+  +'Left'#2#30#6'Height'#2#14#3'Top'#2#24#5'Width'#2'"'#9'Alignment'#7#14'taRig'
+  +'htJustify'#7'Caption'#6#7'&C'#243'digo'#12'FocusControl'#7#8'edCodigo'#11'P'
+  +'arentColor'#8#0#0#6'TLabel'#6'Label2'#4'Left'#2#17#6'Height'#2#14#3'Top'#2
+  +'8'#5'Width'#2'/'#9'Alignment'#7#14'taRightJustify'#7'Caption'#6#10'&Descri'
+  +#231#227'o'#12'FocusControl'#7#11'edDescricao'#11'ParentColor'#8#0#0#6'TLabe'
+  +'l'#6'Label3'#4'Left'#2'+'#6'Height'#2#14#3'Top'#2'X'#5'Width'#2#19#9'Alignm'
+  +'ent'#7#14'taRightJustify'#7'Caption'#6#4'&Qtd'#11'ParentColor'#8#0#0#6'TLab'
+  +'el'#6'Label4'#4'Left'#3#201#0#6'Height'#2#14#3'Top'#2'X'#5'Width'#2'D'#9'Al'
+  +'ignment'#7#14'taRightJustify'#7'Caption'#6#15'&Pre'#231'o Unit'#225'rio'#12
+  +'FocusControl'#7#12'edPrecoUnita'#11'ParentColor'#8#0#0#6'TLabel'#6'Label5'#4
+  +'Left'#3#191#0#6'Height'#2#14#3'Top'#2'x'#5'Width'#2'M'#9'Alignment'#7#14'ta'
+  +'RightJustify'#7'Caption'#6#17'&Valor Aliq. ICMS'#12'FocusControl'#7#6'edICM'
+  +'S'#11'ParentColor'#8#0#0#6'TLabel'#6'Label6'#4'Left'#2#19#6'Height'#2#14#3
+  +'Top'#3#152#0#5'Width'#2'.'#9'Alignment'#7#14'taRightJustify'#7'Caption'#6#9
+  +'&Desconto'#12'FocusControl'#7#10'edDesconto'#11'ParentColor'#8#0#0#6'TLabel'
+  +#6'Label7'#4'Left'#2#22#6'Height'#2#14#3'Top'#2'x'#5'Width'#2'('#9'Alignment'
+  +#7#14'taRightJustify'#7'Caption'#6#8'&Unidade'#12'FocusControl'#7#4'edUN'#11
+  +'ParentColor'#8#0#0#6'TLabel'#6'Label8'#4'Left'#3#205#0#6'Height'#2#14#3'Top'
+  +#3#151#0#5'Width'#2'6'#7'Caption'#6#11'II = Isento'#11'ParentColor'#8#0#0#6
+  +'TLabel'#6'Label9'#4'Left'#3#205#0#6'Height'#2#14#3'Top'#3#167#0#5'Width'#2
+  +'c'#7'Caption'#6#19'NN = Nao Incidencia'#11'ParentColor'#8#0#0#6'TLabel'#7'L'
+  +'abel10'#4'Left'#3#205#0#6'Height'#2#14#3'Top'#3#183#0#5'Width'#3#134#0#7'Ca'
+  +'ption'#6#28'FF = Substitui'#231'ao Tribut'#225'ria'#11'ParentColor'#8#0#0#6
+  +'TBevel'#6'Bevel1'#4'Left'#2#8#6'Height'#2'L'#3'Top'#3#139#0#5'Width'#3#169#0
+  +#0#0#5'TEdit'#8'edCodigo'#6'Cursor'#7#7'crIBeam'#4'Left'#2'H'#6'Height'#2#21
+  +#3'Top'#2#16#5'Width'#2'e'#8'TabOrder'#2#0#4'Text'#6#9'111222333'#0#0#5'TEdi'
+  +'t'#11'edDescricao'#6'Cursor'#7#7'crIBeam'#4'Left'#2'H'#6'Height'#2#21#3'Top'
+  +#2'0'#5'Width'#3'!'#1#8'TabOrder'#2#1#4'Text'#6#16'TESTE DE PRODUTO'#0#0#5'T'
+  +'Edit'#12'edPrecoUnita'#6'Cursor'#7#7'crIBeam'#4'Left'#3#16#1#6'Height'#2#21
+  +#3'Top'#2'P'#5'Width'#2'Y'#10'OnKeyPress'#7#13'edQtdKeyPress'#8'TabOrder'#2#2
+  +#4'Text'#6#1'1'#0#0#5'TEdit'#6'edICMS'#6'Cursor'#7#7'crIBeam'#4'Left'#3#16#1
+  +#6'Height'#2#21#3'Top'#2'p'#5'Width'#2'Y'#10'OnKeyPress'#7#13'edQtdKeyPress'
+  +#8'TabOrder'#2#3#4'Text'#6#2'NN'#0#0#5'TEdit'#10'edDesconto'#6'Cursor'#7#7'c'
+  +'rIBeam'#4'Left'#2'H'#6'Height'#2#21#3'Top'#3#144#0#5'Width'#2'Q'#10'OnKeyPr'
+  +'ess'#7#13'edQtdKeyPress'#8'TabOrder'#2#4#4'Text'#6#1'0'#0#0#5'TEdit'#4'edUN'
+  +#6'Cursor'#7#7'crIBeam'#4'Left'#2'H'#6'Height'#2#21#3'Top'#2'p'#5'Width'#2'Q'
+  +#8'TabOrder'#2#5#4'Text'#6#2'UN'#0#0#7'TButton'#7'Button1'#4'Left'#2'O'#6'He'
+  +'ight'#2#25#3'Top'#3#223#0#5'Width'#2'K'#7'Caption'#6#9'&Imprimir'#7'Default'
+  +#9#7'OnClick'#7#12'Button1Click'#8'TabOrder'#2#6#0#0#7'TButton'#7'Button2'#4
+  +'Left'#3#218#0#6'Height'#2#25#3'Top'#3#223#0#5'Width'#2'K'#6'Cancel'#9#7'Cap'
+  +'tion'#6#6'Fechar'#11'ModalResult'#2#2#7'OnClick'#7#12'Button2Click'#8'TabOr'
+  +'der'#2#7#0#0#5'TEdit'#5'edQtd'#6'Cursor'#7#7'crIBeam'#4'Left'#2'H'#6'Height'
+  +#2#21#3'Top'#2'P'#5'Width'#2'Q'#10'OnKeyPress'#7#13'edQtdKeyPress'#8'TabOrde'
+  +'r'#2#8#4'Text'#6#1'1'#0#0#12'TRadioButton'#13'rbPercentagem'#4'Left'#2'0'#6
+  +'Height'#2#19#3'Top'#3#176#0#5'Width'#2'Y'#7'Caption'#6#11'Percentagem'#7'Ch'
+  +'ecked'#9#5'State'#7#9'cbChecked'#8'TabOrder'#2#9#0#0#12'TRadioButton'#7'rbV'
+  +'alor'#4'Left'#2'0'#6'Height'#2#19#3'Top'#3#194#0#5'Width'#2'2'#7'Caption'#6
+  +#5'Valor'#8'TabOrder'#2#10#0#0#0
+]);

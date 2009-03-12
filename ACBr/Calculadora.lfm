@@ -1,0 +1,359 @@
+object FrCalculadora: TFrCalculadora
+  BorderStyle = bsDialog
+  Caption = 'Calculadora'
+  ClientHeight = 295
+  ClientWidth = 233
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Icon.Data = {
+    FE0200000000010001002020100000000000E802000016000000280000002000
+    0000400000000100040000000000800200000000000000000000000000000000
+    000000000000000080000080000000808000800000008000800080800000C0C0
+    C000808080000000FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFF
+    FF00F77777777777777777777700000000007E44444444444444444444700000
+    00007E6666666666666666666470000000007E66444644464444444664700000
+    00007E6677467746777777466470000000007E66F746F746FFFFF74664700000
+    00007E6666666666666666666470000000007E66444644464446444664700000
+    00007E6677467746774677466470000000007E66F746F746F746F74664700000
+    00007E6666666666666666666470000000007E66444644464446444664700000
+    00007E6677467746774677466470000000007E66F746F746F746F74664700000
+    00007E6666666666666666666470000000007E66444644464446444664700000
+    00007E6677467746774677466470000000007E66F746F746F746F74664700000
+    00007E6666666666666666666470000000007E66444644464446444664700000
+    00007E6677467746774677466470000000007E66F746F746F746F74664700000
+    00007E6666666666666666666470000000007E66666666666666666664700000
+    00007E607EEEEEEEEEEEEEE66470000000007E607FFFFFFFFFFFFFE664700000
+    00007E6077777777777777766470000000007E60000000000000000664700000
+    00007E6666666666666666666470000000007EEEEEEEEEEEEEEEEEEEE4700000
+    0000077777777777777777777700000000000000000000000000000000000000
+    0000000003FF000001FF000001FF000001FF000001FF000001FF000001FF0000
+    01FF000001FF000001FF000001FF000001FF000001FF000001FF000001FF0000
+    01FF000001FF000001FF000001FF000001FF000001FF000001FF000001FF0000
+    01FF000001FF000001FF000001FF000001FF000001FF000001FF800003FFFFFF
+    FFFF
+  }
+  KeyPreview = True
+  OnCreate = FormCreate
+  OnKeyPress = FormKeyPress
+  OnKeyUp = FormKeyUp
+  PixelsPerInch = 96
+  PopupMenu = PopupMenu1
+  ShowHint = True
+  TextHeight = 13
+  HorzScrollBar.Page = 232
+  VertScrollBar.Page = 294
+  Left = 549
+  Height = 295
+  Top = 201
+  Width = 233
+  object b1: TButton
+    Caption = '1'
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    OnClick = b1Click
+    TabOrder = 13
+    Left = 1
+    Height = 35
+    Top = 211
+    Width = 40
+  end
+  object b0: TButton
+    Caption = '0'
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    OnClick = b0Click
+    TabOrder = 18
+    Left = 1
+    Height = 35
+    Top = 255
+    Width = 40
+  end
+  object b2: TButton
+    Caption = '2'
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    OnClick = b1Click
+    TabOrder = 14
+    Left = 49
+    Height = 35
+    Top = 211
+    Width = 40
+  end
+  object b3: TButton
+    Caption = '3'
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    OnClick = b1Click
+    TabOrder = 15
+    Left = 96
+    Height = 35
+    Top = 211
+    Width = 40
+  end
+  object b4: TButton
+    Caption = '4'
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    OnClick = b1Click
+    TabOrder = 8
+    Left = 1
+    Height = 35
+    Top = 167
+    Width = 40
+  end
+  object b5: TButton
+    Caption = '5'
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    OnClick = b1Click
+    TabOrder = 9
+    Left = 49
+    Height = 35
+    Top = 167
+    Width = 40
+  end
+  object b6: TButton
+    Caption = '6'
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    OnClick = b1Click
+    TabOrder = 10
+    Left = 96
+    Height = 35
+    Top = 167
+    Width = 40
+  end
+  object b7: TButton
+    Caption = '7'
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    OnClick = b1Click
+    TabOrder = 3
+    Left = 1
+    Height = 35
+    Top = 124
+    Width = 40
+  end
+  object b8: TButton
+    Caption = '8'
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    OnClick = b1Click
+    TabOrder = 4
+    Left = 49
+    Height = 35
+    Top = 124
+    Width = 40
+  end
+  object b9: TButton
+    Caption = '9'
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    OnClick = b1Click
+    TabOrder = 5
+    Left = 96
+    Height = 35
+    Top = 124
+    Width = 40
+  end
+  object bponto: TButton
+    Caption = ','
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    OnClick = bpontoClick
+    TabOrder = 19
+    Left = 49
+    Height = 35
+    Top = 255
+    Width = 40
+  end
+  object bigual: TButton
+    Caption = '='
+    Default = True
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    OnClick = AcaoClick
+    TabOrder = 20
+    Left = 96
+    Height = 35
+    Top = 255
+    Width = 40
+  end
+  object bmais: TButton
+    Caption = '+'
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    OnClick = AcaoClick
+    TabOrder = 21
+    Left = 144
+    Height = 35
+    Top = 255
+    Width = 40
+  end
+  object bmenos: TButton
+    Caption = '-'
+    Font.Height = -19
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    OnClick = AcaoClick
+    TabOrder = 16
+    Left = 144
+    Height = 35
+    Top = 211
+    Width = 40
+  end
+  object bmulti: TButton
+    Caption = 'x'
+    Font.Height = -13
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    OnClick = AcaoClick
+    TabOrder = 11
+    Left = 144
+    Height = 35
+    Top = 167
+    Width = 40
+  end
+  object bdiv: TButton
+    Caption = '/'
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    OnClick = AcaoClick
+    TabOrder = 6
+    Left = 144
+    Height = 35
+    Top = 124
+    Width = 40
+  end
+  object bapaga: TButton
+    Caption = '<-'
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    OnClick = bapagaClick
+    TabOrder = 2
+    Left = 192
+    Height = 35
+    Top = 124
+    Width = 40
+  end
+  object bc: TButton
+    Caption = '&C'
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    OnClick = bcClick
+    TabOrder = 17
+    Left = 192
+    Height = 35
+    Top = 167
+    Width = 40
+  end
+  object bce: TButton
+    Caption = 'C&E'
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    OnClick = bceClick
+    TabOrder = 12
+    Left = 192
+    Height = 35
+    Top = 211
+    Width = 40
+  end
+  object bporc: TButton
+    Caption = '%'
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    OnClick = bporcClick
+    TabOrder = 7
+    Left = 192
+    Height = 35
+    Top = 255
+    Width = 40
+  end
+  object pValor: TPanel
+    Alignment = taRightJustify
+    BevelOuter = bvNone
+    BorderWidth = 5
+    BorderStyle = bsSingle
+    ClientHeight = 22
+    ClientWidth = 227
+    Color = clBlack
+    Font.CharSet = ANSI_CHARSET
+    Font.Color = clLime
+    Font.Height = -16
+    Font.Name = 'Arial'
+    Font.Style = [fsBold]
+    FullRepaint = False
+    TabOrder = 1
+    TabStop = True
+    Left = 1
+    Height = 26
+    Hint = 'CTRL+ENTER copia Valor e encerra'
+    Top = 91
+    Width = 231
+  end
+  object mBobina: TMemo
+    PopupMenu = PopupMenu1
+    ReadOnly = True
+    ScrollBars = ssVertical
+    TabOrder = 0
+    Left = 1
+    Height = 87
+    Hint = 'CTRL+ENTER copia Valor e encerra'
+    Top = 3
+    Width = 231
+  end
+  object PopupMenu1: TPopupMenu
+    left = 12
+    top = 12
+    object Limpar1: TMenuItem
+      Caption = 'Limpar'
+      ShortCut = 69
+      OnClick = bceClick
+    end
+    object Salvar1: TMenuItem
+      Caption = 'Salvar'
+      ShortCut = 16467
+      OnClick = Salvar1Click
+    end
+    object Copias1: TMenuItem
+      Caption = 'Copiar'
+      ShortCut = 16451
+      OnClick = Copiar1Click
+    end
+  end
+  object SaveDialog1: TSaveDialog
+    Options = [ofOverwritePrompt, ofHideReadOnly, ofEnableSizing]
+    Title = 'Save file as'
+    DefaultExt = '.TXT'
+    Filter = 'Arquivo Texto|*.TXT'
+    FilterIndex = 0
+    Title = 'Save file as'
+    left = 12
+    top = 48
+  end
+  object Timer1: TTimer
+    Enabled = False
+    Interval = 50
+    OnTimer = Timer1Timer
+    left = 12
+    top = 84
+  end
+end

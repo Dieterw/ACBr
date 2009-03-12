@@ -1,0 +1,60 @@
+object dm: Tdm
+  OnCreate = DataModuleCreate
+  OnDestroy = DataModuleDestroy
+  left = 239
+  top = 180
+  Height = 143
+  HorizontalOffset = 769
+  VerticalOffset = 123
+  Width = 406
+  object ACBrCHQ1: TACBrCHQ
+    Porta = 'COM1'
+    left = 36
+    top = 72
+  end
+  object ACBrGAV1: TACBrGAV
+    Porta = 'COM1'
+    AberturaAntecipada = aaException
+    left = 111
+    top = 72
+  end
+  object ACBrDIS1: TACBrDIS
+    Porta = 'COM1'
+    IntervaloEnvioBytes = 3
+    left = 186
+    top = 72
+  end
+  object ACBrLCB1: TACBrLCB
+    Porta = 'Sem Leitor'
+    Sufixo = '#13'
+    ExcluirSufixo = False
+    Intervalo = 100
+    OnLeCodigo = ACBrLCB1LeCodigo
+    left = 261
+    top = 72
+  end
+  object ACBrRFD1: TACBrRFD
+    OnGetKeyRSA = ACBrRFD1GetKeyRSA
+    left = 337
+    top = 72
+  end
+  object ACBrBAL1: TACBrBAL
+    Porta = 'COM1'
+    MonitorarBalanca = True
+    left = 336
+    top = 12
+  end
+  object ACBrETQ1: TACBrETQ
+    Porta = 'LPT1'
+    left = 264
+    top = 16
+  end
+  object TCPServer: TIdTCPServer
+    Bindings = <>
+    OnConnect = TCPServerConnect
+    OnDisconnect = TCPServerDisconnect
+    OnExecute = TCPServerExecute
+    left = 72
+    top = 12
+  end
+end

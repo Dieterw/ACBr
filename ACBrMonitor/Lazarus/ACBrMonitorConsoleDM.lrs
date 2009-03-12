@@ -1,0 +1,17 @@
+LazarusResources.Add('Tdm','FORMDATA',[
+  'TPF0'#3'Tdm'#2'dm'#8'OnCreate'#7#16'DataModuleCreate'#9'OnDestroy'#7#17'Data'
+  +'ModuleDestroy'#4'left'#3#239#0#3'top'#3#180#0#6'Height'#3#143#0#16'Horizont'
+  +'alOffset'#3#1#3#14'VerticalOffset'#2'{'#5'Width'#3#150#1#0#8'TACBrCHQ'#8'AC'
+  +'BrCHQ1'#5'Porta'#6#4'COM1'#4'left'#2'$'#3'top'#2'H'#0#0#8'TACBrGAV'#8'ACBrG'
+  +'AV1'#5'Porta'#6#4'COM1'#18'AberturaAntecipada'#7#11'aaException'#4'left'#2
+  +'o'#3'top'#2'H'#0#0#8'TACBrDIS'#8'ACBrDIS1'#5'Porta'#6#4'COM1'#19'IntervaloE'
+  +'nvioBytes'#2#3#4'left'#3#186#0#3'top'#2'H'#0#0#8'TACBrLCB'#8'ACBrLCB1'#5'Po'
+  +'rta'#6#10'Sem Leitor'#6'Sufixo'#6#3'#13'#13'ExcluirSufixo'#8#9'Intervalo'#2
+  +'d'#10'OnLeCodigo'#7#16'ACBrLCB1LeCodigo'#4'left'#3#5#1#3'top'#2'H'#0#0#8'TA'
+  +'CBrRFD'#8'ACBrRFD1'#11'OnGetKeyRSA'#7#17'ACBrRFD1GetKeyRSA'#4'left'#3'Q'#1#3
+  +'top'#2'H'#0#0#8'TACBrBAL'#8'ACBrBAL1'#5'Porta'#6#4'COM1'#16'MonitorarBalanc'
+  +'a'#9#4'left'#3'P'#1#3'top'#2#12#0#0#8'TACBrETQ'#8'ACBrETQ1'#5'Porta'#6#4'LP'
+  +'T1'#4'left'#3#8#1#3'top'#2#16#0#0#12'TIdTCPServer'#9'TCPServer'#8'Bindings'
+  +#14#0#9'OnConnect'#7#16'TCPServerConnect'#12'OnDisconnect'#7#19'TCPServerDis'
+  +'connect'#9'OnExecute'#7#16'TCPServerExecute'#4'left'#2'H'#3'top'#2#12#0#0#0
+]);

@@ -1,0 +1,202 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!-- C++Builder XML Project -->
+<PROJECT>
+  <MACROS>
+    <VERSION value="BCB.06.00"/>
+    <PROJECT value="ACBr_BCB6.bpl"/>
+    <OBJFILES value="ACBr_BCB6.obj synautil.obj ACBrBAL.obj ACBrBALClass.obj 
+      ACBrBALFilizola.obj ACBrBALToledo.obj ACBrBase.obj ACBrCalculadora.obj 
+      ACBrCHQ.obj ACBrCHQBematech.obj ACBrCHQChronos.obj ACBrCHQClass.obj 
+      ACBrCHQImpressoraComum.obj ACBrCHQImpressoraECF.obj ACBrCHQPerto.obj 
+      ACBrCHQSchalter.obj ACBrCHQSotomaq.obj ACBrCHQUrano.obj ACBrCMC7.obj 
+      ACBrD5.obj ACBrDIS.obj ACBrDISClass.obj ACBrDISGertecSerial.obj 
+      ACBrDISGertecTeclado.obj ACBrDISKeytecTeclado.obj ACBrECF.obj 
+      ACBrECFBematech.obj ACBrECFClass.obj ACBrECFDaruma.obj 
+      ACBrECFDataRegis.obj ACBrECFFiscNET.obj ACBrECFICash.obj ACBrECFMecaf.obj 
+      ACBrECFNaoFiscal.obj ACBrECFQuattro.obj ACBrECFSchalter.obj 
+      ACBrECFSweda.obj ACBrECFUrano.obj ACBrECFYanco.obj ACBrEnterTabCLX.obj 
+      ACBrExtenso.obj ACBrFala.obj ACBrGAV.obj ACBrGAVClass.obj 
+      ACBrGAVImpressoraComum.obj ACBrGAVImpressoraECF.obj ACBrGAVSerialGerbo.obj 
+      ACBrGAVSerialMenno.obj ACBrLCB.obj ACBrReg.obj ACBrTER.obj 
+      ACBrTERClass.obj ACBrTERWilbor.obj ACBrTroco.obj ACBrUtil.obj 
+      ACBrValidador.obj Calculadora.obj synafpc.obj synaser.obj"/>
+    <RESFILES value="ACBr_BCB6.res"/>
+    <IDLFILES value=""/>
+    <IDLGENFILES value=""/>
+    <DEFFILE value=""/>
+    <RESDEPEN value="$(RESFILES) Calculadora.dfm"/>
+    <LIBFILES value=""/>
+    <LIBRARIES value=""/>
+    <SPARELIBS value=""/>
+    <PACKAGES value="rtl.bpi vcl.bpi vclx.bpi visualclx.bpi designide.bpi"/>
+    <PATHCPP value=".;"/>
+    <PATHPAS value=".;"/>
+    <PATHRC value=".;"/>
+    <PATHASM value=".;"/>
+    <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
+    <RELEASELIBPATH value="$(BCB)\lib\release"/>
+    <LINKER value="ilink32"/>
+    <USERDEFINES value="_DEBUG"/>
+    <SYSDEFINES value="_RTLDLL;NO_STRICT;USEPACKAGES"/>
+    <MAINSOURCE value="ACBr_BCB6.cpp"/>
+    <INCLUDEPATH value="&quot;C:\Arquivos de programas\Borland\CBuilder6\Bin&quot;;C:\COMPONENTES\ACBr\source\Pascal;$(BCB)\include;$(BCB)\include\vcl"/>
+    <LIBPATH value="&quot;C:\Arquivos de programas\FastReports\FastReport 4\LibBCB6&quot;;$(BCB)\Projects\Lib;&quot;C:\Arquivos de programas\Borland\CBuilder6\Bin&quot;;C:\COMPONENTES\ACBr\source\Pascal;$(BCB)\lib\obj;$(BCB)\lib"/>
+    <WARNINGS value="-w-par"/>
+    <OTHERFILES value=""/>
+  </MACROS>
+  <OPTIONS>
+    <IDLCFLAGS value="-I&quot;C:\Arquivos de programas\Borland\CBuilder6\Bin&quot; 
+      -IC:\COMPONENTES\ACBr\source\Pascal -I$(BCB)\include -I$(BCB)\include\vcl 
+      -src_suffix cpp -D_DEBUG -boa"/>
+    <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -a8 -b- -k -y -v -vi- -c 
+      -tWM"/>
+    <PFLAGS value="-$YD -$W -$O -V -JPHNE -M -LUDesignIde"/>
+    <RFLAGS value=""/>
+    <AFLAGS value="/mx /w2 /zd"/>
+    <LFLAGS value="-D&quot;ACBr&quot; -aa -Tpp -x -Gn -Gl -Gi -v"/>
+    <OTHERFILES value=""/>
+  </OPTIONS>
+  <LINKER>
+    <ALLOBJ value="c0pkg32.obj $(PACKAGES) Memmgr.Lib sysinit.obj $(OBJFILES)"/>
+    <ALLRES value="$(RESFILES)"/>
+    <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cp32mti.lib"/>
+    <OTHERFILES value=""/>
+  </LINKER>
+  <FILELIST>
+      <FILE FILENAME="ACBr_BCB6.res" FORMNAME="" UNITNAME="ACBr_BCB6.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBr_BCB6.cpp" FORMNAME="" UNITNAME="ACBr_BCB6" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="C:\Arquivos de programas\Borland\CBuilder6\Lib\rtl.bpi" FORMNAME="" UNITNAME="rtl" CONTAINERID="BPITool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="synautil.pas" FORMNAME="" UNITNAME="synautil" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrBAL.pas" FORMNAME="" UNITNAME="ACBrBAL" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrBALClass.pas" FORMNAME="" UNITNAME="ACBrBALClass" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrBALFilizola.pas" FORMNAME="" UNITNAME="ACBrBALFilizola" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrBALToledo.pas" FORMNAME="" UNITNAME="ACBrBALToledo" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrBase.pas" FORMNAME="" UNITNAME="ACBrBase" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrCalculadora.pas" FORMNAME="" UNITNAME="ACBrCalculadora" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrCHQ.pas" FORMNAME="" UNITNAME="ACBrCHQ" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrCHQBematech.pas" FORMNAME="" UNITNAME="ACBrCHQBematech" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrCHQChronos.pas" FORMNAME="" UNITNAME="ACBrCHQChronos" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrCHQClass.pas" FORMNAME="" UNITNAME="ACBrCHQClass" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrCHQImpressoraComum.pas" FORMNAME="" UNITNAME="ACBrCHQImpressoraComum" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrCHQImpressoraECF.pas" FORMNAME="" UNITNAME="ACBrCHQImpressoraECF" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrCHQPerto.pas" FORMNAME="" UNITNAME="ACBrCHQPerto" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrCHQSchalter.pas" FORMNAME="" UNITNAME="ACBrCHQSchalter" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrCHQSotomaq.pas" FORMNAME="" UNITNAME="ACBrCHQSotomaq" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrCHQUrano.pas" FORMNAME="" UNITNAME="ACBrCHQUrano" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrCMC7.pas" FORMNAME="" UNITNAME="ACBrCMC7" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrD5.pas" FORMNAME="" UNITNAME="ACBrD5" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrDIS.pas" FORMNAME="" UNITNAME="ACBrDIS" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrDISClass.pas" FORMNAME="" UNITNAME="ACBrDISClass" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrDISGertecSerial.pas" FORMNAME="" UNITNAME="ACBrDISGertecSerial" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrDISGertecTeclado.pas" FORMNAME="" UNITNAME="ACBrDISGertecTeclado" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrDISKeytecTeclado.pas" FORMNAME="" UNITNAME="ACBrDISKeytecTeclado" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrECF.pas" FORMNAME="" UNITNAME="ACBrECF" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrECFBematech.pas" FORMNAME="" UNITNAME="ACBrECFBematech" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrECFClass.pas" FORMNAME="" UNITNAME="ACBrECFClass" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrECFDaruma.pas" FORMNAME="" UNITNAME="ACBrECFDaruma" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrECFDataRegis.pas" FORMNAME="" UNITNAME="ACBrECFDataRegis" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrECFFiscNET.pas" FORMNAME="" UNITNAME="ACBrECFFiscNET" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrECFICash.pas" FORMNAME="" UNITNAME="ACBrECFICash" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrECFMecaf.pas" FORMNAME="" UNITNAME="ACBrECFMecaf" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrECFNaoFiscal.pas" FORMNAME="" UNITNAME="ACBrECFNaoFiscal" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrECFQuattro.pas" FORMNAME="" UNITNAME="ACBrECFQuattro" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrECFSchalter.pas" FORMNAME="" UNITNAME="ACBrECFSchalter" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrECFSweda.pas" FORMNAME="" UNITNAME="ACBrECFSweda" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrECFUrano.pas" FORMNAME="" UNITNAME="ACBrECFUrano" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrECFYanco.pas" FORMNAME="" UNITNAME="ACBrECFYanco" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrEnterTabCLX.pas" FORMNAME="" UNITNAME="ACBrEnterTabCLX" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrExtenso.pas" FORMNAME="" UNITNAME="ACBrExtenso" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrFala.pas" FORMNAME="" UNITNAME="ACBrFala" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrGAV.pas" FORMNAME="" UNITNAME="ACBrGAV" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrGAVClass.pas" FORMNAME="" UNITNAME="ACBrGAVClass" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrGAVImpressoraComum.pas" FORMNAME="" UNITNAME="ACBrGAVImpressoraComum" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrGAVImpressoraECF.pas" FORMNAME="" UNITNAME="ACBrGAVImpressoraECF" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrGAVSerialGerbo.pas" FORMNAME="" UNITNAME="ACBrGAVSerialGerbo" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrGAVSerialMenno.pas" FORMNAME="" UNITNAME="ACBrGAVSerialMenno" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrLCB.pas" FORMNAME="" UNITNAME="ACBrLCB" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrReg.pas" FORMNAME="" UNITNAME="ACBrReg" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrTER.pas" FORMNAME="" UNITNAME="ACBrTER" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrTERClass.pas" FORMNAME="" UNITNAME="ACBrTERClass" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrTERWilbor.pas" FORMNAME="" UNITNAME="ACBrTERWilbor" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrTroco.pas" FORMNAME="" UNITNAME="ACBrTroco" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrUtil.pas" FORMNAME="" UNITNAME="ACBrUtil" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ACBrValidador.pas" FORMNAME="" UNITNAME="ACBrValidador" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Calculadora.pas" FORMNAME="FrCalculadora" UNITNAME="Calculadora" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="synafpc.pas" FORMNAME="" UNITNAME="synafpc" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="synaser.pas" FORMNAME="" UNITNAME="synaser" CONTAINERID="PascalCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="C:\Arquivos de programas\Borland\CBuilder6\Lib\vcl.bpi" FORMNAME="" UNITNAME="vcl" CONTAINERID="BPITool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="C:\Arquivos de programas\Borland\CBuilder6\Lib\vclx.bpi" FORMNAME="" UNITNAME="vclx" CONTAINERID="BPITool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="C:\Arquivos de programas\Borland\CBuilder6\Lib\visualclx.bpi" FORMNAME="" UNITNAME="visualclx" CONTAINERID="BPITool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="C:\Arquivos de programas\Borland\CBuilder6\Lib\designide.bpi" FORMNAME="" UNITNAME="designide" CONTAINERID="BPITool" DESIGNCLASS="" LOCALCOMMAND=""/>
+  </FILELIST>
+  <BUILDTOOLS>
+  </BUILDTOOLS>
+
+  <IDEOPTIONS>
+[Version Info]
+IncludeVerInfo=1
+AutoIncBuild=0
+MajorVer=1
+MinorVer=0
+Release=0
+Build=0
+Debug=0
+PreRelease=0
+Special=0
+Private=0
+DLL=0
+Locale=1046
+CodePage=1252
+
+[Version Info Keys]
+CompanyName=
+FileDescription=
+FileVersion=1.0.0.0
+InternalName=
+LegalCopyright=
+LegalTrademarks=
+OriginalFilename=
+ProductName=
+ProductVersion=1.0.0.0
+Comments=
+
+[Excluded Packages]
+C:\Arquivos de programas\Borland\CBuilder6\Bin\bcbsmp60.bpl=Borland C++ Sample Components
+C:\Arquivos de programas\Borland\CBuilder6\Bin\indy60.bpl=Internet Direct (Indy) for D6
+
+[Debugging]
+DebugSourceDirs=$(BCB)\source\vcl
+
+[Parameters]
+RunParams=
+Launcher=
+UseLauncher=0
+DebugCWD=
+HostApplication=
+RemoteHost=
+RemotePath=
+RemoteLauncher=
+RemoteCWD=
+RemoteDebug=0
+
+[Compiler]
+ShowInfoMsgs=0
+LinkDebugVcl=0
+LinkCGLIB=0
+
+[CORBA]
+AddServerUnit=1
+AddClientUnit=1
+PrecompiledHeaders=1
+
+[Language]
+ActiveLang=
+ProjectLang=
+RootDir=
+
+[Linker]
+LibPrefix=
+LibSuffix=
+LibVersion=
+  </IDEOPTIONS>
+</PROJECT>

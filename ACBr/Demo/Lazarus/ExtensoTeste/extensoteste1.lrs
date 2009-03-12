@@ -1,0 +1,32 @@
+{ Isto é automaticamente gerado pelo arquivo de recurso lazarus }
+
+LazarusResources.Add('TfrExtenso','FORMDATA',[
+  'TPF0'#10'TfrExtenso'#9'frExtenso'#4'Left'#3#15#1#6'Height'#3#216#0#3'Top'#2
+  +'e'#5'Width'#3#234#0#18'HorzScrollBar.Page'#3#233#0#19'HorzScrollBar.Range'#3
+  +#225#0#18'VertScrollBar.Page'#3#215#0#19'VertScrollBar.Range'#2'y'#13'Active'
+  +'Control'#7#7'edValor'#7'Caption'#6#19'Numeros por Extenso'#11'Font.Height'#2
+  +#245#9'Font.Name'#6#13'MS Sans Serif'#0#6'TLabel'#6'Label1'#4'Left'#2#8#6'He'
+  +'ight'#2#13#3'Top'#2#8#5'Width'#2'N'#7'Caption'#6#14'Digite o Valor'#5'Color'
+  +#7#6'clNone'#11'ParentColor'#8#0#0#6'TLabel'#6'Label2'#4'Left'#2'5'#6'Height'
+  +#2#13#3'Top'#3#192#0#5'Width'#2'1'#7'Anchors'#11#6'akLeft'#8'akBottom'#0#7'C'
+  +'aption'#6#8'Formato:'#5'Color'#7#6'clNone'#11'ParentColor'#8#0#0#5'TEdit'#7
+  +'edValor'#4'Left'#2#8#6'Height'#2#21#3'Top'#2#24#5'Width'#2'e'#7'Anchors'#11
+  +#5'akTop'#6'akLeft'#7'akRight'#0#10'OnKeyPress'#7#15'edValorKeyPress'#8'TabO'
+  +'rder'#2#0#4'Text'#6#9'123456,12'#0#0#7'TButton'#8'bExtenso'#4'Left'#3#144#0
+  +#6'Height'#2#25#3'Top'#2#16#5'Width'#2'K'#7'Anchors'#11#5'akTop'#7'akRight'#0
+  +#25'BorderSpacing.InnerBorder'#2#4#7'Caption'#6#7'Extenso'#7'Default'#9#7'On'
+  +'Click'#7#13'bExtensoClick'#8'TabOrder'#2#1#0#0#5'TMemo'#8'mExtenso'#4'Left'
+  +#2#8#6'Height'#2'Q'#3'Top'#2'@'#5'Width'#3#217#0#7'Anchors'#11#5'akTop'#6'ak'
+  +'Left'#7'akRight'#8'akBottom'#0#8'ReadOnly'#9#8'TabOrder'#2#2#0#0#9'TCheckBo'
+  +'x'#15'cbZeroAEsquerda'#4'Left'#2#13#6'Height'#2#20#3'Top'#3#152#0#5'Width'#3
+  +#128#0#7'Anchors'#11#6'akLeft'#8'akBottom'#0#7'Caption'#6#15'Zero a Esquerda'
+  +#7'OnClick'#7#20'cbZeroAEsquerdaClick'#8'TabOrder'#2#3#0#0#9'TComboBox'#9'Co'
+  +'mboBox1'#4'Left'#2'm'#6'Height'#2#21#3'Top'#3#182#0#5'Width'#2't'#7'Anchors'
+  +#11#6'akLeft'#7'akRight'#8'akBottom'#0#16'AutoCompleteText'#11#22'cbactEndOf'
+  +'LineComplete'#20'cbactSearchAscending'#0#9'ItemIndex'#2#0#13'Items.Strings'
+  +#1#6#9'extPadrao'#6#8'extDolar'#0#9'MaxLength'#2#0#8'OnChange'#7#15'ComboBox'
+  +'1Change'#5'Style'#7#14'csDropDownList'#8'TabOrder'#2#4#4'Text'#6#9'extPadra'
+  +'o'#0#0#12'TACBrExtenso'#12'ACBrExtenso1'#8'StrMoeda'#6#4'Real'#9'StrMoedas'
+  +#6#5'Reais'#10'StrCentavo'#6#7'Centavo'#11'StrCentavos'#6#8'Centavos'#4'left'
+  +#2'0'#3'top'#2'P'#0#0#0
+]);

@@ -1,0 +1,30 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>Abre Cupom</title>
+</head>
+
+<body>
+<font face="Arial"> 
+<p Align="left"><font size="6"><b>Em Linha</b></font></p></font>
+<p><font face="Arial"> Verifica se o ECF est&aacute; em ligado.</font></p>
+<p><strong>Exemplo</strong></p>
+<p> <strong>while</strong> not EmLinha( 1 ) <strong>do</strong> { Impressora est&aacute; 
+  em-linha ? }<br>
+  <strong><font color="#FFFFFF">..</font>begin</strong><br>
+  <strong><font color="#FFFFFF">.....</font>if</strong> Retentar <strong>and</strong> 
+  (MessageDlg('A impressora '+ModeloStr+' n&atilde;o est&aacute; pronta.'+#10+#10+ 
+  'Deseja tentar novamente ?',mtConfirmation, [mbYes,mbNo],0) = mrYes) <strong>then</strong><br>
+  <font color="#FFFFFF">......</font>Continue ;</p>
+<p> <strong><font color="#FFFFFF">.....</font>raise</strong> ShowMessage( 'Impressora 
+  '+ModeloStr+' n&atilde;o est&aacute; em linha') ;<br>
+  <strong><font color="#FFFFFF">..</font>end ;</strong></p>
+<p>&nbsp;</p>
+<font face="Arial"><p>&nbsp;</p>
+</font> 
+</body>
+
+</html>

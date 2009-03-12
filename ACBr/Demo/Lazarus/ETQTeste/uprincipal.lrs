@@ -1,0 +1,32 @@
+{ This is an automatically generated lazarus resource file }
+
+LazarusResources.Add('TFPrincipal','FORMDATA',[
+  'TPF0'#11'TFPrincipal'#10'FPrincipal'#4'Left'#3'5'#1#6'Height'#3#163#0#3'Top'
+  +#3#236#0#5'Width'#3#23#1#13'ActiveControl'#7#8'cbModelo'#11'BorderIcons'#11
+  +#12'biSystemMenu'#10'biMinimize'#0#11'BorderStyle'#7#8'bsSingle'#7'Caption'#6
+  +#23'Impress'#195#163'o de Etiquetas'#12'ClientHeight'#3#163#0#11'ClientWidth'
+  +#3#23#1#11'Font.Height'#2#245#9'Font.Name'#6#13'MS Sans Serif'#10'ParentFont'
+  +#8#10'LCLVersion'#6#6'0.9.26'#0#6'TLabel'#6'Label1'#4'Left'#2#15#6'Height'#2
+  +#14#3'Top'#2#11#5'Width'#2''''#7'Caption'#6#7'Modelo:'#11'ParentColor'#8#0#0
+  +#6'TLabel'#6'Label2'#4'Left'#3#175#0#6'Height'#2#14#3'Top'#2#11#5'Width'#2#29
+  +#7'Caption'#6#6'Porta:'#11'ParentColor'#8#0#0#6'TLabel'#6'Label3'#4'Left'#2
+  +#15#6'Height'#2#14#3'Top'#2';'#5'Width'#2'0'#7'Caption'#6#10'N'#194#186' Cop'
+  +'ias'#11'ParentColor'#8#0#0#6'TLabel'#6'Label4'#4'Left'#3#175#0#6'Height'#2
+  +#14#3'Top'#2';'#5'Width'#2'<'#7'Caption'#6#12'Avan'#195#167'o Etq:'#11'Paren'
+  +'tColor'#8#0#0#9'TComboBox'#8'cbModelo'#4'Left'#2#15#6'Height'#2#21#3'Top'#2
+  +#28#5'Width'#2'Z'#10'ItemHeight'#2#13#9'ItemIndex'#2#1#13'Items.Strings'#1#6
+  +#10'etqNenhuma'#6#7'etqPpla'#6#7'etqPPlb'#0#8'TabOrder'#2#0#4'Text'#6#7'etqP'
+  +'pla'#0#0#9'TComboBox'#7'cbPorta'#4'Left'#3#175#0#6'Height'#2#21#3'Top'#2#28
+  +#5'Width'#2'Z'#10'ItemHeight'#2#13#9'ItemIndex'#2#0#13'Items.Strings'#1#6#4
+  +'LPT1'#6#4'LPT2'#6#4'LPT3'#6#4'COM1'#6#4'COM2'#6#4'COM3'#6#4'COM4'#6#4'COM5'
+  +#0#8'TabOrder'#2#1#4'Text'#6#4'LPT1'#0#0#5'TEdit'#7'eCopias'#4'Left'#2#15#6
+  +'Height'#2#21#3'Top'#2'K'#5'Width'#2'F'#8'TabOrder'#2#2#4'Text'#6#1'1'#0#0#5
+  +'TEdit'#7'eAvanco'#4'Left'#3#175#0#6'Height'#2#21#3'Top'#2'K'#5'Width'#2'F'#8
+  +'TabOrder'#2#3#4'Text'#6#3'600'#0#0#7'TButton'#11'bEtqSimples'#4'Left'#2#23#6
+  +'Height'#2#25#3'Top'#2's'#5'Width'#2'P'#25'BorderSpacing.InnerBorder'#2#4#7
+  +'Caption'#6#11'Etq Simples'#7'OnClick'#7#16'bEtqSimplesClick'#8'TabOrder'#2#4
+  +#0#0#7'TButton'#13'bEtqCarreiras'#4'Left'#3#174#0#6'Height'#2#25#3'Top'#2's'
+  +#5'Width'#2'P'#25'BorderSpacing.InnerBorder'#2#4#7'Caption'#6#15'Etq 3 Carre'
+  +'iras'#7'OnClick'#7#18'bEtqCarreirasClick'#8'TabOrder'#2#5#0#0#8'TACBrETQ'#7
+  +'ACBrETQ'#5'Porta'#6#4'LPT1'#4'left'#2''#3'top'#2#27#0#0#0
+]);

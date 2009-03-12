@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2008/08/20 21:48:37.641.pas,C:\ACBr\ACBr\source\ACBrDll\Unit1.pas=C:\ACBr\ACBr\source\ACBrDll\udmACBrSintegra.pas</Transaction>
+    <Transaction>2008/08/20 21:48:37.641.dfm,C:\ACBr\ACBr\source\ACBrDll\Unit1.dfm=C:\ACBr\ACBr\source\ACBrDll\udmACBrSintegra.dfm</Transaction>
+    <Transaction>2008/08/20 21:48:59.743.pas,C:\ACBr\ACBr\source\ACBrDll\udmACBrSintegra.pas=C:\ACBr\ACBr\source\ACBrDll\udmACBr_Sintegra.pas</Transaction>
+    <Transaction>2008/08/20 21:48:59.743.dfm,C:\ACBr\ACBr\source\ACBrDll\udmACBrSintegra.dfm=C:\ACBr\ACBr\source\ACBrDll\udmACBr_Sintegra.dfm</Transaction>
+    <Transaction>2008/08/20 21:58:15.140.pas,C:\ACBr\ACBr\source\ACBrDll\udmACBr_Sintegra.pas=C:\ACBr\ACBr\source\ACBrDll\ACBr_SintegraDll.pas</Transaction>
+    <Transaction>2008/08/20 21:58:15.140.dfm,C:\ACBr\ACBr\source\ACBrDll\udmACBr_Sintegra.dfm=C:\ACBr\ACBr\source\ACBrDll\ACBr_SintegraDll.dfm</Transaction>
+    <Transaction>2008/08/20 21:59:44.695.pas,C:\ACBr\ACBr\source\ACBrDll\ACBr_SintegraDll.pas=C:\ACBr\ACBr\source\ACBrDll\udmAcbrSintegra.pas</Transaction>
+    <Transaction>2008/08/20 21:59:44.695.dfm,C:\ACBr\ACBr\source\ACBrDll\ACBr_SintegraDll.dfm=C:\ACBr\ACBr\source\ACBrDll\udmAcbrSintegra.dfm</Transaction>
+    <Transaction>2008/08/20 22:01:17.361.pas,C:\ACBr\ACBr\source\ACBrDll\Unit1.pas=C:\ACBr\ACBr\source\ACBrDll\uACBrSintegra.pas</Transaction>
+    <Transaction>2008/08/20 22:12:41.023.pas,C:\ACBr\ACBr\source\ACBrDll\uACBrSintegra.pas=C:\ACBr\ACBr\source\ACBrDll\udllACBrSintegra.pas</Transaction>
+    <Transaction>2008/08/20 22:13:19.379.pas,C:\ACBr\ACBr\source\ACBrDll\udllACBrSintegra.pas=C:\ACBr\ACBr\source\ACBrDll\DllACBrSintegra.pas</Transaction>
+  </Transactions>
+</BorlandProject>

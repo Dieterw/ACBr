@@ -1,0 +1,124 @@
+object FPrincipal: TFPrincipal
+  Left = 309
+  Height = 163
+  Top = 236
+  Width = 279
+  ActiveControl = cbModelo
+  BorderIcons = [biSystemMenu, biMinimize]
+  BorderStyle = bsSingle
+  Caption = 'Impressão de Etiquetas'
+  ClientHeight = 163
+  ClientWidth = 279
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  ParentFont = False
+  LCLVersion = '0.9.26'
+  object Label1: TLabel
+    Left = 15
+    Height = 14
+    Top = 11
+    Width = 39
+    Caption = 'Modelo:'
+    ParentColor = False
+  end
+  object Label2: TLabel
+    Left = 175
+    Height = 14
+    Top = 11
+    Width = 29
+    Caption = 'Porta:'
+    ParentColor = False
+  end
+  object Label3: TLabel
+    Left = 15
+    Height = 14
+    Top = 59
+    Width = 48
+    Caption = 'Nº Copias'
+    ParentColor = False
+  end
+  object Label4: TLabel
+    Left = 175
+    Height = 14
+    Top = 59
+    Width = 60
+    Caption = 'Avanço Etq:'
+    ParentColor = False
+  end
+  object cbModelo: TComboBox
+    Left = 15
+    Height = 21
+    Top = 28
+    Width = 90
+    ItemHeight = 13
+    ItemIndex = 1
+    Items.Strings = (
+      'etqNenhuma'
+      'etqPpla'
+      'etqPPlb'
+    )
+    TabOrder = 0
+    Text = 'etqPpla'
+  end
+  object cbPorta: TComboBox
+    Left = 175
+    Height = 21
+    Top = 28
+    Width = 90
+    ItemHeight = 13
+    ItemIndex = 0
+    Items.Strings = (
+      'LPT1'
+      'LPT2'
+      'LPT3'
+      'COM1'
+      'COM2'
+      'COM3'
+      'COM4'
+      'COM5'
+    )
+    TabOrder = 1
+    Text = 'LPT1'
+  end
+  object eCopias: TEdit
+    Left = 15
+    Height = 21
+    Top = 75
+    Width = 70
+    TabOrder = 2
+    Text = '1'
+  end
+  object eAvanco: TEdit
+    Left = 175
+    Height = 21
+    Top = 75
+    Width = 70
+    TabOrder = 3
+    Text = '600'
+  end
+  object bEtqSimples: TButton
+    Left = 23
+    Height = 25
+    Top = 115
+    Width = 80
+    BorderSpacing.InnerBorder = 4
+    Caption = 'Etq Simples'
+    OnClick = bEtqSimplesClick
+    TabOrder = 4
+  end
+  object bEtqCarreiras: TButton
+    Left = 174
+    Height = 25
+    Top = 115
+    Width = 80
+    BorderSpacing.InnerBorder = 4
+    Caption = 'Etq 3 Carreiras'
+    OnClick = bEtqCarreirasClick
+    TabOrder = 5
+  end
+  object ACBrETQ: TACBrETQ
+    Porta = 'LPT1'
+    left = 127
+    top = 27
+  end
+end

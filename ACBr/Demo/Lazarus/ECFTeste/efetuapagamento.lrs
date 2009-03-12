@@ -1,0 +1,63 @@
+{ This is an automatically generated lazarus resource file }
+
+LazarusResources.Add('TfrPagamento','FORMDATA',[
+  'TPF0'#12'TfrPagamento'#11'frPagamento'#4'Left'#3#162#1#6'Height'#3#255#0#3'T'
+  +'op'#3#190#0#5'Width'#3'`'#1#18'HorzScrollBar.Page'#3'_'#1#19'HorzScrollBar.'
+  +'Range'#3'G'#1#18'VertScrollBar.Page'#3#254#0#19'VertScrollBar.Range'#3#245#0
+  +#13'ActiveControl'#7#5'edCod'#11'BorderStyle'#7#8'bsSingle'#7'Caption'#6#17
+  +'Efetuar Pagamento'#12'ClientHeight'#3#255#0#11'ClientWidth'#3'`'#1#11'Font.'
+  +'Height'#2#245#9'Font.Name'#6#13'MS Sans Serif'#10'KeyPreview'#9#6'OnShow'#7
+  +#8'FormShow'#8'Position'#7#16'poMainFormCenter'#0#12'TSpeedButton'#12'SpeedB'
+  +'utton1'#4'Left'#2'P'#6'Height'#2#22#3'Top'#2'K'#5'Width'#2#23#5'Color'#7#9
+  +'clBtnFace'#10'Glyph.Data'#10'z'#1#0#0'v'#1#0#0'BMv'#1#0#0#0#0#0#0'v'#0#0#0
+  +'('#0#0#0' '#0#0#0#16#0#0#0#1#0#4#0#0#0#0#0#0#1#0#0#18#11#0#0#18#11#0#0#16#0
+  +#0#0#16#0#0#0#0#0#0#0#0#0#128#0#0#128#0#0#0#128#128#0#128#0#0#0#128#0#128#0
+  +#128#128#0#0#192#192#192#0#128#128#128#0#0#0#255#0#0#255#0#0#0#255#255#0#255
+  +#0#0#0#255#0#255#0#255#255#0#0#255#255#255#0'3333333'#3'333333?'#143'3333330'
+  +#0'333333'#248#136'333333'#0#3'33333?'#136#131'333330'#0'333333'#248#136'333'
+  +'333'#0#3'333?'#255'?'#136#131'330'#0#0';'#128'333?'#136#131#248#136'333'#14
+  +#238#238#0#179'333'#136'38'#136#131'330'#238#238#238#224'3338'#243'338'#243
+  +'33'#14#238#238#238#238#3'3383'#243'38?33'#14#254#238#238#238#3'33'#143'3'
+  +#243'33'#143'33'#14#254#238#238#238#3'33'#143'3?33'#143'33'#14#239#238#238
+  +#238#3'33'#131#243'3'#255'3'#131'33'#14#238#255#238#238#3'338'#243'338'#243
+  +'330'#238#238#238#224'3338?'#243'3'#248'3333'#14#238#238#3'3333'#136'?'#248
+  +#131'33330'#0#0'333333'#136#131'3333'#9'NumGlyphs'#2#2#7'OnClick'#7#17'Speed'
+  +'Button1Click'#0#0#6'TLabel'#6'Label1'#4'Left'#2#8#6'Height'#2#14#3'Top'#2'S'
+  +#5'Width'#2#24#7'Caption'#6#5'&Cod.'#12'FocusControl'#7#5'edCod'#11'ParentCo'
+  +'lor'#8#0#0#6'TLabel'#6'Label2'#4'Left'#2#8#6'Height'#2#14#3'Top'#2's'#5'Wid'
+  +'th'#2#25#7'Caption'#6#6'&Valor'#12'FocusControl'#7#7'edValor'#11'ParentColo'
+  +'r'#8#0#0#6'TLabel'#6'Label3'#4'Left'#3#160#0#6'Height'#2#14#3'Top'#2'6'#5'W'
+  +'idth'#2'l'#7'Caption'#6#19'Formas de Pagamento'#11'ParentColor'#8#0#0#6'TLa'
+  +'bel'#6'Label4'#4'Left'#3#136#0#6'Height'#2#14#3'Top'#3#211#0#5'Width'#2'^'#7
+  +'Caption'#6#15'TOTAL DO CUPOM:'#11'ParentColor'#8#0#0#6'TLabel'#6'Label5'#4
+  +'Left'#3#160#0#6'Height'#2#14#3'Top'#3#235#0#5'Width'#2'@'#7'Caption'#6#10'T'
+  +'OTAL PAGO'#11'ParentColor'#8#0#0#6'TLabel'#12'lTotalAPAGAR'#4'Left'#3#16#1#6
+  +'Height'#2#14#3'Top'#3#211#0#5'Width'#2'0'#9'Alignment'#7#14'taRightJustify'
+  +#7'Caption'#6#7'1000.00'#5'Color'#7#9'clBtnFace'#10'Font.Color'#7#7'clBlack'
+  +#11'Font.Height'#2#11#9'Font.Name'#6#13'MS Sans Serif'#10'Font.Pitch'#7#10'f'
+  +'pVariable'#10'Font.Style'#11#6'fsBold'#0#11'ParentColor'#8#11'Transparent'#8
+  +#0#0#6'TLabel'#10'lTotalPago'#4'Left'#3#16#1#6'Height'#2#14#3'Top'#3#235#0#5
+  +'Width'#2'0'#9'Alignment'#7#14'taRightJustify'#7'Caption'#6#7'1000.00'#5'Col'
+  +'or'#7#9'clBtnFace'#10'Font.Color'#7#7'clBlack'#11'Font.Height'#2#11#9'Font.'
+  +'Name'#6#13'MS Sans Serif'#10'Font.Pitch'#7#10'fpVariable'#10'Font.Style'#11
+  +#6'fsBold'#0#11'ParentColor'#8#11'Transparent'#8#0#0#6'TLabel'#6'Label6'#4'L'
+  +'eft'#2#8#6'Height'#2#27#3'Top'#2#7#5'Width'#3' '#1#7'Caption'#6'@- Entre co'
+  +'m um ou v'#225'rios pagamentos at'#233' atingir o Total do Cupom'#11'Parent'
+  +'Color'#8#8'WordWrap'#9#0#0#6'TLabel'#6'Label7'#4'Left'#2#8#6'Height'#2#26#3
+  +'Top'#2#28#5'Width'#3'9'#1#8'AutoSize'#8#7'Caption'#6'J- Se o valor pago for'
+  +' superior ao Total do Cupom ser'#225' calculado o    TROCO'#11'ParentColor'
+  +#8#8'WordWrap'#9#0#0#6'TLabel'#6'Label8'#4'Left'#2#8#6'Height'#2#14#3'Top'#3
+  +#147#0#5'Width'#2#24#7'Caption'#6#5'&Obs:'#12'FocusControl'#7#5'edObs'#11'Pa'
+  +'rentColor'#8#0#0#5'TMemo'#7'mFormas'#4'Left'#3#160#0#6'Height'#3#128#0#3'To'
+  +'p'#2'E'#5'Width'#3#167#0#8'ReadOnly'#9#10'ScrollBars'#7#10'ssVertical'#8'Ta'
+  +'bOrder'#2#5#0#0#5'TEdit'#5'edCod'#6'Cursor'#7#7'crIBeam'#4'Left'#2'('#6'Hei'
+  +'ght'#2#21#3'Top'#2'K'#5'Width'#2'!'#8'TabOrder'#2#0#0#0#5'TEdit'#7'edValor'
+  +#6'Cursor'#7#7'crIBeam'#4'Left'#2'('#6'Height'#2#21#3'Top'#2'k'#5'Width'#2'e'
+  +#10'OnKeyPress'#7#15'edValorKeyPress'#8'TabOrder'#2#1#0#0#7'TButton'#10'btIm'
+  +'primir'#4'Left'#2' '#6'Height'#2#25#3'Top'#3#219#0#5'Width'#2'K'#7'Caption'
+  +#6#9'&Imprimir'#7'OnClick'#7#15'btImprimirClick'#8'TabOrder'#2#4#0#0#9'TChec'
+  +'kBox'#6'cbVinc'#4'Left'#2#16#6'Height'#2#19#3'Top'#3#163#0#5'Width'#2'm'#7
+  +'Caption'#6#16'Cupom &Vinculado'#8'TabOrder'#2#3#0#0#5'TEdit'#5'edObs'#6'Cur'
+  +'sor'#7#7'crIBeam'#4'Left'#2'('#6'Height'#2#21#3'Top'#3#139#0#5'Width'#2'e'#8
+  +'TabOrder'#2#2#0#0#0
+]);

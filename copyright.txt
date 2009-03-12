@@ -1,0 +1,3 @@
+ACBr - Automação Comercial Brasil.
+Copyright (c) 2004-2005 Equipe do Projeto ACBr (http://sourceforge.net/projects/acbr) e contribuidores.
+Todos os direitos reservados.

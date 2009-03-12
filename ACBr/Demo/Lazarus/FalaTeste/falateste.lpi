@@ -1,0 +1,132 @@
+<?xml version="1.0"?>
+<CONFIG>
+  <ProjectOptions>
+    <PathDelim Value="\"/>
+    <Version Value="6"/>
+    <General>
+      <MainUnit Value="0"/>
+      <IconPath Value="./"/>
+      <TargetFileExt Value=".exe"/>
+      <UseXPManifest Value="True"/>
+      <ActiveEditorIndexAtStart Value="0"/>
+    </General>
+    <PublishOptions>
+      <Version Value="2"/>
+      <DestinationDirectory Value="$(TestDir)\publishedproject\"/>
+      <IgnoreBinaries Value="False"/>
+      <IncludeFileFilter Value="*.(pas|pp|inc|lfm|lpr|lrs|lpi|lpk|sh|xml)"/>
+      <ExcludeFileFilter Value="*.(bak|ppu|ppw|o|so);*~;backup"/>
+    </PublishOptions>
+    <RunParams>
+      <local>
+        <FormatVersion Value="1"/>
+        <LaunchingApplication PathPlusParams="\usr\X11R6\bin\xterm -T 'Lazarus Run Output' -e $(LazarusDir)\tools\runwait.sh $(TargetCmdLine)"/>
+      </local>
+    </RunParams>
+    <RequiredPackages Count="1">
+      <Item1>
+        <PackageName Value="LCL"/>
+      </Item1>
+    </RequiredPackages>
+    <Units Count="7">
+      <Unit0>
+        <Filename Value="FalaTeste.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="FalaTeste"/>
+        <CursorPos X="41" Y="13"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="27"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="FalaTeste1.pas"/>
+        <ComponentName Value="Form1"/>
+        <HasResources Value="True"/>
+        <IsPartOfProject Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <ResourceFilename Value="FalaTeste1.lrs"/>
+        <UnitName Value="FalaTeste1"/>
+        <CursorPos X="12" Y="60"/>
+        <TopLine Value="150"/>
+        <EditorIndex Value="0"/>
+        <UsageCount Value="27"/>
+        <Loaded Value="True"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value=""/>
+        <UsageCount Value="10"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="mnt\win_c\delphi\ACBr\source\Pascal\ACBrUtil.pas"/>
+        <UnitName Value="ACBrUtil"/>
+        <CursorPos X="61" Y="56"/>
+        <TopLine Value="55"/>
+        <UsageCount Value="10"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="mnt\win_c\delphi\ACBr\source\Pascal\ACBrFala.pas"/>
+        <UnitName Value="ACBrFala"/>
+        <CursorPos X="36" Y="111"/>
+        <TopLine Value="110"/>
+        <UsageCount Value="10"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="..\..\ACBrFala.pas"/>
+        <UnitName Value="ACBrFala"/>
+        <CursorPos X="1" Y="49"/>
+        <TopLine Value="34"/>
+        <UsageCount Value="10"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="..\..\..\ACBrFala.pas"/>
+        <UnitName Value="ACBrFala"/>
+        <CursorPos X="35" Y="246"/>
+        <TopLine Value="215"/>
+        <UsageCount Value="10"/>
+      </Unit6>
+    </Units>
+    <JumpHistory Count="0" HistoryIndex="-1"/>
+  </ProjectOptions>
+  <CompilerOptions>
+    <Version Value="8"/>
+    <PathDelim Value="\"/>
+    <SearchPaths>
+      <OtherUnitFiles Value="..\..\..\"/>
+      <SrcPath Value="$(LazarusDir)\lcl\;$(LazarusDir)\lcl\interfaces\$(LCLWidgetType)\"/>
+    </SearchPaths>
+    <Linking>
+      <Options>
+        <Win32>
+          <GraphicApplication Value="True"/>
+        </Win32>
+      </Options>
+    </Linking>
+    <Other>
+      <CompilerPath Value="$(CompPath)"/>
+    </Other>
+  </CompilerOptions>
+  <Debugging>
+    <BreakPoints Count="1">
+      <Item1>
+        <Source Value="mnt\win_c\delphi\ACBr\source\Pascal\ACBrECFSweda.pas"/>
+        <Line Value="828"/>
+      </Item1>
+    </BreakPoints>
+    <Exceptions Count="5">
+      <Item1>
+        <Name Value="Exception"/>
+      </Item1>
+      <Item2>
+        <Name Value="ESynaSerError"/>
+      </Item2>
+      <Item3>
+        <Name Value="EACBrECFCMDInvalido"/>
+      </Item3>
+      <Item4>
+        <Name Value="EACBrECFSemResposta"/>
+      </Item4>
+      <Item5>
+        <Name Value="EACBrECFNaoInicializado"/>
+      </Item5>
+    </Exceptions>
+  </Debugging>
+</CONFIG>

@@ -1,0 +1,49 @@
+object frmTimedMessage: TfrmTimedMessage
+  Left = 361
+  Height = 108
+  Top = 312
+  Width = 294
+  BorderIcons = []
+  BorderStyle = bsSingle
+  Caption = 'Atenção'
+  ClientHeight = 108
+  ClientWidth = 294
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  FormStyle = fsStayOnTop
+  OnClose = FormClose
+  OnShow = FormShow
+  ParentFont = False
+  Position = poScreenCenter
+  LCLVersion = '0.9.27'
+  object lblMessage: TLabel
+    Height = 65
+    Width = 294
+    Align = alTop
+    Alignment = taCenter
+    AutoSize = False
+    Caption = 'lblMessage'
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    Layout = tlCenter
+    ParentColor = False
+    ParentFont = False
+    WordWrap = True
+  end
+  object btnOK: TButton
+    Left = 112
+    Height = 25
+    Top = 72
+    Width = 75
+    Caption = '&OK'
+    OnClick = btnOKClick
+    TabOrder = 0
+  end
+  object Timer: TTimer
+    Interval = 500
+    OnTimer = TimerTimer
+    left = 8
+    top = 8
+  end
+end

@@ -105,10 +105,10 @@ mentação. A melhor maneira de aprender como usar os componentes ACBr é observar
 o código dos Programas de demonstração...
 
   Se você instalou a versão CLX da ACBr abra apenas os programas de demos
-da pasta ACBr\trunk\ACBr\Demo\CLX.
+da pasta ACBr\ACBr\Demo\CLX.
 
   Se você instalou a versao VCL da ACBr, use os demos da pasta
-ACBr\trunk\ACBr\Demo\VCL
+ACBr\ACBr\Demo\VCL
 
   Os Demos Linux precisam da biblioteca QT/Borland (libborqt-6.9-qt2.3.so)
 disponivel no Kylix (/usr/local/kylix/bin). Para rodar os demos em uma máquina
@@ -126,21 +126,21 @@ achadas em: http://kylixlibs.sourceforge.net
 
   2. Abra o arquivo .DPK para a versão desejada.
    Na IDE do Delphi acione  "File, Open"
-   Localize o arquivo ACBr\trunk\ACBr\ACBr_CLX.DPK   (para versão CLX)   ou
-                      ACBr\trunk\ACBr\ACBr_VCL.DPK   (para versão VCL)
-                      ACBr\trunk\ACBr\ACBr_D5.DPK    (para Delphi 5)
+   Localize o arquivo ACBr\trunk\ACBr_CLX.DPK   (para versão CLX)   ou
+                      ACBr\trunk\ACBr_VCL.DPK   (para versão VCL)
+                      ACBr\trunk\ACBr_D5.DPK    (para Delphi 5)
 
   3. Compile e Instale a Biblioteca.
    Clique em "Compile" e em seguida em "Install". Feche o arquivo DPK
   (não há necessidade de salvar).
 
-  4. Adcione o diretório " ACBr\trunk\ACBr " e o diretório 
-   " ACBr\trunk\synapse "  no  "Library Path".
+  4. Adcione o diretório " ACBr\ACBr " e o diretório 
+   " ACBr\ACBrComum "  no  "Library Path".
    Na IDE do Delphi acione  "Tools, Enviroment Options" selecione a guia
    "Library",  clique no botão elíptico (...) de "Library Path",
    clique no botão elíptico (...) à frente da caixa de texto, localize a pasta
    " ACBr\trunk\ACBr " no diretório de instalação da Biblioteca, clique em
-   "OK", e em "Add". Repita o mesmo processo com a pasta " ACBr\trunk\synapse ".
+   "OK", e em "Add". Repita o mesmo processo com a pasta " ACBr\ACBrComum ".
    Click em "OK" para finalizar.
 
   5. A paleta ACBr será criada com os componentes da Biblioteca ACBr.

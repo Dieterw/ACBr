@@ -14,19 +14,19 @@ Funciona apenas com certificados do tipo A1.
 versão CAPICOM
 
 Versão OpenSSL
-- Copie as DLLs iconv.dll, libeay32.dll, libxml2.dll, libxmlsec.dll, libxmlsec-openssl.dll,
-libxslt.dll, ssleay32.dll e zlib1.dll para a pasta Windows\System32
+- Copie a DLL ACBr\ACBrNFe\DLLs\iconv.dll e as DLLs da pasta ACBr\ACBrNFe\DLLs\OpenSSL\
+(libeay32.dll, libxml2.dll, libxmlsec.dll, libxmlsec-openssl.dll,libxslt.dll, ssleay32.dll e zlib1.dll) para a pasta Windows\System32
 
--Adicione ao Library Path do Delphi as pastas ACBr\trunk\ACBrNFe e ACBr\trunk\ACBrComum
+-Adicione ao Library Path do Delphi as pastas ACBr\ACBrNFe e ACBr\ACBrComum
    Na IDE do Delphi acione  "Tools, Enviroment Options" selecione a guia
    "Library",  clique no botão elíptico (...) de "Library Path",
    clique no botão elíptico (...) à frente da caixa de texto, localize a pasta
-   " ACBr\trunk\ACBrNFe " no diretório de instalação da Biblioteca, clique em
-   "OK", e em "Add". Repita o mesmo processo com a pasta " ACBr\trunk\ACBrComum ".
+   " ACBr\ACBrNFe " no diretório de instalação da Biblioteca, clique em
+   "OK", e em "Add". Repita o mesmo processo com a pasta " ACBr\ACBrComum ".
    Click em "OK" para finalizar.
 
 -Caso tenha o pacote ACBr_CLX ou ACBr_VCL já instalado no Delphi, verifique se na pasta 
-ACBr\trunk\ACBr existe alguma unit da synapse (blcksock.*, syn*.* ), e caso encontre
+ACBr\ACBr existe alguma unit da synapse (blcksock.*, syn*.* ), e caso encontre
 apague estas units. Abra o pacote do ACBr (ACBr_CLX.dpk ou ACBr_VCL.dpk) e na IDE do Delphi
 clique em "Project, Build ACBr", Volte ao pacote e clique em compile.
 
@@ -38,23 +38,23 @@ pacote ACBr_CLX ou ACBr_VCL clique em Cancel
 
 Versão CAPICOM
 
--Copie as DLLS capicom.dll, msxml5.dll e msxml5r.dll para a pasta Windows\System32.
+-Copie as DLLs da pasta ACBr\ACBrNFe\DLLs\Capicom (capicom.dll, msxml5.dll e msxml5r.dll) para a pasta Windows\System32.
 
 -Vá ao botão Iniciar do Windows - Executar e execute os seguinte comandos
    regsvr32 capicom.dll /s
    regsvr32 msxml5.dll /s
 
--Adicione ao Library Path do Delphi a pasta ACBr\trunk\ACBrNFe e caso utilize o pacote 
-ACBr_CLX ou ACBr_VCL adicione também a pasta ACBr\trunk\ACBr
+-Adicione ao Library Path do Delphi a pasta ACBr\ACBrNFe, ACBr\ACBrNFe\win32api e caso utilize o pacote 
+ACBr_CLX ou ACBr_VCL adicione também a pasta ACBr\ACBr
    Na IDE do Delphi acione  "Tools, Enviroment Options" selecione a guia
    "Library",  clique no botão elíptico (...) de "Library Path",
    clique no botão elíptico (...) à frente da caixa de texto, localize a pasta
-   " ACBr\trunk\ACBrNFe " no diretório de instalação da Biblioteca, clique em
+   " ACBr\ACBrNFe " no diretório de instalação da Biblioteca, clique em
    "OK", e em "Add". Repita o mesmo processo com a pasta caso utilize o ACBr_CLX ou ACBr_VCL
-   " ACBr\trunk\ACBrComum ". Click em "OK" para finalizar.
+   " ACBr\ACBrComum ". Click em "OK" para finalizar.
 
 -Caso tenha o pacote ACBr_CLX ou ACBr_VCL já instalado no Delphi, verifique se na pasta 
-ACBr\trunk\ACBr existe alguma unit da synapse (blcksock.*, syn*.* ), e caso encontre
+ACBr\ACBr existe alguma unit da synapse (blcksock.*, syn*.* ), e caso encontre
 apague estas units. Abra o pacote do ACBr (ACBr_CLX.dpk ou ACBr_VCL.dpk) e na IDE do Delphi
 clique em "Project, Build ACBr", Volte ao pacote e clique em compile.
 

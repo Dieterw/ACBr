@@ -54,3 +54,4 @@ ACBrFala*.res
 SVN*.*
 *.svn-work
 *.svn-base
+*.ini

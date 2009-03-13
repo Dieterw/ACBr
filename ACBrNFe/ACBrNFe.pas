@@ -110,8 +110,6 @@ begin
   begin
     WebServices.Consulta.NFeChave := self.NotasFiscais.Items[0].XML.NFeChave;
     WebServices.Consulta.Executar;
-    if not(Configuracoes.WebServices.Visualizar) then
-      raise Exception.Create( WebServices.Consulta.Msg );
   end;
   Result := True;
 

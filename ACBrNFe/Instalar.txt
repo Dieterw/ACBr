@@ -45,7 +45,7 @@ Versão CAPICOM
    regsvr32 msxml5.dll /s
 
 -Adicione ao Library Path do Delphi a pasta ACBr\ACBrNFe, ACBr\ACBrNFe\win32api e caso utilize o pacote 
-ACBr_CLX ou ACBr_VCL adicione também a pasta ACBr\ACBr
+ACBr_CLX ou ACBr_VCL adicione também a pasta ACBr\ACBrComum
    Na IDE do Delphi acione  "Tools, Enviroment Options" selecione a guia
    "Library",  clique no botão elíptico (...) de "Library Path",
    clique no botão elíptico (...) à frente da caixa de texto, localize a pasta

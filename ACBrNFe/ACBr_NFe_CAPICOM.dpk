@@ -77,7 +77,8 @@ requires
   soaprtl,
   vcl,
   dbrtl,
-  dsnap;
+  dsnap,
+  bdertl;
 
 contains
   ACBrNFe in 'ACBrNFe.pas',
@@ -120,6 +121,7 @@ contains
   ACBrNFeNfeConsultaU in 'ACBrNFeNfeConsultaU.pas',
   ACBrNFeNfeInutilizacaoU in 'ACBrNFeNfeInutilizacaoU.pas',
   ACBrNFeNfeRecepcaoU in 'ACBrNFeNfeRecepcaoU.pas',
-  ACBrNFeNfeRetRecepcaoU in 'ACBrNFeNfeRetRecepcaoU.pas';
+  ACBrNFeNfeRetRecepcaoU in 'ACBrNFeNfeRetRecepcaoU.pas',
+  ACBrNFeDI in 'ACBrNFeDI.pas';
 
 end.

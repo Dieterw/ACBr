@@ -75,7 +75,8 @@ requires
   vcljpg,
   xmlrtl,
   dbrtl,
-  Rave50VCL;
+  Rave50VCL,
+  vcl;
 
 contains
   ACBrNFe in 'ACBrNFe.pas',
@@ -110,6 +111,7 @@ contains
   ACBrNFe_retConsStatServ in 'ACBrNFe_retConsStatServ.pas',
   ACBrNFeWebServices in 'ACBrNFeWebServices.pas',
   ACBrNFeReg in 'ACBrNFeReg.pas',
-  ACBrNFe_retInutNFe in 'ACBrNFe_retInutNFe.pas';
+  ACBrNFe_retInutNFe in 'ACBrNFe_retInutNFe.pas',
+  ACBrNFeDI in 'ACBrNFeDI.pas';
 
 end.

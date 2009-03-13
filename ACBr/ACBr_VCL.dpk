@@ -66,7 +66,6 @@ contains
   ACBrGAVSerialGerbo in 'ACBrGAVSerialGerbo.pas',
   ACBrGAVSerialMenno in 'ACBrGAVSerialMenno.pas',
   ACBrLCB in 'ACBrLCB.pas',
-  ACBrUtil in 'ACBrUtil.pas',
   ACBrValidador in 'ACBrValidador.pas',
   Calculadora in 'Calculadora.pas' {FrCalculadora},
   ACBrECFDataRegis in 'ACBrECFDataRegis.pas',

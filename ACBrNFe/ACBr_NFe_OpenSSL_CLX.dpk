@@ -76,8 +76,7 @@ requires
   visualclx,
   xmlrtl,
   dbrtl,
-  Rave50VCL,
-  ACBr_CLX;
+  Rave50VCL;
 
 contains
   ACBrNFe in 'ACBrNFe.pas',

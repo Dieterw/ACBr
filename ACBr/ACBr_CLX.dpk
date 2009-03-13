@@ -70,7 +70,6 @@ contains
   ACBrLCB in 'ACBrLCB.pas',
   ACBrValidador in 'ACBrValidador.pas',
   QCalculadora in 'QCalculadora.pas' {FrCalculadora},
-  ACBrUtil in 'ACBrUtil.pas',
   ACBrReg in 'ACBrReg.pas',
   ACBrECFDataRegis in 'ACBrECFDataRegis.pas',
   ACBrECFUrano in 'ACBrECFUrano.pas',

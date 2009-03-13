@@ -40,10 +40,10 @@ ImageBase=4194304
 ExeDescription=ACBr Automação Comercial Brasil VCL D5 (http://acbr.sourceforge.net/)
 [Directories]
 OutputDir=
-UnitOutputDir=../../dcu
+UnitOutputDir=
 PackageDLLOutputDir=
 PackageDCPOutputDir=
-SearchPath=
+SearchPath=..\ACBrComum
 Packages=
 Conditionals=
 DebugSourceDirs=

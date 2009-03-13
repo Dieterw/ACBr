@@ -17,12 +17,12 @@ Versão OpenSSL
 - Copie as DLLs iconv.dll, libeay32.dll, libxml2.dll, libxmlsec.dll, libxmlsec-openssl.dll,
 libxslt.dll, ssleay32.dll e zlib1.dll para a pasta Windows\System32
 
--Adicione ao Library Path do Delphi as pastas ACBr\trunk\ACBrNFe e ACBr\trunk\synapse
+-Adicione ao Library Path do Delphi as pastas ACBr\trunk\ACBrNFe e ACBr\trunk\ACBrComum
    Na IDE do Delphi acione  "Tools, Enviroment Options" selecione a guia
    "Library",  clique no botão elíptico (...) de "Library Path",
    clique no botão elíptico (...) à frente da caixa de texto, localize a pasta
    " ACBr\trunk\ACBrNFe " no diretório de instalação da Biblioteca, clique em
-   "OK", e em "Add". Repita o mesmo processo com a pasta " ACBr\trunk\synapse ".
+   "OK", e em "Add". Repita o mesmo processo com a pasta " ACBr\trunk\ACBrComum ".
    Click em "OK" para finalizar.
 
 -Caso tenha o pacote ACBr_CLX ou ACBr_VCL já instalado no Delphi, verifique se na pasta 
@@ -51,7 +51,7 @@ ACBr_CLX ou ACBr_VCL adicione também a pasta ACBr\trunk\ACBr
    clique no botão elíptico (...) à frente da caixa de texto, localize a pasta
    " ACBr\trunk\ACBrNFe " no diretório de instalação da Biblioteca, clique em
    "OK", e em "Add". Repita o mesmo processo com a pasta caso utilize o ACBr_CLX ou ACBr_VCL
-   " ACBr\trunk\synapse ". Click em "OK" para finalizar.
+   " ACBr\trunk\ACBrComum ". Click em "OK" para finalizar.
 
 -Caso tenha o pacote ACBr_CLX ou ACBr_VCL já instalado no Delphi, verifique se na pasta 
 ACBr\trunk\ACBr existe alguma unit da synapse (blcksock.*, syn*.* ), e caso encontre

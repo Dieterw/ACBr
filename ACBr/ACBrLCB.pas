@@ -201,7 +201,7 @@ begin
   fsUltimaLeitura   := '' ;
   fsOnLeCodigo      := nil ;
   fsOnLeFila        := nil ;
-  fsIntervalo       := 200 ;
+  fsIntervalo       := 300 ;
 
   Fila := TStringList.Create ;
 

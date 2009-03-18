@@ -8,15 +8,15 @@
   resources were bound to the produced executable.
 */
 
-#define CAPICOM_TLB_dtlServerPage 65520
-#define CAPICOM_TLB_dtlOcxPage 65521
-#define MSXML2_TLB_dtlServerPage 65522
-#define MSXML2_TLB_dtlOcxPage 65523
+#define ACBrNFeCAPICOM_TLB_dtlServerPage 65520
+#define ACBrNFeCAPICOM_TLB_dtlOcxPage 65521
+#define ACBrNFeMSXML2_TLB_dtlServerPage 65522
+#define ACBrNFeMSXML2_TLB_dtlOcxPage 65523
 STRINGTABLE
 BEGIN
-	CAPICOM_TLB_dtlServerPage,	"ActiveX"
-	CAPICOM_TLB_dtlOcxPage,	"ActiveX"
-	MSXML2_TLB_dtlServerPage,	"ActiveX"
-	MSXML2_TLB_dtlOcxPage,	"ActiveX"
+	ACBrNFeCAPICOM_TLB_dtlServerPage,	"ActiveX"
+	ACBrNFeCAPICOM_TLB_dtlOcxPage,	"ActiveX"
+	ACBrNFeMSXML2_TLB_dtlServerPage,	"ActiveX"
+	ACBrNFeMSXML2_TLB_dtlOcxPage,	"ActiveX"
 END
 

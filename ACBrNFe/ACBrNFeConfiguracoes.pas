@@ -44,7 +44,7 @@ unit ACBrNFeConfiguracoes;
 
 interface
 
-uses {$IFDEF ACBrNFeCAPICOM} CAPICOM_TLB, {$ENDIF}
+uses {$IFDEF ACBrNFeCAPICOM} ACBrNFeCAPICOM_TLB, {$ENDIF}
   Classes, Sysutils;
 
 

@@ -102,7 +102,10 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
         Align = alClient
         Lines.Strings = (
           '')
+        ScrollBars = ssVertical
         TabOrder = 1
+        WantReturns = False
+        WantTabs = True
       end
     end
   end

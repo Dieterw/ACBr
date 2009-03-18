@@ -49,7 +49,7 @@ unit ACBrNFeUtil;
 
 interface
 
-uses {$IFDEF ACBrNFeCAPICOM}CAPICOM_TLB, MSXML2_TLB, {$ENDIF}
+uses {$IFDEF ACBrNFeCAPICOM}ACBrNFeCAPICOM_TLB, ACBrNFeMSXML2_TLB, {$ENDIF}
   Forms, Classes, StrUtils, ACBrNFeTypes, ACBrNFeConfiguracoes;
 
 {$IFDEF ACBrNFeCAPICOM}

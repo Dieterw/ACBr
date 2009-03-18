@@ -51,7 +51,7 @@ uses Classes, SysUtils,
   {$IFNDEF ACBrNFeCAPICOM}
     HTTPSend,
   {$ELSE}
-     SoapHTTPClient, SOAPHTTPTrans, JwaWinCrypt, WinInet, CAPICOM_TLB,
+     SoapHTTPClient, SOAPHTTPTrans, JwaWinCrypt, WinInet, ACBrNFeCAPICOM_TLB,
   {$ENDIF}
   ACBrNFe_retConsReciNFe,
   ACBrNFeNotasFiscais, ACBrNFeTypes, ACBrNFeConfiguracoes ;

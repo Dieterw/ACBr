@@ -1,26 +1,25 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Internet Protocol Helper API interface Unit for Object Pascal                }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: ipexport.h, released August 2001. The original Pascal  }
 { code is: IpExport.pas, released September 2000. The initial developer of the }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
-{ Contributor(s): John C. Penman (jcp@craiglockhart.com)                       }
-{                 Vladimir Vassiliev (voldemarv@hotpop.com)                    }
-{ 								               }
+{                                                                              }
+{ Contributor(s): John C. Penman (jcp att craiglockhart dott com)              }
+{                 Vladimir Vassiliev (voldemarv att hotpop dott com)           }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -39,10 +38,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaIpExport.pas,v 1.8 2005/09/03 14:27:48 marquardt Exp $
 
 unit JwaIpExport;
 
@@ -52,12 +53,12 @@ unit JwaIpExport;
 {$HPPEMIT '#include "ipexport.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinType;
+  JwaWindows, JwaWS2tcpip;
 
 //
 // IP type definitions.
@@ -71,8 +72,7 @@ type
   IP_STATUS = ULONG;  // Status code returned from IP APIs.
   {$EXTERNALSYM IP_STATUS}
 
-{$IFNDEF s6_addr}
-
+(* (rom) deactivated  kernel mode is irrelevant for Delphi
 //
 // Duplicate these definitions here so that this file can be included by
 // kernel-mode components which cannot include ws2tcpip.h, as well as
@@ -93,8 +93,7 @@ type
   {$EXTERNALSYM in_addr6}
   TInAddr6 = in_addr6;
   PInAddr6 = ^in_addr6;
-
-{$ENDIF}
+*)
 
 type
   IPv6Addr = in6_addr;
@@ -307,36 +306,36 @@ const
 // Variants of the above using IPv6 terminology, where different
 //
 
-  IP_DEST_NO_ROUTE            = (IP_STATUS_BASE + 2);
+  IP_DEST_NO_ROUTE            = IP_STATUS_BASE + 2;
   {$EXTERNALSYM IP_DEST_NO_ROUTE}
-  IP_DEST_ADDR_UNREACHABLE    = (IP_STATUS_BASE + 3);
+  IP_DEST_ADDR_UNREACHABLE    = IP_STATUS_BASE + 3;
   {$EXTERNALSYM IP_DEST_ADDR_UNREACHABLE}
-  IP_DEST_PROHIBITED          = (IP_STATUS_BASE + 4);
+  IP_DEST_PROHIBITED          = IP_STATUS_BASE + 4;
   {$EXTERNALSYM IP_DEST_PROHIBITED}
-  //IP_DEST_PORT_UNREACHABLE    = (IP_STATUS_BASE + 5);
+  //IP_DEST_PORT_UNREACHABLE    = IP_STATUS_BASE + 5;
   //{$EXTERNALSYM IP_DEST_PORT_UNREACHABLE}
-  IP_HOP_LIMIT_EXCEEDED       = (IP_STATUS_BASE + 13);
+  IP_HOP_LIMIT_EXCEEDED       = IP_STATUS_BASE + 13;
   {$EXTERNALSYM IP_HOP_LIMIT_EXCEEDED}
-  IP_REASSEMBLY_TIME_EXCEEDED = (IP_STATUS_BASE + 14);
+  IP_REASSEMBLY_TIME_EXCEEDED = IP_STATUS_BASE + 14;
   {$EXTERNALSYM IP_REASSEMBLY_TIME_EXCEEDED}
-  IP_PARAMETER_PROBLEM        = (IP_STATUS_BASE + 15);
+  IP_PARAMETER_PROBLEM        = IP_STATUS_BASE + 15;
   {$EXTERNALSYM IP_PARAMETER_PROBLEM}
 
 //
 // IPv6-only status codes
 //
 
-  IP_DEST_UNREACHABLE         = (IP_STATUS_BASE + 40);
+  IP_DEST_UNREACHABLE         = IP_STATUS_BASE + 40;
   {$EXTERNALSYM IP_DEST_UNREACHABLE}
-  IP_TIME_EXCEEDED            = (IP_STATUS_BASE + 41);
+  IP_TIME_EXCEEDED            = IP_STATUS_BASE + 41;
   {$EXTERNALSYM IP_TIME_EXCEEDED}
-  IP_BAD_HEADER               = (IP_STATUS_BASE + 42);
+  IP_BAD_HEADER               = IP_STATUS_BASE + 42;
   {$EXTERNALSYM IP_BAD_HEADER}
-  IP_UNRECOGNIZED_NEXT_HEADER = (IP_STATUS_BASE + 43);
+  IP_UNRECOGNIZED_NEXT_HEADER = IP_STATUS_BASE + 43;
   {$EXTERNALSYM IP_UNRECOGNIZED_NEXT_HEADER}
-  IP_ICMP_ERROR               = (IP_STATUS_BASE + 44);
+  IP_ICMP_ERROR               = IP_STATUS_BASE + 44;
   {$EXTERNALSYM IP_ICMP_ERROR}
-  IP_DEST_SCOPE_MISMATCH      = (IP_STATUS_BASE + 45);
+  IP_DEST_SCOPE_MISMATCH      = IP_STATUS_BASE + 45;
   {$EXTERNALSYM IP_DEST_SCOPE_MISMATCH}
 
 //

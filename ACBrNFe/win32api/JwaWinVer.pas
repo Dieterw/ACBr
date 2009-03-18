@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Windows Version API interface Unit for Object Pascal                         }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: winver.h, released June 2000. The original Pascal      }
 { code is: WinVer.pas, released December 2000. The initial developer of the    }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,25 +35,33 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaWinVer.pas,v 1.9 2005/09/06 16:36:51 marquardt Exp $
+
+{$IFNDEF JWA_INCLUDEMODE}
 
 unit JwaWinVer;
 
 {$WEAKPACKAGEUNIT}
 
-{$HPPEMIT ''}
-{$HPPEMIT '#include "WinVer.h"'}
-{$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinUser, JwaWinType; 
+  JwaWinUser, JwaWinType;
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_INTERFACESECTION}
+
+{$HPPEMIT ''}
+{$HPPEMIT '#include "WinVer.h"'}
+{$HPPEMIT ''}
 
 const
 
@@ -254,12 +261,6 @@ const
 // ----- Types and structures -----
 
 type
-{$IFDEF USEDELPHI5}
-  PVSFixedFileInfo = Windows.PVSFixedFileInfo;
-  tagVS_FIXEDFILEINFO = Windows.tagVS_FIXEDFILEINFO;
-  VS_FIXEDFILEINFO = Windows.VS_FIXEDFILEINFO;
-  TVSFixedFileInfo = Windows.TVSFixedFileInfo;
-{$ELSE}
   PVSFixedFileInfo = ^VS_FIXEDFILEINFO;
   tagVS_FIXEDFILEINFO = record
     dwSignature: DWORD;        // e.g. 0xfeef04bd
@@ -280,7 +281,6 @@ type
   VS_FIXEDFILEINFO = tagVS_FIXEDFILEINFO;
   {$EXTERNALSYM VS_FIXEDFILEINFO}
   TVSFixedFileInfo = VS_FIXEDFILEINFO;
-{$ENDIF}
 
 // ----- Function prototypes -----
 
@@ -292,18 +292,10 @@ function VerFindFileW(uFlags: DWORD; szFileName, szWinDir, szAppDir,
   szCurDir: LPWSTR; var lpuCurDirLen: UINT; szDestDir: LPWSTR;
   var lpuDestDirLen: UINT): DWORD; stdcall;
 {$EXTERNALSYM VerFindFileW}
-
-{$IFDEF UNICODE}
 function VerFindFile(uFlags: DWORD; szFileName, szWinDir, szAppDir,
-  szCurDir: LPWSTR; var lpuCurDirLen: UINT; szDestDir: LPWSTR;
+  szCurDir: LPTSTR; var lpuCurDirLen: UINT; szDestDir: LPTSTR;
   var lpuDestDirLen: UINT): DWORD; stdcall;
 {$EXTERNALSYM VerFindFile}
-{$ELSE}
-function VerFindFile(uFlags: DWORD; szFileName, szWinDir, szAppDir,
-  szCurDir: LPSTR; var lpuCurDirLen: UINT; szDestDir: LPSTR;
-  var lpuDestDirLen: UINT): DWORD; stdcall;
-{$EXTERNALSYM VerFindFile}
-{$ENDIF}
 
 function VerInstallFileA(uFlags: DWORD; szSrcFileName, szDestFileName, szSrcDir,
   szDestDir, szCurDir, szTmpFile: LPSTR; var lpuTmpFileLen: UINT): DWORD; stdcall;
@@ -311,16 +303,9 @@ function VerInstallFileA(uFlags: DWORD; szSrcFileName, szDestFileName, szSrcDir,
 function VerInstallFileW(uFlags: DWORD; szSrcFileName, szDestFileName, szSrcDir,
   szDestDir, szCurDir, szTmpFile: LPWSTR; var lpuTmpFileLen: UINT): DWORD; stdcall;
 {$EXTERNALSYM VerInstallFileW}
-
-{$IFDEF UNICODE}
 function VerInstallFile(uFlags: DWORD; szSrcFileName, szDestFileName, szSrcDir,
-  szDestDir, szCurDir, szTmpFile: LPWSTR; var lpuTmpFileLen: UINT): DWORD; stdcall;
+  szDestDir, szCurDir, szTmpFile: LPTSTR; var lpuTmpFileLen: UINT): DWORD; stdcall;
 {$EXTERNALSYM VerInstallFile}
-{$ELSE}
-function VerInstallFile(uFlags: DWORD; szSrcFileName, szDestFileName, szSrcDir,
-  szDestDir, szCurDir, szTmpFile: LPSTR; var lpuTmpFileLen: UINT): DWORD; stdcall;
-{$EXTERNALSYM VerInstallFile}
-{$ENDIF}
 
 // Returns size of version info in bytes
 
@@ -328,14 +313,8 @@ function GetFileVersionInfoSizeA(lptstrFilename: LPCSTR; var lpdwHandle: DWORD):
 {$EXTERNALSYM GetFileVersionInfoSizeA}
 function GetFileVersionInfoSizeW(lptstrFilename: LPCWSTR; var lpdwHandle: DWORD): DWORD; stdcall;
 {$EXTERNALSYM GetFileVersionInfoSizeW}
-
-{$IFDEF UNICODE}
-function GetFileVersionInfoSize(lptstrFilename: LPCWSTR; var lpdwHandle: DWORD): DWORD; stdcall;
+function GetFileVersionInfoSize(lptstrFilename: LPCTSTR; var lpdwHandle: DWORD): DWORD; stdcall;
 {$EXTERNALSYM GetFileVersionInfoSize}
-{$ELSE}
-function GetFileVersionInfoSize(lptstrFilename: LPCSTR; var lpdwHandle: DWORD): DWORD; stdcall;
-{$EXTERNALSYM GetFileVersionInfoSize}
-{$ENDIF}
 
 // Read version info into buffer
 
@@ -345,29 +324,16 @@ function GetFileVersionInfoA(lptstrFilename: LPCSTR; dwHandle, dwLen: DWORD;
 function GetFileVersionInfoW(lptstrFilename: LPCWSTR; dwHandle, dwLen: DWORD;
   lpData: LPVOID): BOOL; stdcall;
 {$EXTERNALSYM GetFileVersionInfoW}
-
-{$IFDEF UNICODE}
-function GetFileVersionInfo(lptstrFilename: LPCWSTR; dwHandle, dwLen: DWORD;
+function GetFileVersionInfo(lptstrFilename: LPCTSTR; dwHandle, dwLen: DWORD;
   lpData: LPVOID): BOOL; stdcall;
 {$EXTERNALSYM GetFileVersionInfo}
-{$ELSE}
-function GetFileVersionInfo(lptstrFilename: LPCSTR; dwHandle, dwLen: DWORD;
-  lpData: LPVOID): BOOL; stdcall;
-{$EXTERNALSYM GetFileVersionInfo}
-{$ENDIF}
 
 function VerLanguageNameA(wLang: DWORD; szLang: LPSTR; nSize: DWORD): DWORD; stdcall;
 {$EXTERNALSYM VerLanguageNameA}
 function VerLanguageNameW(wLang: DWORD; szLang: LPWSTR; nSize: DWORD): DWORD; stdcall;
 {$EXTERNALSYM VerLanguageNameW}
-
-{$IFDEF UNICODE}
-function VerLanguageName(wLang: DWORD; szLang: LPWSTR; nSize: DWORD): DWORD; stdcall;
+function VerLanguageName(wLang: DWORD; szLang: LPTSTR; nSize: DWORD): DWORD; stdcall;
 {$EXTERNALSYM VerLanguageName}
-{$ELSE}
-function VerLanguageName(wLang: DWORD; szLang: LPSTR; nSize: DWORD): DWORD; stdcall;
-{$EXTERNALSYM VerLanguageName}
-{$ENDIF}
 
 function VerQueryValueA(pBlock: LPVOID; lpSubBlock: LPSTR; var lplpBuffer: LPVOID;
   var puLen: UINT): BOOL; stdcall;
@@ -375,458 +341,284 @@ function VerQueryValueA(pBlock: LPVOID; lpSubBlock: LPSTR; var lplpBuffer: LPVOI
 function VerQueryValueW(pBlock: LPVOID; lpSubBlock: LPWSTR; var lplpBuffer: LPVOID;
   var puLen: UINT): BOOL; stdcall;
 {$EXTERNALSYM VerQueryValueW}
+function VerQueryValue(pBlock: LPVOID; lpSubBlock: LPTSTR; var lplpBuffer: LPVOID;
+  var puLen: UINT): BOOL; stdcall;
+{$EXTERNALSYM VerQueryValue}
 
-{$IFDEF UNICODE}
-function VerQueryValue(pBlock: LPVOID; lpSubBlock: LPWSTR; var lplpBuffer: LPVOID;
-  var puLen: UINT): BOOL; stdcall;
-{$EXTERNALSYM VerQueryValue}
-{$ELSE}
-function VerQueryValue(pBlock: LPVOID; lpSubBlock: LPSTR; var lplpBuffer: LPVOID;
-  var puLen: UINT): BOOL; stdcall;
-{$EXTERNALSYM VerQueryValue}
-{$ENDIF}
+{$ENDIF JWA_INTERFACESECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
 
 implementation
 
-const
-  Version = 'version.dll';
+uses
+  JwaWinDLLNames;
 
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_IMPLEMENTATIONSECTION}
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _VerFindFileA: Pointer;
 
 function VerFindFileA;
 begin
-  GetProcedureAddress(_VerFindFileA, Version, 'VerFindFileA');
+  GetProcedureAddress(_VerFindFileA, versionlib, 'VerFindFileA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_VerFindFileA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_VerFindFileA]
   end;
 end;
-{$ELSE}
-function VerFindFileA; external Version name 'VerFindFileA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _VerFindFileW: Pointer;
 
 function VerFindFileW;
 begin
-  GetProcedureAddress(_VerFindFileW, Version, 'VerFindFileW');
+  GetProcedureAddress(_VerFindFileW, versionlib, 'VerFindFileW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_VerFindFileW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_VerFindFileW]
   end;
 end;
-{$ELSE}
-function VerFindFileW; external Version name 'VerFindFileW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _VerFindFile: Pointer;
 
 function VerFindFile;
 begin
-  GetProcedureAddress(_VerFindFile, Version, 'VerFindFileW');
+  GetProcedureAddress(_VerFindFile, versionlib, 'VerFindFile' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_VerFindFile]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_VerFindFile]
   end;
 end;
-{$ELSE}
-function VerFindFile; external Version name 'VerFindFileW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _VerFindFile: Pointer;
-
-function VerFindFile;
-begin
-  GetProcedureAddress(_VerFindFile, Version, 'VerFindFileA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_VerFindFile]
-  end;
-end;
-{$ELSE}
-function VerFindFile; external Version name 'VerFindFileA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-
-{$IFDEF DYNAMIC_LINK}
 var
   _VerInstallFileA: Pointer;
 
 function VerInstallFileA;
 begin
-  GetProcedureAddress(_VerInstallFileA, Version, 'VerInstallFileA');
+  GetProcedureAddress(_VerInstallFileA, versionlib, 'VerInstallFileA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_VerInstallFileA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_VerInstallFileA]
   end;
 end;
-{$ELSE}
-function VerInstallFileA; external Version name 'VerInstallFileA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _VerInstallFileW: Pointer;
 
 function VerInstallFileW;
 begin
-  GetProcedureAddress(_VerInstallFileW, Version, 'VerInstallFileW');
+  GetProcedureAddress(_VerInstallFileW, versionlib, 'VerInstallFileW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_VerInstallFileW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_VerInstallFileW]
   end;
 end;
-{$ELSE}
-function VerInstallFileW; external Version name 'VerInstallFileW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _VerInstallFile: Pointer;
 
 function VerInstallFile;
 begin
-  GetProcedureAddress(_VerInstallFile, Version, 'VerInstallFileW');
+  GetProcedureAddress(_VerInstallFile, versionlib, 'VerInstallFile' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_VerInstallFile]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_VerInstallFile]
   end;
 end;
-{$ELSE}
-function VerInstallFile; external Version name 'VerInstallFileW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _VerInstallFile: Pointer;
-
-function VerInstallFile;
-begin
-  GetProcedureAddress(_VerInstallFile, Version, 'VerInstallFileA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_VerInstallFile]
-  end;
-end;
-{$ELSE}
-function VerInstallFile; external Version name 'VerInstallFileA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetFileVersionInfoSizeA: Pointer;
 
 function GetFileVersionInfoSizeA;
 begin
-  GetProcedureAddress(_GetFileVersionInfoSizeA, Version, 'GetFileVersionInfoSizeA');
+  GetProcedureAddress(_GetFileVersionInfoSizeA, versionlib, 'GetFileVersionInfoSizeA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetFileVersionInfoSizeA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetFileVersionInfoSizeA]
   end;
 end;
-{$ELSE}
-function GetFileVersionInfoSizeA; external Version name 'GetFileVersionInfoSizeA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetFileVersionInfoSizeW: Pointer;
 
 function GetFileVersionInfoSizeW;
 begin
-  GetProcedureAddress(_GetFileVersionInfoSizeW, Version, 'GetFileVersionInfoSizeW');
+  GetProcedureAddress(_GetFileVersionInfoSizeW, versionlib, 'GetFileVersionInfoSizeW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetFileVersionInfoSizeW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetFileVersionInfoSizeW]
   end;
 end;
-{$ELSE}
-function GetFileVersionInfoSizeW; external Version name 'GetFileVersionInfoSizeW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetFileVersionInfoSize: Pointer;
 
 function GetFileVersionInfoSize;
 begin
-  GetProcedureAddress(_GetFileVersionInfoSize, Version, 'GetFileVersionInfoSizeW');
+  GetProcedureAddress(_GetFileVersionInfoSize, versionlib, 'GetFileVersionInfoSize' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetFileVersionInfoSize]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetFileVersionInfoSize]
   end;
 end;
-{$ELSE}
-function GetFileVersionInfoSize; external Version name 'GetFileVersionInfoSizeW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetFileVersionInfoSize: Pointer;
-
-function GetFileVersionInfoSize;
-begin
-  GetProcedureAddress(_GetFileVersionInfoSize, Version, 'GetFileVersionInfoSizeA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetFileVersionInfoSize]
-  end;
-end;
-{$ELSE}
-function GetFileVersionInfoSize; external Version name 'GetFileVersionInfoSizeA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetFileVersionInfoA: Pointer;
 
 function GetFileVersionInfoA;
 begin
-  GetProcedureAddress(_GetFileVersionInfoA, Version, 'GetFileVersionInfoA');
+  GetProcedureAddress(_GetFileVersionInfoA, versionlib, 'GetFileVersionInfoA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetFileVersionInfoA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetFileVersionInfoA]
   end;
 end;
-{$ELSE}
-function GetFileVersionInfoA; external Version name 'GetFileVersionInfoA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetFileVersionInfoW: Pointer;
 
 function GetFileVersionInfoW;
 begin
-  GetProcedureAddress(_GetFileVersionInfoW, Version, 'GetFileVersionInfoW');
+  GetProcedureAddress(_GetFileVersionInfoW, versionlib, 'GetFileVersionInfoW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetFileVersionInfoW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetFileVersionInfoW]
   end;
 end;
-{$ELSE}
-function GetFileVersionInfoW; external Version name 'GetFileVersionInfoW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetFileVersionInfo: Pointer;
 
 function GetFileVersionInfo;
 begin
-  GetProcedureAddress(_GetFileVersionInfo, Version, 'GetFileVersionInfoW');
+  GetProcedureAddress(_GetFileVersionInfo, versionlib, 'GetFileVersionInfo' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetFileVersionInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetFileVersionInfo]
   end;
 end;
-{$ELSE}
-function GetFileVersionInfo; external Version name 'GetFileVersionInfoW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetFileVersionInfo: Pointer;
-
-function GetFileVersionInfo;
-begin
-  GetProcedureAddress(_GetFileVersionInfo, Version, 'GetFileVersionInfoA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetFileVersionInfo]
-  end;
-end;
-{$ELSE}
-function GetFileVersionInfo; external Version name 'GetFileVersionInfoA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-
-{$IFDEF DYNAMIC_LINK}
 var
   _VerLanguageNameA: Pointer;
 
 function VerLanguageNameA;
 begin
-  GetProcedureAddress(_VerLanguageNameA, Version, 'VerLanguageNameA');
+  GetProcedureAddress(_VerLanguageNameA, versionlib, 'VerLanguageNameA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_VerLanguageNameA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_VerLanguageNameA]
   end;
 end;
-{$ELSE}
-function VerLanguageNameA; external Version name 'VerLanguageNameA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _VerLanguageNameW: Pointer;
 
 function VerLanguageNameW;
 begin
-  GetProcedureAddress(_VerLanguageNameW, Version, 'VerLanguageNameW');
+  GetProcedureAddress(_VerLanguageNameW, versionlib, 'VerLanguageNameW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_VerLanguageNameW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_VerLanguageNameW]
   end;
 end;
-{$ELSE}
-function VerLanguageNameW; external Version name 'VerLanguageNameW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _VerLanguageName: Pointer;
 
 function VerLanguageName;
 begin
-  GetProcedureAddress(_VerLanguageName, Version, 'VerLanguageNameW');
+  GetProcedureAddress(_VerLanguageName, versionlib, 'VerLanguageName' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_VerLanguageName]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_VerLanguageName]
   end;
 end;
-{$ELSE}
-function VerLanguageName; external Version name 'VerLanguageNameW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _VerLanguageName: Pointer;
-
-function VerLanguageName;
-begin
-  GetProcedureAddress(_VerLanguageName, Version, 'VerLanguageNameA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_VerLanguageName]
-  end;
-end;
-{$ELSE}
-function VerLanguageName; external Version name 'VerLanguageNameA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-
-{$IFDEF DYNAMIC_LINK}
 var
   _VerQueryValueA: Pointer;
 
 function VerQueryValueA;
 begin
-  GetProcedureAddress(_VerQueryValueA, Version, 'VerQueryValueA');
+  GetProcedureAddress(_VerQueryValueA, versionlib, 'VerQueryValueA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_VerQueryValueA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_VerQueryValueA]
   end;
 end;
-{$ELSE}
-function VerQueryValueA; external Version name 'VerQueryValueA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _VerQueryValueW: Pointer;
 
 function VerQueryValueW;
 begin
-  GetProcedureAddress(_VerQueryValueW, Version, 'VerQueryValueW');
+  GetProcedureAddress(_VerQueryValueW, versionlib, 'VerQueryValueW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_VerQueryValueW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_VerQueryValueW]
   end;
 end;
-{$ELSE}
-function VerQueryValueW; external Version name 'VerQueryValueW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _VerQueryValue: Pointer;
 
 function VerQueryValue;
 begin
-  GetProcedureAddress(_VerQueryValue, Version, 'VerQueryValueW');
+  GetProcedureAddress(_VerQueryValue, versionlib, 'VerQueryValue' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_VerQueryValue]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_VerQueryValue]
   end;
 end;
+
 {$ELSE}
-function VerQueryValue; external Version name 'VerQueryValueW';
+
+function VerFindFileA; external versionlib name 'VerFindFileA';
+function VerFindFileW; external versionlib name 'VerFindFileW';
+function VerFindFile; external versionlib name 'VerFindFile' + AWSuffix;
+function VerInstallFileA; external versionlib name 'VerInstallFileA';
+function VerInstallFileW; external versionlib name 'VerInstallFileW';
+function VerInstallFile; external versionlib name 'VerInstallFile' + AWSuffix;
+function GetFileVersionInfoSizeA; external versionlib name 'GetFileVersionInfoSizeA';
+function GetFileVersionInfoSizeW; external versionlib name 'GetFileVersionInfoSizeW';
+function GetFileVersionInfoSize; external versionlib name 'GetFileVersionInfoSize' + AWSuffix;
+function GetFileVersionInfoA; external versionlib name 'GetFileVersionInfoA';
+function GetFileVersionInfoW; external versionlib name 'GetFileVersionInfoW';
+function GetFileVersionInfo; external versionlib name 'GetFileVersionInfo' + AWSuffix;
+function VerLanguageNameA; external versionlib name 'VerLanguageNameA';
+function VerLanguageNameW; external versionlib name 'VerLanguageNameW';
+function VerLanguageName; external versionlib name 'VerLanguageName' + AWSuffix;
+function VerQueryValueA; external versionlib name 'VerQueryValueA';
+function VerQueryValueW; external versionlib name 'VerQueryValueW';
+function VerQueryValue; external versionlib name 'VerQueryValue' + AWSuffix;
+
 {$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _VerQueryValue: Pointer;
+{$ENDIF JWA_IMPLEMENTATIONSECTION}
 
-function VerQueryValue;
-begin
-  GetProcedureAddress(_VerQueryValue, Version, 'VerQueryValueA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_VerQueryValue]
-  end;
-end;
-{$ELSE}
-function VerQueryValue; external Version name 'VerQueryValueA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
+{$IFNDEF JWA_INCLUDEMODE}
 end.
+{$ENDIF !JWA_INCLUDEMODE}

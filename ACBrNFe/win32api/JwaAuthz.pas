@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Authorization Framework API interface Unit for Object Pascal                 }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: authz.h, released August 2001. The original Pascal     }
 { code is: Authz.pas, released October 2001. The initial developer of the      }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaAuthz.pas,v 1.10 2005/09/06 16:36:50 marquardt Exp $
 
 unit JwaAuthz;
 
@@ -49,12 +50,12 @@ unit JwaAuthz;
 {$HPPEMIT '#include "authz.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinNT, JwaWinType;
+  JwaWindows;
 
 //
 // Flags which may be used at the time of client context creation using a sid.
@@ -63,6 +64,8 @@ uses
 const
   AUTHZ_SKIP_TOKEN_GROUPS = $2;
   {$EXTERNALSYM AUTHZ_SKIP_TOKEN_GROUPS}
+  AUTHZ_REQUIRE_S4U_LOGON = $4;
+  {$EXTERNALSYM AUTHZ_REQUIRE_S4U_LOGON}
 
 type
   AUTHZ_ACCESS_CHECK_RESULTS_HANDLE = HANDLE;
@@ -75,6 +78,8 @@ type
   {$EXTERNALSYM AUTHZ_AUDIT_EVENT_HANDLE}
   AUTHZ_AUDIT_EVENT_TYPE_HANDLE = HANDLE;
   {$EXTERNALSYM AUTHZ_AUDIT_EVENT_TYPE_HANDLE}
+  AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE = HANDLE;
+  {$EXTERNALSYM AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE}
 
   PAUTHZ_ACCESS_CHECK_RESULTS_HANDLE = ^AUTHZ_ACCESS_CHECK_RESULTS_HANDLE;
   {$EXTERNALSYM PAUTHZ_ACCESS_CHECK_RESULTS_HANDLE}
@@ -86,6 +91,8 @@ type
   {$EXTERNALSYM PAUTHZ_AUDIT_EVENT_HANDLE}
   PAUTHZ_AUDIT_EVENT_TYPE_HANDLE = ^AUTHZ_AUDIT_EVENT_TYPE_HANDLE;
   {$EXTERNALSYM PAUTHZ_AUDIT_EVENT_TYPE_HANDLE}
+  PAUTHZ_SECURITY_EVENT_PROVIDER_HANDLE = ^AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE;
+  {$EXTERNALSYM PAUTHZ_SECURITY_EVENT_PROVIDER_HANDLE}
 
 //
 // Structure defining the access check request.
@@ -166,7 +173,6 @@ type
   TAuthzAccessReply = AUTHZ_ACCESS_REPLY;
   PAuthzAccessReply = PAUTHZ_ACCESS_REPLY;
 
-
 //
 // Typedefs for callback functions to be provided by the resource manager.
 //
@@ -187,7 +193,7 @@ type
 //
 
 type
-  PFN_AUTHZ_DYNAMIC_ACCESS_CHECK = function (hAuthzClientContext: AUTHZ_CLIENT_CONTEXT_HANDLE;
+  PFN_AUTHZ_DYNAMIC_ACCESS_CHECK = function(hAuthzClientContext: AUTHZ_CLIENT_CONTEXT_HANDLE;
     pAce: PACE_HEADER; pArgs: PVOID; var pbAceApplicable: BOOL): BOOL; stdcall;
   {$EXTERNALSYM PFN_AUTHZ_DYNAMIC_ACCESS_CHECK}
   PFnAuthzDynamicAccessCheck = PFN_AUTHZ_DYNAMIC_ACCESS_CHECK;
@@ -215,7 +221,7 @@ type
 //
 
 type
-  PFN_AUTHZ_COMPUTE_DYNAMIC_GROUPS = function (hAuthzClientContext: AUTHZ_CLIENT_CONTEXT_HANDLE;
+  PFN_AUTHZ_COMPUTE_DYNAMIC_GROUPS = function(hAuthzClientContext: AUTHZ_CLIENT_CONTEXT_HANDLE;
     Args: PVOID; var pSidAttrArray: PSID_AND_ATTRIBUTES; var pSidCount: DWORD;
     var pRestrictedSidAttrArray: PSID_AND_ATTRIBUTES; var pRestrictedSidCount: DWORD): BOOL; stdcall;
   {$EXTERNALSYM PFN_AUTHZ_COMPUTE_DYNAMIC_GROUPS}
@@ -227,7 +233,7 @@ type
 //     dynamic groups function.
 //
 
-  PFN_AUTHZ_FREE_DYNAMIC_GROUPS = procedure (pSidAttrArray: PSID_AND_ATTRIBUTES); stdcall;
+  PFN_AUTHZ_FREE_DYNAMIC_GROUPS = procedure(pSidAttrArray: PSID_AND_ATTRIBUTES); stdcall;
   {$EXTERNALSYM PFN_AUTHZ_FREE_DYNAMIC_GROUPS}
   PFnAuthzFreeDynamicGroups = PFN_AUTHZ_FREE_DYNAMIC_GROUPS;
 
@@ -264,7 +270,7 @@ const
   AUTHZ_RM_FLAG_INITIALIZE_UNDER_IMPERSONATION = $2;
   {$EXTERNALSYM AUTHZ_RM_FLAG_INITIALIZE_UNDER_IMPERSONATION}
 
-  AUTHZ_VALID_RM_INIT_FLAGS = (AUTHZ_RM_FLAG_NO_AUDIT or AUTHZ_RM_FLAG_INITIALIZE_UNDER_IMPERSONATION);
+  AUTHZ_VALID_RM_INIT_FLAGS = AUTHZ_RM_FLAG_NO_AUDIT or AUTHZ_RM_FLAG_INITIALIZE_UNDER_IMPERSONATION;
   {$EXTERNALSYM AUTHZ_VALID_RM_INIT_FLAGS}
 
 function AuthzInitializeResourceManager(Flags: DWORD; pfnDynamicAccessCheck: PFN_AUTHZ_DYNAMIC_ACCESS_CHECK; pfnComputeDynamicGroups: PFN_AUTHZ_COMPUTE_DYNAMIC_GROUPS; pfnFreeDynamicGroups: PFN_AUTHZ_FREE_DYNAMIC_GROUPS; szResourceManagerName: LPCWSTR; phAuthzResourceManager: PAUTHZ_RESOURCE_MANAGER_HANDLE): BOOL; stdcall;
@@ -301,13 +307,16 @@ type
     AuthzContextInfoServerContext,
     AuthzContextInfoIdentifier,
     AuthzContextInfoSource,
-    AuthzContextInfoAll);
+    AuthzContextInfoAll,
+    AuthzContextInfoAuthenticationId);
   {$EXTERNALSYM _AUTHZ_CONTEXT_INFORMATION_CLASS}
   AUTHZ_CONTEXT_INFORMATION_CLASS = _AUTHZ_CONTEXT_INFORMATION_CLASS;
   {$EXTERNALSYM AUTHZ_CONTEXT_INFORMATION_CLASS}
   TAuthzContextInformationClass = AUTHZ_CONTEXT_INFORMATION_CLASS;
 
-function AuthzGetInformationFromContext(hAuthzClientContext: AUTHZ_CLIENT_CONTEXT_HANDLE; InfoClass: AUTHZ_CONTEXT_INFORMATION_CLASS; BufferSize: DWORD; pSizeRequired: PDWORD; Buffer: PVOID): BOOL; stdcall;
+function AuthzGetInformationFromContext(hAuthzClientContext: AUTHZ_CLIENT_CONTEXT_HANDLE;
+  InfoClass: AUTHZ_CONTEXT_INFORMATION_CLASS; BufferSize: DWORD; pSizeRequired: PDWORD;
+  Buffer: PVOID): BOOL; stdcall;
 {$EXTERNALSYM AuthzGetInformationFromContext}
 
 function AuthzFreeContext(hAuthzClientContext: AUTHZ_CLIENT_CONTEXT_HANDLE): BOOL; stdcall;
@@ -325,11 +334,18 @@ const
   AUTHZ_NO_ALLOC_STRINGS = $00000004;
   {$EXTERNALSYM AUTHZ_NO_ALLOC_STRINGS}
 
-  AUTHZ_VALID_OBJECT_ACCESS_AUDIT_FLAGS = (AUTHZ_NO_SUCCESS_AUDIT or AUTHZ_NO_FAILURE_AUDIT or AUTHZ_NO_ALLOC_STRINGS);
+  AUTHZ_VALID_OBJECT_ACCESS_AUDIT_FLAGS = AUTHZ_NO_SUCCESS_AUDIT or AUTHZ_NO_FAILURE_AUDIT or AUTHZ_NO_ALLOC_STRINGS;
   {$EXTERNALSYM AUTHZ_VALID_OBJECT_ACCESS_AUDIT_FLAGS}
 
-function AuthzInitializeObjectAccessAuditEvent(Flags: DWORD; hAuditEventType: AUTHZ_AUDIT_EVENT_TYPE_HANDLE; szOperationType: PWSTR; szObjectType: PWSTR; szObjectName: PWSTR; szAdditionalInfo: PWSTR; phAuditEvent: PAUTHZ_AUDIT_EVENT_HANDLE; dwAdditionalParameterCount: DWORD {, ...}): BOOL; stdcall;
+function AuthzInitializeObjectAccessAuditEvent(Flags: DWORD; hAuditEventType: AUTHZ_AUDIT_EVENT_TYPE_HANDLE;
+  szOperationType: PWSTR; szObjectType: PWSTR; szObjectName: PWSTR; szAdditionalInfo: PWSTR;
+  phAuditEvent: PAUTHZ_AUDIT_EVENT_HANDLE; dwAdditionalParameterCount: DWORD {, ...}): BOOL; stdcall;
 {$EXTERNALSYM AuthzInitializeObjectAccessAuditEvent}
+
+function AuthzInitializeObjectAccessAuditEvent2(Flags: DWORD; hAuditEventType: AUTHZ_AUDIT_EVENT_TYPE_HANDLE;
+  szOperationType: PWSTR; szObjectType: PWSTR; szObjectName: PWSTR; szAdditionalInfo, szAdditionalInfo2: PWSTR;
+  phAuditEvent: PAUTHZ_AUDIT_EVENT_HANDLE; dwAdditionalParameterCount: DWORD {, ...}): BOOL; stdcall;
+{$EXTERNALSYM AuthzInitializeObjectAccessAuditEvent2}
 
 //
 // Enumeration type to be used to specify the type of information to be
@@ -357,265 +373,333 @@ function AuthzGetInformationFromAuditEvent(hAuditEvent: AUTHZ_AUDIT_EVENT_HANDLE
 function AuthzFreeAuditEvent(hAuditEvent: AUTHZ_AUDIT_EVENT_HANDLE): BOOL; stdcall;
 {$EXTERNALSYM AuthzFreeAuditEvent}
 
+(* TODO
+//
+// Support for generic auditing.
+//
+
+typedef struct _AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET
+{
+    PWSTR szObjectTypeName;
+    DWORD dwOffset;
+} AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET, *PAUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET;
+
+typedef struct _AUTHZ_SOURCE_SCHEMA_REGISTRATION
+{
+    DWORD dwFlags;
+    PWSTR szEventSourceName;
+    PWSTR szEventMessageFile;
+    PWSTR szEventSourceXmlSchemaFile;
+    PWSTR szEventAccessStringsFile;
+    PWSTR szExecutableImagePath;
+    PVOID pReserved;
+    DWORD dwObjectTypeNameCount;
+    AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET ObjectTypeNames[ANYSIZE_ARRAY];
+} AUTHZ_SOURCE_SCHEMA_REGISTRATION, *PAUTHZ_SOURCE_SCHEMA_REGISTRATION;
+
+#define AUTHZ_FLAG_ALLOW_MULTIPLE_SOURCE_INSTANCES 0x1
+
+AUTHZAPI
+BOOL 
+WINAPI
+AuthzInstallSecurityEventSource(
+    IN DWORD                             dwFlags,
+    IN PAUTHZ_SOURCE_SCHEMA_REGISTRATION pRegistration
+    );
+
+AUTHZAPI
+BOOL
+WINAPI
+AuthzUninstallSecurityEventSource(
+    IN DWORD  dwFlags,
+    IN PCWSTR szEventSourceName
+    );
+
+AUTHZAPI
+BOOL
+WINAPI
+AuthzEnumerateSecurityEventSources(
+    IN     DWORD                             dwFlags,
+    OUT    PAUTHZ_SOURCE_SCHEMA_REGISTRATION Buffer,
+    OUT    PDWORD                            pdwCount,
+    IN OUT PDWORD                            pdwLength
+    );
+    
+AUTHZAPI
+BOOL
+WINAPI
+AuthzRegisterSecurityEventSource(
+    IN  DWORD                                 dwFlags,
+    IN  PCWSTR                                szEventSourceName,
+    OUT PAUTHZ_SECURITY_EVENT_PROVIDER_HANDLE phEventProvider
+    );
+    
+AUTHZAPI
+BOOL
+WINAPI
+AuthzUnregisterSecurityEventSource(
+    IN     DWORD                                 dwFlags,
+    IN OUT PAUTHZ_SECURITY_EVENT_PROVIDER_HANDLE phEventProvider
+    );
+
+AUTHZAPI
+BOOL
+WINAPI
+AuthzReportSecurityEvent(
+    IN     DWORD                                dwFlags,
+    IN OUT AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE hEventProvider,
+    IN     DWORD                                dwAuditId,
+    IN     PSID                                 pUserSid        OPTIONAL,
+    IN     DWORD                                dwCount,
+    ...    
+    );
+
+AUTHZAPI
+BOOL
+WINAPI
+AuthzReportSecurityEventFromParams(
+    IN     DWORD                                dwFlags,
+    IN OUT AUTHZ_SECURITY_EVENT_PROVIDER_HANDLE hEventProvider,
+    IN     DWORD                                dwAuditId,
+    IN     PSID                                 pUserSid       OPTIONAL,
+    IN     PAUDIT_PARAMS                        pParams
+    );
+*)
+
 implementation
 
-const
-  authz_lib = 'authz.dll';
-
+uses
+  JwaWinDLLNames;
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _AuthzAccessCheck: Pointer;
 
 function AuthzAccessCheck;
 begin
-  GetProcedureAddress(_AuthzAccessCheck, authz_lib, 'AuthzAccessCheck');
+  GetProcedureAddress(_AuthzAccessCheck, authzlib, 'AuthzAccessCheck');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AuthzAccessCheck]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AuthzAccessCheck]
   end;
 end;
-{$ELSE}
-function AuthzAccessCheck; external authz_lib name 'AuthzAccessCheck';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _AuthzCachedAccessCheck: Pointer;
 
 function AuthzCachedAccessCheck;
 begin
-  GetProcedureAddress(_AuthzCachedAccessCheck, authz_lib, 'AuthzCachedAccessCheck');
+  GetProcedureAddress(_AuthzCachedAccessCheck, authzlib, 'AuthzCachedAccessCheck');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AuthzCachedAccessCheck]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AuthzCachedAccessCheck]
   end;
 end;
-{$ELSE}
-function AuthzCachedAccessCheck; external authz_lib name 'AuthzCachedAccessCheck';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _AuthzOpenObjectAudit: Pointer;
 
 function AuthzOpenObjectAudit;
 begin
-  GetProcedureAddress(_AuthzOpenObjectAudit, authz_lib, 'AuthzOpenObjectAudit');
+  GetProcedureAddress(_AuthzOpenObjectAudit, authzlib, 'AuthzOpenObjectAudit');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AuthzOpenObjectAudit]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AuthzOpenObjectAudit]
   end;
 end;
-{$ELSE}
-function AuthzOpenObjectAudit; external authz_lib name 'AuthzOpenObjectAudit';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _AuthzFreeHandle: Pointer;
 
 function AuthzFreeHandle;
 begin
-  GetProcedureAddress(_AuthzFreeHandle, authz_lib, 'AuthzFreeHandle');
+  GetProcedureAddress(_AuthzFreeHandle, authzlib, 'AuthzFreeHandle');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AuthzFreeHandle]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AuthzFreeHandle]
   end;
 end;
-{$ELSE}
-function AuthzFreeHandle; external authz_lib name 'AuthzFreeHandle';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _AuthzInitializeResourceManager: Pointer;
 
 function AuthzInitializeResourceManager;
 begin
-  GetProcedureAddress(_AuthzInitializeResourceManager, authz_lib, 'AuthzInitializeResourceManager');
+  GetProcedureAddress(_AuthzInitializeResourceManager, authzlib, 'AuthzInitializeResourceManager');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AuthzInitializeResourceManager]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AuthzInitializeResourceManager]
   end;
 end;
-{$ELSE}
-function AuthzInitializeResourceManager; external authz_lib name 'AuthzInitializeResourceManager';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _AuthzFreeResourceManager: Pointer;
 
 function AuthzFreeResourceManager;
 begin
-  GetProcedureAddress(_AuthzFreeResourceManager, authz_lib, 'AuthzFreeResourceManager');
+  GetProcedureAddress(_AuthzFreeResourceManager, authzlib, 'AuthzFreeResourceManager');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AuthzFreeResourceManager]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AuthzFreeResourceManager]
   end;
 end;
-{$ELSE}
-function AuthzFreeResourceManager; external authz_lib name 'AuthzFreeResourceManager';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _AuthzInitializeContextFromToken: Pointer;
 
 function AuthzInitializeContextFromToken;
 begin
-  GetProcedureAddress(_AuthzInitializeContextFromToken, authz_lib, 'AuthzInitializeContextFromToken');
+  GetProcedureAddress(_AuthzInitializeContextFromToken, authzlib, 'AuthzInitializeContextFromToken');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AuthzInitializeContextFromToken]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AuthzInitializeContextFromToken]
   end;
 end;
-{$ELSE}
-function AuthzInitializeContextFromToken; external authz_lib name 'AuthzInitializeContextFromToken';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _AuthzInitializeContextFromSid: Pointer;
 
 function AuthzInitializeContextFromSid;
 begin
-  GetProcedureAddress(_AuthzInitializeContextFromSid, authz_lib, 'AuthzInitializeContextFromSid');
+  GetProcedureAddress(_AuthzInitializeContextFromSid, authzlib, 'AuthzInitializeContextFromSid');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AuthzInitializeContextFromSid]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AuthzInitializeContextFromSid]
   end;
 end;
-{$ELSE}
-function AuthzInitializeContextFromSid; external authz_lib name 'AuthzInitializeContextFromSid';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _AuthzInitCxtFromAuthzCxt: Pointer;
 
 function AuthzInitializeContextFromAuthzContext;
 begin
-  GetProcedureAddress(_AuthzInitCxtFromAuthzCxt, authz_lib, 'AuthzInitializeContextFromAuthzContext');
+  GetProcedureAddress(_AuthzInitCxtFromAuthzCxt, authzlib, 'AuthzInitializeContextFromAuthzContext');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AuthzInitCxtFromAuthzCxt]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AuthzInitCxtFromAuthzCxt]
   end;
 end;
-{$ELSE}
-function AuthzInitializeContextFromAuthzContext; external authz_lib name 'AuthzInitializeContextFromAuthzContext';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _AuthzAddSidsToContext: Pointer;
 
 function AuthzAddSidsToContext;
 begin
-  GetProcedureAddress(_AuthzAddSidsToContext, authz_lib, 'AuthzAddSidsToContext');
+  GetProcedureAddress(_AuthzAddSidsToContext, authzlib, 'AuthzAddSidsToContext');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AuthzAddSidsToContext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AuthzAddSidsToContext]
   end;
 end;
-{$ELSE}
-function AuthzAddSidsToContext; external authz_lib name 'AuthzAddSidsToContext';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _AuthzGetInformationFromContext: Pointer;
 
 function AuthzGetInformationFromContext;
 begin
-  GetProcedureAddress(_AuthzGetInformationFromContext, authz_lib, 'AuthzGetInformationFromContext');
+  GetProcedureAddress(_AuthzGetInformationFromContext, authzlib, 'AuthzGetInformationFromContext');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AuthzGetInformationFromContext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AuthzGetInformationFromContext]
   end;
 end;
-{$ELSE}
-function AuthzGetInformationFromContext; external authz_lib name 'AuthzGetInformationFromContext';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _AuthzFreeContext: Pointer;
 
 function AuthzFreeContext;
 begin
-  GetProcedureAddress(_AuthzFreeContext, authz_lib, 'AuthzFreeContext');
+  GetProcedureAddress(_AuthzFreeContext, authzlib, 'AuthzFreeContext');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AuthzFreeContext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AuthzFreeContext]
   end;
 end;
-{$ELSE}
-function AuthzFreeContext; external authz_lib name 'AuthzFreeContext';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _AuthzInitObjAccAuditEvent: Pointer;
 
 function AuthzInitializeObjectAccessAuditEvent;
 begin
-  GetProcedureAddress(_AuthzInitObjAccAuditEvent, authz_lib, 'AuthzInitializeObjectAccessAuditEvent');
+  GetProcedureAddress(_AuthzInitObjAccAuditEvent, authzlib, 'AuthzInitializeObjectAccessAuditEvent');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AuthzInitObjAccAuditEvent]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AuthzInitObjAccAuditEvent]
   end;
 end;
-{$ELSE}
-function AuthzInitializeObjectAccessAuditEvent; external authz_lib name 'AuthzInitializeObjectAccessAuditEvent';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
+var
+  _AuthzInitObjAccAuditEvent2: Pointer;
+
+function AuthzInitializeObjectAccessAuditEvent2;
+begin
+  GetProcedureAddress(_AuthzInitObjAccAuditEvent2, authzlib, 'AuthzInitializeObjectAccessAuditEvent2');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AuthzInitObjAccAuditEvent2]
+  end;
+end;
+
 var
   _AuthzGetInfoFromAuditEvent: Pointer;
 
 function AuthzGetInformationFromAuditEvent;
 begin
-  GetProcedureAddress(_AuthzGetInfoFromAuditEvent, authz_lib, 'AuthzGetInformationFromAuditEvent');
+  GetProcedureAddress(_AuthzGetInfoFromAuditEvent, authzlib, 'AuthzGetInformationFromAuditEvent');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AuthzGetInfoFromAuditEvent]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AuthzGetInfoFromAuditEvent]
   end;
 end;
-{$ELSE}
-function AuthzGetInformationFromAuditEvent; external authz_lib name 'AuthzGetInformationFromAuditEvent';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _AuthzFreeAuditEvent: Pointer;
 
 function AuthzFreeAuditEvent;
 begin
-  GetProcedureAddress(_AuthzFreeAuditEvent, authz_lib, 'AuthzFreeAuditEvent');
+  GetProcedureAddress(_AuthzFreeAuditEvent, authzlib, 'AuthzFreeAuditEvent');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AuthzFreeAuditEvent]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AuthzFreeAuditEvent]
   end;
 end;
+
 {$ELSE}
-function AuthzFreeAuditEvent; external authz_lib name 'AuthzFreeAuditEvent';
+
+function AuthzAccessCheck; external authzlib name 'AuthzAccessCheck';
+function AuthzCachedAccessCheck; external authzlib name 'AuthzCachedAccessCheck';
+function AuthzOpenObjectAudit; external authzlib name 'AuthzOpenObjectAudit';
+function AuthzFreeHandle; external authzlib name 'AuthzFreeHandle';
+function AuthzInitializeResourceManager; external authzlib name 'AuthzInitializeResourceManager';
+function AuthzFreeResourceManager; external authzlib name 'AuthzFreeResourceManager';
+function AuthzInitializeContextFromToken; external authzlib name 'AuthzInitializeContextFromToken';
+function AuthzInitializeContextFromSid; external authzlib name 'AuthzInitializeContextFromSid';
+function AuthzInitializeContextFromAuthzContext; external authzlib name 'AuthzInitializeContextFromAuthzContext';
+function AuthzAddSidsToContext; external authzlib name 'AuthzAddSidsToContext';
+function AuthzGetInformationFromContext; external authzlib name 'AuthzGetInformationFromContext';
+function AuthzFreeContext; external authzlib name 'AuthzFreeContext';
+function AuthzInitializeObjectAccessAuditEvent; external authzlib name 'AuthzInitializeObjectAccessAuditEvent';
+function AuthzInitializeObjectAccessAuditEvent2; external authzlib name 'AuthzInitializeObjectAccessAuditEvent2';
+function AuthzGetInformationFromAuditEvent; external authzlib name 'AuthzGetInformationFromAuditEvent';
+function AuthzFreeAuditEvent; external authzlib name 'AuthzFreeAuditEvent';
+
 {$ENDIF DYNAMIC_LINK}
 
 end.

@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Lan Manager Replicator API interface Unit for Object Pascal                  }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: lmrepl.h, released November 2001. The original Pascal  }
 { code is: LmRepl.pas, released Februari 2002. The initial developer of the    }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,25 +35,33 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaLmRepl.pas,v 1.10 2005/09/07 09:54:54 marquardt Exp $
+
+{$IFNDEF JWA_INCLUDEMODE}
 
 unit JwaLmRepl;
 
 {$WEAKPACKAGEUNIT}
 
-{$HPPEMIT ''}
-{$HPPEMIT '#include "lmrepl.h"'}
-{$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaLmCons, JwaWinType;
+  JwaWindows, JwaLmCons;
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_INTERFACESECTION}
+
+{$HPPEMIT ''}
+{$HPPEMIT '#include "lmrepl.h"'}
+{$HPPEMIT ''}
 
 //
 // Replicator Configuration APIs
@@ -68,13 +75,13 @@ const
   REPL_ROLE_BOTH   = 3;
   {$EXTERNALSYM REPL_ROLE_BOTH}
 
-  REPL_INTERVAL_INFOLEVEL  = (PARMNUM_BASE_INFOLEVEL + 0);
+  REPL_INTERVAL_INFOLEVEL  = PARMNUM_BASE_INFOLEVEL + 0;
   {$EXTERNALSYM REPL_INTERVAL_INFOLEVEL}
-  REPL_PULSE_INFOLEVEL     = (PARMNUM_BASE_INFOLEVEL + 1);
+  REPL_PULSE_INFOLEVEL     = PARMNUM_BASE_INFOLEVEL + 1;
   {$EXTERNALSYM REPL_PULSE_INFOLEVEL}
-  REPL_GUARDTIME_INFOLEVEL = (PARMNUM_BASE_INFOLEVEL + 2);
+  REPL_GUARDTIME_INFOLEVEL = PARMNUM_BASE_INFOLEVEL + 2;
   {$EXTERNALSYM REPL_GUARDTIME_INFOLEVEL}
-  REPL_RANDOM_INFOLEVEL    = (PARMNUM_BASE_INFOLEVEL + 3);
+  REPL_RANDOM_INFOLEVEL    = PARMNUM_BASE_INFOLEVEL + 3;
   {$EXTERNALSYM REPL_RANDOM_INFOLEVEL}
 
 type
@@ -173,9 +180,9 @@ const
   REPL_EXTENT_TREE = 2;
   {$EXTERNALSYM REPL_EXTENT_TREE}
 
-  REPL_EXPORT_INTEGRITY_INFOLEVEL = (PARMNUM_BASE_INFOLEVEL + 0);
+  REPL_EXPORT_INTEGRITY_INFOLEVEL = PARMNUM_BASE_INFOLEVEL + 0;
   {$EXTERNALSYM REPL_EXPORT_INTEGRITY_INFOLEVEL}
-  REPL_EXPORT_EXTENT_INFOLEVEL    = (PARMNUM_BASE_INFOLEVEL + 1);
+  REPL_EXPORT_EXTENT_INFOLEVEL    = PARMNUM_BASE_INFOLEVEL + 1;
   {$EXTERNALSYM REPL_EXPORT_EXTENT_INFOLEVEL}
 
 type
@@ -341,10 +348,21 @@ const
   REPL_STATE_NEVER_REPLICATED = 3;
   {$EXTERNALSYM REPL_STATE_NEVER_REPLICATED}
 
+{$ENDIF JWA_INTERFACESECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
+
 implementation
 
+uses
+  JwaWinDLLNames;
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_IMPLEMENTATIONSECTION}
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _NetReplGetInfo: Pointer;
 
@@ -352,16 +370,12 @@ function NetReplGetInfo;
 begin
   GetProcedureAddress(_NetReplGetInfo, netapi32, 'NetReplGetInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetReplGetInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetReplGetInfo]
   end;
 end;
-{$ELSE}
-function NetReplGetInfo; external netapi32 name 'NetReplGetInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetReplSetInfo: Pointer;
 
@@ -369,16 +383,12 @@ function NetReplSetInfo;
 begin
   GetProcedureAddress(_NetReplSetInfo, netapi32, 'NetReplSetInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetReplSetInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetReplSetInfo]
   end;
 end;
-{$ELSE}
-function NetReplSetInfo; external netapi32 name 'NetReplSetInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetReplExportDirAdd: Pointer;
 
@@ -386,16 +396,12 @@ function NetReplExportDirAdd;
 begin
   GetProcedureAddress(_NetReplExportDirAdd, netapi32, 'NetReplExportDirAdd');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetReplExportDirAdd]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetReplExportDirAdd]
   end;
 end;
-{$ELSE}
-function NetReplExportDirAdd; external netapi32 name 'NetReplExportDirAdd';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetReplExportDirDel: Pointer;
 
@@ -403,16 +409,12 @@ function NetReplExportDirDel;
 begin
   GetProcedureAddress(_NetReplExportDirDel, netapi32, 'NetReplExportDirDel');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetReplExportDirDel]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetReplExportDirDel]
   end;
 end;
-{$ELSE}
-function NetReplExportDirDel; external netapi32 name 'NetReplExportDirDel';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetReplExportDirEnum: Pointer;
 
@@ -420,16 +422,12 @@ function NetReplExportDirEnum;
 begin
   GetProcedureAddress(_NetReplExportDirEnum, netapi32, 'NetReplExportDirEnum');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetReplExportDirEnum]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetReplExportDirEnum]
   end;
 end;
-{$ELSE}
-function NetReplExportDirEnum; external netapi32 name 'NetReplExportDirEnum';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetReplExportDirGetInfo: Pointer;
 
@@ -437,16 +435,12 @@ function NetReplExportDirGetInfo;
 begin
   GetProcedureAddress(_NetReplExportDirGetInfo, netapi32, 'NetReplExportDirGetInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetReplExportDirGetInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetReplExportDirGetInfo]
   end;
 end;
-{$ELSE}
-function NetReplExportDirGetInfo; external netapi32 name 'NetReplExportDirGetInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetReplExportDirSetInfo: Pointer;
 
@@ -454,16 +448,12 @@ function NetReplExportDirSetInfo;
 begin
   GetProcedureAddress(_NetReplExportDirSetInfo, netapi32, 'NetReplExportDirSetInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetReplExportDirSetInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetReplExportDirSetInfo]
   end;
 end;
-{$ELSE}
-function NetReplExportDirSetInfo; external netapi32 name 'NetReplExportDirSetInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetReplExportDirLock: Pointer;
 
@@ -471,16 +461,12 @@ function NetReplExportDirLock;
 begin
   GetProcedureAddress(_NetReplExportDirLock, netapi32, 'NetReplExportDirLock');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetReplExportDirLock]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetReplExportDirLock]
   end;
 end;
-{$ELSE}
-function NetReplExportDirLock; external netapi32 name 'NetReplExportDirLock';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetReplExportDirUnlock: Pointer;
 
@@ -488,16 +474,12 @@ function NetReplExportDirUnlock;
 begin
   GetProcedureAddress(_NetReplExportDirUnlock, netapi32, 'NetReplExportDirUnlock');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetReplExportDirUnlock]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetReplExportDirUnlock]
   end;
 end;
-{$ELSE}
-function NetReplExportDirUnlock; external netapi32 name 'NetReplExportDirUnlock';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetReplImportDirAdd: Pointer;
 
@@ -505,16 +487,12 @@ function NetReplImportDirAdd;
 begin
   GetProcedureAddress(_NetReplImportDirAdd, netapi32, 'NetReplImportDirAdd');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetReplImportDirAdd]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetReplImportDirAdd]
   end;
 end;
-{$ELSE}
-function NetReplImportDirAdd; external netapi32 name 'NetReplImportDirAdd';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetReplImportDirDel: Pointer;
 
@@ -522,16 +500,12 @@ function NetReplImportDirDel;
 begin
   GetProcedureAddress(_NetReplImportDirDel, netapi32, 'NetReplImportDirDel');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetReplImportDirDel]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetReplImportDirDel]
   end;
 end;
-{$ELSE}
-function NetReplImportDirDel; external netapi32 name 'NetReplImportDirDel';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetReplImportDirEnum: Pointer;
 
@@ -539,16 +513,12 @@ function NetReplImportDirEnum;
 begin
   GetProcedureAddress(_NetReplImportDirEnum, netapi32, 'NetReplImportDirEnum');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetReplImportDirEnum]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetReplImportDirEnum]
   end;
 end;
-{$ELSE}
-function NetReplImportDirEnum; external netapi32 name 'NetReplImportDirEnum';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetReplImportDirGetInfo: Pointer;
 
@@ -556,16 +526,12 @@ function NetReplImportDirGetInfo;
 begin
   GetProcedureAddress(_NetReplImportDirGetInfo, netapi32, 'NetReplImportDirGetInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetReplImportDirGetInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetReplImportDirGetInfo]
   end;
 end;
-{$ELSE}
-function NetReplImportDirGetInfo; external netapi32 name 'NetReplImportDirGetInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetReplImportDirLock: Pointer;
 
@@ -573,16 +539,12 @@ function NetReplImportDirLock;
 begin
   GetProcedureAddress(_NetReplImportDirLock, netapi32, 'NetReplImportDirLock');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetReplImportDirLock]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetReplImportDirLock]
   end;
 end;
-{$ELSE}
-function NetReplImportDirLock; external netapi32 name 'NetReplImportDirLock';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetReplImportDirUnlock: Pointer;
 
@@ -590,13 +552,34 @@ function NetReplImportDirUnlock;
 begin
   GetProcedureAddress(_NetReplImportDirUnlock, netapi32, 'NetReplImportDirUnlock');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetReplImportDirUnlock]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetReplImportDirUnlock]
   end;
 end;
+
 {$ELSE}
+
+function NetReplGetInfo; external netapi32 name 'NetReplGetInfo';
+function NetReplSetInfo; external netapi32 name 'NetReplSetInfo';
+function NetReplExportDirAdd; external netapi32 name 'NetReplExportDirAdd';
+function NetReplExportDirDel; external netapi32 name 'NetReplExportDirDel';
+function NetReplExportDirEnum; external netapi32 name 'NetReplExportDirEnum';
+function NetReplExportDirGetInfo; external netapi32 name 'NetReplExportDirGetInfo';
+function NetReplExportDirSetInfo; external netapi32 name 'NetReplExportDirSetInfo';
+function NetReplExportDirLock; external netapi32 name 'NetReplExportDirLock';
+function NetReplExportDirUnlock; external netapi32 name 'NetReplExportDirUnlock';
+function NetReplImportDirAdd; external netapi32 name 'NetReplImportDirAdd';
+function NetReplImportDirDel; external netapi32 name 'NetReplImportDirDel';
+function NetReplImportDirEnum; external netapi32 name 'NetReplImportDirEnum';
+function NetReplImportDirGetInfo; external netapi32 name 'NetReplImportDirGetInfo';
+function NetReplImportDirLock; external netapi32 name 'NetReplImportDirLock';
 function NetReplImportDirUnlock; external netapi32 name 'NetReplImportDirUnlock';
+
 {$ENDIF DYNAMIC_LINK}
 
+{$ENDIF JWA_IMPLEMENTATIONSECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
 end.
+{$ENDIF !JWA_INCLUDEMODE}

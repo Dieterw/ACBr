@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Security Descriptor Definition Language API interface Unit for Object Pascal }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: sddl.h, released June 2000. The original Pascal        }
 { code is: Sddl.pas, released December 2000. The initial developer of the      }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaSddl.pas,v 1.9 2005/09/06 16:36:50 marquardt Exp $
 
 unit JwaSddl;
 
@@ -49,12 +50,12 @@ unit JwaSddl;
 {$HPPEMIT '#include "sddl.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinNT, JwaWinType;
+  JwaWindows;
 
 //
 // SDDL Version information
@@ -309,27 +310,15 @@ function ConvertSidToStringSidA(Sid: PSID; var StringSid: LPSTR): BOOL; stdcall;
 {$EXTERNALSYM ConvertSidToStringSidA}
 function ConvertSidToStringSidW(Sid: PSID; var StringSid: LPWSTR): BOOL; stdcall;
 {$EXTERNALSYM ConvertSidToStringSidW}
-
-{$IFDEF UNICODE}
-function ConvertSidToStringSid(Sid: PSID; var StringSid: LPWSTR): BOOL; stdcall;
+function ConvertSidToStringSid(Sid: PSID; var StringSid: LPTSTR): BOOL; stdcall;
 {$EXTERNALSYM ConvertSidToStringSid}
-{$ELSE}
-function ConvertSidToStringSid(Sid: PSID; var StringSid: LPSTR): BOOL; stdcall;
-{$EXTERNALSYM ConvertSidToStringSid}
-{$ENDIF}
 
 function ConvertStringSidToSidA(StringSid: LPCSTR; var Sid: PSID): BOOL; stdcall;
 {$EXTERNALSYM ConvertStringSidToSidA}
 function ConvertStringSidToSidW(StringSid: LPCWSTR; var Sid: PSID): BOOL; stdcall;
 {$EXTERNALSYM ConvertStringSidToSidW}
-
-{$IFDEF UNICODE}
-function ConvertStringSidToSid(StringSid: LPCWSTR; var Sid: PSID): BOOL; stdcall;
+function ConvertStringSidToSid(StringSid: LPCTSTR; var Sid: PSID): BOOL; stdcall;
 {$EXTERNALSYM ConvertStringSidToSid}
-{$ELSE}
-function ConvertStringSidToSid(StringSid: LPCSTR; var Sid: PSID): BOOL; stdcall;
-{$EXTERNALSYM ConvertStringSidToSid}
-{$ENDIF}
 
 function ConvertStringSecurityDescriptorToSecurityDescriptorA(StringSecurityDescriptor: LPCSTR;
   StringSDRevision: DWORD; var SecurityDescriptor: PSECURITY_DESCRIPTOR;
@@ -339,18 +328,10 @@ function ConvertStringSecurityDescriptorToSecurityDescriptorW(StringSecurityDesc
   StringSDRevision: DWORD; var SecurityDescriptor: PSECURITY_DESCRIPTOR;
   SecurityDescriptorSize: PULONG): BOOL; stdcall;
 {$EXTERNALSYM ConvertStringSecurityDescriptorToSecurityDescriptorW}
-
-{$IFDEF UNICODE}
-function ConvertStringSecurityDescriptorToSecurityDescriptor(StringSecurityDescriptor: LPCWSTR;
+function ConvertStringSecurityDescriptorToSecurityDescriptor(StringSecurityDescriptor: LPCTSTR;
   StringSDRevision: DWORD; var SecurityDescriptor: PSECURITY_DESCRIPTOR;
   SecurityDescriptorSize: PULONG): BOOL; stdcall;
 {$EXTERNALSYM ConvertStringSecurityDescriptorToSecurityDescriptor}
-{$ELSE}
-function ConvertStringSecurityDescriptorToSecurityDescriptor(StringSecurityDescriptor: LPCSTR;
-  StringSDRevision: DWORD; var SecurityDescriptor: PSECURITY_DESCRIPTOR;
-  SecurityDescriptorSize: PULONG): BOOL; stdcall;
-{$EXTERNALSYM ConvertStringSecurityDescriptorToSecurityDescriptor}
-{$ENDIF}
 
 function ConvertSecurityDescriptorToStringSecurityDescriptorA(
   SecurityDescriptor: PSECURITY_DESCRIPTOR; RequestedStringSDRevision: DWORD;
@@ -362,28 +343,19 @@ function ConvertSecurityDescriptorToStringSecurityDescriptorW(
   SecurityInformation: SECURITY_INFORMATION; var StringSecurityDescriptor: LPWSTR;
   StringSecurityDescriptorLen: PULONG): BOOL; stdcall;
 {$EXTERNALSYM ConvertSecurityDescriptorToStringSecurityDescriptorW}
-
-{$IFDEF UNICODE}
 function ConvertSecurityDescriptorToStringSecurityDescriptor(
   SecurityDescriptor: PSECURITY_DESCRIPTOR; RequestedStringSDRevision: DWORD;
-  SecurityInformation: SECURITY_INFORMATION; var StringSecurityDescriptor: LPWSTR;
+  SecurityInformation: SECURITY_INFORMATION; var StringSecurityDescriptor: LPTSTR;
   StringSecurityDescriptorLen: PULONG): BOOL; stdcall;
 {$EXTERNALSYM ConvertSecurityDescriptorToStringSecurityDescriptor}
-{$ELSE}
-function ConvertSecurityDescriptorToStringSecurityDescriptor(
-  SecurityDescriptor: PSECURITY_DESCRIPTOR; RequestedStringSDRevision: DWORD;
-  SecurityInformation: SECURITY_INFORMATION; var StringSecurityDescriptor: LPSTR;
-  StringSecurityDescriptorLen: PULONG): BOOL; stdcall;
-{$EXTERNALSYM ConvertSecurityDescriptorToStringSecurityDescriptor}
-{$ENDIF}
 
 implementation
 
-const
-  advapi32 = 'advapi32.dll';
-
+uses
+  JwaWinDLLNames;
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _ConvertSidToStringSidA: Pointer;
 
@@ -391,16 +363,12 @@ function ConvertSidToStringSidA;
 begin
   GetProcedureAddress(_ConvertSidToStringSidA, advapi32, 'ConvertSidToStringSidA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ConvertSidToStringSidA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ConvertSidToStringSidA]
   end;
 end;
-{$ELSE}
-function ConvertSidToStringSidA; external advapi32 name 'ConvertSidToStringSidA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ConvertSidToStringSidW: Pointer;
 
@@ -408,53 +376,25 @@ function ConvertSidToStringSidW;
 begin
   GetProcedureAddress(_ConvertSidToStringSidW, advapi32, 'ConvertSidToStringSidW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ConvertSidToStringSidW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ConvertSidToStringSidW]
   end;
 end;
-{$ELSE}
-function ConvertSidToStringSidW; external advapi32 name 'ConvertSidToStringSidW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ConvertSidToStringSid: Pointer;
 
 function ConvertSidToStringSid;
 begin
-  GetProcedureAddress(_ConvertSidToStringSid, advapi32, 'ConvertSidToStringSidW');
+  GetProcedureAddress(_ConvertSidToStringSid, advapi32, 'ConvertSidToStringSid' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ConvertSidToStringSid]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ConvertSidToStringSid]
   end;
 end;
-{$ELSE}
-function ConvertSidToStringSid; external advapi32 name 'ConvertSidToStringSidW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _ConvertSidToStringSid: Pointer;
-
-function ConvertSidToStringSid;
-begin
-  GetProcedureAddress(_ConvertSidToStringSid, advapi32, 'ConvertSidToStringSidA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ConvertSidToStringSid]
-  end;
-end;
-{$ELSE}
-function ConvertSidToStringSid; external advapi32 name 'ConvertSidToStringSidA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _ConvertStringSidToSidA: Pointer;
 
@@ -462,16 +402,12 @@ function ConvertStringSidToSidA;
 begin
   GetProcedureAddress(_ConvertStringSidToSidA, advapi32, 'ConvertStringSidToSidA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ConvertStringSidToSidA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ConvertStringSidToSidA]
   end;
 end;
-{$ELSE}
-function ConvertStringSidToSidA; external advapi32 name 'ConvertStringSidToSidA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ConvertStringSidToSidW: Pointer;
 
@@ -479,53 +415,25 @@ function ConvertStringSidToSidW;
 begin
   GetProcedureAddress(_ConvertStringSidToSidW, advapi32, 'ConvertStringSidToSidW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ConvertStringSidToSidW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ConvertStringSidToSidW]
   end;
 end;
-{$ELSE}
-function ConvertStringSidToSidW; external advapi32 name 'ConvertStringSidToSidW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ConvertStringSidToSid: Pointer;
 
 function ConvertStringSidToSid;
 begin
-  GetProcedureAddress(_ConvertStringSidToSid, advapi32, 'ConvertStringSidToSidW');
+  GetProcedureAddress(_ConvertStringSidToSid, advapi32, 'ConvertStringSidToSid' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ConvertStringSidToSid]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ConvertStringSidToSid]
   end;
 end;
-{$ELSE}
-function ConvertStringSidToSid; external advapi32 name 'ConvertStringSidToSidW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _ConvertStringSidToSid: Pointer;
-
-function ConvertStringSidToSid;
-begin
-  GetProcedureAddress(_ConvertStringSidToSid, advapi32, 'ConvertStringSidToSidA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ConvertStringSidToSid]
-  end;
-end;
-{$ELSE}
-function ConvertStringSidToSid; external advapi32 name 'ConvertStringSidToSidA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _ConvStrSecDescrToSecDescrA: Pointer;
 
@@ -533,16 +441,12 @@ function ConvertStringSecurityDescriptorToSecurityDescriptorA;
 begin
   GetProcedureAddress(_ConvStrSecDescrToSecDescrA, advapi32, 'ConvertStringSecurityDescriptorToSecurityDescriptorA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ConvStrSecDescrToSecDescrA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ConvStrSecDescrToSecDescrA]
   end;
 end;
-{$ELSE}
-function ConvertStringSecurityDescriptorToSecurityDescriptorA; external advapi32 name 'ConvertStringSecurityDescriptorToSecurityDescriptorA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ConvStrSecDescrToSecDescrW: Pointer;
 
@@ -550,53 +454,25 @@ function ConvertStringSecurityDescriptorToSecurityDescriptorW;
 begin
   GetProcedureAddress(_ConvStrSecDescrToSecDescrW, advapi32, 'ConvertStringSecurityDescriptorToSecurityDescriptorW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ConvStrSecDescrToSecDescrW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ConvStrSecDescrToSecDescrW]
   end;
 end;
-{$ELSE}
-function ConvertStringSecurityDescriptorToSecurityDescriptorW; external advapi32 name 'ConvertStringSecurityDescriptorToSecurityDescriptorW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ConvStrSecDescrToSecDescr: Pointer;
 
 function ConvertStringSecurityDescriptorToSecurityDescriptor;
 begin
-  GetProcedureAddress(_ConvStrSecDescrToSecDescr, advapi32, 'ConvertStringSecurityDescriptorToSecurityDescriptorW');
+  GetProcedureAddress(_ConvStrSecDescrToSecDescr, advapi32, 'ConvertStringSecurityDescriptorToSecurityDescriptor' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ConvStrSecDescrToSecDescr]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ConvStrSecDescrToSecDescr]
   end;
 end;
-{$ELSE}
-function ConvertStringSecurityDescriptorToSecurityDescriptor; external advapi32 name 'ConvertStringSecurityDescriptorToSecurityDescriptorW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _ConvStrSecDescrToSecDescr: Pointer;
-
-function ConvertStringSecurityDescriptorToSecurityDescriptor;
-begin
-  GetProcedureAddress(_ConvStrSecDescrToSecDescr, advapi32, 'ConvertStringSecurityDescriptorToSecurityDescriptorA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ConvStrSecDescrToSecDescr]
-  end;
-end;
-{$ELSE}
-function ConvertStringSecurityDescriptorToSecurityDescriptor; external advapi32 name 'ConvertStringSecurityDescriptorToSecurityDescriptorA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _ConvSecDescrToStrSecDescrA: Pointer;
 
@@ -604,16 +480,12 @@ function ConvertSecurityDescriptorToStringSecurityDescriptorA;
 begin
   GetProcedureAddress(_ConvSecDescrToStrSecDescrA, advapi32, 'ConvertSecurityDescriptorToStringSecurityDescriptorA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ConvSecDescrToStrSecDescrA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ConvSecDescrToStrSecDescrA]
   end;
 end;
-{$ELSE}
-function ConvertSecurityDescriptorToStringSecurityDescriptorA; external advapi32 name 'ConvertSecurityDescriptorToStringSecurityDescriptorA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ConvSecDescrToStrSecDescrW: Pointer;
 
@@ -621,50 +493,40 @@ function ConvertSecurityDescriptorToStringSecurityDescriptorW;
 begin
   GetProcedureAddress(_ConvSecDescrToStrSecDescrW, advapi32, 'ConvertSecurityDescriptorToStringSecurityDescriptorW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ConvSecDescrToStrSecDescrW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ConvSecDescrToStrSecDescrW]
   end;
 end;
+
+var
+  _ConvSecDescrToStrSecDescr: Pointer;
+
+function ConvertSecurityDescriptorToStringSecurityDescriptor;
+begin
+  GetProcedureAddress(_ConvSecDescrToStrSecDescr, advapi32, 'ConvertSecurityDescriptorToStringSecurityDescriptor' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ConvSecDescrToStrSecDescr]
+  end;
+end;
+
 {$ELSE}
+
+function ConvertSidToStringSidA; external advapi32 name 'ConvertSidToStringSidA';
+function ConvertSidToStringSidW; external advapi32 name 'ConvertSidToStringSidW';
+function ConvertSidToStringSid; external advapi32 name 'ConvertSidToStringSid' + AWSuffix;
+function ConvertStringSidToSidA; external advapi32 name 'ConvertStringSidToSidA';
+function ConvertStringSidToSidW; external advapi32 name 'ConvertStringSidToSidW';
+function ConvertStringSidToSid; external advapi32 name 'ConvertStringSidToSid' + AWSuffix;
+function ConvertStringSecurityDescriptorToSecurityDescriptorA; external advapi32 name 'ConvertStringSecurityDescriptorToSecurityDescriptorA';
+function ConvertStringSecurityDescriptorToSecurityDescriptorW; external advapi32 name 'ConvertStringSecurityDescriptorToSecurityDescriptorW';
+function ConvertStringSecurityDescriptorToSecurityDescriptor; external advapi32 name 'ConvertStringSecurityDescriptorToSecurityDescriptor' + AWSuffix;
+function ConvertSecurityDescriptorToStringSecurityDescriptorA; external advapi32 name 'ConvertSecurityDescriptorToStringSecurityDescriptorA';
 function ConvertSecurityDescriptorToStringSecurityDescriptorW; external advapi32 name 'ConvertSecurityDescriptorToStringSecurityDescriptorW';
+function ConvertSecurityDescriptorToStringSecurityDescriptor; external advapi32 name 'ConvertSecurityDescriptorToStringSecurityDescriptor' + AWSuffix;
+
 {$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ConvSecDescrToStrSecDescr: Pointer;
-
-function ConvertSecurityDescriptorToStringSecurityDescriptor;
-begin
-  GetProcedureAddress(_ConvSecDescrToStrSecDescr, advapi32, 'ConvertSecurityDescriptorToStringSecurityDescriptorW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ConvSecDescrToStrSecDescr]
-  end;
-end;
-{$ELSE}
-function ConvertSecurityDescriptorToStringSecurityDescriptor; external advapi32 name 'ConvertSecurityDescriptorToStringSecurityDescriptorW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ConvSecDescrToStrSecDescr: Pointer;
-
-function ConvertSecurityDescriptorToStringSecurityDescriptor;
-begin
-  GetProcedureAddress(_ConvSecDescrToStrSecDescr, advapi32, 'ConvertSecurityDescriptorToStringSecurityDescriptorA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ConvSecDescrToStrSecDescr]
-  end;
-end;
-{$ELSE}
-function ConvertSecurityDescriptorToStringSecurityDescriptor; external advapi32 name 'ConvertSecurityDescriptorToStringSecurityDescriptorA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
 
 end.

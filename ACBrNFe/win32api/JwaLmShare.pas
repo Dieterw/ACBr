@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Lan Manager Shares API interface Unit for Object Pascal                      }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: lmshare.h, released November 2001. The original Pascal }
 { code is: LmShare.pas, released Februari 2002. The initial developer of the   }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,25 +35,33 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaLmShare.pas,v 1.10 2005/09/07 09:54:54 marquardt Exp $
+
+{$IFNDEF JWA_INCLUDEMODE}
 
 unit JwaLmShare;
 
 {$WEAKPACKAGEUNIT}
 
-{$HPPEMIT ''}
-{$HPPEMIT '#include "lmshare.h"'}
-{$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaLmCons, JwaWinNT, JwaWinType;
+  JwaWindows, JwaLmCons;
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_INTERFACESECTION}
+
+{$HPPEMIT ''}
+{$HPPEMIT '#include "lmshare.h"'}
+{$HPPEMIT ''}
 
 //
 // Function Prototypes - Share
@@ -260,11 +267,11 @@ const
 // Single-field infolevels for NetShareSetInfo.
 //
 
-  SHARE_REMARK_INFOLEVEL   = (PARMNUM_BASE_INFOLEVEL + SHARE_REMARK_PARMNUM);
+  SHARE_REMARK_INFOLEVEL   = PARMNUM_BASE_INFOLEVEL + SHARE_REMARK_PARMNUM;
   {$EXTERNALSYM SHARE_REMARK_INFOLEVEL}
-  SHARE_MAX_USES_INFOLEVEL = (PARMNUM_BASE_INFOLEVEL + SHARE_MAX_USES_PARMNUM);
+  SHARE_MAX_USES_INFOLEVEL = PARMNUM_BASE_INFOLEVEL + SHARE_MAX_USES_PARMNUM;
   {$EXTERNALSYM SHARE_MAX_USES_INFOLEVEL}
-  SHARE_FILE_SD_INFOLEVEL  = (PARMNUM_BASE_INFOLEVEL + SHARE_FILE_SD_PARMNUM);
+  SHARE_FILE_SD_INFOLEVEL  = PARMNUM_BASE_INFOLEVEL + SHARE_FILE_SD_PARMNUM;
   {$EXTERNALSYM SHARE_FILE_SD_INFOLEVEL}
 
   SHI1_NUM_ELEMENTS = 4;
@@ -316,12 +323,16 @@ const
 
   SHI1005_FLAGS_RESTRICT_EXCLUSIVE_OPENS = $0100;          // Used to disallow read-deny read behavior
   {$EXTERNALSYM SHI1005_FLAGS_RESTRICT_EXCLUSIVE_OPENS}
+  SHI1005_FLAGS_FORCE_SHARED_DELETE      = $0200;          // Used to allows force shared delete
+  {$EXTERNALSYM SHI1005_FLAGS_FORCE_SHARED_DELETE}
+  SHI1005_FLAGS_ALLOW_NAMESPACE_CACHING  = $0400;          // The clients may cache the namespace
+  {$EXTERNALSYM SHI1005_FLAGS_ALLOW_NAMESPACE_CACHING}
 
 //
 // The subset of 1005 infolevel flags that can be set via the API
 //
 
-  SHI1005_VALID_FLAGS_SET = (CSC_MASK or SHI1005_FLAGS_RESTRICT_EXCLUSIVE_OPENS);
+  SHI1005_VALID_FLAGS_SET = CSC_MASK or SHI1005_FLAGS_RESTRICT_EXCLUSIVE_OPENS or SHI1005_FLAGS_FORCE_SHARED_DELETE or SHI1005_FLAGS_ALLOW_NAMESPACE_CACHING;
   {$EXTERNALSYM SHI1005_VALID_FLAGS_SET}
 
 //
@@ -435,7 +446,6 @@ type
 //
 // Special Values and Constants - Session
 //
-
 
 //
 // Bits defined in sesi1_user_flags.
@@ -572,10 +582,21 @@ const
   PERM_FILE_CREATE = $4; // user has create access
   {$EXTERNALSYM PERM_FILE_CREATE}
 
+{$ENDIF JWA_INTERFACESECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
+
 implementation
 
+uses
+  JwaWinDLLNames;
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_IMPLEMENTATIONSECTION}
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _NetShareAdd: Pointer;
 
@@ -583,16 +604,12 @@ function NetShareAdd;
 begin
   GetProcedureAddress(_NetShareAdd, netapi32, 'NetShareAdd');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetShareAdd]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetShareAdd]
   end;
 end;
-{$ELSE}
-function NetShareAdd; external netapi32 name 'NetShareAdd';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetShareEnum: Pointer;
 
@@ -600,16 +617,12 @@ function NetShareEnum;
 begin
   GetProcedureAddress(_NetShareEnum, netapi32, 'NetShareEnum');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetShareEnum]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetShareEnum]
   end;
 end;
-{$ELSE}
-function NetShareEnum; external netapi32 name 'NetShareEnum';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetShareEnumSticky: Pointer;
 
@@ -617,16 +630,12 @@ function NetShareEnumSticky;
 begin
   GetProcedureAddress(_NetShareEnumSticky, netapi32, 'NetShareEnumSticky');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetShareEnumSticky]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetShareEnumSticky]
   end;
 end;
-{$ELSE}
-function NetShareEnumSticky; external netapi32 name 'NetShareEnumSticky';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetShareGetInfo: Pointer;
 
@@ -634,16 +643,12 @@ function NetShareGetInfo;
 begin
   GetProcedureAddress(_NetShareGetInfo, netapi32, 'NetShareGetInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetShareGetInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetShareGetInfo]
   end;
 end;
-{$ELSE}
-function NetShareGetInfo; external netapi32 name 'NetShareGetInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetShareSetInfo: Pointer;
 
@@ -651,16 +656,12 @@ function NetShareSetInfo;
 begin
   GetProcedureAddress(_NetShareSetInfo, netapi32, 'NetShareSetInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetShareSetInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetShareSetInfo]
   end;
 end;
-{$ELSE}
-function NetShareSetInfo; external netapi32 name 'NetShareSetInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetShareDel: Pointer;
 
@@ -668,16 +669,12 @@ function NetShareDel;
 begin
   GetProcedureAddress(_NetShareDel, netapi32, 'NetShareDel');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetShareDel]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetShareDel]
   end;
 end;
-{$ELSE}
-function NetShareDel; external netapi32 name 'NetShareDel';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetShareDelSticky: Pointer;
 
@@ -685,16 +682,12 @@ function NetShareDelSticky;
 begin
   GetProcedureAddress(_NetShareDelSticky, netapi32, 'NetShareDelSticky');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetShareDelSticky]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetShareDelSticky]
   end;
 end;
-{$ELSE}
-function NetShareDelSticky; external netapi32 name 'NetShareDelSticky';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetShareCheck: Pointer;
 
@@ -702,17 +695,12 @@ function NetShareCheck;
 begin
   GetProcedureAddress(_NetShareCheck, netapi32, 'NetShareCheck');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetShareCheck]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetShareCheck]
   end;
 end;
-{$ELSE}
-function NetShareCheck; external netapi32 name 'NetShareCheck';
-{$ENDIF DYNAMIC_LINK}
 
-
-{$IFDEF DYNAMIC_LINK}
 var
   _NetSessionEnum: Pointer;
 
@@ -720,16 +708,12 @@ function NetSessionEnum;
 begin
   GetProcedureAddress(_NetSessionEnum, netapi32, 'NetSessionEnum');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetSessionEnum]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetSessionEnum]
   end;
 end;
-{$ELSE}
-function NetSessionEnum; external netapi32 name 'NetSessionEnum';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetSessionDel: Pointer;
 
@@ -737,16 +721,12 @@ function NetSessionDel;
 begin
   GetProcedureAddress(_NetSessionDel, netapi32, 'NetSessionDel');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetSessionDel]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetSessionDel]
   end;
 end;
-{$ELSE}
-function NetSessionDel; external netapi32 name 'NetSessionDel';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetSessionGetInfo: Pointer;
 
@@ -754,17 +734,12 @@ function NetSessionGetInfo;
 begin
   GetProcedureAddress(_NetSessionGetInfo, netapi32, 'NetSessionGetInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetSessionGetInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetSessionGetInfo]
   end;
 end;
-{$ELSE}
-function NetSessionGetInfo; external netapi32 name 'NetSessionGetInfo';
-{$ENDIF DYNAMIC_LINK}
 
-
-{$IFDEF DYNAMIC_LINK}
 var
   _NetConnectionEnum: Pointer;
 
@@ -772,17 +747,12 @@ function NetConnectionEnum;
 begin
   GetProcedureAddress(_NetConnectionEnum, netapi32, 'NetConnectionEnum');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetConnectionEnum]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetConnectionEnum]
   end;
 end;
-{$ELSE}
-function NetConnectionEnum; external netapi32 name 'NetConnectionEnum';
-{$ENDIF DYNAMIC_LINK}
 
-
-{$IFDEF DYNAMIC_LINK}
 var
   _NetFileClose: Pointer;
 
@@ -790,16 +760,12 @@ function NetFileClose;
 begin
   GetProcedureAddress(_NetFileClose, netapi32, 'NetFileClose');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetFileClose]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetFileClose]
   end;
 end;
-{$ELSE}
-function NetFileClose; external netapi32 name 'NetFileClose';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetFileEnum: Pointer;
 
@@ -807,16 +773,12 @@ function NetFileEnum;
 begin
   GetProcedureAddress(_NetFileEnum, netapi32, 'NetFileEnum');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetFileEnum]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetFileEnum]
   end;
 end;
-{$ELSE}
-function NetFileEnum; external netapi32 name 'NetFileEnum';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetFileGetInfo: Pointer;
 
@@ -824,13 +786,34 @@ function NetFileGetInfo;
 begin
   GetProcedureAddress(_NetFileGetInfo, netapi32, 'NetFileGetInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetFileGetInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetFileGetInfo]
   end;
 end;
+
 {$ELSE}
+
+function NetShareAdd; external netapi32 name 'NetShareAdd';
+function NetShareEnum; external netapi32 name 'NetShareEnum';
+function NetShareEnumSticky; external netapi32 name 'NetShareEnumSticky';
+function NetShareGetInfo; external netapi32 name 'NetShareGetInfo';
+function NetShareSetInfo; external netapi32 name 'NetShareSetInfo';
+function NetShareDel; external netapi32 name 'NetShareDel';
+function NetShareDelSticky; external netapi32 name 'NetShareDelSticky';
+function NetShareCheck; external netapi32 name 'NetShareCheck';
+function NetSessionEnum; external netapi32 name 'NetSessionEnum';
+function NetSessionDel; external netapi32 name 'NetSessionDel';
+function NetSessionGetInfo; external netapi32 name 'NetSessionGetInfo';
+function NetConnectionEnum; external netapi32 name 'NetConnectionEnum';
+function NetFileClose; external netapi32 name 'NetFileClose';
+function NetFileEnum; external netapi32 name 'NetFileEnum';
 function NetFileGetInfo; external netapi32 name 'NetFileGetInfo';
+
 {$ENDIF DYNAMIC_LINK}
 
+{$ENDIF JWA_IMPLEMENTATIONSECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
 end.
+{$ENDIF !JWA_INCLUDEMODE}

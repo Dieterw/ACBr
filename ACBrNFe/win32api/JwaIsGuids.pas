@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Internet Shortcut GUID definitions API interface Unit for Object Pascal      }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: isguids.h, released November 2002. The original Pascal }
 { code is: JwaIsGuids.pas, released April 2002. The initial developer of the   }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaIsGuids.pas,v 1.5 2004/12/08 08:18:36 marquardt Exp $
 
 unit JwaIsGuids;
 
@@ -49,7 +50,7 @@ unit JwaIsGuids;
 {$HPPEMIT '#include "isguids.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
@@ -68,13 +69,13 @@ const
   IID_IUniformResourceLocatorW: TGUID = (D1:$CABB0DA0; D2:$DA57; D3:$11CF; D4:($99, $74, $00, $20, $AF, $D7, $97, $62));
   {$EXTERNALSYM IID_IUniformResourceLocatorW}
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   IID_IUniformResourceLocator: TGUID = (D1:$CABB0DA0; D2:$DA57; D3:$11CF; D4:($99, $74, $00, $20, $AF, $D7, $97, $62));
   {$EXTERNALSYM IID_IUniformResourceLocator}
-{$ELSE}
+  {$ELSE}
   IID_IUniformResourceLocator: TGUID = (D1:$FBF23B80; D2:$E3F0; D3:$101B; D4:($84, $88, $00, $AA, $00, $3E, $56, $F8));
   {$EXTERNALSYM IID_IUniformResourceLocator}
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 implementation
 

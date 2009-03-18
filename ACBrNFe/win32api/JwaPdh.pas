@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Performance Data Helper API interface Unit for Object Pascal                 }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: pdh.h, released June 2000. The original Pascal         }
 { code is: Pdh.pas, released December 2000. The initial developer of the       }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaPdh.pas,v 1.12 2005/09/08 07:49:25 marquardt Exp $
 
 unit JwaPdh;
 
@@ -49,12 +50,12 @@ unit JwaPdh;
 {$HPPEMIT '#include "pdh.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinBase, JwaWinType, JwaWinPerf;
+  JwaWindows;
 
 type
   PDH_STATUS = DWORD;
@@ -167,21 +168,21 @@ type
   TPdhRawCounterItemW = PDH_RAW_COUNTER_ITEM_W;
   PPdhRawCounterItemW = PPDH_RAW_COUNTER_ITEM_W;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   PPdhRawCounterItem = PPdhRawCounterItemW;
   PDH_RAW_COUNTER_ITEM = _PDH_RAW_COUNTER_ITEM_W;
   {$EXTERNALSYM PDH_RAW_COUNTER_ITEM}
   PPDH_RAW_COUNTER_ITEM = PPDH_RAW_COUNTER_ITEM_W;
   {$EXTERNALSYM PPDH_RAW_COUNTER_ITEM}
   TPdhRawCounterItem = _PDH_RAW_COUNTER_ITEM_W;
-{$ELSE}
+  {$ELSE}
   PPdhRawCounterItem = PPdhRawCounterItemA;
   PDH_RAW_COUNTER_ITEM = _PDH_RAW_COUNTER_ITEM_A;
   {$EXTERNALSYM PDH_RAW_COUNTER_ITEM}
   PPDH_RAW_COUNTER_ITEM = PPDH_RAW_COUNTER_ITEM_A;
   {$EXTERNALSYM PPDH_RAW_COUNTER_ITEM}
   TPdhRawCounterItem = _PDH_RAW_COUNTER_ITEM_A;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   PPDH_FMT_COUNTERVALUE = ^PDH_FMT_COUNTERVALUE;
   {$EXTERNALSYM PPDH_FMT_COUNTERVALUE}
@@ -224,21 +225,21 @@ type
   TPdhFmtCounterValueItemW = PDH_FMT_COUNTERVALUE_ITEM_W;
   PPdhFmtCounterValueItemW = PPDH_FMT_COUNTERVALUE_ITEM_W;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   PPdhFmtCounterValueItem = PPdhFmtCounterValueItemW;
   PDH_FMT_COUNTERVALUE_ITEM = _PDH_FMT_COUNTERVALUE_ITEM_W;
   {$EXTERNALSYM PDH_FMT_COUNTERVALUE_ITEM}
   PPDH_FMT_COUNTERVALUE_ITEM = PPDH_FMT_COUNTERVALUE_ITEM_W;
   {$EXTERNALSYM PPDH_FMT_COUNTERVALUE_ITEM}
   TPdhFmtCounterValueItem = _PDH_FMT_COUNTERVALUE_ITEM_W;
-{$ELSE}
+  {$ELSE}
   PPdhFmtCounterValueItem = PPdhFmtCounterValueItemA;
   PDH_FMT_COUNTERVALUE_ITEM = _PDH_FMT_COUNTERVALUE_ITEM_A;
   {$EXTERNALSYM PDH_FMT_COUNTERVALUE_ITEM}
   PPDH_FMT_COUNTERVALUE_ITEM = PPDH_FMT_COUNTERVALUE_ITEM_A;
   {$EXTERNALSYM PPDH_FMT_COUNTERVALUE_ITEM}
   TPdhFmtCounterValueItem = _PDH_FMT_COUNTERVALUE_ITEM_A;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   PPDH_STATISTICS = ^PDH_STATISTICS;
   {$EXTERNALSYM PPDH_STATISTICS}
@@ -287,21 +288,21 @@ type
   TPdhCounterPathElementsW = PDH_COUNTER_PATH_ELEMENTS_W;
   PPdhCounterPathElementsW = PPDH_COUNTER_PATH_ELEMENTS_W;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   PPdhCounterPathElements = PPdhCounterPathElementsW;
   PDH_COUNTER_PATH_ELEMENTS = _PDH_COUNTER_PATH_ELEMENTS_W;
   {$EXTERNALSYM PDH_COUNTER_PATH_ELEMENTS}
   PPDH_COUNTER_PATH_ELEMENTS = PPDH_COUNTER_PATH_ELEMENTS_W;
   {$EXTERNALSYM PPDH_COUNTER_PATH_ELEMENTS}
   TPdhCounterPathElements = _PDH_COUNTER_PATH_ELEMENTS_W;
-{$ELSE}
+  {$ELSE}
   PPdhCounterPathElements = PPdhCounterPathElementsA;
   PDH_COUNTER_PATH_ELEMENTS = _PDH_COUNTER_PATH_ELEMENTS_A;
   {$EXTERNALSYM PDH_COUNTER_PATH_ELEMENTS}
   PPDH_COUNTER_PATH_ELEMENTS = PPDH_COUNTER_PATH_ELEMENTS_A;
   {$EXTERNALSYM PPDH_COUNTER_PATH_ELEMENTS}
   TPdhCounterPathElements = _PDH_COUNTER_PATH_ELEMENTS_A;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   PPDH_DATA_ITEM_PATH_ELEMENTS_A = ^PDH_DATA_ITEM_PATH_ELEMENTS_A;
   {$EXTERNALSYM PPDH_DATA_ITEM_PATH_ELEMENTS_A}
@@ -331,21 +332,21 @@ type
   TPdhDataItemPathElementsW = PDH_DATA_ITEM_PATH_ELEMENTS_W;
   PPdhDataItemPathElementsW = PPDH_DATA_ITEM_PATH_ELEMENTS_W;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   PPdhDataItemPathElements = PPdhDataItemPathElementsW;
   PDH_DATA_ITEM_PATH_ELEMENTS = _PDH_DATA_ITEM_PATH_ELEMENTS_W;
   {$EXTERNALSYM PDH_DATA_ITEM_PATH_ELEMENTS}
   PPDH_DATA_ITEM_PATH_ELEMENTS = PPDH_DATA_ITEM_PATH_ELEMENTS_W;
   {$EXTERNALSYM PPDH_DATA_ITEM_PATH_ELEMENTS}
   TPdhDataItemPathElements = _PDH_DATA_ITEM_PATH_ELEMENTS_W;
-{$ELSE}
+  {$ELSE}
   PPdhDataItemPathElements = PPdhDataItemPathElementsA;
   PDH_DATA_ITEM_PATH_ELEMENTS = _PDH_DATA_ITEM_PATH_ELEMENTS_A;
   {$EXTERNALSYM PDH_DATA_ITEM_PATH_ELEMENTS}
   PPDH_DATA_ITEM_PATH_ELEMENTS = PPDH_DATA_ITEM_PATH_ELEMENTS_A;
   {$EXTERNALSYM PPDH_DATA_ITEM_PATH_ELEMENTS}
   TPdhDataItemPathElements = _PDH_DATA_ITEM_PATH_ELEMENTS_A;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   PPDH_COUNTER_INFO_A = ^PDH_COUNTER_INFO_A;
   {$EXTERNALSYM PPDH_COUNTER_INFO_A}
@@ -411,21 +412,21 @@ type
   TPdhCounterInfoW = PDH_COUNTER_INFO_W;
   PPdhCounterInfoW = PPDH_COUNTER_INFO_W;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   PPdhCounterInfo = PPdhCounterInfoW;
   PDH_COUNTER_INFO = _PDH_COUNTER_INFO_W;
   {$EXTERNALSYM PDH_COUNTER_INFO}
   PPDH_COUNTER_INFO = PPDH_COUNTER_INFO_W;
   {$EXTERNALSYM PPDH_COUNTER_INFO}
   TPdhCounterInfo = _PDH_COUNTER_INFO_W;
-{$ELSE}
+  {$ELSE}
   PPdhCounterInfo = PPdhCounterInfoA;
   PDH_COUNTER_INFO = _PDH_COUNTER_INFO_A;
   {$EXTERNALSYM PDH_COUNTER_INFO}
   PPDH_COUNTER_INFO = PPDH_COUNTER_INFO_A;
   {$EXTERNALSYM PPDH_COUNTER_INFO}
   TPdhCounterInfo = _PDH_COUNTER_INFO_A;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   PPDH_TIME_INFO = ^PDH_TIME_INFO;
   {$EXTERNALSYM PPDH_TIME_INFO}
@@ -532,21 +533,21 @@ type
   TPdhLogServiceQueryInfoW = PDH_LOG_SERVICE_QUERY_INFO_W;
   PPdhLogServiceQueryInfoW = PPDH_LOG_SERVICE_QUERY_INFO_W;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   PPdhLogServiceQueryInfo = PPdhLogServiceQueryInfoW;
   PDH_LOG_SERVICE_QUERY_INFO = _PDH_LOG_SERVICE_QUERY_INFO_W;
   {$EXTERNALSYM PDH_LOG_SERVICE_QUERY_INFO}
   PPDH_LOG_SERVICE_QUERY_INFO = PPDH_LOG_SERVICE_QUERY_INFO_W;
   {$EXTERNALSYM PPDH_LOG_SERVICE_QUERY_INFO}
   TPdhLogServiceQueryInfo = _PDH_LOG_SERVICE_QUERY_INFO_W;
-{$ELSE}
+  {$ELSE}
   PPdhLogServiceQueryInfo = PPdhLogServiceQueryInfoA;
   PDH_LOG_SERVICE_QUERY_INFO = _PDH_LOG_SERVICE_QUERY_INFO_A;
   {$EXTERNALSYM PDH_LOG_SERVICE_QUERY_INFO}
   PPDH_LOG_SERVICE_QUERY_INFO = PPDH_LOG_SERVICE_QUERY_INFO_A;
   {$EXTERNALSYM PPDH_LOG_SERVICE_QUERY_INFO}
   TPdhLogServiceQueryInfo = _PDH_LOG_SERVICE_QUERY_INFO_A;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 //  Time value constants
@@ -573,16 +574,9 @@ function PdhOpenQueryA(szDataSource: LPCSTR; dwUserData: DWORD_PTR;
 function PdhOpenQueryW(szDataSource: LPCWSTR; dwUserData: DWORD_PTR;
   var phQuery: PDH_HQUERY): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhOpenQueryW}
-
-{$IFDEF UNICODE}
-function PdhOpenQuery(szDataSource: LPCWSTR; dwUserData: DWORD_PTR;
+function PdhOpenQuery(szDataSource: LPCTSTR; dwUserData: DWORD_PTR;
   var phQuery: PDH_HQUERY): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhOpenQuery}
-{$ELSE}
-function PdhOpenQuery(szDataSource: LPCSTR; dwUserData: DWORD_PTR;
-  var phQuery: PDH_HQUERY): PDH_STATUS; stdcall;
-{$EXTERNALSYM PdhOpenQuery}
-{$ENDIF}
 
 function PdhAddCounterA(hQuery: PDH_HQUERY; szFullCounterPath: LPCSTR;
   dwUserData: DWORD_PTR; var phCounter: PDH_HCOUNTER): PDH_STATUS; stdcall;
@@ -590,16 +584,9 @@ function PdhAddCounterA(hQuery: PDH_HQUERY; szFullCounterPath: LPCSTR;
 function PdhAddCounterW(hQuery: PDH_HQUERY; szFullCounterPath: LPCWSTR;
   dwUserData: DWORD_PTR; var phCounter: PDH_HCOUNTER): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhAddCounterW}
-
-{$IFDEF UNICODE}
-function PdhAddCounter(hQuery: PDH_HQUERY; szFullCounterPath: LPCWSTR;
+function PdhAddCounter(hQuery: PDH_HQUERY; szFullCounterPath: LPCTSTR;
   dwUserData: DWORD_PTR; var phCounter: PDH_HCOUNTER): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhAddCounter}
-{$ELSE}
-function PdhAddCounter(hQuery: PDH_HQUERY; szFullCounterPath: LPCSTR;
-  dwUserData: DWORD_PTR; var phCounter: PDH_HCOUNTER): PDH_STATUS; stdcall;
-{$EXTERNALSYM PdhAddCounter}
-{$ENDIF}
 
 function PdhRemoveCounter(hCounter: PDH_HCOUNTER): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhRemoveCounter}
@@ -626,18 +613,10 @@ function PdhGetFormattedCounterArrayW(hCounter: PDH_HCOUNTER; dwFormat: DWORD;
   var lpdwBufferSize, lpdwItemCount: DWORD;
   var ItemBuffer: PDH_FMT_COUNTERVALUE_ITEM_W): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhGetFormattedCounterArrayW}
-
-{$IFDEF UNICODE}
 function PdhGetFormattedCounterArray(hCounter: PDH_HCOUNTER; dwFormat: DWORD;
   var lpdwBufferSize, lpdwItemCount: DWORD;
-  var ItemBuffer: PDH_FMT_COUNTERVALUE_ITEM_W): PDH_STATUS; stdcall;
+  var ItemBuffer: PDH_FMT_COUNTERVALUE_ITEM): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhGetFormattedCounterArray}
-{$ELSE}
-function PdhGetFormattedCounterArray(hCounter: PDH_HCOUNTER; dwFormat: DWORD;
-  var lpdwBufferSize, lpdwItemCount: DWORD;
-  var ItemBuffer: PDH_FMT_COUNTERVALUE_ITEM_A): PDH_STATUS; stdcall;
-{$EXTERNALSYM PdhGetFormattedCounterArray}
-{$ENDIF}
 
 // dwFormat flag values
 
@@ -678,16 +657,9 @@ function PdhGetRawCounterArrayA(hCounter: PDH_HCOUNTER; var lpdwBufferSize,
 function PdhGetRawCounterArrayW(hCounter: PDH_HCOUNTER; var lpdwBufferSize,
   lpdwItemCount: DWORD; var ItemBuffer: PDH_RAW_COUNTER_ITEM_W): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhGetRawCounterArrayW}
-
-{$IFDEF UNICODE}
 function PdhGetRawCounterArray(hCounter: PDH_HCOUNTER; var lpdwBufferSize,
-  lpdwItemCount: DWORD; var ItemBuffer: PDH_RAW_COUNTER_ITEM_W): PDH_STATUS; stdcall;
+  lpdwItemCount: DWORD; var ItemBuffer: PDH_RAW_COUNTER_ITEM): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhGetRawCounterArray}
-{$ELSE}
-function PdhGetRawCounterArray(hCounter: PDH_HCOUNTER; var lpdwBufferSize,
-  lpdwItemCount: DWORD; var ItemBuffer: PDH_RAW_COUNTER_ITEM_A): PDH_STATUS; stdcall;
-{$EXTERNALSYM PdhGetRawCounterArray}
-{$ENDIF}
 
 function PdhCalculateCounterFromRawValue(hCounter: PDH_HCOUNTER; dwFormat: DWORD;
   rawValue1, rawValue2: PPDH_RAW_COUNTER; var fmtValue: PDH_FMT_COUNTERVALUE): PDH_STATUS; stdcall;
@@ -703,16 +675,9 @@ function PdhGetCounterInfoA(hCounter: PDH_HCOUNTER; bRetrieveExplainText: Boolea
 function PdhGetCounterInfoW(hCounter: PDH_HCOUNTER; bRetrieveExplainText: Boolean;
   var pdwBufferSize: DWORD; lpBuffer: PPDH_COUNTER_INFO_W): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhGetCounterInfoW}
-
-{$IFDEF UNICODE}
 function PdhGetCounterInfo(hCounter: PDH_HCOUNTER; bRetrieveExplainText: Boolean;
-  var pdwBufferSize: DWORD; lpBuffer: PPDH_COUNTER_INFO_W): PDH_STATUS; stdcall;
+  var pdwBufferSize: DWORD; lpBuffer: PPDH_COUNTER_INFO): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhGetCounterInfo}
-{$ELSE}
-function PdhGetCounterInfo(hCounter: PDH_HCOUNTER; bRetrieveExplainText: Boolean;
-  var pdwBufferSize: DWORD; lpBuffer: PPDH_COUNTER_INFO_A): PDH_STATUS; stdcall;
-{$EXTERNALSYM PdhGetCounterInfo}
-{$ENDIF}
 
 const
   PDH_MAX_SCALE = Longint(7);
@@ -731,14 +696,8 @@ function PdhConnectMachineA(szMachineName: LPCSTR): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhConnectMachineA}
 function PdhConnectMachineW(szMachineName: LPCWSTR): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhConnectMachineW}
-
-{$IFDEF UNICODE}
-function PdhConnectMachine(szMachineName: LPCWSTR): PDH_STATUS; stdcall;
+function PdhConnectMachine(szMachineName: LPCTSTR): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhConnectMachine}
-{$ELSE}
-function PdhConnectMachine(szMachineName: LPCSTR): PDH_STATUS; stdcall;
-{$EXTERNALSYM PdhConnectMachine}
-{$ENDIF}
 
 function PdhEnumMachinesA(szDataSource: LPCSTR; mszMachineList: LPSTR;
   pcchBufferSize: LPDWORD): PDH_STATUS; stdcall;
@@ -746,16 +705,9 @@ function PdhEnumMachinesA(szDataSource: LPCSTR; mszMachineList: LPSTR;
 function PdhEnumMachinesW(szDataSource: LPCWSTR; mszMachineList: LPWSTR;
   pcchBufferSize: LPDWORD): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhEnumMachinesW}
-
-{$IFDEF UNICODE}
-function PdhEnumMachines(szDataSource: LPCWSTR; mszMachineList: LPWSTR;
+function PdhEnumMachines(szDataSource: LPCTSTR; mszMachineList: LPTSTR;
   pcchBufferSize: LPDWORD): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhEnumMachines}
-{$ELSE}
-function PdhEnumMachines(szDataSource: LPCSTR; mszMachineList: LPSTR;
-  pcchBufferSize: LPDWORD): PDH_STATUS; stdcall;
-{$EXTERNALSYM PdhEnumMachines}
-{$ENDIF}
 
 function PdhEnumObjectsA(szDataSource, szMachineName: LPCSTR; mszObjectList: LPSTR;
   var pcchBufferSize: DWORD; dwDetailLevel: DWORD; bRefresh: BOOL): PDH_STATUS; stdcall;
@@ -763,16 +715,9 @@ function PdhEnumObjectsA(szDataSource, szMachineName: LPCSTR; mszObjectList: LPS
 function PdhEnumObjectsW(szDataSource, szMachineName: LPCWSTR; mszObjectList: LPWSTR;
   var pcchBufferSize: DWORD; dwDetailLevel: DWORD; bRefresh: BOOL): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhEnumObjectsW}
-
-{$IFDEF UNICODE}
-function PdhEnumObjects(szDataSource, szMachineName: LPCWSTR; mszObjectList: LPWSTR;
+function PdhEnumObjects(szDataSource, szMachineName: LPCTSTR; mszObjectList: LPTSTR;
   var pcchBufferSize: DWORD; dwDetailLevel: DWORD; bRefresh: BOOL): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhEnumObjects}
-{$ELSE}
-function PdhEnumObjects(szDataSource, szMachineName: LPCSTR; mszObjectList: LPSTR;
-  var pcchBufferSize: DWORD; dwDetailLevel: DWORD; bRefresh: BOOL): PDH_STATUS; stdcall;
-{$EXTERNALSYM PdhEnumObjects}
-{$ENDIF}
 
 function PdhEnumObjectItemsA(szDataSource, szMachineName, szObjectName: LPCSTR;
   mszCounterList: LPSTR; var pcchCounterListLength: DWORD; mszInstanceList: LPSTR;
@@ -782,18 +727,10 @@ function PdhEnumObjectItemsW(szDataSource, szMachineName, szObjectName: LPCWSTR;
   mszCounterList: LPWSTR; var pcchCounterListLength: DWORD; mszInstanceList: LPWSTR;
   var pcchInstanceListLength: DWORD; dwDetailLevel, dwFlags: DWORD): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhEnumObjectItemsW}
-
-{$IFDEF UNICODE}
-function PdhEnumObjectItems(szDataSource, szMachineName, szObjectName: LPCWSTR;
-  mszCounterList: LPWSTR; var pcchCounterListLength: DWORD; mszInstanceList: LPWSTR;
+function PdhEnumObjectItems(szDataSource, szMachineName, szObjectName: LPCTSTR;
+  mszCounterList: LPTSTR; var pcchCounterListLength: DWORD; mszInstanceList: LPTSTR;
   var pcchInstanceListLength: DWORD; dwDetailLevel, dwFlags: DWORD): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhEnumObjectItems}
-{$ELSE}
-function PdhEnumObjectItems(szDataSource, szMachineName, szObjectName: LPCSTR;
-  mszCounterList: LPSTR; var pcchCounterListLength: DWORD; mszInstanceList: LPSTR;
-  var pcchInstanceListLength: DWORD; dwDetailLevel, dwFlags: DWORD): PDH_STATUS; stdcall;
-{$EXTERNALSYM PdhEnumObjectItems}
-{$ENDIF}
 
 const
   PDH_OBJECT_HAS_INSTANCES  = $00000001;
@@ -805,39 +742,22 @@ function PdhMakeCounterPathA(pCounterPathElements: PPDH_COUNTER_PATH_ELEMENTS_A;
 function PdhMakeCounterPathW(pCounterPathElements: PPDH_COUNTER_PATH_ELEMENTS_W;
   szFullPathBuffer: LPWSTR; var pcchBufferSize: DWORD; dwFlags: DWORD): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhMakeCounterPathW}
-
-{$IFDEF UNICODE}
-function PdhMakeCounterPath(pCounterPathElements: PPDH_COUNTER_PATH_ELEMENTS_W;
-  szFullPathBuffer: LPWSTR; var pcchBufferSize: DWORD; dwFlags: DWORD): PDH_STATUS; stdcall;
+function PdhMakeCounterPath(pCounterPathElements: PPDH_COUNTER_PATH_ELEMENTS;
+  szFullPathBuffer: LPTSTR; var pcchBufferSize: DWORD; dwFlags: DWORD): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhMakeCounterPath}
-{$ELSE}
-function PdhMakeCounterPath(pCounterPathElements: PPDH_COUNTER_PATH_ELEMENTS_A;
-  szFullPathBuffer: LPSTR; var pcchBufferSize: DWORD; dwFlags: DWORD): PDH_STATUS; stdcall;
-{$EXTERNALSYM PdhMakeCounterPath}
-{$ENDIF}
-
-// todo shouldn't pCounterPathElements be a pointer to ...?
 
 function PdhParseCounterPathA(szFullPathBuffer: LPCSTR;
-  pCounterPathElements: PDH_COUNTER_PATH_ELEMENTS_A; var pdwBufferSize: DWORD;
+  pCounterPathElements: PPDH_COUNTER_PATH_ELEMENTS_A; var pdwBufferSize: DWORD;
   dwFlags: DWORD): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhParseCounterPathA}
 function PdhParseCounterPathW(szFullPathBuffer: LPCWSTR;
-  pCounterPathElements: PDH_COUNTER_PATH_ELEMENTS_W; var pdwBufferSize: DWORD;
+  pCounterPathElements: PPDH_COUNTER_PATH_ELEMENTS_W; var pdwBufferSize: DWORD;
   dwFlags: DWORD): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhParseCounterPathW}
-
-{$IFDEF UNICODE}
-function PdhParseCounterPath(szFullPathBuffer: LPCWSTR;
-  pCounterPathElements: PDH_COUNTER_PATH_ELEMENTS_W; var pdwBufferSize: DWORD;
+function PdhParseCounterPath(szFullPathBuffer: LPCTSTR;
+  pCounterPathElements: PPDH_COUNTER_PATH_ELEMENTS; var pdwBufferSize: DWORD;
   dwFlags: DWORD): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhParseCounterPath}
-{$ELSE}
-function PdhParseCounterPath(szFullPathBuffer: LPCSTR;
-  pCounterPathElements: PDH_COUNTER_PATH_ELEMENTS_A; var pdwBufferSize: DWORD;
-  dwFlags: DWORD): PDH_STATUS; stdcall;
-{$EXTERNALSYM PdhParseCounterPath}
-{$ENDIF}
 
 const
   PDH_PATH_WBEM_RESULT       = DWORD($00000001);
@@ -856,31 +776,17 @@ function PdhParseInstanceNameW(szInstanceString: LPWSTR; szInstanceName: LPCWSTR
   var pcchInstanceNameLength: DWORD; szParentName: LPWSTR;
   var pcchParentNameLength: DWORD; lpIndex: LPDWORD): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhParseInstanceNameW}
-
-{$IFDEF UNICODE}
-function PdhParseInstanceName(szInstanceString: LPWSTR; szInstanceName: LPCWSTR;
-  var pcchInstanceNameLength: DWORD; szParentName: LPWSTR;
+function PdhParseInstanceName(szInstanceString: LPTSTR; szInstanceName: LPCTSTR;
+  var pcchInstanceNameLength: DWORD; szParentName: LPTSTR;
   var pcchParentNameLength: DWORD; lpIndex: LPDWORD): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhParseInstanceName}
-{$ELSE}
-function PdhParseInstanceName(szInstanceString: LPSTR; szInstanceName: LPCSTR;
-  var pcchInstanceNameLength: DWORD; szParentName: LPSTR;
-  var pcchParentNameLength: DWORD; lpIndex: LPDWORD): PDH_STATUS; stdcall;
-{$EXTERNALSYM PdhParseInstanceName}
-{$ENDIF}
 
 function PdhValidatePathA(szFullPathBuffer: LPCSTR): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhValidatePathA}
 function PdhValidatePathW(szFullPathBuffer: LPCWSTR): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhValidatePathW}
-
-{$IFDEF UNICODE}
-function PdhValidatePath(szFullPathBuffer: LPCWSTR): PDH_STATUS; stdcall;
+function PdhValidatePath(szFullPathBuffer: LPCTSTR): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhValidatePath}
-{$ELSE}
-function PdhValidatePath(szFullPathBuffer: LPCSTR): PDH_STATUS; stdcall;
-{$EXTERNALSYM PdhValidatePath}
-{$ENDIF}
 
 function PdhGetDefaultPerfObjectA(szDataSource, szMachineName: LPCSTR;
   szDefaultObjectName: LPSTR; var pcchBufferSize: DWORD): PDH_STATUS; stdcall;
@@ -888,16 +794,9 @@ function PdhGetDefaultPerfObjectA(szDataSource, szMachineName: LPCSTR;
 function PdhGetDefaultPerfObjectW(szDataSource, szMachineName: LPCWSTR;
   szDefaultObjectName: LPWSTR; var pcchBufferSize: DWORD): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhGetDefaultPerfObjectW}
-
-{$IFDEF UNICODE}
-function PdhGetDefaultPerfObject(szDataSource, szMachineName: LPCWSTR;
-  szDefaultObjectName: LPWSTR; var pcchBufferSize: DWORD): PDH_STATUS; stdcall;
+function PdhGetDefaultPerfObject(szDataSource, szMachineName: LPCTSTR;
+  szDefaultObjectName: LPTSTR; var pcchBufferSize: DWORD): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhGetDefaultPerfObject}
-{$ELSE}
-function PdhGetDefaultPerfObject(szDataSource, szMachineName: LPCSTR;
-  szDefaultObjectName: LPSTR; var pcchBufferSize: DWORD): PDH_STATUS; stdcall;
-{$EXTERNALSYM PdhGetDefaultPerfObject}
-{$ENDIF}
 
 function PdhGetDefaultPerfCounterA(szDataSource, szMachineName, szObjectName: LPCSTR;
   szDefaultCounterName: LPSTR; var pcchBufferSize: DWORD): PDH_STATUS; stdcall;
@@ -905,19 +804,12 @@ function PdhGetDefaultPerfCounterA(szDataSource, szMachineName, szObjectName: LP
 function PdhGetDefaultPerfCounterW(szDataSource, szMachineName, szObjectName: LPCWSTR;
   szDefaultCounterName: LPWSTR; var pcchBufferSize: DWORD): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhGetDefaultPerfCounterW}
-
-{$IFDEF UNICODE}
-function PdhGetDefaultPerfCounter(szDataSource, szMachineName, szObjectName: LPCWSTR;
-  szDefaultCounterName: LPWSTR; var pcchBufferSize: DWORD): PDH_STATUS; stdcall;
+function PdhGetDefaultPerfCounter(szDataSource, szMachineName, szObjectName: LPCTSTR;
+  szDefaultCounterName: LPTSTR; var pcchBufferSize: DWORD): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhGetDefaultPerfCounter}
-{$ELSE}
-function PdhGetDefaultPerfCounter(szDataSource, szMachineName, szObjectName: LPCSTR;
-  szDefaultCounterName: LPSTR; var pcchBufferSize: DWORD): PDH_STATUS; stdcall;
-{$EXTERNALSYM PdhGetDefaultPerfCounter}
-{$ENDIF}
 
 type
-  CounterPathCallBack = function (dwArg: DWORD_PTR): PDH_STATUS; stdcall;
+  CounterPathCallBack = function(dwArg: DWORD_PTR): PDH_STATUS; stdcall;
   {$EXTERNALSYM CounterPathCallBack}
 
 const
@@ -973,8 +865,16 @@ type
   {$EXTERNALSYM PDH_BROWSE_DLG_CONFIG_HA}
   PPDH_BROWSE_DLG_CONFIG_HA = ^PDH_BROWSE_DLG_CONFIG_HA;
   {$EXTERNALSYM PPDH_BROWSE_DLG_CONFIG_HA}
-  TPdhBrowseDlGconfigHA = PDH_BROWSE_DLG_CONFIG_HA;
-  PPdhBrowseDlGconfigHA = PPDH_BROWSE_DLG_CONFIG_HA;
+  TPdhBrowseDlgConfigHA = PDH_BROWSE_DLG_CONFIG_HA;
+  PPdhBrowseDlgConfigHA = PPDH_BROWSE_DLG_CONFIG_HA;
+
+  {$IFDEF UNICODE}
+  PDH_BROWSE_DLG_CONFIG_H = PDH_BROWSE_DLG_CONFIG_HW;
+  PPDH_BROWSE_DLG_CONFIG_H = PPDH_BROWSE_DLG_CONFIG_HW;
+  {$ELSE}
+  PDH_BROWSE_DLG_CONFIG_H = PDH_BROWSE_DLG_CONFIG_HA;
+  PPDH_BROWSE_DLG_CONFIG_H = PPDH_BROWSE_DLG_CONFIG_HA;
+  {$ENDIF UNICODE}
 
   PPDH_BROWSE_DLG_CONFIG_A = ^_BrowseDlgConfig_A;
   {$EXTERNALSYM PPDH_BROWSE_DLG_CONFIG_A}
@@ -1016,34 +916,28 @@ type
   TPdhBrowseDlgConfigW = PDH_BROWSE_DLG_CONFIG_W;
   PPdhBrowseDlgConfigW = PPDH_BROWSE_DLG_CONFIG_W;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   PPdhBrowseDlgConfig = PPdhBrowseDlgConfigW;
   PDH_BROWSE_DLG_CONFIG = PDH_BROWSE_DLG_CONFIG_W;
   {$EXTERNALSYM PDH_BROWSE_DLG_CONFIG}
   PPDH_BROWSE_DLG_CONFIG = PPDH_BROWSE_DLG_CONFIG_W;
   {$EXTERNALSYM PPDH_BROWSE_DLG_CONFIG}
   TPdhBrowseDlgConfig = TPdhBrowseDlgConfigW;
-{$ELSE}
+  {$ELSE}
   PPdhBrowseDlgConfig = PPdhBrowseDlgConfigA;
   PDH_BROWSE_DLG_CONFIG = PDH_BROWSE_DLG_CONFIG_A;
   {$EXTERNALSYM PDH_BROWSE_DLG_CONFIG}
   PPDH_BROWSE_DLG_CONFIG = PPDH_BROWSE_DLG_CONFIG_A;
   {$EXTERNALSYM PPDH_BROWSE_DLG_CONFIG}
   TPdhBrowseDlgConfig = TPdhBrowseDlgConfigA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 function PdhBrowseCountersA(const pBrowseDlgData: PDH_BROWSE_DLG_CONFIG_A): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhBrowseCountersA}
 function PdhBrowseCountersW(const pBrowseDlgData: PDH_BROWSE_DLG_CONFIG_W): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhBrowseCountersW}
-
-{$IFDEF UNICODE}
-function PdhBrowseCounters(const pBrowseDlgData: PDH_BROWSE_DLG_CONFIG_W): PDH_STATUS; stdcall;
+function PdhBrowseCounters(const pBrowseDlgData: PDH_BROWSE_DLG_CONFIG): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhBrowseCounters}
-{$ELSE}
-function PdhBrowseCounters(const pBrowseDlgData: PDH_BROWSE_DLG_CONFIG_A): PDH_STATUS; stdcall;
-{$EXTERNALSYM PdhBrowseCounters}
-{$ENDIF}
 
 function PdhExpandCounterPathA(szWildCardPath: LPCSTR; mszExpandedPathList: LPSTR;
   var pcchPathListLength: DWORD): PDH_STATUS; stdcall;
@@ -1051,16 +945,9 @@ function PdhExpandCounterPathA(szWildCardPath: LPCSTR; mszExpandedPathList: LPST
 function PdhExpandCounterPathW(szWildCardPath: LPCWSTR; mszExpandedPathList: LPWSTR;
   var pcchPathListLength: DWORD): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhExpandCounterPathW}
-
-{$IFDEF UNICODE}
-function PdhExpandCounterPath(szWildCardPath: LPCWSTR; mszExpandedPathList: LPWSTR;
+function PdhExpandCounterPath(szWildCardPath: LPCTSTR; mszExpandedPathList: LPTSTR;
   var pcchPathListLength: DWORD): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhExpandCounterPath}
-{$ELSE}
-function PdhExpandCounterPath(szWildCardPath: LPCSTR; mszExpandedPathList: LPSTR;
-  var pcchPathListLength: DWORD): PDH_STATUS; stdcall;
-{$EXTERNALSYM PdhExpandCounterPath}
-{$ENDIF}
 
 //
 //  v2.0 functions
@@ -1072,16 +959,9 @@ function PdhLookupPerfNameByIndexA(szMachineName: LPCSTR; dwNameIndex: DWORD;
 function PdhLookupPerfNameByIndexW(szMachineName: LPCWSTR; dwNameIndex: DWORD;
   szNameBuffer: LPWSTR; var pcchNameBufferSize: DWORD): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhLookupPerfNameByIndexW}
-
-{$IFDEF UNICODE}
-function PdhLookupPerfNameByIndex(szMachineName: LPCWSTR; dwNameIndex: DWORD;
-  szNameBuffer: LPWSTR; var pcchNameBufferSize: DWORD): PDH_STATUS; stdcall;
+function PdhLookupPerfNameByIndex(szMachineName: LPCTSTR; dwNameIndex: DWORD;
+  szNameBuffer: LPTSTR; var pcchNameBufferSize: DWORD): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhLookupPerfNameByIndex}
-{$ELSE}
-function PdhLookupPerfNameByIndex(szMachineName: LPCSTR; dwNameIndex: DWORD;
-  szNameBuffer: LPSTR; var pcchNameBufferSize: DWORD): PDH_STATUS; stdcall;
-{$EXTERNALSYM PdhLookupPerfNameByIndex}
-{$ENDIF}
 
 function PdhLookupPerfIndexByNameA(szMachineName, szNameBuffer: LPCSTR;
   var pdwIndex: DWORD): PDH_STATUS; stdcall;
@@ -1089,22 +969,17 @@ function PdhLookupPerfIndexByNameA(szMachineName, szNameBuffer: LPCSTR;
 function PdhLookupPerfIndexByNameW(szMachineName, szNameBuffer: LPCWSTR;
   var pdwIndex: DWORD): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhLookupPerfIndexByNameW}
-
-{$IFDEF UNICODE}
-function PdhLookupPerfIndexByName(szMachineName, szNameBuffer: LPCWSTR;
+function PdhLookupPerfIndexByName(szMachineName, szNameBuffer: LPCTSTR;
   var pdwIndex: DWORD): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhLookupPerfIndexByName}
-{$ELSE}
-function PdhLookupPerfIndexByName(szMachineName, szNameBuffer: LPCSTR;
-  var pdwIndex: DWORD): PDH_STATUS; stdcall;
-{$EXTERNALSYM PdhLookupPerfIndexByName}
-{$ENDIF}
 
 const
   PDH_NOEXPANDCOUNTERS   = 1;
   {$EXTERNALSYM PDH_NOEXPANDCOUNTERS}
   PDH_NOEXPANDINSTANCES  = 2;
   {$EXTERNALSYM PDH_NOEXPANDINSTANCES}
+  PDH_REFRESHCOUNTERS    = 4;
+  {$EXTERNALSYM PDH_REFRESHCOUNTERS}
 
 function PdhExpandWildCardPathA(szDataSource, szWildCardPath: LPCSTR;
   mszExpandedPathList: LPSTR; var pcchPathListLength: DWORD; dwFlags: DWORD): PDH_STATUS; stdcall;
@@ -1112,16 +987,9 @@ function PdhExpandWildCardPathA(szDataSource, szWildCardPath: LPCSTR;
 function PdhExpandWildCardPathW(szDataSource, szWildCardPath: LPCWSTR;
   mszExpandedPathList: LPWSTR; var pcchPathListLength: DWORD; dwFlags: DWORD): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhExpandWildCardPathW}
-
-{$IFDEF UNICODE}
-function PdhExpandWildCardPath(szDataSource, szWildCardPath: LPCWSTR;
-  mszExpandedPathList: LPWSTR; var pcchPathListLength: DWORD; dwFlags: DWORD): PDH_STATUS; stdcall;
+function PdhExpandWildCardPath(szDataSource, szWildCardPath: LPCTSTR;
+  mszExpandedPathList: LPTSTR; var pcchPathListLength: DWORD; dwFlags: DWORD): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhExpandWildCardPath}
-{$ELSE}
-function PdhExpandWildCardPath(szDataSource, szWildCardPath: LPCSTR;
-  mszExpandedPathList: LPSTR; var pcchPathListLength: DWORD; dwFlags: DWORD): PDH_STATUS; stdcall;
-{$EXTERNALSYM PdhExpandWildCardPath}
-{$ENDIF}
 
 //
 //   Logging Functions
@@ -1186,31 +1054,17 @@ function PdhOpenLogW(szLogFileName: LPCWSTR; dwAccessFlags: DWORD;
   lpdwLogType: LPDWORD; hQuery: PDH_HQUERY; dwMaxRecords: DWORD;
   szUserCaption: LPCWSTR; var phLog: PDH_HLOG): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhOpenLogW}
-
-{$IFDEF UNICODE}
-function PdhOpenLog(szLogFileName: LPCWSTR; dwAccessFlags: DWORD;
+function PdhOpenLog(szLogFileName: LPCTSTR; dwAccessFlags: DWORD;
   lpdwLogType: LPDWORD; hQuery: PDH_HQUERY; dwMaxRecords: DWORD;
-  szUserCaption: LPCWSTR; var phLog: PDH_HLOG): PDH_STATUS; stdcall;
+  szUserCaption: LPCTSTR; var phLog: PDH_HLOG): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhOpenLog}
-{$ELSE}
-function PdhOpenLog(szLogFileName: LPCSTR; dwAccessFlags: DWORD;
-  lpdwLogType: LPDWORD; hQuery: PDH_HQUERY; dwMaxRecords: DWORD;
-  szUserCaption: LPCSTR; var phLog: PDH_HLOG): PDH_STATUS; stdcall;
-{$EXTERNALSYM PdhOpenLog}
-{$ENDIF}
 
 function PdhUpdateLogA(hLog: PDH_HLOG; szUserString: LPCSTR): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhUpdateLogA}
 function PdhUpdateLogW(hLog: PDH_HLOG; szUserString: LPCWSTR): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhUpdateLogW}
-
-{$IFDEF UNICODE}
-function PdhUpdateLog(hLog: PDH_HLOG; szUserString: LPCWSTR): PDH_STATUS; stdcall;
+function PdhUpdateLog(hLog: PDH_HLOG; szUserString: LPCTSTR): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhUpdateLog}
-{$ELSE}
-function PdhUpdateLog(hLog: PDH_HLOG; szUserString: LPCSTR): PDH_STATUS; stdcall;
-{$EXTERNALSYM PdhUpdateLog}
-{$ENDIF}
 
 function PdhUpdateLogFileCatalog(hLog: PDH_HLOG): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhUpdateLogFileCatalog}
@@ -1239,16 +1093,9 @@ function PdhSelectDataSourceA(hWndOwner: HWND; dwFlags: DWORD;
 function PdhSelectDataSourceW(hWndOwner: HWND; dwFlags: DWORD;
   szDataSource: LPWSTR; var pcchBufferLength: DWORD): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhSelectDataSourceW}
-
-{$IFDEF UNICODE}
 function PdhSelectDataSource(hWndOwner: HWND; dwFlags: DWORD;
-  szDataSource: LPWSTR; var pcchBufferLength: DWORD): PDH_STATUS; stdcall;
+  szDataSource: LPTSTR; var pcchBufferLength: DWORD): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhSelectDataSource}
-{$ELSE}
-function PdhSelectDataSource(hWndOwner: HWND; dwFlags: DWORD;
-  szDataSource: LPSTR; var pcchBufferLength: DWORD): PDH_STATUS; stdcall;
-{$EXTERNALSYM PdhSelectDataSource}
-{$ENDIF}
 
 function PdhIsRealTimeQuery(hQuery: PDH_HQUERY): BOOL; stdcall;
 {$EXTERNALSYM PdhIsRealTimeQuery}
@@ -1262,16 +1109,9 @@ function PdhGetDataSourceTimeRangeA(szDataSource: LPCSTR; var pdwNumEntries: DWO
 function PdhGetDataSourceTimeRangeW(szDataSource: LPCWSTR; var pdwNumEntries: DWORD;
   var pInfo: PDH_TIME_INFO; pdwBufferSize: LPDWORD): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhGetDataSourceTimeRangeW}
-
-{$IFDEF UNICODE}
-function PdhGetDataSourceTimeRange(szDataSource: LPCWSTR; var pdwNumEntries: DWORD;
+function PdhGetDataSourceTimeRange(szDataSource: LPCTSTR; var pdwNumEntries: DWORD;
   var pInfo: PDH_TIME_INFO; pdwBufferSize: LPDWORD): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhGetDataSourceTimeRange}
-{$ELSE}
-function PdhGetDataSourceTimeRange(szDataSource: LPCSTR; var pdwNumEntries: DWORD;
-  var pInfo: PDH_TIME_INFO; pdwBufferSize: LPDWORD): PDH_STATUS; stdcall;
-{$EXTERNALSYM PdhGetDataSourceTimeRange}
-{$ENDIF}
 
 function PdhCollectQueryDataEx(hQuery: PDH_HQUERY; dwIntervalTime: DWORD;
   hNewDataEvent: HANDLE): PDH_STATUS; stdcall;
@@ -1307,14 +1147,8 @@ function PdhBindInputDataSourceW(var phDataSource: PDH_HLOG; LogFileNameList: LP
 {$EXTERNALSYM PdhBindInputDataSourceW}
 function PdhBindInputDataSourceA(var phDataSource: PDH_HLOG; LogFileNameList: LPCSTR): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhBindInputDataSourceA}
-
-{$IFDEF UNICODE}
-function PdhBindInputDataSource(var phDataSource: PDH_HLOG; LogFileNameList: LPCWSTR): PDH_STATUS; stdcall;
+function PdhBindInputDataSource(var phDataSource: PDH_HLOG; LogFileNameList: LPCTSTR): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhBindInputDataSource}
-{$ELSE}
-function PdhBindInputDataSource(var phDataSource: PDH_HLOG; LogFileNameList: LPCSTR): PDH_STATUS; stdcall;
-{$EXTERNALSYM PdhBindInputDataSource}
-{$ENDIF}
 
 function PdhOpenQueryH(hDataSource: PDH_HLOG; dwUserData: DWORD_PTR; var phQuery: PDH_HQUERY): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhOpenQueryH}
@@ -1323,69 +1157,41 @@ function PdhEnumMachinesHW(hDataSource: PDH_HLOG; mszMachineList: LPWSTR; pcchBu
 {$EXTERNALSYM PdhEnumMachinesHW}
 function PdhEnumMachinesHA(hDataSource: PDH_HLOG; mszMachineList: LPSTR; pcchBufferSize: LPDWORD): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhEnumMachinesHA}
-
-{$IFDEF UNICODE}
-function PdhEnumMachinesH(hDataSource: PDH_HLOG; mszMachineList: LPWSTR; pcchBufferSize: LPDWORD): PDH_STATUS; stdcall;
+function PdhEnumMachinesH(hDataSource: PDH_HLOG; mszMachineList: LPTSTR; pcchBufferSize: LPDWORD): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhEnumMachinesH}
-{$ELSE}
-function PdhEnumMachinesH(hDataSource: PDH_HLOG; mszMachineList: LPSTR; pcchBufferSize: LPDWORD): PDH_STATUS; stdcall;
-{$EXTERNALSYM PdhEnumMachinesH}
-{$ENDIF}
 
-function PdhEnumObjectsHW(hDataSource: PDH_HLOG; szMachineName: LPCWSTR; mszObjectList: LPWSTR; pcchBufferSize: LPDWORD;
-  dwDetailLevel: DWORD; bRefresh: BOOL): PDH_STATUS; stdcall;
-{$EXTERNALSYM PdhEnumObjectsHW}
 function PdhEnumObjectsHA(hDataSource: PDH_HLOG; szMachineName: LPCSTR; mszObjectList: LPSTR; pcchBufferSize: LPDWORD;
   dwDetailLevel: DWORD; bRefresh: BOOL): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhEnumObjectsHA}
-
-{$IFDEF UNICODE}
-function PdhEnumObjectsH(hDataSource: PDH_HLOG; szMachineName: LPCWSTR; mszObjectList: LPWSTR; pcchBufferSize: LPDWORD;
+function PdhEnumObjectsHW(hDataSource: PDH_HLOG; szMachineName: LPCWSTR; mszObjectList: LPWSTR; pcchBufferSize: LPDWORD;
+  dwDetailLevel: DWORD; bRefresh: BOOL): PDH_STATUS; stdcall;
+{$EXTERNALSYM PdhEnumObjectsHW}
+function PdhEnumObjectsH(hDataSource: PDH_HLOG; szMachineName: LPCTSTR; mszObjectList: LPWSTR; pcchBufferSize: LPDWORD;
   dwDetailLevel: DWORD; bRefresh: BOOL): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhEnumObjectsH}
-{$ELSE}
-function PdhEnumObjectsH(hDataSource: PDH_HLOG; szMachineName: LPCSTR; mszObjectList: LPSTR; pcchBufferSize: LPDWORD;
-  dwDetailLevel: DWORD; bRefresh: BOOL): PDH_STATUS; stdcall;
-{$EXTERNALSYM PdhEnumObjectsH}
-{$ENDIF}
 
-function PdhEnumObjectItemsHW(hDataSource: PDH_HLOG; szMachineName, szObjectName: LPCWSTR; mszCounterList: LPWSTR;
-  pcchCounterListLength: LPDWORD; mszInstanceList: LPWSTR; pcchInstanceListLength: LPDWORD;
-  dwDetailLevel, dwFlags: DWORD): PDH_STATUS; stdcall;
-{$EXTERNALSYM PdhEnumObjectItemsHW}
 function PdhEnumObjectItemsHA(hDataSource: PDH_HLOG; szMachineName, szObjectName: LPCSTR; mszCounterList: LPSTR;
   pcchCounterListLength: LPDWORD; mszInstanceList: LPSTR; pcchInstanceListLength: LPDWORD;
   dwDetailLevel, dwFlags: DWORD): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhEnumObjectItemsHA}
-
-{$IFDEF UNICODE}
-function PdhEnumObjectItemsH(hDataSource: PDH_HLOG; szMachineName, szObjectName: LPCWSTR; mszCounterList: LPWSTR;
+function PdhEnumObjectItemsHW(hDataSource: PDH_HLOG; szMachineName, szObjectName: LPCWSTR; mszCounterList: LPWSTR;
   pcchCounterListLength: LPDWORD; mszInstanceList: LPWSTR; pcchInstanceListLength: LPDWORD;
   dwDetailLevel, dwFlags: DWORD): PDH_STATUS; stdcall;
-{$EXTERNALSYM PdhEnumObjectItemsH}
-{$ELSE}
-function PdhEnumObjectItemsH(hDataSource: PDH_HLOG; szMachineName, szObjectName: LPCSTR; mszCounterList: LPSTR;
-  pcchCounterListLength: LPDWORD; mszInstanceList: LPSTR; pcchInstanceListLength: LPDWORD;
+{$EXTERNALSYM PdhEnumObjectItemsHW}
+function PdhEnumObjectItemsH(hDataSource: PDH_HLOG; szMachineName, szObjectName: LPCTSTR; mszCounterList: LPTSTR;
+  pcchCounterListLength: LPDWORD; mszInstanceList: LPTSTR; pcchInstanceListLength: LPDWORD;
   dwDetailLevel, dwFlags: DWORD): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhEnumObjectItemsH}
-{$ENDIF}
 
-function PdhExpandWildCardPathHW(hDataSource: PDH_HLOG; szWildCardPath: LPCWSTR; mszExpandedPathList: LPWSTR;
-  pcchPathListLength: LPDWORD; dwFlags: DWORD): PDH_STATUS; stdcall;
-{$EXTERNALSYM PdhExpandWildCardPathHW}
 function PdhExpandWildCardPathHA(hDataSource: PDH_HLOG; szWildCardPath: LPCSTR; mszExpandedPathList: LPSTR;
   pcchPathListLength: LPDWORD; dwFlags: DWORD): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhExpandWildCardPathHA}
-
-{$IFDEF UNICODE}
-function PdhExpandWildCardPathH(hDataSource: PDH_HLOG; szWildCardPath: LPCWSTR; mszExpandedPathList: LPWSTR;
+function PdhExpandWildCardPathHW(hDataSource: PDH_HLOG; szWildCardPath: LPCWSTR; mszExpandedPathList: LPWSTR;
+  pcchPathListLength: LPDWORD; dwFlags: DWORD): PDH_STATUS; stdcall;
+{$EXTERNALSYM PdhExpandWildCardPathHW}
+function PdhExpandWildCardPathH(hDataSource: PDH_HLOG; szWildCardPath: LPCTSTR; mszExpandedPathList: LPTSTR;
   pcchPathListLength: LPDWORD; dwFlags: DWORD): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhExpandWildCardPathH}
-{$ELSE}
-function PdhExpandWildCardPathH(hDataSource: PDH_HLOG; szWildCardPath: LPCSTR; mszExpandedPathList: LPSTR;
-  pcchPathListLength: LPDWORD; dwFlags: DWORD): PDH_STATUS; stdcall;
-{$EXTERNALSYM PdhExpandWildCardPathH}
-{$ENDIF}
 
 function PdhGetDataSourceTimeRangeH(hDataSource: PDH_HLOG; pdwNumEntries: LPDWORD; pInfo: PPDH_TIME_INFO;
   pdwBufferSize: LPDWORD): PDH_STATUS; stdcall;
@@ -1397,16 +1203,9 @@ function PdhGetDefaultPerfObjectHW(hDataSource: PDH_HLOG; szMachineName: LPCWSTR
 function PdhGetDefaultPerfObjectHA(hDataSource: PDH_HLOG; szMachineName: LPCSTR; szDefaultObjectName: LPSTR;
   pcchBufferSize: LPDWORD): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhGetDefaultPerfObjectHA}
-
-{$IFDEF UNICODE}
-function PdhGetDefaultPerfObjectH(hDataSource: PDH_HLOG; szMachineName: LPCWSTR; szDefaultObjectName: LPWSTR;
+function PdhGetDefaultPerfObjectH(hDataSource: PDH_HLOG; szMachineName: LPCTSTR; szDefaultObjectName: LPTSTR;
   pcchBufferSize: LPDWORD): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhGetDefaultPerfObjectH}
-{$ELSE}
-function PdhGetDefaultPerfObjectH(hDataSource: PDH_HLOG; szMachineName: LPCSTR; szDefaultObjectName: LPSTR;
-  pcchBufferSize: LPDWORD): PDH_STATUS; stdcall;
-{$EXTERNALSYM PdhGetDefaultPerfObjectH}
-{$ENDIF}
 
 function PdhGetDefaultPerfCounterHW(hDataSource: PDH_HLOG; szMachineName, szObjectName: LPCWSTR;
   szDefaultCounterName: LPWSTR; pcchBufferSize: LPDWORD): PDH_STATUS; stdcall;
@@ -1414,29 +1213,16 @@ function PdhGetDefaultPerfCounterHW(hDataSource: PDH_HLOG; szMachineName, szObje
 function PdhGetDefaultPerfCounterHA(hDataSource: PDH_HLOG; szMachineName, szObjectName: LPCSTR;
   szDefaultCounterName: LPSTR; pcchBufferSize: LPDWORD): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhGetDefaultPerfCounterHA}
-
-{$IFDEF UNICODE}
-function PdhGetDefaultPerfCounterH(hDataSource: PDH_HLOG; szMachineName, szObjectName: LPCWSTR;
-  szDefaultCounterName: LPWSTR; pcchBufferSize: LPDWORD): PDH_STATUS; stdcall;
+function PdhGetDefaultPerfCounterH(hDataSource: PDH_HLOG; szMachineName, szObjectName: LPCTSTR;
+  szDefaultCounterName: LPTSTR; pcchBufferSize: LPDWORD): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhGetDefaultPerfCounterH}
-{$ELSE}
-function PdhGetDefaultPerfCounterH(hDataSource: PDH_HLOG; szMachineName, szObjectName: LPCSTR;
-  szDefaultCounterName: LPSTR; pcchBufferSize: LPDWORD): PDH_STATUS; stdcall;
-{$EXTERNALSYM PdhGetDefaultPerfCounterH}
-{$ENDIF}
 
 function PdhBrowseCountersHW(const pBrowseDlgData: PDH_BROWSE_DLG_CONFIG_HW): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhBrowseCountersHW}
 function PdhBrowseCountersHA(const pBrowseDlgData: PDH_BROWSE_DLG_CONFIG_HA): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhBrowseCountersHA}
-
-{$IFDEF UNICODE}
-function PdhBrowseCountersH(const pBrowseDlgData: PDH_BROWSE_DLG_CONFIG_HW): PDH_STATUS; stdcall;
+function PdhBrowseCountersH(const pBrowseDlgData: PDH_BROWSE_DLG_CONFIG_H): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhBrowseCountersH}
-{$ELSE}
-function PdhBrowseCountersH(const pBrowseDlgData: PDH_BROWSE_DLG_CONFIG_HA): PDH_STATUS; stdcall;
-{$EXTERNALSYM PdhBrowseCountersH}
-{$ENDIF}
 
 //Check that a DSN points to a database that contains the correct Perfmon tables.
 
@@ -1444,14 +1230,8 @@ function PdhVerifySQLDBW(szDataSource: LPCWSTR): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhVerifySQLDBW}
 function PdhVerifySQLDBA(szDataSource: LPCSTR): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhVerifySQLDBA}
-
-{$IFDEF UNICODE}
-function PdhVerifySQLDB(szDataSource: LPCWSTR): PDH_STATUS; stdcall;
+function PdhVerifySQLDB(szDataSource: LPCTSTR): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhVerifySQLDB}
-{$ELSE}
-function PdhVerifySQLDB(szDataSource: LPCSTR): PDH_STATUS; stdcall;
-{$EXTERNALSYM PdhVerifySQLDB}
-{$ENDIF}
 
 //Create the correct perfmon tables in the database pointed to by a DSN.
 
@@ -1459,14 +1239,8 @@ function PdhCreateSQLTablesW(szDataSource: LPCWSTR): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhCreateSQLTablesW}
 function PdhCreateSQLTablesA(szDataSource: LPCSTR): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhCreateSQLTablesA}
-
-{$IFDEF UNICODE}
-function PdhCreateSQLTables(szDataSource: LPCWSTR): PDH_STATUS; stdcall;
+function PdhCreateSQLTables(szDataSource: LPCTSTR): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhCreateSQLTables}
-{$ELSE}
-function PdhCreateSQLTables(szDataSource: LPCSTR): PDH_STATUS; stdcall;
-{$EXTERNALSYM PdhCreateSQLTables}
-{$ENDIF}
 
 //Return the list of Log set names in the database pointed to by the DSN.
 
@@ -1474,14 +1248,8 @@ function PdhEnumLogSetNamesW(szDataSource: LPCWSTR; mszDataSetNameList: LPWSTR; 
 {$EXTERNALSYM PdhEnumLogSetNamesW}
 function PdhEnumLogSetNamesA(szDataSource: LPCSTR; mszDataSetNameList: LPSTR; pcchBufferLength: LPDWORD): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhEnumLogSetNamesA}
-
-{$IFDEF UNICODE}
-function PdhEnumLogSetNames(szDataSource: LPCWSTR; mszDataSetNameList: LPWSTR; pcchBufferLength: LPDWORD): PDH_STATUS; stdcall;
+function PdhEnumLogSetNames(szDataSource: LPCTSTR; mszDataSetNameList: LPTSTR; pcchBufferLength: LPDWORD): PDH_STATUS; stdcall;
 {$EXTERNALSYM PdhEnumLogSetNames}
-{$ELSE}
-function PdhEnumLogSetNames(szDataSource: LPCSTR; mszDataSetNameList: LPSTR; pcchBufferLength: LPDWORD): PDH_STATUS; stdcall;
-{$EXTERNALSYM PdhEnumLogSetNames}
-{$ENDIF}
 
 //Retrieve the GUID for an open Log Set
 
@@ -1495,8 +1263,8 @@ function PdhSetLogSetRunID(hLog: PDH_HLOG; RunId: Integer): PDH_STATUS; stdcall;
 
 implementation
 
-const
-  PdhLib = 'pdh.dll';
+uses
+  JwaWinDLLNames;
 
 function IsSuccessSeverity(ErrorCode: Longint): Boolean;
 begin
@@ -1518,8 +1286,13 @@ begin
   Result := (ErrorCode and $C0000000) = $C0000000;
 end;
 
+function PDH_PATH_LANG_FLAGS(LangId, Flags: DWORD): DWORD;
+begin
+  Result := DWORD(((LangId and $0000FFFF) shl 16) or (Flags and $0000FFFF));
+end;
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _PdhGetDllVersion: Pointer;
 
@@ -1527,16 +1300,12 @@ function PdhGetDllVersion;
 begin
   GetProcedureAddress(_PdhGetDllVersion, PdhLib, 'PdhGetDllVersion');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhGetDllVersion]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhGetDllVersion]
   end;
 end;
-{$ELSE}
-function PdhGetDllVersion; external PdhLib name 'PdhGetDllVersion';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhOpenQueryA: Pointer;
 
@@ -1544,16 +1313,12 @@ function PdhOpenQueryA;
 begin
   GetProcedureAddress(_PdhOpenQueryA, PdhLib, 'PdhOpenQueryA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhOpenQueryA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhOpenQueryA]
   end;
 end;
-{$ELSE}
-function PdhOpenQueryA; external PdhLib name 'PdhOpenQueryA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhOpenQueryW: Pointer;
 
@@ -1561,53 +1326,25 @@ function PdhOpenQueryW;
 begin
   GetProcedureAddress(_PdhOpenQueryW, PdhLib, 'PdhOpenQueryW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhOpenQueryW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhOpenQueryW]
   end;
 end;
-{$ELSE}
-function PdhOpenQueryW; external PdhLib name 'PdhOpenQueryW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhOpenQuery: Pointer;
 
 function PdhOpenQuery;
 begin
-  GetProcedureAddress(_PdhOpenQuery, PdhLib, 'PdhOpenQueryW');
+  GetProcedureAddress(_PdhOpenQuery, PdhLib, 'PdhOpenQuery' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhOpenQuery]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhOpenQuery]
   end;
 end;
-{$ELSE}
-function PdhOpenQuery; external PdhLib name 'PdhOpenQueryW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _PdhOpenQuery: Pointer;
-
-function PdhOpenQuery;
-begin
-  GetProcedureAddress(_PdhOpenQuery, PdhLib, 'PdhOpenQueryA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhOpenQuery]
-  end;
-end;
-{$ELSE}
-function PdhOpenQuery; external PdhLib name 'PdhOpenQueryA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhAddCounterA: Pointer;
 
@@ -1615,16 +1352,12 @@ function PdhAddCounterA;
 begin
   GetProcedureAddress(_PdhAddCounterA, PdhLib, 'PdhAddCounterA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhAddCounterA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhAddCounterA]
   end;
 end;
-{$ELSE}
-function PdhAddCounterA; external PdhLib name 'PdhAddCounterA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhAddCounterW: Pointer;
 
@@ -1632,53 +1365,25 @@ function PdhAddCounterW;
 begin
   GetProcedureAddress(_PdhAddCounterW, PdhLib, 'PdhAddCounterW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhAddCounterW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhAddCounterW]
   end;
 end;
-{$ELSE}
-function PdhAddCounterW; external PdhLib name 'PdhAddCounterW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhAddCounter: Pointer;
 
 function PdhAddCounter;
 begin
-  GetProcedureAddress(_PdhAddCounter, PdhLib, 'PdhAddCounterW');
+  GetProcedureAddress(_PdhAddCounter, PdhLib, 'PdhAddCounter' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhAddCounter]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhAddCounter]
   end;
 end;
-{$ELSE}
-function PdhAddCounter; external PdhLib name 'PdhAddCounterW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _PdhAddCounter: Pointer;
-
-function PdhAddCounter;
-begin
-  GetProcedureAddress(_PdhAddCounter, PdhLib, 'PdhAddCounterA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhAddCounter]
-  end;
-end;
-{$ELSE}
-function PdhAddCounter; external PdhLib name 'PdhAddCounterA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhRemoveCounter: Pointer;
 
@@ -1686,16 +1391,12 @@ function PdhRemoveCounter;
 begin
   GetProcedureAddress(_PdhRemoveCounter, PdhLib, 'PdhRemoveCounter');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhRemoveCounter]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhRemoveCounter]
   end;
 end;
-{$ELSE}
-function PdhRemoveCounter; external PdhLib name 'PdhRemoveCounter';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhCollectQueryData: Pointer;
 
@@ -1703,16 +1404,12 @@ function PdhCollectQueryData;
 begin
   GetProcedureAddress(_PdhCollectQueryData, PdhLib, 'PdhCollectQueryData');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhCollectQueryData]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhCollectQueryData]
   end;
 end;
-{$ELSE}
-function PdhCollectQueryData; external PdhLib name 'PdhCollectQueryData';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhCloseQuery: Pointer;
 
@@ -1720,16 +1417,12 @@ function PdhCloseQuery;
 begin
   GetProcedureAddress(_PdhCloseQuery, PdhLib, 'PdhCloseQuery');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhCloseQuery]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhCloseQuery]
   end;
 end;
-{$ELSE}
-function PdhCloseQuery; external PdhLib name 'PdhCloseQuery';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhGetFormattedCounterValue: Pointer;
 
@@ -1737,16 +1430,12 @@ function PdhGetFormattedCounterValue;
 begin
   GetProcedureAddress(_PdhGetFormattedCounterValue, PdhLib, 'PdhGetFormattedCounterValue');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhGetFormattedCounterValue]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhGetFormattedCounterValue]
   end;
 end;
-{$ELSE}
-function PdhGetFormattedCounterValue; external PdhLib name 'PdhGetFormattedCounterValue';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhGetFormattedCounterArrayA: Pointer;
 
@@ -1754,16 +1443,12 @@ function PdhGetFormattedCounterArrayA;
 begin
   GetProcedureAddress(_PdhGetFormattedCounterArrayA, PdhLib, 'PdhGetFormattedCounterArrayA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhGetFormattedCounterArrayA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhGetFormattedCounterArrayA]
   end;
 end;
-{$ELSE}
-function PdhGetFormattedCounterArrayA; external PdhLib name 'PdhGetFormattedCounterArrayA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhGetFormattedCounterArrayW: Pointer;
 
@@ -1771,53 +1456,25 @@ function PdhGetFormattedCounterArrayW;
 begin
   GetProcedureAddress(_PdhGetFormattedCounterArrayW, PdhLib, 'PdhGetFormattedCounterArrayW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhGetFormattedCounterArrayW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhGetFormattedCounterArrayW]
   end;
 end;
-{$ELSE}
-function PdhGetFormattedCounterArrayW; external PdhLib name 'PdhGetFormattedCounterArrayW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhGetFormattedCounterArray: Pointer;
 
 function PdhGetFormattedCounterArray;
 begin
-  GetProcedureAddress(_PdhGetFormattedCounterArray, PdhLib, 'PdhGetFormattedCounterArrayW');
+  GetProcedureAddress(_PdhGetFormattedCounterArray, PdhLib, 'PdhGetFormattedCounterArray' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhGetFormattedCounterArray]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhGetFormattedCounterArray]
   end;
 end;
-{$ELSE}
-function PdhGetFormattedCounterArray; external PdhLib name 'PdhGetFormattedCounterArrayW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _PdhGetFormattedCounterArray: Pointer;
-
-function PdhGetFormattedCounterArray;
-begin
-  GetProcedureAddress(_PdhGetFormattedCounterArray, PdhLib, 'PdhGetFormattedCounterArrayA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhGetFormattedCounterArray]
-  end;
-end;
-{$ELSE}
-function PdhGetFormattedCounterArray; external PdhLib name 'PdhGetFormattedCounterArrayA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhGetRawCounterValue: Pointer;
 
@@ -1825,16 +1482,12 @@ function PdhGetRawCounterValue;
 begin
   GetProcedureAddress(_PdhGetRawCounterValue, PdhLib, 'PdhGetRawCounterValue');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhGetRawCounterValue]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhGetRawCounterValue]
   end;
 end;
-{$ELSE}
-function PdhGetRawCounterValue; external PdhLib name 'PdhGetRawCounterValue';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhGetRawCounterArrayA: Pointer;
 
@@ -1842,16 +1495,12 @@ function PdhGetRawCounterArrayA;
 begin
   GetProcedureAddress(_PdhGetRawCounterArrayA, PdhLib, 'PdhGetRawCounterArrayA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhGetRawCounterArrayA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhGetRawCounterArrayA]
   end;
 end;
-{$ELSE}
-function PdhGetRawCounterArrayA; external PdhLib name 'PdhGetRawCounterArrayA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhGetRawCounterArrayW: Pointer;
 
@@ -1859,53 +1508,25 @@ function PdhGetRawCounterArrayW;
 begin
   GetProcedureAddress(_PdhGetRawCounterArrayW, PdhLib, 'PdhGetRawCounterArrayW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhGetRawCounterArrayW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhGetRawCounterArrayW]
   end;
 end;
-{$ELSE}
-function PdhGetRawCounterArrayW; external PdhLib name 'PdhGetRawCounterArrayW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhGetRawCounterArray: Pointer;
 
 function PdhGetRawCounterArray;
 begin
-  GetProcedureAddress(_PdhGetRawCounterArray, PdhLib, 'PdhGetRawCounterArrayW');
+  GetProcedureAddress(_PdhGetRawCounterArray, PdhLib, 'PdhGetRawCounterArray' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhGetRawCounterArray]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhGetRawCounterArray]
   end;
 end;
-{$ELSE}
-function PdhGetRawCounterArray; external PdhLib name 'PdhGetRawCounterArrayW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _PdhGetRawCounterArray: Pointer;
-
-function PdhGetRawCounterArray;
-begin
-  GetProcedureAddress(_PdhGetRawCounterArray, PdhLib, 'PdhGetRawCounterArrayA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhGetRawCounterArray]
-  end;
-end;
-{$ELSE}
-function PdhGetRawCounterArray; external PdhLib name 'PdhGetRawCounterArrayA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhCalculateCounterFromRawValue: Pointer;
 
@@ -1913,16 +1534,12 @@ function PdhCalculateCounterFromRawValue;
 begin
   GetProcedureAddress(_PdhCalculateCounterFromRawValue, PdhLib, 'PdhCalculateCounterFromRawValue');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhCalculateCounterFromRawValue]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhCalculateCounterFromRawValue]
   end;
 end;
-{$ELSE}
-function PdhCalculateCounterFromRawValue; external PdhLib name 'PdhCalculateCounterFromRawValue';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhComputeCounterStatistics: Pointer;
 
@@ -1930,16 +1547,12 @@ function PdhComputeCounterStatistics;
 begin
   GetProcedureAddress(_PdhComputeCounterStatistics, PdhLib, 'PdhComputeCounterStatistics');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhComputeCounterStatistics]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhComputeCounterStatistics]
   end;
 end;
-{$ELSE}
-function PdhComputeCounterStatistics; external PdhLib name 'PdhComputeCounterStatistics';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhGetCounterInfoA: Pointer;
 
@@ -1947,16 +1560,12 @@ function PdhGetCounterInfoA;
 begin
   GetProcedureAddress(_PdhGetCounterInfoA, PdhLib, 'PdhGetCounterInfoA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhGetCounterInfoA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhGetCounterInfoA]
   end;
 end;
-{$ELSE}
-function PdhGetCounterInfoA; external PdhLib name 'PdhGetCounterInfoA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhGetCounterInfoW: Pointer;
 
@@ -1964,53 +1573,25 @@ function PdhGetCounterInfoW;
 begin
   GetProcedureAddress(_PdhGetCounterInfoW, PdhLib, 'PdhGetCounterInfoW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhGetCounterInfoW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhGetCounterInfoW]
   end;
 end;
-{$ELSE}
-function PdhGetCounterInfoW; external PdhLib name 'PdhGetCounterInfoW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhGetCounterInfo: Pointer;
 
 function PdhGetCounterInfo;
 begin
-  GetProcedureAddress(_PdhGetCounterInfo, PdhLib, 'PdhGetCounterInfoW');
+  GetProcedureAddress(_PdhGetCounterInfo, PdhLib, 'PdhGetCounterInfo' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhGetCounterInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhGetCounterInfo]
   end;
 end;
-{$ELSE}
-function PdhGetCounterInfo; external PdhLib name 'PdhGetCounterInfoW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _PdhGetCounterInfo: Pointer;
-
-function PdhGetCounterInfo;
-begin
-  GetProcedureAddress(_PdhGetCounterInfo, PdhLib, 'PdhGetCounterInfoA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhGetCounterInfo]
-  end;
-end;
-{$ELSE}
-function PdhGetCounterInfo; external PdhLib name 'PdhGetCounterInfoA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhSetCounterScaleFactor: Pointer;
 
@@ -2018,16 +1599,12 @@ function PdhSetCounterScaleFactor;
 begin
   GetProcedureAddress(_PdhSetCounterScaleFactor, PdhLib, 'PdhSetCounterScaleFactor');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhSetCounterScaleFactor]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhSetCounterScaleFactor]
   end;
 end;
-{$ELSE}
-function PdhSetCounterScaleFactor; external PdhLib name 'PdhSetCounterScaleFactor';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhConnectMachineA: Pointer;
 
@@ -2035,16 +1612,12 @@ function PdhConnectMachineA;
 begin
   GetProcedureAddress(_PdhConnectMachineA, PdhLib, 'PdhConnectMachineA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhConnectMachineA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhConnectMachineA]
   end;
 end;
-{$ELSE}
-function PdhConnectMachineA; external PdhLib name 'PdhConnectMachineA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhConnectMachineW: Pointer;
 
@@ -2052,53 +1625,25 @@ function PdhConnectMachineW;
 begin
   GetProcedureAddress(_PdhConnectMachineW, PdhLib, 'PdhConnectMachineW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhConnectMachineW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhConnectMachineW]
   end;
 end;
-{$ELSE}
-function PdhConnectMachineW; external PdhLib name 'PdhConnectMachineW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhConnectMachine: Pointer;
 
 function PdhConnectMachine;
 begin
-  GetProcedureAddress(_PdhConnectMachine, PdhLib, 'PdhConnectMachineW');
+  GetProcedureAddress(_PdhConnectMachine, PdhLib, 'PdhConnectMachine' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhConnectMachine]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhConnectMachine]
   end;
 end;
-{$ELSE}
-function PdhConnectMachine; external PdhLib name 'PdhConnectMachineW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _PdhConnectMachine: Pointer;
-
-function PdhConnectMachine;
-begin
-  GetProcedureAddress(_PdhConnectMachine, PdhLib, 'PdhConnectMachineA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhConnectMachine]
-  end;
-end;
-{$ELSE}
-function PdhConnectMachine; external PdhLib name 'PdhConnectMachineA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhEnumMachinesA: Pointer;
 
@@ -2106,16 +1651,12 @@ function PdhEnumMachinesA;
 begin
   GetProcedureAddress(_PdhEnumMachinesA, PdhLib, 'PdhEnumMachinesA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhEnumMachinesA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhEnumMachinesA]
   end;
 end;
-{$ELSE}
-function PdhEnumMachinesA; external PdhLib name 'PdhEnumMachinesA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhEnumMachinesW: Pointer;
 
@@ -2123,53 +1664,25 @@ function PdhEnumMachinesW;
 begin
   GetProcedureAddress(_PdhEnumMachinesW, PdhLib, 'PdhEnumMachinesW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhEnumMachinesW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhEnumMachinesW]
   end;
 end;
-{$ELSE}
-function PdhEnumMachinesW; external PdhLib name 'PdhEnumMachinesW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhEnumMachines: Pointer;
 
 function PdhEnumMachines;
 begin
-  GetProcedureAddress(_PdhEnumMachines, PdhLib, 'PdhEnumMachinesW');
+  GetProcedureAddress(_PdhEnumMachines, PdhLib, 'PdhEnumMachines' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhEnumMachines]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhEnumMachines]
   end;
 end;
-{$ELSE}
-function PdhEnumMachines; external PdhLib name 'PdhEnumMachinesW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _PdhEnumMachines: Pointer;
-
-function PdhEnumMachines;
-begin
-  GetProcedureAddress(_PdhEnumMachines, PdhLib, 'PdhEnumMachinesA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhEnumMachines]
-  end;
-end;
-{$ELSE}
-function PdhEnumMachines; external PdhLib name 'PdhEnumMachinesA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhEnumObjectsA: Pointer;
 
@@ -2177,16 +1690,12 @@ function PdhEnumObjectsA;
 begin
   GetProcedureAddress(_PdhEnumObjectsA, PdhLib, 'PdhEnumObjectsA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhEnumObjectsA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhEnumObjectsA]
   end;
 end;
-{$ELSE}
-function PdhEnumObjectsA; external PdhLib name 'PdhEnumObjectsA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhEnumObjectsW: Pointer;
 
@@ -2194,53 +1703,25 @@ function PdhEnumObjectsW;
 begin
   GetProcedureAddress(_PdhEnumObjectsW, PdhLib, 'PdhEnumObjectsW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhEnumObjectsW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhEnumObjectsW]
   end;
 end;
-{$ELSE}
-function PdhEnumObjectsW; external PdhLib name 'PdhEnumObjectsW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhEnumObjects: Pointer;
 
 function PdhEnumObjects;
 begin
-  GetProcedureAddress(_PdhEnumObjects, PdhLib, 'PdhEnumObjectsW');
+  GetProcedureAddress(_PdhEnumObjects, PdhLib, 'PdhEnumObjects' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhEnumObjects]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhEnumObjects]
   end;
 end;
-{$ELSE}
-function PdhEnumObjects; external PdhLib name 'PdhEnumObjectsW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _PdhEnumObjects: Pointer;
-
-function PdhEnumObjects;
-begin
-  GetProcedureAddress(_PdhEnumObjects, PdhLib, 'PdhEnumObjectsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhEnumObjects]
-  end;
-end;
-{$ELSE}
-function PdhEnumObjects; external PdhLib name 'PdhEnumObjectsA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhEnumObjectItemsA: Pointer;
 
@@ -2248,16 +1729,12 @@ function PdhEnumObjectItemsA;
 begin
   GetProcedureAddress(_PdhEnumObjectItemsA, PdhLib, 'PdhEnumObjectItemsA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhEnumObjectItemsA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhEnumObjectItemsA]
   end;
 end;
-{$ELSE}
-function PdhEnumObjectItemsA; external PdhLib name 'PdhEnumObjectItemsA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhEnumObjectItemsW: Pointer;
 
@@ -2265,53 +1742,25 @@ function PdhEnumObjectItemsW;
 begin
   GetProcedureAddress(_PdhEnumObjectItemsW, PdhLib, 'PdhEnumObjectItemsW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhEnumObjectItemsW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhEnumObjectItemsW]
   end;
 end;
-{$ELSE}
-function PdhEnumObjectItemsW; external PdhLib name 'PdhEnumObjectItemsW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhEnumObjectItems: Pointer;
 
 function PdhEnumObjectItems;
 begin
-  GetProcedureAddress(_PdhEnumObjectItems, PdhLib, 'PdhEnumObjectItemsW');
+  GetProcedureAddress(_PdhEnumObjectItems, PdhLib, 'PdhEnumObjectItems' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhEnumObjectItems]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhEnumObjectItems]
   end;
 end;
-{$ELSE}
-function PdhEnumObjectItems; external PdhLib name 'PdhEnumObjectItemsW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _PdhEnumObjectItems: Pointer;
-
-function PdhEnumObjectItems;
-begin
-  GetProcedureAddress(_PdhEnumObjectItems, PdhLib, 'PdhEnumObjectItemsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhEnumObjectItems]
-  end;
-end;
-{$ELSE}
-function PdhEnumObjectItems; external PdhLib name 'PdhEnumObjectItemsA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhMakeCounterPathA: Pointer;
 
@@ -2319,16 +1768,12 @@ function PdhMakeCounterPathA;
 begin
   GetProcedureAddress(_PdhMakeCounterPathA, PdhLib, 'PdhMakeCounterPathA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhMakeCounterPathA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhMakeCounterPathA]
   end;
 end;
-{$ELSE}
-function PdhMakeCounterPathA; external PdhLib name 'PdhMakeCounterPathA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhMakeCounterPathW: Pointer;
 
@@ -2336,53 +1781,25 @@ function PdhMakeCounterPathW;
 begin
   GetProcedureAddress(_PdhMakeCounterPathW, PdhLib, 'PdhMakeCounterPathW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhMakeCounterPathW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhMakeCounterPathW]
   end;
 end;
-{$ELSE}
-function PdhMakeCounterPathW; external PdhLib name 'PdhMakeCounterPathW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhMakeCounterPath: Pointer;
 
 function PdhMakeCounterPath;
 begin
-  GetProcedureAddress(_PdhMakeCounterPath, PdhLib, 'PdhMakeCounterPathW');
+  GetProcedureAddress(_PdhMakeCounterPath, PdhLib, 'PdhMakeCounterPath' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhMakeCounterPath]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhMakeCounterPath]
   end;
 end;
-{$ELSE}
-function PdhMakeCounterPath; external PdhLib name 'PdhMakeCounterPathW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _PdhMakeCounterPath: Pointer;
-
-function PdhMakeCounterPath;
-begin
-  GetProcedureAddress(_PdhMakeCounterPath, PdhLib, 'PdhMakeCounterPathA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhMakeCounterPath]
-  end;
-end;
-{$ELSE}
-function PdhMakeCounterPath; external PdhLib name 'PdhMakeCounterPathA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhParseCounterPathA: Pointer;
 
@@ -2390,16 +1807,12 @@ function PdhParseCounterPathA;
 begin
   GetProcedureAddress(_PdhParseCounterPathA, PdhLib, 'PdhParseCounterPathA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhParseCounterPathA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhParseCounterPathA]
   end;
 end;
-{$ELSE}
-function PdhParseCounterPathA; external PdhLib name 'PdhParseCounterPathA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhParseCounterPathW: Pointer;
 
@@ -2407,59 +1820,25 @@ function PdhParseCounterPathW;
 begin
   GetProcedureAddress(_PdhParseCounterPathW, PdhLib, 'PdhParseCounterPathW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhParseCounterPathW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhParseCounterPathW]
   end;
 end;
-{$ELSE}
-function PdhParseCounterPathW; external PdhLib name 'PdhParseCounterPathW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhParseCounterPath: Pointer;
 
 function PdhParseCounterPath;
 begin
-  GetProcedureAddress(_PdhParseCounterPath, PdhLib, 'PdhParseCounterPathW');
+  GetProcedureAddress(_PdhParseCounterPath, PdhLib, 'PdhParseCounterPath' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhParseCounterPath]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhParseCounterPath]
   end;
 end;
-{$ELSE}
-function PdhParseCounterPath; external PdhLib name 'PdhParseCounterPathW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _PdhParseCounterPath: Pointer;
-
-function PdhParseCounterPath;
-begin
-  GetProcedureAddress(_PdhParseCounterPath, PdhLib, 'PdhParseCounterPathA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhParseCounterPath]
-  end;
-end;
-{$ELSE}
-function PdhParseCounterPath; external PdhLib name 'PdhParseCounterPathA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-function PDH_PATH_LANG_FLAGS(LangId, Flags: DWORD): DWORD;
-begin
-  Result := DWORD(((LangId and $0000FFFF) shl 16) or (Flags and $0000FFFF));
-end;
-
-
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhParseInstanceNameA: Pointer;
 
@@ -2467,16 +1846,12 @@ function PdhParseInstanceNameA;
 begin
   GetProcedureAddress(_PdhParseInstanceNameA, PdhLib, 'PdhParseInstanceNameA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhParseInstanceNameA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhParseInstanceNameA]
   end;
 end;
-{$ELSE}
-function PdhParseInstanceNameA; external PdhLib name 'PdhParseInstanceNameA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhParseInstanceNameW: Pointer;
 
@@ -2484,53 +1859,25 @@ function PdhParseInstanceNameW;
 begin
   GetProcedureAddress(_PdhParseInstanceNameW, PdhLib, 'PdhParseInstanceNameW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhParseInstanceNameW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhParseInstanceNameW]
   end;
 end;
-{$ELSE}
-function PdhParseInstanceNameW; external PdhLib name 'PdhParseInstanceNameW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhParseInstanceName: Pointer;
 
 function PdhParseInstanceName;
 begin
-  GetProcedureAddress(_PdhParseInstanceName, PdhLib, 'PdhParseInstanceNameW');
+  GetProcedureAddress(_PdhParseInstanceName, PdhLib, 'PdhParseInstanceName' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhParseInstanceName]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhParseInstanceName]
   end;
 end;
-{$ELSE}
-function PdhParseInstanceName; external PdhLib name 'PdhParseInstanceNameW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _PdhParseInstanceName: Pointer;
-
-function PdhParseInstanceName;
-begin
-  GetProcedureAddress(_PdhParseInstanceName, PdhLib, 'PdhParseInstanceNameA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhParseInstanceName]
-  end;
-end;
-{$ELSE}
-function PdhParseInstanceName; external PdhLib name 'PdhParseInstanceNameA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhValidatePathA: Pointer;
 
@@ -2538,16 +1885,12 @@ function PdhValidatePathA;
 begin
   GetProcedureAddress(_PdhValidatePathA, PdhLib, 'PdhValidatePathA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhValidatePathA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhValidatePathA]
   end;
 end;
-{$ELSE}
-function PdhValidatePathA; external PdhLib name 'PdhValidatePathA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhValidatePathW: Pointer;
 
@@ -2555,53 +1898,25 @@ function PdhValidatePathW;
 begin
   GetProcedureAddress(_PdhValidatePathW, PdhLib, 'PdhValidatePathW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhValidatePathW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhValidatePathW]
   end;
 end;
-{$ELSE}
-function PdhValidatePathW; external PdhLib name 'PdhValidatePathW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhValidatePath: Pointer;
 
 function PdhValidatePath;
 begin
-  GetProcedureAddress(_PdhValidatePath, PdhLib, 'PdhValidatePathW');
+  GetProcedureAddress(_PdhValidatePath, PdhLib, 'PdhValidatePath' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhValidatePath]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhValidatePath]
   end;
 end;
-{$ELSE}
-function PdhValidatePath; external PdhLib name 'PdhValidatePathW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _PdhValidatePath: Pointer;
-
-function PdhValidatePath;
-begin
-  GetProcedureAddress(_PdhValidatePath, PdhLib, 'PdhValidatePathA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhValidatePath]
-  end;
-end;
-{$ELSE}
-function PdhValidatePath; external PdhLib name 'PdhValidatePathA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhGetDefaultPerfObjectA: Pointer;
 
@@ -2609,16 +1924,12 @@ function PdhGetDefaultPerfObjectA;
 begin
   GetProcedureAddress(_PdhGetDefaultPerfObjectA, PdhLib, 'PdhGetDefaultPerfObjectA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhGetDefaultPerfObjectA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhGetDefaultPerfObjectA]
   end;
 end;
-{$ELSE}
-function PdhGetDefaultPerfObjectA; external PdhLib name 'PdhGetDefaultPerfObjectA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhGetDefaultPerfObjectW: Pointer;
 
@@ -2626,53 +1937,25 @@ function PdhGetDefaultPerfObjectW;
 begin
   GetProcedureAddress(_PdhGetDefaultPerfObjectW, PdhLib, 'PdhGetDefaultPerfObjectW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhGetDefaultPerfObjectW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhGetDefaultPerfObjectW]
   end;
 end;
-{$ELSE}
-function PdhGetDefaultPerfObjectW; external PdhLib name 'PdhGetDefaultPerfObjectW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhGetDefaultPerfObject: Pointer;
 
 function PdhGetDefaultPerfObject;
 begin
-  GetProcedureAddress(_PdhGetDefaultPerfObject, PdhLib, 'PdhGetDefaultPerfObjectW');
+  GetProcedureAddress(_PdhGetDefaultPerfObject, PdhLib, 'PdhGetDefaultPerfObject' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhGetDefaultPerfObject]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhGetDefaultPerfObject]
   end;
 end;
-{$ELSE}
-function PdhGetDefaultPerfObject; external PdhLib name 'PdhGetDefaultPerfObjectW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _PdhGetDefaultPerfObject: Pointer;
-
-function PdhGetDefaultPerfObject;
-begin
-  GetProcedureAddress(_PdhGetDefaultPerfObject, PdhLib, 'PdhGetDefaultPerfObjectA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhGetDefaultPerfObject]
-  end;
-end;
-{$ELSE}
-function PdhGetDefaultPerfObject; external PdhLib name 'PdhGetDefaultPerfObjectA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhGetDefaultPerfCounterA: Pointer;
 
@@ -2680,16 +1963,12 @@ function PdhGetDefaultPerfCounterA;
 begin
   GetProcedureAddress(_PdhGetDefaultPerfCounterA, PdhLib, 'PdhGetDefaultPerfCounterA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhGetDefaultPerfCounterA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhGetDefaultPerfCounterA]
   end;
 end;
-{$ELSE}
-function PdhGetDefaultPerfCounterA; external PdhLib name 'PdhGetDefaultPerfCounterA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhGetDefaultPerfCounterW: Pointer;
 
@@ -2697,53 +1976,25 @@ function PdhGetDefaultPerfCounterW;
 begin
   GetProcedureAddress(_PdhGetDefaultPerfCounterW, PdhLib, 'PdhGetDefaultPerfCounterW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhGetDefaultPerfCounterW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhGetDefaultPerfCounterW]
   end;
 end;
-{$ELSE}
-function PdhGetDefaultPerfCounterW; external PdhLib name 'PdhGetDefaultPerfCounterW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhGetDefaultPerfCounter: Pointer;
 
 function PdhGetDefaultPerfCounter;
 begin
-  GetProcedureAddress(_PdhGetDefaultPerfCounter, PdhLib, 'PdhGetDefaultPerfCounterW');
+  GetProcedureAddress(_PdhGetDefaultPerfCounter, PdhLib, 'PdhGetDefaultPerfCounter' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhGetDefaultPerfCounter]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhGetDefaultPerfCounter]
   end;
 end;
-{$ELSE}
-function PdhGetDefaultPerfCounter; external PdhLib name 'PdhGetDefaultPerfCounterW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _PdhGetDefaultPerfCounter: Pointer;
-
-function PdhGetDefaultPerfCounter;
-begin
-  GetProcedureAddress(_PdhGetDefaultPerfCounter, PdhLib, 'PdhGetDefaultPerfCounterA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhGetDefaultPerfCounter]
-  end;
-end;
-{$ELSE}
-function PdhGetDefaultPerfCounter; external PdhLib name 'PdhGetDefaultPerfCounterA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhBrowseCountersA: Pointer;
 
@@ -2751,16 +2002,12 @@ function PdhBrowseCountersA;
 begin
   GetProcedureAddress(_PdhBrowseCountersA, PdhLib, 'PdhBrowseCountersA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhBrowseCountersA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhBrowseCountersA]
   end;
 end;
-{$ELSE}
-function PdhBrowseCountersA; external PdhLib name 'PdhBrowseCountersA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhBrowseCountersW: Pointer;
 
@@ -2768,53 +2015,25 @@ function PdhBrowseCountersW;
 begin
   GetProcedureAddress(_PdhBrowseCountersW, PdhLib, 'PdhBrowseCountersW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhBrowseCountersW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhBrowseCountersW]
   end;
 end;
-{$ELSE}
-function PdhBrowseCountersW; external PdhLib name 'PdhBrowseCountersW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhBrowseCounters: Pointer;
 
 function PdhBrowseCounters;
 begin
-  GetProcedureAddress(_PdhBrowseCounters, PdhLib, 'PdhBrowseCountersW');
+  GetProcedureAddress(_PdhBrowseCounters, PdhLib, 'PdhBrowseCounters' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhBrowseCounters]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhBrowseCounters]
   end;
 end;
-{$ELSE}
-function PdhBrowseCounters; external PdhLib name 'PdhBrowseCountersW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _PdhBrowseCounters: Pointer;
-
-function PdhBrowseCounters;
-begin
-  GetProcedureAddress(_PdhBrowseCounters, PdhLib, 'PdhBrowseCountersA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhBrowseCounters]
-  end;
-end;
-{$ELSE}
-function PdhBrowseCounters; external PdhLib name 'PdhBrowseCountersA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhExpandCounterPathA: Pointer;
 
@@ -2822,16 +2041,12 @@ function PdhExpandCounterPathA;
 begin
   GetProcedureAddress(_PdhExpandCounterPathA, PdhLib, 'PdhExpandCounterPathA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhExpandCounterPathA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhExpandCounterPathA]
   end;
 end;
-{$ELSE}
-function PdhExpandCounterPathA; external PdhLib name 'PdhExpandCounterPathA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhExpandCounterPathW: Pointer;
 
@@ -2839,53 +2054,25 @@ function PdhExpandCounterPathW;
 begin
   GetProcedureAddress(_PdhExpandCounterPathW, PdhLib, 'PdhExpandCounterPathW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhExpandCounterPathW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhExpandCounterPathW]
   end;
 end;
-{$ELSE}
-function PdhExpandCounterPathW; external PdhLib name 'PdhExpandCounterPathW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhExpandCounterPath: Pointer;
 
 function PdhExpandCounterPath;
 begin
-  GetProcedureAddress(_PdhExpandCounterPath, PdhLib, 'PdhExpandCounterPathW');
+  GetProcedureAddress(_PdhExpandCounterPath, PdhLib, 'PdhExpandCounterPath' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhExpandCounterPath]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhExpandCounterPath]
   end;
 end;
-{$ELSE}
-function PdhExpandCounterPath; external PdhLib name 'PdhExpandCounterPathW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _PdhExpandCounterPath: Pointer;
-
-function PdhExpandCounterPath;
-begin
-  GetProcedureAddress(_PdhExpandCounterPath, PdhLib, 'PdhExpandCounterPathA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhExpandCounterPath]
-  end;
-end;
-{$ELSE}
-function PdhExpandCounterPath; external PdhLib name 'PdhExpandCounterPathA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhLookupPerfNameByIndexA: Pointer;
 
@@ -2893,16 +2080,12 @@ function PdhLookupPerfNameByIndexA;
 begin
   GetProcedureAddress(_PdhLookupPerfNameByIndexA, PdhLib, 'PdhLookupPerfNameByIndexA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhLookupPerfNameByIndexA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhLookupPerfNameByIndexA]
   end;
 end;
-{$ELSE}
-function PdhLookupPerfNameByIndexA; external PdhLib name 'PdhLookupPerfNameByIndexA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhLookupPerfNameByIndexW: Pointer;
 
@@ -2910,53 +2093,25 @@ function PdhLookupPerfNameByIndexW;
 begin
   GetProcedureAddress(_PdhLookupPerfNameByIndexW, PdhLib, 'PdhLookupPerfNameByIndexW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhLookupPerfNameByIndexW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhLookupPerfNameByIndexW]
   end;
 end;
-{$ELSE}
-function PdhLookupPerfNameByIndexW; external PdhLib name 'PdhLookupPerfNameByIndexW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhLookupPerfNameByIndex: Pointer;
 
 function PdhLookupPerfNameByIndex;
 begin
-  GetProcedureAddress(_PdhLookupPerfNameByIndex, PdhLib, 'PdhLookupPerfNameByIndexW');
+  GetProcedureAddress(_PdhLookupPerfNameByIndex, PdhLib, 'PdhLookupPerfNameByIndex' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhLookupPerfNameByIndex]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhLookupPerfNameByIndex]
   end;
 end;
-{$ELSE}
-function PdhLookupPerfNameByIndex; external PdhLib name 'PdhLookupPerfNameByIndexW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _PdhLookupPerfNameByIndex: Pointer;
-
-function PdhLookupPerfNameByIndex;
-begin
-  GetProcedureAddress(_PdhLookupPerfNameByIndex, PdhLib, 'PdhLookupPerfNameByIndexA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhLookupPerfNameByIndex]
-  end;
-end;
-{$ELSE}
-function PdhLookupPerfNameByIndex; external PdhLib name 'PdhLookupPerfNameByIndexA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhLookupPerfIndexByNameA: Pointer;
 
@@ -2964,16 +2119,12 @@ function PdhLookupPerfIndexByNameA;
 begin
   GetProcedureAddress(_PdhLookupPerfIndexByNameA, PdhLib, 'PdhLookupPerfIndexByNameA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhLookupPerfIndexByNameA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhLookupPerfIndexByNameA]
   end;
 end;
-{$ELSE}
-function PdhLookupPerfIndexByNameA; external PdhLib name 'PdhLookupPerfIndexByNameA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhLookupPerfIndexByNameW: Pointer;
 
@@ -2981,53 +2132,25 @@ function PdhLookupPerfIndexByNameW;
 begin
   GetProcedureAddress(_PdhLookupPerfIndexByNameW, PdhLib, 'PdhLookupPerfIndexByNameW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhLookupPerfIndexByNameW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhLookupPerfIndexByNameW]
   end;
 end;
-{$ELSE}
-function PdhLookupPerfIndexByNameW; external PdhLib name 'PdhLookupPerfIndexByNameW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhLookupPerfIndexByName: Pointer;
 
 function PdhLookupPerfIndexByName;
 begin
-  GetProcedureAddress(_PdhLookupPerfIndexByName, PdhLib, 'PdhLookupPerfIndexByNameW');
+  GetProcedureAddress(_PdhLookupPerfIndexByName, PdhLib, 'PdhLookupPerfIndexByName' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhLookupPerfIndexByName]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhLookupPerfIndexByName]
   end;
 end;
-{$ELSE}
-function PdhLookupPerfIndexByName; external PdhLib name 'PdhLookupPerfIndexByNameW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _PdhLookupPerfIndexByName: Pointer;
-
-function PdhLookupPerfIndexByName;
-begin
-  GetProcedureAddress(_PdhLookupPerfIndexByName, PdhLib, 'PdhLookupPerfIndexByNameA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhLookupPerfIndexByName]
-  end;
-end;
-{$ELSE}
-function PdhLookupPerfIndexByName; external PdhLib name 'PdhLookupPerfIndexByNameA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhExpandWildCardPathA: Pointer;
 
@@ -3035,16 +2158,12 @@ function PdhExpandWildCardPathA;
 begin
   GetProcedureAddress(_PdhExpandWildCardPathA, PdhLib, 'PdhExpandWildCardPathA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhExpandWildCardPathA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhExpandWildCardPathA]
   end;
 end;
-{$ELSE}
-function PdhExpandWildCardPathA; external PdhLib name 'PdhExpandWildCardPathA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhExpandWildCardPathW: Pointer;
 
@@ -3052,53 +2171,25 @@ function PdhExpandWildCardPathW;
 begin
   GetProcedureAddress(_PdhExpandWildCardPathW, PdhLib, 'PdhExpandWildCardPathW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhExpandWildCardPathW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhExpandWildCardPathW]
   end;
 end;
-{$ELSE}
-function PdhExpandWildCardPathW; external PdhLib name 'PdhExpandWildCardPathW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhExpandWildCardPath: Pointer;
 
 function PdhExpandWildCardPath;
 begin
-  GetProcedureAddress(_PdhExpandWildCardPath, PdhLib, 'PdhExpandWildCardPathW');
+  GetProcedureAddress(_PdhExpandWildCardPath, PdhLib, 'PdhExpandWildCardPath' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhExpandWildCardPath]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhExpandWildCardPath]
   end;
 end;
-{$ELSE}
-function PdhExpandWildCardPath; external PdhLib name 'PdhExpandWildCardPathW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _PdhExpandWildCardPath: Pointer;
-
-function PdhExpandWildCardPath;
-begin
-  GetProcedureAddress(_PdhExpandWildCardPath, PdhLib, 'PdhExpandWildCardPathA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhExpandWildCardPath]
-  end;
-end;
-{$ELSE}
-function PdhExpandWildCardPath; external PdhLib name 'PdhExpandWildCardPathA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhOpenLogA: Pointer;
 
@@ -3106,16 +2197,12 @@ function PdhOpenLogA;
 begin
   GetProcedureAddress(_PdhOpenLogA, PdhLib, 'PdhOpenLogA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhOpenLogA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhOpenLogA]
   end;
 end;
-{$ELSE}
-function PdhOpenLogA; external PdhLib name 'PdhOpenLogA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhOpenLogW: Pointer;
 
@@ -3123,53 +2210,25 @@ function PdhOpenLogW;
 begin
   GetProcedureAddress(_PdhOpenLogW, PdhLib, 'PdhOpenLogW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhOpenLogW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhOpenLogW]
   end;
 end;
-{$ELSE}
-function PdhOpenLogW; external PdhLib name 'PdhOpenLogW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhOpenLog: Pointer;
 
 function PdhOpenLog;
 begin
-  GetProcedureAddress(_PdhOpenLog, PdhLib, 'PdhOpenLogW');
+  GetProcedureAddress(_PdhOpenLog, PdhLib, 'PdhOpenLog' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhOpenLog]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhOpenLog]
   end;
 end;
-{$ELSE}
-function PdhOpenLog; external PdhLib name 'PdhOpenLogW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _PdhOpenLog: Pointer;
-
-function PdhOpenLog;
-begin
-  GetProcedureAddress(_PdhOpenLog, PdhLib, 'PdhOpenLogA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhOpenLog]
-  end;
-end;
-{$ELSE}
-function PdhOpenLog; external PdhLib name 'PdhOpenLogA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhUpdateLogA: Pointer;
 
@@ -3177,16 +2236,12 @@ function PdhUpdateLogA;
 begin
   GetProcedureAddress(_PdhUpdateLogA, PdhLib, 'PdhUpdateLogA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhUpdateLogA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhUpdateLogA]
   end;
 end;
-{$ELSE}
-function PdhUpdateLogA; external PdhLib name 'PdhUpdateLogA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhUpdateLogW: Pointer;
 
@@ -3194,53 +2249,25 @@ function PdhUpdateLogW;
 begin
   GetProcedureAddress(_PdhUpdateLogW, PdhLib, 'PdhUpdateLogW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhUpdateLogW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhUpdateLogW]
   end;
 end;
-{$ELSE}
-function PdhUpdateLogW; external PdhLib name 'PdhUpdateLogW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhUpdateLog: Pointer;
 
 function PdhUpdateLog;
 begin
-  GetProcedureAddress(_PdhUpdateLog, PdhLib, 'PdhUpdateLogW');
+  GetProcedureAddress(_PdhUpdateLog, PdhLib, 'PdhUpdateLog' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhUpdateLog]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhUpdateLog]
   end;
 end;
-{$ELSE}
-function PdhUpdateLog; external PdhLib name 'PdhUpdateLogW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _PdhUpdateLog: Pointer;
-
-function PdhUpdateLog;
-begin
-  GetProcedureAddress(_PdhUpdateLog, PdhLib, 'PdhUpdateLogA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhUpdateLog]
-  end;
-end;
-{$ELSE}
-function PdhUpdateLog; external PdhLib name 'PdhUpdateLogA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhUpdateLogFileCatalog: Pointer;
 
@@ -3248,16 +2275,12 @@ function PdhUpdateLogFileCatalog;
 begin
   GetProcedureAddress(_PdhUpdateLogFileCatalog, PdhLib, 'PdhUpdateLogFileCatalog');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhUpdateLogFileCatalog]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhUpdateLogFileCatalog]
   end;
 end;
-{$ELSE}
-function PdhUpdateLogFileCatalog; external PdhLib name 'PdhUpdateLogFileCatalog';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhGetLogFileSize: Pointer;
 
@@ -3265,16 +2288,12 @@ function PdhGetLogFileSize;
 begin
   GetProcedureAddress(_PdhGetLogFileSize, PdhLib, 'PdhGetLogFileSize');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhGetLogFileSize]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhGetLogFileSize]
   end;
 end;
-{$ELSE}
-function PdhGetLogFileSize; external PdhLib name 'PdhGetLogFileSize';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhCloseLog: Pointer;
 
@@ -3282,16 +2301,12 @@ function PdhCloseLog;
 begin
   GetProcedureAddress(_PdhCloseLog, PdhLib, 'PdhCloseLog');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhCloseLog]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhCloseLog]
   end;
 end;
-{$ELSE}
-function PdhCloseLog; external PdhLib name 'PdhCloseLog';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhSelectDataSourceA: Pointer;
 
@@ -3299,16 +2314,12 @@ function PdhSelectDataSourceA;
 begin
   GetProcedureAddress(_PdhSelectDataSourceA, PdhLib, 'PdhSelectDataSourceA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhSelectDataSourceA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhSelectDataSourceA]
   end;
 end;
-{$ELSE}
-function PdhSelectDataSourceA; external PdhLib name 'PdhSelectDataSourceA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhSelectDataSourceW: Pointer;
 
@@ -3316,53 +2327,25 @@ function PdhSelectDataSourceW;
 begin
   GetProcedureAddress(_PdhSelectDataSourceW, PdhLib, 'PdhSelectDataSourceW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhSelectDataSourceW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhSelectDataSourceW]
   end;
 end;
-{$ELSE}
-function PdhSelectDataSourceW; external PdhLib name 'PdhSelectDataSourceW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhSelectDataSource: Pointer;
 
 function PdhSelectDataSource;
 begin
-  GetProcedureAddress(_PdhSelectDataSource, PdhLib, 'PdhSelectDataSourceW');
+  GetProcedureAddress(_PdhSelectDataSource, PdhLib, 'PdhSelectDataSource' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhSelectDataSource]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhSelectDataSource]
   end;
 end;
-{$ELSE}
-function PdhSelectDataSource; external PdhLib name 'PdhSelectDataSourceW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _PdhSelectDataSource: Pointer;
-
-function PdhSelectDataSource;
-begin
-  GetProcedureAddress(_PdhSelectDataSource, PdhLib, 'PdhSelectDataSourceA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhSelectDataSource]
-  end;
-end;
-{$ELSE}
-function PdhSelectDataSource; external PdhLib name 'PdhSelectDataSourceA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhIsRealTimeQuery: Pointer;
 
@@ -3370,16 +2353,12 @@ function PdhIsRealTimeQuery;
 begin
   GetProcedureAddress(_PdhIsRealTimeQuery, PdhLib, 'PdhIsRealTimeQuery');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhIsRealTimeQuery]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhIsRealTimeQuery]
   end;
 end;
-{$ELSE}
-function PdhIsRealTimeQuery; external PdhLib name 'PdhIsRealTimeQuery';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhSetQueryTimeRange: Pointer;
 
@@ -3387,16 +2366,12 @@ function PdhSetQueryTimeRange;
 begin
   GetProcedureAddress(_PdhSetQueryTimeRange, PdhLib, 'PdhSetQueryTimeRange');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhSetQueryTimeRange]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhSetQueryTimeRange]
   end;
 end;
-{$ELSE}
-function PdhSetQueryTimeRange; external PdhLib name 'PdhSetQueryTimeRange';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhGetDataSourceTimeRangeA: Pointer;
 
@@ -3404,16 +2379,12 @@ function PdhGetDataSourceTimeRangeA;
 begin
   GetProcedureAddress(_PdhGetDataSourceTimeRangeA, PdhLib, 'PdhGetDataSourceTimeRangeA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhGetDataSourceTimeRangeA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhGetDataSourceTimeRangeA]
   end;
 end;
-{$ELSE}
-function PdhGetDataSourceTimeRangeA; external PdhLib name 'PdhGetDataSourceTimeRangeA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhGetDataSourceTimeRangeW: Pointer;
 
@@ -3421,53 +2392,25 @@ function PdhGetDataSourceTimeRangeW;
 begin
   GetProcedureAddress(_PdhGetDataSourceTimeRangeW, PdhLib, 'PdhGetDataSourceTimeRangeW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhGetDataSourceTimeRangeW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhGetDataSourceTimeRangeW]
   end;
 end;
-{$ELSE}
-function PdhGetDataSourceTimeRangeW; external PdhLib name 'PdhGetDataSourceTimeRangeW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhGetDataSourceTimeRange: Pointer;
 
 function PdhGetDataSourceTimeRange;
 begin
-  GetProcedureAddress(_PdhGetDataSourceTimeRange, PdhLib, 'PdhGetDataSourceTimeRangeW');
+  GetProcedureAddress(_PdhGetDataSourceTimeRange, PdhLib, 'PdhGetDataSourceTimeRange' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhGetDataSourceTimeRange]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhGetDataSourceTimeRange]
   end;
 end;
-{$ELSE}
-function PdhGetDataSourceTimeRange; external PdhLib name 'PdhGetDataSourceTimeRangeW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _PdhGetDataSourceTimeRange: Pointer;
-
-function PdhGetDataSourceTimeRange;
-begin
-  GetProcedureAddress(_PdhGetDataSourceTimeRange, PdhLib, 'PdhGetDataSourceTimeRangeA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhGetDataSourceTimeRange]
-  end;
-end;
-{$ELSE}
-function PdhGetDataSourceTimeRange; external PdhLib name 'PdhGetDataSourceTimeRangeA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhCollectQueryDataEx: Pointer;
 
@@ -3475,16 +2418,12 @@ function PdhCollectQueryDataEx;
 begin
   GetProcedureAddress(_PdhCollectQueryDataEx, PdhLib, 'PdhCollectQueryDataEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhCollectQueryDataEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhCollectQueryDataEx]
   end;
 end;
-{$ELSE}
-function PdhCollectQueryDataEx; external PdhLib name 'PdhCollectQueryDataEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhFormatFromRawValue: Pointer;
 
@@ -3492,16 +2431,12 @@ function PdhFormatFromRawValue;
 begin
   GetProcedureAddress(_PdhFormatFromRawValue, PdhLib, 'PdhFormatFromRawValue');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhFormatFromRawValue]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhFormatFromRawValue]
   end;
 end;
-{$ELSE}
-function PdhFormatFromRawValue; external PdhLib name 'PdhFormatFromRawValue';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhGetCounterTimeBase: Pointer;
 
@@ -3509,16 +2444,12 @@ function PdhGetCounterTimeBase;
 begin
   GetProcedureAddress(_PdhGetCounterTimeBase, PdhLib, 'PdhGetCounterTimeBase');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhGetCounterTimeBase]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhGetCounterTimeBase]
   end;
 end;
-{$ELSE}
-function PdhGetCounterTimeBase; external PdhLib name 'PdhGetCounterTimeBase';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhReadRawLogRecord: Pointer;
 
@@ -3526,16 +2457,12 @@ function PdhReadRawLogRecord;
 begin
   GetProcedureAddress(_PdhReadRawLogRecord, PdhLib, 'PdhReadRawLogRecord');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhReadRawLogRecord]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhReadRawLogRecord]
   end;
 end;
-{$ELSE}
-function PdhReadRawLogRecord; external PdhLib name 'PdhReadRawLogRecord';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhSetDefaultRealTimeDataSource: Pointer;
 
@@ -3543,16 +2470,12 @@ function PdhSetDefaultRealTimeDataSource;
 begin
   GetProcedureAddress(_PdhSetDefaultRealTimeDataSource, PdhLib, 'PdhSetDefaultRealTimeDataSource');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhSetDefaultRealTimeDataSource]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhSetDefaultRealTimeDataSource]
   end;
 end;
-{$ELSE}
-function PdhSetDefaultRealTimeDataSource; external PdhLib name 'PdhSetDefaultRealTimeDataSource';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhBindInputDataSourceW: Pointer;
 
@@ -3560,16 +2483,12 @@ function PdhBindInputDataSourceW;
 begin
   GetProcedureAddress(_PdhBindInputDataSourceW, PdhLib, 'PdhBindInputDataSourceW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhBindInputDataSourceW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhBindInputDataSourceW]
   end;
 end;
-{$ELSE}
-function PdhBindInputDataSourceW; external PdhLib name 'PdhBindInputDataSourceW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhBindInputDataSourceA: Pointer;
 
@@ -3577,53 +2496,25 @@ function PdhBindInputDataSourceA;
 begin
   GetProcedureAddress(_PdhBindInputDataSourceA, PdhLib, 'PdhBindInputDataSourceA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhBindInputDataSourceA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhBindInputDataSourceA]
   end;
 end;
-{$ELSE}
-function PdhBindInputDataSourceA; external PdhLib name 'PdhBindInputDataSourceA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhBindInputDataSource: Pointer;
 
 function PdhBindInputDataSource;
 begin
-  GetProcedureAddress(_PdhBindInputDataSource, PdhLib, 'PdhBindInputDataSourceW');
+  GetProcedureAddress(_PdhBindInputDataSource, PdhLib, 'PdhBindInputDataSource' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhBindInputDataSource]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhBindInputDataSource]
   end;
 end;
-{$ELSE}
-function PdhBindInputDataSource; external PdhLib name 'PdhBindInputDataSourceW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _PdhBindInputDataSource: Pointer;
-
-function PdhBindInputDataSource;
-begin
-  GetProcedureAddress(_PdhBindInputDataSource, PdhLib, 'PdhBindInputDataSourceA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhBindInputDataSource]
-  end;
-end;
-{$ELSE}
-function PdhBindInputDataSource; external PdhLib name 'PdhBindInputDataSourceA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhOpenQueryH: Pointer;
 
@@ -3631,16 +2522,12 @@ function PdhOpenQueryH;
 begin
   GetProcedureAddress(_PdhOpenQueryH, PdhLib, 'PdhOpenQueryH');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhOpenQueryH]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhOpenQueryH]
   end;
 end;
-{$ELSE}
-function PdhOpenQueryH; external PdhLib name 'PdhOpenQueryH';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhEnumMachinesHW: Pointer;
 
@@ -3648,16 +2535,12 @@ function PdhEnumMachinesHW;
 begin
   GetProcedureAddress(_PdhEnumMachinesHW, PdhLib, 'PdhEnumMachinesHW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhEnumMachinesHW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhEnumMachinesHW]
   end;
 end;
-{$ELSE}
-function PdhEnumMachinesHW; external PdhLib name 'PdhEnumMachinesHW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhEnumMachinesHA: Pointer;
 
@@ -3665,53 +2548,25 @@ function PdhEnumMachinesHA;
 begin
   GetProcedureAddress(_PdhEnumMachinesHA, PdhLib, 'PdhEnumMachinesHA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhEnumMachinesHA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhEnumMachinesHA]
   end;
 end;
-{$ELSE}
-function PdhEnumMachinesHA; external PdhLib name 'PdhEnumMachinesHA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhEnumMachinesH: Pointer;
 
 function PdhEnumMachinesH;
 begin
-  GetProcedureAddress(_PdhEnumMachinesH, PdhLib, 'PdhEnumMachinesHW');
+  GetProcedureAddress(_PdhEnumMachinesH, PdhLib, 'PdhEnumMachinesH' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhEnumMachinesH]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhEnumMachinesH]
   end;
 end;
-{$ELSE}
-function PdhEnumMachinesH; external PdhLib name 'PdhEnumMachinesHW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _PdhEnumMachinesH: Pointer;
-
-function PdhEnumMachinesH;
-begin
-  GetProcedureAddress(_PdhEnumMachinesH, PdhLib, 'PdhEnumMachinesHA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhEnumMachinesH]
-  end;
-end;
-{$ELSE}
-function PdhEnumMachinesH; external PdhLib name 'PdhEnumMachinesHA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhEnumObjectsHW: Pointer;
 
@@ -3719,16 +2574,12 @@ function PdhEnumObjectsHW;
 begin
   GetProcedureAddress(_PdhEnumObjectsHW, PdhLib, 'PdhEnumObjectsHW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhEnumObjectsHW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhEnumObjectsHW]
   end;
 end;
-{$ELSE}
-function PdhEnumObjectsHW; external PdhLib name 'PdhEnumObjectsHW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhEnumObjectsHA: Pointer;
 
@@ -3736,53 +2587,25 @@ function PdhEnumObjectsHA;
 begin
   GetProcedureAddress(_PdhEnumObjectsHA, PdhLib, 'PdhEnumObjectsHA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhEnumObjectsHA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhEnumObjectsHA]
   end;
 end;
-{$ELSE}
-function PdhEnumObjectsHA; external PdhLib name 'PdhEnumObjectsHA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhEnumObjectsH: Pointer;
 
 function PdhEnumObjectsH;
 begin
-  GetProcedureAddress(_PdhEnumObjectsH, PdhLib, 'PdhEnumObjectsHW');
+  GetProcedureAddress(_PdhEnumObjectsH, PdhLib, 'PdhEnumObjectsH' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhEnumObjectsH]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhEnumObjectsH]
   end;
 end;
-{$ELSE}
-function PdhEnumObjectsH; external PdhLib name 'PdhEnumObjectsHW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _PdhEnumObjectsH: Pointer;
-
-function PdhEnumObjectsH;
-begin
-  GetProcedureAddress(_PdhEnumObjectsH, PdhLib, 'PdhEnumObjectsHA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhEnumObjectsH]
-  end;
-end;
-{$ELSE}
-function PdhEnumObjectsH; external PdhLib name 'PdhEnumObjectsHA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhEnumObjectItemsHW: Pointer;
 
@@ -3790,16 +2613,12 @@ function PdhEnumObjectItemsHW;
 begin
   GetProcedureAddress(_PdhEnumObjectItemsHW, PdhLib, 'PdhEnumObjectItemsHW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhEnumObjectItemsHW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhEnumObjectItemsHW]
   end;
 end;
-{$ELSE}
-function PdhEnumObjectItemsHW; external PdhLib name 'PdhEnumObjectItemsHW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhEnumObjectItemsHA: Pointer;
 
@@ -3807,53 +2626,25 @@ function PdhEnumObjectItemsHA;
 begin
   GetProcedureAddress(_PdhEnumObjectItemsHA, PdhLib, 'PdhEnumObjectItemsHA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhEnumObjectItemsHA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhEnumObjectItemsHA]
   end;
 end;
-{$ELSE}
-function PdhEnumObjectItemsHA; external PdhLib name 'PdhEnumObjectItemsHA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhEnumObjectItemsH: Pointer;
 
 function PdhEnumObjectItemsH;
 begin
-  GetProcedureAddress(_PdhEnumObjectItemsH, PdhLib, 'PdhEnumObjectItemsHW');
+  GetProcedureAddress(_PdhEnumObjectItemsH, PdhLib, 'PdhEnumObjectItemsH' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhEnumObjectItemsH]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhEnumObjectItemsH]
   end;
 end;
-{$ELSE}
-function PdhEnumObjectItemsH; external PdhLib name 'PdhEnumObjectItemsHW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _PdhEnumObjectItemsH: Pointer;
-
-function PdhEnumObjectItemsH;
-begin
-  GetProcedureAddress(_PdhEnumObjectItemsH, PdhLib, 'PdhEnumObjectItemsHA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhEnumObjectItemsH]
-  end;
-end;
-{$ELSE}
-function PdhEnumObjectItemsH; external PdhLib name 'PdhEnumObjectItemsHA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhExpandWildCardPathHW: Pointer;
 
@@ -3861,16 +2652,12 @@ function PdhExpandWildCardPathHW;
 begin
   GetProcedureAddress(_PdhExpandWildCardPathHW, PdhLib, 'PdhExpandWildCardPathHW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhExpandWildCardPathHW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhExpandWildCardPathHW]
   end;
 end;
-{$ELSE}
-function PdhExpandWildCardPathHW; external PdhLib name 'PdhExpandWildCardPathHW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhExpandWildCardPathHA: Pointer;
 
@@ -3878,53 +2665,25 @@ function PdhExpandWildCardPathHA;
 begin
   GetProcedureAddress(_PdhExpandWildCardPathHA, PdhLib, 'PdhExpandWildCardPathHA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhExpandWildCardPathHA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhExpandWildCardPathHA]
   end;
 end;
-{$ELSE}
-function PdhExpandWildCardPathHA; external PdhLib name 'PdhExpandWildCardPathHA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhExpandWildCardPathH: Pointer;
 
 function PdhExpandWildCardPathH;
 begin
-  GetProcedureAddress(_PdhExpandWildCardPathH, PdhLib, 'PdhExpandWildCardPathHW');
+  GetProcedureAddress(_PdhExpandWildCardPathH, PdhLib, 'PdhExpandWildCardPathH' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhExpandWildCardPathH]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhExpandWildCardPathH]
   end;
 end;
-{$ELSE}
-function PdhExpandWildCardPathH; external PdhLib name 'PdhExpandWildCardPathHW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _PdhExpandWildCardPathH: Pointer;
-
-function PdhExpandWildCardPathH;
-begin
-  GetProcedureAddress(_PdhExpandWildCardPathH, PdhLib, 'PdhExpandWildCardPathHA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhExpandWildCardPathH]
-  end;
-end;
-{$ELSE}
-function PdhExpandWildCardPathH; external PdhLib name 'PdhExpandWildCardPathHA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhGetDataSourceTimeRangeH: Pointer;
 
@@ -3932,16 +2691,12 @@ function PdhGetDataSourceTimeRangeH;
 begin
   GetProcedureAddress(_PdhGetDataSourceTimeRangeH, PdhLib, 'PdhGetDataSourceTimeRangeH');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhGetDataSourceTimeRangeH]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhGetDataSourceTimeRangeH]
   end;
 end;
-{$ELSE}
-function PdhGetDataSourceTimeRangeH; external PdhLib name 'PdhGetDataSourceTimeRangeH';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhGetDefaultPerfObjectHW: Pointer;
 
@@ -3949,16 +2704,12 @@ function PdhGetDefaultPerfObjectHW;
 begin
   GetProcedureAddress(_PdhGetDefaultPerfObjectHW, PdhLib, 'PdhGetDefaultPerfObjectHW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhGetDefaultPerfObjectHW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhGetDefaultPerfObjectHW]
   end;
 end;
-{$ELSE}
-function PdhGetDefaultPerfObjectHW; external PdhLib name 'PdhGetDefaultPerfObjectHW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhGetDefaultPerfObjectHA: Pointer;
 
@@ -3966,53 +2717,25 @@ function PdhGetDefaultPerfObjectHA;
 begin
   GetProcedureAddress(_PdhGetDefaultPerfObjectHA, PdhLib, 'PdhGetDefaultPerfObjectHA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhGetDefaultPerfObjectHA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhGetDefaultPerfObjectHA]
   end;
 end;
-{$ELSE}
-function PdhGetDefaultPerfObjectHA; external PdhLib name 'PdhGetDefaultPerfObjectHA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhGetDefaultPerfObjectH: Pointer;
 
 function PdhGetDefaultPerfObjectH;
 begin
-  GetProcedureAddress(_PdhGetDefaultPerfObjectH, PdhLib, 'PdhGetDefaultPerfObjectHW');
+  GetProcedureAddress(_PdhGetDefaultPerfObjectH, PdhLib, 'PdhGetDefaultPerfObjectH' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhGetDefaultPerfObjectH]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhGetDefaultPerfObjectH]
   end;
 end;
-{$ELSE}
-function PdhGetDefaultPerfObjectH; external PdhLib name 'PdhGetDefaultPerfObjectHW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _PdhGetDefaultPerfObjectH: Pointer;
-
-function PdhGetDefaultPerfObjectH;
-begin
-  GetProcedureAddress(_PdhGetDefaultPerfObjectH, PdhLib, 'PdhGetDefaultPerfObjectHA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhGetDefaultPerfObjectH]
-  end;
-end;
-{$ELSE}
-function PdhGetDefaultPerfObjectH; external PdhLib name 'PdhGetDefaultPerfObjectHA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhGetDefaultPerfCounterHW: Pointer;
 
@@ -4020,16 +2743,12 @@ function PdhGetDefaultPerfCounterHW;
 begin
   GetProcedureAddress(_PdhGetDefaultPerfCounterHW, PdhLib, 'PdhGetDefaultPerfCounterHW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhGetDefaultPerfCounterHW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhGetDefaultPerfCounterHW]
   end;
 end;
-{$ELSE}
-function PdhGetDefaultPerfCounterHW; external PdhLib name 'PdhGetDefaultPerfCounterHW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhGetDefaultPerfCounterHA: Pointer;
 
@@ -4037,53 +2756,25 @@ function PdhGetDefaultPerfCounterHA;
 begin
   GetProcedureAddress(_PdhGetDefaultPerfCounterHA, PdhLib, 'PdhGetDefaultPerfCounterHA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhGetDefaultPerfCounterHA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhGetDefaultPerfCounterHA]
   end;
 end;
-{$ELSE}
-function PdhGetDefaultPerfCounterHA; external PdhLib name 'PdhGetDefaultPerfCounterHA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhGetDefaultPerfCounterH: Pointer;
 
 function PdhGetDefaultPerfCounterH;
 begin
-  GetProcedureAddress(_PdhGetDefaultPerfCounterH, PdhLib, 'PdhGetDefaultPerfCounterHW');
+  GetProcedureAddress(_PdhGetDefaultPerfCounterH, PdhLib, 'PdhGetDefaultPerfCounterH' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhGetDefaultPerfCounterH]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhGetDefaultPerfCounterH]
   end;
 end;
-{$ELSE}
-function PdhGetDefaultPerfCounterH; external PdhLib name 'PdhGetDefaultPerfCounterHW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _PdhGetDefaultPerfCounterH: Pointer;
-
-function PdhGetDefaultPerfCounterH;
-begin
-  GetProcedureAddress(_PdhGetDefaultPerfCounterH, PdhLib, 'PdhGetDefaultPerfCounterHA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhGetDefaultPerfCounterH]
-  end;
-end;
-{$ELSE}
-function PdhGetDefaultPerfCounterH; external PdhLib name 'PdhGetDefaultPerfCounterHA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhBrowseCountersHW: Pointer;
 
@@ -4091,16 +2782,12 @@ function PdhBrowseCountersHW;
 begin
   GetProcedureAddress(_PdhBrowseCountersHW, PdhLib, 'PdhBrowseCountersHW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhBrowseCountersHW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhBrowseCountersHW]
   end;
 end;
-{$ELSE}
-function PdhBrowseCountersHW; external PdhLib name 'PdhBrowseCountersHW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhBrowseCountersHA: Pointer;
 
@@ -4108,53 +2795,25 @@ function PdhBrowseCountersHA;
 begin
   GetProcedureAddress(_PdhBrowseCountersHA, PdhLib, 'PdhBrowseCountersHA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhBrowseCountersHA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhBrowseCountersHA]
   end;
 end;
-{$ELSE}
-function PdhBrowseCountersHA; external PdhLib name 'PdhBrowseCountersHA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhBrowseCountersH: Pointer;
 
 function PdhBrowseCountersH;
 begin
-  GetProcedureAddress(_PdhBrowseCountersH, PdhLib, 'PdhBrowseCountersHW');
+  GetProcedureAddress(_PdhBrowseCountersH, PdhLib, 'PdhBrowseCountersH' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhBrowseCountersH]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhBrowseCountersH]
   end;
 end;
-{$ELSE}
-function PdhBrowseCountersH; external PdhLib name 'PdhBrowseCountersHW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _PdhBrowseCountersH: Pointer;
-
-function PdhBrowseCountersH;
-begin
-  GetProcedureAddress(_PdhBrowseCountersH, PdhLib, 'PdhBrowseCountersHA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhBrowseCountersH]
-  end;
-end;
-{$ELSE}
-function PdhBrowseCountersH; external PdhLib name 'PdhBrowseCountersHA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhVerifySQLDBW: Pointer;
 
@@ -4162,16 +2821,12 @@ function PdhVerifySQLDBW;
 begin
   GetProcedureAddress(_PdhVerifySQLDBW, PdhLib, 'PdhVerifySQLDBW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhVerifySQLDBW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhVerifySQLDBW]
   end;
 end;
-{$ELSE}
-function PdhVerifySQLDBW; external PdhLib name 'PdhVerifySQLDBW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhVerifySQLDBA: Pointer;
 
@@ -4179,53 +2834,25 @@ function PdhVerifySQLDBA;
 begin
   GetProcedureAddress(_PdhVerifySQLDBA, PdhLib, 'PdhVerifySQLDBA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhVerifySQLDBA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhVerifySQLDBA]
   end;
 end;
-{$ELSE}
-function PdhVerifySQLDBA; external PdhLib name 'PdhVerifySQLDBA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhVerifySQLDB: Pointer;
 
 function PdhVerifySQLDB;
 begin
-  GetProcedureAddress(_PdhVerifySQLDB, PdhLib, 'PdhVerifySQLDBW');
+  GetProcedureAddress(_PdhVerifySQLDB, PdhLib, 'PdhVerifySQLDB' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhVerifySQLDB]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhVerifySQLDB]
   end;
 end;
-{$ELSE}
-function PdhVerifySQLDB; external PdhLib name 'PdhVerifySQLDBW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _PdhVerifySQLDB: Pointer;
-
-function PdhVerifySQLDB;
-begin
-  GetProcedureAddress(_PdhVerifySQLDB, PdhLib, 'PdhVerifySQLDBA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhVerifySQLDB]
-  end;
-end;
-{$ELSE}
-function PdhVerifySQLDB; external PdhLib name 'PdhVerifySQLDBA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhCreateSQLTablesW: Pointer;
 
@@ -4233,16 +2860,12 @@ function PdhCreateSQLTablesW;
 begin
   GetProcedureAddress(_PdhCreateSQLTablesW, PdhLib, 'PdhCreateSQLTablesW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhCreateSQLTablesW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhCreateSQLTablesW]
   end;
 end;
-{$ELSE}
-function PdhCreateSQLTablesW; external PdhLib name 'PdhCreateSQLTablesW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhCreateSQLTablesA: Pointer;
 
@@ -4250,53 +2873,25 @@ function PdhCreateSQLTablesA;
 begin
   GetProcedureAddress(_PdhCreateSQLTablesA, PdhLib, 'PdhCreateSQLTablesA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhCreateSQLTablesA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhCreateSQLTablesA]
   end;
 end;
-{$ELSE}
-function PdhCreateSQLTablesA; external PdhLib name 'PdhCreateSQLTablesA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhCreateSQLTables: Pointer;
 
 function PdhCreateSQLTables;
 begin
-  GetProcedureAddress(_PdhCreateSQLTables, PdhLib, 'PdhCreateSQLTablesW');
+  GetProcedureAddress(_PdhCreateSQLTables, PdhLib, 'PdhCreateSQLTables' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhCreateSQLTables]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhCreateSQLTables]
   end;
 end;
-{$ELSE}
-function PdhCreateSQLTables; external PdhLib name 'PdhCreateSQLTablesW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _PdhCreateSQLTables: Pointer;
-
-function PdhCreateSQLTables;
-begin
-  GetProcedureAddress(_PdhCreateSQLTables, PdhLib, 'PdhCreateSQLTablesA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhCreateSQLTables]
-  end;
-end;
-{$ELSE}
-function PdhCreateSQLTables; external PdhLib name 'PdhCreateSQLTablesA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhEnumLogSetNamesW: Pointer;
 
@@ -4304,16 +2899,12 @@ function PdhEnumLogSetNamesW;
 begin
   GetProcedureAddress(_PdhEnumLogSetNamesW, PdhLib, 'PdhEnumLogSetNamesW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhEnumLogSetNamesW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhEnumLogSetNamesW]
   end;
 end;
-{$ELSE}
-function PdhEnumLogSetNamesW; external PdhLib name 'PdhEnumLogSetNamesW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhEnumLogSetNamesA: Pointer;
 
@@ -4321,53 +2912,25 @@ function PdhEnumLogSetNamesA;
 begin
   GetProcedureAddress(_PdhEnumLogSetNamesA, PdhLib, 'PdhEnumLogSetNamesA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhEnumLogSetNamesA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhEnumLogSetNamesA]
   end;
 end;
-{$ELSE}
-function PdhEnumLogSetNamesA; external PdhLib name 'PdhEnumLogSetNamesA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhEnumLogSetNames: Pointer;
 
 function PdhEnumLogSetNames;
 begin
-  GetProcedureAddress(_PdhEnumLogSetNames, PdhLib, 'PdhEnumLogSetNamesW');
+  GetProcedureAddress(_PdhEnumLogSetNames, PdhLib, 'PdhEnumLogSetNames' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhEnumLogSetNames]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhEnumLogSetNames]
   end;
 end;
-{$ELSE}
-function PdhEnumLogSetNames; external PdhLib name 'PdhEnumLogSetNamesW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _PdhEnumLogSetNames: Pointer;
-
-function PdhEnumLogSetNames;
-begin
-  GetProcedureAddress(_PdhEnumLogSetNames, PdhLib, 'PdhEnumLogSetNamesA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhEnumLogSetNames]
-  end;
-end;
-{$ELSE}
-function PdhEnumLogSetNames; external PdhLib name 'PdhEnumLogSetNamesA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhGetLogSetGUID: Pointer;
 
@@ -4375,16 +2938,12 @@ function PdhGetLogSetGUID;
 begin
   GetProcedureAddress(_PdhGetLogSetGUID, PdhLib, 'PdhGetLogSetGUID');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhGetLogSetGUID]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhGetLogSetGUID]
   end;
 end;
-{$ELSE}
-function PdhGetLogSetGUID; external PdhLib name 'PdhGetLogSetGUID';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PdhSetLogSetRunID: Pointer;
 
@@ -4392,14 +2951,143 @@ function PdhSetLogSetRunID;
 begin
   GetProcedureAddress(_PdhSetLogSetRunID, PdhLib, 'PdhSetLogSetRunID');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PdhSetLogSetRunID]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PdhSetLogSetRunID]
   end;
 end;
-{$ELSE}
-function PdhSetLogSetRunID; external PdhLib name 'PdhSetLogSetRunID';
-{$ENDIF DYNAMIC_LINK}
 
+{$ELSE}
+
+function PdhGetDllVersion; external PdhLib name 'PdhGetDllVersion';
+function PdhOpenQueryA; external PdhLib name 'PdhOpenQueryA';
+function PdhOpenQueryW; external PdhLib name 'PdhOpenQueryW';
+function PdhOpenQuery; external PdhLib name 'PdhOpenQuery' + AWSuffix;
+function PdhAddCounterA; external PdhLib name 'PdhAddCounterA';
+function PdhAddCounterW; external PdhLib name 'PdhAddCounterW';
+function PdhAddCounter; external PdhLib name 'PdhAddCounter' + AWSuffix;
+function PdhRemoveCounter; external PdhLib name 'PdhRemoveCounter';
+function PdhCollectQueryData; external PdhLib name 'PdhCollectQueryData';
+function PdhCloseQuery; external PdhLib name 'PdhCloseQuery';
+function PdhGetFormattedCounterValue; external PdhLib name 'PdhGetFormattedCounterValue';
+function PdhGetFormattedCounterArrayA; external PdhLib name 'PdhGetFormattedCounterArrayA';
+function PdhGetFormattedCounterArrayW; external PdhLib name 'PdhGetFormattedCounterArrayW';
+function PdhGetFormattedCounterArray; external PdhLib name 'PdhGetFormattedCounterArray' + AWSuffix;
+function PdhGetRawCounterValue; external PdhLib name 'PdhGetRawCounterValue';
+function PdhGetRawCounterArrayA; external PdhLib name 'PdhGetRawCounterArrayA';
+function PdhGetRawCounterArrayW; external PdhLib name 'PdhGetRawCounterArrayW';
+function PdhGetRawCounterArray; external PdhLib name 'PdhGetRawCounterArray' + AWSuffix;
+function PdhCalculateCounterFromRawValue; external PdhLib name 'PdhCalculateCounterFromRawValue';
+function PdhComputeCounterStatistics; external PdhLib name 'PdhComputeCounterStatistics';
+function PdhGetCounterInfoA; external PdhLib name 'PdhGetCounterInfoA';
+function PdhGetCounterInfoW; external PdhLib name 'PdhGetCounterInfoW';
+function PdhGetCounterInfo; external PdhLib name 'PdhGetCounterInfo' + AWSuffix;
+function PdhSetCounterScaleFactor; external PdhLib name 'PdhSetCounterScaleFactor';
+function PdhConnectMachineA; external PdhLib name 'PdhConnectMachineA';
+function PdhConnectMachineW; external PdhLib name 'PdhConnectMachineW';
+function PdhConnectMachine; external PdhLib name 'PdhConnectMachine' + AWSuffix;
+function PdhEnumMachinesA; external PdhLib name 'PdhEnumMachinesA';
+function PdhEnumMachinesW; external PdhLib name 'PdhEnumMachinesW';
+function PdhEnumMachines; external PdhLib name 'PdhEnumMachines' + AWSuffix;
+function PdhEnumObjectsA; external PdhLib name 'PdhEnumObjectsA';
+function PdhEnumObjectsW; external PdhLib name 'PdhEnumObjectsW';
+function PdhEnumObjects; external PdhLib name 'PdhEnumObjects' + AWSuffix;
+function PdhEnumObjectItemsA; external PdhLib name 'PdhEnumObjectItemsA';
+function PdhEnumObjectItemsW; external PdhLib name 'PdhEnumObjectItemsW';
+function PdhEnumObjectItems; external PdhLib name 'PdhEnumObjectItems' + AWSuffix;
+function PdhMakeCounterPathA; external PdhLib name 'PdhMakeCounterPathA';
+function PdhMakeCounterPathW; external PdhLib name 'PdhMakeCounterPathW';
+function PdhMakeCounterPath; external PdhLib name 'PdhMakeCounterPath' + AWSuffix;
+function PdhParseCounterPathA; external PdhLib name 'PdhParseCounterPathA';
+function PdhParseCounterPathW; external PdhLib name 'PdhParseCounterPathW';
+function PdhParseCounterPath; external PdhLib name 'PdhParseCounterPath' + AWSuffix;
+function PdhParseInstanceNameA; external PdhLib name 'PdhParseInstanceNameA';
+function PdhParseInstanceNameW; external PdhLib name 'PdhParseInstanceNameW';
+function PdhParseInstanceName; external PdhLib name 'PdhParseInstanceName' + AWSuffix;
+function PdhValidatePathA; external PdhLib name 'PdhValidatePathA';
+function PdhValidatePathW; external PdhLib name 'PdhValidatePathW';
+function PdhValidatePath; external PdhLib name 'PdhValidatePath' + AWSuffix;
+function PdhGetDefaultPerfObjectA; external PdhLib name 'PdhGetDefaultPerfObjectA';
+function PdhGetDefaultPerfObjectW; external PdhLib name 'PdhGetDefaultPerfObjectW';
+function PdhGetDefaultPerfObject; external PdhLib name 'PdhGetDefaultPerfObject' + AWSuffix;
+function PdhGetDefaultPerfCounterA; external PdhLib name 'PdhGetDefaultPerfCounterA';
+function PdhGetDefaultPerfCounterW; external PdhLib name 'PdhGetDefaultPerfCounterW';
+function PdhGetDefaultPerfCounter; external PdhLib name 'PdhGetDefaultPerfCounter' + AWSuffix;
+function PdhBrowseCountersA; external PdhLib name 'PdhBrowseCountersA';
+function PdhBrowseCountersW; external PdhLib name 'PdhBrowseCountersW';
+function PdhBrowseCounters; external PdhLib name 'PdhBrowseCounters' + AWSuffix;
+function PdhExpandCounterPathA; external PdhLib name 'PdhExpandCounterPathA';
+function PdhExpandCounterPathW; external PdhLib name 'PdhExpandCounterPathW';
+function PdhExpandCounterPath; external PdhLib name 'PdhExpandCounterPath' + AWSuffix;
+function PdhLookupPerfNameByIndexA; external PdhLib name 'PdhLookupPerfNameByIndexA';
+function PdhLookupPerfNameByIndexW; external PdhLib name 'PdhLookupPerfNameByIndexW';
+function PdhLookupPerfNameByIndex; external PdhLib name 'PdhLookupPerfNameByIndex' + AWSuffix;
+function PdhLookupPerfIndexByNameA; external PdhLib name 'PdhLookupPerfIndexByNameA';
+function PdhLookupPerfIndexByNameW; external PdhLib name 'PdhLookupPerfIndexByNameW';
+function PdhLookupPerfIndexByName; external PdhLib name 'PdhLookupPerfIndexByName' + AWSuffix;
+function PdhExpandWildCardPathA; external PdhLib name 'PdhExpandWildCardPathA';
+function PdhExpandWildCardPathW; external PdhLib name 'PdhExpandWildCardPathW';
+function PdhExpandWildCardPath; external PdhLib name 'PdhExpandWildCardPath' + AWSuffix;
+function PdhOpenLogA; external PdhLib name 'PdhOpenLogA';
+function PdhOpenLogW; external PdhLib name 'PdhOpenLogW';
+function PdhOpenLog; external PdhLib name 'PdhOpenLog' + AWSuffix;
+function PdhUpdateLogA; external PdhLib name 'PdhUpdateLogA';
+function PdhUpdateLogW; external PdhLib name 'PdhUpdateLogW';
+function PdhUpdateLog; external PdhLib name 'PdhUpdateLog' + AWSuffix;
+function PdhUpdateLogFileCatalog; external PdhLib name 'PdhUpdateLogFileCatalog';
+function PdhGetLogFileSize; external PdhLib name 'PdhGetLogFileSize';
+function PdhCloseLog; external PdhLib name 'PdhCloseLog';
+function PdhSelectDataSourceA; external PdhLib name 'PdhSelectDataSourceA';
+function PdhSelectDataSourceW; external PdhLib name 'PdhSelectDataSourceW';
+function PdhSelectDataSource; external PdhLib name 'PdhSelectDataSource' + AWSuffix;
+function PdhIsRealTimeQuery; external PdhLib name 'PdhIsRealTimeQuery';
+function PdhSetQueryTimeRange; external PdhLib name 'PdhSetQueryTimeRange';
+function PdhGetDataSourceTimeRangeA; external PdhLib name 'PdhGetDataSourceTimeRangeA';
+function PdhGetDataSourceTimeRangeW; external PdhLib name 'PdhGetDataSourceTimeRangeW';
+function PdhGetDataSourceTimeRange; external PdhLib name 'PdhGetDataSourceTimeRange' + AWSuffix;
+function PdhCollectQueryDataEx; external PdhLib name 'PdhCollectQueryDataEx';
+function PdhFormatFromRawValue; external PdhLib name 'PdhFormatFromRawValue';
+function PdhGetCounterTimeBase; external PdhLib name 'PdhGetCounterTimeBase';
+function PdhReadRawLogRecord; external PdhLib name 'PdhReadRawLogRecord';
+function PdhSetDefaultRealTimeDataSource; external PdhLib name 'PdhSetDefaultRealTimeDataSource';
+function PdhBindInputDataSourceW; external PdhLib name 'PdhBindInputDataSourceW';
+function PdhBindInputDataSourceA; external PdhLib name 'PdhBindInputDataSourceA';
+function PdhBindInputDataSource; external PdhLib name 'PdhBindInputDataSource' + AWSuffix;
+function PdhOpenQueryH; external PdhLib name 'PdhOpenQueryH';
+function PdhEnumMachinesHW; external PdhLib name 'PdhEnumMachinesHW';
+function PdhEnumMachinesHA; external PdhLib name 'PdhEnumMachinesHA';
+function PdhEnumMachinesH; external PdhLib name 'PdhEnumMachinesH' + AWSuffix;
+function PdhEnumObjectsHW; external PdhLib name 'PdhEnumObjectsHW';
+function PdhEnumObjectsHA; external PdhLib name 'PdhEnumObjectsHA';
+function PdhEnumObjectsH; external PdhLib name 'PdhEnumObjectsH' + AWSuffix;
+function PdhEnumObjectItemsHW; external PdhLib name 'PdhEnumObjectItemsHW';
+function PdhEnumObjectItemsHA; external PdhLib name 'PdhEnumObjectItemsHA';
+function PdhEnumObjectItemsH; external PdhLib name 'PdhEnumObjectItemsH' + AWSuffix;
+function PdhExpandWildCardPathHW; external PdhLib name 'PdhExpandWildCardPathHW';
+function PdhExpandWildCardPathHA; external PdhLib name 'PdhExpandWildCardPathHA';
+function PdhExpandWildCardPathH; external PdhLib name 'PdhExpandWildCardPathH' + AWSuffix;
+function PdhGetDataSourceTimeRangeH; external PdhLib name 'PdhGetDataSourceTimeRangeH';
+function PdhGetDefaultPerfObjectHW; external PdhLib name 'PdhGetDefaultPerfObjectHW';
+function PdhGetDefaultPerfObjectHA; external PdhLib name 'PdhGetDefaultPerfObjectHA';
+function PdhGetDefaultPerfObjectH; external PdhLib name 'PdhGetDefaultPerfObjectH' + AWSuffix;
+function PdhGetDefaultPerfCounterHW; external PdhLib name 'PdhGetDefaultPerfCounterHW';
+function PdhGetDefaultPerfCounterHA; external PdhLib name 'PdhGetDefaultPerfCounterHA';
+function PdhGetDefaultPerfCounterH; external PdhLib name 'PdhGetDefaultPerfCounterH' + AWSuffix;
+function PdhBrowseCountersHW; external PdhLib name 'PdhBrowseCountersHW';
+function PdhBrowseCountersHA; external PdhLib name 'PdhBrowseCountersHA';
+function PdhBrowseCountersH; external PdhLib name 'PdhBrowseCountersH' + AWSuffix;
+function PdhVerifySQLDBW; external PdhLib name 'PdhVerifySQLDBW';
+function PdhVerifySQLDBA; external PdhLib name 'PdhVerifySQLDBA';
+function PdhVerifySQLDB; external PdhLib name 'PdhVerifySQLDB' + AWSuffix;
+function PdhCreateSQLTablesW; external PdhLib name 'PdhCreateSQLTablesW';
+function PdhCreateSQLTablesA; external PdhLib name 'PdhCreateSQLTablesA';
+function PdhCreateSQLTables; external PdhLib name 'PdhCreateSQLTables' + AWSuffix;
+function PdhEnumLogSetNamesW; external PdhLib name 'PdhEnumLogSetNamesW';
+function PdhEnumLogSetNamesA; external PdhLib name 'PdhEnumLogSetNamesA';
+function PdhEnumLogSetNames; external PdhLib name 'PdhEnumLogSetNames' + AWSuffix;
+function PdhGetLogSetGUID; external PdhLib name 'PdhGetLogSetGUID';
+function PdhSetLogSetRunID; external PdhLib name 'PdhSetLogSetRunID';
+
+{$ENDIF DYNAMIC_LINK}
 
 end.

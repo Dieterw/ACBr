@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Active Directory Services API interface Unit for Object Pascal               }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: activeds.h, released June 2000. The original Pascal    }
 { code is: ActiveDS.pas, released December 2000. The initial developer of the  }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,27 +35,29 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
-{ For more information about the LGPL: http://www.gn.org/copyleft/lesser.html }
-{ 						    u		               }
+{                                                                              }
+{ For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaActiveDS.pas,v 1.10 2005/09/06 16:36:50 marquardt Exp $
 
 unit JwaActiveDS;
 
 {$WEAKPACKAGEUNIT}
+
+{$I jediapilib.inc}
+
+interface
+
+uses
+  JwaActiveX, JwaAdsTLB, JwaWindows;
 
 {$HPPEMIT ''}
 {$HPPEMIT '#include "activeds.h"'}
 {$HPPEMIT ''}
 {$HPPEMIT 'typedef GUID REFIID'}
 {$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
-
-interface
-
-uses
-  ActiveX {TODO}, JwaAdsTLB, JwaWinNT, JwaWinType, JwaWinUser;
 
 type
   REFIID = GUID;
@@ -230,7 +231,6 @@ const
 //
 // Define the severity codes
 //
-
 
 //
 // MessageId: E_ADS_BAD_PATHNAME
@@ -556,16 +556,16 @@ const
 
   ADS_SERVICE_STOPPED          = $00000001;
   {$EXTERNALSYM ADS_SERVICE_STOPPED}
-  ADS_SERVICE_START_PENDING	   = $00000002;
-  {$EXTERNALSYM ADS_SERVICE_START_PENDING	}
+  ADS_SERVICE_START_PENDING    = $00000002;
+  {$EXTERNALSYM ADS_SERVICE_START_PENDING}
   ADS_SERVICE_STOP_PENDING     = $00000003;
   {$EXTERNALSYM ADS_SERVICE_STOP_PENDING}
-  ADS_SERVICE_RUNNING	         = $00000004;
-  {$EXTERNALSYM ADS_SERVICE_RUNNING	}
+  ADS_SERVICE_RUNNING          = $00000004;
+  {$EXTERNALSYM ADS_SERVICE_RUNNING}
   ADS_SERVICE_CONTINUE_PENDING = $00000005;
   {$EXTERNALSYM ADS_SERVICE_CONTINUE_PENDING}
-  ADS_SERVICE_PAUSE_PENDING	   = $00000006;
-  {$EXTERNALSYM ADS_SERVICE_PAUSE_PENDING	}
+  ADS_SERVICE_PAUSE_PENDING    = $00000006;
+  {$EXTERNALSYM ADS_SERVICE_PAUSE_PENDING}
   ADS_SERVICE_PAUSED           = $00000007;
   {$EXTERNALSYM ADS_SERVICE_PAUSED}
   ADS_SERVICE_ERROR            = $00000008;
@@ -731,19 +731,19 @@ const
 //              sheets.
 
 const
-  WM_ADSPROP_NOTIFY_PAGEINIT   = (WM_USER + 1101); // where LPARAM is the PADSPROPINITPARAMS pointer.
+  WM_ADSPROP_NOTIFY_PAGEINIT   = WM_USER + 1101; // where LPARAM is the PADSPROPINITPARAMS pointer.
   {$EXTERNALSYM WM_ADSPROP_NOTIFY_PAGEINIT}
-  WM_ADSPROP_NOTIFY_PAGEHWND   = (WM_USER + 1102); // where WPARAM => page's HWND
+  WM_ADSPROP_NOTIFY_PAGEHWND   = WM_USER + 1102; // where WPARAM => page's HWND
   {$EXTERNALSYM WM_ADSPROP_NOTIFY_PAGEHWND}
-  WM_ADSPROP_NOTIFY_CHANGE     = (WM_USER + 1103); // used to send a change notification to a parent sheet
+  WM_ADSPROP_NOTIFY_CHANGE     = WM_USER + 1103; // used to send a change notification to a parent sheet
   {$EXTERNALSYM WM_ADSPROP_NOTIFY_CHANGE}
-  WM_ADSPROP_NOTIFY_APPLY      = (WM_USER + 1104); // pages send this to the notification object.
+  WM_ADSPROP_NOTIFY_APPLY      = WM_USER + 1104; // pages send this to the notification object.
   {$EXTERNALSYM WM_ADSPROP_NOTIFY_APPLY}
-  WM_ADSPROP_NOTIFY_SETFOCUS   = (WM_USER + 1105); // used internally by the notification object.
+  WM_ADSPROP_NOTIFY_SETFOCUS   = WM_USER + 1105; // used internally by the notification object.
   {$EXTERNALSYM WM_ADSPROP_NOTIFY_SETFOCUS}
-  WM_ADSPROP_NOTIFY_FOREGROUND = (WM_USER + 1106); // used internally by the notification object.
+  WM_ADSPROP_NOTIFY_FOREGROUND = WM_USER + 1106; // used internally by the notification object.
   {$EXTERNALSYM WM_ADSPROP_NOTIFY_FOREGROUND}
-  WM_ADSPROP_NOTIFY_EXIT       = (WM_USER + 1107); // sent on page release
+  WM_ADSPROP_NOTIFY_EXIT       = WM_USER + 1107; // sent on page release
   {$EXTERNALSYM WM_ADSPROP_NOTIFY_EXIT}
 
 //+----------------------------------------------------------------------------
@@ -853,46 +853,10 @@ function ADsPropCheckIfWritable(pwzAttr: PWSTR; pWritableAttrs: PADS_ATTR_INFO):
 
 implementation
 
-const
-  adslib = 'activeds.dll';
-  dsprop = 'dsprop.dll';
+uses
+  JwaWinDLLNames;
 
 // adshlp.h
-
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ADsGetObject: Pointer;
-
-function ADsGetObject;
-begin
-  GetProcedureAddress(_ADsGetObject, adslib, 'ADsGetObject');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ADsGetObject]
-  end;
-end;
-{$ELSE}
-function ADsGetObject; external adslib name 'ADsGetObject';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ADsBuildEnumerator: Pointer;
-
-function ADsBuildEnumerator;
-begin
-  GetProcedureAddress(_ADsBuildEnumerator, adslib, 'ADsBuildEnumerator');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ADsBuildEnumerator]
-  end;
-end;
-{$ELSE}
-function ADsBuildEnumerator; external adslib name 'ADsBuildEnumerator';
-{$ENDIF DYNAMIC_LINK}
 
 function _ADsFreeEnumerator(pEnumVariant: IEnumVARIANT): HRESULT; stdcall; external adslib name 'ADsFreeEnumerator';
 
@@ -902,11 +866,42 @@ begin
   // ADsFreeEnumerator doesn't set pEnumVariant to nil causing Delphi to call
   // Release() again when pEnumVariant leaves scope. Result would be an access
   // violation, explicitly setting the interface to nil prevents this.
-  if Result = 0{S_OK} then Pointer(pEnumVariant) := nil;
+  if Result = 0 {S_OK} then
+    Pointer(pEnumVariant) := nil;
 end;
 
+//procedure ADsFreeAllErrorRecords
+
+// adsprop.h
 
 {$IFDEF DYNAMIC_LINK}
+
+var
+  _ADsGetObject: Pointer;
+
+function ADsGetObject;
+begin
+  GetProcedureAddress(_ADsGetObject, adslib, 'ADsGetObject');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ADsGetObject]
+  end;
+end;
+
+var
+  _ADsBuildEnumerator: Pointer;
+
+function ADsBuildEnumerator;
+begin
+  GetProcedureAddress(_ADsBuildEnumerator, adslib, 'ADsBuildEnumerator');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ADsBuildEnumerator]
+  end;
+end;
+
 var
   _ADsEnumerateNext: Pointer;
 
@@ -914,16 +909,12 @@ function ADsEnumerateNext;
 begin
   GetProcedureAddress(_ADsEnumerateNext, adslib, 'ADsEnumerateNext');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ADsEnumerateNext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ADsEnumerateNext]
   end;
 end;
-{$ELSE}
-function ADsEnumerateNext; external adslib name 'ADsEnumerateNext';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ADsBuildVarArrayStr: Pointer;
 
@@ -931,16 +922,12 @@ function ADsBuildVarArrayStr;
 begin
   GetProcedureAddress(_ADsBuildVarArrayStr, adslib, 'ADsBuildVarArrayStr');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ADsBuildVarArrayStr]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ADsBuildVarArrayStr]
   end;
 end;
-{$ELSE}
-function ADsBuildVarArrayStr; external adslib name 'ADsBuildVarArrayStr';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ADsBuildVarArrayInt: Pointer;
 
@@ -948,16 +935,12 @@ function ADsBuildVarArrayInt;
 begin
   GetProcedureAddress(_ADsBuildVarArrayInt, adslib, 'ADsBuildVarArrayInt');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ADsBuildVarArrayInt]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ADsBuildVarArrayInt]
   end;
 end;
-{$ELSE}
-function ADsBuildVarArrayInt; external adslib name 'ADsBuildVarArrayInt';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ADsOpenObject: Pointer;
 
@@ -965,16 +948,12 @@ function ADsOpenObject;
 begin
   GetProcedureAddress(_ADsOpenObject, adslib, 'ADsOpenObject');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ADsOpenObject]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ADsOpenObject]
   end;
 end;
-{$ELSE}
-function ADsOpenObject; external adslib name 'ADsOpenObject';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ADsGetLastError: Pointer;
 
@@ -982,16 +961,12 @@ function ADsGetLastError;
 begin
   GetProcedureAddress(_ADsGetLastError, adslib, 'ADsGetLastError');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ADsGetLastError]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ADsGetLastError]
   end;
 end;
-{$ELSE}
-function ADsGetLastError; external adslib name 'ADsGetLastError';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ADsSetLastError: Pointer;
 
@@ -999,17 +974,12 @@ procedure ADsSetLastError;
 begin
   GetProcedureAddress(_ADsSetLastError, adslib, 'ADsSetLastError');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ADsSetLastError]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ADsSetLastError]
   end;
 end;
-{$ELSE}
-procedure ADsSetLastError; external adslib name 'ADsSetLastError';
-{$ENDIF DYNAMIC_LINK}
-//procedure ADsFreeAllErrorRecords
 
-{$IFDEF DYNAMIC_LINK}
 var
   _AllocADsMem: Pointer;
 
@@ -1017,16 +987,12 @@ function AllocADsMem;
 begin
   GetProcedureAddress(_AllocADsMem, adslib, 'AllocADsMem');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AllocADsMem]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AllocADsMem]
   end;
 end;
-{$ELSE}
-function AllocADsMem; external adslib name 'AllocADsMem';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _FreeADsMem: Pointer;
 
@@ -1034,16 +1000,12 @@ function FreeADsMem;
 begin
   GetProcedureAddress(_FreeADsMem, adslib, 'FreeADsMem');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FreeADsMem]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_FreeADsMem]
   end;
 end;
-{$ELSE}
-function FreeADsMem; external adslib name 'FreeADsMem';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ReallocADsMem: Pointer;
 
@@ -1051,16 +1013,12 @@ function ReallocADsMem;
 begin
   GetProcedureAddress(_ReallocADsMem, adslib, 'ReallocADsMem');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ReallocADsMem]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ReallocADsMem]
   end;
 end;
-{$ELSE}
-function ReallocADsMem; external adslib name 'ReallocADsMem';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _AllocADsStr: Pointer;
 
@@ -1068,16 +1026,12 @@ function AllocADsStr;
 begin
   GetProcedureAddress(_AllocADsStr, adslib, 'AllocADsStr');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AllocADsStr]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AllocADsStr]
   end;
 end;
-{$ELSE}
-function AllocADsStr; external adslib name 'AllocADsStr';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _FreeADsStr: Pointer;
 
@@ -1085,16 +1039,12 @@ function FreeADsStr;
 begin
   GetProcedureAddress(_FreeADsStr, adslib, 'FreeADsStr');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FreeADsStr]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_FreeADsStr]
   end;
 end;
-{$ELSE}
-function FreeADsStr; external adslib name 'FreeADsStr';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ReallocADsStr: Pointer;
 
@@ -1102,16 +1052,12 @@ function ReallocADsStr;
 begin
   GetProcedureAddress(_ReallocADsStr, adslib, 'ReallocADsStr');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ReallocADsStr]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ReallocADsStr]
   end;
 end;
-{$ELSE}
-function ReallocADsStr; external adslib name 'ReallocADsStr';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ADsEncodeBinaryData: Pointer;
 
@@ -1119,16 +1065,12 @@ function ADsEncodeBinaryData;
 begin
   GetProcedureAddress(_ADsEncodeBinaryData, adslib, 'ADsEncodeBinaryData');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ADsEncodeBinaryData]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ADsEncodeBinaryData]
   end;
 end;
-{$ELSE}
-function ADsEncodeBinaryData; external adslib name 'ADsEncodeBinaryData';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ADsDecodeBinaryData: Pointer;
 
@@ -1136,16 +1078,12 @@ function ADsDecodeBinaryData;
 begin
   GetProcedureAddress(_ADsDecodeBinaryData, adslib, 'ADsDecodeBinaryData');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ADsDecodeBinaryData]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ADsDecodeBinaryData]
   end;
 end;
-{$ELSE}
-function ADsDecodeBinaryData; external adslib name 'ADsDecodeBinaryData';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PropVariantToAdsType: Pointer;
 
@@ -1153,16 +1091,12 @@ function PropVariantToAdsType;
 begin
   GetProcedureAddress(_PropVariantToAdsType, adslib, 'PropVariantToAdsType');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PropVariantToAdsType]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PropVariantToAdsType]
   end;
 end;
-{$ELSE}
-function PropVariantToAdsType; external adslib name 'PropVariantToAdsType';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _AdsTypeToPropVariant: Pointer;
 
@@ -1170,16 +1104,12 @@ function AdsTypeToPropVariant;
 begin
   GetProcedureAddress(_AdsTypeToPropVariant, adslib, 'AdsTypeToPropVariant');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AdsTypeToPropVariant]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AdsTypeToPropVariant]
   end;
 end;
-{$ELSE}
-function AdsTypeToPropVariant; external adslib name 'AdsTypeToPropVariant';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _AdsFreeAdsValues: Pointer;
 
@@ -1187,19 +1117,12 @@ procedure AdsFreeAdsValues;
 begin
   GetProcedureAddress(_AdsFreeAdsValues, adslib, 'AdsFreeAdsValues');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AdsFreeAdsValues]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AdsFreeAdsValues]
   end;
 end;
-{$ELSE}
-procedure AdsFreeAdsValues; external adslib name 'AdsFreeAdsValues';
-{$ENDIF DYNAMIC_LINK}
 
-// adsprop.h
-
-
-{$IFDEF DYNAMIC_LINK}
 var
   _ADsPropCreateNotifyObj: Pointer;
 
@@ -1207,16 +1130,12 @@ function ADsPropCreateNotifyObj;
 begin
   GetProcedureAddress(_ADsPropCreateNotifyObj, dsprop, 'ADsPropCreateNotifyObj');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ADsPropCreateNotifyObj]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ADsPropCreateNotifyObj]
   end;
 end;
-{$ELSE}
-function ADsPropCreateNotifyObj; external dsprop name 'ADsPropCreateNotifyObj';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ADsPropGetInitInfo: Pointer;
 
@@ -1224,16 +1143,12 @@ function ADsPropGetInitInfo;
 begin
   GetProcedureAddress(_ADsPropGetInitInfo, dsprop, 'ADsPropGetInitInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ADsPropGetInitInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ADsPropGetInitInfo]
   end;
 end;
-{$ELSE}
-function ADsPropGetInitInfo; external dsprop name 'ADsPropGetInitInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ADsPropSetHwnd: Pointer;
 
@@ -1241,16 +1156,12 @@ function ADsPropSetHwnd;
 begin
   GetProcedureAddress(_ADsPropSetHwnd, dsprop, 'ADsPropSetHwnd');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ADsPropSetHwnd]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ADsPropSetHwnd]
   end;
 end;
-{$ELSE}
-function ADsPropSetHwnd; external dsprop name 'ADsPropSetHwnd';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ADsPropCheckIfWritable: Pointer;
 
@@ -1258,13 +1169,38 @@ function ADsPropCheckIfWritable;
 begin
   GetProcedureAddress(_ADsPropCheckIfWritable, dsprop, 'ADsPropCheckIfWritable');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ADsPropCheckIfWritable]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ADsPropCheckIfWritable]
   end;
 end;
+
 {$ELSE}
+
+function ADsGetObject; external adslib name 'ADsGetObject';
+function ADsBuildEnumerator; external adslib name 'ADsBuildEnumerator';
+function ADsEnumerateNext; external adslib name 'ADsEnumerateNext';
+function ADsBuildVarArrayStr; external adslib name 'ADsBuildVarArrayStr';
+function ADsBuildVarArrayInt; external adslib name 'ADsBuildVarArrayInt';
+function ADsOpenObject; external adslib name 'ADsOpenObject';
+function ADsGetLastError; external adslib name 'ADsGetLastError';
+procedure ADsSetLastError; external adslib name 'ADsSetLastError';
+function AllocADsMem; external adslib name 'AllocADsMem';
+function FreeADsMem; external adslib name 'FreeADsMem';
+function ReallocADsMem; external adslib name 'ReallocADsMem';
+function AllocADsStr; external adslib name 'AllocADsStr';
+function FreeADsStr; external adslib name 'FreeADsStr';
+function ReallocADsStr; external adslib name 'ReallocADsStr';
+function ADsEncodeBinaryData; external adslib name 'ADsEncodeBinaryData';
+function ADsDecodeBinaryData; external adslib name 'ADsDecodeBinaryData';
+function PropVariantToAdsType; external adslib name 'PropVariantToAdsType';
+function AdsTypeToPropVariant; external adslib name 'AdsTypeToPropVariant';
+procedure AdsFreeAdsValues; external adslib name 'AdsFreeAdsValues';
+function ADsPropCreateNotifyObj; external dsprop name 'ADsPropCreateNotifyObj';
+function ADsPropGetInitInfo; external dsprop name 'ADsPropGetInitInfo';
+function ADsPropSetHwnd; external dsprop name 'ADsPropSetHwnd';
 function ADsPropCheckIfWritable; external dsprop name 'ADsPropCheckIfWritable';
+
 {$ENDIF DYNAMIC_LINK}
 
 end.

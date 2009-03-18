@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Creating and applying patches to filesAPI interface Unit for Object Pascal   }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: patchapi.h, released August 2001. The original Pascal  }
 { code is: PatchApi.pas, released December 2001. The initial developer of the  }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaPatchApi.pas,v 1.10 2005/09/06 16:36:50 marquardt Exp $
 
 unit JwaPatchApi;
 
@@ -49,12 +50,12 @@ unit JwaPatchApi;
 {$HPPEMIT '#include "patchapi.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinType;
+  JwaWindows;
 
 //
 //  The following constants can be combined and used as the OptionFlags
@@ -153,16 +154,15 @@ const
   {$EXTERNALSYM ERROR_PATCH_NOT_AVAILABLE}
 
 type
-  PATCH_PROGRESS_CALLBACK = function (CallbackContext: PVOID; CurrentPosition, MaximumPosition: ULONG): BOOL; stdcall;
+  PATCH_PROGRESS_CALLBACK = function(CallbackContext: PVOID; CurrentPosition, MaximumPosition: ULONG): BOOL; stdcall;
   {$EXTERNALSYM PATCH_PROGRESS_CALLBACK}
   TPatchProgressCallback = PATCH_PROGRESS_CALLBACK;
-
 
   PPATCH_PROGRESS_CALLBACK = ^PATCH_PROGRESS_CALLBACK;
   {$EXTERNALSYM PPATCH_PROGRESS_CALLBACK}
   PPatchProgressCallback = PPATCH_PROGRESS_CALLBACK;
 
-  PATCH_SYMLOAD_CALLBACK = function (WhichFile: ULONG; SymbolFileName: LPCSTR; SymType, SymbolFileCheckSum,
+  PATCH_SYMLOAD_CALLBACK = function(WhichFile: ULONG; SymbolFileName: LPCSTR; SymType, SymbolFileCheckSum,
     SymbolFileTimeDate, ImageFileCheckSum, ImageFileTimeDate: ULONG; CallbackContext: PVOID): BOOL; stdcall;
   {$EXTERNALSYM PATCH_SYMLOAD_CALLBACK}
   TPatchSymLoadCallback = PATCH_SYMLOAD_CALLBACK;
@@ -403,52 +403,30 @@ function GetFilePatchSignatureByHandle(FileHandle: HANDLE; OptionFlags: ULONG; O
 //  appropriate Unicode or Ansi APIs.
 //
 
-{$IFDEF UNICODE}
-
-function CreatePatchFile(OldFileName: LPCWSTR; NewFileName: LPCWSTR; PatchFileName: LPCWSTR; OptionFlags: ULONG; OptionData: PPATCH_OPTION_DATA): BOOL; stdcall;
+function CreatePatchFile(OldFileName: LPCTSTR; NewFileName: LPCTSTR; PatchFileName: LPCTSTR; OptionFlags: ULONG; OptionData: PPATCH_OPTION_DATA): BOOL; stdcall;
 {$EXTERNALSYM CreatePatchFile}
-function CreatePatchFileEx(OldFileCount: ULONG; OldFileInfoArray: PPATCH_OLD_FILE_INFO_W; NewFileName: LPCWSTR; PatchFileName: LPCWSTR;
+function CreatePatchFileEx(OldFileCount: ULONG; OldFileInfoArray: PPATCH_OLD_FILE_INFO; NewFileName: LPCTSTR; PatchFileName: LPCTSTR;
   OptionFlags: ULONG; OptionData: PPATCH_OPTION_DATA; ProgressCallback: PATCH_PROGRESS_CALLBACK; CallbackContext: PVOID): BOOL; stdcall;
 {$EXTERNALSYM CreatePatchFileEx}
-function ExtractPatchHeaderToFile(PatchFileName: LPCWSTR; PatchHeaderFileName: LPCWSTR): BOOL; stdcall;
+function ExtractPatchHeaderToFile(PatchFileName: LPCTSTR; PatchHeaderFileName: LPCTSTR): BOOL; stdcall;
 {$EXTERNALSYM ExtractPatchHeaderToFile}
-function TestApplyPatchToFile(PatchFileName: LPCWSTR; OldFileName: LPCWSTR; ApplyOptionFlags: ULONG): BOOL; stdcall;
+function TestApplyPatchToFile(PatchFileName: LPCTSTR; OldFileName: LPCTSTR; ApplyOptionFlags: ULONG): BOOL; stdcall;
 {$EXTERNALSYM TestApplyPatchToFile}
-function ApplyPatchToFile(PatchFileName: LPCWSTR; OldFileName: LPCWSTR; NewFileName: LPCWSTR; ApplyOptionFlags: ULONG): BOOL; stdcall;
+function ApplyPatchToFile(PatchFileName: LPCTSTR; OldFileName: LPCTSTR; NewFileName: LPCTSTR; ApplyOptionFlags: ULONG): BOOL; stdcall;
 {$EXTERNALSYM ApplyPatchToFile}
-function ApplyPatchToFileEx(PatchFileName: LPCWSTR; OldFileName: LPCWSTR; NewFileName: LPCWSTR; ApplyOptionFlags: ULONG; ProgressCallback: PATCH_PROGRESS_CALLBACK; CallbackContext: PVOID): BOOL; stdcall;
+function ApplyPatchToFileEx(PatchFileName: LPCTSTR; OldFileName: LPCTSTR; NewFileName: LPCTSTR; ApplyOptionFlags: ULONG; ProgressCallback: PATCH_PROGRESS_CALLBACK; CallbackContext: PVOID): BOOL; stdcall;
 {$EXTERNALSYM ApplyPatchToFileEx}
-function GetFilePatchSignature(FileName: LPCWSTR; OptionFlags: ULONG; OptionData: PVOID; IgnoreRangeCount: ULONG; IgnoreRangeArray: PPATCH_IGNORE_RANGE;
+function GetFilePatchSignature(FileName: LPCTSTR; OptionFlags: ULONG; OptionData: PVOID; IgnoreRangeCount: ULONG; IgnoreRangeArray: PPATCH_IGNORE_RANGE;
   RetainRangeCount: ULONG; RetainRangeArray: PPATCH_RETAIN_RANGE; SignatureBufferSizeInBytes: ULONG; SignatureBuffer: PVOID): BOOL; stdcall;
 {$EXTERNALSYM GetFilePatchSignature}
 
-{$ELSE}
-
-function CreatePatchFile(OldFileName: LPCSTR; NewFileName: LPCSTR; PatchFileName: LPCSTR; OptionFlags: ULONG; OptionData: PPATCH_OPTION_DATA): BOOL; stdcall;
-{$EXTERNALSYM CreatePatchFile}
-function CreatePatchFileEx(OldFileCount: ULONG; OldFileInfoArray: PPATCH_OLD_FILE_INFO_A; NewFileName: LPCSTR; PatchFileName: LPCSTR;
-  OptionFlags: ULONG; OptionData: PPATCH_OPTION_DATA; ProgressCallback: PATCH_PROGRESS_CALLBACK; CallbackContext: PVOID): BOOL; stdcall;
-{$EXTERNALSYM CreatePatchFileEx}
-function ExtractPatchHeaderToFile(PatchFileName: LPCSTR; PatchHeaderFileName: LPCSTR): BOOL; stdcall;
-{$EXTERNALSYM ExtractPatchHeaderToFile}
-function TestApplyPatchToFile(PatchFileName: LPCSTR; OldFileName: LPCSTR; ApplyOptionFlags: ULONG): BOOL; stdcall;
-{$EXTERNALSYM TestApplyPatchToFile}
-function ApplyPatchToFile(PatchFileName: LPCSTR; OldFileName: LPCSTR; NewFileName: LPCSTR; ApplyOptionFlags: ULONG): BOOL; stdcall;
-{$EXTERNALSYM ApplyPatchToFile}
-function ApplyPatchToFileEx(PatchFileName: LPCSTR; OldFileName: LPCSTR; NewFileName: LPCSTR; ApplyOptionFlags: ULONG; ProgressCallback: PATCH_PROGRESS_CALLBACK; CallbackContext: PVOID): BOOL; stdcall;
-{$EXTERNALSYM ApplyPatchToFileEx}
-function GetFilePatchSignature(FileName: LPCSTR; OptionFlags: ULONG; OptionData: PVOID; IgnoreRangeCount: ULONG; IgnoreRangeArray: PPATCH_IGNORE_RANGE;
-  RetainRangeCount: ULONG; RetainRangeArray: PPATCH_RETAIN_RANGE; SignatureBufferSize: ULONG; SignatureBuffer: PVOID): BOOL; stdcall;
-{$EXTERNALSYM GetFilePatchSignature}
-
-{$ENDIF}
-
 implementation
 
-const
-  patchapi = 'patchapi.dll'; // todo verify
+uses
+  JwaWinDLLNames;
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _CreatePatchFileA: Pointer;
 
@@ -456,16 +434,12 @@ function CreatePatchFileA;
 begin
   GetProcedureAddress(_CreatePatchFileA, patchapi, 'CreatePatchFileA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreatePatchFileA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreatePatchFileA]
   end;
 end;
-{$ELSE}
-function CreatePatchFileA; external patchapi name 'CreatePatchFileA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreatePatchFileW: Pointer;
 
@@ -473,16 +447,12 @@ function CreatePatchFileW;
 begin
   GetProcedureAddress(_CreatePatchFileW, patchapi, 'CreatePatchFileW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreatePatchFileW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreatePatchFileW]
   end;
 end;
-{$ELSE}
-function CreatePatchFileW; external patchapi name 'CreatePatchFileW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreatePatchFileByHandles: Pointer;
 
@@ -490,16 +460,12 @@ function CreatePatchFileByHandles;
 begin
   GetProcedureAddress(_CreatePatchFileByHandles, patchapi, 'CreatePatchFileByHandles');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreatePatchFileByHandles]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreatePatchFileByHandles]
   end;
 end;
-{$ELSE}
-function CreatePatchFileByHandles; external patchapi name 'CreatePatchFileByHandles';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreatePatchFileExA: Pointer;
 
@@ -507,16 +473,12 @@ function CreatePatchFileExA;
 begin
   GetProcedureAddress(_CreatePatchFileExA, patchapi, 'CreatePatchFileExA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreatePatchFileExA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreatePatchFileExA]
   end;
 end;
-{$ELSE}
-function CreatePatchFileExA; external patchapi name 'CreatePatchFileExA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreatePatchFileExW: Pointer;
 
@@ -524,16 +486,12 @@ function CreatePatchFileExW;
 begin
   GetProcedureAddress(_CreatePatchFileExW, patchapi, 'CreatePatchFileExW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreatePatchFileExW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreatePatchFileExW]
   end;
 end;
-{$ELSE}
-function CreatePatchFileExW; external patchapi name 'CreatePatchFileExW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreatePatchFileByHandlesEx: Pointer;
 
@@ -541,16 +499,12 @@ function CreatePatchFileByHandlesEx;
 begin
   GetProcedureAddress(_CreatePatchFileByHandlesEx, patchapi, 'CreatePatchFileByHandlesEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreatePatchFileByHandlesEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreatePatchFileByHandlesEx]
   end;
 end;
-{$ELSE}
-function CreatePatchFileByHandlesEx; external patchapi name 'CreatePatchFileByHandlesEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ExtractPatchHeaderToFileA: Pointer;
 
@@ -558,16 +512,12 @@ function ExtractPatchHeaderToFileA;
 begin
   GetProcedureAddress(_ExtractPatchHeaderToFileA, patchapi, 'ExtractPatchHeaderToFileA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ExtractPatchHeaderToFileA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ExtractPatchHeaderToFileA]
   end;
 end;
-{$ELSE}
-function ExtractPatchHeaderToFileA; external patchapi name 'ExtractPatchHeaderToFileA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ExtractPatchHeaderToFileW: Pointer;
 
@@ -575,16 +525,12 @@ function ExtractPatchHeaderToFileW;
 begin
   GetProcedureAddress(_ExtractPatchHeaderToFileW, patchapi, 'ExtractPatchHeaderToFileW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ExtractPatchHeaderToFileW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ExtractPatchHeaderToFileW]
   end;
 end;
-{$ELSE}
-function ExtractPatchHeaderToFileW; external patchapi name 'ExtractPatchHeaderToFileW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ExtrPatchHdrToFileByHandles: Pointer;
 
@@ -592,16 +538,12 @@ function ExtractPatchHeaderToFileByHandles;
 begin
   GetProcedureAddress(_ExtrPatchHdrToFileByHandles, patchapi, 'ExtractPatchHeaderToFileByHandles');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ExtrPatchHdrToFileByHandles]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ExtrPatchHdrToFileByHandles]
   end;
 end;
-{$ELSE}
-function ExtractPatchHeaderToFileByHandles; external patchapi name 'ExtractPatchHeaderToFileByHandles';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _TestApplyPatchToFileA: Pointer;
 
@@ -609,16 +551,12 @@ function TestApplyPatchToFileA;
 begin
   GetProcedureAddress(_TestApplyPatchToFileA, patchapi, 'TestApplyPatchToFileA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TestApplyPatchToFileA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TestApplyPatchToFileA]
   end;
 end;
-{$ELSE}
-function TestApplyPatchToFileA; external patchapi name 'TestApplyPatchToFileA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _TestApplyPatchToFileW: Pointer;
 
@@ -626,16 +564,12 @@ function TestApplyPatchToFileW;
 begin
   GetProcedureAddress(_TestApplyPatchToFileW, patchapi, 'TestApplyPatchToFileW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TestApplyPatchToFileW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TestApplyPatchToFileW]
   end;
 end;
-{$ELSE}
-function TestApplyPatchToFileW; external patchapi name 'TestApplyPatchToFileW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _TestApplyPatchToFileByHandles: Pointer;
 
@@ -643,16 +577,12 @@ function TestApplyPatchToFileByHandles;
 begin
   GetProcedureAddress(_TestApplyPatchToFileByHandles, patchapi, 'TestApplyPatchToFileByHandles');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TestApplyPatchToFileByHandles]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TestApplyPatchToFileByHandles]
   end;
 end;
-{$ELSE}
-function TestApplyPatchToFileByHandles; external patchapi name 'TestApplyPatchToFileByHandles';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ApplyPatchToFileA: Pointer;
 
@@ -660,16 +590,12 @@ function ApplyPatchToFileA;
 begin
   GetProcedureAddress(_ApplyPatchToFileA, patchapi, 'ApplyPatchToFileA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ApplyPatchToFileA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ApplyPatchToFileA]
   end;
 end;
-{$ELSE}
-function ApplyPatchToFileA; external patchapi name 'ApplyPatchToFileA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ApplyPatchToFileW: Pointer;
 
@@ -677,16 +603,12 @@ function ApplyPatchToFileW;
 begin
   GetProcedureAddress(_ApplyPatchToFileW, patchapi, 'ApplyPatchToFileW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ApplyPatchToFileW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ApplyPatchToFileW]
   end;
 end;
-{$ELSE}
-function ApplyPatchToFileW; external patchapi name 'ApplyPatchToFileW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ApplyPatchToFileByHandles: Pointer;
 
@@ -694,16 +616,12 @@ function ApplyPatchToFileByHandles;
 begin
   GetProcedureAddress(_ApplyPatchToFileByHandles, patchapi, 'ApplyPatchToFileByHandles');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ApplyPatchToFileByHandles]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ApplyPatchToFileByHandles]
   end;
 end;
-{$ELSE}
-function ApplyPatchToFileByHandles; external patchapi name 'ApplyPatchToFileByHandles';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ApplyPatchToFileExA: Pointer;
 
@@ -711,16 +629,12 @@ function ApplyPatchToFileExA;
 begin
   GetProcedureAddress(_ApplyPatchToFileExA, patchapi, 'ApplyPatchToFileExA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ApplyPatchToFileExA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ApplyPatchToFileExA]
   end;
 end;
-{$ELSE}
-function ApplyPatchToFileExA; external patchapi name 'ApplyPatchToFileExA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ApplyPatchToFileExW: Pointer;
 
@@ -728,16 +642,12 @@ function ApplyPatchToFileExW;
 begin
   GetProcedureAddress(_ApplyPatchToFileExW, patchapi, 'ApplyPatchToFileExW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ApplyPatchToFileExW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ApplyPatchToFileExW]
   end;
 end;
-{$ELSE}
-function ApplyPatchToFileExW; external patchapi name 'ApplyPatchToFileExW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ApplyPatchToFileByHandlesEx: Pointer;
 
@@ -745,16 +655,12 @@ function ApplyPatchToFileByHandlesEx;
 begin
   GetProcedureAddress(_ApplyPatchToFileByHandlesEx, patchapi, 'ApplyPatchToFileByHandlesEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ApplyPatchToFileByHandlesEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ApplyPatchToFileByHandlesEx]
   end;
 end;
-{$ELSE}
-function ApplyPatchToFileByHandlesEx; external patchapi name 'ApplyPatchToFileByHandlesEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetFilePatchSignatureA: Pointer;
 
@@ -762,16 +668,12 @@ function GetFilePatchSignatureA;
 begin
   GetProcedureAddress(_GetFilePatchSignatureA, patchapi, 'GetFilePatchSignatureA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetFilePatchSignatureA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetFilePatchSignatureA]
   end;
 end;
-{$ELSE}
-function GetFilePatchSignatureA; external patchapi name 'GetFilePatchSignatureA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetFilePatchSignatureW: Pointer;
 
@@ -779,16 +681,12 @@ function GetFilePatchSignatureW;
 begin
   GetProcedureAddress(_GetFilePatchSignatureW, patchapi, 'GetFilePatchSignatureW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetFilePatchSignatureW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetFilePatchSignatureW]
   end;
 end;
-{$ELSE}
-function GetFilePatchSignatureW; external patchapi name 'GetFilePatchSignatureW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetFilePatchSignatureByHandle: Pointer;
 
@@ -796,260 +694,134 @@ function GetFilePatchSignatureByHandle;
 begin
   GetProcedureAddress(_GetFilePatchSignatureByHandle, patchapi, 'GetFilePatchSignatureByHandle');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetFilePatchSignatureByHandle]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetFilePatchSignatureByHandle]
   end;
 end;
+
+var
+  _CreatePatchFile: Pointer;
+
+function CreatePatchFile;
+begin
+  GetProcedureAddress(_CreatePatchFile, patchapi, 'CreatePatchFile' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreatePatchFile]
+  end;
+end;
+
+var
+  _CreatePatchFileEx: Pointer;
+
+function CreatePatchFileEx;
+begin
+  GetProcedureAddress(_CreatePatchFileEx, patchapi, 'CreatePatchFileEx' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreatePatchFileEx]
+  end;
+end;
+
+var
+  _ExtractPatchHeaderToFile: Pointer;
+
+function ExtractPatchHeaderToFile;
+begin
+  GetProcedureAddress(_ExtractPatchHeaderToFile, patchapi, 'ExtractPatchHeaderToFile' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ExtractPatchHeaderToFile]
+  end;
+end;
+
+var
+  _TestApplyPatchToFile: Pointer;
+
+function TestApplyPatchToFile;
+begin
+  GetProcedureAddress(_TestApplyPatchToFile, patchapi, 'TestApplyPatchToFile' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TestApplyPatchToFile]
+  end;
+end;
+
+var
+  _ApplyPatchToFile: Pointer;
+
+function ApplyPatchToFile;
+begin
+  GetProcedureAddress(_ApplyPatchToFile, patchapi, 'ApplyPatchToFile' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ApplyPatchToFile]
+  end;
+end;
+
+var
+  _ApplyPatchToFileEx: Pointer;
+
+function ApplyPatchToFileEx;
+begin
+  GetProcedureAddress(_ApplyPatchToFileEx, patchapi, 'ApplyPatchToFileEx' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ApplyPatchToFileEx]
+  end;
+end;
+
+var
+  _GetFilePatchSignature: Pointer;
+
+function GetFilePatchSignature;
+begin
+  GetProcedureAddress(_GetFilePatchSignature, patchapi, 'GetFilePatchSignature' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetFilePatchSignature]
+  end;
+end;
+
 {$ELSE}
+
+function CreatePatchFileA; external patchapi name 'CreatePatchFileA';
+function CreatePatchFileW; external patchapi name 'CreatePatchFileW';
+function CreatePatchFileByHandles; external patchapi name 'CreatePatchFileByHandles';
+function CreatePatchFileExA; external patchapi name 'CreatePatchFileExA';
+function CreatePatchFileExW; external patchapi name 'CreatePatchFileExW';
+function CreatePatchFileByHandlesEx; external patchapi name 'CreatePatchFileByHandlesEx';
+function ExtractPatchHeaderToFileA; external patchapi name 'ExtractPatchHeaderToFileA';
+function ExtractPatchHeaderToFileW; external patchapi name 'ExtractPatchHeaderToFileW';
+function ExtractPatchHeaderToFileByHandles; external patchapi name 'ExtractPatchHeaderToFileByHandles';
+function TestApplyPatchToFileA; external patchapi name 'TestApplyPatchToFileA';
+function TestApplyPatchToFileW; external patchapi name 'TestApplyPatchToFileW';
+function TestApplyPatchToFileByHandles; external patchapi name 'TestApplyPatchToFileByHandles';
+function ApplyPatchToFileA; external patchapi name 'ApplyPatchToFileA';
+function ApplyPatchToFileW; external patchapi name 'ApplyPatchToFileW';
+function ApplyPatchToFileByHandles; external patchapi name 'ApplyPatchToFileByHandles';
+function ApplyPatchToFileExA; external patchapi name 'ApplyPatchToFileExA';
+function ApplyPatchToFileExW; external patchapi name 'ApplyPatchToFileExW';
+function ApplyPatchToFileByHandlesEx; external patchapi name 'ApplyPatchToFileByHandlesEx';
+function GetFilePatchSignatureA; external patchapi name 'GetFilePatchSignatureA';
+function GetFilePatchSignatureW; external patchapi name 'GetFilePatchSignatureW';
 function GetFilePatchSignatureByHandle; external patchapi name 'GetFilePatchSignatureByHandle';
+function CreatePatchFile; external patchapi name 'CreatePatchFile' + AWSuffix;
+function CreatePatchFileEx; external patchapi name 'CreatePatchFileEx' + AWSuffix;
+function ExtractPatchHeaderToFile; external patchapi name 'ExtractPatchHeaderToFile' + AWSuffix;
+function TestApplyPatchToFile; external patchapi name 'TestApplyPatchToFile' + AWSuffix;
+function ApplyPatchToFile; external patchapi name 'ApplyPatchToFile' + AWSuffix;
+function ApplyPatchToFileEx; external patchapi name 'ApplyPatchToFileEx' + AWSuffix;
+function GetFilePatchSignature; external patchapi name 'GetFilePatchSignature' + AWSuffix;
+
 {$ENDIF DYNAMIC_LINK}
-
-{$IFDEF UNICODE}
-
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreatePatchFile: Pointer;
-
-function CreatePatchFile;
-begin
-  GetProcedureAddress(_CreatePatchFile, patchapi, 'CreatePatchFileW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreatePatchFile]
-  end;
-end;
-{$ELSE}
-function CreatePatchFile; external patchapi name 'CreatePatchFileW';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreatePatchFileEx: Pointer;
-
-function CreatePatchFileEx;
-begin
-  GetProcedureAddress(_CreatePatchFileEx, patchapi, 'CreatePatchFileExW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreatePatchFileEx]
-  end;
-end;
-{$ELSE}
-function CreatePatchFileEx; external patchapi name 'CreatePatchFileExW';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ExtractPatchHeaderToFile: Pointer;
-
-function ExtractPatchHeaderToFile;
-begin
-  GetProcedureAddress(_ExtractPatchHeaderToFile, patchapi, 'ExtractPatchHeaderToFileW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ExtractPatchHeaderToFile]
-  end;
-end;
-{$ELSE}
-function ExtractPatchHeaderToFile; external patchapi name 'ExtractPatchHeaderToFileW';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _TestApplyPatchToFile: Pointer;
-
-function TestApplyPatchToFile;
-begin
-  GetProcedureAddress(_TestApplyPatchToFile, patchapi, 'TestApplyPatchToFileW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TestApplyPatchToFile]
-  end;
-end;
-{$ELSE}
-function TestApplyPatchToFile; external patchapi name 'TestApplyPatchToFileW';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ApplyPatchToFile: Pointer;
-
-function ApplyPatchToFile;
-begin
-  GetProcedureAddress(_ApplyPatchToFile, patchapi, 'ApplyPatchToFileW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ApplyPatchToFile]
-  end;
-end;
-{$ELSE}
-function ApplyPatchToFile; external patchapi name 'ApplyPatchToFileW';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ApplyPatchToFileEx: Pointer;
-
-function ApplyPatchToFileEx;
-begin
-  GetProcedureAddress(_ApplyPatchToFileEx, patchapi, 'ApplyPatchToFileExW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ApplyPatchToFileEx]
-  end;
-end;
-{$ELSE}
-function ApplyPatchToFileEx; external patchapi name 'ApplyPatchToFileExW';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetFilePatchSignature: Pointer;
-
-function GetFilePatchSignature;
-begin
-  GetProcedureAddress(_GetFilePatchSignature, patchapi, 'GetFilePatchSignatureW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetFilePatchSignature]
-  end;
-end;
-{$ELSE}
-function GetFilePatchSignature; external patchapi name 'GetFilePatchSignatureW';
-{$ENDIF DYNAMIC_LINK}
-
-{$ELSE}
-
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreatePatchFile: Pointer;
-
-function CreatePatchFile;
-begin
-  GetProcedureAddress(_CreatePatchFile, patchapi, 'CreatePatchFileA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreatePatchFile]
-  end;
-end;
-{$ELSE}
-function CreatePatchFile; external patchapi name 'CreatePatchFileA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreatePatchFileEx: Pointer;
-
-function CreatePatchFileEx;
-begin
-  GetProcedureAddress(_CreatePatchFileEx, patchapi, 'CreatePatchFileExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreatePatchFileEx]
-  end;
-end;
-{$ELSE}
-function CreatePatchFileEx; external patchapi name 'CreatePatchFileExA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ExtractPatchHeaderToFile: Pointer;
-
-function ExtractPatchHeaderToFile;
-begin
-  GetProcedureAddress(_ExtractPatchHeaderToFile, patchapi, 'ExtractPatchHeaderToFileA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ExtractPatchHeaderToFile]
-  end;
-end;
-{$ELSE}
-function ExtractPatchHeaderToFile; external patchapi name 'ExtractPatchHeaderToFileA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _TestApplyPatchToFile: Pointer;
-
-function TestApplyPatchToFile;
-begin
-  GetProcedureAddress(_TestApplyPatchToFile, patchapi, 'TestApplyPatchToFileA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TestApplyPatchToFile]
-  end;
-end;
-{$ELSE}
-function TestApplyPatchToFile; external patchapi name 'TestApplyPatchToFileA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ApplyPatchToFile: Pointer;
-
-function ApplyPatchToFile;
-begin
-  GetProcedureAddress(_ApplyPatchToFile, patchapi, 'ApplyPatchToFileA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ApplyPatchToFile]
-  end;
-end;
-{$ELSE}
-function ApplyPatchToFile; external patchapi name 'ApplyPatchToFileA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ApplyPatchToFileEx: Pointer;
-
-function ApplyPatchToFileEx;
-begin
-  GetProcedureAddress(_ApplyPatchToFileEx, patchapi, 'ApplyPatchToFileExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ApplyPatchToFileEx]
-  end;
-end;
-{$ELSE}
-function ApplyPatchToFileEx; external patchapi name 'ApplyPatchToFileExA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetFilePatchSignature: Pointer;
-
-function GetFilePatchSignature;
-begin
-  GetProcedureAddress(_GetFilePatchSignature, patchapi, 'GetFilePatchSignatureA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetFilePatchSignature]
-  end;
-end;
-{$ELSE}
-function GetFilePatchSignature; external patchapi name 'GetFilePatchSignatureA';
-{$ENDIF DYNAMIC_LINK}
-
-{$ENDIF}
-
 
 end.

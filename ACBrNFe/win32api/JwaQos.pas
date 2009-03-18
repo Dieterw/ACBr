@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Winsock2 Quality Of Service API interface Unit for Object Pascal             }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: qos.h, released June 2000. The original Pascal         }
 { code is: Qos.pas, released December 2000. The initial developer of the       }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaQos.pas,v 1.7 2005/09/03 14:27:48 marquardt Exp $
 
 unit JwaQos;
 
@@ -49,12 +50,12 @@ unit JwaQos;
 {$HPPEMIT '#include "qos.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinType;
+  JwaWindows;
 
 type
   ULONG = Cardinal;
@@ -208,16 +209,16 @@ const
   QOS_GENERAL_ID_BASE = 2000;
   {$EXTERNALSYM QOS_GENERAL_ID_BASE}
 
-  QOS_OBJECT_END_OF_LIST = ($00000001 + QOS_GENERAL_ID_BASE); // QOS_End_of_list structure passed
+  QOS_OBJECT_END_OF_LIST = $00000001 + QOS_GENERAL_ID_BASE; // QOS_End_of_list structure passed
   {$EXTERNALSYM QOS_OBJECT_END_OF_LIST}
 
-  QOS_OBJECT_SD_MODE = ($00000002 + QOS_GENERAL_ID_BASE); // QOS_ShapeDiscard structure passed
+  QOS_OBJECT_SD_MODE = $00000002 + QOS_GENERAL_ID_BASE; // QOS_ShapeDiscard structure passed
   {$EXTERNALSYM QOS_OBJECT_SD_MODE}
 
-  QOS_OBJECT_SHAPING_RATE = ($00000003 + QOS_GENERAL_ID_BASE); // QOS_ShapingRate structure
-  {$EXTERNALSYM QOS_OBJECT_SHAPING_RATE	}
+  QOS_OBJECT_SHAPING_RATE = $00000003 + QOS_GENERAL_ID_BASE; // QOS_ShapingRate structure
+  {$EXTERNALSYM QOS_OBJECT_SHAPING_RATE}
 
-  QOS_OBJECT_DESTADDR = ($00000004 + QOS_GENERAL_ID_BASE); // QOS_DestAddr structure (defined in qossp.h)
+  QOS_OBJECT_DESTADDR = $00000004 + QOS_GENERAL_ID_BASE; // QOS_DestAddr structure (defined in qossp.h)
   {$EXTERNALSYM QOS_OBJECT_DESTADDR}
 
 //

@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { 16 bit Generic Thunks API interface Unit for Object Pascal                   }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: wownt16.h, released June 2000. The original Pascal     }
 { code is: WowNT16.pas, released December 2000. The initial developer of the   }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaWowNT16.pas,v 1.7 2005/09/06 16:36:51 marquardt Exp $
 
 unit JwaWowNT16;
 
@@ -49,12 +50,15 @@ unit JwaWowNT16;
 {$HPPEMIT '#include "wownt16.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
+
+// (rom) get rid of warnings about "index" directive
+{$WARN SYMBOL_PLATFORM OFF}
 
 interface
 
 uses
-  JwaWinType;
+  JwaWindows;
 
 //
 // 16:16 -> 0:32 Pointer translation.
@@ -170,11 +174,13 @@ const
 
 implementation
 
-const
-  wow16lib = 'kernel32.dll';
+uses
+  JwaWinDLLNames;
 
+//function CallProcEx32W; external wow16lib index 517;
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _GetVDMPointer32W: Pointer;
 
@@ -182,16 +188,12 @@ function GetVDMPointer32W;
 begin
   GetProcedureAddress(_GetVDMPointer32W, wow16lib, '516');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetVDMPointer32W]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetVDMPointer32W]
   end;
 end;
-{$ELSE}
-function GetVDMPointer32W; external wow16lib index 516;
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LoadLibraryEx32W: Pointer;
 
@@ -199,16 +201,12 @@ function LoadLibraryEx32W;
 begin
   GetProcedureAddress(_LoadLibraryEx32W, wow16lib, '513');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadLibraryEx32W]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LoadLibraryEx32W]
   end;
 end;
-{$ELSE}
-function LoadLibraryEx32W; external wow16lib index 513;
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetProcAddress32W: Pointer;
 
@@ -216,16 +214,12 @@ function GetProcAddress32W;
 begin
   GetProcedureAddress(_GetProcAddress32W, wow16lib, '515');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetProcAddress32W]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetProcAddress32W]
   end;
 end;
-{$ELSE}
-function GetProcAddress32W; external wow16lib index 515;
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _FreeLibrary32W: Pointer;
 
@@ -233,14 +227,19 @@ function FreeLibrary32W;
 begin
   GetProcedureAddress(_FreeLibrary32W, wow16lib, '514');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FreeLibrary32W]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_FreeLibrary32W]
   end;
 end;
+
 {$ELSE}
+
+function GetVDMPointer32W; external wow16lib index 516;
+function LoadLibraryEx32W; external wow16lib index 513;
+function GetProcAddress32W; external wow16lib index 515;
 function FreeLibrary32W; external wow16lib index 514;
+
 {$ENDIF DYNAMIC_LINK}
-//function CallProcEx32W; external wow16lib index 517;
 
 end.

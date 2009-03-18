@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 {  Indezing Service Query API interface Unit for Object Pascal                 }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: nyquery.h, released August 2001. The original Pascal   }
 { code is: NtQuery.pas, released December 2000. The initial developer of the   }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,32 +35,33 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaNtQuery.pas,v 1.11 2005/09/06 16:36:50 marquardt Exp $
 
 unit JwaNtQuery;
 
 {$WEAKPACKAGEUNIT}
 
-{$HPPEMIT ''}
-{$HPPEMIT '#include "ntquery.h"'}
-{$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  ActiveX, ComObj, {TODO} JwaWinType;
+  JwaActiveX, JwaWindows;
+
+{$HPPEMIT ''}
+{$HPPEMIT '#include "ntquery.h"'}
+{$HPPEMIT ''}
 
 type
   // TODO STUBS  see CmdTree.h (cmdtree.idl)
   IFilter = Pointer;
   IUnkown = Pointer;
   ICommand = Pointer;
-  PPWCHAR = ^PWCHAR;
   REFIID = TGUID; // also in ActiveDS
   DBID = Pointer;
   DBCOMMANDTREE = Pointer;
@@ -121,15 +121,9 @@ function LocateCatalogsA(pwszScope: PCHAR; iBmk: ULONG; pwszMachine: PCHAR;
   var pccMachine: ULONG; pwszCat: PCHAR; var pccCat: ULONG): HRESULT; stdcall;
 {$EXTERNALSYM LocateCatalogsA}
 
-{$IFDEF UNICODE}
-function LocateCatalogs(pwszScope: PWCHAR; iBmk: ULONG; pwszMachine: PWCHAR;
-  var pccMachine: ULONG; pwszCat: PWCHAR; var pccCat: ULONG): HRESULT; stdcall;
+function LocateCatalogs(pwszScope: PTCHAR; iBmk: ULONG; pwszMachine: PTCHAR;
+  var pccMachine: ULONG; pwszCat: PTCHAR; var pccCat: ULONG): HRESULT; stdcall;
 {$EXTERNALSYM LocateCatalogs}
-{$ELSE}
-function LocateCatalogs(pwszScope: PCHAR; iBmk: ULONG; pwszMachine: PCHAR;
-  var pccMachine: ULONG; pwszCat: PCHAR; var pccCat: ULONG): HRESULT; stdcall;
-{$EXTERNALSYM LocateCatalogs}
-{$ENDIF}
 
 // The Index Server Data Source Object CLSID
 
@@ -256,32 +250,32 @@ const
 // 00-02  Fill Status: How data is being updated, if at all.
 // 03-15  Bitfield query reliability: How accurate the result is
 
-  STAT_BUSY    = (0);
+  STAT_BUSY    = 0;
   {$EXTERNALSYM STAT_BUSY}
-  STAT_ERROR   = ($1);
+  STAT_ERROR   = $1;
   {$EXTERNALSYM STAT_ERROR}
-  STAT_DONE    = ($2);
+  STAT_DONE    = $2;
   {$EXTERNALSYM STAT_DONE}
-  STAT_REFRESH = ($3);
+  STAT_REFRESH = $3;
   {$EXTERNALSYM STAT_REFRESH}
 
 function QUERY_FILL_STATUS(x: DWORD): DWORD;
 {$EXTERNALSYM QUERY_FILL_STATUS}
 
 const
-  STAT_PARTIAL_SCOPE            = ($8);
+  STAT_PARTIAL_SCOPE            = $8;
   {$EXTERNALSYM STAT_PARTIAL_SCOPE}
-  STAT_NOISE_WORDS              = ($10);
+  STAT_NOISE_WORDS              = $10;
   {$EXTERNALSYM STAT_NOISE_WORDS}
-  STAT_CONTENT_OUT_OF_DATE      = ($20);
+  STAT_CONTENT_OUT_OF_DATE      = $20;
   {$EXTERNALSYM STAT_CONTENT_OUT_OF_DATE}
-  STAT_REFRESH_INCOMPLETE       = ($40);
+  STAT_REFRESH_INCOMPLETE       = $40;
   {$EXTERNALSYM STAT_REFRESH_INCOMPLETE}
-  STAT_CONTENT_QUERY_INCOMPLETE = ($80);
+  STAT_CONTENT_QUERY_INCOMPLETE = $80;
   {$EXTERNALSYM STAT_CONTENT_QUERY_INCOMPLETE}
-  STAT_TIME_LIMIT_EXCEEDED      = ($100);
+  STAT_TIME_LIMIT_EXCEEDED      = $100;
   {$EXTERNALSYM STAT_TIME_LIMIT_EXCEEDED}
-  STAT_SHARING_VIOLATION        = ($200);
+  STAT_SHARING_VIOLATION        = $200;
   {$EXTERNALSYM STAT_SHARING_VIOLATION}
 
 function QUERY_RELIABILITY_STATUS(x: DWORD): DWORD;
@@ -493,6 +487,9 @@ function CIRestrictionToFullTree(const pTree: DBCOMMANDTREE; pwszColumns,
 
 implementation
 
+uses
+  JwaWinDLLNames;
+
 function QUERY_FILL_STATUS(x: DWORD): DWORD;
 begin
   Result := x and $7;
@@ -503,333 +500,263 @@ begin
   Result := x and $FFF8;
 end;
 
-const
-  query = 'query.dll';
-
 {$IFDEF DYNAMIC_LINK}
+
 var
   _LoadIFilterEx: Pointer;
 
 function LoadIFilterEx;
 begin
-  GetProcedureAddress(_LoadIFilterEx, query, 'LoadIFilterEx');
+  GetProcedureAddress(_LoadIFilterEx, querylib, 'LoadIFilterEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadIFilterEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LoadIFilterEx]
   end;
 end;
-{$ELSE}
-function LoadIFilterEx; external query name 'LoadIFilterEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LoadIFilter: Pointer;
 
 function LoadIFilter;
 begin
-  GetProcedureAddress(_LoadIFilter, query, 'LoadIFilter');
+  GetProcedureAddress(_LoadIFilter, querylib, 'LoadIFilter');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadIFilter]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LoadIFilter]
   end;
 end;
-{$ELSE}
-function LoadIFilter; external query name 'LoadIFilter';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _BindIFilterFromStorage: Pointer;
 
 function BindIFilterFromStorage;
 begin
-  GetProcedureAddress(_BindIFilterFromStorage, query, 'BindIFilterFromStorage');
+  GetProcedureAddress(_BindIFilterFromStorage, querylib, 'BindIFilterFromStorage');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_BindIFilterFromStorage]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_BindIFilterFromStorage]
   end;
 end;
-{$ELSE}
-function BindIFilterFromStorage; external query name 'BindIFilterFromStorage';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _BindIFilterFromStream: Pointer;
 
 function BindIFilterFromStream;
 begin
-  GetProcedureAddress(_BindIFilterFromStream, query, 'BindIFilterFromStream');
+  GetProcedureAddress(_BindIFilterFromStream, querylib, 'BindIFilterFromStream');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_BindIFilterFromStream]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_BindIFilterFromStream]
   end;
 end;
-{$ELSE}
-function BindIFilterFromStream; external query name 'BindIFilterFromStream';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LocateCatalogsW: Pointer;
 
 function LocateCatalogsW;
 begin
-  GetProcedureAddress(_LocateCatalogsW, query, 'LocateCatalogsW');
+  GetProcedureAddress(_LocateCatalogsW, querylib, 'LocateCatalogsW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LocateCatalogsW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LocateCatalogsW]
   end;
 end;
-{$ELSE}
-function LocateCatalogsW; external query name 'LocateCatalogsW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LocateCatalogsA: Pointer;
 
 function LocateCatalogsA;
 begin
-  GetProcedureAddress(_LocateCatalogsA, query, 'LocateCatalogsA');
+  GetProcedureAddress(_LocateCatalogsA, querylib, 'LocateCatalogsA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LocateCatalogsA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LocateCatalogsA]
   end;
 end;
-{$ELSE}
-function LocateCatalogsA; external query name 'LocateCatalogsA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LocateCatalogs: Pointer;
 
 function LocateCatalogs;
 begin
-  GetProcedureAddress(_LocateCatalogs, query, 'LocateCatalogsW');
+  GetProcedureAddress(_LocateCatalogs, querylib, 'LocateCatalogs' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LocateCatalogs]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LocateCatalogs]
   end;
 end;
-{$ELSE}
-function LocateCatalogs; external query name 'LocateCatalogsW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _LocateCatalogs: Pointer;
-
-function LocateCatalogs;
-begin
-  GetProcedureAddress(_LocateCatalogs, query, 'LocateCatalogsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LocateCatalogs]
-  end;
-end;
-{$ELSE}
-function LocateCatalogs; external query name 'LocateCatalogsA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _SetCatalogState: Pointer;
 
 function SetCatalogState;
 begin
-  GetProcedureAddress(_SetCatalogState, query, 'SetCatalogState');
+  GetProcedureAddress(_SetCatalogState, querylib, 'SetCatalogState');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetCatalogState]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetCatalogState]
   end;
 end;
-{$ELSE}
-function SetCatalogState; external query name 'SetCatalogState';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CIState: Pointer;
 
 function CIState;
 begin
-  GetProcedureAddress(_CIState, query, 'CIState');
+  GetProcedureAddress(_CIState, querylib, 'CIState');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CIState]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CIState]
   end;
 end;
-{$ELSE}
-function CIState; external query name 'CIState';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CIMakeICommand: Pointer;
 
 function CIMakeICommand;
 begin
-  GetProcedureAddress(_CIMakeICommand, query, 'CIMakeICommand');
+  GetProcedureAddress(_CIMakeICommand, querylib, 'CIMakeICommand');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CIMakeICommand]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CIMakeICommand]
   end;
 end;
-{$ELSE}
-function CIMakeICommand; external query name 'CIMakeICommand';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CICreateCommand: Pointer;
 
 function CICreateCommand;
 begin
-  GetProcedureAddress(_CICreateCommand, query, 'CICreateCommand');
+  GetProcedureAddress(_CICreateCommand, querylib, 'CICreateCommand');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CICreateCommand]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CICreateCommand]
   end;
 end;
-{$ELSE}
-function CICreateCommand; external query name 'CICreateCommand';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CITextToSelectTree: Pointer;
 
 function CITextToSelectTree;
 begin
-  GetProcedureAddress(_CITextToSelectTree, query, 'CITextToSelectTree');
+  GetProcedureAddress(_CITextToSelectTree, querylib, 'CITextToSelectTree');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CITextToSelectTree]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CITextToSelectTree]
   end;
 end;
-{$ELSE}
-function CITextToSelectTree; external query name 'CITextToSelectTree';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CITextToSelectTreeEx: Pointer;
 
 function CITextToSelectTreeEx;
 begin
-  GetProcedureAddress(_CITextToSelectTreeEx, query, 'CITextToSelectTreeEx');
+  GetProcedureAddress(_CITextToSelectTreeEx, querylib, 'CITextToSelectTreeEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CITextToSelectTreeEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CITextToSelectTreeEx]
   end;
 end;
-{$ELSE}
-function CITextToSelectTreeEx; external query name 'CITextToSelectTreeEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CITextToFullTree: Pointer;
 
 function CITextToFullTree;
 begin
-  GetProcedureAddress(_CITextToFullTree, query, 'CITextToSelectTreeEx');
+  GetProcedureAddress(_CITextToFullTree, querylib, 'CITextToSelectTreeEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CITextToFullTree]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CITextToFullTree]
   end;
 end;
-{$ELSE}
-function CITextToFullTree; external query name 'CITextToSelectTreeEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CITextToFullTreeEx: Pointer;
 
 function CITextToFullTreeEx;
 begin
-  GetProcedureAddress(_CITextToFullTreeEx, query, 'CITextToFullTreeEx');
+  GetProcedureAddress(_CITextToFullTreeEx, querylib, 'CITextToFullTreeEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CITextToFullTreeEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CITextToFullTreeEx]
   end;
 end;
-{$ELSE}
-function CITextToFullTreeEx; external query name 'CITextToFullTreeEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CIBuildQueryNode: Pointer;
 
 function CIBuildQueryNode;
 begin
-  GetProcedureAddress(_CIBuildQueryNode, query, 'CIBuildQueryNode');
+  GetProcedureAddress(_CIBuildQueryNode, querylib, 'CIBuildQueryNode');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CIBuildQueryNode]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CIBuildQueryNode]
   end;
 end;
-{$ELSE}
-function CIBuildQueryNode; external query name 'CIBuildQueryNode';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CIBuildQueryTree: Pointer;
 
 function CIBuildQueryTree;
 begin
-  GetProcedureAddress(_CIBuildQueryTree, query, 'CIBuildQueryTree');
+  GetProcedureAddress(_CIBuildQueryTree, querylib, 'CIBuildQueryTree');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CIBuildQueryTree]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CIBuildQueryTree]
   end;
 end;
-{$ELSE}
-function CIBuildQueryTree; external query name 'CIBuildQueryTree';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CIRestrictionToFullTree: Pointer;
 
 function CIRestrictionToFullTree;
 begin
-  GetProcedureAddress(_CIRestrictionToFullTree, query, 'CIRestrictionToFullTree');
+  GetProcedureAddress(_CIRestrictionToFullTree, querylib, 'CIRestrictionToFullTree');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CIRestrictionToFullTree]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CIRestrictionToFullTree]
   end;
 end;
+
 {$ELSE}
-function CIRestrictionToFullTree; external query name 'CIRestrictionToFullTree';
+
+function LoadIFilterEx; external querylib name 'LoadIFilterEx';
+function LoadIFilter; external querylib name 'LoadIFilter';
+function BindIFilterFromStorage; external querylib name 'BindIFilterFromStorage';
+function BindIFilterFromStream; external querylib name 'BindIFilterFromStream';
+function LocateCatalogsW; external querylib name 'LocateCatalogsW';
+function LocateCatalogsA; external querylib name 'LocateCatalogsA';
+function LocateCatalogs; external querylib name 'LocateCatalogs' + AWSuffix;
+function SetCatalogState; external querylib name 'SetCatalogState';
+function CIState; external querylib name 'CIState';
+function CIMakeICommand; external querylib name 'CIMakeICommand';
+function CICreateCommand; external querylib name 'CICreateCommand';
+function CITextToSelectTree; external querylib name 'CITextToSelectTree';
+function CITextToSelectTreeEx; external querylib name 'CITextToSelectTreeEx';
+function CITextToFullTree; external querylib name 'CITextToSelectTreeEx';
+function CITextToFullTreeEx; external querylib name 'CITextToFullTreeEx';
+function CIBuildQueryNode; external querylib name 'CIBuildQueryNode';
+function CIBuildQueryTree; external querylib name 'CIBuildQueryTree';
+function CIRestrictionToFullTree; external querylib name 'CIRestrictionToFullTree';
+
 {$ENDIF DYNAMIC_LINK}
 
 end.

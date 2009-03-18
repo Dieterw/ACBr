@@ -1,26 +1,25 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Management Information Base API interface Unit for Object Pascal             }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: iprtrmib.h, released August 2001. The original Pascal  }
 { code is: IpRtrMib.pas, released September 2000. The initial developer of the }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
-{ Contributor(s): John C. Penman (jcp@craiglockhart.com)                       }
-{                 Vladimir Vassiliev (voldemarv@hotpop.com)                    }
-{ 								               }
+{                                                                              }
+{ Contributor(s): John C. Penman (jcp att craiglockhart dott com)              }
+{                 Vladimir Vassiliev (voldemarv att hotpop dott com)           }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -39,10 +38,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaIpRtrMib.pas,v 1.6 2005/09/03 14:27:48 marquardt Exp $
 
 unit JwaIpRtrMib;
 
@@ -52,12 +53,12 @@ unit JwaIpRtrMib;
 {$HPPEMIT '#include "iprtrmib.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinType;
+  JwaWindows;
 
 //////////////////////////////////////////////////////////////////////////////
 //                                                                          //
@@ -867,7 +868,6 @@ type
   TMibMfeTable = MIB_MFE_TABLE;
   PMibMfeTable = PMIB_MFE_TABLE;
 
-
 // #define SIZEOF_BASIC_MIB_MFE          \
 //    (ULONG)(FIELD_OFFSET(MIB_IPMCAST_MFE, rgmioOutInfo[0]))
 
@@ -1233,7 +1233,7 @@ const
 //    ((MIB_INFO_SIZE(S))/sizeof(DWORD) + 1)
 
 // #define DEFINE_MIB_BUFFER(X,Y,Z)                                        \
-//    DWORD		__rgdwBuff[MIB_INFO_SIZE_IN_DWORDS(Y)]; \
+//    DWORD             __rgdwBuff[MIB_INFO_SIZE_IN_DWORDS(Y)]; \
 //    PMIB_OPAQUE_INFO    X = (PMIB_OPAQUE_INFO)__rgdwBuff;               \
 //    Y *                 Z = (Y *)(X->rgbyData)
 

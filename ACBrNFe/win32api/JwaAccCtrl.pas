@@ -1,23 +1,18 @@
 {******************************************************************************}
-{                                                       	               }
-{ Access Control API interface Unit for Object Pascal                          }
-{                                                       	               }
-{ Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
-{ Corporation. All Rights Reserved.                                            }
-{ 								               }
-{ The original file is: accctrl.h, released June 2000. The original Pascal     }
-{ code is: AccCtrl.pas, released December 2000. The initial developer of the   }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
 {                                                                              }
-{ Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
+{ Interface Unit for Object Pascal                                             }
+{                                                                              }
+{ Portions created by Microsoft are Copyright (C) 1995-2003 Microsoft          }
+{ Corporation. All Rights Reserved.                                            }
+{                                                                              }
+{ Portions created by Marcel van Brakel are Copyright (C) 2003                 }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,14 +31,23 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaAccCtrl.pas,v 1.7 2005/09/03 14:27:47 marquardt Exp $
 
 unit JwaAccCtrl;
 
 {$WEAKPACKAGEUNIT}
+
+{$I jediapilib.inc}
+
+interface
+
+uses
+  JwaWindows;
 
 {$HPPEMIT ''}
 {$HPPEMIT '#include "aclapi.h"'}
@@ -56,13 +60,6 @@ unit JwaAccCtrl;
 {$HPPEMIT 'typedef PPTRUSTEE_A PPTRUSTEE'}
 {$HPPEMIT '#endif'}
 {$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
-
-interface
-
-uses
-  JwaWinNT, JwaWinType;
 
 (* Dependencies
 // winnt
@@ -80,6 +77,7 @@ BOOL
 LONG
 *)
 
+// (rom) MACRO
 function AccFree(hMem: HLOCAL): HLOCAL;
 {$EXTERNALSYM AccFree}
 
@@ -214,21 +212,21 @@ type
   TObjectsAndNameW = OBJECTS_AND_NAME_W;
   PObjectsAndNameW = POBJECTS_AND_NAME_W;
 
-{$IFDEF UNICODE}
-  OBJECTS_AND_NAME_ = OBJECTS_AND_NAME_W;
-  {$EXTERNALSYM OBJECTS_AND_NAME_}
-  POBJECTS_AND_NAME_ = POBJECTS_AND_NAME_W;
-  {$EXTERNALSYM POBJECTS_AND_NAME_}
+  {$IFDEF UNICODE}
+  OBJECTS_AND_NAME = OBJECTS_AND_NAME_W;
+  {$EXTERNALSYM OBJECTS_AND_NAME}
+  POBJECTS_AND_NAME = POBJECTS_AND_NAME_W;
+  {$EXTERNALSYM POBJECTS_AND_NAME}
   TObjectsAndName = TObjectsAndNameW;
   PObjectsAndName = PObjectsAndNameW;
-{$ELSE}
-  OBJECTS_AND_NAME_ = OBJECTS_AND_NAME_A;
-  {$EXTERNALSYM OBJECTS_AND_NAME_}
-  POBJECTS_AND_NAME_ = POBJECTS_AND_NAME_A;
-  {$EXTERNALSYM POBJECTS_AND_NAME_}
+  {$ELSE}
+  OBJECTS_AND_NAME = OBJECTS_AND_NAME_A;
+  {$EXTERNALSYM OBJECTS_AND_NAME}
+  POBJECTS_AND_NAME = POBJECTS_AND_NAME_A;
+  {$EXTERNALSYM POBJECTS_AND_NAME}
   TObjectsAndName = TObjectsAndNameA;
   PObjectsAndName = PObjectsAndNameA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 // Definition: TRUSTEE
@@ -280,7 +278,7 @@ type
   TTrusteeW = TRUSTEE_W;
   PTrusteeW = PTRUSTEE_W;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   TRUSTEE_ = TRUSTEE_W;
   {$EXTERNALSYM TRUSTEE_}
   PTRUSTEE_ = PTRUSTEE_W;
@@ -291,7 +289,7 @@ type
   {$NODEFINE PPTRUSTEE}
   TTrustee = TTrusteeW;
   PTrustee = PTrusteeW;
-{$ELSE}
+  {$ELSE}
   TRUSTEE_ = TRUSTEE_A;
   {$EXTERNALSYM TRUSTEE_}
   PTRUSTEE_ = PTRUSTEE_A;
@@ -302,7 +300,7 @@ type
   {$NODEFINE PPTRUSTEE}
   TTrustee = TTrusteeA;
   PTrustee = PTrusteeA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 // Definition: ACCESS_MODE
@@ -444,7 +442,7 @@ type
   TExplicitAccessW = EXPLICIT_ACCESS_W;
   PExplicitAccessW = PEXPLICIT_ACCESS_W;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   EXPLICIT_ACCESS_ = EXPLICIT_ACCESS_W;
   {$EXTERNALSYM EXPLICIT_ACCESS_}
   PEXPLICIT_ACCESS_ = PEXPLICIT_ACCESS_W;
@@ -455,7 +453,7 @@ type
   {$EXTERNALSYM PEXPLICIT_ACCESS}
   TExplicitAccess = TExplicitAccessW;
   PExplicitAccess = PExplicitAccessW;
-{$ELSE}
+  {$ELSE}
   EXPLICIT_ACCESS_ = EXPLICIT_ACCESS_A;
   {$EXTERNALSYM EXPLICIT_ACCESS_}
   PEXPLICIT_ACCESS_ = PEXPLICIT_ACCESS_A;
@@ -466,7 +464,7 @@ type
   {$EXTERNALSYM PEXPLICIT_ACCESS}
   TExplicitAccess = TExplicitAccessA;
   PExplicitAccess = PExplicitAccessA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //------------------------------------------------------------------------------
 //                              NT5 APIs
@@ -482,13 +480,13 @@ const
   ACCCTRL_DEFAULT_PROVIDERW = 'Windows NT Access Provider';
   {$EXTERNALSYM ACCCTRL_DEFAULT_PROVIDERW}
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   ACCCTRL_DEFAULT_PROVIDER = ACCCTRL_DEFAULT_PROVIDERW;
   {$EXTERNALSYM ACCCTRL_DEFAULT_PROVIDER}
-{$ELSE}
+  {$ELSE}
   ACCCTRL_DEFAULT_PROVIDER = ACCCTRL_DEFAULT_PROVIDERA;
   {$EXTERNALSYM ACCCTRL_DEFAULT_PROVIDER}
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 // Access rights
@@ -549,21 +547,21 @@ type
   TActrlAccessEntryW = ACTRL_ACCESS_ENTRYW;
   PActrlAccessEntryW = PACTRL_ACCESS_ENTRYW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   ACTRL_ACCESS_ENTRY = ACTRL_ACCESS_ENTRYW;
   {$EXTERNALSYM ACTRL_ACCESS_ENTRY}
   PACTRL_ACCESS_ENTRY = PACTRL_ACCESS_ENTRYW;
   {$EXTERNALSYM PACTRL_ACCESS_ENTRY}
   TActrlAccessEntry = TActrlAccessEntryW;
   PActrlAccessEntry = PActrlAccessEntryW;
-{$ELSE}
+  {$ELSE}
   ACTRL_ACCESS_ENTRY = ACTRL_ACCESS_ENTRYA;
   {$EXTERNALSYM ACTRL_ACCESS_ENTRY}
   PACTRL_ACCESS_ENTRY = PACTRL_ACCESS_ENTRYA;
   {$EXTERNALSYM PACTRL_ACCESS_ENTRY}
   TActrlAccessEntry = TActrlAccessEntryA;
   PActrlAccessEntry = PActrlAccessEntryA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   PACTRL_ACCESS_ENTRY_LISTA = ^ACTRL_ACCESS_ENTRY_LISTA;
   {$EXTERNALSYM PACTRL_ACCESS_ENTRY_LISTA}
@@ -589,21 +587,21 @@ type
   TActrlAccessEntryListW = ACTRL_ACCESS_ENTRY_LISTW;
   PActrlAccessEntryListW = PACTRL_ACCESS_ENTRY_LISTW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   ACTRL_ACCESS_ENTRY_LIST = ACTRL_ACCESS_ENTRY_LISTW;
   {$EXTERNALSYM ACTRL_ACCESS_ENTRY_LIST}
   PACTRL_ACCESS_ENTRY_LIST = PACTRL_ACCESS_ENTRY_LISTW;
   {$EXTERNALSYM PACTRL_ACCESS_ENTRY_LIST}
   TActrlAccessEntryList = TActrlAccessEntryListW;
   PActrlAccessEntryList = PActrlAccessEntryListW;
-{$ELSE}
+  {$ELSE}
   ACTRL_ACCESS_ENTRY_LIST = ACTRL_ACCESS_ENTRY_LISTA;
   {$EXTERNALSYM ACTRL_ACCESS_ENTRY_LIST}
   PACTRL_ACCESS_ENTRY_LIST = PACTRL_ACCESS_ENTRY_LISTA;
   {$EXTERNALSYM PACTRL_ACCESS_ENTRY_LIST}
   TActrlAccessEntryList = TActrlAccessEntryListA;
   PActrlAccessEntryList = PActrlAccessEntryListA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   PACTRL_PROPERTY_ENTRYA = ^ACTRL_PROPERTY_ENTRYA;
   {$EXTERNALSYM PACTRL_PROPERTY_ENTRYA}
@@ -631,21 +629,21 @@ type
   TActrlPropertyEntryW = ACTRL_PROPERTY_ENTRYW;
   PActrlPropertyEntryW = PACTRL_PROPERTY_ENTRYW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   ACTRL_PROPERTY_ENTRY = ACTRL_PROPERTY_ENTRYW;
   {$EXTERNALSYM ACTRL_PROPERTY_ENTRY}
   PACTRL_PROPERTY_ENTRY = PACTRL_PROPERTY_ENTRYW;
   {$EXTERNALSYM PACTRL_PROPERTY_ENTRY}
   TActrlPropertyEntry = TActrlPropertyEntryW;
   PActrlPropertyEntry = PActrlPropertyEntryW;
-{$ELSE}
+  {$ELSE}
   ACTRL_PROPERTY_ENTRY = ACTRL_PROPERTY_ENTRYA;
   {$EXTERNALSYM ACTRL_PROPERTY_ENTRY}
   PACTRL_PROPERTY_ENTRY = PACTRL_PROPERTY_ENTRYA;
   {$EXTERNALSYM PACTRL_PROPERTY_ENTRY}
   TActrlPropertyEntry = TActrlPropertyEntryA;
   PActrlPropertyEntry = PActrlPropertyEntryA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   PActrlAlistA = ^TActrlAlistA;
   _ACTRL_ALISTA = packed record
@@ -679,7 +677,7 @@ type
   {$EXTERNALSYM PACTRL_AUDITW}
   TActrlAlistW = _ACTRL_ALISTW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   ACTRL_ACCESS = ACTRL_ACCESSW;
   {$EXTERNALSYM ACTRL_ACCESS}
   PACTRL_ACCESS = PACTRL_ACCESSW;
@@ -690,7 +688,7 @@ type
   {$EXTERNALSYM PACTRL_AUDIT}
   TActrlAlist = TActrlAlistW;
   PActrlAlist = PActrlAlistW;
-{$ELSE}
+  {$ELSE}
   ACTRL_ACCESS = ACTRL_ACCESSA;
   {$EXTERNALSYM ACTRL_ACCESS}
   PACTRL_ACCESS = PACTRL_ACCESSA;
@@ -701,7 +699,7 @@ type
   {$EXTERNALSYM PACTRL_AUDIT}
   TActrlAlist = TActrlAlistA;
   PActrlAlist = PActrlAlistA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 // TRUSTEE_ACCESS flags
@@ -752,21 +750,21 @@ type
   TTrusteeAccessW = TRUSTEE_ACCESSW;
   PTrusteeAccessW = PTRUSTEE_ACCESSW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   TRUSTEE_ACCESS = TRUSTEE_ACCESSW;
   {$EXTERNALSYM TRUSTEE_ACCESS}
   PTRUSTEE_ACCESS = PTRUSTEE_ACCESSW;
   {$EXTERNALSYM PTRUSTEE_ACCESS}
   TTrusteeAccess = TTrusteeAccessW;
   PTrusteeAccess = PTrusteeAccessW;
-{$ELSE}
+  {$ELSE}
   TRUSTEE_ACCESS = TRUSTEE_ACCESSA;
   {$EXTERNALSYM TRUSTEE_ACCESS}
   PTRUSTEE_ACCESS = PTRUSTEE_ACCESSA;
   {$EXTERNALSYM PTRUSTEE_ACCESS}
   TTrusteeAccess = TTrusteeAccessA;
   PTrusteeAccess = PTrusteeAccessA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 // Generic permission values
@@ -997,7 +995,6 @@ const
   ACTRL_WIN_EXIT            = ACTRL_PERM_9;
   {$EXTERNALSYM ACTRL_WIN_EXIT}
 
-
 type
   PACTRL_OVERLAPPED = ^ACTRL_OVERLAPPED;
   {$EXTERNALSYM PACTRL_OVERLAPPED}
@@ -1039,21 +1036,21 @@ type
   TActrlAccessInfoW = ACTRL_ACCESS_INFOW;
   PActrlAccessInfoW = PACTRL_ACCESS_INFOW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   ACTRL_ACCESS_INFO = ACTRL_ACCESS_INFOW;
   {$EXTERNALSYM ACTRL_ACCESS_INFO}
   PACTRL_ACCESS_INFO = PACTRL_ACCESS_INFOW;
   {$EXTERNALSYM PACTRL_ACCESS_INFO}
   TActrlAccessInfo = TActrlAccessInfoW;
   PActrlAccessInfo = PActrlAccessInfoW;
-{$ELSE}
+  {$ELSE}
   ACTRL_ACCESS_INFO = ACTRL_ACCESS_INFOA;
   {$EXTERNALSYM ACTRL_ACCESS_INFO}
   PACTRL_ACCESS_INFO = PACTRL_ACCESS_INFOA;
   {$EXTERNALSYM PACTRL_ACCESS_INFO}
   TActrlAccessInfo = TActrlAccessInfoA;
   PActrlAccessInfo = PActrlAccessInfoA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   PACTRL_CONTROL_INFOA = ^ACTRL_CONTROL_INFOA;
   {$EXTERNALSYM PACTRL_CONTROL_INFOA}
@@ -1079,21 +1076,21 @@ type
   TActrlControlInfoW = ACTRL_CONTROL_INFOW;
   PActrlControlInfoW = PACTRL_CONTROL_INFOW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   ACTRL_CONTROL_INFO = ACTRL_CONTROL_INFOW;
   {$EXTERNALSYM ACTRL_CONTROL_INFO}
   PACTRL_CONTROL_INFO = PACTRL_CONTROL_INFOW;
   {$EXTERNALSYM PACTRL_CONTROL_INFO}
   TActrlControlInfo = TActrlControlInfoW;
   PActrlControlInfo = PActrlControlInfoW;
-{$ELSE}
+  {$ELSE}
   ACTRL_CONTROL_INFO = ACTRL_CONTROL_INFOA;
   {$EXTERNALSYM ACTRL_CONTROL_INFO}
   PACTRL_CONTROL_INFO = PACTRL_CONTROL_INFOA;
   {$EXTERNALSYM PACTRL_CONTROL_INFO}
   TActrlControlInfo = TActrlControlInfoA;
   PActrlControlInfo = PActrlControlInfoA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 const
   ACTRL_ACCESS_NO_OPTIONS              = $00000000;
@@ -1134,7 +1131,7 @@ type
 //
 
 type
-  FN_PROGRESS = procedure (pObjectName: LPWSTR; Status: DWORD;
+  FN_PROGRESS = procedure(pObjectName: LPWSTR; Status: DWORD;
     var pInvokeSetting: PROG_INVOKE_SETTING; Args: PVOID; SecuritySet: BOOL); stdcall;
   {$EXTERNALSYM FN_PROGRESS}
   TFnProgress = FN_PROGRESS;
@@ -1201,30 +1198,29 @@ type
   TInheritedFromW = INHERITED_FROMW;
   PInheritedFromW = PINHERITED_FROMW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   INHERITED_FROM = INHERITED_FROMW;
   {$EXTERNALSYM INHERITED_FROM}
   PINHERITED_FROM = PINHERITED_FROMW;
   {$EXTERNALSYM PINHERITED_FROM}
   TInheritedFrom = TInheritedFromW;
   PInheritedFrom = PInheritedFromW;
-{$ELSE}
+  {$ELSE}
   INHERITED_FROM = INHERITED_FROMA;
   {$EXTERNALSYM INHERITED_FROM}
   PINHERITED_FROM = PINHERITED_FROMA;
   {$EXTERNALSYM PINHERITED_FROM}
   TInheritedFrom = TInheritedFromA;
   PInheritedFrom = PInheritedFromA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 implementation
 
-uses
-  JwaWinBase;
-
+// (rom) MACRO implementation
 function AccFree(hMem: HLOCAL): HLOCAL;
 begin
   Result := LocalFree(hMem);
 end;
 
 end.
+

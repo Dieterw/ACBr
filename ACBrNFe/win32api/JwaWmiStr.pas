@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { WMI Structure Definitions API interface Unit for Object Pascal               }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: wmistr.h, released November 2002. The original Pascal  }
 { code is: WmiStr.pas, released April 2002. The initial developer of the       }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaWmiStr.pas,v 1.5 2005/09/03 14:27:49 marquardt Exp $
 
 unit JwaWmiStr;
 
@@ -49,12 +50,12 @@ unit JwaWmiStr;
 {$HPPEMIT '#include "wmistr.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinType, JwaWinNT;
+  JwaWindows;
 
 //
 // WNODE definition
@@ -233,7 +234,6 @@ type
   TWNodeAllData = WNODE_ALL_DATA;
   PWNodeAllData = PWNODE_ALL_DATA;
 
-
   PWNODE_SINGLE_INSTANCE = ^WNODE_SINGLE_INSTANCE;
   {$EXTERNALSYM PWNODE_SINGLE_INSTANCE}
   tagWNODE_SINGLE_INSTANCE = record
@@ -257,7 +257,6 @@ type
   {$EXTERNALSYM WNODE_SINGLE_INSTANCE}
   TWNodeSingleInstance = WNODE_SINGLE_INSTANCE;
   PWNodeSingleInstance = PWNODE_SINGLE_INSTANCE;
-
 
   PWNODE_SINGLE_ITEM = ^WNODE_SINGLE_ITEM;
   {$EXTERNALSYM PWNODE_SINGLE_ITEM}
@@ -477,7 +476,7 @@ type
                          // counted Unicode string containing
                          // the driver registry path (under HKLM\CCS\Services)
                          // This must be filled only by kernel mode data
-			 // providers
+                         // providers
 
     // Offset from beginning of WMIREGINFO structure to a
     // counted Unicode string containing

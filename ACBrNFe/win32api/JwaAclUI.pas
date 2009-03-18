@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Access Control UI API interface Unit for Object Pascal                       }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: aclui.h, released June 2000. The original Pascal       }
 { code is: AclUI.pas, released December 2000. The initial developer of the     }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaAclUI.pas,v 1.10 2005/09/06 16:36:50 marquardt Exp $
 
 unit JwaAclUI;
 
@@ -49,12 +50,12 @@ unit JwaAclUI;
 {$HPPEMIT '#include "aclui.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaAccCtrl, JwaWinNT, JwaWinUser, JwaWinType;
+  JwaAccCtrl, JwaWindows;
 
 //
 // ISecurityInformation interface
@@ -90,7 +91,7 @@ type
   {$EXTERNALSYM PSI_OBJECT_INFO}
   _SI_OBJECT_INFO = record
     dwFlags: DWORD;
-    hInstance: HINSTANCE;  // resources (e.g. strings) reside here
+    hInstance: HINST;      // resources (e.g. strings) reside here
     pszServerName: LPWSTR; // must be present
     pszObjectName: LPWSTR; // must be present
     pszPageTitle: LPWSTR;  // only valid if SI_PAGE_TITLE is set
@@ -227,7 +228,7 @@ const
   SID_ISecurityInformation2 = '{c3ccfdb4-6f88-11d2-a3ce-00c04fb1782a}';
 
 type
-  ISecurityInformation = interface (IUnknown)
+  ISecurityInformation = interface(IUnknown)
   [SID_ISecurityInformation]
     function GetObjectInformation(out pObjectInfo: SI_OBJECT_INFO): HRESULT; stdcall;
     function GetSecurity(RequestedInformation: SECURITY_INFORMATION;
@@ -248,7 +249,7 @@ type
   LPSECURITYINFO = ISecurityInformation;
   {$EXTERNALSYM LPSECURITYINFO}
 
-  ISecurityInformation2 = interface (IUnknown)
+  ISecurityInformation2 = interface(IUnknown)
   [SID_ISecurityInformation]
     function IsDaclCanonical(pDacl: PACL): BOOL; stdcall;
     function LookupSids(cSids: ULONG; rgpSids: PPSID;
@@ -301,7 +302,7 @@ const
   {$EXTERNALSYM IID_ISecurityObjectTypeInfo}
 
 type
-  IEffectivePermission = interface (IUnknown)
+  IEffectivePermission = interface(IUnknown)
   ['{3853DC76-9F35-407c-88A1-D19344365FBC}']
     function GetEffectivePermission(const pguidObjectType: TGUID; pUserSid: PSID;
       pszServerName: LPCWSTR; pSD: PSECURITY_DESCRIPTOR; var ppObjectTypeList: POBJECT_TYPE_LIST;
@@ -312,7 +313,7 @@ type
   LPEFFECTIVEPERMISSION = IEffectivePermission;
   {$EXTERNALSYM LPEFFECTIVEPERMISSION}
 
-  ISecurityObjectTypeInfo = interface (IUnknown)
+  ISecurityObjectTypeInfo = interface(IUnknown)
   ['{fc3066eb-79ef-444b-9111-d18a75ebf2fa}']
     function GetInheritSource(si: SECURITY_INFORMATION; pACL: PACL;
       var ppInheritArray: PINHERITED_FROM): HRESULT; stdcall;
@@ -332,42 +333,42 @@ function EditSecurity(hwndOwner: HWND; psi: LPSECURITYINFO): BOOL; stdcall;
 
 implementation
 
-const
-  aclui_lib = 'aclui.dll';
-
+uses
+  JwaWinDLLNames;
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _CreateSecurityPage: Pointer;
 
 function CreateSecurityPage;
 begin
-  GetProcedureAddress(_CreateSecurityPage, aclui_lib, 'CreateSecurityPage');
+  GetProcedureAddress(_CreateSecurityPage, acluilib, 'CreateSecurityPage');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateSecurityPage]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateSecurityPage]
   end;
 end;
-{$ELSE}
-function CreateSecurityPage; external aclui_lib name 'CreateSecurityPage';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EditSecurity: Pointer;
 
 function EditSecurity;
 begin
-  GetProcedureAddress(_EditSecurity, aclui_lib, 'EditSecurity');
+  GetProcedureAddress(_EditSecurity, acluilib, 'EditSecurity');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EditSecurity]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EditSecurity]
   end;
 end;
+
 {$ELSE}
-function EditSecurity; external aclui_lib name 'EditSecurity';
+
+function CreateSecurityPage; external acluilib name 'CreateSecurityPage';
+function EditSecurity; external acluilib name 'EditSecurity';
+
 {$ENDIF DYNAMIC_LINK}
 
 end.

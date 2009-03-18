@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Net Shell API interface Unit for Object Pascal                               }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: netsh.h, released August 2001. The original Pascal     }
 { code is: NetSh.pas, released December 2001. The initial developer of the     }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaNetSh.pas,v 1.10 2005/09/08 07:49:25 marquardt Exp $
 
 unit JwaNetSh;
 
@@ -49,12 +50,12 @@ unit JwaNetSh;
 {$HPPEMIT '#include "netsh.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinNT, JwaWinType;
+  JwaWindows;
 
 // This file contains definitions which are needed by all NetSh helper DLLs.
 
@@ -65,45 +66,45 @@ uses
 const
   NETSH_ERROR_BASE                 = 15000;
   {$EXTERNALSYM NETSH_ERROR_BASE}
-  ERROR_NO_ENTRIES                 = (NETSH_ERROR_BASE + 0);
+  ERROR_NO_ENTRIES                 = NETSH_ERROR_BASE + 0;
   {$EXTERNALSYM ERROR_NO_ENTRIES}
-  ERROR_INVALID_SYNTAX             = (NETSH_ERROR_BASE + 1);
+  ERROR_INVALID_SYNTAX             = NETSH_ERROR_BASE + 1;
   {$EXTERNALSYM ERROR_INVALID_SYNTAX}
-  ERROR_PROTOCOL_NOT_IN_TRANSPORT  = (NETSH_ERROR_BASE + 2);
+  ERROR_PROTOCOL_NOT_IN_TRANSPORT  = NETSH_ERROR_BASE + 2;
   {$EXTERNALSYM ERROR_PROTOCOL_NOT_IN_TRANSPORT}
-  ERROR_NO_CHANGE                  = (NETSH_ERROR_BASE + 3);
+  ERROR_NO_CHANGE                  = NETSH_ERROR_BASE + 3;
   {$EXTERNALSYM ERROR_NO_CHANGE}
-  ERROR_CMD_NOT_FOUND              = (NETSH_ERROR_BASE + 4);
+  ERROR_CMD_NOT_FOUND              = NETSH_ERROR_BASE + 4;
   {$EXTERNALSYM ERROR_CMD_NOT_FOUND}
-  ERROR_ENTRY_PT_NOT_FOUND         = (NETSH_ERROR_BASE + 5);
+  ERROR_ENTRY_PT_NOT_FOUND         = NETSH_ERROR_BASE + 5;
   {$EXTERNALSYM ERROR_ENTRY_PT_NOT_FOUND}
-  ERROR_DLL_LOAD_FAILED            = (NETSH_ERROR_BASE + 6);
+  ERROR_DLL_LOAD_FAILED            = NETSH_ERROR_BASE + 6;
   {$EXTERNALSYM ERROR_DLL_LOAD_FAILED}
-  ERROR_INIT_DISPLAY               = (NETSH_ERROR_BASE + 7);
+  ERROR_INIT_DISPLAY               = NETSH_ERROR_BASE + 7;
   {$EXTERNALSYM ERROR_INIT_DISPLAY}
-  ERROR_TAG_ALREADY_PRESENT        = (NETSH_ERROR_BASE + 8);
+  ERROR_TAG_ALREADY_PRESENT        = NETSH_ERROR_BASE + 8;
   {$EXTERNALSYM ERROR_TAG_ALREADY_PRESENT}
-  ERROR_INVALID_OPTION_TAG         = (NETSH_ERROR_BASE + 9);
+  ERROR_INVALID_OPTION_TAG         = NETSH_ERROR_BASE + 9;
   {$EXTERNALSYM ERROR_INVALID_OPTION_TAG}
-  ERROR_NO_TAG                     = (NETSH_ERROR_BASE + 10);
+  ERROR_NO_TAG                     = NETSH_ERROR_BASE + 10;
   {$EXTERNALSYM ERROR_NO_TAG}
-  ERROR_MISSING_OPTION             = (NETSH_ERROR_BASE + 11);
+  ERROR_MISSING_OPTION             = NETSH_ERROR_BASE + 11;
   {$EXTERNALSYM ERROR_MISSING_OPTION}
-  ERROR_TRANSPORT_NOT_PRESENT      = (NETSH_ERROR_BASE + 12);
+  ERROR_TRANSPORT_NOT_PRESENT      = NETSH_ERROR_BASE + 12;
   {$EXTERNALSYM ERROR_TRANSPORT_NOT_PRESENT}
-  ERROR_SHOW_USAGE                 = (NETSH_ERROR_BASE + 13);
+  ERROR_SHOW_USAGE                 = NETSH_ERROR_BASE + 13;
   {$EXTERNALSYM ERROR_SHOW_USAGE}
-  ERROR_INVALID_OPTION_VALUE       = (NETSH_ERROR_BASE + 14);
+  ERROR_INVALID_OPTION_VALUE       = NETSH_ERROR_BASE + 14;
   {$EXTERNALSYM ERROR_INVALID_OPTION_VALUE}
-  ERROR_OKAY                       = (NETSH_ERROR_BASE + 15);
+  ERROR_OKAY                       = NETSH_ERROR_BASE + 15;
   {$EXTERNALSYM ERROR_OKAY}
-  ERROR_CONTINUE_IN_PARENT_CONTEXT = (NETSH_ERROR_BASE + 16);
+  ERROR_CONTINUE_IN_PARENT_CONTEXT = NETSH_ERROR_BASE + 16;
   {$EXTERNALSYM ERROR_CONTINUE_IN_PARENT_CONTEXT}
-  ERROR_SUPPRESS_OUTPUT            = (NETSH_ERROR_BASE + 17);
+  ERROR_SUPPRESS_OUTPUT            = NETSH_ERROR_BASE + 17;
   {$EXTERNALSYM ERROR_SUPPRESS_OUTPUT}
-  ERROR_HELPER_ALREADY_REGISTERED  = (NETSH_ERROR_BASE + 18);
+  ERROR_HELPER_ALREADY_REGISTERED  = NETSH_ERROR_BASE + 18;
   {$EXTERNALSYM ERROR_HELPER_ALREADY_REGISTERED}
-  ERROR_CONTEXT_ALREADY_REGISTERED = (NETSH_ERROR_BASE + 19);
+  ERROR_CONTEXT_ALREADY_REGISTERED = NETSH_ERROR_BASE + 19;
   {$EXTERNALSYM ERROR_CONTEXT_ALREADY_REGISTERED}
   NETSH_ERROR_END                  = ERROR_CONTEXT_ALREADY_REGISTERED;
   {$EXTERNALSYM NETSH_ERROR_END}
@@ -128,7 +129,7 @@ const
   {$EXTERNALSYM CMD_FLAG_HIDDEN}
   CMD_FLAG_LIMIT_MASK  = $ffff;
   {$EXTERNALSYM CMD_FLAG_LIMIT_MASK}
-  CMD_FLAG_PRIORITY    = DWORD($80000000); // ulPriority field is used*/
+  CMD_FLAG_PRIORITY    = DWORD($80000000); // ulPriority field is used
   {$EXTERNALSYM CMD_FLAG_PRIORITY}
 
 type
@@ -209,15 +210,16 @@ type
 
 // Macros
 
-(* TODO
+(* (rom) not convertible  token pasting is specific to the C preprocessor
 #define CREATE_CMD_ENTRY(t,f)            {CMD_##t, f, HLP_##t, HLP_##t##_EX, CMD_FLAG_PRIVATE, NULL}
 #define CREATE_CMD_ENTRY_EX(t,f,i)       {CMD_##t, f, HLP_##t, HLP_##t##_EX, i, NULL}
 #define CREATE_CMD_ENTRY_EX_VER(t,f,i,v) {CMD_##t, f, HLP_##t, HLP_##t##_EX, i, v}
 
 #define CREATE_CMD_GROUP_ENTRY(t,s)            {CMD_##t, HLP_##t, sizeof(s)/sizeof(CMD_ENTRY), 0, s, NULL }
-#define CREATE_CMD_GROUP_ENTRY_EX(t,s,i)	   {CMD_##t, HLP_##t, sizeof(s)/sizeof(CMD_ENTRY), i, s, NULL }
+#define CREATE_CMD_GROUP_ENTRY_EX(t,s,i)       {CMD_##t, HLP_##t, sizeof(s)/sizeof(CMD_ENTRY), i, s, NULL }
 #define CREATE_CMD_GROUP_ENTRY_EX_VER(t,s,i,v) {CMD_##t, HLP_##t, sizeof(s)/sizeof(CMD_ENTRY), i, s, v }
 
+(rom) not convertible  call by name is specific to the C preprocessor
 #define NUM_TOKENS_IN_TABLE(TokenArray) sizeof(TokenArray)/sizeof(TOKEN_VALUE)
 #define NUM_TAGS_IN_TABLE(TagsArray)    sizeof(TagsArray)/sizeof(TAG_TYPE)
 *)
@@ -225,49 +227,49 @@ type
 // Callbacks
 
 type
-  NS_CONTEXT_COMMIT_FN = function (dwAction: DWORD): DWORD; stdcall;
+  NS_CONTEXT_COMMIT_FN = function(dwAction: DWORD): DWORD; stdcall;
   {$EXTERNALSYM NS_CONTEXT_COMMIT_FN}
   PNS_CONTEXT_COMMIT_FN = ^NS_CONTEXT_COMMIT_FN;
   {$EXTERNALSYM PNS_CONTEXT_COMMIT_FN}
   TNsContextCommitFn = NS_CONTEXT_COMMIT_FN;
   PNsContextCommitFn = PNS_CONTEXT_COMMIT_FN;
 
-  NS_CONTEXT_CONNECT_FN = function (pwszMachine: LPCWSTR): DWORD; stdcall;
+  NS_CONTEXT_CONNECT_FN = function(pwszMachine: LPCWSTR): DWORD; stdcall;
   {$EXTERNALSYM NS_CONTEXT_CONNECT_FN}
   PNS_CONTEXT_CONNECT_FN = ^NS_CONTEXT_CONNECT_FN;
   {$EXTERNALSYM PNS_CONTEXT_CONNECT_FN}
   TNsContextConnextFn = NS_CONTEXT_CONNECT_FN;
   PNsContextConnextFn = PNS_CONTEXT_CONNECT_FN;  
 
-  NS_CONTEXT_DUMP_FN = function (pwszRouter: LPCWSTR; var ppwcArguments: LPWSTR; dwArgCount: DWORD; pvData: LPCVOID): DWORD; stdcall;
+  NS_CONTEXT_DUMP_FN = function(pwszRouter: LPCWSTR; var ppwcArguments: LPWSTR; dwArgCount: DWORD; pvData: LPCVOID): DWORD; stdcall;
   {$EXTERNALSYM NS_CONTEXT_DUMP_FN}
   PNS_CONTEXT_DUMP_FN = ^NS_CONTEXT_DUMP_FN;
   {$EXTERNALSYM PNS_CONTEXT_DUMP_FN}
   TNsContextDumpFn = NS_CONTEXT_DUMP_FN;
   PNsContextDumpFn = PNS_CONTEXT_DUMP_FN;
 
-  NS_DLL_STOP_FN = function (dwReserved: DWORD): DWORD; stdcall;
+  NS_DLL_STOP_FN = function(dwReserved: DWORD): DWORD; stdcall;
   {$EXTERNALSYM NS_DLL_STOP_FN}
   PNS_DLL_STOP_FN = ^NS_DLL_STOP_FN;
   {$EXTERNALSYM PNS_DLL_STOP_FN}
   TNsDllStopFn = NS_DLL_STOP_FN;
   PNsDllStopFn = PNS_DLL_STOP_FN;
     
-  NS_HELPER_START_FN = function (const pguidParent: TGUID; dwVersion: DWORD): DWORD; stdcall;
+  NS_HELPER_START_FN = function(const pguidParent: TGUID; dwVersion: DWORD): DWORD; stdcall;
   {$EXTERNALSYM NS_HELPER_START_FN}
   PNS_HELPER_START_FN = NS_HELPER_START_FN;
   {$EXTERNALSYM PNS_HELPER_START_FN}
   TNsHelperStartFn = NS_HELPER_START_FN;
   PNsHelperStartFn = PNS_HELPER_START_FN;
 
-  NS_HELPER_STOP_FN = function (dwReserved: DWORD): DWORD; stdcall;
+  NS_HELPER_STOP_FN = function(dwReserved: DWORD): DWORD; stdcall;
   {$EXTERNALSYM NS_HELPER_STOP_FN}
   PNS_HELPER_STOP_FN = ^NS_HELPER_STOP_FN;
   {$EXTERNALSYM PNS_HELPER_STOP_FN}
   TNsHelperStopFn = NS_HELPER_STOP_FN;
   PNsHelperStopFn = PNS_HELPER_STOP_FN;
 
-  FN_HANDLE_CMD = function (pwszMachine: LPCWSTR; var ppwcArguments: LPWSTR; dwCurrentIndex, dwArgCount,
+  FN_HANDLE_CMD = function(pwszMachine: LPCWSTR; var ppwcArguments: LPWSTR; dwCurrentIndex, dwArgCount,
     dwFlags: DWORD; pvData: LPCVOID; var pbDone: BOOL): DWORD; stdcall;
   {$EXTERNALSYM FN_HANDLE_CMD}
   PFN_HANDLE_CMD = ^FN_HANDLE_CMD;
@@ -275,7 +277,7 @@ type
   TFnHandleCmd = FN_HANDLE_CMD;
   PFnHandleCmd = PFN_HANDLE_CMD;
 
-  NS_OSVERSIONCHECK = function (CIMOSType, CIMOSProductSuite: UINT; CIMOSVersion, CIMOSBuildNumber, CIMServicePackMajorVersion,
+  NS_OSVERSIONCHECK = function(CIMOSType, CIMOSProductSuite: UINT; CIMOSVersion, CIMOSBuildNumber, CIMServicePackMajorVersion,
     CIMServicePackMinorVersion: LPCWSTR; CIMProcessorArchitecture: UINT; dwReserved: DWORD): BOOL; stdcall;
   {$EXTERNALSYM NS_OSVERSIONCHECK}
   PNS_OSVERSIONCHECK = ^NS_OSVERSIONCHECK;
@@ -387,7 +389,7 @@ type
   PTagType = PTAG_TYPE;
 
 type
-  NS_DLL_INIT_FN = function (dwNetshVersion: DWORD; pReserved: PVOID): DWORD; stdcall;
+  NS_DLL_INIT_FN = function(dwNetshVersion: DWORD; pReserved: PVOID): DWORD; stdcall;
   {$EXTERNALSYM NS_DLL_INIT_FN}
   PNS_DLL_INIT_FN = ^NS_DLL_INIT_FN;
   {$EXTERNALSYM PNS_DLL_INIT_FN}
@@ -433,11 +435,11 @@ function RegisterHelper(const pguidParentContext: TGUID; pfnRegisterSubContext: 
 
 implementation
 
-const
-  netsh = 'netsh.exe'; 
-
+uses
+  JwaWinDLLNames;
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _GetHostMachineInfo: Pointer;
 
@@ -445,16 +447,12 @@ function GetHostMachineInfo;
 begin
   GetProcedureAddress(_GetHostMachineInfo, netsh, 'GetHostMachineInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetHostMachineInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetHostMachineInfo]
   end;
 end;
-{$ELSE}
-function GetHostMachineInfo; external netsh name 'GetHostMachineInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MatchEnumTag: Pointer;
 
@@ -462,16 +460,12 @@ function MatchEnumTag;
 begin
   GetProcedureAddress(_MatchEnumTag, netsh, 'MatchEnumTag');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MatchEnumTag]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MatchEnumTag]
   end;
 end;
-{$ELSE}
-function MatchEnumTag; external netsh name 'MatchEnumTag';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MatchToken: Pointer;
 
@@ -479,16 +473,12 @@ function MatchToken;
 begin
   GetProcedureAddress(_MatchToken, netsh, 'MatchToken');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MatchToken]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MatchToken]
   end;
 end;
-{$ELSE}
-function MatchToken; external netsh name 'MatchToken';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PreprocessCommand: Pointer;
 
@@ -496,17 +486,12 @@ function PreprocessCommand;
 begin
   GetProcedureAddress(_PreprocessCommand, netsh, 'PreprocessCommand');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PreprocessCommand]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PreprocessCommand]
   end;
 end;
-{$ELSE}
-function PreprocessCommand; external netsh name 'PreprocessCommand';
-{$ENDIF DYNAMIC_LINK}
 
-
-{$IFDEF DYNAMIC_LINK}
 var
   _RegisterContext: Pointer;
 
@@ -514,17 +499,12 @@ function RegisterContext;
 begin
   GetProcedureAddress(_RegisterContext, netsh, 'RegisterContext');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RegisterContext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RegisterContext]
   end;
 end;
-{$ELSE}
-function RegisterContext; external netsh name 'RegisterContext';
-{$ENDIF DYNAMIC_LINK}
 
-
-{$IFDEF DYNAMIC_LINK}
 var
   _RegisterHelper: Pointer;
 
@@ -532,13 +512,21 @@ function RegisterHelper;
 begin
   GetProcedureAddress(_RegisterHelper, netsh, 'RegisterHelper');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RegisterHelper]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RegisterHelper]
   end;
 end;
+
 {$ELSE}
+
+function GetHostMachineInfo; external netsh name 'GetHostMachineInfo';
+function MatchEnumTag; external netsh name 'MatchEnumTag';
+function MatchToken; external netsh name 'MatchToken';
+function PreprocessCommand; external netsh name 'PreprocessCommand';
+function RegisterContext; external netsh name 'RegisterContext';
 function RegisterHelper; external netsh name 'RegisterHelper';
+
 {$ENDIF DYNAMIC_LINK}
 
 end.

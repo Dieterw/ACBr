@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { WinLogon API interface Unit for Object Pascal                                }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: winwlx.h, released June 2000. The original Pascal      }
 { code is: WinWlx.pas, released December 2000. The initial developer of the    }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaWinWlx.pas,v 1.10 2005/09/06 16:36:51 marquardt Exp $
 
 unit JwaWinWlx;
 
@@ -49,12 +50,12 @@ unit JwaWinWlx;
 {$HPPEMIT '#include "WinWlx.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinType, JwaWinUser, JwaWinNT;
+  JwaWindows;
 
 //    WLX == WinLogon eXtension
 //
@@ -72,17 +73,17 @@ uses
 //
 
 const
-  WLX_VERSION_1_0     = ($00010000);
+  WLX_VERSION_1_0     = $00010000;
   {$EXTERNALSYM WLX_VERSION_1_0}
-  WLX_VERSION_1_1     = ($00010001);
+  WLX_VERSION_1_1     = $00010001;
   {$EXTERNALSYM WLX_VERSION_1_1}
-  WLX_VERSION_1_2     = ($00010002);
+  WLX_VERSION_1_2     = $00010002;
   {$EXTERNALSYM WLX_VERSION_1_2}
-  WLX_VERSION_1_3     = ($00010003);
+  WLX_VERSION_1_3     = $00010003;
   {$EXTERNALSYM WLX_VERSION_1_3}
-  WLX_VERSION_1_4     = ($00010004);
+  WLX_VERSION_1_4     = $00010004;
   {$EXTERNALSYM WLX_VERSION_1_4}
-  WLX_CURRENT_VERSION = (WLX_VERSION_1_4);
+  WLX_CURRENT_VERSION = WLX_VERSION_1_4;
   {$EXTERNALSYM WLX_CURRENT_VERSION}
 
 /////////////////////////////////////////////////////////////////////////
@@ -112,29 +113,29 @@ const
 //          from a compatible device
 //
 
-  WLX_SAS_TYPE_TIMEOUT          = (0);
+  WLX_SAS_TYPE_TIMEOUT          = 0;
   {$EXTERNALSYM WLX_SAS_TYPE_TIMEOUT}
-  WLX_SAS_TYPE_CTRL_ALT_DEL     = (1);
+  WLX_SAS_TYPE_CTRL_ALT_DEL     = 1;
   {$EXTERNALSYM WLX_SAS_TYPE_CTRL_ALT_DEL}
-  WLX_SAS_TYPE_SCRNSVR_TIMEOUT  = (2);
+  WLX_SAS_TYPE_SCRNSVR_TIMEOUT  = 2;
   {$EXTERNALSYM WLX_SAS_TYPE_SCRNSVR_TIMEOUT}
-  WLX_SAS_TYPE_SCRNSVR_ACTIVITY = (3);
+  WLX_SAS_TYPE_SCRNSVR_ACTIVITY = 3;
   {$EXTERNALSYM WLX_SAS_TYPE_SCRNSVR_ACTIVITY}
-  WLX_SAS_TYPE_USER_LOGOFF      = (4);
+  WLX_SAS_TYPE_USER_LOGOFF      = 4;
   {$EXTERNALSYM WLX_SAS_TYPE_USER_LOGOFF}
-  WLX_SAS_TYPE_SC_INSERT        = (5);
+  WLX_SAS_TYPE_SC_INSERT        = 5;
   {$EXTERNALSYM WLX_SAS_TYPE_SC_INSERT}
-  WLX_SAS_TYPE_SC_REMOVE        = (6);
+  WLX_SAS_TYPE_SC_REMOVE        = 6;
   {$EXTERNALSYM WLX_SAS_TYPE_SC_REMOVE}
-  WLX_SAS_TYPE_AUTHENTICATED    = (7);
+  WLX_SAS_TYPE_AUTHENTICATED    = 7;
   {$EXTERNALSYM WLX_SAS_TYPE_AUTHENTICATED}
-  WLX_SAS_TYPE_SC_FIRST_READER_ARRIVED = (8);
+  WLX_SAS_TYPE_SC_FIRST_READER_ARRIVED = 8;
   {$EXTERNALSYM WLX_SAS_TYPE_SC_FIRST_READER_ARRIVED}
-  WLX_SAS_TYPE_SC_LAST_READER_REMOVED  = (9);
+  WLX_SAS_TYPE_SC_LAST_READER_REMOVED  = 9;
   {$EXTERNALSYM WLX_SAS_TYPE_SC_LAST_READER_REMOVED}
-  WLX_SAS_TYPE_SWITCHUSER       = (10);
+  WLX_SAS_TYPE_SWITCHUSER       = 10;
   {$EXTERNALSYM WLX_SAS_TYPE_SWITCHUSER}
-  WLX_SAS_TYPE_MAX_MSFT_VALUE   = (127);
+  WLX_SAS_TYPE_MAX_MSFT_VALUE   = 127;
   {$EXTERNALSYM WLX_SAS_TYPE_MAX_MSFT_VALUE}
 
 //
@@ -170,7 +171,7 @@ type
 //
 
 const
-  WLX_LOGON_OPT_NO_PROFILE = ($00000001);
+  WLX_LOGON_OPT_NO_PROFILE = $00000001;
   {$EXTERNALSYM WLX_LOGON_OPT_NO_PROFILE}
 
 /////////////////////////////////////////////////////////////////////////
@@ -190,9 +191,9 @@ const
 // Standard profile is V2_0
 //
 
-  WLX_PROFILE_TYPE_V1_0 = (1);
+  WLX_PROFILE_TYPE_V1_0 = 1;
   {$EXTERNALSYM WLX_PROFILE_TYPE_V1_0}
-  WLX_PROFILE_TYPE_V2_0 = (2);
+  WLX_PROFILE_TYPE_V2_0 = 2;
   {$EXTERNALSYM WLX_PROFILE_TYPE_V2_0}
 
 /////////////////////////////////////////////////////////////////////////
@@ -223,39 +224,39 @@ const
 //  RECONNECTED        - Session was reconnected to an earlier session
 //
 
-  WLX_SAS_ACTION_LOGON                = (1);
+  WLX_SAS_ACTION_LOGON                = 1;
   {$EXTERNALSYM WLX_SAS_ACTION_LOGON}
-  WLX_SAS_ACTION_NONE                 = (2);
+  WLX_SAS_ACTION_NONE                 = 2;
   {$EXTERNALSYM WLX_SAS_ACTION_NONE}
-  WLX_SAS_ACTION_LOCK_WKSTA           = (3);
+  WLX_SAS_ACTION_LOCK_WKSTA           = 3;
   {$EXTERNALSYM WLX_SAS_ACTION_LOCK_WKSTA}
-  WLX_SAS_ACTION_LOGOFF               = (4);
+  WLX_SAS_ACTION_LOGOFF               = 4;
   {$EXTERNALSYM WLX_SAS_ACTION_LOGOFF}
-  WLX_SAS_ACTION_SHUTDOWN             = (5);
+  WLX_SAS_ACTION_SHUTDOWN             = 5;
   {$EXTERNALSYM WLX_SAS_ACTION_SHUTDOWN}
-  WLX_SAS_ACTION_PWD_CHANGED          = (6);
+  WLX_SAS_ACTION_PWD_CHANGED          = 6;
   {$EXTERNALSYM WLX_SAS_ACTION_PWD_CHANGED}
-  WLX_SAS_ACTION_TASKLIST             = (7);
+  WLX_SAS_ACTION_TASKLIST             = 7;
   {$EXTERNALSYM WLX_SAS_ACTION_TASKLIST}
-  WLX_SAS_ACTION_UNLOCK_WKSTA         = (8);
+  WLX_SAS_ACTION_UNLOCK_WKSTA         = 8;
   {$EXTERNALSYM WLX_SAS_ACTION_UNLOCK_WKSTA}
-  WLX_SAS_ACTION_FORCE_LOGOFF         = (9);
+  WLX_SAS_ACTION_FORCE_LOGOFF         = 9;
   {$EXTERNALSYM WLX_SAS_ACTION_FORCE_LOGOFF}
-  WLX_SAS_ACTION_SHUTDOWN_POWER_OFF   = (10);
+  WLX_SAS_ACTION_SHUTDOWN_POWER_OFF   = 10;
   {$EXTERNALSYM WLX_SAS_ACTION_SHUTDOWN_POWER_OFF}
-  WLX_SAS_ACTION_SHUTDOWN_REBOOT      = (11);
+  WLX_SAS_ACTION_SHUTDOWN_REBOOT      = 11;
   {$EXTERNALSYM WLX_SAS_ACTION_SHUTDOWN_REBOOT}
-  WLX_SAS_ACTION_SHUTDOWN_SLEEP       = (12);
+  WLX_SAS_ACTION_SHUTDOWN_SLEEP       = 12;
   {$EXTERNALSYM WLX_SAS_ACTION_SHUTDOWN_SLEEP}
-  WLX_SAS_ACTION_SHUTDOWN_SLEEP2      = (13);
+  WLX_SAS_ACTION_SHUTDOWN_SLEEP2      = 13;
   {$EXTERNALSYM WLX_SAS_ACTION_SHUTDOWN_SLEEP2}
-  WLX_SAS_ACTION_SHUTDOWN_HIBERNATE   = (14);
+  WLX_SAS_ACTION_SHUTDOWN_HIBERNATE   = 14;
   {$EXTERNALSYM WLX_SAS_ACTION_SHUTDOWN_HIBERNATE}
-  WLX_SAS_ACTION_RECONNECTED          = (15);
+  WLX_SAS_ACTION_RECONNECTED          = 15;
   {$EXTERNALSYM WLX_SAS_ACTION_RECONNECTED}
-  WLX_SAS_ACTION_DELAYED_FORCE_LOGOFF = (16);
+  WLX_SAS_ACTION_DELAYED_FORCE_LOGOFF = 16;
   {$EXTERNALSYM WLX_SAS_ACTION_DELAYED_FORCE_LOGOFF}
-  WLX_SAS_ACTION_SWITCH_CONSOLE       = (17);
+  WLX_SAS_ACTION_SWITCH_CONSOLE       = 17;
   {$EXTERNALSYM WLX_SAS_ACTION_SWITCH_CONSOLE}
 
 ////////////////////////////////////////////////////////////////////////
@@ -269,7 +270,7 @@ const
 //
 //  The wParam parameter has the SAS Type (above)
 
-  WLX_WM_SAS = (WM_USER + 601);
+  WLX_WM_SAS = WM_USER + 601;
   {$EXTERNALSYM WLX_WM_SAS}
 
 //
@@ -508,9 +509,9 @@ type
 //
 
 const
-  WLX_CREDENTIAL_TYPE_V1_0 = (1);
+  WLX_CREDENTIAL_TYPE_V1_0 = 1;
   {$EXTERNALSYM WLX_CREDENTIAL_TYPE_V1_0}
-  WLX_CREDENTIAL_TYPE_V2_0 = (2);
+  WLX_CREDENTIAL_TYPE_V2_0 = 2;
   {$EXTERNALSYM WLX_CREDENTIAL_TYPE_V2_0}
 
 type
@@ -584,7 +585,7 @@ type
 //
 
 const
-  WLX_CONSOLESWITCHCREDENTIAL_TYPE_V1_0 = (1);
+  WLX_CONSOLESWITCHCREDENTIAL_TYPE_V1_0 = 1;
   {$EXTERNALSYM WLX_CONSOLESWITCHCREDENTIAL_TYPE_V1_0}
 
 type
@@ -644,7 +645,7 @@ type
 //                                                                    //
 ////////////////////////////////////////////////////////////////////////
 
-{$IFDEF IMPORT_MS_GINA}
+{$IFDEF MSGINA_IMPORT}
 
 {$IFDEF MSGINA1_0}
 
@@ -689,7 +690,7 @@ procedure WlxLogoff(pWlxContext: PVOID); stdcall;
 procedure WlxShutdown(pWlxContext: PVOID; ShutdownType: DWORD); stdcall;
 {$EXTERNALSYM WlxShutdown}
 
-{$ENDIF}
+{$ENDIF MSGINA1_0}
 
 {$IFDEF MSGINA1_1}
 
@@ -700,7 +701,7 @@ function WlxStartApplication(pWlxContext: PVOID; pszDesktopName: PWSTR;
   pEnvironment: PVOID; pszCmdLine: PWSTR): BOOL; stdcall;
 {$EXTERNALSYM WlxStartApplication}
 
-{$ENDIF}
+{$ENDIF MSGINA1_1}
 
 {$IFDEF MSGINA1_3}
 
@@ -725,7 +726,7 @@ function WlxGetStatusMessage(pWlxContext: PVOID; var pdwOptions: DWORD;
 function WlxRemoveStatusMessage(pWlxContext: PVOID): BOOL; stdcall;
 {$EXTERNALSYM WlxRemoveStatusMessage}
 
-{$ENDIF}
+{$ENDIF MSGINA1_3}
 
 {$IFDEF MSGINA1_4}
 
@@ -738,9 +739,9 @@ procedure WlxReconnectNotify(pWlxContext: PVOID); stdcall;
 procedure WlxDisconnectNotify(pWlxContext: PVOID); stdcall;
 {$EXTERNALSYM WlxDisconnectNotify}
 
-{$ENDIF}
+{$ENDIF MSGINA1_4}
 
-{$ENDIF IMPORT_MS_GINA}
+{$ENDIF MSGINA_IMPORT}
 
 ////////////////////////////////////////////////////////////////////////
 //                                                                    //
@@ -770,44 +771,44 @@ const
   {$EXTERNALSYM WLX_DESKTOP_HANDLE}
 
 type
-  PWLX_USE_CTRL_ALT_DEL = procedure (hWlx: HANDLE); stdcall;
+  PWLX_USE_CTRL_ALT_DEL = procedure(hWlx: HANDLE); stdcall;
   {$EXTERNALSYM PWLX_USE_CTRL_ALT_DEL}
-  PWLX_SET_CONTEXT_POINTER = procedure (hWlx: HANDLE; pWlxContext: PVOID); stdcall;
+  PWLX_SET_CONTEXT_POINTER = procedure(hWlx: HANDLE; pWlxContext: PVOID); stdcall;
   {$EXTERNALSYM PWLX_SET_CONTEXT_POINTER}
-  PWLX_SAS_NOTIFY = procedure (hWlx: HANDLE; dwSasType: DWORD); stdcall;
+  PWLX_SAS_NOTIFY = procedure(hWlx: HANDLE; dwSasType: DWORD); stdcall;
   {$EXTERNALSYM PWLX_SAS_NOTIFY}
-  PWLX_SET_TIMEOUT = function (hWlx: HANDLE; Timeout: DWORD): BOOL; stdcall;
+  PWLX_SET_TIMEOUT = function(hWlx: HANDLE; Timeout: DWORD): BOOL; stdcall;
   {$EXTERNALSYM PWLX_SET_TIMEOUT}
-  PWLX_ASSIGN_SHELL_PROTECTION = function (hWlx, hToken, hProcess, hThread: HANDLE): Integer; stdcall;
+  PWLX_ASSIGN_SHELL_PROTECTION = function(hWlx, hToken, hProcess, hThread: HANDLE): Integer; stdcall;
   {$EXTERNALSYM PWLX_ASSIGN_SHELL_PROTECTION}
-  PWLX_MESSAGE_BOX = function (hWlx: HANDLE; hwndOwner: HWND; lpszText,
+  PWLX_MESSAGE_BOX = function(hWlx: HANDLE; hwndOwner: HWND; lpszText,
     lpszTitle: LPWSTR; fuStyle: UINT): Integer; stdcall;
   {$EXTERNALSYM PWLX_MESSAGE_BOX}
-  PWLX_DIALOG_BOX = function (hWlx, hInst: HANDLE; lpszTemplate: LPWSTR;
+  PWLX_DIALOG_BOX = function(hWlx, hInst: HANDLE; lpszTemplate: LPWSTR;
     hwndOwner: HWND; dlgprc: DLGPROC): Integer; stdcall;
   {$EXTERNALSYM PWLX_DIALOG_BOX}
-  PWLX_DIALOG_BOX_INDIRECT = function (hWlx, hInst: HANDLE;
+  PWLX_DIALOG_BOX_INDIRECT = function(hWlx, hInst: HANDLE;
     hDialogTemplate: LPCDLGTEMPLATE; hwndOwner: HWND; dlgprc: DLGPROC): Integer; stdcall;
   {$EXTERNALSYM PWLX_DIALOG_BOX_INDIRECT}
-  PWLX_DIALOG_BOX_PARAM = function (hWlx, hInst: HANDLE; lpszTemplate: LPWSTR;
+  PWLX_DIALOG_BOX_PARAM = function(hWlx, hInst: HANDLE; lpszTemplate: LPWSTR;
     hwndOwner: HWND; dlgprc: DLGPROC; dwInitParam: LPARAM): Integer; stdcall;
   {$EXTERNALSYM PWLX_DIALOG_BOX_PARAM}
-  PWLX_DIALOG_BOX_INDIRECT_PARAM = function (hWlx, hInst: HANDLE;
+  PWLX_DIALOG_BOX_INDIRECT_PARAM = function(hWlx, hInst: HANDLE;
     hDialogTemplate: LPCDLGTEMPLATE; hwndOwner: HWND; dlgprc: DLGPROC;
     dwInitParam: LPARAM): Integer; stdcall;
   {$EXTERNALSYM PWLX_DIALOG_BOX_INDIRECT_PARAM}
-  PWLX_SWITCH_DESKTOP_TO_USER = function (hWlx: HANDLE): Integer; stdcall;
+  PWLX_SWITCH_DESKTOP_TO_USER = function(hWlx: HANDLE): Integer; stdcall;
   {$EXTERNALSYM PWLX_SWITCH_DESKTOP_TO_USER}
-  PWLX_SWITCH_DESKTOP_TO_WINLOGON = function (hWlx: HANDLE): Integer; stdcall;
+  PWLX_SWITCH_DESKTOP_TO_WINLOGON = function(hWlx: HANDLE): Integer; stdcall;
   {$EXTERNALSYM PWLX_SWITCH_DESKTOP_TO_WINLOGON}
-  PWLX_CHANGE_PASSWORD_NOTIFY = function (hWlx: HANDLE;
+  PWLX_CHANGE_PASSWORD_NOTIFY = function(hWlx: HANDLE;
     var pMprInfo: WLX_MPR_NOTIFY_INFO; dwChangeInfo: DWORD): Integer; stdcall;
   {$EXTERNALSYM PWLX_CHANGE_PASSWORD_NOTIFY}
-  PWLX_GET_SOURCE_DESKTOP = function (hWlx: HANDLE; var ppDesktop: PWLX_DESKTOP): BOOL; stdcall;
+  PWLX_GET_SOURCE_DESKTOP = function(hWlx: HANDLE; var ppDesktop: PWLX_DESKTOP): BOOL; stdcall;
   {$EXTERNALSYM PWLX_GET_SOURCE_DESKTOP}
-  PWLX_SET_RETURN_DESKTOP = function (hWlx: HANDLE; const pDesktop: WLX_DESKTOP): BOOL; stdcall;
+  PWLX_SET_RETURN_DESKTOP = function(hWlx: HANDLE; const pDesktop: WLX_DESKTOP): BOOL; stdcall;
   {$EXTERNALSYM PWLX_SET_RETURN_DESKTOP}
-  PWLX_CREATE_USER_DESKTOP = function (hWlx, hToken: HANDLE; Flags: DWORD;
+  PWLX_CREATE_USER_DESKTOP = function(hWlx, hToken: HANDLE; Flags: DWORD;
     pszDesktopName: PWSTR; var ppDesktop: PWLX_DESKTOP): BOOL; stdcall;
   {$EXTERNALSYM PWLX_CREATE_USER_DESKTOP}
 
@@ -818,32 +819,32 @@ const
   {$EXTERNALSYM WLX_CREATE_USER}
 
 type
-  PWLX_CHANGE_PASSWORD_NOTIFY_EX = function (hWlx: HANDLE;
+  PWLX_CHANGE_PASSWORD_NOTIFY_EX = function(hWlx: HANDLE;
     const pMprInfo: WLX_MPR_NOTIFY_INFO; dwChangeInfo: DWORD;
     ProviderName: PWSTR; Reserved: PVOID): Integer; stdcall;
   {$EXTERNALSYM PWLX_CHANGE_PASSWORD_NOTIFY_EX}
-  PWLX_CLOSE_USER_DESKTOP = function (hWlx: HANDLE; const pDesktop: WLX_DESKTOP;
+  PWLX_CLOSE_USER_DESKTOP = function(hWlx: HANDLE; const pDesktop: WLX_DESKTOP;
     hToken: HANDLE): BOOL; stdcall;
   {$EXTERNALSYM PWLX_CLOSE_USER_DESKTOP}
-  PWLX_SET_OPTION = function (hWlx: HANDLE; Option: DWORD; Value: ULONG_PTR;
+  PWLX_SET_OPTION = function(hWlx: HANDLE; Option: DWORD; Value: ULONG_PTR;
     var OldValue: ULONG_PTR): BOOL; stdcall;
   {$EXTERNALSYM PWLX_SET_OPTION}
-  PWLX_GET_OPTION = function (hWlx: HANDLE; Option: DWORD; var Value: ULONG_PTR): BOOL; stdcall;
+  PWLX_GET_OPTION = function(hWlx: HANDLE; Option: DWORD; var Value: ULONG_PTR): BOOL; stdcall;
   {$EXTERNALSYM PWLX_GET_OPTION}
-  PWLX_WIN31_MIGRATE = procedure (hWlx: HANDLE); stdcall;
+  PWLX_WIN31_MIGRATE = procedure(hWlx: HANDLE); stdcall;
   {$EXTERNALSYM PWLX_WIN31_MIGRATE}
-  PWLX_QUERY_CLIENT_CREDENTIALS = function (var pCred: WLX_CLIENT_CREDENTIALS_INFO_V1_0): BOOL; stdcall;
+  PWLX_QUERY_CLIENT_CREDENTIALS = function(var pCred: WLX_CLIENT_CREDENTIALS_INFO_V1_0): BOOL; stdcall;
   {$EXTERNALSYM PWLX_QUERY_CLIENT_CREDENTIALS}
-  PWLX_QUERY_IC_CREDENTIALS = function (var pCred: WLX_CLIENT_CREDENTIALS_INFO_V1_0): BOOL; stdcall;
+  PWLX_QUERY_IC_CREDENTIALS = function(var pCred: WLX_CLIENT_CREDENTIALS_INFO_V1_0): BOOL; stdcall;
   {$EXTERNALSYM PWLX_QUERY_IC_CREDENTIALS}
-  PWLX_QUERY_TS_LOGON_CREDENTIALS = function (pCred: PWLX_CLIENT_CREDENTIALS_INFO_V2_0): BOOL; stdcall;
+  PWLX_QUERY_TS_LOGON_CREDENTIALS = function(pCred: PWLX_CLIENT_CREDENTIALS_INFO_V2_0): BOOL; stdcall;
   {$EXTERNALSYM PWLX_QUERY_TS_LOGON_CREDENTIALS}
   PWLX_DISCONNECT = function : BOOL; stdcall;
   {$EXTERNALSYM PWLX_DISCONNECT}
-  PWLX_QUERY_TERMINAL_SERVICES_DATA = function (hWlx: HANDLE;
+  PWLX_QUERY_TERMINAL_SERVICES_DATA = function(hWlx: HANDLE;
     var pTSData: WLX_TERMINAL_SERVICES_DATA; UserName, Domain: PWCHAR): DWORD; stdcall;
   {$EXTERNALSYM PWLX_DISCONNECT}
-  PWLX_QUERY_CONSOLESWITCH_CREDENTIALS = function (pCred: PWLX_CONSOLESWITCH_CREDENTIALS_INFO_V1_0): DWORD; stdcall;
+  PWLX_QUERY_CONSOLESWITCH_CREDENTIALS = function(pCred: PWLX_CONSOLESWITCH_CREDENTIALS_INFO_V1_0): DWORD; stdcall;
   {$EXTERNALSYM PWLX_QUERY_CONSOLESWITCH_CREDENTIALS}
 
 //
@@ -1038,7 +1039,7 @@ type
 // Non-GINA notification DLLs
 //
 
-  PFNMSGECALLBACK = function (bVerbose: BOOL; lpMessage: LPWSTR): DWORD; stdcall;
+  PFNMSGECALLBACK = function(bVerbose: BOOL; lpMessage: LPWSTR): DWORD; stdcall;
   {$EXTERNALSYM PFNMSGECALLBACK}
   TFnMsgeCallback = PFNMSGECALLBACK;
 
@@ -1062,15 +1063,15 @@ type
 
 implementation
 
-{$IFDEF IMPORT_MS_GINA}
+{$IFDEF MSGINA_IMPORT}
 
-const
-  msgina = 'msgina.dll';
+uses
+  JwaWinDLLNames;
+
+{$IFDEF DYNAMIC_LINK}
 
 {$IFDEF MSGINA1_0}
 
-
-{$IFDEF DYNAMIC_LINK}
 var
   _WlxNegotiate: Pointer;
 
@@ -1078,16 +1079,12 @@ function WlxNegotiate;
 begin
   GetProcedureAddress(_WlxNegotiate, msgina, 'WlxNegotiate');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WlxNegotiate]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WlxNegotiate]
   end;
 end;
-{$ELSE}
-function WlxNegotiate; external msgina name 'WlxNegotiate';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WlxInitialize: Pointer;
 
@@ -1095,16 +1092,12 @@ function WlxInitialize;
 begin
   GetProcedureAddress(_WlxInitialize, msgina, 'WlxInitialize');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WlxInitialize]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WlxInitialize]
   end;
 end;
-{$ELSE}
-function WlxInitialize; external msgina name 'WlxInitialize';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WlxDisplaySASNotice: Pointer;
 
@@ -1112,16 +1105,12 @@ procedure WlxDisplaySASNotice;
 begin
   GetProcedureAddress(_WlxDisplaySASNotice, msgina, 'WlxDisplaySASNotice');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WlxDisplaySASNotice]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WlxDisplaySASNotice]
   end;
 end;
-{$ELSE}
-procedure WlxDisplaySASNotice; external msgina name 'WlxDisplaySASNotice';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WlxLoggedOutSAS: Pointer;
 
@@ -1129,16 +1118,12 @@ function WlxLoggedOutSAS;
 begin
   GetProcedureAddress(_WlxLoggedOutSAS, msgina, 'WlxLoggedOutSAS');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WlxLoggedOutSAS]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WlxLoggedOutSAS]
   end;
 end;
-{$ELSE}
-function WlxLoggedOutSAS; external msgina name 'WlxLoggedOutSAS';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WlxActivateUserShell: Pointer;
 
@@ -1146,16 +1131,12 @@ function WlxActivateUserShell;
 begin
   GetProcedureAddress(_WlxActivateUserShell, msgina, 'WlxActivateUserShell');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WlxActivateUserShell]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WlxActivateUserShell]
   end;
 end;
-{$ELSE}
-function WlxActivateUserShell; external msgina name 'WlxActivateUserShell';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WlxLoggedOnSAS: Pointer;
 
@@ -1163,16 +1144,12 @@ function WlxLoggedOnSAS;
 begin
   GetProcedureAddress(_WlxLoggedOnSAS, msgina, 'WlxLoggedOnSAS');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WlxLoggedOnSAS]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WlxLoggedOnSAS]
   end;
 end;
-{$ELSE}
-function WlxLoggedOnSAS; external msgina name 'WlxLoggedOnSAS';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WlxDisplayLockedNotice: Pointer;
 
@@ -1180,16 +1157,12 @@ procedure WlxDisplayLockedNotice;
 begin
   GetProcedureAddress(_WlxDisplayLockedNotice, msgina, 'WlxDisplayLockedNotice');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WlxDisplayLockedNotice]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WlxDisplayLockedNotice]
   end;
 end;
-{$ELSE}
-procedure WlxDisplayLockedNotice; external msgina name 'WlxDisplayLockedNotice';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WlxWkstaLockedSAS: Pointer;
 
@@ -1197,16 +1170,12 @@ function WlxWkstaLockedSAS;
 begin
   GetProcedureAddress(_WlxWkstaLockedSAS, msgina, 'WlxWkstaLockedSAS');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WlxWkstaLockedSAS]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WlxWkstaLockedSAS]
   end;
 end;
-{$ELSE}
-function WlxWkstaLockedSAS; external msgina name 'WlxWkstaLockedSAS';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WlxIsLockOk: Pointer;
 
@@ -1214,16 +1183,12 @@ function WlxIsLockOk;
 begin
   GetProcedureAddress(_WlxIsLockOk, msgina, 'WlxIsLockOk');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WlxIsLockOk]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WlxIsLockOk]
   end;
 end;
-{$ELSE}
-function WlxIsLockOk; external msgina name 'WlxIsLockOk';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WlxIsLogoffOk: Pointer;
 
@@ -1231,16 +1196,12 @@ function WlxIsLogoffOk;
 begin
   GetProcedureAddress(_WlxIsLogoffOk, msgina, 'WlxIsLogoffOk');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WlxIsLogoffOk]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WlxIsLogoffOk]
   end;
 end;
-{$ELSE}
-function WlxIsLogoffOk; external msgina name 'WlxIsLogoffOk';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WlxLogoff: Pointer;
 
@@ -1248,16 +1209,12 @@ procedure WlxLogoff;
 begin
   GetProcedureAddress(_WlxLogoff, msgina, 'WlxLogoff');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WlxLogoff]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WlxLogoff]
   end;
 end;
-{$ELSE}
-procedure WlxLogoff; external msgina name 'WlxLogoff';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WlxShutdown: Pointer;
 
@@ -1265,21 +1222,16 @@ procedure WlxShutdown;
 begin
   GetProcedureAddress(_WlxShutdown, msgina, 'WlxShutdown');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WlxShutdown]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WlxShutdown]
   end;
 end;
-{$ELSE}
-procedure WlxShutdown; external msgina name 'WlxShutdown';
-{$ENDIF DYNAMIC_LINK}
 
-{$ENDIF}
+{$ENDIF MSGINA1_0}
 
 {$IFDEF MSGINA1_1}
 
-
-{$IFDEF DYNAMIC_LINK}
 var
   _WlxScreenSaverNotify: Pointer;
 
@@ -1287,16 +1239,12 @@ function WlxScreenSaverNotify;
 begin
   GetProcedureAddress(_WlxScreenSaverNotify, msgina, 'WlxScreenSaverNotify');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WlxScreenSaverNotify]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WlxScreenSaverNotify]
   end;
 end;
-{$ELSE}
-function WlxScreenSaverNotify; external msgina name 'WlxScreenSaverNotify';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WlxStartApplication: Pointer;
 
@@ -1304,21 +1252,16 @@ function WlxStartApplication;
 begin
   GetProcedureAddress(_WlxStartApplication, msgina, 'WlxStartApplication');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WlxStartApplication]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WlxStartApplication]
   end;
 end;
-{$ELSE}
-function WlxStartApplication; external msgina name 'WlxStartApplication';
-{$ENDIF DYNAMIC_LINK}
 
-{$ENDIF}
+{$ENDIF MSGINA1_1}
 
 {$IFDEF MSGINA1_3}
 
-
-{$IFDEF DYNAMIC_LINK}
 var
   _WlxNetworkProviderLoad: Pointer;
 
@@ -1326,16 +1269,12 @@ function WlxNetworkProviderLoad;
 begin
   GetProcedureAddress(_WlxNetworkProviderLoad, msgina, 'WlxNetworkProviderLoad');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WlxNetworkProviderLoad]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WlxNetworkProviderLoad]
   end;
 end;
-{$ELSE}
-function WlxNetworkProviderLoad; external msgina name 'WlxNetworkProviderLoad';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WlxDisplayStatusMessage: Pointer;
 
@@ -1343,16 +1282,12 @@ function WlxDisplayStatusMessage;
 begin
   GetProcedureAddress(_WlxDisplayStatusMessage, msgina, 'WlxDisplayStatusMessage');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WlxDisplayStatusMessage]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WlxDisplayStatusMessage]
   end;
 end;
-{$ELSE}
-function WlxDisplayStatusMessage; external msgina name 'WlxDisplayStatusMessage';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WlxGetStatusMessage: Pointer;
 
@@ -1360,16 +1295,12 @@ function WlxGetStatusMessage;
 begin
   GetProcedureAddress(_WlxGetStatusMessage, msgina, 'WlxGetStatusMessage');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WlxGetStatusMessage]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WlxGetStatusMessage]
   end;
 end;
-{$ELSE}
-function WlxGetStatusMessage; external msgina name 'WlxGetStatusMessage';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WlxRemoveStatusMessage: Pointer;
 
@@ -1377,21 +1308,16 @@ function WlxRemoveStatusMessage;
 begin
   GetProcedureAddress(_WlxRemoveStatusMessage, msgina, 'WlxRemoveStatusMessage');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WlxRemoveStatusMessage]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WlxRemoveStatusMessage]
   end;
 end;
-{$ELSE}
-function WlxRemoveStatusMessage; external msgina name 'WlxRemoveStatusMessage';
-{$ENDIF DYNAMIC_LINK}
 
-{$ENDIF}
+{$ENDIF MSGINA1_3}
 
-{$IFDEF MSGINA1_3}
+{$IFDEF MSGINA1_4}
 
-
-{$IFDEF DYNAMIC_LINK}
 var
   _WlxGetConsoleSwitchCredentials: Pointer;
 
@@ -1399,16 +1325,12 @@ function WlxGetConsoleSwitchCredentials;
 begin
   GetProcedureAddress(_WlxGetConsoleSwitchCredentials, msgina, 'WlxGetConsoleSwitchCredentials');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WlxGetConsoleSwitchCredentials]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WlxGetConsoleSwitchCredentials]
   end;
 end;
-{$ELSE}
-function WlxGetConsoleSwitchCredentials; external msgina name 'WlxGetConsoleSwitchCredentials';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WlxReconnectNotify: Pointer;
 
@@ -1416,16 +1338,12 @@ procedure WlxReconnectNotify;
 begin
   GetProcedureAddress(_WlxReconnectNotify, msgina, 'WlxReconnectNotify');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WlxReconnectNotify]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WlxReconnectNotify]
   end;
 end;
-{$ELSE}
-procedure WlxReconnectNotify; external msgina name 'WlxReconnectNotify';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WlxDisconnectNotify: Pointer;
 
@@ -1433,18 +1351,48 @@ procedure WlxDisconnectNotify;
 begin
   GetProcedureAddress(_WlxDisconnectNotify, msgina, 'WlxDisconnectNotify');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WlxDisconnectNotify]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WlxDisconnectNotify]
   end;
 end;
+
+{$ENDIF MSGINA1_4}
+
 {$ELSE}
+
+{$IFDEF MSGINA1_0}
+function WlxNegotiate; external msgina name 'WlxNegotiate';
+function WlxInitialize; external msgina name 'WlxInitialize';
+procedure WlxDisplaySASNotice; external msgina name 'WlxDisplaySASNotice';
+function WlxLoggedOutSAS; external msgina name 'WlxLoggedOutSAS';
+function WlxActivateUserShell; external msgina name 'WlxActivateUserShell';
+function WlxLoggedOnSAS; external msgina name 'WlxLoggedOnSAS';
+procedure WlxDisplayLockedNotice; external msgina name 'WlxDisplayLockedNotice';
+function WlxWkstaLockedSAS; external msgina name 'WlxWkstaLockedSAS';
+function WlxIsLockOk; external msgina name 'WlxIsLockOk';
+function WlxIsLogoffOk; external msgina name 'WlxIsLogoffOk';
+procedure WlxLogoff; external msgina name 'WlxLogoff';
+procedure WlxShutdown; external msgina name 'WlxShutdown';
+{$ENDIF MSGINA1_0}
+{$IFDEF MSGINA1_1}
+function WlxScreenSaverNotify; external msgina name 'WlxScreenSaverNotify';
+function WlxStartApplication; external msgina name 'WlxStartApplication';
+{$ENDIF MSGINA1_1}
+{$IFDEF MSGINA1_3}
+function WlxNetworkProviderLoad; external msgina name 'WlxNetworkProviderLoad';
+function WlxDisplayStatusMessage; external msgina name 'WlxDisplayStatusMessage';
+function WlxGetStatusMessage; external msgina name 'WlxGetStatusMessage';
+function WlxRemoveStatusMessage; external msgina name 'WlxRemoveStatusMessage';
+{$ENDIF MSGINA1_3}
+{$IFDEF MSGINA1_4}
+function WlxGetConsoleSwitchCredentials; external msgina name 'WlxGetConsoleSwitchCredentials';
+procedure WlxReconnectNotify; external msgina name 'WlxReconnectNotify';
 procedure WlxDisconnectNotify; external msgina name 'WlxDisconnectNotify';
+{$ENDIF MSGINA1_4}
+
 {$ENDIF DYNAMIC_LINK}
 
-{$ENDIF}
-
-{$ENDIF IMPORT_MS_GINA}
+{$ENDIF MSGINA_IMPORT}
 
 end.
-

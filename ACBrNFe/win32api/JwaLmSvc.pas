@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Lan Manager Service API interface Unit for Object Pascal                     }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: lmsvc.h, released November 2001. The original Pascal   }
 { code is: LmSvc.pas, released Februari 2002. The initial developer of the     }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,25 +35,33 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaLmSvc.pas,v 1.10 2005/09/07 09:54:54 marquardt Exp $
+
+{$IFNDEF JWA_INCLUDEMODE}
 
 unit JwaLmSvc;
 
 {$WEAKPACKAGEUNIT}
 
-{$HPPEMIT ''}
-{$HPPEMIT '#include "lmsvc.h"'}
-{$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaLmCons, JwaWinType;
+  JwaWindows, JwaLmCons;
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_INTERFACESECTION}
+
+{$HPPEMIT ''}
+{$HPPEMIT '#include "lmsvc.h"'}
+{$HPPEMIT ''}
 
 //
 //  Data Structures
@@ -307,7 +314,7 @@ const
  *  which sets the status to UNINSTALLED.
  *}
 
-  SERVICE_UIC_BADPARMVAL = (SERVICE_BASE + 1);
+  SERVICE_UIC_BADPARMVAL = SERVICE_BASE + 1;
   {$EXTERNALSYM SERVICE_UIC_BADPARMVAL}
 
 {*
@@ -315,7 +322,7 @@ const
  * value for "%1".
  *}
 
-  SERVICE_UIC_MISSPARM = (SERVICE_BASE + 2);
+  SERVICE_UIC_MISSPARM = SERVICE_BASE + 2;
   {$EXTERNALSYM SERVICE_UIC_MISSPARM}
 
 {*
@@ -323,56 +330,56 @@ const
  * line or in the configuration file.
  *}
 
-  SERVICE_UIC_UNKPARM = (SERVICE_BASE + 3);
+  SERVICE_UIC_UNKPARM = SERVICE_BASE + 3;
   {$EXTERNALSYM SERVICE_UIC_UNKPARM}
 
 {*
  * LAN Manager does not recognize "%1" as a valid option.
  *}
 
-  SERVICE_UIC_RESOURCE = (SERVICE_BASE + 4);
+  SERVICE_UIC_RESOURCE = SERVICE_BASE + 4;
   {$EXTERNALSYM SERVICE_UIC_RESOURCE}
 
 {*
  * A request for resource could not be satisfied.
  *}
 
-  SERVICE_UIC_CONFIG = (SERVICE_BASE + 5);
+  SERVICE_UIC_CONFIG = SERVICE_BASE + 5;
   {$EXTERNALSYM SERVICE_UIC_CONFIG}
 
 {*
  * A problem exists with the system configuration.
  *}
 
-  SERVICE_UIC_SYSTEM = (SERVICE_BASE + 6);
+  SERVICE_UIC_SYSTEM = SERVICE_BASE + 6;
   {$EXTERNALSYM SERVICE_UIC_SYSTEM}
 
 {*
  * A system error has occurred.
  *}
 
-  SERVICE_UIC_INTERNAL = (SERVICE_BASE + 7);
+  SERVICE_UIC_INTERNAL = SERVICE_BASE + 7;
   {$EXTERNALSYM SERVICE_UIC_INTERNAL}
 
 {*
  * An internal consistency error has occurred.
  *}
 
-  SERVICE_UIC_AMBIGPARM = (SERVICE_BASE + 8);
+  SERVICE_UIC_AMBIGPARM = SERVICE_BASE + 8;
   {$EXTERNALSYM SERVICE_UIC_AMBIGPARM}
 
 {*
  * The configuration file or the command line has an ambiguous option.
  *}
 
-  SERVICE_UIC_DUPPARM = (SERVICE_BASE + 9);
+  SERVICE_UIC_DUPPARM = SERVICE_BASE + 9;
   {$EXTERNALSYM SERVICE_UIC_DUPPARM}
 
 {*
  * The configuration file or the command line has a duplicate parameter.
  *}
 
-  SERVICE_UIC_KILL = (SERVICE_BASE + 10);
+  SERVICE_UIC_KILL = SERVICE_BASE + 10;
   {$EXTERNALSYM SERVICE_UIC_KILL}
 
 {*
@@ -380,35 +387,33 @@ const
  * the DosKillProc function.
  *}
 
-  SERVICE_UIC_EXEC = (SERVICE_BASE + 11);
+  SERVICE_UIC_EXEC = SERVICE_BASE + 11;
   {$EXTERNALSYM SERVICE_UIC_EXEC}
 
 {*
  * An error occurred when attempting to run the service program.
  *}
 
-  SERVICE_UIC_SUBSERV = (SERVICE_BASE + 12);
+  SERVICE_UIC_SUBSERV = SERVICE_BASE + 12;
   {$EXTERNALSYM SERVICE_UIC_SUBSERV}
 
 {*
  * The sub-service failed to start.
  *}
 
-  SERVICE_UIC_CONFLPARM = (SERVICE_BASE + 13);
+  SERVICE_UIC_CONFLPARM = SERVICE_BASE + 13;
   {$EXTERNALSYM SERVICE_UIC_CONFLPARM}
 
 {*
  * There is a conflict in the value or use of these options: %1.
  *}
 
-  SERVICE_UIC_FILE = (SERVICE_BASE + 14);
+  SERVICE_UIC_FILE = SERVICE_BASE + 14;
   {$EXTERNALSYM SERVICE_UIC_FILE}
 
 {*
  * There is a problem with the file.
  *}
-
-
 
 //
 //  The modifiers
@@ -425,13 +430,13 @@ const
 //  RESOURCE:
 //
 
-  SERVICE_UIC_M_MEMORY    = (SERVICE_BASE + 20); // memory
+  SERVICE_UIC_M_MEMORY    = SERVICE_BASE + 20; // memory
   {$EXTERNALSYM SERVICE_UIC_M_MEMORY}
-  SERVICE_UIC_M_DISK      = (SERVICE_BASE + 21); // disk space
+  SERVICE_UIC_M_DISK      = SERVICE_BASE + 21; // disk space
   {$EXTERNALSYM SERVICE_UIC_M_DISK}
-  SERVICE_UIC_M_THREADS   = (SERVICE_BASE + 22); // thread
+  SERVICE_UIC_M_THREADS   = SERVICE_BASE + 22; // thread
   {$EXTERNALSYM SERVICE_UIC_M_THREADS}
-  SERVICE_UIC_M_PROCESSES = (SERVICE_BASE + 23); // process
+  SERVICE_UIC_M_PROCESSES = SERVICE_BASE + 23; // process
   {$EXTERNALSYM SERVICE_UIC_M_PROCESSES}
 
 //
@@ -442,110 +447,110 @@ const
 // Security failure
 //
 
-  SERVICE_UIC_M_SECURITY = (SERVICE_BASE + 24);
+  SERVICE_UIC_M_SECURITY = SERVICE_BASE + 24;
   {$EXTERNALSYM SERVICE_UIC_M_SECURITY}
 
 {* Security Failure. %0 *}
 
-  SERVICE_UIC_M_LANROOT = (SERVICE_BASE + 25);
+  SERVICE_UIC_M_LANROOT = SERVICE_BASE + 25;
   {$EXTERNALSYM SERVICE_UIC_M_LANROOT}
 
 {*
  * Bad or missing LAN Manager root directory.
  *}
 
-  SERVICE_UIC_M_REDIR = (SERVICE_BASE + 26);
+  SERVICE_UIC_M_REDIR = SERVICE_BASE + 26;
   {$EXTERNALSYM SERVICE_UIC_M_REDIR}
 
 {*
  * The network software is not installed.
  *}
 
-  SERVICE_UIC_M_SERVER = (SERVICE_BASE + 27);
+  SERVICE_UIC_M_SERVER = SERVICE_BASE + 27;
   {$EXTERNALSYM SERVICE_UIC_M_SERVER}
 
 {*
  * The server is not started.
  *}
 
-  SERVICE_UIC_M_SEC_FILE_ERR = (SERVICE_BASE + 28);
+  SERVICE_UIC_M_SEC_FILE_ERR = SERVICE_BASE + 28;
   {$EXTERNALSYM SERVICE_UIC_M_SEC_FILE_ERR}
 
 {*
  * The server cannot access the user accounts database (NET.ACC).
  *}
 
-  SERVICE_UIC_M_FILES = (SERVICE_BASE + 29);
+  SERVICE_UIC_M_FILES = SERVICE_BASE + 29;
   {$EXTERNALSYM SERVICE_UIC_M_FILES}
 
 {*
  * Incompatible files are installed in the LANMAN tree.
  *}
 
-  SERVICE_UIC_M_LOGS = (SERVICE_BASE + 30);
+  SERVICE_UIC_M_LOGS = SERVICE_BASE + 30;
   {$EXTERNALSYM SERVICE_UIC_M_LOGS}
 
 {*
  * The LANMAN\LOGS directory is invalid.
  *}
 
-  SERVICE_UIC_M_LANGROUP = (SERVICE_BASE + 31);
+  SERVICE_UIC_M_LANGROUP = SERVICE_BASE + 31;
   {$EXTERNALSYM SERVICE_UIC_M_LANGROUP}
 
 {*
  * The domain specified could not be used.
  *}
 
-  SERVICE_UIC_M_MSGNAME = (SERVICE_BASE + 32);
+  SERVICE_UIC_M_MSGNAME = SERVICE_BASE + 32;
   {$EXTERNALSYM SERVICE_UIC_M_MSGNAME}
 
 {*
  * The computer name is being used as a message alias on another computer.
  *}
 
-  SERVICE_UIC_M_ANNOUNCE = (SERVICE_BASE + 33);
+  SERVICE_UIC_M_ANNOUNCE = SERVICE_BASE + 33;
   {$EXTERNALSYM SERVICE_UIC_M_ANNOUNCE}
 
 {*
  * The announcement of the server name failed.
  *}
 
-  SERVICE_UIC_M_UAS = (SERVICE_BASE + 34);
+  SERVICE_UIC_M_UAS = SERVICE_BASE + 34;
   {$EXTERNALSYM SERVICE_UIC_M_UAS}
 
 {*
  * The user accounts database is not configured correctly.
  *}
 
-  SERVICE_UIC_M_SERVER_SEC_ERR = (SERVICE_BASE + 35);
+  SERVICE_UIC_M_SERVER_SEC_ERR = SERVICE_BASE + 35;
   {$EXTERNALSYM SERVICE_UIC_M_SERVER_SEC_ERR}
 
 {*
  * The server is not running with user-level security.
  *}
 
-  SERVICE_UIC_M_WKSTA = (SERVICE_BASE + 37);
+  SERVICE_UIC_M_WKSTA = SERVICE_BASE + 37;
   {$EXTERNALSYM SERVICE_UIC_M_WKSTA}
 
 {*
  * The workstation is not configured properly.
  *}
 
-  SERVICE_UIC_M_ERRLOG = (SERVICE_BASE + 38);
+  SERVICE_UIC_M_ERRLOG = SERVICE_BASE + 38;
   {$EXTERNALSYM SERVICE_UIC_M_ERRLOG}
 
 {*
  * View your error log for details.
  *}
 
-  SERVICE_UIC_M_FILE_UW = (SERVICE_BASE + 39);
+  SERVICE_UIC_M_FILE_UW = SERVICE_BASE + 39;
   {$EXTERNALSYM SERVICE_UIC_M_FILE_UW}
 
 {*
  * Unable to write to this file.
  *}
 
-  SERVICE_UIC_M_ADDPAK = (SERVICE_BASE + 40);
+  SERVICE_UIC_M_ADDPAK = SERVICE_BASE + 40;
   {$EXTERNALSYM SERVICE_UIC_M_ADDPAK}
 
 {*
@@ -553,35 +558,35 @@ const
  * and reapply all ADDPAKs.
  *}
 
-  SERVICE_UIC_M_LAZY = (SERVICE_BASE + 41);
+  SERVICE_UIC_M_LAZY = SERVICE_BASE + 41;
   {$EXTERNALSYM SERVICE_UIC_M_LAZY}
 
 {*
  * The LM386 server cannot be started because CACHE.EXE is not running.
  *}
 
-  SERVICE_UIC_M_UAS_MACHINE_ACCT = (SERVICE_BASE + 42);
+  SERVICE_UIC_M_UAS_MACHINE_ACCT = SERVICE_BASE + 42;
   {$EXTERNALSYM SERVICE_UIC_M_UAS_MACHINE_ACCT}
 
 {*
  * There is no account for this computer in the security database.
  *}
 
-  SERVICE_UIC_M_UAS_SERVERS_NMEMB = (SERVICE_BASE + 43);
+  SERVICE_UIC_M_UAS_SERVERS_NMEMB = SERVICE_BASE + 43;
   {$EXTERNALSYM SERVICE_UIC_M_UAS_SERVERS_NMEMB}
 
 {*
  * This computer is not a member of the group SERVERS.
  *}
 
-  SERVICE_UIC_M_UAS_SERVERS_NOGRP = (SERVICE_BASE + 44);
+  SERVICE_UIC_M_UAS_SERVERS_NOGRP = SERVICE_BASE + 44;
   {$EXTERNALSYM SERVICE_UIC_M_UAS_SERVERS_NOGRP}
 
 {*
  * The group SERVERS is not present in the local security database.
  *}
 
-  SERVICE_UIC_M_UAS_INVALID_ROLE = (SERVICE_BASE + 45);
+  SERVICE_UIC_M_UAS_INVALID_ROLE = SERVICE_BASE + 45;
   {$EXTERNALSYM SERVICE_UIC_M_UAS_INVALID_ROLE}
 
 {*
@@ -590,14 +595,14 @@ const
  * configuration.
  *}
 
-  SERVICE_UIC_M_NETLOGON_NO_DC = (SERVICE_BASE + 46);
+  SERVICE_UIC_M_NETLOGON_NO_DC = SERVICE_BASE + 46;
   {$EXTERNALSYM SERVICE_UIC_M_NETLOGON_NO_DC}
 
 {*
  * The primary Domain Controller for this domain could not be located.
  *}
 
-  SERVICE_UIC_M_NETLOGON_DC_CFLCT = (SERVICE_BASE + 47);
+  SERVICE_UIC_M_NETLOGON_DC_CFLCT = SERVICE_BASE + 47;
   {$EXTERNALSYM SERVICE_UIC_M_NETLOGON_DC_CFLCT}
 
 {*
@@ -606,34 +611,33 @@ const
  * of the domain.
  *}
 
-  SERVICE_UIC_M_NETLOGON_AUTH = (SERVICE_BASE + 48);
+  SERVICE_UIC_M_NETLOGON_AUTH = SERVICE_BASE + 48;
   {$EXTERNALSYM SERVICE_UIC_M_NETLOGON_AUTH}
 
 {*
  * The service failed to authenticate with the primary domain controller.
  *}
 
-  SERVICE_UIC_M_UAS_PROLOG = (SERVICE_BASE + 49);
+  SERVICE_UIC_M_UAS_PROLOG = SERVICE_BASE + 49;
   {$EXTERNALSYM SERVICE_UIC_M_UAS_PROLOG}
 
 {*
  * There is a problem with the security database creation date or serial number.
  *}
 
-
   SERVICE2_BASE = 5600;
   {$EXTERNALSYM SERVICE2_BASE}
 
 {* new SEVICE_UIC messages go here *}
 
-  SERVICE_UIC_M_NETLOGON_MPATH = (SERVICE2_BASE + 0);
+  SERVICE_UIC_M_NETLOGON_MPATH = SERVICE2_BASE + 0;
   {$EXTERNALSYM SERVICE_UIC_M_NETLOGON_MPATH}
 
 {*
  * Could not share the User or Script path.
  *}
 
-  SERVICE_UIC_M_LSA_MACHINE_ACCT = (SERVICE2_BASE + 1);
+  SERVICE_UIC_M_LSA_MACHINE_ACCT = SERVICE2_BASE + 1;
   {$EXTERNALSYM SERVICE_UIC_M_LSA_MACHINE_ACCT}
 
 {*
@@ -641,14 +645,13 @@ const
  * database.
  *}
 
-  SERVICE_UIC_M_DATABASE_ERROR = (SERVICE2_BASE + 2);
+  SERVICE_UIC_M_DATABASE_ERROR = SERVICE2_BASE + 2;
   {$EXTERNALSYM SERVICE_UIC_M_DATABASE_ERROR}
 
 {*
  * An internal error occurred while accessing the computer's
  * local or network security database.
  *}
-
 
 //
 //  End modifiers
@@ -685,76 +688,18 @@ function SERVICE_NT_CCP_CODE(tt, nn: LONG): LONG;
 function SERVICE_NT_WAIT_GET(code: DWORD): DWORD;
 {$EXTERNALSYM SERVICE_NT_WAIT_GET}
 
+{$ENDIF JWA_INTERFACESECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
+
 implementation
 
+uses
+  JwaWinDLLNames;
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _NetServiceControl: Pointer;
+{$ENDIF !JWA_INCLUDEMODE}
 
-function NetServiceControl;
-begin
-  GetProcedureAddress(_NetServiceControl, netapi32, 'NetServiceControl');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetServiceControl]
-  end;
-end;
-{$ELSE}
-function NetServiceControl; external netapi32 name 'NetServiceControl';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _NetServiceEnum: Pointer;
-
-function NetServiceEnum;
-begin
-  GetProcedureAddress(_NetServiceEnum, netapi32, 'NetServiceEnum');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetServiceEnum]
-  end;
-end;
-{$ELSE}
-function NetServiceEnum; external netapi32 name 'NetServiceEnum';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _NetServiceGetInfo: Pointer;
-
-function NetServiceGetInfo;
-begin
-  GetProcedureAddress(_NetServiceGetInfo, netapi32, 'NetServiceGetInfo');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetServiceGetInfo]
-  end;
-end;
-{$ELSE}
-function NetServiceGetInfo; external netapi32 name 'NetServiceGetInfo';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _NetServiceInstall: Pointer;
-
-function NetServiceInstall;
-begin
-  GetProcedureAddress(_NetServiceInstall, netapi32, 'NetServiceInstall');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetServiceInstall]
-  end;
-end;
-{$ELSE}
-function NetServiceInstall; external netapi32 name 'NetServiceInstall';
-{$ENDIF DYNAMIC_LINK}
+{$IFDEF JWA_IMPLEMENTATIONSECTION}
 
 // #define SERVICE_IP_CODE(tt,nn) ((long)SERVICE_IP_QUERY_HINT|(long)(nn|(tt<<SERVICE_IP_WAITTIME_SHIFT)))
 
@@ -785,7 +730,7 @@ end;
 //     (((tt)&UPPER_HINT_MASK) << SERVICE_NTIP_WAITTIME_SHIFT)   \
 //   )
 
-function SERVICE_NT_CCP_CODE(tt, nn: LongInt): LongInt;
+function SERVICE_NT_CCP_CODE(tt, nn: Longint): Longint;
 begin
   Result := SERVICE_CCP_QUERY_HINT or nn or ((tt and LOWER_HINT_MASK) shl SERVICE_IP_WAITTIME_SHIFT) or ((tt and UPPER_HINT_MASK) shl SERVICE_NTIP_WAITTIME_SHIFT);
 end;
@@ -801,4 +746,71 @@ begin
   Result := ((code and UPPER_GET_HINT_MASK) shr SERVICE_NTIP_WAITTIME_SHIFT) or ((code and LOWER_GET_HINT_MASK) shr SERVICE_IP_WAITTIME_SHIFT);
 end;
 
+{$IFDEF DYNAMIC_LINK}
+
+var
+  _NetServiceControl: Pointer;
+
+function NetServiceControl;
+begin
+  GetProcedureAddress(_NetServiceControl, netapi32, 'NetServiceControl');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetServiceControl]
+  end;
+end;
+
+var
+  _NetServiceEnum: Pointer;
+
+function NetServiceEnum;
+begin
+  GetProcedureAddress(_NetServiceEnum, netapi32, 'NetServiceEnum');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetServiceEnum]
+  end;
+end;
+
+var
+  _NetServiceGetInfo: Pointer;
+
+function NetServiceGetInfo;
+begin
+  GetProcedureAddress(_NetServiceGetInfo, netapi32, 'NetServiceGetInfo');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetServiceGetInfo]
+  end;
+end;
+
+var
+  _NetServiceInstall: Pointer;
+
+function NetServiceInstall;
+begin
+  GetProcedureAddress(_NetServiceInstall, netapi32, 'NetServiceInstall');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetServiceInstall]
+  end;
+end;
+
+{$ELSE}
+
+function NetServiceControl; external netapi32 name 'NetServiceControl';
+function NetServiceEnum; external netapi32 name 'NetServiceEnum';
+function NetServiceGetInfo; external netapi32 name 'NetServiceGetInfo';
+function NetServiceInstall; external netapi32 name 'NetServiceInstall';
+
+{$ENDIF DYNAMIC_LINK}
+
+{$ENDIF JWA_IMPLEMENTATIONSECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
 end.
+{$ENDIF !JWA_INCLUDEMODE}

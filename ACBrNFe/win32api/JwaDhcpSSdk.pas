@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { DHCP Callout DLL API interface unit for Object Pascal                        }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: dhcpssdk.h, released June 2000. The original Pascal    }
 { code is: DhcpSSdk.pas, released December 2000. The initial developer of the  }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaDhcpSSdk.pas,v 1.6 2005/09/03 14:27:48 marquardt Exp $
 
 unit JwaDhcpSSdk;
 
@@ -51,12 +52,12 @@ unit JwaDhcpSSdk;
 {$HPPEMIT 'typedef DHCP_IP_ADDRESS *LPDHCP_IP_ADDRESS;'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinNT, JwaWinType;
+  JwaWindows;
 
 //  This structure could change any day.  This will be accurate only for version 0 -- which
 //  has to be checked for by any CalloutDLL that is hooking onto the DhcpHandleOptionsHook.
@@ -179,7 +180,7 @@ const
   {$EXTERNALSYM DHCP_CLIENT_DHCP}
 
 type
-  LPDHCP_CONTROL = function (dwControlCode: DWORD; lpReserved: LPVOID): DWORD; stdcall;
+  LPDHCP_CONTROL = function(dwControlCode: DWORD; lpReserved: LPVOID): DWORD; stdcall;
   {$EXTERNALSYM LPDHCP_CONTROL}
   PDhcpControl = LPDHCP_CONTROL;
 
@@ -199,9 +200,8 @@ Arguments:
 
 }
 
-
 type
-  LPDHCP_NEWPKT = function (var Packet: LPBYTE; var PacketSize: DWORD; IpAddress: DWORD;
+  LPDHCP_NEWPKT = function(var Packet: LPBYTE; var PacketSize: DWORD; IpAddress: DWORD;
     Reserved: LPVOID; var PktContext: LPVOID; ProcessIt: LPBOOL): DWORD; stdcall;
   {$EXTERNALSYM LPDHCP_NEWPKT}
   PDhcpNewPkt = LPDHCP_NEWPKT;
@@ -249,7 +249,7 @@ Arguments:
 }
 
 type
-  LPDHCP_DROP_SEND = function (var Packet: LPBYTE; var PacketSize: DWORD;
+  LPDHCP_DROP_SEND = function(var Packet: LPBYTE; var PacketSize: DWORD;
     ControlCode, IpAddress: DWORD; Reserved, PktContext: LPVOID): DWORD; stdcall;
   {$EXTERNALSYM LPDHCP_DROP_SEND}
   PDhcpDropSend = LPDHCP_DROP_SEND;
@@ -305,7 +305,7 @@ Arguments:
 }
 
 type
-  LPDHCP_PROB = function (Packet: LPBYTE; PacketSize, ControlCode, IpAddress,
+  LPDHCP_PROB = function(Packet: LPBYTE; PacketSize, ControlCode, IpAddress,
     AltAddress: DWORD; Reserved, PktContext: LPVOID): DWORD; stdcall;
   {$EXTERNALSYM LPDHCP_PROB}
   PDhcpProb = LPDHCP_PROB;
@@ -350,7 +350,7 @@ Arguments:
 }
 
 type
-  LPDHCP_GIVE_ADDRESS = function (Packet: LPBYTE; PacketSize, ControlCode, IpAddress,
+  LPDHCP_GIVE_ADDRESS = function(Packet: LPBYTE; PacketSize, ControlCode, IpAddress,
     AltAddress, AddrType, LeaseTime: DWORD; Reserved, PktContext: LPVOID): DWORD; stdcall;
   {$EXTERNALSYM LPDHCP_GIVE_ADDRESS}
   PDhcpGiveAddress = LPDHCP_GIVE_ADDRESS;
@@ -393,7 +393,7 @@ Arguments:
 }
 
 type
-  LPDHCP_HANDLE_OPTIONS = function (Packet: LPBYTE; PacketSize: DWORD;
+  LPDHCP_HANDLE_OPTIONS = function(Packet: LPBYTE; PacketSize: DWORD;
     Reserved, PktContext: LPVOID; ServerOptions: DHCP_SERVER_OPTIONS): DWORD; stdcall;
   {$EXTERNALSYM LPDHCP_HANDLE_OPTIONS}
   TDhcpHandleOptions = LPDHCP_HANDLE_OPTIONS;
@@ -427,7 +427,7 @@ Arguments:
 }
 
 type
-  LPDHCP_DELETE_CLIENT = function (IpAddress: DWORD; HwAddress: LPBYTE;
+  LPDHCP_DELETE_CLIENT = function(IpAddress: DWORD; HwAddress: LPBYTE;
     HwAddressLength: ULONG; Reserved, ClientType: DWORD): DWORD; stdcall;
   {$EXTERNALSYM LPDHCP_DELETE_CLIENT}
   PDhcpDeleteClient = LPDHCP_DELETE_CLIENT;
@@ -475,7 +475,7 @@ type
   PDhcpCalloutTable = LPDHCP_CALLOUT_TABLE;
 
 type
-  LPDHCP_ENTRY_POINT_FUNC = function (ChainDlls: LPWSTR; CalloutVersion: DWORD;
+  LPDHCP_ENTRY_POINT_FUNC = function(ChainDlls: LPWSTR; CalloutVersion: DWORD;
     var CalloutTbl: DHCP_CALLOUT_TABLE): DWORD; stdcall;
   {$EXTERNALSYM LPDHCP_ENTRY_POINT_FUNC}
   PDhcpEntryPointFunc = LPDHCP_ENTRY_POINT_FUNC;
@@ -496,7 +496,7 @@ Routine Description:
     It is expected that the entrypoint routine would walk through the
     names of the dlls and attempt to load each of them and when it
     succeeds in retrieving the entry point, it attempts to get the
-    cumulative set of hooks by repeating the above procedure (as done
+    cumulative set of hooks by repeating the above procedure(as done
     by the DHCP Server).
 
 Arguments:

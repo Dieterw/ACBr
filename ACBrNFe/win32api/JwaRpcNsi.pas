@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { RPC NSI API interface Unit for Object Pascal                                 }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: rpcnsi.h, released June 2000. The original Pascal      }
 { code is: RpcNsi.pas, released December 2000. The initial developer of the    }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,25 +35,35 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaRpcNsi.pas,v 1.10 2005/09/06 16:36:50 marquardt Exp $
+
+{$IFNDEF JWA_INCLUDEMODE}
 
 unit JwaRpcNsi;
 
 {$WEAKPACKAGEUNIT}
 
-{$HPPEMIT ''}
-{$HPPEMIT '#include "RpcNsi.h"'}
-{$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFNDEF JWARPC_PAS}
 uses
-  JwaRpc, JwaRpcDce, JwaWinType{todo only here for GetProcedureAddress};
+  JwaWinType, JwaRpcDce;
+{$ENDIF !JWARPC_PAS}
+
+{$IFDEF JWA_INTERFACESECTION}
+
+{$HPPEMIT ''}
+{$HPPEMIT '#include "RpcNsi.h"'}
+{$HPPEMIT ''}
 
 type
   RPC_NS_HANDLE = Pointer;
@@ -92,18 +101,10 @@ function RpcNsBindingExportW(EntryNameSyntax: Longword; EntryName: PWideChar;
   IfSpec: RPC_IF_HANDLE; BindingVec: PRPC_BINDING_VECTOR;
   ObjectUuidVec: PUUID_VECTOR): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsBindingExportW}
-
-{$IFDEF UNICODE}
-function RpcNsBindingExport(EntryNameSyntax: Longword; EntryName: PWideChar;
+function RpcNsBindingExport(EntryNameSyntax: Longword; EntryName: PTSTR;
   IfSpec: RPC_IF_HANDLE; BindingVec: PRPC_BINDING_VECTOR;
   ObjectUuidVec: PUUID_VECTOR): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsBindingExport}
-{$ELSE}
-function RpcNsBindingExport(EntryNameSyntax: Longword; EntryName: PChar;
-  IfSpec: RPC_IF_HANDLE; BindingVec: PRPC_BINDING_VECTOR;
-  ObjectUuidVec: PUUID_VECTOR): RPC_STATUS; stdcall;
-{$EXTERNALSYM RpcNsBindingExport}
-{$ENDIF}
 
 function RpcNsBindingUnexportA(EntryNameSyntax: Longword; EntryName: PChar;
   IfSpec: RPC_IF_HANDLE; ObjectUuidVec: PUUID_VECTOR): RPC_STATUS; stdcall;
@@ -111,16 +112,9 @@ function RpcNsBindingUnexportA(EntryNameSyntax: Longword; EntryName: PChar;
 function RpcNsBindingUnexportW(EntryNameSyntax: Longword; EntryName: PWideChar;
   IfSpec: RPC_IF_HANDLE; ObjectUuidVec: PUUID_VECTOR): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsBindingUnexportW}
-
-{$IFDEF UNICODE}
-function RpcNsBindingUnexport(EntryNameSyntax: Longword; EntryName: PWideChar;
+function RpcNsBindingUnexport(EntryNameSyntax: Longword; EntryName: PTSTR;
   IfSpec: RPC_IF_HANDLE; ObjectUuidVec: PUUID_VECTOR): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsBindingUnexport}
-{$ELSE}
-function RpcNsBindingUnexport(EntryNameSyntax: Longword; EntryName: PChar;
-  IfSpec: RPC_IF_HANDLE; ObjectUuidVec: PUUID_VECTOR): RPC_STATUS; stdcall;
-{$EXTERNALSYM RpcNsBindingUnexport}
-{$ENDIF}
 
 // Server PnP APIs
 
@@ -130,16 +124,9 @@ function RpcNsBindingExportPnPA(EntryNameSyntax: Longword; EntryName: PChar;
 function RpcNsBindingExportPnPW(EntryNameSyntax: Longword; EntryName: PWideChar;
   IfSpec: RPC_IF_HANDLE; ObjectVector: PUUID_VECTOR): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsBindingExportPnPW}
-
-{$IFDEF UNICODE}
-function RpcNsBindingExportPnP(EntryNameSyntax: Longword; EntryName: PWideChar;
+function RpcNsBindingExportPnP(EntryNameSyntax: Longword; EntryName: PTSTR;
   IfSpec: RPC_IF_HANDLE; ObjectVector: PUUID_VECTOR): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsBindingExportPnP}
-{$ELSE}
-function RpcNsBindingExportPnP(EntryNameSyntax: Longword; EntryName: PChar;
-  IfSpec: RPC_IF_HANDLE; ObjectVector: PUUID_VECTOR): RPC_STATUS; stdcall;
-{$EXTERNALSYM RpcNsBindingExportPnP}
-{$ENDIF}
 
 function RpcNsBindingUnexportPnPA(EntryNameSyntax: Longword; EntryName: PChar;
   IfSpec: RPC_IF_HANDLE; ObjectVector: PUUID_VECTOR): RPC_STATUS; stdcall;
@@ -147,16 +134,9 @@ function RpcNsBindingUnexportPnPA(EntryNameSyntax: Longword; EntryName: PChar;
 function RpcNsBindingUnexportPnPW(EntryNameSyntax: Longword; EntryName: PWideChar;
   IfSpec: RPC_IF_HANDLE; ObjectVector: PUUID_VECTOR): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsBindingUnexportPnPW}
-
-{$IFDEF UNICODE}
-function RpcNsBindingUnexportPnP(EntryNameSyntax: Longword; EntryName: PWideChar;
+function RpcNsBindingUnexportPnP(EntryNameSyntax: Longword; EntryName: PTSTR;
   IfSpec: RPC_IF_HANDLE; ObjectVector: PUUID_VECTOR): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsBindingUnexportPnP}
-{$ELSE}
-function RpcNsBindingUnexportPnP(EntryNameSyntax: Longword; EntryName: PChar;
-  IfSpec: RPC_IF_HANDLE; ObjectVector: PUUID_VECTOR): RPC_STATUS; stdcall;
-{$EXTERNALSYM RpcNsBindingUnexportPnP}
-{$ENDIF}
 
 // Client APIs
 
@@ -168,18 +148,10 @@ function RpcNsBindingLookupBeginW(EntryNameSyntax: Longword; EntryName: PWideCha
   IfSpec: RPC_IF_HANDLE; ObjUuid: PUUID; BindingMaxCount: Longword;
   var LookupContext: RPC_NS_HANDLE): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsBindingLookupBeginW}
-
-{$IFDEF UNICODE}
-function RpcNsBindingLookupBegin(EntryNameSyntax: Longword; EntryName: PWideChar;
+function RpcNsBindingLookupBegin(EntryNameSyntax: Longword; EntryName: PTSTR;
   IfSpec: RPC_IF_HANDLE; ObjUuid: PUUID; BindingMaxCount: Longword;
   var LookupContext: RPC_NS_HANDLE): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsBindingLookupBegin}
-{$ELSE}
-function RpcNsBindingLookupBegin(EntryNameSyntax: Longword; EntryName: PChar;
-  IfSpec: RPC_IF_HANDLE; ObjUuid: PUUID; BindingMaxCount: Longword;
-  var LookupContext: RPC_NS_HANDLE): RPC_STATUS; stdcall;
-{$EXTERNALSYM RpcNsBindingLookupBegin}
-{$ENDIF}
 
 function RpcNsBindingLookupNext(LookupContext: RPC_NS_HANDLE;
   var BindingVec: PRPC_BINDING_VECTOR): RPC_STATUS; stdcall;
@@ -194,14 +166,8 @@ function RpcNsGroupDeleteA(GroupNameSyntax: Longword; GroupName: PChar): RPC_STA
 {$EXTERNALSYM RpcNsGroupDeleteA}
 function RpcNsGroupDeleteW(GroupNameSyntax: Longword; GroupName: PWideChar): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsGroupDeleteW}
-
-{$IFDEF UNICODE}
-function RpcNsGroupDelete(GroupNameSyntax: Longword; GroupName: PWideChar): RPC_STATUS; stdcall;
+function RpcNsGroupDelete(GroupNameSyntax: Longword; GroupName: PTSTR): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsGroupDelete}
-{$ELSE}
-function RpcNsGroupDelete(GroupNameSyntax: Longword; GroupName: PChar): RPC_STATUS; stdcall;
-{$EXTERNALSYM RpcNsGroupDelete}
-{$ENDIF}
 
 function RpcNsGroupMbrAddA(GroupNameSyntax: Longword; GroupName: PChar;
   MemberNameSyntax: Longword; MemberName: PChar): RPC_STATUS; stdcall;
@@ -209,16 +175,9 @@ function RpcNsGroupMbrAddA(GroupNameSyntax: Longword; GroupName: PChar;
 function RpcNsGroupMbrAddW(GroupNameSyntax: Longword; GroupName: PWideChar;
   MemberNameSyntax: Longword; MemberName: PWideChar): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsGroupMbrAddW}
-
-{$IFDEF UNICODE}
-function RpcNsGroupMbrAdd(GroupNameSyntax: Longword; GroupName: PWideChar;
-  MemberNameSyntax: Longword; MemberName: PWideChar): RPC_STATUS; stdcall;
+function RpcNsGroupMbrAdd(GroupNameSyntax: Longword; GroupName: PTSTR;
+  MemberNameSyntax: Longword; MemberName: PTSTR): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsGroupMbrAdd}
-{$ELSE}
-function RpcNsGroupMbrAdd(GroupNameSyntax: Longword; GroupName: PChar;
-  MemberNameSyntax: Longword; MemberName: PChar): RPC_STATUS; stdcall;
-{$EXTERNALSYM RpcNsGroupMbrAdd}
-{$ENDIF}
 
 function RpcNsGroupMbrRemoveA(GroupNameSyntax: Longword; GroupName: PChar;
   MemberNameSyntax: Longword; MemberName: PChar): RPC_STATUS; stdcall;
@@ -226,16 +185,9 @@ function RpcNsGroupMbrRemoveA(GroupNameSyntax: Longword; GroupName: PChar;
 function RpcNsGroupMbrRemoveW(GroupNameSyntax: Longword; GroupName: PWideChar;
   MemberNameSyntax: Longword; MemberName: PWideChar): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsGroupMbrRemoveW}
-
-{$IFDEF UNICODE}
-function RpcNsGroupMbrRemove(GroupNameSyntax: Longword; GroupName: PWideChar;
-  MemberNameSyntax: Longword; MemberName: PWideChar): RPC_STATUS; stdcall;
+function RpcNsGroupMbrRemove(GroupNameSyntax: Longword; GroupName: PTSTR;
+  MemberNameSyntax: Longword; MemberName: PTSTR): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsGroupMbrRemove}
-{$ELSE}
-function RpcNsGroupMbrRemove(GroupNameSyntax: Longword; GroupName: PChar;
-  MemberNameSyntax: Longword; MemberName: PChar): RPC_STATUS; stdcall;
-{$EXTERNALSYM RpcNsGroupMbrRemove}
-{$ENDIF}
 
 function RpcNsGroupMbrInqBeginA(GroupNameSyntax: Longword; GroupName: PChar;
   MemberNameSyntax: Longword; var InquiryContext: RPC_NS_HANDLE): RPC_STATUS; stdcall;
@@ -243,29 +195,16 @@ function RpcNsGroupMbrInqBeginA(GroupNameSyntax: Longword; GroupName: PChar;
 function RpcNsGroupMbrInqBeginW(GroupNameSyntax: Longword; GroupName: PWideChar;
   MemberNameSyntax: Longword; var InquiryContext: RPC_NS_HANDLE): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsGroupMbrInqBeginW}
-
-{$IFDEF UNICODE}
-function RpcNsGroupMbrInqBegin(GroupNameSyntax: Longword; GroupName: PWideChar;
+function RpcNsGroupMbrInqBegin(GroupNameSyntax: Longword; GroupName: PTSTR;
   MemberNameSyntax: Longword; var InquiryContext: RPC_NS_HANDLE): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsGroupMbrInqBegin}
-{$ELSE}
-function RpcNsGroupMbrInqBegin(GroupNameSyntax: Longword; GroupName: PChar;
-  MemberNameSyntax: Longword; var InquiryContext: RPC_NS_HANDLE): RPC_STATUS; stdcall;
-{$EXTERNALSYM RpcNsGroupMbrInqBegin}
-{$ENDIF}
 
 function RpcNsGroupMbrInqNextA(InquiryContext: RPC_NS_HANDLE; MemberName: PPChar): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsGroupMbrInqNextA}
 function RpcNsGroupMbrInqNextW(InquiryContext: RPC_NS_HANDLE; MemberName: PPWideChar): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsGroupMbrInqNextW}
-
-{$IFDEF UNICODE}
-function RpcNsGroupMbrInqNext(InquiryContext: RPC_NS_HANDLE; MemberName: PPWideChar): RPC_STATUS; stdcall;
+function RpcNsGroupMbrInqNext(InquiryContext: RPC_NS_HANDLE; MemberName: PPTSTR): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsGroupMbrInqNext}
-{$ELSE}
-function RpcNsGroupMbrInqNext(InquiryContext: RPC_NS_HANDLE; MemberName: PPChar): RPC_STATUS; stdcall;
-{$EXTERNALSYM RpcNsGroupMbrInqNext}
-{$ENDIF}
 
 function RpcNsGroupMbrInqDone(var InquiryContext: RPC_NS_HANDLE): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsGroupMbrInqDone}
@@ -276,14 +215,8 @@ function RpcNsProfileDeleteA(ProfileNameSyntax: Longword; ProfileName: PChar): R
 {$EXTERNALSYM RpcNsProfileDeleteA}
 function RpcNsProfileDeleteW(ProfileNameSyntax: Longword; ProfileName: PWideChar): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsProfileDeleteW}
-
-{$IFDEF UNICODE}
-function RpcNsProfileDelete(ProfileNameSyntax: Longword; ProfileName: PWideChar): RPC_STATUS; stdcall;
+function RpcNsProfileDelete(ProfileNameSyntax: Longword; ProfileName: PTSTR): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsProfileDelete}
-{$ELSE}
-function RpcNsProfileDelete(ProfileNameSyntax: Longword; ProfileName: PChar): RPC_STATUS; stdcall;
-{$EXTERNALSYM RpcNsProfileDelete}
-{$ENDIF}
 
 function RpcNsProfileEltAddA(ProfileNameSyntax: Longword; ProfileName: PChar;
   IfId: PRPC_IF_ID; MemberNameSyntax: Longword; MemberName: PChar;
@@ -293,18 +226,10 @@ function RpcNsProfileEltAddW(ProfileNameSyntax: Longword; ProfileName: PWideChar
   IfId: PRPC_IF_ID; MemberNameSyntax: Longword; MemberName: PWideChar;
   Priority: Longword; Annotation: PWideChar): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsProfileEltAddW}
-
-{$IFDEF UNICODE}
-function RpcNsProfileEltAdd(ProfileNameSyntax: Longword; ProfileName: PWideChar;
-  IfId: PRPC_IF_ID; MemberNameSyntax: Longword; MemberName: PWideChar;
-  Priority: Longword; Annotation: PWideChar): RPC_STATUS; stdcall;
+function RpcNsProfileEltAdd(ProfileNameSyntax: Longword; ProfileName: PTSTR;
+  IfId: PRPC_IF_ID; MemberNameSyntax: Longword; MemberName: PTSTR;
+  Priority: Longword; Annotation: PTSTR): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsProfileEltAdd}
-{$ELSE}
-function RpcNsProfileEltAdd(ProfileNameSyntax: Longword; ProfileName: PChar;
-  IfId: PRPC_IF_ID; MemberNameSyntax: Longword; MemberName: PChar;
-  Priority: Longword; Annotation: PChar): RPC_STATUS; stdcall;
-{$EXTERNALSYM RpcNsProfileEltAdd}
-{$ENDIF}
 
 function RpcNsProfileEltRemoveA(ProfileNameSyntax: Longword; ProfileName: PChar;
   IfId: PRPC_IF_ID; MemberNameSyntax: Longword; MemberName: PChar): RPC_STATUS; stdcall;
@@ -312,16 +237,9 @@ function RpcNsProfileEltRemoveA(ProfileNameSyntax: Longword; ProfileName: PChar;
 function RpcNsProfileEltRemoveW(ProfileNameSyntax: Longword; ProfileName: PWideChar;
   IfId: PRPC_IF_ID; MemberNameSyntax: Longword; MemberName: PWideChar): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsProfileEltRemoveW}
-
-{$IFDEF UNICODE}
-function RpcNsProfileEltRemove(ProfileNameSyntax: Longword; ProfileName: PWideChar;
-  IfId: PRPC_IF_ID; MemberNameSyntax: Longword; MemberName: PWideChar): RPC_STATUS; stdcall;
+function RpcNsProfileEltRemove(ProfileNameSyntax: Longword; ProfileName: PTSTR;
+  IfId: PRPC_IF_ID; MemberNameSyntax: Longword; MemberName: PTSTR): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsProfileEltRemove}
-{$ELSE}
-function RpcNsProfileEltRemove(ProfileNameSyntax: Longword; ProfileName: PChar;
-  IfId: PRPC_IF_ID; MemberNameSyntax: Longword; MemberName: PChar): RPC_STATUS; stdcall;
-{$EXTERNALSYM RpcNsProfileEltRemove}
-{$ENDIF}
 
 function RpcNsProfileEltInqBeginA(ProfileNameSyntax: Longword; ProfileName: PChar;
   InquiryType: Longword; IfId: PRPC_IF_ID; VersOption, MemberNameSyntax: Longword;
@@ -331,18 +249,10 @@ function RpcNsProfileEltInqBeginW(ProfileNameSyntax: Longword; ProfileName: PWid
   InquiryType: Longword; IfId: PRPC_IF_ID; VersOption, MemberNameSyntax: Longword;
   MemberName: PWideChar; var InquiryContext: RPC_NS_HANDLE): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsProfileEltInqBeginW}
-
-{$IFDEF UNICODE}
-function RpcNsProfileEltInqBegin(ProfileNameSyntax: Longword; ProfileName: PWideChar;
+function RpcNsProfileEltInqBegin(ProfileNameSyntax: Longword; ProfileName: PTSTR;
   InquiryType: Longword; IfId: PRPC_IF_ID; VersOption, MemberNameSyntax: Longword;
-  MemberName: PWideChar; var InquiryContext: RPC_NS_HANDLE): RPC_STATUS; stdcall;
+  MemberName: PTSTR; var InquiryContext: RPC_NS_HANDLE): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsProfileEltInqBegin}
-{$ELSE}
-function RpcNsProfileEltInqBegin(ProfileNameSyntax: Longword; ProfileName: PChar;
-  InquiryType: Longword; IfId: PRPC_IF_ID; VersOption, MemberNameSyntax: Longword;
-  MemberName: PChar; var InquiryContext: RPC_NS_HANDLE): RPC_STATUS; stdcall;
-{$EXTERNALSYM RpcNsProfileEltInqBegin}
-{$ENDIF}
 
 function RpcNsProfileEltInqNextA(InquiryContext: RPC_NS_HANDLE; var IfId: RPC_IF_ID;
   MemberName: PPChar; var Priority: Longword; Annotation: PPChar): RPC_STATUS; stdcall;
@@ -350,16 +260,9 @@ function RpcNsProfileEltInqNextA(InquiryContext: RPC_NS_HANDLE; var IfId: RPC_IF
 function RpcNsProfileEltInqNextW(InquiryContext: RPC_NS_HANDLE; var IfId: RPC_IF_ID;
   MemberName: PPWideChar; var Priority: Longword; Annotation: PPWideChar): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsProfileEltInqNextW}
-
-{$IFDEF UNICODE}
 function RpcNsProfileEltInqNext(InquiryContext: RPC_NS_HANDLE; var IfId: RPC_IF_ID;
-  MemberName: PPWideChar; var Priority: Longword; Annotation: PPWideChar): RPC_STATUS; stdcall;
+  MemberName: PPTSTR; var Priority: Longword; Annotation: PPTSTR): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsProfileEltInqNext}
-{$ELSE}
-function RpcNsProfileEltInqNext(InquiryContext: RPC_NS_HANDLE; var IfId: RPC_IF_ID;
-  MemberName: PPChar; var Priority: Longword; Annotation: PPChar): RPC_STATUS; stdcall;
-{$EXTERNALSYM RpcNsProfileEltInqNext}
-{$ENDIF}
 
 function RpcNsProfileEltInqDone(var InquiryContext: RPC_NS_HANDLE): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsProfileEltInqDone}
@@ -372,16 +275,9 @@ function RpcNsEntryObjectInqBeginA(EntryNameSyntax: Longword; EntryName: PChar;
 function RpcNsEntryObjectInqBeginW(EntryNameSyntax: Longword; EntryName: PWideChar;
   var InquiryContext: RPC_NS_HANDLE): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsEntryObjectInqBeginW}
-
-{$IFDEF UNICODE}
-function RpcNsEntryObjectInqBegin(EntryNameSyntax: Longword; EntryName: PWideChar;
+function RpcNsEntryObjectInqBegin(EntryNameSyntax: Longword; EntryName: PTSTR;
   var InquiryContext: RPC_NS_HANDLE): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsEntryObjectInqBegin}
-{$ELSE}
-function RpcNsEntryObjectInqBegin(EntryNameSyntax: Longword; EntryName: PChar;
-  var InquiryContext: RPC_NS_HANDLE): RPC_STATUS; stdcall;
-{$EXTERNALSYM RpcNsEntryObjectInqBegin}
-{$ENDIF}
 
 function RpcNsEntryObjectInqNext(InquiryContext: RPC_NS_HANDLE; ObjUuid: PUUID): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsEntryObjectInqNext}
@@ -397,16 +293,9 @@ function RpcNsEntryExpandNameA(EntryNameSyntax: Longword; EntryName: PChar;
 function RpcNsEntryExpandNameW(EntryNameSyntax: Longword; EntryName: PWideChar;
   var ExpandedName: PWideChar): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsEntryExpandNameW}
-
-{$IFDEF UNICODE}
-function RpcNsEntryExpandName(EntryNameSyntax: Longword; EntryName: PWideChar;
-  var ExpandedName: PWideChar): RPC_STATUS; stdcall;
+function RpcNsEntryExpandName(EntryNameSyntax: Longword; EntryName: PTSTR;
+  var ExpandedName: PTSTR): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsEntryExpandName}
-{$ELSE}
-function RpcNsEntryExpandName(EntryNameSyntax: Longword; EntryName: PChar;
-  var ExpandedName: PChar): RPC_STATUS; stdcall;
-{$EXTERNALSYM RpcNsEntryExpandName}
-{$ENDIF}
 
 function RpcNsMgmtBindingUnexportA(EntryNameSyntax: Longword; EntryName: PChar;
   IfId: PRPC_IF_ID; VersOption: Longword; ObjectUuidVec: PUUID_VECTOR): RPC_STATUS; stdcall;
@@ -414,42 +303,23 @@ function RpcNsMgmtBindingUnexportA(EntryNameSyntax: Longword; EntryName: PChar;
 function RpcNsMgmtBindingUnexportW(EntryNameSyntax: Longword; EntryName: PWideChar;
   IfId: PRPC_IF_ID; VersOption: Longword; ObjectUuidVec: PUUID_VECTOR): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsMgmtBindingUnexportW}
-
-{$IFDEF UNICODE}
-function RpcNsMgmtBindingUnexport(EntryNameSyntax: Longword; EntryName: PWideChar;
+function RpcNsMgmtBindingUnexport(EntryNameSyntax: Longword; EntryName: PTSTR;
   IfId: PRPC_IF_ID; VersOption: Longword; ObjectUuidVec: PUUID_VECTOR): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsMgmtBindingUnexport}
-{$ELSE}
-function RpcNsMgmtBindingUnexport(EntryNameSyntax: Longword; EntryName: PChar;
-  IfId: PRPC_IF_ID; VersOption: Longword; ObjectUuidVec: PUUID_VECTOR): RPC_STATUS; stdcall;
-{$EXTERNALSYM RpcNsMgmtBindingUnexport}
-{$ENDIF}
 
 function RpcNsMgmtEntryCreateA(EntryNameSyntax: Longword; EntryName: PChar): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsMgmtEntryCreateA}
 function RpcNsMgmtEntryCreateW(EntryNameSyntax: Longword; EntryName: PWideChar): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsMgmtEntryCreateW}
-
-{$IFDEF UNICODE}
-function RpcNsMgmtEntryCreate(EntryNameSyntax: Longword; EntryName: PWideChar): RPC_STATUS; stdcall;
+function RpcNsMgmtEntryCreate(EntryNameSyntax: Longword; EntryName: PTSTR): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsMgmtEntryCreate}
-{$ELSE}
-function RpcNsMgmtEntryCreate(EntryNameSyntax: Longword; EntryName: PChar): RPC_STATUS; stdcall;
-{$EXTERNALSYM RpcNsMgmtEntryCreate}
-{$ENDIF}
 
 function RpcNsMgmtEntryDeleteA(EntryNameSyntax: Longword; EntryName: PChar): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsMgmtEntryDeleteA}
 function RpcNsMgmtEntryDeleteW(EntryNameSyntax: Longword; EntryName: PWideChar): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsMgmtEntryDeleteW}
-
-{$IFDEF UNICODE}
-function RpcNsMgmtEntryDelete(EntryNameSyntax: Longword; EntryName: PWideChar): RPC_STATUS; stdcall;
+function RpcNsMgmtEntryDelete(EntryNameSyntax: Longword; EntryName: PTSTR): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsMgmtEntryDelete}
-{$ELSE}
-function RpcNsMgmtEntryDelete(EntryNameSyntax: Longword; EntryName: PChar): RPC_STATUS; stdcall;
-{$EXTERNALSYM RpcNsMgmtEntryDelete}
-{$ENDIF}
 
 function RpcNsMgmtEntryInqIfIdsA(EntryNameSyntax: Longword; EntryName: PChar;
   var IfIdVec: PRPC_IF_ID_VECTOR): RPC_STATUS; stdcall;
@@ -457,16 +327,9 @@ function RpcNsMgmtEntryInqIfIdsA(EntryNameSyntax: Longword; EntryName: PChar;
 function RpcNsMgmtEntryInqIfIdsW(EntryNameSyntax: Longword; EntryName: PWideChar;
   var IfIdVec: PRPC_IF_ID_VECTOR): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsMgmtEntryInqIfIdsW}
-
-{$IFDEF UNICODE}
-function RpcNsMgmtEntryInqIfIds(EntryNameSyntax: Longword; EntryName: PWideChar;
+function RpcNsMgmtEntryInqIfIds(EntryNameSyntax: Longword; EntryName: PTSTR;
   var IfIdVec: PRPC_IF_ID_VECTOR): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsMgmtEntryInqIfIds}
-{$ELSE}
-function RpcNsMgmtEntryInqIfIds(EntryNameSyntax: Longword; EntryName: PChar;
-  var IfIdVec: PRPC_IF_ID_VECTOR): RPC_STATUS; stdcall;
-{$EXTERNALSYM RpcNsMgmtEntryInqIfIds}
-{$ENDIF}
 
 function RpcNsMgmtHandleSetExpAge(NsHandle: RPC_NS_HANDLE;
   ExpirationAge: Longword): RPC_STATUS; stdcall;
@@ -486,16 +349,9 @@ function RpcNsBindingImportBeginA(EntryNameSyntax: Longword; EntryName: PChar;
 function RpcNsBindingImportBeginW(EntryNameSyntax: Longword; EntryName: PWideChar;
   IfSpec: RPC_IF_HANDLE; ObjUuid: PUUID; var ImportContext: RPC_NS_HANDLE): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsBindingImportBeginW}
-
-{$IFDEF UNICODE}
-function RpcNsBindingImportBegin(EntryNameSyntax: Longword; EntryName: PWideChar;
+function RpcNsBindingImportBegin(EntryNameSyntax: Longword; EntryName: PTSTR;
   IfSpec: RPC_IF_HANDLE; ObjUuid: PUUID; var ImportContext: RPC_NS_HANDLE): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsBindingImportBegin}
-{$ELSE}
-function RpcNsBindingImportBegin(EntryNameSyntax: Longword; EntryName: PChar;
-  IfSpec: RPC_IF_HANDLE; ObjUuid: PUUID; var ImportContext: RPC_NS_HANDLE): RPC_STATUS; stdcall;
-{$EXTERNALSYM RpcNsBindingImportBegin}
-{$ENDIF}
 
 function RpcNsBindingImportNext(ImportContext: RPC_NS_HANDLE;
   var Binding: RPC_BINDING_HANDLE): RPC_STATUS; stdcall;
@@ -507,13 +363,21 @@ function RpcNsBindingImportDone(var ImportContext: RPC_NS_HANDLE): RPC_STATUS; s
 function RpcNsBindingSelect(BindingVec: PRPC_BINDING_VECTOR; var Binding: RPC_BINDING_HANDLE): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcNsBindingSelect}
 
+{$ENDIF JWA_INTERFACESECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
+
 implementation
 
-const
-  rpcns4 = 'rpcns4.dll';
+uses
+  JwaWinDLLNames;
 
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_IMPLEMENTATIONSECTION}
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _RpcNsBindingExportA: Pointer;
 
@@ -521,16 +385,12 @@ function RpcNsBindingExportA;
 begin
   GetProcedureAddress(_RpcNsBindingExportA, rpcns4, 'RpcNsBindingExportA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsBindingExportA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsBindingExportA]
   end;
 end;
-{$ELSE}
-function RpcNsBindingExportA; external rpcns4 name 'RpcNsBindingExportA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsBindingExportW: Pointer;
 
@@ -538,53 +398,25 @@ function RpcNsBindingExportW;
 begin
   GetProcedureAddress(_RpcNsBindingExportW, rpcns4, 'RpcNsBindingExportW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsBindingExportW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsBindingExportW]
   end;
 end;
-{$ELSE}
-function RpcNsBindingExportW; external rpcns4 name 'RpcNsBindingExportW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsBindingExport: Pointer;
 
 function RpcNsBindingExport;
 begin
-  GetProcedureAddress(_RpcNsBindingExport, rpcns4, 'RpcNsBindingExportW');
+  GetProcedureAddress(_RpcNsBindingExport, rpcns4, 'RpcNsBindingExport' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsBindingExport]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsBindingExport]
   end;
 end;
-{$ELSE}
-function RpcNsBindingExport; external rpcns4 name 'RpcNsBindingExportW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _RpcNsBindingExport: Pointer;
-
-function RpcNsBindingExport;
-begin
-  GetProcedureAddress(_RpcNsBindingExport, rpcns4, 'RpcNsBindingExportA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsBindingExport]
-  end;
-end;
-{$ELSE}
-function RpcNsBindingExport; external rpcns4 name 'RpcNsBindingExportA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsBindingUnexportA: Pointer;
 
@@ -592,16 +424,12 @@ function RpcNsBindingUnexportA;
 begin
   GetProcedureAddress(_RpcNsBindingUnexportA, rpcns4, 'RpcNsBindingUnexportA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsBindingUnexportA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsBindingUnexportA]
   end;
 end;
-{$ELSE}
-function RpcNsBindingUnexportA; external rpcns4 name 'RpcNsBindingUnexportA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsBindingUnexportW: Pointer;
 
@@ -609,53 +437,25 @@ function RpcNsBindingUnexportW;
 begin
   GetProcedureAddress(_RpcNsBindingUnexportW, rpcns4, 'RpcNsBindingUnexportW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsBindingUnexportW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsBindingUnexportW]
   end;
 end;
-{$ELSE}
-function RpcNsBindingUnexportW; external rpcns4 name 'RpcNsBindingUnexportW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsBindingUnexport: Pointer;
 
 function RpcNsBindingUnexport;
 begin
-  GetProcedureAddress(_RpcNsBindingUnexport, rpcns4, 'RpcNsBindingUnexportW');
+  GetProcedureAddress(_RpcNsBindingUnexport, rpcns4, 'RpcNsBindingUnexport' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsBindingUnexport]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsBindingUnexport]
   end;
 end;
-{$ELSE}
-function RpcNsBindingUnexport; external rpcns4 name 'RpcNsBindingUnexportW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _RpcNsBindingUnexport: Pointer;
-
-function RpcNsBindingUnexport;
-begin
-  GetProcedureAddress(_RpcNsBindingUnexport, rpcns4, 'RpcNsBindingUnexportA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsBindingUnexport]
-  end;
-end;
-{$ELSE}
-function RpcNsBindingUnexport; external rpcns4 name 'RpcNsBindingUnexportA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsBindingExportPnPA: Pointer;
 
@@ -663,16 +463,12 @@ function RpcNsBindingExportPnPA;
 begin
   GetProcedureAddress(_RpcNsBindingExportPnPA, rpcns4, 'RpcNsBindingExportPnPA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsBindingExportPnPA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsBindingExportPnPA]
   end;
 end;
-{$ELSE}
-function RpcNsBindingExportPnPA; external rpcns4 name 'RpcNsBindingExportPnPA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsBindingExportPnPW: Pointer;
 
@@ -680,53 +476,25 @@ function RpcNsBindingExportPnPW;
 begin
   GetProcedureAddress(_RpcNsBindingExportPnPW, rpcns4, 'RpcNsBindingExportPnPW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsBindingExportPnPW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsBindingExportPnPW]
   end;
 end;
-{$ELSE}
-function RpcNsBindingExportPnPW; external rpcns4 name 'RpcNsBindingExportPnPW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsBindingExportPnP: Pointer;
 
 function RpcNsBindingExportPnP;
 begin
-  GetProcedureAddress(_RpcNsBindingExportPnP, rpcns4, 'RpcNsBindingExportPnPW');
+  GetProcedureAddress(_RpcNsBindingExportPnP, rpcns4, 'RpcNsBindingExportPnP' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsBindingExportPnP]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsBindingExportPnP]
   end;
 end;
-{$ELSE}
-function RpcNsBindingExportPnP; external rpcns4 name 'RpcNsBindingExportPnPW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _RpcNsBindingExportPnP: Pointer;
-
-function RpcNsBindingExportPnP;
-begin
-  GetProcedureAddress(_RpcNsBindingExportPnP, rpcns4, 'RpcNsBindingExportPnPA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsBindingExportPnP]
-  end;
-end;
-{$ELSE}
-function RpcNsBindingExportPnP; external rpcns4 name 'RpcNsBindingExportPnPA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsBindingUnexportPnPA: Pointer;
 
@@ -734,16 +502,12 @@ function RpcNsBindingUnexportPnPA;
 begin
   GetProcedureAddress(_RpcNsBindingUnexportPnPA, rpcns4, 'RpcNsBindingUnexportPnPA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsBindingUnexportPnPA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsBindingUnexportPnPA]
   end;
 end;
-{$ELSE}
-function RpcNsBindingUnexportPnPA; external rpcns4 name 'RpcNsBindingUnexportPnPA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsBindingUnexportPnPW: Pointer;
 
@@ -751,53 +515,25 @@ function RpcNsBindingUnexportPnPW;
 begin
   GetProcedureAddress(_RpcNsBindingUnexportPnPW, rpcns4, 'RpcNsBindingUnexportPnPW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsBindingUnexportPnPW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsBindingUnexportPnPW]
   end;
 end;
-{$ELSE}
-function RpcNsBindingUnexportPnPW; external rpcns4 name 'RpcNsBindingUnexportPnPW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsBindingUnexportPnP: Pointer;
 
 function RpcNsBindingUnexportPnP;
 begin
-  GetProcedureAddress(_RpcNsBindingUnexportPnP, rpcns4, 'RpcNsBindingUnexportPnPW');
+  GetProcedureAddress(_RpcNsBindingUnexportPnP, rpcns4, 'RpcNsBindingUnexportPnP' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsBindingUnexportPnP]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsBindingUnexportPnP]
   end;
 end;
-{$ELSE}
-function RpcNsBindingUnexportPnP; external rpcns4 name 'RpcNsBindingUnexportPnPW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _RpcNsBindingUnexportPnP: Pointer;
-
-function RpcNsBindingUnexportPnP;
-begin
-  GetProcedureAddress(_RpcNsBindingUnexportPnP, rpcns4, 'RpcNsBindingUnexportPnPA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsBindingUnexportPnP]
-  end;
-end;
-{$ELSE}
-function RpcNsBindingUnexportPnP; external rpcns4 name 'RpcNsBindingUnexportPnPA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsBindingLookupBeginA: Pointer;
 
@@ -805,16 +541,12 @@ function RpcNsBindingLookupBeginA;
 begin
   GetProcedureAddress(_RpcNsBindingLookupBeginA, rpcns4, 'RpcNsBindingLookupBeginA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsBindingLookupBeginA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsBindingLookupBeginA]
   end;
 end;
-{$ELSE}
-function RpcNsBindingLookupBeginA; external rpcns4 name 'RpcNsBindingLookupBeginA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsBindingLookupBeginW: Pointer;
 
@@ -822,53 +554,25 @@ function RpcNsBindingLookupBeginW;
 begin
   GetProcedureAddress(_RpcNsBindingLookupBeginW, rpcns4, 'RpcNsBindingLookupBeginW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsBindingLookupBeginW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsBindingLookupBeginW]
   end;
 end;
-{$ELSE}
-function RpcNsBindingLookupBeginW; external rpcns4 name 'RpcNsBindingLookupBeginW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsBindingLookupBegin: Pointer;
 
 function RpcNsBindingLookupBegin;
 begin
-  GetProcedureAddress(_RpcNsBindingLookupBegin, rpcns4, 'RpcNsBindingLookupBeginW');
+  GetProcedureAddress(_RpcNsBindingLookupBegin, rpcns4, 'RpcNsBindingLookupBegin' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsBindingLookupBegin]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsBindingLookupBegin]
   end;
 end;
-{$ELSE}
-function RpcNsBindingLookupBegin; external rpcns4 name 'RpcNsBindingLookupBeginW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _RpcNsBindingLookupBegin: Pointer;
-
-function RpcNsBindingLookupBegin;
-begin
-  GetProcedureAddress(_RpcNsBindingLookupBegin, rpcns4, 'RpcNsBindingLookupBeginA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsBindingLookupBegin]
-  end;
-end;
-{$ELSE}
-function RpcNsBindingLookupBegin; external rpcns4 name 'RpcNsBindingLookupBeginA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsBindingLookupNext: Pointer;
 
@@ -876,16 +580,12 @@ function RpcNsBindingLookupNext;
 begin
   GetProcedureAddress(_RpcNsBindingLookupNext, rpcns4, 'RpcNsBindingLookupNext');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsBindingLookupNext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsBindingLookupNext]
   end;
 end;
-{$ELSE}
-function RpcNsBindingLookupNext; external rpcns4 name 'RpcNsBindingLookupNext';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsBindingLookupDone: Pointer;
 
@@ -893,16 +593,12 @@ function RpcNsBindingLookupDone;
 begin
   GetProcedureAddress(_RpcNsBindingLookupDone, rpcns4, 'RpcNsBindingLookupDone');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsBindingLookupDone]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsBindingLookupDone]
   end;
 end;
-{$ELSE}
-function RpcNsBindingLookupDone; external rpcns4 name 'RpcNsBindingLookupDone';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsGroupDeleteA: Pointer;
 
@@ -910,16 +606,12 @@ function RpcNsGroupDeleteA;
 begin
   GetProcedureAddress(_RpcNsGroupDeleteA, rpcns4, 'RpcNsGroupDeleteA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsGroupDeleteA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsGroupDeleteA]
   end;
 end;
-{$ELSE}
-function RpcNsGroupDeleteA; external rpcns4 name 'RpcNsGroupDeleteA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsGroupDeleteW: Pointer;
 
@@ -927,53 +619,25 @@ function RpcNsGroupDeleteW;
 begin
   GetProcedureAddress(_RpcNsGroupDeleteW, rpcns4, 'RpcNsGroupDeleteW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsGroupDeleteW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsGroupDeleteW]
   end;
 end;
-{$ELSE}
-function RpcNsGroupDeleteW; external rpcns4 name 'RpcNsGroupDeleteW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsGroupDelete: Pointer;
 
 function RpcNsGroupDelete;
 begin
-  GetProcedureAddress(_RpcNsGroupDelete, rpcns4, 'RpcNsGroupDeleteW');
+  GetProcedureAddress(_RpcNsGroupDelete, rpcns4, 'RpcNsGroupDelete' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsGroupDelete]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsGroupDelete]
   end;
 end;
-{$ELSE}
-function RpcNsGroupDelete; external rpcns4 name 'RpcNsGroupDeleteW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _RpcNsGroupDelete: Pointer;
-
-function RpcNsGroupDelete;
-begin
-  GetProcedureAddress(_RpcNsGroupDelete, rpcns4, 'RpcNsGroupDeleteA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsGroupDelete]
-  end;
-end;
-{$ELSE}
-function RpcNsGroupDelete; external rpcns4 name 'RpcNsGroupDeleteA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsGroupMbrAddA: Pointer;
 
@@ -981,16 +645,12 @@ function RpcNsGroupMbrAddA;
 begin
   GetProcedureAddress(_RpcNsGroupMbrAddA, rpcns4, 'RpcNsGroupMbrAddA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsGroupMbrAddA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsGroupMbrAddA]
   end;
 end;
-{$ELSE}
-function RpcNsGroupMbrAddA; external rpcns4 name 'RpcNsGroupMbrAddA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsGroupMbrAddW: Pointer;
 
@@ -998,53 +658,25 @@ function RpcNsGroupMbrAddW;
 begin
   GetProcedureAddress(_RpcNsGroupMbrAddW, rpcns4, 'RpcNsGroupMbrAddW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsGroupMbrAddW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsGroupMbrAddW]
   end;
 end;
-{$ELSE}
-function RpcNsGroupMbrAddW; external rpcns4 name 'RpcNsGroupMbrAddW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsGroupMbrAdd: Pointer;
 
 function RpcNsGroupMbrAdd;
 begin
-  GetProcedureAddress(_RpcNsGroupMbrAdd, rpcns4, 'RpcNsGroupMbrAddW');
+  GetProcedureAddress(_RpcNsGroupMbrAdd, rpcns4, 'RpcNsGroupMbrAdd' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsGroupMbrAdd]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsGroupMbrAdd]
   end;
 end;
-{$ELSE}
-function RpcNsGroupMbrAdd; external rpcns4 name 'RpcNsGroupMbrAddW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _RpcNsGroupMbrAdd: Pointer;
-
-function RpcNsGroupMbrAdd;
-begin
-  GetProcedureAddress(_RpcNsGroupMbrAdd, rpcns4, 'RpcNsGroupMbrAddA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsGroupMbrAdd]
-  end;
-end;
-{$ELSE}
-function RpcNsGroupMbrAdd; external rpcns4 name 'RpcNsGroupMbrAddA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsGroupMbrRemoveA: Pointer;
 
@@ -1052,16 +684,12 @@ function RpcNsGroupMbrRemoveA;
 begin
   GetProcedureAddress(_RpcNsGroupMbrRemoveA, rpcns4, 'RpcNsGroupMbrRemoveA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsGroupMbrRemoveA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsGroupMbrRemoveA]
   end;
 end;
-{$ELSE}
-function RpcNsGroupMbrRemoveA; external rpcns4 name 'RpcNsGroupMbrRemoveA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsGroupMbrRemoveW: Pointer;
 
@@ -1069,53 +697,25 @@ function RpcNsGroupMbrRemoveW;
 begin
   GetProcedureAddress(_RpcNsGroupMbrRemoveW, rpcns4, 'RpcNsGroupMbrRemoveW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsGroupMbrRemoveW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsGroupMbrRemoveW]
   end;
 end;
-{$ELSE}
-function RpcNsGroupMbrRemoveW; external rpcns4 name 'RpcNsGroupMbrRemoveW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsGroupMbrRemove: Pointer;
 
 function RpcNsGroupMbrRemove;
 begin
-  GetProcedureAddress(_RpcNsGroupMbrRemove, rpcns4, 'RpcNsGroupMbrRemoveW');
+  GetProcedureAddress(_RpcNsGroupMbrRemove, rpcns4, 'RpcNsGroupMbrRemove' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsGroupMbrRemove]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsGroupMbrRemove]
   end;
 end;
-{$ELSE}
-function RpcNsGroupMbrRemove; external rpcns4 name 'RpcNsGroupMbrRemoveW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _RpcNsGroupMbrRemove: Pointer;
-
-function RpcNsGroupMbrRemove;
-begin
-  GetProcedureAddress(_RpcNsGroupMbrRemove, rpcns4, 'RpcNsGroupMbrRemoveA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsGroupMbrRemove]
-  end;
-end;
-{$ELSE}
-function RpcNsGroupMbrRemove; external rpcns4 name 'RpcNsGroupMbrRemoveA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsGroupMbrInqBeginA: Pointer;
 
@@ -1123,16 +723,12 @@ function RpcNsGroupMbrInqBeginA;
 begin
   GetProcedureAddress(_RpcNsGroupMbrInqBeginA, rpcns4, 'RpcNsGroupMbrInqBeginA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsGroupMbrInqBeginA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsGroupMbrInqBeginA]
   end;
 end;
-{$ELSE}
-function RpcNsGroupMbrInqBeginA; external rpcns4 name 'RpcNsGroupMbrInqBeginA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsGroupMbrInqBeginW: Pointer;
 
@@ -1140,53 +736,25 @@ function RpcNsGroupMbrInqBeginW;
 begin
   GetProcedureAddress(_RpcNsGroupMbrInqBeginW, rpcns4, 'RpcNsGroupMbrInqBeginW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsGroupMbrInqBeginW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsGroupMbrInqBeginW]
   end;
 end;
-{$ELSE}
-function RpcNsGroupMbrInqBeginW; external rpcns4 name 'RpcNsGroupMbrInqBeginW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsGroupMbrInqBegin: Pointer;
 
 function RpcNsGroupMbrInqBegin;
 begin
-  GetProcedureAddress(_RpcNsGroupMbrInqBegin, rpcns4, 'RpcNsGroupMbrInqBeginW');
+  GetProcedureAddress(_RpcNsGroupMbrInqBegin, rpcns4, 'RpcNsGroupMbrInqBegin' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsGroupMbrInqBegin]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsGroupMbrInqBegin]
   end;
 end;
-{$ELSE}
-function RpcNsGroupMbrInqBegin; external rpcns4 name 'RpcNsGroupMbrInqBeginW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _RpcNsGroupMbrInqBegin: Pointer;
-
-function RpcNsGroupMbrInqBegin;
-begin
-  GetProcedureAddress(_RpcNsGroupMbrInqBegin, rpcns4, 'RpcNsGroupMbrInqBeginA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsGroupMbrInqBegin]
-  end;
-end;
-{$ELSE}
-function RpcNsGroupMbrInqBegin; external rpcns4 name 'RpcNsGroupMbrInqBeginA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsGroupMbrInqNextA: Pointer;
 
@@ -1194,16 +762,12 @@ function RpcNsGroupMbrInqNextA;
 begin
   GetProcedureAddress(_RpcNsGroupMbrInqNextA, rpcns4, 'RpcNsGroupMbrInqNextA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsGroupMbrInqNextA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsGroupMbrInqNextA]
   end;
 end;
-{$ELSE}
-function RpcNsGroupMbrInqNextA; external rpcns4 name 'RpcNsGroupMbrInqNextA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsGroupMbrInqNextW: Pointer;
 
@@ -1211,53 +775,25 @@ function RpcNsGroupMbrInqNextW;
 begin
   GetProcedureAddress(_RpcNsGroupMbrInqNextW, rpcns4, 'RpcNsGroupMbrInqNextW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsGroupMbrInqNextW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsGroupMbrInqNextW]
   end;
 end;
-{$ELSE}
-function RpcNsGroupMbrInqNextW; external rpcns4 name 'RpcNsGroupMbrInqNextW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsGroupMbrInqNext: Pointer;
 
 function RpcNsGroupMbrInqNext;
 begin
-  GetProcedureAddress(_RpcNsGroupMbrInqNext, rpcns4, 'RpcNsGroupMbrInqNextW');
+  GetProcedureAddress(_RpcNsGroupMbrInqNext, rpcns4, 'RpcNsGroupMbrInqNext' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsGroupMbrInqNext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsGroupMbrInqNext]
   end;
 end;
-{$ELSE}
-function RpcNsGroupMbrInqNext; external rpcns4 name 'RpcNsGroupMbrInqNextW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _RpcNsGroupMbrInqNext: Pointer;
-
-function RpcNsGroupMbrInqNext;
-begin
-  GetProcedureAddress(_RpcNsGroupMbrInqNext, rpcns4, 'RpcNsGroupMbrInqNextA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsGroupMbrInqNext]
-  end;
-end;
-{$ELSE}
-function RpcNsGroupMbrInqNext; external rpcns4 name 'RpcNsGroupMbrInqNextA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsGroupMbrInqDone: Pointer;
 
@@ -1265,16 +801,12 @@ function RpcNsGroupMbrInqDone;
 begin
   GetProcedureAddress(_RpcNsGroupMbrInqDone, rpcns4, 'RpcNsGroupMbrInqDone');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsGroupMbrInqDone]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsGroupMbrInqDone]
   end;
 end;
-{$ELSE}
-function RpcNsGroupMbrInqDone; external rpcns4 name 'RpcNsGroupMbrInqDone';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsProfileDeleteA: Pointer;
 
@@ -1282,16 +814,12 @@ function RpcNsProfileDeleteA;
 begin
   GetProcedureAddress(_RpcNsProfileDeleteA, rpcns4, 'RpcNsProfileDeleteA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsProfileDeleteA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsProfileDeleteA]
   end;
 end;
-{$ELSE}
-function RpcNsProfileDeleteA; external rpcns4 name 'RpcNsProfileDeleteA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsProfileDeleteW: Pointer;
 
@@ -1299,53 +827,25 @@ function RpcNsProfileDeleteW;
 begin
   GetProcedureAddress(_RpcNsProfileDeleteW, rpcns4, 'RpcNsProfileDeleteW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsProfileDeleteW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsProfileDeleteW]
   end;
 end;
-{$ELSE}
-function RpcNsProfileDeleteW; external rpcns4 name 'RpcNsProfileDeleteW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsProfileDelete: Pointer;
 
 function RpcNsProfileDelete;
 begin
-  GetProcedureAddress(_RpcNsProfileDelete, rpcns4, 'RpcNsProfileDeleteW');
+  GetProcedureAddress(_RpcNsProfileDelete, rpcns4, 'RpcNsProfileDelete' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsProfileDelete]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsProfileDelete]
   end;
 end;
-{$ELSE}
-function RpcNsProfileDelete; external rpcns4 name 'RpcNsProfileDeleteW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _RpcNsProfileDelete: Pointer;
-
-function RpcNsProfileDelete;
-begin
-  GetProcedureAddress(_RpcNsProfileDelete, rpcns4, 'RpcNsProfileDeleteA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsProfileDelete]
-  end;
-end;
-{$ELSE}
-function RpcNsProfileDelete; external rpcns4 name 'RpcNsProfileDeleteA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsProfileEltAddA: Pointer;
 
@@ -1353,16 +853,12 @@ function RpcNsProfileEltAddA;
 begin
   GetProcedureAddress(_RpcNsProfileEltAddA, rpcns4, 'RpcNsProfileEltAddA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsProfileEltAddA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsProfileEltAddA]
   end;
 end;
-{$ELSE}
-function RpcNsProfileEltAddA; external rpcns4 name 'RpcNsProfileEltAddA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsProfileEltAddW: Pointer;
 
@@ -1370,53 +866,25 @@ function RpcNsProfileEltAddW;
 begin
   GetProcedureAddress(_RpcNsProfileEltAddW, rpcns4, 'RpcNsProfileEltAddW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsProfileEltAddW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsProfileEltAddW]
   end;
 end;
-{$ELSE}
-function RpcNsProfileEltAddW; external rpcns4 name 'RpcNsProfileEltAddW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsProfileEltAdd: Pointer;
 
 function RpcNsProfileEltAdd;
 begin
-  GetProcedureAddress(_RpcNsProfileEltAdd, rpcns4, 'RpcNsProfileEltAddW');
+  GetProcedureAddress(_RpcNsProfileEltAdd, rpcns4, 'RpcNsProfileEltAdd' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsProfileEltAdd]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsProfileEltAdd]
   end;
 end;
-{$ELSE}
-function RpcNsProfileEltAdd; external rpcns4 name 'RpcNsProfileEltAddW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _RpcNsProfileEltAdd: Pointer;
-
-function RpcNsProfileEltAdd;
-begin
-  GetProcedureAddress(_RpcNsProfileEltAdd, rpcns4, 'RpcNsProfileEltAddA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsProfileEltAdd]
-  end;
-end;
-{$ELSE}
-function RpcNsProfileEltAdd; external rpcns4 name 'RpcNsProfileEltAddA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsProfileEltRemoveA: Pointer;
 
@@ -1424,16 +892,12 @@ function RpcNsProfileEltRemoveA;
 begin
   GetProcedureAddress(_RpcNsProfileEltRemoveA, rpcns4, 'RpcNsProfileEltRemoveA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsProfileEltRemoveA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsProfileEltRemoveA]
   end;
 end;
-{$ELSE}
-function RpcNsProfileEltRemoveA; external rpcns4 name 'RpcNsProfileEltRemoveA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsProfileEltRemoveW: Pointer;
 
@@ -1441,53 +905,25 @@ function RpcNsProfileEltRemoveW;
 begin
   GetProcedureAddress(_RpcNsProfileEltRemoveW, rpcns4, 'RpcNsProfileEltRemoveW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsProfileEltRemoveW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsProfileEltRemoveW]
   end;
 end;
-{$ELSE}
-function RpcNsProfileEltRemoveW; external rpcns4 name 'RpcNsProfileEltRemoveW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsProfileEltRemove: Pointer;
 
 function RpcNsProfileEltRemove;
 begin
-  GetProcedureAddress(_RpcNsProfileEltRemove, rpcns4, 'RpcNsProfileEltRemoveW');
+  GetProcedureAddress(_RpcNsProfileEltRemove, rpcns4, 'RpcNsProfileEltRemove' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsProfileEltRemove]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsProfileEltRemove]
   end;
 end;
-{$ELSE}
-function RpcNsProfileEltRemove; external rpcns4 name 'RpcNsProfileEltRemoveW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _RpcNsProfileEltRemove: Pointer;
-
-function RpcNsProfileEltRemove;
-begin
-  GetProcedureAddress(_RpcNsProfileEltRemove, rpcns4, 'RpcNsProfileEltRemoveA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsProfileEltRemove]
-  end;
-end;
-{$ELSE}
-function RpcNsProfileEltRemove; external rpcns4 name 'RpcNsProfileEltRemoveA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsProfileEltInqBeginA: Pointer;
 
@@ -1495,16 +931,12 @@ function RpcNsProfileEltInqBeginA;
 begin
   GetProcedureAddress(_RpcNsProfileEltInqBeginA, rpcns4, 'RpcNsProfileEltInqBeginA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsProfileEltInqBeginA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsProfileEltInqBeginA]
   end;
 end;
-{$ELSE}
-function RpcNsProfileEltInqBeginA; external rpcns4 name 'RpcNsProfileEltInqBeginA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsProfileEltInqBeginW: Pointer;
 
@@ -1512,53 +944,25 @@ function RpcNsProfileEltInqBeginW;
 begin
   GetProcedureAddress(_RpcNsProfileEltInqBeginW, rpcns4, 'RpcNsProfileEltInqBeginW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsProfileEltInqBeginW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsProfileEltInqBeginW]
   end;
 end;
-{$ELSE}
-function RpcNsProfileEltInqBeginW; external rpcns4 name 'RpcNsProfileEltInqBeginW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsProfileEltInqBegin: Pointer;
 
 function RpcNsProfileEltInqBegin;
 begin
-  GetProcedureAddress(_RpcNsProfileEltInqBegin, rpcns4, 'RpcNsProfileEltInqBeginW');
+  GetProcedureAddress(_RpcNsProfileEltInqBegin, rpcns4, 'RpcNsProfileEltInqBegin' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsProfileEltInqBegin]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsProfileEltInqBegin]
   end;
 end;
-{$ELSE}
-function RpcNsProfileEltInqBegin; external rpcns4 name 'RpcNsProfileEltInqBeginW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _RpcNsProfileEltInqBegin: Pointer;
-
-function RpcNsProfileEltInqBegin;
-begin
-  GetProcedureAddress(_RpcNsProfileEltInqBegin, rpcns4, 'RpcNsProfileEltInqBeginA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsProfileEltInqBegin]
-  end;
-end;
-{$ELSE}
-function RpcNsProfileEltInqBegin; external rpcns4 name 'RpcNsProfileEltInqBeginA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsProfileEltInqNextA: Pointer;
 
@@ -1566,16 +970,12 @@ function RpcNsProfileEltInqNextA;
 begin
   GetProcedureAddress(_RpcNsProfileEltInqNextA, rpcns4, 'RpcNsProfileEltInqNextA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsProfileEltInqNextA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsProfileEltInqNextA]
   end;
 end;
-{$ELSE}
-function RpcNsProfileEltInqNextA; external rpcns4 name 'RpcNsProfileEltInqNextA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsProfileEltInqNextW: Pointer;
 
@@ -1583,53 +983,25 @@ function RpcNsProfileEltInqNextW;
 begin
   GetProcedureAddress(_RpcNsProfileEltInqNextW, rpcns4, 'RpcNsProfileEltInqNextW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsProfileEltInqNextW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsProfileEltInqNextW]
   end;
 end;
-{$ELSE}
-function RpcNsProfileEltInqNextW; external rpcns4 name 'RpcNsProfileEltInqNextW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsProfileEltInqNext: Pointer;
 
 function RpcNsProfileEltInqNext;
 begin
-  GetProcedureAddress(_RpcNsProfileEltInqNext, rpcns4, 'RpcNsProfileEltInqNextW');
+  GetProcedureAddress(_RpcNsProfileEltInqNext, rpcns4, 'RpcNsProfileEltInqNext' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsProfileEltInqNext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsProfileEltInqNext]
   end;
 end;
-{$ELSE}
-function RpcNsProfileEltInqNext; external rpcns4 name 'RpcNsProfileEltInqNextW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _RpcNsProfileEltInqNext: Pointer;
-
-function RpcNsProfileEltInqNext;
-begin
-  GetProcedureAddress(_RpcNsProfileEltInqNext, rpcns4, 'RpcNsProfileEltInqNextA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsProfileEltInqNext]
-  end;
-end;
-{$ELSE}
-function RpcNsProfileEltInqNext; external rpcns4 name 'RpcNsProfileEltInqNextA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsProfileEltInqDone: Pointer;
 
@@ -1637,16 +1009,12 @@ function RpcNsProfileEltInqDone;
 begin
   GetProcedureAddress(_RpcNsProfileEltInqDone, rpcns4, 'RpcNsProfileEltInqDone');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsProfileEltInqDone]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsProfileEltInqDone]
   end;
 end;
-{$ELSE}
-function RpcNsProfileEltInqDone; external rpcns4 name 'RpcNsProfileEltInqDone';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsEntryObjectInqBeginA: Pointer;
 
@@ -1654,16 +1022,12 @@ function RpcNsEntryObjectInqBeginA;
 begin
   GetProcedureAddress(_RpcNsEntryObjectInqBeginA, rpcns4, 'RpcNsEntryObjectInqBeginA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsEntryObjectInqBeginA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsEntryObjectInqBeginA]
   end;
 end;
-{$ELSE}
-function RpcNsEntryObjectInqBeginA; external rpcns4 name 'RpcNsEntryObjectInqBeginA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsEntryObjectInqBeginW: Pointer;
 
@@ -1671,53 +1035,25 @@ function RpcNsEntryObjectInqBeginW;
 begin
   GetProcedureAddress(_RpcNsEntryObjectInqBeginW, rpcns4, 'RpcNsEntryObjectInqBeginW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsEntryObjectInqBeginW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsEntryObjectInqBeginW]
   end;
 end;
-{$ELSE}
-function RpcNsEntryObjectInqBeginW; external rpcns4 name 'RpcNsEntryObjectInqBeginW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsEntryObjectInqBegin: Pointer;
 
 function RpcNsEntryObjectInqBegin;
 begin
-  GetProcedureAddress(_RpcNsEntryObjectInqBegin, rpcns4, 'RpcNsEntryObjectInqBeginW');
+  GetProcedureAddress(_RpcNsEntryObjectInqBegin, rpcns4, 'RpcNsEntryObjectInqBegin' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsEntryObjectInqBegin]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsEntryObjectInqBegin]
   end;
 end;
-{$ELSE}
-function RpcNsEntryObjectInqBegin; external rpcns4 name 'RpcNsEntryObjectInqBeginW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _RpcNsEntryObjectInqBegin: Pointer;
-
-function RpcNsEntryObjectInqBegin;
-begin
-  GetProcedureAddress(_RpcNsEntryObjectInqBegin, rpcns4, 'RpcNsEntryObjectInqBeginA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsEntryObjectInqBegin]
-  end;
-end;
-{$ELSE}
-function RpcNsEntryObjectInqBegin; external rpcns4 name 'RpcNsEntryObjectInqBeginA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsEntryObjectInqNext: Pointer;
 
@@ -1725,16 +1061,12 @@ function RpcNsEntryObjectInqNext;
 begin
   GetProcedureAddress(_RpcNsEntryObjectInqNext, rpcns4, 'RpcNsEntryObjectInqNext');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsEntryObjectInqNext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsEntryObjectInqNext]
   end;
 end;
-{$ELSE}
-function RpcNsEntryObjectInqNext; external rpcns4 name 'RpcNsEntryObjectInqNext';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsEntryObjectInqDone: Pointer;
 
@@ -1742,16 +1074,12 @@ function RpcNsEntryObjectInqDone;
 begin
   GetProcedureAddress(_RpcNsEntryObjectInqDone, rpcns4, 'RpcNsEntryObjectInqDone');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsEntryObjectInqDone]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsEntryObjectInqDone]
   end;
 end;
-{$ELSE}
-function RpcNsEntryObjectInqDone; external rpcns4 name 'RpcNsEntryObjectInqDone';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsEntryExpandNameA: Pointer;
 
@@ -1759,16 +1087,12 @@ function RpcNsEntryExpandNameA;
 begin
   GetProcedureAddress(_RpcNsEntryExpandNameA, rpcns4, 'RpcNsEntryExpandNameA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsEntryExpandNameA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsEntryExpandNameA]
   end;
 end;
-{$ELSE}
-function RpcNsEntryExpandNameA; external rpcns4 name 'RpcNsEntryExpandNameA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsEntryExpandNameW: Pointer;
 
@@ -1776,53 +1100,25 @@ function RpcNsEntryExpandNameW;
 begin
   GetProcedureAddress(_RpcNsEntryExpandNameW, rpcns4, 'RpcNsEntryExpandNameW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsEntryExpandNameW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsEntryExpandNameW]
   end;
 end;
-{$ELSE}
-function RpcNsEntryExpandNameW; external rpcns4 name 'RpcNsEntryExpandNameW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsEntryExpandName: Pointer;
 
 function RpcNsEntryExpandName;
 begin
-  GetProcedureAddress(_RpcNsEntryExpandName, rpcns4, 'RpcNsEntryExpandNameW');
+  GetProcedureAddress(_RpcNsEntryExpandName, rpcns4, 'RpcNsEntryExpandName' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsEntryExpandName]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsEntryExpandName]
   end;
 end;
-{$ELSE}
-function RpcNsEntryExpandName; external rpcns4 name 'RpcNsEntryExpandNameW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _RpcNsEntryExpandName: Pointer;
-
-function RpcNsEntryExpandName;
-begin
-  GetProcedureAddress(_RpcNsEntryExpandName, rpcns4, 'RpcNsEntryExpandNameA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsEntryExpandName]
-  end;
-end;
-{$ELSE}
-function RpcNsEntryExpandName; external rpcns4 name 'RpcNsEntryExpandNameA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsMgmtBindingUnexportA: Pointer;
 
@@ -1830,16 +1126,12 @@ function RpcNsMgmtBindingUnexportA;
 begin
   GetProcedureAddress(_RpcNsMgmtBindingUnexportA, rpcns4, 'RpcNsMgmtBindingUnexportA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsMgmtBindingUnexportA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsMgmtBindingUnexportA]
   end;
 end;
-{$ELSE}
-function RpcNsMgmtBindingUnexportA; external rpcns4 name 'RpcNsMgmtBindingUnexportA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsMgmtBindingUnexportW: Pointer;
 
@@ -1847,53 +1139,25 @@ function RpcNsMgmtBindingUnexportW;
 begin
   GetProcedureAddress(_RpcNsMgmtBindingUnexportW, rpcns4, 'RpcNsMgmtBindingUnexportW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsMgmtBindingUnexportW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsMgmtBindingUnexportW]
   end;
 end;
-{$ELSE}
-function RpcNsMgmtBindingUnexportW; external rpcns4 name 'RpcNsMgmtBindingUnexportW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsMgmtBindingUnexport: Pointer;
 
 function RpcNsMgmtBindingUnexport;
 begin
-  GetProcedureAddress(_RpcNsMgmtBindingUnexport, rpcns4, 'RpcNsMgmtBindingUnexportW');
+  GetProcedureAddress(_RpcNsMgmtBindingUnexport, rpcns4, 'RpcNsMgmtBindingUnexport' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsMgmtBindingUnexport]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsMgmtBindingUnexport]
   end;
 end;
-{$ELSE}
-function RpcNsMgmtBindingUnexport; external rpcns4 name 'RpcNsMgmtBindingUnexportW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _RpcNsMgmtBindingUnexport: Pointer;
-
-function RpcNsMgmtBindingUnexport;
-begin
-  GetProcedureAddress(_RpcNsMgmtBindingUnexport, rpcns4, 'RpcNsMgmtBindingUnexportA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsMgmtBindingUnexport]
-  end;
-end;
-{$ELSE}
-function RpcNsMgmtBindingUnexport; external rpcns4 name 'RpcNsMgmtBindingUnexportA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsMgmtEntryCreateA: Pointer;
 
@@ -1901,16 +1165,12 @@ function RpcNsMgmtEntryCreateA;
 begin
   GetProcedureAddress(_RpcNsMgmtEntryCreateA, rpcns4, 'RpcNsMgmtEntryCreateA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsMgmtEntryCreateA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsMgmtEntryCreateA]
   end;
 end;
-{$ELSE}
-function RpcNsMgmtEntryCreateA; external rpcns4 name 'RpcNsMgmtEntryCreateA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsMgmtEntryCreateW: Pointer;
 
@@ -1918,53 +1178,25 @@ function RpcNsMgmtEntryCreateW;
 begin
   GetProcedureAddress(_RpcNsMgmtEntryCreateW, rpcns4, 'RpcNsMgmtEntryCreateW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsMgmtEntryCreateW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsMgmtEntryCreateW]
   end;
 end;
-{$ELSE}
-function RpcNsMgmtEntryCreateW; external rpcns4 name 'RpcNsMgmtEntryCreateW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsMgmtEntryCreate: Pointer;
 
 function RpcNsMgmtEntryCreate;
 begin
-  GetProcedureAddress(_RpcNsMgmtEntryCreate, rpcns4, 'RpcNsMgmtEntryCreateW');
+  GetProcedureAddress(_RpcNsMgmtEntryCreate, rpcns4, 'RpcNsMgmtEntryCreate' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsMgmtEntryCreate]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsMgmtEntryCreate]
   end;
 end;
-{$ELSE}
-function RpcNsMgmtEntryCreate; external rpcns4 name 'RpcNsMgmtEntryCreateW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _RpcNsMgmtEntryCreate: Pointer;
-
-function RpcNsMgmtEntryCreate;
-begin
-  GetProcedureAddress(_RpcNsMgmtEntryCreate, rpcns4, 'RpcNsMgmtEntryCreateA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsMgmtEntryCreate]
-  end;
-end;
-{$ELSE}
-function RpcNsMgmtEntryCreate; external rpcns4 name 'RpcNsMgmtEntryCreateA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsMgmtEntryDeleteA: Pointer;
 
@@ -1972,16 +1204,12 @@ function RpcNsMgmtEntryDeleteA;
 begin
   GetProcedureAddress(_RpcNsMgmtEntryDeleteA, rpcns4, 'RpcNsMgmtEntryDeleteA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsMgmtEntryDeleteA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsMgmtEntryDeleteA]
   end;
 end;
-{$ELSE}
-function RpcNsMgmtEntryDeleteA; external rpcns4 name 'RpcNsMgmtEntryDeleteA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsMgmtEntryDeleteW: Pointer;
 
@@ -1989,53 +1217,25 @@ function RpcNsMgmtEntryDeleteW;
 begin
   GetProcedureAddress(_RpcNsMgmtEntryDeleteW, rpcns4, 'RpcNsMgmtEntryDeleteW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsMgmtEntryDeleteW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsMgmtEntryDeleteW]
   end;
 end;
-{$ELSE}
-function RpcNsMgmtEntryDeleteW; external rpcns4 name 'RpcNsMgmtEntryDeleteW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsMgmtEntryDelete: Pointer;
 
 function RpcNsMgmtEntryDelete;
 begin
-  GetProcedureAddress(_RpcNsMgmtEntryDelete, rpcns4, 'RpcNsMgmtEntryDeleteW');
+  GetProcedureAddress(_RpcNsMgmtEntryDelete, rpcns4, 'RpcNsMgmtEntryDelete' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsMgmtEntryDelete]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsMgmtEntryDelete]
   end;
 end;
-{$ELSE}
-function RpcNsMgmtEntryDelete; external rpcns4 name 'RpcNsMgmtEntryDeleteW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _RpcNsMgmtEntryDelete: Pointer;
-
-function RpcNsMgmtEntryDelete;
-begin
-  GetProcedureAddress(_RpcNsMgmtEntryDelete, rpcns4, 'RpcNsMgmtEntryDeleteA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsMgmtEntryDelete]
-  end;
-end;
-{$ELSE}
-function RpcNsMgmtEntryDelete; external rpcns4 name 'RpcNsMgmtEntryDeleteA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsMgmtEntryInqIfIdsA: Pointer;
 
@@ -2043,16 +1243,12 @@ function RpcNsMgmtEntryInqIfIdsA;
 begin
   GetProcedureAddress(_RpcNsMgmtEntryInqIfIdsA, rpcns4, 'RpcNsMgmtEntryInqIfIdsA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsMgmtEntryInqIfIdsA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsMgmtEntryInqIfIdsA]
   end;
 end;
-{$ELSE}
-function RpcNsMgmtEntryInqIfIdsA; external rpcns4 name 'RpcNsMgmtEntryInqIfIdsA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsMgmtEntryInqIfIdsW: Pointer;
 
@@ -2060,53 +1256,25 @@ function RpcNsMgmtEntryInqIfIdsW;
 begin
   GetProcedureAddress(_RpcNsMgmtEntryInqIfIdsW, rpcns4, 'RpcNsMgmtEntryInqIfIdsW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsMgmtEntryInqIfIdsW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsMgmtEntryInqIfIdsW]
   end;
 end;
-{$ELSE}
-function RpcNsMgmtEntryInqIfIdsW; external rpcns4 name 'RpcNsMgmtEntryInqIfIdsW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsMgmtEntryInqIfIds: Pointer;
 
 function RpcNsMgmtEntryInqIfIds;
 begin
-  GetProcedureAddress(_RpcNsMgmtEntryInqIfIds, rpcns4, 'RpcNsMgmtEntryInqIfIdsW');
+  GetProcedureAddress(_RpcNsMgmtEntryInqIfIds, rpcns4, 'RpcNsMgmtEntryInqIfIds' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsMgmtEntryInqIfIds]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsMgmtEntryInqIfIds]
   end;
 end;
-{$ELSE}
-function RpcNsMgmtEntryInqIfIds; external rpcns4 name 'RpcNsMgmtEntryInqIfIdsW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _RpcNsMgmtEntryInqIfIds: Pointer;
-
-function RpcNsMgmtEntryInqIfIds;
-begin
-  GetProcedureAddress(_RpcNsMgmtEntryInqIfIds, rpcns4, 'RpcNsMgmtEntryInqIfIdsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsMgmtEntryInqIfIds]
-  end;
-end;
-{$ELSE}
-function RpcNsMgmtEntryInqIfIds; external rpcns4 name 'RpcNsMgmtEntryInqIfIdsA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsMgmtHandleSetExpAge: Pointer;
 
@@ -2114,16 +1282,12 @@ function RpcNsMgmtHandleSetExpAge;
 begin
   GetProcedureAddress(_RpcNsMgmtHandleSetExpAge, rpcns4, 'RpcNsMgmtHandleSetExpAge');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsMgmtHandleSetExpAge]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsMgmtHandleSetExpAge]
   end;
 end;
-{$ELSE}
-function RpcNsMgmtHandleSetExpAge; external rpcns4 name 'RpcNsMgmtHandleSetExpAge';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsMgmtInqExpAge: Pointer;
 
@@ -2131,16 +1295,12 @@ function RpcNsMgmtInqExpAge;
 begin
   GetProcedureAddress(_RpcNsMgmtInqExpAge, rpcns4, 'RpcNsMgmtInqExpAge');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsMgmtInqExpAge]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsMgmtInqExpAge]
   end;
 end;
-{$ELSE}
-function RpcNsMgmtInqExpAge; external rpcns4 name 'RpcNsMgmtInqExpAge';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsMgmtSetExpAge: Pointer;
 
@@ -2148,16 +1308,12 @@ function RpcNsMgmtSetExpAge;
 begin
   GetProcedureAddress(_RpcNsMgmtSetExpAge, rpcns4, 'RpcNsMgmtSetExpAge');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsMgmtSetExpAge]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsMgmtSetExpAge]
   end;
 end;
-{$ELSE}
-function RpcNsMgmtSetExpAge; external rpcns4 name 'RpcNsMgmtSetExpAge';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsBindingImportBeginA: Pointer;
 
@@ -2165,16 +1321,12 @@ function RpcNsBindingImportBeginA;
 begin
   GetProcedureAddress(_RpcNsBindingImportBeginA, rpcns4, 'RpcNsBindingImportBeginA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsBindingImportBeginA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsBindingImportBeginA]
   end;
 end;
-{$ELSE}
-function RpcNsBindingImportBeginA; external rpcns4 name 'RpcNsBindingImportBeginA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsBindingImportBeginW: Pointer;
 
@@ -2182,53 +1334,25 @@ function RpcNsBindingImportBeginW;
 begin
   GetProcedureAddress(_RpcNsBindingImportBeginW, rpcns4, 'RpcNsBindingImportBeginW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsBindingImportBeginW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsBindingImportBeginW]
   end;
 end;
-{$ELSE}
-function RpcNsBindingImportBeginW; external rpcns4 name 'RpcNsBindingImportBeginW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsBindingImportBegin: Pointer;
 
 function RpcNsBindingImportBegin;
 begin
-  GetProcedureAddress(_RpcNsBindingImportBegin, rpcns4, 'RpcNsBindingImportBeginW');
+  GetProcedureAddress(_RpcNsBindingImportBegin, rpcns4, 'RpcNsBindingImportBegin' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsBindingImportBegin]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsBindingImportBegin]
   end;
 end;
-{$ELSE}
-function RpcNsBindingImportBegin; external rpcns4 name 'RpcNsBindingImportBeginW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _RpcNsBindingImportBegin: Pointer;
-
-function RpcNsBindingImportBegin;
-begin
-  GetProcedureAddress(_RpcNsBindingImportBegin, rpcns4, 'RpcNsBindingImportBeginA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsBindingImportBegin]
-  end;
-end;
-{$ELSE}
-function RpcNsBindingImportBegin; external rpcns4 name 'RpcNsBindingImportBeginA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsBindingImportNext: Pointer;
 
@@ -2236,16 +1360,12 @@ function RpcNsBindingImportNext;
 begin
   GetProcedureAddress(_RpcNsBindingImportNext, rpcns4, 'RpcNsBindingImportNext');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsBindingImportNext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsBindingImportNext]
   end;
 end;
-{$ELSE}
-function RpcNsBindingImportNext; external rpcns4 name 'RpcNsBindingImportNext';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsBindingImportDone: Pointer;
 
@@ -2253,16 +1373,12 @@ function RpcNsBindingImportDone;
 begin
   GetProcedureAddress(_RpcNsBindingImportDone, rpcns4, 'RpcNsBindingImportDone');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsBindingImportDone]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsBindingImportDone]
   end;
 end;
-{$ELSE}
-function RpcNsBindingImportDone; external rpcns4 name 'RpcNsBindingImportDone';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcNsBindingSelect: Pointer;
 
@@ -2270,13 +1386,97 @@ function RpcNsBindingSelect;
 begin
   GetProcedureAddress(_RpcNsBindingSelect, rpcns4, 'RpcNsBindingSelect');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcNsBindingSelect]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcNsBindingSelect]
   end;
 end;
+
 {$ELSE}
+
+function RpcNsBindingExportA; external rpcns4 name 'RpcNsBindingExportA';
+function RpcNsBindingExportW; external rpcns4 name 'RpcNsBindingExportW';
+function RpcNsBindingExport; external rpcns4 name 'RpcNsBindingExport' + AWSuffix;
+function RpcNsBindingUnexportA; external rpcns4 name 'RpcNsBindingUnexportA';
+function RpcNsBindingUnexportW; external rpcns4 name 'RpcNsBindingUnexportW';
+function RpcNsBindingUnexport; external rpcns4 name 'RpcNsBindingUnexport' + AWSuffix;
+function RpcNsBindingExportPnPA; external rpcns4 name 'RpcNsBindingExportPnPA';
+function RpcNsBindingExportPnPW; external rpcns4 name 'RpcNsBindingExportPnPW';
+function RpcNsBindingExportPnP; external rpcns4 name 'RpcNsBindingExportPnP' + AWSuffix;
+function RpcNsBindingUnexportPnPA; external rpcns4 name 'RpcNsBindingUnexportPnPA';
+function RpcNsBindingUnexportPnPW; external rpcns4 name 'RpcNsBindingUnexportPnPW';
+function RpcNsBindingUnexportPnP; external rpcns4 name 'RpcNsBindingUnexportPnP' + AWSuffix;
+function RpcNsBindingLookupBeginA; external rpcns4 name 'RpcNsBindingLookupBeginA';
+function RpcNsBindingLookupBeginW; external rpcns4 name 'RpcNsBindingLookupBeginW';
+function RpcNsBindingLookupBegin; external rpcns4 name 'RpcNsBindingLookupBegin' + AWSuffix;
+function RpcNsBindingLookupNext; external rpcns4 name 'RpcNsBindingLookupNext';
+function RpcNsBindingLookupDone; external rpcns4 name 'RpcNsBindingLookupDone';
+function RpcNsGroupDeleteA; external rpcns4 name 'RpcNsGroupDeleteA';
+function RpcNsGroupDeleteW; external rpcns4 name 'RpcNsGroupDeleteW';
+function RpcNsGroupDelete; external rpcns4 name 'RpcNsGroupDelete' + AWSuffix;
+function RpcNsGroupMbrAddA; external rpcns4 name 'RpcNsGroupMbrAddA';
+function RpcNsGroupMbrAddW; external rpcns4 name 'RpcNsGroupMbrAddW';
+function RpcNsGroupMbrAdd; external rpcns4 name 'RpcNsGroupMbrAdd' + AWSuffix;
+function RpcNsGroupMbrRemoveA; external rpcns4 name 'RpcNsGroupMbrRemoveA';
+function RpcNsGroupMbrRemoveW; external rpcns4 name 'RpcNsGroupMbrRemoveW';
+function RpcNsGroupMbrRemove; external rpcns4 name 'RpcNsGroupMbrRemove' + AWSuffix;
+function RpcNsGroupMbrInqBeginA; external rpcns4 name 'RpcNsGroupMbrInqBeginA';
+function RpcNsGroupMbrInqBeginW; external rpcns4 name 'RpcNsGroupMbrInqBeginW';
+function RpcNsGroupMbrInqBegin; external rpcns4 name 'RpcNsGroupMbrInqBegin' + AWSuffix;
+function RpcNsGroupMbrInqNextA; external rpcns4 name 'RpcNsGroupMbrInqNextA';
+function RpcNsGroupMbrInqNextW; external rpcns4 name 'RpcNsGroupMbrInqNextW';
+function RpcNsGroupMbrInqNext; external rpcns4 name 'RpcNsGroupMbrInqNext' + AWSuffix;
+function RpcNsGroupMbrInqDone; external rpcns4 name 'RpcNsGroupMbrInqDone';
+function RpcNsProfileDeleteA; external rpcns4 name 'RpcNsProfileDeleteA';
+function RpcNsProfileDeleteW; external rpcns4 name 'RpcNsProfileDeleteW';
+function RpcNsProfileDelete; external rpcns4 name 'RpcNsProfileDelete' + AWSuffix;
+function RpcNsProfileEltAddA; external rpcns4 name 'RpcNsProfileEltAddA';
+function RpcNsProfileEltAddW; external rpcns4 name 'RpcNsProfileEltAddW';
+function RpcNsProfileEltAdd; external rpcns4 name 'RpcNsProfileEltAdd' + AWSuffix;
+function RpcNsProfileEltRemoveA; external rpcns4 name 'RpcNsProfileEltRemoveA';
+function RpcNsProfileEltRemoveW; external rpcns4 name 'RpcNsProfileEltRemoveW';
+function RpcNsProfileEltRemove; external rpcns4 name 'RpcNsProfileEltRemove' + AWSuffix;
+function RpcNsProfileEltInqBeginA; external rpcns4 name 'RpcNsProfileEltInqBeginA';
+function RpcNsProfileEltInqBeginW; external rpcns4 name 'RpcNsProfileEltInqBeginW';
+function RpcNsProfileEltInqBegin; external rpcns4 name 'RpcNsProfileEltInqBegin' + AWSuffix;
+function RpcNsProfileEltInqNextA; external rpcns4 name 'RpcNsProfileEltInqNextA';
+function RpcNsProfileEltInqNextW; external rpcns4 name 'RpcNsProfileEltInqNextW';
+function RpcNsProfileEltInqNext; external rpcns4 name 'RpcNsProfileEltInqNext' + AWSuffix;
+function RpcNsProfileEltInqDone; external rpcns4 name 'RpcNsProfileEltInqDone';
+function RpcNsEntryObjectInqBeginA; external rpcns4 name 'RpcNsEntryObjectInqBeginA';
+function RpcNsEntryObjectInqBeginW; external rpcns4 name 'RpcNsEntryObjectInqBeginW';
+function RpcNsEntryObjectInqBegin; external rpcns4 name 'RpcNsEntryObjectInqBegin' + AWSuffix;
+function RpcNsEntryObjectInqNext; external rpcns4 name 'RpcNsEntryObjectInqNext';
+function RpcNsEntryObjectInqDone; external rpcns4 name 'RpcNsEntryObjectInqDone';
+function RpcNsEntryExpandNameA; external rpcns4 name 'RpcNsEntryExpandNameA';
+function RpcNsEntryExpandNameW; external rpcns4 name 'RpcNsEntryExpandNameW';
+function RpcNsEntryExpandName; external rpcns4 name 'RpcNsEntryExpandName' + AWSuffix;
+function RpcNsMgmtBindingUnexportA; external rpcns4 name 'RpcNsMgmtBindingUnexportA';
+function RpcNsMgmtBindingUnexportW; external rpcns4 name 'RpcNsMgmtBindingUnexportW';
+function RpcNsMgmtBindingUnexport; external rpcns4 name 'RpcNsMgmtBindingUnexport' + AWSuffix;
+function RpcNsMgmtEntryCreateA; external rpcns4 name 'RpcNsMgmtEntryCreateA';
+function RpcNsMgmtEntryCreateW; external rpcns4 name 'RpcNsMgmtEntryCreateW';
+function RpcNsMgmtEntryCreate; external rpcns4 name 'RpcNsMgmtEntryCreate' + AWSuffix;
+function RpcNsMgmtEntryDeleteA; external rpcns4 name 'RpcNsMgmtEntryDeleteA';
+function RpcNsMgmtEntryDeleteW; external rpcns4 name 'RpcNsMgmtEntryDeleteW';
+function RpcNsMgmtEntryDelete; external rpcns4 name 'RpcNsMgmtEntryDelete' + AWSuffix;
+function RpcNsMgmtEntryInqIfIdsA; external rpcns4 name 'RpcNsMgmtEntryInqIfIdsA';
+function RpcNsMgmtEntryInqIfIdsW; external rpcns4 name 'RpcNsMgmtEntryInqIfIdsW';
+function RpcNsMgmtEntryInqIfIds; external rpcns4 name 'RpcNsMgmtEntryInqIfIds' + AWSuffix;
+function RpcNsMgmtHandleSetExpAge; external rpcns4 name 'RpcNsMgmtHandleSetExpAge';
+function RpcNsMgmtInqExpAge; external rpcns4 name 'RpcNsMgmtInqExpAge';
+function RpcNsMgmtSetExpAge; external rpcns4 name 'RpcNsMgmtSetExpAge';
+function RpcNsBindingImportBeginA; external rpcns4 name 'RpcNsBindingImportBeginA';
+function RpcNsBindingImportBeginW; external rpcns4 name 'RpcNsBindingImportBeginW';
+function RpcNsBindingImportBegin; external rpcns4 name 'RpcNsBindingImportBegin' + AWSuffix;
+function RpcNsBindingImportNext; external rpcns4 name 'RpcNsBindingImportNext';
+function RpcNsBindingImportDone; external rpcns4 name 'RpcNsBindingImportDone';
 function RpcNsBindingSelect; external rpcns4 name 'RpcNsBindingSelect';
+
 {$ENDIF DYNAMIC_LINK}
 
+{$ENDIF JWA_IMPLEMENTATIONSECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
 end.
+{$ENDIF !JWA_INCLUDEMODE}

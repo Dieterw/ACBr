@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Windows FAX API interface unit for Object Pascal                             }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: winfax.h, released November 2001. The original Pascal  }
 { code is: WinFax.pas, released April 2002. The initial developer of the       }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,25 +35,27 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaWinFax.pas,v 1.9 2005/09/06 16:36:50 marquardt Exp $
 
 unit JwaWinFax;
 
 {$WEAKPACKAGEUNIT}
 
-{$HPPEMIT ''}
-{$HPPEMIT '#include "winfax.h"'}
-{$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinType, JwaWinError, JwaWinBase, JwaWinNT;
+  JwaWindows;
+
+{$HPPEMIT ''}
+{$HPPEMIT '#include "winfax.h"'}
+{$HPPEMIT ''}
 
 //
 // FAX ERROR CODES
@@ -281,21 +282,21 @@ type
   TFaxLogCategoryW = FAX_LOG_CATEGORYW;
   PFaxLogCategoryW = PFAX_LOG_CATEGORYW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   FAX_LOG_CATEGORY = FAX_LOG_CATEGORYW;
   {$EXTERNALSYM FAX_LOG_CATEGORY}
   PFAX_LOG_CATEGORY = PFAX_LOG_CATEGORYW;
   {$EXTERNALSYM PFAX_LOG_CATEGORY}
   TFaxLogCategory = TFaxLogCategoryW;
   PFaxLogCategory = PFaxLogCategoryW;
-{$ELSE}
+  {$ELSE}
   FAX_LOG_CATEGORY = FAX_LOG_CATEGORYA;
   {$EXTERNALSYM FAX_LOG_CATEGORY}
   PFAX_LOG_CATEGORY = PFAX_LOG_CATEGORYA;
   {$EXTERNALSYM PFAX_LOG_CATEGORY}
   TFaxLogCategory = TFaxLogCategoryA;
   PFaxLogCategory = PFaxLogCategoryA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   PFAX_TIME = ^FAX_TIME;
   {$EXTERNALSYM PFAX_TIME}
@@ -355,21 +356,21 @@ type
   TFaxConfigurationW = FAX_CONFIGURATIONW;
   PFaxConfigurationW = PFAX_CONFIGURATIONW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   FAX_CONFIGURATION = FAX_CONFIGURATIONW;
   {$EXTERNALSYM FAX_CONFIGURATION}
   PFAX_CONFIGURATION = PFAX_CONFIGURATIONW;
   {$EXTERNALSYM PFAX_CONFIGURATION}
   TFaxConfiguration = TFaxConfigurationW;
   PFaxConfiguration = PFaxConfigurationW;
-{$ELSE}
+  {$ELSE}
   FAX_CONFIGURATION = FAX_CONFIGURATIONA;
   {$EXTERNALSYM FAX_CONFIGURATION}
   PFAX_CONFIGURATION = PFAX_CONFIGURATIONA;
   {$EXTERNALSYM PFAX_CONFIGURATION}
   TFaxConfiguration = TFaxConfigurationA;
   PFaxConfiguration = PFaxConfigurationA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 // FaxSetJob() command codes
@@ -484,21 +485,21 @@ type
   TFaxDeviceStatusW = FAX_DEVICE_STATUSW;
   PFaxDeviceStatusW = PFAX_DEVICE_STATUSW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   FAX_DEVICE_STATUS = FAX_DEVICE_STATUSW;
   {$EXTERNALSYM FAX_DEVICE_STATUS}
   PFAX_DEVICE_STATUS = PFAX_DEVICE_STATUSW;
   {$EXTERNALSYM PFAX_DEVICE_STATUS}
   TFaxDeviceStatus = TFaxDeviceStatusW;
   PFaxDeviceStatus = PFaxDeviceStatusW;
-{$ELSE}
+  {$ELSE}
   FAX_DEVICE_STATUS = FAX_DEVICE_STATUSA;
   {$EXTERNALSYM FAX_DEVICE_STATUS}
   PFAX_DEVICE_STATUS = PFAX_DEVICE_STATUSA;
   {$EXTERNALSYM PFAX_DEVICE_STATUS}
   TFaxDeviceStatus = TFaxDeviceStatusA;
   PFaxDeviceStatus = PFaxDeviceStatusA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   PFAX_JOB_ENTRYA = ^FAX_JOB_ENTRYA;
   {$EXTERNALSYM PFAX_JOB_ENTRYA}
@@ -560,21 +561,21 @@ type
   TFaxJobEntryW = FAX_JOB_ENTRYW;
   PFaxJobEntryW = PFAX_JOB_ENTRYW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   FAX_JOB_ENTRY = FAX_JOB_ENTRYW;
   {$EXTERNALSYM FAX_JOB_ENTRY}
   PFAX_JOB_ENTRY = PFAX_JOB_ENTRYW;
   {$EXTERNALSYM PFAX_JOB_ENTRY}
   TFaxJobEntry = TFaxJobEntryW;
   PFaxJobEntry = PFaxJobEntryW;
-{$ELSE}
+  {$ELSE}
   FAX_JOB_ENTRY = FAX_JOB_ENTRYA;
   {$EXTERNALSYM FAX_JOB_ENTRY}
   PFAX_JOB_ENTRY = PFAX_JOB_ENTRYA;
   {$EXTERNALSYM PFAX_JOB_ENTRY}
   TFaxJobEntry = TFaxJobEntryA;
   PFaxJobEntry = PFaxJobEntryA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 // fax port state masks
@@ -680,21 +681,21 @@ type
   TFaxPortInfoW = FAX_PORT_INFOW;
   PFaxPortInfoW = PFAX_PORT_INFOW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   FAX_PORT_INFO = FAX_PORT_INFOW;
   {$EXTERNALSYM FAX_PORT_INFO}
   PFAX_PORT_INFO = PFAX_PORT_INFOW;
   {$EXTERNALSYM PFAX_PORT_INFO}
   TFaxPortInfo = TFaxPortInfoW;
   PFaxPortInfo = PFaxPortInfoW;
-{$ELSE}
+  {$ELSE}
   FAX_PORT_INFO = FAX_PORT_INFOA;
   {$EXTERNALSYM FAX_PORT_INFO}
   PFAX_PORT_INFO = PFAX_PORT_INFOA;
   {$EXTERNALSYM PFAX_PORT_INFO}
   TFaxPortInfo = TFaxPortInfoA;
   PFaxPortInfo = PFaxPortInfoA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   PFAX_ROUTING_METHODA = ^FAX_ROUTING_METHODA;
   {$EXTERNALSYM PFAX_ROUTING_METHODA}
@@ -734,21 +735,21 @@ type
   TFaxRoutingMethodW = FAX_ROUTING_METHODW;
   PFaxRoutingMethodW = PFAX_ROUTING_METHODW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   FAX_ROUTING_METHOD = FAX_ROUTING_METHODW;
   {$EXTERNALSYM FAX_ROUTING_METHOD}
   PFAX_ROUTING_METHOD = PFAX_ROUTING_METHODW;
   {$EXTERNALSYM PFAX_ROUTING_METHOD}
   TFaxRoutingMethod = TFaxRoutingMethodW;
   PFaxRoutingMethod = PFaxRoutingMethodW;
-{$ELSE}
+  {$ELSE}
   FAX_ROUTING_METHOD = FAX_ROUTING_METHODA;
   {$EXTERNALSYM FAX_ROUTING_METHOD}
   PFAX_ROUTING_METHOD = PFAX_ROUTING_METHODA;
   {$EXTERNALSYM PFAX_ROUTING_METHOD}
   TFaxRoutingMethod = TFaxRoutingMethodA;
   PFaxRoutingMethod = PFaxRoutingMethodA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   PFAX_GLOBAL_ROUTING_INFOA = ^FAX_GLOBAL_ROUTING_INFOA;
   {$EXTERNALSYM PFAX_GLOBAL_ROUTING_INFOA}
@@ -784,21 +785,21 @@ type
   TFaxGlobalRoutingInfoW = FAX_GLOBAL_ROUTING_INFOW;
   PFaxGlobalRoutingInfoW = PFAX_GLOBAL_ROUTING_INFOW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   FAX_GLOBAL_ROUTING_INFO = FAX_GLOBAL_ROUTING_INFOW;
   {$EXTERNALSYM FAX_GLOBAL_ROUTING_INFO}
   PFAX_GLOBAL_ROUTING_INFO = FAX_GLOBAL_ROUTING_INFOW;
   {$EXTERNALSYM PFAX_GLOBAL_ROUTING_INFO}
   TFaxGlobalRoutingInfo = TFaxGlobalRoutingInfoW;
   PFaxGlobalRoutingInfo = PFaxGlobalRoutingInfoW;
-{$ELSE}
+  {$ELSE}
   FAX_GLOBAL_ROUTING_INFO = FAX_GLOBAL_ROUTING_INFOA;
   {$EXTERNALSYM FAX_GLOBAL_ROUTING_INFO}
   PFAX_GLOBAL_ROUTING_INFO = FAX_GLOBAL_ROUTING_INFOA;
   {$EXTERNALSYM PFAX_GLOBAL_ROUTING_INFO}
   TFaxGlobalRoutingInfo = TFaxGlobalRoutingInfoA;
   PFaxGlobalRoutingInfo = PFaxGlobalRoutingInfoA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   PFAX_COVERPAGE_INFOA = ^FAX_COVERPAGE_INFOA;
   {$EXTERNALSYM PFAX_COVERPAGE_INFOA}
@@ -902,21 +903,21 @@ type
   TFaxCoverpageInfoW = FAX_COVERPAGE_INFOW;
   PFaxCoverpageInfoW = PFAX_COVERPAGE_INFOW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   FAX_COVERPAGE_INFO = FAX_COVERPAGE_INFOW;
   {$EXTERNALSYM FAX_COVERPAGE_INFO}
   PFAX_COVERPAGE_INFO = PFAX_COVERPAGE_INFOW;
   {$EXTERNALSYM PFAX_COVERPAGE_INFO}
   TFaxCoverpageInfo = TFaxCoverpageInfoW;
   PFaxCoverpageInfo = PFaxCoverpageInfoW;
-{$ELSE}
+  {$ELSE}
   FAX_COVERPAGE_INFO = FAX_COVERPAGE_INFOA;
   {$EXTERNALSYM FAX_COVERPAGE_INFO}
   PFAX_COVERPAGE_INFO = PFAX_COVERPAGE_INFOA;
   {$EXTERNALSYM PFAX_COVERPAGE_INFO}
   TFaxCoverpageInfo = TFaxCoverpageInfoA;
   PFaxCoverpageInfo = PFaxCoverpageInfoA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   FAX_ENUM_JOB_SEND_ATTRIBUTES = (
     JSA_NOW,                        // Send now
@@ -984,21 +985,21 @@ type
   TFaxJobParamW = FAX_JOB_PARAMW;
   PFaxJobParamW = PFAX_JOB_PARAMW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   FAX_JOB_PARAM = FAX_JOB_PARAMW;
   {$EXTERNALSYM FAX_JOB_PARAM}
   PFAX_JOB_PARAM = PFAX_JOB_PARAMW;
   {$EXTERNALSYM PFAX_JOB_PARAM}
   TFaxJobParam = TFaxJobParamW;
   PFaxJobParam = PFaxJobParamW;
-{$ELSE}
+  {$ELSE}
   FAX_JOB_PARAM = FAX_JOB_PARAMA;
   {$EXTERNALSYM FAX_JOB_PARAM}
   PFAX_JOB_PARAM = PFAX_JOB_PARAMA;
   {$EXTERNALSYM PFAX_JOB_PARAM}
   TFaxJobParam = TFaxJobParamA;
   PFaxJobParam = PFaxJobParamA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 // Event Ids
@@ -1096,21 +1097,21 @@ type
   TFaxEventW = FAX_EVENTW;
   PFaxEventW = PFAX_EVENTW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   FAX_EVENT = FAX_EVENTW;
   {$EXTERNALSYM FAX_EVENT}
   PFAX_EVENT = PFAX_EVENTW;
   {$EXTERNALSYM PFAX_EVENT}
   TFaxEvent = TFaxEventW;
   PFaxEvent = PFaxEventW;
-{$ELSE}
+  {$ELSE}
   FAX_EVENT = FAX_EVENTA;
   {$EXTERNALSYM FAX_EVENT}
   PFAX_EVENT = PFAX_EVENTA;
   {$EXTERNALSYM PFAX_EVENT}
   TFaxEvent = TFaxEventA;
   PFaxEvent = PFaxEventA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   PFAX_PRINT_INFOA = ^FAX_PRINT_INFOA;
   {$EXTERNALSYM PFAX_PRINT_INFOA}
@@ -1154,21 +1155,21 @@ type
   TFaxPrintInfoW = FAX_PRINT_INFOW;
   PFaxPrintInfoW = PFAX_PRINT_INFOW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   FAX_PRINT_INFO = FAX_PRINT_INFOW;
   {$EXTERNALSYM FAX_PRINT_INFO}
   PFAX_PRINT_INFO = PFAX_PRINT_INFOW;
   {$EXTERNALSYM PFAX_PRINT_INFO}
   TFaxPrintInfo = TFaxPrintInfoW;
   PFaxPrintInfo = PFaxPrintInfoW;
-{$ELSE}
+  {$ELSE}
   FAX_PRINT_INFO = FAX_PRINT_INFOA;
   {$EXTERNALSYM FAX_PRINT_INFO}
   PFAX_PRINT_INFO = PFAX_PRINT_INFOA;
   {$EXTERNALSYM PFAX_PRINT_INFO}
   TFaxPrintInfo = TFaxPrintInfoA;
   PFaxPrintInfo = PFaxPrintInfoA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   PFAX_CONTEXT_INFOA = ^FAX_CONTEXT_INFOA;
   {$EXTERNALSYM PFAX_CONTEXT_INFOA}
@@ -1196,21 +1197,21 @@ type
   TFaxContextInfoW = FAX_CONTEXT_INFOW;
   PFaxContextInfoW = PFAX_CONTEXT_INFOW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   FAX_CONTEXT_INFO = FAX_CONTEXT_INFOW;
   {$EXTERNALSYM FAX_CONTEXT_INFO}
   PFAX_CONTEXT_INFO = PFAX_CONTEXT_INFOW;
   {$EXTERNALSYM PFAX_CONTEXT_INFO}
   TFaxContextInfo = TFaxContextInfoW;
-  PFaxContextInfo = PFaxContextInfoW;  
-{$ELSE}
+  PFaxContextInfo = PFaxContextInfoW;
+  {$ELSE}
   FAX_CONTEXT_INFO = FAX_CONTEXT_INFOA;
   {$EXTERNALSYM FAX_CONTEXT_INFO}
   PFAX_CONTEXT_INFO = PFAX_CONTEXT_INFOA;
   {$EXTERNALSYM PFAX_CONTEXT_INFO}
   TFaxContextInfo = TFaxContextInfoA;
   PFaxContextInfo = PFaxContextInfoA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 // prototypes
@@ -1220,14 +1221,8 @@ function FaxConnectFaxServerA(MachineName: LPCSTR; var FaxHandle: HANDLE): BOOL;
 {$EXTERNALSYM FaxConnectFaxServerA}
 function FaxConnectFaxServerW(MachineName: LPCWSTR; var FaxHandle: HANDLE): BOOL; stdcall;
 {$EXTERNALSYM FaxConnectFaxServerW}
-
-{$IFDEF UNICODE}
-function FaxConnectFaxServer(MachineName: LPCWSTR; var FaxHandle: HANDLE): BOOL; stdcall;
+function FaxConnectFaxServer(MachineName: LPCTSTR; var FaxHandle: HANDLE): BOOL; stdcall;
 {$EXTERNALSYM FaxConnectFaxServer}
-{$ELSE}
-function FaxConnectFaxServer(MachineName: LPCSTR; var FaxHandle: HANDLE): BOOL; stdcall;
-{$EXTERNALSYM FaxConnectFaxServer}
-{$ENDIF}
 
 function FaxClose(FaxHandle: HANDLE): BOOL; stdcall;
 {$EXTERNALSYM FaxClose}
@@ -1247,97 +1242,61 @@ function FaxCompleteJobParamsA(var JobParams: PFAX_JOB_PARAMA; var CoverpageInfo
 {$EXTERNALSYM FaxCompleteJobParamsA}
 function FaxCompleteJobParamsW(var JobParams: PFAX_JOB_PARAMW; var CoverpageInfo: PFAX_COVERPAGE_INFOW): BOOL; stdcall;
 {$EXTERNALSYM FaxCompleteJobParamsW}
-
-{$IFDEF UNICODE}
-function FaxCompleteJobParams(var JobParams: PFAX_JOB_PARAMW; var CoverpageInfo: PFAX_COVERPAGE_INFOW): BOOL; stdcall;
+function FaxCompleteJobParams(var JobParams: PFAX_JOB_PARAM; var CoverpageInfo: PFAX_COVERPAGE_INFO): BOOL; stdcall;
 {$EXTERNALSYM FaxCompleteJobParams}
-{$ELSE}
-function FaxCompleteJobParams(var JobParams: PFAX_JOB_PARAMA; var CoverpageInfo: PFAX_COVERPAGE_INFOA): BOOL; stdcall;
-{$EXTERNALSYM FaxCompleteJobParams}
-{$ENDIF}
 
 function FaxSendDocumentA(FaxHandle: HANDLE; FileName: LPCSTR; JobParams: PFAX_JOB_PARAMA; CoverpageInfo: PFAX_COVERPAGE_INFOA; FaxJobId: LPDWORD): BOOL; stdcall;
 {$EXTERNALSYM FaxSendDocumentA}
 function FaxSendDocumentW(FaxHandle: HANDLE; FileName: LPCWSTR; JobParams: PFAX_JOB_PARAMW; CoverpageInfo: PFAX_COVERPAGE_INFOW; FaxJobId: LPDWORD): BOOL; stdcall;
 {$EXTERNALSYM FaxSendDocumentW}
-
-{$IFDEF UNICODE}
-function FaxSendDocument(FaxHandle: HANDLE; FileName: LPCWSTR; JobParams: PFAX_JOB_PARAMW; CoverpageInfo: PFAX_COVERPAGE_INFOW; FaxJobId: LPDWORD): BOOL; stdcall;
+function FaxSendDocument(FaxHandle: HANDLE; FileName: LPCTSTR; JobParams: PFAX_JOB_PARAM; CoverpageInfo: PFAX_COVERPAGE_INFO; FaxJobId: LPDWORD): BOOL; stdcall;
 {$EXTERNALSYM FaxSendDocument}
-{$ELSE}
-function FaxSendDocument(FaxHandle: HANDLE; FileName: LPCSTR; JobParams: PFAX_JOB_PARAMA; CoverpageInfo: PFAX_COVERPAGE_INFOA; FaxJobId: LPDWORD): BOOL; stdcall;
-{$EXTERNALSYM FaxSendDocument}
-{$ENDIF}
 
 type
-  PFAX_RECIPIENT_CALLBACKA = function (FaxHandle: HANDLE; RecipientNumber: DWORD; Context: LPVOID; JobParams: PFAX_JOB_PARAMA; CoverpageInfo: PFAX_COVERPAGE_INFOA): BOOL; stdcall;
+  PFAX_RECIPIENT_CALLBACKA = function(FaxHandle: HANDLE; RecipientNumber: DWORD; Context: LPVOID; JobParams: PFAX_JOB_PARAMA; CoverpageInfo: PFAX_COVERPAGE_INFOA): BOOL; stdcall;
   {$EXTERNALSYM PFAX_RECIPIENT_CALLBACKA}
   TFaxRecipientCallbackA = PFAX_RECIPIENT_CALLBACKA;
-  PFAX_RECIPIENT_CALLBACKW = function (FaxHandle: HANDLE; RecipientNumber: DWORD; Context: LPVOID; JobParams: PFAX_JOB_PARAMW; CoverpageInfo: PFAX_COVERPAGE_INFOW): BOOL; stdcall;
+  PFAX_RECIPIENT_CALLBACKW = function(FaxHandle: HANDLE; RecipientNumber: DWORD; Context: LPVOID; JobParams: PFAX_JOB_PARAMW; CoverpageInfo: PFAX_COVERPAGE_INFOW): BOOL; stdcall;
   {$EXTERNALSYM PFAX_RECIPIENT_CALLBACKW}
   TFaxRecipientCallbackW = PFAX_RECIPIENT_CALLBACKW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   PFAX_RECIPIENT_CALLBACK = PFAX_RECIPIENT_CALLBACKW;
   {$EXTERNALSYM PFAX_RECIPIENT_CALLBACK}
   TFaxRecipientCallback = TFaxRecipientCallbackW;
-{$ELSE}
+  {$ELSE}
   PFAX_RECIPIENT_CALLBACK = PFAX_RECIPIENT_CALLBACKA;
   {$EXTERNALSYM PFAX_RECIPIENT_CALLBACK}
-  TFaxRecipientCallback = TFaxRecipientCallbackA;  
-{$ENDIF}
+  TFaxRecipientCallback = TFaxRecipientCallbackA;
+  {$ENDIF UNICODE}
 
 function FaxSendDocumentForBroadcastA(FaxHandle: HANDLE; FileName: LPCSTR; FaxJobId: LPDWORD; FaxRecipientCallback: PFAX_RECIPIENT_CALLBACKA; Context: LPVOID): BOOL; stdcall;
 {$EXTERNALSYM FaxSendDocumentForBroadcastA}
 function FaxSendDocumentForBroadcastW(FaxHandle: HANDLE; FileName: LPCWSTR; FaxJobId: LPDWORD; FaxRecipientCallback: PFAX_RECIPIENT_CALLBACKW; Context: LPVOID): BOOL; stdcall;
 {$EXTERNALSYM FaxSendDocumentForBroadcastW}
-
-{$IFDEF UNICODE}
-function FaxSendDocumentForBroadcast(FaxHandle: HANDLE; FileName: LPCWSTR; FaxJobId: LPDWORD; FaxRecipientCallback: PFAX_RECIPIENT_CALLBACKW; Context: LPVOID): BOOL; stdcall;
+function FaxSendDocumentForBroadcast(FaxHandle: HANDLE; FileName: LPCTSTR; FaxJobId: LPDWORD; FaxRecipientCallback: PFAX_RECIPIENT_CALLBACK; Context: LPVOID): BOOL; stdcall;
 {$EXTERNALSYM FaxSendDocumentForBroadcast}
-{$ELSE}
-function FaxSendDocumentForBroadcast(FaxHandle: HANDLE; FileName: LPCSTR; FaxJobId: LPDWORD; FaxRecipientCallback: PFAX_RECIPIENT_CALLBACKA; Context: LPVOID): BOOL; stdcall;
-{$EXTERNALSYM FaxSendDocumentForBroadcast}
-{$ENDIF}
 
 function FaxEnumJobsA(FaxHandle: HANDLE; var JobEntry: PFAX_JOB_ENTRYA; var JobsReturned: DWORD): BOOL; stdcall;
 {$EXTERNALSYM FaxEnumJobsA}
 function FaxEnumJobsW(FaxHandle: HANDLE; var JobEntry: PFAX_JOB_ENTRYW; var JobsReturned: DWORD): BOOL; stdcall;
 {$EXTERNALSYM FaxEnumJobsW}
-
-{$IFDEF UNICODE}
-function FaxEnumJobs(FaxHandle: HANDLE; var JobEntry: PFAX_JOB_ENTRYW; var JobsReturned: DWORD): BOOL; stdcall;
+function FaxEnumJobs(FaxHandle: HANDLE; var JobEntry: PFAX_JOB_ENTRY; var JobsReturned: DWORD): BOOL; stdcall;
 {$EXTERNALSYM FaxEnumJobs}
-{$ELSE}
-function FaxEnumJobs(FaxHandle: HANDLE; var JobEntry: PFAX_JOB_ENTRYA; var JobsReturned: DWORD): BOOL; stdcall;
-{$EXTERNALSYM FaxEnumJobs}
-{$ENDIF}
 
 function FaxGetJobA(FaxHandle: HANDLE; JobId: DWORD; var JobEntry: PFAX_JOB_ENTRYA): BOOL; stdcall;
 {$EXTERNALSYM FaxGetJobA}
 function FaxGetJobW(FaxHandle: HANDLE; JobId: DWORD; var JobEntry: PFAX_JOB_ENTRYW): BOOL; stdcall;
 {$EXTERNALSYM FaxGetJobW}
-
-{$IFDEF UNICODE}
-function FaxGetJob(FaxHandle: HANDLE; JobId: DWORD; var JobEntry: PFAX_JOB_ENTRYW): BOOL; stdcall;
+function FaxGetJob(FaxHandle: HANDLE; JobId: DWORD; var JobEntry: PFAX_JOB_ENTRY): BOOL; stdcall;
 {$EXTERNALSYM FaxGetJob}
-{$ELSE}
-function FaxGetJob(FaxHandle: HANDLE; JobId: DWORD; var JobEntry: PFAX_JOB_ENTRYA): BOOL; stdcall;
-{$EXTERNALSYM FaxGetJob}
-{$ENDIF}
 
 function FaxSetJobA(FaxHandle: HANDLE; JobId: DWORD; Command: DWORD; JobEntry: PFAX_JOB_ENTRYA): BOOL; stdcall;
 {$EXTERNALSYM FaxSetJobA}
 function FaxSetJobW(FaxHandle: HANDLE; JobId: DWORD; Command: DWORD; JobEntry: PFAX_JOB_ENTRYW): BOOL; stdcall;
 {$EXTERNALSYM FaxSetJobW}
-
-{$IFDEF UNICODE}
-function FaxSetJob(FaxHandle: HANDLE; JobId: DWORD; Command: DWORD; JobEntry: PFAX_JOB_ENTRYW): BOOL; stdcall;
+function FaxSetJob(FaxHandle: HANDLE; JobId: DWORD; Command: DWORD; JobEntry: PFAX_JOB_ENTRY): BOOL; stdcall;
 {$EXTERNALSYM FaxSetJob}
-{$ELSE}
-function FaxSetJob(FaxHandle: HANDLE; JobId: DWORD; Command: DWORD; JobEntry: PFAX_JOB_ENTRYA): BOOL; stdcall;
-{$EXTERNALSYM FaxSetJob}
-{$ENDIF}
 
 function FaxGetPageData(FaxHandle: HANDLE; JobId: DWORD; var Buffer: LPBYTE; var BufferSize, ImageWidth, ImageHeight: DWORD): BOOL; stdcall;
 {$EXTERNALSYM FaxGetPageData}
@@ -1346,14 +1305,8 @@ function FaxGetDeviceStatusA(FaxPortHandle: HANDLE; var DeviceStatus: PFAX_DEVIC
 {$EXTERNALSYM FaxGetDeviceStatusA}
 function FaxGetDeviceStatusW(FaxPortHandle: HANDLE; var DeviceStatus: PFAX_DEVICE_STATUSW): BOOL; stdcall;
 {$EXTERNALSYM FaxGetDeviceStatusW}
-
-{$IFDEF UNICODE}
-function FaxGetDeviceStatus(FaxPortHandle: HANDLE; var DeviceStatus: PFAX_DEVICE_STATUSW): BOOL; stdcall;
+function FaxGetDeviceStatus(FaxPortHandle: HANDLE; var DeviceStatus: PFAX_DEVICE_STATUS): BOOL; stdcall;
 {$EXTERNALSYM FaxGetDeviceStatus}
-{$ELSE}
-function FaxGetDeviceStatus(FaxPortHandle: HANDLE; var DeviceStatus: PFAX_DEVICE_STATUSA): BOOL; stdcall;
-{$EXTERNALSYM FaxGetDeviceStatus}
-{$ENDIF}
 
 function FaxAbort(FaxHandle: HANDLE; JobId: DWORD): BOOL; stdcall;
 {$EXTERNALSYM FaxAbort}
@@ -1362,170 +1315,92 @@ function FaxGetConfigurationA(FaxHandle: HANDLE; var FaxConfig: PFAX_CONFIGURATI
 {$EXTERNALSYM FaxGetConfigurationA}
 function FaxGetConfigurationW(FaxHandle: HANDLE; var FaxConfig: PFAX_CONFIGURATIONW): BOOL; stdcall;
 {$EXTERNALSYM FaxGetConfigurationW}
-
-{$IFDEF UNICODE}
-function FaxGetConfiguration(FaxHandle: HANDLE; var FaxConfig: PFAX_CONFIGURATIONW): BOOL; stdcall;
+function FaxGetConfiguration(FaxHandle: HANDLE; var FaxConfig: PFAX_CONFIGURATION): BOOL; stdcall;
 {$EXTERNALSYM FaxGetConfiguration}
-{$ELSE}
-function FaxGetConfiguration(FaxHandle: HANDLE; var FaxConfig: PFAX_CONFIGURATIONA): BOOL; stdcall;
-{$EXTERNALSYM FaxGetConfiguration}
-{$ENDIF}
 
 function FaxSetConfigurationA(FaxHandle: HANDLE; const FaxConfig: FAX_CONFIGURATIONA): BOOL; stdcall;
 {$EXTERNALSYM FaxSetConfigurationA}
 function FaxSetConfigurationW(FaxHandle: HANDLE; const FaxConfig: FAX_CONFIGURATIONW): BOOL; stdcall;
 {$EXTERNALSYM FaxSetConfigurationW}
-
-{$IFDEF UNICODE}
-function FaxSetConfiguration(FaxHandle: HANDLE; const FaxConfig: FAX_CONFIGURATIONW): BOOL; stdcall;
+function FaxSetConfiguration(FaxHandle: HANDLE; const FaxConfig: FAX_CONFIGURATION): BOOL; stdcall;
 {$EXTERNALSYM FaxSetConfiguration}
-{$ELSE}
-function FaxSetConfiguration(FaxHandle: HANDLE; const FaxConfig: FAX_CONFIGURATIONA): BOOL; stdcall;
-{$EXTERNALSYM FaxSetConfiguration}
-{$ENDIF}
 
 function FaxGetLoggingCategoriesA(FaxHandle: HANDLE; var Categories: PFAX_LOG_CATEGORYA; var NumberCategories: DWORD): BOOL; stdcall;
 {$EXTERNALSYM FaxGetLoggingCategoriesA}
 function FaxGetLoggingCategoriesW(FaxHandle: HANDLE; var Categories: PFAX_LOG_CATEGORYW; var NumberCategories: DWORD): BOOL; stdcall;
 {$EXTERNALSYM FaxGetLoggingCategoriesW}
-
-{$IFDEF UNICODE}
-function FaxGetLoggingCategories(FaxHandle: HANDLE; var Categories: PFAX_LOG_CATEGORYW; var NumberCategories: DWORD): BOOL; stdcall;
+function FaxGetLoggingCategories(FaxHandle: HANDLE; var Categories: PFAX_LOG_CATEGORY; var NumberCategories: DWORD): BOOL; stdcall;
 {$EXTERNALSYM FaxGetLoggingCategories}
-{$ELSE}
-function FaxGetLoggingCategories(FaxHandle: HANDLE; var Categories: PFAX_LOG_CATEGORYA; var NumberCategories: DWORD): BOOL; stdcall;
-{$EXTERNALSYM FaxGetLoggingCategories}
-{$ENDIF}
 
 function FaxSetLoggingCategoriesA(FaxHandle: HANDLE; Categories: PFAX_LOG_CATEGORYA; NumberCategories: DWORD): BOOL; stdcall;
 {$EXTERNALSYM FaxSetLoggingCategoriesA}
 function FaxSetLoggingCategoriesW(FaxHandle: HANDLE; Categories: PFAX_LOG_CATEGORYW; NumberCategories: DWORD): BOOL; stdcall;
 {$EXTERNALSYM FaxSetLoggingCategoriesW}
-
-{$IFDEF UNICODE}
-function FaxSetLoggingCategories(FaxHandle: HANDLE; Categories: PFAX_LOG_CATEGORYW; NumberCategories: DWORD): BOOL; stdcall;
+function FaxSetLoggingCategories(FaxHandle: HANDLE; Categories: PFAX_LOG_CATEGORY; NumberCategories: DWORD): BOOL; stdcall;
 {$EXTERNALSYM FaxSetLoggingCategories}
-{$ELSE}
-function FaxSetLoggingCategories(FaxHandle: HANDLE; Categories: PFAX_LOG_CATEGORYA; NumberCategories: DWORD): BOOL; stdcall;
-{$EXTERNALSYM FaxSetLoggingCategories}
-{$ENDIF}
 
 function FaxEnumPortsA(FaxHandle: HANDLE; var PortInfo: PFAX_PORT_INFOA; var PortsReturned: DWORD): BOOL; stdcall;
 {$EXTERNALSYM FaxEnumPortsA}
 function FaxEnumPortsW(FaxHandle: HANDLE; var PortInfo: PFAX_PORT_INFOW; var PortsReturned: DWORD): BOOL; stdcall;
 {$EXTERNALSYM FaxEnumPortsW}
-
-{$IFDEF UNICODE}
-function FaxEnumPorts(FaxHandle: HANDLE; var PortInfo: PFAX_PORT_INFOW; var PortsReturned: DWORD): BOOL; stdcall;
+function FaxEnumPorts(FaxHandle: HANDLE; var PortInfo: PFAX_PORT_INFO; var PortsReturned: DWORD): BOOL; stdcall;
 {$EXTERNALSYM FaxEnumPorts}
-{$ELSE}
-function FaxEnumPorts(FaxHandle: HANDLE; var PortInfo: PFAX_PORT_INFOA; var PortsReturned: DWORD): BOOL; stdcall;
-{$EXTERNALSYM FaxEnumPorts}
-{$ENDIF}
 
 function FaxGetPortA(FaxPortHandle: HANDLE; var PortInfo: PFAX_PORT_INFOA): BOOL; stdcall;
 {$EXTERNALSYM FaxGetPortA}
 function FaxGetPortW(FaxPortHandle: HANDLE; var PortInfo: PFAX_PORT_INFOW): BOOL; stdcall;
 {$EXTERNALSYM FaxGetPortW}
-
-{$IFDEF UNICODE}
-function FaxGetPort(FaxPortHandle: HANDLE; var PortInfo: PFAX_PORT_INFOW): BOOL; stdcall;
+function FaxGetPort(FaxPortHandle: HANDLE; var PortInfo: PFAX_PORT_INFO): BOOL; stdcall;
 {$EXTERNALSYM FaxGetPort}
-{$ELSE}
-function FaxGetPort(FaxPortHandle: HANDLE; var PortInfo: PFAX_PORT_INFOA): BOOL; stdcall;
-{$EXTERNALSYM FaxGetPort}
-{$ENDIF}
 
 function FaxSetPortA(FaxPortHandle: HANDLE; const PortInfo: FAX_PORT_INFOA): BOOL; stdcall;
 {$EXTERNALSYM FaxSetPortA}
 function FaxSetPortW(FaxPortHandle: HANDLE; const PortInfo: FAX_PORT_INFOW): BOOL; stdcall;
 {$EXTERNALSYM FaxSetPortW}
-
-{$IFDEF UNICODE}
-function FaxSetPort(FaxPortHandle: HANDLE; const PortInfo: FAX_PORT_INFOW): BOOL; stdcall;
+function FaxSetPort(FaxPortHandle: HANDLE; const PortInfo: FAX_PORT_INFO): BOOL; stdcall;
 {$EXTERNALSYM FaxSetPort}
-{$ELSE}
-function FaxSetPort(FaxPortHandle: HANDLE; const PortInfo: FAX_PORT_INFOA): BOOL; stdcall;
-{$EXTERNALSYM FaxSetPort}
-{$ENDIF}
 
 function FaxEnumRoutingMethodsA(FaxPortHandle: HANDLE; var RoutingMethod: PFAX_ROUTING_METHODA; var MethodsReturned: DWORD): BOOL; stdcall;
 {$EXTERNALSYM FaxEnumRoutingMethodsA}
 function FaxEnumRoutingMethodsW(FaxPortHandle: HANDLE; var RoutingMethod: PFAX_ROUTING_METHODW; var MethodsReturned: DWORD): BOOL; stdcall;
 {$EXTERNALSYM FaxEnumRoutingMethodsW}
-
-{$IFDEF UNICODE}
-function FaxEnumRoutingMethods(FaxPortHandle: HANDLE; var RoutingMethod: PFAX_ROUTING_METHODW; var MethodsReturned: DWORD): BOOL; stdcall;
+function FaxEnumRoutingMethods(FaxPortHandle: HANDLE; var RoutingMethod: PFAX_ROUTING_METHOD; var MethodsReturned: DWORD): BOOL; stdcall;
 {$EXTERNALSYM FaxEnumRoutingMethods}
-{$ELSE}
-function FaxEnumRoutingMethods(FaxPortHandle: HANDLE; var RoutingMethod: PFAX_ROUTING_METHODA; var MethodsReturned: DWORD): BOOL; stdcall;
-{$EXTERNALSYM FaxEnumRoutingMethods}
-{$ENDIF}
 
 function FaxEnableRoutingMethodA(FaxPortHandle: HANDLE; RoutingGuid: LPCSTR; Enabled: BOOL): BOOL; stdcall;
 {$EXTERNALSYM FaxEnableRoutingMethodA}
 function FaxEnableRoutingMethodW(FaxPortHandle: HANDLE; RoutingGuid: LPCWSTR; Enabled: BOOL): BOOL; stdcall;
 {$EXTERNALSYM FaxEnableRoutingMethodW}
-
-{$IFDEF UNICODE}
-function FaxEnableRoutingMethod(FaxPortHandle: HANDLE; RoutingGuid: LPCWSTR; Enabled: BOOL): BOOL; stdcall;
+function FaxEnableRoutingMethod(FaxPortHandle: HANDLE; RoutingGuid: LPCTSTR; Enabled: BOOL): BOOL; stdcall;
 {$EXTERNALSYM FaxEnableRoutingMethod}
-{$ELSE}
-function FaxEnableRoutingMethod(FaxPortHandle: HANDLE; RoutingGuid: LPCSTR; Enabled: BOOL): BOOL; stdcall;
-{$EXTERNALSYM FaxEnableRoutingMethod}
-{$ENDIF}
 
 function FaxEnumGlobalRoutingInfoA(FaxHandle: HANDLE; var RoutingInfo: PFAX_GLOBAL_ROUTING_INFOA; var MethodsReturned: DWORD): BOOL; stdcall;
 {$EXTERNALSYM FaxEnumGlobalRoutingInfoA}
 function FaxEnumGlobalRoutingInfoW(FaxHandle: HANDLE; var RoutingInfo: PFAX_GLOBAL_ROUTING_INFOW; var MethodsReturned: DWORD): BOOL; stdcall;
 {$EXTERNALSYM FaxEnumGlobalRoutingInfoW}
-
-{$IFDEF UNICODE}
-function FaxEnumGlobalRoutingInfo(FaxHandle: HANDLE; var RoutingInfo: PFAX_GLOBAL_ROUTING_INFOW; var MethodsReturned: DWORD): BOOL; stdcall;
+function FaxEnumGlobalRoutingInfo(FaxHandle: HANDLE; var RoutingInfo: PFAX_GLOBAL_ROUTING_INFO; var MethodsReturned: DWORD): BOOL; stdcall;
 {$EXTERNALSYM FaxEnumGlobalRoutingInfo}
-{$ELSE}
-function FaxEnumGlobalRoutingInfo(FaxHandle: HANDLE; var RoutingInfo: PFAX_GLOBAL_ROUTING_INFOA; var MethodsReturned: DWORD): BOOL; stdcall;
-{$EXTERNALSYM FaxEnumGlobalRoutingInfo}
-{$ENDIF}
 
 function FaxSetGlobalRoutingInfoA(FaxHandle: HANDLE; const RoutingInfo: FAX_GLOBAL_ROUTING_INFOA): BOOL; stdcall;
 {$EXTERNALSYM FaxSetGlobalRoutingInfoA}
 function FaxSetGlobalRoutingInfoW(FaxHandle: HANDLE; const RoutingInfo: FAX_GLOBAL_ROUTING_INFOW): BOOL; stdcall;
 {$EXTERNALSYM FaxSetGlobalRoutingInfoW}
-
-{$IFDEF UNICODE}
-function FaxSetGlobalRoutingInfo(FaxHandle: HANDLE; const RoutingInfo: FAX_GLOBAL_ROUTING_INFOW): BOOL; stdcall;
+function FaxSetGlobalRoutingInfo(FaxHandle: HANDLE; const RoutingInfo: FAX_GLOBAL_ROUTING_INFO): BOOL; stdcall;
 {$EXTERNALSYM FaxSetGlobalRoutingInfo}
-{$ELSE}
-function FaxSetGlobalRoutingInfo(FaxHandle: HANDLE; const RoutingInfo: FAX_GLOBAL_ROUTING_INFOA): BOOL; stdcall;
-{$EXTERNALSYM FaxSetGlobalRoutingInfo}
-{$ENDIF}
 
 function FaxGetRoutingInfoA(FaxPortHandle: HANDLE; RoutingGuid: LPCSTR; var RoutingInfoBuffer: LPBYTE; var RoutingInfoBufferSize: DWORD): BOOL; stdcall;
 {$EXTERNALSYM FaxGetRoutingInfoA}
 function FaxGetRoutingInfoW(FaxPortHandle: HANDLE; RoutingGuid: LPCWSTR; var RoutingInfoBuffer: LPBYTE; var RoutingInfoBufferSize: DWORD): BOOL; stdcall;
 {$EXTERNALSYM FaxGetRoutingInfoW}
-
-{$IFDEF UNICODE}
-function FaxGetRoutingInfo(FaxPortHandle: HANDLE; RoutingGuid: LPCWSTR; var RoutingInfoBuffer: LPBYTE; var RoutingInfoBufferSize: DWORD): BOOL; stdcall;
+function FaxGetRoutingInfo(FaxPortHandle: HANDLE; RoutingGuid: LPCTSTR; var RoutingInfoBuffer: LPBYTE; var RoutingInfoBufferSize: DWORD): BOOL; stdcall;
 {$EXTERNALSYM FaxGetRoutingInfo}
-{$ELSE}
-function FaxGetRoutingInfo(FaxPortHandle: HANDLE; RoutingGuid: LPCSTR; var RoutingInfoBuffer: LPBYTE; var RoutingInfoBufferSize: DWORD): BOOL; stdcall;
-{$EXTERNALSYM FaxGetRoutingInfo}
-{$ENDIF}
 
 function FaxSetRoutingInfoA(FaxPortHandle: HANDLE; RoutingGuid: LPCSTR; RoutingInfoBuffer: LPBYTE; RoutingInfoBufferSize: DWORD): BOOL; stdcall;
 {$EXTERNALSYM FaxSetRoutingInfoA}
 function FaxSetRoutingInfoW(FaxPortHandle: HANDLE; RoutingGuid: LPCWSTR; RoutingInfoBuffer: LPBYTE; RoutingInfoBufferSize: DWORD): BOOL; stdcall;
 {$EXTERNALSYM FaxSetRoutingInfoW}
-
-{$IFDEF UNICODE}
-function FaxSetRoutingInfo(FaxPortHandle: HANDLE; RoutingGuid: LPCWSTR; RoutingInfoBuffer: LPBYTE; RoutingInfoBufferSize: DWORD): BOOL; stdcall;
+function FaxSetRoutingInfo(FaxPortHandle: HANDLE; RoutingGuid: LPCTSTR; RoutingInfoBuffer: LPBYTE; RoutingInfoBufferSize: DWORD): BOOL; stdcall;
 {$EXTERNALSYM FaxSetRoutingInfo}
-{$ELSE}
-function FaxSetRoutingInfo(FaxPortHandle: HANDLE; RoutingGuid: LPCSTR; RoutingInfoBuffer: LPBYTE; RoutingInfoBufferSize: DWORD): BOOL; stdcall;
-{$EXTERNALSYM FaxSetRoutingInfo}
-{$ENDIF}
 
 function FaxInitializeEventQueue(FaxHandle: HANDLE; CompletionPort: HANDLE; CompletionKey: ULONG_PTR; hWnd: HWND; MessageStart: UINT): BOOL; stdcall;
 {$EXTERNALSYM FaxInitializeEventQueue}
@@ -1537,27 +1412,15 @@ function FaxStartPrintJobA(PrinterName: LPCSTR; const PrintInfo: FAX_PRINT_INFOA
 {$EXTERNALSYM FaxStartPrintJobA}
 function FaxStartPrintJobW(PrinterName: LPCWSTR; const PrintInfo: FAX_PRINT_INFOW; var FaxJobId: DWORD; FaxContextInfo: PFAX_CONTEXT_INFOW): BOOL; stdcall;
 {$EXTERNALSYM FaxStartPrintJobW}
-
-{$IFDEF UNICODE}
-function FaxStartPrintJob(PrinterName: LPCWSTR; const PrintInfo: FAX_PRINT_INFOW; var FaxJobId: DWORD; FaxContextInfo: PFAX_CONTEXT_INFOW): BOOL; stdcall;
+function FaxStartPrintJob(PrinterName: LPCTSTR; const PrintInfo: FAX_PRINT_INFO; var FaxJobId: DWORD; FaxContextInfo: PFAX_CONTEXT_INFO): BOOL; stdcall;
 {$EXTERNALSYM FaxStartPrintJob}
-{$ELSE}
-function FaxStartPrintJob(PrinterName: LPCSTR; const PrintInfo: FAX_PRINT_INFOA; var FaxJobId: DWORD; FaxContextInfo: PFAX_CONTEXT_INFOA): BOOL; stdcall;
-{$EXTERNALSYM FaxStartPrintJob}
-{$ENDIF}
 
 function FaxPrintCoverPageA(const FaxContextInfo: FAX_CONTEXT_INFOA; const CoverPageInfo: FAX_COVERPAGE_INFOA): BOOL; stdcall;
 {$EXTERNALSYM FaxPrintCoverPageA}
 function FaxPrintCoverPageW(const FaxContextInfo: FAX_CONTEXT_INFOW; const CoverPageInfo: FAX_COVERPAGE_INFOW): BOOL; stdcall;
 {$EXTERNALSYM FaxPrintCoverPageW}
-
-{$IFDEF UNICODE}
-function FaxPrintCoverPage(const FaxContextInfo: FAX_CONTEXT_INFOW; const CoverPageInfo: FAX_COVERPAGE_INFOW): BOOL; stdcall;
+function FaxPrintCoverPage(const FaxContextInfo: FAX_CONTEXT_INFO; const CoverPageInfo: FAX_COVERPAGE_INFO): BOOL; stdcall;
 {$EXTERNALSYM FaxPrintCoverPage}
-{$ELSE}
-function FaxPrintCoverPage(const FaxContextInfo: FAX_CONTEXT_INFOA; const CoverPageInfo: FAX_COVERPAGE_INFOA): BOOL; stdcall;
-{$EXTERNALSYM FaxPrintCoverPage}
-{$ENDIF}
 
 function FaxRegisterServiceProviderW(DeviceProvider: LPCWSTR; FriendlyName: LPCWSTR; ImageName: LPCWSTR; TspName: LPCWSTR): BOOL; stdcall;
 {$EXTERNALSYM FaxRegisterServiceProviderW}
@@ -1565,8 +1428,20 @@ function FaxRegisterServiceProviderW(DeviceProvider: LPCWSTR; FriendlyName: LPCW
 function FaxRegisterServiceProvider(DeviceProvider: LPCWSTR; FriendlyName: LPCWSTR; ImageName: LPCWSTR; TspName: LPCWSTR): BOOL;
 {$EXTERNALSYM FaxRegisterServiceProvider}
 
+function FaxUnregisterServiceProviderW(DeviceProvider: LPCWSTR): BOOL; stdcall;
+{$EXTERNALSYM FaxUnregisterServiceProviderW}
+
+function FaxUnregisterServiceProvider(DeviceProvider: LPCWSTR): BOOL; stdcall;
+{$EXTERNALSYM FaxUnregisterServiceProvider}
+
 type
-  PFAX_ROUTING_INSTALLATION_CALLBACKW = function (FaxHandle: HANDLE; Context: LPVOID; MethodName, FriendlyName, FunctionName, Guid: LPWSTR): BOOL; stdcall;
+  PFAXUNREGISTERSERVICEPROVIDERW = function(DeviceProvider: LPCWSTR): BOOL; stdcall;
+  {$EXTERNALSYM PFAXUNREGISTERSERVICEPROVIDERW}
+  PFAXUNREGISTERSERVICEPROVIDER = PFAXUNREGISTERSERVICEPROVIDERW;
+  {$EXTERNALSYM PFAXUNREGISTERSERVICEPROVIDER}
+
+type
+  PFAX_ROUTING_INSTALLATION_CALLBACKW = function(FaxHandle: HANDLE; Context: LPVOID; MethodName, FriendlyName, FunctionName, Guid: LPWSTR): BOOL; stdcall;
   {$EXTERNALSYM PFAX_ROUTING_INSTALLATION_CALLBACKW}
   TFaxRoutingInstallationCallbackW = PFAX_ROUTING_INSTALLATION_CALLBACKW;
 
@@ -1584,14 +1459,8 @@ function FaxUnregisterRoutingExtensionA(hFaxHandle: HANDLE; lpctstrExtensionName
 {$EXTERNALSYM FaxUnregisterRoutingExtensionA}
 function FaxUnregisterRoutingExtensionW(hFaxHandle: HANDLE; lpctstrExtensionName: LPCWSTR): BOOL; stdcall;
 {$EXTERNALSYM FaxUnregisterRoutingExtensionW}
-
-{$IFDEF UNICODE}
-function FaxUnregisterRoutingExtension(hFaxHandle: HANDLE; lpctstrExtensionName: LPCWSTR): BOOL; stdcall;
+function FaxUnregisterRoutingExtension(hFaxHandle: HANDLE; lpctstrExtensionName: LPCTSTR): BOOL; stdcall;
 {$EXTERNALSYM FaxUnregisterRoutingExtension}
-{$ELSE}
-function FaxUnregisterRoutingExtension(hFaxHandle: HANDLE; lpctstrExtensionName: LPCSTR): BOOL; stdcall;
-{$EXTERNALSYM FaxUnregisterRoutingExtension}
-{$ENDIF}
 
 function FaxAccessCheck(FaxHandle: HANDLE; AccessMask: DWORD): BOOL; stdcall;
 {$EXTERNALSYM FaxAccessCheck}
@@ -1601,225 +1470,135 @@ function FaxAccessCheck(FaxHandle: HANDLE; AccessMask: DWORD): BOOL; stdcall;
 //
 
 const
-  FAX_JOB_SUBMIT   = ($0001);
+  FAX_JOB_SUBMIT   = $0001;
   {$EXTERNALSYM FAX_JOB_SUBMIT}
-  FAX_JOB_QUERY    = ($0002);
+  FAX_JOB_QUERY    = $0002;
   {$EXTERNALSYM FAX_JOB_QUERY}
-  FAX_CONFIG_QUERY = ($0004);
+  FAX_CONFIG_QUERY = $0004;
   {$EXTERNALSYM FAX_CONFIG_QUERY}
-  FAX_CONFIG_SET   = ($0008);
+  FAX_CONFIG_SET   = $0008;
   {$EXTERNALSYM FAX_CONFIG_SET}
-  FAX_PORT_QUERY   = ($0010);
+  FAX_PORT_QUERY   = $0010;
   {$EXTERNALSYM FAX_PORT_QUERY}
-  FAX_PORT_SET     = ($0020);
+  FAX_PORT_SET     = $0020;
   {$EXTERNALSYM FAX_PORT_SET}
-  FAX_JOB_MANAGE   = ($0040);
+  FAX_JOB_MANAGE   = $0040;
   {$EXTERNALSYM FAX_JOB_MANAGE}
 
-  FAX_READ = (STANDARD_RIGHTS_READ or FAX_JOB_QUERY or FAX_CONFIG_QUERY or FAX_PORT_QUERY);
+  FAX_READ = STANDARD_RIGHTS_READ or FAX_JOB_QUERY or FAX_CONFIG_QUERY or FAX_PORT_QUERY;
   {$EXTERNALSYM FAX_READ}
 
-  FAX_WRITE = (STANDARD_RIGHTS_WRITE or FAX_JOB_SUBMIT );
+  FAX_WRITE = STANDARD_RIGHTS_WRITE or FAX_JOB_SUBMIT ;
   {$EXTERNALSYM FAX_WRITE}
 
-  FAX_ALL_ACCESS = (STANDARD_RIGHTS_ALL or FAX_JOB_SUBMIT or FAX_JOB_QUERY or FAX_CONFIG_QUERY or FAX_CONFIG_SET or FAX_PORT_QUERY or FAX_PORT_SET or FAX_JOB_MANAGE);
+  FAX_ALL_ACCESS = STANDARD_RIGHTS_ALL or FAX_JOB_SUBMIT or FAX_JOB_QUERY or FAX_CONFIG_QUERY or
+    FAX_CONFIG_SET or FAX_PORT_QUERY or FAX_PORT_SET or FAX_JOB_MANAGE;
   {$EXTERNALSYM FAX_ALL_ACCESS}
 
 implementation
 
-const
-  winfax = 'winfax.dll';
+uses
+  JwaWinDLLNames;
 
 function FaxConnectFaxServerA; external winfax name 'FaxConnectFaxServerA';
 function FaxConnectFaxServerW; external winfax name 'FaxConnectFaxServerW';
-{$IFDEF UNICODE}
-function FaxConnectFaxServer; external winfax name 'FaxConnectFaxServerW';
-{$ELSE}
-function FaxConnectFaxServer; external winfax name 'FaxConnectFaxServerA';
-{$ENDIF}
+function FaxConnectFaxServer; external winfax name 'FaxConnectFaxServer' + AWSuffix;
 function FaxClose; external winfax name 'FaxClose';
 function FaxOpenPort; external winfax name 'FaxOpenPort';
 function FaxCompleteJobParamsA; external winfax name 'FaxCompleteJobParamsA';
 function FaxCompleteJobParamsW; external winfax name 'FaxCompleteJobParamsW';
-{$IFDEF UNICODE}
-function FaxCompleteJobParams; external winfax name 'FaxCompleteJobParamsW';
-{$ELSE}
-function FaxCompleteJobParams; external winfax name 'FaxCompleteJobParamsA';
-{$ENDIF}
+function FaxCompleteJobParams; external winfax name 'FaxCompleteJobParams' + AWSuffix;
 function FaxSendDocumentA; external winfax name 'FaxSendDocumentA';
 function FaxSendDocumentW; external winfax name 'FaxSendDocumentW';
-{$IFDEF UNICODE}
-function FaxSendDocument; external winfax name 'FaxSendDocumentW';
-{$ELSE}
-function FaxSendDocument; external winfax name 'FaxSendDocumentA';
-{$ENDIF}
+function FaxSendDocument; external winfax name 'FaxSendDocument' + AWSuffix;
 function FaxSendDocumentForBroadcastA; external winfax name 'FaxSendDocumentForBroadcastA';
 function FaxSendDocumentForBroadcastW; external winfax name 'FaxSendDocumentForBroadcastW';
-{$IFDEF UNICODE}
-function FaxSendDocumentForBroadcast; external winfax name 'FaxSendDocumentForBroadcastW';
-{$ELSE}
-function FaxSendDocumentForBroadcast; external winfax name 'FaxSendDocumentForBroadcastA';
-{$ENDIF}
+function FaxSendDocumentForBroadcast; external winfax name 'FaxSendDocumentForBroadcast' + AWSuffix;
 function FaxEnumJobsA; external winfax name 'FaxEnumJobsA';
 function FaxEnumJobsW; external winfax name 'FaxEnumJobsW';
-{$IFDEF UNICODE}
-function FaxEnumJobs; external winfax name 'FaxEnumJobsW';
-{$ELSE}
-function FaxEnumJobs; external winfax name 'FaxEnumJobsA';
-{$ENDIF}
+function FaxEnumJobs; external winfax name 'FaxEnumJobs' + AWSuffix;
 function FaxGetJobA; external winfax name 'FaxGetJobA';
 function FaxGetJobW; external winfax name 'FaxGetJobW';
-{$IFDEF UNICODE}
-function FaxGetJob; external winfax name 'FaxGetJobW';
-{$ELSE}
-function FaxGetJob; external winfax name 'FaxGetJobA';
-{$ENDIF}
+function FaxGetJob; external winfax name 'FaxGetJob' + AWSuffix;
 function FaxSetJobA; external winfax name 'FaxSetJobA';
 function FaxSetJobW; external winfax name 'FaxSetJobW';
-{$IFDEF UNICODE}
-function FaxSetJob; external winfax name 'FaxSetJobW';
-{$ELSE}
-function FaxSetJob; external winfax name 'FaxSetJobA';
-{$ENDIF}
+function FaxSetJob; external winfax name 'FaxSetJob' + AWSuffix;
 function FaxGetPageData; external winfax name 'FaxGetPageData';
 function FaxGetDeviceStatusA; external winfax name 'FaxGetDeviceStatusA';
 function FaxGetDeviceStatusW; external winfax name 'FaxGetDeviceStatusW';
-{$IFDEF UNICODE}
-function FaxGetDeviceStatus; external winfax name 'FaxGetDeviceStatusW';
-{$ELSE}
-function FaxGetDeviceStatus; external winfax name 'FaxGetDeviceStatusA';
-{$ENDIF}
+function FaxGetDeviceStatus; external winfax name 'FaxGetDeviceStatus' + AWSuffix;
 function FaxAbort; external winfax name 'FaxAbort';
 function FaxGetConfigurationA; external winfax name 'FaxGetConfigurationA';
 function FaxGetConfigurationW; external winfax name 'FaxGetConfigurationW';
-{$IFDEF UNICODE}
-function FaxGetConfiguration; external winfax name 'FaxGetConfigurationW';
-{$ELSE}
-function FaxGetConfiguration; external winfax name 'FaxGetConfigurationA';
-{$ENDIF}
+function FaxGetConfiguration; external winfax name 'FaxGetConfiguration' + AWSuffix;
 function FaxSetConfigurationA; external winfax name 'FaxSetConfigurationA';
 function FaxSetConfigurationW; external winfax name 'FaxSetConfigurationW';
-{$IFDEF UNICODE}
-function FaxSetConfiguration; external winfax name 'FaxSetConfigurationW';
-{$ELSE}
-function FaxSetConfiguration; external winfax name 'FaxSetConfigurationA';
-{$ENDIF}
+function FaxSetConfiguration; external winfax name 'FaxSetConfiguration' + AWSuffix;
 function FaxGetLoggingCategoriesA; external winfax name 'FaxGetLoggingCategoriesA';
 function FaxGetLoggingCategoriesW; external winfax name 'FaxGetLoggingCategoriesW';
-{$IFDEF UNICODE}
-function FaxGetLoggingCategories; external winfax name 'FaxGetLoggingCategoriesW';
-{$ELSE}
-function FaxGetLoggingCategories; external winfax name 'FaxGetLoggingCategoriesA';
-{$ENDIF}
+function FaxGetLoggingCategories; external winfax name 'FaxGetLoggingCategories' + AWSuffix;
 function FaxSetLoggingCategoriesA; external winfax name 'FaxSetLoggingCategoriesA';
 function FaxSetLoggingCategoriesW; external winfax name 'FaxSetLoggingCategoriesW';
-{$IFDEF UNICODE}
-function FaxSetLoggingCategories; external winfax name 'FaxSetLoggingCategoriesW';
-{$ELSE}
-function FaxSetLoggingCategories; external winfax name 'FaxSetLoggingCategoriesA';
-{$ENDIF}
+function FaxSetLoggingCategories; external winfax name 'FaxSetLoggingCategories' + AWSuffix;
 function FaxEnumPortsA; external winfax name 'FaxEnumPortsA';
 function FaxEnumPortsW; external winfax name 'FaxEnumPortsW';
-{$IFDEF UNICODE}
-function FaxEnumPorts; external winfax name 'FaxEnumPortsW';
-{$ELSE}
-function FaxEnumPorts; external winfax name 'FaxEnumPortsA';
-{$ENDIF}
+function FaxEnumPorts; external winfax name 'FaxEnumPorts' + AWSuffix;
 function FaxGetPortA; external winfax name 'FaxGetPortA';
 function FaxGetPortW; external winfax name 'FaxGetPortW';
-{$IFDEF UNICODE}
-function FaxGetPort; external winfax name 'FaxGetPortW';
-{$ELSE}
-function FaxGetPort; external winfax name 'FaxGetPortA';
-{$ENDIF}
+function FaxGetPort; external winfax name 'FaxGetPort' + AWSuffix;
 function FaxSetPortA; external winfax name 'FaxSetPortA';
 function FaxSetPortW; external winfax name 'FaxSetPortW';
-{$IFDEF UNICODE}
-function FaxSetPort; external winfax name 'FaxSetPortW';
-{$ELSE}
-function FaxSetPort; external winfax name 'FaxSetPortA';
-{$ENDIF}
+function FaxSetPort; external winfax name 'FaxSetPort' + AWSuffix;
 function FaxEnumRoutingMethodsA; external winfax name 'FaxEnumRoutingMethodsA';
 function FaxEnumRoutingMethodsW; external winfax name 'FaxEnumRoutingMethodsW';
-{$IFDEF UNICODE}
-function FaxEnumRoutingMethods; external winfax name 'FaxEnumRoutingMethodsW';
-{$ELSE}
-function FaxEnumRoutingMethods; external winfax name 'FaxEnumRoutingMethodsA';
-{$ENDIF}
+function FaxEnumRoutingMethods; external winfax name 'FaxEnumRoutingMethods' + AWSuffix;
 function FaxEnableRoutingMethodA; external winfax name 'FaxEnableRoutingMethodA';
 function FaxEnableRoutingMethodW; external winfax name 'FaxEnableRoutingMethodW';
-{$IFDEF UNICODE}
-function FaxEnableRoutingMethod; external winfax name 'FaxEnableRoutingMethodW';
-{$ELSE}
-function FaxEnableRoutingMethod; external winfax name 'FaxEnableRoutingMethodA';
-{$ENDIF}
+function FaxEnableRoutingMethod; external winfax name 'FaxEnableRoutingMethod' + AWSuffix;
 function FaxEnumGlobalRoutingInfoA; external winfax name 'FaxEnumGlobalRoutingInfoA';
 function FaxEnumGlobalRoutingInfoW; external winfax name 'FaxEnumGlobalRoutingInfoW';
-{$IFDEF UNICODE}
-function FaxEnumGlobalRoutingInfo; external winfax name 'FaxEnumGlobalRoutingInfoW';
-{$ELSE}
-function FaxEnumGlobalRoutingInfo; external winfax name 'FaxEnumGlobalRoutingInfoA';
-{$ENDIF}
+function FaxEnumGlobalRoutingInfo; external winfax name 'FaxEnumGlobalRoutingInfo' + AWSuffix;
 function FaxSetGlobalRoutingInfoA; external winfax name 'FaxSetGlobalRoutingInfoA';
 function FaxSetGlobalRoutingInfoW; external winfax name 'FaxSetGlobalRoutingInfoW';
-{$IFDEF UNICODE}
-function FaxSetGlobalRoutingInfo; external winfax name 'FaxSetGlobalRoutingInfoW';
-{$ELSE}
-function FaxSetGlobalRoutingInfo; external winfax name 'FaxSetGlobalRoutingInfoA';
-{$ENDIF}
+function FaxSetGlobalRoutingInfo; external winfax name 'FaxSetGlobalRoutingInfo' + AWSuffix;
 function FaxGetRoutingInfoA; external winfax name 'FaxGetRoutingInfoA';
 function FaxGetRoutingInfoW; external winfax name 'FaxGetRoutingInfoW';
-{$IFDEF UNICODE}
-function FaxGetRoutingInfo; external winfax name 'FaxGetRoutingInfoW';
-{$ELSE}
-function FaxGetRoutingInfo; external winfax name 'FaxGetRoutingInfoA';
-{$ENDIF}
+function FaxGetRoutingInfo; external winfax name 'FaxGetRoutingInfo' + AWSuffix;
 function FaxSetRoutingInfoA; external winfax name 'FaxSetRoutingInfoA';
 function FaxSetRoutingInfoW; external winfax name 'FaxSetRoutingInfoW';
-{$IFDEF UNICODE}
-function FaxSetRoutingInfo; external winfax name 'FaxSetRoutingInfoW';
-{$ELSE}
-function FaxSetRoutingInfo; external winfax name 'FaxSetRoutingInfoA';
-{$ENDIF}
+function FaxSetRoutingInfo; external winfax name 'FaxSetRoutingInfo' + AWSuffix;
 function FaxInitializeEventQueue; external winfax name 'FaxInitializeEventQueue';
 procedure FaxFreeBuffer; external winfax name 'FaxFreeBuffer';
 function FaxStartPrintJobA; external winfax name 'FaxStartPrintJobA';
 function FaxStartPrintJobW; external winfax name 'FaxStartPrintJobW';
-{$IFDEF UNICODE}
-function FaxStartPrintJob; external winfax name 'FaxStartPrintJobW';
-{$ELSE}
-function FaxStartPrintJob; external winfax name 'FaxStartPrintJobA';
-{$ENDIF}
+function FaxStartPrintJob; external winfax name 'FaxStartPrintJob' + AWSuffix;
 function FaxPrintCoverPageA; external winfax name 'FaxPrintCoverPageA';
 function FaxPrintCoverPageW; external winfax name 'FaxPrintCoverPageW';
-{$IFDEF UNICODE}
-function FaxPrintCoverPage; external winfax name 'FaxPrintCoverPageW';
-{$ELSE}
-function FaxPrintCoverPage; external winfax name 'FaxPrintCoverPageA';
-{$ENDIF}
+function FaxPrintCoverPage; external winfax name 'FaxPrintCoverPage' + AWSuffix;
 function FaxRegisterServiceProviderW; external winfax name 'FaxRegisterServiceProviderW';
 
 function FaxRegisterServiceProvider(DeviceProvider: LPCWSTR; FriendlyName: LPCWSTR; ImageName: LPCWSTR; TspName: LPCWSTR): BOOL;
 begin
-  Result := FaxRegisterServiceProvider(DeviceProvider, FriendlyName, ImageName, TspName);
+  Result := FaxRegisterServiceProviderW(DeviceProvider, FriendlyName, ImageName, TspName);
+end;
+
+function FaxUnregisterServiceProviderW; external winfax name 'FaxUnregisterServiceProviderW';
+
+function FaxUnregisterServiceProvider(DeviceProvider: LPCWSTR): BOOL;
+begin
+  Result := FaxUnregisterServiceProviderW(DeviceProvider);
 end;
 
 function FaxRegisterRoutingExtensionW; external winfax name 'FaxRegisterRoutingExtensionW';
 
 function FaxRegisterRoutingExtension(FaxHandle: HANDLE; ExtensionName, FriendlyName, ImageName: LPCWSTR; CallBack: PFAX_ROUTING_INSTALLATION_CALLBACKW; Context: LPVOID): BOOL;
 begin
-  Result := FaxRegisterRoutingExtension(FaxHandle, ExtensionName, FriendlyName, ImageName, CallBack, Context);
+  Result := FaxRegisterRoutingExtensionW(FaxHandle, ExtensionName, FriendlyName, ImageName, CallBack, Context);
 end;
 
 function FaxUnregisterRoutingExtensionA; external winfax name 'FaxUnregisterRoutingExtensionA';
 function FaxUnregisterRoutingExtensionW; external winfax name 'FaxUnregisterRoutingExtensionW';
-
-{$IFDEF UNICODE}
-function FaxUnregisterRoutingExtension; external winfax name 'FaxUnregisterRoutingExtensionW';
-{$ELSE}
-function FaxUnregisterRoutingExtension; external winfax name 'FaxUnregisterRoutingExtensionA';
-{$ENDIF}
+function FaxUnregisterRoutingExtension; external winfax name 'FaxUnregisterRoutingExtension' + AWSuffix;
 function FaxAccessCheck; external winfax name 'FaxAccessCheck';
-
 
 end.

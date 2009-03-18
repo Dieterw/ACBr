@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Lan Manager Access API interface Unit for Object Pascal                      }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: lmaccess.h, released November 2001. The original Pascal}
 { code is: LmAccess.pas, released Februari 2002. The initial developer of the  }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,25 +35,33 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaLmAccess.pas,v 1.11 2005/09/07 09:54:53 marquardt Exp $
+
+{$IFNDEF JWA_INCLUDEMODE}
 
 unit JwaLmAccess;
 
 {$WEAKPACKAGEUNIT}
 
-{$HPPEMIT ''}
-{$HPPEMIT '#include "lmaccess.h"'}
-{$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinNT, JwaWinType, JwaLmCons;
+  JwaWindows, JwaLmCons;
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_INTERFACESECTION}
+
+{$HPPEMIT ''}
+{$HPPEMIT '#include "lmaccess.h"'}
+{$HPPEMIT ''}
 
 //
 // Function Prototypes - User
@@ -66,7 +73,7 @@ function NetUserAdd(servername: LPCWSTR; level: DWORD; buf: LPBYTE; parm_err: LP
 function NetUserEnum(servername: LPCWSTR; level, filter: DWORD; var bufptr: LPBYTE; prefmaxlen: DWORD; entriesread, totalentries, resume_handle: LPDWORD): NET_API_STATUS; stdcall;
 {$EXTERNALSYM NetUserEnum}
 
-function NetUserGetInfo(servername, username: LPCWSTR; level: DWORD; bufptr: LPBYTE): NET_API_STATUS; stdcall;
+function NetUserGetInfo(servername, username: LPCWSTR; level: DWORD; var bufptr: LPBYTE): NET_API_STATUS; stdcall;
 {$EXTERNALSYM NetUserGetInfo}
 
 function NetUserSetInfo(servername, username: LPCWSTR; level: DWORD; buf: LPBYTE; parm_err: LPDWORD): NET_API_STATUS; stdcall;
@@ -835,7 +842,7 @@ const
   UF_SERVER_TRUST_ACCOUNT      = $2000;
   {$EXTERNALSYM UF_SERVER_TRUST_ACCOUNT}
 
-  UF_MACHINE_ACCOUNT_MASK = (UF_INTERDOMAIN_TRUST_ACCOUNT or UF_WORKSTATION_TRUST_ACCOUNT or UF_SERVER_TRUST_ACCOUNT);
+  UF_MACHINE_ACCOUNT_MASK = UF_INTERDOMAIN_TRUST_ACCOUNT or UF_WORKSTATION_TRUST_ACCOUNT or UF_SERVER_TRUST_ACCOUNT;
   {$EXTERNALSYM UF_MACHINE_ACCOUNT_MASK}
 
   UF_ACCOUNT_TYPE_MASK = UF_TEMP_DUPLICATE_ACCOUNT or UF_NORMAL_ACCOUNT or UF_INTERDOMAIN_TRUST_ACCOUNT or UF_WORKSTATION_TRUST_ACCOUNT or UF_SERVER_TRUST_ACCOUNT;
@@ -859,7 +866,6 @@ const
   {$EXTERNALSYM UF_PASSWORD_EXPIRED}
   UF_TRUSTED_TO_AUTHENTICATE_FOR_DELEGATION = $1000000;
   {$EXTERNALSYM UF_TRUSTED_TO_AUTHENTICATE_FOR_DELEGATION}
-
 
   UF_SETTABLE_BITS =
                     UF_SCRIPT or
@@ -885,23 +891,23 @@ const
 // bit masks for the NetUserEnum filter parameter.
 //
 
-  FILTER_TEMP_DUPLICATE_ACCOUNT = ($0001);
+  FILTER_TEMP_DUPLICATE_ACCOUNT = $0001;
   {$EXTERNALSYM FILTER_TEMP_DUPLICATE_ACCOUNT}
-  FILTER_NORMAL_ACCOUNT         = ($0002);
+  FILTER_NORMAL_ACCOUNT         = $0002;
   {$EXTERNALSYM FILTER_NORMAL_ACCOUNT}
 // #define FILTER_PROXY_ACCOUNT                (0x0004)
-  FILTER_INTERDOMAIN_TRUST_ACCOUNT = ($0008);
+  FILTER_INTERDOMAIN_TRUST_ACCOUNT = $0008;
   {$EXTERNALSYM FILTER_INTERDOMAIN_TRUST_ACCOUNT}
-  FILTER_WORKSTATION_TRUST_ACCOUNT = ($0010);
+  FILTER_WORKSTATION_TRUST_ACCOUNT = $0010;
   {$EXTERNALSYM FILTER_WORKSTATION_TRUST_ACCOUNT}
-  FILTER_SERVER_TRUST_ACCOUNT      = ($0020);
+  FILTER_SERVER_TRUST_ACCOUNT      = $0020;
   {$EXTERNALSYM FILTER_SERVER_TRUST_ACCOUNT}
 
 //
 // bit masks for the NetUserGetLocalGroups flags
 //
 
-  LG_INCLUDE_INDIRECT = ($0001);
+  LG_INCLUDE_INDIRECT = $0001;
   {$EXTERNALSYM LG_INCLUDE_INDIRECT}
 
 //
@@ -916,7 +922,7 @@ const
   {$EXTERNALSYM AF_OP_SERVER}
   AF_OP_ACCOUNTS   = $8;
   {$EXTERNALSYM AF_OP_ACCOUNTS}
-  AF_SETTABLE_BITS = (AF_OP_PRINT or AF_OP_COMM or AF_OP_SERVER or AF_OP_ACCOUNTS);
+  AF_SETTABLE_BITS = AF_OP_PRINT or AF_OP_COMM or AF_OP_SERVER or AF_OP_ACCOUNTS;
   {$EXTERNALSYM AF_SETTABLE_BITS}
 
 //
@@ -997,60 +1003,60 @@ const
 // the new infolevel counterparts of the old info level + parmnum
 //
 
-  USER_NAME_INFOLEVEL           = (PARMNUM_BASE_INFOLEVEL + USER_NAME_PARMNUM);
+  USER_NAME_INFOLEVEL           = PARMNUM_BASE_INFOLEVEL + USER_NAME_PARMNUM;
   {$EXTERNALSYM USER_NAME_INFOLEVEL}
-  USER_PASSWORD_INFOLEVEL       = (PARMNUM_BASE_INFOLEVEL + USER_PASSWORD_PARMNUM);
+  USER_PASSWORD_INFOLEVEL       = PARMNUM_BASE_INFOLEVEL + USER_PASSWORD_PARMNUM;
   {$EXTERNALSYM USER_PASSWORD_INFOLEVEL}
-  USER_PASSWORD_AGE_INFOLEVEL   = (PARMNUM_BASE_INFOLEVEL + USER_PASSWORD_AGE_PARMNUM);
+  USER_PASSWORD_AGE_INFOLEVEL   = PARMNUM_BASE_INFOLEVEL + USER_PASSWORD_AGE_PARMNUM;
   {$EXTERNALSYM USER_PASSWORD_AGE_INFOLEVEL}
-  USER_PRIV_INFOLEVEL           = (PARMNUM_BASE_INFOLEVEL + USER_PRIV_PARMNUM);
+  USER_PRIV_INFOLEVEL           = PARMNUM_BASE_INFOLEVEL + USER_PRIV_PARMNUM;
   {$EXTERNALSYM USER_PRIV_INFOLEVEL}
-  USER_HOME_DIR_INFOLEVEL       = (PARMNUM_BASE_INFOLEVEL + USER_HOME_DIR_PARMNUM);
+  USER_HOME_DIR_INFOLEVEL       = PARMNUM_BASE_INFOLEVEL + USER_HOME_DIR_PARMNUM;
   {$EXTERNALSYM USER_HOME_DIR_INFOLEVEL}
-  USER_COMMENT_INFOLEVEL        = (PARMNUM_BASE_INFOLEVEL + USER_COMMENT_PARMNUM);
+  USER_COMMENT_INFOLEVEL        = PARMNUM_BASE_INFOLEVEL + USER_COMMENT_PARMNUM;
   {$EXTERNALSYM USER_COMMENT_INFOLEVEL}
-  USER_FLAGS_INFOLEVEL          = (PARMNUM_BASE_INFOLEVEL + USER_FLAGS_PARMNUM);
+  USER_FLAGS_INFOLEVEL          = PARMNUM_BASE_INFOLEVEL + USER_FLAGS_PARMNUM;
   {$EXTERNALSYM USER_FLAGS_INFOLEVEL}
-  USER_SCRIPT_PATH_INFOLEVEL    = (PARMNUM_BASE_INFOLEVEL + USER_SCRIPT_PATH_PARMNUM);
+  USER_SCRIPT_PATH_INFOLEVEL    = PARMNUM_BASE_INFOLEVEL + USER_SCRIPT_PATH_PARMNUM;
   {$EXTERNALSYM USER_SCRIPT_PATH_INFOLEVEL}
-  USER_AUTH_FLAGS_INFOLEVEL     = (PARMNUM_BASE_INFOLEVEL + USER_AUTH_FLAGS_PARMNUM);
+  USER_AUTH_FLAGS_INFOLEVEL     = PARMNUM_BASE_INFOLEVEL + USER_AUTH_FLAGS_PARMNUM;
   {$EXTERNALSYM USER_AUTH_FLAGS_INFOLEVEL}
-  USER_FULL_NAME_INFOLEVEL      = (PARMNUM_BASE_INFOLEVEL + USER_FULL_NAME_PARMNUM);
+  USER_FULL_NAME_INFOLEVEL      = PARMNUM_BASE_INFOLEVEL + USER_FULL_NAME_PARMNUM;
   {$EXTERNALSYM USER_FULL_NAME_INFOLEVEL}
-  USER_USR_COMMENT_INFOLEVEL    = (PARMNUM_BASE_INFOLEVEL + USER_USR_COMMENT_PARMNUM);
+  USER_USR_COMMENT_INFOLEVEL    = PARMNUM_BASE_INFOLEVEL + USER_USR_COMMENT_PARMNUM;
   {$EXTERNALSYM USER_USR_COMMENT_INFOLEVEL}
-  USER_PARMS_INFOLEVEL          = (PARMNUM_BASE_INFOLEVEL + USER_PARMS_PARMNUM);
+  USER_PARMS_INFOLEVEL          = PARMNUM_BASE_INFOLEVEL + USER_PARMS_PARMNUM;
   {$EXTERNALSYM USER_PARMS_INFOLEVEL}
-  USER_WORKSTATIONS_INFOLEVEL   = (PARMNUM_BASE_INFOLEVEL + USER_WORKSTATIONS_PARMNUM);
+  USER_WORKSTATIONS_INFOLEVEL   = PARMNUM_BASE_INFOLEVEL + USER_WORKSTATIONS_PARMNUM;
   {$EXTERNALSYM USER_WORKSTATIONS_INFOLEVEL}
-  USER_LAST_LOGON_INFOLEVEL     = (PARMNUM_BASE_INFOLEVEL + USER_LAST_LOGON_PARMNUM);
+  USER_LAST_LOGON_INFOLEVEL     = PARMNUM_BASE_INFOLEVEL + USER_LAST_LOGON_PARMNUM;
   {$EXTERNALSYM USER_LAST_LOGON_INFOLEVEL}
-  USER_LAST_LOGOFF_INFOLEVEL    = (PARMNUM_BASE_INFOLEVEL + USER_LAST_LOGOFF_PARMNUM);
+  USER_LAST_LOGOFF_INFOLEVEL    = PARMNUM_BASE_INFOLEVEL + USER_LAST_LOGOFF_PARMNUM;
   {$EXTERNALSYM USER_LAST_LOGOFF_INFOLEVEL}
-  USER_ACCT_EXPIRES_INFOLEVEL   = (PARMNUM_BASE_INFOLEVEL + USER_ACCT_EXPIRES_PARMNUM);
+  USER_ACCT_EXPIRES_INFOLEVEL   = PARMNUM_BASE_INFOLEVEL + USER_ACCT_EXPIRES_PARMNUM;
   {$EXTERNALSYM USER_ACCT_EXPIRES_INFOLEVEL}
-  USER_MAX_STORAGE_INFOLEVEL    = (PARMNUM_BASE_INFOLEVEL + USER_MAX_STORAGE_PARMNUM);
+  USER_MAX_STORAGE_INFOLEVEL    = PARMNUM_BASE_INFOLEVEL + USER_MAX_STORAGE_PARMNUM;
   {$EXTERNALSYM USER_MAX_STORAGE_INFOLEVEL}
-  USER_UNITS_PER_WEEK_INFOLEVEL = (PARMNUM_BASE_INFOLEVEL + USER_UNITS_PER_WEEK_PARMNUM);
+  USER_UNITS_PER_WEEK_INFOLEVEL = PARMNUM_BASE_INFOLEVEL + USER_UNITS_PER_WEEK_PARMNUM;
   {$EXTERNALSYM USER_UNITS_PER_WEEK_INFOLEVEL}
-  USER_LOGON_HOURS_INFOLEVEL    = (PARMNUM_BASE_INFOLEVEL + USER_LOGON_HOURS_PARMNUM);
+  USER_LOGON_HOURS_INFOLEVEL    = PARMNUM_BASE_INFOLEVEL + USER_LOGON_HOURS_PARMNUM;
   {$EXTERNALSYM USER_LOGON_HOURS_INFOLEVEL}
-  USER_PAD_PW_COUNT_INFOLEVEL   = (PARMNUM_BASE_INFOLEVEL + USER_PAD_PW_COUNT_PARMNUM);
+  USER_PAD_PW_COUNT_INFOLEVEL   = PARMNUM_BASE_INFOLEVEL + USER_PAD_PW_COUNT_PARMNUM;
   {$EXTERNALSYM USER_PAD_PW_COUNT_INFOLEVEL}
-  USER_NUM_LOGONS_INFOLEVEL     = (PARMNUM_BASE_INFOLEVEL + USER_NUM_LOGONS_PARMNUM);
+  USER_NUM_LOGONS_INFOLEVEL     = PARMNUM_BASE_INFOLEVEL + USER_NUM_LOGONS_PARMNUM;
   {$EXTERNALSYM USER_NUM_LOGONS_INFOLEVEL}
-  USER_LOGON_SERVER_INFOLEVEL   = (PARMNUM_BASE_INFOLEVEL + USER_LOGON_SERVER_PARMNUM);
+  USER_LOGON_SERVER_INFOLEVEL   = PARMNUM_BASE_INFOLEVEL + USER_LOGON_SERVER_PARMNUM;
   {$EXTERNALSYM USER_LOGON_SERVER_INFOLEVEL}
-  USER_COUNTRY_CODE_INFOLEVEL   = (PARMNUM_BASE_INFOLEVEL + USER_COUNTRY_CODE_PARMNUM);
+  USER_COUNTRY_CODE_INFOLEVEL   = PARMNUM_BASE_INFOLEVEL + USER_COUNTRY_CODE_PARMNUM;
   {$EXTERNALSYM USER_COUNTRY_CODE_INFOLEVEL}
-  USER_CODE_PAGE_INFOLEVEL      = (PARMNUM_BASE_INFOLEVEL + USER_CODE_PAGE_PARMNUM);
+  USER_CODE_PAGE_INFOLEVEL      = PARMNUM_BASE_INFOLEVEL + USER_CODE_PAGE_PARMNUM;
   {$EXTERNALSYM USER_CODE_PAGE_INFOLEVEL}
-  USER_PRIMARY_GROUP_INFOLEVEL  = (PARMNUM_BASE_INFOLEVEL + USER_PRIMARY_GROUP_PARMNUM);
+  USER_PRIMARY_GROUP_INFOLEVEL  = PARMNUM_BASE_INFOLEVEL + USER_PRIMARY_GROUP_PARMNUM;
   {$EXTERNALSYM USER_PRIMARY_GROUP_INFOLEVEL}
 //  todo USER_POSIX_ID_PARMNUM where is it defined?
-//  USER_POSIX_ID_INFOLEVEL       = (PARMNUM_BASE_INFOLEVEL + USER_POSIX_ID_PARMNUM);
+//  USER_POSIX_ID_INFOLEVEL       = PARMNUM_BASE_INFOLEVEL + USER_POSIX_ID_PARMNUM;
 //  {$EXTERNALSYM USER_POSIX_ID_INFOLEVEL}
-  USER_HOME_DIR_DRIVE_INFOLEVEL = (PARMNUM_BASE_INFOLEVEL + USER_HOME_DIR_DRIVE_PARMNUM);
+  USER_HOME_DIR_DRIVE_INFOLEVEL = PARMNUM_BASE_INFOLEVEL + USER_HOME_DIR_DRIVE_PARMNUM;
   {$EXTERNALSYM USER_HOME_DIR_DRIVE_INFOLEVEL}
 
 //
@@ -1155,23 +1161,23 @@ const
 // the new infolevel counterparts of the old info level + parmnum
 //
 
-  MODALS_MIN_PASSWD_LEN_INFOLEVEL  = (PARMNUM_BASE_INFOLEVEL + MODALS_MIN_PASSWD_LEN_PARMNUM);
+  MODALS_MIN_PASSWD_LEN_INFOLEVEL  = PARMNUM_BASE_INFOLEVEL + MODALS_MIN_PASSWD_LEN_PARMNUM;
   {$EXTERNALSYM MODALS_MIN_PASSWD_LEN_INFOLEVEL}
-  MODALS_MAX_PASSWD_AGE_INFOLEVEL  = (PARMNUM_BASE_INFOLEVEL + MODALS_MAX_PASSWD_AGE_PARMNUM);
+  MODALS_MAX_PASSWD_AGE_INFOLEVEL  = PARMNUM_BASE_INFOLEVEL + MODALS_MAX_PASSWD_AGE_PARMNUM;
   {$EXTERNALSYM MODALS_MAX_PASSWD_AGE_INFOLEVEL}
-  MODALS_MIN_PASSWD_AGE_INFOLEVEL  = (PARMNUM_BASE_INFOLEVEL + MODALS_MIN_PASSWD_AGE_PARMNUM);
+  MODALS_MIN_PASSWD_AGE_INFOLEVEL  = PARMNUM_BASE_INFOLEVEL + MODALS_MIN_PASSWD_AGE_PARMNUM;
   {$EXTERNALSYM MODALS_MIN_PASSWD_AGE_INFOLEVEL}
-  MODALS_FORCE_LOGOFF_INFOLEVEL    = (PARMNUM_BASE_INFOLEVEL + MODALS_FORCE_LOGOFF_PARMNUM);
+  MODALS_FORCE_LOGOFF_INFOLEVEL    = PARMNUM_BASE_INFOLEVEL + MODALS_FORCE_LOGOFF_PARMNUM;
   {$EXTERNALSYM MODALS_FORCE_LOGOFF_INFOLEVEL}
-  MODALS_PASSWD_HIST_LEN_INFOLEVEL = (PARMNUM_BASE_INFOLEVEL + MODALS_PASSWD_HIST_LEN_PARMNUM);
+  MODALS_PASSWD_HIST_LEN_INFOLEVEL = PARMNUM_BASE_INFOLEVEL + MODALS_PASSWD_HIST_LEN_PARMNUM;
   {$EXTERNALSYM MODALS_PASSWD_HIST_LEN_INFOLEVEL}
-  MODALS_ROLE_INFOLEVEL            = (PARMNUM_BASE_INFOLEVEL + MODALS_ROLE_PARMNUM);
+  MODALS_ROLE_INFOLEVEL            = PARMNUM_BASE_INFOLEVEL + MODALS_ROLE_PARMNUM;
   {$EXTERNALSYM MODALS_ROLE_INFOLEVEL}
-  MODALS_PRIMARY_INFOLEVEL         = (PARMNUM_BASE_INFOLEVEL + MODALS_PRIMARY_PARMNUM);
+  MODALS_PRIMARY_INFOLEVEL         = PARMNUM_BASE_INFOLEVEL + MODALS_PRIMARY_PARMNUM;
   {$EXTERNALSYM MODALS_PRIMARY_INFOLEVEL}
-  MODALS_DOMAIN_NAME_INFOLEVEL     = (PARMNUM_BASE_INFOLEVEL + MODALS_DOMAIN_NAME_PARMNUM);
+  MODALS_DOMAIN_NAME_INFOLEVEL     = PARMNUM_BASE_INFOLEVEL + MODALS_DOMAIN_NAME_PARMNUM;
   {$EXTERNALSYM MODALS_DOMAIN_NAME_INFOLEVEL}
-  MODALS_DOMAIN_ID_INFOLEVEL       = (PARMNUM_BASE_INFOLEVEL + MODALS_DOMAIN_ID_PARMNUM);
+  MODALS_DOMAIN_ID_INFOLEVEL       = PARMNUM_BASE_INFOLEVEL + MODALS_DOMAIN_ID_PARMNUM;
   {$EXTERNALSYM MODALS_DOMAIN_ID_INFOLEVEL}
 
 //
@@ -1365,16 +1371,16 @@ const
 // the new infolevel counterparts of the old info level + parmnum
 //
 
-  GROUP_ALL_INFOLEVEL        = (PARMNUM_BASE_INFOLEVEL + GROUP_ALL_PARMNUM);
+  GROUP_ALL_INFOLEVEL        = PARMNUM_BASE_INFOLEVEL + GROUP_ALL_PARMNUM;
   {$EXTERNALSYM GROUP_ALL_INFOLEVEL}
-  GROUP_NAME_INFOLEVEL       = (PARMNUM_BASE_INFOLEVEL + GROUP_NAME_PARMNUM);
+  GROUP_NAME_INFOLEVEL       = PARMNUM_BASE_INFOLEVEL + GROUP_NAME_PARMNUM;
   {$EXTERNALSYM GROUP_NAME_INFOLEVEL}
-  GROUP_COMMENT_INFOLEVEL    = (PARMNUM_BASE_INFOLEVEL + GROUP_COMMENT_PARMNUM);
+  GROUP_COMMENT_INFOLEVEL    = PARMNUM_BASE_INFOLEVEL + GROUP_COMMENT_PARMNUM;
   {$EXTERNALSYM GROUP_COMMENT_INFOLEVEL}
-  GROUP_ATTRIBUTES_INFOLEVEL = (PARMNUM_BASE_INFOLEVEL + GROUP_ATTRIBUTES_PARMNUM);
+  GROUP_ATTRIBUTES_INFOLEVEL = PARMNUM_BASE_INFOLEVEL + GROUP_ATTRIBUTES_PARMNUM;
   {$EXTERNALSYM GROUP_ATTRIBUTES_INFOLEVEL}
 //  todo see GROUP_POSIX_ID_PARMNUM
-//  GROUP_POSIX_ID_INFOLEVEL   = (PARMNUM_BASE_INFOLEVEL + GROUP_POSIX_ID_PARMNUM);
+//  GROUP_POSIX_ID_INFOLEVEL   = PARMNUM_BASE_INFOLEVEL + GROUP_POSIX_ID_PARMNUM;
 //  {$EXTERNALSYM GROUP_POSIX_ID_INFOLEVEL}
 
 //
@@ -1737,7 +1743,7 @@ const
 
   ACCESS_NONE = 0;
   {$EXTERNALSYM ACCESS_NONE}
-  ACCESS_ALL  = (ACCESS_READ or ACCESS_WRITE or ACCESS_CREATE or ACCESS_EXEC or ACCESS_DELETE or ACCESS_ATRIB or ACCESS_PERM);
+  ACCESS_ALL  = ACCESS_READ or ACCESS_WRITE or ACCESS_CREATE or ACCESS_EXEC or ACCESS_DELETE or ACCESS_ATRIB or ACCESS_PERM;
   {$EXTERNALSYM ACCESS_ALL}
   
 //
@@ -1789,13 +1795,13 @@ const
 // the new infolevel counterparts of the old info level + parmnum
 //
 
-  ACCESS_RESOURCE_NAME_INFOLEVEL = (PARMNUM_BASE_INFOLEVEL + ACCESS_RESOURCE_NAME_PARMNUM);
+  ACCESS_RESOURCE_NAME_INFOLEVEL = PARMNUM_BASE_INFOLEVEL + ACCESS_RESOURCE_NAME_PARMNUM;
   {$EXTERNALSYM ACCESS_RESOURCE_NAME_INFOLEVEL}
-  ACCESS_ATTR_INFOLEVEL          = (PARMNUM_BASE_INFOLEVEL + ACCESS_ATTR_PARMNUM);
+  ACCESS_ATTR_INFOLEVEL          = PARMNUM_BASE_INFOLEVEL + ACCESS_ATTR_PARMNUM;
   {$EXTERNALSYM ACCESS_ATTR_INFOLEVEL}
-  ACCESS_COUNT_INFOLEVEL         = (PARMNUM_BASE_INFOLEVEL + ACCESS_COUNT_PARMNUM);
+  ACCESS_COUNT_INFOLEVEL         = PARMNUM_BASE_INFOLEVEL + ACCESS_COUNT_PARMNUM;
   {$EXTERNALSYM ACCESS_COUNT_INFOLEVEL}
-  ACCESS_ACCESS_LIST_INFOLEVEL   = (PARMNUM_BASE_INFOLEVEL + ACCESS_ACCESS_LIST_PARMNUM);
+  ACCESS_ACCESS_LIST_INFOLEVEL   = PARMNUM_BASE_INFOLEVEL + ACCESS_ACCESS_LIST_PARMNUM;
   {$EXTERNALSYM ACCESS_ACCESS_LIST_INFOLEVEL}
 
 //
@@ -1812,7 +1818,6 @@ const
 //    Password Checking API structures
 //
 //    ********************************
-
 
 //
 //    What kind of password checking is to be performed?
@@ -1866,15 +1871,6 @@ const
   {$EXTERNALSYM NET_VALIDATE_PASSWORD_HISTORY_LENGTH}
   NET_VALIDATE_PASSWORD_HISTORY          = $00000020;
   {$EXTERNALSYM NET_VALIDATE_PASSWORD_HISTORY}
-
-//#if !defined(_WINBASE_) && !defined(_FILETIME_)
-//#define _FILETIME_
-//typedef struct _FILETIME
-//{/
-//    DWORD dwLowDateTime;
-//    DWORD dwHighDateTime;
-//} FILETIME, FAR * LPFILETIME, *PFILETIME;
-//#endif
 
 //
 //    Structure to keep information about the password and related things.
@@ -2007,6 +2003,9 @@ type
 function NetValidatePasswordPolicy(ServerName: LPWSTR; Qualifier: LPVOID; ValidationType: NET_VALIDATE_PASSWORD_TYPE;
   InputArg: LPVOID; var OutputArg: LPVOID): NET_API_STATUS; stdcall;
 {$EXTERNALSYM NetValidatePasswordPolicy}
+
+function NetValidatePasswordPolicyFree(var OutputArg: LPVOID): NET_API_STATUS; stdcall;
+{$EXTERNALSYM NetValidatePasswordPolicyFree}
 
 //
 // Domain Class
@@ -2171,10 +2170,21 @@ const
   NETLOGON_VERIFY_STATUS_RETURNED  = $80; // Trust verification status returned in netlog2_pdc_connection_status
   {$EXTERNALSYM NETLOGON_VERIFY_STATUS_RETURNED}
 
+{$ENDIF JWA_INTERFACESECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
+
 implementation
 
+uses
+  JwaWinDLLNames;
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_IMPLEMENTATIONSECTION}
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _NetUserAdd: Pointer;
 
@@ -2182,16 +2192,12 @@ function NetUserAdd;
 begin
   GetProcedureAddress(_NetUserAdd, netapi32, 'NetUserAdd');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetUserAdd]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetUserAdd]
   end;
 end;
-{$ELSE}
-function NetUserAdd; external netapi32 name 'NetUserAdd';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetUserEnum: Pointer;
 
@@ -2199,16 +2205,12 @@ function NetUserEnum;
 begin
   GetProcedureAddress(_NetUserEnum, netapi32, 'NetUserEnum');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetUserEnum]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetUserEnum]
   end;
 end;
-{$ELSE}
-function NetUserEnum; external netapi32 name 'NetUserEnum';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetUserGetInfo: Pointer;
 
@@ -2216,16 +2218,12 @@ function NetUserGetInfo;
 begin
   GetProcedureAddress(_NetUserGetInfo, netapi32, 'NetUserGetInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetUserGetInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetUserGetInfo]
   end;
 end;
-{$ELSE}
-function NetUserGetInfo; external netapi32 name 'NetUserGetInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetUserSetInfo: Pointer;
 
@@ -2233,16 +2231,12 @@ function NetUserSetInfo;
 begin
   GetProcedureAddress(_NetUserSetInfo, netapi32, 'NetUserSetInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetUserSetInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetUserSetInfo]
   end;
 end;
-{$ELSE}
-function NetUserSetInfo; external netapi32 name 'NetUserSetInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetUserDel: Pointer;
 
@@ -2250,16 +2244,12 @@ function NetUserDel;
 begin
   GetProcedureAddress(_NetUserDel, netapi32, 'NetUserDel');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetUserDel]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetUserDel]
   end;
 end;
-{$ELSE}
-function NetUserDel; external netapi32 name 'NetUserDel';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetUserGetGroups: Pointer;
 
@@ -2267,16 +2257,12 @@ function NetUserGetGroups;
 begin
   GetProcedureAddress(_NetUserGetGroups, netapi32, 'NetUserGetGroups');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetUserGetGroups]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetUserGetGroups]
   end;
 end;
-{$ELSE}
-function NetUserGetGroups; external netapi32 name 'NetUserGetGroups';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetUserSetGroups: Pointer;
 
@@ -2284,16 +2270,12 @@ function NetUserSetGroups;
 begin
   GetProcedureAddress(_NetUserSetGroups, netapi32, 'NetUserSetGroups');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetUserSetGroups]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetUserSetGroups]
   end;
 end;
-{$ELSE}
-function NetUserSetGroups; external netapi32 name 'NetUserSetGroups';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetUserGetLocalGroups: Pointer;
 
@@ -2301,16 +2283,12 @@ function NetUserGetLocalGroups;
 begin
   GetProcedureAddress(_NetUserGetLocalGroups, netapi32, 'NetUserGetLocalGroups');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetUserGetLocalGroups]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetUserGetLocalGroups]
   end;
 end;
-{$ELSE}
-function NetUserGetLocalGroups; external netapi32 name 'NetUserGetLocalGroups';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetUserModalsGet: Pointer;
 
@@ -2318,16 +2296,12 @@ function NetUserModalsGet;
 begin
   GetProcedureAddress(_NetUserModalsGet, netapi32, 'NetUserModalsGet');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetUserModalsGet]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetUserModalsGet]
   end;
 end;
-{$ELSE}
-function NetUserModalsGet; external netapi32 name 'NetUserModalsGet';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetUserModalsSet: Pointer;
 
@@ -2335,16 +2309,12 @@ function NetUserModalsSet;
 begin
   GetProcedureAddress(_NetUserModalsSet, netapi32, 'NetUserModalsSet');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetUserModalsSet]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetUserModalsSet]
   end;
 end;
-{$ELSE}
-function NetUserModalsSet; external netapi32 name 'NetUserModalsSet';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetUserChangePassword: Pointer;
 
@@ -2352,16 +2322,12 @@ function NetUserChangePassword;
 begin
   GetProcedureAddress(_NetUserChangePassword, netapi32, 'NetUserChangePassword');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetUserChangePassword]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetUserChangePassword]
   end;
 end;
-{$ELSE}
-function NetUserChangePassword; external netapi32 name 'NetUserChangePassword';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetGroupAdd: Pointer;
 
@@ -2369,16 +2335,12 @@ function NetGroupAdd;
 begin
   GetProcedureAddress(_NetGroupAdd, netapi32, 'NetGroupAdd');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetGroupAdd]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetGroupAdd]
   end;
 end;
-{$ELSE}
-function NetGroupAdd; external netapi32 name 'NetGroupAdd';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetGroupAddUser: Pointer;
 
@@ -2386,33 +2348,25 @@ function NetGroupAddUser;
 begin
   GetProcedureAddress(_NetGroupAddUser, netapi32, 'NetGroupAddUser');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetGroupAddUser]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetGroupAddUser]
   end;
 end;
-{$ELSE}
-function NetGroupAddUser; external netapi32 name 'NetGroupAddUser';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetGroupEnum: Pointer;
 
 function NetGroupEnum;
 begin
-  GetProcedureAddress(_NetGroupEnum, netapi32, 'NetGroupEnum;');
+  GetProcedureAddress(_NetGroupEnum, netapi32, 'NetGroupEnum');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetGroupEnum]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetGroupEnum]
   end;
 end;
-{$ELSE}
-function NetGroupEnum; external netapi32 name 'NetGroupEnum;';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetGroupGetInfo: Pointer;
 
@@ -2420,16 +2374,12 @@ function NetGroupGetInfo;
 begin
   GetProcedureAddress(_NetGroupGetInfo, netapi32, 'NetGroupGetInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetGroupGetInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetGroupGetInfo]
   end;
 end;
-{$ELSE}
-function NetGroupGetInfo; external netapi32 name 'NetGroupGetInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetGroupSetInfo: Pointer;
 
@@ -2437,16 +2387,12 @@ function NetGroupSetInfo;
 begin
   GetProcedureAddress(_NetGroupSetInfo, netapi32, 'NetGroupSetInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetGroupSetInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetGroupSetInfo]
   end;
 end;
-{$ELSE}
-function NetGroupSetInfo; external netapi32 name 'NetGroupSetInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetGroupDel: Pointer;
 
@@ -2454,16 +2400,12 @@ function NetGroupDel;
 begin
   GetProcedureAddress(_NetGroupDel, netapi32, 'NetGroupDel');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetGroupDel]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetGroupDel]
   end;
 end;
-{$ELSE}
-function NetGroupDel; external netapi32 name 'NetGroupDel';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetGroupDelUser: Pointer;
 
@@ -2471,16 +2413,12 @@ function NetGroupDelUser;
 begin
   GetProcedureAddress(_NetGroupDelUser, netapi32, 'NetGroupDelUser');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetGroupDelUser]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetGroupDelUser]
   end;
 end;
-{$ELSE}
-function NetGroupDelUser; external netapi32 name 'NetGroupDelUser';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetGroupGetUsers: Pointer;
 
@@ -2488,16 +2426,12 @@ function NetGroupGetUsers;
 begin
   GetProcedureAddress(_NetGroupGetUsers, netapi32, 'NetGroupGetUsers');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetGroupGetUsers]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetGroupGetUsers]
   end;
 end;
-{$ELSE}
-function NetGroupGetUsers; external netapi32 name 'NetGroupGetUsers';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetGroupSetUsers: Pointer;
 
@@ -2505,16 +2439,12 @@ function NetGroupSetUsers;
 begin
   GetProcedureAddress(_NetGroupSetUsers, netapi32, 'NetGroupSetUsers');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetGroupSetUsers]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetGroupSetUsers]
   end;
 end;
-{$ELSE}
-function NetGroupSetUsers; external netapi32 name 'NetGroupSetUsers';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetLocalGroupAdd: Pointer;
 
@@ -2522,16 +2452,12 @@ function NetLocalGroupAdd;
 begin
   GetProcedureAddress(_NetLocalGroupAdd, netapi32, 'NetLocalGroupAdd');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetLocalGroupAdd]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetLocalGroupAdd]
   end;
 end;
-{$ELSE}
-function NetLocalGroupAdd; external netapi32 name 'NetLocalGroupAdd';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetLocalGroupAddMember: Pointer;
 
@@ -2539,16 +2465,12 @@ function NetLocalGroupAddMember;
 begin
   GetProcedureAddress(_NetLocalGroupAddMember, netapi32, 'NetLocalGroupAddMember');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetLocalGroupAddMember]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetLocalGroupAddMember]
   end;
 end;
-{$ELSE}
-function NetLocalGroupAddMember; external netapi32 name 'NetLocalGroupAddMember';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetLocalGroupEnum: Pointer;
 
@@ -2556,16 +2478,12 @@ function NetLocalGroupEnum;
 begin
   GetProcedureAddress(_NetLocalGroupEnum, netapi32, 'NetLocalGroupEnum');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetLocalGroupEnum]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetLocalGroupEnum]
   end;
 end;
-{$ELSE}
-function NetLocalGroupEnum; external netapi32 name 'NetLocalGroupEnum';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetLocalGroupGetInfo: Pointer;
 
@@ -2573,16 +2491,12 @@ function NetLocalGroupGetInfo;
 begin
   GetProcedureAddress(_NetLocalGroupGetInfo, netapi32, 'NetLocalGroupGetInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetLocalGroupGetInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetLocalGroupGetInfo]
   end;
 end;
-{$ELSE}
-function NetLocalGroupGetInfo; external netapi32 name 'NetLocalGroupGetInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetLocalGroupSetInfo: Pointer;
 
@@ -2590,16 +2504,12 @@ function NetLocalGroupSetInfo;
 begin
   GetProcedureAddress(_NetLocalGroupSetInfo, netapi32, 'NetLocalGroupSetInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetLocalGroupSetInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetLocalGroupSetInfo]
   end;
 end;
-{$ELSE}
-function NetLocalGroupSetInfo; external netapi32 name 'NetLocalGroupSetInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetLocalGroupDel: Pointer;
 
@@ -2607,16 +2517,12 @@ function NetLocalGroupDel;
 begin
   GetProcedureAddress(_NetLocalGroupDel, netapi32, 'NetLocalGroupDel');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetLocalGroupDel]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetLocalGroupDel]
   end;
 end;
-{$ELSE}
-function NetLocalGroupDel; external netapi32 name 'NetLocalGroupDel';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetLocalGroupDelMember: Pointer;
 
@@ -2624,16 +2530,12 @@ function NetLocalGroupDelMember;
 begin
   GetProcedureAddress(_NetLocalGroupDelMember, netapi32, 'NetLocalGroupDelMember');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetLocalGroupDelMember]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetLocalGroupDelMember]
   end;
 end;
-{$ELSE}
-function NetLocalGroupDelMember; external netapi32 name 'NetLocalGroupDelMember';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetLocalGroupGetMembers: Pointer;
 
@@ -2641,16 +2543,12 @@ function NetLocalGroupGetMembers;
 begin
   GetProcedureAddress(_NetLocalGroupGetMembers, netapi32, 'NetLocalGroupGetMembers');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetLocalGroupGetMembers]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetLocalGroupGetMembers]
   end;
 end;
-{$ELSE}
-function NetLocalGroupGetMembers; external netapi32 name 'NetLocalGroupGetMembers';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetLocalGroupSetMembers: Pointer;
 
@@ -2658,16 +2556,12 @@ function NetLocalGroupSetMembers;
 begin
   GetProcedureAddress(_NetLocalGroupSetMembers, netapi32, 'NetLocalGroupSetMembers');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetLocalGroupSetMembers]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetLocalGroupSetMembers]
   end;
 end;
-{$ELSE}
-function NetLocalGroupSetMembers; external netapi32 name 'NetLocalGroupSetMembers';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetLocalGroupAddMembers: Pointer;
 
@@ -2675,16 +2569,12 @@ function NetLocalGroupAddMembers;
 begin
   GetProcedureAddress(_NetLocalGroupAddMembers, netapi32, 'NetLocalGroupAddMembers');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetLocalGroupAddMembers]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetLocalGroupAddMembers]
   end;
 end;
-{$ELSE}
-function NetLocalGroupAddMembers; external netapi32 name 'NetLocalGroupAddMembers';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetLocalGroupDelMembers: Pointer;
 
@@ -2692,16 +2582,12 @@ function NetLocalGroupDelMembers;
 begin
   GetProcedureAddress(_NetLocalGroupDelMembers, netapi32, 'NetLocalGroupDelMembers');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetLocalGroupDelMembers]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetLocalGroupDelMembers]
   end;
 end;
-{$ELSE}
-function NetLocalGroupDelMembers; external netapi32 name 'NetLocalGroupDelMembers';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetQueryDisplayInformation: Pointer;
 
@@ -2709,16 +2595,12 @@ function NetQueryDisplayInformation;
 begin
   GetProcedureAddress(_NetQueryDisplayInformation, netapi32, 'NetQueryDisplayInformation');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetQueryDisplayInformation]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetQueryDisplayInformation]
   end;
 end;
-{$ELSE}
-function NetQueryDisplayInformation; external netapi32 name 'NetQueryDisplayInformation';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetGetDisplayInformationIndex: Pointer;
 
@@ -2726,16 +2608,12 @@ function NetGetDisplayInformationIndex;
 begin
   GetProcedureAddress(_NetGetDisplayInformationIndex, netapi32, 'NetGetDisplayInformationIndex');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetGetDisplayInformationIndex]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetGetDisplayInformationIndex]
   end;
 end;
-{$ELSE}
-function NetGetDisplayInformationIndex; external netapi32 name 'NetGetDisplayInformationIndex';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetAccessAdd: Pointer;
 
@@ -2743,16 +2621,12 @@ function NetAccessAdd;
 begin
   GetProcedureAddress(_NetAccessAdd, netapi32, 'NetAccessAdd');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetAccessAdd]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetAccessAdd]
   end;
 end;
-{$ELSE}
-function NetAccessAdd; external netapi32 name 'NetAccessAdd';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetAccessEnum: Pointer;
 
@@ -2760,16 +2634,12 @@ function NetAccessEnum;
 begin
   GetProcedureAddress(_NetAccessEnum, netapi32, 'NetAccessEnum');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetAccessEnum]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetAccessEnum]
   end;
 end;
-{$ELSE}
-function NetAccessEnum; external netapi32 name 'NetAccessEnum';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetAccessGetInfo: Pointer;
 
@@ -2777,16 +2647,12 @@ function NetAccessGetInfo;
 begin
   GetProcedureAddress(_NetAccessGetInfo, netapi32, 'NetAccessGetInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetAccessGetInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetAccessGetInfo]
   end;
 end;
-{$ELSE}
-function NetAccessGetInfo; external netapi32 name 'NetAccessGetInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetAccessSetInfo: Pointer;
 
@@ -2794,16 +2660,12 @@ function NetAccessSetInfo;
 begin
   GetProcedureAddress(_NetAccessSetInfo, netapi32, 'NetAccessSetInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetAccessSetInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetAccessSetInfo]
   end;
 end;
-{$ELSE}
-function NetAccessSetInfo; external netapi32 name 'NetAccessSetInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetAccessDel: Pointer;
 
@@ -2811,16 +2673,12 @@ function NetAccessDel;
 begin
   GetProcedureAddress(_NetAccessDel, netapi32, 'NetAccessDel');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetAccessDel]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetAccessDel]
   end;
 end;
-{$ELSE}
-function NetAccessDel; external netapi32 name 'NetAccessDel';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetAccessGetUserPerms: Pointer;
 
@@ -2828,16 +2686,12 @@ function NetAccessGetUserPerms;
 begin
   GetProcedureAddress(_NetAccessGetUserPerms, netapi32, 'NetAccessGetUserPerms');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetAccessGetUserPerms]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetAccessGetUserPerms]
   end;
 end;
-{$ELSE}
-function NetAccessGetUserPerms; external netapi32 name 'NetAccessGetUserPerms';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetValidatePasswordPolicy: Pointer;
 
@@ -2845,16 +2699,25 @@ function NetValidatePasswordPolicy;
 begin
   GetProcedureAddress(_NetValidatePasswordPolicy, netapi32, 'NetValidatePasswordPolicy');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetValidatePasswordPolicy]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetValidatePasswordPolicy]
   end;
 end;
-{$ELSE}
-function NetValidatePasswordPolicy; external netapi32 name 'NetValidatePasswordPolicy';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
+var
+  _NetValidatePasswordPolicyFree: Pointer;
+
+function NetValidatePasswordPolicyFree;
+begin
+  GetProcedureAddress(_NetValidatePasswordPolicyFree, netapi32, 'NetValidatePasswordPolicyFree');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetValidatePasswordPolicyFree]
+  end;
+end;
+
 var
   _NetGetDCName: Pointer;
 
@@ -2862,16 +2725,12 @@ function NetGetDCName;
 begin
   GetProcedureAddress(_NetGetDCName, netapi32, 'NetGetDCName');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetGetDCName]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetGetDCName]
   end;
 end;
-{$ELSE}
-function NetGetDCName; external netapi32 name 'NetGetDCName';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetGetAnyDCName: Pointer;
 
@@ -2879,16 +2738,12 @@ function NetGetAnyDCName;
 begin
   GetProcedureAddress(_NetGetAnyDCName, netapi32, 'NetGetAnyDCName');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetGetAnyDCName]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetGetAnyDCName]
   end;
 end;
-{$ELSE}
-function NetGetAnyDCName; external netapi32 name 'NetGetAnyDCName';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _I_NetLogonControl: Pointer;
 
@@ -2896,16 +2751,12 @@ function I_NetLogonControl;
 begin
   GetProcedureAddress(_I_NetLogonControl, netapi32, 'I_NetLogonControl');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_I_NetLogonControl]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_I_NetLogonControl]
   end;
 end;
-{$ELSE}
-function I_NetLogonControl; external netapi32 name 'I_NetLogonControl';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _I_NetLogonControl2: Pointer;
 
@@ -2913,16 +2764,12 @@ function I_NetLogonControl2;
 begin
   GetProcedureAddress(_I_NetLogonControl2, netapi32, 'I_NetLogonControl2');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_I_NetLogonControl2]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_I_NetLogonControl2]
   end;
 end;
-{$ELSE}
-function I_NetLogonControl2; external netapi32 name 'I_NetLogonControl2';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetEnumerateTrustedDomains: Pointer;
 
@@ -2930,13 +2777,65 @@ function NetEnumerateTrustedDomains;
 begin
   GetProcedureAddress(_NetEnumerateTrustedDomains, netapi32, 'NetEnumerateTrustedDomains');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetEnumerateTrustedDomains]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetEnumerateTrustedDomains]
   end;
 end;
+
 {$ELSE}
+
+function NetUserAdd; external netapi32 name 'NetUserAdd';
+function NetUserEnum; external netapi32 name 'NetUserEnum';
+function NetUserGetInfo; external netapi32 name 'NetUserGetInfo';
+function NetUserSetInfo; external netapi32 name 'NetUserSetInfo';
+function NetUserDel; external netapi32 name 'NetUserDel';
+function NetUserGetGroups; external netapi32 name 'NetUserGetGroups';
+function NetUserSetGroups; external netapi32 name 'NetUserSetGroups';
+function NetUserGetLocalGroups; external netapi32 name 'NetUserGetLocalGroups';
+function NetUserModalsGet; external netapi32 name 'NetUserModalsGet';
+function NetUserModalsSet; external netapi32 name 'NetUserModalsSet';
+function NetUserChangePassword; external netapi32 name 'NetUserChangePassword';
+function NetGroupAdd; external netapi32 name 'NetGroupAdd';
+function NetGroupAddUser; external netapi32 name 'NetGroupAddUser';
+function NetGroupEnum; external netapi32 name 'NetGroupEnum';
+function NetGroupGetInfo; external netapi32 name 'NetGroupGetInfo';
+function NetGroupSetInfo; external netapi32 name 'NetGroupSetInfo';
+function NetGroupDel; external netapi32 name 'NetGroupDel';
+function NetGroupDelUser; external netapi32 name 'NetGroupDelUser';
+function NetGroupGetUsers; external netapi32 name 'NetGroupGetUsers';
+function NetGroupSetUsers; external netapi32 name 'NetGroupSetUsers';
+function NetLocalGroupAdd; external netapi32 name 'NetLocalGroupAdd';
+function NetLocalGroupAddMember; external netapi32 name 'NetLocalGroupAddMember';
+function NetLocalGroupEnum; external netapi32 name 'NetLocalGroupEnum';
+function NetLocalGroupGetInfo; external netapi32 name 'NetLocalGroupGetInfo';
+function NetLocalGroupSetInfo; external netapi32 name 'NetLocalGroupSetInfo';
+function NetLocalGroupDel; external netapi32 name 'NetLocalGroupDel';
+function NetLocalGroupDelMember; external netapi32 name 'NetLocalGroupDelMember';
+function NetLocalGroupGetMembers; external netapi32 name 'NetLocalGroupGetMembers';
+function NetLocalGroupSetMembers; external netapi32 name 'NetLocalGroupSetMembers';
+function NetLocalGroupAddMembers; external netapi32 name 'NetLocalGroupAddMembers';
+function NetLocalGroupDelMembers; external netapi32 name 'NetLocalGroupDelMembers';
+function NetQueryDisplayInformation; external netapi32 name 'NetQueryDisplayInformation';
+function NetGetDisplayInformationIndex; external netapi32 name 'NetGetDisplayInformationIndex';
+function NetAccessAdd; external netapi32 name 'NetAccessAdd';
+function NetAccessEnum; external netapi32 name 'NetAccessEnum';
+function NetAccessGetInfo; external netapi32 name 'NetAccessGetInfo';
+function NetAccessSetInfo; external netapi32 name 'NetAccessSetInfo';
+function NetAccessDel; external netapi32 name 'NetAccessDel';
+function NetAccessGetUserPerms; external netapi32 name 'NetAccessGetUserPerms';
+function NetValidatePasswordPolicy; external netapi32 name 'NetValidatePasswordPolicy';
+function NetValidatePasswordPolicyFree; external netapi32 name 'NetValidatePasswordPolicyFree';
+function NetGetDCName; external netapi32 name 'NetGetDCName';
+function NetGetAnyDCName; external netapi32 name 'NetGetAnyDCName';
+function I_NetLogonControl; external netapi32 name 'I_NetLogonControl';
+function I_NetLogonControl2; external netapi32 name 'I_NetLogonControl2';
 function NetEnumerateTrustedDomains; external netapi32 name 'NetEnumerateTrustedDomains';
+
 {$ENDIF DYNAMIC_LINK}
 
+{$ENDIF JWA_IMPLEMENTATIONSECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
 end.
+{$ENDIF !JWA_INCLUDEMODE}

@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Performance Data Helper Error Codes API interface Unit for Object Pascal     }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: pdhmsg.h, released August 2001. The original Pascal    }
 { code is: PdhMsg.pas, released December 2000. The initial developer of the    }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaPdhMsg.pas,v 1.6 2005/09/03 14:27:48 marquardt Exp $
 
 unit JwaPdhMsg;
 
@@ -49,12 +50,12 @@ unit JwaPdhMsg;
 {$HPPEMIT '#include "pdhmsg.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinType;
+  JwaWindows;
 
 //     PDH DLL messages
 //
@@ -289,7 +290,7 @@ const
 //
 // MessageText:
 //
-//  Cannot change set default realtime datasource. There are realtime query
+//  Cannot change default real-time data source. There are real-time query
 //  sessions collecting counter data.
 //
 
@@ -689,7 +690,7 @@ const
 //
 // MessageText:
 //
-//  An error occured while accessing the WBEM data store.
+//  An error occurred while accessing the WBEM data store.
 //
 
   PDH_WBEM_ERROR                   = DWORD($C0000BDA);
@@ -946,7 +947,7 @@ const
 //
 // MessageText:
 //
-//  The "Performance Logs & Alerts" service did not repond.
+//  The "Performance Logs & Alerts" service did not respond.
 //
 
   PDH_PLA_SERVICE_ERROR            = DWORD($C0000BF1);
@@ -1002,7 +1003,7 @@ const
 // MessageText:
 //
 //  Performance counter in PdhAddCounter() call has already been added
-//  in the performacne query. This counter is ignored.
+//  in the performance query. This counter is ignored.
 //
 
   PDH_COUNTER_ALREADY_IN_QUERY     = DWORD($C0000BF6);

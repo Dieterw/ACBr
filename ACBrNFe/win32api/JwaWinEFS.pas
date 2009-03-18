@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Encrypting File System API interface Unit for Object Pascal                  }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: winefs.h, released June 2000. The original Pascal      }
 { code is: WinEFS.pas, released December 2000. The initial developer of the    }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,14 +35,29 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaWinEFS.pas,v 1.8 2005/09/06 16:36:50 marquardt Exp $
+
+{$IFNDEF JWA_INCLUDEMODE}
 
 unit JwaWinEFS;
 
 {$WEAKPACKAGEUNIT}
+
+{$I jediapilib.inc}
+
+interface
+
+uses
+  JwaWinBase, JwaWinNT, JwaWinType;
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_INTERFACESECTION}
 
 {$HPPEMIT ''}
 {$HPPEMIT '#include "WinEFS.h"'}
@@ -53,16 +67,11 @@ unit JwaWinEFS;
 {$HPPEMIT 'typedef PENCRYPTION_CERTIFICATE_HASH_LIST *PPENCRYPTION_CERTIFICATE_HASH_LIST'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
-
-interface
-
-uses
-  JwaWinBase, JwaWinNT, JwaWinType;
-
+{$IFNDEF JWA_INCLUDEMODE}
 type
   ALG_ID = Cardinal;
   {$EXTERNALSYM ALG_ID}
+{$ENDIF !JWA_INCLUDEMODE}
 
 //
 //  Encoded Certificate
@@ -226,13 +235,21 @@ function DuplicateEncryptionInfoFile(SrcFileName, DstFileName: LPCWSTR; dwCreati
   dwAttributes: DWORD; lpSecurityAttributes: LPSECURITY_ATTRIBUTES): DWORD; stdcall;
 {$EXTERNALSYM DuplicateEncryptionInfoFile}
 
+{$ENDIF JWA_INTERFACESECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
+
 implementation
 
-const
-  advapi32 = 'advapi32.dll';
+uses
+  JwaWinDLLNames;
 
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_IMPLEMENTATIONSECTION}
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _QueryUsersOnEncryptedFile: Pointer;
 
@@ -240,16 +257,12 @@ function QueryUsersOnEncryptedFile;
 begin
   GetProcedureAddress(_QueryUsersOnEncryptedFile, advapi32, 'QueryUsersOnEncryptedFile');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_QueryUsersOnEncryptedFile]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_QueryUsersOnEncryptedFile]
   end;
 end;
-{$ELSE}
-function QueryUsersOnEncryptedFile; external advapi32 name 'QueryUsersOnEncryptedFile';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _QueryRecoveryAgentsOnEncrFile: Pointer;
 
@@ -257,16 +270,12 @@ function QueryRecoveryAgentsOnEncryptedFile;
 begin
   GetProcedureAddress(_QueryRecoveryAgentsOnEncrFile, advapi32, 'QueryRecoveryAgentsOnEncryptedFile');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_QueryRecoveryAgentsOnEncrFile]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_QueryRecoveryAgentsOnEncrFile]
   end;
 end;
-{$ELSE}
-function QueryRecoveryAgentsOnEncryptedFile; external advapi32 name 'QueryRecoveryAgentsOnEncryptedFile';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RemoveUsersFromEncryptedFile: Pointer;
 
@@ -274,16 +283,12 @@ function RemoveUsersFromEncryptedFile;
 begin
   GetProcedureAddress(_RemoveUsersFromEncryptedFile, advapi32, 'RemoveUsersFromEncryptedFile');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RemoveUsersFromEncryptedFile]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RemoveUsersFromEncryptedFile]
   end;
 end;
-{$ELSE}
-function RemoveUsersFromEncryptedFile; external advapi32 name 'RemoveUsersFromEncryptedFile';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _AddUsersToEncryptedFile: Pointer;
 
@@ -291,16 +296,12 @@ function AddUsersToEncryptedFile;
 begin
   GetProcedureAddress(_AddUsersToEncryptedFile, advapi32, 'AddUsersToEncryptedFile');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AddUsersToEncryptedFile]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AddUsersToEncryptedFile]
   end;
 end;
-{$ELSE}
-function AddUsersToEncryptedFile; external advapi32 name 'AddUsersToEncryptedFile';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetUserFileEncryptionKey: Pointer;
 
@@ -308,16 +309,12 @@ function SetUserFileEncryptionKey;
 begin
   GetProcedureAddress(_SetUserFileEncryptionKey, advapi32, 'SetUserFileEncryptionKey');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetUserFileEncryptionKey]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetUserFileEncryptionKey]
   end;
 end;
-{$ELSE}
-function SetUserFileEncryptionKey; external advapi32 name 'SetUserFileEncryptionKey';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _FreeEncrCertificateHashList: Pointer;
 
@@ -325,16 +322,12 @@ procedure FreeEncryptionCertificateHashList;
 begin
   GetProcedureAddress(_FreeEncrCertificateHashList, advapi32, 'FreeEncryptionCertificateHashList');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FreeEncrCertificateHashList]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_FreeEncrCertificateHashList]
   end;
 end;
-{$ELSE}
-procedure FreeEncryptionCertificateHashList; external advapi32 name 'FreeEncryptionCertificateHashList';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EncryptionDisable: Pointer;
 
@@ -342,16 +335,12 @@ function EncryptionDisable;
 begin
   GetProcedureAddress(_EncryptionDisable, advapi32, 'EncryptionDisable');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EncryptionDisable]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EncryptionDisable]
   end;
 end;
-{$ELSE}
-function EncryptionDisable; external advapi32 name 'EncryptionDisable';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DuplicateEncryptionInfoFile: Pointer;
 
@@ -359,13 +348,27 @@ function DuplicateEncryptionInfoFile;
 begin
   GetProcedureAddress(_DuplicateEncryptionInfoFile, advapi32, 'DuplicateEncryptionInfoFile');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DuplicateEncryptionInfoFile]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DuplicateEncryptionInfoFile]
   end;
 end;
+
 {$ELSE}
+
+function QueryUsersOnEncryptedFile; external advapi32 name 'QueryUsersOnEncryptedFile';
+function QueryRecoveryAgentsOnEncryptedFile; external advapi32 name 'QueryRecoveryAgentsOnEncryptedFile';
+function RemoveUsersFromEncryptedFile; external advapi32 name 'RemoveUsersFromEncryptedFile';
+function AddUsersToEncryptedFile; external advapi32 name 'AddUsersToEncryptedFile';
+function SetUserFileEncryptionKey; external advapi32 name 'SetUserFileEncryptionKey';
+procedure FreeEncryptionCertificateHashList; external advapi32 name 'FreeEncryptionCertificateHashList';
+function EncryptionDisable; external advapi32 name 'EncryptionDisable';
 function DuplicateEncryptionInfoFile; external advapi32 name 'DuplicateEncryptionInfoFile';
+
 {$ENDIF DYNAMIC_LINK}
 
+{$ENDIF JWA_IMPLEMENTATIONSECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
 end.
+{$ENDIF !JWA_INCLUDEMODE}

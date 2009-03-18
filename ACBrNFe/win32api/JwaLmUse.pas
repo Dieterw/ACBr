@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Lan Manager Use API interface Unit for Object Pascal                         }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: lmuse.h, released November 2001. The original Pascal   }
 { code is: LmUse.pas, released Februari 2002. The initial developer of the     }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,25 +35,33 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaLmUse.pas,v 1.9 2005/09/07 09:54:54 marquardt Exp $
+
+{$IFNDEF JWA_INCLUDEMODE}
 
 unit JwaLmUse;
 
 {$WEAKPACKAGEUNIT}
 
-{$HPPEMIT ''}
-{$HPPEMIT '#include "lmuse.h"'}
-{$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaLmCons, JwaWinType;
+  JwaWindows, JwaLmCons;
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_INTERFACESECTION}
+
+{$HPPEMIT ''}
+{$HPPEMIT '#include "lmuse.h"'}
+{$HPPEMIT ''}
 
 //
 // Function Prototypes
@@ -217,10 +224,21 @@ const
   USE_DEFAULT_CREDENTIALS = $4; // No explicit credentials passed to NetUseAdd
   {$EXTERNALSYM USE_DEFAULT_CREDENTIALS}
 
+{$ENDIF JWA_INTERFACESECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
+
 implementation
 
+uses
+  JwaWinDLLNames;
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_IMPLEMENTATIONSECTION}
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _NetUseAdd: Pointer;
 
@@ -228,16 +246,12 @@ function NetUseAdd;
 begin
   GetProcedureAddress(_NetUseAdd, netapi32, 'NetUseAdd');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetUseAdd]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetUseAdd]
   end;
 end;
-{$ELSE}
-function NetUseAdd; external netapi32 name 'NetUseAdd';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetUseDel: Pointer;
 
@@ -245,16 +259,12 @@ function NetUseDel;
 begin
   GetProcedureAddress(_NetUseDel, netapi32, 'NetUseDel');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetUseDel]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetUseDel]
   end;
 end;
-{$ELSE}
-function NetUseDel; external netapi32 name 'NetUseDel';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetUseEnum: Pointer;
 
@@ -262,16 +272,12 @@ function NetUseEnum;
 begin
   GetProcedureAddress(_NetUseEnum, netapi32, 'NetUseEnum');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetUseEnum]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetUseEnum]
   end;
 end;
-{$ELSE}
-function NetUseEnum; external netapi32 name 'NetUseEnum';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetUseGetInfo: Pointer;
 
@@ -279,13 +285,23 @@ function NetUseGetInfo;
 begin
   GetProcedureAddress(_NetUseGetInfo, netapi32, 'NetUseGetInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetUseGetInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetUseGetInfo]
   end;
 end;
+
 {$ELSE}
+
+function NetUseAdd; external netapi32 name 'NetUseAdd';
+function NetUseDel; external netapi32 name 'NetUseDel';
+function NetUseEnum; external netapi32 name 'NetUseEnum';
 function NetUseGetInfo; external netapi32 name 'NetUseGetInfo';
+
 {$ENDIF DYNAMIC_LINK}
 
+{$ENDIF JWA_IMPLEMENTATIONSECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
 end.
+{$ENDIF !JWA_INCLUDEMODE}

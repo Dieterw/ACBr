@@ -164,140 +164,28 @@
 
 <body>
 
-  <h2>What's new?</h2>
+  <h2>What has changed?</h2>
 
+  <h3>Januari 2005</h3>
   <p>
-  <h3>25 November 2002</h3>
-  <p><b>Updated units.</b>
-  <p>Several minor bugfixes to different units.
-  <p><b>New conversions.</b>
-  <p>The following units were added:
   <ul>
-    <li>JwaImapi (imapi.h))</li>
-    <li>JwaImapiError (imapierror.h)</li>
+    <li>The Win32 API Conversion was moved to sourceforge.</li>
+    <li>Removed JwaLM, the Lan Manager conversion from Petr. Use the JwaLM*.pas files instead</li>
+    <li>Added externalsym directives where they were missing</li>
+    <li>Added dynamic linking support where it was missing</li>
+    <li>WinDefines.inc was replaced with jedi.inc ad jediapilib.inc. This creates a structuring like in the JCL and JVCL</li>    
+    <li>Many conditional directives have been changed. See ifdef.html for initial documentation</li>
+    <li>Cleanup of source files. Robert has done a lot of work to clean up the conversions, resulting in meaner and cleaner sources</li>
   </ul>
   </p>
 
-  <p>
-  <h3>3 September 2002</h3>
-  <p><b>Updated units.</b>
-  <p>Several minor bugfixes to different units.
-  </p>
 
+  <h2>Note about dynamic linking</h2>
   <p>
-  <h3>24 July 2002</h3>
-  <p><b>Updated units.</b>
-  <p>JwaWinError.pas updated to the Windows XP SP 1 Platform SDK.
-  </p>
+  All conversions (except those functions that use the cdecl calling convention
+  support dynamic loading through the DYNAMIC_LINK conditional directive (see ifdef.html).
+  By default this feature is turned off.
 
-  <p>
-  <h3>10 July 2002</h3>
-  <p><b>Updated units.</b>
-  <p>All units except two or three were updated to the Windows XP SP 1 Platform SDK.
-  </p>
-
-  <p>
-  <h3>10 May 2002</h3>
-  <p><b>New conversions.</b>
-  <p>The following units were added:
-  <ul>
-    <li>JwaIsGuids (isguids.idl)</li>
-    <li>JwaShlGuid (shlguid.h)</li>
-  </ul>
-  </p>
-
-  <p>
-  <h3>10 April 2002</h3>
-  <p><b>New conversions.</b>
-  <p>The following units were added:
-  <ul>
-    <li>JwaWbemCli (wbemcli.idl)</li>
-    <li>JwaWmiStr (wmistr.h)</li>
-    <li>JwaFaxDev (faxdev.h)</li>
-    <li>JwaFaxExt (faxext.h)</li>
-    <li>JwaFaxMmc (faxmmc.h)</li>
-    <li>JwaFaxRoute (faxroute.h)</li>
-    <li>JwaWinFax (winfax.h)</li>
-  </ul>
-  </p>
-
-  <p>
-  <h3>10 March 2002</h3>
-  <p><b>New conversions.</b>
-  <p>The following units were added:
-  <ul>
-    <li>JwaWinCred (wincred.h)</li>
-    <li>JwaCmnQuery (cmnquery.h)</li>
-    <li>JwaDSQuery (dsquery.h)</li>
-    <li>JwaHtmlGuid (htmlguid.h)</li>
-    <li>JwaIAccess (iaccess.h)</li>
-    <li>JwaIAdmExt (iadmext.h)</li>
-    <li>JwaIpInfoId (ipinfoid.h)</li>
-  </ul>
-  </p>
-  <p>
-  <p><b>Updated units</b>
-  <p>The following units were updated:
-  <ul>
-    <li>JwaNtDsApi</li>
-  </ul>
-  </p>
-
-  <p>
-  <h3>18 februari 2002</h3>
-  <p><b>Lan Manager header files (lm*.h).</b>
-  <p>Reason for this addition is twofold:<br>
-  <ol>
-    <li>The LM.pas interface unit included in this package was getting out of 
-        synch with the original from Petr and errors were creeping in. Conversion 
-        from scratch was imo the only way to remove all these errors.
-    <li>The original LM interface units were done by Petr and his copyright. This
-        somewhat limits me in my freedom to do as I want with those units.
-  </ol>
-  <p>
-  Petr's original LM interface unit is still included (JwaLM.pas) for those that
-  are already using it. New development should use either Petr's original units
-  (available from http://www.delphi-jedi.org) or the new units included in this
-  release (the individual JwaLmXYZ.pas units, not JwaLM.pas). Existing applications
-  should continue to use the JwaLM.pas unit as the new units are different in many
-  aspects (e.g. in the conversion of parameters, types and so forth).
-  Eventually JwaLM.pas from Petr will be removed...
-  </p>
-  <p>
-  <b>Up to date with November 2002 Platform SDK</b>
-  <p>
-  The units are now up to date with the November 2002 release of the Platform SDK.
-  This means that the included units are up to date with their equivalent header
-  files in the PSDK, not that all header files are converted - obviously..
-  The only files that are not yet up to date are:<br>
-  <ul>
-    <li>NtDsApi.pas</li>
-    <li>NtSecPkg.pas</li>	
-	<li>WinCrypt.pas</li>
-  </ul>
-  Hopefully I'll be able to attend to these soon.
-  </p>
-
-  <h3>8 januari 2002</h3>
-  <p>
-  The most significant change in this release is the addition of dynamic linking
-  support for all units. By default dynamic linking is turned off, to turn on
-  dynamic linking remove the dot in the line:<br>
-
-  <pre class=syntax>
-  {.$DEFINE DYNAMIC_LINK}
-  </pre>
-
-  <p>
-  inside WinDefines.inc. In this release this will turn on dynamic linking for all
-  interface units, in a future release I might add support to contorl this on a
-  unit-by-unit basis. Dynamic linking is supported by using a small assembler stub
-  that loads the DLL on demand only when the routine is actually used. There is no
-  need to call any special initialization routine, all happens automatically.
-  Thanks goes out to the guys in borland.public.delphi.basm for their help in
-  implementing this.
-
-  <p>
   Please note that currently there is no way to find out upfront whether or not a
   required library is present on the system other than explicitly testing this
   yourself using LoadLibrary(), a future release might add support for this. In
@@ -333,13 +221,22 @@
   <ul>
     <li>All functions with the cdecl calling convention do not yet support dynamic 
         linking. This mostly involves JwaWinBer and JwaWinLdap but there exist a few
-        other instances.
-    <li>There are still plenty of TODO markers :-(
+        other instances.</li>
+    <li>There are still plenty of TODO markers :-(</li>
     <li>The JwaAdsTLB unit has a few errors. This is a type library import and the
         errors are a result of bugs in the Delphi type library importer, not mine.
         Thanks to Chris Burr for pointing this out, sorry Chris but I haven't had
-        time to fix it yet.
+        time to fix it yet.</li>
+    <li>There's a problem using these units in Delphi 4. The problem is that in some places 
+  I use constant declarations like this:<br>
+  RESTORE_LAST_ERROR_NAME_W = WideString('RestoreLastError');<br>
+  which cause access violations at compile time. The work around is to change these
+  constants to:<br>
+  RESTORE_LAST_ERROR_NAME_W : PWideChar = 'RestoreLastError';<br>
+  When I have time I'll change this, until then at least you know...Thanks to 
+  Roman Grycz (Romek?) for reporting this.</li>
   </ul>
+
 
   <h2>Installation</h2>
 
@@ -423,15 +320,7 @@
   globally change some settings, and thereby determine how they get compiled,
   through the WinDefines.inc include file. An example of this would be to specify
   an unicode build. There are a few more directives which cannot be set globally
-  (yet), look through the unit itself to find them. Full documentation for all
-  directives will be provided in a later release.
-
-  <p>
-  Also note that all LanManager units (LM*.pas) were combined into a single
-  unit LM.pas for convenience. The same applies to the Ads*.pas units which
-  were combined into ActiveDS.pas and all Rpc*.pas files which were combined
-  into Rpc.pas. Furthermore, the LanManager translation was done by Petr Vones
-  and is included with his permission. The WinLDAP unit was created by Luk Vermeulen.</p>
+  (yet), Initial documentation for the directives can be found in ifdef.html.
 
   <h2>Copyright</h2>
 
@@ -446,36 +335,11 @@
         <a href="http://www.mozilla.org/MPL/MPL-1.1.html">MPL</a> and/or
         <a href="http://www.gnu.org/copyleft/lesser.html">LGPL</a> to make sure
         you understand your rights and obligations.
-    <li>If neither the MPL and LGPL fit your needs you I can grant you a different
-        license. <a href="mailto:brakelm@chello.nl?subject=Win32Api Licensing">
-        Contact me</a> for more information. Depending on the details, this will
-        cost you something though (dunno what exactly yet, perhaps a monetary
-        donation or a free copy of your product, we'll see).
   </ul>
   <p>
   Please be aware that the WinLDAP unit was created by Luk Vermeulen and can only
   be used and distributed under the MPL license. It's included because of dependencies
-  on this unit. I may convert the header myself one day.
-
-  <h2>Feedback</h2>
-
-  Any and all feedback can be send to <a href="mailto:brakelm@chello.nl?subject=Win32Api">
-  brakelm@chello.nl</a>. Please do not send me any generic API related questions,
-  for that you should use the Borland newsgroups
-  (see <a href="http://community.borland.com">the Borland Community site</a> for
-  more information). Questions directly related to the use, or problems encountered
-  by the use of, these units can of course be directed at the above address. Please
-  include the phrase "Win32Api" in the subject header.
-
-  <h2>Request an interface unit</h2>
-
-  If you're in desperate need of an interface unit for some C/C++ API you can
-  <a href="mailto:brakelm@chello.nl?subject=Win32Api Request">send me a request</a>
-  through e-mail. I cannot promise that I will convert the unit(s) within any
-  particular time frame, or at all, but I will let you know about it. Note that
-  you can also hire me to do header conversions, in that case I will guarentee
-  delivery within a certain time frame which depends on the header(s) themselves.
-  Mail me at the above address for more information.
+  on this unit. We may convert the header ourselves one day.
 
 </body>
 

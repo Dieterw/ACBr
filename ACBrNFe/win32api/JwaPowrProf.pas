@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Power Policy Applicator interface Unit for Object Pascal                     }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: powrprof.h, released June 2000. The original Pascal    }
 { code is: PowrProf.pas, released August 2001. The initial developer of the    }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaPowrProf.pas,v 1.10 2005/09/06 16:36:50 marquardt Exp $
 
 unit JwaPowrProf;
 
@@ -49,12 +50,12 @@ unit JwaPowrProf;
 {$HPPEMIT '#include "powrprof.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinNT, JwaWinType;
+  JwaWindows;
 
 // Registry storage structures for the GLOBAL_POWER_POLICY data. There are two
 // structures, GLOBAL_MACHINE_POWER_POLICY and GLOBAL_USER_POWER_POLICY. the
@@ -181,8 +182,8 @@ type
     SpindownTimeoutAc: ULONG;
     SpindownTimeoutDc: ULONG;
     // processor policies
-    OptimizeForPowerAc: BOOLEAN;
-    OptimizeForPowerDc: BOOLEAN;
+    OptimizeForPowerAc: ByteBool;
+    OptimizeForPowerDc: ByteBool;
     FanThrottleToleranceAc: UCHAR;
     FanThrottleToleranceDc: UCHAR;
     ForcedThrottleAc: UCHAR;
@@ -230,55 +231,53 @@ const
 
 // Prototype for EnumPwrSchemes callback proceedures.
 
-// TODO REPLACE BOOLEAN WITH ...
-
 type
-  PWRSCHEMESENUMPROC = function (uiIndex: UINT; dwName: DWORD; sName: LPTSTR; dwDesc: DWORD; sDesc: LPTSTR; pp: PPOWER_POLICY; lParam: LPARAM): BOOLEAN; stdcall;
+  PWRSCHEMESENUMPROC = function(uiIndex: UINT; dwName: DWORD; sName: LPWSTR; dwDesc: DWORD; sDesc: LPWSTR; pp: PPOWER_POLICY; lParam: LPARAM): ByteBool; stdcall;
   {$EXTERNALSYM PWRSCHEMESENUMPROC}
-  PFNNTINITIATEPWRACTION = function (pPowerAction: POWER_ACTION; SystemPowerState: SYSTEM_POWER_STATE; u: ULONG; b: BOOLEAN): BOOLEAN; stdcall;
+  PFNNTINITIATEPWRACTION = function(pPowerAction: POWER_ACTION; SystemPowerState: SYSTEM_POWER_STATE; u: ULONG; b: ByteBool): ByteBool; stdcall;
   {$EXTERNALSYM PFNNTINITIATEPWRACTION}
 
 // Public function prototypes
 
-function GetPwrDiskSpindownRange(var RangeMax, RangeMin: UINT): BOOLEAN; stdcall;
+function GetPwrDiskSpindownRange(var RangeMax, RangeMin: UINT): ByteBool; stdcall;
 {$EXTERNALSYM GetPwrDiskSpindownRange}
-function EnumPwrSchemes(lpfnPwrSchemesEnumProc: PWRSCHEMESENUMPROC; lParam: LPARAM): BOOLEAN; stdcall;
+function EnumPwrSchemes(lpfnPwrSchemesEnumProc: PWRSCHEMESENUMPROC; lParam: LPARAM): ByteBool; stdcall;
 {$EXTERNALSYM EnumPwrSchemes}
-function ReadGlobalPwrPolicy(var pGlobalPowerPolicy: GLOBAL_POWER_POLICY): BOOLEAN; stdcall;
+function ReadGlobalPwrPolicy(var pGlobalPowerPolicy: GLOBAL_POWER_POLICY): ByteBool; stdcall;
 {$EXTERNALSYM ReadGlobalPwrPolicy}
-function ReadPwrScheme(uiID: UINT; var pPowerPolicy: POWER_POLICY): BOOLEAN; stdcall;
+function ReadPwrScheme(uiID: UINT; var pPowerPolicy: POWER_POLICY): ByteBool; stdcall;
 {$EXTERNALSYM ReadPwrScheme}
-function WritePwrScheme(puiID: PUINT; lpszName, lpszDescription: LPTSTR; const pPowerPolicy: POWER_POLICY): BOOLEAN; stdcall;
+function WritePwrScheme(puiID: PUINT; lpszName, lpszDescription: LPWSTR; const pPowerPolicy: POWER_POLICY): ByteBool; stdcall;
 {$EXTERNALSYM WritePwrScheme}
-function WriteGlobalPwrPolicy(const pGlobalPowerPolicy: GLOBAL_POWER_POLICY): BOOLEAN; stdcall;
+function WriteGlobalPwrPolicy(const pGlobalPowerPolicy: GLOBAL_POWER_POLICY): ByteBool; stdcall;
 {$EXTERNALSYM WriteGlobalPwrPolicy}
-function DeletePwrScheme(uiIndex: UINT): BOOLEAN; stdcall;
+function DeletePwrScheme(uiIndex: UINT): ByteBool; stdcall;
 {$EXTERNALSYM DeletePwrScheme}
-function GetActivePwrScheme(var puiID: UINT): BOOLEAN; stdcall;
+function GetActivePwrScheme(var puiID: UINT): ByteBool; stdcall;
 {$EXTERNALSYM GetActivePwrScheme}
-function SetActivePwrScheme(uiID: UINT; pGlobalPowerPolicy: PGLOBAL_POWER_POLICY; pPowerPolicy: PPOWER_POLICY): BOOLEAN; stdcall;
+function SetActivePwrScheme(uiID: UINT; pGlobalPowerPolicy: PGLOBAL_POWER_POLICY; pPowerPolicy: PPOWER_POLICY): ByteBool; stdcall;
 {$EXTERNALSYM SetActivePwrScheme}
-function GetPwrCapabilities(var lpSystemPowerCapabilities: SYSTEM_POWER_CAPABILITIES): BOOLEAN; stdcall;
+function GetPwrCapabilities(var lpSystemPowerCapabilities: SYSTEM_POWER_CAPABILITIES): ByteBool; stdcall;
 {$EXTERNALSYM GetPwrCapabilities}
-function IsPwrSuspendAllowed: BOOLEAN; stdcall;
+function IsPwrSuspendAllowed: ByteBool; stdcall;
 {$EXTERNALSYM IsPwrSuspendAllowed}
-function IsPwrHibernateAllowed: BOOLEAN; stdcall;
+function IsPwrHibernateAllowed: ByteBool; stdcall;
 {$EXTERNALSYM IsPwrHibernateAllowed}
-function IsPwrShutdownAllowed: BOOLEAN; stdcall;
+function IsPwrShutdownAllowed: ByteBool; stdcall;
 {$EXTERNALSYM IsPwrShutdownAllowed}
-function IsAdminOverrideActive(pAdministratorPowerPolicy: PADMINISTRATOR_POWER_POLICY): BOOLEAN; stdcall;
+function IsAdminOverrideActive(pAdministratorPowerPolicy: PADMINISTRATOR_POWER_POLICY): ByteBool; stdcall;
 {$EXTERNALSYM IsAdminOverrideActive}
-function SetSuspendState(Hibernate, ForceCritical, DisableWakeEvent: BOOLEAN): BOOLEAN; stdcall;
+function SetSuspendState(Hibernate, ForceCritical, DisableWakeEvent: ByteBool): ByteBool; stdcall;
 {$EXTERNALSYM SetSuspendState}
-function GetCurrentPowerPolicies(pGlobalPowerPolicy: PGLOBAL_POWER_POLICY; pPowerPolicy: PPOWER_POLICY): BOOLEAN; stdcall;
+function GetCurrentPowerPolicies(pGlobalPowerPolicy: PGLOBAL_POWER_POLICY; pPowerPolicy: PPOWER_POLICY): ByteBool; stdcall;
 {$EXTERNALSYM GetCurrentPowerPolicies}
-function CanUserWritePwrScheme: BOOLEAN; stdcall;
+function CanUserWritePwrScheme: ByteBool; stdcall;
 {$EXTERNALSYM CanUserWritePwrScheme}
-function ReadProcessorPwrScheme(uiID: UINT; var pMachineProcessorPowerPolicy: MACHINE_PROCESSOR_POWER_POLICY): BOOLEAN; stdcall;
+function ReadProcessorPwrScheme(uiID: UINT; var pMachineProcessorPowerPolicy: MACHINE_PROCESSOR_POWER_POLICY): ByteBool; stdcall;
 {$EXTERNALSYM ReadProcessorPwrScheme}
-function WriteProcessorPwrScheme(uiID: UINT; const pMachineProcessorPowerPolicy: MACHINE_PROCESSOR_POWER_POLICY): BOOLEAN; stdcall;
+function WriteProcessorPwrScheme(uiID: UINT; const pMachineProcessorPowerPolicy: MACHINE_PROCESSOR_POWER_POLICY): ByteBool; stdcall;
 {$EXTERNALSYM WriteProcessorPwrScheme}
-function ValidatePowerPolicies(GlobalPolicy: PGLOBAL_POWER_POLICY; Policy: PPOWER_POLICY): BOOLEAN; stdcall;
+function ValidatePowerPolicies(GlobalPolicy: PGLOBAL_POWER_POLICY; Policy: PPOWER_POLICY): ByteBool; stdcall;
 {$EXTERNALSYM ValidatePowerPolicies}
 
 function CallNtPowerInformation(InformationLeveL: POWER_INFORMATION_LEVEL; lpInputBuffer: PVOID; nInputBufferSize: ULONG; lpOutputBuffer: PVOID; nOutputBufferSize: ULONG): NTSTATUS; stdcall;
@@ -287,366 +286,307 @@ function CallNtPowerInformation(InformationLeveL: POWER_INFORMATION_LEVEL; lpInp
 implementation
 
 uses
-  SysUtils;
-
-const
-  powrprof_lib = 'powrprof.dll';
+  JwaWinDLLNames;
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _GetPwrDiskSpindownRange: Pointer;
 
 function GetPwrDiskSpindownRange;
 begin
-  GetProcedureAddress(_GetPwrDiskSpindownRange, powrprof_lib, 'GetPwrDiskSpindownRange');
+  GetProcedureAddress(_GetPwrDiskSpindownRange, powrproflib, 'GetPwrDiskSpindownRange');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetPwrDiskSpindownRange]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetPwrDiskSpindownRange]
   end;
 end;
-{$ELSE}
-function GetPwrDiskSpindownRange; external powrprof_lib name 'GetPwrDiskSpindownRange';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumPwrSchemes: Pointer;
 
 function EnumPwrSchemes;
 begin
-  GetProcedureAddress(_EnumPwrSchemes, powrprof_lib, 'EnumPwrSchemes');
+  GetProcedureAddress(_EnumPwrSchemes, powrproflib, 'EnumPwrSchemes');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumPwrSchemes]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumPwrSchemes]
   end;
 end;
-{$ELSE}
-function EnumPwrSchemes; external powrprof_lib name 'EnumPwrSchemes';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ReadGlobalPwrPolicy: Pointer;
 
 function ReadGlobalPwrPolicy;
 begin
-  GetProcedureAddress(_ReadGlobalPwrPolicy, powrprof_lib, 'ReadGlobalPwrPolicy');
+  GetProcedureAddress(_ReadGlobalPwrPolicy, powrproflib, 'ReadGlobalPwrPolicy');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ReadGlobalPwrPolicy]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ReadGlobalPwrPolicy]
   end;
 end;
-{$ELSE}
-function ReadGlobalPwrPolicy; external powrprof_lib name 'ReadGlobalPwrPolicy';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ReadPwrScheme: Pointer;
 
 function ReadPwrScheme;
 begin
-  GetProcedureAddress(_ReadPwrScheme, powrprof_lib, 'ReadPwrScheme');
+  GetProcedureAddress(_ReadPwrScheme, powrproflib, 'ReadPwrScheme');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ReadPwrScheme]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ReadPwrScheme]
   end;
 end;
-{$ELSE}
-function ReadPwrScheme; external powrprof_lib name 'ReadPwrScheme';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WritePwrScheme: Pointer;
 
 function WritePwrScheme;
 begin
-  GetProcedureAddress(_WritePwrScheme, powrprof_lib, 'WritePwrScheme');
+  GetProcedureAddress(_WritePwrScheme, powrproflib, 'WritePwrScheme');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WritePwrScheme]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WritePwrScheme]
   end;
 end;
-{$ELSE}
-function WritePwrScheme; external powrprof_lib name 'WritePwrScheme';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WriteGlobalPwrPolicy: Pointer;
 
 function WriteGlobalPwrPolicy;
 begin
-  GetProcedureAddress(_WriteGlobalPwrPolicy, powrprof_lib, 'WriteGlobalPwrPolicy');
+  GetProcedureAddress(_WriteGlobalPwrPolicy, powrproflib, 'WriteGlobalPwrPolicy');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WriteGlobalPwrPolicy]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WriteGlobalPwrPolicy]
   end;
 end;
-{$ELSE}
-function WriteGlobalPwrPolicy; external powrprof_lib name 'WriteGlobalPwrPolicy';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DeletePwrScheme: Pointer;
 
 function DeletePwrScheme;
 begin
-  GetProcedureAddress(_DeletePwrScheme, powrprof_lib, 'DeletePwrScheme');
+  GetProcedureAddress(_DeletePwrScheme, powrproflib, 'DeletePwrScheme');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DeletePwrScheme]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DeletePwrScheme]
   end;
 end;
-{$ELSE}
-function DeletePwrScheme; external powrprof_lib name 'DeletePwrScheme';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetActivePwrScheme: Pointer;
 
 function GetActivePwrScheme;
 begin
-  GetProcedureAddress(_GetActivePwrScheme, powrprof_lib, 'GetActivePwrScheme');
+  GetProcedureAddress(_GetActivePwrScheme, powrproflib, 'GetActivePwrScheme');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetActivePwrScheme]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetActivePwrScheme]
   end;
 end;
-{$ELSE}
-function GetActivePwrScheme; external powrprof_lib name 'GetActivePwrScheme';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetActivePwrScheme: Pointer;
 
 function SetActivePwrScheme;
 begin
-  GetProcedureAddress(_SetActivePwrScheme, powrprof_lib, 'SetActivePwrScheme');
+  GetProcedureAddress(_SetActivePwrScheme, powrproflib, 'SetActivePwrScheme');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetActivePwrScheme]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetActivePwrScheme]
   end;
 end;
-{$ELSE}
-function SetActivePwrScheme; external powrprof_lib name 'SetActivePwrScheme';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetPwrCapabilities: Pointer;
 
 function GetPwrCapabilities;
 begin
-  GetProcedureAddress(_GetPwrCapabilities, powrprof_lib, 'GetPwrCapabilities');
+  GetProcedureAddress(_GetPwrCapabilities, powrproflib, 'GetPwrCapabilities');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetPwrCapabilities]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetPwrCapabilities]
   end;
 end;
-{$ELSE}
-function GetPwrCapabilities; external powrprof_lib name 'GetPwrCapabilities';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _IsPwrSuspendAllowed: Pointer;
 
 function IsPwrSuspendAllowed;
 begin
-  GetProcedureAddress(_IsPwrSuspendAllowed, powrprof_lib, 'IsPwrSuspendAllowed');
+  GetProcedureAddress(_IsPwrSuspendAllowed, powrproflib, 'IsPwrSuspendAllowed');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsPwrSuspendAllowed]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsPwrSuspendAllowed]
   end;
 end;
-{$ELSE}
-function IsPwrSuspendAllowed; external powrprof_lib name 'IsPwrSuspendAllowed';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _IsPwrHibernateAllowed: Pointer;
 
 function IsPwrHibernateAllowed;
 begin
-  GetProcedureAddress(_IsPwrHibernateAllowed, powrprof_lib, 'IsPwrHibernateAllowed');
+  GetProcedureAddress(_IsPwrHibernateAllowed, powrproflib, 'IsPwrHibernateAllowed');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsPwrHibernateAllowed]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsPwrHibernateAllowed]
   end;
 end;
-{$ELSE}
-function IsPwrHibernateAllowed; external powrprof_lib name 'IsPwrHibernateAllowed';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _IsPwrShutdownAllowed: Pointer;
 
 function IsPwrShutdownAllowed;
 begin
-  GetProcedureAddress(_IsPwrShutdownAllowed, powrprof_lib, 'IsPwrShutdownAllowed');
+  GetProcedureAddress(_IsPwrShutdownAllowed, powrproflib, 'IsPwrShutdownAllowed');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsPwrShutdownAllowed]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsPwrShutdownAllowed]
   end;
 end;
-{$ELSE}
-function IsPwrShutdownAllowed; external powrprof_lib name 'IsPwrShutdownAllowed';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _IsAdminOverrideActive: Pointer;
 
 function IsAdminOverrideActive;
 begin
-  GetProcedureAddress(_IsAdminOverrideActive, powrprof_lib, 'IsAdminOverrideActive');
+  GetProcedureAddress(_IsAdminOverrideActive, powrproflib, 'IsAdminOverrideActive');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsAdminOverrideActive]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsAdminOverrideActive]
   end;
 end;
-{$ELSE}
-function IsAdminOverrideActive; external powrprof_lib name 'IsAdminOverrideActive';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetSuspendState: Pointer;
 
 function SetSuspendState;
 begin
-  GetProcedureAddress(_SetSuspendState, powrprof_lib, 'SetSuspendState');
+  GetProcedureAddress(_SetSuspendState, powrproflib, 'SetSuspendState');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetSuspendState]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetSuspendState]
   end;
 end;
-{$ELSE}
-function SetSuspendState; external powrprof_lib name 'SetSuspendState';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetCurrentPowerPolicies: Pointer;
 
 function GetCurrentPowerPolicies;
 begin
-  GetProcedureAddress(_GetCurrentPowerPolicies, powrprof_lib, 'GetCurrentPowerPolicies');
+  GetProcedureAddress(_GetCurrentPowerPolicies, powrproflib, 'GetCurrentPowerPolicies');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCurrentPowerPolicies]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetCurrentPowerPolicies]
   end;
 end;
-{$ELSE}
-function GetCurrentPowerPolicies; external powrprof_lib name 'GetCurrentPowerPolicies';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CanUserWritePwrScheme: Pointer;
 
 function CanUserWritePwrScheme;
 begin
-  GetProcedureAddress(_CanUserWritePwrScheme, powrprof_lib, 'CanUserWritePwrScheme');
+  GetProcedureAddress(_CanUserWritePwrScheme, powrproflib, 'CanUserWritePwrScheme');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CanUserWritePwrScheme]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CanUserWritePwrScheme]
   end;
 end;
-{$ELSE}
-function CanUserWritePwrScheme; external powrprof_lib name 'CanUserWritePwrScheme';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ReadProcessorPwrScheme: Pointer;
 
 function ReadProcessorPwrScheme;
 begin
-  GetProcedureAddress(_ReadProcessorPwrScheme, powrprof_lib, 'ReadProcessorPwrScheme');
+  GetProcedureAddress(_ReadProcessorPwrScheme, powrproflib, 'ReadProcessorPwrScheme');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ReadProcessorPwrScheme]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ReadProcessorPwrScheme]
   end;
 end;
-{$ELSE}
-function ReadProcessorPwrScheme; external powrprof_lib name 'ReadProcessorPwrScheme';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WriteProcessorPwrScheme: Pointer;
 
 function WriteProcessorPwrScheme;
 begin
-  GetProcedureAddress(_WriteProcessorPwrScheme, powrprof_lib, 'WriteProcessorPwrScheme');
+  GetProcedureAddress(_WriteProcessorPwrScheme, powrproflib, 'WriteProcessorPwrScheme');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WriteProcessorPwrScheme]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WriteProcessorPwrScheme]
   end;
 end;
-{$ELSE}
-function WriteProcessorPwrScheme; external powrprof_lib name 'WriteProcessorPwrScheme';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ValidatePowerPolicies: Pointer;
 
 function ValidatePowerPolicies;
 begin
-  GetProcedureAddress(_ValidatePowerPolicies, powrprof_lib, 'ValidatePowerPolicies');
+  GetProcedureAddress(_ValidatePowerPolicies, powrproflib, 'ValidatePowerPolicies');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ValidatePowerPolicies]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ValidatePowerPolicies]
   end;
 end;
-{$ELSE}
-function ValidatePowerPolicies; external powrprof_lib name 'ValidatePowerPolicies';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CallNtPowerInformation: Pointer;
 
 function CallNtPowerInformation;
 begin
-  GetProcedureAddress(_CallNtPowerInformation, powrprof_lib, 'CallNtPowerInformation');
+  GetProcedureAddress(_CallNtPowerInformation, powrproflib, 'CallNtPowerInformation');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CallNtPowerInformation]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CallNtPowerInformation]
   end;
 end;
+
 {$ELSE}
-function CallNtPowerInformation; external powrprof_lib name 'CallNtPowerInformation';
+
+function GetPwrDiskSpindownRange; external powrproflib name 'GetPwrDiskSpindownRange';
+function EnumPwrSchemes; external powrproflib name 'EnumPwrSchemes';
+function ReadGlobalPwrPolicy; external powrproflib name 'ReadGlobalPwrPolicy';
+function ReadPwrScheme; external powrproflib name 'ReadPwrScheme';
+function WritePwrScheme; external powrproflib name 'WritePwrScheme';
+function WriteGlobalPwrPolicy; external powrproflib name 'WriteGlobalPwrPolicy';
+function DeletePwrScheme; external powrproflib name 'DeletePwrScheme';
+function GetActivePwrScheme; external powrproflib name 'GetActivePwrScheme';
+function SetActivePwrScheme; external powrproflib name 'SetActivePwrScheme';
+function GetPwrCapabilities; external powrproflib name 'GetPwrCapabilities';
+function IsPwrSuspendAllowed; external powrproflib name 'IsPwrSuspendAllowed';
+function IsPwrHibernateAllowed; external powrproflib name 'IsPwrHibernateAllowed';
+function IsPwrShutdownAllowed; external powrproflib name 'IsPwrShutdownAllowed';
+function IsAdminOverrideActive; external powrproflib name 'IsAdminOverrideActive';
+function SetSuspendState; external powrproflib name 'SetSuspendState';
+function GetCurrentPowerPolicies; external powrproflib name 'GetCurrentPowerPolicies';
+function CanUserWritePwrScheme; external powrproflib name 'CanUserWritePwrScheme';
+function ReadProcessorPwrScheme; external powrproflib name 'ReadProcessorPwrScheme';
+function WriteProcessorPwrScheme; external powrproflib name 'WriteProcessorPwrScheme';
+function ValidatePowerPolicies; external powrproflib name 'ValidatePowerPolicies';
+function CallNtPowerInformation; external powrproflib name 'CallNtPowerInformation';
+
 {$ENDIF DYNAMIC_LINK}
 
 end.

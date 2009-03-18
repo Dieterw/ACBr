@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Lan Manager Audit API interface Unit for Object Pascal                       }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: lmaudit.h, released November 2001. The original Pascal }
 { code is: LmAudit.pas, released Februari 2002. The initial developer of the   }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,25 +35,35 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaLmAudit.pas,v 1.10 2005/09/07 09:54:54 marquardt Exp $
+
+{$IFNDEF JWA_INCLUDEMODE}
 
 unit JwaLmAudit;
 
 {$WEAKPACKAGEUNIT}
 
-{$HPPEMIT ''}
-{$HPPEMIT '#include "lmaudit.h"'}
-{$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaLmCons, JwaWinType;
+  JwaWindows, JwaLmCons;
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_INTERFACESECTION}
+
+{$HPPEMIT ''}
+{$HPPEMIT '#include "lmaudit.h"'}
+{$HPPEMIT ''}
+
+{$IFNDEF JWA_INCLUDEMODE}
 
 type
   _HLOG = record
@@ -78,6 +87,8 @@ const
   {$EXTERNALSYM LOGFLAGS_BACKWARD}
   LOGFLAGS_SEEK     = $2;
   {$EXTERNALSYM LOGFLAGS_SEEK}
+
+{$ENDIF !JWA_INCLUDEMODE}
 
 //
 // Function Prototypes - Audit
@@ -118,7 +129,7 @@ type
 {$DEFINE REVISED_AUDIT_ENTRY_STRUCT}
 
   _AE_SRVSTATUS = record
-    ae_sv_status: DWORD	;
+    ae_sv_status: DWORD;
   end;
   {$EXTERNALSYM _AE_SRVSTATUS}
   //AE_SRVSTATUS = _AE_SRVSTATUS;
@@ -433,7 +444,7 @@ type
 //
 
 //
-// 	Audit entry types (field ae_type in audit_entry).
+// Audit entry types (field ae_type in audit_entry).
 //
 
 const
@@ -481,7 +492,7 @@ const
   {$EXTERNALSYM AE_GENERIC_TYPE}
 
 //
-//	Values for ae_ss_status field of ae_srvstatus.
+// Values for ae_ss_status field of ae_srvstatus.
 //
 
   AE_SRVSTART  = 0;
@@ -494,7 +505,7 @@ const
   {$EXTERNALSYM AE_SRVSTOP}
 
 //
-// 	Values for ae_so_privilege field of ae_sesslogon.
+// Values for ae_so_privilege field of ae_sesslogon.
 //
 
   AE_GUEST = 0;
@@ -505,7 +516,7 @@ const
   {$EXTERNALSYM AE_ADMIN}
 
 //
-//	Values for various ae_XX_reason fields.
+// Values for various ae_XX_reason fields.
 //
 
   AE_NORMAL        = 0;
@@ -592,21 +603,21 @@ const
   {$EXTERNALSYM SVAUD_GOODSESSLOGON}
   SVAUD_BADSESSLOGON  = $18;
   {$EXTERNALSYM SVAUD_BADSESSLOGON}
-  SVAUD_SESSLOGON     = (SVAUD_GOODSESSLOGON or SVAUD_BADSESSLOGON);
+  SVAUD_SESSLOGON     = SVAUD_GOODSESSLOGON or SVAUD_BADSESSLOGON;
   {$EXTERNALSYM SVAUD_SESSLOGON}
   SVAUD_GOODNETLOGON  = $60;
   {$EXTERNALSYM SVAUD_GOODNETLOGON}
   SVAUD_BADNETLOGON   = $180;
   {$EXTERNALSYM SVAUD_BADNETLOGON}
-  SVAUD_NETLOGON      = (SVAUD_GOODNETLOGON or SVAUD_BADNETLOGON);
+  SVAUD_NETLOGON      = SVAUD_GOODNETLOGON or SVAUD_BADNETLOGON;
   {$EXTERNALSYM SVAUD_NETLOGON}
-  SVAUD_LOGON         = (SVAUD_NETLOGON or SVAUD_SESSLOGON);
+  SVAUD_LOGON         = SVAUD_NETLOGON or SVAUD_SESSLOGON;
   {$EXTERNALSYM SVAUD_LOGON}
   SVAUD_GOODUSE       = $600;
   {$EXTERNALSYM SVAUD_GOODUSE}
   SVAUD_BADUSE        = $1800;
   {$EXTERNALSYM SVAUD_BADUSE}
-  SVAUD_USE           = (SVAUD_GOODUSE or SVAUD_BADUSE);
+  SVAUD_USE           = SVAUD_GOODUSE or SVAUD_BADUSE;
   {$EXTERNALSYM SVAUD_USE}
   SVAUD_USERLIST      = $2000;
   {$EXTERNALSYM SVAUD_USERLIST}
@@ -637,7 +648,7 @@ const
   {$EXTERNALSYM AA_S_DELETE}
   AA_S_ACL     = $0080;
   {$EXTERNALSYM AA_S_ACL}
-  AA_S_ALL     = ( AA_S_OPEN or AA_S_WRITE or AA_S_DELETE or AA_S_ACL);
+  AA_S_ALL     =  AA_S_OPEN or AA_S_WRITE or AA_S_DELETE or AA_S_ACL;
   {$EXTERNALSYM AA_S_ALL}
   AA_F_OPEN    = $0100;
   {$EXTERNALSYM AA_F_OPEN}
@@ -649,7 +660,7 @@ const
   {$EXTERNALSYM AA_F_DELETE}
   AA_F_ACL     = $0800;
   {$EXTERNALSYM AA_F_ACL}
-  AA_F_ALL     = ( AA_F_OPEN or AA_F_WRITE or AA_F_DELETE or AA_F_ACL);
+  AA_F_ALL     =  AA_F_OPEN or AA_F_WRITE or AA_F_DELETE or AA_F_ACL;
   {$EXTERNALSYM AA_F_ALL}
 
 // Pinball-specific
@@ -664,13 +675,24 @@ const
   {$EXTERNALSYM AA_A_DELETE}
   AA_A_ACL    = $8000;
   {$EXTERNALSYM AA_A_ACL}
-  AA_A_ALL    = (AA_F_OPEN or AA_F_WRITE or AA_F_DELETE or AA_F_ACL);
+  AA_A_ALL    = AA_F_OPEN or AA_F_WRITE or AA_F_DELETE or AA_F_ACL;
   {$EXTERNALSYM AA_A_ALL}
+
+{$ENDIF JWA_INTERFACESECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
 
 implementation
 
+uses
+  JwaWinDLLNames;
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_IMPLEMENTATIONSECTION}
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _NetAuditClear: Pointer;
 
@@ -678,16 +700,12 @@ function NetAuditClear;
 begin
   GetProcedureAddress(_NetAuditClear, netapi32, 'NetAuditClear');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetAuditClear]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetAuditClear]
   end;
 end;
-{$ELSE}
-function NetAuditClear; external netapi32 name 'NetAuditClear';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetAuditRead: Pointer;
 
@@ -695,16 +713,12 @@ function NetAuditRead;
 begin
   GetProcedureAddress(_NetAuditRead, netapi32, 'NetAuditRead');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetAuditRead]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetAuditRead]
   end;
 end;
-{$ELSE}
-function NetAuditRead; external netapi32 name 'NetAuditRead';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetAuditWrite: Pointer;
 
@@ -712,14 +726,22 @@ function NetAuditWrite;
 begin
   GetProcedureAddress(_NetAuditWrite, netapi32, 'NetAuditWrite');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetAuditWrite]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetAuditWrite]
   end;
 end;
+
 {$ELSE}
+
+function NetAuditClear; external netapi32 name 'NetAuditClear';
+function NetAuditRead; external netapi32 name 'NetAuditRead';
 function NetAuditWrite; external netapi32 name 'NetAuditWrite';
+
 {$ENDIF DYNAMIC_LINK}
 
-end.
+{$ENDIF JWA_IMPLEMENTATIONSECTION}
 
+{$IFNDEF JWA_INCLUDEMODE}
+end.
+{$ENDIF !JWA_INCLUDEMODE}

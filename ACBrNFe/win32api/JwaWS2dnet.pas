@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Winsock2 DecNET API interface Unit for Object Pascal                         }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: ws2dnet.h, released June 2000. The original Pascal     }
 { code is: WS2dnet.pas, released December 2000. The initial developer of the   }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaWS2dnet.pas,v 1.4 2004/12/08 08:18:40 marquardt Exp $
 
 unit JwaWS2dnet;
 
@@ -49,7 +50,7 @@ unit JwaWS2dnet;
 {$HPPEMIT '#include "ws2dnet.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
@@ -57,7 +58,7 @@ uses
   JwaWinSock2;
 
 //************************************************************************
-//  Winsock V2.0  DECnet definitions		File: WS2DNET.H
+//  Winsock V2.0  DECnet definitions    File: WS2DNET.H
 //************************************************************************
 
 //
@@ -116,7 +117,7 @@ const
 
 type
   dn_naddr = packed record
-    a_len: Word;		               // length of address
+    a_len: Word;                               // length of address
     a_addr: array [0..DN_MAXADDL - 1] of Byte; // address as bytes
   end;
   {$EXTERNALSYM dn_naddr}
@@ -132,12 +133,12 @@ type
 //
 
   sockaddr_dn = packed record
-    sdn_family: Word;	    // AF_DECnet
-    sdn_flags: Byte;	    // flags
-    sdn_objnum: Byte;	    // object number
-    sdn_objnamel: Word;	// size of object name
-    sdn_objname: array [0..DN_MAXOBJL - 1] of Char;	// object name
-    sdn_add: dn_naddr;	    // node address
+    sdn_family: Word;       // AF_DECnet
+    sdn_flags: Byte;        // flags
+    sdn_objnum: Byte;       // object number
+    sdn_objnamel: Word;     // size of object name
+    sdn_objname: array [0..DN_MAXOBJL - 1] of Char; // object name
+    sdn_add: dn_naddr;      // node address
   end;
   {$EXTERNALSYM sockaddr_dn}
   SOCKADDRDN = sockaddr_dn;
@@ -150,23 +151,23 @@ type
 //  Common DECnet object numbers (used in sockaddr_dn)
 
 const
-  DNOBJECT_FAL	= 17;		//    = file access listener;
+  DNOBJECT_FAL    = 17;           // = file access listener;
   {$EXTERNALSYM DNOBJECT_FAL}
-  DNOBJECT_NICE	= 19;		//   = network management;
+  DNOBJECT_NICE   = 19;           // = network management;
   {$EXTERNALSYM DNOBJECT_NICE}
-  DNOBJECT_DTERM  = 23;		//  = remote terminals;
+  DNOBJECT_DTERM  = 23;           // = remote terminals;
   {$EXTERNALSYM DNOBJECT_DTERM}
-  DNOBJECT_MIRROR = 25;		// = loopback mirror;
+  DNOBJECT_MIRROR = 25;           // = loopback mirror;
   {$EXTERNALSYM DNOBJECT_MIRROR}
-  DNOBJECT_EVR = 26;		//    = event receiver;
+  DNOBJECT_EVR    = 26;           // = event receiver;
   {$EXTERNALSYM DNOBJECT_EVR}
-  DNOBJECT_MAIL11 = 27;		// = Mail-11 service;
+  DNOBJECT_MAIL11 = 27;           // = Mail-11 service;
   {$EXTERNALSYM DNOBJECT_MAIL11}
-  DNOBJECT_PHONE = 29;		//  = phone utility;
+  DNOBJECT_PHONE  = 29;           // = phone utility;
   {$EXTERNALSYM DNOBJECT_PHONE}
-  DNOBJECT_CTERM = 42;		//  = command terminals;
+  DNOBJECT_CTERM  = 42;           // = command terminals;
   {$EXTERNALSYM DNOBJECT_CTERM}
-  DNOBJECT_DTR = 63;		//    = data test receiver;
+  DNOBJECT_DTR    = 63;           // = data test receiver;
   {$EXTERNALSYM DNOBJECT_DTR}
 
 //
@@ -176,11 +177,11 @@ const
 type
   nodeent_f = packed record
     n_name: PChar;      // name of node
-    n_addrtype: Word;	// node address type
-    n_length: Word;	// address length
-    n_addr: PChar;	// address
-    n_params: PChar;	// node parameters
-    n_reserved: array [0..15] of Byte;	// Reserved
+    n_addrtype: Word;   // node address type
+    n_length: Word;     // address length
+    n_addr: PChar;      // address
+    n_params: PChar;    // node parameters
+    n_reserved: array [0..15] of Byte; // Reserved
   end;
   {$EXTERNALSYM nodeent_f}
   NODEENTF = nodeent_f;
@@ -195,8 +196,8 @@ type
 //
 
   optdata_dn = packed record
-    opt_status: Word;	          // extended status return
-    opt_optl: Word;	          // user data length
+    opt_status: Word;             // extended status return
+    opt_optl: Word;               // user data length
     opt_data: array [0..DN_MAXOPTL - 1] of Byte; // user data
   end;
   {$EXTERNALSYM optdata_dn}
@@ -212,12 +213,12 @@ type
 //
 
   accessdata_dn = packed record
-    acc_accl: Word;	            // account string length
-    acc_acc: array [0..DN_MAXACCL] of Byte;	// account string
-    acc_passl: Word;	            // password string length
-    acc_pass: array [0..DN_MAXACCL] of Byte;	// password string
-    acc_userl: Word;	            // user string length
-    acc_user: array [0..DN_MAXACCL] of Byte;	// user string
+    acc_accl: Word;                          // account string length
+    acc_acc: array [0..DN_MAXACCL] of Byte;  // account string
+    acc_passl: Word;                         // password string length
+    acc_pass: array [0..DN_MAXACCL] of Byte; // password string
+    acc_userl: Word;                         // user string length
+    acc_user: array [0..DN_MAXACCL] of Byte; // user string
   end;
   {$EXTERNALSYM accessdata_dn}
   ACCESSDATADN = accessdata_dn;
@@ -330,31 +331,31 @@ function getnodename: PChar; stdcall;
 // typedefs for C++ compatability
 
 type
-  LPDNETADDR = function (cp: PChar): PDNNAddr; stdcall;
+  LPDNETADDR = function(cp: PChar): PDNNAddr; stdcall;
   {$EXTERNALSYM LPDNETADDR}
   TDNetAddr = LPDNETADDR;
-  LPDNETEOF = function (s: TSocket): Integer; stdcall;
+  LPDNETEOF = function(s: TSocket): Integer; stdcall;
   {$EXTERNALSYM LPDNETEOF}
   TDNetEOF = LPDNETEOF;
-  LPDNETGETACC = function (const nacc: TDNetAccent): PDNetAccent; stdcall;
+  LPDNETGETACC = function(const nacc: TDNetAccent): PDNetAccent; stdcall;
   {$EXTERNALSYM LPDNETGETACC}
   TDNetGetAcc = LPDNETGETACC;
-  LPDNETGETALIAS = function (P: PChar): PChar; stdcall;
+  LPDNETGETALIAS = function(P: PChar): PChar; stdcall;
   {$EXTERNALSYM LPDNETGETALIAS}
   TDNetGetAlias = LPDNETGETALIAS;
-  LPDNETHTOA = function (const add: TDNNAddr): PChar; stdcall;
+  LPDNETHTOA = function(const add: TDNNAddr): PChar; stdcall;
   {$EXTERNALSYM LPDNETHTOA}
   TDNetHToA = LPDNETHTOA;
-  LPDNETNTOA = function (const add: TDNNAddr): PChar; stdcall;
+  LPDNETNTOA = function(const add: TDNNAddr): PChar; stdcall;
   {$EXTERNALSYM LPDNETNTOA}
   TDNetNToA = LPDNETNTOA;
   LPGETNODEADD = function: PDNNAddr; stdcall;
   {$EXTERNALSYM LPGETNODEADD}
   TGetNodeAdd = LPGETNODEADD;
-  LPGETNODEBYADDR = function (addr: PChar; len, type_: Integer): PNodeEntF; stdcall;
+  LPGETNODEBYADDR = function(addr: PChar; len, type_: Integer): PNodeEntF; stdcall;
   {$EXTERNALSYM LPGETNODEBYADDR}
   TGetNodeByAddr = LPGETNODEBYADDR;
-  LPGETNODEBYNAME = function (name: PChar): PNodeEntF; stdcall;
+  LPGETNODEBYNAME = function(name: PChar): PNodeEntF; stdcall;
   {$EXTERNALSYM LPGETNODEBYNAME}
   TGetNodeByName = LPGETNODEBYNAME;
   LPGETNODENAME = function: PChar; stdcall;

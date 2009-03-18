@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Visual Styles (Themes) API interface Unit for Object Pascal                  }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: uxtheme.h, released June 2001. The original Pascal     }
 { code is: UxTheme.pas, released July 2001. The initial developer of the       }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaUxTheme.pas,v 1.9 2005/09/08 07:49:25 marquardt Exp $
 
 unit JwaUxTheme;
 
@@ -49,15 +50,15 @@ unit JwaUxTheme;
 {$HPPEMIT '#include "uxtheme.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinType, JwaWinGDI;
+  JwaWindows;
 
 type
-  HIMAGELIST = HANDLE; // TODO TEMPORARY
+  HIMAGELIST = Pointer; // TODO
 
 type
   HTHEME = HANDLE;          // handle to a section of theme data for class
@@ -460,7 +461,6 @@ function IsThemeBackgroundPartiallyTransparent(hTheme: HTHEME; iPartId, iStateId
 // Each method also take a "iPropId" param because multiple instances of
 // the same primitive type can be defined in the theme schema.
 //-----------------------------------------------------------------------
-
 
 //-----------------------------------------------------------------------
 //  GetThemeColor()     - Get the value for the specified COLOR property
@@ -910,7 +910,7 @@ const
   {$EXTERNALSYM ETDT_ENABLE}
   ETDT_USETABTEXTURE = $00000004;
   {$EXTERNALSYM ETDT_USETABTEXTURE}
-  ETDT_ENABLETAB     = (ETDT_ENABLE or ETDT_USETABTEXTURE);
+  ETDT_ENABLETAB     = ETDT_ENABLE or ETDT_USETABTEXTURE;
   {$EXTERNALSYM ETDT_ENABLETAB}
 
 function EnableThemeDialogTexture(hwnd: HWND; dwFlags: DWORD): HRESULT; stdcall;
@@ -931,11 +931,11 @@ function IsThemeDialogTextureEnabled(hwnd: HWND): BOOL; stdcall;
 //---- flags to control theming within an app ----
 
 const
-  STAP_ALLOW_NONCLIENT   = (1 shl 0);
+  STAP_ALLOW_NONCLIENT   = 1 shl 0;
   {$EXTERNALSYM STAP_ALLOW_NONCLIENT}
-  STAP_ALLOW_CONTROLS    = (1 shl 1);
+  STAP_ALLOW_CONTROLS    = 1 shl 1;
   {$EXTERNALSYM STAP_ALLOW_CONTROLS}
-  STAP_ALLOW_WEBCONTENT  = (1 shl 2);
+  STAP_ALLOW_WEBCONTENT  = 1 shl 2;
   {$EXTERNALSYM STAP_ALLOW_WEBCONTENT}
 
 //---------------------------------------------------------------------------
@@ -1050,13 +1050,68 @@ function DrawThemeParentBackground(hwnd: HWND; hdc: HDC; prc: PRECT): HRESULT; s
 function EnableTheming(fEnable: BOOL): HRESULT; stdcall;
 {$EXTERNALSYM EnableTheming}
 
-implementation
+//------------------------------------------------------------------------
+//---- bits used in dwFlags of DTBGOPTS ----
 
 const
-  themelib = 'uxtheme.dll';
+  DTBG_CLIPRECT       = $00000001;   // rcClip has been specified
+  {$EXTERNALSYM DTBG_CLIPRECT}
+  DTBG_DRAWSOLID      = $00000002;   // draw transparent/alpha images as solid
+  {$EXTERNALSYM DTBG_DRAWSOLID}
+  DTBG_OMITBORDER     = $00000004;   // don't draw border of part
+  {$EXTERNALSYM DTBG_OMITBORDER}
+  DTBG_OMITCONTENT    = $00000008;   // don't draw content area of part
+  {$EXTERNALSYM DTBG_OMITCONTENT}
 
+  DTBG_COMPUTINGREGION = $00000010;   // TRUE if calling to compute region
+  {$EXTERNALSYM DTBG_COMPUTINGREGION}
+
+  DTBG_MIRRORDC        = $00000020;       // assume the hdc is mirrorred and
+                                          // flip images as appropriate (currently
+                                          // only supported for bgtype=imagefile)
+  {$EXTERNALSYM DTBG_MIRRORDC}
+
+//------------------------------------------------------------------------
+
+type
+  _DTBGOPTS = record
+    dwSize: DWORD;           // size of the struct
+    dwFlags: DWORD;          // which options have been specified
+    rcClip: RECT;            // clipping rectangle
+  end;
+  {$EXTERNALSYM _DTBGOPTS}
+  DTBGOPTS = _DTBGOPTS;
+  {$EXTERNALSYM DTBGOPTS}
+  PDTBGOPTS = ^DTBGOPTS;
+  TDtbgOpts = DTBGOPTS;
+
+//------------------------------------------------------------------------
+//  DrawThemeBackgroundEx()
+//                      - draws the theme-specified border and fill for
+//                        the "iPartId" and "iStateId".  This could be
+//                        based on a bitmap file, a border and fill, or
+//                        other image description.  NOTE: This will be
+//                        merged back into DrawThemeBackground() after
+//                        BETA 2.
+//
+//  hTheme              - theme data handle
+//  hdc                 - HDC to draw into
+//  iPartId             - part number to draw
+//  iStateId            - state number (of the part) to draw
+//  pRect               - defines the size/location of the part
+//  pOptions            - ptr to optional params
+//------------------------------------------------------------------------
+
+function DrawThemeBackgroundEx(hTheme: HTHEME; hdc: HDC; iPartId, iStateId: Integer; pRect: LPRECT; pOptions: PDTBGOPTS): HRESULT; stdcall;
+{$EXTERNALSYM DrawThemeBackgroundEx}
+
+implementation
+
+uses
+  JwaWinDLLNames;
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _OpenThemeData: Pointer;
 
@@ -1064,16 +1119,12 @@ function OpenThemeData;
 begin
   GetProcedureAddress(_OpenThemeData, themelib, 'OpenThemeData');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_OpenThemeData]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_OpenThemeData]
   end;
 end;
-{$ELSE}
-function OpenThemeData; external themelib name 'OpenThemeData';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CloseThemeData: Pointer;
 
@@ -1081,16 +1132,12 @@ function CloseThemeData;
 begin
   GetProcedureAddress(_CloseThemeData, themelib, 'CloseThemeData');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CloseThemeData]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CloseThemeData]
   end;
 end;
-{$ELSE}
-function CloseThemeData; external themelib name 'CloseThemeData';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DrawThemeBackground: Pointer;
 
@@ -1098,16 +1145,12 @@ function DrawThemeBackground;
 begin
   GetProcedureAddress(_DrawThemeBackground, themelib, 'DrawThemeBackground');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DrawThemeBackground]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DrawThemeBackground]
   end;
 end;
-{$ELSE}
-function DrawThemeBackground; external themelib name 'DrawThemeBackground';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DrawThemeText: Pointer;
 
@@ -1115,16 +1158,12 @@ function DrawThemeText;
 begin
   GetProcedureAddress(_DrawThemeText, themelib, 'DrawThemeText');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DrawThemeText]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DrawThemeText]
   end;
 end;
-{$ELSE}
-function DrawThemeText; external themelib name 'DrawThemeText';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetThemeBackgroundContentRect: Pointer;
 
@@ -1132,16 +1171,12 @@ function GetThemeBackgroundContentRect;
 begin
   GetProcedureAddress(_GetThemeBackgroundContentRect, themelib, 'GetThemeBackgroundContentRect');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetThemeBackgroundContentRect]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetThemeBackgroundContentRect]
   end;
 end;
-{$ELSE}
-function GetThemeBackgroundContentRect; external themelib name 'GetThemeBackgroundContentRect';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetThemeBackgroundExtent: Pointer;
 
@@ -1149,16 +1184,12 @@ function GetThemeBackgroundExtent;
 begin
   GetProcedureAddress(_GetThemeBackgroundExtent, themelib, 'GetThemeBackgroundContentRect');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetThemeBackgroundExtent]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetThemeBackgroundExtent]
   end;
 end;
-{$ELSE}
-function GetThemeBackgroundExtent; external themelib name 'GetThemeBackgroundContentRect';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetThemePartSize: Pointer;
 
@@ -1166,16 +1197,12 @@ function GetThemePartSize;
 begin
   GetProcedureAddress(_GetThemePartSize, themelib, 'GetThemePartSize');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetThemePartSize]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetThemePartSize]
   end;
 end;
-{$ELSE}
-function GetThemePartSize; external themelib name 'GetThemePartSize';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetThemeTextExtent: Pointer;
 
@@ -1183,16 +1210,12 @@ function GetThemeTextExtent;
 begin
   GetProcedureAddress(_GetThemeTextExtent, themelib, 'GetThemeTextExtent');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetThemeTextExtent]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetThemeTextExtent]
   end;
 end;
-{$ELSE}
-function GetThemeTextExtent; external themelib name 'GetThemeTextExtent';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetThemeTextMetrics: Pointer;
 
@@ -1200,16 +1223,12 @@ function GetThemeTextMetrics;
 begin
   GetProcedureAddress(_GetThemeTextMetrics, themelib, 'GetThemeTextMetrics');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetThemeTextMetrics]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetThemeTextMetrics]
   end;
 end;
-{$ELSE}
-function GetThemeTextMetrics; external themelib name 'GetThemeTextMetrics';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetThemeBackgroundRegion: Pointer;
 
@@ -1217,16 +1236,12 @@ function GetThemeBackgroundRegion;
 begin
   GetProcedureAddress(_GetThemeBackgroundRegion, themelib, 'GetThemeBackgroundRegion');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetThemeBackgroundRegion]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetThemeBackgroundRegion]
   end;
 end;
-{$ELSE}
-function GetThemeBackgroundRegion; external themelib name 'GetThemeBackgroundRegion';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _HitTestThemeBackground: Pointer;
 
@@ -1234,16 +1249,12 @@ function HitTestThemeBackground;
 begin
   GetProcedureAddress(_HitTestThemeBackground, themelib, 'HitTestThemeBackground');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_HitTestThemeBackground]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_HitTestThemeBackground]
   end;
 end;
-{$ELSE}
-function HitTestThemeBackground; external themelib name 'HitTestThemeBackground';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DrawThemeEdge: Pointer;
 
@@ -1251,16 +1262,12 @@ function DrawThemeEdge;
 begin
   GetProcedureAddress(_DrawThemeEdge, themelib, 'DrawThemeEdge');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DrawThemeEdge]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DrawThemeEdge]
   end;
 end;
-{$ELSE}
-function DrawThemeEdge; external themelib name 'DrawThemeEdge';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DrawThemeIcon: Pointer;
 
@@ -1268,16 +1275,12 @@ function DrawThemeIcon;
 begin
   GetProcedureAddress(_DrawThemeIcon, themelib, 'DrawThemeIcon');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DrawThemeIcon]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DrawThemeIcon]
   end;
 end;
-{$ELSE}
-function DrawThemeIcon; external themelib name 'DrawThemeIcon';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _IsThemePartDefined: Pointer;
 
@@ -1285,16 +1288,12 @@ function IsThemePartDefined;
 begin
   GetProcedureAddress(_IsThemePartDefined, themelib, 'IsThemePartDefined');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsThemePartDefined]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsThemePartDefined]
   end;
 end;
-{$ELSE}
-function IsThemePartDefined; external themelib name 'IsThemePartDefined';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _IsThemeBackgroundPartialTrans: Pointer;
 
@@ -1302,16 +1301,12 @@ function IsThemeBackgroundPartiallyTransparent;
 begin
   GetProcedureAddress(_IsThemeBackgroundPartialTrans, themelib, 'IsThemeBackgroundPartiallyTransparent');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsThemeBackgroundPartialTrans]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsThemeBackgroundPartialTrans]
   end;
 end;
-{$ELSE}
-function IsThemeBackgroundPartiallyTransparent; external themelib name 'IsThemeBackgroundPartiallyTransparent';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetThemeColor: Pointer;
 
@@ -1319,16 +1314,12 @@ function GetThemeColor;
 begin
   GetProcedureAddress(_GetThemeColor, themelib, 'GetThemeColor');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetThemeColor]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetThemeColor]
   end;
 end;
-{$ELSE}
-function GetThemeColor; external themelib name 'GetThemeColor';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetThemeMetric: Pointer;
 
@@ -1336,16 +1327,12 @@ function GetThemeMetric;
 begin
   GetProcedureAddress(_GetThemeMetric, themelib, 'GetThemeMetric');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetThemeMetric]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetThemeMetric]
   end;
 end;
-{$ELSE}
-function GetThemeMetric; external themelib name 'GetThemeMetric';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetThemeString: Pointer;
 
@@ -1353,16 +1340,12 @@ function GetThemeString;
 begin
   GetProcedureAddress(_GetThemeString, themelib, 'GetThemeString');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetThemeString]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetThemeString]
   end;
 end;
-{$ELSE}
-function GetThemeString; external themelib name 'GetThemeString';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetThemeBool: Pointer;
 
@@ -1370,16 +1353,12 @@ function GetThemeBool;
 begin
   GetProcedureAddress(_GetThemeBool, themelib, 'GetThemeBool');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetThemeBool]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetThemeBool]
   end;
 end;
-{$ELSE}
-function GetThemeBool; external themelib name 'GetThemeBool';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetThemeInt: Pointer;
 
@@ -1387,16 +1366,12 @@ function GetThemeInt;
 begin
   GetProcedureAddress(_GetThemeInt, themelib, 'GetThemeInt');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetThemeInt]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetThemeInt]
   end;
 end;
-{$ELSE}
-function GetThemeInt; external themelib name 'GetThemeInt';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetThemeEnumValue: Pointer;
 
@@ -1404,16 +1379,12 @@ function GetThemeEnumValue;
 begin
   GetProcedureAddress(_GetThemeEnumValue, themelib, 'GetThemeEnumValue');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetThemeEnumValue]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetThemeEnumValue]
   end;
 end;
-{$ELSE}
-function GetThemeEnumValue; external themelib name 'GetThemeEnumValue';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetThemePosition: Pointer;
 
@@ -1421,16 +1392,12 @@ function GetThemePosition;
 begin
   GetProcedureAddress(_GetThemePosition, themelib, 'GetThemePosition');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetThemePosition]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetThemePosition]
   end;
 end;
-{$ELSE}
-function GetThemePosition; external themelib name 'GetThemePosition';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetThemeFont: Pointer;
 
@@ -1438,16 +1405,12 @@ function GetThemeFont;
 begin
   GetProcedureAddress(_GetThemeFont, themelib, 'GetThemeFont');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetThemeFont]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetThemeFont]
   end;
 end;
-{$ELSE}
-function GetThemeFont; external themelib name 'GetThemeFont';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetThemeRect: Pointer;
 
@@ -1455,16 +1418,12 @@ function GetThemeRect;
 begin
   GetProcedureAddress(_GetThemeRect, themelib, 'GetThemeRect');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetThemeRect]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetThemeRect]
   end;
 end;
-{$ELSE}
-function GetThemeRect; external themelib name 'GetThemeRect';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetThemeMargins: Pointer;
 
@@ -1472,16 +1431,12 @@ function GetThemeMargins;
 begin
   GetProcedureAddress(_GetThemeMargins, themelib, 'GetThemeMargins');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetThemeMargins]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetThemeMargins]
   end;
 end;
-{$ELSE}
-function GetThemeMargins; external themelib name 'GetThemeMargins';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetThemeIntList: Pointer;
 
@@ -1489,16 +1444,12 @@ function GetThemeIntList;
 begin
   GetProcedureAddress(_GetThemeIntList, themelib, 'GetThemeIntList');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetThemeIntList]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetThemeIntList]
   end;
 end;
-{$ELSE}
-function GetThemeIntList; external themelib name 'GetThemeIntList';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetThemePropertyOrigin: Pointer;
 
@@ -1506,16 +1457,12 @@ function GetThemePropertyOrigin;
 begin
   GetProcedureAddress(_GetThemePropertyOrigin, themelib, 'GetThemePropertyOrigin');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetThemePropertyOrigin]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetThemePropertyOrigin]
   end;
 end;
-{$ELSE}
-function GetThemePropertyOrigin; external themelib name 'GetThemePropertyOrigin';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetWindowTheme: Pointer;
 
@@ -1523,16 +1470,12 @@ function SetWindowTheme;
 begin
   GetProcedureAddress(_SetWindowTheme, themelib, 'SetWindowTheme');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetWindowTheme]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetWindowTheme]
   end;
 end;
-{$ELSE}
-function SetWindowTheme; external themelib name 'SetWindowTheme';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetThemeFilename: Pointer;
 
@@ -1540,16 +1483,12 @@ function GetThemeFilename;
 begin
   GetProcedureAddress(_GetThemeFilename, themelib, 'GetThemeFilename');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetThemeFilename]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetThemeFilename]
   end;
 end;
-{$ELSE}
-function GetThemeFilename; external themelib name 'GetThemeFilename';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetThemeSysColor: Pointer;
 
@@ -1557,16 +1496,12 @@ function GetThemeSysColor;
 begin
   GetProcedureAddress(_GetThemeSysColor, themelib, 'GetThemeSysColor');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetThemeSysColor]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetThemeSysColor]
   end;
 end;
-{$ELSE}
-function GetThemeSysColor; external themelib name 'GetThemeSysColor';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetThemeSysColorBrush: Pointer;
 
@@ -1574,16 +1509,12 @@ function GetThemeSysColorBrush;
 begin
   GetProcedureAddress(_GetThemeSysColorBrush, themelib, 'GetThemeSysColorBrush');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetThemeSysColorBrush]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetThemeSysColorBrush]
   end;
 end;
-{$ELSE}
-function GetThemeSysColorBrush; external themelib name 'GetThemeSysColorBrush';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetThemeSysBool: Pointer;
 
@@ -1591,16 +1522,12 @@ function GetThemeSysBool;
 begin
   GetProcedureAddress(_GetThemeSysBool, themelib, 'GetThemeSysBool');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetThemeSysBool]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetThemeSysBool]
   end;
 end;
-{$ELSE}
-function GetThemeSysBool; external themelib name 'GetThemeSysBool';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetThemeSysSize: Pointer;
 
@@ -1608,16 +1535,12 @@ function GetThemeSysSize;
 begin
   GetProcedureAddress(_GetThemeSysSize, themelib, 'GetThemeSysSize');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetThemeSysSize]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetThemeSysSize]
   end;
 end;
-{$ELSE}
-function GetThemeSysSize; external themelib name 'GetThemeSysSize';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetThemeSysFont: Pointer;
 
@@ -1625,16 +1548,12 @@ function GetThemeSysFont;
 begin
   GetProcedureAddress(_GetThemeSysFont, themelib, 'GetThemeSysFont');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetThemeSysFont]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetThemeSysFont]
   end;
 end;
-{$ELSE}
-function GetThemeSysFont; external themelib name 'GetThemeSysFont';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetThemeSysString: Pointer;
 
@@ -1642,16 +1561,12 @@ function GetThemeSysString;
 begin
   GetProcedureAddress(_GetThemeSysString, themelib, 'GetThemeSysString');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetThemeSysString]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetThemeSysString]
   end;
 end;
-{$ELSE}
-function GetThemeSysString; external themelib name 'GetThemeSysString';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetThemeSysInt: Pointer;
 
@@ -1659,16 +1574,12 @@ function GetThemeSysInt;
 begin
   GetProcedureAddress(_GetThemeSysInt, themelib, 'GetThemeSysInt');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetThemeSysInt]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetThemeSysInt]
   end;
 end;
-{$ELSE}
-function GetThemeSysInt; external themelib name 'GetThemeSysInt';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _IsThemeActive: Pointer;
 
@@ -1676,16 +1587,12 @@ function IsThemeActive;
 begin
   GetProcedureAddress(_IsThemeActive, themelib, 'IsThemeActive');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsThemeActive]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsThemeActive]
   end;
 end;
-{$ELSE}
-function IsThemeActive; external themelib name 'IsThemeActive';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _IsAppThemed: Pointer;
 
@@ -1693,16 +1600,12 @@ function IsAppThemed;
 begin
   GetProcedureAddress(_IsAppThemed, themelib, 'IsAppThemed');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsAppThemed]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsAppThemed]
   end;
 end;
-{$ELSE}
-function IsAppThemed; external themelib name 'IsAppThemed';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetWindowTheme: Pointer;
 
@@ -1710,16 +1613,12 @@ function GetWindowTheme;
 begin
   GetProcedureAddress(_GetWindowTheme, themelib, 'GetWindowTheme');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetWindowTheme]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetWindowTheme]
   end;
 end;
-{$ELSE}
-function GetWindowTheme; external themelib name 'GetWindowTheme';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnableThemeDialogTexture: Pointer;
 
@@ -1727,16 +1626,12 @@ function EnableThemeDialogTexture;
 begin
   GetProcedureAddress(_EnableThemeDialogTexture, themelib, 'EnableThemeDialogTexture');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnableThemeDialogTexture]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnableThemeDialogTexture]
   end;
 end;
-{$ELSE}
-function EnableThemeDialogTexture; external themelib name 'EnableThemeDialogTexture';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _IsThemeDialogTextureEnabled: Pointer;
 
@@ -1744,16 +1639,12 @@ function IsThemeDialogTextureEnabled;
 begin
   GetProcedureAddress(_IsThemeDialogTextureEnabled, themelib, 'IsThemeDialogTextureEnabled');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsThemeDialogTextureEnabled]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsThemeDialogTextureEnabled]
   end;
 end;
-{$ELSE}
-function IsThemeDialogTextureEnabled; external themelib name 'IsThemeDialogTextureEnabled';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetThemeAppProperties: Pointer;
 
@@ -1761,16 +1652,12 @@ function GetThemeAppProperties;
 begin
   GetProcedureAddress(_GetThemeAppProperties, themelib, 'GetThemeAppProperties');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetThemeAppProperties]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetThemeAppProperties]
   end;
 end;
-{$ELSE}
-function GetThemeAppProperties; external themelib name 'GetThemeAppProperties';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetThemeAppProperties: Pointer;
 
@@ -1778,16 +1665,12 @@ procedure SetThemeAppProperties;
 begin
   GetProcedureAddress(_SetThemeAppProperties, themelib, 'SetThemeAppProperties');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetThemeAppProperties]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetThemeAppProperties]
   end;
 end;
-{$ELSE}
-procedure SetThemeAppProperties; external themelib name 'SetThemeAppProperties';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetCurrentThemeName: Pointer;
 
@@ -1795,16 +1678,12 @@ function GetCurrentThemeName;
 begin
   GetProcedureAddress(_GetCurrentThemeName, themelib, 'GetCurrentThemeName');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCurrentThemeName]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetCurrentThemeName]
   end;
 end;
-{$ELSE}
-function GetCurrentThemeName; external themelib name 'GetCurrentThemeName';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetThemeDocumentationProperty: Pointer;
 
@@ -1812,16 +1691,12 @@ function GetThemeDocumentationProperty;
 begin
   GetProcedureAddress(_GetThemeDocumentationProperty, themelib, 'GetThemeDocumentationProperty');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetThemeDocumentationProperty]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetThemeDocumentationProperty]
   end;
 end;
-{$ELSE}
-function GetThemeDocumentationProperty; external themelib name 'GetThemeDocumentationProperty';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DrawThemeParentBackground: Pointer;
 
@@ -1829,16 +1704,12 @@ function DrawThemeParentBackground;
 begin
   GetProcedureAddress(_DrawThemeParentBackground, themelib, 'DrawThemeParentBackground');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DrawThemeParentBackground]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DrawThemeParentBackground]
   end;
 end;
-{$ELSE}
-function DrawThemeParentBackground; external themelib name 'DrawThemeParentBackground';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnableTheming: Pointer;
 
@@ -1846,13 +1717,76 @@ function EnableTheming;
 begin
   GetProcedureAddress(_EnableTheming, themelib, 'EnableTheming');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnableTheming]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnableTheming]
   end;
 end;
+
+var
+  _DrawThemeBackgroundEx: Pointer;
+
+function DrawThemeBackgroundEx;
+begin
+  GetProcedureAddress(_DrawThemeBackgroundEx, themelib, 'DrawThemeBackgroundEx');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DrawThemeBackgroundEx]
+  end;
+end;
+
 {$ELSE}
+
+function OpenThemeData; external themelib name 'OpenThemeData';
+function CloseThemeData; external themelib name 'CloseThemeData';
+function DrawThemeBackground; external themelib name 'DrawThemeBackground';
+function DrawThemeText; external themelib name 'DrawThemeText';
+function GetThemeBackgroundContentRect; external themelib name 'GetThemeBackgroundContentRect';
+function GetThemeBackgroundExtent; external themelib name 'GetThemeBackgroundContentRect';
+function GetThemePartSize; external themelib name 'GetThemePartSize';
+function GetThemeTextExtent; external themelib name 'GetThemeTextExtent';
+function GetThemeTextMetrics; external themelib name 'GetThemeTextMetrics';
+function GetThemeBackgroundRegion; external themelib name 'GetThemeBackgroundRegion';
+function HitTestThemeBackground; external themelib name 'HitTestThemeBackground';
+function DrawThemeEdge; external themelib name 'DrawThemeEdge';
+function DrawThemeIcon; external themelib name 'DrawThemeIcon';
+function IsThemePartDefined; external themelib name 'IsThemePartDefined';
+function IsThemeBackgroundPartiallyTransparent; external themelib name 'IsThemeBackgroundPartiallyTransparent';
+function GetThemeColor; external themelib name 'GetThemeColor';
+function GetThemeMetric; external themelib name 'GetThemeMetric';
+function GetThemeString; external themelib name 'GetThemeString';
+function GetThemeBool; external themelib name 'GetThemeBool';
+function GetThemeInt; external themelib name 'GetThemeInt';
+function GetThemeEnumValue; external themelib name 'GetThemeEnumValue';
+function GetThemePosition; external themelib name 'GetThemePosition';
+function GetThemeFont; external themelib name 'GetThemeFont';
+function GetThemeRect; external themelib name 'GetThemeRect';
+function GetThemeMargins; external themelib name 'GetThemeMargins';
+function GetThemeIntList; external themelib name 'GetThemeIntList';
+function GetThemePropertyOrigin; external themelib name 'GetThemePropertyOrigin';
+function SetWindowTheme; external themelib name 'SetWindowTheme';
+function GetThemeFilename; external themelib name 'GetThemeFilename';
+function GetThemeSysColor; external themelib name 'GetThemeSysColor';
+function GetThemeSysColorBrush; external themelib name 'GetThemeSysColorBrush';
+function GetThemeSysBool; external themelib name 'GetThemeSysBool';
+function GetThemeSysSize; external themelib name 'GetThemeSysSize';
+function GetThemeSysFont; external themelib name 'GetThemeSysFont';
+function GetThemeSysString; external themelib name 'GetThemeSysString';
+function GetThemeSysInt; external themelib name 'GetThemeSysInt';
+function IsThemeActive; external themelib name 'IsThemeActive';
+function IsAppThemed; external themelib name 'IsAppThemed';
+function GetWindowTheme; external themelib name 'GetWindowTheme';
+function EnableThemeDialogTexture; external themelib name 'EnableThemeDialogTexture';
+function IsThemeDialogTextureEnabled; external themelib name 'IsThemeDialogTextureEnabled';
+function GetThemeAppProperties; external themelib name 'GetThemeAppProperties';
+procedure SetThemeAppProperties; external themelib name 'SetThemeAppProperties';
+function GetCurrentThemeName; external themelib name 'GetCurrentThemeName';
+function GetThemeDocumentationProperty; external themelib name 'GetThemeDocumentationProperty';
+function DrawThemeParentBackground; external themelib name 'DrawThemeParentBackground';
 function EnableTheming; external themelib name 'EnableTheming';
+function DrawThemeBackgroundEx; external themelib name 'DrawThemeBackgroundEx';
+
 {$ENDIF DYNAMIC_LINK}
 
 end.

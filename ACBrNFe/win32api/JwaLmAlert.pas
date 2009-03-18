@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Lan Manager Alterter API interface Unit for Object Pascal                    }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: lmalert.h, released November 2001. The original Pascal }
 { code is: LmAlert.pas, released Februari 2002. The initial developer of the   }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,25 +35,33 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaLmAlert.pas,v 1.10 2005/09/07 09:54:54 marquardt Exp $
+
+{$IFNDEF JWA_INCLUDEMODE}
 
 unit JwaLmAlert;
 
 {$WEAKPACKAGEUNIT}
 
-{$HPPEMIT ''}
-{$HPPEMIT '#include "lmalert.h"'}
-{$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaLmCons, JwaWinType;
+  JwaWindows, JwaLmCons;
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_INTERFACESECTION}
+
+{$HPPEMIT ''}
+{$HPPEMIT '#include "lmalert.h"'}
+{$HPPEMIT ''}
 
 //
 // Function Prototypes
@@ -65,7 +72,6 @@ function NetAlertRaise(AlertEventName: LPCWSTR; Buffer: LPVOID; BufferSize: DWOR
 
 function NetAlertRaiseEx(AlertEventName: LPCWSTR; VariableInfo: LPVOID; VariableInfoSize: DWORD; ServiceName: LPCWSTR): NET_API_STATUS; stdcall;
 {$EXTERNALSYM NetAlertRaiseEx}
-
 
 //
 //  Data Structures
@@ -172,8 +178,8 @@ function ALERT_OTHER_INFO(x: Pointer): Pointer;
 // pointer to the variable data portion.
 //
 
-function ALERT_VAR_DATA(const p): Pointer;
-{$EXTERNALSYM ALERT_VAR_DATA}
+// (rom) cannot be implemented in Delphi
+//function ALERT_VAR_DATA(const p): Pointer;
 
 //
 //      Names of standard Microsoft-defined alert events.
@@ -231,10 +237,26 @@ const
   PRJOB_QS_PRINTING = 3;
   {$EXTERNALSYM PRJOB_QS_PRINTING}
 
+{$ENDIF JWA_INTERFACESECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
+
 implementation
 
+uses
+  JwaWinDLLNames;
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_IMPLEMENTATIONSECTION}
+
+function ALERT_OTHER_INFO(x: Pointer): Pointer;
+begin
+  Result := Pointer(PChar(x) + SizeOf(STD_ALERT));
+end;
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _NetAlertRaise: Pointer;
 
@@ -242,16 +264,12 @@ function NetAlertRaise;
 begin
   GetProcedureAddress(_NetAlertRaise, netapi32, 'NetAlertRaise');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetAlertRaise]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetAlertRaise]
   end;
 end;
-{$ELSE}
-function NetAlertRaise; external netapi32 name 'NetAlertRaise';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetAlertRaiseEx: Pointer;
 
@@ -259,28 +277,21 @@ function NetAlertRaiseEx;
 begin
   GetProcedureAddress(_NetAlertRaiseEx, netapi32, 'NetAlertRaiseEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetAlertRaiseEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetAlertRaiseEx]
   end;
 end;
+
 {$ELSE}
+
+function NetAlertRaise; external netapi32 name 'NetAlertRaise';
 function NetAlertRaiseEx; external netapi32 name 'NetAlertRaiseEx';
+
 {$ENDIF DYNAMIC_LINK}
 
-//#define ALERT_OTHER_INFO(x)    ((LPBYTE)(x) + sizeof(STD_ALERT))
+{$ENDIF JWA_IMPLEMENTATIONSECTION}
 
-function ALERT_OTHER_INFO(x: Pointer): Pointer;
-begin
-  Result := Pointer(Integer(x) + SizeOf(STD_ALERT));
-end;
-
-//#define ALERT_VAR_DATA(p)      ((LPBYTE)(p) + sizeof(*p))
-
-function ALERT_VAR_DATA(const p): Pointer;
-begin
-  Result := Pointer(Integer(p) + SizeOf(p)); // todo check!
-end;
-
-
+{$IFNDEF JWA_INCLUDEMODE}
 end.
+{$ENDIF !JWA_INCLUDEMODE}

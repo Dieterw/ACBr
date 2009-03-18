@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { LSA API interface Unit for Object Pascal                                     }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: ntsecapi.h, released June 2000. The original Pascal    }
 { code is: NtSecApi.pas, released December 2000. The initial developer of the  }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaNtSecApi.pas,v 1.13 2005/09/08 07:49:25 marquardt Exp $
 
 unit JwaNtSecApi;
 
@@ -49,12 +50,12 @@ unit JwaNtSecApi;
 {$HPPEMIT '#include "ntsecapi.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinType, JwaNtStatus, JwaWinNT;
+  JwaWindows;
 
 //
 // Security operation mode of the system is held in a control
@@ -103,13 +104,13 @@ type
 //
 
 const
-  LSA_MODE_PASSWORD_PROTECTED  = ($00000001);
+  LSA_MODE_PASSWORD_PROTECTED  = $00000001;
   {$EXTERNALSYM LSA_MODE_PASSWORD_PROTECTED}
-  LSA_MODE_INDIVIDUAL_ACCOUNTS = ($00000002);
+  LSA_MODE_INDIVIDUAL_ACCOUNTS = $00000002;
   {$EXTERNALSYM LSA_MODE_INDIVIDUAL_ACCOUNTS}
-  LSA_MODE_MANDATORY_ACCESS    = ($00000004);
+  LSA_MODE_MANDATORY_ACCESS    = $00000004;
   {$EXTERNALSYM LSA_MODE_MANDATORY_ACCESS}
-  LSA_MODE_LOG_FULL            = ($00000008);
+  LSA_MODE_LOG_FULL            = $00000008;
   {$EXTERNALSYM LSA_MODE_LOG_FULL}
 
 //
@@ -130,7 +131,8 @@ type
     NewCredentials,     // Clone caller, new default credentials
     RemoteInteractive,  // Remote, yet interactive.  Terminal server
     CachedInteractive,  // Try cached credentials without hitting the net.
-    CachedRemoteInteractive); // Same as RemoteInteractive, this is used internally for auditing purpose
+    CachedRemoteInteractive, // Same as RemoteInteractive, this is used internally for auditing purpose
+    CachedUnlock);        // Cached Unlock workstation
   {$EXTERNALSYM _SECURITY_LOGON_TYPE}
   SECURITY_LOGON_TYPE = _SECURITY_LOGON_TYPE;
   {$EXTERNALSYM SECURITY_LOGON_TYPE}
@@ -177,20 +179,20 @@ const
 
 // Leave options specified for this event unchanged
 
-  POLICY_AUDIT_EVENT_UNCHANGED = ($00000000);
+  POLICY_AUDIT_EVENT_UNCHANGED = $00000000;
   {$EXTERNALSYM POLICY_AUDIT_EVENT_UNCHANGED}
 
 // Audit successful occurrences of events of this type
 
-  POLICY_AUDIT_EVENT_SUCCESS = ($00000001);
+  POLICY_AUDIT_EVENT_SUCCESS = $00000001;
   {$EXTERNALSYM POLICY_AUDIT_EVENT_SUCCESS}
 
 // Audit failed attempts to cause an event of this type to occur
 
-  POLICY_AUDIT_EVENT_FAILURE = ($00000002);
+  POLICY_AUDIT_EVENT_FAILURE = $00000002;
   {$EXTERNALSYM POLICY_AUDIT_EVENT_FAILURE}
 
-  POLICY_AUDIT_EVENT_NONE    = ($00000004);
+  POLICY_AUDIT_EVENT_NONE    = $00000004;
   {$EXTERNALSYM POLICY_AUDIT_EVENT_NONE}
 
 // Mask of valid event auditing options
@@ -409,7 +411,6 @@ type
 //         structures.
 //
 
-
 //
 // The following data type is used in name to SID lookup services to describe
 // the domains referenced in the lookup operation.
@@ -511,7 +512,6 @@ type
 //         this field will contain a negative value.
 //
 
-
 //
 // The following data type is used to represent the role of the LSA
 // server (primary or backup).
@@ -534,7 +534,7 @@ type
 
   POLICY_AUDIT_EVENT_OPTIONS = ULONG;
   {$EXTERNALSYM POLICY_AUDIT_EVENT_OPTIONS}
-  PPOLICY_AUDIT_EVENT_OPTIONS = POLICY_AUDIT_EVENT_OPTIONS;
+  PPOLICY_AUDIT_EVENT_OPTIONS = ^POLICY_AUDIT_EVENT_OPTIONS;
   {$EXTERNALSYM PPOLICY_AUDIT_EVENT_OPTIONS}
 
 // where the following flags can be set:
@@ -690,7 +690,6 @@ type
 //        higher than (MaximumAuditEventCount + 1) are left unchanged.
 //
 
-
 //
 // The following structure corresponds to the PolicyAccountDomainInformation
 // information class.
@@ -715,7 +714,6 @@ type
 //     DomainSid - Is the Sid of the domain
 //
 
-
 //
 // The following structure corresponds to the PolicyPrimaryDomainInformation
 // information class.
@@ -739,7 +737,6 @@ type
 //
 //     Sid - Is the Sid of the domain
 //
-
 
 //
 // The following structure corresponds to the PolicyDnsDomainInformation
@@ -773,7 +770,6 @@ type
 //
 //      Sid - Is the Sid of the domain
 
-
 //
 // The following structure corresponds to the PolicyPdAccountInformation
 // information class.  This structure may be used in Query operations
@@ -797,7 +793,6 @@ type
 //         for authentication and name/ID lookup requests.
 //
 
-
 //
 // The following structure corresponds to the PolicyLsaServerRoleInformation
 // information class.
@@ -818,7 +813,6 @@ type
 //
 // TBS
 //
-
 
 //
 // The following structure corresponds to the PolicyReplicaSourceInformation
@@ -952,7 +946,6 @@ type
 //  QualityOfService - Determines what specific QOS actions a machine should take
 //
 
-
 //
 // The following structure corresponds to the PolicyEfsInformation
 // information class
@@ -976,7 +969,6 @@ type
 //
 //      EfsBlob - Efs blob data
 //
-
 
 //
 // The following structure corresponds to the PolicyDomainKerberosTicketInformation
@@ -1018,7 +1010,6 @@ type
 //      MaxClockSkew -- Maximum tolerance for synchronization of computer clocks
 //
 //      Reserved   --  Reserved
-
 
 //
 // The following data type defines the classes of Policy Information / Policy Domain Information
@@ -1137,7 +1128,6 @@ type
 //     string.
 //
 
-
 //
 // The following data type corresponds to the TrustedPosixOffsetInformation
 // information class.
@@ -1197,7 +1187,7 @@ const
   {$EXTERNALSYM TRUST_DIRECTION_INBOUND}
   TRUST_DIRECTION_OUTBOUND      = $00000002;
   {$EXTERNALSYM TRUST_DIRECTION_OUTBOUND}
-  TRUST_DIRECTION_BIDIRECTIONAL = (TRUST_DIRECTION_INBOUND or TRUST_DIRECTION_OUTBOUND);
+  TRUST_DIRECTION_BIDIRECTIONAL = TRUST_DIRECTION_INBOUND or TRUST_DIRECTION_OUTBOUND;
   {$EXTERNALSYM TRUST_DIRECTION_BIDIRECTIONAL}
 
   TRUST_TYPE_DOWNLEVEL = $00000001; // NT4 and before
@@ -1223,6 +1213,8 @@ const
   {$EXTERNALSYM TRUST_ATTRIBUTE_CROSS_ORGANIZATION}
   TRUST_ATTRIBUTE_WITHIN_FOREST      = $00000020;  // Trust is internal to this forest
   {$EXTERNALSYM TRUST_ATTRIBUTE_WITHIN_FOREST}
+  TRUST_ATTRIBUTE_TREAT_AS_EXTERNAL  = $00000040;  // Trust is to be treated as external for trust boundary purposes
+  {$EXTERNALSYM TRUST_ATTRIBUTE_TREAT_AS_EXTERNAL}
 
 // Trust attributes 0x00000040 through 0x00200000 are reserved for future use
 // Trust attributes 0x00400000 through 0x00800000 were used previously (up to W2K) and should not be re-used
@@ -1401,7 +1393,7 @@ type
 //      cause memory problems.
 
 const
-  MAX_FOREST_TRUST_BINARY_DATA_SIZE = (128 * 1024);
+  MAX_FOREST_TRUST_BINARY_DATA_SIZE = 128 * 1024;
   {$EXTERNALSYM MAX_FOREST_TRUST_BINARY_DATA_SIZE}
 
 type
@@ -1520,7 +1512,6 @@ type
 //                                                                        //
 ////////////////////////////////////////////////////////////////////////////
 
-
 function LsaFreeMemory(Buffer: PVOID): NTSTATUS; stdcall;
 {$EXTERNALSYM LsaFreeMemory}
 
@@ -1554,7 +1545,6 @@ type
   {$EXTERNALSYM PSECURITY_LOGON_SESSION_DATA}
   TSecurityLogonSessionData = SECURITY_LOGON_SESSION_DATA;
   PSecurityLogonSessionData = PSECURITY_LOGON_SESSION_DATA;
-
 
 function LsaEnumerateLogonSessions(LogonSessionCount: PULONG; var LogonSessionList: PLUID): NTSTATUS; stdcall;
 {$EXTERNALSYM LsaEnumerateLogonSessions}
@@ -1709,14 +1699,11 @@ function LsaSetForestTrustInformation(PolicyHandle: LSA_HANDLE; TrustedDomainNam
   ForestTrustInfo: PLSA_FOREST_TRUST_INFORMATION; CheckOnly: BOOLEAN; var CollisionInfo: PLSA_FOREST_TRUST_COLLISION_INFORMATION): NTSTATUS; stdcall;
 {$EXTERNALSYM LsaSetForestTrustInformation}
 
-//{$DEFINE TESTING_MATCHING_ROUTINE}
-
+{.DEFINE TESTING_MATCHING_ROUTINE}
 {$IFDEF TESTING_MATCHING_ROUTINE}
-
 function LsaForestTrustFindMatch(PolicyHandle: LSA_HANDLE; Type_: ULONG; Name: PLSA_UNICODE_STRING; var Match: PLSA_UNICODE_STRING): NTSTATUS; stdcall;
 {$EXTERNALSYM LsaForestTrustFindMatch}
-
-{$ENDIF}
+{$ENDIF TESTING_MATCHING_ROUTINE}
 
 //
 // This API sets the workstation password (equivalent of setting/getting
@@ -1824,12 +1811,6 @@ type
   TNegotiateCallerNameResponse = NEGOTIATE_CALLER_NAME_RESPONSE;
   PNegotiateCallerNameResponse = PNEGOTIATE_CALLER_NAME_RESPONSE;
 
-const
-  NEGOTIATE_ALLOW_NTLM = $10000000;
-  {$EXTERNALSYM NEGOTIATE_ALLOW_NTLM}
-  NEGOTIATE_NEG_NTLM   = $20000000;
-  {$EXTERNALSYM NEGOTIATE_NEG_NTLM}
-
 type
   PDOMAIN_PASSWORD_INFORMATION = ^DOMAIN_PASSWORD_INFORMATION;
   {$EXTERNALSYM PDOMAIN_PASSWORD_INFORMATION}
@@ -1865,7 +1846,7 @@ const
   {$EXTERNALSYM DOMAIN_REFUSE_PASSWORD_CHANGE}
 
 type
-  PSAM_PASSWORD_NOTIFICATION_ROUTINE = function (UserName: PUNICODE_STRING;
+  PSAM_PASSWORD_NOTIFICATION_ROUTINE = function(UserName: PUNICODE_STRING;
     RelativeId: ULONG; NewPassword: PUNICODE_STRING): NTSTATUS; stdcall;
   {$EXTERNALSYM PSAM_PASSWORD_NOTIFICATION_ROUTINE}
   TSamPasswordNotificationRoutine = PSAM_PASSWORD_NOTIFICATION_ROUTINE;
@@ -1887,7 +1868,7 @@ const
   {$EXTERNALSYM SAM_PASSWORD_FILTER_ROUTINE}
 
 type
-  PSAM_PASSWORD_FILTER_ROUTINE = function (AccountName, FullName,
+  PSAM_PASSWORD_FILTER_ROUTINE = function(AccountName, FullName,
     Password: PUNICODE_STRING; SetOperation: ByteBool): ByteBool; stdcall;
   {$EXTERNALSYM PSAM_PASSWORD_FILTER_ROUTINE}
   TSamPasswordFilterRoutine = PSAM_PASSWORD_FILTER_ROUTINE;
@@ -2011,7 +1992,6 @@ type
 //
 //
 
-
 //
 // The ProfileBuffer returned upon a successful logon of this type
 // contains the following data structure:
@@ -2084,7 +2064,6 @@ type
 //     HomeDirectory - The home directory for the user.
 //
 
-
 //
 // MsV1_0Lm20Logon and MsV1_0NetworkLogon
 //
@@ -2135,10 +2114,12 @@ const
   {$EXTERNALSYM MSV1_0_ALLOW_WORKSTATION_TRUST_ACCOUNT}
   MSV1_0_DISABLE_PERSONAL_FALLBACK       = $00001000;
   {$EXTERNALSYM MSV1_0_DISABLE_PERSONAL_FALLBACK}
-  MSV1_0_ALLOW_FORCE_GUEST	         = $00002000;
+  MSV1_0_ALLOW_FORCE_GUEST               = $00002000;
   {$EXTERNALSYM MSV1_0_ALLOW_FORCE_GUEST}
   MSV1_0_CLEARTEXT_PASSWORD_SUPPLIED     = $00004000;
   {$EXTERNALSYM MSV1_0_CLEARTEXT_PASSWORD_SUPPLIED}
+  MSV1_0_USE_DOMAIN_FOR_ROUTING_ONLY     = $00008000;
+  {$EXTERNALSYM MSV1_0_USE_DOMAIN_FOR_ROUTING_ONLY}
   MSV1_0_SUBAUTHENTICATION_DLL_EX        = $00100000;
   {$EXTERNALSYM MSV1_0_SUBAUTHENTICATION_DLL_EX}
 
@@ -2346,8 +2327,10 @@ type
   PMsv10Ntlm3Response = PMSV1_0_NTLM3_RESPONSE;
 
 const
-  MSV1_0_NTLM3_INPUT_LENGTH = (SizeOf(MSV1_0_NTLM3_RESPONSE) - MSV1_0_NTLM3_RESPONSE_LENGTH);
+  MSV1_0_NTLM3_INPUT_LENGTH = SizeOf(MSV1_0_NTLM3_RESPONSE) - MSV1_0_NTLM3_RESPONSE_LENGTH;
   {$EXTERNALSYM MSV1_0_NTLM3_INPUT_LENGTH}
+  //todo MSV1_0_NTLM3_MIN_NT_RESPONSE_LENGTH = RTL_SIZEOF_THROUGH_FIELD(MSV1_0_NTLM3_RESPONSE, AvPairsOff)
+  //{$EXTERNALSYM MSV1_0_NTLM3_MIN_NT_RESPONSE_LENGTH}
 
 type
   MSV1_0_AVID = (
@@ -2378,7 +2361,6 @@ type
 //       CALL PACKAGE Related Data Structures                                //
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
 
 //
 //  MSV1.0 LsaCallAuthenticationPackage() submission and response
@@ -2639,6 +2621,17 @@ const
   {$EXTERNALSYM KERB_ETYPE_PKCS7_PUB}
 
 //
+// Unsupported but defined types
+//
+
+  KERB_ETYPE_DES3_CBC_MD5       = 5;
+  {$EXTERNALSYM KERB_ETYPE_DES3_CBC_MD5}
+  KERB_ETYPE_DES3_CBC_SHA1      = 7;
+  {$EXTERNALSYM KERB_ETYPE_DES3_CBC_SHA1}
+  KERB_ETYPE_DES3_CBC_SHA1_KD   = 16;
+  {$EXTERNALSYM KERB_ETYPE_DES3_CBC_SHA1_KD}
+
+//
 // In use types
 //
 
@@ -2788,21 +2781,20 @@ const
   KRB_NT_MS_PRINCIPAL_AND_ID = -129; // nt4 style name with sid
   {$EXTERNALSYM KRB_NT_MS_PRINCIPAL_AND_ID}
 
-// todo #define KERB_IS_MS_PRINCIPAL(_x_) (((_x_) <= KRB_NT_MS_PRINCIPAL) || ((_x_) >= KRB_NT_ENTERPRISE_PRINCIPAL))
-
   MICROSOFT_KERBEROS_NAME_A = 'Kerberos';
   {$EXTERNALSYM MICROSOFT_KERBEROS_NAME_A}
   MICROSOFT_KERBEROS_NAME_W = WideString('Kerberos');
   {$EXTERNALSYM MICROSOFT_KERBEROS_NAME_W}
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   MICROSOFT_KERBEROS_NAME = MICROSOFT_KERBEROS_NAME_W;
   {$EXTERNALSYM MICROSOFT_KERBEROS_NAME}
-{$ELSE}
+  {$ELSE}
   MICROSOFT_KERBEROS_NAME = MICROSOFT_KERBEROS_NAME_A;
   {$EXTERNALSYM MICROSOFT_KERBEROS_NAME}
-{$ENDIF}
+  {$ENDIF UNICODE}
 
+function KERB_IS_MS_PRINCIPAL(X: Integer): BOOL;
 
 /////////////////////////////////////////////////////////////////////////
 //
@@ -2814,7 +2806,7 @@ const
 // This flag indicates to EncryptMessage that the message is not to actually
 // be encrypted, but a header/trailer are to be produced.
 //
-
+const
   KERB_WRAP_NO_ENCRYPT = DWORD($80000001);
   {$EXTERNALSYM KERB_WRAP_NO_ENCRYPT}
 
@@ -3488,7 +3480,7 @@ type
 
   _KERB_REFRESH_SCCRED_REQUEST = record
     MessageType: KERB_PROTOCOL_MESSAGE_TYPE;
-    CredentialBlob: UNICODE_STRING;	 // optional
+    CredentialBlob: UNICODE_STRING;  // optional
     LogonId: LUID;
     Flags: ULONG;
   end;
@@ -3503,12 +3495,12 @@ type
 //
 // Flags for KERB_REFRESH_SCCRED_REQUEST
 //
-//	KERB_REFRESH_SCCRED_RELEASE
-// 	Release the smartcard handle for LUID
+//      KERB_REFRESH_SCCRED_RELEASE
+//      Release the smartcard handle for LUID
 //
 //      KERB_REFRESH_SCCRED_GETTGT
-//	Use the certificate hash in the blob to get a TGT for the logon 
-//	session.
+//      Use the certificate hash in the blob to get a TGT for the logon 
+//      session.
 //
 
 const
@@ -3550,17 +3542,21 @@ const
 
 implementation
 
+uses
+  JwaWinDLLNames;
+
 function LSA_SUCCESS(Error: NTSTATUS): BOOL;
 begin
  Result := LONG(Error) > 0;
 end;
 
-const
-  secur32 = 'secur32.dll';
-  advapi32 = 'advapi32.dll';
-
+function KERB_IS_MS_PRINCIPAL(X: Integer): BOOL;
+begin
+  Result := (X <= KRB_NT_MS_PRINCIPAL) or (X >= KRB_NT_ENTERPRISE_PRINCIPAL);
+end;
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _LsaRegisterLogonProcess: Pointer;
 
@@ -3568,16 +3564,12 @@ function LsaRegisterLogonProcess;
 begin
   GetProcedureAddress(_LsaRegisterLogonProcess, secur32, 'LsaRegisterLogonProcess');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LsaRegisterLogonProcess]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LsaRegisterLogonProcess]
   end;
 end;
-{$ELSE}
-function LsaRegisterLogonProcess; external secur32 name 'LsaRegisterLogonProcess';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LsaLogonUser: Pointer;
 
@@ -3585,16 +3577,12 @@ function LsaLogonUser;
 begin
   GetProcedureAddress(_LsaLogonUser, secur32, 'LsaLogonUser');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LsaLogonUser]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LsaLogonUser]
   end;
 end;
-{$ELSE}
-function LsaLogonUser; external secur32 name 'LsaLogonUser';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LsaLookupAuthenticationPackage: Pointer;
 
@@ -3602,16 +3590,12 @@ function LsaLookupAuthenticationPackage;
 begin
   GetProcedureAddress(_LsaLookupAuthenticationPackage, secur32, 'LsaLookupAuthenticationPackage');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LsaLookupAuthenticationPackage]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LsaLookupAuthenticationPackage]
   end;
 end;
-{$ELSE}
-function LsaLookupAuthenticationPackage; external secur32 name 'LsaLookupAuthenticationPackage';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LsaFreeReturnBuffer: Pointer;
 
@@ -3619,16 +3603,12 @@ function LsaFreeReturnBuffer;
 begin
   GetProcedureAddress(_LsaFreeReturnBuffer, secur32, 'LsaFreeReturnBuffer');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LsaFreeReturnBuffer]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LsaFreeReturnBuffer]
   end;
 end;
-{$ELSE}
-function LsaFreeReturnBuffer; external secur32 name 'LsaFreeReturnBuffer';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LsaCallAuthenticationPackage: Pointer;
 
@@ -3636,16 +3616,12 @@ function LsaCallAuthenticationPackage;
 begin
   GetProcedureAddress(_LsaCallAuthenticationPackage, secur32, 'LsaCallAuthenticationPackage');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LsaCallAuthenticationPackage]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LsaCallAuthenticationPackage]
   end;
 end;
-{$ELSE}
-function LsaCallAuthenticationPackage; external secur32 name 'LsaCallAuthenticationPackage';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LsaDeregisterLogonProcess: Pointer;
 
@@ -3653,16 +3629,12 @@ function LsaDeregisterLogonProcess;
 begin
   GetProcedureAddress(_LsaDeregisterLogonProcess, secur32, 'LsaDeregisterLogonProcess');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LsaDeregisterLogonProcess]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LsaDeregisterLogonProcess]
   end;
 end;
-{$ELSE}
-function LsaDeregisterLogonProcess; external secur32 name 'LsaDeregisterLogonProcess';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LsaConnectUntrusted: Pointer;
 
@@ -3670,17 +3642,12 @@ function LsaConnectUntrusted;
 begin
   GetProcedureAddress(_LsaConnectUntrusted, secur32, 'LsaConnectUntrusted');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LsaConnectUntrusted]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LsaConnectUntrusted]
   end;
 end;
-{$ELSE}
-function LsaConnectUntrusted; external secur32 name 'LsaConnectUntrusted';
-{$ENDIF DYNAMIC_LINK}
 
-
-{$IFDEF DYNAMIC_LINK}
 var
   _LsaFreeMemory: Pointer;
 
@@ -3688,16 +3655,12 @@ function LsaFreeMemory;
 begin
   GetProcedureAddress(_LsaFreeMemory, advapi32, 'LsaFreeMemory');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LsaFreeMemory]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LsaFreeMemory]
   end;
 end;
-{$ELSE}
-function LsaFreeMemory; external advapi32 name 'LsaFreeMemory';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LsaClose: Pointer;
 
@@ -3705,16 +3668,12 @@ function LsaClose;
 begin
   GetProcedureAddress(_LsaClose, advapi32, 'LsaClose');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LsaClose]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LsaClose]
   end;
 end;
-{$ELSE}
-function LsaClose; external advapi32 name 'LsaClose';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LsaOpenPolicy: Pointer;
 
@@ -3722,16 +3681,12 @@ function LsaOpenPolicy;
 begin
   GetProcedureAddress(_LsaOpenPolicy, advapi32, 'LsaOpenPolicy');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LsaOpenPolicy]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LsaOpenPolicy]
   end;
 end;
-{$ELSE}
-function LsaOpenPolicy; external advapi32 name 'LsaOpenPolicy';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LsaEnumerateLogonSessions: Pointer;
 
@@ -3739,16 +3694,12 @@ function LsaEnumerateLogonSessions;
 begin
   GetProcedureAddress(_LsaEnumerateLogonSessions, secur32, 'LsaEnumerateLogonSessions');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LsaEnumerateLogonSessions]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LsaEnumerateLogonSessions]
   end;
 end;
-{$ELSE}
-function LsaEnumerateLogonSessions; external secur32 name 'LsaEnumerateLogonSessions';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LsaGetLogonSessionData: Pointer;
 
@@ -3756,17 +3707,12 @@ function LsaGetLogonSessionData;
 begin
   GetProcedureAddress(_LsaGetLogonSessionData, secur32, 'LsaGetLogonSessionData');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LsaGetLogonSessionData]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LsaGetLogonSessionData]
   end;
 end;
-{$ELSE}
-function LsaGetLogonSessionData; external secur32 name 'LsaGetLogonSessionData';
-{$ENDIF DYNAMIC_LINK}
 
-
-{$IFDEF DYNAMIC_LINK}
 var
   _LsaQueryInformationPolicy: Pointer;
 
@@ -3774,16 +3720,12 @@ function LsaQueryInformationPolicy;
 begin
   GetProcedureAddress(_LsaQueryInformationPolicy, advapi32, 'LsaQueryInformationPolicy');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LsaQueryInformationPolicy]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LsaQueryInformationPolicy]
   end;
 end;
-{$ELSE}
-function LsaQueryInformationPolicy; external advapi32 name 'LsaQueryInformationPolicy';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LsaSetInformationPolicy: Pointer;
 
@@ -3791,16 +3733,12 @@ function LsaSetInformationPolicy;
 begin
   GetProcedureAddress(_LsaSetInformationPolicy, advapi32, 'LsaSetInformationPolicy');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LsaSetInformationPolicy]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LsaSetInformationPolicy]
   end;
 end;
-{$ELSE}
-function LsaSetInformationPolicy; external advapi32 name 'LsaSetInformationPolicy';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LsaQueryDomainInformationPolicy: Pointer;
 
@@ -3808,16 +3746,12 @@ function LsaQueryDomainInformationPolicy;
 begin
   GetProcedureAddress(_LsaQueryDomainInformationPolicy, advapi32, 'LsaQueryDomainInformationPolicy');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LsaQueryDomainInformationPolicy]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LsaQueryDomainInformationPolicy]
   end;
 end;
-{$ELSE}
-function LsaQueryDomainInformationPolicy; external advapi32 name 'LsaQueryDomainInformationPolicy';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LsaSetDomainInformationPolicy: Pointer;
 
@@ -3825,16 +3759,12 @@ function LsaSetDomainInformationPolicy;
 begin
   GetProcedureAddress(_LsaSetDomainInformationPolicy, advapi32, 'LsaSetDomainInformationPolicy');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LsaSetDomainInformationPolicy]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LsaSetDomainInformationPolicy]
   end;
 end;
-{$ELSE}
-function LsaSetDomainInformationPolicy; external advapi32 name 'LsaSetDomainInformationPolicy';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LsaRegisterPolicyChangeNot: Pointer;
 
@@ -3842,16 +3772,12 @@ function LsaRegisterPolicyChangeNotification;
 begin
   GetProcedureAddress(_LsaRegisterPolicyChangeNot, secur32, 'LsaRegisterPolicyChangeNotification');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LsaRegisterPolicyChangeNot]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LsaRegisterPolicyChangeNot]
   end;
 end;
-{$ELSE}
-function LsaRegisterPolicyChangeNotification; external secur32 name 'LsaRegisterPolicyChangeNotification';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LsaUnregisterPolicyChangeNot: Pointer;
 
@@ -3859,16 +3785,12 @@ function LsaUnregisterPolicyChangeNotification;
 begin
   GetProcedureAddress(_LsaUnregisterPolicyChangeNot, secur32, 'LsaUnregisterPolicyChangeNotification');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LsaUnregisterPolicyChangeNot]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LsaUnregisterPolicyChangeNot]
   end;
 end;
-{$ELSE}
-function LsaUnregisterPolicyChangeNotification; external secur32 name 'LsaUnregisterPolicyChangeNotification';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LsaEnumerateTrustedDomains: Pointer;
 
@@ -3876,16 +3798,12 @@ function LsaEnumerateTrustedDomains;
 begin
   GetProcedureAddress(_LsaEnumerateTrustedDomains, advapi32, 'LsaEnumerateTrustedDomains');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LsaEnumerateTrustedDomains]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LsaEnumerateTrustedDomains]
   end;
 end;
-{$ELSE}
-function LsaEnumerateTrustedDomains; external advapi32 name 'LsaEnumerateTrustedDomains';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LsaLookupNames: Pointer;
 
@@ -3893,16 +3811,12 @@ function LsaLookupNames;
 begin
   GetProcedureAddress(_LsaLookupNames, advapi32, 'LsaLookupNames');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LsaLookupNames]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LsaLookupNames]
   end;
 end;
-{$ELSE}
-function LsaLookupNames; external advapi32 name 'LsaLookupNames';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LsaLookupNames2: Pointer;
 
@@ -3910,16 +3824,12 @@ function LsaLookupNames2;
 begin
   GetProcedureAddress(_LsaLookupNames2, advapi32, 'LsaLookupNames2');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LsaLookupNames2]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LsaLookupNames2]
   end;
 end;
-{$ELSE}
-function LsaLookupNames2; external advapi32 name 'LsaLookupNames2';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LsaLookupSids: Pointer;
 
@@ -3927,17 +3837,12 @@ function LsaLookupSids;
 begin
   GetProcedureAddress(_LsaLookupSids, advapi32, 'LsaLookupSids');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LsaLookupSids]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LsaLookupSids]
   end;
 end;
-{$ELSE}
-function LsaLookupSids; external advapi32 name 'LsaLookupSids';
-{$ENDIF DYNAMIC_LINK}
 
-
-{$IFDEF DYNAMIC_LINK}
 var
   _LsaEnumAccountsWithUserRight: Pointer;
 
@@ -3945,16 +3850,12 @@ function LsaEnumerateAccountsWithUserRight;
 begin
   GetProcedureAddress(_LsaEnumAccountsWithUserRight, advapi32, 'LsaEnumerateAccountsWithUserRight');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LsaEnumAccountsWithUserRight]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LsaEnumAccountsWithUserRight]
   end;
 end;
-{$ELSE}
-function LsaEnumerateAccountsWithUserRight; external advapi32 name 'LsaEnumerateAccountsWithUserRight';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LsaEnumerateAccountRights: Pointer;
 
@@ -3962,16 +3863,12 @@ function LsaEnumerateAccountRights;
 begin
   GetProcedureAddress(_LsaEnumerateAccountRights, advapi32, 'LsaEnumerateAccountRights');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LsaEnumerateAccountRights]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LsaEnumerateAccountRights]
   end;
 end;
-{$ELSE}
-function LsaEnumerateAccountRights; external advapi32 name 'LsaEnumerateAccountRights';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LsaAddAccountRights: Pointer;
 
@@ -3979,16 +3876,12 @@ function LsaAddAccountRights;
 begin
   GetProcedureAddress(_LsaAddAccountRights, advapi32, 'LsaAddAccountRights');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LsaAddAccountRights]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LsaAddAccountRights]
   end;
 end;
-{$ELSE}
-function LsaAddAccountRights; external advapi32 name 'LsaAddAccountRights';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LsaRemoveAccountRights: Pointer;
 
@@ -3996,16 +3889,12 @@ function LsaRemoveAccountRights;
 begin
   GetProcedureAddress(_LsaRemoveAccountRights, advapi32, 'LsaRemoveAccountRights');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LsaRemoveAccountRights]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LsaRemoveAccountRights]
   end;
 end;
-{$ELSE}
-function LsaRemoveAccountRights; external advapi32 name 'LsaRemoveAccountRights';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LsaOpenTrustedDomainByName: Pointer;
 
@@ -4013,16 +3902,12 @@ function LsaOpenTrustedDomainByName;
 begin
   GetProcedureAddress(_LsaOpenTrustedDomainByName, advapi32, 'LsaOpenTrustedDomainByName');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LsaOpenTrustedDomainByName]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LsaOpenTrustedDomainByName]
   end;
 end;
-{$ELSE}
-function LsaOpenTrustedDomainByName; external advapi32 name 'LsaOpenTrustedDomainByName';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LsaQueryTrustedDomainInfo: Pointer;
 
@@ -4030,16 +3915,12 @@ function LsaQueryTrustedDomainInfo;
 begin
   GetProcedureAddress(_LsaQueryTrustedDomainInfo, advapi32, 'LsaQueryTrustedDomainInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LsaQueryTrustedDomainInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LsaQueryTrustedDomainInfo]
   end;
 end;
-{$ELSE}
-function LsaQueryTrustedDomainInfo; external advapi32 name 'LsaQueryTrustedDomainInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LsaSetTrustedDomainInformation: Pointer;
 
@@ -4047,16 +3928,12 @@ function LsaSetTrustedDomainInformation;
 begin
   GetProcedureAddress(_LsaSetTrustedDomainInformation, advapi32, 'LsaSetTrustedDomainInformation');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LsaSetTrustedDomainInformation]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LsaSetTrustedDomainInformation]
   end;
 end;
-{$ELSE}
-function LsaSetTrustedDomainInformation; external advapi32 name 'LsaSetTrustedDomainInformation';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LsaDeleteTrustedDomain: Pointer;
 
@@ -4064,16 +3941,12 @@ function LsaDeleteTrustedDomain;
 begin
   GetProcedureAddress(_LsaDeleteTrustedDomain, advapi32, 'LsaDeleteTrustedDomain');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LsaDeleteTrustedDomain]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LsaDeleteTrustedDomain]
   end;
 end;
-{$ELSE}
-function LsaDeleteTrustedDomain; external advapi32 name 'LsaDeleteTrustedDomain';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LsaQueryTrustedDomainInfoByName: Pointer;
 
@@ -4081,16 +3954,12 @@ function LsaQueryTrustedDomainInfoByName;
 begin
   GetProcedureAddress(_LsaQueryTrustedDomainInfoByName, advapi32, 'LsaQueryTrustedDomainInfoByName');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LsaQueryTrustedDomainInfoByName]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LsaQueryTrustedDomainInfoByName]
   end;
 end;
-{$ELSE}
-function LsaQueryTrustedDomainInfoByName; external advapi32 name 'LsaQueryTrustedDomainInfoByName';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LsaSetTrustedDomainInfoByName: Pointer;
 
@@ -4098,16 +3967,12 @@ function LsaSetTrustedDomainInfoByName;
 begin
   GetProcedureAddress(_LsaSetTrustedDomainInfoByName, advapi32, 'LsaSetTrustedDomainInfoByName');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LsaSetTrustedDomainInfoByName]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LsaSetTrustedDomainInfoByName]
   end;
 end;
-{$ELSE}
-function LsaSetTrustedDomainInfoByName; external advapi32 name 'LsaSetTrustedDomainInfoByName';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LsaEnumerateTrustedDomainsEx: Pointer;
 
@@ -4115,16 +3980,12 @@ function LsaEnumerateTrustedDomainsEx;
 begin
   GetProcedureAddress(_LsaEnumerateTrustedDomainsEx, advapi32, 'LsaEnumerateTrustedDomainsEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LsaEnumerateTrustedDomainsEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LsaEnumerateTrustedDomainsEx]
   end;
 end;
-{$ELSE}
-function LsaEnumerateTrustedDomainsEx; external advapi32 name 'LsaEnumerateTrustedDomainsEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LsaCreateTrustedDomainEx: Pointer;
 
@@ -4132,16 +3993,12 @@ function LsaCreateTrustedDomainEx;
 begin
   GetProcedureAddress(_LsaCreateTrustedDomainEx, advapi32, 'LsaCreateTrustedDomainEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LsaCreateTrustedDomainEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LsaCreateTrustedDomainEx]
   end;
 end;
-{$ELSE}
-function LsaCreateTrustedDomainEx; external advapi32 name 'LsaCreateTrustedDomainEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LsaQueryForestTrustInformation: Pointer;
 
@@ -4149,16 +4006,12 @@ function LsaQueryForestTrustInformation;
 begin
   GetProcedureAddress(_LsaQueryForestTrustInformation, advapi32, 'LsaQueryForestTrustInformation');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LsaQueryForestTrustInformation]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LsaQueryForestTrustInformation]
   end;
 end;
-{$ELSE}
-function LsaQueryForestTrustInformation; external advapi32 name 'LsaQueryForestTrustInformation';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LsaSetForestTrustInformation: Pointer;
 
@@ -4166,16 +4019,12 @@ function LsaSetForestTrustInformation;
 begin
   GetProcedureAddress(_LsaSetForestTrustInformation, advapi32, 'LsaSetForestTrustInformation');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LsaSetForestTrustInformation]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LsaSetForestTrustInformation]
   end;
 end;
-{$ELSE}
-function LsaSetForestTrustInformation; external advapi32 name 'LsaSetForestTrustInformation';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LsaStorePrivateData: Pointer;
 
@@ -4183,16 +4032,12 @@ function LsaStorePrivateData;
 begin
   GetProcedureAddress(_LsaStorePrivateData, advapi32, 'LsaStorePrivateData');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LsaStorePrivateData]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LsaStorePrivateData]
   end;
 end;
-{$ELSE}
-function LsaStorePrivateData; external advapi32 name 'LsaStorePrivateData';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LsaRetrievePrivateData: Pointer;
 
@@ -4200,16 +4045,12 @@ function LsaRetrievePrivateData;
 begin
   GetProcedureAddress(_LsaRetrievePrivateData, advapi32, 'LsaRetrievePrivateData');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LsaRetrievePrivateData]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LsaRetrievePrivateData]
   end;
 end;
-{$ELSE}
-function LsaRetrievePrivateData; external advapi32 name 'LsaRetrievePrivateData';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LsaNtStatusToWinError: Pointer;
 
@@ -4217,13 +4058,54 @@ function LsaNtStatusToWinError;
 begin
   GetProcedureAddress(_LsaNtStatusToWinError, advapi32, 'LsaNtStatusToWinError');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LsaNtStatusToWinError]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LsaNtStatusToWinError]
   end;
 end;
+
 {$ELSE}
+
+function LsaRegisterLogonProcess; external secur32 name 'LsaRegisterLogonProcess';
+function LsaLogonUser; external secur32 name 'LsaLogonUser';
+function LsaLookupAuthenticationPackage; external secur32 name 'LsaLookupAuthenticationPackage';
+function LsaFreeReturnBuffer; external secur32 name 'LsaFreeReturnBuffer';
+function LsaCallAuthenticationPackage; external secur32 name 'LsaCallAuthenticationPackage';
+function LsaDeregisterLogonProcess; external secur32 name 'LsaDeregisterLogonProcess';
+function LsaConnectUntrusted; external secur32 name 'LsaConnectUntrusted';
+function LsaFreeMemory; external advapi32 name 'LsaFreeMemory';
+function LsaClose; external advapi32 name 'LsaClose';
+function LsaOpenPolicy; external advapi32 name 'LsaOpenPolicy';
+function LsaEnumerateLogonSessions; external secur32 name 'LsaEnumerateLogonSessions';
+function LsaGetLogonSessionData; external secur32 name 'LsaGetLogonSessionData';
+function LsaQueryInformationPolicy; external advapi32 name 'LsaQueryInformationPolicy';
+function LsaSetInformationPolicy; external advapi32 name 'LsaSetInformationPolicy';
+function LsaQueryDomainInformationPolicy; external advapi32 name 'LsaQueryDomainInformationPolicy';
+function LsaSetDomainInformationPolicy; external advapi32 name 'LsaSetDomainInformationPolicy';
+function LsaRegisterPolicyChangeNotification; external secur32 name 'LsaRegisterPolicyChangeNotification';
+function LsaUnregisterPolicyChangeNotification; external secur32 name 'LsaUnregisterPolicyChangeNotification';
+function LsaEnumerateTrustedDomains; external advapi32 name 'LsaEnumerateTrustedDomains';
+function LsaLookupNames; external advapi32 name 'LsaLookupNames';
+function LsaLookupNames2; external advapi32 name 'LsaLookupNames2';
+function LsaLookupSids; external advapi32 name 'LsaLookupSids';
+function LsaEnumerateAccountsWithUserRight; external advapi32 name 'LsaEnumerateAccountsWithUserRight';
+function LsaEnumerateAccountRights; external advapi32 name 'LsaEnumerateAccountRights';
+function LsaAddAccountRights; external advapi32 name 'LsaAddAccountRights';
+function LsaRemoveAccountRights; external advapi32 name 'LsaRemoveAccountRights';
+function LsaOpenTrustedDomainByName; external advapi32 name 'LsaOpenTrustedDomainByName';
+function LsaQueryTrustedDomainInfo; external advapi32 name 'LsaQueryTrustedDomainInfo';
+function LsaSetTrustedDomainInformation; external advapi32 name 'LsaSetTrustedDomainInformation';
+function LsaDeleteTrustedDomain; external advapi32 name 'LsaDeleteTrustedDomain';
+function LsaQueryTrustedDomainInfoByName; external advapi32 name 'LsaQueryTrustedDomainInfoByName';
+function LsaSetTrustedDomainInfoByName; external advapi32 name 'LsaSetTrustedDomainInfoByName';
+function LsaEnumerateTrustedDomainsEx; external advapi32 name 'LsaEnumerateTrustedDomainsEx';
+function LsaCreateTrustedDomainEx; external advapi32 name 'LsaCreateTrustedDomainEx';
+function LsaQueryForestTrustInformation; external advapi32 name 'LsaQueryForestTrustInformation';
+function LsaSetForestTrustInformation; external advapi32 name 'LsaSetForestTrustInformation';
+function LsaStorePrivateData; external advapi32 name 'LsaStorePrivateData';
+function LsaRetrievePrivateData; external advapi32 name 'LsaRetrievePrivateData';
 function LsaNtStatusToWinError; external advapi32 name 'LsaNtStatusToWinError';
+
 {$ENDIF DYNAMIC_LINK}
 
 end.

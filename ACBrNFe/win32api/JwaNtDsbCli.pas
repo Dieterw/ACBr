@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Directory Backup and Restore API interface Unit for Object Pascal            }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: ntdsbcli.h, released June 2000. The original Pascal    }
 { code is: NtDsbCli.pas, released December 2000. The initial developer of the  }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaNtDsbCli.pas,v 1.10 2005/09/06 16:36:50 marquardt Exp $
 
 unit JwaNtDsbCli;
 
@@ -49,12 +50,12 @@ unit JwaNtDsbCli;
 {$HPPEMIT '#include ":ntdsbcli.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinType;
+  JwaWindows;
 
 const
   g_wszBackupAnnotation = 'NTDS Backup Interface';
@@ -67,17 +68,17 @@ const
   g_aszRestoreAnnotation = 'NTDS Restore Interface';
   {$EXTERNALSYM g_aszRestoreAnnotation}
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   g_szBackupAnnotation  = g_wszBackupAnnotation;
   {$EXTERNALSYM g_szBackupAnnotation}
   g_szRestoreAnnotation = g_wszRestoreAnnotation;
   {$EXTERNALSYM g_szRestoreAnnotation}
-{$ELSE}
+  {$ELSE}
   g_szBackupAnnotation  = g_aszBackupAnnotation;
   {$EXTERNALSYM g_szBackupAnnotation}
   g_szRestoreAnnotation = g_aszRestoreAnnotation;
   {$EXTERNALSYM g_szRestoreAnnotation}
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 // Type of Backup passed to DsBackupPrepare()
 // BACKUP_TYPE_FULL: Requesting backup of the complete DS (DIT, Log files, and Patch files)
@@ -115,13 +116,13 @@ const
 // map to the values 0-256 in unicode.
 
 type
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   BFT = WCHAR;
   {$EXTERNALSYM BFT}
-{$ELSE}
-  BFT = CHAR;
+  {$ELSE}
+  BFT = Char;
   {$EXTERNALSYM BFT}
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 // Bit flags:
 //  BFT_DIRECTORY               - indicates path specified is a directory
@@ -166,8 +167,8 @@ type
   TEdbRstMapA = EDB_RSTMAPA;
   PEdbRstMapA = PEDB_RSTMAPA;
 
-//	required for NTDS unicode support.
-//	UNDONE: NYI
+// required for NTDS unicode support.
+// UNDONE: NYI
 
   PEDB_RSTMAPW = ^EDB_RSTMAPW;
   {$EXTERNALSYM PEDB_RSTMAPW}
@@ -181,21 +182,21 @@ type
   TEdbRstMapW = EDB_RSTMAPW;
   PEdbRstMapW = PEDB_RSTMAPW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   EDB_RSTMAP = EDB_RSTMAPW;
   {$EXTERNALSYM EDB_RSTMAP}
   PEDB_RSTMAP = PEDB_RSTMAPW;
   {$EXTERNALSYM PEDB_RSTMAP}
   TEdbRstMap = TEdbRstMapW;
   PEdbRstMap = PEdbRstMapW;
-{$ELSE}
+  {$ELSE}
   EDB_RSTMAP = EDB_RSTMAPA;
   {$EXTERNALSYM EDB_RSTMAP}
   PEDB_RSTMAP = PEDB_RSTMAPA;
   {$EXTERNALSYM PEDB_RSTMAP}
   TEdbRstMap = TEdbRstMapA;
   PEdbRstMap = PEdbRstMapA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 {*************************************************************************************
 Routine Description:
@@ -219,14 +220,8 @@ function DsIsNTDSOnlineA(szServerName: LPCSTR; var pfNTDSOnline: BOOL): HRESULT;
 {$EXTERNALSYM DsIsNTDSOnlineA}
 function DsIsNTDSOnlineW(szServerName: LPCWSTR; var pfNTDSOnline: BOOL): HRESULT; stdcall;
 {$EXTERNALSYM DsIsNTDSOnlineW}
-
-{$IFDEF UNICODE}
-function DsIsNTDSOnline(szServerName: LPCWSTR; var pfNTDSOnline: BOOL): HRESULT; stdcall;
+function DsIsNTDSOnline(szServerName: LPCTSTR; var pfNTDSOnline: BOOL): HRESULT; stdcall;
 {$EXTERNALSYM DsIsNTDSOnline}
-{$ELSE}
-function DsIsNTDSOnline(szServerName: LPCSTR; var pfNTDSOnline: BOOL): HRESULT; stdcall;
-{$EXTERNALSYM DsIsNTDSOnline}
-{$ENDIF}
 
 {*************************************************************************************
 Routine Description:
@@ -260,16 +255,9 @@ function DsBackupPrepareA(szBackupServer: LPCSTR; grbit: ULONG; btFlag: ULONG;
 function DsBackupPrepareW(szBackupServer: LPCWSTR; grbit: ULONG; btFlag: ULONG;
   var ppvExpiryToken: PVOID; var pcbExpiryTokenSize: DWORD; var phbc: HBC): HRESULT; stdcall;
 {$EXTERNALSYM DsBackupPrepareW}
-
-{$IFDEF UNICODE}
-function DsBackupPrepare(szBackupServer: LPCWSTR; grbit: ULONG; btFlag: ULONG;
+function DsBackupPrepare(szBackupServer: LPCTSTR; grbit: ULONG; btFlag: ULONG;
   var ppvExpiryToken: PVOID; var pcbExpiryTokenSize: DWORD; var phbc: HBC): HRESULT; stdcall;
 {$EXTERNALSYM DsBackupPrepare}
-{$ELSE}
-function DsBackupPrepare(szBackupServer: LPCSTR; grbit: ULONG; btFlag: ULONG;
-  var ppvExpiryToken: PVOID; var pcbExpiryTokenSize: DWORD; var phbc: HBC): HRESULT; stdcall;
-{$EXTERNALSYM DsBackupPrepare}
-{$ENDIF}
 
 {*************************************************************************************
 Routine Description:
@@ -297,16 +285,9 @@ function DsBackupGetDatabaseNamesA(hbc: HBC; var pszAttachmentInfo: LPSTR;
 function DsBackupGetDatabaseNamesW(hbc: HBC; var pszAttachmentInfo: LPWSTR;
   var pcbSize: DWORD): HRESULT; stdcall;
 {$EXTERNALSYM DsBackupGetDatabaseNamesW}
-
-{$IFDEF UNICODE}
-function DsBackupGetDatabaseNames(hbc: HBC; var pszAttachmentInfo: LPWSTR;
+function DsBackupGetDatabaseNames(hbc: HBC; var pszAttachmentInfo: LPTSTR;
   var pcbSize: DWORD): HRESULT; stdcall;
 {$EXTERNALSYM DsBackupGetDatabaseNames}
-{$ELSE}
-function DsBackupGetDatabaseNames(hbc: HBC; var pszAttachmentInfo: LPSTR;
-  var pcbSize: DWORD): HRESULT; stdcall;
-{$EXTERNALSYM DsBackupGetDatabaseNames}
-{$ENDIF}
 
 {*************************************************************************************
 Routine Description:
@@ -333,16 +314,9 @@ function DsBackupOpenFileA(hbc: HBC; szAttachmentName: LPCSTR; cbReadHintSize: D
 function DsBackupOpenFileW(hbc: HBC; szAttachmentName: LPCWSTR; cbReadHintSize: DWORD;
   var pliFileSize: LARGE_INTEGER): HRESULT; stdcall;
 {$EXTERNALSYM DsBackupOpenFileW}
-
-{$IFDEF UNICODE}
-function DsBackupOpenFile(hbc: HBC; szAttachmentName: LPCWSTR; cbReadHintSize: DWORD;
+function DsBackupOpenFile(hbc: HBC; szAttachmentName: LPCTSTR; cbReadHintSize: DWORD;
   var pliFileSize: LARGE_INTEGER): HRESULT; stdcall;
 {$EXTERNALSYM DsBackupOpenFile}
-{$ELSE}
-function DsBackupOpenFile(hbc: HBC; szAttachmentName: LPCSTR; cbReadHintSize: DWORD;
-  var pliFileSize: LARGE_INTEGER): HRESULT; stdcall;
-{$EXTERNALSYM DsBackupOpenFile}
-{$ENDIF}
 
 {*************************************************************************************
 Routine Description:
@@ -411,16 +385,9 @@ function DsBackupGetBackupLogsA(hbc: HBC; var pszBackupLogFiles: LPSTR;
 function DsBackupGetBackupLogsW(hbc: HBC; var pszBackupLogFiles: LPWSTR;
   var pcbSize: DWORD): HRESULT; stdcall;
 {$EXTERNALSYM DsBackupGetBackupLogsW}
-
-{$IFDEF UNICODE}
-function DsBackupGetBackupLogs(hbc: HBC; var pszBackupLogFiles: LPWSTR;
+function DsBackupGetBackupLogs(hbc: HBC; var pszBackupLogFiles: LPTSTR;
   var pcbSize: DWORD): HRESULT; stdcall;
 {$EXTERNALSYM DsBackupGetBackupLogs}
-{$ELSE}
-function DsBackupGetBackupLogs(hbc: HBC; var pszBackupLogFiles: LPSTR;
-  var pcbSize: DWORD): HRESULT; stdcall;
-{$EXTERNALSYM DsBackupGetBackupLogs}
-{$ENDIF}
 
 {*************************************************************************************
 Routine Description:
@@ -504,16 +471,9 @@ function DsRestoreGetDatabaseLocationsA(hbc: HBC; var pszDatabaseLocationList: L
 function DsRestoreGetDatabaseLocationsW(hbc: HBC; var pszDatabaseLocationList: LPWSTR;
   var pcbSize: DWORD): HRESULT; stdcall;
 {$EXTERNALSYM DsRestoreGetDatabaseLocationsW}
-
-{$IFDEF UNICODE}
-function DsRestoreGetDatabaseLocations(hbc: HBC; var pszDatabaseLocationList: LPWSTR;
+function DsRestoreGetDatabaseLocations(hbc: HBC; var pszDatabaseLocationList: LPTSTR;
   var pcbSize: DWORD): HRESULT; stdcall;
 {$EXTERNALSYM DsRestoreGetDatabaseLocations}
-{$ELSE}
-function DsRestoreGetDatabaseLocations(hbc: HBC; var pszDatabaseLocationList: LPSTR;
-  var pcbSize: DWORD): HRESULT; stdcall;
-{$EXTERNALSYM DsRestoreGetDatabaseLocations}
-{$ENDIF}
 
 {*************************************************************************************
 Routine Description:
@@ -544,16 +504,9 @@ function DsRestorePrepareA(szServerName: LPCSTR; rtFlag: ULONG; pvExpiryToken: P
 function DsRestorePrepareW(szServerName: LPCWSTR; rtFlag: ULONG; pvExpiryToken: PVOID;
   cbExpiryTokenSize: DWORD; var phbc: HBC): HRESULT; stdcall;
 {$EXTERNALSYM DsRestorePrepareW}
-
-{$IFDEF UNICODE}
-function DsRestorePrepare(szServerName: LPCWSTR; rtFlag: ULONG; pvExpiryToken: PVOID;
+function DsRestorePrepare(szServerName: LPCTSTR; rtFlag: ULONG; pvExpiryToken: PVOID;
   cbExpiryTokenSize: DWORD; var phbc: HBC): HRESULT; stdcall;
 {$EXTERNALSYM DsRestorePrepare}
-{$ELSE}
-function DsRestorePrepare(szServerName: LPCSTR; rtFlag: ULONG; pvExpiryToken: PVOID;
-  cbExpiryTokenSize: DWORD; var phbc: HBC): HRESULT; stdcall;
-{$EXTERNALSYM DsRestorePrepare}
-{$ENDIF}
 
 {*************************************************************************************
 Routine Description:
@@ -585,16 +538,9 @@ function DsRestoreRegisterA(hbc: HBC; szCheckPointFilePath, szLogPath: LPCSTR;
 function DsRestoreRegisterW(hbc: HBC; szCheckPointFilePath, szLogPath: LPCWSTR;
   rgrstmap: PEDB_RSTMAPW; crstmap: LONG; szBackupLogPath: LPCWSTR; genLow, genHigh: ULONG): HRESULT; stdcall;
 {$EXTERNALSYM DsRestoreRegisterW}
-
-{$IFDEF UNICODE}
-function DsRestoreRegister(hbc: HBC; szCheckPointFilePath, szLogPath: LPCWSTR;
-  rgrstmap: PEDB_RSTMAPW; crstmap: LONG; szBackupLogPath: LPCWSTR; genLow, genHigh: ULONG): HRESULT; stdcall;
+function DsRestoreRegister(hbc: HBC; szCheckPointFilePath, szLogPath: LPCTSTR;
+  rgrstmap: PEDB_RSTMAP; crstmap: LONG; szBackupLogPath: LPCTSTR; genLow, genHigh: ULONG): HRESULT; stdcall;
 {$EXTERNALSYM DsRestoreRegister}
-{$ELSE}
-function DsRestoreRegister(hbc: HBC; szCheckPointFilePath, szLogPath: LPCSTR;
-  rgrstmap: PEDB_RSTMAPA; crstmap: LONG; szBackupLogPath: LPCSTR; genLow, genHigh: ULONG): HRESULT; stdcall;
-{$EXTERNALSYM DsRestoreRegister}
-{$ENDIF}
 
 {*************************************************************************************
 Routine Description:
@@ -651,14 +597,8 @@ function DsSetCurrentBackupLogA(szServerName: LPCSTR; dwCurrentLog: DWORD): HRES
 {$EXTERNALSYM DsSetCurrentBackupLogA}
 function DsSetCurrentBackupLogW(szServerName: LPCWSTR; dwCurrentLog: DWORD): HRESULT; stdcall;
 {$EXTERNALSYM DsSetCurrentBackupLogW}
-
-{$IFDEF UNICODE}
-function DsSetCurrentBackupLog(szServerName: LPCWSTR; dwCurrentLog: DWORD): HRESULT; stdcall;
+function DsSetCurrentBackupLog(szServerName: LPCTSTR; dwCurrentLog: DWORD): HRESULT; stdcall;
 {$EXTERNALSYM DsSetCurrentBackupLog}
-{$ELSE}
-function DsSetCurrentBackupLog(szServerName: LPCSTR; dwCurrentLog: DWORD): HRESULT; stdcall;
-{$EXTERNALSYM DsSetCurrentBackupLog}
-{$ENDIF}
 
 {*************************************************************************************
 Routine Description:
@@ -683,22 +623,16 @@ function DsSetAuthIdentityA(szUserName, szDomainName, szPassword: LPCSTR): HRESU
 {$EXTERNALSYM DsSetAuthIdentityA}
 function DsSetAuthIdentityW(szUserName, szDomainName, szPassword: LPCWSTR): HRESULT; stdcall;
 {$EXTERNALSYM DsSetAuthIdentityW}
-
-{$IFDEF UNICODE}
-function DsSetAuthIdentity(szUserName, szDomainName, szPassword: LPCWSTR): HRESULT; stdcall;
+function DsSetAuthIdentity(szUserName, szDomainName, szPassword: LPCTSTR): HRESULT; stdcall;
 {$EXTERNALSYM DsSetAuthIdentity}
-{$ELSE}
-function DsSetAuthIdentity(szUserName, szDomainName, szPassword: LPCSTR): HRESULT; stdcall;
-{$EXTERNALSYM DsSetAuthIdentity}
-{$ENDIF}
 
 implementation
 
-const
-  ntdsbclilib = 'ntdsbclilib.dll';
-
+uses
+  JwaWinDLLNames;
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _DsIsNTDSOnlineA: Pointer;
 
@@ -706,16 +640,12 @@ function DsIsNTDSOnlineA;
 begin
   GetProcedureAddress(_DsIsNTDSOnlineA, ntdsbclilib, 'DsIsNTDSOnlineA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsIsNTDSOnlineA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsIsNTDSOnlineA]
   end;
 end;
-{$ELSE}
-function DsIsNTDSOnlineA; external ntdsbclilib name 'DsIsNTDSOnlineA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsIsNTDSOnlineW: Pointer;
 
@@ -723,53 +653,25 @@ function DsIsNTDSOnlineW;
 begin
   GetProcedureAddress(_DsIsNTDSOnlineW, ntdsbclilib, 'DsIsNTDSOnlineW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsIsNTDSOnlineW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsIsNTDSOnlineW]
   end;
 end;
-{$ELSE}
-function DsIsNTDSOnlineW; external ntdsbclilib name 'DsIsNTDSOnlineW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsIsNTDSOnline: Pointer;
 
 function DsIsNTDSOnline;
 begin
-  GetProcedureAddress(_DsIsNTDSOnline, ntdsbclilib, 'DsIsNTDSOnlineW');
+  GetProcedureAddress(_DsIsNTDSOnline, ntdsbclilib, 'DsIsNTDSOnline' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsIsNTDSOnline]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsIsNTDSOnline]
   end;
 end;
-{$ELSE}
-function DsIsNTDSOnline; external ntdsbclilib name 'DsIsNTDSOnlineW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsIsNTDSOnline: Pointer;
-
-function DsIsNTDSOnline;
-begin
-  GetProcedureAddress(_DsIsNTDSOnline, ntdsbclilib, 'DsIsNTDSOnlineA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsIsNTDSOnline]
-  end;
-end;
-{$ELSE}
-function DsIsNTDSOnline; external ntdsbclilib name 'DsIsNTDSOnlineA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsBackupPrepareA: Pointer;
 
@@ -777,16 +679,12 @@ function DsBackupPrepareA;
 begin
   GetProcedureAddress(_DsBackupPrepareA, ntdsbclilib, 'DsBackupPrepareA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBackupPrepareA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsBackupPrepareA]
   end;
 end;
-{$ELSE}
-function DsBackupPrepareA; external ntdsbclilib name 'DsBackupPrepareA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsBackupPrepareW: Pointer;
 
@@ -794,53 +692,25 @@ function DsBackupPrepareW;
 begin
   GetProcedureAddress(_DsBackupPrepareW, ntdsbclilib, 'DsBackupPrepareW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBackupPrepareW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsBackupPrepareW]
   end;
 end;
-{$ELSE}
-function DsBackupPrepareW; external ntdsbclilib name 'DsBackupPrepareW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsBackupPrepare: Pointer;
 
 function DsBackupPrepare;
 begin
-  GetProcedureAddress(_DsBackupPrepare, ntdsbclilib, 'DsBackupPrepareW');
+  GetProcedureAddress(_DsBackupPrepare, ntdsbclilib, 'DsBackupPrepare' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBackupPrepare]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsBackupPrepare]
   end;
 end;
-{$ELSE}
-function DsBackupPrepare; external ntdsbclilib name 'DsBackupPrepareW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsBackupPrepare: Pointer;
-
-function DsBackupPrepare;
-begin
-  GetProcedureAddress(_DsBackupPrepare, ntdsbclilib, 'DsBackupPrepareA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBackupPrepare]
-  end;
-end;
-{$ELSE}
-function DsBackupPrepare; external ntdsbclilib name 'DsBackupPrepareA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsBackupGetDatabaseNamesA: Pointer;
 
@@ -848,16 +718,12 @@ function DsBackupGetDatabaseNamesA;
 begin
   GetProcedureAddress(_DsBackupGetDatabaseNamesA, ntdsbclilib, 'DsBackupGetDatabaseNamesA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBackupGetDatabaseNamesA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsBackupGetDatabaseNamesA]
   end;
 end;
-{$ELSE}
-function DsBackupGetDatabaseNamesA; external ntdsbclilib name 'DsBackupGetDatabaseNamesA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsBackupGetDatabaseNamesW: Pointer;
 
@@ -865,53 +731,25 @@ function DsBackupGetDatabaseNamesW;
 begin
   GetProcedureAddress(_DsBackupGetDatabaseNamesW, ntdsbclilib, 'DsBackupGetDatabaseNamesW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBackupGetDatabaseNamesW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsBackupGetDatabaseNamesW]
   end;
 end;
-{$ELSE}
-function DsBackupGetDatabaseNamesW; external ntdsbclilib name 'DsBackupGetDatabaseNamesW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsBackupGetDatabaseNames: Pointer;
 
 function DsBackupGetDatabaseNames;
 begin
-  GetProcedureAddress(_DsBackupGetDatabaseNames, ntdsbclilib, 'DsBackupGetDatabaseNamesW');
+  GetProcedureAddress(_DsBackupGetDatabaseNames, ntdsbclilib, 'DsBackupGetDatabaseNames' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBackupGetDatabaseNames]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsBackupGetDatabaseNames]
   end;
 end;
-{$ELSE}
-function DsBackupGetDatabaseNames; external ntdsbclilib name 'DsBackupGetDatabaseNamesW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsBackupGetDatabaseNames: Pointer;
-
-function DsBackupGetDatabaseNames;
-begin
-  GetProcedureAddress(_DsBackupGetDatabaseNames, ntdsbclilib, 'DsBackupGetDatabaseNamesA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBackupGetDatabaseNames]
-  end;
-end;
-{$ELSE}
-function DsBackupGetDatabaseNames; external ntdsbclilib name 'DsBackupGetDatabaseNamesA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsBackupOpenFileA: Pointer;
 
@@ -919,16 +757,12 @@ function DsBackupOpenFileA;
 begin
   GetProcedureAddress(_DsBackupOpenFileA, ntdsbclilib, 'DsBackupOpenFileA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBackupOpenFileA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsBackupOpenFileA]
   end;
 end;
-{$ELSE}
-function DsBackupOpenFileA; external ntdsbclilib name 'DsBackupOpenFileA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsBackupOpenFileW: Pointer;
 
@@ -936,53 +770,25 @@ function DsBackupOpenFileW;
 begin
   GetProcedureAddress(_DsBackupOpenFileW, ntdsbclilib, 'DsBackupOpenFileW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBackupOpenFileW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsBackupOpenFileW]
   end;
 end;
-{$ELSE}
-function DsBackupOpenFileW; external ntdsbclilib name 'DsBackupOpenFileW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsBackupOpenFile: Pointer;
 
 function DsBackupOpenFile;
 begin
-  GetProcedureAddress(_DsBackupOpenFile, ntdsbclilib, 'DsBackupOpenFileW');
+  GetProcedureAddress(_DsBackupOpenFile, ntdsbclilib, 'DsBackupOpenFile' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBackupOpenFile]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsBackupOpenFile]
   end;
 end;
-{$ELSE}
-function DsBackupOpenFile; external ntdsbclilib name 'DsBackupOpenFileW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsBackupOpenFile: Pointer;
-
-function DsBackupOpenFile;
-begin
-  GetProcedureAddress(_DsBackupOpenFile, ntdsbclilib, 'DsBackupOpenFileA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBackupOpenFile]
-  end;
-end;
-{$ELSE}
-function DsBackupOpenFile; external ntdsbclilib name 'DsBackupOpenFileA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsBackupRead: Pointer;
 
@@ -990,16 +796,12 @@ function DsBackupRead;
 begin
   GetProcedureAddress(_DsBackupRead, ntdsbclilib, 'DsBackupRead');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBackupRead]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsBackupRead]
   end;
 end;
-{$ELSE}
-function DsBackupRead; external ntdsbclilib name 'DsBackupRead';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsBackupClose: Pointer;
 
@@ -1007,16 +809,12 @@ function DsBackupClose;
 begin
   GetProcedureAddress(_DsBackupClose, ntdsbclilib, 'DsBackupClose');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBackupClose]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsBackupClose]
   end;
 end;
-{$ELSE}
-function DsBackupClose; external ntdsbclilib name 'DsBackupClose';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsBackupGetBackupLogsA: Pointer;
 
@@ -1024,16 +822,12 @@ function DsBackupGetBackupLogsA;
 begin
   GetProcedureAddress(_DsBackupGetBackupLogsA, ntdsbclilib, 'DsBackupGetBackupLogsA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBackupGetBackupLogsA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsBackupGetBackupLogsA]
   end;
 end;
-{$ELSE}
-function DsBackupGetBackupLogsA; external ntdsbclilib name 'DsBackupGetBackupLogsA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsBackupGetBackupLogsW: Pointer;
 
@@ -1041,53 +835,25 @@ function DsBackupGetBackupLogsW;
 begin
   GetProcedureAddress(_DsBackupGetBackupLogsW, ntdsbclilib, 'DsBackupGetBackupLogsW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBackupGetBackupLogsW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsBackupGetBackupLogsW]
   end;
 end;
-{$ELSE}
-function DsBackupGetBackupLogsW; external ntdsbclilib name 'DsBackupGetBackupLogsW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsBackupGetBackupLogs: Pointer;
 
 function DsBackupGetBackupLogs;
 begin
-  GetProcedureAddress(_DsBackupGetBackupLogs, ntdsbclilib, 'DsBackupGetBackupLogsW');
+  GetProcedureAddress(_DsBackupGetBackupLogs, ntdsbclilib, 'DsBackupGetBackupLogs' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBackupGetBackupLogs]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsBackupGetBackupLogs]
   end;
 end;
-{$ELSE}
-function DsBackupGetBackupLogs; external ntdsbclilib name 'DsBackupGetBackupLogsW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsBackupGetBackupLogs: Pointer;
-
-function DsBackupGetBackupLogs;
-begin
-  GetProcedureAddress(_DsBackupGetBackupLogs, ntdsbclilib, 'DsBackupGetBackupLogsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBackupGetBackupLogs]
-  end;
-end;
-{$ELSE}
-function DsBackupGetBackupLogs; external ntdsbclilib name 'DsBackupGetBackupLogsA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsBackupTruncateLogs: Pointer;
 
@@ -1095,16 +861,12 @@ function DsBackupTruncateLogs;
 begin
   GetProcedureAddress(_DsBackupTruncateLogs, ntdsbclilib, 'DsBackupTruncateLogs');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBackupTruncateLogs]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsBackupTruncateLogs]
   end;
 end;
-{$ELSE}
-function DsBackupTruncateLogs; external ntdsbclilib name 'DsBackupTruncateLogs';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsBackupEnd: Pointer;
 
@@ -1112,16 +874,12 @@ function DsBackupEnd;
 begin
   GetProcedureAddress(_DsBackupEnd, ntdsbclilib, 'DsBackupEnd');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBackupEnd]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsBackupEnd]
   end;
 end;
-{$ELSE}
-function DsBackupEnd; external ntdsbclilib name 'DsBackupEnd';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsBackupFree: Pointer;
 
@@ -1129,16 +887,12 @@ procedure DsBackupFree;
 begin
   GetProcedureAddress(_DsBackupFree, ntdsbclilib, 'DsBackupFree');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBackupFree]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsBackupFree]
   end;
 end;
-{$ELSE}
-procedure DsBackupFree; external ntdsbclilib name 'DsBackupFree';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsRestoreGetDatabaseLocationsA: Pointer;
 
@@ -1146,16 +900,12 @@ function DsRestoreGetDatabaseLocationsA;
 begin
   GetProcedureAddress(_DsRestoreGetDatabaseLocationsA, ntdsbclilib, 'DsRestoreGetDatabaseLocationsA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsRestoreGetDatabaseLocationsA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsRestoreGetDatabaseLocationsA]
   end;
 end;
-{$ELSE}
-function DsRestoreGetDatabaseLocationsA; external ntdsbclilib name 'DsRestoreGetDatabaseLocationsA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsRestoreGetDatabaseLocationsW: Pointer;
 
@@ -1163,53 +913,25 @@ function DsRestoreGetDatabaseLocationsW;
 begin
   GetProcedureAddress(_DsRestoreGetDatabaseLocationsW, ntdsbclilib, 'DsRestoreGetDatabaseLocationsW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsRestoreGetDatabaseLocationsW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsRestoreGetDatabaseLocationsW]
   end;
 end;
-{$ELSE}
-function DsRestoreGetDatabaseLocationsW; external ntdsbclilib name 'DsRestoreGetDatabaseLocationsW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsRestoreGetDatabaseLocations: Pointer;
 
 function DsRestoreGetDatabaseLocations;
 begin
-  GetProcedureAddress(_DsRestoreGetDatabaseLocations, ntdsbclilib, 'DsRestoreGetDatabaseLocationsW');
+  GetProcedureAddress(_DsRestoreGetDatabaseLocations, ntdsbclilib, 'DsRestoreGetDatabaseLocations' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsRestoreGetDatabaseLocations]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsRestoreGetDatabaseLocations]
   end;
 end;
-{$ELSE}
-function DsRestoreGetDatabaseLocations; external ntdsbclilib name 'DsRestoreGetDatabaseLocationsW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsRestoreGetDatabaseLocations: Pointer;
-
-function DsRestoreGetDatabaseLocations;
-begin
-  GetProcedureAddress(_DsRestoreGetDatabaseLocations, ntdsbclilib, 'DsRestoreGetDatabaseLocationsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsRestoreGetDatabaseLocations]
-  end;
-end;
-{$ELSE}
-function DsRestoreGetDatabaseLocations; external ntdsbclilib name 'DsRestoreGetDatabaseLocationsA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsRestorePrepareA: Pointer;
 
@@ -1217,16 +939,12 @@ function DsRestorePrepareA;
 begin
   GetProcedureAddress(_DsRestorePrepareA, ntdsbclilib, 'DsRestorePrepareA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsRestorePrepareA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsRestorePrepareA]
   end;
 end;
-{$ELSE}
-function DsRestorePrepareA; external ntdsbclilib name 'DsRestorePrepareA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsRestorePrepareW: Pointer;
 
@@ -1234,53 +952,25 @@ function DsRestorePrepareW;
 begin
   GetProcedureAddress(_DsRestorePrepareW, ntdsbclilib, 'DsRestorePrepareW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsRestorePrepareW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsRestorePrepareW]
   end;
 end;
-{$ELSE}
-function DsRestorePrepareW; external ntdsbclilib name 'DsRestorePrepareW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsRestorePrepare: Pointer;
 
 function DsRestorePrepare;
 begin
-  GetProcedureAddress(_DsRestorePrepare, ntdsbclilib, 'DsRestorePrepareW');
+  GetProcedureAddress(_DsRestorePrepare, ntdsbclilib, 'DsRestorePrepare' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsRestorePrepare]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsRestorePrepare]
   end;
 end;
-{$ELSE}
-function DsRestorePrepare; external ntdsbclilib name 'DsRestorePrepareW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsRestorePrepare: Pointer;
-
-function DsRestorePrepare;
-begin
-  GetProcedureAddress(_DsRestorePrepare, ntdsbclilib, 'DsRestorePrepareA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsRestorePrepare]
-  end;
-end;
-{$ELSE}
-function DsRestorePrepare; external ntdsbclilib name 'DsRestorePrepareA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsRestoreRegisterA: Pointer;
 
@@ -1288,16 +978,12 @@ function DsRestoreRegisterA;
 begin
   GetProcedureAddress(_DsRestoreRegisterA, ntdsbclilib, 'DsRestoreRegisterA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsRestoreRegisterA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsRestoreRegisterA]
   end;
 end;
-{$ELSE}
-function DsRestoreRegisterA; external ntdsbclilib name 'DsRestoreRegisterA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsRestoreRegisterW: Pointer;
 
@@ -1305,53 +991,25 @@ function DsRestoreRegisterW;
 begin
   GetProcedureAddress(_DsRestoreRegisterW, ntdsbclilib, 'DsRestoreRegisterW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsRestoreRegisterW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsRestoreRegisterW]
   end;
 end;
-{$ELSE}
-function DsRestoreRegisterW; external ntdsbclilib name 'DsRestoreRegisterW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsRestoreRegister: Pointer;
 
 function DsRestoreRegister;
 begin
-  GetProcedureAddress(_DsRestoreRegister, ntdsbclilib, 'DsRestoreRegisterW');
+  GetProcedureAddress(_DsRestoreRegister, ntdsbclilib, 'DsRestoreRegister' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsRestoreRegister]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsRestoreRegister]
   end;
 end;
-{$ELSE}
-function DsRestoreRegister; external ntdsbclilib name 'DsRestoreRegisterW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsRestoreRegister: Pointer;
-
-function DsRestoreRegister;
-begin
-  GetProcedureAddress(_DsRestoreRegister, ntdsbclilib, 'DsRestoreRegisterA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsRestoreRegister]
-  end;
-end;
-{$ELSE}
-function DsRestoreRegister; external ntdsbclilib name 'DsRestoreRegisterA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsRestoreRegisterComplete: Pointer;
 
@@ -1359,16 +1017,12 @@ function DsRestoreRegisterComplete;
 begin
   GetProcedureAddress(_DsRestoreRegisterComplete, ntdsbclilib, 'DsRestoreRegisterComplete');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsRestoreRegisterComplete]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsRestoreRegisterComplete]
   end;
 end;
-{$ELSE}
-function DsRestoreRegisterComplete; external ntdsbclilib name 'DsRestoreRegisterComplete';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsRestoreEnd: Pointer;
 
@@ -1376,16 +1030,12 @@ function DsRestoreEnd;
 begin
   GetProcedureAddress(_DsRestoreEnd, ntdsbclilib, 'DsRestoreEnd');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsRestoreEnd]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsRestoreEnd]
   end;
 end;
-{$ELSE}
-function DsRestoreEnd; external ntdsbclilib name 'DsRestoreEnd';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsSetCurrentBackupLogA: Pointer;
 
@@ -1393,16 +1043,12 @@ function DsSetCurrentBackupLogA;
 begin
   GetProcedureAddress(_DsSetCurrentBackupLogA, ntdsbclilib, 'DsSetCurrentBackupLogA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsSetCurrentBackupLogA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsSetCurrentBackupLogA]
   end;
 end;
-{$ELSE}
-function DsSetCurrentBackupLogA; external ntdsbclilib name 'DsSetCurrentBackupLogA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsSetCurrentBackupLogW: Pointer;
 
@@ -1410,53 +1056,25 @@ function DsSetCurrentBackupLogW;
 begin
   GetProcedureAddress(_DsSetCurrentBackupLogW, ntdsbclilib, 'DsSetCurrentBackupLogW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsSetCurrentBackupLogW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsSetCurrentBackupLogW]
   end;
 end;
-{$ELSE}
-function DsSetCurrentBackupLogW; external ntdsbclilib name 'DsSetCurrentBackupLogW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsSetCurrentBackupLog: Pointer;
 
 function DsSetCurrentBackupLog;
 begin
-  GetProcedureAddress(_DsSetCurrentBackupLog, ntdsbclilib, 'DsSetCurrentBackupLogW');
+  GetProcedureAddress(_DsSetCurrentBackupLog, ntdsbclilib, 'DsSetCurrentBackupLog' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsSetCurrentBackupLog]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsSetCurrentBackupLog]
   end;
 end;
-{$ELSE}
-function DsSetCurrentBackupLog; external ntdsbclilib name 'DsSetCurrentBackupLogW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsSetCurrentBackupLog: Pointer;
-
-function DsSetCurrentBackupLog;
-begin
-  GetProcedureAddress(_DsSetCurrentBackupLog, ntdsbclilib, 'DsSetCurrentBackupLogA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsSetCurrentBackupLog]
-  end;
-end;
-{$ELSE}
-function DsSetCurrentBackupLog; external ntdsbclilib name 'DsSetCurrentBackupLogA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsSetAuthIdentityA: Pointer;
 
@@ -1464,16 +1082,12 @@ function DsSetAuthIdentityA;
 begin
   GetProcedureAddress(_DsSetAuthIdentityA, ntdsbclilib, 'DsSetAuthIdentityA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsSetAuthIdentityA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsSetAuthIdentityA]
   end;
 end;
-{$ELSE}
-function DsSetAuthIdentityA; external ntdsbclilib name 'DsSetAuthIdentityA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsSetAuthIdentityW: Pointer;
 
@@ -1481,50 +1095,65 @@ function DsSetAuthIdentityW;
 begin
   GetProcedureAddress(_DsSetAuthIdentityW, ntdsbclilib, 'DsSetAuthIdentityW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsSetAuthIdentityW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsSetAuthIdentityW]
   end;
 end;
+
+var
+  _DsSetAuthIdentity: Pointer;
+
+function DsSetAuthIdentity;
+begin
+  GetProcedureAddress(_DsSetAuthIdentity, ntdsbclilib, 'DsSetAuthIdentity' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsSetAuthIdentity]
+  end;
+end;
+
 {$ELSE}
+
+function DsIsNTDSOnlineA; external ntdsbclilib name 'DsIsNTDSOnlineA';
+function DsIsNTDSOnlineW; external ntdsbclilib name 'DsIsNTDSOnlineW';
+function DsIsNTDSOnline; external ntdsbclilib name 'DsIsNTDSOnline' + AWSuffix;
+function DsBackupPrepareA; external ntdsbclilib name 'DsBackupPrepareA';
+function DsBackupPrepareW; external ntdsbclilib name 'DsBackupPrepareW';
+function DsBackupPrepare; external ntdsbclilib name 'DsBackupPrepare' + AWSuffix;
+function DsBackupGetDatabaseNamesA; external ntdsbclilib name 'DsBackupGetDatabaseNamesA';
+function DsBackupGetDatabaseNamesW; external ntdsbclilib name 'DsBackupGetDatabaseNamesW';
+function DsBackupGetDatabaseNames; external ntdsbclilib name 'DsBackupGetDatabaseNames' + AWSuffix;
+function DsBackupOpenFileA; external ntdsbclilib name 'DsBackupOpenFileA';
+function DsBackupOpenFileW; external ntdsbclilib name 'DsBackupOpenFileW';
+function DsBackupOpenFile; external ntdsbclilib name 'DsBackupOpenFile' + AWSuffix;
+function DsBackupRead; external ntdsbclilib name 'DsBackupRead';
+function DsBackupClose; external ntdsbclilib name 'DsBackupClose';
+function DsBackupGetBackupLogsA; external ntdsbclilib name 'DsBackupGetBackupLogsA';
+function DsBackupGetBackupLogsW; external ntdsbclilib name 'DsBackupGetBackupLogsW';
+function DsBackupGetBackupLogs; external ntdsbclilib name 'DsBackupGetBackupLogs' + AWSuffix;
+function DsBackupTruncateLogs; external ntdsbclilib name 'DsBackupTruncateLogs';
+function DsBackupEnd; external ntdsbclilib name 'DsBackupEnd';
+procedure DsBackupFree; external ntdsbclilib name 'DsBackupFree';
+function DsRestoreGetDatabaseLocationsA; external ntdsbclilib name 'DsRestoreGetDatabaseLocationsA';
+function DsRestoreGetDatabaseLocationsW; external ntdsbclilib name 'DsRestoreGetDatabaseLocationsW';
+function DsRestoreGetDatabaseLocations; external ntdsbclilib name 'DsRestoreGetDatabaseLocations' + AWSuffix;
+function DsRestorePrepareA; external ntdsbclilib name 'DsRestorePrepareA';
+function DsRestorePrepareW; external ntdsbclilib name 'DsRestorePrepareW';
+function DsRestorePrepare; external ntdsbclilib name 'DsRestorePrepare' + AWSuffix;
+function DsRestoreRegisterA; external ntdsbclilib name 'DsRestoreRegisterA';
+function DsRestoreRegisterW; external ntdsbclilib name 'DsRestoreRegisterW';
+function DsRestoreRegister; external ntdsbclilib name 'DsRestoreRegister' + AWSuffix;
+function DsRestoreRegisterComplete; external ntdsbclilib name 'DsRestoreRegisterComplete';
+function DsRestoreEnd; external ntdsbclilib name 'DsRestoreEnd';
+function DsSetCurrentBackupLogA; external ntdsbclilib name 'DsSetCurrentBackupLogA';
+function DsSetCurrentBackupLogW; external ntdsbclilib name 'DsSetCurrentBackupLogW';
+function DsSetCurrentBackupLog; external ntdsbclilib name 'DsSetCurrentBackupLog' + AWSuffix;
+function DsSetAuthIdentityA; external ntdsbclilib name 'DsSetAuthIdentityA';
 function DsSetAuthIdentityW; external ntdsbclilib name 'DsSetAuthIdentityW';
+function DsSetAuthIdentity; external ntdsbclilib name 'DsSetAuthIdentity' + AWSuffix;
+
 {$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsSetAuthIdentity: Pointer;
-
-function DsSetAuthIdentity;
-begin
-  GetProcedureAddress(_DsSetAuthIdentity, ntdsbclilib, 'DsSetAuthIdentityW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsSetAuthIdentity]
-  end;
-end;
-{$ELSE}
-function DsSetAuthIdentity; external ntdsbclilib name 'DsSetAuthIdentityW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsSetAuthIdentity: Pointer;
-
-function DsSetAuthIdentity;
-begin
-  GetProcedureAddress(_DsSetAuthIdentity, ntdsbclilib, 'DsSetAuthIdentityA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsSetAuthIdentity]
-  end;
-end;
-{$ELSE}
-function DsSetAuthIdentity; external ntdsbclilib name 'DsSetAuthIdentityA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
 
 end.

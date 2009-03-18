@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Authz Generic Audits API interface Unit for Object Pascal                    }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: adtgen.h, released August 2001. The original Pascal    }
 { code is: AdtGen.pas, released October 2001. The initial developer of the     }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaAdtGen.pas,v 1.10 2005/09/06 16:36:50 marquardt Exp $
 
 unit JwaAdtGen;
 
@@ -49,12 +50,12 @@ unit JwaAdtGen;
 {$HPPEMIT '#include "adtgen.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinNT, JwaWinType;
+  JwaWindows;
 
 //
 // type of audit 
@@ -192,7 +193,7 @@ const
 // APT_Ulong : format flag : causes a number to appear in hex
 //
 
-  AP_FormatHex = ($0001 shl AP_ParamTypeBits);
+  AP_FormatHex = $0001 shl AP_ParamTypeBits;
   {$EXTERNALSYM AP_FormatHex}
 
 //
@@ -201,7 +202,7 @@ const
 //                           object type.
 //
 
-  AP_AccessMask = ($0002 shl AP_ParamTypeBits);
+  AP_AccessMask = $0002 shl AP_ParamTypeBits;
   {$EXTERNALSYM AP_AccessMask}
 
                                                        
@@ -209,30 +210,32 @@ const
 // APT_String : format flag : causes a string to be treated as a file-path
 //
 
-  AP_Filespec = ($0001 shl AP_ParamTypeBits);
+  AP_Filespec = $0001 shl AP_ParamTypeBits;
   {$EXTERNALSYM AP_Filespec}
 
 //
 // APT_LogonId : control flag : logon-id is captured from the process token
 //
 
-  AP_PrimaryLogonId = ($0001 shl AP_ParamTypeBits);
+  AP_PrimaryLogonId = $0001 shl AP_ParamTypeBits;
   {$EXTERNALSYM AP_PrimaryLogonId}
 
 //
 // APT_LogonId : control flag : logon-id is captured from the thread token
 //
 
-  AP_ClientLogonId = ($0002 shl AP_ParamTypeBits);
+  AP_ClientLogonId = $0002 shl AP_ParamTypeBits;
   {$EXTERNALSYM AP_ClientLogonId}
 
 //
 // internal helper macros
 //
 
+// (rom) MACRO
 function ApExtractType(TypeFlags: DWORD): AUDIT_PARAM_TYPE;
 {$EXTERNALSYM ApExtractType}
 
+// (rom) MACRO
 function ApExtractFlags(TypeFlags: DWORD): DWORD;
 {$EXTERNALSYM ApExtractFlags}
 
@@ -326,7 +329,7 @@ const
 // set of valid audit control flags 
 //
 
-  APF_ValidFlags = (APF_AuditSuccess);
+  APF_ValidFlags = APF_AuditSuccess;
   {$EXTERNALSYM APF_ValidFlags}
 
 //
@@ -412,61 +415,44 @@ type
   PAUDIT_HANDLE = ^AUDIT_HANDLE;
   {$EXTERNALSYM PAUDIT_HANDLE}
 
+(* todo
 function AuthzpRegisterAuditEvent(pAuditEventType: PAUTHZ_AUDIT_EVENT_TYPE_OLD; var phAuditContext: AUDIT_HANDLE): BOOL; stdcall;
 {$EXTERNALSYM AuthzpRegisterAuditEvent}
 
 function AuthzpUnregisterAuditEvent(var phAuditContext: AUDIT_HANDLE): BOOL; stdcall;
 {$EXTERNALSYM AuthzpUnregisterAuditEvent}
+*)
+
+//
+// Begin support for extensible auditing.
+//
+
+const
+  AUTHZ_ALLOW_MULTIPLE_SOURCE_INSTANCES = $1;
+  {$EXTERNALSYM AUTHZ_ALLOW_MULTIPLE_SOURCE_INSTANCES}
+
+  AUTHZ_AUDIT_INSTANCE_INFORMATION = $2;
+  {$EXTERNALSYM AUTHZ_AUDIT_INSTANCE_INFORMATION}
 
 implementation
 
-const
-  authz_lib = 'authz.dll';
+uses
+  JwaWinDLLNames;
 
-
+// (rom) MACRO implementation
 function ApExtractType(TypeFlags: DWORD): AUDIT_PARAM_TYPE;
 begin
   Result := AUDIT_PARAM_TYPE(TypeFlags and AP_ParamTypeMask);
 end;
 
+// (rom) MACRO implementation
 function ApExtractFlags(TypeFlags: DWORD): DWORD;
 begin
   Result := TypeFlags and not AP_ParamTypeMask;
 end;
 
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _AuthzpRegisterAuditEvent: Pointer;
-
-function AuthzpRegisterAuditEvent;
-begin
-  GetProcedureAddress(_AuthzpRegisterAuditEvent, authz_lib, 'AuthzpRegisterAuditEvent');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AuthzpRegisterAuditEvent]
-  end;
-end;
-{$ELSE}
-function AuthzpRegisterAuditEvent; external authz_lib name 'AuthzpRegisterAuditEvent';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _AuthzpUnregisterAuditEvent: Pointer;
-
-function AuthzpUnregisterAuditEvent;
-begin
-  GetProcedureAddress(_AuthzpUnregisterAuditEvent, authz_lib, 'AuthzpUnregisterAuditEvent');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AuthzpUnregisterAuditEvent]
-  end;
-end;
-{$ELSE}
-function AuthzpUnregisterAuditEvent; external authz_lib name 'AuthzpUnregisterAuditEvent';
-{$ENDIF DYNAMIC_LINK}
-
+{
+AuthzpRegisterAuditEvent
+AuthzpUnregisterAuditEvent
+}
 end.

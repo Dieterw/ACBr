@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Security Service Provider API interface Unit for Object Pascal               }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: sspi.h, released June 2000. The original Pascal        }
 { code is: Sspi.pas, released December 2000. The initial developer of the      }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaSspi.pas,v 1.10 2005/09/06 16:36:50 marquardt Exp $
 
 unit JwaSspi;
 
@@ -52,12 +53,12 @@ unit JwaSspi;
 {$HPPEMIT '#typedef SEC_WCHAR *PSEC_WCHAR'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinType;
+  JwaWindows;
 
 //
 // Determine environment:
@@ -101,17 +102,17 @@ type
 // Decide what a string - 32 bits only since for 16 bits it is clear.
 //
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   SECURITY_PSTR = ^SEC_WCHAR;
   {$EXTERNALSYM SECURITY_PSTR}
   SECURITY_PCSTR = ^SEC_WCHAR;
   {$EXTERNALSYM SECURITY_PCSTR}
-{$ELSE}
+  {$ELSE}
   SECURITY_PSTR = ^SEC_CHAR;
   {$EXTERNALSYM SECURITY_PSTR}
   SECURITY_PCSTR = ^SEC_CHAR;
   {$EXTERNALSYM SECURITY_PCSTR}
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 // Okay, security specific types:
@@ -212,19 +213,19 @@ type
   {$EXTERNALSYM SecPkgInfoA}
   TSecPkgInfoA = SecPkgInfoA;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   SecPkgInfo = SecPkgInfoW;
   {$EXTERNALSYM SecPkgInfo}
   PSecPkgInfo = PSecPkgInfoW;
   {$EXTERNALSYM PSecPkgInfo}
   TSecPkgInfo = TSecPkgInfoW;
-{$ELSE}
+  {$ELSE}
   SecPkgInfo = SecPkgInfoA;
   {$EXTERNALSYM SecPkgInfo}
   PSecPkgInfo = PSecPkgInfoA;
   {$EXTERNALSYM PSecPkgInfo}
   TSecPkgInfo = TSecPkgInfoA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 //  Security Package Capabilities
@@ -619,21 +620,21 @@ type
   TSecPkgCredentialsNamesA = SecPkgCredentials_NamesA;
   PSecPkgCredentialsNamesA = PSecPkgCredentials_NamesA;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   SecPkgCredentials_Names = SecPkgCredentials_NamesW;
   {$EXTERNALSYM SecPkgCredentials_Names}
   PSecPkgCredentials_Names = PSecPkgCredentials_NamesW;
   {$EXTERNALSYM PSecPkgCredentials_Names}
   TSecPkgCredentialsNames = TSecPkgCredentialsNamesW;
   PSecPkgCredentialsNames = PSecPkgCredentialsNamesW;
-{$ELSE}
+  {$ELSE}
   SecPkgCredentials_Names = SecPkgCredentials_NamesA;
   {$EXTERNALSYM SecPkgCredentials_Names}
   PSecPkgCredentials_Names = PSecPkgCredentials_NamesA;
   {$EXTERNALSYM PSecPkgCredentials_Names}
   TSecPkgCredentialsNames = TSecPkgCredentialsNamesA;
   PSecPkgCredentialsNames = PSecPkgCredentialsNamesA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 //  Security Context Attributes:
@@ -735,21 +736,21 @@ type
   TSecPkgContextNamesA = SecPkgContext_NamesA;
   PSecPkgContextNamesA = PSecPkgContext_NamesA;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   SecPkgContext_Names = SecPkgContext_NamesW;
   {$EXTERNALSYM SecPkgContext_Names}
   PSecPkgContext_Names = PSecPkgContext_NamesW;
   {$EXTERNALSYM PSecPkgContext_Names}
   TSecPkgContextNames = TSecPkgContextNamesW;
   PSecPkgContextNames = PSecPkgContextNamesW;
-{$ELSE}
+  {$ELSE}
   SecPkgContext_Names = SecPkgContext_NamesA;
   {$EXTERNALSYM SecPkgContext_Names}
   PSecPkgContext_Names = PSecPkgContext_NamesA;
   {$EXTERNALSYM PSecPkgContext_Names}
   TSecPkgContextNames = TSecPkgContextNamesA;
   PSecPkgContextNames = PSecPkgContextNamesA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   PSecPkgContext_LifeSpan = ^SecPkgContext_LifeSpan;
   {$EXTERNALSYM PSecPkgContext_LifeSpan}
@@ -805,21 +806,21 @@ type
   TSecPkgContextKeyInfoW = SecPkgContext_KeyInfoW;
   PSecPkgContextKeyInfoW = PSecPkgContext_KeyInfoW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   SecPkgContext_KeyInfo  = SecPkgContext_KeyInfoW;
   {$EXTERNALSYM SecPkgContext_KeyInfo}
   PSecPkgContext_KeyInfo = PSecPkgContext_KeyInfoW;
   {$EXTERNALSYM PSecPkgContext_KeyInfo}
   TSecPkgContextKeyInfo = TSecPkgContextKeyInfoW;
   PSecPkgContextKeyInfo = PSecPkgContextKeyInfoW;
-{$ELSE}
+  {$ELSE}
   SecPkgContext_KeyInfo  = SecPkgContext_KeyInfoA;
   {$EXTERNALSYM SecPkgContext_KeyInfo}
   PSecPkgContext_KeyInfo = PSecPkgContext_KeyInfoA;
   {$EXTERNALSYM PSecPkgContext_KeyInfo}
   TSecPkgContextKeyInfo = TSecPkgContextKeyInfoA;
   PSecPkgContextKeyInfo = PSecPkgContextKeyInfoA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   PSecPkgContext_AuthorityA = ^SecPkgContext_AuthorityA;
   {$EXTERNALSYM PSecPkgContext_AuthorityA}
@@ -843,21 +844,21 @@ type
   TSecPkgContextAuthorityW = SecPkgContext_AuthorityW;
   PSecPkgContextAuthorityW = PSecPkgContext_AuthorityW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   SecPkgContext_Authority  = SecPkgContext_AuthorityW;
   {$EXTERNALSYM SecPkgContext_Authority}
   PSecPkgContext_Authority = PSecPkgContext_AuthorityW;
   {$EXTERNALSYM PSecPkgContext_Authority}
   TSecPkgContextAuthority = TSecPkgContextAuthorityW;
   PSecPkgContextAuthority = PSecPkgContextAuthorityW;
-{$ELSE}
+  {$ELSE}
   SecPkgContext_Authority  = SecPkgContext_AuthorityA;
   {$EXTERNALSYM SecPkgContext_Authority}
   PSecPkgContext_Authority = PSecPkgContext_AuthorityA;
   {$EXTERNALSYM PSecPkgContext_Authority}
   TSecPkgContextAuthority = SecPkgContext_AuthorityA;
   PSecPkgContextAuthority = PSecPkgContext_AuthorityA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   PSecPkgContext_ProtoInfoA = ^SecPkgContext_ProtoInfoA;
   {$EXTERNALSYM PSecPkgContext_ProtoInfoA}
@@ -885,21 +886,21 @@ type
   TSecPkgContextProtoInfoW = SecPkgContext_ProtoInfoW;
   PSecPkgContextProtoInfoW = PSecPkgContext_ProtoInfoW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   SecPkgContext_ProtoInfo  = SecPkgContext_ProtoInfoW;
   {$EXTERNALSYM SecPkgContext_ProtoInfo}
   PSecPkgContext_ProtoInfo = PSecPkgContext_ProtoInfoW;
   {$EXTERNALSYM PSecPkgContext_ProtoInfo}
   TSecPkgContextProtoInfo = TSecPkgContextProtoInfoW;
   PSecPkgContextProtoInfo = PSecPkgContextProtoInfoW;
-{$ELSE}
+  {$ELSE}
   SecPkgContext_ProtoInfo  = SecPkgContext_ProtoInfoA;
   {$EXTERNALSYM SecPkgContext_ProtoInfo}
   PSecPkgContext_ProtoInfo = PSecPkgContext_ProtoInfoA;
   {$EXTERNALSYM PSecPkgContext_ProtoInfo}
   TSecPkgContextProtoInfo = TSecPkgContextProtoInfoA;
   PSecPkgContextProtoInfo = PSecPkgContextProtoInfoA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   PSecPkgContext_PasswordExpiry = ^SecPkgContext_PasswordExpiry;
   {$EXTERNALSYM PSecPkgContext_PasswordExpiry}
@@ -968,21 +969,21 @@ type
   TSecPkgContextFlags = SecPkgContext_Flags;
   PSecPkgContextFlags = PSecPkgContext_Flags;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   SecPkgContext_PackageInfo  = SecPkgContext_PackageInfoW;
   {$EXTERNALSYM SecPkgContext_PackageInfo}
   PSecPkgContext_PackageInfo = PSecPkgContext_PackageInfoW;
   {$EXTERNALSYM PSecPkgContext_PackageInfo}
   TSecPkgContextPackageInfo = TSecPkgContextPackageInfoW;
   PSecPkgContextPackageInfo = PSecPkgContextPackageInfoW;
-{$ELSE}
+  {$ELSE}
   SecPkgContext_PackageInfo  = SecPkgContext_PackageInfoA;
   {$EXTERNALSYM SecPkgContext_PackageInfo}
   PSecPkgContext_PackageInfo = PSecPkgContext_PackageInfoA;
   {$EXTERNALSYM PSecPkgContext_PackageInfo}
   TSecPkgContextPackageInfo = TSecPkgContextPackageInfoA;
   PSecPkgContextPackageInfo = PSecPkgContextPackageInfoA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   PSecPkgContext_NegotiationInfoA = ^SecPkgContext_NegotiationInfoA;
   {$EXTERNALSYM PSecPkgContext_NegotiationInfoA}
@@ -1008,21 +1009,21 @@ type
   TSecPkgContextNegotiationInfoW = SecPkgContext_NegotiationInfoW;
   PSecPkgContextNegotiationInfoW = PSecPkgContext_NegotiationInfoW ;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   SecPkgContext_NegotiationInfo  = SecPkgContext_NegotiationInfoW;
   {$EXTERNALSYM SecPkgContext_NegotiationInfo}
   PSecPkgContext_NegotiationInfo = PSecPkgContext_NegotiationInfoW;
   {$EXTERNALSYM PSecPkgContext_NegotiationInfo}
   TSecPkgContextNegotiationInfo = TSecPkgContextNegotiationInfoW;
   PSecPkgContextNegotiationInfo = PSecPkgContextNegotiationInfoW;
-{$ELSE}
+  {$ELSE}
   SecPkgContext_NegotiationInfo  = SecPkgContext_NegotiationInfoA;
   {$EXTERNALSYM SecPkgContext_NegotiationInfo}
   PSecPkgContext_NegotiationInfo = PSecPkgContext_NegotiationInfoA;
   {$EXTERNALSYM PSecPkgContext_NegotiationInfo}
   TSecPkgContextNegotiationInfo = TSecPkgContextNegotiationInfoA;
   PSecPkgContextNegotiationInfo = PSecPkgContextNegotiationInfoA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 const
   SECPKG_NEGOTIATION_COMPLETE    = 0;
@@ -1061,21 +1062,21 @@ type
   TSecPkgContextNativeNamesA = SecPkgContext_NativeNamesA;
   PSecPkgContextNativeNamesA = PSecPkgContext_NativeNamesA;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   SecPkgContext_NativeNames  = SecPkgContext_NativeNamesW;
   {$EXTERNALSYM SecPkgContext_NativeNames}
   PSecPkgContext_NativeNames = PSecPkgContext_NativeNamesW;
   {$EXTERNALSYM PSecPkgContext_NativeNames}
   TSecPkgContextNativeNames = TSecPkgContextNativeNamesW;
   PSecPkgContextNativeNames = PSecPkgContextNativeNamesW;
-{$ELSE}
+  {$ELSE}
   SecPkgContext_NativeNames  = SecPkgContext_NativeNamesA;
   {$EXTERNALSYM SecPkgContext_NativeNames}
   PSecPkgContext_NativeNames = PSecPkgContext_NativeNamesA;
   {$EXTERNALSYM PSecPkgContext_NativeNames}
   TSecPkgContextNativeNames = TSecPkgContextNativeNamesA;
   PSecPkgContextNativeNames = PSecPkgContextNativeNamesA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   _SecPkgContext_CredentialNameW = record
     CredentialType: Cardinal;
@@ -1101,21 +1102,21 @@ type
   TSecPkgContextCredentialNameA = SecPkgContext_CredentialNameA;
   PSecPkgContextCredentialNameA = PSecPkgContext_CredentialNameA;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   SecPkgContext_CredentialName = SecPkgContext_CredentialNameW;
   {$EXTERNALSYM SecPkgContext_CredentialName}
   PSecPkgContext_CredentialName = PSecPkgContext_CredentialNameW;
   {$EXTERNALSYM PSecPkgContext_CredentialName}
   TSecPkgContextCredentialName = TSecPkgContextCredentialNameW;
   PSecPkgContextCredentialName = PSecPkgContextCredentialNameW;
-{$ELSE}
+  {$ELSE}
   SecPkgContext_CredentialName = SecPkgContext_CredentialNameA;
   {$EXTERNALSYM SecPkgContext_CredentialName}
   PSecPkgContext_CredentialName = PSecPkgContext_CredentialNameA;
   {$EXTERNALSYM PSecPkgContext_CredentialName}
   TSecPkgContextCredentialName = TSecPkgContextCredentialNameA;
   PSecPkgContextCredentialName = PSecPkgContextCredentialNameA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   _SecPkgContext_AccessToken = record
     AccessToken: Pointer;
@@ -1164,7 +1165,7 @@ type
   TSecPkgContextTarget = SecPkgContext_Target;
   PSecPkgContextTarget = PSecPkgContext_Target;  
 
-  SEC_GET_KEY_FN = procedure (
+  SEC_GET_KEY_FN = procedure(
     Arg: Pointer;                           // Argument passed in
     Principal: Pointer;                     // Principal ID
     KeyVer: Cardinal;                       // Key Version
@@ -1190,7 +1191,7 @@ function AcquireCredentialsHandleW(pszPrincipal, pszPackage: PSecWChar;
 {$EXTERNALSYM AcquireCredentialsHandleW}
 
 type
-  ACQUIRE_CREDENTIALS_HANDLE_FN_W = function (
+  ACQUIRE_CREDENTIALS_HANDLE_FN_W = function(
     pszPrincipal: PSecWChar;
     pszPackage: PSecWChar;
     fCredentialsUse: Cardinal;
@@ -1210,7 +1211,7 @@ function AcquireCredentialsHandleA(pszPrincipal, pszPackage: PSecChar;
 {$EXTERNALSYM AcquireCredentialsHandleA}
 
 type
-  ACQUIRE_CREDENTIALS_HANDLE_FN_A = function (
+  ACQUIRE_CREDENTIALS_HANDLE_FN_A = function(
     pszPrincipal: PSecChar;
     pszPackage: PSecChar;
     fCredentialsUse: Cardinal;
@@ -1243,13 +1244,13 @@ type
   ACQUIRE_CREDENTIALS_HANDLE_FN = ACQUIRE_CREDENTIALS_HANDLE_FN_A;
   {$EXTERNALSYM ACQUIRE_CREDENTIALS_HANDLE_FN}
   TAcquireCredentialsHandleFn = TAcquireCredentialsHandleFnA;
-{$ENDIF}
+{$ENDIF UNICODE}
 
 function FreeCredentialsHandle(phCredential: PCredHandle): SECURITY_STATUS; stdcall;
 {$EXTERNALSYM FreeCredentialsHandle}
 
 type
-  FREE_CREDENTIALS_HANDLE_FN = function (phCredential: PCredHandle): SECURITY_STATUS; stdcall;
+  FREE_CREDENTIALS_HANDLE_FN = function(phCredential: PCredHandle): SECURITY_STATUS; stdcall;
   {$EXTERNALSYM FREE_CREDENTIALS_HANDLE_FN}
 
 function AddCredentialsW(hCredentials: PCredHandle; pszPrincipal: PSecWChar;
@@ -1259,7 +1260,7 @@ function AddCredentialsW(hCredentials: PCredHandle; pszPrincipal: PSecWChar;
 {$EXTERNALSYM AddCredentialsW}
 
 type
-  ADD_CREDENTIALS_FN_W = function (hCredentials: PCredHandle; pszPrincipal: PSecWChar;
+  ADD_CREDENTIALS_FN_W = function(hCredentials: PCredHandle; pszPrincipal: PSecWChar;
     pszPackage: PSecWChar; fCredentialUse: Cardinal; pAuthData: Pointer;
     pGetKeyFn: SEC_GET_KEY_FN; pvGetKeyArgument: Pointer;
     ptsExpiry: PTimeStamp): SECURITY_STATUS; stdcall;
@@ -1271,7 +1272,7 @@ function AddCredentialsA(hCredentials: PCredHandle; pszPrincipal: PSecChar;
 {$EXTERNALSYM AddCredentialsA}
 
 type
-  ADD_CREDENTIALS_FN_A = function (hCredentials: PCredHandle; pszPrincipal: PSecChar;
+  ADD_CREDENTIALS_FN_A = function(hCredentials: PCredHandle; pszPrincipal: PSecChar;
     pszPackage: PSecChar; fCredentialUse: Cardinal; pAuthData: Pointer;
     pGetKeyFn: SEC_GET_KEY_FN; pvGetKeyArgument: Pointer; ptsExpiry: PTimeStamp): SECURITY_STATUS; stdcall;
   {$EXTERNALSYM ADD_CREDENTIALS_FN_A}
@@ -1284,7 +1285,7 @@ function AddCredentials(hCredentials: PCredHandle; pszPrincipal: PSecWChar;
 {$EXTERNALSYM AddCredentials}
 
 type
-  ADD_CREDENTIALS_FN = function (hCredentials: PCredHandle; pszPrincipal: PSecWChar;
+  ADD_CREDENTIALS_FN = function(hCredentials: PCredHandle; pszPrincipal: PSecWChar;
     pszPackage: PSecWChar; fCredentialUse: Cardinal; pAuthData: Pointer;
     pGetKeyFn: SEC_GET_KEY_FN; pvGetKeyArgument: Pointer;
     ptsExpiry: PTimeStamp): SECURITY_STATUS; stdcall;
@@ -1296,11 +1297,11 @@ function AddCredentials(hCredentials: PCredHandle; pszPrincipal: PSecChar;
 {$EXTERNALSYM AddCredentials}
 
 type
-  ADD_CREDENTIALS_FN = function (hCredentials: PCredHandle; pszPrincipal: PSecChar;
+  ADD_CREDENTIALS_FN = function(hCredentials: PCredHandle; pszPrincipal: PSecChar;
     pszPackage: PSecChar; fCredentialUse: Cardinal; pAuthData: Pointer;
     pGetKeyFn: SEC_GET_KEY_FN; pvGetKeyArgument: Pointer; ptsExpiry: PTimeStamp): SECURITY_STATUS; stdcall;
   {$EXTERNALSYM ADD_CREDENTIALS_FN}
-{$ENDIF}
+{$ENDIF UNICODE}
 
 ////////////////////////////////////////////////////////////////////////
 ///
@@ -1315,7 +1316,7 @@ function InitializeSecurityContextW(phCredential: PCredHandle; phContext: PCtxtH
 {$EXTERNALSYM InitializeSecurityContextW}
 
 type
-  INITIALIZE_SECURITY_CONTEXT_FN_W = function (phCredential: PCredHandle; phContext: PCtxtHandle;
+  INITIALIZE_SECURITY_CONTEXT_FN_W = function(phCredential: PCredHandle; phContext: PCtxtHandle;
     pszTargetName: PSecWChar; fContextReq, Reserved1, TargetDataRep: Cardinal;
     pInput: PSecBufferDesc; Reserved2: Cardinal; phNewContext: PCtxtHandle;
     pOutput: PSecBufferDesc; var pfContextAttr: Cardinal; ptsExpiry: PTimeStamp): SECURITY_STATUS; stdcall;
@@ -1328,7 +1329,7 @@ function InitializeSecurityContextA(phCredential: PCredHandle; phContext: PCtxtH
 {$EXTERNALSYM InitializeSecurityContextA}
 
 type
-  INITIALIZE_SECURITY_CONTEXT_FN_A = function (phCredential: PCredHandle; phContext: PCtxtHandle;
+  INITIALIZE_SECURITY_CONTEXT_FN_A = function(phCredential: PCredHandle; phContext: PCtxtHandle;
     pszTargetName: PSecChar; fContextReq, Reserved1, TargetDataRep: Cardinal;
     pInput: PSecBufferDesc; Reserved2: Cardinal; phNewContext: PCtxtHandle;
     pOutput: PSecBufferDesc; var pfContextAttr: Cardinal; ptsExpiry: PTimeStamp): SECURITY_STATUS; stdcall;
@@ -1342,7 +1343,7 @@ function InitializeSecurityContext(phCredential: PCredHandle; phContext: PCtxtHa
 {$EXTERNALSYM InitializeSecurityContext}
 
 type
-  INITIALIZE_SECURITY_CONTEXT_FN = function (phCredential: PCredHandle; phContext: PCtxtHandle;
+  INITIALIZE_SECURITY_CONTEXT_FN = function(phCredential: PCredHandle; phContext: PCtxtHandle;
     pszTargetName: PSecWChar; fContextReq, Reserved1, TargetDataRep: Cardinal;
     pInput: PSecBufferDesc; Reserved2: Cardinal; phNewContext: PCtxtHandle;
     pOutput: PSecBufferDesc; var pfContextAttr: Cardinal; ptsExpiry: PTimeStamp): SECURITY_STATUS; stdcall;
@@ -1355,12 +1356,12 @@ function InitializeSecurityContext(phCredential: PCredHandle; phContext: PCtxtHa
 {$EXTERNALSYM InitializeSecurityContext}
 
 type
-  INITIALIZE_SECURITY_CONTEXT_FN = function (phCredential: PCredHandle; phContext: PCtxtHandle;
+  INITIALIZE_SECURITY_CONTEXT_FN = function(phCredential: PCredHandle; phContext: PCtxtHandle;
     pszTargetName: PSecChar; fContextReq, Reserved1, TargetDataRep: Cardinal;
     pInput: PSecBufferDesc; Reserved2: Cardinal; phNewContext: PCtxtHandle;
     pOutput: PSecBufferDesc; var pfContextAttr: Cardinal; ptsExpiry: PTimeStamp): SECURITY_STATUS; stdcall;
   {$EXTERNALSYM INITIALIZE_SECURITY_CONTEXT_FN}
-{$ENDIF}
+{$ENDIF UNICODE}
 
 function AcceptSecurityContext(phCredential: PCredHandle; phContext: PCtxtHandle;
   pInput: PSecBufferDesc; fContextReq, TargetDataRep: Cardinal;
@@ -1369,7 +1370,7 @@ function AcceptSecurityContext(phCredential: PCredHandle; phContext: PCtxtHandle
 {$EXTERNALSYM AcceptSecurityContext}
 
 type
-  ACCEPT_SECURITY_CONTEXT_FN = function (phCredential: PCredHandle; phContext: PCtxtHandle;
+  ACCEPT_SECURITY_CONTEXT_FN = function(phCredential: PCredHandle; phContext: PCtxtHandle;
     pInput: PSecBufferDesc; fContextReq, TargetDataRep: Cardinal;
     phNewContext: PCtxtHandle; pOutput: PSecBufferDesc; var pfContextAttr: Cardinal;
     ptsExpiry: PTimeStamp): SECURITY_STATUS; stdcall;
@@ -1379,28 +1380,28 @@ function CompleteAuthToken(phContext: PCtxtHandle; pToken: PSecBufferDesc): SECU
 {$EXTERNALSYM CompleteAuthToken}
 
 type
-  COMPLETE_AUTH_TOKEN_FN = function (phContext: PCtxtHandle; pToken: PSecBufferDesc): SECURITY_STATUS; stdcall;
+  COMPLETE_AUTH_TOKEN_FN = function(phContext: PCtxtHandle; pToken: PSecBufferDesc): SECURITY_STATUS; stdcall;
   {$EXTERNALSYM COMPLETE_AUTH_TOKEN_FN}
 
 function ImpersonateSecurityContext(phContext: PCtxtHandle): SECURITY_STATUS; stdcall;
 {$EXTERNALSYM ImpersonateSecurityContext}
 
 type
-  IMPERSONATE_SECURITY_CONTEXT_FN = function (phContext: PCtxtHandle): SECURITY_STATUS; stdcall;
+  IMPERSONATE_SECURITY_CONTEXT_FN = function(phContext: PCtxtHandle): SECURITY_STATUS; stdcall;
   {$EXTERNALSYM IMPERSONATE_SECURITY_CONTEXT_FN}
 
 function RevertSecurityContext(phContext: PCtxtHandle): SECURITY_STATUS; stdcall;
 {$EXTERNALSYM RevertSecurityContext}
 
 type
-  REVERT_SECURITY_CONTEXT_FN = function (phContext: PCtxtHandle): SECURITY_STATUS; stdcall;
+  REVERT_SECURITY_CONTEXT_FN = function(phContext: PCtxtHandle): SECURITY_STATUS; stdcall;
   {$EXTERNALSYM REVERT_SECURITY_CONTEXT_FN}
 
 function QuerySecurityContextToken(phContext: PCtxtHandle; var Token: Pointer): SECURITY_STATUS; stdcall;
 {$EXTERNALSYM QuerySecurityContextToken}
 
 type
-  QUERY_SECURITY_CONTEXT_TOKEN_FN = function (phContext: PCtxtHandle;
+  QUERY_SECURITY_CONTEXT_TOKEN_FN = function(phContext: PCtxtHandle;
     var Token: Pointer): SECURITY_STATUS; stdcall;
   {$EXTERNALSYM QUERY_SECURITY_CONTEXT_TOKEN_FN}
 
@@ -1408,14 +1409,14 @@ function DeleteSecurityContext(phContext: PCtxtHandle): SECURITY_STATUS; stdcall
 {$EXTERNALSYM DeleteSecurityContext}
 
 type
-  DELETE_SECURITY_CONTEXT_FN = function (phContext: PCtxtHandle): SECURITY_STATUS; stdcall;
+  DELETE_SECURITY_CONTEXT_FN = function(phContext: PCtxtHandle): SECURITY_STATUS; stdcall;
   {$EXTERNALSYM DELETE_SECURITY_CONTEXT_FN}
 
 function ApplyControlToken(phContext: PCtxtHandle; pInput: PSecBufferDesc): SECURITY_STATUS; stdcall;
 {$EXTERNALSYM ApplyControlToken}
 
 type
-  APPLY_CONTROL_TOKEN_FN = function (phContext: PCtxtHandle; pInput: PSecBufferDesc): SECURITY_STATUS; stdcall;
+  APPLY_CONTROL_TOKEN_FN = function(phContext: PCtxtHandle; pInput: PSecBufferDesc): SECURITY_STATUS; stdcall;
   {$EXTERNALSYM APPLY_CONTROL_TOKEN_FN}
 
 function QueryContextAttributesW(phContext: PCtxtHandle; ulAttribute: Cardinal;
@@ -1423,7 +1424,7 @@ function QueryContextAttributesW(phContext: PCtxtHandle; ulAttribute: Cardinal;
 {$EXTERNALSYM QueryContextAttributesW}
 
 type
-  QUERY_CONTEXT_ATTRIBUTES_FN_W = function (phContext: PCtxtHandle;
+  QUERY_CONTEXT_ATTRIBUTES_FN_W = function(phContext: PCtxtHandle;
     ulAttribute: Cardinal; pBuffer: Pointer): SECURITY_STATUS; stdcall;
   {$EXTERNALSYM QUERY_CONTEXT_ATTRIBUTES_FN_W}
 
@@ -1432,7 +1433,7 @@ function QueryContextAttributesA(phContext: PCtxtHandle; ulAttribute: Cardinal;
 {$EXTERNALSYM QueryContextAttributesA}
 
 type
-  QUERY_CONTEXT_ATTRIBUTES_FN_A = function (phContext: PCtxtHandle;
+  QUERY_CONTEXT_ATTRIBUTES_FN_A = function(phContext: PCtxtHandle;
     ulAttribute: Cardinal; pBuffer: Pointer): SECURITY_STATUS; stdcall;
   {$EXTERNALSYM QUERY_CONTEXT_ATTRIBUTES_FN_A}
 
@@ -1442,7 +1443,7 @@ function QueryContextAttributes(phContext: PCtxtHandle; ulAttribute: Cardinal;
 {$EXTERNALSYM QueryContextAttributes}
 
 type
-  QUERY_CONTEXT_ATTRIBUTES_FN = function (phContext: PCtxtHandle;
+  QUERY_CONTEXT_ATTRIBUTES_FN = function(phContext: PCtxtHandle;
     ulAttribute: Cardinal; pBuffer: Pointer): SECURITY_STATUS; stdcall;
   {$EXTERNALSYM QUERY_CONTEXT_ATTRIBUTES_FN}
 {$ELSE}
@@ -1451,17 +1452,17 @@ function QueryContextAttributes(phContext: PCtxtHandle; ulAttribute: Cardinal;
 {$EXTERNALSYM QueryContextAttributes}
 
 type
-  QUERY_CONTEXT_ATTRIBUTES_FN = function (phContext: PCtxtHandle;
+  QUERY_CONTEXT_ATTRIBUTES_FN = function(phContext: PCtxtHandle;
     ulAttribute: Cardinal; pBuffer: Pointer): SECURITY_STATUS; stdcall;
   {$EXTERNALSYM QUERY_CONTEXT_ATTRIBUTES_FN}
-{$ENDIF}
+{$ENDIF UNICODE}
 
 function SetContextAttributesW(phContext: PCtxtHandle; ulAttribute: Cardinal;
   pBuffer: Pointer; cbBuffer: Cardinal): SECURITY_STATUS; stdcall;
 {$EXTERNALSYM SetContextAttributesW}
 
 type
-  SET_CONTEXT_ATTRIBUTES_FN_W = function (phContext: PCtxtHandle; ulAttribute: Cardinal;
+  SET_CONTEXT_ATTRIBUTES_FN_W = function(phContext: PCtxtHandle; ulAttribute: Cardinal;
     pBuffer: Pointer; cbBuffer: Cardinal): SECURITY_STATUS; stdcall;
   {$EXTERNALSYM SET_CONTEXT_ATTRIBUTES_FN_W}
 
@@ -1470,7 +1471,7 @@ function SetContextAttributesA(phContext: PCtxtHandle; ulAttribute: Cardinal;
 {$EXTERNALSYM SetContextAttributesA}
 
 type
-  SET_CONTEXT_ATTRIBUTES_FN_A = function (phContext: PCtxtHandle; ulAttribute: Cardinal;
+  SET_CONTEXT_ATTRIBUTES_FN_A = function(phContext: PCtxtHandle; ulAttribute: Cardinal;
     pBuffer: Pointer; cbBuffer: Cardinal): SECURITY_STATUS; stdcall;
   {$EXTERNALSYM SET_CONTEXT_ATTRIBUTES_FN_A}
 
@@ -1490,14 +1491,14 @@ function SetContextAttributes(phContext: PCtxtHandle; ulAttribute: Cardinal;
 type
   SET_CONTEXT_ATTRIBUTES_FN = SET_CONTEXT_ATTRIBUTES_FN_A;
   {$EXTERNALSYM SET_CONTEXT_ATTRIBUTES_FN}
-{$ENDIF}
+{$ENDIF UNICODE}
 
 function QueryCredentialsAttributesW(phCredential: PCredHandle;
   ulAttribute: Cardinal; pBuffer: Pointer): SECURITY_STATUS; stdcall;
 {$EXTERNALSYM QueryCredentialsAttributesW}
 
 type
-  QUERY_CREDENTIALS_ATTRIBUTES_FN_W = function (phCredential: PCredHandle;
+  QUERY_CREDENTIALS_ATTRIBUTES_FN_W = function(phCredential: PCredHandle;
     ulAttribute: Cardinal; pBuffer: Pointer): SECURITY_STATUS; stdcall;
   {$EXTERNALSYM QUERY_CREDENTIALS_ATTRIBUTES_FN_W}
 
@@ -1506,7 +1507,7 @@ function QueryCredentialsAttributesA(phCredential: PCredHandle;
 {$EXTERNALSYM QueryCredentialsAttributesA}
 
 type
-  QUERY_CREDENTIALS_ATTRIBUTES_FN_A = function (phCredential: PCredHandle;
+  QUERY_CREDENTIALS_ATTRIBUTES_FN_A = function(phCredential: PCredHandle;
     ulAttribute: Cardinal; pBuffer: Pointer): SECURITY_STATUS; stdcall;
   {$EXTERNALSYM QUERY_CREDENTIALS_ATTRIBUTES_FN_A}
 
@@ -1516,7 +1517,7 @@ function QueryCredentialsAttributes(phCredential: PCredHandle;
 {$EXTERNALSYM QueryCredentialsAttributes}
 
 type
-  QUERY_CREDENTIALS_ATTRIBUTES_FN = function (phCredential: PCredHandle;
+  QUERY_CREDENTIALS_ATTRIBUTES_FN = function(phCredential: PCredHandle;
     ulAttribute: Cardinal; pBuffer: Pointer): SECURITY_STATUS; stdcall;
   {$EXTERNALSYM QUERY_CREDENTIALS_ATTRIBUTES_FN}
 {$ELSE}
@@ -1525,16 +1526,16 @@ function QueryCredentialsAttributes(phCredential: PCredHandle;
 {$EXTERNALSYM QueryCredentialsAttributes}
 
 type
-  QUERY_CREDENTIALS_ATTRIBUTES_FN = function (phCredential: PCredHandle;
+  QUERY_CREDENTIALS_ATTRIBUTES_FN = function(phCredential: PCredHandle;
     ulAttribute: Cardinal; pBuffer: Pointer): SECURITY_STATUS; stdcall;
   {$EXTERNALSYM QUERY_CREDENTIALS_ATTRIBUTES_FN}
-{$ENDIF}
+{$ENDIF UNICODE}
 
 function FreeContextBuffer(pvContextBuffer: Pointer): SECURITY_STATUS; stdcall;
 {$EXTERNALSYM FreeContextBuffer}
 
 type
-  FREE_CONTEXT_BUFFER_FN = function (pvContextBuffer: Pointer): SECURITY_STATUS; stdcall;
+  FREE_CONTEXT_BUFFER_FN = function(pvContextBuffer: Pointer): SECURITY_STATUS; stdcall;
   {$EXTERNALSYM FREE_CONTEXT_BUFFER_FN}
 
 ///////////////////////////////////////////////////////////////////
@@ -1548,7 +1549,7 @@ function MakeSignature(phContext: PCtxtHandle; fQOP: Cardinal;
 {$EXTERNALSYM MakeSignature}
 
 type
-  MAKE_SIGNATURE_FN = function (phContext: PCtxtHandle; fQOP: Cardinal;
+  MAKE_SIGNATURE_FN = function(phContext: PCtxtHandle; fQOP: Cardinal;
     pMessage: PSecBufferDesc; MessageSeqNo: Cardinal): SECURITY_STATUS; stdcall;
   {$EXTERNALSYM MAKE_SIGNATURE_FN}
 
@@ -1557,7 +1558,7 @@ function VerifySignature(phContext: PCtxtHandle; pMessage: PSecBufferDesc;
 {$EXTERNALSYM VerifySignature}
 
 type
-  VERIFY_SIGNATURE_FN = function (phContext: PCtxtHandle; pMessage: PSecBufferDesc;
+  VERIFY_SIGNATURE_FN = function(phContext: PCtxtHandle; pMessage: PSecBufferDesc;
     MessageSeqNo: Cardinal; var pfQOP: Cardinal): SECURITY_STATUS; stdcall;
   {$EXTERNALSYM VERIFY_SIGNATURE_FN}
 
@@ -1570,7 +1571,7 @@ function EncryptMessage(phContext: PCtxtHandle; fQOP: Cardinal;
 {$EXTERNALSYM EncryptMessage}
 
 type
-  ENCRYPT_MESSAGE_FN = function (phContext: PCtxtHandle; fQOP: Cardinal;
+  ENCRYPT_MESSAGE_FN = function(phContext: PCtxtHandle; fQOP: Cardinal;
     pMessage: PSecBufferDesc; MessageSeqNo: Cardinal): SECURITY_STATUS; stdcall;
   {$EXTERNALSYM ENCRYPT_MESSAGE_FN}
 
@@ -1579,7 +1580,7 @@ function DecryptMessage(phContext: PCtxtHandle; pMessage: PSecBufferDesc;
 {$EXTERNALSYM DecryptMessage}
 
 type
-  DECRYPT_MESSAGE_FN = function (phContext: PCtxtHandle; pMessage: PSecBufferDesc;
+  DECRYPT_MESSAGE_FN = function(phContext: PCtxtHandle; pMessage: PSecBufferDesc;
     MessageSeqNo: Cardinal; var pfQOP: Cardinal): SECURITY_STATUS; stdcall;
   {$EXTERNALSYM DECRYPT_MESSAGE_FN}
 
@@ -1594,7 +1595,7 @@ function EnumerateSecurityPackagesW(var pcPackages: Cardinal;
 {$EXTERNALSYM EnumerateSecurityPackagesW}
 
 type
-  ENUMERATE_SECURITY_PACKAGES_FN_W = function (var pcPackages: Cardinal;
+  ENUMERATE_SECURITY_PACKAGES_FN_W = function(var pcPackages: Cardinal;
     var ppPackageInfo: PSecPkgInfoW): SECURITY_STATUS; stdcall;
   {$EXTERNALSYM ENUMERATE_SECURITY_PACKAGES_FN_W}
 
@@ -1603,7 +1604,7 @@ function EnumerateSecurityPackagesA(var pcPackages: Cardinal;
 {$EXTERNALSYM EnumerateSecurityPackagesA}
 
 type
-  ENUMERATE_SECURITY_PACKAGES_FN_A = function (var pcPackages: Cardinal;
+  ENUMERATE_SECURITY_PACKAGES_FN_A = function(var pcPackages: Cardinal;
     var ppPackageInfo: PSecPkgInfoA): SECURITY_STATUS; stdcall;
   {$EXTERNALSYM ENUMERATE_SECURITY_PACKAGES_FN_A}
 
@@ -1613,7 +1614,7 @@ function EnumerateSecurityPackages(var pcPackages: Cardinal;
 {$EXTERNALSYM EnumerateSecurityPackages}
 
 type
-  ENUMERATE_SECURITY_PACKAGES_FN = function (var pcPackages: Cardinal;
+  ENUMERATE_SECURITY_PACKAGES_FN = function(var pcPackages: Cardinal;
     var ppPackageInfo: PSecPkgInfoW): SECURITY_STATUS; stdcall;
   {$EXTERNALSYM ENUMERATE_SECURITY_PACKAGES_FN}
 {$ELSE}
@@ -1622,17 +1623,17 @@ function EnumerateSecurityPackages(var pcPackages: Cardinal;
 {$EXTERNALSYM EnumerateSecurityPackages}
 
 type
-  ENUMERATE_SECURITY_PACKAGES_FN = function (var pcPackages: Cardinal;
+  ENUMERATE_SECURITY_PACKAGES_FN = function(var pcPackages: Cardinal;
     var ppPackageInfo: PSecPkgInfoA): SECURITY_STATUS; stdcall;
   {$EXTERNALSYM ENUMERATE_SECURITY_PACKAGES_FN}
-{$ENDIF}
+{$ENDIF UNICODE}
 
 function QuerySecurityPackageInfoW(pszPackageName: PSecWChar;
   var ppPackageInfo: PSecPkgInfoW): SECURITY_STATUS; stdcall;
 {$EXTERNALSYM QuerySecurityPackageInfoW}
 
 type
-  QUERY_SECURITY_PACKAGE_INFO_FN_W = function (pszPackageName: PSecWChar;
+  QUERY_SECURITY_PACKAGE_INFO_FN_W = function(pszPackageName: PSecWChar;
     var ppPackageInfo: PSecPkgInfoW): SECURITY_STATUS; stdcall;
   {$EXTERNALSYM QUERY_SECURITY_PACKAGE_INFO_FN_W}
 
@@ -1641,7 +1642,7 @@ function QuerySecurityPackageInfoA(pszPackageName: PSecChar;
 {$EXTERNALSYM QuerySecurityPackageInfoA}
 
 type
-  QUERY_SECURITY_PACKAGE_INFO_FN_A = function (pszPackageName: PSecChar;
+  QUERY_SECURITY_PACKAGE_INFO_FN_A = function(pszPackageName: PSecChar;
     var ppPackageInfo: PSecPkgInfoA): SECURITY_STATUS; stdcall;
   {$EXTERNALSYM QUERY_SECURITY_PACKAGE_INFO_FN_A}
 
@@ -1651,7 +1652,7 @@ function QuerySecurityPackageInfo(pszPackageName: PSecWChar;
 {$EXTERNALSYM QuerySecurityPackageInfo}
 
 type
-  QUERY_SECURITY_PACKAGE_INFO_FN = function (pszPackageName: PSecWChar;
+  QUERY_SECURITY_PACKAGE_INFO_FN = function(pszPackageName: PSecWChar;
     var ppPackageInfo: PSecPkgInfoW): SECURITY_STATUS; stdcall;
   {$EXTERNALSYM QUERY_SECURITY_PACKAGE_INFO_FN}
 {$ELSE}
@@ -1660,10 +1661,10 @@ function QuerySecurityPackageInfo(pszPackageName: PSecChar;
 {$EXTERNALSYM QuerySecurityPackageInfo}
 
 type
-  QUERY_SECURITY_PACKAGE_INFO_FN = function (pszPackageName: PSecChar;
+  QUERY_SECURITY_PACKAGE_INFO_FN = function(pszPackageName: PSecChar;
     var ppPackageInfo: PSecPkgInfoA): SECURITY_STATUS; stdcall;
   {$EXTERNALSYM QUERY_SECURITY_PACKAGE_INFO_FN}
-{$ENDIF}
+{$ENDIF UNICODE}
 
 type
   _SecDelegationType = (
@@ -1690,7 +1691,6 @@ type
 ////
 ///////////////////////////////////////////////////////////////////////////
 
-
 //
 // Proxies are only available on NT platforms
 //
@@ -1706,7 +1706,7 @@ function ExportSecurityContext(phContext: PCtxtHandle; fFlags: ULONG;
 {$EXTERNALSYM ExportSecurityContext}
 
 type
-  EXPORT_SECURITY_CONTEXT_FN = function (phContext: PCtxtHandle; fFlags: ULONG;
+  EXPORT_SECURITY_CONTEXT_FN = function(phContext: PCtxtHandle; fFlags: ULONG;
     pPackedContext: PSecBuffer; var pToken: Pointer): SECURITY_STATUS; stdcall;
   {$EXTERNALSYM EXPORT_SECURITY_CONTEXT_FN}
 
@@ -1715,7 +1715,7 @@ function ImportSecurityContextW(pszPackage: PSecWChar; pPackedContext: PSecBuffe
 {$EXTERNALSYM ImportSecurityContextW}
 
 type
-  IMPORT_SECURITY_CONTEXT_FN_W = function (pszPackage: PSecWChar; pPackedContext: PSecBuffer;
+  IMPORT_SECURITY_CONTEXT_FN_W = function(pszPackage: PSecWChar; pPackedContext: PSecBuffer;
     Token: Pointer; phContext: PCtxtHandle): SECURITY_STATUS; stdcall;
   {$EXTERNALSYM IMPORT_SECURITY_CONTEXT_FN_W}
 
@@ -1724,7 +1724,7 @@ function ImportSecurityContextA(pszPackage: PSecChar; pPackedContext: PSecBuffer
 {$EXTERNALSYM ImportSecurityContextA}
 
 type
-  IMPORT_SECURITY_CONTEXT_FN_A = function (pszPackage: PSecChar; pPackedContext: PSecBuffer;
+  IMPORT_SECURITY_CONTEXT_FN_A = function(pszPackage: PSecChar; pPackedContext: PSecBuffer;
     Token: Pointer; phContext: PCtxtHandle): SECURITY_STATUS; stdcall;
   {$EXTERNALSYM IMPORT_SECURITY_CONTEXT_FN_A}
 
@@ -1734,7 +1734,7 @@ function ImportSecurityContext(pszPackage: PSecWChar; pPackedContext: PSecBuffer
 {$EXTERNALSYM ImportSecurityContext}
 
 type
-  IMPORT_SECURITY_CONTEXT_FN = function (pszPackage: PSecWChar; pPackedContext: PSecBuffer;
+  IMPORT_SECURITY_CONTEXT_FN = function(pszPackage: PSecWChar; pPackedContext: PSecBuffer;
     Token: Pointer; phContext: PCtxtHandle): SECURITY_STATUS; stdcall;
   {$EXTERNALSYM IMPORT_SECURITY_CONTEXT_FN}
 {$ELSE}
@@ -1743,10 +1743,10 @@ function ImportSecurityContext(pszPackage: PSecChar; pPackedContext: PSecBuffer;
 {$EXTERNALSYM ImportSecurityContext}
 
 type
-  IMPORT_SECURITY_CONTEXT_FN = function (pszPackage: PSecChar; pPackedContext: PSecBuffer;
+  IMPORT_SECURITY_CONTEXT_FN = function(pszPackage: PSecChar; pPackedContext: PSecBuffer;
     Token: Pointer; phContext: PCtxtHandle): SECURITY_STATUS; stdcall;
   {$EXTERNALSYM IMPORT_SECURITY_CONTEXT_FN}
-{$ENDIF}
+{$ENDIF UNICODE}
 
 (*
 
@@ -1832,17 +1832,17 @@ const
   SECURITY_ENTRYPOINT16     = 'INITSECURITYINTERFACEA';
   {$EXTERNALSYM SECURITY_ENTRYPOINT16}
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   SECURITY_ENTRYPOINT = SECURITY_ENTRYPOINTW;
   {$EXTERNALSYM SECURITY_ENTRYPOINT}
   SECURITY_ENTRYPOINT_ANSI = SECURITY_ENTRYPOINT_ANSIW;
   {$EXTERNALSYM SECURITY_ENTRYPOINT_ANSI}
-{$ELSE}
+  {$ELSE}
   SECURITY_ENTRYPOINT = SECURITY_ENTRYPOINTA;
   {$EXTERNALSYM SECURITY_ENTRYPOINT}
   SECURITY_ENTRYPOINT_ANSI = SECURITY_ENTRYPOINT_ANSIA;
   {$EXTERNALSYM SECURITY_ENTRYPOINT_ANSI}
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 function FreeCredentialHandle(phCredential: PCredHandle): SECURITY_STATUS;
 {$EXTERNALSYM FreeCredentialHandle}
@@ -1910,7 +1910,7 @@ type
     Reserved4: Pointer;
     ExportSecurityContext: EXPORT_SECURITY_CONTEXT_FN;
     ImportSecurityContextA: IMPORT_SECURITY_CONTEXT_FN_A;
-    AddCredentialsA : ADD_CREDENTIALS_FN_A;
+    AddCredentialsA: ADD_CREDENTIALS_FN_A;
     Reserved8: Pointer;
     QuerySecurityContextToken: QUERY_SECURITY_CONTEXT_TOKEN_FN;
     EncryptMessage: ENCRYPT_MESSAGE_FN;
@@ -1922,19 +1922,19 @@ type
   {$EXTERNALSYM SecurityFunctionTableA}
   TSecurityFunctionTableA = SecurityFunctionTableA;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   SecurityFunctionTable  = SecurityFunctionTableW;
   {$EXTERNALSYM SecurityFunctionTable}
   PSecurityFunctionTable = PSecurityFunctionTableW;
   {$EXTERNALSYM PSecurityFunctionTable}
   TSecurityFunctionTable = TSecurityFunctionTableW;
-{$ELSE}
+  {$ELSE}
   SecurityFunctionTable  = SecurityFunctionTableA;
   {$EXTERNALSYM SecurityFunctionTable}
   PSecurityFunctionTable = PSecurityFunctionTableA;
   {$EXTERNALSYM PSecurityFunctionTable}
   TSecurityFunctionTable = TSecurityFunctionTableA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 const
   // Function table has all routines through DecryptMessage
@@ -1949,14 +1949,14 @@ function InitSecurityInterfaceA: PSecurityFunctionTableA; stdcall;
 {$EXTERNALSYM InitSecurityInterfaceA}
 
 type
-  INIT_SECURITY_INTERFACE_A = function : PSecurityFunctionTableA; stdcall;
+  INIT_SECURITY_INTERFACE_A = function: PSecurityFunctionTableA; stdcall;
   {$EXTERNALSYM INIT_SECURITY_INTERFACE_A}
 
 function InitSecurityInterfaceW: PSecurityFunctionTableW; stdcall;
 {$EXTERNALSYM InitSecurityInterfaceW}
 
 type
-  INIT_SECURITY_INTERFACE_W = function : PSecurityFunctionTableW; stdcall;
+  INIT_SECURITY_INTERFACE_W = function: PSecurityFunctionTableW; stdcall;
   {$EXTERNALSYM INIT_SECURITY_INTERFACE_W}
 
 {$IFDEF UNICODE}
@@ -1964,16 +1964,16 @@ function InitSecurityInterface: PSecurityFunctionTableW; stdcall;
 {$EXTERNALSYM InitSecurityInterface}
 
 type
-  INIT_SECURITY_INTERFACE = function : PSecurityFunctionTableW; stdcall;
+  INIT_SECURITY_INTERFACE = function: PSecurityFunctionTableW; stdcall;
   {$EXTERNALSYM INIT_SECURITY_INTERFACE}
 {$ELSE}
 function InitSecurityInterface: PSecurityFunctionTableA; stdcall;
 {$EXTERNALSYM InitSecurityInterface}
 
 type
-  INIT_SECURITY_INTERFACE = function : PSecurityFunctionTableA; stdcall;
+  INIT_SECURITY_INTERFACE = function: PSecurityFunctionTableA; stdcall;
   {$EXTERNALSYM INIT_SECURITY_INTERFACE}
-{$ENDIF}
+{$ENDIF UNICODE}
 
 //
 // SASL Profile Support
@@ -1994,7 +1994,7 @@ function SaslEnumerateProfiles(var ProfileList: LPWSTR;
 function SaslEnumerateProfiles(var ProfileList: LPSTR;
   var ProfileCount: ULONG): SECURITY_STATUS; stdcall;
 {$EXTERNALSYM SaslEnumerateProfiles}
-{$ENDIF}
+{$ENDIF UNICODE}
 
 function SaslGetProfilePackageA(ProfileName: LPSTR;
   var PackageInfo: PSecPkgInfoA): SECURITY_STATUS; stdcall;
@@ -2011,7 +2011,7 @@ function SaslGetProfilePackage(ProfileName: LPWSTR;
 function SaslGetProfilePackage(ProfileName: LPSTR;
   var PackageInfo: PSecPkgInfoA): SECURITY_STATUS; stdcall;
 {$EXTERNALSYM SaslGetProfilePackage}
-{$ENDIF}
+{$ENDIF UNICODE}
 
 function SaslIdentifyPackageA(pInput: PSecBufferDesc;
   var PackageInfo: PSecPkgInfoA): SECURITY_STATUS; stdcall;
@@ -2028,7 +2028,7 @@ function SaslIdentifyPackage(pInput: PSecBufferDesc;
 function SaslIdentifyPackage(pInput: PSecBufferDesc;
   var PackageInfo: PSecPkgInfoA): SECURITY_STATUS; stdcall;
 {$EXTERNALSYM SaslIdentifyPackage}
-{$ENDIF}
+{$ENDIF UNICODE}
 
 function SaslInitializeSecurityContextW(phCredential: PCredHandle;
   phContext: PCtxtHandle; pszTargetName: LPWSTR; fContextReq, Reserved1: Cardinal;
@@ -2057,7 +2057,7 @@ function SaslInitializeSecurityContext(phCredential: PCredHandle;
   phNewContext: PCtxtHandle; pOutput: PSecBufferDesc; var pfContextAttr: Cardinal;
   ptsExpiry: PTimeStamp): SECURITY_STATUS; stdcall;
 {$EXTERNALSYM SaslInitializeSecurityContext}
-{$ENDIF}
+{$ENDIF UNICODE}
 
 function SaslAcceptSecurityContext(phCredential: PCredHandle;
   phContext: PCtxtHandle; pInput: PSecBufferDesc; fContextReq: Cardinal;
@@ -2136,7 +2136,7 @@ type
   TSecWinNTAuthIdentityA = SEC_WINNT_AUTH_IDENTITY_A;
   PSecWinNTAuthIdentityA = PSEC_WINNT_AUTH_IDENTITY_A;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   SEC_WINNT_AUTH_IDENTITY = SEC_WINNT_AUTH_IDENTITY_W;
   {$EXTERNALSYM SEC_WINNT_AUTH_IDENTITY}
   PSEC_WINNT_AUTH_IDENTITY = PSEC_WINNT_AUTH_IDENTITY_W;
@@ -2145,7 +2145,7 @@ type
   {$EXTERNALSYM _SEC_WINNT_AUTH_IDENTITY}
   TSecWinNTAuthIdentity = TSecWinNTAuthIdentityW;
   PSecWinNTAuthIdentity = PSecWinNTAuthIdentityW;
-{$ELSE}
+  {$ELSE}
   SEC_WINNT_AUTH_IDENTITY = SEC_WINNT_AUTH_IDENTITY_A;
   {$EXTERNALSYM SEC_WINNT_AUTH_IDENTITY}
   PSEC_WINNT_AUTH_IDENTITY = PSEC_WINNT_AUTH_IDENTITY_A;
@@ -2154,7 +2154,7 @@ type
   {$EXTERNALSYM _SEC_WINNT_AUTH_IDENTITY}
   TSecWinNTAuthIdentity = TSecWinNTAuthIdentityA;
   PSecWinNTAuthIdentity = PSecWinNTAuthIdentityA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 // This is the combined authentication identity structure that may be
@@ -2207,21 +2207,21 @@ type
   TSecWinNTAuthIdentityExA = SEC_WINNT_AUTH_IDENTITY_EXA;
   PSecWinNTAuthIdentityExA = PSEC_WINNT_AUTH_IDENTITY_EXA;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   SEC_WINNT_AUTH_IDENTITY_EX = SEC_WINNT_AUTH_IDENTITY_EXW;
   {$EXTERNALSYM SEC_WINNT_AUTH_IDENTITY_EX}
   PSEC_WINNT_AUTH_IDENTITY_EX = PSEC_WINNT_AUTH_IDENTITY_EXW;
   {$EXTERNALSYM PSEC_WINNT_AUTH_IDENTITY_EX}
   TSecWinNTAuthIdentityEx = TSecWinNTAuthIdentityExW;
   PSecWinNTAuthIdentityEx = PSecWinNTAuthIdentityExW;
-{$ELSE}
+  {$ELSE}
   SEC_WINNT_AUTH_IDENTITY_EX = SEC_WINNT_AUTH_IDENTITY_EXA;
   {$EXTERNALSYM SEC_WINNT_AUTH_IDENTITY_EX}
   PSEC_WINNT_AUTH_IDENTITY_EX = PSEC_WINNT_AUTH_IDENTITY_EXA;
   {$EXTERNALSYM PSEC_WINNT_AUTH_IDENTITY_EX}
   TSecWinNTAuthIdentityEx = TSecWinNTAuthIdentityExA;
   PSecWinNTAuthIdentityEx = PSecWinNTAuthIdentityExA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 // Common types used by negotiable security packages
@@ -2275,7 +2275,7 @@ function AddSecurityPackage(pszPackageName: PSEC_WCHAR; Options: PSECURITY_PACKA
 {$ELSE}
 function AddSecurityPackage(pszPackageName: PSEC_CHAR; Options: PSECURITY_PACKAGE_OPTIONS): SECURITY_STATUS; stdcall;
 {$EXTERNALSYM AddSecurityPackage}
-{$ENDIF}
+{$ENDIF UNICODE}
 
 function DeleteSecurityPackageA(pszPackageName: PSEC_CHAR): SECURITY_STATUS; stdcall;
 {$EXTERNALSYM DeleteSecurityPackageA}
@@ -2289,9 +2289,12 @@ function DeleteSecurityPackage(pszPackageName: PSEC_WCHAR): SECURITY_STATUS; std
 {$ELSE}
 function DeleteSecurityPackage(pszPackageName: PSEC_CHAR): SECURITY_STATUS; stdcall;
 {$EXTERNALSYM DeleteSecurityPackage}
-{$ENDIF}
+{$ENDIF UNICODE}
 
 implementation
+
+uses
+  JwaWinDLLNames;
 
 procedure SecInvalidateHandle(var x: SecHandle);
 begin
@@ -2309,11 +2312,18 @@ begin
   Result := FreeCredentialsHandle(phCredential);
 end;
 
-const
-  secur32 = 'secur32.dll';
+//function SspiLogonUserW; external secur32 name 'SspiLogonUserW';
+//function SspiLogonUserA; external secur32 name 'SspiLogonUserA';
+//{$IFDEF UNICODE}
+//function SspiLogonUser; external secur32 name 'SspiLogonUserW';
+//{$ELSE}
+//function SspiLogonUser; external secur32 name 'SspiLogonUserA';
+//{$ENDIF UNICODE}
 
+//function DelegateSecurityContext; external secur32 name 'DelegateSecurityContext';
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _AcquireCredentialsHandleW: Pointer;
 
@@ -2321,16 +2331,12 @@ function AcquireCredentialsHandleW;
 begin
   GetProcedureAddress(_AcquireCredentialsHandleW, secur32, 'AcquireCredentialsHandleW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AcquireCredentialsHandleW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AcquireCredentialsHandleW]
   end;
 end;
-{$ELSE}
-function AcquireCredentialsHandleW; external secur32 name 'AcquireCredentialsHandleW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _AcquireCredentialsHandleA: Pointer;
 
@@ -2338,53 +2344,25 @@ function AcquireCredentialsHandleA;
 begin
   GetProcedureAddress(_AcquireCredentialsHandleA, secur32, 'AcquireCredentialsHandleA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AcquireCredentialsHandleA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AcquireCredentialsHandleA]
   end;
 end;
-{$ELSE}
-function AcquireCredentialsHandleA; external secur32 name 'AcquireCredentialsHandleA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _AcquireCredentialsHandle: Pointer;
 
 function AcquireCredentialsHandle;
 begin
-  GetProcedureAddress(_AcquireCredentialsHandle, secur32, 'AcquireCredentialsHandleW');
+  GetProcedureAddress(_AcquireCredentialsHandle, secur32, 'AcquireCredentialsHandle' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AcquireCredentialsHandle]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AcquireCredentialsHandle]
   end;
 end;
-{$ELSE}
-function AcquireCredentialsHandle; external secur32 name 'AcquireCredentialsHandleW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _AcquireCredentialsHandle: Pointer;
-
-function AcquireCredentialsHandle;
-begin
-  GetProcedureAddress(_AcquireCredentialsHandle, secur32, 'AcquireCredentialsHandleA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AcquireCredentialsHandle]
-  end;
-end;
-{$ELSE}
-function AcquireCredentialsHandle; external secur32 name 'AcquireCredentialsHandleA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _FreeCredentialsHandle: Pointer;
 
@@ -2392,16 +2370,12 @@ function FreeCredentialsHandle;
 begin
   GetProcedureAddress(_FreeCredentialsHandle, secur32, 'FreeCredentialsHandle');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FreeCredentialsHandle]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_FreeCredentialsHandle]
   end;
 end;
-{$ELSE}
-function FreeCredentialsHandle; external secur32 name 'FreeCredentialsHandle';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _AddCredentialsW: Pointer;
 
@@ -2409,16 +2383,12 @@ function AddCredentialsW;
 begin
   GetProcedureAddress(_AddCredentialsW, secur32, 'AddCredentialsW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AddCredentialsW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AddCredentialsW]
   end;
 end;
-{$ELSE}
-function AddCredentialsW; external secur32 name 'AddCredentialsW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _AddCredentialsA: Pointer;
 
@@ -2426,60 +2396,25 @@ function AddCredentialsA;
 begin
   GetProcedureAddress(_AddCredentialsA, secur32, 'AddCredentialsA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AddCredentialsA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AddCredentialsA]
   end;
 end;
-{$ELSE}
-function AddCredentialsA; external secur32 name 'AddCredentialsA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _AddCredentials: Pointer;
 
 function AddCredentials;
 begin
-  GetProcedureAddress(_AddCredentials, secur32, 'AddCredentialsW');
+  GetProcedureAddress(_AddCredentials, secur32, 'AddCredentials' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AddCredentials]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AddCredentials]
   end;
 end;
-{$ELSE}
-function AddCredentials; external secur32 name 'AddCredentialsW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _AddCredentials: Pointer;
-
-function AddCredentials;
-begin
-  GetProcedureAddress(_AddCredentials, secur32, 'AddCredentialsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AddCredentials]
-  end;
-end;
-{$ELSE}
-function AddCredentials; external secur32 name 'AddCredentialsA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-//function SspiLogonUserW; external secur32 name 'SspiLogonUserW';
-//function SspiLogonUserA; external secur32 name 'SspiLogonUserA';
-//{$IFDEF UNICODE}
-//function SspiLogonUser; external secur32 name 'SspiLogonUserW';
-//{$ELSE}
-//function SspiLogonUser; external secur32 name 'SspiLogonUserA';
-//{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _InitializeSecurityContextW: Pointer;
 
@@ -2487,16 +2422,12 @@ function InitializeSecurityContextW;
 begin
   GetProcedureAddress(_InitializeSecurityContextW, secur32, 'InitializeSecurityContextW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_InitializeSecurityContextW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_InitializeSecurityContextW]
   end;
 end;
-{$ELSE}
-function InitializeSecurityContextW; external secur32 name 'InitializeSecurityContextW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _InitializeSecurityContextA: Pointer;
 
@@ -2504,53 +2435,25 @@ function InitializeSecurityContextA;
 begin
   GetProcedureAddress(_InitializeSecurityContextA, secur32, 'InitializeSecurityContextA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_InitializeSecurityContextA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_InitializeSecurityContextA]
   end;
 end;
-{$ELSE}
-function InitializeSecurityContextA; external secur32 name 'InitializeSecurityContextA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _InitializeSecurityContext: Pointer;
 
 function InitializeSecurityContext;
 begin
-  GetProcedureAddress(_InitializeSecurityContext, secur32, 'InitializeSecurityContextW');
+  GetProcedureAddress(_InitializeSecurityContext, secur32, 'InitializeSecurityContext' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_InitializeSecurityContext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_InitializeSecurityContext]
   end;
 end;
-{$ELSE}
-function InitializeSecurityContext; external secur32 name 'InitializeSecurityContextW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _InitializeSecurityContext: Pointer;
-
-function InitializeSecurityContext;
-begin
-  GetProcedureAddress(_InitializeSecurityContext, secur32, 'InitializeSecurityContextA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_InitializeSecurityContext]
-  end;
-end;
-{$ELSE}
-function InitializeSecurityContext; external secur32 name 'InitializeSecurityContextA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _AcceptSecurityContext: Pointer;
 
@@ -2558,16 +2461,12 @@ function AcceptSecurityContext;
 begin
   GetProcedureAddress(_AcceptSecurityContext, secur32, 'AcceptSecurityContext');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AcceptSecurityContext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AcceptSecurityContext]
   end;
 end;
-{$ELSE}
-function AcceptSecurityContext; external secur32 name 'AcceptSecurityContext';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CompleteAuthToken: Pointer;
 
@@ -2575,16 +2474,12 @@ function CompleteAuthToken;
 begin
   GetProcedureAddress(_CompleteAuthToken, secur32, 'CompleteAuthToken');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CompleteAuthToken]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CompleteAuthToken]
   end;
 end;
-{$ELSE}
-function CompleteAuthToken; external secur32 name 'CompleteAuthToken';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ImpersonateSecurityContext: Pointer;
 
@@ -2592,16 +2487,12 @@ function ImpersonateSecurityContext;
 begin
   GetProcedureAddress(_ImpersonateSecurityContext, secur32, 'ImpersonateSecurityContext');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ImpersonateSecurityContext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ImpersonateSecurityContext]
   end;
 end;
-{$ELSE}
-function ImpersonateSecurityContext; external secur32 name 'ImpersonateSecurityContext';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RevertSecurityContext: Pointer;
 
@@ -2609,16 +2500,12 @@ function RevertSecurityContext;
 begin
   GetProcedureAddress(_RevertSecurityContext, secur32, 'RevertSecurityContext');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RevertSecurityContext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RevertSecurityContext]
   end;
 end;
-{$ELSE}
-function RevertSecurityContext; external secur32 name 'RevertSecurityContext';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _QuerySecurityContextToken: Pointer;
 
@@ -2626,16 +2513,12 @@ function QuerySecurityContextToken;
 begin
   GetProcedureAddress(_QuerySecurityContextToken, secur32, 'QuerySecurityContextToken');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_QuerySecurityContextToken]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_QuerySecurityContextToken]
   end;
 end;
-{$ELSE}
-function QuerySecurityContextToken; external secur32 name 'QuerySecurityContextToken';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DeleteSecurityContext: Pointer;
 
@@ -2643,16 +2526,12 @@ function DeleteSecurityContext;
 begin
   GetProcedureAddress(_DeleteSecurityContext, secur32, 'DeleteSecurityContext');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DeleteSecurityContext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DeleteSecurityContext]
   end;
 end;
-{$ELSE}
-function DeleteSecurityContext; external secur32 name 'DeleteSecurityContext';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ApplyControlToken: Pointer;
 
@@ -2660,16 +2539,12 @@ function ApplyControlToken;
 begin
   GetProcedureAddress(_ApplyControlToken, secur32, 'ApplyControlToken');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ApplyControlToken]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ApplyControlToken]
   end;
 end;
-{$ELSE}
-function ApplyControlToken; external secur32 name 'ApplyControlToken';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _QueryContextAttributesW: Pointer;
 
@@ -2677,16 +2552,12 @@ function QueryContextAttributesW;
 begin
   GetProcedureAddress(_QueryContextAttributesW, secur32, 'QueryContextAttributesW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_QueryContextAttributesW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_QueryContextAttributesW]
   end;
 end;
-{$ELSE}
-function QueryContextAttributesW; external secur32 name 'QueryContextAttributesW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _QueryContextAttributesA: Pointer;
 
@@ -2694,53 +2565,25 @@ function QueryContextAttributesA;
 begin
   GetProcedureAddress(_QueryContextAttributesA, secur32, 'QueryContextAttributesA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_QueryContextAttributesA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_QueryContextAttributesA]
   end;
 end;
-{$ELSE}
-function QueryContextAttributesA; external secur32 name 'QueryContextAttributesA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _QueryContextAttributes: Pointer;
 
 function QueryContextAttributes;
 begin
-  GetProcedureAddress(_QueryContextAttributes, secur32, 'QueryContextAttributesW');
+  GetProcedureAddress(_QueryContextAttributes, secur32, 'QueryContextAttributes' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_QueryContextAttributes]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_QueryContextAttributes]
   end;
 end;
-{$ELSE}
-function QueryContextAttributes; external secur32 name 'QueryContextAttributesW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _QueryContextAttributes: Pointer;
-
-function QueryContextAttributes;
-begin
-  GetProcedureAddress(_QueryContextAttributes, secur32, 'QueryContextAttributesA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_QueryContextAttributes]
-  end;
-end;
-{$ELSE}
-function QueryContextAttributes; external secur32 name 'QueryContextAttributesA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _SetContextAttributesW: Pointer;
 
@@ -2748,16 +2591,12 @@ function SetContextAttributesW;
 begin
   GetProcedureAddress(_SetContextAttributesW, secur32, 'SetContextAttributesW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetContextAttributesW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetContextAttributesW]
   end;
 end;
-{$ELSE}
-function SetContextAttributesW; external secur32 name 'SetContextAttributesW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetContextAttributesA: Pointer;
 
@@ -2765,53 +2604,25 @@ function SetContextAttributesA;
 begin
   GetProcedureAddress(_SetContextAttributesA, secur32, 'SetContextAttributesA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetContextAttributesA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetContextAttributesA]
   end;
 end;
-{$ELSE}
-function SetContextAttributesA; external secur32 name 'SetContextAttributesA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetContextAttributes: Pointer;
 
 function SetContextAttributes;
 begin
-  GetProcedureAddress(_SetContextAttributes, secur32, 'SetContextAttributesW');
+  GetProcedureAddress(_SetContextAttributes, secur32, 'SetContextAttributes' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetContextAttributes]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetContextAttributes]
   end;
 end;
-{$ELSE}
-function SetContextAttributes; external secur32 name 'SetContextAttributesW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetContextAttributes: Pointer;
-
-function SetContextAttributes;
-begin
-  GetProcedureAddress(_SetContextAttributes, secur32, 'SetContextAttributesA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetContextAttributes]
-  end;
-end;
-{$ELSE}
-function SetContextAttributes; external secur32 name 'SetContextAttributesA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _QueryCredentialsAttributesW: Pointer;
 
@@ -2819,16 +2630,12 @@ function QueryCredentialsAttributesW;
 begin
   GetProcedureAddress(_QueryCredentialsAttributesW, secur32, 'QueryCredentialsAttributesW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_QueryCredentialsAttributesW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_QueryCredentialsAttributesW]
   end;
 end;
-{$ELSE}
-function QueryCredentialsAttributesW; external secur32 name 'QueryCredentialsAttributesW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _QueryCredentialsAttributesA: Pointer;
 
@@ -2836,53 +2643,25 @@ function QueryCredentialsAttributesA;
 begin
   GetProcedureAddress(_QueryCredentialsAttributesA, secur32, 'QueryCredentialsAttributesA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_QueryCredentialsAttributesA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_QueryCredentialsAttributesA]
   end;
 end;
-{$ELSE}
-function QueryCredentialsAttributesA; external secur32 name 'QueryCredentialsAttributesA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _QueryCredentialsAttributes: Pointer;
 
 function QueryCredentialsAttributes;
 begin
-  GetProcedureAddress(_QueryCredentialsAttributes, secur32, 'QueryCredentialsAttributesW');
+  GetProcedureAddress(_QueryCredentialsAttributes, secur32, 'QueryCredentialsAttributes' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_QueryCredentialsAttributes]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_QueryCredentialsAttributes]
   end;
 end;
-{$ELSE}
-function QueryCredentialsAttributes; external secur32 name 'QueryCredentialsAttributesW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _QueryCredentialsAttributes: Pointer;
-
-function QueryCredentialsAttributes;
-begin
-  GetProcedureAddress(_QueryCredentialsAttributes, secur32, 'QueryCredentialsAttributesA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_QueryCredentialsAttributes]
-  end;
-end;
-{$ELSE}
-function QueryCredentialsAttributes; external secur32 name 'QueryCredentialsAttributesA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _FreeContextBuffer: Pointer;
 
@@ -2890,16 +2669,12 @@ function FreeContextBuffer;
 begin
   GetProcedureAddress(_FreeContextBuffer, secur32, 'FreeContextBuffer');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FreeContextBuffer]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_FreeContextBuffer]
   end;
 end;
-{$ELSE}
-function FreeContextBuffer; external secur32 name 'FreeContextBuffer';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MakeSignature: Pointer;
 
@@ -2907,16 +2682,12 @@ function MakeSignature;
 begin
   GetProcedureAddress(_MakeSignature, secur32, 'MakeSignature');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MakeSignature]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MakeSignature]
   end;
 end;
-{$ELSE}
-function MakeSignature; external secur32 name 'MakeSignature';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _VerifySignature: Pointer;
 
@@ -2924,16 +2695,12 @@ function VerifySignature;
 begin
   GetProcedureAddress(_VerifySignature, secur32, 'VerifySignature');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_VerifySignature]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_VerifySignature]
   end;
 end;
-{$ELSE}
-function VerifySignature; external secur32 name 'VerifySignature';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EncryptMessage: Pointer;
 
@@ -2941,16 +2708,12 @@ function EncryptMessage;
 begin
   GetProcedureAddress(_EncryptMessage, secur32, 'EncryptMessage');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EncryptMessage]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EncryptMessage]
   end;
 end;
-{$ELSE}
-function EncryptMessage; external secur32 name 'EncryptMessage';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DecryptMessage: Pointer;
 
@@ -2958,16 +2721,12 @@ function DecryptMessage;
 begin
   GetProcedureAddress(_DecryptMessage, secur32, 'DecryptMessage');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DecryptMessage]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DecryptMessage]
   end;
 end;
-{$ELSE}
-function DecryptMessage; external secur32 name 'DecryptMessage';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumerateSecurityPackagesW: Pointer;
 
@@ -2975,16 +2734,12 @@ function EnumerateSecurityPackagesW;
 begin
   GetProcedureAddress(_EnumerateSecurityPackagesW, secur32, 'EnumerateSecurityPackagesW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumerateSecurityPackagesW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumerateSecurityPackagesW]
   end;
 end;
-{$ELSE}
-function EnumerateSecurityPackagesW; external secur32 name 'EnumerateSecurityPackagesW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumerateSecurityPackagesA: Pointer;
 
@@ -2992,53 +2747,25 @@ function EnumerateSecurityPackagesA;
 begin
   GetProcedureAddress(_EnumerateSecurityPackagesA, secur32, 'EnumerateSecurityPackagesA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumerateSecurityPackagesA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumerateSecurityPackagesA]
   end;
 end;
-{$ELSE}
-function EnumerateSecurityPackagesA; external secur32 name 'EnumerateSecurityPackagesA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumerateSecurityPackages: Pointer;
 
 function EnumerateSecurityPackages;
 begin
-  GetProcedureAddress(_EnumerateSecurityPackages, secur32, 'EnumerateSecurityPackagesW');
+  GetProcedureAddress(_EnumerateSecurityPackages, secur32, 'EnumerateSecurityPackages' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumerateSecurityPackages]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumerateSecurityPackages]
   end;
 end;
-{$ELSE}
-function EnumerateSecurityPackages; external secur32 name 'EnumerateSecurityPackagesW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumerateSecurityPackages: Pointer;
-
-function EnumerateSecurityPackages;
-begin
-  GetProcedureAddress(_EnumerateSecurityPackages, secur32, 'EnumerateSecurityPackagesA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumerateSecurityPackages]
-  end;
-end;
-{$ELSE}
-function EnumerateSecurityPackages; external secur32 name 'EnumerateSecurityPackagesA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _QuerySecurityPackageInfoW: Pointer;
 
@@ -3046,16 +2773,12 @@ function QuerySecurityPackageInfoW;
 begin
   GetProcedureAddress(_QuerySecurityPackageInfoW, secur32, 'QuerySecurityPackageInfoW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_QuerySecurityPackageInfoW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_QuerySecurityPackageInfoW]
   end;
 end;
-{$ELSE}
-function QuerySecurityPackageInfoW; external secur32 name 'QuerySecurityPackageInfoW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _QuerySecurityPackageInfoA: Pointer;
 
@@ -3063,54 +2786,25 @@ function QuerySecurityPackageInfoA;
 begin
   GetProcedureAddress(_QuerySecurityPackageInfoA, secur32, 'QuerySecurityPackageInfoA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_QuerySecurityPackageInfoA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_QuerySecurityPackageInfoA]
   end;
 end;
-{$ELSE}
-function QuerySecurityPackageInfoA; external secur32 name 'QuerySecurityPackageInfoA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _QuerySecurityPackageInfo: Pointer;
 
 function QuerySecurityPackageInfo;
 begin
-  GetProcedureAddress(_QuerySecurityPackageInfo, secur32, 'QuerySecurityPackageInfoW');
+  GetProcedureAddress(_QuerySecurityPackageInfo, secur32, 'QuerySecurityPackageInfo' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_QuerySecurityPackageInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_QuerySecurityPackageInfo]
   end;
 end;
-{$ELSE}
-function QuerySecurityPackageInfo; external secur32 name 'QuerySecurityPackageInfoW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _QuerySecurityPackageInfo: Pointer;
-
-function QuerySecurityPackageInfo;
-begin
-  GetProcedureAddress(_QuerySecurityPackageInfo, secur32, 'QuerySecurityPackageInfoA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_QuerySecurityPackageInfo]
-  end;
-end;
-{$ELSE}
-function QuerySecurityPackageInfo; external secur32 name 'QuerySecurityPackageInfoA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-//function DelegateSecurityContext; external secur32 name 'DelegateSecurityContext';
-
-{$IFDEF DYNAMIC_LINK}
 var
   _ExportSecurityContext: Pointer;
 
@@ -3118,16 +2812,12 @@ function ExportSecurityContext;
 begin
   GetProcedureAddress(_ExportSecurityContext, secur32, 'ExportSecurityContext');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ExportSecurityContext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ExportSecurityContext]
   end;
 end;
-{$ELSE}
-function ExportSecurityContext; external secur32 name 'ExportSecurityContext';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ImportSecurityContextW: Pointer;
 
@@ -3135,16 +2825,12 @@ function ImportSecurityContextW;
 begin
   GetProcedureAddress(_ImportSecurityContextW, secur32, 'ImportSecurityContextW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ImportSecurityContextW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ImportSecurityContextW]
   end;
 end;
-{$ELSE}
-function ImportSecurityContextW; external secur32 name 'ImportSecurityContextW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ImportSecurityContextA: Pointer;
 
@@ -3152,53 +2838,25 @@ function ImportSecurityContextA;
 begin
   GetProcedureAddress(_ImportSecurityContextA, secur32, 'ImportSecurityContextA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ImportSecurityContextA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ImportSecurityContextA]
   end;
 end;
-{$ELSE}
-function ImportSecurityContextA; external secur32 name 'ImportSecurityContextA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ImportSecurityContext: Pointer;
 
 function ImportSecurityContext;
 begin
-  GetProcedureAddress(_ImportSecurityContext, secur32, 'ImportSecurityContextW');
+  GetProcedureAddress(_ImportSecurityContext, secur32, 'ImportSecurityContext' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ImportSecurityContext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ImportSecurityContext]
   end;
 end;
-{$ELSE}
-function ImportSecurityContext; external secur32 name 'ImportSecurityContextW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _ImportSecurityContext: Pointer;
-
-function ImportSecurityContext;
-begin
-  GetProcedureAddress(_ImportSecurityContext, secur32, 'ImportSecurityContextA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ImportSecurityContext]
-  end;
-end;
-{$ELSE}
-function ImportSecurityContext; external secur32 name 'ImportSecurityContextA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _InitSecurityInterfaceA: Pointer;
 
@@ -3206,16 +2864,12 @@ function InitSecurityInterfaceA;
 begin
   GetProcedureAddress(_InitSecurityInterfaceA, secur32, 'InitSecurityInterfaceA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_InitSecurityInterfaceA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_InitSecurityInterfaceA]
   end;
 end;
-{$ELSE}
-function InitSecurityInterfaceA; external secur32 name 'InitSecurityInterfaceA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _InitSecurityInterfaceW: Pointer;
 
@@ -3223,53 +2877,25 @@ function InitSecurityInterfaceW;
 begin
   GetProcedureAddress(_InitSecurityInterfaceW, secur32, 'InitSecurityInterfaceW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_InitSecurityInterfaceW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_InitSecurityInterfaceW]
   end;
 end;
-{$ELSE}
-function InitSecurityInterfaceW; external secur32 name 'InitSecurityInterfaceW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _InitSecurityInterface: Pointer;
 
 function InitSecurityInterface;
 begin
-  GetProcedureAddress(_InitSecurityInterface, secur32, 'InitSecurityInterfaceW');
+  GetProcedureAddress(_InitSecurityInterface, secur32, 'InitSecurityInterface' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_InitSecurityInterface]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_InitSecurityInterface]
   end;
 end;
-{$ELSE}
-function InitSecurityInterface; external secur32 name 'InitSecurityInterfaceW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _InitSecurityInterface: Pointer;
-
-function InitSecurityInterface;
-begin
-  GetProcedureAddress(_InitSecurityInterface, secur32, 'InitSecurityInterfaceA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_InitSecurityInterface]
-  end;
-end;
-{$ELSE}
-function InitSecurityInterface; external secur32 name 'InitSecurityInterfaceA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _SaslEnumerateProfilesA: Pointer;
 
@@ -3277,16 +2903,12 @@ function SaslEnumerateProfilesA;
 begin
   GetProcedureAddress(_SaslEnumerateProfilesA, secur32, 'SaslEnumerateProfilesA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SaslEnumerateProfilesA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SaslEnumerateProfilesA]
   end;
 end;
-{$ELSE}
-function SaslEnumerateProfilesA; external secur32 name 'SaslEnumerateProfilesA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SaslEnumerateProfilesW: Pointer;
 
@@ -3294,53 +2916,25 @@ function SaslEnumerateProfilesW;
 begin
   GetProcedureAddress(_SaslEnumerateProfilesW, secur32, 'SaslEnumerateProfilesW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SaslEnumerateProfilesW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SaslEnumerateProfilesW]
   end;
 end;
-{$ELSE}
-function SaslEnumerateProfilesW; external secur32 name 'SaslEnumerateProfilesW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SaslEnumerateProfiles: Pointer;
 
 function SaslEnumerateProfiles;
 begin
-  GetProcedureAddress(_SaslEnumerateProfiles, secur32, 'SaslEnumerateProfilesW');
+  GetProcedureAddress(_SaslEnumerateProfiles, secur32, 'SaslEnumerateProfiles' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SaslEnumerateProfiles]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SaslEnumerateProfiles]
   end;
 end;
-{$ELSE}
-function SaslEnumerateProfiles; external secur32 name 'SaslEnumerateProfilesW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _SaslEnumerateProfiles: Pointer;
-
-function SaslEnumerateProfiles;
-begin
-  GetProcedureAddress(_SaslEnumerateProfiles, secur32, 'SaslEnumerateProfilesA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SaslEnumerateProfiles]
-  end;
-end;
-{$ELSE}
-function SaslEnumerateProfiles; external secur32 name 'SaslEnumerateProfilesA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _SaslGetProfilePackageA: Pointer;
 
@@ -3348,16 +2942,12 @@ function SaslGetProfilePackageA;
 begin
   GetProcedureAddress(_SaslGetProfilePackageA, secur32, 'SaslGetProfilePackageA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SaslGetProfilePackageA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SaslGetProfilePackageA]
   end;
 end;
-{$ELSE}
-function SaslGetProfilePackageA; external secur32 name 'SaslGetProfilePackageA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SaslGetProfilePackageW: Pointer;
 
@@ -3365,53 +2955,25 @@ function SaslGetProfilePackageW;
 begin
   GetProcedureAddress(_SaslGetProfilePackageW, secur32, 'SaslGetProfilePackageW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SaslGetProfilePackageW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SaslGetProfilePackageW]
   end;
 end;
-{$ELSE}
-function SaslGetProfilePackageW; external secur32 name 'SaslGetProfilePackageW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SaslGetProfilePackage: Pointer;
 
 function SaslGetProfilePackage;
 begin
-  GetProcedureAddress(_SaslGetProfilePackage, secur32, 'SaslGetProfilePackageW');
+  GetProcedureAddress(_SaslGetProfilePackage, secur32, 'SaslGetProfilePackage' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SaslGetProfilePackage]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SaslGetProfilePackage]
   end;
 end;
-{$ELSE}
-function SaslGetProfilePackage; external secur32 name 'SaslGetProfilePackageW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _SaslGetProfilePackage: Pointer;
-
-function SaslGetProfilePackage;
-begin
-  GetProcedureAddress(_SaslGetProfilePackage, secur32, 'SaslGetProfilePackageA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SaslGetProfilePackage]
-  end;
-end;
-{$ELSE}
-function SaslGetProfilePackage; external secur32 name 'SaslGetProfilePackageA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _SaslIdentifyPackageA: Pointer;
 
@@ -3419,16 +2981,12 @@ function SaslIdentifyPackageA;
 begin
   GetProcedureAddress(_SaslIdentifyPackageA, secur32, 'SaslIdentifyPackageA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SaslIdentifyPackageA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SaslIdentifyPackageA]
   end;
 end;
-{$ELSE}
-function SaslIdentifyPackageA; external secur32 name 'SaslIdentifyPackageA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SaslIdentifyPackageW: Pointer;
 
@@ -3436,53 +2994,25 @@ function SaslIdentifyPackageW;
 begin
   GetProcedureAddress(_SaslIdentifyPackageW, secur32, 'SaslIdentifyPackageW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SaslIdentifyPackageW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SaslIdentifyPackageW]
   end;
 end;
-{$ELSE}
-function SaslIdentifyPackageW; external secur32 name 'SaslIdentifyPackageW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SaslIdentifyPackage: Pointer;
 
 function SaslIdentifyPackage;
 begin
-  GetProcedureAddress(_SaslIdentifyPackage, secur32, 'SaslIdentifyPackageW');
+  GetProcedureAddress(_SaslIdentifyPackage, secur32, 'SaslIdentifyPackage' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SaslIdentifyPackage]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SaslIdentifyPackage]
   end;
 end;
-{$ELSE}
-function SaslIdentifyPackage; external secur32 name 'SaslIdentifyPackageW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _SaslIdentifyPackage: Pointer;
-
-function SaslIdentifyPackage;
-begin
-  GetProcedureAddress(_SaslIdentifyPackage, secur32, 'SaslIdentifyPackageA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SaslIdentifyPackage]
-  end;
-end;
-{$ELSE}
-function SaslIdentifyPackage; external secur32 name 'SaslIdentifyPackageA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _SaslInitializeSecurityContextW: Pointer;
 
@@ -3490,16 +3020,12 @@ function SaslInitializeSecurityContextW;
 begin
   GetProcedureAddress(_SaslInitializeSecurityContextW, secur32, 'SaslInitializeSecurityContextW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SaslInitializeSecurityContextW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SaslInitializeSecurityContextW]
   end;
 end;
-{$ELSE}
-function SaslInitializeSecurityContextW; external secur32 name 'SaslInitializeSecurityContextW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SaslInitializeSecurityContextA: Pointer;
 
@@ -3507,53 +3033,25 @@ function SaslInitializeSecurityContextA;
 begin
   GetProcedureAddress(_SaslInitializeSecurityContextA, secur32, 'SaslInitializeSecurityContextA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SaslInitializeSecurityContextA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SaslInitializeSecurityContextA]
   end;
 end;
-{$ELSE}
-function SaslInitializeSecurityContextA; external secur32 name 'SaslInitializeSecurityContextA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SaslInitializeSecurityContext: Pointer;
 
 function SaslInitializeSecurityContext;
 begin
-  GetProcedureAddress(_SaslInitializeSecurityContext, secur32, 'SaslInitializeSecurityContextW');
+  GetProcedureAddress(_SaslInitializeSecurityContext, secur32, 'SaslInitializeSecurityContext' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SaslInitializeSecurityContext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SaslInitializeSecurityContext]
   end;
 end;
-{$ELSE}
-function SaslInitializeSecurityContext; external secur32 name 'SaslInitializeSecurityContextW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _SaslInitializeSecurityContext: Pointer;
-
-function SaslInitializeSecurityContext;
-begin
-  GetProcedureAddress(_SaslInitializeSecurityContext, secur32, 'SaslInitializeSecurityContextA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SaslInitializeSecurityContext]
-  end;
-end;
-{$ELSE}
-function SaslInitializeSecurityContext; external secur32 name 'SaslInitializeSecurityContextA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _SaslAcceptSecurityContext: Pointer;
 
@@ -3561,17 +3059,12 @@ function SaslAcceptSecurityContext;
 begin
   GetProcedureAddress(_SaslAcceptSecurityContext, secur32, 'SaslAcceptSecurityContext');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SaslAcceptSecurityContext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SaslAcceptSecurityContext]
   end;
 end;
-{$ELSE}
-function SaslAcceptSecurityContext; external secur32 name 'SaslAcceptSecurityContext';
-{$ENDIF DYNAMIC_LINK}
 
-
-{$IFDEF DYNAMIC_LINK}
 var
   _SaslSetContextOption: Pointer;
 
@@ -3579,16 +3072,12 @@ function SaslSetContextOption;
 begin
   GetProcedureAddress(_SaslSetContextOption, secur32, 'SaslSetContextOption');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SaslSetContextOption]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SaslSetContextOption]
   end;
 end;
-{$ELSE}
-function SaslSetContextOption; external secur32 name 'SaslSetContextOption';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SaslGetContextOption: Pointer;
 
@@ -3596,16 +3085,12 @@ function SaslGetContextOption;
 begin
   GetProcedureAddress(_SaslGetContextOption, secur32, 'SaslGetContextOption');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SaslGetContextOption]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SaslGetContextOption]
   end;
 end;
-{$ELSE}
-function SaslGetContextOption; external secur32 name 'SaslGetContextOption';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _AddSecurityPackageA: Pointer;
 
@@ -3613,16 +3098,12 @@ function AddSecurityPackageA;
 begin
   GetProcedureAddress(_AddSecurityPackageA, secur32, 'AddSecurityPackageA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AddSecurityPackageA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AddSecurityPackageA]
   end;
 end;
-{$ELSE}
-function AddSecurityPackageA; external secur32 name 'AddSecurityPackageA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _AddSecurityPackageW: Pointer;
 
@@ -3630,53 +3111,25 @@ function AddSecurityPackageW;
 begin
   GetProcedureAddress(_AddSecurityPackageW, secur32, 'AddSecurityPackageW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AddSecurityPackageW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AddSecurityPackageW]
   end;
 end;
-{$ELSE}
-function AddSecurityPackageW; external secur32 name 'AddSecurityPackageW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _AddSecurityPackage: Pointer;
 
 function AddSecurityPackage;
 begin
-  GetProcedureAddress(_AddSecurityPackage, secur32, 'AddSecurityPackageW');
+  GetProcedureAddress(_AddSecurityPackage, secur32, 'AddSecurityPackage' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AddSecurityPackage]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AddSecurityPackage]
   end;
 end;
-{$ELSE}
-function AddSecurityPackage; external secur32 name 'AddSecurityPackageW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _AddSecurityPackage: Pointer;
-
-function AddSecurityPackage;
-begin
-  GetProcedureAddress(_AddSecurityPackage, secur32, 'AddSecurityPackageA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AddSecurityPackage]
-  end;
-end;
-{$ELSE}
-function AddSecurityPackage; external secur32 name 'AddSecurityPackageA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DeleteSecurityPackageA: Pointer;
 
@@ -3684,16 +3137,12 @@ function DeleteSecurityPackageA;
 begin
   GetProcedureAddress(_DeleteSecurityPackageA, secur32, 'DeleteSecurityPackageA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DeleteSecurityPackageA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DeleteSecurityPackageA]
   end;
 end;
-{$ELSE}
-function DeleteSecurityPackageA; external secur32 name 'DeleteSecurityPackageA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DeleteSecurityPackageW: Pointer;
 
@@ -3701,50 +3150,93 @@ function DeleteSecurityPackageW;
 begin
   GetProcedureAddress(_DeleteSecurityPackageW, secur32, 'DeleteSecurityPackageW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DeleteSecurityPackageW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DeleteSecurityPackageW]
   end;
 end;
+
+var
+  _DeleteSecurityPackage: Pointer;
+
+function DeleteSecurityPackage;
+begin
+  GetProcedureAddress(_DeleteSecurityPackage, secur32, 'DeleteSecurityPackage' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DeleteSecurityPackage]
+  end;
+end;
+
 {$ELSE}
+
+function AcquireCredentialsHandleW; external secur32 name 'AcquireCredentialsHandleW';
+function AcquireCredentialsHandleA; external secur32 name 'AcquireCredentialsHandleA';
+function AcquireCredentialsHandle; external secur32 name 'AcquireCredentialsHandle' + AWSuffix;
+function FreeCredentialsHandle; external secur32 name 'FreeCredentialsHandle';
+function AddCredentialsW; external secur32 name 'AddCredentialsW';
+function AddCredentialsA; external secur32 name 'AddCredentialsA';
+function AddCredentials; external secur32 name 'AddCredentials' + AWSuffix;
+function InitializeSecurityContextW; external secur32 name 'InitializeSecurityContextW';
+function InitializeSecurityContextA; external secur32 name 'InitializeSecurityContextA';
+function InitializeSecurityContext; external secur32 name 'InitializeSecurityContext' + AWSuffix;
+function AcceptSecurityContext; external secur32 name 'AcceptSecurityContext';
+function CompleteAuthToken; external secur32 name 'CompleteAuthToken';
+function ImpersonateSecurityContext; external secur32 name 'ImpersonateSecurityContext';
+function RevertSecurityContext; external secur32 name 'RevertSecurityContext';
+function QuerySecurityContextToken; external secur32 name 'QuerySecurityContextToken';
+function DeleteSecurityContext; external secur32 name 'DeleteSecurityContext';
+function ApplyControlToken; external secur32 name 'ApplyControlToken';
+function QueryContextAttributesW; external secur32 name 'QueryContextAttributesW';
+function QueryContextAttributesA; external secur32 name 'QueryContextAttributesA';
+function QueryContextAttributes; external secur32 name 'QueryContextAttributes' + AWSuffix;
+function SetContextAttributesW; external secur32 name 'SetContextAttributesW';
+function SetContextAttributesA; external secur32 name 'SetContextAttributesA';
+function SetContextAttributes; external secur32 name 'SetContextAttributes' + AWSuffix;
+function QueryCredentialsAttributesW; external secur32 name 'QueryCredentialsAttributesW';
+function QueryCredentialsAttributesA; external secur32 name 'QueryCredentialsAttributesA';
+function QueryCredentialsAttributes; external secur32 name 'QueryCredentialsAttributes' + AWSuffix;
+function FreeContextBuffer; external secur32 name 'FreeContextBuffer';
+function MakeSignature; external secur32 name 'MakeSignature';
+function VerifySignature; external secur32 name 'VerifySignature';
+function EncryptMessage; external secur32 name 'EncryptMessage';
+function DecryptMessage; external secur32 name 'DecryptMessage';
+function EnumerateSecurityPackagesW; external secur32 name 'EnumerateSecurityPackagesW';
+function EnumerateSecurityPackagesA; external secur32 name 'EnumerateSecurityPackagesA';
+function EnumerateSecurityPackages; external secur32 name 'EnumerateSecurityPackages' + AWSuffix;
+function QuerySecurityPackageInfoW; external secur32 name 'QuerySecurityPackageInfoW';
+function QuerySecurityPackageInfoA; external secur32 name 'QuerySecurityPackageInfoA';
+function QuerySecurityPackageInfo; external secur32 name 'QuerySecurityPackageInfo' + AWSuffix;
+function ExportSecurityContext; external secur32 name 'ExportSecurityContext';
+function ImportSecurityContextW; external secur32 name 'ImportSecurityContextW';
+function ImportSecurityContextA; external secur32 name 'ImportSecurityContextA';
+function ImportSecurityContext; external secur32 name 'ImportSecurityContext' + AWSuffix;
+function InitSecurityInterfaceA; external secur32 name 'InitSecurityInterfaceA';
+function InitSecurityInterfaceW; external secur32 name 'InitSecurityInterfaceW';
+function InitSecurityInterface; external secur32 name 'InitSecurityInterface' + AWSuffix;
+function SaslEnumerateProfilesA; external secur32 name 'SaslEnumerateProfilesA';
+function SaslEnumerateProfilesW; external secur32 name 'SaslEnumerateProfilesW';
+function SaslEnumerateProfiles; external secur32 name 'SaslEnumerateProfiles' + AWSuffix;
+function SaslGetProfilePackageA; external secur32 name 'SaslGetProfilePackageA';
+function SaslGetProfilePackageW; external secur32 name 'SaslGetProfilePackageW';
+function SaslGetProfilePackage; external secur32 name 'SaslGetProfilePackage' + AWSuffix;
+function SaslIdentifyPackageA; external secur32 name 'SaslIdentifyPackageA';
+function SaslIdentifyPackageW; external secur32 name 'SaslIdentifyPackageW';
+function SaslIdentifyPackage; external secur32 name 'SaslIdentifyPackage' + AWSuffix;
+function SaslInitializeSecurityContextW; external secur32 name 'SaslInitializeSecurityContextW';
+function SaslInitializeSecurityContextA; external secur32 name 'SaslInitializeSecurityContextA';
+function SaslInitializeSecurityContext; external secur32 name 'SaslInitializeSecurityContext' + AWSuffix;
+function SaslAcceptSecurityContext; external secur32 name 'SaslAcceptSecurityContext';
+function SaslSetContextOption; external secur32 name 'SaslSetContextOption';
+function SaslGetContextOption; external secur32 name 'SaslGetContextOption';
+function AddSecurityPackageA; external secur32 name 'AddSecurityPackageA';
+function AddSecurityPackageW; external secur32 name 'AddSecurityPackageW';
+function AddSecurityPackage; external secur32 name 'AddSecurityPackage' + AWSuffix;
+function DeleteSecurityPackageA; external secur32 name 'DeleteSecurityPackageA';
 function DeleteSecurityPackageW; external secur32 name 'DeleteSecurityPackageW';
+function DeleteSecurityPackage; external secur32 name 'DeleteSecurityPackage' + AWSuffix;
+
 {$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DeleteSecurityPackage: Pointer;
-
-function DeleteSecurityPackage;
-begin
-  GetProcedureAddress(_DeleteSecurityPackage, secur32, 'DeleteSecurityPackageW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DeleteSecurityPackage]
-  end;
-end;
-{$ELSE}
-function DeleteSecurityPackage; external secur32 name 'DeleteSecurityPackageW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DeleteSecurityPackage: Pointer;
-
-function DeleteSecurityPackage;
-begin
-  GetProcedureAddress(_DeleteSecurityPackage, secur32, 'DeleteSecurityPackageA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DeleteSecurityPackage]
-  end;
-end;
-{$ELSE}
-function DeleteSecurityPackage; external secur32 name 'DeleteSecurityPackageA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
 
 end.

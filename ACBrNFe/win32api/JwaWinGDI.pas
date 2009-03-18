@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Graphics Device Interface API interface Unit for Object Pascal               }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: wingdi.h, released June 2000. The original Pascal      }
 { code is: WinGDI.pas, released December 2000. The initial developer of the    }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,25 +35,33 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaWinGDI.pas,v 1.12 2005/09/06 16:36:50 marquardt Exp $
+
+{$IFNDEF JWA_INCLUDEMODE}
 
 unit JwaWinGDI;
 
 {$WEAKPACKAGEUNIT}
 
-{$HPPEMIT ''}
-{$HPPEMIT '#include "WinGDI.h"'}
-{$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
   JwaWinNT, JwaWinType;
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_INTERFACESECTION}
+
+{$HPPEMIT ''}
+{$HPPEMIT '#include "WinGDI.h"'}
+{$HPPEMIT ''}
 
 // Binary raster ops
 
@@ -214,7 +221,7 @@ const
   {$EXTERNALSYM LAYOUT_BTT}
   LAYOUT_VBH                        = $00000004; // Vertical before horizontal
   {$EXTERNALSYM LAYOUT_VBH}
-  LAYOUT_ORIENTATIONMASK            = (LAYOUT_RTL or LAYOUT_BTT or LAYOUT_VBH);
+  LAYOUT_ORIENTATIONMASK            = LAYOUT_RTL or LAYOUT_BTT or LAYOUT_VBH;
   {$EXTERNALSYM LAYOUT_ORIENTATIONMASK}
   LAYOUT_BITMAPORIENTATIONPRESERVED = $00000008;
   {$EXTERNALSYM LAYOUT_BITMAPORIENTATIONPRESERVED}
@@ -243,13 +250,8 @@ const
   TA_RTLREADING = 256;
   {$EXTERNALSYM TA_RTLREADING}
 
-{$IFDEF WINVER_0400_GREATER}
-  TA_MASK       = (TA_BASELINE + TA_CENTER + TA_UPDATECP + TA_RTLREADING);
+  TA_MASK       = TA_BASELINE + TA_CENTER + TA_UPDATECP + TA_RTLREADING;
   {$EXTERNALSYM TA_MASK}
-{$ELSE}
-  TA_MASK       = (TA_BASELINE + TA_CENTER + TA_UPDATECP);
-  {$EXTERNALSYM TA_MASK}
-{$ENDIF}
 
   VTA_BASELINE = TA_BASELINE;
   {$EXTERNALSYM VTA_BASELINE}
@@ -294,7 +296,7 @@ const
   {$EXTERNALSYM DCB_ACCUMULATE}
   DCB_DIRTY      = DCB_ACCUMULATE;
   {$EXTERNALSYM DCB_DIRTY}
-  DCB_SET        = (DCB_RESET or DCB_ACCUMULATE);
+  DCB_SET        = DCB_RESET or DCB_ACCUMULATE;
   {$EXTERNALSYM DCB_SET}
   DCB_ENABLE     = $0004;
   {$EXTERNALSYM DCB_ENABLE}
@@ -1115,21 +1117,21 @@ type
   {$EXTERNALSYM LPLOGCOLORSPACEW}
   TLogColorSpaceW = LOGCOLORSPACEW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   LOGCOLORSPACE = LOGCOLORSPACEW;
   {$EXTERNALSYM LOGCOLORSPACE}
   LPLOGCOLORSPACE = LPLOGCOLORSPACEW;
   {$EXTERNALSYM LPLOGCOLORSPACE}
   TLogColorSpace = TLogColorSpaceW;
   PLogColorSpace = PLogColorSpaceW;
-{$ELSE}
+  {$ELSE}
   LOGCOLORSPACE = LOGCOLORSPACEA;
   {$EXTERNALSYM LOGCOLORSPACE}
   LPLOGCOLORSPACE = LPLOGCOLORSPACEA;
   {$EXTERNALSYM LPLOGCOLORSPACE}
   TLogColorSpace = TLogColorSpaceA;
   PLogColorSpace = PLogColorSpaceA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 // structures for defining DIBs
 
@@ -1334,6 +1336,8 @@ const
   {$EXTERNALSYM TCI_SRCCODEPAGE}
   TCI_SRCFONTSIG  = 3;
   {$EXTERNALSYM TCI_SRCFONTSIG}
+  TCI_SRCLOCALE   = $1000;
+  {$EXTERNALSYM TCI_SRCLOCALE}
 
 type
   PLocaleSignature = ^TLocaleSignature;
@@ -1446,17 +1450,15 @@ type
     nPalEntries: DWORD;        // Number of entries in the metafile palette.
     szlDevice: SIZEL;          // Size of the reference device in pels
     szlMillimeters: SIZEL;     // Size of the reference device in millimeters
-    {$IFDEF WINVER_0400_GREATER}
     cbPixelFormat: DWORD;      // Size of PIXELFORMATDESCRIPTOR information
                                // This is 0 if no pixel format is set
     offPixelFormat: DWORD;     // Offset to PIXELFORMATDESCRIPTOR
                                // This is 0 if no pixel format is set
     bOpenGL: DWORD;            // TRUE if OpenGL commands are present in
                                // the metafile, otherwise FALSE
-    {$ENDIF}
-    {$IFDEF WINVER_0500_GREATER}
+    {$IFDEF WIN98ME_UP}
     szlMicrometers: SIZEL;     // Size of the reference device in micrometers
-    {$ENDIF}
+    {$ENDIF WIN98ME_UP}
   end;
   {$EXTERNALSYM tagENHMETAHEADER}
   ENHMETAHEADER = tagENHMETAHEADER;
@@ -1482,13 +1484,13 @@ const
 //
 
 type
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   BCHAR = WCHAR;
   {$EXTERNALSYM BCHAR}
-{$ELSE}
+  {$ELSE}
   BCHAR = BYTE;
   {$EXTERNALSYM BCHAR}
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 type
   PTextMetricA = ^TTextMetricA;
@@ -1555,7 +1557,7 @@ type
   {$EXTERNALSYM NPTEXTMETRICW}
   TTextMetricW = TEXTMETRICW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   TEXTMETRIC = TEXTMETRICW;
   {$EXTERNALSYM TEXTMETRIC}
   PTEXTMETRIC = PTEXTMETRICW;
@@ -1565,7 +1567,7 @@ type
   LPTEXTMETRIC = LPTEXTMETRICW;
   {$EXTERNALSYM LPTEXTMETRIC}
   TTextMetric = TTextMetricW;
-{$ELSE}
+  {$ELSE}
   TEXTMETRIC = TEXTMETRICA;
   {$EXTERNALSYM TEXTMETRIC}
   NPTEXTMETRIC = NPTEXTMETRICA;
@@ -1573,7 +1575,7 @@ type
   LPTEXTMETRIC = LPTEXTMETRICA;
   {$EXTERNALSYM LPTEXTMETRIC}
   TTextMetric = TTextMetricA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 // ntmFlags field flags
 
@@ -1675,7 +1677,7 @@ type
   {$EXTERNALSYM NPNEWTEXTMETRICW}
   TNewTextMetricW = NEWTEXTMETRICW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   NEWTEXTMETRIC = NEWTEXTMETRICW;
   {$EXTERNALSYM NEWTEXTMETRIC}
   PNEWTEXTMETRIC = PNEWTEXTMETRICW;
@@ -1685,7 +1687,7 @@ type
   LPNEWTEXTMETRIC = LPNEWTEXTMETRICW;
   {$EXTERNALSYM LPNEWTEXTMETRIC}
   TNewTextMetric = TNewTextMetricW;
-{$ELSE}
+  {$ELSE}
   NEWTEXTMETRIC = NEWTEXTMETRICW;
   {$EXTERNALSYM NEWTEXTMETRIC}
   PNEWTEXTMETRIC = PNEWTEXTMETRICW;
@@ -1695,7 +1697,7 @@ type
   LPNEWTEXTMETRIC = LPNEWTEXTMETRICW;
   {$EXTERNALSYM LPNEWTEXTMETRIC}
   TNewTextMetric = TNewTextMetricW;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 // #include <poppack.h>
 
@@ -1719,17 +1721,17 @@ type
   {$EXTERNALSYM NEWTEXTMETRICEXW}
   TNewTextMetricExW = NEWTEXTMETRICEXW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   NEWTEXTMETRICEX = NEWTEXTMETRICEXW;
   {$EXTERNALSYM NEWTEXTMETRICEX}
   TNewTextMetricEx = TNewTextMetricExW;
   PNewTextMetricEx = PNewTextMetricExW;
-{$ELSE}
+  {$ELSE}
   NEWTEXTMETRICEX = NEWTEXTMETRICEXA;
   {$EXTERNALSYM NEWTEXTMETRICEX}
   TNewTextMetricEx = TNewTextMetricExA;
   PNewTextMetricEx = PNewTextMetricExA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 // GDI Logical Objects:
 
@@ -1917,7 +1919,7 @@ type
   {$EXTERNALSYM NPLOGFONTW}
   TLogFontW = LOGFONTW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   LOGFONT = LOGFONTW;
   {$EXTERNALSYM LOGFONT}
   PLOGFONT = PLOGFONTW;
@@ -1927,7 +1929,7 @@ type
   LPLOGFONT = LPLOGFONTW;
   {$EXTERNALSYM LPLOGFONT}
   TLogFont = TLogFontW;
-{$ELSE}
+  {$ELSE}
   LOGFONT = LOGFONTA;
   {$EXTERNALSYM LOGFONT}
   PLOGFONT = PLOGFONTA;
@@ -1937,7 +1939,7 @@ type
   LPLOGFONT = LPLOGFONTA;
   {$EXTERNALSYM LPLOGFONT}
   TLogFont = TLogFontA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 const
   LF_FULLFACESIZE = 64;
@@ -1974,21 +1976,21 @@ type
   {$EXTERNALSYM LPENUMLOGFONTW}
   TEnumLogFontW = ENUMLOGFONTW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   ENUMLOGFONT = ENUMLOGFONTW;
   {$EXTERNALSYM ENUMLOGFONT}
   LPENUMLOGFONT = LPENUMLOGFONTW;
   {$EXTERNALSYM LPENUMLOGFONT}
   TEnumLogFont = TEnumLogFontW;
   PEnumLogFont = PEnumLogFontW;
-{$ELSE}
+  {$ELSE}
   ENUMLOGFONT = ENUMLOGFONTA;
   {$EXTERNALSYM ENUMLOGFONT}
   LPENUMLOGFONT = LPENUMLOGFONTA;
   {$EXTERNALSYM LPENUMLOGFONT}
   TEnumLogFont = TEnumLogFontA;
   PEnumLogFont = PEnumLogFontA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   PEnumLogFontExA = ^TEnumLogFontExA;
   tagENUMLOGFONTEXA = record
@@ -2018,21 +2020,21 @@ type
   {$EXTERNALSYM LPENUMLOGFONTEXW}
   TEnumLogFontExW = ENUMLOGFONTEXW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   ENUMLOGFONTEX = ENUMLOGFONTEXW;
   {$EXTERNALSYM ENUMLOGFONTEX}
   LPENUMLOGFONTEX = LPENUMLOGFONTEXW;
   {$EXTERNALSYM LPENUMLOGFONTEX}
   TEnumLogFontEx = TEnumLogFontExW;
   PEnumLogFontEx = PEnumLogFontExW;
-{$ELSE}
+  {$ELSE}
   ENUMLOGFONTEX = ENUMLOGFONTEXA;
   {$EXTERNALSYM ENUMLOGFONTEX}
   LPENUMLOGFONTEX = LPENUMLOGFONTEXA;
   {$EXTERNALSYM LPENUMLOGFONTEX}
   TEnumLogFontEx = TEnumLogFontExA;
   PEnumLogFontEx = PEnumLogFontExA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 const
   OUT_DEFAULT_PRECIS        = 0;
@@ -2066,11 +2068,13 @@ const
   {$EXTERNALSYM CLIP_STROKE_PRECIS}
   CLIP_MASK             = $f;
   {$EXTERNALSYM CLIP_MASK}
-  CLIP_LH_ANGLES        = (1 shl 4);
+  CLIP_LH_ANGLES        = 1 shl 4;
   {$EXTERNALSYM CLIP_LH_ANGLES}
-  CLIP_TT_ALWAYS        = (2 shl 4);
+  CLIP_TT_ALWAYS        = 2 shl 4;
   {$EXTERNALSYM CLIP_TT_ALWAYS}
-  CLIP_EMBEDDED         = (8 shl 4);
+  CLIP_DFA_DISABLE      = 4 shl 4;
+  {$EXTERNALSYM CLIP_DFA_DISABLE}
+  CLIP_EMBEDDED         = 8 shl 4;
   {$EXTERNALSYM CLIP_EMBEDDED}
 
   DEFAULT_QUALITY        = 0;
@@ -2177,20 +2181,20 @@ const
 
 // Font Families
 
-  FF_DONTCARE   = (0 shl 4); // Don't care or don't know.
+  FF_DONTCARE   = 0 shl 4; // Don't care or don't know.
   {$EXTERNALSYM FF_DONTCARE}
-  FF_ROMAN      = (1 shl 4); // Variable stroke width, serifed.
+  FF_ROMAN      = 1 shl 4; // Variable stroke width, serifed.
   {$EXTERNALSYM FF_ROMAN}
                              // Times Roman, Century Schoolbook, etc.
-  FF_SWISS      = (2 shl 4); // Variable stroke width, sans-serifed.
+  FF_SWISS      = 2 shl 4; // Variable stroke width, sans-serifed.
   {$EXTERNALSYM FF_SWISS}
                              // Helvetica, Swiss, etc.
-  FF_MODERN     = (3 shl 4); // Constant stroke width, serifed or sans-serifed.
+  FF_MODERN     = 3 shl 4; // Constant stroke width, serifed or sans-serifed.
   {$EXTERNALSYM FF_MODERN}
                              // Pica, Elite, Courier, etc.
-  FF_SCRIPT     = (4 shl 4); // Cursive, etc.
+  FF_SCRIPT     = 4 shl 4; // Cursive, etc.
   {$EXTERNALSYM FF_SCRIPT}
-  FF_DECORATIVE = (5 shl 4); // Old English, etc.
+  FF_DECORATIVE = 5 shl 4; // Old English, etc.
   {$EXTERNALSYM FF_DECORATIVE}
 
 // Font Weights
@@ -2527,7 +2531,7 @@ type
   {$EXTERNALSYM NPEXTLOGFONTW}
   TExtLogFontW = EXTLOGFONTW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   EXTLOGFONT = EXTLOGFONTW;
   {$EXTERNALSYM EXTLOGFONT}
   PEXTLOGFONT = PEXTLOGFONTW;
@@ -2537,7 +2541,7 @@ type
   LPEXTLOGFONT = LPEXTLOGFONTW;
   {$EXTERNALSYM LPEXTLOGFONT}
   TExtLogFont = TExtLogFontW;
-{$ELSE}
+  {$ELSE}
   EXTLOGFONT = EXTLOGFONTA;
   {$EXTERNALSYM EXTLOGFONT}
   PEXTLOGFONT = PEXTLOGFONTA;
@@ -2547,7 +2551,7 @@ type
   LPEXTLOGFONT = LPEXTLOGFONTA;
   {$EXTERNALSYM LPEXTLOGFONT}
   TExtLogFont = TExtLogFontA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 const
   ELF_VERSION       = 0;
@@ -2698,18 +2702,18 @@ const
   DC_PEN   = 19;
   {$EXTERNALSYM DC_PEN}
 
-{$IFDEF WIN32_WINNT_0500_GREATER}
+  {$IFDEF WIN2000_UP}
   STOCK_LAST = 19;
   {$EXTERNALSYM STOCK_LAST}
-{$ELSE}
-{$IFDEF WINVER_0400_GREATER}
+  {$ELSE}
+  {$IFDEF WIN95_UP}
   STOCK_LAST = 17;
   {$EXTERNALSYM STOCK_LAST}
-{$ELSE}
+  {$ELSE}
   STOCK_LAST = 16;
   {$EXTERNALSYM STOCK_LAST}
-{$ENDIF}
-{$ENDIF}
+  {$ENDIF WIN95_UP}
+  {$ENDIF WIN2000_UP}
 
   CLR_INVALID = DWORD($FFFFFFFF);
   {$EXTERNALSYM CLR_INVALID}
@@ -3138,12 +3142,11 @@ const
   CCHFORMNAME = 32;
   {$EXTERNALSYM CCHFORMNAME}
 
-
-{$IFDEF WINVER_0500_GREATER}
-{$IFDEF WIN32_WINNT_0400_GREATER}
-{$DEFINE WINVER_0500_OR_WIN32_WINNT_0400}
-{$ENDIF}
-{$ENDIF}
+{$IFDEF WIN98ME}
+{$IFNDEF WINNT4}
+{$DEFINE WIN98ME_UP_EXCEPT_NT4}
+{$ENDIF !WINNT4}
+{$ENDIF WIN98ME}
 
 type
   TDmDisplayFlagsUnion = record
@@ -3191,18 +3194,16 @@ type
     dmPelsHeight: DWORD;
     dmDisplayFlags: TDmDisplayFlagsUnion;
     dmDisplayFrequency: DWORD;
-    {$IFDEF WINVER_0400_GREATER}
     dmICMMethod: DWORD;
     dmICMIntent: DWORD;
     dmMediaType: DWORD;
     dmDitherType: DWORD;
     dmReserved1: DWORD;
     dmReserved2: DWORD;
-    {$IFDEF WINVER_0500_OR_WIN32_WINNT_0400}
+    {$IFDEF WIN98ME_UP_EXCEPT_NT4}
     dmPanningWidth: DWORD;
     dmPanningHeight: DWORD;
-    {$ENDIF}
-    {$ENDIF}
+    {$ENDIF WIN98ME_UP_EXCEPT_NT4}
   end;
   {$EXTERNALSYM _devicemodeA}
   DEVMODEA = _devicemodeA;
@@ -3252,18 +3253,16 @@ type
     dmPelsHeight: DWORD;
     dmDiusplayFlags: TDmDisplayFlagsUnion;
     dmDisplayFrequency: DWORD;
-    {$IFDEF WINVER_0400_GREATER}
     dmICMMethod: DWORD;
     dmICMIntent: DWORD;
     dmMediaType: DWORD;
     dmDitherType: DWORD;
     dmReserved1: DWORD;
     dmReserved2: DWORD;
-    {$IFDEF WINVER_0500_OR_WIN32_WINNT_0400}
+    {$IFDEF WIN98ME_UP_EXCEPT_NT4}
     dmPanningWidth: DWORD;
     dmPanningHeight: DWORD;
-    {$ENDIF}
-    {$ENDIF}
+    {$ENDIF WIN98ME_UP_EXCEPT_NT4}
   end;
   {$EXTERNALSYM _devicemodeW}
   DEVMODEW = _devicemodeW;
@@ -3276,7 +3275,7 @@ type
   {$EXTERNALSYM NPDEVMODEW}
   TDevModeW = _devicemodeW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   DEVMODE = DEVMODEW;
   {$EXTERNALSYM DEVMODE}
   PDEVMODE = PDEVMODEW;
@@ -3286,7 +3285,7 @@ type
   LPDEVMODE = LPDEVMODEW;
   {$EXTERNALSYM LPDEVMODE}
   TDevMode = TDevModeW;
-{$ELSE}
+  {$ELSE}
   DEVMODE = DEVMODEA;
   {$EXTERNALSYM DEVMODE}
   PDEVMODE = PDEVMODEA;
@@ -3296,25 +3295,20 @@ type
   LPDEVMODE = LPDEVMODEA;
   {$EXTERNALSYM LPDEVMODE}
   TDevMode = TDevModeA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 // current version of specification
 
 const
-{$IFDEF WINVER_0500_OR_WIN32_WINNT_0400}
+  {$IFDEF WIN98ME_UP_EXCEPT_NT4}
   DM_SPECVERSION = $0401;
   {$EXTERNALSYM DM_SPECVERSION}
-{$ELSE}
-{$IFDEF WINVER_0400_GREATER}
+  {$ELSE}
   DM_SPECVERSION = $0400;
   {$EXTERNALSYM DM_SPECVERSION}
-{$ELSE}
-  DM_SPECVERSION = $0320;
-  {$EXTERNALSYM DM_SPECVERSION}
-{$ENDIF}
-{$ENDIF}
+  {$ENDIF WIN98ME_UP_EXCEPT_NT4}
 
-{$UNDEF WINVER_0500_OR_WIN32_WINNT_0400}
+{$UNDEF WIN98ME_UP_EXCEPT_NT4}
 
 // field selection bits
 
@@ -3633,18 +3627,13 @@ const
   DMPAPER_PENV_10_ROTATED               = 118; // PRC Envelope #10 Rotated 458 x 324 mm
   {$EXTERNALSYM DMPAPER_PENV_10_ROTATED}
 
-{$IFDEF WINVER_0500_GREATER}
+  {$IFDEF WIN98ME_UP}
   DMPAPER_LAST = DMPAPER_PENV_10_ROTATED;
   {$EXTERNALSYM DMPAPER_LAST}
-{$ELSE}
-{$IFDEF WINVER_0400_GREATER}
+  {$ELSE}
   DMPAPER_LAST = DMPAPER_A3_EXTRA_TRANSVERSE;
   {$EXTERNALSYM DMPAPER_LAST}
-{$ELSE}
-  DMPAPER_LAST = DMPAPER_FANFOLD_LGL_GERMAN;
-  {$EXTERNALSYM DMPAPER_LAST}
-{$ENDIF}
-{$ENDIF}
+  {$ENDIF WIN98ME_UP}
 
   DMPAPER_USER = 256;
   {$EXTERNALSYM DMPAPER_USER}
@@ -3874,7 +3863,7 @@ type
   {$EXTERNALSYM PDISPLAY_DEVICEW}
   TDisplayDeviceW = _DISPLAY_DEVICEW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   DISPLAY_DEVICE = DISPLAY_DEVICEW;
   {$EXTERNALSYM DISPLAY_DEVICE}
   PDISPLAY_DEVICE = PDISPLAY_DEVICEW;
@@ -3883,7 +3872,7 @@ type
   {$EXTERNALSYM LPDISPLAY_DEVICE}
   TDisplayDevice = TDisplayDeviceW;
   PDisplayDevice = PDisplayDeviceW;
-{$ELSE}
+  {$ELSE}
   DISPLAY_DEVICE = DISPLAY_DEVICEA;
   {$EXTERNALSYM DISPLAY_DEVICE}
   PDISPLAY_DEVICE = PDISPLAY_DEVICEA;
@@ -3892,7 +3881,7 @@ type
   {$EXTERNALSYM LPDISPLAY_DEVICE}
   TDisplayDevice = TDisplayDeviceA;
   PDisplayDevice = PDisplayDeviceA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 const
   DISPLAY_DEVICE_ATTACHED_TO_DESKTOP = $00000001;
@@ -4079,7 +4068,7 @@ type
   {$EXTERNALSYM NPOUTLINETEXTMETRICW}
   TOutlineTextMetricW = _OUTLINETEXTMETRICW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   OUTLINETEXTMETRIC = OUTLINETEXTMETRICW;
   {$EXTERNALSYM OUTLINETEXTMETRIC}
   POUTLINETEXTMETRIC = POUTLINETEXTMETRICW;
@@ -4089,7 +4078,7 @@ type
   LPOUTLINETEXTMETRIC = LPOUTLINETEXTMETRICW;
   {$EXTERNALSYM LPOUTLINETEXTMETRIC}
   TOutlineTextMetric = TOutlineTextMetricW;
-{$ELSE}
+  {$ELSE}
   OUTLINETEXTMETRIC = OUTLINETEXTMETRICA;
   {$EXTERNALSYM OUTLINETEXTMETRIC}
   POUTLINETEXTMETRIC = POUTLINETEXTMETRICA;
@@ -4099,7 +4088,7 @@ type
   LPOUTLINETEXTMETRIC = LPOUTLINETEXTMETRICA;
   {$EXTERNALSYM LPOUTLINETEXTMETRIC}
   TOutlineTextMetric = TOutlineTextMetricA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   PPolytextA = ^TPolytextA;
   tagPOLYTEXTA = record
@@ -4139,7 +4128,7 @@ type
   {$EXTERNALSYM NPPOLYTEXTW}
   TPolytextW = POLYTEXTW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   POLYTEXT = POLYTEXTW;
   {$EXTERNALSYM POLYTEXT}
   PPOLYTEXT = PPOLYTEXTW;
@@ -4149,7 +4138,7 @@ type
   LPPOLYTEXT = LPPOLYTEXTW;
   {$EXTERNALSYM LPPOLYTEXT}
   TPolyText = TPolyTextW;
-{$ELSE}
+  {$ELSE}
   POLYTEXT = POLYTEXTA;
   {$EXTERNALSYM POLYTEXT}
   PPOLYTEXT = PPOLYTEXTA;
@@ -4159,7 +4148,7 @@ type
   LPPOLYTEXT = LPPOLYTEXTA;
   {$EXTERNALSYM LPPOLYTEXT}
   TPolyText = TPolyTextA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   PFixed = ^TFixed;
   _FIXED = record
@@ -4389,21 +4378,21 @@ type
   {$EXTERNALSYM LPGCP_RESULTSW}
   TGcpResultsW = GCP_RESULTSW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   GCP_RESULTS = GCP_RESULTSW;
   {$EXTERNALSYM GCP_RESULTS}
   LPGCP_RESULTS = LPGCP_RESULTSW;
   {$EXTERNALSYM LPGCP_RESULTS}
   TGcpResults = TGcpResultsW;
   PGcpResults = PGcpResultsW;
-{$ELSE}
+  {$ELSE}
   GCP_RESULTS = GCP_RESULTSA;
   {$EXTERNALSYM GCP_RESULTS}
   LPGCP_RESULTS = LPGCP_RESULTSA;
   {$EXTERNALSYM LPGCP_RESULTS}
   TGcpResults = TGcpResultsA;
   PGcpResults = PGcpResultsA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   PRasterizerStatus = ^TRasterizerStatus;
   _RASTERIZER_STATUS = record
@@ -4523,47 +4512,31 @@ const
   {$EXTERNALSYM PFD_STEREO_DONTCARE}
 
 type
-  OLDFONTENUMPROCA = function (lpelf: LPLOGFONTA; lpntm: LPTEXTMETRICA; FontType: DWORD; lParam: LPARAM): Integer; stdcall;
+  OLDFONTENUMPROCA = function(lpelf: LPLOGFONTA; lpntm: LPTEXTMETRICA; FontType: DWORD; lParam: LPARAM): Integer; stdcall;
   {$EXTERNALSYM OLDFONTENUMPROCA}
-  OLDFONTENUMPROCW = function (lpelf: LPLOGFONTW; lpntm: LPTEXTMETRICW; FontType: DWORD; lParam: LPARAM): Integer; stdcall;
+  OLDFONTENUMPROCW = function(lpelf: LPLOGFONTW; lpntm: LPTEXTMETRICW; FontType: DWORD; lParam: LPARAM): Integer; stdcall;
   {$EXTERNALSYM OLDFONTENUMPROCW}
-  {$IFDEF UNICODE}
-  OLDFONTENUMPROC = function (lpelf: LPLOGFONTW; lpntm: LPTEXTMETRICW; FontType: DWORD; lParam: LPARAM): Integer; stdcall;
+  OLDFONTENUMPROC = function(lpelf: LPLOGFONT; lpntm: LPTEXTMETRIC; FontType: DWORD; lParam: LPARAM): Integer; stdcall;
   {$EXTERNALSYM OLDFONTENUMPROC}
-  {$ELSE}
-  OLDFONTENUMPROC = function (lpelf: LPLOGFONTA; lpntm: LPTEXTMETRICA; FontType: DWORD; lParam: LPARAM): Integer; stdcall;
-  {$EXTERNALSYM OLDFONTENUMPROC}
-  {$ENDIF}
 
   FONTENUMPROCA = OLDFONTENUMPROCA;
   {$EXTERNALSYM FONTENUMPROCA}
   FONTENUMPROCW = OLDFONTENUMPROCW;
   {$EXTERNALSYM FONTENUMPROCW}
-  {$IFDEF UNICODE}
-  FONTENUMPROC = FONTENUMPROCW;
+  FONTENUMPROC = OLDFONTENUMPROC;
   {$EXTERNALSYM FONTENUMPROC}
-  {$ELSE}
-  FONTENUMPROC = FONTENUMPROCA;
-  {$EXTERNALSYM FONTENUMPROC}
-  {$ENDIF}
 
   GOBJENUMPROC = function(lpLogObject: LPVOID; lpData: LPARAM): Integer; stdcall;
   {$EXTERNALSYM GOBJENUMPROC}
-  LINEDDAPROC = procedure (X, Y: Integer; lpData: LPARAM); stdcall;
+  LINEDDAPROC = procedure(X, Y: Integer; lpData: LPARAM); stdcall;
   {$EXTERNALSYM LINEDDAPROC}
 
 function AddFontResourceA(lpszFileName: LPCSTR): Integer; stdcall;
 {$EXTERNALSYM AddFontResourceA}
 function AddFontResourceW(lpszFileName: LPCWSTR): Integer; stdcall;
 {$EXTERNALSYM AddFontResourceW}
-
-{$IFDEF UNICODE}
-function AddFontResource(lpszFileName: LPCWSTR): Integer; stdcall;
+function AddFontResource(lpszFileName: LPCTSTR): Integer; stdcall;
 {$EXTERNALSYM AddFontResource}
-{$ELSE}
-function AddFontResource(lpszFileName: LPCSTR): Integer; stdcall;
-{$EXTERNALSYM AddFontResource}
-{$ENDIF}
 
 function AnimatePalette(hPal: HPALETTE; iStartIndex: UINT; cEntries: UINT; ppe: PPALETTEENTRY): BOOL; stdcall;
 {$EXTERNALSYM AnimatePalette}
@@ -4585,13 +4558,8 @@ function CopyMetaFileA(hmfSrc: HMETAFILE; lpszFile: LPCSTR): HMETAFILE; stdcall;
 {$EXTERNALSYM CopyMetaFileA}
 function CopyMetaFileW(hmfSrc: HMETAFILE; lpszFile: LPCWSTR): HMETAFILE; stdcall;
 {$EXTERNALSYM CopyMetaFileW}
-{$IFDEF UNICODE}
-function CopyMetaFile(hmfSrc: HMETAFILE; lpszFile: LPCWSTR): HMETAFILE; stdcall;
+function CopyMetaFile(hmfSrc: HMETAFILE; lpszFile: LPCTSTR): HMETAFILE; stdcall;
 {$EXTERNALSYM CopyMetaFile}
-{$ELSE}
-function CopyMetaFile(hmfSrc: HMETAFILE; lpszFile: LPCSTR): HMETAFILE; stdcall;
-{$EXTERNALSYM CopyMetaFile}
-{$ENDIF}
 function CreateBitmap(nWidth, nHeight: Integer; Cplanes, cBitsPerPel: UINT; lpvBits: PVOID): HBITMAP; stdcall;
 {$EXTERNALSYM CreateBitmap}
 function CreateBitmapIndirect(const lpbm: BITMAP): HBITMAP; stdcall;
@@ -4608,13 +4576,8 @@ function CreateDCA(lpszDriver, lpszDevice, lpszOutput: LPCSTR; lpInitData: LPDEV
 {$EXTERNALSYM CreateDCA}
 function CreateDCW(lpszDriver, lpszDevice, lpszOutput: LPCWSTR; lpInitData: LPDEVMODEW): HDC; stdcall;
 {$EXTERNALSYM CreateDCW}
-{$IFDEF UNICODE}
-function CreateDC(lpszDriver, lpszDevice, lpszOutput: LPCWSTR; lpInitData: LPDEVMODEW): HDC; stdcall;
+function CreateDC(lpszDriver, lpszDevice, lpszOutput: LPCTSTR; lpInitData: LPDEVMODE): HDC; stdcall;
 {$EXTERNALSYM CreateDC}
-{$ELSE}
-function CreateDC(lpszDriver, lpszDevice, lpszOutput: LPCSTR; lpInitData: LPDEVMODEA): HDC; stdcall;
-{$EXTERNALSYM CreateDC}
-{$ENDIF}
 function CreateDIBitmap(hdc: HDC; const lpbmih: BITMAPINFOHEADER; fdwInit: DWORD; lpbInit: PVOID; const lpbmi: BITMAPINFO; fuUsage: UINT): HBITMAP; stdcall;
 {$EXTERNALSYM CreateDIBitmap}
 function CreateDIBPatternBrush(hglbDIBPacked: HGLOBAL; fuColorSpec: UINT): HBRUSH; stdcall;
@@ -4629,48 +4592,28 @@ function CreateFontIndirectA(const lplf: LOGFONTA): HFONT; stdcall;
 {$EXTERNALSYM CreateFontIndirectA}
 function CreateFontIndirectW(const lplf: LOGFONTW): HFONT; stdcall;
 {$EXTERNALSYM CreateFontIndirectW}
-{$IFDEF UNICODE}
-function CreateFontIndirect(const lplf: LOGFONTW): HFONT; stdcall;
+function CreateFontIndirect(const lplf: LOGFONT): HFONT; stdcall;
 {$EXTERNALSYM CreateFontIndirect}
-{$ELSE}
-function CreateFontIndirect(const lplf: LOGFONTA): HFONT; stdcall;
-{$EXTERNALSYM CreateFontIndirect}
-{$ENDIF}
 function CreateFontA(nHeight, nWidth, nEscapement, nOrientation, fnWeight: Integer; fdwItalic, fdwUnderline, fdwStrikeOut, fdwCharSet, fdwOutputPrecision, fdwClipPrecision, fdwQuality, fdwPitchAndFamily: DWORD; lpszFace: LPCSTR): HFONT; stdcall;
 {$EXTERNALSYM CreateFontA}
 function CreateFontW(nHeight, nWidth, nEscapement, nOrientation, fnWeight: Integer; fdwItalic, fdwUnderline, fdwStrikeOut, fdwCharSet, fdwOutputPrecision, fdwClipPrecision, fdwQuality, fdwPitchAndFamily: DWORD; lpszFace: LPCWSTR): HFONT; stdcall;
 {$EXTERNALSYM CreateFontW}
-{$IFDEF UNICODE}
-function CreateFont(nHeight, nWidth, nEscapement, nOrientation, fnWeight: Integer; fdwItalic, fdwUnderline, fdwStrikeOut, fdwCharSet, fdwOutputPrecision, fdwClipPrecision, fdwQuality, fdwPitchAndFamily: DWORD; lpszFace: LPCWSTR): HFONT; stdcall;
+function CreateFont(nHeight, nWidth, nEscapement, nOrientation, fnWeight: Integer; fdwItalic, fdwUnderline, fdwStrikeOut, fdwCharSet, fdwOutputPrecision, fdwClipPrecision, fdwQuality, fdwPitchAndFamily: DWORD; lpszFace: LPCTSTR): HFONT; stdcall;
 {$EXTERNALSYM CreateFont}
-{$ELSE}
-function CreateFont(nHeight, nWidth, nEscapement, nOrientation, fnWeight: Integer; fdwItalic, fdwUnderline, fdwStrikeOut, fdwCharSet, fdwOutputPrecision, fdwClipPrecision, fdwQuality, fdwPitchAndFamily: DWORD; lpszFace: LPCSTR): HFONT; stdcall;
-{$EXTERNALSYM CreateFont}
-{$ENDIF}
 function CreateHatchBrush(fnStyle: Integer; clrref: COLORREF): HBRUSH; stdcall;
 {$EXTERNALSYM CreateHatchBrush}
 function CreateICA(lpszDriver, lpszDevice, lpszOutput: LPCSTR; lpdvmInit: LPDEVMODEA): HDC; stdcall;
 {$EXTERNALSYM CreateICA}
 function CreateICW(lpszDriver, lpszDevice, lpszOutput: LPCWSTR; lpdvmInit: LPDEVMODEW): HDC; stdcall;
 {$EXTERNALSYM CreateICW}
-{$IFDEF UNICODE}
-function CreateIC(lpszDriver, lpszDevice, lpszOutput: LPCWSTR; lpdvmInit: LPDEVMODEW): HDC; stdcall;
+function CreateIC(lpszDriver, lpszDevice, lpszOutput: LPCWSTR; lpdvmInit: LPDEVMODE): HDC; stdcall;
 {$EXTERNALSYM CreateIC}
-{$ELSE}
-function CreateIC(lpszDriver, lpszDevice, lpszOutput: LPCSTR; lpdvmInit: LPDEVMODEA): HDC; stdcall;
-{$EXTERNALSYM CreateIC}
-{$ENDIF}
 function CreateMetaFileA(lpszFile: LPCSTR): HDC; stdcall;
 {$EXTERNALSYM CreateMetaFileA}
 function CreateMetaFileW(lpszFile: LPCWSTR): HDC; stdcall;
 {$EXTERNALSYM CreateMetaFileW}
-{$IFDEF UNICODE}
-function CreateMetaFile(lpszFile: LPCWSTR): HDC; stdcall;
+function CreateMetaFile(lpszFile: LPCTSTR): HDC; stdcall;
 {$EXTERNALSYM CreateMetaFile}
-{$ELSE}
-function CreateMetaFile(lpszFile: LPCSTR): HDC; stdcall;
-{$EXTERNALSYM CreateMetaFile}
-{$ENDIF}
 function CreatePalette(const lplgpl: LOGPALETTE): HPALETTE; stdcall;
 {$EXTERNALSYM CreatePalette}
 function CreatePen(fnPenStyle, nWidth: Integer; crColor: COLORREF): HPEN; stdcall;
@@ -4691,13 +4634,8 @@ function CreateScalableFontResourceA(fdwHidden: DWORD; lpszFontRes, lpszFontFile
 {$EXTERNALSYM CreateScalableFontResourceA}
 function CreateScalableFontResourceW(fdwHidden: DWORD; lpszFontRes, lpszFontFile, lpszCurrentPath: LPCWSTR): BOOL; stdcall;
 {$EXTERNALSYM CreateScalableFontResourceW}
-{$IFDEF UNICODE}
-function CreateScalableFontResource(fdwHidden: DWORD; lpszFontRes, lpszFontFile, lpszCurrentPath: LPCWSTR): BOOL; stdcall;
+function CreateScalableFontResource(fdwHidden: DWORD; lpszFontRes, lpszFontFile, lpszCurrentPath: LPCTSTR): BOOL; stdcall;
 {$EXTERNALSYM CreateScalableFontResource}
-{$ELSE}
-function CreateScalableFontResource(fdwHidden: DWORD; lpszFontRes, lpszFontFile, lpszCurrentPath: LPCSTR): BOOL; stdcall;
-{$EXTERNALSYM CreateScalableFontResource}
-{$ENDIF}
 function CreateSolidBrush(crColor: COLORREF): HBRUSH; stdcall;
 {$EXTERNALSYM CreateSolidBrush}
 function DeleteDC(hdc: HDC): BOOL; stdcall;
@@ -4711,6 +4649,7 @@ function DescribePixelFormat(hdc: HDC; iPixelFormat: Integer; nBytes: UINT; ppfd
 
 // mode selections for the device mode function
 
+{$IFNDEF JWA_INCLUDEMODE}
 const
   DM_UPDATE = 1;
   {$EXTERNALSYM DM_UPDATE}
@@ -4811,9 +4750,10 @@ const
   {$EXTERNALSYM DC_MEDIATYPENAMES}
   DC_MEDIATYPES     = 35;
   {$EXTERNALSYM DC_MEDIATYPES}
+{$ENDIF !JWA_INCLUDEMODE}
 
 // bit fields of the return value (DWORD) for DC_TRUETYPE
-
+const
   DCTT_BITMAP           = $0000001;
   {$EXTERNALSYM DCTT_BITMAP}
   DCTT_DOWNLOAD         = $0000002;
@@ -4846,13 +4786,8 @@ function DeviceCapabilitiesA(pDevice, pPort: LPCSTR; fwCapability: WORD; pOutput
 {$EXTERNALSYM DeviceCapabilitiesA}
 function DeviceCapabilitiesW(pDevice, pPort: LPCWSTR; fwCapability: WORD; pOutput: LPWSTR; pDevMode: LPDEVMODEW): Integer; stdcall;
 {$EXTERNALSYM DeviceCapabilitiesW}
-{$IFDEF UNICODE}
-function DeviceCapabilities(pDevice, pPort: LPCWSTR; fwCapability: WORD; pOutput: LPWSTR; pDevMode: LPDEVMODEW): Integer; stdcall;
+function DeviceCapabilities(pDevice, pPort: LPCTSTR; fwCapability: WORD; pOutput: LPTSTR; pDevMode: LPDEVMODE): Integer; stdcall;
 {$EXTERNALSYM DeviceCapabilities}
-{$ELSE}
-function DeviceCapabilities(pDevice, pPort: LPCSTR; fwCapability: WORD; pOutput: LPSTR; pDevMode: LPDEVMODEA): Integer; stdcall;
-{$EXTERNALSYM DeviceCapabilities}
-{$ENDIF}
 function DrawEscape(hdc: HDC; nEscape, cbInput: Integer; lpszInData: LPCSTR): Integer; stdcall;
 {$EXTERNALSYM DrawEscape}
 function Ellipse(hdc: HDC; nLeftRect, nTopRect, nRightRect, nBottomRect: Integer): BOOL; stdcall;
@@ -4861,37 +4796,22 @@ function EnumFontFamiliesExA(hdc: HDC; lpLogFont: LPLOGFONTA; lpEnumFontFamExPro
 {$EXTERNALSYM EnumFontFamiliesExA}
 function EnumFontFamiliesExW(hdc: HDC; lpLogFont: LPLOGFONTW; lpEnumFontFamExProc: FONTENUMPROCW; lParam: LPARAM; dwFlags: DWORD): Integer; stdcall;
 {$EXTERNALSYM EnumFontFamiliesExW}
-{$IFDEF UNICODE}
-function EnumFontFamiliesEx(hdc: HDC; lpLogFont: LPLOGFONTW; lpEnumFontFamExProc: FONTENUMPROCW; lParam: LPARAM; dwFlags: DWORD): Integer; stdcall;
+function EnumFontFamiliesEx(hdc: HDC; lpLogFont: LPLOGFONT; lpEnumFontFamExProc: FONTENUMPROC; lParam: LPARAM; dwFlags: DWORD): Integer; stdcall;
 {$EXTERNALSYM EnumFontFamiliesEx}
-{$ELSE}
-function EnumFontFamiliesEx(hdc: HDC; lpLogFont: LPLOGFONTA; lpEnumFontFamExProc: FONTENUMPROCA; lParam: LPARAM; dwFlags: DWORD): Integer; stdcall;
-{$EXTERNALSYM EnumFontFamiliesEx}
-{$ENDIF}
 
 function EnumFontFamiliesA(hdc: HDC; lpszFamily: LPCSTR; lpEnumFontFamProc: FONTENUMPROCA; lParam: LPARAM): Integer; stdcall;
 {$EXTERNALSYM EnumFontFamiliesA}
 function EnumFontFamiliesW(hdc: HDC; lpszFamily: LPCWSTR; lpEnumFontFamProc: FONTENUMPROCW; lParam: LPARAM): Integer; stdcall;
 {$EXTERNALSYM EnumFontFamiliesW}
-{$IFDEF UNICODE}
-function EnumFontFamilies(hdc: HDC; lpszFamily: LPCWSTR; lpEnumFontFamProc: FONTENUMPROCW; lParam: LPARAM): Integer; stdcall;
+function EnumFontFamilies(hdc: HDC; lpszFamily: LPCTSTR; lpEnumFontFamProc: FONTENUMPROC; lParam: LPARAM): Integer; stdcall;
 {$EXTERNALSYM EnumFontFamilies}
-{$ELSE}
-function EnumFontFamilies(hdc: HDC; lpszFamily: LPCSTR; lpEnumFontFamProc: FONTENUMPROCA; lParam: LPARAM): Integer; stdcall;
-{$EXTERNALSYM EnumFontFamilies}
-{$ENDIF}
 
 function EnumFontsA(hdc: HDC; lpFaceName: LPCSTR; lpFontFunc: FONTENUMPROCA; lParam: LPARAM): Integer; stdcall;
 {$EXTERNALSYM EnumFontsA}
 function EnumFontsW(hdc: HDC; lpFaceName: LPCWSTR; lpFontFunc: FONTENUMPROCW; lParam: LPARAM): Integer; stdcall;
 {$EXTERNALSYM EnumFontsW}
-{$IFDEF UNICODE}
-function EnumFonts(hdc: HDC; lpFaceName: LPCWSTR; lpFontFunc: FONTENUMPROCW; lParam: LPARAM): Integer; stdcall;
+function EnumFonts(hdc: HDC; lpFaceName: LPCTSTR; lpFontFunc: FONTENUMPROC; lParam: LPARAM): Integer; stdcall;
 {$EXTERNALSYM EnumFonts}
-{$ELSE}
-function EnumFonts(hdc: HDC; lpFaceName: LPCSTR; lpFontFunc: FONTENUMPROCA; lParam: LPARAM): Integer; stdcall;
-{$EXTERNALSYM EnumFonts}
-{$ENDIF}
 
 function EnumObjects(hdc: HDC; mObjectType: Integer; lpObjectFunc: GOBJENUMPROC; lParam: LPARAM): Integer; stdcall;
 {$EXTERNALSYM EnumObjects}
@@ -4942,57 +4862,32 @@ function GetCharWidthA(hdc: HDC; iFirstChar, iLastChar: UINT; lpBuffer: LPINT): 
 {$EXTERNALSYM GetCharWidthA}
 function GetCharWidthW(hdc: HDC; iFirstChar, iLastChar: UINT; lpBuffer: LPINT): BOOL; stdcall;
 {$EXTERNALSYM GetCharWidthW}
-{$IFDEF UNICODE}
 function GetCharWidth(hdc: HDC; iFirstChar, iLastChar: UINT; lpBuffer: LPINT): BOOL; stdcall;
 {$EXTERNALSYM GetCharWidth}
-{$ELSE}
-function GetCharWidth(hdc: HDC; iFirstChar, iLastChar: UINT; lpBuffer: LPINT): BOOL; stdcall;
-{$EXTERNALSYM GetCharWidth}
-{$ENDIF}
 function GetCharWidth32A(hdc: HDC; iFirstChar, iLastChar: UINT; lpBuffer: LPINT): BOOL; stdcall;
 {$EXTERNALSYM GetCharWidth32A}
 function GetCharWidth32W(hdc: HDC; iFirstChar, iLastChar: UINT; lpBuffer: LPINT): BOOL; stdcall;
 {$EXTERNALSYM GetCharWidth32W}
-{$IFDEF UNICODE}
 function GetCharWidth32(hdc: HDC; iFirstChar, iLastChar: UINT; lpBuffer: LPINT): BOOL; stdcall;
 {$EXTERNALSYM GetCharWidth32}
-{$ELSE}
-function GetCharWidth32(hdc: HDC; iFirstChar, iLastChar: UINT; lpBuffer: LPINT): BOOL; stdcall;
-{$EXTERNALSYM GetCharWidth32}
-{$ENDIF}
 function GetCharWidthFloatA(hdc: HDC; iFirstChar, iLastChar: UINT; pxBuffer: PFLOAT): BOOL; stdcall;
 {$EXTERNALSYM GetCharWidthFloatA}
 function GetCharWidthFloatW(hdc: HDC; iFirstChar, iLastChar: UINT; pxBuffer: PFLOAT): BOOL; stdcall;
 {$EXTERNALSYM GetCharWidthFloatW}
-{$IFDEF UNICODE}
 function GetCharWidthFloat(hdc: HDC; iFirstChar, iLastChar: UINT; pxBuffer: PFLOAT): BOOL; stdcall;
 {$EXTERNALSYM GetCharWidthFloat}
-{$ELSE}
-function GetCharWidthFloat(hdc: HDC; iFirstChar, iLastChar: UINT; pxBuffer: PFLOAT): BOOL; stdcall;
-{$EXTERNALSYM GetCharWidthFloat}
-{$ENDIF}
 function GetCharABCWidthsA(hdc: HDC; uFirstChar, uLastChar: UINT; lpAbc: LPABC): BOOL; stdcall;
 {$EXTERNALSYM GetCharABCWidthsA}
 function GetCharABCWidthsW(hdc: HDC; uFirstChar, uLastChar: UINT; lpAbc: LPABC): BOOL; stdcall;
 {$EXTERNALSYM GetCharABCWidthsW}
-{$IFDEF UNICODE}
 function GetCharABCWidths(hdc: HDC; uFirstChar, uLastChar: UINT; lpAbc: LPABC): BOOL; stdcall;
 {$EXTERNALSYM GetCharABCWidths}
-{$ELSE}
-function GetCharABCWidths(hdc: HDC; uFirstChar, uLastChar: UINT; lpAbc: LPABC): BOOL; stdcall;
-{$EXTERNALSYM GetCharABCWidths}
-{$ENDIF}
 function GetCharABCWidthsFloatA(hdc: HDC; iFirstChar, iLastChar: UINT; lpAbcF: LPABCFLOAT): BOOL; stdcall;
 {$EXTERNALSYM GetCharABCWidthsFloatA}
 function GetCharABCWidthsFloatW(hdc: HDC; iFirstChar, iLastChar: UINT; lpAbcF: LPABCFLOAT): BOOL; stdcall;
 {$EXTERNALSYM GetCharABCWidthsFloatW}
-{$IFDEF UNICODE}
 function GetCharABCWidthsFloat(hdc: HDC; iFirstChar, iLastChar: UINT; lpAbcF: LPABCFLOAT): BOOL; stdcall;
 {$EXTERNALSYM GetCharABCWidthsFloat}
-{$ELSE}
-function GetCharABCWidthsFloat(hdc: HDC; iFirstChar, iLastChar: UINT; lpAbcF: LPABCFLOAT): BOOL; stdcall;
-{$EXTERNALSYM GetCharABCWidthsFloat}
-{$ENDIF}
 
 function GetClipBox(hdc: HDC; var lprc: RECT): Integer; stdcall;
 {$EXTERNALSYM GetClipBox}
@@ -5014,13 +4909,8 @@ function GetGlyphOutlineA(hdc: HDC; uChar, uFormat: UINT; var lpgm: GLYPHMETRICS
 {$EXTERNALSYM GetGlyphOutlineA}
 function GetGlyphOutlineW(hdc: HDC; uChar, uFormat: UINT; var lpgm: GLYPHMETRICS; cbBuffer: DWORD; lpvBuffer: LPVOID; const lpMat2: MAT2): DWORD; stdcall;
 {$EXTERNALSYM GetGlyphOutlineW}
-{$IFDEF UNICODE}
 function GetGlyphOutline(hdc: HDC; uChar, uFormat: UINT; var lpgm: GLYPHMETRICS; cbBuffer: DWORD; lpvBuffer: LPVOID; const lpMat2: MAT2): DWORD; stdcall;
 {$EXTERNALSYM GetGlyphOutline}
-{$ELSE}
-function GetGlyphOutline(hdc: HDC; uChar, uFormat: UINT; var lpgm: GLYPHMETRICS; cbBuffer: DWORD; lpvBuffer: LPVOID; const lpMat2: MAT2): DWORD; stdcall;
-{$EXTERNALSYM GetGlyphOutline}
-{$ENDIF}
 function GetGraphicsMode(hdc: HDC): Integer; stdcall;
 {$EXTERNALSYM GetGraphicsMode}
 function GetMapMode(hdc: HDC): Integer; stdcall;
@@ -5031,13 +4921,8 @@ function GetMetaFileA(lpszMetaFile: LPCSTR): HMETAFILE; stdcall;
 {$EXTERNALSYM GetMetaFileA}
 function GetMetaFileW(lpszMetaFile: LPCWSTR): HMETAFILE; stdcall;
 {$EXTERNALSYM GetMetaFileW}
-{$IFDEF UNICODE}
-function GetMetaFile(lpszMetaFile: LPCWSTR): HMETAFILE; stdcall;
+function GetMetaFile(lpszMetaFile: LPCTSTR): HMETAFILE; stdcall;
 {$EXTERNALSYM GetMetaFile}
-{$ELSE}
-function GetMetaFile(lpszMetaFile: LPCSTR): HMETAFILE; stdcall;
-{$EXTERNALSYM GetMetaFile}
-{$ENDIF}
 function GetNearestColor(hdc: HDC; crColor: COLORREF): COLORREF; stdcall;
 {$EXTERNALSYM GetNearestColor}
 function GetNearestPaletteIndex(hPal: HPALETTE; crColor: COLORREF): UINT; stdcall;
@@ -5049,13 +4934,8 @@ function GetOutlineTextMetricsA(hdc: HDC; cbData: UINT; lpOTM: LPOUTLINETEXTMETR
 {$EXTERNALSYM GetOutlineTextMetricsA}
 function GetOutlineTextMetricsW(hdc: HDC; cbData: UINT; lpOTM: LPOUTLINETEXTMETRICW): UINT; stdcall;
 {$EXTERNALSYM GetOutlineTextMetricsW}
-{$IFDEF UNICODE}
-function GetOutlineTextMetrics(hdc: HDC; cbData: UINT; lpOTM: LPOUTLINETEXTMETRICW): UINT; stdcall;
+function GetOutlineTextMetrics(hdc: HDC; cbData: UINT; lpOTM: LPOUTLINETEXTMETRIC): UINT; stdcall;
 {$EXTERNALSYM GetOutlineTextMetrics}
-{$ELSE}
-function GetOutlineTextMetrics(hdc: HDC; cbData: UINT; lpOTM: LPOUTLINETEXTMETRICA): UINT; stdcall;
-{$EXTERNALSYM GetOutlineTextMetrics}
-{$ENDIF}
 function GetPaletteEntries(hPal: HPALETTE; iStartIndex, nEntries: UINT; lppe: LPPALETTEENTRY): UINT; stdcall;
 {$EXTERNALSYM GetPaletteEntries}
 function GetPixel(hdc: HDC; nXPos, nYPos: Integer): COLORREF; stdcall;
@@ -5091,35 +4971,20 @@ function GetTextExtentPointA(hdc: HDC; lpString: LPCSTR; cbString: Integer; var 
 {$EXTERNALSYM GetTextExtentPointA}
 function GetTextExtentPointW(hdc: HDC; lpString: LPCWSTR; cbString: Integer; var Size: TSize): BOOL; stdcall;
 {$EXTERNALSYM GetTextExtentPointW}
-{$IFDEF UNICODE}
-function GetTextExtentPoint(hdc: HDC; lpString: LPCWSTR; cbString: Integer; var Size: TSize): BOOL; stdcall;
+function GetTextExtentPoint(hdc: HDC; lpString: LPCTSTR; cbString: Integer; var Size: TSize): BOOL; stdcall;
 {$EXTERNALSYM GetTextExtentPoint}
-{$ELSE}
-function GetTextExtentPoint(hdc: HDC; lpString: LPCSTR; cbString: Integer; var Size: TSize): BOOL; stdcall;
-{$EXTERNALSYM GetTextExtentPoint}
-{$ENDIF}
 function GetTextExtentPoint32A(hdc: HDC; lpString: LPCSTR; cbString: Integer; var Size: TSize): BOOL; stdcall;
 {$EXTERNALSYM GetTextExtentPoint32A}
 function GetTextExtentPoint32W(hdc: HDC; lpString: LPCWSTR; cbString: Integer; var Size: TSize): BOOL; stdcall;
 {$EXTERNALSYM GetTextExtentPoint32W}
-{$IFDEF UNICODE}
-function GetTextExtentPoint32(hdc: HDC; lpString: LPCWSTR; cbString: Integer; var Size: TSize): BOOL; stdcall;
+function GetTextExtentPoint32(hdc: HDC; lpString: LPCTSTR; cbString: Integer; var Size: TSize): BOOL; stdcall;
 {$EXTERNALSYM GetTextExtentPoint32}
-{$ELSE}
-function GetTextExtentPoint32(hdc: HDC; lpString: LPCSTR; cbString: Integer; var Size: TSize): BOOL; stdcall;
-{$EXTERNALSYM GetTextExtentPoint32}
-{$ENDIF}
 function GetTextExtentExPointA(hdc: HDC; lpszStr: LPCSTR; cchString, nMaxExtend: Integer; lpnFit, alpDx: LPINT; var lpSize: TSize): BOOL; stdcall;
 {$EXTERNALSYM GetTextExtentExPointA}
 function GetTextExtentExPointW(hdc: HDC; lpszStr: LPCWSTR; cchString, nMaxExtend: Integer; lpnFit, alpDx: LPINT; var lpSize: TSize): BOOL; stdcall;
 {$EXTERNALSYM GetTextExtentExPointW}
-{$IFDEF UNICODE}
-function GetTextExtentExPoint(hdc: HDC; lpszStr: LPCWSTR; cchString, nMaxExtend: Integer; lpnFit, alpDx: LPINT; var lpSize: TSize): BOOL; stdcall;
+function GetTextExtentExPoint(hdc: HDC; lpszStr: LPCTSTR; cchString, nMaxExtend: Integer; lpnFit, alpDx: LPINT; var lpSize: TSize): BOOL; stdcall;
 {$EXTERNALSYM GetTextExtentExPoint}
-{$ELSE}
-function GetTextExtentExPoint(hdc: HDC; lpszStr: LPCSTR; cchString, nMaxExtend: Integer; lpnFit, alpDx: LPINT; var lpSize: TSize): BOOL; stdcall;
-{$EXTERNALSYM GetTextExtentExPoint}
-{$ENDIF}
 function GetTextCharset(hdc: HDC): Integer; stdcall;
 {$EXTERNALSYM GetTextCharset}
 function GetTextCharsetInfo(hdc: HDC; lpSig: LPFONTSIGNATURE; dwFlags: DWORD): Integer; stdcall;
@@ -5132,13 +4997,8 @@ function GetCharacterPlacementA(hdc: HDC; lpString: LPCSTR; nCount, nMaxExtend: 
 {$EXTERNALSYM GetCharacterPlacementA}
 function GetCharacterPlacementW(hdc: HDC; lpString: LPCWSTR; nCount, nMaxExtend: Integer; var lpResults: GCP_RESULTSW; dwFlags: DWORD): DWORD; stdcall;
 {$EXTERNALSYM GetCharacterPlacementW}
-{$IFDEF UNICODE}
-function GetCharacterPlacement(hdc: HDC; lpString: LPCWSTR; nCount, nMaxExtend: Integer; var lpResults: GCP_RESULTSW; dwFlags: DWORD): DWORD; stdcall;
+function GetCharacterPlacement(hdc: HDC; lpString: LPCTSTR; nCount, nMaxExtend: Integer; var lpResults: GCP_RESULTS; dwFlags: DWORD): DWORD; stdcall;
 {$EXTERNALSYM GetCharacterPlacement}
-{$ELSE}
-function GetCharacterPlacement(hdc: HDC; lpString: LPCSTR; nCount, nMaxExtend: Integer; var lpResults: GCP_RESULTSA; dwFlags: DWORD): DWORD; stdcall;
-{$EXTERNALSYM GetCharacterPlacement}
-{$ENDIF}
 
 type
   PWcRange = ^TWcRange;
@@ -5186,14 +5046,8 @@ function GetGlyphIndicesA(hdc: HDC; lpstr: LPCSTR; c: Integer; pgi: LPWORD; fl: 
 {$EXTERNALSYM GetGlyphIndicesA}
 function GetGlyphIndicesW(hdc: HDC; lpstr: LPCWSTR; c: Integer; pgi: LPWORD; fl: DWORD): DWORD; stdcall;
 {$EXTERNALSYM GetGlyphIndicesW}
-
-{$IFDEF UNICODE}
-function GetGlyphIndices(hdc: HDC; lpstr: LPCWSTR; c: Integer; pgi: LPWORD; fl: DWORD): DWORD; stdcall;
+function GetGlyphIndices(hdc: HDC; lpstr: LPCTSTR; c: Integer; pgi: LPWORD; fl: DWORD): DWORD; stdcall;
 {$EXTERNALSYM GetGlyphIndices}
-{$ELSE}
-function GetGlyphIndices(hdc: HDC; lpstr: LPCSTR; c: Integer; pgi: LPWORD; fl: DWORD): DWORD; stdcall;
-{$EXTERNALSYM GetGlyphIndices}
-{$ENDIF}
 
 function GetTextExtentPointI(hdc: HDC; pgiIn: LPWORD; cgi: Integer; lpSize: LPSIZE): BOOL; stdcall;
 {$EXTERNALSYM GetTextExtentPointI}
@@ -5206,9 +5060,9 @@ function GetCharABCWidthsI(hdc: HDC; giFirst, cgi: UINT; pgi: LPWORD; lpAbc: LPA
 {$EXTERNALSYM GetCharABCWidthsI}
 
 const
-  STAMP_DESIGNVECTOR = ($8000000 + Ord('d') + (Ord('v') shl 8));
+  STAMP_DESIGNVECTOR = $8000000 + Ord('d') + (Ord('v') shl 8);
   {$EXTERNALSYM STAMP_DESIGNVECTOR}
-  STAMP_AXESLIST     = ($8000000 + Ord('a') + (Ord('l') shl 8));
+  STAMP_AXESLIST     = $8000000 + Ord('a') + (Ord('l') shl 8);
   {$EXTERNALSYM STAMP_AXESLIST}
   MM_MAX_NUMAXES     = 16;
   {$EXTERNALSYM MM_MAX_NUMAXES}
@@ -5231,27 +5085,15 @@ function AddFontResourceExA(lpszFilename: LPCSTR; fl: DWORD; pdv: PVOID): Intege
 {$EXTERNALSYM AddFontResourceExA}
 function AddFontResourceExW(lpszFilename: LPCWSTR; fl: DWORD; pdv: PVOID): Integer; stdcall;
 {$EXTERNALSYM AddFontResourceExW}
-
-{$IFDEF UNICODE}
-function AddFontResourceEx(lpszFilename: LPCWSTR; fl: DWORD; pdv: PVOID): Integer; stdcall;
+function AddFontResourceEx(lpszFilename: LPCTSTR; fl: DWORD; pdv: PVOID): Integer; stdcall;
 {$EXTERNALSYM AddFontResourceEx}
-{$ELSE}
-function AddFontResourceEx(lpszFilename: LPCSTR; fl: DWORD; pdv: PVOID): Integer; stdcall;
-{$EXTERNALSYM AddFontResourceEx}
-{$ENDIF}
 
 function RemoveFontResourceExA(lpFilename: LPCSTR; fl: DWORD; pdv: PVOID): BOOL; stdcall;
 {$EXTERNALSYM RemoveFontResourceExA}
 function RemoveFontResourceExW(lpFilename: LPCWSTR; fl: DWORD; pdv: PVOID): BOOL; stdcall;
 {$EXTERNALSYM RemoveFontResourceExW}
-
-{$IFDEF UNICODE}
-function RemoveFontResourceEx(lpFilename: LPCWSTR; fl: DWORD; pdv: PVOID): BOOL; stdcall;
+function RemoveFontResourceEx(lpFilename: LPCTSTR; fl: DWORD; pdv: PVOID): BOOL; stdcall;
 {$EXTERNALSYM RemoveFontResourceEx}
-{$ELSE}
-function RemoveFontResourceEx(lpFilename: LPCSTR; fl: DWORD; pdv: PVOID): BOOL; stdcall;
-{$EXTERNALSYM RemoveFontResourceEx}
-{$ENDIF}
 
 function AddFontMemResourceEx(pbFont: PVOID; cbFont: DWORD; pdv: PVOID; pcFonts: LPDWORD): HANDLE; stdcall;
 {$EXTERNALSYM AddFontMemResourceEx}
@@ -5299,7 +5141,7 @@ type
   {$EXTERNALSYM LPAXISINFOW}
   TAxisInfoW = AXISINFOW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   AXISINFO = AXISINFOW;
   {$EXTERNALSYM AXISINFO}
   PAXISINFO = PAXISINFOW;
@@ -5307,7 +5149,7 @@ type
   LPAXISINFO = LPAXISINFOW;
   {$EXTERNALSYM LPAXISINFO}
   TAxisInfo = TAxisInfoW;
-{$ELSE}
+  {$ELSE}
   AXISINFO = AXISINFOA;
   {$EXTERNALSYM AXISINFO}
   PAXISINFO = PAXISINFOA;
@@ -5315,7 +5157,7 @@ type
   LPAXISINFO = LPAXISINFOA;
   {$EXTERNALSYM LPAXISINFO}
   TAxisInfo = TAxisInfoA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   PAxesListA = ^TAxesListA;
   tagAXESLISTA = record
@@ -5343,7 +5185,7 @@ type
   {$EXTERNALSYM LPAXESLISTW}
   TAxesListW = tagAXESLISTW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   AXESLIST = AXESLISTW;
   {$EXTERNALSYM AXESLIST}
   PAXESLIST = PAXESLISTW;
@@ -5351,7 +5193,7 @@ type
   LPAXESLIST = LPAXESLISTW;
   {$EXTERNALSYM LPAXESLIST}
   TAxesList = TAxesListW;
-{$ELSE}
+  {$ELSE}
   AXESLIST = AXESLISTA;
   {$EXTERNALSYM AXESLIST}
   PAXESLIST = PAXESLISTA;
@@ -5359,7 +5201,7 @@ type
   LPAXESLIST = LPAXESLISTA;
   {$EXTERNALSYM LPAXESLIST}
   TAxesList = TAxesListA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 // The actual size of the AXESLIST and ENUMTEXTMETRIC structure is
 // determined by axlNumAxes,
@@ -5389,7 +5231,7 @@ type
   {$EXTERNALSYM LPENUMLOGFONTEXDVW}
   TEnumLogFontExDVW = tagENUMLOGFONTEXDVW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   ENUMLOGFONTEXDV = ENUMLOGFONTEXDVW;
   {$EXTERNALSYM ENUMLOGFONTEXDV}
   PENUMLOGFONTEXDV = PENUMLOGFONTEXDVW;
@@ -5397,7 +5239,7 @@ type
   LPENUMLOGFONTEXDV = LPENUMLOGFONTEXDVW;
   {$EXTERNALSYM LPENUMLOGFONTEXDV}
   TEnumLogFontExDV = TEnumLogFontExDVW;
-{$ELSE}
+  {$ELSE}
   ENUMLOGFONTEXDV = ENUMLOGFONTEXDVA;
   {$EXTERNALSYM ENUMLOGFONTEXDV}
   PENUMLOGFONTEXDV = PENUMLOGFONTEXDVA;
@@ -5405,20 +5247,14 @@ type
   LPENUMLOGFONTEXDV = LPENUMLOGFONTEXDVA;
   {$EXTERNALSYM LPENUMLOGFONTEXDV}
   TEnumLogFontExDV = TEnumLogFontExDVA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 function CreateFontIndirectExA(penumlfex: LPENUMLOGFONTEXDVA): HFONT; stdcall;
 {$EXTERNALSYM CreateFontIndirectExA}
 function CreateFontIndirectExW(penumlfex: LPENUMLOGFONTEXDVW): HFONT; stdcall;
 {$EXTERNALSYM CreateFontIndirectExW}
-
-{$IFDEF UNICODE}
-function CreateFontIndirectEx(penumlfex: LPENUMLOGFONTEXDVW): HFONT; stdcall;
+function CreateFontIndirectEx(penumlfex: LPENUMLOGFONTEXDV): HFONT; stdcall;
 {$EXTERNALSYM CreateFontIndirectEx}
-{$ELSE}
-function CreateFontIndirectEx(penumlfex: LPENUMLOGFONTEXDVA): HFONT; stdcall;
-{$EXTERNALSYM CreateFontIndirectEx}
-{$ENDIF}
 
 type
   PEnumTextMetricA = ^TEnumTextMetricA;
@@ -5445,7 +5281,7 @@ type
   {$EXTERNALSYM LPENUMTEXTMETRICW}
   TEnumTextMetricW = tagENUMTEXTMETRICW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   ENUMTEXTMETRIC = ENUMTEXTMETRICW;
   {$EXTERNALSYM ENUMTEXTMETRIC}
   PENUMTEXTMETRIC = PENUMTEXTMETRICW;
@@ -5453,7 +5289,7 @@ type
   LPENUMTEXTMETRIC = LPENUMTEXTMETRICW;
   {$EXTERNALSYM LPENUMTEXTMETRIC}
   TEnumTextMetric = TEnumTextMetricW;
-{$ELSE}
+  {$ELSE}
   ENUMTEXTMETRIC = ENUMTEXTMETRICA;
   {$EXTERNALSYM ENUMTEXTMETRIC}
   PENUMTEXTMETRIC = PENUMTEXTMETRICA;
@@ -5461,7 +5297,7 @@ type
   LPENUMTEXTMETRIC = LPENUMTEXTMETRICA;
   {$EXTERNALSYM LPENUMTEXTMETRIC}
   TEnumTextMetric = TEnumTextMetricA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 function GetViewportExtEx(hdc: HDC; var lpSize: TSize): BOOL; stdcall;
 {$EXTERNALSYM GetViewportExtEx}
@@ -5515,26 +5351,16 @@ function ResetDCA(hdc: HDC; const lpInitData: DEVMODEA): HDC; stdcall;
 {$EXTERNALSYM ResetDCA}
 function ResetDCW(hdc: HDC; const lpInitData: DEVMODEW): HDC; stdcall;
 {$EXTERNALSYM ResetDCW}
-{$IFDEF UNICODE}
-function ResetDC(hdc: HDC; const lpInitData: DEVMODEW): HDC; stdcall;
+function ResetDC(hdc: HDC; const lpInitData: DEVMODE): HDC; stdcall;
 {$EXTERNALSYM ResetDC}
-{$ELSE}
-function ResetDC(hdc: HDC; const lpInitData: DEVMODEA): HDC; stdcall;
-{$EXTERNALSYM ResetDC}
-{$ENDIF}
 function RealizePalette(hdc: HDC): UINT; stdcall;
 {$EXTERNALSYM RealizePalette}
 function RemoveFontResourceA(lpFileName: LPCSTR): BOOL; stdcall;
 {$EXTERNALSYM RemoveFontResourceA}
 function RemoveFontResourceW(lpFileName: LPCWSTR): BOOL; stdcall;
 {$EXTERNALSYM RemoveFontResourceW}
-{$IFDEF UNICODE}
-function RemoveFontResource(lpFileName: LPCWSTR): BOOL; stdcall;
+function RemoveFontResource(lpFileName: LPCTSTR): BOOL; stdcall;
 {$EXTERNALSYM RemoveFontResource}
-{$ELSE}
-function RemoveFontResource(lpFileName: LPCSTR): BOOL; stdcall;
-{$EXTERNALSYM RemoveFontResource}
-{$ENDIF}
 function RoundRect(hdc: HDC; nLeftRect, nTopRect, nRightRect, nBottomRect, nWidth, nHeight: Integer): BOOL; stdcall;
 {$EXTERNALSYM RoundRect}
 function ResizePalette(hPal: HPALETTE; nEntries: UINT): BOOL; stdcall;
@@ -5729,14 +5555,14 @@ function PlayMetaFileRecord(hdc: HDC; lpHandleTable: LPHANDLETABLE; lpMetaRecord
 {$EXTERNALSYM PlayMetaFileRecord}
 
 type
-  MFENUMPROC = function (hdc: HDC; lpHTable: LPHANDLETABLE; lpMFR: LPMETARECORD; nObj: Integer; lpClientData: LPARAM): Integer; stdcall;
+  MFENUMPROC = function(hdc: HDC; lpHTable: LPHANDLETABLE; lpMFR: LPMETARECORD; nObj: Integer; lpClientData: LPARAM): Integer; stdcall;
   {$EXTERNALSYM MFENUMPROC}
 
 function EnumMetaFile(hdc: HDC; hemf: HMETAFILE; lpMetaFunc: MFENUMPROC; lParam: LPARAM): BOOL; stdcall;
 {$EXTERNALSYM EnumMetaFile}
 
 type
-  ENHMFENUMPROC = function (hdc: HDC; lpHTable: LPHANDLETABLE; lpEMFR: LPENHMETARECORD; nObj: Integer; lpData: LPARAM): Integer; stdcall;
+  ENHMFENUMPROC = function(hdc: HDC; lpHTable: LPHANDLETABLE; lpEMFR: LPENHMETARECORD; nObj: Integer; lpData: LPARAM): Integer; stdcall;
   {$EXTERNALSYM ENHMFENUMPROC}
 
 // Enhanced Metafile Function Declarations
@@ -5747,24 +5573,14 @@ function CopyEnhMetaFileA(hemfSrc: HENHMETAFILE; lpszFile: LPCSTR): HENHMETAFILE
 {$EXTERNALSYM CopyEnhMetaFileA}
 function CopyEnhMetaFileW(hemfSrc: HENHMETAFILE; lpszFile: LPCWSTR): HENHMETAFILE; stdcall;
 {$EXTERNALSYM CopyEnhMetaFileW}
-{$IFDEF UNICODE}
-function CopyEnhMetaFile(hemfSrc: HENHMETAFILE; lpszFile: LPCWSTR): HENHMETAFILE; stdcall;
+function CopyEnhMetaFile(hemfSrc: HENHMETAFILE; lpszFile: LPCTSTR): HENHMETAFILE; stdcall;
 {$EXTERNALSYM CopyEnhMetaFile}
-{$ELSE}
-function CopyEnhMetaFile(hemfSrc: HENHMETAFILE; lpszFile: LPCSTR): HENHMETAFILE; stdcall;
-{$EXTERNALSYM CopyEnhMetaFile}
-{$ENDIF}
 function CreateEnhMetaFileA(hdcRef: HDC; lpFileName: LPCSTR; const lpRect: RECT; lpDescription: LPCSTR): HDC; stdcall;
 {$EXTERNALSYM CreateEnhMetaFileA}
 function CreateEnhMetaFileW(hdcRef: HDC; lpFileName: LPCWSTR; const lpRect: RECT; lpDescription: LPCWSTR): HDC; stdcall;
 {$EXTERNALSYM CreateEnhMetaFileW}
-{$IFDEF UNICODE}
-function CreateEnhMetaFile(hdcRef: HDC; lpFileName: LPCWSTR; const lpRect: RECT; lpDescription: LPCWSTR): HDC; stdcall;
+function CreateEnhMetaFile(hdcRef: HDC; lpFileName: LPCTSTR; const lpRect: RECT; lpDescription: LPCTSTR): HDC; stdcall;
 {$EXTERNALSYM CreateEnhMetaFile}
-{$ELSE}
-function CreateEnhMetaFile(hdcRef: HDC; lpFileName: LPCSTR; const lpRect: RECT; lpDescription: LPCSTR): HDC; stdcall;
-{$EXTERNALSYM CreateEnhMetaFile}
-{$ENDIF}
 
 function DeleteEnhMetaFile(hemf: HENHMETAFILE): BOOL; stdcall;
 {$EXTERNALSYM DeleteEnhMetaFile}
@@ -5774,26 +5590,16 @@ function GetEnhMetaFileA(lpszMetaFile: LPCSTR): HENHMETAFILE; stdcall;
 {$EXTERNALSYM GetEnhMetaFileA}
 function GetEnhMetaFileW(lpszMetaFile: LPCWSTR): HENHMETAFILE; stdcall;
 {$EXTERNALSYM GetEnhMetaFileW}
-{$IFDEF UNICODE}
-function GetEnhMetaFile(lpszMetaFile: LPCWSTR): HENHMETAFILE; stdcall;
+function GetEnhMetaFile(lpszMetaFile: LPCTSTR): HENHMETAFILE; stdcall;
 {$EXTERNALSYM GetEnhMetaFile}
-{$ELSE}
-function GetEnhMetaFile(lpszMetaFile: LPCSTR): HENHMETAFILE; stdcall;
-{$EXTERNALSYM GetEnhMetaFile}
-{$ENDIF}
 function GetEnhMetaFileBits(hemf: HENHMETAFILE; cbBuffer: UINT; lpBuffer: LPBYTE): UINT; stdcall;
 {$EXTERNALSYM GetEnhMetaFileBits}
 function GetEnhMetaFileDescriptionA(hemf: HENHMETAFILE; cchBuffer: UINT; lpszDescription: LPSTR): UINT; stdcall;
 {$EXTERNALSYM GetEnhMetaFileDescriptionA}
 function GetEnhMetaFileDescriptionW(hemf: HENHMETAFILE; cchBuffer: UINT; lpszDescription: LPWSTR): UINT; stdcall;
 {$EXTERNALSYM GetEnhMetaFileDescriptionW}
-{$IFDEF UNICODE}
-function GetEnhMetaFileDescription(hemf: HENHMETAFILE; cchBuffer: UINT; lpszDescription: LPWSTR): UINT; stdcall;
+function GetEnhMetaFileDescription(hemf: HENHMETAFILE; cchBuffer: UINT; lpszDescription: LPTSTR): UINT; stdcall;
 {$EXTERNALSYM GetEnhMetaFileDescription}
-{$ELSE}
-function GetEnhMetaFileDescription(hemf: HENHMETAFILE; cchBuffer: UINT; lpszDescription: LPSTR): UINT; stdcall;
-{$EXTERNALSYM GetEnhMetaFileDescription}
-{$ENDIF}
 function GetEnhMetaFileHeader(hemf: HENHMETAFILE; cbBuffer: UINT; lpemh: LPENHMETAHEADER ): UINT; stdcall;
 {$EXTERNALSYM GetEnhMetaFileHeader}
 function GetEnhMetaFilePaletteEntries(hemf: HENHMETAFILE; cEntries: UINT; lppe: LPPALETTEENTRY ): UINT; stdcall;
@@ -5817,13 +5623,8 @@ function GetTextMetricsA(hdc: HDC; var lptm: TEXTMETRICA): BOOL; stdcall;
 {$EXTERNALSYM GetTextMetricsA}
 function GetTextMetricsW(hdc: HDC; var lptm: TEXTMETRICW): BOOL; stdcall;
 {$EXTERNALSYM GetTextMetricsW}
-{$IFDEF UNICODE}
-function GetTextMetrics(hdc: HDC; var lptm: TEXTMETRICW): BOOL; stdcall;
+function GetTextMetrics(hdc: HDC; var lptm: TEXTMETRIC): BOOL; stdcall;
 {$EXTERNALSYM GetTextMetrics}
-{$ELSE}
-function GetTextMetrics(hdc: HDC; var lptm: TEXTMETRICA): BOOL; stdcall;
-{$EXTERNALSYM GetTextMetrics}
-{$ENDIF}
 
 // new GDI
 
@@ -5959,7 +5760,7 @@ function CreateHalftonePalette(hdc: HDC): HPALETTE; stdcall;
 {$EXTERNALSYM CreateHalftonePalette}
 
 type
-  ABORTPROC = function (hdc: HDC; iError: Integer): BOOL; stdcall;
+  ABORTPROC = function(hdc: HDC; iError: Integer): BOOL; stdcall;
   {$EXTERNALSYM ABORTPROC}
 
   PDocInfoA = ^TDocInfoA;
@@ -5967,10 +5768,8 @@ type
     cbSize: Integer;
     lpszDocName: LPCSTR;
     lpszOutput: LPCSTR;
-    {$IFDEF WINVER_0400_GREATER}
     lpszDatatype: LPCSTR;
     fwType: DWORD;
-    {$ENDIF}
   end;
   {$EXTERNALSYM _DOCINFOA}
   DOCINFOA = _DOCINFOA;
@@ -5984,10 +5783,8 @@ type
     cbSize: Integer;
     lpszDocName: LPCWSTR;
     lpszOutput: LPCWSTR;
-    {$IFDEF WINVER_0400_GREATER}
     lpszDatatype: LPCWSTR;
     fwType: DWORD;
-    {$ENDIF}
   end;
   {$EXTERNALSYM _DOCINFOW}
   DOCINFOW = _DOCINFOW;
@@ -5996,21 +5793,21 @@ type
   {$EXTERNALSYM LPDOCINFOW}
   TDocInfoW = _DOCINFOW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   DOCINFO = DOCINFOW;
   {$EXTERNALSYM DOCINFO}
   LPDOCINFO = LPDOCINFOW;
   {$EXTERNALSYM LPDOCINFO}
   TDocInfo = TDocInfoW;
   PDocInfo = PDocInfoW;
-{$ELSE}
+  {$ELSE}
   DOCINFO = DOCINFOA;
   {$EXTERNALSYM DOCINFO}
   LPDOCINFO = LPDOCINFOA;
   {$EXTERNALSYM LPDOCINFO}
   TDocInfo = TDocInfoA;
   PDocInfo = PDocInfoA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 const
   DI_APPBANDING            = $00000001;
@@ -6022,13 +5819,8 @@ function StartDocA(hdc: HDC; const lpdi: DOCINFOA): Integer; stdcall;
 {$EXTERNALSYM StartDocA}
 function StartDocW(hdc: HDC; const lpdi: DOCINFOW): Integer; stdcall;
 {$EXTERNALSYM StartDocW}
-{$IFDEF UNICODE}
-function StartDoc(hdc: HDC; const lpdi: DOCINFOW): Integer; stdcall;
+function StartDoc(hdc: HDC; const lpdi: DOCINFO): Integer; stdcall;
 {$EXTERNALSYM StartDoc}
-{$ELSE}
-function StartDoc(hdc: HDC; const lpdi: DOCINFOA): Integer; stdcall;
-{$EXTERNALSYM StartDoc}
-{$ENDIF}
 function EndDoc(dc: HDC): Integer; stdcall;
 {$EXTERNALSYM EndDoc}
 function StartPage(dc: HDC): Integer; stdcall;
@@ -6083,48 +5875,28 @@ function GetObjectA(hgdiobj: HGDIOBJ; cbBuffer: Integer; lpvObject: LPVOID): Int
 {$EXTERNALSYM GetObjectA}
 function GetObjectW(hgdiobj: HGDIOBJ; cbBuffer: Integer; lpvObject: LPVOID): Integer; stdcall;
 {$EXTERNALSYM GetObjectW}
-{$IFDEF UNICODE}
 function GetObject(hgdiobj: HGDIOBJ; cbBuffer: Integer; lpvObject: LPVOID): Integer; stdcall;
 {$EXTERNALSYM GetObject}
-{$ELSE}
-function GetObject(hgdiobj: HGDIOBJ; cbBuffer: Integer; lpvObject: LPVOID): Integer; stdcall;
-{$EXTERNALSYM GetObject}
-{$ENDIF}
 function MoveToEx(hdc: HDC; X, Y: Integer; lpPoint: LPPOINT): BOOL; stdcall;
 {$EXTERNALSYM MoveToEx}
 function TextOutA(hdc: HDC; nXStart, nYStart: Integer; lpString: LPCSTR; cbString: Integer): BOOL; stdcall;
 {$EXTERNALSYM TextOutA}
 function TextOutW(hdc: HDC; nXStart, nYStart: Integer; lpString: LPCWSTR; cbString: Integer): BOOL; stdcall;
 {$EXTERNALSYM TextOutW}
-{$IFDEF UNICODE}
-function TextOut(hdc: HDC; nXStart, nYStart: Integer; lpString: LPCWSTR; cbString: Integer): BOOL; stdcall;
+function TextOut(hdc: HDC; nXStart, nYStart: Integer; lpString: LPCTSTR; cbString: Integer): BOOL; stdcall;
 {$EXTERNALSYM TextOut}
-{$ELSE}
-function TextOut(hdc: HDC; nXStart, nYStart: Integer; lpString: LPCSTR; cbString: Integer): BOOL; stdcall;
-{$EXTERNALSYM TextOut}
-{$ENDIF}
 function ExtTextOutA(hdc: HDC; X, Y: Integer; fuOptions: UINT; lprc: LPRECT; lpString: LPCSTR; cbCount: UINT; lpDx: LPINT): BOOL; stdcall;
 {$EXTERNALSYM ExtTextOutA}
 function ExtTextOutW(hdc: HDC; X, Y: Integer; fuOptions: UINT; lprc: LPRECT; lpString: LPCWSTR; cbCount: UINT; lpDx: LPINT): BOOL; stdcall;
 {$EXTERNALSYM ExtTextOutW}
-{$IFDEF UNICODE}
-function ExtTextOut(hdc: HDC; X, Y: Integer; fuOptions: UINT; lprc: LPRECT; lpString: LPCWSTR; cbCount: UINT; lpDx: LPINT): BOOL; stdcall;
+function ExtTextOut(hdc: HDC; X, Y: Integer; fuOptions: UINT; lprc: LPRECT; lpString: LPCTSTR; cbCount: UINT; lpDx: LPINT): BOOL; stdcall;
 {$EXTERNALSYM ExtTextOut}
-{$ELSE}
-function ExtTextOut(hdc: HDC; X, Y: Integer; fuOptions: UINT; lprc: LPRECT; lpString: LPCSTR; cbCount: UINT; lpDx: LPINT): BOOL; stdcall;
-{$EXTERNALSYM ExtTextOut}
-{$ENDIF}
 function PolyTextOutA(hdc: HDC; pptxt: LPPOLYTEXTA; cStrings: Integer): BOOL; stdcall;
 {$EXTERNALSYM PolyTextOutA}
 function PolyTextOutW(hdc: HDC; pptxt: LPPOLYTEXTW; cStrings: Integer): BOOL; stdcall;
 {$EXTERNALSYM PolyTextOutW}
-{$IFDEF UNICODE}
-function PolyTextOut(hdc: HDC; pptxt: LPPOLYTEXTW; cStrings: Integer): BOOL; stdcall;
+function PolyTextOut(hdc: HDC; pptxt: LPPOLYTEXT; cStrings: Integer): BOOL; stdcall;
 {$EXTERNALSYM PolyTextOut}
-{$ELSE}
-function PolyTextOut(hdc: HDC; pptxt: LPPOLYTEXTA; cStrings: Integer): BOOL; stdcall;
-{$EXTERNALSYM PolyTextOut}
-{$ENDIF}
 
 function CreatePolygonRgn(lppt: LPPOINT; cPoints, fnPolyFillMode: Integer): HRGN; stdcall;
 {$EXTERNALSYM CreatePolygonRgn}
@@ -6170,13 +5942,8 @@ function GetTextFaceA(hdc: HDC; nCount: Integer; lpFaceName: LPSTR): Integer; st
 {$EXTERNALSYM GetTextFaceA}
 function GetTextFaceW(hdc: HDC; nCount: Integer; lpFaceName: LPWSTR): Integer; stdcall;
 {$EXTERNALSYM GetTextFaceW}
-{$IFDEF UNICODE}
-function GetTextFace(hdc: HDC; nCount: Integer; lpFaceName: LPWSTR): Integer; stdcall;
+function GetTextFace(hdc: HDC; nCount: Integer; lpFaceName: LPTSTR): Integer; stdcall;
 {$EXTERNALSYM GetTextFace}
-{$ELSE}
-function GetTextFace(hdc: HDC; nCount: Integer; lpFaceName: LPSTR): Integer; stdcall;
-{$EXTERNALSYM GetTextFace}
-{$ENDIF}
 
 const
   FONTMAPPER_MAX = 10;
@@ -6200,14 +5967,8 @@ function GetKerningPairsA(hDc: HDC; nNumPairs: DWORD; lpkrnpair: LPKERNINGPAIR):
 {$EXTERNALSYM GetKerningPairsA}
 function GetKerningPairsW(hDc: HDC; nNumPairs: DWORD; lpkrnpair: LPKERNINGPAIR): DWORD; stdcall;
 {$EXTERNALSYM GetKerningPairsW}
-
-{$IFDEF UNICODE}
 function GetKerningPairs(hDc: HDC; nNumPairs: DWORD; lpkrnpair: LPKERNINGPAIR): DWORD; stdcall;
 {$EXTERNALSYM GetKerningPairs}
-{$ELSE}
-function GetKerningPairs(hDc: HDC; nNumPairs: DWORD; lpkrnpair: LPKERNINGPAIR): DWORD; stdcall;
-{$EXTERNALSYM GetKerningPairs}
-{$ENDIF}
 
 function GetDCOrgEx(hdc: HDC; lpPoint: LPPOINT): BOOL; stdcall;
 {$EXTERNALSYM GetDCOrgEx}
@@ -6234,18 +5995,12 @@ const
   {$EXTERNALSYM ICM_DONE_OUTSIDEDC}
 
 type
-  ICMENUMPROCA = function (lpszFileName: LPSTR; lParam: LPARAM): Integer; stdcall;
+  ICMENUMPROCA = function(lpszFileName: LPSTR; lParam: LPARAM): Integer; stdcall;
   {$EXTERNALSYM ICMENUMPROCA}
-  ICMENUMPROCW = function (lpszFileName: LPWSTR; lParam: LPARAM): Integer; stdcall;
+  ICMENUMPROCW = function(lpszFileName: LPWSTR; lParam: LPARAM): Integer; stdcall;
   {$EXTERNALSYM ICMENUMPROCW}
-
-{$IFDEF UNICODE}
-  ICMENUMPROC = function (lpszFileName: LPWSTR; lParam: LPARAM): Integer; stdcall;
+  ICMENUMPROC = function(lpszFileName: LPTSTR; lParam: LPARAM): Integer; stdcall;
   {$EXTERNALSYM ICMENUMPROC}
-{$ELSE}
-  ICMENUMPROC = function (lpszFileName: LPSTR; lParam: LPARAM): Integer; stdcall;
-  {$EXTERNALSYM ICMENUMPROC}
-{$ENDIF}
 
 function SetICMMode(hDc: HDC; iEnableICM: Integer): Integer; stdcall;
 {$EXTERNALSYM SetICMMode}
@@ -6258,27 +6013,15 @@ function GetLogColorSpaceA(hColorSpace: HCOLORSPACE; lpBuffer: LPLOGCOLORSPACEA;
 {$EXTERNALSYM GetLogColorSpaceA}
 function GetLogColorSpaceW(hColorSpace: HCOLORSPACE; lpBuffer: LPLOGCOLORSPACEW; nSize: DWORD): BOOL; stdcall;
 {$EXTERNALSYM GetLogColorSpaceW}
-
-{$IFDEF UNICODE}
-function GetLogColorSpace(hColorSpace: HCOLORSPACE; lpBuffer: LPLOGCOLORSPACEW; nSize: DWORD): BOOL; stdcall;
+function GetLogColorSpace(hColorSpace: HCOLORSPACE; lpBuffer: LPLOGCOLORSPACE; nSize: DWORD): BOOL; stdcall;
 {$EXTERNALSYM GetLogColorSpace}
-{$ELSE}
-function GetLogColorSpace(hColorSpace: HCOLORSPACE; lpBuffer: LPLOGCOLORSPACEA; nSize: DWORD): BOOL; stdcall;
-{$EXTERNALSYM GetLogColorSpace}
-{$ENDIF}
 
 function CreateColorSpaceA(lpLogColorSpace: LPLOGCOLORSPACEA): HCOLORSPACE; stdcall;
 {$EXTERNALSYM CreateColorSpaceA}
 function CreateColorSpaceW(lpLogColorSpace: LPLOGCOLORSPACEW): HCOLORSPACE; stdcall;
 {$EXTERNALSYM CreateColorSpaceW}
-
-{$IFDEF UNICODE}
-function CreateColorSpace(lpLogColorSpace: LPLOGCOLORSPACEW): HCOLORSPACE; stdcall;
+function CreateColorSpace(lpLogColorSpace: LPLOGCOLORSPACE): HCOLORSPACE; stdcall;
 {$EXTERNALSYM CreateColorSpace}
-{$ELSE}
-function CreateColorSpace(lpLogColorSpace: LPLOGCOLORSPACEA): HCOLORSPACE; stdcall;
-{$EXTERNALSYM CreateColorSpace}
-{$ENDIF}
 
 function SetColorSpace(hDc: HDC; hColorSpace: HCOLORSPACE): HCOLORSPACE; stdcall;
 {$EXTERNALSYM SetColorSpace}
@@ -6288,27 +6031,15 @@ function GetICMProfileA(hDc: HDC; lpcbName: LPDWORD; lpszFilename: LPSTR): BOOL;
 {$EXTERNALSYM GetICMProfileA}
 function GetICMProfileW(hDc: HDC; lpcbName: LPDWORD; lpszFilename: LPWSTR): BOOL; stdcall;
 {$EXTERNALSYM GetICMProfileW}
-
-{$IFDEF UNICODE}
-function GetICMProfile(hDc: HDC; lpcbName: LPDWORD; lpszFilename: LPWSTR): BOOL; stdcall;
+function GetICMProfile(hDc: HDC; lpcbName: LPDWORD; lpszFilename: LPTSTR): BOOL; stdcall;
 {$EXTERNALSYM GetICMProfile}
-{$ELSE}
-function GetICMProfile(hDc: HDC; lpcbName: LPDWORD; lpszFilename: LPSTR): BOOL; stdcall;
-{$EXTERNALSYM GetICMProfile}
-{$ENDIF}
 
 function SetICMProfileA(hDc: HDC; lpFileName: LPSTR): BOOL; stdcall;
 {$EXTERNALSYM SetICMProfileA}
 function SetICMProfileW(hDc: HDC; lpFileName: LPWSTR): BOOL; stdcall;
 {$EXTERNALSYM SetICMProfileW}
-
-{$IFDEF UNICODE}
-function SetICMProfile(hDc: HDC; lpFileName: LPWSTR): BOOL; stdcall;
+function SetICMProfile(hDc: HDC; lpFileName: LPTSTR): BOOL; stdcall;
 {$EXTERNALSYM SetICMProfile}
-{$ELSE}
-function SetICMProfile(hDc: HDC; lpFileName: LPSTR): BOOL; stdcall;
-{$EXTERNALSYM SetICMProfile}
-{$ENDIF}
 
 function GetDeviceGammaRamp(hDc: HDC; lpRamp: LPVOID): BOOL; stdcall;
 {$EXTERNALSYM GetDeviceGammaRamp}
@@ -6321,27 +6052,15 @@ function EnumICMProfilesA(hDc: HDC; lpEnumProc: ICMENUMPROCA; lParam: LPARAM): I
 {$EXTERNALSYM EnumICMProfilesA}
 function EnumICMProfilesW(hDc: HDC; lpEnumProc: ICMENUMPROCW; lParam: LPARAM): Integer; stdcall;
 {$EXTERNALSYM EnumICMProfilesW}
-
-{$IFDEF UNICODE}
-function EnumICMProfiles(hDc: HDC; lpEnumProc: ICMENUMPROCW; lParam: LPARAM): Integer; stdcall;
+function EnumICMProfiles(hDc: HDC; lpEnumProc: ICMENUMPROC; lParam: LPARAM): Integer; stdcall;
 {$EXTERNALSYM EnumICMProfiles}
-{$ELSE}
-function EnumICMProfiles(hDc: HDC; lpEnumProc: ICMENUMPROCA; lParam: LPARAM): Integer; stdcall;
-{$EXTERNALSYM EnumICMProfiles}
-{$ENDIF}
 
 function UpdateICMRegKeyA(dwReserved: DWORD; lpszCMID, lpszFileName: LPSTR; nCommand: UINT): BOOL; stdcall;
 {$EXTERNALSYM UpdateICMRegKeyA}
 function UpdateICMRegKeyW(dwReserved: DWORD; lpszCMID, lpszFileName: LPWSTR; nCommand: UINT): BOOL; stdcall;
 {$EXTERNALSYM UpdateICMRegKeyW}
-
-{$IFDEF UNICODE}
-function UpdateICMRegKey(dwReserved: DWORD; lpszCMID, lpszFileName: LPWSTR; nCommand: UINT): BOOL; stdcall;
+function UpdateICMRegKey(dwReserved: DWORD; lpszCMID, lpszFileName: LPTSTR; nCommand: UINT): BOOL; stdcall;
 {$EXTERNALSYM UpdateICMRegKey}
-{$ELSE}
-function UpdateICMRegKey(dwReserved: DWORD; lpszCMID, lpszFileName: LPSTR; nCommand: UINT): BOOL; stdcall;
-{$EXTERNALSYM UpdateICMRegKey}
-{$ENDIF}
 
 function ColorCorrectPalette(hDc: HDC; hColorPalette: HPALETTE; dwFirstEntry, dwNumOfEntries: DWORD): BOOL; stdcall;
 {$EXTERNALSYM ColorCorrectPalette}
@@ -6611,18 +6330,13 @@ const
   EMR_MIN = 1;
   {$EXTERNALSYM EMR_MIN}
 
-{$IFDEF WINVER_0500_GREATER}
+  {$IFDEF WIN98ME_UP}
   EMR_MAX = 122;
   {$EXTERNALSYM EMR_MAX}
-{$ELSE}
-{$IFDEF WINVER_0400_GREATER}
+  {$ELSE}
   EMR_MAX = 104;
   {$EXTERNALSYM EMR_MAX}
-{$ELSE}
-  EMR_MAX = 97;
-  {$EXTERNALSYM EMR_MAX}
-{$ENDIF}
-{$ENDIF}
+  {$ENDIF WIN98ME_UP}
 
 // Base record type for the enhanced metafile.
 
@@ -7846,14 +7560,8 @@ function wglUseFontBitmapsA(hdc: HDC; first, count, listBase: DWORD): BOOL; stdc
 {$EXTERNALSYM wglUseFontBitmapsA}
 function wglUseFontBitmapsW(hdc: HDC; first, count, listBase: DWORD): BOOL; stdcall;
 {$EXTERNALSYM wglUseFontBitmapsW}
-
-{$IFDEF UNICODE}
 function wglUseFontBitmaps(hdc: HDC; first, count, listBase: DWORD): BOOL; stdcall;
 {$EXTERNALSYM wglUseFontBitmaps}
-{$ELSE}
-function wglUseFontBitmaps(hdc: HDC; first, count, listBase: DWORD): BOOL; stdcall;
-{$EXTERNALSYM wglUseFontBitmaps}
-{$ENDIF}
 
 function SwapBuffers(hdc: HDC): BOOL; stdcall;
 {$EXTERNALSYM SwapBuffers}
@@ -7896,16 +7604,9 @@ function wglUseFontOutlinesA(hdc: HDC; first, count, listBase: DWORD; deviation,
 function wglUseFontOutlinesW(hdc: HDC; first, count, listBase: DWORD; deviation,
   extrusion: FLOAT; format: Integer; lpgmf: LPGLYPHMETRICSFLOAT): BOOL; stdcall;
 {$EXTERNALSYM wglUseFontOutlinesW}
-
-{$IFDEF UNICODE}
 function wglUseFontOutlines(hdc: HDC; first, count, listBase: DWORD; deviation,
   extrusion: FLOAT; format: Integer; lpgmf: LPGLYPHMETRICSFLOAT): BOOL; stdcall;
 {$EXTERNALSYM wglUseFontOutlines}
-{$ELSE}
-function wglUseFontOutlines(hdc: HDC; first, count, listBase: DWORD; deviation,
-  extrusion: FLOAT; format: Integer; lpgmf: LPGLYPHMETRICSFLOAT): BOOL; stdcall;
-{$EXTERNALSYM wglUseFontOutlines}
-{$ENDIF}
 
 // Layer plane descriptor
 
@@ -8072,7 +7773,18 @@ const
 function wglSwapMultipleBuffers(fuCount: UINT; lpBuffers: LPWGLSWAP): DWORD; stdcall;
 {$EXTERNALSYM wglSwapMultipleBuffers}
 
+{$ENDIF JWA_INTERFACESECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
+
 implementation
+
+uses
+  JwaWinDLLNames;
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_IMPLEMENTATIONSECTION}
 
 function MAKEROP4(Fore, Back: DWORD): DWORD;
 begin
@@ -8140,14 +7852,8 @@ begin
   Result := BYTE(rgb shr 16);
 end;
 
-const
-  gdi32 = 'gdi32.dll';
-  msimg32 = 'msimg32.dll';
-  winspool32 = 'winspool32.drv';
-  opengl32 = 'opengl32.dll';
-  
-
 {$IFDEF DYNAMIC_LINK}
+
 var
   _AddFontResourceA: Pointer;
 
@@ -8155,16 +7861,12 @@ function AddFontResourceA;
 begin
   GetProcedureAddress(_AddFontResourceA, gdi32, 'AddFontResourceA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AddFontResourceA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AddFontResourceA]
   end;
 end;
-{$ELSE}
-function AddFontResourceA; external gdi32 name 'AddFontResourceA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _AddFontResourceW: Pointer;
 
@@ -8172,53 +7874,25 @@ function AddFontResourceW;
 begin
   GetProcedureAddress(_AddFontResourceW, gdi32, 'AddFontResourceW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AddFontResourceW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AddFontResourceW]
   end;
 end;
-{$ELSE}
-function AddFontResourceW; external gdi32 name 'AddFontResourceW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _AddFontResource: Pointer;
 
 function AddFontResource;
 begin
-  GetProcedureAddress(_AddFontResource, gdi32, 'AddFontResourceW');
+  GetProcedureAddress(_AddFontResource, gdi32, 'AddFontResource' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AddFontResource]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AddFontResource]
   end;
 end;
-{$ELSE}
-function AddFontResource; external gdi32 name 'AddFontResourceW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _AddFontResource: Pointer;
-
-function AddFontResource;
-begin
-  GetProcedureAddress(_AddFontResource, gdi32, 'AddFontResourceA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AddFontResource]
-  end;
-end;
-{$ELSE}
-function AddFontResource; external gdi32 name 'AddFontResourceA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _AnimatePalette: Pointer;
 
@@ -8226,16 +7900,12 @@ function AnimatePalette;
 begin
   GetProcedureAddress(_AnimatePalette, gdi32, 'AnimatePalette');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AnimatePalette]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AnimatePalette]
   end;
 end;
-{$ELSE}
-function AnimatePalette; external gdi32 name 'AnimatePalette';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _Arc: Pointer;
 
@@ -8243,16 +7913,12 @@ function Arc;
 begin
   GetProcedureAddress(_Arc, gdi32, 'Arc');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_Arc]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_Arc]
   end;
 end;
-{$ELSE}
-function Arc; external gdi32 name 'Arc';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _BitBlt: Pointer;
 
@@ -8260,16 +7926,12 @@ function BitBlt;
 begin
   GetProcedureAddress(_BitBlt, gdi32, 'BitBlt');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_BitBlt]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_BitBlt]
   end;
 end;
-{$ELSE}
-function BitBlt; external gdi32 name 'BitBlt';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CancelDC: Pointer;
 
@@ -8277,16 +7939,12 @@ function CancelDC;
 begin
   GetProcedureAddress(_CancelDC, gdi32, 'CancelDC');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CancelDC]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CancelDC]
   end;
 end;
-{$ELSE}
-function CancelDC; external gdi32 name 'CancelDC';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _Chord: Pointer;
 
@@ -8294,16 +7952,12 @@ function Chord;
 begin
   GetProcedureAddress(_Chord, gdi32, 'Chord');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_Chord]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_Chord]
   end;
 end;
-{$ELSE}
-function Chord; external gdi32 name 'Chord';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ChoosePixelFormat: Pointer;
 
@@ -8311,16 +7965,12 @@ function ChoosePixelFormat;
 begin
   GetProcedureAddress(_ChoosePixelFormat, gdi32, 'ChoosePixelFormat');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ChoosePixelFormat]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ChoosePixelFormat]
   end;
 end;
-{$ELSE}
-function ChoosePixelFormat; external gdi32 name 'ChoosePixelFormat';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CloseMetaFile: Pointer;
 
@@ -8328,16 +7978,12 @@ function CloseMetaFile;
 begin
   GetProcedureAddress(_CloseMetaFile, gdi32, 'CloseMetaFile');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CloseMetaFile]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CloseMetaFile]
   end;
 end;
-{$ELSE}
-function CloseMetaFile; external gdi32 name 'CloseMetaFile';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CombineRgn: Pointer;
 
@@ -8345,16 +7991,12 @@ function CombineRgn;
 begin
   GetProcedureAddress(_CombineRgn, gdi32, 'CombineRgn');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CombineRgn]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CombineRgn]
   end;
 end;
-{$ELSE}
-function CombineRgn; external gdi32 name 'CombineRgn';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CopyMetaFileA: Pointer;
 
@@ -8362,16 +8004,12 @@ function CopyMetaFileA;
 begin
   GetProcedureAddress(_CopyMetaFileA, gdi32, 'CopyMetaFileA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CopyMetaFileA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CopyMetaFileA]
   end;
 end;
-{$ELSE}
-function CopyMetaFileA; external gdi32 name 'CopyMetaFileA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CopyMetaFileW: Pointer;
 
@@ -8379,53 +8017,25 @@ function CopyMetaFileW;
 begin
   GetProcedureAddress(_CopyMetaFileW, gdi32, 'CopyMetaFileW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CopyMetaFileW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CopyMetaFileW]
   end;
 end;
-{$ELSE}
-function CopyMetaFileW; external gdi32 name 'CopyMetaFileW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CopyMetaFile: Pointer;
 
 function CopyMetaFile;
 begin
-  GetProcedureAddress(_CopyMetaFile, gdi32, 'CopyMetaFileW');
+  GetProcedureAddress(_CopyMetaFile, gdi32, 'CopyMetaFile' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CopyMetaFile]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CopyMetaFile]
   end;
 end;
-{$ELSE}
-function CopyMetaFile; external gdi32 name 'CopyMetaFileW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CopyMetaFile: Pointer;
-
-function CopyMetaFile;
-begin
-  GetProcedureAddress(_CopyMetaFile, gdi32, 'CopyMetaFileA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CopyMetaFile]
-  end;
-end;
-{$ELSE}
-function CopyMetaFile; external gdi32 name 'CopyMetaFileA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateBitmap: Pointer;
 
@@ -8433,16 +8043,12 @@ function CreateBitmap;
 begin
   GetProcedureAddress(_CreateBitmap, gdi32, 'CreateBitmap');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateBitmap]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateBitmap]
   end;
 end;
-{$ELSE}
-function CreateBitmap; external gdi32 name 'CreateBitmap';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateBitmapIndirect: Pointer;
 
@@ -8450,16 +8056,12 @@ function CreateBitmapIndirect;
 begin
   GetProcedureAddress(_CreateBitmapIndirect, gdi32, 'CreateBitmapIndirect');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateBitmapIndirect]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateBitmapIndirect]
   end;
 end;
-{$ELSE}
-function CreateBitmapIndirect; external gdi32 name 'CreateBitmapIndirect';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateBrushIndirect: Pointer;
 
@@ -8467,16 +8069,12 @@ function CreateBrushIndirect;
 begin
   GetProcedureAddress(_CreateBrushIndirect, gdi32, 'CreateBrushIndirect');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateBrushIndirect]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateBrushIndirect]
   end;
 end;
-{$ELSE}
-function CreateBrushIndirect; external gdi32 name 'CreateBrushIndirect';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateCompatibleBitmap: Pointer;
 
@@ -8484,16 +8082,12 @@ function CreateCompatibleBitmap;
 begin
   GetProcedureAddress(_CreateCompatibleBitmap, gdi32, 'CreateCompatibleBitmap');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateCompatibleBitmap]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateCompatibleBitmap]
   end;
 end;
-{$ELSE}
-function CreateCompatibleBitmap; external gdi32 name 'CreateCompatibleBitmap';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateDiscardableBitmap: Pointer;
 
@@ -8501,16 +8095,12 @@ function CreateDiscardableBitmap;
 begin
   GetProcedureAddress(_CreateDiscardableBitmap, gdi32, 'CreateDiscardableBitmap');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateDiscardableBitmap]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateDiscardableBitmap]
   end;
 end;
-{$ELSE}
-function CreateDiscardableBitmap; external gdi32 name 'CreateDiscardableBitmap';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateCompatibleDC: Pointer;
 
@@ -8518,16 +8108,12 @@ function CreateCompatibleDC;
 begin
   GetProcedureAddress(_CreateCompatibleDC, gdi32, 'CreateCompatibleDC');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateCompatibleDC]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateCompatibleDC]
   end;
 end;
-{$ELSE}
-function CreateCompatibleDC; external gdi32 name 'CreateCompatibleDC';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateDCA: Pointer;
 
@@ -8535,16 +8121,12 @@ function CreateDCA;
 begin
   GetProcedureAddress(_CreateDCA, gdi32, 'CreateDCA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateDCA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateDCA]
   end;
 end;
-{$ELSE}
-function CreateDCA; external gdi32 name 'CreateDCA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateDCW: Pointer;
 
@@ -8552,53 +8134,25 @@ function CreateDCW;
 begin
   GetProcedureAddress(_CreateDCW, gdi32, 'CreateDCW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateDCW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateDCW]
   end;
 end;
-{$ELSE}
-function CreateDCW; external gdi32 name 'CreateDCW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateDC: Pointer;
 
 function CreateDC;
 begin
-  GetProcedureAddress(_CreateDC, gdi32, 'CreateDCW');
+  GetProcedureAddress(_CreateDC, gdi32, 'CreateDC' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateDC]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateDC]
   end;
 end;
-{$ELSE}
-function CreateDC; external gdi32 name 'CreateDCW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateDC: Pointer;
-
-function CreateDC;
-begin
-  GetProcedureAddress(_CreateDC, gdi32, 'CreateDCA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateDC]
-  end;
-end;
-{$ELSE}
-function CreateDC; external gdi32 name 'CreateDCA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateDIBitmap: Pointer;
 
@@ -8606,16 +8160,12 @@ function CreateDIBitmap;
 begin
   GetProcedureAddress(_CreateDIBitmap, gdi32, 'CreateDIBitmap');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateDIBitmap]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateDIBitmap]
   end;
 end;
-{$ELSE}
-function CreateDIBitmap; external gdi32 name 'CreateDIBitmap';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateDIBPatternBrush: Pointer;
 
@@ -8623,16 +8173,12 @@ function CreateDIBPatternBrush;
 begin
   GetProcedureAddress(_CreateDIBPatternBrush, gdi32, 'CreateDIBPatternBrush');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateDIBPatternBrush]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateDIBPatternBrush]
   end;
 end;
-{$ELSE}
-function CreateDIBPatternBrush; external gdi32 name 'CreateDIBPatternBrush';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateDIBPatternBrushPt: Pointer;
 
@@ -8640,16 +8186,12 @@ function CreateDIBPatternBrushPt;
 begin
   GetProcedureAddress(_CreateDIBPatternBrushPt, gdi32, 'CreateDIBPatternBrushPt');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateDIBPatternBrushPt]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateDIBPatternBrushPt]
   end;
 end;
-{$ELSE}
-function CreateDIBPatternBrushPt; external gdi32 name 'CreateDIBPatternBrushPt';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateEllipticRgn: Pointer;
 
@@ -8657,16 +8199,12 @@ function CreateEllipticRgn;
 begin
   GetProcedureAddress(_CreateEllipticRgn, gdi32, 'CreateEllipticRgn');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateEllipticRgn]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateEllipticRgn]
   end;
 end;
-{$ELSE}
-function CreateEllipticRgn; external gdi32 name 'CreateEllipticRgn';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateEllipticRgnIndirect: Pointer;
 
@@ -8674,16 +8212,12 @@ function CreateEllipticRgnIndirect;
 begin
   GetProcedureAddress(_CreateEllipticRgnIndirect, gdi32, 'CreateEllipticRgnIndirect');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateEllipticRgnIndirect]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateEllipticRgnIndirect]
   end;
 end;
-{$ELSE}
-function CreateEllipticRgnIndirect; external gdi32 name 'CreateEllipticRgnIndirect';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateFontIndirectA: Pointer;
 
@@ -8691,16 +8225,12 @@ function CreateFontIndirectA;
 begin
   GetProcedureAddress(_CreateFontIndirectA, gdi32, 'CreateFontIndirectA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateFontIndirectA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateFontIndirectA]
   end;
 end;
-{$ELSE}
-function CreateFontIndirectA; external gdi32 name 'CreateFontIndirectA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateFontIndirectW: Pointer;
 
@@ -8708,53 +8238,25 @@ function CreateFontIndirectW;
 begin
   GetProcedureAddress(_CreateFontIndirectW, gdi32, 'CreateFontIndirectW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateFontIndirectW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateFontIndirectW]
   end;
 end;
-{$ELSE}
-function CreateFontIndirectW; external gdi32 name 'CreateFontIndirectW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateFontIndirect: Pointer;
 
 function CreateFontIndirect;
 begin
-  GetProcedureAddress(_CreateFontIndirect, gdi32, 'CreateFontIndirectW');
+  GetProcedureAddress(_CreateFontIndirect, gdi32, 'CreateFontIndirect' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateFontIndirect]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateFontIndirect]
   end;
 end;
-{$ELSE}
-function CreateFontIndirect; external gdi32 name 'CreateFontIndirectW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateFontIndirect: Pointer;
-
-function CreateFontIndirect;
-begin
-  GetProcedureAddress(_CreateFontIndirect, gdi32, 'CreateFontIndirectA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateFontIndirect]
-  end;
-end;
-{$ELSE}
-function CreateFontIndirect; external gdi32 name 'CreateFontIndirectA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateFontA: Pointer;
 
@@ -8762,16 +8264,12 @@ function CreateFontA;
 begin
   GetProcedureAddress(_CreateFontA, gdi32, 'CreateFontA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateFontA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateFontA]
   end;
 end;
-{$ELSE}
-function CreateFontA; external gdi32 name 'CreateFontA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateFontW: Pointer;
 
@@ -8779,53 +8277,25 @@ function CreateFontW;
 begin
   GetProcedureAddress(_CreateFontW, gdi32, 'CreateFontW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateFontW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateFontW]
   end;
 end;
-{$ELSE}
-function CreateFontW; external gdi32 name 'CreateFontW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateFont: Pointer;
 
 function CreateFont;
 begin
-  GetProcedureAddress(_CreateFont, gdi32, 'CreateFontW');
+  GetProcedureAddress(_CreateFont, gdi32, 'CreateFont' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateFont]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateFont]
   end;
 end;
-{$ELSE}
-function CreateFont; external gdi32 name 'CreateFontW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateFont: Pointer;
-
-function CreateFont;
-begin
-  GetProcedureAddress(_CreateFont, gdi32, 'CreateFontA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateFont]
-  end;
-end;
-{$ELSE}
-function CreateFont; external gdi32 name 'CreateFontA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateHatchBrush: Pointer;
 
@@ -8833,16 +8303,12 @@ function CreateHatchBrush;
 begin
   GetProcedureAddress(_CreateHatchBrush, gdi32, 'CreateHatchBrush');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateHatchBrush]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateHatchBrush]
   end;
 end;
-{$ELSE}
-function CreateHatchBrush; external gdi32 name 'CreateHatchBrush';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateICA: Pointer;
 
@@ -8850,16 +8316,12 @@ function CreateICA;
 begin
   GetProcedureAddress(_CreateICA, gdi32, 'CreateICA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateICA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateICA]
   end;
 end;
-{$ELSE}
-function CreateICA; external gdi32 name 'CreateICA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateICW: Pointer;
 
@@ -8867,53 +8329,25 @@ function CreateICW;
 begin
   GetProcedureAddress(_CreateICW, gdi32, 'CreateICW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateICW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateICW]
   end;
 end;
-{$ELSE}
-function CreateICW; external gdi32 name 'CreateICW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateIC: Pointer;
 
 function CreateIC;
 begin
-  GetProcedureAddress(_CreateIC, gdi32, 'CreateICW');
+  GetProcedureAddress(_CreateIC, gdi32, 'CreateIC' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateIC]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateIC]
   end;
 end;
-{$ELSE}
-function CreateIC; external gdi32 name 'CreateICW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateIC: Pointer;
-
-function CreateIC;
-begin
-  GetProcedureAddress(_CreateIC, gdi32, 'CreateICA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateIC]
-  end;
-end;
-{$ELSE}
-function CreateIC; external gdi32 name 'CreateICA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateMetaFileA: Pointer;
 
@@ -8921,16 +8355,12 @@ function CreateMetaFileA;
 begin
   GetProcedureAddress(_CreateMetaFileA, gdi32, 'CreateMetaFileA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateMetaFileA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateMetaFileA]
   end;
 end;
-{$ELSE}
-function CreateMetaFileA; external gdi32 name 'CreateMetaFileA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateMetaFileW: Pointer;
 
@@ -8938,53 +8368,25 @@ function CreateMetaFileW;
 begin
   GetProcedureAddress(_CreateMetaFileW, gdi32, 'CreateMetaFileW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateMetaFileW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateMetaFileW]
   end;
 end;
-{$ELSE}
-function CreateMetaFileW; external gdi32 name 'CreateMetaFileW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateMetaFile: Pointer;
 
 function CreateMetaFile;
 begin
-  GetProcedureAddress(_CreateMetaFile, gdi32, 'CreateMetaFileW');
+  GetProcedureAddress(_CreateMetaFile, gdi32, 'CreateMetaFile' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateMetaFile]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateMetaFile]
   end;
 end;
-{$ELSE}
-function CreateMetaFile; external gdi32 name 'CreateMetaFileW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateMetaFile: Pointer;
-
-function CreateMetaFile;
-begin
-  GetProcedureAddress(_CreateMetaFile, gdi32, 'CreateMetaFileA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateMetaFile]
-  end;
-end;
-{$ELSE}
-function CreateMetaFile; external gdi32 name 'CreateMetaFileA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CreatePalette: Pointer;
 
@@ -8992,16 +8394,12 @@ function CreatePalette;
 begin
   GetProcedureAddress(_CreatePalette, gdi32, 'CreatePalette');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreatePalette]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreatePalette]
   end;
 end;
-{$ELSE}
-function CreatePalette; external gdi32 name 'CreatePalette';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreatePen: Pointer;
 
@@ -9009,16 +8407,12 @@ function CreatePen;
 begin
   GetProcedureAddress(_CreatePen, gdi32, 'CreatePen');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreatePen]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreatePen]
   end;
 end;
-{$ELSE}
-function CreatePen; external gdi32 name 'CreatePen';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreatePenIndirect: Pointer;
 
@@ -9026,16 +8420,12 @@ function CreatePenIndirect;
 begin
   GetProcedureAddress(_CreatePenIndirect, gdi32, 'CreatePenIndirect');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreatePenIndirect]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreatePenIndirect]
   end;
 end;
-{$ELSE}
-function CreatePenIndirect; external gdi32 name 'CreatePenIndirect';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreatePolyPolygonRgn: Pointer;
 
@@ -9043,16 +8433,12 @@ function CreatePolyPolygonRgn;
 begin
   GetProcedureAddress(_CreatePolyPolygonRgn, gdi32, 'CreatePolyPolygonRgn');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreatePolyPolygonRgn]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreatePolyPolygonRgn]
   end;
 end;
-{$ELSE}
-function CreatePolyPolygonRgn; external gdi32 name 'CreatePolyPolygonRgn';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreatePatternBrush: Pointer;
 
@@ -9060,16 +8446,12 @@ function CreatePatternBrush;
 begin
   GetProcedureAddress(_CreatePatternBrush, gdi32, 'CreatePatternBrush');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreatePatternBrush]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreatePatternBrush]
   end;
 end;
-{$ELSE}
-function CreatePatternBrush; external gdi32 name 'CreatePatternBrush';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateRectRgn: Pointer;
 
@@ -9077,16 +8459,12 @@ function CreateRectRgn;
 begin
   GetProcedureAddress(_CreateRectRgn, gdi32, 'CreateRectRgn');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateRectRgn]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateRectRgn]
   end;
 end;
-{$ELSE}
-function CreateRectRgn; external gdi32 name 'CreateRectRgn';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateRectRgnIndirect: Pointer;
 
@@ -9094,16 +8472,12 @@ function CreateRectRgnIndirect;
 begin
   GetProcedureAddress(_CreateRectRgnIndirect, gdi32, 'CreateRectRgnIndirect');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateRectRgnIndirect]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateRectRgnIndirect]
   end;
 end;
-{$ELSE}
-function CreateRectRgnIndirect; external gdi32 name 'CreateRectRgnIndirect';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateRoundRectRgn: Pointer;
 
@@ -9111,16 +8485,12 @@ function CreateRoundRectRgn;
 begin
   GetProcedureAddress(_CreateRoundRectRgn, gdi32, 'CreateRoundRectRgn');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateRoundRectRgn]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateRoundRectRgn]
   end;
 end;
-{$ELSE}
-function CreateRoundRectRgn; external gdi32 name 'CreateRoundRectRgn';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateScalableFontResourceA: Pointer;
 
@@ -9128,16 +8498,12 @@ function CreateScalableFontResourceA;
 begin
   GetProcedureAddress(_CreateScalableFontResourceA, gdi32, 'CreateScalableFontResourceA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateScalableFontResourceA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateScalableFontResourceA]
   end;
 end;
-{$ELSE}
-function CreateScalableFontResourceA; external gdi32 name 'CreateScalableFontResourceA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateScalableFontResourceW: Pointer;
 
@@ -9145,53 +8511,25 @@ function CreateScalableFontResourceW;
 begin
   GetProcedureAddress(_CreateScalableFontResourceW, gdi32, 'CreateScalableFontResourceW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateScalableFontResourceW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateScalableFontResourceW]
   end;
 end;
-{$ELSE}
-function CreateScalableFontResourceW; external gdi32 name 'CreateScalableFontResourceW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateScalableFontResource: Pointer;
 
 function CreateScalableFontResource;
 begin
-  GetProcedureAddress(_CreateScalableFontResource, gdi32, 'CreateScalableFontResourceW');
+  GetProcedureAddress(_CreateScalableFontResource, gdi32, 'CreateScalableFontResource' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateScalableFontResource]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateScalableFontResource]
   end;
 end;
-{$ELSE}
-function CreateScalableFontResource; external gdi32 name 'CreateScalableFontResourceW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateScalableFontResource: Pointer;
-
-function CreateScalableFontResource;
-begin
-  GetProcedureAddress(_CreateScalableFontResource, gdi32, 'CreateScalableFontResourceA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateScalableFontResource]
-  end;
-end;
-{$ELSE}
-function CreateScalableFontResource; external gdi32 name 'CreateScalableFontResourceA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateSolidBrush: Pointer;
 
@@ -9199,16 +8537,12 @@ function CreateSolidBrush;
 begin
   GetProcedureAddress(_CreateSolidBrush, gdi32, 'CreateSolidBrush');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateSolidBrush]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateSolidBrush]
   end;
 end;
-{$ELSE}
-function CreateSolidBrush; external gdi32 name 'CreateSolidBrush';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DeleteDC: Pointer;
 
@@ -9216,16 +8550,12 @@ function DeleteDC;
 begin
   GetProcedureAddress(_DeleteDC, gdi32, 'DeleteDC');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DeleteDC]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DeleteDC]
   end;
 end;
-{$ELSE}
-function DeleteDC; external gdi32 name 'DeleteDC';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DeleteMetaFile: Pointer;
 
@@ -9233,16 +8563,12 @@ function DeleteMetaFile;
 begin
   GetProcedureAddress(_DeleteMetaFile, gdi32, 'DeleteMetaFile');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DeleteMetaFile]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DeleteMetaFile]
   end;
 end;
-{$ELSE}
-function DeleteMetaFile; external gdi32 name 'DeleteMetaFile';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DeleteObject: Pointer;
 
@@ -9250,16 +8576,12 @@ function DeleteObject;
 begin
   GetProcedureAddress(_DeleteObject, gdi32, 'DeleteObject');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DeleteObject]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DeleteObject]
   end;
 end;
-{$ELSE}
-function DeleteObject; external gdi32 name 'DeleteObject';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DescribePixelFormat: Pointer;
 
@@ -9267,16 +8589,12 @@ function DescribePixelFormat;
 begin
   GetProcedureAddress(_DescribePixelFormat, gdi32, 'DescribePixelFormat');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DescribePixelFormat]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DescribePixelFormat]
   end;
 end;
-{$ELSE}
-function DescribePixelFormat; external gdi32 name 'DescribePixelFormat';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DeviceCapabilitiesA: Pointer;
 
@@ -9284,16 +8602,12 @@ function DeviceCapabilitiesA;
 begin
   GetProcedureAddress(_DeviceCapabilitiesA, winspool32, 'DeviceCapabilitiesA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DeviceCapabilitiesA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DeviceCapabilitiesA]
   end;
 end;
-{$ELSE}
-function DeviceCapabilitiesA; external winspool32 name 'DeviceCapabilitiesA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DeviceCapabilitiesW: Pointer;
 
@@ -9301,53 +8615,25 @@ function DeviceCapabilitiesW;
 begin
   GetProcedureAddress(_DeviceCapabilitiesW, winspool32, 'DeviceCapabilitiesW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DeviceCapabilitiesW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DeviceCapabilitiesW]
   end;
 end;
-{$ELSE}
-function DeviceCapabilitiesW; external winspool32 name 'DeviceCapabilitiesW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DeviceCapabilities: Pointer;
 
 function DeviceCapabilities;
 begin
-  GetProcedureAddress(_DeviceCapabilities, winspool32, 'DeviceCapabilitiesW');
+  GetProcedureAddress(_DeviceCapabilities, winspool32, 'DeviceCapabilities' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DeviceCapabilities]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DeviceCapabilities]
   end;
 end;
-{$ELSE}
-function DeviceCapabilities; external winspool32 name 'DeviceCapabilitiesW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DeviceCapabilities: Pointer;
-
-function DeviceCapabilities;
-begin
-  GetProcedureAddress(_DeviceCapabilities, winspool32, 'DeviceCapabilitiesA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DeviceCapabilities]
-  end;
-end;
-{$ELSE}
-function DeviceCapabilities; external winspool32 name 'DeviceCapabilitiesA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DrawEscape: Pointer;
 
@@ -9355,16 +8641,12 @@ function DrawEscape;
 begin
   GetProcedureAddress(_DrawEscape, gdi32, 'DrawEscape');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DrawEscape]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DrawEscape]
   end;
 end;
-{$ELSE}
-function DrawEscape; external gdi32 name 'DrawEscape';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _Ellipse: Pointer;
 
@@ -9372,16 +8654,12 @@ function Ellipse;
 begin
   GetProcedureAddress(_Ellipse, gdi32, 'Ellipse');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_Ellipse]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_Ellipse]
   end;
 end;
-{$ELSE}
-function Ellipse; external gdi32 name 'Ellipse';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumFontFamiliesExA: Pointer;
 
@@ -9389,16 +8667,12 @@ function EnumFontFamiliesExA;
 begin
   GetProcedureAddress(_EnumFontFamiliesExA, gdi32, 'EnumFontFamiliesExA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumFontFamiliesExA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumFontFamiliesExA]
   end;
 end;
-{$ELSE}
-function EnumFontFamiliesExA; external gdi32 name 'EnumFontFamiliesExA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumFontFamiliesExW: Pointer;
 
@@ -9406,53 +8680,25 @@ function EnumFontFamiliesExW;
 begin
   GetProcedureAddress(_EnumFontFamiliesExW, gdi32, 'EnumFontFamiliesExW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumFontFamiliesExW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumFontFamiliesExW]
   end;
 end;
-{$ELSE}
-function EnumFontFamiliesExW; external gdi32 name 'EnumFontFamiliesExW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumFontFamiliesEx: Pointer;
 
 function EnumFontFamiliesEx;
 begin
-  GetProcedureAddress(_EnumFontFamiliesEx, gdi32, 'EnumFontFamiliesExW');
+  GetProcedureAddress(_EnumFontFamiliesEx, gdi32, 'EnumFontFamiliesEx' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumFontFamiliesEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumFontFamiliesEx]
   end;
 end;
-{$ELSE}
-function EnumFontFamiliesEx; external gdi32 name 'EnumFontFamiliesExW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumFontFamiliesEx: Pointer;
-
-function EnumFontFamiliesEx;
-begin
-  GetProcedureAddress(_EnumFontFamiliesEx, gdi32, 'EnumFontFamiliesExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumFontFamiliesEx]
-  end;
-end;
-{$ELSE}
-function EnumFontFamiliesEx; external gdi32 name 'EnumFontFamiliesExA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumFontFamiliesA: Pointer;
 
@@ -9460,16 +8706,12 @@ function EnumFontFamiliesA;
 begin
   GetProcedureAddress(_EnumFontFamiliesA, gdi32, 'EnumFontFamiliesA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumFontFamiliesA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumFontFamiliesA]
   end;
 end;
-{$ELSE}
-function EnumFontFamiliesA; external gdi32 name 'EnumFontFamiliesA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumFontFamiliesW: Pointer;
 
@@ -9477,53 +8719,25 @@ function EnumFontFamiliesW;
 begin
   GetProcedureAddress(_EnumFontFamiliesW, gdi32, 'EnumFontFamiliesW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumFontFamiliesW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumFontFamiliesW]
   end;
 end;
-{$ELSE}
-function EnumFontFamiliesW; external gdi32 name 'EnumFontFamiliesW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumFontFamilies: Pointer;
 
 function EnumFontFamilies;
 begin
-  GetProcedureAddress(_EnumFontFamilies, gdi32, 'EnumFontFamiliesW');
+  GetProcedureAddress(_EnumFontFamilies, gdi32, 'EnumFontFamilies' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumFontFamilies]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumFontFamilies]
   end;
 end;
-{$ELSE}
-function EnumFontFamilies; external gdi32 name 'EnumFontFamiliesW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumFontFamilies: Pointer;
-
-function EnumFontFamilies;
-begin
-  GetProcedureAddress(_EnumFontFamilies, gdi32, 'EnumFontFamiliesA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumFontFamilies]
-  end;
-end;
-{$ELSE}
-function EnumFontFamilies; external gdi32 name 'EnumFontFamiliesA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumFontsA: Pointer;
 
@@ -9531,16 +8745,12 @@ function EnumFontsA;
 begin
   GetProcedureAddress(_EnumFontsA, gdi32, 'EnumFontsA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumFontsA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumFontsA]
   end;
 end;
-{$ELSE}
-function EnumFontsA; external gdi32 name 'EnumFontsA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumFontsW: Pointer;
 
@@ -9548,53 +8758,25 @@ function EnumFontsW;
 begin
   GetProcedureAddress(_EnumFontsW, gdi32, 'EnumFontsW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumFontsW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumFontsW]
   end;
 end;
-{$ELSE}
-function EnumFontsW; external gdi32 name 'EnumFontsW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumFonts: Pointer;
 
 function EnumFonts;
 begin
-  GetProcedureAddress(_EnumFonts, gdi32, 'EnumFontsW');
+  GetProcedureAddress(_EnumFonts, gdi32, 'EnumFonts' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumFonts]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumFonts]
   end;
 end;
-{$ELSE}
-function EnumFonts; external gdi32 name 'EnumFontsW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumFonts: Pointer;
-
-function EnumFonts;
-begin
-  GetProcedureAddress(_EnumFonts, gdi32, 'EnumFontsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumFonts]
-  end;
-end;
-{$ELSE}
-function EnumFonts; external gdi32 name 'EnumFontsA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumObjects: Pointer;
 
@@ -9602,16 +8784,12 @@ function EnumObjects;
 begin
   GetProcedureAddress(_EnumObjects, gdi32, 'EnumObjects');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumObjects]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumObjects]
   end;
 end;
-{$ELSE}
-function EnumObjects; external gdi32 name 'EnumObjects';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EqualRgn: Pointer;
 
@@ -9619,16 +8797,12 @@ function EqualRgn;
 begin
   GetProcedureAddress(_EqualRgn, gdi32, 'EqualRgn');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EqualRgn]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EqualRgn]
   end;
 end;
-{$ELSE}
-function EqualRgn; external gdi32 name 'EqualRgn';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _Escape: Pointer;
 
@@ -9636,16 +8810,12 @@ function Escape;
 begin
   GetProcedureAddress(_Escape, gdi32, 'Escape');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_Escape]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_Escape]
   end;
 end;
-{$ELSE}
-function Escape; external gdi32 name 'Escape';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ExtEscape: Pointer;
 
@@ -9653,16 +8823,12 @@ function ExtEscape;
 begin
   GetProcedureAddress(_ExtEscape, gdi32, 'ExtEscape');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ExtEscape]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ExtEscape]
   end;
 end;
-{$ELSE}
-function ExtEscape; external gdi32 name 'ExtEscape';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ExcludeClipRect: Pointer;
 
@@ -9670,16 +8836,12 @@ function ExcludeClipRect;
 begin
   GetProcedureAddress(_ExcludeClipRect, gdi32, 'ExcludeClipRect');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ExcludeClipRect]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ExcludeClipRect]
   end;
 end;
-{$ELSE}
-function ExcludeClipRect; external gdi32 name 'ExcludeClipRect';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ExtCreateRegion: Pointer;
 
@@ -9687,16 +8849,12 @@ function ExtCreateRegion;
 begin
   GetProcedureAddress(_ExtCreateRegion, gdi32, 'ExtCreateRegion');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ExtCreateRegion]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ExtCreateRegion]
   end;
 end;
-{$ELSE}
-function ExtCreateRegion; external gdi32 name 'ExtCreateRegion';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ExtFloodFill: Pointer;
 
@@ -9704,16 +8862,12 @@ function ExtFloodFill;
 begin
   GetProcedureAddress(_ExtFloodFill, gdi32, 'ExtFloodFill');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ExtFloodFill]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ExtFloodFill]
   end;
 end;
-{$ELSE}
-function ExtFloodFill; external gdi32 name 'ExtFloodFill';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _FillRgn: Pointer;
 
@@ -9721,16 +8875,12 @@ function FillRgn;
 begin
   GetProcedureAddress(_FillRgn, gdi32, 'FillRgn');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FillRgn]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_FillRgn]
   end;
 end;
-{$ELSE}
-function FillRgn; external gdi32 name 'FillRgn';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _FloodFill: Pointer;
 
@@ -9738,16 +8888,12 @@ function FloodFill;
 begin
   GetProcedureAddress(_FloodFill, gdi32, 'FloodFill');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FloodFill]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_FloodFill]
   end;
 end;
-{$ELSE}
-function FloodFill; external gdi32 name 'FloodFill';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _FrameRgn: Pointer;
 
@@ -9755,16 +8901,12 @@ function FrameRgn;
 begin
   GetProcedureAddress(_FrameRgn, gdi32, 'FrameRgn');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FrameRgn]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_FrameRgn]
   end;
 end;
-{$ELSE}
-function FrameRgn; external gdi32 name 'FrameRgn';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetROP2: Pointer;
 
@@ -9772,16 +8914,12 @@ function GetROP2;
 begin
   GetProcedureAddress(_GetROP2, gdi32, 'GetROP2');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetROP2]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetROP2]
   end;
 end;
-{$ELSE}
-function GetROP2; external gdi32 name 'GetROP2';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetAspectRatioFilterEx: Pointer;
 
@@ -9789,16 +8927,12 @@ function GetAspectRatioFilterEx;
 begin
   GetProcedureAddress(_GetAspectRatioFilterEx, gdi32, 'GetAspectRatioFilterEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetAspectRatioFilterEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetAspectRatioFilterEx]
   end;
 end;
-{$ELSE}
-function GetAspectRatioFilterEx; external gdi32 name 'GetAspectRatioFilterEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetBkColor: Pointer;
 
@@ -9806,16 +8940,12 @@ function GetBkColor;
 begin
   GetProcedureAddress(_GetBkColor, gdi32, 'GetBkColor');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetBkColor]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetBkColor]
   end;
 end;
-{$ELSE}
-function GetBkColor; external gdi32 name 'GetBkColor';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetDCBrushColor: Pointer;
 
@@ -9823,16 +8953,12 @@ function GetDCBrushColor;
 begin
   GetProcedureAddress(_GetDCBrushColor, gdi32, 'GetDCBrushColor');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetDCBrushColor]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetDCBrushColor]
   end;
 end;
-{$ELSE}
-function GetDCBrushColor; external gdi32 name 'GetDCBrushColor';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetDCPenColor: Pointer;
 
@@ -9840,16 +8966,12 @@ function GetDCPenColor;
 begin
   GetProcedureAddress(_GetDCPenColor, gdi32, 'GetDCPenColor');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetDCPenColor]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetDCPenColor]
   end;
 end;
-{$ELSE}
-function GetDCPenColor; external gdi32 name 'GetDCPenColor';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetBkMode: Pointer;
 
@@ -9857,16 +8979,12 @@ function GetBkMode;
 begin
   GetProcedureAddress(_GetBkMode, gdi32, 'GetBkMode');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetBkMode]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetBkMode]
   end;
 end;
-{$ELSE}
-function GetBkMode; external gdi32 name 'GetBkMode';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetBitmapBits: Pointer;
 
@@ -9874,16 +8992,12 @@ function GetBitmapBits;
 begin
   GetProcedureAddress(_GetBitmapBits, gdi32, 'GetBitmapBits');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetBitmapBits]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetBitmapBits]
   end;
 end;
-{$ELSE}
-function GetBitmapBits; external gdi32 name 'GetBitmapBits';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetBitmapDimensionEx: Pointer;
 
@@ -9891,16 +9005,12 @@ function GetBitmapDimensionEx;
 begin
   GetProcedureAddress(_GetBitmapDimensionEx, gdi32, 'GetBitmapDimensionEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetBitmapDimensionEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetBitmapDimensionEx]
   end;
 end;
-{$ELSE}
-function GetBitmapDimensionEx; external gdi32 name 'GetBitmapDimensionEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetBoundsRect: Pointer;
 
@@ -9908,16 +9018,12 @@ function GetBoundsRect;
 begin
   GetProcedureAddress(_GetBoundsRect, gdi32, 'GetBoundsRect');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetBoundsRect]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetBoundsRect]
   end;
 end;
-{$ELSE}
-function GetBoundsRect; external gdi32 name 'GetBoundsRect';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetBrushOrgEx: Pointer;
 
@@ -9925,16 +9031,12 @@ function GetBrushOrgEx;
 begin
   GetProcedureAddress(_GetBrushOrgEx, gdi32, 'GetBrushOrgEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetBrushOrgEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetBrushOrgEx]
   end;
 end;
-{$ELSE}
-function GetBrushOrgEx; external gdi32 name 'GetBrushOrgEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetCharWidthA: Pointer;
 
@@ -9942,16 +9044,12 @@ function GetCharWidthA;
 begin
   GetProcedureAddress(_GetCharWidthA, gdi32, 'GetCharWidthA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCharWidthA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetCharWidthA]
   end;
 end;
-{$ELSE}
-function GetCharWidthA; external gdi32 name 'GetCharWidthA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetCharWidthW: Pointer;
 
@@ -9959,53 +9057,25 @@ function GetCharWidthW;
 begin
   GetProcedureAddress(_GetCharWidthW, gdi32, 'GetCharWidthW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCharWidthW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetCharWidthW]
   end;
 end;
-{$ELSE}
-function GetCharWidthW; external gdi32 name 'GetCharWidthW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetCharWidth: Pointer;
 
 function GetCharWidth;
 begin
-  GetProcedureAddress(_GetCharWidth, gdi32, 'GetCharWidthW');
+  GetProcedureAddress(_GetCharWidth, gdi32, 'GetCharWidth' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCharWidth]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetCharWidth]
   end;
 end;
-{$ELSE}
-function GetCharWidth; external gdi32 name 'GetCharWidthW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetCharWidth: Pointer;
-
-function GetCharWidth;
-begin
-  GetProcedureAddress(_GetCharWidth, gdi32, 'GetCharWidthA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCharWidth]
-  end;
-end;
-{$ELSE}
-function GetCharWidth; external gdi32 name 'GetCharWidthA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetCharWidth32A: Pointer;
 
@@ -10013,16 +9083,12 @@ function GetCharWidth32A;
 begin
   GetProcedureAddress(_GetCharWidth32A, gdi32, 'GetCharWidth32A');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCharWidth32A]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetCharWidth32A]
   end;
 end;
-{$ELSE}
-function GetCharWidth32A; external gdi32 name 'GetCharWidth32A';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetCharWidth32W: Pointer;
 
@@ -10030,53 +9096,25 @@ function GetCharWidth32W;
 begin
   GetProcedureAddress(_GetCharWidth32W, gdi32, 'GetCharWidth32W');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCharWidth32W]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetCharWidth32W]
   end;
 end;
-{$ELSE}
-function GetCharWidth32W; external gdi32 name 'GetCharWidth32W';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetCharWidth32: Pointer;
 
 function GetCharWidth32;
 begin
-  GetProcedureAddress(_GetCharWidth32, gdi32, 'GetCharWidth32W');
+  GetProcedureAddress(_GetCharWidth32, gdi32, 'GetCharWidth32' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCharWidth32]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetCharWidth32]
   end;
 end;
-{$ELSE}
-function GetCharWidth32; external gdi32 name 'GetCharWidth32W';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetCharWidth32: Pointer;
-
-function GetCharWidth32;
-begin
-  GetProcedureAddress(_GetCharWidth32, gdi32, 'GetCharWidth32A');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCharWidth32]
-  end;
-end;
-{$ELSE}
-function GetCharWidth32; external gdi32 name 'GetCharWidth32A';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetCharWidthFloatA: Pointer;
 
@@ -10084,16 +9122,12 @@ function GetCharWidthFloatA;
 begin
   GetProcedureAddress(_GetCharWidthFloatA, gdi32, 'GetCharWidthFloatA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCharWidthFloatA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetCharWidthFloatA]
   end;
 end;
-{$ELSE}
-function GetCharWidthFloatA; external gdi32 name 'GetCharWidthFloatA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetCharWidthFloatW: Pointer;
 
@@ -10101,53 +9135,25 @@ function GetCharWidthFloatW;
 begin
   GetProcedureAddress(_GetCharWidthFloatW, gdi32, 'GetCharWidthFloatW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCharWidthFloatW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetCharWidthFloatW]
   end;
 end;
-{$ELSE}
-function GetCharWidthFloatW; external gdi32 name 'GetCharWidthFloatW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetCharWidthFloat: Pointer;
 
 function GetCharWidthFloat;
 begin
-  GetProcedureAddress(_GetCharWidthFloat, gdi32, 'GetCharWidthFloatW');
+  GetProcedureAddress(_GetCharWidthFloat, gdi32, 'GetCharWidthFloat' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCharWidthFloat]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetCharWidthFloat]
   end;
 end;
-{$ELSE}
-function GetCharWidthFloat; external gdi32 name 'GetCharWidthFloatW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetCharWidthFloat: Pointer;
-
-function GetCharWidthFloat;
-begin
-  GetProcedureAddress(_GetCharWidthFloat, gdi32, 'GetCharWidthFloatA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCharWidthFloat]
-  end;
-end;
-{$ELSE}
-function GetCharWidthFloat; external gdi32 name 'GetCharWidthFloatA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetCharABCWidthsA: Pointer;
 
@@ -10155,16 +9161,12 @@ function GetCharABCWidthsA;
 begin
   GetProcedureAddress(_GetCharABCWidthsA, gdi32, 'GetCharABCWidthsA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCharABCWidthsA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetCharABCWidthsA]
   end;
 end;
-{$ELSE}
-function GetCharABCWidthsA; external gdi32 name 'GetCharABCWidthsA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetCharABCWidthsW: Pointer;
 
@@ -10172,53 +9174,25 @@ function GetCharABCWidthsW;
 begin
   GetProcedureAddress(_GetCharABCWidthsW, gdi32, 'GetCharABCWidthsW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCharABCWidthsW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetCharABCWidthsW]
   end;
 end;
-{$ELSE}
-function GetCharABCWidthsW; external gdi32 name 'GetCharABCWidthsW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetCharABCWidths: Pointer;
 
 function GetCharABCWidths;
 begin
-  GetProcedureAddress(_GetCharABCWidths, gdi32, 'GetCharABCWidthsW');
+  GetProcedureAddress(_GetCharABCWidths, gdi32, 'GetCharABCWidths' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCharABCWidths]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetCharABCWidths]
   end;
 end;
-{$ELSE}
-function GetCharABCWidths; external gdi32 name 'GetCharABCWidthsW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetCharABCWidths: Pointer;
-
-function GetCharABCWidths;
-begin
-  GetProcedureAddress(_GetCharABCWidths, gdi32, 'GetCharABCWidthsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCharABCWidths]
-  end;
-end;
-{$ELSE}
-function GetCharABCWidths; external gdi32 name 'GetCharABCWidthsA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetCharABCWidthsFloatA: Pointer;
 
@@ -10226,16 +9200,12 @@ function GetCharABCWidthsFloatA;
 begin
   GetProcedureAddress(_GetCharABCWidthsFloatA, gdi32, 'GetCharABCWidthsFloatA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCharABCWidthsFloatA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetCharABCWidthsFloatA]
   end;
 end;
-{$ELSE}
-function GetCharABCWidthsFloatA; external gdi32 name 'GetCharABCWidthsFloatA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetCharABCWidthsFloatW: Pointer;
 
@@ -10243,53 +9213,25 @@ function GetCharABCWidthsFloatW;
 begin
   GetProcedureAddress(_GetCharABCWidthsFloatW, gdi32, 'GetCharABCWidthsFloatW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCharABCWidthsFloatW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetCharABCWidthsFloatW]
   end;
 end;
-{$ELSE}
-function GetCharABCWidthsFloatW; external gdi32 name 'GetCharABCWidthsFloatW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetCharABCWidthsFloat: Pointer;
 
 function GetCharABCWidthsFloat;
 begin
-  GetProcedureAddress(_GetCharABCWidthsFloat, gdi32, 'GetCharABCWidthsFloatW');
+  GetProcedureAddress(_GetCharABCWidthsFloat, gdi32, 'GetCharABCWidthsFloat' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCharABCWidthsFloat]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetCharABCWidthsFloat]
   end;
 end;
-{$ELSE}
-function GetCharABCWidthsFloat; external gdi32 name 'GetCharABCWidthsFloatW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetCharABCWidthsFloat: Pointer;
-
-function GetCharABCWidthsFloat;
-begin
-  GetProcedureAddress(_GetCharABCWidthsFloat, gdi32, 'GetCharABCWidthsFloatA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCharABCWidthsFloat]
-  end;
-end;
-{$ELSE}
-function GetCharABCWidthsFloat; external gdi32 name 'GetCharABCWidthsFloatA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetClipBox: Pointer;
 
@@ -10297,16 +9239,12 @@ function GetClipBox;
 begin
   GetProcedureAddress(_GetClipBox, gdi32, 'GetClipBox');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetClipBox]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetClipBox]
   end;
 end;
-{$ELSE}
-function GetClipBox; external gdi32 name 'GetClipBox';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetClipRgn: Pointer;
 
@@ -10314,16 +9252,12 @@ function GetClipRgn;
 begin
   GetProcedureAddress(_GetClipRgn, gdi32, 'GetClipRgn');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetClipRgn]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetClipRgn]
   end;
 end;
-{$ELSE}
-function GetClipRgn; external gdi32 name 'GetClipRgn';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetMetaRgn: Pointer;
 
@@ -10331,16 +9265,12 @@ function GetMetaRgn;
 begin
   GetProcedureAddress(_GetMetaRgn, gdi32, 'GetMetaRgn');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetMetaRgn]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetMetaRgn]
   end;
 end;
-{$ELSE}
-function GetMetaRgn; external gdi32 name 'GetMetaRgn';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetCurrentObject: Pointer;
 
@@ -10348,16 +9278,12 @@ function GetCurrentObject;
 begin
   GetProcedureAddress(_GetCurrentObject, gdi32, 'GetCurrentObject');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCurrentObject]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetCurrentObject]
   end;
 end;
-{$ELSE}
-function GetCurrentObject; external gdi32 name 'GetCurrentObject';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetCurrentPositionEx: Pointer;
 
@@ -10365,16 +9291,12 @@ function GetCurrentPositionEx;
 begin
   GetProcedureAddress(_GetCurrentPositionEx, gdi32, 'GetCurrentPositionEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCurrentPositionEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetCurrentPositionEx]
   end;
 end;
-{$ELSE}
-function GetCurrentPositionEx; external gdi32 name 'GetCurrentPositionEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetDeviceCaps: Pointer;
 
@@ -10382,16 +9304,12 @@ function GetDeviceCaps;
 begin
   GetProcedureAddress(_GetDeviceCaps, gdi32, 'GetDeviceCaps');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetDeviceCaps]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetDeviceCaps]
   end;
 end;
-{$ELSE}
-function GetDeviceCaps; external gdi32 name 'GetDeviceCaps';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetDIBits: Pointer;
 
@@ -10399,16 +9317,12 @@ function GetDIBits;
 begin
   GetProcedureAddress(_GetDIBits, gdi32, 'GetDIBits');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetDIBits]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetDIBits]
   end;
 end;
-{$ELSE}
-function GetDIBits; external gdi32 name 'GetDIBits';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetFontData: Pointer;
 
@@ -10416,16 +9330,12 @@ function GetFontData;
 begin
   GetProcedureAddress(_GetFontData, gdi32, 'GetFontData');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetFontData]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetFontData]
   end;
 end;
-{$ELSE}
-function GetFontData; external gdi32 name 'GetFontData';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetGlyphOutlineA: Pointer;
 
@@ -10433,16 +9343,12 @@ function GetGlyphOutlineA;
 begin
   GetProcedureAddress(_GetGlyphOutlineA, gdi32, 'GetGlyphOutlineA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetGlyphOutlineA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetGlyphOutlineA]
   end;
 end;
-{$ELSE}
-function GetGlyphOutlineA; external gdi32 name 'GetGlyphOutlineA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetGlyphOutlineW: Pointer;
 
@@ -10450,53 +9356,25 @@ function GetGlyphOutlineW;
 begin
   GetProcedureAddress(_GetGlyphOutlineW, gdi32, 'GetGlyphOutlineW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetGlyphOutlineW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetGlyphOutlineW]
   end;
 end;
-{$ELSE}
-function GetGlyphOutlineW; external gdi32 name 'GetGlyphOutlineW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetGlyphOutline: Pointer;
 
 function GetGlyphOutline;
 begin
-  GetProcedureAddress(_GetGlyphOutline, gdi32, 'GetGlyphOutlineW');
+  GetProcedureAddress(_GetGlyphOutline, gdi32, 'GetGlyphOutline' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetGlyphOutline]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetGlyphOutline]
   end;
 end;
-{$ELSE}
-function GetGlyphOutline; external gdi32 name 'GetGlyphOutlineW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetGlyphOutline: Pointer;
-
-function GetGlyphOutline;
-begin
-  GetProcedureAddress(_GetGlyphOutline, gdi32, 'GetGlyphOutlineA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetGlyphOutline]
-  end;
-end;
-{$ELSE}
-function GetGlyphOutline; external gdi32 name 'GetGlyphOutlineA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetGraphicsMode: Pointer;
 
@@ -10504,16 +9382,12 @@ function GetGraphicsMode;
 begin
   GetProcedureAddress(_GetGraphicsMode, gdi32, 'GetGraphicsMode');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetGraphicsMode]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetGraphicsMode]
   end;
 end;
-{$ELSE}
-function GetGraphicsMode; external gdi32 name 'GetGraphicsMode';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetMapMode: Pointer;
 
@@ -10521,16 +9395,12 @@ function GetMapMode;
 begin
   GetProcedureAddress(_GetMapMode, gdi32, 'GetMapMode');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetMapMode]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetMapMode]
   end;
 end;
-{$ELSE}
-function GetMapMode; external gdi32 name 'GetMapMode';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetMetaFileBitsEx: Pointer;
 
@@ -10538,16 +9408,12 @@ function GetMetaFileBitsEx;
 begin
   GetProcedureAddress(_GetMetaFileBitsEx, gdi32, 'GetMetaFileBitsEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetMetaFileBitsEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetMetaFileBitsEx]
   end;
 end;
-{$ELSE}
-function GetMetaFileBitsEx; external gdi32 name 'GetMetaFileBitsEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetMetaFileA: Pointer;
 
@@ -10555,16 +9421,12 @@ function GetMetaFileA;
 begin
   GetProcedureAddress(_GetMetaFileA, gdi32, 'GetMetaFileA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetMetaFileA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetMetaFileA]
   end;
 end;
-{$ELSE}
-function GetMetaFileA; external gdi32 name 'GetMetaFileA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetMetaFileW: Pointer;
 
@@ -10572,53 +9434,25 @@ function GetMetaFileW;
 begin
   GetProcedureAddress(_GetMetaFileW, gdi32, 'GetMetaFileW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetMetaFileW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetMetaFileW]
   end;
 end;
-{$ELSE}
-function GetMetaFileW; external gdi32 name 'GetMetaFileW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetMetaFile: Pointer;
 
 function GetMetaFile;
 begin
-  GetProcedureAddress(_GetMetaFile, gdi32, 'GetMetaFileW');
+  GetProcedureAddress(_GetMetaFile, gdi32, 'GetMetaFile' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetMetaFile]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetMetaFile]
   end;
 end;
-{$ELSE}
-function GetMetaFile; external gdi32 name 'GetMetaFileW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetMetaFile: Pointer;
-
-function GetMetaFile;
-begin
-  GetProcedureAddress(_GetMetaFile, gdi32, 'GetMetaFileA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetMetaFile]
-  end;
-end;
-{$ELSE}
-function GetMetaFile; external gdi32 name 'GetMetaFileA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetNearestColor: Pointer;
 
@@ -10626,16 +9460,12 @@ function GetNearestColor;
 begin
   GetProcedureAddress(_GetNearestColor, gdi32, 'GetNearestColor');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetNearestColor]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetNearestColor]
   end;
 end;
-{$ELSE}
-function GetNearestColor; external gdi32 name 'GetNearestColor';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetNearestPaletteIndex: Pointer;
 
@@ -10643,16 +9473,12 @@ function GetNearestPaletteIndex;
 begin
   GetProcedureAddress(_GetNearestPaletteIndex, gdi32, 'GetNearestPaletteIndex');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetNearestPaletteIndex]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetNearestPaletteIndex]
   end;
 end;
-{$ELSE}
-function GetNearestPaletteIndex; external gdi32 name 'GetNearestPaletteIndex';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetObjectType: Pointer;
 
@@ -10660,16 +9486,12 @@ function GetObjectType;
 begin
   GetProcedureAddress(_GetObjectType, gdi32, 'GetObjectType');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetObjectType]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetObjectType]
   end;
 end;
-{$ELSE}
-function GetObjectType; external gdi32 name 'GetObjectType';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetOutlineTextMetricsA: Pointer;
 
@@ -10677,16 +9499,12 @@ function GetOutlineTextMetricsA;
 begin
   GetProcedureAddress(_GetOutlineTextMetricsA, gdi32, 'GetOutlineTextMetricsA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetOutlineTextMetricsA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetOutlineTextMetricsA]
   end;
 end;
-{$ELSE}
-function GetOutlineTextMetricsA; external gdi32 name 'GetOutlineTextMetricsA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetOutlineTextMetricsW: Pointer;
 
@@ -10694,53 +9512,25 @@ function GetOutlineTextMetricsW;
 begin
   GetProcedureAddress(_GetOutlineTextMetricsW, gdi32, 'GetOutlineTextMetricsW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetOutlineTextMetricsW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetOutlineTextMetricsW]
   end;
 end;
-{$ELSE}
-function GetOutlineTextMetricsW; external gdi32 name 'GetOutlineTextMetricsW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetOutlineTextMetrics: Pointer;
 
 function GetOutlineTextMetrics;
 begin
-  GetProcedureAddress(_GetOutlineTextMetrics, gdi32, 'GetOutlineTextMetricsW');
+  GetProcedureAddress(_GetOutlineTextMetrics, gdi32, 'GetOutlineTextMetrics' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetOutlineTextMetrics]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetOutlineTextMetrics]
   end;
 end;
-{$ELSE}
-function GetOutlineTextMetrics; external gdi32 name 'GetOutlineTextMetricsW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetOutlineTextMetrics: Pointer;
-
-function GetOutlineTextMetrics;
-begin
-  GetProcedureAddress(_GetOutlineTextMetrics, gdi32, 'GetOutlineTextMetricsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetOutlineTextMetrics]
-  end;
-end;
-{$ELSE}
-function GetOutlineTextMetrics; external gdi32 name 'GetOutlineTextMetricsA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetPaletteEntries: Pointer;
 
@@ -10748,16 +9538,12 @@ function GetPaletteEntries;
 begin
   GetProcedureAddress(_GetPaletteEntries, gdi32, 'GetPaletteEntries');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetPaletteEntries]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetPaletteEntries]
   end;
 end;
-{$ELSE}
-function GetPaletteEntries; external gdi32 name 'GetPaletteEntries';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetPixel: Pointer;
 
@@ -10765,16 +9551,12 @@ function GetPixel;
 begin
   GetProcedureAddress(_GetPixel, gdi32, 'GetPixel');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetPixel]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetPixel]
   end;
 end;
-{$ELSE}
-function GetPixel; external gdi32 name 'GetPixel';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetPixelFormat: Pointer;
 
@@ -10782,16 +9564,12 @@ function GetPixelFormat;
 begin
   GetProcedureAddress(_GetPixelFormat, gdi32, 'GetPixelFormat');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetPixelFormat]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetPixelFormat]
   end;
 end;
-{$ELSE}
-function GetPixelFormat; external gdi32 name 'GetPixelFormat';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetPolyFillMode: Pointer;
 
@@ -10799,16 +9577,12 @@ function GetPolyFillMode;
 begin
   GetProcedureAddress(_GetPolyFillMode, gdi32, 'GetPolyFillMode');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetPolyFillMode]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetPolyFillMode]
   end;
 end;
-{$ELSE}
-function GetPolyFillMode; external gdi32 name 'GetPolyFillMode';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetRasterizerCaps: Pointer;
 
@@ -10816,16 +9590,12 @@ function GetRasterizerCaps;
 begin
   GetProcedureAddress(_GetRasterizerCaps, gdi32, 'GetRasterizerCaps');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetRasterizerCaps]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetRasterizerCaps]
   end;
 end;
-{$ELSE}
-function GetRasterizerCaps; external gdi32 name 'GetRasterizerCaps';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetRandomRgn: Pointer;
 
@@ -10833,16 +9603,12 @@ function GetRandomRgn;
 begin
   GetProcedureAddress(_GetRandomRgn, gdi32, 'GetRandomRgn');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetRandomRgn]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetRandomRgn]
   end;
 end;
-{$ELSE}
-function GetRandomRgn; external gdi32 name 'GetRandomRgn';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetRegionData: Pointer;
 
@@ -10850,16 +9616,12 @@ function GetRegionData;
 begin
   GetProcedureAddress(_GetRegionData, gdi32, 'GetRegionData');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetRegionData]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetRegionData]
   end;
 end;
-{$ELSE}
-function GetRegionData; external gdi32 name 'GetRegionData';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetRgnBox: Pointer;
 
@@ -10867,16 +9629,12 @@ function GetRgnBox;
 begin
   GetProcedureAddress(_GetRgnBox, gdi32, 'GetRgnBox');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetRgnBox]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetRgnBox]
   end;
 end;
-{$ELSE}
-function GetRgnBox; external gdi32 name 'GetRgnBox';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetStockObject: Pointer;
 
@@ -10884,16 +9642,12 @@ function GetStockObject;
 begin
   GetProcedureAddress(_GetStockObject, gdi32, 'GetStockObject');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetStockObject]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetStockObject]
   end;
 end;
-{$ELSE}
-function GetStockObject; external gdi32 name 'GetStockObject';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetStretchBltMode: Pointer;
 
@@ -10901,16 +9655,12 @@ function GetStretchBltMode;
 begin
   GetProcedureAddress(_GetStretchBltMode, gdi32, 'GetStretchBltMode');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetStretchBltMode]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetStretchBltMode]
   end;
 end;
-{$ELSE}
-function GetStretchBltMode; external gdi32 name 'GetStretchBltMode';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetSystemPaletteEntries: Pointer;
 
@@ -10918,16 +9668,12 @@ function GetSystemPaletteEntries;
 begin
   GetProcedureAddress(_GetSystemPaletteEntries, gdi32, 'GetSystemPaletteEntries');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetSystemPaletteEntries]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetSystemPaletteEntries]
   end;
 end;
-{$ELSE}
-function GetSystemPaletteEntries; external gdi32 name 'GetSystemPaletteEntries';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetSystemPaletteUse: Pointer;
 
@@ -10935,16 +9681,12 @@ function GetSystemPaletteUse;
 begin
   GetProcedureAddress(_GetSystemPaletteUse, gdi32, 'GetSystemPaletteUse');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetSystemPaletteUse]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetSystemPaletteUse]
   end;
 end;
-{$ELSE}
-function GetSystemPaletteUse; external gdi32 name 'GetSystemPaletteUse';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetTextCharacterExtra: Pointer;
 
@@ -10952,16 +9694,12 @@ function GetTextCharacterExtra;
 begin
   GetProcedureAddress(_GetTextCharacterExtra, gdi32, 'GetTextCharacterExtra');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTextCharacterExtra]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetTextCharacterExtra]
   end;
 end;
-{$ELSE}
-function GetTextCharacterExtra; external gdi32 name 'GetTextCharacterExtra';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetTextAlign: Pointer;
 
@@ -10969,16 +9707,12 @@ function GetTextAlign;
 begin
   GetProcedureAddress(_GetTextAlign, gdi32, 'GetTextAlign');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTextAlign]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetTextAlign]
   end;
 end;
-{$ELSE}
-function GetTextAlign; external gdi32 name 'GetTextAlign';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetTextColor: Pointer;
 
@@ -10986,16 +9720,12 @@ function GetTextColor;
 begin
   GetProcedureAddress(_GetTextColor, gdi32, 'GetTextColor');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTextColor]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetTextColor]
   end;
 end;
-{$ELSE}
-function GetTextColor; external gdi32 name 'GetTextColor';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetTextExtentPointA: Pointer;
 
@@ -11003,16 +9733,12 @@ function GetTextExtentPointA;
 begin
   GetProcedureAddress(_GetTextExtentPointA, gdi32, 'GetTextExtentPointA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTextExtentPointA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetTextExtentPointA]
   end;
 end;
-{$ELSE}
-function GetTextExtentPointA; external gdi32 name 'GetTextExtentPointA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetTextExtentPointW: Pointer;
 
@@ -11020,53 +9746,25 @@ function GetTextExtentPointW;
 begin
   GetProcedureAddress(_GetTextExtentPointW, gdi32, 'GetTextExtentPointW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTextExtentPointW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetTextExtentPointW]
   end;
 end;
-{$ELSE}
-function GetTextExtentPointW; external gdi32 name 'GetTextExtentPointW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetTextExtentPoint: Pointer;
 
 function GetTextExtentPoint;
 begin
-  GetProcedureAddress(_GetTextExtentPoint, gdi32, 'GetTextExtentPointW');
+  GetProcedureAddress(_GetTextExtentPoint, gdi32, 'GetTextExtentPoint' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTextExtentPoint]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetTextExtentPoint]
   end;
 end;
-{$ELSE}
-function GetTextExtentPoint; external gdi32 name 'GetTextExtentPointW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetTextExtentPoint: Pointer;
-
-function GetTextExtentPoint;
-begin
-  GetProcedureAddress(_GetTextExtentPoint, gdi32, 'GetTextExtentPointA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTextExtentPoint]
-  end;
-end;
-{$ELSE}
-function GetTextExtentPoint; external gdi32 name 'GetTextExtentPointA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetTextExtentPoint32A: Pointer;
 
@@ -11074,16 +9772,12 @@ function GetTextExtentPoint32A;
 begin
   GetProcedureAddress(_GetTextExtentPoint32A, gdi32, 'GetTextExtentPoint32A');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTextExtentPoint32A]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetTextExtentPoint32A]
   end;
 end;
-{$ELSE}
-function GetTextExtentPoint32A; external gdi32 name 'GetTextExtentPoint32A';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetTextExtentPoint32W: Pointer;
 
@@ -11091,53 +9785,25 @@ function GetTextExtentPoint32W;
 begin
   GetProcedureAddress(_GetTextExtentPoint32W, gdi32, 'GetTextExtentPoint32W');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTextExtentPoint32W]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetTextExtentPoint32W]
   end;
 end;
-{$ELSE}
-function GetTextExtentPoint32W; external gdi32 name 'GetTextExtentPoint32W';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetTextExtentPoint32: Pointer;
 
 function GetTextExtentPoint32;
 begin
-  GetProcedureAddress(_GetTextExtentPoint32, gdi32, 'GetTextExtentPoint32W');
+  GetProcedureAddress(_GetTextExtentPoint32, gdi32, 'GetTextExtentPoint32' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTextExtentPoint32]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetTextExtentPoint32]
   end;
 end;
-{$ELSE}
-function GetTextExtentPoint32; external gdi32 name 'GetTextExtentPoint32W';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetTextExtentPoint32: Pointer;
-
-function GetTextExtentPoint32;
-begin
-  GetProcedureAddress(_GetTextExtentPoint32, gdi32, 'GetTextExtentPoint32A');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTextExtentPoint32]
-  end;
-end;
-{$ELSE}
-function GetTextExtentPoint32; external gdi32 name 'GetTextExtentPoint32A';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetTextExtentExPointA: Pointer;
 
@@ -11145,16 +9811,12 @@ function GetTextExtentExPointA;
 begin
   GetProcedureAddress(_GetTextExtentExPointA, gdi32, 'GetTextExtentExPointA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTextExtentExPointA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetTextExtentExPointA]
   end;
 end;
-{$ELSE}
-function GetTextExtentExPointA; external gdi32 name 'GetTextExtentExPointA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetTextExtentExPointW: Pointer;
 
@@ -11162,53 +9824,25 @@ function GetTextExtentExPointW;
 begin
   GetProcedureAddress(_GetTextExtentExPointW, gdi32, 'GetTextExtentExPointW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTextExtentExPointW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetTextExtentExPointW]
   end;
 end;
-{$ELSE}
-function GetTextExtentExPointW; external gdi32 name 'GetTextExtentExPointW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetTextExtentExPoint: Pointer;
 
 function GetTextExtentExPoint;
 begin
-  GetProcedureAddress(_GetTextExtentExPoint, gdi32, 'GetTextExtentExPointW');
+  GetProcedureAddress(_GetTextExtentExPoint, gdi32, 'GetTextExtentExPoint' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTextExtentExPoint]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetTextExtentExPoint]
   end;
 end;
-{$ELSE}
-function GetTextExtentExPoint; external gdi32 name 'GetTextExtentExPointW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetTextExtentExPoint: Pointer;
-
-function GetTextExtentExPoint;
-begin
-  GetProcedureAddress(_GetTextExtentExPoint, gdi32, 'GetTextExtentExPointA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTextExtentExPoint]
-  end;
-end;
-{$ELSE}
-function GetTextExtentExPoint; external gdi32 name 'GetTextExtentExPointA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetTextCharset: Pointer;
 
@@ -11216,16 +9850,12 @@ function GetTextCharset;
 begin
   GetProcedureAddress(_GetTextCharset, gdi32, 'GetTextCharset');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTextCharset]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetTextCharset]
   end;
 end;
-{$ELSE}
-function GetTextCharset; external gdi32 name 'GetTextCharset';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetTextCharsetInfo: Pointer;
 
@@ -11233,16 +9863,12 @@ function GetTextCharsetInfo;
 begin
   GetProcedureAddress(_GetTextCharsetInfo, gdi32, 'GetTextCharsetInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTextCharsetInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetTextCharsetInfo]
   end;
 end;
-{$ELSE}
-function GetTextCharsetInfo; external gdi32 name 'GetTextCharsetInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _TranslateCharsetInfo: Pointer;
 
@@ -11250,16 +9876,12 @@ function TranslateCharsetInfo;
 begin
   GetProcedureAddress(_TranslateCharsetInfo, gdi32, 'TranslateCharsetInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TranslateCharsetInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TranslateCharsetInfo]
   end;
 end;
-{$ELSE}
-function TranslateCharsetInfo; external gdi32 name 'TranslateCharsetInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetFontLanguageInfo: Pointer;
 
@@ -11267,16 +9889,12 @@ function GetFontLanguageInfo;
 begin
   GetProcedureAddress(_GetFontLanguageInfo, gdi32, 'GetFontLanguageInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetFontLanguageInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetFontLanguageInfo]
   end;
 end;
-{$ELSE}
-function GetFontLanguageInfo; external gdi32 name 'GetFontLanguageInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetCharacterPlacementA: Pointer;
 
@@ -11284,16 +9902,12 @@ function GetCharacterPlacementA;
 begin
   GetProcedureAddress(_GetCharacterPlacementA, gdi32, 'GetCharacterPlacementA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCharacterPlacementA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetCharacterPlacementA]
   end;
 end;
-{$ELSE}
-function GetCharacterPlacementA; external gdi32 name 'GetCharacterPlacementA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetCharacterPlacementW: Pointer;
 
@@ -11301,53 +9915,25 @@ function GetCharacterPlacementW;
 begin
   GetProcedureAddress(_GetCharacterPlacementW, gdi32, 'GetCharacterPlacementW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCharacterPlacementW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetCharacterPlacementW]
   end;
 end;
-{$ELSE}
-function GetCharacterPlacementW; external gdi32 name 'GetCharacterPlacementW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetCharacterPlacement: Pointer;
 
 function GetCharacterPlacement;
 begin
-  GetProcedureAddress(_GetCharacterPlacement, gdi32, 'GetCharacterPlacementW');
+  GetProcedureAddress(_GetCharacterPlacement, gdi32, 'GetCharacterPlacement' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCharacterPlacement]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetCharacterPlacement]
   end;
 end;
-{$ELSE}
-function GetCharacterPlacement; external gdi32 name 'GetCharacterPlacementW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetCharacterPlacement: Pointer;
-
-function GetCharacterPlacement;
-begin
-  GetProcedureAddress(_GetCharacterPlacement, gdi32, 'GetCharacterPlacementA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCharacterPlacement]
-  end;
-end;
-{$ELSE}
-function GetCharacterPlacement; external gdi32 name 'GetCharacterPlacementA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetFontUnicodeRanges: Pointer;
 
@@ -11355,16 +9941,12 @@ function GetFontUnicodeRanges;
 begin
   GetProcedureAddress(_GetFontUnicodeRanges, gdi32, 'GetFontUnicodeRanges');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetFontUnicodeRanges]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetFontUnicodeRanges]
   end;
 end;
-{$ELSE}
-function GetFontUnicodeRanges; external gdi32 name 'GetFontUnicodeRanges';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetGlyphIndicesA: Pointer;
 
@@ -11372,16 +9954,12 @@ function GetGlyphIndicesA;
 begin
   GetProcedureAddress(_GetGlyphIndicesA, gdi32, 'GetGlyphIndicesA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetGlyphIndicesA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetGlyphIndicesA]
   end;
 end;
-{$ELSE}
-function GetGlyphIndicesA; external gdi32 name 'GetGlyphIndicesA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetGlyphIndicesW: Pointer;
 
@@ -11389,53 +9967,25 @@ function GetGlyphIndicesW;
 begin
   GetProcedureAddress(_GetGlyphIndicesW, gdi32, 'GetGlyphIndicesW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetGlyphIndicesW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetGlyphIndicesW]
   end;
 end;
-{$ELSE}
-function GetGlyphIndicesW; external gdi32 name 'GetGlyphIndicesW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetGlyphIndices: Pointer;
 
 function GetGlyphIndices;
 begin
-  GetProcedureAddress(_GetGlyphIndices, gdi32, 'GetGlyphIndicesW');
+  GetProcedureAddress(_GetGlyphIndices, gdi32, 'GetGlyphIndices' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetGlyphIndices]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetGlyphIndices]
   end;
 end;
-{$ELSE}
-function GetGlyphIndices; external gdi32 name 'GetGlyphIndicesW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetGlyphIndices: Pointer;
-
-function GetGlyphIndices;
-begin
-  GetProcedureAddress(_GetGlyphIndices, gdi32, 'GetGlyphIndicesA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetGlyphIndices]
-  end;
-end;
-{$ELSE}
-function GetGlyphIndices; external gdi32 name 'GetGlyphIndicesA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetTextExtentPointI: Pointer;
 
@@ -11443,16 +9993,12 @@ function GetTextExtentPointI;
 begin
   GetProcedureAddress(_GetTextExtentPointI, gdi32, 'GetTextExtentPointI');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTextExtentPointI]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetTextExtentPointI]
   end;
 end;
-{$ELSE}
-function GetTextExtentPointI; external gdi32 name 'GetTextExtentPointI';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetTextExtentExPointI: Pointer;
 
@@ -11460,16 +10006,12 @@ function GetTextExtentExPointI;
 begin
   GetProcedureAddress(_GetTextExtentExPointI, gdi32, 'GetTextExtentExPointI');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTextExtentExPointI]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetTextExtentExPointI]
   end;
 end;
-{$ELSE}
-function GetTextExtentExPointI; external gdi32 name 'GetTextExtentExPointI';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetCharWidthI: Pointer;
 
@@ -11477,16 +10019,12 @@ function GetCharWidthI;
 begin
   GetProcedureAddress(_GetCharWidthI, gdi32, 'GetCharWidthI');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCharWidthI]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetCharWidthI]
   end;
 end;
-{$ELSE}
-function GetCharWidthI; external gdi32 name 'GetCharWidthI';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetCharABCWidthsI: Pointer;
 
@@ -11494,16 +10032,12 @@ function GetCharABCWidthsI;
 begin
   GetProcedureAddress(_GetCharABCWidthsI, gdi32, 'GetCharABCWidthsI');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCharABCWidthsI]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetCharABCWidthsI]
   end;
 end;
-{$ELSE}
-function GetCharABCWidthsI; external gdi32 name 'GetCharABCWidthsI';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _AddFontResourceExA: Pointer;
 
@@ -11511,16 +10045,12 @@ function AddFontResourceExA;
 begin
   GetProcedureAddress(_AddFontResourceExA, gdi32, 'AddFontResourceExA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AddFontResourceExA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AddFontResourceExA]
   end;
 end;
-{$ELSE}
-function AddFontResourceExA; external gdi32 name 'AddFontResourceExA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _AddFontResourceExW: Pointer;
 
@@ -11528,53 +10058,25 @@ function AddFontResourceExW;
 begin
   GetProcedureAddress(_AddFontResourceExW, gdi32, 'AddFontResourceExW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AddFontResourceExW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AddFontResourceExW]
   end;
 end;
-{$ELSE}
-function AddFontResourceExW; external gdi32 name 'AddFontResourceExW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _AddFontResourceEx: Pointer;
 
 function AddFontResourceEx;
 begin
-  GetProcedureAddress(_AddFontResourceEx, gdi32, 'AddFontResourceExW');
+  GetProcedureAddress(_AddFontResourceEx, gdi32, 'AddFontResourceEx' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AddFontResourceEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AddFontResourceEx]
   end;
 end;
-{$ELSE}
-function AddFontResourceEx; external gdi32 name 'AddFontResourceExW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _AddFontResourceEx: Pointer;
-
-function AddFontResourceEx;
-begin
-  GetProcedureAddress(_AddFontResourceEx, gdi32, 'AddFontResourceExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AddFontResourceEx]
-  end;
-end;
-{$ELSE}
-function AddFontResourceEx; external gdi32 name 'AddFontResourceExA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _RemoveFontResourceExA: Pointer;
 
@@ -11582,16 +10084,12 @@ function RemoveFontResourceExA;
 begin
   GetProcedureAddress(_RemoveFontResourceExA, gdi32, 'RemoveFontResourceExA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RemoveFontResourceExA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RemoveFontResourceExA]
   end;
 end;
-{$ELSE}
-function RemoveFontResourceExA; external gdi32 name 'RemoveFontResourceExA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RemoveFontResourceExW: Pointer;
 
@@ -11599,53 +10097,25 @@ function RemoveFontResourceExW;
 begin
   GetProcedureAddress(_RemoveFontResourceExW, gdi32, 'RemoveFontResourceExW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RemoveFontResourceExW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RemoveFontResourceExW]
   end;
 end;
-{$ELSE}
-function RemoveFontResourceExW; external gdi32 name 'RemoveFontResourceExW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RemoveFontResourceEx: Pointer;
 
 function RemoveFontResourceEx;
 begin
-  GetProcedureAddress(_RemoveFontResourceEx, gdi32, 'RemoveFontResourceExW');
+  GetProcedureAddress(_RemoveFontResourceEx, gdi32, 'RemoveFontResourceEx' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RemoveFontResourceEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RemoveFontResourceEx]
   end;
 end;
-{$ELSE}
-function RemoveFontResourceEx; external gdi32 name 'RemoveFontResourceExW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _RemoveFontResourceEx: Pointer;
-
-function RemoveFontResourceEx;
-begin
-  GetProcedureAddress(_RemoveFontResourceEx, gdi32, 'RemoveFontResourceExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RemoveFontResourceEx]
-  end;
-end;
-{$ELSE}
-function RemoveFontResourceEx; external gdi32 name 'RemoveFontResourceExA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _AddFontMemResourceEx: Pointer;
 
@@ -11653,16 +10123,12 @@ function AddFontMemResourceEx;
 begin
   GetProcedureAddress(_AddFontMemResourceEx, gdi32, 'AddFontMemResourceEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AddFontMemResourceEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AddFontMemResourceEx]
   end;
 end;
-{$ELSE}
-function AddFontMemResourceEx; external gdi32 name 'AddFontMemResourceEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RemoveFontMemResourceEx: Pointer;
 
@@ -11670,16 +10136,12 @@ function RemoveFontMemResourceEx;
 begin
   GetProcedureAddress(_RemoveFontMemResourceEx, gdi32, 'RemoveFontMemResourceEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RemoveFontMemResourceEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RemoveFontMemResourceEx]
   end;
 end;
-{$ELSE}
-function RemoveFontMemResourceEx; external gdi32 name 'RemoveFontMemResourceEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateFontIndirectExA: Pointer;
 
@@ -11687,16 +10149,12 @@ function CreateFontIndirectExA;
 begin
   GetProcedureAddress(_CreateFontIndirectExA, gdi32, 'CreateFontIndirectExA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateFontIndirectExA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateFontIndirectExA]
   end;
 end;
-{$ELSE}
-function CreateFontIndirectExA; external gdi32 name 'CreateFontIndirectExA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateFontIndirectExW: Pointer;
 
@@ -11704,53 +10162,25 @@ function CreateFontIndirectExW;
 begin
   GetProcedureAddress(_CreateFontIndirectExW, gdi32, 'CreateFontIndirectExW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateFontIndirectExW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateFontIndirectExW]
   end;
 end;
-{$ELSE}
-function CreateFontIndirectExW; external gdi32 name 'CreateFontIndirectExW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateFontIndirectEx: Pointer;
 
 function CreateFontIndirectEx;
 begin
-  GetProcedureAddress(_CreateFontIndirectEx, gdi32, 'CreateFontIndirectExW');
+  GetProcedureAddress(_CreateFontIndirectEx, gdi32, 'CreateFontIndirectEx' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateFontIndirectEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateFontIndirectEx]
   end;
 end;
-{$ELSE}
-function CreateFontIndirectEx; external gdi32 name 'CreateFontIndirectExW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateFontIndirectEx: Pointer;
-
-function CreateFontIndirectEx;
-begin
-  GetProcedureAddress(_CreateFontIndirectEx, gdi32, 'CreateFontIndirectExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateFontIndirectEx]
-  end;
-end;
-{$ELSE}
-function CreateFontIndirectEx; external gdi32 name 'CreateFontIndirectExA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetViewportExtEx: Pointer;
 
@@ -11758,16 +10188,12 @@ function GetViewportExtEx;
 begin
   GetProcedureAddress(_GetViewportExtEx, gdi32, 'GetViewportExtEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetViewportExtEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetViewportExtEx]
   end;
 end;
-{$ELSE}
-function GetViewportExtEx; external gdi32 name 'GetViewportExtEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetViewportOrgEx: Pointer;
 
@@ -11775,16 +10201,12 @@ function GetViewportOrgEx;
 begin
   GetProcedureAddress(_GetViewportOrgEx, gdi32, 'GetViewportOrgEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetViewportOrgEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetViewportOrgEx]
   end;
 end;
-{$ELSE}
-function GetViewportOrgEx; external gdi32 name 'GetViewportOrgEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetWindowExtEx: Pointer;
 
@@ -11792,16 +10214,12 @@ function GetWindowExtEx;
 begin
   GetProcedureAddress(_GetWindowExtEx, gdi32, 'GetWindowExtEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetWindowExtEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetWindowExtEx]
   end;
 end;
-{$ELSE}
-function GetWindowExtEx; external gdi32 name 'GetWindowExtEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetWindowOrgEx: Pointer;
 
@@ -11809,16 +10227,12 @@ function GetWindowOrgEx;
 begin
   GetProcedureAddress(_GetWindowOrgEx, gdi32, 'GetWindowOrgEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetWindowOrgEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetWindowOrgEx]
   end;
 end;
-{$ELSE}
-function GetWindowOrgEx; external gdi32 name 'GetWindowOrgEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _IntersectClipRect: Pointer;
 
@@ -11826,16 +10240,12 @@ function IntersectClipRect;
 begin
   GetProcedureAddress(_IntersectClipRect, gdi32, 'IntersectClipRect');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IntersectClipRect]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IntersectClipRect]
   end;
 end;
-{$ELSE}
-function IntersectClipRect; external gdi32 name 'IntersectClipRect';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _InvertRgn: Pointer;
 
@@ -11843,16 +10253,12 @@ function InvertRgn;
 begin
   GetProcedureAddress(_InvertRgn, gdi32, 'InvertRgn');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_InvertRgn]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_InvertRgn]
   end;
 end;
-{$ELSE}
-function InvertRgn; external gdi32 name 'InvertRgn';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LineDDA: Pointer;
 
@@ -11860,16 +10266,12 @@ function LineDDA;
 begin
   GetProcedureAddress(_LineDDA, gdi32, 'LineDDA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LineDDA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LineDDA]
   end;
 end;
-{$ELSE}
-function LineDDA; external gdi32 name 'LineDDA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LineTo: Pointer;
 
@@ -11877,16 +10279,12 @@ function LineTo;
 begin
   GetProcedureAddress(_LineTo, gdi32, 'LineTo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LineTo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LineTo]
   end;
 end;
-{$ELSE}
-function LineTo; external gdi32 name 'LineTo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MaskBlt: Pointer;
 
@@ -11894,16 +10292,12 @@ function MaskBlt;
 begin
   GetProcedureAddress(_MaskBlt, gdi32, 'MaskBlt');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MaskBlt]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MaskBlt]
   end;
 end;
-{$ELSE}
-function MaskBlt; external gdi32 name 'MaskBlt';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PlgBlt: Pointer;
 
@@ -11911,16 +10305,12 @@ function PlgBlt;
 begin
   GetProcedureAddress(_PlgBlt, gdi32, 'PlgBlt');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PlgBlt]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PlgBlt]
   end;
 end;
-{$ELSE}
-function PlgBlt; external gdi32 name 'PlgBlt';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _OffsetClipRgn: Pointer;
 
@@ -11928,16 +10318,12 @@ function OffsetClipRgn;
 begin
   GetProcedureAddress(_OffsetClipRgn, gdi32, 'OffsetClipRgn');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_OffsetClipRgn]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_OffsetClipRgn]
   end;
 end;
-{$ELSE}
-function OffsetClipRgn; external gdi32 name 'OffsetClipRgn';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _OffsetRgn: Pointer;
 
@@ -11945,16 +10331,12 @@ function OffsetRgn;
 begin
   GetProcedureAddress(_OffsetRgn, gdi32, 'OffsetRgn');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_OffsetRgn]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_OffsetRgn]
   end;
 end;
-{$ELSE}
-function OffsetRgn; external gdi32 name 'OffsetRgn';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PatBlt: Pointer;
 
@@ -11962,16 +10344,12 @@ function PatBlt;
 begin
   GetProcedureAddress(_PatBlt, gdi32, 'PatBlt');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PatBlt]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PatBlt]
   end;
 end;
-{$ELSE}
-function PatBlt; external gdi32 name 'PatBlt';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _Pie: Pointer;
 
@@ -11979,16 +10357,12 @@ function Pie;
 begin
   GetProcedureAddress(_Pie, gdi32, 'Pie');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_Pie]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_Pie]
   end;
 end;
-{$ELSE}
-function Pie; external gdi32 name 'Pie';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PlayMetaFile: Pointer;
 
@@ -11996,16 +10370,12 @@ function PlayMetaFile;
 begin
   GetProcedureAddress(_PlayMetaFile, gdi32, 'PlayMetaFile');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PlayMetaFile]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PlayMetaFile]
   end;
 end;
-{$ELSE}
-function PlayMetaFile; external gdi32 name 'PlayMetaFile';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PaintRgn: Pointer;
 
@@ -12013,16 +10383,12 @@ function PaintRgn;
 begin
   GetProcedureAddress(_PaintRgn, gdi32, 'PaintRgn');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PaintRgn]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PaintRgn]
   end;
 end;
-{$ELSE}
-function PaintRgn; external gdi32 name 'PaintRgn';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PolyPolygon: Pointer;
 
@@ -12030,16 +10396,12 @@ function PolyPolygon;
 begin
   GetProcedureAddress(_PolyPolygon, gdi32, 'PolyPolygon');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PolyPolygon]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PolyPolygon]
   end;
 end;
-{$ELSE}
-function PolyPolygon; external gdi32 name 'PolyPolygon';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PtInRegion: Pointer;
 
@@ -12047,16 +10409,12 @@ function PtInRegion;
 begin
   GetProcedureAddress(_PtInRegion, gdi32, 'PtInRegion');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PtInRegion]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PtInRegion]
   end;
 end;
-{$ELSE}
-function PtInRegion; external gdi32 name 'PtInRegion';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PtVisible: Pointer;
 
@@ -12064,16 +10422,12 @@ function PtVisible;
 begin
   GetProcedureAddress(_PtVisible, gdi32, 'PtVisible');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PtVisible]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PtVisible]
   end;
 end;
-{$ELSE}
-function PtVisible; external gdi32 name 'PtVisible';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RectInRegion: Pointer;
 
@@ -12081,16 +10435,12 @@ function RectInRegion;
 begin
   GetProcedureAddress(_RectInRegion, gdi32, 'RectInRegion');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RectInRegion]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RectInRegion]
   end;
 end;
-{$ELSE}
-function RectInRegion; external gdi32 name 'RectInRegion';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RectVisible: Pointer;
 
@@ -12098,16 +10448,12 @@ function RectVisible;
 begin
   GetProcedureAddress(_RectVisible, gdi32, 'RectVisible');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RectVisible]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RectVisible]
   end;
 end;
-{$ELSE}
-function RectVisible; external gdi32 name 'RectVisible';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _Rectangle: Pointer;
 
@@ -12115,16 +10461,12 @@ function Rectangle;
 begin
   GetProcedureAddress(_Rectangle, gdi32, 'Rectangle');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_Rectangle]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_Rectangle]
   end;
 end;
-{$ELSE}
-function Rectangle; external gdi32 name 'Rectangle';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RestoreDC: Pointer;
 
@@ -12132,16 +10474,12 @@ function RestoreDC;
 begin
   GetProcedureAddress(_RestoreDC, gdi32, 'RestoreDC');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RestoreDC]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RestoreDC]
   end;
 end;
-{$ELSE}
-function RestoreDC; external gdi32 name 'RestoreDC';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ResetDCA: Pointer;
 
@@ -12149,16 +10487,12 @@ function ResetDCA;
 begin
   GetProcedureAddress(_ResetDCA, gdi32, 'ResetDCA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ResetDCA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ResetDCA]
   end;
 end;
-{$ELSE}
-function ResetDCA; external gdi32 name 'ResetDCA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ResetDCW: Pointer;
 
@@ -12166,53 +10500,25 @@ function ResetDCW;
 begin
   GetProcedureAddress(_ResetDCW, gdi32, 'ResetDCW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ResetDCW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ResetDCW]
   end;
 end;
-{$ELSE}
-function ResetDCW; external gdi32 name 'ResetDCW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ResetDC: Pointer;
 
 function ResetDC;
 begin
-  GetProcedureAddress(_ResetDC, gdi32, 'ResetDCW');
+  GetProcedureAddress(_ResetDC, gdi32, 'ResetDC' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ResetDC]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ResetDC]
   end;
 end;
-{$ELSE}
-function ResetDC; external gdi32 name 'ResetDCW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _ResetDC: Pointer;
-
-function ResetDC;
-begin
-  GetProcedureAddress(_ResetDC, gdi32, 'ResetDCA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ResetDC]
-  end;
-end;
-{$ELSE}
-function ResetDC; external gdi32 name 'ResetDCA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _RealizePalette: Pointer;
 
@@ -12220,16 +10526,12 @@ function RealizePalette;
 begin
   GetProcedureAddress(_RealizePalette, gdi32, 'RealizePalette');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RealizePalette]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RealizePalette]
   end;
 end;
-{$ELSE}
-function RealizePalette; external gdi32 name 'RealizePalette';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RemoveFontResourceA: Pointer;
 
@@ -12237,16 +10539,12 @@ function RemoveFontResourceA;
 begin
   GetProcedureAddress(_RemoveFontResourceA, gdi32, 'RemoveFontResourceA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RemoveFontResourceA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RemoveFontResourceA]
   end;
 end;
-{$ELSE}
-function RemoveFontResourceA; external gdi32 name 'RemoveFontResourceA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RemoveFontResourceW: Pointer;
 
@@ -12254,53 +10552,25 @@ function RemoveFontResourceW;
 begin
   GetProcedureAddress(_RemoveFontResourceW, gdi32, 'RemoveFontResourceW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RemoveFontResourceW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RemoveFontResourceW]
   end;
 end;
-{$ELSE}
-function RemoveFontResourceW; external gdi32 name 'RemoveFontResourceW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RemoveFontResource: Pointer;
 
 function RemoveFontResource;
 begin
-  GetProcedureAddress(_RemoveFontResource, gdi32, 'RemoveFontResourceW');
+  GetProcedureAddress(_RemoveFontResource, gdi32, 'RemoveFontResource' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RemoveFontResource]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RemoveFontResource]
   end;
 end;
-{$ELSE}
-function RemoveFontResource; external gdi32 name 'RemoveFontResourceW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _RemoveFontResource: Pointer;
-
-function RemoveFontResource;
-begin
-  GetProcedureAddress(_RemoveFontResource, gdi32, 'RemoveFontResourceA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RemoveFontResource]
-  end;
-end;
-{$ELSE}
-function RemoveFontResource; external gdi32 name 'RemoveFontResourceA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _RoundRect: Pointer;
 
@@ -12308,16 +10578,12 @@ function RoundRect;
 begin
   GetProcedureAddress(_RoundRect, gdi32, 'RoundRect');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RoundRect]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RoundRect]
   end;
 end;
-{$ELSE}
-function RoundRect; external gdi32 name 'RoundRect';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ResizePalette: Pointer;
 
@@ -12325,16 +10591,12 @@ function ResizePalette;
 begin
   GetProcedureAddress(_ResizePalette, gdi32, 'ResizePalette');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ResizePalette]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ResizePalette]
   end;
 end;
-{$ELSE}
-function ResizePalette; external gdi32 name 'ResizePalette';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SaveDC: Pointer;
 
@@ -12342,16 +10604,12 @@ function SaveDC;
 begin
   GetProcedureAddress(_SaveDC, gdi32, 'SaveDC');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SaveDC]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SaveDC]
   end;
 end;
-{$ELSE}
-function SaveDC; external gdi32 name 'SaveDC';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SelectClipRgn: Pointer;
 
@@ -12359,16 +10617,12 @@ function SelectClipRgn;
 begin
   GetProcedureAddress(_SelectClipRgn, gdi32, 'SelectClipRgn');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SelectClipRgn]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SelectClipRgn]
   end;
 end;
-{$ELSE}
-function SelectClipRgn; external gdi32 name 'SelectClipRgn';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ExtSelectClipRgn: Pointer;
 
@@ -12376,16 +10630,12 @@ function ExtSelectClipRgn;
 begin
   GetProcedureAddress(_ExtSelectClipRgn, gdi32, 'ExtSelectClipRgn');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ExtSelectClipRgn]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ExtSelectClipRgn]
   end;
 end;
-{$ELSE}
-function ExtSelectClipRgn; external gdi32 name 'ExtSelectClipRgn';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetMetaRgn: Pointer;
 
@@ -12393,16 +10643,12 @@ function SetMetaRgn;
 begin
   GetProcedureAddress(_SetMetaRgn, gdi32, 'SetMetaRgn');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetMetaRgn]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetMetaRgn]
   end;
 end;
-{$ELSE}
-function SetMetaRgn; external gdi32 name 'SetMetaRgn';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SelectObject: Pointer;
 
@@ -12410,16 +10656,12 @@ function SelectObject;
 begin
   GetProcedureAddress(_SelectObject, gdi32, 'SelectObject');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SelectObject]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SelectObject]
   end;
 end;
-{$ELSE}
-function SelectObject; external gdi32 name 'SelectObject';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SelectPalette: Pointer;
 
@@ -12427,16 +10669,12 @@ function SelectPalette;
 begin
   GetProcedureAddress(_SelectPalette, gdi32, 'SelectPalette');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SelectPalette]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SelectPalette]
   end;
 end;
-{$ELSE}
-function SelectPalette; external gdi32 name 'SelectPalette';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetBkColor: Pointer;
 
@@ -12444,16 +10682,12 @@ function SetBkColor;
 begin
   GetProcedureAddress(_SetBkColor, gdi32, 'SetBkColor');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetBkColor]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetBkColor]
   end;
 end;
-{$ELSE}
-function SetBkColor; external gdi32 name 'SetBkColor';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetDCBrushColor: Pointer;
 
@@ -12461,16 +10695,12 @@ function SetDCBrushColor;
 begin
   GetProcedureAddress(_SetDCBrushColor, gdi32, 'SetDCBrushColor');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetDCBrushColor]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetDCBrushColor]
   end;
 end;
-{$ELSE}
-function SetDCBrushColor; external gdi32 name 'SetDCBrushColor';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetDCPenColor: Pointer;
 
@@ -12478,16 +10708,12 @@ function SetDCPenColor;
 begin
   GetProcedureAddress(_SetDCPenColor, gdi32, 'SetDCPenColor');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetDCPenColor]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetDCPenColor]
   end;
 end;
-{$ELSE}
-function SetDCPenColor; external gdi32 name 'SetDCPenColor';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetBkMode: Pointer;
 
@@ -12495,16 +10721,12 @@ function SetBkMode;
 begin
   GetProcedureAddress(_SetBkMode, gdi32, 'SetBkMode');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetBkMode]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetBkMode]
   end;
 end;
-{$ELSE}
-function SetBkMode; external gdi32 name 'SetBkMode';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetBitmapBits: Pointer;
 
@@ -12512,16 +10734,12 @@ function SetBitmapBits;
 begin
   GetProcedureAddress(_SetBitmapBits, gdi32, 'SetBitmapBits');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetBitmapBits]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetBitmapBits]
   end;
 end;
-{$ELSE}
-function SetBitmapBits; external gdi32 name 'SetBitmapBits';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetBoundsRect: Pointer;
 
@@ -12529,16 +10747,12 @@ function SetBoundsRect;
 begin
   GetProcedureAddress(_SetBoundsRect, gdi32, 'SetBoundsRect');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetBoundsRect]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetBoundsRect]
   end;
 end;
-{$ELSE}
-function SetBoundsRect; external gdi32 name 'SetBoundsRect';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetDIBits: Pointer;
 
@@ -12546,16 +10760,12 @@ function SetDIBits;
 begin
   GetProcedureAddress(_SetDIBits, gdi32, 'SetDIBits');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetDIBits]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetDIBits]
   end;
 end;
-{$ELSE}
-function SetDIBits; external gdi32 name 'SetDIBits';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetDIBitsToDevice: Pointer;
 
@@ -12563,16 +10773,12 @@ function SetDIBitsToDevice;
 begin
   GetProcedureAddress(_SetDIBitsToDevice, gdi32, 'SetDIBitsToDevice');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetDIBitsToDevice]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetDIBitsToDevice]
   end;
 end;
-{$ELSE}
-function SetDIBitsToDevice; external gdi32 name 'SetDIBitsToDevice';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetMapperFlags: Pointer;
 
@@ -12580,16 +10786,12 @@ function SetMapperFlags;
 begin
   GetProcedureAddress(_SetMapperFlags, gdi32, 'SetMapperFlags');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetMapperFlags]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetMapperFlags]
   end;
 end;
-{$ELSE}
-function SetMapperFlags; external gdi32 name 'SetMapperFlags';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetGraphicsMode: Pointer;
 
@@ -12597,16 +10799,12 @@ function SetGraphicsMode;
 begin
   GetProcedureAddress(_SetGraphicsMode, gdi32, 'SetGraphicsMode');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetGraphicsMode]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetGraphicsMode]
   end;
 end;
-{$ELSE}
-function SetGraphicsMode; external gdi32 name 'SetGraphicsMode';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetMapMode: Pointer;
 
@@ -12614,16 +10812,12 @@ function SetMapMode;
 begin
   GetProcedureAddress(_SetMapMode, gdi32, 'SetMapMode');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetMapMode]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetMapMode]
   end;
 end;
-{$ELSE}
-function SetMapMode; external gdi32 name 'SetMapMode';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetLayout: Pointer;
 
@@ -12631,16 +10825,12 @@ function SetLayout;
 begin
   GetProcedureAddress(_SetLayout, gdi32, 'SetLayout');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetLayout]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetLayout]
   end;
 end;
-{$ELSE}
-function SetLayout; external gdi32 name 'SetLayout';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetLayout: Pointer;
 
@@ -12648,16 +10838,12 @@ function GetLayout;
 begin
   GetProcedureAddress(_GetLayout, gdi32, 'GetLayout');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetLayout]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetLayout]
   end;
 end;
-{$ELSE}
-function GetLayout; external gdi32 name 'GetLayout';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetMetaFileBitsEx: Pointer;
 
@@ -12665,16 +10851,12 @@ function SetMetaFileBitsEx;
 begin
   GetProcedureAddress(_SetMetaFileBitsEx, gdi32, 'SetMetaFileBitsEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetMetaFileBitsEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetMetaFileBitsEx]
   end;
 end;
-{$ELSE}
-function SetMetaFileBitsEx; external gdi32 name 'SetMetaFileBitsEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetPaletteEntries: Pointer;
 
@@ -12682,16 +10864,12 @@ function SetPaletteEntries;
 begin
   GetProcedureAddress(_SetPaletteEntries, gdi32, 'SetPaletteEntries');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetPaletteEntries]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetPaletteEntries]
   end;
 end;
-{$ELSE}
-function SetPaletteEntries; external gdi32 name 'SetPaletteEntries';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetPixel: Pointer;
 
@@ -12699,16 +10877,12 @@ function SetPixel;
 begin
   GetProcedureAddress(_SetPixel, gdi32, 'SetPixel');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetPixel]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetPixel]
   end;
 end;
-{$ELSE}
-function SetPixel; external gdi32 name 'SetPixel';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetPixelV: Pointer;
 
@@ -12716,16 +10890,12 @@ function SetPixelV;
 begin
   GetProcedureAddress(_SetPixelV, gdi32, 'SetPixelV');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetPixelV]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetPixelV]
   end;
 end;
-{$ELSE}
-function SetPixelV; external gdi32 name 'SetPixelV';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetPixelFormat: Pointer;
 
@@ -12733,16 +10903,12 @@ function SetPixelFormat;
 begin
   GetProcedureAddress(_SetPixelFormat, gdi32, 'SetPixelFormat');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetPixelFormat]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetPixelFormat]
   end;
 end;
-{$ELSE}
-function SetPixelFormat; external gdi32 name 'SetPixelFormat';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetPolyFillMode: Pointer;
 
@@ -12750,16 +10916,12 @@ function SetPolyFillMode;
 begin
   GetProcedureAddress(_SetPolyFillMode, gdi32, 'SetPolyFillMode');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetPolyFillMode]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetPolyFillMode]
   end;
 end;
-{$ELSE}
-function SetPolyFillMode; external gdi32 name 'SetPolyFillMode';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _StretchBlt: Pointer;
 
@@ -12767,16 +10929,12 @@ function StretchBlt;
 begin
   GetProcedureAddress(_StretchBlt, gdi32, 'StretchBlt');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_StretchBlt]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_StretchBlt]
   end;
 end;
-{$ELSE}
-function StretchBlt; external gdi32 name 'StretchBlt';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetRectRgn: Pointer;
 
@@ -12784,16 +10942,12 @@ function SetRectRgn;
 begin
   GetProcedureAddress(_SetRectRgn, gdi32, 'SetRectRgn');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetRectRgn]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetRectRgn]
   end;
 end;
-{$ELSE}
-function SetRectRgn; external gdi32 name 'SetRectRgn';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _StretchDIBits: Pointer;
 
@@ -12801,16 +10955,12 @@ function StretchDIBits;
 begin
   GetProcedureAddress(_StretchDIBits, gdi32, 'StretchDIBits');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_StretchDIBits]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_StretchDIBits]
   end;
 end;
-{$ELSE}
-function StretchDIBits; external gdi32 name 'StretchDIBits';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetROP2: Pointer;
 
@@ -12818,16 +10968,12 @@ function SetROP2;
 begin
   GetProcedureAddress(_SetROP2, gdi32, 'SetROP2');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetROP2]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetROP2]
   end;
 end;
-{$ELSE}
-function SetROP2; external gdi32 name 'SetROP2';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetStretchBltMode: Pointer;
 
@@ -12835,16 +10981,12 @@ function SetStretchBltMode;
 begin
   GetProcedureAddress(_SetStretchBltMode, gdi32, 'SetStretchBltMode');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetStretchBltMode]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetStretchBltMode]
   end;
 end;
-{$ELSE}
-function SetStretchBltMode; external gdi32 name 'SetStretchBltMode';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetSystemPaletteUse: Pointer;
 
@@ -12852,16 +10994,12 @@ function SetSystemPaletteUse;
 begin
   GetProcedureAddress(_SetSystemPaletteUse, gdi32, 'SetSystemPaletteUse');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetSystemPaletteUse]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetSystemPaletteUse]
   end;
 end;
-{$ELSE}
-function SetSystemPaletteUse; external gdi32 name 'SetSystemPaletteUse';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetTextCharacterExtra: Pointer;
 
@@ -12869,16 +11007,12 @@ function SetTextCharacterExtra;
 begin
   GetProcedureAddress(_SetTextCharacterExtra, gdi32, 'SetTextCharacterExtra');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetTextCharacterExtra]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetTextCharacterExtra]
   end;
 end;
-{$ELSE}
-function SetTextCharacterExtra; external gdi32 name 'SetTextCharacterExtra';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetTextColor: Pointer;
 
@@ -12886,16 +11020,12 @@ function SetTextColor;
 begin
   GetProcedureAddress(_SetTextColor, gdi32, 'SetTextColor');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetTextColor]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetTextColor]
   end;
 end;
-{$ELSE}
-function SetTextColor; external gdi32 name 'SetTextColor';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetTextAlign: Pointer;
 
@@ -12903,16 +11033,12 @@ function SetTextAlign;
 begin
   GetProcedureAddress(_SetTextAlign, gdi32, 'SetTextAlign');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetTextAlign]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetTextAlign]
   end;
 end;
-{$ELSE}
-function SetTextAlign; external gdi32 name 'SetTextAlign';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetTextJustification: Pointer;
 
@@ -12920,16 +11046,12 @@ function SetTextJustification;
 begin
   GetProcedureAddress(_SetTextJustification, gdi32, 'SetTextJustification');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetTextJustification]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetTextJustification]
   end;
 end;
-{$ELSE}
-function SetTextJustification; external gdi32 name 'SetTextJustification';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _UpdateColors: Pointer;
 
@@ -12937,16 +11059,12 @@ function UpdateColors;
 begin
   GetProcedureAddress(_UpdateColors, gdi32, 'UpdateColors');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_UpdateColors]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_UpdateColors]
   end;
 end;
-{$ELSE}
-function UpdateColors; external gdi32 name 'UpdateColors';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _AlphaBlend: Pointer;
 
@@ -12954,16 +11072,12 @@ function AlphaBlend;
 begin
   GetProcedureAddress(_AlphaBlend, msimg32, 'AlphaBlend');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AlphaBlend]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AlphaBlend]
   end;
 end;
-{$ELSE}
-function AlphaBlend; external msimg32 name 'AlphaBlend';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _TransparentBlt: Pointer;
 
@@ -12971,16 +11085,12 @@ function TransparentBlt;
 begin
   GetProcedureAddress(_TransparentBlt, msimg32, 'TransparentBlt');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TransparentBlt]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TransparentBlt]
   end;
 end;
-{$ELSE}
-function TransparentBlt; external msimg32 name 'TransparentBlt';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GradientFill: Pointer;
 
@@ -12988,16 +11098,12 @@ function GradientFill;
 begin
   GetProcedureAddress(_GradientFill, msimg32, 'GradientFill');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GradientFill]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GradientFill]
   end;
 end;
-{$ELSE}
-function GradientFill; external msimg32 name 'GradientFill';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PlayMetaFileRecord: Pointer;
 
@@ -13005,16 +11111,12 @@ function PlayMetaFileRecord;
 begin
   GetProcedureAddress(_PlayMetaFileRecord, gdi32, 'PlayMetaFileRecord');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PlayMetaFileRecord]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PlayMetaFileRecord]
   end;
 end;
-{$ELSE}
-function PlayMetaFileRecord; external gdi32 name 'PlayMetaFileRecord';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumMetaFile: Pointer;
 
@@ -13022,16 +11124,12 @@ function EnumMetaFile;
 begin
   GetProcedureAddress(_EnumMetaFile, gdi32, 'EnumMetaFile');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumMetaFile]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumMetaFile]
   end;
 end;
-{$ELSE}
-function EnumMetaFile; external gdi32 name 'EnumMetaFile';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CloseEnhMetaFile: Pointer;
 
@@ -13039,16 +11137,12 @@ function CloseEnhMetaFile;
 begin
   GetProcedureAddress(_CloseEnhMetaFile, gdi32, 'CloseEnhMetaFile');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CloseEnhMetaFile]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CloseEnhMetaFile]
   end;
 end;
-{$ELSE}
-function CloseEnhMetaFile; external gdi32 name 'CloseEnhMetaFile';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CopyEnhMetaFileA: Pointer;
 
@@ -13056,16 +11150,12 @@ function CopyEnhMetaFileA;
 begin
   GetProcedureAddress(_CopyEnhMetaFileA, gdi32, 'CopyEnhMetaFileA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CopyEnhMetaFileA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CopyEnhMetaFileA]
   end;
 end;
-{$ELSE}
-function CopyEnhMetaFileA; external gdi32 name 'CopyEnhMetaFileA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CopyEnhMetaFileW: Pointer;
 
@@ -13073,53 +11163,25 @@ function CopyEnhMetaFileW;
 begin
   GetProcedureAddress(_CopyEnhMetaFileW, gdi32, 'CopyEnhMetaFileW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CopyEnhMetaFileW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CopyEnhMetaFileW]
   end;
 end;
-{$ELSE}
-function CopyEnhMetaFileW; external gdi32 name 'CopyEnhMetaFileW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CopyEnhMetaFile: Pointer;
 
 function CopyEnhMetaFile;
 begin
-  GetProcedureAddress(_CopyEnhMetaFile, gdi32, 'CopyEnhMetaFileW');
+  GetProcedureAddress(_CopyEnhMetaFile, gdi32, 'CopyEnhMetaFile' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CopyEnhMetaFile]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CopyEnhMetaFile]
   end;
 end;
-{$ELSE}
-function CopyEnhMetaFile; external gdi32 name 'CopyEnhMetaFileW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CopyEnhMetaFile: Pointer;
-
-function CopyEnhMetaFile;
-begin
-  GetProcedureAddress(_CopyEnhMetaFile, gdi32, 'CopyEnhMetaFileA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CopyEnhMetaFile]
-  end;
-end;
-{$ELSE}
-function CopyEnhMetaFile; external gdi32 name 'CopyEnhMetaFileA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateEnhMetaFileA: Pointer;
 
@@ -13127,16 +11189,12 @@ function CreateEnhMetaFileA;
 begin
   GetProcedureAddress(_CreateEnhMetaFileA, gdi32, 'CreateEnhMetaFileA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateEnhMetaFileA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateEnhMetaFileA]
   end;
 end;
-{$ELSE}
-function CreateEnhMetaFileA; external gdi32 name 'CreateEnhMetaFileA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateEnhMetaFileW: Pointer;
 
@@ -13144,53 +11202,25 @@ function CreateEnhMetaFileW;
 begin
   GetProcedureAddress(_CreateEnhMetaFileW, gdi32, 'CreateEnhMetaFileW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateEnhMetaFileW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateEnhMetaFileW]
   end;
 end;
-{$ELSE}
-function CreateEnhMetaFileW; external gdi32 name 'CreateEnhMetaFileW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateEnhMetaFile: Pointer;
 
 function CreateEnhMetaFile;
 begin
-  GetProcedureAddress(_CreateEnhMetaFile, gdi32, 'CreateEnhMetaFileW');
+  GetProcedureAddress(_CreateEnhMetaFile, gdi32, 'CreateEnhMetaFile' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateEnhMetaFile]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateEnhMetaFile]
   end;
 end;
-{$ELSE}
-function CreateEnhMetaFile; external gdi32 name 'CreateEnhMetaFileW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateEnhMetaFile: Pointer;
-
-function CreateEnhMetaFile;
-begin
-  GetProcedureAddress(_CreateEnhMetaFile, gdi32, 'CreateEnhMetaFileA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateEnhMetaFile]
-  end;
-end;
-{$ELSE}
-function CreateEnhMetaFile; external gdi32 name 'CreateEnhMetaFileA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DeleteEnhMetaFile: Pointer;
 
@@ -13198,16 +11228,12 @@ function DeleteEnhMetaFile;
 begin
   GetProcedureAddress(_DeleteEnhMetaFile, gdi32, 'DeleteEnhMetaFile');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DeleteEnhMetaFile]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DeleteEnhMetaFile]
   end;
 end;
-{$ELSE}
-function DeleteEnhMetaFile; external gdi32 name 'DeleteEnhMetaFile';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumEnhMetaFile: Pointer;
 
@@ -13215,16 +11241,12 @@ function EnumEnhMetaFile;
 begin
   GetProcedureAddress(_EnumEnhMetaFile, gdi32, 'EnumEnhMetaFile');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumEnhMetaFile]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumEnhMetaFile]
   end;
 end;
-{$ELSE}
-function EnumEnhMetaFile; external gdi32 name 'EnumEnhMetaFile';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetEnhMetaFileA: Pointer;
 
@@ -13232,16 +11254,12 @@ function GetEnhMetaFileA;
 begin
   GetProcedureAddress(_GetEnhMetaFileA, gdi32, 'GetEnhMetaFileA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetEnhMetaFileA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetEnhMetaFileA]
   end;
 end;
-{$ELSE}
-function GetEnhMetaFileA; external gdi32 name 'GetEnhMetaFileA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetEnhMetaFileW: Pointer;
 
@@ -13249,53 +11267,25 @@ function GetEnhMetaFileW;
 begin
   GetProcedureAddress(_GetEnhMetaFileW, gdi32, 'GetEnhMetaFileW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetEnhMetaFileW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetEnhMetaFileW]
   end;
 end;
-{$ELSE}
-function GetEnhMetaFileW; external gdi32 name 'GetEnhMetaFileW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetEnhMetaFile: Pointer;
 
 function GetEnhMetaFile;
 begin
-  GetProcedureAddress(_GetEnhMetaFile, gdi32, 'GetEnhMetaFileW');
+  GetProcedureAddress(_GetEnhMetaFile, gdi32, 'GetEnhMetaFile' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetEnhMetaFile]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetEnhMetaFile]
   end;
 end;
-{$ELSE}
-function GetEnhMetaFile; external gdi32 name 'GetEnhMetaFileW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetEnhMetaFile: Pointer;
-
-function GetEnhMetaFile;
-begin
-  GetProcedureAddress(_GetEnhMetaFile, gdi32, 'GetEnhMetaFileA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetEnhMetaFile]
-  end;
-end;
-{$ELSE}
-function GetEnhMetaFile; external gdi32 name 'GetEnhMetaFileA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetEnhMetaFileBits: Pointer;
 
@@ -13303,16 +11293,12 @@ function GetEnhMetaFileBits;
 begin
   GetProcedureAddress(_GetEnhMetaFileBits, gdi32, 'GetEnhMetaFileBits');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetEnhMetaFileBits]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetEnhMetaFileBits]
   end;
 end;
-{$ELSE}
-function GetEnhMetaFileBits; external gdi32 name 'GetEnhMetaFileBits';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetEnhMetaFileDescriptionA: Pointer;
 
@@ -13320,16 +11306,12 @@ function GetEnhMetaFileDescriptionA;
 begin
   GetProcedureAddress(_GetEnhMetaFileDescriptionA, gdi32, 'GetEnhMetaFileDescriptionA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetEnhMetaFileDescriptionA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetEnhMetaFileDescriptionA]
   end;
 end;
-{$ELSE}
-function GetEnhMetaFileDescriptionA; external gdi32 name 'GetEnhMetaFileDescriptionA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetEnhMetaFileDescriptionW: Pointer;
 
@@ -13337,53 +11319,25 @@ function GetEnhMetaFileDescriptionW;
 begin
   GetProcedureAddress(_GetEnhMetaFileDescriptionW, gdi32, 'GetEnhMetaFileDescriptionW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetEnhMetaFileDescriptionW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetEnhMetaFileDescriptionW]
   end;
 end;
-{$ELSE}
-function GetEnhMetaFileDescriptionW; external gdi32 name 'GetEnhMetaFileDescriptionW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetEnhMetaFileDescription: Pointer;
 
 function GetEnhMetaFileDescription;
 begin
-  GetProcedureAddress(_GetEnhMetaFileDescription, gdi32, 'GetEnhMetaFileDescriptionW');
+  GetProcedureAddress(_GetEnhMetaFileDescription, gdi32, 'GetEnhMetaFileDescription' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetEnhMetaFileDescription]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetEnhMetaFileDescription]
   end;
 end;
-{$ELSE}
-function GetEnhMetaFileDescription; external gdi32 name 'GetEnhMetaFileDescriptionW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetEnhMetaFileDescription: Pointer;
-
-function GetEnhMetaFileDescription;
-begin
-  GetProcedureAddress(_GetEnhMetaFileDescription, gdi32, 'GetEnhMetaFileDescriptionA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetEnhMetaFileDescription]
-  end;
-end;
-{$ELSE}
-function GetEnhMetaFileDescription; external gdi32 name 'GetEnhMetaFileDescriptionA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetEnhMetaFileHeader: Pointer;
 
@@ -13391,16 +11345,12 @@ function GetEnhMetaFileHeader;
 begin
   GetProcedureAddress(_GetEnhMetaFileHeader, gdi32, 'GetEnhMetaFileHeader');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetEnhMetaFileHeader]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetEnhMetaFileHeader]
   end;
 end;
-{$ELSE}
-function GetEnhMetaFileHeader; external gdi32 name 'GetEnhMetaFileHeader';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetEnhMetaFilePaletteEntries: Pointer;
 
@@ -13408,16 +11358,12 @@ function GetEnhMetaFilePaletteEntries;
 begin
   GetProcedureAddress(_GetEnhMetaFilePaletteEntries, gdi32, 'GetEnhMetaFilePaletteEntries');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetEnhMetaFilePaletteEntries]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetEnhMetaFilePaletteEntries]
   end;
 end;
-{$ELSE}
-function GetEnhMetaFilePaletteEntries; external gdi32 name 'GetEnhMetaFilePaletteEntries';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetEnhMetaFilePixelFormat: Pointer;
 
@@ -13425,16 +11371,12 @@ function GetEnhMetaFilePixelFormat;
 begin
   GetProcedureAddress(_GetEnhMetaFilePixelFormat, gdi32, 'GetEnhMetaFilePixelFormat');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetEnhMetaFilePixelFormat]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetEnhMetaFilePixelFormat]
   end;
 end;
-{$ELSE}
-function GetEnhMetaFilePixelFormat; external gdi32 name 'GetEnhMetaFilePixelFormat';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetWinMetaFileBits: Pointer;
 
@@ -13442,16 +11384,12 @@ function GetWinMetaFileBits;
 begin
   GetProcedureAddress(_GetWinMetaFileBits, gdi32, 'GetWinMetaFileBits');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetWinMetaFileBits]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetWinMetaFileBits]
   end;
 end;
-{$ELSE}
-function GetWinMetaFileBits; external gdi32 name 'GetWinMetaFileBits';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PlayEnhMetaFile: Pointer;
 
@@ -13459,16 +11397,12 @@ function PlayEnhMetaFile;
 begin
   GetProcedureAddress(_PlayEnhMetaFile, gdi32, 'PlayEnhMetaFile');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PlayEnhMetaFile]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PlayEnhMetaFile]
   end;
 end;
-{$ELSE}
-function PlayEnhMetaFile; external gdi32 name 'PlayEnhMetaFile';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PlayEnhMetaFileRecord: Pointer;
 
@@ -13476,16 +11410,12 @@ function PlayEnhMetaFileRecord;
 begin
   GetProcedureAddress(_PlayEnhMetaFileRecord, gdi32, 'PlayEnhMetaFileRecord');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PlayEnhMetaFileRecord]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PlayEnhMetaFileRecord]
   end;
 end;
-{$ELSE}
-function PlayEnhMetaFileRecord; external gdi32 name 'PlayEnhMetaFileRecord';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetEnhMetaFileBits: Pointer;
 
@@ -13493,16 +11423,12 @@ function SetEnhMetaFileBits;
 begin
   GetProcedureAddress(_SetEnhMetaFileBits, gdi32, 'SetEnhMetaFileBits');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetEnhMetaFileBits]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetEnhMetaFileBits]
   end;
 end;
-{$ELSE}
-function SetEnhMetaFileBits; external gdi32 name 'SetEnhMetaFileBits';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetWinMetaFileBits: Pointer;
 
@@ -13510,16 +11436,12 @@ function SetWinMetaFileBits;
 begin
   GetProcedureAddress(_SetWinMetaFileBits, gdi32, 'SetWinMetaFileBits');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetWinMetaFileBits]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetWinMetaFileBits]
   end;
 end;
-{$ELSE}
-function SetWinMetaFileBits; external gdi32 name 'SetWinMetaFileBits';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GdiComment: Pointer;
 
@@ -13527,16 +11449,12 @@ function GdiComment;
 begin
   GetProcedureAddress(_GdiComment, gdi32, 'GdiComment');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GdiComment]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GdiComment]
   end;
 end;
-{$ELSE}
-function GdiComment; external gdi32 name 'GdiComment';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetTextMetricsA: Pointer;
 
@@ -13544,16 +11462,12 @@ function GetTextMetricsA;
 begin
   GetProcedureAddress(_GetTextMetricsA, gdi32, 'GetTextMetricsA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTextMetricsA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetTextMetricsA]
   end;
 end;
-{$ELSE}
-function GetTextMetricsA; external gdi32 name 'GetTextMetricsA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetTextMetricsW: Pointer;
 
@@ -13561,53 +11475,25 @@ function GetTextMetricsW;
 begin
   GetProcedureAddress(_GetTextMetricsW, gdi32, 'GetTextMetricsW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTextMetricsW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetTextMetricsW]
   end;
 end;
-{$ELSE}
-function GetTextMetricsW; external gdi32 name 'GetTextMetricsW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetTextMetrics: Pointer;
 
 function GetTextMetrics;
 begin
-  GetProcedureAddress(_GetTextMetrics, gdi32, 'GetTextMetricsW');
+  GetProcedureAddress(_GetTextMetrics, gdi32, 'GetTextMetrics' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTextMetrics]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetTextMetrics]
   end;
 end;
-{$ELSE}
-function GetTextMetrics; external gdi32 name 'GetTextMetricsW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetTextMetrics: Pointer;
-
-function GetTextMetrics;
-begin
-  GetProcedureAddress(_GetTextMetrics, gdi32, 'GetTextMetricsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTextMetrics]
-  end;
-end;
-{$ELSE}
-function GetTextMetrics; external gdi32 name 'GetTextMetricsA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _AngleArc: Pointer;
 
@@ -13615,16 +11501,12 @@ function AngleArc;
 begin
   GetProcedureAddress(_AngleArc, gdi32, 'AngleArc');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AngleArc]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AngleArc]
   end;
 end;
-{$ELSE}
-function AngleArc; external gdi32 name 'AngleArc';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PolyPolyline: Pointer;
 
@@ -13632,16 +11514,12 @@ function PolyPolyline;
 begin
   GetProcedureAddress(_PolyPolyline, gdi32, 'PolyPolyline');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PolyPolyline]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PolyPolyline]
   end;
 end;
-{$ELSE}
-function PolyPolyline; external gdi32 name 'PolyPolyline';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetWorldTransform: Pointer;
 
@@ -13649,16 +11527,12 @@ function GetWorldTransform;
 begin
   GetProcedureAddress(_GetWorldTransform, gdi32, 'GetWorldTransform');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetWorldTransform]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetWorldTransform]
   end;
 end;
-{$ELSE}
-function GetWorldTransform; external gdi32 name 'GetWorldTransform';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetWorldTransform: Pointer;
 
@@ -13666,16 +11540,12 @@ function SetWorldTransform;
 begin
   GetProcedureAddress(_SetWorldTransform, gdi32, 'SetWorldTransform');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetWorldTransform]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetWorldTransform]
   end;
 end;
-{$ELSE}
-function SetWorldTransform; external gdi32 name 'SetWorldTransform';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ModifyWorldTransform: Pointer;
 
@@ -13683,16 +11553,12 @@ function ModifyWorldTransform;
 begin
   GetProcedureAddress(_ModifyWorldTransform, gdi32, 'ModifyWorldTransform');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ModifyWorldTransform]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ModifyWorldTransform]
   end;
 end;
-{$ELSE}
-function ModifyWorldTransform; external gdi32 name 'ModifyWorldTransform';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CombineTransform: Pointer;
 
@@ -13700,16 +11566,12 @@ function CombineTransform;
 begin
   GetProcedureAddress(_CombineTransform, gdi32, 'CombineTransform');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CombineTransform]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CombineTransform]
   end;
 end;
-{$ELSE}
-function CombineTransform; external gdi32 name 'CombineTransform';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateDIBSection: Pointer;
 
@@ -13717,16 +11579,12 @@ function CreateDIBSection;
 begin
   GetProcedureAddress(_CreateDIBSection, gdi32, 'CreateDIBSection');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateDIBSection]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateDIBSection]
   end;
 end;
-{$ELSE}
-function CreateDIBSection; external gdi32 name 'CreateDIBSection';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetDIBColorTable: Pointer;
 
@@ -13734,16 +11592,12 @@ function GetDIBColorTable;
 begin
   GetProcedureAddress(_GetDIBColorTable, gdi32, 'GetDIBColorTable');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetDIBColorTable]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetDIBColorTable]
   end;
 end;
-{$ELSE}
-function GetDIBColorTable; external gdi32 name 'GetDIBColorTable';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetDIBColorTable: Pointer;
 
@@ -13751,16 +11605,12 @@ function SetDIBColorTable;
 begin
   GetProcedureAddress(_SetDIBColorTable, gdi32, 'SetDIBColorTable');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetDIBColorTable]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetDIBColorTable]
   end;
 end;
-{$ELSE}
-function SetDIBColorTable; external gdi32 name 'SetDIBColorTable';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetColorAdjustment: Pointer;
 
@@ -13768,16 +11618,12 @@ function SetColorAdjustment;
 begin
   GetProcedureAddress(_SetColorAdjustment, gdi32, 'SetColorAdjustment');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetColorAdjustment]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetColorAdjustment]
   end;
 end;
-{$ELSE}
-function SetColorAdjustment; external gdi32 name 'SetColorAdjustment';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetColorAdjustment: Pointer;
 
@@ -13785,16 +11631,12 @@ function GetColorAdjustment;
 begin
   GetProcedureAddress(_GetColorAdjustment, gdi32, 'GetColorAdjustment');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetColorAdjustment]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetColorAdjustment]
   end;
 end;
-{$ELSE}
-function GetColorAdjustment; external gdi32 name 'GetColorAdjustment';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateHalftonePalette: Pointer;
 
@@ -13802,16 +11644,12 @@ function CreateHalftonePalette;
 begin
   GetProcedureAddress(_CreateHalftonePalette, gdi32, 'CreateHalftonePalette');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateHalftonePalette]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateHalftonePalette]
   end;
 end;
-{$ELSE}
-function CreateHalftonePalette; external gdi32 name 'CreateHalftonePalette';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _StartDocA: Pointer;
 
@@ -13819,16 +11657,12 @@ function StartDocA;
 begin
   GetProcedureAddress(_StartDocA, gdi32, 'StartDocA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_StartDocA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_StartDocA]
   end;
 end;
-{$ELSE}
-function StartDocA; external gdi32 name 'StartDocA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _StartDocW: Pointer;
 
@@ -13836,53 +11670,25 @@ function StartDocW;
 begin
   GetProcedureAddress(_StartDocW, gdi32, 'StartDocW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_StartDocW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_StartDocW]
   end;
 end;
-{$ELSE}
-function StartDocW; external gdi32 name 'StartDocW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _StartDoc: Pointer;
 
 function StartDoc;
 begin
-  GetProcedureAddress(_StartDoc, gdi32, 'StartDocW');
+  GetProcedureAddress(_StartDoc, gdi32, 'StartDoc' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_StartDoc]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_StartDoc]
   end;
 end;
-{$ELSE}
-function StartDoc; external gdi32 name 'StartDocW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  __StartDoc: Pointer;
-
-function StartDoc;
-begin
-  GetProcedureAddress(__StartDoc, gdi32, 'StartDocA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [__StartDoc]
-  end;
-end;
-{$ELSE}
-function StartDoc; external gdi32 name 'StartDocA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   __EndDoc: Pointer;
 
@@ -13890,16 +11696,12 @@ function EndDoc;
 begin
   GetProcedureAddress(__EndDoc, gdi32, 'EndDoc');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [__EndDoc]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [__EndDoc]
   end;
 end;
-{$ELSE}
-function EndDoc; external gdi32 name 'EndDoc';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _StartPage: Pointer;
 
@@ -13907,16 +11709,12 @@ function StartPage;
 begin
   GetProcedureAddress(_StartPage, gdi32, 'StartPage');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_StartPage]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_StartPage]
   end;
 end;
-{$ELSE}
-function StartPage; external gdi32 name 'StartPage';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EndPage: Pointer;
 
@@ -13924,16 +11722,12 @@ function EndPage;
 begin
   GetProcedureAddress(_EndPage, gdi32, 'EndPage');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EndPage]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EndPage]
   end;
 end;
-{$ELSE}
-function EndPage; external gdi32 name 'EndPage';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   __AbortDoc: Pointer;
 
@@ -13941,16 +11735,12 @@ function AbortDoc;
 begin
   GetProcedureAddress(__AbortDoc, gdi32, 'AbortDoc');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [__AbortDoc]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [__AbortDoc]
   end;
 end;
-{$ELSE}
-function AbortDoc; external gdi32 name 'AbortDoc';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetAbortProc: Pointer;
 
@@ -13958,16 +11748,12 @@ function SetAbortProc;
 begin
   GetProcedureAddress(_SetAbortProc, gdi32, 'SetAbortProc');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetAbortProc]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetAbortProc]
   end;
 end;
-{$ELSE}
-function SetAbortProc; external gdi32 name 'SetAbortProc';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _AbortPath: Pointer;
 
@@ -13975,16 +11761,12 @@ function AbortPath;
 begin
   GetProcedureAddress(_AbortPath, gdi32, 'AbortPath');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AbortPath]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AbortPath]
   end;
 end;
-{$ELSE}
-function AbortPath; external gdi32 name 'AbortPath';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ArcTo: Pointer;
 
@@ -13992,16 +11774,12 @@ function ArcTo;
 begin
   GetProcedureAddress(_ArcTo, gdi32, 'ArcTo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ArcTo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ArcTo]
   end;
 end;
-{$ELSE}
-function ArcTo; external gdi32 name 'ArcTo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _BeginPath: Pointer;
 
@@ -14009,16 +11787,12 @@ function BeginPath;
 begin
   GetProcedureAddress(_BeginPath, gdi32, 'BeginPath');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_BeginPath]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_BeginPath]
   end;
 end;
-{$ELSE}
-function BeginPath; external gdi32 name 'BeginPath';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CloseFigure: Pointer;
 
@@ -14026,16 +11800,12 @@ function CloseFigure;
 begin
   GetProcedureAddress(_CloseFigure, gdi32, 'CloseFigure');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CloseFigure]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CloseFigure]
   end;
 end;
-{$ELSE}
-function CloseFigure; external gdi32 name 'CloseFigure';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EndPath: Pointer;
 
@@ -14043,16 +11813,12 @@ function EndPath;
 begin
   GetProcedureAddress(_EndPath, gdi32, 'EndPath');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EndPath]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EndPath]
   end;
 end;
-{$ELSE}
-function EndPath; external gdi32 name 'EndPath';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _FillPath: Pointer;
 
@@ -14060,16 +11826,12 @@ function FillPath;
 begin
   GetProcedureAddress(_FillPath, gdi32, 'FillPath');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FillPath]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_FillPath]
   end;
 end;
-{$ELSE}
-function FillPath; external gdi32 name 'FillPath';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _FlattenPath: Pointer;
 
@@ -14077,16 +11839,12 @@ function FlattenPath;
 begin
   GetProcedureAddress(_FlattenPath, gdi32, 'FlattenPath');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FlattenPath]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_FlattenPath]
   end;
 end;
-{$ELSE}
-function FlattenPath; external gdi32 name 'FlattenPath';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetPath: Pointer;
 
@@ -14094,16 +11852,12 @@ function GetPath;
 begin
   GetProcedureAddress(_GetPath, gdi32, 'GetPath');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetPath]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetPath]
   end;
 end;
-{$ELSE}
-function GetPath; external gdi32 name 'GetPath';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PathToRegion: Pointer;
 
@@ -14111,16 +11865,12 @@ function PathToRegion;
 begin
   GetProcedureAddress(_PathToRegion, gdi32, 'PathToRegion');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PathToRegion]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PathToRegion]
   end;
 end;
-{$ELSE}
-function PathToRegion; external gdi32 name 'PathToRegion';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PolyDraw: Pointer;
 
@@ -14128,16 +11878,12 @@ function PolyDraw;
 begin
   GetProcedureAddress(_PolyDraw, gdi32, 'PolyDraw');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PolyDraw]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PolyDraw]
   end;
 end;
-{$ELSE}
-function PolyDraw; external gdi32 name 'PolyDraw';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SelectClipPath: Pointer;
 
@@ -14145,16 +11891,12 @@ function SelectClipPath;
 begin
   GetProcedureAddress(_SelectClipPath, gdi32, 'SelectClipPath');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SelectClipPath]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SelectClipPath]
   end;
 end;
-{$ELSE}
-function SelectClipPath; external gdi32 name 'SelectClipPath';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetArcDirection: Pointer;
 
@@ -14162,16 +11904,12 @@ function SetArcDirection;
 begin
   GetProcedureAddress(_SetArcDirection, gdi32, 'SetArcDirection');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetArcDirection]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetArcDirection]
   end;
 end;
-{$ELSE}
-function SetArcDirection; external gdi32 name 'SetArcDirection';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetMiterLimit: Pointer;
 
@@ -14179,16 +11917,12 @@ function SetMiterLimit;
 begin
   GetProcedureAddress(_SetMiterLimit, gdi32, 'SetMiterLimit');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetMiterLimit]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetMiterLimit]
   end;
 end;
-{$ELSE}
-function SetMiterLimit; external gdi32 name 'SetMiterLimit';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _StrokeAndFillPath: Pointer;
 
@@ -14196,16 +11930,12 @@ function StrokeAndFillPath;
 begin
   GetProcedureAddress(_StrokeAndFillPath, gdi32, 'StrokeAndFillPath');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_StrokeAndFillPath]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_StrokeAndFillPath]
   end;
 end;
-{$ELSE}
-function StrokeAndFillPath; external gdi32 name 'StrokeAndFillPath';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _StrokePath: Pointer;
 
@@ -14213,16 +11943,12 @@ function StrokePath;
 begin
   GetProcedureAddress(_StrokePath, gdi32, 'StrokePath');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_StrokePath]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_StrokePath]
   end;
 end;
-{$ELSE}
-function StrokePath; external gdi32 name 'StrokePath';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WidenPath: Pointer;
 
@@ -14230,16 +11956,12 @@ function WidenPath;
 begin
   GetProcedureAddress(_WidenPath, gdi32, 'WidenPath');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WidenPath]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WidenPath]
   end;
 end;
-{$ELSE}
-function WidenPath; external gdi32 name 'WidenPath';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ExtCreatePen: Pointer;
 
@@ -14247,16 +11969,12 @@ function ExtCreatePen;
 begin
   GetProcedureAddress(_ExtCreatePen, gdi32, 'ExtCreatePen');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ExtCreatePen]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ExtCreatePen]
   end;
 end;
-{$ELSE}
-function ExtCreatePen; external gdi32 name 'ExtCreatePen';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetMiterLimit: Pointer;
 
@@ -14264,16 +11982,12 @@ function GetMiterLimit;
 begin
   GetProcedureAddress(_GetMiterLimit, gdi32, 'GetMiterLimit');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetMiterLimit]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetMiterLimit]
   end;
 end;
-{$ELSE}
-function GetMiterLimit; external gdi32 name 'GetMiterLimit';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetArcDirection: Pointer;
 
@@ -14281,16 +11995,12 @@ function GetArcDirection;
 begin
   GetProcedureAddress(_GetArcDirection, gdi32, 'GetArcDirection');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetArcDirection]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetArcDirection]
   end;
 end;
-{$ELSE}
-function GetArcDirection; external gdi32 name 'GetArcDirection';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetObjectA: Pointer;
 
@@ -14298,16 +12008,12 @@ function GetObjectA;
 begin
   GetProcedureAddress(_GetObjectA, gdi32, 'GetObjectA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetObjectA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetObjectA]
   end;
 end;
-{$ELSE}
-function GetObjectA; external gdi32 name 'GetObjectA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetObjectW: Pointer;
 
@@ -14315,53 +12021,25 @@ function GetObjectW;
 begin
   GetProcedureAddress(_GetObjectW, gdi32, 'GetObjectW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetObjectW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetObjectW]
   end;
 end;
-{$ELSE}
-function GetObjectW; external gdi32 name 'GetObjectW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetObject: Pointer;
 
 function GetObject;
 begin
-  GetProcedureAddress(_GetObject, gdi32, 'GetObjectW');
+  GetProcedureAddress(_GetObject, gdi32, 'GetObject' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetObject]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetObject]
   end;
 end;
-{$ELSE}
-function GetObject; external gdi32 name 'GetObjectW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetObject: Pointer;
-
-function GetObject;
-begin
-  GetProcedureAddress(_GetObject, gdi32, 'GetObjectA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetObject]
-  end;
-end;
-{$ELSE}
-function GetObject; external gdi32 name 'GetObjectA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _MoveToEx: Pointer;
 
@@ -14369,16 +12047,12 @@ function MoveToEx;
 begin
   GetProcedureAddress(_MoveToEx, gdi32, 'MoveToEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MoveToEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MoveToEx]
   end;
 end;
-{$ELSE}
-function MoveToEx; external gdi32 name 'MoveToEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _TextOutA: Pointer;
 
@@ -14386,16 +12060,12 @@ function TextOutA;
 begin
   GetProcedureAddress(_TextOutA, gdi32, 'TextOutA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TextOutA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TextOutA]
   end;
 end;
-{$ELSE}
-function TextOutA; external gdi32 name 'TextOutA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _TextOutW: Pointer;
 
@@ -14403,53 +12073,25 @@ function TextOutW;
 begin
   GetProcedureAddress(_TextOutW, gdi32, 'TextOutW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TextOutW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TextOutW]
   end;
 end;
-{$ELSE}
-function TextOutW; external gdi32 name 'TextOutW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _TextOut: Pointer;
 
 function TextOut;
 begin
-  GetProcedureAddress(_TextOut, gdi32, 'TextOutW');
+  GetProcedureAddress(_TextOut, gdi32, 'TextOut' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TextOut]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TextOut]
   end;
 end;
-{$ELSE}
-function TextOut; external gdi32 name 'TextOutW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _TextOut: Pointer;
-
-function TextOut;
-begin
-  GetProcedureAddress(_TextOut, gdi32, 'TextOutA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TextOut]
-  end;
-end;
-{$ELSE}
-function TextOut; external gdi32 name 'TextOutA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _ExtTextOutA: Pointer;
 
@@ -14457,16 +12099,12 @@ function ExtTextOutA;
 begin
   GetProcedureAddress(_ExtTextOutA, gdi32, 'ExtTextOutA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ExtTextOutA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ExtTextOutA]
   end;
 end;
-{$ELSE}
-function ExtTextOutA; external gdi32 name 'ExtTextOutA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ExtTextOutW: Pointer;
 
@@ -14474,53 +12112,25 @@ function ExtTextOutW;
 begin
   GetProcedureAddress(_ExtTextOutW, gdi32, 'ExtTextOutW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ExtTextOutW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ExtTextOutW]
   end;
 end;
-{$ELSE}
-function ExtTextOutW; external gdi32 name 'ExtTextOutW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ExtTextOut: Pointer;
 
 function ExtTextOut;
 begin
-  GetProcedureAddress(_ExtTextOut, gdi32, 'ExtTextOutW');
+  GetProcedureAddress(_ExtTextOut, gdi32, 'ExtTextOut' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ExtTextOut]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ExtTextOut]
   end;
 end;
-{$ELSE}
-function ExtTextOut; external gdi32 name 'ExtTextOutW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _ExtTextOut: Pointer;
-
-function ExtTextOut;
-begin
-  GetProcedureAddress(_ExtTextOut, gdi32, 'ExtTextOutA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ExtTextOut]
-  end;
-end;
-{$ELSE}
-function ExtTextOut; external gdi32 name 'ExtTextOutA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _PolyTextOutA: Pointer;
 
@@ -14528,16 +12138,12 @@ function PolyTextOutA;
 begin
   GetProcedureAddress(_PolyTextOutA, gdi32, 'PolyTextOutA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PolyTextOutA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PolyTextOutA]
   end;
 end;
-{$ELSE}
-function PolyTextOutA; external gdi32 name 'PolyTextOutA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PolyTextOutW: Pointer;
 
@@ -14545,53 +12151,25 @@ function PolyTextOutW;
 begin
   GetProcedureAddress(_PolyTextOutW, gdi32, 'PolyTextOutW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PolyTextOutW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PolyTextOutW]
   end;
 end;
-{$ELSE}
-function PolyTextOutW; external gdi32 name 'PolyTextOutW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PolyTextOut: Pointer;
 
 function PolyTextOut;
 begin
-  GetProcedureAddress(_PolyTextOut, gdi32, 'PolyTextOutW');
+  GetProcedureAddress(_PolyTextOut, gdi32, 'PolyTextOut' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PolyTextOut]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PolyTextOut]
   end;
 end;
-{$ELSE}
-function PolyTextOut; external gdi32 name 'PolyTextOutW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _PolyTextOut: Pointer;
-
-function PolyTextOut;
-begin
-  GetProcedureAddress(_PolyTextOut, gdi32, 'PolyTextOutA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PolyTextOut]
-  end;
-end;
-{$ELSE}
-function PolyTextOut; external gdi32 name 'PolyTextOutA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CreatePolygonRgn: Pointer;
 
@@ -14599,16 +12177,12 @@ function CreatePolygonRgn;
 begin
   GetProcedureAddress(_CreatePolygonRgn, gdi32, 'CreatePolygonRgn');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreatePolygonRgn]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreatePolygonRgn]
   end;
 end;
-{$ELSE}
-function CreatePolygonRgn; external gdi32 name 'CreatePolygonRgn';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DPtoLP: Pointer;
 
@@ -14616,16 +12190,12 @@ function DPtoLP;
 begin
   GetProcedureAddress(_DPtoLP, gdi32, 'DPtoLP');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DPtoLP]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DPtoLP]
   end;
 end;
-{$ELSE}
-function DPtoLP; external gdi32 name 'DPtoLP';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LPtoDP: Pointer;
 
@@ -14633,16 +12203,12 @@ function LPtoDP;
 begin
   GetProcedureAddress(_LPtoDP, gdi32, 'LPtoDP');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LPtoDP]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LPtoDP]
   end;
 end;
-{$ELSE}
-function LPtoDP; external gdi32 name 'LPtoDP';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _Polygon: Pointer;
 
@@ -14650,16 +12216,12 @@ function Polygon;
 begin
   GetProcedureAddress(_Polygon, gdi32, 'Polygon');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_Polygon]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_Polygon]
   end;
 end;
-{$ELSE}
-function Polygon; external gdi32 name 'Polygon';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _Polyline: Pointer;
 
@@ -14667,16 +12229,12 @@ function Polyline;
 begin
   GetProcedureAddress(_Polyline, gdi32, 'Polyline');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_Polyline]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_Polyline]
   end;
 end;
-{$ELSE}
-function Polyline; external gdi32 name 'Polyline';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PolyBezier: Pointer;
 
@@ -14684,16 +12242,12 @@ function PolyBezier;
 begin
   GetProcedureAddress(_PolyBezier, gdi32, 'PolyBezier');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PolyBezier]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PolyBezier]
   end;
 end;
-{$ELSE}
-function PolyBezier; external gdi32 name 'PolyBezier';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PolyBezierTo: Pointer;
 
@@ -14701,16 +12255,12 @@ function PolyBezierTo;
 begin
   GetProcedureAddress(_PolyBezierTo, gdi32, 'PolyBezierTo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PolyBezierTo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PolyBezierTo]
   end;
 end;
-{$ELSE}
-function PolyBezierTo; external gdi32 name 'PolyBezierTo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PolylineTo: Pointer;
 
@@ -14718,16 +12268,12 @@ function PolylineTo;
 begin
   GetProcedureAddress(_PolylineTo, gdi32, 'PolylineTo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PolylineTo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PolylineTo]
   end;
 end;
-{$ELSE}
-function PolylineTo; external gdi32 name 'PolylineTo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetViewportExtEx: Pointer;
 
@@ -14735,16 +12281,12 @@ function SetViewportExtEx;
 begin
   GetProcedureAddress(_SetViewportExtEx, gdi32, 'SetViewportExtEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetViewportExtEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetViewportExtEx]
   end;
 end;
-{$ELSE}
-function SetViewportExtEx; external gdi32 name 'SetViewportExtEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetViewportOrgEx: Pointer;
 
@@ -14752,16 +12294,12 @@ function SetViewportOrgEx;
 begin
   GetProcedureAddress(_SetViewportOrgEx, gdi32, 'SetViewportOrgEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetViewportOrgEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetViewportOrgEx]
   end;
 end;
-{$ELSE}
-function SetViewportOrgEx; external gdi32 name 'SetViewportOrgEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetWindowExtEx: Pointer;
 
@@ -14769,16 +12307,12 @@ function SetWindowExtEx;
 begin
   GetProcedureAddress(_SetWindowExtEx, gdi32, 'SetWindowExtEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetWindowExtEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetWindowExtEx]
   end;
 end;
-{$ELSE}
-function SetWindowExtEx; external gdi32 name 'SetWindowExtEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetWindowOrgEx: Pointer;
 
@@ -14786,16 +12320,12 @@ function SetWindowOrgEx;
 begin
   GetProcedureAddress(_SetWindowOrgEx, gdi32, 'SetWindowOrgEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetWindowOrgEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetWindowOrgEx]
   end;
 end;
-{$ELSE}
-function SetWindowOrgEx; external gdi32 name 'SetWindowOrgEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _OffsetViewportOrgEx: Pointer;
 
@@ -14803,16 +12333,12 @@ function OffsetViewportOrgEx;
 begin
   GetProcedureAddress(_OffsetViewportOrgEx, gdi32, 'OffsetViewportOrgEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_OffsetViewportOrgEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_OffsetViewportOrgEx]
   end;
 end;
-{$ELSE}
-function OffsetViewportOrgEx; external gdi32 name 'OffsetViewportOrgEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _OffsetWindowOrgEx: Pointer;
 
@@ -14820,16 +12346,12 @@ function OffsetWindowOrgEx;
 begin
   GetProcedureAddress(_OffsetWindowOrgEx, gdi32, 'OffsetWindowOrgEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_OffsetWindowOrgEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_OffsetWindowOrgEx]
   end;
 end;
-{$ELSE}
-function OffsetWindowOrgEx; external gdi32 name 'OffsetWindowOrgEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ScaleViewportExtEx: Pointer;
 
@@ -14837,16 +12359,12 @@ function ScaleViewportExtEx;
 begin
   GetProcedureAddress(_ScaleViewportExtEx, gdi32, 'ScaleViewportExtEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ScaleViewportExtEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ScaleViewportExtEx]
   end;
 end;
-{$ELSE}
-function ScaleViewportExtEx; external gdi32 name 'ScaleViewportExtEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ScaleWindowExtEx: Pointer;
 
@@ -14854,16 +12372,12 @@ function ScaleWindowExtEx;
 begin
   GetProcedureAddress(_ScaleWindowExtEx, gdi32, 'ScaleWindowExtEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ScaleWindowExtEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ScaleWindowExtEx]
   end;
 end;
-{$ELSE}
-function ScaleWindowExtEx; external gdi32 name 'ScaleWindowExtEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetBitmapDimensionEx: Pointer;
 
@@ -14871,16 +12385,12 @@ function SetBitmapDimensionEx;
 begin
   GetProcedureAddress(_SetBitmapDimensionEx, gdi32, 'SetBitmapDimensionEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetBitmapDimensionEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetBitmapDimensionEx]
   end;
 end;
-{$ELSE}
-function SetBitmapDimensionEx; external gdi32 name 'SetBitmapDimensionEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetBrushOrgEx: Pointer;
 
@@ -14888,16 +12398,12 @@ function SetBrushOrgEx;
 begin
   GetProcedureAddress(_SetBrushOrgEx, gdi32, 'SetBrushOrgEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetBrushOrgEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetBrushOrgEx]
   end;
 end;
-{$ELSE}
-function SetBrushOrgEx; external gdi32 name 'SetBrushOrgEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetTextFaceA: Pointer;
 
@@ -14905,16 +12411,12 @@ function GetTextFaceA;
 begin
   GetProcedureAddress(_GetTextFaceA, gdi32, 'GetTextFaceA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTextFaceA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetTextFaceA]
   end;
 end;
-{$ELSE}
-function GetTextFaceA; external gdi32 name 'GetTextFaceA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetTextFaceW: Pointer;
 
@@ -14922,53 +12424,25 @@ function GetTextFaceW;
 begin
   GetProcedureAddress(_GetTextFaceW, gdi32, 'GetTextFaceW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTextFaceW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetTextFaceW]
   end;
 end;
-{$ELSE}
-function GetTextFaceW; external gdi32 name 'GetTextFaceW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetTextFace: Pointer;
 
 function GetTextFace;
 begin
-  GetProcedureAddress(_GetTextFace, gdi32, 'GetTextFaceW');
+  GetProcedureAddress(_GetTextFace, gdi32, 'GetTextFace' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTextFace]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetTextFace]
   end;
 end;
-{$ELSE}
-function GetTextFace; external gdi32 name 'GetTextFaceW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetTextFace: Pointer;
-
-function GetTextFace;
-begin
-  GetProcedureAddress(_GetTextFace, gdi32, 'GetTextFaceA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTextFace]
-  end;
-end;
-{$ELSE}
-function GetTextFace; external gdi32 name 'GetTextFaceA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetKerningPairsA: Pointer;
 
@@ -14976,16 +12450,12 @@ function GetKerningPairsA;
 begin
   GetProcedureAddress(_GetKerningPairsA, gdi32, 'GetKerningPairsA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetKerningPairsA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetKerningPairsA]
   end;
 end;
-{$ELSE}
-function GetKerningPairsA; external gdi32 name 'GetKerningPairsA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetKerningPairsW: Pointer;
 
@@ -14993,53 +12463,25 @@ function GetKerningPairsW;
 begin
   GetProcedureAddress(_GetKerningPairsW, gdi32, 'GetKerningPairsW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetKerningPairsW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetKerningPairsW]
   end;
 end;
-{$ELSE}
-function GetKerningPairsW; external gdi32 name 'GetKerningPairsW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetKerningPairs: Pointer;
 
 function GetKerningPairs;
 begin
-  GetProcedureAddress(_GetKerningPairs, gdi32, 'GetKerningPairsW');
+  GetProcedureAddress(_GetKerningPairs, gdi32, 'GetKerningPairs' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetKerningPairs]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetKerningPairs]
   end;
 end;
-{$ELSE}
-function GetKerningPairs; external gdi32 name 'GetKerningPairsW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetKerningPairs: Pointer;
-
-function GetKerningPairs;
-begin
-  GetProcedureAddress(_GetKerningPairs, gdi32, 'GetKerningPairsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetKerningPairs]
-  end;
-end;
-{$ELSE}
-function GetKerningPairs; external gdi32 name 'GetKerningPairsA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetDCOrgEx: Pointer;
 
@@ -15047,16 +12489,12 @@ function GetDCOrgEx;
 begin
   GetProcedureAddress(_GetDCOrgEx, gdi32, 'GetDCOrgEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetDCOrgEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetDCOrgEx]
   end;
 end;
-{$ELSE}
-function GetDCOrgEx; external gdi32 name 'GetDCOrgEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _FixBrushOrgEx: Pointer;
 
@@ -15064,16 +12502,12 @@ function FixBrushOrgEx;
 begin
   GetProcedureAddress(_FixBrushOrgEx, gdi32, 'FixBrushOrgEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FixBrushOrgEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_FixBrushOrgEx]
   end;
 end;
-{$ELSE}
-function FixBrushOrgEx; external gdi32 name 'FixBrushOrgEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _UnrealizeObject: Pointer;
 
@@ -15081,16 +12515,12 @@ function UnrealizeObject;
 begin
   GetProcedureAddress(_UnrealizeObject, gdi32, 'UnrealizeObject');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_UnrealizeObject]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_UnrealizeObject]
   end;
 end;
-{$ELSE}
-function UnrealizeObject; external gdi32 name 'UnrealizeObject';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GdiFlush: Pointer;
 
@@ -15098,16 +12528,12 @@ function GdiFlush;
 begin
   GetProcedureAddress(_GdiFlush, gdi32, 'GdiFlush');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GdiFlush]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GdiFlush]
   end;
 end;
-{$ELSE}
-function GdiFlush; external gdi32 name 'GdiFlush';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GdiSetBatchLimit: Pointer;
 
@@ -15115,16 +12541,12 @@ function GdiSetBatchLimit;
 begin
   GetProcedureAddress(_GdiSetBatchLimit, gdi32, 'GdiSetBatchLimit');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GdiSetBatchLimit]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GdiSetBatchLimit]
   end;
 end;
-{$ELSE}
-function GdiSetBatchLimit; external gdi32 name 'GdiSetBatchLimit';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GdiGetBatchLimit: Pointer;
 
@@ -15132,16 +12554,12 @@ function GdiGetBatchLimit;
 begin
   GetProcedureAddress(_GdiGetBatchLimit, gdi32, 'GdiGetBatchLimit');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GdiGetBatchLimit]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GdiGetBatchLimit]
   end;
 end;
-{$ELSE}
-function GdiGetBatchLimit; external gdi32 name 'GdiGetBatchLimit';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetICMMode: Pointer;
 
@@ -15149,16 +12567,12 @@ function SetICMMode;
 begin
   GetProcedureAddress(_SetICMMode, gdi32, 'SetICMMode');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetICMMode]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetICMMode]
   end;
 end;
-{$ELSE}
-function SetICMMode; external gdi32 name 'SetICMMode';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CheckColorsInGamut: Pointer;
 
@@ -15166,16 +12580,12 @@ function CheckColorsInGamut;
 begin
   GetProcedureAddress(_CheckColorsInGamut, gdi32, 'CheckColorsInGamut');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CheckColorsInGamut]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CheckColorsInGamut]
   end;
 end;
-{$ELSE}
-function CheckColorsInGamut; external gdi32 name 'CheckColorsInGamut';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetColorSpace: Pointer;
 
@@ -15183,16 +12593,12 @@ function GetColorSpace;
 begin
   GetProcedureAddress(_GetColorSpace, gdi32, 'GetColorSpace');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetColorSpace]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetColorSpace]
   end;
 end;
-{$ELSE}
-function GetColorSpace; external gdi32 name 'GetColorSpace';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetLogColorSpaceA: Pointer;
 
@@ -15200,16 +12606,12 @@ function GetLogColorSpaceA;
 begin
   GetProcedureAddress(_GetLogColorSpaceA, gdi32, 'GetLogColorSpaceA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetLogColorSpaceA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetLogColorSpaceA]
   end;
 end;
-{$ELSE}
-function GetLogColorSpaceA; external gdi32 name 'GetLogColorSpaceA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetLogColorSpaceW: Pointer;
 
@@ -15217,53 +12619,25 @@ function GetLogColorSpaceW;
 begin
   GetProcedureAddress(_GetLogColorSpaceW, gdi32, 'GetLogColorSpaceW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetLogColorSpaceW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetLogColorSpaceW]
   end;
 end;
-{$ELSE}
-function GetLogColorSpaceW; external gdi32 name 'GetLogColorSpaceW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetLogColorSpace: Pointer;
 
 function GetLogColorSpace;
 begin
-  GetProcedureAddress(_GetLogColorSpace, gdi32, 'GetLogColorSpaceW');
+  GetProcedureAddress(_GetLogColorSpace, gdi32, 'GetLogColorSpace' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetLogColorSpace]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetLogColorSpace]
   end;
 end;
-{$ELSE}
-function GetLogColorSpace; external gdi32 name 'GetLogColorSpaceW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetLogColorSpace: Pointer;
-
-function GetLogColorSpace;
-begin
-  GetProcedureAddress(_GetLogColorSpace, gdi32, 'GetLogColorSpaceA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetLogColorSpace]
-  end;
-end;
-{$ELSE}
-function GetLogColorSpace; external gdi32 name 'GetLogColorSpaceA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateColorSpaceA: Pointer;
 
@@ -15271,16 +12645,12 @@ function CreateColorSpaceA;
 begin
   GetProcedureAddress(_CreateColorSpaceA, gdi32, 'CreateColorSpaceA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateColorSpaceA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateColorSpaceA]
   end;
 end;
-{$ELSE}
-function CreateColorSpaceA; external gdi32 name 'CreateColorSpaceA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateColorSpaceW: Pointer;
 
@@ -15288,53 +12658,25 @@ function CreateColorSpaceW;
 begin
   GetProcedureAddress(_CreateColorSpaceW, gdi32, 'CreateColorSpaceW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateColorSpaceW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateColorSpaceW]
   end;
 end;
-{$ELSE}
-function CreateColorSpaceW; external gdi32 name 'CreateColorSpaceW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateColorSpace: Pointer;
 
 function CreateColorSpace;
 begin
-  GetProcedureAddress(_CreateColorSpace, gdi32, 'CreateColorSpaceW');
+  GetProcedureAddress(_CreateColorSpace, gdi32, 'CreateColorSpace' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateColorSpace]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateColorSpace]
   end;
 end;
-{$ELSE}
-function CreateColorSpace; external gdi32 name 'CreateColorSpaceW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateColorSpace: Pointer;
-
-function CreateColorSpace;
-begin
-  GetProcedureAddress(_CreateColorSpace, gdi32, 'CreateColorSpaceA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateColorSpace]
-  end;
-end;
-{$ELSE}
-function CreateColorSpace; external gdi32 name 'CreateColorSpaceA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _SetColorSpace: Pointer;
 
@@ -15342,16 +12684,12 @@ function SetColorSpace;
 begin
   GetProcedureAddress(_SetColorSpace, gdi32, 'SetColorSpace');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetColorSpace]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetColorSpace]
   end;
 end;
-{$ELSE}
-function SetColorSpace; external gdi32 name 'SetColorSpace';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DeleteColorSpace: Pointer;
 
@@ -15359,16 +12697,12 @@ function DeleteColorSpace;
 begin
   GetProcedureAddress(_DeleteColorSpace, gdi32, 'DeleteColorSpace');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DeleteColorSpace]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DeleteColorSpace]
   end;
 end;
-{$ELSE}
-function DeleteColorSpace; external gdi32 name 'DeleteColorSpace';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetICMProfileA: Pointer;
 
@@ -15376,16 +12710,12 @@ function GetICMProfileA;
 begin
   GetProcedureAddress(_GetICMProfileA, gdi32, 'GetICMProfileA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetICMProfileA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetICMProfileA]
   end;
 end;
-{$ELSE}
-function GetICMProfileA; external gdi32 name 'GetICMProfileA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetICMProfileW: Pointer;
 
@@ -15393,53 +12723,25 @@ function GetICMProfileW;
 begin
   GetProcedureAddress(_GetICMProfileW, gdi32, 'GetICMProfileW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetICMProfileW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetICMProfileW]
   end;
 end;
-{$ELSE}
-function GetICMProfileW; external gdi32 name 'GetICMProfileW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetICMProfile: Pointer;
 
 function GetICMProfile;
 begin
-  GetProcedureAddress(_GetICMProfile, gdi32, 'GetICMProfileW');
+  GetProcedureAddress(_GetICMProfile, gdi32, 'GetICMProfile' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetICMProfile]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetICMProfile]
   end;
 end;
-{$ELSE}
-function GetICMProfile; external gdi32 name 'GetICMProfileW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetICMProfile: Pointer;
-
-function GetICMProfile;
-begin
-  GetProcedureAddress(_GetICMProfile, gdi32, 'GetICMProfileA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetICMProfile]
-  end;
-end;
-{$ELSE}
-function GetICMProfile; external gdi32 name 'GetICMProfileA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _SetICMProfileA: Pointer;
 
@@ -15447,16 +12749,12 @@ function SetICMProfileA;
 begin
   GetProcedureAddress(_SetICMProfileA, gdi32, 'SetICMProfileA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetICMProfileA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetICMProfileA]
   end;
 end;
-{$ELSE}
-function SetICMProfileA; external gdi32 name 'SetICMProfileA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetICMProfileW: Pointer;
 
@@ -15464,53 +12762,25 @@ function SetICMProfileW;
 begin
   GetProcedureAddress(_SetICMProfileW, gdi32, 'SetICMProfileW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetICMProfileW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetICMProfileW]
   end;
 end;
-{$ELSE}
-function SetICMProfileW; external gdi32 name 'SetICMProfileW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetICMProfile: Pointer;
 
 function SetICMProfile;
 begin
-  GetProcedureAddress(_SetICMProfile, gdi32, 'SetICMProfileW');
+  GetProcedureAddress(_SetICMProfile, gdi32, 'SetICMProfile' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetICMProfile]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetICMProfile]
   end;
 end;
-{$ELSE}
-function SetICMProfile; external gdi32 name 'SetICMProfileW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetICMProfile: Pointer;
-
-function SetICMProfile;
-begin
-  GetProcedureAddress(_SetICMProfile, gdi32, 'SetICMProfileA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetICMProfile]
-  end;
-end;
-{$ELSE}
-function SetICMProfile; external gdi32 name 'SetICMProfileA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetDeviceGammaRamp: Pointer;
 
@@ -15518,16 +12788,12 @@ function GetDeviceGammaRamp;
 begin
   GetProcedureAddress(_GetDeviceGammaRamp, gdi32, 'GetDeviceGammaRamp');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetDeviceGammaRamp]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetDeviceGammaRamp]
   end;
 end;
-{$ELSE}
-function GetDeviceGammaRamp; external gdi32 name 'GetDeviceGammaRamp';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetDeviceGammaRamp: Pointer;
 
@@ -15535,16 +12801,12 @@ function SetDeviceGammaRamp;
 begin
   GetProcedureAddress(_SetDeviceGammaRamp, gdi32, 'SetDeviceGammaRamp');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetDeviceGammaRamp]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetDeviceGammaRamp]
   end;
 end;
-{$ELSE}
-function SetDeviceGammaRamp; external gdi32 name 'SetDeviceGammaRamp';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ColorMatchToTarget: Pointer;
 
@@ -15552,16 +12814,12 @@ function ColorMatchToTarget;
 begin
   GetProcedureAddress(_ColorMatchToTarget, gdi32, 'ColorMatchToTarget');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ColorMatchToTarget]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ColorMatchToTarget]
   end;
 end;
-{$ELSE}
-function ColorMatchToTarget; external gdi32 name 'ColorMatchToTarget';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumICMProfilesA: Pointer;
 
@@ -15569,16 +12827,12 @@ function EnumICMProfilesA;
 begin
   GetProcedureAddress(_EnumICMProfilesA, gdi32, 'EnumICMProfilesA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumICMProfilesA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumICMProfilesA]
   end;
 end;
-{$ELSE}
-function EnumICMProfilesA; external gdi32 name 'EnumICMProfilesA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumICMProfilesW: Pointer;
 
@@ -15586,53 +12840,25 @@ function EnumICMProfilesW;
 begin
   GetProcedureAddress(_EnumICMProfilesW, gdi32, 'EnumICMProfilesW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumICMProfilesW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumICMProfilesW]
   end;
 end;
-{$ELSE}
-function EnumICMProfilesW; external gdi32 name 'EnumICMProfilesW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumICMProfiles: Pointer;
 
 function EnumICMProfiles;
 begin
-  GetProcedureAddress(_EnumICMProfiles, gdi32, 'EnumICMProfilesW');
+  GetProcedureAddress(_EnumICMProfiles, gdi32, 'EnumICMProfiles' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumICMProfiles]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumICMProfiles]
   end;
 end;
-{$ELSE}
-function EnumICMProfiles; external gdi32 name 'EnumICMProfilesW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumICMProfiles: Pointer;
-
-function EnumICMProfiles;
-begin
-  GetProcedureAddress(_EnumICMProfiles, gdi32, 'EnumICMProfilesA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumICMProfiles]
-  end;
-end;
-{$ELSE}
-function EnumICMProfiles; external gdi32 name 'EnumICMProfilesA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _UpdateICMRegKeyA: Pointer;
 
@@ -15640,16 +12866,12 @@ function UpdateICMRegKeyA;
 begin
   GetProcedureAddress(_UpdateICMRegKeyA, gdi32, 'UpdateICMRegKeyA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_UpdateICMRegKeyA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_UpdateICMRegKeyA]
   end;
 end;
-{$ELSE}
-function UpdateICMRegKeyA; external gdi32 name 'UpdateICMRegKeyA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _UpdateICMRegKeyW: Pointer;
 
@@ -15657,53 +12879,25 @@ function UpdateICMRegKeyW;
 begin
   GetProcedureAddress(_UpdateICMRegKeyW, gdi32, 'UpdateICMRegKeyW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_UpdateICMRegKeyW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_UpdateICMRegKeyW]
   end;
 end;
-{$ELSE}
-function UpdateICMRegKeyW; external gdi32 name 'UpdateICMRegKeyW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _UpdateICMRegKey: Pointer;
 
 function UpdateICMRegKey;
 begin
-  GetProcedureAddress(_UpdateICMRegKey, gdi32, 'UpdateICMRegKeyW');
+  GetProcedureAddress(_UpdateICMRegKey, gdi32, 'UpdateICMRegKey' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_UpdateICMRegKey]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_UpdateICMRegKey]
   end;
 end;
-{$ELSE}
-function UpdateICMRegKey; external gdi32 name 'UpdateICMRegKeyW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _UpdateICMRegKey: Pointer;
-
-function UpdateICMRegKey;
-begin
-  GetProcedureAddress(_UpdateICMRegKey, gdi32, 'UpdateICMRegKeyA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_UpdateICMRegKey]
-  end;
-end;
-{$ELSE}
-function UpdateICMRegKey; external gdi32 name 'UpdateICMRegKeyA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _ColorCorrectPalette: Pointer;
 
@@ -15711,17 +12905,12 @@ function ColorCorrectPalette;
 begin
   GetProcedureAddress(_ColorCorrectPalette, gdi32, 'ColorCorrectPalette');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ColorCorrectPalette]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ColorCorrectPalette]
   end;
 end;
-{$ELSE}
-function ColorCorrectPalette; external gdi32 name 'ColorCorrectPalette';
-{$ENDIF DYNAMIC_LINK}
 
-
-{$IFDEF DYNAMIC_LINK}
 var
   _wglCopyContext: Pointer;
 
@@ -15729,16 +12918,12 @@ function wglCopyContext;
 begin
   GetProcedureAddress(_wglCopyContext, opengl32, 'wglCopyContext');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_wglCopyContext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_wglCopyContext]
   end;
 end;
-{$ELSE}
-function wglCopyContext; external opengl32 name 'wglCopyContext';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _wglCreateContext: Pointer;
 
@@ -15746,16 +12931,12 @@ function wglCreateContext;
 begin
   GetProcedureAddress(_wglCreateContext, opengl32, 'wglCreateContext');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_wglCreateContext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_wglCreateContext]
   end;
 end;
-{$ELSE}
-function wglCreateContext; external opengl32 name 'wglCreateContext';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _wglCreateLayerContext: Pointer;
 
@@ -15763,16 +12944,12 @@ function wglCreateLayerContext;
 begin
   GetProcedureAddress(_wglCreateLayerContext, opengl32, 'wglCreateLayerContext');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_wglCreateLayerContext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_wglCreateLayerContext]
   end;
 end;
-{$ELSE}
-function wglCreateLayerContext; external opengl32 name 'wglCreateLayerContext';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _wglDeleteContext: Pointer;
 
@@ -15780,16 +12957,12 @@ function wglDeleteContext;
 begin
   GetProcedureAddress(_wglDeleteContext, opengl32, 'wglDeleteContext');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_wglDeleteContext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_wglDeleteContext]
   end;
 end;
-{$ELSE}
-function wglDeleteContext; external opengl32 name 'wglDeleteContext';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _wglGetCurrentContext: Pointer;
 
@@ -15797,16 +12970,12 @@ function wglGetCurrentContext;
 begin
   GetProcedureAddress(_wglGetCurrentContext, opengl32, 'wglGetCurrentContext');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_wglGetCurrentContext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_wglGetCurrentContext]
   end;
 end;
-{$ELSE}
-function wglGetCurrentContext; external opengl32 name 'wglGetCurrentContext';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _wglGetCurrentDC: Pointer;
 
@@ -15814,16 +12983,12 @@ function wglGetCurrentDC;
 begin
   GetProcedureAddress(_wglGetCurrentDC, opengl32, 'wglGetCurrentDC');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_wglGetCurrentDC]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_wglGetCurrentDC]
   end;
 end;
-{$ELSE}
-function wglGetCurrentDC; external opengl32 name 'wglGetCurrentDC';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _wglGetProcAddress: Pointer;
 
@@ -15831,16 +12996,12 @@ function wglGetProcAddress;
 begin
   GetProcedureAddress(_wglGetProcAddress, opengl32, 'wglGetProcAddress');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_wglGetProcAddress]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_wglGetProcAddress]
   end;
 end;
-{$ELSE}
-function wglGetProcAddress; external opengl32 name 'wglGetProcAddress';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _wglMakeCurrent: Pointer;
 
@@ -15848,16 +13009,12 @@ function wglMakeCurrent;
 begin
   GetProcedureAddress(_wglMakeCurrent, opengl32, 'wglMakeCurrent');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_wglMakeCurrent]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_wglMakeCurrent]
   end;
 end;
-{$ELSE}
-function wglMakeCurrent; external opengl32 name 'wglMakeCurrent';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _wglShareLists: Pointer;
 
@@ -15865,16 +13022,12 @@ function wglShareLists;
 begin
   GetProcedureAddress(_wglShareLists, opengl32, 'wglShareLists');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_wglShareLists]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_wglShareLists]
   end;
 end;
-{$ELSE}
-function wglShareLists; external opengl32 name 'wglShareLists';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _wglUseFontBitmapsA: Pointer;
 
@@ -15882,16 +13035,12 @@ function wglUseFontBitmapsA;
 begin
   GetProcedureAddress(_wglUseFontBitmapsA, opengl32, 'wglUseFontBitmapsA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_wglUseFontBitmapsA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_wglUseFontBitmapsA]
   end;
 end;
-{$ELSE}
-function wglUseFontBitmapsA; external opengl32 name 'wglUseFontBitmapsA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _wglUseFontBitmapsW: Pointer;
 
@@ -15899,53 +13048,25 @@ function wglUseFontBitmapsW;
 begin
   GetProcedureAddress(_wglUseFontBitmapsW, opengl32, 'wglUseFontBitmapsW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_wglUseFontBitmapsW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_wglUseFontBitmapsW]
   end;
 end;
-{$ELSE}
-function wglUseFontBitmapsW; external opengl32 name 'wglUseFontBitmapsW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _wglUseFontBitmaps: Pointer;
 
 function wglUseFontBitmaps;
 begin
-  GetProcedureAddress(_wglUseFontBitmaps, opengl32, 'wglUseFontBitmapsW');
+  GetProcedureAddress(_wglUseFontBitmaps, opengl32, 'wglUseFontBitmaps' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_wglUseFontBitmaps]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_wglUseFontBitmaps]
   end;
 end;
-{$ELSE}
-function wglUseFontBitmaps; external opengl32 name 'wglUseFontBitmapsW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _wglUseFontBitmaps: Pointer;
-
-function wglUseFontBitmaps;
-begin
-  GetProcedureAddress(_wglUseFontBitmaps, opengl32, 'wglUseFontBitmapsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_wglUseFontBitmaps]
-  end;
-end;
-{$ELSE}
-function wglUseFontBitmaps; external opengl32 name 'wglUseFontBitmapsA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _SwapBuffers: Pointer;
 
@@ -15953,16 +13074,12 @@ function SwapBuffers;
 begin
   GetProcedureAddress(_SwapBuffers, opengl32, 'SwapBuffers');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SwapBuffers]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SwapBuffers]
   end;
 end;
-{$ELSE}
-function SwapBuffers; external opengl32 name 'SwapBuffers';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _wglUseFontOutlinesA: Pointer;
 
@@ -15970,16 +13087,12 @@ function wglUseFontOutlinesA;
 begin
   GetProcedureAddress(_wglUseFontOutlinesA, opengl32, 'wglUseFontOutlinesA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_wglUseFontOutlinesA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_wglUseFontOutlinesA]
   end;
 end;
-{$ELSE}
-function wglUseFontOutlinesA; external opengl32 name 'wglUseFontOutlinesA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _wglUseFontOutlinesW: Pointer;
 
@@ -15987,53 +13100,25 @@ function wglUseFontOutlinesW;
 begin
   GetProcedureAddress(_wglUseFontOutlinesW, opengl32, 'wglUseFontOutlinesW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_wglUseFontOutlinesW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_wglUseFontOutlinesW]
   end;
 end;
-{$ELSE}
-function wglUseFontOutlinesW; external opengl32 name 'wglUseFontOutlinesW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _wglUseFontOutlines: Pointer;
 
 function wglUseFontOutlines;
 begin
-  GetProcedureAddress(_wglUseFontOutlines, opengl32, 'wglUseFontOutlinesW');
+  GetProcedureAddress(_wglUseFontOutlines, opengl32, 'wglUseFontOutlines' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_wglUseFontOutlines]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_wglUseFontOutlines]
   end;
 end;
-{$ELSE}
-function wglUseFontOutlines; external opengl32 name 'wglUseFontOutlinesW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _wglUseFontOutlines: Pointer;
-
-function wglUseFontOutlines;
-begin
-  GetProcedureAddress(_wglUseFontOutlines, opengl32, 'wglUseFontOutlinesA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_wglUseFontOutlines]
-  end;
-end;
-{$ELSE}
-function wglUseFontOutlines; external opengl32 name 'wglUseFontOutlinesA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _wglDescribeLayerPlane: Pointer;
 
@@ -16041,16 +13126,12 @@ function wglDescribeLayerPlane;
 begin
   GetProcedureAddress(_wglDescribeLayerPlane, opengl32, 'wglDescribeLayerPlane');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_wglDescribeLayerPlane]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_wglDescribeLayerPlane]
   end;
 end;
-{$ELSE}
-function wglDescribeLayerPlane; external opengl32 name 'wglDescribeLayerPlane';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _wglSetLayerPaletteEntries: Pointer;
 
@@ -16058,16 +13139,12 @@ function wglSetLayerPaletteEntries;
 begin
   GetProcedureAddress(_wglSetLayerPaletteEntries, opengl32, 'wglSetLayerPaletteEntries');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_wglSetLayerPaletteEntries]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_wglSetLayerPaletteEntries]
   end;
 end;
-{$ELSE}
-function wglSetLayerPaletteEntries; external opengl32 name 'wglSetLayerPaletteEntries';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _wglGetLayerPaletteEntries: Pointer;
 
@@ -16075,16 +13152,12 @@ function wglGetLayerPaletteEntries;
 begin
   GetProcedureAddress(_wglGetLayerPaletteEntries, opengl32, 'wglGetLayerPaletteEntries');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_wglGetLayerPaletteEntries]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_wglGetLayerPaletteEntries]
   end;
 end;
-{$ELSE}
-function wglGetLayerPaletteEntries; external opengl32 name 'wglGetLayerPaletteEntries';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _wglRealizeLayerPalette: Pointer;
 
@@ -16092,16 +13165,12 @@ function wglRealizeLayerPalette;
 begin
   GetProcedureAddress(_wglRealizeLayerPalette, opengl32, 'wglRealizeLayerPalette');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_wglRealizeLayerPalette]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_wglRealizeLayerPalette]
   end;
 end;
-{$ELSE}
-function wglRealizeLayerPalette; external opengl32 name 'wglRealizeLayerPalette';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _wglSwapLayerBuffers: Pointer;
 
@@ -16109,16 +13178,12 @@ function wglSwapLayerBuffers;
 begin
   GetProcedureAddress(_wglSwapLayerBuffers, opengl32, 'wglSwapLayerBuffers');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_wglSwapLayerBuffers]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_wglSwapLayerBuffers]
   end;
 end;
-{$ELSE}
-function wglSwapLayerBuffers; external opengl32 name 'wglSwapLayerBuffers';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _wglSwapMultipleBuffers: Pointer;
 
@@ -16126,13 +13191,430 @@ function wglSwapMultipleBuffers;
 begin
   GetProcedureAddress(_wglSwapMultipleBuffers, opengl32, 'wglSwapMultipleBuffers');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_wglSwapMultipleBuffers]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_wglSwapMultipleBuffers]
   end;
 end;
+
 {$ELSE}
+
+function AddFontResourceA; external gdi32 name 'AddFontResourceA';
+function AddFontResourceW; external gdi32 name 'AddFontResourceW';
+function AddFontResource; external gdi32 name 'AddFontResource' + AWSuffix;
+function AnimatePalette; external gdi32 name 'AnimatePalette';
+function Arc; external gdi32 name 'Arc';
+function BitBlt; external gdi32 name 'BitBlt';
+function CancelDC; external gdi32 name 'CancelDC';
+function Chord; external gdi32 name 'Chord';
+function ChoosePixelFormat; external gdi32 name 'ChoosePixelFormat';
+function CloseMetaFile; external gdi32 name 'CloseMetaFile';
+function CombineRgn; external gdi32 name 'CombineRgn';
+function CopyMetaFileA; external gdi32 name 'CopyMetaFileA';
+function CopyMetaFileW; external gdi32 name 'CopyMetaFileW';
+function CopyMetaFile; external gdi32 name 'CopyMetaFile' + AWSuffix;
+function CreateBitmap; external gdi32 name 'CreateBitmap';
+function CreateBitmapIndirect; external gdi32 name 'CreateBitmapIndirect';
+function CreateBrushIndirect; external gdi32 name 'CreateBrushIndirect';
+function CreateCompatibleBitmap; external gdi32 name 'CreateCompatibleBitmap';
+function CreateDiscardableBitmap; external gdi32 name 'CreateDiscardableBitmap';
+function CreateCompatibleDC; external gdi32 name 'CreateCompatibleDC';
+function CreateDCA; external gdi32 name 'CreateDCA';
+function CreateDCW; external gdi32 name 'CreateDCW';
+function CreateDC; external gdi32 name 'CreateDC' + AWSuffix;
+function CreateDIBitmap; external gdi32 name 'CreateDIBitmap';
+function CreateDIBPatternBrush; external gdi32 name 'CreateDIBPatternBrush';
+function CreateDIBPatternBrushPt; external gdi32 name 'CreateDIBPatternBrushPt';
+function CreateEllipticRgn; external gdi32 name 'CreateEllipticRgn';
+function CreateEllipticRgnIndirect; external gdi32 name 'CreateEllipticRgnIndirect';
+function CreateFontIndirectA; external gdi32 name 'CreateFontIndirectA';
+function CreateFontIndirectW; external gdi32 name 'CreateFontIndirectW';
+function CreateFontIndirect; external gdi32 name 'CreateFontIndirect' + AWSuffix;
+function CreateFontA; external gdi32 name 'CreateFontA';
+function CreateFontW; external gdi32 name 'CreateFontW';
+function CreateFont; external gdi32 name 'CreateFont' + AWSuffix;
+function CreateHatchBrush; external gdi32 name 'CreateHatchBrush';
+function CreateICA; external gdi32 name 'CreateICA';
+function CreateICW; external gdi32 name 'CreateICW';
+function CreateIC; external gdi32 name 'CreateIC' + AWSuffix;
+function CreateMetaFileA; external gdi32 name 'CreateMetaFileA';
+function CreateMetaFileW; external gdi32 name 'CreateMetaFileW';
+function CreateMetaFile; external gdi32 name 'CreateMetaFile' + AWSuffix;
+function CreatePalette; external gdi32 name 'CreatePalette';
+function CreatePen; external gdi32 name 'CreatePen';
+function CreatePenIndirect; external gdi32 name 'CreatePenIndirect';
+function CreatePolyPolygonRgn; external gdi32 name 'CreatePolyPolygonRgn';
+function CreatePatternBrush; external gdi32 name 'CreatePatternBrush';
+function CreateRectRgn; external gdi32 name 'CreateRectRgn';
+function CreateRectRgnIndirect; external gdi32 name 'CreateRectRgnIndirect';
+function CreateRoundRectRgn; external gdi32 name 'CreateRoundRectRgn';
+function CreateScalableFontResourceA; external gdi32 name 'CreateScalableFontResourceA';
+function CreateScalableFontResourceW; external gdi32 name 'CreateScalableFontResourceW';
+function CreateScalableFontResource; external gdi32 name 'CreateScalableFontResource' + AWSuffix;
+function CreateSolidBrush; external gdi32 name 'CreateSolidBrush';
+function DeleteDC; external gdi32 name 'DeleteDC';
+function DeleteMetaFile; external gdi32 name 'DeleteMetaFile';
+function DeleteObject; external gdi32 name 'DeleteObject';
+function DescribePixelFormat; external gdi32 name 'DescribePixelFormat';
+function DeviceCapabilitiesA; external winspool32 name 'DeviceCapabilitiesA';
+function DeviceCapabilitiesW; external winspool32 name 'DeviceCapabilitiesW';
+function DeviceCapabilities; external winspool32 name 'DeviceCapabilities' + AWSuffix;
+function DrawEscape; external gdi32 name 'DrawEscape';
+function Ellipse; external gdi32 name 'Ellipse';
+function EnumFontFamiliesExA; external gdi32 name 'EnumFontFamiliesExA';
+function EnumFontFamiliesExW; external gdi32 name 'EnumFontFamiliesExW';
+function EnumFontFamiliesEx; external gdi32 name 'EnumFontFamiliesEx' + AWSuffix;
+function EnumFontFamiliesA; external gdi32 name 'EnumFontFamiliesA';
+function EnumFontFamiliesW; external gdi32 name 'EnumFontFamiliesW';
+function EnumFontFamilies; external gdi32 name 'EnumFontFamilies' + AWSuffix;
+function EnumFontsA; external gdi32 name 'EnumFontsA';
+function EnumFontsW; external gdi32 name 'EnumFontsW';
+function EnumFonts; external gdi32 name 'EnumFonts' + AWSuffix;
+function EnumObjects; external gdi32 name 'EnumObjects';
+function EqualRgn; external gdi32 name 'EqualRgn';
+function Escape; external gdi32 name 'Escape';
+function ExtEscape; external gdi32 name 'ExtEscape';
+function ExcludeClipRect; external gdi32 name 'ExcludeClipRect';
+function ExtCreateRegion; external gdi32 name 'ExtCreateRegion';
+function ExtFloodFill; external gdi32 name 'ExtFloodFill';
+function FillRgn; external gdi32 name 'FillRgn';
+function FloodFill; external gdi32 name 'FloodFill';
+function FrameRgn; external gdi32 name 'FrameRgn';
+function GetROP2; external gdi32 name 'GetROP2';
+function GetAspectRatioFilterEx; external gdi32 name 'GetAspectRatioFilterEx';
+function GetBkColor; external gdi32 name 'GetBkColor';
+function GetDCBrushColor; external gdi32 name 'GetDCBrushColor';
+function GetDCPenColor; external gdi32 name 'GetDCPenColor';
+function GetBkMode; external gdi32 name 'GetBkMode';
+function GetBitmapBits; external gdi32 name 'GetBitmapBits';
+function GetBitmapDimensionEx; external gdi32 name 'GetBitmapDimensionEx';
+function GetBoundsRect; external gdi32 name 'GetBoundsRect';
+function GetBrushOrgEx; external gdi32 name 'GetBrushOrgEx';
+function GetCharWidthA; external gdi32 name 'GetCharWidthA';
+function GetCharWidthW; external gdi32 name 'GetCharWidthW';
+function GetCharWidth; external gdi32 name 'GetCharWidth' + AWSuffix;
+function GetCharWidth32A; external gdi32 name 'GetCharWidth32A';
+function GetCharWidth32W; external gdi32 name 'GetCharWidth32W';
+function GetCharWidth32; external gdi32 name 'GetCharWidth32' + AWSuffix;
+function GetCharWidthFloatA; external gdi32 name 'GetCharWidthFloatA';
+function GetCharWidthFloatW; external gdi32 name 'GetCharWidthFloatW';
+function GetCharWidthFloat; external gdi32 name 'GetCharWidthFloat' + AWSuffix;
+function GetCharABCWidthsA; external gdi32 name 'GetCharABCWidthsA';
+function GetCharABCWidthsW; external gdi32 name 'GetCharABCWidthsW';
+function GetCharABCWidths; external gdi32 name 'GetCharABCWidths' + AWSuffix;
+function GetCharABCWidthsFloatA; external gdi32 name 'GetCharABCWidthsFloatA';
+function GetCharABCWidthsFloatW; external gdi32 name 'GetCharABCWidthsFloatW';
+function GetCharABCWidthsFloat; external gdi32 name 'GetCharABCWidthsFloat' + AWSuffix;
+function GetClipBox; external gdi32 name 'GetClipBox';
+function GetClipRgn; external gdi32 name 'GetClipRgn';
+function GetMetaRgn; external gdi32 name 'GetMetaRgn';
+function GetCurrentObject; external gdi32 name 'GetCurrentObject';
+function GetCurrentPositionEx; external gdi32 name 'GetCurrentPositionEx';
+function GetDeviceCaps; external gdi32 name 'GetDeviceCaps';
+function GetDIBits; external gdi32 name 'GetDIBits';
+function GetFontData; external gdi32 name 'GetFontData';
+function GetGlyphOutlineA; external gdi32 name 'GetGlyphOutlineA';
+function GetGlyphOutlineW; external gdi32 name 'GetGlyphOutlineW';
+function GetGlyphOutline; external gdi32 name 'GetGlyphOutline' + AWSuffix;
+function GetGraphicsMode; external gdi32 name 'GetGraphicsMode';
+function GetMapMode; external gdi32 name 'GetMapMode';
+function GetMetaFileBitsEx; external gdi32 name 'GetMetaFileBitsEx';
+function GetMetaFileA; external gdi32 name 'GetMetaFileA';
+function GetMetaFileW; external gdi32 name 'GetMetaFileW';
+function GetMetaFile; external gdi32 name 'GetMetaFile' + AWSuffix;
+function GetNearestColor; external gdi32 name 'GetNearestColor';
+function GetNearestPaletteIndex; external gdi32 name 'GetNearestPaletteIndex';
+function GetObjectType; external gdi32 name 'GetObjectType';
+function GetOutlineTextMetricsA; external gdi32 name 'GetOutlineTextMetricsA';
+function GetOutlineTextMetricsW; external gdi32 name 'GetOutlineTextMetricsW';
+function GetOutlineTextMetrics; external gdi32 name 'GetOutlineTextMetrics' + AWSuffix;
+function GetPaletteEntries; external gdi32 name 'GetPaletteEntries';
+function GetPixel; external gdi32 name 'GetPixel';
+function GetPixelFormat; external gdi32 name 'GetPixelFormat';
+function GetPolyFillMode; external gdi32 name 'GetPolyFillMode';
+function GetRasterizerCaps; external gdi32 name 'GetRasterizerCaps';
+function GetRandomRgn; external gdi32 name 'GetRandomRgn';
+function GetRegionData; external gdi32 name 'GetRegionData';
+function GetRgnBox; external gdi32 name 'GetRgnBox';
+function GetStockObject; external gdi32 name 'GetStockObject';
+function GetStretchBltMode; external gdi32 name 'GetStretchBltMode';
+function GetSystemPaletteEntries; external gdi32 name 'GetSystemPaletteEntries';
+function GetSystemPaletteUse; external gdi32 name 'GetSystemPaletteUse';
+function GetTextCharacterExtra; external gdi32 name 'GetTextCharacterExtra';
+function GetTextAlign; external gdi32 name 'GetTextAlign';
+function GetTextColor; external gdi32 name 'GetTextColor';
+function GetTextExtentPointA; external gdi32 name 'GetTextExtentPointA';
+function GetTextExtentPointW; external gdi32 name 'GetTextExtentPointW';
+function GetTextExtentPoint; external gdi32 name 'GetTextExtentPoint' + AWSuffix;
+function GetTextExtentPoint32A; external gdi32 name 'GetTextExtentPoint32A';
+function GetTextExtentPoint32W; external gdi32 name 'GetTextExtentPoint32W';
+function GetTextExtentPoint32; external gdi32 name 'GetTextExtentPoint32' + AWSuffix;
+function GetTextExtentExPointA; external gdi32 name 'GetTextExtentExPointA';
+function GetTextExtentExPointW; external gdi32 name 'GetTextExtentExPointW';
+function GetTextExtentExPoint; external gdi32 name 'GetTextExtentExPoint' + AWSuffix;
+function GetTextCharset; external gdi32 name 'GetTextCharset';
+function GetTextCharsetInfo; external gdi32 name 'GetTextCharsetInfo';
+function TranslateCharsetInfo; external gdi32 name 'TranslateCharsetInfo';
+function GetFontLanguageInfo; external gdi32 name 'GetFontLanguageInfo';
+function GetCharacterPlacementA; external gdi32 name 'GetCharacterPlacementA';
+function GetCharacterPlacementW; external gdi32 name 'GetCharacterPlacementW';
+function GetCharacterPlacement; external gdi32 name 'GetCharacterPlacement' + AWSuffix;
+function GetFontUnicodeRanges; external gdi32 name 'GetFontUnicodeRanges';
+function GetGlyphIndicesA; external gdi32 name 'GetGlyphIndicesA';
+function GetGlyphIndicesW; external gdi32 name 'GetGlyphIndicesW';
+function GetGlyphIndices; external gdi32 name 'GetGlyphIndices' + AWSuffix;
+function GetTextExtentPointI; external gdi32 name 'GetTextExtentPointI';
+function GetTextExtentExPointI; external gdi32 name 'GetTextExtentExPointI';
+function GetCharWidthI; external gdi32 name 'GetCharWidthI';
+function GetCharABCWidthsI; external gdi32 name 'GetCharABCWidthsI';
+function AddFontResourceExA; external gdi32 name 'AddFontResourceExA';
+function AddFontResourceExW; external gdi32 name 'AddFontResourceExW';
+function AddFontResourceEx; external gdi32 name 'AddFontResourceEx' + AWSuffix;
+function RemoveFontResourceExA; external gdi32 name 'RemoveFontResourceExA';
+function RemoveFontResourceExW; external gdi32 name 'RemoveFontResourceExW';
+function RemoveFontResourceEx; external gdi32 name 'RemoveFontResourceEx' + AWSuffix;
+function AddFontMemResourceEx; external gdi32 name 'AddFontMemResourceEx';
+function RemoveFontMemResourceEx; external gdi32 name 'RemoveFontMemResourceEx';
+function CreateFontIndirectExA; external gdi32 name 'CreateFontIndirectExA';
+function CreateFontIndirectExW; external gdi32 name 'CreateFontIndirectExW';
+function CreateFontIndirectEx; external gdi32 name 'CreateFontIndirectEx' + AWSuffix;
+function GetViewportExtEx; external gdi32 name 'GetViewportExtEx';
+function GetViewportOrgEx; external gdi32 name 'GetViewportOrgEx';
+function GetWindowExtEx; external gdi32 name 'GetWindowExtEx';
+function GetWindowOrgEx; external gdi32 name 'GetWindowOrgEx';
+function IntersectClipRect; external gdi32 name 'IntersectClipRect';
+function InvertRgn; external gdi32 name 'InvertRgn';
+function LineDDA; external gdi32 name 'LineDDA';
+function LineTo; external gdi32 name 'LineTo';
+function MaskBlt; external gdi32 name 'MaskBlt';
+function PlgBlt; external gdi32 name 'PlgBlt';
+function OffsetClipRgn; external gdi32 name 'OffsetClipRgn';
+function OffsetRgn; external gdi32 name 'OffsetRgn';
+function PatBlt; external gdi32 name 'PatBlt';
+function Pie; external gdi32 name 'Pie';
+function PlayMetaFile; external gdi32 name 'PlayMetaFile';
+function PaintRgn; external gdi32 name 'PaintRgn';
+function PolyPolygon; external gdi32 name 'PolyPolygon';
+function PtInRegion; external gdi32 name 'PtInRegion';
+function PtVisible; external gdi32 name 'PtVisible';
+function RectInRegion; external gdi32 name 'RectInRegion';
+function RectVisible; external gdi32 name 'RectVisible';
+function Rectangle; external gdi32 name 'Rectangle';
+function RestoreDC; external gdi32 name 'RestoreDC';
+function ResetDCA; external gdi32 name 'ResetDCA';
+function ResetDCW; external gdi32 name 'ResetDCW';
+function ResetDC; external gdi32 name 'ResetDC' + AWSuffix;
+function RealizePalette; external gdi32 name 'RealizePalette';
+function RemoveFontResourceA; external gdi32 name 'RemoveFontResourceA';
+function RemoveFontResourceW; external gdi32 name 'RemoveFontResourceW';
+function RemoveFontResource; external gdi32 name 'RemoveFontResource' + AWSuffix;
+function RoundRect; external gdi32 name 'RoundRect';
+function ResizePalette; external gdi32 name 'ResizePalette';
+function SaveDC; external gdi32 name 'SaveDC';
+function SelectClipRgn; external gdi32 name 'SelectClipRgn';
+function ExtSelectClipRgn; external gdi32 name 'ExtSelectClipRgn';
+function SetMetaRgn; external gdi32 name 'SetMetaRgn';
+function SelectObject; external gdi32 name 'SelectObject';
+function SelectPalette; external gdi32 name 'SelectPalette';
+function SetBkColor; external gdi32 name 'SetBkColor';
+function SetDCBrushColor; external gdi32 name 'SetDCBrushColor';
+function SetDCPenColor; external gdi32 name 'SetDCPenColor';
+function SetBkMode; external gdi32 name 'SetBkMode';
+function SetBitmapBits; external gdi32 name 'SetBitmapBits';
+function SetBoundsRect; external gdi32 name 'SetBoundsRect';
+function SetDIBits; external gdi32 name 'SetDIBits';
+function SetDIBitsToDevice; external gdi32 name 'SetDIBitsToDevice';
+function SetMapperFlags; external gdi32 name 'SetMapperFlags';
+function SetGraphicsMode; external gdi32 name 'SetGraphicsMode';
+function SetMapMode; external gdi32 name 'SetMapMode';
+function SetLayout; external gdi32 name 'SetLayout';
+function GetLayout; external gdi32 name 'GetLayout';
+function SetMetaFileBitsEx; external gdi32 name 'SetMetaFileBitsEx';
+function SetPaletteEntries; external gdi32 name 'SetPaletteEntries';
+function SetPixel; external gdi32 name 'SetPixel';
+function SetPixelV; external gdi32 name 'SetPixelV';
+function SetPixelFormat; external gdi32 name 'SetPixelFormat';
+function SetPolyFillMode; external gdi32 name 'SetPolyFillMode';
+function StretchBlt; external gdi32 name 'StretchBlt';
+function SetRectRgn; external gdi32 name 'SetRectRgn';
+function StretchDIBits; external gdi32 name 'StretchDIBits';
+function SetROP2; external gdi32 name 'SetROP2';
+function SetStretchBltMode; external gdi32 name 'SetStretchBltMode';
+function SetSystemPaletteUse; external gdi32 name 'SetSystemPaletteUse';
+function SetTextCharacterExtra; external gdi32 name 'SetTextCharacterExtra';
+function SetTextColor; external gdi32 name 'SetTextColor';
+function SetTextAlign; external gdi32 name 'SetTextAlign';
+function SetTextJustification; external gdi32 name 'SetTextJustification';
+function UpdateColors; external gdi32 name 'UpdateColors';
+function AlphaBlend; external msimg32 name 'AlphaBlend';
+function TransparentBlt; external msimg32 name 'TransparentBlt';
+function GradientFill; external msimg32 name 'GradientFill';
+function PlayMetaFileRecord; external gdi32 name 'PlayMetaFileRecord';
+function EnumMetaFile; external gdi32 name 'EnumMetaFile';
+function CloseEnhMetaFile; external gdi32 name 'CloseEnhMetaFile';
+function CopyEnhMetaFileA; external gdi32 name 'CopyEnhMetaFileA';
+function CopyEnhMetaFileW; external gdi32 name 'CopyEnhMetaFileW';
+function CopyEnhMetaFile; external gdi32 name 'CopyEnhMetaFile' + AWSuffix;
+function CreateEnhMetaFileA; external gdi32 name 'CreateEnhMetaFileA';
+function CreateEnhMetaFileW; external gdi32 name 'CreateEnhMetaFileW';
+function CreateEnhMetaFile; external gdi32 name 'CreateEnhMetaFile' + AWSuffix;
+function DeleteEnhMetaFile; external gdi32 name 'DeleteEnhMetaFile';
+function EnumEnhMetaFile; external gdi32 name 'EnumEnhMetaFile';
+function GetEnhMetaFileA; external gdi32 name 'GetEnhMetaFileA';
+function GetEnhMetaFileW; external gdi32 name 'GetEnhMetaFileW';
+function GetEnhMetaFile; external gdi32 name 'GetEnhMetaFile' + AWSuffix;
+function GetEnhMetaFileBits; external gdi32 name 'GetEnhMetaFileBits';
+function GetEnhMetaFileDescriptionA; external gdi32 name 'GetEnhMetaFileDescriptionA';
+function GetEnhMetaFileDescriptionW; external gdi32 name 'GetEnhMetaFileDescriptionW';
+function GetEnhMetaFileDescription; external gdi32 name 'GetEnhMetaFileDescription' + AWSuffix;
+function GetEnhMetaFileHeader; external gdi32 name 'GetEnhMetaFileHeader';
+function GetEnhMetaFilePaletteEntries; external gdi32 name 'GetEnhMetaFilePaletteEntries';
+function GetEnhMetaFilePixelFormat; external gdi32 name 'GetEnhMetaFilePixelFormat';
+function GetWinMetaFileBits; external gdi32 name 'GetWinMetaFileBits';
+function PlayEnhMetaFile; external gdi32 name 'PlayEnhMetaFile';
+function PlayEnhMetaFileRecord; external gdi32 name 'PlayEnhMetaFileRecord';
+function SetEnhMetaFileBits; external gdi32 name 'SetEnhMetaFileBits';
+function SetWinMetaFileBits; external gdi32 name 'SetWinMetaFileBits';
+function GdiComment; external gdi32 name 'GdiComment';
+function GetTextMetricsA; external gdi32 name 'GetTextMetricsA';
+function GetTextMetricsW; external gdi32 name 'GetTextMetricsW';
+function GetTextMetrics; external gdi32 name 'GetTextMetrics' + AWSuffix;
+function AngleArc; external gdi32 name 'AngleArc';
+function PolyPolyline; external gdi32 name 'PolyPolyline';
+function GetWorldTransform; external gdi32 name 'GetWorldTransform';
+function SetWorldTransform; external gdi32 name 'SetWorldTransform';
+function ModifyWorldTransform; external gdi32 name 'ModifyWorldTransform';
+function CombineTransform; external gdi32 name 'CombineTransform';
+function CreateDIBSection; external gdi32 name 'CreateDIBSection';
+function GetDIBColorTable; external gdi32 name 'GetDIBColorTable';
+function SetDIBColorTable; external gdi32 name 'SetDIBColorTable';
+function SetColorAdjustment; external gdi32 name 'SetColorAdjustment';
+function GetColorAdjustment; external gdi32 name 'GetColorAdjustment';
+function CreateHalftonePalette; external gdi32 name 'CreateHalftonePalette';
+function StartDocA; external gdi32 name 'StartDocA';
+function StartDocW; external gdi32 name 'StartDocW';
+function StartDoc; external gdi32 name 'StartDoc' + AWSuffix;
+function EndDoc; external gdi32 name 'EndDoc';
+function StartPage; external gdi32 name 'StartPage';
+function EndPage; external gdi32 name 'EndPage';
+function AbortDoc; external gdi32 name 'AbortDoc';
+function SetAbortProc; external gdi32 name 'SetAbortProc';
+function AbortPath; external gdi32 name 'AbortPath';
+function ArcTo; external gdi32 name 'ArcTo';
+function BeginPath; external gdi32 name 'BeginPath';
+function CloseFigure; external gdi32 name 'CloseFigure';
+function EndPath; external gdi32 name 'EndPath';
+function FillPath; external gdi32 name 'FillPath';
+function FlattenPath; external gdi32 name 'FlattenPath';
+function GetPath; external gdi32 name 'GetPath';
+function PathToRegion; external gdi32 name 'PathToRegion';
+function PolyDraw; external gdi32 name 'PolyDraw';
+function SelectClipPath; external gdi32 name 'SelectClipPath';
+function SetArcDirection; external gdi32 name 'SetArcDirection';
+function SetMiterLimit; external gdi32 name 'SetMiterLimit';
+function StrokeAndFillPath; external gdi32 name 'StrokeAndFillPath';
+function StrokePath; external gdi32 name 'StrokePath';
+function WidenPath; external gdi32 name 'WidenPath';
+function ExtCreatePen; external gdi32 name 'ExtCreatePen';
+function GetMiterLimit; external gdi32 name 'GetMiterLimit';
+function GetArcDirection; external gdi32 name 'GetArcDirection';
+function GetObjectA; external gdi32 name 'GetObjectA';
+function GetObjectW; external gdi32 name 'GetObjectW';
+function GetObject; external gdi32 name 'GetObject' + AWSuffix;
+function MoveToEx; external gdi32 name 'MoveToEx';
+function TextOutA; external gdi32 name 'TextOutA';
+function TextOutW; external gdi32 name 'TextOutW';
+function TextOut; external gdi32 name 'TextOut' + AWSuffix;
+function ExtTextOutA; external gdi32 name 'ExtTextOutA';
+function ExtTextOutW; external gdi32 name 'ExtTextOutW';
+function ExtTextOut; external gdi32 name 'ExtTextOut' + AWSuffix;
+function PolyTextOutA; external gdi32 name 'PolyTextOutA';
+function PolyTextOutW; external gdi32 name 'PolyTextOutW';
+function PolyTextOut; external gdi32 name 'PolyTextOut' + AWSuffix;
+function CreatePolygonRgn; external gdi32 name 'CreatePolygonRgn';
+function DPtoLP; external gdi32 name 'DPtoLP';
+function LPtoDP; external gdi32 name 'LPtoDP';
+function Polygon; external gdi32 name 'Polygon';
+function Polyline; external gdi32 name 'Polyline';
+function PolyBezier; external gdi32 name 'PolyBezier';
+function PolyBezierTo; external gdi32 name 'PolyBezierTo';
+function PolylineTo; external gdi32 name 'PolylineTo';
+function SetViewportExtEx; external gdi32 name 'SetViewportExtEx';
+function SetViewportOrgEx; external gdi32 name 'SetViewportOrgEx';
+function SetWindowExtEx; external gdi32 name 'SetWindowExtEx';
+function SetWindowOrgEx; external gdi32 name 'SetWindowOrgEx';
+function OffsetViewportOrgEx; external gdi32 name 'OffsetViewportOrgEx';
+function OffsetWindowOrgEx; external gdi32 name 'OffsetWindowOrgEx';
+function ScaleViewportExtEx; external gdi32 name 'ScaleViewportExtEx';
+function ScaleWindowExtEx; external gdi32 name 'ScaleWindowExtEx';
+function SetBitmapDimensionEx; external gdi32 name 'SetBitmapDimensionEx';
+function SetBrushOrgEx; external gdi32 name 'SetBrushOrgEx';
+function GetTextFaceA; external gdi32 name 'GetTextFaceA';
+function GetTextFaceW; external gdi32 name 'GetTextFaceW';
+function GetTextFace; external gdi32 name 'GetTextFace' + AWSuffix;
+function GetKerningPairsA; external gdi32 name 'GetKerningPairsA';
+function GetKerningPairsW; external gdi32 name 'GetKerningPairsW';
+function GetKerningPairs; external gdi32 name 'GetKerningPairs' + AWSuffix;
+function GetDCOrgEx; external gdi32 name 'GetDCOrgEx';
+function FixBrushOrgEx; external gdi32 name 'FixBrushOrgEx';
+function UnrealizeObject; external gdi32 name 'UnrealizeObject';
+function GdiFlush; external gdi32 name 'GdiFlush';
+function GdiSetBatchLimit; external gdi32 name 'GdiSetBatchLimit';
+function GdiGetBatchLimit; external gdi32 name 'GdiGetBatchLimit';
+function SetICMMode; external gdi32 name 'SetICMMode';
+function CheckColorsInGamut; external gdi32 name 'CheckColorsInGamut';
+function GetColorSpace; external gdi32 name 'GetColorSpace';
+function GetLogColorSpaceA; external gdi32 name 'GetLogColorSpaceA';
+function GetLogColorSpaceW; external gdi32 name 'GetLogColorSpaceW';
+function GetLogColorSpace; external gdi32 name 'GetLogColorSpace' + AWSuffix;
+function CreateColorSpaceA; external gdi32 name 'CreateColorSpaceA';
+function CreateColorSpaceW; external gdi32 name 'CreateColorSpaceW';
+function CreateColorSpace; external gdi32 name 'CreateColorSpace' + AWSuffix;
+function SetColorSpace; external gdi32 name 'SetColorSpace';
+function DeleteColorSpace; external gdi32 name 'DeleteColorSpace';
+function GetICMProfileA; external gdi32 name 'GetICMProfileA';
+function GetICMProfileW; external gdi32 name 'GetICMProfileW';
+function GetICMProfile; external gdi32 name 'GetICMProfile' + AWSuffix;
+function SetICMProfileA; external gdi32 name 'SetICMProfileA';
+function SetICMProfileW; external gdi32 name 'SetICMProfileW';
+function SetICMProfile; external gdi32 name 'SetICMProfile' + AWSuffix;
+function GetDeviceGammaRamp; external gdi32 name 'GetDeviceGammaRamp';
+function SetDeviceGammaRamp; external gdi32 name 'SetDeviceGammaRamp';
+function ColorMatchToTarget; external gdi32 name 'ColorMatchToTarget';
+function EnumICMProfilesA; external gdi32 name 'EnumICMProfilesA';
+function EnumICMProfilesW; external gdi32 name 'EnumICMProfilesW';
+function EnumICMProfiles; external gdi32 name 'EnumICMProfiles' + AWSuffix;
+function UpdateICMRegKeyA; external gdi32 name 'UpdateICMRegKeyA';
+function UpdateICMRegKeyW; external gdi32 name 'UpdateICMRegKeyW';
+function UpdateICMRegKey; external gdi32 name 'UpdateICMRegKey' + AWSuffix;
+function ColorCorrectPalette; external gdi32 name 'ColorCorrectPalette';
+function wglCopyContext; external opengl32 name 'wglCopyContext';
+function wglCreateContext; external opengl32 name 'wglCreateContext';
+function wglCreateLayerContext; external opengl32 name 'wglCreateLayerContext';
+function wglDeleteContext; external opengl32 name 'wglDeleteContext';
+function wglGetCurrentContext; external opengl32 name 'wglGetCurrentContext';
+function wglGetCurrentDC; external opengl32 name 'wglGetCurrentDC';
+function wglGetProcAddress; external opengl32 name 'wglGetProcAddress';
+function wglMakeCurrent; external opengl32 name 'wglMakeCurrent';
+function wglShareLists; external opengl32 name 'wglShareLists';
+function wglUseFontBitmapsA; external opengl32 name 'wglUseFontBitmapsA';
+function wglUseFontBitmapsW; external opengl32 name 'wglUseFontBitmapsW';
+function wglUseFontBitmaps; external opengl32 name 'wglUseFontBitmaps' + AWSuffix;
+function SwapBuffers; external opengl32 name 'SwapBuffers';
+function wglUseFontOutlinesA; external opengl32 name 'wglUseFontOutlinesA';
+function wglUseFontOutlinesW; external opengl32 name 'wglUseFontOutlinesW';
+function wglUseFontOutlines; external opengl32 name 'wglUseFontOutlines' + AWSuffix;
+function wglDescribeLayerPlane; external opengl32 name 'wglDescribeLayerPlane';
+function wglSetLayerPaletteEntries; external opengl32 name 'wglSetLayerPaletteEntries';
+function wglGetLayerPaletteEntries; external opengl32 name 'wglGetLayerPaletteEntries';
+function wglRealizeLayerPalette; external opengl32 name 'wglRealizeLayerPalette';
+function wglSwapLayerBuffers; external opengl32 name 'wglSwapLayerBuffers';
 function wglSwapMultipleBuffers; external opengl32 name 'wglSwapMultipleBuffers';
+
 {$ENDIF DYNAMIC_LINK}
 
+{$ENDIF JWA_IMPLEMENTATIONSECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
 end.
+{$ENDIF !JWA_INCLUDEMODE}

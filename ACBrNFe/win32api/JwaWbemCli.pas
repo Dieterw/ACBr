@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { WBEM Client interface Unit for Object Pascal                                 }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: wbemcli.idl, released Nov 2002. The original Pascal    }
 { code is: WbemCli.pas, released April 2002. The initial developer of the      }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,25 +35,27 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaWbemCli.pas,v 1.6 2005/09/03 13:12:10 marquardt Exp $
 
 unit JwaWbemCli;
 
 {$WEAKPACKAGEUNIT}
 
-{$HPPEMIT ''}
-{$HPPEMIT '#include "wbemcli.h"'}
-{$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  ActiveX, JwaWinType;
+  JwaActiveX, JwaWindows;
+
+{$HPPEMIT ''}
+{$HPPEMIT '#include "wbemcli.h"'}
+{$HPPEMIT ''}
 
 type
   tag_WBEM_GENUS_TYPE = DWORD;
@@ -65,9 +66,9 @@ type
   {$EXTERNALSYM TWbemGenusType}
 
 const
-  WBEM_GENUS_CLASS	= 1;
+  WBEM_GENUS_CLASS      = 1;
   {$EXTERNALSYM WBEM_GENUS_CLASS}
-  WBEM_GENUS_INSTANCE	= 2;
+  WBEM_GENUS_INSTANCE   = 2;
   {$EXTERNALSYM WBEM_GENUS_INSTANCE}
 
 type
@@ -479,7 +480,6 @@ const
   WBEM_MAX_USER_PROPERTIES = 1024;
   {$EXTERNALSYM WBEM_MAX_USER_PROPERTIES}
 
-
 type
   tag_WBEMSTATUS = DWORD;
   {$EXTERNALSYM tag_WBEMSTATUS}
@@ -519,7 +519,7 @@ const
   {$EXTERNALSYM WBEM_S_PARTIAL_RESULTS}
   WBEM_S_SOURCE_NOT_AVAILABLE = DWORD($40017);
   {$EXTERNALSYM WBEM_S_SOURCE_NOT_AVAILABLE}
-  WBEM_E_FAILED	= DWORD($80041001);
+  WBEM_E_FAILED = DWORD($80041001);
   {$EXTERNALSYM WBEM_E_FAILED}
   WBEM_E_NOT_FOUND = DWORD($80041002);
   {$EXTERNALSYM WBEM_E_NOT_FOUND}
@@ -743,7 +743,7 @@ const
   {$EXTERNALSYM WBEM_E_QUALIFIER_NAME_TOO_WIDE}
   WBEM_E_RERUN_COMMAND = DWORD($80041077);
   {$EXTERNALSYM WBEM_E_RERUN_COMMAND}
-  WBEM_E_DATABASE_VER_MISMATCH	= DWORD($80041078);
+  WBEM_E_DATABASE_VER_MISMATCH = DWORD($80041078);
   {$EXTERNALSYM WBEM_E_DATABASE_VER_MISMATCH}
   WBEM_E_VETO_DELETE = DWORD($80041079);
   {$EXTERNALSYM WBEM_E_VETO_DELETE}
@@ -763,7 +763,7 @@ const
   {$EXTERNALSYM WBEM_E_PROVIDER_NOT_REGISTERED}
   WBEM_E_FATAL_TRANSPORT_ERROR = DWORD($80041086);
   {$EXTERNALSYM WBEM_E_FATAL_TRANSPORT_ERROR}
-  WBEM_E_ENCRYPTED_CONNECTION_REQUIRED	= DWORD($80041087);
+  WBEM_E_ENCRYPTED_CONNECTION_REQUIRED = DWORD($80041087);
   {$EXTERNALSYM WBEM_E_ENCRYPTED_CONNECTION_REQUIRED}
   WBEM_E_PROVIDER_TIMED_OUT = DWORD($80041088);
   {$EXTERNALSYM WBEM_E_PROVIDER_TIMED_OUT}
@@ -951,7 +951,7 @@ type
   end;
   {$EXTERNALSYM IWbemClassObject}
 
-  IWbemObjectAccess = interface (IWbemClassObject)
+  IWbemObjectAccess = interface(IWbemClassObject)
   ['{49353c9a-516b-11d1-aea6-00c04fb68820}']
     function GetPropertyHandle(wszPropertyName: LPCWSTR; out pType: CIMTYPE; out plHandle: Longint): HRESULT; stdcall;
     function WritePropertyValue(lHandle, lNumBytes: Longint; aData: LPBYTE): HRESULT; stdcall;
@@ -966,7 +966,7 @@ type
   end;
   {$EXTERNALSYM IWbemObjectAccess}
 
-  IWbemQualifierSet = interface (IUnknown)
+  IWbemQualifierSet = interface(IUnknown)
   ['{dc12a680-737f-11cf-884d-00aa004b2e24}']
     function Get(wszName: LPCWSTR; lFlags: Longint; var pVal: OleVariant; var plFlavor: Longint): HRESULT; stdcall;
     function Put(wszName: LPCWSTR; pVal: POleVariant; lFlavor: Longint): HRESULT; stdcall;
@@ -978,7 +978,7 @@ type
   end;
   {$EXTERNALSYM IWbemQualifierSet}
 
-  IWbemServices = interface (IUnknown)
+  IWbemServices = interface(IUnknown)
   ['{9556dc99-828c-11cf-a37e-00aa003240c7}']
     function OpenNamespace(strNamespace: WideString; lFlags: Longint; pCtx: IWbemContext; out ppWorkingNamespace: IWbemServices; out ppResult: IWbemCallResult): HRESULT; stdcall;
     function CancelAsyncCall(pSink: IWbemObjectSink): HRESULT; stdcall;
@@ -1006,21 +1006,21 @@ type
   end;
   {$EXTERNALSYM IWbemServices}
 
-  IWbemLocator = interface (IUnknown)
+  IWbemLocator = interface(IUnknown)
   ['{dc12a687-737f-11cf-884d-00aa004b2e24}']
     function ConnectServer(strNetworkResource, strUser, strPassword, strLocale: WideString; lSecurityFlags: Longint;
       strAuthority: WideString; pCtx: IWbemContext; out ppNamespace: IWbemServices): HRESULT; stdcall;
   end;
   {$EXTERNALSYM IWbemLocator}
 
-  IWbemObjectSink = interface (IUnknown)
+  IWbemObjectSink = interface(IUnknown)
   ['{7c857801-7381-11cf-884d-00aa004b2e24}']
     function Indicate(lObjectCount: Longint; var apObjArray: IWbemClassObject{todo}): HRESULT; stdcall;
     function SetStatus(lFlags: Longint; hResult: HRESULT; strParam: WideString; pObjParam: IWbemClassObject): HRESULT; stdcall;
   end;
   {$EXTERNALSYM IWbemObjectSink}
 
-  IEnumWbemClassObject = interface (IUnknown)
+  IEnumWbemClassObject = interface(IUnknown)
   ['{027947e1-d731-11ce-a357-000000000001}']
     function Reset: HRESULT; stdcall;
     function Next(lTimeout: Longint; uCount: ULONG; out apObjects: IWbemClassObject; out puReturned: ULONG): HRESULT; stdcall;
@@ -1030,7 +1030,7 @@ type
   end;
   {$EXTERNALSYM IEnumWbemClassObject}
 
-  IWbemCallResult = interface (IUnknown)
+  IWbemCallResult = interface(IUnknown)
   ['{44aca675-e8fc-11d0-a07c-00c04fb68820}']
     function GetResultObject(lTimeout: Longint; out ppResultObject: IWbemClassObject): HRESULT; stdcall;
     function GetResultString(lTimeout: Longint; out pstrResultString: WideString): HRESULT; stdcall;
@@ -1039,7 +1039,7 @@ type
   end;
   {$EXTERNALSYM IWbemCallResult}
 
-  IWbemContext = interface (IUnknown)
+  IWbemContext = interface(IUnknown)
   ['{44aca674-e8fc-11d0-a07c-00c04fb68820}']
     function Clone(out ppNewCopy: IWbemContext): HRESULT; stdcall;
     function GetNames(lFlags: Longint; out pNames: PSafeArray): HRESULT; stdcall;
@@ -1053,40 +1053,40 @@ type
   end;
   {$EXTERNALSYM IWbemContext}
 
-  IUnsecuredApartment = interface (IUnknown)
+  IUnsecuredApartment = interface(IUnknown)
   ['{1cfaba8c-1523-11d1-ad79-00c04fd8fdff}']
     function CreateObjectStub(pObject: IUnknown; out ppStub: IUnknown): HRESULT; stdcall;
   end;
   {$EXTERNALSYM IUnsecuredApartment}
 
-  IWbemUnsecuredApartment = interface (IUnsecuredApartment)
+  IWbemUnsecuredApartment = interface(IUnsecuredApartment)
   ['{31739d04-3471-4cf4-9a7c-57a44ae71956}']
     function CreateSinkStub(pSink: IWbemObjectSink; dwFlags: DWORD; wszReserved: LPCWSTR; out ppStub: IWbemObjectSink): HRESULT; stdcall;
   end;
   {$EXTERNALSYM IWbemUnsecuredApartment}
 
-  IWbemStatusCodeText = interface (IUnknown)
+  IWbemStatusCodeText = interface(IUnknown)
   ['{eb87e1bc-3233-11d2-aec9-00c04fb68820}']
     function GetErrorCodeText(hRes: HRESULT; LocaleId: LCID; lFlags: Longint; out MessageText: WideString): HRESULT; stdcall;
     function GetFacilityCodeText(hRes: HRESULT; LocaleId: LCID; lFlags: Longint; out MessageText: WideString): HRESULT; stdcall;
   end;
   {$EXTERNALSYM IWbemStatusCodeText}
 
-  IWbemBackupRestore = interface (IUnknown)
+  IWbemBackupRestore = interface(IUnknown)
   ['{C49E32C7-BC8B-11d2-85D4-00105A1F8304}']
     function Backup(strBackupToFile: LPCWSTR; lFlags: Longint): HRESULT; stdcall;
     function Restore(strRestoreFromFile: LPCWSTR; lFlags: Longint): HRESULT; stdcall;
   end;
   {$EXTERNALSYM IWbemBackupRestore}
 
-  IWbemBackupRestoreEx = interface (IWbemBackupRestore)
+  IWbemBackupRestoreEx = interface(IWbemBackupRestore)
   ['{A359DEC5-E813-4834-8A2A-BA7F1D777D76}']
     function Pause: HRESULT; stdcall;
     function Resume: HRESULT; stdcall;
   end;
   {$EXTERNALSYM IWbemBackupRestoreEx}
 
-  IWbemRefresher = interface (IUnknown)
+  IWbemRefresher = interface(IUnknown)
   ['{49353c99-516b-11d1-aea6-00c04fb68820}']
     function Refresh(lFlags: Longint): HRESULT; stdcall;
   end;
@@ -1096,7 +1096,7 @@ type
 
   PLongint = ^Longint; // TODO PLongint introduced in Delphi 6
 
-  IWbemHiPerfEnum = interface (IUnknown)
+  IWbemHiPerfEnum = interface(IUnknown)
   ['{2705C288-79AE-11d2-B348-00105A1F8177}']
     function AddObjects(lFlags: Longint; uNumObjects: ULONG; apIds: PLongint; apObj: PIWbemObjectAccess): HRESULT; stdcall;
     function RemoveObjects(lFlags: Longint; uNumObjects: ULONG; apIds: PLongint): HRESULT; stdcall;
@@ -1105,7 +1105,7 @@ type
   end;
   {$EXTERNALSYM IWbemHiPerfEnum}
 
-  IWbemConfigureRefresher = interface (IUnknown)
+  IWbemConfigureRefresher = interface(IUnknown)
   ['{49353c92-516b-11d1-aea6-00c04fb68820}']
     function AddObjectByPath(pNamespace: IWbemServices; wszPath: LPCWSTR; lFlags: Longint; pContext: IWbemContext; out ppRefreshable: IWbemClassObject; var plId: Longint): HRESULT; stdcall;
     function AddObjectByTemplate(pNamespace: IWbemServices; pTemplate: IWbemClassObject; lFlags: Longint; pContext: IWbemContext; out ppRefreshable: IWbemClassObject; var plId: Longint): HRESULT; stdcall;
@@ -1140,7 +1140,7 @@ const
   {$EXTERNALSYM IID_IWbemShutdown}
 
 type
-  IWbemShutdown = interface (IUnknown)
+  IWbemShutdown = interface(IUnknown)
   ['{b7b31df9-d515-11d3-a11c-00105a1f515a}']
     function Shutdown(uReason: LONG; uMaxMilliseconds: ULONG; pCtx: IWbemContext): HRESULT; stdcall;
   end;
@@ -1186,7 +1186,7 @@ const
   {$EXTERNALSYM IID_IWbemObjectTextSrc}
 
 type
-  IWbemObjectTextSrc = interface (IUnknown)
+  IWbemObjectTextSrc = interface(IUnknown)
   ['{bfbf883a-cad7-11d3-a11b-00105a1f515a}']
     function GetText(lFlags: Longint; pObj: IWbemClassObject; uObjTextFormat: ULONG; pCtx: IWbemContext; out strText: WideString): HRESULT; stdcall;
     function CreateFromText(lFlags: Longint; strText: WideString; uObjTextFormat: ULONG; pCtx: IWbemContext; out pNewObj:IWbemClassObject): HRESULT; stdcall;
@@ -1242,13 +1242,13 @@ type
   TWbemConnectOptions = WBEM_CONNECT_OPTIONS;
 
 const
-  WBEM_FLAG_CONNECT_REPOSITORY_ONLY	= $40;
+  WBEM_FLAG_CONNECT_REPOSITORY_ONLY = $40;
   {$EXTERNALSYM WBEM_FLAG_CONNECT_REPOSITORY_ONLY}
-  WBEM_FLAG_CONNECT_USE_MAX_WAIT	= $80;
+  WBEM_FLAG_CONNECT_USE_MAX_WAIT = $80;
   {$EXTERNALSYM WBEM_FLAG_CONNECT_USE_MAX_WAIT}
 
 type
-  IMofCompiler = interface (IUnknown)
+  IMofCompiler = interface(IUnknown)
   ['{6daf974e-2e37-11d2-aec9-00c04fb68820}']
     function CompileFile(FileName, ServerAndNamespace, User, Authority, Password: LPWSTR;
       lOptionFlags, lClassFlags, lInstanceFlags: LONG; var pInfo: WBEM_COMPILE_STATUS_INFO): HRESULT; stdcall;

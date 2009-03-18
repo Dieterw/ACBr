@@ -1,24 +1,23 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { LDAP Client 32 API interface Unit for Object Pascal                          }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: winldap.h, released August 1999. The original Pascal   }
 { code is: WinLDAP.pas, released December 1998. The initial developer of the   }
-{ Pascal code is Luk Vermeulen (lvermeulen@seria.com).                         }
+{ Pascal code is Luk Vermeulen (lvermeulen att seria dott com).                }
 {                                                                              }
 { Portions created by Luk Vermeulen are Copyright (C) 1998 Luk Vermeulen.      }
 { Portions created by Rudy Velthuis are Copyright (C) 2000 Rudy Velthuis.      }
 { Portions created by M. van Brakel are Copyright (C) 2001 Marcel van Brakel.  }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -30,9 +29,13 @@
 {                                                                              }
 {******************************************************************************}
 
+// $Id: JwaWinLDAP.pas,v 1.6 2005/09/06 16:36:50 marquardt Exp $
+
 unit JwaWinLDAP;
 
 {$WEAKPACKAGEUNIT}
+
+{$I jediapilib.inc}
 
 interface
 
@@ -124,7 +127,6 @@ const
   {$EXTERNALSYM LDAP_SSL_GC_PORT}
   LDAP_SSL_GC_PORT        = 3269;
 
-
 //
 //  We currently support going to either v2 or v3 servers, though the API
 //  is only a V2 API.  We'll add support for result sets, server side
@@ -214,7 +216,6 @@ const
   {$EXTERNALSYM LDAP_INVALID_RES}
   LDAP_INVALID_RES         = $FF;
 
-
 //
 // We'll make the error codes compatible with reference implementation
 //
@@ -256,7 +257,6 @@ const
   LDAP_CONFIDENTIALITY_REQUIRED   =   $0d;
   {$EXTERNALSYM LDAP_SASL_BIND_IN_PROGRESS}
   LDAP_SASL_BIND_IN_PROGRESS      =   $0e;
-
 
   {$EXTERNALSYM LDAP_NO_SUCH_ATTRIBUTE}
   LDAP_NO_SUCH_ATTRIBUTE          =   $10;
@@ -351,7 +351,6 @@ const
   LDAP_CLIENT_LOOP                =   $60;
   {$EXTERNALSYM LDAP_REFERRAL_LIMIT_EXCEEDED}
   LDAP_REFERRAL_LIMIT_EXCEEDED    =   $61;
-
 
 //
 //  Bind methods.  We support the following methods :
@@ -512,9 +511,9 @@ type
 
     ld_sb: record
       sb_sd: ULONG;
-      Reserved1: array [0..(10 * sizeof(ULONG))] of Byte;
+      Reserved1: array [0..10*SizeOf(ULONG)] of Byte;
       sb_naddr: ULONG;   // notzero implies CLDAP available
-      Reserved2: array [0..(6 * sizeof(ULONG)) - 1] of Byte;
+      Reserved2: array [0..6*SizeOf(ULONG)-1] of Byte;
     end;
 
     //
@@ -540,7 +539,7 @@ type
     ld_error: PChar;
     ld_msgid: ULONG;
 
-    Reserved3: array  [0..(6*sizeof(ULONG))] of Byte;
+    Reserved3: array  [0..6*SizeOf(ULONG)] of Byte;
 
     //
     //  Following parameters may match up to reference implementation of LDAP API.
@@ -686,7 +685,6 @@ const
   {$EXTERNALSYM LDAP_CONTROL_REFERRALS}
   LDAP_CONTROL_REFERRALS   = '1.2.840.113556.1.4.616';
 
-
 //
 //  Values required for Modification command  These are options for the
 //  mod_op field of LDAPMod structure
@@ -701,7 +699,6 @@ const
   LDAP_MOD_REPLACE        = $02;
   {$EXTERNALSYM LDAP_MOD_BVALUES}
   LDAP_MOD_BVALUES        = $80;
-
 
 type
   {$EXTERNALSYM PLDAPModA}
@@ -806,7 +803,6 @@ function cldap_openA(HostName: PAnsiChar; PortNumber: ULONG): PLDAP; cdecl;
 function cldap_openW(HostName: PWideChar; PortNumber: ULONG): PLDAP; cdecl;
 {$EXTERNALSYM cldap_open}
 function cldap_open(HostName: PChar; PortNumber: ULONG): PLDAP; cdecl;
-
 
 //
 //  Call unbind when you're done with the connection, it will free all
@@ -988,7 +984,6 @@ const
   {$EXTERNALSYM LDAP_OPT_SECURITY_CONTEXT}
   LDAP_OPT_SECURITY_CONTEXT   = $99;
 
-
 //
 //  End of Microsoft only options
 //
@@ -1081,7 +1076,6 @@ function ldap_sasl_bind_s(ExternalHandle: PLDAP; DistName: PChar;
   AuthMechanism: PChar; cred: PBERVAL;
   var ServerCtrls, ClientCtrls: PLDAPControl;
   var ServerData: PBERVAL): Integer; cdecl;
-
 
 //
 //  Synchronous and asynch search routines.
@@ -1252,7 +1246,6 @@ function ldap_modify_ext_sW(ld: PLDAP; dn: PWideChar; var mods: PLDAPModW;
 function ldap_modify_ext_s(ld: PLDAP; dn: PChar; var mods: PLDAPMod;
   var ServerControls, ClientControls: PLDAPControl): ULONG; cdecl;
 
-
 //
 //  modrdn and modrdn2 function both as RenameObject and MoveObject.
 //
@@ -1288,7 +1281,6 @@ function ldap_modify_ext_s(ld: PLDAP; dn: PChar; var mods: PLDAPMod;
 //
 //                Use ldap_rename_ext instead, as these are thread safe.
 //
-
 
 {$EXTERNALSYM ldap_modrdn2A}
 function ldap_modrdn2A(var ExternalHandle: LDAP;
@@ -1340,7 +1332,6 @@ function ldap_modrdn_sW(var ExternalHandle: LDAP;
 function ldap_modrdn_s(var ExternalHandle: LDAP;
   DistinguishedName, NewDistinguishedName: PChar): ULONG; cdecl;
 
-
 //
 //  Extended Rename operations.  These take controls and separate out the
 //  parent from the RDN, for clarity.
@@ -1371,7 +1362,6 @@ function ldap_rename_ext_sW(ld: PLDAP;
 function ldap_rename_ext_s(ld: PLDAP;
   dn, NewRDN, NewParent: PChar; DeleteOldRdn: Integer;
   var ServerControls, ClientControls: PLDAPControl): ULONG; cdecl;
-
 
 //
 //  Add an entry to the tree
@@ -1480,7 +1470,6 @@ function ldap_compare_ext_s(ld: PLDAP;
   dn, Attr, Value: PChar; Data: PLDAPBerVal;
   var ServerControls, ClientControls: PLDAPControl): ULONG; cdecl;
 
-
 //
 //  Delete an object out of the tree
 //
@@ -1533,7 +1522,6 @@ function ldap_delete_ext_sW(ld: PLDAP; dn: PWideChar;
 function ldap_delete_ext_s(ld: PLDAP; dn: PChar;
   var ServerControls, ClientControls: PLDAPControl): ULONG; cdecl;
 
-
 //
 //  Give up on a request.  No guarentee that it got there as there is no
 //  response from the server.
@@ -1541,7 +1529,6 @@ function ldap_delete_ext_s(ld: PLDAP; dn: PChar;
 
 {$EXTERNALSYM ldap_abandon}
 function ldap_abandon(ld: PLDAP; msgid: ULONG): ULONG; cdecl;
-
 
 //
 //  Possible values for "all" field in ldap_result.  We've enhanced it such
@@ -1766,7 +1753,6 @@ function ldap_next_attributeW(ld: PLDAP; entry: PLDAPMessage;
 function ldap_next_attribute(ld: PLDAP; entry: PLDAPMessage;
   ptr: PBerElement): PChar; cdecl;
 
-
 //
 //  Get a given attribute's list of values.  This is used during parsing of
 //  a search response.  It returns a list of pointers to values, the list is
@@ -1788,7 +1774,6 @@ function ldap_get_valuesW(ld: PLDAP; entry: PLDAPMessage;
 {$EXTERNALSYM ldap_get_values}
 function ldap_get_values(ld: PLDAP; entry: PLDAPMessage;
   attr: PChar): PPChar; cdecl;
-
 
 //
 //  Get a given attribute's list of values.  This is used during parsing of
@@ -1812,7 +1797,6 @@ function ldap_get_values_lenW(ExternalHandle: PLDAP; Message: PLDAPMessage;
 function ldap_get_values_len(ExternalHandle: PLDAP; Message: PLDAPMessage;
  attr: PChar): PPLDAPBerVal; cdecl;
 
-
 //
 //  Return the number of values in a list returned by ldap_get_values.
 //
@@ -1823,7 +1807,6 @@ function ldap_count_valuesA(vals: PPCharA): ULONG; cdecl;
 function ldap_count_valuesW(vals: PPCharW): ULONG; cdecl;
 {$EXTERNALSYM ldap_count_values}
 function ldap_count_values(vals: PPChar): ULONG; cdecl;
-
 
 //
 //  Return the number of values in a list returned by ldap_get_values_len.
@@ -1842,7 +1825,6 @@ function ldap_value_freeA(vals: PPCharA): ULONG; cdecl;
 function ldap_value_freeW(vals: PPCharW): ULONG; cdecl;
 {$EXTERNALSYM ldap_value_free}
 function ldap_value_free(vals: PPChar): ULONG; cdecl;
-
 
 //
 //  Free structures returned by ldap_get_values_len.
@@ -1863,7 +1845,6 @@ function ldap_get_dnW(ld: PLDAP; entry: PLDAPMessage): PWideChar; cdecl;
 {$EXTERNALSYM ldap_get_dn}
 function ldap_get_dn(ld: PLDAP; entry: PLDAPMessage): PChar; cdecl;
 
-
 //
 //  When using ldap_explode_dn, you should free the returned string by
 //  calling ldap_value_free.
@@ -1876,7 +1857,6 @@ function ldap_explode_dnW(dn: PWideChar; notypes: ULONG): PPCharW; cdecl;
 {$EXTERNALSYM ldap_explode_dn}
 function ldap_explode_dn(dn: PChar; notypes: ULONG): PPChar; cdecl;
 
-
 //
 //  When calling ldap_dn2ufn, you should free the returned string by calling
 //  ldap_memfree.
@@ -1888,7 +1868,6 @@ function ldap_dn2ufnA(dn: PAnsiChar): PAnsiChar; cdecl;
 function ldap_dn2ufnW(dn: PWideChar): PWideChar; cdecl;
 {$EXTERNALSYM ldap_dn2ufn}
 function ldap_dn2ufn(dn: PChar): PChar; cdecl;
-
 
 //
 //  This is used to free strings back to the LDAP API heap.  Don't pass in
@@ -1904,7 +1883,6 @@ procedure ldap_memfree(Block: PChar); cdecl;
 
 {$EXTERNALSYM ber_bvfree}
 procedure ber_bvfree(bv: PLDAPBerVal); cdecl;
-
 
 //
 //  The function ldap_ufn2dn attempts to "normalize" a user specified DN
@@ -1968,7 +1946,6 @@ function ldap_startup(var version: TLDAPVersionInfo): ULONG; cdecl;
 {$EXTERNALSYM ldap_cleanup}
 function ldap_cleanup(hInstance: THandle): ULONG; cdecl;
 
-
 //
 //  Extended API to support allowing opaque blobs of data in search filters.
 //  This API takes any filter element and converts it to a safe text string that
@@ -2009,7 +1986,6 @@ function ldap_escape_filter_elementW(
 function ldap_escape_filter_element(
   sourceFilterElement: PChar; sourceLength: ULONG;
   destFilterElement: PChar; destLength: ULONG): ULONG; cdecl;
-
 
 //
 //  Misc extensions for additional debugging.
@@ -2166,7 +2142,6 @@ function ldap_encode_sort_control(ExternalHandle: PLDAP;
   var SortKeys: PLDAPSortKey; Control: PLDAPControl;
   Criticality: ByteBool): ULONG; cdecl;
 
-
 //
 //  LDAPv3: This is the RFC defined API for the simple paging of results
 //  control.  Use ldap_control_free to free the control allocated by
@@ -2198,7 +2173,6 @@ function ldap_parse_page_controlW(ExternalHandle: PLDAP;
 function ldap_parse_page_control(ExternalHandle: PLDAP;
   ServerControls: PPLDAPControl; var TotalCount: ULONG;
   var Cookie: PLDAPBerVal): ULONG; cdecl; // Use ber_bvfree to free Cookie
-
 
 //
 //  LDAPv3: This is the interface for simple paging of results.  To ensure
@@ -2261,7 +2235,6 @@ function ldap_search_init_page(ExternalHandle: PLDAP;
   var ServerControls, ClientControls: PLDAPControl;
   PageTimeLimit, TotalSizeLimit: ULONG;
   var SortKeys: PLDAPSortKey): PLDAPSearch; cdecl;
-
 
 {$EXTERNALSYM ldap_get_next_page}
 function ldap_get_next_page(ExternalHandle: PLDAP; SearchHandle: PLDAPSearch;
@@ -2526,7 +2499,6 @@ type
   ): ByteBool cdecl;
 
 
-
 //
 //  Given an LDAP message, return the connection pointer where the message
 //  came from.  It can return NULL if the connection has already been freed.
@@ -2543,11 +2515,10 @@ const
   {$EXTERNALSYM LDAP_OPT_REF_DEREF_CONN_PER_MSG}
   LDAP_OPT_REF_DEREF_CONN_PER_MSG = $94;
 
-
 implementation
 
-const
-  LDAPLib = 'wldap32.dll';
+uses
+  JwaWinDLLNames;
 
 function ldap_openA; external LDAPLib name 'ldap_openA';
 function ldap_openW; external LDAPLib name 'ldap_openW';
@@ -2776,7 +2747,6 @@ function ldap_close_extended_op; external LDAPLib name 'ldap_close_extended_op';
 function LdapGetLastError; external LDAPLib name 'LdapGetLastError';
 function LdapMapErrorToWin32; external LDAPLib name 'LdapMapErrorToWin32';
 function ldap_conn_from_msg; external LDAPLib name 'ldap_conn_from_msg';
-
 
 
 // Macros.

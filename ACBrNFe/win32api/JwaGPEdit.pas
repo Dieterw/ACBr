@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Group Policy API interface Unit for Object Pascal                            }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: gpedit.h, released June 2000. The original Pascal      }
 { code is: GPEdit.pas, released December 2000. The initial developer of the    }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,25 +35,27 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaGPEdit.pas,v 1.8 2005/09/06 16:36:50 marquardt Exp $
 
 unit JwaGPEdit;
 
 {$WEAKPACKAGEUNIT}
 
-{$HPPEMIT ''}
-{$HPPEMIT '#include "GPEdit.h"'}
-{$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  ActiveX {TODO}, JwaPrSht, JwaWinType;
+  JwaActiveX, JwaPrSht, JwaWindows;
+
+{$HPPEMIT ''}
+{$HPPEMIT '#include "GPEdit.h"'}
+{$HPPEMIT ''}
 
 type
   LPOLESTR = POleStr;
@@ -84,7 +85,6 @@ type
 //                         without going through the Group Policy Editor
 //
 
-
 //
 // Group Policy Editor MMC SnapIn GUID
 //
@@ -94,7 +94,6 @@ const
   CLSID_GPESnapIn: TGUID = (
     D1:$8fc0b734; D2:$a0e1; D3:$11d1; D4:($a7, $d3, $0, $0, $f8, $75, $71, $e3));
   {$EXTERNALSYM CLSID_GPESnapIn}
-
 
 //
 // Group Policy Editor node ids
@@ -729,7 +728,6 @@ type
 function CreateGPOLink(lpGPO, lpContainer: LPOLESTR; fHighPriority: BOOL): HRESULT; stdcall;
 {$EXTERNALSYM CreateGPOLink}
 
-
 //=============================================================================
 //
 // DeleteGPOLink
@@ -855,11 +853,11 @@ function ExportRSoPData(lpNameSpace, lpFileName: LPOLESTR): HRESULT; stdcall;
 
 implementation
 
-const
-  gpeditlib = 'gpedit.dll';
-
+uses
+  JwaWinDLLNames;
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _CreateGPOLink: Pointer;
 
@@ -867,16 +865,12 @@ function CreateGPOLink;
 begin
   GetProcedureAddress(_CreateGPOLink, gpeditlib, 'CreateGPOLink');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateGPOLink]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateGPOLink]
   end;
 end;
-{$ELSE}
-function CreateGPOLink; external gpeditlib name 'CreateGPOLink';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DeleteGPOLink: Pointer;
 
@@ -884,16 +878,12 @@ function DeleteGPOLink;
 begin
   GetProcedureAddress(_DeleteGPOLink, gpeditlib, 'DeleteGPOLink');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DeleteGPOLink]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DeleteGPOLink]
   end;
 end;
-{$ELSE}
-function DeleteGPOLink; external gpeditlib name 'DeleteGPOLink';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DeleteAllGPOLinks: Pointer;
 
@@ -901,16 +891,12 @@ function DeleteAllGPOLinks;
 begin
   GetProcedureAddress(_DeleteAllGPOLinks, gpeditlib, 'DeleteAllGPOLinks');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DeleteAllGPOLinks]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DeleteAllGPOLinks]
   end;
 end;
-{$ELSE}
-function DeleteAllGPOLinks; external gpeditlib name 'DeleteAllGPOLinks';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _BrowseForGPO: Pointer;
 
@@ -918,16 +904,12 @@ function BrowseForGPO;
 begin
   GetProcedureAddress(_BrowseForGPO, gpeditlib, 'BrowseForGPO');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_BrowseForGPO]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_BrowseForGPO]
   end;
 end;
-{$ELSE}
-function BrowseForGPO; external gpeditlib name 'BrowseForGPO';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ImportRSoPData: Pointer;
 
@@ -935,16 +917,12 @@ function ImportRSoPData;
 begin
   GetProcedureAddress(_ImportRSoPData, gpeditlib, 'ImportRSoPData');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ImportRSoPData]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ImportRSoPData]
   end;
 end;
-{$ELSE}
-function ImportRSoPData; external gpeditlib name 'ImportRSoPData';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ExportRSoPData: Pointer;
 
@@ -952,13 +930,21 @@ function ExportRSoPData;
 begin
   GetProcedureAddress(_ExportRSoPData, gpeditlib, 'ExportRSoPData');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ExportRSoPData]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ExportRSoPData]
   end;
 end;
+
 {$ELSE}
+
+function CreateGPOLink; external gpeditlib name 'CreateGPOLink';
+function DeleteGPOLink; external gpeditlib name 'DeleteGPOLink';
+function DeleteAllGPOLinks; external gpeditlib name 'DeleteAllGPOLinks';
+function BrowseForGPO; external gpeditlib name 'BrowseForGPO';
+function ImportRSoPData; external gpeditlib name 'ImportRSoPData';
 function ExportRSoPData; external gpeditlib name 'ExportRSoPData';
+
 {$ENDIF DYNAMIC_LINK}
 
 end.

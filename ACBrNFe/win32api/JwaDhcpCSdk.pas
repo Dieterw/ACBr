@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { DHCP Client API interface unit for Object Pascal                             }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: dhcpcsdk.h, released June 2000. The original Pascal    }
 { code is: DhcpCSdk.pas, released December 2000. The initial developer of the  }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaDhcpCSdk.pas,v 1.8 2005/09/06 16:36:50 marquardt Exp $
 
 unit JwaDhcpCSdk;
 
@@ -49,12 +50,12 @@ unit JwaDhcpCSdk;
 {$HPPEMIT '#include "dhcpcsdk.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinType;
+  JwaWindows;
 
 //
 // DHCP Standard Options.
@@ -337,11 +338,11 @@ function DhcpRemoveDNSRegistrations: DWORD; stdcall;
 
 implementation
 
-const
-  dhcpapi = 'dhcpcsvc.dll';
-
+uses
+  JwaWinDLLNames;
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _DhcpCApiInitialize: Pointer;
 
@@ -349,16 +350,12 @@ function DhcpCApiInitialize;
 begin
   GetProcedureAddress(_DhcpCApiInitialize, dhcpapi, 'DhcpCApiInitialize');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DhcpCApiInitialize]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DhcpCApiInitialize]
   end;
 end;
-{$ELSE}
-function DhcpCApiInitialize; external dhcpapi name 'DhcpCApiInitialize';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DhcpCApiCleanup: Pointer;
 
@@ -366,16 +363,12 @@ procedure DhcpCApiCleanup;
 begin
   GetProcedureAddress(_DhcpCApiCleanup, dhcpapi, 'DhcpCApiCleanup');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DhcpCApiCleanup]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DhcpCApiCleanup]
   end;
 end;
-{$ELSE}
-procedure DhcpCApiCleanup; external dhcpapi name 'DhcpCApiCleanup';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DhcpRequestParams: Pointer;
 
@@ -383,16 +376,12 @@ function DhcpRequestParams;
 begin
   GetProcedureAddress(_DhcpRequestParams, dhcpapi, 'DhcpRequestParams');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DhcpRequestParams]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DhcpRequestParams]
   end;
 end;
-{$ELSE}
-function DhcpRequestParams; external dhcpapi name 'DhcpRequestParams';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DhcpUndoRequestParams: Pointer;
 
@@ -400,16 +389,12 @@ function DhcpUndoRequestParams;
 begin
   GetProcedureAddress(_DhcpUndoRequestParams, dhcpapi, 'DhcpUndoRequestParams');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DhcpUndoRequestParams]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DhcpUndoRequestParams]
   end;
 end;
-{$ELSE}
-function DhcpUndoRequestParams; external dhcpapi name 'DhcpUndoRequestParams';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DhcpRegisterParamChange: Pointer;
 
@@ -417,16 +402,12 @@ function DhcpRegisterParamChange;
 begin
   GetProcedureAddress(_DhcpRegisterParamChange, dhcpapi, 'DhcpRegisterParamChange');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DhcpRegisterParamChange]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DhcpRegisterParamChange]
   end;
 end;
-{$ELSE}
-function DhcpRegisterParamChange; external dhcpapi name 'DhcpRegisterParamChange';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DhcpDeRegisterParamChange: Pointer;
 
@@ -434,16 +415,12 @@ function DhcpDeRegisterParamChange;
 begin
   GetProcedureAddress(_DhcpDeRegisterParamChange, dhcpapi, 'DhcpDeRegisterParamChange');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DhcpDeRegisterParamChange]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DhcpDeRegisterParamChange]
   end;
 end;
-{$ELSE}
-function DhcpDeRegisterParamChange; external dhcpapi name 'DhcpDeRegisterParamChange';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DhcpRemoveDNSRegistrations: Pointer;
 
@@ -451,13 +428,22 @@ function DhcpRemoveDNSRegistrations;
 begin
   GetProcedureAddress(_DhcpRemoveDNSRegistrations, dhcpapi, 'DhcpRemoveDNSRegistrations');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DhcpRemoveDNSRegistrations]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DhcpRemoveDNSRegistrations]
   end;
 end;
+
 {$ELSE}
+
+function DhcpCApiInitialize; external dhcpapi name 'DhcpCApiInitialize';
+procedure DhcpCApiCleanup; external dhcpapi name 'DhcpCApiCleanup';
+function DhcpRequestParams; external dhcpapi name 'DhcpRequestParams';
+function DhcpUndoRequestParams; external dhcpapi name 'DhcpUndoRequestParams';
+function DhcpRegisterParamChange; external dhcpapi name 'DhcpRegisterParamChange';
+function DhcpDeRegisterParamChange; external dhcpapi name 'DhcpDeRegisterParamChange';
 function DhcpRemoveDNSRegistrations; external dhcpapi name 'DhcpRemoveDNSRegistrations';
+
 {$ENDIF DYNAMIC_LINK}
 
 end.

@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { IME Component API interface Unit for Object Pascal                           }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: ime.h, released June 2000. The original Pascal         }
 { code is: Ime.pas, released December 2000. The initial developer of the       }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaIme.pas,v 1.9 2005/09/06 16:36:50 marquardt Exp $
 
 unit JwaIme;
 
@@ -49,12 +50,12 @@ unit JwaIme;
 {$HPPEMIT '#include "Ime.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinType;
+  JwaWindows;
 
 const
   IME_MAXPROCESS = 32;
@@ -64,13 +65,8 @@ function SendIMEMessageExA(hWnd: HWND; lParam: LPARAM): LRESULT; stdcall;
 {$EXTERNALSYM SendIMEMessageExA}
 function SendIMEMessageExW(hWnd: HWND; lParam: LPARAM): LRESULT; stdcall;
 {$EXTERNALSYM SendIMEMessageExW}
-{$IFDEF UNICODE}
 function SendIMEMessageEx(hWnd: HWND; lParam: LPARAM): LRESULT; stdcall;
 {$EXTERNALSYM SendIMEMessageEx}
-{$ELSE}
-function SendIMEMessageEx(hWnd: HWND; lParam: LPARAM): LRESULT; stdcall;
-{$EXTERNALSYM SendIMEMessageEx}
-{$ENDIF}
 
 //
 // IMESTRUCT structure for SendIMEMessageEx
@@ -166,13 +162,13 @@ const
   IME_MODE_ALPHANUMERIC = $0001;
   {$EXTERNALSYM IME_MODE_ALPHANUMERIC}
 
-{$IFDEF KOREA}    // BeomOh - 9/29/92
+  {$IFDEF KOREA}    // BeomOh - 9/29/92
   IME_MODE_SBCSCHAR = $0002;
   {$EXTERNALSYM IME_MODE_SBCSCHAR}
-{$ELSE}
+  {$ELSE}
   IME_MODE_SBCSCHAR = $0008;
   {$EXTERNALSYM IME_MODE_SBCSCHAR}
-{$ENDIF}
+  {$ENDIF KOREA}
 
   IME_MODE_KATAKANA     = $0002;
   {$EXTERNALSYM IME_MODE_KATAKANA}
@@ -345,7 +341,6 @@ const
   WM_IMEKEYUP   = $291;
   {$EXTERNALSYM WM_IMEKEYUP}
 
-
 //
 // UNDETERMINESTRING structure for IR_UNDETERMINE
 //
@@ -398,11 +393,11 @@ type
 
 implementation
 
-const
-  imelib = 'user32.dll';
-
+uses
+  JwaWinDLLNames;
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _SendIMEMessageExA: Pointer;
 
@@ -410,16 +405,12 @@ function SendIMEMessageExA;
 begin
   GetProcedureAddress(_SendIMEMessageExA, imelib, 'SendIMEMessageExA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SendIMEMessageExA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SendIMEMessageExA]
   end;
 end;
-{$ELSE}
-function SendIMEMessageExA; external imelib name 'SendIMEMessageExA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SendIMEMessageExW: Pointer;
 
@@ -427,50 +418,31 @@ function SendIMEMessageExW;
 begin
   GetProcedureAddress(_SendIMEMessageExW, imelib, 'SendIMEMessageExW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SendIMEMessageExW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SendIMEMessageExW]
   end;
 end;
+
+var
+  _SendIMEMessageEx: Pointer;
+
+function SendIMEMessageEx;
+begin
+  GetProcedureAddress(_SendIMEMessageEx, imelib, 'SendIMEMessageEx' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SendIMEMessageEx]
+  end;
+end;
+
 {$ELSE}
+
+function SendIMEMessageExA; external imelib name 'SendIMEMessageExA';
 function SendIMEMessageExW; external imelib name 'SendIMEMessageExW';
+function SendIMEMessageEx; external imelib name 'SendIMEMessageEx' + AWSuffix;
+
 {$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SendIMEMessageEx: Pointer;
-
-function SendIMEMessageEx;
-begin
-  GetProcedureAddress(_SendIMEMessageEx, imelib, 'SendIMEMessageExW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SendIMEMessageEx]
-  end;
-end;
-{$ELSE}
-function SendIMEMessageEx; external imelib name 'SendIMEMessageExW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SendIMEMessageEx: Pointer;
-
-function SendIMEMessageEx;
-begin
-  GetProcedureAddress(_SendIMEMessageEx, imelib, 'SendIMEMessageExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SendIMEMessageEx]
-  end;
-end;
-{$ELSE}
-function SendIMEMessageEx; external imelib name 'SendIMEMessageExA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
 
 end.

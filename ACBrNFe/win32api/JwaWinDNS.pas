@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Domain Naming Services API interface Unit for Object Pascal                  }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: windns.h, released June 2000. The original Pascal      }
 { code is: WinDNS.pas, released December 2000. The initial developer of the    }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,20 +35,19 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
 
+// $Id: JwaWinDNS.pas,v 1.10 2005/09/06 16:36:50 marquardt Exp $
 
 {******************************************************************}
-{ 								   }
 { Notes (TODO):                                                    }
 {   DnsRecordSetDetach() and DnsValidateName_X() didn't have a cc  }
 {   IP_ADDRESS_STRING_LENGTH is defined nowhere                    }
 {   DNS_WINS_RECORD macro  untranslatable due to IP_ADDRESS        }
 {   DNS_RRSET_ADD macro untranslatable                             }
-{ 								   }
 {******************************************************************}
 
 unit JwaWinDNS;
@@ -62,14 +60,12 @@ unit JwaWinDNS;
 {$HPPEMIT 'typeded PDNS_RECORD *PPDNS_RECORD'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinsock2, JwaWinType;
-
-{.$DEFINE ATMA_E164}
+  JwaWinsock2, JwaWindows, JwaWS2atm;
 
 type
   IN6_ADDR = Pointer; // todo
@@ -165,9 +161,9 @@ type
 //  
 
 const
-  IP6_ADDRESS_STRING_LENGTH        = (47);
+  IP6_ADDRESS_STRING_LENGTH        = 47;
   {$EXTERNALSYM IP6_ADDRESS_STRING_LENGTH}
-  IP6_ADDRESS_STRING_BUFFER_LENGTH = (48);
+  IP6_ADDRESS_STRING_BUFFER_LENGTH = 48;
   {$EXTERNALSYM IP6_ADDRESS_STRING_BUFFER_LENGTH}
 
 //  backcompat
@@ -179,22 +175,22 @@ const
 //  Inline byte flipping -- can be done in registers
 //
 
-procedure INLINE_WORD_FLIP(var Out: WORD; In_: WORD);
+procedure INLINE_WORD_FLIP(var Out_: WORD; In_: WORD);
 {$EXTERNALSYM INLINE_WORD_FLIP}
 
-procedure INLINE_HTONS(var Out: WORD; In_: WORD);
+procedure INLINE_HTONS(var Out_: WORD; In_: WORD);
 {$EXTERNALSYM INLINE_HTONS}
 
-procedure INLINE_NTOHS(var Out: WORD; In_: WORD);
+procedure INLINE_NTOHS(var Out_: WORD; In_: WORD);
 {$EXTERNALSYM INLINE_NTOHS}
 
-procedure INLINE_DWORD_FLIP(var Out: DWORD; In_: DWORD);
+procedure INLINE_DWORD_FLIP(var Out_: DWORD; In_: DWORD);
 {$EXTERNALSYM INLINE_DWORD_FLIP}
 
-procedure INLINE_NTOHL(var Out: DWORD; In_: DWORD);
+procedure INLINE_NTOHL(var Out_: DWORD; In_: DWORD);
 {$EXTERNALSYM INLINE_NTOHL}
 
-procedure INLINE_HTONL(var Out: DWORD; In_: DWORD);
+procedure INLINE_HTONL(var Out_: DWORD; In_: DWORD);
 {$EXTERNALSYM INLINE_HTONL}
 
 //
@@ -216,52 +212,52 @@ procedure INLINE_WRITE_FLIPPED_DWORD(pout: PDWORD; In_: DWORD);
 //
 
 const
-  DNS_PORT_HOST_ORDER = ($0035); // port 53
+  DNS_PORT_HOST_ORDER = $0035; // port 53
   {$EXTERNALSYM DNS_PORT_HOST_ORDER}
-  DNS_PORT_NET_ORDER  = ($3500);
+  DNS_PORT_NET_ORDER  = $3500;
   {$EXTERNALSYM DNS_PORT_NET_ORDER}
 
 //
 //  DNS UDP packets no more than 512 bytes
 //
 
-  DNS_RFC_MAX_UDP_PACKET_LENGTH = (512);
+  DNS_RFC_MAX_UDP_PACKET_LENGTH = 512;
   {$EXTERNALSYM DNS_RFC_MAX_UDP_PACKET_LENGTH}
 
 //
 //  DNS Names limited to 255, 63 in any one label
 //
 
-  DNS_MAX_NAME_LENGTH  = (255);
+  DNS_MAX_NAME_LENGTH  = 255;
   {$EXTERNALSYM DNS_MAX_NAME_LENGTH}
-  DNS_MAX_LABEL_LENGTH = (63);
+  DNS_MAX_LABEL_LENGTH = 63;
   {$EXTERNALSYM DNS_MAX_LABEL_LENGTH}
 
-  DNS_MAX_NAME_BUFFER_LENGTH  = (256);
+  DNS_MAX_NAME_BUFFER_LENGTH  = 256;
   {$EXTERNALSYM DNS_MAX_NAME_BUFFER_LENGTH}
-  DNS_MAX_LABEL_BUFFER_LENGTH = (64);
+  DNS_MAX_LABEL_BUFFER_LENGTH = 64;
   {$EXTERNALSYM DNS_MAX_LABEL_BUFFER_LENGTH}
 
 //
 //  Reverse lookup domain names
 //
 
-  DNS_IP4_REVERSE_DOMAIN_STRING = ('in-addr.arpa.');
+  DNS_IP4_REVERSE_DOMAIN_STRING = 'in-addr.arpa.';
   {$EXTERNALSYM DNS_IP4_REVERSE_DOMAIN_STRING}
 
-  //DNS_MAX_IP4_REVERSE_NAME_LENGTH = (IP_ADDRESS_STRING_LENGTH + 1 + SizeOf(DNS_IP4_REVERSE_DOMAIN_STRING));
+  //DNS_MAX_IP4_REVERSE_NAME_LENGTH = IP_ADDRESS_STRING_LENGTH + 1 + SizeOf(DNS_IP4_REVERSE_DOMAIN_STRING);
   //{$EXTERNALSYM DNS_MAX_IP4_REVERSE_NAME_LENGTH}
 
-  //DNS_MAX_IP4_REVERSE_NAME_BUFFER_LENGTH = (DNS_MAX_IP4_REVERSE_NAME_LENGTH + 1);
+  //DNS_MAX_IP4_REVERSE_NAME_BUFFER_LENGTH = DNS_MAX_IP4_REVERSE_NAME_LENGTH + 1;
   //{$EXTERNALSYM DNS_MAX_IP4_REVERSE_NAME_BUFFER_LENGTH}
 
-  DNS_IP6_REVERSE_DOMAIN_STRING = ('ip6.int.');
+  DNS_IP6_REVERSE_DOMAIN_STRING = 'ip6.int.';
   {$EXTERNALSYM DNS_IP6_REVERSE_DOMAIN_STRING}
 
-  DNS_MAX_IP6_REVERSE_NAME_LENGTH = (64 + SizeOf(DNS_IP6_REVERSE_DOMAIN_STRING));
+  DNS_MAX_IP6_REVERSE_NAME_LENGTH = 64 + SizeOf(DNS_IP6_REVERSE_DOMAIN_STRING);
   {$EXTERNALSYM DNS_MAX_IP6_REVERSE_NAME_LENGTH}
 
-  DNS_MAX_IP6_REVERSE_NAME_BUFFER_LENGTH = (DNS_MAX_IP6_REVERSE_NAME_LENGTH + 1);
+  DNS_MAX_IP6_REVERSE_NAME_BUFFER_LENGTH = DNS_MAX_IP6_REVERSE_NAME_LENGTH + 1;
   {$EXTERNALSYM DNS_MAX_IP6_REVERSE_NAME_BUFFER_LENGTH}
 
 //  Combined
@@ -276,7 +272,7 @@ const
 //  DNS Text string limited by size representable
 //      in a single byte length field
 
-  DNS_MAX_TEXT_STRING_LENGTH = (255);
+  DNS_MAX_TEXT_STRING_LENGTH = 255;
   {$EXTERNALSYM DNS_MAX_TEXT_STRING_LENGTH}
 
 //
@@ -342,7 +338,7 @@ const
 //  Question immediately follows header so compressed question name
 //      0xC000 | sizeof(DNS_HEADER)
 
-  DNS_COMPRESSED_QUESTION_NAME = ($C00C);
+  DNS_COMPRESSED_QUESTION_NAME = $C00C;
   {$EXTERNALSYM DNS_COMPRESSED_QUESTION_NAME}
 
 //
@@ -697,9 +693,8 @@ const
   {$EXTERNALSYM DNS_TYPE_WINS}
   DNS_TYPE_WINSR  = $ff02; // 64K - 254
   {$EXTERNALSYM DNS_TYPE_WINSR}
-  DNS_TYPE_NBSTAT = (DNS_TYPE_WINSR);
+  DNS_TYPE_NBSTAT = DNS_TYPE_WINSR;
   {$EXTERNALSYM DNS_TYPE_NBSTAT}
-
 
 //
 //  DNS Record Types -- Net Byte Order
@@ -842,25 +837,16 @@ const
 //  without winsock2 ATM support (ws2atm.h)
 //
 
-{$IFNDEF ATMA_E164}
-  DNS_ATMA_FORMAT_E164     = 1;
-  {$EXTERNALSYM DNS_ATMA_FORMAT_E164}
-  DNS_ATMA_FORMAT_AESA     = 2;
-  {$EXTERNALSYM DNS_ATMA_FORMAT_AESA}
-  DNS_ATMA_MAX_ADDR_LENGTH = (20);
-  {$EXTERNALSYM DNS_ATMA_MAX_ADDR_LENGTH}
-{$ELSE}
   DNS_ATMA_FORMAT_E164     = ATM_E164;
   {$EXTERNALSYM DNS_ATMA_FORMAT_E164}
   DNS_ATMA_FORMAT_AESA     = ATM_AESA;
   {$EXTERNALSYM DNS_ATMA_FORMAT_AESA}
   DNS_ATMA_MAX_ADDR_LENGTH = ATM_ADDR_SIZE;
   {$EXTERNALSYM DNS_ATMA_MAX_ADDR_LENGTH}
-{$ENDIF}
 
-  DNS_ATMA_AESA_ADDR_LENGTH  = (20);
+  DNS_ATMA_AESA_ADDR_LENGTH  = 20;
   {$EXTERNALSYM DNS_ATMA_AESA_ADDR_LENGTH}
-  DNS_ATMA_MAX_RECORD_LENGTH = (DNS_ATMA_MAX_ADDR_LENGTH+1);
+  DNS_ATMA_MAX_RECORD_LENGTH = DNS_ATMA_MAX_ADDR_LENGTH + 1;
   {$EXTERNALSYM DNS_ATMA_MAX_RECORD_LENGTH}
 
 //
@@ -981,7 +967,7 @@ const
 
   DNS_WINS_FLAG_SCOPE = DWORD($80000000);
   {$EXTERNALSYM DNS_WINS_FLAG_SCOPE}
-  DNS_WINS_FLAG_LOCAL = ($00010000);
+  DNS_WINS_FLAG_LOCAL = $00010000;
   {$EXTERNALSYM DNS_WINS_FLAG_LOCAL}
 
 //
@@ -1048,7 +1034,7 @@ type
 //
 
 const
-  DNS_CONFIG_FLAG_ALLOC = ($00000001);
+  DNS_CONFIG_FLAG_ALLOC = $00000001;
   {$EXTERNALSYM DNS_CONFIG_FLAG_ALLOC}
 
 function DnsQueryConfig(Config: DNS_CONFIG_TYPE; Flag: DWORD; pwsAdapterName: PWSTR; pReserved, pBuffer: PVOID; pBufferLength: PDWORD): DNS_STATUS; stdcall;
@@ -1281,7 +1267,6 @@ type
   TDnsTsigData = DNS_TSIG_DATA;
   PDnsTsigData = PDNS_TSIG_DATA;
 
-
 //
 //  MS only types -- only hit the wire in MS-MS zone transfer
 //
@@ -1379,32 +1364,32 @@ const
 
 //  RR Section in packet
 
-  DNSREC_SECTION = ($00000003);
+  DNSREC_SECTION = $00000003;
   {$EXTERNALSYM DNSREC_SECTION}
 
-  DNSREC_QUESTION   = ($00000000);
+  DNSREC_QUESTION   = $00000000;
   {$EXTERNALSYM DNSREC_QUESTION}
-  DNSREC_ANSWER     = ($00000001);
+  DNSREC_ANSWER     = $00000001;
   {$EXTERNALSYM DNSREC_ANSWER}
-  DNSREC_AUTHORITY  = ($00000002);
+  DNSREC_AUTHORITY  = $00000002;
   {$EXTERNALSYM DNSREC_AUTHORITY}
-  DNSREC_ADDITIONAL = ($00000003);
+  DNSREC_ADDITIONAL = $00000003;
   {$EXTERNALSYM DNSREC_ADDITIONAL}
 
 //  RR Section in packet (update)
 
-  DNSREC_ZONE   = ($00000000);
+  DNSREC_ZONE   = $00000000;
   {$EXTERNALSYM DNSREC_ZONE}
-  DNSREC_PREREQ = ($00000001);
+  DNSREC_PREREQ = $00000001;
   {$EXTERNALSYM DNSREC_PREREQ}
-  DNSREC_UPDATE = ($00000002);
+  DNSREC_UPDATE = $00000002;
   {$EXTERNALSYM DNSREC_UPDATE}
 
 //  Delete RR (update) or No-exist (prerequisite)
 
-  DNSREC_DELETE  = ($00000004);
+  DNSREC_DELETE  = $00000004;
   {$EXTERNALSYM DNSREC_DELETE}
-  DNSREC_NOEXIST = ($00000004);
+  DNSREC_NOEXIST = $00000004;
   {$EXTERNALSYM DNSREC_NOEXIST}
 
 //
@@ -1566,23 +1551,11 @@ function DnsRecordCopyEx(pRecord: PDNS_RECORD; CharSetIn: DNS_CHARSET; CharSetOu
 function DnsRecordSetCopyEx(pRecordSet: PDNS_RECORD; CharSetIn: DNS_CHARSET; CharSetOut: DNS_CHARSET): PDNS_RECORD; stdcall;
 {$EXTERNALSYM DnsRecordSetCopyEx}
 
-{$IFDEF UNICODE}
-
 function DnsRecordCopy(pRR: PDNS_RECORD): PDNS_RECORD;
 {$EXTERNALSYM DnsRecordCopy}
 
 function DnsRecordSetCopy(pRR: PDNS_RECORD): PDNS_RECORD;
 {$EXTERNALSYM DnsRecordSetCopy}
-
-{$ELSE}
-
-function DnsRecordCopy(pRR: PDNS_RECORD): PDNS_RECORD;
-{$EXTERNALSYM DnsRecordCopy}
-
-function DnsRecordSetCopy(pRR: PDNS_RECORD): PDNS_RECORD;
-{$EXTERNALSYM DnsRecordSetCopy}
-
-{$ENDIF}
 
 //
 //  Record Compare
@@ -1684,13 +1657,8 @@ function DnsQuery_UTF8(pszName: PCSTR; wType: WORD; Options: DWORD; aipServers: 
 function DnsQuery_W(pszName: LPCWSTR; wType: WORD; Options: DWORD; aipServers: PIP4_ARRAY; ppQueryResults: PPDNS_RECORD; pReserved: PPVOID): DNS_STATUS; stdcall;
 {$EXTERNALSYM DnsQuery_W}
 
-{$IFDEF UNICODE}
-function DnsQuery(pszName: LPCWSTR; wType: WORD; Options: DWORD; aipServers: PIP4_ARRAY; ppQueryResults: PPDNS_RECORD; pReserved: PPVOID): DNS_STATUS; stdcall;
+function DnsQuery(pszName: LPCTSTR; wType: WORD; Options: DWORD; aipServers: PIP4_ARRAY; ppQueryResults: PPDNS_RECORD; pReserved: PPVOID): DNS_STATUS; stdcall;
 {$EXTERNALSYM DnsQuery}
-{$ELSE}
-function DnsQuery(pszName: PCSTR; wType: WORD; Options: DWORD; aipServers: PIP4_ARRAY; ppQueryResults: PPDNS_RECORD; pReserved: PPVOID): DNS_STATUS; stdcall;
-{$EXTERNALSYM DnsQuery}
-{$ENDIF}
 
 //
 //  DNS Update API
@@ -1742,13 +1710,8 @@ function DnsAcquireContextHandle_W(CredentialFlags: DWORD; pCredentials: PVOID; 
 function DnsAcquireContextHandle_A(CredentialFlags: DWORD; pCredentials: PVOID; pContextHandle: PHANDLE): DNS_STATUS; stdcall;
 {$EXTERNALSYM DnsAcquireContextHandle_A}
 
-{$IFDEF UNICODE}
 function DnsAcquireContextHandle(CredentialFlags: DWORD; pCredentials: PVOID; pContextHandle: PHANDLE): DNS_STATUS; stdcall;
 {$EXTERNALSYM DnsAcquireContextHandle}
-{$ELSE}
-function DnsAcquireContextHandle(CredentialFlags: DWORD; pCredentials: PVOID; pContextHandle: PHANDLE): DNS_STATUS; stdcall;
-{$EXTERNALSYM DnsAcquireContextHandle}
-{$ENDIF}
 
 procedure DnsReleaseContextHandle(hContext: HANDLE); stdcall;
 {$EXTERNALSYM DnsReleaseContextHandle}
@@ -1766,13 +1729,8 @@ function DnsModifyRecordsInSet_A(pAddRecords: PDNS_RECORD; pDeleteRecords: PDNS_
 function DnsModifyRecordsInSet_UTF8(pAddRecords: PDNS_RECORD; pDeleteRecords: PDNS_RECORD; Options: DWORD; hContext: HANDLE; pServerList: PIP4_ARRAY; pReserved: PVOID): DNS_STATUS; stdcall;
 {$EXTERNALSYM DnsModifyRecordsInSet_UTF8}
 
-{$IFDEF UNICODE}
 function DnsModifyRecordsInSet(pAddRecords: PDNS_RECORD; pDeleteRecords: PDNS_RECORD; Options: DWORD; hContext: HANDLE; pServerList: PIP4_ARRAY; pReserved: PVOID): DNS_STATUS; stdcall;
 {$EXTERNALSYM DnsModifyRecordsInSet}
-{$ELSE}
-function DnsModifyRecordsInSet(pAddRecords: PDNS_RECORD; pDeleteRecords: PDNS_RECORD; Options: DWORD; hContext: HANDLE; pServerList: PIP4_ARRAY; pReserved: PVOID): DNS_STATUS; stdcall;
-{$EXTERNALSYM DnsModifyRecordsInSet}
-{$ENDIF}
 
 function DnsReplaceRecordSetW(pNewSet: PDNS_RECORD; Options: DWORD; hContext: HANDLE; pServerList: PIP4_ARRAY; pReserved: PVOID): DNS_STATUS; stdcall;
 {$EXTERNALSYM DnsReplaceRecordSetW}
@@ -1783,13 +1741,8 @@ function DnsReplaceRecordSetA(pNewSet: PDNS_RECORD; Options: DWORD; hContext: HA
 function DnsReplaceRecordSetUTF8(pNewSet: PDNS_RECORD; Options: DWORD; hContext: HANDLE; pServerList: PIP4_ARRAY; pReserved: PVOID): DNS_STATUS; stdcall;
 {$EXTERNALSYM DnsReplaceRecordSetUTF8}
 
-{$IFDEF UNICODE}
 function DnsReplaceRecordSet(pNewSet: PDNS_RECORD; Options: DWORD; hContext: HANDLE; pServerList: PIP4_ARRAY; pReserved: PVOID): DNS_STATUS; stdcall;
 {$EXTERNALSYM DnsReplaceRecordSet}
-{$ELSE}
-function DnsReplaceRecordSet(pNewSet: PDNS_RECORD; Options: DWORD; hContext: HANDLE; pServerList: PIP4_ARRAY; pReserved: PVOID): DNS_STATUS; stdcall;
-{$EXTERNALSYM DnsReplaceRecordSet}
-{$ENDIF}
 
 //
 //  DNS name validation
@@ -1818,17 +1771,8 @@ function DnsValidateName_W(pwszName: LPCWSTR; Format: DNS_NAME_FORMAT): DNS_STAT
 function DnsValidateName_A(pszName: LPCSTR; Format: DNS_NAME_FORMAT): DNS_STATUS; stdcall;
 {$EXTERNALSYM DnsValidateName_A}
 
-{$IFDEF UNICODE}
-
-function DnsValidateName(pszName: LPCWSTR; Format: DNS_NAME_FORMAT): DNS_STATUS;
+function DnsValidateName(pszName: LPCTSTR; Format: DNS_NAME_FORMAT): DNS_STATUS;
 {$EXTERNALSYM DnsValidateName}
-
-{$ELSE}
-
-function DnsValidateName(pszName: LPCSTR; Format: DNS_NAME_FORMAT): DNS_STATUS;
-{$EXTERNALSYM DnsValidateName}
-
-{$ENDIF}
 
 //
 //  DNS name comparison
@@ -1840,13 +1784,8 @@ function DnsNameCompare_A(pName1: LPSTR; pName2: LPSTR): BOOL; stdcall;
 function DnsNameCompare_W(pName1: LPWSTR; pName2: LPWSTR): BOOL; stdcall;
 {$EXTERNALSYM DnsNameCompare_W}
 
-{$IFDEF UNICODE}
-function DnsNameCompare(pName1: LPWSTR; pName2: LPWSTR): BOOL; stdcall;
+function DnsNameCompare(pName1: LPTSTR; pName2: LPTSTR): BOOL; stdcall;
 {$EXTERNALSYM DnsNameCompare}
-{$ELSE}
-function DnsNameCompare(pName1: LPSTR; pName2: LPSTR): BOOL; stdcall;
-{$EXTERNALSYM DnsNameCompare}
-{$ENDIF}
 
 //
 //  DNS message "roll-your-own" routines
@@ -1879,38 +1818,38 @@ function DnsExtractRecordsFromMessage_UTF8(pDnsBuffer: PDNS_MESSAGE_BUFFER; wMes
 
 implementation
 
-const
-  dnsapi = 'dnsapi.dll';
+uses
+  JwaWinDLLNames;
 
-procedure INLINE_WORD_FLIP(var Out: WORD; In_: WORD);
+procedure INLINE_WORD_FLIP(var Out_: WORD; In_: WORD);
 begin
-  Out := (In_ shl 8) or (In_ shr 8);
+  Out_ := (In_ shl 8) or (In_ shr 8);
 end;
 
-procedure INLINE_HTONS(var Out: WORD; In_: WORD);
+procedure INLINE_HTONS(var Out_: WORD; In_: WORD);
 begin
-  INLINE_WORD_FLIP(Out, In_);
+  INLINE_WORD_FLIP(Out_, In_);
 end;
 
-procedure INLINE_NTOHS(var Out: WORD; In_: WORD);
+procedure INLINE_NTOHS(var Out_: WORD; In_: WORD);
 begin
-  INLINE_WORD_FLIP(Out, In_);
+  INLINE_WORD_FLIP(Out_, In_);
 end;
 
-procedure INLINE_DWORD_FLIP(var Out: DWORD; In_: DWORD);
+procedure INLINE_DWORD_FLIP(var Out_: DWORD; In_: DWORD);
 begin
-  Out := ((In_ shl 8) and $00ff0000) or (In_ shl 24) or
+  Out_ := ((In_ shl 8) and $00ff0000) or (In_ shl 24) or
     ((In_ shr 8) and $0000ff00) or (In_ shr 24);
 end;
 
-procedure INLINE_NTOHL(var Out: DWORD; In_: DWORD);
+procedure INLINE_NTOHL(var Out_: DWORD; In_: DWORD);
 begin
-  INLINE_DWORD_FLIP(Out, In_);
+  INLINE_DWORD_FLIP(Out_, In_);
 end;
 
-procedure INLINE_HTONL(var Out: DWORD; In_: DWORD);
+procedure INLINE_HTONL(var Out_: DWORD; In_: DWORD);
 begin
-  INLINE_DWORD_FLIP(Out, In_);
+  INLINE_DWORD_FLIP(Out_, In_);
 end;
 
 procedure INLINE_WRITE_FLIPPED_WORD(pout: PWORD; In_: WORD);
@@ -1963,24 +1902,6 @@ begin
   Result := (Integer(P) and 7) = 0;
 end;
 
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DnsQueryConfig: Pointer;
-
-function DnsQueryConfig;
-begin
-  GetProcedureAddress(_DnsQueryConfig, dnsapi, 'DnsQueryConfig');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DnsQueryConfig]
-  end;
-end;
-{$ELSE}
-function DnsQueryConfig; external dnsapi name 'DnsQueryConfig';
-{$ENDIF DYNAMIC_LINK}
-
 function DNS_TEXT_RECORD_LENGTH(StringCount: Integer): Integer;
 begin
   Result := SizeOf(DWORD) + ((StringCount) * SizeOf(PChar));
@@ -1998,7 +1919,6 @@ end;
 
 //#define DNS_WINS_RECORD_LENGTH(IpCount) \
 //            (FIELD_OFFSET(DNS_WINS_DATA, WinsServers) + ((IpCount) * sizeof(IP4_ADDRESS)))
-
 
 procedure DNS_RRSET_INIT(rrset: PDnsRRSet);
 begin
@@ -2019,41 +1939,8 @@ begin
   rrset^.pLastRR^.pNext := nil;
 end;
 
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DnsRecordCopyEx: Pointer;
-
-function DnsRecordCopyEx;
-begin
-  GetProcedureAddress(_DnsRecordCopyEx, dnsapi, 'DnsRecordCopyEx');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DnsRecordCopyEx]
-  end;
-end;
-{$ELSE}
-function DnsRecordCopyEx; external dnsapi name 'DnsRecordCopyEx';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DnsRecordSetCopyEx: Pointer;
-
-function DnsRecordSetCopyEx;
-begin
-  GetProcedureAddress(_DnsRecordSetCopyEx, dnsapi, 'DnsRecordSetCopyEx');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DnsRecordSetCopyEx]
-  end;
-end;
-{$ELSE}
-function DnsRecordSetCopyEx; external dnsapi name 'DnsRecordSetCopyEx';
-{$ENDIF DYNAMIC_LINK}
 {$IFDEF UNICODE}
+
 function DnsRecordCopy(pRR: PDNS_RECORD): PDNS_RECORD;
 begin
   Result := DnsRecordCopyEx(pRR, DnsCharSetUnicode, DnsCharSetUnicode);
@@ -2063,7 +1950,14 @@ function DnsRecordSetCopy(pRR: PDNS_RECORD): PDNS_RECORD;
 begin
   Result := DnsRecordSetCopyEx(pRR, DnsCharSetUnicode, DnsCharSetUnicode);
 end;
+
+function DnsValidateName(pszName: LPCWSTR; Format: DNS_NAME_FORMAT): DNS_STATUS;
+begin
+  Result := DnsValidateName_W(pszName, Format);
+end;
+
 {$ELSE}
+
 function DnsRecordCopy(pRR: PDNS_RECORD): PDNS_RECORD;
 begin
   Result := DnsRecordCopyEx(pRR, DnsCharSetAnsi, DnsCharSetAnsi);
@@ -2073,9 +1967,55 @@ function DnsRecordSetCopy(pRR: PDNS_RECORD): PDNS_RECORD;
 begin
   Result := DnsRecordSetCopyEx(pRR, DnsCharSetAnsi, DnsCharSetAnsi);
 end;
-{$ENDIF}
+
+function DnsValidateName(pszName: LPCSTR; Format: DNS_NAME_FORMAT): DNS_STATUS;
+begin
+  Result := DnsValidateName_A(pszName, Format);
+end;
+
+{$ENDIF UNICODE}
 
 {$IFDEF DYNAMIC_LINK}
+
+var
+  _DnsQueryConfig: Pointer;
+
+function DnsQueryConfig;
+begin
+  GetProcedureAddress(_DnsQueryConfig, dnsapi, 'DnsQueryConfig');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DnsQueryConfig]
+  end;
+end;
+
+var
+  _DnsRecordCopyEx: Pointer;
+
+function DnsRecordCopyEx;
+begin
+  GetProcedureAddress(_DnsRecordCopyEx, dnsapi, 'DnsRecordCopyEx');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DnsRecordCopyEx]
+  end;
+end;
+
+var
+  _DnsRecordSetCopyEx: Pointer;
+
+function DnsRecordSetCopyEx;
+begin
+  GetProcedureAddress(_DnsRecordSetCopyEx, dnsapi, 'DnsRecordSetCopyEx');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DnsRecordSetCopyEx]
+  end;
+end;
+
 var
   _DnsRecordCompare: Pointer;
 
@@ -2083,16 +2023,12 @@ function DnsRecordCompare;
 begin
   GetProcedureAddress(_DnsRecordCompare, dnsapi, 'DnsRecordCompare');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DnsRecordCompare]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DnsRecordCompare]
   end;
 end;
-{$ELSE}
-function DnsRecordCompare; external dnsapi name 'DnsRecordCompare';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DnsRecordSetCompare: Pointer;
 
@@ -2100,16 +2036,12 @@ function DnsRecordSetCompare;
 begin
   GetProcedureAddress(_DnsRecordSetCompare, dnsapi, 'DnsRecordSetCompare');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DnsRecordSetCompare]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DnsRecordSetCompare]
   end;
 end;
-{$ELSE}
-function DnsRecordSetCompare; external dnsapi name 'DnsRecordSetCompare';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DnsRecordSetDetach: Pointer;
 
@@ -2117,16 +2049,12 @@ function DnsRecordSetDetach;
 begin
   GetProcedureAddress(_DnsRecordSetDetach, dnsapi, 'DnsRecordSetDetach');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DnsRecordSetDetach]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DnsRecordSetDetach]
   end;
 end;
-{$ELSE}
-function DnsRecordSetDetach; external dnsapi name 'DnsRecordSetDetach';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DnsFreeRecordListDeep: Pointer;
 
@@ -2134,16 +2062,12 @@ procedure DnsFreeRecordListDeep;
 begin
   GetProcedureAddress(_DnsFreeRecordListDeep, dnsapi, 'DnsRecordListFree');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DnsFreeRecordListDeep]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DnsFreeRecordListDeep]
   end;
 end;
-{$ELSE}
-procedure DnsFreeRecordListDeep; external dnsapi name 'DnsRecordListFree';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DnsRecordListFree: Pointer;
 
@@ -2151,16 +2075,12 @@ procedure DnsRecordListFree;
 begin
   GetProcedureAddress(_DnsRecordListFree, dnsapi, 'DnsRecordListFree');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DnsRecordListFree]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DnsRecordListFree]
   end;
 end;
-{$ELSE}
-procedure DnsRecordListFree; external dnsapi name 'DnsRecordListFree';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DnsFree: Pointer;
 
@@ -2168,16 +2088,12 @@ procedure DnsFree;
 begin
   GetProcedureAddress(_DnsFree, dnsapi, 'DnsFree');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DnsFree]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DnsFree]
   end;
 end;
-{$ELSE}
-procedure DnsFree; external dnsapi name 'DnsFree';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DnsQuery_A: Pointer;
 
@@ -2185,16 +2101,12 @@ function DnsQuery_A;
 begin
   GetProcedureAddress(_DnsQuery_A, dnsapi, 'DnsQuery_A');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DnsQuery_A]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DnsQuery_A]
   end;
 end;
-{$ELSE}
-function DnsQuery_A; external dnsapi name 'DnsQuery_A';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DnsQuery_UTF8: Pointer;
 
@@ -2202,16 +2114,12 @@ function DnsQuery_UTF8;
 begin
   GetProcedureAddress(_DnsQuery_UTF8, dnsapi, 'DnsQuery_UTF8');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DnsQuery_UTF8]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DnsQuery_UTF8]
   end;
 end;
-{$ELSE}
-function DnsQuery_UTF8; external dnsapi name 'DnsQuery_UTF8';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DnsQuery_W: Pointer;
 
@@ -2219,53 +2127,25 @@ function DnsQuery_W;
 begin
   GetProcedureAddress(_DnsQuery_W, dnsapi, 'DnsQuery_W');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DnsQuery_W]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DnsQuery_W]
   end;
 end;
-{$ELSE}
-function DnsQuery_W; external dnsapi name 'DnsQuery_W';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DnsQuery: Pointer;
 
 function DnsQuery;
 begin
-  GetProcedureAddress(_DnsQuery, dnsapi, 'DnsQuery_W');
+  GetProcedureAddress(_DnsQuery, dnsapi, 'DnsQuery_' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DnsQuery]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DnsQuery]
   end;
 end;
-{$ELSE}
-function DnsQuery; external dnsapi name 'DnsQuery_W';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DnsQuery: Pointer;
-
-function DnsQuery;
-begin
-  GetProcedureAddress(_DnsQuery, dnsapi, 'DnsQuery_A');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DnsQuery]
-  end;
-end;
-{$ELSE}
-function DnsQuery; external dnsapi name 'DnsQuery_A';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DnsAcquireContextHandle_W: Pointer;
 
@@ -2273,16 +2153,12 @@ function DnsAcquireContextHandle_W;
 begin
   GetProcedureAddress(_DnsAcquireContextHandle_W, dnsapi, 'DnsAcquireContextHandle_W');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DnsAcquireContextHandle_W]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DnsAcquireContextHandle_W]
   end;
 end;
-{$ELSE}
-function DnsAcquireContextHandle_W; external dnsapi name 'DnsAcquireContextHandle_W';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DnsAcquireContextHandle_A: Pointer;
 
@@ -2290,53 +2166,25 @@ function DnsAcquireContextHandle_A;
 begin
   GetProcedureAddress(_DnsAcquireContextHandle_A, dnsapi, 'DnsAcquireContextHandle_A');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DnsAcquireContextHandle_A]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DnsAcquireContextHandle_A]
   end;
 end;
-{$ELSE}
-function DnsAcquireContextHandle_A; external dnsapi name 'DnsAcquireContextHandle_A';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DnsAcquireContextHandle: Pointer;
 
 function DnsAcquireContextHandle;
 begin
-  GetProcedureAddress(_DnsAcquireContextHandle, dnsapi, 'DnsAcquireContextHandle_W');
+  GetProcedureAddress(_DnsAcquireContextHandle, dnsapi, 'DnsAcquireContextHandle_' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DnsAcquireContextHandle]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DnsAcquireContextHandle]
   end;
 end;
-{$ELSE}
-function DnsAcquireContextHandle; external dnsapi name 'DnsAcquireContextHandle_W';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DnsAcquireContextHandle: Pointer;
-
-function DnsAcquireContextHandle;
-begin
-  GetProcedureAddress(_DnsAcquireContextHandle, dnsapi, 'DnsAcquireContextHandle_A');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DnsAcquireContextHandle]
-  end;
-end;
-{$ELSE}
-function DnsAcquireContextHandle; external dnsapi name 'DnsAcquireContextHandle_A';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DnsReleaseContextHandle: Pointer;
 
@@ -2344,16 +2192,12 @@ procedure DnsReleaseContextHandle;
 begin
   GetProcedureAddress(_DnsReleaseContextHandle, dnsapi, 'DnsReleaseContextHandle');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DnsReleaseContextHandle]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DnsReleaseContextHandle]
   end;
 end;
-{$ELSE}
-procedure DnsReleaseContextHandle; external dnsapi name 'DnsReleaseContextHandle';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DnsModifyRecordsInSet_W: Pointer;
 
@@ -2361,16 +2205,12 @@ function DnsModifyRecordsInSet_W;
 begin
   GetProcedureAddress(_DnsModifyRecordsInSet_W, dnsapi, 'DnsModifyRecordsInSet_W');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DnsModifyRecordsInSet_W]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DnsModifyRecordsInSet_W]
   end;
 end;
-{$ELSE}
-function DnsModifyRecordsInSet_W; external dnsapi name 'DnsModifyRecordsInSet_W';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DnsModifyRecordsInSet_A: Pointer;
 
@@ -2378,16 +2218,12 @@ function DnsModifyRecordsInSet_A;
 begin
   GetProcedureAddress(_DnsModifyRecordsInSet_A, dnsapi, 'DnsModifyRecordsInSet_A');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DnsModifyRecordsInSet_A]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DnsModifyRecordsInSet_A]
   end;
 end;
-{$ELSE}
-function DnsModifyRecordsInSet_A; external dnsapi name 'DnsModifyRecordsInSet_A';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DnsModifyRecordsInSet_UTF8: Pointer;
 
@@ -2395,54 +2231,25 @@ function DnsModifyRecordsInSet_UTF8;
 begin
   GetProcedureAddress(_DnsModifyRecordsInSet_UTF8, dnsapi, 'DnsModifyRecordsInSet_UTF8');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DnsModifyRecordsInSet_UTF8]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DnsModifyRecordsInSet_UTF8]
   end;
 end;
-{$ELSE}
-function DnsModifyRecordsInSet_UTF8; external dnsapi name 'DnsModifyRecordsInSet_UTF8';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DnsModifyRecordsInSet: Pointer;
 
 function DnsModifyRecordsInSet;
 begin
-  GetProcedureAddress(_DnsModifyRecordsInSet, dnsapi, 'DnsModifyRecordsInSet_W');
+  GetProcedureAddress(_DnsModifyRecordsInSet, dnsapi, 'DnsModifyRecordsInSet_' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DnsModifyRecordsInSet]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DnsModifyRecordsInSet]
   end;
 end;
-{$ELSE}
-function DnsModifyRecordsInSet; external dnsapi name 'DnsModifyRecordsInSet_W';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DnsModifyRecordsInSet: Pointer;
-
-function DnsModifyRecordsInSet;
-begin
-  GetProcedureAddress(_DnsModifyRecordsInSet, dnsapi, 'DnsModifyRecordsInSet_A');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DnsModifyRecordsInSet]
-  end;
-end;
-{$ELSE}
-function DnsModifyRecordsInSet; external dnsapi name 'DnsModifyRecordsInSet_A';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DnsReplaceRecordSetW: Pointer;
 
@@ -2450,16 +2257,12 @@ function DnsReplaceRecordSetW;
 begin
   GetProcedureAddress(_DnsReplaceRecordSetW, dnsapi, 'DnsReplaceRecordSetW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DnsReplaceRecordSetW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DnsReplaceRecordSetW]
   end;
 end;
-{$ELSE}
-function DnsReplaceRecordSetW; external dnsapi name 'DnsReplaceRecordSetW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DnsReplaceRecordSetA: Pointer;
 
@@ -2467,16 +2270,12 @@ function DnsReplaceRecordSetA;
 begin
   GetProcedureAddress(_DnsReplaceRecordSetA, dnsapi, 'DnsReplaceRecordSetA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DnsReplaceRecordSetA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DnsReplaceRecordSetA]
   end;
 end;
-{$ELSE}
-function DnsReplaceRecordSetA; external dnsapi name 'DnsReplaceRecordSetA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DnsReplaceRecordSetUTF8: Pointer;
 
@@ -2484,53 +2283,25 @@ function DnsReplaceRecordSetUTF8;
 begin
   GetProcedureAddress(_DnsReplaceRecordSetUTF8, dnsapi, 'DnsReplaceRecordSetUTF8');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DnsReplaceRecordSetUTF8]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DnsReplaceRecordSetUTF8]
   end;
 end;
-{$ELSE}
-function DnsReplaceRecordSetUTF8; external dnsapi name 'DnsReplaceRecordSetUTF8';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DnsReplaceRecordSet: Pointer;
 
 function DnsReplaceRecordSet;
 begin
-  GetProcedureAddress(_DnsReplaceRecordSet, dnsapi, 'DnsReplaceRecordSetW');
+  GetProcedureAddress(_DnsReplaceRecordSet, dnsapi, 'DnsReplaceRecordSet' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DnsReplaceRecordSet]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DnsReplaceRecordSet]
   end;
 end;
-{$ELSE}
-function DnsReplaceRecordSet; external dnsapi name 'DnsReplaceRecordSetW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DnsReplaceRecordSet: Pointer;
-
-function DnsReplaceRecordSet;
-begin
-  GetProcedureAddress(_DnsReplaceRecordSet, dnsapi, 'DnsReplaceRecordSetA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DnsReplaceRecordSet]
-  end;
-end;
-{$ELSE}
-function DnsReplaceRecordSet; external dnsapi name 'DnsReplaceRecordSetA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DnsValidateName_UTF8: Pointer;
 
@@ -2538,16 +2309,12 @@ function DnsValidateName_UTF8;
 begin
   GetProcedureAddress(_DnsValidateName_UTF8, dnsapi, 'DnsValidateName_UTF8');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DnsValidateName_UTF8]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DnsValidateName_UTF8]
   end;
 end;
-{$ELSE}
-function DnsValidateName_UTF8; external dnsapi name 'DnsValidateName_UTF8';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DnsValidateName_W: Pointer;
 
@@ -2555,16 +2322,12 @@ function DnsValidateName_W;
 begin
   GetProcedureAddress(_DnsValidateName_W, dnsapi, 'DnsValidateName_W');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DnsValidateName_W]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DnsValidateName_W]
   end;
 end;
-{$ELSE}
-function DnsValidateName_W; external dnsapi name 'DnsValidateName_W';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DnsValidateName_A: Pointer;
 
@@ -2572,27 +2335,12 @@ function DnsValidateName_A;
 begin
   GetProcedureAddress(_DnsValidateName_A, dnsapi, 'DnsValidateName_A');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DnsValidateName_A]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DnsValidateName_A]
   end;
 end;
-{$ELSE}
-function DnsValidateName_A; external dnsapi name 'DnsValidateName_A';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-function DnsValidateName(pszName: LPCWSTR; Format: DNS_NAME_FORMAT): DNS_STATUS;
-begin
-  Result := DnsValidateName_W(pszName, Format);
-end;
-{$ELSE}
-function DnsValidateName(pszName: LPCSTR; Format: DNS_NAME_FORMAT): DNS_STATUS;
-begin
-  Result := DnsValidateName_A(pszName, Format);
-end;
-{$ENDIF}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DnsNameCompare_A: Pointer;
 
@@ -2600,16 +2348,12 @@ function DnsNameCompare_A;
 begin
   GetProcedureAddress(_DnsNameCompare_A, dnsapi, 'DnsNameCompare_A');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DnsNameCompare_A]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DnsNameCompare_A]
   end;
 end;
-{$ELSE}
-function DnsNameCompare_A; external dnsapi name 'DnsNameCompare_A';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DnsNameCompare_W: Pointer;
 
@@ -2617,53 +2361,25 @@ function DnsNameCompare_W;
 begin
   GetProcedureAddress(_DnsNameCompare_W, dnsapi, 'DnsNameCompare_W');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DnsNameCompare_W]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DnsNameCompare_W]
   end;
 end;
-{$ELSE}
-function DnsNameCompare_W; external dnsapi name 'DnsNameCompare_W';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DnsNameCompare: Pointer;
 
 function DnsNameCompare;
 begin
-  GetProcedureAddress(_DnsNameCompare, dnsapi, 'DnsNameCompare_W');
+  GetProcedureAddress(_DnsNameCompare, dnsapi, 'DnsNameCompare_' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DnsNameCompare]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DnsNameCompare]
   end;
 end;
-{$ELSE}
-function DnsNameCompare; external dnsapi name 'DnsNameCompare_W';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DnsNameCompare: Pointer;
-
-function DnsNameCompare;
-begin
-  GetProcedureAddress(_DnsNameCompare, dnsapi, 'DnsNameCompare_A');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DnsNameCompare]
-  end;
-end;
-{$ELSE}
-function DnsNameCompare; external dnsapi name 'DnsNameCompare_A';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DnsWriteQuestionToBuffer_W: Pointer;
 
@@ -2671,16 +2387,12 @@ function DnsWriteQuestionToBuffer_W;
 begin
   GetProcedureAddress(_DnsWriteQuestionToBuffer_W, dnsapi, 'DnsWriteQuestionToBuffer_W');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DnsWriteQuestionToBuffer_W]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DnsWriteQuestionToBuffer_W]
   end;
 end;
-{$ELSE}
-function DnsWriteQuestionToBuffer_W; external dnsapi name 'DnsWriteQuestionToBuffer_W';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DnsWriteQuestionToBuffer_UTF8: Pointer;
 
@@ -2688,16 +2400,12 @@ function DnsWriteQuestionToBuffer_UTF8;
 begin
   GetProcedureAddress(_DnsWriteQuestionToBuffer_UTF8, dnsapi, 'DnsWriteQuestionToBuffer_UTF8');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DnsWriteQuestionToBuffer_UTF8]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DnsWriteQuestionToBuffer_UTF8]
   end;
 end;
-{$ELSE}
-function DnsWriteQuestionToBuffer_UTF8; external dnsapi name 'DnsWriteQuestionToBuffer_UTF8';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DnsExtractRecordsFromMessage_W: Pointer;
 
@@ -2705,16 +2413,12 @@ function DnsExtractRecordsFromMessage_W;
 begin
   GetProcedureAddress(_DnsExtractRecordsFromMessage_W, dnsapi, 'DnsExtractRecordsFromMessage_W');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DnsExtractRecordsFromMessage_W]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DnsExtractRecordsFromMessage_W]
   end;
 end;
-{$ELSE}
-function DnsExtractRecordsFromMessage_W; external dnsapi name 'DnsExtractRecordsFromMessage_W';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DnsExtractRecFromMessage_UTF8: Pointer;
 
@@ -2722,14 +2426,50 @@ function DnsExtractRecordsFromMessage_UTF8;
 begin
   GetProcedureAddress(_DnsExtractRecFromMessage_UTF8, dnsapi, 'DnsExtractRecordsFromMessage_UTF8');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DnsExtractRecFromMessage_UTF8]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DnsExtractRecFromMessage_UTF8]
   end;
 end;
-{$ELSE}
-function DnsExtractRecordsFromMessage_UTF8; external dnsapi name 'DnsExtractRecordsFromMessage_UTF8';
-{$ENDIF DYNAMIC_LINK}
 
+{$ELSE}
+
+function DnsQueryConfig; external dnsapi name 'DnsQueryConfig';
+function DnsRecordCopyEx; external dnsapi name 'DnsRecordCopyEx';
+function DnsRecordSetCopyEx; external dnsapi name 'DnsRecordSetCopyEx';
+function DnsRecordCompare; external dnsapi name 'DnsRecordCompare';
+function DnsRecordSetCompare; external dnsapi name 'DnsRecordSetCompare';
+function DnsRecordSetDetach; external dnsapi name 'DnsRecordSetDetach';
+procedure DnsFreeRecordListDeep; external dnsapi name 'DnsRecordListFree';
+procedure DnsRecordListFree; external dnsapi name 'DnsRecordListFree';
+procedure DnsFree; external dnsapi name 'DnsFree';
+function DnsQuery_A; external dnsapi name 'DnsQuery_A';
+function DnsQuery_UTF8; external dnsapi name 'DnsQuery_UTF8';
+function DnsQuery_W; external dnsapi name 'DnsQuery_W';
+function DnsQuery; external dnsapi name 'DnsQuery_' + AWSuffix;
+function DnsAcquireContextHandle_W; external dnsapi name 'DnsAcquireContextHandle_W';
+function DnsAcquireContextHandle_A; external dnsapi name 'DnsAcquireContextHandle_A';
+function DnsAcquireContextHandle; external dnsapi name 'DnsAcquireContextHandle_' + AWSuffix;
+procedure DnsReleaseContextHandle; external dnsapi name 'DnsReleaseContextHandle';
+function DnsModifyRecordsInSet_W; external dnsapi name 'DnsModifyRecordsInSet_W';
+function DnsModifyRecordsInSet_A; external dnsapi name 'DnsModifyRecordsInSet_A';
+function DnsModifyRecordsInSet_UTF8; external dnsapi name 'DnsModifyRecordsInSet_UTF8';
+function DnsModifyRecordsInSet; external dnsapi name 'DnsModifyRecordsInSet_' + AWSuffix;
+function DnsReplaceRecordSetW; external dnsapi name 'DnsReplaceRecordSetW';
+function DnsReplaceRecordSetA; external dnsapi name 'DnsReplaceRecordSetA';
+function DnsReplaceRecordSetUTF8; external dnsapi name 'DnsReplaceRecordSetUTF8';
+function DnsReplaceRecordSet; external dnsapi name 'DnsReplaceRecordSet' + AWSuffix;
+function DnsValidateName_UTF8; external dnsapi name 'DnsValidateName_UTF8';
+function DnsValidateName_W; external dnsapi name 'DnsValidateName_W';
+function DnsValidateName_A; external dnsapi name 'DnsValidateName_A';
+function DnsNameCompare_A; external dnsapi name 'DnsNameCompare_A';
+function DnsNameCompare_W; external dnsapi name 'DnsNameCompare_W';
+function DnsNameCompare; external dnsapi name 'DnsNameCompare_' + AWSuffix;
+function DnsWriteQuestionToBuffer_W; external dnsapi name 'DnsWriteQuestionToBuffer_W';
+function DnsWriteQuestionToBuffer_UTF8; external dnsapi name 'DnsWriteQuestionToBuffer_UTF8';
+function DnsExtractRecordsFromMessage_W; external dnsapi name 'DnsExtractRecordsFromMessage_W';
+function DnsExtractRecordsFromMessage_UTF8; external dnsapi name 'DnsExtractRecordsFromMessage_UTF8';
+
+{$ENDIF DYNAMIC_LINK}
 
 end.

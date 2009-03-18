@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { I/O Control Codes API interface Unit for Object Pascal                       }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: winioctl.h, released June 2000. The original Pascal    }
 { code is: WinIoCtl.pas, released December 2000. The initial developer of the  }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaWinIoctl.pas,v 1.7 2005/09/03 14:27:49 marquardt Exp $
 
 unit JwaWinIoctl;
 
@@ -49,12 +50,12 @@ unit JwaWinIoctl;
 {$HPPEMIT '#include "WinIoCtl.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinNT, JwaWinType;
+  JwaWindows;
 
 //
 // Device interface class GUIDs.
@@ -314,9 +315,9 @@ const
 //   METHOD_DIRECT_FROM_HARDWARE (reads, aka METHOD_OUT_DIRECT)
 //
 
-  METHOD_DIRECT_TO_HARDWARE     = METHOD_OUT_DIRECT;
+  METHOD_DIRECT_TO_HARDWARE     = METHOD_IN_DIRECT;
   {$EXTERNALSYM METHOD_DIRECT_TO_HARDWARE}
-  METHOD_DIRECT_FROM_HARDWARE   = METHOD_IN_DIRECT;
+  METHOD_DIRECT_FROM_HARDWARE   = METHOD_OUT_DIRECT;
   {$EXTERNALSYM METHOD_DIRECT_FROM_HARDWARE}
 
 //
@@ -533,6 +534,23 @@ type
   PStorageBusResetRequest = PSTORAGE_BUS_RESET_REQUEST;
 
 //
+// Break reservation is sent to the Adapter/FDO with the given lun information.
+//
+
+  STORAGE_BREAK_RESERVATION_REQUEST = record
+    Length: DWORD;
+    _unused: Byte;
+    PathId: Byte;
+    TargetId: Byte;
+    Lun: Byte;
+  end;
+  {$EXTERNALSYM STORAGE_BREAK_RESERVATION_REQUEST}
+  PSTORAGE_BREAK_RESERVATION_REQUEST = ^STORAGE_BREAK_RESERVATION_REQUEST;
+  {$EXTERNALSYM PSTORAGE_BREAK_RESERVATION_REQUEST}
+  TStorageBreakReservationRequest = STORAGE_BREAK_RESERVATION_REQUEST;
+  PStorageBreakReservationRequest = PSTORAGE_BREAK_RESERVATION_REQUEST;  
+
+//
 // IOCTL_STORAGE_MEDIA_REMOVAL disables the mechanism
 // on a storage device that ejects media. This function
 // may or may not be supported on storage devices that
@@ -560,7 +578,7 @@ type
 
   _CLASS_MEDIA_CHANGE_CONTEXT = record
     MediaChangeCount: DWORD;
-    NewState: DWORD;		// see MEDIA_CHANGE_DETECTION_STATE enum in classpnp.h in DDK
+    NewState: DWORD;  // see MEDIA_CHANGE_DETECTION_STATE enum in classpnp.h in DDK
   end;
   {$EXTERNALSYM _CLASS_MEDIA_CHANGE_CONTEXT}
   CLASS_MEDIA_CHANGE_CONTEXT = _CLASS_MEDIA_CHANGE_CONTEXT;
@@ -1037,10 +1055,10 @@ const
     ($0036 shl 2) or METHOD_BUFFERED);
   {$EXTERNALSYM IOCTL_DISK_SET_CACHE_INFORMATION}
 
-  IOCTL_DISK_GET_WRITE_CACHE_STATE = (
+  OBSOLETE_DISK_GET_WRITE_CACHE_STATE = (
     (IOCTL_DISK_BASE shl 16) or (FILE_READ_ACCESS shl 14) or
     ($0037 shl 2) or METHOD_BUFFERED);
-  {$EXTERNALSYM IOCTL_DISK_GET_WRITE_CACHE_STATE}
+  {$EXTERNALSYM OBSOLETE_DISK_GET_WRITE_CACHE_STATE}
 
   IOCTL_DISK_DELETE_DRIVE_LAYOUT = (
     (IOCTL_DISK_BASE shl 16) or ((FILE_READ_ACCESS or FILE_WRITE_ACCESS) shl 14) or
@@ -1521,7 +1539,7 @@ type
 //
 
 const
-  GPT_ATTRIBUTE_PLATFORM_REQUIRED = ($0000000000000001);
+  GPT_ATTRIBUTE_PLATFORM_REQUIRED = $0000000000000001;
   {$EXTERNALSYM GPT_ATTRIBUTE_PLATFORM_REQUIRED}
 
 //
@@ -1531,9 +1549,9 @@ const
 
   GPT_BASIC_DATA_ATTRIBUTE_NO_DRIVE_LETTER = DWORD($8000000000000000);
   {$EXTERNALSYM GPT_BASIC_DATA_ATTRIBUTE_NO_DRIVE_LETTER}
-  GPT_BASIC_DATA_ATTRIBUTE_HIDDEN          = ($4000000000000000);
+  GPT_BASIC_DATA_ATTRIBUTE_HIDDEN          = $4000000000000000;
   {$EXTERNALSYM GPT_BASIC_DATA_ATTRIBUTE_HIDDEN}
-  GPT_BASIC_DATA_ATTRIBUTE_READ_ONLY       = ($1000000000000000);
+  GPT_BASIC_DATA_ATTRIBUTE_READ_ONLY       = $1000000000000000;
   {$EXTERNALSYM GPT_BASIC_DATA_ATTRIBUTE_READ_ONLY}
 
 //
@@ -1800,7 +1818,6 @@ type
   TDiskDetectionInfo = DISK_DETECTION_INFO;
   PDiskDetectionInfo = PDISK_DETECTION_INFO;
 
-
   PDISK_PARTITION_INFO = ^DISK_PARTITION_INFO;
   {$EXTERNALSYM PDISK_PARTITION_INFO}
   _DISK_PARTITION_INFO = record
@@ -1825,12 +1842,6 @@ type
 // followed by a DISK_DETECTION_DATA structure.
 //
 
-function DiskGeometryGetPartition(Geometry: DWORD): PDISK_PARTITION_INFO;
-{$EXTERNALSYM DiskGeometryGetPartition}
-
-function DiskGeometryGetDetect(Geometry: DWORD): PDISK_DETECTION_INFO;
-{$EXTERNALSYM DiskGeometryGetDetect}
-
 type
   PDISK_GEOMETRY_EX = ^DISK_GEOMETRY_EX;
   {$EXTERNALSYM PDISK_GEOMETRY_EX}
@@ -1845,12 +1856,18 @@ type
   TDiskGeometryEx = DISK_GEOMETRY_EX;
   PDiskGeometryEx = PDISK_GEOMETRY_EX;
 
+function DiskGeometryGetPartition(Geometry: PDiskGeometryEx): PDiskPartitionInfo;
+{$EXTERNALSYM DiskGeometryGetPartition}
+
+function DiskGeometryGetDetect(Geometry: PDiskGeometryEx): PDiskDetectionInfo;
+{$EXTERNALSYM DiskGeometryGetDetect}
+
 //
 // IOCTL_DISK_CONTROLLER_NUMBER returns the controller and disk
 // number for the handle.  This is used to determine if a disk
 // is attached to the primary or secondary IDE controller.
 //
-
+type
   PDISK_CONTROLLER_NUMBER = ^DISK_CONTROLLER_NUMBER;
   {$EXTERNALSYM PDISK_CONTROLLER_NUMBER}
   _DISK_CONTROLLER_NUMBER = record
@@ -1880,18 +1897,6 @@ type
   DISK_CACHE_RETENTION_PRIORITY = (EqualPriority, KeepPrefetchedData, KeepReadData);
   {$EXTERNALSYM DISK_CACHE_RETENTION_PRIORITY}
   TDiskCacheRetentionPriority = DISK_CACHE_RETENTION_PRIORITY;
-
-  _DISK_WRITE_CACHE_STATE = (
-    DiskWriteCacheNormal,
-    DiskWriteCacheForceDisable,
-    DiskWriteCacheDisableNotSupported);
-  {$EXTERNALSYM _DISK_WRITE_CACHE_STATE}
-  DISK_WRITE_CACHE_STATE = _DISK_WRITE_CACHE_STATE;
-  {$EXTERNALSYM DISK_WRITE_CACHE_STATE}
-  PDISK_WRITE_CACHE_STATE = ^DISK_WRITE_CACHE_STATE;
-  {$EXTERNALSYM PDISK_WRITE_CACHE_STATE}
-  TDiskWriteCacheState = DISK_WRITE_CACHE_STATE;
-  PDiskWriteCacheState = PDISK_WRITE_CACHE_STATE;
 
   TDCIScalarPrefetch = record
     Minimum: WORD;
@@ -2337,7 +2342,6 @@ const
   {$EXTERNALSYM SMART_CYL_LOW}
   SMART_CYL_HI  = $C2;
   {$EXTERNALSYM SMART_CYL_HI}
-
 
 //
 // SENDCMDINPARAMS contains the input parameters for the
@@ -3454,7 +3458,7 @@ const
     (5 shl 2) or METHOD_BUFFERED);
   {$EXTERNALSYM FSCTL_OPLOCK_BREAK_NOTIFY}
 
-  FSCTL_LOCK_VOLUME = ((FILE_DEVICE_FILE_SYSTEM shl 16) or (FILE_ANY_ACCESS shl 14) or (6 shl 2) or METHOD_BUFFERED);
+  FSCTL_LOCK_VOLUME = (FILE_DEVICE_FILE_SYSTEM shl 16) or (FILE_ANY_ACCESS shl 14) or (6 shl 2) or METHOD_BUFFERED;
   {$EXTERNALSYM FSCTL_LOCK_VOLUME}
 
   FSCTL_UNLOCK_VOLUME = (
@@ -3593,7 +3597,7 @@ const
 
   FSCTL_FIND_FILES_BY_SID = (
     (FILE_DEVICE_FILE_SYSTEM shl 16) or (FILE_ANY_ACCESS shl 14) or
-    (35 shl 2) or METHOD_NEITHER);
+    (35 shl 2) or METHOD_NEITHER);  
   {$EXTERNALSYM FSCTL_FIND_FILES_BY_SID}
 
 // decommissioned fsctl value                                             36
@@ -3986,7 +3990,7 @@ type
 {$ENDIF _WIN64}
 
 //
-// Structure for FSCTL_FIND_FILES_BY_SID
+// Structures for FSCTL_FIND_FILES_BY_SID
 //
 
   PFIND_BY_SID_DATA = ^FIND_BY_SID_DATA;
@@ -3998,6 +4002,17 @@ type
   {$EXTERNALSYM FIND_BY_SID_DATA}
   TFindBySidData = FIND_BY_SID_DATA;
   PFindBySidData = PFIND_BY_SID_DATA;
+
+  FIND_BY_SID_OUTPUT = record
+    NextEntryOffset: DWORD;
+    FileIndex: DWORD;
+    FileNameLength: DWORD;
+    FileName: array [0..0] of WCHAR;
+  end;
+  {$EXTERNALSYM FIND_BY_SID_OUTPUT}
+  PFIND_BY_SID_OUTPUT = ^FIND_BY_SID_OUTPUT;
+  TFindBySidOutput = FIND_BY_SID_OUTPUT;
+  PFindBySidOutput = PFIND_BY_SID_OUTPUT;  
 
 //
 //  The following structures apply to Usn operations.
@@ -4093,48 +4108,48 @@ type
   PUsnRecord = PUSN_RECORD;
 
 const
-  USN_PAGE_SIZE = ($1000);
+  USN_PAGE_SIZE = $1000;
   {$EXTERNALSYM USN_PAGE_SIZE}
 
-  USN_REASON_DATA_OVERWRITE        = ($00000001);
+  USN_REASON_DATA_OVERWRITE        = $00000001;
   {$EXTERNALSYM USN_REASON_DATA_OVERWRITE}
-  USN_REASON_DATA_EXTEND           = ($00000002);
+  USN_REASON_DATA_EXTEND           = $00000002;
   {$EXTERNALSYM USN_REASON_DATA_EXTEND}
-  USN_REASON_DATA_TRUNCATION       = ($00000004);
+  USN_REASON_DATA_TRUNCATION       = $00000004;
   {$EXTERNALSYM USN_REASON_DATA_TRUNCATION}
-  USN_REASON_NAMED_DATA_OVERWRITE  = ($00000010);
+  USN_REASON_NAMED_DATA_OVERWRITE  = $00000010;
   {$EXTERNALSYM USN_REASON_NAMED_DATA_OVERWRITE}
-  USN_REASON_NAMED_DATA_EXTEND     = ($00000020);
+  USN_REASON_NAMED_DATA_EXTEND     = $00000020;
   {$EXTERNALSYM USN_REASON_NAMED_DATA_EXTEND}
-  USN_REASON_NAMED_DATA_TRUNCATION = ($00000040);
+  USN_REASON_NAMED_DATA_TRUNCATION = $00000040;
   {$EXTERNALSYM USN_REASON_NAMED_DATA_TRUNCATION}
-  USN_REASON_FILE_CREATE           = ($00000100);
+  USN_REASON_FILE_CREATE           = $00000100;
   {$EXTERNALSYM USN_REASON_FILE_CREATE}
-  USN_REASON_FILE_DELETE           = ($00000200);
+  USN_REASON_FILE_DELETE           = $00000200;
   {$EXTERNALSYM USN_REASON_FILE_DELETE}
-  USN_REASON_EA_CHANGE             = ($00000400);
+  USN_REASON_EA_CHANGE             = $00000400;
   {$EXTERNALSYM USN_REASON_EA_CHANGE}
-  USN_REASON_SECURITY_CHANGE       = ($00000800);
+  USN_REASON_SECURITY_CHANGE       = $00000800;
   {$EXTERNALSYM USN_REASON_SECURITY_CHANGE}
-  USN_REASON_RENAME_OLD_NAME       = ($00001000);
+  USN_REASON_RENAME_OLD_NAME       = $00001000;
   {$EXTERNALSYM USN_REASON_RENAME_OLD_NAME}
-  USN_REASON_RENAME_NEW_NAME       = ($00002000);
+  USN_REASON_RENAME_NEW_NAME       = $00002000;
   {$EXTERNALSYM USN_REASON_RENAME_NEW_NAME}
-  USN_REASON_INDEXABLE_CHANGE      = ($00004000);
+  USN_REASON_INDEXABLE_CHANGE      = $00004000;
   {$EXTERNALSYM USN_REASON_INDEXABLE_CHANGE}
-  USN_REASON_BASIC_INFO_CHANGE     = ($00008000);
+  USN_REASON_BASIC_INFO_CHANGE     = $00008000;
   {$EXTERNALSYM USN_REASON_BASIC_INFO_CHANGE}
-  USN_REASON_HARD_LINK_CHANGE      = ($00010000);
+  USN_REASON_HARD_LINK_CHANGE      = $00010000;
   {$EXTERNALSYM USN_REASON_HARD_LINK_CHANGE}
-  USN_REASON_COMPRESSION_CHANGE    = ($00020000);
+  USN_REASON_COMPRESSION_CHANGE    = $00020000;
   {$EXTERNALSYM USN_REASON_COMPRESSION_CHANGE}
-  USN_REASON_ENCRYPTION_CHANGE     = ($00040000);
+  USN_REASON_ENCRYPTION_CHANGE     = $00040000;
   {$EXTERNALSYM USN_REASON_ENCRYPTION_CHANGE}
-  USN_REASON_OBJECT_ID_CHANGE      = ($00080000);
+  USN_REASON_OBJECT_ID_CHANGE      = $00080000;
   {$EXTERNALSYM USN_REASON_OBJECT_ID_CHANGE}
-  USN_REASON_REPARSE_POINT_CHANGE  = ($00100000);
+  USN_REASON_REPARSE_POINT_CHANGE  = $00100000;
   {$EXTERNALSYM USN_REASON_REPARSE_POINT_CHANGE}
-  USN_REASON_STREAM_CHANGE         = ($00200000);
+  USN_REASON_STREAM_CHANGE         = $00200000;
   {$EXTERNALSYM USN_REASON_STREAM_CHANGE}
 
   USN_REASON_CLOSE = DWORD($80000000);
@@ -4175,12 +4190,12 @@ type
   PDeleteUsnJournalData = PDELETE_USN_JOURNAL_DATA;
 
 const
-  USN_DELETE_FLAG_DELETE = ($00000001);
+  USN_DELETE_FLAG_DELETE = $00000001;
   {$EXTERNALSYM USN_DELETE_FLAG_DELETE}
-  USN_DELETE_FLAG_NOTIFY = ($00000002);
+  USN_DELETE_FLAG_NOTIFY = $00000002;
   {$EXTERNALSYM USN_DELETE_FLAG_NOTIFY}
 
-  USN_DELETE_VALID_FLAGS = ($00000003);
+  USN_DELETE_VALID_FLAGS = $00000003;
   {$EXTERNALSYM USN_DELETE_VALID_FLAGS}
 
 //
@@ -4235,13 +4250,12 @@ type
 //
 
 const
-  USN_SOURCE_DATA_MANAGEMENT        = ($00000001);
+  USN_SOURCE_DATA_MANAGEMENT        = $00000001;
   {$EXTERNALSYM USN_SOURCE_DATA_MANAGEMENT}
-  USN_SOURCE_AUXILIARY_DATA         = ($00000002);
+  USN_SOURCE_AUXILIARY_DATA         = $00000002;
   {$EXTERNALSYM USN_SOURCE_AUXILIARY_DATA}
-  USN_SOURCE_REPLICATION_MANAGEMENT = ($00000004);
+  USN_SOURCE_REPLICATION_MANAGEMENT = $00000004;
   {$EXTERNALSYM USN_SOURCE_REPLICATION_MANAGEMENT}
-
 
 //
 //  Flags for the HandleInfo field above
@@ -4273,9 +4287,9 @@ type
 //
 
 const
-  VOLUME_IS_DIRTY          = ($00000001);
+  VOLUME_IS_DIRTY          = $00000001;
   {$EXTERNALSYM VOLUME_IS_DIRTY}
-  VOLUME_UPGRADE_SCHEDULED = ($00000002);
+  VOLUME_UPGRADE_SCHEDULED = $00000002;
   {$EXTERNALSYM VOLUME_UPGRADE_SCHEDULED}
 
 //
@@ -4626,10 +4640,10 @@ type
   PDecryptionStatusBuffer = PDECRYPTION_STATUS_BUFFER;
 
 const
-  ENCRYPTION_FORMAT_DEFAULT = ($01);
+  ENCRYPTION_FORMAT_DEFAULT = $01;
   {$EXTERNALSYM ENCRYPTION_FORMAT_DEFAULT}
 
-  COMPRESSION_FORMAT_SPARSE = ($4000);
+  COMPRESSION_FORMAT_SPARSE = $4000;
   {$EXTERNALSYM COMPRESSION_FORMAT_SPARSE}
 
 //
@@ -4973,21 +4987,20 @@ end;
 
 function IsFTPartition(PartitionType: DWORD): Boolean;
 begin
-{     (((PartitionType)&PARTITION_NTFT) && IsRecognizedPartition(PartitionType)) }
-  Result := ((PartitionType and PARTITION_NTFT) = PARTITION_NTFT) and IsRecognizedPartition(PartitionType);
+  Result := ((PartitionType and PARTITION_NTFT) <> 0) and IsRecognizedPartition(PartitionType);
 end;
 
-function DiskGeometryGetPartition(Geometry: DWORD): PDISK_PARTITION_INFO;
+function DiskGeometryGetPartition(Geometry: PDiskGeometryEx): PDiskPartitionInfo;
 begin
-//((PDISK_PARTITION_INFO)((Geometry)+1))
-  Result := PDISK_PARTITION_INFO(Geometry + 1);
+  Result := @Geometry^.Data[0];
 end;
 
-function DiskGeometryGetDetect(Geometry: DWORD): PDISK_DETECTION_INFO;
+function DiskGeometryGetDetect(Geometry: PDiskGeometryEx): PDiskDetectionInfo;
+var
+  Partition: PDiskPartitionInfo;
 begin
-//((PDISK_DETECTION_INFO)(((PBYTE)DiskGeometryGetPartition(Geometry)+\
-//DiskGeometryGetPartition(Geometry)->SizeOfPartitionInfo)))
-  Result := PDISK_DETECTION_INFO(DWORD_PTR(DiskGeometryGetPartition(Geometry)) + DiskGeometryGetPartition(Geometry)^.SizeOfPartitionInfo);
+  Partition := DiskGeometryGetPartition(Geometry);
+  Result := PDiskDetectionInfo(PChar(Partition) + Partition^.SizeOfPartitionInfo*SizeOf(DWORD));
 end;
 
 end.

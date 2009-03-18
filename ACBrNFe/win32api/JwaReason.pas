@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Windows Shutdown Reason Codes interface Unit for Object Pascal               }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: reason.h, released June 2000. The original Pascal      }
 { code is: Reason.pas, released December 2000. The initial developer of the    }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,25 +35,33 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaReason.pas,v 1.8 2005/09/04 07:02:38 marquardt Exp $
+
+{$IFNDEF JWA_INCLUDEMODE}
 
 unit JwaReason;
 
 {$WEAKPACKAGEUNIT}
 
-{$HPPEMIT ''}
-{$HPPEMIT '#include "WinReg.h"'}
-{$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
   JwaWinType;
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_INTERFACESECTION}
+
+{$HPPEMIT ''}
+{$HPPEMIT '#include "WinReg.h"'}
+{$HPPEMIT ''}
 
 // Reason flags
 
@@ -154,10 +161,16 @@ const
   {$EXTERNALSYM SHTDN_REASON_MINOR_SECURITYFIX_UNINSTALL}
   SHTDN_REASON_MINOR_MMC                   = $00000019;
   {$EXTERNALSYM SHTDN_REASON_MINOR_MMC}
+  SHTDN_REASON_MINOR_TERMSRV               = $00000020;
+  {$EXTERNALSYM SHTDN_REASON_MINOR_TERMSRV}
+  SHTDN_REASON_MINOR_DC_PROMOTION          = $00000021;
+  {$EXTERNALSYM SHTDN_REASON_MINOR_DC_PROMOTION}
+  SHTDN_REASON_MINOR_DC_DEMOTION           = $00000022;
+  {$EXTERNALSYM SHTDN_REASON_MINOR_DC_DEMOTION}
 
   SHTDN_REASON_UNKNOWN = SHTDN_REASON_MINOR_NONE;
   {$EXTERNALSYM SHTDN_REASON_UNKNOWN}
-  SHTDN_REASON_LEGACY_API = (SHTDN_REASON_MAJOR_LEGACY_API or SHTDN_REASON_FLAG_PLANNED);
+  SHTDN_REASON_LEGACY_API = SHTDN_REASON_MAJOR_LEGACY_API or SHTDN_REASON_FLAG_PLANNED;
   {$EXTERNALSYM SHTDN_REASON_LEGACY_API}
 
 // This mask cuts out UI flags.
@@ -167,13 +180,13 @@ const
 
 // Convenience flags.
 
-  PCLEANUI = (SHTDN_REASON_FLAG_PLANNED or SHTDN_REASON_FLAG_CLEAN_UI);
+  PCLEANUI = SHTDN_REASON_FLAG_PLANNED or SHTDN_REASON_FLAG_CLEAN_UI;
   {$EXTERNALSYM PCLEANUI}
-  UCLEANUI = (SHTDN_REASON_FLAG_CLEAN_UI);
+  UCLEANUI = SHTDN_REASON_FLAG_CLEAN_UI;
   {$EXTERNALSYM UCLEANUI}
-  PDIRTYUI = (SHTDN_REASON_FLAG_PLANNED or SHTDN_REASON_FLAG_DIRTY_UI);
+  PDIRTYUI = SHTDN_REASON_FLAG_PLANNED or SHTDN_REASON_FLAG_DIRTY_UI;
   {$EXTERNALSYM PDIRTYUI}
-  UDIRTYUI = (SHTDN_REASON_FLAG_DIRTY_UI);
+  UDIRTYUI = SHTDN_REASON_FLAG_DIRTY_UI;
   {$EXTERNALSYM UDIRTYUI}
 
 (*
@@ -193,15 +206,15 @@ const
   {$EXTERNALSYM SHUTDOWN_TYPE_LEN}
 
 (*
- *	S.E.T. policy value
+ * S.E.T. policy value
  *
  *)
 
-  POLICY_SHOWREASONUI_NEVER	      = 0;
+  POLICY_SHOWREASONUI_NEVER           = 0;
   {$EXTERNALSYM POLICY_SHOWREASONUI_NEVER}
-  POLICY_SHOWREASONUI_ALWAYS	      = 1;
+  POLICY_SHOWREASONUI_ALWAYS          = 1;
   {$EXTERNALSYM POLICY_SHOWREASONUI_ALWAYS}
-  POLICY_SHOWREASONUI_WORKSTATIONONLY =	2;
+  POLICY_SHOWREASONUI_WORKSTATIONONLY = 2;
   {$EXTERNALSYM POLICY_SHOWREASONUI_WORKSTATIONONLY}
   POLICY_SHOWREASONUI_SERVERONLY      = 3;
   {$EXTERNALSYM POLICY_SHOWREASONUI_SERVERONLY}
@@ -224,6 +237,15 @@ const
   MAX_NUM_REASONS = 256;
   {$EXTERNALSYM MAX_NUM_REASONS}
 
-implementation
+{$ENDIF JWA_INTERFACESECTION}
 
+{$IFNDEF JWA_INCLUDEMODE}
+implementation
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_IMPLEMENTATIONSECTION}
+{$ENDIF JWA_IMPLEMENTATIONSECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
 end.
+{$ENDIF !JWA_INCLUDEMODE}

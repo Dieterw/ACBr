@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Lan Manager Join API interface Unit for Object Pascal                        }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: lmjoin.h, released November 2001. The original Pascal  }
 { code is: LmJoin.pas, released Februari 2002. The initial developer of the    }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,25 +35,33 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaLmJoin.pas,v 1.11 2005/09/07 09:54:54 marquardt Exp $
+
+{$IFNDEF JWA_INCLUDEMODE}
 
 unit JwaLmJoin;
 
 {$WEAKPACKAGEUNIT}
 
-{$HPPEMIT ''}
-{$HPPEMIT '#include "lmjoin.h"'}
-{$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaLmCons, JwaWinType;
+  JwaWindows, JwaLmCons;
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_INTERFACESECTION}
+
+{$HPPEMIT ''}
+{$HPPEMIT '#include "lmjoin.h"'}
+{$HPPEMIT ''}
 
 //
 // Types of name that can be validated
@@ -67,9 +74,9 @@ type
     NetSetupWorkgroup,
     NetSetupDomain,
     NetSetupNonExistentDomain
-    {$IFDEF _WIN32_WINNT_GREATER_EQUAL_0500} // #if(_WIN32_WINNT >= 0x0500)
+    {$IFDEF WIN2000_UP}
     , NetSetupDnsMachine
-    {$ENDIF}
+    {$ENDIF WIN2000_UP}
     );
   {$EXTERNALSYM _NETSETUP_NAME_TYPE}
   NETSETUP_NAME_TYPE = _NETSETUP_NAME_TYPE;
@@ -132,7 +139,7 @@ const
                                                        //  were not set.
   {$EXTERNALSYM NETSETUP_IGNORE_UNSUPPORTED_FLAGS}
 
-  NETSETUP_VALID_UNJOIN_FLAGS = (NETSETUP_ACCT_DELETE or NETSETUP_IGNORE_UNSUPPORTED_FLAGS);
+  NETSETUP_VALID_UNJOIN_FLAGS = NETSETUP_ACCT_DELETE or NETSETUP_IGNORE_UNSUPPORTED_FLAGS;
   {$EXTERNALSYM NETSETUP_VALID_UNJOIN_FLAGS}
 
 //
@@ -165,7 +172,6 @@ function NetValidateName(lpServer, lpName, lpAccount, lpPassword: LPCWSTR; NameT
 
 function NetGetJoinInformation(lpServer: LPCWSTR; var lpNameBuffer: LPWSTR; BufferType: PNETSETUP_JOIN_STATUS): NET_API_STATUS; stdcall;
 {$EXTERNALSYM NetGetJoinInformation}
-
 
 //
 // Determines the list of OUs that the client can create a machine account in
@@ -214,10 +220,21 @@ type
 function NetEnumerateComputerNames(Server: LPCWSTR; NameType: NET_COMPUTER_NAME_TYPE; Reserved: ULONG; EntryCount: PDWORD; var ComputerNames: LPLPWSTR): NET_API_STATUS; stdcall;
 {$EXTERNALSYM NetEnumerateComputerNames}
 
+{$ENDIF JWA_INTERFACESECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
+
 implementation
 
+uses
+  JwaWinDLLNames;
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_IMPLEMENTATIONSECTION}
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _NetJoinDomain: Pointer;
 
@@ -225,16 +242,12 @@ function NetJoinDomain;
 begin
   GetProcedureAddress(_NetJoinDomain, netapi32, 'NetJoinDomain');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetJoinDomain]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetJoinDomain]
   end;
 end;
-{$ELSE}
-function NetJoinDomain; external netapi32 name 'NetJoinDomain';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetUnjoinDomain: Pointer;
 
@@ -242,16 +255,12 @@ function NetUnjoinDomain;
 begin
   GetProcedureAddress(_NetUnjoinDomain, netapi32, 'NetUnjoinDomain');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetUnjoinDomain]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetUnjoinDomain]
   end;
 end;
-{$ELSE}
-function NetUnjoinDomain; external netapi32 name 'NetUnjoinDomain';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetRenameMachineInDomain: Pointer;
 
@@ -259,16 +268,12 @@ function NetRenameMachineInDomain;
 begin
   GetProcedureAddress(_NetRenameMachineInDomain, netapi32, 'NetRenameMachineInDomain');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetRenameMachineInDomain]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetRenameMachineInDomain]
   end;
 end;
-{$ELSE}
-function NetRenameMachineInDomain; external netapi32 name 'NetRenameMachineInDomain';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetValidateName: Pointer;
 
@@ -276,16 +281,12 @@ function NetValidateName;
 begin
   GetProcedureAddress(_NetValidateName, netapi32, 'NetValidateName');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetValidateName]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetValidateName]
   end;
 end;
-{$ELSE}
-function NetValidateName; external netapi32 name 'NetValidateName';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetGetJoinInformation: Pointer;
 
@@ -293,16 +294,12 @@ function NetGetJoinInformation;
 begin
   GetProcedureAddress(_NetGetJoinInformation, netapi32, 'NetGetJoinInformation');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetGetJoinInformation]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetGetJoinInformation]
   end;
 end;
-{$ELSE}
-function NetGetJoinInformation; external netapi32 name 'NetGetJoinInformation';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetGetJoinableOUs: Pointer;
 
@@ -310,16 +307,12 @@ function NetGetJoinableOUs;
 begin
   GetProcedureAddress(_NetGetJoinableOUs, netapi32, 'NetGetJoinableOUs');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetGetJoinableOUs]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetGetJoinableOUs]
   end;
 end;
-{$ELSE}
-function NetGetJoinableOUs; external netapi32 name 'NetGetJoinableOUs';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetAddAlternateComputerName: Pointer;
 
@@ -327,16 +320,12 @@ function NetAddAlternateComputerName;
 begin
   GetProcedureAddress(_NetAddAlternateComputerName, netapi32, 'NetAddAlternateComputerName');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetAddAlternateComputerName]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetAddAlternateComputerName]
   end;
 end;
-{$ELSE}
-function NetAddAlternateComputerName; external netapi32 name 'NetAddAlternateComputerName';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetRemoveAlternateComputerName: Pointer;
 
@@ -344,16 +333,12 @@ function NetRemoveAlternateComputerName;
 begin
   GetProcedureAddress(_NetRemoveAlternateComputerName, netapi32, 'NetRemoveAlternateComputerName');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetRemoveAlternateComputerName]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetRemoveAlternateComputerName]
   end;
 end;
-{$ELSE}
-function NetRemoveAlternateComputerName; external netapi32 name 'NetRemoveAlternateComputerName';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetSetPrimaryComputerName: Pointer;
 
@@ -361,16 +346,12 @@ function NetSetPrimaryComputerName;
 begin
   GetProcedureAddress(_NetSetPrimaryComputerName, netapi32, 'NetSetPrimaryComputerName');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetSetPrimaryComputerName]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetSetPrimaryComputerName]
   end;
 end;
-{$ELSE}
-function NetSetPrimaryComputerName; external netapi32 name 'NetSetPrimaryComputerName';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetEnumerateComputerNames: Pointer;
 
@@ -378,13 +359,29 @@ function NetEnumerateComputerNames;
 begin
   GetProcedureAddress(_NetEnumerateComputerNames, netapi32, 'NetEnumerateComputerNames');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetEnumerateComputerNames]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetEnumerateComputerNames]
   end;
 end;
+
 {$ELSE}
+
+function NetJoinDomain; external netapi32 name 'NetJoinDomain';
+function NetUnjoinDomain; external netapi32 name 'NetUnjoinDomain';
+function NetRenameMachineInDomain; external netapi32 name 'NetRenameMachineInDomain';
+function NetValidateName; external netapi32 name 'NetValidateName';
+function NetGetJoinInformation; external netapi32 name 'NetGetJoinInformation';
+function NetGetJoinableOUs; external netapi32 name 'NetGetJoinableOUs';
+function NetAddAlternateComputerName; external netapi32 name 'NetAddAlternateComputerName';
+function NetRemoveAlternateComputerName; external netapi32 name 'NetRemoveAlternateComputerName';
+function NetSetPrimaryComputerName; external netapi32 name 'NetSetPrimaryComputerName';
 function NetEnumerateComputerNames; external netapi32 name 'NetEnumerateComputerNames';
+
 {$ENDIF DYNAMIC_LINK}
 
+{$ENDIF JWA_IMPLEMENTATIONSECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
 end.
+{$ENDIF !JWA_INCLUDEMODE}

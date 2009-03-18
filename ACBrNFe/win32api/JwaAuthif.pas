@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Internet Authentication Extensions API interface Unit for Object Pascal      }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: authif.h, released June 2000. The original Pascal      }
 { code is: Authif.pas, released December 2000. The initial developer of the    }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaAuthif.pas,v 1.6 2005/09/03 14:27:47 marquardt Exp $
 
 unit JwaAuthif;
 
@@ -49,12 +50,12 @@ unit JwaAuthif;
 {$HPPEMIT '#include "authif.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinType;
+  JwaWindows;
 
 //
 //  Enumerates the attribute types that are passed to the extension DLL.  The
@@ -379,7 +380,7 @@ const
   {$EXTERNALSYM RADIUS_EXTENSION_PROCESS}
 
 type
-  PRADIUS_EXTENSION_PROCESS = function (pAttrs: PRADIUS_ATTRIBUTE; pfAction: PRADIUS_ACTION): DWORD; stdcall;
+  PRADIUS_EXTENSION_PROCESS = function(pAttrs: PRADIUS_ATTRIBUTE; pfAction: PRADIUS_ACTION): DWORD; stdcall;
   {$EXTERNALSYM PRADIUS_EXTENSION_PROCESS}
   PRadiusExtensionProcess = PRADIUS_EXTENSION_PROCESS;
 
@@ -410,7 +411,7 @@ const
   {$EXTERNALSYM RADIUS_EXTENSION_PROCESS_EX}
 
 type
-  PRADIUS_EXTENSION_PROCESS_EX = function (pInAttrs: PRADIUS_ATTRIBUTE;
+  PRADIUS_EXTENSION_PROCESS_EX = function(pInAttrs: PRADIUS_ATTRIBUTE;
     pOutAttrs: PRADIUS_ATTRIBUTE; pfAction: PRADIUS_ACTION): DWORD; stdcall;
   {$EXTERNALSYM PRADIUS_EXTENSION_PROCESS_EX}
   PRadiusExtensionProcessEx = PRADIUS_EXTENSION_PROCESS_EX;
@@ -429,7 +430,7 @@ const
   {$EXTERNALSYM RADIUS_EXTENSION_FREE_ATTRIBUTES}
 
 type
-  PRADIUS_EXTENSION_FREE_ATTRIBUTES = procedure (pAttrs: PRADIUS_ATTRIBUTE); stdcall;
+  PRADIUS_EXTENSION_FREE_ATTRIBUTES = procedure(pAttrs: PRADIUS_ATTRIBUTE); stdcall;
   {$EXTERNALSYM PRADIUS_EXTENSION_FREE_ATTRIBUTES}
   PRadiusExtensionFreeAttributes = PRADIUS_EXTENSION_FREE_ATTRIBUTES;
 
@@ -502,21 +503,21 @@ type
 
    // Adds a new attribute to the end of the array.
 
-   Add: function (This: PRADIUS_ATTRIBUTE_ARRAY; pAttr: PRADIUS_ATTRIBUTE): DWORD; stdcall;
+   Add: function(This: PRADIUS_ATTRIBUTE_ARRAY; pAttr: PRADIUS_ATTRIBUTE): DWORD; stdcall;
 
    //
    // Returns a const pointer to the specified attribute within the array or
    // NULL if the index is out of range.
    //
 
-   AttributeAt: function (This: PPRADIUS_ATTRIBUTE_ARRAY; dwIndex: DWORD): PRADIUS_ATTRIBUTE; stdcall;
+   AttributeAt: function(This: PPRADIUS_ATTRIBUTE_ARRAY; dwIndex: DWORD): PRADIUS_ATTRIBUTE; stdcall;
 
    //
    // Returns the size of the array. Since indexes are zero-based, the size is
    // 1 greater than the largest index.
    //
 
-   GetSize: function (This: PRADIUS_ATTRIBUTE_ARRAY): DWORD; stdcall;
+   GetSize: function(This: PRADIUS_ATTRIBUTE_ARRAY): DWORD; stdcall;
 
    //
    // Inserts a new attribute at a specified index in the array. In the
@@ -525,7 +526,7 @@ type
    // ERROR_INVALID_PARAMETER if the index is out of range.
    //
 
-   InsertAt: function (This: PRADIUS_ATTRIBUTE_ARRAY; dwIndex: DWORD; pAttr: PRADIUS_ATTRIBUTE): DWORD; stdcall;
+   InsertAt: function(This: PRADIUS_ATTRIBUTE_ARRAY; dwIndex: DWORD; pAttr: PRADIUS_ATTRIBUTE): DWORD; stdcall;
 
    //
    // Removes the attribute at the specified index in the array. In the
@@ -534,14 +535,14 @@ type
    // Returns ERROR_INVALID_PARAMETER if the index is out of range.
    //
 
-   RemoveAt: function (This: PRADIUS_ATTRIBUTE_ARRAY; dwIndex: DWORD): DWORD; stdcall;
+   RemoveAt: function(This: PRADIUS_ATTRIBUTE_ARRAY; dwIndex: DWORD): DWORD; stdcall;
 
    //
    // Sets the array element at the specified index, replacing the existing
    // attribute.  Returns ERROR_INVALID_PARAMETER if the index is out of range.
    //
 
-   SetAt: function (This: PPRADIUS_ATTRIBUTE_ARRAY; dwIndex: DWORD; pAttr: PRADIUS_ATTRIBUTE): DWORD; stdcall;
+   SetAt: function(This: PPRADIUS_ATTRIBUTE_ARRAY; dwIndex: DWORD; pAttr: PRADIUS_ATTRIBUTE): DWORD; stdcall;
 
   end;
   {$EXTERNALSYM _RADIUS_ATTRIBUTE_ARRAY}
@@ -593,7 +594,7 @@ type
     // server.
     //
 
-    GetRequest: function (This: PRADIUS_EXTENSION_CONTROL_BLOCK): PRADIUS_ATTRIBUTE_ARRAY; stdcall;
+    GetRequest: function(This: PRADIUS_EXTENSION_CONTROL_BLOCK): PRADIUS_ATTRIBUTE_ARRAY; stdcall;
 
     //
     // Returns the attributes that will be sent in the response if the final
@@ -606,7 +607,7 @@ type
     // processing.
     //
 
-    GetResponse: function (This: PRADIUS_EXTENSION_CONTROL_BLOCK; rcResponseType: RADIUS_CODE): PRADIUS_ATTRIBUTE_ARRAY; stdcall;
+    GetResponse: function(This: PRADIUS_EXTENSION_CONTROL_BLOCK; rcResponseType: RADIUS_CODE): PRADIUS_ATTRIBUTE_ARRAY; stdcall;
 
     //
     // Sets the final disposition of the request.
@@ -614,7 +615,7 @@ type
     // for the request type.
     //
 
-    SetResponseType: function (This: PRADIUS_EXTENSION_CONTROL_BLOCK; rcResponseType: RADIUS_CODE): DWORD; stdcall;
+    SetResponseType: function(This: PRADIUS_EXTENSION_CONTROL_BLOCK; rcResponseType: RADIUS_CODE): DWORD; stdcall;
   end;
   {$EXTERNALSYM _RADIUS_EXTENSION_CONTROL_BLOCK}
   RADIUS_EXTENSION_CONTROL_BLOCK = _RADIUS_EXTENSION_CONTROL_BLOCK;
@@ -638,7 +639,7 @@ const
   {$EXTERNALSYM RADIUS_EXTENSION_PROCESS2}
 
 type
-  PRADIUS_EXTENSION_PROCESS_2 = function (pECB: PRADIUS_EXTENSION_CONTROL_BLOCK): DWORD; stdcall;
+  PRADIUS_EXTENSION_PROCESS_2 = function(pECB: PRADIUS_EXTENSION_CONTROL_BLOCK): DWORD; stdcall;
   {$EXTERNALSYM PRADIUS_EXTENSION_PROCESS_2}
 
 implementation

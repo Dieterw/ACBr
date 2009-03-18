@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Winsock2 AppleTalk API interface Unit for Object Pascal                      }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: atalkwsh.h, released June 2000. The original Pascal    }
 { code is: ATalkWsh.pas, released December 2000. The initial developer of the  }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaAtalkWsh.pas,v 1.7 2005/09/08 07:49:25 marquardt Exp $
 
 unit JwaAtalkWsh;
 
@@ -51,10 +52,10 @@ interface
 {$HPPEMIT '#include "atalkwsh.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 uses
-  JwaWinSock2;
+  JwaWindows;
 
 //
 //  All protocol types should be specified in the Decimal base
@@ -68,40 +69,40 @@ const
 //  Protocol number 0 is invalid in the Appletalk case
 //
 
-  ATPROTO_BASE    = (1000 * AF_APPLETALK);
+  ATPROTO_BASE    = 1000 * AF_APPLETALK;
   {$EXTERNALSYM ATPROTO_BASE}
-  SOL_APPLETALK   = (ATPROTO_BASE);
+  SOL_APPLETALK   = ATPROTO_BASE;
   {$EXTERNALSYM SOL_APPLETALK}
 
-  DDPPROTO_RTMP   = (ATPROTO_BASE + 1);
+  DDPPROTO_RTMP   = ATPROTO_BASE + 1;
   {$EXTERNALSYM DDPPROTO_RTMP}
-  DDPPROTO_NBP    = (ATPROTO_BASE + 2);
+  DDPPROTO_NBP    = ATPROTO_BASE + 2;
   {$EXTERNALSYM DDPPROTO_NBP}
-  DDPPROTO_ATP    = (ATPROTO_BASE + 3);
+  DDPPROTO_ATP    = ATPROTO_BASE + 3;
   {$EXTERNALSYM DDPPROTO_ATP}
-  DDPPROTO_AEP    = (ATPROTO_BASE + 4);
+  DDPPROTO_AEP    = ATPROTO_BASE + 4;
   {$EXTERNALSYM DDPPROTO_AEP}
-  DDPPROTO_RTMPRQ = (ATPROTO_BASE + 5);
+  DDPPROTO_RTMPRQ = ATPROTO_BASE + 5;
   {$EXTERNALSYM DDPPROTO_RTMPRQ}
-  DDPPROTO_ZIP    = (ATPROTO_BASE + 6);
+  DDPPROTO_ZIP    = ATPROTO_BASE + 6;
   {$EXTERNALSYM DDPPROTO_ZIP}
-  DDPPROTO_ADSP   = (ATPROTO_BASE + 7);
+  DDPPROTO_ADSP   = ATPROTO_BASE + 7;
   {$EXTERNALSYM DDPPROTO_ADSP}
 
-  DDPPROTO_MAX    = (ATPROTO_BASE + 255);
+  DDPPROTO_MAX    = ATPROTO_BASE + 255;
   {$EXTERNALSYM DDPPROTO_MAX}
 
 //
 //  Define the higher layer appletalk protocol types
 //
 
-  ATPROTO_ADSP = (DDPPROTO_MAX + 1);
+  ATPROTO_ADSP = DDPPROTO_MAX + 1;
   {$EXTERNALSYM ATPROTO_ADSP}
-  ATPROTO_ATP  = (DDPPROTO_MAX + 2);
+  ATPROTO_ATP  = DDPPROTO_MAX + 2;
   {$EXTERNALSYM ATPROTO_ATP}
-  ATPROTO_ASP  = (DDPPROTO_MAX + 3);
+  ATPROTO_ASP  = DDPPROTO_MAX + 3;
   {$EXTERNALSYM ATPROTO_ASP}
-  ATPROTO_PAP  = (DDPPROTO_MAX + 4);
+  ATPROTO_PAP  = DDPPROTO_MAX + 4;
   {$EXTERNALSYM ATPROTO_PAP}
 
   SO_REGISTER_NAME            = $A000;
@@ -148,22 +149,21 @@ const
   {$EXTERNALSYM ATADDR_BROADCAST}
 
 //
-//	Define flags/error codes peculiar to Appletalk
+// Define flags/error codes peculiar to Appletalk
 //
 
-  WSAEMSGPARTIAL = (WSABASEERR + 100);
+  WSAEMSGPARTIAL = WSABASEERR + 100;
   {$EXTERNALSYM WSAEMSGPARTIAL}
 
-
-//	Maximum pap status size
+// Maximum pap status size
 
   MAX_PAP_STATUS_SIZE   = 255;
   {$EXTERNALSYM MAX_PAP_STATUS_SIZE}
   MIN_PAP_READ_BUF_SIZE = 4096;
   {$EXTERNALSYM MIN_PAP_READ_BUF_SIZE}
 
-//	These are the unused 4 bytes returned in the PAP status packet. If ever
-//	they are to be interpreted, they will be available.
+// These are the unused 4 bytes returned in the PAP status packet. If ever
+// they are to be interpreted, they will be available.
 
   PAP_UNUSED_STATUS_BYTES = 4;
   {$EXTERNALSYM PAP_UNUSED_STATUS_BYTES}
@@ -186,9 +186,9 @@ type
   PSockAddrAT = PSOCKADDR_AT;  
 
 //
-//	***WARNING***
-//	This is defined to be the same as the ATALK ADDRESS defined in atalktdi.h
-//	Change this if the other changes.
+// ***WARNING***
+// This is defined to be the same as the ATALK ADDRESS defined in atalktdi.h
+// Change this if the other changes.
 //
 
 type

@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Winsock2 Service Provider API interface Unit for Object Pascal               }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: ws2spi.h, released June 2000. The original Pascal      }
 { code is: WS2spi.pas, released December 2000. The initial developer of the    }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaWS2spi.pas,v 1.9 2005/09/06 16:36:50 marquardt Exp $
 
 unit JwaWS2spi;
 
@@ -49,22 +50,22 @@ unit JwaWS2spi;
 {$HPPEMIT '#include "ws2spi.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinType, JwaWinSock2;
+  JwaWindows, JwaWinSock2;
 
 (*
  * Ensure structures are packed consistently.
  *)
 
-{$IFNDEF _WIN64}
-{$ALIGN ON}
-{$ELSE}
+{$IFDEF _WIN64}
 {$ALIGN OFF}
-{$ENDIF}
+{$ELSE}
+{$ALIGN ON}
+{$ENDIF _WIN64}
 
 const
   WSPDESCRIPTION_LEN = 255;
@@ -105,7 +106,7 @@ type
  *)
 
 type
-  LPBLOCKINGCALLBACK = function (dwContext: DWORD): BOOL; stdcall;
+  LPBLOCKINGCALLBACK = function(dwContext: DWORD): BOOL; stdcall;
   {$EXTERNALSYM LPBLOCKINGCALLBACK}
   TBlockingCallback = LPBLOCKINGCALLBACK;
 
@@ -115,7 +116,7 @@ type
  * identical to an application's completion routine.
  *)
 
-  LPWSAUSERAPC = procedure (dwContext: DWORD); stdcall;
+  LPWSAUSERAPC = procedure(dwContext: DWORD); stdcall;
   {$EXTERNALSYM LPWSAUSERAPC}
   TWsaUserApc = LPWSAUSERAPC;
 
@@ -123,145 +124,145 @@ type
  * Pointers to the individual entries in a service provider's proc table.
  *)
 
-  LPWSPACCEPT = function (s: TSocket; addr: PSockAddr; addrlen: PINT;
+  LPWSPACCEPT = function(s: TSocket; addr: PSockAddr; addrlen: PINT;
     lpfnCondition: LPCONDITIONPROC; dwCallbackData: DWORD; var Errno: Integer): TSocket; stdcall;
   {$EXTERNALSYM LPWSPACCEPT}
   TWspAccept = LPWSPACCEPT;
 
-  LPWSPADDRESSTOSTRING = function (lpsaAddress: LPSOCKADDR; dwAddressLength: DWORD;
+  LPWSPADDRESSTOSTRING = function(lpsaAddress: LPSOCKADDR; dwAddressLength: DWORD;
     lpProtocolInfo: LPWSAPROTOCOL_INFOW; lpszAddressString: LPWSTR;
     var lpdwAddressStringLength: DWORD; var lpErrno: Integer): Integer; stdcall;
   {$EXTERNALSYM LPWSPADDRESSTOSTRING}
   TWspAddressToString = LPWSPADDRESSTOSTRING;
 
-  LPWSPASYNCSELECT = function (s: TSocket; hWnd: HWND; wMsg: u_int; lEvent: Longint; var lpErrno: Integer): Integer; stdcall;
+  LPWSPASYNCSELECT = function(s: TSocket; hWnd: HWND; wMsg: u_int; lEvent: Longint; var lpErrno: Integer): Integer; stdcall;
   {$EXTERNALSYM LPWSPASYNCSELECT}
   TWspASyncSelect = LPWSPASYNCSELECT;
 
-  LPWSPBIND = function (s: TSocket; var name: sockaddr; namelen: Integer; var lpErrno: Integer): Integer; stdcall;
+  LPWSPBIND = function(s: TSocket; var name: sockaddr; namelen: Integer; var lpErrno: Integer): Integer; stdcall;
   {$EXTERNALSYM LPWSPBIND}
   TWspBind = LPWSPBIND;
 
-  LPWSPCANCELBLOCKINGCALL = function (var lpErrno: Integer): Integer; stdcall;
+  LPWSPCANCELBLOCKINGCALL = function(var lpErrno: Integer): Integer; stdcall;
   {$EXTERNALSYM LPWSPCANCELBLOCKINGCALL}
   TWspCancelBlockingCall = LPWSPCANCELBLOCKINGCALL;
 
-  LPWSPCLEANUP = function (var lpErrno: Integer): Integer; stdcall;
+  LPWSPCLEANUP = function(var lpErrno: Integer): Integer; stdcall;
   {$EXTERNALSYM LPWSPCLEANUP}
   TWspCleanup = LPWSPCLEANUP;
 
-  LPWSPCLOSESOCKET = function (s: TSocket; var lpErrno: Integer): Integer; stdcall;
+  LPWSPCLOSESOCKET = function(s: TSocket; var lpErrno: Integer): Integer; stdcall;
   {$EXTERNALSYM LPWSPCLOSESOCKET}
   TWspCloseSocket = LPWSPCLOSESOCKET;
 
-  LPWSPCONNECT = function (s: TSocket; name: PSockAddr; namelen: Integer; lpCallerData: LPWSABUF;
+  LPWSPCONNECT = function(s: TSocket; name: PSockAddr; namelen: Integer; lpCallerData: LPWSABUF;
     lpCalleeData: LPWSABUF; lpSQOS: LPQOS; lpGQOS: LPQOS; var lpErrno: Integer): Integer; stdcall;
   {$EXTERNALSYM LPWSPCONNECT}
   TWspConnect = LPWSPCONNECT;
 
-  LPWSPDUPLICATESOCKET = function (s: TSocket; dwProcessId: DWORD; lpProtocolInfo: LPWSAPROTOCOL_INFOW; var lpErrno: Integer): Integer; stdcall;
+  LPWSPDUPLICATESOCKET = function(s: TSocket; dwProcessId: DWORD; lpProtocolInfo: LPWSAPROTOCOL_INFOW; var lpErrno: Integer): Integer; stdcall;
   {$EXTERNALSYM LPWSPDUPLICATESOCKET}
   TWspDuplicateSocket = LPWSPDUPLICATESOCKET;
 
-  LPWSPENUMNETWORKEVENTS = function (s: TSocket; hEventObject: WSAEVENT; lpNetworkEvents: LPWSANETWORKEVENTS; var lpErrno: Integer): Integer; stdcall;
+  LPWSPENUMNETWORKEVENTS = function(s: TSocket; hEventObject: WSAEVENT; lpNetworkEvents: LPWSANETWORKEVENTS; var lpErrno: Integer): Integer; stdcall;
   {$EXTERNALSYM LPWSPENUMNETWORKEVENTS}
   TWspEnumNetworkEvents = LPWSPENUMNETWORKEVENTS;
 
-  LPWSPEVENTSELECT = function (s: TSocket; hEventObject: WSAEVENT; lNetworkEvents: Longint; var lpErrno: Integer): Integer; stdcall;
+  LPWSPEVENTSELECT = function(s: TSocket; hEventObject: WSAEVENT; lNetworkEvents: Longint; var lpErrno: Integer): Integer; stdcall;
   {$EXTERNALSYM LPWSPEVENTSELECT}
   TWspEventSelect = LPWSPEVENTSELECT;
 
-  LPWSPGETOVERLAPPEDRESULT = function (s: TSocket; lpOverlapped: LPWSAOVERLAPPED;
+  LPWSPGETOVERLAPPEDRESULT = function(s: TSocket; lpOverlapped: LPWSAOVERLAPPED;
     var lpcbTransfer: DWORD; fWait: BOOL; lpdwFlags: DWORD; var lpErrno: Integer): BOOL; stdcall;
   {$EXTERNALSYM LPWSPGETOVERLAPPEDRESULT}
   TWspGetOverlappedResult = LPWSPGETOVERLAPPEDRESULT;
 
-  LPWSPGETPEERNAME = function (s: TSocket; var name: sockaddr; var namelen, lpErrno: Integer): Integer; stdcall;
+  LPWSPGETPEERNAME = function(s: TSocket; var name: sockaddr; var namelen, lpErrno: Integer): Integer; stdcall;
   {$EXTERNALSYM LPWSPGETPEERNAME}
   TWspGetPeerName = LPWSPGETPEERNAME;
 
-  LPWSPGETSOCKNAME = function (s: TSocket; var name: sockaddr; var namelen, lpErrno: Integer): Integer; stdcall;
+  LPWSPGETSOCKNAME = function(s: TSocket; var name: sockaddr; var namelen, lpErrno: Integer): Integer; stdcall;
   {$EXTERNALSYM LPWSPGETSOCKNAME}
   TWspGetSockName = LPWSPGETSOCKNAME;
 
-  LPWSPGETSOCKOPT = function (s: TSocket; level, optname: Integer; optval: PChar; var optlen, lpErrno: Integer): Integer; stdcall;
+  LPWSPGETSOCKOPT = function(s: TSocket; level, optname: Integer; optval: PChar; var optlen, lpErrno: Integer): Integer; stdcall;
   {$EXTERNALSYM LPWSPGETSOCKOPT}
   TWspGetSockOpt = LPWSPGETSOCKOPT;
 
-  LPWSPGETQOSBYNAME = function (s: TSocket; var lpQOSName: WSABUF; lpQOS: LPQOS; lpErrno: Integer): BOOL; stdcall;
+  LPWSPGETQOSBYNAME = function(s: TSocket; var lpQOSName: WSABUF; lpQOS: LPQOS; lpErrno: Integer): BOOL; stdcall;
   {$EXTERNALSYM LPWSPGETQOSBYNAME}
   TWspGetQosByName = LPWSPGETQOSBYNAME;
 
-  LPWSPIOCTL = function (s: TSocket; dwIoControlCode: DWORD; lpvInBuffer: LPVOID; cbInBuffer: DWORD;
+  LPWSPIOCTL = function(s: TSocket; dwIoControlCode: DWORD; lpvInBuffer: LPVOID; cbInBuffer: DWORD;
     lpvOutBuffer: LPVOID; cbOutBuffer: DWORD; var lpcbBytesReturned: DWORD;
     lpOverlapped: LPWSAOVERLAPPED; lpCompletionRoutine: LPWSAOVERLAPPED_COMPLETION_ROUTINE;
     lpThreadId: LPWSATHREADID; var lpErrno: Integer): Integer; stdcall;
   {$EXTERNALSYM LPWSPIOCTL}
   TWspIoctl = LPWSPIOCTL;
 
-  LPWSPJOINLEAF = function (s: TSocket; name: sockaddr; namelen: Integer; lpCallerData: LPWSABUF;
+  LPWSPJOINLEAF = function(s: TSocket; name: sockaddr; namelen: Integer; lpCallerData: LPWSABUF;
     lpCalleeData: LPWSABUF; lpSQOS, lpGQOS: LPQOS; dwFlags: DWORD; var lpErrno: Integer): TSocket; stdcall;
   {$EXTERNALSYM LPWSPJOINLEAF}
   TWspJoinLeaf = LPWSPJOINLEAF;
 
-  LPWSPLISTEN = function (s: TSocket; backlog: Integer; var lpErrno: Integer): Integer; stdcall;
+  LPWSPLISTEN = function(s: TSocket; backlog: Integer; var lpErrno: Integer): Integer; stdcall;
   {$EXTERNALSYM LPWSPLISTEN}
   TWspListen = LPWSPLISTEN;
 
-  LPWSPRECV = function (s: TSocket; lpBuffers: LPWSABUF; dwBufferCount: DWORD;
+  LPWSPRECV = function(s: TSocket; lpBuffers: LPWSABUF; dwBufferCount: DWORD;
     var lpNumberOfBytesRecvd, lpFlags: DWORD; lpOverlapped: LPWSAOVERLAPPED;
     lpCompletionRoutine: LPWSAOVERLAPPED_COMPLETION_ROUTINE; lpThreadId: LPWSATHREADID;
     var lpErrno: Integer): Integer; stdcall;
   {$EXTERNALSYM LPWSPRECV}
   TWspRecv = LPWSPRECV;
 
-  LPWSPRECVDISCONNECT = function (s: TSocket; lpInboundDisconnectData: LPWSABUF; var lpErrno: Integer): Integer; stdcall;
+  LPWSPRECVDISCONNECT = function(s: TSocket; lpInboundDisconnectData: LPWSABUF; var lpErrno: Integer): Integer; stdcall;
   {$EXTERNALSYM LPWSPRECVDISCONNECT}
   TWspRecvDisconnect = LPWSPRECVDISCONNECT;
 
-  LPWSPRECVFROM = function (s: TSocket; lpBuffers: LPWSABUF; dwBufferCount: DWORD;
+  LPWSPRECVFROM = function(s: TSocket; lpBuffers: LPWSABUF; dwBufferCount: DWORD;
     var lpNumberOfBytesRecvd, lpFlags: DWORD; lpFrom: PSockAddr; lpFromlen: PINT;
     lpOverlapped: LPWSAOVERLAPPED; lpCompletionRoutine: LPWSAOVERLAPPED_COMPLETION_ROUTINE;
     lpThreadId: LPWSATHREADID; var lpErrno: Integer): Integer; stdcall;
   {$EXTERNALSYM LPWSPRECVFROM}
   TWspRecvFrom = LPWSPRECVFROM;
 
-  LPWSPSELECT = function (nfds: Integer; readfds, writefds, exceptfds: PFdSet; timeout: PTimeVal; var lpErrno: Integer): Integer; stdcall;
+  LPWSPSELECT = function(nfds: Integer; readfds, writefds, exceptfds: PFdSet; timeout: PTimeVal; var lpErrno: Integer): Integer; stdcall;
   {$EXTERNALSYM LPWSPSELECT}
   TWspSelect = LPWSPSELECT;
 
-  LPWSPSEND = function (s: TSocket; lpBuffers: LPWSABUF; dwBufferCount: DWORD;
+  LPWSPSEND = function(s: TSocket; lpBuffers: LPWSABUF; dwBufferCount: DWORD;
     var lpNumberOfBytesSent: DWORD; dwFlags: DWORD; lpOverlapped: LPWSAOVERLAPPED;
     lpCompletionRoutine: LPWSAOVERLAPPED_COMPLETION_ROUTINE;
     lpThreadId: LPWSATHREADID; var lpErrno: Integer): Integer; stdcall;
   {$EXTERNALSYM LPWSPSEND}
   TWspSend = LPWSPSEND;
 
-  LPWSPSENDDISCONNECT = function (s: TSocket; lpOutboundDisconnectData: LPWSABUF; var lpErrno: Integer): Integer; stdcall;
+  LPWSPSENDDISCONNECT = function(s: TSocket; lpOutboundDisconnectData: LPWSABUF; var lpErrno: Integer): Integer; stdcall;
   {$EXTERNALSYM LPWSPSENDDISCONNECT}
   TWspSendDisconnect = LPWSPSENDDISCONNECT;
 
-  LPWSPSENDTO = function (s: TSocket; lpBuffers: LPWSABUF; dwBufferCount: DWORD;
+  LPWSPSENDTO = function(s: TSocket; lpBuffers: LPWSABUF; dwBufferCount: DWORD;
     var lpNumberOfBytesSent: DWORD; dwFlags: DWORD; lpTo: PSockAddr; iTolen: Integer;
     lpOverlapped: LPWSAOVERLAPPED; lpCompletionRoutine: LPWSAOVERLAPPED_COMPLETION_ROUTINE;
     lpThreadId: LPWSATHREADID; var lpErrno: Integer): Integer; stdcall;
   {$EXTERNALSYM LPWSPSENDTO}
   TWspSendTo = LPWSPSENDTO;
 
-  LPWSPSETSOCKOPT = function (s: TSocket; level, optname: Integer; optval: PChar; optlen: Integer; var lpErrno: Integer): Integer; stdcall;
+  LPWSPSETSOCKOPT = function(s: TSocket; level, optname: Integer; optval: PChar; optlen: Integer; var lpErrno: Integer): Integer; stdcall;
   {$EXTERNALSYM LPWSPSETSOCKOPT}
   TWspSetSockOpt = LPWSPSETSOCKOPT;
 
-  LPWSPSHUTDOWN = function (s: TSocket; how: Integer; var lpErrno: Integer): Integer; stdcall;
+  LPWSPSHUTDOWN = function(s: TSocket; how: Integer; var lpErrno: Integer): Integer; stdcall;
   {$EXTERNALSYM LPWSPSHUTDOWN}
   TWspShutdown = LPWSPSHUTDOWN;
 
-  LPWSPSOCKET = function (af, type_, protocol: Integer; lpProtocolInfo: LPWSAPROTOCOL_INFOW;
+  LPWSPSOCKET = function(af, type_, protocol: Integer; lpProtocolInfo: LPWSAPROTOCOL_INFOW;
     g: GROUP; dwFlags: DWORD; var lpErrno: Integer): TSocket; stdcall;
   {$EXTERNALSYM LPWSPSOCKET}
   TWspSocket = LPWSPSOCKET;
 
-  LPWSPSTRINGTOADDRESS = function (AddressString: LPWSTR; AddressFamily: Integer;
+  LPWSPSTRINGTOADDRESS = function(AddressString: LPWSTR; AddressFamily: Integer;
     lpProtocolInfo: LPWSAPROTOCOL_INFOW; lpAddress: LPSOCKADDR;
     var lpAddressLength, lpErrno: Integer): Integer; stdcall;
   {$EXTERNALSYM LPWSPSTRINGTOADDRESS}
@@ -318,75 +319,75 @@ type
  *)
 
 type
-  LPWPUCLOSEEVENT = function (hEvent: WSAEVENT; var lpErrno: Integer): BOOL; stdcall;
+  LPWPUCLOSEEVENT = function(hEvent: WSAEVENT; var lpErrno: Integer): BOOL; stdcall;
   {$EXTERNALSYM LPWPUCLOSEEVENT}
   TWpuCloseEvent = LPWPUCLOSEEVENT;
 
-  LPWPUCLOSESOCKETHANDLE = function (s: TSocket; var lpErrno: Integer): Integer; stdcall;
+  LPWPUCLOSESOCKETHANDLE = function(s: TSocket; var lpErrno: Integer): Integer; stdcall;
   {$EXTERNALSYM LPWPUCLOSESOCKETHANDLE}
   TWpuCloseSocketHandle = LPWPUCLOSESOCKETHANDLE;
 
-  LPWPUCREATEEVENT = function (var lpErrno: Integer): WSAEVENT; stdcall;
+  LPWPUCREATEEVENT = function(var lpErrno: Integer): WSAEVENT; stdcall;
   {$EXTERNALSYM LPWPUCREATEEVENT}
   TWpuCreateEvent = LPWPUCREATEEVENT;
 
-  LPWPUCREATESOCKETHANDLE = function (dwCatalogEntryId, dwContext: DWORD;
+  LPWPUCREATESOCKETHANDLE = function(dwCatalogEntryId, dwContext: DWORD;
     var lpErrno: Integer): TSocket; stdcall;
   {$EXTERNALSYM LPWPUCREATESOCKETHANDLE}
   TWpuCreateSocketHandle = LPWPUCREATESOCKETHANDLE;
 
-  LPWPUFDISSET = function (s: TSocket; fdset: PFdSet): Integer; stdcall;
+  LPWPUFDISSET = function(s: TSocket; fdset: PFdSet): Integer; stdcall;
   {$EXTERNALSYM LPWPUFDISSET}
   TWpuFdIsSet = LPWPUFDISSET;
 
-  LPWPUGETPROVIDERPATH = function (const lpProviderId: TGUID;
+  LPWPUGETPROVIDERPATH = function(const lpProviderId: TGUID;
     lpszProviderDllPath: PWCHAR; var lpProviderDllPathLen, lpErrno: Integer): Integer; stdcall;
   {$EXTERNALSYM LPWPUGETPROVIDERPATH}
   TWpuGetProviderPath = LPWPUGETPROVIDERPATH;
 
-  LPWPUMODIFYIFSHANDLE = function (dwCatalogEntryId: DWORD; ProposedHandle: TSocket;
+  LPWPUMODIFYIFSHANDLE = function(dwCatalogEntryId: DWORD; ProposedHandle: TSocket;
     var lpErrno: Integer): TSocket; stdcall;
   {$EXTERNALSYM LPWPUMODIFYIFSHANDLE}
   TWpuMoifyIfsHandle = LPWPUMODIFYIFSHANDLE;
 
-  LPWPUPOSTMESSAGE = function (hWnd: HWND; Msg: UINT; wParam: WPARAM; lParam: LPARAM): BOOL; stdcall;
+  LPWPUPOSTMESSAGE = function(hWnd: HWND; Msg: UINT; wParam: WPARAM; lParam: LPARAM): BOOL; stdcall;
   {$EXTERNALSYM LPWPUPOSTMESSAGE}
   TWpuPostMessage = LPWPUPOSTMESSAGE;
 
-  LPWPUQUERYBLOCKINGCALLBACK = function (dwCatalogEntryId: DWORD; var lplpfnCallback: LPBLOCKINGCALLBACK;
+  LPWPUQUERYBLOCKINGCALLBACK = function(dwCatalogEntryId: DWORD; var lplpfnCallback: LPBLOCKINGCALLBACK;
     lpdwContext: LPDWORD; var lpErrno: Integer): Integer; stdcall;
   {$EXTERNALSYM LPWPUQUERYBLOCKINGCALLBACK}
   TWpuQueryBlockingCallback = LPWPUQUERYBLOCKINGCALLBACK;
 
-  LPWPUQUERYSOCKETHANDLECONTEXT = function (s: TSocket; lpContext: LPDWORD;
+  LPWPUQUERYSOCKETHANDLECONTEXT = function(s: TSocket; lpContext: LPDWORD;
     var lpErrno: Integer): Integer; stdcall;
   {$EXTERNALSYM LPWPUQUERYSOCKETHANDLECONTEXT}
   TWpuQuerySocketHandleContext = LPWPUQUERYSOCKETHANDLECONTEXT;
 
-  LPWPUQUEUEAPC = function (lpThreadId: LPWSATHREADID; lpfnUserApc: LPWSAUSERAPC;
+  LPWPUQUEUEAPC = function(lpThreadId: LPWSATHREADID; lpfnUserApc: LPWSAUSERAPC;
     dwContext: DWORD; var lpErrno: Integer): Integer; stdcall;
   {$EXTERNALSYM LPWPUQUEUEAPC}
   TWpuQueueApc = LPWPUQUEUEAPC;
 
-  LPWPURESETEVENT = function (hEvent: WSAEVENT; var lpErrno: Integer): BOOL; stdcall;
+  LPWPURESETEVENT = function(hEvent: WSAEVENT; var lpErrno: Integer): BOOL; stdcall;
   {$EXTERNALSYM LPWPURESETEVENT}
   TWpuResetEvent = LPWPURESETEVENT;
 
-  LPWPUSETEVENT = function (hEvent: WSAEVENT; var lpErrno: Integer): BOOL; stdcall;
+  LPWPUSETEVENT = function(hEvent: WSAEVENT; var lpErrno: Integer): BOOL; stdcall;
   {$EXTERNALSYM LPWPUSETEVENT}
   TWpuSetEvent = LPWPUSETEVENT;
 
-  LPWPUOPENCURRENTTHREAD = function (lpThreadId: LPWSATHREADID; var lpErrno: Integer): Integer; stdcall;
+  LPWPUOPENCURRENTTHREAD = function(lpThreadId: LPWSATHREADID; var lpErrno: Integer): Integer; stdcall;
   {$EXTERNALSYM LPWPUOPENCURRENTTHREAD}
   TWpuOpenCurrentThread = LPWPUOPENCURRENTTHREAD;
 
-  LPWPUCLOSETHREAD = function (lpThreadId: LPWSATHREADID; var lpErrno: Integer): Integer; stdcall;
+  LPWPUCLOSETHREAD = function(lpThreadId: LPWSATHREADID; var lpErrno: Integer): Integer; stdcall;
   {$EXTERNALSYM LPWPUCLOSETHREAD}
   TWpuCloseThread = LPWPUCLOSETHREAD;
 
 // Available only directly from ws2_32.dll
 
-  LPWPUCOMPLETEOVERLAPPEDREQUEST = function (s: TSocket; lpOverlapped: LPWSAOVERLAPPED;
+  LPWPUCOMPLETEOVERLAPPEDREQUEST = function(s: TSocket; lpOverlapped: LPWSAOVERLAPPED;
     dwError: DWORD; cbTransferred: DWORD; var lpErrno: Integer): Integer; stdcall;
   {$EXTERNALSYM LPWPUCOMPLETEOVERLAPPEDREQUEST}
   TWpuCompleteOverlappedRequest = LPWPUCOMPLETEOVERLAPPEDREQUEST;
@@ -431,7 +432,7 @@ type
 //{$EXTERNALSYM WSPStartup}
 
 type
-  LPWSPSTARTUP = function (wVersionRequested: WORD; lpWSPData: LPWSPDATA;
+  LPWSPSTARTUP = function(wVersionRequested: WORD; lpWSPData: LPWSPDATA;
     lpProtocolInfo: LPWSAPROTOCOL_INFOW; UpcallTable: WSPUPCALLTABLE;
     lpProcTable: LPWSPPROC_TABLE): Integer; stdcall;
   {$EXTERNALSYM LPWSPSTARTUP}
@@ -446,7 +447,7 @@ function WSCEnumProtocols(lpiProtocols: PINT; lpProtocolBuffer: LPWSAPROTOCOL_IN
 {$EXTERNALSYM WSCEnumProtocols}
 
 type
-  LPWSCENUMPROTOCOLS = function (lpiProtocols: PINT; lpProtocolBuffer: LPWSAPROTOCOL_INFOW;
+  LPWSCENUMPROTOCOLS = function(lpiProtocols: PINT; lpProtocolBuffer: LPWSAPROTOCOL_INFOW;
     var lpdwBufferLength: DWORD; var lpErrno: Integer): Integer; stdcall;
   {$EXTERNALSYM LPWSCENUMPROTOCOLS}
   TWscEnumProtocols = LPWSCENUMPROTOCOLS;
@@ -468,7 +469,7 @@ function WSCDeinstallProvider(const lpProviderId: TGUID; var lpErrno: Integer): 
 {$EXTERNALSYM WSCDeinstallProvider}
 
 type
-  LPWSCDEINSTALLPROVIDER = function (const lpProviderId: TGUID; var lpErrno: Integer): Integer; stdcall;
+  LPWSCDEINSTALLPROVIDER = function(const lpProviderId: TGUID; var lpErrno: Integer): Integer; stdcall;
   {$EXTERNALSYM LPWSCDEINSTALLPROVIDER}
   TWscDeinstallProvider = LPWSCDEINSTALLPROVIDER;
 
@@ -484,7 +485,7 @@ function WSCInstallProvider(const lpProviderId: TGUID; lpszProviderDllPath: PWCH
 {$EXTERNALSYM WSCInstallProvider}
 
 type
-  LPWSCINSTALLPROVIDER = function (const lpProviderId: TGUID; lpszProviderDllPath: PWCHAR;
+  LPWSCINSTALLPROVIDER = function(const lpProviderId: TGUID; lpszProviderDllPath: PWCHAR;
     lpProtocolInfoList: LPWSAPROTOCOL_INFOW; dwNumberOfEntries: DWORD; var lpErrno: Integer): Integer; stdcall;
   {$EXTERNALSYM LPWSCINSTALLPROVIDER}
   TWscInstallProvider = LPWSCINSTALLPROVIDER;
@@ -508,7 +509,7 @@ function WSCGetProviderPath(const lpProviderId: TGUID; lpszProviderDllPath: PWCH
 {$EXTERNALSYM WSCGetProviderPath}
 
 type
-  LPWSCGETPROVIDERPATH = function (const lpProviderId: TGUID; lpszProviderDllPath: PWCHAR;
+  LPWSCGETPROVIDERPATH = function(const lpProviderId: TGUID; lpszProviderDllPath: PWCHAR;
   var lpProviderDllPathLen, lpErrno: Integer): Integer; stdcall;
   {$EXTERNALSYM LPWSCGETPROVIDERPATH}
   TWscGetProviderPath = LPWSCGETPROVIDERPATH;
@@ -525,7 +526,7 @@ function WSCUpdateProvider(lpProviderId: PGUID; lpszProviderDllPath: PWCHAR; lpP
 {$EXTERNALSYM WSCUpdateProvider}
 
 type
-  LPWSCUPDATEPROVIDER = function (lpProviderId: PGUID; lpszProviderDllPath: PWCHAR; lpProtocolInfoList: LPWSAPROTOCOL_INFOW;
+  LPWSCUPDATEPROVIDER = function(lpProviderId: PGUID; lpszProviderDllPath: PWCHAR; lpProtocolInfoList: LPWSAPROTOCOL_INFOW;
     dwNumberOfEntries: DWORD; lpErrno: PINT): Integer; stdcall;
   {$EXTERNALSYM LPWSCUPDATEPROVIDER}
 
@@ -541,7 +542,7 @@ function WSCInstallQOSTemplate(const Guid: TGUID; QosName: LPWSABUF; Qos: LPQOS)
 {$EXTERNALSYM WSCInstallQOSTemplate}
 
 type
-  LPWSCINSTALLQOSTEMPLATE = function (const Guid: TGUID; QosName: LPWSABUF; Qos: LPQOS): Integer; stdcall;
+  LPWSCINSTALLQOSTEMPLATE = function(const Guid: TGUID; QosName: LPWSABUF; Qos: LPQOS): Integer; stdcall;
   {$EXTERNALSYM LPWSCINSTALLQOSTEMPLATE}
   TWscInstallQosTemplate = LPWSCINSTALLQOSTEMPLATE;
 
@@ -549,7 +550,7 @@ function WSCRemoveQOSTemplate(const Guid: TGUID; QosName: LPWSABUF): Integer; st
 {$EXTERNALSYM WSCRemoveQOSTemplate}
 
 type
-  LPWSCREMOVEQOSTEMPLATE = function (const Guid: TGUID; QosName: LPWSABUF): Integer; stdcall;
+  LPWSCREMOVEQOSTEMPLATE = function(const Guid: TGUID; QosName: LPWSABUF): Integer; stdcall;
   {$EXTERNALSYM LPWSCREMOVEQOSTEMPLATE}
   TWscRemoveQosTemplate = LPWSCREMOVEQOSTEMPLATE;
 
@@ -638,7 +639,7 @@ function WSCInstallNameSpace(lpszIdentifier, lpszPathName: LPWSTR; dwNameSpace,
 {$EXTERNALSYM WSCInstallNameSpace}
 
 type
-  LPWSCINSTALLNAMESPACE = function (lpszIdentifier, lpszPathName: LPWSTR;
+  LPWSCINSTALLNAMESPACE = function(lpszIdentifier, lpszPathName: LPWSTR;
     dwNameSpace, dwVersion: DWORD; const lpProviderId: TGUID): Integer; stdcall;
   {$EXTERNALSYM LPWSCINSTALLNAMESPACE}
   TWscInstallNamespace = LPWSCINSTALLNAMESPACE;
@@ -654,7 +655,7 @@ function WSCUnInstallNameSpace(const lpProviderId: TGUID): Integer; stdcall;
 {$EXTERNALSYM WSCUnInstallNameSpace}
 
 type
-  LPWSCUNINSTALLNAMESPACE = function (const lpProviderId: TGUID): Integer; stdcall;
+  LPWSCUNINSTALLNAMESPACE = function(const lpProviderId: TGUID): Integer; stdcall;
   {$EXTERNALSYM LPWSCUNINSTALLNAMESPACE}
   TWscUninstallNamespace = LPWSCUNINSTALLNAMESPACE;
 
@@ -669,7 +670,7 @@ function WSCEnableNSProvider(const lpProviderId: TGUID; fEnable: BOOL): Integer;
 {$EXTERNALSYM WSCEnableNSProvider}
 
 type
-  LPWSCENABLENSPROVIDER = function (const lpProviderId: TGUID; fEnable: BOOL): Integer; stdcall;
+  LPWSCENABLENSPROVIDER = function(const lpProviderId: TGUID; fEnable: BOOL): Integer; stdcall;
   {$EXTERNALSYM LPWSCENABLENSPROVIDER}
   TWscEnableNsProvider = LPWSCENABLENSPROVIDER;
 
@@ -680,52 +681,51 @@ function WSCEnableNSProvider32(lpProviderId: PGUID; fEnable: BOOL): Integer; std
 
 {$ENDIF _WIN64}
 
-
 (*
  * Pointers to the individual entries in the namespace proc table.
  *)
 
 type
-  LPNSPCLEANUP = function (const lpProviderId: TGUID): Integer; stdcall;
+  LPNSPCLEANUP = function(const lpProviderId: TGUID): Integer; stdcall;
   {$EXTERNALSYM LPNSPCLEANUP}
   TNspCleanup = LPNSPCLEANUP;
 
-  LPNSPLOOKUPSERVICEBEGIN = function (const lpProviderId: TGUID;
+  LPNSPLOOKUPSERVICEBEGIN = function(const lpProviderId: TGUID;
     lpqsRestrictions: LPWSAQUERYSETW; lpServiceClassInfo: LPWSASERVICECLASSINFOW;
     dwControlFlags: DWORD; lphLookup: LPHANDLE): Integer; stdcall;
   {$EXTERNALSYM LPNSPLOOKUPSERVICEBEGIN}
   TNspLookupServiceBegin = LPNSPLOOKUPSERVICEBEGIN;
 
-  LPNSPLOOKUPSERVICENEXT = function (hLookup: HANDLE; dwControlFlags: DWORD;
+  LPNSPLOOKUPSERVICENEXT = function(hLookup: HANDLE; dwControlFlags: DWORD;
     lpdwBufferLength: LPDWORD; lpqsResults: LPWSAQUERYSETW): Integer; stdcall;
   {$EXTERNALSYM LPNSPLOOKUPSERVICENEXT}
   TNspLookupServiceNext = LPNSPLOOKUPSERVICENEXT;
 
-  LPNSPIOCTL = function (hLookup: HANDLE; dwControlCode: DWORD; lpvInBuffer: LPVOID;
+  LPNSPIOCTL = function(hLookup: HANDLE; dwControlCode: DWORD; lpvInBuffer: LPVOID;
     cbInBuffer: DWORD; lpvOutBuffer: LPVOID; cbOutBuffer: DWORD; lpcbBytesReturned: LPDWORD;
     lpCompletion: LPWSACOMPLETION; lpThreadId: LPWSATHREADID): Integer; stdcall;
   {$EXTERNALSYM LPNSPIOCTL}
 
-  LPNSPLOOKUPSERVICEEND = function (hLookup: HANDLE): Integer; stdcall;
+  LPNSPLOOKUPSERVICEEND = function(hLookup: HANDLE): Integer; stdcall;
   {$EXTERNALSYM LPNSPLOOKUPSERVICEEND}
   TNspLookupServiceEnd = LPNSPLOOKUPSERVICEEND;
 
-  LPNSPSETSERVICE = function (const lpProviderId: TGUID;
+  LPNSPSETSERVICE = function(const lpProviderId: TGUID;
     lpServiceClassInfo: LPWSASERVICECLASSINFOW; lpqsRegInfo: LPWSAQUERYSETW;
     essOperation: WSAESETSERVICEOP; dwControlFlags: DWORD): Integer; stdcall;
   {$EXTERNALSYM LPNSPSETSERVICE}
   TNspSetService = LPNSPSETSERVICE;
 
-  LPNSPINSTALLSERVICECLASS = function (const lpProviderId: TGUID;
+  LPNSPINSTALLSERVICECLASS = function(const lpProviderId: TGUID;
     lpServiceClassInfo: LPWSASERVICECLASSINFOW): Integer; stdcall;
   {$EXTERNALSYM LPNSPINSTALLSERVICECLASS}
   TNspInstallServiceClass = LPNSPINSTALLSERVICECLASS;
 
-  LPNSPREMOVESERVICECLASS = function (const lpProviderId, lpServiceClassId: TGUID): Integer; stdcall;
+  LPNSPREMOVESERVICECLASS = function(const lpProviderId, lpServiceClassId: TGUID): Integer; stdcall;
   {$EXTERNALSYM LPNSPREMOVESERVICECLASS}
   TNspRemoveServiceClass = LPNSPREMOVESERVICECLASS;
 
-  LPNSPGETSERVICECLASSINFO = function (const lpProviderId: TGUID; lpdwBufSize: LPDWORD;
+  LPNSPGETSERVICECLASSINFO = function(const lpProviderId: TGUID; lpdwBufSize: LPDWORD;
     lpServiceClassInfo: LPWSASERVICECLASSINFOW): Integer; stdcall;
   {$EXTERNALSYM LPNSPGETSERVICECLASSINFO}
   TNspGetServiceClassInfo = LPNSPGETSERVICECLASSINFO;
@@ -771,18 +771,17 @@ type
 //{$EXTERNALSYM NSPStartup}
 
 type
-  LPNSPSTARTUP = function (const lpProviderId: TGUID; lpnspRoutines:  LPNSP_ROUTINE): Integer; stdcall;
+  LPNSPSTARTUP = function(const lpProviderId: TGUID; lpnspRoutines:  LPNSP_ROUTINE): Integer; stdcall;
   {$EXTERNALSYM LPNSPSTARTUP}
   TNspStartup = LPNSPSTARTUP;
 
 implementation
 
-const
-  ws2_32 = 'ws2_32.dll';
-  qosname = 'qosname.dll';
-
+uses
+  JwaWinDLLNames;
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _WSCEnumProtocols: Pointer;
 
@@ -790,17 +789,14 @@ function WSCEnumProtocols;
 begin
   GetProcedureAddress(_WSCEnumProtocols, ws2_32, 'WSCEnumProtocols');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WSCEnumProtocols]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WSCEnumProtocols]
   end;
 end;
-{$ELSE}
-function WSCEnumProtocols; external ws2_32 name 'WSCEnumProtocols';
-{$ENDIF DYNAMIC_LINK}
+
 {$IFDEF _WIN64}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WSCEnumProtocols32: Pointer;
 
@@ -808,17 +804,14 @@ function WSCEnumProtocols32;
 begin
   GetProcedureAddress(_WSCEnumProtocols32, ws2_32, 'WSCEnumProtocols32');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WSCEnumProtocols32]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WSCEnumProtocols32]
   end;
 end;
-{$ELSE}
-function WSCEnumProtocols32; external ws2_32 name 'WSCEnumProtocols32';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
 
-{$IFDEF DYNAMIC_LINK}
+{$ENDIF _WIN64}
+
 var
   _WSCDeinstallProvider: Pointer;
 
@@ -826,17 +819,14 @@ function WSCDeinstallProvider;
 begin
   GetProcedureAddress(_WSCDeinstallProvider, ws2_32, 'WSCDeinstallProvider');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WSCDeinstallProvider]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WSCDeinstallProvider]
   end;
 end;
-{$ELSE}
-function WSCDeinstallProvider; external ws2_32 name 'WSCDeinstallProvider';
-{$ENDIF DYNAMIC_LINK}
+
 {$IFDEF _WIN64}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WSCDeinstallProvider32: Pointer;
 
@@ -844,17 +834,14 @@ function WSCDeinstallProvider32;
 begin
   GetProcedureAddress(_WSCDeinstallProvider32, ws2_32, 'WSCDeinstallProvider32');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WSCDeinstallProvider32]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WSCDeinstallProvider32]
   end;
 end;
-{$ELSE}
-function WSCDeinstallProvider32; external ws2_32 name 'WSCDeinstallProvider32';
-{$ENDIF DYNAMIC_LINK}
+
 {$ENDIF _WIN64}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WSCInstallProvider: Pointer;
 
@@ -862,17 +849,14 @@ function WSCInstallProvider;
 begin
   GetProcedureAddress(_WSCInstallProvider, ws2_32, 'WSCInstallProvider');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WSCInstallProvider]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WSCInstallProvider]
   end;
 end;
-{$ELSE}
-function WSCInstallProvider; external ws2_32 name 'WSCInstallProvider';
-{$ENDIF DYNAMIC_LINK}
+
 {$IFDEF _WIN64}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WSCInstallProvider64_32: Pointer;
 
@@ -880,17 +864,14 @@ function WSCInstallProvider64_32;
 begin
   GetProcedureAddress(_WSCInstallProvider64_32, ws2_32, 'WSCInstallProvider64_32');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WSCInstallProvider64_32]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WSCInstallProvider64_32]
   end;
 end;
-{$ELSE}
-function WSCInstallProvider64_32; external ws2_32 name 'WSCInstallProvider64_32';
-{$ENDIF DYNAMIC_LINK}
+
 {$ENDIF _WIN64}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WSCGetProviderPath: Pointer;
 
@@ -898,17 +879,14 @@ function WSCGetProviderPath;
 begin
   GetProcedureAddress(_WSCGetProviderPath, ws2_32, 'WSCGetProviderPath');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WSCGetProviderPath]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WSCGetProviderPath]
   end;
 end;
-{$ELSE}
-function WSCGetProviderPath; external ws2_32 name 'WSCGetProviderPath';
-{$ENDIF DYNAMIC_LINK}
+
 {$IFDEF _WIN64}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WSCGetProviderPath32: Pointer;
 
@@ -916,17 +894,14 @@ function WSCGetProviderPath32;
 begin
   GetProcedureAddress(_WSCGetProviderPath32, ws2_32, 'WSCGetProviderPath32');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WSCGetProviderPath32]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WSCGetProviderPath32]
   end;
 end;
-{$ELSE}
-function WSCGetProviderPath32; external ws2_32 name 'WSCGetProviderPath32';
-{$ENDIF DYNAMIC_LINK}
+
 {$ENDIF _WIN64}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WSCUpdateProvider: Pointer;
 
@@ -934,17 +909,14 @@ function WSCUpdateProvider;
 begin
   GetProcedureAddress(_WSCUpdateProvider, ws2_32, 'WSCUpdateProvider');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WSCUpdateProvider]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WSCUpdateProvider]
   end;
 end;
-{$ELSE}
-function WSCUpdateProvider; external ws2_32 name 'WSCUpdateProvider';
-{$ENDIF DYNAMIC_LINK}
+
 {$IFDEF _WIN64}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WSCUpdateProvider32: Pointer;
 
@@ -952,17 +924,14 @@ function WSCUpdateProvider32;
 begin
   GetProcedureAddress(_WSCUpdateProvider32, ws2_32, 'WSCUpdateProvider32');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WSCUpdateProvider32]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WSCUpdateProvider32]
   end;
 end;
-{$ELSE}
-function WSCUpdateProvider32; external ws2_32 name 'WSCUpdateProvider32';
-{$ENDIF DYNAMIC_LINK}
+
 {$ENDIF _WIN64}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WSCInstallQOSTemplate: Pointer;
 
@@ -970,16 +939,12 @@ function WSCInstallQOSTemplate;
 begin
   GetProcedureAddress(_WSCInstallQOSTemplate, JwaWs2spi.qosname, 'WSCInstallQOSTemplate');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WSCInstallQOSTemplate]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WSCInstallQOSTemplate]
   end;
 end;
-{$ELSE}
-function WSCInstallQOSTemplate; external qosname name 'WSCInstallQOSTemplate';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WSCRemoveQOSTemplate: Pointer;
 
@@ -987,17 +952,14 @@ function WSCRemoveQOSTemplate;
 begin
   GetProcedureAddress(_WSCRemoveQOSTemplate, JwaWs2spi.qosname, 'WSCRemoveQOSTemplate');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WSCRemoveQOSTemplate]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WSCRemoveQOSTemplate]
   end;
 end;
-{$ELSE}
-function WSCRemoveQOSTemplate; external qosname name 'WSCRemoveQOSTemplate';
-{$ENDIF DYNAMIC_LINK}
+
 {$IFDEF _WIN64}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WSCEnumNameSpaceProviders32: Pointer;
 
@@ -1005,17 +967,14 @@ function WSCEnumNameSpaceProviders32;
 begin
   GetProcedureAddress(_WSCEnumNameSpaceProviders32, ws2_32, 'WSCEnumNameSpaceProviders32');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WSCEnumNameSpaceProviders32]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WSCEnumNameSpaceProviders32]
   end;
 end;
-{$ELSE}
-function WSCEnumNameSpaceProviders32; external ws2_32 name 'WSCEnumNameSpaceProviders32';
-{$ENDIF DYNAMIC_LINK}
+
 {$ENDIF _WIN64}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WSCInstallNameSpace: Pointer;
 
@@ -1023,17 +982,14 @@ function WSCInstallNameSpace;
 begin
   GetProcedureAddress(_WSCInstallNameSpace, ws2_32, 'WSCInstallNameSpace');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WSCInstallNameSpace]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WSCInstallNameSpace]
   end;
 end;
-{$ELSE}
-function WSCInstallNameSpace; external ws2_32 name 'WSCInstallNameSpace';
-{$ENDIF DYNAMIC_LINK}
+
 {$IFDEF _WIN64}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WSCInstallNameSpace32: Pointer;
 
@@ -1041,17 +997,14 @@ function WSCInstallNameSpace32;
 begin
   GetProcedureAddress(_WSCInstallNameSpace32, ws2_32, 'WSCInstallNameSpace32');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WSCInstallNameSpace32]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WSCInstallNameSpace32]
   end;
 end;
-{$ELSE}
-function WSCInstallNameSpace32; external ws2_32 name 'WSCInstallNameSpace32';
-{$ENDIF DYNAMIC_LINK}
+
 {$ENDIF _WIN64}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WSCUnInstallNameSpace: Pointer;
 
@@ -1059,17 +1012,14 @@ function WSCUnInstallNameSpace;
 begin
   GetProcedureAddress(_WSCUnInstallNameSpace, ws2_32, 'WSCUnInstallNameSpace');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WSCUnInstallNameSpace]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WSCUnInstallNameSpace]
   end;
 end;
-{$ELSE}
-function WSCUnInstallNameSpace; external ws2_32 name 'WSCUnInstallNameSpace';
-{$ENDIF DYNAMIC_LINK}
+
 {$IFDEF _WIN64}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WSCUnInstallNameSpace32: Pointer;
 
@@ -1077,17 +1027,14 @@ function WSCUnInstallNameSpace32;
 begin
   GetProcedureAddress(_WSCUnInstallNameSpace32, ws2_32, 'WSCUnInstallNameSpace32');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WSCUnInstallNameSpace32]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WSCUnInstallNameSpace32]
   end;
 end;
-{$ELSE}
-function WSCUnInstallNameSpace32; external ws2_32 name 'WSCUnInstallNameSpace32';
-{$ENDIF DYNAMIC_LINK}
+
 {$ENDIF _WIN64}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WSCEnableNSProvider: Pointer;
 
@@ -1095,17 +1042,14 @@ function WSCEnableNSProvider;
 begin
   GetProcedureAddress(_WSCEnableNSProvider, ws2_32, 'WSCEnableNSProvider');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WSCEnableNSProvider]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WSCEnableNSProvider]
   end;
 end;
-{$ELSE}
-function WSCEnableNSProvider; external ws2_32 name 'WSCEnableNSProvider';
-{$ENDIF DYNAMIC_LINK}
+
 {$IFDEF _WIN64}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WSCEnableNSProvider32: Pointer;
 
@@ -1113,14 +1057,38 @@ function WSCEnableNSProvider32;
 begin
   GetProcedureAddress(_WSCEnableNSProvider32, ws2_32, 'WSCEnableNSProvider32');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WSCEnableNSProvider32]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WSCEnableNSProvider32]
   end;
 end;
-{$ELSE}
-function WSCEnableNSProvider32; external ws2_32 name 'WSCEnableNSProvider32';
-{$ENDIF DYNAMIC_LINK}
+
 {$ENDIF _WIN64}
+
+{$ELSE}
+
+function WSCEnumProtocols; external ws2_32 name 'WSCEnumProtocols';
+function WSCDeinstallProvider; external ws2_32 name 'WSCDeinstallProvider';
+function WSCInstallProvider; external ws2_32 name 'WSCInstallProvider';
+function WSCGetProviderPath; external ws2_32 name 'WSCGetProviderPath';
+function WSCUpdateProvider; external ws2_32 name 'WSCUpdateProvider';
+function WSCInstallQOSTemplate; external qosname name 'WSCInstallQOSTemplate';
+function WSCRemoveQOSTemplate; external qosname name 'WSCRemoveQOSTemplate';
+function WSCInstallNameSpace; external ws2_32 name 'WSCInstallNameSpace';
+function WSCUnInstallNameSpace; external ws2_32 name 'WSCUnInstallNameSpace';
+function WSCEnableNSProvider; external ws2_32 name 'WSCEnableNSProvider';
+{$IFDEF _WIN64}
+function WSCEnumProtocols32; external ws2_32 name 'WSCEnumProtocols32';
+function WSCDeinstallProvider32; external ws2_32 name 'WSCDeinstallProvider32';
+function WSCInstallProvider64_32; external ws2_32 name 'WSCInstallProvider64_32';
+function WSCGetProviderPath32; external ws2_32 name 'WSCGetProviderPath32';
+function WSCUpdateProvider32; external ws2_32 name 'WSCUpdateProvider32';
+function WSCEnumNameSpaceProviders32; external ws2_32 name 'WSCEnumNameSpaceProviders32';
+function WSCInstallNameSpace32; external ws2_32 name 'WSCInstallNameSpace32';
+function WSCUnInstallNameSpace32; external ws2_32 name 'WSCUnInstallNameSpace32';
+function WSCEnableNSProvider32; external ws2_32 name 'WSCEnableNSProvider32';
+{$ENDIF _WIN64}
+
+{$ENDIF DYNAMIC_LINK}
 
 end.

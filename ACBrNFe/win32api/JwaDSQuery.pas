@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Directory Services Query API interface Unit for Object Pascal                }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: dsquery.h, released November 2002. The original Pascal }
 { code is: DSQuery.pas, released March 2002. The initial developer of the      }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaDSQuery.pas,v 1.8 2005/09/03 14:27:48 marquardt Exp $
 
 unit JwaDSQuery;
 
@@ -49,12 +50,12 @@ unit JwaDSQuery;
 {$HPPEMIT '#include "dsquery.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaCmnQuery, JwaWinType;
+  JwaCmnQuery, JwaWindows;
 
 const
   CLSID_DsQuery: TGUID = (D1:$8a23e65e; D2:$31c2; D3:$11d0; D4:($89, $1c, $0, $a0, $24, $ab, $2d, $bb));
@@ -87,8 +88,6 @@ const
   {$EXTERNALSYM CLSID_DsFindDomainController}
   CLSID_DsFindFrsMembers: TGUID = (D1:$94ce4b18; D2:$b3d3; D3:$11d1; D4:($b9, $b4, $0, $c0, $4f, $d8, $d5, $b0));
   {$EXTERNALSYM CLSID_DsFindFrsMembers}
-
-{$IFNDEF GUID_DEFS_ONLY}
 
 //
 // DSQUERYINITPARAMS
@@ -164,7 +163,7 @@ type
   DSQUERYPARAMS = record
     cbStruct: DWORD;
     dwFlags: DWORD;
-    hInstance: HINSTANCE; // instance handle used for string extraction
+    hInstance: HINST; // instance handle used for string extraction
     offsetQuery: LONG; // offset to LDAP filter string
     iColumns: LONG; // column count
     dwReserved: DWORD; // reserved field for this query
@@ -206,7 +205,7 @@ type
   PDsQueryClassList = LPDSQUERYCLASSLIST;
 
 const
-  DSQPM_GETCLASSLIST = (CQPM_HANDLERSPECIFIC+0); // wParam == flags, lParam = LPLPDSQUERYCLASSLIST
+  DSQPM_GETCLASSLIST = CQPM_HANDLERSPECIFIC + 0; // wParam == flags, lParam = LPLPDSQUERYCLASSLIST
   {$EXTERNALSYM DSQPM_GETCLASSLIST}
 
 //
@@ -216,10 +215,8 @@ const
 //  "Help Topics" verb.
 //
 
-  DSQPM_HELPTOPICS = (CQPM_HANDLERSPECIFIC+1); // wParam = 0, lParam = hWnd parent
+  DSQPM_HELPTOPICS = CQPM_HANDLERSPECIFIC + 1; // wParam = 0, lParam = hWnd parent
   {$EXTERNALSYM DSQPM_HELPTOPICS}
-
-{$ENDIF}
 
 implementation
 

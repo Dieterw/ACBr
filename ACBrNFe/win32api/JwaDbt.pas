@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Equates for WM_DEVICECHANGE and BroadcastSystemMessage for Object Pascal     }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: dbt.h, released June 2000. The original Pascal         }
 { code is: Dbt.pas, released December 2000. The initial developer of the       }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaDbt.pas,v 1.7 2005/09/03 14:27:48 marquardt Exp $
 
 unit JwaDbt;
 
@@ -49,12 +50,12 @@ unit JwaDbt;
 {$HPPEMIT '#include "dbt.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinType, JwaWinUser;
+  JwaWindows;
 
 //
 // BroadcastSpecialMessage constants.
@@ -469,21 +470,21 @@ type
   TDevBroadcastPortW = DEV_BROADCAST_PORT_W;
   PDevBroadcastPortW = PDEV_BROADCAST_PORT_W;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   DEV_BROADCAST_PORT = DEV_BROADCAST_PORT_W;
   {$EXTERNALSYM DEV_BROADCAST_PORT}
   PDEV_BROADCAST_PORT = PDEV_BROADCAST_PORT_W;
   {$EXTERNALSYM PDEV_BROADCAST_PORT}
   TDevBroadcastPort = TDevBroadcastPortW;
   PDevBroadcastPort = PDevBroadcastPortW;
-{$ELSE}
+  {$ELSE}
   DEV_BROADCAST_PORT = DEV_BROADCAST_PORT_A;
   {$EXTERNALSYM DEV_BROADCAST_PORT}
   PDEV_BROADCAST_PORT = PDEV_BROADCAST_PORT_A;
   {$EXTERNALSYM PDEV_BROADCAST_PORT}
   TDevBroadcastPort = TDevBroadcastPortA;
   PDevBroadcastPort = PDevBroadcastPortA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   PDEV_BROADCAST_NET = ^DEV_BROADCAST_NET;
   {$EXTERNALSYM PDEV_BROADCAST_NET}
@@ -530,21 +531,21 @@ type
   TDevBroadcastDeviceInterfaceW = DEV_BROADCAST_DEVICEINTERFACE_W;
   PDevBroadcastDeviceInterfaceW = PDEV_BROADCAST_DEVICEINTERFACE_W;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   DEV_BROADCAST_DEVICEINTERFACE = DEV_BROADCAST_DEVICEINTERFACE_W;
   {$EXTERNALSYM DEV_BROADCAST_DEVICEINTERFACE}
   PDEV_BROADCAST_DEVICEINTERFACE = PDEV_BROADCAST_DEVICEINTERFACE_W;
   {$EXTERNALSYM PDEV_BROADCAST_DEVICEINTERFACE}
   TDevBroadcastDeviceInterface = TDevBroadcastDeviceInterfaceW;
   PDevBroadcastDeviceInterface = PDevBroadcastDeviceInterfaceW;
-{$ELSE}
+  {$ELSE}
   DEV_BROADCAST_DEVICEINTERFACE = DEV_BROADCAST_DEVICEINTERFACE_A;
   {$EXTERNALSYM DEV_BROADCAST_DEVICEINTERFACE}
   PDEV_BROADCAST_DEVICEINTERFACE = PDEV_BROADCAST_DEVICEINTERFACE_A;
   {$EXTERNALSYM PDEV_BROADCAST_DEVICEINTERFACE}
   TDevBroadcastDeviceInterface = TDevBroadcastDeviceInterfaceA;
   PDevBroadcastDeviceInterface = PDevBroadcastDeviceInterfaceA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   PDEV_BROADCAST_HANDLE = ^DEV_BROADCAST_HANDLE;
   {$EXTERNALSYM PDEV_BROADCAST_HANDLE}
@@ -655,6 +656,17 @@ type
   {$EXTERNALSYM DEV_BROADCAST_USERDEFINED}
   TDevBroadcastUserDefined = DEV_BROADCAST_USERDEFINED;
   PDevBroadcastUserDefined = PDEV_BROADCAST_USERDEFINED;
+
+// (rom) added own message type for WM_DEVICECHANGE
+// see Messages.pas TWMNoParams ff. 
+
+type
+  TWMDeviceChange = record
+   Msg: Cardinal;
+   Event: UINT;
+   dwData: Pointer;
+   Result: Longint;
+  end;
 
 implementation
 

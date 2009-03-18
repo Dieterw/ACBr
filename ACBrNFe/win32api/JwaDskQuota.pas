@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Disk Quota's API interface Unit for Object Pascal                            }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: dskquota.h, released June 2000. The original Pascal    }
 { code is: DskQuota.pas, released December 2000. The initial developer of the  }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,25 +35,27 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaDskQuota.pas,v 1.7 2005/09/03 13:12:10 marquardt Exp $
 
 unit JwaDskQuota;
 
 {$WEAKPACKAGEUNIT}
 
-{$HPPEMIT ''}
-{$HPPEMIT '#include "DskQuota.h"'}
-{$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  ActiveX {TODO}, JwaWinNT, JwaWinType;
+  JwaActiveX, JwaWindows;
+
+{$HPPEMIT ''}
+{$HPPEMIT '#include "DskQuota.h"'}
+{$HPPEMIT ''}
 
 const
 
@@ -410,13 +411,15 @@ end;
 function DISKQUOTA_SET_LOG_USER_THRESHOLD(f: DWORD; yn: BOOL): DWORD;
 begin
   Result := f and (not DISKQUOTA_LOGFLAG_USER_THRESHOLD);
-  if yn then Result := Result or DISKQUOTA_LOGFLAG_USER_THRESHOLD;
+  if yn then
+    Result := Result or DISKQUOTA_LOGFLAG_USER_THRESHOLD;
 end;
 
 function DISKQUOTA_SET_LOG_USER_LIMIT(f: DWORD; yn: BOOL): DWORD;
 begin
   Result := f and (not DISKQUOTA_LOGFLAG_USER_LIMIT);
-  if yn then Result := Result or DISKQUOTA_LOGFLAG_USER_LIMIT;
+  if yn then
+    Result := Result or DISKQUOTA_LOGFLAG_USER_LIMIT;
 end;
 
 end.

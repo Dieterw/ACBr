@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Lan Manager Scheduler API interface Unit for Object Pascal                   }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: lmat.h, released November 2001. The original Pascal    }
 { code is: LmAt.pas, released Februari 2002. The initial developer of the      }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaLmAt.pas,v 1.8 2005/09/06 16:36:50 marquardt Exp $
 
 unit JwaLmAt;
 
@@ -49,12 +50,12 @@ unit JwaLmAt;
 {$HPPEMIT '#include "lmat.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaLmCons, JwaWinType;
+  JwaWindows, JwaLmCons;
 
 //
 //  The following bits are used with Flags field in structures below.
@@ -158,8 +159,11 @@ function NetScheduleJobGetInfo(Servername: LPCWSTR; JobId: DWORD; var PointerToB
 
 implementation
 
+uses
+  JwaWinDLLNames;
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _NetScheduleJobAdd: Pointer;
 
@@ -167,16 +171,12 @@ function NetScheduleJobAdd;
 begin
   GetProcedureAddress(_NetScheduleJobAdd, netapi32, 'NetScheduleJobAdd');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetScheduleJobAdd]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetScheduleJobAdd]
   end;
 end;
-{$ELSE}
-function NetScheduleJobAdd; external netapi32 name 'NetScheduleJobAdd';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetScheduleJobDel: Pointer;
 
@@ -184,16 +184,12 @@ function NetScheduleJobDel;
 begin
   GetProcedureAddress(_NetScheduleJobDel, netapi32, 'NetScheduleJobDel');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetScheduleJobDel]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetScheduleJobDel]
   end;
 end;
-{$ELSE}
-function NetScheduleJobDel; external netapi32 name 'NetScheduleJobDel';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetScheduleJobEnum: Pointer;
 
@@ -201,16 +197,12 @@ function NetScheduleJobEnum;
 begin
   GetProcedureAddress(_NetScheduleJobEnum, netapi32, 'NetScheduleJobEnum');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetScheduleJobEnum]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetScheduleJobEnum]
   end;
 end;
-{$ELSE}
-function NetScheduleJobEnum; external netapi32 name 'NetScheduleJobEnum';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetScheduleJobGetInfo: Pointer;
 
@@ -218,13 +210,19 @@ function NetScheduleJobGetInfo;
 begin
   GetProcedureAddress(_NetScheduleJobGetInfo, netapi32, 'NetScheduleJobGetInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetScheduleJobGetInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetScheduleJobGetInfo]
   end;
 end;
+
 {$ELSE}
+
+function NetScheduleJobAdd; external netapi32 name 'NetScheduleJobAdd';
+function NetScheduleJobDel; external netapi32 name 'NetScheduleJobDel';
+function NetScheduleJobEnum; external netapi32 name 'NetScheduleJobEnum';
 function NetScheduleJobGetInfo; external netapi32 name 'NetScheduleJobGetInfo';
+
 {$ENDIF DYNAMIC_LINK}
 
 end.

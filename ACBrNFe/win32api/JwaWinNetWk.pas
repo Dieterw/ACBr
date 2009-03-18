@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Windows Networking API interface Unit for Object Pascal                      }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: winnetwk.h, released June 2000. The original Pascal    }
 { code is: WinNetWk.pas, released December 2000. The initial developer of the  }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,25 +35,33 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaWinNetWk.pas,v 1.11 2005/09/06 16:36:51 marquardt Exp $
+
+{$IFNDEF JWA_INCLUDEMODE}
 
 unit JwaWinNetWk;
 
 {$WEAKPACKAGEUNIT}
 
-{$HPPEMIT ''}
-{$HPPEMIT '#include "WinNetWk.h"'}
-{$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinError, JwaWinType;
+  JwaWinType, JwaWinError;
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_INTERFACESECTION}
+
+{$HPPEMIT ''}
+{$HPPEMIT '#include "WinNetWk.h"'}
+{$HPPEMIT ''}
 
 //
 // Network types
@@ -169,6 +176,8 @@ const
   {$EXTERNALSYM WNNC_NET_TERMSRV}
   WNNC_NET_SRT         = $00370000;
   {$EXTERNALSYM WNNC_NET_SRT}
+  WNNC_NET_QUINCY      = $00380000;
+  {$EXTERNALSYM WNNC_NET_QUINCY}
 
   WNNC_CRED_MANAGER = DWORD($FFFF0000);
   {$EXTERNALSYM WNNC_CRED_MANAGER}
@@ -277,21 +286,21 @@ type
   TNetResourceW = NETRESOURCEW;
   PNetResourceW = LPNETRESOURCEW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   NETRESOURCE = NETRESOURCEW;
   {$EXTERNALSYM NETRESOURCE}
   LPNETRESOURCE = LPNETRESOURCEW;
   {$EXTERNALSYM LPNETRESOURCE}
   TNetResource = TNetResourceW;
   PNetResource = PNetResourceW;
-{$ELSE}
+  {$ELSE}
   NETRESOURCE = NETRESOURCEA;
   {$EXTERNALSYM NETRESOURCE}
   LPNETRESOURCE = LPNETRESOURCEA;
   {$EXTERNALSYM LPNETRESOURCE}
   TNetResource = TNetResourceA;
   PNetResource = PNetResourceA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 //  Network Connections.
@@ -334,14 +343,8 @@ function WNetAddConnectionA(lpRemoteName, lpPassword, lpLocalName: LPCSTR): DWOR
 {$EXTERNALSYM WNetAddConnectionA}
 function WNetAddConnectionW(lpRemoteName, lpPassword, lpLocalName: LPCWSTR): DWORD; stdcall;
 {$EXTERNALSYM WNetAddConnectionW}
-
-{$IFDEF UNICODE}
-function WNetAddConnection(lpRemoteName, lpPassword, lpLocalName: LPCWSTR): DWORD; stdcall;
+function WNetAddConnection(lpRemoteName, lpPassword, lpLocalName: LPCTSTR): DWORD; stdcall;
 {$EXTERNALSYM WNetAddConnection}
-{$ELSE}
-function WNetAddConnection(lpRemoteName, lpPassword, lpLocalName: LPCSTR): DWORD; stdcall;
-{$EXTERNALSYM WNetAddConnection}
-{$ENDIF}
 
 function WNetAddConnection2A(const lpNetResource: NETRESOURCEA; lpPassword: LPCSTR;
   lpUserName: LPCSTR; dwFlags: DWORD): DWORD; stdcall;
@@ -349,16 +352,9 @@ function WNetAddConnection2A(const lpNetResource: NETRESOURCEA; lpPassword: LPCS
 function WNetAddConnection2W(const lpNetResource: NETRESOURCEW; lpPassword: LPCWSTR;
   lpUserName: LPCWSTR; dwFlags: DWORD): DWORD; stdcall;
 {$EXTERNALSYM WNetAddConnection2W}
-
-{$IFDEF UNICODE}
-function WNetAddConnection2(const lpNetResource: NETRESOURCEW; lpPassword: LPCWSTR;
-  lpUserName: LPCWSTR; dwFlags: DWORD): DWORD; stdcall;
+function WNetAddConnection2(const lpNetResource: NETRESOURCE; lpPassword: LPCTSTR;
+  lpUserName: LPCTSTR; dwFlags: DWORD): DWORD; stdcall;
 {$EXTERNALSYM WNetAddConnection2}
-{$ELSE}
-function WNetAddConnection2(const lpNetResource: NETRESOURCEA; lpPassword: LPCSTR;
-  lpUserName: LPCSTR; dwFlags: DWORD): DWORD; stdcall;
-{$EXTERNALSYM WNetAddConnection2}
-{$ENDIF}
 
 function WNetAddConnection3A(hwndOwner: HWND; const lpNetResource: NETRESOURCEA;
   lpPassword: LPCSTR; lpUserName: LPCSTR; dwFlags: DWORD): DWORD; stdcall;
@@ -366,55 +362,37 @@ function WNetAddConnection3A(hwndOwner: HWND; const lpNetResource: NETRESOURCEA;
 function WNetAddConnection3W(hwndOwner: HWND; const lpNetResource: NETRESOURCEW;
   lpPassword: LPCWSTR; lpUserName: LPCWSTR; dwFlags: DWORD): DWORD; stdcall;
 {$EXTERNALSYM WNetAddConnection3W}
-
-{$IFDEF UNICODE}
-function WNetAddConnection3(hwndOwner: HWND; const lpNetResource: LPNETRESOURCEW;
-  lpPassword: LPCWSTR; lpUserName: LPCWSTR; dwFlags: DWORD): DWORD; stdcall;
+function WNetAddConnection3(hwndOwner: HWND; const lpNetResource: LPNETRESOURCE;
+  lpPassword: LPCTSTR; lpUserName: LPCTSTR; dwFlags: DWORD): DWORD; stdcall;
 {$EXTERNALSYM WNetAddConnection3}
-{$ELSE}
-function WNetAddConnection3(hwndOwner: HWND; const lpNetResource: NETRESOURCEA;
-  lpPassword: LPCSTR; lpUserName: LPCSTR; dwFlags: DWORD): DWORD; stdcall;
-{$EXTERNALSYM WNetAddConnection3}
-{$ENDIF}
 
 function WNetCancelConnectionA(lpName: LPCSTR; fForce: BOOL): DWORD; stdcall;
 {$EXTERNALSYM WNetCancelConnectionA}
 function WNetCancelConnectionW(lpName: LPCWSTR; fForce: BOOL): DWORD; stdcall;
 {$EXTERNALSYM WNetCancelConnectionW}
-
-{$IFDEF UNICODE}
-function WNetCancelConnection(lpName: LPCWSTR; fForce: BOOL): DWORD; stdcall;
+function WNetCancelConnection(lpName: LPCTSTR; fForce: BOOL): DWORD; stdcall;
 {$EXTERNALSYM WNetCancelConnection}
-{$ELSE}
-function WNetCancelConnection(lpName: LPCSTR; fForce: BOOL): DWORD; stdcall;
-{$EXTERNALSYM WNetCancelConnection}
-{$ENDIF}
 
 function WNetCancelConnection2A(lpName: LPCSTR; dwFlags: DWORD; fForce: BOOL): DWORD; stdcall;
 {$EXTERNALSYM WNetCancelConnection2A}
 function WNetCancelConnection2W(lpName: LPCWSTR; dwFlags: DWORD; fForce: BOOL): DWORD; stdcall;
 {$EXTERNALSYM WNetCancelConnection2W}
-
-{$IFDEF UNICODE}
-function WNetCancelConnection2(lpName: LPCWSTR; dwFlags: DWORD; fForce: BOOL): DWORD; stdcall;
+function WNetCancelConnection2(lpName: LPCTSTR; dwFlags: DWORD; fForce: BOOL): DWORD; stdcall;
 {$EXTERNALSYM WNetCancelConnection2}
-{$ELSE}
-function WNetCancelConnection2(lpName: LPCSTR; dwFlags: DWORD; fForce: BOOL): DWORD; stdcall;
-{$EXTERNALSYM WNetCancelConnection2}
-{$ENDIF}
 
 function WNetGetConnectionA(lpLocalName, lpRemoteName: LPSTR; var lpnLength: DWORD): DWORD; stdcall;
 {$EXTERNALSYM WNetGetConnectionA}
 function WNetGetConnectionW(lpLocalName, lpRemoteName: LPWSTR; var lpnLength: DWORD): DWORD; stdcall;
 {$EXTERNALSYM WNetGetConnectionW}
+function WNetGetConnection(lpLocalName, lpRemoteName: LPTSTR; var lpnLength: DWORD): DWORD; stdcall;
+{$EXTERNALSYM WNetGetConnection}
 
-{$IFDEF UNICODE}
-function WNetGetConnection(lpLocalName, lpRemoteName: LPWSTR; var lpnLength: DWORD): DWORD; stdcall;
-{$EXTERNALSYM WNetGetConnection}
-{$ELSE}
-function WNetGetConnection(lpLocalName, lpRemoteName: LPSTR; var lpnLength: DWORD): DWORD; stdcall;
-{$EXTERNALSYM WNetGetConnection}
-{$ENDIF}
+function WNetRestoreConnectionA(hwndParent: HWND; lpDevice: LPCSTR): DWORD; stdcall;
+{$EXTERNALSYM WNetRestoreConnectionA}
+function WNetRestoreConnectionW(hwndParent: HWND; lpDevice: LPCWSTR): DWORD; stdcall;
+{$EXTERNALSYM WNetRestoreConnectionW}
+function WNetRestoreConnection(hwndParent: HWND; lpDevice: LPCTSTR): DWORD; stdcall;
+{$EXTERNALSYM WNetRestoreConnection}
 
 function WNetUseConnectionA(hwndOwner: HWND; const lpNetResource: NETRESOURCEA;
   lpPassword, lpUserID: LPCSTR; dwFlags: DWORD; lpAccessName: LPSTR;
@@ -424,18 +402,10 @@ function WNetUseConnectionW(hwndOwner: HWND; const lpNetResource: NETRESOURCEW;
   lpPassword, lpUserID: LPCWSTR; dwFlags: DWORD; lpAccessName: LPWSTR;
   var lpBufferSize, lpResult: DWORD): DWORD; stdcall;
 {$EXTERNALSYM WNetUseConnectionW}
-
-{$IFDEF UNICODE}
-function WNetUseConnection(hwndOwner: HWND; const lpNetResource: NETRESOURCEW;
-  lpPassword, lpUserID: LPCWSTR; dwFlags: DWORD; lpAccessName: LPWSTR;
+function WNetUseConnection(hwndOwner: HWND; const lpNetResource: NETRESOURCE;
+  lpPassword, lpUserID: LPCTSTR; dwFlags: DWORD; lpAccessName: LPTSTR;
   var lpBufferSize, lpResult: DWORD): DWORD; stdcall;
 {$EXTERNALSYM WNetUseConnection}
-{$ELSE}
-function WNetUseConnection(hwndOwner: HWND; const lpNetResource: NETRESOURCEA;
-  lpPassword, lpUserID: LPCSTR; dwFlags: DWORD; lpAccessName: LPSTR;
-  var lpBufferSize, lpResult: DWORD): DWORD; stdcall;
-{$EXTERNALSYM WNetUseConnection}
-{$ENDIF}
 
 //
 //  Network Connection Dialogs.
@@ -478,21 +448,21 @@ type
   TConnectDlgStructW = CONNECTDLGSTRUCTW;
   PConnectDlgStructW = LPCONNECTDLGSTRUCTW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   CONNECTDLGSTRUCT = CONNECTDLGSTRUCTW;
   {$EXTERNALSYM CONNECTDLGSTRUCT}
   LPCONNECTDLGSTRUCT = LPCONNECTDLGSTRUCTW;
   {$EXTERNALSYM LPCONNECTDLGSTRUCT}
   TConnectDlgStruct = TConnectDlgStructW;
   PConnectDlgStruct = PConnectDlgStructW;
-{$ELSE}
+  {$ELSE}
   CONNECTDLGSTRUCT = CONNECTDLGSTRUCTA;
   {$EXTERNALSYM CONNECTDLGSTRUCT}
   LPCONNECTDLGSTRUCT = LPCONNECTDLGSTRUCTA;
   {$EXTERNALSYM LPCONNECTDLGSTRUCT}
   TConnectDlgStruct = TConnectDlgStructA;
   PConnectDlgStruct = PConnectDlgStructA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 const
   CONNDLG_RO_PATH    = $00000001; // Resource path should be read-only
@@ -519,14 +489,8 @@ function WNetConnectionDialog1A(var lpConnDlgStruct: CONNECTDLGSTRUCTA): DWORD; 
 {$EXTERNALSYM WNetConnectionDialog1A}
 function WNetConnectionDialog1W(var lpConnDlgStruct: CONNECTDLGSTRUCTW): DWORD; stdcall;
 {$EXTERNALSYM WNetConnectionDialog1W}
-
-{$IFDEF UNICODE}
-function WNetConnectionDialog1(var lpConnDlgStruct: CONNECTDLGSTRUCTW): DWORD; stdcall;
+function WNetConnectionDialog1(var lpConnDlgStruct: CONNECTDLGSTRUCT): DWORD; stdcall;
 {$EXTERNALSYM WNetConnectionDialog1}
-{$ELSE}
-function WNetConnectionDialog1(var lpConnDlgStruct: CONNECTDLGSTRUCTA): DWORD; stdcall;
-{$EXTERNALSYM WNetConnectionDialog1}
-{$ENDIF}
 
 type
   LPDISCDLGSTRUCTA = ^DISCDLGSTRUCTA;
@@ -559,21 +523,21 @@ type
   TDiscDlgStructW = DISCDLGSTRUCTW;
   PDiscDlgStructW = LPDISCDLGSTRUCTW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   DISCDLGSTRUCT = DISCDLGSTRUCTW;
   {$EXTERNALSYM DISCDLGSTRUCT}
   LPDISCDLGSTRUCT = LPDISCDLGSTRUCTW;
   {$EXTERNALSYM LPDISCDLGSTRUCT}
   TDiscDlgStruct = TDiscDlgStructW;
   PDiscDlgStruct = PDiscDlgStructW;
-{$ELSE}
+  {$ELSE}
   DISCDLGSTRUCT = DISCDLGSTRUCTA;
   {$EXTERNALSYM DISCDLGSTRUCT}
   LPDISCDLGSTRUCT = LPDISCDLGSTRUCTA;
   {$EXTERNALSYM LPDISCDLGSTRUCT}
   TDiscDlgStruct = TDiscDlgStructA;
   PDiscDlgStruct = PDiscDlgStructA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 const
   DISC_UPDATE_PROFILE = $00000001;
@@ -585,14 +549,8 @@ function WNetDisconnectDialog1A(const lpConnDlgStruct: DISCDLGSTRUCTA): DWORD; s
 {$EXTERNALSYM WNetDisconnectDialog1A}
 function WNetDisconnectDialog1W(const lpConnDlgStruct: DISCDLGSTRUCTW): DWORD; stdcall;
 {$EXTERNALSYM WNetDisconnectDialog1W}
-
-{$IFDEF UNICODE}
-function WNetDisconnectDialog1(const lpConnDlgStruct: DISCDLGSTRUCTW): DWORD; stdcall;
+function WNetDisconnectDialog1(const lpConnDlgStruct: DISCDLGSTRUCT): DWORD; stdcall;
 {$EXTERNALSYM WNetDisconnectDialog1}
-{$ELSE}
-function WNetDisconnectDialog1(const lpConnDlgStruct: DISCDLGSTRUCTA): DWORD; stdcall;
-{$EXTERNALSYM WNetDisconnectDialog1}
-{$ENDIF}
 
 //
 //  Network Browsing.
@@ -604,16 +562,9 @@ function WNetOpenEnumA(dwScope, dwType, dwUsage: DWORD; lpNetResource: LPNETRESO
 function WNetOpenEnumW(dwScope, dwType, dwUsage: DWORD; lpNetResource: LPNETRESOURCEW;
   var lphEnum: HANDLE): DWORD; stdcall;
 {$EXTERNALSYM WNetOpenEnumW}
-
-{$IFDEF UNICODE}
-function WNetOpenEnum(dwScope, dwType, dwUsage: DWORD; lpNetResource: LPNETRESOURCEW;
+function WNetOpenEnum(dwScope, dwType, dwUsage: DWORD; lpNetResource: LPNETRESOURCE;
   var lphEnum: HANDLE): DWORD; stdcall;
 {$EXTERNALSYM WNetOpenEnum}
-{$ELSE}
-function WNetOpenEnum(dwScope, dwType, dwUsage: DWORD; lpNetResource: LPNETRESOURCEA;
-  var lphEnum: HANDLE): DWORD; stdcall;
-{$EXTERNALSYM WNetOpenEnum}
-{$ENDIF}
 
 function WNetEnumResourceA(hEnum: HANDLE; var lpcCount: DWORD; lpBuffer: LPVOID;
   var lpBufferSize: DWORD): DWORD; stdcall;
@@ -621,16 +572,9 @@ function WNetEnumResourceA(hEnum: HANDLE; var lpcCount: DWORD; lpBuffer: LPVOID;
 function WNetEnumResourceW(hEnum: HANDLE; var lpcCount: DWORD; lpBuffer: LPVOID;
   var lpBufferSize: DWORD): DWORD; stdcall;
 {$EXTERNALSYM WNetEnumResourceW}
-
-{$IFDEF UNICODE}
 function WNetEnumResource(hEnum: HANDLE; var lpcCount: DWORD; lpBuffer: LPVOID;
   var lpBufferSize: DWORD): DWORD; stdcall;
 {$EXTERNALSYM WNetEnumResource}
-{$ELSE}
-function WNetEnumResource(hEnum: HANDLE; var lpcCount: DWORD; lpBuffer: LPVOID;
-  var lpBufferSize: DWORD): DWORD; stdcall;
-{$EXTERNALSYM WNetEnumResource}
-{$ENDIF}
 
 function WNetCloseEnum(hEnum: HANDLE): DWORD; stdcall;
 {$EXTERNALSYM WNetCloseEnum}
@@ -641,16 +585,9 @@ function WNetGetResourceParentA(const lpNetResource: NETRESOURCEA;
 function WNetGetResourceParentW(const lpNetResource: NETRESOURCEW;
   lpBuffer: LPVOID; var lpcbBuffer: DWORD): DWORD; stdcall;
 {$EXTERNALSYM WNetGetResourceParentW}
-
-{$IFDEF UNICODE}
-function WNetGetResourceParent(const lpNetResource: NETRESOURCEW;
+function WNetGetResourceParent(const lpNetResource: NETRESOURCE;
   lpBuffer: LPVOID; var lpcbBuffer: DWORD): DWORD; stdcall;
 {$EXTERNALSYM WNetGetResourceParent}
-{$ELSE}
-function WNetGetResourceParent(const lpNetResource: NETRESOURCEA;
-  lpBuffer: LPVOID; var lpcbBuffer: DWORD): DWORD; stdcall;
-{$EXTERNALSYM WNetGetResourceParent}
-{$ENDIF}
 
 function WNetGetResourceInformationA(const lpNetResource: NETRESOURCEA;
   lpBuffer: LPVOID; var lpcbBuffer: DWORD; var lplpSystem: LPSTR): DWORD; stdcall;
@@ -658,16 +595,9 @@ function WNetGetResourceInformationA(const lpNetResource: NETRESOURCEA;
 function WNetGetResourceInformationW(const lpNetResource: NETRESOURCEW;
   lpBuffer: LPVOID; var lpcbBuffer: DWORD; var lplpSystem: LPWSTR): DWORD; stdcall;
 {$EXTERNALSYM WNetGetResourceInformationW}
-
-{$IFDEF UNICODE}
-function WNetGetResourceInformation(const lpNetResource: NETRESOURCEW;
-  lpBuffer: LPVOID; var lpcbBuffer: DWORD; var lplpSystem: LPWSTR): DWORD; stdcall;
+function WNetGetResourceInformation(const lpNetResource: NETRESOURCE;
+  lpBuffer: LPVOID; var lpcbBuffer: DWORD; var lplpSystem: LPTSTR): DWORD; stdcall;
 {$EXTERNALSYM WNetGetResourceInformation}
-{$ELSE}
-function WNetGetResourceInformation(const lpNetResource: NETRESOURCEA;
-  lpBuffer: LPVOID; var lpcbBuffer: DWORD; var lplpSystem: LPSTR): DWORD; stdcall;
-{$EXTERNALSYM WNetGetResourceInformation}
-{$ENDIF}
 
 //
 //  Universal Naming.
@@ -702,21 +632,21 @@ type
   TUniversalNameInfoW = UNIVERSAL_NAME_INFOW;
   PUniversalNameInfoW = LPUNIVERSAL_NAME_INFOW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   UNIVERSAL_NAME_INFO = UNIVERSAL_NAME_INFOW;
   {$EXTERNALSYM UNIVERSAL_NAME_INFO}
   LPUNIVERSAL_NAME_INFO = LPUNIVERSAL_NAME_INFOW;
   {$EXTERNALSYM LPUNIVERSAL_NAME_INFO}
   TUniversalNameInfo = TUniversalNameInfoW;
   PUniversalNameInfo = PUniversalNameInfoW;
-{$ELSE}
+  {$ELSE}
   UNIVERSAL_NAME_INFO = UNIVERSAL_NAME_INFOA;
   {$EXTERNALSYM UNIVERSAL_NAME_INFO}
   LPUNIVERSAL_NAME_INFO = LPUNIVERSAL_NAME_INFOA;
   {$EXTERNALSYM LPUNIVERSAL_NAME_INFO}
   TUniversalNameInfo = TUniversalNameInfoA;
   PUniversalNameInfo = PUniversalNameInfoA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   LPREMOTE_NAME_INFOA = ^REMOTE_NAME_INFOA;
   {$EXTERNALSYM LPREMOTE_NAME_INFOA}
@@ -744,21 +674,21 @@ type
   TRemoteNameInfoW = REMOTE_NAME_INFOW;
   PRemoteNameInfoW = LPREMOTE_NAME_INFOW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   REMOTE_NAME_INFO = REMOTE_NAME_INFOW;
   {$EXTERNALSYM REMOTE_NAME_INFO}
   LPREMOTE_NAME_INFO = LPREMOTE_NAME_INFOW;
   {$EXTERNALSYM LPREMOTE_NAME_INFO}
   TRemoteNameInfo = TRemoteNameInfoW;
   PRemoteNameInfo = PRemoteNameInfoW;
-{$ELSE}
+  {$ELSE}
   REMOTE_NAME_INFO = REMOTE_NAME_INFOA;
   {$EXTERNALSYM REMOTE_NAME_INFO}
   LPREMOTE_NAME_INFO = LPREMOTE_NAME_INFOA;
   {$EXTERNALSYM LPREMOTE_NAME_INFO}
   TRemoteNameInfo = TRemoteNameInfoA;
   PRemoteNameInfo = PRemoteNameInfoA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 function WNetGetUniversalNameA(lpLocalPath: LPCSTR; dwInfoLevel: DWORD;
   lpBuffer: LPVOID; var lpBufferSize: DWORD): DWORD; stdcall;
@@ -766,16 +696,9 @@ function WNetGetUniversalNameA(lpLocalPath: LPCSTR; dwInfoLevel: DWORD;
 function WNetGetUniversalNameW(lpLocalPath: LPCWSTR; dwInfoLevel: DWORD;
   lpBuffer: LPVOID; var lpBufferSize: DWORD): DWORD; stdcall;
 {$EXTERNALSYM WNetGetUniversalNameW}
-
-{$IFDEF UNICODE}
-function WNetGetUniversalName(lpLocalPath: LPCWSTR; dwInfoLevel: DWORD;
+function WNetGetUniversalName(lpLocalPath: LPCTSTR; dwInfoLevel: DWORD;
   lpBuffer: LPVOID; var lpBufferSize: DWORD): DWORD; stdcall;
 {$EXTERNALSYM WNetGetUniversalName}
-{$ELSE}
-function WNetGetUniversalName(lpLocalPath: LPCSTR; dwInfoLevel: DWORD;
-  lpBuffer: LPVOID; var lpBufferSize: DWORD): DWORD; stdcall;
-{$EXTERNALSYM WNetGetUniversalName}
-{$ENDIF}
 
 //
 //  Authentication and Logon/Logoff.
@@ -785,14 +708,8 @@ function WNetGetUserA(lpName: LPCSTR; lpUserName: LPSTR; var lpnLength: DWORD): 
 {$EXTERNALSYM WNetGetUserA}
 function WNetGetUserW(lpName: LPCWSTR; lpUserName: LPWSTR; var lpnLength: DWORD): DWORD; stdcall;
 {$EXTERNALSYM WNetGetUserW}
-
-{$IFDEF UNICODE}
-function WNetGetUser(lpName: LPCWSTR; lpUserName: LPWSTR; var lpnLength: DWORD): DWORD; stdcall;
+function WNetGetUser(lpName: LPCTSTR; lpUserName: LPTSTR; var lpnLength: DWORD): DWORD; stdcall;
 {$EXTERNALSYM WNetGetUser}
-{$ELSE}
-function WNetGetUser(lpName: LPCSTR; lpUserName: LPSTR; var lpnLength: DWORD): DWORD; stdcall;
-{$EXTERNALSYM WNetGetUser}
-{$ENDIF}
 
 //
 // Other.
@@ -814,16 +731,9 @@ function WNetGetProviderNameA(dwNetType: DWORD; lpProviderName: LPSTR;
 function WNetGetProviderNameW(dwNetType: DWORD; lpProviderName: LPWSTR;
   var lpBufferSize: DWORD): DWORD; stdcall;
 {$EXTERNALSYM WNetGetProviderNameW}
-
-{$IFDEF UNICODE}
-function WNetGetProviderName(dwNetType: DWORD; lpProviderName: LPWSTR;
+function WNetGetProviderName(dwNetType: DWORD; lpProviderName: LPTSTR;
   var lpBufferSize: DWORD): DWORD; stdcall;
 {$EXTERNALSYM WNetGetProviderName}
-{$ELSE}
-function WNetGetProviderName(dwNetType: DWORD; lpProviderName: LPSTR;
-  var lpBufferSize: DWORD): DWORD; stdcall;
-{$EXTERNALSYM WNetGetProviderName}
-{$ENDIF}
 
 type
   LPNETINFOSTRUCT = ^NETINFOSTRUCT;
@@ -858,54 +768,40 @@ function WNetGetNetworkInformationA(lpProvider: LPCSTR;
 function WNetGetNetworkInformationW(lpProvider: LPCWSTR;
   var lpNetInfoStruct: NETINFOSTRUCT): DWORD; stdcall;
 {$EXTERNALSYM WNetGetNetworkInformationW}
-
-{$IFDEF UNICODE}
-function WNetGetNetworkInformation(lpProvider: LPCWSTR;
+function WNetGetNetworkInformation(lpProvider: LPCTSTR;
   var lpNetInfoStruct: NETINFOSTRUCT): DWORD; stdcall;
 {$EXTERNALSYM WNetGetNetworkInformation}
-{$ELSE}
-function WNetGetNetworkInformation(lpProvider: LPCSTR;
-  var lpNetInfoStruct: NETINFOSTRUCT): DWORD; stdcall;
-{$EXTERNALSYM WNetGetNetworkInformation}
-{$ENDIF}
 
 //
 //  User Profiles.
 //
 
 type
-  PFNGETPROFILEPATHA = function (pszUsername: LPCSTR; pszBuffer: LPSTR;
+  PFNGETPROFILEPATHA = function(pszUsername: LPCSTR; pszBuffer: LPSTR;
     cbBuffer: UINT): UINT; stdcall;
   {$EXTERNALSYM PFNGETPROFILEPATHA}
 
-  PFNGETPROFILEPATHW = function (pszUsername: LPCWSTR; pszBuffer: LPWSTR;
+  PFNGETPROFILEPATHW = function(pszUsername: LPCWSTR; pszBuffer: LPWSTR;
     cbBuffer: UINT): UINT; stdcall;
   {$EXTERNALSYM PFNGETPROFILEPATHW}
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   PFNGETPROFILEPATH = PFNGETPROFILEPATHW;
   {$EXTERNALSYM PFNGETPROFILEPATH}
-{$ELSE}
+  {$ELSE}
   PFNGETPROFILEPATH = PFNGETPROFILEPATHA;
   {$EXTERNALSYM PFNGETPROFILEPATH}
-{$ENDIF}
+  {$ENDIF UNICODE}
 
-  PFNRECONCILEPROFILEA = function (pszCentralFile, pszLocalFile: LPCSTR;
+  PFNRECONCILEPROFILEA = function(pszCentralFile, pszLocalFile: LPCSTR;
     dwFlags: DWORD): UINT; stdcall;
   {$EXTERNALSYM PFNRECONCILEPROFILEA}
-
-  PFNRECONCILEPROFILEW = function (pszCentralFile, pszLocalFile: LPCWSTR;
+  PFNRECONCILEPROFILEW = function(pszCentralFile, pszLocalFile: LPCWSTR;
     dwFlags: DWORD): UINT; stdcall;
   {$EXTERNALSYM PFNRECONCILEPROFILEW}
-
-
-{$IFDEF UNICODE}
-  PFNRECONCILEPROFILE = PFNRECONCILEPROFILEW;
+  PFNRECONCILEPROFILE = function(pszCentralFile, pszLocalFile: LPCTSTR;
+    dwFlags: DWORD): UINT; stdcall;
   {$EXTERNALSYM PFNRECONCILEPROFILE}
-{$ELSE}
-  PFNRECONCILEPROFILE = PFNRECONCILEPROFILEA;
-  {$EXTERNALSYM PFNRECONCILEPROFILE}  
-{$ENDIF}
 
 const
   RP_LOGON   = $01; // if set, do for logon, else for logoff
@@ -918,21 +814,15 @@ const
 //
 
 type
-  PFNPROCESSPOLICIESA = function (hwnd: HWND; pszPath, pszUsername,
+  PFNPROCESSPOLICIESA = function(hwnd: HWND; pszPath, pszUsername,
     pszComputerName: LPCSTR; dwFlags: DWORD): BOOL; stdcall;
   {$EXTERNALSYM PFNPROCESSPOLICIESA}
-
-  PFNPROCESSPOLICIESW = function (hwnd: HWND; pszPath, pszUsername,
+  PFNPROCESSPOLICIESW = function(hwnd: HWND; pszPath, pszUsername,
     pszComputerName: LPCWSTR; dwFlags: DWORD): BOOL; stdcall;
   {$EXTERNALSYM PFNPROCESSPOLICIESW}
-
-{$IFDEF UNICODE}
-  PFNPROCESSPOLICIES = PFNPROCESSPOLICIESW;
+  PFNPROCESSPOLICIES = function(hwnd: HWND; pszPath, pszUsername,
+    pszComputerName: LPCTSTR; dwFlags: DWORD): BOOL; stdcall;
   {$EXTERNALSYM PFNPROCESSPOLICIES}
-{$ELSE}
-  PFNPROCESSPOLICIES = PFNPROCESSPOLICIESA;
-  {$EXTERNALSYM PFNPROCESSPOLICIES}  
-{$ENDIF}
 
 const
   PP_DISPLAYERRORS = $01; // if set, display error messages, else fail silently if error
@@ -948,16 +838,9 @@ function WNetGetLastErrorA(var lpError: DWORD; lpErrorBuf: LPSTR;
 function WNetGetLastErrorW(var lpError: DWORD; lpErrorBuf: LPWSTR;
   nErrorBufSize: DWORD; lpNameBuf: LPWSTR; nNameBufSize: DWORD): DWORD; stdcall;
 {$EXTERNALSYM WNetGetLastErrorW}
-
-{$IFDEF UNICODE}
-function WNetGetLastError(var lpError: DWORD; lpErrorBuf: LPWSTR;
-  nErrorBufSize: DWORD; lpNameBuf: LPWSTR; nNameBufSize: DWORD): DWORD; stdcall;
+function WNetGetLastError(var lpError: DWORD; lpErrorBuf: LPTSTR;
+  nErrorBufSize: DWORD; lpNameBuf: LPTSTR; nNameBufSize: DWORD): DWORD; stdcall;
 {$EXTERNALSYM WNetGetLastError}
-{$ELSE}
-function WNetGetLastError(var lpError: DWORD; lpErrorBuf: LPSTR;
-  nErrorBufSize: DWORD; lpNameBuf: LPSTR; nNameBufSize: DWORD): DWORD; stdcall;
-{$EXTERNALSYM WNetGetLastError}
-{$ENDIF}
 
 //
 //  STATUS CODES
@@ -1096,1421 +979,914 @@ function MultinetGetConnectionPerformanceA(const lpNetResource: NETRESOURCEA;
 function MultinetGetConnectionPerformanceW(const lpNetResource: NETRESOURCEW;
   var lpNetConnectInfoStruct: NETCONNECTINFOSTRUCT): DWORD; stdcall;
 {$EXTERNALSYM MultinetGetConnectionPerformanceW}
+function MultinetGetConnectionPerformance(const lpNetResource: NETRESOURCE;
+  var lpNetConnectInfoStruct: NETCONNECTINFOSTRUCT): DWORD; stdcall;
+{$EXTERNALSYM MultinetGetConnectionPerformance}
 
-{$IFDEF UNICODE}
-function MultinetGetConnectionPerformance(const lpNetResource: NETRESOURCEW;
-  var lpNetConnectInfoStruct: NETCONNECTINFOSTRUCT): DWORD; stdcall;
-{$EXTERNALSYM MultinetGetConnectionPerformance}
-{$ELSE}
-function MultinetGetConnectionPerformance(const lpNetResource: NETRESOURCEA;
-  var lpNetConnectInfoStruct: NETCONNECTINFOSTRUCT): DWORD; stdcall;
-{$EXTERNALSYM MultinetGetConnectionPerformance}
-{$ENDIF}
+{$ENDIF JWA_INTERFACESECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
 
 implementation
 
-const
-  mpr = 'mpr.dll';
+uses
+  JwaWinDLLNames;
 
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_IMPLEMENTATIONSECTION}
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _WNetAddConnectionA: Pointer;
 
 function WNetAddConnectionA;
 begin
-  GetProcedureAddress(_WNetAddConnectionA, mpr, 'WNetAddConnectionA');
+  GetProcedureAddress(_WNetAddConnectionA, mprlib, 'WNetAddConnectionA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetAddConnectionA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetAddConnectionA]
   end;
 end;
-{$ELSE}
-function WNetAddConnectionA; external mpr name 'WNetAddConnectionA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetAddConnectionW: Pointer;
 
 function WNetAddConnectionW;
 begin
-  GetProcedureAddress(_WNetAddConnectionW, mpr, 'WNetAddConnectionW');
+  GetProcedureAddress(_WNetAddConnectionW, mprlib, 'WNetAddConnectionW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetAddConnectionW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetAddConnectionW]
   end;
 end;
-{$ELSE}
-function WNetAddConnectionW; external mpr name 'WNetAddConnectionW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetAddConnection: Pointer;
 
 function WNetAddConnection;
 begin
-  GetProcedureAddress(_WNetAddConnection, mpr, 'WNetAddConnectionW');
+  GetProcedureAddress(_WNetAddConnection, mprlib, 'WNetAddConnection' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetAddConnection]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetAddConnection]
   end;
 end;
-{$ELSE}
-function WNetAddConnection; external mpr name 'WNetAddConnectionW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _WNetAddConnection: Pointer;
-
-function WNetAddConnection;
-begin
-  GetProcedureAddress(_WNetAddConnection, mpr, 'WNetAddConnectionA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetAddConnection]
-  end;
-end;
-{$ELSE}
-function WNetAddConnection; external mpr name 'WNetAddConnectionA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetAddConnection2A: Pointer;
 
 function WNetAddConnection2A;
 begin
-  GetProcedureAddress(_WNetAddConnection2A, mpr, 'WNetAddConnection2A');
+  GetProcedureAddress(_WNetAddConnection2A, mprlib, 'WNetAddConnection2A');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetAddConnection2A]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetAddConnection2A]
   end;
 end;
-{$ELSE}
-function WNetAddConnection2A; external mpr name 'WNetAddConnection2A';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetAddConnection2W: Pointer;
 
 function WNetAddConnection2W;
 begin
-  GetProcedureAddress(_WNetAddConnection2W, mpr, 'WNetAddConnection2W');
+  GetProcedureAddress(_WNetAddConnection2W, mprlib, 'WNetAddConnection2W');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetAddConnection2W]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetAddConnection2W]
   end;
 end;
-{$ELSE}
-function WNetAddConnection2W; external mpr name 'WNetAddConnection2W';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetAddConnection2: Pointer;
 
 function WNetAddConnection2;
 begin
-  GetProcedureAddress(_WNetAddConnection2, mpr, 'WNetAddConnection2W');
+  GetProcedureAddress(_WNetAddConnection2, mprlib, 'WNetAddConnection2' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetAddConnection2]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetAddConnection2]
   end;
 end;
-{$ELSE}
-function WNetAddConnection2; external mpr name 'WNetAddConnection2W';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _WNetAddConnection2: Pointer;
-
-function WNetAddConnection2;
-begin
-  GetProcedureAddress(_WNetAddConnection2, mpr, 'WNetAddConnection2A');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetAddConnection2]
-  end;
-end;
-{$ELSE}
-function WNetAddConnection2; external mpr name 'WNetAddConnection2A';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetAddConnection3A: Pointer;
 
 function WNetAddConnection3A;
 begin
-  GetProcedureAddress(_WNetAddConnection3A, mpr, 'WNetAddConnection3A');
+  GetProcedureAddress(_WNetAddConnection3A, mprlib, 'WNetAddConnection3A');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetAddConnection3A]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetAddConnection3A]
   end;
 end;
-{$ELSE}
-function WNetAddConnection3A; external mpr name 'WNetAddConnection3A';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetAddConnection3W: Pointer;
 
 function WNetAddConnection3W;
 begin
-  GetProcedureAddress(_WNetAddConnection3W, mpr, 'WNetAddConnection3W');
+  GetProcedureAddress(_WNetAddConnection3W, mprlib, 'WNetAddConnection3W');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetAddConnection3W]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetAddConnection3W]
   end;
 end;
-{$ELSE}
-function WNetAddConnection3W; external mpr name 'WNetAddConnection3W';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetAddConnection3: Pointer;
 
 function WNetAddConnection3;
 begin
-  GetProcedureAddress(_WNetAddConnection3, mpr, 'WNetAddConnection3W');
+  GetProcedureAddress(_WNetAddConnection3, mprlib, 'WNetAddConnection3' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetAddConnection3]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetAddConnection3]
   end;
 end;
-{$ELSE}
-function WNetAddConnection3; external mpr name 'WNetAddConnection3W';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _WNetAddConnection3: Pointer;
-
-function WNetAddConnection3;
-begin
-  GetProcedureAddress(_WNetAddConnection3, mpr, 'WNetAddConnection3A');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetAddConnection3]
-  end;
-end;
-{$ELSE}
-function WNetAddConnection3; external mpr name 'WNetAddConnection3A';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetCancelConnectionA: Pointer;
 
 function WNetCancelConnectionA;
 begin
-  GetProcedureAddress(_WNetCancelConnectionA, mpr, 'WNetCancelConnectionA');
+  GetProcedureAddress(_WNetCancelConnectionA, mprlib, 'WNetCancelConnectionA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetCancelConnectionA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetCancelConnectionA]
   end;
 end;
-{$ELSE}
-function WNetCancelConnectionA; external mpr name 'WNetCancelConnectionA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetCancelConnectionW: Pointer;
 
 function WNetCancelConnectionW;
 begin
-  GetProcedureAddress(_WNetCancelConnectionW, mpr, 'WNetCancelConnectionW');
+  GetProcedureAddress(_WNetCancelConnectionW, mprlib, 'WNetCancelConnectionW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetCancelConnectionW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetCancelConnectionW]
   end;
 end;
-{$ELSE}
-function WNetCancelConnectionW; external mpr name 'WNetCancelConnectionW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetCancelConnection: Pointer;
 
 function WNetCancelConnection;
 begin
-  GetProcedureAddress(_WNetCancelConnection, mpr, 'WNetCancelConnectionW');
+  GetProcedureAddress(_WNetCancelConnection, mprlib, 'WNetCancelConnection' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetCancelConnection]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetCancelConnection]
   end;
 end;
-{$ELSE}
-function WNetCancelConnection; external mpr name 'WNetCancelConnectionW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _WNetCancelConnection: Pointer;
-
-function WNetCancelConnection;
-begin
-  GetProcedureAddress(_WNetCancelConnection, mpr, 'WNetCancelConnectionA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetCancelConnection]
-  end;
-end;
-{$ELSE}
-function WNetCancelConnection; external mpr name 'WNetCancelConnectionA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetCancelConnection2A: Pointer;
 
 function WNetCancelConnection2A;
 begin
-  GetProcedureAddress(_WNetCancelConnection2A, mpr, 'WNetCancelConnection2A');
+  GetProcedureAddress(_WNetCancelConnection2A, mprlib, 'WNetCancelConnection2A');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetCancelConnection2A]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetCancelConnection2A]
   end;
 end;
-{$ELSE}
-function WNetCancelConnection2A; external mpr name 'WNetCancelConnection2A';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetCancelConnection2W: Pointer;
 
 function WNetCancelConnection2W;
 begin
-  GetProcedureAddress(_WNetCancelConnection2W, mpr, 'WNetCancelConnection2W');
+  GetProcedureAddress(_WNetCancelConnection2W, mprlib, 'WNetCancelConnection2W');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetCancelConnection2W]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetCancelConnection2W]
   end;
 end;
-{$ELSE}
-function WNetCancelConnection2W; external mpr name 'WNetCancelConnection2W';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetCancelConnection2: Pointer;
 
 function WNetCancelConnection2;
 begin
-  GetProcedureAddress(_WNetCancelConnection2, mpr, 'WNetCancelConnection2W');
+  GetProcedureAddress(_WNetCancelConnection2, mprlib, 'WNetCancelConnection2' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetCancelConnection2]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetCancelConnection2]
   end;
 end;
-{$ELSE}
-function WNetCancelConnection2; external mpr name 'WNetCancelConnection2W';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _WNetCancelConnection2: Pointer;
-
-function WNetCancelConnection2;
-begin
-  GetProcedureAddress(_WNetCancelConnection2, mpr, 'WNetCancelConnection2A');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetCancelConnection2]
-  end;
-end;
-{$ELSE}
-function WNetCancelConnection2; external mpr name 'WNetCancelConnection2A';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetGetConnectionA: Pointer;
 
 function WNetGetConnectionA;
 begin
-  GetProcedureAddress(_WNetGetConnectionA, mpr, 'WNetGetConnectionA');
+  GetProcedureAddress(_WNetGetConnectionA, mprlib, 'WNetGetConnectionA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetGetConnectionA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetGetConnectionA]
   end;
 end;
-{$ELSE}
-function WNetGetConnectionA; external mpr name 'WNetGetConnectionA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetGetConnectionW: Pointer;
 
 function WNetGetConnectionW;
 begin
-  GetProcedureAddress(_WNetGetConnectionW, mpr, 'WNetGetConnectionW');
+  GetProcedureAddress(_WNetGetConnectionW, mprlib, 'WNetGetConnectionW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetGetConnectionW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetGetConnectionW]
   end;
 end;
-{$ELSE}
-function WNetGetConnectionW; external mpr name 'WNetGetConnectionW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetGetConnection: Pointer;
 
 function WNetGetConnection;
 begin
-  GetProcedureAddress(_WNetGetConnection, mpr, 'WNetGetConnectionW');
+  GetProcedureAddress(_WNetGetConnection, mprlib, 'WNetGetConnection' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetGetConnection]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetGetConnection]
   end;
 end;
-{$ELSE}
-function WNetGetConnection; external mpr name 'WNetGetConnectionW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
 var
-  _WNetGetConnection: Pointer;
+  _WNetRestoreConnectionA: Pointer;
 
-function WNetGetConnection;
+function WNetRestoreConnectionA;
 begin
-  GetProcedureAddress(_WNetGetConnection, mpr, 'WNetGetConnectionA');
+  GetProcedureAddress(_WNetRestoreConnectionA, mprlib, 'WNetRestoreConnectionA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetGetConnection]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetRestoreConnectionA]
   end;
 end;
-{$ELSE}
-function WNetGetConnection; external mpr name 'WNetGetConnectionA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
 
-{$IFDEF DYNAMIC_LINK}
+var
+  _WNetRestoreConnectionW: Pointer;
+
+function WNetRestoreConnectionW;
+begin
+  GetProcedureAddress(_WNetRestoreConnectionW, mprlib, 'WNetRestoreConnectionW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetRestoreConnectionW]
+  end;
+end;
+
+var
+  _WNetRestoreConnection: Pointer;
+
+function WNetRestoreConnection;
+begin
+  GetProcedureAddress(_WNetRestoreConnection, mprlib, 'WNetRestoreConnection' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetRestoreConnection]
+  end;
+end;
+
 var
   _WNetUseConnectionA: Pointer;
 
 function WNetUseConnectionA;
 begin
-  GetProcedureAddress(_WNetUseConnectionA, mpr, 'WNetUseConnectionA');
+  GetProcedureAddress(_WNetUseConnectionA, mprlib, 'WNetUseConnectionA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetUseConnectionA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetUseConnectionA]
   end;
 end;
-{$ELSE}
-function WNetUseConnectionA; external mpr name 'WNetUseConnectionA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetUseConnectionW: Pointer;
 
 function WNetUseConnectionW;
 begin
-  GetProcedureAddress(_WNetUseConnectionW, mpr, 'WNetUseConnectionW');
+  GetProcedureAddress(_WNetUseConnectionW, mprlib, 'WNetUseConnectionW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetUseConnectionW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetUseConnectionW]
   end;
 end;
-{$ELSE}
-function WNetUseConnectionW; external mpr name 'WNetUseConnectionW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetUseConnection: Pointer;
 
 function WNetUseConnection;
 begin
-  GetProcedureAddress(_WNetUseConnection, mpr, 'WNetUseConnectionW');
+  GetProcedureAddress(_WNetUseConnection, mprlib, 'WNetUseConnection' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetUseConnection]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetUseConnection]
   end;
 end;
-{$ELSE}
-function WNetUseConnection; external mpr name 'WNetUseConnectionW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _WNetUseConnection: Pointer;
-
-function WNetUseConnection;
-begin
-  GetProcedureAddress(_WNetUseConnection, mpr, 'WNetUseConnectionA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetUseConnection]
-  end;
-end;
-{$ELSE}
-function WNetUseConnection; external mpr name 'WNetUseConnectionA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetConnectionDialog: Pointer;
 
 function WNetConnectionDialog;
 begin
-  GetProcedureAddress(_WNetConnectionDialog, mpr, 'WNetConnectionDialog');
+  GetProcedureAddress(_WNetConnectionDialog, mprlib, 'WNetConnectionDialog');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetConnectionDialog]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetConnectionDialog]
   end;
 end;
-{$ELSE}
-function WNetConnectionDialog; external mpr name 'WNetConnectionDialog';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetDisconnectDialog: Pointer;
 
 function WNetDisconnectDialog;
 begin
-  GetProcedureAddress(_WNetDisconnectDialog, mpr, 'WNetDisconnectDialog');
+  GetProcedureAddress(_WNetDisconnectDialog, mprlib, 'WNetDisconnectDialog');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetDisconnectDialog]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetDisconnectDialog]
   end;
 end;
-{$ELSE}
-function WNetDisconnectDialog; external mpr name 'WNetDisconnectDialog';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetConnectionDialog1A: Pointer;
 
 function WNetConnectionDialog1A;
 begin
-  GetProcedureAddress(_WNetConnectionDialog1A, mpr, 'WNetConnectionDialog1A');
+  GetProcedureAddress(_WNetConnectionDialog1A, mprlib, 'WNetConnectionDialog1A');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetConnectionDialog1A]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetConnectionDialog1A]
   end;
 end;
-{$ELSE}
-function WNetConnectionDialog1A; external mpr name 'WNetConnectionDialog1A';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetConnectionDialog1W: Pointer;
 
 function WNetConnectionDialog1W;
 begin
-  GetProcedureAddress(_WNetConnectionDialog1W, mpr, 'WNetConnectionDialog1W');
+  GetProcedureAddress(_WNetConnectionDialog1W, mprlib, 'WNetConnectionDialog1W');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetConnectionDialog1W]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetConnectionDialog1W]
   end;
 end;
-{$ELSE}
-function WNetConnectionDialog1W; external mpr name 'WNetConnectionDialog1W';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetConnectionDialog1: Pointer;
 
 function WNetConnectionDialog1;
 begin
-  GetProcedureAddress(_WNetConnectionDialog1, mpr, 'WNetConnectionDialog1W');
+  GetProcedureAddress(_WNetConnectionDialog1, mprlib, 'WNetConnectionDialog1' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetConnectionDialog1]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetConnectionDialog1]
   end;
 end;
-{$ELSE}
-function WNetConnectionDialog1; external mpr name 'WNetConnectionDialog1W';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _WNetConnectionDialog1: Pointer;
-
-function WNetConnectionDialog1;
-begin
-  GetProcedureAddress(_WNetConnectionDialog1, mpr, 'WNetConnectionDialog1A');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetConnectionDialog1]
-  end;
-end;
-{$ELSE}
-function WNetConnectionDialog1; external mpr name 'WNetConnectionDialog1A';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetDisconnectDialog1A: Pointer;
 
 function WNetDisconnectDialog1A;
 begin
-  GetProcedureAddress(_WNetDisconnectDialog1A, mpr, 'WNetDisconnectDialog1A');
+  GetProcedureAddress(_WNetDisconnectDialog1A, mprlib, 'WNetDisconnectDialog1A');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetDisconnectDialog1A]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetDisconnectDialog1A]
   end;
 end;
-{$ELSE}
-function WNetDisconnectDialog1A; external mpr name 'WNetDisconnectDialog1A';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetDisconnectDialog1W: Pointer;
 
 function WNetDisconnectDialog1W;
 begin
-  GetProcedureAddress(_WNetDisconnectDialog1W, mpr, 'WNetDisconnectDialog1W');
+  GetProcedureAddress(_WNetDisconnectDialog1W, mprlib, 'WNetDisconnectDialog1W');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetDisconnectDialog1W]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetDisconnectDialog1W]
   end;
 end;
-{$ELSE}
-function WNetDisconnectDialog1W; external mpr name 'WNetDisconnectDialog1W';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetDisconnectDialog1: Pointer;
 
 function WNetDisconnectDialog1;
 begin
-  GetProcedureAddress(_WNetDisconnectDialog1, mpr, 'WNetDisconnectDialog1W');
+  GetProcedureAddress(_WNetDisconnectDialog1, mprlib, 'WNetDisconnectDialog1' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetDisconnectDialog1]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetDisconnectDialog1]
   end;
 end;
-{$ELSE}
-function WNetDisconnectDialog1; external mpr name 'WNetDisconnectDialog1W';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _WNetDisconnectDialog1: Pointer;
-
-function WNetDisconnectDialog1;
-begin
-  GetProcedureAddress(_WNetDisconnectDialog1, mpr, 'WNetDisconnectDialog1A');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetDisconnectDialog1]
-  end;
-end;
-{$ELSE}
-function WNetDisconnectDialog1; external mpr name 'WNetDisconnectDialog1A';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetOpenEnumA: Pointer;
 
 function WNetOpenEnumA;
 begin
-  GetProcedureAddress(_WNetOpenEnumA, mpr, 'WNetOpenEnumA');
+  GetProcedureAddress(_WNetOpenEnumA, mprlib, 'WNetOpenEnumA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetOpenEnumA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetOpenEnumA]
   end;
 end;
-{$ELSE}
-function WNetOpenEnumA; external mpr name 'WNetOpenEnumA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetOpenEnumW: Pointer;
 
 function WNetOpenEnumW;
 begin
-  GetProcedureAddress(_WNetOpenEnumW, mpr, 'WNetOpenEnumW');
+  GetProcedureAddress(_WNetOpenEnumW, mprlib, 'WNetOpenEnumW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetOpenEnumW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetOpenEnumW]
   end;
 end;
-{$ELSE}
-function WNetOpenEnumW; external mpr name 'WNetOpenEnumW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetOpenEnum: Pointer;
 
 function WNetOpenEnum;
 begin
-  GetProcedureAddress(_WNetOpenEnum, mpr, 'WNetOpenEnumW');
+  GetProcedureAddress(_WNetOpenEnum, mprlib, 'WNetOpenEnum' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetOpenEnum]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetOpenEnum]
   end;
 end;
-{$ELSE}
-function WNetOpenEnum; external mpr name 'WNetOpenEnumW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _WNetOpenEnum: Pointer;
-
-function WNetOpenEnum;
-begin
-  GetProcedureAddress(_WNetOpenEnum, mpr, 'WNetOpenEnumA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetOpenEnum]
-  end;
-end;
-{$ELSE}
-function WNetOpenEnum; external mpr name 'WNetOpenEnumA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetEnumResourceA: Pointer;
 
 function WNetEnumResourceA;
 begin
-  GetProcedureAddress(_WNetEnumResourceA, mpr, 'WNetEnumResourceA');
+  GetProcedureAddress(_WNetEnumResourceA, mprlib, 'WNetEnumResourceA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetEnumResourceA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetEnumResourceA]
   end;
 end;
-{$ELSE}
-function WNetEnumResourceA; external mpr name 'WNetEnumResourceA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetEnumResourceW: Pointer;
 
 function WNetEnumResourceW;
 begin
-  GetProcedureAddress(_WNetEnumResourceW, mpr, 'WNetEnumResourceW');
+  GetProcedureAddress(_WNetEnumResourceW, mprlib, 'WNetEnumResourceW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetEnumResourceW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetEnumResourceW]
   end;
 end;
-{$ELSE}
-function WNetEnumResourceW; external mpr name 'WNetEnumResourceW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetEnumResource: Pointer;
 
 function WNetEnumResource;
 begin
-  GetProcedureAddress(_WNetEnumResource, mpr, 'WNetEnumResourceW');
+  GetProcedureAddress(_WNetEnumResource, mprlib, 'WNetEnumResource' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetEnumResource]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetEnumResource]
   end;
 end;
-{$ELSE}
-function WNetEnumResource; external mpr name 'WNetEnumResourceW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _WNetEnumResource: Pointer;
-
-function WNetEnumResource;
-begin
-  GetProcedureAddress(_WNetEnumResource, mpr, 'WNetEnumResourceA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetEnumResource]
-  end;
-end;
-{$ELSE}
-function WNetEnumResource; external mpr name 'WNetEnumResourceA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetCloseEnum: Pointer;
 
 function WNetCloseEnum;
 begin
-  GetProcedureAddress(_WNetCloseEnum, mpr, 'WNetCloseEnum');
+  GetProcedureAddress(_WNetCloseEnum, mprlib, 'WNetCloseEnum');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetCloseEnum]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetCloseEnum]
   end;
 end;
-{$ELSE}
-function WNetCloseEnum; external mpr name 'WNetCloseEnum';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetGetResourceParentA: Pointer;
 
 function WNetGetResourceParentA;
 begin
-  GetProcedureAddress(_WNetGetResourceParentA, mpr, 'WNetGetResourceParentA');
+  GetProcedureAddress(_WNetGetResourceParentA, mprlib, 'WNetGetResourceParentA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetGetResourceParentA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetGetResourceParentA]
   end;
 end;
-{$ELSE}
-function WNetGetResourceParentA; external mpr name 'WNetGetResourceParentA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetGetResourceParentW: Pointer;
 
 function WNetGetResourceParentW;
 begin
-  GetProcedureAddress(_WNetGetResourceParentW, mpr, 'WNetGetResourceParentW');
+  GetProcedureAddress(_WNetGetResourceParentW, mprlib, 'WNetGetResourceParentW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetGetResourceParentW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetGetResourceParentW]
   end;
 end;
-{$ELSE}
-function WNetGetResourceParentW; external mpr name 'WNetGetResourceParentW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetGetResourceParent: Pointer;
 
 function WNetGetResourceParent;
 begin
-  GetProcedureAddress(_WNetGetResourceParent, mpr, 'WNetGetResourceParentW');
+  GetProcedureAddress(_WNetGetResourceParent, mprlib, 'WNetGetResourceParent' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetGetResourceParent]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetGetResourceParent]
   end;
 end;
-{$ELSE}
-function WNetGetResourceParent; external mpr name 'WNetGetResourceParentW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _WNetGetResourceParent: Pointer;
-
-function WNetGetResourceParent;
-begin
-  GetProcedureAddress(_WNetGetResourceParent, mpr, 'WNetGetResourceParentA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetGetResourceParent]
-  end;
-end;
-{$ELSE}
-function WNetGetResourceParent; external mpr name 'WNetGetResourceParentA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetGetResourceInformationA: Pointer;
 
 function WNetGetResourceInformationA;
 begin
-  GetProcedureAddress(_WNetGetResourceInformationA, mpr, 'WNetGetResourceInformationA');
+  GetProcedureAddress(_WNetGetResourceInformationA, mprlib, 'WNetGetResourceInformationA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetGetResourceInformationA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetGetResourceInformationA]
   end;
 end;
-{$ELSE}
-function WNetGetResourceInformationA; external mpr name 'WNetGetResourceInformationA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetGetResourceInformationW: Pointer;
 
 function WNetGetResourceInformationW;
 begin
-  GetProcedureAddress(_WNetGetResourceInformationW, mpr, 'WNetGetResourceInformationW');
+  GetProcedureAddress(_WNetGetResourceInformationW, mprlib, 'WNetGetResourceInformationW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetGetResourceInformationW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetGetResourceInformationW]
   end;
 end;
-{$ELSE}
-function WNetGetResourceInformationW; external mpr name 'WNetGetResourceInformationW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetGetResourceInformation: Pointer;
 
 function WNetGetResourceInformation;
 begin
-  GetProcedureAddress(_WNetGetResourceInformation, mpr, 'WNetGetResourceInformationW');
+  GetProcedureAddress(_WNetGetResourceInformation, mprlib, 'WNetGetResourceInformation' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetGetResourceInformation]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetGetResourceInformation]
   end;
 end;
-{$ELSE}
-function WNetGetResourceInformation; external mpr name 'WNetGetResourceInformationW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _WNetGetResourceInformation: Pointer;
-
-function WNetGetResourceInformation;
-begin
-  GetProcedureAddress(_WNetGetResourceInformation, mpr, 'WNetGetResourceInformationA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetGetResourceInformation]
-  end;
-end;
-{$ELSE}
-function WNetGetResourceInformation; external mpr name 'WNetGetResourceInformationA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetGetUniversalNameA: Pointer;
 
 function WNetGetUniversalNameA;
 begin
-  GetProcedureAddress(_WNetGetUniversalNameA, mpr, 'WNetGetUniversalNameA');
+  GetProcedureAddress(_WNetGetUniversalNameA, mprlib, 'WNetGetUniversalNameA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetGetUniversalNameA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetGetUniversalNameA]
   end;
 end;
-{$ELSE}
-function WNetGetUniversalNameA; external mpr name 'WNetGetUniversalNameA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetGetUniversalNameW: Pointer;
 
 function WNetGetUniversalNameW;
 begin
-  GetProcedureAddress(_WNetGetUniversalNameW, mpr, 'WNetGetUniversalNameW');
+  GetProcedureAddress(_WNetGetUniversalNameW, mprlib, 'WNetGetUniversalNameW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetGetUniversalNameW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetGetUniversalNameW]
   end;
 end;
-{$ELSE}
-function WNetGetUniversalNameW; external mpr name 'WNetGetUniversalNameW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetGetUniversalName: Pointer;
 
 function WNetGetUniversalName;
 begin
-  GetProcedureAddress(_WNetGetUniversalName, mpr, 'WNetGetUniversalNameW');
+  GetProcedureAddress(_WNetGetUniversalName, mprlib, 'WNetGetUniversalName' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetGetUniversalName]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetGetUniversalName]
   end;
 end;
-{$ELSE}
-function WNetGetUniversalName; external mpr name 'WNetGetUniversalNameW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _WNetGetUniversalName: Pointer;
-
-function WNetGetUniversalName;
-begin
-  GetProcedureAddress(_WNetGetUniversalName, mpr, 'WNetGetUniversalNameA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetGetUniversalName]
-  end;
-end;
-{$ELSE}
-function WNetGetUniversalName; external mpr name 'WNetGetUniversalNameA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetGetUserA: Pointer;
 
 function WNetGetUserA;
 begin
-  GetProcedureAddress(_WNetGetUserA, mpr, 'WNetGetUserA');
+  GetProcedureAddress(_WNetGetUserA, mprlib, 'WNetGetUserA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetGetUserA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetGetUserA]
   end;
 end;
-{$ELSE}
-function WNetGetUserA; external mpr name 'WNetGetUserA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetGetUserW: Pointer;
 
 function WNetGetUserW;
 begin
-  GetProcedureAddress(_WNetGetUserW, mpr, 'WNetGetUserW');
+  GetProcedureAddress(_WNetGetUserW, mprlib, 'WNetGetUserW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetGetUserW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetGetUserW]
   end;
 end;
-{$ELSE}
-function WNetGetUserW; external mpr name 'WNetGetUserW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetGetUser: Pointer;
 
 function WNetGetUser;
 begin
-  GetProcedureAddress(_WNetGetUser, mpr, 'WNetGetUserW');
+  GetProcedureAddress(_WNetGetUser, mprlib, 'WNetGetUser' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetGetUser]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetGetUser]
   end;
 end;
-{$ELSE}
-function WNetGetUser; external mpr name 'WNetGetUserW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _WNetGetUser: Pointer;
-
-function WNetGetUser;
-begin
-  GetProcedureAddress(_WNetGetUser, mpr, 'WNetGetUserA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetGetUser]
-  end;
-end;
-{$ELSE}
-function WNetGetUser; external mpr name 'WNetGetUserA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetGetProviderNameA: Pointer;
 
 function WNetGetProviderNameA;
 begin
-  GetProcedureAddress(_WNetGetProviderNameA, mpr, 'WNetGetProviderNameA');
+  GetProcedureAddress(_WNetGetProviderNameA, mprlib, 'WNetGetProviderNameA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetGetProviderNameA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetGetProviderNameA]
   end;
 end;
-{$ELSE}
-function WNetGetProviderNameA; external mpr name 'WNetGetProviderNameA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetGetProviderNameW: Pointer;
 
 function WNetGetProviderNameW;
 begin
-  GetProcedureAddress(_WNetGetProviderNameW, mpr, 'WNetGetProviderNameW');
+  GetProcedureAddress(_WNetGetProviderNameW, mprlib, 'WNetGetProviderNameW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetGetProviderNameW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetGetProviderNameW]
   end;
 end;
-{$ELSE}
-function WNetGetProviderNameW; external mpr name 'WNetGetProviderNameW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetGetProviderName: Pointer;
 
 function WNetGetProviderName;
 begin
-  GetProcedureAddress(_WNetGetProviderName, mpr, 'WNetGetProviderNameW');
+  GetProcedureAddress(_WNetGetProviderName, mprlib, 'WNetGetProviderName' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetGetProviderName]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetGetProviderName]
   end;
 end;
-{$ELSE}
-function WNetGetProviderName; external mpr name 'WNetGetProviderNameW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _WNetGetProviderName: Pointer;
-
-function WNetGetProviderName;
-begin
-  GetProcedureAddress(_WNetGetProviderName, mpr, 'WNetGetProviderNameA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetGetProviderName]
-  end;
-end;
-{$ELSE}
-function WNetGetProviderName; external mpr name 'WNetGetProviderNameA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetGetNetworkInformationA: Pointer;
 
 function WNetGetNetworkInformationA;
 begin
-  GetProcedureAddress(_WNetGetNetworkInformationA, mpr, 'WNetGetNetworkInformationA');
+  GetProcedureAddress(_WNetGetNetworkInformationA, mprlib, 'WNetGetNetworkInformationA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetGetNetworkInformationA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetGetNetworkInformationA]
   end;
 end;
-{$ELSE}
-function WNetGetNetworkInformationA; external mpr name 'WNetGetNetworkInformationA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetGetNetworkInformationW: Pointer;
 
 function WNetGetNetworkInformationW;
 begin
-  GetProcedureAddress(_WNetGetNetworkInformationW, mpr, 'WNetGetNetworkInformationW');
+  GetProcedureAddress(_WNetGetNetworkInformationW, mprlib, 'WNetGetNetworkInformationW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetGetNetworkInformationW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetGetNetworkInformationW]
   end;
 end;
-{$ELSE}
-function WNetGetNetworkInformationW; external mpr name 'WNetGetNetworkInformationW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetGetNetworkInformation: Pointer;
 
 function WNetGetNetworkInformation;
 begin
-  GetProcedureAddress(_WNetGetNetworkInformation, mpr, 'WNetGetNetworkInformationW');
+  GetProcedureAddress(_WNetGetNetworkInformation, mprlib, 'WNetGetNetworkInformation' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetGetNetworkInformation]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetGetNetworkInformation]
   end;
 end;
-{$ELSE}
-function WNetGetNetworkInformation; external mpr name 'WNetGetNetworkInformationW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _WNetGetNetworkInformation: Pointer;
-
-function WNetGetNetworkInformation;
-begin
-  GetProcedureAddress(_WNetGetNetworkInformation, mpr, 'WNetGetNetworkInformationA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetGetNetworkInformation]
-  end;
-end;
-{$ELSE}
-function WNetGetNetworkInformation; external mpr name 'WNetGetNetworkInformationA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetGetLastErrorA: Pointer;
 
 function WNetGetLastErrorA;
 begin
-  GetProcedureAddress(_WNetGetLastErrorA, mpr, 'WNetGetLastErrorA');
+  GetProcedureAddress(_WNetGetLastErrorA, mprlib, 'WNetGetLastErrorA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetGetLastErrorA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetGetLastErrorA]
   end;
 end;
-{$ELSE}
-function WNetGetLastErrorA; external mpr name 'WNetGetLastErrorA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetGetLastErrorW: Pointer;
 
 function WNetGetLastErrorW;
 begin
-  GetProcedureAddress(_WNetGetLastErrorW, mpr, 'WNetGetLastErrorW');
+  GetProcedureAddress(_WNetGetLastErrorW, mprlib, 'WNetGetLastErrorW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetGetLastErrorW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetGetLastErrorW]
   end;
 end;
-{$ELSE}
-function WNetGetLastErrorW; external mpr name 'WNetGetLastErrorW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WNetGetLastError: Pointer;
 
 function WNetGetLastError;
 begin
-  GetProcedureAddress(_WNetGetLastError, mpr, 'WNetGetLastErrorW');
+  GetProcedureAddress(_WNetGetLastError, mprlib, 'WNetGetLastError' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetGetLastError]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WNetGetLastError]
   end;
 end;
-{$ELSE}
-function WNetGetLastError; external mpr name 'WNetGetLastErrorW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _WNetGetLastError: Pointer;
-
-function WNetGetLastError;
-begin
-  GetProcedureAddress(_WNetGetLastError, mpr, 'WNetGetLastErrorA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WNetGetLastError]
-  end;
-end;
-{$ELSE}
-function WNetGetLastError; external mpr name 'WNetGetLastErrorA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _MultinetGetConnectionPerfA: Pointer;
 
 function MultinetGetConnectionPerformanceA;
 begin
-  GetProcedureAddress(_MultinetGetConnectionPerfA, mpr, 'MultinetGetConnectionPerformanceA');
+  GetProcedureAddress(_MultinetGetConnectionPerfA, mprlib, 'MultinetGetConnectionPerformanceA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MultinetGetConnectionPerfA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MultinetGetConnectionPerfA]
   end;
 end;
-{$ELSE}
-function MultinetGetConnectionPerformanceA; external mpr name 'MultinetGetConnectionPerformanceA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MultinetGetConnectionPerfW: Pointer;
 
 function MultinetGetConnectionPerformanceW;
 begin
-  GetProcedureAddress(_MultinetGetConnectionPerfW, mpr, 'MultinetGetConnectionPerformanceW');
+  GetProcedureAddress(_MultinetGetConnectionPerfW, mprlib, 'MultinetGetConnectionPerformanceW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MultinetGetConnectionPerfW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MultinetGetConnectionPerfW]
   end;
 end;
-{$ELSE}
-function MultinetGetConnectionPerformanceW; external mpr name 'MultinetGetConnectionPerformanceW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MultinetGetConnectionPerf: Pointer;
 
 function MultinetGetConnectionPerformance;
 begin
-  GetProcedureAddress(_MultinetGetConnectionPerf, mpr, 'MultinetGetConnectionPerformanceW');
+  GetProcedureAddress(_MultinetGetConnectionPerf, mprlib, 'MultinetGetConnectionPerformance' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MultinetGetConnectionPerf]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MultinetGetConnectionPerf]
   end;
 end;
+
 {$ELSE}
-function MultinetGetConnectionPerformance; external mpr name 'MultinetGetConnectionPerformanceW';
+
+function WNetAddConnectionA; external mprlib name 'WNetAddConnectionA';
+function WNetAddConnectionW; external mprlib name 'WNetAddConnectionW';
+function WNetAddConnection; external mprlib name 'WNetAddConnection' + AWSuffix;
+function WNetAddConnection2A; external mprlib name 'WNetAddConnection2A';
+function WNetAddConnection2W; external mprlib name 'WNetAddConnection2W';
+function WNetAddConnection2; external mprlib name 'WNetAddConnection2' + AWSuffix;
+function WNetAddConnection3A; external mprlib name 'WNetAddConnection3A';
+function WNetAddConnection3W; external mprlib name 'WNetAddConnection3W';
+function WNetAddConnection3; external mprlib name 'WNetAddConnection3' + AWSuffix;
+function WNetCancelConnectionA; external mprlib name 'WNetCancelConnectionA';
+function WNetCancelConnectionW; external mprlib name 'WNetCancelConnectionW';
+function WNetCancelConnection; external mprlib name 'WNetCancelConnection' + AWSuffix;
+function WNetCancelConnection2A; external mprlib name 'WNetCancelConnection2A';
+function WNetCancelConnection2W; external mprlib name 'WNetCancelConnection2W';
+function WNetCancelConnection2; external mprlib name 'WNetCancelConnection2' + AWSuffix;
+function WNetGetConnectionA; external mprlib name 'WNetGetConnectionA';
+function WNetGetConnectionW; external mprlib name 'WNetGetConnectionW';
+function WNetGetConnection; external mprlib name 'WNetGetConnection' + AWSuffix;
+function WNetRestoreConnectionA; external mprlib name 'WNetRestoreConnectionA';
+function WNetRestoreConnectionW; external mprlib name 'WNetRestoreConnectionW';
+function WNetRestoreConnection; external mprlib name 'WNetRestoreConnection' + AWSuffix;
+function WNetUseConnectionA; external mprlib name 'WNetUseConnectionA';
+function WNetUseConnectionW; external mprlib name 'WNetUseConnectionW';
+function WNetUseConnection; external mprlib name 'WNetUseConnection' + AWSuffix;
+function WNetConnectionDialog; external mprlib name 'WNetConnectionDialog';
+function WNetDisconnectDialog; external mprlib name 'WNetDisconnectDialog';
+function WNetConnectionDialog1A; external mprlib name 'WNetConnectionDialog1A';
+function WNetConnectionDialog1W; external mprlib name 'WNetConnectionDialog1W';
+function WNetConnectionDialog1; external mprlib name 'WNetConnectionDialog1' + AWSuffix;
+function WNetDisconnectDialog1A; external mprlib name 'WNetDisconnectDialog1A';
+function WNetDisconnectDialog1W; external mprlib name 'WNetDisconnectDialog1W';
+function WNetDisconnectDialog1; external mprlib name 'WNetDisconnectDialog1' + AWSuffix;
+function WNetOpenEnumA; external mprlib name 'WNetOpenEnumA';
+function WNetOpenEnumW; external mprlib name 'WNetOpenEnumW';
+function WNetOpenEnum; external mprlib name 'WNetOpenEnum' + AWSuffix;
+function WNetEnumResourceA; external mprlib name 'WNetEnumResourceA';
+function WNetEnumResourceW; external mprlib name 'WNetEnumResourceW';
+function WNetEnumResource; external mprlib name 'WNetEnumResource' + AWSuffix;
+function WNetCloseEnum; external mprlib name 'WNetCloseEnum';
+function WNetGetResourceParentA; external mprlib name 'WNetGetResourceParentA';
+function WNetGetResourceParentW; external mprlib name 'WNetGetResourceParentW';
+function WNetGetResourceParent; external mprlib name 'WNetGetResourceParent' + AWSuffix;
+function WNetGetResourceInformationA; external mprlib name 'WNetGetResourceInformationA';
+function WNetGetResourceInformationW; external mprlib name 'WNetGetResourceInformationW';
+function WNetGetResourceInformation; external mprlib name 'WNetGetResourceInformation' + AWSuffix;
+function WNetGetUniversalNameA; external mprlib name 'WNetGetUniversalNameA';
+function WNetGetUniversalNameW; external mprlib name 'WNetGetUniversalNameW';
+function WNetGetUniversalName; external mprlib name 'WNetGetUniversalName' + AWSuffix;
+function WNetGetUserA; external mprlib name 'WNetGetUserA';
+function WNetGetUserW; external mprlib name 'WNetGetUserW';
+function WNetGetUser; external mprlib name 'WNetGetUser' + AWSuffix;
+function WNetGetProviderNameA; external mprlib name 'WNetGetProviderNameA';
+function WNetGetProviderNameW; external mprlib name 'WNetGetProviderNameW';
+function WNetGetProviderName; external mprlib name 'WNetGetProviderName' + AWSuffix;
+function WNetGetNetworkInformationA; external mprlib name 'WNetGetNetworkInformationA';
+function WNetGetNetworkInformationW; external mprlib name 'WNetGetNetworkInformationW';
+function WNetGetNetworkInformation; external mprlib name 'WNetGetNetworkInformation' + AWSuffix;
+function WNetGetLastErrorA; external mprlib name 'WNetGetLastErrorA';
+function WNetGetLastErrorW; external mprlib name 'WNetGetLastErrorW';
+function WNetGetLastError; external mprlib name 'WNetGetLastError' + AWSuffix;
+function MultinetGetConnectionPerformanceA; external mprlib name 'MultinetGetConnectionPerformanceA';
+function MultinetGetConnectionPerformanceW; external mprlib name 'MultinetGetConnectionPerformanceW';
+function MultinetGetConnectionPerformance; external mprlib name 'MultinetGetConnectionPerformance' + AWSuffix;
+
 {$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _MultinetGetConnectionPerf: Pointer;
+{$ENDIF JWA_IMPLEMENTATIONSECTION}
 
-function MultinetGetConnectionPerformance;
-begin
-  GetProcedureAddress(_MultinetGetConnectionPerf, mpr, 'MultinetGetConnectionPerformanceA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MultinetGetConnectionPerf]
-  end;
-end;
-{$ELSE}
-function MultinetGetConnectionPerformance; external mpr name 'MultinetGetConnectionPerformanceA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
+{$IFNDEF JWA_INCLUDEMODE}
 end.
+{$ENDIF !JWA_INCLUDEMODE}

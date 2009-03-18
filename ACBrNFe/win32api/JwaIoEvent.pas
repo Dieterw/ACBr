@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { IO Events API interface Unit for Object Pascal                               }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: Ioevent.h, released June 2000. The original Pascal     }
 { code is: IoEvent.pas, released December 2000. The initial developer of the   }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaIoEvent.pas,v 1.6 2005/09/03 14:27:48 marquardt Exp $
 
 unit JwaIoEvent;
 
@@ -49,12 +50,12 @@ unit JwaIoEvent;
 {$HPPEMIT '#include "Ioevent.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinType;
+  JwaWindows;
 
 //
 //  Label change event.  This event is signalled upon successful completion
@@ -106,7 +107,6 @@ const
   GUID_IO_VOLUME_LOCK_FAILED: TGUID = (D1:$ae2eed10; D2:$0ba8; D3:$11d2; D4:($8f, $fb, $00, $a0, $c9, $a0, $6d, $32));
   {$EXTERNALSYM GUID_IO_VOLUME_LOCK_FAILED}
 
-
 //
 //  Volume unlock event.  This event is signalled when an attempt is made to
 //  unlock a volume.  There is no additional data.
@@ -114,7 +114,6 @@ const
 
   GUID_IO_VOLUME_UNLOCK: TGUID = (D1:$9a8c3d68; D2:$d0cb; D3:$11d1; D4:($8f, $ef, $00, $a0, $c9, $a0, $6d, $32));
   {$EXTERNALSYM GUID_IO_VOLUME_UNLOCK}
-
 
 //
 //  Volume name change.  This event is signalled when the list of persistent
@@ -125,7 +124,6 @@ const
   GUID_IO_VOLUME_NAME_CHANGE: TGUID = (D1:$2de97f83; D2:$4c06; D3:$11d2; D4:($a5, $32, $0, $60, $97, $13, $5, $5a));
   {$EXTERNALSYM GUID_IO_VOLUME_NAME_CHANGE}
 
-
 //
 //  Volume physical configuration change.  This event is signalled when the
 //  physical makeup or current physical state of the volume changes.
@@ -133,7 +131,6 @@ const
 
   GUID_IO_VOLUME_PHYSICAL_CONFIGURATION_CHANGE: TGUID = (D1:$2de97f84; D2:$4c06; D3:$11d2; D4:($a5, $32, $0, $60, $97, $13, $5, $5a));
   {$EXTERNALSYM GUID_IO_VOLUME_PHYSICAL_CONFIGURATION_CHANGE}
-
 
 //
 //  Volume device interface.  This is a device interface GUID that appears

@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Performance Monitoring API interface Unit for Object Pascal                  }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: winperf.h, released June 2000. The original Pascal     }
 { code is: WinPerf.pas, released December 2000. The initial developer of the   }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,26 +35,33 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaWinPerf.pas,v 1.6 2005/09/04 16:25:57 marquardt Exp $
+
+{$IFNDEF JWA_INCLUDEMODE}
 
 unit JwaWinPerf;
 
 {$WEAKPACKAGEUNIT}
 
-{$HPPEMIT ''}
-{$HPPEMIT '#include "WinPerf.h"'}
-{$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
-
+{$I jediapilib.inc}
 
 interface
 
 uses
   JwaWinBase, JwaWinType;
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_INTERFACESECTION}
+
+{$HPPEMIT ''}
+{$HPPEMIT '#include "WinPerf.h"'}
+{$HPPEMIT ''}
 
 //  Header file for the Performance Monitor data.
 //
@@ -846,13 +852,13 @@ const
 //
 
 type
-  PM_OPEN_PROC = function (Arg1: LPWSTR): DWORD; stdcall;
+  PM_OPEN_PROC = function(Arg1: LPWSTR): DWORD; stdcall;
   {$EXTERNALSYM PM_OPEN_PROC}
-  PM_COLLECT_PROC = function (Arg1: LPWSTR; Arg2: Pointer; Arg3, Arg4: LPDWORD): DWORD; stdcall;
+  PM_COLLECT_PROC = function(Arg1: LPWSTR; Arg2: Pointer; Arg3, Arg4: LPDWORD): DWORD; stdcall;
   {$EXTERNALSYM PM_COLLECT_PROC}
   PM_CLOSE_PROC = function: DWORD; stdcall;
   {$EXTERNALSYM PM_CLOSE_PROC}
-  PM_QUERY_PROC = function (Arg1: LPDWORD; Arg2: Pointer; Arg3, Arg4: LPDWORD): DWORD; stdcall;
+  PM_QUERY_PROC = function(Arg1: LPDWORD; Arg2: Pointer; Arg3, Arg4: LPDWORD): DWORD; stdcall;
   {$EXTERNALSYM PM_QUERY_PROC}
 
 const
@@ -877,6 +883,15 @@ const
   WINPERF_LOG_VERBOSE   = 3;          // Report everything
   {$EXTERNALSYM WINPERF_LOG_VERBOSE}
 
-implementation
+{$ENDIF JWA_INTERFACESECTION}
 
+{$IFNDEF JWA_INCLUDEMODE}
+implementation
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_IMPLEMENTATIONSECTION}
+{$ENDIF JWA_IMPLEMENTATIONSECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
 end.
+{$ENDIF !JWA_INCLUDEMODE}

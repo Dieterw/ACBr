@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Image Help API interface Unit for Object Pascal                              }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: imagehlp.h, released August 2001. The original Pascal  }
 { code is: ImageHelp.pas, released December 2000. The initial developer of the }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaImageHlp.pas,v 1.10 2005/09/06 16:36:50 marquardt Exp $
 
 unit JwaImageHlp;
 
@@ -49,15 +50,15 @@ unit JwaImageHlp;
 {$HPPEMIT '#include "ImageHlp.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  Windows, JwaWinBase, JwaWinNT, JwaWinType;
+  Windows, JwaWindows;
 
 const
-  IMAGE_SEPARATION = (64*1024);
+  IMAGE_SEPARATION = 64*1024;
   {$EXTERNALSYM IMAGE_SEPARATION}
 
 type
@@ -117,17 +118,17 @@ type
   {$EXTERNALSYM IMAGEHLP_STATUS_REASON}
   TImageHlpStatusReason = IMAGEHLP_STATUS_REASON;
 
-  PIMAGEHLP_STATUS_ROUTINE = function (Reason: IMAGEHLP_STATUS_REASON;
+  PIMAGEHLP_STATUS_ROUTINE = function(Reason: IMAGEHLP_STATUS_REASON;
     ImageName, DllName: PSTR; Va, Parameter: ULONG_PTR): BOOL; stdcall;
   {$EXTERNALSYM PIMAGEHLP_STATUS_ROUTINE}
   PImageHlpStatusRoutine = PIMAGEHLP_STATUS_ROUTINE;
 
-  PIMAGEHLP_STATUS_ROUTINE32 = function (Reason: IMAGEHLP_STATUS_REASON; ImageName, DllName: PSTR;
+  PIMAGEHLP_STATUS_ROUTINE32 = function(Reason: IMAGEHLP_STATUS_REASON; ImageName, DllName: PSTR;
     Va: ULONG; Parameter: ULONG_PTR): BOOL; stdcall;
   {$EXTERNALSYM PIMAGEHLP_STATUS_ROUTINE32}
   PImageHlpStatusRoutine23 = PIMAGEHLP_STATUS_ROUTINE32;
 
-  PIMAGEHLP_STATUS_ROUTINE64 = function (Reason: IMAGEHLP_STATUS_REASON; ImageName, DllName: PSTR;
+  PIMAGEHLP_STATUS_ROUTINE64 = function(Reason: IMAGEHLP_STATUS_REASON; ImageName, DllName: PSTR;
     Va: ULONG64; Parameter: ULONG_PTR): BOOL; stdcall;
   {$EXTERNALSYM PIMAGEHLP_STATUS_ROUTINE64}
   PImageHlpStatusRoutine64 = PIMAGEHLP_STATUS_ROUTINE64;
@@ -208,14 +209,8 @@ function MapFileAndCheckSumA(Filename: PSTR; var HeaderSum, CheckSum: DWORD): DW
 {$EXTERNALSYM MapFileAndCheckSumA}
 function MapFileAndCheckSumW(Filename: PWSTR; var HeaderSum, CheckSum: DWORD): DWORD; stdcall;
 {$EXTERNALSYM MapFileAndCheckSumW}
-
-{$IFDEF UNICODE}
-function MapFileAndCheckSum(Filename: PWSTR; var HeaderSum, CheckSum: DWORD): DWORD; stdcall;
+function MapFileAndCheckSum(Filename: PTSTR; var HeaderSum, CheckSum: DWORD): DWORD; stdcall;
 {$EXTERNALSYM MapFileAndCheckSum}
-{$ELSE}
-function MapFileAndCheckSum(Filename: PSTR; var HeaderSum, CheckSum: DWORD): DWORD; stdcall;
-{$EXTERNALSYM MapFileAndCheckSum}
-{$ENDIF}
 
 function GetImageConfigInformation(const LoadedImage: LOADED_IMAGE;
   var ImageConfigInformation: IMAGE_LOAD_CONFIG_DIRECTORY): BOOL; stdcall;
@@ -249,7 +244,7 @@ type
   {$EXTERNALSYM DIGEST_HANDLE}
   TDigestHandle = DIGEST_HANDLE;
 
-  DIGEST_FUNCTION = function (refdata: DIGEST_HANDLE; pData: PBYTE; dwLength: DWORD): BOOL; stdcall;
+  DIGEST_FUNCTION = function(refdata: DIGEST_HANDLE; pData: PBYTE; dwLength: DWORD): BOOL; stdcall;
   {$EXTERNALSYM DIGEST_FUNCTION}
   TDigestFunction = DIGEST_FUNCTION;
 
@@ -307,7 +302,7 @@ function FindDebugInfoFile(FileName, SymbolPath, DebugFilePath: PSTR): HANDLE; s
 {$EXTERNALSYM FindDebugInfoFile}
 
 type
-  PFIND_DEBUG_FILE_CALLBACK = function (FileHandle: HANDLE; FileName: PSTR;
+  PFIND_DEBUG_FILE_CALLBACK = function(FileHandle: HANDLE; FileName: PSTR;
     CallerData: PVOID): BOOL; stdcall;
   {$EXTERNALSYM PFIND_DEBUG_FILE_CALLBACK}
   PFindDebugFileCallback = PFIND_DEBUG_FILE_CALLBACK;
@@ -317,7 +312,7 @@ function FindDebugInfoFileEx(FileName, SymbolPath, DebugFilePath: PSTR;
 {$EXTERNALSYM FindDebugInfoFileEx}
 
 type
-  PFINDFILEINPATHCALLBACK = function (filename: PSTR; context: PVOID): BOOL; stdcall;
+  PFINDFILEINPATHCALLBACK = function(filename: PSTR; context: PVOID): BOOL; stdcall;
   {$EXTERNALSYM PFINDFILEINPATHCALLBACK}
 
 function SymFindFileInPath(hprocess: HANDLE; SearchPath, FileName: LPSTR; id: PVOID; two, three, flags: DWORD;
@@ -328,7 +323,7 @@ function FindExecutableImage(FileName, SymbolPath, ImageFilePath: PSTR): HANDLE;
 {$EXTERNALSYM FindExecutableImage}
 
 type
-  PFIND_EXE_FILE_CALLBACK = function (FileHandle: HANDLE; FileName: PSTR;
+  PFIND_EXE_FILE_CALLBACK = function(FileHandle: HANDLE; FileName: PSTR;
     CallerData: PVOID): BOOL; stdcall;
   {$EXTERNALSYM PFIND_EXE_FILE_CALLBACK}
   PFindExeFileCallback = PFIND_EXE_FILE_CALLBACK;
@@ -358,19 +353,19 @@ function ImageRvaToVa(NtHeaders: PIMAGE_NT_HEADERS; Base: PVOID; Rva: ULONG;
 // Symbol server exports
 
 type
-  PSYMBOLSERVERPROC = function (a1, a2: LPCSTR; a3: PVOID; a4, a5: DWORD; a6: LPSTR): BOOL; stdcall;
+  PSYMBOLSERVERPROC = function(a1, a2: LPCSTR; a3: PVOID; a4, a5: DWORD; a6: LPSTR): BOOL; stdcall;
   {$EXTERNALSYM PSYMBOLSERVERPROC}
   PSYMBOLSERVEROPENPROC = function: BOOL; stdcall;
   {$EXTERNALSYM PSYMBOLSERVEROPENPROC}
   PSYMBOLSERVERCLOSEPROC = function: BOOL; stdcall;
   {$EXTERNALSYM PSYMBOLSERVERCLOSEPROC}
-  PSYMBOLSERVERSETOPTIONSPROC = function (a1: UINT_PTR; a2: ULONG64): BOOL; stdcall;
+  PSYMBOLSERVERSETOPTIONSPROC = function(a1: UINT_PTR; a2: ULONG64): BOOL; stdcall;
   {$EXTERNALSYM PSYMBOLSERVERSETOPTIONSPROC}
-  PSYMBOLSERVERCALLBACKPROC = function (action: UINT_PTR; data: ULONG64; context: ULONG64): BOOL; stdcall;
+  PSYMBOLSERVERCALLBACKPROC = function(action: UINT_PTR; data: ULONG64; context: ULONG64): BOOL; stdcall;
   {$EXTERNALSYM PSYMBOLSERVERCALLBACKPROC}
   PSYMBOLSERVERGETOPTIONSPROC = function: UINT_PTR; stdcall;
   {$EXTERNALSYM PSYMBOLSERVERGETOPTIONSPROC}
-  PSYMBOLSERVERPINGPROC = function (a1: LPCSTR): BOOL; stdcall;
+  PSYMBOLSERVERPINGPROC = function(a1: LPCSTR): BOOL; stdcall;
   {$EXTERNALSYM PSYMBOLSERVERPINGPROC}
 
 const
@@ -447,7 +442,7 @@ function SearchTreeForFile(RootPath, InputPathName, OutputPathBuffer: PSTR): BOO
 {$EXTERNALSYM SearchTreeForFile}
 
 type
-  PENUMDIRTREE_CALLBACK = function (FilePath: LPCSTR; CallerData: PVOID): BOOL; stdcall;
+  PENUMDIRTREE_CALLBACK = function(FilePath: LPCSTR; CallerData: PVOID): BOOL; stdcall;
   {$EXTERNALSYM PENUMDIRTREE_CALLBACK}
   PEnumDirTreeCallback = PENUMDIRTREE_CALLBACK;
 
@@ -463,40 +458,40 @@ function MakeSureDirectoryPathExists(DirPath: PCSTR): BOOL; stdcall;
 //
 
 const
-  UNDNAME_COMPLETE               = ($0000); // Enable full undecoration
+  UNDNAME_COMPLETE               = $0000; // Enable full undecoration
   {$EXTERNALSYM UNDNAME_COMPLETE}
-  UNDNAME_NO_LEADING_UNDERSCORES = ($0001); // Remove leading underscores from MS extended keywords
+  UNDNAME_NO_LEADING_UNDERSCORES = $0001; // Remove leading underscores from MS extended keywords
   {$EXTERNALSYM UNDNAME_NO_LEADING_UNDERSCORES}
-  UNDNAME_NO_MS_KEYWORDS         = ($0002); // Disable expansion of MS extended keywords
+  UNDNAME_NO_MS_KEYWORDS         = $0002; // Disable expansion of MS extended keywords
   {$EXTERNALSYM UNDNAME_NO_MS_KEYWORDS}
-  UNDNAME_NO_FUNCTION_RETURNS    = ($0004); // Disable expansion of return type for primary declaration
+  UNDNAME_NO_FUNCTION_RETURNS    = $0004; // Disable expansion of return type for primary declaration
   {$EXTERNALSYM UNDNAME_NO_FUNCTION_RETURNS}
-  UNDNAME_NO_ALLOCATION_MODEL    = ($0008); // Disable expansion of the declaration model
+  UNDNAME_NO_ALLOCATION_MODEL    = $0008; // Disable expansion of the declaration model
   {$EXTERNALSYM UNDNAME_NO_ALLOCATION_MODEL}
-  UNDNAME_NO_ALLOCATION_LANGUAGE = ($0010); // Disable expansion of the declaration language specifier
+  UNDNAME_NO_ALLOCATION_LANGUAGE = $0010; // Disable expansion of the declaration language specifier
   {$EXTERNALSYM UNDNAME_NO_ALLOCATION_LANGUAGE}
-  UNDNAME_NO_MS_THISTYPE         = ($0020); // NYI Disable expansion of MS keywords on the 'this' type for primary declaration
+  UNDNAME_NO_MS_THISTYPE         = $0020; // NYI Disable expansion of MS keywords on the 'this' type for primary declaration
   {$EXTERNALSYM UNDNAME_NO_MS_THISTYPE}
-  UNDNAME_NO_CV_THISTYPE         = ($0040); // NYI Disable expansion of CV modifiers on the 'this' type for primary declaration
+  UNDNAME_NO_CV_THISTYPE         = $0040; // NYI Disable expansion of CV modifiers on the 'this' type for primary declaration
   {$EXTERNALSYM UNDNAME_NO_CV_THISTYPE}
-  UNDNAME_NO_THISTYPE            = ($0060); // Disable all modifiers on the 'this' type
+  UNDNAME_NO_THISTYPE            = $0060; // Disable all modifiers on the 'this' type
   {$EXTERNALSYM UNDNAME_NO_THISTYPE}
-  UNDNAME_NO_ACCESS_SPECIFIERS   = ($0080); // Disable expansion of access specifiers for members
+  UNDNAME_NO_ACCESS_SPECIFIERS   = $0080; // Disable expansion of access specifiers for members
   {$EXTERNALSYM UNDNAME_NO_ACCESS_SPECIFIERS}
-  UNDNAME_NO_THROW_SIGNATURES    = ($0100); // Disable expansion of 'throw-signatures' for functions and pointers to functions
+  UNDNAME_NO_THROW_SIGNATURES    = $0100; // Disable expansion of 'throw-signatures' for functions and pointers to functions
   {$EXTERNALSYM UNDNAME_NO_THROW_SIGNATURES}
-  UNDNAME_NO_MEMBER_TYPE         = ($0200); // Disable expansion of 'static' or 'virtual'ness of members
+  UNDNAME_NO_MEMBER_TYPE         = $0200; // Disable expansion of 'static' or 'virtual'ness of members
   {$EXTERNALSYM UNDNAME_NO_MEMBER_TYPE}
-  UNDNAME_NO_RETURN_UDT_MODEL    = ($0400); // Disable expansion of MS model for UDT returns
+  UNDNAME_NO_RETURN_UDT_MODEL    = $0400; // Disable expansion of MS model for UDT returns
   {$EXTERNALSYM UNDNAME_NO_RETURN_UDT_MODEL}
-  UNDNAME_32_BIT_DECODE          = ($0800); // Undecorate 32-bit decorated names
+  UNDNAME_32_BIT_DECODE          = $0800; // Undecorate 32-bit decorated names
   {$EXTERNALSYM UNDNAME_32_BIT_DECODE}
-  UNDNAME_NAME_ONLY              = ($1000); // Crack only the name for primary declaration;
+  UNDNAME_NAME_ONLY              = $1000; // Crack only the name for primary declaration;
   {$EXTERNALSYM UNDNAME_NAME_ONLY}
                                                                                                    //  return just [scope::]name.  Does expand template params
-  UNDNAME_NO_ARGUMENTS    = ($2000); // Don't undecorate arguments to function
+  UNDNAME_NO_ARGUMENTS    = $2000; // Don't undecorate arguments to function
   {$EXTERNALSYM UNDNAME_NO_ARGUMENTS}
-  UNDNAME_NO_SPECIAL_SYMS = ($4000); // Don't undecorate special names (v-table, vcall, vector xxx, metatype, etc)
+  UNDNAME_NO_SPECIAL_SYMS = $4000; // Don't undecorate special names (v-table, vcall, vector xxx, metatype, etc)
   {$EXTERNALSYM UNDNAME_NO_SPECIAL_SYMS}
 
 function UnDecorateSymbolName(DecoratedName: PCSTR; UnDecoratedName: PSTR;
@@ -723,22 +718,22 @@ type
   TStackFrame = STACKFRAME;
   PStackFrame = LPSTACKFRAME;
 
-  PREAD_PROCESS_MEMORY_ROUTINE64 = function (hProcess: HANDLE; qwBaseAddress: DWORD64;
+  PREAD_PROCESS_MEMORY_ROUTINE64 = function(hProcess: HANDLE; qwBaseAddress: DWORD64;
     lpBuffer: PVOID; nSize: DWORD; var lpNumberOfBytesRead: DWORD): BOOL; stdcall;
   {$EXTERNALSYM PREAD_PROCESS_MEMORY_ROUTINE64}
   PReadProcessMemoryRoutine64 = PREAD_PROCESS_MEMORY_ROUTINE64;
 
-  PFUNCTION_TABLE_ACCESS_ROUTINE64 = function (hProcess: HANDLE;
+  PFUNCTION_TABLE_ACCESS_ROUTINE64 = function(hProcess: HANDLE;
     AddrBase: DWORD64): PVOID; stdcall;
   {$EXTERNALSYM PFUNCTION_TABLE_ACCESS_ROUTINE64}
   PFunctionTableAccessRoutine64 = PFUNCTION_TABLE_ACCESS_ROUTINE64;
 
-  PGET_MODULE_BASE_ROUTINE64 = function (hProcess: HANDLE;
+  PGET_MODULE_BASE_ROUTINE64 = function(hProcess: HANDLE;
     Address: DWORD64): DWORD64; stdcall;
   {$EXTERNALSYM PGET_MODULE_BASE_ROUTINE64}
   PGetModuleBaseRoutine64 = PGET_MODULE_BASE_ROUTINE64;
 
-  PTRANSLATE_ADDRESS_ROUTINE64 = function (hProcess: HANDLE; hThread: HANDLE;
+  PTRANSLATE_ADDRESS_ROUTINE64 = function(hProcess: HANDLE; hThread: HANDLE;
     const lpaddr: ADDRESS64): DWORD64; stdcall;
   {$EXTERNALSYM PTRANSLATE_ADDRESS_ROUTINE64}
   PTranslateAddressRoutine64 = PTRANSLATE_ADDRESS_ROUTINE64;
@@ -752,21 +747,21 @@ function StackWalk64(MachineType: DWORD; hProcess: HANDLE; hThread: HANDLE;
 {$EXTERNALSYM StackWalk64}
 
 type
-  PREAD_PROCESS_MEMORY_ROUTINE = function (hProcess: HANDLE;
+  PREAD_PROCESS_MEMORY_ROUTINE = function(hProcess: HANDLE;
     lpBaseAddress: DWORD; lpBuffer: PVOID; nSize: DWORD;
     var lpNumberOfBytesRead: DWORD): BOOL; stdcall;
   {$EXTERNALSYM PREAD_PROCESS_MEMORY_ROUTINE}
   PreadProcessMemoryRoutine = PREAD_PROCESS_MEMORY_ROUTINE;
 
-  PFUNCTION_TABLE_ACCESS_ROUTINE = function (hProcess: HANDLE; AddrBase: DWORD): PVOID; stdcall;
+  PFUNCTION_TABLE_ACCESS_ROUTINE = function(hProcess: HANDLE; AddrBase: DWORD): PVOID; stdcall;
   {$EXTERNALSYM PFUNCTION_TABLE_ACCESS_ROUTINE}
   PFunctionTableAccessRoutine = PFUNCTION_TABLE_ACCESS_ROUTINE;
 
-  PGET_MODULE_BASE_ROUTINE = function (hProcess: HANDLE; Address: DWORD): DWORD; stdcall;
+  PGET_MODULE_BASE_ROUTINE = function(hProcess: HANDLE; Address: DWORD): DWORD; stdcall;
   {$EXTERNALSYM PGET_MODULE_BASE_ROUTINE}
   PGetModuleBaseRoutine = PGET_MODULE_BASE_ROUTINE;
 
-  PTRANSLATE_ADDRESS_ROUTINE = function (hProcess: HANDLE; hThread: HANDLE;
+  PTRANSLATE_ADDRESS_ROUTINE = function(hProcess: HANDLE; hThread: HANDLE;
     const lpaddr: ADDRESS): DWORD; stdcall;
   {$EXTERNALSYM PTRANSLATE_ADDRESS_ROUTINE}
   PTranslateAddressRoutine = PTRANSLATE_ADDRESS_ROUTINE;
@@ -810,62 +805,62 @@ function GetTimestampForLoadedLibrary(Module: HMODULE): DWORD; stdcall;
 //
 
 type
-  PSYM_ENUMMODULES_CALLBACK64 = function (ModuleName: PSTR; BaseOfDll: DWORD64;
+  PSYM_ENUMMODULES_CALLBACK64 = function(ModuleName: PSTR; BaseOfDll: DWORD64;
     UserContext: PVOID): BOOL; stdcall;
   {$EXTERNALSYM PSYM_ENUMMODULES_CALLBACK64}
   PSymEnummodulesCallback64 = PSYM_ENUMMODULES_CALLBACK64;
 
-  PSYM_ENUMSYMBOLS_CALLBACK64 = function (SymbolName: PSTR; SymbolAddress: DWORD64;
+  PSYM_ENUMSYMBOLS_CALLBACK64 = function(SymbolName: PSTR; SymbolAddress: DWORD64;
     SymbolSize: ULONG; UserContext: PVOID): BOOL; stdcall;
   {$EXTERNALSYM PSYM_ENUMSYMBOLS_CALLBACK64}
   PSymEnumsymbolsCallback64 = PSYM_ENUMSYMBOLS_CALLBACK64;
 
-  PSYM_ENUMSYMBOLS_CALLBACK64W = function (SymbolName: PWSTR;
+  PSYM_ENUMSYMBOLS_CALLBACK64W = function(SymbolName: PWSTR;
     SymbolAddress: DWORD64; SymbolSize: ULONG; UserContext: PVOID): BOOL; stdcall;
   {$EXTERNALSYM PSYM_ENUMSYMBOLS_CALLBACK64W}
   PSymEnumsymbolsCallback64w = PSYM_ENUMSYMBOLS_CALLBACK64W;
 
-  PENUMLOADED_MODULES_CALLBACK64 = function (ModuleName: PSTR;
+  PENUMLOADED_MODULES_CALLBACK64 = function(ModuleName: PSTR;
     ModuleBase: DWORD64; ModuleSize: ULONG; UserContext: PVOID): BOOL; stdcall;
   {$EXTERNALSYM PENUMLOADED_MODULES_CALLBACK64}
   PSnumloadedModulesCallback64 = PENUMLOADED_MODULES_CALLBACK64;
 
-  PSYMBOL_REGISTERED_CALLBACK64 = function (hProcess: HANDLE; ActionCode: ULONG;
+  PSYMBOL_REGISTERED_CALLBACK64 = function(hProcess: HANDLE; ActionCode: ULONG;
     CallbackData: ULONG64; UserContext: ULONG64): BOOL; stdcall;
   {$EXTERNALSYM PSYMBOL_REGISTERED_CALLBACK64}
   PSymbolRegisteredCallback64 = PSYMBOL_REGISTERED_CALLBACK64;
 
-  PSYMBOL_FUNCENTRY_CALLBACK = function (hProcess: HANDLE; AddrBase: DWORD;
+  PSYMBOL_FUNCENTRY_CALLBACK = function(hProcess: HANDLE; AddrBase: DWORD;
     UserContext: PVOID): PVOID; stdcall;
   {$EXTERNALSYM PSYMBOL_FUNCENTRY_CALLBACK}
   PSymbolFuncentryCallback = PSYMBOL_FUNCENTRY_CALLBACK;
 
-  PSYMBOL_FUNCENTRY_CALLBACK64 = function (hProcess: HANDLE; AddrBase: ULONG64;
+  PSYMBOL_FUNCENTRY_CALLBACK64 = function(hProcess: HANDLE; AddrBase: ULONG64;
     UserContext: ULONG64): PVOID; stdcall;
   {$EXTERNALSYM PSYMBOL_FUNCENTRY_CALLBACK64}
   PSymbolFuncentryCallback64 = PSYMBOL_FUNCENTRY_CALLBACK64;
 
-  PSYM_ENUMMODULES_CALLBACK = function (ModuleName: PSTR; BaseOfDll: ULONG;
+  PSYM_ENUMMODULES_CALLBACK = function(ModuleName: PSTR; BaseOfDll: ULONG;
     UserContext: PVOID): BOOL; stdcall;
   {$EXTERNALSYM PSYM_ENUMMODULES_CALLBACK}
   PSymEnummodulesCallback = PSYM_ENUMMODULES_CALLBACK;
 
-  PSYM_ENUMSYMBOLS_CALLBACK = function (SymbolName: PSTR; SymbolAddress: ULONG;
+  PSYM_ENUMSYMBOLS_CALLBACK = function(SymbolName: PSTR; SymbolAddress: ULONG;
     SymbolSize: ULONG; UserContext: PVOID): BOOL; stdcall;
   {$EXTERNALSYM PSYM_ENUMSYMBOLS_CALLBACK}
   PSymEnumsymbolsCallback = PSYM_ENUMSYMBOLS_CALLBACK;
 
-  PSYM_ENUMSYMBOLS_CALLBACKW = function (SymbolName: PWSTR; SymbolAddress: ULONG;
+  PSYM_ENUMSYMBOLS_CALLBACKW = function(SymbolName: PWSTR; SymbolAddress: ULONG;
     SymbolSize: ULONG; UserContext: PVOID): BOOL; stdcall;
   {$EXTERNALSYM PSYM_ENUMSYMBOLS_CALLBACKW}
   PSymEnumsymbolsCallbackw = PSYM_ENUMSYMBOLS_CALLBACKW;
 
-  PENUMLOADED_MODULES_CALLBACK = function (ModuleName: PSTR; ModuleBase: ULONG;
+  PENUMLOADED_MODULES_CALLBACK = function(ModuleName: PSTR; ModuleBase: ULONG;
     ModuleSize: ULONG; UserContext: PVOID): BOOL; stdcall;
   {$EXTERNALSYM PENUMLOADED_MODULES_CALLBACK}
   PEnumloadedModulesCallback = PENUMLOADED_MODULES_CALLBACK;
 
-  PSYMBOL_REGISTERED_CALLBACK = function (hProcess: HANDLE; ActionCode: ULONG;
+  PSYMBOL_REGISTERED_CALLBACK = function(hProcess: HANDLE; ActionCode: ULONG;
     CallbackData: PVOID; UserContext: PVOID): BOOL; stdcall;
   {$EXTERNALSYM PSYMBOL_REGISTERED_CALLBACK}
   PSymbolRegisteredCallback = PSYMBOL_REGISTERED_CALLBACK;
@@ -1334,7 +1329,7 @@ function SymMatchString(string_, expression: LPSTR; fCase: BOOL): BOOL; stdcall;
 {$EXTERNALSYM SymMatchString}
 
 type
-  PSYM_ENUMSOURCFILES_CALLBACK = function (pSourceFile: PSOURCEFILE; UserContext: PVOID): BOOL; stdcall;
+  PSYM_ENUMSOURCFILES_CALLBACK = function(pSourceFile: PSOURCEFILE; UserContext: PVOID): BOOL; stdcall;
   {$EXTERNALSYM PSYM_ENUMSOURCFILES_CALLBACK}
   PSymEnumSourceFilesCallback = PSYM_ENUMSOURCFILES_CALLBACK;
 
@@ -1608,7 +1603,7 @@ function SymFromName(hProcess: HANDLE; Name: LPSTR; Symbol: PSYMBOL_INFO): BOOL;
 {$EXTERNALSYM SymFromName}
 
 type
-  PSYM_ENUMERATESYMBOLS_CALLBACK = function (pSymInfo: PSYMBOL_INFO; SymbolSize: ULONG; UserContext: PVOID): BOOL; stdcall;
+  PSYM_ENUMERATESYMBOLS_CALLBACK = function(pSymInfo: PSYMBOL_INFO; SymbolSize: ULONG; UserContext: PVOID): BOOL; stdcall;
   {$EXTERNALSYM PSYM_ENUMERATESYMBOLS_CALLBACK}
   PSymEnumerateSymbolsCallback = PSYM_ENUMERATESYMBOLS_CALLBACK;
 
@@ -1686,7 +1681,7 @@ function SymDeleteSymbol(hProcess: HANDLE; BaseOfDll: ULONG64; Name: PCSTR; Addr
 //
 
 type
-  PDBGHELP_CREATE_USER_DUMP_CALLBACK = function (DataType: DWORD; var Data: PVOID; DataLength: LPDWORD; UserData: PVOID): BOOL; stdcall;
+  PDBGHELP_CREATE_USER_DUMP_CALLBACK = function(DataType: DWORD; var Data: PVOID; DataLength: LPDWORD; UserData: PVOID): BOOL; stdcall;
   {$EXTERNALSYM PDBGHELP_CREATE_USER_DUMP_CALLBACK}
   PDbgHelpCreateUserDumpCallback = PDBGHELP_CREATE_USER_DUMP_CALLBACK;
 
@@ -1773,9 +1768,9 @@ const
   IMAGEHLP_SYMBOL_INFO_TLSRELATIVE          = SYMF_TLSREL;          // 0x4000
 
 const
-  MINIDUMP_SIGNATURE = ('PMDM');
+  MINIDUMP_SIGNATURE = 'PMDM';
   {$EXTERNALSYM MINIDUMP_SIGNATURE}
-  MINIDUMP_VERSION   = (42899);
+  MINIDUMP_VERSION   = 42899;
   {$EXTERNALSYM MINIDUMP_VERSION}
 
 type
@@ -2062,7 +2057,6 @@ type
 // this thread.
 //
 
-
 //
 // ThreadId must be 4 bytes on all architectures.
 //
@@ -2136,7 +2130,6 @@ type
   {$EXTERNALSYM MINIDUMP_THREAD_EX_LIST}
   TMinidumpThreadExList = MINIDUMP_THREAD_EX_LIST;
   PMinidumpThreadExList = PMINIDUMP_THREAD_EX_LIST;
-
 
 //
 // The MINIDUMP_EXCEPTION is the same as EXCEPTION on Win64.
@@ -2698,7 +2691,7 @@ type
 // file.
 //
 
-  MINIDUMP_CALLBACK_ROUTINE = function (CallbackParam: PVOID; CallbackInput: PMINIDUMP_CALLBACK_INPUT;
+  MINIDUMP_CALLBACK_ROUTINE = function(CallbackParam: PVOID; CallbackInput: PMINIDUMP_CALLBACK_INPUT;
     CallbackOutput: PMINIDUMP_CALLBACK_OUTPUT): BOOL; stdcall;
   {$EXTERNALSYM MINIDUMP_CALLBACK_ROUTINE}
   TMinidumpCallbackRoutine = MINIDUMP_CALLBACK_ROUTINE;
@@ -2751,6 +2744,9 @@ function MiniDumpReadDumpStream(BaseOfDump: PVOID; StreamNumber: ULONG; var Dir:
 
 implementation
 
+uses
+  JwaWinDLLNames;
+
 procedure Address32To64(a32: LPADDRESS; a64: LPADDRESS64);
 begin
   a64^.Offset := {ULONG64(LONG64(LONG(}a32^.Offset{)))};
@@ -2776,11 +2772,13 @@ begin
   p64^.SystemRangeStart := p32^.SystemRangeStart;
 end;
 
-const
-  ImageHlpLib = 'imagehlp.dll';
-
+function RVA_TO_ADDR(Mapping, Rva: Pointer): Pointer;
+begin
+  Result := Pointer(Cardinal(Mapping) + Cardinal(Rva));
+end;
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _BindImage: Pointer;
 
@@ -2788,16 +2786,12 @@ function BindImage;
 begin
   GetProcedureAddress(_BindImage, ImageHlpLib, 'BindImage');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_BindImage]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_BindImage]
   end;
 end;
-{$ELSE}
-function BindImage; external ImageHlpLib name 'BindImage';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _BindImageEx: Pointer;
 
@@ -2805,16 +2799,12 @@ function BindImageEx;
 begin
   GetProcedureAddress(_BindImageEx, ImageHlpLib, 'BindImageEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_BindImageEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_BindImageEx]
   end;
 end;
-{$ELSE}
-function BindImageEx; external ImageHlpLib name 'BindImageEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ReBaseImage: Pointer;
 
@@ -2822,16 +2812,12 @@ function ReBaseImage;
 begin
   GetProcedureAddress(_ReBaseImage, ImageHlpLib, 'ReBaseImage');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ReBaseImage]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ReBaseImage]
   end;
 end;
-{$ELSE}
-function ReBaseImage; external ImageHlpLib name 'ReBaseImage';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ReBaseImage64: Pointer;
 
@@ -2839,16 +2825,12 @@ function ReBaseImage64;
 begin
   GetProcedureAddress(_ReBaseImage64, ImageHlpLib, 'ReBaseImage64');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ReBaseImage64]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ReBaseImage64]
   end;
 end;
-{$ELSE}
-function ReBaseImage64; external ImageHlpLib name 'ReBaseImage64';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CheckSumMappedFile: Pointer;
 
@@ -2856,16 +2838,12 @@ function CheckSumMappedFile;
 begin
   GetProcedureAddress(_CheckSumMappedFile, ImageHlpLib, 'CheckSumMappedFile');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CheckSumMappedFile]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CheckSumMappedFile]
   end;
 end;
-{$ELSE}
-function CheckSumMappedFile; external ImageHlpLib name 'CheckSumMappedFile';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MapFileAndCheckSumA: Pointer;
 
@@ -2873,16 +2851,12 @@ function MapFileAndCheckSumA;
 begin
   GetProcedureAddress(_MapFileAndCheckSumA, ImageHlpLib, 'MapFileAndCheckSumA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MapFileAndCheckSumA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MapFileAndCheckSumA]
   end;
 end;
-{$ELSE}
-function MapFileAndCheckSumA; external ImageHlpLib name 'MapFileAndCheckSumA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MapFileAndCheckSumW: Pointer;
 
@@ -2890,53 +2864,25 @@ function MapFileAndCheckSumW;
 begin
   GetProcedureAddress(_MapFileAndCheckSumW, ImageHlpLib, 'MapFileAndCheckSumW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MapFileAndCheckSumW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MapFileAndCheckSumW]
   end;
 end;
-{$ELSE}
-function MapFileAndCheckSumW; external ImageHlpLib name 'MapFileAndCheckSumW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MapFileAndCheckSum: Pointer;
 
 function MapFileAndCheckSum;
 begin
-  GetProcedureAddress(_MapFileAndCheckSum, ImageHlpLib, 'MapFileAndCheckSumW');
+  GetProcedureAddress(_MapFileAndCheckSum, ImageHlpLib, 'MapFileAndCheckSum' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MapFileAndCheckSum]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MapFileAndCheckSum]
   end;
 end;
-{$ELSE}
-function MapFileAndCheckSum; external ImageHlpLib name 'MapFileAndCheckSumW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _MapFileAndCheckSum: Pointer;
-
-function MapFileAndCheckSum;
-begin
-  GetProcedureAddress(_MapFileAndCheckSum, ImageHlpLib, 'MapFileAndCheckSumA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MapFileAndCheckSum]
-  end;
-end;
-{$ELSE}
-function MapFileAndCheckSum; external ImageHlpLib name 'MapFileAndCheckSumA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetImageConfigInformation: Pointer;
 
@@ -2944,16 +2890,12 @@ function GetImageConfigInformation;
 begin
   GetProcedureAddress(_GetImageConfigInformation, ImageHlpLib, 'GetImageConfigInformation');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetImageConfigInformation]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetImageConfigInformation]
   end;
 end;
-{$ELSE}
-function GetImageConfigInformation; external ImageHlpLib name 'GetImageConfigInformation';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetImageUnusedHeaderBytes: Pointer;
 
@@ -2961,16 +2903,12 @@ function GetImageUnusedHeaderBytes;
 begin
   GetProcedureAddress(_GetImageUnusedHeaderBytes, ImageHlpLib, 'GetImageUnusedHeaderBytes');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetImageUnusedHeaderBytes]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetImageUnusedHeaderBytes]
   end;
 end;
-{$ELSE}
-function GetImageUnusedHeaderBytes; external ImageHlpLib name 'GetImageUnusedHeaderBytes';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetImageConfigInformation: Pointer;
 
@@ -2978,16 +2916,12 @@ function SetImageConfigInformation;
 begin
   GetProcedureAddress(_SetImageConfigInformation, ImageHlpLib, 'SetImageConfigInformation');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetImageConfigInformation]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetImageConfigInformation]
   end;
 end;
-{$ELSE}
-function SetImageConfigInformation; external ImageHlpLib name 'SetImageConfigInformation';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ImageGetDigestStream: Pointer;
 
@@ -2995,16 +2929,12 @@ function ImageGetDigestStream;
 begin
   GetProcedureAddress(_ImageGetDigestStream, ImageHlpLib, 'ImageGetDigestStream');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ImageGetDigestStream]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ImageGetDigestStream]
   end;
 end;
-{$ELSE}
-function ImageGetDigestStream; external ImageHlpLib name 'ImageGetDigestStream';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ImageAddCertificate: Pointer;
 
@@ -3012,16 +2942,12 @@ function ImageAddCertificate;
 begin
   GetProcedureAddress(_ImageAddCertificate, ImageHlpLib, 'ImageAddCertificate');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ImageAddCertificate]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ImageAddCertificate]
   end;
 end;
-{$ELSE}
-function ImageAddCertificate; external ImageHlpLib name 'ImageAddCertificate';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ImageRemoveCertificate: Pointer;
 
@@ -3029,16 +2955,12 @@ function ImageRemoveCertificate;
 begin
   GetProcedureAddress(_ImageRemoveCertificate, ImageHlpLib, 'ImageRemoveCertificate');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ImageRemoveCertificate]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ImageRemoveCertificate]
   end;
 end;
-{$ELSE}
-function ImageRemoveCertificate; external ImageHlpLib name 'ImageRemoveCertificate';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ImageEnumerateCertificates: Pointer;
 
@@ -3046,16 +2968,12 @@ function ImageEnumerateCertificates;
 begin
   GetProcedureAddress(_ImageEnumerateCertificates, ImageHlpLib, 'ImageEnumerateCertificates');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ImageEnumerateCertificates]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ImageEnumerateCertificates]
   end;
 end;
-{$ELSE}
-function ImageEnumerateCertificates; external ImageHlpLib name 'ImageEnumerateCertificates';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ImageGetCertificateData: Pointer;
 
@@ -3063,16 +2981,12 @@ function ImageGetCertificateData;
 begin
   GetProcedureAddress(_ImageGetCertificateData, ImageHlpLib, 'ImageGetCertificateData');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ImageGetCertificateData]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ImageGetCertificateData]
   end;
 end;
-{$ELSE}
-function ImageGetCertificateData; external ImageHlpLib name 'ImageGetCertificateData';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ImageGetCertificateHeader: Pointer;
 
@@ -3080,16 +2994,12 @@ function ImageGetCertificateHeader;
 begin
   GetProcedureAddress(_ImageGetCertificateHeader, ImageHlpLib, 'ImageGetCertificateHeader');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ImageGetCertificateHeader]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ImageGetCertificateHeader]
   end;
 end;
-{$ELSE}
-function ImageGetCertificateHeader; external ImageHlpLib name 'ImageGetCertificateHeader';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ImageLoad: Pointer;
 
@@ -3097,16 +3007,12 @@ function ImageLoad;
 begin
   GetProcedureAddress(_ImageLoad, ImageHlpLib, 'ImageLoad');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ImageLoad]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ImageLoad]
   end;
 end;
-{$ELSE}
-function ImageLoad; external ImageHlpLib name 'ImageLoad';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ImageUnload: Pointer;
 
@@ -3114,16 +3020,12 @@ function ImageUnload;
 begin
   GetProcedureAddress(_ImageUnload, ImageHlpLib, 'ImageUnload');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ImageUnload]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ImageUnload]
   end;
 end;
-{$ELSE}
-function ImageUnload; external ImageHlpLib name 'ImageUnload';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MapAndLoad: Pointer;
 
@@ -3131,16 +3033,12 @@ function MapAndLoad;
 begin
   GetProcedureAddress(_MapAndLoad, ImageHlpLib, 'MapAndLoad');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MapAndLoad]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MapAndLoad]
   end;
 end;
-{$ELSE}
-function MapAndLoad; external ImageHlpLib name 'MapAndLoad';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _UnMapAndLoad: Pointer;
 
@@ -3148,16 +3046,12 @@ function UnMapAndLoad;
 begin
   GetProcedureAddress(_UnMapAndLoad, ImageHlpLib, 'UnMapAndLoad');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_UnMapAndLoad]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_UnMapAndLoad]
   end;
 end;
-{$ELSE}
-function UnMapAndLoad; external ImageHlpLib name 'UnMapAndLoad';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _TouchFileTimes: Pointer;
 
@@ -3165,16 +3059,12 @@ function TouchFileTimes;
 begin
   GetProcedureAddress(_TouchFileTimes, ImageHlpLib, 'TouchFileTimes');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TouchFileTimes]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TouchFileTimes]
   end;
 end;
-{$ELSE}
-function TouchFileTimes; external ImageHlpLib name 'TouchFileTimes';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SplitSymbols: Pointer;
 
@@ -3182,16 +3072,12 @@ function SplitSymbols;
 begin
   GetProcedureAddress(_SplitSymbols, ImageHlpLib, 'SplitSymbols');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SplitSymbols]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SplitSymbols]
   end;
 end;
-{$ELSE}
-function SplitSymbols; external ImageHlpLib name 'SplitSymbols';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _UpdateDebugInfoFile: Pointer;
 
@@ -3199,16 +3085,12 @@ function UpdateDebugInfoFile;
 begin
   GetProcedureAddress(_UpdateDebugInfoFile, ImageHlpLib, 'UpdateDebugInfoFile');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_UpdateDebugInfoFile]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_UpdateDebugInfoFile]
   end;
 end;
-{$ELSE}
-function UpdateDebugInfoFile; external ImageHlpLib name 'UpdateDebugInfoFile';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _UpdateDebugInfoFileEx: Pointer;
 
@@ -3216,16 +3098,12 @@ function UpdateDebugInfoFileEx;
 begin
   GetProcedureAddress(_UpdateDebugInfoFileEx, ImageHlpLib, 'UpdateDebugInfoFileEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_UpdateDebugInfoFileEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_UpdateDebugInfoFileEx]
   end;
 end;
-{$ELSE}
-function UpdateDebugInfoFileEx; external ImageHlpLib name 'UpdateDebugInfoFileEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _FindDebugInfoFile: Pointer;
 
@@ -3233,16 +3111,12 @@ function FindDebugInfoFile;
 begin
   GetProcedureAddress(_FindDebugInfoFile, ImageHlpLib, 'FindDebugInfoFile');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FindDebugInfoFile]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_FindDebugInfoFile]
   end;
 end;
-{$ELSE}
-function FindDebugInfoFile; external ImageHlpLib name 'FindDebugInfoFile';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _FindDebugInfoFileEx: Pointer;
 
@@ -3250,16 +3124,12 @@ function FindDebugInfoFileEx;
 begin
   GetProcedureAddress(_FindDebugInfoFileEx, ImageHlpLib, 'FindDebugInfoFileEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FindDebugInfoFileEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_FindDebugInfoFileEx]
   end;
 end;
-{$ELSE}
-function FindDebugInfoFileEx; external ImageHlpLib name 'FindDebugInfoFileEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymFindFileInPath: Pointer;
 
@@ -3267,16 +3137,12 @@ function SymFindFileInPath;
 begin
   GetProcedureAddress(_SymFindFileInPath, ImageHlpLib, 'SymFindFileInPath');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymFindFileInPath]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymFindFileInPath]
   end;
 end;
-{$ELSE}
-function SymFindFileInPath; external ImageHlpLib name 'SymFindFileInPath';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _FindExecutableImage: Pointer;
 
@@ -3284,16 +3150,12 @@ function FindExecutableImage;
 begin
   GetProcedureAddress(_FindExecutableImage, ImageHlpLib, 'FindExecutableImage');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FindExecutableImage]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_FindExecutableImage]
   end;
 end;
-{$ELSE}
-function FindExecutableImage; external ImageHlpLib name 'FindExecutableImage';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _FindExecutableImageEx: Pointer;
 
@@ -3301,16 +3163,12 @@ function FindExecutableImageEx;
 begin
   GetProcedureAddress(_FindExecutableImageEx, ImageHlpLib, 'FindExecutableImageEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FindExecutableImageEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_FindExecutableImageEx]
   end;
 end;
-{$ELSE}
-function FindExecutableImageEx; external ImageHlpLib name 'FindExecutableImageEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ImageNtHeader: Pointer;
 
@@ -3318,16 +3176,12 @@ function ImageNtHeader;
 begin
   GetProcedureAddress(_ImageNtHeader, ImageHlpLib, 'ImageNtHeader');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ImageNtHeader]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ImageNtHeader]
   end;
 end;
-{$ELSE}
-function ImageNtHeader; external ImageHlpLib name 'ImageNtHeader';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ImageDirectoryEntryToDataEx: Pointer;
 
@@ -3335,16 +3189,12 @@ function ImageDirectoryEntryToDataEx;
 begin
   GetProcedureAddress(_ImageDirectoryEntryToDataEx, ImageHlpLib, 'ImageDirectoryEntryToDataEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ImageDirectoryEntryToDataEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ImageDirectoryEntryToDataEx]
   end;
 end;
-{$ELSE}
-function ImageDirectoryEntryToDataEx; external ImageHlpLib name 'ImageDirectoryEntryToDataEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ImageDirectoryEntryToData: Pointer;
 
@@ -3352,16 +3202,12 @@ function ImageDirectoryEntryToData;
 begin
   GetProcedureAddress(_ImageDirectoryEntryToData, ImageHlpLib, 'ImageDirectoryEntryToData');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ImageDirectoryEntryToData]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ImageDirectoryEntryToData]
   end;
 end;
-{$ELSE}
-function ImageDirectoryEntryToData; external ImageHlpLib name 'ImageDirectoryEntryToData';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ImageRvaToSection: Pointer;
 
@@ -3369,16 +3215,12 @@ function ImageRvaToSection;
 begin
   GetProcedureAddress(_ImageRvaToSection, ImageHlpLib, 'ImageRvaToSection');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ImageRvaToSection]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ImageRvaToSection]
   end;
 end;
-{$ELSE}
-function ImageRvaToSection; external ImageHlpLib name 'ImageRvaToSection';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ImageRvaToVa: Pointer;
 
@@ -3386,16 +3228,12 @@ function ImageRvaToVa;
 begin
   GetProcedureAddress(_ImageRvaToVa, ImageHlpLib, 'ImageRvaToVa');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ImageRvaToVa]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ImageRvaToVa]
   end;
 end;
-{$ELSE}
-function ImageRvaToVa; external ImageHlpLib name 'ImageRvaToVa';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MapDebugInformation: Pointer;
 
@@ -3403,16 +3241,12 @@ function MapDebugInformation;
 begin
   GetProcedureAddress(_MapDebugInformation, ImageHlpLib, 'MapDebugInformation');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MapDebugInformation]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MapDebugInformation]
   end;
 end;
-{$ELSE}
-function MapDebugInformation; external ImageHlpLib name 'MapDebugInformation';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _UnmapDebugInformation: Pointer;
 
@@ -3420,16 +3254,12 @@ function UnmapDebugInformation;
 begin
   GetProcedureAddress(_UnmapDebugInformation, ImageHlpLib, 'UnmapDebugInformation');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_UnmapDebugInformation]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_UnmapDebugInformation]
   end;
 end;
-{$ELSE}
-function UnmapDebugInformation; external ImageHlpLib name 'UnmapDebugInformation';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SearchTreeForFile: Pointer;
 
@@ -3437,16 +3267,12 @@ function SearchTreeForFile;
 begin
   GetProcedureAddress(_SearchTreeForFile, ImageHlpLib, 'SearchTreeForFile');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SearchTreeForFile]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SearchTreeForFile]
   end;
 end;
-{$ELSE}
-function SearchTreeForFile; external ImageHlpLib name 'SearchTreeForFile';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumDirTree: Pointer;
 
@@ -3454,16 +3280,12 @@ function EnumDirTree;
 begin
   GetProcedureAddress(_EnumDirTree, ImageHlpLib, 'EnumDirTree');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumDirTree]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumDirTree]
   end;
 end;
-{$ELSE}
-function EnumDirTree; external ImageHlpLib name 'EnumDirTree';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MakeSureDirectoryPathExists: Pointer;
 
@@ -3471,16 +3293,12 @@ function MakeSureDirectoryPathExists;
 begin
   GetProcedureAddress(_MakeSureDirectoryPathExists, ImageHlpLib, 'MakeSureDirectoryPathExists');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MakeSureDirectoryPathExists]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MakeSureDirectoryPathExists]
   end;
 end;
-{$ELSE}
-function MakeSureDirectoryPathExists; external ImageHlpLib name 'MakeSureDirectoryPathExists';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _UnDecorateSymbolName: Pointer;
 
@@ -3488,16 +3306,12 @@ function UnDecorateSymbolName;
 begin
   GetProcedureAddress(_UnDecorateSymbolName, ImageHlpLib, 'UnDecorateSymbolName');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_UnDecorateSymbolName]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_UnDecorateSymbolName]
   end;
 end;
-{$ELSE}
-function UnDecorateSymbolName; external ImageHlpLib name 'UnDecorateSymbolName';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _StackWalk64: Pointer;
 
@@ -3505,16 +3319,12 @@ function StackWalk64;
 begin
   GetProcedureAddress(_StackWalk64, ImageHlpLib, 'StackWalk64');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_StackWalk64]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_StackWalk64]
   end;
 end;
-{$ELSE}
-function StackWalk64; external ImageHlpLib name 'StackWalk64';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _StackWalk: Pointer;
 
@@ -3522,16 +3332,12 @@ function StackWalk;
 begin
   GetProcedureAddress(_StackWalk, ImageHlpLib, 'StackWalk');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_StackWalk]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_StackWalk]
   end;
 end;
-{$ELSE}
-function StackWalk; external ImageHlpLib name 'StackWalk';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ImagehlpApiVersion: Pointer;
 
@@ -3539,16 +3345,12 @@ function ImagehlpApiVersion;
 begin
   GetProcedureAddress(_ImagehlpApiVersion, ImageHlpLib, 'ImagehlpApiVersion');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ImagehlpApiVersion]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ImagehlpApiVersion]
   end;
 end;
-{$ELSE}
-function ImagehlpApiVersion; external ImageHlpLib name 'ImagehlpApiVersion';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ImagehlpApiVersionEx: Pointer;
 
@@ -3556,16 +3358,12 @@ function ImagehlpApiVersionEx;
 begin
   GetProcedureAddress(_ImagehlpApiVersionEx, ImageHlpLib, 'ImagehlpApiVersionEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ImagehlpApiVersionEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ImagehlpApiVersionEx]
   end;
 end;
-{$ELSE}
-function ImagehlpApiVersionEx; external ImageHlpLib name 'ImagehlpApiVersionEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetTimestampForLoadedLibrary: Pointer;
 
@@ -3573,16 +3371,12 @@ function GetTimestampForLoadedLibrary;
 begin
   GetProcedureAddress(_GetTimestampForLoadedLibrary, ImageHlpLib, 'GetTimestampForLoadedLibrary');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTimestampForLoadedLibrary]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetTimestampForLoadedLibrary]
   end;
 end;
-{$ELSE}
-function GetTimestampForLoadedLibrary; external ImageHlpLib name 'GetTimestampForLoadedLibrary';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymSetOptions: Pointer;
 
@@ -3590,16 +3384,12 @@ function SymSetOptions;
 begin
   GetProcedureAddress(_SymSetOptions, ImageHlpLib, 'SymSetOptions');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymSetOptions]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymSetOptions]
   end;
 end;
-{$ELSE}
-function SymSetOptions; external ImageHlpLib name 'SymSetOptions';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymGetOptions: Pointer;
 
@@ -3607,16 +3397,12 @@ function SymGetOptions;
 begin
   GetProcedureAddress(_SymGetOptions, ImageHlpLib, 'SymGetOptions');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymGetOptions]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymGetOptions]
   end;
 end;
-{$ELSE}
-function SymGetOptions; external ImageHlpLib name 'SymGetOptions';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymCleanup: Pointer;
 
@@ -3624,16 +3410,12 @@ function SymCleanup;
 begin
   GetProcedureAddress(_SymCleanup, ImageHlpLib, 'SymCleanup');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymCleanup]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymCleanup]
   end;
 end;
-{$ELSE}
-function SymCleanup; external ImageHlpLib name 'SymCleanup';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymMatchString: Pointer;
 
@@ -3641,16 +3423,12 @@ function SymMatchString;
 begin
   GetProcedureAddress(_SymMatchString, ImageHlpLib, 'SymMatchString');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymMatchString]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymMatchString]
   end;
 end;
-{$ELSE}
-function SymMatchString; external ImageHlpLib name 'SymMatchString';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymEnumSourceFiles: Pointer;
 
@@ -3658,16 +3436,12 @@ function SymEnumSourceFiles;
 begin
   GetProcedureAddress(_SymEnumSourceFiles, ImageHlpLib, 'SymEnumSourceFiles');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymEnumSourceFiles]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymEnumSourceFiles]
   end;
 end;
-{$ELSE}
-function SymEnumSourceFiles; external ImageHlpLib name 'SymEnumSourceFiles';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymEnumerateModules64: Pointer;
 
@@ -3675,16 +3449,12 @@ function SymEnumerateModules64;
 begin
   GetProcedureAddress(_SymEnumerateModules64, ImageHlpLib, 'SymEnumerateModules64');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymEnumerateModules64]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymEnumerateModules64]
   end;
 end;
-{$ELSE}
-function SymEnumerateModules64; external ImageHlpLib name 'SymEnumerateModules64';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymEnumerateModules: Pointer;
 
@@ -3692,16 +3462,12 @@ function SymEnumerateModules;
 begin
   GetProcedureAddress(_SymEnumerateModules, ImageHlpLib, 'SymEnumerateModules');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymEnumerateModules]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymEnumerateModules]
   end;
 end;
-{$ELSE}
-function SymEnumerateModules; external ImageHlpLib name 'SymEnumerateModules';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymEnumerateSymbols64: Pointer;
 
@@ -3709,16 +3475,12 @@ function SymEnumerateSymbols64;
 begin
   GetProcedureAddress(_SymEnumerateSymbols64, ImageHlpLib, 'SymEnumerateSymbols64');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymEnumerateSymbols64]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymEnumerateSymbols64]
   end;
 end;
-{$ELSE}
-function SymEnumerateSymbols64; external ImageHlpLib name 'SymEnumerateSymbols64';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymEnumerateSymbolsW64: Pointer;
 
@@ -3726,16 +3488,12 @@ function SymEnumerateSymbolsW64;
 begin
   GetProcedureAddress(_SymEnumerateSymbolsW64, ImageHlpLib, 'SymEnumerateSymbolsW64');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymEnumerateSymbolsW64]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymEnumerateSymbolsW64]
   end;
 end;
-{$ELSE}
-function SymEnumerateSymbolsW64; external ImageHlpLib name 'SymEnumerateSymbolsW64';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymEnumerateSymbols: Pointer;
 
@@ -3743,16 +3501,12 @@ function SymEnumerateSymbols;
 begin
   GetProcedureAddress(_SymEnumerateSymbols, ImageHlpLib, 'SymEnumerateSymbols');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymEnumerateSymbols]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymEnumerateSymbols]
   end;
 end;
-{$ELSE}
-function SymEnumerateSymbols; external ImageHlpLib name 'SymEnumerateSymbols';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymEnumerateSymbolsW: Pointer;
 
@@ -3760,16 +3514,12 @@ function SymEnumerateSymbolsW;
 begin
   GetProcedureAddress(_SymEnumerateSymbolsW, ImageHlpLib, 'SymEnumerateSymbolsW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymEnumerateSymbolsW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymEnumerateSymbolsW]
   end;
 end;
-{$ELSE}
-function SymEnumerateSymbolsW; external ImageHlpLib name 'SymEnumerateSymbolsW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumerateLoadedModules64: Pointer;
 
@@ -3777,16 +3527,12 @@ function EnumerateLoadedModules64;
 begin
   GetProcedureAddress(_EnumerateLoadedModules64, ImageHlpLib, 'EnumerateLoadedModules64');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumerateLoadedModules64]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumerateLoadedModules64]
   end;
 end;
-{$ELSE}
-function EnumerateLoadedModules64; external ImageHlpLib name 'EnumerateLoadedModules64';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumerateLoadedModules: Pointer;
 
@@ -3794,16 +3540,12 @@ function EnumerateLoadedModules;
 begin
   GetProcedureAddress(_EnumerateLoadedModules, ImageHlpLib, 'EnumerateLoadedModules');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumerateLoadedModules]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumerateLoadedModules]
   end;
 end;
-{$ELSE}
-function EnumerateLoadedModules; external ImageHlpLib name 'EnumerateLoadedModules';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymFunctionTableAccess64: Pointer;
 
@@ -3811,16 +3553,12 @@ function SymFunctionTableAccess64;
 begin
   GetProcedureAddress(_SymFunctionTableAccess64, ImageHlpLib, 'SymFunctionTableAccess64');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymFunctionTableAccess64]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymFunctionTableAccess64]
   end;
 end;
-{$ELSE}
-function SymFunctionTableAccess64; external ImageHlpLib name 'SymFunctionTableAccess64';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymFunctionTableAccess: Pointer;
 
@@ -3828,16 +3566,12 @@ function SymFunctionTableAccess;
 begin
   GetProcedureAddress(_SymFunctionTableAccess, ImageHlpLib, 'SymFunctionTableAccess');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymFunctionTableAccess]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymFunctionTableAccess]
   end;
 end;
-{$ELSE}
-function SymFunctionTableAccess; external ImageHlpLib name 'SymFunctionTableAccess';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymGetModuleInfo64: Pointer;
 
@@ -3845,16 +3579,12 @@ function SymGetModuleInfo64;
 begin
   GetProcedureAddress(_SymGetModuleInfo64, ImageHlpLib, 'SymGetModuleInfo64');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymGetModuleInfo64]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymGetModuleInfo64]
   end;
 end;
-{$ELSE}
-function SymGetModuleInfo64; external ImageHlpLib name 'SymGetModuleInfo64';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymGetModuleInfoW64: Pointer;
 
@@ -3862,16 +3592,12 @@ function SymGetModuleInfoW64;
 begin
   GetProcedureAddress(_SymGetModuleInfoW64, ImageHlpLib, 'SymGetModuleInfoW64');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymGetModuleInfoW64]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymGetModuleInfoW64]
   end;
 end;
-{$ELSE}
-function SymGetModuleInfoW64; external ImageHlpLib name 'SymGetModuleInfoW64';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymGetModuleInfo: Pointer;
 
@@ -3879,16 +3605,12 @@ function SymGetModuleInfo;
 begin
   GetProcedureAddress(_SymGetModuleInfo, ImageHlpLib, 'SymGetModuleInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymGetModuleInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymGetModuleInfo]
   end;
 end;
-{$ELSE}
-function SymGetModuleInfo; external ImageHlpLib name 'SymGetModuleInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymGetModuleInfoW: Pointer;
 
@@ -3896,16 +3618,12 @@ function SymGetModuleInfoW;
 begin
   GetProcedureAddress(_SymGetModuleInfoW, ImageHlpLib, 'SymGetModuleInfoW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymGetModuleInfoW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymGetModuleInfoW]
   end;
 end;
-{$ELSE}
-function SymGetModuleInfoW; external ImageHlpLib name 'SymGetModuleInfoW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymGetModuleBase64: Pointer;
 
@@ -3913,16 +3631,12 @@ function SymGetModuleBase64;
 begin
   GetProcedureAddress(_SymGetModuleBase64, ImageHlpLib, 'SymGetModuleBase64');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymGetModuleBase64]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymGetModuleBase64]
   end;
 end;
-{$ELSE}
-function SymGetModuleBase64; external ImageHlpLib name 'SymGetModuleBase64';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymGetModuleBase: Pointer;
 
@@ -3930,16 +3644,12 @@ function SymGetModuleBase;
 begin
   GetProcedureAddress(_SymGetModuleBase, ImageHlpLib, 'SymGetModuleBase');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymGetModuleBase]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymGetModuleBase]
   end;
 end;
-{$ELSE}
-function SymGetModuleBase; external ImageHlpLib name 'SymGetModuleBase';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymGetSymNext64: Pointer;
 
@@ -3947,16 +3657,12 @@ function SymGetSymNext64;
 begin
   GetProcedureAddress(_SymGetSymNext64, ImageHlpLib, 'SymGetSymNext64');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymGetSymNext64]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymGetSymNext64]
   end;
 end;
-{$ELSE}
-function SymGetSymNext64; external ImageHlpLib name 'SymGetSymNext64';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymGetSymNext: Pointer;
 
@@ -3964,16 +3670,12 @@ function SymGetSymNext;
 begin
   GetProcedureAddress(_SymGetSymNext, ImageHlpLib, 'SymGetSymNext');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymGetSymNext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymGetSymNext]
   end;
 end;
-{$ELSE}
-function SymGetSymNext; external ImageHlpLib name 'SymGetSymNext';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymGetSymPrev64: Pointer;
 
@@ -3981,16 +3683,12 @@ function SymGetSymPrev64;
 begin
   GetProcedureAddress(_SymGetSymPrev64, ImageHlpLib, 'SymGetSymPrev64');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymGetSymPrev64]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymGetSymPrev64]
   end;
 end;
-{$ELSE}
-function SymGetSymPrev64; external ImageHlpLib name 'SymGetSymPrev64';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymGetSymPrev: Pointer;
 
@@ -3998,16 +3696,12 @@ function SymGetSymPrev;
 begin
   GetProcedureAddress(_SymGetSymPrev, ImageHlpLib, 'SymGetSymPrev');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymGetSymPrev]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymGetSymPrev]
   end;
 end;
-{$ELSE}
-function SymGetSymPrev; external ImageHlpLib name 'SymGetSymPrev';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymGetLineFromAddr64: Pointer;
 
@@ -4015,16 +3709,12 @@ function SymGetLineFromAddr64;
 begin
   GetProcedureAddress(_SymGetLineFromAddr64, ImageHlpLib, 'SymGetLineFromAddr64');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymGetLineFromAddr64]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymGetLineFromAddr64]
   end;
 end;
-{$ELSE}
-function SymGetLineFromAddr64; external ImageHlpLib name 'SymGetLineFromAddr64';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymGetLineFromAddr: Pointer;
 
@@ -4032,16 +3722,12 @@ function SymGetLineFromAddr;
 begin
   GetProcedureAddress(_SymGetLineFromAddr, ImageHlpLib, 'SymGetLineFromAddr');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymGetLineFromAddr]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymGetLineFromAddr]
   end;
 end;
-{$ELSE}
-function SymGetLineFromAddr; external ImageHlpLib name 'SymGetLineFromAddr';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymGetLineFromName64: Pointer;
 
@@ -4049,16 +3735,12 @@ function SymGetLineFromName64;
 begin
   GetProcedureAddress(_SymGetLineFromName64, ImageHlpLib, 'SymGetLineFromName64');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymGetLineFromName64]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymGetLineFromName64]
   end;
 end;
-{$ELSE}
-function SymGetLineFromName64; external ImageHlpLib name 'SymGetLineFromName64';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymGetLineFromName: Pointer;
 
@@ -4066,16 +3748,12 @@ function SymGetLineFromName;
 begin
   GetProcedureAddress(_SymGetLineFromName, ImageHlpLib, 'SymGetLineFromName');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymGetLineFromName]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymGetLineFromName]
   end;
 end;
-{$ELSE}
-function SymGetLineFromName; external ImageHlpLib name 'SymGetLineFromName';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymGetLineNext64: Pointer;
 
@@ -4083,16 +3761,12 @@ function SymGetLineNext64;
 begin
   GetProcedureAddress(_SymGetLineNext64, ImageHlpLib, 'SymGetLineNext64');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymGetLineNext64]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymGetLineNext64]
   end;
 end;
-{$ELSE}
-function SymGetLineNext64; external ImageHlpLib name 'SymGetLineNext64';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymGetLineNext: Pointer;
 
@@ -4100,16 +3774,12 @@ function SymGetLineNext;
 begin
   GetProcedureAddress(_SymGetLineNext, ImageHlpLib, 'SymGetLineNext');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymGetLineNext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymGetLineNext]
   end;
 end;
-{$ELSE}
-function SymGetLineNext; external ImageHlpLib name 'SymGetLineNext';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymGetLinePrev64: Pointer;
 
@@ -4117,16 +3787,12 @@ function SymGetLinePrev64;
 begin
   GetProcedureAddress(_SymGetLinePrev64, ImageHlpLib, 'SymGetLinePrev64');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymGetLinePrev64]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymGetLinePrev64]
   end;
 end;
-{$ELSE}
-function SymGetLinePrev64; external ImageHlpLib name 'SymGetLinePrev64';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymGetLinePrev: Pointer;
 
@@ -4134,16 +3800,12 @@ function SymGetLinePrev;
 begin
   GetProcedureAddress(_SymGetLinePrev, ImageHlpLib, 'SymGetLinePrev');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymGetLinePrev]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymGetLinePrev]
   end;
 end;
-{$ELSE}
-function SymGetLinePrev; external ImageHlpLib name 'SymGetLinePrev';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymMatchFileName: Pointer;
 
@@ -4151,16 +3813,12 @@ function SymMatchFileName;
 begin
   GetProcedureAddress(_SymMatchFileName, ImageHlpLib, 'SymMatchFileName');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymMatchFileName]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymMatchFileName]
   end;
 end;
-{$ELSE}
-function SymMatchFileName; external ImageHlpLib name 'SymMatchFileName';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymInitialize: Pointer;
 
@@ -4168,16 +3826,12 @@ function SymInitialize;
 begin
   GetProcedureAddress(_SymInitialize, ImageHlpLib, 'SymInitialize');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymInitialize]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymInitialize]
   end;
 end;
-{$ELSE}
-function SymInitialize; external ImageHlpLib name 'SymInitialize';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymGetSearchPath: Pointer;
 
@@ -4185,16 +3839,12 @@ function SymGetSearchPath;
 begin
   GetProcedureAddress(_SymGetSearchPath, ImageHlpLib, 'SymGetSearchPath');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymGetSearchPath]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymGetSearchPath]
   end;
 end;
-{$ELSE}
-function SymGetSearchPath; external ImageHlpLib name 'SymGetSearchPath';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymSetSearchPath: Pointer;
 
@@ -4202,16 +3852,12 @@ function SymSetSearchPath;
 begin
   GetProcedureAddress(_SymSetSearchPath, ImageHlpLib, 'SymSetSearchPath');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymSetSearchPath]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymSetSearchPath]
   end;
 end;
-{$ELSE}
-function SymSetSearchPath; external ImageHlpLib name 'SymSetSearchPath';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymLoadModuleEx: Pointer;
 
@@ -4219,16 +3865,12 @@ function SymLoadModuleEx;
 begin
   GetProcedureAddress(_SymLoadModuleEx, ImageHlpLib, 'SymLoadModuleEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymLoadModuleEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymLoadModuleEx]
   end;
 end;
-{$ELSE}
-function SymLoadModuleEx; external ImageHlpLib name 'SymLoadModuleEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymLoadModule64: Pointer;
 
@@ -4236,16 +3878,12 @@ function SymLoadModule64;
 begin
   GetProcedureAddress(_SymLoadModule64, ImageHlpLib, 'SymLoadModule64');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymLoadModule64]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymLoadModule64]
   end;
 end;
-{$ELSE}
-function SymLoadModule64; external ImageHlpLib name 'SymLoadModule64';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymLoadModule: Pointer;
 
@@ -4253,16 +3891,12 @@ function SymLoadModule;
 begin
   GetProcedureAddress(_SymLoadModule, ImageHlpLib, 'SymLoadModule');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymLoadModule]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymLoadModule]
   end;
 end;
-{$ELSE}
-function SymLoadModule; external ImageHlpLib name 'SymLoadModule';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymUnloadModule64: Pointer;
 
@@ -4270,16 +3904,12 @@ function SymUnloadModule64;
 begin
   GetProcedureAddress(_SymUnloadModule64, ImageHlpLib, 'SymUnloadModule64');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymUnloadModule64]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymUnloadModule64]
   end;
 end;
-{$ELSE}
-function SymUnloadModule64; external ImageHlpLib name 'SymUnloadModule64';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymUnloadModule: Pointer;
 
@@ -4287,16 +3917,12 @@ function SymUnloadModule;
 begin
   GetProcedureAddress(_SymUnloadModule, ImageHlpLib, 'SymUnloadModule');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymUnloadModule]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymUnloadModule]
   end;
 end;
-{$ELSE}
-function SymUnloadModule; external ImageHlpLib name 'SymUnloadModule';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymUnDName64: Pointer;
 
@@ -4304,16 +3930,12 @@ function SymUnDName64;
 begin
   GetProcedureAddress(_SymUnDName64, ImageHlpLib, 'SymUnDName64');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymUnDName64]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymUnDName64]
   end;
 end;
-{$ELSE}
-function SymUnDName64; external ImageHlpLib name 'SymUnDName64';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymUnDName: Pointer;
 
@@ -4321,16 +3943,12 @@ function SymUnDName;
 begin
   GetProcedureAddress(_SymUnDName, ImageHlpLib, 'SymUnDName');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymUnDName]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymUnDName]
   end;
 end;
-{$ELSE}
-function SymUnDName; external ImageHlpLib name 'SymUnDName';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymRegisterCallback64: Pointer;
 
@@ -4338,16 +3956,12 @@ function SymRegisterCallback64;
 begin
   GetProcedureAddress(_SymRegisterCallback64, ImageHlpLib, 'SymRegisterCallback64');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymRegisterCallback64]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymRegisterCallback64]
   end;
 end;
-{$ELSE}
-function SymRegisterCallback64; external ImageHlpLib name 'SymRegisterCallback64';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymRegFuncEntryCallback64: Pointer;
 
@@ -4355,16 +3969,12 @@ function SymRegisterFunctionEntryCallback64;
 begin
   GetProcedureAddress(_SymRegFuncEntryCallback64, ImageHlpLib, 'SymRegisterFunctionEntryCallback64');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymRegFuncEntryCallback64]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymRegFuncEntryCallback64]
   end;
 end;
-{$ELSE}
-function SymRegisterFunctionEntryCallback64; external ImageHlpLib name 'SymRegisterFunctionEntryCallback64';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymRegisterCallback: Pointer;
 
@@ -4372,16 +3982,12 @@ function SymRegisterCallback;
 begin
   GetProcedureAddress(_SymRegisterCallback, ImageHlpLib, 'SymRegisterCallback');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymRegisterCallback]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymRegisterCallback]
   end;
 end;
-{$ELSE}
-function SymRegisterCallback; external ImageHlpLib name 'SymRegisterCallback';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymRegisterFuncEntryCallback: Pointer;
 
@@ -4389,17 +3995,12 @@ function SymRegisterFunctionEntryCallback;
 begin
   GetProcedureAddress(_SymRegisterFuncEntryCallback, ImageHlpLib, 'SymRegisterFunctionEntryCallback');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymRegisterFuncEntryCallback]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymRegisterFuncEntryCallback]
   end;
 end;
-{$ELSE}
-function SymRegisterFunctionEntryCallback; external ImageHlpLib name 'SymRegisterFunctionEntryCallback';
-{$ENDIF DYNAMIC_LINK}
 
-
-{$IFDEF DYNAMIC_LINK}
 var
   _SymSetContext: Pointer;
 
@@ -4407,16 +4008,12 @@ function SymSetContext;
 begin
   GetProcedureAddress(_SymSetContext, ImageHlpLib, 'SymSetContext');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymSetContext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymSetContext]
   end;
 end;
-{$ELSE}
-function SymSetContext; external ImageHlpLib name 'SymSetContext';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymFromAddr: Pointer;
 
@@ -4424,16 +4021,12 @@ function SymFromAddr;
 begin
   GetProcedureAddress(_SymFromAddr, ImageHlpLib, 'SymFromAddr');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymFromAddr]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymFromAddr]
   end;
 end;
-{$ELSE}
-function SymFromAddr; external ImageHlpLib name 'SymFromAddr';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymFromName: Pointer;
 
@@ -4441,16 +4034,12 @@ function SymFromName;
 begin
   GetProcedureAddress(_SymFromName, ImageHlpLib, 'SymFromName');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymFromName]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymFromName]
   end;
 end;
-{$ELSE}
-function SymFromName; external ImageHlpLib name 'SymFromName';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymEnumSymbolsForAddr: Pointer;
 
@@ -4458,16 +4047,12 @@ function SymEnumSymbolsForAddr;
 begin
   GetProcedureAddress(_SymEnumSymbolsForAddr, ImageHlpLib, 'SymEnumSymbolsForAddr');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymEnumSymbolsForAddr]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymEnumSymbolsForAddr]
   end;
 end;
-{$ELSE}
-function SymEnumSymbolsForAddr; external ImageHlpLib name 'SymEnumSymbolsForAddr';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymEnumSymbols: Pointer;
 
@@ -4475,16 +4060,12 @@ function SymEnumSymbols;
 begin
   GetProcedureAddress(_SymEnumSymbols, ImageHlpLib, 'SymEnumSymbols');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymEnumSymbols]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymEnumSymbols]
   end;
 end;
-{$ELSE}
-function SymEnumSymbols; external ImageHlpLib name 'SymEnumSymbols';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymGetTypeInfo: Pointer;
 
@@ -4492,16 +4073,12 @@ function SymGetTypeInfo;
 begin
   GetProcedureAddress(_SymGetTypeInfo, ImageHlpLib, 'SymGetTypeInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymGetTypeInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymGetTypeInfo]
   end;
 end;
-{$ELSE}
-function SymGetTypeInfo; external ImageHlpLib name 'SymGetTypeInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymEnumTypes: Pointer;
 
@@ -4509,16 +4086,12 @@ function SymEnumTypes;
 begin
   GetProcedureAddress(_SymEnumTypes, ImageHlpLib, 'SymEnumTypes');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymEnumTypes]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymEnumTypes]
   end;
 end;
-{$ELSE}
-function SymEnumTypes; external ImageHlpLib name 'SymEnumTypes';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymGetTypeFromName: Pointer;
 
@@ -4526,16 +4099,12 @@ function SymGetTypeFromName;
 begin
   GetProcedureAddress(_SymGetTypeFromName, ImageHlpLib, 'SymGetTypeFromName');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymGetTypeFromName]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymGetTypeFromName]
   end;
 end;
-{$ELSE}
-function SymGetTypeFromName; external ImageHlpLib name 'SymGetTypeFromName';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymAddSymbol: Pointer;
 
@@ -4543,16 +4112,12 @@ function SymAddSymbol;
 begin
   GetProcedureAddress(_SymAddSymbol, ImageHlpLib, 'SymAddSymbol');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymAddSymbol]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymAddSymbol]
   end;
 end;
-{$ELSE}
-function SymAddSymbol; external ImageHlpLib name 'SymAddSymbol';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymDeleteSymbol: Pointer;
 
@@ -4560,16 +4125,12 @@ function SymDeleteSymbol;
 begin
   GetProcedureAddress(_SymDeleteSymbol, ImageHlpLib, 'SymDeleteSymbol');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymDeleteSymbol]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymDeleteSymbol]
   end;
 end;
-{$ELSE}
-function SymDeleteSymbol; external ImageHlpLib name 'SymDeleteSymbol';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DbgHelpCreateUserDump: Pointer;
 
@@ -4577,16 +4138,12 @@ function DbgHelpCreateUserDump;
 begin
   GetProcedureAddress(_DbgHelpCreateUserDump, ImageHlpLib, 'DbgHelpCreateUserDump');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DbgHelpCreateUserDump]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DbgHelpCreateUserDump]
   end;
 end;
-{$ELSE}
-function DbgHelpCreateUserDump; external ImageHlpLib name 'DbgHelpCreateUserDump';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DbgHelpCreateUserDumpW: Pointer;
 
@@ -4594,16 +4151,12 @@ function DbgHelpCreateUserDumpW;
 begin
   GetProcedureAddress(_DbgHelpCreateUserDumpW, ImageHlpLib, 'DbgHelpCreateUserDumpW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DbgHelpCreateUserDumpW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DbgHelpCreateUserDumpW]
   end;
 end;
-{$ELSE}
-function DbgHelpCreateUserDumpW; external ImageHlpLib name 'DbgHelpCreateUserDumpW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymGetSymFromAddr64: Pointer;
 
@@ -4611,16 +4164,12 @@ function SymGetSymFromAddr64;
 begin
   GetProcedureAddress(_SymGetSymFromAddr64, ImageHlpLib, 'SymGetSymFromAddr64');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymGetSymFromAddr64]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymGetSymFromAddr64]
   end;
 end;
-{$ELSE}
-function SymGetSymFromAddr64; external ImageHlpLib name 'SymGetSymFromAddr64';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymGetSymFromAddr: Pointer;
 
@@ -4628,16 +4177,12 @@ function SymGetSymFromAddr;
 begin
   GetProcedureAddress(_SymGetSymFromAddr, ImageHlpLib, 'SymGetSymFromAddr');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymGetSymFromAddr]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymGetSymFromAddr]
   end;
 end;
-{$ELSE}
-function SymGetSymFromAddr; external ImageHlpLib name 'SymGetSymFromAddr';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymGetSymFromName64: Pointer;
 
@@ -4645,16 +4190,12 @@ function SymGetSymFromName64;
 begin
   GetProcedureAddress(_SymGetSymFromName64, ImageHlpLib, 'SymGetSymFromName64');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymGetSymFromName64]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymGetSymFromName64]
   end;
 end;
-{$ELSE}
-function SymGetSymFromName64; external ImageHlpLib name 'SymGetSymFromName64';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymGetSymFromName: Pointer;
 
@@ -4662,16 +4203,12 @@ function SymGetSymFromName;
 begin
   GetProcedureAddress(_SymGetSymFromName, ImageHlpLib, 'SymGetSymFromName');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymGetSymFromName]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymGetSymFromName]
   end;
 end;
-{$ELSE}
-function SymGetSymFromName; external ImageHlpLib name 'SymGetSymFromName';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _FindFileInPath: Pointer;
 
@@ -4679,16 +4216,12 @@ function FindFileInPath;
 begin
   GetProcedureAddress(_FindFileInPath, ImageHlpLib, 'FindFileInPath');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FindFileInPath]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_FindFileInPath]
   end;
 end;
-{$ELSE}
-function FindFileInPath; external ImageHlpLib name 'FindFileInPath';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _FindFileInSearchPath: Pointer;
 
@@ -4696,16 +4229,12 @@ function FindFileInSearchPath;
 begin
   GetProcedureAddress(_FindFileInSearchPath, ImageHlpLib, 'FindFileInSearchPath');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FindFileInSearchPath]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_FindFileInSearchPath]
   end;
 end;
-{$ELSE}
-function FindFileInSearchPath; external ImageHlpLib name 'FindFileInSearchPath';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SymEnumSym: Pointer;
 
@@ -4713,22 +4242,12 @@ function SymEnumSym;
 begin
   GetProcedureAddress(_SymEnumSym, ImageHlpLib, 'SymEnumSym');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SymEnumSym]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SymEnumSym]
   end;
 end;
-{$ELSE}
-function SymEnumSym; external ImageHlpLib name 'SymEnumSym';
-{$ENDIF DYNAMIC_LINK}
 
-function RVA_TO_ADDR(Mapping, Rva: Pointer): Pointer;
-begin
-  Result := Pointer(Cardinal(Mapping) + Cardinal(Rva));
-end;
-
-
-{$IFDEF DYNAMIC_LINK}
 var
   _MiniDumpWriteDump: Pointer;
 
@@ -4736,16 +4255,12 @@ function MiniDumpWriteDump;
 begin
   GetProcedureAddress(_MiniDumpWriteDump, ImageHlpLib, 'MiniDumpWriteDump');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MiniDumpWriteDump]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MiniDumpWriteDump]
   end;
 end;
-{$ELSE}
-function MiniDumpWriteDump; external ImageHlpLib name 'MiniDumpWriteDump';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MiniDumpReadDumpStream: Pointer;
 
@@ -4753,16 +4268,130 @@ function MiniDumpReadDumpStream;
 begin
   GetProcedureAddress(_MiniDumpReadDumpStream, ImageHlpLib, 'MiniDumpReadDumpStream');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MiniDumpReadDumpStream]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MiniDumpReadDumpStream]
   end;
 end;
+
 {$ELSE}
+
+function BindImage; external ImageHlpLib name 'BindImage';
+function BindImageEx; external ImageHlpLib name 'BindImageEx';
+function ReBaseImage; external ImageHlpLib name 'ReBaseImage';
+function ReBaseImage64; external ImageHlpLib name 'ReBaseImage64';
+function CheckSumMappedFile; external ImageHlpLib name 'CheckSumMappedFile';
+function MapFileAndCheckSumA; external ImageHlpLib name 'MapFileAndCheckSumA';
+function MapFileAndCheckSumW; external ImageHlpLib name 'MapFileAndCheckSumW';
+function MapFileAndCheckSum; external ImageHlpLib name 'MapFileAndCheckSum' + AWSuffix;
+function GetImageConfigInformation; external ImageHlpLib name 'GetImageConfigInformation';
+function GetImageUnusedHeaderBytes; external ImageHlpLib name 'GetImageUnusedHeaderBytes';
+function SetImageConfigInformation; external ImageHlpLib name 'SetImageConfigInformation';
+function ImageGetDigestStream; external ImageHlpLib name 'ImageGetDigestStream';
+function ImageAddCertificate; external ImageHlpLib name 'ImageAddCertificate';
+function ImageRemoveCertificate; external ImageHlpLib name 'ImageRemoveCertificate';
+function ImageEnumerateCertificates; external ImageHlpLib name 'ImageEnumerateCertificates';
+function ImageGetCertificateData; external ImageHlpLib name 'ImageGetCertificateData';
+function ImageGetCertificateHeader; external ImageHlpLib name 'ImageGetCertificateHeader';
+function ImageLoad; external ImageHlpLib name 'ImageLoad';
+function ImageUnload; external ImageHlpLib name 'ImageUnload';
+function MapAndLoad; external ImageHlpLib name 'MapAndLoad';
+function UnMapAndLoad; external ImageHlpLib name 'UnMapAndLoad';
+function TouchFileTimes; external ImageHlpLib name 'TouchFileTimes';
+function SplitSymbols; external ImageHlpLib name 'SplitSymbols';
+function UpdateDebugInfoFile; external ImageHlpLib name 'UpdateDebugInfoFile';
+function UpdateDebugInfoFileEx; external ImageHlpLib name 'UpdateDebugInfoFileEx';
+function FindDebugInfoFile; external ImageHlpLib name 'FindDebugInfoFile';
+function FindDebugInfoFileEx; external ImageHlpLib name 'FindDebugInfoFileEx';
+function SymFindFileInPath; external ImageHlpLib name 'SymFindFileInPath';
+function FindExecutableImage; external ImageHlpLib name 'FindExecutableImage';
+function FindExecutableImageEx; external ImageHlpLib name 'FindExecutableImageEx';
+function ImageNtHeader; external ImageHlpLib name 'ImageNtHeader';
+function ImageDirectoryEntryToDataEx; external ImageHlpLib name 'ImageDirectoryEntryToDataEx';
+function ImageDirectoryEntryToData; external ImageHlpLib name 'ImageDirectoryEntryToData';
+function ImageRvaToSection; external ImageHlpLib name 'ImageRvaToSection';
+function ImageRvaToVa; external ImageHlpLib name 'ImageRvaToVa';
+function MapDebugInformation; external ImageHlpLib name 'MapDebugInformation';
+function UnmapDebugInformation; external ImageHlpLib name 'UnmapDebugInformation';
+function SearchTreeForFile; external ImageHlpLib name 'SearchTreeForFile';
+function EnumDirTree; external ImageHlpLib name 'EnumDirTree';
+function MakeSureDirectoryPathExists; external ImageHlpLib name 'MakeSureDirectoryPathExists';
+function UnDecorateSymbolName; external ImageHlpLib name 'UnDecorateSymbolName';
+function StackWalk64; external ImageHlpLib name 'StackWalk64';
+function StackWalk; external ImageHlpLib name 'StackWalk';
+function ImagehlpApiVersion; external ImageHlpLib name 'ImagehlpApiVersion';
+function ImagehlpApiVersionEx; external ImageHlpLib name 'ImagehlpApiVersionEx';
+function GetTimestampForLoadedLibrary; external ImageHlpLib name 'GetTimestampForLoadedLibrary';
+function SymSetOptions; external ImageHlpLib name 'SymSetOptions';
+function SymGetOptions; external ImageHlpLib name 'SymGetOptions';
+function SymCleanup; external ImageHlpLib name 'SymCleanup';
+function SymMatchString; external ImageHlpLib name 'SymMatchString';
+function SymEnumSourceFiles; external ImageHlpLib name 'SymEnumSourceFiles';
+function SymEnumerateModules64; external ImageHlpLib name 'SymEnumerateModules64';
+function SymEnumerateModules; external ImageHlpLib name 'SymEnumerateModules';
+function SymEnumerateSymbols64; external ImageHlpLib name 'SymEnumerateSymbols64';
+function SymEnumerateSymbolsW64; external ImageHlpLib name 'SymEnumerateSymbolsW64';
+function SymEnumerateSymbols; external ImageHlpLib name 'SymEnumerateSymbols';
+function SymEnumerateSymbolsW; external ImageHlpLib name 'SymEnumerateSymbolsW';
+function EnumerateLoadedModules64; external ImageHlpLib name 'EnumerateLoadedModules64';
+function EnumerateLoadedModules; external ImageHlpLib name 'EnumerateLoadedModules';
+function SymFunctionTableAccess64; external ImageHlpLib name 'SymFunctionTableAccess64';
+function SymFunctionTableAccess; external ImageHlpLib name 'SymFunctionTableAccess';
+function SymGetModuleInfo64; external ImageHlpLib name 'SymGetModuleInfo64';
+function SymGetModuleInfoW64; external ImageHlpLib name 'SymGetModuleInfoW64';
+function SymGetModuleInfo; external ImageHlpLib name 'SymGetModuleInfo';
+function SymGetModuleInfoW; external ImageHlpLib name 'SymGetModuleInfoW';
+function SymGetModuleBase64; external ImageHlpLib name 'SymGetModuleBase64';
+function SymGetModuleBase; external ImageHlpLib name 'SymGetModuleBase';
+function SymGetSymNext64; external ImageHlpLib name 'SymGetSymNext64';
+function SymGetSymNext; external ImageHlpLib name 'SymGetSymNext';
+function SymGetSymPrev64; external ImageHlpLib name 'SymGetSymPrev64';
+function SymGetSymPrev; external ImageHlpLib name 'SymGetSymPrev';
+function SymGetLineFromAddr64; external ImageHlpLib name 'SymGetLineFromAddr64';
+function SymGetLineFromAddr; external ImageHlpLib name 'SymGetLineFromAddr';
+function SymGetLineFromName64; external ImageHlpLib name 'SymGetLineFromName64';
+function SymGetLineFromName; external ImageHlpLib name 'SymGetLineFromName';
+function SymGetLineNext64; external ImageHlpLib name 'SymGetLineNext64';
+function SymGetLineNext; external ImageHlpLib name 'SymGetLineNext';
+function SymGetLinePrev64; external ImageHlpLib name 'SymGetLinePrev64';
+function SymGetLinePrev; external ImageHlpLib name 'SymGetLinePrev';
+function SymMatchFileName; external ImageHlpLib name 'SymMatchFileName';
+function SymInitialize; external ImageHlpLib name 'SymInitialize';
+function SymGetSearchPath; external ImageHlpLib name 'SymGetSearchPath';
+function SymSetSearchPath; external ImageHlpLib name 'SymSetSearchPath';
+function SymLoadModuleEx; external ImageHlpLib name 'SymLoadModuleEx';
+function SymLoadModule64; external ImageHlpLib name 'SymLoadModule64';
+function SymLoadModule; external ImageHlpLib name 'SymLoadModule';
+function SymUnloadModule64; external ImageHlpLib name 'SymUnloadModule64';
+function SymUnloadModule; external ImageHlpLib name 'SymUnloadModule';
+function SymUnDName64; external ImageHlpLib name 'SymUnDName64';
+function SymUnDName; external ImageHlpLib name 'SymUnDName';
+function SymRegisterCallback64; external ImageHlpLib name 'SymRegisterCallback64';
+function SymRegisterFunctionEntryCallback64; external ImageHlpLib name 'SymRegisterFunctionEntryCallback64';
+function SymRegisterCallback; external ImageHlpLib name 'SymRegisterCallback';
+function SymRegisterFunctionEntryCallback; external ImageHlpLib name 'SymRegisterFunctionEntryCallback';
+function SymSetContext; external ImageHlpLib name 'SymSetContext';
+function SymFromAddr; external ImageHlpLib name 'SymFromAddr';
+function SymFromName; external ImageHlpLib name 'SymFromName';
+function SymEnumSymbolsForAddr; external ImageHlpLib name 'SymEnumSymbolsForAddr';
+function SymEnumSymbols; external ImageHlpLib name 'SymEnumSymbols';
+function SymGetTypeInfo; external ImageHlpLib name 'SymGetTypeInfo';
+function SymEnumTypes; external ImageHlpLib name 'SymEnumTypes';
+function SymGetTypeFromName; external ImageHlpLib name 'SymGetTypeFromName';
+function SymAddSymbol; external ImageHlpLib name 'SymAddSymbol';
+function SymDeleteSymbol; external ImageHlpLib name 'SymDeleteSymbol';
+function DbgHelpCreateUserDump; external ImageHlpLib name 'DbgHelpCreateUserDump';
+function DbgHelpCreateUserDumpW; external ImageHlpLib name 'DbgHelpCreateUserDumpW';
+function SymGetSymFromAddr64; external ImageHlpLib name 'SymGetSymFromAddr64';
+function SymGetSymFromAddr; external ImageHlpLib name 'SymGetSymFromAddr';
+function SymGetSymFromName64; external ImageHlpLib name 'SymGetSymFromName64';
+function SymGetSymFromName; external ImageHlpLib name 'SymGetSymFromName';
+function FindFileInPath; external ImageHlpLib name 'FindFileInPath';
+function FindFileInSearchPath; external ImageHlpLib name 'FindFileInSearchPath';
+function SymEnumSym; external ImageHlpLib name 'SymEnumSym';
+function MiniDumpWriteDump; external ImageHlpLib name 'MiniDumpWriteDump';
 function MiniDumpReadDumpStream; external ImageHlpLib name 'MiniDumpReadDumpStream';
+
 {$ENDIF DYNAMIC_LINK}
 
 end.
-
-
-

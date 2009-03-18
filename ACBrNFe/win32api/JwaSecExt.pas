@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { SSPI Context Management API interface Unit for Object Pascal                 }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: secext.h, released August 2001. The original Pascal    }
 { code is: SecExt.pas, released December 2000. The initial developer of the    }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaSecExt.pas,v 1.9 2005/09/06 16:36:50 marquardt Exp $
 
 unit JwaSecExt;
 
@@ -49,12 +50,12 @@ unit JwaSecExt;
 {$HPPEMIT '#include "secext.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaSSPI, JwaWinType;
+  JwaSSPI, JwaWindows;
 
 //
 // Extended Name APIs for ADS
@@ -151,16 +152,9 @@ function GetUserNameExA(NameFormat: EXTENDED_NAME_FORMAT; lpNameBuffer: LPSTR;
 function GetUserNameExW(NameFormat: EXTENDED_NAME_FORMAT; lpNameBuffer: LPWSTR;
   var nSize: ULONG): ByteBool; stdcall;
 {$EXTERNALSYM GetUserNameExW}
-
-{$IFDEF UNICODE}
-function GetUserNameEx(NameFormat: EXTENDED_NAME_FORMAT; lpNameBuffer: LPWSTR;
+function GetUserNameEx(NameFormat: EXTENDED_NAME_FORMAT; lpNameBuffer: LPTSTR;
   var nSize: ULONG): ByteBool; stdcall;
 {$EXTERNALSYM GetUserNameEx}
-{$ELSE}
-function GetUserNameEx(NameFormat: EXTENDED_NAME_FORMAT; lpNameBuffer: LPSTR;
-  var nSize: ULONG): ByteBool; stdcall;
-{$EXTERNALSYM GetUserNameEx}
-{$ENDIF}
 
 function GetComputerObjectNameA(NameFormat: EXTENDED_NAME_FORMAT;
   lpNameBuffer: LPSTR; var nSize: ULONG): ByteBool; stdcall;
@@ -168,16 +162,9 @@ function GetComputerObjectNameA(NameFormat: EXTENDED_NAME_FORMAT;
 function GetComputerObjectNameW(NameFormat: EXTENDED_NAME_FORMAT;
   lpNameBuffer: LPWSTR; var nSize: ULONG): ByteBool; stdcall;
 {$EXTERNALSYM GetComputerObjectNameW}
-
-{$IFDEF UNICODE}
 function GetComputerObjectName(NameFormat: EXTENDED_NAME_FORMAT;
-  lpNameBuffer: LPWSTR; var nSize: ULONG): ByteBool; stdcall;
+  lpNameBuffer: LPTSTR; var nSize: ULONG): ByteBool; stdcall;
 {$EXTERNALSYM GetComputerObjectName}
-{$ELSE}
-function GetComputerObjectName(NameFormat: EXTENDED_NAME_FORMAT;
-  lpNameBuffer: LPSTR; var nSize: ULONG): ByteBool; stdcall;
-{$EXTERNALSYM GetComputerObjectName}
-{$ENDIF}
 
 function TranslateNameA(lpAccountName: LPCSTR; AccountNameFormat,
   DesiredNameFormat: EXTENDED_NAME_FORMAT; lpTranslatedName: LPSTR;
@@ -187,26 +174,18 @@ function TranslateNameW(lpAccountName: LPCWSTR; AccountNameFormat,
   DesiredNameFormat: EXTENDED_NAME_FORMAT; lpTranslatedName: LPWSTR;
   var nSize: ULONG): ByteBool; stdcall;
 {$EXTERNALSYM TranslateNameW}
-
-{$IFDEF UNICODE}
-function TranslateName(lpAccountName: LPCWSTR; AccountNameFormat,
-  DesiredNameFormat: EXTENDED_NAME_FORMAT; lpTranslatedName: LPWSTR;
+function TranslateName(lpAccountName: LPCTSTR; AccountNameFormat,
+  DesiredNameFormat: EXTENDED_NAME_FORMAT; lpTranslatedName: LPTSTR;
   var nSize: ULONG): ByteBool; stdcall;
 {$EXTERNALSYM TranslateName}
-{$ELSE}
-function TranslateName(lpAccountName: LPCSTR; AccountNameFormat,
-  DesiredNameFormat: EXTENDED_NAME_FORMAT; lpTranslatedName: LPSTR;
-  var nSize: ULONG): ByteBool; stdcall;
-{$EXTERNALSYM TranslateName}
-{$ENDIF}
 
 implementation
 
-const
-  secur32 = 'secur32.dll';
-
+uses
+  JwaWinDLLNames;
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _GetUserNameExA: Pointer;
 
@@ -214,16 +193,12 @@ function GetUserNameExA;
 begin
   GetProcedureAddress(_GetUserNameExA, secur32, 'GetUserNameExA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetUserNameExA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetUserNameExA]
   end;
 end;
-{$ELSE}
-function GetUserNameExA; external secur32 name 'GetUserNameExA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetUserNameExW: Pointer;
 
@@ -231,53 +206,25 @@ function GetUserNameExW;
 begin
   GetProcedureAddress(_GetUserNameExW, secur32, 'GetUserNameExW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetUserNameExW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetUserNameExW]
   end;
 end;
-{$ELSE}
-function GetUserNameExW; external secur32 name 'GetUserNameExW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetUserNameEx: Pointer;
 
 function GetUserNameEx;
 begin
-  GetProcedureAddress(_GetUserNameEx, secur32, 'GetUserNameExW');
+  GetProcedureAddress(_GetUserNameEx, secur32, 'GetUserNameEx' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetUserNameEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetUserNameEx]
   end;
 end;
-{$ELSE}
-function GetUserNameEx; external secur32 name 'GetUserNameExW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetUserNameEx: Pointer;
-
-function GetUserNameEx;
-begin
-  GetProcedureAddress(_GetUserNameEx, secur32, 'GetUserNameExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetUserNameEx]
-  end;
-end;
-{$ELSE}
-function GetUserNameEx; external secur32 name 'GetUserNameExA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetComputerObjectNameA: Pointer;
 
@@ -285,16 +232,12 @@ function GetComputerObjectNameA;
 begin
   GetProcedureAddress(_GetComputerObjectNameA, secur32, 'GetComputerObjectNameA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetComputerObjectNameA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetComputerObjectNameA]
   end;
 end;
-{$ELSE}
-function GetComputerObjectNameA; external secur32 name 'GetComputerObjectNameA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetComputerObjectNameW: Pointer;
 
@@ -302,53 +245,25 @@ function GetComputerObjectNameW;
 begin
   GetProcedureAddress(_GetComputerObjectNameW, secur32, 'GetComputerObjectNameW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetComputerObjectNameW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetComputerObjectNameW]
   end;
 end;
-{$ELSE}
-function GetComputerObjectNameW; external secur32 name 'GetComputerObjectNameW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetComputerObjectName: Pointer;
 
 function GetComputerObjectName;
 begin
-  GetProcedureAddress(_GetComputerObjectName, secur32, 'GetComputerObjectNameW');
+  GetProcedureAddress(_GetComputerObjectName, secur32, 'GetComputerObjectName' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetComputerObjectName]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetComputerObjectName]
   end;
 end;
-{$ELSE}
-function GetComputerObjectName; external secur32 name 'GetComputerObjectNameW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetComputerObjectName: Pointer;
-
-function GetComputerObjectName;
-begin
-  GetProcedureAddress(_GetComputerObjectName, secur32, 'GetComputerObjectNameA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetComputerObjectName]
-  end;
-end;
-{$ELSE}
-function GetComputerObjectName; external secur32 name 'GetComputerObjectNameA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _TranslateNameA: Pointer;
 
@@ -356,16 +271,12 @@ function TranslateNameA;
 begin
   GetProcedureAddress(_TranslateNameA, secur32, 'TranslateNameA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TranslateNameA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TranslateNameA]
   end;
 end;
-{$ELSE}
-function TranslateNameA; external secur32 name 'TranslateNameA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _TranslateNameW: Pointer;
 
@@ -373,50 +284,37 @@ function TranslateNameW;
 begin
   GetProcedureAddress(_TranslateNameW, secur32, 'TranslateNameW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TranslateNameW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TranslateNameW]
   end;
 end;
+
+var
+  _TranslateName: Pointer;
+
+function TranslateName;
+begin
+  GetProcedureAddress(_TranslateName, secur32, 'TranslateName' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TranslateName]
+  end;
+end;
+
 {$ELSE}
+
+function GetUserNameExA; external secur32 name 'GetUserNameExA';
+function GetUserNameExW; external secur32 name 'GetUserNameExW';
+function GetUserNameEx; external secur32 name 'GetUserNameEx' + AWSuffix;
+function GetComputerObjectNameA; external secur32 name 'GetComputerObjectNameA';
+function GetComputerObjectNameW; external secur32 name 'GetComputerObjectNameW';
+function GetComputerObjectName; external secur32 name 'GetComputerObjectName' + AWSuffix;
+function TranslateNameA; external secur32 name 'TranslateNameA';
 function TranslateNameW; external secur32 name 'TranslateNameW';
+function TranslateName; external secur32 name 'TranslateName' + AWSuffix;
+
 {$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _TranslateName: Pointer;
-
-function TranslateName;
-begin
-  GetProcedureAddress(_TranslateName, secur32, 'TranslateNameW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TranslateName]
-  end;
-end;
-{$ELSE}
-function TranslateName; external secur32 name 'TranslateNameW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _TranslateName: Pointer;
-
-function TranslateName;
-begin
-  GetProcedureAddress(_TranslateName, secur32, 'TranslateNameA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TranslateName]
-  end;
-end;
-{$ELSE}
-function TranslateName; external secur32 name 'TranslateNameA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
 
 end.

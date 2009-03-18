@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Directory Services API interface Unit for Object Pascal                      }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: dsrole.h, released June 2000. The original Pascal      }
 { code is: DsRole.pas, released December 2000. The initial developer of the    }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaDSRole.pas,v 1.8 2005/09/06 16:36:50 marquardt Exp $
 
 unit JwaDSRole;
 
@@ -49,12 +50,12 @@ unit JwaDSRole;
 {$HPPEMIT '#include "dsrole.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinType;
+  JwaWindows;
 
 //
 // Domain information
@@ -174,11 +175,11 @@ procedure DsRoleFreeMemory(Buffer: PVOID); stdcall;
 
 implementation
 
-const
-  netapi32 = 'netapi32.dll';
-
+uses
+  JwaWinDLLNames;
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _DsRoleGetPrimaryDomainInfo: Pointer;
 
@@ -186,16 +187,12 @@ function DsRoleGetPrimaryDomainInformation;
 begin
   GetProcedureAddress(_DsRoleGetPrimaryDomainInfo, netapi32, 'DsRoleGetPrimaryDomainInformation');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsRoleGetPrimaryDomainInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsRoleGetPrimaryDomainInfo]
   end;
 end;
-{$ELSE}
-function DsRoleGetPrimaryDomainInformation; external netapi32 name 'DsRoleGetPrimaryDomainInformation';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsRoleFreeMemory: Pointer;
 
@@ -203,13 +200,17 @@ procedure DsRoleFreeMemory;
 begin
   GetProcedureAddress(_DsRoleFreeMemory, netapi32, 'DsRoleFreeMemory');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsRoleFreeMemory]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsRoleFreeMemory]
   end;
 end;
+
 {$ELSE}
+
+function DsRoleGetPrimaryDomainInformation; external netapi32 name 'DsRoleGetPrimaryDomainInformation';
 procedure DsRoleFreeMemory; external netapi32 name 'DsRoleFreeMemory';
+
 {$ENDIF DYNAMIC_LINK}
 
 end.

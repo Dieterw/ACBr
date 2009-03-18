@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Lan Manager Workstation API interface Unit for Object Pascal                 }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: lmwksta.h, released November 2001. The original Pascal }
 { code is: LmWkSta.pas, released Februari 2002. The initial developer of the   }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,25 +35,33 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaLmWkSta.pas,v 1.9 2005/09/07 09:54:54 marquardt Exp $
+
+{$IFNDEF JWA_INCLUDEMODE}
 
 unit JwaLmWkSta;
 
 {$WEAKPACKAGEUNIT}
 
-{$HPPEMIT ''}
-{$HPPEMIT '#include "lmwksta.h"'}
-{$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaLmCons, JwaWinType;
+  JwaWindows, JwaLmCons;
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_INTERFACESECTION}
+
+{$HPPEMIT ''}
+{$HPPEMIT '#include "lmwksta.h"'}
+{$HPPEMIT ''}
 
 //
 // Function Prototypes
@@ -291,7 +298,6 @@ type
   {$EXTERNALSYM WKSTA_INFO_502}
   TWkstaInfo502 = WKSTA_INFO_502;
   PWkstaInfo502 = PWKSTA_INFO_502;
-
 
 //
 // The following info-levels are only valid for NetWkstaSetInfo
@@ -951,10 +957,21 @@ const
   TRANSPORT_NAME_PARMNUM             = 202;
   {$EXTERNALSYM TRANSPORT_NAME_PARMNUM}
 
+{$ENDIF JWA_INTERFACESECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
+
 implementation
 
+uses
+  JwaWinDLLNames;
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_IMPLEMENTATIONSECTION}
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _NetWkstaGetInfo: Pointer;
 
@@ -962,16 +979,12 @@ function NetWkstaGetInfo;
 begin
   GetProcedureAddress(_NetWkstaGetInfo, netapi32, 'NetWkstaGetInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetWkstaGetInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetWkstaGetInfo]
   end;
 end;
-{$ELSE}
-function NetWkstaGetInfo; external netapi32 name 'NetWkstaGetInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetWkstaSetInfo: Pointer;
 
@@ -979,16 +992,12 @@ function NetWkstaSetInfo;
 begin
   GetProcedureAddress(_NetWkstaSetInfo, netapi32, 'NetWkstaSetInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetWkstaSetInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetWkstaSetInfo]
   end;
 end;
-{$ELSE}
-function NetWkstaSetInfo; external netapi32 name 'NetWkstaSetInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetWkstaUserGetInfo: Pointer;
 
@@ -996,16 +1005,12 @@ function NetWkstaUserGetInfo;
 begin
   GetProcedureAddress(_NetWkstaUserGetInfo, netapi32, 'NetWkstaUserGetInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetWkstaUserGetInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetWkstaUserGetInfo]
   end;
 end;
-{$ELSE}
-function NetWkstaUserGetInfo; external netapi32 name 'NetWkstaUserGetInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetWkstaUserSetInfo: Pointer;
 
@@ -1013,16 +1018,12 @@ function NetWkstaUserSetInfo;
 begin
   GetProcedureAddress(_NetWkstaUserSetInfo, netapi32, 'NetWkstaUserSetInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetWkstaUserSetInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetWkstaUserSetInfo]
   end;
 end;
-{$ELSE}
-function NetWkstaUserSetInfo; external netapi32 name 'NetWkstaUserSetInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetWkstaUserEnum: Pointer;
 
@@ -1030,16 +1031,12 @@ function NetWkstaUserEnum;
 begin
   GetProcedureAddress(_NetWkstaUserEnum, netapi32, 'NetWkstaUserEnum');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetWkstaUserEnum]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetWkstaUserEnum]
   end;
 end;
-{$ELSE}
-function NetWkstaUserEnum; external netapi32 name 'NetWkstaUserEnum';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetWkstaTransportAdd: Pointer;
 
@@ -1047,16 +1044,12 @@ function NetWkstaTransportAdd;
 begin
   GetProcedureAddress(_NetWkstaTransportAdd, netapi32, 'NetWkstaTransportAdd');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetWkstaTransportAdd]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetWkstaTransportAdd]
   end;
 end;
-{$ELSE}
-function NetWkstaTransportAdd; external netapi32 name 'NetWkstaTransportAdd';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetWkstaTransportDel: Pointer;
 
@@ -1064,16 +1057,12 @@ function NetWkstaTransportDel;
 begin
   GetProcedureAddress(_NetWkstaTransportDel, netapi32, 'NetWkstaTransportDel');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetWkstaTransportDel]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetWkstaTransportDel]
   end;
 end;
-{$ELSE}
-function NetWkstaTransportDel; external netapi32 name 'NetWkstaTransportDel';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetWkstaTransportEnum: Pointer;
 
@@ -1081,13 +1070,27 @@ function NetWkstaTransportEnum;
 begin
   GetProcedureAddress(_NetWkstaTransportEnum, netapi32, 'NetWkstaTransportEnum');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetWkstaTransportEnum]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetWkstaTransportEnum]
   end;
 end;
+
 {$ELSE}
+
+function NetWkstaGetInfo; external netapi32 name 'NetWkstaGetInfo';
+function NetWkstaSetInfo; external netapi32 name 'NetWkstaSetInfo';
+function NetWkstaUserGetInfo; external netapi32 name 'NetWkstaUserGetInfo';
+function NetWkstaUserSetInfo; external netapi32 name 'NetWkstaUserSetInfo';
+function NetWkstaUserEnum; external netapi32 name 'NetWkstaUserEnum';
+function NetWkstaTransportAdd; external netapi32 name 'NetWkstaTransportAdd';
+function NetWkstaTransportDel; external netapi32 name 'NetWkstaTransportDel';
 function NetWkstaTransportEnum; external netapi32 name 'NetWkstaTransportEnum';
+
 {$ENDIF DYNAMIC_LINK}
 
+{$ENDIF JWA_IMPLEMENTATIONSECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
 end.
+{$ENDIF !JWA_INCLUDEMODE}

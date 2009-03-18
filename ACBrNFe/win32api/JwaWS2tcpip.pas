@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Winsock2 TCP/IP Extensions API interface Unit for Object Pascal              }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: ws2tcpip.h, released June 2000. The original Pascal    }
 { code is: WS2tcpip.pas, released December 2000. The initial developer of the  }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaWS2tcpip.pas,v 1.10 2005/09/08 07:49:25 marquardt Exp $
 
 unit JwaWS2tcpip;
 
@@ -49,37 +50,37 @@ unit JwaWS2tcpip;
 {$HPPEMIT '#include "ws2tcpip.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinSock2, JwaWinType;
+  JwaWinSock2, JwaWindows;
 
 //
-//	WS2TCPIP.H - WinSock2 Extension for TCP/IP protocols
+// WS2TCPIP.H - WinSock2 Extension for TCP/IP protocols
 //
-//	This file contains TCP/IP specific information for use
-//	by WinSock2 compatible applications.
+// This file contains TCP/IP specific information for use
+// by WinSock2 compatible applications.
 //
 // Copyright (c) 1995-1999  Microsoft Corporation
 //
-//	To provide the backward compatibility, all the TCP/IP
-//	specific definitions that were included in the WINSOCK.H
-//	 file are now included in WINSOCK2.H file. WS2TCPIP.H
-//	file includes only the definitions  introduced in the
-//	"WinSock 2 Protocol-Specific Annex" document.
+// To provide the backward compatibility, all the TCP/IP
+// specific definitions that were included in the WINSOCK.H
+// file are now included in WINSOCK2.H file. WS2TCPIP.H
+// file includes only the definitions  introduced in the
+// "WinSock 2 Protocol-Specific Annex" document.
 //
-//	Rev 0.3	Nov 13, 1995
-//      Rev 0.4	Dec 15, 1996
+// Rev 0.3 Nov 13, 1995
+// Rev 0.4 Dec 15, 1996
 //
 
 // Argument structure for IP_ADD_MEMBERSHIP and IP_DROP_MEMBERSHIP
 
 type
   ip_mreq = record
-    imr_multiaddr: in_addr;	// IP multicast address of group
-    imr_interface: in_addr;	// local IP address of interface
+    imr_multiaddr: in_addr;  // IP multicast address of group
+    imr_interface: in_addr;  // local IP address of interface
   end;
   {$EXTERNALSYM ip_mreq}
   TIPMReq = ip_mreq;
@@ -498,14 +499,8 @@ function gai_strerrorA(ecode: Integer): PChar;
 {$EXTERNALSYM gai_strerrorA}
 function gai_strerrorW(ecode: Integer): PWideChar;
 {$EXTERNALSYM gai_strerrorW}
-
-{$IFDEF UNICODE}
-function gai_strerror(ecode: Integer): PWideChar;
+function gai_strerror(ecode: Integer): PTCHAR;
 {$EXTERNALSYM gai_strerror}
-{$ELSE}
-function gai_strerror(ecode: Integer): PChar;
-{$EXTERNALSYM gai_strerror}
-{$ENDIF}
 
 type
   socklen_t = Integer;
@@ -540,9 +535,6 @@ const
 
 implementation
 
-uses
-  SysUtils, JwaWinBase, JwaWinNT;
-
 function IP_MSFILTER_SIZE(numsrc: Integer): Integer;
 begin
   Result := SizeOf(ip_msfilter) - SizeOf(in_addr) + (numsrc * SizeOf(in_addr));
@@ -560,7 +552,8 @@ begin
   x.sin6_family := AF_INET6;
   x.sin6_port := 0;
   x.sin6_flowinfo := 0;
-  for I := 0 to 15 do x.sin6_addr.s6_addr[I] := 0;
+  for I := 0 to 15 do
+    x.sin6_addr.s6_addr[I] := 0;
 end;
 
 procedure IN6ADDR_SETLOOPBACK(var x: TSockAddrIn6);
@@ -570,7 +563,8 @@ begin
   x.sin6_family := AF_INET6;
   x.sin6_port := 0;
   x.sin6_flowinfo := 0;
-  for I := 0 to 14 do x.sin6_addr.s6_addr[I] := 0;
+  for I := 0 to 14 do
+    x.sin6_addr.s6_addr[I] := 0;
   x.sin6_addr.s6_addr[15] := 1;
 end;
 
@@ -579,7 +573,8 @@ var
   I: Integer;
 begin
   Result := x.sin6_family = AF_INET6;
-  for I := 0 to 15 do Result := Result and (x.sin6_addr.s6_addr[I] = 0);
+  for I := 0 to 15 do
+    Result := Result and (x.sin6_addr.s6_addr[I] = 0);
 end;
 
 function IN6ADDR_ISLOOPBACK(const x: TSockAddrIn6): Boolean;
@@ -587,13 +582,18 @@ var
   I: Integer;
 begin
   Result := x.sin6_family = AF_INET6;
-  for I := 0 to 14 do Result := Result and (x.sin6_addr.s6_addr[I] = 0);
+  for I := 0 to 14 do
+    Result := Result and (x.sin6_addr.s6_addr[I] = 0);
   Result := Result and (x.sin6_addr.s6_addr[15] = 1);
 end;
 
 function IN6_ADDR_EQUAL(const a, b: in6_addr): Boolean;
+var
+  I: Integer;
 begin
-  Result := CompareMem(@a, @b, SizeOf(in6_addr));
+  Result := True;
+  for I := Low(a.Word) to High(a.Word) do
+    Result := (a.Word[I] = b.Word[I]) and Result;
 end;
 
 function IN6_IS_ADDR_UNSPECIFIED(const a: in6_addr): boolean;
@@ -666,66 +666,93 @@ begin
   Result := IN6_IS_ADDR_MULTICAST(a) and ((a.s6_bytes[1] and $f) = $e);
 end;
 
-const
-  ws2tcpip = 'ws2_32.dll';
-
-function getaddrinfo; external ws2tcpip name 'getaddrinfo';
-procedure freeaddrinfo; external ws2tcpip name 'freeaddrinfo';
+var
+  gai_strerror_buffA: array [0..GAI_STRERROR_BUFFER_SIZE-1] of Char;
+  gai_strerror_buffW: array [0..GAI_STRERROR_BUFFER_SIZE-1] of WideChar;
 
 function gai_strerrorA(ecode: Integer): PChar;
 var
   dwMsgLen: DWORD;
-  buff: array [0..GAI_STRERROR_BUFFER_SIZE] of Char;
 begin
   dwMsgLen := FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM or FORMAT_MESSAGE_IGNORE_INSERTS or FORMAT_MESSAGE_MAX_WIDTH_MASK,
-    nil, ecode, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), PChar(buff[0]), GAI_STRERROR_BUFFER_SIZE, nil);
+    nil, ecode, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), PChar(@gai_strerror_buffA[0]), GAI_STRERROR_BUFFER_SIZE, nil);
   if dwMsgLen = 0 then
     Result := nil
   else
-    Result := PChar(buff[0]);
+    Result := PChar(@gai_strerror_buffA[0]);
 end;
 
 function gai_strerrorW(ecode: Integer): PWideChar;
 var
   dwMsgLen: DWORD;
-  buff: array [0..GAI_STRERROR_BUFFER_SIZE] of WideChar;
 begin
   dwMsgLen := FormatMessageW(FORMAT_MESSAGE_FROM_SYSTEM or FORMAT_MESSAGE_IGNORE_INSERTS or FORMAT_MESSAGE_MAX_WIDTH_MASK,
-    nil, ecode, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), PWideChar(buff[0]), GAI_STRERROR_BUFFER_SIZE, nil);
+    nil, ecode, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), PWideChar(@gai_strerror_buffW[0]), GAI_STRERROR_BUFFER_SIZE, nil);
   if dwMsgLen = 0 then
     Result := nil
   else
-    Result := PWideChar(buff[0]);
+    Result := PWideChar(@gai_strerror_buffW[0]);
 end;
 
-{$IFDEF UNICODE}
-function gai_strerror(ecode: Integer): PWideChar;
-var
-  dwMsgLen: DWORD;
-  buff: array [0..GAI_STRERROR_BUFFER_SIZE] of WideChar;
+function gai_strerror(ecode: Integer): PTCHAR;
 begin
-  dwMsgLen := FormatMessageW(FORMAT_MESSAGE_FROM_SYSTEM or FORMAT_MESSAGE_IGNORE_INSERTS or FORMAT_MESSAGE_MAX_WIDTH_MASK,
-    nil, ecode, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), PWideChar(buff[0]), GAI_STRERROR_BUFFER_SIZE, nil);
-  if dwMsgLen = 0 then
-    Result := nil
-  else
-    Result := PWideChar(buff[0]);
+  {$IFDEF UNICODE}
+  Result := PTCHAR(gai_strerrorW(ecode));
+  {$ELSE}
+  Result := PTCHAR(gai_strerrorA(ecode));
+  {$ENDIF UNICODE}
 end;
+
+const
+  ws2tcpip = 'ws2_32.dll';
+
+{$IFDEF DYNAMIC_LINK}
+
+var
+  _getaddrinfo: Pointer;
+
+function getaddrinfo;
+begin
+  GetProcedureAddress(_getaddrinfo, ws2tcpip, 'getaddrinfo');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_getaddrinfo]
+  end;
+end;
+
+var
+  _freeaddrinfo: Pointer;
+
+procedure freeaddrinfo;
+begin
+  GetProcedureAddress(_freeaddrinfo, ws2tcpip, 'freeaddrinfo');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_freeaddrinfo]
+  end;
+end;
+
+var
+  _getnameinfo: Pointer;
+
+function getnameinfo;
+begin
+  GetProcedureAddress(_getnameinfo, ws2tcpip, 'getnameinfo');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_getnameinfo]
+  end;
+end;
+
 {$ELSE}
-function gai_strerror(ecode: Integer): PChar;
-var
-  dwMsgLen: DWORD;
-  buff: array [0..GAI_STRERROR_BUFFER_SIZE] of Char;
-begin
-  dwMsgLen := FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM or FORMAT_MESSAGE_IGNORE_INSERTS or FORMAT_MESSAGE_MAX_WIDTH_MASK,
-    nil, ecode, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), PChar(buff[0]), GAI_STRERROR_BUFFER_SIZE, nil);
-  if dwMsgLen = 0 then
-    Result := nil
-  else
-    Result := PChar(buff[0]);
-end;
-{$ENDIF}
 
+function getaddrinfo; external ws2tcpip name 'getaddrinfo';
+procedure freeaddrinfo; external ws2tcpip name 'freeaddrinfo';
 function getnameinfo; external ws2tcpip name 'getnameinfo';
+
+{$ENDIF DYNAMIC_LINK}
 
 end.

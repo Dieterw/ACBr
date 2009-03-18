@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Image Mastering API interface Unit for Object Pascal                         }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: imapi.h, released Aug 2002. The original Pascal        }
 { code is: Imapi.pas, released November 2002. The initial developer of the     }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,25 +35,27 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaImapi.pas,v 1.7 2005/09/03 13:12:10 marquardt Exp $
 
 unit JwaImapi;
 
 {$WEAKPACKAGEUNIT}
 
-{$HPPEMIT ''}
-{$HPPEMIT '#include "imapi.h"'}
-{$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinType, ActiveX{todo};
+  JwaActiveX, JwaWindows;
+
+{$HPPEMIT ''}
+{$HPPEMIT '#include "imapi.h"'}
+{$HPPEMIT ''}
 
 //
 // interface IDiscRecorder
@@ -118,7 +119,7 @@ const
   {$EXTERNALSYM IID_IDiscRecorder}
 
 type
-  IDiscRecorder = interface (IUnknown)
+  IDiscRecorder = interface(IUnknown)
   ['{85AC9776-CA88-4cf2-894E-09598C078A41}']
     function Init(pbyUniqueID: PByte; nulIDSize, nulDriveNumber: ULONG): HRESULT; stdcall;
     function GetRecorderGUID(pbyUniqueID: PByte; ulBufferSize: ULONG; out pulReturnSizeRequired: ULONG): HRESULT; stdcall;
@@ -131,7 +132,7 @@ type
     function GetRecorderState(out pulDevStateFlags: ULONG): HRESULT; stdcall;
     function OpenExclusive: HRESULT; stdcall;
     function QueryMediaType(out fMediaType, fMediaFlags: Longint): HRESULT; stdcall;
-    function QueryMediaInfo(out pbSessions, pbLastTrack: PByte; out ulStartAddress, ulNextWritable, ulFreeBlocks: ULONG): HRESULT; stdcall;
+    function QueryMediaInfo(out pbSessions, pbLastTrack: Byte; out ulStartAddress, ulNextWritable, ulFreeBlocks: ULONG): HRESULT; stdcall;
     function Eject: HRESULT; stdcall;
     function Erase(bFullErase: BOOL): HRESULT; stdcall;
     function Close: HRESULT; stdcall;
@@ -147,7 +148,7 @@ const
   {$EXTERNALSYM IID_IEnumDiscRecorders}
 
 type
-  IEnumDiscRecorders = interface (IUnknown)
+  IEnumDiscRecorders = interface(IUnknown)
   ['{9B1921E1-54AC-11d3-9144-00104BA11C5E}']
     function Next(cRecorders: ULONG; out ppRecorder: IDiscRecorder; out pcFetched: ULONG): HRESULT; stdcall;
     function Skip(cRecorders: ULONG): HRESULT; stdcall;
@@ -165,7 +166,7 @@ const
   {$EXTERNALSYM IID_IEnumDiscMasterFormats}
 
 type
-  IEnumDiscMasterFormats = interface (IUnknown)
+  IEnumDiscMasterFormats = interface(IUnknown)
   ['{DDF445E1-54BA-11d3-9144-00104BA11C5E}']
     function Next(cFormats: ULONG; out lpiidFormatID: TGUID; out pcFetched: ULONG): HRESULT; stdcall;
     function Skip(cFormats: ULONG): HRESULT; stdcall;
@@ -183,7 +184,7 @@ const
   {$EXTERNALSYM IID_IRedbookDiscMaster}
 
 type
-  IRedbookDiscMaster = interface (IUnknown)
+  IRedbookDiscMaster = interface(IUnknown)
   ['{E3BC42CD-4E5C-11D3-9144-00104BA11C5E}']
     function GetTotalAudioTracks(out pnTracks: Longint): HRESULT; stdcall;
     function GetTotalAudioBlocks(out pnBlocks: Longint): HRESULT; stdcall;
@@ -205,7 +206,7 @@ const
   {$EXTERNALSYM IID_IJolietDiscMaster}
 
 type
-  IJolietDiscMaster = interface (IUnknown)
+  IJolietDiscMaster = interface(IUnknown)
   ['{E3BC42CE-4E5C-11D3-9144-00104BA11C5E}']
     function GetTotalDataBlocks(out pnBlocks: Longint): HRESULT; stdcall;
     function GetUsedDataBlocks(out pnBlocks: Longint): HRESULT; stdcall;
@@ -225,7 +226,7 @@ const
   {$EXTERNALSYM IID_IDiscMasterProgressEvents}
 
 type
-  IDiscMasterProgressEvents = interface (IUnknown)
+  IDiscMasterProgressEvents = interface(IUnknown)
   ['{EC9E51C1-4E5D-11D3-9144-00104BA11C5E}']
     function QueryCancel(out pbCancel: BOOL): HRESULT; stdcall;
     function NotifyPnPActivity: HRESULT; stdcall;
@@ -248,7 +249,7 @@ const
   {$EXTERNALSYM IID_IDiscMaster}
 
 type
-  IDiscMaster = interface (IUnknown)
+  IDiscMaster = interface(IUnknown)
   ['{520CCA62-51A5-11D3-9144-00104BA11C5E}']
     function Open: HRESULT; stdcall;
     function EnumDiscMasterFormats(out ppEnum: IEnumDiscMasterFormats): HRESULT; stdcall;

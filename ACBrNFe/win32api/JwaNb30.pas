@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Portable Netbios 3.0 API interface Unit for Object Pascal                    }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: Nb30.h, released June 2000. The original Pascal        }
 { code is: JwaN30.pas, released December 2000. The initial developer of the    }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,25 +35,33 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaNb30.pas,v 1.10 2005/09/06 16:36:50 marquardt Exp $
+
+{$IFNDEF JWA_INCLUDEMODE}
 
 unit JwaNb30;
 
 {$WEAKPACKAGEUNIT}
 
-{$HPPEMIT ''}
-{$HPPEMIT '#include "Nb30.h"'}
-{$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
   JwaWinType;
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_INTERFACESECTION}
+
+{$HPPEMIT ''}
+{$HPPEMIT '#include "Nb30.h"'}
+{$HPPEMIT ''}
 
 (****************************************************************
  *                                                              *
@@ -75,7 +82,7 @@ const
 type
   PNCB = ^NCB;
 
-  TNcbPost = procedure (P: PNCB); stdcall;
+  TNcbPost = procedure(P: PNCB); stdcall;
 
   _NCB = record
     ncb_command: UCHAR;  // command code
@@ -95,7 +102,7 @@ type
     ncb_reserve: array [0..17] of Char; // reserved, used by BIOS
     {$ELSE}
     ncb_reserve: array [0..9] of Char;  // reserved, used by BIOS
-    {$ENDIF}
+    {$ENDIF _WIN64}
     ncb_event: HANDLE;   // HANDLE to Win32 event which
                          // will be set to the signalled
                          // state when an ASYNCH command
@@ -488,24 +495,42 @@ function Netbios(pncb: PNCB): UCHAR; stdcall;
 
 // #define NCB_POST void CALLBACK
 
+{$ENDIF JWA_INTERFACESECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
+
 implementation
 
+uses
+  JwaWinDLLNames;
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_IMPLEMENTATIONSECTION}
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _Netbios: Pointer;
 
 function Netbios;
 begin
-  GetProcedureAddress(_Netbios, 'netapi32.dll', 'Netbios');
+  GetProcedureAddress(_Netbios, netapi32, 'Netbios');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_Netbios]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_Netbios]
   end;
 end;
+
 {$ELSE}
-function Netbios; external 'netapi32.dll' name 'Netbios';
+
+function Netbios; external netapi32 name 'Netbios';
+
 {$ENDIF DYNAMIC_LINK}
 
+{$ENDIF JWA_IMPLEMENTATIONSECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
 end.
+{$ENDIF !JWA_INCLUDEMODE}

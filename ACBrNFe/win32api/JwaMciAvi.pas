@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Multimedia Systems Media Control API interface Unit for Object Pascal        }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: MciAvi.h, released June 2000. The original Pascal      }
 { code is: MciAvi.pas, released December 2000. The initial developer of the    }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaMciAvi.pas,v 1.6 2004/12/08 08:18:37 marquardt Exp $
 
 unit JwaMciAvi;
 
@@ -49,15 +50,15 @@ unit JwaMciAvi;
 {$HPPEMIT '#include "MciAvi.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 (*
 ** These three flags apply to the 'play' command:
-**	play <alias> window		Play in normal window
-**	play <alias> fullscreen		Play in 320x240 full-screen mode
-**	play <alias> fullscreen by 2	Play fullscreen, zoomed by 2
+**      play <alias> window             Play in normal window
+**      play <alias> fullscreen         Play in 320x240 full-screen mode
+**      play <alias> fullscreen by 2    Play fullscreen, zoomed by 2
 *)
 
 const
@@ -117,31 +118,31 @@ const
   {$EXTERNALSYM MCI_AVI_SETVIDEO_PALETTE_HALFTONE}
 
 (*
-**	Custom error return values
+** Custom error return values
 *)
 
-  // TODO FROM MMSysytem.h
+  // TODO FROM MMSystem.h
 
   MCIERR_BASE               = 256;
-  MCIERR_CUSTOM_DRIVER_BASE = (MCIERR_BASE + 256);
+  MCIERR_CUSTOM_DRIVER_BASE = MCIERR_BASE + 256;
 
-  MCIERR_AVI_OLDAVIFORMAT       = (MCIERR_CUSTOM_DRIVER_BASE + 100);
+  MCIERR_AVI_OLDAVIFORMAT       = MCIERR_CUSTOM_DRIVER_BASE + 100;
   {$EXTERNALSYM MCIERR_AVI_OLDAVIFORMAT}
-  MCIERR_AVI_NOTINTERLEAVED     = (MCIERR_CUSTOM_DRIVER_BASE + 101);
+  MCIERR_AVI_NOTINTERLEAVED     = MCIERR_CUSTOM_DRIVER_BASE + 101;
   {$EXTERNALSYM MCIERR_AVI_NOTINTERLEAVED}
-  MCIERR_AVI_NODISPDIB          = (MCIERR_CUSTOM_DRIVER_BASE + 102);
+  MCIERR_AVI_NODISPDIB          = MCIERR_CUSTOM_DRIVER_BASE + 102;
   {$EXTERNALSYM MCIERR_AVI_NODISPDIB}
-  MCIERR_AVI_CANTPLAYFULLSCREEN = (MCIERR_CUSTOM_DRIVER_BASE + 103);
+  MCIERR_AVI_CANTPLAYFULLSCREEN = MCIERR_CUSTOM_DRIVER_BASE + 103;
   {$EXTERNALSYM MCIERR_AVI_CANTPLAYFULLSCREEN}
-  MCIERR_AVI_TOOBIGFORVGA       = (MCIERR_CUSTOM_DRIVER_BASE + 104);
+  MCIERR_AVI_TOOBIGFORVGA       = MCIERR_CUSTOM_DRIVER_BASE + 104;
   {$EXTERNALSYM MCIERR_AVI_TOOBIGFORVGA}
-  MCIERR_AVI_NOCOMPRESSOR       = (MCIERR_CUSTOM_DRIVER_BASE + 105);
+  MCIERR_AVI_NOCOMPRESSOR       = MCIERR_CUSTOM_DRIVER_BASE + 105;
   {$EXTERNALSYM MCIERR_AVI_NOCOMPRESSOR}
-  MCIERR_AVI_DISPLAYERROR       = (MCIERR_CUSTOM_DRIVER_BASE + 106);
+  MCIERR_AVI_DISPLAYERROR       = MCIERR_CUSTOM_DRIVER_BASE + 106;
   {$EXTERNALSYM MCIERR_AVI_DISPLAYERROR}
-  MCIERR_AVI_AUDIOERROR         = (MCIERR_CUSTOM_DRIVER_BASE + 107);
+  MCIERR_AVI_AUDIOERROR         = MCIERR_CUSTOM_DRIVER_BASE + 107;
   {$EXTERNALSYM MCIERR_AVI_AUDIOERROR}
-  MCIERR_AVI_BADPALETTE         = (MCIERR_CUSTOM_DRIVER_BASE + 108);
+  MCIERR_AVI_BADPALETTE         = MCIERR_CUSTOM_DRIVER_BASE + 108;
   {$EXTERNALSYM MCIERR_AVI_BADPALETTE}
 
 implementation

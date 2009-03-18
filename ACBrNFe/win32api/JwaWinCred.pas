@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Credentials Manager API interface Unit for Object Pascal                     }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: wincred.h, released November 2001. The original Pascal }
 { code is: WinCred.pas, released March 2002. The initial developer of the      }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,25 +35,27 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaWinCred.pas,v 1.12 2005/09/06 16:36:50 marquardt Exp $
 
 unit JwaWinCred;
 
 {$WEAKPACKAGEUNIT}
 
-{$HPPEMIT ''}
-{$HPPEMIT '#include "wincred.h"'}
-{$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaLmCons, JwaWinBase, JwaWinError, JwaWinType, JwaNtSecApi;
+  JwaLmCons, JwaWindows, JwaNtSecApi;
+
+{$HPPEMIT ''}
+{$HPPEMIT '#include "wincred.h"'}
+{$HPPEMIT ''}
 
 type
   PCtxtHandle = PSecHandle;
@@ -121,7 +122,7 @@ const
 
   NERR_BASE            = 2100;
   {$EXTERNALSYM NERR_BASE}
-  NERR_PasswordExpired = (NERR_BASE+142); // The password of this user has expired.
+  NERR_PasswordExpired = NERR_BASE + 142; // The password of this user has expired.
   {$EXTERNALSYM NERR_PasswordExpired}
 
 function CREDUIP_IS_USER_PASSWORD_ERROR(_Status: NTSTATUS): BOOL;
@@ -156,7 +157,7 @@ const
 
 // Maximum length of the UserName field.  The worst case is <User>@<DnsDomain>
 
-  CRED_MAX_USERNAME_LENGTH = (256+1+256);
+  CRED_MAX_USERNAME_LENGTH = 256 + 1 + 256;
   {$EXTERNALSYM CRED_MAX_USERNAME_LENGTH}
 
 // Maximum length of the TargetName field for CRED_TYPE_GENERIC (in characters)
@@ -167,7 +168,7 @@ const
 // Maximum length of the TargetName field for CRED_TYPE_DOMAIN_* (in characters)
 //      Largest one is <DfsRoot>\<DfsShare>
 
-  CRED_MAX_DOMAIN_TARGET_NAME_LENGTH = (256+1+80);
+  CRED_MAX_DOMAIN_TARGET_NAME_LENGTH = 256 + 1 + 80;
   {$EXTERNALSYM CRED_MAX_DOMAIN_TARGET_NAME_LENGTH}
 
 // Maximum size of the Credential Attribute Value field (in bytes)
@@ -209,21 +210,21 @@ type
   TCredentialAttributeW = CREDENTIAL_ATTRIBUTEW;
   PCredentialAttributeW = PCREDENTIAL_ATTRIBUTEW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   CREDENTIAL_ATTRIBUTE = CREDENTIAL_ATTRIBUTEW;
   {$EXTERNALSYM CREDENTIAL_ATTRIBUTE}
   PCREDENTIAL_ATTRIBUTE = PCREDENTIAL_ATTRIBUTEW;
   {$EXTERNALSYM PCREDENTIAL_ATTRIBUTE}
   TCredentialAttribute = TCredentialAttributeW;
   PCredentialAttribute = PCredentialAttributeW;
-{$ELSE}
+  {$ELSE}
   CREDENTIAL_ATTRIBUTE = CREDENTIAL_ATTRIBUTEA;
   {$EXTERNALSYM CREDENTIAL_ATTRIBUTE}
   PCREDENTIAL_ATTRIBUTE = PCREDENTIAL_ATTRIBUTEA;
   {$EXTERNALSYM PCREDENTIAL_ATTRIBUTE}
   TCredentialAttribute = TCredentialAttributeA;
   PCredentialAttribute = PCredentialAttributeA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 // Special values of the TargetName field
@@ -237,13 +238,13 @@ const
   CRED_SESSION_WILDCARD_NAME_LENGTH = SizeOf(CRED_SESSION_WILDCARD_NAME_A) - 1;
   {$EXTERNALSYM CRED_SESSION_WILDCARD_NAME_LENGTH}
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   CRED_SESSION_WILDCARD_NAME = CRED_SESSION_WILDCARD_NAME_W;
   {$EXTERNALSYM CRED_SESSION_WILDCARD_NAME}
-{$ELSE}
+  {$ELSE}
   CRED_SESSION_WILDCARD_NAME = CRED_SESSION_WILDCARD_NAME_A;
   {$EXTERNALSYM CRED_SESSION_WILDCARD_NAME}
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 // Values of the Credential Flags field.
@@ -275,7 +276,7 @@ const
   {$EXTERNALSYM CRED_TYPE_DOMAIN_VISIBLE_PASSWORD}
   CRED_TYPE_MAXIMUM                 = 5; // Maximum supported cred type
   {$EXTERNALSYM CRED_TYPE_MAXIMUM}
-  CRED_TYPE_MAXIMUM_EX              = (CRED_TYPE_MAXIMUM+1000);  // Allow new applications to run on old OSes
+  CRED_TYPE_MAXIMUM_EX              = CRED_TYPE_MAXIMUM + 1000;  // Allow new applications to run on old OSes
   {$EXTERNALSYM CRED_TYPE_MAXIMUM_EX}
 
 //
@@ -345,19 +346,19 @@ type
   {$EXTERNALSYM CREDENTIALW}
   TCredentialW = CREDENTIALW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   CREDENTIAL = CREDENTIALW;
   {$EXTERNALSYM CREDENTIAL}
   PCREDENTIAL = PCREDENTIALW;
   {$EXTERNALSYM PCREDENTIAL}
   TCredential = TCredentialW;
-{$ELSE}
+  {$ELSE}
   CREDENTIAL = CREDENTIALA;
   {$EXTERNALSYM CREDENTIAL}
   PCREDENTIAL = PCREDENTIALA;
   {$EXTERNALSYM PCREDENTIAL}
   TCredential = TCredentialA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 // Value of the Flags field in CREDENTIAL_TARGET_INFORMATION
@@ -424,21 +425,21 @@ type
   TCredentialTargetInformationW = CREDENTIAL_TARGET_INFORMATIONW;
   PCredentialTargetInformationW = PCREDENTIAL_TARGET_INFORMATIONW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   CREDENTIAL_TARGET_INFORMATION = CREDENTIAL_TARGET_INFORMATIONW;
   {$EXTERNALSYM CREDENTIAL_TARGET_INFORMATION}
   PCREDENTIAL_TARGET_INFORMATION = PCREDENTIAL_TARGET_INFORMATIONW;
   {$EXTERNALSYM PCREDENTIAL_TARGET_INFORMATION}
   TCredentialTargetInformation = TCredentialTargetInformationW;
   PCredentialTargetInformation = PCredentialTargetInformationW;
-{$ELSE}
+  {$ELSE}
   CREDENTIAL_TARGET_INFORMATION = CREDENTIAL_TARGET_INFORMATIONA;
   {$EXTERNALSYM CREDENTIAL_TARGET_INFORMATION}
   PCREDENTIAL_TARGET_INFORMATION = PCREDENTIAL_TARGET_INFORMATIONA;
   {$EXTERNALSYM PCREDENTIAL_TARGET_INFORMATION}
   TCredentialTargetInformation = TCredentialTargetInformationA;
   PCredentialTargetInformation = PCredentialTargetInformationA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 // Certificate credential information
@@ -536,21 +537,21 @@ type
   TCredUIInfoW = CREDUI_INFOW;
   PCredUIInfoW = PCREDUI_INFOW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   CREDUI_INFO = CREDUI_INFOW;
   {$EXTERNALSYM CREDUI_INFO}
   PCREDUI_INFO = PCREDUI_INFOW;
   {$EXTERNALSYM PCREDUI_INFO}
   TCredUIInfo = TCredUIInfoW;
   PCredUIInfo = PCredUIInfoW;
-{$ELSE}
+  {$ELSE}
   CREDUI_INFO = CREDUI_INFOA;
   {$EXTERNALSYM CREDUI_INFO}
   PCREDUI_INFO = PCREDUI_INFOA;
   {$EXTERNALSYM PCREDUI_INFO}
   TCredUIInfo = TCredUIInfoA;
   PCredUIInfo = PCredUIInfoA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //-----------------------------------------------------------------------------
 // Values
@@ -569,7 +570,7 @@ const
   {$EXTERNALSYM CREDUI_MAX_DOMAIN_TARGET_LENGTH}
   CREDUI_MAX_USERNAME_LENGTH       = CRED_MAX_USERNAME_LENGTH;
   {$EXTERNALSYM CREDUI_MAX_USERNAME_LENGTH}
-  CREDUI_MAX_PASSWORD_LENGTH       = (CRED_MAX_CREDENTIAL_BLOB_SIZE div 2);
+  CREDUI_MAX_PASSWORD_LENGTH       = CRED_MAX_CREDENTIAL_BLOB_SIZE div 2;
   {$EXTERNALSYM CREDUI_MAX_PASSWORD_LENGTH}
 
 //
@@ -647,61 +648,33 @@ const
   CRED_PRESERVE_CREDENTIAL_BLOB = $1;
   {$EXTERNALSYM CRED_PRESERVE_CREDENTIAL_BLOB}
 
-function CredWriteW(Credential: PCREDENTIALW; Flags: DWORD): BOOL; stdcall;
-{$EXTERNALSYM CredWriteW}
-
 function CredWriteA(Credential: PCREDENTIALA; Flags: DWORD): BOOL; stdcall;
 {$EXTERNALSYM CredWriteA}
-
-{$IFDEF UNICODE}
-function CredWrite(Credential: PCREDENTIALW; Flags: DWORD): BOOL; stdcall;
+function CredWriteW(Credential: PCREDENTIALW; Flags: DWORD): BOOL; stdcall;
+{$EXTERNALSYM CredWriteW}
+function CredWrite(Credential: PCREDENTIAL; Flags: DWORD): BOOL; stdcall;
 {$EXTERNALSYM CredWrite}
-{$ELSE}
-function CredWrite(Credential: PCREDENTIALA; Flags: DWORD): BOOL; stdcall;
-{$EXTERNALSYM CredWrite}
-{$ENDIF}
-
-function CredReadW(TargetName: LPCWSTR; Type_: DWORD; Flags: DWORD; var Credential: PCREDENTIALW): BOOL; stdcall;
-{$EXTERNALSYM CredReadW}
 
 function CredReadA(TargetName: LPCSTR; Type_: DWORD; Flags: DWORD; var Credential: PCREDENTIALA): BOOL; stdcall;
 {$EXTERNALSYM CredReadA}
-
-{$IFDEF UNICODE}
-function CredRead(TargetName: LPCWSTR; Type_: DWORD; Flags: DWORD; var Credential: PCREDENTIALW): BOOL; stdcall;
+function CredReadW(TargetName: LPCWSTR; Type_: DWORD; Flags: DWORD; var Credential: PCREDENTIALW): BOOL; stdcall;
+{$EXTERNALSYM CredReadW}
+function CredRead(TargetName: LPCTSTR; Type_: DWORD; Flags: DWORD; var Credential: PCREDENTIAL): BOOL; stdcall;
 {$EXTERNALSYM CredRead}
-{$ELSE}
-function CredRead(TargetName: LPCSTR; Type_: DWORD; Flags: DWORD; var Credential: PCREDENTIALA): BOOL; stdcall;
-{$EXTERNALSYM CredRead}
-{$ENDIF}
-
-function CredEnumerateW(Filter: LPCWSTR; Flags: DWORD; var Count: DWORD; var Credential: PCREDENTIALW): BOOL; stdcall;
-{$EXTERNALSYM CredEnumerateW}
 
 function CredEnumerateA(Filter: LPCSTR; Flags: DWORD; var Count: DWORD; var Credential: PCREDENTIALA): BOOL; stdcall;
 {$EXTERNALSYM CredEnumerateA}
-
-{$IFDEF UNICODE}
-function CredEnumerate(Filter: LPCWSTR; Flags: DWORD; var Count: DWORD; var Credential: PCREDENTIALW): BOOL; stdcall;
+function CredEnumerateW(Filter: LPCWSTR; Flags: DWORD; var Count: DWORD; var Credential: PCREDENTIALW): BOOL; stdcall;
+{$EXTERNALSYM CredEnumerateW}
+function CredEnumerate(Filter: LPCTSTR; Flags: DWORD; var Count: DWORD; var Credential: PCREDENTIAL): BOOL; stdcall;
 {$EXTERNALSYM CredEnumerate}
-{$ELSE}
-function CredEnumerate(Filter: LPCSTR; Flags: DWORD; var Count: DWORD; var Credential: PCREDENTIALA): BOOL; stdcall;
-{$EXTERNALSYM CredEnumerate}
-{$ENDIF}
-
-function CredWriteDomainCredentialsW(TargetInfo: PCREDENTIAL_TARGET_INFORMATIONW; Credential: PCREDENTIALW; Flags: DWORD): BOOL; stdcall;
-{$EXTERNALSYM CredWriteDomainCredentialsW}
 
 function CredWriteDomainCredentialsA(TargetInfo: PCREDENTIAL_TARGET_INFORMATIONA; Credential: PCREDENTIALA; Flags: DWORD): BOOL; stdcall;
 {$EXTERNALSYM CredWriteDomainCredentialsA}
-
-{$IFDEF UNICODE}
-function CredWriteDomainCredentials(TargetInfo: PCREDENTIAL_TARGET_INFORMATIONW; Credential: PCREDENTIALW; Flags: DWORD): BOOL; stdcall;
+function CredWriteDomainCredentialsW(TargetInfo: PCREDENTIAL_TARGET_INFORMATIONW; Credential: PCREDENTIALW; Flags: DWORD): BOOL; stdcall;
+{$EXTERNALSYM CredWriteDomainCredentialsW}
+function CredWriteDomainCredentials(TargetInfo: PCREDENTIAL_TARGET_INFORMATION; Credential: PCREDENTIAL; Flags: DWORD): BOOL; stdcall;
 {$EXTERNALSYM CredWriteDomainCredentials}
-{$ELSE}
-function CredWriteDomainCredentials(TargetInfo: PCREDENTIAL_TARGET_INFORMATIONA; Credential: PCREDENTIALA; Flags: DWORD): BOOL; stdcall;
-{$EXTERNALSYM CredWriteDomainCredentials}
-{$ENDIF}
 
 //
 // Values of flags to CredReadDomainCredentials
@@ -711,47 +684,26 @@ const
   CRED_CACHE_TARGET_INFORMATION = $1;
   {$EXTERNALSYM CRED_CACHE_TARGET_INFORMATION}
 
-function CredReadDomainCredentialsW(TargetInfo: PCREDENTIAL_TARGET_INFORMATIONW; Flags: DWORD; var Count: DWORD; var Credential: PCREDENTIALW): BOOL; stdcall;
-{$EXTERNALSYM CredReadDomainCredentialsW}
-
 function CredReadDomainCredentialsA(TargetInfo: PCREDENTIAL_TARGET_INFORMATIONA; Flags: DWORD; var Count: DWORD; var Credential: PCREDENTIALA): BOOL; stdcall;
 {$EXTERNALSYM CredReadDomainCredentialsA}
-
-{$IFDEF UNICODE}
-function CredReadDomainCredentials(TargetInfo: PCREDENTIAL_TARGET_INFORMATIONW; Flags: DWORD; var Count: DWORD; var Credential: PCREDENTIALW): BOOL; stdcall;
+function CredReadDomainCredentialsW(TargetInfo: PCREDENTIAL_TARGET_INFORMATIONW; Flags: DWORD; var Count: DWORD; var Credential: PCREDENTIALW): BOOL; stdcall;
+{$EXTERNALSYM CredReadDomainCredentialsW}
+function CredReadDomainCredentials(TargetInfo: PCREDENTIAL_TARGET_INFORMATION; Flags: DWORD; var Count: DWORD; var Credential: PCREDENTIAL): BOOL; stdcall;
 {$EXTERNALSYM CredReadDomainCredentials}
-{$ELSE}
-function CredReadDomainCredentials(TargetInfo: PCREDENTIAL_TARGET_INFORMATIONA; Flags: DWORD; var Count: DWORD; var Credential: PCREDENTIALA): BOOL; stdcall;
-{$EXTERNALSYM CredReadDomainCredentials}
-{$ENDIF}
-
-function CredDeleteW(TargetName: LPCWSTR; Type_: DWORD; Flags: DWORD): BOOL; stdcall;
-{$EXTERNALSYM CredDeleteW}
 
 function CredDeleteA(TargetName: LPCSTR; Type_: DWORD; Flags: DWORD): BOOL; stdcall;
 {$EXTERNALSYM CredDeleteA}
-
-{$IFDEF UNICODE}
-function CredDelete(TargetName: LPCWSTR; Type_: DWORD; Flags: DWORD): BOOL; stdcall;
+function CredDeleteW(TargetName: LPCWSTR; Type_: DWORD; Flags: DWORD): BOOL; stdcall;
+{$EXTERNALSYM CredDeleteW}
+function CredDelete(TargetName: LPCTSTR; Type_: DWORD; Flags: DWORD): BOOL; stdcall;
 {$EXTERNALSYM CredDelete}
-{$ELSE}
-function CredDelete(TargetName: LPCSTR; Type_: DWORD; Flags: DWORD): BOOL; stdcall;
-{$EXTERNALSYM CredDelete}
-{$ENDIF}
-
-function CredRenameW(OldTargetName: LPCWSTR; NewTargetName: LPCWSTR; Type_: DWORD; Flags: DWORD): BOOL; stdcall;
-{$EXTERNALSYM CredRenameW}
 
 function CredRenameA(OldTargetName: LPCSTR; NewTargetName: LPCSTR; Type_: DWORD; Flags: DWORD): BOOL; stdcall;
 {$EXTERNALSYM CredRenameA}
-
-{$IFDEF UNICODE}
-function CredRename(OldTargetName: LPCWSTR; NewTargetName: LPCWSTR; Type_: DWORD; Flags: DWORD): BOOL; stdcall;
+function CredRenameW(OldTargetName: LPCWSTR; NewTargetName: LPCWSTR; Type_: DWORD; Flags: DWORD): BOOL; stdcall;
+{$EXTERNALSYM CredRenameW}
+function CredRename(OldTargetName: LPCTSTR; NewTargetName: LPCTSTR; Type_: DWORD; Flags: DWORD): BOOL; stdcall;
 {$EXTERNALSYM CredRename}
-{$ELSE}
-function CredRename(OldTargetName: LPCSTR; NewTargetName: LPCSTR; Type_: DWORD; Flags: DWORD): BOOL; stdcall;
-{$EXTERNALSYM CredRename}
-{$ENDIF}
 
 //
 // Values of flags to CredGetTargetInfo
@@ -761,61 +713,33 @@ const
   CRED_ALLOW_NAME_RESOLUTION = $1;
   {$EXTERNALSYM CRED_ALLOW_NAME_RESOLUTION}
 
-function CredGetTargetInfoW(TargetName: LPCWSTR; Flags: DWORD; var TargetInfo: PCREDENTIAL_TARGET_INFORMATIONW): BOOL; stdcall;
-{$EXTERNALSYM CredGetTargetInfoW}
-
 function CredGetTargetInfoA(TargetName: LPCSTR; Flags: DWORD; var TargetInfo: PCREDENTIAL_TARGET_INFORMATIONA): BOOL; stdcall;
 {$EXTERNALSYM CredGetTargetInfoA}
-
-{$IFDEF UNICODE}
-function CredGetTargetInfo(TargetName: LPCWSTR; Flags: DWORD; var TargetInfo: PCREDENTIAL_TARGET_INFORMATIONW): BOOL; stdcall;
+function CredGetTargetInfoW(TargetName: LPCWSTR; Flags: DWORD; var TargetInfo: PCREDENTIAL_TARGET_INFORMATIONW): BOOL; stdcall;
+{$EXTERNALSYM CredGetTargetInfoW}
+function CredGetTargetInfo(TargetName: LPCTSTR; Flags: DWORD; var TargetInfo: PCREDENTIAL_TARGET_INFORMATION): BOOL; stdcall;
 {$EXTERNALSYM CredGetTargetInfo}
-{$ELSE}
-function CredGetTargetInfo(TargetName: LPCSTR; Flags: DWORD; var TargetInfo: PCREDENTIAL_TARGET_INFORMATIONA): BOOL; stdcall;
-{$EXTERNALSYM CredGetTargetInfo}
-{$ENDIF}
-
-function CredMarshalCredentialW(CredType: CRED_MARSHAL_TYPE; Credential: PVOID; var MarshaledCredential: LPWSTR): BOOL; stdcall;
-{$EXTERNALSYM CredMarshalCredentialW}
 
 function CredMarshalCredentialA(CredType: CRED_MARSHAL_TYPE; Credential: PVOID; MarshaledCredential: LPSTR): BOOL; stdcall;
 {$EXTERNALSYM CredMarshalCredentialA}
-
-{$IFDEF UNICODE}
-function CredMarshalCredential(CredType: CRED_MARSHAL_TYPE; Credential: PVOID; var MarshaledCredential: LPWSTR): BOOL; stdcall;
+function CredMarshalCredentialW(CredType: CRED_MARSHAL_TYPE; Credential: PVOID; var MarshaledCredential: LPWSTR): BOOL; stdcall;
+{$EXTERNALSYM CredMarshalCredentialW}
+function CredMarshalCredential(CredType: CRED_MARSHAL_TYPE; Credential: PVOID; var MarshaledCredential: LPTSTR): BOOL; stdcall;
 {$EXTERNALSYM CredMarshalCredential}
-{$ELSE}
-function CredMarshalCredential(CredType: CRED_MARSHAL_TYPE; Credential: PVOID; MarshaledCredential: LPSTR): BOOL; stdcall;
-{$EXTERNALSYM CredMarshalCredential}
-{$ENDIF}
-
-function CredUnmarshalCredentialW(MarshaledCredential: LPCWSTR; CredType: PCRED_MARSHAL_TYPE; var Credential: PVOID): BOOL; stdcall;
-{$EXTERNALSYM CredUnmarshalCredentialW}
 
 function CredUnmarshalCredentialA(MarshaledCredential: LPCSTR; CredType: PCRED_MARSHAL_TYPE; Credential: PVOID): BOOL; stdcall;
 {$EXTERNALSYM CredUnmarshalCredentialA}
-
-{$IFDEF UNICODE}
-function CredUnmarshalCredential(MarshaledCredential: LPCWSTR; CredType: PCRED_MARSHAL_TYPE; var Credential: PVOID): BOOL; stdcall;
+function CredUnmarshalCredentialW(MarshaledCredential: LPCWSTR; CredType: PCRED_MARSHAL_TYPE; var Credential: PVOID): BOOL; stdcall;
+{$EXTERNALSYM CredUnmarshalCredentialW}
+function CredUnmarshalCredential(MarshaledCredential: LPCTSTR; CredType: PCRED_MARSHAL_TYPE; var Credential: PVOID): BOOL; stdcall;
 {$EXTERNALSYM CredUnmarshalCredential}
-{$ELSE}
-function CredUnmarshalCredential(MarshaledCredential: LPCSTR; CredType: PCRED_MARSHAL_TYPE; Credential: PVOID): BOOL; stdcall;
-{$EXTERNALSYM CredUnmarshalCredential}
-{$ENDIF}
-
-function CredIsMarshaledCredentialW(MarshaledCredential: LPCWSTR): BOOL; stdcall;
-{$EXTERNALSYM CredIsMarshaledCredentialW}
 
 function CredIsMarshaledCredentialA(MarshaledCredential: LPCSTR): BOOL; stdcall;
 {$EXTERNALSYM CredIsMarshaledCredentialA}
-
-{$IFDEF UNICODE}
-function CredIsMarshaledCredential(MarshaledCredential: LPCWSTR): BOOL; stdcall;
+function CredIsMarshaledCredentialW(MarshaledCredential: LPCWSTR): BOOL; stdcall;
+{$EXTERNALSYM CredIsMarshaledCredentialW}
+function CredIsMarshaledCredential(MarshaledCredential: LPCTSTR): BOOL; stdcall;
 {$EXTERNALSYM CredIsMarshaledCredential}
-{$ELSE}
-function CredIsMarshaledCredential(MarshaledCredential: LPCSTR): BOOL; stdcall;
-{$EXTERNALSYM CredIsMarshaledCredential}
-{$ENDIF}
 
 function CredGetSessionTypes(MaximumPersistCount: DWORD; MaximumPersist: LPDWORD): BOOL; stdcall;
 {$EXTERNALSYM CredGetSessionTypes}
@@ -823,68 +747,49 @@ function CredGetSessionTypes(MaximumPersistCount: DWORD; MaximumPersist: LPDWORD
 procedure CredFree(Buffer: PVOID); stdcall;
 {$EXTERNALSYM CredFree}
 
-function CredUIPromptForCredentialsW(pUiInfo: PCREDUI_INFOW; pszTargetName: LPCWSTR; pContext: PCtxtHandle; dwAuthError: DWORD; pszUserName: PWSTR; ulUserNameBufferSize: ULONG; pszPassword: PWSTR; ulPasswordBufferSize: ULONG; var save: BOOL; dwFlags: DWORD): DWORD; stdcall;
-{$EXTERNALSYM CredUIPromptForCredentialsW}
-
 function CredUIPromptForCredentialsA(pUiInfo: PCREDUI_INFOA; pszTargetName: PCSTR; pContext: PCtxtHandle; dwAuthError: DWORD; pszUserName: PSTR; ulUserNameBufferSize: ULONG; pszPassword: PSTR; ulPasswordBufferSize: ULONG; var save: BOOL; dwFlags: DWORD): DWORD; stdcall;
 {$EXTERNALSYM CredUIPromptForCredentialsA}
-
-{$IFDEF UNICODE}
-function CredUIPromptForCredentials(pUiInfo: PCREDUI_INFOW; pszTargetName: LPCWSTR; pContext: PCtxtHandle; dwAuthError: DWORD; pszUserName: PWSTR; ulUserNameBufferSize: ULONG; pszPassword: PWSTR; ulPasswordBufferSize: ULONG; var save: BOOL; dwFlags: DWORD): DWORD; stdcall;
+function CredUIPromptForCredentialsW(pUiInfo: PCREDUI_INFOW; pszTargetName: LPCWSTR; pContext: PCtxtHandle; dwAuthError: DWORD; pszUserName: PWSTR; ulUserNameBufferSize: ULONG; pszPassword: PWSTR; ulPasswordBufferSize: ULONG; var save: BOOL; dwFlags: DWORD): DWORD; stdcall;
+{$EXTERNALSYM CredUIPromptForCredentialsW}
+function CredUIPromptForCredentials(pUiInfo: PCREDUI_INFO; pszTargetName: LPCTSTR; pContext: PCtxtHandle; dwAuthError: DWORD; pszUserName: PTSTR; ulUserNameBufferSize: ULONG; pszPassword: PTSTR; ulPasswordBufferSize: ULONG; var save: BOOL; dwFlags: DWORD): DWORD; stdcall;
 {$EXTERNALSYM CredUIPromptForCredentials}
-{$ELSE}
-function CredUIPromptForCredentials(pUiInfo: PCREDUI_INFOA; pszTargetName: PCSTR; pContext: PCtxtHandle; dwAuthError: DWORD; pszUserName: PSTR; ulUserNameBufferSize: ULONG; pszPassword: PSTR; ulPasswordBufferSize: ULONG; var save: BOOL; dwFlags: DWORD): DWORD; stdcall;
-{$EXTERNALSYM CredUIPromptForCredentials}
-{$ENDIF}
-
-function CredUIParseUserNameW(pszUserName: LPCWSTR; pszUser: PWSTR; ulUserBufferSize: ULONG; pszDomain: PWSTR; ulDomainBufferSize: ULONG): DWORD; stdcall;
-{$EXTERNALSYM CredUIParseUserNameW}
 
 function CredUIParseUserNameA(pszUserName: PCSTR; pszUser: PSTR; ulUserBufferSize: ULONG; pszDomain: PSTR; ulDomainBufferSize: ULONG): DWORD; stdcall;
 {$EXTERNALSYM CredUIParseUserNameA}
-
-{$IFDEF UNICODE}
-function CredUIParseUserName(pszUserName: LPCWSTR; pszUser: PWSTR; ulUserBufferSize: ULONG; pszDomain: PWSTR; ulDomainBufferSize: ULONG): DWORD; stdcall;
+function CredUIParseUserNameW(pszUserName: LPCWSTR; pszUser: PWSTR; ulUserBufferSize: ULONG; pszDomain: PWSTR; ulDomainBufferSize: ULONG): DWORD; stdcall;
+{$EXTERNALSYM CredUIParseUserNameW}
+function CredUIParseUserName(pszUserName: LPCTSTR; pszUser: PTSTR; ulUserBufferSize: ULONG; pszDomain: PTSTR; ulDomainBufferSize: ULONG): DWORD; stdcall;
 {$EXTERNALSYM CredUIParseUserName}
-{$ELSE}
-function CredUIParseUserName(pszUserName: PCSTR; pszUser: PSTR; ulUserBufferSize: ULONG; pszDomain: PSTR; ulDomainBufferSize: ULONG): DWORD; stdcall;
-{$EXTERNALSYM CredUIParseUserName}
-{$ENDIF}
-
-function CredUICmdLinePromptForCredentialsW(pszTargetName: LPCWSTR; pContext: PCtxtHandle; dwAuthError: DWORD; UserName: PWSTR; ulUserBufferSize: ULONG; pszPassword: PWSTR; ulPasswordBufferSize: ULONG; pfSave: PBOOL; dwFlags: DWORD): DWORD; stdcall;
-{$EXTERNALSYM CredUICmdLinePromptForCredentialsW}
 
 function CredUICmdLinePromptForCredentialsA(pszTargetName: PCSTR; pContext: PCtxtHandle; dwAuthError: DWORD; UserName: PSTR; ulUserBufferSize: ULONG; pszPassword: PSTR; ulPasswordBufferSize: ULONG; pfSave: PBOOL; dwFlags: DWORD): DWORD; stdcall;
 {$EXTERNALSYM CredUICmdLinePromptForCredentialsA}
-
-{$IFDEF UNICODE}
-function CredUICmdLinePromptForCredentials(pszTargetName: LPCWSTR; pContext: PCtxtHandle; dwAuthError: DWORD; UserName: PWSTR; ulUserBufferSize: ULONG; pszPassword: PWSTR; ulPasswordBufferSize: ULONG; pfSave: PBOOL; dwFlags: DWORD): DWORD; stdcall;
+function CredUICmdLinePromptForCredentialsW(pszTargetName: LPCWSTR; pContext: PCtxtHandle; dwAuthError: DWORD; UserName: PWSTR; ulUserBufferSize: ULONG; pszPassword: PWSTR; ulPasswordBufferSize: ULONG; pfSave: PBOOL; dwFlags: DWORD): DWORD; stdcall;
+{$EXTERNALSYM CredUICmdLinePromptForCredentialsW}
+function CredUICmdLinePromptForCredentials(pszTargetName: LPCTSTR; pContext: PCtxtHandle; dwAuthError: DWORD; UserName: PTSTR; ulUserBufferSize: ULONG; pszPassword: PTSTR; ulPasswordBufferSize: ULONG; pfSave: PBOOL; dwFlags: DWORD): DWORD; stdcall;
 {$EXTERNALSYM CredUICmdLinePromptForCredentials}
-{$ELSE}
-function CredUICmdLinePromptForCredentials(pszTargetName: PCSTR; pContext: PCtxtHandle; dwAuthError: DWORD; UserName: PSTR; ulUserBufferSize: ULONG; pszPassword: PSTR; ulPasswordBufferSize: ULONG; pfSave: PBOOL; dwFlags: DWORD): DWORD; stdcall;
-{$EXTERNALSYM CredUICmdLinePromptForCredentials}
-{$ENDIF}
 
 //
 // Call this API with bConfirm set to TRUE to confirm that the credential (previously created
 // via CredUIGetCredentials or CredUIPromptForCredentials worked, or with bConfirm set to FALSE
 // to indicate it didn't
 
-function CredUIConfirmCredentialsW(pszTargetName: LPCWSTR; bConfirm: BOOL): DWORD; stdcall;
-{$EXTERNALSYM CredUIConfirmCredentialsW}
-
 function CredUIConfirmCredentialsA(pszTargetName: PCSTR; bConfirm: BOOL): DWORD; stdcall;
 {$EXTERNALSYM CredUIConfirmCredentialsA}
+function CredUIConfirmCredentialsW(pszTargetName: LPCWSTR; bConfirm: BOOL): DWORD; stdcall;
+{$EXTERNALSYM CredUIConfirmCredentialsW}
+function CredUIConfirmCredentials(pszTargetName: LPCTSTR; bConfirm: BOOL): DWORD; stdcall;
+{$EXTERNALSYM CredUIConfirmCredentials}
 
-{$IFDEF UNICODE}
-function CredUIConfirmCredentials(pszTargetName: LPCWSTR; bConfirm: BOOL): DWORD; stdcall;
-{$EXTERNALSYM CredUIConfirmCredentials}
-{$ELSE}
-function CredUIConfirmCredentials(pszTargetName: PCSTR; bConfirm: BOOL): DWORD; stdcall;
-{$EXTERNALSYM CredUIConfirmCredentials}
-{$ENDIF}
+function CredUIStoreSSOCredW(pszRealm, pszUsername, pszPassword: LPCWSTR; bPersist: BOOL): DWORD; stdcall;
+{$EXTERNALSYM CredUIStoreSSOCredW}
+
+function CredUIReadSSOCredW(pszRealm: LPCWSTR; out ppszUsername: PWSTR): DWORD; stdcall;
+{$EXTERNALSYM CredUIReadSSOCredW}
 
 implementation
+
+uses
+  JwaWinDLLNames;
 
 function CREDUIP_IS_USER_PASSWORD_ERROR(_Status: NTSTATUS): BOOL;
 begin
@@ -937,8 +842,8 @@ end;
 function CREDUI_NO_PROMPT_AUTHENTICATION_ERROR(_Status: NTSTATUS): BOOL;
 begin
   Result :=
-    (_Status = 1935{TODO Temp until WinError updated ERROR_AUTHENTICATION_FIREWALL_FAILED}) or
-    (_Status = HRESULT_FROM_WIN32(1935{TODO ERROR_AUTHENTICATION_FIREWALL_FAILED})) or
+    (_Status = NTSTATUS(ERROR_AUTHENTICATION_FIREWALL_FAILED)) or
+    (_Status = HRESULT_FROM_WIN32(ERROR_AUTHENTICATION_FIREWALL_FAILED)) or
     (_Status = STATUS_AUTHENTICATION_FIREWALL_FAILED) or
     (_Status = HRESULT_FROM_NT(STATUS_AUTHENTICATION_FIREWALL_FAILED)) or
     (DWORD(_Status) = ERROR_ACCOUNT_DISABLED) or
@@ -963,11 +868,8 @@ begin
     (_Status = HRESULT_FROM_NT(STATUS_LOGON_TYPE_NOT_GRANTED));
 end;
 
-const
-  credapi = 'advapi32.dll';
-  credui = 'credui.dll';
-
 {$IFDEF DYNAMIC_LINK}
+
 var
   _CredWriteW: Pointer;
 
@@ -975,16 +877,12 @@ function CredWriteW;
 begin
   GetProcedureAddress(_CredWriteW, credapi, 'CredWriteW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredWriteW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredWriteW]
   end;
 end;
-{$ELSE}
-function CredWriteW; external credapi name 'CredWriteW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CredWriteA: Pointer;
 
@@ -992,53 +890,25 @@ function CredWriteA;
 begin
   GetProcedureAddress(_CredWriteA, credapi, 'CredWriteA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredWriteA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredWriteA]
   end;
 end;
-{$ELSE}
-function CredWriteA; external credapi name 'CredWriteA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CredWrite: Pointer;
 
 function CredWrite;
 begin
-  GetProcedureAddress(_CredWrite, credapi, 'CredWriteW');
+  GetProcedureAddress(_CredWrite, credapi, 'CredWrite' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredWrite]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredWrite]
   end;
 end;
-{$ELSE}
-function CredWrite; external credapi name 'CredWriteW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CredWrite: Pointer;
-
-function CredWrite;
-begin
-  GetProcedureAddress(_CredWrite, credapi, 'CredWriteA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredWrite]
-  end;
-end;
-{$ELSE}
-function CredWrite; external credapi name 'CredWriteA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CredReadW: Pointer;
 
@@ -1046,16 +916,12 @@ function CredReadW;
 begin
   GetProcedureAddress(_CredReadW, credapi, 'CredReadW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredReadW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredReadW]
   end;
 end;
-{$ELSE}
-function CredReadW; external credapi name 'CredReadW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CredReadA: Pointer;
 
@@ -1063,53 +929,25 @@ function CredReadA;
 begin
   GetProcedureAddress(_CredReadA, credapi, 'CredReadA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredReadA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredReadA]
   end;
 end;
-{$ELSE}
-function CredReadA; external credapi name 'CredReadA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CredRead: Pointer;
 
 function CredRead;
 begin
-  GetProcedureAddress(_CredRead, credapi, 'CredReadW');
+  GetProcedureAddress(_CredRead, credapi, 'CredRead' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredRead]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredRead]
   end;
 end;
-{$ELSE}
-function CredRead; external credapi name 'CredReadW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CredRead: Pointer;
-
-function CredRead;
-begin
-  GetProcedureAddress(_CredRead, credapi, 'CredReadA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredRead]
-  end;
-end;
-{$ELSE}
-function CredRead; external credapi name 'CredReadA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CredEnumerateW: Pointer;
 
@@ -1117,16 +955,12 @@ function CredEnumerateW;
 begin
   GetProcedureAddress(_CredEnumerateW, credapi, 'CredEnumerateW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredEnumerateW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredEnumerateW]
   end;
 end;
-{$ELSE}
-function CredEnumerateW; external credapi name 'CredEnumerateW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CredEnumerateA: Pointer;
 
@@ -1134,53 +968,25 @@ function CredEnumerateA;
 begin
   GetProcedureAddress(_CredEnumerateA, credapi, 'CredEnumerateA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredEnumerateA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredEnumerateA]
   end;
 end;
-{$ELSE}
-function CredEnumerateA; external credapi name 'CredEnumerateA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CredEnumerate: Pointer;
 
 function CredEnumerate;
 begin
-  GetProcedureAddress(_CredEnumerate, credapi, 'CredEnumerateW');
+  GetProcedureAddress(_CredEnumerate, credapi, 'CredEnumerate' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredEnumerate]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredEnumerate]
   end;
 end;
-{$ELSE}
-function CredEnumerate; external credapi name 'CredEnumerateW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CredEnumerate: Pointer;
-
-function CredEnumerate;
-begin
-  GetProcedureAddress(_CredEnumerate, credapi, 'CredEnumerateA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredEnumerate]
-  end;
-end;
-{$ELSE}
-function CredEnumerate; external credapi name 'CredEnumerateA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CredWriteDomainCredentialsW: Pointer;
 
@@ -1188,16 +994,12 @@ function CredWriteDomainCredentialsW;
 begin
   GetProcedureAddress(_CredWriteDomainCredentialsW, credapi, 'CredWriteDomainCredentialsW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredWriteDomainCredentialsW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredWriteDomainCredentialsW]
   end;
 end;
-{$ELSE}
-function CredWriteDomainCredentialsW; external credapi name 'CredWriteDomainCredentialsW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CredWriteDomainCredentialsA: Pointer;
 
@@ -1205,53 +1007,25 @@ function CredWriteDomainCredentialsA;
 begin
   GetProcedureAddress(_CredWriteDomainCredentialsA, credapi, 'CredWriteDomainCredentialsA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredWriteDomainCredentialsA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredWriteDomainCredentialsA]
   end;
 end;
-{$ELSE}
-function CredWriteDomainCredentialsA; external credapi name 'CredWriteDomainCredentialsA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CredWriteDomainCredentials: Pointer;
 
 function CredWriteDomainCredentials;
 begin
-  GetProcedureAddress(_CredWriteDomainCredentials, credapi, 'CredWriteDomainCredentialsW');
+  GetProcedureAddress(_CredWriteDomainCredentials, credapi, 'CredWriteDomainCredentials' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredWriteDomainCredentials]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredWriteDomainCredentials]
   end;
 end;
-{$ELSE}
-function CredWriteDomainCredentials; external credapi name 'CredWriteDomainCredentialsW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CredWriteDomainCredentials: Pointer;
-
-function CredWriteDomainCredentials;
-begin
-  GetProcedureAddress(_CredWriteDomainCredentials, credapi, 'CredWriteDomainCredentialsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredWriteDomainCredentials]
-  end;
-end;
-{$ELSE}
-function CredWriteDomainCredentials; external credapi name 'CredWriteDomainCredentialsA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CredReadDomainCredentialsW: Pointer;
 
@@ -1259,16 +1033,12 @@ function CredReadDomainCredentialsW;
 begin
   GetProcedureAddress(_CredReadDomainCredentialsW, credapi, 'CredReadDomainCredentialsW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredReadDomainCredentialsW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredReadDomainCredentialsW]
   end;
 end;
-{$ELSE}
-function CredReadDomainCredentialsW; external credapi name 'CredReadDomainCredentialsW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CredReadDomainCredentialsA: Pointer;
 
@@ -1276,53 +1046,25 @@ function CredReadDomainCredentialsA;
 begin
   GetProcedureAddress(_CredReadDomainCredentialsA, credapi, 'CredReadDomainCredentialsA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredReadDomainCredentialsA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredReadDomainCredentialsA]
   end;
 end;
-{$ELSE}
-function CredReadDomainCredentialsA; external credapi name 'CredReadDomainCredentialsA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CredReadDomainCredentials: Pointer;
 
 function CredReadDomainCredentials;
 begin
-  GetProcedureAddress(_CredReadDomainCredentials, credapi, 'CredReadDomainCredentialsW');
+  GetProcedureAddress(_CredReadDomainCredentials, credapi, 'CredReadDomainCredentials' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredReadDomainCredentials]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredReadDomainCredentials]
   end;
 end;
-{$ELSE}
-function CredReadDomainCredentials; external credapi name 'CredReadDomainCredentialsW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CredReadDomainCredentials: Pointer;
-
-function CredReadDomainCredentials;
-begin
-  GetProcedureAddress(_CredReadDomainCredentials, credapi, 'CredReadDomainCredentialsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredReadDomainCredentials]
-  end;
-end;
-{$ELSE}
-function CredReadDomainCredentials; external credapi name 'CredReadDomainCredentialsA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CredDeleteW: Pointer;
 
@@ -1330,16 +1072,12 @@ function CredDeleteW;
 begin
   GetProcedureAddress(_CredDeleteW, credapi, 'CredDeleteW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredDeleteW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredDeleteW]
   end;
 end;
-{$ELSE}
-function CredDeleteW; external credapi name 'CredDeleteW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CredDeleteA: Pointer;
 
@@ -1347,53 +1085,25 @@ function CredDeleteA;
 begin
   GetProcedureAddress(_CredDeleteA, credapi, 'CredDeleteA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredDeleteA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredDeleteA]
   end;
 end;
-{$ELSE}
-function CredDeleteA; external credapi name 'CredDeleteA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CredDelete: Pointer;
 
 function CredDelete;
 begin
-  GetProcedureAddress(_CredDelete, credapi, 'CredDeleteW');
+  GetProcedureAddress(_CredDelete, credapi, 'CredDelete' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredDelete]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredDelete]
   end;
 end;
-{$ELSE}
-function CredDelete; external credapi name 'CredDeleteW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CredDelete: Pointer;
-
-function CredDelete;
-begin
-  GetProcedureAddress(_CredDelete, credapi, 'CredDeleteA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredDelete]
-  end;
-end;
-{$ELSE}
-function CredDelete; external credapi name 'CredDeleteA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CredRenameW: Pointer;
 
@@ -1401,16 +1111,12 @@ function CredRenameW;
 begin
   GetProcedureAddress(_CredRenameW, credapi, 'CredRenameW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredRenameW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredRenameW]
   end;
 end;
-{$ELSE}
-function CredRenameW; external credapi name 'CredRenameW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CredRenameA: Pointer;
 
@@ -1418,53 +1124,25 @@ function CredRenameA;
 begin
   GetProcedureAddress(_CredRenameA, credapi, 'CredRenameA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredRenameA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredRenameA]
   end;
 end;
-{$ELSE}
-function CredRenameA; external credapi name 'CredRenameA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CredRename: Pointer;
 
 function CredRename;
 begin
-  GetProcedureAddress(_CredRename, credapi, 'CredRenameW');
+  GetProcedureAddress(_CredRename, credapi, 'CredRename' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredRename]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredRename]
   end;
 end;
-{$ELSE}
-function CredRename; external credapi name 'CredRenameW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CredRename: Pointer;
-
-function CredRename;
-begin
-  GetProcedureAddress(_CredRename, credapi, 'CredRenameA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredRename]
-  end;
-end;
-{$ELSE}
-function CredRename; external credapi name 'CredRenameA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CredGetTargetInfoW: Pointer;
 
@@ -1472,16 +1150,12 @@ function CredGetTargetInfoW;
 begin
   GetProcedureAddress(_CredGetTargetInfoW, credapi, 'CredGetTargetInfoW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredGetTargetInfoW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredGetTargetInfoW]
   end;
 end;
-{$ELSE}
-function CredGetTargetInfoW; external credapi name 'CredGetTargetInfoW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CredGetTargetInfoA: Pointer;
 
@@ -1489,17 +1163,12 @@ function CredGetTargetInfoA;
 begin
   GetProcedureAddress(_CredGetTargetInfoA, credapi, 'CredGetTargetInfoA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredGetTargetInfoA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredGetTargetInfoA]
   end;
 end;
-{$ELSE}
-function CredGetTargetInfoA; external credapi name 'CredGetTargetInfoA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CredGetTargetInfo: Pointer;
 
@@ -1507,35 +1176,12 @@ function CredGetTargetInfo;
 begin
   GetProcedureAddress(_CredGetTargetInfo, credapi, 'CredGetTargetInfoA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredGetTargetInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredGetTargetInfo]
   end;
 end;
-{$ELSE}
-function CredGetTargetInfo; external credapi name 'CredGetTargetInfoA';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CredGetTargetInfo: Pointer;
-
-function CredGetTargetInfo;
-begin
-  GetProcedureAddress(_CredGetTargetInfo, credapi, 'CredGetTargetInfoA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredGetTargetInfo]
-  end;
-end;
-{$ELSE}
-function CredGetTargetInfo; external credapi name 'CredGetTargetInfoA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CredMarshalCredentialW: Pointer;
 
@@ -1543,16 +1189,12 @@ function CredMarshalCredentialW;
 begin
   GetProcedureAddress(_CredMarshalCredentialW, credapi, 'CredMarshalCredentialW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredMarshalCredentialW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredMarshalCredentialW]
   end;
 end;
-{$ELSE}
-function CredMarshalCredentialW; external credapi name 'CredMarshalCredentialW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CredMarshalCredentialA: Pointer;
 
@@ -1560,53 +1202,25 @@ function CredMarshalCredentialA;
 begin
   GetProcedureAddress(_CredMarshalCredentialA, credapi, 'CredMarshalCredentialA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredMarshalCredentialA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredMarshalCredentialA]
   end;
 end;
-{$ELSE}
-function CredMarshalCredentialA; external credapi name 'CredMarshalCredentialA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CredMarshalCredential: Pointer;
 
 function CredMarshalCredential;
 begin
-  GetProcedureAddress(_CredMarshalCredential, credapi, 'CredMarshalCredentialW');
+  GetProcedureAddress(_CredMarshalCredential, credapi, 'CredMarshalCredential' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredMarshalCredential]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredMarshalCredential]
   end;
 end;
-{$ELSE}
-function CredMarshalCredential; external credapi name 'CredMarshalCredentialW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CredMarshalCredential: Pointer;
-
-function CredMarshalCredential;
-begin
-  GetProcedureAddress(_CredMarshalCredential, credapi, 'CredMarshalCredentialA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredMarshalCredential]
-  end;
-end;
-{$ELSE}
-function CredMarshalCredential; external credapi name 'CredMarshalCredentialA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CredUnmarshalCredentialW: Pointer;
 
@@ -1614,16 +1228,12 @@ function CredUnmarshalCredentialW;
 begin
   GetProcedureAddress(_CredUnmarshalCredentialW, credapi, 'CredUnmarshalCredentialW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredUnmarshalCredentialW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredUnmarshalCredentialW]
   end;
 end;
-{$ELSE}
-function CredUnmarshalCredentialW; external credapi name 'CredUnmarshalCredentialW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CredUnmarshalCredentialA: Pointer;
 
@@ -1631,53 +1241,25 @@ function CredUnmarshalCredentialA;
 begin
   GetProcedureAddress(_CredUnmarshalCredentialA, credapi, 'CredUnmarshalCredentialA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredUnmarshalCredentialA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredUnmarshalCredentialA]
   end;
 end;
-{$ELSE}
-function CredUnmarshalCredentialA; external credapi name 'CredUnmarshalCredentialA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CredUnmarshalCredential: Pointer;
 
 function CredUnmarshalCredential;
 begin
-  GetProcedureAddress(_CredUnmarshalCredential, credapi, 'CredUnmarshalCredentialW');
+  GetProcedureAddress(_CredUnmarshalCredential, credapi, 'CredUnmarshalCredential' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredUnmarshalCredential]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredUnmarshalCredential]
   end;
 end;
-{$ELSE}
-function CredUnmarshalCredential; external credapi name 'CredUnmarshalCredentialW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CredUnmarshalCredential: Pointer;
-
-function CredUnmarshalCredential;
-begin
-  GetProcedureAddress(_CredUnmarshalCredential, credapi, 'CredUnmarshalCredentialA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredUnmarshalCredential]
-  end;
-end;
-{$ELSE}
-function CredUnmarshalCredential; external credapi name 'CredUnmarshalCredentialA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CredIsMarshaledCredentialW: Pointer;
 
@@ -1685,16 +1267,12 @@ function CredIsMarshaledCredentialW;
 begin
   GetProcedureAddress(_CredIsMarshaledCredentialW, credapi, 'CredIsMarshaledCredentialW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredIsMarshaledCredentialW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredIsMarshaledCredentialW]
   end;
 end;
-{$ELSE}
-function CredIsMarshaledCredentialW; external credapi name 'CredIsMarshaledCredentialW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CredIsMarshaledCredentialA: Pointer;
 
@@ -1702,53 +1280,25 @@ function CredIsMarshaledCredentialA;
 begin
   GetProcedureAddress(_CredIsMarshaledCredentialA, credapi, 'CredIsMarshaledCredentialA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredIsMarshaledCredentialA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredIsMarshaledCredentialA]
   end;
 end;
-{$ELSE}
-function CredIsMarshaledCredentialA; external credapi name 'CredIsMarshaledCredentialA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CredIsMarshaledCredential: Pointer;
 
 function CredIsMarshaledCredential;
 begin
-  GetProcedureAddress(_CredIsMarshaledCredential, credapi, 'CredIsMarshaledCredentialW');
+  GetProcedureAddress(_CredIsMarshaledCredential, credapi, 'CredIsMarshaledCredential' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredIsMarshaledCredential]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredIsMarshaledCredential]
   end;
 end;
-{$ELSE}
-function CredIsMarshaledCredential; external credapi name 'CredIsMarshaledCredentialW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CredIsMarshaledCredential: Pointer;
-
-function CredIsMarshaledCredential;
-begin
-  GetProcedureAddress(_CredIsMarshaledCredential, credapi, 'CredIsMarshaledCredentialA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredIsMarshaledCredential]
-  end;
-end;
-{$ELSE}
-function CredIsMarshaledCredential; external credapi name 'CredIsMarshaledCredentialA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CredGetSessionTypes: Pointer;
 
@@ -1756,16 +1306,12 @@ function CredGetSessionTypes;
 begin
   GetProcedureAddress(_CredGetSessionTypes, credapi, 'CredGetSessionTypes');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredGetSessionTypes]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredGetSessionTypes]
   end;
 end;
-{$ELSE}
-function CredGetSessionTypes; external credapi name 'CredGetSessionTypes';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CredFree: Pointer;
 
@@ -1773,16 +1319,12 @@ procedure CredFree;
 begin
   GetProcedureAddress(_CredFree, credapi, 'CredFree');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredFree]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredFree]
   end;
 end;
-{$ELSE}
-procedure CredFree; external credapi name 'CredFree';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CredUIPromptForCredentialsW: Pointer;
 
@@ -1790,16 +1332,12 @@ function CredUIPromptForCredentialsW;
 begin
   GetProcedureAddress(_CredUIPromptForCredentialsW, credui, 'CredUIPromptForCredentialsW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredUIPromptForCredentialsW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredUIPromptForCredentialsW]
   end;
 end;
-{$ELSE}
-function CredUIPromptForCredentialsW; external credui name 'CredUIPromptForCredentialsW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CredUIPromptForCredentialsA: Pointer;
 
@@ -1807,53 +1345,25 @@ function CredUIPromptForCredentialsA;
 begin
   GetProcedureAddress(_CredUIPromptForCredentialsA, credui, 'CredUIPromptForCredentialsA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredUIPromptForCredentialsA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredUIPromptForCredentialsA]
   end;
 end;
-{$ELSE}
-function CredUIPromptForCredentialsA; external credui name 'CredUIPromptForCredentialsA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CredUIPromptForCredentials: Pointer;
 
 function CredUIPromptForCredentials;
 begin
-  GetProcedureAddress(_CredUIPromptForCredentials, credui, 'CredUIPromptForCredentialsW');
+  GetProcedureAddress(_CredUIPromptForCredentials, credui, 'CredUIPromptForCredentials' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredUIPromptForCredentials]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredUIPromptForCredentials]
   end;
 end;
-{$ELSE}
-function CredUIPromptForCredentials; external credui name 'CredUIPromptForCredentialsW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CredUIPromptForCredentials: Pointer;
-
-function CredUIPromptForCredentials;
-begin
-  GetProcedureAddress(_CredUIPromptForCredentials, credui, 'CredUIPromptForCredentialsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredUIPromptForCredentials]
-  end;
-end;
-{$ELSE}
-function CredUIPromptForCredentials; external credui name 'CredUIPromptForCredentialsA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CredUIParseUserNameW: Pointer;
 
@@ -1861,16 +1371,12 @@ function CredUIParseUserNameW;
 begin
   GetProcedureAddress(_CredUIParseUserNameW, credui, 'CredUIParseUserNameW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredUIParseUserNameW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredUIParseUserNameW]
   end;
 end;
-{$ELSE}
-function CredUIParseUserNameW; external credui name 'CredUIParseUserNameW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CredUIParseUserNameA: Pointer;
 
@@ -1878,53 +1384,25 @@ function CredUIParseUserNameA;
 begin
   GetProcedureAddress(_CredUIParseUserNameA, credui, 'CredUIParseUserNameA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredUIParseUserNameA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredUIParseUserNameA]
   end;
 end;
-{$ELSE}
-function CredUIParseUserNameA; external credui name 'CredUIParseUserNameA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CredUIParseUserName: Pointer;
 
 function CredUIParseUserName;
 begin
-  GetProcedureAddress(_CredUIParseUserName, credui, 'CredUIParseUserNameW');
+  GetProcedureAddress(_CredUIParseUserName, credui, 'CredUIParseUserName' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredUIParseUserName]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredUIParseUserName]
   end;
 end;
-{$ELSE}
-function CredUIParseUserName; external credui name 'CredUIParseUserNameW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CredUIParseUserName: Pointer;
-
-function CredUIParseUserName;
-begin
-  GetProcedureAddress(_CredUIParseUserName, credui, 'CredUIParseUserNameA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredUIParseUserName]
-  end;
-end;
-{$ELSE}
-function CredUIParseUserName; external credui name 'CredUIParseUserNameA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CredUICmdLinePromptForCredentialsW: Pointer;
 
@@ -1932,16 +1410,12 @@ function CredUICmdLinePromptForCredentialsW;
 begin
   GetProcedureAddress(_CredUICmdLinePromptForCredentialsW, credui, 'CredUICmdLinePromptForCredentialsW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredUICmdLinePromptForCredentialsW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredUICmdLinePromptForCredentialsW]
   end;
 end;
-{$ELSE}
-function CredUICmdLinePromptForCredentialsW; external credui name 'CredUICmdLinePromptForCredentialsW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CredUICmdLinePromptForCredentialsA: Pointer;
 
@@ -1949,53 +1423,25 @@ function CredUICmdLinePromptForCredentialsA;
 begin
   GetProcedureAddress(_CredUICmdLinePromptForCredentialsA, credui, 'CredUICmdLinePromptForCredentialsA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredUICmdLinePromptForCredentialsA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredUICmdLinePromptForCredentialsA]
   end;
 end;
-{$ELSE}
-function CredUICmdLinePromptForCredentialsA; external credui name 'CredUICmdLinePromptForCredentialsA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CredUICmdLinePromptForCredentials: Pointer;
 
 function CredUICmdLinePromptForCredentials;
 begin
-  GetProcedureAddress(_CredUICmdLinePromptForCredentials, credui, 'CredUICmdLinePromptForCredentialsW');
+  GetProcedureAddress(_CredUICmdLinePromptForCredentials, credui, 'CredUICmdLinePromptForCredentials' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredUICmdLinePromptForCredentials]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredUICmdLinePromptForCredentials]
   end;
 end;
-{$ELSE}
-function CredUICmdLinePromptForCredentials; external credui name 'CredUICmdLinePromptForCredentialsW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CredUICmdLinePromptForCredentials: Pointer;
-
-function CredUICmdLinePromptForCredentials;
-begin
-  GetProcedureAddress(_CredUICmdLinePromptForCredentials, credui, 'CredUICmdLinePromptForCredentialsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredUICmdLinePromptForCredentials]
-  end;
-end;
-{$ELSE}
-function CredUICmdLinePromptForCredentials; external credui name 'CredUICmdLinePromptForCredentialsA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CredUIConfirmCredentialsW: Pointer;
 
@@ -2003,16 +1449,12 @@ function CredUIConfirmCredentialsW;
 begin
   GetProcedureAddress(_CredUIConfirmCredentialsW, credui, 'CredUIConfirmCredentialsW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredUIConfirmCredentialsW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredUIConfirmCredentialsW]
   end;
 end;
-{$ELSE}
-function CredUIConfirmCredentialsW; external credui name 'CredUIConfirmCredentialsW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CredUIConfirmCredentialsA: Pointer;
 
@@ -2020,50 +1462,103 @@ function CredUIConfirmCredentialsA;
 begin
   GetProcedureAddress(_CredUIConfirmCredentialsA, credui, 'CredUIConfirmCredentialsA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredUIConfirmCredentialsA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredUIConfirmCredentialsA]
   end;
 end;
+
+var
+  _CredUIConfirmCredentials: Pointer;
+
+function CredUIConfirmCredentials;
+begin
+  GetProcedureAddress(_CredUIConfirmCredentials, credui, 'CredUIConfirmCredentials' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredUIConfirmCredentials]
+  end;
+end;
+
+var
+  _CredUIStoreSSOCredW: Pointer;
+
+function CredUIStoreSSOCredW;
+begin
+  GetProcedureAddress(_CredUIStoreSSOCredW, credui, 'CredUIStoreSSOCredW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredUIStoreSSOCredW]
+  end;
+end;
+
+var
+  _CredUIReadSSOCredW: Pointer;
+
+function CredUIReadSSOCredW;
+begin
+  GetProcedureAddress(_CredUIReadSSOCredW, credui, 'CredUIReadSSOCredW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CredUIReadSSOCredW]
+  end;
+end;
+
 {$ELSE}
+
+function CredWriteW; external credapi name 'CredWriteW';
+function CredWriteA; external credapi name 'CredWriteA';
+function CredWrite; external credapi name 'CredWrite' + AWSuffix;
+function CredReadW; external credapi name 'CredReadW';
+function CredReadA; external credapi name 'CredReadA';
+function CredRead; external credapi name 'CredRead' + AWSuffix;
+function CredEnumerateW; external credapi name 'CredEnumerateW';
+function CredEnumerateA; external credapi name 'CredEnumerateA';
+function CredEnumerate; external credapi name 'CredEnumerate' + AWSuffix;
+function CredWriteDomainCredentialsW; external credapi name 'CredWriteDomainCredentialsW';
+function CredWriteDomainCredentialsA; external credapi name 'CredWriteDomainCredentialsA';
+function CredWriteDomainCredentials; external credapi name 'CredWriteDomainCredentials' + AWSuffix;
+function CredReadDomainCredentialsW; external credapi name 'CredReadDomainCredentialsW';
+function CredReadDomainCredentialsA; external credapi name 'CredReadDomainCredentialsA';
+function CredReadDomainCredentials; external credapi name 'CredReadDomainCredentials' + AWSuffix;
+function CredDeleteW; external credapi name 'CredDeleteW';
+function CredDeleteA; external credapi name 'CredDeleteA';
+function CredDelete; external credapi name 'CredDelete' + AWSuffix;
+function CredRenameW; external credapi name 'CredRenameW';
+function CredRenameA; external credapi name 'CredRenameA';
+function CredRename; external credapi name 'CredRename' + AWSuffix;
+function CredGetTargetInfoW; external credapi name 'CredGetTargetInfoW';
+function CredGetTargetInfoA; external credapi name 'CredGetTargetInfoA';
+function CredGetTargetInfo; external credapi name 'CredGetTargetInfoA';
+function CredMarshalCredentialW; external credapi name 'CredMarshalCredentialW';
+function CredMarshalCredentialA; external credapi name 'CredMarshalCredentialA';
+function CredMarshalCredential; external credapi name 'CredMarshalCredential' + AWSuffix;
+function CredUnmarshalCredentialW; external credapi name 'CredUnmarshalCredentialW';
+function CredUnmarshalCredentialA; external credapi name 'CredUnmarshalCredentialA';
+function CredUnmarshalCredential; external credapi name 'CredUnmarshalCredential' + AWSuffix;
+function CredIsMarshaledCredentialW; external credapi name 'CredIsMarshaledCredentialW';
+function CredIsMarshaledCredentialA; external credapi name 'CredIsMarshaledCredentialA';
+function CredIsMarshaledCredential; external credapi name 'CredIsMarshaledCredential' + AWSuffix;
+function CredGetSessionTypes; external credapi name 'CredGetSessionTypes';
+procedure CredFree; external credapi name 'CredFree';
+function CredUIPromptForCredentialsW; external credui name 'CredUIPromptForCredentialsW';
+function CredUIPromptForCredentialsA; external credui name 'CredUIPromptForCredentialsA';
+function CredUIPromptForCredentials; external credui name 'CredUIPromptForCredentials' + AWSuffix;
+function CredUIParseUserNameW; external credui name 'CredUIParseUserNameW';
+function CredUIParseUserNameA; external credui name 'CredUIParseUserNameA';
+function CredUIParseUserName; external credui name 'CredUIParseUserName' + AWSuffix;
+function CredUICmdLinePromptForCredentialsW; external credui name 'CredUICmdLinePromptForCredentialsW';
+function CredUICmdLinePromptForCredentialsA; external credui name 'CredUICmdLinePromptForCredentialsA';
+function CredUICmdLinePromptForCredentials; external credui name 'CredUICmdLinePromptForCredentials' + AWSuffix;
+function CredUIConfirmCredentialsW; external credui name 'CredUIConfirmCredentialsW';
 function CredUIConfirmCredentialsA; external credui name 'CredUIConfirmCredentialsA';
+function CredUIConfirmCredentials; external credui name 'CredUIConfirmCredentials' + AWSuffix;
+function CredUIStoreSSOCredW; external credui name 'CredUIStoreSSOCredW';
+function CredUIReadSSOCredW; external credui name 'CredUIReadSSOCredW';
+
 {$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CredUIConfirmCredentials: Pointer;
-
-function CredUIConfirmCredentials;
-begin
-  GetProcedureAddress(_CredUIConfirmCredentials, credui, 'CredUIConfirmCredentialsW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredUIConfirmCredentials]
-  end;
-end;
-{$ELSE}
-function CredUIConfirmCredentials; external credui name 'CredUIConfirmCredentialsW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CredUIConfirmCredentials: Pointer;
-
-function CredUIConfirmCredentials;
-begin
-  GetProcedureAddress(_CredUIConfirmCredentials, credui, 'CredUIConfirmCredentialsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CredUIConfirmCredentials]
-  end;
-end;
-{$ELSE}
-function CredUIConfirmCredentials; external credui name 'CredUIConfirmCredentialsA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
 
 end.

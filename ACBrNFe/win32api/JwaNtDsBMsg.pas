@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { DS Backup/Restore Error Codes API interface Unit for Object Pascal           }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: ntdsbmsg.h, released June 2000. The original Pascal    }
 { code is: NtDsBMsg.pas, released December 2000. The initial developer of the  }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,33 +35,35 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaNtDsBMsg.pas,v 1.7 2005/09/03 16:10:31 marquardt Exp $
 
 unit JwaNtDsBMsg;
 
 {$WEAKPACKAGEUNIT}
 
-{$HPPEMIT ''}
-{$HPPEMIT '#include "NtDsBMsg.h"'}
-{$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinError, JwaWinType;
+  JwaWindows;
+
+{$HPPEMIT ''}
+{$HPPEMIT '#include "NtDsBMsg.h"'}
+{$HPPEMIT ''}
 
 //
-//	Windows NT Directory Service Backup/Restore API error codes
-//	Copyright (C) 1996-1999, Microsoft Corporation
+// Windows NT Directory Service Backup/Restore API error codes
+// Copyright (C) 1996-1999, Microsoft Corporation
 //
 
 //
-//	SUCCESS
+// SUCCESS
 //
 //
 //  Values are 32 bit values layed out as follows:
@@ -115,7 +116,6 @@ const
   STATUS_SEVERITY_ERROR           = $3;
   {$EXTERNALSYM STATUS_SEVERITY_ERROR}
 
-
 //
 // MessageId: hrNone
 //
@@ -127,7 +127,7 @@ const
   {$EXTERNALSYM hrNone}
 
 //
-//	ERRORS
+// ERRORS
 //
 //
 // MessageId: hrNyi
@@ -140,7 +140,7 @@ const
   {$EXTERNALSYM hrNyi}
 
 //
-//	Backup errors
+// Backup errors
 //
 //
 // MessageId: hrInvalidParam
@@ -321,7 +321,7 @@ const
   {$EXTERNALSYM hrAlreadyListening}
   
 //
-//	ERRORS
+// ERRORS
 //
 //
 // SYSTEM errors
@@ -357,7 +357,7 @@ const
   {$EXTERNALSYM hrTooManyIO}
 
 //
-//	BUFFER MANAGER errors
+// BUFFER MANAGER errors
 //
 //
 // MessageId: hrBFNotSynchronous
@@ -390,7 +390,7 @@ const
   {$EXTERNALSYM hrBFInUse}
 
 //
-//	DIRECTORY MANAGER errors
+// DIRECTORY MANAGER errors
 //
 //
 // MessageId: hrPMRecDeleted
@@ -413,7 +413,7 @@ const
   {$EXTERNALSYM hrRemainingVersions}
 
 //
-//	RECORD MANAGER errors
+// RECORD MANAGER errors
 //
 //
 // MessageId: hrFLDKeyTooBig
@@ -446,7 +446,7 @@ const
   {$EXTERNALSYM hrFLDNullKey}
 
 //
-//	LOGGING/RECOVERY errors
+// LOGGING/RECOVERY errors
 //
 //
 // MessageId: hrLogFileCorrupt

@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Web Publishing SPI Helper API interface Unit for Object Pascal               }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: wpspihlp.h, released June 2000. The original Pascal    }
 { code is: WPSpiHlp.pas, released December 2000. The initial developer of the  }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaWPSpiHlp.pas,v 1.5 2005/09/03 14:27:48 marquardt Exp $
 
 unit JwaWPSpiHlp;
 
@@ -49,22 +50,22 @@ unit JwaWPSpiHlp;
 {$HPPEMIT '#include "wpspihlp.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWPTypes, JwaWinType;
+  JwaWPTypes, JwaWindows;
 
 //
-//	Flags
+// Flags
 //
 
 const
   WPF_FORCE_BIND  = $00000100; // WppBindToSite
 
 //
-//	Helper function declarations and typedefs
+// Helper function declarations and typedefs
 //
 
 //function WppBindToSiteA(hwnd: HWND; sSiteName, sURL: LPCSTR; const riid: TGUID;
@@ -72,7 +73,7 @@ const
 //{$EXTERNALSYM WppBindToSiteA}
 
 type
-  PFN_WPPBINDTOSITEA = function (hwnd: HWND; sSiteName, sURL: LPCSTR;
+  PFN_WPPBINDTOSITEA = function(hwnd: HWND; sSiteName, sURL: LPCSTR;
     const riid: TGUID; dwFlag, dwReserved: DWORD; out ppvUnk): HRESULT; stdcall;
   {$EXTERNALSYM PFN_WPPBINDTOSITEA}
 
@@ -81,7 +82,7 @@ type
 //{$EXTERNALSYM WppListSitesA}
 
 type
-  PFN_WPPLISTSITESA = function (var pdwSitesBufLen: DWORD;
+  PFN_WPPLISTSITESA = function(var pdwSitesBufLen: DWORD;
     pSitesBuffer: LPWPSITEINFOA; pdwNumSites: LPDWORD): HRESULT; stdcall;
   {$EXTERNALSYM PFN_WPPLISTSITESA}
 
@@ -89,7 +90,7 @@ type
 //{$EXTERNALSYM WppDeleteSiteA}
 
 type
-  PFN_WPPDELETESITEA = function (sSiteName: LPCSTR): HRESULT; stdcall;
+  PFN_WPPDELETESITEA = function(sSiteName: LPCSTR): HRESULT; stdcall;
   {$EXTERNALSYM PFN_WPPDELETESITEA}
 
 //function WppBindToSiteW(hwnd: HWND; sSiteName, sURL: LPCWSTR; const riid: TGUID;
@@ -97,7 +98,7 @@ type
 //{$EXTERNALSYM WppBindToSiteW}
 
 type
-  PFN_WPPBINDTOSITEW = function (hwnd: HWND; sSiteName, sURL: LPCWSTR;
+  PFN_WPPBINDTOSITEW = function(hwnd: HWND; sSiteName, sURL: LPCWSTR;
     const riid: TGUID; dwFlag, dwReserved: DWORD; out ppvUnk): HRESULT; stdcall;
   {$EXTERNALSYM PFN_WPPBINDTOSITEW}
 
@@ -106,7 +107,7 @@ type
 //{$EXTERNALSYM WppListSitesW}
 
 type
-  PFN_WPPLISTSITESW = function (var pdwSitesBufLen: DWORD;
+  PFN_WPPLISTSITESW = function(var pdwSitesBufLen: DWORD;
     pSitesBuffer: LPWPSITEINFOW; pdwNumSites: LPDWORD): HRESULT; stdcall;
   {$EXTERNALSYM PFN_WPPLISTSITESW}
 
@@ -114,11 +115,11 @@ type
 //{$EXTERNALSYM WppDeleteSiteW}
 
 type
-  PFN_WPPDELETESITEW = function (sSiteName: LPCWSTR): HRESULT; stdcall;
+  PFN_WPPDELETESITEW = function(sSiteName: LPCWSTR): HRESULT; stdcall;
   {$EXTERNALSYM PFN_WPPDELETESITEW}
 
 //
-//	Entry Points
+// Entry Points
 //
 
 const

@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Lan Manager Constants API interface Unit for Object Pascal                   }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: lmcons.h, released November 2001. The original Pascal  }
 { code is: LmCons.pas, released Februari 2002. The initial developer of the    }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,28 +35,33 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaLmCons.pas,v 1.10 2005/09/07 09:54:54 marquardt Exp $
+
+{$IFNDEF JWA_INCLUDEMODE}
 
 unit JwaLmCons;
 
 {$WEAKPACKAGEUNIT}
 
-{$HPPEMIT ''}
-{$HPPEMIT '#include "lm.h"'}
-{$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinType, JwaLmErr;
+  JwaWindows, JwaLmErr;
 
-const
-  NetApi32 = 'netapi32.dll';
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_INTERFACESECTION}
+
+{$HPPEMIT ''}
+{$HPPEMIT '#include "lm.h"'}
+{$HPPEMIT ''}
 
 //
 // NOTE:  Lengths of strings are given as the maximum lengths of the
@@ -89,9 +93,9 @@ const
 //#error CNLEN and DNLEN are not equal
 //#endif
 
-  UNCLEN      = (CNLEN+2); // UNC computer name length
+  UNCLEN      = CNLEN + 2; // UNC computer name length
   {$EXTERNALSYM UNCLEN}
-  LM20_UNCLEN = (LM20_CNLEN+2); // LM 2.0 UNC computer name length
+  LM20_UNCLEN = LM20_CNLEN + 2; // LM 2.0 UNC computer name length
   {$EXTERNALSYM LM20_UNCLEN}
 
   NNLEN      = 80; // Net name length (share name)
@@ -99,9 +103,9 @@ const
   LM20_NNLEN = 12; // LM 2.0 Net name length
   {$EXTERNALSYM LM20_NNLEN}
 
-  RMLEN      = (UNCLEN+1+NNLEN); // Max remote name length
+  RMLEN      = UNCLEN + 1 + NNLEN; // Max remote name length
   {$EXTERNALSYM RMLEN}
-  LM20_RMLEN = (LM20_UNCLEN+1+LM20_NNLEN); // LM 2.0 Max remote name length
+  LM20_RMLEN = LM20_UNCLEN + 1 + LM20_NNLEN; // LM 2.0 Max remote name length
   {$EXTERNALSYM LM20_RMLEN}
 
   SNLEN        = 80; // Service name length
@@ -172,7 +176,7 @@ const
 
   ALERTSZ       = 128; // size of alert string in server
   {$EXTERNALSYM ALERTSZ}
-  MAXDEVENTRIES = (SizeOf(Integer)*8); // Max number of device entries
+  MAXDEVENTRIES = SizeOf(Integer)*8;    // Max number of device entries
   {$EXTERNALSYM MAXDEVENTRIES}
 
                                         //
@@ -228,17 +232,13 @@ const
 
 //#if defined( _WIN32_WINNT ) || defined( WINNT ) || defined( FORCE_UNICODE )
 
-{$IFDEF _WIN32_WINNT}
+{$IFDEF WINNT4_UP}
 {$DEFINE LM_USE_UNICODE}
-{$ENDIF}
+{$ENDIF WINNT4_UP}
 
-{$IFDEF WINNT}
+{$IFDEF LM_FORCE_UNICODE}
 {$DEFINE LM_USE_UNICODE}
-{$ENDIF}
-
-{$IFDEF FORCE_UNICODE}
-{$DEFINE LM_USE_UNICODE}
-{$ENDIF}
+{$ENDIF LM_FORCE_UNICODE}
 
 {$IFDEF LM_USE_UNICODE}
 
@@ -250,28 +250,12 @@ type
   PLMSTR = ^LMSTR;
   {$NODEFINE PLMSTR}
 
-{$ELSE}
-
-type
-  LMSTR = LPSTR;
-  {$EXTERNALSYM LMSTR}
-  LMCSTR = LPCSTR;
-  {$EXTERNALSYM LMCSTR}
-
-{$ENDIF}
-
-{$UNDEF LM_USE_UNICODE}
-
-//
-//        Message File Names
-//
-
 const
-  MESSAGE_FILENAME  = TEXT('NETMSG');
+  MESSAGE_FILENAME  = WideString('NETMSG');
   {$EXTERNALSYM MESSAGE_FILENAME}
-  OS2MSG_FILENAME   = TEXT('BASE');
+  OS2MSG_FILENAME   = WideString('BASE');
   {$EXTERNALSYM OS2MSG_FILENAME}
-  HELP_MSG_FILENAME = TEXT('NETH');
+  HELP_MSG_FILENAME = WideString('NETH');
   {$EXTERNALSYM HELP_MSG_FILENAME}
 
 // ** INTERNAL_ONLY **
@@ -284,10 +268,49 @@ const
 // retrieving the messages from net.msg do we then get the bound
 // messages out of bak.msg (really out of the message segment).
 
-  BACKUP_MSG_FILENAME = TEXT('BAK.MSG');
+  BACKUP_MSG_FILENAME = WideString('BAK.MSG');
   {$EXTERNALSYM BACKUP_MSG_FILENAME}
 
 // ** END_INTERNAL **
+
+{$ELSE}
+
+type
+  LMSTR = LPSTR;
+  {$EXTERNALSYM LMSTR}
+  LMCSTR = LPCSTR;
+  {$EXTERNALSYM LMCSTR}
+
+const
+  MESSAGE_FILENAME  = AnsiString('NETMSG');
+  {$EXTERNALSYM MESSAGE_FILENAME}
+  OS2MSG_FILENAME   = AnsiString('BASE');
+  {$EXTERNALSYM OS2MSG_FILENAME}
+  HELP_MSG_FILENAME = AnsiString('NETH');
+  {$EXTERNALSYM HELP_MSG_FILENAME}
+
+// ** INTERNAL_ONLY **
+
+// The backup message file named here is a duplicate of net.msg. It
+// is not shipped with the product, but is used at buildtime to
+// msgbind certain messages to netapi.dll and some of the services.
+// This allows for OEMs to modify the message text in net.msg and
+// have those changes show up.        Only in case there is an error in
+// retrieving the messages from net.msg do we then get the bound
+// messages out of bak.msg (really out of the message segment).
+
+  BACKUP_MSG_FILENAME = LMSTR('BAK.MSG');
+  {$EXTERNALSYM BACKUP_MSG_FILENAME}
+
+// ** END_INTERNAL **
+
+{$ENDIF LM_USE_UNICODE}
+
+{$UNDEF LM_USE_UNICODE}
+
+//
+//        Message File Names
+//
 
 //
 // Keywords used in Function Prototypes
@@ -338,6 +361,15 @@ const
   MAX_LANMAN_MESSAGE_ID = 5899;
   {$EXTERNALSYM MAX_LANMAN_MESSAGE_ID}
 
-implementation
+{$ENDIF JWA_INTERFACESECTION}
 
+{$IFNDEF JWA_INCLUDEMODE}
+implementation
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_IMPLEMENTATIONSECTION}
+{$ENDIF JWA_IMPLEMENTATIONSECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
 end.
+{$ENDIF !JWA_INCLUDEMODE}

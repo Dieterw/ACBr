@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Hooking mechanism to receive system events interface Unit for Object Pascal  }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: winable.h, released June 2000. The original Pascal     }
 { code is: WinAble.pas, released December 2000. The initial developer of the   }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaWinAble.pas,v 1.8 2005/09/06 16:36:50 marquardt Exp $
 
 unit JwaWinAble;
 
@@ -49,12 +50,12 @@ unit JwaWinAble;
 {$HPPEMIT '#include "WinAble.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinType;
+  JwaWindows;
 
 //
 // This gets GUI information out of context.  If you pass in a NULL thread ID,
@@ -106,14 +107,8 @@ function GetWindowModuleFileNameW(hwnd: HWND; lpFileName: LPWSTR; cchFileName: U
 {$EXTERNALSYM GetWindowModuleFileNameW}
 function GetWindowModuleFileNameA(hwnd: HWND; lpFileName: LPSTR; cchFileName: UINT): UINT; stdcall;
 {$EXTERNALSYM GetWindowModuleFileNameA}
-
-{$IFDEF UNICODE}
-function GetWindowModuleFileName(hwnd: HWND; lpFileName: LPWSTR; cchFileName: UINT): UINT; stdcall;
+function GetWindowModuleFileName(hwnd: HWND; lpFileName: LPTSTR; cchFileName: UINT): UINT; stdcall;
 {$EXTERNALSYM GetWindowModuleFileName}
-{$ELSE}
-function GetWindowModuleFileName(hwnd: HWND; lpFileName: LPSTR; cchFileName: UINT): UINT; stdcall;
-{$EXTERNALSYM GetWindowModuleFileName}
-{$ENDIF}
 
 //
 // This returns FALSE if the caller doesn't have permissions to do this
@@ -293,7 +288,7 @@ type
   HWINEVENTHOOK = DWORD;
   {$EXTERNALSYM HWINEVENTHOOK}
 
-  WINEVENTPROC = procedure (
+  WINEVENTPROC = procedure(
     hEvent: HWINEVENTHOOK;
     event: DWORD;
     hwnd: HWND;
@@ -338,7 +333,6 @@ function UnhookWinEvent(hEvent: HWINEVENTHOOK): BOOL; stdcall;
 // If idThread isn't zero but idProcess is, will hook idThread only.
 // If both are zero, will hook everything
 //
-
 
 //
 // EVENT DEFINITION
@@ -615,11 +609,11 @@ const
 
 implementation
 
-const
-  user32 = 'user32.dll';
-
+uses
+  JwaWinDLLNames;
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _GetGUIThreadInfo: Pointer;
 
@@ -627,16 +621,12 @@ function GetGUIThreadInfo;
 begin
   GetProcedureAddress(_GetGUIThreadInfo, user32, 'GetGUIThreadInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetGUIThreadInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetGUIThreadInfo]
   end;
 end;
-{$ELSE}
-function GetGUIThreadInfo; external user32 name 'GetGUIThreadInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetWindowModuleFileNameW: Pointer;
 
@@ -644,16 +634,12 @@ function GetWindowModuleFileNameW;
 begin
   GetProcedureAddress(_GetWindowModuleFileNameW, user32, 'GetWindowModuleFileNameW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetWindowModuleFileNameW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetWindowModuleFileNameW]
   end;
 end;
-{$ELSE}
-function GetWindowModuleFileNameW; external user32 name 'GetWindowModuleFileNameW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetWindowModuleFileNameA: Pointer;
 
@@ -661,53 +647,25 @@ function GetWindowModuleFileNameA;
 begin
   GetProcedureAddress(_GetWindowModuleFileNameA, user32, 'GetWindowModuleFileNameA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetWindowModuleFileNameA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetWindowModuleFileNameA]
   end;
 end;
-{$ELSE}
-function GetWindowModuleFileNameA; external user32 name 'GetWindowModuleFileNameA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetWindowModuleFileName: Pointer;
 
 function GetWindowModuleFileName;
 begin
-  GetProcedureAddress(_GetWindowModuleFileName, user32, 'GetWindowModuleFileNameW');
+  GetProcedureAddress(_GetWindowModuleFileName, user32, 'GetWindowModuleFileName' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetWindowModuleFileName]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetWindowModuleFileName]
   end;
 end;
-{$ELSE}
-function GetWindowModuleFileName; external user32 name 'GetWindowModuleFileNameW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetWindowModuleFileName: Pointer;
-
-function GetWindowModuleFileName;
-begin
-  GetProcedureAddress(_GetWindowModuleFileName, user32, 'GetWindowModuleFileNameA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetWindowModuleFileName]
-  end;
-end;
-{$ELSE}
-function GetWindowModuleFileName; external user32 name 'GetWindowModuleFileNameA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _BlockInput: Pointer;
 
@@ -715,16 +673,12 @@ function BlockInput;
 begin
   GetProcedureAddress(_BlockInput, user32, 'BlockInput');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_BlockInput]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_BlockInput]
   end;
 end;
-{$ELSE}
-function BlockInput; external user32 name 'BlockInput';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SendInput: Pointer;
 
@@ -732,16 +686,12 @@ function SendInput;
 begin
   GetProcedureAddress(_SendInput, user32, 'SendInput');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SendInput]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SendInput]
   end;
 end;
-{$ELSE}
-function SendInput; external user32 name 'SendInput';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NotifyWinEvent: Pointer;
 
@@ -749,16 +699,12 @@ procedure NotifyWinEvent;
 begin
   GetProcedureAddress(_NotifyWinEvent, user32, 'NotifyWinEvent');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NotifyWinEvent]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NotifyWinEvent]
   end;
 end;
-{$ELSE}
-procedure NotifyWinEvent; external user32 name 'NotifyWinEvent';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetWinEventHook: Pointer;
 
@@ -766,16 +712,12 @@ function SetWinEventHook;
 begin
   GetProcedureAddress(_SetWinEventHook, user32, 'SetWinEventHook');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetWinEventHook]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetWinEventHook]
   end;
 end;
-{$ELSE}
-function SetWinEventHook; external user32 name 'SetWinEventHook';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _UnhookWinEvent: Pointer;
 
@@ -783,13 +725,24 @@ function UnhookWinEvent;
 begin
   GetProcedureAddress(_UnhookWinEvent, user32, 'UnhookWinEvent');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_UnhookWinEvent]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_UnhookWinEvent]
   end;
 end;
+
 {$ELSE}
+
+function GetGUIThreadInfo; external user32 name 'GetGUIThreadInfo';
+function GetWindowModuleFileNameW; external user32 name 'GetWindowModuleFileNameW';
+function GetWindowModuleFileNameA; external user32 name 'GetWindowModuleFileNameA';
+function GetWindowModuleFileName; external user32 name 'GetWindowModuleFileName' + AWSuffix;
+function BlockInput; external user32 name 'BlockInput';
+function SendInput; external user32 name 'SendInput';
+procedure NotifyWinEvent; external user32 name 'NotifyWinEvent';
+function SetWinEventHook; external user32 name 'SetWinEventHook';
 function UnhookWinEvent; external user32 name 'UnhookWinEvent';
+
 {$ENDIF DYNAMIC_LINK}
 
 end.

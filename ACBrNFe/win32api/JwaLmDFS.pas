@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Lan Manager DFS API interface Unit for Object Pascal                         }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: lmdfs.h, released November 2001. The original Pascal   }
 { code is: LmDfs.pas, released Februari 2002. The initial developer of the     }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaLmDFS.pas,v 1.8 2005/09/06 16:36:50 marquardt Exp $
 
 unit JwaLmDFS;
 
@@ -49,12 +50,12 @@ unit JwaLmDFS;
 {$HPPEMIT '#include "lmdfs.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaLmCons, JwaWinType;
+  JwaWindows, JwaLmCons;
 
 //
 // DFS Volume state
@@ -482,8 +483,11 @@ function NetDfsRename(Path: LPWSTR; NewPath: LPWSTR): NET_API_STATUS; stdcall;
 
 implementation
 
+uses
+  JwaWinDLLNames;
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _NetDfsAdd: Pointer;
 
@@ -491,16 +495,12 @@ function NetDfsAdd;
 begin
   GetProcedureAddress(_NetDfsAdd, netapi32, 'NetDfsAdd');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetDfsAdd]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetDfsAdd]
   end;
 end;
-{$ELSE}
-function NetDfsAdd; external netapi32 name 'NetDfsAdd';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetDfsAddStdRoot: Pointer;
 
@@ -508,16 +508,12 @@ function NetDfsAddStdRoot;
 begin
   GetProcedureAddress(_NetDfsAddStdRoot, netapi32, 'NetDfsAddStdRoot');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetDfsAddStdRoot]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetDfsAddStdRoot]
   end;
 end;
-{$ELSE}
-function NetDfsAddStdRoot; external netapi32 name 'NetDfsAddStdRoot';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetDfsRemoveStdRoot: Pointer;
 
@@ -525,16 +521,12 @@ function NetDfsRemoveStdRoot;
 begin
   GetProcedureAddress(_NetDfsRemoveStdRoot, netapi32, 'NetDfsRemoveStdRoot');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetDfsRemoveStdRoot]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetDfsRemoveStdRoot]
   end;
 end;
-{$ELSE}
-function NetDfsRemoveStdRoot; external netapi32 name 'NetDfsRemoveStdRoot';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetDfsAddFtRoot: Pointer;
 
@@ -542,16 +534,12 @@ function NetDfsAddFtRoot;
 begin
   GetProcedureAddress(_NetDfsAddFtRoot, netapi32, 'NetDfsAddFtRoot');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetDfsAddFtRoot]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetDfsAddFtRoot]
   end;
 end;
-{$ELSE}
-function NetDfsAddFtRoot; external netapi32 name 'NetDfsAddFtRoot';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetDfsRemoveFtRoot: Pointer;
 
@@ -559,16 +547,12 @@ function NetDfsRemoveFtRoot;
 begin
   GetProcedureAddress(_NetDfsRemoveFtRoot, netapi32, 'NetDfsRemoveFtRoot');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetDfsRemoveFtRoot]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetDfsRemoveFtRoot]
   end;
 end;
-{$ELSE}
-function NetDfsRemoveFtRoot; external netapi32 name 'NetDfsRemoveFtRoot';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetDfsRemoveFtRootForced: Pointer;
 
@@ -576,16 +560,12 @@ function NetDfsRemoveFtRootForced;
 begin
   GetProcedureAddress(_NetDfsRemoveFtRootForced, netapi32, 'NetDfsRemoveFtRootForced');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetDfsRemoveFtRootForced]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetDfsRemoveFtRootForced]
   end;
 end;
-{$ELSE}
-function NetDfsRemoveFtRootForced; external netapi32 name 'NetDfsRemoveFtRootForced';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetDfsManagerInitialize: Pointer;
 
@@ -593,16 +573,12 @@ function NetDfsManagerInitialize;
 begin
   GetProcedureAddress(_NetDfsManagerInitialize, netapi32, 'NetDfsManagerInitialize');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetDfsManagerInitialize]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetDfsManagerInitialize]
   end;
 end;
-{$ELSE}
-function NetDfsManagerInitialize; external netapi32 name 'NetDfsManagerInitialize';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetDfsAddStdRootForced: Pointer;
 
@@ -610,16 +586,12 @@ function NetDfsAddStdRootForced;
 begin
   GetProcedureAddress(_NetDfsAddStdRootForced, netapi32, 'NetDfsAddStdRootForced');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetDfsAddStdRootForced]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetDfsAddStdRootForced]
   end;
 end;
-{$ELSE}
-function NetDfsAddStdRootForced; external netapi32 name 'NetDfsAddStdRootForced';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetDfsGetDcAddress: Pointer;
 
@@ -627,16 +599,12 @@ function NetDfsGetDcAddress;
 begin
   GetProcedureAddress(_NetDfsGetDcAddress, netapi32, 'NetDfsGetDcAddress');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetDfsGetDcAddress]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetDfsGetDcAddress]
   end;
 end;
-{$ELSE}
-function NetDfsGetDcAddress; external netapi32 name 'NetDfsGetDcAddress';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetDfsRemove: Pointer;
 
@@ -644,16 +612,12 @@ function NetDfsRemove;
 begin
   GetProcedureAddress(_NetDfsRemove, netapi32, 'NetDfsRemove');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetDfsRemove]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetDfsRemove]
   end;
 end;
-{$ELSE}
-function NetDfsRemove; external netapi32 name 'NetDfsRemove';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetDfsEnum: Pointer;
 
@@ -661,16 +625,12 @@ function NetDfsEnum;
 begin
   GetProcedureAddress(_NetDfsEnum, netapi32, 'NetDfsEnum');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetDfsEnum]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetDfsEnum]
   end;
 end;
-{$ELSE}
-function NetDfsEnum; external netapi32 name 'NetDfsEnum';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetDfsGetInfo: Pointer;
 
@@ -678,16 +638,12 @@ function NetDfsGetInfo;
 begin
   GetProcedureAddress(_NetDfsGetInfo, netapi32, 'NetDfsGetInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetDfsGetInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetDfsGetInfo]
   end;
 end;
-{$ELSE}
-function NetDfsGetInfo; external netapi32 name 'NetDfsGetInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetDfsSetInfo: Pointer;
 
@@ -695,16 +651,12 @@ function NetDfsSetInfo;
 begin
   GetProcedureAddress(_NetDfsSetInfo, netapi32, 'NetDfsSetInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetDfsSetInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetDfsSetInfo]
   end;
 end;
-{$ELSE}
-function NetDfsSetInfo; external netapi32 name 'NetDfsSetInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetDfsGetClientInfo: Pointer;
 
@@ -712,16 +664,12 @@ function NetDfsGetClientInfo;
 begin
   GetProcedureAddress(_NetDfsGetClientInfo, netapi32, 'NetDfsGetClientInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetDfsGetClientInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetDfsGetClientInfo]
   end;
 end;
-{$ELSE}
-function NetDfsGetClientInfo; external netapi32 name 'NetDfsGetClientInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetDfsSetClientInfo: Pointer;
 
@@ -729,16 +677,12 @@ function NetDfsSetClientInfo;
 begin
   GetProcedureAddress(_NetDfsSetClientInfo, netapi32, 'NetDfsSetClientInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetDfsSetClientInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetDfsSetClientInfo]
   end;
 end;
-{$ELSE}
-function NetDfsSetClientInfo; external netapi32 name 'NetDfsSetClientInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetDfsMove: Pointer;
 
@@ -746,16 +690,12 @@ function NetDfsMove;
 begin
   GetProcedureAddress(_NetDfsMove, netapi32, 'NetDfsMove');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetDfsMove]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetDfsMove]
   end;
 end;
-{$ELSE}
-function NetDfsMove; external netapi32 name 'NetDfsMove';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetDfsRename: Pointer;
 
@@ -763,13 +703,32 @@ function NetDfsRename;
 begin
   GetProcedureAddress(_NetDfsRename, netapi32, 'NetDfsRename');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetDfsRename]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetDfsRename]
   end;
 end;
+
 {$ELSE}
+
+function NetDfsAdd; external netapi32 name 'NetDfsAdd';
+function NetDfsAddStdRoot; external netapi32 name 'NetDfsAddStdRoot';
+function NetDfsRemoveStdRoot; external netapi32 name 'NetDfsRemoveStdRoot';
+function NetDfsAddFtRoot; external netapi32 name 'NetDfsAddFtRoot';
+function NetDfsRemoveFtRoot; external netapi32 name 'NetDfsRemoveFtRoot';
+function NetDfsRemoveFtRootForced; external netapi32 name 'NetDfsRemoveFtRootForced';
+function NetDfsManagerInitialize; external netapi32 name 'NetDfsManagerInitialize';
+function NetDfsAddStdRootForced; external netapi32 name 'NetDfsAddStdRootForced';
+function NetDfsGetDcAddress; external netapi32 name 'NetDfsGetDcAddress';
+function NetDfsRemove; external netapi32 name 'NetDfsRemove';
+function NetDfsEnum; external netapi32 name 'NetDfsEnum';
+function NetDfsGetInfo; external netapi32 name 'NetDfsGetInfo';
+function NetDfsSetInfo; external netapi32 name 'NetDfsSetInfo';
+function NetDfsGetClientInfo; external netapi32 name 'NetDfsGetClientInfo';
+function NetDfsSetClientInfo; external netapi32 name 'NetDfsSetClientInfo';
+function NetDfsMove; external netapi32 name 'NetDfsMove';
 function NetDfsRename; external netapi32 name 'NetDfsRename';
+
 {$ENDIF DYNAMIC_LINK}
 
 end.

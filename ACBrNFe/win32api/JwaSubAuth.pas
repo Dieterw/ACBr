@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Subauthentication packages API interface Unit for Object Pascal              }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: subauth.h, released June 2000. The original Pascal     }
 { code is: SubAuth.pas, released December 2000. The initial developer of the   }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaSubAuth.pas,v 1.6 2005/09/03 14:27:48 marquardt Exp $
 
 unit JwaSubAuth;
 
@@ -49,12 +50,12 @@ unit JwaSubAuth;
 {$HPPEMIT '#include "subauth.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinType;
+  JwaWindows;
 
 type
   SAM_HANDLE = PVOID;
@@ -79,45 +80,45 @@ type
 //
 
 const
-  USER_ACCOUNT_DISABLED                = ($00000001);
+  USER_ACCOUNT_DISABLED                = $00000001;
   {$EXTERNALSYM USER_ACCOUNT_DISABLED}
-  USER_HOME_DIRECTORY_REQUIRED         = ($00000002);
+  USER_HOME_DIRECTORY_REQUIRED         = $00000002;
   {$EXTERNALSYM USER_HOME_DIRECTORY_REQUIRED}
-  USER_PASSWORD_NOT_REQUIRED           = ($00000004);
+  USER_PASSWORD_NOT_REQUIRED           = $00000004;
   {$EXTERNALSYM USER_PASSWORD_NOT_REQUIRED}
-  USER_TEMP_DUPLICATE_ACCOUNT          = ($00000008);
+  USER_TEMP_DUPLICATE_ACCOUNT          = $00000008;
   {$EXTERNALSYM USER_TEMP_DUPLICATE_ACCOUNT}
-  USER_NORMAL_ACCOUNT                  = ($00000010);
+  USER_NORMAL_ACCOUNT                  = $00000010;
   {$EXTERNALSYM USER_NORMAL_ACCOUNT}
-  USER_MNS_LOGON_ACCOUNT               = ($00000020);
+  USER_MNS_LOGON_ACCOUNT               = $00000020;
   {$EXTERNALSYM USER_MNS_LOGON_ACCOUNT}
-  USER_INTERDOMAIN_TRUST_ACCOUNT       = ($00000040);
+  USER_INTERDOMAIN_TRUST_ACCOUNT       = $00000040;
   {$EXTERNALSYM USER_INTERDOMAIN_TRUST_ACCOUNT}
-  USER_WORKSTATION_TRUST_ACCOUNT       = ($00000080);
+  USER_WORKSTATION_TRUST_ACCOUNT       = $00000080;
   {$EXTERNALSYM USER_WORKSTATION_TRUST_ACCOUNT}
-  USER_SERVER_TRUST_ACCOUNT            = ($00000100);
+  USER_SERVER_TRUST_ACCOUNT            = $00000100;
   {$EXTERNALSYM USER_SERVER_TRUST_ACCOUNT}
-  USER_DONT_EXPIRE_PASSWORD            = ($00000200);
+  USER_DONT_EXPIRE_PASSWORD            = $00000200;
   {$EXTERNALSYM USER_DONT_EXPIRE_PASSWORD}
-  USER_ACCOUNT_AUTO_LOCKED             = ($00000400);
+  USER_ACCOUNT_AUTO_LOCKED             = $00000400;
   {$EXTERNALSYM USER_ACCOUNT_AUTO_LOCKED}
-  USER_ENCRYPTED_TEXT_PASSWORD_ALLOWED = ($00000800);
+  USER_ENCRYPTED_TEXT_PASSWORD_ALLOWED = $00000800;
   {$EXTERNALSYM USER_ENCRYPTED_TEXT_PASSWORD_ALLOWED}
-  USER_SMARTCARD_REQUIRED              = ($00001000);
+  USER_SMARTCARD_REQUIRED              = $00001000;
   {$EXTERNALSYM USER_SMARTCARD_REQUIRED}
-  USER_TRUSTED_FOR_DELEGATION          = ($00002000);
+  USER_TRUSTED_FOR_DELEGATION          = $00002000;
   {$EXTERNALSYM USER_TRUSTED_FOR_DELEGATION}
-  USER_NOT_DELEGATED                   = ($00004000);
+  USER_NOT_DELEGATED                   = $00004000;
   {$EXTERNALSYM USER_NOT_DELEGATED}
-  USER_USE_DES_KEY_ONLY                = ($00008000);
+  USER_USE_DES_KEY_ONLY                = $00008000;
   {$EXTERNALSYM USER_USE_DES_KEY_ONLY}
-  USER_DONT_REQUIRE_PREAUTH            = ($00010000);
+  USER_DONT_REQUIRE_PREAUTH            = $00010000;
   {$EXTERNALSYM USER_DONT_REQUIRE_PREAUTH}
-  USER_PASSWORD_EXPIRED                = ($00020000);
+  USER_PASSWORD_EXPIRED                = $00020000;
   {$EXTERNALSYM USER_PASSWORD_EXPIRED}
-  USER_TRUSTED_TO_AUTHENTICATE_FOR_DELEGATION = ($00040000);
+  USER_TRUSTED_TO_AUTHENTICATE_FOR_DELEGATION = $00040000;
   {$EXTERNALSYM USER_TRUSTED_TO_AUTHENTICATE_FOR_DELEGATION}
-  NEXT_FREE_ACCOUNT_CONTROL_BIT        = (USER_TRUSTED_TO_AUTHENTICATE_FOR_DELEGATION shl 1);
+  NEXT_FREE_ACCOUNT_CONTROL_BIT        = USER_TRUSTED_TO_AUTHENTICATE_FOR_DELEGATION shl 1;
   {$EXTERNALSYM NEXT_FREE_ACCOUNT_CONTROL_BIT}
 
   USER_MACHINE_ACCOUNT_MASK = USER_INTERDOMAIN_TRUST_ACCOUNT or USER_WORKSTATION_TRUST_ACCOUNT or USER_SERVER_TRUST_ACCOUNT;
@@ -136,11 +137,11 @@ const
 //              Minutes per week = 10080
 //
 
-  SAM_DAYS_PER_WEEK    = (7);
+  SAM_DAYS_PER_WEEK    = 7;
   {$EXTERNALSYM SAM_DAYS_PER_WEEK}
-  SAM_HOURS_PER_WEEK   = (24 * SAM_DAYS_PER_WEEK);
+  SAM_HOURS_PER_WEEK   = 24 * SAM_DAYS_PER_WEEK;
   {$EXTERNALSYM SAM_HOURS_PER_WEEK}
-  SAM_MINUTES_PER_WEEK = (60 * SAM_HOURS_PER_WEEK);
+  SAM_MINUTES_PER_WEEK = 60 * SAM_HOURS_PER_WEEK;
   {$EXTERNALSYM SAM_MINUTES_PER_WEEK}
 
 type
@@ -288,7 +289,7 @@ type
   {$EXTERNALSYM PNT_CHALLENGE}
 
 const
-  USER_SESSION_KEY_LENGTH = (CYPHER_BLOCK_LENGTH * 2);
+  USER_SESSION_KEY_LENGTH = CYPHER_BLOCK_LENGTH * 2;
   {$EXTERNALSYM USER_SESSION_KEY_LENGTH}
 
 type

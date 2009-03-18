@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Property Sheet Pages API interface Unit for Object Pascal                    }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: prsht.h, released June 2000. The original Pascal       }
 { code is: PrSht.pas, released December 2000. The initial developer of the     }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,27 +35,29 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaPrSht.pas,v 1.12 2005/09/06 16:36:50 marquardt Exp $
 
 unit JwaPrSht;
 
 {$WEAKPACKAGEUNIT}
+
+{$I jediapilib.inc}
+
+interface
+
+uses
+  JwaWindows;
 
 {$HPPEMIT ''}
 {$HPPEMIT '#include "ntdsapi.h"'}
 {$HPPEMIT ''}
 {$HPPEMIT 'typedef PHPROPSHEETPAGE  *HPROPSHEETPAGE'}
 {$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
-
-interface
-
-uses
-  JwaWinNT, JwaWinUser, JwaWinType;
 
 //#ifndef CCSIZEOF_STRUCT
 //#define CCSIZEOF_STRUCT(structname, member)  (((int)((LPBYTE)(&((structname*)0)->member) - ((LPBYTE)((structname*)0)))) + sizeof(((structname*)0)->member))
@@ -76,18 +77,18 @@ type
   PHPROPSHEETPAGE = ^HPROPSHEETPAGE;
   {$NODEFINE PHPROPSHEETPAGE}
 
-  LPFNPSPCALLBACKA = function (hwnd: HWND; uMsg: UINT; ppsp: Pointer{LPPROPSHEETPAGEA}): UINT; stdcall;
+  LPFNPSPCALLBACKA = function(hwnd: HWND; uMsg: UINT; ppsp: Pointer{LPPROPSHEETPAGEA}): UINT; stdcall;
   {$EXTERNALSYM LPFNPSPCALLBACKA}
-  LPFNPSPCALLBACKW = function (hwnd: HWND; uMsg: UINT; ppsp: Pointer{LPPROPSHEETPAGEW}): UINT; stdcall;
+  LPFNPSPCALLBACKW = function(hwnd: HWND; uMsg: UINT; ppsp: Pointer{LPPROPSHEETPAGEW}): UINT; stdcall;
   {$EXTERNALSYM LPFNPSPCALLBACKW}
 
-{$IFDEF UNICODE}
-  LPFNPSPCALLBACK = function (hwnd: HWND; uMsg: UINT; ppsp: Pointer{LPPROPSHEETPAGEW}): UINT; stdcall;
+  {$IFDEF UNICODE}
+  LPFNPSPCALLBACK = function(hwnd: HWND; uMsg: UINT; ppsp: Pointer{LPPROPSHEETPAGEW}): UINT; stdcall;
   {$EXTERNALSYM LPFNPSPCALLBACK}
-{$ELSE}
-  LPFNPSPCALLBACK = function (hwnd: HWND; uMsg: UINT; ppsp: Pointer{LPPROPSHEETPAGEA}): UINT; stdcall;
+  {$ELSE}
+  LPFNPSPCALLBACK = function(hwnd: HWND; uMsg: UINT; ppsp: Pointer{LPPROPSHEETPAGEA}): UINT; stdcall;
   {$EXTERNALSYM LPFNPSPCALLBACK}
-{$ENDIF}
+  {$ENDIF UNICODE}
   
 const
   PSP_DEFAULT               = $00000000;
@@ -137,7 +138,7 @@ type
   _PROPSHEETPAGEA = record
     dwSize: DWORD;
     dwFlags: DWORD;
-    hInstance: HINSTANCE;
+    hInstance: HINST;
     u: record
     case Integer of
       0: (pszTemplate: LPCSTR);
@@ -153,10 +154,10 @@ type
     lParam: LPARAM;
     pfnCallback: LPFNPSPCALLBACKA;
     pcRefParent: LPUINT;
-    {$IFDEF _WIN32_IE_GE_0x0400}
+    {$IFDEF IE400_UP}
     pszHeaderTitle: LPCSTR;    // this is displayed in the header
     pszHeaderSubTitle: LPCSTR; //
-    {$ENDIF}
+    {$ENDIF IE400_UP}
   end;
   {$EXTERNALSYM _PROPSHEETPAGEA}
   PROPSHEETPAGEA = _PROPSHEETPAGEA;
@@ -171,7 +172,7 @@ type
   _PROPSHEETPAGEW = record
     dwSize: DWORD;
     dwFlags: DWORD;
-    hInstance: HINSTANCE;
+    hInstance: HINST;
     u: record
     case Integer of
       0: (pszTemplate: LPCWSTR);
@@ -187,10 +188,10 @@ type
     lParam: LPARAM;
     pfnCallback: LPFNPSPCALLBACKW;
     pcRefParent: LPUINT;
-    {$IFDEF _WIN32_IE_GE_0x0400}
+    {$IFDEF IE400_UP}
     pszHeaderTitle: LPCWSTR;    // this is displayed in the header
     pszHeaderSubTitle: LPCWSTR; //
-    {$ENDIF}
+    {$ENDIF IE400_UP}
   end;
   {$EXTERNALSYM _PROPSHEETPAGEW}
   PROPSHEETPAGEW = _PROPSHEETPAGEW;
@@ -203,24 +204,24 @@ type
   PPropSheetPageW = LPPROPSHEETPAGEW;
 
 {$IFDEF UNICODE}
-  PROPSHEETPAGE          = PROPSHEETPAGEW;
+  PROPSHEETPAGE = PROPSHEETPAGEW;
   {$EXTERNALSYM PROPSHEETPAGE}
-  LPPROPSHEETPAGE        = LPPROPSHEETPAGEW;
+  LPPROPSHEETPAGE = LPPROPSHEETPAGEW;
   {$EXTERNALSYM LPPROPSHEETPAGE}
-  LPCPROPSHEETPAGE       = LPCPROPSHEETPAGEW;
+  LPCPROPSHEETPAGE = LPCPROPSHEETPAGEW;
   {$EXTERNALSYM LPCPROPSHEETPAGE}
   TPropSheetPage = TPropSheetPageW;
   PPropSheetPage = PPropSheetPageW;
-  
+
 const
   PROPSHEETPAGE_V1_SIZE  = 40; {PROPSHEETPAGEW_V1_SIZE}
   {$EXTERNALSYM PROPSHEETPAGE_V1_SIZE}
 {$ELSE}
-  PROPSHEETPAGE          = PROPSHEETPAGEA;
+  PROPSHEETPAGE = PROPSHEETPAGEA;
   {$EXTERNALSYM PROPSHEETPAGE}
-  LPPROPSHEETPAGE        = LPPROPSHEETPAGEA;
+  LPPROPSHEETPAGE = LPPROPSHEETPAGEA;
   {$EXTERNALSYM LPPROPSHEETPAGE}
-  LPCPROPSHEETPAGE       = LPCPROPSHEETPAGEA;
+  LPCPROPSHEETPAGE = LPCPROPSHEETPAGEA;
   {$EXTERNALSYM LPCPROPSHEETPAGE}
   TPropSheetPage = TPropSheetPageA;
   PPropSheetPage = PPropSheetPageA;
@@ -228,7 +229,7 @@ const
 const
   PROPSHEETPAGE_V1_SIZE  = 40; {PROPSHEETPAGEA_V1_SIZE}
   {$EXTERNALSYM PROPSHEETPAGE_V1_SIZE}
-{$ENDIF}
+{$ENDIF UNICODE}
 
 const
   PSH_DEFAULT            = $00000000;
@@ -262,13 +263,13 @@ const
 
 //----- New flags for wizard97 -----------
 
-{$IFDEF _WIN32_IE_SMALLER_0500}
-  PSH_WIZARD97           = $00002000;
-  {$EXTERNALSYM PSH_WIZARD97}
-{$ELSE}
+  {$IFDEF IE500_UP}
   PSH_WIZARD97           = $01000000;
   {$EXTERNALSYM PSH_WIZARD97}
-{$ENDIF}
+  {$ELSE}
+  PSH_WIZARD97           = $00002000;
+  {$EXTERNALSYM PSH_WIZARD97}
+  {$ENDIF IE500_UP}
 
 // 0x00004000 was not used by any previous release
 
@@ -299,7 +300,7 @@ const
 //----------------------------------------
 
 type
-  PFNPROPSHEETCALLBACK = function (hwn: HWND; uMsg: UINT; lParam: LPARAM): Integer; stdcall;
+  PFNPROPSHEETCALLBACK = function(hwn: HWND; uMsg: UINT; lParam: LPARAM): Integer; stdcall;
   {$EXTERNALSYM PFNPROPSHEETCALLBACK}
 
 //const
@@ -311,7 +312,7 @@ type
     dwSize: DWORD;
     dwFlags: DWORD;
     hwndParent: HWND;
-    hInstance: HINSTANCE;
+    hInstance: HINST;
     u: record
     case Integer of
       0: (hIcon: HICON);
@@ -330,7 +331,7 @@ type
       1: (phpage: PHPROPSHEETPAGE);
     end;
     pfnCallback: PFNPROPSHEETCALLBACK;
-    {$IFDEF _WIN32_IE_GE_0x0400}
+    {$IFDEF IE400_UP}
     u4: record
     case Integer of
       0: (hbmWatermark: HBITMAP);
@@ -342,7 +343,7 @@ type
       0: (hbmHeader: HBITMAP);     // Header  bitmap shares the palette with watermark
       1: (pszbmHeader: LPCSTR);
     end;
-    {$ENDIF}
+    {$ENDIF IE400_UP}
   end;
   {$EXTERNALSYM _PROPSHEETHEADERA}
   PROPSHEETHEADERA =_PROPSHEETHEADERA;
@@ -358,7 +359,7 @@ type
     dwSize: DWORD;
     dwFlags: DWORD;
     hwndParent: HWND;
-    hInstance: HINSTANCE;
+    hInstance: HINST;
     u: record
     case Integer of
       0: (hIcon: HICON);
@@ -377,7 +378,7 @@ type
       1: (phpage: PHPROPSHEETPAGE);
     end;
     pfnCallback: PFNPROPSHEETCALLBACK;
-    {$IFDEF _WIN32_IE_GE_0x0400}
+    {$IFDEF IE400_UP}
     u4: record
     case Integer of
       0: (hbmWatermark: HBITMAP);
@@ -389,7 +390,7 @@ type
       0: (hbmHeader: HBITMAP);     // Header  bitmap shares the palette with watermark
       1: (pszbmHeader: LPCWSTR);
     end;
-    {$ENDIF}
+    {$ENDIF IE400_UP}
   end;
   {$EXTERNALSYM _PROPSHEETHEADERW}
   PROPSHEETHEADERW =_PROPSHEETHEADERW;
@@ -402,11 +403,11 @@ type
   PPropSheetHeaderW = LPPROPSHEETHEADERW;
 
 {$IFDEF UNICODE}
-  PROPSHEETHEADER         = PROPSHEETHEADERW;
+  PROPSHEETHEADER = PROPSHEETHEADERW;
   {$EXTERNALSYM PROPSHEETHEADER}
-  LPPROPSHEETHEADER       = LPPROPSHEETHEADERW;
+  LPPROPSHEETHEADER  = LPPROPSHEETHEADERW;
   {$EXTERNALSYM LPPROPSHEETHEADER}
-  LPCPROPSHEETHEADER      = LPCPROPSHEETHEADERW;
+  LPCPROPSHEETHEADER = LPCPROPSHEETHEADERW;
   {$EXTERNALSYM LPCPROPSHEETHEADER}
   TPropSheetHeader = TPropSheetHeaderW;
   PPropSheetHeader = PPropSheetHeaderW;
@@ -415,19 +416,19 @@ const
   PROPSHEETHEADER_V1_SIZE = 40; {PROPSHEETHEADERW_V1_SIZE}
   {$EXTERNALSYM PROPSHEETHEADER_V1_SIZE}
 {$ELSE}
-  PROPSHEETHEADER         = PROPSHEETHEADERA;
+  PROPSHEETHEADER = PROPSHEETHEADERA;
   {$EXTERNALSYM PROPSHEETHEADER}
-  LPPROPSHEETHEADER       = LPPROPSHEETHEADERA;
+  LPPROPSHEETHEADER = LPPROPSHEETHEADERA;
   {$EXTERNALSYM LPPROPSHEETHEADER}
-  LPCPROPSHEETHEADER      = LPCPROPSHEETHEADERA;
+  LPCPROPSHEETHEADER = LPCPROPSHEETHEADERA;
   {$EXTERNALSYM LPCPROPSHEETHEADER}
   TPropSheetHeader = TPropSheetHeaderA;
   PPropSheetHeader = PPropSheetHeaderA;
 
 const
-  PROPSHEETHEADER_V1_SIZE = 40; {PROPSHEETHEADERA_V1_SIZE;}
+  PROPSHEETHEADER_V1_SIZE = 40; {PROPSHEETHEADERA_V1_SIZE}
   {$EXTERNALSYM PROPSHEETHEADER_V1_SIZE}
-{$ENDIF}
+{$ENDIF UNICODE}
 
 const
   PSCB_INITIALIZED = 1;
@@ -445,23 +446,15 @@ function PropertySheetA(const lppsph: PROPSHEETHEADERA): INT_PTR; stdcall;
 {$EXTERNALSYM PropertySheetA}
 function PropertySheetW(const lppsph: PROPSHEETHEADERW): INT_PTR; stdcall;
 {$EXTERNALSYM PropertySheetW}
-
-{$IFDEF UNICODE}
-function CreatePropertySheetPage(const lppsp: PROPSHEETPAGEW): HPROPSHEETPAGE; stdcall;
+function CreatePropertySheetPage(const lppsp: PROPSHEETPAGE): HPROPSHEETPAGE; stdcall;
 {$EXTERNALSYM DestroyPropertySheetPage}
-function PropertySheet(const lppsph: PROPSHEETHEADERW): INT_PTR; stdcall;
+function PropertySheet(const lppsph: PROPSHEETHEADER): INT_PTR; stdcall;
 {$EXTERNALSYM PropertySheet}
-{$ELSE}
-function CreatePropertySheetPage(const lppsp: PROPSHEETPAGEA): HPROPSHEETPAGE; stdcall;
-{$EXTERNALSYM CreatePropertySheetPage}
-function PropertySheet(const lppsph: PROPSHEETHEADERA): INT_PTR; stdcall;
-{$EXTERNALSYM PropertySheet}
-{$ENDIF}
 
 type
-  LPFNADDPROPSHEETPAGE = function (page: HPROPSHEETPAGE; lParam: LPARAM): BOOL; stdcall;
+  LPFNADDPROPSHEETPAGE = function(page: HPROPSHEETPAGE; lParam: LPARAM): BOOL; stdcall;
   {$EXTERNALSYM LPFNADDPROPSHEETPAGE}
-  LPFNADDPROPSHEETPAGES = function (pv: LPVOID; fn: LPFNADDPROPSHEETPAGE; lParam: LPARAM): BOOL; stdcall;
+  LPFNADDPROPSHEETPAGES = function(pv: LPVOID; fn: LPFNADDPROPSHEETPAGE; lParam: LPARAM): BOOL; stdcall;
   {$EXTERNALSYM LPFNADDPROPSHEETPAGES}
 
   _PSHNOTIFY = record
@@ -482,33 +475,33 @@ const
   PSN_LAST               = ULONG(0-299);
   {$EXTERNALSYM PSN_LAST}
 
-  PSN_SETACTIVE   = (PSN_FIRST-0);
+  PSN_SETACTIVE   = PSN_FIRST - 0;
   {$EXTERNALSYM PSN_SETACTIVE}
-  PSN_KILLACTIVE  = (PSN_FIRST-1);
+  PSN_KILLACTIVE  = PSN_FIRST - 1;
   {$EXTERNALSYM PSN_KILLACTIVE}
-  //PSN_VALIDATE    = (PSN_FIRST-1);
+  //PSN_VALIDATE    = PSN_FIRST - 1;
   //{$EXTERNALSYM PSN_VALIDATE}
-  PSN_APPLY       = (PSN_FIRST-2);
+  PSN_APPLY       = PSN_FIRST - 2;
   {$EXTERNALSYM PSN_APPLY}
-  PSN_RESET       = (PSN_FIRST-3);
+  PSN_RESET       = PSN_FIRST - 3;
   {$EXTERNALSYM PSN_RESET}
-  //PSN_CANCEL      = (PSN_FIRST-3);
+  //PSN_CANCEL      = PSN_FIRST - 3;
   //{$EXTERNALSYM PSN_CANCEL}
-  PSN_HELP        = (PSN_FIRST-5);
+  PSN_HELP        = PSN_FIRST - 5;
   {$EXTERNALSYM PSN_HELP}
-  PSN_WIZBACK     = (PSN_FIRST-6);
+  PSN_WIZBACK     = PSN_FIRST - 6;
   {$EXTERNALSYM PSN_WIZBACK}
-  PSN_WIZNEXT     = (PSN_FIRST-7);
+  PSN_WIZNEXT     = PSN_FIRST - 7;
   {$EXTERNALSYM PSN_WIZNEXT}
-  PSN_WIZFINISH   = (PSN_FIRST-8);
+  PSN_WIZFINISH   = PSN_FIRST - 8;
   {$EXTERNALSYM PSN_WIZFINISH}
-  PSN_QUERYCANCEL = (PSN_FIRST-9);
+  PSN_QUERYCANCEL = PSN_FIRST - 9;
   {$EXTERNALSYM PSN_QUERYCANCEL}
-  PSN_GETOBJECT = (PSN_FIRST-10);
+  PSN_GETOBJECT = PSN_FIRST - 10;
   {$EXTERNALSYM PSN_GETOBJECT}
-  PSN_TRANSLATEACCELERATOR = (PSN_FIRST-12);
+  PSN_TRANSLATEACCELERATOR = PSN_FIRST - 12;
   {$EXTERNALSYM PSN_TRANSLATEACCELERATOR}
-  PSN_QUERYINITIALFOCUS    = (PSN_FIRST-13);
+  PSN_QUERYINITIALFOCUS    = PSN_FIRST - 13;
   {$EXTERNALSYM PSN_QUERYINITIALFOCUS}
 
   PSNRET_NOERROR              = 0;
@@ -520,83 +513,83 @@ const
   PSNRET_MESSAGEHANDLED       = 3;
   {$EXTERNALSYM PSNRET_MESSAGEHANDLED}
 
-  PSM_SETCURSEL = (WM_USER + 101);
+  PSM_SETCURSEL = WM_USER + 101;
   {$EXTERNALSYM PSM_SETCURSEL}
 
 function PropSheet_SetCurSel(hPropSheetDlg: HWND; hPage: HPROPSHEETPAGE; Index: Integer): BOOL;
 
 const
-  PSM_REMOVEPAGE = (WM_USER + 102);
+  PSM_REMOVEPAGE = WM_USER + 102;
   {$EXTERNALSYM PSM_REMOVEPAGE}
 
 procedure PropSheet_RemovePage(hPropSheetDlg: HWND; Index: Integer; hPage: HPROPSHEETPAGE);
 
 const
-  PSM_ADDPAGE = (WM_USER + 103);
+  PSM_ADDPAGE = WM_USER + 103;
   {$EXTERNALSYM PSM_ADDPAGE}
 
 function PropSheet_AddPage(hPropSheetDlg: HWND; hpage: HPROPSHEETPAGE): BOOL;
 
 const
-  PSM_CHANGED = (WM_USER + 104);
+  PSM_CHANGED = WM_USER + 104;
   {$EXTERNALSYM PSM_CHANGED}
 
 function PropSheet_Changed(hPropSheetDlg: HWND; hwndPage: HWND): BOOL;
 
 const
-  PSM_RESTARTWINDOWS = (WM_USER + 105);
+  PSM_RESTARTWINDOWS = WM_USER + 105;
   {$EXTERNALSYM PSM_RESTARTWINDOWS}
 
 procedure PropSheet_RestartWindows(hPropSheetDlg: HWND);
 
 const
-  PSM_REBOOTSYSTEM = (WM_USER + 106);
+  PSM_REBOOTSYSTEM = WM_USER + 106;
   {$EXTERNALSYM PSM_REBOOTSYSTEM}
 
 procedure PropSheet_RebootSystem(hPropSheetDlg: HWND);
 
 const
-  PSM_CANCELTOCLOSE = (WM_USER + 107);
+  PSM_CANCELTOCLOSE = WM_USER + 107;
   {$EXTERNALSYM PSM_CANCELTOCLOSE}
 
 procedure PropSheet_CancelToClose(hPropSheetDlg: HWND);
 
 const
-  PSM_QUERYSIBLINGS = (WM_USER + 108);
+  PSM_QUERYSIBLINGS = WM_USER + 108;
   {$EXTERNALSYM PSM_QUERYSIBLINGS}
 
 function PropSheet_QuerySiblings(hPropSheetDlg: HWND; Param1: WPARAM; Param2: LPARAM): Integer;
 
 const
-  PSM_UNCHANGED = (WM_USER + 109);
+  PSM_UNCHANGED = WM_USER + 109;
   {$EXTERNALSYM PSM_UNCHANGED}
 
 procedure PropSheet_UnChanged(hPropSheetDlg: HWND; hwndPage: HWND);
 
 const
-  PSM_APPLY = (WM_USER + 110);
+  PSM_APPLY = WM_USER + 110;
   {$EXTERNALSYM PSM_APPLY}
 
 function PropSheet_Apply(hPropSheetDlg: HWND): BOOL;
 
 const
-  PSM_SETTITLEA = (WM_USER + 111);
+  PSM_SETTITLEA = WM_USER + 111;
   {$EXTERNALSYM PSM_SETTITLEA}
-  PSM_SETTITLEW = (WM_USER + 120);
+  PSM_SETTITLEW = WM_USER + 120;
   {$EXTERNALSYM PSM_SETTITLEW}
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   PSM_SETTITLE = PSM_SETTITLEW;
   {$EXTERNALSYM PSM_SETTITLE}
-{$ELSE}
+  {$ELSE}
   PSM_SETTITLE = PSM_SETTITLEA;
   {$EXTERNALSYM PSM_SETTITLE}
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 procedure PropSheet_SetTitle(hPropSheetDlg: HWND; dwStyle: DWORD; lpszText: LPTSTR);
 
 const
-  PSM_SETWIZBUTTONS = (WM_USER + 112);
+  PSM_SETWIZBUTTONS = WM_USER + 112;
   {$EXTERNALSYM PSM_SETWIZBUTTONS}
 
 procedure PropSheet_SetWizButtons(hPropSheetDlg: HWND; dwFlags: DWORD);
@@ -611,7 +604,7 @@ const
   PSWIZB_DISABLEDFINISH = $00000008;
   {$EXTERNALSYM PSWIZB_DISABLEDFINISH}
 
-  PSM_PRESSBUTTON = (WM_USER + 113);
+  PSM_PRESSBUTTON = WM_USER + 113;
   {$EXTERNALSYM PSM_PRESSBUTTON}
 
 function PropSheet_PressButton(hPropSheetDlg: HWND; iButton: Integer): BOOL;
@@ -634,127 +627,127 @@ const
   PSBTN_MAX      = 6;
   {$EXTERNALSYM PSBTN_MAX}
 
-  PSM_SETCURSELID = (WM_USER + 114);
+  PSM_SETCURSELID = WM_USER + 114;
   {$EXTERNALSYM PSM_SETCURSELID}
 
 function PropSheet_SetCurSelByID(hPropSheetDlg: HWND; id: Integer): BOOL;
 
 const
-  PSM_SETFINISHTEXTA = (WM_USER + 115);
+  PSM_SETFINISHTEXTA = WM_USER + 115;
   {$EXTERNALSYM PSM_SETFINISHTEXTA}
-  PSM_SETFINISHTEXTW = (WM_USER + 121);
+  PSM_SETFINISHTEXTW = WM_USER + 121;
   {$EXTERNALSYM PSM_SETFINISHTEXTW}
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   PSM_SETFINISHTEXT = PSM_SETFINISHTEXTW;
   {$EXTERNALSYM PSM_SETFINISHTEXT}
-{$ELSE}
+  {$ELSE}
   PSM_SETFINISHTEXT = PSM_SETFINISHTEXTA;
   {$EXTERNALSYM PSM_SETFINISHTEXT}
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 procedure PropSheet_SetFinishText(hPropSheetDlg: HWND; lpszText: LPTSTR);
 
 const
-  PSM_GETTABCONTROL = (WM_USER + 116);
+  PSM_GETTABCONTROL = WM_USER + 116;
   {$EXTERNALSYM PSM_GETTABCONTROL}
 
 function PropSheet_GetTabControl(hPropSheetDlg: HWND): HWND;
 
 const
-  PSM_ISDIALOGMESSAGE = (WM_USER + 117);
+  PSM_ISDIALOGMESSAGE = WM_USER + 117;
   {$EXTERNALSYM PSM_ISDIALOGMESSAGE}
 
 function PropSheet_IsDialogMessage(hDlg: HWND; pMsg: LPMSG): BOOL;
 
 const
-  PSM_GETCURRENTPAGEHWND = (WM_USER + 118);
+  PSM_GETCURRENTPAGEHWND = WM_USER + 118;
   {$EXTERNALSYM PSM_GETCURRENTPAGEHWND}
 
 function PropSheet_GetCurrentPageHwnd(hDlg: HWND): HWND;
 
 const
-  PSM_INSERTPAGE = (WM_USER + 119);
+  PSM_INSERTPAGE = WM_USER + 119;
   {$EXTERNALSYM PSM_INSERTPAGE}
 
 function PropSheet_InsertPage(hPropSheetDlg: HWND; index: Integer; hpage: HPROPSHEETPAGE): BOOL;
 
 const
-  PSM_SETHEADERTITLEA = (WM_USER + 125);
+  PSM_SETHEADERTITLEA = WM_USER + 125;
   {$EXTERNALSYM PSM_SETHEADERTITLEA}
-  PSM_SETHEADERTITLEW = (WM_USER + 126);
+  PSM_SETHEADERTITLEW = WM_USER + 126;
   {$EXTERNALSYM PSM_SETHEADERTITLEW}
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   PSM_SETHEADERTITLE = PSM_SETHEADERTITLEW;
   {$EXTERNALSYM PSM_SETHEADERTITLE}
-{$ELSE}
+  {$ELSE}
   PSM_SETHEADERTITLE = PSM_SETHEADERTITLEA;
   {$EXTERNALSYM PSM_SETHEADERTITLE}
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 function PropSheet_SetHeaderTitle(hWizardDlg: HWND; iPageIndex: Integer; lpszText: LPCSTR): Integer;
 
 const
-  PSM_SETHEADERSUBTITLEA = (WM_USER + 127);
+  PSM_SETHEADERSUBTITLEA = WM_USER + 127;
   {$EXTERNALSYM PSM_SETHEADERSUBTITLEA}
-  PSM_SETHEADERSUBTITLEW = (WM_USER + 128);
+  PSM_SETHEADERSUBTITLEW = WM_USER + 128;
   {$EXTERNALSYM PSM_SETHEADERSUBTITLEW}
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   PSM_SETHEADERSUBTITLE = PSM_SETHEADERSUBTITLEW;
   {$EXTERNALSYM PSM_SETHEADERSUBTITLE}
-{$ELSE}
+  {$ELSE}
   PSM_SETHEADERSUBTITLE = PSM_SETHEADERSUBTITLEA;
   {$EXTERNALSYM PSM_SETHEADERSUBTITLE}
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 procedure PropSheet_SetHeaderSubTitle(hWizardDlg: HWND; iPageIndex: Integer; pszHeaderSubTitle: LPCSTR);
 
 const
-  PSM_HWNDTOINDEX = (WM_USER + 129);
+  PSM_HWNDTOINDEX = WM_USER + 129;
   {$EXTERNALSYM PSM_HWNDTOINDEX}
 
 function PropSheet_HwndToIndex(hPropSheetDlg: HWND; hPageDlg: HWND): Integer;
 
 const
-  PSM_INDEXTOHWND = (WM_USER + 130);
+  PSM_INDEXTOHWND = WM_USER + 130;
   {$EXTERNALSYM PSM_INDEXTOHWND}
 
 function PropSheet_IndexToHwnd(hPropSheetDlg: HWND; iPageIndex: Integer): HWND;
 
 const
-  PSM_PAGETOINDEX = (WM_USER + 131);
+  PSM_PAGETOINDEX = WM_USER + 131;
   {$EXTERNALSYM PSM_PAGETOINDEX}
 
 function PropSheet_PageToIndex(hPropSheetDlg: HWND; hPage: HPROPSHEETPAGE): Integer;
 
 const
-  PSM_INDEXTOPAGE = (WM_USER + 132);
+  PSM_INDEXTOPAGE = WM_USER + 132;
   {$EXTERNALSYM PSM_INDEXTOPAGE}
 
 function PropSheet_IndexToPage(hPropSheetDlg: HWND; iPageIndex: Integer): HPROPSHEETPAGE;
 
 const
-  PSM_IDTOINDEX = (WM_USER + 133);
+  PSM_IDTOINDEX = WM_USER + 133;
   {$EXTERNALSYM PSM_IDTOINDEX}
 
 function PropSheet_IdToIndex(hPropSheetDlg: HWND; iPageId: Integer): Integer;
 
 const
-  PSM_INDEXTOID = (WM_USER + 134);
+  PSM_INDEXTOID = WM_USER + 134;
   {$EXTERNALSYM PSM_INDEXTOID}
 
 function PropSheet_IndexToId(hPropSheetDlg: HWND; iPageIndex: Integer): Integer;
 
 const
-  PSM_GETRESULT = (WM_USER + 135);
+  PSM_GETRESULT = WM_USER + 135;
   {$EXTERNALSYM PSM_GETRESULT}
 
 function PropSheet_GetResult(hPropSheetDlg: HWND): BOOL;
 
 const
-  PSM_RECALCPAGESIZES = (WM_USER + 136);
+  PSM_RECALCPAGESIZES = WM_USER + 136;
   {$EXTERNALSYM PSM_RECALCPAGESIZES}
 
 function PropSheet_RecalcPageSizes(hPropSheetDlg: HWND): BOOL;
@@ -763,7 +756,7 @@ const
   ID_PSRESTARTWINDOWS = $2;
   {$EXTERNALSYM ID_PSRESTARTWINDOWS}
 
-  ID_PSREBOOTSYSTEM   = (ID_PSRESTARTWINDOWS or $1);
+  ID_PSREBOOTSYSTEM   = ID_PSRESTARTWINDOWS or $1;
   {$EXTERNALSYM ID_PSREBOOTSYSTEM}
 
   WIZ_CXDLG = 276;
@@ -796,166 +789,8 @@ const
 
 implementation
 
-const
-  comctl32 = 'comctl32.dll';
-
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreatePropertySheetPageA: Pointer;
-
-function CreatePropertySheetPageA;
-begin
-  GetProcedureAddress(_CreatePropertySheetPageA, comctl32, 'CreatePropertySheetPageA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreatePropertySheetPageA]
-  end;
-end;
-{$ELSE}
-function CreatePropertySheetPageA; external comctl32 name 'CreatePropertySheetPageA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreatePropertySheetPageW: Pointer;
-
-function CreatePropertySheetPageW;
-begin
-  GetProcedureAddress(_CreatePropertySheetPageW, comctl32, 'CreatePropertySheetPageW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreatePropertySheetPageW]
-  end;
-end;
-{$ELSE}
-function CreatePropertySheetPageW; external comctl32 name 'CreatePropertySheetPageW';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DestroyPropertySheetPage: Pointer;
-
-function DestroyPropertySheetPage;
-begin
-  GetProcedureAddress(_DestroyPropertySheetPage, comctl32, 'DestroyPropertySheetPage');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DestroyPropertySheetPage]
-  end;
-end;
-{$ELSE}
-function DestroyPropertySheetPage; external comctl32 name 'DestroyPropertySheetPage';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _PropertySheetA: Pointer;
-
-function PropertySheetA;
-begin
-  GetProcedureAddress(_PropertySheetA, comctl32, 'PropertySheetA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PropertySheetA]
-  end;
-end;
-{$ELSE}
-function PropertySheetA; external comctl32 name 'PropertySheetA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _PropertySheetW: Pointer;
-
-function PropertySheetW;
-begin
-  GetProcedureAddress(_PropertySheetW, comctl32, 'PropertySheetW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PropertySheetW]
-  end;
-end;
-{$ELSE}
-function PropertySheetW; external comctl32 name 'PropertySheetW';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreatePropertySheetPage: Pointer;
-
-function CreatePropertySheetPage;
-begin
-  GetProcedureAddress(_CreatePropertySheetPage, comctl32, 'CreatePropertySheetPageW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreatePropertySheetPage]
-  end;
-end;
-{$ELSE}
-function CreatePropertySheetPage; external comctl32 name 'CreatePropertySheetPageW';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _PropertySheet: Pointer;
-
-function PropertySheet;
-begin
-  GetProcedureAddress(_PropertySheet, comctl32, 'PropertySheetW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PropertySheet]
-  end;
-end;
-{$ELSE}
-function PropertySheet; external comctl32 name 'PropertySheetW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreatePropertySheetPage: Pointer;
-
-function CreatePropertySheetPage;
-begin
-  GetProcedureAddress(_CreatePropertySheetPage, comctl32, 'CreatePropertySheetPageA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreatePropertySheetPage]
-  end;
-end;
-{$ELSE}
-function CreatePropertySheetPage; external comctl32 name 'CreatePropertySheetPageA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _PropertySheet: Pointer;
-
-function PropertySheet;
-begin
-  GetProcedureAddress(_PropertySheet, comctl32, 'PropertySheetA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PropertySheet]
-  end;
-end;
-{$ELSE}
-function PropertySheet; external comctl32 name 'PropertySheetA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
+uses
+  JwaWinDLLNames;
 
 function PropSheet_SetCurSel(hPropSheetDlg: HWND; hPage: HPROPSHEETPAGE; Index: Integer): BOOL;
 begin
@@ -1101,5 +936,110 @@ function PropSheet_RecalcPageSizes(hPropSheetDlg: HWND): BOOL;
 begin
   Result := BOOL(SendMessage(hPropSheetDlg, PSM_RECALCPAGESIZES, 0, 0));
 end;
+
+{$IFDEF DYNAMIC_LINK}
+
+var
+  _CreatePropertySheetPageA: Pointer;
+
+function CreatePropertySheetPageA;
+begin
+  GetProcedureAddress(_CreatePropertySheetPageA, comctl32, 'CreatePropertySheetPageA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreatePropertySheetPageA]
+  end;
+end;
+
+var
+  _CreatePropertySheetPageW: Pointer;
+
+function CreatePropertySheetPageW;
+begin
+  GetProcedureAddress(_CreatePropertySheetPageW, comctl32, 'CreatePropertySheetPageW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreatePropertySheetPageW]
+  end;
+end;
+
+var
+  _DestroyPropertySheetPage: Pointer;
+
+function DestroyPropertySheetPage;
+begin
+  GetProcedureAddress(_DestroyPropertySheetPage, comctl32, 'DestroyPropertySheetPage');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DestroyPropertySheetPage]
+  end;
+end;
+
+var
+  _PropertySheetA: Pointer;
+
+function PropertySheetA;
+begin
+  GetProcedureAddress(_PropertySheetA, comctl32, 'PropertySheetA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PropertySheetA]
+  end;
+end;
+
+var
+  _PropertySheetW: Pointer;
+
+function PropertySheetW;
+begin
+  GetProcedureAddress(_PropertySheetW, comctl32, 'PropertySheetW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PropertySheetW]
+  end;
+end;
+
+var
+  _CreatePropertySheetPage: Pointer;
+
+function CreatePropertySheetPage;
+begin
+  GetProcedureAddress(_CreatePropertySheetPage, comctl32, 'CreatePropertySheetPage' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreatePropertySheetPage]
+  end;
+end;
+
+var
+  _PropertySheet: Pointer;
+
+function PropertySheet;
+begin
+  GetProcedureAddress(_PropertySheet, comctl32, 'PropertySheet' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PropertySheet]
+  end;
+end;
+
+{$ELSE}
+
+function CreatePropertySheetPageA; external comctl32 name 'CreatePropertySheetPageA';
+function CreatePropertySheetPageW; external comctl32 name 'CreatePropertySheetPageW';
+function DestroyPropertySheetPage; external comctl32 name 'DestroyPropertySheetPage';
+function PropertySheetA; external comctl32 name 'PropertySheetA';
+function PropertySheetW; external comctl32 name 'PropertySheetW';
+function CreatePropertySheetPage; external comctl32 name 'CreatePropertySheetPage' + AWSuffix;
+function PropertySheet; external comctl32 name 'PropertySheet' + AWSuffix;
+
+{$ENDIF DYNAMIC_LINK}
 
 end.

@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Security Service Attachements API interface Unit for Object Pascal           }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: scesvc.h, released June 2000. The original Pascal      }
 { code is: SceSvc.pas, released December 2000. The initial developer of the    }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaSceSvc.pas,v 1.3 2005/09/03 14:27:48 marquardt Exp $
 
 unit JwaSceSvc;
 
@@ -51,12 +52,12 @@ unit JwaSceSvc;
 {$HPPEMIT 'typedef SCESVC_HANDLE *PSCESVC_HANDLE'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinType;
+  JwaWindows;
 
 type
   SCESTATUS = DWORD;
@@ -191,16 +192,16 @@ const
   {$EXTERNALSYM SCESVC_ENUMERATION_MAX}
 
 type
-  PFSCE_QUERY_INFO = function (sceHandle: SCE_HANDLE; sceType: SCESVC_INFO_TYPE;
+  PFSCE_QUERY_INFO = function(sceHandle: SCE_HANDLE; sceType: SCESVC_INFO_TYPE;
     lpPrefix: LPTSTR; bExact: BOOL; ppvInfo: PPVOID;
     var psceEnumHandle: SCE_ENUMERATION_CONTEXT): SCESTATUS; stdcall;
   {$EXTERNALSYM PFSCE_QUERY_INFO}
 
-  PFSCE_SET_INFO = function (sceHandle: SCE_HANDLE; sceType: SCESVC_INFO_TYPE;
+  PFSCE_SET_INFO = function(sceHandle: SCE_HANDLE; sceType: SCESVC_INFO_TYPE;
     lpPrefix: LPTSTR; bExact: BOOL; pvInfo: PVOID): SCESTATUS; stdcall;
   {$EXTERNALSYM PFSCE_SET_INFO}
 
-  PFSCE_FREE_INFO = function (pvServiceInfo: PVOID): SCESTATUS; stdcall;
+  PFSCE_FREE_INFO = function(pvServiceInfo: PVOID): SCESTATUS; stdcall;
   {$EXTERNALSYM PFSCE_FREE_INFO}
 
 const
@@ -214,7 +215,7 @@ const
   {$EXTERNALSYM SCE_LOG_LEVEL_DEBUG}
 
 type
-  PFSCE_LOG_INFO = function (ErrLevel: Integer; Win32rc: DWORD; pErrFmt: LPTSTR {...}): SCESTATUS; stdcall;
+  PFSCE_LOG_INFO = function(ErrLevel: Integer; Win32rc: DWORD; pErrFmt: LPTSTR {...}): SCESTATUS; stdcall;
   {$EXTERNALSYM PFSCE_LOG_INFO}
 
   PSCESVC_CALLBACK_INFO = ^SCESVC_CALLBACK_INFO;
@@ -232,10 +233,10 @@ type
   TScesvcCallbackInfo = SCESVC_CALLBACK_INFO;
   PScesvcCallbackInfo = PSCESVC_CALLBACK_INFO;
 
-  PF_ConfigAnalyzeService = function (pSceCbInfo: PSCESVC_CALLBACK_INFO): SCESTATUS; stdcall;
+  PF_ConfigAnalyzeService = function(pSceCbInfo: PSCESVC_CALLBACK_INFO): SCESTATUS; stdcall;
   {$EXTERNALSYM PF_ConfigAnalyzeService}
 
-  PF_UpdateService = function (pSceCbInfo: PSCESVC_CALLBACK_INFO;
+  PF_UpdateService = function(pSceCbInfo: PSCESVC_CALLBACK_INFO;
     ServiceInfo: PSCESVC_CONFIGURATION_INFO): SCESTATUS; stdcall;
   {$EXTERNALSYM PF_UpdateService}
 

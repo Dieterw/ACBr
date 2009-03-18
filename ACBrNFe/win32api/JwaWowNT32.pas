@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { 32 bit Generic Thunks API interface Unit for Object Pascal                   }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: wownt32.h, released June 2000. The original Pascal     }
 { code is: WowNT32.pas, released December 2000. The initial developer of the   }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaWowNT32.pas,v 1.7 2005/09/06 16:36:51 marquardt Exp $
 
 unit JwaWowNT32;
 
@@ -49,12 +50,12 @@ unit JwaWowNT32;
 {$HPPEMIT '#include "wownt32.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinType;
+  JwaWindows;
 
 //
 // 16:16 -> 0:32 Pointer translation.
@@ -335,281 +336,8 @@ function WOWCallback16Ex(vpfn16, dwFlags, cbArgs: DWORD; pArgs: PVOID; pdwRetCod
 
 implementation
 
-const
-  wow32lib = 'wow32.dll';
-
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WOWGetVDMPointer: Pointer;
-
-function WOWGetVDMPointer;
-begin
-  GetProcedureAddress(_WOWGetVDMPointer, wow32lib, 'WOWGetVDMPointer');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WOWGetVDMPointer]
-  end;
-end;
-{$ELSE}
-function WOWGetVDMPointer; external wow32lib name 'WOWGetVDMPointer';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WOWGetVDMPointerFix: Pointer;
-
-function WOWGetVDMPointerFix;
-begin
-  GetProcedureAddress(_WOWGetVDMPointerFix, wow32lib, 'WOWGetVDMPointerFix');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WOWGetVDMPointerFix]
-  end;
-end;
-{$ELSE}
-function WOWGetVDMPointerFix; external wow32lib name 'WOWGetVDMPointerFix';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WOWGetVDMPointerUnfix: Pointer;
-
-procedure WOWGetVDMPointerUnfix;
-begin
-  GetProcedureAddress(_WOWGetVDMPointerUnfix, wow32lib, 'WOWGetVDMPointerUnfix');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WOWGetVDMPointerUnfix]
-  end;
-end;
-{$ELSE}
-procedure WOWGetVDMPointerUnfix; external wow32lib name 'WOWGetVDMPointerUnfix';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WOWGlobalAlloc16: Pointer;
-
-function WOWGlobalAlloc16;
-begin
-  GetProcedureAddress(_WOWGlobalAlloc16, wow32lib, 'WOWGlobalAlloc16');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WOWGlobalAlloc16]
-  end;
-end;
-{$ELSE}
-function WOWGlobalAlloc16; external wow32lib name 'WOWGlobalAlloc16';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WOWGlobalFree16: Pointer;
-
-function WOWGlobalFree16;
-begin
-  GetProcedureAddress(_WOWGlobalFree16, wow32lib, 'WOWGlobalFree16');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WOWGlobalFree16]
-  end;
-end;
-{$ELSE}
-function WOWGlobalFree16; external wow32lib name 'WOWGlobalFree16';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WOWGlobalLock16: Pointer;
-
-function WOWGlobalLock16;
-begin
-  GetProcedureAddress(_WOWGlobalLock16, wow32lib, 'WOWGlobalLock16');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WOWGlobalLock16]
-  end;
-end;
-{$ELSE}
-function WOWGlobalLock16; external wow32lib name 'WOWGlobalLock16';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WOWGlobalUnlock16: Pointer;
-
-function WOWGlobalUnlock16;
-begin
-  GetProcedureAddress(_WOWGlobalUnlock16, wow32lib, 'WOWGlobalUnlock16');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WOWGlobalUnlock16]
-  end;
-end;
-{$ELSE}
-function WOWGlobalUnlock16; external wow32lib name 'WOWGlobalUnlock16';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WOWGlobalAllocLock16: Pointer;
-
-function WOWGlobalAllocLock16;
-begin
-  GetProcedureAddress(_WOWGlobalAllocLock16, wow32lib, 'WOWGlobalAllocLock16');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WOWGlobalAllocLock16]
-  end;
-end;
-{$ELSE}
-function WOWGlobalAllocLock16; external wow32lib name 'WOWGlobalAllocLock16';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WOWGlobalUnlockFree16: Pointer;
-
-function WOWGlobalUnlockFree16;
-begin
-  GetProcedureAddress(_WOWGlobalUnlockFree16, wow32lib, 'WOWGlobalUnlockFree16');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WOWGlobalUnlockFree16]
-  end;
-end;
-{$ELSE}
-function WOWGlobalUnlockFree16; external wow32lib name 'WOWGlobalUnlockFree16';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WOWGlobalLockSize16: Pointer;
-
-function WOWGlobalLockSize16;
-begin
-  GetProcedureAddress(_WOWGlobalLockSize16, wow32lib, 'WOWGlobalLockSize16');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WOWGlobalLockSize16]
-  end;
-end;
-{$ELSE}
-function WOWGlobalLockSize16; external wow32lib name 'WOWGlobalLockSize16';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WOWYield16: Pointer;
-
-procedure WOWYield16;
-begin
-  GetProcedureAddress(_WOWYield16, wow32lib, 'WOWYield16');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WOWYield16]
-  end;
-end;
-{$ELSE}
-procedure WOWYield16; external wow32lib name 'WOWYield16';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WOWDirectedYield16: Pointer;
-
-procedure WOWDirectedYield16;
-begin
-  GetProcedureAddress(_WOWDirectedYield16, wow32lib, 'WOWDirectedYield16');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WOWDirectedYield16]
-  end;
-end;
-{$ELSE}
-procedure WOWDirectedYield16; external wow32lib name 'WOWDirectedYield16';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WOWHandle32: Pointer;
-
-function WOWHandle32;
-begin
-  GetProcedureAddress(_WOWHandle32, wow32lib, 'WOWHandle32');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WOWHandle32]
-  end;
-end;
-{$ELSE}
-function WOWHandle32; external wow32lib name 'WOWHandle32';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WOWHandle16: Pointer;
-
-function WOWHandle16;
-begin
-  GetProcedureAddress(_WOWHandle16, wow32lib, 'WOWHandle16');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WOWHandle16]
-  end;
-end;
-{$ELSE}
-function WOWHandle16; external wow32lib name 'WOWHandle16';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WOWCallback16: Pointer;
-
-function WOWCallback16;
-begin
-  GetProcedureAddress(_WOWCallback16, wow32lib, 'WOWCallback16');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WOWCallback16]
-  end;
-end;
-{$ELSE}
-function WOWCallback16; external wow32lib name 'WOWCallback16';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WOWCallback16Ex: Pointer;
-
-function WOWCallback16Ex;
-begin
-  GetProcedureAddress(_WOWCallback16Ex, wow32lib, 'WOWCallback16Ex');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WOWCallback16Ex]
-  end;
-end;
-{$ELSE}
-function WOWCallback16Ex; external wow32lib name 'WOWCallback16Ex';
-{$ENDIF DYNAMIC_LINK}
+uses
+  JwaWinDLLNames;
 
 function HWND_32(h16: WORD): HANDLE;
 begin
@@ -755,5 +483,236 @@ function HTASK_16(h32: HANDLE): WORD;
 begin
   Result := WOWHandle16(h32, WOW_TYPE_HTASK);
 end;
+
+{$IFDEF DYNAMIC_LINK}
+
+var
+  _WOWGetVDMPointer: Pointer;
+
+function WOWGetVDMPointer;
+begin
+  GetProcedureAddress(_WOWGetVDMPointer, wow32lib, 'WOWGetVDMPointer');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WOWGetVDMPointer]
+  end;
+end;
+
+var
+  _WOWGetVDMPointerFix: Pointer;
+
+function WOWGetVDMPointerFix;
+begin
+  GetProcedureAddress(_WOWGetVDMPointerFix, wow32lib, 'WOWGetVDMPointerFix');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WOWGetVDMPointerFix]
+  end;
+end;
+
+var
+  _WOWGetVDMPointerUnfix: Pointer;
+
+procedure WOWGetVDMPointerUnfix;
+begin
+  GetProcedureAddress(_WOWGetVDMPointerUnfix, wow32lib, 'WOWGetVDMPointerUnfix');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WOWGetVDMPointerUnfix]
+  end;
+end;
+
+var
+  _WOWGlobalAlloc16: Pointer;
+
+function WOWGlobalAlloc16;
+begin
+  GetProcedureAddress(_WOWGlobalAlloc16, wow32lib, 'WOWGlobalAlloc16');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WOWGlobalAlloc16]
+  end;
+end;
+
+var
+  _WOWGlobalFree16: Pointer;
+
+function WOWGlobalFree16;
+begin
+  GetProcedureAddress(_WOWGlobalFree16, wow32lib, 'WOWGlobalFree16');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WOWGlobalFree16]
+  end;
+end;
+
+var
+  _WOWGlobalLock16: Pointer;
+
+function WOWGlobalLock16;
+begin
+  GetProcedureAddress(_WOWGlobalLock16, wow32lib, 'WOWGlobalLock16');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WOWGlobalLock16]
+  end;
+end;
+
+var
+  _WOWGlobalUnlock16: Pointer;
+
+function WOWGlobalUnlock16;
+begin
+  GetProcedureAddress(_WOWGlobalUnlock16, wow32lib, 'WOWGlobalUnlock16');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WOWGlobalUnlock16]
+  end;
+end;
+
+var
+  _WOWGlobalAllocLock16: Pointer;
+
+function WOWGlobalAllocLock16;
+begin
+  GetProcedureAddress(_WOWGlobalAllocLock16, wow32lib, 'WOWGlobalAllocLock16');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WOWGlobalAllocLock16]
+  end;
+end;
+
+var
+  _WOWGlobalUnlockFree16: Pointer;
+
+function WOWGlobalUnlockFree16;
+begin
+  GetProcedureAddress(_WOWGlobalUnlockFree16, wow32lib, 'WOWGlobalUnlockFree16');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WOWGlobalUnlockFree16]
+  end;
+end;
+
+var
+  _WOWGlobalLockSize16: Pointer;
+
+function WOWGlobalLockSize16;
+begin
+  GetProcedureAddress(_WOWGlobalLockSize16, wow32lib, 'WOWGlobalLockSize16');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WOWGlobalLockSize16]
+  end;
+end;
+
+var
+  _WOWYield16: Pointer;
+
+procedure WOWYield16;
+begin
+  GetProcedureAddress(_WOWYield16, wow32lib, 'WOWYield16');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WOWYield16]
+  end;
+end;
+
+var
+  _WOWDirectedYield16: Pointer;
+
+procedure WOWDirectedYield16;
+begin
+  GetProcedureAddress(_WOWDirectedYield16, wow32lib, 'WOWDirectedYield16');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WOWDirectedYield16]
+  end;
+end;
+
+var
+  _WOWHandle32: Pointer;
+
+function WOWHandle32;
+begin
+  GetProcedureAddress(_WOWHandle32, wow32lib, 'WOWHandle32');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WOWHandle32]
+  end;
+end;
+
+var
+  _WOWHandle16: Pointer;
+
+function WOWHandle16;
+begin
+  GetProcedureAddress(_WOWHandle16, wow32lib, 'WOWHandle16');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WOWHandle16]
+  end;
+end;
+
+var
+  _WOWCallback16: Pointer;
+
+function WOWCallback16;
+begin
+  GetProcedureAddress(_WOWCallback16, wow32lib, 'WOWCallback16');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WOWCallback16]
+  end;
+end;
+
+var
+  _WOWCallback16Ex: Pointer;
+
+function WOWCallback16Ex;
+begin
+  GetProcedureAddress(_WOWCallback16Ex, wow32lib, 'WOWCallback16Ex');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WOWCallback16Ex]
+  end;
+end;
+
+{$ELSE}
+
+function WOWGetVDMPointer; external wow32lib name 'WOWGetVDMPointer';
+function WOWGetVDMPointerFix; external wow32lib name 'WOWGetVDMPointerFix';
+procedure WOWGetVDMPointerUnfix; external wow32lib name 'WOWGetVDMPointerUnfix';
+function WOWGlobalAlloc16; external wow32lib name 'WOWGlobalAlloc16';
+function WOWGlobalFree16; external wow32lib name 'WOWGlobalFree16';
+function WOWGlobalLock16; external wow32lib name 'WOWGlobalLock16';
+function WOWGlobalUnlock16; external wow32lib name 'WOWGlobalUnlock16';
+function WOWGlobalAllocLock16; external wow32lib name 'WOWGlobalAllocLock16';
+function WOWGlobalUnlockFree16; external wow32lib name 'WOWGlobalUnlockFree16';
+function WOWGlobalLockSize16; external wow32lib name 'WOWGlobalLockSize16';
+procedure WOWYield16; external wow32lib name 'WOWYield16';
+procedure WOWDirectedYield16; external wow32lib name 'WOWDirectedYield16';
+function WOWHandle32; external wow32lib name 'WOWHandle32';
+function WOWHandle16; external wow32lib name 'WOWHandle16';
+function WOWCallback16; external wow32lib name 'WOWCallback16';
+function WOWCallback16Ex; external wow32lib name 'WOWCallback16Ex';
+
+{$ENDIF DYNAMIC_LINK}
 
 end.

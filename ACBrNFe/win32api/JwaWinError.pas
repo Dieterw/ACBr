@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Windows Error Codes API interface Unit for Object Pascal                     }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: winerror.h, released June 2000. The original Pascal    }
 { code is: WinError.pas, released December 2000. The initial developer of the  }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,25 +35,33 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaWinError.pas,v 1.7 2005/09/04 07:02:38 marquardt Exp $
+
+{$IFNDEF JWA_INCLUDEMODE}
 
 unit JwaWinError;
 
 {$WEAKPACKAGEUNIT}
 
-{$HPPEMIT ''}
-{$HPPEMIT '#include "WinError.h"'}
-{$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
   JwaWinType;
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_INTERFACESECTION}
+
+{$HPPEMIT ''}
+{$HPPEMIT '#include "WinError.h"'}
+{$HPPEMIT ''}
 
 //
 //  Values are 32 bit values layed out as follows:
@@ -117,6 +124,8 @@ const
   {$EXTERNALSYM FACILITY_CONTROL}
   FACILITY_NULL = 0;
   {$EXTERNALSYM FACILITY_NULL}
+  FACILITY_METADIRECTORY = 35;
+  {$EXTERNALSYM FACILITY_METADIRECTORY}
   FACILITY_MSMQ = 14;
   {$EXTERNALSYM FACILITY_MSMQ}
   FACILITY_MEDIASERVER = 13;
@@ -144,11 +153,9 @@ const
   FACILITY_AAF = 18;
   {$EXTERNALSYM FACILITY_AAF}
 
-
 //
 // Define the severity codes
 //
-
 
 //
 // MessageId: ERROR_SUCCESS
@@ -3986,7 +3993,7 @@ const
 //
 // MessageText:
 //
-//  This operation is not supported on a Microsoft Small Business Server
+//  This operation is not supported on a computer running Windows Server 2003 for Small Business Server
 //
   ERROR_NOT_SUPPORTED_ON_SBS = DWORD(1254);
   {$EXTERNALSYM ERROR_NOT_SUPPORTED_ON_SBS}
@@ -4077,7 +4084,8 @@ const
 // MessageText:
 //
 //  The kerberos protocol encountered an error while validating the
-//  KDC certificate during smartcard logon.
+//  KDC certificate during smartcard logon.  There is more information in the
+//  system event log.
 //
   ERROR_PKINIT_FAILURE = DWORD(1263);
   {$EXTERNALSYM ERROR_PKINIT_FAILURE}
@@ -4257,6 +4265,15 @@ const
   ERROR_VDM_DISALLOWED = DWORD(1286);
   {$EXTERNALSYM ERROR_VDM_DISALLOWED}
 
+//
+// MessageId: ERROR_UNIDENTIFIED_ERROR
+//
+// MessageText:
+//
+//  Insufficient information exists to identify the cause of failure.
+//
+  ERROR_UNIDENTIFIED_ERROR = DWORD(1287);
+  {$EXTERNALSYM ERROR_UNIDENTIFIED_ERROR}
 
 ///////////////////////////
 //
@@ -4264,13 +4281,11 @@ const
 //
 ///////////////////////////
 
-
 ///////////////////////////
 //                       //
 // Security Status Codes //
 //                       //
 ///////////////////////////
-
 
 //
 // MessageId: ERROR_NOT_ALL_ASSIGNED
@@ -5266,13 +5281,11 @@ const
 // End of security error codes
 
 
-
 ///////////////////////////
 //                       //
 // WinUser Error Codes   //
 //                       //
 ///////////////////////////
-
 
 //
 // MessageId: ERROR_INVALID_WINDOW_HANDLE
@@ -5897,13 +5910,11 @@ const
 // End of WinUser error codes
 
 
-
 ///////////////////////////
 //                       //
 // Eventlog Status Codes //
 //                       //
 ///////////////////////////
-
 
 //
 // MessageId: ERROR_EVENTLOG_FILE_CORRUPT
@@ -5948,13 +5959,11 @@ const
 // End of eventlog error codes
 
 
-
 ///////////////////////////
 //                       //
 // MSI Error Codes       //
 //                       //
 ///////////////////////////
-
 
 //
 // MessageId: ERROR_INSTALL_SERVICE_FAILURE
@@ -6410,13 +6419,11 @@ const
 // End of MSI error codes
 
 
-
 ///////////////////////////
 //                       //
 //   RPC Status Codes    //
 //                       //
 ///////////////////////////
-
 
 //
 // MessageId: RPC_S_INVALID_STRING_BINDING
@@ -8100,13 +8107,11 @@ const
 
 
 
-
 ///////////////////////////
 //                       //
 //   OpenGL Error Code   //
 //                       //
 ///////////////////////////
-
 
 //
 // MessageId: ERROR_INVALID_PIXEL_FORMAT
@@ -8171,13 +8176,11 @@ const
 // End of OpenGL error codes
 
 
-
 ///////////////////////////////////////////
 //                                       //
 //   Image Color Management Error Code   //
 //                                       //
 ///////////////////////////////////////////
-
 
 //
 // MessageId: ERROR_INVALID_CMM
@@ -8311,7 +8314,6 @@ const
 
 
 
-
 ///////////////////////////
 //                       //
 // Winnet32 Status Codes //
@@ -8319,7 +8321,6 @@ const
 // The range 2100 through 2999 is reserved for network status codes.
 // See lmerr.h for a complete listing
 ///////////////////////////
-
 
 //
 // MessageId: ERROR_CONNECTED_OTHER_PASSWORD
@@ -8390,7 +8391,6 @@ const
 //
   ERROR_DEVICE_IN_USE = DWORD(2404);
   {$EXTERNALSYM ERROR_DEVICE_IN_USE}
-
 
 ////////////////////////////////////
 //                                //
@@ -9206,6 +9206,16 @@ const
 //
   ERROR_CLEANER_CARTRIDGE_INSTALLED = DWORD(4340);
   {$EXTERNALSYM ERROR_CLEANER_CARTRIDGE_INSTALLED}
+
+//
+// MessageId: ERROR_IEPORT_FULL
+//
+// MessageText:
+//
+//  Cannot use the ieport because it is not empty.
+//
+  ERROR_IEPORT_FULL = DWORD(4341);
+  {$EXTERNALSYM ERROR_IEPORT_FULL}
 
 ////////////////////////////////////////////
 //                                        //
@@ -13427,7 +13437,7 @@ const
 //
 // MessageText:
 //
-//  The replication synchronization attempt failed as the destination partial attribute set is not a subset of source partial attribute set.
+//  Synchronization attempt failed because the destination DC is currently waiting to synchronize new partial attributes from source. This condition is normal if a recent schema change modified the partial attribute set. The destination partial attribute set is not a subset of source partial attribute set.
 //
   ERROR_DS_DRA_INCOMPATIBLE_PARTIAL_SET = DWORD(8464);
   {$EXTERNALSYM ERROR_DS_DRA_INCOMPATIBLE_PARTIAL_SET}
@@ -14951,13 +14961,35 @@ const
   ERROR_DS_DISALLOWED_IN_SYSTEM_CONTAINER = DWORD(8615);
   {$EXTERNALSYM ERROR_DS_DISALLOWED_IN_SYSTEM_CONTAINER}
 
+//
+// MessageId: ERROR_DS_LDAP_SEND_QUEUE_FULL
+//
+// MessageText:
+//
+//  The LDAP servers network send queue has filled up because the client is not
+//  processing the results of it's requests fast enough.  No more requests will
+//  be processed until the client catches up.  If the client does not catch up
+//  then it will be disconnected.
+//
+  ERROR_DS_LDAP_SEND_QUEUE_FULL = 8616;
+  {$EXTERNALSYM ERROR_DS_LDAP_SEND_QUEUE_FULL}
+
+//
+// MessageId: ERROR_DS_DRA_OUT_SCHEDULE_WINDOW
+//
+// MessageText:
+//
+//  The scheduled replication did not take place because the system was too busy to execute the request within the schedule window.  The replication queue is overloaded. Consider reducing the number of partners or decreasing the scheduled replication frequency.
+//
+  ERROR_DS_DRA_OUT_SCHEDULE_WINDOW = DWORD(8617);
+  {$EXTERNALSYM ERROR_DS_DRA_OUT_SCHEDULE_WINDOW}
+
 ///////////////////////////////////////////////////
 //                                                /
 //     End of Active Directory Error Codes        /
 //                                                /
 //                  8000 to  8999                 /
 ///////////////////////////////////////////////////
-
 
 ///////////////////////////////////////////////////
 //                                               //
@@ -15129,7 +15161,6 @@ const
   DNS_ERROR_RCODE_LAST = DNS_ERROR_RCODE_BADTIME;
   {$EXTERNALSYM DNS_ERROR_RCODE_LAST}
 
-
 //
 //  Packet format
 //
@@ -15194,7 +15225,6 @@ const
 
   DNS_STATUS_PACKET_UNSECURE = DNS_ERROR_UNSECURE_PACKET;
   {$EXTERNALSYM DNS_STATUS_PACKET_UNSECURE}
-
 
 //
 //  General API errors
@@ -15376,7 +15406,6 @@ const
 //
   DNS_ERROR_INCONSISTENT_ROOT_HINTS = DWORD(9565);
   {$EXTERNALSYM DNS_ERROR_INCONSISTENT_ROOT_HINTS}
-
 
 //
 //  Zone errors
@@ -15616,7 +15645,6 @@ const
   DNS_ERROR_ZONE_IS_SHUTDOWN = DWORD(9621);
   {$EXTERNALSYM DNS_ERROR_ZONE_IS_SHUTDOWN}
 
-
 //
 //  Datafile errors
 //
@@ -15678,7 +15706,6 @@ const
 //
   DNS_ERROR_DATAFILE_PARSING = DWORD(9655);
   {$EXTERNALSYM DNS_ERROR_DATAFILE_PARSING}
-
 
 //
 //  Database errors
@@ -15896,7 +15923,6 @@ const
   DNS_ERROR_NO_BOOTFILE_IF_DS_ZONE = DWORD(9719);
   {$EXTERNALSYM DNS_ERROR_NO_BOOTFILE_IF_DS_ZONE}
 
-
 //
 //  Operation errors
 //
@@ -15937,7 +15963,6 @@ const
   DNS_INFO_ADDED_LOCAL_WINS = DWORD(9753);
   {$EXTERNALSYM DNS_INFO_ADDED_LOCAL_WINS}
 
-
 //
 //  Secure update
 //
@@ -15955,7 +15980,6 @@ const
 //
   DNS_STATUS_CONTINUE_NEEDED = DWORD(9801);
   {$EXTERNALSYM DNS_STATUS_CONTINUE_NEEDED}
-
 
 //
 //  Setup errors
@@ -15985,7 +16009,6 @@ const
 //
   DNS_ERROR_NO_DNS_SERVERS = DWORD(9852);
   {$EXTERNALSYM DNS_ERROR_NO_DNS_SERVERS}
-
 
 //
 //  Directory partition (DP) errors
@@ -16050,13 +16073,25 @@ const
   DNS_ERROR_DP_NOT_AVAILABLE = DWORD(9905);
   {$EXTERNALSYM DNS_ERROR_DP_NOT_AVAILABLE}
 
+// DNS_ERROR_DP_FSMO_ERROR               0x000026b2
+//
+// MessageId: DNS_ERROR_DP_FSMO_ERROR
+//
+// MessageText:
+//
+//  The application directory partition operation failed. The domain controller
+//  holding the domain naming master role is down or unable to service the
+//  request or is not running Windows Server 2003.
+//
+  DNS_ERROR_DP_FSMO_ERROR = DWORD(9906);
+  {$EXTERNALSYM DNS_ERROR_DP_FSMO_ERROR}
+
 ///////////////////////////////////////////////////
 //                                               //
 //             End of DNS Error Codes            //
 //                                               //
 //                  9000 to 9999                 //
 ///////////////////////////////////////////////////
-
 
 ///////////////////////////////////////////////////
 //                                               //
@@ -16969,7 +17004,6 @@ const
 ///////////////////////////////////////////////////
 
 
-
 ///////////////////////////////////////////////////
 //                                               //
 //             Side By Side Error Codes          //
@@ -17788,7 +17822,6 @@ const
   ERROR_SXS_INVALID_ASSEMBLY_IDENTITY_ATTRIBUTE_NAME = DWORD(14080);
   {$EXTERNALSYM ERROR_SXS_INVALID_ASSEMBLY_IDENTITY_ATTRIBUTE_NAME}
 
-
 ///////////////////////////////////////////////////
 //                                               //
 //           End of Side By Side Error Codes     //
@@ -17797,14 +17830,12 @@ const
 ///////////////////////////////////////////////////
 
 
-
 ///////////////////////////////////////////////////
 //                                               //
 //           Start of IPSec Error codes          //
 //                                               //
 //                 13000 to 13999                //
 ///////////////////////////////////////////////////
-
 
 //
 // MessageId: ERROR_IPSEC_QM_POLICY_EXISTS
@@ -18948,7 +18979,6 @@ const
   SEVERITY_ERROR = 1;
   {$EXTERNALSYM SEVERITY_ERROR}
 
-
 //
 // Generic test for success on any status value (non-negative numbers
 // indicate success).
@@ -19042,7 +19072,6 @@ function HRESULT_FROM_NT(x: NTSTATUS): HRESULT;
 
 // HRESULT functions
 // As noted above, these functions are obsolete and should not be used.
-
 
 // Extract the SCODE from a HRESULT
 
@@ -19614,7 +19643,6 @@ const
   CO_E_MALFORMED_SPN = HRESULT($80004033);
   {$EXTERNALSYM CO_E_MALFORMED_SPN}
 
-
 //
 // Success codes
 //
@@ -19631,7 +19659,6 @@ const
 // Codes 0x0-0x01ff are reserved for the OLE group of
 // interfaces.
 //
-
 
 //
 // Generic OLE errors that may be returned by many inerfaces
@@ -24280,7 +24307,6 @@ const
   {$EXTERNALSYM RPC_E_UNEXPECTED}
 
 
-
 //////////////////////////////////////
 //                                  //
 // Additional Security Status Codes //
@@ -24288,7 +24314,6 @@ const
 // Facility=Security                //
 //                                  //
 //////////////////////////////////////
-
 
 //
 // MessageId: ERROR_AUDITING_DISABLED
@@ -24311,13 +24336,11 @@ const
   {$EXTERNALSYM ERROR_ALL_SIDS_FILTERED}
 
 
-
 /////////////////////////////////////////////
 //                                         //
 // end of Additional Security Status Codes //
 //                                         //
 /////////////////////////////////////////////
-
 
 
  /////////////////
@@ -25417,6 +25440,52 @@ const
 //
   SEC_E_CROSSREALM_DELEGATION_FAILURE = HRESULT($80090357);
   {$EXTERNALSYM SEC_E_CROSSREALM_DELEGATION_FAILURE}
+
+//
+// MessageId: SEC_E_REVOCATION_OFFLINE_KDC
+//
+// MessageText:
+//
+//  The revocation status of the domain controller certificate used for smartcard
+//  authentication could not be determined.  There is additional information in the system event
+//  log. Please contact your system administrator.
+//
+  SEC_E_REVOCATION_OFFLINE_KDC = HRESULT($80090358);
+  {$EXTERNALSYM SEC_E_REVOCATION_OFFLINE_KDC}
+
+//
+// MessageId: SEC_E_ISSUING_CA_UNTRUSTED_KDC
+//
+// MessageText:
+//
+//  An untrusted certificate authority was detected while processing the
+//  domain controller certificate used for authentication.  There is additional information in
+//  the system event log.  Please contact your system administrator.
+//
+  SEC_E_ISSUING_CA_UNTRUSTED_KDC = HRESULT($80090359);
+  {$EXTERNALSYM SEC_E_ISSUING_CA_UNTRUSTED_KDC}
+
+//
+// MessageId: SEC_E_KDC_CERT_EXPIRED
+//
+// MessageText:
+//
+//  The domain controller certificate used for smartcard logon has expired.
+//  Please contact your system administrator with the contents of your system event log.
+//
+  SEC_E_KDC_CERT_EXPIRED = HRESULT($8009035A);
+  {$EXTERNALSYM SEC_E_KDC_CERT_EXPIRED}
+
+//
+// MessageId: SEC_E_KDC_CERT_REVOKED
+//
+// MessageText:
+//
+//  The domain controller certificate used for smartcard logon has been revoked.
+//  Please contact your system administrator with the contents of your system event log.
+//
+  SEC_E_KDC_CERT_REVOKED = HRESULT($8009035B);
+  {$EXTERNALSYM SEC_E_KDC_CERT_REVOKED}
 
 //
 // Provided for backwards compatibility
@@ -27140,7 +27209,7 @@ const
 //
 // MessageText:
 //
-//  The certificate does not meet or contain the Authenticode financial extensions.
+//  The certificate does not meet or contain the Authenticode(tm) financial extensions.
 //
   TRUST_E_FINANCIAL_CRITERIA = HRESULT($8009601E);
   {$EXTERNALSYM TRUST_E_FINANCIAL_CRITERIA}
@@ -28362,6 +28431,146 @@ const
 //
   SPAPI_E_SCE_DISABLED = HRESULT($800F0238);
   {$EXTERNALSYM SPAPI_E_SCE_DISABLED}
+
+//
+// MessageId: SPAPI_E_UNKNOWN_EXCEPTION
+//
+// MessageText:
+//
+//  An unknown exception was encountered.
+//
+  SPAPI_E_UNKNOWN_EXCEPTION = HRESULT($800F0239);
+  {$EXTERNALSYM SPAPI_E_UNKNOWN_EXCEPTION}
+
+//
+// MessageId: SPAPI_E_PNP_REGISTRY_ERROR
+//
+// MessageText:
+//
+//  A problem was encountered when accessing the Plug and Play registry database.
+//
+  SPAPI_E_PNP_REGISTRY_ERROR = HRESULT($800F023A);
+  {$EXTERNALSYM SPAPI_E_PNP_REGISTRY_ERROR}
+
+//
+// MessageId: SPAPI_E_REMOTE_REQUEST_UNSUPPORTED
+//
+// MessageText:
+//
+//  The requested operation is not supported for a remote machine.
+//
+  SPAPI_E_REMOTE_REQUEST_UNSUPPORTED = HRESULT($800F023B);
+  {$EXTERNALSYM SPAPI_E_REMOTE_REQUEST_UNSUPPORTED}
+
+//
+// MessageId: SPAPI_E_NOT_AN_INSTALLED_OEM_INF
+//
+// MessageText:
+//
+//  The specified file is not an installed OEM INF.
+//
+  SPAPI_E_NOT_AN_INSTALLED_OEM_INF = HRESULT($800F023C);
+  {$EXTERNALSYM SPAPI_E_NOT_AN_INSTALLED_OEM_INF}
+
+//
+// MessageId: SPAPI_E_INF_IN_USE_BY_DEVICES
+//
+// MessageText:
+//
+//  One or more devices are presently installed using the specified INF.
+//
+  SPAPI_E_INF_IN_USE_BY_DEVICES = HRESULT($800F023D);
+  {$EXTERNALSYM SPAPI_E_INF_IN_USE_BY_DEVICES}
+
+//
+// MessageId: SPAPI_E_DI_FUNCTION_OBSOLETE
+//
+// MessageText:
+//
+//  The requested device install operation is obsolete.
+//
+  SPAPI_E_DI_FUNCTION_OBSOLETE = HRESULT($800F023E);
+  {$EXTERNALSYM SPAPI_E_DI_FUNCTION_OBSOLETE}
+
+//
+// MessageId: SPAPI_E_NO_AUTHENTICODE_CATALOG
+//
+// MessageText:
+//
+//  A file could not be verified because it does not have an associated catalog signed via Authenticode(tm).
+//
+  SPAPI_E_NO_AUTHENTICODE_CATALOG = HRESULT($800F023F);
+  {$EXTERNALSYM SPAPI_E_NO_AUTHENTICODE_CATALOG}
+
+//
+// MessageId: SPAPI_E_AUTHENTICODE_DISALLOWED
+//
+// MessageText:
+//
+//  Authenticode(tm) signature verification is not supported for the specified INF.
+//
+  SPAPI_E_AUTHENTICODE_DISALLOWED = HRESULT($800F0240);
+  {$EXTERNALSYM SPAPI_E_AUTHENTICODE_DISALLOWED}
+
+//
+// MessageId: SPAPI_E_AUTHENTICODE_TRUSTED_PUBLISHER
+//
+// MessageText:
+//
+//  The INF was signed with an Authenticode(tm) catalog from a trusted publisher.
+//
+  SPAPI_E_AUTHENTICODE_TRUSTED_PUBLISHER = HRESULT($800F0241);
+  {$EXTERNALSYM SPAPI_E_AUTHENTICODE_TRUSTED_PUBLISHER}
+
+//
+// MessageId: SPAPI_E_AUTHENTICODE_TRUST_NOT_ESTABLISHED
+//
+// MessageText:
+//
+//  The publisher of an Authenticode(tm) signed catalog has not yet been established as trusted.
+//
+  SPAPI_E_AUTHENTICODE_TRUST_NOT_ESTABLISHED = HRESULT($800F0242);
+  {$EXTERNALSYM SPAPI_E_AUTHENTICODE_TRUST_NOT_ESTABLISHED}
+
+//
+// MessageId: SPAPI_E_AUTHENTICODE_PUBLISHER_NOT_TRUSTED
+//
+// MessageText:
+//
+//  The publisher of an Authenticode(tm) signed catalog was not established as trusted.
+//
+  SPAPI_E_AUTHENTICODE_PUBLISHER_NOT_TRUSTED = HRESULT($800F0243);
+  {$EXTERNALSYM SPAPI_E_AUTHENTICODE_PUBLISHER_NOT_TRUSTED}
+
+//
+// MessageId: SPAPI_E_SIGNATURE_OSATTRIBUTE_MISMATCH
+//
+// MessageText:
+//
+//  The software was tested for compliance with Windows Logo requirements on a different version of Windows, and may not be compatible with this version.
+//
+  SPAPI_E_SIGNATURE_OSATTRIBUTE_MISMATCH = HRESULT($800F0244);
+  {$EXTERNALSYM SPAPI_E_SIGNATURE_OSATTRIBUTE_MISMATCH}
+
+//
+// MessageId: SPAPI_E_ONLY_VALIDATE_VIA_AUTHENTICODE
+//
+// MessageText:
+//
+//  The file may only be validated by a catalog signed via Authenticode(tm).
+//
+  SPAPI_E_ONLY_VALIDATE_VIA_AUTHENTICODE = HRESULT($800F0245);
+  {$EXTERNALSYM SPAPI_E_ONLY_VALIDATE_VIA_AUTHENTICODE}
+
+//
+// MessageId: SPAPI_E_UNRECOVERABLE_STACK_OVERFLOW
+//
+// MessageText:
+//
+//  An unrecoverable stack overflow was encountered.
+//
+  SPAPI_E_UNRECOVERABLE_STACK_OVERFLOW = HRESULT($800F0300);
+  {$EXTERNALSYM SPAPI_E_UNRECOVERABLE_STACK_OVERFLOW}
 
 //
 // MessageId: SPAPI_E_ERROR_NOT_INSTALLED
@@ -30142,7 +30351,13 @@ const
   COMADMIN_E_PARTITIONS_DISABLED = HRESULT($80110824);
   {$EXTERNALSYM COMADMIN_E_PARTITIONS_DISABLED}
 
+{$ENDIF JWA_INTERFACESECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
 implementation
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_IMPLEMENTATIONSECTION}
 
 function SUCCEEDED(Status: HRESULT): BOOL;
 begin
@@ -30241,4 +30456,8 @@ begin
   Result := HRESULT(scBase);
 end;
 
+{$ENDIF JWA_IMPLEMENTATIONSECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
 end.
+{$ENDIF !JWA_INCLUDEMODE}

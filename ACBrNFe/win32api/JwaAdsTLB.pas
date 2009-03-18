@@ -1,34 +1,37 @@
+// $Id: JwaAdsTLB.pas,v 1.5 2005/09/03 13:12:10 marquardt Exp $
+
 unit JwaAdsTLB;
 
 // ************************************************************************ //
-// WARNING                                                                    
-// -------                                                                    
-// The types declared in this file were generated from data read from a       
-// Type Library. If this type library is explicitly or indirectly (via        
-// another type library referring to this type library) re-imported, or the   
-// 'Refresh' command of the Type Library Editor activated while editing the   
-// Type Library, the contents of this file will be regenerated and all        
-// manual modifications will be lost.                                         
+// WARNING
+// -------
+// The types declared in this file were generated from data read from a
+// Type Library. If this type library is explicitly or indirectly (via
+// another type library referring to this type library) re-imported, or the
+// 'Refresh' command of the Type Library Editor activated while editing the
+// Type Library, the contents of this file will be regenerated and all
+// manual modifications will be lost.
 // ************************************************************************ //
 
-// PASTLWTR : $Revision: 1.1 $
+// (rom) deactivated CVS string
+// PASTLWTR : Revision:   1.88.1.0.1.0
 // File generated on 9/25/2000 11:37:09 AM from Type Library described below.
 
 // *************************************************************************//
-// NOTE:                                                                      
-// Items guarded by $IFDEF_LIVE_SERVER_AT_DESIGN_TIME are used by properties  
-// which return objects that may need to be explicitly created via a function 
-// call prior to any access via the property. These items have been disabled  
-// in order to prevent accidental use from within the object inspector. You   
-// may enable them by defining LIVE_SERVER_AT_DESIGN_TIME or by selectively   
-// removing them from the $IFDEF blocks. However, such items must still be    
-// programmatically created via a method of the appropriate CoClass before    
-// they can be used.                                                          
+// NOTE:
+// Items guarded by $IFDEF_LIVE_SERVER_AT_DESIGN_TIME are used by properties
+// which return objects that may need to be explicitly created via a function
+// call prior to any access via the property. These items have been disabled
+// in order to prevent accidental use from within the object inspector. You
+// may enable them by defining LIVE_SERVER_AT_DESIGN_TIME or by selectively
+// removing them from the $IFDEF blocks. However, such items must still be
+// programmatically created via a method of the appropriate CoClass before
+// they can be used.
 // ************************************************************************ //
 // Type Lib: C:\WINNT\system32\activeds.tlb (1)
 // IID\LCID: {97D25DB0-0363-11CF-ABC4-02608C9E7553}\0
-// Helpfile: 
-// DepndLst: 
+// Helpfile:
+// DepndLst:
 //   (1) v2.0 stdole, (C:\WINNT\System32\stdole2.tlb)
 //   (2) v4.0 StdVCL, (C:\WINNT\System32\STDVCL40.DLL)
 // Errors:
@@ -66,18 +69,50 @@ unit JwaAdsTLB;
 //   Error creating palette bitmap of (TDNWithBinary) : Server activeds.dll contains no icons
 //   Error creating palette bitmap of (TDNWithString) : Server activeds.dll contains no icons
 // ************************************************************************ //
-{$TYPEDADDRESS OFF} // Unit must be compiled without type-checked pointers. 
+{$TYPEDADDRESS OFF} // Unit must be compiled without type-checked pointers.
+
 interface
+{$i jediapilib.inc}
+uses
+  Windows, ActiveX, Classes {$IFNDEF NOVCL} , Graphics, OleServer, OleCtrls, StdVCL {$ENDIF} ;
 
-uses Windows, ActiveX, Classes, Graphics, OleServer, OleCtrls, StdVCL;
+{$IFDEF FPC}
+Type
+// Temporary dummies to get FPC working.
+           TServerData= Record
+                            ClassID:   TGUID;
+                            IntfIID:   TGUID;
+                            EventIID:  String;   // probably TGUID too
+                            LicenseKey: pointer;
+                            Version: integer
+                            end;
+
+
+
+               TOleServer = Class(TComponent)  // for registercomponents to work
+                           private
+                            ServerData : ^TServerData;
+                           public
+                 function  GetServer:IUnknown;
+                 procedure InitServerData; virtual;
+                 constructor Create(AOwner: TComponent); virtual;
+                 Procedure Connect; virtual;
+                 procedure Disconnect; virtual;
+                 end;
+
+
+  SysUINT    = Windows.UINT;
+  SysINT     = Windows.WINT;
+{$endif}
 
 // *********************************************************************//
-// GUIDS declared in the TypeLibrary. Following prefixes are used:        
-//   Type Libraries     : LIBID_xxxx                                      
-//   CoClasses          : CLASS_xxxx                                      
-//   DISPInterfaces     : DIID_xxxx                                       
-//   Non-DISP interfaces: IID_xxxx                                        
+// GUIDS declared in the TypeLibrary. Following prefixes are used:
+//   Type Libraries     : LIBID_xxxx
+//   CoClasses          : CLASS_xxxx
+//   DISPInterfaces     : DIID_xxxx
+//   Non-DISP interfaces: IID_xxxx
 // *********************************************************************//
+
 const
   // TypeLibrary Major and minor versions
   ActiveDsMajorVersion = 1;
@@ -180,7 +215,7 @@ const
   CLASS_DNWithString: TGUID = '{334857CC-F934-11D2-BA96-00C04FB6D0D1}';
 
 // *********************************************************************//
-// Declaration of Enumerations defined in Type Library                    
+// Declaration of Enumerations defined in Type Library
 // *********************************************************************//
 // Constants for enum __MIDL___MIDL_itf_ads_0000_0001
 type
@@ -610,24 +645,40 @@ const
 type
 
 // *********************************************************************//
-// Forward declaration of types defined in TypeLibrary                    
+// Forward declaration of types defined in TypeLibrary
 // *********************************************************************//
   IADs = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsDisp = dispinterface;
+  {$endif}
   IADsContainer = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsContainerDisp = dispinterface;
+  {$endif}
   IADsCollection = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsCollectionDisp = dispinterface;
+  {$endif}
   IADsMembers = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsMembersDisp = dispinterface;
+  {$endif}
   IADsPropertyList = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsPropertyListDisp = dispinterface;
+  {$endif}
   IADsPropertyEntry = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsPropertyEntryDisp = dispinterface;
+  {$endif}
   IADsPropertyValue = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsPropertyValueDisp = dispinterface;
+  {$endif}
   IADsPropertyValue2 = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsPropertyValue2Disp = dispinterface;
+  {$endif}
   IPrivateDispatch = interface;
   ITypeInfo = interface;
   ITypeComp = interface;
@@ -635,112 +686,210 @@ type
   IPrivateUnknown = interface;
   IADsExtension = interface;
   IADsDeleteOps = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsDeleteOpsDisp = dispinterface;
+  {$endif}
   IADsNamespaces = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsNamespacesDisp = dispinterface;
+  {$endif}
   IADsClass = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsClassDisp = dispinterface;
+  {$endif}
   IADsProperty = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsPropertyDisp = dispinterface;
+  {$endif}
   IADsSyntax = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsSyntaxDisp = dispinterface;
+  {$endif}
   IADsLocality = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsLocalityDisp = dispinterface;
+  {$endif}
   IADsO = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsODisp = dispinterface;
+  {$endif}
   IADsOU = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsOUDisp = dispinterface;
+  {$endif}
   IADsDomain = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsDomainDisp = dispinterface;
+  {$endif}
   IADsComputer = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsComputerDisp = dispinterface;
+  {$endif}
   IADsComputerOperations = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsComputerOperationsDisp = dispinterface;
+  {$endif}
   IADsGroup = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsGroupDisp = dispinterface;
+  {$endif}
   IADsUser = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsUserDisp = dispinterface;
+  {$endif}
   IADsPrintQueue = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsPrintQueueDisp = dispinterface;
+  {$endif}
   IADsPrintQueueOperations = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsPrintQueueOperationsDisp = dispinterface;
+  {$endif}
   IADsPrintJob = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsPrintJobDisp = dispinterface;
+  {$endif}
   IADsPrintJobOperations = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsPrintJobOperationsDisp = dispinterface;
+  {$endif}
   IADsService = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsServiceDisp = dispinterface;
+  {$endif}
   IADsServiceOperations = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsServiceOperationsDisp = dispinterface;
+  {$endif}
   IADsFileService = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsFileServiceDisp = dispinterface;
+  {$endif}
   IADsFileServiceOperations = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsFileServiceOperationsDisp = dispinterface;
+  {$endif}
   IADsFileShare = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsFileShareDisp = dispinterface;
+  {$endif}
   IADsSession = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsSessionDisp = dispinterface;
+  {$endif}
   IADsResource = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsResourceDisp = dispinterface;
+  {$endif}
   IADsOpenDSObject = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsOpenDSObjectDisp = dispinterface;
+  {$endif}
   IDirectoryObject = interface;
   IDirectorySearch = interface;
   IDirectorySchemaMgmt = interface;
   IADsAggregatee = interface;
   IADsAggregator = interface;
   IADsAccessControlEntry = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsAccessControlEntryDisp = dispinterface;
+  {$endif}
   IADsAccessControlList = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsAccessControlListDisp = dispinterface;
+  {$endif}
   IADsSecurityDescriptor = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsSecurityDescriptorDisp = dispinterface;
+  {$endif}
   IADsLargeInteger = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsLargeIntegerDisp = dispinterface;
+  {$endif}
   IADsNameTranslate = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsNameTranslateDisp = dispinterface;
+  {$endif}
   IADsCaseIgnoreList = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsCaseIgnoreListDisp = dispinterface;
+  {$endif}
   IADsFaxNumber = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsFaxNumberDisp = dispinterface;
+  {$endif}
   IADsNetAddress = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsNetAddressDisp = dispinterface;
+  {$endif}
   IADsOctetList = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsOctetListDisp = dispinterface;
+  {$endif}
   IADsEmail = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsEmailDisp = dispinterface;
+  {$endif}
   IADsPath = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsPathDisp = dispinterface;
+  {$endif}
   IADsReplicaPointer = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsReplicaPointerDisp = dispinterface;
+  {$endif}
   IADsAcl = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsAclDisp = dispinterface;
+  {$endif}
   IADsTimestamp = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsTimestampDisp = dispinterface;
+  {$endif}
   IADsPostalAddress = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsPostalAddressDisp = dispinterface;
+  {$endif}
   IADsBackLink = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsBackLinkDisp = dispinterface;
+  {$endif}
   IADsTypedName = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsTypedNameDisp = dispinterface;
+  {$endif}
   IADsHold = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsHoldDisp = dispinterface;
+  {$endif}
   IADsObjectOptions = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsObjectOptionsDisp = dispinterface;
+  {$endif}
   IADsPathname = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsPathnameDisp = dispinterface;
+  {$endif}
   IADsADSystemInfo = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsADSystemInfoDisp = dispinterface;
+  {$endif}
   IADsWinNTSystemInfo = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsWinNTSystemInfoDisp = dispinterface;
+  {$endif}
   IADsDNWithBinary = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsDNWithBinaryDisp = dispinterface;
+  {$endif}
   IADsDNWithString = interface;
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsDNWithStringDisp = dispinterface;
+  {$endif}
 
 // *********************************************************************//
-// Declaration of CoClasses defined in Type Library                       
-// (NOTE: Here we map each CoClass to its Default Interface)              
+// Declaration of CoClasses defined in Type Library
+// (NOTE: Here we map each CoClass to its Default Interface)
 // *********************************************************************//
   PropertyEntry = IADsPropertyEntry;
   PropertyValue = IADsPropertyValue;
@@ -768,9 +917,8 @@ type
   DNWithBinary = IADsDNWithBinary;
   DNWithString = IADsDNWithString;
 
-
 // *********************************************************************//
-// Declaration of structures, unions and aliases.                         
+// Declaration of structures, unions and aliases.
 // *********************************************************************//
   PUserType1 = ^_ADS_CASEIGNORE_LIST; {*}
   PUserType2 = ^_ADS_OCTET_LIST; {*}
@@ -795,21 +943,21 @@ type
   PUserType16 = ^_ads_class_def; {*}
   PPUserType2 = ^PUserType16; {*}
 
-  ADSTYPEENUM = __MIDL___MIDL_itf_ads_0000_0001; 
+  ADSTYPEENUM = __MIDL___MIDL_itf_ads_0000_0001;
 
   __MIDL___MIDL_itf_ads_0000_0002 = packed record
     dwLength: LongWord;
     lpValue: ^Byte;
   end;
 
-  ADS_OCTET_STRING = __MIDL___MIDL_itf_ads_0000_0002; 
+  ADS_OCTET_STRING = __MIDL___MIDL_itf_ads_0000_0002;
 
   __MIDL___MIDL_itf_ads_0000_0003 = packed record
     dwLength: LongWord;
     lpValue: ^Byte;
   end;
 
-  ADS_NT_SECURITY_DESCRIPTOR = __MIDL___MIDL_itf_ads_0000_0003; 
+  ADS_NT_SECURITY_DESCRIPTOR = __MIDL___MIDL_itf_ads_0000_0003;
 
   _SYSTEMTIME = packed record
     wYear: Word;
@@ -831,7 +979,7 @@ type
     lpValue: ^Byte;
   end;
 
-  ADS_PROV_SPECIFIC = __MIDL___MIDL_itf_ads_0000_0004; 
+  ADS_PROV_SPECIFIC = __MIDL___MIDL_itf_ads_0000_0004;
 
   __MIDL___MIDL_itf_ads_0000_0005 = packed record
     Type_: LongWord;
@@ -839,27 +987,27 @@ type
     Path: PWideChar;
   end;
 
-  ADS_PATH = __MIDL___MIDL_itf_ads_0000_0005; 
+  ADS_PATH = __MIDL___MIDL_itf_ads_0000_0005;
 
   __MIDL___MIDL_itf_ads_0000_0006 = packed record
     PostalAddress: array[0..5] of PWideChar;
   end;
 
-  ADS_POSTALADDRESS = __MIDL___MIDL_itf_ads_0000_0006; 
+  ADS_POSTALADDRESS = __MIDL___MIDL_itf_ads_0000_0006;
 
   __MIDL___MIDL_itf_ads_0000_0007 = packed record
     WholeSeconds: LongWord;
     EventID: LongWord;
   end;
 
-  ADS_TIMESTAMP = __MIDL___MIDL_itf_ads_0000_0007; 
+  ADS_TIMESTAMP = __MIDL___MIDL_itf_ads_0000_0007;
 
   __MIDL___MIDL_itf_ads_0000_0008 = packed record
     RemoteID: LongWord;
     ObjectName: PWideChar;
   end;
 
-  ADS_BACKLINK = __MIDL___MIDL_itf_ads_0000_0008; 
+  ADS_BACKLINK = __MIDL___MIDL_itf_ads_0000_0008;
 
   __MIDL___MIDL_itf_ads_0000_0009 = packed record
     ObjectName: PWideChar;
@@ -867,14 +1015,14 @@ type
     Interval: LongWord;
   end;
 
-  ADS_TYPEDNAME = __MIDL___MIDL_itf_ads_0000_0009; 
+  ADS_TYPEDNAME = __MIDL___MIDL_itf_ads_0000_0009;
 
   __MIDL___MIDL_itf_ads_0000_0010 = packed record
     ObjectName: PWideChar;
     Amount: LongWord;
   end;
 
-  ADS_HOLD = __MIDL___MIDL_itf_ads_0000_0010; 
+  ADS_HOLD = __MIDL___MIDL_itf_ads_0000_0010;
 
   __MIDL___MIDL_itf_ads_0000_0011 = packed record
     AddressType: LongWord;
@@ -882,7 +1030,7 @@ type
     Address: ^Byte;
   end;
 
-  ADS_NETADDRESS = __MIDL___MIDL_itf_ads_0000_0011; 
+  ADS_NETADDRESS = __MIDL___MIDL_itf_ads_0000_0011;
 
   __MIDL___MIDL_itf_ads_0000_0012 = packed record
     ServerName: PWideChar;
@@ -892,7 +1040,7 @@ type
     ReplicaAddressHints: ^__MIDL___MIDL_itf_ads_0000_0011;
   end;
 
-  ADS_REPLICAPOINTER = __MIDL___MIDL_itf_ads_0000_0012; 
+  ADS_REPLICAPOINTER = __MIDL___MIDL_itf_ads_0000_0012;
 
   __MIDL___MIDL_itf_ads_0000_0013 = packed record
     TelephoneNumber: PWideChar;
@@ -900,14 +1048,14 @@ type
     Parameters: ^Byte;
   end;
 
-  ADS_FAXNUMBER = __MIDL___MIDL_itf_ads_0000_0013; 
+  ADS_FAXNUMBER = __MIDL___MIDL_itf_ads_0000_0013;
 
   __MIDL___MIDL_itf_ads_0000_0014 = packed record
     Address: PWideChar;
     Type_: LongWord;
   end;
 
-  ADS_EMAIL = __MIDL___MIDL_itf_ads_0000_0014; 
+  ADS_EMAIL = __MIDL___MIDL_itf_ads_0000_0014;
 
   __MIDL___MIDL_itf_ads_0000_0015 = packed record
     dwLength: LongWord;
@@ -915,14 +1063,14 @@ type
     pszDNString: PWideChar;
   end;
 
-  ADS_DN_WITH_BINARY = __MIDL___MIDL_itf_ads_0000_0015; 
+  ADS_DN_WITH_BINARY = __MIDL___MIDL_itf_ads_0000_0015;
 
   __MIDL___MIDL_itf_ads_0000_0016 = packed record
     pszStringValue: PWideChar;
     pszDNString: PWideChar;
   end;
 
-  ADS_DN_WITH_STRING = __MIDL___MIDL_itf_ads_0000_0016; 
+  ADS_DN_WITH_STRING = __MIDL___MIDL_itf_ads_0000_0016;
 
   _ADS_CASEIGNORE_LIST = packed record
     Next: PUserType1;
@@ -966,7 +1114,7 @@ type
       26: (pDNWithString: ^__MIDL___MIDL_itf_ads_0000_0016);
   end;
 
-  ADS_AUTHENTICATION_ENUM = __MIDL___MIDL_itf_ads_0000_0018; 
+  ADS_AUTHENTICATION_ENUM = __MIDL___MIDL_itf_ads_0000_0018;
 
   _ads_object_info = packed record
     pszRDN: PWideChar;
@@ -976,13 +1124,13 @@ type
     pszClassName: PWideChar;
   end;
 
-  ADS_STATUSENUM = __MIDL___MIDL_itf_ads_0000_0019; 
-  ADS_DEREFENUM = __MIDL___MIDL_itf_ads_0000_0020; 
-  ADS_SCOPEENUM = __MIDL___MIDL_itf_ads_0000_0021; 
-  ADS_PREFERENCES_ENUM = __MIDL___MIDL_itf_ads_0000_0022; 
-  ADSI_DIALECT_ENUM = __MIDL___MIDL_itf_ads_0000_0023; 
-  ADS_CHASE_REFERRALS_ENUM = __MIDL___MIDL_itf_ads_0000_0024; 
-  ADS_SEARCHPREF_ENUM = __MIDL___MIDL_itf_ads_0000_0025; 
+  ADS_STATUSENUM = __MIDL___MIDL_itf_ads_0000_0019;
+  ADS_DEREFENUM = __MIDL___MIDL_itf_ads_0000_0020;
+  ADS_SCOPEENUM = __MIDL___MIDL_itf_ads_0000_0021;
+  ADS_PREFERENCES_ENUM = __MIDL___MIDL_itf_ads_0000_0022;
+  ADSI_DIALECT_ENUM = __MIDL___MIDL_itf_ads_0000_0023;
+  ADS_CHASE_REFERRALS_ENUM = __MIDL___MIDL_itf_ads_0000_0024;
+  ADS_SEARCHPREF_ENUM = __MIDL___MIDL_itf_ads_0000_0025;
 
   _adsvalue = packed record
     dwType: ADSTYPEENUM;
@@ -1005,14 +1153,13 @@ type
     fMultiValued: Integer;
   end;
 
-
   _ads_sortkey = packed record
     pszAttrType: PWideChar;
     pszReserved: PWideChar;
     fReverseorder: Shortint;
   end;
 
-  ADS_PROPERTY_OPERATION_ENUM = __MIDL___MIDL_itf_ads_0000_0026; 
+  ADS_PROPERTY_OPERATION_ENUM = __MIDL___MIDL_itf_ads_0000_0026;
 
   __MIDL_IOleAutomationTypes_0005 = record
     case Integer of
@@ -1031,14 +1178,14 @@ type
     lLbound: Integer;
   end;
 
-  ULONG_PTR = LongWord; 
+  ULONG_PTR = LongWord;
 
   tagIDLDESC = packed record
     dwReserved: ULONG_PTR;
     wIDLFlags: Word;
   end;
 
-  DWORD = LongWord; 
+  DWORD = LongWord;
 
   tagPARAMDESCEX = packed record
     cBytes: LongWord;
@@ -1094,22 +1241,22 @@ type
     wLibFlags: Word;
   end;
 
-  ADS_SYSTEMFLAG_ENUM = __MIDL___MIDL_itf_ads_0120_0001; 
-  ADS_GROUP_TYPE_ENUM = __MIDL___MIDL_itf_ads_0126_0001; 
-  ADS_RIGHTS_ENUM = __MIDL___MIDL_itf_ads_0148_0001; 
-  ADS_ACETYPE_ENUM = __MIDL___MIDL_itf_ads_0148_0002; 
-  ADS_ACEFLAG_ENUM = __MIDL___MIDL_itf_ads_0148_0003; 
-  ADS_FLAGTYPE_ENUM = __MIDL___MIDL_itf_ads_0148_0004; 
-  ADS_SD_CONTROL_ENUM = __MIDL___MIDL_itf_ads_0148_0005; 
-  ADS_SD_REVISION_ENUM = __MIDL___MIDL_itf_ads_0148_0006; 
-  ADS_NAME_TYPE_ENUM = __MIDL___MIDL_itf_ads_0149_0001; 
-  ADS_NAME_INITTYPE_ENUM = __MIDL___MIDL_itf_ads_0149_0002; 
-  ADS_OPTION_ENUM = __MIDL___MIDL_itf_ads_0163_0001; 
-  ADS_SECURITY_INFO_ENUM = __MIDL___MIDL_itf_ads_0163_0002; 
-  ADS_SETTYPE_ENUM = __MIDL___MIDL_itf_ads_0164_0001; 
-  ADS_FORMAT_ENUM = __MIDL___MIDL_itf_ads_0164_0002; 
-  ADS_DISPLAY_ENUM = __MIDL___MIDL_itf_ads_0164_0003; 
-  ADS_ESCAPE_MODE_ENUM = __MIDL___MIDL_itf_ads_0164_0004; 
+  ADS_SYSTEMFLAG_ENUM = __MIDL___MIDL_itf_ads_0120_0001;
+  ADS_GROUP_TYPE_ENUM = __MIDL___MIDL_itf_ads_0126_0001;
+  ADS_RIGHTS_ENUM = __MIDL___MIDL_itf_ads_0148_0001;
+  ADS_ACETYPE_ENUM = __MIDL___MIDL_itf_ads_0148_0002;
+  ADS_ACEFLAG_ENUM = __MIDL___MIDL_itf_ads_0148_0003;
+  ADS_FLAGTYPE_ENUM = __MIDL___MIDL_itf_ads_0148_0004;
+  ADS_SD_CONTROL_ENUM = __MIDL___MIDL_itf_ads_0148_0005;
+  ADS_SD_REVISION_ENUM = __MIDL___MIDL_itf_ads_0148_0006;
+  ADS_NAME_TYPE_ENUM = __MIDL___MIDL_itf_ads_0149_0001;
+  ADS_NAME_INITTYPE_ENUM = __MIDL___MIDL_itf_ads_0149_0002;
+  ADS_OPTION_ENUM = __MIDL___MIDL_itf_ads_0163_0001;
+  ADS_SECURITY_INFO_ENUM = __MIDL___MIDL_itf_ads_0163_0002;
+  ADS_SETTYPE_ENUM = __MIDL___MIDL_itf_ads_0164_0001;
+  ADS_FORMAT_ENUM = __MIDL___MIDL_itf_ads_0164_0002;
+  ADS_DISPLAY_ENUM = __MIDL___MIDL_itf_ads_0164_0003;
+  ADS_ESCAPE_MODE_ENUM = __MIDL___MIDL_itf_ads_0164_0004;
 
   _ads_attr_info = packed record
     pszAttrName: PWideChar;
@@ -1138,7 +1285,6 @@ type
     fIsContainer: Integer;
   end;
 
-
   tagTYPEATTR = packed record
     GUID: TGUID;
     lcid: LongWord;
@@ -1165,7 +1311,6 @@ type
     cDims: Word;
     rgbounds: ^tagSAFEARRAYBOUND;
   end;
-
 
 // *********************************************************************//
 // Interface: IADs
@@ -1200,6 +1345,7 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {FD8256D0-FD15-11CE-ABC4-02608C9E7553}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsDisp = dispinterface
     ['{FD8256D0-FD15-11CE-ABC4-02608C9E7553}']
     property Name: WideString readonly dispid 2;
@@ -1216,7 +1362,7 @@ type
     procedure PutEx(lnControlCode: Integer; const bstrName: WideString; vProp: OleVariant); dispid 13;
     procedure GetInfoEx(vProperties: OleVariant; lnReserved: Integer); dispid 14;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsContainer
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -1246,6 +1392,7 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {001677D0-FD16-11CE-ABC4-02608C9E7553}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsContainerDisp = dispinterface
     ['{001677D0-FD16-11CE-ABC4-02608C9E7553}']
     property Count: Integer readonly dispid 2;
@@ -1258,7 +1405,7 @@ type
     function  CopyHere(const SourceName: WideString; const NewName: WideString): IDispatch; dispid 8;
     function  MoveHere(const SourceName: WideString; const NewName: WideString): IDispatch; dispid 9;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsCollection
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -1278,6 +1425,7 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {72B945E0-253B-11CF-A988-00AA006BC149}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsCollectionDisp = dispinterface
     ['{72B945E0-253B-11CF-A988-00AA006BC149}']
     property _NewEnum: IUnknown readonly dispid -4;
@@ -1285,7 +1433,7 @@ type
     procedure Remove(const bstrItemToBeRemoved: WideString); dispid 5;
     function  GetObject(const bstrName: WideString): OleVariant; dispid 6;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsMembers
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -1307,13 +1455,14 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {451A0030-72EC-11CF-B03B-00AA006E0975}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsMembersDisp = dispinterface
     ['{451A0030-72EC-11CF-B03B-00AA006E0975}']
     property Count: Integer readonly dispid 2;
     property _NewEnum: IUnknown readonly dispid -4;
     property Filter: OleVariant dispid 3;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsPropertyList
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -1338,6 +1487,7 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {C6F602B6-8F69-11D0-8528-00C04FD8D503}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsPropertyListDisp = dispinterface
     ['{C6F602B6-8F69-11D0-8528-00C04FD8D503}']
     property PropertyCount: Integer readonly dispid 2;
@@ -1350,7 +1500,7 @@ type
     procedure ResetPropertyItem(varEntry: OleVariant); dispid 8;
     procedure PurgePropertyList; dispid 9;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsPropertyEntry
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -1378,6 +1528,7 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {05792C8E-941F-11D0-8529-00C04FD8D503}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsPropertyEntryDisp = dispinterface
     ['{05792C8E-941F-11D0-8529-00C04FD8D503}']
     procedure Clear; dispid 1;
@@ -1386,7 +1537,7 @@ type
     property ControlCode: Integer dispid 4;
     property Values: OleVariant dispid 5;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsPropertyValue
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -1438,6 +1589,7 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {79FA9AD0-A97C-11D0-8534-00C04FD8D503}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsPropertyValueDisp = dispinterface
     ['{79FA9AD0-A97C-11D0-8534-00C04FD8D503}']
     procedure Clear; dispid 1;
@@ -1454,7 +1606,7 @@ type
     property LargeInteger: IDispatch dispid 12;
     property UTCTime: TDateTime dispid 13;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsPropertyValue2
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -1471,11 +1623,13 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {306E831C-5BC7-11D1-A3B8-00C04FB950DC}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsPropertyValue2Disp = dispinterface
     ['{306E831C-5BC7-11D1-A3B8-00C04FB950DC}']
     function  GetObjectProperty(var lnADsType: Integer): OleVariant; dispid 1;
     procedure PutObjectProperty(lnADsType: Integer; vProp: OleVariant); dispid 2;
   end;
+  {$endif}
 
 // *********************************************************************//
 // Interface: IPrivateDispatch
@@ -1487,10 +1641,10 @@ type
     function  ADSIInitializeDispatchManager(dwExtensionId: Integer): HResult; stdcall;
     function  ADSIGetTypeInfoCount(out pctinfo: SYSUINT): HResult; stdcall;
     function  ADSIGetTypeInfo(itinfo: SYSUINT; lcid: LongWord; out ppTInfo: ITypeInfo): HResult; stdcall;
-    function  ADSIGetIDsOfNames(var riid: TGUID; rgszNames: PPWord1; cNames: SYSUINT; 
+    function  ADSIGetIDsOfNames(var riid: TGUID; rgszNames: PPWord1; cNames: SYSUINT;
                                 lcid: LongWord; out rgdispid: Integer): HResult; stdcall;
-    function  ADSIInvoke(dispidMember: Integer; var riid: TGUID; lcid: LongWord; wFlags: Word; 
-                         var pdispparams: TGUID; out pvarResult: OleVariant; out pexcepinfo: TGUID; 
+    function  ADSIInvoke(dispidMember: Integer; var riid: TGUID; lcid: LongWord; wFlags: Word;
+                         var pdispparams: TGUID; out pvarResult: OleVariant; out pexcepinfo: TGUID;
                          out puArgErr: SYSUINT): HResult; stdcall;
   end;
 
@@ -1505,17 +1659,17 @@ type
     function  GetTypeComp(out ppTComp: ITypeComp): HResult; stdcall;
     function  RemoteGetFuncDesc(index: SYSUINT; out ppFuncDesc: PUserType6; out pDummy: DWORD): HResult; stdcall;
     function  RemoteGetVarDesc(index: SYSUINT; out ppVarDesc: PUserType7; out pDummy: DWORD): HResult; stdcall;
-    function  RemoteGetNames(memid: Integer; out rgBstrNames: WideString; cMaxNames: SYSUINT; 
+    function  RemoteGetNames(memid: Integer; out rgBstrNames: WideString; cMaxNames: SYSUINT;
                              out pcNames: SYSUINT): HResult; stdcall;
     function  GetRefTypeOfImplType(index: SYSUINT; out pRefType: LongWord): HResult; stdcall;
     function  GetImplTypeFlags(index: SYSUINT; out pImplTypeFlags: SYSINT): HResult; stdcall;
     function  LocalGetIDsOfNames: HResult; stdcall;
     function  LocalInvoke: HResult; stdcall;
-    function  RemoteGetDocumentation(memid: Integer; refPtrFlags: LongWord; 
-                                     out pBstrName: WideString; out pBstrDocString: WideString; 
+    function  RemoteGetDocumentation(memid: Integer; refPtrFlags: LongWord;
+                                     out pBstrName: WideString; out pBstrDocString: WideString;
                                      out pdwHelpContext: LongWord; out pBstrHelpFile: WideString): HResult; stdcall;
-    function  RemoteGetDllEntry(memid: Integer; invkind: tagINVOKEKIND; refPtrFlags: LongWord; 
-                                out pBstrDllName: WideString; out pBstrName: WideString; 
+    function  RemoteGetDllEntry(memid: Integer; invkind: tagINVOKEKIND; refPtrFlags: LongWord;
+                                out pBstrDllName: WideString; out pBstrName: WideString;
                                 out pwOrdinal: Word): HResult; stdcall;
     function  GetRefTypeInfo(hreftype: LongWord; out ppTInfo: ITypeInfo): HResult; stdcall;
     function  LocalAddressOfMember: HResult; stdcall;
@@ -1534,9 +1688,9 @@ type
 // *********************************************************************//
   ITypeComp = interface(IUnknown)
     ['{00020403-0000-0000-C000-000000000046}']
-    function  RemoteBind(szName: PWideChar; lHashVal: LongWord; wFlags: Word; 
-                         out ppTInfo: ITypeInfo; out pDescKind: tagDESCKIND; 
-                         out ppFuncDesc: PUserType6; out ppVarDesc: PUserType7; 
+    function  RemoteBind(szName: PWideChar; lHashVal: LongWord; wFlags: Word;
+                         out ppTInfo: ITypeInfo; out pDescKind: tagDESCKIND;
+                         out ppFuncDesc: PUserType6; out ppVarDesc: PUserType7;
                          out ppTypeComp: ITypeComp; out pDummy: DWORD): HResult; stdcall;
     function  RemoteBindType(szName: PWideChar; lHashVal: LongWord; out ppTInfo: ITypeInfo): HResult; stdcall;
   end;
@@ -1554,12 +1708,12 @@ type
     function  GetTypeInfoOfGuid(var GUID: TGUID; out ppTInfo: ITypeInfo): HResult; stdcall;
     function  RemoteGetLibAttr(out ppTLibAttr: PUserType10; out pDummy: DWORD): HResult; stdcall;
     function  GetTypeComp(out ppTComp: ITypeComp): HResult; stdcall;
-    function  RemoteGetDocumentation(index: SYSINT; refPtrFlags: LongWord; 
-                                     out pBstrName: WideString; out pBstrDocString: WideString; 
+    function  RemoteGetDocumentation(index: SYSINT; refPtrFlags: LongWord;
+                                     out pBstrName: WideString; out pBstrDocString: WideString;
                                      out pdwHelpContext: LongWord; out pBstrHelpFile: WideString): HResult; stdcall;
-    function  RemoteIsName(szNameBuf: PWideChar; lHashVal: LongWord; out pfName: Integer; 
+    function  RemoteIsName(szNameBuf: PWideChar; lHashVal: LongWord; out pfName: Integer;
                            out pBstrLibName: WideString): HResult; stdcall;
-    function  RemoteFindName(szNameBuf: PWideChar; lHashVal: LongWord; out ppTInfo: ITypeInfo; 
+    function  RemoteFindName(szNameBuf: PWideChar; lHashVal: LongWord; out ppTInfo: ITypeInfo;
                              out rgMemId: Integer; var pcFound: Word; out pBstrLibName: WideString): HResult; stdcall;
     function  LocalReleaseTLibAttr: HResult; stdcall;
   end;
@@ -1571,7 +1725,7 @@ type
 // *********************************************************************//
   IPrivateUnknown = interface(IUnknown)
     ['{89126BAB-6EAD-11D1-8C18-00C04FD8D503}']
-    function  ADSIInitializeObject(const lpszUserName: WideString; const lpszPassword: WideString; 
+    function  ADSIInitializeObject(const lpszUserName: WideString; const lpszPassword: WideString;
                                    lnReserved: Integer): HResult; stdcall;
     function  ADSIReleaseObject: HResult; stdcall;
   end;
@@ -1583,12 +1737,12 @@ type
 // *********************************************************************//
   IADsExtension = interface(IUnknown)
     ['{3D35553C-D2B0-11D1-B17B-0000F87593A0}']
-    function  Operate(dwCode: LongWord; varData1: OleVariant; varData2: OleVariant; 
+    function  Operate(dwCode: LongWord; varData1: OleVariant; varData2: OleVariant;
                       varData3: OleVariant): HResult; stdcall;
-    function  PrivateGetIDsOfNames(var riid: TGUID; rgszNames: PPWord1; cNames: SYSUINT; 
+    function  PrivateGetIDsOfNames(var riid: TGUID; rgszNames: PPWord1; cNames: SYSUINT;
                                    lcid: LongWord; out rgdispid: Integer): HResult; stdcall;
-    function  PrivateInvoke(dispidMember: Integer; var riid: TGUID; lcid: LongWord; wFlags: Word; 
-                            var pdispparams: TGUID; out pvarResult: OleVariant; 
+    function  PrivateInvoke(dispidMember: Integer; var riid: TGUID; lcid: LongWord; wFlags: Word;
+                            var pdispparams: TGUID; out pvarResult: OleVariant;
                             out pexcepinfo: TGUID; out puArgErr: SYSUINT): HResult; stdcall;
   end;
 
@@ -1607,11 +1761,12 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {B2BD0902-8878-11D1-8C21-00C04FD8D503}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsDeleteOpsDisp = dispinterface
     ['{B2BD0902-8878-11D1-8C21-00C04FD8D503}']
     procedure DeleteObject(lnFlags: Integer); dispid 2;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsNamespaces
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -1629,6 +1784,7 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {28B96BA0-B330-11CF-A9AD-00AA006BC149}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsNamespacesDisp = dispinterface
     ['{28B96BA0-B330-11CF-A9AD-00AA006BC149}']
     property DefaultContainer: WideString dispid 1;
@@ -1646,6 +1802,7 @@ type
     procedure PutEx(lnControlCode: Integer; const bstrName: WideString; vProp: OleVariant); dispid 13;
     procedure GetInfoEx(vProperties: OleVariant; lnReserved: Integer); dispid 14;
   end;
+  {$endif}
 
 // *********************************************************************//
 // Interface: IADsClass
@@ -1706,6 +1863,7 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {C8F93DD0-4AE0-11CF-9E73-00AA004A5691}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsClassDisp = dispinterface
     ['{C8F93DD0-4AE0-11CF-9E73-00AA004A5691}']
     property PrimaryInterface: WideString readonly dispid 15;
@@ -1738,7 +1896,7 @@ type
     procedure PutEx(lnControlCode: Integer; const bstrName: WideString; vProp: OleVariant); dispid 13;
     procedure GetInfoEx(vProperties: OleVariant; lnReserved: Integer); dispid 14;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsProperty
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -1769,6 +1927,7 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {C8F93DD3-4AE0-11CF-9E73-00AA004A5691}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsPropertyDisp = dispinterface
     ['{C8F93DD3-4AE0-11CF-9E73-00AA004A5691}']
     property OID: WideString dispid 17;
@@ -1791,6 +1950,7 @@ type
     procedure PutEx(lnControlCode: Integer; const bstrName: WideString; vProp: OleVariant); dispid 13;
     procedure GetInfoEx(vProperties: OleVariant; lnReserved: Integer); dispid 14;
   end;
+  {$endif}
 
 // *********************************************************************//
 // Interface: IADsSyntax
@@ -1809,6 +1969,7 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {C8F93DD2-4AE0-11CF-9E73-00AA004A5691}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsSyntaxDisp = dispinterface
     ['{C8F93DD2-4AE0-11CF-9E73-00AA004A5691}']
     property OleAutoDataType: Integer dispid 15;
@@ -1826,6 +1987,7 @@ type
     procedure PutEx(lnControlCode: Integer; const bstrName: WideString; vProp: OleVariant); dispid 13;
     procedure GetInfoEx(vProperties: OleVariant; lnReserved: Integer); dispid 14;
   end;
+  {$endif}
 
 // *********************************************************************//
 // Interface: IADsLocality
@@ -1853,6 +2015,7 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {A05E03A2-EFFE-11CF-8ABC-00C04FD8D503}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsLocalityDisp = dispinterface
     ['{A05E03A2-EFFE-11CF-8ABC-00C04FD8D503}']
     property Description: WideString dispid 15;
@@ -1873,6 +2036,7 @@ type
     procedure PutEx(lnControlCode: Integer; const bstrName: WideString; vProp: OleVariant); dispid 13;
     procedure GetInfoEx(vProperties: OleVariant; lnReserved: Integer); dispid 14;
   end;
+  {$endif}
 
 // *********************************************************************//
 // Interface: IADsO
@@ -1906,6 +2070,7 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {A1CD2DC6-EFFE-11CF-8ABC-00C04FD8D503}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsODisp = dispinterface
     ['{A1CD2DC6-EFFE-11CF-8ABC-00C04FD8D503}']
     property Description: WideString dispid 15;
@@ -1928,6 +2093,7 @@ type
     procedure PutEx(lnControlCode: Integer; const bstrName: WideString; vProp: OleVariant); dispid 13;
     procedure GetInfoEx(vProperties: OleVariant; lnReserved: Integer); dispid 14;
   end;
+  {$endif}
 
 // *********************************************************************//
 // Interface: IADsOU
@@ -1964,6 +2130,7 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {A2F733B8-EFFE-11CF-8ABC-00C04FD8D503}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsOUDisp = dispinterface
     ['{A2F733B8-EFFE-11CF-8ABC-00C04FD8D503}']
     property Description: WideString dispid 15;
@@ -1987,6 +2154,7 @@ type
     procedure PutEx(lnControlCode: Integer; const bstrName: WideString; vProp: OleVariant); dispid 13;
     procedure GetInfoEx(vProperties: OleVariant; lnReserved: Integer); dispid 14;
   end;
+  {$endif}
 
 // *********************************************************************//
 // Interface: IADsDomain
@@ -2028,6 +2196,7 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {00E4C220-FD16-11CE-ABC4-02608C9E7553}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsDomainDisp = dispinterface
     ['{00E4C220-FD16-11CE-ABC4-02608C9E7553}']
     property IsWorkgroup: WordBool readonly dispid 15;
@@ -2053,7 +2222,7 @@ type
     procedure PutEx(lnControlCode: Integer; const bstrName: WideString; vProp: OleVariant); dispid 13;
     procedure GetInfoEx(vProperties: OleVariant; lnReserved: Integer); dispid 14;
   end;
-
+   {$endif}
 // *********************************************************************//
 // Interface: IADsComputer
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -2117,6 +2286,7 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {EFE3CC70-1D9F-11CF-B1F3-02608C9E7553}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsComputerDisp = dispinterface
     ['{EFE3CC70-1D9F-11CF-B1F3-02608C9E7553}']
     property ComputerID: WideString readonly dispid 16;
@@ -2150,7 +2320,7 @@ type
     procedure PutEx(lnControlCode: Integer; const bstrName: WideString; vProp: OleVariant); dispid 13;
     procedure GetInfoEx(vProperties: OleVariant; lnReserved: Integer); dispid 14;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsComputerOperations
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -2167,6 +2337,7 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {EF497680-1D9F-11CF-B1F3-02608C9E7553}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsComputerOperationsDisp = dispinterface
     ['{EF497680-1D9F-11CF-B1F3-02608C9E7553}']
     function  Status: IDispatch; dispid 33;
@@ -2185,7 +2356,7 @@ type
     procedure PutEx(lnControlCode: Integer; const bstrName: WideString; vProp: OleVariant); dispid 13;
     procedure GetInfoEx(vProperties: OleVariant; lnReserved: Integer); dispid 14;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsGroup
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -2207,6 +2378,7 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {27636B00-410F-11CF-B1FF-02608C9E7553}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsGroupDisp = dispinterface
     ['{27636B00-410F-11CF-B1FF-02608C9E7553}']
     property Description: WideString dispid 15;
@@ -2228,7 +2400,7 @@ type
     procedure PutEx(lnControlCode: Integer; const bstrName: WideString; vProp: OleVariant); dispid 13;
     procedure GetInfoEx(vProperties: OleVariant; lnReserved: Integer); dispid 14;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsUser
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -2381,6 +2553,7 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {3E37E320-17E2-11CF-ABC4-02608C9E7553}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsUserDisp = dispinterface
     ['{3E37E320-17E2-11CF-ABC4-02608C9E7553}']
     property BadLoginAddress: WideString readonly dispid 53;
@@ -2447,7 +2620,7 @@ type
     procedure PutEx(lnControlCode: Integer; const bstrName: WideString; vProp: OleVariant); dispid 13;
     procedure GetInfoEx(vProperties: OleVariant; lnReserved: Integer); dispid 14;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsPrintQueue
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -2501,6 +2674,7 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {B15160D0-1226-11CF-A985-00AA006BC149}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsPrintQueueDisp = dispinterface
     ['{B15160D0-1226-11CF-A985-00AA006BC149}']
     property PrinterPath: WideString dispid 15;
@@ -2530,7 +2704,7 @@ type
     procedure PutEx(lnControlCode: Integer; const bstrName: WideString; vProp: OleVariant); dispid 13;
     procedure GetInfoEx(vProperties: OleVariant; lnReserved: Integer); dispid 14;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsPrintQueueOperations
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -2551,6 +2725,7 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {124BE5C0-156E-11CF-A986-00AA006BC149}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsPrintQueueOperationsDisp = dispinterface
     ['{124BE5C0-156E-11CF-A986-00AA006BC149}']
     property Status: Integer readonly dispid 27;
@@ -2572,7 +2747,7 @@ type
     procedure PutEx(lnControlCode: Integer; const bstrName: WideString; vProp: OleVariant); dispid 13;
     procedure GetInfoEx(vProperties: OleVariant; lnReserved: Integer); dispid 14;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsPrintJob
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -2617,6 +2792,7 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {32FB6780-1ED0-11CF-A988-00AA006BC149}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsPrintJobDisp = dispinterface
     ['{32FB6780-1ED0-11CF-A988-00AA006BC149}']
     property HostPrintQueue: WideString readonly dispid 15;
@@ -2645,7 +2821,7 @@ type
     procedure PutEx(lnControlCode: Integer; const bstrName: WideString; vProp: OleVariant); dispid 13;
     procedure GetInfoEx(vProperties: OleVariant; lnReserved: Integer); dispid 14;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsPrintJobOperations
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -2671,6 +2847,7 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {9A52DB30-1ECF-11CF-A988-00AA006BC149}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsPrintJobOperationsDisp = dispinterface
     ['{9A52DB30-1ECF-11CF-A988-00AA006BC149}']
     property Status: Integer readonly dispid 26;
@@ -2693,7 +2870,7 @@ type
     procedure PutEx(lnControlCode: Integer; const bstrName: WideString; vProp: OleVariant); dispid 13;
     procedure GetInfoEx(vProperties: OleVariant; lnReserved: Integer); dispid 14;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsService
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -2744,6 +2921,7 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {68AF66E0-31CA-11CF-A98A-00AA006BC149}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsServiceDisp = dispinterface
     ['{68AF66E0-31CA-11CF-A98A-00AA006BC149}']
     property HostComputer: WideString dispid 15;
@@ -2772,7 +2950,7 @@ type
     procedure PutEx(lnControlCode: Integer; const bstrName: WideString; vProp: OleVariant); dispid 13;
     procedure GetInfoEx(vProperties: OleVariant; lnReserved: Integer); dispid 14;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsServiceOperations
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -2794,6 +2972,7 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {5D7B33F0-31CA-11CF-A98A-00AA006BC149}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsServiceOperationsDisp = dispinterface
     ['{5D7B33F0-31CA-11CF-A98A-00AA006BC149}']
     property Status: Integer readonly dispid 27;
@@ -2816,6 +2995,7 @@ type
     procedure PutEx(lnControlCode: Integer; const bstrName: WideString; vProp: OleVariant); dispid 13;
     procedure GetInfoEx(vProperties: OleVariant; lnReserved: Integer); dispid 14;
   end;
+  {$endif}
 
 // *********************************************************************//
 // Interface: IADsFileService
@@ -2837,6 +3017,7 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {A89D1900-31CA-11CF-A98A-00AA006BC149}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsFileServiceDisp = dispinterface
     ['{A89D1900-31CA-11CF-A98A-00AA006BC149}']
     property Description: WideString dispid 33;
@@ -2867,7 +3048,7 @@ type
     procedure PutEx(lnControlCode: Integer; const bstrName: WideString; vProp: OleVariant); dispid 13;
     procedure GetInfoEx(vProperties: OleVariant; lnReserved: Integer); dispid 14;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsFileServiceOperations
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -2884,6 +3065,7 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {A02DED10-31CA-11CF-A98A-00AA006BC149}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsFileServiceOperationsDisp = dispinterface
     ['{A02DED10-31CA-11CF-A98A-00AA006BC149}']
     function  Sessions: IADsCollection; dispid 35;
@@ -2908,7 +3090,7 @@ type
     procedure PutEx(lnControlCode: Integer; const bstrName: WideString; vProp: OleVariant); dispid 13;
     procedure GetInfoEx(vProperties: OleVariant; lnReserved: Integer); dispid 14;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsFileShare
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -2937,6 +3119,7 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {EB6DCAF0-4B83-11CF-A995-00AA006BC149}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsFileShareDisp = dispinterface
     ['{EB6DCAF0-4B83-11CF-A995-00AA006BC149}']
     property CurrentUserCount: Integer readonly dispid 15;
@@ -2958,6 +3141,7 @@ type
     procedure PutEx(lnControlCode: Integer; const bstrName: WideString; vProp: OleVariant); dispid 13;
     procedure GetInfoEx(vProperties: OleVariant; lnReserved: Integer); dispid 14;
   end;
+  {$endif}
 
 // *********************************************************************//
 // Interface: IADsSession
@@ -2985,6 +3169,7 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {398B7DA0-4AAB-11CF-AE2C-00AA006EBFB9}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsSessionDisp = dispinterface
     ['{398B7DA0-4AAB-11CF-AE2C-00AA006EBFB9}']
     property User: WideString readonly dispid 15;
@@ -3007,7 +3192,7 @@ type
     procedure PutEx(lnControlCode: Integer; const bstrName: WideString; vProp: OleVariant); dispid 13;
     procedure GetInfoEx(vProperties: OleVariant; lnReserved: Integer); dispid 14;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsResource
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -3030,6 +3215,7 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {34A05B20-4AAB-11CF-AE2C-00AA006EBFB9}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsResourceDisp = dispinterface
     ['{34A05B20-4AAB-11CF-AE2C-00AA006EBFB9}']
     property User: WideString readonly dispid 15;
@@ -3050,7 +3236,7 @@ type
     procedure PutEx(lnControlCode: Integer; const bstrName: WideString; vProp: OleVariant); dispid 13;
     procedure GetInfoEx(vProperties: OleVariant; lnReserved: Integer); dispid 14;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsOpenDSObject
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -3058,7 +3244,7 @@ type
 // *********************************************************************//
   IADsOpenDSObject = interface(IDispatch)
     ['{DDF2891E-0F9C-11D0-8AD4-00C04FD8D503}']
-    function  OpenDSObject(const lpszDNName: WideString; const lpszUserName: WideString; 
+    function  OpenDSObject(const lpszDNName: WideString; const lpszUserName: WideString;
                            const lpszPassword: WideString; lnReserved: Integer): IDispatch; safecall;
   end;
 
@@ -3067,12 +3253,13 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {DDF2891E-0F9C-11D0-8AD4-00C04FD8D503}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsOpenDSObjectDisp = dispinterface
     ['{DDF2891E-0F9C-11D0-8AD4-00C04FD8D503}']
-    function  OpenDSObject(const lpszDNName: WideString; const lpszUserName: WideString; 
+    function  OpenDSObject(const lpszDNName: WideString; const lpszUserName: WideString;
                            const lpszPassword: WideString; lnReserved: Integer): IDispatch; dispid 1;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IDirectoryObject
 // Flags:     (0)
@@ -3081,12 +3268,12 @@ type
   IDirectoryObject = interface(IUnknown)
     ['{E798DE2C-22E4-11D0-84FE-00C04FD8D503}']
     function  GetObjectInformation(out ppObjInfo: PUserType11): HResult; stdcall;
-    function  GetObjectAttributes(var pAttributeNames: PWideChar; dwNumberAttributes: LongWord; 
-                                  out ppAttributeEntries: PUserType12; 
+    function  GetObjectAttributes(var pAttributeNames: PWideChar; dwNumberAttributes: LongWord;
+                                  out ppAttributeEntries: PUserType12;
                                   out pdwNumAttributesReturned: LongWord): HResult; stdcall;
-    function  SetObjectAttributes(var pAttributeEntries: _ads_attr_info; dwNumAttributes: LongWord; 
+    function  SetObjectAttributes(var pAttributeEntries: _ads_attr_info; dwNumAttributes: LongWord;
                                   out pdwNumAttributesModified: LongWord): HResult; stdcall;
-    function  CreateDSObject(pszRDNName: PWideChar; var pAttributeEntries: _ads_attr_info; 
+    function  CreateDSObject(pszRDNName: PWideChar; var pAttributeEntries: _ads_attr_info;
                              dwNumAttributes: LongWord; out ppObject: IDispatch): HResult; stdcall;
     function  DeleteDSObject(pszRDNName: PWideChar): HResult; stdcall;
   end;
@@ -3099,14 +3286,14 @@ type
   IDirectorySearch = interface(IUnknown)
     ['{109BA8EC-92F0-11D0-A790-00C04FD8D5A8}']
     function  SetSearchPreference(var pSearchPrefs: ads_searchpref_info; dwNumPrefs: LongWord): HResult; stdcall;
-    function  ExecuteSearch(pszSearchFilter: PWideChar; var pAttributeNames: PWideChar; 
+    function  ExecuteSearch(pszSearchFilter: PWideChar; var pAttributeNames: PWideChar;
                             dwNumberAttributes: LongWord; out phSearchResult: Pointer): HResult; stdcall;
     function  AbandonSearch(var phSearchResult: Pointer): HResult; stdcall;
     function  GetFirstRow(var hSearchResult: Pointer): HResult; stdcall;
     function  GetNextRow(var hSearchResult: Pointer): HResult; stdcall;
     function  GetPreviousRow(var hSearchResult: Pointer): HResult; stdcall;
     function  GetNextColumnName(var hSearchHandle: Pointer; out ppszColumnName: PWideChar): HResult; stdcall;
-    function  GetColumn(var hSearchResult: Pointer; szColumnName: PWideChar; 
+    function  GetColumn(var hSearchResult: Pointer; szColumnName: PWideChar;
                         out pSearchColumn: ads_search_column): HResult; stdcall;
     function  FreeColumn(var pSearchColumn: ads_search_column): HResult; stdcall;
     function  CloseSearchHandle(var hSearchResult: Pointer): HResult; stdcall;
@@ -3119,14 +3306,14 @@ type
 // *********************************************************************//
   IDirectorySchemaMgmt = interface(IUnknown)
     ['{75DB3B9C-A4D8-11D0-A79C-00C04FD8D5A8}']
-    function  EnumAttributes(var ppszAttrNames: PWideChar; dwNumAttributes: LongWord; 
+    function  EnumAttributes(var ppszAttrNames: PWideChar; dwNumAttributes: LongWord;
                              ppAttrDefinition: PPUserType1; var pdwNumAttributes: LongWord): HResult; stdcall;
-    function  CreateAttributeDefinition(pszAttributeName: PWideChar; 
+    function  CreateAttributeDefinition(pszAttributeName: PWideChar;
                                         var pAttributeDefinition: _ads_attr_def): HResult; stdcall;
-    function  WriteAttributeDefinition(pszAttributeName: PWideChar; 
+    function  WriteAttributeDefinition(pszAttributeName: PWideChar;
                                        var pAttributeDefinition: _ads_attr_def): HResult; stdcall;
     function  DeleteAttributeDefinition(pszAttributeName: PWideChar): HResult; stdcall;
-    function  EnumClasses(var ppszClassNames: PWideChar; dwNumClasses: LongWord; 
+    function  EnumClasses(var ppszClassNames: PWideChar; dwNumClasses: LongWord;
                           ppClassDefinition: PPUserType2; var pdwNumClasses: LongWord): HResult; stdcall;
     function  WriteClassDefinition(pszClassName: PWideChar; var pClassDefinition: _ads_class_def): HResult; stdcall;
     function  CreateClassDefinition(pszClassName: PWideChar; var pClassDefinition: _ads_class_def): HResult; stdcall;
@@ -3192,6 +3379,7 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {B4F3A14C-9BDD-11D0-852C-00C04FD8D503}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsAccessControlEntryDisp = dispinterface
     ['{B4F3A14C-9BDD-11D0-852C-00C04FD8D503}']
     property AccessMask: Integer dispid 2;
@@ -3202,7 +3390,7 @@ type
     property InheritedObjectType: WideString dispid 7;
     property Trustee: WideString dispid 8;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsAccessControlList
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -3228,6 +3416,7 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {B7EE91CC-9BDD-11D0-852C-00C04FD8D503}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsAccessControlListDisp = dispinterface
     ['{B7EE91CC-9BDD-11D0-852C-00C04FD8D503}']
     property AclRevision: Integer dispid 3;
@@ -3237,7 +3426,7 @@ type
     function  CopyAccessList: IDispatch; dispid 7;
     property _NewEnum: IUnknown readonly dispid -4;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsSecurityDescriptor
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -3283,6 +3472,7 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {B8C787CA-9BDD-11D0-852C-00C04FD8D503}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsSecurityDescriptorDisp = dispinterface
     ['{B8C787CA-9BDD-11D0-852C-00C04FD8D503}']
     property Revision: Integer dispid 2;
@@ -3297,7 +3487,7 @@ type
     property SaclDefaulted: WordBool dispid 11;
     function  CopySecurityDescriptor: IDispatch; dispid 12;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsLargeInteger
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -3318,12 +3508,13 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {9068270B-0939-11D1-8BE1-00C04FD8D503}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsLargeIntegerDisp = dispinterface
     ['{9068270B-0939-11D1-8BE1-00C04FD8D503}']
     property HighPart: Integer dispid 2;
     property LowPart: Integer dispid 3;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsNameTranslate
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -3333,8 +3524,8 @@ type
     ['{B1B272A3-3625-11D1-A3A4-00C04FB950DC}']
     procedure Set_ChaseReferral(Param1: Integer); safecall;
     procedure Init(lnSetType: Integer; const bstrADsPath: WideString); safecall;
-    procedure InitEx(lnSetType: Integer; const bstrADsPath: WideString; 
-                     const bstrUserID: WideString; const bstrDomain: WideString; 
+    procedure InitEx(lnSetType: Integer; const bstrADsPath: WideString;
+                     const bstrUserID: WideString; const bstrDomain: WideString;
                      const bstrPassword: WideString); safecall;
     procedure Set_(lnSetType: Integer; const bstrADsPath: WideString); safecall;
     function  Get(lnFormatType: Integer): WideString; safecall;
@@ -3348,19 +3539,20 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {B1B272A3-3625-11D1-A3A4-00C04FB950DC}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsNameTranslateDisp = dispinterface
     ['{B1B272A3-3625-11D1-A3A4-00C04FB950DC}']
     property ChaseReferral: Integer writeonly dispid 1;
     procedure Init(lnSetType: Integer; const bstrADsPath: WideString); dispid 2;
-    procedure InitEx(lnSetType: Integer; const bstrADsPath: WideString; 
-                     const bstrUserID: WideString; const bstrDomain: WideString; 
+    procedure InitEx(lnSetType: Integer; const bstrADsPath: WideString;
+                     const bstrUserID: WideString; const bstrDomain: WideString;
                      const bstrPassword: WideString); dispid 3;
     procedure Set_(lnSetType: Integer; const bstrADsPath: WideString); dispid 4;
     function  Get(lnFormatType: Integer): WideString; dispid 5;
     procedure SetEx(lnFormatType: Integer; pVar: OleVariant); dispid 6;
     function  GetEx(lnFormatType: Integer): OleVariant; dispid 7;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsCaseIgnoreList
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -3378,11 +3570,12 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {7B66B533-4680-11D1-A3B4-00C04FB950DC}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsCaseIgnoreListDisp = dispinterface
     ['{7B66B533-4680-11D1-A3B4-00C04FB950DC}']
     property CaseIgnoreList: OleVariant dispid 2;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsFaxNumber
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -3403,12 +3596,13 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {A910DEA9-4680-11D1-A3B4-00C04FB950DC}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsFaxNumberDisp = dispinterface
     ['{A910DEA9-4680-11D1-A3B4-00C04FB950DC}']
     property TelephoneNumber: WideString dispid 2;
     property Parameters: OleVariant dispid 3;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsNetAddress
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -3429,12 +3623,13 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {B21A50A9-4080-11D1-A3AC-00C04FB950DC}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsNetAddressDisp = dispinterface
     ['{B21A50A9-4080-11D1-A3AC-00C04FB950DC}']
     property AddressType: Integer dispid 2;
     property Address: OleVariant dispid 3;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsOctetList
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -3452,11 +3647,12 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {7B28B80F-4680-11D1-A3B4-00C04FB950DC}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsOctetListDisp = dispinterface
     ['{7B28B80F-4680-11D1-A3B4-00C04FB950DC}']
     property OctetList: OleVariant dispid 2;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsEmail
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -3477,12 +3673,13 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {97AF011A-478E-11D1-A3B4-00C04FB950DC}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsEmailDisp = dispinterface
     ['{97AF011A-478E-11D1-A3B4-00C04FB950DC}']
     property Type_: Integer dispid 2;
     property Address: WideString dispid 3;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsPath
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -3506,13 +3703,14 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {B287FCD5-4080-11D1-A3AC-00C04FB950DC}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsPathDisp = dispinterface
     ['{B287FCD5-4080-11D1-A3AC-00C04FB950DC}']
     property Type_: Integer dispid 2;
     property VolumeName: WideString dispid 3;
     property Path: WideString dispid 4;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsReplicaPointer
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -3542,6 +3740,7 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {F60FB803-4080-11D1-A3AC-00C04FB950DC}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsReplicaPointerDisp = dispinterface
     ['{F60FB803-4080-11D1-A3AC-00C04FB950DC}']
     property ServerName: WideString dispid 2;
@@ -3550,7 +3749,7 @@ type
     property Count: Integer dispid 5;
     property ReplicaAddressHints: OleVariant dispid 6;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsAcl
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -3575,6 +3774,7 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {8452D3AB-0869-11D1-A377-00C04FB950DC}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsAclDisp = dispinterface
     ['{8452D3AB-0869-11D1-A377-00C04FB950DC}']
     property ProtectedAttrName: WideString dispid 2;
@@ -3582,7 +3782,7 @@ type
     property Privileges: Integer dispid 4;
     function  CopyAcl: IDispatch; dispid 5;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsTimestamp
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -3603,12 +3803,13 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {B2F5A901-4080-11D1-A3AC-00C04FB950DC}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsTimestampDisp = dispinterface
     ['{B2F5A901-4080-11D1-A3AC-00C04FB950DC}']
     property WholeSeconds: Integer dispid 2;
     property EventID: Integer dispid 3;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsPostalAddress
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -3626,11 +3827,12 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {7ADECF29-4680-11D1-A3B4-00C04FB950DC}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsPostalAddressDisp = dispinterface
     ['{7ADECF29-4680-11D1-A3B4-00C04FB950DC}']
     property PostalAddress: OleVariant dispid 2;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsBackLink
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -3651,12 +3853,13 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {FD1302BD-4080-11D1-A3AC-00C04FB950DC}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsBackLinkDisp = dispinterface
     ['{FD1302BD-4080-11D1-A3AC-00C04FB950DC}']
     property RemoteID: Integer dispid 2;
     property ObjectName: WideString dispid 3;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsTypedName
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -3680,13 +3883,14 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {B371A349-4080-11D1-A3AC-00C04FB950DC}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsTypedNameDisp = dispinterface
     ['{B371A349-4080-11D1-A3AC-00C04FB950DC}']
     property ObjectName: WideString dispid 2;
     property Level: Integer dispid 3;
     property Interval: Integer dispid 4;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsHold
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -3707,12 +3911,13 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {B3EB3B37-4080-11D1-A3AC-00C04FB950DC}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsHoldDisp = dispinterface
     ['{B3EB3B37-4080-11D1-A3AC-00C04FB950DC}']
     property ObjectName: WideString dispid 2;
     property Amount: Integer dispid 3;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsObjectOptions
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -3729,12 +3934,13 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {46F14FDA-232B-11D1-A808-00C04FD8D5A8}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsObjectOptionsDisp = dispinterface
     ['{46F14FDA-232B-11D1-A808-00C04FD8D5A8}']
     function  GetOption(lnOption: Integer): OleVariant; dispid 2;
     procedure SetOption(lnOption: Integer; vValue: OleVariant); dispid 3;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsPathname
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -3761,6 +3967,7 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {D592AED4-F420-11D0-A36E-00C04FB950DC}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsPathnameDisp = dispinterface
     ['{D592AED4-F420-11D0-A36E-00C04FB950DC}']
     procedure Set_(const bstrADsPath: WideString; lnSetType: Integer); dispid 2;
@@ -3774,7 +3981,7 @@ type
     function  GetEscapedElement(lnReserved: Integer; const bstrInStr: WideString): WideString; dispid 10;
     property EscapedMode: Integer dispid 11;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsADSystemInfo
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -3811,6 +4018,7 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {5BB11929-AFD1-11D2-9CB9-0000F87A369E}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsADSystemInfoDisp = dispinterface
     ['{5BB11929-AFD1-11D2-9CB9-0000F87A369E}']
     property UserName: WideString readonly dispid 2;
@@ -3827,7 +4035,7 @@ type
     procedure RefreshSchemaCache; dispid 13;
     function  GetTrees: OleVariant; dispid 14;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsWinNTSystemInfo
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -3850,6 +4058,7 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {6C6D65DC-AFD1-11D2-9CB9-0000F87A369E}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsWinNTSystemInfoDisp = dispinterface
     ['{6C6D65DC-AFD1-11D2-9CB9-0000F87A369E}']
     property UserName: WideString readonly dispid 2;
@@ -3857,7 +4066,7 @@ type
     property DomainName: WideString readonly dispid 4;
     property PDC: WideString readonly dispid 5;
   end;
-
+  {$endif}
 // *********************************************************************//
 // Interface: IADsDNWithBinary
 // Flags:     (4416) Dual OleAutomation Dispatchable
@@ -3878,11 +4087,13 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {7E99C0A2-F935-11D2-BA96-00C04FB6D0D1}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsDNWithBinaryDisp = dispinterface
     ['{7E99C0A2-F935-11D2-BA96-00C04FB6D0D1}']
     property BinaryValue: OleVariant dispid 2;
     property DNString: WideString dispid 3;
   end;
+  {$endif}
 
 // *********************************************************************//
 // Interface: IADsDNWithString
@@ -3904,32 +4115,32 @@ type
 // Flags:     (4416) Dual OleAutomation Dispatchable
 // GUID:      {370DF02E-F934-11D2-BA96-00C04FB6D0D1}
 // *********************************************************************//
+  {$ifdef SUPPORTS_DISPINTERFACE}
   IADsDNWithStringDisp = dispinterface
     ['{370DF02E-F934-11D2-BA96-00C04FB6D0D1}']
     property StringValue: WideString dispid 2;
     property DNString: WideString dispid 3;
   end;
-
+  {$endif}
 // *********************************************************************//
-// The Class CoPropertyEntry provides a Create and CreateRemote method to          
-// create instances of the default interface IADsPropertyEntry exposed by              
-// the CoClass PropertyEntry. The functions are intended to be used by             
-// clients wishing to automate the CoClass objects exposed by the         
-// server of this typelibrary.                                            
+// The Class CoPropertyEntry provides a Create and CreateRemote method to
+// create instances of the default interface IADsPropertyEntry exposed by
+// the CoClass PropertyEntry. The functions are intended to be used by
+// clients wishing to automate the CoClass objects exposed by the
+// server of this typelibrary.
 // *********************************************************************//
   CoPropertyEntry = class
     class function Create: IADsPropertyEntry;
     class function CreateRemote(const MachineName: string): IADsPropertyEntry;
   end;
 
-
 // *********************************************************************//
 // OLE Server Proxy class declaration
 // Server Object    : TPropertyEntry
-// Help String      : 
+// Help String      :
 // Default Interface: IADsPropertyEntry
 // Def. Intf. DISP? : No
-// Event   Interface: 
+// Event   Interface:
 // TypeFlags        : (2) CanCreate
 // *********************************************************************//
 {$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
@@ -4001,27 +4212,25 @@ type
   end;
 {$ENDIF}
 
-
 // *********************************************************************//
-// The Class CoPropertyValue provides a Create and CreateRemote method to          
-// create instances of the default interface IADsPropertyValue exposed by              
-// the CoClass PropertyValue. The functions are intended to be used by             
-// clients wishing to automate the CoClass objects exposed by the         
-// server of this typelibrary.                                            
+// The Class CoPropertyValue provides a Create and CreateRemote method to
+// create instances of the default interface IADsPropertyValue exposed by
+// the CoClass PropertyValue. The functions are intended to be used by
+// clients wishing to automate the CoClass objects exposed by the
+// server of this typelibrary.
 // *********************************************************************//
   CoPropertyValue = class
     class function Create: IADsPropertyValue;
     class function CreateRemote(const MachineName: string): IADsPropertyValue;
   end;
 
-
 // *********************************************************************//
 // OLE Server Proxy class declaration
 // Server Object    : TPropertyValue
-// Help String      : 
+// Help String      :
 // Default Interface: IADsPropertyValue
 // Def. Intf. DISP? : No
-// Event   Interface: 
+// Event   Interface:
 // TypeFlags        : (2) CanCreate
 // *********************************************************************//
 {$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
@@ -4139,27 +4348,25 @@ type
   end;
 {$ENDIF}
 
-
 // *********************************************************************//
-// The Class CoAccessControlEntry provides a Create and CreateRemote method to          
-// create instances of the default interface IADsAccessControlEntry exposed by              
-// the CoClass AccessControlEntry. The functions are intended to be used by             
-// clients wishing to automate the CoClass objects exposed by the         
-// server of this typelibrary.                                            
+// The Class CoAccessControlEntry provides a Create and CreateRemote method to
+// create instances of the default interface IADsAccessControlEntry exposed by
+// the CoClass AccessControlEntry. The functions are intended to be used by
+// clients wishing to automate the CoClass objects exposed by the
+// server of this typelibrary.
 // *********************************************************************//
   CoAccessControlEntry = class
     class function Create: IADsAccessControlEntry;
     class function CreateRemote(const MachineName: string): IADsAccessControlEntry;
   end;
 
-
 // *********************************************************************//
 // OLE Server Proxy class declaration
 // Server Object    : TAccessControlEntry
-// Help String      : 
+// Help String      :
 // Default Interface: IADsAccessControlEntry
 // Def. Intf. DISP? : No
-// Event   Interface: 
+// Event   Interface:
 // TypeFlags        : (2) CanCreate
 // *********************************************************************//
 {$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
@@ -4249,27 +4456,25 @@ type
   end;
 {$ENDIF}
 
-
 // *********************************************************************//
-// The Class CoAccessControlList provides a Create and CreateRemote method to          
-// create instances of the default interface IADsAccessControlList exposed by              
-// the CoClass AccessControlList. The functions are intended to be used by             
-// clients wishing to automate the CoClass objects exposed by the         
-// server of this typelibrary.                                            
+// The Class CoAccessControlList provides a Create and CreateRemote method to
+// create instances of the default interface IADsAccessControlList exposed by
+// the CoClass AccessControlList. The functions are intended to be used by
+// clients wishing to automate the CoClass objects exposed by the
+// server of this typelibrary.
 // *********************************************************************//
   CoAccessControlList = class
     class function Create: IADsAccessControlList;
     class function CreateRemote(const MachineName: string): IADsAccessControlList;
   end;
 
-
 // *********************************************************************//
 // OLE Server Proxy class declaration
 // Server Object    : TAccessControlList
-// Help String      : 
+// Help String      :
 // Default Interface: IADsAccessControlList
 // Def. Intf. DISP? : No
-// Event   Interface: 
+// Event   Interface:
 // TypeFlags        : (2) CanCreate
 // *********************************************************************//
 {$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
@@ -4332,27 +4537,25 @@ type
   end;
 {$ENDIF}
 
-
 // *********************************************************************//
-// The Class CoSecurityDescriptor provides a Create and CreateRemote method to          
-// create instances of the default interface IADsSecurityDescriptor exposed by              
-// the CoClass SecurityDescriptor. The functions are intended to be used by             
-// clients wishing to automate the CoClass objects exposed by the         
-// server of this typelibrary.                                            
+// The Class CoSecurityDescriptor provides a Create and CreateRemote method to
+// create instances of the default interface IADsSecurityDescriptor exposed by
+// the CoClass SecurityDescriptor. The functions are intended to be used by
+// clients wishing to automate the CoClass objects exposed by the
+// server of this typelibrary.
 // *********************************************************************//
   CoSecurityDescriptor = class
     class function Create: IADsSecurityDescriptor;
     class function CreateRemote(const MachineName: string): IADsSecurityDescriptor;
   end;
 
-
 // *********************************************************************//
 // OLE Server Proxy class declaration
 // Server Object    : TSecurityDescriptor
-// Help String      : 
+// Help String      :
 // Default Interface: IADsSecurityDescriptor
 // Def. Intf. DISP? : No
-// Event   Interface: 
+// Event   Interface:
 // TypeFlags        : (2) CanCreate
 // *********************************************************************//
 {$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
@@ -4459,27 +4662,25 @@ type
   end;
 {$ENDIF}
 
-
 // *********************************************************************//
-// The Class CoLargeInteger provides a Create and CreateRemote method to          
-// create instances of the default interface IADsLargeInteger exposed by              
-// the CoClass LargeInteger. The functions are intended to be used by             
-// clients wishing to automate the CoClass objects exposed by the         
-// server of this typelibrary.                                            
+// The Class CoLargeInteger provides a Create and CreateRemote method to
+// create instances of the default interface IADsLargeInteger exposed by
+// the CoClass LargeInteger. The functions are intended to be used by
+// clients wishing to automate the CoClass objects exposed by the
+// server of this typelibrary.
 // *********************************************************************//
   CoLargeInteger = class
     class function Create: IADsLargeInteger;
     class function CreateRemote(const MachineName: string): IADsLargeInteger;
   end;
 
-
 // *********************************************************************//
 // OLE Server Proxy class declaration
 // Server Object    : TLargeInteger
-// Help String      : 
+// Help String      :
 // Default Interface: IADsLargeInteger
 // Def. Intf. DISP? : No
-// Event   Interface: 
+// Event   Interface:
 // TypeFlags        : (2) CanCreate
 // *********************************************************************//
 {$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
@@ -4539,27 +4740,25 @@ type
   end;
 {$ENDIF}
 
-
 // *********************************************************************//
-// The Class CoNameTranslate provides a Create and CreateRemote method to          
-// create instances of the default interface IADsNameTranslate exposed by              
-// the CoClass NameTranslate. The functions are intended to be used by             
-// clients wishing to automate the CoClass objects exposed by the         
-// server of this typelibrary.                                            
+// The Class CoNameTranslate provides a Create and CreateRemote method to
+// create instances of the default interface IADsNameTranslate exposed by
+// the CoClass NameTranslate. The functions are intended to be used by
+// clients wishing to automate the CoClass objects exposed by the
+// server of this typelibrary.
 // *********************************************************************//
   CoNameTranslate = class
     class function Create: IADsNameTranslate;
     class function CreateRemote(const MachineName: string): IADsNameTranslate;
   end;
 
-
 // *********************************************************************//
 // OLE Server Proxy class declaration
 // Server Object    : TNameTranslate
-// Help String      : 
+// Help String      :
 // Default Interface: IADsNameTranslate
 // Def. Intf. DISP? : No
-// Event   Interface: 
+// Event   Interface:
 // TypeFlags        : (2) CanCreate
 // *********************************************************************//
 {$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
@@ -4583,8 +4782,8 @@ type
     procedure ConnectTo(svrIntf: IADsNameTranslate);
     procedure Disconnect; override;
     procedure Init(lnSetType: Integer; const bstrADsPath: WideString);
-    procedure InitEx(lnSetType: Integer; const bstrADsPath: WideString; 
-                     const bstrUserID: WideString; const bstrDomain: WideString; 
+    procedure InitEx(lnSetType: Integer; const bstrADsPath: WideString;
+                     const bstrUserID: WideString; const bstrDomain: WideString;
                      const bstrPassword: WideString);
     procedure Set_(lnSetType: Integer; const bstrADsPath: WideString);
     function  Get(lnFormatType: Integer): WideString;
@@ -4618,27 +4817,25 @@ type
   end;
 {$ENDIF}
 
-
 // *********************************************************************//
-// The Class CoCaseIgnoreList provides a Create and CreateRemote method to          
-// create instances of the default interface IADsCaseIgnoreList exposed by              
-// the CoClass CaseIgnoreList. The functions are intended to be used by             
-// clients wishing to automate the CoClass objects exposed by the         
-// server of this typelibrary.                                            
+// The Class CoCaseIgnoreList provides a Create and CreateRemote method to
+// create instances of the default interface IADsCaseIgnoreList exposed by
+// the CoClass CaseIgnoreList. The functions are intended to be used by
+// clients wishing to automate the CoClass objects exposed by the
+// server of this typelibrary.
 // *********************************************************************//
   CoCaseIgnoreList = class
     class function Create: IADsCaseIgnoreList;
     class function CreateRemote(const MachineName: string): IADsCaseIgnoreList;
   end;
 
-
 // *********************************************************************//
 // OLE Server Proxy class declaration
 // Server Object    : TCaseIgnoreList
-// Help String      : 
+// Help String      :
 // Default Interface: IADsCaseIgnoreList
 // Def. Intf. DISP? : No
-// Event   Interface: 
+// Event   Interface:
 // TypeFlags        : (2) CanCreate
 // *********************************************************************//
 {$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
@@ -4691,27 +4888,25 @@ type
   end;
 {$ENDIF}
 
-
 // *********************************************************************//
-// The Class CoFaxNumber provides a Create and CreateRemote method to          
-// create instances of the default interface IADsFaxNumber exposed by              
-// the CoClass FaxNumber. The functions are intended to be used by             
-// clients wishing to automate the CoClass objects exposed by the         
-// server of this typelibrary.                                            
+// The Class CoFaxNumber provides a Create and CreateRemote method to
+// create instances of the default interface IADsFaxNumber exposed by
+// the CoClass FaxNumber. The functions are intended to be used by
+// clients wishing to automate the CoClass objects exposed by the
+// server of this typelibrary.
 // *********************************************************************//
   CoFaxNumber = class
     class function Create: IADsFaxNumber;
     class function CreateRemote(const MachineName: string): IADsFaxNumber;
   end;
 
-
 // *********************************************************************//
 // OLE Server Proxy class declaration
 // Server Object    : TFaxNumber
-// Help String      : 
+// Help String      :
 // Default Interface: IADsFaxNumber
 // Def. Intf. DISP? : No
-// Event   Interface: 
+// Event   Interface:
 // TypeFlags        : (2) CanCreate
 // *********************************************************************//
 {$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
@@ -4770,27 +4965,25 @@ type
   end;
 {$ENDIF}
 
-
 // *********************************************************************//
-// The Class CoNetAddress provides a Create and CreateRemote method to          
-// create instances of the default interface IADsNetAddress exposed by              
-// the CoClass NetAddress. The functions are intended to be used by             
-// clients wishing to automate the CoClass objects exposed by the         
-// server of this typelibrary.                                            
+// The Class CoNetAddress provides a Create and CreateRemote method to
+// create instances of the default interface IADsNetAddress exposed by
+// the CoClass NetAddress. The functions are intended to be used by
+// clients wishing to automate the CoClass objects exposed by the
+// server of this typelibrary.
 // *********************************************************************//
   CoNetAddress = class
     class function Create: IADsNetAddress;
     class function CreateRemote(const MachineName: string): IADsNetAddress;
   end;
 
-
 // *********************************************************************//
 // OLE Server Proxy class declaration
 // Server Object    : TNetAddress
-// Help String      : 
+// Help String      :
 // Default Interface: IADsNetAddress
 // Def. Intf. DISP? : No
-// Event   Interface: 
+// Event   Interface:
 // TypeFlags        : (2) CanCreate
 // *********************************************************************//
 {$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
@@ -4849,27 +5042,25 @@ type
   end;
 {$ENDIF}
 
-
 // *********************************************************************//
-// The Class CoOctetList provides a Create and CreateRemote method to          
-// create instances of the default interface IADsOctetList exposed by              
-// the CoClass OctetList. The functions are intended to be used by             
-// clients wishing to automate the CoClass objects exposed by the         
-// server of this typelibrary.                                            
+// The Class CoOctetList provides a Create and CreateRemote method to
+// create instances of the default interface IADsOctetList exposed by
+// the CoClass OctetList. The functions are intended to be used by
+// clients wishing to automate the CoClass objects exposed by the
+// server of this typelibrary.
 // *********************************************************************//
   CoOctetList = class
     class function Create: IADsOctetList;
     class function CreateRemote(const MachineName: string): IADsOctetList;
   end;
 
-
 // *********************************************************************//
 // OLE Server Proxy class declaration
 // Server Object    : TOctetList
-// Help String      : 
+// Help String      :
 // Default Interface: IADsOctetList
 // Def. Intf. DISP? : No
-// Event   Interface: 
+// Event   Interface:
 // TypeFlags        : (2) CanCreate
 // *********************************************************************//
 {$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
@@ -4922,27 +5113,25 @@ type
   end;
 {$ENDIF}
 
-
 // *********************************************************************//
-// The Class CoEmail provides a Create and CreateRemote method to          
-// create instances of the default interface IADsEmail exposed by              
-// the CoClass Email. The functions are intended to be used by             
-// clients wishing to automate the CoClass objects exposed by the         
-// server of this typelibrary.                                            
+// The Class CoEmail provides a Create and CreateRemote method to
+// create instances of the default interface IADsEmail exposed by
+// the CoClass Email. The functions are intended to be used by
+// clients wishing to automate the CoClass objects exposed by the
+// server of this typelibrary.
 // *********************************************************************//
   CoEmail = class
     class function Create: IADsEmail;
     class function CreateRemote(const MachineName: string): IADsEmail;
   end;
 
-
 // *********************************************************************//
 // OLE Server Proxy class declaration
 // Server Object    : TEmail
-// Help String      : 
+// Help String      :
 // Default Interface: IADsEmail
 // Def. Intf. DISP? : No
-// Event   Interface: 
+// Event   Interface:
 // TypeFlags        : (2) CanCreate
 // *********************************************************************//
 {$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
@@ -5002,27 +5191,25 @@ type
   end;
 {$ENDIF}
 
-
 // *********************************************************************//
-// The Class CoPath provides a Create and CreateRemote method to          
-// create instances of the default interface IADsPath exposed by              
-// the CoClass Path. The functions are intended to be used by             
-// clients wishing to automate the CoClass objects exposed by the         
-// server of this typelibrary.                                            
+// The Class CoPath provides a Create and CreateRemote method to
+// create instances of the default interface IADsPath exposed by
+// the CoClass Path. The functions are intended to be used by
+// clients wishing to automate the CoClass objects exposed by the
+// server of this typelibrary.
 // *********************************************************************//
   CoPath = class
     class function Create: IADsPath;
     class function CreateRemote(const MachineName: string): IADsPath;
   end;
 
-
 // *********************************************************************//
 // OLE Server Proxy class declaration
 // Server Object    : TPath
-// Help String      : 
+// Help String      :
 // Default Interface: IADsPath
 // Def. Intf. DISP? : No
-// Event   Interface: 
+// Event   Interface:
 // TypeFlags        : (2) CanCreate
 // *********************************************************************//
 {$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
@@ -5088,27 +5275,25 @@ type
   end;
 {$ENDIF}
 
-
 // *********************************************************************//
-// The Class CoReplicaPointer provides a Create and CreateRemote method to          
-// create instances of the default interface IADsReplicaPointer exposed by              
-// the CoClass ReplicaPointer. The functions are intended to be used by             
-// clients wishing to automate the CoClass objects exposed by the         
-// server of this typelibrary.                                            
+// The Class CoReplicaPointer provides a Create and CreateRemote method to
+// create instances of the default interface IADsReplicaPointer exposed by
+// the CoClass ReplicaPointer. The functions are intended to be used by
+// clients wishing to automate the CoClass objects exposed by the
+// server of this typelibrary.
 // *********************************************************************//
   CoReplicaPointer = class
     class function Create: IADsReplicaPointer;
     class function CreateRemote(const MachineName: string): IADsReplicaPointer;
   end;
 
-
 // *********************************************************************//
 // OLE Server Proxy class declaration
 // Server Object    : TReplicaPointer
-// Help String      : 
+// Help String      :
 // Default Interface: IADsReplicaPointer
 // Def. Intf. DISP? : No
-// Event   Interface: 
+// Event   Interface:
 // TypeFlags        : (2) CanCreate
 // *********************************************************************//
 {$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
@@ -5185,27 +5370,25 @@ type
   end;
 {$ENDIF}
 
-
 // *********************************************************************//
-// The Class CoAcl provides a Create and CreateRemote method to          
-// create instances of the default interface IADsAcl exposed by              
-// the CoClass Acl. The functions are intended to be used by             
-// clients wishing to automate the CoClass objects exposed by the         
-// server of this typelibrary.                                            
+// The Class CoAcl provides a Create and CreateRemote method to
+// create instances of the default interface IADsAcl exposed by
+// the CoClass Acl. The functions are intended to be used by
+// clients wishing to automate the CoClass objects exposed by the
+// server of this typelibrary.
 // *********************************************************************//
   CoAcl = class
     class function Create: IADsAcl;
     class function CreateRemote(const MachineName: string): IADsAcl;
   end;
 
-
 // *********************************************************************//
 // OLE Server Proxy class declaration
 // Server Object    : TAcl
-// Help String      : 
+// Help String      :
 // Default Interface: IADsAcl
 // Def. Intf. DISP? : No
-// Event   Interface: 
+// Event   Interface:
 // TypeFlags        : (2) CanCreate
 // *********************************************************************//
 {$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
@@ -5272,27 +5455,25 @@ type
   end;
 {$ENDIF}
 
-
 // *********************************************************************//
-// The Class CoTimestamp provides a Create and CreateRemote method to          
-// create instances of the default interface IADsTimestamp exposed by              
-// the CoClass Timestamp. The functions are intended to be used by             
-// clients wishing to automate the CoClass objects exposed by the         
-// server of this typelibrary.                                            
+// The Class CoTimestamp provides a Create and CreateRemote method to
+// create instances of the default interface IADsTimestamp exposed by
+// the CoClass Timestamp. The functions are intended to be used by
+// clients wishing to automate the CoClass objects exposed by the
+// server of this typelibrary.
 // *********************************************************************//
   CoTimestamp = class
     class function Create: IADsTimestamp;
     class function CreateRemote(const MachineName: string): IADsTimestamp;
   end;
 
-
 // *********************************************************************//
 // OLE Server Proxy class declaration
 // Server Object    : TTimestamp
-// Help String      : 
+// Help String      :
 // Default Interface: IADsTimestamp
 // Def. Intf. DISP? : No
-// Event   Interface: 
+// Event   Interface:
 // TypeFlags        : (2) CanCreate
 // *********************************************************************//
 {$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
@@ -5352,27 +5533,25 @@ type
   end;
 {$ENDIF}
 
-
 // *********************************************************************//
-// The Class CoPostalAddress provides a Create and CreateRemote method to          
-// create instances of the default interface IADsPostalAddress exposed by              
-// the CoClass PostalAddress. The functions are intended to be used by             
-// clients wishing to automate the CoClass objects exposed by the         
-// server of this typelibrary.                                            
+// The Class CoPostalAddress provides a Create and CreateRemote method to
+// create instances of the default interface IADsPostalAddress exposed by
+// the CoClass PostalAddress. The functions are intended to be used by
+// clients wishing to automate the CoClass objects exposed by the
+// server of this typelibrary.
 // *********************************************************************//
   CoPostalAddress = class
     class function Create: IADsPostalAddress;
     class function CreateRemote(const MachineName: string): IADsPostalAddress;
   end;
 
-
 // *********************************************************************//
 // OLE Server Proxy class declaration
 // Server Object    : TPostalAddress
-// Help String      : 
+// Help String      :
 // Default Interface: IADsPostalAddress
 // Def. Intf. DISP? : No
-// Event   Interface: 
+// Event   Interface:
 // TypeFlags        : (2) CanCreate
 // *********************************************************************//
 {$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
@@ -5425,27 +5604,25 @@ type
   end;
 {$ENDIF}
 
-
 // *********************************************************************//
-// The Class CoBackLink provides a Create and CreateRemote method to          
-// create instances of the default interface IADsBackLink exposed by              
-// the CoClass BackLink. The functions are intended to be used by             
-// clients wishing to automate the CoClass objects exposed by the         
-// server of this typelibrary.                                            
+// The Class CoBackLink provides a Create and CreateRemote method to
+// create instances of the default interface IADsBackLink exposed by
+// the CoClass BackLink. The functions are intended to be used by
+// clients wishing to automate the CoClass objects exposed by the
+// server of this typelibrary.
 // *********************************************************************//
   CoBackLink = class
     class function Create: IADsBackLink;
     class function CreateRemote(const MachineName: string): IADsBackLink;
   end;
 
-
 // *********************************************************************//
 // OLE Server Proxy class declaration
 // Server Object    : TBackLink
-// Help String      : 
+// Help String      :
 // Default Interface: IADsBackLink
 // Def. Intf. DISP? : No
-// Event   Interface: 
+// Event   Interface:
 // TypeFlags        : (2) CanCreate
 // *********************************************************************//
 {$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
@@ -5505,27 +5682,25 @@ type
   end;
 {$ENDIF}
 
-
 // *********************************************************************//
-// The Class CoTypedName provides a Create and CreateRemote method to          
-// create instances of the default interface IADsTypedName exposed by              
-// the CoClass TypedName. The functions are intended to be used by             
-// clients wishing to automate the CoClass objects exposed by the         
-// server of this typelibrary.                                            
+// The Class CoTypedName provides a Create and CreateRemote method to
+// create instances of the default interface IADsTypedName exposed by
+// the CoClass TypedName. The functions are intended to be used by
+// clients wishing to automate the CoClass objects exposed by the
+// server of this typelibrary.
 // *********************************************************************//
   CoTypedName = class
     class function Create: IADsTypedName;
     class function CreateRemote(const MachineName: string): IADsTypedName;
   end;
 
-
 // *********************************************************************//
 // OLE Server Proxy class declaration
 // Server Object    : TTypedName
-// Help String      : 
+// Help String      :
 // Default Interface: IADsTypedName
 // Def. Intf. DISP? : No
-// Event   Interface: 
+// Event   Interface:
 // TypeFlags        : (2) CanCreate
 // *********************************************************************//
 {$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
@@ -5591,27 +5766,25 @@ type
   end;
 {$ENDIF}
 
-
 // *********************************************************************//
-// The Class CoHold provides a Create and CreateRemote method to          
-// create instances of the default interface IADsHold exposed by              
-// the CoClass Hold. The functions are intended to be used by             
-// clients wishing to automate the CoClass objects exposed by the         
-// server of this typelibrary.                                            
+// The Class CoHold provides a Create and CreateRemote method to
+// create instances of the default interface IADsHold exposed by
+// the CoClass Hold. The functions are intended to be used by
+// clients wishing to automate the CoClass objects exposed by the
+// server of this typelibrary.
 // *********************************************************************//
   CoHold = class
     class function Create: IADsHold;
     class function CreateRemote(const MachineName: string): IADsHold;
   end;
 
-
 // *********************************************************************//
 // OLE Server Proxy class declaration
 // Server Object    : THold
-// Help String      : 
+// Help String      :
 // Default Interface: IADsHold
 // Def. Intf. DISP? : No
-// Event   Interface: 
+// Event   Interface:
 // TypeFlags        : (2) CanCreate
 // *********************************************************************//
 {$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
@@ -5671,27 +5844,25 @@ type
   end;
 {$ENDIF}
 
-
 // *********************************************************************//
-// The Class CoPathname provides a Create and CreateRemote method to          
-// create instances of the default interface IADsPathname exposed by              
-// the CoClass Pathname. The functions are intended to be used by             
-// clients wishing to automate the CoClass objects exposed by the         
-// server of this typelibrary.                                            
+// The Class CoPathname provides a Create and CreateRemote method to
+// create instances of the default interface IADsPathname exposed by
+// the CoClass Pathname. The functions are intended to be used by
+// clients wishing to automate the CoClass objects exposed by the
+// server of this typelibrary.
 // *********************************************************************//
   CoPathname = class
     class function Create: IADsPathname;
     class function CreateRemote(const MachineName: string): IADsPathname;
   end;
 
-
 // *********************************************************************//
 // OLE Server Proxy class declaration
 // Server Object    : TPathname
-// Help String      : 
+// Help String      :
 // Default Interface: IADsPathname
 // Def. Intf. DISP? : No
-// Event   Interface: 
+// Event   Interface:
 // TypeFlags        : (2) CanCreate
 // *********************************************************************//
 {$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
@@ -5754,27 +5925,25 @@ type
   end;
 {$ENDIF}
 
-
 // *********************************************************************//
-// The Class CoADSystemInfo provides a Create and CreateRemote method to          
-// create instances of the default interface IADsADSystemInfo exposed by              
-// the CoClass ADSystemInfo. The functions are intended to be used by             
-// clients wishing to automate the CoClass objects exposed by the         
-// server of this typelibrary.                                            
+// The Class CoADSystemInfo provides a Create and CreateRemote method to
+// create instances of the default interface IADsADSystemInfo exposed by
+// the CoClass ADSystemInfo. The functions are intended to be used by
+// clients wishing to automate the CoClass objects exposed by the
+// server of this typelibrary.
 // *********************************************************************//
   CoADSystemInfo = class
     class function Create: IADsADSystemInfo;
     class function CreateRemote(const MachineName: string): IADsADSystemInfo;
   end;
 
-
 // *********************************************************************//
 // OLE Server Proxy class declaration
 // Server Object    : TADSystemInfo
-// Help String      : 
+// Help String      :
 // Default Interface: IADsADSystemInfo
 // Def. Intf. DISP? : No
-// Event   Interface: 
+// Event   Interface:
 // TypeFlags        : (2) CanCreate
 // *********************************************************************//
 {$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
@@ -5853,27 +6022,25 @@ type
   end;
 {$ENDIF}
 
-
 // *********************************************************************//
-// The Class CoWinNTSystemInfo provides a Create and CreateRemote method to          
-// create instances of the default interface IADsWinNTSystemInfo exposed by              
-// the CoClass WinNTSystemInfo. The functions are intended to be used by             
-// clients wishing to automate the CoClass objects exposed by the         
-// server of this typelibrary.                                            
+// The Class CoWinNTSystemInfo provides a Create and CreateRemote method to
+// create instances of the default interface IADsWinNTSystemInfo exposed by
+// the CoClass WinNTSystemInfo. The functions are intended to be used by
+// clients wishing to automate the CoClass objects exposed by the
+// server of this typelibrary.
 // *********************************************************************//
   CoWinNTSystemInfo = class
     class function Create: IADsWinNTSystemInfo;
     class function CreateRemote(const MachineName: string): IADsWinNTSystemInfo;
   end;
 
-
 // *********************************************************************//
 // OLE Server Proxy class declaration
 // Server Object    : TWinNTSystemInfo
-// Help String      : 
+// Help String      :
 // Default Interface: IADsWinNTSystemInfo
 // Def. Intf. DISP? : No
-// Event   Interface: 
+// Event   Interface:
 // TypeFlags        : (2) CanCreate
 // *********************************************************************//
 {$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
@@ -5933,27 +6100,25 @@ type
   end;
 {$ENDIF}
 
-
 // *********************************************************************//
-// The Class CoDNWithBinary provides a Create and CreateRemote method to          
-// create instances of the default interface IADsDNWithBinary exposed by              
-// the CoClass DNWithBinary. The functions are intended to be used by             
-// clients wishing to automate the CoClass objects exposed by the         
-// server of this typelibrary.                                            
+// The Class CoDNWithBinary provides a Create and CreateRemote method to
+// create instances of the default interface IADsDNWithBinary exposed by
+// the CoClass DNWithBinary. The functions are intended to be used by
+// clients wishing to automate the CoClass objects exposed by the
+// server of this typelibrary.
 // *********************************************************************//
   CoDNWithBinary = class
     class function Create: IADsDNWithBinary;
     class function CreateRemote(const MachineName: string): IADsDNWithBinary;
   end;
 
-
 // *********************************************************************//
 // OLE Server Proxy class declaration
 // Server Object    : TDNWithBinary
-// Help String      : 
+// Help String      :
 // Default Interface: IADsDNWithBinary
 // Def. Intf. DISP? : No
-// Event   Interface: 
+// Event   Interface:
 // TypeFlags        : (2) CanCreate
 // *********************************************************************//
 {$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
@@ -6012,27 +6177,25 @@ type
   end;
 {$ENDIF}
 
-
 // *********************************************************************//
-// The Class CoDNWithString provides a Create and CreateRemote method to          
-// create instances of the default interface IADsDNWithString exposed by              
-// the CoClass DNWithString. The functions are intended to be used by             
-// clients wishing to automate the CoClass objects exposed by the         
-// server of this typelibrary.                                            
+// The Class CoDNWithString provides a Create and CreateRemote method to
+// create instances of the default interface IADsDNWithString exposed by
+// the CoClass DNWithString. The functions are intended to be used by
+// clients wishing to automate the CoClass objects exposed by the
+// server of this typelibrary.
 // *********************************************************************//
   CoDNWithString = class
     class function Create: IADsDNWithString;
     class function CreateRemote(const MachineName: string): IADsDNWithString;
   end;
 
-
 // *********************************************************************//
 // OLE Server Proxy class declaration
 // Server Object    : TDNWithString
-// Help String      : 
+// Help String      :
 // Default Interface: IADsDNWithString
 // Def. Intf. DISP? : No
-// Event   Interface: 
+// Event   Interface:
 // TypeFlags        : (2) CanCreate
 // *********************************************************************//
 {$IFDEF LIVE_SERVER_AT_DESIGN_TIME}
@@ -6091,7 +6254,6 @@ type
     property DNString: WideString read Get_DNString write Set_DNString;
   end;
 {$ENDIF}
-
 
 procedure Register;
 
@@ -7509,8 +7671,8 @@ begin
   DefaultInterface.Init(lnSetType, bstrADsPath);
 end;
 
-procedure TNameTranslate.InitEx(lnSetType: Integer; const bstrADsPath: WideString; 
-                                const bstrUserID: WideString; const bstrDomain: WideString; 
+procedure TNameTranslate.InitEx(lnSetType: Integer; const bstrADsPath: WideString;
+                                const bstrUserID: WideString; const bstrDomain: WideString;
                                 const bstrPassword: WideString);
 begin
   DefaultInterface.InitEx(lnSetType, bstrADsPath, bstrUserID, bstrDomain, bstrPassword);
@@ -10091,14 +10253,50 @@ end;
 
 {$ENDIF}
 
+
+{$ifdef FPC} // dummy
+{
+function CreateComObject(ID: TGUID): IUnknown; //empty
+
+begin
+end;
+
+function CreateRemoteComObject(w:widestring; ID: TGUID): IUnknown; //empty
+
+begin
+end;
+}
+function  tOleServer.GetServer:IUnknown;
+begin
+end;
+
+procedure tOleServer.InitServerData;
+begin
+end;
+constructor tOleServer.Create(AOwner: TComponent);
+begin
+end;
+Procedure tOleServer.Connect;
+begin
+end;
+procedure tOleServer.Disconnect;
+begin
+end;
+
+
+{$endif}
+
+
 procedure Register;
 begin
-  RegisterComponents('ActiveX',[TPropertyEntry, TPropertyValue, TAccessControlEntry, TAccessControlList, 
-    TSecurityDescriptor, TLargeInteger, TNameTranslate, TCaseIgnoreList, TFaxNumber, 
-    TNetAddress, TOctetList, TEmail, TPath, TReplicaPointer, 
-    TAcl, TTimestamp, TPostalAddress, TBackLink, TTypedName, 
-    THold, TPathname, TADSystemInfo, TWinNTSystemInfo, TDNWithBinary, 
+  RegisterComponents('ActiveX',[TPropertyEntry, TPropertyValue, TAccessControlEntry, TAccessControlList,
+    TSecurityDescriptor, TLargeInteger, TNameTranslate, TCaseIgnoreList, TFaxNumber,
+    TNetAddress, TOctetList, TEmail, TPath, TReplicaPointer,
+    TAcl, TTimestamp, TPostalAddress, TBackLink, TTypedName,
+    THold, TPathname, TADSystemInfo, TWinNTSystemInfo, TDNWithBinary,
     TDNWithString]);
 end;
+
+
 
 end.

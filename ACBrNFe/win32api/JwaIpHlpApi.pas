@@ -1,26 +1,25 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Internet Protocol Helper API interface Unit for Object Pascal                }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: iphlpapi.h, released August 2000. The original Pascal  }
 { code is: IpHlpApi.pas, released September 2000. The initial developer of the }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
-{ Contributor(s): John C. Penman (jcp@craiglockhart.com)                       }
-{                 Vladimir Vassiliev (voldemarv@hotpop.com)                    }
-{ 								               }
+{                                                                              }
+{ Contributor(s): John C. Penman (jcp att craiglockhart dott com)              }
+{                 Vladimir Vassiliev (voldemarv att hotpop dott com)           }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -39,25 +38,27 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaIpHlpApi.pas,v 1.9 2005/09/06 16:36:50 marquardt Exp $
 
 unit JwaIpHlpApi;
 
 {$WEAKPACKAGEUNIT}
 
-{$HPPEMIT ''}
-{$HPPEMIT '#include "iphlpapi.h"'}
-{$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaIpExport, JwaIpRtrMib, JwaIpTypes, JwaWinType, JwaWinBase, JwaWinSock;
+  JwaIpExport, JwaIpRtrMib, JwaIpTypes, JwaWindows;
+
+{$HPPEMIT ''}
+{$HPPEMIT '#include "iphlpapi.h"'}
+{$HPPEMIT ''}
 
 //////////////////////////////////////////////////////////////////////////////
 //                                                                          //
@@ -79,7 +80,6 @@ uses
 // MIB-II (RFC XXXX)                                                        //
 //                                                                          //
 //////////////////////////////////////////////////////////////////////////////
-
 
 //////////////////////////////////////////////////////////////////////////////
 //                                                                          //
@@ -286,6 +286,10 @@ function GetUniDirectionalAdapterInfo(pIPIfInfo: PIP_UNIDIRECTIONAL_ADAPTER_ADDR
   var dwOutBufLen: ULONG): DWORD; stdcall;
 {$EXTERNALSYM GetUniDirectionalAdapterInfo(OUT PIP_UNIDIRECTIONAL_ADAPTER_ADDRESS pIPIfInfo}
 
+function NhpAllocateAndGetInterfaceInfoFromStack(out ppTable: PIP_INTERFACE_NAME_INFO;
+  pdwCount: PDWORD; bOrder: BOOL; hHeap: HANDLE; dwFlags: DWORD): DWORD; stdcall;
+{$EXTERNALSYM NhpAllocateAndGetInterfaceInfoFromStack}
+
 //////////////////////////////////////////////////////////////////////////////
 //                                                                          //
 // Gets the "best" outgoing interface for the specified destination address //
@@ -317,6 +321,9 @@ function NotifyAddrChange(var Handle: THandle; overlapped: POVERLAPPED): DWORD; 
 function NotifyRouteChange(var Handle: THandle; overlapped: POVERLAPPED): DWORD; stdcall;
 {$EXTERNALSYM NotifyRouteChange}
 
+function CancelIPChangeNotify(notifyOverlapped: LPOVERLAPPED): BOOL; stdcall;
+{$EXTERNALSYM CancelIPChangeNotify}
+
 function GetAdapterIndex(AdapterName: LPWSTR; var IfIndex: ULONG): DWORD; stdcall;
 {$EXTERNALSYM GetAdapterIndex}
 
@@ -332,6 +339,9 @@ function GetNetworkParams(pFixedInfo: PFIXED_INFO; var pOutBufLen: ULONG): DWORD
 
 function GetAdaptersInfo(pAdapterInfo: PIP_ADAPTER_INFO; var pOutBufLen: ULONG): DWORD; stdcall;
 {$EXTERNALSYM GetAdaptersInfo}
+
+function GetAdapterOrderMap: PIP_ADAPTER_ORDER_MAP; stdcall;
+{$EXTERNALSYM GetAdapterOrderMap}
 
 //
 // The following functions require Winsock2.
@@ -378,11 +388,11 @@ function GetIpErrorString(ErrorCode: IP_STATUS; Buffer: PWCHAR; var Size: DWORD)
 
 implementation
 
-const
-  iphlpapilib = 'iphlpapi.dll';
-
+uses
+  JwaWinDLLNames;
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _GetNumberOfInterfaces: Pointer;
 
@@ -390,16 +400,12 @@ function GetNumberOfInterfaces;
 begin
   GetProcedureAddress(_GetNumberOfInterfaces, iphlpapilib, 'GetNumberOfInterfaces');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetNumberOfInterfaces]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetNumberOfInterfaces]
   end;
 end;
-{$ELSE}
-function GetNumberOfInterfaces; external iphlpapilib name 'GetNumberOfInterfaces';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetIfEntry: Pointer;
 
@@ -407,16 +413,12 @@ function GetIfEntry;
 begin
   GetProcedureAddress(_GetIfEntry, iphlpapilib, 'GetIfEntry');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetIfEntry]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetIfEntry]
   end;
 end;
-{$ELSE}
-function GetIfEntry; external iphlpapilib name 'GetIfEntry';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetIfTable: Pointer;
 
@@ -424,16 +426,12 @@ function GetIfTable;
 begin
   GetProcedureAddress(_GetIfTable, iphlpapilib, 'GetIfTable');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetIfTable]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetIfTable]
   end;
 end;
-{$ELSE}
-function GetIfTable; external iphlpapilib name 'GetIfTable';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetIpAddrTable: Pointer;
 
@@ -441,16 +439,12 @@ function GetIpAddrTable;
 begin
   GetProcedureAddress(_GetIpAddrTable, iphlpapilib, 'GetIpAddrTable');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetIpAddrTable]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetIpAddrTable]
   end;
 end;
-{$ELSE}
-function GetIpAddrTable; external iphlpapilib name 'GetIpAddrTable';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetIpNetTable: Pointer;
 
@@ -458,16 +452,12 @@ function GetIpNetTable;
 begin
   GetProcedureAddress(_GetIpNetTable, iphlpapilib, 'GetIpNetTable');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetIpNetTable]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetIpNetTable]
   end;
 end;
-{$ELSE}
-function GetIpNetTable; external iphlpapilib name 'GetIpNetTable';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetIpForwardTable: Pointer;
 
@@ -475,16 +465,12 @@ function GetIpForwardTable;
 begin
   GetProcedureAddress(_GetIpForwardTable, iphlpapilib, 'GetIpForwardTable');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetIpForwardTable]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetIpForwardTable]
   end;
 end;
-{$ELSE}
-function GetIpForwardTable; external iphlpapilib name 'GetIpForwardTable';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetTcpTable: Pointer;
 
@@ -492,16 +478,12 @@ function GetTcpTable;
 begin
   GetProcedureAddress(_GetTcpTable, iphlpapilib, 'GetTcpTable');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTcpTable]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetTcpTable]
   end;
 end;
-{$ELSE}
-function GetTcpTable; external iphlpapilib name 'GetTcpTable';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetUdpTable: Pointer;
 
@@ -509,16 +491,12 @@ function GetUdpTable;
 begin
   GetProcedureAddress(_GetUdpTable, iphlpapilib, 'GetUdpTable');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetUdpTable]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetUdpTable]
   end;
 end;
-{$ELSE}
-function GetUdpTable; external iphlpapilib name 'GetUdpTable';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetIpStatistics: Pointer;
 
@@ -526,16 +504,12 @@ function GetIpStatistics;
 begin
   GetProcedureAddress(_GetIpStatistics, iphlpapilib, 'GetIpStatistics');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetIpStatistics]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetIpStatistics]
   end;
 end;
-{$ELSE}
-function GetIpStatistics; external iphlpapilib name 'GetIpStatistics';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetIpStatisticsEx: Pointer;
 
@@ -543,16 +517,12 @@ function GetIpStatisticsEx;
 begin
   GetProcedureAddress(_GetIpStatisticsEx, iphlpapilib, 'GetIpStatisticsEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetIpStatisticsEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetIpStatisticsEx]
   end;
 end;
-{$ELSE}
-function GetIpStatisticsEx; external iphlpapilib name 'GetIpStatisticsEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetIcmpStatistics: Pointer;
 
@@ -560,16 +530,12 @@ function GetIcmpStatistics;
 begin
   GetProcedureAddress(_GetIcmpStatistics, iphlpapilib, 'GetIcmpStatistics');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetIcmpStatistics]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetIcmpStatistics]
   end;
 end;
-{$ELSE}
-function GetIcmpStatistics; external iphlpapilib name 'GetIcmpStatistics';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetIcmpStatisticsEx: Pointer;
 
@@ -577,16 +543,12 @@ function GetIcmpStatisticsEx;
 begin
   GetProcedureAddress(_GetIcmpStatisticsEx, iphlpapilib, 'GetIcmpStatisticsEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetIcmpStatisticsEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetIcmpStatisticsEx]
   end;
 end;
-{$ELSE}
-function GetIcmpStatisticsEx; external iphlpapilib name 'GetIcmpStatisticsEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetTcpStatistics: Pointer;
 
@@ -594,16 +556,12 @@ function GetTcpStatistics;
 begin
   GetProcedureAddress(_GetTcpStatistics, iphlpapilib, 'GetTcpStatistics');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTcpStatistics]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetTcpStatistics]
   end;
 end;
-{$ELSE}
-function GetTcpStatistics; external iphlpapilib name 'GetTcpStatistics';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetTcpStatisticsEx: Pointer;
 
@@ -611,16 +569,12 @@ function GetTcpStatisticsEx;
 begin
   GetProcedureAddress(_GetTcpStatisticsEx, iphlpapilib, 'GetTcpStatisticsEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTcpStatisticsEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetTcpStatisticsEx]
   end;
 end;
-{$ELSE}
-function GetTcpStatisticsEx; external iphlpapilib name 'GetTcpStatisticsEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetUdpStatistics: Pointer;
 
@@ -628,16 +582,12 @@ function GetUdpStatistics;
 begin
   GetProcedureAddress(_GetUdpStatistics, iphlpapilib, 'GetUdpStatistics');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetUdpStatistics]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetUdpStatistics]
   end;
 end;
-{$ELSE}
-function GetUdpStatistics; external iphlpapilib name 'GetUdpStatistics';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetUdpStatisticsEx: Pointer;
 
@@ -645,16 +595,12 @@ function GetUdpStatisticsEx;
 begin
   GetProcedureAddress(_GetUdpStatisticsEx, iphlpapilib, 'GetUdpStatisticsEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetUdpStatisticsEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetUdpStatisticsEx]
   end;
 end;
-{$ELSE}
-function GetUdpStatisticsEx; external iphlpapilib name 'GetUdpStatisticsEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetIfEntry: Pointer;
 
@@ -662,16 +608,12 @@ function SetIfEntry;
 begin
   GetProcedureAddress(_SetIfEntry, iphlpapilib, 'SetIfEntry');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetIfEntry]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetIfEntry]
   end;
 end;
-{$ELSE}
-function SetIfEntry; external iphlpapilib name 'SetIfEntry';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateIpForwardEntry: Pointer;
 
@@ -679,16 +621,12 @@ function CreateIpForwardEntry;
 begin
   GetProcedureAddress(_CreateIpForwardEntry, iphlpapilib, 'CreateIpForwardEntry');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateIpForwardEntry]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateIpForwardEntry]
   end;
 end;
-{$ELSE}
-function CreateIpForwardEntry; external iphlpapilib name 'CreateIpForwardEntry';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetIpForwardEntry: Pointer;
 
@@ -696,16 +634,12 @@ function SetIpForwardEntry;
 begin
   GetProcedureAddress(_SetIpForwardEntry, iphlpapilib, 'SetIpForwardEntry');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetIpForwardEntry]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetIpForwardEntry]
   end;
 end;
-{$ELSE}
-function SetIpForwardEntry; external iphlpapilib name 'SetIpForwardEntry';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DeleteIpForwardEntry: Pointer;
 
@@ -713,16 +647,12 @@ function DeleteIpForwardEntry;
 begin
   GetProcedureAddress(_DeleteIpForwardEntry, iphlpapilib, 'DeleteIpForwardEntry');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DeleteIpForwardEntry]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DeleteIpForwardEntry]
   end;
 end;
-{$ELSE}
-function DeleteIpForwardEntry; external iphlpapilib name 'DeleteIpForwardEntry';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetIpStatistics: Pointer;
 
@@ -730,16 +660,12 @@ function SetIpStatistics;
 begin
   GetProcedureAddress(_SetIpStatistics, iphlpapilib, 'SetIpStatistics');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetIpStatistics]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetIpStatistics]
   end;
 end;
-{$ELSE}
-function SetIpStatistics; external iphlpapilib name 'SetIpStatistics';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetIpTTL: Pointer;
 
@@ -747,16 +673,12 @@ function SetIpTTL;
 begin
   GetProcedureAddress(_SetIpTTL, iphlpapilib, 'SetIpTTL');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetIpTTL]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetIpTTL]
   end;
 end;
-{$ELSE}
-function SetIpTTL; external iphlpapilib name 'SetIpTTL';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateIpNetEntry: Pointer;
 
@@ -764,16 +686,12 @@ function CreateIpNetEntry;
 begin
   GetProcedureAddress(_CreateIpNetEntry, iphlpapilib, 'CreateIpNetEntry');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateIpNetEntry]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateIpNetEntry]
   end;
 end;
-{$ELSE}
-function CreateIpNetEntry; external iphlpapilib name 'CreateIpNetEntry';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetIpNetEntry: Pointer;
 
@@ -781,16 +699,12 @@ function SetIpNetEntry;
 begin
   GetProcedureAddress(_SetIpNetEntry, iphlpapilib, 'SetIpNetEntry');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetIpNetEntry]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetIpNetEntry]
   end;
 end;
-{$ELSE}
-function SetIpNetEntry; external iphlpapilib name 'SetIpNetEntry';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DeleteIpNetEntry: Pointer;
 
@@ -798,16 +712,12 @@ function DeleteIpNetEntry;
 begin
   GetProcedureAddress(_DeleteIpNetEntry, iphlpapilib, 'DeleteIpNetEntry');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DeleteIpNetEntry]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DeleteIpNetEntry]
   end;
 end;
-{$ELSE}
-function DeleteIpNetEntry; external iphlpapilib name 'DeleteIpNetEntry';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _FlushIpNetTable: Pointer;
 
@@ -815,16 +725,12 @@ function FlushIpNetTable;
 begin
   GetProcedureAddress(_FlushIpNetTable, iphlpapilib, 'FlushIpNetTable');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FlushIpNetTable]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_FlushIpNetTable]
   end;
 end;
-{$ELSE}
-function FlushIpNetTable; external iphlpapilib name 'FlushIpNetTable';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateProxyArpEntry: Pointer;
 
@@ -832,16 +738,12 @@ function CreateProxyArpEntry;
 begin
   GetProcedureAddress(_CreateProxyArpEntry, iphlpapilib, 'CreateProxyArpEntry');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateProxyArpEntry]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateProxyArpEntry]
   end;
 end;
-{$ELSE}
-function CreateProxyArpEntry; external iphlpapilib name 'CreateProxyArpEntry';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DeleteProxyArpEntry: Pointer;
 
@@ -849,16 +751,12 @@ function DeleteProxyArpEntry;
 begin
   GetProcedureAddress(_DeleteProxyArpEntry, iphlpapilib, 'DeleteProxyArpEntry');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DeleteProxyArpEntry]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DeleteProxyArpEntry]
   end;
 end;
-{$ELSE}
-function DeleteProxyArpEntry; external iphlpapilib name 'DeleteProxyArpEntry';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetTcpEntry: Pointer;
 
@@ -866,16 +764,12 @@ function SetTcpEntry;
 begin
   GetProcedureAddress(_SetTcpEntry, iphlpapilib, 'SetTcpEntry');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetTcpEntry]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetTcpEntry]
   end;
 end;
-{$ELSE}
-function SetTcpEntry; external iphlpapilib name 'SetTcpEntry';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetInterfaceInfo: Pointer;
 
@@ -883,16 +777,12 @@ function GetInterfaceInfo;
 begin
   GetProcedureAddress(_GetInterfaceInfo, iphlpapilib, 'GetInterfaceInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetInterfaceInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetInterfaceInfo]
   end;
 end;
-{$ELSE}
-function GetInterfaceInfo; external iphlpapilib name 'GetInterfaceInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetUniDirectionalAdapterInfo: Pointer;
 
@@ -900,16 +790,25 @@ function GetUniDirectionalAdapterInfo;
 begin
   GetProcedureAddress(_GetUniDirectionalAdapterInfo, iphlpapilib, 'GetUniDirectionalAdapterInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetUniDirectionalAdapterInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetUniDirectionalAdapterInfo]
   end;
 end;
-{$ELSE}
-function GetUniDirectionalAdapterInfo; external iphlpapilib name 'GetUniDirectionalAdapterInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
+var
+  _NhpAllocateAndGetInterfaceInfoFromStack: Pointer;
+
+function NhpAllocateAndGetInterfaceInfoFromStack;
+begin
+  GetProcedureAddress(_NhpAllocateAndGetInterfaceInfoFromStack, iphlpapilib, 'NhpAllocateAndGetInterfaceInfoFromStack');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NhpAllocateAndGetInterfaceInfoFromStack]
+  end;
+end;
+
 var
   _GetBestInterface: Pointer;
 
@@ -917,16 +816,12 @@ function GetBestInterface;
 begin
   GetProcedureAddress(_GetBestInterface, iphlpapilib, 'GetBestInterface');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetBestInterface]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetBestInterface]
   end;
 end;
-{$ELSE}
-function GetBestInterface; external iphlpapilib name 'GetBestInterface';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetBestInterfaceEx: Pointer;
 
@@ -934,16 +829,12 @@ function GetBestInterfaceEx;
 begin
   GetProcedureAddress(_GetBestInterfaceEx, iphlpapilib, 'GetBestInterfaceEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetBestInterfaceEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetBestInterfaceEx]
   end;
 end;
-{$ELSE}
-function GetBestInterfaceEx; external iphlpapilib name 'GetBestInterfaceEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetBestRoute: Pointer;
 
@@ -951,16 +842,12 @@ function GetBestRoute;
 begin
   GetProcedureAddress(_GetBestRoute, iphlpapilib, 'GetBestRoute');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetBestRoute]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetBestRoute]
   end;
 end;
-{$ELSE}
-function GetBestRoute; external iphlpapilib name 'GetBestRoute';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NotifyAddrChange: Pointer;
 
@@ -968,16 +855,12 @@ function NotifyAddrChange;
 begin
   GetProcedureAddress(_NotifyAddrChange, iphlpapilib, 'NotifyAddrChange');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NotifyAddrChange]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NotifyAddrChange]
   end;
 end;
-{$ELSE}
-function NotifyAddrChange; external iphlpapilib name 'NotifyAddrChange';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NotifyRouteChange: Pointer;
 
@@ -985,16 +868,25 @@ function NotifyRouteChange;
 begin
   GetProcedureAddress(_NotifyRouteChange, iphlpapilib, 'NotifyRouteChange');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NotifyRouteChange]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NotifyRouteChange]
   end;
 end;
-{$ELSE}
-function NotifyRouteChange; external iphlpapilib name 'NotifyRouteChange';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
+var
+  _CancelIPChangeNotify: Pointer;
+
+function CancelIPChangeNotify;
+begin
+  GetProcedureAddress(_CancelIPChangeNotify, iphlpapilib, 'CancelIPChangeNotify');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CancelIPChangeNotify]
+  end;
+end;
+
 var
   _GetAdapterIndex: Pointer;
 
@@ -1002,16 +894,12 @@ function GetAdapterIndex;
 begin
   GetProcedureAddress(_GetAdapterIndex, iphlpapilib, 'GetAdapterIndex');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetAdapterIndex]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetAdapterIndex]
   end;
 end;
-{$ELSE}
-function GetAdapterIndex; external iphlpapilib name 'GetAdapterIndex';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _AddIPAddress: Pointer;
 
@@ -1019,16 +907,12 @@ function AddIPAddress;
 begin
   GetProcedureAddress(_AddIPAddress, iphlpapilib, 'AddIPAddress');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AddIPAddress]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AddIPAddress]
   end;
 end;
-{$ELSE}
-function AddIPAddress; external iphlpapilib name 'AddIPAddress';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DeleteIPAddress: Pointer;
 
@@ -1036,16 +920,12 @@ function DeleteIPAddress;
 begin
   GetProcedureAddress(_DeleteIPAddress, iphlpapilib, 'DeleteIPAddress');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DeleteIPAddress]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DeleteIPAddress]
   end;
 end;
-{$ELSE}
-function DeleteIPAddress; external iphlpapilib name 'DeleteIPAddress';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetNetworkParams: Pointer;
 
@@ -1053,16 +933,12 @@ function GetNetworkParams;
 begin
   GetProcedureAddress(_GetNetworkParams, iphlpapilib, 'GetNetworkParams');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetNetworkParams]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetNetworkParams]
   end;
 end;
-{$ELSE}
-function GetNetworkParams; external iphlpapilib name 'GetNetworkParams';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetAdaptersInfo: Pointer;
 
@@ -1070,16 +946,25 @@ function GetAdaptersInfo;
 begin
   GetProcedureAddress(_GetAdaptersInfo, iphlpapilib, 'GetAdaptersInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetAdaptersInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetAdaptersInfo]
   end;
 end;
-{$ELSE}
-function GetAdaptersInfo; external iphlpapilib name 'GetAdaptersInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
+var
+  _GetAdapterOrderMap: Pointer;
+
+function GetAdapterOrderMap;
+begin
+  GetProcedureAddress(_GetAdapterOrderMap, iphlpapilib, 'GetAdapterOrderMap');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetAdapterOrderMap]
+  end;
+end;
+
 var
   _GetAdaptersAddresses: Pointer;
 
@@ -1087,16 +972,12 @@ function GetAdaptersAddresses;
 begin
   GetProcedureAddress(_GetAdaptersAddresses, iphlpapilib, 'GetAdaptersAddresses');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetAdaptersAddresses]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetAdaptersAddresses]
   end;
 end;
-{$ELSE}
-function GetAdaptersAddresses; external iphlpapilib name 'GetAdaptersAddresses';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetPerAdapterInfo: Pointer;
 
@@ -1104,16 +985,12 @@ function GetPerAdapterInfo;
 begin
   GetProcedureAddress(_GetPerAdapterInfo, iphlpapilib, 'GetPerAdapterInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetPerAdapterInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetPerAdapterInfo]
   end;
 end;
-{$ELSE}
-function GetPerAdapterInfo; external iphlpapilib name 'GetPerAdapterInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _IpReleaseAddress: Pointer;
 
@@ -1121,16 +998,12 @@ function IpReleaseAddress;
 begin
   GetProcedureAddress(_IpReleaseAddress, iphlpapilib, 'IpReleaseAddress');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IpReleaseAddress]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IpReleaseAddress]
   end;
 end;
-{$ELSE}
-function IpReleaseAddress; external iphlpapilib name 'IpReleaseAddress';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _IpRenewAddress: Pointer;
 
@@ -1138,16 +1011,12 @@ function IpRenewAddress;
 begin
   GetProcedureAddress(_IpRenewAddress, iphlpapilib, 'IpRenewAddress');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IpRenewAddress]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IpRenewAddress]
   end;
 end;
-{$ELSE}
-function IpRenewAddress; external iphlpapilib name 'IpRenewAddress';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SendARP: Pointer;
 
@@ -1155,16 +1024,12 @@ function SendARP;
 begin
   GetProcedureAddress(_SendARP, iphlpapilib, 'SendARP');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SendARP]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SendARP]
   end;
 end;
-{$ELSE}
-function SendARP; external iphlpapilib name 'SendARP';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetRTTAndHopCount: Pointer;
 
@@ -1172,16 +1037,12 @@ function GetRTTAndHopCount;
 begin
   GetProcedureAddress(_GetRTTAndHopCount, iphlpapilib, 'GetRTTAndHopCount');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetRTTAndHopCount]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetRTTAndHopCount]
   end;
 end;
-{$ELSE}
-function GetRTTAndHopCount; external iphlpapilib name 'GetRTTAndHopCount';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetFriendlyIfIndex: Pointer;
 
@@ -1189,16 +1050,12 @@ function GetFriendlyIfIndex;
 begin
   GetProcedureAddress(_GetFriendlyIfIndex, iphlpapilib, 'GetFriendlyIfIndex');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetFriendlyIfIndex]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetFriendlyIfIndex]
   end;
 end;
-{$ELSE}
-function GetFriendlyIfIndex; external iphlpapilib name 'GetFriendlyIfIndex';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnableRouter: Pointer;
 
@@ -1206,16 +1063,12 @@ function EnableRouter;
 begin
   GetProcedureAddress(_EnableRouter, iphlpapilib, 'EnableRouter');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnableRouter]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnableRouter]
   end;
 end;
-{$ELSE}
-function EnableRouter; external iphlpapilib name 'EnableRouter';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _UnenableRouter: Pointer;
 
@@ -1223,16 +1076,12 @@ function UnenableRouter;
 begin
   GetProcedureAddress(_UnenableRouter, iphlpapilib, 'UnenableRouter');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_UnenableRouter]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_UnenableRouter]
   end;
 end;
-{$ELSE}
-function UnenableRouter; external iphlpapilib name 'UnenableRouter';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DisableMediaSense: Pointer;
 
@@ -1240,16 +1089,12 @@ function DisableMediaSense;
 begin
   GetProcedureAddress(_DisableMediaSense, iphlpapilib, 'DisableMediaSense');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DisableMediaSense]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DisableMediaSense]
   end;
 end;
-{$ELSE}
-function DisableMediaSense; external iphlpapilib name 'DisableMediaSense';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RestoreMediaSense: Pointer;
 
@@ -1257,16 +1102,12 @@ function RestoreMediaSense;
 begin
   GetProcedureAddress(_RestoreMediaSense, iphlpapilib, 'RestoreMediaSense');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RestoreMediaSense]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RestoreMediaSense]
   end;
 end;
-{$ELSE}
-function RestoreMediaSense; external iphlpapilib name 'RestoreMediaSense';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetIpErrorString: Pointer;
 
@@ -1274,13 +1115,71 @@ function GetIpErrorString;
 begin
   GetProcedureAddress(_GetIpErrorString, iphlpapilib, 'GetIpErrorString');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetIpErrorString]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetIpErrorString]
   end;
 end;
+
 {$ELSE}
+
+function GetNumberOfInterfaces; external iphlpapilib name 'GetNumberOfInterfaces';
+function GetIfEntry; external iphlpapilib name 'GetIfEntry';
+function GetIfTable; external iphlpapilib name 'GetIfTable';
+function GetIpAddrTable; external iphlpapilib name 'GetIpAddrTable';
+function GetIpNetTable; external iphlpapilib name 'GetIpNetTable';
+function GetIpForwardTable; external iphlpapilib name 'GetIpForwardTable';
+function GetTcpTable; external iphlpapilib name 'GetTcpTable';
+function GetUdpTable; external iphlpapilib name 'GetUdpTable';
+function GetIpStatistics; external iphlpapilib name 'GetIpStatistics';
+function GetIpStatisticsEx; external iphlpapilib name 'GetIpStatisticsEx';
+function GetIcmpStatistics; external iphlpapilib name 'GetIcmpStatistics';
+function GetIcmpStatisticsEx; external iphlpapilib name 'GetIcmpStatisticsEx';
+function GetTcpStatistics; external iphlpapilib name 'GetTcpStatistics';
+function GetTcpStatisticsEx; external iphlpapilib name 'GetTcpStatisticsEx';
+function GetUdpStatistics; external iphlpapilib name 'GetUdpStatistics';
+function GetUdpStatisticsEx; external iphlpapilib name 'GetUdpStatisticsEx';
+function SetIfEntry; external iphlpapilib name 'SetIfEntry';
+function CreateIpForwardEntry; external iphlpapilib name 'CreateIpForwardEntry';
+function SetIpForwardEntry; external iphlpapilib name 'SetIpForwardEntry';
+function DeleteIpForwardEntry; external iphlpapilib name 'DeleteIpForwardEntry';
+function SetIpStatistics; external iphlpapilib name 'SetIpStatistics';
+function SetIpTTL; external iphlpapilib name 'SetIpTTL';
+function CreateIpNetEntry; external iphlpapilib name 'CreateIpNetEntry';
+function SetIpNetEntry; external iphlpapilib name 'SetIpNetEntry';
+function DeleteIpNetEntry; external iphlpapilib name 'DeleteIpNetEntry';
+function FlushIpNetTable; external iphlpapilib name 'FlushIpNetTable';
+function CreateProxyArpEntry; external iphlpapilib name 'CreateProxyArpEntry';
+function DeleteProxyArpEntry; external iphlpapilib name 'DeleteProxyArpEntry';
+function SetTcpEntry; external iphlpapilib name 'SetTcpEntry';
+function GetInterfaceInfo; external iphlpapilib name 'GetInterfaceInfo';
+function GetUniDirectionalAdapterInfo; external iphlpapilib name 'GetUniDirectionalAdapterInfo';
+function NhpAllocateAndGetInterfaceInfoFromStack; external iphlpapilib name 'NhpAllocateAndGetInterfaceInfoFromStack';
+function GetBestInterface; external iphlpapilib name 'GetBestInterface';
+function GetBestInterfaceEx; external iphlpapilib name 'GetBestInterfaceEx';
+function GetBestRoute; external iphlpapilib name 'GetBestRoute';
+function NotifyAddrChange; external iphlpapilib name 'NotifyAddrChange';
+function NotifyRouteChange; external iphlpapilib name 'NotifyRouteChange';
+function CancelIPChangeNotify; external iphlpapilib name 'CancelIPChangeNotify';
+function GetAdapterIndex; external iphlpapilib name 'GetAdapterIndex';
+function AddIPAddress; external iphlpapilib name 'AddIPAddress';
+function DeleteIPAddress; external iphlpapilib name 'DeleteIPAddress';
+function GetNetworkParams; external iphlpapilib name 'GetNetworkParams';
+function GetAdaptersInfo; external iphlpapilib name 'GetAdaptersInfo';
+function GetAdapterOrderMap; external iphlpapilib name 'GetAdapterOrderMap';
+function GetAdaptersAddresses; external iphlpapilib name 'GetAdaptersAddresses';
+function GetPerAdapterInfo; external iphlpapilib name 'GetPerAdapterInfo';
+function IpReleaseAddress; external iphlpapilib name 'IpReleaseAddress';
+function IpRenewAddress; external iphlpapilib name 'IpRenewAddress';
+function SendARP; external iphlpapilib name 'SendARP';
+function GetRTTAndHopCount; external iphlpapilib name 'GetRTTAndHopCount';
+function GetFriendlyIfIndex; external iphlpapilib name 'GetFriendlyIfIndex';
+function EnableRouter; external iphlpapilib name 'EnableRouter';
+function UnenableRouter; external iphlpapilib name 'UnenableRouter';
+function DisableMediaSense; external iphlpapilib name 'DisableMediaSense';
+function RestoreMediaSense; external iphlpapilib name 'RestoreMediaSense';
 function GetIpErrorString; external iphlpapilib name 'GetIpErrorString';
+
 {$ENDIF DYNAMIC_LINK}
 
 end.

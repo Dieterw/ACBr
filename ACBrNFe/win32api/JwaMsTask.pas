@@ -1,25 +1,24 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Microsoft Task Scheduler API interface Unit for Object Pascal                }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: mstask.h, released August 2001. The original Pascal    }
 { code is: MsTask.pas, released October 2001. The initial developer of the     }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
-{ Contributor(s): Sunish Issac  (sunish@nettaxi.com)                           }
-{ 								               }
+{                                                                              }
+{ Contributor(s): Sunish Issac (sunish att nettaxi dott com)                   }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -38,10 +37,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaMsTask.pas,v 1.8 2005/09/03 14:27:48 marquardt Exp $
 
 unit JwaMsTask;
 
@@ -51,98 +52,98 @@ unit JwaMsTask;
 {$HPPEMIT '#include "mstask.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinBase, JwaWinType, CommCtrl {TODO};
+  JwaWindows, JwaPrSht;
 
 const
-  TASK_SUNDAY = ($1);
+  TASK_SUNDAY = $1;
   {$EXTERNALSYM TASK_SUNDAY}
-  TASK_MONDAY = ($2);
+  TASK_MONDAY = $2;
   {$EXTERNALSYM TASK_MONDAY}
-  TASK_TUESDAY = ($4);
+  TASK_TUESDAY = $4;
   {$EXTERNALSYM TASK_TUESDAY}
-  TASK_WEDNESDAY = ($8);
+  TASK_WEDNESDAY = $8;
   {$EXTERNALSYM TASK_WEDNESDAY}
-  TASK_THURSDAY = ($10);
+  TASK_THURSDAY = $10;
   {$EXTERNALSYM TASK_THURSDAY}
-  TASK_FRIDAY = ($20);
+  TASK_FRIDAY = $20;
   {$EXTERNALSYM TASK_FRIDAY}
-  TASK_SATURDAY = ($40);
+  TASK_SATURDAY = $40;
   {$EXTERNALSYM TASK_SATURDAY}
-  TASK_FIRST_WEEK = (1);
+  TASK_FIRST_WEEK = 1;
   {$EXTERNALSYM TASK_FIRST_WEEK}
-  TASK_SECOND_WEEK = (2);
+  TASK_SECOND_WEEK = 2;
   {$EXTERNALSYM TASK_SECOND_WEEK}
-  TASK_THIRD_WEEK = (3);
+  TASK_THIRD_WEEK = 3;
   {$EXTERNALSYM TASK_THIRD_WEEK}
-  TASK_FOURTH_WEEK = (4);
+  TASK_FOURTH_WEEK = 4;
   {$EXTERNALSYM TASK_FOURTH_WEEK}
-  TASK_LAST_WEEK = (5);
+  TASK_LAST_WEEK = 5;
   {$EXTERNALSYM TASK_LAST_WEEK}
-  TASK_JANUARY = ($1);
+  TASK_JANUARY = $1;
   {$EXTERNALSYM TASK_JANUARY}
-  TASK_FEBRUARY = ($2);
+  TASK_FEBRUARY = $2;
   {$EXTERNALSYM TASK_FEBRUARY}
-  TASK_MARCH = ($4);
+  TASK_MARCH = $4;
   {$EXTERNALSYM TASK_MARCH}
-  TASK_APRIL = ($8);
+  TASK_APRIL = $8;
   {$EXTERNALSYM TASK_APRIL}
-  TASK_MAY = ($10);
+  TASK_MAY = $10;
   {$EXTERNALSYM TASK_MAY}
-  TASK_JUNE = ($20);
+  TASK_JUNE = $20;
   {$EXTERNALSYM TASK_JUNE}
-  TASK_JULY = ($40);
+  TASK_JULY = $40;
   {$EXTERNALSYM TASK_JULY}
-  TASK_AUGUST = ($80);
+  TASK_AUGUST = $80;
   {$EXTERNALSYM TASK_AUGUST}
-  TASK_SEPTEMBER = ($100);
+  TASK_SEPTEMBER = $100;
   {$EXTERNALSYM TASK_SEPTEMBER}
-  TASK_OCTOBER = ($200);
+  TASK_OCTOBER = $200;
   {$EXTERNALSYM TASK_OCTOBER}
-  TASK_NOVEMBER = ($400);
+  TASK_NOVEMBER = $400;
   {$EXTERNALSYM TASK_NOVEMBER}
-  TASK_DECEMBER = ($800);
+  TASK_DECEMBER = $800;
   {$EXTERNALSYM TASK_DECEMBER}
 
-  TASK_FLAG_INTERACTIVE = ($1);
+  TASK_FLAG_INTERACTIVE = $1;
   {$EXTERNALSYM TASK_FLAG_INTERACTIVE}
-  TASK_FLAG_DELETE_WHEN_DONE = ($2);
+  TASK_FLAG_DELETE_WHEN_DONE = $2;
   {$EXTERNALSYM TASK_FLAG_DELETE_WHEN_DONE}
-  TASK_FLAG_DISABLED = ($4);
+  TASK_FLAG_DISABLED = $4;
   {$EXTERNALSYM TASK_FLAG_DISABLED}
-  TASK_FLAG_START_ONLY_IF_IDLE = ($10);
+  TASK_FLAG_START_ONLY_IF_IDLE = $10;
   {$EXTERNALSYM TASK_FLAG_START_ONLY_IF_IDLE}
-  TASK_FLAG_KILL_ON_IDLE_END = ($20);
+  TASK_FLAG_KILL_ON_IDLE_END = $20;
   {$EXTERNALSYM TASK_FLAG_KILL_ON_IDLE_END}
-  TASK_FLAG_DONT_START_IF_ON_BATTERIES = ($40);
+  TASK_FLAG_DONT_START_IF_ON_BATTERIES = $40;
   {$EXTERNALSYM TASK_FLAG_DONT_START_IF_ON_BATTERIES}
-  TASK_FLAG_KILL_IF_GOING_ON_BATTERIES = ($80);
+  TASK_FLAG_KILL_IF_GOING_ON_BATTERIES = $80;
   {$EXTERNALSYM TASK_FLAG_KILL_IF_GOING_ON_BATTERIES}
-  TASK_FLAG_RUN_ONLY_IF_DOCKED = ($100);
+  TASK_FLAG_RUN_ONLY_IF_DOCKED = $100;
   {$EXTERNALSYM TASK_FLAG_RUN_ONLY_IF_DOCKED}
-  TASK_FLAG_HIDDEN = ($200);
+  TASK_FLAG_HIDDEN = $200;
   {$EXTERNALSYM TASK_FLAG_HIDDEN}
-  TASK_FLAG_RUN_IF_CONNECTED_TO_INTERNET = ($400);
+  TASK_FLAG_RUN_IF_CONNECTED_TO_INTERNET = $400;
   {$EXTERNALSYM TASK_FLAG_RUN_IF_CONNECTED_TO_INTERNET}
-  TASK_FLAG_RESTART_ON_IDLE_RESUME = ($800);
+  TASK_FLAG_RESTART_ON_IDLE_RESUME = $800;
   {$EXTERNALSYM TASK_FLAG_RESTART_ON_IDLE_RESUME}
-  TASK_FLAG_SYSTEM_REQUIRED = ($1000);
+  TASK_FLAG_SYSTEM_REQUIRED = $1000;
   {$EXTERNALSYM TASK_FLAG_SYSTEM_REQUIRED}
-  TASK_FLAG_RUN_ONLY_IF_LOGGED_ON = ($2000);
+  TASK_FLAG_RUN_ONLY_IF_LOGGED_ON = $2000;
   {$EXTERNALSYM TASK_FLAG_RUN_ONLY_IF_LOGGED_ON}
 
-  TASK_TRIGGER_FLAG_HAS_END_DATE = ($1);
+  TASK_TRIGGER_FLAG_HAS_END_DATE = $1;
   {$EXTERNALSYM TASK_TRIGGER_FLAG_HAS_END_DATE}
-  TASK_TRIGGER_FLAG_KILL_AT_DURATION_END = ($2);
+  TASK_TRIGGER_FLAG_KILL_AT_DURATION_END = $2;
   {$EXTERNALSYM TASK_TRIGGER_FLAG_KILL_AT_DURATION_END}
-  TASK_TRIGGER_FLAG_DISABLED = ($4);
+  TASK_TRIGGER_FLAG_DISABLED = $4;
   {$EXTERNALSYM TASK_TRIGGER_FLAG_DISABLED}
 
-  TASK_MAX_RUN_TIMES = (1440);
+  TASK_MAX_RUN_TIMES = 1440;
   {$EXTERNALSYM TASK_MAX_RUN_TIMES}
 
 type
@@ -394,7 +395,6 @@ const
   //CLSID_CSchedulingAgent = CLSID_CTaskScheduler;
   CLSID_CSchedulingAgent: TGuid = '{148BD52A-A2AB-11CE-B11F-00AA00530503}';
   {$EXTERNALSYM CLSID_CSchedulingAgent}
-
 
 //added to use save option without ole2 - not there in original source of mstask.h
 

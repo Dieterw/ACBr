@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Background file copier error codes API interface Unit for Object Pascal      }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: bitsmsg.h, released June 2000. The original Pascal     }
 { code is: BitsMsg.pas, released December 2000. The initial developer of the   }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaBitsMsg.pas,v 1.6 2005/09/03 14:27:47 marquardt Exp $
 
 unit JwaBitsMsg;
 
@@ -49,12 +50,12 @@ unit JwaBitsMsg;
 {$HPPEMIT '#include "BitsMsg.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinType;
+  JwaWindows;
 
 //
 //  Values are 32 bit values layed out as follows:
@@ -86,21 +87,19 @@ uses
 // Define the facility codes
 //
 
-
 //
 // Define the severity codes
 //
 
+const
 
 //
 // MessageId: BG_E_NOT_FOUND
 //
 // MessageText:
 //
-//  The requested item was not found.
+//  The requested job was not found.
 //
-
-const
   BG_E_NOT_FOUND = DWORD($80200001);
   {$EXTERNALSYM BG_E_NOT_FOUND}
 
@@ -109,7 +108,7 @@ const
 //
 // MessageText:
 //
-//  The requested action is not allowed in the current state.
+//  The requested action is not allowed in the current job state. The job might have been canceled or completed transferring. It is in a read-only state now.
 //
   BG_E_INVALID_STATE = DWORD($80200002);
   {$EXTERNALSYM BG_E_INVALID_STATE}
@@ -119,7 +118,7 @@ const
 //
 // MessageText:
 //
-//  The item is empty.
+//  There are no files attached to this job. Attach files to the job, and then try again.
 //
   BG_E_EMPTY = DWORD($80200003);
   {$EXTERNALSYM BG_E_EMPTY}
@@ -129,7 +128,7 @@ const
 //
 // MessageText:
 //
-//  The file is not available.
+//  No file is available because no URL generated an error.
 //
   BG_E_FILE_NOT_AVAILABLE = DWORD($80200004);
   {$EXTERNALSYM BG_E_FILE_NOT_AVAILABLE}
@@ -139,7 +138,7 @@ const
 //
 // MessageText:
 //
-//  The protocol is not available.
+//  No protocol is available because no URL generated an error.
 //
   BG_E_PROTOCOL_NOT_AVAILABLE = DWORD($80200005);
   {$EXTERNALSYM BG_E_PROTOCOL_NOT_AVAILABLE}
@@ -149,9 +148,9 @@ const
 //
 // MessageText:
 //
-//  An error has not occured.
+//  No errors have occurred.
 //
-  BG_S_ERROR_CONTEXT_NONE = $00200006;
+  BG_S_ERROR_CONTEXT_NONE = DWORD($00200006);
   {$EXTERNALSYM BG_S_ERROR_CONTEXT_NONE}
 
 //
@@ -159,7 +158,7 @@ const
 //
 // MessageText:
 //
-//  The error occured in an unknown location.
+//  The error occurred in an unknown location.
 //
   BG_E_ERROR_CONTEXT_UNKNOWN = DWORD($80200007);
   {$EXTERNALSYM BG_E_ERROR_CONTEXT_UNKNOWN}
@@ -169,7 +168,7 @@ const
 //
 // MessageText:
 //
-//  The error occured in the queue manager.
+//  The error occurred in the Background Intelligent Transfer Service (BITS) queue manager.
 //
   BG_E_ERROR_CONTEXT_GENERAL_QUEUE_MANAGER = DWORD($80200008);
   {$EXTERNALSYM BG_E_ERROR_CONTEXT_GENERAL_QUEUE_MANAGER}
@@ -179,7 +178,7 @@ const
 //
 // MessageText:
 //
-//  The error occured while processing the local file.
+//  The error occurred while the local file was being processed. Verify that the file is not in use, and then try again.
 //
   BG_E_ERROR_CONTEXT_LOCAL_FILE = DWORD($80200009);
   {$EXTERNALSYM BG_E_ERROR_CONTEXT_LOCAL_FILE}
@@ -189,7 +188,7 @@ const
 //
 // MessageText:
 //
-//  The error occured while processing the remote file.
+//  The error occurred while the remote file was being processed.
 //
   BG_E_ERROR_CONTEXT_REMOTE_FILE = DWORD($8020000A);
   {$EXTERNALSYM BG_E_ERROR_CONTEXT_REMOTE_FILE}
@@ -199,7 +198,7 @@ const
 //
 // MessageText:
 //
-//  The error occured in the transport layer.
+//  The error occurred in the transport layer. The client could not connect to the server.
 //
   BG_E_ERROR_CONTEXT_GENERAL_TRANSPORT = DWORD($8020000B);
   {$EXTERNALSYM BG_E_ERROR_CONTEXT_GENERAL_TRANSPORT}
@@ -209,7 +208,7 @@ const
 //
 // MessageText:
 //
-//  The error occured while processing the notification callback.
+//  The error occurred while the notification callback was being processed. Background Intelligent Transfer Service (BITS) will try again later.
 //
   BG_E_ERROR_CONTEXT_QUEUE_MANAGER_NOTIFICATION = DWORD($8020000C);
   {$EXTERNALSYM BG_E_ERROR_CONTEXT_QUEUE_MANAGER_NOTIFICATION}
@@ -219,7 +218,7 @@ const
 //
 // MessageText:
 //
-//  The destination volume is locked.
+//  The destination file system volume is not available. Verify that another program, such as CheckDisk, is not running, which would lock the volume. When the volume is available, Background Intelligent Transfer Service (BITS) will try again.
 //
   BG_E_DESTINATION_LOCKED = DWORD($8020000D);
   {$EXTERNALSYM BG_E_DESTINATION_LOCKED}
@@ -229,7 +228,7 @@ const
 //
 // MessageText:
 //
-//  The destination volume changed.
+//  The destination volume has changed. If the disk is removable, it might have been replaced with a different disk. Reinsert the original disk and resume the job.
 //
   BG_E_VOLUME_CHANGED = DWORD($8020000E);
   {$EXTERNALSYM BG_E_VOLUME_CHANGED}
@@ -239,7 +238,7 @@ const
 //
 // MessageText:
 //
-//  Error information is unavailable.
+//  No errors have occurred.
 //
   BG_E_ERROR_INFORMATION_UNAVAILABLE = DWORD($8020000F);
   {$EXTERNALSYM BG_E_ERROR_INFORMATION_UNAVAILABLE}
@@ -249,7 +248,7 @@ const
 //
 // MessageText:
 //
-//  No network connection is active at this time.
+//  There are currently no active network connections. Background Intelligent Transfer Service (BITS) will try again when an adapter is connected.
 //
   BG_E_NETWORK_DISCONNECTED = DWORD($80200010);
   {$EXTERNALSYM BG_E_NETWORK_DISCONNECTED}
@@ -259,7 +258,7 @@ const
 //
 // MessageText:
 //
-//  The server did not return the file size. The URL may point to dynamic content.
+//  The server did not return the file size. The URL might point to dynamic content. The Content-Length header is not available in the server's HTTP reply.
 //
   BG_E_MISSING_FILE_SIZE = DWORD($80200011);
   {$EXTERNALSYM BG_E_MISSING_FILE_SIZE}
@@ -279,7 +278,7 @@ const
 //
 // MessageText:
 //
-//  The server does not support the Range header.
+//  The server does not support the necessary HTTP protocol. Background Intelligent Transfer Service (BITS) requires that the server support the Range protocol header.
 //
   BG_E_INSUFFICIENT_RANGE_SUPPORT = DWORD($80200013);
   {$EXTERNALSYM BG_E_INSUFFICIENT_RANGE_SUPPORT}
@@ -289,7 +288,7 @@ const
 //
 // MessageText:
 //
-//  Remote use of BITS is not supported.
+//  Background Intelligent Transfer Service (BITS) cannot be used remotely.
 //
   BG_E_REMOTE_NOT_SUPPORTED = DWORD($80200014);
   {$EXTERNALSYM BG_E_REMOTE_NOT_SUPPORTED}
@@ -299,7 +298,7 @@ const
 //
 // MessageText:
 //
-//  The drive mapping for the job are different for the current owner then the previous owner.
+//  The drive mapping for the job is different for the current owner than for the previous owner. Use a UNC path instead.
 //
   BG_E_NEW_OWNER_DIFF_MAPPING = DWORD($80200015);
   {$EXTERNALSYM BG_E_NEW_OWNER_DIFF_MAPPING}
@@ -309,7 +308,7 @@ const
 //
 // MessageText:
 //
-//  The new owner has insufficient access to the temp files.
+//  The new owner has insufficient access to the local files for the job. The new owner might not have permissions to access the job files. Verify that the new owner has sufficient permissions, and then try again.
 //
   BG_E_NEW_OWNER_NO_FILE_ACCESS = DWORD($80200016);
   {$EXTERNALSYM BG_E_NEW_OWNER_NO_FILE_ACCESS}
@@ -319,9 +318,9 @@ const
 //
 // MessageText:
 //
-//  Some files were incomplete and were deleted.
+//  Some of the transferred files were deleted because they were incomplete.
 //
-  BG_S_PARTIAL_COMPLETE = $00200017;
+  BG_S_PARTIAL_COMPLETE = DWORD($00200017);
   {$EXTERNALSYM BG_S_PARTIAL_COMPLETE}
 
 //
@@ -329,7 +328,7 @@ const
 //
 // MessageText:
 //
-//  The proxy list may not be longer then 32767 characters.
+//  The HTTP proxy list cannot be longer than 32,000 characters. Try again with a shorter proxy list.
 //
   BG_E_PROXY_LIST_TOO_LARGE = DWORD($80200018);
   {$EXTERNALSYM BG_E_PROXY_LIST_TOO_LARGE}
@@ -339,7 +338,7 @@ const
 //
 // MessageText:
 //
-//  The proxy bypass list may not be longer then 32767 characters.
+//  The HTTP proxy bypass list cannot be longer than 32,000 characters. Try again with a shorter bypass proxy list.
 //
   BG_E_PROXY_BYPASS_LIST_TOO_LARGE = DWORD($80200019);
   {$EXTERNALSYM BG_E_PROXY_BYPASS_LIST_TOO_LARGE}
@@ -349,9 +348,9 @@ const
 //
 // MessageText:
 //
-//  Unable to delete all the temporary files.
+//  Some of the temporary files could not be deleted. Check the system event log for the complete list of files that could not be deleted.
 //
-  BG_S_UNABLE_TO_DELETE_FILES = $0020001A;
+  BG_S_UNABLE_TO_DELETE_FILES = DWORD($0020001A);
   {$EXTERNALSYM BG_S_UNABLE_TO_DELETE_FILES}
 
 //
@@ -359,9 +358,9 @@ const
 //
 // MessageText:
 //
-//  The server's response was not valid.
+//  The server's response was not valid. The server was not following the defined protocol. Resume the job, and then Background Intelligent Transfer Service (BITS) will try again.
 //
-  BG_E_INVALID_SERVER_RESPONSE     = DWORD($8020001B);
+  BG_E_INVALID_SERVER_RESPONSE = DWORD($8020001B);
   {$EXTERNALSYM BG_E_INVALID_SERVER_RESPONSE}
 
 //
@@ -371,7 +370,7 @@ const
 //
 //  No more files can be added to this job.
 //
-  BG_E_TOO_MANY_FILES              = DWORD($8020001C);
+  BG_E_TOO_MANY_FILES = DWORD($8020001C);
   {$EXTERNALSYM BG_E_TOO_MANY_FILES}
 
 //
@@ -379,9 +378,9 @@ const
 //
 // MessageText:
 //
-//  The local file was changed during the transfer.
+//  The local file was changed during the transfer. Recreate the job, and then try to transfer it again.
 //
-  BG_E_LOCAL_FILE_CHANGED          = DWORD($8020001D);
+  BG_E_LOCAL_FILE_CHANGED = DWORD($8020001D);
   {$EXTERNALSYM BG_E_LOCAL_FILE_CHANGED}
 
 //
@@ -389,7 +388,7 @@ const
 //
 // MessageText:
 //
-//  The error was reported by the remote server application.
+//  The program on the remote server reported the error.
 //
   BG_E_ERROR_CONTEXT_REMOTE_APPLICATION = DWORD($8020001E);
   {$EXTERNALSYM BG_E_ERROR_CONTEXT_REMOTE_APPLICATION}
@@ -399,9 +398,9 @@ const
 //
 // MessageText:
 //
-//  The specified session could not be found on the server.
+//  The specified session could not be found on the server. Background Intelligent Transfer Service (BITS) will try again.
 //
-  BG_E_SESSION_NOT_FOUND           = DWORD($8020001F);
+  BG_E_SESSION_NOT_FOUND = DWORD($8020001F);
   {$EXTERNALSYM BG_E_SESSION_NOT_FOUND}
 
 //
@@ -409,9 +408,9 @@ const
 //
 // MessageText:
 //
-//  The upload file is too large for the server to accept.
+//  The job is too large for the server to accept. This job might exceed a job size limit set by the server administrator. Reduce the size of the job, and then try again.
 //
-  BG_E_TOO_LARGE                   = DWORD($80200020);
+  BG_E_TOO_LARGE = DWORD($80200020);
   {$EXTERNALSYM BG_E_TOO_LARGE}
 
 //
@@ -421,7 +420,7 @@ const
 //
 //  The specified string is too long.
 //
-  BG_E_STRING_TOO_LONG             = DWORD($80200021);
+  BG_E_STRING_TOO_LONG = DWORD($80200021);
   {$EXTERNALSYM BG_E_STRING_TOO_LONG}
 
 //
@@ -429,7 +428,7 @@ const
 //
 // MessageText:
 //
-//  The server doesn't support any of the upload protocols that the client supports.
+//  The client and server versions of Background Intelligent Transfer Service (BITS) are incompatible.
 //
   BG_E_CLIENT_SERVER_PROTOCOL_MISMATCH = DWORD($80200022);
   {$EXTERNALSYM BG_E_CLIENT_SERVER_PROTOCOL_MISMATCH}
@@ -439,10 +438,60 @@ const
 //
 // MessageText:
 //
-//  Scripting OR execute permissions are enabled on the IIS virtual directory associated with the job. To upload files to the virtural directory, disable the scripting and execute permissions on the virtual directory.
+//  Scripting OR execute permissions are enabled on the IIS virtual directory associated with the job. To upload files to the virtual directory, disable the scripting and execute permissions on the virtual directory.
 //
-  BG_E_SERVER_EXECUTE_ENABLE       = DWORD($80200023);
+  BG_E_SERVER_EXECUTE_ENABLE = DWORD($80200023);
   {$EXTERNALSYM BG_E_SERVER_EXECUTE_ENABLE}
+
+//
+// MessageId: BG_E_NO_PROGRESS
+//
+// MessageText:
+//
+//  The job is not making headway.  The server may be misconfigured.  Background Intelligent Transfer Service (BITS) will try again later.
+//
+  BG_E_NO_PROGRESS = DWORD($80200024);
+  {$EXTERNALSYM BG_E_NO_PROGRESS}
+
+//
+// MessageId: BG_E_USERNAME_TOO_LARGE
+//
+// MessageText:
+//
+//  The user name cannot be longer than 300 characters. Try again with a shorter name.
+//
+  BG_E_USERNAME_TOO_LARGE = DWORD($80200025);
+  {$EXTERNALSYM BG_E_USERNAME_TOO_LARGE}
+
+//
+// MessageId: BG_E_PASSWORD_TOO_LARGE
+//
+// MessageText:
+//
+//  The password cannot be longer than 300 characters. Try again with a shorter password.
+//
+  BG_E_PASSWORD_TOO_LARGE = DWORD($80200026);
+  {$EXTERNALSYM BG_E_PASSWORD_TOO_LARGE}
+
+//
+// MessageId: BG_E_INVALID_AUTH_TARGET
+//
+// MessageText:
+//
+//  The authentication target specified in the credentials is not defined.
+//
+  BG_E_INVALID_AUTH_TARGET = DWORD($80200027);
+  {$EXTERNALSYM BG_E_INVALID_AUTH_TARGET}
+
+//
+// MessageId: BG_E_INVALID_AUTH_SCHEME
+//
+// MessageText:
+//
+//  The authentication scheme specified in the credentials is not defined.
+//
+  BG_E_INVALID_AUTH_SCHEME = DWORD($80200028);
+  {$EXTERNALSYM BG_E_INVALID_AUTH_SCHEME}
 
 //
 // MessageId: BG_E_HTTP_ERROR_100
@@ -459,7 +508,7 @@ const
 //
 // MessageText:
 //
-//  The server has switched protocols in an upgrade header.
+//  The server switched protocols in an upgrade header.
 //
   BG_E_HTTP_ERROR_101 = DWORD($80190065);
   {$EXTERNALSYM BG_E_HTTP_ERROR_101}
@@ -469,7 +518,7 @@ const
 //
 // MessageText:
 //
-//  The request completed successfully.
+//  The server's response was not valid. The server was not following the defined protocol. Resume the job, and then Background Intelligent Transfer Service (BITS) will try again.
 //
   BG_E_HTTP_ERROR_200 = DWORD($801900C8);
   {$EXTERNALSYM BG_E_HTTP_ERROR_200}
@@ -479,7 +528,7 @@ const
 //
 // MessageText:
 //
-//  The request has been fulfilled and resulted in the creation of a new resource.
+//  The request was fulfilled and resulted in the creation of a new resource.
 //
   BG_E_HTTP_ERROR_201 = DWORD($801900C9);
   {$EXTERNALSYM BG_E_HTTP_ERROR_201}
@@ -489,7 +538,7 @@ const
 //
 // MessageText:
 //
-//  The request has been accepted for processing, but the processing has not been completed.
+//  The request was accepted for processing, but the processing has not been completed yet.
 //
   BG_E_HTTP_ERROR_202 = DWORD($801900CA);
   {$EXTERNALSYM BG_E_HTTP_ERROR_202}
@@ -499,7 +548,7 @@ const
 //
 // MessageText:
 //
-//  The returned meta information in the entity-header is not the definitive set available from the origin server.
+//  The returned metadata in the entity-header is not the definitive set available from the server of origin.
 //
   BG_E_HTTP_ERROR_203 = DWORD($801900CB);
   {$EXTERNALSYM BG_E_HTTP_ERROR_203}
@@ -519,7 +568,7 @@ const
 //
 // MessageText:
 //
-//  The request has been completed, and the client program should reset the document view that caused the request to be sent to allow the user to easily initiate another input action.
+//  The server's response was not valid. The server was not following the defined protocol. Resume the job, and then Background Intelligent Transfer Service (BITS) will try again.
 //
   BG_E_HTTP_ERROR_205 = DWORD($801900CD);
   {$EXTERNALSYM BG_E_HTTP_ERROR_205}
@@ -529,7 +578,7 @@ const
 //
 // MessageText:
 //
-//  The server has fulfilled the partial GET request for the resource.
+//  The server fulfilled the partial GET request for the resource.
 //
   BG_E_HTTP_ERROR_206 = DWORD($801900CE);
   {$EXTERNALSYM BG_E_HTTP_ERROR_206}
@@ -539,7 +588,7 @@ const
 //
 // MessageText:
 //
-//  The server couldn't decide what to return.
+//  The server could not return the requested data.
 //
   BG_E_HTTP_ERROR_300 = DWORD($8019012C);
   {$EXTERNALSYM BG_E_HTTP_ERROR_300}
@@ -549,7 +598,7 @@ const
 //
 // MessageText:
 //
-//  The requested resource has been assigned to a new permanent URI (Uniform Resource Identifier), and any future references to this resource should be done using one of the returned URIs.
+//  The requested resource was assigned to a new permanent Uniform Resource Identifier (URI), and any future references to this resource should use one of the returned URIs.
 //
   BG_E_HTTP_ERROR_301 = DWORD($8019012D);
   {$EXTERNALSYM BG_E_HTTP_ERROR_301}
@@ -559,7 +608,7 @@ const
 //
 // MessageText:
 //
-//  The requested resource resides temporarily under a different URI (Uniform Resource Identifier).
+//  The requested resource was assigned a different Uniform Resource Identifier (URI). This change is temporary.
 //
   BG_E_HTTP_ERROR_302 = DWORD($8019012E);
   {$EXTERNALSYM BG_E_HTTP_ERROR_302}
@@ -569,7 +618,7 @@ const
 //
 // MessageText:
 //
-//  The response to the request can be found under a different URI (Uniform Resource Identifier) and should be retrieved using a GET method on that resource.
+//  The response to the request is under a different Uniform Resource Identifier (URI) and must be retrieved using a GET method on that resource.
 //
   BG_E_HTTP_ERROR_303 = DWORD($8019012F);
   {$EXTERNALSYM BG_E_HTTP_ERROR_303}
@@ -579,7 +628,7 @@ const
 //
 // MessageText:
 //
-//  The requested resource has not been modified.
+//  The server's response was not valid. The server was not following the defined protocol. Resume the job, and then Background Intelligent Transfer Service (BITS) will try again.
 //
   BG_E_HTTP_ERROR_304 = DWORD($80190130);
   {$EXTERNALSYM BG_E_HTTP_ERROR_304}
@@ -599,7 +648,7 @@ const
 //
 // MessageText:
 //
-//  The redirected request keeps the same verb. HTTP/1.1 behavior.
+//  The URL has been temporarily relocated. Try again later.
 //
   BG_E_HTTP_ERROR_307 = DWORD($80190133);
   {$EXTERNALSYM BG_E_HTTP_ERROR_307}
@@ -609,7 +658,7 @@ const
 //
 // MessageText:
 //
-//  The request could not be processed by the server due to invalid syntax.
+//  The server cannot process the request because the syntax is not valid.
 //
   BG_E_HTTP_ERROR_400 = DWORD($80190190);
   {$EXTERNALSYM BG_E_HTTP_ERROR_400}
@@ -629,7 +678,7 @@ const
 //
 // MessageText:
 //
-//  Not currently implemented in the HTTP protocol.
+//  The server's response was not valid. The server was not following the defined protocol. Resume the job, and then Background Intelligent Transfer Service (BITS) will try again.
 //
   BG_E_HTTP_ERROR_402 = DWORD($80190192);
   {$EXTERNALSYM BG_E_HTTP_ERROR_402}
@@ -639,7 +688,7 @@ const
 //
 // MessageText:
 //
-//  The server understood the request, but is refusing to fulfill it.
+//  The client does not have sufficient access rights to the requested server object.
 //
   BG_E_HTTP_ERROR_403 = DWORD($80190193);
   {$EXTERNALSYM BG_E_HTTP_ERROR_403}
@@ -649,7 +698,7 @@ const
 //
 // MessageText:
 //
-//  The server has not found anything matching the requested URI (Uniform Resource Identifier).
+//  The requested URL does not exist on the server.
 //
   BG_E_HTTP_ERROR_404 = DWORD($80190194);
   {$EXTERNALSYM BG_E_HTTP_ERROR_404}
@@ -679,7 +728,7 @@ const
 //
 // MessageText:
 //
-//  Proxy authentication required.
+//  Proxy authentication is required.
 //
   BG_E_HTTP_ERROR_407 = DWORD($80190197);
   {$EXTERNALSYM BG_E_HTTP_ERROR_407}
@@ -699,7 +748,7 @@ const
 //
 // MessageText:
 //
-//  The request could not be completed due to a conflict with the current state of the resource. The user should resubmit with more information.
+//  The request could not be completed because of a conflict with the current state of the resource. The user should resubmit the request with more information.
 //
   BG_E_HTTP_ERROR_409 = DWORD($80190199);
   {$EXTERNALSYM BG_E_HTTP_ERROR_409}
@@ -709,7 +758,7 @@ const
 //
 // MessageText:
 //
-//  The requested resource is no longer available at the server, and no forwarding address is known.
+//  The requested resource is not currently available at the server, and no forwarding address is known.
 //
   BG_E_HTTP_ERROR_410 = DWORD($8019019A);
   {$EXTERNALSYM BG_E_HTTP_ERROR_410}
@@ -719,7 +768,7 @@ const
 //
 // MessageText:
 //
-//  The server refuses to accept the request without a defined content length.
+//  The server cannot accept the request without a defined content length.
 //
   BG_E_HTTP_ERROR_411 = DWORD($8019019B);
   {$EXTERNALSYM BG_E_HTTP_ERROR_411}
@@ -739,7 +788,7 @@ const
 //
 // MessageText:
 //
-//  The server is refusing to process a request because the request entity is larger than the server is willing or able to process.
+//  The server cannot process the request because the request entity is too large.
 //
   BG_E_HTTP_ERROR_413 = DWORD($8019019D);
   {$EXTERNALSYM BG_E_HTTP_ERROR_413}
@@ -749,7 +798,7 @@ const
 //
 // MessageText:
 //
-//  The server is refusing to service the request because the request URI (Uniform Resource Identifier) is longer than the server is willing to interpret.
+//  The server cannot process the request because the request Uniform Resource Identifier (URI) is longer than the server can interpret.
 //
   BG_E_HTTP_ERROR_414 = DWORD($8019019E);
   {$EXTERNALSYM BG_E_HTTP_ERROR_414}
@@ -759,7 +808,7 @@ const
 //
 // MessageText:
 //
-//  The server is refusing to service the request because the entity of the request is in a format not supported by the requested resource for the requested method.
+//  The server's response was not valid. The server was not following the defined protocol. Resume the job, and then Background Intelligent Transfer Service (BITS) will try again.
 //
   BG_E_HTTP_ERROR_415 = DWORD($8019019F);
   {$EXTERNALSYM BG_E_HTTP_ERROR_415}
@@ -779,7 +828,7 @@ const
 //
 // MessageText:
 //
-//  The expectation given in an Expect request-header field could not be met by this server.
+//  The server could not meet the expectation given in an Expect request-header field.
 //
   BG_E_HTTP_ERROR_417 = DWORD($801901A1);
   {$EXTERNALSYM BG_E_HTTP_ERROR_417}
@@ -789,7 +838,7 @@ const
 //
 // MessageText:
 //
-//  The request should be retried after doing the appropriate action.
+//   The server's response was not valid. The server was not following the defined protocol. Resume the job, and then Background Intelligent Transfer Service (BITS) will try again.
 //
   BG_E_HTTP_ERROR_449 = DWORD($801901C1);
   {$EXTERNALSYM BG_E_HTTP_ERROR_449}
@@ -799,7 +848,7 @@ const
 //
 // MessageText:
 //
-//  The server encountered an unexpected condition that prevented it from fulfilling the request.
+//  An unexpected condition prevented the server from fulfilling the request.
 //
   BG_E_HTTP_ERROR_500 = DWORD($801901F4);
   {$EXTERNALSYM BG_E_HTTP_ERROR_500}
@@ -819,7 +868,7 @@ const
 //
 // MessageText:
 //
-//  The server, while acting as a gateway or proxy, received an invalid response from the upstream server it accessed in attempting to fulfill the request.
+//  The server, while acting as a gateway or proxy to fulfill the request, received an invalid response from the upstream server it accessed.
 //
   BG_E_HTTP_ERROR_502 = DWORD($801901F6);
   {$EXTERNALSYM BG_E_HTTP_ERROR_502}
@@ -849,7 +898,7 @@ const
 //
 // MessageText:
 //
-//  The server does not support, or refuses to support, the HTTP protocol version that was used in the request message.
+//  The server does not support the HTTP protocol version that was used in the request message.
 //
   BG_E_HTTP_ERROR_505 = DWORD($801901F9);
   {$EXTERNALSYM BG_E_HTTP_ERROR_505}
@@ -859,9 +908,9 @@ const
 //
 // MessageText:
 //
-//  %4 canceled job %1 on behalf of %3.  The job's name was "%2".
+//  The administrator %4 canceled job "%2" on behalf of %3.  The job ID was %1.
 //
-  MC_JOB_CANCELLED                 = DWORD($80194000);
+  MC_JOB_CANCELLED = DWORD($80194000);
   {$EXTERNALSYM MC_JOB_CANCELLED}
 
 //
@@ -869,12 +918,12 @@ const
 //
 // MessageText:
 //
-//  BITS completed job %1 with name "%2" but was not able to remove the following temporary files.
-//  If you can delete them, then you will regain some disk space.
-//
+//  While canceling job "%2", BITS was not able to remove the temporary files listed below.
+//  If you can delete them, then you will regain some disk space.  The job ID was %1.%\
+//  
 //  %3
 //
-  MC_FILE_DELETION_FAILED          = DWORD($80194001);
+  MC_FILE_DELETION_FAILED = DWORD($80194001);
   {$EXTERNALSYM MC_FILE_DELETION_FAILED}
 
 //
@@ -882,14 +931,65 @@ const
 //
 // MessageText:
 //
-//  BITS completed job %1 with name "%2" but was not able to remove some temporary files.
-//  If you can delete them, then you will regain some disk space.
-//
+//  While canceling job "%2", BITS was not able to remove the temporary files listed below.
+//  If you can delete them, then you will regain some disk space.  The job ID was %1. %\
+//  
 //  %3
+//  %\
 //  Due to space limitations, not all files are listed here.  Check for additional files of the form BITxxx.TMP in the same directory.
 //
-  MC_FILE_DELETION_FAILED_MORE     = DWORD($80194002);
+  MC_FILE_DELETION_FAILED_MORE = DWORD($80194002);
   {$EXTERNALSYM MC_FILE_DELETION_FAILED_MORE}
+
+//
+// MessageId: MC_JOB_PROPERTY_CHANGE
+//
+// MessageText:
+//
+//  The administrator %3 modified the %4 property of job "%2".  The job ID was %1.
+//
+  MC_JOB_PROPERTY_CHANGE = DWORD($80194003);
+  {$EXTERNALSYM MC_JOB_PROPERTY_CHANGE}
+
+//
+// MessageId: MC_JOB_TAKE_OWNERSHIP
+//
+// MessageText:
+//
+//  The administrator %4 took ownership of job "%2" from %3.  The job ID was %1.
+//
+  MC_JOB_TAKE_OWNERSHIP = DWORD($80194004);
+  {$EXTERNALSYM MC_JOB_TAKE_OWNERSHIP}
+
+//
+// MessageId: MC_JOB_SCAVENGED
+//
+// MessageText:
+//
+//  Job "%2" owned by %3 was canceled after being inactive for more than %4 days.  The job ID was %1.
+//
+  MC_JOB_SCAVENGED = DWORD($80194005);
+  {$EXTERNALSYM MC_JOB_SCAVENGED}
+
+//
+// MessageId: MC_JOB_NOTIFICATION_FAILURE
+//
+// MessageText:
+//
+//  Job "%2" owned by %3 failed to notify its associated application.  BITS will retry in %4 minutes.  The job ID was %1.
+//
+  MC_JOB_NOTIFICATION_FAILURE = DWORD($80194006);
+  {$EXTERNALSYM MC_JOB_NOTIFICATION_FAILURE}
+
+//
+// MessageId: MC_STATE_FILE_CORRUPT
+//
+// MessageText:
+//
+//  The BITS job list is not in a recognized format.  It may have been created by a different version of BITS.  The job list has been cleared.
+//
+  MC_STATE_FILE_CORRUPT = DWORD($80194007);
+  {$EXTERNALSYM MC_STATE_FILE_CORRUPT}
 
 implementation
 

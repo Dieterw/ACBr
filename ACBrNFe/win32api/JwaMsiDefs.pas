@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Windows Installer API interface Unit for Object Pascal                       }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: msidefs.h, released June 2000. The original Pascal     }
 { code is: MsiDefs.pas, released June 2001. The initial developer of the       }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaMsiDefs.pas,v 1.6 2005/09/03 14:27:48 marquardt Exp $
 
 unit JwaMsiDefs;
 
@@ -49,12 +50,12 @@ unit JwaMsiDefs;
 {$HPPEMIT '#include "msidefs.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinType;
+  JwaWindows;
 
 //------------------------------------------------------------------------------
 // INSTALLER PROPERTY DEFINITIONS
@@ -171,6 +172,7 @@ const
   // Comments summary info property of admin packages when patching admin installs
   IPROPNAME_PRODUCTLANGUAGE = TEXT('PRODUCTLANGUAGE'); // requested language, must be one in summary information list, selects language transform
   {$EXTERNALSYM IPROPNAME_PRODUCTLANGUAGE}
+
   IPROPNAME_CHECKCRCS         = TEXT('MSICHECKCRCS');       // requests Darwin to check CRCs after copying, moving, patching & duplicating files.
   {$EXTERNALSYM IPROPNAME_CHECKCRCS}
   IPROPNAME_MSINODISABLEMEDIA = TEXT('MSINODISABLEMEDIA');  // if set, DISABLEMEDIA won't be set in the AdminProperties stream during an admin install of
@@ -178,7 +180,7 @@ const
 
 // property used for URT bootstrapping
 
-  IPROPNAME_CARRYINGNDP	                = TEXT('CARRYINGNDP');
+  IPROPNAME_CARRYINGNDP                 = TEXT('CARRYINGNDP');
   {$EXTERNALSYM IPROPNAME_CARRYINGNDP}
   IPROPVALUE__CARRYINGNDP_URTREINSTALL  = TEXT('URTREINSTALL');   // reinstalling/ uninstalling core URT files
   {$EXTERNALSYM IPROPVALUE__CARRYINGNDP_URTREINSTALL}
@@ -191,6 +193,13 @@ const
   {$EXTERNALSYM IPROPNAME_MSINEWINSTANCE}
   IPROPNAME_MSIINSTANCEGUID = TEXT('MSIINSTANCEGUID');
   {$EXTERNALSYM IPROPNAME_MSIINSTANCEGUID}
+
+// properties used for URL download reduction for admins
+
+  IPROPNAME_MSIPACKAGEDOWNLOADLOCALCOPY = TEXT('MSIPACKAGEDOWNLOADLOCALCOPY');
+  {$EXTERNALSYM IPROPNAME_MSIPACKAGEDOWNLOADLOCALCOPY}
+  IPROPNAME_MSIPATCHDOWNLOADLOCALCOPY = TEXT('MSIPATCHDOWNLOADLOCALCOPY');
+  {$EXTERNALSYM IPROPNAME_MSIPATCHDOWNLOADLOCALCOPY}
 
 // Properties used to populate Add/Remove Control Panel values
 

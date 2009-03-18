@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Windows Safer API interface Unit for Object Pascal                           }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: winsafer.h, released Nov 2001. The original Pascal     }
 { code is: WinSafer.pas, released Februari 2002. The initial developer of the  }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaWinSafer.pas,v 1.9 2005/09/08 07:49:25 marquardt Exp $
 
 unit JwaWinSafer;
 
@@ -49,12 +50,12 @@ unit JwaWinSafer;
 {$HPPEMIT '#include "winsafer.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinCrypt, JwaWinType;
+  JwaWindows;
 
 //
 // Opaque datatype for representing handles to Safer objects.
@@ -146,7 +147,8 @@ const
 // Code image information structure passed to SaferIdentifyLevel.
 //
 
-// #include <pshpack8.h> todo
+// (rom) handled by $A+ in jediapilib.inc
+// #include <pshpack8.h>
 
 type
   _SAFER_CODE_PROPERTIES = record
@@ -361,7 +363,8 @@ type
 // Structures and enums used by the SaferGet/SetLevelInformation APIs.
 //
 
-// #include <pshpack8.h> todo
+// (rom) handled by $A+ in jediapilib.inc
+// #include <pshpack8.h>
 
   _SAFER_IDENTIFICATION_TYPES = (
     SaferIdentityDefault,
@@ -544,12 +547,16 @@ function SaferSetLevelInformation(LevelHandle: SAFER_LEVEL_HANDLE; dwInfoType: S
 function SaferRecordEventLogEntry(hLevel: SAFER_LEVEL_HANDLE; szTargetPath: LPCWSTR; lpReserved: LPVOID): BOOL; stdcall;
 {$EXTERNALSYM SaferRecordEventLogEntry}
 
+function SaferiIsExecutableFileType(szFullPathname: LPCWSTR; bFromShellExecute: BOOL): BOOL; stdcall;
+{$EXTERNALSYM SaferiIsExecutableFileType}
+
 implementation
 
-const
-  advapi32 = 'advapi32.dll';
+uses
+  JwaWinDLLNames;
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _SaferGetPolicyInformation: Pointer;
 
@@ -557,16 +564,12 @@ function SaferGetPolicyInformation;
 begin
   GetProcedureAddress(_SaferGetPolicyInformation, advapi32, 'SaferGetPolicyInformation');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SaferGetPolicyInformation]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SaferGetPolicyInformation]
   end;
 end;
-{$ELSE}
-function SaferGetPolicyInformation; external advapi32 name 'SaferGetPolicyInformation';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SaferSetPolicyInformation: Pointer;
 
@@ -574,16 +577,12 @@ function SaferSetPolicyInformation;
 begin
   GetProcedureAddress(_SaferSetPolicyInformation, advapi32, 'SaferSetPolicyInformation');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SaferSetPolicyInformation]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SaferSetPolicyInformation]
   end;
 end;
-{$ELSE}
-function SaferSetPolicyInformation; external advapi32 name 'SaferSetPolicyInformation';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SaferCreateLevel: Pointer;
 
@@ -591,16 +590,12 @@ function SaferCreateLevel;
 begin
   GetProcedureAddress(_SaferCreateLevel, advapi32, 'SaferCreateLevel');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SaferCreateLevel]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SaferCreateLevel]
   end;
 end;
-{$ELSE}
-function SaferCreateLevel; external advapi32 name 'SaferCreateLevel';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SaferCloseLevel: Pointer;
 
@@ -608,16 +603,12 @@ function SaferCloseLevel;
 begin
   GetProcedureAddress(_SaferCloseLevel, advapi32, 'SaferCloseLevel');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SaferCloseLevel]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SaferCloseLevel]
   end;
 end;
-{$ELSE}
-function SaferCloseLevel; external advapi32 name 'SaferCloseLevel';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SaferIdentifyLevel: Pointer;
 
@@ -625,16 +616,12 @@ function SaferIdentifyLevel;
 begin
   GetProcedureAddress(_SaferIdentifyLevel, advapi32, 'SaferIdentifyLevel');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SaferIdentifyLevel]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SaferIdentifyLevel]
   end;
 end;
-{$ELSE}
-function SaferIdentifyLevel; external advapi32 name 'SaferIdentifyLevel';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SaferComputeTokenFromLevel: Pointer;
 
@@ -642,16 +629,12 @@ function SaferComputeTokenFromLevel;
 begin
   GetProcedureAddress(_SaferComputeTokenFromLevel, advapi32, 'SaferComputeTokenFromLevel');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SaferComputeTokenFromLevel]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SaferComputeTokenFromLevel]
   end;
 end;
-{$ELSE}
-function SaferComputeTokenFromLevel; external advapi32 name 'SaferComputeTokenFromLevel';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SaferGetLevelInformation: Pointer;
 
@@ -659,16 +642,12 @@ function SaferGetLevelInformation;
 begin
   GetProcedureAddress(_SaferGetLevelInformation, advapi32, 'SaferGetLevelInformation');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SaferGetLevelInformation]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SaferGetLevelInformation]
   end;
 end;
-{$ELSE}
-function SaferGetLevelInformation; external advapi32 name 'SaferGetLevelInformation';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SaferSetLevelInformation: Pointer;
 
@@ -676,16 +655,12 @@ function SaferSetLevelInformation;
 begin
   GetProcedureAddress(_SaferSetLevelInformation, advapi32, 'SaferSetLevelInformation');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SaferSetLevelInformation]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SaferSetLevelInformation]
   end;
 end;
-{$ELSE}
-function SaferSetLevelInformation; external advapi32 name 'SaferSetLevelInformation';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SaferRecordEventLogEntry: Pointer;
 
@@ -693,13 +668,38 @@ function SaferRecordEventLogEntry;
 begin
   GetProcedureAddress(_SaferRecordEventLogEntry, advapi32, 'SaferRecordEventLogEntry');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SaferRecordEventLogEntry]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SaferRecordEventLogEntry]
   end;
 end;
+
+var
+  _SaferiIsExecutableFileType: Pointer;
+
+function SaferiIsExecutableFileType;
+begin
+  GetProcedureAddress(_SaferiIsExecutableFileType, advapi32, 'SaferiIsExecutableFileType');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SaferiIsExecutableFileType]
+  end;
+end;
+
 {$ELSE}
+
+function SaferGetPolicyInformation; external advapi32 name 'SaferGetPolicyInformation';
+function SaferSetPolicyInformation; external advapi32 name 'SaferSetPolicyInformation';
+function SaferCreateLevel; external advapi32 name 'SaferCreateLevel';
+function SaferCloseLevel; external advapi32 name 'SaferCloseLevel';
+function SaferIdentifyLevel; external advapi32 name 'SaferIdentifyLevel';
+function SaferComputeTokenFromLevel; external advapi32 name 'SaferComputeTokenFromLevel';
+function SaferGetLevelInformation; external advapi32 name 'SaferGetLevelInformation';
+function SaferSetLevelInformation; external advapi32 name 'SaferSetLevelInformation';
 function SaferRecordEventLogEntry; external advapi32 name 'SaferRecordEventLogEntry';
+function SaferiIsExecutableFileType; external advapi32 name 'SaferiIsExecutableFileType';
+
 {$ENDIF DYNAMIC_LINK}
 
 end.

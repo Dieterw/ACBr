@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { DC and Replication Management API interface Unit for Object Pascal           }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: ntdsapi.h, released June 2000. The original Pascal     }
 { code is: NtDsApi.pas, released December 2000. The initial developer of the   }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,14 +35,23 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaNtDsApi.pas,v 1.10 2005/09/06 16:36:50 marquardt Exp $
 
 unit JwaNtDsApi;
 
 {$WEAKPACKAGEUNIT}
+
+{$I jediapilib.inc}
+
+interface
+
+uses
+  JwaWindows, JwaSchedule;
 
 {$HPPEMIT ''}
 {$HPPEMIT '#include "ntdsapi.h"'}
@@ -56,13 +64,6 @@ unit JwaNtDsApi;
 {$HPPEMIT 'typedef PPDS_REPSYNCALL_ERRINFOA PPDS_REPSYNCALL_ERRINFO'}
 {$HPPEMIT '#endif'}
 {$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
-
-interface
-
-uses
-  JwaWinBase, JwaWinType, JwaWinNT, JwaWinNLS, JwaRpcDce, JwaSchedule;
 
 //////////////////////////////////////////////////////////////////////////
 //                                                                      //
@@ -134,21 +135,20 @@ const
 
 // generic execute
 
-  DS_GENERIC_EXECUTE = ((STANDARD_RIGHTS_EXECUTE) or (ACTRL_DS_LIST));
+  DS_GENERIC_EXECUTE = STANDARD_RIGHTS_EXECUTE or ACTRL_DS_LIST;
   {$EXTERNALSYM DS_GENERIC_EXECUTE}
 
 // generic right
 
-  DS_GENERIC_WRITE = ((STANDARD_RIGHTS_WRITE) or (ACTRL_DS_SELF) or
-    (ACTRL_DS_WRITE_PROP));
+  DS_GENERIC_WRITE = STANDARD_RIGHTS_WRITE or ACTRL_DS_SELF or ACTRL_DS_WRITE_PROP;
   {$EXTERNALSYM DS_GENERIC_WRITE}
 
 // generic all
 
-  DS_GENERIC_ALL = ((STANDARD_RIGHTS_REQUIRED) or (ACTRL_DS_CREATE_CHILD) or
-    (ACTRL_DS_DELETE_CHILD) or (ACTRL_DS_DELETE_TREE) or (ACTRL_DS_READ_PROP) or
-    (ACTRL_DS_WRITE_PROP) or (ACTRL_DS_LIST) or (ACTRL_DS_LIST_OBJECT) or
-    (ACTRL_DS_CONTROL_ACCESS) or (ACTRL_DS_SELF));
+  DS_GENERIC_ALL = STANDARD_RIGHTS_REQUIRED or ACTRL_DS_CREATE_CHILD or
+    ACTRL_DS_DELETE_CHILD or ACTRL_DS_DELETE_TREE or ACTRL_DS_READ_PROP or
+    ACTRL_DS_WRITE_PROP or ACTRL_DS_LIST or ACTRL_DS_LIST_OBJECT or
+    ACTRL_DS_CONTROL_ACCESS or ACTRL_DS_SELF;
   {$EXTERNALSYM DS_GENERIC_ALL}
 
 type
@@ -276,7 +276,7 @@ type
   TDsNameError = DS_NAME_ERROR;
 
 const
-  DS_NAME_LEGAL_FLAGS = (DS_NAME_FLAG_SYNTACTICAL_ONLY);
+  DS_NAME_LEGAL_FLAGS = DS_NAME_FLAG_SYNTACTICAL_ONLY;
   {$EXTERNALSYM DS_NAME_LEGAL_FLAGS}
 
 type
@@ -355,7 +355,7 @@ type
   TDsNameResultW = DS_NAME_RESULTW;
   PDsNameResultW = PDS_NAME_RESULTW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   DS_NAME_RESULT = DS_NAME_RESULTW;
   {$EXTERNALSYM DS_NAME_RESULT}
   PDS_NAME_RESULT = PDS_NAME_RESULTW;
@@ -368,7 +368,7 @@ type
   PDsNameResult = PDsNameResultW;
   TDsNameResultItem = TDsNameResultItemW;
   PDsNameResultItem = PDsNameResultItemW;
-{$ELSE}
+  {$ELSE}
   DS_NAME_RESULT = DS_NAME_RESULTA;
   {$EXTERNALSYM DS_NAME_RESULT}
   PDS_NAME_RESULT = PDS_NAME_RESULTA;
@@ -381,7 +381,7 @@ type
   PDsNameResult = PDsNameResultA;
   TDsNameResultItem = TDsNameResultItemA;
   PDsNameResultItem = PDsNameResultItemA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 // Public replication option flags
 
@@ -398,7 +398,7 @@ type
 // operations other than you intended.
 
 const
-  NTDSAPI_BIND_ALLOW_DELEGATION	= ($00000001);
+  NTDSAPI_BIND_ALLOW_DELEGATION = $00000001;
   {$EXTERNALSYM NTDSAPI_BIND_ALLOW_DELEGATION}
 
 // ********************
@@ -728,15 +728,14 @@ const
 // Bit flags valid for options attribute on NTDS-DSA objects.
 //
 
-  NTDSDSA_OPT_IS_GC                    = (1 shl 0); // DSA is a global catalog
+  NTDSDSA_OPT_IS_GC                    = 1 shl 0; // DSA is a global catalog
   {$EXTERNALSYM NTDSDSA_OPT_IS_GC}
-  NTDSDSA_OPT_DISABLE_INBOUND_REPL     = (1 shl 1); // disable inbound replication
+  NTDSDSA_OPT_DISABLE_INBOUND_REPL     = 1 shl 1; // disable inbound replication
   {$EXTERNALSYM NTDSDSA_OPT_DISABLE_INBOUND_REPL}
-  NTDSDSA_OPT_DISABLE_OUTBOUND_REPL    = (1 shl 2); // disable outbound replication
+  NTDSDSA_OPT_DISABLE_OUTBOUND_REPL    = 1 shl 2; // disable outbound replication
   {$EXTERNALSYM NTDSDSA_OPT_DISABLE_OUTBOUND_REPL}
-  NTDSDSA_OPT_DISABLE_NTDSCONN_XLATE   = (1 shl 3); // disable logical conn xlation
+  NTDSDSA_OPT_DISABLE_NTDSCONN_XLATE   = 1 shl 3; // disable logical conn xlation
   {$EXTERNALSYM NTDSDSA_OPT_DISABLE_NTDSCONN_XLATE}
-
 
 // Bit flags for options attribute on NTDS-Connection objects.
 //
@@ -753,13 +752,13 @@ const
 // what the overridden default shall be.
 //
 
-  NTDSCONN_OPT_IS_GENERATED = (1 shl 0);  // object generated by DS, not admin
+  NTDSCONN_OPT_IS_GENERATED = 1 shl 0;  // object generated by DS, not admin
   {$EXTERNALSYM NTDSCONN_OPT_IS_GENERATED}
-  NTDSCONN_OPT_TWOWAY_SYNC  = (1 shl 1);  // force sync in opposite direction at end of sync
+  NTDSCONN_OPT_TWOWAY_SYNC  = 1 shl 1;  // force sync in opposite direction at end of sync
   {$EXTERNALSYM NTDSCONN_OPT_TWOWAY_SYNC}
-  NTDSCONN_OPT_OVERRIDE_NOTIFY_DEFAULT = (1 shl 2);  // Do not use defaults to determine notification
+  NTDSCONN_OPT_OVERRIDE_NOTIFY_DEFAULT = 1 shl 2;  // Do not use defaults to determine notification
   {$EXTERNALSYM NTDSCONN_OPT_OVERRIDE_NOTIFY_DEFAULT}
-  NTDSCONN_OPT_USE_NOTIFY   = (1 shl 3); // Does source notify destination
+  NTDSCONN_OPT_USE_NOTIFY   = 1 shl 3; // Does source notify destination
   {$EXTERNALSYM NTDSCONN_OPT_USE_NOTIFY}
 
 // For intra-site connections, this bit has no meaning.
@@ -767,14 +766,14 @@ const
 //  0 - Compression of replication data enabled
 //  1 - Compression of replication data disabled
 
-  NTDSCONN_OPT_DISABLE_INTERSITE_COMPRESSION   = (1 shl 4);
+  NTDSCONN_OPT_DISABLE_INTERSITE_COMPRESSION   = 1 shl 4;
   {$EXTERNALSYM NTDSCONN_OPT_DISABLE_INTERSITE_COMPRESSION}
 
 // For connections whose IS_GENERATED bit is 0, this bit has no effect.
 // For KCC-generated connections, this bit indicates that the schedule attribute
 // is owned by the user and should not be touched by the KCC.
 
-  NTDSCONN_OPT_USER_OWNED_SCHEDULE = (1 shl 5);
+  NTDSCONN_OPT_USER_OWNED_SCHEDULE = 1 shl 5;
   {$EXTERNALSYM NTDSCONN_OPT_USER_OWNED_SCHEDULE}
 
 //
@@ -783,9 +782,9 @@ const
 // the initial sync. Bits 30 - 28 are used to specify a priority between 0-7.
 //
 
-  FRSCONN_PRIORITY_MASK		     = $70000000;
+  FRSCONN_PRIORITY_MASK              = $70000000;
   {$EXTERNALSYM FRSCONN_PRIORITY_MASK}
-  FRSCONN_MAX_PRIORITY		     = $8;
+  FRSCONN_MAX_PRIORITY               = $8;
   {$EXTERNALSYM FRSCONN_MAX_PRIORITY}
 
   DSCONN_OPT_IGNORE_SCHEDULE_MASK = DWORD($80000000);
@@ -801,25 +800,25 @@ function FRSCONN_GET_PRIORITY(_options_: DWORD): DWORD;
 //
 
 const
-  NTDSSETTINGS_OPT_IS_AUTO_TOPOLOGY_DISABLED     = (1 shl 0); // automatic topology gen disabled
+  NTDSSETTINGS_OPT_IS_AUTO_TOPOLOGY_DISABLED     = 1 shl 0; // automatic topology gen disabled
   {$EXTERNALSYM NTDSSETTINGS_OPT_IS_AUTO_TOPOLOGY_DISABLED}
-  NTDSSETTINGS_OPT_IS_TOPL_CLEANUP_DISABLED      = (1 shl 1); // automatic topology cleanup disabled
+  NTDSSETTINGS_OPT_IS_TOPL_CLEANUP_DISABLED      = 1 shl 1; // automatic topology cleanup disabled
   {$EXTERNALSYM NTDSSETTINGS_OPT_IS_TOPL_CLEANUP_DISABLED}
-  NTDSSETTINGS_OPT_IS_TOPL_MIN_HOPS_DISABLED     = (1 shl 2); // automatic minimum hops topology disabled
+  NTDSSETTINGS_OPT_IS_TOPL_MIN_HOPS_DISABLED     = 1 shl 2; // automatic minimum hops topology disabled
   {$EXTERNALSYM NTDSSETTINGS_OPT_IS_TOPL_MIN_HOPS_DISABLED}
-  NTDSSETTINGS_OPT_IS_TOPL_DETECT_STALE_DISABLED = (1 shl 3); // automatic stale server detection disabled
+  NTDSSETTINGS_OPT_IS_TOPL_DETECT_STALE_DISABLED = 1 shl 3; // automatic stale server detection disabled
   {$EXTERNALSYM NTDSSETTINGS_OPT_IS_TOPL_DETECT_STALE_DISABLED}
-  NTDSSETTINGS_OPT_IS_INTER_SITE_AUTO_TOPOLOGY_DISABLED = (1 shl 4); // automatic inter-site topology gen disabled
+  NTDSSETTINGS_OPT_IS_INTER_SITE_AUTO_TOPOLOGY_DISABLED = 1 shl 4; // automatic inter-site topology gen disabled
   {$EXTERNALSYM NTDSSETTINGS_OPT_IS_INTER_SITE_AUTO_TOPOLOGY_DISABLED}
-  NTDSSETTINGS_OPT_IS_GROUP_CACHING_ENABLED      = (1 shl 5); // group memberships for users enabled
+  NTDSSETTINGS_OPT_IS_GROUP_CACHING_ENABLED      = 1 shl 5; // group memberships for users enabled
   {$EXTERNALSYM NTDSSETTINGS_OPT_IS_GROUP_CACHING_ENABLED}
-  NTDSSETTINGS_OPT_FORCE_KCC_WHISTLER_BEHAVIOR   = (1 shl 6); // force KCC to operate in Whistler behavior mode
+  NTDSSETTINGS_OPT_FORCE_KCC_WHISTLER_BEHAVIOR   = 1 shl 6; // force KCC to operate in Whistler behavior mode
   {$EXTERNALSYM NTDSSETTINGS_OPT_FORCE_KCC_WHISTLER_BEHAVIOR}
-  NTDSSETTINGS_OPT_FORCE_KCC_W2K_ELECTION        = (1 shl 7); // force KCC to use the Windows 2000 ISTG election algorithm
+  NTDSSETTINGS_OPT_FORCE_KCC_W2K_ELECTION        = 1 shl 7; // force KCC to use the Windows 2000 ISTG election algorithm
   {$EXTERNALSYM NTDSSETTINGS_OPT_FORCE_KCC_W2K_ELECTION}
-  NTDSSETTINGS_OPT_IS_RAND_BH_SELECTION_DISABLED = (1 shl 8); // prevent the KCC from randomly picking a bridgehead when creating a connection
+  NTDSSETTINGS_OPT_IS_RAND_BH_SELECTION_DISABLED = 1 shl 8; // prevent the KCC from randomly picking a bridgehead when creating a connection
   {$EXTERNALSYM NTDSSETTINGS_OPT_IS_RAND_BH_SELECTION_DISABLED}
-  NTDSSETTINGS_OPT_IS_SCHEDULE_HASHING_ENABLED   = (1 shl 9); // allow the KCC to use hashing when creating a replication schedule
+  NTDSSETTINGS_OPT_IS_SCHEDULE_HASHING_ENABLED   = 1 shl 9; // allow the KCC to use hashing when creating a replication schedule
   {$EXTERNALSYM NTDSSETTINGS_OPT_IS_SCHEDULE_HASHING_ENABLED}
 
 // Bit flags for options attribute on Inter-Site-Transport objects
@@ -830,44 +829,44 @@ const
 //
 // default: schedules are significant
 
-  NTDSTRANSPORT_OPT_IGNORE_SCHEDULES = (1 shl 0); // Schedules disabled
+  NTDSTRANSPORT_OPT_IGNORE_SCHEDULES = 1 shl 0; // Schedules disabled
   {$EXTERNALSYM NTDSTRANSPORT_OPT_IGNORE_SCHEDULES}
 
 // default: links transitive (bridges not required)
 
-  NTDSTRANSPORT_OPT_BRIDGES_REQUIRED = (1 shl 1); // siteLink bridges are required
+  NTDSTRANSPORT_OPT_BRIDGES_REQUIRED = 1 shl 1; // siteLink bridges are required
   {$EXTERNALSYM NTDSTRANSPORT_OPT_BRIDGES_REQUIRED}
 
 // Bit flags for options attribute on site-Connection objects
 //
 // These are not realized in the DS, but are built up in the KCC
 
-  NTDSSITECONN_OPT_USE_NOTIFY  = (1 shl 0); // Use notification on this link
+  NTDSSITECONN_OPT_USE_NOTIFY  = 1 shl 0; // Use notification on this link
   {$EXTERNALSYM NTDSSITECONN_OPT_USE_NOTIFY}
-  NTDSSITECONN_OPT_TWOWAY_SYNC = (1 shl 1);  // force sync in opposite direction at end of sync
+  NTDSSITECONN_OPT_TWOWAY_SYNC = 1 shl 1;  // force sync in opposite direction at end of sync
   {$EXTERNALSYM NTDSSITECONN_OPT_TWOWAY_SYNC}
 
 // This bit means:
 //  0 - Compression of replication data across this site connection enabled
 //  1 - Compression of replication data across this site connection disabled
 
-  NTDSSITECONN_OPT_DISABLE_COMPRESSION = (1 shl 2);
+  NTDSSITECONN_OPT_DISABLE_COMPRESSION = 1 shl 2;
   {$EXTERNALSYM NTDSSITECONN_OPT_DISABLE_COMPRESSION}
 
 // Bit flags for options attribute on site-Link objects
 // Note that these options are AND-ed along a site-link path
 //
 
-  NTDSSITELINK_OPT_USE_NOTIFY  = (1 shl 0); // Use notification on this link
+  NTDSSITELINK_OPT_USE_NOTIFY  = 1 shl 0; // Use notification on this link
   {$EXTERNALSYM NTDSSITELINK_OPT_USE_NOTIFY}
-  NTDSSITELINK_OPT_TWOWAY_SYNC = (1 shl 1);  // force sync in opposite direction at end of sync
+  NTDSSITELINK_OPT_TWOWAY_SYNC = 1 shl 1;  // force sync in opposite direction at end of sync
   {$EXTERNALSYM NTDSSITELINK_OPT_TWOWAY_SYNC}
 
 // This bit means:
 //  0 - Compression of replication data across this site link enabled
 //  1 - Compression of replication data across this site link disabled
 
-  NTDSSITELINK_OPT_DISABLE_COMPRESSION = (1 shl 2);
+  NTDSSITELINK_OPT_DISABLE_COMPRESSION = 1 shl 2;
   {$EXTERNALSYM NTDSSITELINK_OPT_DISABLE_COMPRESSION}
 
 // ***********************
@@ -1008,16 +1007,9 @@ function DsBindA(DomainControllerName: LPCSTR; DnsDomainName: LPCSTR;
 function DsBindW(DomainControllerName: LPCWSTR; DnsDomainName: LPCWSTR;
   var phDS: HANDLE): DWORD; stdcall;
 {$EXTERNALSYM DsBindW}
-
-{$IFDEF UNICODE}
-function DsBind(DomainControllerName: LPCSTR; DnsDomainName: LPCSTR;
+function DsBind(DomainControllerName: LPCTSTR; DnsDomainName: LPCTSTR;
   var phDS: HANDLE): DWORD; stdcall;
 {$EXTERNALSYM DsBind}
-{$ELSE}
-function DsBind(DomainControllerName: LPCWSTR; DnsDomainName: LPCWSTR;
-  var phDS: HANDLE): DWORD; stdcall;
-{$EXTERNALSYM DsBind}
-{$ENDIF}
 
 function DsBindWithCredA(DomainControllerName: LPCSTR; DnsDomainName: LPCSTR;
   AuthIdentity: RPC_AUTH_IDENTITY_HANDLE; var phDS: HANDLE): DWORD; stdcall;
@@ -1025,16 +1017,9 @@ function DsBindWithCredA(DomainControllerName: LPCSTR; DnsDomainName: LPCSTR;
 function DsBindWithCredW(DomainControllerName: LPCWSTR; DnsDomainName: LPCWSTR;
   AuthIdentity: RPC_AUTH_IDENTITY_HANDLE; var phDS: HANDLE): DWORD; stdcall;
 {$EXTERNALSYM DsBindWithCredW}
-
-{$IFDEF UNICODE}
-function DsBindWithCred(DomainControllerName: LPCWSTR; DnsDomainName: LPCWSTR;
+function DsBindWithCred(DomainControllerName: LPCTSTR; DnsDomainName: LPCTSTR;
   AuthIdentity: RPC_AUTH_IDENTITY_HANDLE; var phDS: HANDLE): DWORD; stdcall;
 {$EXTERNALSYM DsBindWithCred}
-{$ELSE}
-function DsBindWithCred(DomainControllerName: LPCSTR; DnsDomainName: LPCSTR;
-  AuthIdentity: RPC_AUTH_IDENTITY_HANDLE; var phDS: HANDLE): DWORD; stdcall;
-{$EXTERNALSYM DsBindWithCred}
-{$ENDIF}
 
 //
 // DsBindWithSpn{A|W} allows the caller to specify the service principal
@@ -1054,18 +1039,10 @@ function DsBindWithSpnW(DomainControllerName: LPCWSTR; DnsDomainName: LPCWSTR;
   AuthIdentity: RPC_AUTH_IDENTITY_HANDLE; ServicePrincipalName: LPCWSTR;
   var phDS: HANDLE): DWORD; stdcall;
 {$EXTERNALSYM DsBindWithSpnW}
-
-{$IFDEF UNICODE}
-function DsBindWithSpn(DomainControllerName: LPCWSTR; DnsDomainName: LPCWSTR;
-  AuthIdentity: RPC_AUTH_IDENTITY_HANDLE; ServicePrincipalName: LPCWSTR;
+function DsBindWithSpn(DomainControllerName: LPCTSTR; DnsDomainName: LPCTSTR;
+  AuthIdentity: RPC_AUTH_IDENTITY_HANDLE; ServicePrincipalName: LPCTSTR;
   var phDS: HANDLE): DWORD; stdcall;
 {$EXTERNALSYM DsBindWithSpn}
-{$ELSE}
-function DsBindWithSpn(DomainControllerName: LPCSTR; DnsDomainName: LPCSTR;
-  AuthIdentity: RPC_AUTH_IDENTITY_HANDLE; ServicePrincipalName: LPCSTR;
-  var phDS: HANDLE): DWORD; stdcall;
-{$EXTERNALSYM DsBindWithSpn}
-{$ENDIF}
 
 //
 // DsBindWithSpnEx{A|W} allows you all the options of the previous
@@ -1081,16 +1058,9 @@ function DsBindWithSpnExW(DomainControllerName, DnsDomainName: LPCWSTR; AuthIden
 function DsBindWithSpnExA(DomainControllerName, DnsDomainName: LPCSTR; AuthIdentity: RPC_AUTH_IDENTITY_HANDLE;
   ServicePrincipalName: LPCSTR; BindFlags: DWORD; phDS: LPHANDLE): DWORD; stdcall;
 {$EXTERNALSYM DsBindWithSpnExA}
-
-{$IFDEF UNICODE}
-function DsBindWithSpnEx(DomainControllerName, DnsDomainName: LPCWSTR; AuthIdentity: RPC_AUTH_IDENTITY_HANDLE;
-  ServicePrincipalName: LPCWSTR; BindFlags: DWORD; phDS: LPHANDLE): DWORD; stdcall;
+function DsBindWithSpnEx(DomainControllerName, DnsDomainName: LPCTSTR; AuthIdentity: RPC_AUTH_IDENTITY_HANDLE;
+  ServicePrincipalName: LPCTSTR; BindFlags: DWORD; phDS: LPHANDLE): DWORD; stdcall;
 {$EXTERNALSYM DsBindWithSpnEx}
-{$ELSE}
-function DsBindWithSpnEx(DomainControllerName, DnsDomainName: LPCSTR; AuthIdentity: RPC_AUTH_IDENTITY_HANDLE;
-  ServicePrincipalName: LPCSTR; BindFlags: DWORD; phDS: LPHANDLE): DWORD; stdcall;
-{$EXTERNALSYM DsBindWithSpnEx}
-{$ENDIF}
 
 //
 // DsBindToISTG{A|W} allows the caller to bind to the server which
@@ -1103,14 +1073,8 @@ function DsBindToISTGW(SiteName: LPCWSTR; phDS: LPHANDLE): DWORD; stdcall;
 {$EXTERNALSYM DsBindToISTGW}
 function DsBindToISTGA(SiteName: LPCSTR; phDS: LPHANDLE): DWORD; stdcall;
 {$EXTERNALSYM DsBindToISTGA}
-
-{$IFDEF UNICODE}
-function DsBindToISTG(SiteName: LPCWSTR; phDS: LPHANDLE): DWORD; stdcall;
+function DsBindToISTG(SiteName: LPCTSTR; phDS: LPHANDLE): DWORD; stdcall;
 {$EXTERNALSYM DsBindToISTG}
-{$ELSE}
-function DsBindToISTG(SiteName: LPCSTR; phDS: LPHANDLE): DWORD; stdcall;
-{$EXTERNALSYM DsBindToISTG}
-{$ENDIF}
 
 //
 // DsBindingSetTimeout allows the caller to specify a timeout value
@@ -1129,20 +1093,14 @@ function DsUnBindA(var phDS: HANDLE): DWORD; stdcall;
 {$EXTERNALSYM DsUnBindA}
 function DsUnBindW(var phDS: HANDLE): DWORD; stdcall;
 {$EXTERNALSYM DsUnBindW}
-
-{$IFDEF UNICODE}
 function DsUnBind(var phDS: HANDLE): DWORD; stdcall;
 {$EXTERNALSYM DsUnBind}
-{$ELSE}
-function DsUnBind(var phDS: HANDLE): DWORD; stdcall;
-{$EXTERNALSYM DsUnBind}
-{$ENDIF}
 
 //
 // DsMakePasswordCredentials
 //
 // This function constructs a credential structure which is suitable for input
-// to the DsBindWithCredentials function, or the ldap_open function (winldap.h)
+// to the DsBindWithCredentials function, or the ldap_open function(winldap.h)
 // The credential must be freed using DsFreeCredential.
 //
 // None of the input parameters may be present indicating a null, default
@@ -1157,24 +1115,16 @@ function DsMakePasswordCredentialsA(User: LPCSTR; Domain: LPCSTR;
 function DsMakePasswordCredentialsW(User: LPCWSTR; Domain: LPCWSTR;
   Password: LPCWSTR; var pAuthIdentity: RPC_AUTH_IDENTITY_HANDLE): DWORD; stdcall;
 {$EXTERNALSYM DsMakePasswordCredentialsW}
-
-{$IFDEF UNICODE}
-function DsMakePasswordCredentials(User: LPCWSTR; Domain: LPCWSTR;
-  Password: LPCWSTR; var pAuthIdentity: RPC_AUTH_IDENTITY_HANDLE): DWORD; stdcall;
+function DsMakePasswordCredentials(User: LPCTSTR; Domain: LPCTSTR;
+  Password: LPCTSTR; var pAuthIdentity: RPC_AUTH_IDENTITY_HANDLE): DWORD; stdcall;
 {$EXTERNALSYM DsMakePasswordCredentials}
-{$ELSE}
-function DsMakePasswordCredentials(User: LPCSTR; Domain: LPCSTR;
-  Password: LPCSTR; var pAuthIdentity: RPC_AUTH_IDENTITY_HANDLE): DWORD; stdcall;
-{$EXTERNALSYM DsMakePasswordCredentials}
-{$ENDIF}
-
-procedure DsFreePasswordCredentials(AuthIdentity: RPC_AUTH_IDENTITY_HANDLE); stdcall;
-{$EXTERNALSYM DsFreePasswordCredentials}
 
 procedure DsFreePasswordCredentialsA(AuthIdentity: RPC_AUTH_IDENTITY_HANDLE); stdcall;
 {$EXTERNALSYM DsFreePasswordCredentialsA}
 procedure DsFreePasswordCredentialsW(AuthIdentity: RPC_AUTH_IDENTITY_HANDLE); stdcall;
 {$EXTERNALSYM DsFreePasswordCredentialsW}
+procedure DsFreePasswordCredentials(AuthIdentity: RPC_AUTH_IDENTITY_HANDLE); stdcall;
+{$EXTERNALSYM DsFreePasswordCredentials}
 
 //
 // DsCrackNames
@@ -1188,18 +1138,10 @@ function DsCrackNamesW(hDS: HANDLE; flags: DS_NAME_FLAGS;
   formatOffered: DS_NAME_FORMAT; formatDesired: DS_NAME_FORMAT; cNames: DWORD;
   rpNames: LPCWSTR; var ppResult: PDS_NAME_RESULTW): DWORD; stdcall;
 {$EXTERNALSYM DsCrackNamesW}
-
-{$IFDEF UNICODE}
 function DsCrackNames(hDS: HANDLE; flags: DS_NAME_FLAGS;
   formatOffered: DS_NAME_FORMAT; formatDesired: DS_NAME_FORMAT; cNames: DWORD;
-  rpNames: LPCWSTR; var ppResult: PDS_NAME_RESULTW): DWORD; stdcall;
+  rpNames: LPCTSTR; var ppResult: PDS_NAME_RESULT): DWORD; stdcall;
 {$EXTERNALSYM DsCrackNames}
-{$ELSE}
-function DsCrackNames(hDS: HANDLE; flags: DS_NAME_FLAGS;
-  formatOffered: DS_NAME_FORMAT; formatDesired: DS_NAME_FORMAT; cNames: DWORD;
-  rpNames: LPCSTR; var ppResult: PDS_NAME_RESULTA): DWORD; stdcall;
-{$EXTERNALSYM DsCrackNames}
-{$ENDIF}
 
 //
 // DsFreeNameResult
@@ -1209,14 +1151,8 @@ procedure DsFreeNameResultA(pResult: PDS_NAME_RESULTA); stdcall;
 {$EXTERNALSYM DsFreeNameResultA}
 procedure DsFreeNameResultW(pResult: PDS_NAME_RESULTW); stdcall;
 {$EXTERNALSYM DsFreeNameResultW}
-
-{$IFDEF UNICODE}
-procedure DsFreeNameResult(pResult: PDS_NAME_RESULTW); stdcall;
+procedure DsFreeNameResult(pResult: PDS_NAME_RESULT); stdcall;
 {$EXTERNALSYM DsFreeNameResult}
-{$ELSE}
-procedure DsFreeNameResult(pResult: PDS_NAME_RESULTA); stdcall;
-{$EXTERNALSYM DsFreeNameResult}
-{$ENDIF}
 
 // ==========================================================
 // DSMakeSpn -- client call to create SPN for a service to which it wants to
@@ -1272,18 +1208,10 @@ function DsMakeSpnW(ServiceClass: LPCWSTR; ServiceName: LPCWSTR;
   InstanceName: LPCWSTR; InstancePort: USHORT; Referrer: LPCWSTR;
   var pcSpnLength: DWORD; pszSpn: LPWSTR): DWORD; stdcall;
 {$EXTERNALSYM DsMakeSpnW}
-
-{$IFDEF UNICODE}
-function DsMakeSpn(ServiceClass: LPCWSTR; ServiceName: LPCWSTR;
-  InstanceName: LPCWSTR; InstancePort: USHORT; Referrer: LPCWSTR;
-  var pcSpnLength: DWORD; pszSpn: LPWSTR): DWORD; stdcall;
+function DsMakeSpn(ServiceClass: LPCTSTR; ServiceName: LPCTSTR;
+  InstanceName: LPCTSTR; InstancePort: USHORT; Referrer: LPCTSTR;
+  var pcSpnLength: DWORD; pszSpn: LPTSTR): DWORD; stdcall;
 {$EXTERNALSYM DsMakeSpn}
-{$ELSE}
-function DsMakeSpn(ServiceClass: LPCSTR; ServiceName: LPCSTR;
-  InstanceName: LPCSTR; InstancePort: USHORT; Referrer: LPCSTR;
-  var pcSpnLength: DWORD; pszSpn: LPSTR): DWORD; stdcall;
-{$EXTERNALSYM DsMakeSpn}
-{$ENDIF}
 
 // ==========================================================
 // DsGetSPN -- server's call to gets SPNs for a service name by which it is
@@ -1318,20 +1246,11 @@ function DsGetSpnW(ServiceType: DS_SPN_NAME_TYPE; ServiceClass: LPCWSTR;
   pInstanceNames: LPCWSTR; pInstancePorts: PUSHORT; var pcSpn: DWORD;
   var prpszSpn: LPWSTR): DWORD; stdcall;
 {$EXTERNALSYM DsGetSpnW}
-
-{$IFDEF UNICODE}
-function DsGetSpn(ServiceType: DS_SPN_NAME_TYPE; ServiceClass: LPCWSTR;
-  ServiceName: LPCWSTR; InstancePort: USHORT; cInstanceNames: USHORT;
-  pInstanceNames: LPCWSTR; pInstancePorts: PUSHORT; var pcSpn: DWORD;
-  var prpszSpn: LPWSTR): DWORD; stdcall;
+function DsGetSpn(ServiceType: DS_SPN_NAME_TYPE; ServiceClass: LPCTSTR;
+  ServiceName: LPCTSTR; InstancePort: USHORT; cInstanceNames: USHORT;
+  pInstanceNames: LPCTSTR; pInstancePorts: PUSHORT; var pcSpn: DWORD;
+  var prpszSpn: LPTSTR): DWORD; stdcall;
 {$EXTERNALSYM DsGetSpn}
-{$ELSE}
-function DsGetSpn(ServiceType: DS_SPN_NAME_TYPE; ServiceClass: LPCSTR;
-  ServiceName: LPCSTR; InstancePort: USHORT; cInstanceNames: USHORT;
-  pInstanceNames: LPCSTR; pInstancePorts: PUSHORT; var pcSpn: DWORD;
-  var prpszSpn: LPSTR): DWORD; stdcall;
-{$EXTERNALSYM DsGetSpn}
-{$ENDIF}
 
 // ==========================================================
 // DsFreeSpnArray() -- Free array returned by DsGetSpn{A,W}
@@ -1340,14 +1259,8 @@ procedure DsFreeSpnArrayA(cSpn: DWORD; rpszSpn: LPSTR); stdcall;
 {$EXTERNALSYM DsFreeSpnArrayA}
 procedure DsFreeSpnArrayW(cSpn: DWORD; rpszSpn: LPWSTR); stdcall;
 {$EXTERNALSYM DsFreeSpnArrayW}
-
-{$IFDEF UNICODE}
-procedure DsFreeSpnArray(cSpn: DWORD; rpszSpn: LPWSTR); stdcall;
+procedure DsFreeSpnArray(cSpn: DWORD; rpszSpn: LPTSTR); stdcall;
 {$EXTERNALSYM DsFreeSpnArray}
-{$ELSE}
-procedure DsFreeSpnArray(cSpn: DWORD; rpszSpn: LPSTR); stdcall;
-{$EXTERNALSYM DsFreeSpnArray}
-{$ENDIF}
 
 // ==========================================================
 // DsCrackSpn() -- parse an SPN into the ServiceClass,
@@ -1383,19 +1296,10 @@ function DsCrackSpnW(pszSpn: LPCWSTR; pcServiceClass: LPDWORD; ServiceClass: LPW
   pcServiceName: LPDWORD; ServiceName: LPWSTR; pcInstanceName: LPDWORD;
   InstanceName: LPWSTR; pInstancePort: PUSHORT): DWORD; stdcall;
 {$EXTERNALSYM DsCrackSpnW}
-
-{$IFDEF UNICODE}
-function DsCrackSpn(pszSpn: LPCWSTR; pcServiceClass: LPDWORD; ServiceClass: LPWSTR;
-  pcServiceName: LPDWORD; ServiceName: LPWSTR; pcInstanceName: LPDWORD;
-  InstanceName: LPWSTR; pInstancePort: PUSHORT): DWORD; stdcall;
+function DsCrackSpn(pszSpn: LPCTSTR; pcServiceClass: LPDWORD; ServiceClass: LPTSTR;
+  pcServiceName: LPDWORD; ServiceName: LPTSTR; pcInstanceName: LPDWORD;
+  InstanceName: LPTSTR; pInstancePort: PUSHORT): DWORD; stdcall;
 {$EXTERNALSYM DsCrackSpn}
-{$ELSE}
-function DsCrackSpn(pszSpn: LPCSTR; pcServiceClass: LPDWORD; ServiceClass: LPSTR;
-  pcServiceName: LPDWORD; ServiceName: LPSTR; pcInstanceName: LPDWORD;
-  InstanceName: LPSTR; pInstancePort: PUSHORT): DWORD; stdcall;
-{$EXTERNALSYM DsCrackSpn}
-{$ENDIF}
-
 
 // ==========================================================
 // DsWriteAccountSpn -- set or add SPNs for an account object
@@ -1423,16 +1327,9 @@ function DsWriteAccountSpnA(hDS: HANDLE; Operation: DS_SPN_WRITE_OP;
 function DsWriteAccountSpnW(hDS: HANDLE; Operation: DS_SPN_WRITE_OP;
   pszAccount: LPCWSTR; cSpn: DWORD; rpszSpn: LPCWSTR): DWORD; stdcall;
 {$EXTERNALSYM DsWriteAccountSpnW}
-
-{$IFDEF UNICODE}
 function DsWriteAccountSpn(hDS: HANDLE; Operation: DS_SPN_WRITE_OP;
-  pszAccount: LPCWSTR; cSpn: DWORD; rpszSpn: LPCWSTR): DWORD; stdcall;
+  pszAccount: LPCTSTR; cSpn: DWORD; rpszSpn: LPCTSTR): DWORD; stdcall;
 {$EXTERNALSYM DsWriteAccountSpn}
-{$ELSE}
-function DsWriteAccountSpn(hDS: HANDLE; Operation: DS_SPN_WRITE_OP;
-  pszAccount: LPCSTR; cSpn: DWORD; rpszSpn: LPCSTR): DWORD; stdcall;
-{$EXTERNALSYM DsWriteAccountSpn}
-{$ENDIF}
 
 {++
 
@@ -1444,6 +1341,11 @@ The service class and part of a dns hostname must be supplied.
 This routine is a simplified wrapper to DsMakeSpn.
 The ServiceName is made canonical by resolving through DNS.
 Guid-based dns names are not supported.
+
+NOTE:
+This routine is no longer recommended for use. In order to be secure, an SPN
+should be constructed purely on the client without reliance on other services,
+such as DNS, which may be spoofed.
 
 The simplified SPN constructed looks like this:
 
@@ -1477,16 +1379,9 @@ function DsClientMakeSpnForTargetServerA(ServiceClass: LPCSTR; ServiceName: LPCS
 function DsClientMakeSpnForTargetServerW(ServiceClass: LPCWSTR; ServiceName: LPCWSTR;
   var pcSpnLength: DWORD; pszSpn: LPWSTR): DWORD; stdcall;
 {$EXTERNALSYM DsClientMakeSpnForTargetServerW}
-
-{$IFDEF UNICODE}
-function DsClientMakeSpnForTargetServer(ServiceClass: LPCWSTR; ServiceName: LPCWSTR;
-  var pcSpnLength: DWORD; pszSpn: LPWSTR): DWORD; stdcall;
+function DsClientMakeSpnForTargetServer(ServiceClass: LPCTSTR; ServiceName: LPCTSTR;
+  var pcSpnLength: DWORD; pszSpn: LPTSTR): DWORD; stdcall;
 {$EXTERNALSYM DsClientMakeSpnForTargetServer}
-{$ELSE}
-function DsClientMakeSpnForTargetServer(ServiceClass: LPCSTR; ServiceName: LPCSTR;
-  var pcSpnLength: DWORD; pszSpn: LPSTR): DWORD; stdcall;
-{$EXTERNALSYM DsClientMakeSpnForTargetServer}
-{$ENDIF}
 
 {++
 outine Description:
@@ -1531,16 +1426,9 @@ function DsServerRegisterSpnA(Operation: DS_SPN_WRITE_OP; ServiceClass: LPCSTR;
 function DsServerRegisterSpnW(Operation: DS_SPN_WRITE_OP; ServiceClass: LPCWSTR;
   UserObjectDN: LPCWSTR): DWORD; stdcall;
 {$EXTERNALSYM DsServerRegisterSpnW}
-
-{$IFDEF UNICODE}
-function DsServerRegisterSpn(Operation: DS_SPN_WRITE_OP; ServiceClass: LPCWSTR;
-  UserObjectDN: LPCWSTR): DWORD; stdcall;
+function DsServerRegisterSpn(Operation: DS_SPN_WRITE_OP; ServiceClass: LPCTSTR;
+  UserObjectDN: LPCTSTR): DWORD; stdcall;
 {$EXTERNALSYM DsServerRegisterSpn}
-{$ELSE}
-function DsServerRegisterSpn(Operation: DS_SPN_WRITE_OP; ServiceClass: LPCSTR;
-  UserObjectDN: LPCSTR): DWORD; stdcall;
-{$EXTERNALSYM DsServerRegisterSpn}
-{$ENDIF}
 
 // DsReplicaSync.  The server that this call is executing on is called the
 // destination.  The destination's naming context will be brought up to date
@@ -1565,16 +1453,9 @@ function DsReplicaSyncA(hDS: HANDLE; NameContext: LPCSTR; pUuidDsaSrc: LPUUID;
 function DsReplicaSyncW(hDS: HANDLE; NameContext: LPCWSTR; pUuidDsaSrc: LPUUID;
   Options: ULONG): DWORD; stdcall;
 {$EXTERNALSYM DsReplicaSyncW}
-
-{$IFDEF UNICODE}
-function DsReplicaSync(hDS: HANDLE; NameContext: LPCWSTR; pUuidDsaSrc: LPUUID;
+function DsReplicaSync(hDS: HANDLE; NameContext: LPCTSTR; pUuidDsaSrc: LPUUID;
   Options: ULONG): DWORD; stdcall;
 {$EXTERNALSYM DsReplicaSync}
-{$ELSE}
-function DsReplicaSync(hDS: HANDLE; NameContext: LPCSTR; pUuidDsaSrc: LPUUID;
-  Options: ULONG): DWORD; stdcall;
-{$EXTERNALSYM DsReplicaSync}
-{$ENDIF}
 
 // DsReplicaAdd
 //
@@ -1616,18 +1497,10 @@ function DsReplicaAddW(hDS: HANDLE; NameContext: LPCWSTR; SourceDsaDn: LPCWSTR;
   TransportDn: LPCWSTR; SourceDsaAddress: LPCWSTR; pSchedule: PSCHEDULE;
   Options: DWORD): DWORD; stdcall;
 {$EXTERNALSYM DsReplicaAddW}
-
-{$IFDEF UNICODE}
-function DsReplicaAdd(hDS: HANDLE; NameContext: LPCWSTR; SourceDsaDn: LPCWSTR;
-  TransportDn: LPCWSTR; SourceDsaAddress: LPCWSTR; pSchedule: PSCHEDULE;
+function DsReplicaAdd(hDS: HANDLE; NameContext: LPCTSTR; SourceDsaDn: LPCTSTR;
+  TransportDn: LPCTSTR; SourceDsaAddress: LPCTSTR; pSchedule: PSCHEDULE;
   Options: DWORD): DWORD; stdcall;
 {$EXTERNALSYM DsReplicaAdd}
-{$ELSE}
-function DsReplicaAdd(hDS: HANDLE; NameContext: LPCSTR; SourceDsaDn: LPCSTR;
-  TransportDn: LPCSTR; SourceDsaAddress: LPCSTR; pSchedule: PSCHEDULE;
-  Options: DWORD): DWORD; stdcall;
-{$EXTERNALSYM DsReplicaAdd}
-{$ENDIF}
 
 // DsReplicaDel
 //
@@ -1658,16 +1531,9 @@ function DsReplicaDelA(hDS: HANDLE; NameContext: LPCSTR; DsaSrc: LPCSTR;
 function DsReplicaDelW(hDS: HANDLE; NameContext: LPCWSTR; DsaSrc: LPCWSTR;
   Options: ULONG): DWORD; stdcall;
 {$EXTERNALSYM DsReplicaDelW}
-
-{$IFDEF UNICODE}
-function DsReplicaDel(hDS: HANDLE; NameContext: LPCWSTR; DsaSrc: LPCWSTR;
+function DsReplicaDel(hDS: HANDLE; NameContext: LPCTSTR; DsaSrc: LPCTSTR;
   Options: ULONG): DWORD; stdcall;
 {$EXTERNALSYM DsReplicaDel}
-{$ELSE}
-function DsReplicaDel(hDS: HANDLE; NameContext: LPCSTR; DsaSrc: LPCSTR;
-  Options: ULONG): DWORD; stdcall;
-{$EXTERNALSYM DsReplicaDel}
-{$ENDIF}
 
 // DsReplicaModify
 //
@@ -1726,18 +1592,10 @@ function DsReplicaModifyW(hDS: HANDLE; NameContext: LPCWSTR; pUuidSourceDsa: LPU
   TransportDn: LPCWSTR; SourceDsaAddress: LPCWSTR; pSchedule: PSCHEDULE;
   ReplicaFlags: DWORD; ModifyFields: DWORD; Options: DWORD): DWORD; stdcall;
 {$EXTERNALSYM DsReplicaModifyW}
-
-{$IFDEF UNICODE}
-function DsReplicaModify(hDS: HANDLE; NameContext: LPCWSTR; pUuidSourceDsa: LPUUID;
-  TransportDn: LPCWSTR; SourceDsaAddress: LPCWSTR; pSchedule: PSCHEDULE;
+function DsReplicaModify(hDS: HANDLE; NameContext: LPCTSTR; pUuidSourceDsa: LPUUID;
+  TransportDn: LPCTSTR; SourceDsaAddress: LPCTSTR; pSchedule: PSCHEDULE;
   ReplicaFlags: DWORD; ModifyFields: DWORD; Options: DWORD): DWORD; stdcall;
 {$EXTERNALSYM DsReplicaModify}
-{$ELSE}
-function DsReplicaModify(hDS: HANDLE; NameContext: LPCSTR; pUuidSourceDsa: LPUUID;
-  TransportDn: LPCSTR; SourceDsaAddress: LPCSTR; pSchedule: PSCHEDULE;
-  ReplicaFlags: DWORD; ModifyFields: DWORD; Options: DWORD): DWORD; stdcall;
-{$EXTERNALSYM DsReplicaModify}
-{$ENDIF}
 
 // DsReplicaUpdateRefs
 //
@@ -1776,16 +1634,9 @@ function DsReplicaUpdateRefsA(hDS: HANDLE; NameContext: LPCSTR; DsaDest: LPCSTR;
 function DsReplicaUpdateRefsW(hDS: HANDLE; NameContext: LPCWSTR; DsaDest: LPCWSTR;
   pUuidDsaDest: LPUUID; Options: ULONG): DWORD; stdcall;
 {$EXTERNALSYM DsReplicaUpdateRefsW}
-
-{$IFDEF UNICODE}
-function DsReplicaUpdateRefs(hDS: HANDLE; NameContext: LPCWSTR; DsaDest: LPCWSTR;
+function DsReplicaUpdateRefs(hDS: HANDLE; NameContext: LPCTSTR; DsaDest: LPCTSTR;
   pUuidDsaDest: LPUUID; Options: ULONG): DWORD; stdcall;
 {$EXTERNALSYM DsReplicaUpdateRefs}
-{$ELSE}
-function DsReplicaUpdateRefs(hDS: HANDLE; NameContext: LPCSTR; DsaDest: LPCSTR;
-  pUuidDsaDest: LPUUID; Options: ULONG): DWORD; stdcall;
-{$EXTERNALSYM DsReplicaUpdateRefs}
-{$ENDIF}
 
 // Friends of DsReplicaSyncAll
 
@@ -1883,7 +1734,7 @@ type
   TDsRepSynCallUpdateW = DS_REPSYNCALL_UPDATEW;
   PDsRepSynCallUpdateW = PDS_REPSYNCALL_UPDATEW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   DS_REPSYNCALL_SYNC = DS_REPSYNCALL_SYNCW;
   {$EXTERNALSYM DS_REPSYNCALL_SYNC}
   DS_REPSYNCALL_ERRINFO = DS_REPSYNCALL_ERRINFOW;
@@ -1904,7 +1755,7 @@ type
   PDsRepSynCallErrInfo = PDsRepSynCallErrInfoW;
   TDsRepSynCallUpdate = TDsRepSynCallUpdateW;
   PDsRepSynCallUpdate = PDsRepSynCallUpdateW;
-{$ELSE}
+  {$ELSE}
   DS_REPSYNCALL_SYNC = DS_REPSYNCALL_SYNCA;
   {$EXTERNALSYM DS_REPSYNCALL_SYNC}
   DS_REPSYNCALL_ERRINFO = DS_REPSYNCALL_ERRINFOA;
@@ -1925,7 +1776,7 @@ type
   PDsRepSynCallErrInfo = PDsRepSynCallErrInfoA;
   TDsRepSynCallUpdate = TDsRepSynCallUpdateA;
   PDsRepSynCallUpdate = PDsRepSynCallUpdateA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 // **********************
 // Replica SyncAll flags
@@ -1997,18 +1848,23 @@ const
 // in the site.
 //
 //  PARAMETERS:
-//	hDS		(IN) - A DS connection bound to the destination server.
-//	pszNameContext	(IN) - The naming context to synchronize
-//	ulFlags		(IN) - Bitwise OR of zero or more flags
-//	pFnCallBack	(IN, OPTIONAL) - Callback function for message-passing.
-//	pCallbackData	(IN, OPTIONAL) - A pointer that will be passed to the
-//				first argument of the callback function.
-//	pErrors		(OUT, OPTIONAL) - Pointer to a (PDS_REPSYNCALL_ERRINFO *)
-//				object that will hold an array of error structures.
+//      hDS             (IN) - A DS connection bound to the destination server.
+//      pszNameContext  (IN) - The naming context to synchronize
+//      ulFlags         (IN) - Bitwise OR of zero or more flags
+//      pFnCallBack     (IN, OPTIONAL) - Callback function for message-passing.
+//      pCallbackData   (IN, OPTIONAL) - A pointer that will be passed to the
+//                                       first argument of the callback function.
+//      pErrors         (OUT, OPTIONAL) - Pointer to a (PDS_REPSYNCALL_ERRINFO *)
+//                                        object that will hold an array of error structures.
 
 type
-  TSynchUpdateProcA = function (pData: LPVOID; pUpdate: PDS_REPSYNCALL_UPDATEA): BOOL; stdcall;
-  TSynchUpdateProcW = function (pData: LPVOID; pUpdate: PDS_REPSYNCALL_UPDATEW): BOOL; stdcall;
+  TSynchUpdateProcA = function(pData: LPVOID; pUpdate: PDS_REPSYNCALL_UPDATEA): BOOL; stdcall;
+  TSynchUpdateProcW = function(pData: LPVOID; pUpdate: PDS_REPSYNCALL_UPDATEW): BOOL; stdcall;
+  {$IFDEF UNICODE}
+  TSynchUpdateProc = TSynchUpdateProcW;
+  {$ELSE}
+  TSynchUpdateProc = TSynchUpdateProcA;
+  {$ENDIF UNICODE}
 
 function DsReplicaSyncAllA(hDS: HANDLE; pszNameContext: LPCSTR; ulFlags: ULONG;
   pfnCallBack: TSynchUpdateProcA; pCallbackData: LPVOID;
@@ -2018,18 +1874,10 @@ function DsReplicaSyncAllW(hDS: HANDLE; pszNameContext: LPCWSTR; ulFlags: ULONG;
   pfnCallBackW: TSynchUpdateProcW; pCallbackData: LPVOID;
   pErrors: PPDS_REPSYNCALL_ERRINFOW): DWORD; stdcall;
 {$EXTERNALSYM DsReplicaSyncAllW}
-
-{$IFDEF UNICODE}
-function DsReplicaSyncAll(hDS: HANDLE; pszNameContext: LPCWSTR; ulFlags: ULONG;
-  pfnCallBackW: TSynchUpdateProcW; pCallbackData: LPVOID;
-  pErrors: PPDS_REPSYNCALL_ERRINFOW): DWORD; stdcall;
+function DsReplicaSyncAll(hDS: HANDLE; pszNameContext: LPCTSTR; ulFlags: ULONG;
+  pfnCallBack: TSynchUpdateProc; pCallbackData: LPVOID;
+  pErrors: PPDS_REPSYNCALL_ERRINFO): DWORD; stdcall;
 {$EXTERNALSYM DsReplicaSyncAll}
-{$ELSE}
-function DsReplicaSyncAll(hDS: HANDLE; pszNameContext: LPCSTR; ulFlags: ULONG;
-  pfnCallBack: TSynchUpdateProcA; pCallbackData: LPVOID;
-  pErrors: PPDS_REPSYNCALL_ERRINFOA): DWORD; stdcall;
-{$EXTERNALSYM DsReplicaSyncAll}
-{$ENDIF}
 
 function DsRemoveDsServerA(hDs: HANDLE; ServerDN: LPSTR; DomainDN: LPSTR;
   fLastDcInDomain: PBOOL; fCommit: BOOL): DWORD; stdcall;
@@ -2037,42 +1885,23 @@ function DsRemoveDsServerA(hDs: HANDLE; ServerDN: LPSTR; DomainDN: LPSTR;
 function DsRemoveDsServerW(hDs: HANDLE; ServerDN: LPWSTR; DomainDN: LPWSTR;
   fLastDcInDomain: PBOOL; fCommit: BOOL): DWORD; stdcall;
 {$EXTERNALSYM DsRemoveDsServerW}
-
-{$IFDEF UNICODE}
-function DsRemoveDsServer(hDs: HANDLE; ServerDN: LPWSTR; DomainDN: LPWSTR;
+function DsRemoveDsServer(hDs: HANDLE; ServerDN: LPTSTR; DomainDN: LPTSTR;
   fLastDcInDomain: PBOOL; fCommit: BOOL): DWORD; stdcall;
 {$EXTERNALSYM DsRemoveDsServer}
-{$ELSE}
-function DsRemoveDsServer(hDs: HANDLE; ServerDN: LPSTR; DomainDN: LPSTR;
-  fLastDcInDomain: PBOOL; fCommit: BOOL): DWORD; stdcall;
-{$EXTERNALSYM DsRemoveDsServer}
-{$ENDIF}
 
 function DsRemoveDsDomainA(hDs: HANDLE; DomainDN: LPSTR): DWORD; stdcall;
 {$EXTERNALSYM DsRemoveDsDomainA}
 function DsRemoveDsDomainW(hDs: HANDLE; DomainDN: LPWSTR): DWORD; stdcall;
 {$EXTERNALSYM DsRemoveDsDomainW}
-
-{$IFDEF UNICODE}
-function DsRemoveDsDomain(hDs: HANDLE; DomainDN: LPWSTR): DWORD; stdcall;
+function DsRemoveDsDomain(hDs: HANDLE; DomainDN: LPTSTR): DWORD; stdcall;
 {$EXTERNALSYM DsRemoveDsDomain}
-{$ELSE}
-function DsRemoveDsDomain(hDs: HANDLE; DomainDN: LPSTR): DWORD; stdcall;
-{$EXTERNALSYM DsRemoveDsDomain}
-{$ENDIF}
 
 function DsListSitesA(hDs: HANDLE; var ppSites: PDS_NAME_RESULTA): DWORD; stdcall;
 {$EXTERNALSYM DsListSitesA}
 function DsListSitesW(hDs: HANDLE; var ppSites: PDS_NAME_RESULTW): DWORD; stdcall;
 {$EXTERNALSYM DsListSitesW}
-
-{$IFDEF UNICODE}
-function DsListSites(hDs: HANDLE; var ppSites: PDS_NAME_RESULTW): DWORD; stdcall;
+function DsListSites(hDs: HANDLE; var ppSites: PDS_NAME_RESULT): DWORD; stdcall;
 {$EXTERNALSYM DsListSites}
-{$ELSE}
-function DsListSites(hDs: HANDLE; var ppSites: PDS_NAME_RESULTA): DWORD; stdcall;
-{$EXTERNALSYM DsListSites}
-{$ENDIF}
 
 function DsListServersInSiteA(hDs: HANDLE; site: LPCSTR;
   var ppServers: PDS_NAME_RESULTA): DWORD; stdcall;
@@ -2080,16 +1909,9 @@ function DsListServersInSiteA(hDs: HANDLE; site: LPCSTR;
 function DsListServersInSiteW(hDs: HANDLE; site: LPCWSTR;
   var ppServers: PDS_NAME_RESULTW): DWORD; stdcall;
 {$EXTERNALSYM DsListServersInSiteW}
-
-{$IFDEF UNICODE}
-function DsListServersInSite(hDs: HANDLE; site: LPCWSTR;
-  var ppServers: PDS_NAME_RESULTW): DWORD; stdcall;
+function DsListServersInSite(hDs: HANDLE; site: LPCTSTR;
+  var ppServers: PDS_NAME_RESULT): DWORD; stdcall;
 {$EXTERNALSYM DsListServersInSite}
-{$ELSE}
-function DsListServersInSite(hDs: HANDLE; site: LPCSTR;
-  var ppServers: PDS_NAME_RESULTA): DWORD; stdcall;
-{$EXTERNALSYM DsListServersInSite}
-{$ENDIF}
 
 function DsListDomainsInSiteA(hDs: HANDLE; site: LPCSTR;
   var ppDomains: PDS_NAME_RESULTA): DWORD; stdcall;
@@ -2097,16 +1919,9 @@ function DsListDomainsInSiteA(hDs: HANDLE; site: LPCSTR;
 function DsListDomainsInSiteW(hDs: HANDLE; site: LPCWSTR;
   var ppDomains: PDS_NAME_RESULTW): DWORD; stdcall;
 {$EXTERNALSYM DsListDomainsInSiteW}
-
-{$IFDEF UNICODE}
-function DsListDomainsInSite(hDs: HANDLE; site: LPCWSTR;
-  var ppDomains: PDS_NAME_RESULTW): DWORD; stdcall;
+function DsListDomainsInSite(hDs: HANDLE; site: LPCTSTR;
+  var ppDomains: PDS_NAME_RESULT): DWORD; stdcall;
 {$EXTERNALSYM DsListDomainsInSite}
-{$ELSE}
-function DsListDomainsInSite(hDs: HANDLE; site: LPCSTR;
-  var ppDomains: PDS_NAME_RESULTA): DWORD; stdcall;
-{$EXTERNALSYM DsListDomainsInSite}
-{$ENDIF}
 
 function DsListServersForDomainInSiteA(hDs: HANDLE; domain: LPCSTR; site: LPCSTR;
   var ppServers: PDS_NAME_RESULTA): DWORD; stdcall;
@@ -2114,16 +1929,9 @@ function DsListServersForDomainInSiteA(hDs: HANDLE; domain: LPCSTR; site: LPCSTR
 function DsListServersForDomainInSiteW(hDs: HANDLE; domain: LPCWSTR; site: LPCWSTR;
   var ppServers: PDS_NAME_RESULTW): DWORD; stdcall;
 {$EXTERNALSYM DsListServersForDomainInSiteW}
-
-{$IFDEF UNICODE}
-function DsListServersForDomainInSite(hDs: HANDLE; domain: LPCWSTR; site: LPCWSTR;
-  var ppServers: PDS_NAME_RESULTW): DWORD; stdcall;
+function DsListServersForDomainInSite(hDs: HANDLE; domain: LPCTSTR; site: LPCTSTR;
+  var ppServers: PDS_NAME_RESULT): DWORD; stdcall;
 {$EXTERNALSYM DsListServersForDomainInSite}
-{$ELSE}
-function DsListServersForDomainInSite(hDs: HANDLE; domain: LPCSTR; site: LPCSTR;
-  var ppServers: PDS_NAME_RESULTA): DWORD; stdcall;
-{$EXTERNALSYM DsListServersForDomainInSite}
-{$ENDIF}
 
 // Define indices for DsListInfoForServer return data.  Check status
 // for each field as a given value may not be present.
@@ -2142,16 +1950,9 @@ function DsListInfoForServerA(hDs: HANDLE; server: LPCSTR;
 function DsListInfoForServerW(hDs: HANDLE; server: LPCWSTR;
   var ppInfo: PDS_NAME_RESULTW): DWORD; stdcall;
 {$EXTERNALSYM DsListInfoForServerW}
-
-{$IFDEF UNICODE}
-function DsListInfoForServer(hDs: HANDLE; server: LPCWSTR;
-  var ppInfo: PDS_NAME_RESULTW): DWORD; stdcall;
+function DsListInfoForServer(hDs: HANDLE; server: LPCTSTR;
+  var ppInfo: PDS_NAME_RESULT): DWORD; stdcall;
 {$EXTERNALSYM DsListInfoForServer}
-{$ELSE}
-function DsListInfoForServer(hDs: HANDLE; server: LPCSTR;
-  var ppInfo: PDS_NAME_RESULTA): DWORD; stdcall;
-{$EXTERNALSYM DsListInfoForServer}
-{$ENDIF}
 
 // Define indices for DsListRoles return data.  Check status for
 // each field as a given value may not be present.
@@ -2172,14 +1973,8 @@ function DsListRolesA(hDs: HANDLE; var ppRoles: PDS_NAME_RESULTA): DWORD; stdcal
 {$EXTERNALSYM DsListRolesA}
 function DsListRolesW(hDs: HANDLE; var ppRoles: PDS_NAME_RESULTW): DWORD; stdcall;
 {$EXTERNALSYM DsListRolesW}
-
-{$IFDEF UNICODE}
-function DsListRoles(hDs: HANDLE; var ppRoles: PDS_NAME_RESULTW): DWORD; stdcall;
+function DsListRoles(hDs: HANDLE; var ppRoles: PDS_NAME_RESULT): DWORD; stdcall;
 {$EXTERNALSYM DsListRoles}
-{$ELSE}
-function DsListRoles(hDs: HANDLE; var ppRoles: PDS_NAME_RESULTA): DWORD; stdcall;
-{$EXTERNALSYM DsListRoles}
-{$ENDIF}
 
 //
 // DsQuerySitesByCost{A|W} allows the caller to determine the
@@ -2209,16 +2004,9 @@ function DsQuerySitesByCostW(hDS: HANDLE; pwszFromSite: LPWSTR; out rgwszToSites
 function DsQuerySitesByCostA(hDS: HANDLE; pwszFromSite: LPSTR; out rgwszToSites: LPSTR; cToSites, dwFlags: DWORD;
   out prgSiteInfo: PDS_SITE_COST_INFO): DWORD; stdcall;
 {$EXTERNALSYM DsQuerySitesByCostA}
-
-{$IFDEF UNICODE}
-function DsQuerySitesByCost(hDS: HANDLE; pwszFromSite: LPWSTR; out rgwszToSites: LPWSTR; cToSites, dwFlags: DWORD;
+function DsQuerySitesByCost(hDS: HANDLE; pwszFromSite: LPTSTR; out rgwszToSites: LPTSTR; cToSites, dwFlags: DWORD;
   out prgSiteInfo: PDS_SITE_COST_INFO): DWORD; stdcall;
 {$EXTERNALSYM DsQuerySitesByCost}
-{$ELSE}
-function DsQuerySitesByCost(hDS: HANDLE; pwszFromSite: LPSTR; out rgwszToSites: LPSTR; cToSites, dwFlags: DWORD;
-  out prgSiteInfo: PDS_SITE_COST_INFO): DWORD; stdcall;
-{$EXTERNALSYM DsQuerySitesByCost}
-{$ENDIF}
 
 //
 // DsQuerySitesByCost will free the site info array returned
@@ -2227,7 +2015,6 @@ function DsQuerySitesByCost(hDS: HANDLE; pwszFromSite: LPSTR; out rgwszToSites: 
 
 procedure DsQuerySitesFree(rgSiteInfo: PDS_SITE_COST_INFO); stdcall;
 {$EXTERNALSYM DsQuerySitesFree}
-
 
 // Definitions required for DsMapSchemaGuid routines.
 
@@ -2265,6 +2052,17 @@ type
   {$EXTERNALSYM DS_SCHEMA_GUID_MAPW}
   TDsSchemaGuidMapW = DS_SCHEMA_GUID_MAPW;
   PDsSchemaGuidMapW = PDS_SCHEMA_GUID_MAPW;
+  {$IFDEF UNICODE}
+  TDsSchemaGuidMap = DS_SCHEMA_GUID_MAPW;
+  PDsSchemaGuidMap = PDS_SCHEMA_GUID_MAPW;
+  DS_SCHEMA_GUID_MAP = DS_SCHEMA_GUID_MAPW;
+  PDS_SCHEMA_GUID_MAP = PDS_SCHEMA_GUID_MAPW;
+  {$ELSE}
+  TDsSchemaGuidMap = DS_SCHEMA_GUID_MAPW;
+  PDsSchemaGuidMap = PDS_SCHEMA_GUID_MAPW;
+  DS_SCHEMA_GUID_MAP = DS_SCHEMA_GUID_MAPA;
+  PDS_SCHEMA_GUID_MAP = PDS_SCHEMA_GUID_MAPA;
+  {$ENDIF UNICODE}
 
 function DsMapSchemaGuidsA(hDs: HANDLE; cGuids: DWORD; rGuids: PGUID;
   var ppGuidMap: PDS_SCHEMA_GUID_MAPA): DWORD; stdcall;
@@ -2272,25 +2070,16 @@ function DsMapSchemaGuidsA(hDs: HANDLE; cGuids: DWORD; rGuids: PGUID;
 function DsMapSchemaGuidsW(hDs: HANDLE; cGuids: DWORD; rGuids: PGUID;
   var ppGuidMap: PDS_SCHEMA_GUID_MAPW): DWORD; stdcall;
 {$EXTERNALSYM DsMapSchemaGuidsW}
+function DsMapSchemaGuids(hDs: HANDLE; cGuids: DWORD; rGuids: PGUID;
+  var ppGuidMap: PDS_SCHEMA_GUID_MAP): DWORD; stdcall;
+{$EXTERNALSYM DsMapSchemaGuids}
 
 procedure DsFreeSchemaGuidMapA(pGuidMap: PDS_SCHEMA_GUID_MAPA); stdcall;
 {$EXTERNALSYM DsFreeSchemaGuidMapA}
 procedure DsFreeSchemaGuidMapW(pGuidMap: PDS_SCHEMA_GUID_MAPW); stdcall;
 {$EXTERNALSYM DsFreeSchemaGuidMapW}
-
-{$IFDEF UNICODE}
-function DsMapSchemaGuids(hDs: HANDLE; cGuids: DWORD; rGuids: PGUID;
-  var ppGuidMap: PDS_SCHEMA_GUID_MAPW): DWORD; stdcall;
-{$EXTERNALSYM DsMapSchemaGuids}
-procedure DsFreeSchemaGuidMap(pGuidMap: PDS_SCHEMA_GUID_MAPW); stdcall;
+procedure DsFreeSchemaGuidMap(pGuidMap: PDS_SCHEMA_GUID_MAP); stdcall;
 {$EXTERNALSYM DsFreeSchemaGuidMap}
-{$ELSE}
-function DsMapSchemaGuids(hDs: HANDLE; cGuids: DWORD; rGuids: PGUID;
-  var ppGuidMap: PDS_SCHEMA_GUID_MAPA): DWORD; stdcall;
-{$EXTERNALSYM DsMapSchemaGuids}
-procedure DsFreeSchemaGuidMap(pGuidMap: PDS_SCHEMA_GUID_MAPA); stdcall;
-{$EXTERNALSYM DsFreeSchemaGuidMap}
-{$ENDIF}
 
 type
   PDS_DOMAIN_CONTROLLER_INFO_1A = ^DS_DOMAIN_CONTROLLER_INFO_1A;
@@ -2375,7 +2164,7 @@ type
   TDsDomainControllerInfo2W = DS_DOMAIN_CONTROLLER_INFO_2W;
   PDsDomainControllerInfo2W = PDS_DOMAIN_CONTROLLER_INFO_2W;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   DS_DOMAIN_CONTROLLER_INFO_1 = DS_DOMAIN_CONTROLLER_INFO_1W;
   {$EXTERNALSYM DS_DOMAIN_CONTROLLER_INFO_1}
   DS_DOMAIN_CONTROLLER_INFO_2 = DS_DOMAIN_CONTROLLER_INFO_2W;
@@ -2388,7 +2177,7 @@ type
   PDsDomainControllerInfo1 = PDsDomainControllerInfo1W;
   TDsDomainControllerInfo2 = TDsDomainControllerInfo2W;
   PDsDomainControllerInfo2 = PDsDomainControllerInfo2W;
-{$ELSE}
+  {$ELSE}
   DS_DOMAIN_CONTROLLER_INFO_1 = DS_DOMAIN_CONTROLLER_INFO_1A;
   {$EXTERNALSYM DS_DOMAIN_CONTROLLER_INFO_1}
   DS_DOMAIN_CONTROLLER_INFO_2 = DS_DOMAIN_CONTROLLER_INFO_2A;
@@ -2401,7 +2190,7 @@ type
   PDsDomainControllerInfo1 = PDsDomainControllerInfo1A;
   TDsDomainControllerInfo2 = TDsDomainControllerInfo2A;
   PDsDomainControllerInfo2 = PDsDomainControllerInfo2A;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 // The following APIs strictly find domain controller account objects 
 // in the DS and return information associated with them.  As such, they
@@ -2416,16 +2205,9 @@ function DsGetDomainControllerInfoA(hDs: HANDLE; DomainName: LPCSTR;
 function DsGetDomainControllerInfoW(hDs: HANDLE; DomainName: LPCWSTR;
   InfoLevel: DWORD; var pcOut: DWORD; ppInfo: PPVOID): DWORD; stdcall;
 {$EXTERNALSYM DsGetDomainControllerInfoW}
-
-{$IFDEF UNICODE}
-function DsGetDomainControllerInfo(hDs: HANDLE; DomainName: LPCWSTR;
+function DsGetDomainControllerInfo(hDs: HANDLE; DomainName: LPCTSTR;
   InfoLevel: DWORD; var pcOut: DWORD; ppInfo: PPVOID): DWORD; stdcall;
 {$EXTERNALSYM DsGetDomainControllerInfo}
-{$ELSE}
-function DsGetDomainControllerInfo(hDs: HANDLE; DomainName: LPCSTR;
-  InfoLevel: DWORD; var pcOut: DWORD; ppInfo: PPVOID): DWORD; stdcall;
-{$EXTERNALSYM DsGetDomainControllerInfo}
-{$ENDIF}
 
 procedure DsFreeDomainControllerInfoA(InfoLevel: DWORD; cInfo: DWORD;
   pInfo: PVOID); stdcall;
@@ -2433,20 +2215,12 @@ procedure DsFreeDomainControllerInfoA(InfoLevel: DWORD; cInfo: DWORD;
 procedure DsFreeDomainControllerInfoW(InfoLevel: DWORD; cInfo: DWORD;
   pInfo: PVOID); stdcall;
 {$EXTERNALSYM DsFreeDomainControllerInfoW}
-
-{$IFDEF UNICODE}
 procedure DsFreeDomainControllerInfo(InfoLevel: DWORD; cInfo: DWORD;
   pInfo: PVOID); stdcall;
 {$EXTERNALSYM DsFreeDomainControllerInfo}
-{$ELSE}
-procedure DsFreeDomainControllerInfo(InfoLevel: DWORD; cInfo: DWORD;
-  pInfo: PVOID); stdcall;
-{$EXTERNALSYM DsFreeDomainControllerInfo}
-{$ENDIF}
 
 type
-
-// Which task should be run?
+  // Which task should be run?
 
   DS_KCC_TASKID = (DS_KCC_TASKID_UPDATE_TOPOLOGY);
   {$EXTERNALSYM DS_KCC_TASKID}
@@ -2455,12 +2229,12 @@ type
 // Don't wait for completion of the task; queue it and return.
 
 const
-  DS_KCC_FLAG_ASYNC_OP   = (1 shl 0);
+  DS_KCC_FLAG_ASYNC_OP   = 1 shl 0;
   {$EXTERNALSYM DS_KCC_FLAG_ASYNC_OP}
 
 // Don't enqueue the task if another queued task will run soon.
 
-  DS_KCC_FLAG_DAMPED     = (1 shl 1);
+  DS_KCC_FLAG_DAMPED     = 1 shl 1;
   {$EXTERNALSYM DS_KCC_FLAG_DAMPED}
 
 function DsReplicaConsistencyCheck(hDS: HANDLE; TaskID: DS_KCC_TASKID;
@@ -2471,19 +2245,13 @@ function DsReplicaVerifyObjectsW(hDS: HANDLE; NameContext: LPCWSTR; const pUuidD
 {$EXTERNALSYM DsReplicaVerifyObjectsW}
 function DsReplicaVerifyObjectsA(hDS: HANDLE; NameContext: LPCSTR; const pUuidDsaSrc: UUID; ulOptions: ULONG): DWORD; stdcall;
 {$EXTERNALSYM DsReplicaVerifyObjectsA}
-
-{$IFDEF UNICODE}
-function DsReplicaVerifyObjects(hDS: HANDLE; NameContext: LPCWSTR; const pUuidDsaSrc: UUID; ulOptions: ULONG): DWORD; stdcall;
+function DsReplicaVerifyObjects(hDS: HANDLE; NameContext: LPCTSTR; const pUuidDsaSrc: UUID; ulOptions: ULONG): DWORD; stdcall;
 {$EXTERNALSYM DsReplicaVerifyObjects}
-{$ELSE}
-function DsReplicaVerifyObjects(hDS: HANDLE; NameContext: LPCSTR; const pUuidDsaSrc: UUID; ulOptions: ULONG): DWORD; stdcall;
-{$EXTERNALSYM DsReplicaVerifyObjects}
-{$ENDIF}
 
 // Do not delete objects on DsReplicaVerifyObjects call
 
 const
-  DS_EXIST_ADVISORY_MODE = ($1);
+  DS_EXIST_ADVISORY_MODE = $1;
   {$EXTERNALSYM DS_EXIST_ADVISORY_MODE}
 
 type
@@ -2528,35 +2296,35 @@ const
 // Bit values for the dwReplicaFlags field of the DS_REPL_NEIGHBOR structure.
 // Also used for the ulReplicaFlags argument to DsReplicaModify
 
-  DS_REPL_NBR_WRITEABLE                     = ($00000010);
+  DS_REPL_NBR_WRITEABLE                     = $00000010;
   {$EXTERNALSYM DS_REPL_NBR_WRITEABLE}
-  DS_REPL_NBR_SYNC_ON_STARTUP               = ($00000020);
+  DS_REPL_NBR_SYNC_ON_STARTUP               = $00000020;
   {$EXTERNALSYM DS_REPL_NBR_SYNC_ON_STARTUP}
-  DS_REPL_NBR_DO_SCHEDULED_SYNCS            = ($00000040);
+  DS_REPL_NBR_DO_SCHEDULED_SYNCS            = $00000040;
   {$EXTERNALSYM DS_REPL_NBR_DO_SCHEDULED_SYNCS}
-  DS_REPL_NBR_USE_ASYNC_INTERSITE_TRANSPORT = ($00000080);
+  DS_REPL_NBR_USE_ASYNC_INTERSITE_TRANSPORT = $00000080;
   {$EXTERNALSYM DS_REPL_NBR_USE_ASYNC_INTERSITE_TRANSPORT}
-  DS_REPL_NBR_TWO_WAY_SYNC                  = ($00000200);
+  DS_REPL_NBR_TWO_WAY_SYNC                  = $00000200;
   {$EXTERNALSYM DS_REPL_NBR_TWO_WAY_SYNC}
-  DS_REPL_NBR_RETURN_OBJECT_PARENTS         = ($00000800);
+  DS_REPL_NBR_RETURN_OBJECT_PARENTS         = $00000800;
   {$EXTERNALSYM DS_REPL_NBR_RETURN_OBJECT_PARENTS}
-  DS_REPL_NBR_FULL_SYNC_IN_PROGRESS         = ($00010000);
+  DS_REPL_NBR_FULL_SYNC_IN_PROGRESS         = $00010000;
   {$EXTERNALSYM DS_REPL_NBR_FULL_SYNC_IN_PROGRESS}
-  DS_REPL_NBR_FULL_SYNC_NEXT_PACKET         = ($00020000);
+  DS_REPL_NBR_FULL_SYNC_NEXT_PACKET         = $00020000;
   {$EXTERNALSYM DS_REPL_NBR_FULL_SYNC_NEXT_PACKET}
-  DS_REPL_NBR_NEVER_SYNCED                  = ($00200000);
+  DS_REPL_NBR_NEVER_SYNCED                  = $00200000;
   {$EXTERNALSYM DS_REPL_NBR_NEVER_SYNCED}
-  DS_REPL_NBR_PREEMPTED                     = ($01000000);
+  DS_REPL_NBR_PREEMPTED                     = $01000000;
   {$EXTERNALSYM DS_REPL_NBR_PREEMPTED}
-  DS_REPL_NBR_IGNORE_CHANGE_NOTIFICATIONS   = ($04000000);
+  DS_REPL_NBR_IGNORE_CHANGE_NOTIFICATIONS   = $04000000;
   {$EXTERNALSYM DS_REPL_NBR_IGNORE_CHANGE_NOTIFICATIONS}
-  DS_REPL_NBR_DISABLE_SCHEDULED_SYNC        = ($08000000);
+  DS_REPL_NBR_DISABLE_SCHEDULED_SYNC        = $08000000;
   {$EXTERNALSYM DS_REPL_NBR_DISABLE_SCHEDULED_SYNC}
-  DS_REPL_NBR_COMPRESS_CHANGES              = ($10000000);
+  DS_REPL_NBR_COMPRESS_CHANGES              = $10000000;
   {$EXTERNALSYM DS_REPL_NBR_COMPRESS_CHANGES}
-  DS_REPL_NBR_NO_CHANGE_NOTIFICATIONS       = ($20000000);
+  DS_REPL_NBR_NO_CHANGE_NOTIFICATIONS       = $20000000;
   {$EXTERNALSYM DS_REPL_NBR_NO_CHANGE_NOTIFICATIONS}
-  DS_REPL_NBR_PARTIAL_ATTRIBUTE_SET         = ($40000000);
+  DS_REPL_NBR_PARTIAL_ATTRIBUTE_SET         = $40000000;
   {$EXTERNALSYM DS_REPL_NBR_PARTIAL_ATTRIBUTE_SET}
 
 // This is the mask of replica flags that may be changed on the DsReplicaModify
@@ -3043,7 +2811,7 @@ type
   TDsReplPendingOps = TDsReplPendingOpsW;
 {$ELSE}
 // No ANSI equivalents currently supported.
-{$ENDIF}
+{$ENDIF UNICODE}
 
 function DsAddSidHistoryA(hDS: HANDLE; Flags: DWORD; SrcDomain: LPCSTR;
   SrcPrincipal: LPCSTR; SrcDomainController: LPCSTR;
@@ -3055,20 +2823,11 @@ function DsAddSidHistoryW(hDS: HANDLE; Flags: DWORD; SrcDomain: LPCWSTR;
   SrcDomainCreds: RPC_AUTH_IDENTITY_HANDLE; DstDomain: LPCWSTR;
   DstPrincipal: LPCWSTR): DWORD; stdcall;
 {$EXTERNALSYM DsAddSidHistoryW}
-
-{$IFDEF UNICODE}
-function DsAddSidHistory(hDS: HANDLE; Flags: DWORD; SrcDomain: LPCWSTR;
-  SrcPrincipal: LPCWSTR; SrcDomainController: LPCWSTR;
-  SrcDomainCreds: RPC_AUTH_IDENTITY_HANDLE; DstDomain: LPCWSTR;
-  DstPrincipal: LPCWSTR): DWORD; stdcall;
+function DsAddSidHistory(hDS: HANDLE; Flags: DWORD; SrcDomain: LPCTSTR;
+  SrcPrincipal: LPCTSTR; SrcDomainController: LPCTSTR;
+  SrcDomainCreds: RPC_AUTH_IDENTITY_HANDLE; DstDomain: LPCTSTR;
+  DstPrincipal: LPCTSTR): DWORD; stdcall;
 {$EXTERNALSYM DsAddSidHistory}
-{$ELSE}
-function DsAddSidHistory(hDS: HANDLE; Flags: DWORD; SrcDomain: LPCSTR;
-  SrcPrincipal: LPCSTR; SrcDomainController: LPCSTR;
-  SrcDomainCreds: RPC_AUTH_IDENTITY_HANDLE; DstDomain: LPCSTR;
-  DstPrincipal: LPCSTR): DWORD; stdcall;
-{$EXTERNALSYM DsAddSidHistory}
-{$ENDIF}
 
 // The DsInheritSecurityIdentity API adds the source principal's SID and
 // SID history to the destination principal's SID history and then DELETES
@@ -3081,16 +2840,9 @@ function DsInheritSecurityIdentityA(hDS: HANDLE; Flags: DWORD;
 function DsInheritSecurityIdentityW(hDS: HANDLE; Flags: DWORD;
   SrcPrincipal: LPCWSTR; DstPrincipal: LPCWSTR): DWORD; stdcall;
 {$EXTERNALSYM DsInheritSecurityIdentityW}
-
-{$IFDEF UNICODE}
 function DsInheritSecurityIdentity(hDS: HANDLE; Flags: DWORD;
-  SrcPrincipal: LPCWSTR; DstPrincipal: LPCWSTR): DWORD; stdcall;
+  SrcPrincipal: LPCTSTR; DstPrincipal: LPCTSTR): DWORD; stdcall;
 {$EXTERNALSYM DsInheritSecurityIdentity}
-{$ELSE}
-function DsInheritSecurityIdentity(hDS: HANDLE; Flags: DWORD;
-  SrcPrincipal: LPCSTR; DstPrincipal: LPCSTR): DWORD; stdcall;
-{$EXTERNALSYM DsInheritSecurityIdentity}
-{$ENDIF}
 
 {ifndef MIDL_PASS
 /*++
@@ -3164,18 +2916,10 @@ function DsQuoteRdnValueW(cUnquotedRdnValueLength: DWORD;
   psUnquotedRdnValue: LPCWCH; var pcQuotedRdnValueLength: DWORD;
   psQuotedRdnValue: LPWCH): DWORD; stdcall;
 {$EXTERNALSYM DsQuoteRdnValueW}
-
-{$IFDEF UNICODE}
 function DsQuoteRdnValue(cUnquotedRdnValueLength: DWORD;
-  psUnquotedRdnValue: LPCWCH; var pcQuotedRdnValueLength: DWORD;
-  psQuotedRdnValue: LPWCH): DWORD; stdcall;
+  psUnquotedRdnValue: LPCTCH; var pcQuotedRdnValueLength: DWORD;
+  psQuotedRdnValue: LPTCH): DWORD; stdcall;
 {$EXTERNALSYM DsQuoteRdnValue}
-{$ELSE}
-function DsQuoteRdnValue(cUnquotedRdnValueLength: DWORD;
-  psUnquotedRdnValue: LPCCH; var pcQuotedRdnValueLength: DWORD;
-  psQuotedRdnValue: LPCH): DWORD; stdcall;
-{$EXTERNALSYM DsQuoteRdnValue}
-{$ENDIF}
 
 {++
 ==========================================================
@@ -3262,16 +3006,9 @@ function DsUnquoteRdnValueA(cQuotedRdnValueLength: DWORD; psQuotedRdnValue: LPCC
 function DsUnquoteRdnValueW(cQuotedRdnValueLength: DWORD; psQuotedRdnValue: LPCWCH;
   var pcUnquotedRdnValueLength: DWORD; psUnquotedRdnValue: LPWCH): DWORD; stdcall;
 {$EXTERNALSYM DsUnquoteRdnValueW}
-
-{$IFDEF UNICODE}
-function DsUnquoteRdnValue(cQuotedRdnValueLength: DWORD; psQuotedRdnValue: LPCWCH;
-  var pcUnquotedRdnValueLength: DWORD; psUnquotedRdnValue: LPWCH): DWORD; stdcall;
+function DsUnquoteRdnValue(cQuotedRdnValueLength: DWORD; psQuotedRdnValue: LPCTCH;
+  var pcUnquotedRdnValueLength: DWORD; psUnquotedRdnValue: LPTCH): DWORD; stdcall;
 {$EXTERNALSYM DsUnquoteRdnValue}
-{$ELSE}
-function DsUnquoteRdnValue(cQuotedRdnValueLength: DWORD; psQuotedRdnValue: LPCCH;
-  var pcUnquotedRdnValueLength: DWORD; psUnquotedRdnValue: LPCH): DWORD; stdcall;
-{$EXTERNALSYM DsUnquoteRdnValue}
-{$ENDIF}
 
 (*++
 ==========================================================
@@ -3410,14 +3147,8 @@ function DsCrackUnquotedMangledRdnW(pszRDN: LPCWSTR; cchRDN: DWORD; pGuid: LPGUI
 {$EXTERNALSYM DsCrackUnquotedMangledRdnW}
 function DsCrackUnquotedMangledRdnA(pszRDN: LPCSTR; cchRDN: DWORD; pGuid: LPGUID; peDsMangleFor: PDsMangleFor): BOOL; stdcall;
 {$EXTERNALSYM DsCrackUnquotedMangledRdnA}
-
-{$IFDEF UNICODE}
-function DsCrackUnquotedMangledRdn(pszRDN: LPCWSTR; cchRDN: DWORD; pGuid: LPGUID; peDsMangleFor: PDsMangleFor): BOOL; stdcall;
+function DsCrackUnquotedMangledRdn(pszRDN: LPCTSTR; cchRDN: DWORD; pGuid: LPGUID; peDsMangleFor: PDsMangleFor): BOOL; stdcall;
 {$EXTERNALSYM DsCrackUnquotedMangledRdn}
-{$ELSE}
-function DsCrackUnquotedMangledRdn(pszRDN: LPCSTR; cchRDN: DWORD; pGuid: LPGUID; peDsMangleFor: PDsMangleFor): BOOL; stdcall;
-{$EXTERNALSYM DsCrackUnquotedMangledRdn}
-{$ENDIF}
 
 (*++
 ==========================================================
@@ -3471,14 +3202,8 @@ function DsIsMangledRdnValueW(pszRdn: LPCWSTR; cRdn: DWORD; eDsMangleForDesired:
 {$EXTERNALSYM DsIsMangledRdnValueW}
 function DsIsMangledRdnValueA(pszRdn: LPCSTR; cRdn: DWORD; eDsMangleForDesired: DS_MANGLE_FOR): BOOL; stdcall;
 {$EXTERNALSYM DsIsMangledRdnValueA}
-
-{$IFDEF UNICODE}
-function DsIsMangledRdnValue(pszRdn: LPCWSTR; cRdn: DWORD; eDsMangleForDesired: DS_MANGLE_FOR): BOOL; stdcall;
+function DsIsMangledRdnValue(pszRdn: LPCTSTR; cRdn: DWORD; eDsMangleForDesired: DS_MANGLE_FOR): BOOL; stdcall;
 {$EXTERNALSYM DsIsMangledRdnValue}
-{$ELSE}
-function DsIsMangledRdnValue(pszRdn: LPCSTR; cRdn: DWORD; eDsMangleForDesired: DS_MANGLE_FOR): BOOL; stdcall;
-{$EXTERNALSYM DsIsMangledRdnValue}
-{$ENDIF}
 
 (*++
 ==========================================================
@@ -3518,19 +3243,13 @@ function DsIsMangledDnA(pszDn: LPCSTR; eDsMangleFor: DS_MANGLE_FOR): BOOL; stdca
 {$EXTERNALSYM DsIsMangledDnA}
 function DsIsMangledDnW(pszDn: LPCWSTR; eDsMangleFor: DS_MANGLE_FOR): BOOL; stdcall;
 {$EXTERNALSYM DsIsMangledDnW}
-
-{$IFDEF UNICODE}
-function DsIsMangledDn(pszDn: LPCWSTR; eDsMangleFor: DS_MANGLE_FOR): BOOL; stdcall;
+function DsIsMangledDn(pszDn: LPCTSTR; eDsMangleFor: DS_MANGLE_FOR): BOOL; stdcall;
 {$EXTERNALSYM DsIsMangledDn}
-{$ELSE}
-function DsIsMangledDn(pszDn: LPCSTR; eDsMangleFor: DS_MANGLE_FOR): BOOL; stdcall;
-{$EXTERNALSYM DsIsMangledDn}
-{$ENDIF}
 
 implementation
 
-const
-  ntdsapilib = 'ntdsapi.dll';
+uses
+  JwaWinDLLNames;
 
 function NTDSCONN_IGNORE_SCHEDULE(_options_: DWORD): DWORD;
 begin
@@ -3547,6 +3266,7 @@ begin
 end;
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _DsBindA: Pointer;
 
@@ -3554,16 +3274,12 @@ function DsBindA;
 begin
   GetProcedureAddress(_DsBindA, ntdsapilib, 'DsBindA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBindA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsBindA]
   end;
 end;
-{$ELSE}
-function DsBindA; external ntdsapilib name 'DsBindA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsBindW: Pointer;
 
@@ -3571,53 +3287,25 @@ function DsBindW;
 begin
   GetProcedureAddress(_DsBindW, ntdsapilib, 'DsBindW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBindW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsBindW]
   end;
 end;
-{$ELSE}
-function DsBindW; external ntdsapilib name 'DsBindW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsBind: Pointer;
 
 function DsBind;
 begin
-  GetProcedureAddress(_DsBind, ntdsapilib, 'DsBindW');
+  GetProcedureAddress(_DsBind, ntdsapilib, 'DsBind' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBind]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsBind]
   end;
 end;
-{$ELSE}
-function DsBind; external ntdsapilib name 'DsBindW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsBind: Pointer;
-
-function DsBind;
-begin
-  GetProcedureAddress(_DsBind, ntdsapilib, 'DsBindA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBind]
-  end;
-end;
-{$ELSE}
-function DsBind; external ntdsapilib name 'DsBindA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsBindWithCredA: Pointer;
 
@@ -3625,16 +3313,12 @@ function DsBindWithCredA;
 begin
   GetProcedureAddress(_DsBindWithCredA, ntdsapilib, 'DsBindWithCredA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBindWithCredA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsBindWithCredA]
   end;
 end;
-{$ELSE}
-function DsBindWithCredA; external ntdsapilib name 'DsBindWithCredA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsBindWithCredW: Pointer;
 
@@ -3642,53 +3326,25 @@ function DsBindWithCredW;
 begin
   GetProcedureAddress(_DsBindWithCredW, ntdsapilib, 'DsBindWithCredW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBindWithCredW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsBindWithCredW]
   end;
 end;
-{$ELSE}
-function DsBindWithCredW; external ntdsapilib name 'DsBindWithCredW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsBindWithCred: Pointer;
 
 function DsBindWithCred;
 begin
-  GetProcedureAddress(_DsBindWithCred, ntdsapilib, 'DsBindWithCredW');
+  GetProcedureAddress(_DsBindWithCred, ntdsapilib, 'DsBindWithCred' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBindWithCred]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsBindWithCred]
   end;
 end;
-{$ELSE}
-function DsBindWithCred; external ntdsapilib name 'DsBindWithCredW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsBindWithCred: Pointer;
-
-function DsBindWithCred;
-begin
-  GetProcedureAddress(_DsBindWithCred, ntdsapilib, 'DsBindWithCredA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBindWithCred]
-  end;
-end;
-{$ELSE}
-function DsBindWithCred; external ntdsapilib name 'DsBindWithCredA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsBindWithSpnA: Pointer;
 
@@ -3696,16 +3352,12 @@ function DsBindWithSpnA;
 begin
   GetProcedureAddress(_DsBindWithSpnA, ntdsapilib, 'DsBindWithSpnA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBindWithSpnA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsBindWithSpnA]
   end;
 end;
-{$ELSE}
-function DsBindWithSpnA; external ntdsapilib name 'DsBindWithSpnA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsBindWithSpnW: Pointer;
 
@@ -3713,53 +3365,25 @@ function DsBindWithSpnW;
 begin
   GetProcedureAddress(_DsBindWithSpnW, ntdsapilib, 'DsBindWithSpnW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBindWithSpnW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsBindWithSpnW]
   end;
 end;
-{$ELSE}
-function DsBindWithSpnW; external ntdsapilib name 'DsBindWithSpnW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsBindWithSpn: Pointer;
 
 function DsBindWithSpn;
 begin
-  GetProcedureAddress(_DsBindWithSpn, ntdsapilib, 'DsBindWithSpnW');
+  GetProcedureAddress(_DsBindWithSpn, ntdsapilib, 'DsBindWithSpn' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBindWithSpn]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsBindWithSpn]
   end;
 end;
-{$ELSE}
-function DsBindWithSpn; external ntdsapilib name 'DsBindWithSpnW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsBindWithSpn: Pointer;
-
-function DsBindWithSpn;
-begin
-  GetProcedureAddress(_DsBindWithSpn, ntdsapilib, 'DsBindWithSpnA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBindWithSpn]
-  end;
-end;
-{$ELSE}
-function DsBindWithSpn; external ntdsapilib name 'DsBindWithSpnA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsBindWithSpnExW: Pointer;
 
@@ -3767,16 +3391,12 @@ function DsBindWithSpnExW;
 begin
   GetProcedureAddress(_DsBindWithSpnExW, ntdsapilib, 'DsBindWithSpnExW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBindWithSpnExW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsBindWithSpnExW]
   end;
 end;
-{$ELSE}
-function DsBindWithSpnExW; external ntdsapilib name 'DsBindWithSpnExW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsBindWithSpnExA: Pointer;
 
@@ -3784,56 +3404,25 @@ function DsBindWithSpnExA;
 begin
   GetProcedureAddress(_DsBindWithSpnExA, ntdsapilib, 'DsBindWithSpnExA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBindWithSpnExA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsBindWithSpnExA]
   end;
 end;
-{$ELSE}
-function DsBindWithSpnExA; external ntdsapilib name 'DsBindWithSpnExA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsBindWithSpnEx: Pointer;
 
 function DsBindWithSpnEx;
 begin
-  GetProcedureAddress(_DsBindWithSpnEx, ntdsapilib, 'DsBindWithSpnExW');
+  GetProcedureAddress(_DsBindWithSpnEx, ntdsapilib, 'DsBindWithSpnEx' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBindWithSpnEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsBindWithSpnEx]
   end;
 end;
-{$ELSE}
-function DsBindWithSpnEx; external ntdsapilib name 'DsBindWithSpnExW';
-{$ENDIF DYNAMIC_LINK}
 
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsBindWithSpnEx: Pointer;
-
-function DsBindWithSpnEx;
-begin
-  GetProcedureAddress(_DsBindWithSpnEx, ntdsapilib, 'DsBindWithSpnExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBindWithSpnEx]
-  end;
-end;
-{$ELSE}
-function DsBindWithSpnEx; external ntdsapilib name 'DsBindWithSpnExA';
-{$ENDIF DYNAMIC_LINK}
-
-{$ENDIF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsBindToISTGW: Pointer;
 
@@ -3841,16 +3430,12 @@ function DsBindToISTGW;
 begin
   GetProcedureAddress(_DsBindToISTGW, ntdsapilib, 'DsBindToISTGW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBindToISTGW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsBindToISTGW]
   end;
 end;
-{$ELSE}
-function DsBindToISTGW; external ntdsapilib name 'DsBindToISTGW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsBindToISTGA: Pointer;
 
@@ -3858,56 +3443,25 @@ function DsBindToISTGA;
 begin
   GetProcedureAddress(_DsBindToISTGA, ntdsapilib, 'DsBindToISTGA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBindToISTGA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsBindToISTGA]
   end;
 end;
-{$ELSE}
-function DsBindToISTGA; external ntdsapilib name 'DsBindToISTGA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsBindToISTG: Pointer;
 
 function DsBindToISTG;
 begin
-  GetProcedureAddress(_DsBindToISTG, ntdsapilib, 'DsBindToISTGW');
+  GetProcedureAddress(_DsBindToISTG, ntdsapilib, 'DsBindToISTG' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBindToISTG]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsBindToISTG]
   end;
 end;
-{$ELSE}
-function DsBindToISTG; external ntdsapilib name 'DsBindToISTGW';
-{$ENDIF DYNAMIC_LINK}
 
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsBindToISTG: Pointer;
-
-function DsBindToISTG;
-begin
-  GetProcedureAddress(_DsBindToISTG, ntdsapilib, 'DsBindToISTGA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBindToISTG]
-  end;
-end;
-{$ELSE}
-function DsBindToISTG; external ntdsapilib name 'DsBindToISTGA';
-{$ENDIF DYNAMIC_LINK}
-
-{$ENDIF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsBindingSetTimeout: Pointer;
 
@@ -3915,16 +3469,12 @@ function DsBindingSetTimeout;
 begin
   GetProcedureAddress(_DsBindingSetTimeout, ntdsapilib, 'DsBindingSetTimeout');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBindingSetTimeout]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsBindingSetTimeout]
   end;
 end;
-{$ELSE}
-function DsBindingSetTimeout; external ntdsapilib name 'DsBindingSetTimeout';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsUnBindA: Pointer;
 
@@ -3932,16 +3482,12 @@ function DsUnBindA;
 begin
   GetProcedureAddress(_DsUnBindA, ntdsapilib, 'DsUnBindA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsUnBindA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsUnBindA]
   end;
 end;
-{$ELSE}
-function DsUnBindA; external ntdsapilib name 'DsUnBindA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsUnBindW: Pointer;
 
@@ -3949,53 +3495,25 @@ function DsUnBindW;
 begin
   GetProcedureAddress(_DsUnBindW, ntdsapilib, 'DsUnBindW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsUnBindW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsUnBindW]
   end;
 end;
-{$ELSE}
-function DsUnBindW; external ntdsapilib name 'DsUnBindW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsUnBind: Pointer;
 
 function DsUnBind;
 begin
-  GetProcedureAddress(_DsUnBind, ntdsapilib, 'DsUnBindW');
+  GetProcedureAddress(_DsUnBind, ntdsapilib, 'DsUnBind' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsUnBind]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsUnBind]
   end;
 end;
-{$ELSE}
-function DsUnBind; external ntdsapilib name 'DsUnBindW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsUnBind: Pointer;
-
-function DsUnBind;
-begin
-  GetProcedureAddress(_DsUnBind, ntdsapilib, 'DsUnBindA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsUnBind]
-  end;
-end;
-{$ELSE}
-function DsUnBind; external ntdsapilib name 'DsUnBindA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsMakePasswordCredentialsA: Pointer;
 
@@ -4003,16 +3521,12 @@ function DsMakePasswordCredentialsA;
 begin
   GetProcedureAddress(_DsMakePasswordCredentialsA, ntdsapilib, 'DsMakePasswordCredentialsA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsMakePasswordCredentialsA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsMakePasswordCredentialsA]
   end;
 end;
-{$ELSE}
-function DsMakePasswordCredentialsA; external ntdsapilib name 'DsMakePasswordCredentialsA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsMakePasswordCredentialsW: Pointer;
 
@@ -4020,53 +3534,25 @@ function DsMakePasswordCredentialsW;
 begin
   GetProcedureAddress(_DsMakePasswordCredentialsW, ntdsapilib, 'DsMakePasswordCredentialsW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsMakePasswordCredentialsW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsMakePasswordCredentialsW]
   end;
 end;
-{$ELSE}
-function DsMakePasswordCredentialsW; external ntdsapilib name 'DsMakePasswordCredentialsW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsMakePasswordCredentials: Pointer;
 
 function DsMakePasswordCredentials;
 begin
-  GetProcedureAddress(_DsMakePasswordCredentials, ntdsapilib, 'DsMakePasswordCredentialsW');
+  GetProcedureAddress(_DsMakePasswordCredentials, ntdsapilib, 'DsMakePasswordCredentials' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsMakePasswordCredentials]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsMakePasswordCredentials]
   end;
 end;
-{$ELSE}
-function DsMakePasswordCredentials; external ntdsapilib name 'DsMakePasswordCredentialsW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsMakePasswordCredentials: Pointer;
-
-function DsMakePasswordCredentials;
-begin
-  GetProcedureAddress(_DsMakePasswordCredentials, ntdsapilib, 'DsMakePasswordCredentialsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsMakePasswordCredentials]
-  end;
-end;
-{$ELSE}
-function DsMakePasswordCredentials; external ntdsapilib name 'DsMakePasswordCredentialsA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsFreePasswordCredentials: Pointer;
 
@@ -4074,16 +3560,12 @@ procedure DsFreePasswordCredentials;
 begin
   GetProcedureAddress(_DsFreePasswordCredentials, ntdsapilib, 'DsFreePasswordCredentials');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsFreePasswordCredentials]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsFreePasswordCredentials]
   end;
 end;
-{$ELSE}
-procedure DsFreePasswordCredentials; external ntdsapilib name 'DsFreePasswordCredentials';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsFreePasswordCredentialsA: Pointer;
 
@@ -4091,16 +3573,12 @@ procedure DsFreePasswordCredentialsA;
 begin
   GetProcedureAddress(_DsFreePasswordCredentialsA, ntdsapilib, 'DsFreePasswordCredentials');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsFreePasswordCredentialsA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsFreePasswordCredentialsA]
   end;
 end;
-{$ELSE}
-procedure DsFreePasswordCredentialsA; external ntdsapilib name 'DsFreePasswordCredentials';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsFreePasswordCredentialsW: Pointer;
 
@@ -4108,16 +3586,12 @@ procedure DsFreePasswordCredentialsW;
 begin
   GetProcedureAddress(_DsFreePasswordCredentialsW, ntdsapilib, 'DsFreePasswordCredentials');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsFreePasswordCredentialsW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsFreePasswordCredentialsW]
   end;
 end;
-{$ELSE}
-procedure DsFreePasswordCredentialsW; external ntdsapilib name 'DsFreePasswordCredentials';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsCrackNamesA: Pointer;
 
@@ -4125,16 +3599,12 @@ function DsCrackNamesA;
 begin
   GetProcedureAddress(_DsCrackNamesA, ntdsapilib, 'DsCrackNamesA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsCrackNamesA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsCrackNamesA]
   end;
 end;
-{$ELSE}
-function DsCrackNamesA; external ntdsapilib name 'DsCrackNamesA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsCrackNamesW: Pointer;
 
@@ -4142,53 +3612,25 @@ function DsCrackNamesW;
 begin
   GetProcedureAddress(_DsCrackNamesW, ntdsapilib, 'DsCrackNamesW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsCrackNamesW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsCrackNamesW]
   end;
 end;
-{$ELSE}
-function DsCrackNamesW; external ntdsapilib name 'DsCrackNamesW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsCrackNames: Pointer;
 
 function DsCrackNames;
 begin
-  GetProcedureAddress(_DsCrackNames, ntdsapilib, 'DsCrackNamesW');
+  GetProcedureAddress(_DsCrackNames, ntdsapilib, 'DsCrackNames' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsCrackNames]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsCrackNames]
   end;
 end;
-{$ELSE}
-function DsCrackNames; external ntdsapilib name 'DsCrackNamesW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsCrackNames: Pointer;
-
-function DsCrackNames;
-begin
-  GetProcedureAddress(_DsCrackNames, ntdsapilib, 'DsCrackNamesA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsCrackNames]
-  end;
-end;
-{$ELSE}
-function DsCrackNames; external ntdsapilib name 'DsCrackNamesA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsFreeNameResultA: Pointer;
 
@@ -4196,16 +3638,12 @@ procedure DsFreeNameResultA;
 begin
   GetProcedureAddress(_DsFreeNameResultA, ntdsapilib, 'DsFreeNameResultA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsFreeNameResultA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsFreeNameResultA]
   end;
 end;
-{$ELSE}
-procedure DsFreeNameResultA; external ntdsapilib name 'DsFreeNameResultA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsFreeNameResultW: Pointer;
 
@@ -4213,53 +3651,25 @@ procedure DsFreeNameResultW;
 begin
   GetProcedureAddress(_DsFreeNameResultW, ntdsapilib, 'DsFreeNameResultW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsFreeNameResultW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsFreeNameResultW]
   end;
 end;
-{$ELSE}
-procedure DsFreeNameResultW; external ntdsapilib name 'DsFreeNameResultW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsFreeNameResult: Pointer;
 
 procedure DsFreeNameResult;
 begin
-  GetProcedureAddress(_DsFreeNameResult, ntdsapilib, 'DsFreeNameResultW');
+  GetProcedureAddress(_DsFreeNameResult, ntdsapilib, 'DsFreeNameResult' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsFreeNameResult]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsFreeNameResult]
   end;
 end;
-{$ELSE}
-procedure DsFreeNameResult; external ntdsapilib name 'DsFreeNameResultW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsFreeNameResult: Pointer;
-
-procedure DsFreeNameResult;
-begin
-  GetProcedureAddress(_DsFreeNameResult, ntdsapilib, 'DsFreeNameResultA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsFreeNameResult]
-  end;
-end;
-{$ELSE}
-procedure DsFreeNameResult; external ntdsapilib name 'DsFreeNameResultA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsMakeSpnA: Pointer;
 
@@ -4267,16 +3677,12 @@ function DsMakeSpnA;
 begin
   GetProcedureAddress(_DsMakeSpnA, ntdsapilib, 'DsMakeSpnA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsMakeSpnA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsMakeSpnA]
   end;
 end;
-{$ELSE}
-function DsMakeSpnA; external ntdsapilib name 'DsMakeSpnA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsMakeSpnW: Pointer;
 
@@ -4284,53 +3690,25 @@ function DsMakeSpnW;
 begin
   GetProcedureAddress(_DsMakeSpnW, ntdsapilib, 'DsMakeSpnW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsMakeSpnW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsMakeSpnW]
   end;
 end;
-{$ELSE}
-function DsMakeSpnW; external ntdsapilib name 'DsMakeSpnW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsMakeSpn: Pointer;
 
 function DsMakeSpn;
 begin
-  GetProcedureAddress(_DsMakeSpn, ntdsapilib, 'DsMakeSpnW');
+  GetProcedureAddress(_DsMakeSpn, ntdsapilib, 'DsMakeSpn' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsMakeSpn]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsMakeSpn]
   end;
 end;
-{$ELSE}
-function DsMakeSpn; external ntdsapilib name 'DsMakeSpnW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsMakeSpn: Pointer;
-
-function DsMakeSpn;
-begin
-  GetProcedureAddress(_DsMakeSpn, ntdsapilib, 'DsMakeSpnA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsMakeSpn]
-  end;
-end;
-{$ELSE}
-function DsMakeSpn; external ntdsapilib name 'DsMakeSpnA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsGetSpnA: Pointer;
 
@@ -4338,16 +3716,12 @@ function DsGetSpnA;
 begin
   GetProcedureAddress(_DsGetSpnA, ntdsapilib, 'DsGetSpnA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsGetSpnA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsGetSpnA]
   end;
 end;
-{$ELSE}
-function DsGetSpnA; external ntdsapilib name 'DsGetSpnA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsGetSpnW: Pointer;
 
@@ -4355,53 +3729,25 @@ function DsGetSpnW;
 begin
   GetProcedureAddress(_DsGetSpnW, ntdsapilib, 'DsGetSpnW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsGetSpnW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsGetSpnW]
   end;
 end;
-{$ELSE}
-function DsGetSpnW; external ntdsapilib name 'DsGetSpnW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsGetSpn: Pointer;
 
 function DsGetSpn;
 begin
-  GetProcedureAddress(_DsGetSpn, ntdsapilib, 'DsGetSpnW');
+  GetProcedureAddress(_DsGetSpn, ntdsapilib, 'DsGetSpn' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsGetSpn]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsGetSpn]
   end;
 end;
-{$ELSE}
-function DsGetSpn; external ntdsapilib name 'DsGetSpnW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsGetSpn: Pointer;
-
-function DsGetSpn;
-begin
-  GetProcedureAddress(_DsGetSpn, ntdsapilib, 'DsGetSpnA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsGetSpn]
-  end;
-end;
-{$ELSE}
-function DsGetSpn; external ntdsapilib name 'DsGetSpnA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsFreeSpnArrayA: Pointer;
 
@@ -4409,16 +3755,12 @@ procedure DsFreeSpnArrayA;
 begin
   GetProcedureAddress(_DsFreeSpnArrayA, ntdsapilib, 'DsFreeSpnArrayA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsFreeSpnArrayA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsFreeSpnArrayA]
   end;
 end;
-{$ELSE}
-procedure DsFreeSpnArrayA; external ntdsapilib name 'DsFreeSpnArrayA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsFreeSpnArrayW: Pointer;
 
@@ -4426,53 +3768,25 @@ procedure DsFreeSpnArrayW;
 begin
   GetProcedureAddress(_DsFreeSpnArrayW, ntdsapilib, 'DsFreeSpnArrayW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsFreeSpnArrayW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsFreeSpnArrayW]
   end;
 end;
-{$ELSE}
-procedure DsFreeSpnArrayW; external ntdsapilib name 'DsFreeSpnArrayW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsFreeSpnArray: Pointer;
 
 procedure DsFreeSpnArray;
 begin
-  GetProcedureAddress(_DsFreeSpnArray, ntdsapilib, 'DsFreeSpnArrayW');
+  GetProcedureAddress(_DsFreeSpnArray, ntdsapilib, 'DsFreeSpnArray' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsFreeSpnArray]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsFreeSpnArray]
   end;
 end;
-{$ELSE}
-procedure DsFreeSpnArray; external ntdsapilib name 'DsFreeSpnArrayW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsFreeSpnArray: Pointer;
-
-procedure DsFreeSpnArray;
-begin
-  GetProcedureAddress(_DsFreeSpnArray, ntdsapilib, 'DsFreeSpnArrayA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsFreeSpnArray]
-  end;
-end;
-{$ELSE}
-procedure DsFreeSpnArray; external ntdsapilib name 'DsFreeSpnArrayA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsCrackSpnA: Pointer;
 
@@ -4480,16 +3794,12 @@ function DsCrackSpnA;
 begin
   GetProcedureAddress(_DsCrackSpnA, ntdsapilib, 'DsCrackSpnA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsCrackSpnA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsCrackSpnA]
   end;
 end;
-{$ELSE}
-function DsCrackSpnA; external ntdsapilib name 'DsCrackSpnA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsCrackSpnW: Pointer;
 
@@ -4497,53 +3807,25 @@ function DsCrackSpnW;
 begin
   GetProcedureAddress(_DsCrackSpnW, ntdsapilib, 'DsCrackSpnW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsCrackSpnW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsCrackSpnW]
   end;
 end;
-{$ELSE}
-function DsCrackSpnW; external ntdsapilib name 'DsCrackSpnW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsCrackSpn: Pointer;
 
 function DsCrackSpn;
 begin
-  GetProcedureAddress(_DsCrackSpn, ntdsapilib, 'DsCrackSpnW');
+  GetProcedureAddress(_DsCrackSpn, ntdsapilib, 'DsCrackSpn' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsCrackSpn]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsCrackSpn]
   end;
 end;
-{$ELSE}
-function DsCrackSpn; external ntdsapilib name 'DsCrackSpnW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsCrackSpn: Pointer;
-
-function DsCrackSpn;
-begin
-  GetProcedureAddress(_DsCrackSpn, ntdsapilib, 'DsCrackSpnA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsCrackSpn]
-  end;
-end;
-{$ELSE}
-function DsCrackSpn; external ntdsapilib name 'DsCrackSpnA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsWriteAccountSpnA: Pointer;
 
@@ -4551,16 +3833,12 @@ function DsWriteAccountSpnA;
 begin
   GetProcedureAddress(_DsWriteAccountSpnA, ntdsapilib, 'DsWriteAccountSpnA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsWriteAccountSpnA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsWriteAccountSpnA]
   end;
 end;
-{$ELSE}
-function DsWriteAccountSpnA; external ntdsapilib name 'DsWriteAccountSpnA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsWriteAccountSpnW: Pointer;
 
@@ -4568,53 +3846,25 @@ function DsWriteAccountSpnW;
 begin
   GetProcedureAddress(_DsWriteAccountSpnW, ntdsapilib, 'DsWriteAccountSpnW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsWriteAccountSpnW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsWriteAccountSpnW]
   end;
 end;
-{$ELSE}
-function DsWriteAccountSpnW; external ntdsapilib name 'DsWriteAccountSpnW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsWriteAccountSpn: Pointer;
 
 function DsWriteAccountSpn;
 begin
-  GetProcedureAddress(_DsWriteAccountSpn, ntdsapilib, 'DsWriteAccountSpnW');
+  GetProcedureAddress(_DsWriteAccountSpn, ntdsapilib, 'DsWriteAccountSpn' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsWriteAccountSpn]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsWriteAccountSpn]
   end;
 end;
-{$ELSE}
-function DsWriteAccountSpn; external ntdsapilib name 'DsWriteAccountSpnW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsWriteAccountSpn: Pointer;
-
-function DsWriteAccountSpn;
-begin
-  GetProcedureAddress(_DsWriteAccountSpn, ntdsapilib, 'DsWriteAccountSpnA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsWriteAccountSpn]
-  end;
-end;
-{$ELSE}
-function DsWriteAccountSpn; external ntdsapilib name 'DsWriteAccountSpnA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsClientMakeSpnForTargetServerA: Pointer;
 
@@ -4622,16 +3872,12 @@ function DsClientMakeSpnForTargetServerA;
 begin
   GetProcedureAddress(_DsClientMakeSpnForTargetServerA, ntdsapilib, 'DsClientMakeSpnForTargetServerA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsClientMakeSpnForTargetServerA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsClientMakeSpnForTargetServerA]
   end;
 end;
-{$ELSE}
-function DsClientMakeSpnForTargetServerA; external ntdsapilib name 'DsClientMakeSpnForTargetServerA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsClientMakeSpnForTargetServerW: Pointer;
 
@@ -4639,53 +3885,25 @@ function DsClientMakeSpnForTargetServerW;
 begin
   GetProcedureAddress(_DsClientMakeSpnForTargetServerW, ntdsapilib, 'DsClientMakeSpnForTargetServerW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsClientMakeSpnForTargetServerW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsClientMakeSpnForTargetServerW]
   end;
 end;
-{$ELSE}
-function DsClientMakeSpnForTargetServerW; external ntdsapilib name 'DsClientMakeSpnForTargetServerW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsClientMakeSpnForTargetServer: Pointer;
 
 function DsClientMakeSpnForTargetServer;
 begin
-  GetProcedureAddress(_DsClientMakeSpnForTargetServer, ntdsapilib, 'DsClientMakeSpnForTargetServerW');
+  GetProcedureAddress(_DsClientMakeSpnForTargetServer, ntdsapilib, 'DsClientMakeSpnForTargetServer' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsClientMakeSpnForTargetServer]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsClientMakeSpnForTargetServer]
   end;
 end;
-{$ELSE}
-function DsClientMakeSpnForTargetServer; external ntdsapilib name 'DsClientMakeSpnForTargetServerW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsClientMakeSpnForTargetServer: Pointer;
-
-function DsClientMakeSpnForTargetServer;
-begin
-  GetProcedureAddress(_DsClientMakeSpnForTargetServer, ntdsapilib, 'DsClientMakeSpnForTargetServerA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsClientMakeSpnForTargetServer]
-  end;
-end;
-{$ELSE}
-function DsClientMakeSpnForTargetServer; external ntdsapilib name 'DsClientMakeSpnForTargetServerA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsServerRegisterSpnA: Pointer;
 
@@ -4693,16 +3911,12 @@ function DsServerRegisterSpnA;
 begin
   GetProcedureAddress(_DsServerRegisterSpnA, ntdsapilib, 'DsServerRegisterSpnA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsServerRegisterSpnA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsServerRegisterSpnA]
   end;
 end;
-{$ELSE}
-function DsServerRegisterSpnA; external ntdsapilib name 'DsServerRegisterSpnA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsServerRegisterSpnW: Pointer;
 
@@ -4710,53 +3924,25 @@ function DsServerRegisterSpnW;
 begin
   GetProcedureAddress(_DsServerRegisterSpnW, ntdsapilib, 'DsServerRegisterSpnW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsServerRegisterSpnW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsServerRegisterSpnW]
   end;
 end;
-{$ELSE}
-function DsServerRegisterSpnW; external ntdsapilib name 'DsServerRegisterSpnW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsServerRegisterSpn: Pointer;
 
 function DsServerRegisterSpn;
 begin
-  GetProcedureAddress(_DsServerRegisterSpn, ntdsapilib, 'DsServerRegisterSpnW');
+  GetProcedureAddress(_DsServerRegisterSpn, ntdsapilib, 'DsServerRegisterSpn' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsServerRegisterSpn]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsServerRegisterSpn]
   end;
 end;
-{$ELSE}
-function DsServerRegisterSpn; external ntdsapilib name 'DsServerRegisterSpnW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsServerRegisterSpn: Pointer;
-
-function DsServerRegisterSpn;
-begin
-  GetProcedureAddress(_DsServerRegisterSpn, ntdsapilib, 'DsServerRegisterSpnA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsServerRegisterSpn]
-  end;
-end;
-{$ELSE}
-function DsServerRegisterSpn; external ntdsapilib name 'DsServerRegisterSpnA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsReplicaSyncA: Pointer;
 
@@ -4764,16 +3950,12 @@ function DsReplicaSyncA;
 begin
   GetProcedureAddress(_DsReplicaSyncA, ntdsapilib, 'DsReplicaSyncA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsReplicaSyncA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsReplicaSyncA]
   end;
 end;
-{$ELSE}
-function DsReplicaSyncA; external ntdsapilib name 'DsReplicaSyncA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsReplicaSyncW: Pointer;
 
@@ -4781,53 +3963,25 @@ function DsReplicaSyncW;
 begin
   GetProcedureAddress(_DsReplicaSyncW, ntdsapilib, 'DsReplicaSyncW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsReplicaSyncW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsReplicaSyncW]
   end;
 end;
-{$ELSE}
-function DsReplicaSyncW; external ntdsapilib name 'DsReplicaSyncW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsReplicaSync: Pointer;
 
 function DsReplicaSync;
 begin
-  GetProcedureAddress(_DsReplicaSync, ntdsapilib, 'DsReplicaSyncW');
+  GetProcedureAddress(_DsReplicaSync, ntdsapilib, 'DsReplicaSync' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsReplicaSync]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsReplicaSync]
   end;
 end;
-{$ELSE}
-function DsReplicaSync; external ntdsapilib name 'DsReplicaSyncW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsReplicaSync: Pointer;
-
-function DsReplicaSync;
-begin
-  GetProcedureAddress(_DsReplicaSync, ntdsapilib, 'DsReplicaSyncA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsReplicaSync]
-  end;
-end;
-{$ELSE}
-function DsReplicaSync; external ntdsapilib name 'DsReplicaSyncA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsReplicaAddA: Pointer;
 
@@ -4835,16 +3989,12 @@ function DsReplicaAddA;
 begin
   GetProcedureAddress(_DsReplicaAddA, ntdsapilib, 'DsReplicaAddA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsReplicaAddA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsReplicaAddA]
   end;
 end;
-{$ELSE}
-function DsReplicaAddA; external ntdsapilib name 'DsReplicaAddA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsReplicaAddW: Pointer;
 
@@ -4852,53 +4002,25 @@ function DsReplicaAddW;
 begin
   GetProcedureAddress(_DsReplicaAddW, ntdsapilib, 'DsReplicaAddW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsReplicaAddW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsReplicaAddW]
   end;
 end;
-{$ELSE}
-function DsReplicaAddW; external ntdsapilib name 'DsReplicaAddW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsReplicaAdd: Pointer;
 
 function DsReplicaAdd;
 begin
-  GetProcedureAddress(_DsReplicaAdd, ntdsapilib, 'DsReplicaAddW');
+  GetProcedureAddress(_DsReplicaAdd, ntdsapilib, 'DsReplicaAdd' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsReplicaAdd]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsReplicaAdd]
   end;
 end;
-{$ELSE}
-function DsReplicaAdd; external ntdsapilib name 'DsReplicaAddW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsReplicaAdd: Pointer;
-
-function DsReplicaAdd;
-begin
-  GetProcedureAddress(_DsReplicaAdd, ntdsapilib, 'DsReplicaAddA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsReplicaAdd]
-  end;
-end;
-{$ELSE}
-function DsReplicaAdd; external ntdsapilib name 'DsReplicaAddA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsReplicaDelA: Pointer;
 
@@ -4906,16 +4028,12 @@ function DsReplicaDelA;
 begin
   GetProcedureAddress(_DsReplicaDelA, ntdsapilib, 'DsReplicaDelA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsReplicaDelA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsReplicaDelA]
   end;
 end;
-{$ELSE}
-function DsReplicaDelA; external ntdsapilib name 'DsReplicaDelA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsReplicaDelW: Pointer;
 
@@ -4923,53 +4041,25 @@ function DsReplicaDelW;
 begin
   GetProcedureAddress(_DsReplicaDelW, ntdsapilib, 'DsReplicaDelW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsReplicaDelW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsReplicaDelW]
   end;
 end;
-{$ELSE}
-function DsReplicaDelW; external ntdsapilib name 'DsReplicaDelW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsReplicaDel: Pointer;
 
 function DsReplicaDel;
 begin
-  GetProcedureAddress(_DsReplicaDel, ntdsapilib, 'DsReplicaDelW');
+  GetProcedureAddress(_DsReplicaDel, ntdsapilib, 'DsReplicaDel' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsReplicaDel]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsReplicaDel]
   end;
 end;
-{$ELSE}
-function DsReplicaDel; external ntdsapilib name 'DsReplicaDelW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsReplicaDel: Pointer;
-
-function DsReplicaDel;
-begin
-  GetProcedureAddress(_DsReplicaDel, ntdsapilib, 'DsReplicaDelA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsReplicaDel]
-  end;
-end;
-{$ELSE}
-function DsReplicaDel; external ntdsapilib name 'DsReplicaDelA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsReplicaModifyA: Pointer;
 
@@ -4977,16 +4067,12 @@ function DsReplicaModifyA;
 begin
   GetProcedureAddress(_DsReplicaModifyA, ntdsapilib, 'DsReplicaModifyA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsReplicaModifyA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsReplicaModifyA]
   end;
 end;
-{$ELSE}
-function DsReplicaModifyA; external ntdsapilib name 'DsReplicaModifyA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsReplicaModifyW: Pointer;
 
@@ -4994,53 +4080,25 @@ function DsReplicaModifyW;
 begin
   GetProcedureAddress(_DsReplicaModifyW, ntdsapilib, 'DsReplicaModifyW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsReplicaModifyW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsReplicaModifyW]
   end;
 end;
-{$ELSE}
-function DsReplicaModifyW; external ntdsapilib name 'DsReplicaModifyW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsReplicaModify: Pointer;
 
 function DsReplicaModify;
 begin
-  GetProcedureAddress(_DsReplicaModify, ntdsapilib, 'DsReplicaModifyW');
+  GetProcedureAddress(_DsReplicaModify, ntdsapilib, 'DsReplicaModify' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsReplicaModify]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsReplicaModify]
   end;
 end;
-{$ELSE}
-function DsReplicaModify; external ntdsapilib name 'DsReplicaModifyW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsReplicaModify: Pointer;
-
-function DsReplicaModify;
-begin
-  GetProcedureAddress(_DsReplicaModify, ntdsapilib, 'DsReplicaModifyA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsReplicaModify]
-  end;
-end;
-{$ELSE}
-function DsReplicaModify; external ntdsapilib name 'DsReplicaModifyA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsReplicaUpdateRefsA: Pointer;
 
@@ -5048,16 +4106,12 @@ function DsReplicaUpdateRefsA;
 begin
   GetProcedureAddress(_DsReplicaUpdateRefsA, ntdsapilib, 'DsReplicaUpdateRefsA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsReplicaUpdateRefsA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsReplicaUpdateRefsA]
   end;
 end;
-{$ELSE}
-function DsReplicaUpdateRefsA; external ntdsapilib name 'DsReplicaUpdateRefsA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsReplicaUpdateRefsW: Pointer;
 
@@ -5065,53 +4119,25 @@ function DsReplicaUpdateRefsW;
 begin
   GetProcedureAddress(_DsReplicaUpdateRefsW, ntdsapilib, 'DsReplicaUpdateRefsW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsReplicaUpdateRefsW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsReplicaUpdateRefsW]
   end;
 end;
-{$ELSE}
-function DsReplicaUpdateRefsW; external ntdsapilib name 'DsReplicaUpdateRefsW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsReplicaUpdateRefs: Pointer;
 
 function DsReplicaUpdateRefs;
 begin
-  GetProcedureAddress(_DsReplicaUpdateRefs, ntdsapilib, 'DsReplicaUpdateRefsW');
+  GetProcedureAddress(_DsReplicaUpdateRefs, ntdsapilib, 'DsReplicaUpdateRefs' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsReplicaUpdateRefs]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsReplicaUpdateRefs]
   end;
 end;
-{$ELSE}
-function DsReplicaUpdateRefs; external ntdsapilib name 'DsReplicaUpdateRefsW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsReplicaUpdateRefs: Pointer;
-
-function DsReplicaUpdateRefs;
-begin
-  GetProcedureAddress(_DsReplicaUpdateRefs, ntdsapilib, 'DsReplicaUpdateRefsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsReplicaUpdateRefs]
-  end;
-end;
-{$ELSE}
-function DsReplicaUpdateRefs; external ntdsapilib name 'DsReplicaUpdateRefsA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsReplicaSyncAllA: Pointer;
 
@@ -5119,16 +4145,12 @@ function DsReplicaSyncAllA;
 begin
   GetProcedureAddress(_DsReplicaSyncAllA, ntdsapilib, 'DsReplicaSyncAllA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsReplicaSyncAllA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsReplicaSyncAllA]
   end;
 end;
-{$ELSE}
-function DsReplicaSyncAllA; external ntdsapilib name 'DsReplicaSyncAllA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsReplicaSyncAllW: Pointer;
 
@@ -5136,53 +4158,25 @@ function DsReplicaSyncAllW;
 begin
   GetProcedureAddress(_DsReplicaSyncAllW, ntdsapilib, 'DsReplicaSyncAllW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsReplicaSyncAllW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsReplicaSyncAllW]
   end;
 end;
-{$ELSE}
-function DsReplicaSyncAllW; external ntdsapilib name 'DsReplicaSyncAllW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsReplicaSyncAll: Pointer;
 
 function DsReplicaSyncAll;
 begin
-  GetProcedureAddress(_DsReplicaSyncAll, ntdsapilib, 'DsReplicaSyncAllW');
+  GetProcedureAddress(_DsReplicaSyncAll, ntdsapilib, 'DsReplicaSyncAll' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsReplicaSyncAll]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsReplicaSyncAll]
   end;
 end;
-{$ELSE}
-function DsReplicaSyncAll; external ntdsapilib name 'DsReplicaSyncAllW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsReplicaSyncAll: Pointer;
-
-function DsReplicaSyncAll;
-begin
-  GetProcedureAddress(_DsReplicaSyncAll, ntdsapilib, 'DsReplicaSyncAllA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsReplicaSyncAll]
-  end;
-end;
-{$ELSE}
-function DsReplicaSyncAll; external ntdsapilib name 'DsReplicaSyncAllA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsRemoveDsServerA: Pointer;
 
@@ -5190,16 +4184,12 @@ function DsRemoveDsServerA;
 begin
   GetProcedureAddress(_DsRemoveDsServerA, ntdsapilib, 'DsRemoveDsServerA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsRemoveDsServerA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsRemoveDsServerA]
   end;
 end;
-{$ELSE}
-function DsRemoveDsServerA; external ntdsapilib name 'DsRemoveDsServerA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsRemoveDsServerW: Pointer;
 
@@ -5207,53 +4197,25 @@ function DsRemoveDsServerW;
 begin
   GetProcedureAddress(_DsRemoveDsServerW, ntdsapilib, 'DsRemoveDsServerW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsRemoveDsServerW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsRemoveDsServerW]
   end;
 end;
-{$ELSE}
-function DsRemoveDsServerW; external ntdsapilib name 'DsRemoveDsServerW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsRemoveDsServer: Pointer;
 
 function DsRemoveDsServer;
 begin
-  GetProcedureAddress(_DsRemoveDsServer, ntdsapilib, 'DsRemoveDsServerW');
+  GetProcedureAddress(_DsRemoveDsServer, ntdsapilib, 'DsRemoveDsServer' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsRemoveDsServer]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsRemoveDsServer]
   end;
 end;
-{$ELSE}
-function DsRemoveDsServer; external ntdsapilib name 'DsRemoveDsServerW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsRemoveDsServer: Pointer;
-
-function DsRemoveDsServer;
-begin
-  GetProcedureAddress(_DsRemoveDsServer, ntdsapilib, 'DsRemoveDsServerA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsRemoveDsServer]
-  end;
-end;
-{$ELSE}
-function DsRemoveDsServer; external ntdsapilib name 'DsRemoveDsServerA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsRemoveDsDomainA: Pointer;
 
@@ -5261,16 +4223,12 @@ function DsRemoveDsDomainA;
 begin
   GetProcedureAddress(_DsRemoveDsDomainA, ntdsapilib, 'DsRemoveDsDomainA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsRemoveDsDomainA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsRemoveDsDomainA]
   end;
 end;
-{$ELSE}
-function DsRemoveDsDomainA; external ntdsapilib name 'DsRemoveDsDomainA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsRemoveDsDomainW: Pointer;
 
@@ -5278,53 +4236,25 @@ function DsRemoveDsDomainW;
 begin
   GetProcedureAddress(_DsRemoveDsDomainW, ntdsapilib, 'DsRemoveDsDomainW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsRemoveDsDomainW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsRemoveDsDomainW]
   end;
 end;
-{$ELSE}
-function DsRemoveDsDomainW; external ntdsapilib name 'DsRemoveDsDomainW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsRemoveDsDomain: Pointer;
 
 function DsRemoveDsDomain;
 begin
-  GetProcedureAddress(_DsRemoveDsDomain, ntdsapilib, 'DsRemoveDsDomainW');
+  GetProcedureAddress(_DsRemoveDsDomain, ntdsapilib, 'DsRemoveDsDomain' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsRemoveDsDomain]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsRemoveDsDomain]
   end;
 end;
-{$ELSE}
-function DsRemoveDsDomain; external ntdsapilib name 'DsRemoveDsDomainW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsRemoveDsDomain: Pointer;
-
-function DsRemoveDsDomain;
-begin
-  GetProcedureAddress(_DsRemoveDsDomain, ntdsapilib, 'DsRemoveDsDomainA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsRemoveDsDomain]
-  end;
-end;
-{$ELSE}
-function DsRemoveDsDomain; external ntdsapilib name 'DsRemoveDsDomainA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsListSitesA: Pointer;
 
@@ -5332,16 +4262,12 @@ function DsListSitesA;
 begin
   GetProcedureAddress(_DsListSitesA, ntdsapilib, 'DsListSitesA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsListSitesA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsListSitesA]
   end;
 end;
-{$ELSE}
-function DsListSitesA; external ntdsapilib name 'DsListSitesA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsListSitesW: Pointer;
 
@@ -5349,53 +4275,25 @@ function DsListSitesW;
 begin
   GetProcedureAddress(_DsListSitesW, ntdsapilib, 'DsListSitesW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsListSitesW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsListSitesW]
   end;
 end;
-{$ELSE}
-function DsListSitesW; external ntdsapilib name 'DsListSitesW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsListSites: Pointer;
 
 function DsListSites;
 begin
-  GetProcedureAddress(_DsListSites, ntdsapilib, 'DsListSitesW');
+  GetProcedureAddress(_DsListSites, ntdsapilib, 'DsListSites' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsListSites]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsListSites]
   end;
 end;
-{$ELSE}
-function DsListSites; external ntdsapilib name 'DsListSitesW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsListSites: Pointer;
-
-function DsListSites;
-begin
-  GetProcedureAddress(_DsListSites, ntdsapilib, 'DsListSitesA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsListSites]
-  end;
-end;
-{$ELSE}
-function DsListSites; external ntdsapilib name 'DsListSitesA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsListServersInSiteA: Pointer;
 
@@ -5403,16 +4301,12 @@ function DsListServersInSiteA;
 begin
   GetProcedureAddress(_DsListServersInSiteA, ntdsapilib, 'DsListServersInSiteA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsListServersInSiteA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsListServersInSiteA]
   end;
 end;
-{$ELSE}
-function DsListServersInSiteA; external ntdsapilib name 'DsListServersInSiteA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsListServersInSiteW: Pointer;
 
@@ -5420,53 +4314,25 @@ function DsListServersInSiteW;
 begin
   GetProcedureAddress(_DsListServersInSiteW, ntdsapilib, 'DsListServersInSiteW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsListServersInSiteW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsListServersInSiteW]
   end;
 end;
-{$ELSE}
-function DsListServersInSiteW; external ntdsapilib name 'DsListServersInSiteW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsListServersInSite: Pointer;
 
 function DsListServersInSite;
 begin
-  GetProcedureAddress(_DsListServersInSite, ntdsapilib, 'DsListServersInSiteW');
+  GetProcedureAddress(_DsListServersInSite, ntdsapilib, 'DsListServersInSite' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsListServersInSite]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsListServersInSite]
   end;
 end;
-{$ELSE}
-function DsListServersInSite; external ntdsapilib name 'DsListServersInSiteW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsListServersInSite: Pointer;
-
-function DsListServersInSite;
-begin
-  GetProcedureAddress(_DsListServersInSite, ntdsapilib, 'DsListServersInSiteA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsListServersInSite]
-  end;
-end;
-{$ELSE}
-function DsListServersInSite; external ntdsapilib name 'DsListServersInSiteA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsListDomainsInSiteA: Pointer;
 
@@ -5474,16 +4340,12 @@ function DsListDomainsInSiteA;
 begin
   GetProcedureAddress(_DsListDomainsInSiteA, ntdsapilib, 'DsListDomainsInSiteA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsListDomainsInSiteA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsListDomainsInSiteA]
   end;
 end;
-{$ELSE}
-function DsListDomainsInSiteA; external ntdsapilib name 'DsListDomainsInSiteA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsListDomainsInSiteW: Pointer;
 
@@ -5491,53 +4353,25 @@ function DsListDomainsInSiteW;
 begin
   GetProcedureAddress(_DsListDomainsInSiteW, ntdsapilib, 'DsListDomainsInSiteW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsListDomainsInSiteW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsListDomainsInSiteW]
   end;
 end;
-{$ELSE}
-function DsListDomainsInSiteW; external ntdsapilib name 'DsListDomainsInSiteW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsListDomainsInSite: Pointer;
 
 function DsListDomainsInSite;
 begin
-  GetProcedureAddress(_DsListDomainsInSite, ntdsapilib, 'DsListDomainsInSiteW');
+  GetProcedureAddress(_DsListDomainsInSite, ntdsapilib, 'DsListDomainsInSite' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsListDomainsInSite]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsListDomainsInSite]
   end;
 end;
-{$ELSE}
-function DsListDomainsInSite; external ntdsapilib name 'DsListDomainsInSiteW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsListDomainsInSite: Pointer;
-
-function DsListDomainsInSite;
-begin
-  GetProcedureAddress(_DsListDomainsInSite, ntdsapilib, 'DsListDomainsInSiteA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsListDomainsInSite]
-  end;
-end;
-{$ELSE}
-function DsListDomainsInSite; external ntdsapilib name 'DsListDomainsInSiteA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsListServersForDomainInSiteA: Pointer;
 
@@ -5545,16 +4379,12 @@ function DsListServersForDomainInSiteA;
 begin
   GetProcedureAddress(_DsListServersForDomainInSiteA, ntdsapilib, 'DsListServersForDomainInSiteA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsListServersForDomainInSiteA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsListServersForDomainInSiteA]
   end;
 end;
-{$ELSE}
-function DsListServersForDomainInSiteA; external ntdsapilib name 'DsListServersForDomainInSiteA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsListServersForDomainInSiteW: Pointer;
 
@@ -5562,53 +4392,25 @@ function DsListServersForDomainInSiteW;
 begin
   GetProcedureAddress(_DsListServersForDomainInSiteW, ntdsapilib, 'DsListServersForDomainInSiteW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsListServersForDomainInSiteW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsListServersForDomainInSiteW]
   end;
 end;
-{$ELSE}
-function DsListServersForDomainInSiteW; external ntdsapilib name 'DsListServersForDomainInSiteW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsListServersForDomainInSite: Pointer;
 
 function DsListServersForDomainInSite;
 begin
-  GetProcedureAddress(_DsListServersForDomainInSite, ntdsapilib, 'DsListServersForDomainInSiteW');
+  GetProcedureAddress(_DsListServersForDomainInSite, ntdsapilib, 'DsListServersForDomainInSite' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsListServersForDomainInSite]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsListServersForDomainInSite]
   end;
 end;
-{$ELSE}
-function DsListServersForDomainInSite; external ntdsapilib name 'DsListServersForDomainInSiteW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsListServersForDomainInSite: Pointer;
-
-function DsListServersForDomainInSite;
-begin
-  GetProcedureAddress(_DsListServersForDomainInSite, ntdsapilib, 'DsListServersForDomainInSiteA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsListServersForDomainInSite]
-  end;
-end;
-{$ELSE}
-function DsListServersForDomainInSite; external ntdsapilib name 'DsListServersForDomainInSiteA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsListInfoForServerA: Pointer;
 
@@ -5616,16 +4418,12 @@ function DsListInfoForServerA;
 begin
   GetProcedureAddress(_DsListInfoForServerA, ntdsapilib, 'DsListInfoForServerA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsListInfoForServerA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsListInfoForServerA]
   end;
 end;
-{$ELSE}
-function DsListInfoForServerA; external ntdsapilib name 'DsListInfoForServerA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsListInfoForServerW: Pointer;
 
@@ -5633,53 +4431,25 @@ function DsListInfoForServerW;
 begin
   GetProcedureAddress(_DsListInfoForServerW, ntdsapilib, 'DsListInfoForServerW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsListInfoForServerW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsListInfoForServerW]
   end;
 end;
-{$ELSE}
-function DsListInfoForServerW; external ntdsapilib name 'DsListInfoForServerW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsListInfoForServer: Pointer;
 
 function DsListInfoForServer;
 begin
-  GetProcedureAddress(_DsListInfoForServer, ntdsapilib, 'DsListInfoForServerW');
+  GetProcedureAddress(_DsListInfoForServer, ntdsapilib, 'DsListInfoForServer' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsListInfoForServer]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsListInfoForServer]
   end;
 end;
-{$ELSE}
-function DsListInfoForServer; external ntdsapilib name 'DsListInfoForServerW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsListInfoForServer: Pointer;
-
-function DsListInfoForServer;
-begin
-  GetProcedureAddress(_DsListInfoForServer, ntdsapilib, 'DsListInfoForServerA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsListInfoForServer]
-  end;
-end;
-{$ELSE}
-function DsListInfoForServer; external ntdsapilib name 'DsListInfoForServerA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsListRolesA: Pointer;
 
@@ -5687,16 +4457,12 @@ function DsListRolesA;
 begin
   GetProcedureAddress(_DsListRolesA, ntdsapilib, 'DsListRolesA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsListRolesA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsListRolesA]
   end;
 end;
-{$ELSE}
-function DsListRolesA; external ntdsapilib name 'DsListRolesA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsListRolesW: Pointer;
 
@@ -5704,53 +4470,25 @@ function DsListRolesW;
 begin
   GetProcedureAddress(_DsListRolesW, ntdsapilib, 'DsListRolesW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsListRolesW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsListRolesW]
   end;
 end;
-{$ELSE}
-function DsListRolesW; external ntdsapilib name 'DsListRolesW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsListRoles: Pointer;
 
 function DsListRoles;
 begin
-  GetProcedureAddress(_DsListRoles, ntdsapilib, 'DsListRolesW');
+  GetProcedureAddress(_DsListRoles, ntdsapilib, 'DsListRoles' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsListRoles]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsListRoles]
   end;
 end;
-{$ELSE}
-function DsListRoles; external ntdsapilib name 'DsListRolesW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsListRoles: Pointer;
-
-function DsListRoles;
-begin
-  GetProcedureAddress(_DsListRoles, ntdsapilib, 'DsListRolesA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsListRoles]
-  end;
-end;
-{$ELSE}
-function DsListRoles; external ntdsapilib name 'DsListRolesA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsQuerySitesByCostW: Pointer;
 
@@ -5758,16 +4496,12 @@ function DsQuerySitesByCostW;
 begin
   GetProcedureAddress(_DsQuerySitesByCostW, ntdsapilib, 'DsQuerySitesByCostW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsQuerySitesByCostW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsQuerySitesByCostW]
   end;
 end;
-{$ELSE}
-function DsQuerySitesByCostW; external ntdsapilib name 'DsQuerySitesByCostW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsQuerySitesByCostA: Pointer;
 
@@ -5775,56 +4509,25 @@ function DsQuerySitesByCostA;
 begin
   GetProcedureAddress(_DsQuerySitesByCostA, ntdsapilib, 'DsQuerySitesByCostA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsQuerySitesByCostA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsQuerySitesByCostA]
   end;
 end;
-{$ELSE}
-function DsQuerySitesByCostA; external ntdsapilib name 'DsQuerySitesByCostA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsQuerySitesByCost: Pointer;
 
 function DsQuerySitesByCost;
 begin
-  GetProcedureAddress(_DsQuerySitesByCost, ntdsapilib, 'DsQuerySitesByCostW');
+  GetProcedureAddress(_DsQuerySitesByCost, ntdsapilib, 'DsQuerySitesByCost' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsQuerySitesByCost]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsQuerySitesByCost]
   end;
 end;
-{$ELSE}
-function DsQuerySitesByCost; external ntdsapilib name 'DsQuerySitesByCostW';
-{$ENDIF DYNAMIC_LINK}
 
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsQuerySitesByCost: Pointer;
-
-function DsQuerySitesByCost;
-begin
-  GetProcedureAddress(_DsQuerySitesByCost, ntdsapilib, 'DsQuerySitesByCostA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsQuerySitesByCost]
-  end;
-end;
-{$ELSE}
-function DsQuerySitesByCost; external ntdsapilib name 'DsQuerySitesByCostA';
-{$ENDIF DYNAMIC_LINK}
-
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsQuerySitesFree: Pointer;
 
@@ -5832,17 +4535,12 @@ procedure DsQuerySitesFree;
 begin
   GetProcedureAddress(_DsQuerySitesFree, ntdsapilib, 'DsQuerySitesFree');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsQuerySitesFree]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsQuerySitesFree]
   end;
 end;
-{$ELSE}
-procedure DsQuerySitesFree; external ntdsapilib name 'DsQuerySitesFree';
-{$ENDIF DYNAMIC_LINK}
 
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsMapSchemaGuidsA: Pointer;
 
@@ -5850,16 +4548,12 @@ function DsMapSchemaGuidsA;
 begin
   GetProcedureAddress(_DsMapSchemaGuidsA, ntdsapilib, 'DsMapSchemaGuidsA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsMapSchemaGuidsA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsMapSchemaGuidsA]
   end;
 end;
-{$ELSE}
-function DsMapSchemaGuidsA; external ntdsapilib name 'DsMapSchemaGuidsA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsMapSchemaGuidsW: Pointer;
 
@@ -5867,16 +4561,12 @@ function DsMapSchemaGuidsW;
 begin
   GetProcedureAddress(_DsMapSchemaGuidsW, ntdsapilib, 'DsMapSchemaGuidsW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsMapSchemaGuidsW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsMapSchemaGuidsW]
   end;
 end;
-{$ELSE}
-function DsMapSchemaGuidsW; external ntdsapilib name 'DsMapSchemaGuidsW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsFreeSchemaGuidMapA: Pointer;
 
@@ -5884,16 +4574,12 @@ procedure DsFreeSchemaGuidMapA;
 begin
   GetProcedureAddress(_DsFreeSchemaGuidMapA, ntdsapilib, 'DsFreeSchemaGuidMapA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsFreeSchemaGuidMapA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsFreeSchemaGuidMapA]
   end;
 end;
-{$ELSE}
-procedure DsFreeSchemaGuidMapA; external ntdsapilib name 'DsFreeSchemaGuidMapA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsFreeSchemaGuidMapW: Pointer;
 
@@ -5901,87 +4587,38 @@ procedure DsFreeSchemaGuidMapW;
 begin
   GetProcedureAddress(_DsFreeSchemaGuidMapW, ntdsapilib, 'DsFreeSchemaGuidMapW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsFreeSchemaGuidMapW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsFreeSchemaGuidMapW]
   end;
 end;
-{$ELSE}
-procedure DsFreeSchemaGuidMapW; external ntdsapilib name 'DsFreeSchemaGuidMapW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsMapSchemaGuids: Pointer;
 
 function DsMapSchemaGuids;
 begin
-  GetProcedureAddress(_DsMapSchemaGuids, ntdsapilib, 'DsMapSchemaGuidsW');
+  GetProcedureAddress(_DsMapSchemaGuids, ntdsapilib, 'DsMapSchemaGuids' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsMapSchemaGuids]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsMapSchemaGuids]
   end;
 end;
-{$ELSE}
-function DsMapSchemaGuids; external ntdsapilib name 'DsMapSchemaGuidsW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsFreeSchemaGuidMap: Pointer;
 
 procedure DsFreeSchemaGuidMap;
 begin
-  GetProcedureAddress(_DsFreeSchemaGuidMap, ntdsapilib, 'DsFreeSchemaGuidMapW');
+  GetProcedureAddress(_DsFreeSchemaGuidMap, ntdsapilib, 'DsFreeSchemaGuidMap' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsFreeSchemaGuidMap]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsFreeSchemaGuidMap]
   end;
 end;
-{$ELSE}
-procedure DsFreeSchemaGuidMap; external ntdsapilib name 'DsFreeSchemaGuidMapW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsMapSchemaGuids: Pointer;
-
-function DsMapSchemaGuids;
-begin
-  GetProcedureAddress(_DsMapSchemaGuids, ntdsapilib, 'DsMapSchemaGuidsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsMapSchemaGuids]
-  end;
-end;
-{$ELSE}
-function DsMapSchemaGuids; external ntdsapilib name 'DsMapSchemaGuidsA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsFreeSchemaGuidMap: Pointer;
-
-procedure DsFreeSchemaGuidMap;
-begin
-  GetProcedureAddress(_DsFreeSchemaGuidMap, ntdsapilib, 'DsFreeSchemaGuidMapA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsFreeSchemaGuidMap]
-  end;
-end;
-{$ELSE}
-procedure DsFreeSchemaGuidMap; external ntdsapilib name 'DsFreeSchemaGuidMapA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsGetDomainControllerInfoA: Pointer;
 
@@ -5989,16 +4626,12 @@ function DsGetDomainControllerInfoA;
 begin
   GetProcedureAddress(_DsGetDomainControllerInfoA, ntdsapilib, 'DsGetDomainControllerInfoA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsGetDomainControllerInfoA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsGetDomainControllerInfoA]
   end;
 end;
-{$ELSE}
-function DsGetDomainControllerInfoA; external ntdsapilib name 'DsGetDomainControllerInfoA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsGetDomainControllerInfoW: Pointer;
 
@@ -6006,53 +4639,25 @@ function DsGetDomainControllerInfoW;
 begin
   GetProcedureAddress(_DsGetDomainControllerInfoW, ntdsapilib, 'DsGetDomainControllerInfoW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsGetDomainControllerInfoW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsGetDomainControllerInfoW]
   end;
 end;
-{$ELSE}
-function DsGetDomainControllerInfoW; external ntdsapilib name 'DsGetDomainControllerInfoW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsGetDomainControllerInfo: Pointer;
 
 function DsGetDomainControllerInfo;
 begin
-  GetProcedureAddress(_DsGetDomainControllerInfo, ntdsapilib, 'DsGetDomainControllerInfoW');
+  GetProcedureAddress(_DsGetDomainControllerInfo, ntdsapilib, 'DsGetDomainControllerInfo' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsGetDomainControllerInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsGetDomainControllerInfo]
   end;
 end;
-{$ELSE}
-function DsGetDomainControllerInfo; external ntdsapilib name 'DsGetDomainControllerInfoW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsGetDomainControllerInfo: Pointer;
-
-function DsGetDomainControllerInfo;
-begin
-  GetProcedureAddress(_DsGetDomainControllerInfo, ntdsapilib, 'DsGetDomainControllerInfoA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsGetDomainControllerInfo]
-  end;
-end;
-{$ELSE}
-function DsGetDomainControllerInfo; external ntdsapilib name 'DsGetDomainControllerInfoA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsFreeDomainControllerInfoA: Pointer;
 
@@ -6060,16 +4665,12 @@ procedure DsFreeDomainControllerInfoA;
 begin
   GetProcedureAddress(_DsFreeDomainControllerInfoA, ntdsapilib, 'DsFreeDomainControllerInfoA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsFreeDomainControllerInfoA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsFreeDomainControllerInfoA]
   end;
 end;
-{$ELSE}
-procedure DsFreeDomainControllerInfoA; external ntdsapilib name 'DsFreeDomainControllerInfoA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsFreeDomainControllerInfoW: Pointer;
 
@@ -6077,53 +4678,25 @@ procedure DsFreeDomainControllerInfoW;
 begin
   GetProcedureAddress(_DsFreeDomainControllerInfoW, ntdsapilib, 'DsFreeDomainControllerInfoW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsFreeDomainControllerInfoW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsFreeDomainControllerInfoW]
   end;
 end;
-{$ELSE}
-procedure DsFreeDomainControllerInfoW; external ntdsapilib name 'DsFreeDomainControllerInfoW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsFreeDomainControllerInfo: Pointer;
 
 procedure DsFreeDomainControllerInfo;
 begin
-  GetProcedureAddress(_DsFreeDomainControllerInfo, ntdsapilib, 'DsFreeDomainControllerInfoW');
+  GetProcedureAddress(_DsFreeDomainControllerInfo, ntdsapilib, 'DsFreeDomainControllerInfo' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsFreeDomainControllerInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsFreeDomainControllerInfo]
   end;
 end;
-{$ELSE}
-procedure DsFreeDomainControllerInfo; external ntdsapilib name 'DsFreeDomainControllerInfoW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsFreeDomainControllerInfo: Pointer;
-
-procedure DsFreeDomainControllerInfo;
-begin
-  GetProcedureAddress(_DsFreeDomainControllerInfo, ntdsapilib, 'DsFreeDomainControllerInfoA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsFreeDomainControllerInfo]
-  end;
-end;
-{$ELSE}
-procedure DsFreeDomainControllerInfo; external ntdsapilib name 'DsFreeDomainControllerInfoA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsReplicaConsistencyCheck: Pointer;
 
@@ -6131,16 +4704,12 @@ function DsReplicaConsistencyCheck;
 begin
   GetProcedureAddress(_DsReplicaConsistencyCheck, ntdsapilib, 'DsReplicaConsistencyCheck');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsReplicaConsistencyCheck]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsReplicaConsistencyCheck]
   end;
 end;
-{$ELSE}
-function DsReplicaConsistencyCheck; external ntdsapilib name 'DsReplicaConsistencyCheck';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsReplicaVerifyObjectsW: Pointer;
 
@@ -6148,16 +4717,12 @@ function DsReplicaVerifyObjectsW;
 begin
   GetProcedureAddress(_DsReplicaVerifyObjectsW, ntdsapilib, 'DsReplicaVerifyObjectsW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsReplicaVerifyObjectsW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsReplicaVerifyObjectsW]
   end;
 end;
-{$ELSE}
-function DsReplicaVerifyObjectsW; external ntdsapilib name 'DsReplicaVerifyObjectsW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsReplicaVerifyObjectsA: Pointer;
 
@@ -6165,56 +4730,25 @@ function DsReplicaVerifyObjectsA;
 begin
   GetProcedureAddress(_DsReplicaVerifyObjectsA, ntdsapilib, 'DsReplicaVerifyObjectsA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsReplicaVerifyObjectsA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsReplicaVerifyObjectsA]
   end;
 end;
-{$ELSE}
-function DsReplicaVerifyObjectsA; external ntdsapilib name 'DsReplicaVerifyObjectsA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsReplicaVerifyObjects: Pointer;
 
 function DsReplicaVerifyObjects;
 begin
-  GetProcedureAddress(_DsReplicaVerifyObjects, ntdsapilib, 'DsReplicaVerifyObjectsW');
+  GetProcedureAddress(_DsReplicaVerifyObjects, ntdsapilib, 'DsReplicaVerifyObjects' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsReplicaVerifyObjects]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsReplicaVerifyObjects]
   end;
 end;
-{$ELSE}
-function DsReplicaVerifyObjects; external ntdsapilib name 'DsReplicaVerifyObjectsW';
-{$ENDIF DYNAMIC_LINK}
 
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsReplicaVerifyObjects: Pointer;
-
-function DsReplicaVerifyObjects;
-begin
-  GetProcedureAddress(_DsReplicaVerifyObjects, ntdsapilib, 'DsReplicaVerifyObjectsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsReplicaVerifyObjects]
-  end;
-end;
-{$ELSE}
-function DsReplicaVerifyObjects; external ntdsapilib name 'DsReplicaVerifyObjectsA';
-{$ENDIF DYNAMIC_LINK}
-
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsReplicaGetInfoW: Pointer;
 
@@ -6222,16 +4756,12 @@ function DsReplicaGetInfoW;
 begin
   GetProcedureAddress(_DsReplicaGetInfoW, ntdsapilib, 'DsReplicaGetInfoW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsReplicaGetInfoW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsReplicaGetInfoW]
   end;
 end;
-{$ELSE}
-function DsReplicaGetInfoW; external ntdsapilib name 'DsReplicaGetInfoW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsReplicaFreeInfo: Pointer;
 
@@ -6239,18 +4769,14 @@ procedure DsReplicaFreeInfo;
 begin
   GetProcedureAddress(_DsReplicaFreeInfo, ntdsapilib, 'DsReplicaFreeInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsReplicaFreeInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsReplicaFreeInfo]
   end;
 end;
-{$ELSE}
-procedure DsReplicaFreeInfo; external ntdsapilib name 'DsReplicaFreeInfo';
-{$ENDIF DYNAMIC_LINK}
 
 {$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsReplicaGetInfo: Pointer;
 
@@ -6258,16 +4784,12 @@ function DsReplicaGetInfo;
 begin
   GetProcedureAddress(_DsReplicaGetInfo, ntdsapilib, 'DsReplicaGetInfoW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsReplicaGetInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsReplicaGetInfo]
   end;
 end;
-{$ELSE}
-function DsReplicaGetInfo; external ntdsapilib name 'DsReplicaGetInfoW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsReplicaGetInfo2W: Pointer;
 
@@ -6275,18 +4797,14 @@ function DsReplicaGetInfo2W;
 begin
   GetProcedureAddress(_DsReplicaGetInfo2W, ntdsapilib, 'DsReplicaGetInfo2W');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsReplicaGetInfo2W]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsReplicaGetInfo2W]
   end;
 end;
-{$ELSE}
-function DsReplicaGetInfo2W; external ntdsapilib name 'DsReplicaGetInfo2W';
-{$ENDIF DYNAMIC_LINK}
 
 {$ENDIF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsAddSidHistoryA: Pointer;
 
@@ -6294,16 +4812,12 @@ function DsAddSidHistoryA;
 begin
   GetProcedureAddress(_DsAddSidHistoryA, ntdsapilib, 'DsAddSidHistoryA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsAddSidHistoryA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsAddSidHistoryA]
   end;
 end;
-{$ELSE}
-function DsAddSidHistoryA; external ntdsapilib name 'DsAddSidHistoryA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsAddSidHistoryW: Pointer;
 
@@ -6311,53 +4825,25 @@ function DsAddSidHistoryW;
 begin
   GetProcedureAddress(_DsAddSidHistoryW, ntdsapilib, 'DsAddSidHistoryW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsAddSidHistoryW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsAddSidHistoryW]
   end;
 end;
-{$ELSE}
-function DsAddSidHistoryW; external ntdsapilib name 'DsAddSidHistoryW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsAddSidHistory: Pointer;
 
 function DsAddSidHistory;
 begin
-  GetProcedureAddress(_DsAddSidHistory, ntdsapilib, 'DsAddSidHistoryW');
+  GetProcedureAddress(_DsAddSidHistory, ntdsapilib, 'DsAddSidHistory' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsAddSidHistory]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsAddSidHistory]
   end;
 end;
-{$ELSE}
-function DsAddSidHistory; external ntdsapilib name 'DsAddSidHistoryW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsAddSidHistory: Pointer;
-
-function DsAddSidHistory;
-begin
-  GetProcedureAddress(_DsAddSidHistory, ntdsapilib, 'DsAddSidHistoryA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsAddSidHistory]
-  end;
-end;
-{$ELSE}
-function DsAddSidHistory; external ntdsapilib name 'DsAddSidHistoryA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsInheritSecurityIdentityA: Pointer;
 
@@ -6365,16 +4851,12 @@ function DsInheritSecurityIdentityA;
 begin
   GetProcedureAddress(_DsInheritSecurityIdentityA, ntdsapilib, 'DsInheritSecurityIdentityA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsInheritSecurityIdentityA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsInheritSecurityIdentityA]
   end;
 end;
-{$ELSE}
-function DsInheritSecurityIdentityA; external ntdsapilib name 'DsInheritSecurityIdentityA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsInheritSecurityIdentityW: Pointer;
 
@@ -6382,53 +4864,25 @@ function DsInheritSecurityIdentityW;
 begin
   GetProcedureAddress(_DsInheritSecurityIdentityW, ntdsapilib, 'DsInheritSecurityIdentityW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsInheritSecurityIdentityW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsInheritSecurityIdentityW]
   end;
 end;
-{$ELSE}
-function DsInheritSecurityIdentityW; external ntdsapilib name 'DsInheritSecurityIdentityW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsInheritSecurityIdentity: Pointer;
 
 function DsInheritSecurityIdentity;
 begin
-  GetProcedureAddress(_DsInheritSecurityIdentity, ntdsapilib, 'DsInheritSecurityIdentityW');
+  GetProcedureAddress(_DsInheritSecurityIdentity, ntdsapilib, 'DsInheritSecurityIdentity' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsInheritSecurityIdentity]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsInheritSecurityIdentity]
   end;
 end;
-{$ELSE}
-function DsInheritSecurityIdentity; external ntdsapilib name 'DsInheritSecurityIdentityW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsInheritSecurityIdentity: Pointer;
-
-function DsInheritSecurityIdentity;
-begin
-  GetProcedureAddress(_DsInheritSecurityIdentity, ntdsapilib, 'DsInheritSecurityIdentityA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsInheritSecurityIdentity]
-  end;
-end;
-{$ELSE}
-function DsInheritSecurityIdentity; external ntdsapilib name 'DsInheritSecurityIdentityA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsQuoteRdnValueA: Pointer;
 
@@ -6436,16 +4890,12 @@ function DsQuoteRdnValueA;
 begin
   GetProcedureAddress(_DsQuoteRdnValueA, ntdsapilib, 'DsQuoteRdnValueA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsQuoteRdnValueA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsQuoteRdnValueA]
   end;
 end;
-{$ELSE}
-function DsQuoteRdnValueA; external ntdsapilib name 'DsQuoteRdnValueA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsQuoteRdnValueW: Pointer;
 
@@ -6453,53 +4903,25 @@ function DsQuoteRdnValueW;
 begin
   GetProcedureAddress(_DsQuoteRdnValueW, ntdsapilib, 'DsQuoteRdnValueW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsQuoteRdnValueW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsQuoteRdnValueW]
   end;
 end;
-{$ELSE}
-function DsQuoteRdnValueW; external ntdsapilib name 'DsQuoteRdnValueW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsQuoteRdnValue: Pointer;
 
 function DsQuoteRdnValue;
 begin
-  GetProcedureAddress(_DsQuoteRdnValue, ntdsapilib, 'DsQuoteRdnValueW');
+  GetProcedureAddress(_DsQuoteRdnValue, ntdsapilib, 'DsQuoteRdnValue' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsQuoteRdnValue]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsQuoteRdnValue]
   end;
 end;
-{$ELSE}
-function DsQuoteRdnValue; external ntdsapilib name 'DsQuoteRdnValueW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsQuoteRdnValue: Pointer;
-
-function DsQuoteRdnValue;
-begin
-  GetProcedureAddress(_DsQuoteRdnValue, ntdsapilib, 'DsQuoteRdnValueA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsQuoteRdnValue]
-  end;
-end;
-{$ELSE}
-function DsQuoteRdnValue; external ntdsapilib name 'DsQuoteRdnValueA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsUnquoteRdnValueA: Pointer;
 
@@ -6507,16 +4929,12 @@ function DsUnquoteRdnValueA;
 begin
   GetProcedureAddress(_DsUnquoteRdnValueA, ntdsapilib, 'DsUnquoteRdnValueA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsUnquoteRdnValueA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsUnquoteRdnValueA]
   end;
 end;
-{$ELSE}
-function DsUnquoteRdnValueA; external ntdsapilib name 'DsUnquoteRdnValueA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsUnquoteRdnValueW: Pointer;
 
@@ -6524,53 +4942,25 @@ function DsUnquoteRdnValueW;
 begin
   GetProcedureAddress(_DsUnquoteRdnValueW, ntdsapilib, 'DsUnquoteRdnValueW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsUnquoteRdnValueW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsUnquoteRdnValueW]
   end;
 end;
-{$ELSE}
-function DsUnquoteRdnValueW; external ntdsapilib name 'DsUnquoteRdnValueW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsUnquoteRdnValue: Pointer;
 
 function DsUnquoteRdnValue;
 begin
-  GetProcedureAddress(_DsUnquoteRdnValue, ntdsapilib, 'DsUnquoteRdnValueW');
+  GetProcedureAddress(_DsUnquoteRdnValue, ntdsapilib, 'DsUnquoteRdnValue' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsUnquoteRdnValue]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsUnquoteRdnValue]
   end;
 end;
-{$ELSE}
-function DsUnquoteRdnValue; external ntdsapilib name 'DsUnquoteRdnValueW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsUnquoteRdnValue: Pointer;
-
-function DsUnquoteRdnValue;
-begin
-  GetProcedureAddress(_DsUnquoteRdnValue, ntdsapilib, 'DsUnquoteRdnValueA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsUnquoteRdnValue]
-  end;
-end;
-{$ELSE}
-function DsUnquoteRdnValue; external ntdsapilib name 'DsUnquoteRdnValueA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsGetRdnW: Pointer;
 
@@ -6578,16 +4968,12 @@ function DsGetRdnW;
 begin
   GetProcedureAddress(_DsGetRdnW, ntdsapilib, 'DsGetRdnW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsGetRdnW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsGetRdnW]
   end;
 end;
-{$ELSE}
-function DsGetRdnW; external ntdsapilib name 'DsGetRdnW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsCrackUnquotedMangledRdnW: Pointer;
 
@@ -6595,16 +4981,12 @@ function DsCrackUnquotedMangledRdnW;
 begin
   GetProcedureAddress(_DsCrackUnquotedMangledRdnW, ntdsapilib, 'DsCrackUnquotedMangledRdnW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsCrackUnquotedMangledRdnW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsCrackUnquotedMangledRdnW]
   end;
 end;
-{$ELSE}
-function DsCrackUnquotedMangledRdnW; external ntdsapilib name 'DsCrackUnquotedMangledRdnW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsCrackUnquotedMangledRdnA: Pointer;
 
@@ -6612,56 +4994,25 @@ function DsCrackUnquotedMangledRdnA;
 begin
   GetProcedureAddress(_DsCrackUnquotedMangledRdnA, ntdsapilib, 'DsCrackUnquotedMangledRdnA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsCrackUnquotedMangledRdnA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsCrackUnquotedMangledRdnA]
   end;
 end;
-{$ELSE}
-function DsCrackUnquotedMangledRdnA; external ntdsapilib name 'DsCrackUnquotedMangledRdnA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsCrackUnquotedMangledRdn: Pointer;
 
 function DsCrackUnquotedMangledRdn;
 begin
-  GetProcedureAddress(_DsCrackUnquotedMangledRdn, ntdsapilib, 'DsCrackUnquotedMangledRdnW');
+  GetProcedureAddress(_DsCrackUnquotedMangledRdn, ntdsapilib, 'DsCrackUnquotedMangledRdn' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsCrackUnquotedMangledRdn]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsCrackUnquotedMangledRdn]
   end;
 end;
-{$ELSE}
-function DsCrackUnquotedMangledRdn; external ntdsapilib name 'DsCrackUnquotedMangledRdnW';
-{$ENDIF DYNAMIC_LINK}
 
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsCrackUnquotedMangledRdn: Pointer;
-
-function DsCrackUnquotedMangledRdn;
-begin
-  GetProcedureAddress(_DsCrackUnquotedMangledRdn, ntdsapilib, 'DsCrackUnquotedMangledRdnA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsCrackUnquotedMangledRdn]
-  end;
-end;
-{$ELSE}
-function DsCrackUnquotedMangledRdn; external ntdsapilib name 'DsCrackUnquotedMangledRdnA';
-{$ENDIF DYNAMIC_LINK}
-
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsIsMangledRdnValueW: Pointer;
 
@@ -6669,16 +5020,12 @@ function DsIsMangledRdnValueW;
 begin
   GetProcedureAddress(_DsIsMangledRdnValueW, ntdsapilib, 'DsIsMangledRdnValueW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsIsMangledRdnValueW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsIsMangledRdnValueW]
   end;
 end;
-{$ELSE}
-function DsIsMangledRdnValueW; external ntdsapilib name 'DsIsMangledRdnValueW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsIsMangledRdnValueA: Pointer;
 
@@ -6686,56 +5033,25 @@ function DsIsMangledRdnValueA;
 begin
   GetProcedureAddress(_DsIsMangledRdnValueA, ntdsapilib, 'DsIsMangledRdnValueA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsIsMangledRdnValueA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsIsMangledRdnValueA]
   end;
 end;
-{$ELSE}
-function DsIsMangledRdnValueA; external ntdsapilib name 'DsIsMangledRdnValueA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsIsMangledRdnValue: Pointer;
 
 function DsIsMangledRdnValue;
 begin
-  GetProcedureAddress(_DsIsMangledRdnValue, ntdsapilib, 'DsIsMangledRdnValueW');
+  GetProcedureAddress(_DsIsMangledRdnValue, ntdsapilib, 'DsIsMangledRdnValue' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsIsMangledRdnValue]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsIsMangledRdnValue]
   end;
 end;
-{$ELSE}
-function DsIsMangledRdnValue; external ntdsapilib name 'DsIsMangledRdnValueW';
-{$ENDIF DYNAMIC_LINK}
 
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsIsMangledRdnValue: Pointer;
-
-function DsIsMangledRdnValue;
-begin
-  GetProcedureAddress(_DsIsMangledRdnValue, ntdsapilib, 'DsIsMangledRdnValueA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsIsMangledRdnValue]
-  end;
-end;
-{$ELSE}
-function DsIsMangledRdnValue; external ntdsapilib name 'DsIsMangledRdnValueA';
-{$ENDIF DYNAMIC_LINK}
-
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsIsMangledDnA: Pointer;
 
@@ -6743,16 +5059,12 @@ function DsIsMangledDnA;
 begin
   GetProcedureAddress(_DsIsMangledDnA, ntdsapilib, 'DsIsMangledDnA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsIsMangledDnA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsIsMangledDnA]
   end;
 end;
-{$ELSE}
-function DsIsMangledDnA; external ntdsapilib name 'DsIsMangledDnA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsIsMangledDnW: Pointer;
 
@@ -6760,53 +5072,170 @@ function DsIsMangledDnW;
 begin
   GetProcedureAddress(_DsIsMangledDnW, ntdsapilib, 'DsIsMangledDnW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsIsMangledDnW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsIsMangledDnW]
   end;
 end;
-{$ELSE}
-function DsIsMangledDnW; external ntdsapilib name 'DsIsMangledDnW';
-{$ENDIF DYNAMIC_LINK}
 
+var
+  _DsIsMangledDn: Pointer;
+
+function DsIsMangledDn;
+begin
+  GetProcedureAddress(_DsIsMangledDn, ntdsapilib, 'DsIsMangledDn' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsIsMangledDn]
+  end;
+end;
+
+{$ELSE}
+
+function DsBindA; external ntdsapilib name 'DsBindA';
+function DsBindW; external ntdsapilib name 'DsBindW';
+function DsBind; external ntdsapilib name 'DsBind' + AWSuffix;
+function DsBindWithCredA; external ntdsapilib name 'DsBindWithCredA';
+function DsBindWithCredW; external ntdsapilib name 'DsBindWithCredW';
+function DsBindWithCred; external ntdsapilib name 'DsBindWithCred' + AWSuffix;
+function DsBindWithSpnA; external ntdsapilib name 'DsBindWithSpnA';
+function DsBindWithSpnW; external ntdsapilib name 'DsBindWithSpnW';
+function DsBindWithSpn; external ntdsapilib name 'DsBindWithSpn' + AWSuffix;
+function DsBindWithSpnExW; external ntdsapilib name 'DsBindWithSpnExW';
+function DsBindWithSpnExA; external ntdsapilib name 'DsBindWithSpnExA';
+function DsBindWithSpnEx; external ntdsapilib name 'DsBindWithSpnEx' + AWSuffix;
+function DsBindToISTGW; external ntdsapilib name 'DsBindToISTGW';
+function DsBindToISTGA; external ntdsapilib name 'DsBindToISTGA';
+function DsBindToISTG; external ntdsapilib name 'DsBindToISTG' + AWSuffix;
+function DsBindingSetTimeout; external ntdsapilib name 'DsBindingSetTimeout';
+function DsUnBindA; external ntdsapilib name 'DsUnBindA';
+function DsUnBindW; external ntdsapilib name 'DsUnBindW';
+function DsUnBind; external ntdsapilib name 'DsUnBind' + AWSuffix;
+function DsMakePasswordCredentialsA; external ntdsapilib name 'DsMakePasswordCredentialsA';
+function DsMakePasswordCredentialsW; external ntdsapilib name 'DsMakePasswordCredentialsW';
+function DsMakePasswordCredentials; external ntdsapilib name 'DsMakePasswordCredentials' + AWSuffix;
+procedure DsFreePasswordCredentials; external ntdsapilib name 'DsFreePasswordCredentials';
+procedure DsFreePasswordCredentialsA; external ntdsapilib name 'DsFreePasswordCredentials';
+procedure DsFreePasswordCredentialsW; external ntdsapilib name 'DsFreePasswordCredentials';
+function DsCrackNamesA; external ntdsapilib name 'DsCrackNamesA';
+function DsCrackNamesW; external ntdsapilib name 'DsCrackNamesW';
+function DsCrackNames; external ntdsapilib name 'DsCrackNames' + AWSuffix;
+procedure DsFreeNameResultA; external ntdsapilib name 'DsFreeNameResultA';
+procedure DsFreeNameResultW; external ntdsapilib name 'DsFreeNameResultW';
+procedure DsFreeNameResult; external ntdsapilib name 'DsFreeNameResult' + AWSuffix;
+function DsMakeSpnA; external ntdsapilib name 'DsMakeSpnA';
+function DsMakeSpnW; external ntdsapilib name 'DsMakeSpnW';
+function DsMakeSpn; external ntdsapilib name 'DsMakeSpn' + AWSuffix;
+function DsGetSpnA; external ntdsapilib name 'DsGetSpnA';
+function DsGetSpnW; external ntdsapilib name 'DsGetSpnW';
+function DsGetSpn; external ntdsapilib name 'DsGetSpn' + AWSuffix;
+procedure DsFreeSpnArrayA; external ntdsapilib name 'DsFreeSpnArrayA';
+procedure DsFreeSpnArrayW; external ntdsapilib name 'DsFreeSpnArrayW';
+procedure DsFreeSpnArray; external ntdsapilib name 'DsFreeSpnArray' + AWSuffix;
+function DsCrackSpnA; external ntdsapilib name 'DsCrackSpnA';
+function DsCrackSpnW; external ntdsapilib name 'DsCrackSpnW';
+function DsCrackSpn; external ntdsapilib name 'DsCrackSpn' + AWSuffix;
+function DsWriteAccountSpnA; external ntdsapilib name 'DsWriteAccountSpnA';
+function DsWriteAccountSpnW; external ntdsapilib name 'DsWriteAccountSpnW';
+function DsWriteAccountSpn; external ntdsapilib name 'DsWriteAccountSpn' + AWSuffix;
+function DsClientMakeSpnForTargetServerA; external ntdsapilib name 'DsClientMakeSpnForTargetServerA';
+function DsClientMakeSpnForTargetServerW; external ntdsapilib name 'DsClientMakeSpnForTargetServerW';
+function DsClientMakeSpnForTargetServer; external ntdsapilib name 'DsClientMakeSpnForTargetServer' + AWSuffix;
+function DsServerRegisterSpnA; external ntdsapilib name 'DsServerRegisterSpnA';
+function DsServerRegisterSpnW; external ntdsapilib name 'DsServerRegisterSpnW';
+function DsServerRegisterSpn; external ntdsapilib name 'DsServerRegisterSpn' + AWSuffix;
+function DsReplicaSyncA; external ntdsapilib name 'DsReplicaSyncA';
+function DsReplicaSyncW; external ntdsapilib name 'DsReplicaSyncW';
+function DsReplicaSync; external ntdsapilib name 'DsReplicaSync' + AWSuffix;
+function DsReplicaAddA; external ntdsapilib name 'DsReplicaAddA';
+function DsReplicaAddW; external ntdsapilib name 'DsReplicaAddW';
+function DsReplicaAdd; external ntdsapilib name 'DsReplicaAdd' + AWSuffix;
+function DsReplicaDelA; external ntdsapilib name 'DsReplicaDelA';
+function DsReplicaDelW; external ntdsapilib name 'DsReplicaDelW';
+function DsReplicaDel; external ntdsapilib name 'DsReplicaDel' + AWSuffix;
+function DsReplicaModifyA; external ntdsapilib name 'DsReplicaModifyA';
+function DsReplicaModifyW; external ntdsapilib name 'DsReplicaModifyW';
+function DsReplicaModify; external ntdsapilib name 'DsReplicaModify' + AWSuffix;
+function DsReplicaUpdateRefsA; external ntdsapilib name 'DsReplicaUpdateRefsA';
+function DsReplicaUpdateRefsW; external ntdsapilib name 'DsReplicaUpdateRefsW';
+function DsReplicaUpdateRefs; external ntdsapilib name 'DsReplicaUpdateRefs' + AWSuffix;
+function DsReplicaSyncAllA; external ntdsapilib name 'DsReplicaSyncAllA';
+function DsReplicaSyncAllW; external ntdsapilib name 'DsReplicaSyncAllW';
+function DsReplicaSyncAll; external ntdsapilib name 'DsReplicaSyncAll' + AWSuffix;
+function DsRemoveDsServerA; external ntdsapilib name 'DsRemoveDsServerA';
+function DsRemoveDsServerW; external ntdsapilib name 'DsRemoveDsServerW';
+function DsRemoveDsServer; external ntdsapilib name 'DsRemoveDsServer' + AWSuffix;
+function DsRemoveDsDomainA; external ntdsapilib name 'DsRemoveDsDomainA';
+function DsRemoveDsDomainW; external ntdsapilib name 'DsRemoveDsDomainW';
+function DsRemoveDsDomain; external ntdsapilib name 'DsRemoveDsDomain' + AWSuffix;
+function DsListSitesA; external ntdsapilib name 'DsListSitesA';
+function DsListSitesW; external ntdsapilib name 'DsListSitesW';
+function DsListSites; external ntdsapilib name 'DsListSites' + AWSuffix;
+function DsListServersInSiteA; external ntdsapilib name 'DsListServersInSiteA';
+function DsListServersInSiteW; external ntdsapilib name 'DsListServersInSiteW';
+function DsListServersInSite; external ntdsapilib name 'DsListServersInSite' + AWSuffix;
+function DsListDomainsInSiteA; external ntdsapilib name 'DsListDomainsInSiteA';
+function DsListDomainsInSiteW; external ntdsapilib name 'DsListDomainsInSiteW';
+function DsListDomainsInSite; external ntdsapilib name 'DsListDomainsInSite' + AWSuffix;
+function DsListServersForDomainInSiteA; external ntdsapilib name 'DsListServersForDomainInSiteA';
+function DsListServersForDomainInSiteW; external ntdsapilib name 'DsListServersForDomainInSiteW';
+function DsListServersForDomainInSite; external ntdsapilib name 'DsListServersForDomainInSite' + AWSuffix;
+function DsListInfoForServerA; external ntdsapilib name 'DsListInfoForServerA';
+function DsListInfoForServerW; external ntdsapilib name 'DsListInfoForServerW';
+function DsListInfoForServer; external ntdsapilib name 'DsListInfoForServer' + AWSuffix;
+function DsListRolesA; external ntdsapilib name 'DsListRolesA';
+function DsListRolesW; external ntdsapilib name 'DsListRolesW';
+function DsListRoles; external ntdsapilib name 'DsListRoles' + AWSuffix;
+function DsQuerySitesByCostW; external ntdsapilib name 'DsQuerySitesByCostW';
+function DsQuerySitesByCostA; external ntdsapilib name 'DsQuerySitesByCostA';
+function DsQuerySitesByCost; external ntdsapilib name 'DsQuerySitesByCost' + AWSuffix;
+procedure DsQuerySitesFree; external ntdsapilib name 'DsQuerySitesFree';
+function DsMapSchemaGuidsA; external ntdsapilib name 'DsMapSchemaGuidsA';
+function DsMapSchemaGuidsW; external ntdsapilib name 'DsMapSchemaGuidsW';
+procedure DsFreeSchemaGuidMapA; external ntdsapilib name 'DsFreeSchemaGuidMapA';
+procedure DsFreeSchemaGuidMapW; external ntdsapilib name 'DsFreeSchemaGuidMapW';
+function DsMapSchemaGuids; external ntdsapilib name 'DsMapSchemaGuids' + AWSuffix;
+procedure DsFreeSchemaGuidMap; external ntdsapilib name 'DsFreeSchemaGuidMap' + AWSuffix;
+function DsGetDomainControllerInfoA; external ntdsapilib name 'DsGetDomainControllerInfoA';
+function DsGetDomainControllerInfoW; external ntdsapilib name 'DsGetDomainControllerInfoW';
+function DsGetDomainControllerInfo; external ntdsapilib name 'DsGetDomainControllerInfo' + AWSuffix;
+procedure DsFreeDomainControllerInfoA; external ntdsapilib name 'DsFreeDomainControllerInfoA';
+procedure DsFreeDomainControllerInfoW; external ntdsapilib name 'DsFreeDomainControllerInfoW';
+procedure DsFreeDomainControllerInfo; external ntdsapilib name 'DsFreeDomainControllerInfo' + AWSuffix;
+function DsReplicaConsistencyCheck; external ntdsapilib name 'DsReplicaConsistencyCheck';
+function DsReplicaVerifyObjectsW; external ntdsapilib name 'DsReplicaVerifyObjectsW';
+function DsReplicaVerifyObjectsA; external ntdsapilib name 'DsReplicaVerifyObjectsA';
+function DsReplicaVerifyObjects; external ntdsapilib name 'DsReplicaVerifyObjects' + AWSuffix;
+function DsReplicaGetInfoW; external ntdsapilib name 'DsReplicaGetInfoW';
+procedure DsReplicaFreeInfo; external ntdsapilib name 'DsReplicaFreeInfo';
 {$IFDEF UNICODE}
+function DsReplicaGetInfo; external ntdsapilib name 'DsReplicaGetInfoW';
+function DsReplicaGetInfo2W; external ntdsapilib name 'DsReplicaGetInfo2W';
+{$ENDIF UNICODE}
+function DsAddSidHistoryA; external ntdsapilib name 'DsAddSidHistoryA';
+function DsAddSidHistoryW; external ntdsapilib name 'DsAddSidHistoryW';
+function DsAddSidHistory; external ntdsapilib name 'DsAddSidHistory' + AWSuffix;
+function DsInheritSecurityIdentityA; external ntdsapilib name 'DsInheritSecurityIdentityA';
+function DsInheritSecurityIdentityW; external ntdsapilib name 'DsInheritSecurityIdentityW';
+function DsInheritSecurityIdentity; external ntdsapilib name 'DsInheritSecurityIdentity' + AWSuffix;
+function DsQuoteRdnValueA; external ntdsapilib name 'DsQuoteRdnValueA';
+function DsQuoteRdnValueW; external ntdsapilib name 'DsQuoteRdnValueW';
+function DsQuoteRdnValue; external ntdsapilib name 'DsQuoteRdnValue' + AWSuffix;
+function DsUnquoteRdnValueA; external ntdsapilib name 'DsUnquoteRdnValueA';
+function DsUnquoteRdnValueW; external ntdsapilib name 'DsUnquoteRdnValueW';
+function DsUnquoteRdnValue; external ntdsapilib name 'DsUnquoteRdnValue' + AWSuffix;
+function DsGetRdnW; external ntdsapilib name 'DsGetRdnW';
+function DsCrackUnquotedMangledRdnW; external ntdsapilib name 'DsCrackUnquotedMangledRdnW';
+function DsCrackUnquotedMangledRdnA; external ntdsapilib name 'DsCrackUnquotedMangledRdnA';
+function DsCrackUnquotedMangledRdn; external ntdsapilib name 'DsCrackUnquotedMangledRdn' + AWSuffix;
+function DsIsMangledRdnValueW; external ntdsapilib name 'DsIsMangledRdnValueW';
+function DsIsMangledRdnValueA; external ntdsapilib name 'DsIsMangledRdnValueA';
+function DsIsMangledRdnValue; external ntdsapilib name 'DsIsMangledRdnValue' + AWSuffix;
+function DsIsMangledDnA; external ntdsapilib name 'DsIsMangledDnA';
+function DsIsMangledDnW; external ntdsapilib name 'DsIsMangledDnW';
+function DsIsMangledDn; external ntdsapilib name 'DsIsMangledDn' + AWSuffix;
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsIsMangledDn: Pointer;
-
-function DsIsMangledDn;
-begin
-  GetProcedureAddress(_DsIsMangledDn, ntdsapilib, 'DsIsMangledDnW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsIsMangledDn]
-  end;
-end;
-{$ELSE}
-function DsIsMangledDn; external ntdsapilib name 'DsIsMangledDnW';
 {$ENDIF DYNAMIC_LINK}
-
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsIsMangledDn: Pointer;
-
-function DsIsMangledDn;
-begin
-  GetProcedureAddress(_DsIsMangledDn, ntdsapilib, 'DsIsMangledDnA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsIsMangledDn]
-  end;
-end;
-{$ELSE}
-function DsIsMangledDn; external ntdsapilib name 'DsIsMangledDnA';
-{$ENDIF DYNAMIC_LINK}
-
-{$ENDIF}
 
 end.

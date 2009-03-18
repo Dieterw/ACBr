@@ -1,26 +1,25 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { HTML Help API interface Unit for Object Pascal                               }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: htmlhelp.h, released July 2000. The original Pascal    }
 { code is: HtmlHelp.pas, released September 2000. The initial developer of the }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
-{ Contributor(s): Robert Chandler  (robert@helpware.net)                       }
-{ 		  Kurt Senfer (ks@siemens.dk)  		                       }
-{ 								               }
+{                                                                              }
+{ Contributor(s): Robert Chandler  (robert att helpware dott net)              }
+{                 Kurt Senfer (ks att siemens dott dk)                         }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -39,12 +38,16 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
 
+// $Id: JwaHtmlHelp.pas,v 1.12 2005/09/06 16:36:50 marquardt Exp $
+
 unit JwaHtmlHelp;
+
+{$I jediapilib.inc}
 
 interface
 
@@ -61,11 +64,11 @@ interface
 (*$HPPEMIT '} HH_LAST_ERROR ;'*)
 (*$HPPEMIT ''*)
 
-{$I WINDEFINES.INC}
-{$DEFINE HTMLHELP12}
-
 uses
-  JwaWinType, JwaWinUser{$IFDEF VER140}, Variants{$ENDIF};
+  {$IFDEF HAS_UNIT_VARIANTS}
+  Variants,
+  {$ENDIF HAS_UNIT_VARIANTS}
+  JwaWindows;
 
 // Commands to pass to HtmlHelp()
 
@@ -92,22 +95,22 @@ const
   {$EXTERNALSYM HH_SET_INFO_TYPE}
   HH_SYNC                    = $0009;
   {$EXTERNALSYM HH_SYNC}
-{$IFDEF HTMLHELP11}
+  {$IFDEF HTMLHELP11}
   HH_ADD_NAV_UI              = $000A;      // not currently implemented
   {$EXTERNALSYM HH_ADD_NAV_UI}
   HH_ADD_BUTTON              = $000B;      // not currently implemented
   {$EXTERNALSYM HH_ADD_BUTTON}
   HH_GETBROWSER_APP          = $000C;      // not currently implemented
   {$EXTERNALSYM HH_GETBROWSER_APP}
-{$ENDIF}
-{$IFDEF HTMLHELP12}
+  {$ENDIF HTMLHELP11}
+  {$IFDEF HTMLHELP12}
   HH_RESERVED1               = $000A;
   {$EXTERNALSYM HH_RESERVED1}
   HH_RESERVED2               = $000B;
   {$EXTERNALSYM HH_RESERVED2}
   HH_RESERVED3               = $000C;
   {$EXTERNALSYM HH_RESERVED3}
-{$ENDIF}
+  {$ENDIF HTMLHELP12}
   HH_KEYWORD_LOOKUP          = $000D;
   {$EXTERNALSYM HH_KEYWORD_LOOKUP}
   HH_DISPLAY_TEXT_POPUP      = $000E;      // display string resource id or text in a popup window
@@ -124,7 +127,7 @@ const
   {$EXTERNALSYM HH_ALINK_LOOKUP}
   HH_GET_LAST_ERROR          = $0014;      // not currently implemented, See HHERROR.h
   {$EXTERNALSYM HH_GET_LAST_ERROR}
-  HH_ENUM_CATEGORY           = $0015;	     // Get category name, call repeatedly to enumerate, -1 at end
+  HH_ENUM_CATEGORY           = $0015;      // Get category name, call repeatedly to enumerate, -1 at end
   {$EXTERNALSYM HH_ENUM_CATEGORY}
   HH_ENUM_CATEGORY_IT        = $0016;      // Get category info type members, call repeatedly to enumerate, -1 at end
   {$EXTERNALSYM HH_ENUM_CATEGORY_IT}
@@ -134,11 +137,11 @@ const
   {$EXTERNALSYM HH_SET_INCLUSIVE_FILTER}
   HH_SET_EXCLUSIVE_FILTER    = $0019;      // set exclusive filtering method for untyped topics to be excluded from display
   {$EXTERNALSYM HH_SET_EXCLUSIVE_FILTER}
-{$IFDEF HTMLHELP11}
+  {$IFDEF HTMLHELP11}
   HH_SET_GUID                = $001A;      // For Microsoft Installer -- dwData is a pointer to the GUID string
   {$EXTERNALSYM HH_SET_GUID}
-{$ENDIF}
-{$IFDEF HTMLHELP12}
+  {$ENDIF HTMLHELP11}
+  {$IFDEF HTMLHELP12}
   HH_INITIALIZE              = $001C;      // Initializes the help system.
   {$EXTERNALSYM HH_INITIALIZE}
   HH_UNINITIALIZE            = $001D;      // Uninitializes the help system.
@@ -147,158 +150,158 @@ const
   {$EXTERNALSYM HH_PRETRANSLATEMESSAGE}
   HH_SET_GLOBAL_PROPERTY     = $00FC;      // Set a global property. (NULL, NULL, HH_GPROP)
   {$EXTERNALSYM HH_SET_GLOBAL_PROPERTY}
-{$ENDIF}
+  {$ENDIF HTMLHELP12}
 
-{$IFDEF HTMLHELP11}
+  {$IFDEF HTMLHELP11}
   HH_INTERNAL                = $00FF;      // Used internally.
   {$EXTERNALSYM HH_INTERNAL}
-{$ENDIF}
+  {$ENDIF HTMLHELP11}
 
-{$IFDEF HTMLHELP12}
-  HHWIN_PROP_TAB_AUTOHIDESHOW = (1 shl 0); // Automatically hide/show tri-pane window
+  {$IFDEF HTMLHELP12}
+  HHWIN_PROP_TAB_AUTOHIDESHOW = 1 shl 0; // Automatically hide/show tri-pane window
   {$EXTERNALSYM HHWIN_PROP_TAB_AUTOHIDESHOW}
-{$ENDIF}
-  HHWIN_PROP_ONTOP           = (1 shl 1);  // Top-most window (not currently implemented)
+  {$ENDIF HTMLHELP12}
+  HHWIN_PROP_ONTOP           = 1 shl 1;  // Top-most window (not currently implemented)
   {$EXTERNALSYM HHWIN_PROP_ONTOP}
-  HHWIN_PROP_NOTITLEBAR      = (1 shl 2);  // no title bar
+  HHWIN_PROP_NOTITLEBAR      = 1 shl 2;  // no title bar
   {$EXTERNALSYM HHWIN_PROP_NOTITLEBAR}
-  HHWIN_PROP_NODEF_STYLES    = (1 shl 3);  // no default window styles (only HH_WINTYPE.dwStyles)
+  HHWIN_PROP_NODEF_STYLES    = 1 shl 3;  // no default window styles (only HH_WINTYPE.dwStyles)
   {$EXTERNALSYM HHWIN_PROP_NODEF_STYLES}
-  HHWIN_PROP_NODEF_EXSTYLES  = (1 shl 4);  // no default extended window styles (only HH_WINTYPE.dwExStyles)
+  HHWIN_PROP_NODEF_EXSTYLES  = 1 shl 4;  // no default extended window styles (only HH_WINTYPE.dwExStyles)
   {$EXTERNALSYM HHWIN_PROP_NODEF_EXSTYLES}
-  HHWIN_PROP_TRI_PANE        = (1 shl 5);  // use a tri-pane window
+  HHWIN_PROP_TRI_PANE        = 1 shl 5;  // use a tri-pane window
   {$EXTERNALSYM HHWIN_PROP_TRI_PANE}
-  HHWIN_PROP_NOTB_TEXT       = (1 shl 6);  // no text on toolbar buttons
+  HHWIN_PROP_NOTB_TEXT       = 1 shl 6;  // no text on toolbar buttons
   {$EXTERNALSYM HHWIN_PROP_NOTB_TEXT}
-  HHWIN_PROP_POST_QUIT       = (1 shl 7);  // post WM_QUIT message when window closes
+  HHWIN_PROP_POST_QUIT       = 1 shl 7;  // post WM_QUIT message when window closes
   {$EXTERNALSYM HHWIN_PROP_POST_QUIT}
-  HHWIN_PROP_AUTO_SYNC       = (1 shl 8);  // automatically ssync contents and index
+  HHWIN_PROP_AUTO_SYNC       = 1 shl 8;  // automatically ssync contents and index
   {$EXTERNALSYM HHWIN_PROP_AUTO_SYNC}
-  HHWIN_PROP_TRACKING        = (1 shl 9);  // send tracking notification messages
+  HHWIN_PROP_TRACKING        = 1 shl 9;  // send tracking notification messages
   {$EXTERNALSYM HHWIN_PROP_TRACKING}
-  HHWIN_PROP_TAB_SEARCH      = (1 shl 10); // include search tab in navigation pane
+  HHWIN_PROP_TAB_SEARCH      = 1 shl 10; // include search tab in navigation pane
   {$EXTERNALSYM HHWIN_PROP_TAB_SEARCH}
-  HHWIN_PROP_TAB_HISTORY     = (1 shl 11); // include history tab in navigation pane
+  HHWIN_PROP_TAB_HISTORY     = 1 shl 11; // include history tab in navigation pane
   {$EXTERNALSYM HHWIN_PROP_TAB_HISTORY}
-{$IFDEF HTMLHELP11}
-  HHWIN_PROP_TAB_BOOKMARKS   = (1 shl 12); // include bookmark tab in navigation pane
+  {$IFDEF HTMLHELP11}
+  HHWIN_PROP_TAB_BOOKMARKS   = 1 shl 12; // include bookmark tab in navigation pane
   {$EXTERNALSYM HHWIN_PROP_TAB_BOOKMARKS}
-{$ENDIF}
-{$IFDEF HTMLHELP12}
-  HHWIN_PROP_TAB_FAVORITES   = (1 shl 12); // include favorites tab in navigation pane
+  {$ENDIF HTMLHELP11}
+  {$IFDEF HTMLHELP12}
+  HHWIN_PROP_TAB_FAVORITES   = 1 shl 12; // include favorites tab in navigation pane
   {$EXTERNALSYM HHWIN_PROP_TAB_FAVORITES}
-{$ENDIF}
-  HHWIN_PROP_CHANGE_TITLE    = (1 shl 13); // Put current HTML title in title bar
+  {$ENDIF HTMLHELP12}
+  HHWIN_PROP_CHANGE_TITLE    = 1 shl 13; // Put current HTML title in title bar
   {$EXTERNALSYM HHWIN_PROP_CHANGE_TITLE}
-  HHWIN_PROP_NAV_ONLY_WIN    = (1 shl 14); // Only display the navigation window
+  HHWIN_PROP_NAV_ONLY_WIN    = 1 shl 14; // Only display the navigation window
   {$EXTERNALSYM HHWIN_PROP_NAV_ONLY_WIN}
-  HHWIN_PROP_NO_TOOLBAR      = (1 shl 15); // Don't display a toolbar
+  HHWIN_PROP_NO_TOOLBAR      = 1 shl 15; // Don't display a toolbar
   {$EXTERNALSYM HHWIN_PROP_NO_TOOLBAR}
-  HHWIN_PROP_MENU            = (1 shl 16); // Menu
+  HHWIN_PROP_MENU            = 1 shl 16; // Menu
   {$EXTERNALSYM HHWIN_PROP_MENU}
-  HHWIN_PROP_TAB_ADVSEARCH   = (1 shl 17); // Advanced FTS UI.
+  HHWIN_PROP_TAB_ADVSEARCH   = 1 shl 17; // Advanced FTS UI.
   {$EXTERNALSYM HHWIN_PROP_TAB_ADVSEARCH}
-  HHWIN_PROP_USER_POS        = (1 shl 18); // After initial creation, user controls window size/Position
+  HHWIN_PROP_USER_POS        = 1 shl 18; // After initial creation, user controls window size/Position
   {$EXTERNALSYM HHWIN_PROP_USER_POS}
 {$IFDEF HTMLHELP12}
-  HHWIN_PROP_TAB_CUSTOM1     = (1 shl 19); // Use custom tab #1
+  HHWIN_PROP_TAB_CUSTOM1     = 1 shl 19; // Use custom tab #1
   {$EXTERNALSYM HHWIN_PROP_TAB_CUSTOM1}
-  HHWIN_PROP_TAB_CUSTOM2     = (1 shl 20); // Use custom tab #2
+  HHWIN_PROP_TAB_CUSTOM2     = 1 shl 20; // Use custom tab #2
   {$EXTERNALSYM HHWIN_PROP_TAB_CUSTOM2}
-  HHWIN_PROP_TAB_CUSTOM3     = (1 shl 21); // Use custom tab #3
+  HHWIN_PROP_TAB_CUSTOM3     = 1 shl 21; // Use custom tab #3
   {$EXTERNALSYM HHWIN_PROP_TAB_CUSTOM3}
-  HHWIN_PROP_TAB_CUSTOM4     = (1 shl 22); // Use custom tab #4
+  HHWIN_PROP_TAB_CUSTOM4     = 1 shl 22; // Use custom tab #4
   {$EXTERNALSYM HHWIN_PROP_TAB_CUSTOM4}
-  HHWIN_PROP_TAB_CUSTOM5     = (1 shl 23); // Use custom tab #5
+  HHWIN_PROP_TAB_CUSTOM5     = 1 shl 23; // Use custom tab #5
   {$EXTERNALSYM HHWIN_PROP_TAB_CUSTOM5}
-  HHWIN_PROP_TAB_CUSTOM6     = (1 shl 24); // Use custom tab #6
+  HHWIN_PROP_TAB_CUSTOM6     = 1 shl 24; // Use custom tab #6
   {$EXTERNALSYM HHWIN_PROP_TAB_CUSTOM6}
-  HHWIN_PROP_TAB_CUSTOM7     = (1 shl 25); // Use custom tab #7
+  HHWIN_PROP_TAB_CUSTOM7     = 1 shl 25; // Use custom tab #7
   {$EXTERNALSYM HHWIN_PROP_TAB_CUSTOM7}
-  HHWIN_PROP_TAB_CUSTOM8     = (1 shl 26); // Use custom tab #8
+  HHWIN_PROP_TAB_CUSTOM8     = 1 shl 26; // Use custom tab #8
   {$EXTERNALSYM HHWIN_PROP_TAB_CUSTOM8}
-  HHWIN_PROP_TAB_CUSTOM9     = (1 shl 27); // Use custom tab #9
+  HHWIN_PROP_TAB_CUSTOM9     = 1 shl 27; // Use custom tab #9
   {$EXTERNALSYM HHWIN_PROP_TAB_CUSTOM9}
-  HHWIN_TB_MARGIN            = (1 shl 28); // the window type has a margin
+  HHWIN_TB_MARGIN            = 1 shl 28; // the window type has a margin
   {$EXTERNALSYM HHWIN_TB_MARGIN}
-{$ENDIF}
+{$ENDIF HTMLHELP12}
 
-  HHWIN_PARAM_PROPERTIES     = (1 shl 1);  // valid fsWinProperties
+  HHWIN_PARAM_PROPERTIES     = 1 shl 1;  // valid fsWinProperties
   {$EXTERNALSYM HHWIN_PARAM_PROPERTIES}
-  HHWIN_PARAM_STYLES         = (1 shl 2);  // valid dwStyles
+  HHWIN_PARAM_STYLES         = 1 shl 2;  // valid dwStyles
   {$EXTERNALSYM HHWIN_PARAM_STYLES}
-  HHWIN_PARAM_EXSTYLES       = (1 shl 3);  // valid dwExStyles
+  HHWIN_PARAM_EXSTYLES       = 1 shl 3;  // valid dwExStyles
   {$EXTERNALSYM HHWIN_PARAM_EXSTYLES}
-  HHWIN_PARAM_RECT           = (1 shl 4);  // valid rcWindowPos
+  HHWIN_PARAM_RECT           = 1 shl 4;  // valid rcWindowPos
   {$EXTERNALSYM HHWIN_PARAM_RECT}
-  HHWIN_PARAM_NAV_WIDTH      = (1 shl 5);  // valid iNavWidth
+  HHWIN_PARAM_NAV_WIDTH      = 1 shl 5;  // valid iNavWidth
   {$EXTERNALSYM HHWIN_PARAM_NAV_WIDTH}
-  HHWIN_PARAM_SHOWSTATE      = (1 shl 6);  // valid nShowState
+  HHWIN_PARAM_SHOWSTATE      = 1 shl 6;  // valid nShowState
   {$EXTERNALSYM HHWIN_PARAM_SHOWSTATE}
-  HHWIN_PARAM_INFOTYPES      = (1 shl 7);  // valid apInfoTypes
+  HHWIN_PARAM_INFOTYPES      = 1 shl 7;  // valid apInfoTypes
   {$EXTERNALSYM HHWIN_PARAM_INFOTYPES}
-  HHWIN_PARAM_TB_FLAGS       = (1 shl 8);  // valid fsToolBarFlags
+  HHWIN_PARAM_TB_FLAGS       = 1 shl 8;  // valid fsToolBarFlags
   {$EXTERNALSYM HHWIN_PARAM_TB_FLAGS}
-  HHWIN_PARAM_EXPANSION      = (1 shl 9);  // valid fNotExpanded
+  HHWIN_PARAM_EXPANSION      = 1 shl 9;  // valid fNotExpanded
   {$EXTERNALSYM HHWIN_PARAM_EXPANSION}
-  HHWIN_PARAM_TABPOS         = (1 shl 10); // valid tabpos
+  HHWIN_PARAM_TABPOS         = 1 shl 10; // valid tabpos
   {$EXTERNALSYM HHWIN_PARAM_TABPOS}
-  HHWIN_PARAM_TABORDER       = (1 shl 11); // valid taborder
+  HHWIN_PARAM_TABORDER       = 1 shl 11; // valid taborder
   {$EXTERNALSYM HHWIN_PARAM_TABORDER}
-  HHWIN_PARAM_HISTORY_COUNT  = (1 shl 12); // valid cHistory
+  HHWIN_PARAM_HISTORY_COUNT  = 1 shl 12; // valid cHistory
   {$EXTERNALSYM HHWIN_PARAM_HISTORY_COUNT}
-  HHWIN_PARAM_CUR_TAB        = (1 shl 13); // valid curNavType
+  HHWIN_PARAM_CUR_TAB        = 1 shl 13; // valid curNavType
   {$EXTERNALSYM HHWIN_PARAM_CUR_TAB}
 
-  HHWIN_BUTTON_EXPAND        = (1 shl 1);  // Expand/contract button
+  HHWIN_BUTTON_EXPAND        = 1 shl 1;  // Expand/contract button
   {$EXTERNALSYM HHWIN_BUTTON_EXPAND}
-  HHWIN_BUTTON_BACK          = (1 shl 2);  // Back button
+  HHWIN_BUTTON_BACK          = 1 shl 2;  // Back button
   {$EXTERNALSYM HHWIN_BUTTON_BACK}
-  HHWIN_BUTTON_FORWARD       = (1 shl 3);  // Forward button
+  HHWIN_BUTTON_FORWARD       = 1 shl 3;  // Forward button
   {$EXTERNALSYM HHWIN_BUTTON_FORWARD}
-  HHWIN_BUTTON_STOP          = (1 shl 4);  // Stop button
+  HHWIN_BUTTON_STOP          = 1 shl 4;  // Stop button
   {$EXTERNALSYM HHWIN_BUTTON_STOP}
-  HHWIN_BUTTON_REFRESH       = (1 shl 5);  // Refresh button
+  HHWIN_BUTTON_REFRESH       = 1 shl 5;  // Refresh button
   {$EXTERNALSYM HHWIN_BUTTON_REFRESH}
-  HHWIN_BUTTON_HOME          = (1 shl 6);  // Home button
+  HHWIN_BUTTON_HOME          = 1 shl 6;  // Home button
   {$EXTERNALSYM HHWIN_BUTTON_HOME}
-  HHWIN_BUTTON_BROWSE_FWD    = (1 shl 7);  // not implemented
+  HHWIN_BUTTON_BROWSE_FWD    = 1 shl 7;  // not implemented
   {$EXTERNALSYM HHWIN_BUTTON_BROWSE_FWD}
-  HHWIN_BUTTON_BROWSE_BCK    = (1 shl 8);  // not implemented
+  HHWIN_BUTTON_BROWSE_BCK    = 1 shl 8;  // not implemented
   {$EXTERNALSYM HHWIN_BUTTON_BROWSE_BCK}
-  HHWIN_BUTTON_NOTES         = (1 shl 9);  // not implemented
+  HHWIN_BUTTON_NOTES         = 1 shl 9;  // not implemented
   {$EXTERNALSYM HHWIN_BUTTON_NOTES}
-  HHWIN_BUTTON_CONTENTS      = (1 shl 10); // not implemented
+  HHWIN_BUTTON_CONTENTS      = 1 shl 10; // not implemented
   {$EXTERNALSYM HHWIN_BUTTON_CONTENTS}
-  HHWIN_BUTTON_SYNC          = (1 shl 11); // Sync button
+  HHWIN_BUTTON_SYNC          = 1 shl 11; // Sync button
   {$EXTERNALSYM HHWIN_BUTTON_SYNC}
-  HHWIN_BUTTON_OPTIONS       = (1 shl 12); // Options button
+  HHWIN_BUTTON_OPTIONS       = 1 shl 12; // Options button
   {$EXTERNALSYM HHWIN_BUTTON_OPTIONS}
-  HHWIN_BUTTON_PRINT         = (1 shl 13); // Print button
+  HHWIN_BUTTON_PRINT         = 1 shl 13; // Print button
   {$EXTERNALSYM HHWIN_BUTTON_PRINT}
-  HHWIN_BUTTON_INDEX         = (1 shl 14); // not implemented
+  HHWIN_BUTTON_INDEX         = 1 shl 14; // not implemented
   {$EXTERNALSYM HHWIN_BUTTON_INDEX}
-  HHWIN_BUTTON_SEARCH        = (1 shl 15); // not implemented
+  HHWIN_BUTTON_SEARCH        = 1 shl 15; // not implemented
   {$EXTERNALSYM HHWIN_BUTTON_SEARCH}
-  HHWIN_BUTTON_HISTORY       = (1 shl 16); // not implemented
+  HHWIN_BUTTON_HISTORY       = 1 shl 16; // not implemented
   {$EXTERNALSYM HHWIN_BUTTON_HISTORY}
-{$IFDEF HTMLHELP11}
-  HHWIN_BUTTON_BOOKMARKS     = (1 shl 17); // not implemented
+  {$IFDEF HTMLHELP11}
+  HHWIN_BUTTON_BOOKMARKS     = 1 shl 17; // not implemented
   {$EXTERNALSYM HHWIN_BUTTON_BOOKMARKS}
-{$ENDIF}
-{$IFDEF HTMLHELP12}
-  HHWIN_BUTTON_FAVORITES     = (1 shl 17); // not implemented
+  {$ENDIF HTMLHELP11}
+  {$IFDEF HTMLHELP12}
+  HHWIN_BUTTON_FAVORITES     = 1 shl 17; // not implemented
   {$EXTERNALSYM HHWIN_BUTTON_FAVORITES}
-{$ENDIF}
-  HHWIN_BUTTON_JUMP1         = (1 shl 18);
+  {$ENDIF HTMLHELP12}
+  HHWIN_BUTTON_JUMP1         = 1 shl 18;
   {$EXTERNALSYM HHWIN_BUTTON_JUMP1}
-  HHWIN_BUTTON_JUMP2         = (1 shl 19);
+  HHWIN_BUTTON_JUMP2         = 1 shl 19;
   {$EXTERNALSYM HHWIN_BUTTON_JUMP2}
-  HHWIN_BUTTON_ZOOM          = (1 shl 20);
+  HHWIN_BUTTON_ZOOM          = 1 shl 20;
   {$EXTERNALSYM HHWIN_BUTTON_ZOOM}
-  HHWIN_BUTTON_TOC_NEXT      = (1 shl 21);
+  HHWIN_BUTTON_TOC_NEXT      = 1 shl 21;
   {$EXTERNALSYM HHWIN_BUTTON_TOC_NEXT}
-  HHWIN_BUTTON_TOC_PREV      = (1 shl 22);
+  HHWIN_BUTTON_TOC_PREV      = 1 shl 22;
   {$EXTERNALSYM HHWIN_BUTTON_TOC_PREV}
 
   HHWIN_DEF_BUTTONS = HHWIN_BUTTON_EXPAND or HHWIN_BUTTON_BACK or
@@ -341,14 +344,14 @@ const
   {$EXTERNALSYM IDTB_SEARCH}
   IDTB_HISTORY      = 216;                 // not implemented
   {$EXTERNALSYM IDTB_HISTORY}
-{$IFDEF HTMLHELP11}
+  {$IFDEF HTMLHELP11}
   IDTB_BOOKMARKS    = 217;                 // not implemented
   {$EXTERNALSYM IDTB_BOOKMARKS}
-{$ENDIF}
-{$IFDEF HTMLHELP12}
+  {$ENDIF HTMLHELP11}
+  {$IFDEF HTMLHELP12}
   IDTB_FAVORITES    = 217;                 // not implemented
   {$EXTERNALSYM IDTB_FAVORITES}
-{$ENDIF}
+  {$ENDIF HTMLHELP12}
   IDTB_JUMP1        = 218;
   {$EXTERNALSYM IDTB_JUMP1}
   IDTB_JUMP2        = 219;
@@ -369,11 +372,11 @@ const
   HHN_LAST          = -879;
   {$EXTERNALSYM HHN_LAST}
 
-  HHN_NAVCOMPLETE   = (HHN_FIRST - 0);
+  HHN_NAVCOMPLETE   = HHN_FIRST - 0;
   {$EXTERNALSYM HHN_NAVCOMPLETE}
-  HHN_TRACK         = (HHN_FIRST - 1);
+  HHN_TRACK         = HHN_FIRST - 1;
   {$EXTERNALSYM HHN_TRACK}
-  HHN_WINDOW_CREATE = (HHN_FIRST - 2);
+  HHN_WINDOW_CREATE = HHN_FIRST - 2;
   {$EXTERNALSYM HHN_WINDOW_CREATE}
 
 type
@@ -398,7 +401,7 @@ type
   PHHPopup = ^THHPopup;
   tagHH_POPUP = packed record
     cbStruct: Integer;                     // sizeof this structure
-    hinst_: HINSTANCE;                     // instance handle for string resource
+    hinst_: HINST;                         // instance handle for string resource
     idString: UINT;                        // string resource id, or text id if pszFile is specified in HtmlHelp call
     pszText: LPCTSTR;                      // used if idString is zero
     pt: POINT;                             // top center of popup window
@@ -435,13 +438,13 @@ const
   {$EXTERNALSYM HHWIN_NAVTYPE_INDEX}
   HHWIN_NAVTYPE_SEARCH       = 2;
   {$EXTERNALSYM HHWIN_NAVTYPE_SEARCH}
-{$IFDEF HTMLHELP11}
+  {$IFDEF HTMLHELP11}
   HHWIN_NAVTYPE_BOOKMARKS    = 3;
   {$EXTERNALSYM HHWIN_NAVTYPE_BOOKMARKS}
   HHWIN_NAVTYPE_HISTORY      = 4;          //not implemented
   {$EXTERNALSYM HHWIN_NAVTYPE_HISTORY}
-{$ENDIF}
-{$IFDEF HTMLHELP12}
+  {$ENDIF HTMLHELP11}
+  {$IFDEF HTMLHELP12}
   HHWIN_NAVTYPE_FAVORITES    = 3;
   {$EXTERNALSYM HHWIN_NAVTYPE_FAVORITES}
   HHWIN_NAVTYPE_HISTORY      = 4;          //not implemented
@@ -450,7 +453,7 @@ const
   {$EXTERNALSYM HHWIN_NAVTYPE_AUTHOR}
   HHWIN_NAVTYPE_CUSTOM_FIRST = 11;
   {$EXTERNALSYM HHWIN_NAVTYPE_CUSTOM_FIRST}
-{$ENDIF}
+{$ENDIF HTMLHELP12}
 
   IT_INCLUSIVE = 0;
   {$EXTERNALSYM IT_INCLUSIVE}
@@ -525,13 +528,13 @@ const
   {$EXTERNALSYM HH_TAB_INDEX}
   HH_TAB_SEARCH       = 2;
   {$EXTERNALSYM HH_TAB_SEARCH}
-{$IFDEF HTMLHELP11}
+  {$IFDEF HTMLHELP11}
   HH_TAB_BOOKMARKS    = 3;
   {$EXTERNALSYM HH_TAB_BOOKMARKS}
   HH_TAB_HISTORY      = 4;
   {$EXTERNALSYM HH_TAB_HISTORY}
-{$ENDIF}
-{$IFDEF HTMLHELP12}
+  {$ENDIF HTMLHELP11}
+  {$IFDEF HTMLHELP12}
   HH_TAB_FAVORITES    = 3;
   {$EXTERNALSYM HH_TAB_FAVORITES}
   HH_TAB_HISTORY      = 4;
@@ -546,7 +549,7 @@ const
 
   HH_MAX_TABS_CUSTOM  = HH_TAB_CUSTOM_LAST - HH_TAB_CUSTOM_FIRST + 1;
   {$EXTERNALSYM HH_MAX_TABS_CUSTOM}
-{$ENDIF}
+{$ENDIF HTMLHELP12}
 
 // HH_DISPLAY_SEARCH Command Related Structures and Constants
 
@@ -614,9 +617,9 @@ type
     pszUrlJump2: LPCTSTR;   // URL for HHWIN_BUTTON_JUMP2
     rcMinSize: RECT;        // Minimum size for window (ignored in version 1)
     cbInfoTypes: Integer;   // size of paInfoTypes;
-{$IFDEF HTMLHELP12}
+    {$IFDEF HTMLHELP12}
     pszCustomTabs: LPCTSTR; // multiple zero-terminated Strings
-{$ENDIF}
+    {$ENDIF HTMLHELP12}
   end;
   {$EXTERNALSYM tagHH_WINTYPE}
   HH_WINTYPE = tagHH_WINTYPE;
@@ -692,12 +695,7 @@ function HtmlHelpA(hwndCaller: HWND; pszFile: LPCSTR; uCommand: UINT; dwData: DW
 {$EXTERNALSYM HtmlHelpA}
 function HtmlHelpW(hwndCaller: HWND; pszFile: LPCWSTR; uCommand: UINT; dwData: DWORD_PTR): HWND; stdcall;
 {$EXTERNALSYM HtmlHelpW}
-
-{$IFDEF UNICODE}
-function HtmlHelp(hwndCaller: HWND; pszFile: LPCSTR; uCommand: UINT; dwData: DWORD_PTR): HWND; stdcall;
-{$ELSE}
-function HtmlHelp(hwndCaller: HWND; pszFile: LPCWSTR; uCommand: UINT; dwData: DWORD_PTR): HWND; stdcall;
-{$ENDIF}
+function HtmlHelp(hwndCaller: HWND; pszFile: LPCTSTR; uCommand: UINT; dwData: DWORD_PTR): HWND; stdcall;
 
 // Use the following for GetProcAddress to load from hhctrl.ocx
 
@@ -737,14 +735,18 @@ type
   end;
   HH_GLOBAL_PROPERTY = tagHH_GLOBAL_PROPERTY;
   THHGlobalProperty = tagHH_GLOBAL_PROPERTY;
-{$ENDIF}
+
+{$ENDIF HTMLHELP12}
 
 implementation
 
-{$IFDEF DYNAMIC_LINK}
-
 uses
-  JwaWinBase, JwaWinError, JwaWinNT, JwaWinReg;
+  {$IFDEF DYNAMIC_LINK}
+  JwaWindows, JwaWinReg,
+  {$ENDIF DYNAMIC_LINK}
+  JwaWinDLLNames;
+
+{$IFDEF DYNAMIC_LINK}
 
 function GetOCXPath: string;
 const
@@ -770,7 +772,8 @@ begin
     end;
     RegCloseKey(HHKey);
   end;
-  if R <> ERROR_SUCCESS then Result := 'hhctrl.ocx';
+  if R <> ERROR_SUCCESS then
+    Result := 'hhctrl.ocx';
 end;
 
 var
@@ -782,40 +785,37 @@ function HtmlHelpA;
 begin
   GetProcedureAddress(_HtmlHelpA, GetOCXPath, 'HtmlHelpA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_HtmlHelpA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_HtmlHelpA]
   end;
 end;
 
 function HtmlHelpW;
 begin
-  GetProcedureAddress(_HtmlHelpA, GetOCXPath, 'HtmlHelpW');
+  GetProcedureAddress(_HtmlHelpW, GetOCXPath, 'HtmlHelpW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_HtmlHelpW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_HtmlHelpW]
   end;
 end;
 
 function HtmlHelp;
 begin
-  GetProcedureAddress(_HtmlHelp, GetOCXPath, {$IFDEF UNICODE}'HtmlHelpW'{$ELSE}'HtmlHelpA'{$ENDIF});
+  GetProcedureAddress(_HtmlHelp, GetOCXPath, 'HtmlHelp' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_HtmlHelp]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_HtmlHelp]
   end;
 end;
 
 {$ELSE}
 
-const
-  hhctrl = 'hhctrl.ocx';
-
 function HtmlHelpA; external hhctrl name 'HtmlHelpA';
 function HtmlHelpW; external hhctrl name 'HtmlHelpW';
-function HtmlHelp; external hhctrl name {$IFDEF UNICODE}'HtmlHelpW'{$ELSE}'HtmlHelpA'{$ENDIF};
+function HtmlHelp; external hhctrl name 'HtmlHelp' + AWSuffix;
 
 {$ENDIF DYNAMIC_LINK}
 

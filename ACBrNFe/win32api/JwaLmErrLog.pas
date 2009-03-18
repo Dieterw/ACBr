@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Lan Manager Error Log API interface Unit for Object Pascal                   }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: lmerrlog.h, released November 2001. The original Pascal}
 { code is: LmErrLog.pas, released Februari 2002. The initial developer of the  }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,25 +35,33 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaLmErrLog.pas,v 1.10 2005/09/07 09:54:54 marquardt Exp $
+
+{$IFNDEF JWA_INCLUDEMODE}
 
 unit JwaLmErrLog;
 
 {$WEAKPACKAGEUNIT}
 
-{$HPPEMIT ''}
-{$HPPEMIT '#include "lmerrlog.h"'}
-{$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaLmCons, JwaWinType;
+  JwaWindows, JwaLmCons;
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_INTERFACESECTION}
+
+{$HPPEMIT ''}
+{$HPPEMIT '#include "lmerrlog.h"'}
+{$HPPEMIT ''}
 
 //
 // Data Structures - Config
@@ -125,7 +132,6 @@ function NetErrorLogWrite(reserved1: LPBYTE; code: DWORD; component: LPCWSTR; bu
 // Special Values and Constants
 //
 
-
 //
 //  Generic (could be used by more than one service)
 //   error log messages from 0 to 25
@@ -138,22 +144,21 @@ const
   ERRLOG_BASE = 3100;        { NELOG errors start here }
   {$EXTERNALSYM ERRLOG_BASE}
 
-
-  NELOG_Internal_Error = (ERRLOG_BASE + 0);
+  NELOG_Internal_Error = ERRLOG_BASE + 0;
   {$EXTERNALSYM NELOG_Internal_Error}
 
     {
     * The operation failed because a network software error occurred.
     }
 
-  NELOG_Resource_Shortage = (ERRLOG_BASE + 1);
+  NELOG_Resource_Shortage = ERRLOG_BASE + 1;
   {$EXTERNALSYM NELOG_Resource_Shortage}
 
     {
     * The system ran out of a resource controlled by the %1 option.
     }
 
-  NELOG_Unable_To_Lock_Segment = (ERRLOG_BASE + 2);
+  NELOG_Unable_To_Lock_Segment = ERRLOG_BASE + 2;
   {$EXTERNALSYM NELOG_Unable_To_Lock_Segment}
 
     {
@@ -161,7 +166,7 @@ const
     *  segment for network control blocks (NCBs). The error code is the data.
     }
 
-  NELOG_Unable_To_Unlock_Segment = (ERRLOG_BASE + 3);
+  NELOG_Unable_To_Unlock_Segment = ERRLOG_BASE + 3;
   {$EXTERNALSYM NELOG_Unable_To_Unlock_Segment}
 
     {
@@ -169,7 +174,7 @@ const
     *  segment for network control blocks (NCBs). The error code is the data.
     }
 
-  NELOG_Uninstall_Service = (ERRLOG_BASE + 4);
+  NELOG_Uninstall_Service = ERRLOG_BASE + 4;
   {$EXTERNALSYM NELOG_Uninstall_Service}
 
     {
@@ -177,7 +182,7 @@ const
     *  The error code from NetServiceControl is the data.
     }
 
-  NELOG_Init_Exec_Fail = (ERRLOG_BASE + 5);
+  NELOG_Init_Exec_Fail = ERRLOG_BASE + 5;
   {$EXTERNALSYM NELOG_Init_Exec_Fail}
 
     {
@@ -185,21 +190,21 @@ const
     *  path %1. The system error code is the data.
     }
 
-  NELOG_Ncb_Error = (ERRLOG_BASE + 6);
+  NELOG_Ncb_Error = ERRLOG_BASE + 6;
   {$EXTERNALSYM NELOG_Ncb_Error}
 
     {
     * An unexpected network control block (NCB) was received. The NCB is the data.
     }
 
-  NELOG_Net_Not_Started = (ERRLOG_BASE + 7);
+  NELOG_Net_Not_Started = ERRLOG_BASE + 7;
   {$EXTERNALSYM NELOG_Net_Not_Started}
 
     {
     * The network is not started.
     }
 
-  NELOG_Ioctl_Error = (ERRLOG_BASE + 8);
+  NELOG_Ioctl_Error = ERRLOG_BASE + 8;
   {$EXTERNALSYM NELOG_Ioctl_Error}
 
     {
@@ -210,7 +215,7 @@ const
     *     WORD   ioctl or fsctl number
     }
 
-  NELOG_System_Semaphore = (ERRLOG_BASE + 9);
+  NELOG_System_Semaphore = ERRLOG_BASE + 9;
   {$EXTERNALSYM NELOG_System_Semaphore}
 
     {
@@ -218,7 +223,7 @@ const
     *  The error code is the data.
     }
 
-  NELOG_Init_OpenCreate_Err = (ERRLOG_BASE + 10);
+  NELOG_Init_OpenCreate_Err = ERRLOG_BASE + 10;
   {$EXTERNALSYM NELOG_Init_OpenCreate_Err}
 
     {
@@ -226,7 +231,7 @@ const
     *  file %1. The system error code is the data.
     }
 
-  NELOG_NetBios = (ERRLOG_BASE + 11);
+  NELOG_NetBios = ERRLOG_BASE + 11;
   {$EXTERNALSYM NELOG_NetBios}
 
     {
@@ -234,7 +239,7 @@ const
     *  The error code is the data.
     }
 
-  NELOG_SMB_Illegal = (ERRLOG_BASE + 12);
+  NELOG_SMB_Illegal = ERRLOG_BASE + 12;
   {$EXTERNALSYM NELOG_SMB_Illegal}
 
     {
@@ -242,7 +247,7 @@ const
     *  The SMB is the data.
     }
 
-  NELOG_Service_Fail = (ERRLOG_BASE + 13);
+  NELOG_Service_Fail = ERRLOG_BASE + 13;
   {$EXTERNALSYM NELOG_Service_Fail}
 
     {
@@ -250,7 +255,7 @@ const
     *  could not be started.
    }
 
-  NELOG_Entries_Lost = (ERRLOG_BASE + 14);
+  NELOG_Entries_Lost = ERRLOG_BASE + 14;
   {$EXTERNALSYM NELOG_Entries_Lost}
 
     {
@@ -258,12 +263,11 @@ const
     * overflow.
     }
 
-
 //
 //  Server specific error log messages from 20 to 40
 //
 
-  NELOG_Init_Seg_Overflow = (ERRLOG_BASE + 20);
+  NELOG_Init_Seg_Overflow = ERRLOG_BASE + 20;
   {$EXTERNALSYM NELOG_Init_Seg_Overflow}
 
     {
@@ -271,14 +275,14 @@ const
     *  than net buffers are sized so that too much memory is needed.
     }
 
-  NELOG_Srv_No_Mem_Grow = (ERRLOG_BASE + 21);
+  NELOG_Srv_No_Mem_Grow = ERRLOG_BASE + 21;
   {$EXTERNALSYM NELOG_Srv_No_Mem_Grow}
 
     {
     * The server cannot increase the size of a memory segment.
     }
 
-  NELOG_Access_File_Bad = (ERRLOG_BASE + 22);
+  NELOG_Access_File_Bad = ERRLOG_BASE + 22;
   {$EXTERNALSYM NELOG_Access_File_Bad}
 
     {
@@ -286,14 +290,14 @@ const
     * or not present.
     }
 
-  NELOG_Srvnet_Not_Started = (ERRLOG_BASE + 23);
+  NELOG_Srvnet_Not_Started = ERRLOG_BASE + 23;
   {$EXTERNALSYM NELOG_Srvnet_Not_Started}
 
     {
     * Initialization failed because network %1 was not started.
     }
 
-  NELOG_Init_Chardev_Err = (ERRLOG_BASE + 24);
+  NELOG_Init_Chardev_Err = ERRLOG_BASE + 24;
   {$EXTERNALSYM NELOG_Init_Chardev_Err}
 
     {
@@ -301,14 +305,14 @@ const
     *  parameters must be zero or all three must be nonzero.
     }
 
-  NELOG_Remote_API = (ERRLOG_BASE + 25);
+  NELOG_Remote_API = ERRLOG_BASE + 25;
   {$EXTERNALSYM NELOG_Remote_API}
 
     { A remote API request was halted due to the following
     * invalid description string: %1.
     }
 
-  NELOG_Ncb_TooManyErr = (ERRLOG_BASE + 26);
+  NELOG_Ncb_TooManyErr = ERRLOG_BASE + 26;
   {$EXTERNALSYM NELOG_Ncb_TooManyErr}
 
     { The network %1 ran out of network control blocks (NCBs).  You may need to increase NCBs
@@ -316,14 +320,14 @@ const
     * number of NCBs submitted by the server when this error occurred:
     }
 
-  NELOG_Mailslot_err = (ERRLOG_BASE + 27);
+  NELOG_Mailslot_err = ERRLOG_BASE + 27;
   {$EXTERNALSYM NELOG_Mailslot_err}
 
     { The server cannot create the %1 mailslot needed to send
     * the ReleaseMemory alert message.  The error received is:
     }
 
-  NELOG_ReleaseMem_Alert = (ERRLOG_BASE + 28);
+  NELOG_ReleaseMem_Alert = ERRLOG_BASE + 28;
   {$EXTERNALSYM NELOG_ReleaseMem_Alert}
 
     { The server failed to register for the ReleaseMemory alert,
@@ -331,21 +335,21 @@ const
     * NetAlertStart is the data.
     }
 
-  NELOG_AT_cannot_write = (ERRLOG_BASE + 29);
+  NELOG_AT_cannot_write = ERRLOG_BASE + 29;
   {$EXTERNALSYM NELOG_AT_cannot_write}
 
     { The server cannot update the AT schedule file. The file
     * is corrupted.
     }
 
-  NELOG_Cant_Make_Msg_File = (ERRLOG_BASE + 30);
+  NELOG_Cant_Make_Msg_File = ERRLOG_BASE + 30;
   {$EXTERNALSYM NELOG_Cant_Make_Msg_File}
 
     { The server encountered an error when calling
     * NetIMakeLMFileName. The error code is the data.
     }
 
-  NELOG_Exec_Netservr_NoMem = (ERRLOG_BASE + 31);
+  NELOG_Exec_Netservr_NoMem = ERRLOG_BASE + 31;
   {$EXTERNALSYM NELOG_Exec_Netservr_NoMem}
 
     { Initialization failed because of a system execution failure on
@@ -353,7 +357,7 @@ const
     * The system error code is the data.
     }
 
-  NELOG_Server_Lock_Failure = (ERRLOG_BASE + 32);
+  NELOG_Server_Lock_Failure = ERRLOG_BASE + 32;
   {$EXTERNALSYM NELOG_Server_Lock_Failure}
 
     { Longterm lock of the server buffers failed.
@@ -364,7 +368,7 @@ const
 //  Message service and POPUP specific error log messages from 40 to 55
 //
 
-  NELOG_Msg_Shutdown = (ERRLOG_BASE + 40);
+  NELOG_Msg_Shutdown = ERRLOG_BASE + 40;
   {$EXTERNALSYM NELOG_Msg_Shutdown}
 
     {
@@ -373,7 +377,7 @@ const
     *  in raw data.
     }
 
-  NELOG_Msg_Sem_Shutdown = (ERRLOG_BASE + 41);
+  NELOG_Msg_Sem_Shutdown = ERRLOG_BASE + 41;
   {$EXTERNALSYM NELOG_Msg_Sem_Shutdown}
 
     {
@@ -381,7 +385,7 @@ const
     *  Message server shared data segment.
     }
 
-  NELOG_Msg_Log_Err = (ERRLOG_BASE + 50);
+  NELOG_Msg_Log_Err = ERRLOG_BASE + 50;
   {$EXTERNALSYM NELOG_Msg_Log_Err}
 
     {
@@ -390,9 +394,7 @@ const
     *  switched off due to the error. The error code is the data.
     }
 
-
-
-  NELOG_VIO_POPUP_ERR = (ERRLOG_BASE + 51);
+  NELOG_VIO_POPUP_ERR = ERRLOG_BASE + 51;
   {$EXTERNALSYM NELOG_VIO_POPUP_ERR}
 
     {
@@ -400,7 +402,7 @@ const
     *  The error code is the data.
     }
 
-  NELOG_Msg_Unexpected_SMB_Type = (ERRLOG_BASE + 52);
+  NELOG_Msg_Unexpected_SMB_Type = ERRLOG_BASE + 52;
   {$EXTERNALSYM NELOG_Msg_Unexpected_SMB_Type}
 
     {
@@ -411,8 +413,7 @@ const
 //  Workstation specific error log messages from 60 to 75
 //
 
-
-  NELOG_Wksta_Infoseg = (ERRLOG_BASE + 60);
+  NELOG_Wksta_Infoseg = ERRLOG_BASE + 60;
   {$EXTERNALSYM NELOG_Wksta_Infoseg}
 
     {
@@ -420,14 +421,14 @@ const
     *  The size follows, in DWORD format:
     }
 
-  NELOG_Wksta_Compname = (ERRLOG_BASE + 61);
+  NELOG_Wksta_Compname = ERRLOG_BASE + 61;
   {$EXTERNALSYM NELOG_Wksta_Compname}
 
     {
     * The workstation was unable to get the name-number of the computer.
     }
 
-  NELOG_Wksta_BiosThreadFailure = (ERRLOG_BASE + 62);
+  NELOG_Wksta_BiosThreadFailure = ERRLOG_BASE + 62;
   {$EXTERNALSYM NELOG_Wksta_BiosThreadFailure}
 
     {
@@ -435,7 +436,7 @@ const
     *  The error code is the data.
     }
 
-  NELOG_Wksta_IniSeg = (ERRLOG_BASE + 63);
+  NELOG_Wksta_IniSeg = ERRLOG_BASE + 63;
   {$EXTERNALSYM NELOG_Wksta_IniSeg}
 
     {
@@ -443,21 +444,21 @@ const
     *  The error code is the data.
     }
 
-  NELOG_Wksta_HostTab_Full = (ERRLOG_BASE + 64);
+  NELOG_Wksta_HostTab_Full = ERRLOG_BASE + 64;
   {$EXTERNALSYM NELOG_Wksta_HostTab_Full}
 
     {
     * The workstation host table is full.
     }
 
-  NELOG_Wksta_Bad_Mailslot_SMB = (ERRLOG_BASE + 65);
+  NELOG_Wksta_Bad_Mailslot_SMB = ERRLOG_BASE + 65;
   {$EXTERNALSYM NELOG_Wksta_Bad_Mailslot_SMB}
 
     {
     * A bad mailslot server message block (SMB) was received.  The SMB is the data.
     }
 
-  NELOG_Wksta_UASInit = (ERRLOG_BASE + 66);
+  NELOG_Wksta_UASInit = ERRLOG_BASE + 66;
   {$EXTERNALSYM NELOG_Wksta_UASInit}
 
     {
@@ -465,7 +466,7 @@ const
     *  The error code is the data.
     }
 
-  NELOG_Wksta_SSIRelogon = (ERRLOG_BASE + 67);
+  NELOG_Wksta_SSIRelogon = ERRLOG_BASE + 67;
   {$EXTERNALSYM NELOG_Wksta_SSIRelogon}
 
     {
@@ -477,8 +478,7 @@ const
 //  Alerter service specific error log messages from 70 to 79
 //
 
-
-  NELOG_Build_Name = (ERRLOG_BASE + 70);
+  NELOG_Build_Name = ERRLOG_BASE + 70;
   {$EXTERNALSYM NELOG_Build_Name}
 
     {
@@ -486,7 +486,7 @@ const
     * alert recipients.  The error code is %1.
     }
 
-  NELOG_Name_Expansion = (ERRLOG_BASE + 71);
+  NELOG_Name_Expansion = ERRLOG_BASE + 71;
   {$EXTERNALSYM NELOG_Name_Expansion}
 
     {
@@ -494,7 +494,7 @@ const
     *  splitting the group into two or more smaller groups.
     }
 
-  NELOG_Message_Send = (ERRLOG_BASE + 72);
+  NELOG_Message_Send = ERRLOG_BASE + 72;
   {$EXTERNALSYM NELOG_Message_Send}
 
     {
@@ -504,7 +504,7 @@ const
     *  The error code is %1.
     }
 
-  NELOG_Mail_Slt_Err = (ERRLOG_BASE + 73);
+  NELOG_Mail_Slt_Err = ERRLOG_BASE + 73;
   {$EXTERNALSYM NELOG_Mail_Slt_Err}
 
     {
@@ -512,35 +512,35 @@ const
     *  The error code is %1.
     }
 
-  NELOG_AT_cannot_read = (ERRLOG_BASE + 74);
+  NELOG_AT_cannot_read = ERRLOG_BASE + 74;
   {$EXTERNALSYM NELOG_AT_cannot_read}
 
     {
     * The server could not read the AT schedule file.
     }
 
-  NELOG_AT_sched_err = (ERRLOG_BASE + 75);
+  NELOG_AT_sched_err = ERRLOG_BASE + 75;
   {$EXTERNALSYM NELOG_AT_sched_err}
 
     {
     * The server found an invalid AT schedule record.
     }
 
-  NELOG_AT_schedule_file_created = (ERRLOG_BASE + 76);
+  NELOG_AT_schedule_file_created = ERRLOG_BASE + 76;
   {$EXTERNALSYM NELOG_AT_schedule_file_created}
 
     {
     * The server could not find an AT schedule file so it created one.
     }
 
-  NELOG_Srvnet_NB_Open = (ERRLOG_BASE + 77);
+  NELOG_Srvnet_NB_Open = ERRLOG_BASE + 77;
   {$EXTERNALSYM NELOG_Srvnet_NB_Open}
 
     {
     * The server could not access the %1 network with NetBiosOpen.
     }
 
-  NELOG_AT_Exec_Err = (ERRLOG_BASE + 78);
+  NELOG_AT_Exec_Err = ERRLOG_BASE + 78;
   {$EXTERNALSYM NELOG_AT_Exec_Err}
 
     {
@@ -551,7 +551,7 @@ const
 //      Cache Lazy Write and HPFS386 specific error log messages from 80 to 89
 //
 
-  NELOG_Lazy_Write_Err = (ERRLOG_BASE + 80);
+  NELOG_Lazy_Write_Err = ERRLOG_BASE + 80;
   {$EXTERNALSYM NELOG_Lazy_Write_Err}
 
         {
@@ -559,7 +559,7 @@ const
         *  contains some corrupted data.  The cache is stopped.
         }
 
-  NELOG_HotFix = (ERRLOG_BASE + 81);
+  NELOG_HotFix = ERRLOG_BASE + 81;
   {$EXTERNALSYM NELOG_HotFix}
 
     {
@@ -570,7 +570,7 @@ const
     * The hotfix occurred while processing a remote request.
     }
 
-  NELOG_HardErr_From_Server = (ERRLOG_BASE + 82);
+  NELOG_HardErr_From_Server = ERRLOG_BASE + 82;
   {$EXTERNALSYM NELOG_HardErr_From_Server}
 
     {
@@ -578,7 +578,7 @@ const
     * The error occurred while processing a remote request.
     }
 
-  NELOG_LocalSecFail1 = (ERRLOG_BASE + 83);
+  NELOG_LocalSecFail1 = ERRLOG_BASE + 83;
   {$EXTERNALSYM NELOG_LocalSecFail1}
 
     {
@@ -589,7 +589,7 @@ const
     *
     }
 
-  NELOG_LocalSecFail2 = (ERRLOG_BASE + 84);
+  NELOG_LocalSecFail2 = ERRLOG_BASE + 84;
   {$EXTERNALSYM NELOG_LocalSecFail2}
 
     {
@@ -600,7 +600,7 @@ const
     *
     }
 
-  NELOG_LocalSecFail3 = (ERRLOG_BASE + 85);
+  NELOG_LocalSecFail3 = ERRLOG_BASE + 85;
   {$EXTERNALSYM NELOG_LocalSecFail3}
 
     {
@@ -611,7 +611,7 @@ const
     * THE SYSTEM IS NOT SECURE.
     }
 
-  NELOG_LocalSecGeneralFail = (ERRLOG_BASE + 86);
+  NELOG_LocalSecGeneralFail = ERRLOG_BASE + 86;
   {$EXTERNALSYM NELOG_LocalSecGeneralFail}
 
     {
@@ -626,7 +626,7 @@ const
 //  NETWKSTA.SYS specific error log messages from 90 to 99
 //
 
-  NELOG_NetWkSta_Internal_Error = (ERRLOG_BASE + 90);
+  NELOG_NetWkSta_Internal_Error = ERRLOG_BASE + 90;
   {$EXTERNALSYM NELOG_NetWkSta_Internal_Error}
 
     {
@@ -634,14 +634,14 @@ const
     *  %1
     }
 
-  NELOG_NetWkSta_No_Resource = (ERRLOG_BASE + 91);
+  NELOG_NetWkSta_No_Resource = ERRLOG_BASE + 91;
   {$EXTERNALSYM NELOG_NetWkSta_No_Resource}
 
     {
     * The redirector is out of a resource: %1.
     }
 
-  NELOG_NetWkSta_SMB_Err = (ERRLOG_BASE + 92);
+  NELOG_NetWkSta_SMB_Err = ERRLOG_BASE + 92;
   {$EXTERNALSYM NELOG_NetWkSta_SMB_Err}
 
     {
@@ -649,7 +649,7 @@ const
     *  The SMB header is the data.
     }
 
-  NELOG_NetWkSta_VC_Err = (ERRLOG_BASE + 93);
+  NELOG_NetWkSta_VC_Err = ERRLOG_BASE + 93;
   {$EXTERNALSYM NELOG_NetWkSta_VC_Err}
 
     {
@@ -657,14 +657,14 @@ const
     *  The network control block (NCB) command and return code is the data.
     }
 
-  NELOG_NetWkSta_Stuck_VC_Err = (ERRLOG_BASE + 94);
+  NELOG_NetWkSta_Stuck_VC_Err = ERRLOG_BASE + 94;
   {$EXTERNALSYM NELOG_NetWkSta_Stuck_VC_Err}
 
     {
     * Hanging up a stuck session to %1.
     }
 
-  NELOG_NetWkSta_NCB_Err = (ERRLOG_BASE + 95);
+  NELOG_NetWkSta_NCB_Err = ERRLOG_BASE + 95;
   {$EXTERNALSYM NELOG_NetWkSta_NCB_Err}
 
     {
@@ -672,7 +672,7 @@ const
     *  The NCB is the data.
     }
 
-  NELOG_NetWkSta_Write_Behind_Err = (ERRLOG_BASE + 96);
+  NELOG_NetWkSta_Write_Behind_Err = ERRLOG_BASE + 96;
   {$EXTERNALSYM NELOG_NetWkSta_Write_Behind_Err}
 
     {
@@ -680,7 +680,7 @@ const
     *  Data may have been lost.
     }
 
-  NELOG_NetWkSta_Reset_Err = (ERRLOG_BASE + 97);
+  NELOG_NetWkSta_Reset_Err = ERRLOG_BASE + 97;
   {$EXTERNALSYM NELOG_NetWkSta_Reset_Err}
 
     {
@@ -688,7 +688,7 @@ const
     *  The NCB is the data.
     }
 
-  NELOG_NetWkSta_Too_Many = (ERRLOG_BASE + 98);
+  NELOG_NetWkSta_Too_Many = ERRLOG_BASE + 98;
   {$EXTERNALSYM NELOG_NetWkSta_Too_Many}
 
     {
@@ -700,7 +700,7 @@ const
 //  Spooler specific error log messages from 100 to 103
 //
 
-  NELOG_Srv_Thread_Failure = (ERRLOG_BASE + 104);
+  NELOG_Srv_Thread_Failure = ERRLOG_BASE + 104;
   {$EXTERNALSYM NELOG_Srv_Thread_Failure}
 
     {
@@ -708,7 +708,7 @@ const
     *  The THREADS parameter in the CONFIG.SYS file should be increased.
     }
 
-  NELOG_Srv_Close_Failure = (ERRLOG_BASE + 105);
+  NELOG_Srv_Close_Failure = ERRLOG_BASE + 105;
   {$EXTERNALSYM NELOG_Srv_Close_Failure}
 
     {
@@ -716,7 +716,7 @@ const
     *  The file is probably corrupted.
     }
 
-  NELOG_ReplUserCurDir = (ERRLOG_BASE + 106);
+  NELOG_ReplUserCurDir = ERRLOG_BASE + 106;
   {$EXTERNALSYM NELOG_ReplUserCurDir}
 
     {
@@ -724,7 +724,7 @@ const
     * and is the current directory for some process.
     }
 
-  NELOG_ReplCannotMasterDir = (ERRLOG_BASE + 107);
+  NELOG_ReplCannotMasterDir = ERRLOG_BASE + 107;
   {$EXTERNALSYM NELOG_ReplCannotMasterDir}
 
     {
@@ -732,7 +732,7 @@ const
     * It is exported from another server.
     }
 
-  NELOG_ReplUpdateError = (ERRLOG_BASE + 108);
+  NELOG_ReplUpdateError = ERRLOG_BASE + 108;
   {$EXTERNALSYM NELOG_ReplUpdateError}
 
     {
@@ -740,7 +740,7 @@ const
     * on %3 due to error %1.
     }
 
-  NELOG_ReplLostMaster = (ERRLOG_BASE + 109);
+  NELOG_ReplLostMaster = ERRLOG_BASE + 109;
   {$EXTERNALSYM NELOG_ReplLostMaster}
 
     {
@@ -748,7 +748,7 @@ const
     * time.
     }
 
-  NELOG_NetlogonAuthDCFail = (ERRLOG_BASE + 110);
+  NELOG_NetlogonAuthDCFail = ERRLOG_BASE + 110;
   {$EXTERNALSYM NELOG_NetlogonAuthDCFail}
 
     {
@@ -760,50 +760,49 @@ const
     * administrator.
     }
 
-  NELOG_ReplLogonFailed = (ERRLOG_BASE + 111);
+  NELOG_ReplLogonFailed = ERRLOG_BASE + 111;
   {$EXTERNALSYM NELOG_ReplLogonFailed}
 
     {
     *The replicator attempted to log on at %2 as %1 and failed.
     }
 
-  NELOG_ReplNetErr = (ERRLOG_BASE + 112);
+  NELOG_ReplNetErr = ERRLOG_BASE + 112;
   {$EXTERNALSYM NELOG_ReplNetErr}
 
     {
     *  Network error %1 occurred.
     }
 
-  NELOG_ReplMaxFiles = (ERRLOG_BASE + 113);
+  NELOG_ReplMaxFiles = ERRLOG_BASE + 113;
   {$EXTERNALSYM NELOG_ReplMaxFiles}
 
     {
     *  Replicator limit for files in a directory has been exceeded.
     }
 
-
-  NELOG_ReplMaxTreeDepth = (ERRLOG_BASE + 114);
+  NELOG_ReplMaxTreeDepth = ERRLOG_BASE + 114;
   {$EXTERNALSYM NELOG_ReplMaxTreeDepth}
 
     {
     *  Replicator limit for tree depth has been exceeded.
     }
 
-  NELOG_ReplBadMsg = (ERRLOG_BASE + 115);
+  NELOG_ReplBadMsg = ERRLOG_BASE + 115;
   {$EXTERNALSYM NELOG_ReplBadMsg}
 
     {
     *  Unrecognized message received in mailslot.
     }
 
-  NELOG_ReplSysErr = (ERRLOG_BASE + 116);
+  NELOG_ReplSysErr = ERRLOG_BASE + 116;
   {$EXTERNALSYM NELOG_ReplSysErr}
 
     {
     *  System error %1 occurred.
     }
 
-  NELOG_ReplUserLoged = (ERRLOG_BASE + 117);
+  NELOG_ReplUserLoged = ERRLOG_BASE + 117;
   {$EXTERNALSYM NELOG_ReplUserLoged}
 
     {
@@ -811,21 +810,21 @@ const
     *  is set to NO.
     }
 
-  NELOG_ReplBadImport = (ERRLOG_BASE + 118);
+  NELOG_ReplBadImport = ERRLOG_BASE + 118;
   {$EXTERNALSYM NELOG_ReplBadImport}
 
     {
     *  IMPORT path %1 cannot be found.
     }
 
-  NELOG_ReplBadExport = (ERRLOG_BASE + 119);
+  NELOG_ReplBadExport = ERRLOG_BASE + 119;
   {$EXTERNALSYM NELOG_ReplBadExport}
 
     {
     *  EXPORT path %1 cannot be found.
     }
 
-  NELOG_ReplSignalFileErr = (ERRLOG_BASE + 120);
+  NELOG_ReplSignalFileErr = ERRLOG_BASE + 120;
   {$EXTERNALSYM NELOG_ReplSignalFileErr}
 
     {
@@ -842,7 +841,7 @@ const
     * %1
     }
 
-  NELOG_ReplAccessDenied = (ERRLOG_BASE + 122);
+  NELOG_ReplAccessDenied = ERRLOG_BASE + 122;
   {$EXTERNALSYM NELOG_ReplAccessDenied}
 
     {
@@ -850,14 +849,14 @@ const
     *  on %3 due to system error %1.
     }
 
-  NELOG_NetlogonFailedPrimary = (ERRLOG_BASE + 123);
+  NELOG_NetlogonFailedPrimary = ERRLOG_BASE + 123;
   {$EXTERNALSYM NELOG_NetlogonFailedPrimary}
 
     {
     *The primary domain controller for domain %1 has apparently failed.
     }
 
-  NELOG_NetlogonPasswdSetFailed = (ERRLOG_BASE + 124);
+  NELOG_NetlogonPasswdSetFailed = ERRLOG_BASE + 124;
   {$EXTERNALSYM NELOG_NetlogonPasswdSetFailed}
 
     {
@@ -865,21 +864,21 @@ const
     * the following error: %n%2
     }
 
-  NELOG_NetlogonTrackingError = (ERRLOG_BASE + 125);
+  NELOG_NetlogonTrackingError = ERRLOG_BASE + 125;
   {$EXTERNALSYM NELOG_NetlogonTrackingError}
 
     {
     *An error occurred while updating the logon or logoff information for %1.
     }
 
-  NELOG_NetlogonSyncError = (ERRLOG_BASE + 126);
+  NELOG_NetlogonSyncError = ERRLOG_BASE + 126;
   {$EXTERNALSYM NELOG_NetlogonSyncError}
 
     {
     *An error occurred while synchronizing with primary domain controller %1
     }
 
-  NELOG_NetlogonRequireSignOrSealError = (ERRLOG_BASE + 127);
+  NELOG_NetlogonRequireSignOrSealError = ERRLOG_BASE + 127;
   {$EXTERNALSYM NELOG_NetlogonRequireSignOrSealError}
 
     {
@@ -895,21 +894,21 @@ const
 //  UPS service specific error log messages from 130 to 135
 //
 
-  NELOG_UPS_PowerOut = (ERRLOG_BASE + 130);
+  NELOG_UPS_PowerOut = ERRLOG_BASE + 130;
   {$EXTERNALSYM NELOG_UPS_PowerOut}
 
     {
     * A power failure was detected at the server.
     }
 
-  NELOG_UPS_Shutdown = (ERRLOG_BASE + 131);
+  NELOG_UPS_Shutdown = ERRLOG_BASE + 131;
   {$EXTERNALSYM NELOG_UPS_Shutdown}
 
     {
     * The UPS service performed server shut down.
     }
 
-  NELOG_UPS_CmdFileError = (ERRLOG_BASE + 132);
+  NELOG_UPS_CmdFileError = ERRLOG_BASE + 132;
   {$EXTERNALSYM NELOG_UPS_CmdFileError}
 
     {
@@ -925,14 +924,14 @@ const
     * the data.
     }
 
-  NELOG_UPS_PowerBack = (ERRLOG_BASE + 134);
+  NELOG_UPS_PowerBack = ERRLOG_BASE + 134;
   {$EXTERNALSYM NELOG_UPS_PowerBack}
 
     {
     * Power has been restored.
     }
 
-  NELOG_UPS_CmdFileConfig = (ERRLOG_BASE + 135);
+  NELOG_UPS_CmdFileConfig = ERRLOG_BASE + 135;
   {$EXTERNALSYM NELOG_UPS_CmdFileConfig}
 
     {
@@ -940,7 +939,7 @@ const
     * shut down command file.
     }
 
-  NELOG_UPS_CmdFileExec = (ERRLOG_BASE + 136);
+  NELOG_UPS_CmdFileExec = ERRLOG_BASE + 136;
   {$EXTERNALSYM NELOG_UPS_CmdFileExec}
 
     {
@@ -952,7 +951,7 @@ const
 //  Remoteboot server specific error log messages are from 150 to 157
 //
 
-  NELOG_Missing_Parameter = (ERRLOG_BASE + 150);
+  NELOG_Missing_Parameter = ERRLOG_BASE + 150;
   {$EXTERNALSYM NELOG_Missing_Parameter}
 
     {
@@ -960,7 +959,7 @@ const
     *  parameter in the configuration file %1.
     }
 
-  NELOG_Invalid_Config_Line = (ERRLOG_BASE + 151);
+  NELOG_Invalid_Config_Line = ERRLOG_BASE + 151;
   {$EXTERNALSYM NELOG_Invalid_Config_Line}
 
     {
@@ -968,7 +967,7 @@ const
     *  configuration file %1. The invalid line is the data.
     }
 
-  NELOG_Invalid_Config_File = (ERRLOG_BASE + 152);
+  NELOG_Invalid_Config_File = ERRLOG_BASE + 152;
   {$EXTERNALSYM NELOG_Invalid_Config_File}
 
     {
@@ -976,7 +975,7 @@ const
     *  file %1.
     }
 
-  NELOG_File_Changed = (ERRLOG_BASE + 153);
+  NELOG_File_Changed = ERRLOG_BASE + 153;
   {$EXTERNALSYM NELOG_File_Changed}
 
     {
@@ -984,7 +983,7 @@ const
     *  The boot-block loading was temporarily terminated.
     }
 
-  NELOG_Files_Dont_Fit = (ERRLOG_BASE + 154);
+  NELOG_Files_Dont_Fit = ERRLOG_BASE + 154;
   {$EXTERNALSYM NELOG_Files_Dont_Fit}
 
     {
@@ -993,7 +992,7 @@ const
     * of the files.
     }
 
-  NELOG_Wrong_DLL_Version = (ERRLOG_BASE + 155);
+  NELOG_Wrong_DLL_Version = ERRLOG_BASE + 155;
   {$EXTERNALSYM NELOG_Wrong_DLL_Version}
 
     {
@@ -1001,7 +1000,7 @@ const
     *  library %1 returned an incorrect version number.
     }
 
-  NELOG_Error_in_DLL = (ERRLOG_BASE + 156);
+  NELOG_Error_in_DLL = ERRLOG_BASE + 156;
   {$EXTERNALSYM NELOG_Error_in_DLL}
 
     {
@@ -1009,7 +1008,7 @@ const
     *  link library of the service.
     }
 
-  NELOG_System_Error = (ERRLOG_BASE + 157);
+  NELOG_System_Error = ERRLOG_BASE + 157;
   {$EXTERNALSYM NELOG_System_Error}
 
     {
@@ -1017,7 +1016,7 @@ const
     *  The error code is the data.
     }
 
-  NELOG_FT_ErrLog_Too_Large = (ERRLOG_BASE + 158);
+  NELOG_FT_ErrLog_Too_Large = ERRLOG_BASE + 158;
   {$EXTERNALSYM NELOG_FT_ErrLog_Too_Large}
 
     {
@@ -1025,7 +1024,7 @@ const
     *  is more than 64K.
     }
 
-  NELOG_FT_Update_In_Progress = (ERRLOG_BASE + 159);
+  NELOG_FT_Update_In_Progress = ERRLOG_BASE + 159;
   {$EXTERNALSYM NELOG_FT_Update_In_Progress}
 
     {
@@ -1034,20 +1033,19 @@ const
     * system crashed while working on the error log.
     }
 
-  NELOG_Joined_Domain = (ERRLOG_BASE + 160);
+  NELOG_Joined_Domain = ERRLOG_BASE + 160;
   {$EXTERNALSYM NELOG_Joined_Domain}
 
     {
     * This computer has been successfully joined to %1 '%2'.
     }
 
-  NELOG_Joined_Workgroup = (ERRLOG_BASE + 161);
+  NELOG_Joined_Workgroup = ERRLOG_BASE + 161;
   {$EXTERNALSYM NELOG_Joined_Workgroup}
 
     (*
     * This computer has been successfully joined to workgroup '%1'.
     *)
-
 
 //
 // Microsoft has created a generic error log entry for OEMs to use to
@@ -1068,7 +1066,7 @@ const
 // provide null strings for the empty insertion strings.
 //
 
-  NELOG_OEM_Code = (ERRLOG_BASE + 199);
+  NELOG_OEM_Code = ERRLOG_BASE + 199;
   {$EXTERNALSYM NELOG_OEM_Code}
 
     {
@@ -1082,8 +1080,7 @@ const
   ERRLOG2_BASE = 5700        { New NT NELOG errors start here };
   {$EXTERNALSYM ERRLOG2_BASE}
 
-
-  NELOG_NetlogonSSIInitError = (ERRLOG2_BASE + 0);
+  NELOG_NetlogonSSIInitError = ERRLOG2_BASE + 0;
   {$EXTERNALSYM NELOG_NetlogonSSIInitError}
 
     {
@@ -1092,7 +1089,7 @@ const
      * error occurred: %n%1
      }
 
-  NELOG_NetlogonFailedToUpdateTrustList = (ERRLOG2_BASE + 1);
+  NELOG_NetlogonFailedToUpdateTrustList = ERRLOG2_BASE + 1;
   {$EXTERNALSYM NELOG_NetlogonFailedToUpdateTrustList}
 
     {
@@ -1100,7 +1097,7 @@ const
      * following error occurred: %n%1
      }
 
-  NELOG_NetlogonFailedToAddRpcInterface = (ERRLOG2_BASE + 2);
+  NELOG_NetlogonFailedToAddRpcInterface = ERRLOG2_BASE + 2;
   {$EXTERNALSYM NELOG_NetlogonFailedToAddRpcInterface}
 
     {
@@ -1108,7 +1105,7 @@ const
      * service was terminated. The following error occurred: %n%1
      }
 
-  NELOG_NetlogonFailedToReadMailslot = (ERRLOG2_BASE + 3);
+  NELOG_NetlogonFailedToReadMailslot = ERRLOG2_BASE + 3;
   {$EXTERNALSYM NELOG_NetlogonFailedToReadMailslot}
 
     {
@@ -1116,7 +1113,7 @@ const
      * to the following error: %n%2
      }
 
-  NELOG_NetlogonFailedToRegisterSC = (ERRLOG2_BASE + 4);
+  NELOG_NetlogonFailedToRegisterSC = ERRLOG2_BASE + 4;
   {$EXTERNALSYM NELOG_NetlogonFailedToRegisterSC}
 
     (*
@@ -1125,7 +1122,7 @@ const
      * error occurred: %n%1
      *)
 
-  NELOG_NetlogonChangeLogCorrupt = (ERRLOG2_BASE + 5);
+  NELOG_NetlogonChangeLogCorrupt = ERRLOG2_BASE + 5;
   {$EXTERNALSYM NELOG_NetlogonChangeLogCorrupt}
 
     {
@@ -1134,7 +1131,7 @@ const
      * the change log.
      }
 
-  NELOG_NetlogonFailedToCreateShare = (ERRLOG2_BASE + 6);
+  NELOG_NetlogonFailedToCreateShare = ERRLOG2_BASE + 6;
   {$EXTERNALSYM NELOG_NetlogonFailedToCreateShare}
 
     {
@@ -1142,21 +1139,21 @@ const
      * error occurred: %n%2
      }
 
-  NELOG_NetlogonDownLevelLogonFailed = (ERRLOG2_BASE + 7);
+  NELOG_NetlogonDownLevelLogonFailed = ERRLOG2_BASE + 7;
   {$EXTERNALSYM NELOG_NetlogonDownLevelLogonFailed}
 
     {
      * The down-level logon request for the user %1 from %2 failed.
      }
 
-  NELOG_NetlogonDownLevelLogoffFailed = (ERRLOG2_BASE + 8);
+  NELOG_NetlogonDownLevelLogoffFailed = ERRLOG2_BASE + 8;
   {$EXTERNALSYM NELOG_NetlogonDownLevelLogoffFailed}
 
     {
      * The down-level logoff request for the user %1 from %2 failed.
      }
 
-  NELOG_NetlogonNTLogonFailed = (ERRLOG2_BASE + 9);
+  NELOG_NetlogonNTLogonFailed = ERRLOG2_BASE + 9;
   {$EXTERNALSYM NELOG_NetlogonNTLogonFailed}
 
     {
@@ -1164,7 +1161,7 @@ const
      * failed.
      }
 
-  NELOG_NetlogonNTLogoffFailed = (ERRLOG2_BASE + 10);
+  NELOG_NetlogonNTLogoffFailed = ERRLOG2_BASE + 10;
   {$EXTERNALSYM NELOG_NetlogonNTLogoffFailed}
 
     {
@@ -1172,7 +1169,7 @@ const
      * failed.
      }
 
-  NELOG_NetlogonPartialSyncCallSuccess = (ERRLOG2_BASE + 11);
+  NELOG_NetlogonPartialSyncCallSuccess = ERRLOG2_BASE + 11;
   {$EXTERNALSYM NELOG_NetlogonPartialSyncCallSuccess}
 
     {
@@ -1181,7 +1178,7 @@ const
      * caller.
      }
 
-  NELOG_NetlogonPartialSyncCallFailed = (ERRLOG2_BASE + 12);
+  NELOG_NetlogonPartialSyncCallFailed = ERRLOG2_BASE + 12;
   {$EXTERNALSYM NELOG_NetlogonPartialSyncCallFailed}
 
     {
@@ -1189,7 +1186,7 @@ const
      * the following error: %n%2
      }
 
-  NELOG_NetlogonFullSyncCallSuccess = (ERRLOG2_BASE + 13);
+  NELOG_NetlogonFullSyncCallSuccess = ERRLOG2_BASE + 13;
   {$EXTERNALSYM NELOG_NetlogonFullSyncCallSuccess}
 
     {
@@ -1198,7 +1195,7 @@ const
      * the caller.
      }
 
-  NELOG_NetlogonFullSyncCallFailed = (ERRLOG2_BASE + 14);
+  NELOG_NetlogonFullSyncCallFailed = ERRLOG2_BASE + 14;
   {$EXTERNALSYM NELOG_NetlogonFullSyncCallFailed}
 
     {
@@ -1206,7 +1203,7 @@ const
      * the following error: %n%2
      }
 
-  NELOG_NetlogonPartialSyncSuccess = (ERRLOG2_BASE + 15);
+  NELOG_NetlogonPartialSyncSuccess = ERRLOG2_BASE + 15;
   {$EXTERNALSYM NELOG_NetlogonPartialSyncSuccess}
 
     {
@@ -1215,8 +1212,7 @@ const
      * applied to the database.
      }
 
-
-  NELOG_NetlogonPartialSyncFailed = (ERRLOG2_BASE + 16);
+  NELOG_NetlogonPartialSyncFailed = ERRLOG2_BASE + 16;
   {$EXTERNALSYM NELOG_NetlogonPartialSyncFailed}
 
     {
@@ -1224,7 +1220,7 @@ const
      * primary domain controller %2 failed with the following error: %n%3
      }
 
-  NELOG_NetlogonFullSyncSuccess = (ERRLOG2_BASE + 17);
+  NELOG_NetlogonFullSyncSuccess = ERRLOG2_BASE + 17;
   {$EXTERNALSYM NELOG_NetlogonFullSyncSuccess}
 
     {
@@ -1232,8 +1228,7 @@ const
      * primary domain controller %2 completed successfully.
      }
 
-
-  NELOG_NetlogonFullSyncFailed = (ERRLOG2_BASE + 18);
+  NELOG_NetlogonFullSyncFailed = ERRLOG2_BASE + 18;
   {$EXTERNALSYM NELOG_NetlogonFullSyncFailed}
 
     {
@@ -1241,7 +1236,7 @@ const
      * primary domain controller %2 failed with the following error: %n%3
      }
 
-  NELOG_NetlogonAuthNoDomainController = (ERRLOG2_BASE + 19);
+  NELOG_NetlogonAuthNoDomainController = ERRLOG2_BASE + 19;
   {$EXTERNALSYM NELOG_NetlogonAuthNoDomainController}
 
     {
@@ -1258,7 +1253,7 @@ const
      * in the specified domain.
      }
 
-  NELOG_NetlogonAuthNoTrustLsaSecret = (ERRLOG2_BASE + 20);
+  NELOG_NetlogonAuthNoTrustLsaSecret = ERRLOG2_BASE + 20;
   {$EXTERNALSYM NELOG_NetlogonAuthNoTrustLsaSecret}
 
     {
@@ -1266,7 +1261,7 @@ const
      * failed because the computer %3 does not have a local security database account.
      }
 
-  NELOG_NetlogonAuthNoTrustSamAccount = (ERRLOG2_BASE + 21);
+  NELOG_NetlogonAuthNoTrustSamAccount = ERRLOG2_BASE + 21;
   {$EXTERNALSYM NELOG_NetlogonAuthNoTrustSamAccount}
 
     {
@@ -1280,7 +1275,7 @@ const
      * Otherwise, the account is an interdomain trust account with the specified domain.
      }
 
-  NELOG_NetlogonServerAuthFailed = (ERRLOG2_BASE + 22);
+  NELOG_NetlogonServerAuthFailed = ERRLOG2_BASE + 22;
   {$EXTERNALSYM NELOG_NetlogonServerAuthFailed}
 
     {
@@ -1289,7 +1284,7 @@ const
      * %2.  The following error occurred: %n%3
      }
 
-  NELOG_NetlogonServerAuthNoTrustSamAccount = (ERRLOG2_BASE + 23);
+  NELOG_NetlogonServerAuthNoTrustSamAccount = ERRLOG2_BASE + 23;
   {$EXTERNALSYM NELOG_NetlogonServerAuthNoTrustSamAccount}
 
     {
@@ -1320,35 +1315,35 @@ const
 // General log messages for NT services.
 //
 
-  NELOG_FailedToRegisterSC = (ERRLOG2_BASE + 24);
+  NELOG_FailedToRegisterSC = ERRLOG2_BASE + 24;
   {$EXTERNALSYM NELOG_FailedToRegisterSC}
 
     {
      * Could not register control handler with service controller %1.
      }
 
-  NELOG_FailedToSetServiceStatus = (ERRLOG2_BASE + 25);
+  NELOG_FailedToSetServiceStatus = ERRLOG2_BASE + 25;
   {$EXTERNALSYM NELOG_FailedToSetServiceStatus}
 
     {
      * Could not set service status with service controller %1.
      }
 
-  NELOG_FailedToGetComputerName = (ERRLOG2_BASE + 26);
+  NELOG_FailedToGetComputerName = ERRLOG2_BASE + 26;
   {$EXTERNALSYM NELOG_FailedToGetComputerName}
 
     {
      * Could not find the computer name %1.
      }
 
-  NELOG_DriverNotLoaded = (ERRLOG2_BASE + 27);
+  NELOG_DriverNotLoaded = ERRLOG2_BASE + 27;
   {$EXTERNALSYM NELOG_DriverNotLoaded}
 
     {
      * Could not load %1 device driver.
      }
 
-  NELOG_NoTranportLoaded = (ERRLOG2_BASE + 28);
+  NELOG_NoTranportLoaded = ERRLOG2_BASE + 28;
   {$EXTERNALSYM NELOG_NoTranportLoaded}
 
     {
@@ -1359,7 +1354,7 @@ const
 // More Netlogon service events
 //
 
-  NELOG_NetlogonFailedDomainDelta = (ERRLOG2_BASE + 29);
+  NELOG_NetlogonFailedDomainDelta = ERRLOG2_BASE + 29;
   {$EXTERNALSYM NELOG_NetlogonFailedDomainDelta}
 
     {
@@ -1367,7 +1362,7 @@ const
      * %3 failed with the following error: %n%4
      }
 
-  NELOG_NetlogonFailedGlobalGroupDelta = (ERRLOG2_BASE + 30);
+  NELOG_NetlogonFailedGlobalGroupDelta = ERRLOG2_BASE + 30;
   {$EXTERNALSYM NELOG_NetlogonFailedGlobalGroupDelta}
 
     {
@@ -1375,7 +1370,7 @@ const
      * %3 failed with the following error: %n%4
      }
 
-  NELOG_NetlogonFailedLocalGroupDelta = (ERRLOG2_BASE + 31);
+  NELOG_NetlogonFailedLocalGroupDelta = ERRLOG2_BASE + 31;
   {$EXTERNALSYM NELOG_NetlogonFailedLocalGroupDelta}
 
     {
@@ -1383,7 +1378,7 @@ const
      * %3 failed with the following error: %n%4
      }
 
-  NELOG_NetlogonFailedUserDelta = (ERRLOG2_BASE + 32);
+  NELOG_NetlogonFailedUserDelta = ERRLOG2_BASE + 32;
   {$EXTERNALSYM NELOG_NetlogonFailedUserDelta}
 
     {
@@ -1391,7 +1386,7 @@ const
      * %3 failed with the following error: %n%4
      }
 
-  NELOG_NetlogonFailedPolicyDelta = (ERRLOG2_BASE + 33);
+  NELOG_NetlogonFailedPolicyDelta = ERRLOG2_BASE + 33;
   {$EXTERNALSYM NELOG_NetlogonFailedPolicyDelta}
 
     {
@@ -1399,7 +1394,7 @@ const
      * %3 failed with the following error: %n%4
      }
 
-  NELOG_NetlogonFailedTrustedDomainDelta = (ERRLOG2_BASE + 34);
+  NELOG_NetlogonFailedTrustedDomainDelta = ERRLOG2_BASE + 34;
   {$EXTERNALSYM NELOG_NetlogonFailedTrustedDomainDelta}
 
     {
@@ -1407,7 +1402,7 @@ const
      * %3 failed with the following error: %n%4
      }
 
-  NELOG_NetlogonFailedAccountDelta = (ERRLOG2_BASE + 35);
+  NELOG_NetlogonFailedAccountDelta = ERRLOG2_BASE + 35;
   {$EXTERNALSYM NELOG_NetlogonFailedAccountDelta}
 
     {
@@ -1415,7 +1410,7 @@ const
      * %3 failed with the following error: %n%4
      }
 
-  NELOG_NetlogonFailedSecretDelta = (ERRLOG2_BASE + 36);
+  NELOG_NetlogonFailedSecretDelta = ERRLOG2_BASE + 36;
   {$EXTERNALSYM NELOG_NetlogonFailedSecretDelta}
 
     {
@@ -1423,14 +1418,14 @@ const
      * %3 failed with the following error: %n%4
      }
 
-  NELOG_NetlogonSystemError = (ERRLOG2_BASE + 37);
+  NELOG_NetlogonSystemError = ERRLOG2_BASE + 37;
   {$EXTERNALSYM NELOG_NetlogonSystemError}
 
     {
     * The system returned the following unexpected error code: %n%1
     }
 
-  NELOG_NetlogonDuplicateMachineAccounts = (ERRLOG2_BASE + 38);
+  NELOG_NetlogonDuplicateMachineAccounts = ERRLOG2_BASE + 38;
   {$EXTERNALSYM NELOG_NetlogonDuplicateMachineAccounts}
 
     {
@@ -1440,7 +1435,7 @@ const
     * SERVERS global group.  It cannot be both.
     }
 
-  NELOG_NetlogonTooManyGlobalGroups = (ERRLOG2_BASE + 39);
+  NELOG_NetlogonTooManyGlobalGroups = ERRLOG2_BASE + 39;
   {$EXTERNALSYM NELOG_NetlogonTooManyGlobalGroups}
 
     {
@@ -1449,14 +1444,14 @@ const
     * BDCs from the domain.
     }
 
-  NELOG_NetlogonBrowserDriver = (ERRLOG2_BASE + 40);
+  NELOG_NetlogonBrowserDriver = ERRLOG2_BASE + 40;
   {$EXTERNALSYM NELOG_NetlogonBrowserDriver}
 
     {
     * The Browser driver returned the following error to Netlogon: %n%1
     }
 
-  NELOG_NetlogonAddNameFailure = (ERRLOG2_BASE + 41);
+  NELOG_NetlogonAddNameFailure = ERRLOG2_BASE + 41;
   {$EXTERNALSYM NELOG_NetlogonAddNameFailure}
 
     {
@@ -1466,14 +1461,14 @@ const
 //
 //  More Remoteboot service events.
 //
-  NELOG_RplMessages = (ERRLOG2_BASE + 42);
+  NELOG_RplMessages = ERRLOG2_BASE + 42;
   {$EXTERNALSYM NELOG_RplMessages}
 
     {
     * Service failed to retrieve messages needed to boot remote boot clients.
     }
 
-  NELOG_RplXnsBoot = (ERRLOG2_BASE + 43);
+  NELOG_RplXnsBoot = ERRLOG2_BASE + 43;
   {$EXTERNALSYM NELOG_RplXnsBoot}
 
     {
@@ -1481,14 +1476,14 @@ const
     * for 3Com 3Start remote boot clients.
     }
 
-  NELOG_RplSystem = (ERRLOG2_BASE + 44);
+  NELOG_RplSystem = ERRLOG2_BASE + 44;
   {$EXTERNALSYM NELOG_RplSystem}
 
     {
     * Service experienced a severe system error and will shut itself down.
     }
 
-  NELOG_RplWkstaTimeout = (ERRLOG2_BASE + 45);
+  NELOG_RplWkstaTimeout = ERRLOG2_BASE + 45;
   {$EXTERNALSYM NELOG_RplWkstaTimeout}
 
     {
@@ -1496,7 +1491,7 @@ const
     * boot data.  Remote boot of this client was not completed.
     }
 
-  NELOG_RplWkstaFileOpen = (ERRLOG2_BASE + 46);
+  NELOG_RplWkstaFileOpen = ERRLOG2_BASE + 46;
   {$EXTERNALSYM NELOG_RplWkstaFileOpen}
 
     {
@@ -1504,7 +1499,7 @@ const
     * file %2.
     }
 
-  NELOG_RplWkstaFileRead = (ERRLOG2_BASE + 47);
+  NELOG_RplWkstaFileRead = ERRLOG2_BASE + 47;
   {$EXTERNALSYM NELOG_RplWkstaFileRead}
 
     {
@@ -1512,7 +1507,7 @@ const
     * file %2.
     }
 
-  NELOG_RplWkstaMemory = (ERRLOG2_BASE + 48);
+  NELOG_RplWkstaMemory = ERRLOG2_BASE + 48;
   {$EXTERNALSYM NELOG_RplWkstaMemory}
 
     {
@@ -1520,7 +1515,7 @@ const
     * at the remote boot server.
     }
 
-  NELOG_RplWkstaFileChecksum = (ERRLOG2_BASE + 49);
+  NELOG_RplWkstaFileChecksum = ERRLOG2_BASE + 49;
   {$EXTERNALSYM NELOG_RplWkstaFileChecksum}
 
     {
@@ -1528,7 +1523,7 @@ const
     * because checksum for file %2 could not be calculated.
     }
 
-  NELOG_RplWkstaFileLineCount = (ERRLOG2_BASE + 50);
+  NELOG_RplWkstaFileLineCount = ERRLOG2_BASE + 50;
   {$EXTERNALSYM NELOG_RplWkstaFileLineCount}
 
     {
@@ -1536,7 +1531,7 @@ const
     * file %2.
     }
 
-  NELOG_RplWkstaBbcFile = (ERRLOG2_BASE + 51);
+  NELOG_RplWkstaBbcFile = ERRLOG2_BASE + 51;
   {$EXTERNALSYM NELOG_RplWkstaBbcFile}
 
     {
@@ -1545,7 +1540,7 @@ const
     * line and/or loader line.
     }
 
-  NELOG_RplWkstaFileSize = (ERRLOG2_BASE + 52);
+  NELOG_RplWkstaFileSize = ERRLOG2_BASE + 52;
   {$EXTERNALSYM NELOG_RplWkstaFileSize}
 
     {
@@ -1553,7 +1548,7 @@ const
     * file %2.
     }
 
-  NELOG_RplWkstaInternal = (ERRLOG2_BASE + 53);
+  NELOG_RplWkstaInternal = ERRLOG2_BASE + 53;
   {$EXTERNALSYM NELOG_RplWkstaInternal}
 
     {
@@ -1561,7 +1556,7 @@ const
     * service internal error.
     }
 
-  NELOG_RplWkstaWrongVersion = (ERRLOG2_BASE + 54);
+  NELOG_RplWkstaWrongVersion = ERRLOG2_BASE + 54;
   {$EXTERNALSYM NELOG_RplWkstaWrongVersion}
 
     {
@@ -1569,65 +1564,65 @@ const
     * invalid boot header.
     }
 
-  NELOG_RplWkstaNetwork = (ERRLOG2_BASE + 55);
+  NELOG_RplWkstaNetwork = ERRLOG2_BASE + 55;
   {$EXTERNALSYM NELOG_RplWkstaNetwork}
 
     {
     * Client with computer name %1 was not booted due to network error.
     }
 
-  NELOG_RplAdapterResource = (ERRLOG2_BASE + 56);
+  NELOG_RplAdapterResource = ERRLOG2_BASE + 56;
   {$EXTERNALSYM NELOG_RplAdapterResource}
 
     {
     * Client with adapter id %1 was not booted due to lack of resources.
     }
 
-  NELOG_RplFileCopy = (ERRLOG2_BASE + 57);
+  NELOG_RplFileCopy = ERRLOG2_BASE + 57;
   {$EXTERNALSYM NELOG_RplFileCopy}
 
     {
     * Service experienced error copying file or directory %1.
     }
 
-  NELOG_RplFileDelete = (ERRLOG2_BASE + 58);
+  NELOG_RplFileDelete = ERRLOG2_BASE + 58;
   {$EXTERNALSYM NELOG_RplFileDelete}
 
     {
     * Service experienced error deleting file or directory %1.
     }
 
-  NELOG_RplFilePerms = (ERRLOG2_BASE + 59);
+  NELOG_RplFilePerms = ERRLOG2_BASE + 59;
   {$EXTERNALSYM NELOG_RplFilePerms}
 
     {
     * Service experienced error setting permissions on file or directory %1.
     }
-  NELOG_RplCheckConfigs = (ERRLOG2_BASE + 60);
+  NELOG_RplCheckConfigs = ERRLOG2_BASE + 60;
   {$EXTERNALSYM NELOG_RplCheckConfigs}
 
     {
     * Service experienced error evaluating RPL configurations.
     }
-  NELOG_RplCreateProfiles = (ERRLOG2_BASE + 61);
+  NELOG_RplCreateProfiles = ERRLOG2_BASE + 61;
   {$EXTERNALSYM NELOG_RplCreateProfiles}
 
     {
     * Service experienced error creating RPL profiles for all configurations.
     }
-  NELOG_RplRegistry = (ERRLOG2_BASE + 62);
+  NELOG_RplRegistry = ERRLOG2_BASE + 62;
   {$EXTERNALSYM NELOG_RplRegistry}
 
     {
     * Service experienced error accessing registry.
     }
-  NELOG_RplReplaceRPLDISK = (ERRLOG2_BASE + 63);
+  NELOG_RplReplaceRPLDISK = ERRLOG2_BASE + 63;
   {$EXTERNALSYM NELOG_RplReplaceRPLDISK}
 
     {
     * Service experienced error replacing possibly outdated RPLDISK.SYS.
     }
-  NELOG_RplCheckSecurity = (ERRLOG2_BASE + 64);
+  NELOG_RplCheckSecurity = ERRLOG2_BASE + 64;
   {$EXTERNALSYM NELOG_RplCheckSecurity}
 
     {
@@ -1635,13 +1630,13 @@ const
     * file permissions.  These accounts are the RPLUSER local group
     * and the user accounts for the individual RPL workstations.
     }
-  NELOG_RplBackupDatabase = (ERRLOG2_BASE + 65);
+  NELOG_RplBackupDatabase = ERRLOG2_BASE + 65;
   {$EXTERNALSYM NELOG_RplBackupDatabase}
 
     {
     * Service failed to back up its database.
     }
-  NELOG_RplInitDatabase = (ERRLOG2_BASE + 66);
+  NELOG_RplInitDatabase = ERRLOG2_BASE + 66;
   {$EXTERNALSYM NELOG_RplInitDatabase}
 
     {
@@ -1649,20 +1644,20 @@ const
     * missing or corrupted.  Service will attempt restoring the database
     * from the backup.
     }
-  NELOG_RplRestoreDatabaseFailure = (ERRLOG2_BASE + 67);
+  NELOG_RplRestoreDatabaseFailure = ERRLOG2_BASE + 67;
   {$EXTERNALSYM NELOG_RplRestoreDatabaseFailure}
 
     {
     * Service failed to restore its database from the backup.  Service
     * will not start.
     }
-  NELOG_RplRestoreDatabaseSuccess = (ERRLOG2_BASE + 68);
+  NELOG_RplRestoreDatabaseSuccess = ERRLOG2_BASE + 68;
   {$EXTERNALSYM NELOG_RplRestoreDatabaseSuccess}
 
     {
     * Service successfully restored its database from the backup.
     }
-  NELOG_RplInitRestoredDatabase = (ERRLOG2_BASE + 69);
+  NELOG_RplInitRestoredDatabase = ERRLOG2_BASE + 69;
   {$EXTERNALSYM NELOG_RplInitRestoredDatabase}
 
     {
@@ -1673,7 +1668,7 @@ const
 //
 // More Netlogon and RPL service events
 //
-  NELOG_NetlogonSessionTypeWrong = (ERRLOG2_BASE + 70);
+  NELOG_NetlogonSessionTypeWrong = ERRLOG2_BASE + 70;
   {$EXTERNALSYM NELOG_NetlogonSessionTypeWrong}
 
     {
@@ -1683,7 +1678,7 @@ const
      * a member workstation in domain %3, or as a server in domain %3.
      * Use the Active Directory Users and Computers tool or Server Manager to remove the BDC account for %2.
      }
-  NELOG_RplUpgradeDBTo40 = (ERRLOG2_BASE + 71);
+  NELOG_RplUpgradeDBTo40 = ERRLOG2_BASE + 71;
   {$EXTERNALSYM NELOG_RplUpgradeDBTo40}
 
     {
@@ -1691,7 +1686,7 @@ const
     * attempting to convert it to NT 4.0 format. The JETCONV converter
     * will write to the Application event log when it is finished.
     }
-  NELOG_NetlogonLanmanBdcsNotAllowed = (ERRLOG2_BASE + 72);
+  NELOG_NetlogonLanmanBdcsNotAllowed = ERRLOG2_BASE + 72;
   {$EXTERNALSYM NELOG_NetlogonLanmanBdcsNotAllowed}
 
     {
@@ -1699,7 +1694,7 @@ const
      * This group defines Lan Manager BDCs in the domain.
      * Lan Manager BDCs are not permitted in NT domains.
      }
-  NELOG_NetlogonNoDynamicDns = (ERRLOG2_BASE + 73);
+  NELOG_NetlogonNoDynamicDns = ERRLOG2_BASE + 73;
   {$EXTERNALSYM NELOG_NetlogonNoDynamicDns}
 
     {
@@ -1716,10 +1711,11 @@ const
      * records from the file '%SystemRoot%\System32\Config\Netlogon.dns' to the DNS database.
      }
 
-  NELOG_NetlogonDynamicDnsRegisterFailure = (ERRLOG2_BASE + 74);
+  NELOG_NetlogonDynamicDnsRegisterFailure = ERRLOG2_BASE + 74;
   {$EXTERNALSYM NELOG_NetlogonDynamicDnsRegisterFailure}
 
     {
+      *
       * The dynamic registration of the DNS record '%1' failed on the following DNS server:
       *
       * %n%nDNS server IP address: %3
@@ -1733,19 +1729,20 @@ const
       *
       * %nDetermine what might have caused this failure, resolve the problem, and initiate
       * registration of the DNS records by the domain controller. To determine what might
-      * have caused this failure, run DCDiag.exe. You can find this program on the Whistler
-      * installation CD in the Support\Tools folder. To learn more about DCDiag.exe, see
-      * Help and Suport Center. To initiate registration of the DNS records by this domain
-      * controller, run 'nltest.exe /dsregdns' from the command prompt on the domain controller
-      * or restart Net Logon service. Nltest.exe is available in the Microsoft Windows Server
-      * Resource Kit CD. %n  Or, you can manually add this record to DNS, but it is not
+      * have caused this failure, run DCDiag.exe. You can find this program on the Windows
+      * Server 2003 installation CD in Support\Tools\support.cab. To learn more about
+      * DCDiag.exe, see Help and Support Center. To initiate registration of the DNS records by
+      * this domain controller, run 'nltest.exe /dsregdns' from the command prompt on the domain
+      * controller or restart Net Logon service. Nltest.exe is available in the Microsoft Windows
+      * Server Resource Kit CD. %n  Or, you can manually add this record to DNS, but it is not
       * recommended.
       *
       * %n%nADDITIONAL DATA
       * %nError Value: %2
+      *
      }
 
-  NELOG_NetlogonDynamicDnsDeregisterFailure = (ERRLOG2_BASE + 75);
+  NELOG_NetlogonDynamicDnsDeregisterFailure = ERRLOG2_BASE + 75;
   {$EXTERNALSYM NELOG_NetlogonDynamicDnsDeregisterFailure}
 
     {
@@ -1765,14 +1762,14 @@ const
       * %nError Value: %2
      }
 
-  NELOG_NetlogonFailedFileCreate = (ERRLOG2_BASE + 76);
+  NELOG_NetlogonFailedFileCreate = ERRLOG2_BASE + 76;
   {$EXTERNALSYM NELOG_NetlogonFailedFileCreate}
 
     {
      * Failed to create/open file %1 with the following error: %n%2
      }
 
-  NELOG_NetlogonGetSubnetToSite = (ERRLOG2_BASE + 77);
+  NELOG_NetlogonGetSubnetToSite = ERRLOG2_BASE + 77;
   {$EXTERNALSYM NELOG_NetlogonGetSubnetToSite}
 
     {
@@ -1780,7 +1777,7 @@ const
      * mapping information from the DS: %n%1
      }
 
-  NELOG_NetlogonNoSiteForClient = (ERRLOG2_BASE + 78);
+  NELOG_NetlogonNoSiteForClient = ERRLOG2_BASE + 78;
   {$EXTERNALSYM NELOG_NetlogonNoSiteForClient}
 
    {
@@ -1789,7 +1786,7 @@ const
     * the IP address.  Consider adding a subnet object for this IP address.
     }
 
-  NELOG_NetlogonBadSiteName = (ERRLOG2_BASE + 79);
+  NELOG_NetlogonBadSiteName = ERRLOG2_BASE + 79;
   {$EXTERNALSYM NELOG_NetlogonBadSiteName}
 
     {
@@ -1798,7 +1795,7 @@ const
      * Rename the site to be a valid name.
      }
 
-  NELOG_NetlogonBadSubnetName = (ERRLOG2_BASE + 80);
+  NELOG_NetlogonBadSubnetName = ERRLOG2_BASE + 80;
   {$EXTERNALSYM NELOG_NetlogonBadSubnetName}
 
     {
@@ -1810,7 +1807,7 @@ const
      * Correct the name of the subnet object.
      }
 
-  NELOG_NetlogonDynamicDnsServerFailure = (ERRLOG2_BASE + 81);
+  NELOG_NetlogonDynamicDnsServerFailure = ERRLOG2_BASE + 81;
   {$EXTERNALSYM NELOG_NetlogonDynamicDnsServerFailure}
 
     {
@@ -1834,14 +1831,14 @@ const
      * Net Logon service. Nltest.exe is available in the Microsoft Windows Server Resource Kit CD.
      }
 
-  NELOG_NetlogonDynamicDnsFailure = (ERRLOG2_BASE + 82);
+  NELOG_NetlogonDynamicDnsFailure = ERRLOG2_BASE + 82;
   {$EXTERNALSYM NELOG_NetlogonDynamicDnsFailure}
 
     {
      * Dynamic registration or deregistration of one or more DNS records failed with the following error: %n%1
      }
 
-  NELOG_NetlogonRpcCallCancelled = (ERRLOG2_BASE + 83);
+  NELOG_NetlogonRpcCallCancelled = ERRLOG2_BASE + 83;
   {$EXTERNALSYM NELOG_NetlogonRpcCallCancelled}
 
     {
@@ -1849,7 +1846,7 @@ const
      * is not responsive.  The current RPC call from Netlogon on \\%3 to %1 has been cancelled.
      }
 
-  NELOG_NetlogonDcSiteCovered = (ERRLOG2_BASE + 84);
+  NELOG_NetlogonDcSiteCovered = ERRLOG2_BASE + 84;
   {$EXTERNALSYM NELOG_NetlogonDcSiteCovered}
 
     {
@@ -1859,14 +1856,14 @@ const
      * Directory Server replication costs.
      }
 
-  NELOG_NetlogonDcSiteNotCovered = (ERRLOG2_BASE + 85);
+  NELOG_NetlogonDcSiteNotCovered = ERRLOG2_BASE + 85;
   {$EXTERNALSYM NELOG_NetlogonDcSiteNotCovered}
 
     {
      * This Domain Controller no longer automatically covers site '%1' for domain '%2'.
      }
 
-  NELOG_NetlogonGcSiteCovered = (ERRLOG2_BASE + 86);
+  NELOG_NetlogonGcSiteCovered = ERRLOG2_BASE + 86;
   {$EXTERNALSYM NELOG_NetlogonGcSiteCovered}
 
     {
@@ -1876,14 +1873,14 @@ const
      * Directory Server replication costs.
      }
 
-  NELOG_NetlogonGcSiteNotCovered = (ERRLOG2_BASE + 87);
+  NELOG_NetlogonGcSiteNotCovered = ERRLOG2_BASE + 87;
   {$EXTERNALSYM NELOG_NetlogonGcSiteNotCovered}
 
     {
      * This Global Catalog server no longer automatically covers site '%1' for forest '%2'.
      }
 
-  NELOG_NetlogonFailedSpnUpdate = (ERRLOG2_BASE + 88);
+  NELOG_NetlogonFailedSpnUpdate = ERRLOG2_BASE + 88;
   {$EXTERNALSYM NELOG_NetlogonFailedSpnUpdate}
 
     {
@@ -1892,7 +1889,7 @@ const
      * The following error occurred: %n%3
      }
 
-  NELOG_NetlogonFailedDnsHostNameUpdate = (ERRLOG2_BASE + 89);
+  NELOG_NetlogonFailedDnsHostNameUpdate = ERRLOG2_BASE + 89;
   {$EXTERNALSYM NELOG_NetlogonFailedDnsHostNameUpdate}
 
     {
@@ -1901,7 +1898,7 @@ const
      * The following error occurred: %n%2
      }
 
-  NELOG_NetlogonAuthNoUplevelDomainController = (ERRLOG2_BASE + 90);
+  NELOG_NetlogonAuthNoUplevelDomainController = ERRLOG2_BASE + 90;
   {$EXTERNALSYM NELOG_NetlogonAuthNoUplevelDomainController}
 
     {
@@ -1912,7 +1909,7 @@ const
      * The following error occurred:%n%2
      }
 
-  NELOG_NetlogonAuthDomainDowngraded = (ERRLOG2_BASE + 91);
+  NELOG_NetlogonAuthDomainDowngraded = ERRLOG2_BASE + 91;
   {$EXTERNALSYM NELOG_NetlogonAuthDomainDowngraded}
 
     {
@@ -1923,7 +1920,7 @@ const
      * The following error occurred:%n%2
      }
 
-  NELOG_NetlogonNdncSiteCovered = (ERRLOG2_BASE + 92);
+  NELOG_NetlogonNdncSiteCovered = ERRLOG2_BASE + 92;
   {$EXTERNALSYM NELOG_NetlogonNdncSiteCovered}
 
     {
@@ -1933,14 +1930,14 @@ const
      * Directory Server replication costs.
      }
 
-  NELOG_NetlogonNdncSiteNotCovered = (ERRLOG2_BASE + 93);
+  NELOG_NetlogonNdncSiteNotCovered = ERRLOG2_BASE + 93;
   {$EXTERNALSYM NELOG_NetlogonNdncSiteNotCovered}
 
     {
      * This LDAP server no longer automatically covers site '%1' for non-domain NC '%2'.
      }
 
-  NELOG_NetlogonDcOldSiteCovered = (ERRLOG2_BASE + 94);
+  NELOG_NetlogonDcOldSiteCovered = ERRLOG2_BASE + 94;
   {$EXTERNALSYM NELOG_NetlogonDcOldSiteCovered}
 
     {
@@ -1952,7 +1949,7 @@ const
      * Directory Server replication costs.
      }
 
-  NELOG_NetlogonDcSiteNotCoveredAuto = (ERRLOG2_BASE + 95);
+  NELOG_NetlogonDcSiteNotCoveredAuto = ERRLOG2_BASE + 95;
   {$EXTERNALSYM NELOG_NetlogonDcSiteNotCoveredAuto}
 
     {
@@ -1961,7 +1958,7 @@ const
      * domain '%2' since this site has been manually configured in the registry.
      }
 
-  NELOG_NetlogonGcOldSiteCovered = (ERRLOG2_BASE + 96);
+  NELOG_NetlogonGcOldSiteCovered = ERRLOG2_BASE + 96;
   {$EXTERNALSYM NELOG_NetlogonGcOldSiteCovered}
 
     {
@@ -1973,7 +1970,7 @@ const
      * Directory Server replication costs.
      }
 
-  NELOG_NetlogonGcSiteNotCoveredAuto = (ERRLOG2_BASE + 97);
+  NELOG_NetlogonGcSiteNotCoveredAuto = ERRLOG2_BASE + 97;
   {$EXTERNALSYM NELOG_NetlogonGcSiteNotCoveredAuto}
 
     {
@@ -1982,7 +1979,7 @@ const
      * forest '%2' since this site has been manually configured in the registry.
      }
 
-  NELOG_NetlogonNdncOldSiteCovered = (ERRLOG2_BASE + 98);
+  NELOG_NetlogonNdncOldSiteCovered = ERRLOG2_BASE + 98;
   {$EXTERNALSYM NELOG_NetlogonNdncOldSiteCovered}
 
     {
@@ -1994,7 +1991,7 @@ const
      * configured Directory Server replication costs.
      }
 
-  NELOG_NetlogonNdncSiteNotCoveredAuto = (ERRLOG2_BASE + 99);
+  NELOG_NetlogonNdncSiteNotCoveredAuto = ERRLOG2_BASE + 99;
   {$EXTERNALSYM NELOG_NetlogonNdncSiteNotCoveredAuto}
 
     {
@@ -2003,7 +2000,7 @@ const
      * non-domain NC '%2' since this site has been manually configured in the registry.
      }
 
-  NELOG_NetlogonSpnMultipleSamAccountNames = (ERRLOG2_BASE + 100);
+  NELOG_NetlogonSpnMultipleSamAccountNames = ERRLOG2_BASE + 100;
   {$EXTERNALSYM NELOG_NetlogonSpnMultipleSamAccountNames}
 
     {
@@ -2015,7 +2012,7 @@ const
      * collision.
      }
 
-  NELOG_NetlogonSpnCrackNamesFailure = (ERRLOG2_BASE + 101);
+  NELOG_NetlogonSpnCrackNamesFailure = ERRLOG2_BASE + 101;
   {$EXTERNALSYM NELOG_NetlogonSpnCrackNamesFailure}
 
     {
@@ -2028,7 +2025,7 @@ const
      * DsCrackNames status = 0x%3, crack error = 0x%4.
      }
 
-  NELOG_NetlogonNoAddressToSiteMapping = (ERRLOG2_BASE + 102);
+  NELOG_NetlogonNoAddressToSiteMapping = ERRLOG2_BASE + 102;
   {$EXTERNALSYM NELOG_NetlogonNoAddressToSiteMapping}
 
     {
@@ -2042,7 +2039,7 @@ const
      * to the selected site object.
      }
 
-  NELOG_NetlogonInvalidGenericParameterValue = (ERRLOG2_BASE + 103);
+  NELOG_NetlogonInvalidGenericParameterValue = ERRLOG2_BASE + 103;
   {$EXTERNALSYM NELOG_NetlogonInvalidGenericParameterValue}
 
     {
@@ -2050,7 +2047,7 @@ const
      * Netlogon %1 registry section:%n%3
      }
 
-  NELOG_NetlogonInvalidDwordParameterValue = (ERRLOG2_BASE + 104);
+  NELOG_NetlogonInvalidDwordParameterValue = ERRLOG2_BASE + 104;
   {$EXTERNALSYM NELOG_NetlogonInvalidDwordParameterValue}
 
     {
@@ -2059,7 +2056,7 @@ const
      * The value of 0x%6 has been assigned to this parameter.
      }
 
-  NELOG_NetlogonServerAuthFailedNoAccount = (ERRLOG2_BASE + 105);
+  NELOG_NetlogonServerAuthFailedNoAccount = ERRLOG2_BASE + 105;
   {$EXTERNALSYM NELOG_NetlogonServerAuthFailedNoAccount}
 
     {
@@ -2067,7 +2064,7 @@ const
      * The following error occurred: %n%2
      }
 
-  NELOG_NetlogonNoDynamicDnsManual = (ERRLOG2_BASE + 106);
+  NELOG_NetlogonNoDynamicDnsManual = ERRLOG2_BASE + 106;
   {$EXTERNALSYM NELOG_NetlogonNoDynamicDnsManual}
 
     (*
@@ -2079,7 +2076,7 @@ const
      * records from the file '%SystemRoot%\System32\Config\Netlogon.dns' to the DNS database.
      *)
 
-  NELOG_NetlogonNoSiteForClients = (ERRLOG2_BASE + 107);
+  NELOG_NetlogonNoSiteForClients = ERRLOG2_BASE + 107;
   {$EXTERNALSYM NELOG_NetlogonNoSiteForClients}
 
     {
@@ -2106,7 +2103,7 @@ const
      * maximum size in bytes.
      }
 
-  NELOG_NetlogonDnsDeregAborted               = (ERRLOG2_BASE + 108);
+  NELOG_NetlogonDnsDeregAborted               = ERRLOG2_BASE + 108;
   {$EXTERNALSYM NELOG_NetlogonDnsDeregAborted}
 
     (*
@@ -2120,7 +2117,7 @@ const
      * '%SystemRoot%\System32\Config\Netlogon.dns' from the DNS database.
      *)
 
-  NELOG_NetlogonRpcPortRequestFailure         = (ERRLOG2_BASE + 109);
+  NELOG_NetlogonRpcPortRequestFailure         = ERRLOG2_BASE + 109;
   {$EXTERNALSYM NELOG_NetlogonRpcPortRequestFailure}
 
     (*
@@ -2143,10 +2140,21 @@ const
      * service on this machine and verify that this event log no longer appears.
      *)
 
+{$ENDIF JWA_INTERFACESECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
+
 implementation
 
+uses
+  JwaWinDLLNames;
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_IMPLEMENTATIONSECTION}
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _NetErrorLogClear: Pointer;
 
@@ -2154,16 +2162,12 @@ function NetErrorLogClear;
 begin
   GetProcedureAddress(_NetErrorLogClear, netapi32, 'NetErrorLogClear');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetErrorLogClear]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetErrorLogClear]
   end;
 end;
-{$ELSE}
-function NetErrorLogClear; external netapi32 name 'NetErrorLogClear';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetErrorLogRead: Pointer;
 
@@ -2171,16 +2175,12 @@ function NetErrorLogRead;
 begin
   GetProcedureAddress(_NetErrorLogRead, netapi32, 'NetErrorLogRead');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetErrorLogRead]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetErrorLogRead]
   end;
 end;
-{$ELSE}
-function NetErrorLogRead; external netapi32 name 'NetErrorLogRead';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetErrorLogWrite: Pointer;
 
@@ -2188,13 +2188,22 @@ function NetErrorLogWrite;
 begin
   GetProcedureAddress(_NetErrorLogWrite, netapi32, 'NetErrorLogWrite');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetErrorLogWrite]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetErrorLogWrite]
   end;
 end;
+
 {$ELSE}
+
+function NetErrorLogClear; external netapi32 name 'NetErrorLogClear';
+function NetErrorLogRead; external netapi32 name 'NetErrorLogRead';
 function NetErrorLogWrite; external netapi32 name 'NetErrorLogWrite';
+
 {$ENDIF DYNAMIC_LINK}
 
+{$ENDIF JWA_IMPLEMENTATIONSECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
 end.
+{$ENDIF !JWA_INCLUDEMODE}

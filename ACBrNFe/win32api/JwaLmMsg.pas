@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Lan Manager Messages API interface Unit for Object Pascal                    }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: lmmsg.h, released November 2001. The original Pascal   } 
 { code is: LmMsg.pas, released Februari 2002. The initial developer of the     }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,25 +35,33 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaLmMsg.pas,v 1.9 2005/09/07 09:54:54 marquardt Exp $
+
+{$IFNDEF JWA_INCLUDEMODE}
 
 unit JwaLmMsg;
 
 {$WEAKPACKAGEUNIT}
 
-{$HPPEMIT ''}
-{$HPPEMIT '#include "lmmsg.h"'}
-{$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaLmCons, JwaWinType;
+  JwaWindows, JwaLmCons;
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_INTERFACESECTION}
+
+{$HPPEMIT ''}
+{$HPPEMIT '#include "lmmsg.h"'}
+{$HPPEMIT ''}
 
 //
 // Function Prototypes
@@ -124,10 +131,21 @@ const
   MSGNAME_FORWARDED_FROM = $10;    // Name forwarded from remote station
   {$EXTERNALSYM MSGNAME_FORWARDED_FROM}
 
+{$ENDIF JWA_INTERFACESECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
+
 implementation
 
+uses
+  JwaWinDLLNames;
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_IMPLEMENTATIONSECTION}
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _NetMessageNameAdd: Pointer;
 
@@ -135,16 +153,12 @@ function NetMessageNameAdd;
 begin
   GetProcedureAddress(_NetMessageNameAdd, netapi32, 'NetMessageNameAdd');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetMessageNameAdd]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetMessageNameAdd]
   end;
 end;
-{$ELSE}
-function NetMessageNameAdd; external netapi32 name 'NetMessageNameAdd';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetMessageNameEnum: Pointer;
 
@@ -152,16 +166,12 @@ function NetMessageNameEnum;
 begin
   GetProcedureAddress(_NetMessageNameEnum, netapi32, 'NetMessageNameEnum');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetMessageNameEnum]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetMessageNameEnum]
   end;
 end;
-{$ELSE}
-function NetMessageNameEnum; external netapi32 name 'NetMessageNameEnum';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetMessageNameGetInfo: Pointer;
 
@@ -169,16 +179,12 @@ function NetMessageNameGetInfo;
 begin
   GetProcedureAddress(_NetMessageNameGetInfo, netapi32, 'NetMessageNameGetInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetMessageNameGetInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetMessageNameGetInfo]
   end;
 end;
-{$ELSE}
-function NetMessageNameGetInfo; external netapi32 name 'NetMessageNameGetInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetMessageNameDel: Pointer;
 
@@ -186,16 +192,12 @@ function NetMessageNameDel;
 begin
   GetProcedureAddress(_NetMessageNameDel, netapi32, 'NetMessageNameDel');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetMessageNameDel]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetMessageNameDel]
   end;
 end;
-{$ELSE}
-function NetMessageNameDel; external netapi32 name 'NetMessageNameDel';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _NetMessageBufferSend: Pointer;
 
@@ -203,13 +205,24 @@ function NetMessageBufferSend;
 begin
   GetProcedureAddress(_NetMessageBufferSend, netapi32, 'NetMessageBufferSend');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NetMessageBufferSend]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NetMessageBufferSend]
   end;
 end;
+
 {$ELSE}
+
+function NetMessageNameAdd; external netapi32 name 'NetMessageNameAdd';
+function NetMessageNameEnum; external netapi32 name 'NetMessageNameEnum';
+function NetMessageNameGetInfo; external netapi32 name 'NetMessageNameGetInfo';
+function NetMessageNameDel; external netapi32 name 'NetMessageNameDel';
 function NetMessageBufferSend; external netapi32 name 'NetMessageBufferSend';
+
 {$ENDIF DYNAMIC_LINK}
 
+{$ENDIF JWA_IMPLEMENTATIONSECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
 end.
+{$ENDIF !JWA_INCLUDEMODE}

@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { User Profile API interface Unit for Object Pascal                            }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: userenv.h, released June 2000. The original Pascal     }
 { code is: UserEnv.pas, released December 2000. The initial developer of the   }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,14 +35,23 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaUserEnv.pas,v 1.10 2005/09/06 16:36:50 marquardt Exp $
 
 unit JwaUserEnv;
 
 {$WEAKPACKAGEUNIT}
+
+{$I jediapilib.inc}
+
+interface
+
+uses
+  JwaActiveX, JwaProfInfo, JwaWbemCli, JwaWindows;
 
 {$HPPEMIT ''}
 {$HPPEMIT '#include "userenv.h"'}
@@ -57,22 +65,6 @@ unit JwaUserEnv;
 {$HPPEMIT 'typedef PPGROUP_POLICY_OBJECTA PPGROUP_POLICY_OBJECT'}
 {$HPPEMIT 'typedef #endif'}
 {$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
-
-interface
-
-uses
-  JwaProfInfo, {WbemCli, }JwaWinType, JWaWinBase, JwaWinNT;
-
-{ TODO Convert WbemCli.h => Import TypeLibrary? }
-
-type
-  IWbemServices = Pointer;
-  IWbemClassObject = Pointer;
-  PSafeArray = Pointer;
-
-{ /TODO }
 
 //=============================================================================
 //
@@ -116,14 +108,8 @@ function LoadUserProfileA(hToken: HANDLE; var lpProfileInfo: PROFILEINFOA): BOOL
 {$EXTERNALSYM LoadUserProfileA}
 function LoadUserProfileW(hToken: HANDLE; var lpProfileInfo: PROFILEINFOW): BOOL; stdcall;
 {$EXTERNALSYM LoadUserProfileW}
-
-{$IFDEF UNICODE}
 function LoadUserProfile(hToken: HANDLE; var lpProfileInfo: PROFILEINFO): BOOL; stdcall;
 {$EXTERNALSYM LoadUserProfile}
-{$ELSE}
-function LoadUserProfile(hToken: HANDLE; var lpProfileInfo: PROFILEINFO): BOOL; stdcall;
-{$EXTERNALSYM LoadUserProfile}
-{$ENDIF}
 
 //=============================================================================
 //
@@ -167,14 +153,8 @@ function GetProfilesDirectoryA(lpProfilesDir: LPSTR; var lpcchSize: DWORD): BOOL
 {$EXTERNALSYM GetProfilesDirectoryA}
 function GetProfilesDirectoryW(lpProfilesDir: LPWSTR; var lpcchSize: DWORD): BOOL; stdcall;
 {$EXTERNALSYM GetProfilesDirectoryW}
-
-{$IFDEF UNICODE}
-function GetProfilesDirectory(lpProfilesDir: LPWSTR; var lpcchSize: DWORD): BOOL; stdcall;
+function GetProfilesDirectory(lpProfilesDir: LPTSTR; var lpcchSize: DWORD): BOOL; stdcall;
 {$EXTERNALSYM GetProfilesDirectory}
-{$ELSE}
-function GetProfilesDirectory(lpProfilesDir: LPSTR; var lpcchSize: DWORD): BOOL; stdcall;
-{$EXTERNALSYM GetProfilesDirectory}
-{$ENDIF}
 
 //=============================================================================
 //
@@ -230,16 +210,9 @@ function DeleteProfileA(lpSidString: LPCSTR; lpProfilePath: LPCSTR;
 function DeleteProfileW(lpSidString: LPCWSTR; lpProfilePath: LPCWSTR;
   lpComputerName: LPCWSTR): BOOL; stdcall;
 {$EXTERNALSYM DeleteProfileW}
-
-{$IFDEF UNICODE}
-function DeleteProfile(lpSidString: LPCWSTR; lpProfilePath: LPCWSTR;
-  lpComputerName: LPCWSTR): BOOL; stdcall;
+function DeleteProfile(lpSidString: LPCTSTR; lpProfilePath: LPCTSTR;
+  lpComputerName: LPCTSTR): BOOL; stdcall;
 {$EXTERNALSYM DeleteProfile}
-{$ELSE}
-function DeleteProfile(lpSidString: LPCSTR; lpProfilePath: LPCSTR;
-  lpComputerName: LPCSTR): BOOL; stdcall;
-{$EXTERNALSYM DeleteProfile}
-{$ENDIF}
 
 //=============================================================================
 //
@@ -264,14 +237,8 @@ function GetDefaultUserProfileDirectoryA(lpProfileDir: LPSTR; var lpcchSize: DWO
 {$EXTERNALSYM GetDefaultUserProfileDirectoryA}
 function GetDefaultUserProfileDirectoryW(lpProfileDir: LPWSTR; var lpcchSize: DWORD): BOOL; stdcall;
 {$EXTERNALSYM GetDefaultUserProfileDirectoryW}
-
-{$IFDEF UNICODE}
-function GetDefaultUserProfileDirectory(lpProfileDir: LPWSTR; var lpcchSize: DWORD): BOOL; stdcall;
+function GetDefaultUserProfileDirectory(lpProfileDir: LPTSTR; var lpcchSize: DWORD): BOOL; stdcall;
 {$EXTERNALSYM GetDefaultUserProfileDirectory}
-{$ELSE}
-function GetDefaultUserProfileDirectory(lpProfileDir: LPSTR; var lpcchSize: DWORD): BOOL; stdcall;
-{$EXTERNALSYM GetDefaultUserProfileDirectory}
-{$ENDIF}
 
 //=============================================================================
 //
@@ -296,14 +263,8 @@ function GetAllUsersProfileDirectoryA(lpProfileDir: LPSTR; var lpcchSize: DWORD)
 {$EXTERNALSYM GetAllUsersProfileDirectoryA}
 function GetAllUsersProfileDirectoryW(lpProfileDir: LPWSTR; var lpcchSize: DWORD): BOOL; stdcall;
 {$EXTERNALSYM GetAllUsersProfileDirectoryW}
-
-{$IFDEF UNICODE}
-function GetAllUsersProfileDirectory(lpProfileDir: LPWSTR; var lpcchSize: DWORD): BOOL; stdcall;
+function GetAllUsersProfileDirectory(lpProfileDir: LPTSTR; var lpcchSize: DWORD): BOOL; stdcall;
 {$EXTERNALSYM GetAllUsersProfileDirectory}
-{$ELSE}
-function GetAllUsersProfileDirectory(lpProfileDir: LPSTR; var lpcchSize: DWORD): BOOL; stdcall;
-{$EXTERNALSYM GetAllUsersProfileDirectory}
-{$ENDIF}
 
 //=============================================================================
 //
@@ -331,16 +292,9 @@ function GetUserProfileDirectoryA(hToken: HANDLE; lpProfileDir: LPSTR;
 function GetUserProfileDirectoryW(hToken: HANDLE; lpProfileDir: LPWSTR;
   var lpcchSize: DWORD): BOOL; stdcall;
 {$EXTERNALSYM GetUserProfileDirectoryW}
-
-{$IFDEF UNICODE}
-function GetUserProfileDirectory(hToken: HANDLE; lpProfileDir: LPWSTR;
+function GetUserProfileDirectory(hToken: HANDLE; lpProfileDir: LPTSTR;
   var lpcchSize: DWORD): BOOL; stdcall;
 {$EXTERNALSYM GetUserProfileDirectory}
-{$ELSE}
-function GetUserProfileDirectory(hToken: HANDLE; lpProfileDir: LPSTR;
-  var lpcchSize: DWORD): BOOL; stdcall;
-{$EXTERNALSYM GetUserProfileDirectory}
-{$ENDIF}
 
 //=============================================================================
 //
@@ -413,16 +367,9 @@ function ExpandEnvironmentStringsForUserA(hToken: HANDLE; lpSrc: LPCSTR;
 function ExpandEnvironmentStringsForUserW(hToken: HANDLE; lpSrc: LPCWSTR;
   lpDest: LPWSTR; dwSize: DWORD): BOOL; stdcall;
 {$EXTERNALSYM ExpandEnvironmentStringsForUserW}
-
-{$IFDEF UNICODE}
-function ExpandEnvironmentStringsForUser(hToken: HANDLE; lpSrc: LPCWSTR;
-  lpDest: LPWSTR; dwSize: DWORD): BOOL; stdcall;
+function ExpandEnvironmentStringsForUser(hToken: HANDLE; lpSrc: LPCTSTR;
+  lpDest: LPTSTR; dwSize: DWORD): BOOL; stdcall;
 {$EXTERNALSYM ExpandEnvironmentStringsForUser}
-{$ELSE}
-function ExpandEnvironmentStringsForUser(hToken: HANDLE; lpSrc: LPCSTR;
-  lpDest: LPSTR; dwSize: DWORD): BOOL; stdcall;
-{$EXTERNALSYM ExpandEnvironmentStringsForUser}
-{$ENDIF}
 
 //=============================================================================
 //
@@ -738,7 +685,7 @@ type
   PPGROUP_POLICY_OBJECTW = ^PGROUP_POLICY_OBJECTW;
   {$NODEFINE PPGROUP_POLICY_OBJECTW}
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   GROUP_POLICY_OBJECT = GROUP_POLICY_OBJECTW;
   {$EXTERNALSYM GROUP_POLICY_OBJECT}
   PGROUP_POLICY_OBJECT = PGROUP_POLICY_OBJECTW;
@@ -747,7 +694,7 @@ type
   {$NODEFINE PPGROUP_POLICY_OBJECT}
   TGroupPolicyObject = TGroupPolicyObjectW;
   PGroupPolicyObject = PGroupPolicyObjectW;
-{$ELSE}
+  {$ELSE}
   GROUP_POLICY_OBJECT = GROUP_POLICY_OBJECTA;
   {$EXTERNALSYM GROUP_POLICY_OBJECT}
   PGROUP_POLICY_OBJECT = PGROUP_POLICY_OBJECTA;
@@ -756,7 +703,7 @@ type
   {$NODEFINE PPGROUP_POLICY_OBJECT}
   TGroupPolicyObject = TGroupPolicyObjectA;
   PGroupPolicyObject = PGroupPolicyObjectA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 // dwFlags for GetGPOList()
@@ -774,16 +721,9 @@ function GetGPOListA(hToken: HANDLE; lpName: LPCSTR; lpHostName: LPCSTR;
 function GetGPOListW(hToken: HANDLE; lpName: LPCWSTR; lpHostName: LPCWSTR;
   lpComputerName: LPCWSTR; dwFlags: DWORD; pGPOList: PPGROUP_POLICY_OBJECTW): BOOL; stdcall;
 {$EXTERNALSYM GetGPOListW}
-
-{$IFDEF UNICODE}
-function GetGPOList(hToken: HANDLE; lpName: LPCWSTR; lpHostName: LPCWSTR;
-  lpComputerName: LPCWSTR; dwFlags: DWORD; pGPOList: PPGROUP_POLICY_OBJECT): BOOL; stdcall;
+function GetGPOList(hToken: HANDLE; lpName: LPCTSTR; lpHostName: LPCTSTR;
+  lpComputerName: LPCTSTR; dwFlags: DWORD; pGPOList: PPGROUP_POLICY_OBJECT): BOOL; stdcall;
 {$EXTERNALSYM GetGPOList}
-{$ELSE}
-function GetGPOList(hToken: HANDLE; lpName: LPCSTR; lpHostName: LPCSTR;
-lpComputerName: LPCSTR; dwFlags: DWORD; pGPOList: PPGROUP_POLICY_OBJECT): BOOL; stdcall;
-{$EXTERNALSYM GetGPOList}
-{$ENDIF}
 
 //=============================================================================
 //
@@ -804,14 +744,8 @@ function FreeGPOListA(pGPOList: PGROUP_POLICY_OBJECTA): BOOL; stdcall;
 {$EXTERNALSYM FreeGPOListA}
 function FreeGPOListW(pGPOList: PGROUP_POLICY_OBJECTW): BOOL; stdcall;
 {$EXTERNALSYM FreeGPOListW}
-
-{$IFDEF UNICODE}
 function FreeGPOList(pGPOList: PGROUP_POLICY_OBJECT): BOOL; stdcall;
 {$EXTERNALSYM FreeGPOList}
-{$ELSE}
-function FreeGPOList(pGPOList: PGROUP_POLICY_OBJECT): BOOL; stdcall;
-{$EXTERNALSYM FreeGPOList}
-{$ENDIF}
 
 //=============================================================================
 //
@@ -845,16 +779,9 @@ function GetAppliedGPOListA(dwFlags: DWORD; pMachineName: LPCSTR; pSidUser: PSID
 function GetAppliedGPOListW(dwFlags: DWORD; pMachineName: LPCWSTR; pSidUser: PSID;
   pGuidExtension: LPGUID; ppGPOList: PPGROUP_POLICY_OBJECTW): DWORD; stdcall;
 {$EXTERNALSYM GetAppliedGPOListW}
-
-{$IFDEF UNICODE}
-function GetAppliedGPOList(dwFlags: DWORD; pMachineName: LPCWSTR; pSidUser: PSID;
+function GetAppliedGPOList(dwFlags: DWORD; pMachineName: LPCTSTR; pSidUser: PSID;
   pGuidExtension: LPGUID; ppGPOList: PPGROUP_POLICY_OBJECT): DWORD; stdcall;
 {$EXTERNALSYM GetAppliedGPOList}
-{$ELSE}
-function GetAppliedGPOList(dwFlags: DWORD; pMachineName: LPCSTR; pSidUser: PSID;
-  pGuidExtension: LPGUID; ppGPOList: PPGROUP_POLICY_OBJECT): DWORD; stdcall;
-{$EXTERNALSYM GetAppliedGPOList}
-{$ENDIF}
 
 //=============================================================================
 //
@@ -957,10 +884,10 @@ type
   ASYNCCOMPLETIONHANDLE = UINT_PTR;
   {$EXTERNALSYM ASYNCCOMPLETIONHANDLE}
 
-  PFNSTATUSMESSAGECALLBACK = function (bVerbose: BOOL; lpMessage: LPWSTR): DWORD; stdcall;
+  PFNSTATUSMESSAGECALLBACK = function(bVerbose: BOOL; lpMessage: LPWSTR): DWORD; stdcall;
   {$EXTERNALSYM PFNSTATUSMESSAGECALLBACK}
 
-  PFNPROCESSGROUPPOLICY = function (
+  PFNPROCESSGROUPPOLICY = function(
     dwFlags: DWORD;                              // GPO_INFO_FLAGS
     hToken: HANDLE;                              // User or machine token
     hKeyRoot: HKEY;                              // Root of registry
@@ -972,7 +899,7 @@ type
     ): DWORD; stdcall;                           // Note, this can be NULL
   {$EXTERNALSYM PFNPROCESSGROUPPOLICY}
 
-  PFNPROCESSGROUPPOLICYEX = function (
+  PFNPROCESSGROUPPOLICYEX = function(
     dwFlags: DWORD;                              // GPO_INFO_FLAGS
     hToken: HANDLE;                              // User or machine token
     hKeyRoot: HKEY;                              // Root of registry
@@ -1007,7 +934,7 @@ type
   TRsopTarget = RSOP_TARGET;
   PRsopTarget = PRSOP_TARGET;  
 
-  PFNGENERATEGROUPPOLICY = function (
+  PFNGENERATEGROUPPOLICY = function(
     dwFlags: DWORD;                              // GPO_INFO_FLAGS
     var pbAbort: BOOL;                           // If true, then abort GPO processing
     pwszSite: PWCHAR;                            // Site the target computer is in
@@ -1083,7 +1010,7 @@ function ProcessGroupPolicyCompletedEx(extensionId: REFGPEXTENSIONID; pAsyncHand
 // pGenericMapping      - Generic Mapping
 // pPrivilegeSet        - privilege set
 // pdwPrivilegeSetLength- privilege set length
-// pdwGrantedAccessMask	- On success, if pbAccessStatus is true, it contains
+// pdwGrantedAccessMask - On success, if pbAccessStatus is true, it contains
 //                                         the mask of standard and specific rights granted.
 //                                         If pbAccessStatus is false, it is set to 0.
 //                                         On failure, it is not modified.
@@ -1112,7 +1039,7 @@ function RsopAccessCheckByType(pSecurityDescriptor: PSECURITY_DESCRIPTOR; pPrinc
 // pszFileName          - Name of an existing filename
 // pRsopToken           - Pointer to a valid RSOPTOKEN against which access needs to be checked
 // dwDesiredAccessMask  - Mask of requested generic and/or standard and or specific access rights
-// pdwGrantedAccessMask	- On success, if pbAccessStatus is true, it contains
+// pdwGrantedAccessMask - On success, if pbAccessStatus is true, it contains
 //                                         the mask of standard and specific rights granted.
 //                                         If pbAccessStatus is false, it is set to 0.
 //                                         On failure, it is not modified.
@@ -1241,7 +1168,7 @@ const
 
   FLAG_PLANNING_MODE               = $01000000;  // flag that indicates that a given namespace was created
   {$EXTERNALSYM FLAG_PLANNING_MODE}              // for planning mode. This flag cannot be passed in but the
-					         // relevant subnamespace will be marked with this flag
+                                                 // relevant subnamespace will be marked with this flag
 
 // diagnostic mode provider flags
 
@@ -1276,11 +1203,11 @@ const
 
 implementation
 
-const
-  userenvlib = 'userenv.dll';
-
+uses
+  JwaWinDLLNames;
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _LoadUserProfileA: Pointer;
 
@@ -1288,16 +1215,12 @@ function LoadUserProfileA;
 begin
   GetProcedureAddress(_LoadUserProfileA, userenvlib, 'LoadUserProfileA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadUserProfileA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LoadUserProfileA]
   end;
 end;
-{$ELSE}
-function LoadUserProfileA; external userenvlib name 'LoadUserProfileA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LoadUserProfileW: Pointer;
 
@@ -1305,53 +1228,25 @@ function LoadUserProfileW;
 begin
   GetProcedureAddress(_LoadUserProfileW, userenvlib, 'LoadUserProfileW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadUserProfileW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LoadUserProfileW]
   end;
 end;
-{$ELSE}
-function LoadUserProfileW; external userenvlib name 'LoadUserProfileW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LoadUserProfile: Pointer;
 
 function LoadUserProfile;
 begin
-  GetProcedureAddress(_LoadUserProfile, userenvlib, 'LoadUserProfileW');
+  GetProcedureAddress(_LoadUserProfile, userenvlib, 'LoadUserProfile' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadUserProfile]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LoadUserProfile]
   end;
 end;
-{$ELSE}
-function LoadUserProfile; external userenvlib name 'LoadUserProfileW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadUserProfile: Pointer;
-
-function LoadUserProfile;
-begin
-  GetProcedureAddress(_LoadUserProfile, userenvlib, 'LoadUserProfileA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadUserProfile]
-  end;
-end;
-{$ELSE}
-function LoadUserProfile; external userenvlib name 'LoadUserProfileA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _UnloadUserProfile: Pointer;
 
@@ -1359,16 +1254,12 @@ function UnloadUserProfile;
 begin
   GetProcedureAddress(_UnloadUserProfile, userenvlib, 'UnloadUserProfile');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_UnloadUserProfile]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_UnloadUserProfile]
   end;
 end;
-{$ELSE}
-function UnloadUserProfile; external userenvlib name 'UnloadUserProfile';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetProfilesDirectoryA: Pointer;
 
@@ -1376,16 +1267,12 @@ function GetProfilesDirectoryA;
 begin
   GetProcedureAddress(_GetProfilesDirectoryA, userenvlib, 'GetProfilesDirectoryA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetProfilesDirectoryA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetProfilesDirectoryA]
   end;
 end;
-{$ELSE}
-function GetProfilesDirectoryA; external userenvlib name 'GetProfilesDirectoryA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetProfilesDirectoryW: Pointer;
 
@@ -1393,53 +1280,25 @@ function GetProfilesDirectoryW;
 begin
   GetProcedureAddress(_GetProfilesDirectoryW, userenvlib, 'GetProfilesDirectoryW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetProfilesDirectoryW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetProfilesDirectoryW]
   end;
 end;
-{$ELSE}
-function GetProfilesDirectoryW; external userenvlib name 'GetProfilesDirectoryW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetProfilesDirectory: Pointer;
 
 function GetProfilesDirectory;
 begin
-  GetProcedureAddress(_GetProfilesDirectory, userenvlib, 'GetProfilesDirectoryW');
+  GetProcedureAddress(_GetProfilesDirectory, userenvlib, 'GetProfilesDirectory' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetProfilesDirectory]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetProfilesDirectory]
   end;
 end;
-{$ELSE}
-function GetProfilesDirectory; external userenvlib name 'GetProfilesDirectoryW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetProfilesDirectory: Pointer;
-
-function GetProfilesDirectory;
-begin
-  GetProcedureAddress(_GetProfilesDirectory, userenvlib, 'GetProfilesDirectoryA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetProfilesDirectory]
-  end;
-end;
-{$ELSE}
-function GetProfilesDirectory; external userenvlib name 'GetProfilesDirectoryA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetProfileType: Pointer;
 
@@ -1447,16 +1306,12 @@ function GetProfileType;
 begin
   GetProcedureAddress(_GetProfileType, userenvlib, 'GetProfileType');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetProfileType]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetProfileType]
   end;
 end;
-{$ELSE}
-function GetProfileType; external userenvlib name 'GetProfileType';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DeleteProfileA: Pointer;
 
@@ -1464,16 +1319,12 @@ function DeleteProfileA;
 begin
   GetProcedureAddress(_DeleteProfileA, userenvlib, 'DeleteProfileA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DeleteProfileA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DeleteProfileA]
   end;
 end;
-{$ELSE}
-function DeleteProfileA; external userenvlib name 'DeleteProfileA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DeleteProfileW: Pointer;
 
@@ -1481,53 +1332,25 @@ function DeleteProfileW;
 begin
   GetProcedureAddress(_DeleteProfileW, userenvlib, 'DeleteProfileW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DeleteProfileW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DeleteProfileW]
   end;
 end;
-{$ELSE}
-function DeleteProfileW; external userenvlib name 'DeleteProfileW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DeleteProfile: Pointer;
 
 function DeleteProfile;
 begin
-  GetProcedureAddress(_DeleteProfile, userenvlib, 'DeleteProfileW');
+  GetProcedureAddress(_DeleteProfile, userenvlib, 'DeleteProfile' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DeleteProfile]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DeleteProfile]
   end;
 end;
-{$ELSE}
-function DeleteProfile; external userenvlib name 'DeleteProfileW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DeleteProfile: Pointer;
-
-function DeleteProfile;
-begin
-  GetProcedureAddress(_DeleteProfile, userenvlib, 'DeleteProfileA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DeleteProfile]
-  end;
-end;
-{$ELSE}
-function DeleteProfile; external userenvlib name 'DeleteProfileA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetDefaultUserProfileDirectoryA: Pointer;
 
@@ -1535,16 +1358,12 @@ function GetDefaultUserProfileDirectoryA;
 begin
   GetProcedureAddress(_GetDefaultUserProfileDirectoryA, userenvlib, 'GetDefaultUserProfileDirectoryA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetDefaultUserProfileDirectoryA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetDefaultUserProfileDirectoryA]
   end;
 end;
-{$ELSE}
-function GetDefaultUserProfileDirectoryA; external userenvlib name 'GetDefaultUserProfileDirectoryA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetDefaultUserProfileDirectoryW: Pointer;
 
@@ -1552,53 +1371,25 @@ function GetDefaultUserProfileDirectoryW;
 begin
   GetProcedureAddress(_GetDefaultUserProfileDirectoryW, userenvlib, 'GetDefaultUserProfileDirectoryW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetDefaultUserProfileDirectoryW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetDefaultUserProfileDirectoryW]
   end;
 end;
-{$ELSE}
-function GetDefaultUserProfileDirectoryW; external userenvlib name 'GetDefaultUserProfileDirectoryW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetDefaultUserProfileDirectory: Pointer;
 
 function GetDefaultUserProfileDirectory;
 begin
-  GetProcedureAddress(_GetDefaultUserProfileDirectory, userenvlib, 'GetDefaultUserProfileDirectoryW');
+  GetProcedureAddress(_GetDefaultUserProfileDirectory, userenvlib, 'GetDefaultUserProfileDirectory' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetDefaultUserProfileDirectory]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetDefaultUserProfileDirectory]
   end;
 end;
-{$ELSE}
-function GetDefaultUserProfileDirectory; external userenvlib name 'GetDefaultUserProfileDirectoryW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetDefaultUserProfileDirectory: Pointer;
-
-function GetDefaultUserProfileDirectory;
-begin
-  GetProcedureAddress(_GetDefaultUserProfileDirectory, userenvlib, 'GetDefaultUserProfileDirectoryA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetDefaultUserProfileDirectory]
-  end;
-end;
-{$ELSE}
-function GetDefaultUserProfileDirectory; external userenvlib name 'GetDefaultUserProfileDirectoryA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetAllUsersProfileDirectoryA: Pointer;
 
@@ -1606,16 +1397,12 @@ function GetAllUsersProfileDirectoryA;
 begin
   GetProcedureAddress(_GetAllUsersProfileDirectoryA, userenvlib, 'GetAllUsersProfileDirectoryA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetAllUsersProfileDirectoryA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetAllUsersProfileDirectoryA]
   end;
 end;
-{$ELSE}
-function GetAllUsersProfileDirectoryA; external userenvlib name 'GetAllUsersProfileDirectoryA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetAllUsersProfileDirectoryW: Pointer;
 
@@ -1623,53 +1410,25 @@ function GetAllUsersProfileDirectoryW;
 begin
   GetProcedureAddress(_GetAllUsersProfileDirectoryW, userenvlib, 'GetAllUsersProfileDirectoryW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetAllUsersProfileDirectoryW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetAllUsersProfileDirectoryW]
   end;
 end;
-{$ELSE}
-function GetAllUsersProfileDirectoryW; external userenvlib name 'GetAllUsersProfileDirectoryW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetAllUsersProfileDirectory: Pointer;
 
 function GetAllUsersProfileDirectory;
 begin
-  GetProcedureAddress(_GetAllUsersProfileDirectory, userenvlib, 'GetAllUsersProfileDirectoryW');
+  GetProcedureAddress(_GetAllUsersProfileDirectory, userenvlib, 'GetAllUsersProfileDirectory' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetAllUsersProfileDirectory]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetAllUsersProfileDirectory]
   end;
 end;
-{$ELSE}
-function GetAllUsersProfileDirectory; external userenvlib name 'GetAllUsersProfileDirectoryW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetAllUsersProfileDirectory: Pointer;
-
-function GetAllUsersProfileDirectory;
-begin
-  GetProcedureAddress(_GetAllUsersProfileDirectory, userenvlib, 'GetAllUsersProfileDirectoryA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetAllUsersProfileDirectory]
-  end;
-end;
-{$ELSE}
-function GetAllUsersProfileDirectory; external userenvlib name 'GetAllUsersProfileDirectoryA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetUserProfileDirectoryA: Pointer;
 
@@ -1677,16 +1436,12 @@ function GetUserProfileDirectoryA;
 begin
   GetProcedureAddress(_GetUserProfileDirectoryA, userenvlib, 'GetUserProfileDirectoryA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetUserProfileDirectoryA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetUserProfileDirectoryA]
   end;
 end;
-{$ELSE}
-function GetUserProfileDirectoryA; external userenvlib name 'GetUserProfileDirectoryA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetUserProfileDirectoryW: Pointer;
 
@@ -1694,53 +1449,25 @@ function GetUserProfileDirectoryW;
 begin
   GetProcedureAddress(_GetUserProfileDirectoryW, userenvlib, 'GetUserProfileDirectoryW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetUserProfileDirectoryW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetUserProfileDirectoryW]
   end;
 end;
-{$ELSE}
-function GetUserProfileDirectoryW; external userenvlib name 'GetUserProfileDirectoryW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetUserProfileDirectory: Pointer;
 
 function GetUserProfileDirectory;
 begin
-  GetProcedureAddress(_GetUserProfileDirectory, userenvlib, 'GetUserProfileDirectoryW');
+  GetProcedureAddress(_GetUserProfileDirectory, userenvlib, 'GetUserProfileDirectory' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetUserProfileDirectory]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetUserProfileDirectory]
   end;
 end;
-{$ELSE}
-function GetUserProfileDirectory; external userenvlib name 'GetUserProfileDirectoryW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetUserProfileDirectory: Pointer;
-
-function GetUserProfileDirectory;
-begin
-  GetProcedureAddress(_GetUserProfileDirectory, userenvlib, 'GetUserProfileDirectoryA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetUserProfileDirectory]
-  end;
-end;
-{$ELSE}
-function GetUserProfileDirectory; external userenvlib name 'GetUserProfileDirectoryA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateEnvironmentBlock: Pointer;
 
@@ -1748,16 +1475,12 @@ function CreateEnvironmentBlock;
 begin
   GetProcedureAddress(_CreateEnvironmentBlock, userenvlib, 'CreateEnvironmentBlock');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateEnvironmentBlock]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateEnvironmentBlock]
   end;
 end;
-{$ELSE}
-function CreateEnvironmentBlock; external userenvlib name 'CreateEnvironmentBlock';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DestroyEnvironmentBlock: Pointer;
 
@@ -1765,16 +1488,12 @@ function DestroyEnvironmentBlock;
 begin
   GetProcedureAddress(_DestroyEnvironmentBlock, userenvlib, 'DestroyEnvironmentBlock');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DestroyEnvironmentBlock]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DestroyEnvironmentBlock]
   end;
 end;
-{$ELSE}
-function DestroyEnvironmentBlock; external userenvlib name 'DestroyEnvironmentBlock';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ExpandEnvStringsForUserA: Pointer;
 
@@ -1782,16 +1501,12 @@ function ExpandEnvironmentStringsForUserA;
 begin
   GetProcedureAddress(_ExpandEnvStringsForUserA, userenvlib, 'ExpandEnvironmentStringsForUserA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ExpandEnvStringsForUserA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ExpandEnvStringsForUserA]
   end;
 end;
-{$ELSE}
-function ExpandEnvironmentStringsForUserA; external userenvlib name 'ExpandEnvironmentStringsForUserA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ExpandEnvStringsForUserW: Pointer;
 
@@ -1799,53 +1514,25 @@ function ExpandEnvironmentStringsForUserW;
 begin
   GetProcedureAddress(_ExpandEnvStringsForUserW, userenvlib, 'ExpandEnvironmentStringsForUserW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ExpandEnvStringsForUserW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ExpandEnvStringsForUserW]
   end;
 end;
-{$ELSE}
-function ExpandEnvironmentStringsForUserW; external userenvlib name 'ExpandEnvironmentStringsForUserW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ExpandEnvironmentStringsForUser: Pointer;
 
 function ExpandEnvironmentStringsForUser;
 begin
-  GetProcedureAddress(_ExpandEnvironmentStringsForUser, userenvlib, 'ExpandEnvironmentStringsForUserW');
+  GetProcedureAddress(_ExpandEnvironmentStringsForUser, userenvlib, 'ExpandEnvironmentStringsForUser' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ExpandEnvironmentStringsForUser]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ExpandEnvironmentStringsForUser]
   end;
 end;
-{$ELSE}
-function ExpandEnvironmentStringsForUser; external userenvlib name 'ExpandEnvironmentStringsForUserW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _ExpandEnvironmentStringsForUser: Pointer;
-
-function ExpandEnvironmentStringsForUser;
-begin
-  GetProcedureAddress(_ExpandEnvironmentStringsForUser, userenvlib, 'ExpandEnvironmentStringsForUserA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ExpandEnvironmentStringsForUser]
-  end;
-end;
-{$ELSE}
-function ExpandEnvironmentStringsForUser; external userenvlib name 'ExpandEnvironmentStringsForUserA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _RefreshPolicy: Pointer;
 
@@ -1853,16 +1540,12 @@ function RefreshPolicy;
 begin
   GetProcedureAddress(_RefreshPolicy, userenvlib, 'RefreshPolicy');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RefreshPolicy]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RefreshPolicy]
   end;
 end;
-{$ELSE}
-function RefreshPolicy; external userenvlib name 'RefreshPolicy';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RefreshPolicyEx: Pointer;
 
@@ -1870,16 +1553,12 @@ function RefreshPolicyEx;
 begin
   GetProcedureAddress(_RefreshPolicyEx, userenvlib, 'RefreshPolicyEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RefreshPolicyEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RefreshPolicyEx]
   end;
 end;
-{$ELSE}
-function RefreshPolicyEx; external userenvlib name 'RefreshPolicyEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnterCriticalPolicySection: Pointer;
 
@@ -1887,16 +1566,12 @@ function EnterCriticalPolicySection;
 begin
   GetProcedureAddress(_EnterCriticalPolicySection, userenvlib, 'EnterCriticalPolicySection');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnterCriticalPolicySection]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnterCriticalPolicySection]
   end;
 end;
-{$ELSE}
-function EnterCriticalPolicySection; external userenvlib name 'EnterCriticalPolicySection';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LeaveCriticalPolicySection: Pointer;
 
@@ -1904,16 +1579,12 @@ function LeaveCriticalPolicySection;
 begin
   GetProcedureAddress(_LeaveCriticalPolicySection, userenvlib, 'LeaveCriticalPolicySection');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LeaveCriticalPolicySection]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LeaveCriticalPolicySection]
   end;
 end;
-{$ELSE}
-function LeaveCriticalPolicySection; external userenvlib name 'LeaveCriticalPolicySection';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RegisterGPNotification: Pointer;
 
@@ -1921,16 +1592,12 @@ function RegisterGPNotification;
 begin
   GetProcedureAddress(_RegisterGPNotification, userenvlib, 'RegisterGPNotification');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RegisterGPNotification]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RegisterGPNotification]
   end;
 end;
-{$ELSE}
-function RegisterGPNotification; external userenvlib name 'RegisterGPNotification';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _UnregisterGPNotification: Pointer;
 
@@ -1938,16 +1605,12 @@ function UnregisterGPNotification;
 begin
   GetProcedureAddress(_UnregisterGPNotification, userenvlib, 'UnregisterGPNotification');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_UnregisterGPNotification]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_UnregisterGPNotification]
   end;
 end;
-{$ELSE}
-function UnregisterGPNotification; external userenvlib name 'UnregisterGPNotification';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetGPOListA: Pointer;
 
@@ -1955,16 +1618,12 @@ function GetGPOListA;
 begin
   GetProcedureAddress(_GetGPOListA, userenvlib, 'GetGPOListA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetGPOListA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetGPOListA]
   end;
 end;
-{$ELSE}
-function GetGPOListA; external userenvlib name 'GetGPOListA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetGPOListW: Pointer;
 
@@ -1972,53 +1631,25 @@ function GetGPOListW;
 begin
   GetProcedureAddress(_GetGPOListW, userenvlib, 'GetGPOListW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetGPOListW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetGPOListW]
   end;
 end;
-{$ELSE}
-function GetGPOListW; external userenvlib name 'GetGPOListW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetGPOList: Pointer;
 
 function GetGPOList;
 begin
-  GetProcedureAddress(_GetGPOList, userenvlib, 'GetGPOListW');
+  GetProcedureAddress(_GetGPOList, userenvlib, 'GetGPOList' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetGPOList]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetGPOList]
   end;
 end;
-{$ELSE}
-function GetGPOList; external userenvlib name 'GetGPOListW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetGPOList: Pointer;
-
-function GetGPOList;
-begin
-  GetProcedureAddress(_GetGPOList, userenvlib, 'GetGPOListA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetGPOList]
-  end;
-end;
-{$ELSE}
-function GetGPOList; external userenvlib name 'GetGPOListA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _FreeGPOListA: Pointer;
 
@@ -2026,16 +1657,12 @@ function FreeGPOListA;
 begin
   GetProcedureAddress(_FreeGPOListA, userenvlib, 'FreeGPOListA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FreeGPOListA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_FreeGPOListA]
   end;
 end;
-{$ELSE}
-function FreeGPOListA; external userenvlib name 'FreeGPOListA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _FreeGPOListW: Pointer;
 
@@ -2043,53 +1670,25 @@ function FreeGPOListW;
 begin
   GetProcedureAddress(_FreeGPOListW, userenvlib, 'FreeGPOListW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FreeGPOListW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_FreeGPOListW]
   end;
 end;
-{$ELSE}
-function FreeGPOListW; external userenvlib name 'FreeGPOListW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _FreeGPOList: Pointer;
 
 function FreeGPOList;
 begin
-  GetProcedureAddress(_FreeGPOList, userenvlib, 'FreeGPOListW');
+  GetProcedureAddress(_FreeGPOList, userenvlib, 'FreeGPOList' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FreeGPOList]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_FreeGPOList]
   end;
 end;
-{$ELSE}
-function FreeGPOList; external userenvlib name 'FreeGPOListW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _FreeGPOList: Pointer;
-
-function FreeGPOList;
-begin
-  GetProcedureAddress(_FreeGPOList, userenvlib, 'FreeGPOListA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FreeGPOList]
-  end;
-end;
-{$ELSE}
-function FreeGPOList; external userenvlib name 'FreeGPOListA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetAppliedGPOListA: Pointer;
 
@@ -2097,16 +1696,12 @@ function GetAppliedGPOListA;
 begin
   GetProcedureAddress(_GetAppliedGPOListA, userenvlib, 'GetAppliedGPOListA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetAppliedGPOListA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetAppliedGPOListA]
   end;
 end;
-{$ELSE}
-function GetAppliedGPOListA; external userenvlib name 'GetAppliedGPOListA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetAppliedGPOListW: Pointer;
 
@@ -2114,53 +1709,25 @@ function GetAppliedGPOListW;
 begin
   GetProcedureAddress(_GetAppliedGPOListW, userenvlib, 'GetAppliedGPOListW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetAppliedGPOListW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetAppliedGPOListW]
   end;
 end;
-{$ELSE}
-function GetAppliedGPOListW; external userenvlib name 'GetAppliedGPOListW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetAppliedGPOList: Pointer;
 
 function GetAppliedGPOList;
 begin
-  GetProcedureAddress(_GetAppliedGPOList, userenvlib, 'GetAppliedGPOListW');
+  GetProcedureAddress(_GetAppliedGPOList, userenvlib, 'GetAppliedGPOList' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetAppliedGPOList]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetAppliedGPOList]
   end;
 end;
-{$ELSE}
-function GetAppliedGPOList; external userenvlib name 'GetAppliedGPOListW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetAppliedGPOList: Pointer;
-
-function GetAppliedGPOList;
-begin
-  GetProcedureAddress(_GetAppliedGPOList, userenvlib, 'GetAppliedGPOListA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetAppliedGPOList]
-  end;
-end;
-{$ELSE}
-function GetAppliedGPOList; external userenvlib name 'GetAppliedGPOListA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _ProcessGroupPolicyCompleted: Pointer;
 
@@ -2168,16 +1735,12 @@ function ProcessGroupPolicyCompleted;
 begin
   GetProcedureAddress(_ProcessGroupPolicyCompleted, userenvlib, 'ProcessGroupPolicyCompleted');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ProcessGroupPolicyCompleted]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ProcessGroupPolicyCompleted]
   end;
 end;
-{$ELSE}
-function ProcessGroupPolicyCompleted; external userenvlib name 'ProcessGroupPolicyCompleted';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ProcessGroupPolicyCompletedEx: Pointer;
 
@@ -2185,16 +1748,12 @@ function ProcessGroupPolicyCompletedEx;
 begin
   GetProcedureAddress(_ProcessGroupPolicyCompletedEx, userenvlib, 'ProcessGroupPolicyCompletedEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ProcessGroupPolicyCompletedEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ProcessGroupPolicyCompletedEx]
   end;
 end;
-{$ELSE}
-function ProcessGroupPolicyCompletedEx; external userenvlib name 'ProcessGroupPolicyCompletedEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RsopAccessCheckByType: Pointer;
 
@@ -2202,16 +1761,12 @@ function RsopAccessCheckByType;
 begin
   GetProcedureAddress(_RsopAccessCheckByType, userenvlib, 'RsopAccessCheckByType');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RsopAccessCheckByType]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RsopAccessCheckByType]
   end;
 end;
-{$ELSE}
-function RsopAccessCheckByType; external userenvlib name 'RsopAccessCheckByType';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RsopFileAccessCheck: Pointer;
 
@@ -2219,16 +1774,12 @@ function RsopFileAccessCheck;
 begin
   GetProcedureAddress(_RsopFileAccessCheck, userenvlib, 'RsopFileAccessCheck');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RsopFileAccessCheck]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RsopFileAccessCheck]
   end;
 end;
-{$ELSE}
-function RsopFileAccessCheck; external userenvlib name 'RsopFileAccessCheck';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RsopSetPolicySettingStatus: Pointer;
 
@@ -2236,16 +1787,12 @@ function RsopSetPolicySettingStatus;
 begin
   GetProcedureAddress(_RsopSetPolicySettingStatus, userenvlib, 'RsopSetPolicySettingStatus');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RsopSetPolicySettingStatus]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RsopSetPolicySettingStatus]
   end;
 end;
-{$ELSE}
-function RsopSetPolicySettingStatus; external userenvlib name 'RsopSetPolicySettingStatus';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RsopResetPolicySettingStatus: Pointer;
 
@@ -2253,14 +1800,61 @@ function RsopResetPolicySettingStatus;
 begin
   GetProcedureAddress(_RsopResetPolicySettingStatus, userenvlib, 'RsopResetPolicySettingStatus');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RsopResetPolicySettingStatus]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RsopResetPolicySettingStatus]
   end;
 end;
+
 {$ELSE}
+
+function LoadUserProfileA; external userenvlib name 'LoadUserProfileA';
+function LoadUserProfileW; external userenvlib name 'LoadUserProfileW';
+function LoadUserProfile; external userenvlib name 'LoadUserProfile' + AWSuffix;
+function UnloadUserProfile; external userenvlib name 'UnloadUserProfile';
+function GetProfilesDirectoryA; external userenvlib name 'GetProfilesDirectoryA';
+function GetProfilesDirectoryW; external userenvlib name 'GetProfilesDirectoryW';
+function GetProfilesDirectory; external userenvlib name 'GetProfilesDirectory' + AWSuffix;
+function GetProfileType; external userenvlib name 'GetProfileType';
+function DeleteProfileA; external userenvlib name 'DeleteProfileA';
+function DeleteProfileW; external userenvlib name 'DeleteProfileW';
+function DeleteProfile; external userenvlib name 'DeleteProfile' + AWSuffix;
+function GetDefaultUserProfileDirectoryA; external userenvlib name 'GetDefaultUserProfileDirectoryA';
+function GetDefaultUserProfileDirectoryW; external userenvlib name 'GetDefaultUserProfileDirectoryW';
+function GetDefaultUserProfileDirectory; external userenvlib name 'GetDefaultUserProfileDirectory' + AWSuffix;
+function GetAllUsersProfileDirectoryA; external userenvlib name 'GetAllUsersProfileDirectoryA';
+function GetAllUsersProfileDirectoryW; external userenvlib name 'GetAllUsersProfileDirectoryW';
+function GetAllUsersProfileDirectory; external userenvlib name 'GetAllUsersProfileDirectory' + AWSuffix;
+function GetUserProfileDirectoryA; external userenvlib name 'GetUserProfileDirectoryA';
+function GetUserProfileDirectoryW; external userenvlib name 'GetUserProfileDirectoryW';
+function GetUserProfileDirectory; external userenvlib name 'GetUserProfileDirectory' + AWSuffix;
+function CreateEnvironmentBlock; external userenvlib name 'CreateEnvironmentBlock';
+function DestroyEnvironmentBlock; external userenvlib name 'DestroyEnvironmentBlock';
+function ExpandEnvironmentStringsForUserA; external userenvlib name 'ExpandEnvironmentStringsForUserA';
+function ExpandEnvironmentStringsForUserW; external userenvlib name 'ExpandEnvironmentStringsForUserW';
+function ExpandEnvironmentStringsForUser; external userenvlib name 'ExpandEnvironmentStringsForUser' + AWSuffix;
+function RefreshPolicy; external userenvlib name 'RefreshPolicy';
+function RefreshPolicyEx; external userenvlib name 'RefreshPolicyEx';
+function EnterCriticalPolicySection; external userenvlib name 'EnterCriticalPolicySection';
+function LeaveCriticalPolicySection; external userenvlib name 'LeaveCriticalPolicySection';
+function RegisterGPNotification; external userenvlib name 'RegisterGPNotification';
+function UnregisterGPNotification; external userenvlib name 'UnregisterGPNotification';
+function GetGPOListA; external userenvlib name 'GetGPOListA';
+function GetGPOListW; external userenvlib name 'GetGPOListW';
+function GetGPOList; external userenvlib name 'GetGPOList' + AWSuffix;
+function FreeGPOListA; external userenvlib name 'FreeGPOListA';
+function FreeGPOListW; external userenvlib name 'FreeGPOListW';
+function FreeGPOList; external userenvlib name 'FreeGPOList' + AWSuffix;
+function GetAppliedGPOListA; external userenvlib name 'GetAppliedGPOListA';
+function GetAppliedGPOListW; external userenvlib name 'GetAppliedGPOListW';
+function GetAppliedGPOList; external userenvlib name 'GetAppliedGPOList' + AWSuffix;
+function ProcessGroupPolicyCompleted; external userenvlib name 'ProcessGroupPolicyCompleted';
+function ProcessGroupPolicyCompletedEx; external userenvlib name 'ProcessGroupPolicyCompletedEx';
+function RsopAccessCheckByType; external userenvlib name 'RsopAccessCheckByType';
+function RsopFileAccessCheck; external userenvlib name 'RsopFileAccessCheck';
+function RsopSetPolicySettingStatus; external userenvlib name 'RsopSetPolicySettingStatus';
 function RsopResetPolicySettingStatus; external userenvlib name 'RsopResetPolicySettingStatus';
+
 {$ENDIF DYNAMIC_LINK}
 
 end.
-

@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { National Language Support API interface Unit for Object Pascal               }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: winnls.h, released June 2000. The original Pascal      }
 { code is: WinNLS.pas, released December 2000. The initial developer of the    }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,25 +35,33 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaWinNLS.pas,v 1.10 2005/09/06 16:36:50 marquardt Exp $
+
+{$IFNDEF JWA_INCLUDEMODE}
 
 unit JwaWinNLS;
 
 {$WEAKPACKAGEUNIT}
 
-{$HPPEMIT ''}
-{$HPPEMIT '#include "WinNls.h"'}
-{$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinType, JwaWinBase;
+  JwaWinBase, JwaWinType;
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_INTERFACESECTION}
+
+{$HPPEMIT ''}
+{$HPPEMIT '#include "WinNls.h"'}
+{$HPPEMIT ''}
 
 ////////////////////////////////////////////////////////////////////////////
 //
@@ -1177,21 +1184,21 @@ type
   TCpInfoExW = CPINFOEXW;
   PCpInfoExW = LPCPINFOEXW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   CPINFOEX = CPINFOEXW;
   {$EXTERNALSYM CPINFOEX}
   LPCPINFOEX = LPCPINFOEXW;
   {$EXTERNALSYM LPCPINFOEX}
   TCpInfoEx = TCpInfoExW;
   PCpInfoEx = PCpInfoExW;
-{$ELSE}
+  {$ELSE}
   CPINFOEX = CPINFOEXA;
   {$EXTERNALSYM CPINFOEX}
   LPCPINFOEX = LPCPINFOEXA;
   {$EXTERNALSYM LPCPINFOEX}
   TCpInfoEx = TCpInfoExA;
   PCpInfoEx = PCpInfoExA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 //  Number format.
@@ -1229,21 +1236,21 @@ type
   TNumberFmtW = NUMBERFMTW;
   PNumberFmtW = LPNUMBERFMTW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   NUMBERFMT = NUMBERFMTW;
   {$EXTERNALSYM NUMBERFMT}
   LPNUMBERFMT = LPNUMBERFMTW;
   {$EXTERNALSYM LPNUMBERFMT}
   TNumberFmt = TNumberFmtW;
   PNumberFmt = TNumberFmtW;
-{$ELSE}
+  {$ELSE}
   NUMBERFMT = NUMBERFMTA;
   {$EXTERNALSYM NUMBERFMT}
   LPNUMBERFMT = LPNUMBERFMTA;
   {$EXTERNALSYM LPNUMBERFMT}
   TNumberFmt = TNumberFmtA;
   PNumberFmt = TNumberFmtA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 //  Currency format.
@@ -1285,21 +1292,21 @@ type
   TCurrencyFmtW = CURRENCYFMTW;
   PCurrencyFmtW = LPCURRENCYFMTW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   CURRENCYFMT = CURRENCYFMTW;
   {$EXTERNALSYM CURRENCYFMT}
   LPCURRENCYFMT = LPCURRENCYFMTW;
   {$EXTERNALSYM LPCURRENCYFMT}
   TCurrencyFmt = TCurrencyFmtW;
   PCurrencyFmt = PCurrencyFmtW;
-{$ELSE}
+  {$ELSE}
   CURRENCYFMT = CURRENCYFMTA;
   {$EXTERNALSYM CURRENCYFMT}
   LPCURRENCYFMT = LPCURRENCYFMTA;
   {$EXTERNALSYM LPCURRENCYFMT}
   TCurrencyFmt = TCurrencyFmtA;
   PCurrencyFmt = PCurrencyFmtA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 //  NLS function capabilities
@@ -1401,105 +1408,76 @@ type
 //
 
 type
-  LANGUAGEGROUP_ENUMPROCA = function (LanguageGroup: LGRPID; lpLanguageGroupString,
+  LANGUAGEGROUP_ENUMPROCA = function(LanguageGroup: LGRPID; lpLanguageGroupString,
     lpLanguageGroupNameSting: LPSTR; dwFlags: DWORD; lParam: LONG_PTR): BOOL; stdcall;
   {$EXTERNALSYM LANGUAGEGROUP_ENUMPROCA}
-  LANGGROUPLOCALE_ENUMPROCA = function (LanguageGroup: LGRPID; Locale: LCID;
+  LANGGROUPLOCALE_ENUMPROCA = function(LanguageGroup: LGRPID; Locale: LCID;
     lpLocaleString: LPSTR; lParam: LONG_PTR): BOOL; stdcall;
   {$EXTERNALSYM LANGGROUPLOCALE_ENUMPROCA}
-  UILANGUAGE_ENUMPROCA = function (lpUILanguageString: LPSTR; lParam: LONG_PTR): BOOL; stdcall;
+  UILANGUAGE_ENUMPROCA = function(lpUILanguageString: LPSTR; lParam: LONG_PTR): BOOL; stdcall;
   {$EXTERNALSYM UILANGUAGE_ENUMPROCA}
-  LOCALE_ENUMPROCA = function (lpLocaleString: LPSTR): BOOL; stdcall;
+  LOCALE_ENUMPROCA = function(lpLocaleString: LPSTR): BOOL; stdcall;
   {$EXTERNALSYM LOCALE_ENUMPROCA}
-  CODEPAGE_ENUMPROCA = function (lpCodePAgeString: LPSTR): BOOL; stdcall;
+  CODEPAGE_ENUMPROCA = function(lpCodePAgeString: LPSTR): BOOL; stdcall;
   {$EXTERNALSYM CODEPAGE_ENUMPROCA}
-  DATEFMT_ENUMPROCA = function (lpDateFormatString: LPSTR): BOOL; stdcall;
+  DATEFMT_ENUMPROCA = function(lpDateFormatString: LPSTR): BOOL; stdcall;
   {$EXTERNALSYM DATEFMT_ENUMPROCA}
-  DATEFMT_ENUMPROCEXA = function (lpDateFormatString: LPSTR; CalenderId: CALID): BOOL; stdcall;
+  DATEFMT_ENUMPROCEXA = function(lpDateFormatString: LPSTR; CalenderId: CALID): BOOL; stdcall;
   {$EXTERNALSYM DATEFMT_ENUMPROCEXA}
-  TIMEFMT_ENUMPROCA = function (lpTimeFormatString: LPSTR): BOOL; stdcall;
+  TIMEFMT_ENUMPROCA = function(lpTimeFormatString: LPSTR): BOOL; stdcall;
   {$EXTERNALSYM TIMEFMT_ENUMPROCA}
-  CALINFO_ENUMPROCA = function (lpCalendarInfoString: LPSTR): BOOL; stdcall;
+  CALINFO_ENUMPROCA = function(lpCalendarInfoString: LPSTR): BOOL; stdcall;
   {$EXTERNALSYM CALINFO_ENUMPROCA}
-  CALINFO_ENUMPROCEXA = function (lpCalendarInfoString: LPSTR; Calendar: CALID): BOOL; stdcall;
+  CALINFO_ENUMPROCEXA = function(lpCalendarInfoString: LPSTR; Calendar: CALID): BOOL; stdcall;
   {$EXTERNALSYM CALINFO_ENUMPROCEXA}
 
-  LANGUAGEGROUP_ENUMPROCW = function (LanguageGroup: LGRPID; lpLanguageGroupString,
+  LANGUAGEGROUP_ENUMPROCW = function(LanguageGroup: LGRPID; lpLanguageGroupString,
     lpLanguageGroupNameSting: LPWSTR; dwFlags: DWORD; lParam: LONG_PTR): BOOL; stdcall;
   {$EXTERNALSYM LANGUAGEGROUP_ENUMPROCW}
-  LANGGROUPLOCALE_ENUMPROCW = function (LanguageGroup: LGRPID; Locale: LCID;
+  LANGGROUPLOCALE_ENUMPROCW = function(LanguageGroup: LGRPID; Locale: LCID;
     lpLocaleString: LPWSTR; lParam: LONG_PTR): BOOL; stdcall;
   {$EXTERNALSYM LANGGROUPLOCALE_ENUMPROCW}
-  UILANGUAGE_ENUMPROCW = function (lpUILanguageString: LPWSTR; lParam: LONG_PTR): BOOL; stdcall;
+  UILANGUAGE_ENUMPROCW = function(lpUILanguageString: LPWSTR; lParam: LONG_PTR): BOOL; stdcall;
   {$EXTERNALSYM UILANGUAGE_ENUMPROCW}
-  LOCALE_ENUMPROCW = function (lpLocaleString: LPWSTR): BOOL; stdcall;
+  LOCALE_ENUMPROCW = function(lpLocaleString: LPWSTR): BOOL; stdcall;
   {$EXTERNALSYM LOCALE_ENUMPROCW}
-  CODEPAGE_ENUMPROCW = function (lpCodePAgeString: LPWSTR): BOOL; stdcall;
+  CODEPAGE_ENUMPROCW = function(lpCodePAgeString: LPWSTR): BOOL; stdcall;
   {$EXTERNALSYM CODEPAGE_ENUMPROCW}
-  DATEFMT_ENUMPROCW = function (lpDateFormatString: LPWSTR): BOOL; stdcall;
+  DATEFMT_ENUMPROCW = function(lpDateFormatString: LPWSTR): BOOL; stdcall;
   {$EXTERNALSYM DATEFMT_ENUMPROCW}
-  DATEFMT_ENUMPROCEXW = function (lpDateFormatString: LPWSTR; CalenderId: CALID): BOOL; stdcall;
+  DATEFMT_ENUMPROCEXW = function(lpDateFormatString: LPWSTR; CalenderId: CALID): BOOL; stdcall;
   {$EXTERNALSYM DATEFMT_ENUMPROCEXW}
-  TIMEFMT_ENUMPROCW = function (lpTimeFormatString: LPWSTR): BOOL; stdcall;
+  TIMEFMT_ENUMPROCW = function(lpTimeFormatString: LPWSTR): BOOL; stdcall;
   {$EXTERNALSYM TIMEFMT_ENUMPROCW}
-  CALINFO_ENUMPROCW = function (lpCalendarInfoString: LPWSTR): BOOL; stdcall;
+  CALINFO_ENUMPROCW = function(lpCalendarInfoString: LPWSTR): BOOL; stdcall;
   {$EXTERNALSYM CALINFO_ENUMPROCW}
-  CALINFO_ENUMPROCEXW = function (lpCalendarInfoString: LPWSTR; Calendar: CALID): BOOL; stdcall;
+  CALINFO_ENUMPROCEXW = function(lpCalendarInfoString: LPWSTR; Calendar: CALID): BOOL; stdcall;
   {$EXTERNALSYM CALINFO_ENUMPROCEXW}
-  GEO_ENUMPROC = function (geo: GEOID): BOOL; stdcall;
+  GEO_ENUMPROC = function(geo: GEOID): BOOL; stdcall;
   {$EXTERNALSYM GEO_ENUMPROC}
 
-{$IFDEF UNICODE}
-
-  LANGUAGEGROUP_ENUMPROC = function (LanguageGroup: LGRPID; lpLanguageGroupString,
-    lpLanguageGroupNameSting: LPWSTR; dwFlags: DWORD; lParam: LONG_PTR): BOOL; stdcall;
+  LANGUAGEGROUP_ENUMPROC = function(LanguageGroup: LGRPID; lpLanguageGroupString,
+    lpLanguageGroupNameSting: LPTSTR; dwFlags: DWORD; lParam: LONG_PTR): BOOL; stdcall;
   {$EXTERNALSYM LANGUAGEGROUP_ENUMPROC}
-  LANGGROUPLOCALE_ENUMPROC = function (LanguageGroup: LGRPID; Locale: LCID;
-    lpLocaleString: LPWSTR; lParam: LONG_PTR): BOOL; stdcall;
+  LANGGROUPLOCALE_ENUMPROC = function(LanguageGroup: LGRPID; Locale: LCID;
+    lpLocaleString: LPTSTR; lParam: LONG_PTR): BOOL; stdcall;
   {$EXTERNALSYM LANGGROUPLOCALE_ENUMPROC}
-  UILANGUAGE_ENUMPROC = function (lpUILanguageString: LPWSTR; lParam: LONG_PTR): BOOL; stdcall;
+  UILANGUAGE_ENUMPROC = function(lpUILanguageString: LPTSTR; lParam: LONG_PTR): BOOL; stdcall;
   {$EXTERNALSYM UILANGUAGE_ENUMPROC}
-  LOCALE_ENUMPROC = function (lpLocaleString: LPWSTR): BOOL; stdcall;
+  LOCALE_ENUMPROC = function(lpLocaleString: LPTSTR): BOOL; stdcall;
   {$EXTERNALSYM LOCALE_ENUMPROC}
-  CODEPAGE_ENUMPROC = function (lpCodePAgeString: LPWSTR): BOOL; stdcall;
+  CODEPAGE_ENUMPROC = function(lpCodePAgeString: LPTSTR): BOOL; stdcall;
   {$EXTERNALSYM CODEPAGE_ENUMPROC}
-  DATEFMT_ENUMPROC = function (lpDateFormatString: LPWSTR): BOOL; stdcall;
+  DATEFMT_ENUMPROC = function(lpDateFormatString: LPTSTR): BOOL; stdcall;
   {$EXTERNALSYM DATEFMT_ENUMPROC}
-  DATEFMT_ENUMPROCEX = function (lpDateFormatString: LPWSTR; CalenderId: CALID): BOOL; stdcall;
+  DATEFMT_ENUMPROCEX = function(lpDateFormatString: LPTSTR; CalenderId: CALID): BOOL; stdcall;
   {$EXTERNALSYM DATEFMT_ENUMPROCEX}
-  TIMEFMT_ENUMPROC = function (lpTimeFormatString: LPWSTR): BOOL; stdcall;
+  TIMEFMT_ENUMPROC = function(lpTimeFormatString: LPTSTR): BOOL; stdcall;
   {$EXTERNALSYM TIMEFMT_ENUMPROC}
-  CALINFO_ENUMPROC = function (lpCalendarInfoString: LPWSTR): BOOL; stdcall;
+  CALINFO_ENUMPROC = function(lpCalendarInfoString: LPTSTR): BOOL; stdcall;
   {$EXTERNALSYM CALINFO_ENUMPROC}
-  CALINFO_ENUMPROCEX = function (lpCalendarInfoString: LPWSTR; Calendar: CALID): BOOL; stdcall;
+  CALINFO_ENUMPROCEX = function(lpCalendarInfoString: LPTSTR; Calendar: CALID): BOOL; stdcall;
   {$EXTERNALSYM CALINFO_ENUMPROCEX}
-
-{$ELSE}
-
-  LANGUAGEGROUP_ENUMPROC = function (LanguageGroup: LGRPID; lpLanguageGroupString,
-    lpLanguageGroupNameSting: LPSTR; dwFlags: DWORD; lParam: LONG_PTR): BOOL; stdcall;
-  {$EXTERNALSYM LANGUAGEGROUP_ENUMPROC}
-  LANGGROUPLOCALE_ENUMPROC = function (LanguageGroup: LGRPID; Locale: LCID;
-    lpLocaleString: LPSTR; lParam: LONG_PTR): BOOL; stdcall;
-  {$EXTERNALSYM LANGGROUPLOCALE_ENUMPROC}
-  UILANGUAGE_ENUMPROC = function (lpUILanguageString: LPSTR; lParam: LONG_PTR): BOOL; stdcall;
-  {$EXTERNALSYM UILANGUAGE_ENUMPROC}
-  LOCALE_ENUMPROC = function (lpLocaleString: LPSTR): BOOL; stdcall;
-  {$EXTERNALSYM LOCALE_ENUMPROC}
-  CODEPAGE_ENUMPROC = function (lpCodePAgeString: LPSTR): BOOL; stdcall;
-  {$EXTERNALSYM CODEPAGE_ENUMPROC}
-  DATEFMT_ENUMPROC = function (lpDateFormatString: LPSTR): BOOL; stdcall;
-  {$EXTERNALSYM DATEFMT_ENUMPROC}
-  DATEFMT_ENUMPROCEX = function (lpDateFormatString: LPSTR; CalenderId: CALID): BOOL; stdcall;
-  {$EXTERNALSYM DATEFMT_ENUMPROCEX}
-  TIMEFMT_ENUMPROC = function (lpTimeFormatString: LPSTR): BOOL; stdcall;
-  {$EXTERNALSYM TIMEFMT_ENUMPROC}
-  CALINFO_ENUMPROC = function (lpCalendarInfoString: LPSTR): BOOL; stdcall;
-  {$EXTERNALSYM CALINFO_ENUMPROC}
-  CALINFO_ENUMPROCEX = function (lpCalendarInfoString: LPSTR; Calendar: CALID): BOOL; stdcall;
-  {$EXTERNALSYM CALINFO_ENUMPROCEX}
-
-{$ENDIF}
 
 ////////////////////////////////////////////////////////////////////////////
 //
@@ -1508,9 +1486,6 @@ type
 //  Define all macros for the NLS component here.
 //
 ////////////////////////////////////////////////////////////////////////////
-
-
-
 
 ////////////////////////////////////////////////////////////////////////////
 //
@@ -1540,14 +1515,8 @@ function GetCPInfoExA(CodePage: UINT; dwFlags: DWORD; var lpCPInfoEx: CPINFOEXA)
 {$EXTERNALSYM GetCPInfoExA}
 function GetCPInfoExW(CodePage: UINT; dwFlags: DWORD; var lpCPInfoEx: CPINFOEXW): BOOL; stdcall;
 {$EXTERNALSYM GetCPInfoExW}
-
-{$IFDEF UNICODE}
-function GetCPInfoEx(CodePage: UINT; dwFlags: DWORD; var lpCPInfoEx: CPINFOEXW): BOOL; stdcall;
+function GetCPInfoEx(CodePage: UINT; dwFlags: DWORD; var lpCPInfoEx: CPINFOEX): BOOL; stdcall;
 {$EXTERNALSYM GetCPInfoEx}
-{$ELSE}
-function GetCPInfoEx(CodePage: UINT; dwFlags: DWORD; var lpCPInfoEx: CPINFOEXA): BOOL; stdcall;
-{$EXTERNALSYM GetCPInfoEx}
-{$ENDIF}
 
 function IsDBCSLeadByte(TestChar: BYTE): BOOL; stdcall;
 {$EXTERNALSYM IsDBCSLeadByte}
@@ -1574,16 +1543,9 @@ function CompareStringA(Locale: LCID; dwCmpFlags: DWORD; lpString1: LPCSTR;
 function CompareStringW(Locale: LCID; dwCmpFlags: DWORD; lpString1: LPCWSTR;
   cchCount1: Integer; lpString2: LPCWSTR; cchCount2: Integer): Integer; stdcall;
 {$EXTERNALSYM CompareStringW}
-
-{$IFDEF UNICODE}
-function CompareString(Locale: LCID; dwCmpFlags: DWORD; lpString1: LPCWSTR;
-  cchCount1: Integer; lpString2: LPCWSTR; cchCount2: Integer): Integer; stdcall;
+function CompareString(Locale: LCID; dwCmpFlags: DWORD; lpString1: LPCTSTR;
+  cchCount1: Integer; lpString2: LPCTSTR; cchCount2: Integer): Integer; stdcall;
 {$EXTERNALSYM CompareString}
-{$ELSE}
-function CompareString(Locale: LCID; dwCmpFlags: DWORD; lpString1: LPCSTR;
-  cchCount1: Integer; lpString2: LPCSTR; cchCount2: Integer): Integer; stdcall;
-{$EXTERNALSYM CompareString}
-{$ENDIF}
 
 function LCMapStringA(Locale: LCID; dwMapFlags: DWORD; lpSrcStr: LPCSTR;
   cchSrc: Integer; lpDestStr: LPSTR; cchDest: Integer): Integer; stdcall;
@@ -1591,16 +1553,9 @@ function LCMapStringA(Locale: LCID; dwMapFlags: DWORD; lpSrcStr: LPCSTR;
 function LCMapStringW(Locale: LCID; dwMapFlags: DWORD; lpSrcStr: LPCWSTR;
   cchSrc: Integer; lpDestStr: LPWSTR; cchDest: Integer): Integer; stdcall;
 {$EXTERNALSYM LCMapStringW}
-
-{$IFDEF UNICODE}
-function LCMapString(Locale: LCID; dwMapFlags: DWORD; lpSrcStr: LPCWSTR;
-  cchSrc: Integer; lpDestStr: LPWSTR; cchDest: Integer): Integer; stdcall;
+function LCMapString(Locale: LCID; dwMapFlags: DWORD; lpSrcStr: LPCTSTR;
+  cchSrc: Integer; lpDestStr: LPTSTR; cchDest: Integer): Integer; stdcall;
 {$EXTERNALSYM LCMapString}
-{$ELSE}
-function LCMapString(Locale: LCID; dwMapFlags: DWORD; lpSrcStr: LPCSTR;
-  cchSrc: Integer; lpDestStr: LPSTR; cchDest: Integer): Integer; stdcall;
-{$EXTERNALSYM LCMapString}
-{$ENDIF}
 
 function GetLocaleInfoA(Locale: LCID; LCType: LCTYPE; lpLCData: LPSTR;
   cchData: Integer): Integer; stdcall;
@@ -1608,29 +1563,16 @@ function GetLocaleInfoA(Locale: LCID; LCType: LCTYPE; lpLCData: LPSTR;
 function GetLocaleInfoW(Locale: LCID; LCType: LCTYPE; lpLCData: LPWSTR;
   cchData: Integer): Integer; stdcall;
 {$EXTERNALSYM GetLocaleInfoW}
-
-{$IFDEF UNICODE}
-function GetLocaleInfo(Locale: LCID; LCType: LCTYPE; lpLCData: LPWSTR;
+function GetLocaleInfo(Locale: LCID; LCType: LCTYPE; lpLCData: LPTSTR;
   cchData: Integer): Integer; stdcall;
 {$EXTERNALSYM GetLocaleInfo}
-{$ELSE}
-function GetLocaleInfo(Locale: LCID; LCType: LCTYPE; lpLCData: LPSTR;
-  cchData: Integer): Integer; stdcall;
-{$EXTERNALSYM GetLocaleInfo}
-{$ENDIF}
 
 function SetLocaleInfoA(Locale: LCID; LCType: LCTYPE; lpLCData: LPCSTR): BOOL; stdcall;
 {$EXTERNALSYM SetLocaleInfoA}
 function SetLocaleInfoW(Locale: LCID; LCType: LCTYPE; lpLCData: LPCWSTR): BOOL; stdcall;
 {$EXTERNALSYM SetLocaleInfoW}
-
-{$IFDEF UNICODE}
-function SetLocaleInfo(Locale: LCID; LCType: LCTYPE; lpLCData: LPCWSTR): BOOL; stdcall;
+function SetLocaleInfo(Locale: LCID; LCType: LCTYPE; lpLCData: LPCTSTR): BOOL; stdcall;
 {$EXTERNALSYM SetLocaleInfo}
-{$ELSE}
-function SetLocaleInfo(Locale: LCID; LCType: LCTYPE; lpLCData: LPCSTR): BOOL; stdcall;
-{$EXTERNALSYM SetLocaleInfo}
-{$ENDIF}
 
 function GetCalendarInfoA(Locale: LCID; Calendar: CALID; CalType: CALTYPE;
   lpCalData: LPSTR; cchData: Integer; lpValue: LPDWORD): Integer; stdcall;
@@ -1638,16 +1580,9 @@ function GetCalendarInfoA(Locale: LCID; Calendar: CALID; CalType: CALTYPE;
 function GetCalendarInfoW(Locale: LCID; Calendar: CALID; CalType: CALTYPE;
   lpCalData: LPWSTR; cchData: Integer; lpValue: LPDWORD): Integer; stdcall;
 {$EXTERNALSYM GetCalendarInfoW}
-
-{$IFDEF UNICODE}
 function GetCalendarInfo(Locale: LCID; Calendar: CALID; CalType: CALTYPE;
-  lpCalData: LPWSTR; cchData: Integer; lpValue: LPDWORD): Integer; stdcall;
+  lpCalData: LPTSTR; cchData: Integer; lpValue: LPDWORD): Integer; stdcall;
 {$EXTERNALSYM GetCalendarInfo}
-{$ELSE}
-function GetCalendarInfo(Locale: LCID; Calendar: CALID; CalType: CALTYPE;
-  lpCalData: LPSTR; cchData: Integer; lpValue: LPDWORD): Integer; stdcall;
-{$EXTERNALSYM GetCalendarInfo}
-{$ENDIF}
 
 function SetCalendarInfoA(Locale: LCID; Calendar: CALID; CalType: CALTYPE;
   lpCalData: LPCSTR): BOOL; stdcall;
@@ -1655,16 +1590,9 @@ function SetCalendarInfoA(Locale: LCID; Calendar: CALID; CalType: CALTYPE;
 function SetCalendarInfoW(Locale: LCID; Calendar: CALID; CalType: CALTYPE;
   lpCalData: LPCWSTR): BOOL; stdcall;
 {$EXTERNALSYM SetCalendarInfoW}
-
-{$IFDEF UNICODE}
 function SetCalendarInfo(Locale: LCID; Calendar: CALID; CalType: CALTYPE;
-  lpCalData: LPCWSTR): BOOL; stdcall;
+  lpCalData: LPCTSTR): BOOL; stdcall;
 {$EXTERNALSYM SetCalendarInfo}
-{$ELSE}
-function SetCalendarInfo(Locale: LCID; Calendar: CALID; CalType: CALTYPE;
-  lpCalData: LPCSTR): BOOL; stdcall;
-{$EXTERNALSYM SetCalendarInfo}
-{$ENDIF}
 
 function GetTimeFormatA(Locale: LCID; dwFlags: DWORD; lpTime: LPSYSTEMTIME;
   lpFormat: LPCSTR; lpTimeStr: LPSTR; cchTime: Integer): Integer; stdcall;
@@ -1672,16 +1600,9 @@ function GetTimeFormatA(Locale: LCID; dwFlags: DWORD; lpTime: LPSYSTEMTIME;
 function GetTimeFormatW(Locale: LCID; dwFlags: DWORD; lpTime: LPSYSTEMTIME;
   lpFormat: LPCWSTR; lpTimeStr: LPWSTR; cchTime: Integer): Integer; stdcall;
 {$EXTERNALSYM GetTimeFormatW}
-
-{$IFDEF UNICODE}
 function GetTimeFormat(Locale: LCID; dwFlags: DWORD; lpTime: LPSYSTEMTIME;
-  lpFormat: LPCWSTR; lpTimeStr: LPWSTR; cchTime: Integer): Integer; stdcall;
+  lpFormat: LPCTSTR; lpTimeStr: LPTSTR; cchTime: Integer): Integer; stdcall;
 {$EXTERNALSYM GetTimeFormat}
-{$ELSE}
-function GetTimeFormat(Locale: LCID; dwFlags: DWORD; lpTime: LPSYSTEMTIME;
-  lpFormat: LPCSTR; lpTimeStr: LPSTR; cchTime: Integer): Integer; stdcall;
-{$EXTERNALSYM GetTimeFormat}
-{$ENDIF}
 
 function GetDateFormatA(Locale: LCID; dwFlags: DWORD; lpDate: LPSYSTEMTIME;
   lpFormat: LPCSTR; lpDateStr: LPSTR; cchDate: Integer): Integer; stdcall;
@@ -1689,16 +1610,9 @@ function GetDateFormatA(Locale: LCID; dwFlags: DWORD; lpDate: LPSYSTEMTIME;
 function GetDateFormatW(Locale: LCID; dwFlags: DWORD; lpDate: LPSYSTEMTIME;
   lpFormat: LPCWSTR; lpDateStr: LPWSTR; cchDate: Integer): Integer; stdcall;
 {$EXTERNALSYM GetDateFormatW}
-
-{$IFDEF UNICODE}
 function GetDateFormat(Locale: LCID; dwFlags: DWORD; lpDate: LPSYSTEMTIME;
-  lpFormat: LPCWSTR; lpDateStr: LPWSTR; cchDate: Integer): Integer; stdcall;
+  lpFormat: LPCTSTR; lpDateStr: LPTSTR; cchDate: Integer): Integer; stdcall;
 {$EXTERNALSYM GetDateFormat}
-{$ELSE}
-function GetDateFormat(Locale: LCID; dwFlags: DWORD; lpDate: LPSYSTEMTIME;
-  lpFormat: LPCSTR; lpDateStr: LPSTR; cchDate: Integer): Integer; stdcall;
-{$EXTERNALSYM GetDateFormat}
-{$ENDIF}
 
 function GetNumberFormatA(Locale: LCID; dwFlags: DWORD; lpValue: LPCSTR;
   lpFormat: LPNUMBERFMTA; lpNumberStr: LPSTR; cchNumber: Integer): Integer; stdcall;
@@ -1706,16 +1620,9 @@ function GetNumberFormatA(Locale: LCID; dwFlags: DWORD; lpValue: LPCSTR;
 function GetNumberFormatW(Locale: LCID; dwFlags: DWORD; lpValue: LPCWSTR;
   lpFormat: LPNUMBERFMTW; lpNumberStr: LPWSTR; cchNumber: Integer): Integer; stdcall;
 {$EXTERNALSYM GetNumberFormatW}
-
-{$IFDEF UNICODE}
-function GetNumberFormat(Locale: LCID; dwFlags: DWORD; lpValue: LPCWSTR;
-  lpFormat: LPNUMBERFMTW; lpNumberStr: LPWSTR; cchNumber: Integer): Integer; stdcall;
+function GetNumberFormat(Locale: LCID; dwFlags: DWORD; lpValue: LPCTSTR;
+  lpFormat: LPNUMBERFMT; lpNumberStr: LPTSTR; cchNumber: Integer): Integer; stdcall;
 {$EXTERNALSYM GetNumberFormat}
-{$ELSE}
-function GetNumberFormat(Locale: LCID; dwFlags: DWORD; lpValue: LPCSTR;
-  lpFormat: LPNUMBERFMTA; lpNumberStr: LPSTR; cchNumber: Integer): Integer; stdcall;
-{$EXTERNALSYM GetNumberFormat}
-{$ENDIF}
 
 function GetCurrencyFormatA(Locale: LCID; dwFlags: DWORD; lpValue: LPCSTR;
   lpFormat: LPCURRENCYFMTA; lpCurrencyStr: LPSTR; cchCurrency: Integer): Integer; stdcall;
@@ -1723,16 +1630,9 @@ function GetCurrencyFormatA(Locale: LCID; dwFlags: DWORD; lpValue: LPCSTR;
 function GetCurrencyFormatW(Locale: LCID; dwFlags: DWORD; lpValue: LPCWSTR;
   lpFormat: LPCURRENCYFMTW; lpCurrencyStr: LPWSTR; cchCurrency: Integer): Integer; stdcall;
 {$EXTERNALSYM GetCurrencyFormatW}
-
-{$IFDEF UNICODE}
-function GetCurrencyFormat(Locale: LCID; dwFlags: DWORD; lpValue: LPCWSTR;
-  lpFormat: LPCURRENCYFMTW; lpCurrencyStr: LPWSTR; cchCurrency: Integer): Integer; stdcall;
+function GetCurrencyFormat(Locale: LCID; dwFlags: DWORD; lpValue: LPCTSTR;
+  lpFormat: LPCURRENCYFMT; lpCurrencyStr: LPTSTR; cchCurrency: Integer): Integer; stdcall;
 {$EXTERNALSYM GetCurrencyFormat}
-{$ELSE}
-function GetCurrencyFormat(Locale: LCID; dwFlags: DWORD; lpValue: LPCSTR;
-  lpFormat: LPCURRENCYFMTA; lpCurrencyStr: LPSTR; cchCurrency: Integer): Integer; stdcall;
-{$EXTERNALSYM GetCurrencyFormat}
-{$ENDIF}
 
 function EnumCalendarInfoA(lpCalInfoEnumProc: CALINFO_ENUMPROCA; Locale: LCID;
   Calendar: CALID; CalType: CALTYPE): BOOL; stdcall;
@@ -1740,16 +1640,9 @@ function EnumCalendarInfoA(lpCalInfoEnumProc: CALINFO_ENUMPROCA; Locale: LCID;
 function EnumCalendarInfoW(lpCalInfoEnumProc: CALINFO_ENUMPROCW; Locale: LCID;
   Calendar: CALID; CalType: CALTYPE): BOOL; stdcall;
 {$EXTERNALSYM EnumCalendarInfoW}
-
-{$IFDEF UNICODE}
-function EnumCalendarInfo(lpCalInfoEnumProc: CALINFO_ENUMPROCW; Locale: LCID;
+function EnumCalendarInfo(lpCalInfoEnumProc: CALINFO_ENUMPROC; Locale: LCID;
   Calendar: CALID; CalType: CALTYPE): BOOL; stdcall;
 {$EXTERNALSYM EnumCalendarInfo}
-{$ELSE}
-function EnumCalendarInfo(lpCalInfoEnumProc: CALINFO_ENUMPROCA; Locale: LCID;
-  Calendar: CALID; CalType: CALTYPE): BOOL; stdcall;
-{$EXTERNALSYM EnumCalendarInfo}
-{$ENDIF}
 
 function EnumCalendarInfoExA(lpCalInfoEnumProcEx: CALINFO_ENUMPROCEXA;
   Locale: LCID; Calendar: CALID; CalType: CALTYPE): BOOL; stdcall;
@@ -1757,16 +1650,9 @@ function EnumCalendarInfoExA(lpCalInfoEnumProcEx: CALINFO_ENUMPROCEXA;
 function EnumCalendarInfoExW(lpCalInfoEnumProcEx: CALINFO_ENUMPROCEXW;
   Locale: LCID; Calendar: CALID; CalType: CALTYPE): BOOL; stdcall;
 {$EXTERNALSYM EnumCalendarInfoExW}
-
-{$IFDEF UNICODE}
-function EnumCalendarInfoEx(lpCalInfoEnumProcEx: CALINFO_ENUMPROCEXW;
+function EnumCalendarInfoEx(lpCalInfoEnumProcEx: CALINFO_ENUMPROCEX;
   Locale: LCID; Calendar: CALID; CalType: CALTYPE): BOOL; stdcall;
 {$EXTERNALSYM EnumCalendarInfoEx}
-{$ELSE}
-function EnumCalendarInfoEx(lpCalInfoEnumProcEx: CALINFO_ENUMPROCEXA;
-  Locale: LCID; Calendar: CALID; CalType: CALTYPE): BOOL; stdcall;
-{$EXTERNALSYM EnumCalendarInfoEx}
-{$ENDIF}
 
 function EnumTimeFormatsA(lpTimeFmtEnumProc: TIMEFMT_ENUMPROCA; Locale:
   LCID; dwFlags: DWORD): BOOL; stdcall;
@@ -1774,16 +1660,9 @@ function EnumTimeFormatsA(lpTimeFmtEnumProc: TIMEFMT_ENUMPROCA; Locale:
 function EnumTimeFormatsW(lpTimeFmtEnumProc: TIMEFMT_ENUMPROCW; Locale:
   LCID; dwFlags: DWORD): BOOL; stdcall;
 {$EXTERNALSYM EnumTimeFormatsW}
-
-{$IFDEF UNICODE}
-function EnumTimeFormats(lpTimeFmtEnumProc: TIMEFMT_ENUMPROCW; Locale: LCID;
+function EnumTimeFormats(lpTimeFmtEnumProc: TIMEFMT_ENUMPROC; Locale: LCID;
   dwFlags: DWORD): BOOL; stdcall;
 {$EXTERNALSYM EnumTimeFormats}
-{$ELSE}
-function EnumTimeFormats(lpTimeFmtEnumProc: TIMEFMT_ENUMPROCA; Locale: LCID;
-  dwFlags: DWORD): BOOL; stdcall;
-{$EXTERNALSYM EnumTimeFormats}
-{$ENDIF}
 
 function EnumDateFormatsA(lpDateFmtEnumProc: DATEFMT_ENUMPROCA; Locale: LCID;
   dwFlags: DWORD): BOOL; stdcall;
@@ -1791,16 +1670,9 @@ function EnumDateFormatsA(lpDateFmtEnumProc: DATEFMT_ENUMPROCA; Locale: LCID;
 function EnumDateFormatsW(lpDateFmtEnumProc: DATEFMT_ENUMPROCW; Locale: LCID;
   dwFlags: DWORD): BOOL; stdcall;
 {$EXTERNALSYM EnumDateFormatsW}
-
-{$IFDEF UNICODE}
-function EnumDateFormats(lpDateFmtEnumProc: DATEFMT_ENUMPROCW; Locale: LCID;
+function EnumDateFormats(lpDateFmtEnumProc: DATEFMT_ENUMPROC; Locale: LCID;
   dwFlags: DWORD): BOOL; stdcall;
 {$EXTERNALSYM EnumDateFormats}
-{$ELSE}
-function EnumDateFormats(lpDateFmtEnumProc: DATEFMT_ENUMPROCA; Locale: LCID;
-  dwFlags: DWORD): BOOL; stdcall;
-{$EXTERNALSYM EnumDateFormats}
-{$ENDIF}
 
 function EnumDateFormatsExA(lpDateFmtEnumProcEx: DATEFMT_ENUMPROCEXA;
   Locale: LCID; dwFlags: DWORD): BOOL; stdcall;
@@ -1808,16 +1680,9 @@ function EnumDateFormatsExA(lpDateFmtEnumProcEx: DATEFMT_ENUMPROCEXA;
 function EnumDateFormatsExW(lpDateFmtEnumProcEx: DATEFMT_ENUMPROCEXW;
   Locale: LCID; dwFlags: DWORD): BOOL; stdcall;
 {$EXTERNALSYM EnumDateFormatsExW}
-
-{$IFDEF UNICODE}
-function EnumDateFormatsEx(lpDateFmtEnumProcEx: DATEFMT_ENUMPROCEXW;
+function EnumDateFormatsEx(lpDateFmtEnumProcEx: DATEFMT_ENUMPROCEX;
   Locale: LCID; dwFlags: DWORD): BOOL; stdcall;
 {$EXTERNALSYM EnumDateFormatsEx}
-{$ELSE}
-function EnumDateFormatsEx(lpDateFmtEnumProcEx: DATEFMT_ENUMPROCEXA;
-  Locale: LCID; dwFlags: DWORD): BOOL; stdcall;
-{$EXTERNALSYM EnumDateFormatsEx}
-{$ENDIF}
 
 function IsValidLanguageGroup(LanguageGroup: LGRPID; dwFlags: DWORD): BOOL; stdcall;
 {$EXTERNALSYM IsValidLanguageGroup}
@@ -1838,16 +1703,9 @@ function GetGeoInfoA(Location: GEOID; GeoType: GEOTYPE; lpGeoData: LPSTR;
 function GetGeoInfoW(Location: GEOID; GeoType: GEOTYPE; lpGeoData: LPWSTR;
   cchData: Integer; LangId: LANGID): Integer; stdcall;
 {$EXTERNALSYM GetGeoInfoW}
-
-{$IFDEF UNICODE}
-function GetGeoInfo(Location: GEOID; GeoType: GEOTYPE; lpGeoData: LPWSTR;
+function GetGeoInfo(Location: GEOID; GeoType: GEOTYPE; lpGeoData: LPTSTR;
   cchData: Integer; LangId: LANGID): Integer; stdcall;
 {$EXTERNALSYM GetGeoInfo}
-{$ELSE}
-function GetGeoInfo(Location: GEOID; GeoType: GEOTYPE; lpGeoData: LPSTR;
-  cchData: Integer; LangId: LANGID): Integer; stdcall;
-{$EXTERNALSYM GetGeoInfo}
-{$ENDIF}
 
 function EnumSystemGeoID(GeoClass: GEOCLASS; ParentGeoId: GEOID; lpGeoEnumProc: GEO_ENUMPROC): BOOL; stdcall;
 {$EXTERNALSYM EnumSystemGeoID}
@@ -1895,16 +1753,9 @@ function GetStringTypeExA(Locale: LCID; dwInfoType: DWORD; lpSrcStr: LPCSTR;
 function GetStringTypeExW(Locale: LCID; dwInfoType: DWORD; lpSrcStr: LPCWSTR;
   cchSrc: Integer; lpCharType: LPWORD): BOOL; stdcall;
 {$EXTERNALSYM GetStringTypeExW}
-
-{$IFDEF UNICODE}
-function GetStringTypeEx(Locale: LCID; dwInfoType: DWORD; lpSrcStr: LPCWSTR;
+function GetStringTypeEx(Locale: LCID; dwInfoType: DWORD; lpSrcStr: LPCTSTR;
   cchSrc: Integer; lpCharType: LPWORD): BOOL; stdcall;
 {$EXTERNALSYM GetStringTypeEx}
-{$ELSE}
-function GetStringTypeEx(Locale: LCID; dwInfoType: DWORD; lpSrcStr: LPCSTR;
-  cchSrc: Integer; lpCharType: LPWORD): BOOL; stdcall;
-{$EXTERNALSYM GetStringTypeEx}
-{$ENDIF}
 
 //
 //  NOTE: The parameters for GetStringTypeA and GetStringTypeW are
@@ -1931,16 +1782,9 @@ function FoldStringA(dwMapFlags: DWORD; lpSrcStr: LPCSTR; cchSrc: Integer;
 function FoldStringW(dwMapFlags: DWORD; lpSrcStr: LPCWSTR; cchSrc: Integer;
   lpDestStr: LPWSTR; cchDest: Integer): Integer; stdcall;
 {$EXTERNALSYM FoldStringW}
-
-{$IFDEF UNICODE}
-function FoldString(dwMapFlags: DWORD; lpSrcStr: LPCWSTR; cchSrc: Integer;
-  lpDestStr: LPWSTR; cchDest: Integer): Integer; stdcall;
+function FoldString(dwMapFlags: DWORD; lpSrcStr: LPCTSTR; cchSrc: Integer;
+  lpDestStr: LPTSTR; cchDest: Integer): Integer; stdcall;
 {$EXTERNALSYM FoldString}
-{$ELSE}
-function FoldString(dwMapFlags: DWORD; lpSrcStr: LPCSTR; cchSrc: Integer;
-  lpDestStr: LPSTR; cchDest: Integer): Integer; stdcall;
-{$EXTERNALSYM FoldString}
-{$ENDIF}
 
 function EnumSystemLanguageGroupsA(lpLanguageGroupEnumProc: LANGUAGEGROUP_ENUMPROCA;
   dwFlags: DWORD; lParam: LONG_PTR): BOOL; stdcall;
@@ -1948,16 +1792,9 @@ function EnumSystemLanguageGroupsA(lpLanguageGroupEnumProc: LANGUAGEGROUP_ENUMPR
 function EnumSystemLanguageGroupsW(lpLanguageGroupEnumProc: LANGUAGEGROUP_ENUMPROCW;
   dwFlags: DWORD; lParam: LONG_PTR): BOOL; stdcall;
 {$EXTERNALSYM EnumSystemLanguageGroupsW}
-
-{$IFDEF UNICODE}
-function EnumSystemLanguageGroups(lpLanguageGroupEnumProc: LANGUAGEGROUP_ENUMPROCW;
+function EnumSystemLanguageGroups(lpLanguageGroupEnumProc: LANGUAGEGROUP_ENUMPROC;
   dwFlags: DWORD; lParam: LONG_PTR): BOOL; stdcall;
 {$EXTERNALSYM EnumSystemLanguageGroups}
-{$ELSE}
-function EnumSystemLanguageGroups(lpLanguageGroupEnumProc: LANGUAGEGROUP_ENUMPROCA;
-  dwFlags: DWORD; lParam: LONG_PTR): BOOL; stdcall;
-{$EXTERNALSYM EnumSystemLanguageGroups}
-{$ENDIF}
 
 function EnumLanguageGroupLocalesA(lpLangGroupLocaleEnumProc: LANGGROUPLOCALE_ENUMPROCA;
   LanguageGroup: LGRPID; dwFlags: DWORD; lParam: LONG_PTR): BOOL; stdcall;
@@ -1965,16 +1802,9 @@ function EnumLanguageGroupLocalesA(lpLangGroupLocaleEnumProc: LANGGROUPLOCALE_EN
 function EnumLanguageGroupLocalesW(lpLangGroupLocaleEnumProc: LANGGROUPLOCALE_ENUMPROCW;
   LanguageGroup: LGRPID; dwFlags: DWORD; lParam: LONG_PTR): BOOL; stdcall;
 {$EXTERNALSYM EnumLanguageGroupLocalesW}
-
-{$IFDEF UNICODE}
-function EnumLanguageGroupLocales(lpLangGroupLocaleEnumProc: LANGGROUPLOCALE_ENUMPROCW;
+function EnumLanguageGroupLocales(lpLangGroupLocaleEnumProc: LANGGROUPLOCALE_ENUMPROC;
   LanguageGroup: LGRPID; dwFlags: DWORD; lParam: LONG_PTR): BOOL; stdcall;
 {$EXTERNALSYM EnumLanguageGroupLocales}
-{$ELSE}
-function EnumLanguageGroupLocales(lpLangGroupLocaleEnumProc: LANGGROUPLOCALE_ENUMPROCA;
-  LanguageGroup: LGRPID; dwFlags: DWORD; lParam: LONG_PTR): BOOL; stdcall;
-{$EXTERNALSYM EnumLanguageGroupLocales}
-{$ENDIF}
 
 function EnumUILanguagesA(lpUILanguageEnumProc: UILANGUAGE_ENUMPROCA;
   dwFlags: DWORD; lParam: LONG_PTR): BOOL; stdcall;
@@ -1982,16 +1812,9 @@ function EnumUILanguagesA(lpUILanguageEnumProc: UILANGUAGE_ENUMPROCA;
 function EnumUILanguagesW(lpUILanguageEnumProc: UILANGUAGE_ENUMPROCW;
   dwFlags: DWORD; lParam: LONG_PTR): BOOL; stdcall;
 {$EXTERNALSYM EnumUILanguagesW}
-
-{$IFDEF UNICODE}
-function EnumUILanguages(lpUILanguageEnumProc: UILANGUAGE_ENUMPROCW;
+function EnumUILanguages(lpUILanguageEnumProc: UILANGUAGE_ENUMPROC;
   dwFlags: DWORD; lParam: LONG_PTR): BOOL; stdcall;
 {$EXTERNALSYM EnumUILanguages}
-{$ELSE}
-function EnumUILanguages(lpUILanguageEnumProc: UILANGUAGE_ENUMPROCA;
-  dwFlags: DWORD; lParam: LONG_PTR): BOOL; stdcall;
-{$EXTERNALSYM EnumUILanguages}
-{$ENDIF}
 
 function EnumSystemLocalesA(lpLocaleEnumProc: LOCALE_ENUMPROCA;
   dwFlags: DWORD): BOOL; stdcall;
@@ -1999,16 +1822,9 @@ function EnumSystemLocalesA(lpLocaleEnumProc: LOCALE_ENUMPROCA;
 function EnumSystemLocalesW(lpLocaleEnumProc: LOCALE_ENUMPROCW;
   dwFlags: DWORD): BOOL; stdcall;
 {$EXTERNALSYM EnumSystemLocalesW}
-
-{$IFDEF UNICODE}
-function EnumSystemLocales(lpLocaleEnumProc: LOCALE_ENUMPROCW;
+function EnumSystemLocales(lpLocaleEnumProc: LOCALE_ENUMPROC;
   dwFlags: DWORD): BOOL; stdcall;
 {$EXTERNALSYM EnumSystemLocales}
-{$ELSE}
-function EnumSystemLocales(lpLocaleEnumProc: LOCALE_ENUMPROCA;
-  dwFlags: DWORD): BOOL; stdcall;
-{$EXTERNALSYM EnumSystemLocales}
-{$ENDIF}
 
 function EnumSystemCodePagesA(lpCodePageEnumProc: CODEPAGE_ENUMPROCA;
   dwFlags: DWORD): BOOL; stdcall;
@@ -2016,24 +1832,25 @@ function EnumSystemCodePagesA(lpCodePageEnumProc: CODEPAGE_ENUMPROCA;
 function EnumSystemCodePagesW(lpCodePageEnumProc: CODEPAGE_ENUMPROCW;
   dwFlags: DWORD): BOOL; stdcall;
 {$EXTERNALSYM EnumSystemCodePagesW}
+function EnumSystemCodePages(lpCodePageEnumProc: CODEPAGE_ENUMPROC;
+  dwFlags: DWORD): BOOL; stdcall;
+{$EXTERNALSYM EnumSystemCodePages}
 
-{$IFDEF UNICODE}
-function EnumSystemCodePages(lpCodePageEnumProc: CODEPAGE_ENUMPROCW;
-  dwFlags: DWORD): BOOL; stdcall;
-{$EXTERNALSYM EnumSystemCodePages}
-{$ELSE}
-function EnumSystemCodePages(lpCodePageEnumProc: CODEPAGE_ENUMPROCA;
-  dwFlags: DWORD): BOOL; stdcall;
-{$EXTERNALSYM EnumSystemCodePages}
-{$ENDIF}
+{$ENDIF JWA_INTERFACESECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
 
 implementation
 
-const
- kernel32 = 'kernel32.dll';
+uses
+  JwaWinDLLNames;
 
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_IMPLEMENTATIONSECTION}
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _IsValidCodePage: Pointer;
 
@@ -2041,16 +1858,12 @@ function IsValidCodePage;
 begin
   GetProcedureAddress(_IsValidCodePage, kernel32, 'IsValidCodePage');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsValidCodePage]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsValidCodePage]
   end;
 end;
-{$ELSE}
-function IsValidCodePage; external kernel32 name 'IsValidCodePage';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetACP: Pointer;
 
@@ -2058,16 +1871,12 @@ function GetACP;
 begin
   GetProcedureAddress(_GetACP, kernel32, 'GetACP');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetACP]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetACP]
   end;
 end;
-{$ELSE}
-function GetACP; external kernel32 name 'GetACP';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetOEMCP: Pointer;
 
@@ -2075,16 +1884,12 @@ function GetOEMCP;
 begin
   GetProcedureAddress(_GetOEMCP, kernel32, 'GetOEMCP');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetOEMCP]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetOEMCP]
   end;
 end;
-{$ELSE}
-function GetOEMCP; external kernel32 name 'GetOEMCP';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetCPInfo: Pointer;
 
@@ -2092,16 +1897,12 @@ function GetCPInfo;
 begin
   GetProcedureAddress(_GetCPInfo, kernel32, 'GetCPInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCPInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetCPInfo]
   end;
 end;
-{$ELSE}
-function GetCPInfo; external kernel32 name 'GetCPInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetCPInfoExA: Pointer;
 
@@ -2109,16 +1910,12 @@ function GetCPInfoExA;
 begin
   GetProcedureAddress(_GetCPInfoExA, kernel32, 'GetCPInfoExA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCPInfoExA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetCPInfoExA]
   end;
 end;
-{$ELSE}
-function GetCPInfoExA; external kernel32 name 'GetCPInfoExA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetCPInfoExW: Pointer;
 
@@ -2126,53 +1923,25 @@ function GetCPInfoExW;
 begin
   GetProcedureAddress(_GetCPInfoExW, kernel32, 'GetCPInfoExW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCPInfoExW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetCPInfoExW]
   end;
 end;
-{$ELSE}
-function GetCPInfoExW; external kernel32 name 'GetCPInfoExW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetCPInfoEx: Pointer;
 
 function GetCPInfoEx;
 begin
-  GetProcedureAddress(_GetCPInfoEx, kernel32, 'GetCPInfoExW');
+  GetProcedureAddress(_GetCPInfoEx, kernel32, 'GetCPInfoEx' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCPInfoEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetCPInfoEx]
   end;
 end;
-{$ELSE}
-function GetCPInfoEx; external kernel32 name 'GetCPInfoExW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetCPInfoEx: Pointer;
-
-function GetCPInfoEx;
-begin
-  GetProcedureAddress(_GetCPInfoEx, kernel32, 'GetCPInfoExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCPInfoEx]
-  end;
-end;
-{$ELSE}
-function GetCPInfoEx; external kernel32 name 'GetCPInfoExA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _IsDBCSLeadByte: Pointer;
 
@@ -2180,16 +1949,12 @@ function IsDBCSLeadByte;
 begin
   GetProcedureAddress(_IsDBCSLeadByte, kernel32, 'IsDBCSLeadByte');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsDBCSLeadByte]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsDBCSLeadByte]
   end;
 end;
-{$ELSE}
-function IsDBCSLeadByte; external kernel32 name 'IsDBCSLeadByte';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _IsDBCSLeadByteEx: Pointer;
 
@@ -2197,16 +1962,12 @@ function IsDBCSLeadByteEx;
 begin
   GetProcedureAddress(_IsDBCSLeadByteEx, kernel32, 'IsDBCSLeadByteEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsDBCSLeadByteEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsDBCSLeadByteEx]
   end;
 end;
-{$ELSE}
-function IsDBCSLeadByteEx; external kernel32 name 'IsDBCSLeadByteEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MultiByteToWideChar: Pointer;
 
@@ -2214,16 +1975,12 @@ function MultiByteToWideChar;
 begin
   GetProcedureAddress(_MultiByteToWideChar, kernel32, 'MultiByteToWideChar');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MultiByteToWideChar]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MultiByteToWideChar]
   end;
 end;
-{$ELSE}
-function MultiByteToWideChar; external kernel32 name 'MultiByteToWideChar';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WideCharToMultiByte: Pointer;
 
@@ -2231,16 +1988,12 @@ function WideCharToMultiByte;
 begin
   GetProcedureAddress(_WideCharToMultiByte, kernel32, 'WideCharToMultiByte');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WideCharToMultiByte]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WideCharToMultiByte]
   end;
 end;
-{$ELSE}
-function WideCharToMultiByte; external kernel32 name 'WideCharToMultiByte';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CompareStringA: Pointer;
 
@@ -2248,16 +2001,12 @@ function CompareStringA;
 begin
   GetProcedureAddress(_CompareStringA, kernel32, 'CompareStringA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CompareStringA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CompareStringA]
   end;
 end;
-{$ELSE}
-function CompareStringA; external kernel32 name 'CompareStringA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CompareStringW: Pointer;
 
@@ -2265,53 +2014,25 @@ function CompareStringW;
 begin
   GetProcedureAddress(_CompareStringW, kernel32, 'CompareStringW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CompareStringW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CompareStringW]
   end;
 end;
-{$ELSE}
-function CompareStringW; external kernel32 name 'CompareStringW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CompareString: Pointer;
 
 function CompareString;
 begin
-  GetProcedureAddress(_CompareString, kernel32, 'CompareStringW');
+  GetProcedureAddress(_CompareString, kernel32, 'CompareString' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CompareString]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CompareString]
   end;
 end;
-{$ELSE}
-function CompareString; external kernel32 name 'CompareStringW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CompareString: Pointer;
-
-function CompareString;
-begin
-  GetProcedureAddress(_CompareString, kernel32, 'CompareStringA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CompareString]
-  end;
-end;
-{$ELSE}
-function CompareString; external kernel32 name 'CompareStringA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _LCMapStringA: Pointer;
 
@@ -2319,16 +2040,12 @@ function LCMapStringA;
 begin
   GetProcedureAddress(_LCMapStringA, kernel32, 'LCMapStringA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LCMapStringA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LCMapStringA]
   end;
 end;
-{$ELSE}
-function LCMapStringA; external kernel32 name 'LCMapStringA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LCMapStringW: Pointer;
 
@@ -2336,53 +2053,25 @@ function LCMapStringW;
 begin
   GetProcedureAddress(_LCMapStringW, kernel32, 'LCMapStringW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LCMapStringW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LCMapStringW]
   end;
 end;
-{$ELSE}
-function LCMapStringW; external kernel32 name 'LCMapStringW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LCMapString: Pointer;
 
 function LCMapString;
 begin
-  GetProcedureAddress(_LCMapString, kernel32, 'LCMapStringW');
+  GetProcedureAddress(_LCMapString, kernel32, 'LCMapString' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LCMapString]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LCMapString]
   end;
 end;
-{$ELSE}
-function LCMapString; external kernel32 name 'LCMapStringW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _LCMapString: Pointer;
-
-function LCMapString;
-begin
-  GetProcedureAddress(_LCMapString, kernel32, 'LCMapStringA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LCMapString]
-  end;
-end;
-{$ELSE}
-function LCMapString; external kernel32 name 'LCMapStringA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetLocaleInfoA: Pointer;
 
@@ -2390,16 +2079,12 @@ function GetLocaleInfoA;
 begin
   GetProcedureAddress(_GetLocaleInfoA, kernel32, 'GetLocaleInfoA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetLocaleInfoA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetLocaleInfoA]
   end;
 end;
-{$ELSE}
-function GetLocaleInfoA; external kernel32 name 'GetLocaleInfoA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetLocaleInfoW: Pointer;
 
@@ -2407,53 +2092,25 @@ function GetLocaleInfoW;
 begin
   GetProcedureAddress(_GetLocaleInfoW, kernel32, 'GetLocaleInfoW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetLocaleInfoW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetLocaleInfoW]
   end;
 end;
-{$ELSE}
-function GetLocaleInfoW; external kernel32 name 'GetLocaleInfoW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetLocaleInfo: Pointer;
 
 function GetLocaleInfo;
 begin
-  GetProcedureAddress(_GetLocaleInfo, kernel32, 'GetLocaleInfoW');
+  GetProcedureAddress(_GetLocaleInfo, kernel32, 'GetLocaleInfo' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetLocaleInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetLocaleInfo]
   end;
 end;
-{$ELSE}
-function GetLocaleInfo; external kernel32 name 'GetLocaleInfoW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetLocaleInfo: Pointer;
-
-function GetLocaleInfo;
-begin
-  GetProcedureAddress(_GetLocaleInfo, kernel32, 'GetLocaleInfoA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetLocaleInfo]
-  end;
-end;
-{$ELSE}
-function GetLocaleInfo; external kernel32 name 'GetLocaleInfoA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _SetLocaleInfoA: Pointer;
 
@@ -2461,16 +2118,12 @@ function SetLocaleInfoA;
 begin
   GetProcedureAddress(_SetLocaleInfoA, kernel32, 'SetLocaleInfoA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetLocaleInfoA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetLocaleInfoA]
   end;
 end;
-{$ELSE}
-function SetLocaleInfoA; external kernel32 name 'SetLocaleInfoA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetLocaleInfoW: Pointer;
 
@@ -2478,53 +2131,25 @@ function SetLocaleInfoW;
 begin
   GetProcedureAddress(_SetLocaleInfoW, kernel32, 'SetLocaleInfoW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetLocaleInfoW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetLocaleInfoW]
   end;
 end;
-{$ELSE}
-function SetLocaleInfoW; external kernel32 name 'SetLocaleInfoW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetLocaleInfo: Pointer;
 
 function SetLocaleInfo;
 begin
-  GetProcedureAddress(_SetLocaleInfo, kernel32, 'SetLocaleInfoW');
+  GetProcedureAddress(_SetLocaleInfo, kernel32, 'SetLocaleInfo' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetLocaleInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetLocaleInfo]
   end;
 end;
-{$ELSE}
-function SetLocaleInfo; external kernel32 name 'SetLocaleInfoW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetLocaleInfo: Pointer;
-
-function SetLocaleInfo;
-begin
-  GetProcedureAddress(_SetLocaleInfo, kernel32, 'SetLocaleInfoA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetLocaleInfo]
-  end;
-end;
-{$ELSE}
-function SetLocaleInfo; external kernel32 name 'SetLocaleInfoA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetCalendarInfoA: Pointer;
 
@@ -2532,16 +2157,12 @@ function GetCalendarInfoA;
 begin
   GetProcedureAddress(_GetCalendarInfoA, kernel32, 'GetCalendarInfoA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCalendarInfoA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetCalendarInfoA]
   end;
 end;
-{$ELSE}
-function GetCalendarInfoA; external kernel32 name 'GetCalendarInfoA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetCalendarInfoW: Pointer;
 
@@ -2549,53 +2170,25 @@ function GetCalendarInfoW;
 begin
   GetProcedureAddress(_GetCalendarInfoW, kernel32, 'GetCalendarInfoW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCalendarInfoW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetCalendarInfoW]
   end;
 end;
-{$ELSE}
-function GetCalendarInfoW; external kernel32 name 'GetCalendarInfoW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetCalendarInfo: Pointer;
 
 function GetCalendarInfo;
 begin
-  GetProcedureAddress(_GetCalendarInfo, kernel32, 'GetCalendarInfoW');
+  GetProcedureAddress(_GetCalendarInfo, kernel32, 'GetCalendarInfo' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCalendarInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetCalendarInfo]
   end;
 end;
-{$ELSE}
-function GetCalendarInfo; external kernel32 name 'GetCalendarInfoW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetCalendarInfo: Pointer;
-
-function GetCalendarInfo;
-begin
-  GetProcedureAddress(_GetCalendarInfo, kernel32, 'GetCalendarInfoA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCalendarInfo]
-  end;
-end;
-{$ELSE}
-function GetCalendarInfo; external kernel32 name 'GetCalendarInfoA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _SetCalendarInfoA: Pointer;
 
@@ -2603,16 +2196,12 @@ function SetCalendarInfoA;
 begin
   GetProcedureAddress(_SetCalendarInfoA, kernel32, 'SetCalendarInfoA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetCalendarInfoA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetCalendarInfoA]
   end;
 end;
-{$ELSE}
-function SetCalendarInfoA; external kernel32 name 'SetCalendarInfoA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetCalendarInfoW: Pointer;
 
@@ -2620,53 +2209,25 @@ function SetCalendarInfoW;
 begin
   GetProcedureAddress(_SetCalendarInfoW, kernel32, 'SetCalendarInfoW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetCalendarInfoW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetCalendarInfoW]
   end;
 end;
-{$ELSE}
-function SetCalendarInfoW; external kernel32 name 'SetCalendarInfoW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetCalendarInfo: Pointer;
 
 function SetCalendarInfo;
 begin
-  GetProcedureAddress(_SetCalendarInfo, kernel32, 'SetCalendarInfoW');
+  GetProcedureAddress(_SetCalendarInfo, kernel32, 'SetCalendarInfo' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetCalendarInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetCalendarInfo]
   end;
 end;
-{$ELSE}
-function SetCalendarInfo; external kernel32 name 'SetCalendarInfoW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetCalendarInfo: Pointer;
-
-function SetCalendarInfo;
-begin
-  GetProcedureAddress(_SetCalendarInfo, kernel32, 'SetCalendarInfoA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetCalendarInfo]
-  end;
-end;
-{$ELSE}
-function SetCalendarInfo; external kernel32 name 'SetCalendarInfoA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetTimeFormatA: Pointer;
 
@@ -2674,16 +2235,12 @@ function GetTimeFormatA;
 begin
   GetProcedureAddress(_GetTimeFormatA, kernel32, 'GetTimeFormatA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTimeFormatA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetTimeFormatA]
   end;
 end;
-{$ELSE}
-function GetTimeFormatA; external kernel32 name 'GetTimeFormatA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetTimeFormatW: Pointer;
 
@@ -2691,53 +2248,25 @@ function GetTimeFormatW;
 begin
   GetProcedureAddress(_GetTimeFormatW, kernel32, 'GetTimeFormatW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTimeFormatW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetTimeFormatW]
   end;
 end;
-{$ELSE}
-function GetTimeFormatW; external kernel32 name 'GetTimeFormatW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetTimeFormat: Pointer;
 
 function GetTimeFormat;
 begin
-  GetProcedureAddress(_GetTimeFormat, kernel32, 'GetTimeFormatW');
+  GetProcedureAddress(_GetTimeFormat, kernel32, 'GetTimeFormat' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTimeFormat]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetTimeFormat]
   end;
 end;
-{$ELSE}
-function GetTimeFormat; external kernel32 name 'GetTimeFormatW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetTimeFormat: Pointer;
-
-function GetTimeFormat;
-begin
-  GetProcedureAddress(_GetTimeFormat, kernel32, 'GetTimeFormatA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTimeFormat]
-  end;
-end;
-{$ELSE}
-function GetTimeFormat; external kernel32 name 'GetTimeFormatA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetDateFormatA: Pointer;
 
@@ -2745,16 +2274,12 @@ function GetDateFormatA;
 begin
   GetProcedureAddress(_GetDateFormatA, kernel32, 'GetDateFormatA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetDateFormatA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetDateFormatA]
   end;
 end;
-{$ELSE}
-function GetDateFormatA; external kernel32 name 'GetDateFormatA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetDateFormatW: Pointer;
 
@@ -2762,53 +2287,25 @@ function GetDateFormatW;
 begin
   GetProcedureAddress(_GetDateFormatW, kernel32, 'GetDateFormatW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetDateFormatW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetDateFormatW]
   end;
 end;
-{$ELSE}
-function GetDateFormatW; external kernel32 name 'GetDateFormatW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetDateFormat: Pointer;
 
 function GetDateFormat;
 begin
-  GetProcedureAddress(_GetDateFormat, kernel32, 'GetDateFormatW');
+  GetProcedureAddress(_GetDateFormat, kernel32, 'GetDateFormat' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetDateFormat]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetDateFormat]
   end;
 end;
-{$ELSE}
-function GetDateFormat; external kernel32 name 'GetDateFormatW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetDateFormat: Pointer;
-
-function GetDateFormat;
-begin
-  GetProcedureAddress(_GetDateFormat, kernel32, 'GetDateFormatA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetDateFormat]
-  end;
-end;
-{$ELSE}
-function GetDateFormat; external kernel32 name 'GetDateFormatA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetNumberFormatA: Pointer;
 
@@ -2816,16 +2313,12 @@ function GetNumberFormatA;
 begin
   GetProcedureAddress(_GetNumberFormatA, kernel32, 'GetNumberFormatA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetNumberFormatA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetNumberFormatA]
   end;
 end;
-{$ELSE}
-function GetNumberFormatA; external kernel32 name 'GetNumberFormatA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetNumberFormatW: Pointer;
 
@@ -2833,53 +2326,25 @@ function GetNumberFormatW;
 begin
   GetProcedureAddress(_GetNumberFormatW, kernel32, 'GetNumberFormatW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetNumberFormatW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetNumberFormatW]
   end;
 end;
-{$ELSE}
-function GetNumberFormatW; external kernel32 name 'GetNumberFormatW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetNumberFormat: Pointer;
 
 function GetNumberFormat;
 begin
-  GetProcedureAddress(_GetNumberFormat, kernel32, 'GetNumberFormatW');
+  GetProcedureAddress(_GetNumberFormat, kernel32, 'GetNumberFormat' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetNumberFormat]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetNumberFormat]
   end;
 end;
-{$ELSE}
-function GetNumberFormat; external kernel32 name 'GetNumberFormatW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetNumberFormat: Pointer;
-
-function GetNumberFormat;
-begin
-  GetProcedureAddress(_GetNumberFormat, kernel32, 'GetNumberFormatA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetNumberFormat]
-  end;
-end;
-{$ELSE}
-function GetNumberFormat; external kernel32 name 'GetNumberFormatA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetCurrencyFormatA: Pointer;
 
@@ -2887,16 +2352,12 @@ function GetCurrencyFormatA;
 begin
   GetProcedureAddress(_GetCurrencyFormatA, kernel32, 'GetCurrencyFormatA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCurrencyFormatA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetCurrencyFormatA]
   end;
 end;
-{$ELSE}
-function GetCurrencyFormatA; external kernel32 name 'GetCurrencyFormatA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetCurrencyFormatW: Pointer;
 
@@ -2904,53 +2365,25 @@ function GetCurrencyFormatW;
 begin
   GetProcedureAddress(_GetCurrencyFormatW, kernel32, 'GetCurrencyFormatW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCurrencyFormatW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetCurrencyFormatW]
   end;
 end;
-{$ELSE}
-function GetCurrencyFormatW; external kernel32 name 'GetCurrencyFormatW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetCurrencyFormat: Pointer;
 
 function GetCurrencyFormat;
 begin
-  GetProcedureAddress(_GetCurrencyFormat, kernel32, 'GetCurrencyFormatW');
+  GetProcedureAddress(_GetCurrencyFormat, kernel32, 'GetCurrencyFormat' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCurrencyFormat]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetCurrencyFormat]
   end;
 end;
-{$ELSE}
-function GetCurrencyFormat; external kernel32 name 'GetCurrencyFormatW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetCurrencyFormat: Pointer;
-
-function GetCurrencyFormat;
-begin
-  GetProcedureAddress(_GetCurrencyFormat, kernel32, 'GetCurrencyFormatA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCurrencyFormat]
-  end;
-end;
-{$ELSE}
-function GetCurrencyFormat; external kernel32 name 'GetCurrencyFormatA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumCalendarInfoA: Pointer;
 
@@ -2958,16 +2391,12 @@ function EnumCalendarInfoA;
 begin
   GetProcedureAddress(_EnumCalendarInfoA, kernel32, 'EnumCalendarInfoA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumCalendarInfoA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumCalendarInfoA]
   end;
 end;
-{$ELSE}
-function EnumCalendarInfoA; external kernel32 name 'EnumCalendarInfoA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumCalendarInfoW: Pointer;
 
@@ -2975,53 +2404,25 @@ function EnumCalendarInfoW;
 begin
   GetProcedureAddress(_EnumCalendarInfoW, kernel32, 'EnumCalendarInfoW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumCalendarInfoW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumCalendarInfoW]
   end;
 end;
-{$ELSE}
-function EnumCalendarInfoW; external kernel32 name 'EnumCalendarInfoW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumCalendarInfo: Pointer;
 
 function EnumCalendarInfo;
 begin
-  GetProcedureAddress(_EnumCalendarInfo, kernel32, 'EnumCalendarInfoW');
+  GetProcedureAddress(_EnumCalendarInfo, kernel32, 'EnumCalendarInfo' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumCalendarInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumCalendarInfo]
   end;
 end;
-{$ELSE}
-function EnumCalendarInfo; external kernel32 name 'EnumCalendarInfoW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumCalendarInfo: Pointer;
-
-function EnumCalendarInfo;
-begin
-  GetProcedureAddress(_EnumCalendarInfo, kernel32, 'EnumCalendarInfoA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumCalendarInfo]
-  end;
-end;
-{$ELSE}
-function EnumCalendarInfo; external kernel32 name 'EnumCalendarInfoA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumCalendarInfoExA: Pointer;
 
@@ -3029,16 +2430,12 @@ function EnumCalendarInfoExA;
 begin
   GetProcedureAddress(_EnumCalendarInfoExA, kernel32, 'EnumCalendarInfoExA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumCalendarInfoExA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumCalendarInfoExA]
   end;
 end;
-{$ELSE}
-function EnumCalendarInfoExA; external kernel32 name 'EnumCalendarInfoExA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumCalendarInfoExW: Pointer;
 
@@ -3046,53 +2443,25 @@ function EnumCalendarInfoExW;
 begin
   GetProcedureAddress(_EnumCalendarInfoExW, kernel32, 'EnumCalendarInfoExW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumCalendarInfoExW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumCalendarInfoExW]
   end;
 end;
-{$ELSE}
-function EnumCalendarInfoExW; external kernel32 name 'EnumCalendarInfoExW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumCalendarInfoEx: Pointer;
 
 function EnumCalendarInfoEx;
 begin
-  GetProcedureAddress(_EnumCalendarInfoEx, kernel32, 'EnumCalendarInfoExW');
+  GetProcedureAddress(_EnumCalendarInfoEx, kernel32, 'EnumCalendarInfoEx' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumCalendarInfoEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumCalendarInfoEx]
   end;
 end;
-{$ELSE}
-function EnumCalendarInfoEx; external kernel32 name 'EnumCalendarInfoExW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumCalendarInfoEx: Pointer;
-
-function EnumCalendarInfoEx;
-begin
-  GetProcedureAddress(_EnumCalendarInfoEx, kernel32, 'EnumCalendarInfoExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumCalendarInfoEx]
-  end;
-end;
-{$ELSE}
-function EnumCalendarInfoEx; external kernel32 name 'EnumCalendarInfoExA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumTimeFormatsA: Pointer;
 
@@ -3100,16 +2469,12 @@ function EnumTimeFormatsA;
 begin
   GetProcedureAddress(_EnumTimeFormatsA, kernel32, 'EnumTimeFormatsA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumTimeFormatsA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumTimeFormatsA]
   end;
 end;
-{$ELSE}
-function EnumTimeFormatsA; external kernel32 name 'EnumTimeFormatsA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumTimeFormatsW: Pointer;
 
@@ -3117,53 +2482,25 @@ function EnumTimeFormatsW;
 begin
   GetProcedureAddress(_EnumTimeFormatsW, kernel32, 'EnumTimeFormatsW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumTimeFormatsW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumTimeFormatsW]
   end;
 end;
-{$ELSE}
-function EnumTimeFormatsW; external kernel32 name 'EnumTimeFormatsW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumTimeFormats: Pointer;
 
 function EnumTimeFormats;
 begin
-  GetProcedureAddress(_EnumTimeFormats, kernel32, 'EnumTimeFormatsW');
+  GetProcedureAddress(_EnumTimeFormats, kernel32, 'EnumTimeFormats' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumTimeFormats]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumTimeFormats]
   end;
 end;
-{$ELSE}
-function EnumTimeFormats; external kernel32 name 'EnumTimeFormatsW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumTimeFormats: Pointer;
-
-function EnumTimeFormats;
-begin
-  GetProcedureAddress(_EnumTimeFormats, kernel32, 'EnumTimeFormatsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumTimeFormats]
-  end;
-end;
-{$ELSE}
-function EnumTimeFormats; external kernel32 name 'EnumTimeFormatsA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumDateFormatsA: Pointer;
 
@@ -3171,16 +2508,12 @@ function EnumDateFormatsA;
 begin
   GetProcedureAddress(_EnumDateFormatsA, kernel32, 'EnumDateFormatsA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumDateFormatsA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumDateFormatsA]
   end;
 end;
-{$ELSE}
-function EnumDateFormatsA; external kernel32 name 'EnumDateFormatsA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumDateFormatsW: Pointer;
 
@@ -3188,53 +2521,25 @@ function EnumDateFormatsW;
 begin
   GetProcedureAddress(_EnumDateFormatsW, kernel32, 'EnumDateFormatsW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumDateFormatsW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumDateFormatsW]
   end;
 end;
-{$ELSE}
-function EnumDateFormatsW; external kernel32 name 'EnumDateFormatsW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumDateFormats: Pointer;
 
 function EnumDateFormats;
 begin
-  GetProcedureAddress(_EnumDateFormats, kernel32, 'EnumDateFormatsW');
+  GetProcedureAddress(_EnumDateFormats, kernel32, 'EnumDateFormats' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumDateFormats]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumDateFormats]
   end;
 end;
-{$ELSE}
-function EnumDateFormats; external kernel32 name 'EnumDateFormatsW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumDateFormats: Pointer;
-
-function EnumDateFormats;
-begin
-  GetProcedureAddress(_EnumDateFormats, kernel32, 'EnumDateFormatsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumDateFormats]
-  end;
-end;
-{$ELSE}
-function EnumDateFormats; external kernel32 name 'EnumDateFormatsA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumDateFormatsExA: Pointer;
 
@@ -3242,16 +2547,12 @@ function EnumDateFormatsExA;
 begin
   GetProcedureAddress(_EnumDateFormatsExA, kernel32, 'EnumDateFormatsExA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumDateFormatsExA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumDateFormatsExA]
   end;
 end;
-{$ELSE}
-function EnumDateFormatsExA; external kernel32 name 'EnumDateFormatsExA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumDateFormatsExW: Pointer;
 
@@ -3259,53 +2560,25 @@ function EnumDateFormatsExW;
 begin
   GetProcedureAddress(_EnumDateFormatsExW, kernel32, 'EnumDateFormatsExW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumDateFormatsExW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumDateFormatsExW]
   end;
 end;
-{$ELSE}
-function EnumDateFormatsExW; external kernel32 name 'EnumDateFormatsExW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumDateFormatsEx: Pointer;
 
 function EnumDateFormatsEx;
 begin
-  GetProcedureAddress(_EnumDateFormatsEx, kernel32, 'EnumDateFormatsExW');
+  GetProcedureAddress(_EnumDateFormatsEx, kernel32, 'EnumDateFormatsEx' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumDateFormatsEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumDateFormatsEx]
   end;
 end;
-{$ELSE}
-function EnumDateFormatsEx; external kernel32 name 'EnumDateFormatsExW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumDateFormatsEx: Pointer;
-
-function EnumDateFormatsEx;
-begin
-  GetProcedureAddress(_EnumDateFormatsEx, kernel32, 'EnumDateFormatsExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumDateFormatsEx]
-  end;
-end;
-{$ELSE}
-function EnumDateFormatsEx; external kernel32 name 'EnumDateFormatsExA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _IsValidLanguageGroup: Pointer;
 
@@ -3313,16 +2586,12 @@ function IsValidLanguageGroup;
 begin
   GetProcedureAddress(_IsValidLanguageGroup, kernel32, 'IsValidLanguageGroup');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsValidLanguageGroup]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsValidLanguageGroup]
   end;
 end;
-{$ELSE}
-function IsValidLanguageGroup; external kernel32 name 'IsValidLanguageGroup';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetNLSVersion: Pointer;
 
@@ -3330,16 +2599,12 @@ function GetNLSVersion;
 begin
   GetProcedureAddress(_GetNLSVersion, kernel32, 'GetNLSVersion');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetNLSVersion]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetNLSVersion]
   end;
 end;
-{$ELSE}
-function GetNLSVersion; external kernel32 name 'GetNLSVersion';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _IsNLSDefinedString: Pointer;
 
@@ -3347,16 +2612,12 @@ function IsNLSDefinedString;
 begin
   GetProcedureAddress(_IsNLSDefinedString, kernel32, 'IsNLSDefinedString');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsNLSDefinedString]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsNLSDefinedString]
   end;
 end;
-{$ELSE}
-function IsNLSDefinedString; external kernel32 name 'IsNLSDefinedString';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _IsValidLocale: Pointer;
 
@@ -3364,16 +2625,12 @@ function IsValidLocale;
 begin
   GetProcedureAddress(_IsValidLocale, kernel32, 'IsValidLocale');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsValidLocale]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsValidLocale]
   end;
 end;
-{$ELSE}
-function IsValidLocale; external kernel32 name 'IsValidLocale';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetGeoInfoA: Pointer;
 
@@ -3381,16 +2638,12 @@ function GetGeoInfoA;
 begin
   GetProcedureAddress(_GetGeoInfoA, kernel32, 'GetGeoInfoA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetGeoInfoA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetGeoInfoA]
   end;
 end;
-{$ELSE}
-function GetGeoInfoA; external kernel32 name 'GetGeoInfoA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetGeoInfoW: Pointer;
 
@@ -3398,17 +2651,12 @@ function GetGeoInfoW;
 begin
   GetProcedureAddress(_GetGeoInfoW, kernel32, 'GetGeoInfoW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetGeoInfoW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetGeoInfoW]
   end;
 end;
-{$ELSE}
-function GetGeoInfoW; external kernel32 name 'GetGeoInfoW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetGeoInfo: Pointer;
 
@@ -3416,35 +2664,12 @@ function GetGeoInfo;
 begin
   GetProcedureAddress(_GetGeoInfo, kernel32, 'GetGeoInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetGeoInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetGeoInfo]
   end;
 end;
-{$ELSE}
-function GetGeoInfo; external kernel32 name 'GetGeoInfo';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetGeoInfo: Pointer;
-
-function GetGeoInfo;
-begin
-  GetProcedureAddress(_GetGeoInfo, kernel32, 'GetGeoInfo');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetGeoInfo]
-  end;
-end;
-{$ELSE}
-function GetGeoInfo; external kernel32 name 'GetGeoInfo';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumSystemGeoID: Pointer;
 
@@ -3452,16 +2677,12 @@ function EnumSystemGeoID;
 begin
   GetProcedureAddress(_EnumSystemGeoID, kernel32, 'EnumSystemGeoID');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumSystemGeoID]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumSystemGeoID]
   end;
 end;
-{$ELSE}
-function EnumSystemGeoID; external kernel32 name 'EnumSystemGeoID';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetUserGeoID: Pointer;
 
@@ -3469,16 +2690,12 @@ function GetUserGeoID;
 begin
   GetProcedureAddress(_GetUserGeoID, kernel32, 'GetUserGeoID');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetUserGeoID]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetUserGeoID]
   end;
 end;
-{$ELSE}
-function GetUserGeoID; external kernel32 name 'GetUserGeoID';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetUserGeoID: Pointer;
 
@@ -3486,16 +2703,12 @@ function SetUserGeoID;
 begin
   GetProcedureAddress(_SetUserGeoID, kernel32, 'SetUserGeoID');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetUserGeoID]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetUserGeoID]
   end;
 end;
-{$ELSE}
-function SetUserGeoID; external kernel32 name 'SetUserGeoID';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ConvertDefaultLocale: Pointer;
 
@@ -3503,16 +2716,12 @@ function ConvertDefaultLocale;
 begin
   GetProcedureAddress(_ConvertDefaultLocale, kernel32, 'ConvertDefaultLocale');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ConvertDefaultLocale]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ConvertDefaultLocale]
   end;
 end;
-{$ELSE}
-function ConvertDefaultLocale; external kernel32 name 'ConvertDefaultLocale';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetThreadLocale: Pointer;
 
@@ -3520,16 +2729,12 @@ function GetThreadLocale;
 begin
   GetProcedureAddress(_GetThreadLocale, kernel32, 'GetThreadLocale');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetThreadLocale]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetThreadLocale]
   end;
 end;
-{$ELSE}
-function GetThreadLocale; external kernel32 name 'GetThreadLocale';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetThreadLocale: Pointer;
 
@@ -3537,16 +2742,12 @@ function SetThreadLocale;
 begin
   GetProcedureAddress(_SetThreadLocale, kernel32, 'SetThreadLocale');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetThreadLocale]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetThreadLocale]
   end;
 end;
-{$ELSE}
-function SetThreadLocale; external kernel32 name 'SetThreadLocale';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetSystemDefaultUILanguage: Pointer;
 
@@ -3554,16 +2755,12 @@ function GetSystemDefaultUILanguage;
 begin
   GetProcedureAddress(_GetSystemDefaultUILanguage, kernel32, 'GetSystemDefaultUILanguage');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetSystemDefaultUILanguage]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetSystemDefaultUILanguage]
   end;
 end;
-{$ELSE}
-function GetSystemDefaultUILanguage; external kernel32 name 'GetSystemDefaultUILanguage';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetUserDefaultUILanguage: Pointer;
 
@@ -3571,16 +2768,12 @@ function GetUserDefaultUILanguage;
 begin
   GetProcedureAddress(_GetUserDefaultUILanguage, kernel32, 'GetUserDefaultUILanguage');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetUserDefaultUILanguage]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetUserDefaultUILanguage]
   end;
 end;
-{$ELSE}
-function GetUserDefaultUILanguage; external kernel32 name 'GetUserDefaultUILanguage';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetSystemDefaultLangID: Pointer;
 
@@ -3588,16 +2781,12 @@ function GetSystemDefaultLangID;
 begin
   GetProcedureAddress(_GetSystemDefaultLangID, kernel32, 'GetSystemDefaultLangID');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetSystemDefaultLangID]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetSystemDefaultLangID]
   end;
 end;
-{$ELSE}
-function GetSystemDefaultLangID; external kernel32 name 'GetSystemDefaultLangID';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetUserDefaultLangID: Pointer;
 
@@ -3605,16 +2794,12 @@ function GetUserDefaultLangID;
 begin
   GetProcedureAddress(_GetUserDefaultLangID, kernel32, 'GetUserDefaultLangID');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetUserDefaultLangID]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetUserDefaultLangID]
   end;
 end;
-{$ELSE}
-function GetUserDefaultLangID; external kernel32 name 'GetUserDefaultLangID';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetSystemDefaultLCID: Pointer;
 
@@ -3622,16 +2807,12 @@ function GetSystemDefaultLCID;
 begin
   GetProcedureAddress(_GetSystemDefaultLCID, kernel32, 'GetSystemDefaultLCID');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetSystemDefaultLCID]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetSystemDefaultLCID]
   end;
 end;
-{$ELSE}
-function GetSystemDefaultLCID; external kernel32 name 'GetSystemDefaultLCID';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetUserDefaultLCID: Pointer;
 
@@ -3639,16 +2820,12 @@ function GetUserDefaultLCID;
 begin
   GetProcedureAddress(_GetUserDefaultLCID, kernel32, 'GetUserDefaultLCID');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetUserDefaultLCID]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetUserDefaultLCID]
   end;
 end;
-{$ELSE}
-function GetUserDefaultLCID; external kernel32 name 'GetUserDefaultLCID';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetStringTypeExA: Pointer;
 
@@ -3656,16 +2833,12 @@ function GetStringTypeExA;
 begin
   GetProcedureAddress(_GetStringTypeExA, kernel32, 'GetStringTypeExA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetStringTypeExA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetStringTypeExA]
   end;
 end;
-{$ELSE}
-function GetStringTypeExA; external kernel32 name 'GetStringTypeExA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetStringTypeExW: Pointer;
 
@@ -3673,53 +2846,25 @@ function GetStringTypeExW;
 begin
   GetProcedureAddress(_GetStringTypeExW, kernel32, 'GetStringTypeExW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetStringTypeExW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetStringTypeExW]
   end;
 end;
-{$ELSE}
-function GetStringTypeExW; external kernel32 name 'GetStringTypeExW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetStringTypeEx: Pointer;
 
 function GetStringTypeEx;
 begin
-  GetProcedureAddress(_GetStringTypeEx, kernel32, 'GetStringTypeExW');
+  GetProcedureAddress(_GetStringTypeEx, kernel32, 'GetStringTypeEx' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetStringTypeEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetStringTypeEx]
   end;
 end;
-{$ELSE}
-function GetStringTypeEx; external kernel32 name 'GetStringTypeExW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetStringTypeEx: Pointer;
-
-function GetStringTypeEx;
-begin
-  GetProcedureAddress(_GetStringTypeEx, kernel32, 'GetStringTypeExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetStringTypeEx]
-  end;
-end;
-{$ELSE}
-function GetStringTypeEx; external kernel32 name 'GetStringTypeExA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetStringTypeA: Pointer;
 
@@ -3727,16 +2872,12 @@ function GetStringTypeA;
 begin
   GetProcedureAddress(_GetStringTypeA, kernel32, 'GetStringTypeA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetStringTypeA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetStringTypeA]
   end;
 end;
-{$ELSE}
-function GetStringTypeA; external kernel32 name 'GetStringTypeA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetStringTypeW: Pointer;
 
@@ -3744,16 +2885,12 @@ function GetStringTypeW;
 begin
   GetProcedureAddress(_GetStringTypeW, kernel32, 'GetStringTypeW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetStringTypeW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetStringTypeW]
   end;
 end;
-{$ELSE}
-function GetStringTypeW; external kernel32 name 'GetStringTypeW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _FoldStringA: Pointer;
 
@@ -3761,16 +2898,12 @@ function FoldStringA;
 begin
   GetProcedureAddress(_FoldStringA, kernel32, 'FoldStringA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FoldStringA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_FoldStringA]
   end;
 end;
-{$ELSE}
-function FoldStringA; external kernel32 name 'FoldStringA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _FoldStringW: Pointer;
 
@@ -3778,53 +2911,25 @@ function FoldStringW;
 begin
   GetProcedureAddress(_FoldStringW, kernel32, 'FoldStringW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FoldStringW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_FoldStringW]
   end;
 end;
-{$ELSE}
-function FoldStringW; external kernel32 name 'FoldStringW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _FoldString: Pointer;
 
 function FoldString;
 begin
-  GetProcedureAddress(_FoldString, kernel32, 'FoldStringW');
+  GetProcedureAddress(_FoldString, kernel32, 'FoldString' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FoldString]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_FoldString]
   end;
 end;
-{$ELSE}
-function FoldString; external kernel32 name 'FoldStringW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _FoldString: Pointer;
-
-function FoldString;
-begin
-  GetProcedureAddress(_FoldString, kernel32, 'FoldStringA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FoldString]
-  end;
-end;
-{$ELSE}
-function FoldString; external kernel32 name 'FoldStringA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumSystemLanguageGroupsA: Pointer;
 
@@ -3832,16 +2937,12 @@ function EnumSystemLanguageGroupsA;
 begin
   GetProcedureAddress(_EnumSystemLanguageGroupsA, kernel32, 'EnumSystemLanguageGroupsA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumSystemLanguageGroupsA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumSystemLanguageGroupsA]
   end;
 end;
-{$ELSE}
-function EnumSystemLanguageGroupsA; external kernel32 name 'EnumSystemLanguageGroupsA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumSystemLanguageGroupsW: Pointer;
 
@@ -3849,53 +2950,25 @@ function EnumSystemLanguageGroupsW;
 begin
   GetProcedureAddress(_EnumSystemLanguageGroupsW, kernel32, 'EnumSystemLanguageGroupsW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumSystemLanguageGroupsW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumSystemLanguageGroupsW]
   end;
 end;
-{$ELSE}
-function EnumSystemLanguageGroupsW; external kernel32 name 'EnumSystemLanguageGroupsW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumSystemLanguageGroups: Pointer;
 
 function EnumSystemLanguageGroups;
 begin
-  GetProcedureAddress(_EnumSystemLanguageGroups, kernel32, 'EnumSystemLanguageGroupsW');
+  GetProcedureAddress(_EnumSystemLanguageGroups, kernel32, 'EnumSystemLanguageGroups' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumSystemLanguageGroups]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumSystemLanguageGroups]
   end;
 end;
-{$ELSE}
-function EnumSystemLanguageGroups; external kernel32 name 'EnumSystemLanguageGroupsW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumSystemLanguageGroups: Pointer;
-
-function EnumSystemLanguageGroups;
-begin
-  GetProcedureAddress(_EnumSystemLanguageGroups, kernel32, 'EnumSystemLanguageGroupsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumSystemLanguageGroups]
-  end;
-end;
-{$ELSE}
-function EnumSystemLanguageGroups; external kernel32 name 'EnumSystemLanguageGroupsA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumLanguageGroupLocalesA: Pointer;
 
@@ -3903,16 +2976,12 @@ function EnumLanguageGroupLocalesA;
 begin
   GetProcedureAddress(_EnumLanguageGroupLocalesA, kernel32, 'EnumLanguageGroupLocalesA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumLanguageGroupLocalesA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumLanguageGroupLocalesA]
   end;
 end;
-{$ELSE}
-function EnumLanguageGroupLocalesA; external kernel32 name 'EnumLanguageGroupLocalesA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumLanguageGroupLocalesW: Pointer;
 
@@ -3920,53 +2989,25 @@ function EnumLanguageGroupLocalesW;
 begin
   GetProcedureAddress(_EnumLanguageGroupLocalesW, kernel32, 'EnumLanguageGroupLocalesW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumLanguageGroupLocalesW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumLanguageGroupLocalesW]
   end;
 end;
-{$ELSE}
-function EnumLanguageGroupLocalesW; external kernel32 name 'EnumLanguageGroupLocalesW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumLanguageGroupLocales: Pointer;
 
 function EnumLanguageGroupLocales;
 begin
-  GetProcedureAddress(_EnumLanguageGroupLocales, kernel32, 'EnumLanguageGroupLocalesW');
+  GetProcedureAddress(_EnumLanguageGroupLocales, kernel32, 'EnumLanguageGroupLocales' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumLanguageGroupLocales]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumLanguageGroupLocales]
   end;
 end;
-{$ELSE}
-function EnumLanguageGroupLocales; external kernel32 name 'EnumLanguageGroupLocalesW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumLanguageGroupLocales: Pointer;
-
-function EnumLanguageGroupLocales;
-begin
-  GetProcedureAddress(_EnumLanguageGroupLocales, kernel32, 'EnumLanguageGroupLocalesA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumLanguageGroupLocales]
-  end;
-end;
-{$ELSE}
-function EnumLanguageGroupLocales; external kernel32 name 'EnumLanguageGroupLocalesA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumUILanguagesA: Pointer;
 
@@ -3974,16 +3015,12 @@ function EnumUILanguagesA;
 begin
   GetProcedureAddress(_EnumUILanguagesA, kernel32, 'EnumUILanguagesA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumUILanguagesA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumUILanguagesA]
   end;
 end;
-{$ELSE}
-function EnumUILanguagesA; external kernel32 name 'EnumUILanguagesA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumUILanguagesW: Pointer;
 
@@ -3991,53 +3028,25 @@ function EnumUILanguagesW;
 begin
   GetProcedureAddress(_EnumUILanguagesW, kernel32, 'EnumUILanguagesW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumUILanguagesW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumUILanguagesW]
   end;
 end;
-{$ELSE}
-function EnumUILanguagesW; external kernel32 name 'EnumUILanguagesW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumUILanguages: Pointer;
 
 function EnumUILanguages;
 begin
-  GetProcedureAddress(_EnumUILanguages, kernel32, 'EnumUILanguagesW');
+  GetProcedureAddress(_EnumUILanguages, kernel32, 'EnumUILanguages' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumUILanguages]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumUILanguages]
   end;
 end;
-{$ELSE}
-function EnumUILanguages; external kernel32 name 'EnumUILanguagesW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumUILanguages: Pointer;
-
-function EnumUILanguages;
-begin
-  GetProcedureAddress(_EnumUILanguages, kernel32, 'EnumUILanguagesA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumUILanguages]
-  end;
-end;
-{$ELSE}
-function EnumUILanguages; external kernel32 name 'EnumUILanguagesA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumSystemLocalesA: Pointer;
 
@@ -4045,16 +3054,12 @@ function EnumSystemLocalesA;
 begin
   GetProcedureAddress(_EnumSystemLocalesA, kernel32, 'EnumSystemLocalesA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumSystemLocalesA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumSystemLocalesA]
   end;
 end;
-{$ELSE}
-function EnumSystemLocalesA; external kernel32 name 'EnumSystemLocalesA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumSystemLocalesW: Pointer;
 
@@ -4062,53 +3067,25 @@ function EnumSystemLocalesW;
 begin
   GetProcedureAddress(_EnumSystemLocalesW, kernel32, 'EnumSystemLocalesW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumSystemLocalesW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumSystemLocalesW]
   end;
 end;
-{$ELSE}
-function EnumSystemLocalesW; external kernel32 name 'EnumSystemLocalesW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumSystemLocales: Pointer;
 
 function EnumSystemLocales;
 begin
-  GetProcedureAddress(_EnumSystemLocales, kernel32, 'EnumSystemLocalesW');
+  GetProcedureAddress(_EnumSystemLocales, kernel32, 'EnumSystemLocales' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumSystemLocales]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumSystemLocales]
   end;
 end;
-{$ELSE}
-function EnumSystemLocales; external kernel32 name 'EnumSystemLocalesW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumSystemLocales: Pointer;
-
-function EnumSystemLocales;
-begin
-  GetProcedureAddress(_EnumSystemLocales, kernel32, 'EnumSystemLocalesA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumSystemLocales]
-  end;
-end;
-{$ELSE}
-function EnumSystemLocales; external kernel32 name 'EnumSystemLocalesA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumSystemCodePagesA: Pointer;
 
@@ -4116,16 +3093,12 @@ function EnumSystemCodePagesA;
 begin
   GetProcedureAddress(_EnumSystemCodePagesA, kernel32, 'EnumSystemCodePagesA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumSystemCodePagesA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumSystemCodePagesA]
   end;
 end;
-{$ELSE}
-function EnumSystemCodePagesA; external kernel32 name 'EnumSystemCodePagesA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumSystemCodePagesW: Pointer;
 
@@ -4133,50 +3106,130 @@ function EnumSystemCodePagesW;
 begin
   GetProcedureAddress(_EnumSystemCodePagesW, kernel32, 'EnumSystemCodePagesW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumSystemCodePagesW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumSystemCodePagesW]
   end;
 end;
+
+var
+  _EnumSystemCodePages: Pointer;
+
+function EnumSystemCodePages;
+begin
+  GetProcedureAddress(_EnumSystemCodePages, kernel32, 'EnumSystemCodePages' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumSystemCodePages]
+  end;
+end;
+
 {$ELSE}
+
+function IsValidCodePage; external kernel32 name 'IsValidCodePage';
+function GetACP; external kernel32 name 'GetACP';
+function GetOEMCP; external kernel32 name 'GetOEMCP';
+function GetCPInfo; external kernel32 name 'GetCPInfo';
+function GetCPInfoExA; external kernel32 name 'GetCPInfoExA';
+function GetCPInfoExW; external kernel32 name 'GetCPInfoExW';
+function GetCPInfoEx; external kernel32 name 'GetCPInfoEx' + AWSuffix;
+function IsDBCSLeadByte; external kernel32 name 'IsDBCSLeadByte';
+function IsDBCSLeadByteEx; external kernel32 name 'IsDBCSLeadByteEx';
+function MultiByteToWideChar; external kernel32 name 'MultiByteToWideChar';
+function WideCharToMultiByte; external kernel32 name 'WideCharToMultiByte';
+function CompareStringA; external kernel32 name 'CompareStringA';
+function CompareStringW; external kernel32 name 'CompareStringW';
+function CompareString; external kernel32 name 'CompareString' + AWSuffix;
+function LCMapStringA; external kernel32 name 'LCMapStringA';
+function LCMapStringW; external kernel32 name 'LCMapStringW';
+function LCMapString; external kernel32 name 'LCMapString' + AWSuffix;
+function GetLocaleInfoA; external kernel32 name 'GetLocaleInfoA';
+function GetLocaleInfoW; external kernel32 name 'GetLocaleInfoW';
+function GetLocaleInfo; external kernel32 name 'GetLocaleInfo' + AWSuffix;
+function SetLocaleInfoA; external kernel32 name 'SetLocaleInfoA';
+function SetLocaleInfoW; external kernel32 name 'SetLocaleInfoW';
+function SetLocaleInfo; external kernel32 name 'SetLocaleInfo' + AWSuffix;
+function GetCalendarInfoA; external kernel32 name 'GetCalendarInfoA';
+function GetCalendarInfoW; external kernel32 name 'GetCalendarInfoW';
+function GetCalendarInfo; external kernel32 name 'GetCalendarInfo' + AWSuffix;
+function SetCalendarInfoA; external kernel32 name 'SetCalendarInfoA';
+function SetCalendarInfoW; external kernel32 name 'SetCalendarInfoW';
+function SetCalendarInfo; external kernel32 name 'SetCalendarInfo' + AWSuffix;
+function GetTimeFormatA; external kernel32 name 'GetTimeFormatA';
+function GetTimeFormatW; external kernel32 name 'GetTimeFormatW';
+function GetTimeFormat; external kernel32 name 'GetTimeFormat' + AWSuffix;
+function GetDateFormatA; external kernel32 name 'GetDateFormatA';
+function GetDateFormatW; external kernel32 name 'GetDateFormatW';
+function GetDateFormat; external kernel32 name 'GetDateFormat' + AWSuffix;
+function GetNumberFormatA; external kernel32 name 'GetNumberFormatA';
+function GetNumberFormatW; external kernel32 name 'GetNumberFormatW';
+function GetNumberFormat; external kernel32 name 'GetNumberFormat' + AWSuffix;
+function GetCurrencyFormatA; external kernel32 name 'GetCurrencyFormatA';
+function GetCurrencyFormatW; external kernel32 name 'GetCurrencyFormatW';
+function GetCurrencyFormat; external kernel32 name 'GetCurrencyFormat' + AWSuffix;
+function EnumCalendarInfoA; external kernel32 name 'EnumCalendarInfoA';
+function EnumCalendarInfoW; external kernel32 name 'EnumCalendarInfoW';
+function EnumCalendarInfo; external kernel32 name 'EnumCalendarInfo' + AWSuffix;
+function EnumCalendarInfoExA; external kernel32 name 'EnumCalendarInfoExA';
+function EnumCalendarInfoExW; external kernel32 name 'EnumCalendarInfoExW';
+function EnumCalendarInfoEx; external kernel32 name 'EnumCalendarInfoEx' + AWSuffix;
+function EnumTimeFormatsA; external kernel32 name 'EnumTimeFormatsA';
+function EnumTimeFormatsW; external kernel32 name 'EnumTimeFormatsW';
+function EnumTimeFormats; external kernel32 name 'EnumTimeFormats' + AWSuffix;
+function EnumDateFormatsA; external kernel32 name 'EnumDateFormatsA';
+function EnumDateFormatsW; external kernel32 name 'EnumDateFormatsW';
+function EnumDateFormats; external kernel32 name 'EnumDateFormats' + AWSuffix;
+function EnumDateFormatsExA; external kernel32 name 'EnumDateFormatsExA';
+function EnumDateFormatsExW; external kernel32 name 'EnumDateFormatsExW';
+function EnumDateFormatsEx; external kernel32 name 'EnumDateFormatsEx' + AWSuffix;
+function IsValidLanguageGroup; external kernel32 name 'IsValidLanguageGroup';
+function GetNLSVersion; external kernel32 name 'GetNLSVersion';
+function IsNLSDefinedString; external kernel32 name 'IsNLSDefinedString';
+function IsValidLocale; external kernel32 name 'IsValidLocale';
+function GetGeoInfoA; external kernel32 name 'GetGeoInfoA';
+function GetGeoInfoW; external kernel32 name 'GetGeoInfoW';
+function GetGeoInfo; external kernel32 name 'GetGeoInfo';
+function EnumSystemGeoID; external kernel32 name 'EnumSystemGeoID';
+function GetUserGeoID; external kernel32 name 'GetUserGeoID';
+function SetUserGeoID; external kernel32 name 'SetUserGeoID';
+function ConvertDefaultLocale; external kernel32 name 'ConvertDefaultLocale';
+function GetThreadLocale; external kernel32 name 'GetThreadLocale';
+function SetThreadLocale; external kernel32 name 'SetThreadLocale';
+function GetSystemDefaultUILanguage; external kernel32 name 'GetSystemDefaultUILanguage';
+function GetUserDefaultUILanguage; external kernel32 name 'GetUserDefaultUILanguage';
+function GetSystemDefaultLangID; external kernel32 name 'GetSystemDefaultLangID';
+function GetUserDefaultLangID; external kernel32 name 'GetUserDefaultLangID';
+function GetSystemDefaultLCID; external kernel32 name 'GetSystemDefaultLCID';
+function GetUserDefaultLCID; external kernel32 name 'GetUserDefaultLCID';
+function GetStringTypeExA; external kernel32 name 'GetStringTypeExA';
+function GetStringTypeExW; external kernel32 name 'GetStringTypeExW';
+function GetStringTypeEx; external kernel32 name 'GetStringTypeEx' + AWSuffix;
+function GetStringTypeA; external kernel32 name 'GetStringTypeA';
+function GetStringTypeW; external kernel32 name 'GetStringTypeW';
+function FoldStringA; external kernel32 name 'FoldStringA';
+function FoldStringW; external kernel32 name 'FoldStringW';
+function FoldString; external kernel32 name 'FoldString' + AWSuffix;
+function EnumSystemLanguageGroupsA; external kernel32 name 'EnumSystemLanguageGroupsA';
+function EnumSystemLanguageGroupsW; external kernel32 name 'EnumSystemLanguageGroupsW';
+function EnumSystemLanguageGroups; external kernel32 name 'EnumSystemLanguageGroups' + AWSuffix;
+function EnumLanguageGroupLocalesA; external kernel32 name 'EnumLanguageGroupLocalesA';
+function EnumLanguageGroupLocalesW; external kernel32 name 'EnumLanguageGroupLocalesW';
+function EnumLanguageGroupLocales; external kernel32 name 'EnumLanguageGroupLocales' + AWSuffix;
+function EnumUILanguagesA; external kernel32 name 'EnumUILanguagesA';
+function EnumUILanguagesW; external kernel32 name 'EnumUILanguagesW';
+function EnumUILanguages; external kernel32 name 'EnumUILanguages' + AWSuffix;
+function EnumSystemLocalesA; external kernel32 name 'EnumSystemLocalesA';
+function EnumSystemLocalesW; external kernel32 name 'EnumSystemLocalesW';
+function EnumSystemLocales; external kernel32 name 'EnumSystemLocales' + AWSuffix;
+function EnumSystemCodePagesA; external kernel32 name 'EnumSystemCodePagesA';
 function EnumSystemCodePagesW; external kernel32 name 'EnumSystemCodePagesW';
+function EnumSystemCodePages; external kernel32 name 'EnumSystemCodePages' + AWSuffix;
+
 {$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumSystemCodePages: Pointer;
+{$ENDIF JWA_IMPLEMENTATIONSECTION}
 
-function EnumSystemCodePages;
-begin
-  GetProcedureAddress(_EnumSystemCodePages, kernel32, 'EnumSystemCodePagesW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumSystemCodePages]
-  end;
-end;
-{$ELSE}
-function EnumSystemCodePages; external kernel32 name 'EnumSystemCodePagesW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumSystemCodePages: Pointer;
-
-function EnumSystemCodePages;
-begin
-  GetProcedureAddress(_EnumSystemCodePages, kernel32, 'EnumSystemCodePagesA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumSystemCodePages]
-  end;
-end;
-{$ELSE}
-function EnumSystemCodePages; external kernel32 name 'EnumSystemCodePagesA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
+{$IFNDEF JWA_INCLUDEMODE}
 end.
+{$ENDIF !JWA_INCLUDEMODE}

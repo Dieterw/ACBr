@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Windows Installer API interface Unit for Object Pascal                       }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: msiquery.h, released June 2000. The original Pascal    }
 { code is: MsiQuery.pas, released June 2001. The initial developer of the      }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaMsiQuery.pas,v 1.9 2005/09/06 16:36:50 marquardt Exp $
 
 unit JwaMsiQuery;
 
@@ -49,12 +50,12 @@ unit JwaMsiQuery;
 {$HPPEMIT '#include "msiquery.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaMsi, JwaWinBase, JwaWinType;
+  JwaMsi, JwaWindows;
 
 (*****************************************************************************\
 *                                                                             *
@@ -92,11 +93,7 @@ const
   MSIDBOPEN_CREATEDIRECT = LPCTSTR(4);  // create new database, direct mode read/write
   {$EXTERNALSYM MSIDBOPEN_CREATEDIRECT}
 
-  {$IFDEF UNICODE}
-  MSIDBOPEN_PATCHFILE    = 32 div SizeOf(WideChar); // add flag to indicate patch file
-  {$ELSE}
-  MSIDBOPEN_PATCHFILE    = 32 div SizeOf(AnsiChar); // add flag to indicate patch file  
-  {$ENDIF}
+  MSIDBOPEN_PATCHFILE    = 32 div SizeOf(TCHAR); // add flag to indicate patch file
 
   MSIDBSTATE_ERROR    = DWORD(-1);  // invalid database handle
   {$EXTERNALSYM MSIDBSTATE_ERROR}
@@ -176,7 +173,7 @@ const
   {$EXTERNALSYM MSICOSTTREE_CHILDREN}
   MSICOSTTREE_PARENTS  = 2;
   {$EXTERNALSYM MSICOSTTREE_PARENTS}
-  MSICOSTTREE_RESERVED = 3;	// Reserved for future use
+  MSICOSTTREE_RESERVED = 3;  // Reserved for future use
   {$EXTERNALSYM MSICOSTTREE_RESERVED}
 
 type
@@ -379,14 +376,8 @@ function MsiDatabaseOpenViewA(hDatabase: MSIHANDLE; szQuery: LPCSTR; var phView:
 {$EXTERNALSYM MsiDatabaseOpenViewA}
 function MsiDatabaseOpenViewW(hDatabase: MSIHANDLE; szQuery: LPCWSTR; var phView: MSIHANDLE): UINT; stdcall;
 {$EXTERNALSYM MsiDatabaseOpenViewW}
-
-{$IFDEF UNICODE}
-function MsiDatabaseOpenView(hDatabase: MSIHANDLE; szQuery: LPCWSTR; var phView: MSIHANDLE): UINT; stdcall;
+function MsiDatabaseOpenView(hDatabase: MSIHANDLE; szQuery: LPCTSTR; var phView: MSIHANDLE): UINT; stdcall;
 {$EXTERNALSYM MsiDatabaseOpenView}
-{$ELSE}
-function MsiDatabaseOpenView(hDatabase: MSIHANDLE; szQuery: LPCSTR; var phView: MSIHANDLE): UINT; stdcall;
-{$EXTERNALSYM MsiDatabaseOpenView}
-{$ENDIF}
 
 // Returns the MSIDBERROR enum and name of the column corresponding to the error
 // Similar to a GetLastError function, but for the view. NOT the same as MsiGetLastErrorRecord
@@ -398,16 +389,9 @@ function MsiViewGetErrorA(hView: MSIHANDLE; szColumnNameBuffer: LPSTR;
 function MsiViewGetErrorW(hView: MSIHANDLE; szColumnNameBuffer: LPWSTR;
   var pcchBuf: DWORD): MSIDBERROR; stdcall;
 {$EXTERNALSYM MsiViewGetErrorW}
-
-{$IFDEF UNICODE}
-function MsiViewGetError(hView: MSIHANDLE; szColumnNameBuffer: LPWSTR;
+function MsiViewGetError(hView: MSIHANDLE; szColumnNameBuffer: LPTSTR;
   var pcchBuf: DWORD): MSIDBERROR; stdcall;
 {$EXTERNALSYM MsiViewGetError}
-{$ELSE}
-function MsiViewGetError(hView: MSIHANDLE; szColumnNameBuffer: LPSTR;
-  var pcchBuf: DWORD): MSIDBERROR; stdcall;
-{$EXTERNALSYM MsiViewGetError}
-{$ENDIF}
 
 // Exectute the view query, supplying parameters as required
 // Returns ERROR_SUCCESS, ERROR_INVALID_HANDLE, ERROR_INVALID_HANDLE_STATE, ERROR_GEN_FAILURE
@@ -457,16 +441,9 @@ function MsiDatabaseGetPrimaryKeysA(hDatabase: MSIHANDLE; szTableName: LPCSTR;
 function MsiDatabaseGetPrimaryKeysW(hDatabase: MSIHANDLE; szTableName: LPCWSTR;
   var phRecord: MSIHANDLE): UINT; stdcall;
 {$EXTERNALSYM MsiDatabaseGetPrimaryKeysW}
-
-{$IFDEF UNICODE}
-function MsiDatabaseGetPrimaryKeys(hDatabase: MSIHANDLE; szTableName: LPCWSTR;
+function MsiDatabaseGetPrimaryKeys(hDatabase: MSIHANDLE; szTableName: LPCTSTR;
   var phRecord: MSIHANDLE): UINT; stdcall;
 {$EXTERNALSYM MsiDatabaseGetPrimaryKeys}
-{$ELSE}
-function MsiDatabaseGetPrimaryKeys(hDatabase: MSIHANDLE; szTableName: LPCSTR;
-  var phRecord: MSIHANDLE): UINT; stdcall;
-{$EXTERNALSYM MsiDatabaseGetPrimaryKeys}
-{$ENDIF}
 
 // Return an enum defining the state of the table (temporary, unknown, or persistent).
 // Returns MSICONDITION_ERROR, MSICONDITION_FALSE, MSICONDITION_TRUE, MSICONDITION_NONE
@@ -475,14 +452,8 @@ function MsiDatabaseIsTablePersistentA(hDatabase: MSIHANDLE; szTableName: LPCSTR
 {$EXTERNALSYM MsiDatabaseIsTablePersistentA}
 function MsiDatabaseIsTablePersistentW(hDatabase: MSIHANDLE; szTableName: LPCWSTR): MSICONDITION; stdcall;
 {$EXTERNALSYM MsiDatabaseIsTablePersistentW}
-
-{$IFDEF UNICODE}
-function MsiDatabaseIsTablePersistent(hDatabase: MSIHANDLE; szTableName: LPCWSTR): MSICONDITION; stdcall;
+function MsiDatabaseIsTablePersistent(hDatabase: MSIHANDLE; szTableName: LPCTSTR): MSICONDITION; stdcall;
 {$EXTERNALSYM MsiDatabaseIsTablePersistent}
-{$ELSE}
-function MsiDatabaseIsTablePersistent(hDatabase: MSIHANDLE; szTableName: LPCSTR): MSICONDITION; stdcall;
-{$EXTERNALSYM MsiDatabaseIsTablePersistent}
-{$ENDIF}
 
 // --------------------------------------------------------------------------
 // Summary information stream management functions
@@ -502,16 +473,9 @@ function MsiGetSummaryInformationA(hDatabase: MSIHANDLE; szDatabasePath: LPCSTR;
 function MsiGetSummaryInformationW(hDatabase: MSIHANDLE; szDatabasePath: LPCWSTR;
   uiUpdateCount: UINT; var phSummaryInfo: MSIHANDLE): UINT; stdcall;
 {$EXTERNALSYM MsiGetSummaryInformationW}
-
-{$IFDEF UNICODE}
-function MsiGetSummaryInformation(hDatabase: MSIHANDLE; szDatabasePath: LPCWSTR;
+function MsiGetSummaryInformation(hDatabase: MSIHANDLE; szDatabasePath: LPCTSTR;
   uiUpdateCount: UINT; var phSummaryInfo: MSIHANDLE): UINT; stdcall;
 {$EXTERNALSYM MsiGetSummaryInformation}
-{$ELSE}
-function MsiGetSummaryInformation(hDatabase: MSIHANDLE; szDatabasePath: LPCSTR;
-  uiUpdateCount: UINT; var phSummaryInfo: MSIHANDLE): UINT; stdcall;
-{$EXTERNALSYM MsiGetSummaryInformation}
-{$ENDIF}
 
 // Obtain the number of existing properties in the SummaryInformation stream
 
@@ -527,16 +491,9 @@ function MsiSummaryInfoSetPropertyA(hSummaryInfo: MSIHANDLE; uiProperty: UINT;
 function MsiSummaryInfoSetPropertyW(hSummaryInfo: MSIHANDLE; uiProperty: UINT;
   uiDataType: UINT; iValue: Integer; const pftValue: FILETIME; szValue: LPCWSTR): UINT; stdcall;
 {$EXTERNALSYM MsiSummaryInfoSetPropertyW}
-
-{$IFDEF UNICODE}
 function MsiSummaryInfoSetProperty(hSummaryInfo: MSIHANDLE; uiProperty: UINT;
-  uiDataType: UINT; iValue: Integer; const pftValue: FILETIME; szValue: LPCWSTR): UINT; stdcall;
+  uiDataType: UINT; iValue: Integer; const pftValue: FILETIME; szValue: LPCTSTR): UINT; stdcall;
 {$EXTERNALSYM MsiSummaryInfoSetProperty}
-{$ELSE}
-function MsiSummaryInfoSetProperty(hSummaryInfo: MSIHANDLE; uiProperty: UINT;
-  uiDataType: UINT; iValue: Integer; const pftValue: FILETIME; szValue: LPCSTR): UINT; stdcall;
-{$EXTERNALSYM MsiSummaryInfoSetProperty}
-{$ENDIF}
 
 // Get a single property from the summary information
 // Returns ERROR_SUCCESS, ERROR_INVALID_HANDLE, ERROR_UNKNOWN_PROPERTY
@@ -549,18 +506,10 @@ function MsiSummaryInfoGetPropertyW(hSummaryInfo: MSIHANDLE; uiProperty: UINT;
   var puiDataType: UINT; var piValue: Integer; var pftValue: FILETIME; szValueBuf: LPWSTR;
   var pcchValueBuf: DWORD): UINT; stdcall;
 {$EXTERNALSYM MsiSummaryInfoGetPropertyW}
-
-{$IFDEF UNICODE}
 function MsiSummaryInfoGetProperty(hSummaryInfo: MSIHANDLE; uiProperty: UINT;
-  var puiDataType: UINT; var piValue: Integer; var pftValue: FILETIME; szValueBuf: LPWSTR;
+  var puiDataType: UINT; var piValue: Integer; var pftValue: FILETIME; szValueBuf: LPTSTR;
   var pcchValueBuf: DWORD): UINT; stdcall;
 {$EXTERNALSYM MsiSummaryInfoGetProperty}
-{$ELSE}
-function MsiSummaryInfoGetProperty(hSummaryInfo: MSIHANDLE; uiProperty: UINT;
-  var puiDataType: UINT; var piValue: Integer; var pftValue: FILETIME; szValueBuf: LPSTR;
-  var pcchValueBuf: DWORD): UINT; stdcall;
-{$EXTERNALSYM MsiSummaryInfoGetProperty}
-{$ENDIF}
 
 // Write back changed information to summary information stream
 
@@ -581,16 +530,9 @@ function MsiOpenDatabaseA(szDatabasePath: LPCSTR; szPersist: LPCSTR;
 function MsiOpenDatabaseW(szDatabasePath: LPCWSTR; szPersist: LPCWSTR;
   var phDatabase: MSIHANDLE): UINT; stdcall;
 {$EXTERNALSYM MsiOpenDatabaseW}
-
-{$IFDEF UNICODE}
-function MsiOpenDatabase(szDatabasePath: LPCWSTR; szPersist: LPCWSTR;
+function MsiOpenDatabase(szDatabasePath: LPCTSTR; szPersist: LPCTSTR;
   var phDatabase: MSIHANDLE): UINT; stdcall;
 {$EXTERNALSYM MsiOpenDatabase}
-{$ELSE}
-function MsiOpenDatabase(szDatabasePath: LPCSTR; szPersist: LPCSTR;
-  var phDatabase: MSIHANDLE): UINT; stdcall;
-{$EXTERNALSYM MsiOpenDatabase}
-{$ENDIF}
 
 // Import an MSI text archive table into an open database
 // Execution of this function sets the error record, accessible via MsiGetLastErrorRecord
@@ -601,16 +543,9 @@ function MsiDatabaseImportA(hDatabase: MSIHANDLE; szFolderPath: LPCSTR;
 function MsiDatabaseImportW(hDatabase: MSIHANDLE; szFolderPath: LPCWSTR;
   szFileName: LPCWSTR): UINT; stdcall;
 {$EXTERNALSYM MsiDatabaseImportW}
-
-{$IFDEF UNICODE}
-function MsiDatabaseImport(hDatabase: MSIHANDLE; szFolderPath: LPCWSTR;
-  szFileName: LPCWSTR): UINT; stdcall;
+function MsiDatabaseImport(hDatabase: MSIHANDLE; szFolderPath: LPCTSTR;
+  szFileName: LPCTSTR): UINT; stdcall;
 {$EXTERNALSYM MsiDatabaseImport}
-{$ELSE}
-function MsiDatabaseImport(hDatabase: MSIHANDLE; szFolderPath: LPCSTR;
-  szFileName: LPCSTR): UINT; stdcall;
-{$EXTERNALSYM MsiDatabaseImport}
-{$ENDIF}
 
 // Export an MSI table from an open database to a text archive file
 // Execution of this function sets the error record, accessible via MsiGetLastErrorRecord
@@ -621,16 +556,9 @@ function MsiDatabaseExportA(hDatabase: MSIHANDLE; szTableName: LPCSTR;
 function MsiDatabaseExportW(hDatabase: MSIHANDLE; szTableName: LPCWSTR;
   szFolderPath: LPCWSTR; szFileName: LPCWSTR): UINT; stdcall;
 {$EXTERNALSYM MsiDatabaseExportW}
-
-{$IFDEF UNICODE}
-function MsiDatabaseExport(hDatabase: MSIHANDLE; szTableName: LPCWSTR;
-  szFolderPath: LPCWSTR; szFileName: LPCWSTR): UINT; stdcall;
+function MsiDatabaseExport(hDatabase: MSIHANDLE; szTableName: LPCTSTR;
+  szFolderPath: LPCTSTR; szFileName: LPCTSTR): UINT; stdcall;
 {$EXTERNALSYM MsiDatabaseExport}
-{$ELSE}
-function MsiDatabaseExport(hDatabase: MSIHANDLE; szTableName: LPCSTR;
-  szFolderPath: LPCSTR; szFileName: LPCSTR): UINT; stdcall;
-{$EXTERNALSYM MsiDatabaseExport}
-{$ENDIF}
 
 // Merge two database together, allowing duplicate rows
 // Execution of this function sets the error record, accessible via MsiGetLastErrorRecord
@@ -641,16 +569,9 @@ function MsiDatabaseMergeA(hDatabase: MSIHANDLE; hDatabaseMerge: MSIHANDLE;
 function MsiDatabaseMergeW(hDatabase: MSIHANDLE; hDatabaseMerge: MSIHANDLE;
   szTableName: LPCWSTR): UINT; stdcall;
 {$EXTERNALSYM MsiDatabaseMergeW}
-
-{$IFDEF UNICODE}
 function MsiDatabaseMerge(hDatabase: MSIHANDLE; hDatabaseMerge: MSIHANDLE;
-  szTableName: LPCWSTR): UINT; stdcall;
+  szTableName: LPCTSTR): UINT; stdcall;
 {$EXTERNALSYM MsiDatabaseMerge}
-{$ELSE}
-function MsiDatabaseMerge(hDatabase: MSIHANDLE; hDatabaseMerge: MSIHANDLE;
-  szTableName: LPCSTR): UINT; stdcall;
-{$EXTERNALSYM MsiDatabaseMerge}
-{$ENDIF}
 
 // Generate a transform file of differences between two databases
 // Execution of this function sets the error record, accessible via MsiGetLastErrorRecord
@@ -661,16 +582,9 @@ function MsiDatabaseGenerateTransformA(hDatabase: MSIHANDLE; hDatabaseReference:
 function MsiDatabaseGenerateTransformW(hDatabase: MSIHANDLE; hDatabaseReference: MSIHANDLE;
   szTransformFile: LPCWSTR; iReserved1: Integer; iReserved2: Integer): UINT; stdcall;
 {$EXTERNALSYM MsiDatabaseGenerateTransformW}
-
-{$IFDEF UNICODE}
 function MsiDatabaseGenerateTransform(hDatabase: MSIHANDLE; hDatabaseReference: MSIHANDLE;
-  szTransformFile: LPCWSTR; iReserved1: Integer; iReserved2: Integer): UINT; stdcall;
+  szTransformFile: LPCTSTR; iReserved1: Integer; iReserved2: Integer): UINT; stdcall;
 {$EXTERNALSYM MsiDatabaseGenerateTransform}
-{$ELSE}
-function MsiDatabaseGenerateTransform(hDatabase: MSIHANDLE; hDatabaseReference: MSIHANDLE;
-  szTransformFile: LPCSTR; iReserved1: Integer; iReserved2: Integer): UINT; stdcall;
-{$EXTERNALSYM MsiDatabaseGenerateTransform}
-{$ENDIF}
 
 // Apply a transform file containing database difference
 // Execution of this function sets the error record, accessible via MsiGetLastErrorRecord
@@ -681,16 +595,9 @@ function MsiDatabaseApplyTransformA(hDatabase: MSIHANDLE; szTransformFile: LPCST
 function MsiDatabaseApplyTransformW(hDatabase: MSIHANDLE; szTransformFile: LPCWSTR;
   iErrorConditions: Integer): UINT; stdcall;
 {$EXTERNALSYM MsiDatabaseApplyTransformW}
-
-{$IFDEF UNICODE}
-function MsiDatabaseApplyTransform(hDatabase: MSIHANDLE; szTransformFile: LPCWSTR;
+function MsiDatabaseApplyTransform(hDatabase: MSIHANDLE; szTransformFile: LPCTSTR;
   iErrorConditions: Integer): UINT; stdcall;
 {$EXTERNALSYM MsiDatabaseApplyTransform}
-{$ELSE}
-function MsiDatabaseApplyTransform(hDatabase: MSIHANDLE; szTransformFile: LPCSTR;
-  iErrorConditions: Integer): UINT; stdcall;
-{$EXTERNALSYM MsiDatabaseApplyTransform}
-{$ENDIF}
 
 // Create summary information of existing transform to include validation and error conditions
 // Execution of this function sets the error record, accessible via MsiGetLastErrorRecord
@@ -701,16 +608,9 @@ function MsiCreateTransformSummaryInfoA(hDatabase: MSIHANDLE; hDatabaseReference
 function MsiCreateTransformSummaryInfoW(hDatabase: MSIHANDLE; hDatabaseReference: MSIHANDLE;
   szTransformFile: LPCWSTR; iErrorConditions: Integer; iValidation: Integer): UINT; stdcall;
 {$EXTERNALSYM MsiCreateTransformSummaryInfoW}
-
-{$IFDEF UNICODE}
 function MsiCreateTransformSummaryInfo(hDatabase: MSIHANDLE; hDatabaseReference: MSIHANDLE;
-  szTransformFile: LPCWSTR; iErrorConditions: Integer; iValidation: Integer): UINT; stdcall;
+  szTransformFile: LPCTSTR; iErrorConditions: Integer; iValidation: Integer): UINT; stdcall;
 {$EXTERNALSYM MsiCreateTransformSummaryInfo}
-{$ELSE}
-function MsiCreateTransformSummaryInfo(hDatabase: MSIHANDLE; hDatabaseReference: MSIHANDLE;
-  szTransformFile: LPCSTR; iErrorConditions: Integer; iValidation: Integer): UINT; stdcall;
-{$EXTERNALSYM MsiCreateTransformSummaryInfo}
-{$ENDIF}
 
 // Write out all persistent table data, ignored if database opened read-only
 // Execution of this function sets the error record, accessible via MsiGetLastErrorRecord
@@ -765,14 +665,8 @@ function MsiRecordSetStringA(hRecord: MSIHANDLE; iField: UINT; szValue: LPCSTR):
 {$EXTERNALSYM MsiRecordSetStringA}
 function MsiRecordSetStringW(hRecord: MSIHANDLE; iField: UINT; szValue: LPCWSTR): UINT; stdcall;
 {$EXTERNALSYM MsiRecordSetStringW}
-
-{$IFDEF UNICODE}
-function MsiRecordSetString(hRecord: MSIHANDLE; iField: UINT; szValue: LPCWSTR): UINT; stdcall;
+function MsiRecordSetString(hRecord: MSIHANDLE; iField: UINT; szValue: LPCTSTR): UINT; stdcall;
 {$EXTERNALSYM MsiRecordSetString}
-{$ELSE}
-function MsiRecordSetString(hRecord: MSIHANDLE; iField: UINT; szValue: LPCSTR): UINT; stdcall;
-{$EXTERNALSYM MsiRecordSetString}
-{$ENDIF}
 
 // Return the integer value from a record field
 // Returns the value MSI_NULL_INTEGER if the field is null
@@ -794,16 +688,9 @@ function MsiRecordGetStringA(hRecord: MSIHANDLE; iField: UINT; szValueBuf: LPSTR
 function MsiRecordGetStringW(hRecord: MSIHANDLE; iField: UINT; szValueBuf: LPWSTR;
   var pcchValueBuf: DWORD): UINT; stdcall;
 {$EXTERNALSYM MsiRecordGetStringW}
-
-{$IFDEF UNICODE}
-function MsiRecordGetString(hRecord: MSIHANDLE; iField: UINT; szValueBuf: LPWSTR;
+function MsiRecordGetString(hRecord: MSIHANDLE; iField: UINT; szValueBuf: LPTSTR;
   var pcchValueBuf: DWORD): UINT; stdcall;
 {$EXTERNALSYM MsiRecordGetString}
-{$ELSE}
-function MsiRecordGetString(hRecord: MSIHANDLE; iField: UINT; szValueBuf: LPSTR;
-  var pcchValueBuf: DWORD): UINT; stdcall;
-{$EXTERNALSYM MsiRecordGetString}
-{$ENDIF}
 
 // Returns the number of fields allocated in the record
 // Does not count field 0, used for formatting and op codes
@@ -820,14 +707,8 @@ function MsiRecordSetStreamA(hRecord: MSIHANDLE; iField: UINT; szFilePath: LPCST
 {$EXTERNALSYM MsiRecordSetStreamA}
 function MsiRecordSetStreamW(hRecord: MSIHANDLE; iField: UINT; szFilePath: LPCWSTR): UINT; stdcall;
 {$EXTERNALSYM MsiRecordSetStreamW}
-
-{$IFDEF UNICODE}
-function MsiRecordSetStream(hRecord: MSIHANDLE; iField: UINT; szFilePath: LPCWSTR): UINT; stdcall;
+function MsiRecordSetStream(hRecord: MSIHANDLE; iField: UINT; szFilePath: LPCTSTR): UINT; stdcall;
 {$EXTERNALSYM MsiRecordSetStream}
-{$ELSE}
-function MsiRecordSetStream(hRecord: MSIHANDLE; iField: UINT; szFilePath: LPCSTR): UINT; stdcall;
-{$EXTERNALSYM MsiRecordSetStream}
-{$ENDIF}
 
 // Read bytes from a record stream field into a buffer
 // Must set the in/out argument to the requested byte count to read
@@ -862,14 +743,8 @@ function MsiSetPropertyA(hInstall: MSIHANDLE; szName: LPCSTR; szValue: LPCSTR): 
 {$EXTERNALSYM MsiSetPropertyA}
 function MsiSetPropertyW(hInstall: MSIHANDLE; szName: LPCWSTR; szValue: LPCWSTR): UINT; stdcall;
 {$EXTERNALSYM MsiSetPropertyW}
-
-{$IFDEF UNICODE}
-function MsiSetProperty(hInstall: MSIHANDLE; szName: LPCWSTR; szValue: LPCWSTR): UINT; stdcall;
+function MsiSetProperty(hInstall: MSIHANDLE; szName: LPCTSTR; szValue: LPCTSTR): UINT; stdcall;
 {$EXTERNALSYM MsiSetProperty}
-{$ELSE}
-function MsiSetProperty(hInstall: MSIHANDLE; szName: LPCSTR; szValue: LPCSTR): UINT; stdcall;
-{$EXTERNALSYM MsiSetProperty}
-{$ENDIF}
 
 // Get the value for an installer property
 // If the property is not defined, it is equivalent to a 0-length value, not error
@@ -881,16 +756,9 @@ function MsiGetPropertyA(hInstall: MSIHANDLE; szName: LPCSTR; szValueBuf: LPSTR;
 function MsiGetPropertyW(hInstall: MSIHANDLE; szName: LPCWSTR; szValueBuf: LPWSTR;
   var pcchValueBuf: DWORD): UINT; stdcall;
 {$EXTERNALSYM MsiGetPropertyW}
-
-{$IFDEF UNICODE}
-function MsiGetProperty(hInstall: MSIHANDLE; szName: LPCWSTR; szValueBuf: LPWSTR;
+function MsiGetProperty(hInstall: MSIHANDLE; szName: LPCTSTR; szValueBuf: LPTSTR;
   var pcchValueBuf: DWORD): UINT; stdcall;
 {$EXTERNALSYM MsiGetProperty}
-{$ELSE}
-function MsiGetProperty(hInstall: MSIHANDLE; szName: LPCSTR; szValueBuf: LPSTR;
-  var pcchValueBuf: DWORD): UINT; stdcall;
-{$EXTERNALSYM MsiGetProperty}
-{$ENDIF}
 
 // Return the numeric language for the currently running install
 // Returns 0 if an install not running
@@ -922,16 +790,9 @@ function MsiFormatRecordA(hInstall: MSIHANDLE; hRecord: MSIHANDLE; szResultBuf: 
 function MsiFormatRecordW(hInstall: MSIHANDLE; hRecord: MSIHANDLE; szResultBuf: LPWSTR;
   var pcchResultBuf: DWORD): UINT; stdcall;
 {$EXTERNALSYM MsiFormatRecordW}
-
-{$IFDEF UNICODE}
-function MsiFormatRecord(hInstall: MSIHANDLE; hRecord: MSIHANDLE; szResultBuf: LPWSTR;
+function MsiFormatRecord(hInstall: MSIHANDLE; hRecord: MSIHANDLE; szResultBuf: LPTSTR;
   var pcchResultBuf: DWORD): UINT; stdcall;
 {$EXTERNALSYM MsiFormatRecord}
-{$ELSE}
-function MsiFormatRecord(hInstall: MSIHANDLE; hRecord: MSIHANDLE; szResultBuf: LPSTR;
-  var pcchResultBuf: DWORD): UINT; stdcall;
-{$EXTERNALSYM MsiFormatRecord}
-{$ENDIF}
 
 // Execute another action, either built-in, custom, or UI wizard
 // Returns ERROR_FUNCTION_NOT_CALLED if action not found
@@ -948,14 +809,8 @@ function MsiDoActionA(hInstall: MSIHANDLE; szAction: LPCSTR): UINT; stdcall;
 {$EXTERNALSYM MsiDoActionA}
 function MsiDoActionW(hInstall: MSIHANDLE; szAction: LPCWSTR): UINT; stdcall;
 {$EXTERNALSYM MsiDoActionW}
-
-{$IFDEF UNICODE}
-function MsiDoAction(hInstall: MSIHANDLE; szAction: LPCWSTR): UINT; stdcall;
+function MsiDoAction(hInstall: MSIHANDLE; szAction: LPCTSTR): UINT; stdcall;
 {$EXTERNALSYM MsiDoAction}
-{$ELSE}
-function MsiDoAction(hInstall: MSIHANDLE; szAction: LPCSTR): UINT; stdcall;
-{$EXTERNALSYM MsiDoAction}
-{$ENDIF}
 
 // Execute another action sequence, as descibed in the specified table
 // Returns the same error codes as MsiDoAction
@@ -964,14 +819,8 @@ function MsiSequenceA(hInstall: MSIHANDLE; szTable: LPCSTR; iSequenceMode: Integ
 {$EXTERNALSYM MsiSequenceA}
 function MsiSequenceW(hInstall: MSIHANDLE; szTable: LPCWSTR; iSequenceMode: Integer): UINT; stdcall;
 {$EXTERNALSYM MsiSequenceW}
-
-{$IFDEF UNICODE}
-function MsiSequence(hInstall: MSIHANDLE; szTable: LPCWSTR; iSequenceMode: Integer): UINT; stdcall;
+function MsiSequence(hInstall: MSIHANDLE; szTable: LPCTSTR; iSequenceMode: Integer): UINT; stdcall;
 {$EXTERNALSYM MsiSequence}
-{$ELSE}
-function MsiSequence(hInstall: MSIHANDLE; szTable: LPCSTR; iSequenceMode: Integer): UINT; stdcall;
-{$EXTERNALSYM MsiSequence}
-{$ENDIF}
 
 // Send an error record to the installer for processing.
 // If field 0 (template) is not set, field 1 must be set to the error code,
@@ -991,14 +840,8 @@ function MsiEvaluateConditionA(hInstall: MSIHANDLE; szCondition: LPCSTR): MSICON
 {$EXTERNALSYM MsiEvaluateConditionA}
 function MsiEvaluateConditionW(hInstall: MSIHANDLE; szCondition: LPCWSTR): MSICONDITION; stdcall;
 {$EXTERNALSYM MsiEvaluateConditionW}
-
-{$IFDEF UNICODE}
-function MsiEvaluateCondition(hInstall: MSIHANDLE; szCondition: LPCWSTR): MSICONDITION; stdcall;
+function MsiEvaluateCondition(hInstall: MSIHANDLE; szCondition: LPCTSTR): MSICONDITION; stdcall;
 {$EXTERNALSYM MsiEvaluateCondition}
-{$ELSE}
-function MsiEvaluateCondition(hInstall: MSIHANDLE; szCondition: LPCSTR): MSICONDITION; stdcall;
-{$EXTERNALSYM MsiEvaluateCondition}
-{$ENDIF}
 
 // Get the installed state and requested action state of a feature
 // Execution of this function sets the error record, accessible via MsiGetLastErrorRecord
@@ -1009,16 +852,9 @@ function MsiGetFeatureStateA(hInstall: MSIHANDLE; szFeature: LPCSTR;
 function MsiGetFeatureStateW(hInstall: MSIHANDLE; szFeature: LPCWSTR;
   var piInstalled: INSTALLSTATE; var piAction: INSTALLSTATE): UINT; stdcall;
 {$EXTERNALSYM MsiGetFeatureStateW}
-
-{$IFDEF UNICODE}
-function MsiGetFeatureState(hInstall: MSIHANDLE; szFeature: LPCWSTR;
+function MsiGetFeatureState(hInstall: MSIHANDLE; szFeature: LPCTSTR;
   var piInstalled: INSTALLSTATE; var piAction: INSTALLSTATE): UINT; stdcall;
 {$EXTERNALSYM MsiGetFeatureState}
-{$ELSE}
-function MsiGetFeatureState(hInstall: MSIHANDLE; szFeature: LPCSTR;
-  var piInstalled: INSTALLSTATE; var piAction: INSTALLSTATE): UINT; stdcall;
-{$EXTERNALSYM MsiGetFeatureState}
-{$ENDIF}
 
 // Request a feature to be set to a specified state
 // Execution of this function sets the error record, accessible via MsiGetLastErrorRecord
@@ -1029,16 +865,9 @@ function MsiSetFeatureStateA(hInstall: MSIHANDLE; szFeature: LPCSTR;
 function MsiSetFeatureStateW(hInstall: MSIHANDLE; szFeature: LPCWSTR;
   iState: INSTALLSTATE): UINT; stdcall;
 {$EXTERNALSYM MsiSetFeatureStateW}
-
-{$IFDEF UNICODE}
-function MsiSetFeatureState(hInstall: MSIHANDLE; szFeature: LPCWSTR;
+function MsiSetFeatureState(hInstall: MSIHANDLE; szFeature: LPCTSTR;
   iState: INSTALLSTATE): UINT; stdcall;
 {$EXTERNALSYM MsiSetFeatureState}
-{$ELSE}
-function MsiSetFeatureState(hInstall: MSIHANDLE; szFeature: LPCSTR;
-  iState: INSTALLSTATE): UINT; stdcall;
-{$EXTERNALSYM MsiSetFeatureState}
-{$ENDIF}
 
 // Set the attribute bits of a specified feature at runtime.
 // Execution of this function sets the error record, accessible via MsiGetLastErrorRecord
@@ -1049,16 +878,9 @@ function MsiSetFeatureAttributesA(hInstall: MSIHANDLE; szFeature: LPCSTR;
 function MsiSetFeatureAttributesW(hInstall: MSIHANDLE; szFeature: LPCWSTR;
   dwAttributes: DWORD): UINT; stdcall;
 {$EXTERNALSYM MsiSetFeatureAttributesW}
-
-{$IFDEF UNICODE}
-function MsiSetFeatureAttributes(hInstall: MSIHANDLE; szFeature: LPCWSTR;
+function MsiSetFeatureAttributes(hInstall: MSIHANDLE; szFeature: LPCTSTR;
   dwAttributes: DWORD): UINT; stdcall;
 {$EXTERNALSYM MsiSetFeatureAttributes}
-{$ELSE}
-function MsiSetFeatureAttributes(hInstall: MSIHANDLE; szFeature: LPCSTR;
-  dwAttributes: DWORD): UINT; stdcall;
-{$EXTERNALSYM MsiSetFeatureAttributes}
-{$ENDIF}
 
 // Get the installed state and requested action state of a component
 // Execution of this function sets the error record, accessible via MsiGetLastErrorRecord
@@ -1069,16 +891,9 @@ function MsiGetComponentStateA(hInstall: MSIHANDLE; szComponent: LPCSTR;
 function MsiGetComponentStateW(hInstall: MSIHANDLE; szComponent: LPCWSTR;
   var piInstalled: INSTALLSTATE; var piAction: INSTALLSTATE): UINT; stdcall;
 {$EXTERNALSYM MsiGetComponentStateW}
-
-{$IFDEF UNICODE}
-function MsiGetComponentState(hInstall: MSIHANDLE; szComponent: LPCWSTR;
+function MsiGetComponentState(hInstall: MSIHANDLE; szComponent: LPCTSTR;
   var piInstalled: INSTALLSTATE; var piAction: INSTALLSTATE): UINT; stdcall;
 {$EXTERNALSYM MsiGetComponentState}
-{$ELSE}
-function MsiGetComponentState(hInstall: MSIHANDLE; szComponent: LPCSTR;
-  var piInstalled: INSTALLSTATE; var piAction: INSTALLSTATE): UINT; stdcall;
-{$EXTERNALSYM MsiGetComponentState}
-{$ENDIF}
 
 // Request a component to be set to a specified state
 // Execution of this function sets the error record, accessible via MsiGetLastErrorRecord
@@ -1089,16 +904,9 @@ function MsiSetComponentStateA(hInstall: MSIHANDLE; szComponent: LPCSTR;
 function MsiSetComponentStateW(hInstall: MSIHANDLE; szComponent: LPCWSTR;
   iState: INSTALLSTATE): UINT; stdcall;
 {$EXTERNALSYM MsiSetComponentStateW}
-
-{$IFDEF UNICODE}
-function MsiSetComponentState(hInstall: MSIHANDLE; szComponent: LPCWSTR;
+function MsiSetComponentState(hInstall: MSIHANDLE; szComponent: LPCTSTR;
   iState: INSTALLSTATE): UINT; stdcall;
 {$EXTERNALSYM MsiSetComponentState}
-{$ELSE}
-function MsiSetComponentState(hInstall: MSIHANDLE; szComponent: LPCSTR;
-  iState: INSTALLSTATE): UINT; stdcall;
-{$EXTERNALSYM MsiSetComponentState}
-{$ENDIF}
 
 // Return the disk cost for a feature and related features
 // Can specify either current feature state or proposed state
@@ -1113,16 +921,9 @@ function MsiGetFeatureCostA(hInstall: MSIHANDLE; szFeature: LPCSTR;
 function MsiGetFeatureCostW(hInstall: MSIHANDLE; szFeature: LPCWSTR;
   iCostTree: MSICOSTTREE; iState: INSTALLSTATE; var piCost: Integer): UINT; stdcall;
 {$EXTERNALSYM MsiGetFeatureCostW}
-
-{$IFDEF UNICODE}
-function MsiGetFeatureCost(hInstall: MSIHANDLE; szFeature: LPCWSTR;
+function MsiGetFeatureCost(hInstall: MSIHANDLE; szFeature: LPCTSTR;
   iCostTree: MSICOSTTREE; iState: INSTALLSTATE; var piCost: Integer): UINT; stdcall;
 {$EXTERNALSYM MsiGetFeatureCost}
-{$ELSE}
-function MsiGetFeatureCost(hInstall: MSIHANDLE; szFeature: LPCSTR;
-  iCostTree: MSICOSTTREE; iState: INSTALLSTATE; var piCost: Integer): UINT; stdcall;
-{$EXTERNALSYM MsiGetFeatureCost}
-{$ENDIF}
 
 // Enumerates the costs and temporary costs per drives for
 // szComponent. If szComponent is set to NULL, it enumerates
@@ -1142,16 +943,9 @@ function MsiEnumComponentCostsA(hInstall: MSIHANDLE; szComponent: LPCSTR; dwInde
 function MsiEnumComponentCostsW(hInstall: MSIHANDLE; szComponent: LPCWSTR; dwIndex: DWORD; iState: INSTALLSTATE;
   szDriveBuf: LPWSTR; var pcchDriveBuf: DWORD; var piCost: INT; var piTempCost: INT): UINT; stdcall;
 {$EXTERNALSYM MsiEnumComponentCostsW}
-
-{$IFDEF UNICODE}
-function MsiEnumComponentCosts(hInstall: MSIHANDLE; szComponent: LPCWSTR; dwIndex: DWORD; iState: INSTALLSTATE;
-  szDriveBuf: LPWSTR; var pcchDriveBuf: DWORD; var piCost: INT; var piTempCost: INT): UINT; stdcall;
+function MsiEnumComponentCosts(hInstall: MSIHANDLE; szComponent: LPCTSTR; dwIndex: DWORD; iState: INSTALLSTATE;
+  szDriveBuf: LPTSTR; var pcchDriveBuf: DWORD; var piCost: INT; var piTempCost: INT): UINT; stdcall;
 {$EXTERNALSYM MsiEnumComponentCosts}
-{$ELSE}
-function MsiEnumComponentCosts(hInstall: MSIHANDLE; szComponent: LPCSTR; dwIndex: DWORD; iState: INSTALLSTATE;
-  szDriveBuf: LPSTR; var pcchDriveBuf: DWORD; var piCost: INT; piTempCost: INT): UINT; stdcall;
-{$EXTERNALSYM MsiEnumComponentCosts}
-{$ENDIF}
 
 // Set the install level for a full product installation (not a feature request)
 // Setting the value to 0 initialized components and features to the default level
@@ -1170,16 +964,9 @@ function MsiGetFeatureValidStatesA(hInstall: MSIHANDLE; szFeature: LPCSTR;
 function MsiGetFeatureValidStatesW(hInstall: MSIHANDLE; szFeature: LPCWSTR;
   var dwInstallStates: DWORD): UINT; stdcall;
 {$EXTERNALSYM MsiGetFeatureValidStatesW}
-
-{$IFDEF UNICODE}
-function MsiGetFeatureValidStates(hInstall: MSIHANDLE; szFeature: LPCWSTR;
+function MsiGetFeatureValidStates(hInstall: MSIHANDLE; szFeature: LPCTSTR;
   var dwInstallStates: DWORD): UINT; stdcall;
 {$EXTERNALSYM MsiGetFeatureValidStates}
-{$ELSE}
-function MsiGetFeatureValidStates(hInstall: MSIHANDLE; szFeature: LPCSTR;
-  var dwInstallStates: DWORD): UINT; stdcall;
-{$EXTERNALSYM MsiGetFeatureValidStates}
-{$ENDIF}
 
 // Return the full source path for a folder in the Directory table
 // Execution of this function sets the error record, accessible via MsiGetLastErrorRecord
@@ -1190,16 +977,9 @@ function MsiGetSourcePathA(hInstall: MSIHANDLE; szFolder: LPCSTR; szPathBuf: LPS
 function MsiGetSourcePathW(hInstall: MSIHANDLE; szFolder: LPCWSTR; szPathBuf: LPWSTR;
   var pcchPathBuf: DWORD): UINT; stdcall;
 {$EXTERNALSYM MsiGetSourcePathW}
-
-{$IFDEF UNICODE}
-function MsiGetSourcePath(hInstall: MSIHANDLE; szFolder: LPCWSTR; szPathBuf: LPWSTR;
+function MsiGetSourcePath(hInstall: MSIHANDLE; szFolder: LPCTSTR; szPathBuf: LPTSTR;
   var pcchPathBuf: DWORD): UINT; stdcall;
 {$EXTERNALSYM MsiGetSourcePath}
-{$ELSE}
-function MsiGetSourcePath(hInstall: MSIHANDLE; szFolder: LPCSTR; szPathBuf: LPSTR;
-  var pcchPathBuf: DWORD): UINT; stdcall;
-{$EXTERNALSYM MsiGetSourcePath}
-{$ENDIF}
 
 // Return the full target path for a folder in the Directory table
 // Execution of this function sets the error record, accessible via MsiGetLastErrorRecord
@@ -1210,16 +990,9 @@ function MsiGetTargetPathA(hInstall: MSIHANDLE; szFolder: LPCSTR;
 function MsiGetTargetPathW(hInstall: MSIHANDLE; szFolder: LPCWSTR;
   szPathBuf: LPWSTR; var pcchPathBuf: DWORD): UINT; stdcall;
 {$EXTERNALSYM MsiGetTargetPathW}
-
-{$IFDEF UNICODE}
-function MsiGetTargetPath(hInstall: MSIHANDLE; szFolder: LPCWSTR;
-  szPathBuf: LPWSTR; var pcchPathBuf: DWORD): UINT; stdcall;
+function MsiGetTargetPath(hInstall: MSIHANDLE; szFolder: LPCTSTR;
+  szPathBuf: LPTSTR; var pcchPathBuf: DWORD): UINT; stdcall;
 {$EXTERNALSYM MsiGetTargetPath}
-{$ELSE}
-function MsiGetTargetPath(hInstall: MSIHANDLE; szFolder: LPCSTR;
-  szPathBuf: LPSTR; var pcchPathBuf: DWORD): UINT; stdcall;
-{$EXTERNALSYM MsiGetTargetPath}
-{$ENDIF}
 
 // Set the full target path for a folder in the Directory table
 // Execution of this function sets the error record, accessible via MsiGetLastErrorRecord
@@ -1230,16 +1003,9 @@ function MsiSetTargetPathA(hInstall: MSIHANDLE; szFolder: LPCSTR;
 function MsiSetTargetPathW(hInstall: MSIHANDLE; szFolder: LPCWSTR;
   szFolderPath: LPCWSTR): UINT; stdcall;
 {$EXTERNALSYM MsiSetTargetPathW}
-
-{$IFDEF UNICODE}
-function MsiSetTargetPath(hInstall: MSIHANDLE; szFolder: LPCWSTR;
-  szFolderPath: LPCWSTR): UINT; stdcall;
+function MsiSetTargetPath(hInstall: MSIHANDLE; szFolder: LPCTSTR;
+  szFolderPath: LPCTSTR): UINT; stdcall;
 {$EXTERNALSYM MsiSetTargetPath}
-{$ELSE}
-function MsiSetTargetPath(hInstall: MSIHANDLE; szFolder: LPCSTR;
-  szFolderPath: LPCSTR): UINT; stdcall;
-{$EXTERNALSYM MsiSetTargetPath}
-{$ENDIF}
 
 // Check to see if sufficent disk space is present for the current installation
 // Returns ERROR_SUCCESS, ERROR_DISK_FULL, ERROR_INVALID_HANDLE_STATE, or ERROR_INVALID_HANDLE
@@ -1265,14 +1031,8 @@ function MsiPreviewDialogA(hPreview: MSIHANDLE; szDialogName: LPCSTR): UINT; std
 {$EXTERNALSYM MsiPreviewDialogA}
 function MsiPreviewDialogW(hPreview: MSIHANDLE; szDialogName: LPCWSTR): UINT; stdcall;
 {$EXTERNALSYM MsiPreviewDialogW}
-
-{$IFDEF UNICODE}
-function MsiPreviewDialog(hPreview: MSIHANDLE; szDialogName: LPCWSTR): UINT; stdcall;
+function MsiPreviewDialog(hPreview: MSIHANDLE; szDialogName: LPCTSTR): UINT; stdcall;
 {$EXTERNALSYM MsiPreviewDialog}
-{$ELSE}
-function MsiPreviewDialog(hPreview: MSIHANDLE; szDialogName: LPCSTR): UINT; stdcall;
-{$EXTERNALSYM MsiPreviewDialog}
-{$ENDIF}
 
 // Display a billboard within a host control in the displayed dialog.
 // Supplying a null billboard name will remove any billboard displayed.
@@ -1283,16 +1043,9 @@ function MsiPreviewBillboardA(hPreview: MSIHANDLE; szControlName: LPCSTR;
 function MsiPreviewBillboardW(hPreview: MSIHANDLE; szControlName: LPCWSTR;
   szBillboard: LPCWSTR): UINT; stdcall;
 {$EXTERNALSYM MsiPreviewBillboardW}
-
-{$IFDEF UNICODE}
-function MsiPreviewBillboard(hPreview: MSIHANDLE; szControlName: LPCWSTR;
-  szBillboard: LPCWSTR): UINT; stdcall;
+function MsiPreviewBillboard(hPreview: MSIHANDLE; szControlName: LPCTSTR;
+  szBillboard: LPCTSTR): UINT; stdcall;
 {$EXTERNALSYM MsiPreviewBillboard}
-{$ELSE}
-function MsiPreviewBillboard(hPreview: MSIHANDLE; szControlName: LPCSTR;
-  szBillboard: LPCSTR): UINT; stdcall;
-{$EXTERNALSYM MsiPreviewBillboard}
-{$ENDIF}
 
 // --------------------------------------------------------------------------
 // Error handling not associated with any particular object
@@ -1309,11 +1062,11 @@ function MsiGetLastErrorRecord: MSIHANDLE; stdcall;
 
 implementation
 
-const
-  msilib = 'msi.dll';
-
+uses
+  JwaWinDLLNames;
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _MsiDatabaseOpenViewA: Pointer;
 
@@ -1321,16 +1074,12 @@ function MsiDatabaseOpenViewA;
 begin
   GetProcedureAddress(_MsiDatabaseOpenViewA, msilib, 'MsiDatabaseOpenViewA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiDatabaseOpenViewA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiDatabaseOpenViewA]
   end;
 end;
-{$ELSE}
-function MsiDatabaseOpenViewA; external msilib name 'MsiDatabaseOpenViewA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiDatabaseOpenViewW: Pointer;
 
@@ -1338,53 +1087,25 @@ function MsiDatabaseOpenViewW;
 begin
   GetProcedureAddress(_MsiDatabaseOpenViewW, msilib, 'MsiDatabaseOpenViewW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiDatabaseOpenViewW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiDatabaseOpenViewW]
   end;
 end;
-{$ELSE}
-function MsiDatabaseOpenViewW; external msilib name 'MsiDatabaseOpenViewW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiDatabaseOpenView: Pointer;
 
 function MsiDatabaseOpenView;
 begin
-  GetProcedureAddress(_MsiDatabaseOpenView, msilib, 'MsiDatabaseOpenViewW');
+  GetProcedureAddress(_MsiDatabaseOpenView, msilib, 'MsiDatabaseOpenView' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiDatabaseOpenView]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiDatabaseOpenView]
   end;
 end;
-{$ELSE}
-function MsiDatabaseOpenView; external msilib name 'MsiDatabaseOpenViewW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _MsiDatabaseOpenView: Pointer;
-
-function MsiDatabaseOpenView;
-begin
-  GetProcedureAddress(_MsiDatabaseOpenView, msilib, 'MsiDatabaseOpenViewA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiDatabaseOpenView]
-  end;
-end;
-{$ELSE}
-function MsiDatabaseOpenView; external msilib name 'MsiDatabaseOpenViewA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiViewGetErrorA: Pointer;
 
@@ -1392,16 +1113,12 @@ function MsiViewGetErrorA;
 begin
   GetProcedureAddress(_MsiViewGetErrorA, msilib, 'MsiViewGetErrorA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiViewGetErrorA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiViewGetErrorA]
   end;
 end;
-{$ELSE}
-function MsiViewGetErrorA; external msilib name 'MsiViewGetErrorA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiViewGetErrorW: Pointer;
 
@@ -1409,53 +1126,25 @@ function MsiViewGetErrorW;
 begin
   GetProcedureAddress(_MsiViewGetErrorW, msilib, 'MsiViewGetErrorW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiViewGetErrorW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiViewGetErrorW]
   end;
 end;
-{$ELSE}
-function MsiViewGetErrorW; external msilib name 'MsiViewGetErrorW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiViewGetError: Pointer;
 
 function MsiViewGetError;
 begin
-  GetProcedureAddress(_MsiViewGetError, msilib, 'MsiViewGetErrorW');
+  GetProcedureAddress(_MsiViewGetError, msilib, 'MsiViewGetError' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiViewGetError]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiViewGetError]
   end;
 end;
-{$ELSE}
-function MsiViewGetError; external msilib name 'MsiViewGetErrorW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _MsiViewGetError: Pointer;
-
-function MsiViewGetError;
-begin
-  GetProcedureAddress(_MsiViewGetError, msilib, 'MsiViewGetErrorA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiViewGetError]
-  end;
-end;
-{$ELSE}
-function MsiViewGetError; external msilib name 'MsiViewGetErrorA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiViewExecute: Pointer;
 
@@ -1463,16 +1152,12 @@ function MsiViewExecute;
 begin
   GetProcedureAddress(_MsiViewExecute, msilib, 'MsiViewExecute');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiViewExecute]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiViewExecute]
   end;
 end;
-{$ELSE}
-function MsiViewExecute; external msilib name 'MsiViewExecute';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiViewFetch: Pointer;
 
@@ -1480,16 +1165,12 @@ function MsiViewFetch;
 begin
   GetProcedureAddress(_MsiViewFetch, msilib, 'MsiViewFetch');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiViewFetch]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiViewFetch]
   end;
 end;
-{$ELSE}
-function MsiViewFetch; external msilib name 'MsiViewFetch';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiViewModify: Pointer;
 
@@ -1497,16 +1178,12 @@ function MsiViewModify;
 begin
   GetProcedureAddress(_MsiViewModify, msilib, 'MsiViewModify');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiViewModify]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiViewModify]
   end;
 end;
-{$ELSE}
-function MsiViewModify; external msilib name 'MsiViewModify';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiViewGetColumnInfo: Pointer;
 
@@ -1514,16 +1191,12 @@ function MsiViewGetColumnInfo;
 begin
   GetProcedureAddress(_MsiViewGetColumnInfo, msilib, 'MsiViewGetColumnInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiViewGetColumnInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiViewGetColumnInfo]
   end;
 end;
-{$ELSE}
-function MsiViewGetColumnInfo; external msilib name 'MsiViewGetColumnInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiViewClose: Pointer;
 
@@ -1531,16 +1204,12 @@ function MsiViewClose;
 begin
   GetProcedureAddress(_MsiViewClose, msilib, 'MsiViewClose');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiViewClose]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiViewClose]
   end;
 end;
-{$ELSE}
-function MsiViewClose; external msilib name 'MsiViewClose';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiDatabaseGetPrimaryKeysA: Pointer;
 
@@ -1548,16 +1217,12 @@ function MsiDatabaseGetPrimaryKeysA;
 begin
   GetProcedureAddress(_MsiDatabaseGetPrimaryKeysA, msilib, 'MsiDatabaseGetPrimaryKeysA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiDatabaseGetPrimaryKeysA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiDatabaseGetPrimaryKeysA]
   end;
 end;
-{$ELSE}
-function MsiDatabaseGetPrimaryKeysA; external msilib name 'MsiDatabaseGetPrimaryKeysA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiDatabaseGetPrimaryKeysW: Pointer;
 
@@ -1565,53 +1230,25 @@ function MsiDatabaseGetPrimaryKeysW;
 begin
   GetProcedureAddress(_MsiDatabaseGetPrimaryKeysW, msilib, 'MsiDatabaseGetPrimaryKeysW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiDatabaseGetPrimaryKeysW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiDatabaseGetPrimaryKeysW]
   end;
 end;
-{$ELSE}
-function MsiDatabaseGetPrimaryKeysW; external msilib name 'MsiDatabaseGetPrimaryKeysW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiDatabaseGetPrimaryKeys: Pointer;
 
 function MsiDatabaseGetPrimaryKeys;
 begin
-  GetProcedureAddress(_MsiDatabaseGetPrimaryKeys, msilib, 'MsiDatabaseGetPrimaryKeysW');
+  GetProcedureAddress(_MsiDatabaseGetPrimaryKeys, msilib, 'MsiDatabaseGetPrimaryKeys' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiDatabaseGetPrimaryKeys]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiDatabaseGetPrimaryKeys]
   end;
 end;
-{$ELSE}
-function MsiDatabaseGetPrimaryKeys; external msilib name 'MsiDatabaseGetPrimaryKeysW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _MsiDatabaseGetPrimaryKeys: Pointer;
-
-function MsiDatabaseGetPrimaryKeys;
-begin
-  GetProcedureAddress(_MsiDatabaseGetPrimaryKeys, msilib, 'MsiDatabaseGetPrimaryKeysA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiDatabaseGetPrimaryKeys]
-  end;
-end;
-{$ELSE}
-function MsiDatabaseGetPrimaryKeys; external msilib name 'MsiDatabaseGetPrimaryKeysA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiDatabaseIsTablePersistentA: Pointer;
 
@@ -1619,16 +1256,12 @@ function MsiDatabaseIsTablePersistentA;
 begin
   GetProcedureAddress(_MsiDatabaseIsTablePersistentA, msilib, 'MsiDatabaseIsTablePersistentA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiDatabaseIsTablePersistentA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiDatabaseIsTablePersistentA]
   end;
 end;
-{$ELSE}
-function MsiDatabaseIsTablePersistentA; external msilib name 'MsiDatabaseIsTablePersistentA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiDatabaseIsTablePersistentW: Pointer;
 
@@ -1636,53 +1269,25 @@ function MsiDatabaseIsTablePersistentW;
 begin
   GetProcedureAddress(_MsiDatabaseIsTablePersistentW, msilib, 'MsiDatabaseIsTablePersistentW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiDatabaseIsTablePersistentW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiDatabaseIsTablePersistentW]
   end;
 end;
-{$ELSE}
-function MsiDatabaseIsTablePersistentW; external msilib name 'MsiDatabaseIsTablePersistentW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiDatabaseIsTablePersistent: Pointer;
 
 function MsiDatabaseIsTablePersistent;
 begin
-  GetProcedureAddress(_MsiDatabaseIsTablePersistent, msilib, 'MsiDatabaseIsTablePersistentW');
+  GetProcedureAddress(_MsiDatabaseIsTablePersistent, msilib, 'MsiDatabaseIsTablePersistent' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiDatabaseIsTablePersistent]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiDatabaseIsTablePersistent]
   end;
 end;
-{$ELSE}
-function MsiDatabaseIsTablePersistent; external msilib name 'MsiDatabaseIsTablePersistentW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _MsiDatabaseIsTablePersistent: Pointer;
-
-function MsiDatabaseIsTablePersistent;
-begin
-  GetProcedureAddress(_MsiDatabaseIsTablePersistent, msilib, 'MsiDatabaseIsTablePersistentA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiDatabaseIsTablePersistent]
-  end;
-end;
-{$ELSE}
-function MsiDatabaseIsTablePersistent; external msilib name 'MsiDatabaseIsTablePersistentA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiGetSummaryInformationA: Pointer;
 
@@ -1690,16 +1295,12 @@ function MsiGetSummaryInformationA;
 begin
   GetProcedureAddress(_MsiGetSummaryInformationA, msilib, 'MsiGetSummaryInformationA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiGetSummaryInformationA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiGetSummaryInformationA]
   end;
 end;
-{$ELSE}
-function MsiGetSummaryInformationA; external msilib name 'MsiGetSummaryInformationA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiGetSummaryInformationW: Pointer;
 
@@ -1707,53 +1308,25 @@ function MsiGetSummaryInformationW;
 begin
   GetProcedureAddress(_MsiGetSummaryInformationW, msilib, 'MsiGetSummaryInformationW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiGetSummaryInformationW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiGetSummaryInformationW]
   end;
 end;
-{$ELSE}
-function MsiGetSummaryInformationW; external msilib name 'MsiGetSummaryInformationW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiGetSummaryInformation: Pointer;
 
 function MsiGetSummaryInformation;
 begin
-  GetProcedureAddress(_MsiGetSummaryInformation, msilib, 'MsiGetSummaryInformationW');
+  GetProcedureAddress(_MsiGetSummaryInformation, msilib, 'MsiGetSummaryInformation' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiGetSummaryInformation]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiGetSummaryInformation]
   end;
 end;
-{$ELSE}
-function MsiGetSummaryInformation; external msilib name 'MsiGetSummaryInformationW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _MsiGetSummaryInformation: Pointer;
-
-function MsiGetSummaryInformation;
-begin
-  GetProcedureAddress(_MsiGetSummaryInformation, msilib, 'MsiGetSummaryInformationA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiGetSummaryInformation]
-  end;
-end;
-{$ELSE}
-function MsiGetSummaryInformation; external msilib name 'MsiGetSummaryInformationA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiSummaryInfoGetPropertyCount: Pointer;
 
@@ -1761,16 +1334,12 @@ function MsiSummaryInfoGetPropertyCount;
 begin
   GetProcedureAddress(_MsiSummaryInfoGetPropertyCount, msilib, 'MsiSummaryInfoGetPropertyCount');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiSummaryInfoGetPropertyCount]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiSummaryInfoGetPropertyCount]
   end;
 end;
-{$ELSE}
-function MsiSummaryInfoGetPropertyCount; external msilib name 'MsiSummaryInfoGetPropertyCount';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiSummaryInfoSetPropertyA: Pointer;
 
@@ -1778,16 +1347,12 @@ function MsiSummaryInfoSetPropertyA;
 begin
   GetProcedureAddress(_MsiSummaryInfoSetPropertyA, msilib, 'MsiSummaryInfoSetPropertyA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiSummaryInfoSetPropertyA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiSummaryInfoSetPropertyA]
   end;
 end;
-{$ELSE}
-function MsiSummaryInfoSetPropertyA; external msilib name 'MsiSummaryInfoSetPropertyA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiSummaryInfoSetPropertyW: Pointer;
 
@@ -1795,53 +1360,25 @@ function MsiSummaryInfoSetPropertyW;
 begin
   GetProcedureAddress(_MsiSummaryInfoSetPropertyW, msilib, 'MsiSummaryInfoSetPropertyW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiSummaryInfoSetPropertyW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiSummaryInfoSetPropertyW]
   end;
 end;
-{$ELSE}
-function MsiSummaryInfoSetPropertyW; external msilib name 'MsiSummaryInfoSetPropertyW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiSummaryInfoSetProperty: Pointer;
 
 function MsiSummaryInfoSetProperty;
 begin
-  GetProcedureAddress(_MsiSummaryInfoSetProperty, msilib, 'MsiSummaryInfoSetPropertyW');
+  GetProcedureAddress(_MsiSummaryInfoSetProperty, msilib, 'MsiSummaryInfoSetProperty' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiSummaryInfoSetProperty]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiSummaryInfoSetProperty]
   end;
 end;
-{$ELSE}
-function MsiSummaryInfoSetProperty; external msilib name 'MsiSummaryInfoSetPropertyW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _MsiSummaryInfoSetProperty: Pointer;
-
-function MsiSummaryInfoSetProperty;
-begin
-  GetProcedureAddress(_MsiSummaryInfoSetProperty, msilib, 'MsiSummaryInfoSetPropertyA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiSummaryInfoSetProperty]
-  end;
-end;
-{$ELSE}
-function MsiSummaryInfoSetProperty; external msilib name 'MsiSummaryInfoSetPropertyA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiSummaryInfoGetPropertyA: Pointer;
 
@@ -1849,16 +1386,12 @@ function MsiSummaryInfoGetPropertyA;
 begin
   GetProcedureAddress(_MsiSummaryInfoGetPropertyA, msilib, 'MsiSummaryInfoGetPropertyA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiSummaryInfoGetPropertyA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiSummaryInfoGetPropertyA]
   end;
 end;
-{$ELSE}
-function MsiSummaryInfoGetPropertyA; external msilib name 'MsiSummaryInfoGetPropertyA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiSummaryInfoGetPropertyW: Pointer;
 
@@ -1866,53 +1399,25 @@ function MsiSummaryInfoGetPropertyW;
 begin
   GetProcedureAddress(_MsiSummaryInfoGetPropertyW, msilib, 'MsiSummaryInfoGetPropertyW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiSummaryInfoGetPropertyW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiSummaryInfoGetPropertyW]
   end;
 end;
-{$ELSE}
-function MsiSummaryInfoGetPropertyW; external msilib name 'MsiSummaryInfoGetPropertyW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiSummaryInfoGetProperty: Pointer;
 
 function MsiSummaryInfoGetProperty;
 begin
-  GetProcedureAddress(_MsiSummaryInfoGetProperty, msilib, 'MsiSummaryInfoGetPropertyW');
+  GetProcedureAddress(_MsiSummaryInfoGetProperty, msilib, 'MsiSummaryInfoGetProperty' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiSummaryInfoGetProperty]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiSummaryInfoGetProperty]
   end;
 end;
-{$ELSE}
-function MsiSummaryInfoGetProperty; external msilib name 'MsiSummaryInfoGetPropertyW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _MsiSummaryInfoGetProperty: Pointer;
-
-function MsiSummaryInfoGetProperty;
-begin
-  GetProcedureAddress(_MsiSummaryInfoGetProperty, msilib, 'MsiSummaryInfoGetPropertyA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiSummaryInfoGetProperty]
-  end;
-end;
-{$ELSE}
-function MsiSummaryInfoGetProperty; external msilib name 'MsiSummaryInfoGetPropertyA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiSummaryInfoPersist: Pointer;
 
@@ -1920,16 +1425,12 @@ function MsiSummaryInfoPersist;
 begin
   GetProcedureAddress(_MsiSummaryInfoPersist, msilib, 'MsiSummaryInfoPersist');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiSummaryInfoPersist]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiSummaryInfoPersist]
   end;
 end;
-{$ELSE}
-function MsiSummaryInfoPersist; external msilib name 'MsiSummaryInfoPersist';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiOpenDatabaseA: Pointer;
 
@@ -1937,16 +1438,12 @@ function MsiOpenDatabaseA;
 begin
   GetProcedureAddress(_MsiOpenDatabaseA, msilib, 'MsiOpenDatabaseA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiOpenDatabaseA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiOpenDatabaseA]
   end;
 end;
-{$ELSE}
-function MsiOpenDatabaseA; external msilib name 'MsiOpenDatabaseA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiOpenDatabaseW: Pointer;
 
@@ -1954,53 +1451,25 @@ function MsiOpenDatabaseW;
 begin
   GetProcedureAddress(_MsiOpenDatabaseW, msilib, 'MsiOpenDatabaseW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiOpenDatabaseW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiOpenDatabaseW]
   end;
 end;
-{$ELSE}
-function MsiOpenDatabaseW; external msilib name 'MsiOpenDatabaseW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiOpenDatabase: Pointer;
 
 function MsiOpenDatabase;
 begin
-  GetProcedureAddress(_MsiOpenDatabase, msilib, 'MsiOpenDatabaseW');
+  GetProcedureAddress(_MsiOpenDatabase, msilib, 'MsiOpenDatabase' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiOpenDatabase]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiOpenDatabase]
   end;
 end;
-{$ELSE}
-function MsiOpenDatabase; external msilib name 'MsiOpenDatabaseW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _MsiOpenDatabase: Pointer;
-
-function MsiOpenDatabase;
-begin
-  GetProcedureAddress(_MsiOpenDatabase, msilib, 'MsiOpenDatabaseA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiOpenDatabase]
-  end;
-end;
-{$ELSE}
-function MsiOpenDatabase; external msilib name 'MsiOpenDatabaseA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiDatabaseImportA: Pointer;
 
@@ -2008,16 +1477,12 @@ function MsiDatabaseImportA;
 begin
   GetProcedureAddress(_MsiDatabaseImportA, msilib, 'MsiDatabaseImportA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiDatabaseImportA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiDatabaseImportA]
   end;
 end;
-{$ELSE}
-function MsiDatabaseImportA; external msilib name 'MsiDatabaseImportA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiDatabaseImportW: Pointer;
 
@@ -2025,53 +1490,25 @@ function MsiDatabaseImportW;
 begin
   GetProcedureAddress(_MsiDatabaseImportW, msilib, 'MsiDatabaseImportW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiDatabaseImportW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiDatabaseImportW]
   end;
 end;
-{$ELSE}
-function MsiDatabaseImportW; external msilib name 'MsiDatabaseImportW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiDatabaseImport: Pointer;
 
 function MsiDatabaseImport;
 begin
-  GetProcedureAddress(_MsiDatabaseImport, msilib, 'MsiDatabaseImportW');
+  GetProcedureAddress(_MsiDatabaseImport, msilib, 'MsiDatabaseImport' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiDatabaseImport]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiDatabaseImport]
   end;
 end;
-{$ELSE}
-function MsiDatabaseImport; external msilib name 'MsiDatabaseImportW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _MsiDatabaseImport: Pointer;
-
-function MsiDatabaseImport;
-begin
-  GetProcedureAddress(_MsiDatabaseImport, msilib, 'MsiDatabaseImportA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiDatabaseImport]
-  end;
-end;
-{$ELSE}
-function MsiDatabaseImport; external msilib name 'MsiDatabaseImportA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiDatabaseExportA: Pointer;
 
@@ -2079,16 +1516,12 @@ function MsiDatabaseExportA;
 begin
   GetProcedureAddress(_MsiDatabaseExportA, msilib, 'MsiDatabaseExportA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiDatabaseExportA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiDatabaseExportA]
   end;
 end;
-{$ELSE}
-function MsiDatabaseExportA; external msilib name 'MsiDatabaseExportA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiDatabaseExportW: Pointer;
 
@@ -2096,53 +1529,25 @@ function MsiDatabaseExportW;
 begin
   GetProcedureAddress(_MsiDatabaseExportW, msilib, 'MsiDatabaseExportW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiDatabaseExportW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiDatabaseExportW]
   end;
 end;
-{$ELSE}
-function MsiDatabaseExportW; external msilib name 'MsiDatabaseExportW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiDatabaseExport: Pointer;
 
 function MsiDatabaseExport;
 begin
-  GetProcedureAddress(_MsiDatabaseExport, msilib, 'MsiDatabaseExportW');
+  GetProcedureAddress(_MsiDatabaseExport, msilib, 'MsiDatabaseExport' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiDatabaseExport]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiDatabaseExport]
   end;
 end;
-{$ELSE}
-function MsiDatabaseExport; external msilib name 'MsiDatabaseExportW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _MsiDatabaseExport: Pointer;
-
-function MsiDatabaseExport;
-begin
-  GetProcedureAddress(_MsiDatabaseExport, msilib, 'MsiDatabaseExportA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiDatabaseExport]
-  end;
-end;
-{$ELSE}
-function MsiDatabaseExport; external msilib name 'MsiDatabaseExportA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiDatabaseMergeA: Pointer;
 
@@ -2150,16 +1555,12 @@ function MsiDatabaseMergeA;
 begin
   GetProcedureAddress(_MsiDatabaseMergeA, msilib, 'MsiDatabaseMergeA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiDatabaseMergeA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiDatabaseMergeA]
   end;
 end;
-{$ELSE}
-function MsiDatabaseMergeA; external msilib name 'MsiDatabaseMergeA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiDatabaseMergeW: Pointer;
 
@@ -2167,53 +1568,25 @@ function MsiDatabaseMergeW;
 begin
   GetProcedureAddress(_MsiDatabaseMergeW, msilib, 'MsiDatabaseMergeW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiDatabaseMergeW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiDatabaseMergeW]
   end;
 end;
-{$ELSE}
-function MsiDatabaseMergeW; external msilib name 'MsiDatabaseMergeW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiDatabaseMerge: Pointer;
 
 function MsiDatabaseMerge;
 begin
-  GetProcedureAddress(_MsiDatabaseMerge, msilib, 'MsiDatabaseMergeW');
+  GetProcedureAddress(_MsiDatabaseMerge, msilib, 'MsiDatabaseMerge' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiDatabaseMerge]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiDatabaseMerge]
   end;
 end;
-{$ELSE}
-function MsiDatabaseMerge; external msilib name 'MsiDatabaseMergeW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _MsiDatabaseMerge: Pointer;
-
-function MsiDatabaseMerge;
-begin
-  GetProcedureAddress(_MsiDatabaseMerge, msilib, 'MsiDatabaseMergeA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiDatabaseMerge]
-  end;
-end;
-{$ELSE}
-function MsiDatabaseMerge; external msilib name 'MsiDatabaseMergeA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiDatabaseGenerateTransformA: Pointer;
 
@@ -2221,16 +1594,12 @@ function MsiDatabaseGenerateTransformA;
 begin
   GetProcedureAddress(_MsiDatabaseGenerateTransformA, msilib, 'MsiDatabaseGenerateTransformA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiDatabaseGenerateTransformA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiDatabaseGenerateTransformA]
   end;
 end;
-{$ELSE}
-function MsiDatabaseGenerateTransformA; external msilib name 'MsiDatabaseGenerateTransformA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiDatabaseGenerateTransformW: Pointer;
 
@@ -2238,53 +1607,25 @@ function MsiDatabaseGenerateTransformW;
 begin
   GetProcedureAddress(_MsiDatabaseGenerateTransformW, msilib, 'MsiDatabaseGenerateTransformW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiDatabaseGenerateTransformW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiDatabaseGenerateTransformW]
   end;
 end;
-{$ELSE}
-function MsiDatabaseGenerateTransformW; external msilib name 'MsiDatabaseGenerateTransformW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiDatabaseGenerateTransform: Pointer;
 
 function MsiDatabaseGenerateTransform;
 begin
-  GetProcedureAddress(_MsiDatabaseGenerateTransform, msilib, 'MsiDatabaseGenerateTransformW');
+  GetProcedureAddress(_MsiDatabaseGenerateTransform, msilib, 'MsiDatabaseGenerateTransform' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiDatabaseGenerateTransform]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiDatabaseGenerateTransform]
   end;
 end;
-{$ELSE}
-function MsiDatabaseGenerateTransform; external msilib name 'MsiDatabaseGenerateTransformW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _MsiDatabaseGenerateTransform: Pointer;
-
-function MsiDatabaseGenerateTransform;
-begin
-  GetProcedureAddress(_MsiDatabaseGenerateTransform, msilib, 'MsiDatabaseGenerateTransformA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiDatabaseGenerateTransform]
-  end;
-end;
-{$ELSE}
-function MsiDatabaseGenerateTransform; external msilib name 'MsiDatabaseGenerateTransformA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiDatabaseApplyTransformA: Pointer;
 
@@ -2292,16 +1633,12 @@ function MsiDatabaseApplyTransformA;
 begin
   GetProcedureAddress(_MsiDatabaseApplyTransformA, msilib, 'MsiDatabaseApplyTransformA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiDatabaseApplyTransformA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiDatabaseApplyTransformA]
   end;
 end;
-{$ELSE}
-function MsiDatabaseApplyTransformA; external msilib name 'MsiDatabaseApplyTransformA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiDatabaseApplyTransformW: Pointer;
 
@@ -2309,53 +1646,25 @@ function MsiDatabaseApplyTransformW;
 begin
   GetProcedureAddress(_MsiDatabaseApplyTransformW, msilib, 'MsiDatabaseApplyTransformW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiDatabaseApplyTransformW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiDatabaseApplyTransformW]
   end;
 end;
-{$ELSE}
-function MsiDatabaseApplyTransformW; external msilib name 'MsiDatabaseApplyTransformW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiDatabaseApplyTransform: Pointer;
 
 function MsiDatabaseApplyTransform;
 begin
-  GetProcedureAddress(_MsiDatabaseApplyTransform, msilib, 'MsiDatabaseApplyTransformW');
+  GetProcedureAddress(_MsiDatabaseApplyTransform, msilib, 'MsiDatabaseApplyTransform' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiDatabaseApplyTransform]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiDatabaseApplyTransform]
   end;
 end;
-{$ELSE}
-function MsiDatabaseApplyTransform; external msilib name 'MsiDatabaseApplyTransformW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _MsiDatabaseApplyTransform: Pointer;
-
-function MsiDatabaseApplyTransform;
-begin
-  GetProcedureAddress(_MsiDatabaseApplyTransform, msilib, 'MsiDatabaseApplyTransformA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiDatabaseApplyTransform]
-  end;
-end;
-{$ELSE}
-function MsiDatabaseApplyTransform; external msilib name 'MsiDatabaseApplyTransformA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiCreateTransformSummaryInfoA: Pointer;
 
@@ -2363,16 +1672,12 @@ function MsiCreateTransformSummaryInfoA;
 begin
   GetProcedureAddress(_MsiCreateTransformSummaryInfoA, msilib, 'MsiCreateTransformSummaryInfoA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiCreateTransformSummaryInfoA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiCreateTransformSummaryInfoA]
   end;
 end;
-{$ELSE}
-function MsiCreateTransformSummaryInfoA; external msilib name 'MsiCreateTransformSummaryInfoA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiCreateTransformSummaryInfoW: Pointer;
 
@@ -2380,53 +1685,25 @@ function MsiCreateTransformSummaryInfoW;
 begin
   GetProcedureAddress(_MsiCreateTransformSummaryInfoW, msilib, 'MsiCreateTransformSummaryInfoW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiCreateTransformSummaryInfoW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiCreateTransformSummaryInfoW]
   end;
 end;
-{$ELSE}
-function MsiCreateTransformSummaryInfoW; external msilib name 'MsiCreateTransformSummaryInfoW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiCreateTransformSummaryInfo: Pointer;
 
 function MsiCreateTransformSummaryInfo;
 begin
-  GetProcedureAddress(_MsiCreateTransformSummaryInfo, msilib, 'MsiCreateTransformSummaryInfoW');
+  GetProcedureAddress(_MsiCreateTransformSummaryInfo, msilib, 'MsiCreateTransformSummaryInfo' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiCreateTransformSummaryInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiCreateTransformSummaryInfo]
   end;
 end;
-{$ELSE}
-function MsiCreateTransformSummaryInfo; external msilib name 'MsiCreateTransformSummaryInfoW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _MsiCreateTransformSummaryInfo: Pointer;
-
-function MsiCreateTransformSummaryInfo;
-begin
-  GetProcedureAddress(_MsiCreateTransformSummaryInfo, msilib, 'MsiCreateTransformSummaryInfoA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiCreateTransformSummaryInfo]
-  end;
-end;
-{$ELSE}
-function MsiCreateTransformSummaryInfo; external msilib name 'MsiCreateTransformSummaryInfoA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiDatabaseCommit: Pointer;
 
@@ -2434,16 +1711,12 @@ function MsiDatabaseCommit;
 begin
   GetProcedureAddress(_MsiDatabaseCommit, msilib, 'MsiDatabaseCommit');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiDatabaseCommit]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiDatabaseCommit]
   end;
 end;
-{$ELSE}
-function MsiDatabaseCommit; external msilib name 'MsiDatabaseCommit';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiGetDatabaseState: Pointer;
 
@@ -2451,16 +1724,12 @@ function MsiGetDatabaseState;
 begin
   GetProcedureAddress(_MsiGetDatabaseState, msilib, 'MsiGetDatabaseState');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiGetDatabaseState]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiGetDatabaseState]
   end;
 end;
-{$ELSE}
-function MsiGetDatabaseState; external msilib name 'MsiGetDatabaseState';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiCreateRecord: Pointer;
 
@@ -2468,16 +1737,12 @@ function MsiCreateRecord;
 begin
   GetProcedureAddress(_MsiCreateRecord, msilib, 'MsiCreateRecord');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiCreateRecord]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiCreateRecord]
   end;
 end;
-{$ELSE}
-function MsiCreateRecord; external msilib name 'MsiCreateRecord';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiRecordIsNull: Pointer;
 
@@ -2485,16 +1750,12 @@ function MsiRecordIsNull;
 begin
   GetProcedureAddress(_MsiRecordIsNull, msilib, 'MsiRecordIsNull');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiRecordIsNull]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiRecordIsNull]
   end;
 end;
-{$ELSE}
-function MsiRecordIsNull; external msilib name 'MsiRecordIsNull';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiRecordDataSize: Pointer;
 
@@ -2502,16 +1763,12 @@ function MsiRecordDataSize;
 begin
   GetProcedureAddress(_MsiRecordDataSize, msilib, 'MsiRecordDataSize');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiRecordDataSize]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiRecordDataSize]
   end;
 end;
-{$ELSE}
-function MsiRecordDataSize; external msilib name 'MsiRecordDataSize';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiRecordSetInteger: Pointer;
 
@@ -2519,16 +1776,12 @@ function MsiRecordSetInteger;
 begin
   GetProcedureAddress(_MsiRecordSetInteger, msilib, 'MsiRecordSetInteger');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiRecordSetInteger]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiRecordSetInteger]
   end;
 end;
-{$ELSE}
-function MsiRecordSetInteger; external msilib name 'MsiRecordSetInteger';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiRecordSetStringA: Pointer;
 
@@ -2536,16 +1789,12 @@ function MsiRecordSetStringA;
 begin
   GetProcedureAddress(_MsiRecordSetStringA, msilib, 'MsiRecordSetStringA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiRecordSetStringA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiRecordSetStringA]
   end;
 end;
-{$ELSE}
-function MsiRecordSetStringA; external msilib name 'MsiRecordSetStringA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiRecordSetStringW: Pointer;
 
@@ -2553,53 +1802,25 @@ function MsiRecordSetStringW;
 begin
   GetProcedureAddress(_MsiRecordSetStringW, msilib, 'MsiRecordSetStringW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiRecordSetStringW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiRecordSetStringW]
   end;
 end;
-{$ELSE}
-function MsiRecordSetStringW; external msilib name 'MsiRecordSetStringW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiRecordSetString: Pointer;
 
 function MsiRecordSetString;
 begin
-  GetProcedureAddress(_MsiRecordSetString, msilib, 'MsiRecordSetStringW');
+  GetProcedureAddress(_MsiRecordSetString, msilib, 'MsiRecordSetString' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiRecordSetString]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiRecordSetString]
   end;
 end;
-{$ELSE}
-function MsiRecordSetString; external msilib name 'MsiRecordSetStringW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _MsiRecordSetString: Pointer;
-
-function MsiRecordSetString;
-begin
-  GetProcedureAddress(_MsiRecordSetString, msilib, 'MsiRecordSetStringA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiRecordSetString]
-  end;
-end;
-{$ELSE}
-function MsiRecordSetString; external msilib name 'MsiRecordSetStringA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiRecordGetInteger: Pointer;
 
@@ -2607,16 +1828,12 @@ function MsiRecordGetInteger;
 begin
   GetProcedureAddress(_MsiRecordGetInteger, msilib, 'MsiRecordGetInteger');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiRecordGetInteger]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiRecordGetInteger]
   end;
 end;
-{$ELSE}
-function MsiRecordGetInteger; external msilib name 'MsiRecordGetInteger';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiRecordGetStringA: Pointer;
 
@@ -2624,16 +1841,12 @@ function MsiRecordGetStringA;
 begin
   GetProcedureAddress(_MsiRecordGetStringA, msilib, 'MsiRecordGetStringA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiRecordGetStringA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiRecordGetStringA]
   end;
 end;
-{$ELSE}
-function MsiRecordGetStringA; external msilib name 'MsiRecordGetStringA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiRecordGetStringW: Pointer;
 
@@ -2641,53 +1854,25 @@ function MsiRecordGetStringW;
 begin
   GetProcedureAddress(_MsiRecordGetStringW, msilib, 'MsiRecordGetStringW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiRecordGetStringW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiRecordGetStringW]
   end;
 end;
-{$ELSE}
-function MsiRecordGetStringW; external msilib name 'MsiRecordGetStringW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiRecordGetString: Pointer;
 
 function MsiRecordGetString;
 begin
-  GetProcedureAddress(_MsiRecordGetString, msilib, 'MsiRecordGetStringW');
+  GetProcedureAddress(_MsiRecordGetString, msilib, 'MsiRecordGetString' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiRecordGetString]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiRecordGetString]
   end;
 end;
-{$ELSE}
-function MsiRecordGetString; external msilib name 'MsiRecordGetStringW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _MsiRecordGetString: Pointer;
-
-function MsiRecordGetString;
-begin
-  GetProcedureAddress(_MsiRecordGetString, msilib, 'MsiRecordGetStringA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiRecordGetString]
-  end;
-end;
-{$ELSE}
-function MsiRecordGetString; external msilib name 'MsiRecordGetStringA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiRecordGetFieldCount: Pointer;
 
@@ -2695,16 +1880,12 @@ function MsiRecordGetFieldCount;
 begin
   GetProcedureAddress(_MsiRecordGetFieldCount, msilib, 'MsiRecordGetFieldCount');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiRecordGetFieldCount]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiRecordGetFieldCount]
   end;
 end;
-{$ELSE}
-function MsiRecordGetFieldCount; external msilib name 'MsiRecordGetFieldCount';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiRecordSetStreamA: Pointer;
 
@@ -2712,16 +1893,12 @@ function MsiRecordSetStreamA;
 begin
   GetProcedureAddress(_MsiRecordSetStreamA, msilib, 'MsiRecordSetStreamA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiRecordSetStreamA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiRecordSetStreamA]
   end;
 end;
-{$ELSE}
-function MsiRecordSetStreamA; external msilib name 'MsiRecordSetStreamA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiRecordSetStreamW: Pointer;
 
@@ -2729,53 +1906,25 @@ function MsiRecordSetStreamW;
 begin
   GetProcedureAddress(_MsiRecordSetStreamW, msilib, 'MsiRecordSetStreamW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiRecordSetStreamW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiRecordSetStreamW]
   end;
 end;
-{$ELSE}
-function MsiRecordSetStreamW; external msilib name 'MsiRecordSetStreamW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiRecordSetStream: Pointer;
 
 function MsiRecordSetStream;
 begin
-  GetProcedureAddress(_MsiRecordSetStream, msilib, 'MsiRecordSetStreamW');
+  GetProcedureAddress(_MsiRecordSetStream, msilib, 'MsiRecordSetStream' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiRecordSetStream]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiRecordSetStream]
   end;
 end;
-{$ELSE}
-function MsiRecordSetStream; external msilib name 'MsiRecordSetStreamW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _MsiRecordSetStream: Pointer;
-
-function MsiRecordSetStream;
-begin
-  GetProcedureAddress(_MsiRecordSetStream, msilib, 'MsiRecordSetStreamA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiRecordSetStream]
-  end;
-end;
-{$ELSE}
-function MsiRecordSetStream; external msilib name 'MsiRecordSetStreamA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiRecordReadStream: Pointer;
 
@@ -2783,16 +1932,12 @@ function MsiRecordReadStream;
 begin
   GetProcedureAddress(_MsiRecordReadStream, msilib, 'MsiRecordReadStream');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiRecordReadStream]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiRecordReadStream]
   end;
 end;
-{$ELSE}
-function MsiRecordReadStream; external msilib name 'MsiRecordReadStream';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiRecordClearData: Pointer;
 
@@ -2800,16 +1945,12 @@ function MsiRecordClearData;
 begin
   GetProcedureAddress(_MsiRecordClearData, msilib, 'MsiRecordClearData');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiRecordClearData]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiRecordClearData]
   end;
 end;
-{$ELSE}
-function MsiRecordClearData; external msilib name 'MsiRecordClearData';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiGetActiveDatabase: Pointer;
 
@@ -2817,16 +1958,12 @@ function MsiGetActiveDatabase;
 begin
   GetProcedureAddress(_MsiGetActiveDatabase, msilib, 'MsiGetActiveDatabase');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiGetActiveDatabase]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiGetActiveDatabase]
   end;
 end;
-{$ELSE}
-function MsiGetActiveDatabase; external msilib name 'MsiGetActiveDatabase';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiSetPropertyA: Pointer;
 
@@ -2834,16 +1971,12 @@ function MsiSetPropertyA;
 begin
   GetProcedureAddress(_MsiSetPropertyA, msilib, 'MsiSetPropertyA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiSetPropertyA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiSetPropertyA]
   end;
 end;
-{$ELSE}
-function MsiSetPropertyA; external msilib name 'MsiSetPropertyA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiSetPropertyW: Pointer;
 
@@ -2851,53 +1984,25 @@ function MsiSetPropertyW;
 begin
   GetProcedureAddress(_MsiSetPropertyW, msilib, 'MsiSetPropertyW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiSetPropertyW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiSetPropertyW]
   end;
 end;
-{$ELSE}
-function MsiSetPropertyW; external msilib name 'MsiSetPropertyW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiSetProperty: Pointer;
 
 function MsiSetProperty;
 begin
-  GetProcedureAddress(_MsiSetProperty, msilib, 'MsiSetPropertyW');
+  GetProcedureAddress(_MsiSetProperty, msilib, 'MsiSetProperty' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiSetProperty]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiSetProperty]
   end;
 end;
-{$ELSE}
-function MsiSetProperty; external msilib name 'MsiSetPropertyW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _MsiSetProperty: Pointer;
-
-function MsiSetProperty;
-begin
-  GetProcedureAddress(_MsiSetProperty, msilib, 'MsiSetPropertyA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiSetProperty]
-  end;
-end;
-{$ELSE}
-function MsiSetProperty; external msilib name 'MsiSetPropertyA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiGetPropertyA: Pointer;
 
@@ -2905,16 +2010,12 @@ function MsiGetPropertyA;
 begin
   GetProcedureAddress(_MsiGetPropertyA, msilib, 'MsiGetPropertyA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiGetPropertyA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiGetPropertyA]
   end;
 end;
-{$ELSE}
-function MsiGetPropertyA; external msilib name 'MsiGetPropertyA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiGetPropertyW: Pointer;
 
@@ -2922,53 +2023,25 @@ function MsiGetPropertyW;
 begin
   GetProcedureAddress(_MsiGetPropertyW, msilib, 'MsiGetPropertyW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiGetPropertyW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiGetPropertyW]
   end;
 end;
-{$ELSE}
-function MsiGetPropertyW; external msilib name 'MsiGetPropertyW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiGetProperty: Pointer;
 
 function MsiGetProperty;
 begin
-  GetProcedureAddress(_MsiGetProperty, msilib, 'MsiGetPropertyW');
+  GetProcedureAddress(_MsiGetProperty, msilib, 'MsiGetProperty' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiGetProperty]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiGetProperty]
   end;
 end;
-{$ELSE}
-function MsiGetProperty; external msilib name 'MsiGetPropertyW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _MsiGetProperty: Pointer;
-
-function MsiGetProperty;
-begin
-  GetProcedureAddress(_MsiGetProperty, msilib, 'MsiGetPropertyA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiGetProperty]
-  end;
-end;
-{$ELSE}
-function MsiGetProperty; external msilib name 'MsiGetPropertyA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiGetLanguage: Pointer;
 
@@ -2976,16 +2049,12 @@ function MsiGetLanguage;
 begin
   GetProcedureAddress(_MsiGetLanguage, msilib, 'MsiGetLanguage');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiGetLanguage]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiGetLanguage]
   end;
 end;
-{$ELSE}
-function MsiGetLanguage; external msilib name 'MsiGetLanguage';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiGetMode: Pointer;
 
@@ -2993,16 +2062,12 @@ function MsiGetMode;
 begin
   GetProcedureAddress(_MsiGetMode, msilib, 'MsiGetMode');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiGetMode]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiGetMode]
   end;
 end;
-{$ELSE}
-function MsiGetMode; external msilib name 'MsiGetMode';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiSetMode: Pointer;
 
@@ -3010,16 +2075,12 @@ function MsiSetMode;
 begin
   GetProcedureAddress(_MsiSetMode, msilib, 'MsiSetMode');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiSetMode]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiSetMode]
   end;
 end;
-{$ELSE}
-function MsiSetMode; external msilib name 'MsiSetMode';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiFormatRecordA: Pointer;
 
@@ -3027,16 +2088,12 @@ function MsiFormatRecordA;
 begin
   GetProcedureAddress(_MsiFormatRecordA, msilib, 'MsiFormatRecordA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiFormatRecordA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiFormatRecordA]
   end;
 end;
-{$ELSE}
-function MsiFormatRecordA; external msilib name 'MsiFormatRecordA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiFormatRecordW: Pointer;
 
@@ -3044,53 +2101,25 @@ function MsiFormatRecordW;
 begin
   GetProcedureAddress(_MsiFormatRecordW, msilib, 'MsiFormatRecordW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiFormatRecordW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiFormatRecordW]
   end;
 end;
-{$ELSE}
-function MsiFormatRecordW; external msilib name 'MsiFormatRecordW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiFormatRecord: Pointer;
 
 function MsiFormatRecord;
 begin
-  GetProcedureAddress(_MsiFormatRecord, msilib, 'MsiFormatRecordW');
+  GetProcedureAddress(_MsiFormatRecord, msilib, 'MsiFormatRecord' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiFormatRecord]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiFormatRecord]
   end;
 end;
-{$ELSE}
-function MsiFormatRecord; external msilib name 'MsiFormatRecordW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _MsiFormatRecord: Pointer;
-
-function MsiFormatRecord;
-begin
-  GetProcedureAddress(_MsiFormatRecord, msilib, 'MsiFormatRecordA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiFormatRecord]
-  end;
-end;
-{$ELSE}
-function MsiFormatRecord; external msilib name 'MsiFormatRecordA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiDoActionA: Pointer;
 
@@ -3098,16 +2127,12 @@ function MsiDoActionA;
 begin
   GetProcedureAddress(_MsiDoActionA, msilib, 'MsiDoActionA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiDoActionA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiDoActionA]
   end;
 end;
-{$ELSE}
-function MsiDoActionA; external msilib name 'MsiDoActionA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiDoActionW: Pointer;
 
@@ -3115,53 +2140,25 @@ function MsiDoActionW;
 begin
   GetProcedureAddress(_MsiDoActionW, msilib, 'MsiDoActionW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiDoActionW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiDoActionW]
   end;
 end;
-{$ELSE}
-function MsiDoActionW; external msilib name 'MsiDoActionW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiDoAction: Pointer;
 
 function MsiDoAction;
 begin
-  GetProcedureAddress(_MsiDoAction, msilib, 'MsiDoActionW');
+  GetProcedureAddress(_MsiDoAction, msilib, 'MsiDoAction' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiDoAction]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiDoAction]
   end;
 end;
-{$ELSE}
-function MsiDoAction; external msilib name 'MsiDoActionW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _MsiDoAction: Pointer;
-
-function MsiDoAction;
-begin
-  GetProcedureAddress(_MsiDoAction, msilib, 'MsiDoActionA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiDoAction]
-  end;
-end;
-{$ELSE}
-function MsiDoAction; external msilib name 'MsiDoActionA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiSequenceA: Pointer;
 
@@ -3169,16 +2166,12 @@ function MsiSequenceA;
 begin
   GetProcedureAddress(_MsiSequenceA, msilib, 'MsiSequenceA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiSequenceA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiSequenceA]
   end;
 end;
-{$ELSE}
-function MsiSequenceA; external msilib name 'MsiSequenceA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiSequenceW: Pointer;
 
@@ -3186,53 +2179,25 @@ function MsiSequenceW;
 begin
   GetProcedureAddress(_MsiSequenceW, msilib, 'MsiSequenceW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiSequenceW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiSequenceW]
   end;
 end;
-{$ELSE}
-function MsiSequenceW; external msilib name 'MsiSequenceW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiSequence: Pointer;
 
 function MsiSequence;
 begin
-  GetProcedureAddress(_MsiSequence, msilib, 'MsiSequenceW');
+  GetProcedureAddress(_MsiSequence, msilib, 'MsiSequence' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiSequence]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiSequence]
   end;
 end;
-{$ELSE}
-function MsiSequence; external msilib name 'MsiSequenceW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _MsiSequence: Pointer;
-
-function MsiSequence;
-begin
-  GetProcedureAddress(_MsiSequence, msilib, 'MsiSequenceA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiSequence]
-  end;
-end;
-{$ELSE}
-function MsiSequence; external msilib name 'MsiSequenceA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiProcessMessage: Pointer;
 
@@ -3240,16 +2205,12 @@ function MsiProcessMessage;
 begin
   GetProcedureAddress(_MsiProcessMessage, msilib, 'MsiProcessMessage');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiProcessMessage]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiProcessMessage]
   end;
 end;
-{$ELSE}
-function MsiProcessMessage; external msilib name 'MsiProcessMessage';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiEvaluateConditionA: Pointer;
 
@@ -3257,16 +2218,12 @@ function MsiEvaluateConditionA;
 begin
   GetProcedureAddress(_MsiEvaluateConditionA, msilib, 'MsiEvaluateConditionA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiEvaluateConditionA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiEvaluateConditionA]
   end;
 end;
-{$ELSE}
-function MsiEvaluateConditionA; external msilib name 'MsiEvaluateConditionA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiEvaluateConditionW: Pointer;
 
@@ -3274,53 +2231,25 @@ function MsiEvaluateConditionW;
 begin
   GetProcedureAddress(_MsiEvaluateConditionW, msilib, 'MsiEvaluateConditionW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiEvaluateConditionW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiEvaluateConditionW]
   end;
 end;
-{$ELSE}
-function MsiEvaluateConditionW; external msilib name 'MsiEvaluateConditionW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiEvaluateCondition: Pointer;
 
 function MsiEvaluateCondition;
 begin
-  GetProcedureAddress(_MsiEvaluateCondition, msilib, 'MsiEvaluateConditionW');
+  GetProcedureAddress(_MsiEvaluateCondition, msilib, 'MsiEvaluateCondition' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiEvaluateCondition]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiEvaluateCondition]
   end;
 end;
-{$ELSE}
-function MsiEvaluateCondition; external msilib name 'MsiEvaluateConditionW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _MsiEvaluateCondition: Pointer;
-
-function MsiEvaluateCondition;
-begin
-  GetProcedureAddress(_MsiEvaluateCondition, msilib, 'MsiEvaluateConditionA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiEvaluateCondition]
-  end;
-end;
-{$ELSE}
-function MsiEvaluateCondition; external msilib name 'MsiEvaluateConditionA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiGetFeatureStateA: Pointer;
 
@@ -3328,16 +2257,12 @@ function MsiGetFeatureStateA;
 begin
   GetProcedureAddress(_MsiGetFeatureStateA, msilib, 'MsiGetFeatureStateA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiGetFeatureStateA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiGetFeatureStateA]
   end;
 end;
-{$ELSE}
-function MsiGetFeatureStateA; external msilib name 'MsiGetFeatureStateA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiGetFeatureStateW: Pointer;
 
@@ -3345,53 +2270,25 @@ function MsiGetFeatureStateW;
 begin
   GetProcedureAddress(_MsiGetFeatureStateW, msilib, 'MsiGetFeatureStateW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiGetFeatureStateW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiGetFeatureStateW]
   end;
 end;
-{$ELSE}
-function MsiGetFeatureStateW; external msilib name 'MsiGetFeatureStateW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiGetFeatureState: Pointer;
 
 function MsiGetFeatureState;
 begin
-  GetProcedureAddress(_MsiGetFeatureState, msilib, 'MsiGetFeatureStateW');
+  GetProcedureAddress(_MsiGetFeatureState, msilib, 'MsiGetFeatureState' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiGetFeatureState]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiGetFeatureState]
   end;
 end;
-{$ELSE}
-function MsiGetFeatureState; external msilib name 'MsiGetFeatureStateW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _MsiGetFeatureState: Pointer;
-
-function MsiGetFeatureState;
-begin
-  GetProcedureAddress(_MsiGetFeatureState, msilib, 'MsiGetFeatureStateA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiGetFeatureState]
-  end;
-end;
-{$ELSE}
-function MsiGetFeatureState; external msilib name 'MsiGetFeatureStateA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiSetFeatureStateA: Pointer;
 
@@ -3399,16 +2296,12 @@ function MsiSetFeatureStateA;
 begin
   GetProcedureAddress(_MsiSetFeatureStateA, msilib, 'MsiSetFeatureStateA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiSetFeatureStateA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiSetFeatureStateA]
   end;
 end;
-{$ELSE}
-function MsiSetFeatureStateA; external msilib name 'MsiSetFeatureStateA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiSetFeatureStateW: Pointer;
 
@@ -3416,53 +2309,25 @@ function MsiSetFeatureStateW;
 begin
   GetProcedureAddress(_MsiSetFeatureStateW, msilib, 'MsiSetFeatureStateW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiSetFeatureStateW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiSetFeatureStateW]
   end;
 end;
-{$ELSE}
-function MsiSetFeatureStateW; external msilib name 'MsiSetFeatureStateW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiSetFeatureState: Pointer;
 
 function MsiSetFeatureState;
 begin
-  GetProcedureAddress(_MsiSetFeatureState, msilib, 'MsiSetFeatureStateW');
+  GetProcedureAddress(_MsiSetFeatureState, msilib, 'MsiSetFeatureState' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiSetFeatureState]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiSetFeatureState]
   end;
 end;
-{$ELSE}
-function MsiSetFeatureState; external msilib name 'MsiSetFeatureStateW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _MsiSetFeatureState: Pointer;
-
-function MsiSetFeatureState;
-begin
-  GetProcedureAddress(_MsiSetFeatureState, msilib, 'MsiSetFeatureStateA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiSetFeatureState]
-  end;
-end;
-{$ELSE}
-function MsiSetFeatureState; external msilib name 'MsiSetFeatureStateA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiSetFeatureAttributesA: Pointer;
 
@@ -3470,16 +2335,12 @@ function MsiSetFeatureAttributesA;
 begin
   GetProcedureAddress(_MsiSetFeatureAttributesA, msilib, 'MsiSetFeatureAttributesA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiSetFeatureAttributesA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiSetFeatureAttributesA]
   end;
 end;
-{$ELSE}
-function MsiSetFeatureAttributesA; external msilib name 'MsiSetFeatureAttributesA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiSetFeatureAttributesW: Pointer;
 
@@ -3487,53 +2348,25 @@ function MsiSetFeatureAttributesW;
 begin
   GetProcedureAddress(_MsiSetFeatureAttributesW, msilib, 'MsiSetFeatureAttributesW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiSetFeatureAttributesW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiSetFeatureAttributesW]
   end;
 end;
-{$ELSE}
-function MsiSetFeatureAttributesW; external msilib name 'MsiSetFeatureAttributesW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiSetFeatureAttributes: Pointer;
 
 function MsiSetFeatureAttributes;
 begin
-  GetProcedureAddress(_MsiSetFeatureAttributes, msilib, 'MsiSetFeatureAttributesW');
+  GetProcedureAddress(_MsiSetFeatureAttributes, msilib, 'MsiSetFeatureAttributes' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiSetFeatureAttributes]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiSetFeatureAttributes]
   end;
 end;
-{$ELSE}
-function MsiSetFeatureAttributes; external msilib name 'MsiSetFeatureAttributesW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _MsiSetFeatureAttributes: Pointer;
-
-function MsiSetFeatureAttributes;
-begin
-  GetProcedureAddress(_MsiSetFeatureAttributes, msilib, 'MsiSetFeatureAttributesA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiSetFeatureAttributes]
-  end;
-end;
-{$ELSE}
-function MsiSetFeatureAttributes; external msilib name 'MsiSetFeatureAttributesA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiGetComponentStateA: Pointer;
 
@@ -3541,16 +2374,12 @@ function MsiGetComponentStateA;
 begin
   GetProcedureAddress(_MsiGetComponentStateA, msilib, 'MsiGetComponentStateA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiGetComponentStateA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiGetComponentStateA]
   end;
 end;
-{$ELSE}
-function MsiGetComponentStateA; external msilib name 'MsiGetComponentStateA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiGetComponentStateW: Pointer;
 
@@ -3558,53 +2387,25 @@ function MsiGetComponentStateW;
 begin
   GetProcedureAddress(_MsiGetComponentStateW, msilib, 'MsiGetComponentStateW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiGetComponentStateW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiGetComponentStateW]
   end;
 end;
-{$ELSE}
-function MsiGetComponentStateW; external msilib name 'MsiGetComponentStateW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiGetComponentState: Pointer;
 
 function MsiGetComponentState;
 begin
-  GetProcedureAddress(_MsiGetComponentState, msilib, 'MsiGetComponentStateW');
+  GetProcedureAddress(_MsiGetComponentState, msilib, 'MsiGetComponentState' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiGetComponentState]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiGetComponentState]
   end;
 end;
-{$ELSE}
-function MsiGetComponentState; external msilib name 'MsiGetComponentStateW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _MsiGetComponentState: Pointer;
-
-function MsiGetComponentState;
-begin
-  GetProcedureAddress(_MsiGetComponentState, msilib, 'MsiGetComponentStateA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiGetComponentState]
-  end;
-end;
-{$ELSE}
-function MsiGetComponentState; external msilib name 'MsiGetComponentStateA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiSetComponentStateA: Pointer;
 
@@ -3612,16 +2413,12 @@ function MsiSetComponentStateA;
 begin
   GetProcedureAddress(_MsiSetComponentStateA, msilib, 'MsiSetComponentStateA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiSetComponentStateA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiSetComponentStateA]
   end;
 end;
-{$ELSE}
-function MsiSetComponentStateA; external msilib name 'MsiSetComponentStateA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiSetComponentStateW: Pointer;
 
@@ -3629,53 +2426,25 @@ function MsiSetComponentStateW;
 begin
   GetProcedureAddress(_MsiSetComponentStateW, msilib, 'MsiSetComponentStateW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiSetComponentStateW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiSetComponentStateW]
   end;
 end;
-{$ELSE}
-function MsiSetComponentStateW; external msilib name 'MsiSetComponentStateW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiSetComponentState: Pointer;
 
 function MsiSetComponentState;
 begin
-  GetProcedureAddress(_MsiSetComponentState, msilib, 'MsiSetComponentStateW');
+  GetProcedureAddress(_MsiSetComponentState, msilib, 'MsiSetComponentState' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiSetComponentState]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiSetComponentState]
   end;
 end;
-{$ELSE}
-function MsiSetComponentState; external msilib name 'MsiSetComponentStateW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _MsiSetComponentState: Pointer;
-
-function MsiSetComponentState;
-begin
-  GetProcedureAddress(_MsiSetComponentState, msilib, 'MsiSetComponentStateA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiSetComponentState]
-  end;
-end;
-{$ELSE}
-function MsiSetComponentState; external msilib name 'MsiSetComponentStateA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiGetFeatureCostA: Pointer;
 
@@ -3683,16 +2452,12 @@ function MsiGetFeatureCostA;
 begin
   GetProcedureAddress(_MsiGetFeatureCostA, msilib, 'MsiGetFeatureCostA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiGetFeatureCostA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiGetFeatureCostA]
   end;
 end;
-{$ELSE}
-function MsiGetFeatureCostA; external msilib name 'MsiGetFeatureCostA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiGetFeatureCostW: Pointer;
 
@@ -3700,53 +2465,25 @@ function MsiGetFeatureCostW;
 begin
   GetProcedureAddress(_MsiGetFeatureCostW, msilib, 'MsiGetFeatureCostW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiGetFeatureCostW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiGetFeatureCostW]
   end;
 end;
-{$ELSE}
-function MsiGetFeatureCostW; external msilib name 'MsiGetFeatureCostW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiGetFeatureCost: Pointer;
 
 function MsiGetFeatureCost;
 begin
-  GetProcedureAddress(_MsiGetFeatureCost, msilib, 'MsiGetFeatureCostW');
+  GetProcedureAddress(_MsiGetFeatureCost, msilib, 'MsiGetFeatureCost' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiGetFeatureCost]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiGetFeatureCost]
   end;
 end;
-{$ELSE}
-function MsiGetFeatureCost; external msilib name 'MsiGetFeatureCostW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _MsiGetFeatureCost: Pointer;
-
-function MsiGetFeatureCost;
-begin
-  GetProcedureAddress(_MsiGetFeatureCost, msilib, 'MsiGetFeatureCostA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiGetFeatureCost]
-  end;
-end;
-{$ELSE}
-function MsiGetFeatureCost; external msilib name 'MsiGetFeatureCostA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiEnumComponentCostsA: Pointer;
 
@@ -3754,16 +2491,12 @@ function MsiEnumComponentCostsA;
 begin
   GetProcedureAddress(_MsiEnumComponentCostsA, msilib, 'MsiEnumComponentCostsA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiEnumComponentCostsA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiEnumComponentCostsA]
   end;
 end;
-{$ELSE}
-function MsiEnumComponentCostsA; external msilib name 'MsiEnumComponentCostsA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiEnumComponentCostsW: Pointer;
 
@@ -3771,53 +2504,25 @@ function MsiEnumComponentCostsW;
 begin
   GetProcedureAddress(_MsiEnumComponentCostsW, msilib, 'MsiEnumComponentCostsW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiEnumComponentCostsW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiEnumComponentCostsW]
   end;
 end;
-{$ELSE}
-function MsiEnumComponentCostsW; external msilib name 'MsiEnumComponentCostsW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiEnumComponentCosts: Pointer;
 
 function MsiEnumComponentCosts;
 begin
-  GetProcedureAddress(_MsiEnumComponentCosts, msilib, 'MsiEnumComponentCostsW');
+  GetProcedureAddress(_MsiEnumComponentCosts, msilib, 'MsiEnumComponentCosts' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiEnumComponentCosts]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiEnumComponentCosts]
   end;
 end;
-{$ELSE}
-function MsiEnumComponentCosts; external msilib name 'MsiEnumComponentCostsW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _MsiEnumComponentCosts: Pointer;
-
-function MsiEnumComponentCosts;
-begin
-  GetProcedureAddress(_MsiEnumComponentCosts, msilib, 'MsiEnumComponentCostsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiEnumComponentCosts]
-  end;
-end;
-{$ELSE}
-function MsiEnumComponentCosts; external msilib name 'MsiEnumComponentCostsA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiSetInstallLevel: Pointer;
 
@@ -3825,16 +2530,12 @@ function MsiSetInstallLevel;
 begin
   GetProcedureAddress(_MsiSetInstallLevel, msilib, 'MsiSetInstallLevel');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiSetInstallLevel]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiSetInstallLevel]
   end;
 end;
-{$ELSE}
-function MsiSetInstallLevel; external msilib name 'MsiSetInstallLevel';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiGetFeatureValidStatesA: Pointer;
 
@@ -3842,16 +2543,12 @@ function MsiGetFeatureValidStatesA;
 begin
   GetProcedureAddress(_MsiGetFeatureValidStatesA, msilib, 'MsiGetFeatureValidStatesA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiGetFeatureValidStatesA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiGetFeatureValidStatesA]
   end;
 end;
-{$ELSE}
-function MsiGetFeatureValidStatesA; external msilib name 'MsiGetFeatureValidStatesA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiGetFeatureValidStatesW: Pointer;
 
@@ -3859,53 +2556,25 @@ function MsiGetFeatureValidStatesW;
 begin
   GetProcedureAddress(_MsiGetFeatureValidStatesW, msilib, 'MsiGetFeatureValidStatesW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiGetFeatureValidStatesW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiGetFeatureValidStatesW]
   end;
 end;
-{$ELSE}
-function MsiGetFeatureValidStatesW; external msilib name 'MsiGetFeatureValidStatesW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiGetFeatureValidStates: Pointer;
 
 function MsiGetFeatureValidStates;
 begin
-  GetProcedureAddress(_MsiGetFeatureValidStates, msilib, 'MsiGetFeatureValidStatesW');
+  GetProcedureAddress(_MsiGetFeatureValidStates, msilib, 'MsiGetFeatureValidStates' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiGetFeatureValidStates]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiGetFeatureValidStates]
   end;
 end;
-{$ELSE}
-function MsiGetFeatureValidStates; external msilib name 'MsiGetFeatureValidStatesW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _MsiGetFeatureValidStates: Pointer;
-
-function MsiGetFeatureValidStates;
-begin
-  GetProcedureAddress(_MsiGetFeatureValidStates, msilib, 'MsiGetFeatureValidStatesA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiGetFeatureValidStates]
-  end;
-end;
-{$ELSE}
-function MsiGetFeatureValidStates; external msilib name 'MsiGetFeatureValidStatesA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiGetSourcePathA: Pointer;
 
@@ -3913,16 +2582,12 @@ function MsiGetSourcePathA;
 begin
   GetProcedureAddress(_MsiGetSourcePathA, msilib, 'MsiGetSourcePathA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiGetSourcePathA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiGetSourcePathA]
   end;
 end;
-{$ELSE}
-function MsiGetSourcePathA; external msilib name 'MsiGetSourcePathA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiGetSourcePathW: Pointer;
 
@@ -3930,53 +2595,25 @@ function MsiGetSourcePathW;
 begin
   GetProcedureAddress(_MsiGetSourcePathW, msilib, 'MsiGetSourcePathW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiGetSourcePathW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiGetSourcePathW]
   end;
 end;
-{$ELSE}
-function MsiGetSourcePathW; external msilib name 'MsiGetSourcePathW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiGetSourcePath: Pointer;
 
 function MsiGetSourcePath;
 begin
-  GetProcedureAddress(_MsiGetSourcePath, msilib, 'MsiGetSourcePathW');
+  GetProcedureAddress(_MsiGetSourcePath, msilib, 'MsiGetSourcePath' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiGetSourcePath]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiGetSourcePath]
   end;
 end;
-{$ELSE}
-function MsiGetSourcePath; external msilib name 'MsiGetSourcePathW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _MsiGetSourcePath: Pointer;
-
-function MsiGetSourcePath;
-begin
-  GetProcedureAddress(_MsiGetSourcePath, msilib, 'MsiGetSourcePathA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiGetSourcePath]
-  end;
-end;
-{$ELSE}
-function MsiGetSourcePath; external msilib name 'MsiGetSourcePathA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiGetTargetPathA: Pointer;
 
@@ -3984,16 +2621,12 @@ function MsiGetTargetPathA;
 begin
   GetProcedureAddress(_MsiGetTargetPathA, msilib, 'MsiGetTargetPathA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiGetTargetPathA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiGetTargetPathA]
   end;
 end;
-{$ELSE}
-function MsiGetTargetPathA; external msilib name 'MsiGetTargetPathA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiGetTargetPathW: Pointer;
 
@@ -4001,53 +2634,25 @@ function MsiGetTargetPathW;
 begin
   GetProcedureAddress(_MsiGetTargetPathW, msilib, 'MsiGetTargetPathW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiGetTargetPathW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiGetTargetPathW]
   end;
 end;
-{$ELSE}
-function MsiGetTargetPathW; external msilib name 'MsiGetTargetPathW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiGetTargetPath: Pointer;
 
 function MsiGetTargetPath;
 begin
-  GetProcedureAddress(_MsiGetTargetPath, msilib, 'MsiGetTargetPathW');
+  GetProcedureAddress(_MsiGetTargetPath, msilib, 'MsiGetTargetPath' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiGetTargetPath]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiGetTargetPath]
   end;
 end;
-{$ELSE}
-function MsiGetTargetPath; external msilib name 'MsiGetTargetPathW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _MsiGetTargetPath: Pointer;
-
-function MsiGetTargetPath;
-begin
-  GetProcedureAddress(_MsiGetTargetPath, msilib, 'MsiGetTargetPathA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiGetTargetPath]
-  end;
-end;
-{$ELSE}
-function MsiGetTargetPath; external msilib name 'MsiGetTargetPathA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiSetTargetPathA: Pointer;
 
@@ -4055,16 +2660,12 @@ function MsiSetTargetPathA;
 begin
   GetProcedureAddress(_MsiSetTargetPathA, msilib, 'MsiSetTargetPathA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiSetTargetPathA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiSetTargetPathA]
   end;
 end;
-{$ELSE}
-function MsiSetTargetPathA; external msilib name 'MsiSetTargetPathA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiSetTargetPathW: Pointer;
 
@@ -4072,53 +2673,25 @@ function MsiSetTargetPathW;
 begin
   GetProcedureAddress(_MsiSetTargetPathW, msilib, 'MsiSetTargetPathW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiSetTargetPathW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiSetTargetPathW]
   end;
 end;
-{$ELSE}
-function MsiSetTargetPathW; external msilib name 'MsiSetTargetPathW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiSetTargetPath: Pointer;
 
 function MsiSetTargetPath;
 begin
-  GetProcedureAddress(_MsiSetTargetPath, msilib, 'MsiSetTargetPathW');
+  GetProcedureAddress(_MsiSetTargetPath, msilib, 'MsiSetTargetPath' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiSetTargetPath]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiSetTargetPath]
   end;
 end;
-{$ELSE}
-function MsiSetTargetPath; external msilib name 'MsiSetTargetPathW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _MsiSetTargetPath: Pointer;
-
-function MsiSetTargetPath;
-begin
-  GetProcedureAddress(_MsiSetTargetPath, msilib, 'MsiSetTargetPathA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiSetTargetPath]
-  end;
-end;
-{$ELSE}
-function MsiSetTargetPath; external msilib name 'MsiSetTargetPathA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiVerifyDiskSpace: Pointer;
 
@@ -4126,16 +2699,12 @@ function MsiVerifyDiskSpace;
 begin
   GetProcedureAddress(_MsiVerifyDiskSpace, msilib, 'MsiVerifyDiskSpace');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiVerifyDiskSpace]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiVerifyDiskSpace]
   end;
 end;
-{$ELSE}
-function MsiVerifyDiskSpace; external msilib name 'MsiVerifyDiskSpace';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiEnableUIPreview: Pointer;
 
@@ -4143,16 +2712,12 @@ function MsiEnableUIPreview;
 begin
   GetProcedureAddress(_MsiEnableUIPreview, msilib, 'MsiEnableUIPreview');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiEnableUIPreview]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiEnableUIPreview]
   end;
 end;
-{$ELSE}
-function MsiEnableUIPreview; external msilib name 'MsiEnableUIPreview';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiPreviewDialogA: Pointer;
 
@@ -4160,16 +2725,12 @@ function MsiPreviewDialogA;
 begin
   GetProcedureAddress(_MsiPreviewDialogA, msilib, 'MsiPreviewDialogA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiPreviewDialogA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiPreviewDialogA]
   end;
 end;
-{$ELSE}
-function MsiPreviewDialogA; external msilib name 'MsiPreviewDialogA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiPreviewDialogW: Pointer;
 
@@ -4177,53 +2738,25 @@ function MsiPreviewDialogW;
 begin
   GetProcedureAddress(_MsiPreviewDialogW, msilib, 'MsiPreviewDialogW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiPreviewDialogW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiPreviewDialogW]
   end;
 end;
-{$ELSE}
-function MsiPreviewDialogW; external msilib name 'MsiPreviewDialogW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiPreviewDialog: Pointer;
 
 function MsiPreviewDialog;
 begin
-  GetProcedureAddress(_MsiPreviewDialog, msilib, 'MsiPreviewDialogW');
+  GetProcedureAddress(_MsiPreviewDialog, msilib, 'MsiPreviewDialog' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiPreviewDialog]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiPreviewDialog]
   end;
 end;
-{$ELSE}
-function MsiPreviewDialog; external msilib name 'MsiPreviewDialogW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _MsiPreviewDialog: Pointer;
-
-function MsiPreviewDialog;
-begin
-  GetProcedureAddress(_MsiPreviewDialog, msilib, 'MsiPreviewDialogA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiPreviewDialog]
-  end;
-end;
-{$ELSE}
-function MsiPreviewDialog; external msilib name 'MsiPreviewDialogA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiPreviewBillboardA: Pointer;
 
@@ -4231,16 +2764,12 @@ function MsiPreviewBillboardA;
 begin
   GetProcedureAddress(_MsiPreviewBillboardA, msilib, 'MsiPreviewBillboardA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiPreviewBillboardA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiPreviewBillboardA]
   end;
 end;
-{$ELSE}
-function MsiPreviewBillboardA; external msilib name 'MsiPreviewBillboardA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiPreviewBillboardW: Pointer;
 
@@ -4248,53 +2777,25 @@ function MsiPreviewBillboardW;
 begin
   GetProcedureAddress(_MsiPreviewBillboardW, msilib, 'MsiPreviewBillboardW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiPreviewBillboardW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiPreviewBillboardW]
   end;
 end;
-{$ELSE}
-function MsiPreviewBillboardW; external msilib name 'MsiPreviewBillboardW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiPreviewBillboard: Pointer;
 
 function MsiPreviewBillboard;
 begin
-  GetProcedureAddress(_MsiPreviewBillboard, msilib, 'MsiPreviewBillboardW');
+  GetProcedureAddress(_MsiPreviewBillboard, msilib, 'MsiPreviewBillboard' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiPreviewBillboard]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiPreviewBillboard]
   end;
 end;
-{$ELSE}
-function MsiPreviewBillboard; external msilib name 'MsiPreviewBillboardW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _MsiPreviewBillboard: Pointer;
-
-function MsiPreviewBillboard;
-begin
-  GetProcedureAddress(_MsiPreviewBillboard, msilib, 'MsiPreviewBillboardA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiPreviewBillboard]
-  end;
-end;
-{$ELSE}
-function MsiPreviewBillboard; external msilib name 'MsiPreviewBillboardA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _MsiGetLastErrorRecord: Pointer;
 
@@ -4302,13 +2803,149 @@ function MsiGetLastErrorRecord;
 begin
   GetProcedureAddress(_MsiGetLastErrorRecord, msilib, 'MsiGetLastErrorRecord');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsiGetLastErrorRecord]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsiGetLastErrorRecord]
   end;
 end;
+
 {$ELSE}
+
+function MsiDatabaseOpenViewA; external msilib name 'MsiDatabaseOpenViewA';
+function MsiDatabaseOpenViewW; external msilib name 'MsiDatabaseOpenViewW';
+function MsiDatabaseOpenView; external msilib name 'MsiDatabaseOpenView' + AWSuffix;
+function MsiViewGetErrorA; external msilib name 'MsiViewGetErrorA';
+function MsiViewGetErrorW; external msilib name 'MsiViewGetErrorW';
+function MsiViewGetError; external msilib name 'MsiViewGetError' + AWSuffix;
+function MsiViewExecute; external msilib name 'MsiViewExecute';
+function MsiViewFetch; external msilib name 'MsiViewFetch';
+function MsiViewModify; external msilib name 'MsiViewModify';
+function MsiViewGetColumnInfo; external msilib name 'MsiViewGetColumnInfo';
+function MsiViewClose; external msilib name 'MsiViewClose';
+function MsiDatabaseGetPrimaryKeysA; external msilib name 'MsiDatabaseGetPrimaryKeysA';
+function MsiDatabaseGetPrimaryKeysW; external msilib name 'MsiDatabaseGetPrimaryKeysW';
+function MsiDatabaseGetPrimaryKeys; external msilib name 'MsiDatabaseGetPrimaryKeys' + AWSuffix;
+function MsiDatabaseIsTablePersistentA; external msilib name 'MsiDatabaseIsTablePersistentA';
+function MsiDatabaseIsTablePersistentW; external msilib name 'MsiDatabaseIsTablePersistentW';
+function MsiDatabaseIsTablePersistent; external msilib name 'MsiDatabaseIsTablePersistent' + AWSuffix;
+function MsiGetSummaryInformationA; external msilib name 'MsiGetSummaryInformationA';
+function MsiGetSummaryInformationW; external msilib name 'MsiGetSummaryInformationW';
+function MsiGetSummaryInformation; external msilib name 'MsiGetSummaryInformation' + AWSuffix;
+function MsiSummaryInfoGetPropertyCount; external msilib name 'MsiSummaryInfoGetPropertyCount';
+function MsiSummaryInfoSetPropertyA; external msilib name 'MsiSummaryInfoSetPropertyA';
+function MsiSummaryInfoSetPropertyW; external msilib name 'MsiSummaryInfoSetPropertyW';
+function MsiSummaryInfoSetProperty; external msilib name 'MsiSummaryInfoSetProperty' + AWSuffix;
+function MsiSummaryInfoGetPropertyA; external msilib name 'MsiSummaryInfoGetPropertyA';
+function MsiSummaryInfoGetPropertyW; external msilib name 'MsiSummaryInfoGetPropertyW';
+function MsiSummaryInfoGetProperty; external msilib name 'MsiSummaryInfoGetProperty' + AWSuffix;
+function MsiSummaryInfoPersist; external msilib name 'MsiSummaryInfoPersist';
+function MsiOpenDatabaseA; external msilib name 'MsiOpenDatabaseA';
+function MsiOpenDatabaseW; external msilib name 'MsiOpenDatabaseW';
+function MsiOpenDatabase; external msilib name 'MsiOpenDatabase' + AWSuffix;
+function MsiDatabaseImportA; external msilib name 'MsiDatabaseImportA';
+function MsiDatabaseImportW; external msilib name 'MsiDatabaseImportW';
+function MsiDatabaseImport; external msilib name 'MsiDatabaseImport' + AWSuffix;
+function MsiDatabaseExportA; external msilib name 'MsiDatabaseExportA';
+function MsiDatabaseExportW; external msilib name 'MsiDatabaseExportW';
+function MsiDatabaseExport; external msilib name 'MsiDatabaseExport' + AWSuffix;
+function MsiDatabaseMergeA; external msilib name 'MsiDatabaseMergeA';
+function MsiDatabaseMergeW; external msilib name 'MsiDatabaseMergeW';
+function MsiDatabaseMerge; external msilib name 'MsiDatabaseMerge' + AWSuffix;
+function MsiDatabaseGenerateTransformA; external msilib name 'MsiDatabaseGenerateTransformA';
+function MsiDatabaseGenerateTransformW; external msilib name 'MsiDatabaseGenerateTransformW';
+function MsiDatabaseGenerateTransform; external msilib name 'MsiDatabaseGenerateTransform' + AWSuffix;
+function MsiDatabaseApplyTransformA; external msilib name 'MsiDatabaseApplyTransformA';
+function MsiDatabaseApplyTransformW; external msilib name 'MsiDatabaseApplyTransformW';
+function MsiDatabaseApplyTransform; external msilib name 'MsiDatabaseApplyTransform' + AWSuffix;
+function MsiCreateTransformSummaryInfoA; external msilib name 'MsiCreateTransformSummaryInfoA';
+function MsiCreateTransformSummaryInfoW; external msilib name 'MsiCreateTransformSummaryInfoW';
+function MsiCreateTransformSummaryInfo; external msilib name 'MsiCreateTransformSummaryInfo' + AWSuffix;
+function MsiDatabaseCommit; external msilib name 'MsiDatabaseCommit';
+function MsiGetDatabaseState; external msilib name 'MsiGetDatabaseState';
+function MsiCreateRecord; external msilib name 'MsiCreateRecord';
+function MsiRecordIsNull; external msilib name 'MsiRecordIsNull';
+function MsiRecordDataSize; external msilib name 'MsiRecordDataSize';
+function MsiRecordSetInteger; external msilib name 'MsiRecordSetInteger';
+function MsiRecordSetStringA; external msilib name 'MsiRecordSetStringA';
+function MsiRecordSetStringW; external msilib name 'MsiRecordSetStringW';
+function MsiRecordSetString; external msilib name 'MsiRecordSetString' + AWSuffix;
+function MsiRecordGetInteger; external msilib name 'MsiRecordGetInteger';
+function MsiRecordGetStringA; external msilib name 'MsiRecordGetStringA';
+function MsiRecordGetStringW; external msilib name 'MsiRecordGetStringW';
+function MsiRecordGetString; external msilib name 'MsiRecordGetString' + AWSuffix;
+function MsiRecordGetFieldCount; external msilib name 'MsiRecordGetFieldCount';
+function MsiRecordSetStreamA; external msilib name 'MsiRecordSetStreamA';
+function MsiRecordSetStreamW; external msilib name 'MsiRecordSetStreamW';
+function MsiRecordSetStream; external msilib name 'MsiRecordSetStream' + AWSuffix;
+function MsiRecordReadStream; external msilib name 'MsiRecordReadStream';
+function MsiRecordClearData; external msilib name 'MsiRecordClearData';
+function MsiGetActiveDatabase; external msilib name 'MsiGetActiveDatabase';
+function MsiSetPropertyA; external msilib name 'MsiSetPropertyA';
+function MsiSetPropertyW; external msilib name 'MsiSetPropertyW';
+function MsiSetProperty; external msilib name 'MsiSetProperty' + AWSuffix;
+function MsiGetPropertyA; external msilib name 'MsiGetPropertyA';
+function MsiGetPropertyW; external msilib name 'MsiGetPropertyW';
+function MsiGetProperty; external msilib name 'MsiGetProperty' + AWSuffix;
+function MsiGetLanguage; external msilib name 'MsiGetLanguage';
+function MsiGetMode; external msilib name 'MsiGetMode';
+function MsiSetMode; external msilib name 'MsiSetMode';
+function MsiFormatRecordA; external msilib name 'MsiFormatRecordA';
+function MsiFormatRecordW; external msilib name 'MsiFormatRecordW';
+function MsiFormatRecord; external msilib name 'MsiFormatRecord' + AWSuffix;
+function MsiDoActionA; external msilib name 'MsiDoActionA';
+function MsiDoActionW; external msilib name 'MsiDoActionW';
+function MsiDoAction; external msilib name 'MsiDoAction' + AWSuffix;
+function MsiSequenceA; external msilib name 'MsiSequenceA';
+function MsiSequenceW; external msilib name 'MsiSequenceW';
+function MsiSequence; external msilib name 'MsiSequence' + AWSuffix;
+function MsiProcessMessage; external msilib name 'MsiProcessMessage';
+function MsiEvaluateConditionA; external msilib name 'MsiEvaluateConditionA';
+function MsiEvaluateConditionW; external msilib name 'MsiEvaluateConditionW';
+function MsiEvaluateCondition; external msilib name 'MsiEvaluateCondition' + AWSuffix;
+function MsiGetFeatureStateA; external msilib name 'MsiGetFeatureStateA';
+function MsiGetFeatureStateW; external msilib name 'MsiGetFeatureStateW';
+function MsiGetFeatureState; external msilib name 'MsiGetFeatureState' + AWSuffix;
+function MsiSetFeatureStateA; external msilib name 'MsiSetFeatureStateA';
+function MsiSetFeatureStateW; external msilib name 'MsiSetFeatureStateW';
+function MsiSetFeatureState; external msilib name 'MsiSetFeatureState' + AWSuffix;
+function MsiSetFeatureAttributesA; external msilib name 'MsiSetFeatureAttributesA';
+function MsiSetFeatureAttributesW; external msilib name 'MsiSetFeatureAttributesW';
+function MsiSetFeatureAttributes; external msilib name 'MsiSetFeatureAttributes' + AWSuffix;
+function MsiGetComponentStateA; external msilib name 'MsiGetComponentStateA';
+function MsiGetComponentStateW; external msilib name 'MsiGetComponentStateW';
+function MsiGetComponentState; external msilib name 'MsiGetComponentState' + AWSuffix;
+function MsiSetComponentStateA; external msilib name 'MsiSetComponentStateA';
+function MsiSetComponentStateW; external msilib name 'MsiSetComponentStateW';
+function MsiSetComponentState; external msilib name 'MsiSetComponentState' + AWSuffix;
+function MsiGetFeatureCostA; external msilib name 'MsiGetFeatureCostA';
+function MsiGetFeatureCostW; external msilib name 'MsiGetFeatureCostW';
+function MsiGetFeatureCost; external msilib name 'MsiGetFeatureCost' + AWSuffix;
+function MsiEnumComponentCostsA; external msilib name 'MsiEnumComponentCostsA';
+function MsiEnumComponentCostsW; external msilib name 'MsiEnumComponentCostsW';
+function MsiEnumComponentCosts; external msilib name 'MsiEnumComponentCosts' + AWSuffix;
+function MsiSetInstallLevel; external msilib name 'MsiSetInstallLevel';
+function MsiGetFeatureValidStatesA; external msilib name 'MsiGetFeatureValidStatesA';
+function MsiGetFeatureValidStatesW; external msilib name 'MsiGetFeatureValidStatesW';
+function MsiGetFeatureValidStates; external msilib name 'MsiGetFeatureValidStates' + AWSuffix;
+function MsiGetSourcePathA; external msilib name 'MsiGetSourcePathA';
+function MsiGetSourcePathW; external msilib name 'MsiGetSourcePathW';
+function MsiGetSourcePath; external msilib name 'MsiGetSourcePath' + AWSuffix;
+function MsiGetTargetPathA; external msilib name 'MsiGetTargetPathA';
+function MsiGetTargetPathW; external msilib name 'MsiGetTargetPathW';
+function MsiGetTargetPath; external msilib name 'MsiGetTargetPath' + AWSuffix;
+function MsiSetTargetPathA; external msilib name 'MsiSetTargetPathA';
+function MsiSetTargetPathW; external msilib name 'MsiSetTargetPathW';
+function MsiSetTargetPath; external msilib name 'MsiSetTargetPath' + AWSuffix;
+function MsiVerifyDiskSpace; external msilib name 'MsiVerifyDiskSpace';
+function MsiEnableUIPreview; external msilib name 'MsiEnableUIPreview';
+function MsiPreviewDialogA; external msilib name 'MsiPreviewDialogA';
+function MsiPreviewDialogW; external msilib name 'MsiPreviewDialogW';
+function MsiPreviewDialog; external msilib name 'MsiPreviewDialog' + AWSuffix;
+function MsiPreviewBillboardA; external msilib name 'MsiPreviewBillboardA';
+function MsiPreviewBillboardW; external msilib name 'MsiPreviewBillboardW';
+function MsiPreviewBillboard; external msilib name 'MsiPreviewBillboard' + AWSuffix;
 function MsiGetLastErrorRecord; external msilib name 'MsiGetLastErrorRecord';
+
 {$ENDIF DYNAMIC_LINK}
 
 end.

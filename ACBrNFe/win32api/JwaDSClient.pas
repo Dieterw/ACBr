@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Active Directory Display API interface Unit for Object Pascal                }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: dsclient.h, released June 2000. The original Pascal    }
 { code is: DsClient.pas, released December 2000. The initial developer of the  }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaDSClient.pas,v 1.9 2005/09/06 16:36:50 marquardt Exp $
 
 unit JwaDSClient;
 
@@ -49,12 +50,12 @@ unit JwaDSClient;
 {$HPPEMIT '#include "dsclient.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaAdsTLB, JwaWinType;
+  JwaAdsTLB, JwaWindows;
 
 //---------------------------------------------------------------------------//
 // CLSIDs exposed for the dsclient.
@@ -209,6 +210,8 @@ const
   {$EXTERNALSYM DSDSOF_HASUSERANDSERVERINFO}
   DSDSOF_SIMPLEAUTHENTICATE   = $00000002; // = 1 => don't use secure authentication to DS
   {$EXTERNALSYM DSDSOF_SIMPLEAUTHENTICATE}
+  DSDSOF_DONTSIGNSEAL         = $00000004; // = 1 => don't sign+seal when opening DS objects
+  {$EXTERNALSYM DSDSOF_DONTSIGNSEAL}
   DSDSOF_DSAVAILABLE          = $40000000; // = 1 => ignore DS available checks
   {$EXTERNALSYM DSDSOF_DSAVAILABLE}
 
@@ -246,7 +249,6 @@ const
   {$EXTERNALSYM DSPROP_ATTRCHANGED_MSG}
 
 //---------------------------------------------------------------------------//
-
 
 //---------------------------------------------------------------------------//
 //
@@ -322,7 +324,6 @@ type
 
 //---------------------------------------------------------------------------//
 
-
 //---------------------------------------------------------------------------//
 //
 // IDsDisplaySpecifier
@@ -339,6 +340,8 @@ type
 const
   DSSSF_SIMPLEAUTHENTICATE = $00000001; // = 1 => don't use secure authentication to DS
   {$EXTERNALSYM DSSSF_SIMPLEAUTHENTICATE}
+  DSSSF_DONTSIGNSEAL       = $00000002; // = 1 => don't use sign+seal when opening objects in the DS
+  {$EXTERNALSYM DSSSF_DONTSIGNSEAL}
   DSSSF_DSAVAILABLE        = DWORD($80000000); // = 1 => ignore DS available checks
   {$EXTERNALSYM DSSSF_DSAVAILABLE}
 
@@ -374,7 +377,7 @@ const
   {$EXTERNALSYM DSECAF_NOTLISTED}
 
 type
-  LPDSENUMATTRIBUTES = function (lParam: LPARAM; pszAttributeName: LPCWSTR;
+  LPDSENUMATTRIBUTES = function(lParam: LPARAM; pszAttributeName: LPCWSTR;
     pszDisplayName: LPCWSTR; dwFlags: DWORD): HRESULT; stdcall;
   {$EXTERNALSYM LPDSENUMATTRIBUTES}
   TDsEnumAttributes = LPDSENUMATTRIBUTES;  
@@ -448,7 +451,7 @@ type
 //---------------------------------------------------------------------------//
 
 type
-  BFFCALLBACK = function (hwnd: HWND; msg: UINT;
+  BFFCALLBACK = function(hwnd: HWND; msg: UINT;
     lpData, lParam: LPARAM): Integer; stdcall;
   {$NODEFINE BFFCALLBACK}
   TBffCallback = BFFCALLBACK;
@@ -463,7 +466,7 @@ type
     pszPath: LPWSTR; // [in/out] initial selection & returned path (required)
     cchPath: ULONG; // size of pszPath buffer in characters
     dwFlags: DWORD;
-    pfnCallback: BFFCALLBACK; // callback function (see SHBrowseForFolder)
+    pfnCallback: BFFCALLBACK; // callback function(see SHBrowseForFolder)
     lParam: LPARAM; // passed to pfnCallback as lpUserData
     dwReturnFormat: DWORD; // ADS_FORMAT_* (default is ADS_FORMAT_X500_NO_SERVER)
     pUserName: LPCWSTR; // Username and Password to authenticate against DS with
@@ -495,19 +498,19 @@ type
   {$EXTERNALSYM DSBROWSEINFOA}
   TDsBrowseInfoA = DSBROWSEINFOA;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   DSBROWSEINFO = DSBROWSEINFOW;
   {$EXTERNALSYM DSBROWSEINFO}
   PDSBROWSEINFO = PDSBROWSEINFOW;
   {$EXTERNALSYM PDSBROWSEINFO}
   TDsBrowseInfo = TDsBrowseInfoW;
-{$ELSE}
+  {$ELSE}
   DSBROWSEINFO = DSBROWSEINFOA;
   {$EXTERNALSYM DSBROWSEINFO}
   PDSBROWSEINFO = PDSBROWSEINFOA;
   {$EXTERNALSYM PDSBROWSEINFO}
   TDsBrowseInfo = TDsBrowseInfoA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 // DSBROWSEINFO flags
 
@@ -538,6 +541,8 @@ const
   {$EXTERNALSYM DSBI_SIMPLEAUTHENTICATE}
   DSBI_RETURNOBJECTCLASS  = $01000000; // return object class of selected object
   {$EXTERNALSYM DSBI_RETURNOBJECTCLASS}
+  DSBI_DONTSIGNSEAL       = $02000000; // don't sign+seal communication with DS
+  {$EXTERNALSYM DSBI_DONTSIGNSEAL}
 
   DSB_MAX_DISPLAYNAME_CHARS = 64;
   {$EXTERNALSYM DSB_MAX_DISPLAYNAME_CHARS}
@@ -573,19 +578,19 @@ type
   {$EXTERNALSYM DSBITEMA}
   TDsBItemA = DSBITEMA;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   DSBITEM = DSBITEMW;
   {$EXTERNALSYM DSBITEM}
   PDSBITEM = PDSBITEMW;
   {$EXTERNALSYM PDSBITEM}
   TDsBItem = TDsBItemW;
-{$ELSE}
+  {$ELSE}
   DSBITEM = DSBITEMA;
   {$EXTERNALSYM DSBITEM}
   PDSBITEM = PDSBITEMA;
   {$EXTERNALSYM PDSBITEM}
   TDsBItem = TDsBItemA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 // DSBITEM mask flags
 
@@ -616,13 +621,13 @@ const
   DSBM_QUERYINSERTA = 101; // lParam = PDSBITEMA (state, icon & name may be modified). Return TRUE if handled.
   {$EXTERNALSYM DSBM_QUERYINSERTA}
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   DSBM_QUERYINSERT = DSBM_QUERYINSERTW;
   {$EXTERNALSYM DSBM_QUERYINSERT}
-{$ELSE}
+  {$ELSE}
   DSBM_QUERYINSERT = DSBM_QUERYINSERTA;
   {$EXTERNALSYM DSBM_QUERYINSERT}
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 // Called before we change the state of the icon (on tree collapse/expand)
@@ -664,14 +669,8 @@ function DsBrowseForContainerW(const pInfo: DSBROWSEINFOW): Integer; stdcall;
 {$EXTERNALSYM DsBrowseForContainerW}
 function DsBrowseForContainerA(const pInfo: DSBROWSEINFOA): Integer; stdcall;
 {$EXTERNALSYM DsBrowseForContainerA}
-
-{$IFDEF UNICODE}
-function DsBrowseForContainer(const pInfo: DSBROWSEINFOW): Integer; stdcall;
+function DsBrowseForContainer(const pInfo: DSBROWSEINFO): Integer; stdcall;
 {$EXTERNALSYM DsBrowseForContainer}
-{$ELSE}
-function DsBrowseForContainer(const pInfo: DSBROWSEINFOA): Integer; stdcall;
-{$EXTERNALSYM DsBrowseForContainer}
-{$ENDIF}
 
 //BUGBUG: these are here to keep old clients building - remove soon
 
@@ -684,11 +683,11 @@ procedure DsGetFriendlyClassName(pszObjectClass, pszBuffer: LPWSTR;
 
 implementation
 
-const
-  dsuiext = 'dsuiext.dll';
-
+uses
+  JwaWinDLLNames;
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _DsBrowseForContainerW: Pointer;
 
@@ -696,16 +695,12 @@ function DsBrowseForContainerW;
 begin
   GetProcedureAddress(_DsBrowseForContainerW, dsuiext, 'DsBrowseForContainerW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBrowseForContainerW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsBrowseForContainerW]
   end;
 end;
-{$ELSE}
-function DsBrowseForContainerW; external dsuiext name 'DsBrowseForContainerW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsBrowseForContainerA: Pointer;
 
@@ -713,54 +708,25 @@ function DsBrowseForContainerA;
 begin
   GetProcedureAddress(_DsBrowseForContainerA, dsuiext, 'DsBrowseForContainerA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBrowseForContainerA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsBrowseForContainerA]
   end;
 end;
-{$ELSE}
-function DsBrowseForContainerA; external dsuiext name 'DsBrowseForContainerA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsBrowseForContainer: Pointer;
 
 function DsBrowseForContainer;
 begin
-  GetProcedureAddress(_DsBrowseForContainer, dsuiext, 'DsBrowseForContainerW');
+  GetProcedureAddress(_DsBrowseForContainer, dsuiext, 'DsBrowseForContainer' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBrowseForContainer]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsBrowseForContainer]
   end;
 end;
-{$ELSE}
-function DsBrowseForContainer; external dsuiext name 'DsBrowseForContainerW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsBrowseForContainer: Pointer;
-
-function DsBrowseForContainer;
-begin
-  GetProcedureAddress(_DsBrowseForContainer, dsuiext, 'DsBrowseForContainerA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsBrowseForContainer]
-  end;
-end;
-{$ELSE}
-function DsBrowseForContainer; external dsuiext name 'DsBrowseForContainerA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsGetIcon: Pointer;
 
@@ -768,16 +734,12 @@ function DsGetIcon;
 begin
   GetProcedureAddress(_DsGetIcon, dsuiext, 'DsGetIcon');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsGetIcon]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsGetIcon]
   end;
 end;
-{$ELSE}
-function DsGetIcon; external dsuiext name 'DsGetIcon';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsGetFriendlyClassName: Pointer;
 
@@ -785,13 +747,20 @@ procedure DsGetFriendlyClassName;
 begin
   GetProcedureAddress(_DsGetFriendlyClassName, dsuiext, 'DsGetFriendlyClassName');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsGetFriendlyClassName]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsGetFriendlyClassName]
   end;
 end;
+
 {$ELSE}
+
+function DsBrowseForContainerW; external dsuiext name 'DsBrowseForContainerW';
+function DsBrowseForContainerA; external dsuiext name 'DsBrowseForContainerA';
+function DsBrowseForContainer; external dsuiext name 'DsBrowseForContainer' + AWSuffix;
+function DsGetIcon; external dsuiext name 'DsGetIcon';
 procedure DsGetFriendlyClassName; external dsuiext name 'DsGetFriendlyClassName';
+
 {$ENDIF DYNAMIC_LINK}
 
 end.

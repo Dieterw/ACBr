@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Web Publishing Type Declarations API interface Unit for Object Pascal        }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: wptypes.h, released June 2000. The original Pascal     }
 { code is: WPTypes.pas, released December 2000. The initial developer of the   }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaWPTypes.pas,v 1.5 2005/09/03 14:27:48 marquardt Exp $
 
 unit JwaWPTypes;
 
@@ -49,15 +50,15 @@ unit JwaWPTypes;
 {$HPPEMIT '#include "wptypes.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinType;
+  JwaWindows;
 
 //
-//	Site info structures
+// Site info structures
 //
 
 type
@@ -90,7 +91,7 @@ type
   PWpSiteInfoW = LPWPSITEINFOW;
 
 //
-//	Provider info structures
+// Provider info structures
 //
 
   LPWPPROVINFOA = ^WPPROVINFOA;
@@ -125,8 +126,7 @@ type
   TWpProvInfoW = WPPROVINFOW;
   PWpProvInfoW = LPWPPROVINFOW;
 
-{$IFDEF UNICODE}
-
+  {$IFDEF UNICODE}
   WPSITEINFO = WPSITEINFOW;
   {$EXTERNALSYM WPSITEINFO}
   LPWPSITEINFO = LPWPSITEINFOW;
@@ -139,9 +139,7 @@ type
   {$EXTERNALSYM LPWPPROVINFO}
   TWpProvInfo = TWpProvInfoW;
   PWpProvInfo = PWpProvInfoW;
-
-{$ELSE}
-
+  {$ELSE}
   WPSITEINFO = WPSITEINFOA;
   {$EXTERNALSYM WPSITEINFO}
   LPWPSITEINFO = LPWPSITEINFOA;
@@ -154,8 +152,7 @@ type
   {$EXTERNALSYM LPWPPROVINFO}
   TWpProvInfo = TWpProvInfoA;
   PWpProvInfo = PWpProvInfoA;
-
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 implementation
 

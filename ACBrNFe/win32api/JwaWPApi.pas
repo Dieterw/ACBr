@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Web Publishing API interface Unit for Object Pascal                          }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: wpapi.h, released June 2000. The original Pascal       }
 { code is: WPApi.pas, released December 2000. The initial developer of the     }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaWPApi.pas,v 1.8 2005/09/06 16:36:50 marquardt Exp $
 
 unit JwaWPApi;
 
@@ -49,15 +50,15 @@ unit JwaWPApi;
 {$HPPEMIT '#include "wpapi.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWPTypes, JwaWinType;
+  JwaWPTypes, JwaWindows;
 
 //
-//	Flags
+// Flags
 //
 
 const
@@ -97,14 +98,14 @@ const
   {$EXTERNALSYM WPF_SHOWPAGE_ALL}
 
 //
-//	Miscellaneous
+// Miscellaneous
 //
 
   MAX_SITENAME_LEN = 128;
   {$EXTERNALSYM MAX_SITENAME_LEN}
 
 //
-//	Unicode APIs
+// Unicode APIs
 //
 
 function WpPostW(hwnd: HWND; dwNumLocalPaths: DWORD; pwsLocalPaths: LPWSTR;
@@ -131,7 +132,7 @@ function WpGetErrorStringW(uErrCode: UINT; wsOutputBuf: LPWSTR; var pdwBufLen: D
 {$EXTERNALSYM WpGetErrorStringW}
 
 //
-//	ANSI APIs
+// ANSI APIs
 //
 
 function WpPostA(hwnd: HWND; dwNumLocalPaths: DWORD; pwsLocalPaths: LPSTR;
@@ -157,613 +158,374 @@ function WpEnumProvidersA(var pdwProvidersBufLen: DWORD; pProvidersBuffer: LPWPP
 function WpGetErrorStringA(uErrCode: UINT; wsOutputBuf: LPSTR; var pdwBufLen: DWORD): DWORD; stdcall;
 {$EXTERNALSYM WpGetErrorStringA}
 
-{$IFDEF UNICODE}
-
-function WpPost(hwnd: HWND; dwNumLocalPaths: DWORD; pwsLocalPaths: LPWSTR;
-  var pdwSiteNameBufLen: DWORD; wsSiteName: LPWSTR; var pdwDestURLBufLen: DWORD;
-  wsDestURL: LPWSTR; dwFlag: DWORD): DWORD; stdcall;
+function WpPost(hwnd: HWND; dwNumLocalPaths: DWORD; pwsLocalPaths: LPTSTR;
+  var pdwSiteNameBufLen: DWORD; wsSiteName: LPTSTR; var pdwDestURLBufLen: DWORD;
+  wsDestURL: LPTSTR; dwFlag: DWORD): DWORD; stdcall;
 {$EXTERNALSYM WpPost}
-function WpListSites(var pdwSitesBufLen: DWORD; pSitesBuffer: LPWPSITEINFOW;
+function WpListSites(var pdwSitesBufLen: DWORD; pSitesBuffer: LPWPSITEINFO;
   var pdwNumSites: DWORD): DWORD; stdcall;
 {$EXTERNALSYM WpListSites}
-function WpDoesSiteExist(wsSiteName: LPCWSTR; var pfSiteExists: BOOL): DWORD; stdcall;
+function WpDoesSiteExist(wsSiteName: LPCTSTR; var pfSiteExists: BOOL): DWORD; stdcall;
 {$EXTERNALSYM WpDoesSiteExist}
-function WpDeleteSite(wsSiteName: LPCWSTR): DWORD; stdcall;
+function WpDeleteSite(wsSiteName: LPCTSTR): DWORD; stdcall;
 {$EXTERNALSYM WpDeleteSite}
-function WpBindToSite(hwnd: HWND; wsSiteName, wsSitePostingURL: LPCWSTR;
+function WpBindToSite(hwnd: HWND; wsSiteName, wsSitePostingURL: LPCTSTR;
   dwFlag, dwReserved: DWORD; out ppvUnk: IUnknown): DWORD; stdcall;
 {$EXTERNALSYM WpBindToSite}
-function WpCreateSite(wsSiteName, wsSiteLocalBaseDir, wsSitePostingURL, wsProviderCLSID: LPCWSTR; dwFlags: DWORD): DWORD; stdcall;
+function WpCreateSite(wsSiteName, wsSiteLocalBaseDir, wsSitePostingURL, wsProviderCLSID: LPCTSTR; dwFlags: DWORD): DWORD; stdcall;
 {$EXTERNALSYM WpCreateSite}
-function WpEnumProviders(var pdwProvidersBufLen: DWORD; pProvidersBuffer: LPWPPROVINFOW;
+function WpEnumProviders(var pdwProvidersBufLen: DWORD; pProvidersBuffer: LPWPPROVINFO;
   var pdwNumProviders: DWORD): DWORD; stdcall;
 {$EXTERNALSYM WpEnumProviders}
-function WpGetErrorString(uErrCode: UINT; wsOutputBuf: LPWSTR; var pdwBufLen: DWORD): DWORD; stdcall;
+function WpGetErrorString(uErrCode: UINT; wsOutputBuf: LPTSTR; var pdwBufLen: DWORD): DWORD; stdcall;
 {$EXTERNALSYM WpGetErrorString}
-
-{$ELSE}
-
-function WpPost(hwnd: HWND; dwNumLocalPaths: DWORD; pwsLocalPaths: LPSTR;
-  var pdwSiteNameBufLen: DWORD; wsSiteName: LPSTR; var pdwDestURLBufLen: DWORD;
-  wsDestURL: LPSTR; dwFlag: DWORD): DWORD; stdcall;
-{$EXTERNALSYM WpPost}
-function WpListSites(var pdwSitesBufLen: DWORD; pSitesBuffer: LPWPSITEINFOA;
-  var pdwNumSites: DWORD): DWORD; stdcall;
-{$EXTERNALSYM WpListSites}
-function WpDoesSiteExist(wsSiteName: LPCSTR; var pfSiteExists: BOOL): DWORD; stdcall;
-{$EXTERNALSYM WpDoesSiteExist}
-function WpDeleteSite(wsSiteName: LPCSTR): DWORD; stdcall;
-{$EXTERNALSYM WpDeleteSite}
-function WpBindToSite(hwnd: HWND; wsSiteName, wsSitePostingURL: LPCSTR;
-  dwFlag, dwReserved: DWORD; out ppvUnk: IUnknown): DWORD; stdcall;
-{$EXTERNALSYM WpBindToSite}
-function WpCreateSite(wsSiteName, wsSiteLocalBaseDir, wsSitePostingURL, wsProviderCLSID: LPCSTR; dwFlags: DWORD): DWORD; stdcall;
-{$EXTERNALSYM WpCreateSite}
-function WpEnumProviders(var pdwProvidersBufLen: DWORD; pProvidersBuffer: LPWPPROVINFOA;
-  var pdwNumProviders: DWORD): DWORD; stdcall;
-{$EXTERNALSYM WpEnumProviders}
-function WpGetErrorString(uErrCode: UINT; wsOutputBuf: LPSTR; var pdwBufLen: DWORD): DWORD; stdcall;
-{$EXTERNALSYM WpGetErrorString}
-
-{$ENDIF}
 
 implementation
 
-const
-  wpapi_lib = 'wpapi.dll';
-
+uses
+  JwaWinDLLNames;
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _WpPostA: Pointer;
 
 function WpPostA;
 begin
-  GetProcedureAddress(_WpPostA, wpapi_lib, 'WpPostA');
+  GetProcedureAddress(_WpPostA, wpapilib, 'WpPostA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WpPostA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WpPostA]
   end;
 end;
-{$ELSE}
-function WpPostA; external wpapi_lib name 'WpPostA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WpListSitesA: Pointer;
 
 function WpListSitesA;
 begin
-  GetProcedureAddress(_WpListSitesA, wpapi_lib, 'WpListSitesA');
+  GetProcedureAddress(_WpListSitesA, wpapilib, 'WpListSitesA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WpListSitesA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WpListSitesA]
   end;
 end;
-{$ELSE}
-function WpListSitesA; external wpapi_lib name 'WpListSitesA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WpDoesSiteExistA: Pointer;
 
 function WpDoesSiteExistA;
 begin
-  GetProcedureAddress(_WpDoesSiteExistA, wpapi_lib, 'WpDoesSiteExistA');
+  GetProcedureAddress(_WpDoesSiteExistA, wpapilib, 'WpDoesSiteExistA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WpDoesSiteExistA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WpDoesSiteExistA]
   end;
 end;
-{$ELSE}
-function WpDoesSiteExistA; external wpapi_lib name 'WpDoesSiteExistA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WpDeleteSiteA: Pointer;
 
 function WpDeleteSiteA;
 begin
-  GetProcedureAddress(_WpDeleteSiteA, wpapi_lib, 'WpDeleteSiteA');
+  GetProcedureAddress(_WpDeleteSiteA, wpapilib, 'WpDeleteSiteA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WpDeleteSiteA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WpDeleteSiteA]
   end;
 end;
-{$ELSE}
-function WpDeleteSiteA; external wpapi_lib name 'WpDeleteSiteA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WpBindToSiteA: Pointer;
 
 function WpBindToSiteA;
 begin
-  GetProcedureAddress(_WpBindToSiteA, wpapi_lib, 'WpBindToSiteA');
+  GetProcedureAddress(_WpBindToSiteA, wpapilib, 'WpBindToSiteA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WpBindToSiteA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WpBindToSiteA]
   end;
 end;
-{$ELSE}
-function WpBindToSiteA; external wpapi_lib name 'WpBindToSiteA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WpCreateSiteA: Pointer;
 
 function WpCreateSiteA;
 begin
-  GetProcedureAddress(_WpCreateSiteA, wpapi_lib, 'WpCreateSiteA');
+  GetProcedureAddress(_WpCreateSiteA, wpapilib, 'WpCreateSiteA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WpCreateSiteA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WpCreateSiteA]
   end;
 end;
-{$ELSE}
-function WpCreateSiteA; external wpapi_lib name 'WpCreateSiteA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WpEnumProvidersA: Pointer;
 
 function WpEnumProvidersA;
 begin
-  GetProcedureAddress(_WpEnumProvidersA, wpapi_lib, 'WpEnumProvidersA');
+  GetProcedureAddress(_WpEnumProvidersA, wpapilib, 'WpEnumProvidersA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WpEnumProvidersA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WpEnumProvidersA]
   end;
 end;
-{$ELSE}
-function WpEnumProvidersA; external wpapi_lib name 'WpEnumProvidersA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WpGetErrorStringA: Pointer;
 
 function WpGetErrorStringA;
 begin
-  GetProcedureAddress(_WpGetErrorStringA, wpapi_lib, 'WpGetErrorStringA');
+  GetProcedureAddress(_WpGetErrorStringA, wpapilib, 'WpGetErrorStringA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WpGetErrorStringA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WpGetErrorStringA]
   end;
 end;
-{$ELSE}
-function WpGetErrorStringA; external wpapi_lib name 'WpGetErrorStringA';
-{$ENDIF DYNAMIC_LINK}
 
-
-{$IFDEF DYNAMIC_LINK}
 var
   _WpPostW: Pointer;
 
 function WpPostW;
 begin
-  GetProcedureAddress(_WpPostW, wpapi_lib, 'WpPostW');
+  GetProcedureAddress(_WpPostW, wpapilib, 'WpPostW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WpPostW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WpPostW]
   end;
 end;
-{$ELSE}
-function WpPostW; external wpapi_lib name 'WpPostW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WpListSitesW: Pointer;
 
 function WpListSitesW;
 begin
-  GetProcedureAddress(_WpListSitesW, wpapi_lib, 'WpListSitesW');
+  GetProcedureAddress(_WpListSitesW, wpapilib, 'WpListSitesW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WpListSitesW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WpListSitesW]
   end;
 end;
-{$ELSE}
-function WpListSitesW; external wpapi_lib name 'WpListSitesW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WpDoesSiteExistW: Pointer;
 
 function WpDoesSiteExistW;
 begin
-  GetProcedureAddress(_WpDoesSiteExistW, wpapi_lib, 'WpDoesSiteExistW');
+  GetProcedureAddress(_WpDoesSiteExistW, wpapilib, 'WpDoesSiteExistW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WpDoesSiteExistW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WpDoesSiteExistW]
   end;
 end;
-{$ELSE}
-function WpDoesSiteExistW; external wpapi_lib name 'WpDoesSiteExistW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WpDeleteSiteW: Pointer;
 
 function WpDeleteSiteW;
 begin
-  GetProcedureAddress(_WpDeleteSiteW, wpapi_lib, 'WpDeleteSiteW');
+  GetProcedureAddress(_WpDeleteSiteW, wpapilib, 'WpDeleteSiteW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WpDeleteSiteW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WpDeleteSiteW]
   end;
 end;
-{$ELSE}
-function WpDeleteSiteW; external wpapi_lib name 'WpDeleteSiteW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WpBindToSiteW: Pointer;
 
 function WpBindToSiteW;
 begin
-  GetProcedureAddress(_WpBindToSiteW, wpapi_lib, 'WpBindToSiteW');
+  GetProcedureAddress(_WpBindToSiteW, wpapilib, 'WpBindToSiteW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WpBindToSiteW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WpBindToSiteW]
   end;
 end;
-{$ELSE}
-function WpBindToSiteW; external wpapi_lib name 'WpBindToSiteW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WpCreateSiteW: Pointer;
 
 function WpCreateSiteW;
 begin
-  GetProcedureAddress(_WpCreateSiteW, wpapi_lib, 'WpCreateSiteW');
+  GetProcedureAddress(_WpCreateSiteW, wpapilib, 'WpCreateSiteW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WpCreateSiteW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WpCreateSiteW]
   end;
 end;
-{$ELSE}
-function WpCreateSiteW; external wpapi_lib name 'WpCreateSiteW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WpEnumProvidersW: Pointer;
 
 function WpEnumProvidersW;
 begin
-  GetProcedureAddress(_WpEnumProvidersW, wpapi_lib, 'WpEnumProvidersW');
+  GetProcedureAddress(_WpEnumProvidersW, wpapilib, 'WpEnumProvidersW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WpEnumProvidersW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WpEnumProvidersW]
   end;
 end;
-{$ELSE}
-function WpEnumProvidersW; external wpapi_lib name 'WpEnumProvidersW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WpGetErrorStringW: Pointer;
 
 function WpGetErrorStringW;
 begin
-  GetProcedureAddress(_WpGetErrorStringW, wpapi_lib, 'WpGetErrorStringW');
+  GetProcedureAddress(_WpGetErrorStringW, wpapilib, 'WpGetErrorStringW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WpGetErrorStringW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WpGetErrorStringW]
   end;
 end;
-{$ELSE}
-function WpGetErrorStringW; external wpapi_lib name 'WpGetErrorStringW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF UNICODE}
-
-
-{$IFDEF DYNAMIC_LINK}
 var
   _WpPost: Pointer;
 
 function WpPost;
 begin
-  GetProcedureAddress(_WpPost, wpapi_lib, 'WpPostW');
+  GetProcedureAddress(_WpPost, wpapilib, 'WpPost' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WpPost]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WpPost]
   end;
 end;
-{$ELSE}
-function WpPost; external wpapi_lib name 'WpPostW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WpListSites: Pointer;
 
 function WpListSites;
 begin
-  GetProcedureAddress(_WpListSites, wpapi_lib, 'WpListSitesW');
+  GetProcedureAddress(_WpListSites, wpapilib, 'WpListSites' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WpListSites]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WpListSites]
   end;
 end;
-{$ELSE}
-function WpListSites; external wpapi_lib name 'WpListSitesW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WpDoesSiteExist: Pointer;
 
 function WpDoesSiteExist;
 begin
-  GetProcedureAddress(_WpDoesSiteExist, wpapi_lib, 'WpDoesSiteExistW');
+  GetProcedureAddress(_WpDoesSiteExist, wpapilib, 'WpDoesSiteExist' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WpDoesSiteExist]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WpDoesSiteExist]
   end;
 end;
-{$ELSE}
-function WpDoesSiteExist; external wpapi_lib name 'WpDoesSiteExistW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WpDeleteSite: Pointer;
 
 function WpDeleteSite;
 begin
-  GetProcedureAddress(_WpDeleteSite, wpapi_lib, 'WpDeleteSiteW');
+  GetProcedureAddress(_WpDeleteSite, wpapilib, 'WpDeleteSite' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WpDeleteSite]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WpDeleteSite]
   end;
 end;
-{$ELSE}
-function WpDeleteSite; external wpapi_lib name 'WpDeleteSiteW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WpBindToSite: Pointer;
 
 function WpBindToSite;
 begin
-  GetProcedureAddress(_WpBindToSite, wpapi_lib, 'WpBindToSiteW');
+  GetProcedureAddress(_WpBindToSite, wpapilib, 'WpBindToSite' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WpBindToSite]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WpBindToSite]
   end;
 end;
-{$ELSE}
-function WpBindToSite; external wpapi_lib name 'WpBindToSiteW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WpCreateSite: Pointer;
 
 function WpCreateSite;
 begin
-  GetProcedureAddress(_WpCreateSite, wpapi_lib, 'WpCreateSiteW');
+  GetProcedureAddress(_WpCreateSite, wpapilib, 'WpCreateSite' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WpCreateSite]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WpCreateSite]
   end;
 end;
-{$ELSE}
-function WpCreateSite; external wpapi_lib name 'WpCreateSiteW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WpEnumProviders: Pointer;
 
 function WpEnumProviders;
 begin
-  GetProcedureAddress(_WpEnumProviders, wpapi_lib, 'WpEnumProvidersW');
+  GetProcedureAddress(_WpEnumProviders, wpapilib, 'WpEnumProviders' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WpEnumProviders]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WpEnumProviders]
   end;
 end;
-{$ELSE}
-function WpEnumProviders; external wpapi_lib name 'WpEnumProvidersW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WpGetErrorString: Pointer;
 
 function WpGetErrorString;
 begin
-  GetProcedureAddress(_WpGetErrorString, wpapi_lib, 'WpGetErrorStringW');
+  GetProcedureAddress(_WpGetErrorString, wpapilib, 'WpGetErrorString' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WpGetErrorString]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WpGetErrorString]
   end;
 end;
+
 {$ELSE}
-function WpGetErrorString; external wpapi_lib name 'WpGetErrorStringW';
+
+function WpPostA; external wpapilib name 'WpPostA';
+function WpListSitesA; external wpapilib name 'WpListSitesA';
+function WpDoesSiteExistA; external wpapilib name 'WpDoesSiteExistA';
+function WpDeleteSiteA; external wpapilib name 'WpDeleteSiteA';
+function WpBindToSiteA; external wpapilib name 'WpBindToSiteA';
+function WpCreateSiteA; external wpapilib name 'WpCreateSiteA';
+function WpEnumProvidersA; external wpapilib name 'WpEnumProvidersA';
+function WpGetErrorStringA; external wpapilib name 'WpGetErrorStringA';
+function WpPostW; external wpapilib name 'WpPostW';
+function WpListSitesW; external wpapilib name 'WpListSitesW';
+function WpDoesSiteExistW; external wpapilib name 'WpDoesSiteExistW';
+function WpDeleteSiteW; external wpapilib name 'WpDeleteSiteW';
+function WpBindToSiteW; external wpapilib name 'WpBindToSiteW';
+function WpCreateSiteW; external wpapilib name 'WpCreateSiteW';
+function WpEnumProvidersW; external wpapilib name 'WpEnumProvidersW';
+function WpGetErrorStringW; external wpapilib name 'WpGetErrorStringW';
+function WpPost; external wpapilib name 'WpPost' + AWSuffix;
+function WpListSites; external wpapilib name 'WpListSites' + AWSuffix;
+function WpDoesSiteExist; external wpapilib name 'WpDoesSiteExist' + AWSuffix;
+function WpDeleteSite; external wpapilib name 'WpDeleteSite' + AWSuffix;
+function WpBindToSite; external wpapilib name 'WpBindToSite' + AWSuffix;
+function WpCreateSite; external wpapilib name 'WpCreateSite' + AWSuffix;
+function WpEnumProviders; external wpapilib name 'WpEnumProviders' + AWSuffix;
+function WpGetErrorString; external wpapilib name 'WpGetErrorString' + AWSuffix;
+
 {$ENDIF DYNAMIC_LINK}
-
-{$ELSE}
-
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WpPost: Pointer;
-
-function WpPost;
-begin
-  GetProcedureAddress(_WpPost, wpapi_lib, 'WpPostA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WpPost]
-  end;
-end;
-{$ELSE}
-function WpPost; external wpapi_lib name 'WpPostA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WpListSites: Pointer;
-
-function WpListSites;
-begin
-  GetProcedureAddress(_WpListSites, wpapi_lib, 'WpListSitesA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WpListSites]
-  end;
-end;
-{$ELSE}
-function WpListSites; external wpapi_lib name 'WpListSitesA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WpDoesSiteExist: Pointer;
-
-function WpDoesSiteExist;
-begin
-  GetProcedureAddress(_WpDoesSiteExist, wpapi_lib, 'WpDoesSiteExistA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WpDoesSiteExist]
-  end;
-end;
-{$ELSE}
-function WpDoesSiteExist; external wpapi_lib name 'WpDoesSiteExistA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WpDeleteSite: Pointer;
-
-function WpDeleteSite;
-begin
-  GetProcedureAddress(_WpDeleteSite, wpapi_lib, 'WpDeleteSiteA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WpDeleteSite]
-  end;
-end;
-{$ELSE}
-function WpDeleteSite; external wpapi_lib name 'WpDeleteSiteA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WpBindToSite: Pointer;
-
-function WpBindToSite;
-begin
-  GetProcedureAddress(_WpBindToSite, wpapi_lib, 'WpBindToSiteA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WpBindToSite]
-  end;
-end;
-{$ELSE}
-function WpBindToSite; external wpapi_lib name 'WpBindToSiteA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WpCreateSite: Pointer;
-
-function WpCreateSite;
-begin
-  GetProcedureAddress(_WpCreateSite, wpapi_lib, 'WpCreateSiteA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WpCreateSite]
-  end;
-end;
-{$ELSE}
-function WpCreateSite; external wpapi_lib name 'WpCreateSiteA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WpEnumProviders: Pointer;
-
-function WpEnumProviders;
-begin
-  GetProcedureAddress(_WpEnumProviders, wpapi_lib, 'WpEnumProvidersA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WpEnumProviders]
-  end;
-end;
-{$ELSE}
-function WpEnumProviders; external wpapi_lib name 'WpEnumProvidersA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WpGetErrorString: Pointer;
-
-function WpGetErrorString;
-begin
-  GetProcedureAddress(_WpGetErrorString, wpapi_lib, 'WpGetErrorStringA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WpGetErrorString]
-  end;
-end;
-{$ELSE}
-function WpGetErrorString; external wpapi_lib name 'WpGetErrorStringA';
-{$ENDIF DYNAMIC_LINK}
-
-{$ENDIF}
 
 end.

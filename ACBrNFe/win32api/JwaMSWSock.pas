@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Winsock2 Options and Extensions API interface Unit for Object Pascal         }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: mswsock.h, released June 2000. The original Pascal     }
 { code is: MSWSock.pas, released December 2000. The initial developer of the   }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaMSWSock.pas,v 1.8 2005/09/06 16:36:50 marquardt Exp $
 
 unit JwaMSWSock;
 
@@ -49,12 +50,12 @@ unit JwaMSWSock;
 {$HPPEMIT '#include "mswsock.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinType, JwaWinBase, JwaWinSock2;
+  JwaWindows, JwaWinSock2;
 
 //
 // Options for connect and disconnect data and options.  Used only by
@@ -177,7 +178,7 @@ function AcceptEx(sListenSocket, sAcceptSocket: TSocket; lpOutputBuffer: LPVOID;
 
 procedure GetAcceptExSockaddrs(lpOutputBuffer: LPVOID; dwReceiveDataLength,
   dwLocalAddressLength, dwRemoteAddressLength: DWORD; var LocalSockaddr: LPSOCKADDR;
-  var LocalSockaddrLength: Integer; RemoteSockaddr: LPSOCKADDR;
+  var LocalSockaddrLength: Integer; var RemoteSockaddr: LPSOCKADDR;
   var RemoteSockaddrLength: Integer); stdcall;
 {$EXTERNALSYM GetAcceptExSockaddrs}
 
@@ -186,7 +187,7 @@ procedure GetAcceptExSockaddrs(lpOutputBuffer: LPVOID; dwReceiveDataLength,
 //
 
 type
-  LPFN_TRANSMITFILE = function (hSocket: TSocket; hFile: HANDLE; nNumberOfBytesToWrite,
+  LPFN_TRANSMITFILE = function(hSocket: TSocket; hFile: HANDLE; nNumberOfBytesToWrite,
     nNumberOfBytesPerSend: DWORD; lpOverlapped: POVERLAPPED;
     lpTransmitBuffers: LPTRANSMIT_FILE_BUFFERS; dwReserved: DWORD): BOOL; stdcall;
   {$EXTERNALSYM LPFN_TRANSMITFILE}
@@ -198,7 +199,7 @@ const
   {$EXTERNALSYM WSAID_TRANSMITFILE}
 
 type
-  LPFN_ACCEPTEX = function (sListenSocket, sAcceptSocket: TSocket; lpOutputBuffer: LPVOID;
+  LPFN_ACCEPTEX = function(sListenSocket, sAcceptSocket: TSocket; lpOutputBuffer: LPVOID;
     dwReceiveDataLength, dwLocalAddressLength, dwRemoteAddressLength: DWORD;
     var lpdwBytesReceived: DWORD; lpOverlapped: POVERLAPPED): BOOL; stdcall;
   {$EXTERNALSYM LPFN_ACCEPTEX}
@@ -210,7 +211,7 @@ const
   {$EXTERNALSYM WSAID_ACCEPTEX}
 
 type
-  LPFN_GETACCEPTEXSOCKADDRS = procedure (lpOutputBuffer: LPVOID; dwReceiveDataLength,
+  LPFN_GETACCEPTEXSOCKADDRS = procedure(lpOutputBuffer: LPVOID; dwReceiveDataLength,
     dwLocalAddressLength, dwRemoteAddressLength: DWORD; var LocalSockaddr: LPSOCKADDR;
     var LocalSockaddrLength: Integer; var RemoteSockaddr: LPSOCKADDR;
     var RemoteSockaddrLength: Integer); stdcall;
@@ -263,7 +264,7 @@ const
   {$EXTERNALSYM TP_USE_KERNEL_APC}
 
 type
-  LPFN_TRANSMITPACKETS = function (Socket: TSocket; lpPacketArray: LPTRANSMIT_PACKETS_ELEMENT; ElementCount: DWORD;
+  LPFN_TRANSMITPACKETS = function(Socket: TSocket; lpPacketArray: LPTRANSMIT_PACKETS_ELEMENT; ElementCount: DWORD;
     nSendSize: DWORD; lpOverlapped: LPOVERLAPPED; dwFlags: DWORD): BOOL; stdcall;
   {$EXTERNALSYM LPFN_TRANSMITPACKETS}
 
@@ -273,7 +274,7 @@ const
   {$EXTERNALSYM WSAID_TRANSMITPACKETS}
 
 type
-  LPFN_CONNECTEX = function (s: TSocket; name: PSockAddr; namelen: Integer; lpSendBuffer: PVOID; dwSendDataLength: DWORD;
+  LPFN_CONNECTEX = function(s: TSocket; name: PSockAddr; namelen: Integer; lpSendBuffer: PVOID; dwSendDataLength: DWORD;
     lpdwBytesSent: LPDWORD; lpOverlapped: LPOVERLAPPED): BOOL; stdcall;
   {$EXTERNALSYM LPFN_CONNECTEX}
 
@@ -283,7 +284,7 @@ const
   {$EXTERNALSYM WSAID_CONNECTEX}
 
 type
-  LPFN_DISCONNECTEX = function (s: TSocket; lpOverlapped: LPOVERLAPPED; dwFlags: DWORD; dwReserved: DWORD): BOOL; stdcall;
+  LPFN_DISCONNECTEX = function(s: TSocket; lpOverlapped: LPOVERLAPPED; dwFlags: DWORD; dwReserved: DWORD): BOOL; stdcall;
   {$EXTERNALSYM LPFN_DISCONNECTEX}
 
 const
@@ -565,7 +566,7 @@ const
   {$EXTERNALSYM MSG_MCAST}
 
 type
-  LPFN_WSARECVMSG = function (s: TSocket; lpMsg: LPWSAMSG; lpdwNumberOfBytesRecvd: LPDWORD; lpOverlapped: LPWSAOVERLAPPED;
+  LPFN_WSARECVMSG = function(s: TSocket; lpMsg: LPWSAMSG; lpdwNumberOfBytesRecvd: LPDWORD; lpOverlapped: LPWSAOVERLAPPED;
     lpCompletionRoutine: LPWSAOVERLAPPED_COMPLETION_ROUTINE): INT; stdcall;
   {$EXTERNALSYM LPFN_WSARECVMSG}
 
@@ -576,77 +577,70 @@ const
 
 implementation
 
-const
-  mswsock_lib = 'mswsock.dll';
-
+uses
+  JwaWinDLLNames;
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _WSARecvEx: Pointer;
 
 function WSARecvEx;
 begin
-  GetProcedureAddress(_WSARecvEx, mswsock_lib, 'WSARecvEx');
+  GetProcedureAddress(_WSARecvEx, mswsocklib, 'WSARecvEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WSARecvEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WSARecvEx]
   end;
 end;
-{$ELSE}
-function WSARecvEx; external mswsock_lib name 'WSARecvEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _TransmitFile: Pointer;
 
 function TransmitFile;
 begin
-  GetProcedureAddress(_TransmitFile, mswsock_lib, 'TransmitFile');
+  GetProcedureAddress(_TransmitFile, mswsocklib, 'TransmitFile');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TransmitFile]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TransmitFile]
   end;
 end;
-{$ELSE}
-function TransmitFile; external mswsock_lib name 'TransmitFile';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _AcceptEx: Pointer;
 
 function AcceptEx;
 begin
-  GetProcedureAddress(_AcceptEx, mswsock_lib, 'AcceptEx');
+  GetProcedureAddress(_AcceptEx, mswsocklib, 'AcceptEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AcceptEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AcceptEx]
   end;
 end;
-{$ELSE}
-function AcceptEx; external mswsock_lib name 'AcceptEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetAcceptExSockaddrs: Pointer;
 
 procedure GetAcceptExSockaddrs;
 begin
-  GetProcedureAddress(_GetAcceptExSockaddrs, mswsock_lib, 'GetAcceptExSockaddrs');
+  GetProcedureAddress(_GetAcceptExSockaddrs, mswsocklib, 'GetAcceptExSockaddrs');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetAcceptExSockaddrs]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetAcceptExSockaddrs]
   end;
 end;
-{$ELSE}
-procedure GetAcceptExSockaddrs; external mswsock_lib name 'GetAcceptExSockaddrs';
-{$ENDIF DYNAMIC_LINK}
 
+{$ELSE}
+
+function WSARecvEx; external mswsocklib name 'WSARecvEx';
+function TransmitFile; external mswsocklib name 'TransmitFile';
+function AcceptEx; external mswsocklib name 'AcceptEx';
+procedure GetAcceptExSockaddrs; external mswsocklib name 'GetAcceptExSockaddrs';
+
+{$ENDIF DYNAMIC_LINK}
 
 end.

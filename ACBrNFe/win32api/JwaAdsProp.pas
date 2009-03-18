@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Active Directory Property Pages API interface Unit for Object Pascal         }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: adsprop.h, released June 2000. The original Pascal     }
 { code is: AdsProp.pas, released December 2000. The initial developer of the   }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,25 +35,27 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaAdsProp.pas,v 1.10 2005/09/06 16:36:50 marquardt Exp $
 
 unit JwaAdsProp;
 
 {$WEAKPACKAGEUNIT}
 
-{$HPPEMIT ''}
-{$HPPEMIT '#include "adsprop.h"'}
-{$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  ActiveX {TODO}, JwaAdsTLB, JwaWinUser, JwaWinType;
+  JwaAdsTLB, JwaWindows;
+
+{$HPPEMIT ''}
+{$HPPEMIT '#include "adsprop.h"'}
+{$HPPEMIT ''}
 
 //  Windows NT Active Directory Service Property Pages
 //
@@ -62,21 +63,21 @@ uses
 //              sheets.
 
 const
-  WM_ADSPROP_NOTIFY_PAGEINIT   = (WM_USER + 1101); // where LPARAM is the PADSPROPINITPARAMS pointer.
+  WM_ADSPROP_NOTIFY_PAGEINIT   = WM_USER + 1101; // where LPARAM is the PADSPROPINITPARAMS pointer.
   {$EXTERNALSYM WM_ADSPROP_NOTIFY_PAGEINIT}
-  WM_ADSPROP_NOTIFY_PAGEHWND   = (WM_USER + 1102); // where WPARAM => page's HWND and LPARAM => page's Title
+  WM_ADSPROP_NOTIFY_PAGEHWND   = WM_USER + 1102; // where WPARAM => page's HWND and LPARAM => page's Title
   {$EXTERNALSYM WM_ADSPROP_NOTIFY_PAGEHWND}
-  WM_ADSPROP_NOTIFY_CHANGE     = (WM_USER + 1103); // used to send a change notification to a parent sheet
+  WM_ADSPROP_NOTIFY_CHANGE     = WM_USER + 1103; // used to send a change notification to a parent sheet
   {$EXTERNALSYM WM_ADSPROP_NOTIFY_CHANGE}
-  WM_ADSPROP_NOTIFY_APPLY      = (WM_USER + 1104); // pages send this to the notification object.
+  WM_ADSPROP_NOTIFY_APPLY      = WM_USER + 1104; // pages send this to the notification object.
   {$EXTERNALSYM WM_ADSPROP_NOTIFY_APPLY}
-  WM_ADSPROP_NOTIFY_SETFOCUS   = (WM_USER + 1105); // used internally by the notification object.
+  WM_ADSPROP_NOTIFY_SETFOCUS   = WM_USER + 1105; // used internally by the notification object.
   {$EXTERNALSYM WM_ADSPROP_NOTIFY_SETFOCUS}
-  WM_ADSPROP_NOTIFY_FOREGROUND = (WM_USER + 1106); // used internally by the notification object.
+  WM_ADSPROP_NOTIFY_FOREGROUND = WM_USER + 1106; // used internally by the notification object.
   {$EXTERNALSYM WM_ADSPROP_NOTIFY_FOREGROUND}
-  WM_ADSPROP_NOTIFY_EXIT       = (WM_USER + 1107); // sent on page release
+  WM_ADSPROP_NOTIFY_EXIT       = WM_USER + 1107; // sent on page release
   {$EXTERNALSYM WM_ADSPROP_NOTIFY_EXIT}
-  WM_ADSPROP_NOTIFY_ERROR      = (WM_USER + 1110); // used to send the notification object an error message
+  WM_ADSPROP_NOTIFY_ERROR      = WM_USER + 1110; // used to send the notification object an error message
   {$EXTERNALSYM WM_ADSPROP_NOTIFY_ERROR}
   
 //+----------------------------------------------------------------------------
@@ -277,11 +278,11 @@ function ADsPropShowErrorDialog(hNotifyObj: HWND; hPage: HWND): BOOL; stdcall;
 
 implementation
 
-const
-  dsprop = 'dsprop.dll';
-
+uses
+  JwaWinDLLNames;
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _ADsPropCreateNotifyObj: Pointer;
 
@@ -289,16 +290,12 @@ function ADsPropCreateNotifyObj;
 begin
   GetProcedureAddress(_ADsPropCreateNotifyObj, dsprop, 'ADsPropCreateNotifyObj');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ADsPropCreateNotifyObj]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ADsPropCreateNotifyObj]
   end;
 end;
-{$ELSE}
-function ADsPropCreateNotifyObj; external dsprop name 'ADsPropCreateNotifyObj';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ADsPropGetInitInfo: Pointer;
 
@@ -306,16 +303,12 @@ function ADsPropGetInitInfo;
 begin
   GetProcedureAddress(_ADsPropGetInitInfo, dsprop, 'ADsPropGetInitInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ADsPropGetInitInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ADsPropGetInitInfo]
   end;
 end;
-{$ELSE}
-function ADsPropGetInitInfo; external dsprop name 'ADsPropGetInitInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ADsPropSetHwndWithTitle: Pointer;
 
@@ -323,16 +316,12 @@ function ADsPropSetHwndWithTitle;
 begin
   GetProcedureAddress(_ADsPropSetHwndWithTitle, dsprop, 'ADsPropSetHwndWithTitle');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ADsPropSetHwndWithTitle]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ADsPropSetHwndWithTitle]
   end;
 end;
-{$ELSE}
-function ADsPropSetHwndWithTitle; external dsprop name 'ADsPropSetHwndWithTitle';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ADsPropSetHwnd: Pointer;
 
@@ -340,16 +329,12 @@ function ADsPropSetHwnd;
 begin
   GetProcedureAddress(_ADsPropSetHwnd, dsprop, 'ADsPropSetHwnd');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ADsPropSetHwnd]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ADsPropSetHwnd]
   end;
 end;
-{$ELSE}
-function ADsPropSetHwnd; external dsprop name 'ADsPropSetHwnd';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ADsPropCheckIfWritable: Pointer;
 
@@ -357,16 +342,12 @@ function ADsPropCheckIfWritable;
 begin
   GetProcedureAddress(_ADsPropCheckIfWritable, dsprop, 'ADsPropCheckIfWritable');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ADsPropCheckIfWritable]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ADsPropCheckIfWritable]
   end;
 end;
-{$ELSE}
-function ADsPropCheckIfWritable; external dsprop name 'ADsPropCheckIfWritable';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ADsPropSendErrorMessage: Pointer;
 
@@ -374,16 +355,12 @@ function ADsPropSendErrorMessage;
 begin
   GetProcedureAddress(_ADsPropSendErrorMessage, dsprop, 'ADsPropSendErrorMessage');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ADsPropSendErrorMessage]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ADsPropSendErrorMessage]
   end;
 end;
-{$ELSE}
-function ADsPropSendErrorMessage; external dsprop name 'ADsPropSendErrorMessage';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ADsPropShowErrorDialog: Pointer;
 
@@ -391,13 +368,22 @@ function ADsPropShowErrorDialog;
 begin
   GetProcedureAddress(_ADsPropShowErrorDialog, dsprop, 'ADsPropShowErrorDialog');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ADsPropShowErrorDialog]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ADsPropShowErrorDialog]
   end;
 end;
+
 {$ELSE}
+
+function ADsPropCreateNotifyObj; external dsprop name 'ADsPropCreateNotifyObj';
+function ADsPropGetInitInfo; external dsprop name 'ADsPropGetInitInfo';
+function ADsPropSetHwndWithTitle; external dsprop name 'ADsPropSetHwndWithTitle';
+function ADsPropSetHwnd; external dsprop name 'ADsPropSetHwnd';
+function ADsPropCheckIfWritable; external dsprop name 'ADsPropCheckIfWritable';
+function ADsPropSendErrorMessage; external dsprop name 'ADsPropSendErrorMessage';
 function ADsPropShowErrorDialog; external dsprop name 'ADsPropShowErrorDialog';
+
 {$ENDIF DYNAMIC_LINK}
 
 end.

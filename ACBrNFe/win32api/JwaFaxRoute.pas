@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 {  Fax Routing Extension API interface unit for Object Pascal                  }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: faxroute.h, released November 2001. The original Pascal}
 { code is: FaxRoute.pas, released April 2002. The initial developer of the     }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaFaxRoute.pas,v 1.6 2005/09/03 14:27:48 marquardt Exp $
 
 unit JwaFaxRoute;
 
@@ -49,12 +50,12 @@ unit JwaFaxRoute;
 {$HPPEMIT '#include "faxroute.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinType;
+  JwaWindows;
 
 //
 // microsoft routing guids
@@ -73,17 +74,17 @@ const
 //
 
 type
-  PFAXROUTEADDFILE = function (JobId: DWORD; FileName: LPCWSTR; Guid: LPGUID): LONG; stdcall;
+  PFAXROUTEADDFILE = function(JobId: DWORD; FileName: LPCWSTR; Guid: LPGUID): LONG; stdcall;
   {$EXTERNALSYM PFAXROUTEADDFILE}
-  PFAXROUTEDELETEFILE = function (JobId: DWORD; FileName: LPCWSTR): LONG; stdcall;
+  PFAXROUTEDELETEFILE = function(JobId: DWORD; FileName: LPCWSTR): LONG; stdcall;
   {$EXTERNALSYM PFAXROUTEDELETEFILE}
-  PFAXROUTEGETFILE = function (JobId, Index: DWORD; FileNameBuffer: LPWSTR; RequiredSize: LPDWORD): BOOL; stdcall;
+  PFAXROUTEGETFILE = function(JobId, Index: DWORD; FileNameBuffer: LPWSTR; RequiredSize: LPDWORD): BOOL; stdcall;
   {$EXTERNALSYM PFAXROUTEGETFILE}
-  PFAXROUTEENUMFILE = function (JobId: DWORD; GuidOwner, GuidCaller: LPGUID; FileName: LPCWSTR; Context: PVOID): BOOL; stdcall;
+  PFAXROUTEENUMFILE = function(JobId: DWORD; GuidOwner, GuidCaller: LPGUID; FileName: LPCWSTR; Context: PVOID): BOOL; stdcall;
   {$EXTERNALSYM PFAXROUTEENUMFILE}
-  PFAXROUTEENUMFILES = function (JobId: DWORD; Guid: LPGUID; FileEnumerator: PFAXROUTEENUMFILE; Context: PVOID): BOOL; stdcall;
+  PFAXROUTEENUMFILES = function(JobId: DWORD; Guid: LPGUID; FileEnumerator: PFAXROUTEENUMFILE; Context: PVOID): BOOL; stdcall;
   {$EXTERNALSYM PFAXROUTEENUMFILES}
-  PFAXROUTEMODIFYROUTINGDATA = function (JobId: DWORD; RoutingGuid: LPCWSTR; RoutingData: LPBYTE; RoutingDataSize: DWORD): BOOL; stdcall;
+  PFAXROUTEMODIFYROUTINGDATA = function(JobId: DWORD; RoutingGuid: LPCWSTR; RoutingData: LPBYTE; RoutingDataSize: DWORD): BOOL; stdcall;
   {$EXTERNALSYM PFAXROUTEMODIFYROUTINGDATA}
 
   PFAX_ROUTE_CALLBACKROUTINES = ^FAX_ROUTE_CALLBACKROUTINES;
@@ -148,17 +149,17 @@ const
 //
 
 type
-  PFAXROUTEINITIALIZE = function (HeapHandle: HANDLE; FaxRouteCallbackRoutines: PFAX_ROUTE_CALLBACKROUTINES): BOOL; stdcall;
+  PFAXROUTEINITIALIZE = function(HeapHandle: HANDLE; FaxRouteCallbackRoutines: PFAX_ROUTE_CALLBACKROUTINES): BOOL; stdcall;
   {$EXTERNALSYM PFAXROUTEINITIALIZE}
-  PFAXROUTEMETHOD = function (FaxRoute: PFAX_ROUTE; P: PVOID; D: LPDWORD): BOOL; stdcall;
+  PFAXROUTEMETHOD = function(FaxRoute: PFAX_ROUTE; P: PVOID; D: LPDWORD): BOOL; stdcall;
   {$EXTERNALSYM PFAXROUTEMETHOD}
-  PFAXROUTEDEVICEENABLE = function (RoutingGuid: LPCWSTR; DeviceId: DWORD; Enabled: LONG): BOOL; stdcall;
+  PFAXROUTEDEVICEENABLE = function(RoutingGuid: LPCWSTR; DeviceId: DWORD; Enabled: LONG): BOOL; stdcall;
   {$EXTERNALSYM PFAXROUTEDEVICEENABLE}
-  PFAXROUTEDEVICECHANGENOTIFICATION = function (DeviceId: DWORD; NewDevice: BOOL): BOOL; stdcall;
+  PFAXROUTEDEVICECHANGENOTIFICATION = function(DeviceId: DWORD; NewDevice: BOOL): BOOL; stdcall;
   {$EXTERNALSYM PFAXROUTEDEVICECHANGENOTIFICATION}
-  PFAXROUTEGETROUTINGINFO = function (RoutingGuid: LPCWSTR; DeviceId: DWORD; RoutingInfo: LPBYTE; RoutingInfoSize: LPDWORD): BOOL; stdcall;
+  PFAXROUTEGETROUTINGINFO = function(RoutingGuid: LPCWSTR; DeviceId: DWORD; RoutingInfo: LPBYTE; RoutingInfoSize: LPDWORD): BOOL; stdcall;
   {$EXTERNALSYM PFAXROUTEGETROUTINGINFO}
-  PFAXROUTESETROUTINGINFO = function (RoutingGuid: LPCWSTR; DeviceId: DWORD; RoutingInfo: LPBYTE; RoutingInfoSize: DWORD): BOOL; stdcall;
+  PFAXROUTESETROUTINGINFO = function(RoutingGuid: LPCWSTR; DeviceId: DWORD; RoutingInfo: LPBYTE; RoutingInfoSize: DWORD): BOOL; stdcall;
   {$EXTERNALSYM PFAXROUTESETROUTINGINFO}
 
 implementation

@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Windows Base Types API interface Unit for Object Pascal                      }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: basetsd.h, released August 2001. The original Pascal   }
 { code is: WinType.pas, released December 2000. The initial developer of the   }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,14 +35,32 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaWinType.pas,v 1.16 2005/09/06 16:36:51 marquardt Exp $
+
+{$IFNDEF JWA_INCLUDEMODE}
 
 unit JwaWinType;
 
 {$WEAKPACKAGEUNIT}
+
+{$I jediapilib.inc}
+
+interface
+
+uses
+  {$IFDEF USE_DELPHI_TYPES}
+  Windows,
+  {$ENDIF USE_DELPHI_TYPES}
+  SysUtils; // TODO
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_INTERFACESECTION}
 
 {$HPPEMIT ''}
 {$HPPEMIT '#include "BaseTsd.h"'}
@@ -58,50 +75,21 @@ unit JwaWinType;
 {$HPPEMIT 'typedef HMODULE *PHMODULE'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
-
-interface
-
-uses
-  Windows, SysUtils; // TODO
-
 type
-  EJwaError = class (Exception)
-  end;
-
-  EJwaLoadLibraryError = class (EJwaError)
-  end;
-
-  EJwaGetProcAddressError = class (EJwaError)
-  end;
+  EJwaError = class(Exception);
+  EJwaLoadLibraryError = class(EJwaError);
+  EJwaGetProcAddressError = class(EJwaError);
 
 procedure GetProcedureAddress(var P: Pointer; const ModuleName, ProcName: string);
 
 type
-  LPLPSTR = ^LPSTR;
-  {$NODEFINE LPLPSTR}
-  LPLPCSTR = ^LPCSTR;
-  {$NODEFINE LPLPCSTR}
-  LPLPCWSTR = ^LPCWSTR;
-  {$NODEFINE LPLPCWSTR}
-  LPLPWSTR = ^LPWSTR;
-  {$NODEFINE LPLPWSTR}
-
-  PPChar = ^PChar;
-  PPWideChar = ^PWideChar;
-  PPointer = ^Pointer;
-
-  GUID = TGUID;
-  {$NODEFINE GUID}
-  LPGUID = ^GUID;
-  {$NODEFINE LPGUID}
-  CLSID = TGUID;
-  {$NODEFINE CLSID}
+  // (rom) moved from JwaRpc.pas
+  RPC_STATUS = Longint;
+  {$EXTERNALSYM RPC_STATUS}
 
 // ntdef.h
 
 type
-
 //typedef double DOUBLE;
 
   PQuad = ^TQuad;
@@ -117,11 +105,11 @@ type
 // Unsigned Basics
 //
 
-  UCHAR = {$IFDEF USE_DELPHI_TYPES}Windows.UCHAR{$ELSE}Char{$ENDIF};
+  UCHAR = {$IFDEF USE_DELPHI_TYPES} Windows.UCHAR {$ELSE} Byte {$ENDIF};
   {$EXTERNALSYM UCHAR}
   USHORT = Word;
   {$EXTERNALSYM USHORT}
-  ULONG = {$IFDEF USE_DELPHI_TYPES}Windows.ULONG{$ELSE}Longword{$ENDIF};
+  ULONG = {$IFDEF USE_DELPHI_TYPES} Windows.ULONG {$ELSE} Cardinal {$ENDIF};
   {$EXTERNALSYM ULONG}
   UQUAD = QUAD;
   {$EXTERNALSYM UQUAD}
@@ -132,7 +120,7 @@ type
 //
 
 type
-  LONGLONG = {$IFDEF USE_DELPHI_TYPES}Windows.LONGLONG{$ELSE}Int64{$ENDIF};
+  LONGLONG = {$IFDEF USE_DELPHI_TYPES} Windows.LONGLONG {$ELSE} Int64 {$ENDIF};
   {$EXTERNALSYM LONGLONG}
   ULONGLONG = Int64;
   {$EXTERNALSYM ULONGLONG}
@@ -147,10 +135,10 @@ type
   PULONGLONG = ^ULONGLONG;
   {$EXTERNALSYM PULONGLONG}
 
-  BOOL = {$IFDEF USE_DELPHI_TYPES}Windows.BOOL{$ELSE}LongBool{$ENDIF};
+  BOOL = {$IFDEF USE_DELPHI_TYPES} Windows.BOOL {$ELSE} LongBool {$ENDIF};
   {$EXTERNALSYM BOOL}
 
-  DWORD = {$IFDEF USE_DELPHI_TYPES}Windows.DWORD{$ELSE}Longword{$ENDIF};
+  DWORD = {$IFDEF USE_DELPHI_TYPES} Windows.DWORD {$ELSE} Longword {$ENDIF};
   {$EXTERNALSYM DWORD}
 
 const
@@ -176,7 +164,7 @@ type
 // Basics
 //
 
-  SHORT = {$IFDEF USE_DELPHI_TYPES}Windows.SHORT{$ELSE}Smallint{$ENDIF};
+  SHORT = {$IFDEF USE_DELPHI_TYPES} Windows.SHORT {$ELSE} Smallint {$ENDIF};
   {$EXTERNALSYM SHORT}
   LONG = Longint;
   {$EXTERNALSYM LONG}
@@ -185,10 +173,10 @@ type
 // UNICODE (Wide Character) types
 //
 
-  WCHAR = {$IFDEF USE_DELPHI_TYPES}Windows.WCHAR{$ELSE}WideChar{$ENDIF};
+  WCHAR = {$IFDEF USE_DELPHI_TYPES} Windows.WCHAR {$ELSE} WideChar {$ENDIF};
   {$EXTERNALSYM WCHAR}
 
-  PWCHAR = {$IFDEF USE_DELPHI_TYPES}Windows.PWChar{$ELSE}^WCHAR{$ENDIF};
+  PWCHAR = {$IFDEF USE_DELPHI_TYPES} Windows.PWChar {$ELSE} PWideChar {$ENDIF};
   {$EXTERNALSYM PWCHAR}
   LPWCH = ^WCHAR;
   {$EXTERNALSYM LPWCH}
@@ -200,44 +188,73 @@ type
   {$EXTERNALSYM PCWCH}
   NWPSTR = ^WCHAR;
   {$EXTERNALSYM NWPSTR}
-  LPWSTR = {$IFDEF USE_DELPHI_TYPES}Windows.LPWSTR{$ELSE}^WCHAR{$ENDIF};
+  LPWSTR = {$IFDEF USE_DELPHI_TYPES} Windows.LPWSTR {$ELSE} PWideChar {$ENDIF};
   {$EXTERNALSYM LPWSTR}
-  LPCWSTR = {$IFDEF USE_DELPHI_TYPES}Windows.LPCWSTR{$ELSE}^WCHAR{$ENDIF};
+  LPCWSTR = {$IFDEF USE_DELPHI_TYPES} Windows.LPCWSTR {$ELSE} PWideChar {$ENDIF};
   {$EXTERNALSYM LPCWSTR}
-  PWSTR = {$IFDEF USE_DELPHI_TYPES}Windows.LPWSTR{$ELSE}^WCHAR{$ENDIF};
+  PWSTR = {$IFDEF USE_DELPHI_TYPES} Windows.LPWSTR {$ELSE} PWideChar {$ENDIF};
   {$EXTERNALSYM PWSTR}
-  LPUWSTR = {$IFDEF USE_DELPHI_TYPES}Windows.LPWSTR{$ELSE}^WCHAR{$ENDIF};
+  LPUWSTR = {$IFDEF USE_DELPHI_TYPES} Windows.LPWSTR {$ELSE} PWideChar {$ENDIF};
   {$EXTERNALSYM LPUWSTR}
-  PUWSTR = {$IFDEF USE_DELPHI_TYPES}Windows.LPWSTR{$ELSE}^WCHAR{$ENDIF};
+  PUWSTR = {$IFDEF USE_DELPHI_TYPES} Windows.LPWSTR {$ELSE} PWideChar {$ENDIF};
   {$EXTERNALSYM PUWSTR}
-  LCPUWSTR = {$IFDEF USE_DELPHI_TYPES}Windows.LPWSTR{$ELSE}^WCHAR{$ENDIF};
+  LCPUWSTR = {$IFDEF USE_DELPHI_TYPES} Windows.LPWSTR {$ELSE} PWideChar {$ENDIF};
   {$EXTERNALSYM LCPUWSTR}
-  PCUWSTR = {$IFDEF USE_DELPHI_TYPES}Windows.LPWSTR{$ELSE}^WCHAR{$ENDIF};
+  PCUWSTR = {$IFDEF USE_DELPHI_TYPES} Windows.LPWSTR {$ELSE} PWideChar {$ENDIF};
   {$EXTERNALSYM PCUWSTR}
 
 //
 // ANSI (Multi-byte Character) types
 //
 
-  LPCH = ^CHAR;
+  LPCH = ^Char;
   {$EXTERNALSYM LPCH}
-  PCH = ^CHAR;
+  PCH = ^Char;
   {$EXTERNALSYM PCH}
 
-  LPCCH = ^CHAR;
+  LPCCH = ^Char;
   {$EXTERNALSYM LPCCH}
-  PCCH = ^CHAR;
+  PCCH = ^Char;
   {$EXTERNALSYM PCCH}
-  NPSTR = ^CHAR;
+  NPSTR = ^Char;
   {$EXTERNALSYM NPSTR}
-  LPSTR = {$IFDEF USE_DELPHI_TYPES}Windows.LPSTR{$ELSE}^CHAR{$ENDIF};
+  LPSTR = {$IFDEF USE_DELPHI_TYPES} Windows.LPSTR {$ELSE} PAnsiChar {$ENDIF};
   {$EXTERNALSYM LPSTR}
-  PSTR = {$IFDEF USE_DELPHI_TYPES}PChar{$ELSE}^CHAR{$ENDIF};
+  PSTR = PChar;
   {$EXTERNALSYM PSTR}
-  LPCSTR = {$IFDEF USE_DELPHI_TYPES}Windows.LPCSTR{$ELSE}^CHAR{$ENDIF};
+  LPCSTR = {$IFDEF USE_DELPHI_TYPES} Windows.LPCSTR {$ELSE} PAnsiChar {$ENDIF};
   {$EXTERNALSYM LPCSTR}
-  PCSTR = {$IFDEF USE_DELPHI_TYPES}PChar{$ELSE}^CHAR{$ENDIF};
+  PCSTR = PChar;
   {$EXTERNALSYM PCSTR}
+
+// (rom) moved down to have LPSTR etc always declared
+type
+  LPLPSTR = ^LPSTR;
+  {$NODEFINE LPLPSTR}
+  LPLPCSTR = ^LPCSTR;
+  {$NODEFINE LPLPCSTR}
+  LPLPCWSTR = ^LPCWSTR;
+  {$NODEFINE LPLPCWSTR}
+  LPLPWSTR = ^LPWSTR;
+  {$NODEFINE LPLPWSTR}
+
+  PLPWSTR = ^LPWSTR;
+  {$EXTERNALSYM PLPWSTR}
+  PLPSTR = ^LPSTR;
+  {$EXTERNALSYM PLPSTR}
+  PPWCHAR = ^PWCHAR;
+
+  PPTSTR = ^PTSTR;
+  PPChar = ^PChar;
+  PPWideChar = ^PWideChar;
+  PPointer = ^Pointer;
+
+  GUID = TGUID;
+  {$NODEFINE GUID}
+  LPGUID = ^GUID;
+  {$NODEFINE LPGUID}
+  CLSID = TGUID;
+  {$NODEFINE CLSID}
 
 //
 // Neutral ANSI/UNICODE types and macros
@@ -247,75 +264,77 @@ type
 
   TCHAR = WCHAR;
   {$EXTERNALSYM TCHAR}
-  PTCHAR = ^TCHAR;
+  PTCHAR = PWideChar;
   {$EXTERNALSYM PTCHAR}
   TUCHAR = WCHAR;
   {$EXTERNALSYM TUCHAR}
   PTUCHAR = ^TUCHAR;
   {$EXTERNALSYM PTUCHAR}
 
+  LPCTCH = LPWSTR;
   LPTCH = LPWSTR;
   {$EXTERNALSYM LPTCH}
   PTCH = LPWSTR;
   {$EXTERNALSYM PTCH}
   PTSTR = LPWSTR;
   {$EXTERNALSYM PTSTR}
-  LPTSTR = {$IFDEF USE_DELPHI_TYPES}Windows.LPTSTR{$ELSE}LPWSTR{$ENDIF};
+  LPTSTR = {$IFDEF USE_DELPHI_TYPES} Windows.LPWSTR {$ELSE} LPWSTR {$ENDIF};
   {$EXTERNALSYM LPTSTR}
-  PCTSTR = LPCWSTR;
+  PCTSTR = LPTSTR;
   {$EXTERNALSYM PCTSTR}
-  LPCTSTR = {$IFDEF USE_DELPHI_TYPES}Windows.LPCTSTR{$ELSE}LPCWSTR{$ENDIF};
+  LPCTSTR = LPTSTR;
   {$EXTERNALSYM LPCTSTR}
 
-  PCUTSTR = {$IFDEF USE_DELPHI_TYPES}Windows.LPCTSTR{$ELSE}LPCWSTR{$ENDIF};
+  PCUTSTR = PTUCHAR;
   {$EXTERNALSYM PCUTSTR}
-  LPCUTSTR = {$IFDEF USE_DELPHI_TYPES}Windows.LPCTSTR{$ELSE}LPCWSTR{$ENDIF};
+  LPCUTSTR = PTUCHAR;
   {$EXTERNALSYM LPCUTSTR}
-  PUTSTR = {$IFDEF USE_DELPHI_TYPES}Windows.LPCSTR{$ELSE}LPCWSTR{$ENDIF};
+  PUTSTR = PTUCHAR;
   {$EXTERNALSYM PUTSTR}
-  LPUTSTR = {$IFDEF USE_DELPHI_TYPES}Windows.LPCSTR{$ELSE}LPCWSTR{$ENDIF};
+  LPUTSTR = PTUCHAR;
   {$EXTERNALSYM LPUTSTR}
 
   __TEXT = WideString;
   {$EXTERNALSYM __TEXT}
 
-{$ELSE}
+  {$ELSE}
 
-  TCHAR = CHAR;
+  TCHAR = Char;
   {$EXTERNALSYM TCHAR}
-  PTCHAR = ^TCHAR;
+  PTCHAR = PChar;
   {$EXTERNALSYM PTCHAR}
-  TUCHAR = CHAR;
+  TUCHAR = Byte;
   {$EXTERNALSYM TUCHAR}
   PTUCHAR = ^TUCHAR;
   {$EXTERNALSYM PTUCHAR}
 
+  LPCTCH = LPSTR;
   LPTCH = LPSTR;
   {$EXTERNALSYM LPTCH}
   PTCH = LPSTR;
   {$EXTERNALSYM PTCH}
   PTSTR = LPSTR;
   {$EXTERNALSYM PTSTR}
-  LPTSTR = {$IFDEF USE_DELPHI_TYPES}Windows.LPTSTR{$ELSE}LPSTR{$ENDIF};
+  LPTSTR = LPSTR;
   {$EXTERNALSYM LPTSTR}
   PCTSTR = LPCSTR;
   {$EXTERNALSYM PCTSTR}
-  LPCTSTR = {$IFDEF USE_DELPHI_TYPES}Windows.LPCTSTR{$ELSE}LPCSTR{$ENDIF};
+  LPCTSTR = LPCSTR;
   {$EXTERNALSYM LPCTSTR}
 
-  PCUTSTR = {$IFDEF USE_DELPHI_TYPES}Windows.LPCSTR{$ELSE}LPCSTR{$ENDIF};
+  PCUTSTR = PTUCHAR;
   {$EXTERNALSYM PCUTSTR}
-  LPCUTSTR = {$IFDEF USE_DELPHI_TYPES}Windows.LPCSTR{$ELSE}LPCSTR{$ENDIF};
+  LPCUTSTR = PTUCHAR;
   {$EXTERNALSYM LPCUTSTR}
-  PUTSTR = {$IFDEF USE_DELPHI_TYPES}Windows.LPCSTR{$ELSE}LPCSTR{$ENDIF};
+  PUTSTR = PTUCHAR;
   {$EXTERNALSYM PUTSTR}
-  LPUTSTR = {$IFDEF USE_DELPHI_TYPES}Windows.LPCSTR{$ELSE}LPCSTR{$ENDIF};
+  LPUTSTR = PTUCHAR;
   {$EXTERNALSYM LPUTSTR}
 
   __TEXT = AnsiString;
   {$EXTERNALSYM __TEXT}
 
-{$ENDIF}
+{$ENDIF UNICODE}
 
   TEXT = __TEXT;
   {$EXTERNALSYM TEXT}
@@ -333,11 +352,11 @@ type
 // Pointer to Unsigned Basics
 //
 
-  PUCHAR = {$IFDEF USE_DELPHI_TYPES}Windows.PUCHAR{$ELSE}^UCHAR{$ENDIF};
+  PUCHAR = {$IFDEF USE_DELPHI_TYPES} Windows.PUCHAR {$ELSE} ^Byte {$ENDIF};
   {$EXTERNALSYM PUCHAR}
   PUSHORT = ^USHORT;
   {$EXTERNALSYM PUSHORT}
-  PULONG = {$IFDEF USE_DELPHI_TYPES}Windows.PULONG{$ELSE}^ULONG{$ENDIF};
+  PULONG = {$IFDEF USE_DELPHI_TYPES} Windows.PULONG {$ELSE} ^ULONG {$ENDIF};
   {$EXTERNALSYM PULONG}
   PUQUAD = ^UQUAD;
   {$EXTERNALSYM PUQUAD}
@@ -355,11 +374,11 @@ type
 // Handle to an Object
 //
 
-  HANDLE = {$IFDEF USE_DELPHI_TYPES}Windows.THandle{$ELSE}Longword{$ENDIF};
+  HANDLE = {$IFDEF USE_DELPHI_TYPES} Windows.THandle {$ELSE} Longword {$ENDIF};
   {$EXTERNALSYM HANDLE}
-  PHANDLE = {$IFDEF USE_DELPHI_TYPES}Windows.PHandle{$ELSE}^HANDLE{$ENDIF};
+  PHANDLE = {$IFDEF USE_DELPHI_TYPES} Windows.PHandle {$ELSE} ^HANDLE {$ENDIF};
   {$EXTERNALSYM PHANDLE}
-  THandle = {$IFDEF USE_DELPHI_TYPES}Windows.THandle{$ELSE}HANDLE{$ENDIF};
+  THandle = {$IFDEF USE_DELPHI_TYPES} Windows.THandle {$ELSE} HANDLE {$ENDIF};
 
 //
 // Flag (bit) fields
@@ -410,11 +429,11 @@ type
 // NLS basics (Locale and Language Ids)
 //
 
-  LCID = {$IFDEF USE_DELPHI_TYPES}Windows.LCID{$ELSE}ULONG{$ENDIF};
+  LCID = {$IFDEF USE_DELPHI_TYPES} Windows.LCID {$ELSE} DWORD {$ENDIF};
   {$EXTERNALSYM LCID}
-  PLCID = {$IFDEF USE_DELPHI_TYPES}^LCID{$ELSE}PULONG{$ENDIF};
+  PLCID = ^LCID;
   {$EXTERNALSYM PLCID}
-  LANGID = {$IFDEF USE_DELPHI_TYPES}Windows.LANGID{$ELSE}USHORT{$ENDIF};
+  LANGID = {$IFDEF USE_DELPHI_TYPES} Windows.LANGID {$ELSE} Word {$ENDIF};
   {$EXTERNALSYM LANGID}
   PLANGID = ^LANGID; // TODO Not in original header (used in MSI)
 
@@ -511,11 +530,11 @@ type
   LPLARGE_INTEGER = ^LARGE_INTEGER;
   {$EXTERNALSYM LPLARGE_INTEGER}
 
-{$IFDEF USE_DELPHI_TYPES}
+  {$IFDEF USE_DELPHI_TYPES}
   _LARGE_INTEGER = Windows._LARGE_INTEGER;
   LARGE_INTEGER = Windows.LARGE_INTEGER;
   TLargeInteger = Windows.TLargeInteger;
-{$ELSE}
+  {$ELSE}
   _LARGE_INTEGER = record
     case Integer of
     0: (
@@ -528,7 +547,7 @@ type
   LARGE_INTEGER = _LARGE_INTEGER;
   {$EXTERNALSYM LARGE_INTEGER}
   TLargeInteger = LARGE_INTEGER;
-{$ENDIF}
+  {$ENDIF USE_DELPHI_TYPES}
 
   PLARGE_INTEGER = ^LARGE_INTEGER;
   {$EXTERNALSYM PLARGE_INTEGER}
@@ -537,11 +556,11 @@ type
   LPULARGE_INTEGER = ^ULARGE_INTEGER;
   {$EXTERNALSYM LPULARGE_INTEGER}
 
-{$IFDEF USE_DELPHI_TYPES}
+  {$IFDEF USE_DELPHI_TYPES}
   ULARGE_INTEGER = Windows.ULARGE_INTEGER;
   TULargeInteger = Windows.TULargeInteger;
   PULargeInteger = Windows.PULargeInteger;
-{$ELSE}
+  {$ELSE}
   ULARGE_INTEGER = record
     case Integer of
       0: (
@@ -553,7 +572,7 @@ type
   {$EXTERNALSYM ULARGE_INTEGER}
   TULargeInteger = ULARGE_INTEGER;
   PULargeInteger = LPULARGE_INTEGER;
-{$ENDIF}
+  {$ENDIF USE_DELPHI_TYPES}
 
   PULARGE_INTEGER = ^ULARGE_INTEGER;
   {$EXTERNALSYM PULARGE_INTEGER}
@@ -780,12 +799,12 @@ type
   PLIST_ENTRY = ^LIST_ENTRY;
   {$EXTERNALSYM PLIST_ENTRY}
 
-{$IFDEF USE_DELPHI_TYPES}
+  {$IFDEF USE_DELPHI_TYPES}
   _LIST_ENTRY = Windows._LIST_ENTRY;
   LIST_ENTRY = Windows.LIST_ENTRY;
   TListEntry = Windows.TListEntry;
   PListEntry = Windows.PListEntry;
-{$ELSE}
+  {$ELSE}
   _LIST_ENTRY = record
     Flink: PLIST_ENTRY;
     Blink: PLIST_ENTRY;
@@ -795,7 +814,7 @@ type
   {$EXTERNALSYM LIST_ENTRY}
   TListEntry = LIST_ENTRY;
   PListEntry = PLIST_ENTRY;
-{$ENDIF}
+  {$ENDIF USE_DELPHI_TYPES}
 
   PRLIST_ENTRY = ^LIST_ENTRY;
   {$EXTERNALSYM PLIST_ENTRY}
@@ -1018,7 +1037,7 @@ function ARGUMENT_PRESENT(ArgumentPointer: Pointer): BOOL;
 // struct _EXCEPTION_RECORD;
 
 //type
-//  PEXCEPTION_ROUTINE = function (ExceptionRecord: LP_EXCEPTION_RECORD;
+//  PEXCEPTION_ROUTINE = function(ExceptionRecord: LP_EXCEPTION_RECORD;
 //    EstablisherFrame: PVOID; ContextRecord: LPCONTEXT;
 //    DispatcherContext: PVOID): EXCEPTION_DISPOSITION; stdcall;
 //  {$EXTERNALSYM PEXCEPTION_ROUTINE}
@@ -1122,7 +1141,7 @@ type
   {$EXTERNALSYM PLONG_PTR}
   ULONG_PTR = Longword;
   {$EXTERNALSYM ULONG_PTR}
-  PULONG_PTR = ^PULONG_PTR;
+  PULONG_PTR = ^ULONG_PTR;
   {$EXTERNALSYM PULONG_PTR}
 
   LONG32 = Integer;
@@ -1164,31 +1183,31 @@ type
   {$EXTERNALSYM FLOAT}
   PFLOAT = ^FLOAT;
   {$EXTERNALSYM PFLOAT}
-  PBOOL = {$IFDEF USE_DELPHI_TYPES}Windows.PBOOL{$ELSE}^BOOL{$ENDIF};
+  PBOOL = {$IFDEF USE_DELPHI_TYPES} Windows.PBOOL {$ELSE} ^BOOL {$ENDIF};
   {$EXTERNALSYM PBOOL}
-  LPBOOL = {$IFDEF USE_DELPHI_TYPES}Windows.PBOOL{$ELSE}^BOOL{$ENDIF};
+  LPBOOL = {$IFDEF USE_DELPHI_TYPES} Windows.PBOOL {$ELSE} ^BOOL {$ENDIF};
   {$EXTERNALSYM LPBOOL}
-  PBYTE = {$IFDEF USE_DELPHI_TYPES}Windows.PBYTE{$ELSE}^BYTE{$ENDIF};
+  PBYTE = {$IFDEF USE_DELPHI_TYPES} Windows.PBYTE {$ELSE} ^Byte {$ENDIF};
   {$EXTERNALSYM PBYTE}
-  LPBYTE = {$IFDEF USE_DELPHI_TYPES}Windows.PBYTE{$ELSE}^BYTE{$ENDIF};
+  LPBYTE = {$IFDEF USE_DELPHI_TYPES} Windows.PBYTE {$ELSE} ^Byte {$ENDIF};
   {$EXTERNALSYM LPBYTE}
-  PINT = {$IFDEF USE_DELPHI_TYPES}Windows.PINT{$ELSE}^INT{$ENDIF};
+  PINT = {$IFDEF USE_DELPHI_TYPES} Windows.PINT {$ELSE} ^INT {$ENDIF};
   {$EXTERNALSYM PINT}
-  PUINT = {$IFDEF USE_DELPHI_TYPES}Windows.PUINT{$ELSE}^UINT{$ENDIF};
+  PUINT = {$IFDEF USE_DELPHI_TYPES} Windows.PUINT {$ELSE} ^UINT {$ENDIF};
   {$EXTERNALSYM PUINT}
-  LPUINT = {$IFDEF USE_DELPHI_TYPES}Windows.PUINT{$ELSE}^UINT{$ENDIF};
+  LPUINT = {$IFDEF USE_DELPHI_TYPES} Windows.PUINT {$ELSE} ^UINT {$ENDIF};
   {$EXTERNALSYM LPUINT}
-  LPINT = {$IFDEF USE_DELPHI_TYPES}Windows.PINT{$ELSE}^INT{$ENDIF};
+  LPINT = {$IFDEF USE_DELPHI_TYPES} Windows.PINT {$ELSE} ^INT {$ENDIF};
   {$EXTERNALSYM LPINT}
-  PWORD = {$IFDEF USE_DELPHI_TYPES}Windows.PWORD{$ELSE}^WORD{$ENDIF};
+  PWORD = {$IFDEF USE_DELPHI_TYPES} Windows.PWORD {$ELSE} ^WORD {$ENDIF};
   {$EXTERNALSYM PWORD}
-  LPWORD = {$IFDEF USE_DELPHI_TYPES}Windows.PWORD{$ELSE}^WORD{$ENDIF};
+  LPWORD = {$IFDEF USE_DELPHI_TYPES} Windows.PWORD {$ELSE} ^WORD {$ENDIF};
   {$EXTERNALSYM LPWORD}
   LPLONG = ^LONG;
   {$EXTERNALSYM LPLONG}
-  PDWORD = {$IFDEF USE_DELPHI_TYPES}Windows.PDWORD{$ELSE}^DWORD{$ENDIF};
+  PDWORD = {$IFDEF USE_DELPHI_TYPES} Windows.PDWORD {$ELSE} ^DWORD {$ENDIF};
   {$EXTERNALSYM PDWORD}
-  LPDWORD = {$IFDEF USE_DELPHI_TYPES}Windows.LPDWORD{$ELSE}^DWORD{$ENDIF};
+  LPDWORD = {$IFDEF USE_DELPHI_TYPES} Windows.LPDWORD {$ELSE} ^DWORD {$ENDIF};
   {$EXTERNALSYM LPDWORD}
   LPVOID = Pointer;
   {$EXTERNALSYM LPVOID}
@@ -1199,16 +1218,16 @@ type
 
   INT = Integer;
   {$EXTERNALSYM INT}
-  UINT = {$IFDEF USE_DELPHI_TYPES}Windows.UINT{$ELSE}Longword{$ENDIF};
+  UINT = {$IFDEF USE_DELPHI_TYPES} Windows.UINT {$ELSE} Longword {$ENDIF};
   {$EXTERNALSYM UINT}
 
 // Types use for passing & returning polymorphic values
 
-  WPARAM = {$IFDEF USE_DELPHI_TYPES}Windows.WPARAM{$ELSE}UINT_PTR{$ENDIF};
+  WPARAM = {$IFDEF USE_DELPHI_TYPES} Windows.WPARAM {$ELSE} UINT_PTR {$ENDIF};
   {$EXTERNALSYM WPARAM}
-  LPARAM = {$IFDEF USE_DELPHI_TYPES}Windows.LPARAM{$ELSE}LONG_PTR{$ENDIF};
+  LPARAM = {$IFDEF USE_DELPHI_TYPES} Windows.LPARAM {$ELSE} LONG_PTR {$ENDIF};
   {$EXTERNALSYM LPARAM}
-  LRESULT = {$IFDEF USE_DELPHI_TYPES}Windows.LRESULT{$ELSE}LONG_PTR{$ENDIF};
+  LRESULT = {$IFDEF USE_DELPHI_TYPES} Windows.LRESULT {$ELSE} LONG_PTR {$ENDIF};
   {$EXTERNALSYM LRESULT}
 
 function MAKEWORD(a, b: BYTE): WORD;
@@ -1226,95 +1245,97 @@ function HIBYTE(W: WORD): BYTE;
 {$EXTERNALSYM HIBYTE}
 
 type
-  HWND = {$IFDEF USE_DELPHI_TYPES}Windows.HWND{$ELSE}HANDLE{$ENDIF};
+  HWND = {$IFDEF USE_DELPHI_TYPES} Windows.HWND {$ELSE} HANDLE {$ENDIF};
   {$EXTERNALSYM HWND}
   LPHWND = ^HWND;
   {$EXTERNALSYM LPHWND}
-  HHOOK = {$IFDEF USE_DELPHI_TYPES}Windows.HHOOK{$ELSE}HANDLE{$ENDIF};
+  HHOOK = {$IFDEF USE_DELPHI_TYPES} Windows.HHOOK {$ELSE} HANDLE {$ENDIF};
   {$EXTERNALSYM HHOOK}
   LPHHOOK = ^HHOOK;
   {$EXTERNALSYM LPHHOOK}
   HEVENT = HANDLE;
   {$EXTERNALSYM HEVENT}
 
-  ATOM = {$IFDEF USE_DELPHI_TYPES}Windows.ATOM{$ELSE}WORD{$ENDIF};
+  ATOM = {$IFDEF USE_DELPHI_TYPES} Windows.ATOM {$ELSE} WORD {$ENDIF};
   {$EXTERNALSYM ATOM}
 
   SPHANDLE = ^HANDLE;
   {$EXTERNALSYM SPHANDLE}
   LPHANDLE = ^HANDLE;
   {$EXTERNALSYM LPHANDLE}
-  HGLOBAL = {$IFDEF USE_DELPHI_TYPES}Windows.HGLOBAL{$ELSE}HANDLE{$ENDIF};
+  HGLOBAL = {$IFDEF USE_DELPHI_TYPES} Windows.HGLOBAL {$ELSE} HANDLE {$ENDIF};
   {$EXTERNALSYM HGLOBAL}
-  HLOCAL = {$IFDEF USE_DELPHI_TYPES}Windows.HLOCAL{$ELSE}HANDLE{$ENDIF};
+  HLOCAL = {$IFDEF USE_DELPHI_TYPES} Windows.HLOCAL {$ELSE} HANDLE {$ENDIF};
   {$EXTERNALSYM HLOCAL}
-  GLOBALHANDLE = HANDLE;
-  {$EXTERNALSYM GLOBALHANDLE}
+  //GLOBALHANDLE = HANDLE;
+  //{$EXTERNALSYM GLOBALHANDLE} // clashes with WinBase.GlobalHandle function
   //LOCALHANDLE = HANDLE; // todo clashes with WinBase.LocalHandle function
   //{$EXTERNALSYM LOCALHANDLE}
-  FARPROC = {$IFDEF USE_DELPHI_TYPES}Windows.FARPROC{$ELSE}function: Integer{$ENDIF};
+  FARPROC = {$IFDEF USE_DELPHI_TYPES} Windows.FARPROC {$ELSE} function: Integer; stdcall {$ENDIF};
   {$EXTERNALSYM FARPROC}
   NEARPROC = function: Integer; stdcall;
   {$EXTERNALSYM NEARPROC}
   PROC = function: Integer; stdcall;
   {$EXTERNALSYM PROC}
 
-  HGDIOBJ = {$IFDEF USE_DELPHI_TYPES}Windows.HGDIOBJ{$ELSE}HANDLE{$ENDIF};
+  HGDIOBJ = {$IFDEF USE_DELPHI_TYPES} Windows.HGDIOBJ {$ELSE} HANDLE {$ENDIF};
   {$EXTERNALSYM HGDIOBJ}
 
-  HKEY = {$IFDEF USE_DELPHI_TYPES}Windows.HKEY{$ELSE}HANDLE{$ENDIF};
+  HKEY = {$IFDEF USE_DELPHI_TYPES} Windows.HKEY {$ELSE} HANDLE {$ENDIF};
   {$EXTERNALSYM HKEY}
-  PHKEY = {$IFDEF USE_DELPHI_TYPES}Windows.PHKEY{$ELSE}^HKEY{$ENDIF};
+  PHKEY = {$IFDEF USE_DELPHI_TYPES} Windows.PHKEY {$ELSE} ^HKEY {$ENDIF};
   {$EXTERNALSYM PHKEY}
 
-  HACCEL = {$IFDEF USE_DELPHI_TYPES}Windows.HACCEL{$ELSE}HANDLE{$ENDIF};
+  HACCEL = {$IFDEF USE_DELPHI_TYPES} Windows.HACCEL {$ELSE} HANDLE {$ENDIF};
   {$EXTERNALSYM HACCEL}
 
-  HBITMAP = {$IFDEF USE_DELPHI_TYPES}Windows.HBITMAP{$ELSE}HANDLE{$ENDIF};
+  HBITMAP = {$IFDEF USE_DELPHI_TYPES} Windows.HBITMAP {$ELSE} HANDLE {$ENDIF};
   {$EXTERNALSYM HBITMAP}
-  HBRUSH = {$IFDEF USE_DELPHI_TYPES}Windows.HBRUSH{$ELSE}HANDLE{$ENDIF};
+  HBRUSH = {$IFDEF USE_DELPHI_TYPES} Windows.HBRUSH {$ELSE} HANDLE {$ENDIF};
   {$EXTERNALSYM HBRUSH}
 
-  HCOLORSPACE = {$IFDEF USE_DELPHI_TYPES}Windows.HCOLORSPACE{$ELSE}HANDLE{$ENDIF};
+  HCOLORSPACE = {$IFDEF USE_DELPHI_TYPES} Windows.HCOLORSPACE {$ELSE} HANDLE {$ENDIF};
   {$EXTERNALSYM HCOLORSPACE}
 
-  HDC = {$IFDEF USE_DELPHI_TYPES}Windows.HDC{$ELSE}HANDLE{$ENDIF};
+  HDC = {$IFDEF USE_DELPHI_TYPES} Windows.HDC {$ELSE} HANDLE {$ENDIF};
   {$EXTERNALSYM HDC}
-  HGLRC = {$IFDEF USE_DELPHI_TYPES}Windows.HGLRC{$ELSE}HANDLE{$ENDIF};
+  HGLRC = {$IFDEF USE_DELPHI_TYPES} Windows.HGLRC {$ELSE} HANDLE {$ENDIF};
   {$EXTERNALSYM HGLRC}
-  HDESK = {$IFDEF USE_DELPHI_TYPES}Windows.HDESK{$ELSE}HANDLE{$ENDIF};
+  HDESK = {$IFDEF USE_DELPHI_TYPES} Windows.HDESK {$ELSE} HANDLE {$ENDIF};
   {$EXTERNALSYM HDESK}
-  HENHMETAFILE = {$IFDEF USE_DELPHI_TYPES}Windows.HENHMETAFILE{$ELSE}HANDLE{$ENDIF};
+  HENHMETAFILE = {$IFDEF USE_DELPHI_TYPES} Windows.HENHMETAFILE {$ELSE} HANDLE {$ENDIF};
   {$EXTERNALSYM HENHMETAFILE}
-  HFONT = {$IFDEF USE_DELPHI_TYPES}Windows.HFONT{$ELSE}HANDLE{$ENDIF};
+  HFONT = {$IFDEF USE_DELPHI_TYPES} Windows.HFONT {$ELSE} HANDLE {$ENDIF};
   {$EXTERNALSYM HFONT}
-  HICON = {$IFDEF USE_DELPHI_TYPES}Windows.HICON{$ELSE}HANDLE{$ENDIF};
+  HICON = {$IFDEF USE_DELPHI_TYPES} Windows.HICON {$ELSE} HANDLE {$ENDIF};
   {$EXTERNALSYM HICON}
-  HMENU = {$IFDEF USE_DELPHI_TYPES}Windows.HMENU{$ELSE}HANDLE{$ENDIF};
+  HMENU = {$IFDEF USE_DELPHI_TYPES} Windows.HMENU {$ELSE} HANDLE {$ENDIF};
   {$EXTERNALSYM HMENU}
-  HMETAFILE = {$IFDEF USE_DELPHI_TYPES}Windows.HMETAFILE{$ELSE}HANDLE{$ENDIF};
+  HMETAFILE = {$IFDEF USE_DELPHI_TYPES} Windows.HMETAFILE {$ELSE} HANDLE {$ENDIF};
   {$EXTERNALSYM HMETAFILE}
-  HINSTANCE = {$IFDEF USE_DELPHI_TYPES}Windows.HINST{$ELSE}HANDLE{$ENDIF};
-  {$EXTERNALSYM HINSTANCE}
-  HMODULE = {$IFDEF USE_DELPHI_TYPES}Windows.HMODULE{$ELSE}HINSTANCE{$ENDIF};
+
+  // (rom) HINSTANCE collides with Delphi HInstance global variable
+  HINST = {$IFDEF USE_DELPHI_TYPES} Windows.HINST {$ELSE} HANDLE {$ENDIF};
+
+  HMODULE = {$IFDEF USE_DELPHI_TYPES} Windows.HMODULE {$ELSE} HINST {$ENDIF};
   {$EXTERNALSYM HMODULE}
-  HPALETTE = {$IFDEF USE_DELPHI_TYPES}Windows.HPALETTE{$ELSE}HANDLE{$ENDIF};
+  HPALETTE = {$IFDEF USE_DELPHI_TYPES} Windows.HPALETTE {$ELSE} HANDLE {$ENDIF};
   {$EXTERNALSYM HPALETTE}
-  HPEN = {$IFDEF USE_DELPHI_TYPES}Windows.HPEN{$ELSE}HANDLE{$ENDIF};
+  HPEN = {$IFDEF USE_DELPHI_TYPES} Windows.HPEN {$ELSE} HANDLE {$ENDIF};
   {$EXTERNALSYM HPEN}
-  HRGN = {$IFDEF USE_DELPHI_TYPES}Windows.HRGN{$ELSE}HANDLE{$ENDIF};
+  HRGN = {$IFDEF USE_DELPHI_TYPES} Windows.HRGN {$ELSE} HANDLE {$ENDIF};
   {$EXTERNALSYM HRGN}
-  HRSRC = {$IFDEF USE_DELPHI_TYPES}Windows.HRSRC{$ELSE}HANDLE{$ENDIF};
+  HRSRC = {$IFDEF USE_DELPHI_TYPES} Windows.HRSRC {$ELSE} HANDLE {$ENDIF};
   {$EXTERNALSYM HRSRC}
-  HSTR = {$IFDEF USE_DELPHI_TYPES}Windows.HSTR{$ELSE}HANDLE{$ENDIF};
+  HSTR = {$IFDEF USE_DELPHI_TYPES} Windows.HSTR {$ELSE} HANDLE {$ENDIF};
   {$EXTERNALSYM HSTR}
-  HTASK = {$IFDEF USE_DELPHI_TYPES}Windows.HTASK{$ELSE}HANDLE{$ENDIF};
+  HTASK = {$IFDEF USE_DELPHI_TYPES} Windows.HTASK {$ELSE} HANDLE {$ENDIF};
   {$EXTERNALSYM HTASK}
-  HWINSTA = {$IFDEF USE_DELPHI_TYPES}Windows.HWINSTA{$ELSE}HANDLE{$ENDIF};
+  HWINSTA = {$IFDEF USE_DELPHI_TYPES} Windows.HWINSTA {$ELSE} HANDLE {$ENDIF};
   {$EXTERNALSYM HWINSTA}
-  HKL = {$IFDEF USE_DELPHI_TYPES}Windows.HKL{$ELSE}HANDLE{$ENDIF};
+  HKL = {$IFDEF USE_DELPHI_TYPES} Windows.HKL {$ELSE} HANDLE {$ENDIF};
   {$EXTERNALSYM HKL}
-  PHKL = {$IFDEF USE_DELPHI_TYPES}^HKL{$ELSE}^HANDLE{$ENDIF};
+  PHKL = {$IFDEF USE_DELPHI_TYPES} ^HKL {$ELSE} ^HANDLE {$ENDIF};
   {$EXTERNALSYM PHKL}
 
   HMONITOR = HANDLE;
@@ -1324,12 +1345,12 @@ type
   HUMPD = HANDLE;
   {$EXTERNALSYM HUMPD}  
 
-  HFILE = {$IFDEF USE_DELPHI_TYPES}Windows.HFILE{$ELSE}Integer{$ENDIF};
+  HFILE = {$IFDEF USE_DELPHI_TYPES} Windows.HFILE {$ELSE} Longword {$ENDIF};
   {$EXTERNALSYM HFILE}
-  HCURSOR = {$IFDEF USE_DELPHI_TYPES}Windows.HCURSOR{$ELSE}HICON{$ENDIF};
+  HCURSOR = {$IFDEF USE_DELPHI_TYPES} Windows.HCURSOR {$ELSE} HICON {$ENDIF};
   {$EXTERNALSYM HCURSOR}
 
-  COLORREF = {$IFDEF USE_DELPHI_TYPES}Windows.COLORREF{$ELSE}DWORD{$ENDIF};
+  COLORREF = {$IFDEF USE_DELPHI_TYPES} Windows.COLORREF {$ELSE} DWORD {$ENDIF};
   {$EXTERNALSYM COLORREF}
   LPCOLORREF = ^COLORREF;
   {$EXTERNALSYM LPCOLORREF}
@@ -1351,14 +1372,14 @@ type
     bottom: LONG;
   end;
   {$EXTERNALSYM tagRECT}
-  RECT = {$IFDEF USE_DELPHI_TYPES}Windows.TRect{$ELSE}tagRECT{$ENDIF};
+  RECT = {$IFDEF USE_DELPHI_TYPES} Windows.TRect {$ELSE} tagRECT {$ENDIF};
   {$EXTERNALSYM RECT}
   NPRECT = ^RECT;
   {$EXTERNALSYM NPRECT}
   LPCRECT = ^RECT;
   {$EXTERNALSYM LPCRECT}
-  TRect = {$IFDEF USE_DELPHI_TYPES}Windows.TRect{$ELSE}RECT{$ENDIF};
-  PRect = {$IFDEF USE_DELPHI_TYPES}Windows.PRect{$ELSE}LPRECT{$ENDIF};
+  TRect = {$IFDEF USE_DELPHI_TYPES} Windows.TRect {$ELSE} RECT {$ENDIF};
+  PRect = {$IFDEF USE_DELPHI_TYPES} Windows.PRect {$ELSE} LPRECT {$ENDIF};
 
   LPRECTL = ^RECTL;
   {$EXTERNALSYM LPRECTL}
@@ -1387,8 +1408,8 @@ type
   {$EXTERNALSYM NPPOINT}
   POINT = tagPOINT;
   {$EXTERNALSYM tagPOINT}
-  TPoint = {$IFDEF USE_DELPHI_TYPES}Windows.TPoint{$ELSE}POINT{$ENDIF};
-  PPoint = {$IFDEF USE_DELPHI_TYPES}Windows.PPoint{$ELSE}LPPOINT{$ENDIF};
+  TPoint = {$IFDEF USE_DELPHI_TYPES} Windows.TPoint {$ELSE} POINT {$ENDIF};
+  PPoint = {$IFDEF USE_DELPHI_TYPES} Windows.PPoint {$ELSE} LPPOINT {$ENDIF};
 
   PPointl = ^POINTL;
   _POINTL = record
@@ -1403,10 +1424,10 @@ type
   LPSIZE = ^TSize;
   {$EXTERNALSYM LPSIZE}
 
-{$IFDEF USE_DELPHI_TYPES}
+  {$IFDEF USE_DELPHI_TYPES}
   TSize = Windows.TSize;
   PSize = Windows.PSize;
-{$ELSE}
+  {$ELSE}
   tagSIZE = record
     cx: LONG;
     cy: LONG;
@@ -1414,7 +1435,7 @@ type
   {$EXTERNALSYM tagSIZE}
   TSize = tagSIZE;
   PSize = LPSIZE;
-{$ENDIF}
+  {$ENDIF USE_DELPHI_TYPES}
 
   SIZE = TSize;
   {$EXTERNALSYM SIZE}
@@ -1441,8 +1462,6 @@ type
 //  File System time stamps are represented with the following structure:
 //
 
-  {$IFNDEF _FILETIME_}
-  {$DEFINE _FILETIME_}
   _FILETIME = record
     dwLowDateTime: DWORD;
     dwHighDateTime: DWORD;
@@ -1455,7 +1474,6 @@ type
   LPFILETIME = PFILETIME;
   {$EXTERNALSYM LPFILETIME}
   TFileTime = FILETIME;
-  {$ENDIF}
 
 // mode selections for the device mode function
 
@@ -1645,10 +1663,42 @@ type
   PKAFFINITY = ^KAFFINITY;
   {$EXTERNALSYM PKAFFINITY}
 
+  // (rom) missing types
+  LPCASTR = ^AnsiChar;
+  LPASTR = ^AnsiChar;
+  PCASTR = ^AnsiChar;
+  PASTR = ^AnsiChar;
+
+  PPCWSTR = ^LPCWSTR;
+  PPCASTR = ^LPCASTR;
+  PPCSTR  = ^LPCTSTR;
+  PPWSTR = ^LPWSTR;
+  PPASTR = ^LPASTR;
+  PPSTR  = ^LPTSTR;
+  PPTCHAR = ^PTCHAR;
+  LPLPCTSTR = ^LPCTSTR;
+
+{$IFDEF JWA_INCLUDEMODE}
+function GetModuleHandle(lpModuleName: LPCTSTR): HMODULE; stdcall;
+{$EXTERNALSYM GetModuleHandle}
+function LoadLibrary(lpLibFileName: LPCTSTR): HMODULE; stdcall;
+{$EXTERNALSYM LoadLibrary}
+function GetProcAddress(hModule: HMODULE; lpProcName: LPCSTR): FARPROC; stdcall;
+{$EXTERNALSYM GetProcAddress}
+{$ENDIF JWA_INCLUDEMODE}
+
+{$ENDIF JWA_INTERFACESECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
+
 implementation
 
 uses
-  JwaWinNT;
+  JwaWinDLLNames, JwaWinNT;
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_IMPLEMENTATIONSECTION}
 
 function Int32x32To64(a, b: LONG): LONGLONG;
 begin
@@ -1722,7 +1772,7 @@ end;
 procedure InitializeObjectAttributes(p: POBJECT_ATTRIBUTES; n: PUNICODE_STRING;
   a: ULONG; r: HANDLE; s: PVOID{PSECURITY_DESCRIPTOR});
 begin
-  p^.Length := sizeof(OBJECT_ATTRIBUTES);
+  p^.Length := SizeOf(OBJECT_ATTRIBUTES);
   p^.RootDirectory := r;
   p^.Attributes := a;
   p^.ObjectName := n;
@@ -1765,9 +1815,15 @@ begin
   Result := W shr 8;
 end;
 
-function GetModuleHandle(lpModuleName: LPCSTR): HMODULE; stdcall; external kernel32 name 'GetModuleHandleA';
-function LoadLibrary(lpLibFileName: LPCSTR): HMODULE; stdcall; external kernel32 name 'LoadLibraryA';
-function GetProcAddress(hModule: HMODULE; lpProcName: LPCSTR): FARPROC; stdcall; external kernel32 name 'GetProcAddress';
+{$IFDEF JWA_INCLUDEMODE}
+function GetModuleHandle; external kernel32 name 'GetModuleHandleA';
+function LoadLibrary; external kernel32 name 'LoadLibraryA';
+function GetProcAddress; stdcall; external kernel32 name 'GetProcAddress';
+{$ENDIF JWA_INCLUDEMODE}
+
+const
+  RsELibraryNotFound = 'Library not found: %s';
+  RsEFunctionNotFound = 'Function not found: %s.%s';
 
 procedure GetProcedureAddress(var P: Pointer; const ModuleName, ProcName: string);
 var
@@ -1779,12 +1835,17 @@ begin
     if ModuleHandle = 0 then
     begin
       ModuleHandle := LoadLibrary(PChar(ModuleName));
-      if ModuleHandle = 0 then raise EJwaLoadLibraryError.Create('Library not found: ' + ModuleName);
+      if ModuleHandle = 0 then
+        raise EJwaLoadLibraryError.CreateFmt(RsELibraryNotFound, [ModuleName]);
     end;
-    P := GetProcAddress(ModuleHandle, PChar(ProcName));
-    if not Assigned(P) then raise EJwaGetProcAddressError.Create('Function not found: ' + ModuleName + '.' + ProcName);
+    P := Pointer(GetProcAddress(ModuleHandle, PChar(ProcName)));
+    if not Assigned(P) then
+      raise EJwaGetProcAddressError.CreateFmt(RsEFunctionNotFound, [ModuleName, ProcName]);
   end;
 end;
 
+{$ENDIF JWA_IMPLEMENTATIONSECTION}
 
+{$IFNDEF JWA_INCLUDEMODE}
 end.
+{$ENDIF !JWA_INCLUDEMODE}

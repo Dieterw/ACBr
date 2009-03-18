@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Registry Key Definitions API interface Unit for Object Pascal                }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: regstr.h, released June 2000. The original Pascal      }
 { code is: RegStr.pas, released December 2000. The initial developer of the    }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaRegStr.pas,v 1.8 2005/09/03 14:27:48 marquardt Exp $
 
 unit JwaRegStr;
 
@@ -49,15 +50,14 @@ unit JwaRegStr;
 {$HPPEMIT '#include "regstr.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 {.$DEFINE NEC_98}
-{.$DEFINE _KERNEL_PNPI_}
 
 uses
-  JwaWinType;
+  JwaWindows;
 
 const
 
@@ -81,17 +81,17 @@ const
   {$EXTERNALSYM REGSTR_KEY_PCIENUM}
   REGSTR_KEY_VPOWERDENUM = 'VPOWERD'; // child of ENUM
   {$EXTERNALSYM REGSTR_KEY_VPOWERDENUM}
-{$IFNDEF NEC_98}
-  REGSTR_KEY_ISAENUM  = 'ISAPnP'; // child of ENUM
-  {$EXTERNALSYM REGSTR_KEY_ISAENUM}
-  REGSTR_KEY_EISAENUM = 'EISA'; // child of ENUM
-  {$EXTERNALSYM REGSTR_KEY_EISAENUM}
-{$ELSE}
+  {$IFDEF NEC_98}
   REGSTR_KEY_ISAENUM  = 'C98PnP'; // child of ENUM
   {$EXTERNALSYM REGSTR_KEY_ISAENUM}
   REGSTR_KEY_EISAENUM = 'NESA'; // child of ENUM
   {$EXTERNALSYM REGSTR_KEY_EISAENUM}
-{$ENDIF}
+  {$ELSE}
+  REGSTR_KEY_ISAENUM  = 'ISAPnP'; // child of ENUM
+  {$EXTERNALSYM REGSTR_KEY_ISAENUM}
+  REGSTR_KEY_EISAENUM = 'EISA'; // child of ENUM
+  {$EXTERNALSYM REGSTR_KEY_EISAENUM}
+  {$ENDIF NEC_98}
   REGSTR_KEY_LOGCONFIG   = 'LogConfig'; // child of enum\<enumerator>\<deviceid>\<instanceid>
   {$EXTERNALSYM REGSTR_KEY_LOGCONFIG}
   REGSTR_KEY_SYSTEMBOARD = '*PNP0C01'; // child of enum\root
@@ -162,6 +162,8 @@ const
   {$EXTERNALSYM REGSTR_PATH_NETEQUIV}
   REGSTR_PATH_CVNETWORK            = 'Software\Microsoft\Windows\CurrentVersion\Network';
   {$EXTERNALSYM REGSTR_PATH_CVNETWORK}
+  REGSTR_PATH_WMI_SECURITY         = 'System\CurrentControlSet\Control\Wmi\Security';
+  {$EXTERNALSYM REGSTR_PATH_WMI_SECURITY}
   REGSTR_PATH_RELIABILITY          = 'Software\Microsoft\Windows\CurrentVersion\Reliability';
   {$EXTERNALSYM REGSTR_PATH_RELIABILITY}
   REGSTR_PATH_RELIABILITY_POLICY   = TEXT('Software\Policies\Microsoft\Windows NT\Reliability');
@@ -404,7 +406,6 @@ const
   REGSTR_VAL_DISPLAYFLAGS = 'DisplayFlags';
   {$EXTERNALSYM REGSTR_VAL_DISPLAYFLAGS}
 
-
 // under HKEY_CURRENT_USER
 
   REGSTR_PATH_CONTROLPANEL = 'Control Panel';
@@ -556,7 +557,6 @@ const
   {$EXTERNALSYM REGSTR_KEY_EBDCONFIGSYSLOCAL}
   REGSTR_KEY_EBDCONFIGSYSKEYBOARD   = 'EBDConfigSysKeyboard';
   {$EXTERNALSYM REGSTR_KEY_EBDCONFIGSYSKEYBOARD}
-
 
 // Values under REGSTR_PATH_DRIVERSIGN and REGSTR_PATH_NONDRIVERSIGN
 
@@ -1159,7 +1159,7 @@ const
   {$EXTERNALSYM REGDF_NOTDETIRQ}
   REGDF_NOTDETDMA       = $00000008; // cannot detect DMA resource
   {$EXTERNALSYM REGDF_NOTDETDMA}
-  REGDF_NOTDETALL       = (REGDF_NOTDETIO or REGDF_NOTDETMEM or REGDF_NOTDETIRQ or REGDF_NOTDETDMA);
+  REGDF_NOTDETALL       = REGDF_NOTDETIO or REGDF_NOTDETMEM or REGDF_NOTDETIRQ or REGDF_NOTDETDMA;
   {$EXTERNALSYM REGDF_NOTDETALL}
   REGDF_NEEDFULLCONFIG  = $00000010; // stop devnode if lack resource
   {$EXTERNALSYM REGDF_NEEDFULLCONFIG}
@@ -1175,7 +1175,7 @@ const
   {$EXTERNALSYM REGDF_CONFLICTIRQ}
   REGDF_CONFLICTDMA     = $00080000; // DMA res. in conflict
   {$EXTERNALSYM REGDF_CONFLICTDMA}
-  REGDF_CONFLICTALL     = (REGDF_CONFLICTIO or REGDF_CONFLICTMEM or REGDF_CONFLICTIRQ or REGDF_CONFLICTDMA);
+  REGDF_CONFLICTALL     = REGDF_CONFLICTIO or REGDF_CONFLICTMEM or REGDF_CONFLICTIRQ or REGDF_CONFLICTDMA;
   {$EXTERNALSYM REGDF_CONFLICTALL}
   REGDF_MAPIRQ2TO9      = $00100000; // IRQ2 has been mapped to 9
   {$EXTERNALSYM REGDF_MAPIRQ2TO9}
@@ -1411,18 +1411,7 @@ const
 // EISA multi functions add-on
 //
 
-{$IFNDEF NEC_98}
-  REGSTR_VAL_EISA_RANGES         = 'EISARanges';
-  {$EXTERNALSYM REGSTR_VAL_EISA_RANGES}
-  REGSTR_VAL_EISA_FUNCTIONS      = 'EISAFunctions';
-  {$EXTERNALSYM REGSTR_VAL_EISA_FUNCTIONS}
-  REGSTR_VAL_EISA_FUNCTIONS_MASK = 'EISAFunctionsMask';
-  {$EXTERNALSYM REGSTR_VAL_EISA_FUNCTIONS_MASK}
-  REGSTR_VAL_EISA_FLAGS          = 'EISAFlags';
-  {$EXTERNALSYM REGSTR_VAL_EISA_FLAGS}
-  REGSTR_VAL_EISA_SIMULATE_INT15 = 'EISASimulateInt15';
-  {$EXTERNALSYM REGSTR_VAL_EISA_SIMULATE_INT15}
-{$ELSE}
+  {$IFDEF NEC_98}
   REGSTR_VAL_EISA_RANGES         = 'NESARanges';
   {$EXTERNALSYM REGSTR_VAL_EISA_RANGES}
   REGSTR_VAL_EISA_FUNCTIONS      = 'NESAFunctions';
@@ -1433,7 +1422,18 @@ const
   {$EXTERNALSYM REGSTR_VAL_EISA_FLAGS}
   REGSTR_VAL_EISA_SIMULATE_INT15 = 'NESASimulateInt15';
   {$EXTERNALSYM REGSTR_VAL_EISA_SIMULATE_INT15}
-{$ENDIF}
+  {$ELSE}
+  REGSTR_VAL_EISA_RANGES         = 'EISARanges';
+  {$EXTERNALSYM REGSTR_VAL_EISA_RANGES}
+  REGSTR_VAL_EISA_FUNCTIONS      = 'EISAFunctions';
+  {$EXTERNALSYM REGSTR_VAL_EISA_FUNCTIONS}
+  REGSTR_VAL_EISA_FUNCTIONS_MASK = 'EISAFunctionsMask';
+  {$EXTERNALSYM REGSTR_VAL_EISA_FUNCTIONS_MASK}
+  REGSTR_VAL_EISA_FLAGS          = 'EISAFlags';
+  {$EXTERNALSYM REGSTR_VAL_EISA_FLAGS}
+  REGSTR_VAL_EISA_SIMULATE_INT15 = 'EISASimulateInt15';
+  {$EXTERNALSYM REGSTR_VAL_EISA_SIMULATE_INT15}
+  {$ENDIF NEC_98}
   EISAFLAG_NO_IO_MERGE   = $00000001;
   {$EXTERNALSYM EISAFLAG_NO_IO_MERGE}
   EISAFLAG_SLOT_IO_FIRST = $00000002;
@@ -1589,8 +1589,6 @@ const
   {$EXTERNALSYM REGSTR_VAL_INSTALLER_32}
   REGSTR_VAL_INSICON            = 'Icon'; // value of class\name
   {$EXTERNALSYM REGSTR_VAL_INSICON}
-  REGSTR_VAL_LEGACYINFOPT       = 'LegacyInfOption'; // used for translating to old-style INF option names
-  {$EXTERNALSYM REGSTR_VAL_LEGACYINFOPT}
   REGSTR_VAL_ENUMPROPPAGES      = 'EnumPropPages'; // For Class/Device Properties (16-bit)
   {$EXTERNALSYM REGSTR_VAL_ENUMPROPPAGES}
   REGSTR_VAL_ENUMPROPPAGES_32   = 'EnumPropPages32'; // For Class/Device Properties (32-bit)
@@ -1657,13 +1655,13 @@ const
   REGSTR_VAL_PCICOPTIONS = 'PCICOptions'; // Binary DWORD.  IRQ mask in
   {$EXTERNALSYM REGSTR_VAL_PCICOPTIONS}
                                                 // low word.  # skts in high
-{$IFNDEF NEC_98}
-  PCIC_DEFAULT_IRQMASK = $4EB8; // Default IRQ masks
-  {$EXTERNALSYM PCIC_DEFAULT_IRQMASK}
-{$ELSE}
+  {$IFDEF NEC_98}
   PCIC_DEFAULT_IRQMASK = $1468; // Default IRQ masks
   {$EXTERNALSYM PCIC_DEFAULT_IRQMASK}
-{$ENDIF}
+  {$ELSE}
+  PCIC_DEFAULT_IRQMASK = $4EB8; // Default IRQ masks
+  {$EXTERNALSYM PCIC_DEFAULT_IRQMASK}
+  {$ENDIF NEC_98}
   PCIC_DEFAULT_NUMSOCKETS = 0; // 0 = Automatic detection
   {$EXTERNALSYM PCIC_DEFAULT_NUMSOCKETS}
   REGSTR_VAL_PCICIRQMAP   = 'PCICIRQMap'; // Binary 16 byte IRQ map table
@@ -2431,35 +2429,17 @@ const
 
 // BiosInfo defines.
 
-{$IFNDEF _KERNEL_PNPI_}
-
-  REGSTR_PATH_BIOSINFO = 'System\CurrentControlSet\Control\BiosInfo';
-  {$EXTERNALSYM REGSTR_PATH_BIOSINFO}
-
-{$ELSE}
-
+  {$IFDEF _KERNEL_PNPI_}
   REGSTR_PATH_BIOSINFO = '\Registry\Machine\System\CurrentControlSet\Control\BiosInfo';
   {$EXTERNALSYM REGSTR_PATH_BIOSINFO}
-
-{$ENDIF}
+  {$ELSE}
+  REGSTR_PATH_BIOSINFO = 'System\CurrentControlSet\Control\BiosInfo';
+  {$EXTERNALSYM REGSTR_PATH_BIOSINFO}
+  {$ENDIF _KERNEL_PNPI_}
 
 // Pci Irq Routing registry defines.
 
-{$IFNDEF _KERNEL_PNPI_}
-
-  REGSTR_PATH_PCIIR        = 'System\CurrentControlSet\Control\Pnp\PciIrqRouting';
-  {$EXTERNALSYM REGSTR_PATH_PCIIR}
-  REGSTR_VAL_OPTIONS       = 'Options';
-  {$EXTERNALSYM REGSTR_VAL_OPTIONS}
-  REGSTR_VAL_STAT          = 'Status';
-  {$EXTERNALSYM REGSTR_VAL_STAT}
-  REGSTR_VAL_TABLE_STAT    = 'TableStatus';
-  {$EXTERNALSYM REGSTR_VAL_TABLE_STAT}
-  REGSTR_VAL_MINIPORT_STAT = 'MiniportStatus';
-  {$EXTERNALSYM REGSTR_VAL_MINIPORT_STAT}
-
-{$ELSE}
-
+  {$IFDEF _KERNEL_PNPI_}
   REGSTR_PATH_PCIIR        = '\Registry\Machine\System\CurrentControlSet\Control\Pnp\PciIrqRouting';
   {$EXTERNALSYM REGSTR_PATH_PCIIR}
   REGSTR_VAL_OPTIONS       = 'Options';
@@ -2470,8 +2450,18 @@ const
   {$EXTERNALSYM REGSTR_VAL_TABLE_STAT}
   REGSTR_VAL_MINIPORT_STAT = 'MiniportStatus';
   {$EXTERNALSYM REGSTR_VAL_MINIPORT_STAT}
-
-{$ENDIF}
+  {$ELSE}
+  REGSTR_PATH_PCIIR        = 'System\CurrentControlSet\Control\Pnp\PciIrqRouting';
+  {$EXTERNALSYM REGSTR_PATH_PCIIR}
+  REGSTR_VAL_OPTIONS       = 'Options';
+  {$EXTERNALSYM REGSTR_VAL_OPTIONS}
+  REGSTR_VAL_STAT          = 'Status';
+  {$EXTERNALSYM REGSTR_VAL_STAT}
+  REGSTR_VAL_TABLE_STAT    = 'TableStatus';
+  {$EXTERNALSYM REGSTR_VAL_TABLE_STAT}
+  REGSTR_VAL_MINIPORT_STAT = 'MiniportStatus';
+  {$EXTERNALSYM REGSTR_VAL_MINIPORT_STAT}
+  {$ENDIF _KERNEL_PNPI_}
 
 // Pci Irq Routing Option values.
 

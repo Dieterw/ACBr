@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Windows Cryptography API interface Unit for Object Pascal                    }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: wincrypt.h, released June 2000. The original Pascal    }
 { code is: WinCrypt.pas, released December 2000. The initial developer of the  }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,14 +35,29 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaWinCrypt.pas,v 1.13 2005/09/06 16:36:50 marquardt Exp $
+
+{$IFNDEF JWA_INCLUDEMODE}
 
 unit JwaWinCrypt;
 
+{$I jediapilib.inc}
+
 {$WEAKPACKAGEUNIT}
+
+interface
+
+uses
+  JwaWindows;
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_INTERFACESECTION}
 
 {$HPPEMIT ''}
 {$HPPEMIT '#include <WinCrypt.h>'}
@@ -69,13 +83,6 @@ unit JwaWinCrypt;
 {$HPPEMIT 'typedef PCERT_CHAIN_CONTEXT *PPCCERT_CHAIN_CONTEXT'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
-
-interface
-
-uses
-  JwaWinBase, JwaWinType;
-
 //
 // Algorithm IDs and Flags
 //
@@ -94,41 +101,41 @@ function GET_ALG_SID(x: DWORD): DWORD;
 // Algorithm classes
 
 const
-  ALG_CLASS_ANY          = (0);
+  ALG_CLASS_ANY          = 0;
   {$EXTERNALSYM ALG_CLASS_ANY}
-  ALG_CLASS_SIGNATURE    = (1 shl 13);
+  ALG_CLASS_SIGNATURE    = 1 shl 13;
   {$EXTERNALSYM ALG_CLASS_SIGNATURE}
-  ALG_CLASS_MSG_ENCRYPT  = (2 shl 13);
+  ALG_CLASS_MSG_ENCRYPT  = 2 shl 13;
   {$EXTERNALSYM ALG_CLASS_MSG_ENCRYPT}
-  ALG_CLASS_DATA_ENCRYPT = (3 shl 13);
+  ALG_CLASS_DATA_ENCRYPT = 3 shl 13;
   {$EXTERNALSYM ALG_CLASS_DATA_ENCRYPT}
-  ALG_CLASS_HASH         = (4 shl 13);
+  ALG_CLASS_HASH         = 4 shl 13;
   {$EXTERNALSYM ALG_CLASS_HASH}
-  ALG_CLASS_KEY_EXCHANGE = (5 shl 13);
+  ALG_CLASS_KEY_EXCHANGE = 5 shl 13;
   {$EXTERNALSYM ALG_CLASS_KEY_EXCHANGE}
-  ALG_CLASS_ALL          = (7 shl 13);
+  ALG_CLASS_ALL          = 7 shl 13;
   {$EXTERNALSYM ALG_CLASS_ALL}
 
 // Algorithm types
 
-  ALG_TYPE_ANY           = (0);
+  ALG_TYPE_ANY           = 0;
   {$EXTERNALSYM ALG_TYPE_ANY}
-  ALG_TYPE_DSS           = (1 shl 9);
+  ALG_TYPE_DSS           = 1 shl 9;
   {$EXTERNALSYM ALG_TYPE_DSS}
-  ALG_TYPE_RSA           = (2 shl 9);
+  ALG_TYPE_RSA           = 2 shl 9;
   {$EXTERNALSYM ALG_TYPE_RSA}
-  ALG_TYPE_BLOCK         = (3 shl 9);
+  ALG_TYPE_BLOCK         = 3 shl 9;
   {$EXTERNALSYM ALG_TYPE_BLOCK}
-  ALG_TYPE_STREAM        = (4 shl 9);
+  ALG_TYPE_STREAM        = 4 shl 9;
   {$EXTERNALSYM ALG_TYPE_STREAM}
-  ALG_TYPE_DH            = (5 shl 9);
+  ALG_TYPE_DH            = 5 shl 9;
   {$EXTERNALSYM ALG_TYPE_DH}
-  ALG_TYPE_SECURECHANNEL = (6 shl 9);
+  ALG_TYPE_SECURECHANNEL = 6 shl 9;
   {$EXTERNALSYM ALG_TYPE_SECURECHANNEL}
 
 // Generic sub-ids
 
-  ALG_SID_ANY = (0);
+  ALG_SID_ANY = 0;
   {$EXTERNALSYM ALG_SID_ANY}
 
 // Some RSA sub-ids
@@ -275,75 +282,75 @@ type
 // algorithm identifier definitions
 
 const
-  CALG_MD2                  = (ALG_CLASS_HASH or ALG_TYPE_ANY or ALG_SID_MD2);
+  CALG_MD2                  = ALG_CLASS_HASH or ALG_TYPE_ANY or ALG_SID_MD2;
   {$EXTERNALSYM CALG_MD2}
-  CALG_MD4                  = (ALG_CLASS_HASH or ALG_TYPE_ANY or ALG_SID_MD4);
+  CALG_MD4                  = ALG_CLASS_HASH or ALG_TYPE_ANY or ALG_SID_MD4;
   {$EXTERNALSYM CALG_MD4}
-  CALG_MD5                  = (ALG_CLASS_HASH or ALG_TYPE_ANY or ALG_SID_MD5);
+  CALG_MD5                  = ALG_CLASS_HASH or ALG_TYPE_ANY or ALG_SID_MD5;
   {$EXTERNALSYM CALG_MD5}
-  CALG_SHA                  = (ALG_CLASS_HASH or ALG_TYPE_ANY or ALG_SID_SHA);
+  CALG_SHA                  = ALG_CLASS_HASH or ALG_TYPE_ANY or ALG_SID_SHA;
   {$EXTERNALSYM CALG_SHA}
-  CALG_SHA1                 = (ALG_CLASS_HASH or ALG_TYPE_ANY or ALG_SID_SHA1);
+  CALG_SHA1                 = ALG_CLASS_HASH or ALG_TYPE_ANY or ALG_SID_SHA1;
   {$EXTERNALSYM CALG_SHA1}
-  CALG_MAC                  = (ALG_CLASS_HASH or ALG_TYPE_ANY or ALG_SID_MAC);
+  CALG_MAC                  = ALG_CLASS_HASH or ALG_TYPE_ANY or ALG_SID_MAC;
   {$EXTERNALSYM CALG_MAC}
-  CALG_RSA_SIGN             = (ALG_CLASS_SIGNATURE or ALG_TYPE_RSA or ALG_SID_RSA_ANY);
+  CALG_RSA_SIGN             = ALG_CLASS_SIGNATURE or ALG_TYPE_RSA or ALG_SID_RSA_ANY;
   {$EXTERNALSYM CALG_RSA_SIGN}
-  CALG_DSS_SIGN             = (ALG_CLASS_SIGNATURE or ALG_TYPE_DSS or ALG_SID_DSS_ANY);
+  CALG_DSS_SIGN             = ALG_CLASS_SIGNATURE or ALG_TYPE_DSS or ALG_SID_DSS_ANY;
   {$EXTERNALSYM CALG_DSS_SIGN}
-  CALG_RSA_KEYX             = (ALG_CLASS_KEY_EXCHANGE or ALG_TYPE_RSA or ALG_SID_RSA_ANY);
+  CALG_RSA_KEYX             = ALG_CLASS_KEY_EXCHANGE or ALG_TYPE_RSA or ALG_SID_RSA_ANY;
   {$EXTERNALSYM CALG_RSA_KEYX}
-  CALG_DES                  = (ALG_CLASS_DATA_ENCRYPT or ALG_TYPE_BLOCK or ALG_SID_DES);
+  CALG_DES                  = ALG_CLASS_DATA_ENCRYPT or ALG_TYPE_BLOCK or ALG_SID_DES;
   {$EXTERNALSYM CALG_DES}
-  CALG_3DES_112             = (ALG_CLASS_DATA_ENCRYPT or ALG_TYPE_BLOCK or ALG_SID_3DES_112);
+  CALG_3DES_112             = ALG_CLASS_DATA_ENCRYPT or ALG_TYPE_BLOCK or ALG_SID_3DES_112;
   {$EXTERNALSYM CALG_3DES_112}
-  CALG_3DES                 = (ALG_CLASS_DATA_ENCRYPT or ALG_TYPE_BLOCK or ALG_SID_3DES);
+  CALG_3DES                 = ALG_CLASS_DATA_ENCRYPT or ALG_TYPE_BLOCK or ALG_SID_3DES;
   {$EXTERNALSYM CALG_3DES}
-  CALG_DESX                 = (ALG_CLASS_DATA_ENCRYPT or ALG_TYPE_BLOCK or ALG_SID_DESX);
+  CALG_DESX                 = ALG_CLASS_DATA_ENCRYPT or ALG_TYPE_BLOCK or ALG_SID_DESX;
   {$EXTERNALSYM CALG_DESX}
-  CALG_RC2                  = (ALG_CLASS_DATA_ENCRYPT or ALG_TYPE_BLOCK or ALG_SID_RC2);
+  CALG_RC2                  = ALG_CLASS_DATA_ENCRYPT or ALG_TYPE_BLOCK or ALG_SID_RC2;
   {$EXTERNALSYM CALG_RC2}
-  CALG_RC4                  = (ALG_CLASS_DATA_ENCRYPT or ALG_TYPE_STREAM or ALG_SID_RC4);
+  CALG_RC4                  = ALG_CLASS_DATA_ENCRYPT or ALG_TYPE_STREAM or ALG_SID_RC4;
   {$EXTERNALSYM CALG_RC4}
-  CALG_SEAL                 = (ALG_CLASS_DATA_ENCRYPT or ALG_TYPE_STREAM or ALG_SID_SEAL);
+  CALG_SEAL                 = ALG_CLASS_DATA_ENCRYPT or ALG_TYPE_STREAM or ALG_SID_SEAL;
   {$EXTERNALSYM CALG_SEAL}
-  CALG_DH_SF                = (ALG_CLASS_KEY_EXCHANGE or ALG_TYPE_DH or ALG_SID_DH_SANDF);
+  CALG_DH_SF                = ALG_CLASS_KEY_EXCHANGE or ALG_TYPE_DH or ALG_SID_DH_SANDF;
   {$EXTERNALSYM CALG_DH_SF}
-  CALG_DH_EPHEM             = (ALG_CLASS_KEY_EXCHANGE or ALG_TYPE_DH or ALG_SID_DH_EPHEM);
+  CALG_DH_EPHEM             = ALG_CLASS_KEY_EXCHANGE or ALG_TYPE_DH or ALG_SID_DH_EPHEM;
   {$EXTERNALSYM CALG_DH_EPHEM}
-  CALG_AGREEDKEY_ANY        = (ALG_CLASS_KEY_EXCHANGE or ALG_TYPE_DH or ALG_SID_AGREED_KEY_ANY);
+  CALG_AGREEDKEY_ANY        = ALG_CLASS_KEY_EXCHANGE or ALG_TYPE_DH or ALG_SID_AGREED_KEY_ANY;
   {$EXTERNALSYM CALG_AGREEDKEY_ANY}
-  CALG_KEA_KEYX             = (ALG_CLASS_KEY_EXCHANGE or ALG_TYPE_DH or ALG_SID_KEA);
+  CALG_KEA_KEYX             = ALG_CLASS_KEY_EXCHANGE or ALG_TYPE_DH or ALG_SID_KEA;
   {$EXTERNALSYM CALG_KEA_KEYX}
-  CALG_HUGHES_MD5           = (ALG_CLASS_KEY_EXCHANGE or ALG_TYPE_ANY or ALG_SID_MD5);
+  CALG_HUGHES_MD5           = ALG_CLASS_KEY_EXCHANGE or ALG_TYPE_ANY or ALG_SID_MD5;
   {$EXTERNALSYM CALG_HUGHES_MD5}
-  CALG_SKIPJACK             = (ALG_CLASS_DATA_ENCRYPT or ALG_TYPE_BLOCK or ALG_SID_SKIPJACK);
+  CALG_SKIPJACK             = ALG_CLASS_DATA_ENCRYPT or ALG_TYPE_BLOCK or ALG_SID_SKIPJACK;
   {$EXTERNALSYM CALG_SKIPJACK}
-  CALG_TEK                  = (ALG_CLASS_DATA_ENCRYPT or ALG_TYPE_BLOCK or ALG_SID_TEK);
+  CALG_TEK                  = ALG_CLASS_DATA_ENCRYPT or ALG_TYPE_BLOCK or ALG_SID_TEK;
   {$EXTERNALSYM CALG_TEK}
-  CALG_CYLINK_MEK           = (ALG_CLASS_DATA_ENCRYPT or ALG_TYPE_BLOCK or ALG_SID_CYLINK_MEK);
+  CALG_CYLINK_MEK           = ALG_CLASS_DATA_ENCRYPT or ALG_TYPE_BLOCK or ALG_SID_CYLINK_MEK;
   {$EXTERNALSYM CALG_CYLINK_MEK}
-  CALG_SSL3_SHAMD5          = (ALG_CLASS_HASH or ALG_TYPE_ANY or ALG_SID_SSL3SHAMD5);
+  CALG_SSL3_SHAMD5          = ALG_CLASS_HASH or ALG_TYPE_ANY or ALG_SID_SSL3SHAMD5;
   {$EXTERNALSYM CALG_SSL3_SHAMD5}
-  CALG_SSL3_MASTER          = (ALG_CLASS_MSG_ENCRYPT or ALG_TYPE_SECURECHANNEL or ALG_SID_SSL3_MASTER);
+  CALG_SSL3_MASTER          = ALG_CLASS_MSG_ENCRYPT or ALG_TYPE_SECURECHANNEL or ALG_SID_SSL3_MASTER;
   {$EXTERNALSYM CALG_SSL3_MASTER}
-  CALG_SCHANNEL_MASTER_HASH = (ALG_CLASS_MSG_ENCRYPT or ALG_TYPE_SECURECHANNEL or ALG_SID_SCHANNEL_MASTER_HASH);
+  CALG_SCHANNEL_MASTER_HASH = ALG_CLASS_MSG_ENCRYPT or ALG_TYPE_SECURECHANNEL or ALG_SID_SCHANNEL_MASTER_HASH;
   {$EXTERNALSYM CALG_SCHANNEL_MASTER_HASH}
-  CALG_SCHANNEL_MAC_KEY     = (ALG_CLASS_MSG_ENCRYPT or ALG_TYPE_SECURECHANNEL or ALG_SID_SCHANNEL_MAC_KEY);
+  CALG_SCHANNEL_MAC_KEY     = ALG_CLASS_MSG_ENCRYPT or ALG_TYPE_SECURECHANNEL or ALG_SID_SCHANNEL_MAC_KEY;
   {$EXTERNALSYM CALG_SCHANNEL_MAC_KEY}
-  CALG_SCHANNEL_ENC_KEY     = (ALG_CLASS_MSG_ENCRYPT or ALG_TYPE_SECURECHANNEL or ALG_SID_SCHANNEL_ENC_KEY);
+  CALG_SCHANNEL_ENC_KEY     = ALG_CLASS_MSG_ENCRYPT or ALG_TYPE_SECURECHANNEL or ALG_SID_SCHANNEL_ENC_KEY;
   {$EXTERNALSYM CALG_SCHANNEL_ENC_KEY}
-  CALG_PCT1_MASTER          = (ALG_CLASS_MSG_ENCRYPT or ALG_TYPE_SECURECHANNEL or ALG_SID_PCT1_MASTER);
+  CALG_PCT1_MASTER          = ALG_CLASS_MSG_ENCRYPT or ALG_TYPE_SECURECHANNEL or ALG_SID_PCT1_MASTER;
   {$EXTERNALSYM CALG_PCT1_MASTER}
-  CALG_SSL2_MASTER          = (ALG_CLASS_MSG_ENCRYPT or ALG_TYPE_SECURECHANNEL or ALG_SID_SSL2_MASTER);
+  CALG_SSL2_MASTER          = ALG_CLASS_MSG_ENCRYPT or ALG_TYPE_SECURECHANNEL or ALG_SID_SSL2_MASTER;
   {$EXTERNALSYM CALG_SSL2_MASTER}
-  CALG_TLS1_MASTER          = (ALG_CLASS_MSG_ENCRYPT or ALG_TYPE_SECURECHANNEL or ALG_SID_TLS1_MASTER);
+  CALG_TLS1_MASTER          = ALG_CLASS_MSG_ENCRYPT or ALG_TYPE_SECURECHANNEL or ALG_SID_TLS1_MASTER;
   {$EXTERNALSYM CALG_TLS1_MASTER}
-  CALG_RC5                  = (ALG_CLASS_DATA_ENCRYPT or ALG_TYPE_BLOCK or ALG_SID_RC5);
+  CALG_RC5                  = ALG_CLASS_DATA_ENCRYPT or ALG_TYPE_BLOCK or ALG_SID_RC5;
   {$EXTERNALSYM CALG_RC5}
-  CALG_HMAC                 = (ALG_CLASS_HASH or ALG_TYPE_ANY or ALG_SID_HMAC);
+  CALG_HMAC                 = ALG_CLASS_HASH or ALG_TYPE_ANY or ALG_SID_HMAC;
   {$EXTERNALSYM CALG_HMAC}
-  CALG_TLS1PRF              = (ALG_CLASS_HASH or ALG_TYPE_ANY or ALG_SID_TLS1PRF);
+  CALG_TLS1PRF              = ALG_CLASS_HASH or ALG_TYPE_ANY or ALG_SID_TLS1PRF;
   {$EXTERNALSYM CALG_TLS1PRF}
 
 // resource number for signatures in the CSP
@@ -848,121 +855,121 @@ const
   MS_DEF_PROV_W = 'Microsoft Base Cryptographic Provider v1.0';
   {$EXTERNALSYM MS_DEF_PROV_W}
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   MS_DEF_PROV = MS_DEF_PROV_W;
   {$EXTERNALSYM MS_DEF_PROV}
-{$ELSE}
+  {$ELSE}
   MS_DEF_PROV = MS_DEF_PROV_A;
   {$EXTERNALSYM MS_DEF_PROV}
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   MS_ENHANCED_PROV_A = 'Microsoft Enhanced Cryptographic Provider v1.0';
   {$EXTERNALSYM MS_ENHANCED_PROV_A}
   MS_ENHANCED_PROV_W = 'Microsoft Enhanced Cryptographic Provider v1.0';
   {$EXTERNALSYM MS_ENHANCED_PROV_W}
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   MS_ENHANCED_PROV = MS_ENHANCED_PROV_W;
   {$EXTERNALSYM MS_ENHANCED_PROV}
-{$ELSE}
+  {$ELSE}
   MS_ENHANCED_PROV = MS_ENHANCED_PROV_A;
   {$EXTERNALSYM MS_ENHANCED_PROV}
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   MS_STRONG_PROV_A = 'Microsoft Strong Cryptographic Provider';
   {$EXTERNALSYM MS_STRONG_PROV_A}
   MS_STRONG_PROV_W = 'Microsoft Strong Cryptographic Provider';
   {$EXTERNALSYM MS_STRONG_PROV_W}
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   MS_STRONG_PROV = MS_STRONG_PROV_W;
   {$EXTERNALSYM MS_STRONG_PROV}
-{$ELSE}
+  {$ELSE}
   MS_STRONG_PROV = MS_STRONG_PROV_A;
   {$EXTERNALSYM MS_STRONG_PROV}
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   MS_DEF_RSA_SIG_PROV_A = 'Microsoft RSA Signature Cryptographic Provider';
   {$EXTERNALSYM MS_DEF_RSA_SIG_PROV_A}
   MS_DEF_RSA_SIG_PROV_W = 'Microsoft RSA Signature Cryptographic Provider';
   {$EXTERNALSYM MS_DEF_RSA_SIG_PROV_W}
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   MS_DEF_RSA_SIG_PROV = MS_DEF_RSA_SIG_PROV_W;
   {$EXTERNALSYM MS_DEF_RSA_SIG_PROV}
-{$ELSE}
+  {$ELSE}
   MS_DEF_RSA_SIG_PROV = MS_DEF_RSA_SIG_PROV_A;
   {$EXTERNALSYM MS_DEF_RSA_SIG_PROV}
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   MS_DEF_RSA_SCHANNEL_PROV_A = 'Microsoft RSA SChannel Cryptographic Provider';
   {$EXTERNALSYM MS_DEF_RSA_SCHANNEL_PROV_A}
   MS_DEF_RSA_SCHANNEL_PROV_W = 'Microsoft RSA SChannel Cryptographic Provider';
   {$EXTERNALSYM MS_DEF_RSA_SCHANNEL_PROV_W}
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   MS_DEF_RSA_SCHANNEL_PROV = MS_DEF_RSA_SCHANNEL_PROV_W;
   {$EXTERNALSYM MS_DEF_RSA_SCHANNEL_PROV}
-{$ELSE}
+  {$ELSE}
   MS_DEF_RSA_SCHANNEL_PROV = MS_DEF_RSA_SCHANNEL_PROV_A;
   {$EXTERNALSYM MS_DEF_RSA_SCHANNEL_PROV}
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   MS_DEF_DSS_PROV_A = 'Microsoft Base DSS Cryptographic Provider';
   {$EXTERNALSYM MS_DEF_DSS_PROV_A}
   MS_DEF_DSS_PROV_W = 'Microsoft Base DSS Cryptographic Provider';
   {$EXTERNALSYM MS_DEF_DSS_PROV_W}
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   MS_DEF_DSS_PROV = MS_DEF_DSS_PROV_W;
   {$EXTERNALSYM MS_DEF_DSS_PROV}
-{$ELSE}
+  {$ELSE}
   MS_DEF_DSS_PROV = MS_DEF_DSS_PROV_A;
   {$EXTERNALSYM MS_DEF_DSS_PROV}
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   MS_DEF_DSS_DH_PROV_A = 'Microsoft Base DSS and Diffie-Hellman Cryptographic Provider';
   {$EXTERNALSYM MS_DEF_DSS_DH_PROV_A}
   MS_DEF_DSS_DH_PROV_W = 'Microsoft Base DSS and Diffie-Hellman Cryptographic Provider';
   {$EXTERNALSYM MS_DEF_DSS_DH_PROV_W}
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   MS_DEF_DSS_DH_PROV = MS_DEF_DSS_DH_PROV_W;
   {$EXTERNALSYM MS_DEF_DSS_DH_PROV}
-{$ELSE}
+  {$ELSE}
   MS_DEF_DSS_DH_PROV = MS_DEF_DSS_DH_PROV_A;
   {$EXTERNALSYM MS_DEF_DSS_DH_PROV}
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   MS_ENH_DSS_DH_PROV_A = 'Microsoft Enhanced DSS and Diffie-Hellman Cryptographic Provider';
   {$EXTERNALSYM MS_ENH_DSS_DH_PROV_A}
   MS_ENH_DSS_DH_PROV_W = 'Microsoft Enhanced DSS and Diffie-Hellman Cryptographic Provider';
   {$EXTERNALSYM MS_ENH_DSS_DH_PROV_W}
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   MS_ENH_DSS_DH_PROV = MS_ENH_DSS_DH_PROV_W;
   {$EXTERNALSYM MS_ENH_DSS_DH_PROV}
-{$ELSE}
+  {$ELSE}
   MS_ENH_DSS_DH_PROV = MS_ENH_DSS_DH_PROV_A;
   {$EXTERNALSYM MS_ENH_DSS_DH_PROV}
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   MS_DEF_DH_SCHANNEL_PROV_A = 'Microsoft DH SChannel Cryptographic Provider';
   {$EXTERNALSYM MS_DEF_DH_SCHANNEL_PROV_A}
   MS_DEF_DH_SCHANNEL_PROV_W = 'Microsoft DH SChannel Cryptographic Provider';
   {$EXTERNALSYM MS_DEF_DH_SCHANNEL_PROV_W}
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   MS_DEF_DH_SCHANNEL_PROV = MS_DEF_DH_SCHANNEL_PROV_W;
   {$EXTERNALSYM MS_DEF_DH_SCHANNEL_PROV}
-{$ELSE}
+  {$ELSE}
   MS_DEF_DH_SCHANNEL_PROV = MS_DEF_DH_SCHANNEL_PROV_A;
   {$EXTERNALSYM MS_DEF_DH_SCHANNEL_PROV}
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   MS_SCARD_PROV_A = 'Microsoft Base Smart Card Crypto Provider';
   {$EXTERNALSYM MS_SCARD_PROV_A}
   MS_SCARD_PROV_W = 'Microsoft Base Smart Card Crypto Provider';
   {$EXTERNALSYM MS_SCARD_PROV_W}
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   MS_SCARD_PROV = MS_SCARD_PROV_W;
   {$EXTERNALSYM MS_SCARD_PROV}
-{$ELSE}
+  {$ELSE}
   MS_SCARD_PROV = MS_SCARD_PROV_A;
   {$EXTERNALSYM MS_SCARD_PROV}
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   MAXUIDLEN = 64;
   {$EXTERNALSYM MAXUIDLEN}
@@ -1300,16 +1307,9 @@ function CryptAcquireContextA(var phProv: HCRYPTPROV; pszContainer: LPCSTR;
 function CryptAcquireContextW(var phProv: HCRYPTPROV; pszContainer: LPCWSTR;
   pszProvider: LPCWSTR; dwProvType: DWORD; dwFlags: DWORD): BOOL; stdcall;
 {$EXTERNALSYM CryptAcquireContextW}
-
-{$IFDEF UNICODE}
-function CryptAcquireContext(var phProv: HCRYPTPROV; pszContainer: LPCWSTR;
-  pszProvider: LPCWSTR; dwProvType: DWORD; dwFlags: DWORD): BOOL; stdcall;
+function CryptAcquireContext(var phProv: HCRYPTPROV; pszContainer: LPCTSTR;
+  pszProvider: LPCTSTR; dwProvType: DWORD; dwFlags: DWORD): BOOL; stdcall;
 {$EXTERNALSYM CryptAcquireContext}
-{$ELSE}
-function CryptAcquireContext(var phProv: HCRYPTPROV; pszContainer: LPCSTR;
-  pszProvider: LPCSTR; dwProvType: DWORD; dwFlags: DWORD): BOOL; stdcall;
-{$EXTERNALSYM CryptAcquireContext}
-{$ENDIF}
 
 function CryptReleaseContext(hProv: HCRYPTPROV; dwFlags: ULONG_PTR): BOOL; stdcall;
 {$EXTERNALSYM CryptReleaseContext}
@@ -1390,16 +1390,9 @@ function CryptSignHashA(hHash: HCRYPTHASH; dwKeySpec: DWORD; sDescription: LPCST
 function CryptSignHashW(hHash: HCRYPTHASH; dwKeySpec: DWORD; sDescription: LPCWSTR;
   dwFlags: DWORD; pbSignature: LPBYTE; var pdwSigLen: DWORD): BOOL; stdcall;
 {$EXTERNALSYM CryptSignHashW}
-
-{$IFDEF UNICODE}
-function CryptSignHash(hHash: HCRYPTHASH; dwKeySpec: DWORD; sDescription: LPCWSTR;
+function CryptSignHash(hHash: HCRYPTHASH; dwKeySpec: DWORD; sDescription: LPCTSTR;
   dwFlags: DWORD; pbSignature: LPBYTE; var pdwSigLen: DWORD): BOOL; stdcall;
 {$EXTERNALSYM CryptSignHash}
-{$ELSE}
-function CryptSignHash(hHash: HCRYPTHASH; dwKeySpec: DWORD; sDescription: LPCSTR;
-  dwFlags: DWORD; pbSignature: LPBYTE; var pdwSigLen: DWORD): BOOL; stdcall;
-{$EXTERNALSYM CryptSignHash}
-{$ENDIF}
 
 function CryptVerifySignatureA(hHash: HCRYPTHASH; pbSignature: LPBYTE;
   dwSigLen: DWORD; hPubKey: HCRYPTKEY; sDescription: LPCSTR; dwFlags: DWORD): BOOL; stdcall;
@@ -1407,29 +1400,16 @@ function CryptVerifySignatureA(hHash: HCRYPTHASH; pbSignature: LPBYTE;
 function CryptVerifySignatureW(hHash: HCRYPTHASH; pbSignature: LPBYTE;
   dwSigLen: DWORD; hPubKey: HCRYPTKEY; sDescription: LPCWSTR; dwFlags: DWORD): BOOL; stdcall;
 {$EXTERNALSYM CryptVerifySignatureW}
-
-{$IFDEF UNICODE}
 function CryptVerifySignature(hHash: HCRYPTHASH; pbSignature: LPBYTE;
-  dwSigLen: DWORD; hPubKey: HCRYPTKEY; sDescription: LPCWSTR; dwFlags: DWORD): BOOL; stdcall;
+  dwSigLen: DWORD; hPubKey: HCRYPTKEY; sDescription: LPCTSTR; dwFlags: DWORD): BOOL; stdcall;
 {$EXTERNALSYM CryptVerifySignature}
-{$ELSE}
-function CryptVerifySignature(hHash: HCRYPTHASH; pbSignature: LPBYTE;
-  dwSigLen: DWORD; hPubKey: HCRYPTKEY; sDescription: LPCSTR; dwFlags: DWORD): BOOL; stdcall;
-{$EXTERNALSYM CryptVerifySignature}
-{$ENDIF}
 
 function CryptSetProviderA(pszProvName: LPCSTR; dwProvType: DWORD): BOOL; stdcall;
 {$EXTERNALSYM CryptSetProviderA}
 function CryptSetProviderW(pszProvName: LPCWSTR; dwProvType: DWORD): BOOL; stdcall;
 {$EXTERNALSYM CryptSetProviderW}
-
-{$IFDEF UNICODE}
-function CryptSetProvider(pszProvName: LPCWSTR; dwProvType: DWORD): BOOL; stdcall;
+function CryptSetProvider(pszProvName: LPCTSTR; dwProvType: DWORD): BOOL; stdcall;
 {$EXTERNALSYM CryptSetProvider}
-{$ELSE}
-function CryptSetProvider(pszProvName: LPCSTR; dwProvType: DWORD): BOOL; stdcall;
-{$EXTERNALSYM CryptSetProvider}
-{$ENDIF}
 
 function CryptSetProviderExA(pszProvName: LPCSTR; dwProvType: DWORD;
   pdwReserved: LPDWORD; dwFlags: DWORD): BOOL; stdcall;
@@ -1437,16 +1417,9 @@ function CryptSetProviderExA(pszProvName: LPCSTR; dwProvType: DWORD;
 function CryptSetProviderExW(pszProvName: LPCWSTR; dwProvType: DWORD;
   pdwReserved: LPDWORD; dwFlags: DWORD): BOOL; stdcall;
 {$EXTERNALSYM CryptSetProviderExW}
-
-{$IFDEF UNICODE}
-function CryptSetProviderEx(pszProvName: LPCWSTR; dwProvType: DWORD;
+function CryptSetProviderEx(pszProvName: LPCTSTR; dwProvType: DWORD;
   pdwReserved: LPDWORD; dwFlags: DWORD): BOOL; stdcall;
 {$EXTERNALSYM CryptSetProviderEx}
-{$ELSE}
-function CryptSetProviderEx(pszProvName: LPCSTR; dwProvType: DWORD;
-  pdwReserved: LPDWORD; dwFlags: DWORD): BOOL; stdcall;
-{$EXTERNALSYM CryptSetProviderEx}
-{$ENDIF}
 
 function CryptGetDefaultProviderA(dwProvType: DWORD; pdwReserved: LPDWORD;
   dwFlags: DWORD; pszProvName: LPSTR; var pcbProvName: DWORD): BOOL; stdcall;
@@ -1454,16 +1427,9 @@ function CryptGetDefaultProviderA(dwProvType: DWORD; pdwReserved: LPDWORD;
 function CryptGetDefaultProviderW(dwProvType: DWORD; pdwReserved: LPDWORD;
   dwFlags: DWORD; pszProvName: LPWSTR; var pcbProvName: DWORD): BOOL; stdcall;
 {$EXTERNALSYM CryptGetDefaultProviderW}
-
-{$IFDEF UNICODE}
 function CryptGetDefaultProvider(dwProvType: DWORD; pdwReserved: LPDWORD;
-  dwFlags: DWORD; pszProvName: LPWSTR; var pcbProvName: DWORD): BOOL; stdcall;
+  dwFlags: DWORD; pszProvName: LPTSTR; var pcbProvName: DWORD): BOOL; stdcall;
 {$EXTERNALSYM CryptGetDefaultProvider}
-{$ELSE}
-function CryptGetDefaultProvider(dwProvType: DWORD; pdwReserved: LPDWORD;
-  dwFlags: DWORD; pszProvName: LPSTR; var pcbProvName: DWORD): BOOL; stdcall;
-{$EXTERNALSYM CryptGetDefaultProvider}
-{$ENDIF}
 
 function CryptEnumProviderTypesA(dwIndex: DWORD; pdwReserved: LPDWORD;
   dwFlags: DWORD; var pdwProvType: DWORD; pszTypeName: LPSTR;
@@ -1473,18 +1439,10 @@ function CryptEnumProviderTypesW(dwIndex: DWORD; pdwReserved: LPDWORD;
   dwFlags: DWORD; var pdwProvType: DWORD; pszTypeName: LPWSTR;
   var pcbTypeName: DWORD): BOOL; stdcall;
 {$EXTERNALSYM CryptEnumProviderTypesW}
-
-{$IFDEF UNICODE}
 function CryptEnumProviderTypes(dwIndex: DWORD; pdwReserved: LPDWORD;
-  dwFlags: DWORD; var pdwProvType: DWORD; pszTypeName: LPWSTR;
+  dwFlags: DWORD; var pdwProvType: DWORD; pszTypeName: LPTSTR;
   var pcbTypeName: DWORD): BOOL; stdcall;
 {$EXTERNALSYM CryptEnumProviderTypes}
-{$ELSE}
-function CryptEnumProviderTypes(dwIndex: DWORD; pdwReserved: LPDWORD;
-  dwFlags: DWORD; var pdwProvType: DWORD; pszTypeName: LPSTR;
-  var pcbTypeName: DWORD): BOOL; stdcall;
-{$EXTERNALSYM CryptEnumProviderTypes}
-{$ENDIF}
 
 function CryptEnumProvidersA(dwIndex: DWORD; pdwReserved: LPDWORD; dwFlags: DWORD;
   var pdwProvType: DWORD; pszProvName: LPSTR; var pcbProvName: DWORD): BOOL; stdcall;
@@ -1492,16 +1450,9 @@ function CryptEnumProvidersA(dwIndex: DWORD; pdwReserved: LPDWORD; dwFlags: DWOR
 function CryptEnumProvidersW(dwIndex: DWORD; pdwReserved: LPDWORD; dwFlags: DWORD;
   var pdwProvType: DWORD; pszProvName: LPWSTR; var pcbProvName: DWORD): BOOL; stdcall;
 {$EXTERNALSYM CryptEnumProvidersW}
-
-{$IFDEF UNICODE}
 function CryptEnumProviders(dwIndex: DWORD; pdwReserved: LPDWORD; dwFlags: DWORD;
-  var pdwProvType: DWORD; pszProvName: LPWSTR; var pcbProvName: DWORD): BOOL; stdcall;
+  var pdwProvType: DWORD; pszProvName: LPTSTR; var pcbProvName: DWORD): BOOL; stdcall;
 {$EXTERNALSYM CryptEnumProviders}
-{$ELSE}
-function CryptEnumProviders(dwIndex: DWORD; pdwReserved: LPDWORD; dwFlags: DWORD;
-  var pdwProvType: DWORD; pszProvName: LPSTR; var pcbProvName: DWORD): BOOL; stdcall;
-{$EXTERNALSYM CryptEnumProviders}
-{$ENDIF}
 
 function CryptContextAddRef(hProv: HCRYPTPROV; pdwReserved: LPDWORD; dwFlags: DWORD): BOOL; stdcall;
 {$EXTERNALSYM CryptContextAddRef}
@@ -1669,7 +1620,6 @@ const
   {$EXTERNALSYM szOID_RSA_DES_EDE3_CBC}
   szOID_RSA_RC5_CBCPad   = '1.2.840.113549.3.9';
   {$EXTERNALSYM szOID_RSA_RC5_CBCPad}
-
 
   szOID_ANSI_X942    = '1.2.840.10046';
   {$EXTERNALSYM szOID_ANSI_X942}
@@ -2325,7 +2275,7 @@ type
 //+-------------------------------------------------------------------------
 
 type
-  PCRYPT_DECRYPT_PRIVATE_KEY_FUNC = function (Algorithm: CRYPT_ALGORITHM_IDENTIFIER;
+  PCRYPT_DECRYPT_PRIVATE_KEY_FUNC = function(Algorithm: CRYPT_ALGORITHM_IDENTIFIER;
     EncryptedPrivateKey: CRYPT_DATA_BLOB; pbClearTextKey: LPBYTE;
     pcbClearTextKey: LPDWORD; pVoidDecryptFunc: LPVOID): BOOL; stdcall;
   {$EXTERNALSYM PCRYPT_DECRYPT_PRIVATE_KEY_FUNC}
@@ -2349,7 +2299,7 @@ type
 //+-------------------------------------------------------------------------
 
 type
-  PCRYPT_ENCRYPT_PRIVATE_KEY_FUNC = function (pAlgorithm: PCRYPT_ALGORITHM_IDENTIFIER;
+  PCRYPT_ENCRYPT_PRIVATE_KEY_FUNC = function(pAlgorithm: PCRYPT_ALGORITHM_IDENTIFIER;
     pClearTextPrivateKey: PCRYPT_DATA_BLOB; pbEncryptedKey: LPBYTE;
     pcbEncryptedKey: LPDWORD; pVoidEncryptFunc: LPVOID): BOOL; stdcall;
   {$EXTERNALSYM PCRYPT_ENCRYPT_PRIVATE_KEY_FUNC}
@@ -2369,7 +2319,7 @@ type
 //+-------------------------------------------------------------------------
 
 type
-  PCRYPT_RESOLVE_HCRYPTPROV_FUNC = function (pPrivateKeyInfo: PCRYPT_PRIVATE_KEY_INFO;
+  PCRYPT_RESOLVE_HCRYPTPROV_FUNC = function(pPrivateKeyInfo: PCRYPT_PRIVATE_KEY_INFO;
     phCryptProv: PHCRYPTPROV; pVoidResolveFunc: LPVOID): BOOL; stdcall;
   {$EXTERNALSYM PCRYPT_RESOLVE_HCRYPTPROV_FUNC}
   PCryptResolveHCryptProvFunc = PCRYPT_RESOLVE_HCRYPTPROV_FUNC;
@@ -2914,10 +2864,10 @@ const
 //--------------------------------------------------------------------------
 
 type
-  PFN_CRYPT_ALLOC = function (cbSize: size_t): LPVOID; stdcall;
+  PFN_CRYPT_ALLOC = function(cbSize: size_t): LPVOID; stdcall;
   {$EXTERNALSYM PFN_CRYPT_ALLOC}
 
-  PFN_CRYPT_FREE = procedure (pv: LPVOID); stdcall;
+  PFN_CRYPT_FREE = procedure(pv: LPVOID); stdcall;
   {$EXTERNALSYM PFN_CRYPT_FREE}
 
   PCRYPT_ENCODE_PARA = ^CRYPT_ENCODE_PARA;
@@ -3781,7 +3731,6 @@ function GET_CERT_UNICODE_VALUE_ERR_INDEX(X: DWORD): DWORD;
 //  pvStructInfo points to CERT_PUBLIC_KEY_INFO.
 //--------------------------------------------------------------------------
 
-
 //+-------------------------------------------------------------------------
 //  X509_AUTHORITY_KEY_ID
 //  szOID_AUTHORITY_KEY_IDENTIFIER
@@ -4576,7 +4525,6 @@ function IS_CRL_DIST_POINT_ERR_CRL_ISSUER(X: DWORD): Boolean;
 //  set.
 //--------------------------------------------------------------------------
 
-
 //+-------------------------------------------------------------------------
 // Sorted CTL TrustedSubjects extension
 //
@@ -4598,13 +4546,13 @@ function IS_CRL_DIST_POINT_ERR_CRL_ISSUER(X: DWORD): Boolean;
 //--------------------------------------------------------------------------
 
 const
-  SORTED_CTL_EXT_FLAGS_OFFSET         = (0*4);
+  SORTED_CTL_EXT_FLAGS_OFFSET         = 0 * 4;
   {$EXTERNALSYM SORTED_CTL_EXT_FLAGS_OFFSET}
-  SORTED_CTL_EXT_COUNT_OFFSET         = (1*4);
+  SORTED_CTL_EXT_COUNT_OFFSET         = 1 * 4;
   {$EXTERNALSYM SORTED_CTL_EXT_COUNT_OFFSET}
-  SORTED_CTL_EXT_MAX_COLLISION_OFFSET = (2*4);
+  SORTED_CTL_EXT_MAX_COLLISION_OFFSET = 2 * 4;
   {$EXTERNALSYM SORTED_CTL_EXT_MAX_COLLISION_OFFSET}
-  SORTED_CTL_EXT_HASH_BUCKET_OFFSET   = (3*4);
+  SORTED_CTL_EXT_HASH_BUCKET_OFFSET   = 3 * 4;
   {$EXTERNALSYM SORTED_CTL_EXT_HASH_BUCKET_OFFSET}
 
 // If the SubjectIdentifiers are a MD5 or SHA1 hash, the following flag is
@@ -4660,13 +4608,13 @@ const
   {$EXTERNALSYM CERT_DSS_R_LEN}
   CERT_DSS_S_LEN         = 20;
   {$EXTERNALSYM CERT_DSS_S_LEN}
-  CERT_DSS_SIGNATURE_LEN = (CERT_DSS_R_LEN + CERT_DSS_S_LEN);
+  CERT_DSS_SIGNATURE_LEN = CERT_DSS_R_LEN + CERT_DSS_S_LEN;
   {$EXTERNALSYM CERT_DSS_SIGNATURE_LEN}
 
 // Sequence of 2 unsigned integers (the extra +1 is for a potential leading
 // 0x00 to make the integer unsigned)
 
-  CERT_MAX_ASN_ENCODED_DSS_SIGNATURE_LEN = (2 + 2 * (2 + 20 + 1));
+  CERT_MAX_ASN_ENCODED_DSS_SIGNATURE_LEN = 2 + 2 * (2 + 20 + 1);
   {$EXTERNALSYM CERT_MAX_ASN_ENCODED_DSS_SIGNATURE_LEN}
 
 //+-------------------------------------------------------------------------
@@ -4742,7 +4690,7 @@ const
   {$EXTERNALSYM CRYPT_X942_COUNTER_BYTE_LENGTH}
   CRYPT_X942_KEY_LENGTH_BYTE_LENGTH = 4;
   {$EXTERNALSYM CRYPT_X942_KEY_LENGTH_BYTE_LENGTH}
-  CRYPT_X942_PUB_INFO_BYTE_LENGTH   = (512 div 8);
+  CRYPT_X942_PUB_INFO_BYTE_LENGTH   = 512 div 8;
   {$EXTERNALSYM CRYPT_X942_PUB_INFO_BYTE_LENGTH}
 
 type
@@ -4837,7 +4785,6 @@ type
 //
 //  pvStructInfo points to CMSG_CMS_SIGNER_INFO.
 //--------------------------------------------------------------------------
-
 
 //+-------------------------------------------------------------------------
 //  Netscape Certificate Extension Object Identifiers
@@ -5025,7 +4972,6 @@ const
 //  pszObjId = szOID_NETSCAPE_CERT_SEQUENCE and the CRYPT_DER_BLOBs point
 //  to encoded X509 certificates.
 //--------------------------------------------------------------------------
-
 
 //+=========================================================================
 //  Object IDentifier (OID) Installable Functions:  Data Structures and APIs
@@ -5357,7 +5303,7 @@ function CryptGetOIDFunctionValue(dwEncodingType: DWORD; pszFuncName: LPCSTR;
 {$EXTERNALSYM CryptGetOIDFunctionValue}
 
 type
-  PFN_CRYPT_ENUM_OID_FUNC = function (dwEncodingType: DWORD; pszFuncName,
+  PFN_CRYPT_ENUM_OID_FUNC = function(dwEncodingType: DWORD; pszFuncName,
     pszOID: LPCSTR; cValue: DWORD; rgdwValueType: LPDWORD;
     rgpwszValueName: LPCWSTR; rgpbValueData: LPBYTE; rgcbValueData: LPDWORD;
     pvArg: Pointer): BOOL; stdcall;
@@ -5546,7 +5492,7 @@ function CryptUnregisterOIDInfo(pInfo: PCCRYPT_OID_INFO): BOOL; stdcall;
 // If the callback returns FALSE, stops the enumeration.
 
 type
-  PFN_CRYPT_ENUM_OID_INFO = function (pInfo: PCCRYPT_OID_INFO; pvArg: Pointer): BOOL; stdcall;
+  PFN_CRYPT_ENUM_OID_INFO = function(pInfo: PCCRYPT_OID_INFO; pvArg: Pointer): BOOL; stdcall;
   {$EXTERNALSYM PFN_CRYPT_ENUM_OID_INFO}
   PFnCryptEnumOidInfo = PFN_CRYPT_ENUM_OID_INFO;
 
@@ -5648,19 +5594,19 @@ const
 //  Message Type Bit Flags
 //--------------------------------------------------------------------------
 
-  CMSG_ALL_FLAGS                 = (not 0);
+  CMSG_ALL_FLAGS                 = not 0;
   {$EXTERNALSYM CMSG_ALL_FLAGS}
-  CMSG_DATA_FLAG                 = (1 shl CMSG_DATA);
+  CMSG_DATA_FLAG                 = 1 shl CMSG_DATA;
   {$EXTERNALSYM CMSG_DATA_FLAG}
-  CMSG_SIGNED_FLAG               = (1 shl CMSG_SIGNED);
+  CMSG_SIGNED_FLAG               = 1 shl CMSG_SIGNED;
   {$EXTERNALSYM CMSG_SIGNED_FLAG}
-  CMSG_ENVELOPED_FLAG            = (1 shl CMSG_ENVELOPED);
+  CMSG_ENVELOPED_FLAG            = 1 shl CMSG_ENVELOPED;
   {$EXTERNALSYM CMSG_ENVELOPED_FLAG}
-  CMSG_SIGNED_AND_ENVELOPED_FLAG = (1 shl CMSG_SIGNED_AND_ENVELOPED);
+  CMSG_SIGNED_AND_ENVELOPED_FLAG = 1 shl CMSG_SIGNED_AND_ENVELOPED;
   {$EXTERNALSYM CMSG_SIGNED_AND_ENVELOPED_FLAG}
-  CMSG_HASHED_FLAG               = (1 shl CMSG_HASHED);
+  CMSG_HASHED_FLAG               = 1 shl CMSG_HASHED;
   {$EXTERNALSYM CMSG_HASHED_FLAG}
-  CMSG_ENCRYPTED_FLAG            = (1 shl CMSG_ENCRYPTED);
+  CMSG_ENCRYPTED_FLAG            = 1 shl CMSG_ENCRYPTED;
   {$EXTERNALSYM CMSG_ENCRYPTED_FLAG}
 
 //+-------------------------------------------------------------------------
@@ -5770,7 +5716,7 @@ type
     SignerId: CERT_ID;
     HashEncryptionAlgorithm: CRYPT_ALGORITHM_IDENTIFIER;
     pvHashEncryptionAuxInfo: Pointer;
-    {$ENDIF}
+    {$ENDIF CMSG_SIGNER_ENCODE_INFO_HAS_CMS_FIELDS}
   end;
   {$EXTERNALSYM _CMSG_SIGNER_ENCODE_INFO}
   CMSG_SIGNER_ENCODE_INFO = _CMSG_SIGNER_ENCODE_INFO;
@@ -5791,7 +5737,7 @@ type
     {$IFDEF CMSG_SIGNED_ENCODE_INFO_HAS_CMS_FIELDS}
     cAttrCertEncoded: DWORD;
     rgAttrCertEncoded: PCERT_BLOB;
-    {$ENDIF}
+    {$ENDIF CMSG_SIGNED_ENCODE_INFO_HAS_CMS_FIELDS}
   end;
   {$EXTERNALSYM _CMSG_SIGNED_ENCODE_INFO}
   CMSG_SIGNED_ENCODE_INFO = _CMSG_SIGNED_ENCODE_INFO;
@@ -5861,7 +5807,7 @@ type
     rgAttrCertEncoded: PCERT_BLOB;
     cUnprotectedAttr: DWORD;
     rgUnprotectedAttr: PCRYPT_ATTRIBUTE;
-    {$ENDIF}
+    {$ENDIF CMSG_ENVELOPED_ENCODE_INFO_HAS_CMS_FIELDS}
   end;
   {$EXTERNALSYM _CMSG_ENVELOPED_ENCODE_INFO}
   CMSG_ENVELOPED_ENCODE_INFO = _CMSG_ENVELOPED_ENCODE_INFO;
@@ -6258,7 +6204,7 @@ type
 //--------------------------------------------------------------------------
 
 type
-  PFN_CMSG_STREAM_OUTPUT = function (pvArg: Pointer; pbData: LPBYTE;
+  PFN_CMSG_STREAM_OUTPUT = function(pvArg: Pointer; pbData: LPBYTE;
     cbData: DWORD; fFinal: BOOL): BOOL; stdcall;
   {$EXTERNALSYM PFN_CMSG_STREAM_OUTPUT}
   PFnCMsgStreamOutput = PFN_CMSG_STREAM_OUTPUT;
@@ -6719,7 +6665,6 @@ type
 //  pvData points to an array of the CRL's encoded bytes.
 //--------------------------------------------------------------------------
 
-
 //+-------------------------------------------------------------------------
 //  CMSG_ENVELOPE_ALGORITHM_PARAM
 //
@@ -7050,7 +6995,6 @@ const
 //
 //  pvData points to a CMSG_ATTR struct.
 //--------------------------------------------------------------------------
-
 
 //+-------------------------------------------------------------------------
 //  Perform a special "control" function after the final CryptMsgUpdate of a
@@ -7481,7 +7425,6 @@ type
 //  attribute certificate to be removed.
 //--------------------------------------------------------------------------
 
-
 //+-------------------------------------------------------------------------
 //  Verify a countersignature, at the SignerInfo level.
 //  ie. verify that pbSignerInfoCountersignature contains the encrypted
@@ -7544,11 +7487,11 @@ function CryptMsgCountersignEncoded(dwEncodingType: DWORD; pbSignerInfo: PBYTE;
 //--------------------------------------------------------------------------
 
 type
-  PFN_CMSG_ALLOC = function (cb: size_t): Pointer; stdcall;
+  PFN_CMSG_ALLOC = function(cb: size_t): Pointer; stdcall;
   {$EXTERNALSYM PFN_CMSG_ALLOC}
   PFnCMsgAlloc = PFN_CMSG_ALLOC;
 
-  PFN_CMSG_FREE = procedure (pv: Pointer); stdcall;
+  PFN_CMSG_FREE = procedure(pv: Pointer); stdcall;
   {$EXTERNALSYM PFN_CMSG_FREE}
   PFnCMsgFree = PFN_CMSG_FREE;
 
@@ -7570,7 +7513,7 @@ const
   {$EXTERNALSYM CMSG_OID_GEN_ENCRYPT_KEY_FUNC}
 
 type
-  PFN_CMSG_GEN_ENCRYPT_KEY = function (phCryptProv: PHCRYPTPROV;
+  PFN_CMSG_GEN_ENCRYPT_KEY = function(phCryptProv: PHCRYPTPROV;
     paiEncrypt: PCRYPT_ALGORITHM_IDENTIFIER; pvEncryptAuxInfo: PVOID;
     pPublicKeyInfo: PCERT_PUBLIC_KEY_INFO; pfnAlloc: PFN_CMSG_ALLOC;
     var phEncryptKey: HCRYPTKEY; var ppbEncryptParameters: PBYTE;
@@ -7583,7 +7526,7 @@ const
   {$EXTERNALSYM CMSG_OID_EXPORT_ENCRYPT_KEY_FUNC}
 
 type
-  PFN_CMSG_EXPORT_ENCRYPT_KEY = function (hCryptProv: HCRYPTPROV;
+  PFN_CMSG_EXPORT_ENCRYPT_KEY = function(hCryptProv: HCRYPTPROV;
     hEncryptKey: HCRYPTKEY; pPublicKeyInfo: PCERT_PUBLIC_KEY_INFO;
     pbData: PBYTE; var pcbData: DWORD): BOOL; stdcall;
   {$EXTERNALSYM PFN_CMSG_EXPORT_ENCRYPT_KEY}
@@ -7594,7 +7537,7 @@ const
   {$EXTERNALSYM CMSG_OID_IMPORT_ENCRYPT_KEY_FUNC}
 
 type
-  PFN_CMSG_IMPORT_ENCRYPT_KEY = function (hCryptProv: HCRYPTPROV;
+  PFN_CMSG_IMPORT_ENCRYPT_KEY = function(hCryptProv: HCRYPTPROV;
     dwKeySpec: DWORD; paiEncrypt: PCRYPT_ALGORITHM_IDENTIFIER;
     paiPubKey: PCRYPT_ALGORITHM_IDENTIFIER; pbEncodedKey: PBYTE;
     cbEncodedKey: DWORD; var phEncryptKey: HCRYPTKEY): BOOL; stdcall;
@@ -7691,7 +7634,7 @@ const
   {$EXTERNALSYM CMSG_OID_GEN_CONTENT_ENCRYPT_KEY_FUNC}
 
 type
-  PFN_CMSG_GEN_CONTENT_ENCRYPT_KEY = function (pContentEncryptInfo: PCMSG_CONTENT_ENCRYPT_INFO;
+  PFN_CMSG_GEN_CONTENT_ENCRYPT_KEY = function(pContentEncryptInfo: PCMSG_CONTENT_ENCRYPT_INFO;
     dwFlags: DWORD; pvReserved: PPointer): BOOL; stdcall;
   {$EXTERNALSYM PFN_CMSG_GEN_CONTENT_ENCRYPT_KEY}
   PfnCmsgGenContentEncryptKey = PFN_CMSG_GEN_CONTENT_ENCRYPT_KEY;
@@ -7750,7 +7693,7 @@ const
   {$EXTERNALSYM CMSG_OID_EXPORT_KEY_TRANS_FUNC}
 
 type
-  PFN_CMSG_EXPORT_KEY_TRANS = function (pContentEncryptInfo: PCMSG_CONTENT_ENCRYPT_INFO;
+  PFN_CMSG_EXPORT_KEY_TRANS = function(pContentEncryptInfo: PCMSG_CONTENT_ENCRYPT_INFO;
     pKeyTransEncodeInfo: PCMSG_KEY_TRANS_RECIPIENT_ENCODE_INFO;
     pKeyTransEncryptInfo: PCMSG_KEY_TRANS_ENCRYPT_INFO; dwFlags: DWORD;
     pvReserved: Pointer): BOOL; stdcall;
@@ -7874,7 +7817,7 @@ const
   {$EXTERNALSYM CMSG_OID_EXPORT_KEY_AGREE_FUNC}
 
 type
-  PFN_CMSG_EXPORT_KEY_AGREE = function (pContentEncryptInfo: PCMSG_CONTENT_ENCRYPT_INFO;
+  PFN_CMSG_EXPORT_KEY_AGREE = function(pContentEncryptInfo: PCMSG_CONTENT_ENCRYPT_INFO;
     pKeyAgreeEncodeInfo: PCMSG_KEY_AGREE_RECIPIENT_ENCODE_INFO;
     pKeyAgreeEncryptInfo: PCMSG_KEY_AGREE_ENCRYPT_INFO; dwFlags: DWORD;
     pvReserved: Pointer): BOOL; stdcall;
@@ -7935,7 +7878,7 @@ const
   {$EXTERNALSYM CMSG_OID_EXPORT_MAIL_LIST_FUNC}
 
 type
-  PFN_CMSG_EXPORT_MAIL_LIST = function (pContentEncryptInfo: PCMSG_CONTENT_ENCRYPT_INFO;
+  PFN_CMSG_EXPORT_MAIL_LIST = function(pContentEncryptInfo: PCMSG_CONTENT_ENCRYPT_INFO;
     pMailListEncodeInfo: PCMSG_MAIL_LIST_RECIPIENT_ENCODE_INFO;
     pMailListEncryptInfo: PCMSG_MAIL_LIST_ENCRYPT_INFO; dwFlags: DWORD;
     pvReserved: Pointer): BOOL; stdcall;
@@ -7966,7 +7909,7 @@ const
   {$EXTERNALSYM CMSG_OID_IMPORT_KEY_TRANS_FUNC}
 
 type
-  PFN_CMSG_IMPORT_KEY_TRANS = function (pContentEncryptionAlgorithm: PCRYPT_ALGORITHM_IDENTIFIER;
+  PFN_CMSG_IMPORT_KEY_TRANS = function(pContentEncryptionAlgorithm: PCRYPT_ALGORITHM_IDENTIFIER;
     pKeyTransDecryptPara: PCMSG_CTRL_KEY_TRANS_DECRYPT_PARA; dwFlags: DWORD;
     pvReserved: Pointer; var phContentEncryptKey: HCRYPTKEY): BOOL; stdcall;
   {$EXTERNALSYM PFN_CMSG_IMPORT_KEY_TRANS}
@@ -7977,7 +7920,7 @@ const
   {$EXTERNALSYM CMSG_OID_IMPORT_KEY_AGREE_FUNC}
 
 type
-  PFN_CMSG_IMPORT_KEY_AGREE = function (pContentEncryptionAlgorithm: PCRYPT_ALGORITHM_IDENTIFIER;
+  PFN_CMSG_IMPORT_KEY_AGREE = function(pContentEncryptionAlgorithm: PCRYPT_ALGORITHM_IDENTIFIER;
     pKeyAgreeDecryptPara: PCMSG_CTRL_KEY_AGREE_DECRYPT_PARA; dwFlags: DWORD;
     pvReserved: Pointer; var phContentEncryptKey: HCRYPTKEY): BOOL; stdcall;
   {$EXTERNALSYM PFN_CMSG_IMPORT_KEY_AGREE}
@@ -7988,7 +7931,7 @@ const
   {$EXTERNALSYM CMSG_OID_IMPORT_MAIL_LIST_FUNC}
 
 type
-  PFN_CMSG_IMPORT_MAIL_LIST = function (pContentEncryptionAlgorithm: PCRYPT_ALGORITHM_IDENTIFIER;
+  PFN_CMSG_IMPORT_MAIL_LIST = function(pContentEncryptionAlgorithm: PCRYPT_ALGORITHM_IDENTIFIER;
     pMailListDecryptPara: PCMSG_CTRL_MAIL_LIST_DECRYPT_PARA; dwFlags: DWORD;
     pvReserved: Pointer; var phContentEncryptKey: HCRYPTKEY): BOOL; stdcall;
   {$EXTERNALSYM PFN_CMSG_IMPORT_MAIL_LIST}
@@ -8552,23 +8495,23 @@ const
   CERT_SYSTEM_STORE_LOCAL_MACHINE_ENTERPRISE_ID = 9;
   {$EXTERNALSYM CERT_SYSTEM_STORE_LOCAL_MACHINE_ENTERPRISE_ID}
 
-  CERT_SYSTEM_STORE_CURRENT_USER    = (CERT_SYSTEM_STORE_CURRENT_USER_ID shl CERT_SYSTEM_STORE_LOCATION_SHIFT);
+  CERT_SYSTEM_STORE_CURRENT_USER    = CERT_SYSTEM_STORE_CURRENT_USER_ID shl CERT_SYSTEM_STORE_LOCATION_SHIFT;
   {$EXTERNALSYM CERT_SYSTEM_STORE_CURRENT_USER}
-  CERT_SYSTEM_STORE_LOCAL_MACHINE   = (CERT_SYSTEM_STORE_LOCAL_MACHINE_ID shl CERT_SYSTEM_STORE_LOCATION_SHIFT);
+  CERT_SYSTEM_STORE_LOCAL_MACHINE   = CERT_SYSTEM_STORE_LOCAL_MACHINE_ID shl CERT_SYSTEM_STORE_LOCATION_SHIFT;
   {$EXTERNALSYM CERT_SYSTEM_STORE_LOCAL_MACHINE}
-  CERT_SYSTEM_STORE_CURRENT_SERVICE = (CERT_SYSTEM_STORE_CURRENT_SERVICE_ID shl CERT_SYSTEM_STORE_LOCATION_SHIFT);
+  CERT_SYSTEM_STORE_CURRENT_SERVICE = CERT_SYSTEM_STORE_CURRENT_SERVICE_ID shl CERT_SYSTEM_STORE_LOCATION_SHIFT;
   {$EXTERNALSYM CERT_SYSTEM_STORE_CURRENT_SERVICE}
-  CERT_SYSTEM_STORE_SERVICES        = (CERT_SYSTEM_STORE_SERVICES_ID shl CERT_SYSTEM_STORE_LOCATION_SHIFT);
+  CERT_SYSTEM_STORE_SERVICES        = CERT_SYSTEM_STORE_SERVICES_ID shl CERT_SYSTEM_STORE_LOCATION_SHIFT;
   {$EXTERNALSYM CERT_SYSTEM_STORE_SERVICES}
-  CERT_SYSTEM_STORE_USERS           = (CERT_SYSTEM_STORE_USERS_ID shl CERT_SYSTEM_STORE_LOCATION_SHIFT);
+  CERT_SYSTEM_STORE_USERS           = CERT_SYSTEM_STORE_USERS_ID shl CERT_SYSTEM_STORE_LOCATION_SHIFT;
   {$EXTERNALSYM CERT_SYSTEM_STORE_USERS}
 
-  CERT_SYSTEM_STORE_CURRENT_USER_GROUP_POLICY  = (CERT_SYSTEM_STORE_CURRENT_USER_GROUP_POLICY_ID shl CERT_SYSTEM_STORE_LOCATION_SHIFT);
+  CERT_SYSTEM_STORE_CURRENT_USER_GROUP_POLICY  = CERT_SYSTEM_STORE_CURRENT_USER_GROUP_POLICY_ID shl CERT_SYSTEM_STORE_LOCATION_SHIFT;
   {$EXTERNALSYM CERT_SYSTEM_STORE_CURRENT_USER_GROUP_POLICY}
-  CERT_SYSTEM_STORE_LOCAL_MACHINE_GROUP_POLICY = (CERT_SYSTEM_STORE_LOCAL_MACHINE_GROUP_POLICY_ID shl CERT_SYSTEM_STORE_LOCATION_SHIFT);
+  CERT_SYSTEM_STORE_LOCAL_MACHINE_GROUP_POLICY = CERT_SYSTEM_STORE_LOCAL_MACHINE_GROUP_POLICY_ID shl CERT_SYSTEM_STORE_LOCATION_SHIFT;
   {$EXTERNALSYM CERT_SYSTEM_STORE_LOCAL_MACHINE_GROUP_POLICY}
 
-  CERT_SYSTEM_STORE_LOCAL_MACHINE_ENTERPRISE = (CERT_SYSTEM_STORE_LOCAL_MACHINE_ENTERPRISE_ID shl CERT_SYSTEM_STORE_LOCATION_SHIFT);
+  CERT_SYSTEM_STORE_LOCAL_MACHINE_ENTERPRISE = CERT_SYSTEM_STORE_LOCAL_MACHINE_ENTERPRISE_ID shl CERT_SYSTEM_STORE_LOCATION_SHIFT;
   {$EXTERNALSYM CERT_SYSTEM_STORE_LOCAL_MACHINE_ENTERPRISE}
 
 //+-------------------------------------------------------------------------
@@ -9151,7 +9094,7 @@ type
 // call the appropriate provider callback function.
 
 type
-  PFN_CERT_DLL_OPEN_STORE_PROV_FUNC = function (
+  PFN_CERT_DLL_OPEN_STORE_PROV_FUNC = function(
     lpszStoreProvider: LPCSTR;
     dwEncodingType: DWORD;
     hCryptProv: HCRYPTPROV;
@@ -9244,7 +9187,7 @@ const
 // decremented to 0.
 
 type
-  PFN_CERT_STORE_PROV_CLOSE = procedure (hStoreProv: HCERTSTOREPROV; dwFlags: DWORD); stdcall;
+  PFN_CERT_STORE_PROV_CLOSE = procedure(hStoreProv: HCERTSTOREPROV; dwFlags: DWORD); stdcall;
   {$EXTERNALSYM PFN_CERT_STORE_PROV_CLOSE}
   PFnCertStoreProvClose = PFN_CERT_STORE_PROV_CLOSE;
 
@@ -9254,7 +9197,7 @@ type
 // Reads the provider's copy of the certificate context. If it exists,
 // creates a new certificate context.
 
-  PFN_CERT_STORE_PROV_READ_CERT = function (hStoreProv: HCERTSTOREPROV;
+  PFN_CERT_STORE_PROV_READ_CERT = function(hStoreProv: HCERTSTOREPROV;
     pStoreCertContext: PCCERT_CONTEXT; dwFlags: DWORD;
     var ppProvCertContext: PCCERT_CONTEXT): BOOL; stdcall;
   {$EXTERNALSYM PFN_CERT_STORE_PROV_READ_CERT}
@@ -9273,7 +9216,7 @@ const
 // Returns TRUE if its OK to update the the store.
 
 type
-  PFN_CERT_STORE_PROV_WRITE_CERT = function (hStoreProv: HCERTSTOREPROV;
+  PFN_CERT_STORE_PROV_WRITE_CERT = function(hStoreProv: HCERTSTOREPROV;
     pCertContext: PCCERT_CONTEXT; dwFlags: DWORD): BOOL; stdcall;
   {$EXTERNALSYM PFN_CERT_STORE_PROV_WRITE_CERT}
   PfnCertStoreProvWriteCert = PFN_CERT_STORE_PROV_WRITE_CERT;
@@ -9283,7 +9226,7 @@ type
 //
 // Returns TRUE if its OK to delete from the store.
 
-  PFN_CERT_STORE_PROV_DELETE_CERT = function (hStoreProv: HCERTSTOREPROV;
+  PFN_CERT_STORE_PROV_DELETE_CERT = function(hStoreProv: HCERTSTOREPROV;
     pCertContext: PCCERT_CONTEXT; dwFlags: DWORD): BOOL; stdcall;
   {$EXTERNALSYM PFN_CERT_STORE_PROV_DELETE_CERT}
   PfnCertStoreProvDeleteCert = PFN_CERT_STORE_PROV_DELETE_CERT;
@@ -9298,7 +9241,7 @@ type
 // Returns TRUE if its OK to set the property.
 
 type
-  PFN_CERT_STORE_PROV_SET_CERT_PROPERTY = function (hStoreProv: HCERTSTOREPROV;
+  PFN_CERT_STORE_PROV_SET_CERT_PROPERTY = function(hStoreProv: HCERTSTOREPROV;
     pCertContext: PCCERT_CONTEXT; dwPropId: DWORD; dwFlags: DWORD;
     pvData: Pointer): BOOL; stdcall;
   {$EXTERNALSYM PFN_CERT_STORE_PROV_SET_CERT_PROPERTY}
@@ -9310,7 +9253,7 @@ type
 // Reads the provider's copy of the CRL context. If it exists,
 // creates a new CRL context.
 
-  PFN_CERT_STORE_PROV_READ_CRL = function (hStoreProv: HCERTSTOREPROV;
+  PFN_CERT_STORE_PROV_READ_CRL = function(hStoreProv: HCERTSTOREPROV;
     pStoreCrlContext: PCCRL_CONTEXT; dwFlags: DWORD;
     var ppProvCrlContext: PCCRL_CONTEXT): BOOL; stdcall;
   {$EXTERNALSYM PFN_CERT_STORE_PROV_READ_CRL}
@@ -9324,7 +9267,7 @@ type
 //
 // Returns TRUE if its OK to update the the store.
 
-  PFN_CERT_STORE_PROV_WRITE_CRL = function (hStoreProv: HCERTSTOREPROV;
+  PFN_CERT_STORE_PROV_WRITE_CRL = function(hStoreProv: HCERTSTOREPROV;
     pCrlContext: PCCRL_CONTEXT; dwFlags: DWORD): BOOL; stdcall;
   {$EXTERNALSYM PFN_CERT_STORE_PROV_WRITE_CRL}
   PfnCertStoreProvWriteCrl = PFN_CERT_STORE_PROV_WRITE_CRL;
@@ -9333,7 +9276,7 @@ type
 //
 // Returns TRUE if its OK to delete from the store.
 
-  PFN_CERT_STORE_PROV_DELETE_CRL = function (hStoreProv: HCERTSTOREPROV;
+  PFN_CERT_STORE_PROV_DELETE_CRL = function(hStoreProv: HCERTSTOREPROV;
     pCrlContext: PCCRL_CONTEXT; dwFlags: DWORD): BOOL; stdcall;
   {$EXTERNALSYM PFN_CERT_STORE_PROV_DELETE_CRL}
   PfnCertStoreProvDeleteCrl = PFN_CERT_STORE_PROV_DELETE_CRL;
@@ -9347,7 +9290,7 @@ type
 //
 // Returns TRUE if its OK to set the property.
 
-  PFN_CERT_STORE_PROV_SET_CRL_PROPERTY = function (hStoreProv: HCERTSTOREPROV;
+  PFN_CERT_STORE_PROV_SET_CRL_PROPERTY = function(hStoreProv: HCERTSTOREPROV;
     pCrlContext: PCCRL_CONTEXT; dwPropId: DWORD; dwFlags: DWORD;
     pvData: Pointer): BOOL; stdcall;
   {$EXTERNALSYM PFN_CERT_STORE_PROV_SET_CRL_PROPERTY}
@@ -9359,7 +9302,7 @@ type
 // Reads the provider's copy of the CTL context. If it exists,
 // creates a new CTL context.
 
-  PFN_CERT_STORE_PROV_READ_CTL = function (hStoreProv: HCERTSTOREPROV;
+  PFN_CERT_STORE_PROV_READ_CTL = function(hStoreProv: HCERTSTOREPROV;
     pStoreCtlContext: PCCTL_CONTEXT; dwFlags: DWORD;
     var ppProvCtlContext: PCCTL_CONTEXT): BOOL; stdcall;
   {$EXTERNALSYM PFN_CERT_STORE_PROV_READ_CTL}
@@ -9373,7 +9316,7 @@ type
 //
 // Returns TRUE if its OK to update the the store.
 
-  PFN_CERT_STORE_PROV_WRITE_CTL = function (hStoreProv: HCERTSTOREPROV;
+  PFN_CERT_STORE_PROV_WRITE_CTL = function(hStoreProv: HCERTSTOREPROV;
     pCtlContext: PCCTL_CONTEXT; dwFlags: DWORD): BOOL; stdcall;
   {$EXTERNALSYM PFN_CERT_STORE_PROV_WRITE_CTL}
   PfnCertStoreProvWriteCtl = PFN_CERT_STORE_PROV_WRITE_CTL;
@@ -9382,7 +9325,7 @@ type
 //
 // Returns TRUE if its OK to delete from the store.
 
-  PFN_CERT_STORE_PROV_DELETE_CTL = function (hStoreProv: HCERTSTOREPROV;
+  PFN_CERT_STORE_PROV_DELETE_CTL = function(hStoreProv: HCERTSTOREPROV;
     pCtlContext: PCCTL_CONTEXT; dwFlags: DWORD): BOOL; stdcall;
   {$EXTERNALSYM PFN_CERT_STORE_PROV_DELETE_CTL}
   PfnCertStoreProvDeleteCtl = PFN_CERT_STORE_PROV_DELETE_CTL;
@@ -9396,12 +9339,12 @@ type
 //
 // Returns TRUE if its OK to set the property.
 
-  PFN_CERT_STORE_PROV_SET_CTL_PROPERTY = function (hStoreProv: HCERTSTOREPROV;
+  PFN_CERT_STORE_PROV_SET_CTL_PROPERTY = function(hStoreProv: HCERTSTOREPROV;
     pCtlContext: PCCTL_CONTEXT; dwPropId, dwFlags: DWORD;  pvData: Pointer): BOOL; stdcall;
   {$EXTERNALSYM PFN_CERT_STORE_PROV_SET_CTL_PROPERTY}
   PfnCertStoreProvSetCtlProperty = PFN_CERT_STORE_PROV_SET_CTL_PROPERTY;
 
-  PFN_CERT_STORE_PROV_CONTROL = function (hStoreProv: HCERTSTOREPROV;
+  PFN_CERT_STORE_PROV_CONTROL = function(hStoreProv: HCERTSTOREPROV;
     dwFlags: DWORD; dwCtrlType: DWORD; pvCtrlPara: Pointer): BOOL; stdcall;
   {$EXTERNALSYM PFN_CERT_STORE_PROV_CONTROL}
   PfnCertStoreProvControl = PFN_CERT_STORE_PROV_CONTROL;
@@ -9426,55 +9369,55 @@ type
   PCCERT_STORE_PROV_FIND_INFO = PCERT_STORE_PROV_FIND_INFO;
   {$EXTERNALSYM PCCERT_STORE_PROV_FIND_INFO}
 
-  PFN_CERT_STORE_PROV_FIND_CERT = function (hStoreProv: HCERTSTOREPROV;
+  PFN_CERT_STORE_PROV_FIND_CERT = function(hStoreProv: HCERTSTOREPROV;
     pFindInfo: PCCERT_STORE_PROV_FIND_INFO; pPrevCertContext: PCCERT_CONTEXT;
     dwFlags: DWORD; var ppvStoreProvFindInfo: Pointer;
     var ppProvCertContext: PCCERT_CONTEXT): BOOL; stdcall;
   {$EXTERNALSYM PFN_CERT_STORE_PROV_FIND_CERT}
   PfnCertStoreProvFindCert = PFN_CERT_STORE_PROV_FIND_CERT;
 
-  PFN_CERT_STORE_PROV_FREE_FIND_CERT = function (hStoreProv: HCERTSTOREPROV;
+  PFN_CERT_STORE_PROV_FREE_FIND_CERT = function(hStoreProv: HCERTSTOREPROV;
     pCertContext: PCCERT_CONTEXT; pvStoreProvFindInfo: Pointer; dwFlags: DWORD): BOOL; stdcall;
   {$EXTERNALSYM PFN_CERT_STORE_PROV_FREE_FIND_CERT}
   PfnCertStoreProvFreeFindCert = PFN_CERT_STORE_PROV_FREE_FIND_CERT;
 
-  PFN_CERT_STORE_PROV_GET_CERT_PROPERTY = function (hStoreProv: HCERTSTOREPROV;
+  PFN_CERT_STORE_PROV_GET_CERT_PROPERTY = function(hStoreProv: HCERTSTOREPROV;
     pCertContext: PCCERT_CONTEXT; dwPropId: DWORD; dwFlags: DWORD; pvData: Pointer;
     var pcbData: DWORD): BOOL; stdcall;
   {$EXTERNALSYM PFN_CERT_STORE_PROV_GET_CERT_PROPERTY}
   PfnCertStoreProvGetCertProperty = PFN_CERT_STORE_PROV_GET_CERT_PROPERTY;
 
-  PFN_CERT_STORE_PROV_FIND_CRL = function (hStoreProv: HCERTSTOREPROV;
+  PFN_CERT_STORE_PROV_FIND_CRL = function(hStoreProv: HCERTSTOREPROV;
     pFindInfo: PCCERT_STORE_PROV_FIND_INFO; pPrevCrlContext: PCCRL_CONTEXT;
     dwFlags: DWORD; var ppvStoreProvFindInfo: Pointer;
     var ppProvCrlContext: PCCRL_CONTEXT): BOOL; stdcall;
   {$EXTERNALSYM PFN_CERT_STORE_PROV_FIND_CRL}
   PfnCertStoreProvFindCrl = PFN_CERT_STORE_PROV_FIND_CRL;
 
-  PFN_CERT_STORE_PROV_FREE_FIND_CRL = function (hStoreProv: HCERTSTOREPROV;
+  PFN_CERT_STORE_PROV_FREE_FIND_CRL = function(hStoreProv: HCERTSTOREPROV;
     pCrlContext: PCCRL_CONTEXT; pvStoreProvFindInfo: Pointer; dwFlags: DWORD): BOOL; stdcall;
   {$EXTERNALSYM PFN_CERT_STORE_PROV_FREE_FIND_CRL}
   PfnCertStoreProvFreeFindCrl = PFN_CERT_STORE_PROV_FREE_FIND_CRL;
 
-  PFN_CERT_STORE_PROV_GET_CRL_PROPERTY = function (hStoreProv: HCERTSTOREPROV;
+  PFN_CERT_STORE_PROV_GET_CRL_PROPERTY = function(hStoreProv: HCERTSTOREPROV;
     pCrlContext: PCCRL_CONTEXT; dwPropId: DWORD; dwFlags: DWORD; pvData: Pointer;
     var pcbData: DWORD): BOOL; stdcall;
   {$EXTERNALSYM PFN_CERT_STORE_PROV_GET_CRL_PROPERTY}
   PfnCertStoreProvGetCrlProperty = PFN_CERT_STORE_PROV_GET_CRL_PROPERTY;
 
-  PFN_CERT_STORE_PROV_FIND_CTL = function (hStoreProv: HCERTSTOREPROV;
+  PFN_CERT_STORE_PROV_FIND_CTL = function(hStoreProv: HCERTSTOREPROV;
     pFindInfo: PCCERT_STORE_PROV_FIND_INFO; pPrevCtlContext: PCCTL_CONTEXT;
     dwFlags: DWORD; var ppvStoreProvFindInfo: Pointer;
     var ppProvCtlContext: PCCTL_CONTEXT): BOOL; stdcall;
   {$EXTERNALSYM PFN_CERT_STORE_PROV_FIND_CTL}
   PfnCertStoreProvFindCtl = PFN_CERT_STORE_PROV_FIND_CTL;
 
-  PFN_CERT_STORE_PROV_FREE_FIND_CTL = function (hStoreProv: HCERTSTOREPROV;
+  PFN_CERT_STORE_PROV_FREE_FIND_CTL = function(hStoreProv: HCERTSTOREPROV;
     pCtlContext: PCCTL_CONTEXT; pvStoreProvFindInfo: Pointer; dwFlags: DWORD): BOOL; stdcall;
   {$EXTERNALSYM PFN_CERT_STORE_PROV_FREE_FIND_CTL}
   PfnCertStoreProvFreeFindCtl = PFN_CERT_STORE_PROV_FREE_FIND_CTL;
 
-  PFN_CERT_STORE_PROV_GET_CTL_PROPERTY = function (hStoreProv: HCERTSTOREPROV;
+  PFN_CERT_STORE_PROV_GET_CTL_PROPERTY = function(hStoreProv: HCERTSTOREPROV;
     pCtlContext: PCCTL_CONTEXT; dwPropId: DWORD; dwFlags: DWORD; pvData: Pointer;
     var pcbData: DWORD): BOOL; stdcall;
   {$EXTERNALSYM PFN_CERT_STORE_PROV_GET_CTL_PROPERTY}
@@ -9723,56 +9666,56 @@ const
 //   - certificate information flag
 //--------------------------------------------------------------------------
 
-  CERT_FIND_ANY            = (CERT_COMPARE_ANY shl CERT_COMPARE_SHIFT);
+  CERT_FIND_ANY            = CERT_COMPARE_ANY shl CERT_COMPARE_SHIFT;
   {$EXTERNALSYM CERT_FIND_ANY}
-  CERT_FIND_SHA1_HASH      = (CERT_COMPARE_SHA1_HASH shl CERT_COMPARE_SHIFT);
+  CERT_FIND_SHA1_HASH      = CERT_COMPARE_SHA1_HASH shl CERT_COMPARE_SHIFT;
   {$EXTERNALSYM CERT_FIND_SHA1_HASH}
-  CERT_FIND_MD5_HASH       = (CERT_COMPARE_MD5_HASH shl CERT_COMPARE_SHIFT);
+  CERT_FIND_MD5_HASH       = CERT_COMPARE_MD5_HASH shl CERT_COMPARE_SHIFT;
   {$EXTERNALSYM CERT_FIND_MD5_HASH}
-  CERT_FIND_SIGNATURE_HASH = (CERT_COMPARE_SIGNATURE_HASH shl CERT_COMPARE_SHIFT);
+  CERT_FIND_SIGNATURE_HASH = CERT_COMPARE_SIGNATURE_HASH shl CERT_COMPARE_SHIFT;
   {$EXTERNALSYM CERT_FIND_SIGNATURE_HASH}
-  CERT_FIND_KEY_IDENTIFIER = (CERT_COMPARE_KEY_IDENTIFIER shl CERT_COMPARE_SHIFT);
+  CERT_FIND_KEY_IDENTIFIER = CERT_COMPARE_KEY_IDENTIFIER shl CERT_COMPARE_SHIFT;
   {$EXTERNALSYM CERT_FIND_KEY_IDENTIFIER}
   CERT_FIND_HASH           = CERT_FIND_SHA1_HASH;
   {$EXTERNALSYM CERT_FIND_HASH}
-  CERT_FIND_PROPERTY       = (CERT_COMPARE_PROPERTY shl CERT_COMPARE_SHIFT);
+  CERT_FIND_PROPERTY       = CERT_COMPARE_PROPERTY shl CERT_COMPARE_SHIFT;
   {$EXTERNALSYM CERT_FIND_PROPERTY}
-  CERT_FIND_PUBLIC_KEY     = (CERT_COMPARE_PUBLIC_KEY shl CERT_COMPARE_SHIFT);
+  CERT_FIND_PUBLIC_KEY     = CERT_COMPARE_PUBLIC_KEY shl CERT_COMPARE_SHIFT;
   {$EXTERNALSYM CERT_FIND_PUBLIC_KEY}
-  CERT_FIND_SUBJECT_NAME   = (CERT_COMPARE_NAME shl CERT_COMPARE_SHIFT or CERT_INFO_SUBJECT_FLAG);
+  CERT_FIND_SUBJECT_NAME   = CERT_COMPARE_NAME shl CERT_COMPARE_SHIFT or CERT_INFO_SUBJECT_FLAG;
   {$EXTERNALSYM CERT_FIND_SUBJECT_NAME}
-  CERT_FIND_SUBJECT_ATTR   = (CERT_COMPARE_ATTR shl CERT_COMPARE_SHIFT or CERT_INFO_SUBJECT_FLAG);
+  CERT_FIND_SUBJECT_ATTR   = CERT_COMPARE_ATTR shl CERT_COMPARE_SHIFT or CERT_INFO_SUBJECT_FLAG;
   {$EXTERNALSYM CERT_FIND_SUBJECT_ATTR}
-  CERT_FIND_ISSUER_NAME    = (CERT_COMPARE_NAME shl CERT_COMPARE_SHIFT or CERT_INFO_ISSUER_FLAG);
+  CERT_FIND_ISSUER_NAME    = CERT_COMPARE_NAME shl CERT_COMPARE_SHIFT or CERT_INFO_ISSUER_FLAG;
   {$EXTERNALSYM CERT_FIND_ISSUER_NAME}
-  CERT_FIND_ISSUER_ATTR    = (CERT_COMPARE_ATTR shl CERT_COMPARE_SHIFT or CERT_INFO_ISSUER_FLAG);
+  CERT_FIND_ISSUER_ATTR    = CERT_COMPARE_ATTR shl CERT_COMPARE_SHIFT or CERT_INFO_ISSUER_FLAG;
   {$EXTERNALSYM CERT_FIND_ISSUER_ATTR}
-  CERT_FIND_SUBJECT_STR_A  = (CERT_COMPARE_NAME_STR_A shl CERT_COMPARE_SHIFT or CERT_INFO_SUBJECT_FLAG);
+  CERT_FIND_SUBJECT_STR_A  = CERT_COMPARE_NAME_STR_A shl CERT_COMPARE_SHIFT or CERT_INFO_SUBJECT_FLAG;
   {$EXTERNALSYM CERT_FIND_SUBJECT_STR_A}
-  CERT_FIND_SUBJECT_STR_W  = (CERT_COMPARE_NAME_STR_W shl CERT_COMPARE_SHIFT or CERT_INFO_SUBJECT_FLAG);
+  CERT_FIND_SUBJECT_STR_W  = CERT_COMPARE_NAME_STR_W shl CERT_COMPARE_SHIFT or CERT_INFO_SUBJECT_FLAG;
   {$EXTERNALSYM CERT_FIND_SUBJECT_STR_W}
   CERT_FIND_SUBJECT_STR    = CERT_FIND_SUBJECT_STR_W;
   {$EXTERNALSYM CERT_FIND_SUBJECT_STR}
-  CERT_FIND_ISSUER_STR_A   = (CERT_COMPARE_NAME_STR_A shl CERT_COMPARE_SHIFT or CERT_INFO_ISSUER_FLAG);
+  CERT_FIND_ISSUER_STR_A   = CERT_COMPARE_NAME_STR_A shl CERT_COMPARE_SHIFT or CERT_INFO_ISSUER_FLAG;
   {$EXTERNALSYM CERT_FIND_ISSUER_STR_A}
-  CERT_FIND_ISSUER_STR_W   = (CERT_COMPARE_NAME_STR_W shl CERT_COMPARE_SHIFT or CERT_INFO_ISSUER_FLAG);
+  CERT_FIND_ISSUER_STR_W   = CERT_COMPARE_NAME_STR_W shl CERT_COMPARE_SHIFT or CERT_INFO_ISSUER_FLAG;
   {$EXTERNALSYM CERT_FIND_ISSUER_STR_W}
   CERT_FIND_ISSUER_STR     = CERT_FIND_ISSUER_STR_W;
   {$EXTERNALSYM CERT_FIND_ISSUER_STR}
-  CERT_FIND_KEY_SPEC       = (CERT_COMPARE_KEY_SPEC shl CERT_COMPARE_SHIFT);
+  CERT_FIND_KEY_SPEC       = CERT_COMPARE_KEY_SPEC shl CERT_COMPARE_SHIFT;
   {$EXTERNALSYM CERT_FIND_KEY_SPEC}
-  CERT_FIND_ENHKEY_USAGE   = (CERT_COMPARE_ENHKEY_USAGE shl CERT_COMPARE_SHIFT);
+  CERT_FIND_ENHKEY_USAGE   = CERT_COMPARE_ENHKEY_USAGE shl CERT_COMPARE_SHIFT;
   {$EXTERNALSYM CERT_FIND_ENHKEY_USAGE}
   CERT_FIND_CTL_USAGE      = CERT_FIND_ENHKEY_USAGE;
   {$EXTERNALSYM CERT_FIND_CTL_USAGE}
 
-  CERT_FIND_SUBJECT_CERT = (CERT_COMPARE_SUBJECT_CERT shl CERT_COMPARE_SHIFT);
+  CERT_FIND_SUBJECT_CERT = CERT_COMPARE_SUBJECT_CERT shl CERT_COMPARE_SHIFT;
   {$EXTERNALSYM CERT_FIND_SUBJECT_CERT}
-  CERT_FIND_ISSUER_OF    = (CERT_COMPARE_ISSUER_OF shl CERT_COMPARE_SHIFT);
+  CERT_FIND_ISSUER_OF    = CERT_COMPARE_ISSUER_OF shl CERT_COMPARE_SHIFT;
   {$EXTERNALSYM CERT_FIND_ISSUER_OF}
-  CERT_FIND_EXISTING     = (CERT_COMPARE_EXISTING shl CERT_COMPARE_SHIFT);
+  CERT_FIND_EXISTING     = CERT_COMPARE_EXISTING shl CERT_COMPARE_SHIFT;
   {$EXTERNALSYM CERT_FIND_EXISTING}
-  CERT_FIND_CERT_ID      = (CERT_COMPARE_CERT_ID shl CERT_COMPARE_SHIFT);
+  CERT_FIND_CERT_ID      = CERT_COMPARE_CERT_ID shl CERT_COMPARE_SHIFT;
   {$EXTERNALSYM CERT_FIND_CERT_ID}
 
 //+-------------------------------------------------------------------------
@@ -10384,7 +10327,6 @@ const
 //  exists in the store.
 //--------------------------------------------------------------------------
 
-
 //+-------------------------------------------------------------------------
 //  Duplicate a CRL context
 //--------------------------------------------------------------------------
@@ -10626,13 +10568,13 @@ const
 //  Certificate Store Context Bit Flags
 //--------------------------------------------------------------------------
 
-  CERT_STORE_ALL_CONTEXT_FLAG         = (not 0);
+  CERT_STORE_ALL_CONTEXT_FLAG         = not 0;
   {$EXTERNALSYM CERT_STORE_ALL_CONTEXT_FLAG}
-  CERT_STORE_CERTIFICATE_CONTEXT_FLAG = (1 shl CERT_STORE_CERTIFICATE_CONTEXT);
+  CERT_STORE_CERTIFICATE_CONTEXT_FLAG = 1 shl CERT_STORE_CERTIFICATE_CONTEXT;
   {$EXTERNALSYM CERT_STORE_CERTIFICATE_CONTEXT_FLAG}
-  CERT_STORE_CRL_CONTEXT_FLAG         = (1 shl CERT_STORE_CRL_CONTEXT);
+  CERT_STORE_CRL_CONTEXT_FLAG         = 1 shl CERT_STORE_CRL_CONTEXT;
   {$EXTERNALSYM CERT_STORE_CRL_CONTEXT_FLAG}
-  CERT_STORE_CTL_CONTEXT_FLAG         = (1 shl CERT_STORE_CTL_CONTEXT);
+  CERT_STORE_CTL_CONTEXT_FLAG         = 1 shl CERT_STORE_CTL_CONTEXT;
   {$EXTERNALSYM CERT_STORE_CTL_CONTEXT_FLAG}
 
 //+-------------------------------------------------------------------------
@@ -11566,18 +11508,18 @@ function CertUnregisterPhysicalStore(pvSystemStore: Pointer; dwFlags: DWORD;
 //--------------------------------------------------------------------------
 
 type
-  PFN_CERT_ENUM_SYSTEM_STORE_LOCATION = function (pwszStoreLocation: LPCWSTR;
+  PFN_CERT_ENUM_SYSTEM_STORE_LOCATION = function(pwszStoreLocation: LPCWSTR;
     dwFlags: DWORD; pvReserved: Pointer; pvArg: Pointer): BOOL; stdcall;
   {$EXTERNALSYM PFN_CERT_ENUM_SYSTEM_STORE_LOCATION}
   PfnCertEnumSystemStoreLocation = PFN_CERT_ENUM_SYSTEM_STORE_LOCATION;
 
-  PFN_CERT_ENUM_SYSTEM_STORE = function (pvSystemStore: Pointer;
+  PFN_CERT_ENUM_SYSTEM_STORE = function(pvSystemStore: Pointer;
     dwFlags: DWORD; pStoreInfo: PCERT_SYSTEM_STORE_INFO; pvReserved: Pointer;
     pvArg: Pointer): BOOL; stdcall;
   {$EXTERNALSYM PFN_CERT_ENUM_SYSTEM_STORE}
   PfnCertEnumSystemStore = PFN_CERT_ENUM_SYSTEM_STORE;
 
-  PFN_CERT_ENUM_PHYSICAL_STORE = function (pvSystemStore: Pointer;
+  PFN_CERT_ENUM_PHYSICAL_STORE = function(pvSystemStore: Pointer;
     dwFlags: DWORD; pwszStoreName: LPCWSTR; pStoreInfo: PCERT_PHYSICAL_STORE_INFO;
     pvReserved: Pointer; pvArg: Pointer): BOOL; stdcall;
   {$EXTERNALSYM PFN_CERT_ENUM_PHYSICAL_STORE}
@@ -11718,7 +11660,6 @@ const
 
 // The remaining Register, Enum and Unregister OID installable functions
 // have the same signature as their Cert Store API counterpart.
-
 
 //+=========================================================================
 //  Enhanced Key Usage Helper Functions
@@ -12192,7 +12133,6 @@ const
 //+=========================================================================
 //  Certificate Helper APIs
 //==========================================================================
-
 
 //+-------------------------------------------------------------------------
 //  Compare two multiple byte integer blobs to see if they are identical.
@@ -12771,7 +12711,7 @@ const
 //--------------------------------------------------------------------------
 
 type
-  PFN_IMPORT_PRIV_KEY_FUNC = function (hCryptProv: HCRYPTPROV;
+  PFN_IMPORT_PRIV_KEY_FUNC = function(hCryptProv: HCRYPTPROV;
     pPrivateKeyInfo: PCRYPT_PRIVATE_KEY_INFO; dwFlags: DWORD;
     pvAuxInfo: Pointer): BOOL; stdcall;
   {$EXTERNALSYM PFN_IMPORT_PRIV_KEY_FUNC}
@@ -12809,7 +12749,7 @@ function CryptImportPKCS8(sImportParams: CRYPT_PKCS8_IMPORT_PARAMS; dwFlags: DWO
 //--------------------------------------------------------------------------
 
 type
-  PFN_EXPORT_PRIV_KEY_FUNC = function (hCryptProv: HCRYPTPROV; dwKeySpec: DWORD;
+  PFN_EXPORT_PRIV_KEY_FUNC = function(hCryptProv: HCRYPTPROV; dwKeySpec: DWORD;
     pszPrivateKeyObjId: LPSTR; dwFlags: DWORD; pvAuxInfo: Pointer;
     var pPrivateKeyInfo: CRYPT_PRIVATE_KEY_INFO; var pcbPrivateKeyBlob: DWORD): BOOL; stdcall;
   {$EXTERNALSYM PFN_EXPORT_PRIV_KEY_FUNC}
@@ -12903,16 +12843,9 @@ function CertRDNValueToStrA(dwValueType: DWORD; pValue: PCERT_RDN_VALUE_BLOB;
 function CertRDNValueToStrW(dwValueType: DWORD; pValue: PCERT_RDN_VALUE_BLOB;
   psz: LPWSTR; csz: DWORD): DWORD; stdcall;
 {$EXTERNALSYM CertRDNValueToStrW}
-
-{$IFDEF UNICODE}
 function CertRDNValueToStr(dwValueType: DWORD; pValue: PCERT_RDN_VALUE_BLOB;
-  psz: LPWSTR; csz: DWORD): DWORD; stdcall;
+  psz: LPTSTR; csz: DWORD): DWORD; stdcall;
 {$EXTERNALSYM CertRDNValueToStr}
-{$ELSE}
-function CertRDNValueToStr(dwValueType: DWORD; pValue: PCERT_RDN_VALUE_BLOB;
-  psz: LPSTR; csz: DWORD): DWORD; stdcall;
-{$EXTERNALSYM CertRDNValueToStr}
-{$ENDIF}
 
 //+-------------------------------------------------------------------------
 //  Convert the certificate name blob to a null terminated char string.
@@ -12989,16 +12922,9 @@ function CertNameToStrA(dwCertEncodingType: DWORD; pName: PCERT_NAME_BLOB;
 function CertNameToStrW(dwCertEncodingType: DWORD; pName: PCERT_NAME_BLOB;
   dwStrType: DWORD; psz: LPWSTR; csz: DWORD): DWORD; stdcall;
 {$EXTERNALSYM CertNameToStrW}
-
-{$IFDEF UNICODE}
 function CertNameToStr(dwCertEncodingType: DWORD; pName: PCERT_NAME_BLOB;
-  dwStrType: DWORD; psz: LPWSTR; csz: DWORD): DWORD; stdcall;
+  dwStrType: DWORD; psz: LPTSTR; csz: DWORD): DWORD; stdcall;
 {$EXTERNALSYM CertNameToStr}
-{$ELSE}
-function CertNameToStr(dwCertEncodingType: DWORD; pName: PCERT_NAME_BLOB;
-  dwStrType: DWORD; psz: LPSTR; csz: DWORD): DWORD; stdcall;
-{$EXTERNALSYM CertNameToStr}
-{$ENDIF}
 
 //+-------------------------------------------------------------------------
 //  Certificate name string types
@@ -13139,18 +13065,10 @@ function CertStrToNameW(dwCertEncodingType: DWORD; pszX500: LPCWSTR;
   dwStrType: DWORD; pvReserved: Pointer; pbEncoded: LPBYTE; var pcbEncoded: DWORD;
   ppszError: LPLPCWSTR): BOOL; stdcall;
 {$EXTERNALSYM CertStrToNameW}
-
-{$IFDEF UNICODE}
-function CertStrToName(dwCertEncodingType: DWORD; pszX500: LPCWSTR;
+function CertStrToName(dwCertEncodingType: DWORD; pszX500: LPCTSTR;
   dwStrType: DWORD; pvReserved: Pointer; pbEncoded: LPBYTE; var pcbEncoded: DWORD;
-  ppszError: LPLPCWSTR): BOOL; stdcall;
+  ppszError: LPLPCTSTR): BOOL; stdcall;
 {$EXTERNALSYM CertStrToName}
-{$ELSE}
-function CertStrToName(dwCertEncodingType: DWORD; pszX500: LPCSTR;
-  dwStrType: DWORD; pvReserved: Pointer; pbEncoded: LPBYTE; var pcbEncoded: DWORD;
-  ppszError: LPLPCSTR): BOOL; stdcall;
-{$EXTERNALSYM CertStrToName}
-{$ENDIF}
 
 //+-------------------------------------------------------------------------
 //  Get the subject or issuer name from the certificate and
@@ -13232,16 +13150,9 @@ function CertGetNameStringA(pCertContext: PCCERT_CONTEXT; dwType, dwFlags: DWORD
 function CertGetNameStringW(pCertContext: PCCERT_CONTEXT; dwType, dwFlags: DWORD;
   pvTypePara: Pointer; pszNameString: LPWSTR; cchNameString: DWORD): DWORD; stdcall;
 {$EXTERNALSYM CertGetNameStringW}
-
-{$IFDEF UNICODE}
 function CertGetNameString(pCertContext: PCCERT_CONTEXT; dwType, dwFlags: DWORD;
-  pvTypePara: Pointer; pszNameString: LPWSTR; cchNameString: DWORD): DWORD; stdcall;
+  pvTypePara: Pointer; pszNameString: LPTSTR; cchNameString: DWORD): DWORD; stdcall;
 {$EXTERNALSYM CertGetNameString}
-{$ELSE}
-function CertGetNameString(pCertContext: PCCERT_CONTEXT; dwType, dwFlags: DWORD;
-  pvTypePara: Pointer; pszNameString: LPSTR; cchNameString: DWORD): DWORD; stdcall;
-{$EXTERNALSYM CertGetNameString}
-{$ENDIF}
 
 //+-------------------------------------------------------------------------
 //  Certificate name types
@@ -13272,7 +13183,6 @@ const
 //  Simplified Cryptographic Message Data Structures and APIs
 //==========================================================================
 
-
 //+-------------------------------------------------------------------------
 //              Conventions for the *pb and *pcb output parameters:
 //
@@ -13287,7 +13197,6 @@ const
 //                      length error is returned. In all cases *pcb is updated
 //                      with the actual length needed/returned.
 //--------------------------------------------------------------------------
-
 
 //+-------------------------------------------------------------------------
 //  Type definitions of the parameters used for doing the cryptographic
@@ -13323,7 +13232,7 @@ const
 //--------------------------------------------------------------------------
 
 type
-  PFN_CRYPT_GET_SIGNER_CERTIFICATE = function (pvGetArg: Pointer;
+  PFN_CRYPT_GET_SIGNER_CERTIFICATE = function(pvGetArg: Pointer;
     dwCertEncodingType: DWORD; pSignerId: PCERT_INFO;
     hMsgCertStore: HCERTSTORE): PCCERT_CONTEXT; stdcall;
   {$EXTERNALSYM PFN_CRYPT_GET_SIGNER_CERTIFICATE}
@@ -13400,7 +13309,7 @@ type
     {$IFDEF CRYPT_SIGN_MESSAGE_PARA_HAS_CMS_FIELDS}
     HashEncryptionAlgorithm: CRYPT_ALGORITHM_IDENTIFIER;
     pvHashEncryptionAuxInfo: Pointer;
-    {$ENDIF}
+    {$ENDIF CRYPT_SIGN_MESSAGE_PARA_HAS_CMS_FIELDS}
   end;
   {$EXTERNALSYM _CRYPT_SIGN_MESSAGE_PARA}
   CRYPT_SIGN_MESSAGE_PARA = _CRYPT_SIGN_MESSAGE_PARA;
@@ -13919,7 +13828,6 @@ function CryptVerifyMessageSignatureWithKey(pVerifyPara: PCRYPT_KEY_VERIFY_MESSA
 //  System Certificate Store Data Structures and APIs
 //==========================================================================
 
-
 //+-------------------------------------------------------------------------
 //  Get a system certificate store based on a subsystem protocol.
 //
@@ -13944,14 +13852,8 @@ function CertOpenSystemStoreA(hProv: HCRYPTPROV; szSubsystemProtocol: LPCSTR): H
 {$EXTERNALSYM CertOpenSystemStoreA}
 function CertOpenSystemStoreW(hProv: HCRYPTPROV; szSubsystemProtocol: LPCWSTR): HCERTSTORE; stdcall;
 {$EXTERNALSYM CertOpenSystemStoreW}
-
-{$IFDEF UNICODE}
-function CertOpenSystemStore(hProv: HCRYPTPROV; szSubsystemProtocol: LPCWSTR): HCERTSTORE; stdcall;
+function CertOpenSystemStore(hProv: HCRYPTPROV; szSubsystemProtocol: LPCTSTR): HCERTSTORE; stdcall;
 {$EXTERNALSYM CertOpenSystemStore}
-{$ELSE}
-function CertOpenSystemStore(hProv: HCRYPTPROV; szSubsystemProtocol: LPCSTR): HCERTSTORE; stdcall;
-{$EXTERNALSYM CertOpenSystemStore}
-{$ENDIF}
 
 function CertAddEncodedCertificateToSystemStoreA(szCertStoreName: LPCSTR;
   pbCertEncoded: LPBYTE; cbCertEncoded: DWORD): BOOL; stdcall;
@@ -13959,16 +13861,9 @@ function CertAddEncodedCertificateToSystemStoreA(szCertStoreName: LPCSTR;
 function CertAddEncodedCertificateToSystemStoreW(szCertStoreName: LPCWSTR;
   pbCertEncoded: LPBYTE; cbCertEncoded: DWORD): BOOL; stdcall;
 {$EXTERNALSYM CertAddEncodedCertificateToSystemStoreW}
-
-{$IFDEF UNICODE}
-function CertAddEncodedCertificateToSystemStore(szCertStoreName: LPCWSTR;
+function CertAddEncodedCertificateToSystemStore(szCertStoreName: LPCTSTR;
   pbCertEncoded: LPBYTE; cbCertEncoded: DWORD): BOOL; stdcall;
 {$EXTERNALSYM CertAddEncodedCertificateToSystemStore}
-{$ELSE}
-function CertAddEncodedCertificateToSystemStore(szCertStoreName: LPCSTR;
-  pbCertEncoded: LPBYTE; cbCertEncoded: DWORD): BOOL; stdcall;
-{$EXTERNALSYM CertAddEncodedCertificateToSystemStore}
-{$ENDIF}
 
 //+-------------------------------------------------------------------------
 //  Find all certificate chains tying the given issuer name to any certificate
@@ -14214,62 +14109,62 @@ const
 
 //encoded single certificate
 
-  CERT_QUERY_CONTENT_FLAG_CERT = (1 shl CERT_QUERY_CONTENT_CERT);
+  CERT_QUERY_CONTENT_FLAG_CERT = 1 shl CERT_QUERY_CONTENT_CERT;
   {$EXTERNALSYM CERT_QUERY_CONTENT_FLAG_CERT}
 
 //encoded single CTL
 
-  CERT_QUERY_CONTENT_FLAG_CTL = (1 shl CERT_QUERY_CONTENT_CTL);
+  CERT_QUERY_CONTENT_FLAG_CTL = 1 shl CERT_QUERY_CONTENT_CTL;
   {$EXTERNALSYM CERT_QUERY_CONTENT_FLAG_CTL}
 
 //encoded single CRL
 
-  CERT_QUERY_CONTENT_FLAG_CRL = (1 shl CERT_QUERY_CONTENT_CRL);
+  CERT_QUERY_CONTENT_FLAG_CRL = 1 shl CERT_QUERY_CONTENT_CRL;
   {$EXTERNALSYM CERT_QUERY_CONTENT_FLAG_CRL}
 
 //serialized store
 
-  CERT_QUERY_CONTENT_FLAG_SERIALIZED_STORE = (1 shl CERT_QUERY_CONTENT_SERIALIZED_STORE);
+  CERT_QUERY_CONTENT_FLAG_SERIALIZED_STORE = 1 shl CERT_QUERY_CONTENT_SERIALIZED_STORE;
   {$EXTERNALSYM CERT_QUERY_CONTENT_FLAG_SERIALIZED_STORE}
 
 //serialized single certificate
 
-  CERT_QUERY_CONTENT_FLAG_SERIALIZED_CERT = (1 shl CERT_QUERY_CONTENT_SERIALIZED_CERT);
+  CERT_QUERY_CONTENT_FLAG_SERIALIZED_CERT = 1 shl CERT_QUERY_CONTENT_SERIALIZED_CERT;
   {$EXTERNALSYM CERT_QUERY_CONTENT_FLAG_SERIALIZED_CERT}
 
 //serialized single CTL
 
-  CERT_QUERY_CONTENT_FLAG_SERIALIZED_CTL = (1 shl CERT_QUERY_CONTENT_SERIALIZED_CTL);
+  CERT_QUERY_CONTENT_FLAG_SERIALIZED_CTL = 1 shl CERT_QUERY_CONTENT_SERIALIZED_CTL;
   {$EXTERNALSYM CERT_QUERY_CONTENT_FLAG_SERIALIZED_CTL}
 
 //serialized single CRL
 
-  CERT_QUERY_CONTENT_FLAG_SERIALIZED_CRL = (1 shl CERT_QUERY_CONTENT_SERIALIZED_CRL);
+  CERT_QUERY_CONTENT_FLAG_SERIALIZED_CRL = 1 shl CERT_QUERY_CONTENT_SERIALIZED_CRL;
   {$EXTERNALSYM CERT_QUERY_CONTENT_FLAG_SERIALIZED_CRL}
 
 //an encoded PKCS#7 signed message
 
-  CERT_QUERY_CONTENT_FLAG_PKCS7_SIGNED = (1 shl CERT_QUERY_CONTENT_PKCS7_SIGNED);
+  CERT_QUERY_CONTENT_FLAG_PKCS7_SIGNED = 1 shl CERT_QUERY_CONTENT_PKCS7_SIGNED;
   {$EXTERNALSYM CERT_QUERY_CONTENT_FLAG_PKCS7_SIGNED}
 
 //an encoded PKCS#7 message.  But it is not a signed message
 
-  CERT_QUERY_CONTENT_FLAG_PKCS7_UNSIGNED = (1 shl CERT_QUERY_CONTENT_PKCS7_UNSIGNED);
+  CERT_QUERY_CONTENT_FLAG_PKCS7_UNSIGNED = 1 shl CERT_QUERY_CONTENT_PKCS7_UNSIGNED;
   {$EXTERNALSYM CERT_QUERY_CONTENT_FLAG_PKCS7_UNSIGNED}
 
 //the content includes an embedded PKCS7 signed message
 
-  CERT_QUERY_CONTENT_FLAG_PKCS7_SIGNED_EMBED = (1 shl CERT_QUERY_CONTENT_PKCS7_SIGNED_EMBED);
+  CERT_QUERY_CONTENT_FLAG_PKCS7_SIGNED_EMBED = 1 shl CERT_QUERY_CONTENT_PKCS7_SIGNED_EMBED;
   {$EXTERNALSYM CERT_QUERY_CONTENT_FLAG_PKCS7_SIGNED_EMBED}
 
 //an encoded PKCS#10
 
-  CERT_QUERY_CONTENT_FLAG_PKCS10 = (1 shl CERT_QUERY_CONTENT_PKCS10);
+  CERT_QUERY_CONTENT_FLAG_PKCS10 = 1 shl CERT_QUERY_CONTENT_PKCS10;
   {$EXTERNALSYM CERT_QUERY_CONTENT_FLAG_PKCS10}
 
 //an encoded PFX BLOB
 
-  CERT_QUERY_CONTENT_FLAG_PFX = (1 shl CERT_QUERY_CONTENT_PFX);
+  CERT_QUERY_CONTENT_FLAG_PFX = 1 shl CERT_QUERY_CONTENT_PFX;
   {$EXTERNALSYM CERT_QUERY_CONTENT_FLAG_PFX}
 
 //content can be any type
@@ -14306,12 +14201,12 @@ const
 
 //the content is in binary format
 
-  CERT_QUERY_FORMAT_FLAG_BINARY = (1 shl CERT_QUERY_FORMAT_BINARY);
+  CERT_QUERY_FORMAT_FLAG_BINARY = 1 shl CERT_QUERY_FORMAT_BINARY;
   {$EXTERNALSYM CERT_QUERY_FORMAT_FLAG_BINARY}
 
 //the content is base64 encoded
 
-  CERT_QUERY_FORMAT_FLAG_BASE64_ENCODED = (1 shl CERT_QUERY_FORMAT_BASE64_ENCODED);
+  CERT_QUERY_FORMAT_FLAG_BASE64_ENCODED = 1 shl CERT_QUERY_FORMAT_BASE64_ENCODED;
   {$EXTERNALSYM CERT_QUERY_FORMAT_FLAG_BASE64_ENCODED}
 
 //the content can be of any format
@@ -14347,7 +14242,7 @@ type
   PHCRYPTASYNC = ^HCRYPTASYNC;
   {$EXTERNALSYM PHCRYPTASYNC}
 
-  PFN_CRYPT_ASYNC_PARAM_FREE_FUNC = procedure (pszParamOid: LPSTR; pvParam: LPVOID); stdcall;
+  PFN_CRYPT_ASYNC_PARAM_FREE_FUNC = procedure(pszParamOid: LPSTR; pvParam: LPVOID); stdcall;
   {$EXTERNALSYM PFN_CRYPT_ASYNC_PARAM_FREE_FUNC}
   PFnCryptAsyncParamFreeFunc = PFN_CRYPT_ASYNC_PARAM_FREE_FUNC;
 
@@ -14411,13 +14306,13 @@ const
   CREDENTIAL_OID_PASSWORD_CREDENTIALS_W = LPCSTR(2);
   {$EXTERNALSYM CREDENTIAL_OID_PASSWORD_CREDENTIALS_W}
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   CREDENTIAL_OID_PASSWORD_CREDENTIALS = CREDENTIAL_OID_PASSWORD_CREDENTIALS_W;
   {$EXTERNALSYM CREDENTIAL_OID_PASSWORD_CREDENTIALS}
-{$ELSE}
+  {$ELSE}
   CREDENTIAL_OID_PASSWORD_CREDENTIALS = CREDENTIAL_OID_PASSWORD_CREDENTIALS_A;
   {$EXTERNALSYM CREDENTIAL_OID_PASSWORD_CREDENTIALS}
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 type
   PCRYPT_PASSWORD_CREDENTIALSA = ^CRYPT_PASSWORD_CREDENTIALSA;
@@ -14446,21 +14341,21 @@ type
   TCryptPasswordCredentialsW = CRYPT_PASSWORD_CREDENTIALSW;
   PCryptPasswordCredentialsW = PCRYPT_PASSWORD_CREDENTIALSW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   CRYPT_PASSWORD_CREDENTIALS = CRYPT_PASSWORD_CREDENTIALSW;
   {$EXTERNALSYM CRYPT_PASSWORD_CREDENTIALS}
   PCRYPT_PASSWORD_CREDENTIALS = PCRYPT_PASSWORD_CREDENTIALSW;
   {$EXTERNALSYM PCRYPT_PASSWORD_CREDENTIALS}
   TCryptPasswordCredentials = TCryptPasswordCredentialsW;
   PCryptPasswordCredentials = PCryptPasswordCredentialsW;
-{$ELSE}
+  {$ELSE}
   CRYPT_PASSWORD_CREDENTIALS = CRYPT_PASSWORD_CREDENTIALSA;
   {$EXTERNALSYM CRYPT_PASSWORD_CREDENTIALS}
   PCRYPT_PASSWORD_CREDENTIALS = PCRYPT_PASSWORD_CREDENTIALSA;
   {$EXTERNALSYM PCRYPT_PASSWORD_CREDENTIALS}
   TCryptPasswordCredentials = TCryptPasswordCredentialsA;
   PCryptPasswordCredentials = PCryptPasswordCredentialsA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 // Scheme Provider Signatures
@@ -14471,7 +14366,7 @@ const
   {$EXTERNALSYM SCHEME_OID_RETRIEVE_ENCODED_OBJECT_FUNC}
 
 type
-  PFN_FREE_ENCODED_OBJECT_FUNC = procedure (pszObjectOid: LPCSTR;
+  PFN_FREE_ENCODED_OBJECT_FUNC = procedure(pszObjectOid: LPCSTR;
     pObject: PCRYPT_BLOB_ARRAY; pvFreeContext: LPVOID); stdcall;
   {$EXTERNALSYM PFN_FREE_ENCODED_OBJECT_FUNC}
   PFnFreeEncodedObjectFunc = PFN_FREE_ENCODED_OBJECT_FUNC;
@@ -14580,20 +14475,11 @@ function CryptRetrieveObjectByUrlW(pszUrl: LPCWSTR; pszObjectOid: LPCSTR;
   hAsyncRetrieve: HCRYPTASYNC; pCredentials: PCRYPT_CREDENTIALS;
   pvVerify: LPVOID; pvReserved: LPVOID): BOOL; stdcall;
 {$EXTERNALSYM CryptRetrieveObjectByUrlW}
-
-{$IFDEF UNICODE}
-function CryptRetrieveObjectByUrl(pszUrl: LPCWSTR; pszObjectOid: LPCSTR;
+function CryptRetrieveObjectByUrl(pszUrl: LPCTSTR; pszObjectOid: LPCSTR;
   dwRetrievalFlags: DWORD; dwTimeout: DWORD; var ppvObject: LPVOID;
   hAsyncRetrieve: HCRYPTASYNC; pCredentials: PCRYPT_CREDENTIALS;
   pvVerify: LPVOID; pvReserved: LPVOID): BOOL; stdcall;
 {$EXTERNALSYM CryptRetrieveObjectByUrl}
-{$ELSE}
-function CryptRetrieveObjectByUrl(pszUrl: LPCSTR; pszObjectOid: LPCSTR;
-  dwRetrievalFlags: DWORD; dwTimeout: DWORD; var ppvObject: LPVOID;
-  hAsyncRetrieve: HCRYPTASYNC; pCredentials: PCRYPT_CREDENTIALS;
-  pvVerify: LPVOID; pvReserved: LPVOID): BOOL; stdcall;
-{$EXTERNALSYM CryptRetrieveObjectByUrl}
-{$ENDIF}
 
 //
 // Call back function to cancel object retrieval
@@ -14606,7 +14492,7 @@ function CryptRetrieveObjectByUrl(pszUrl: LPCSTR; pszObjectOid: LPCSTR;
 // It is ignored by the rest of the protocols.
 
 type
-  PFN_CRYPT_CANCEL_RETRIEVAL = function (dwFlags: DWORD; pvArg: Pointer): BOOL; stdcall;
+  PFN_CRYPT_CANCEL_RETRIEVAL = function(dwFlags: DWORD; pvArg: Pointer): BOOL; stdcall;
   {$EXTERNALSYM PFN_CRYPT_CANCEL_RETRIEVAL}
   PFnCryptCancelRetrieval = PFN_CRYPT_CANCEL_RETRIEVAL;
 
@@ -14641,7 +14527,7 @@ const
   {$EXTERNALSYM CRYPT_PARAM_ASYNC_RETRIEVAL_COMPLETION}
 
 type
-  PFN_CRYPT_ASYNC_RETRIEVAL_COMPLETION_FUNC = procedure (pvCompletion: LPVOID;
+  PFN_CRYPT_ASYNC_RETRIEVAL_COMPLETION_FUNC = procedure(pvCompletion: LPVOID;
     dwCompletionCode: DWORD; pszUrl: LPCSTR; pszObjectOid: LPSTR; pvObject: LPVOID); stdcall;
   {$EXTERNALSYM PFN_CRYPT_ASYNC_RETRIEVAL_COMPLETION_FUNC}
   PFnCryptASynchRetrievalCompletionFunc = PFN_CRYPT_ASYNC_RETRIEVAL_COMPLETION_FUNC;
@@ -14668,7 +14554,7 @@ const
   {$EXTERNALSYM CRYPT_PARAM_CANCEL_ASYNC_RETRIEVAL}
 
 type
-  PFN_CANCEL_ASYNC_RETRIEVAL_FUNC = function (hAsyncRetrieve: HCRYPTASYNC): BOOL; stdcall;
+  PFN_CANCEL_ASYNC_RETRIEVAL_FUNC = function(hAsyncRetrieve: HCRYPTASYNC): BOOL; stdcall;
   {$EXTERNALSYM PFN_CANCEL_ASYNC_RETRIEVAL_FUNC}
   PFnCancelASynchRetrievalFunc = PFN_CANCEL_ASYNC_RETRIEVAL_FUNC;
 
@@ -15098,7 +14984,7 @@ const
 //--------------------------------------------------------------------------
 
 type
-  PFN_CRYPT_ENUM_KEYID_PROP = function (pKeyIdentifier: PCRYPT_HASH_BLOB;
+  PFN_CRYPT_ENUM_KEYID_PROP = function(pKeyIdentifier: PCRYPT_HASH_BLOB;
     dwFlags: DWORD; pvReserved: Pointer; pvArg: Pointer; cProp: DWORD;
     rgdwPropId: LPDWORD; rgpvData: Pointer; rgcbData: LPDWORD): BOOL; stdcall;
   {$EXTERNALSYM PFN_CRYPT_ENUM_KEYID_PROP}
@@ -15687,7 +15573,7 @@ const
 // build a chain for this certificate.
 
 type
-  PFN_CERT_CHAIN_FIND_BY_ISSUER_CALLBACK = function (pCert: PCCERT_CONTEXT;
+  PFN_CERT_CHAIN_FIND_BY_ISSUER_CALLBACK = function(pCert: PCCERT_CONTEXT;
     pvFindArg: Pointer): BOOL; stdcall;
   {$EXTERNALSYM PFN_CERT_CHAIN_FIND_BY_ISSUER_CALLBACK}
   PFnCertChainFindByIssuerCallback = PFN_CERT_CHAIN_FIND_BY_ISSUER_CALLBACK;
@@ -16069,7 +15955,18 @@ const
 //          dwError is set to CERT_E_UNTRUSTEDCA.
 //--------------------------------------------------------------------------
 
+{$ENDIF JWA_INTERFACESECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
+
 implementation
+
+uses
+  JwaWinDLLNames;
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_IMPLEMENTATIONSECTION}
 
 function GET_ALG_CLASS(x: DWORD): DWORD;
 begin
@@ -16152,13 +16049,8 @@ begin
     (CERT_SIGNATURE_HASH_PROP_ID = X);
 end;
 
-const
-  crypt32 = 'crypt32.dll';
-  advapi32 = 'advapi32.dll';
-  softpub = 'softpub.dll';
-
-
 {$IFDEF DYNAMIC_LINK}
+
 var
   _CryptAcquireContextA: Pointer;
 
@@ -16166,16 +16058,12 @@ function CryptAcquireContextA;
 begin
   GetProcedureAddress(_CryptAcquireContextA, advapi32, 'CryptAcquireContextA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptAcquireContextA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptAcquireContextA]
   end;
 end;
-{$ELSE}
-function CryptAcquireContextA; external advapi32 name 'CryptAcquireContextA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptAcquireContextW: Pointer;
 
@@ -16183,53 +16071,25 @@ function CryptAcquireContextW;
 begin
   GetProcedureAddress(_CryptAcquireContextW, advapi32, 'CryptAcquireContextW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptAcquireContextW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptAcquireContextW]
   end;
 end;
-{$ELSE}
-function CryptAcquireContextW; external advapi32 name 'CryptAcquireContextW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptAcquireContext: Pointer;
 
 function CryptAcquireContext;
 begin
-  GetProcedureAddress(_CryptAcquireContext, advapi32, 'CryptAcquireContextW');
+  GetProcedureAddress(_CryptAcquireContext, advapi32, 'CryptAcquireContext' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptAcquireContext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptAcquireContext]
   end;
 end;
-{$ELSE}
-function CryptAcquireContext; external advapi32 name 'CryptAcquireContextW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CryptAcquireContext: Pointer;
-
-function CryptAcquireContext;
-begin
-  GetProcedureAddress(_CryptAcquireContext, advapi32, 'CryptAcquireContextA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptAcquireContext]
-  end;
-end;
-{$ELSE}
-function CryptAcquireContext; external advapi32 name 'CryptAcquireContextA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptReleaseContext: Pointer;
 
@@ -16237,16 +16097,12 @@ function CryptReleaseContext;
 begin
   GetProcedureAddress(_CryptReleaseContext, advapi32, 'CryptReleaseContext');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptReleaseContext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptReleaseContext]
   end;
 end;
-{$ELSE}
-function CryptReleaseContext; external advapi32 name 'CryptReleaseContext';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptGenKey: Pointer;
 
@@ -16254,16 +16110,12 @@ function CryptGenKey;
 begin
   GetProcedureAddress(_CryptGenKey, advapi32, 'CryptGenKey');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptGenKey]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptGenKey]
   end;
 end;
-{$ELSE}
-function CryptGenKey; external advapi32 name 'CryptGenKey';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptDeriveKey: Pointer;
 
@@ -16271,16 +16123,12 @@ function CryptDeriveKey;
 begin
   GetProcedureAddress(_CryptDeriveKey, advapi32, 'CryptDeriveKey');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptDeriveKey]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptDeriveKey]
   end;
 end;
-{$ELSE}
-function CryptDeriveKey; external advapi32 name 'CryptDeriveKey';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptDestroyKey: Pointer;
 
@@ -16288,16 +16136,12 @@ function CryptDestroyKey;
 begin
   GetProcedureAddress(_CryptDestroyKey, advapi32, 'CryptDestroyKey');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptDestroyKey]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptDestroyKey]
   end;
 end;
-{$ELSE}
-function CryptDestroyKey; external advapi32 name 'CryptDestroyKey';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptSetKeyParam: Pointer;
 
@@ -16305,16 +16149,12 @@ function CryptSetKeyParam;
 begin
   GetProcedureAddress(_CryptSetKeyParam, crypt32, 'CryptSetKeyParam');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptSetKeyParam]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptSetKeyParam]
   end;
 end;
-{$ELSE}
-function CryptSetKeyParam; external crypt32 name 'CryptSetKeyParam';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptGetKeyParam: Pointer;
 
@@ -16322,16 +16162,12 @@ function CryptGetKeyParam;
 begin
   GetProcedureAddress(_CryptGetKeyParam, advapi32, 'CryptGetKeyParam');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptGetKeyParam]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptGetKeyParam]
   end;
 end;
-{$ELSE}
-function CryptGetKeyParam; external advapi32 name 'CryptGetKeyParam';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptSetHashParam: Pointer;
 
@@ -16339,16 +16175,12 @@ function CryptSetHashParam;
 begin
   GetProcedureAddress(_CryptSetHashParam, advapi32, 'CryptSetHashParam');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptSetHashParam]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptSetHashParam]
   end;
 end;
-{$ELSE}
-function CryptSetHashParam; external advapi32 name 'CryptSetHashParam';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptGetHashParam: Pointer;
 
@@ -16356,16 +16188,12 @@ function CryptGetHashParam;
 begin
   GetProcedureAddress(_CryptGetHashParam, advapi32, 'CryptGetHashParam');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptGetHashParam]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptGetHashParam]
   end;
 end;
-{$ELSE}
-function CryptGetHashParam; external advapi32 name 'CryptGetHashParam';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptSetProvParam: Pointer;
 
@@ -16373,16 +16201,12 @@ function CryptSetProvParam;
 begin
   GetProcedureAddress(_CryptSetProvParam, advapi32, 'CryptSetProvParam');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptSetProvParam]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptSetProvParam]
   end;
 end;
-{$ELSE}
-function CryptSetProvParam; external advapi32 name 'CryptSetProvParam';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptGetProvParam: Pointer;
 
@@ -16390,16 +16214,12 @@ function CryptGetProvParam;
 begin
   GetProcedureAddress(_CryptGetProvParam, advapi32, 'CryptGetProvParam');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptGetProvParam]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptGetProvParam]
   end;
 end;
-{$ELSE}
-function CryptGetProvParam; external advapi32 name 'CryptGetProvParam';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptGenRandom: Pointer;
 
@@ -16407,16 +16227,12 @@ function CryptGenRandom;
 begin
   GetProcedureAddress(_CryptGenRandom, advapi32, 'CryptGenRandom');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptGenRandom]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptGenRandom]
   end;
 end;
-{$ELSE}
-function CryptGenRandom; external advapi32 name 'CryptGenRandom';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptGetUserKey: Pointer;
 
@@ -16424,16 +16240,12 @@ function CryptGetUserKey;
 begin
   GetProcedureAddress(_CryptGetUserKey, advapi32, 'CryptGetUserKey');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptGetUserKey]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptGetUserKey]
   end;
 end;
-{$ELSE}
-function CryptGetUserKey; external advapi32 name 'CryptGetUserKey';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptExportKey: Pointer;
 
@@ -16441,16 +16253,12 @@ function CryptExportKey;
 begin
   GetProcedureAddress(_CryptExportKey, advapi32, 'CryptExportKey');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptExportKey]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptExportKey]
   end;
 end;
-{$ELSE}
-function CryptExportKey; external advapi32 name 'CryptExportKey';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptImportKey: Pointer;
 
@@ -16458,16 +16266,12 @@ function CryptImportKey;
 begin
   GetProcedureAddress(_CryptImportKey, advapi32, 'CryptImportKey');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptImportKey]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptImportKey]
   end;
 end;
-{$ELSE}
-function CryptImportKey; external advapi32 name 'CryptImportKey';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptEncrypt: Pointer;
 
@@ -16475,16 +16279,12 @@ function CryptEncrypt;
 begin
   GetProcedureAddress(_CryptEncrypt, advapi32, 'CryptEncrypt');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptEncrypt]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptEncrypt]
   end;
 end;
-{$ELSE}
-function CryptEncrypt; external advapi32 name 'CryptEncrypt';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptDecrypt: Pointer;
 
@@ -16492,16 +16292,12 @@ function CryptDecrypt;
 begin
   GetProcedureAddress(_CryptDecrypt, advapi32, 'CryptDecrypt');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptDecrypt]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptDecrypt]
   end;
 end;
-{$ELSE}
-function CryptDecrypt; external advapi32 name 'CryptDecrypt';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptCreateHash: Pointer;
 
@@ -16509,16 +16305,12 @@ function CryptCreateHash;
 begin
   GetProcedureAddress(_CryptCreateHash, advapi32, 'CryptCreateHash');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptCreateHash]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptCreateHash]
   end;
 end;
-{$ELSE}
-function CryptCreateHash; external advapi32 name 'CryptCreateHash';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptHashData: Pointer;
 
@@ -16526,16 +16318,12 @@ function CryptHashData;
 begin
   GetProcedureAddress(_CryptHashData, advapi32, 'CryptHashData');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptHashData]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptHashData]
   end;
 end;
-{$ELSE}
-function CryptHashData; external advapi32 name 'CryptHashData';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptHashSessionKey: Pointer;
 
@@ -16543,16 +16331,12 @@ function CryptHashSessionKey;
 begin
   GetProcedureAddress(_CryptHashSessionKey, advapi32, 'CryptHashSessionKey');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptHashSessionKey]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptHashSessionKey]
   end;
 end;
-{$ELSE}
-function CryptHashSessionKey; external advapi32 name 'CryptHashSessionKey';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptDestroyHash: Pointer;
 
@@ -16560,16 +16344,12 @@ function CryptDestroyHash;
 begin
   GetProcedureAddress(_CryptDestroyHash, advapi32, 'CryptDestroyHash');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptDestroyHash]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptDestroyHash]
   end;
 end;
-{$ELSE}
-function CryptDestroyHash; external advapi32 name 'CryptDestroyHash';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptSignHashA: Pointer;
 
@@ -16577,16 +16357,12 @@ function CryptSignHashA;
 begin
   GetProcedureAddress(_CryptSignHashA, advapi32, 'CryptSignHashA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptSignHashA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptSignHashA]
   end;
 end;
-{$ELSE}
-function CryptSignHashA; external advapi32 name 'CryptSignHashA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptSignHashW: Pointer;
 
@@ -16594,53 +16370,25 @@ function CryptSignHashW;
 begin
   GetProcedureAddress(_CryptSignHashW, advapi32, 'CryptSignHashW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptSignHashW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptSignHashW]
   end;
 end;
-{$ELSE}
-function CryptSignHashW; external advapi32 name 'CryptSignHashW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptSignHash: Pointer;
 
 function CryptSignHash;
 begin
-  GetProcedureAddress(_CryptSignHash, advapi32, 'CryptSignHashW');
+  GetProcedureAddress(_CryptSignHash, advapi32, 'CryptSignHash' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptSignHash]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptSignHash]
   end;
 end;
-{$ELSE}
-function CryptSignHash; external advapi32 name 'CryptSignHashW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CryptSignHash: Pointer;
-
-function CryptSignHash;
-begin
-  GetProcedureAddress(_CryptSignHash, advapi32, 'CryptSignHashA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptSignHash]
-  end;
-end;
-{$ELSE}
-function CryptSignHash; external advapi32 name 'CryptSignHashA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptVerifySignatureA: Pointer;
 
@@ -16648,16 +16396,12 @@ function CryptVerifySignatureA;
 begin
   GetProcedureAddress(_CryptVerifySignatureA, advapi32, 'CryptVerifySignatureA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptVerifySignatureA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptVerifySignatureA]
   end;
 end;
-{$ELSE}
-function CryptVerifySignatureA; external advapi32 name 'CryptVerifySignatureA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptVerifySignatureW: Pointer;
 
@@ -16665,53 +16409,25 @@ function CryptVerifySignatureW;
 begin
   GetProcedureAddress(_CryptVerifySignatureW, advapi32, 'CryptVerifySignatureW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptVerifySignatureW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptVerifySignatureW]
   end;
 end;
-{$ELSE}
-function CryptVerifySignatureW; external advapi32 name 'CryptVerifySignatureW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptVerifySignature: Pointer;
 
 function CryptVerifySignature;
 begin
-  GetProcedureAddress(_CryptVerifySignature, advapi32, 'CryptVerifySignatureW');
+  GetProcedureAddress(_CryptVerifySignature, advapi32, 'CryptVerifySignature' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptVerifySignature]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptVerifySignature]
   end;
 end;
-{$ELSE}
-function CryptVerifySignature; external advapi32 name 'CryptVerifySignatureW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CryptVerifySignature: Pointer;
-
-function CryptVerifySignature;
-begin
-  GetProcedureAddress(_CryptVerifySignature, advapi32, 'CryptVerifySignatureA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptVerifySignature]
-  end;
-end;
-{$ELSE}
-function CryptVerifySignature; external advapi32 name 'CryptVerifySignatureA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptSetProviderA: Pointer;
 
@@ -16719,16 +16435,12 @@ function CryptSetProviderA;
 begin
   GetProcedureAddress(_CryptSetProviderA, advapi32, 'CryptSetProviderA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptSetProviderA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptSetProviderA]
   end;
 end;
-{$ELSE}
-function CryptSetProviderA; external advapi32 name 'CryptSetProviderA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptSetProviderW: Pointer;
 
@@ -16736,53 +16448,25 @@ function CryptSetProviderW;
 begin
   GetProcedureAddress(_CryptSetProviderW, advapi32, 'CryptSetProviderW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptSetProviderW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptSetProviderW]
   end;
 end;
-{$ELSE}
-function CryptSetProviderW; external advapi32 name 'CryptSetProviderW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptSetProvider: Pointer;
 
 function CryptSetProvider;
 begin
-  GetProcedureAddress(_CryptSetProvider, advapi32, 'CryptSetProviderW');
+  GetProcedureAddress(_CryptSetProvider, advapi32, 'CryptSetProvider' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptSetProvider]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptSetProvider]
   end;
 end;
-{$ELSE}
-function CryptSetProvider; external advapi32 name 'CryptSetProviderW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CryptSetProvider: Pointer;
-
-function CryptSetProvider;
-begin
-  GetProcedureAddress(_CryptSetProvider, advapi32, 'CryptSetProviderA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptSetProvider]
-  end;
-end;
-{$ELSE}
-function CryptSetProvider; external advapi32 name 'CryptSetProviderA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptSetProviderExA: Pointer;
 
@@ -16790,16 +16474,12 @@ function CryptSetProviderExA;
 begin
   GetProcedureAddress(_CryptSetProviderExA, advapi32, 'CryptSetProviderExA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptSetProviderExA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptSetProviderExA]
   end;
 end;
-{$ELSE}
-function CryptSetProviderExA; external advapi32 name 'CryptSetProviderExA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptSetProviderExW: Pointer;
 
@@ -16807,53 +16487,25 @@ function CryptSetProviderExW;
 begin
   GetProcedureAddress(_CryptSetProviderExW, advapi32, 'CryptSetProviderExW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptSetProviderExW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptSetProviderExW]
   end;
 end;
-{$ELSE}
-function CryptSetProviderExW; external advapi32 name 'CryptSetProviderExW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptSetProviderEx: Pointer;
 
 function CryptSetProviderEx;
 begin
-  GetProcedureAddress(_CryptSetProviderEx, advapi32, 'CryptSetProviderExW');
+  GetProcedureAddress(_CryptSetProviderEx, advapi32, 'CryptSetProviderEx' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptSetProviderEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptSetProviderEx]
   end;
 end;
-{$ELSE}
-function CryptSetProviderEx; external advapi32 name 'CryptSetProviderExW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CryptSetProviderEx: Pointer;
-
-function CryptSetProviderEx;
-begin
-  GetProcedureAddress(_CryptSetProviderEx, advapi32, 'CryptSetProviderExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptSetProviderEx]
-  end;
-end;
-{$ELSE}
-function CryptSetProviderEx; external advapi32 name 'CryptSetProviderExA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptGetDefaultProviderA: Pointer;
 
@@ -16861,16 +16513,12 @@ function CryptGetDefaultProviderA;
 begin
   GetProcedureAddress(_CryptGetDefaultProviderA, advapi32, 'CryptGetDefaultProviderA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptGetDefaultProviderA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptGetDefaultProviderA]
   end;
 end;
-{$ELSE}
-function CryptGetDefaultProviderA; external advapi32 name 'CryptGetDefaultProviderA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptGetDefaultProviderW: Pointer;
 
@@ -16878,53 +16526,25 @@ function CryptGetDefaultProviderW;
 begin
   GetProcedureAddress(_CryptGetDefaultProviderW, advapi32, 'CryptGetDefaultProviderW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptGetDefaultProviderW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptGetDefaultProviderW]
   end;
 end;
-{$ELSE}
-function CryptGetDefaultProviderW; external advapi32 name 'CryptGetDefaultProviderW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptGetDefaultProvider: Pointer;
 
 function CryptGetDefaultProvider;
 begin
-  GetProcedureAddress(_CryptGetDefaultProvider, advapi32, 'CryptGetDefaultProviderW');
+  GetProcedureAddress(_CryptGetDefaultProvider, advapi32, 'CryptGetDefaultProvider' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptGetDefaultProvider]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptGetDefaultProvider]
   end;
 end;
-{$ELSE}
-function CryptGetDefaultProvider; external advapi32 name 'CryptGetDefaultProviderW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CryptGetDefaultProvider: Pointer;
-
-function CryptGetDefaultProvider;
-begin
-  GetProcedureAddress(_CryptGetDefaultProvider, advapi32, 'CryptGetDefaultProviderA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptGetDefaultProvider]
-  end;
-end;
-{$ELSE}
-function CryptGetDefaultProvider; external advapi32 name 'CryptGetDefaultProviderA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptEnumProviderTypesA: Pointer;
 
@@ -16932,16 +16552,12 @@ function CryptEnumProviderTypesA;
 begin
   GetProcedureAddress(_CryptEnumProviderTypesA, advapi32, 'CryptEnumProviderTypesA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptEnumProviderTypesA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptEnumProviderTypesA]
   end;
 end;
-{$ELSE}
-function CryptEnumProviderTypesA; external advapi32 name 'CryptEnumProviderTypesA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptEnumProviderTypesW: Pointer;
 
@@ -16949,53 +16565,25 @@ function CryptEnumProviderTypesW;
 begin
   GetProcedureAddress(_CryptEnumProviderTypesW, advapi32, 'CryptEnumProviderTypesW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptEnumProviderTypesW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptEnumProviderTypesW]
   end;
 end;
-{$ELSE}
-function CryptEnumProviderTypesW; external advapi32 name 'CryptEnumProviderTypesW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptEnumProviderTypes: Pointer;
 
 function CryptEnumProviderTypes;
 begin
-  GetProcedureAddress(_CryptEnumProviderTypes, advapi32, 'CryptEnumProviderTypesW');
+  GetProcedureAddress(_CryptEnumProviderTypes, advapi32, 'CryptEnumProviderTypes' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptEnumProviderTypes]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptEnumProviderTypes]
   end;
 end;
-{$ELSE}
-function CryptEnumProviderTypes; external advapi32 name 'CryptEnumProviderTypesW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CryptEnumProviderTypes: Pointer;
-
-function CryptEnumProviderTypes;
-begin
-  GetProcedureAddress(_CryptEnumProviderTypes, advapi32, 'CryptEnumProviderTypesA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptEnumProviderTypes]
-  end;
-end;
-{$ELSE}
-function CryptEnumProviderTypes; external advapi32 name 'CryptEnumProviderTypesA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptEnumProvidersA: Pointer;
 
@@ -17003,16 +16591,12 @@ function CryptEnumProvidersA;
 begin
   GetProcedureAddress(_CryptEnumProvidersA, advapi32, 'CryptEnumProvidersA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptEnumProvidersA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptEnumProvidersA]
   end;
 end;
-{$ELSE}
-function CryptEnumProvidersA; external advapi32 name 'CryptEnumProvidersA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptEnumProvidersW: Pointer;
 
@@ -17020,53 +16604,25 @@ function CryptEnumProvidersW;
 begin
   GetProcedureAddress(_CryptEnumProvidersW, advapi32, 'CryptEnumProvidersW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptEnumProvidersW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptEnumProvidersW]
   end;
 end;
-{$ELSE}
-function CryptEnumProvidersW; external advapi32 name 'CryptEnumProvidersW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptEnumProviders: Pointer;
 
 function CryptEnumProviders;
 begin
-  GetProcedureAddress(_CryptEnumProviders, advapi32, 'CryptEnumProvidersW');
+  GetProcedureAddress(_CryptEnumProviders, advapi32, 'CryptEnumProviders' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptEnumProviders]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptEnumProviders]
   end;
 end;
-{$ELSE}
-function CryptEnumProviders; external advapi32 name 'CryptEnumProvidersW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CryptEnumProviders: Pointer;
-
-function CryptEnumProviders;
-begin
-  GetProcedureAddress(_CryptEnumProviders, advapi32, 'CryptEnumProvidersA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptEnumProviders]
-  end;
-end;
-{$ELSE}
-function CryptEnumProviders; external advapi32 name 'CryptEnumProvidersA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptContextAddRef: Pointer;
 
@@ -17074,16 +16630,12 @@ function CryptContextAddRef;
 begin
   GetProcedureAddress(_CryptContextAddRef, advapi32, 'CryptContextAddRef');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptContextAddRef]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptContextAddRef]
   end;
 end;
-{$ELSE}
-function CryptContextAddRef; external advapi32 name 'CryptContextAddRef';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptDuplicateKey: Pointer;
 
@@ -17091,16 +16643,12 @@ function CryptDuplicateKey;
 begin
   GetProcedureAddress(_CryptDuplicateKey, advapi32, 'CryptDuplicateKey');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptDuplicateKey]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptDuplicateKey]
   end;
 end;
-{$ELSE}
-function CryptDuplicateKey; external advapi32 name 'CryptDuplicateKey';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptDuplicateHash: Pointer;
 
@@ -17108,17 +16656,12 @@ function CryptDuplicateHash;
 begin
   GetProcedureAddress(_CryptDuplicateHash, advapi32, 'CryptDuplicateHash');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptDuplicateHash]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptDuplicateHash]
   end;
 end;
-{$ELSE}
-function CryptDuplicateHash; external advapi32 name 'CryptDuplicateHash';
-{$ENDIF DYNAMIC_LINK}
 
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptFormatObject: Pointer;
 
@@ -17126,16 +16669,12 @@ function CryptFormatObject;
 begin
   GetProcedureAddress(_CryptFormatObject, crypt32, 'CryptFormatObject');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptFormatObject]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptFormatObject]
   end;
 end;
-{$ELSE}
-function CryptFormatObject; external crypt32 name 'CryptFormatObject';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptEncodeObjectEx: Pointer;
 
@@ -17143,16 +16682,12 @@ function CryptEncodeObjectEx;
 begin
   GetProcedureAddress(_CryptEncodeObjectEx, crypt32, 'CryptEncodeObjectEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptEncodeObjectEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptEncodeObjectEx]
   end;
 end;
-{$ELSE}
-function CryptEncodeObjectEx; external crypt32 name 'CryptEncodeObjectEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptEncodeObject: Pointer;
 
@@ -17160,16 +16695,12 @@ function CryptEncodeObject;
 begin
   GetProcedureAddress(_CryptEncodeObject, crypt32, 'CryptEncodeObject');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptEncodeObject]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptEncodeObject]
   end;
 end;
-{$ELSE}
-function CryptEncodeObject; external crypt32 name 'CryptEncodeObject';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptDecodeObjectEx: Pointer;
 
@@ -17177,16 +16708,12 @@ function CryptDecodeObjectEx;
 begin
   GetProcedureAddress(_CryptDecodeObjectEx, crypt32, 'CryptDecodeObjectEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptDecodeObjectEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptDecodeObjectEx]
   end;
 end;
-{$ELSE}
-function CryptDecodeObjectEx; external crypt32 name 'CryptDecodeObjectEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptDecodeObject: Pointer;
 
@@ -17194,16 +16721,12 @@ function CryptDecodeObject;
 begin
   GetProcedureAddress(_CryptDecodeObject, crypt32, 'CryptDecodeObject');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptDecodeObject]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptDecodeObject]
   end;
 end;
-{$ELSE}
-function CryptDecodeObject; external crypt32 name 'CryptDecodeObject';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptInstallOIDFunctionAddress: Pointer;
 
@@ -17211,16 +16734,12 @@ function CryptInstallOIDFunctionAddress;
 begin
   GetProcedureAddress(_CryptInstallOIDFunctionAddress, crypt32, 'CryptInstallOIDFunctionAddress');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptInstallOIDFunctionAddress]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptInstallOIDFunctionAddress]
   end;
 end;
-{$ELSE}
-function CryptInstallOIDFunctionAddress; external crypt32 name 'CryptInstallOIDFunctionAddress';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptInitOIDFunctionSet: Pointer;
 
@@ -17228,16 +16747,12 @@ function CryptInitOIDFunctionSet;
 begin
   GetProcedureAddress(_CryptInitOIDFunctionSet, crypt32, 'CryptInitOIDFunctionSet');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptInitOIDFunctionSet]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptInitOIDFunctionSet]
   end;
 end;
-{$ELSE}
-function CryptInitOIDFunctionSet; external crypt32 name 'CryptInitOIDFunctionSet';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptGetOIDFunctionAddress: Pointer;
 
@@ -17245,16 +16760,12 @@ function CryptGetOIDFunctionAddress;
 begin
   GetProcedureAddress(_CryptGetOIDFunctionAddress, crypt32, 'CryptGetOIDFunctionAddress');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptGetOIDFunctionAddress]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptGetOIDFunctionAddress]
   end;
 end;
-{$ELSE}
-function CryptGetOIDFunctionAddress; external crypt32 name 'CryptGetOIDFunctionAddress';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptGetDefaultOIDDllList: Pointer;
 
@@ -17262,16 +16773,12 @@ function CryptGetDefaultOIDDllList;
 begin
   GetProcedureAddress(_CryptGetDefaultOIDDllList, crypt32, 'CryptGetDefaultOIDDllList');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptGetDefaultOIDDllList]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptGetDefaultOIDDllList]
   end;
 end;
-{$ELSE}
-function CryptGetDefaultOIDDllList; external crypt32 name 'CryptGetDefaultOIDDllList';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptGetDefaultOIDFunctionAddr: Pointer;
 
@@ -17279,16 +16786,12 @@ function CryptGetDefaultOIDFunctionAddress;
 begin
   GetProcedureAddress(_CryptGetDefaultOIDFunctionAddr, crypt32, 'CryptGetDefaultOIDFunctionAddress');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptGetDefaultOIDFunctionAddr]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptGetDefaultOIDFunctionAddr]
   end;
 end;
-{$ELSE}
-function CryptGetDefaultOIDFunctionAddress; external crypt32 name 'CryptGetDefaultOIDFunctionAddress';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptFreeOIDFunctionAddress: Pointer;
 
@@ -17296,16 +16799,12 @@ function CryptFreeOIDFunctionAddress;
 begin
   GetProcedureAddress(_CryptFreeOIDFunctionAddress, crypt32, 'CryptFreeOIDFunctionAddress');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptFreeOIDFunctionAddress]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptFreeOIDFunctionAddress]
   end;
 end;
-{$ELSE}
-function CryptFreeOIDFunctionAddress; external crypt32 name 'CryptFreeOIDFunctionAddress';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptRegisterOIDFunction: Pointer;
 
@@ -17313,16 +16812,12 @@ function CryptRegisterOIDFunction;
 begin
   GetProcedureAddress(_CryptRegisterOIDFunction, crypt32, 'CryptRegisterOIDFunction');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptRegisterOIDFunction]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptRegisterOIDFunction]
   end;
 end;
-{$ELSE}
-function CryptRegisterOIDFunction; external crypt32 name 'CryptRegisterOIDFunction';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptUnregisterOIDFunction: Pointer;
 
@@ -17330,16 +16825,12 @@ function CryptUnregisterOIDFunction;
 begin
   GetProcedureAddress(_CryptUnregisterOIDFunction, crypt32, 'CryptUnregisterOIDFunction');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptUnregisterOIDFunction]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptUnregisterOIDFunction]
   end;
 end;
-{$ELSE}
-function CryptUnregisterOIDFunction; external crypt32 name 'CryptUnregisterOIDFunction';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptRegisterDefaultOIDFunction: Pointer;
 
@@ -17347,16 +16838,12 @@ function CryptRegisterDefaultOIDFunction;
 begin
   GetProcedureAddress(_CryptRegisterDefaultOIDFunction, crypt32, 'CryptRegisterDefaultOIDFunction');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptRegisterDefaultOIDFunction]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptRegisterDefaultOIDFunction]
   end;
 end;
-{$ELSE}
-function CryptRegisterDefaultOIDFunction; external crypt32 name 'CryptRegisterDefaultOIDFunction';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptUnregisterDefaultOIDFunc: Pointer;
 
@@ -17364,16 +16851,12 @@ function CryptUnregisterDefaultOIDFunction;
 begin
   GetProcedureAddress(_CryptUnregisterDefaultOIDFunc, crypt32, 'CryptUnregisterDefaultOIDFunction');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptUnregisterDefaultOIDFunc]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptUnregisterDefaultOIDFunc]
   end;
 end;
-{$ELSE}
-function CryptUnregisterDefaultOIDFunction; external crypt32 name 'CryptUnregisterDefaultOIDFunction';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptSetOIDFunctionValue: Pointer;
 
@@ -17381,16 +16864,12 @@ function CryptSetOIDFunctionValue;
 begin
   GetProcedureAddress(_CryptSetOIDFunctionValue, crypt32, 'CryptSetOIDFunctionValue');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptSetOIDFunctionValue]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptSetOIDFunctionValue]
   end;
 end;
-{$ELSE}
-function CryptSetOIDFunctionValue; external crypt32 name 'CryptSetOIDFunctionValue';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptGetOIDFunctionValue: Pointer;
 
@@ -17398,16 +16877,12 @@ function CryptGetOIDFunctionValue;
 begin
   GetProcedureAddress(_CryptGetOIDFunctionValue, crypt32, 'CryptGetOIDFunctionValue');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptGetOIDFunctionValue]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptGetOIDFunctionValue]
   end;
 end;
-{$ELSE}
-function CryptGetOIDFunctionValue; external crypt32 name 'CryptGetOIDFunctionValue';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptEnumOIDFunction: Pointer;
 
@@ -17415,16 +16890,12 @@ function CryptEnumOIDFunction;
 begin
   GetProcedureAddress(_CryptEnumOIDFunction, crypt32, 'CryptEnumOIDFunction');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptEnumOIDFunction]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptEnumOIDFunction]
   end;
 end;
-{$ELSE}
-function CryptEnumOIDFunction; external crypt32 name 'CryptEnumOIDFunction';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptFindOIDInfo: Pointer;
 
@@ -17432,16 +16903,12 @@ function CryptFindOIDInfo;
 begin
   GetProcedureAddress(_CryptFindOIDInfo, crypt32, 'CryptFindOIDInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptFindOIDInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptFindOIDInfo]
   end;
 end;
-{$ELSE}
-function CryptFindOIDInfo; external crypt32 name 'CryptFindOIDInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptRegisterOIDInfo: Pointer;
 
@@ -17449,16 +16916,12 @@ function CryptRegisterOIDInfo;
 begin
   GetProcedureAddress(_CryptRegisterOIDInfo, crypt32, 'CryptRegisterOIDInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptRegisterOIDInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptRegisterOIDInfo]
   end;
 end;
-{$ELSE}
-function CryptRegisterOIDInfo; external crypt32 name 'CryptRegisterOIDInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptUnregisterOIDInfo: Pointer;
 
@@ -17466,16 +16929,12 @@ function CryptUnregisterOIDInfo;
 begin
   GetProcedureAddress(_CryptUnregisterOIDInfo, crypt32, 'CryptUnregisterOIDInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptUnregisterOIDInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptUnregisterOIDInfo]
   end;
 end;
-{$ELSE}
-function CryptUnregisterOIDInfo; external crypt32 name 'CryptUnregisterOIDInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptEnumOIDInfo: Pointer;
 
@@ -17483,16 +16942,12 @@ function CryptEnumOIDInfo;
 begin
   GetProcedureAddress(_CryptEnumOIDInfo, crypt32, 'CryptEnumOIDInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptEnumOIDInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptEnumOIDInfo]
   end;
 end;
-{$ELSE}
-function CryptEnumOIDInfo; external crypt32 name 'CryptEnumOIDInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptFindLocalizedName: Pointer;
 
@@ -17500,16 +16955,12 @@ function CryptFindLocalizedName;
 begin
   GetProcedureAddress(_CryptFindLocalizedName, crypt32, 'CryptFindLocalizedName');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptFindLocalizedName]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptFindLocalizedName]
   end;
 end;
-{$ELSE}
-function CryptFindLocalizedName; external crypt32 name 'CryptFindLocalizedName';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptMsgOpenToEncode: Pointer;
 
@@ -17517,16 +16968,12 @@ function CryptMsgOpenToEncode;
 begin
   GetProcedureAddress(_CryptMsgOpenToEncode, crypt32, 'CryptMsgOpenToEncode');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptMsgOpenToEncode]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptMsgOpenToEncode]
   end;
 end;
-{$ELSE}
-function CryptMsgOpenToEncode; external crypt32 name 'CryptMsgOpenToEncode';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptMsgCalculateEncodedLength: Pointer;
 
@@ -17534,16 +16981,12 @@ function CryptMsgCalculateEncodedLength;
 begin
   GetProcedureAddress(_CryptMsgCalculateEncodedLength, crypt32, 'CryptMsgCalculateEncodedLength');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptMsgCalculateEncodedLength]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptMsgCalculateEncodedLength]
   end;
 end;
-{$ELSE}
-function CryptMsgCalculateEncodedLength; external crypt32 name 'CryptMsgCalculateEncodedLength';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptMsgOpenToDecode: Pointer;
 
@@ -17551,16 +16994,12 @@ function CryptMsgOpenToDecode;
 begin
   GetProcedureAddress(_CryptMsgOpenToDecode, crypt32, 'CryptMsgOpenToDecode');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptMsgOpenToDecode]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptMsgOpenToDecode]
   end;
 end;
-{$ELSE}
-function CryptMsgOpenToDecode; external crypt32 name 'CryptMsgOpenToDecode';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptMsgDuplicate: Pointer;
 
@@ -17568,16 +17007,12 @@ function CryptMsgDuplicate;
 begin
   GetProcedureAddress(_CryptMsgDuplicate, crypt32, 'CryptMsgDuplicate');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptMsgDuplicate]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptMsgDuplicate]
   end;
 end;
-{$ELSE}
-function CryptMsgDuplicate; external crypt32 name 'CryptMsgDuplicate';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptMsgClose: Pointer;
 
@@ -17585,16 +17020,12 @@ function CryptMsgClose;
 begin
   GetProcedureAddress(_CryptMsgClose, crypt32, 'CryptMsgClose');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptMsgClose]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptMsgClose]
   end;
 end;
-{$ELSE}
-function CryptMsgClose; external crypt32 name 'CryptMsgClose';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptMsgUpdate: Pointer;
 
@@ -17602,16 +17033,12 @@ function CryptMsgUpdate;
 begin
   GetProcedureAddress(_CryptMsgUpdate, crypt32, 'CryptMsgUpdate');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptMsgUpdate]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptMsgUpdate]
   end;
 end;
-{$ELSE}
-function CryptMsgUpdate; external crypt32 name 'CryptMsgUpdate';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptMsgGetParam: Pointer;
 
@@ -17619,16 +17046,12 @@ function CryptMsgGetParam;
 begin
   GetProcedureAddress(_CryptMsgGetParam, crypt32, 'CryptMsgGetParam');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptMsgGetParam]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptMsgGetParam]
   end;
 end;
-{$ELSE}
-function CryptMsgGetParam; external crypt32 name 'CryptMsgGetParam';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptMsgControl: Pointer;
 
@@ -17636,16 +17059,12 @@ function CryptMsgControl;
 begin
   GetProcedureAddress(_CryptMsgControl, crypt32, 'CryptMsgControl');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptMsgControl]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptMsgControl]
   end;
 end;
-{$ELSE}
-function CryptMsgControl; external crypt32 name 'CryptMsgControl';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptMsgVerifyCountersigEnc: Pointer;
 
@@ -17653,16 +17072,12 @@ function CryptMsgVerifyCountersignatureEncoded;
 begin
   GetProcedureAddress(_CryptMsgVerifyCountersigEnc, crypt32, 'CryptMsgVerifyCountersignatureEncoded');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptMsgVerifyCountersigEnc]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptMsgVerifyCountersigEnc]
   end;
 end;
-{$ELSE}
-function CryptMsgVerifyCountersignatureEncoded; external crypt32 name 'CryptMsgVerifyCountersignatureEncoded';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptMsgVerifyCountersigEncEx: Pointer;
 
@@ -17670,16 +17085,12 @@ function CryptMsgVerifyCountersignatureEncodedEx;
 begin
   GetProcedureAddress(_CryptMsgVerifyCountersigEncEx, crypt32, 'CryptMsgVerifyCountersignatureEncodedEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptMsgVerifyCountersigEncEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptMsgVerifyCountersigEncEx]
   end;
 end;
-{$ELSE}
-function CryptMsgVerifyCountersignatureEncodedEx; external crypt32 name 'CryptMsgVerifyCountersignatureEncodedEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptMsgCountersign: Pointer;
 
@@ -17687,16 +17098,12 @@ function CryptMsgCountersign;
 begin
   GetProcedureAddress(_CryptMsgCountersign, crypt32, 'CryptMsgCountersign');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptMsgCountersign]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptMsgCountersign]
   end;
 end;
-{$ELSE}
-function CryptMsgCountersign; external crypt32 name 'CryptMsgCountersign';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptMsgCountersignEncoded: Pointer;
 
@@ -17704,16 +17111,12 @@ function CryptMsgCountersignEncoded;
 begin
   GetProcedureAddress(_CryptMsgCountersignEncoded, crypt32, 'CryptMsgCountersignEncoded');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptMsgCountersignEncoded]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptMsgCountersignEncoded]
   end;
 end;
-{$ELSE}
-function CryptMsgCountersignEncoded; external crypt32 name 'CryptMsgCountersignEncoded';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertOpenStore: Pointer;
 
@@ -17721,16 +17124,12 @@ function CertOpenStore;
 begin
   GetProcedureAddress(_CertOpenStore, crypt32, 'CertOpenStore');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertOpenStore]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertOpenStore]
   end;
 end;
-{$ELSE}
-function CertOpenStore; external crypt32 name 'CertOpenStore';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertDuplicateStore: Pointer;
 
@@ -17738,16 +17137,12 @@ function CertDuplicateStore;
 begin
   GetProcedureAddress(_CertDuplicateStore, crypt32, 'CertDuplicateStore');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertDuplicateStore]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertDuplicateStore]
   end;
 end;
-{$ELSE}
-function CertDuplicateStore; external crypt32 name 'CertDuplicateStore';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertSaveStore: Pointer;
 
@@ -17755,16 +17150,12 @@ function CertSaveStore;
 begin
   GetProcedureAddress(_CertSaveStore, crypt32, 'CertSaveStore');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertSaveStore]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertSaveStore]
   end;
 end;
-{$ELSE}
-function CertSaveStore; external crypt32 name 'CertSaveStore';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertCloseStore: Pointer;
 
@@ -17772,16 +17163,12 @@ function CertCloseStore;
 begin
   GetProcedureAddress(_CertCloseStore, crypt32, 'CertCloseStore');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertCloseStore]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertCloseStore]
   end;
 end;
-{$ELSE}
-function CertCloseStore; external crypt32 name 'CertCloseStore';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertGetSubjectCertFromStore: Pointer;
 
@@ -17789,16 +17176,12 @@ function CertGetSubjectCertificateFromStore;
 begin
   GetProcedureAddress(_CertGetSubjectCertFromStore, crypt32, 'CertGetSubjectCertificateFromStore');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertGetSubjectCertFromStore]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertGetSubjectCertFromStore]
   end;
 end;
-{$ELSE}
-function CertGetSubjectCertificateFromStore; external crypt32 name 'CertGetSubjectCertificateFromStore';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertEnumCertificatesInStore: Pointer;
 
@@ -17806,16 +17189,12 @@ function CertEnumCertificatesInStore;
 begin
   GetProcedureAddress(_CertEnumCertificatesInStore, crypt32, 'CertEnumCertificatesInStore');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertEnumCertificatesInStore]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertEnumCertificatesInStore]
   end;
 end;
-{$ELSE}
-function CertEnumCertificatesInStore; external crypt32 name 'CertEnumCertificatesInStore';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertFindCertificateInStore: Pointer;
 
@@ -17823,16 +17202,12 @@ function CertFindCertificateInStore;
 begin
   GetProcedureAddress(_CertFindCertificateInStore, crypt32, 'CertFindCertificateInStore');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertFindCertificateInStore]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertFindCertificateInStore]
   end;
 end;
-{$ELSE}
-function CertFindCertificateInStore; external crypt32 name 'CertFindCertificateInStore';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertGetIssuerCertFromStore: Pointer;
 
@@ -17840,16 +17215,12 @@ function CertGetIssuerCertificateFromStore;
 begin
   GetProcedureAddress(_CertGetIssuerCertFromStore, crypt32, 'CertGetIssuerCertificateFromStore');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertGetIssuerCertFromStore]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertGetIssuerCertFromStore]
   end;
 end;
-{$ELSE}
-function CertGetIssuerCertificateFromStore; external crypt32 name 'CertGetIssuerCertificateFromStore';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertVerifySubjectCertContext: Pointer;
 
@@ -17857,16 +17228,12 @@ function CertVerifySubjectCertificateContext;
 begin
   GetProcedureAddress(_CertVerifySubjectCertContext, crypt32, 'CertVerifySubjectCertificateContext');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertVerifySubjectCertContext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertVerifySubjectCertContext]
   end;
 end;
-{$ELSE}
-function CertVerifySubjectCertificateContext; external crypt32 name 'CertVerifySubjectCertificateContext';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertDuplicateCertificateContext: Pointer;
 
@@ -17874,16 +17241,12 @@ function CertDuplicateCertificateContext;
 begin
   GetProcedureAddress(_CertDuplicateCertificateContext, crypt32, 'CertDuplicateCertificateContext');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertDuplicateCertificateContext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertDuplicateCertificateContext]
   end;
 end;
-{$ELSE}
-function CertDuplicateCertificateContext; external crypt32 name 'CertDuplicateCertificateContext';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertCreateCertificateContext: Pointer;
 
@@ -17891,16 +17254,12 @@ function CertCreateCertificateContext;
 begin
   GetProcedureAddress(_CertCreateCertificateContext, crypt32, 'CertCreateCertificateContext');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertCreateCertificateContext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertCreateCertificateContext]
   end;
 end;
-{$ELSE}
-function CertCreateCertificateContext; external crypt32 name 'CertCreateCertificateContext';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertFreeCertificateContext: Pointer;
 
@@ -17908,16 +17267,12 @@ function CertFreeCertificateContext;
 begin
   GetProcedureAddress(_CertFreeCertificateContext, crypt32, 'CertFreeCertificateContext');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertFreeCertificateContext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertFreeCertificateContext]
   end;
 end;
-{$ELSE}
-function CertFreeCertificateContext; external crypt32 name 'CertFreeCertificateContext';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertSetCertContextProperty: Pointer;
 
@@ -17925,16 +17280,12 @@ function CertSetCertificateContextProperty;
 begin
   GetProcedureAddress(_CertSetCertContextProperty, crypt32, 'CertSetCertificateContextProperty');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertSetCertContextProperty]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertSetCertContextProperty]
   end;
 end;
-{$ELSE}
-function CertSetCertificateContextProperty; external crypt32 name 'CertSetCertificateContextProperty';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertGetCertContextProperty: Pointer;
 
@@ -17942,16 +17293,12 @@ function CertGetCertificateContextProperty;
 begin
   GetProcedureAddress(_CertGetCertContextProperty, crypt32, 'CertGetCertificateContextProperty');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertGetCertContextProperty]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertGetCertContextProperty]
   end;
 end;
-{$ELSE}
-function CertGetCertificateContextProperty; external crypt32 name 'CertGetCertificateContextProperty';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertEnumCertContextProperties: Pointer;
 
@@ -17959,16 +17306,12 @@ function CertEnumCertificateContextProperties;
 begin
   GetProcedureAddress(_CertEnumCertContextProperties, crypt32, 'CertEnumCertificateContextProperties');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertEnumCertContextProperties]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertEnumCertContextProperties]
   end;
 end;
-{$ELSE}
-function CertEnumCertificateContextProperties; external crypt32 name 'CertEnumCertificateContextProperties';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertGetCRLFromStore: Pointer;
 
@@ -17976,16 +17319,12 @@ function CertGetCRLFromStore;
 begin
   GetProcedureAddress(_CertGetCRLFromStore, crypt32, 'CertGetCRLFromStore');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertGetCRLFromStore]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertGetCRLFromStore]
   end;
 end;
-{$ELSE}
-function CertGetCRLFromStore; external crypt32 name 'CertGetCRLFromStore';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertEnumCRLsInStore: Pointer;
 
@@ -17993,16 +17332,12 @@ function CertEnumCRLsInStore;
 begin
   GetProcedureAddress(_CertEnumCRLsInStore, crypt32, 'CertEnumCRLsInStore');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertEnumCRLsInStore]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertEnumCRLsInStore]
   end;
 end;
-{$ELSE}
-function CertEnumCRLsInStore; external crypt32 name 'CertEnumCRLsInStore';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertFindCRLInStore: Pointer;
 
@@ -18010,16 +17345,12 @@ function CertFindCRLInStore;
 begin
   GetProcedureAddress(_CertFindCRLInStore, crypt32, 'CertFindCRLInStore');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertFindCRLInStore]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertFindCRLInStore]
   end;
 end;
-{$ELSE}
-function CertFindCRLInStore; external crypt32 name 'CertFindCRLInStore';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertDuplicateCRLContext: Pointer;
 
@@ -18027,16 +17358,12 @@ function CertDuplicateCRLContext;
 begin
   GetProcedureAddress(_CertDuplicateCRLContext, crypt32, 'CertDuplicateCRLContext');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertDuplicateCRLContext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertDuplicateCRLContext]
   end;
 end;
-{$ELSE}
-function CertDuplicateCRLContext; external crypt32 name 'CertDuplicateCRLContext';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertCreateCRLContext: Pointer;
 
@@ -18044,16 +17371,12 @@ function CertCreateCRLContext;
 begin
   GetProcedureAddress(_CertCreateCRLContext, crypt32, 'CertCreateCRLContext');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertCreateCRLContext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertCreateCRLContext]
   end;
 end;
-{$ELSE}
-function CertCreateCRLContext; external crypt32 name 'CertCreateCRLContext';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertFreeCRLContext: Pointer;
 
@@ -18061,16 +17384,12 @@ function CertFreeCRLContext;
 begin
   GetProcedureAddress(_CertFreeCRLContext, crypt32, 'CertFreeCRLContext');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertFreeCRLContext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertFreeCRLContext]
   end;
 end;
-{$ELSE}
-function CertFreeCRLContext; external crypt32 name 'CertFreeCRLContext';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertSetCRLContextProperty: Pointer;
 
@@ -18078,16 +17397,12 @@ function CertSetCRLContextProperty;
 begin
   GetProcedureAddress(_CertSetCRLContextProperty, crypt32, 'CertSetCRLContextProperty');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertSetCRLContextProperty]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertSetCRLContextProperty]
   end;
 end;
-{$ELSE}
-function CertSetCRLContextProperty; external crypt32 name 'CertSetCRLContextProperty';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertGetCRLContextProperty: Pointer;
 
@@ -18095,16 +17410,12 @@ function CertGetCRLContextProperty;
 begin
   GetProcedureAddress(_CertGetCRLContextProperty, crypt32, 'CertGetCRLContextProperty');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertGetCRLContextProperty]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertGetCRLContextProperty]
   end;
 end;
-{$ELSE}
-function CertGetCRLContextProperty; external crypt32 name 'CertGetCRLContextProperty';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertEnumCRLContextProperties: Pointer;
 
@@ -18112,16 +17423,12 @@ function CertEnumCRLContextProperties;
 begin
   GetProcedureAddress(_CertEnumCRLContextProperties, crypt32, 'CertEnumCRLContextProperties');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertEnumCRLContextProperties]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertEnumCRLContextProperties]
   end;
 end;
-{$ELSE}
-function CertEnumCRLContextProperties; external crypt32 name 'CertEnumCRLContextProperties';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertFindCertificateInCRL: Pointer;
 
@@ -18129,16 +17436,12 @@ function CertFindCertificateInCRL;
 begin
   GetProcedureAddress(_CertFindCertificateInCRL, crypt32, 'CertFindCertificateInCRL');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertFindCertificateInCRL]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertFindCertificateInCRL]
   end;
 end;
-{$ELSE}
-function CertFindCertificateInCRL; external crypt32 name 'CertFindCertificateInCRL';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertAddEncodedCertToStore: Pointer;
 
@@ -18146,16 +17449,12 @@ function CertAddEncodedCertificateToStore;
 begin
   GetProcedureAddress(_CertAddEncodedCertToStore, crypt32, 'CertAddEncodedCertificateToStore');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertAddEncodedCertToStore]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertAddEncodedCertToStore]
   end;
 end;
-{$ELSE}
-function CertAddEncodedCertificateToStore; external crypt32 name 'CertAddEncodedCertificateToStore';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertAddCertContextToStore: Pointer;
 
@@ -18163,16 +17462,12 @@ function CertAddCertificateContextToStore;
 begin
   GetProcedureAddress(_CertAddCertContextToStore, crypt32, 'CertAddCertificateContextToStore');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertAddCertContextToStore]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertAddCertContextToStore]
   end;
 end;
-{$ELSE}
-function CertAddCertificateContextToStore; external crypt32 name 'CertAddCertificateContextToStore';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertAddSerializedElementToStore: Pointer;
 
@@ -18180,16 +17475,12 @@ function CertAddSerializedElementToStore;
 begin
   GetProcedureAddress(_CertAddSerializedElementToStore, crypt32, 'CertAddSerializedElementToStore');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertAddSerializedElementToStore]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertAddSerializedElementToStore]
   end;
 end;
-{$ELSE}
-function CertAddSerializedElementToStore; external crypt32 name 'CertAddSerializedElementToStore';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertDeleteCertificateFromStore: Pointer;
 
@@ -18197,16 +17488,12 @@ function CertDeleteCertificateFromStore;
 begin
   GetProcedureAddress(_CertDeleteCertificateFromStore, crypt32, 'CertDeleteCertificateFromStore');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertDeleteCertificateFromStore]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertDeleteCertificateFromStore]
   end;
 end;
-{$ELSE}
-function CertDeleteCertificateFromStore; external crypt32 name 'CertDeleteCertificateFromStore';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertAddEncodedCRLToStore: Pointer;
 
@@ -18214,16 +17501,12 @@ function CertAddEncodedCRLToStore;
 begin
   GetProcedureAddress(_CertAddEncodedCRLToStore, crypt32, 'CertAddEncodedCRLToStore');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertAddEncodedCRLToStore]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertAddEncodedCRLToStore]
   end;
 end;
-{$ELSE}
-function CertAddEncodedCRLToStore; external crypt32 name 'CertAddEncodedCRLToStore';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertAddCRLContextToStore: Pointer;
 
@@ -18231,16 +17514,12 @@ function CertAddCRLContextToStore;
 begin
   GetProcedureAddress(_CertAddCRLContextToStore, crypt32, 'CertAddCRLContextToStore');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertAddCRLContextToStore]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertAddCRLContextToStore]
   end;
 end;
-{$ELSE}
-function CertAddCRLContextToStore; external crypt32 name 'CertAddCRLContextToStore';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertDeleteCRLFromStore: Pointer;
 
@@ -18248,16 +17527,12 @@ function CertDeleteCRLFromStore;
 begin
   GetProcedureAddress(_CertDeleteCRLFromStore, crypt32, 'CertDeleteCRLFromStore');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertDeleteCRLFromStore]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertDeleteCRLFromStore]
   end;
 end;
-{$ELSE}
-function CertDeleteCRLFromStore; external crypt32 name 'CertDeleteCRLFromStore';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertSerializeCertStoreElement: Pointer;
 
@@ -18265,16 +17540,12 @@ function CertSerializeCertificateStoreElement;
 begin
   GetProcedureAddress(_CertSerializeCertStoreElement, crypt32, 'CertSerializeCertificateStoreElement');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertSerializeCertStoreElement]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertSerializeCertStoreElement]
   end;
 end;
-{$ELSE}
-function CertSerializeCertificateStoreElement; external crypt32 name 'CertSerializeCertificateStoreElement';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertSerializeCRLStoreElement: Pointer;
 
@@ -18282,16 +17553,12 @@ function CertSerializeCRLStoreElement;
 begin
   GetProcedureAddress(_CertSerializeCRLStoreElement, crypt32, 'CertSerializeCRLStoreElement');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertSerializeCRLStoreElement]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertSerializeCRLStoreElement]
   end;
 end;
-{$ELSE}
-function CertSerializeCRLStoreElement; external crypt32 name 'CertSerializeCRLStoreElement';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertDuplicateCTLContext: Pointer;
 
@@ -18299,16 +17566,12 @@ function CertDuplicateCTLContext;
 begin
   GetProcedureAddress(_CertDuplicateCTLContext, crypt32, 'CertDuplicateCTLContext');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertDuplicateCTLContext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertDuplicateCTLContext]
   end;
 end;
-{$ELSE}
-function CertDuplicateCTLContext; external crypt32 name 'CertDuplicateCTLContext';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertCreateCTLContext: Pointer;
 
@@ -18316,16 +17579,12 @@ function CertCreateCTLContext;
 begin
   GetProcedureAddress(_CertCreateCTLContext, crypt32, 'CertCreateCTLContext');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertCreateCTLContext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertCreateCTLContext]
   end;
 end;
-{$ELSE}
-function CertCreateCTLContext; external crypt32 name 'CertCreateCTLContext';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertFreeCTLContext: Pointer;
 
@@ -18333,16 +17592,12 @@ function CertFreeCTLContext;
 begin
   GetProcedureAddress(_CertFreeCTLContext, crypt32, 'CertFreeCTLContext');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertFreeCTLContext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertFreeCTLContext]
   end;
 end;
-{$ELSE}
-function CertFreeCTLContext; external crypt32 name 'CertFreeCTLContext';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertSetCTLContextProperty: Pointer;
 
@@ -18350,16 +17605,12 @@ function CertSetCTLContextProperty;
 begin
   GetProcedureAddress(_CertSetCTLContextProperty, crypt32, 'CertSetCTLContextProperty');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertSetCTLContextProperty]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertSetCTLContextProperty]
   end;
 end;
-{$ELSE}
-function CertSetCTLContextProperty; external crypt32 name 'CertSetCTLContextProperty';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertGetCTLContextProperty: Pointer;
 
@@ -18367,16 +17618,12 @@ function CertGetCTLContextProperty;
 begin
   GetProcedureAddress(_CertGetCTLContextProperty, crypt32, 'CertGetCTLContextProperty');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertGetCTLContextProperty]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertGetCTLContextProperty]
   end;
 end;
-{$ELSE}
-function CertGetCTLContextProperty; external crypt32 name 'CertGetCTLContextProperty';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertEnumCTLContextProperties: Pointer;
 
@@ -18384,16 +17631,12 @@ function CertEnumCTLContextProperties;
 begin
   GetProcedureAddress(_CertEnumCTLContextProperties, crypt32, 'CertEnumCTLContextProperties');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertEnumCTLContextProperties]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertEnumCTLContextProperties]
   end;
 end;
-{$ELSE}
-function CertEnumCTLContextProperties; external crypt32 name 'CertEnumCTLContextProperties';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertEnumCTLsInStore: Pointer;
 
@@ -18401,16 +17644,12 @@ function CertEnumCTLsInStore;
 begin
   GetProcedureAddress(_CertEnumCTLsInStore, crypt32, 'CertEnumCTLsInStore');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertEnumCTLsInStore]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertEnumCTLsInStore]
   end;
 end;
-{$ELSE}
-function CertEnumCTLsInStore; external crypt32 name 'CertEnumCTLsInStore';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertFindSubjectInCTL: Pointer;
 
@@ -18418,16 +17657,12 @@ function CertFindSubjectInCTL;
 begin
   GetProcedureAddress(_CertFindSubjectInCTL, crypt32, 'CertFindSubjectInCTL');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertFindSubjectInCTL]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertFindSubjectInCTL]
   end;
 end;
-{$ELSE}
-function CertFindSubjectInCTL; external crypt32 name 'CertFindSubjectInCTL';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertFindCTLInStore: Pointer;
 
@@ -18435,16 +17670,12 @@ function CertFindCTLInStore;
 begin
   GetProcedureAddress(_CertFindCTLInStore, crypt32, 'CertFindCTLInStore');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertFindCTLInStore]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertFindCTLInStore]
   end;
 end;
-{$ELSE}
-function CertFindCTLInStore; external crypt32 name 'CertFindCTLInStore';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertAddEncodedCTLToStore: Pointer;
 
@@ -18452,16 +17683,12 @@ function CertAddEncodedCTLToStore;
 begin
   GetProcedureAddress(_CertAddEncodedCTLToStore, crypt32, 'CertAddEncodedCTLToStore');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertAddEncodedCTLToStore]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertAddEncodedCTLToStore]
   end;
 end;
-{$ELSE}
-function CertAddEncodedCTLToStore; external crypt32 name 'CertAddEncodedCTLToStore';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertAddCTLContextToStore: Pointer;
 
@@ -18469,16 +17696,12 @@ function CertAddCTLContextToStore;
 begin
   GetProcedureAddress(_CertAddCTLContextToStore, crypt32, 'CertAddCTLContextToStore');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertAddCTLContextToStore]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertAddCTLContextToStore]
   end;
 end;
-{$ELSE}
-function CertAddCTLContextToStore; external crypt32 name 'CertAddCTLContextToStore';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertSerializeCTLStoreElement: Pointer;
 
@@ -18486,16 +17709,12 @@ function CertSerializeCTLStoreElement;
 begin
   GetProcedureAddress(_CertSerializeCTLStoreElement, crypt32, 'CertSerializeCTLStoreElement');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertSerializeCTLStoreElement]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertSerializeCTLStoreElement]
   end;
 end;
-{$ELSE}
-function CertSerializeCTLStoreElement; external crypt32 name 'CertSerializeCTLStoreElement';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertDeleteCTLFromStore: Pointer;
 
@@ -18503,16 +17722,12 @@ function CertDeleteCTLFromStore;
 begin
   GetProcedureAddress(_CertDeleteCTLFromStore, crypt32, 'CertDeleteCTLFromStore');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertDeleteCTLFromStore]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertDeleteCTLFromStore]
   end;
 end;
-{$ELSE}
-function CertDeleteCTLFromStore; external crypt32 name 'CertDeleteCTLFromStore';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertAddCertificateLinkToStore: Pointer;
 
@@ -18520,16 +17735,12 @@ function CertAddCertificateLinkToStore;
 begin
   GetProcedureAddress(_CertAddCertificateLinkToStore, crypt32, 'CertAddCertificateLinkToStore');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertAddCertificateLinkToStore]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertAddCertificateLinkToStore]
   end;
 end;
-{$ELSE}
-function CertAddCertificateLinkToStore; external crypt32 name 'CertAddCertificateLinkToStore';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertAddCRLLinkToStore: Pointer;
 
@@ -18537,16 +17748,12 @@ function CertAddCRLLinkToStore;
 begin
   GetProcedureAddress(_CertAddCRLLinkToStore, crypt32, 'CertAddCRLLinkToStore');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertAddCRLLinkToStore]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertAddCRLLinkToStore]
   end;
 end;
-{$ELSE}
-function CertAddCRLLinkToStore; external crypt32 name 'CertAddCRLLinkToStore';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertAddCTLLinkToStore: Pointer;
 
@@ -18554,16 +17761,12 @@ function CertAddCTLLinkToStore;
 begin
   GetProcedureAddress(_CertAddCTLLinkToStore, crypt32, 'CertAddCTLLinkToStore');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertAddCTLLinkToStore]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertAddCTLLinkToStore]
   end;
 end;
-{$ELSE}
-function CertAddCTLLinkToStore; external crypt32 name 'CertAddCTLLinkToStore';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertAddStoreToCollection: Pointer;
 
@@ -18571,16 +17774,12 @@ function CertAddStoreToCollection;
 begin
   GetProcedureAddress(_CertAddStoreToCollection, crypt32, 'CertAddStoreToCollection');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertAddStoreToCollection]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertAddStoreToCollection]
   end;
 end;
-{$ELSE}
-function CertAddStoreToCollection; external crypt32 name 'CertAddStoreToCollection';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertRemoveStoreFromCollection: Pointer;
 
@@ -18588,16 +17787,12 @@ procedure CertRemoveStoreFromCollection;
 begin
   GetProcedureAddress(_CertRemoveStoreFromCollection, crypt32, 'CertRemoveStoreFromCollection');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertRemoveStoreFromCollection]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertRemoveStoreFromCollection]
   end;
 end;
-{$ELSE}
-procedure CertRemoveStoreFromCollection; external crypt32 name 'CertRemoveStoreFromCollection';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertControlStore: Pointer;
 
@@ -18605,16 +17800,12 @@ function CertControlStore;
 begin
   GetProcedureAddress(_CertControlStore, crypt32, 'CertControlStore');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertControlStore]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertControlStore]
   end;
 end;
-{$ELSE}
-function CertControlStore; external crypt32 name 'CertControlStore';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertSetStoreProperty: Pointer;
 
@@ -18622,16 +17813,12 @@ function CertSetStoreProperty;
 begin
   GetProcedureAddress(_CertSetStoreProperty, crypt32, 'CertSetStoreProperty');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertSetStoreProperty]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertSetStoreProperty]
   end;
 end;
-{$ELSE}
-function CertSetStoreProperty; external crypt32 name 'CertSetStoreProperty';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertGetStoreProperty: Pointer;
 
@@ -18639,16 +17826,12 @@ function CertGetStoreProperty;
 begin
   GetProcedureAddress(_CertGetStoreProperty, crypt32, 'CertGetStoreProperty');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertGetStoreProperty]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertGetStoreProperty]
   end;
 end;
-{$ELSE}
-function CertGetStoreProperty; external crypt32 name 'CertGetStoreProperty';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertCreateContext: Pointer;
 
@@ -18656,16 +17839,12 @@ function CertCreateContext;
 begin
   GetProcedureAddress(_CertCreateContext, crypt32, 'CertCreateContext');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertCreateContext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertCreateContext]
   end;
 end;
-{$ELSE}
-function CertCreateContext; external crypt32 name 'CertCreateContext';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertRegisterSystemStore: Pointer;
 
@@ -18673,16 +17852,12 @@ function CertRegisterSystemStore;
 begin
   GetProcedureAddress(_CertRegisterSystemStore, crypt32, 'CertRegisterSystemStore');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertRegisterSystemStore]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertRegisterSystemStore]
   end;
 end;
-{$ELSE}
-function CertRegisterSystemStore; external crypt32 name 'CertRegisterSystemStore';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertRegisterPhysicalStore: Pointer;
 
@@ -18690,16 +17865,12 @@ function CertRegisterPhysicalStore;
 begin
   GetProcedureAddress(_CertRegisterPhysicalStore, crypt32, 'CertRegisterPhysicalStore');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertRegisterPhysicalStore]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertRegisterPhysicalStore]
   end;
 end;
-{$ELSE}
-function CertRegisterPhysicalStore; external crypt32 name 'CertRegisterPhysicalStore';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertUnregisterSystemStore: Pointer;
 
@@ -18707,16 +17878,12 @@ function CertUnregisterSystemStore;
 begin
   GetProcedureAddress(_CertUnregisterSystemStore, crypt32, 'CertUnregisterSystemStore');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertUnregisterSystemStore]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertUnregisterSystemStore]
   end;
 end;
-{$ELSE}
-function CertUnregisterSystemStore; external crypt32 name 'CertUnregisterSystemStore';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertUnregisterPhysicalStore: Pointer;
 
@@ -18724,16 +17891,12 @@ function CertUnregisterPhysicalStore;
 begin
   GetProcedureAddress(_CertUnregisterPhysicalStore, crypt32, 'CertUnregisterPhysicalStore');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertUnregisterPhysicalStore]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertUnregisterPhysicalStore]
   end;
 end;
-{$ELSE}
-function CertUnregisterPhysicalStore; external crypt32 name 'CertUnregisterPhysicalStore';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertEnumSystemStoreLocation: Pointer;
 
@@ -18741,16 +17904,12 @@ function CertEnumSystemStoreLocation;
 begin
   GetProcedureAddress(_CertEnumSystemStoreLocation, crypt32, 'CertEnumSystemStoreLocation');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertEnumSystemStoreLocation]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertEnumSystemStoreLocation]
   end;
 end;
-{$ELSE}
-function CertEnumSystemStoreLocation; external crypt32 name 'CertEnumSystemStoreLocation';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertEnumSystemStore: Pointer;
 
@@ -18758,16 +17917,12 @@ function CertEnumSystemStore;
 begin
   GetProcedureAddress(_CertEnumSystemStore, crypt32, 'CertEnumSystemStore');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertEnumSystemStore]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertEnumSystemStore]
   end;
 end;
-{$ELSE}
-function CertEnumSystemStore; external crypt32 name 'CertEnumSystemStore';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertEnumPhysicalStore: Pointer;
 
@@ -18775,16 +17930,12 @@ function CertEnumPhysicalStore;
 begin
   GetProcedureAddress(_CertEnumPhysicalStore, crypt32, 'CertEnumPhysicalStore');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertEnumPhysicalStore]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertEnumPhysicalStore]
   end;
 end;
-{$ELSE}
-function CertEnumPhysicalStore; external crypt32 name 'CertEnumPhysicalStore';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertGetEnhancedKeyUsage: Pointer;
 
@@ -18792,16 +17943,12 @@ function CertGetEnhancedKeyUsage;
 begin
   GetProcedureAddress(_CertGetEnhancedKeyUsage, crypt32, 'CertGetEnhancedKeyUsage');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertGetEnhancedKeyUsage]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertGetEnhancedKeyUsage]
   end;
 end;
-{$ELSE}
-function CertGetEnhancedKeyUsage; external crypt32 name 'CertGetEnhancedKeyUsage';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertSetEnhancedKeyUsage: Pointer;
 
@@ -18809,16 +17956,12 @@ function CertSetEnhancedKeyUsage;
 begin
   GetProcedureAddress(_CertSetEnhancedKeyUsage, crypt32, 'CertSetEnhancedKeyUsage');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertSetEnhancedKeyUsage]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertSetEnhancedKeyUsage]
   end;
 end;
-{$ELSE}
-function CertSetEnhancedKeyUsage; external crypt32 name 'CertSetEnhancedKeyUsage';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertAddEnhKeyUsageIdentifier: Pointer;
 
@@ -18826,16 +17969,12 @@ function CertAddEnhancedKeyUsageIdentifier;
 begin
   GetProcedureAddress(_CertAddEnhKeyUsageIdentifier, crypt32, 'CertAddEnhancedKeyUsageIdentifier');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertAddEnhKeyUsageIdentifier]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertAddEnhKeyUsageIdentifier]
   end;
 end;
-{$ELSE}
-function CertAddEnhancedKeyUsageIdentifier; external crypt32 name 'CertAddEnhancedKeyUsageIdentifier';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertRemoveEnhKeyUsageIdent: Pointer;
 
@@ -18843,16 +17982,12 @@ function CertRemoveEnhancedKeyUsageIdentifier;
 begin
   GetProcedureAddress(_CertRemoveEnhKeyUsageIdent, crypt32, 'CertRemoveEnhancedKeyUsageIdentifier');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertRemoveEnhKeyUsageIdent]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertRemoveEnhKeyUsageIdent]
   end;
 end;
-{$ELSE}
-function CertRemoveEnhancedKeyUsageIdentifier; external crypt32 name 'CertRemoveEnhancedKeyUsageIdentifier';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertGetValidUsages: Pointer;
 
@@ -18860,16 +17995,12 @@ function CertGetValidUsages;
 begin
   GetProcedureAddress(_CertGetValidUsages, crypt32, 'CertGetValidUsages');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertGetValidUsages]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertGetValidUsages]
   end;
 end;
-{$ELSE}
-function CertGetValidUsages; external crypt32 name 'CertGetValidUsages';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptMsgGetAndVerifySigner: Pointer;
 
@@ -18877,16 +18008,12 @@ function CryptMsgGetAndVerifySigner;
 begin
   GetProcedureAddress(_CryptMsgGetAndVerifySigner, crypt32, 'CryptMsgGetAndVerifySigner');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptMsgGetAndVerifySigner]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptMsgGetAndVerifySigner]
   end;
 end;
-{$ELSE}
-function CryptMsgGetAndVerifySigner; external crypt32 name 'CryptMsgGetAndVerifySigner';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptMsgSignCTL: Pointer;
 
@@ -18894,16 +18021,12 @@ function CryptMsgSignCTL;
 begin
   GetProcedureAddress(_CryptMsgSignCTL, crypt32, 'CryptMsgSignCTL');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptMsgSignCTL]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptMsgSignCTL]
   end;
 end;
-{$ELSE}
-function CryptMsgSignCTL; external crypt32 name 'CryptMsgSignCTL';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptMsgEncodeAndSignCTL: Pointer;
 
@@ -18911,16 +18034,12 @@ function CryptMsgEncodeAndSignCTL;
 begin
   GetProcedureAddress(_CryptMsgEncodeAndSignCTL, crypt32, 'CryptMsgEncodeAndSignCTL');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptMsgEncodeAndSignCTL]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptMsgEncodeAndSignCTL]
   end;
 end;
-{$ELSE}
-function CryptMsgEncodeAndSignCTL; external crypt32 name 'CryptMsgEncodeAndSignCTL';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertFindSubjectInSortedCTL: Pointer;
 
@@ -18928,16 +18047,12 @@ function CertFindSubjectInSortedCTL;
 begin
   GetProcedureAddress(_CertFindSubjectInSortedCTL, crypt32, 'CertFindSubjectInSortedCTL');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertFindSubjectInSortedCTL]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertFindSubjectInSortedCTL]
   end;
 end;
-{$ELSE}
-function CertFindSubjectInSortedCTL; external crypt32 name 'CertFindSubjectInSortedCTL';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertEnumSubjectInSortedCTL: Pointer;
 
@@ -18945,16 +18060,12 @@ function CertEnumSubjectInSortedCTL;
 begin
   GetProcedureAddress(_CertEnumSubjectInSortedCTL, crypt32, 'CertEnumSubjectInSortedCTL');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertEnumSubjectInSortedCTL]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertEnumSubjectInSortedCTL]
   end;
 end;
-{$ELSE}
-function CertEnumSubjectInSortedCTL; external crypt32 name 'CertEnumSubjectInSortedCTL';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertVerifyCTLUsage: Pointer;
 
@@ -18962,16 +18073,12 @@ function CertVerifyCTLUsage;
 begin
   GetProcedureAddress(_CertVerifyCTLUsage, crypt32, 'CertVerifyCTLUsage');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertVerifyCTLUsage]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertVerifyCTLUsage]
   end;
 end;
-{$ELSE}
-function CertVerifyCTLUsage; external crypt32 name 'CertVerifyCTLUsage';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertVerifyRevocation: Pointer;
 
@@ -18979,16 +18086,12 @@ function CertVerifyRevocation;
 begin
   GetProcedureAddress(_CertVerifyRevocation, crypt32, 'CertVerifyRevocation');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertVerifyRevocation]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertVerifyRevocation]
   end;
 end;
-{$ELSE}
-function CertVerifyRevocation; external crypt32 name 'CertVerifyRevocation';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertCompareIntegerBlob: Pointer;
 
@@ -18996,16 +18099,12 @@ function CertCompareIntegerBlob;
 begin
   GetProcedureAddress(_CertCompareIntegerBlob, crypt32, 'CertCompareIntegerBlob');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertCompareIntegerBlob]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertCompareIntegerBlob]
   end;
 end;
-{$ELSE}
-function CertCompareIntegerBlob; external crypt32 name 'CertCompareIntegerBlob';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertCompareCertificate: Pointer;
 
@@ -19013,16 +18112,12 @@ function CertCompareCertificate;
 begin
   GetProcedureAddress(_CertCompareCertificate, crypt32, 'CertCompareCertificate');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertCompareCertificate]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertCompareCertificate]
   end;
 end;
-{$ELSE}
-function CertCompareCertificate; external crypt32 name 'CertCompareCertificate';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertCompareCertificateName: Pointer;
 
@@ -19030,16 +18125,12 @@ function CertCompareCertificateName;
 begin
   GetProcedureAddress(_CertCompareCertificateName, crypt32, 'CertCompareCertificateName');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertCompareCertificateName]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertCompareCertificateName]
   end;
 end;
-{$ELSE}
-function CertCompareCertificateName; external crypt32 name 'CertCompareCertificateName';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertIsRDNAttrsInCertificateName: Pointer;
 
@@ -19047,16 +18138,12 @@ function CertIsRDNAttrsInCertificateName;
 begin
   GetProcedureAddress(_CertIsRDNAttrsInCertificateName, crypt32, 'CertIsRDNAttrsInCertificateName');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertIsRDNAttrsInCertificateName]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertIsRDNAttrsInCertificateName]
   end;
 end;
-{$ELSE}
-function CertIsRDNAttrsInCertificateName; external crypt32 name 'CertIsRDNAttrsInCertificateName';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertComparePublicKeyInfo: Pointer;
 
@@ -19064,16 +18151,12 @@ function CertComparePublicKeyInfo;
 begin
   GetProcedureAddress(_CertComparePublicKeyInfo, crypt32, 'CertComparePublicKeyInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertComparePublicKeyInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertComparePublicKeyInfo]
   end;
 end;
-{$ELSE}
-function CertComparePublicKeyInfo; external crypt32 name 'CertComparePublicKeyInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertGetPublicKeyLength: Pointer;
 
@@ -19081,16 +18164,12 @@ function CertGetPublicKeyLength;
 begin
   GetProcedureAddress(_CertGetPublicKeyLength, crypt32, 'CertGetPublicKeyLength');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertGetPublicKeyLength]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertGetPublicKeyLength]
   end;
 end;
-{$ELSE}
-function CertGetPublicKeyLength; external crypt32 name 'CertGetPublicKeyLength';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptVerifyCertificateSignature: Pointer;
 
@@ -19098,16 +18177,12 @@ function CryptVerifyCertificateSignature;
 begin
   GetProcedureAddress(_CryptVerifyCertificateSignature, crypt32, 'CryptVerifyCertificateSignature');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptVerifyCertificateSignature]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptVerifyCertificateSignature]
   end;
 end;
-{$ELSE}
-function CryptVerifyCertificateSignature; external crypt32 name 'CryptVerifyCertificateSignature';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptVerifyCertSignatureEx: Pointer;
 
@@ -19115,16 +18190,12 @@ function CryptVerifyCertificateSignatureEx;
 begin
   GetProcedureAddress(_CryptVerifyCertSignatureEx, crypt32, 'CryptVerifyCertificateSignatureEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptVerifyCertSignatureEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptVerifyCertSignatureEx]
   end;
 end;
-{$ELSE}
-function CryptVerifyCertificateSignatureEx; external crypt32 name 'CryptVerifyCertificateSignatureEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptHashToBeSigned: Pointer;
 
@@ -19132,16 +18203,12 @@ function CryptHashToBeSigned;
 begin
   GetProcedureAddress(_CryptHashToBeSigned, crypt32, 'CryptHashToBeSigned');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptHashToBeSigned]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptHashToBeSigned]
   end;
 end;
-{$ELSE}
-function CryptHashToBeSigned; external crypt32 name 'CryptHashToBeSigned';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptHashCertificate: Pointer;
 
@@ -19149,16 +18216,12 @@ function CryptHashCertificate;
 begin
   GetProcedureAddress(_CryptHashCertificate, crypt32, 'CryptHashCertificate');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptHashCertificate]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptHashCertificate]
   end;
 end;
-{$ELSE}
-function CryptHashCertificate; external crypt32 name 'CryptHashCertificate';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptSignCertificate: Pointer;
 
@@ -19166,16 +18229,12 @@ function CryptSignCertificate;
 begin
   GetProcedureAddress(_CryptSignCertificate, crypt32, 'CryptSignCertificate');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptSignCertificate]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptSignCertificate]
   end;
 end;
-{$ELSE}
-function CryptSignCertificate; external crypt32 name 'CryptSignCertificate';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptSignAndEncodeCertificate: Pointer;
 
@@ -19183,16 +18242,12 @@ function CryptSignAndEncodeCertificate;
 begin
   GetProcedureAddress(_CryptSignAndEncodeCertificate, crypt32, 'CryptSignAndEncodeCertificate');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptSignAndEncodeCertificate]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptSignAndEncodeCertificate]
   end;
 end;
-{$ELSE}
-function CryptSignAndEncodeCertificate; external crypt32 name 'CryptSignAndEncodeCertificate';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertVerifyTimeValidity: Pointer;
 
@@ -19200,16 +18255,12 @@ function CertVerifyTimeValidity;
 begin
   GetProcedureAddress(_CertVerifyTimeValidity, crypt32, 'CertVerifyTimeValidity');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertVerifyTimeValidity]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertVerifyTimeValidity]
   end;
 end;
-{$ELSE}
-function CertVerifyTimeValidity; external crypt32 name 'CertVerifyTimeValidity';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertVerifyCRLTimeValidity: Pointer;
 
@@ -19217,16 +18268,12 @@ function CertVerifyCRLTimeValidity;
 begin
   GetProcedureAddress(_CertVerifyCRLTimeValidity, crypt32, 'CertVerifyCRLTimeValidity');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertVerifyCRLTimeValidity]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertVerifyCRLTimeValidity]
   end;
 end;
-{$ELSE}
-function CertVerifyCRLTimeValidity; external crypt32 name 'CertVerifyCRLTimeValidity';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertVerifyValidityNesting: Pointer;
 
@@ -19234,16 +18281,12 @@ function CertVerifyValidityNesting;
 begin
   GetProcedureAddress(_CertVerifyValidityNesting, crypt32, 'CertVerifyValidityNesting');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertVerifyValidityNesting]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertVerifyValidityNesting]
   end;
 end;
-{$ELSE}
-function CertVerifyValidityNesting; external crypt32 name 'CertVerifyValidityNesting';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertVerifyCRLRevocation: Pointer;
 
@@ -19251,16 +18294,12 @@ function CertVerifyCRLRevocation;
 begin
   GetProcedureAddress(_CertVerifyCRLRevocation, crypt32, 'CertVerifyCRLRevocation');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertVerifyCRLRevocation]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertVerifyCRLRevocation]
   end;
 end;
-{$ELSE}
-function CertVerifyCRLRevocation; external crypt32 name 'CertVerifyCRLRevocation';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertAlgIdToOID: Pointer;
 
@@ -19268,16 +18307,12 @@ function CertAlgIdToOID;
 begin
   GetProcedureAddress(_CertAlgIdToOID, crypt32, 'CertAlgIdToOID');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertAlgIdToOID]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertAlgIdToOID]
   end;
 end;
-{$ELSE}
-function CertAlgIdToOID; external crypt32 name 'CertAlgIdToOID';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertOIDToAlgId: Pointer;
 
@@ -19285,16 +18320,12 @@ function CertOIDToAlgId;
 begin
   GetProcedureAddress(_CertOIDToAlgId, crypt32, 'CertOIDToAlgId');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertOIDToAlgId]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertOIDToAlgId]
   end;
 end;
-{$ELSE}
-function CertOIDToAlgId; external crypt32 name 'CertOIDToAlgId';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertFindExtension: Pointer;
 
@@ -19302,16 +18333,12 @@ function CertFindExtension;
 begin
   GetProcedureAddress(_CertFindExtension, crypt32, 'CertFindExtension');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertFindExtension]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertFindExtension]
   end;
 end;
-{$ELSE}
-function CertFindExtension; external crypt32 name 'CertFindExtension';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertFindAttribute: Pointer;
 
@@ -19319,16 +18346,12 @@ function CertFindAttribute;
 begin
   GetProcedureAddress(_CertFindAttribute, crypt32, 'CertFindAttribute');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertFindAttribute]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertFindAttribute]
   end;
 end;
-{$ELSE}
-function CertFindAttribute; external crypt32 name 'CertFindAttribute';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertFindRDNAttr: Pointer;
 
@@ -19336,16 +18359,12 @@ function CertFindRDNAttr;
 begin
   GetProcedureAddress(_CertFindRDNAttr, crypt32, 'CertFindRDNAttr');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertFindRDNAttr]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertFindRDNAttr]
   end;
 end;
-{$ELSE}
-function CertFindRDNAttr; external crypt32 name 'CertFindRDNAttr';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertGetIntendedKeyUsage: Pointer;
 
@@ -19353,16 +18372,12 @@ function CertGetIntendedKeyUsage;
 begin
   GetProcedureAddress(_CertGetIntendedKeyUsage, crypt32, 'CertGetIntendedKeyUsage');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertGetIntendedKeyUsage]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertGetIntendedKeyUsage]
   end;
 end;
-{$ELSE}
-function CertGetIntendedKeyUsage; external crypt32 name 'CertGetIntendedKeyUsage';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptInstallDefaultContext: Pointer;
 
@@ -19370,16 +18385,12 @@ function CryptInstallDefaultContext;
 begin
   GetProcedureAddress(_CryptInstallDefaultContext, crypt32, 'CryptInstallDefaultContext');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptInstallDefaultContext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptInstallDefaultContext]
   end;
 end;
-{$ELSE}
-function CryptInstallDefaultContext; external crypt32 name 'CryptInstallDefaultContext';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptUninstallDefaultContext: Pointer;
 
@@ -19387,16 +18398,12 @@ function CryptUninstallDefaultContext;
 begin
   GetProcedureAddress(_CryptUninstallDefaultContext, crypt32, 'CryptUninstallDefaultContext');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptUninstallDefaultContext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptUninstallDefaultContext]
   end;
 end;
-{$ELSE}
-function CryptUninstallDefaultContext; external crypt32 name 'CryptUninstallDefaultContext';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptExportPublicKeyInfo: Pointer;
 
@@ -19404,16 +18411,12 @@ function CryptExportPublicKeyInfo;
 begin
   GetProcedureAddress(_CryptExportPublicKeyInfo, crypt32, 'CryptExportPublicKeyInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptExportPublicKeyInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptExportPublicKeyInfo]
   end;
 end;
-{$ELSE}
-function CryptExportPublicKeyInfo; external crypt32 name 'CryptExportPublicKeyInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptExportPublicKeyInfoEx: Pointer;
 
@@ -19421,16 +18424,12 @@ function CryptExportPublicKeyInfoEx;
 begin
   GetProcedureAddress(_CryptExportPublicKeyInfoEx, crypt32, 'CryptExportPublicKeyInfoEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptExportPublicKeyInfoEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptExportPublicKeyInfoEx]
   end;
 end;
-{$ELSE}
-function CryptExportPublicKeyInfoEx; external crypt32 name 'CryptExportPublicKeyInfoEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptImportPublicKeyInfo: Pointer;
 
@@ -19438,16 +18437,12 @@ function CryptImportPublicKeyInfo;
 begin
   GetProcedureAddress(_CryptImportPublicKeyInfo, crypt32, 'CryptImportPublicKeyInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptImportPublicKeyInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptImportPublicKeyInfo]
   end;
 end;
-{$ELSE}
-function CryptImportPublicKeyInfo; external crypt32 name 'CryptImportPublicKeyInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptImportPublicKeyInfoEx: Pointer;
 
@@ -19455,16 +18450,12 @@ function CryptImportPublicKeyInfoEx;
 begin
   GetProcedureAddress(_CryptImportPublicKeyInfoEx, crypt32, 'CryptImportPublicKeyInfoEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptImportPublicKeyInfoEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptImportPublicKeyInfoEx]
   end;
 end;
-{$ELSE}
-function CryptImportPublicKeyInfoEx; external crypt32 name 'CryptImportPublicKeyInfoEx';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptAcquireCertPrivateKey: Pointer;
 
@@ -19472,16 +18463,12 @@ function CryptAcquireCertificatePrivateKey;
 begin
   GetProcedureAddress(_CryptAcquireCertPrivateKey, crypt32, 'CryptAcquireCertificatePrivateKey');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptAcquireCertPrivateKey]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptAcquireCertPrivateKey]
   end;
 end;
-{$ELSE}
-function CryptAcquireCertificatePrivateKey; external crypt32 name 'CryptAcquireCertificatePrivateKey';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptFindCertificateKeyProvInfo: Pointer;
 
@@ -19489,16 +18476,12 @@ function CryptFindCertificateKeyProvInfo;
 begin
   GetProcedureAddress(_CryptFindCertificateKeyProvInfo, crypt32, 'CryptFindCertificateKeyProvInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptFindCertificateKeyProvInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptFindCertificateKeyProvInfo]
   end;
 end;
-{$ELSE}
-function CryptFindCertificateKeyProvInfo; external crypt32 name 'CryptFindCertificateKeyProvInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptImportPKCS8: Pointer;
 
@@ -19506,16 +18489,12 @@ function CryptImportPKCS8;
 begin
   GetProcedureAddress(_CryptImportPKCS8, crypt32, 'CryptImportPKCS8');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptImportPKCS8]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptImportPKCS8]
   end;
 end;
-{$ELSE}
-function CryptImportPKCS8; external crypt32 name 'CryptImportPKCS8';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptExportPKCS8: Pointer;
 
@@ -19523,16 +18502,12 @@ function CryptExportPKCS8;
 begin
   GetProcedureAddress(_CryptExportPKCS8, crypt32, 'CryptExportPKCS8');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptExportPKCS8]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptExportPKCS8]
   end;
 end;
-{$ELSE}
-function CryptExportPKCS8; external crypt32 name 'CryptExportPKCS8';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptExportPKCS8Ex: Pointer;
 
@@ -19540,16 +18515,12 @@ function CryptExportPKCS8Ex;
 begin
   GetProcedureAddress(_CryptExportPKCS8Ex, crypt32, 'CryptExportPKCS8Ex');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptExportPKCS8Ex]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptExportPKCS8Ex]
   end;
 end;
-{$ELSE}
-function CryptExportPKCS8Ex; external crypt32 name 'CryptExportPKCS8Ex';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptHashPublicKeyInfo: Pointer;
 
@@ -19557,16 +18528,12 @@ function CryptHashPublicKeyInfo;
 begin
   GetProcedureAddress(_CryptHashPublicKeyInfo, crypt32, 'CryptHashPublicKeyInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptHashPublicKeyInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptHashPublicKeyInfo]
   end;
 end;
-{$ELSE}
-function CryptHashPublicKeyInfo; external crypt32 name 'CryptHashPublicKeyInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertRDNValueToStrA: Pointer;
 
@@ -19574,16 +18541,12 @@ function CertRDNValueToStrA;
 begin
   GetProcedureAddress(_CertRDNValueToStrA, crypt32, 'CertRDNValueToStrA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertRDNValueToStrA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertRDNValueToStrA]
   end;
 end;
-{$ELSE}
-function CertRDNValueToStrA; external crypt32 name 'CertRDNValueToStrA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertRDNValueToStrW: Pointer;
 
@@ -19591,53 +18554,25 @@ function CertRDNValueToStrW;
 begin
   GetProcedureAddress(_CertRDNValueToStrW, crypt32, 'CertRDNValueToStrW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertRDNValueToStrW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertRDNValueToStrW]
   end;
 end;
-{$ELSE}
-function CertRDNValueToStrW; external crypt32 name 'CertRDNValueToStrW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertRDNValueToStr: Pointer;
 
 function CertRDNValueToStr;
 begin
-  GetProcedureAddress(_CertRDNValueToStr, crypt32, 'CertRDNValueToStrW');
+  GetProcedureAddress(_CertRDNValueToStr, crypt32, 'CertRDNValueToStr' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertRDNValueToStr]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertRDNValueToStr]
   end;
 end;
-{$ELSE}
-function CertRDNValueToStr; external crypt32 name 'CertRDNValueToStrW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CertRDNValueToStr: Pointer;
-
-function CertRDNValueToStr;
-begin
-  GetProcedureAddress(_CertRDNValueToStr, crypt32, 'CertRDNValueToStrA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertRDNValueToStr]
-  end;
-end;
-{$ELSE}
-function CertRDNValueToStr; external crypt32 name 'CertRDNValueToStrA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CertNameToStrA: Pointer;
 
@@ -19645,16 +18580,12 @@ function CertNameToStrA;
 begin
   GetProcedureAddress(_CertNameToStrA, crypt32, 'CertNameToStrA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertNameToStrA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertNameToStrA]
   end;
 end;
-{$ELSE}
-function CertNameToStrA; external crypt32 name 'CertNameToStrA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertNameToStrW: Pointer;
 
@@ -19662,53 +18593,25 @@ function CertNameToStrW;
 begin
   GetProcedureAddress(_CertNameToStrW, crypt32, 'CertNameToStrW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertNameToStrW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertNameToStrW]
   end;
 end;
-{$ELSE}
-function CertNameToStrW; external crypt32 name 'CertNameToStrW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertNameToStr: Pointer;
 
 function CertNameToStr;
 begin
-  GetProcedureAddress(_CertNameToStr, crypt32, 'CertNameToStrW');
+  GetProcedureAddress(_CertNameToStr, crypt32, 'CertNameToStr' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertNameToStr]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertNameToStr]
   end;
 end;
-{$ELSE}
-function CertNameToStr; external crypt32 name 'CertNameToStrW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CertNameToStr: Pointer;
-
-function CertNameToStr;
-begin
-  GetProcedureAddress(_CertNameToStr, crypt32, 'CertNameToStrA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertNameToStr]
-  end;
-end;
-{$ELSE}
-function CertNameToStr; external crypt32 name 'CertNameToStrA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CertStrToNameA: Pointer;
 
@@ -19716,16 +18619,12 @@ function CertStrToNameA;
 begin
   GetProcedureAddress(_CertStrToNameA, crypt32, 'CertStrToNameA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertStrToNameA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertStrToNameA]
   end;
 end;
-{$ELSE}
-function CertStrToNameA; external crypt32 name 'CertStrToNameA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertStrToNameW: Pointer;
 
@@ -19733,53 +18632,25 @@ function CertStrToNameW;
 begin
   GetProcedureAddress(_CertStrToNameW, crypt32, 'CertStrToNameW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertStrToNameW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertStrToNameW]
   end;
 end;
-{$ELSE}
-function CertStrToNameW; external crypt32 name 'CertStrToNameW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertStrToName: Pointer;
 
 function CertStrToName;
 begin
-  GetProcedureAddress(_CertStrToName, crypt32, 'CertStrToNameW');
+  GetProcedureAddress(_CertStrToName, crypt32, 'CertStrToName' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertStrToName]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertStrToName]
   end;
 end;
-{$ELSE}
-function CertStrToName; external crypt32 name 'CertStrToNameW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CertStrToName: Pointer;
-
-function CertStrToName;
-begin
-  GetProcedureAddress(_CertStrToName, crypt32, 'CertStrToNameA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertStrToName]
-  end;
-end;
-{$ELSE}
-function CertStrToName; external crypt32 name 'CertStrToNameA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CertGetNameStringA: Pointer;
 
@@ -19787,16 +18658,12 @@ function CertGetNameStringA;
 begin
   GetProcedureAddress(_CertGetNameStringA, crypt32, 'CertGetNameStringA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertGetNameStringA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertGetNameStringA]
   end;
 end;
-{$ELSE}
-function CertGetNameStringA; external crypt32 name 'CertGetNameStringA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertGetNameStringW: Pointer;
 
@@ -19804,53 +18671,25 @@ function CertGetNameStringW;
 begin
   GetProcedureAddress(_CertGetNameStringW, crypt32, 'CertGetNameStringW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertGetNameStringW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertGetNameStringW]
   end;
 end;
-{$ELSE}
-function CertGetNameStringW; external crypt32 name 'CertGetNameStringW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertGetNameString: Pointer;
 
 function CertGetNameString;
 begin
-  GetProcedureAddress(_CertGetNameString, crypt32, 'CertGetNameStringW');
+  GetProcedureAddress(_CertGetNameString, crypt32, 'CertGetNameString' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertGetNameString]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertGetNameString]
   end;
 end;
-{$ELSE}
-function CertGetNameString; external crypt32 name 'CertGetNameStringW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CertGetNameString: Pointer;
-
-function CertGetNameString;
-begin
-  GetProcedureAddress(_CertGetNameString, crypt32, 'CertGetNameStringA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertGetNameString]
-  end;
-end;
-{$ELSE}
-function CertGetNameString; external crypt32 name 'CertGetNameStringA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptSignMessage: Pointer;
 
@@ -19858,16 +18697,12 @@ function CryptSignMessage;
 begin
   GetProcedureAddress(_CryptSignMessage, crypt32, 'CryptSignMessage');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptSignMessage]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptSignMessage]
   end;
 end;
-{$ELSE}
-function CryptSignMessage; external crypt32 name 'CryptSignMessage';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptVerifyMessageSignature: Pointer;
 
@@ -19875,16 +18710,12 @@ function CryptVerifyMessageSignature;
 begin
   GetProcedureAddress(_CryptVerifyMessageSignature, crypt32, 'CryptVerifyMessageSignature');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptVerifyMessageSignature]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptVerifyMessageSignature]
   end;
 end;
-{$ELSE}
-function CryptVerifyMessageSignature; external crypt32 name 'CryptVerifyMessageSignature';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptGetMessageSignerCount: Pointer;
 
@@ -19892,16 +18723,12 @@ function CryptGetMessageSignerCount;
 begin
   GetProcedureAddress(_CryptGetMessageSignerCount, crypt32, 'CryptGetMessageSignerCount');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptGetMessageSignerCount]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptGetMessageSignerCount]
   end;
 end;
-{$ELSE}
-function CryptGetMessageSignerCount; external crypt32 name 'CryptGetMessageSignerCount';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptGetMessageCertificates: Pointer;
 
@@ -19909,16 +18736,12 @@ function CryptGetMessageCertificates;
 begin
   GetProcedureAddress(_CryptGetMessageCertificates, crypt32, 'CryptGetMessageCertificates');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptGetMessageCertificates]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptGetMessageCertificates]
   end;
 end;
-{$ELSE}
-function CryptGetMessageCertificates; external crypt32 name 'CryptGetMessageCertificates';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptVerDetachedMsgSignature: Pointer;
 
@@ -19926,16 +18749,12 @@ function CryptVerifyDetachedMessageSignature;
 begin
   GetProcedureAddress(_CryptVerDetachedMsgSignature, crypt32, 'CryptVerifyDetachedMessageSignature');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptVerDetachedMsgSignature]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptVerDetachedMsgSignature]
   end;
 end;
-{$ELSE}
-function CryptVerifyDetachedMessageSignature; external crypt32 name 'CryptVerifyDetachedMessageSignature';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptEncryptMessage: Pointer;
 
@@ -19943,16 +18762,12 @@ function CryptEncryptMessage;
 begin
   GetProcedureAddress(_CryptEncryptMessage, crypt32, 'CryptEncryptMessage');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptEncryptMessage]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptEncryptMessage]
   end;
 end;
-{$ELSE}
-function CryptEncryptMessage; external crypt32 name 'CryptEncryptMessage';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptDecryptMessage: Pointer;
 
@@ -19960,16 +18775,12 @@ function CryptDecryptMessage;
 begin
   GetProcedureAddress(_CryptDecryptMessage, crypt32, 'CryptDecryptMessage');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptDecryptMessage]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptDecryptMessage]
   end;
 end;
-{$ELSE}
-function CryptDecryptMessage; external crypt32 name 'CryptDecryptMessage';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptSignAndEncryptMessage: Pointer;
 
@@ -19977,16 +18788,12 @@ function CryptSignAndEncryptMessage;
 begin
   GetProcedureAddress(_CryptSignAndEncryptMessage, crypt32, 'CryptSignAndEncryptMessage');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptSignAndEncryptMessage]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptSignAndEncryptMessage]
   end;
 end;
-{$ELSE}
-function CryptSignAndEncryptMessage; external crypt32 name 'CryptSignAndEncryptMessage';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptDecryptAndVerMsgSig: Pointer;
 
@@ -19994,16 +18801,12 @@ function CryptDecryptAndVerifyMessageSignature;
 begin
   GetProcedureAddress(_CryptDecryptAndVerMsgSig, crypt32, 'CryptDecryptAndVerifyMessageSignature');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptDecryptAndVerMsgSig]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptDecryptAndVerMsgSig]
   end;
 end;
-{$ELSE}
-function CryptDecryptAndVerifyMessageSignature; external crypt32 name 'CryptDecryptAndVerifyMessageSignature';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptDecodeMessage: Pointer;
 
@@ -20011,16 +18814,12 @@ function CryptDecodeMessage;
 begin
   GetProcedureAddress(_CryptDecodeMessage, crypt32, 'CryptDecodeMessage');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptDecodeMessage]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptDecodeMessage]
   end;
 end;
-{$ELSE}
-function CryptDecodeMessage; external crypt32 name 'CryptDecodeMessage';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptHashMessage: Pointer;
 
@@ -20028,16 +18827,12 @@ function CryptHashMessage;
 begin
   GetProcedureAddress(_CryptHashMessage, crypt32, 'CryptHashMessage');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptHashMessage]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptHashMessage]
   end;
 end;
-{$ELSE}
-function CryptHashMessage; external crypt32 name 'CryptHashMessage';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptVerifyMessageHash: Pointer;
 
@@ -20045,16 +18840,12 @@ function CryptVerifyMessageHash;
 begin
   GetProcedureAddress(_CryptVerifyMessageHash, crypt32, 'CryptVerifyMessageHash');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptVerifyMessageHash]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptVerifyMessageHash]
   end;
 end;
-{$ELSE}
-function CryptVerifyMessageHash; external crypt32 name 'CryptVerifyMessageHash';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptVerifyDetachedMessageHash: Pointer;
 
@@ -20062,16 +18853,12 @@ function CryptVerifyDetachedMessageHash;
 begin
   GetProcedureAddress(_CryptVerifyDetachedMessageHash, crypt32, 'CryptVerifyDetachedMessageHash');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptVerifyDetachedMessageHash]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptVerifyDetachedMessageHash]
   end;
 end;
-{$ELSE}
-function CryptVerifyDetachedMessageHash; external crypt32 name 'CryptVerifyDetachedMessageHash';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptSignMessageWithKey: Pointer;
 
@@ -20079,16 +18866,12 @@ function CryptSignMessageWithKey;
 begin
   GetProcedureAddress(_CryptSignMessageWithKey, crypt32, 'CryptSignMessageWithKey');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptSignMessageWithKey]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptSignMessageWithKey]
   end;
 end;
-{$ELSE}
-function CryptSignMessageWithKey; external crypt32 name 'CryptSignMessageWithKey';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptVerifyMsgSigWithKey: Pointer;
 
@@ -20096,16 +18879,12 @@ function CryptVerifyMessageSignatureWithKey;
 begin
   GetProcedureAddress(_CryptVerifyMsgSigWithKey, crypt32, 'CryptVerifyMessageSignatureWithKey');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptVerifyMsgSigWithKey]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptVerifyMsgSigWithKey]
   end;
 end;
-{$ELSE}
-function CryptVerifyMessageSignatureWithKey; external crypt32 name 'CryptVerifyMessageSignatureWithKey';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertOpenSystemStoreA: Pointer;
 
@@ -20113,16 +18892,12 @@ function CertOpenSystemStoreA;
 begin
   GetProcedureAddress(_CertOpenSystemStoreA, crypt32, 'CertOpenSystemStoreA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertOpenSystemStoreA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertOpenSystemStoreA]
   end;
 end;
-{$ELSE}
-function CertOpenSystemStoreA; external crypt32 name 'CertOpenSystemStoreA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertOpenSystemStoreW: Pointer;
 
@@ -20130,53 +18905,25 @@ function CertOpenSystemStoreW;
 begin
   GetProcedureAddress(_CertOpenSystemStoreW, crypt32, 'CertOpenSystemStoreW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertOpenSystemStoreW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertOpenSystemStoreW]
   end;
 end;
-{$ELSE}
-function CertOpenSystemStoreW; external crypt32 name 'CertOpenSystemStoreW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertOpenSystemStore: Pointer;
 
 function CertOpenSystemStore;
 begin
-  GetProcedureAddress(_CertOpenSystemStore, crypt32, 'CertOpenSystemStoreW');
+  GetProcedureAddress(_CertOpenSystemStore, crypt32, 'CertOpenSystemStore' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertOpenSystemStore]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertOpenSystemStore]
   end;
 end;
-{$ELSE}
-function CertOpenSystemStore; external crypt32 name 'CertOpenSystemStoreW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CertOpenSystemStore: Pointer;
-
-function CertOpenSystemStore;
-begin
-  GetProcedureAddress(_CertOpenSystemStore, crypt32, 'CertOpenSystemStoreA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertOpenSystemStore]
-  end;
-end;
-{$ELSE}
-function CertOpenSystemStore; external crypt32 name 'CertOpenSystemStoreA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CertAddEncodedCertToSysStoreA: Pointer;
 
@@ -20184,16 +18931,12 @@ function CertAddEncodedCertificateToSystemStoreA;
 begin
   GetProcedureAddress(_CertAddEncodedCertToSysStoreA, crypt32, 'CertAddEncodedCertificateToSystemStoreA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertAddEncodedCertToSysStoreA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertAddEncodedCertToSysStoreA]
   end;
 end;
-{$ELSE}
-function CertAddEncodedCertificateToSystemStoreA; external crypt32 name 'CertAddEncodedCertificateToSystemStoreA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertAddEncodedCertToSysStoreW: Pointer;
 
@@ -20201,53 +18944,25 @@ function CertAddEncodedCertificateToSystemStoreW;
 begin
   GetProcedureAddress(_CertAddEncodedCertToSysStoreW, crypt32, 'CertAddEncodedCertificateToSystemStoreW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertAddEncodedCertToSysStoreW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertAddEncodedCertToSysStoreW]
   end;
 end;
-{$ELSE}
-function CertAddEncodedCertificateToSystemStoreW; external crypt32 name 'CertAddEncodedCertificateToSystemStoreW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertAddEncodedCertToSysStore: Pointer;
 
 function CertAddEncodedCertificateToSystemStore;
 begin
-  GetProcedureAddress(_CertAddEncodedCertToSysStore, crypt32, 'CertAddEncodedCertificateToSystemStoreW');
+  GetProcedureAddress(_CertAddEncodedCertToSysStore, crypt32, 'CertAddEncodedCertificateToSystemStore' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertAddEncodedCertToSysStore]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertAddEncodedCertToSysStore]
   end;
 end;
-{$ELSE}
-function CertAddEncodedCertificateToSystemStore; external crypt32 name 'CertAddEncodedCertificateToSystemStoreW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CertAddEncodedCertToSysStore: Pointer;
-
-function CertAddEncodedCertificateToSystemStore;
-begin
-  GetProcedureAddress(_CertAddEncodedCertToSysStore, crypt32, 'CertAddEncodedCertificateToSystemStoreA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertAddEncodedCertToSysStore]
-  end;
-end;
-{$ELSE}
-function CertAddEncodedCertificateToSystemStore; external crypt32 name 'CertAddEncodedCertificateToSystemStoreA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _FindCertsByIssuer: Pointer;
 
@@ -20255,16 +18970,12 @@ function FindCertsByIssuer;
 begin
   GetProcedureAddress(_FindCertsByIssuer, softpub, 'FindCertsByIssuer');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FindCertsByIssuer]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_FindCertsByIssuer]
   end;
 end;
-{$ELSE}
-function FindCertsByIssuer; external softpub name 'FindCertsByIssuer';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptQueryObject: Pointer;
 
@@ -20272,16 +18983,12 @@ function CryptQueryObject;
 begin
   GetProcedureAddress(_CryptQueryObject, crypt32, 'CryptQueryObject');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptQueryObject]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptQueryObject]
   end;
 end;
-{$ELSE}
-function CryptQueryObject; external crypt32 name 'CryptQueryObject';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptMemAlloc: Pointer;
 
@@ -20289,16 +18996,12 @@ function CryptMemAlloc;
 begin
   GetProcedureAddress(_CryptMemAlloc, crypt32, 'CryptMemAlloc');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptMemAlloc]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptMemAlloc]
   end;
 end;
-{$ELSE}
-function CryptMemAlloc; external crypt32 name 'CryptMemAlloc';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptMemRealloc: Pointer;
 
@@ -20306,16 +19009,12 @@ function CryptMemRealloc;
 begin
   GetProcedureAddress(_CryptMemRealloc, crypt32, 'CryptMemRealloc');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptMemRealloc]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptMemRealloc]
   end;
 end;
-{$ELSE}
-function CryptMemRealloc; external crypt32 name 'CryptMemRealloc';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptMemFree: Pointer;
 
@@ -20323,16 +19022,12 @@ procedure CryptMemFree;
 begin
   GetProcedureAddress(_CryptMemFree, crypt32, 'CryptMemFree');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptMemFree]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptMemFree]
   end;
 end;
-{$ELSE}
-procedure CryptMemFree; external crypt32 name 'CryptMemFree';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptCreateAsyncHandle: Pointer;
 
@@ -20340,16 +19035,12 @@ function CryptCreateAsyncHandle;
 begin
   GetProcedureAddress(_CryptCreateAsyncHandle, crypt32, 'CryptCreateAsyncHandle');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptCreateAsyncHandle]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptCreateAsyncHandle]
   end;
 end;
-{$ELSE}
-function CryptCreateAsyncHandle; external crypt32 name 'CryptCreateAsyncHandle';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptSetAsyncParam: Pointer;
 
@@ -20357,16 +19048,12 @@ function CryptSetAsyncParam;
 begin
   GetProcedureAddress(_CryptSetAsyncParam, crypt32, 'CryptSetAsyncParam');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptSetAsyncParam]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptSetAsyncParam]
   end;
 end;
-{$ELSE}
-function CryptSetAsyncParam; external crypt32 name 'CryptSetAsyncParam';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptGetAsyncParam: Pointer;
 
@@ -20374,16 +19061,12 @@ function CryptGetAsyncParam;
 begin
   GetProcedureAddress(_CryptGetAsyncParam, crypt32, 'CryptGetAsyncParam');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptGetAsyncParam]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptGetAsyncParam]
   end;
 end;
-{$ELSE}
-function CryptGetAsyncParam; external crypt32 name 'CryptGetAsyncParam';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptCloseAsyncHandle: Pointer;
 
@@ -20391,16 +19074,12 @@ function CryptCloseAsyncHandle;
 begin
   GetProcedureAddress(_CryptCloseAsyncHandle, crypt32, 'CryptCloseAsyncHandle');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptCloseAsyncHandle]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptCloseAsyncHandle]
   end;
 end;
-{$ELSE}
-function CryptCloseAsyncHandle; external crypt32 name 'CryptCloseAsyncHandle';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptRetrieveObjectByUrlA: Pointer;
 
@@ -20408,16 +19087,12 @@ function CryptRetrieveObjectByUrlA;
 begin
   GetProcedureAddress(_CryptRetrieveObjectByUrlA, crypt32, 'CryptRetrieveObjectByUrlA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptRetrieveObjectByUrlA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptRetrieveObjectByUrlA]
   end;
 end;
-{$ELSE}
-function CryptRetrieveObjectByUrlA; external crypt32 name 'CryptRetrieveObjectByUrlA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptRetrieveObjectByUrlW: Pointer;
 
@@ -20425,53 +19100,25 @@ function CryptRetrieveObjectByUrlW;
 begin
   GetProcedureAddress(_CryptRetrieveObjectByUrlW, crypt32, 'CryptRetrieveObjectByUrlW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptRetrieveObjectByUrlW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptRetrieveObjectByUrlW]
   end;
 end;
-{$ELSE}
-function CryptRetrieveObjectByUrlW; external crypt32 name 'CryptRetrieveObjectByUrlW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptRetrieveObjectByUrl: Pointer;
 
 function CryptRetrieveObjectByUrl;
 begin
-  GetProcedureAddress(_CryptRetrieveObjectByUrl, crypt32, 'CryptRetrieveObjectByUrlW');
+  GetProcedureAddress(_CryptRetrieveObjectByUrl, crypt32, 'CryptRetrieveObjectByUrl' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptRetrieveObjectByUrl]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptRetrieveObjectByUrl]
   end;
 end;
-{$ELSE}
-function CryptRetrieveObjectByUrl; external crypt32 name 'CryptRetrieveObjectByUrlW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CryptRetrieveObjectByUrl: Pointer;
-
-function CryptRetrieveObjectByUrl;
-begin
-  GetProcedureAddress(_CryptRetrieveObjectByUrl, crypt32, 'CryptRetrieveObjectByUrlA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptRetrieveObjectByUrl]
-  end;
-end;
-{$ELSE}
-function CryptRetrieveObjectByUrl; external crypt32 name 'CryptRetrieveObjectByUrlA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptInstallCancelRetrieval: Pointer;
 
@@ -20479,16 +19126,12 @@ function CryptInstallCancelRetrieval;
 begin
   GetProcedureAddress(_CryptInstallCancelRetrieval, crypt32, 'CryptInstallCancelRetrieval');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptInstallCancelRetrieval]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptInstallCancelRetrieval]
   end;
 end;
-{$ELSE}
-function CryptInstallCancelRetrieval; external crypt32 name 'CryptInstallCancelRetrieval';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptUninstallCancelRetrieval: Pointer;
 
@@ -20496,16 +19139,12 @@ function CryptUninstallCancelRetrieval;
 begin
   GetProcedureAddress(_CryptUninstallCancelRetrieval, crypt32, 'CryptUninstallCancelRetrieval');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptUninstallCancelRetrieval]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptUninstallCancelRetrieval]
   end;
 end;
-{$ELSE}
-function CryptUninstallCancelRetrieval; external crypt32 name 'CryptUninstallCancelRetrieval';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptCancelAsyncRetrieval: Pointer;
 
@@ -20513,16 +19152,12 @@ function CryptCancelAsyncRetrieval;
 begin
   GetProcedureAddress(_CryptCancelAsyncRetrieval, crypt32, 'CryptCancelAsyncRetrieval');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptCancelAsyncRetrieval]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptCancelAsyncRetrieval]
   end;
 end;
-{$ELSE}
-function CryptCancelAsyncRetrieval; external crypt32 name 'CryptCancelAsyncRetrieval';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptGetObjectUrl: Pointer;
 
@@ -20530,16 +19165,12 @@ function CryptGetObjectUrl;
 begin
   GetProcedureAddress(_CryptGetObjectUrl, crypt32, 'CryptGetObjectUrl');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptGetObjectUrl]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptGetObjectUrl]
   end;
 end;
-{$ELSE}
-function CryptGetObjectUrl; external crypt32 name 'CryptGetObjectUrl';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptGetTimeValidObject: Pointer;
 
@@ -20547,16 +19178,12 @@ function CryptGetTimeValidObject;
 begin
   GetProcedureAddress(_CryptGetTimeValidObject, crypt32, 'CryptGetTimeValidObject');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptGetTimeValidObject]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptGetTimeValidObject]
   end;
 end;
-{$ELSE}
-function CryptGetTimeValidObject; external crypt32 name 'CryptGetTimeValidObject';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptFlushTimeValidObject: Pointer;
 
@@ -20564,16 +19191,12 @@ function CryptFlushTimeValidObject;
 begin
   GetProcedureAddress(_CryptFlushTimeValidObject, crypt32, 'CryptFlushTimeValidObject');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptFlushTimeValidObject]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptFlushTimeValidObject]
   end;
 end;
-{$ELSE}
-function CryptFlushTimeValidObject; external crypt32 name 'CryptFlushTimeValidObject';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptProtectData: Pointer;
 
@@ -20581,16 +19204,12 @@ function CryptProtectData;
 begin
   GetProcedureAddress(_CryptProtectData, crypt32, 'CryptProtectData');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptProtectData]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptProtectData]
   end;
 end;
-{$ELSE}
-function CryptProtectData; external crypt32 name 'CryptProtectData';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptUnprotectData: Pointer;
 
@@ -20598,16 +19217,12 @@ function CryptUnprotectData;
 begin
   GetProcedureAddress(_CryptUnprotectData, crypt32, 'CryptUnprotectData');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptUnprotectData]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptUnprotectData]
   end;
 end;
-{$ELSE}
-function CryptUnprotectData; external crypt32 name 'CryptUnprotectData';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertCreateSelfSignCertificate: Pointer;
 
@@ -20615,16 +19230,12 @@ function CertCreateSelfSignCertificate;
 begin
   GetProcedureAddress(_CertCreateSelfSignCertificate, crypt32, 'CertCreateSelfSignCertificate');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertCreateSelfSignCertificate]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertCreateSelfSignCertificate]
   end;
 end;
-{$ELSE}
-function CertCreateSelfSignCertificate; external crypt32 name 'CertCreateSelfSignCertificate';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptGetKeyIdentifierProperty: Pointer;
 
@@ -20632,16 +19243,12 @@ function CryptGetKeyIdentifierProperty;
 begin
   GetProcedureAddress(_CryptGetKeyIdentifierProperty, crypt32, 'CryptGetKeyIdentifierProperty');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptGetKeyIdentifierProperty]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptGetKeyIdentifierProperty]
   end;
 end;
-{$ELSE}
-function CryptGetKeyIdentifierProperty; external crypt32 name 'CryptGetKeyIdentifierProperty';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptSetKeyIdentifierProperty: Pointer;
 
@@ -20649,16 +19256,12 @@ function CryptSetKeyIdentifierProperty;
 begin
   GetProcedureAddress(_CryptSetKeyIdentifierProperty, crypt32, 'CryptSetKeyIdentifierProperty');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptSetKeyIdentifierProperty]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptSetKeyIdentifierProperty]
   end;
 end;
-{$ELSE}
-function CryptSetKeyIdentifierProperty; external crypt32 name 'CryptSetKeyIdentifierProperty';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptEnumKeyIdentProperties: Pointer;
 
@@ -20666,16 +19269,12 @@ function CryptEnumKeyIdentifierProperties;
 begin
   GetProcedureAddress(_CryptEnumKeyIdentProperties, crypt32, 'CryptEnumKeyIdentifierProperties');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptEnumKeyIdentProperties]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptEnumKeyIdentProperties]
   end;
 end;
-{$ELSE}
-function CryptEnumKeyIdentifierProperties; external crypt32 name 'CryptEnumKeyIdentifierProperties';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CryptCreateKeyIdentifierFromCSP: Pointer;
 
@@ -20683,16 +19282,12 @@ function CryptCreateKeyIdentifierFromCSP;
 begin
   GetProcedureAddress(_CryptCreateKeyIdentifierFromCSP, crypt32, 'CryptCreateKeyIdentifierFromCSP');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CryptCreateKeyIdentifierFromCSP]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CryptCreateKeyIdentifierFromCSP]
   end;
 end;
-{$ELSE}
-function CryptCreateKeyIdentifierFromCSP; external crypt32 name 'CryptCreateKeyIdentifierFromCSP';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertCreateCertChainEngine: Pointer;
 
@@ -20700,16 +19295,12 @@ function CertCreateCertificateChainEngine;
 begin
   GetProcedureAddress(_CertCreateCertChainEngine, crypt32, 'CertCreateCertificateChainEngine');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertCreateCertChainEngine]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertCreateCertChainEngine]
   end;
 end;
-{$ELSE}
-function CertCreateCertificateChainEngine; external crypt32 name 'CertCreateCertificateChainEngine';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertFreeCertificateChainEngine: Pointer;
 
@@ -20717,16 +19308,12 @@ procedure CertFreeCertificateChainEngine;
 begin
   GetProcedureAddress(_CertFreeCertificateChainEngine, crypt32, 'CertFreeCertificateChainEngine');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertFreeCertificateChainEngine]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertFreeCertificateChainEngine]
   end;
 end;
-{$ELSE}
-procedure CertFreeCertificateChainEngine; external crypt32 name 'CertFreeCertificateChainEngine';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertResyncCertChainEngine: Pointer;
 
@@ -20734,16 +19321,12 @@ function CertResyncCertificateChainEngine;
 begin
   GetProcedureAddress(_CertResyncCertChainEngine, crypt32, 'CertResyncCertificateChainEngine');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertResyncCertChainEngine]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertResyncCertChainEngine]
   end;
 end;
-{$ELSE}
-function CertResyncCertificateChainEngine; external crypt32 name 'CertResyncCertificateChainEngine';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertGetCertificateChain: Pointer;
 
@@ -20751,16 +19334,12 @@ function CertGetCertificateChain;
 begin
   GetProcedureAddress(_CertGetCertificateChain, crypt32, 'CertGetCertificateChain');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertGetCertificateChain]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertGetCertificateChain]
   end;
 end;
-{$ELSE}
-function CertGetCertificateChain; external crypt32 name 'CertGetCertificateChain';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertFreeCertificateChain: Pointer;
 
@@ -20768,16 +19347,12 @@ procedure CertFreeCertificateChain;
 begin
   GetProcedureAddress(_CertFreeCertificateChain, crypt32, 'CertFreeCertificateChain');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertFreeCertificateChain]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertFreeCertificateChain]
   end;
 end;
-{$ELSE}
-procedure CertFreeCertificateChain; external crypt32 name 'CertFreeCertificateChain';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertDuplicateCertificateChain: Pointer;
 
@@ -20785,16 +19360,12 @@ function CertDuplicateCertificateChain;
 begin
   GetProcedureAddress(_CertDuplicateCertificateChain, crypt32, 'CertDuplicateCertificateChain');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertDuplicateCertificateChain]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertDuplicateCertificateChain]
   end;
 end;
-{$ELSE}
-function CertDuplicateCertificateChain; external crypt32 name 'CertDuplicateCertificateChain';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertFindChainInStore: Pointer;
 
@@ -20802,16 +19373,12 @@ function CertFindChainInStore;
 begin
   GetProcedureAddress(_CertFindChainInStore, crypt32, 'CertFindChainInStore');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertFindChainInStore]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertFindChainInStore]
   end;
 end;
-{$ELSE}
-function CertFindChainInStore; external crypt32 name 'CertFindChainInStore';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CertVerifyCertChainPolicy: Pointer;
 
@@ -20819,13 +19386,276 @@ function CertVerifyCertificateChainPolicy;
 begin
   GetProcedureAddress(_CertVerifyCertChainPolicy, crypt32, 'CertVerifyCertificateChainPolicy');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CertVerifyCertChainPolicy]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CertVerifyCertChainPolicy]
   end;
 end;
+
 {$ELSE}
+
+function CryptAcquireContextA; external advapi32 name 'CryptAcquireContextA';
+function CryptAcquireContextW; external advapi32 name 'CryptAcquireContextW';
+function CryptAcquireContext; external advapi32 name 'CryptAcquireContext' + AWSuffix;
+function CryptReleaseContext; external advapi32 name 'CryptReleaseContext';
+function CryptGenKey; external advapi32 name 'CryptGenKey';
+function CryptDeriveKey; external advapi32 name 'CryptDeriveKey';
+function CryptDestroyKey; external advapi32 name 'CryptDestroyKey';
+function CryptSetKeyParam; external crypt32 name 'CryptSetKeyParam';
+function CryptGetKeyParam; external advapi32 name 'CryptGetKeyParam';
+function CryptSetHashParam; external advapi32 name 'CryptSetHashParam';
+function CryptGetHashParam; external advapi32 name 'CryptGetHashParam';
+function CryptSetProvParam; external advapi32 name 'CryptSetProvParam';
+function CryptGetProvParam; external advapi32 name 'CryptGetProvParam';
+function CryptGenRandom; external advapi32 name 'CryptGenRandom';
+function CryptGetUserKey; external advapi32 name 'CryptGetUserKey';
+function CryptExportKey; external advapi32 name 'CryptExportKey';
+function CryptImportKey; external advapi32 name 'CryptImportKey';
+function CryptEncrypt; external advapi32 name 'CryptEncrypt';
+function CryptDecrypt; external advapi32 name 'CryptDecrypt';
+function CryptCreateHash; external advapi32 name 'CryptCreateHash';
+function CryptHashData; external advapi32 name 'CryptHashData';
+function CryptHashSessionKey; external advapi32 name 'CryptHashSessionKey';
+function CryptDestroyHash; external advapi32 name 'CryptDestroyHash';
+function CryptSignHashA; external advapi32 name 'CryptSignHashA';
+function CryptSignHashW; external advapi32 name 'CryptSignHashW';
+function CryptSignHash; external advapi32 name 'CryptSignHash' + AWSuffix;
+function CryptVerifySignatureA; external advapi32 name 'CryptVerifySignatureA';
+function CryptVerifySignatureW; external advapi32 name 'CryptVerifySignatureW';
+function CryptVerifySignature; external advapi32 name 'CryptVerifySignature' + AWSuffix;
+function CryptSetProviderA; external advapi32 name 'CryptSetProviderA';
+function CryptSetProviderW; external advapi32 name 'CryptSetProviderW';
+function CryptSetProvider; external advapi32 name 'CryptSetProvider' + AWSuffix;
+function CryptSetProviderExA; external advapi32 name 'CryptSetProviderExA';
+function CryptSetProviderExW; external advapi32 name 'CryptSetProviderExW';
+function CryptSetProviderEx; external advapi32 name 'CryptSetProviderEx' + AWSuffix;
+function CryptGetDefaultProviderA; external advapi32 name 'CryptGetDefaultProviderA';
+function CryptGetDefaultProviderW; external advapi32 name 'CryptGetDefaultProviderW';
+function CryptGetDefaultProvider; external advapi32 name 'CryptGetDefaultProvider' + AWSuffix;
+function CryptEnumProviderTypesA; external advapi32 name 'CryptEnumProviderTypesA';
+function CryptEnumProviderTypesW; external advapi32 name 'CryptEnumProviderTypesW';
+function CryptEnumProviderTypes; external advapi32 name 'CryptEnumProviderTypes' + AWSuffix;
+function CryptEnumProvidersA; external advapi32 name 'CryptEnumProvidersA';
+function CryptEnumProvidersW; external advapi32 name 'CryptEnumProvidersW';
+function CryptEnumProviders; external advapi32 name 'CryptEnumProviders' + AWSuffix;
+function CryptContextAddRef; external advapi32 name 'CryptContextAddRef';
+function CryptDuplicateKey; external advapi32 name 'CryptDuplicateKey';
+function CryptDuplicateHash; external advapi32 name 'CryptDuplicateHash';
+function CryptFormatObject; external crypt32 name 'CryptFormatObject';
+function CryptEncodeObjectEx; external crypt32 name 'CryptEncodeObjectEx';
+function CryptEncodeObject; external crypt32 name 'CryptEncodeObject';
+function CryptDecodeObjectEx; external crypt32 name 'CryptDecodeObjectEx';
+function CryptDecodeObject; external crypt32 name 'CryptDecodeObject';
+function CryptInstallOIDFunctionAddress; external crypt32 name 'CryptInstallOIDFunctionAddress';
+function CryptInitOIDFunctionSet; external crypt32 name 'CryptInitOIDFunctionSet';
+function CryptGetOIDFunctionAddress; external crypt32 name 'CryptGetOIDFunctionAddress';
+function CryptGetDefaultOIDDllList; external crypt32 name 'CryptGetDefaultOIDDllList';
+function CryptGetDefaultOIDFunctionAddress; external crypt32 name 'CryptGetDefaultOIDFunctionAddress';
+function CryptFreeOIDFunctionAddress; external crypt32 name 'CryptFreeOIDFunctionAddress';
+function CryptRegisterOIDFunction; external crypt32 name 'CryptRegisterOIDFunction';
+function CryptUnregisterOIDFunction; external crypt32 name 'CryptUnregisterOIDFunction';
+function CryptRegisterDefaultOIDFunction; external crypt32 name 'CryptRegisterDefaultOIDFunction';
+function CryptUnregisterDefaultOIDFunction; external crypt32 name 'CryptUnregisterDefaultOIDFunction';
+function CryptSetOIDFunctionValue; external crypt32 name 'CryptSetOIDFunctionValue';
+function CryptGetOIDFunctionValue; external crypt32 name 'CryptGetOIDFunctionValue';
+function CryptEnumOIDFunction; external crypt32 name 'CryptEnumOIDFunction';
+function CryptFindOIDInfo; external crypt32 name 'CryptFindOIDInfo';
+function CryptRegisterOIDInfo; external crypt32 name 'CryptRegisterOIDInfo';
+function CryptUnregisterOIDInfo; external crypt32 name 'CryptUnregisterOIDInfo';
+function CryptEnumOIDInfo; external crypt32 name 'CryptEnumOIDInfo';
+function CryptFindLocalizedName; external crypt32 name 'CryptFindLocalizedName';
+function CryptMsgOpenToEncode; external crypt32 name 'CryptMsgOpenToEncode';
+function CryptMsgCalculateEncodedLength; external crypt32 name 'CryptMsgCalculateEncodedLength';
+function CryptMsgOpenToDecode; external crypt32 name 'CryptMsgOpenToDecode';
+function CryptMsgDuplicate; external crypt32 name 'CryptMsgDuplicate';
+function CryptMsgClose; external crypt32 name 'CryptMsgClose';
+function CryptMsgUpdate; external crypt32 name 'CryptMsgUpdate';
+function CryptMsgGetParam; external crypt32 name 'CryptMsgGetParam';
+function CryptMsgControl; external crypt32 name 'CryptMsgControl';
+function CryptMsgVerifyCountersignatureEncoded; external crypt32 name 'CryptMsgVerifyCountersignatureEncoded';
+function CryptMsgVerifyCountersignatureEncodedEx; external crypt32 name 'CryptMsgVerifyCountersignatureEncodedEx';
+function CryptMsgCountersign; external crypt32 name 'CryptMsgCountersign';
+function CryptMsgCountersignEncoded; external crypt32 name 'CryptMsgCountersignEncoded';
+function CertOpenStore; external crypt32 name 'CertOpenStore';
+function CertDuplicateStore; external crypt32 name 'CertDuplicateStore';
+function CertSaveStore; external crypt32 name 'CertSaveStore';
+function CertCloseStore; external crypt32 name 'CertCloseStore';
+function CertGetSubjectCertificateFromStore; external crypt32 name 'CertGetSubjectCertificateFromStore';
+function CertEnumCertificatesInStore; external crypt32 name 'CertEnumCertificatesInStore';
+function CertFindCertificateInStore; external crypt32 name 'CertFindCertificateInStore';
+function CertGetIssuerCertificateFromStore; external crypt32 name 'CertGetIssuerCertificateFromStore';
+function CertVerifySubjectCertificateContext; external crypt32 name 'CertVerifySubjectCertificateContext';
+function CertDuplicateCertificateContext; external crypt32 name 'CertDuplicateCertificateContext';
+function CertCreateCertificateContext; external crypt32 name 'CertCreateCertificateContext';
+function CertFreeCertificateContext; external crypt32 name 'CertFreeCertificateContext';
+function CertSetCertificateContextProperty; external crypt32 name 'CertSetCertificateContextProperty';
+function CertGetCertificateContextProperty; external crypt32 name 'CertGetCertificateContextProperty';
+function CertEnumCertificateContextProperties; external crypt32 name 'CertEnumCertificateContextProperties';
+function CertGetCRLFromStore; external crypt32 name 'CertGetCRLFromStore';
+function CertEnumCRLsInStore; external crypt32 name 'CertEnumCRLsInStore';
+function CertFindCRLInStore; external crypt32 name 'CertFindCRLInStore';
+function CertDuplicateCRLContext; external crypt32 name 'CertDuplicateCRLContext';
+function CertCreateCRLContext; external crypt32 name 'CertCreateCRLContext';
+function CertFreeCRLContext; external crypt32 name 'CertFreeCRLContext';
+function CertSetCRLContextProperty; external crypt32 name 'CertSetCRLContextProperty';
+function CertGetCRLContextProperty; external crypt32 name 'CertGetCRLContextProperty';
+function CertEnumCRLContextProperties; external crypt32 name 'CertEnumCRLContextProperties';
+function CertFindCertificateInCRL; external crypt32 name 'CertFindCertificateInCRL';
+function CertAddEncodedCertificateToStore; external crypt32 name 'CertAddEncodedCertificateToStore';
+function CertAddCertificateContextToStore; external crypt32 name 'CertAddCertificateContextToStore';
+function CertAddSerializedElementToStore; external crypt32 name 'CertAddSerializedElementToStore';
+function CertDeleteCertificateFromStore; external crypt32 name 'CertDeleteCertificateFromStore';
+function CertAddEncodedCRLToStore; external crypt32 name 'CertAddEncodedCRLToStore';
+function CertAddCRLContextToStore; external crypt32 name 'CertAddCRLContextToStore';
+function CertDeleteCRLFromStore; external crypt32 name 'CertDeleteCRLFromStore';
+function CertSerializeCertificateStoreElement; external crypt32 name 'CertSerializeCertificateStoreElement';
+function CertSerializeCRLStoreElement; external crypt32 name 'CertSerializeCRLStoreElement';
+function CertDuplicateCTLContext; external crypt32 name 'CertDuplicateCTLContext';
+function CertCreateCTLContext; external crypt32 name 'CertCreateCTLContext';
+function CertFreeCTLContext; external crypt32 name 'CertFreeCTLContext';
+function CertSetCTLContextProperty; external crypt32 name 'CertSetCTLContextProperty';
+function CertGetCTLContextProperty; external crypt32 name 'CertGetCTLContextProperty';
+function CertEnumCTLContextProperties; external crypt32 name 'CertEnumCTLContextProperties';
+function CertEnumCTLsInStore; external crypt32 name 'CertEnumCTLsInStore';
+function CertFindSubjectInCTL; external crypt32 name 'CertFindSubjectInCTL';
+function CertFindCTLInStore; external crypt32 name 'CertFindCTLInStore';
+function CertAddEncodedCTLToStore; external crypt32 name 'CertAddEncodedCTLToStore';
+function CertAddCTLContextToStore; external crypt32 name 'CertAddCTLContextToStore';
+function CertSerializeCTLStoreElement; external crypt32 name 'CertSerializeCTLStoreElement';
+function CertDeleteCTLFromStore; external crypt32 name 'CertDeleteCTLFromStore';
+function CertAddCertificateLinkToStore; external crypt32 name 'CertAddCertificateLinkToStore';
+function CertAddCRLLinkToStore; external crypt32 name 'CertAddCRLLinkToStore';
+function CertAddCTLLinkToStore; external crypt32 name 'CertAddCTLLinkToStore';
+function CertAddStoreToCollection; external crypt32 name 'CertAddStoreToCollection';
+procedure CertRemoveStoreFromCollection; external crypt32 name 'CertRemoveStoreFromCollection';
+function CertControlStore; external crypt32 name 'CertControlStore';
+function CertSetStoreProperty; external crypt32 name 'CertSetStoreProperty';
+function CertGetStoreProperty; external crypt32 name 'CertGetStoreProperty';
+function CertCreateContext; external crypt32 name 'CertCreateContext';
+function CertRegisterSystemStore; external crypt32 name 'CertRegisterSystemStore';
+function CertRegisterPhysicalStore; external crypt32 name 'CertRegisterPhysicalStore';
+function CertUnregisterSystemStore; external crypt32 name 'CertUnregisterSystemStore';
+function CertUnregisterPhysicalStore; external crypt32 name 'CertUnregisterPhysicalStore';
+function CertEnumSystemStoreLocation; external crypt32 name 'CertEnumSystemStoreLocation';
+function CertEnumSystemStore; external crypt32 name 'CertEnumSystemStore';
+function CertEnumPhysicalStore; external crypt32 name 'CertEnumPhysicalStore';
+function CertGetEnhancedKeyUsage; external crypt32 name 'CertGetEnhancedKeyUsage';
+function CertSetEnhancedKeyUsage; external crypt32 name 'CertSetEnhancedKeyUsage';
+function CertAddEnhancedKeyUsageIdentifier; external crypt32 name 'CertAddEnhancedKeyUsageIdentifier';
+function CertRemoveEnhancedKeyUsageIdentifier; external crypt32 name 'CertRemoveEnhancedKeyUsageIdentifier';
+function CertGetValidUsages; external crypt32 name 'CertGetValidUsages';
+function CryptMsgGetAndVerifySigner; external crypt32 name 'CryptMsgGetAndVerifySigner';
+function CryptMsgSignCTL; external crypt32 name 'CryptMsgSignCTL';
+function CryptMsgEncodeAndSignCTL; external crypt32 name 'CryptMsgEncodeAndSignCTL';
+function CertFindSubjectInSortedCTL; external crypt32 name 'CertFindSubjectInSortedCTL';
+function CertEnumSubjectInSortedCTL; external crypt32 name 'CertEnumSubjectInSortedCTL';
+function CertVerifyCTLUsage; external crypt32 name 'CertVerifyCTLUsage';
+function CertVerifyRevocation; external crypt32 name 'CertVerifyRevocation';
+function CertCompareIntegerBlob; external crypt32 name 'CertCompareIntegerBlob';
+function CertCompareCertificate; external crypt32 name 'CertCompareCertificate';
+function CertCompareCertificateName; external crypt32 name 'CertCompareCertificateName';
+function CertIsRDNAttrsInCertificateName; external crypt32 name 'CertIsRDNAttrsInCertificateName';
+function CertComparePublicKeyInfo; external crypt32 name 'CertComparePublicKeyInfo';
+function CertGetPublicKeyLength; external crypt32 name 'CertGetPublicKeyLength';
+function CryptVerifyCertificateSignature; external crypt32 name 'CryptVerifyCertificateSignature';
+function CryptVerifyCertificateSignatureEx; external crypt32 name 'CryptVerifyCertificateSignatureEx';
+function CryptHashToBeSigned; external crypt32 name 'CryptHashToBeSigned';
+function CryptHashCertificate; external crypt32 name 'CryptHashCertificate';
+function CryptSignCertificate; external crypt32 name 'CryptSignCertificate';
+function CryptSignAndEncodeCertificate; external crypt32 name 'CryptSignAndEncodeCertificate';
+function CertVerifyTimeValidity; external crypt32 name 'CertVerifyTimeValidity';
+function CertVerifyCRLTimeValidity; external crypt32 name 'CertVerifyCRLTimeValidity';
+function CertVerifyValidityNesting; external crypt32 name 'CertVerifyValidityNesting';
+function CertVerifyCRLRevocation; external crypt32 name 'CertVerifyCRLRevocation';
+function CertAlgIdToOID; external crypt32 name 'CertAlgIdToOID';
+function CertOIDToAlgId; external crypt32 name 'CertOIDToAlgId';
+function CertFindExtension; external crypt32 name 'CertFindExtension';
+function CertFindAttribute; external crypt32 name 'CertFindAttribute';
+function CertFindRDNAttr; external crypt32 name 'CertFindRDNAttr';
+function CertGetIntendedKeyUsage; external crypt32 name 'CertGetIntendedKeyUsage';
+function CryptInstallDefaultContext; external crypt32 name 'CryptInstallDefaultContext';
+function CryptUninstallDefaultContext; external crypt32 name 'CryptUninstallDefaultContext';
+function CryptExportPublicKeyInfo; external crypt32 name 'CryptExportPublicKeyInfo';
+function CryptExportPublicKeyInfoEx; external crypt32 name 'CryptExportPublicKeyInfoEx';
+function CryptImportPublicKeyInfo; external crypt32 name 'CryptImportPublicKeyInfo';
+function CryptImportPublicKeyInfoEx; external crypt32 name 'CryptImportPublicKeyInfoEx';
+function CryptAcquireCertificatePrivateKey; external crypt32 name 'CryptAcquireCertificatePrivateKey';
+function CryptFindCertificateKeyProvInfo; external crypt32 name 'CryptFindCertificateKeyProvInfo';
+function CryptImportPKCS8; external crypt32 name 'CryptImportPKCS8';
+function CryptExportPKCS8; external crypt32 name 'CryptExportPKCS8';
+function CryptExportPKCS8Ex; external crypt32 name 'CryptExportPKCS8Ex';
+function CryptHashPublicKeyInfo; external crypt32 name 'CryptHashPublicKeyInfo';
+function CertRDNValueToStrA; external crypt32 name 'CertRDNValueToStrA';
+function CertRDNValueToStrW; external crypt32 name 'CertRDNValueToStrW';
+function CertRDNValueToStr; external crypt32 name 'CertRDNValueToStr' + AWSuffix;
+function CertNameToStrA; external crypt32 name 'CertNameToStrA';
+function CertNameToStrW; external crypt32 name 'CertNameToStrW';
+function CertNameToStr; external crypt32 name 'CertNameToStr' + AWSuffix;
+function CertStrToNameA; external crypt32 name 'CertStrToNameA';
+function CertStrToNameW; external crypt32 name 'CertStrToNameW';
+function CertStrToName; external crypt32 name 'CertStrToName' + AWSuffix;
+function CertGetNameStringA; external crypt32 name 'CertGetNameStringA';
+function CertGetNameStringW; external crypt32 name 'CertGetNameStringW';
+function CertGetNameString; external crypt32 name 'CertGetNameString' + AWSuffix;
+function CryptSignMessage; external crypt32 name 'CryptSignMessage';
+function CryptVerifyMessageSignature; external crypt32 name 'CryptVerifyMessageSignature';
+function CryptGetMessageSignerCount; external crypt32 name 'CryptGetMessageSignerCount';
+function CryptGetMessageCertificates; external crypt32 name 'CryptGetMessageCertificates';
+function CryptVerifyDetachedMessageSignature; external crypt32 name 'CryptVerifyDetachedMessageSignature';
+function CryptEncryptMessage; external crypt32 name 'CryptEncryptMessage';
+function CryptDecryptMessage; external crypt32 name 'CryptDecryptMessage';
+function CryptSignAndEncryptMessage; external crypt32 name 'CryptSignAndEncryptMessage';
+function CryptDecryptAndVerifyMessageSignature; external crypt32 name 'CryptDecryptAndVerifyMessageSignature';
+function CryptDecodeMessage; external crypt32 name 'CryptDecodeMessage';
+function CryptHashMessage; external crypt32 name 'CryptHashMessage';
+function CryptVerifyMessageHash; external crypt32 name 'CryptVerifyMessageHash';
+function CryptVerifyDetachedMessageHash; external crypt32 name 'CryptVerifyDetachedMessageHash';
+function CryptSignMessageWithKey; external crypt32 name 'CryptSignMessageWithKey';
+function CryptVerifyMessageSignatureWithKey; external crypt32 name 'CryptVerifyMessageSignatureWithKey';
+function CertOpenSystemStoreA; external crypt32 name 'CertOpenSystemStoreA';
+function CertOpenSystemStoreW; external crypt32 name 'CertOpenSystemStoreW';
+function CertOpenSystemStore; external crypt32 name 'CertOpenSystemStore' + AWSuffix;
+function CertAddEncodedCertificateToSystemStoreA; external crypt32 name 'CertAddEncodedCertificateToSystemStoreA';
+function CertAddEncodedCertificateToSystemStoreW; external crypt32 name 'CertAddEncodedCertificateToSystemStoreW';
+function CertAddEncodedCertificateToSystemStore; external crypt32 name 'CertAddEncodedCertificateToSystemStore' + AWSuffix;
+function FindCertsByIssuer; external softpub name 'FindCertsByIssuer';
+function CryptQueryObject; external crypt32 name 'CryptQueryObject';
+function CryptMemAlloc; external crypt32 name 'CryptMemAlloc';
+function CryptMemRealloc; external crypt32 name 'CryptMemRealloc';
+procedure CryptMemFree; external crypt32 name 'CryptMemFree';
+function CryptCreateAsyncHandle; external crypt32 name 'CryptCreateAsyncHandle';
+function CryptSetAsyncParam; external crypt32 name 'CryptSetAsyncParam';
+function CryptGetAsyncParam; external crypt32 name 'CryptGetAsyncParam';
+function CryptCloseAsyncHandle; external crypt32 name 'CryptCloseAsyncHandle';
+function CryptRetrieveObjectByUrlA; external crypt32 name 'CryptRetrieveObjectByUrlA';
+function CryptRetrieveObjectByUrlW; external crypt32 name 'CryptRetrieveObjectByUrlW';
+function CryptRetrieveObjectByUrl; external crypt32 name 'CryptRetrieveObjectByUrl' + AWSuffix;
+function CryptInstallCancelRetrieval; external crypt32 name 'CryptInstallCancelRetrieval';
+function CryptUninstallCancelRetrieval; external crypt32 name 'CryptUninstallCancelRetrieval';
+function CryptCancelAsyncRetrieval; external crypt32 name 'CryptCancelAsyncRetrieval';
+function CryptGetObjectUrl; external crypt32 name 'CryptGetObjectUrl';
+function CryptGetTimeValidObject; external crypt32 name 'CryptGetTimeValidObject';
+function CryptFlushTimeValidObject; external crypt32 name 'CryptFlushTimeValidObject';
+function CryptProtectData; external crypt32 name 'CryptProtectData';
+function CryptUnprotectData; external crypt32 name 'CryptUnprotectData';
+function CertCreateSelfSignCertificate; external crypt32 name 'CertCreateSelfSignCertificate';
+function CryptGetKeyIdentifierProperty; external crypt32 name 'CryptGetKeyIdentifierProperty';
+function CryptSetKeyIdentifierProperty; external crypt32 name 'CryptSetKeyIdentifierProperty';
+function CryptEnumKeyIdentifierProperties; external crypt32 name 'CryptEnumKeyIdentifierProperties';
+function CryptCreateKeyIdentifierFromCSP; external crypt32 name 'CryptCreateKeyIdentifierFromCSP';
+function CertCreateCertificateChainEngine; external crypt32 name 'CertCreateCertificateChainEngine';
+procedure CertFreeCertificateChainEngine; external crypt32 name 'CertFreeCertificateChainEngine';
+function CertResyncCertificateChainEngine; external crypt32 name 'CertResyncCertificateChainEngine';
+function CertGetCertificateChain; external crypt32 name 'CertGetCertificateChain';
+procedure CertFreeCertificateChain; external crypt32 name 'CertFreeCertificateChain';
+function CertDuplicateCertificateChain; external crypt32 name 'CertDuplicateCertificateChain';
+function CertFindChainInStore; external crypt32 name 'CertFindChainInStore';
 function CertVerifyCertificateChainPolicy; external crypt32 name 'CertVerifyCertificateChainPolicy';
+
 {$ENDIF DYNAMIC_LINK}
 
+{$ENDIF JWA_IMPLEMENTATIONSECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
 end.
+{$ENDIF !JWA_INCLUDEMODE}

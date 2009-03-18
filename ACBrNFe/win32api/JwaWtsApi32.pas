@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Terminal Services API interface Unit for Object Pascal                       }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: wtsapi32.h, released June 2000. The original Pascal    }
 { code is: WtsApi32.pas, released December 2000. The initial developer of the  }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,17 +35,21 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
 
+// $Id: JwaWtsApi32.pas,v 1.10 2005/09/06 16:36:51 marquardt Exp $
+
 unit JwaWtsApi32;
+
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinNT, JwaWinType;
+  JwaWindows;
 
 //   Windows Terminal Server public APIs
 //
@@ -173,21 +176,21 @@ type
   TWtsServerInfoA = WTS_SERVER_INFOA;
   PWtsServerInfoA = PWTS_SERVER_INFOA;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   WTS_SERVER_INFO = WTS_SERVER_INFOW;
   {$EXTERNALSYM WTS_SERVER_INFO}
   PWTS_SERVER_INFO = PWTS_SERVER_INFOW;
   {$EXTERNALSYM PWTS_SERVER_INFO}
   TWtsServerInfo = TWtsServerInfoW;
   PWtsServerInfo = PWtsServerInfoW;
-{$ELSE}
+  {$ELSE}
   WTS_SERVER_INFO = WTS_SERVER_INFOA;
   {$EXTERNALSYM WTS_SERVER_INFO}
   PWTS_SERVER_INFO = PWTS_SERVER_INFOA;
   {$EXTERNALSYM PWTS_SERVER_INFO}
   TWtsServerInfo = TWtsServerInfoA;
   PWtsServerInfo = PWtsServerInfoA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //==============================================================================
 // WTS_SESSION_INFO - returned by WTSEnumerateSessions (version 1)
@@ -244,17 +247,17 @@ type
   TWtsSessionInfoA = WTS_SESSION_INFOA;
   PWtsSessionInfoA = PWTS_SESSION_INFOA;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   WTS_SESSION_INFO = WTS_SESSION_INFOW;
   PWTS_SESSION_INFO = PWTS_SESSION_INFOW;
   TWtsSessionInfo = TWtsSessionInfoW;
   PWtsSessionInfo = PWtsSessionInfoW;
-{$ELSE}
+  {$ELSE}
   WTS_SESSION_INFO = WTS_SESSION_INFOA;
   PWTS_SESSION_INFO = PWTS_SESSION_INFOA;
   TWtsSessionInfo = TWtsSessionInfoA;
   PWtsSessionInfo = PWtsSessionInfoA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //==============================================================================
 // WTS_PROCESS_INFO - returned by WTSEnumerateProcesses (version 1)
@@ -316,21 +319,21 @@ type
   TWtsProcessInfoA = WTS_PROCESS_INFOA;
   PWtsProcessInfoA = PWTS_PROCESS_INFOA;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   WTS_PROCESS_INFO = WTS_PROCESS_INFOW;
   {$EXTERNALSYM WTS_PROCESS_INFO}
   PWTS_PROCESS_INFO = PWTS_PROCESS_INFOW;
   {$EXTERNALSYM PWTS_PROCESS_INFO}
   TWtsProcessInfo = TWtsProcessInfoW;
   PWtsProcessInfo = PWtsProcessInfoW;
-{$ELSE}
+  {$ELSE}
   WTS_PROCESS_INFO = WTS_PROCESS_INFOA;
   {$EXTERNALSYM WTS_PROCESS_INFO}
   PWTS_PROCESS_INFO = PWTS_PROCESS_INFOA;
   {$EXTERNALSYM PWTS_PROCESS_INFO}
   TWtsProcessInfo = TWtsProcessInfoA;
   PWtsProcessInfo = PWtsProcessInfoA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //==============================================================================
 // WTS_INFO_CLASS - WTSQuerySessionInformation
@@ -410,17 +413,17 @@ type
 type
   _WTS_CONFIG_CLASS = (
     //Initial program settings
-    WTSUserConfigInitialProgram,         	// string returned/expected
-    WTSUserConfigWorkingDirectory,       	// string returned/expected
-    WTSUserConfigfInheritInitialProgram, 	// DWORD returned/expected
+    WTSUserConfigInitialProgram,                // string returned/expected
+    WTSUserConfigWorkingDirectory,              // string returned/expected
+    WTSUserConfigfInheritInitialProgram,        // DWORD returned/expected
     //
-    WTSUserConfigfAllowLogonTerminalServer, 	//DWORD returned/expected
+    WTSUserConfigfAllowLogonTerminalServer,     //DWORD returned/expected
     //Timeout settings
-    WTSUserConfigTimeoutSettingsConnections, 	//DWORD returned/expected
+    WTSUserConfigTimeoutSettingsConnections,    //DWORD returned/expected
     WTSUserConfigTimeoutSettingsDisconnections, //DWORD returned/expected
-    WTSUserConfigTimeoutSettingsIdle, 	        //DWORD returned/expected
+    WTSUserConfigTimeoutSettingsIdle,           //DWORD returned/expected
     //Client device settings
-    WTSUserConfigfDeviceClientDrives,  		//DWORD returned/expected
+    WTSUserConfigfDeviceClientDrives,           //DWORD returned/expected
     WTSUserConfigfDeviceClientPrinters,         //DWORD returned/expected
     WTSUserConfigfDeviceClientDefaultPrinter,   //DWORD returned/expected
     //Connection settings
@@ -471,22 +474,23 @@ type
   TWtsUserConfigSetNwserverA = WTS_USER_CONFIG_SET_NWSERVERA;
   PWtsUserConfigSetNwserverA = PWTS_USER_CONFIG_SET_NWSERVERA;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   WTS_USER_CONFIG_SET_NWSERVER  = WTS_USER_CONFIG_SET_NWSERVERW;
   {$EXTERNALSYM WTS_USER_CONFIG_SET_NWSERVER}
   PWTS_USER_CONFIG_SET_NWSERVER = PWTS_USER_CONFIG_SET_NWSERVERW;
   {$EXTERNALSYM PWTS_USER_CONFIG_SET_NWSERVER}
   TWtsUserConfigSetNwserver = TWtsUserConfigSetNwserverW;
   PWtsUserConfigSetNwserver = PWtsUserConfigSetNwserverW;
-{$ELSE}
+  {$ELSE}
   WTS_USER_CONFIG_SET_NWSERVER  = WTS_USER_CONFIG_SET_NWSERVERA;
   {$EXTERNALSYM WTS_USER_CONFIG_SET_NWSERVER}
   PWTS_USER_CONFIG_SET_NWSERVER = PWTS_USER_CONFIG_SET_NWSERVERA;
   {$EXTERNALSYM PWTS_USER_CONFIG_SET_NWSERVER}
   TWtsUserConfigSetNwserver = TWtsUserConfigSetNwserverA;
   PWtsUserConfigSetNwserver = PWtsUserConfigSetNwserverA;
-{$ENDIF}
-{$ENDIF}
+  {$ENDIF UNICODE}
+
+{$ENDIF FALSE}
 
 //==============================================================================
 // WTS_EVENT - Event flags for WTSWaitSystemEvent
@@ -539,16 +543,9 @@ function WTSEnumerateServersA(pDomainName: LPSTR; Reserved, Version: DWORD;
 function WTSEnumerateServersW(pDomainName: LPWSTR; Reserved, Version: DWORD;
   var ppServerInfo: PWTS_SERVER_INFOW; var pCount: DWORD): BOOL; stdcall;
 {$EXTERNALSYM WTSEnumerateServersW}
-
-{$IFDEF UNICODE}
-function WTSEnumerateServers(pDomainName: LPWSTR; Reserved, Version: DWORD;
-  var ppServerInfo: PWTS_SERVER_INFOW; var pCount: DWORD): BOOL; stdcall;
+function WTSEnumerateServers(pDomainName: LPTSTR; Reserved, Version: DWORD;
+  var ppServerInfo: PWTS_SERVER_INFO; var pCount: DWORD): BOOL; stdcall;
 {$EXTERNALSYM WTSEnumerateServers}
-{$ELSE}
-function WTSEnumerateServers(pDomainName: LPSTR; Reserved, Version: DWORD;
-  var ppServerInfo: PWTS_SERVER_INFOA; var pCount: DWORD): BOOL; stdcall;
-{$EXTERNALSYM WTSEnumerateServers}
-{$ENDIF}
 
 //------------------------------------------------------------------------------
 
@@ -556,14 +553,8 @@ function WTSOpenServerA(pServerName: LPSTR): HANDLE; stdcall;
 {$EXTERNALSYM WTSOpenServerA}
 function WTSOpenServerW(pServerName: LPWSTR): HANDLE; stdcall;
 {$EXTERNALSYM WTSOpenServerW}
-
-{$IFDEF UNICODE}
-function WTSOpenServer(pServerName: LPWSTR): HANDLE; stdcall;
+function WTSOpenServer(pServerName: LPTSTR): HANDLE; stdcall;
 {$EXTERNALSYM WTSOpenServer}
-{$ELSE}
-function WTSOpenServer(pServerName: LPSTR): HANDLE; stdcall;
-{$EXTERNALSYM WTSOpenServer}
-{$ENDIF}
 
 //------------------------------------------------------------------------------
 
@@ -578,16 +569,9 @@ function WTSEnumerateSessionsA(hServer: HANDLE; Reserved: DWORD; Version: DWORD;
 function WTSEnumerateSessionsW(hServer: HANDLE; Reserved: DWORD; Version: DWORD;
   var ppSessionInfo: PWTS_SESSION_INFOW; var pCount: DWORD): BOOL; stdcall;
 {$EXTERNALSYM WTSEnumerateSessionsW}
-
-{$IFDEF UNICODE}
 function WTSEnumerateSessions(hServer: HANDLE; Reserved: DWORD; Version: DWORD;
-  var ppSessionInfo: PWTS_SESSION_INFOW; var pCount: DWORD): BOOL; stdcall;
+  var ppSessionInfo: PWTS_SESSION_INFO; var pCount: DWORD): BOOL; stdcall;
 {$EXTERNALSYM WTSEnumerateSessions}
-{$ELSE}
-function WTSEnumerateSessions(hServer: HANDLE; Reserved: DWORD; Version: DWORD;
-  var ppSessionInfo: PWTS_SESSION_INFOA; var pCount: DWORD): BOOL; stdcall;
-{$EXTERNALSYM WTSEnumerateSessions}
-{$ENDIF}
 
 //------------------------------------------------------------------------------
 
@@ -597,16 +581,9 @@ function WTSEnumerateProcessesA(hServer: HANDLE; Reserved: DWORD; Version: DWORD
 function WTSEnumerateProcessesW(hServer: HANDLE; Reserved: DWORD; Version: DWORD;
   var ppProcessInfo: PWTS_PROCESS_INFOW; var pCount: DWORD): BOOL; stdcall;
 {$EXTERNALSYM WTSEnumerateProcessesW}
-
-{$IFDEF UNICODE}
 function WTSEnumerateProcesses(hServer: HANDLE; Reserved: DWORD; Version: DWORD;
-  var ppProcessInfo: PWTS_PROCESS_INFOW; var pCount: DWORD): BOOL; stdcall;
+  var ppProcessInfo: PWTS_PROCESS_INFO; var pCount: DWORD): BOOL; stdcall;
 {$EXTERNALSYM WTSEnumerateProcesses}
-{$ELSE}
-function WTSEnumerateProcesses(hServer: HANDLE; Reserved: DWORD; Version: DWORD;
-  var ppProcessInfo: PWTS_PROCESS_INFOA; var pCount: DWORD): BOOL; stdcall;
-{$EXTERNALSYM WTSEnumerateProcesses}
-{$ENDIF}
 
 //------------------------------------------------------------------------------
 
@@ -621,16 +598,9 @@ function WTSQuerySessionInformationA(hServer: HANDLE; SessionId: DWORD;
 function WTSQuerySessionInformationW(hServer: HANDLE; SessionId: DWORD;
   WTSInfoClass: WTS_INFO_CLASS; var ppBuffer: Pointer; var pBytesReturned: DWORD): BOOL; stdcall;
 {$EXTERNALSYM WTSQuerySessionInformationW}
-
-{$IFDEF UNICODE}
 function WTSQuerySessionInformation(hServer: HANDLE; SessionId: DWORD;
   WTSInfoClass: WTS_INFO_CLASS; var ppBuffer: Pointer; var pBytesReturned: DWORD): BOOL; stdcall;
 {$EXTERNALSYM WTSQuerySessionInformation}
-{$ELSE}
-function WTSQuerySessionInformation(hServer: HANDLE; SessionId: DWORD;
-  WTSInfoClass: WTS_INFO_CLASS; var ppBuffer: Pointer; var pBytesReturned: DWORD): BOOL; stdcall;
-{$EXTERNALSYM WTSQuerySessionInformation}
-{$ENDIF}
 
 //------------------------------------------------------------------------------
 
@@ -640,16 +610,9 @@ function WTSQueryUserConfigA(pServerName, pUserName: LPSTR; WTSConfigClass: WTS_
 function WTSQueryUserConfigW(pServerName, pUserName: LPWSTR; WTSConfigClass: WTS_CONFIG_CLASS;
   var ppBuffer: Pointer; var pBytesReturned: DWORD): BOOL; stdcall;
 {$EXTERNALSYM WTSQueryUserConfigW}
-
-{$IFDEF UNICODE}
-function WTSQueryUserConfig(pServerName, pUserName: LPWSTR; WTSConfigClass: WTS_CONFIG_CLASS;
+function WTSQueryUserConfig(pServerName, pUserName: LPTSTR; WTSConfigClass: WTS_CONFIG_CLASS;
   var ppBuffer: Pointer; var pBytesReturned: DWORD): BOOL; stdcall;
 {$EXTERNALSYM WTSQueryUserConfig}
-{$ELSE}
-function WTSQueryUserConfig(pServerName, pUserName: LPSTR; WTSConfigClass: WTS_CONFIG_CLASS;
-  var ppBuffer: Pointer; var pBytesReturned: DWORD): BOOL; stdcall;
-{$EXTERNALSYM WTSQueryUserConfig}
-{$ENDIF}
 
 //------------------------------------------------------------------------------
 
@@ -659,16 +622,9 @@ function WTSSetUserConfigA(pServerName, pUserName: LPSTR; WTSConfigClass: WTS_CO
 function WTSSetUserConfigW(pServerName, pUserName: LPWSTR; WTSConfigClass: WTS_CONFIG_CLASS;
   pBuffer: LPWSTR; DataLength: DWORD): BOOL; stdcall;
 {$EXTERNALSYM WTSSetUserConfigW}
-
-{$IFDEF UNICODE}
-function WTSSetUserConfig(pServerName, pUserName: LPWSTR; WTSConfigClass: WTS_CONFIG_CLASS;
-  pBuffer: LPWSTR; DataLength: DWORD): BOOL; stdcall;
+function WTSSetUserConfig(pServerName, pUserName: LPTSTR; WTSConfigClass: WTS_CONFIG_CLASS;
+  pBuffer: LPTSTR; DataLength: DWORD): BOOL; stdcall;
 {$EXTERNALSYM WTSSetUserConfig}
-{$ELSE}
-function WTSSetUserConfig(pServerName, pUserName: LPSTR; WTSConfigClass: WTS_CONFIG_CLASS;
-  pBuffer: LPSTR; DataLength: DWORD): BOOL; stdcall;
-{$EXTERNALSYM WTSSetUserConfig}
-{$ENDIF}
 
 //------------------------------------------------------------------------------
 
@@ -680,18 +636,10 @@ function WTSSendMessageW(hServer: HANDLE; SessionId: DWORD; pTitle: LPWSTR;
   TitleLength: DWORD; pMessage: LPWSTR; MessageLength: DWORD; Style: DWORD;
   Timeout: DWORD; var pResponse: DWORD; bWait: BOOL): BOOL; stdcall;
 {$EXTERNALSYM WTSSendMessageW}
-
-{$IFDEF UNICODE}
-function WTSSendMessage(hServer: HANDLE; SessionId: DWORD; pTitle: LPWSTR;
-  TitleLength: DWORD; pMessage: LPWSTR; MessageLength: DWORD; Style: DWORD;
+function WTSSendMessage(hServer: HANDLE; SessionId: DWORD; pTitle: LPTSTR;
+  TitleLength: DWORD; pMessage: LPTSTR; MessageLength: DWORD; Style: DWORD;
   Timeout: DWORD; var pResponse: DWORD; bWait: BOOL): BOOL; stdcall;
 {$EXTERNALSYM WTSSendMessage}
-{$ELSE}
-function WTSSendMessage(hServer: HANDLE; SessionId: DWORD; pTitle: LPSTR;
-  TitleLength: DWORD; pMessage: LPSTR; MessageLength: DWORD; Style: DWORD;
-  Timeout: DWORD; var pResponse: DWORD; bWait: BOOL): BOOL; stdcall;
-{$EXTERNALSYM WTSSendMessage}
-{$ENDIF}
 
 //------------------------------------------------------------------------------
 
@@ -765,11 +713,11 @@ function WTSQueryUserToken(SessionId: ULONG; var phToken: HANDLE): BOOL; stdcall
 
 implementation
 
-const
-  wtsapi = 'wtsapi32.dll';
-
+uses
+  JwaWinDLLNames;
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _WTSEnumerateServersA: Pointer;
 
@@ -777,16 +725,12 @@ function WTSEnumerateServersA;
 begin
   GetProcedureAddress(_WTSEnumerateServersA, wtsapi, 'WTSEnumerateServersA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSEnumerateServersA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSEnumerateServersA]
   end;
 end;
-{$ELSE}
-function WTSEnumerateServersA; external wtsapi name 'WTSEnumerateServersA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WTSEnumerateServersW: Pointer;
 
@@ -794,53 +738,25 @@ function WTSEnumerateServersW;
 begin
   GetProcedureAddress(_WTSEnumerateServersW, wtsapi, 'WTSEnumerateServersW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSEnumerateServersW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSEnumerateServersW]
   end;
 end;
-{$ELSE}
-function WTSEnumerateServersW; external wtsapi name 'WTSEnumerateServersW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WTSEnumerateServers: Pointer;
 
 function WTSEnumerateServers;
 begin
-  GetProcedureAddress(_WTSEnumerateServers, wtsapi, 'WTSEnumerateServersW');
+  GetProcedureAddress(_WTSEnumerateServers, wtsapi, 'WTSEnumerateServers' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSEnumerateServers]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSEnumerateServers]
   end;
 end;
-{$ELSE}
-function WTSEnumerateServers; external wtsapi name 'WTSEnumerateServersW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _WTSEnumerateServers: Pointer;
-
-function WTSEnumerateServers;
-begin
-  GetProcedureAddress(_WTSEnumerateServers, wtsapi, 'WTSEnumerateServersA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSEnumerateServers]
-  end;
-end;
-{$ELSE}
-function WTSEnumerateServers; external wtsapi name 'WTSEnumerateServersA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _WTSOpenServerA: Pointer;
 
@@ -848,16 +764,12 @@ function WTSOpenServerA;
 begin
   GetProcedureAddress(_WTSOpenServerA, wtsapi, 'WTSOpenServerA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSOpenServerA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSOpenServerA]
   end;
 end;
-{$ELSE}
-function WTSOpenServerA; external wtsapi name 'WTSOpenServerA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WTSOpenServerW: Pointer;
 
@@ -865,53 +777,25 @@ function WTSOpenServerW;
 begin
   GetProcedureAddress(_WTSOpenServerW, wtsapi, 'WTSOpenServerW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSOpenServerW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSOpenServerW]
   end;
 end;
-{$ELSE}
-function WTSOpenServerW; external wtsapi name 'WTSOpenServerW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WTSOpenServer: Pointer;
 
 function WTSOpenServer;
 begin
-  GetProcedureAddress(_WTSOpenServer, wtsapi, 'WTSOpenServerW');
+  GetProcedureAddress(_WTSOpenServer, wtsapi, 'WTSOpenServer' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSOpenServer]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSOpenServer]
   end;
 end;
-{$ELSE}
-function WTSOpenServer; external wtsapi name 'WTSOpenServerW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _WTSOpenServer: Pointer;
-
-function WTSOpenServer;
-begin
-  GetProcedureAddress(_WTSOpenServer, wtsapi, 'WTSOpenServerA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSOpenServer]
-  end;
-end;
-{$ELSE}
-function WTSOpenServer; external wtsapi name 'WTSOpenServerA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _WTSCloseServer: Pointer;
 
@@ -919,16 +803,12 @@ procedure WTSCloseServer;
 begin
   GetProcedureAddress(_WTSCloseServer, wtsapi, 'WTSCloseServer');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSCloseServer]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSCloseServer]
   end;
 end;
-{$ELSE}
-procedure WTSCloseServer; external wtsapi name 'WTSCloseServer';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WTSEnumerateSessionsA: Pointer;
 
@@ -936,16 +816,12 @@ function WTSEnumerateSessionsA;
 begin
   GetProcedureAddress(_WTSEnumerateSessionsA, wtsapi, 'WTSEnumerateSessionsA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSEnumerateSessionsA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSEnumerateSessionsA]
   end;
 end;
-{$ELSE}
-function WTSEnumerateSessionsA; external wtsapi name 'WTSEnumerateSessionsA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WTSEnumerateSessionsW: Pointer;
 
@@ -953,53 +829,25 @@ function WTSEnumerateSessionsW;
 begin
   GetProcedureAddress(_WTSEnumerateSessionsW, wtsapi, 'WTSEnumerateSessionsW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSEnumerateSessionsW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSEnumerateSessionsW]
   end;
 end;
-{$ELSE}
-function WTSEnumerateSessionsW; external wtsapi name 'WTSEnumerateSessionsW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WTSEnumerateSessions: Pointer;
 
 function WTSEnumerateSessions;
 begin
-  GetProcedureAddress(_WTSEnumerateSessions, wtsapi, 'WTSEnumerateSessionsW');
+  GetProcedureAddress(_WTSEnumerateSessions, wtsapi, 'WTSEnumerateSessions' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSEnumerateSessions]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSEnumerateSessions]
   end;
 end;
-{$ELSE}
-function WTSEnumerateSessions; external wtsapi name 'WTSEnumerateSessionsW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _WTSEnumerateSessions: Pointer;
-
-function WTSEnumerateSessions;
-begin
-  GetProcedureAddress(_WTSEnumerateSessions, wtsapi, 'WTSEnumerateSessionsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSEnumerateSessions]
-  end;
-end;
-{$ELSE}
-function WTSEnumerateSessions; external wtsapi name 'WTSEnumerateSessionsA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _WTSEnumerateProcessesA: Pointer;
 
@@ -1007,16 +855,12 @@ function WTSEnumerateProcessesA;
 begin
   GetProcedureAddress(_WTSEnumerateProcessesA, wtsapi, 'WTSEnumerateProcessesA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSEnumerateProcessesA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSEnumerateProcessesA]
   end;
 end;
-{$ELSE}
-function WTSEnumerateProcessesA; external wtsapi name 'WTSEnumerateProcessesA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WTSEnumerateProcessesW: Pointer;
 
@@ -1024,53 +868,25 @@ function WTSEnumerateProcessesW;
 begin
   GetProcedureAddress(_WTSEnumerateProcessesW, wtsapi, 'WTSEnumerateProcessesW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSEnumerateProcessesW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSEnumerateProcessesW]
   end;
 end;
-{$ELSE}
-function WTSEnumerateProcessesW; external wtsapi name 'WTSEnumerateProcessesW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WTSEnumerateProcesses: Pointer;
 
 function WTSEnumerateProcesses;
 begin
-  GetProcedureAddress(_WTSEnumerateProcesses, wtsapi, 'WTSEnumerateProcessesW');
+  GetProcedureAddress(_WTSEnumerateProcesses, wtsapi, 'WTSEnumerateProcesses' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSEnumerateProcesses]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSEnumerateProcesses]
   end;
 end;
-{$ELSE}
-function WTSEnumerateProcesses; external wtsapi name 'WTSEnumerateProcessesW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _WTSEnumerateProcesses: Pointer;
-
-function WTSEnumerateProcesses;
-begin
-  GetProcedureAddress(_WTSEnumerateProcesses, wtsapi, 'WTSEnumerateProcessesA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSEnumerateProcesses]
-  end;
-end;
-{$ELSE}
-function WTSEnumerateProcesses; external wtsapi name 'WTSEnumerateProcessesA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _WTSTerminateProcess: Pointer;
 
@@ -1078,16 +894,12 @@ function WTSTerminateProcess;
 begin
   GetProcedureAddress(_WTSTerminateProcess, wtsapi, 'WTSTerminateProcess');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSTerminateProcess]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSTerminateProcess]
   end;
 end;
-{$ELSE}
-function WTSTerminateProcess; external wtsapi name 'WTSTerminateProcess';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WTSQuerySessionInformationA: Pointer;
 
@@ -1095,16 +907,12 @@ function WTSQuerySessionInformationA;
 begin
   GetProcedureAddress(_WTSQuerySessionInformationA, wtsapi, 'WTSQuerySessionInformationA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSQuerySessionInformationA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSQuerySessionInformationA]
   end;
 end;
-{$ELSE}
-function WTSQuerySessionInformationA; external wtsapi name 'WTSQuerySessionInformationA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WTSQuerySessionInformationW: Pointer;
 
@@ -1112,53 +920,25 @@ function WTSQuerySessionInformationW;
 begin
   GetProcedureAddress(_WTSQuerySessionInformationW, wtsapi, 'WTSQuerySessionInformationW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSQuerySessionInformationW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSQuerySessionInformationW]
   end;
 end;
-{$ELSE}
-function WTSQuerySessionInformationW; external wtsapi name 'WTSQuerySessionInformationW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WTSQuerySessionInformation: Pointer;
 
 function WTSQuerySessionInformation;
 begin
-  GetProcedureAddress(_WTSQuerySessionInformation, wtsapi, 'WTSQuerySessionInformationW');
+  GetProcedureAddress(_WTSQuerySessionInformation, wtsapi, 'WTSQuerySessionInformation' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSQuerySessionInformation]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSQuerySessionInformation]
   end;
 end;
-{$ELSE}
-function WTSQuerySessionInformation; external wtsapi name 'WTSQuerySessionInformationW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _WTSQuerySessionInformation: Pointer;
-
-function WTSQuerySessionInformation;
-begin
-  GetProcedureAddress(_WTSQuerySessionInformation, wtsapi, 'WTSQuerySessionInformationA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSQuerySessionInformation]
-  end;
-end;
-{$ELSE}
-function WTSQuerySessionInformation; external wtsapi name 'WTSQuerySessionInformationA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _WTSQueryUserConfigA: Pointer;
 
@@ -1166,16 +946,12 @@ function WTSQueryUserConfigA;
 begin
   GetProcedureAddress(_WTSQueryUserConfigA, wtsapi, 'WTSQueryUserConfigA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSQueryUserConfigA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSQueryUserConfigA]
   end;
 end;
-{$ELSE}
-function WTSQueryUserConfigA; external wtsapi name 'WTSQueryUserConfigA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WTSQueryUserConfigW: Pointer;
 
@@ -1183,53 +959,25 @@ function WTSQueryUserConfigW;
 begin
   GetProcedureAddress(_WTSQueryUserConfigW, wtsapi, 'WTSQueryUserConfigW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSQueryUserConfigW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSQueryUserConfigW]
   end;
 end;
-{$ELSE}
-function WTSQueryUserConfigW; external wtsapi name 'WTSQueryUserConfigW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WTSQueryUserConfig: Pointer;
 
 function WTSQueryUserConfig;
 begin
-  GetProcedureAddress(_WTSQueryUserConfig, wtsapi, 'WTSQueryUserConfigW');
+  GetProcedureAddress(_WTSQueryUserConfig, wtsapi, 'WTSQueryUserConfig' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSQueryUserConfig]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSQueryUserConfig]
   end;
 end;
-{$ELSE}
-function WTSQueryUserConfig; external wtsapi name 'WTSQueryUserConfigW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _WTSQueryUserConfig: Pointer;
-
-function WTSQueryUserConfig;
-begin
-  GetProcedureAddress(_WTSQueryUserConfig, wtsapi, 'WTSQueryUserConfigA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSQueryUserConfig]
-  end;
-end;
-{$ELSE}
-function WTSQueryUserConfig; external wtsapi name 'WTSQueryUserConfigA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _WTSSetUserConfigA: Pointer;
 
@@ -1237,16 +985,12 @@ function WTSSetUserConfigA;
 begin
   GetProcedureAddress(_WTSSetUserConfigA, wtsapi, 'WTSSetUserConfigA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSSetUserConfigA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSSetUserConfigA]
   end;
 end;
-{$ELSE}
-function WTSSetUserConfigA; external wtsapi name 'WTSSetUserConfigA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WTSSetUserConfigW: Pointer;
 
@@ -1254,53 +998,25 @@ function WTSSetUserConfigW;
 begin
   GetProcedureAddress(_WTSSetUserConfigW, wtsapi, 'WTSSetUserConfigW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSSetUserConfigW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSSetUserConfigW]
   end;
 end;
-{$ELSE}
-function WTSSetUserConfigW; external wtsapi name 'WTSSetUserConfigW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WTSSetUserConfig: Pointer;
 
 function WTSSetUserConfig;
 begin
-  GetProcedureAddress(_WTSSetUserConfig, wtsapi, 'WTSSetUserConfigW');
+  GetProcedureAddress(_WTSSetUserConfig, wtsapi, 'WTSSetUserConfig' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSSetUserConfig]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSSetUserConfig]
   end;
 end;
-{$ELSE}
-function WTSSetUserConfig; external wtsapi name 'WTSSetUserConfigW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _WTSSetUserConfig: Pointer;
-
-function WTSSetUserConfig;
-begin
-  GetProcedureAddress(_WTSSetUserConfig, wtsapi, 'WTSSetUserConfigA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSSetUserConfig]
-  end;
-end;
-{$ELSE}
-function WTSSetUserConfig; external wtsapi name 'WTSSetUserConfigA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _WTSSendMessageA: Pointer;
 
@@ -1308,16 +1024,12 @@ function WTSSendMessageA;
 begin
   GetProcedureAddress(_WTSSendMessageA, wtsapi, 'WTSSendMessageA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSSendMessageA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSSendMessageA]
   end;
 end;
-{$ELSE}
-function WTSSendMessageA; external wtsapi name 'WTSSendMessageA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WTSSendMessageW: Pointer;
 
@@ -1325,53 +1037,25 @@ function WTSSendMessageW;
 begin
   GetProcedureAddress(_WTSSendMessageW, wtsapi, 'WTSSendMessageW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSSendMessageW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSSendMessageW]
   end;
 end;
-{$ELSE}
-function WTSSendMessageW; external wtsapi name 'WTSSendMessageW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WTSSendMessage: Pointer;
 
 function WTSSendMessage;
 begin
-  GetProcedureAddress(_WTSSendMessage, wtsapi, 'WTSSendMessageW');
+  GetProcedureAddress(_WTSSendMessage, wtsapi, 'WTSSendMessage' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSSendMessage]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSSendMessage]
   end;
 end;
-{$ELSE}
-function WTSSendMessage; external wtsapi name 'WTSSendMessageW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _WTSSendMessage: Pointer;
-
-function WTSSendMessage;
-begin
-  GetProcedureAddress(_WTSSendMessage, wtsapi, 'WTSSendMessageA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSSendMessage]
-  end;
-end;
-{$ELSE}
-function WTSSendMessage; external wtsapi name 'WTSSendMessageA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _WTSDisconnectSession: Pointer;
 
@@ -1379,16 +1063,12 @@ function WTSDisconnectSession;
 begin
   GetProcedureAddress(_WTSDisconnectSession, wtsapi, 'WTSDisconnectSession');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSDisconnectSession]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSDisconnectSession]
   end;
 end;
-{$ELSE}
-function WTSDisconnectSession; external wtsapi name 'WTSDisconnectSession';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WTSLogoffSession: Pointer;
 
@@ -1396,16 +1076,12 @@ function WTSLogoffSession;
 begin
   GetProcedureAddress(_WTSLogoffSession, wtsapi, 'WTSLogoffSession');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSLogoffSession]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSLogoffSession]
   end;
 end;
-{$ELSE}
-function WTSLogoffSession; external wtsapi name 'WTSLogoffSession';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WTSShutdownSystem: Pointer;
 
@@ -1413,16 +1089,12 @@ function WTSShutdownSystem;
 begin
   GetProcedureAddress(_WTSShutdownSystem, wtsapi, 'WTSShutdownSystem');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSShutdownSystem]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSShutdownSystem]
   end;
 end;
-{$ELSE}
-function WTSShutdownSystem; external wtsapi name 'WTSShutdownSystem';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WTSWaitSystemEvent: Pointer;
 
@@ -1430,16 +1102,12 @@ function WTSWaitSystemEvent;
 begin
   GetProcedureAddress(_WTSWaitSystemEvent, wtsapi, 'WTSWaitSystemEvent');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSWaitSystemEvent]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSWaitSystemEvent]
   end;
 end;
-{$ELSE}
-function WTSWaitSystemEvent; external wtsapi name 'WTSWaitSystemEvent';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WTSVirtualChannelOpen: Pointer;
 
@@ -1447,16 +1115,12 @@ function WTSVirtualChannelOpen;
 begin
   GetProcedureAddress(_WTSVirtualChannelOpen, wtsapi, 'WTSVirtualChannelOpen');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSVirtualChannelOpen]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSVirtualChannelOpen]
   end;
 end;
-{$ELSE}
-function WTSVirtualChannelOpen; external wtsapi name 'WTSVirtualChannelOpen';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WTSVirtualChannelClose: Pointer;
 
@@ -1464,16 +1128,12 @@ function WTSVirtualChannelClose;
 begin
   GetProcedureAddress(_WTSVirtualChannelClose, wtsapi, 'WTSVirtualChannelClose');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSVirtualChannelClose]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSVirtualChannelClose]
   end;
 end;
-{$ELSE}
-function WTSVirtualChannelClose; external wtsapi name 'WTSVirtualChannelClose';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WTSVirtualChannelRead: Pointer;
 
@@ -1481,16 +1141,12 @@ function WTSVirtualChannelRead;
 begin
   GetProcedureAddress(_WTSVirtualChannelRead, wtsapi, 'WTSVirtualChannelRead');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSVirtualChannelRead]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSVirtualChannelRead]
   end;
 end;
-{$ELSE}
-function WTSVirtualChannelRead; external wtsapi name 'WTSVirtualChannelRead';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WTSVirtualChannelWrite: Pointer;
 
@@ -1498,16 +1154,12 @@ function WTSVirtualChannelWrite;
 begin
   GetProcedureAddress(_WTSVirtualChannelWrite, wtsapi, 'WTSVirtualChannelWrite');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSVirtualChannelWrite]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSVirtualChannelWrite]
   end;
 end;
-{$ELSE}
-function WTSVirtualChannelWrite; external wtsapi name 'WTSVirtualChannelWrite';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WTSVirtualChannelPurgeInput: Pointer;
 
@@ -1515,16 +1167,12 @@ function WTSVirtualChannelPurgeInput;
 begin
   GetProcedureAddress(_WTSVirtualChannelPurgeInput, wtsapi, 'WTSVirtualChannelPurgeInput');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSVirtualChannelPurgeInput]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSVirtualChannelPurgeInput]
   end;
 end;
-{$ELSE}
-function WTSVirtualChannelPurgeInput; external wtsapi name 'WTSVirtualChannelPurgeInput';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WTSVirtualChannelPurgeOutput: Pointer;
 
@@ -1532,16 +1180,12 @@ function WTSVirtualChannelPurgeOutput;
 begin
   GetProcedureAddress(_WTSVirtualChannelPurgeOutput, wtsapi, 'WTSVirtualChannelPurgeOutput');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSVirtualChannelPurgeOutput]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSVirtualChannelPurgeOutput]
   end;
 end;
-{$ELSE}
-function WTSVirtualChannelPurgeOutput; external wtsapi name 'WTSVirtualChannelPurgeOutput';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WTSVirtualChannelQuery: Pointer;
 
@@ -1549,16 +1193,12 @@ function WTSVirtualChannelQuery;
 begin
   GetProcedureAddress(_WTSVirtualChannelQuery, wtsapi, 'WTSVirtualChannelQuery');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSVirtualChannelQuery]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSVirtualChannelQuery]
   end;
 end;
-{$ELSE}
-function WTSVirtualChannelQuery; external wtsapi name 'WTSVirtualChannelQuery';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WTSFreeMemory: Pointer;
 
@@ -1566,16 +1206,12 @@ procedure WTSFreeMemory;
 begin
   GetProcedureAddress(_WTSFreeMemory, wtsapi, 'WTSFreeMemory');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSFreeMemory]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSFreeMemory]
   end;
 end;
-{$ELSE}
-procedure WTSFreeMemory; external wtsapi name 'WTSFreeMemory';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WTSRegisterSessionNotification: Pointer;
 
@@ -1583,16 +1219,12 @@ function WTSRegisterSessionNotification;
 begin
   GetProcedureAddress(_WTSRegisterSessionNotification, wtsapi, 'WTSRegisterSessionNotification');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSRegisterSessionNotification]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSRegisterSessionNotification]
   end;
 end;
-{$ELSE}
-function WTSRegisterSessionNotification; external wtsapi name 'WTSRegisterSessionNotification';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WTSUnRegisterSessionNot: Pointer;
 
@@ -1600,16 +1232,12 @@ function WTSUnRegisterSessionNotification;
 begin
   GetProcedureAddress(_WTSUnRegisterSessionNot, wtsapi, 'WTSUnRegisterSessionNotification');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSUnRegisterSessionNot]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSUnRegisterSessionNot]
   end;
 end;
-{$ELSE}
-function WTSUnRegisterSessionNotification; external wtsapi name 'WTSUnRegisterSessionNotification';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _WTSQueryUserToken: Pointer;
 
@@ -1617,13 +1245,56 @@ function WTSQueryUserToken;
 begin
   GetProcedureAddress(_WTSQueryUserToken, wtsapi, 'WTSQueryUserToken');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WTSQueryUserToken]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WTSQueryUserToken]
   end;
 end;
+
 {$ELSE}
+
+function WTSEnumerateServersA; external wtsapi name 'WTSEnumerateServersA';
+function WTSEnumerateServersW; external wtsapi name 'WTSEnumerateServersW';
+function WTSEnumerateServers; external wtsapi name 'WTSEnumerateServers' + AWSuffix;
+function WTSOpenServerA; external wtsapi name 'WTSOpenServerA';
+function WTSOpenServerW; external wtsapi name 'WTSOpenServerW';
+function WTSOpenServer; external wtsapi name 'WTSOpenServer' + AWSuffix;
+procedure WTSCloseServer; external wtsapi name 'WTSCloseServer';
+function WTSEnumerateSessionsA; external wtsapi name 'WTSEnumerateSessionsA';
+function WTSEnumerateSessionsW; external wtsapi name 'WTSEnumerateSessionsW';
+function WTSEnumerateSessions; external wtsapi name 'WTSEnumerateSessions' + AWSuffix;
+function WTSEnumerateProcessesA; external wtsapi name 'WTSEnumerateProcessesA';
+function WTSEnumerateProcessesW; external wtsapi name 'WTSEnumerateProcessesW';
+function WTSEnumerateProcesses; external wtsapi name 'WTSEnumerateProcesses' + AWSuffix;
+function WTSTerminateProcess; external wtsapi name 'WTSTerminateProcess';
+function WTSQuerySessionInformationA; external wtsapi name 'WTSQuerySessionInformationA';
+function WTSQuerySessionInformationW; external wtsapi name 'WTSQuerySessionInformationW';
+function WTSQuerySessionInformation; external wtsapi name 'WTSQuerySessionInformation' + AWSuffix;
+function WTSQueryUserConfigA; external wtsapi name 'WTSQueryUserConfigA';
+function WTSQueryUserConfigW; external wtsapi name 'WTSQueryUserConfigW';
+function WTSQueryUserConfig; external wtsapi name 'WTSQueryUserConfig' + AWSuffix;
+function WTSSetUserConfigA; external wtsapi name 'WTSSetUserConfigA';
+function WTSSetUserConfigW; external wtsapi name 'WTSSetUserConfigW';
+function WTSSetUserConfig; external wtsapi name 'WTSSetUserConfig' + AWSuffix;
+function WTSSendMessageA; external wtsapi name 'WTSSendMessageA';
+function WTSSendMessageW; external wtsapi name 'WTSSendMessageW';
+function WTSSendMessage; external wtsapi name 'WTSSendMessage' + AWSuffix;
+function WTSDisconnectSession; external wtsapi name 'WTSDisconnectSession';
+function WTSLogoffSession; external wtsapi name 'WTSLogoffSession';
+function WTSShutdownSystem; external wtsapi name 'WTSShutdownSystem';
+function WTSWaitSystemEvent; external wtsapi name 'WTSWaitSystemEvent';
+function WTSVirtualChannelOpen; external wtsapi name 'WTSVirtualChannelOpen';
+function WTSVirtualChannelClose; external wtsapi name 'WTSVirtualChannelClose';
+function WTSVirtualChannelRead; external wtsapi name 'WTSVirtualChannelRead';
+function WTSVirtualChannelWrite; external wtsapi name 'WTSVirtualChannelWrite';
+function WTSVirtualChannelPurgeInput; external wtsapi name 'WTSVirtualChannelPurgeInput';
+function WTSVirtualChannelPurgeOutput; external wtsapi name 'WTSVirtualChannelPurgeOutput';
+function WTSVirtualChannelQuery; external wtsapi name 'WTSVirtualChannelQuery';
+procedure WTSFreeMemory; external wtsapi name 'WTSFreeMemory';
+function WTSRegisterSessionNotification; external wtsapi name 'WTSRegisterSessionNotification';
+function WTSUnRegisterSessionNotification; external wtsapi name 'WTSUnRegisterSessionNotification';
 function WTSQueryUserToken; external wtsapi name 'WTSQueryUserToken';
+
 {$ENDIF DYNAMIC_LINK}
 
 end.

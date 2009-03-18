@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Winsock2 Namespace API interface Unit for Object Pascal                      }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: nspapi.h, released June 2000. The original Pascal      }
 { code is: NspApi.pas, released December 2000. The initial developer of the    }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaNspApi.pas,v 1.10 2005/09/06 16:36:50 marquardt Exp $
 
 unit JwaNspAPI;
 
@@ -49,68 +50,68 @@ unit JwaNspAPI;
 {$HPPEMIT '#include "nspapi.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinType, JwaWinSock2;
+  JwaWindows, JwaWinSock2;
 
 //
 // Service categories
 //
 
 const
-  SERVICE_RESOURCE = ($00000001);
+  SERVICE_RESOURCE = $00000001;
   {$EXTERNALSYM SERVICE_RESOURCE}
-  SERVICE_SERVICE  = ($00000002);
+  SERVICE_SERVICE  = $00000002;
   {$EXTERNALSYM SERVICE_SERVICE}
-  SERVICE_LOCAL    = ($00000004);
+  SERVICE_LOCAL    = $00000004;
   {$EXTERNALSYM SERVICE_LOCAL}
 
 //
 // Operation used when calling SetService()
 //
 
-  SERVICE_REGISTER    = ($00000001);
+  SERVICE_REGISTER    = $00000001;
   {$EXTERNALSYM SERVICE_REGISTER}
-  SERVICE_DEREGISTER  = ($00000002);
+  SERVICE_DEREGISTER  = $00000002;
   {$EXTERNALSYM SERVICE_DEREGISTER}
-  SERVICE_FLUSH       = ($00000003);
+  SERVICE_FLUSH       = $00000003;
   {$EXTERNALSYM SERVICE_FLUSH}
-  SERVICE_ADD_TYPE    = ($00000004);
+  SERVICE_ADD_TYPE    = $00000004;
   {$EXTERNALSYM SERVICE_ADD_TYPE}
-  SERVICE_DELETE_TYPE = ($00000005);
+  SERVICE_DELETE_TYPE = $00000005;
   {$EXTERNALSYM SERVICE_DELETE_TYPE}
 
 //
 // Flags that affect the operations above
 //
 
-  SERVICE_FLAG_DEFER = ($00000001);
+  SERVICE_FLAG_DEFER = $00000001;
   {$EXTERNALSYM SERVICE_FLAG_DEFER}
-  SERVICE_FLAG_HARD  = ($00000002);
+  SERVICE_FLAG_HARD  = $00000002;
   {$EXTERNALSYM SERVICE_FLAG_HARD}
 
 //
 // Used as input to GetService() for setting the dwProps parameter
 //
 
-  PROP_COMMENT      = ($00000001);
+  PROP_COMMENT      = $00000001;
   {$EXTERNALSYM PROP_COMMENT}
-  PROP_LOCALE       = ($00000002);
+  PROP_LOCALE       = $00000002;
   {$EXTERNALSYM PROP_LOCALE}
-  PROP_DISPLAY_HINT = ($00000004);
+  PROP_DISPLAY_HINT = $00000004;
   {$EXTERNALSYM PROP_DISPLAY_HINT}
-  PROP_VERSION      = ($00000008);
+  PROP_VERSION      = $00000008;
   {$EXTERNALSYM PROP_VERSION}
-  PROP_START_TIME   = ($00000010);
+  PROP_START_TIME   = $00000010;
   {$EXTERNALSYM PROP_START_TIME}
-  PROP_MACHINE      = ($00000020);
+  PROP_MACHINE      = $00000020;
   {$EXTERNALSYM PROP_MACHINE}
-  PROP_ADDRESSES    = ($00000100);
+  PROP_ADDRESSES    = $00000100;
   {$EXTERNALSYM PROP_ADDRESSES}
-  PROP_SD           = ($00000200);
+  PROP_SD           = $00000200;
   {$EXTERNALSYM PROP_SD}
   PROP_ALL          = DWORD($80000000);
   {$EXTERNALSYM PROP_ALL}
@@ -119,111 +120,111 @@ const
 // Flags that describe attributes of Service Addresses
 //
 
-  SERVICE_ADDRESS_FLAG_RPC_CN = ($00000001);
+  SERVICE_ADDRESS_FLAG_RPC_CN = $00000001;
   {$EXTERNALSYM SERVICE_ADDRESS_FLAG_RPC_CN}
-  SERVICE_ADDRESS_FLAG_RPC_DG = ($00000002);
+  SERVICE_ADDRESS_FLAG_RPC_DG = $00000002;
   {$EXTERNALSYM SERVICE_ADDRESS_FLAG_RPC_DG}
-  SERVICE_ADDRESS_FLAG_RPC_NB = ($00000004);
+  SERVICE_ADDRESS_FLAG_RPC_NB = $00000004;
   {$EXTERNALSYM SERVICE_ADDRESS_FLAG_RPC_NB}
 
 //
 // Name Spaces
 //
 
-  NS_DEFAULT = (0);
+  NS_DEFAULT = 0;
   {$EXTERNALSYM NS_DEFAULT}
 
-  NS_SAP         = (1);
+  NS_SAP         = 1;
   {$EXTERNALSYM NS_SAP}
-  NS_NDS         = (2);
+  NS_NDS         = 2;
   {$EXTERNALSYM NS_NDS}
-  NS_PEER_BROWSE = (3);
+  NS_PEER_BROWSE = 3;
   {$EXTERNALSYM NS_PEER_BROWSE}
 
-  NS_TCPIP_LOCAL = (10);
+  NS_TCPIP_LOCAL = 10;
   {$EXTERNALSYM NS_TCPIP_LOCAL}
-  NS_TCPIP_HOSTS = (11);
+  NS_TCPIP_HOSTS = 11;
   {$EXTERNALSYM NS_TCPIP_HOSTS}
-  NS_DNS         = (12);
+  NS_DNS         = 12;
   {$EXTERNALSYM NS_DNS}
-  NS_NETBT       = (13);
+  NS_NETBT       = 13;
   {$EXTERNALSYM NS_NETBT}
-  NS_WINS        = (14);
+  NS_WINS        = 14;
   {$EXTERNALSYM NS_WINS}
 
-  NS_NBP = (20);
+  NS_NBP = 20;
   {$EXTERNALSYM NS_NBP}
 
-  NS_MS   = (30);
+  NS_MS   = 30;
   {$EXTERNALSYM NS_MS}
-  NS_STDA = (31);
+  NS_STDA = 31;
   {$EXTERNALSYM NS_STDA}
-  NS_NTDS = (32);
+  NS_NTDS = 32;
   {$EXTERNALSYM NS_NTDS}
 
-  NS_X500 = (40);
+  NS_X500 = 40;
   {$EXTERNALSYM NS_X500}
-  NS_NIS  = (41);
+  NS_NIS  = 41;
   {$EXTERNALSYM NS_NIS}
 
-  NS_VNS = (50);
+  NS_VNS = 50;
   {$EXTERNALSYM NS_VNS}
 
 //
 // Name space attributes.
 //
 
-  NSTYPE_HIERARCHICAL = ($00000001);
+  NSTYPE_HIERARCHICAL = $00000001;
   {$EXTERNALSYM NSTYPE_HIERARCHICAL}
-  NSTYPE_DYNAMIC      = ($00000002);
+  NSTYPE_DYNAMIC      = $00000002;
   {$EXTERNALSYM NSTYPE_DYNAMIC}
-  NSTYPE_ENUMERABLE   = ($00000004);
+  NSTYPE_ENUMERABLE   = $00000004;
   {$EXTERNALSYM NSTYPE_ENUMERABLE}
-  NSTYPE_WORKGROUP    = ($00000008);
+  NSTYPE_WORKGROUP    = $00000008;
   {$EXTERNALSYM NSTYPE_WORKGROUP}
 
 //
 // Transport attributes.
 //
 
-  XP_CONNECTIONLESS       = ($00000001);
+  XP_CONNECTIONLESS       = $00000001;
   {$EXTERNALSYM XP_CONNECTIONLESS}
-  XP_GUARANTEED_DELIVERY  = ($00000002);
+  XP_GUARANTEED_DELIVERY  = $00000002;
   {$EXTERNALSYM XP_GUARANTEED_DELIVERY}
-  XP_GUARANTEED_ORDER     = ($00000004);
+  XP_GUARANTEED_ORDER     = $00000004;
   {$EXTERNALSYM XP_GUARANTEED_ORDER}
-  XP_MESSAGE_ORIENTED     = ($00000008);
+  XP_MESSAGE_ORIENTED     = $00000008;
   {$EXTERNALSYM XP_MESSAGE_ORIENTED}
-  XP_PSEUDO_STREAM        = ($00000010);
+  XP_PSEUDO_STREAM        = $00000010;
   {$EXTERNALSYM XP_PSEUDO_STREAM}
-  XP_GRACEFUL_CLOSE       = ($00000020);
+  XP_GRACEFUL_CLOSE       = $00000020;
   {$EXTERNALSYM XP_GRACEFUL_CLOSE}
-  XP_EXPEDITED_DATA       = ($00000040);
+  XP_EXPEDITED_DATA       = $00000040;
   {$EXTERNALSYM XP_EXPEDITED_DATA}
-  XP_CONNECT_DATA         = ($00000080);
+  XP_CONNECT_DATA         = $00000080;
   {$EXTERNALSYM XP_CONNECT_DATA}
-  XP_DISCONNECT_DATA      = ($00000100);
+  XP_DISCONNECT_DATA      = $00000100;
   {$EXTERNALSYM XP_DISCONNECT_DATA}
-  XP_SUPPORTS_BROADCAST   = ($00000200);
+  XP_SUPPORTS_BROADCAST   = $00000200;
   {$EXTERNALSYM XP_SUPPORTS_BROADCAST}
-  XP_SUPPORTS_MULTICAST   = ($00000400);
+  XP_SUPPORTS_MULTICAST   = $00000400;
   {$EXTERNALSYM XP_SUPPORTS_MULTICAST}
-  XP_BANDWIDTH_ALLOCATION = ($00000800);
+  XP_BANDWIDTH_ALLOCATION = $00000800;
   {$EXTERNALSYM XP_BANDWIDTH_ALLOCATION}
-  XP_FRAGMENTATION        = ($00001000);
+  XP_FRAGMENTATION        = $00001000;
   {$EXTERNALSYM XP_FRAGMENTATION}
-  XP_ENCRYPTS             = ($00002000);
+  XP_ENCRYPTS             = $00002000;
   {$EXTERNALSYM XP_ENCRYPTS}
 
 //
 // Resolution flags for GetAddressByName().
 //
 
-  RES_SOFT_SEARCH   = ($00000001);
+  RES_SOFT_SEARCH   = $00000001;
   {$EXTERNALSYM RES_SOFT_SEARCH}
-  RES_FIND_MULTIPLE = ($00000002);
+  RES_FIND_MULTIPLE = $00000002;
   {$EXTERNALSYM RES_FIND_MULTIPLE}
-  RES_SERVICE       = ($00000004);
+  RES_SERVICE       = $00000004;
   {$EXTERNALSYM RES_SERVICE}
 
 //
@@ -250,8 +251,7 @@ const
   SERVICE_TYPE_VALUE_UDPPORTW = WideString('UdpPort');
   {$EXTERNALSYM SERVICE_TYPE_VALUE_UDPPORTW}
 
-{$IFDEF UNICODE}
-
+  {$IFDEF UNICODE}
   SERVICE_TYPE_VALUE_SAPID   = SERVICE_TYPE_VALUE_SAPIDW;
   {$EXTERNALSYM SERVICE_TYPE_VALUE_SAPID}
   SERVICE_TYPE_VALUE_CONN    = SERVICE_TYPE_VALUE_CONNW;
@@ -260,9 +260,7 @@ const
   {$EXTERNALSYM SERVICE_TYPE_VALUE_TCPPORT}
   SERVICE_TYPE_VALUE_UDPPORT = SERVICE_TYPE_VALUE_UDPPORTW;
   {$EXTERNALSYM SERVICE_TYPE_VALUE_UDPPORT}
-
-{$ELSE}
-
+  {$ELSE}
   SERVICE_TYPE_VALUE_SAPID   = SERVICE_TYPE_VALUE_SAPIDA;
   {$EXTERNALSYM SERVICE_TYPE_VALUE_SAPID}
   SERVICE_TYPE_VALUE_CONN    = SERVICE_TYPE_VALUE_CONNA;
@@ -271,15 +269,13 @@ const
   {$EXTERNALSYM SERVICE_TYPE_VALUE_TCPPORT}
   SERVICE_TYPE_VALUE_UDPPORT = SERVICE_TYPE_VALUE_UDPPORTA;
   {$EXTERNALSYM SERVICE_TYPE_VALUE_UDPPORT}
-
-{$ENDIF}
-
+  {$ENDIF UNICODE}
 
 //
 // status flags returned by SetService
 //
 
-  SET_SERVICE_PARTIAL_SUCCESS = ($00000001);
+  SET_SERVICE_PARTIAL_SUCCESS = $00000001;
   {$EXTERNALSYM SET_SERVICE_PARTIAL_SUCCESS}
 
 //
@@ -321,7 +317,7 @@ type
   TNsInfoW = NS_INFOW;
   PNsInfoW = LPNS_INFOW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   NS_INFO = NS_INFOW;
   {$EXTERNALSYM NS_INFO}
   PNS_INFO = PNS_INFOW;
@@ -330,7 +326,7 @@ type
   {$EXTERNALSYM LPNS_INFO}
   TNsInfo = TNsInfoW;
   PNsInfo = PNsInfoW;
-{$ELSE}
+  {$ELSE}
   NS_INFO = NS_INFOA;
   {$EXTERNALSYM NS_INFO}
   PNS_INFO = PNS_INFOA;
@@ -339,7 +335,7 @@ type
   {$EXTERNALSYM LPNS_INFO}
   TNsInfo = TNsInfoA;
   PNsInfo = PNsInfoA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 // Service Type Values. The structures are used to define named Service
@@ -405,7 +401,7 @@ type
   TServiceTypeValueAbsW = SERVICE_TYPE_VALUE_ABSW;
   PServiceTypeValueAbsW = LPSERVICE_TYPE_VALUE_ABSW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   SERVICE_TYPE_VALUE_ABS = SERVICE_TYPE_VALUE_ABSW;
   {$EXTERNALSYM SERVICE_TYPE_VALUE_ABS}
   PSERVICE_TYPE_VALUE_ABS = PSERVICE_TYPE_VALUE_ABSW;
@@ -414,7 +410,7 @@ type
   {$EXTERNALSYM LPSERVICE_TYPE_VALUE_ABS}
   TServiceTypeValueAbs = TServiceTypeValueAbsW;
   PServiceTypeValueAbs = PServiceTypeValueAbsW;
-{$ELSE}
+  {$ELSE}
   SERVICE_TYPE_VALUE_ABS = SERVICE_TYPE_VALUE_ABSA;
   {$EXTERNALSYM SERVICE_TYPE_VALUE_ABS}
   PSERVICE_TYPE_VALUE_ABS = PSERVICE_TYPE_VALUE_ABSA;
@@ -423,7 +419,7 @@ type
   {$EXTERNALSYM LPSERVICE_TYPE_VALUE_ABS}
   TServiceTypeValueAbs = TServiceTypeValueAbsA;
   PServiceTypeValueAbs = PServiceTypeValueAbsA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 // Service Type Information. Contains the name of the Service Type and
@@ -476,7 +472,7 @@ type
   TServiceTypeInfoAbsW = SERVICE_TYPE_INFO_ABSW;
   PServiceTypeInfoAbsW = LPSERVICE_TYPE_INFO_ABSW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   SERVICE_TYPE_INFO_ABS = SERVICE_TYPE_INFO_ABSW;
   {$EXTERNALSYM SERVICE_TYPE_INFO_ABS}
   PSERVICE_TYPE_INFO_ABS = PSERVICE_TYPE_INFO_ABSW;
@@ -485,7 +481,7 @@ type
   {$EXTERNALSYM LPSERVICE_TYPE_INFO_ABS}
   TServiceTypeInfoAbs = TServiceTypeInfoAbsW;
   PServiceTypeInfoAbs = PServiceTypeInfoAbsW;
-{$ELSE}
+  {$ELSE}
   SERVICE_TYPE_INFO_ABS = SERVICE_TYPE_INFO_ABSA;
   {$EXTERNALSYM SERVICE_TYPE_INFO_ABS}
   PSERVICE_TYPE_INFO_ABS = PSERVICE_TYPE_INFO_ABSA;
@@ -494,7 +490,7 @@ type
   {$EXTERNALSYM LPSERVICE_TYPE_INFO_ABS}
   TServiceTypeInfoAbs = TServiceTypeInfoAbsA;
   PServiceTypeInfoAbs = PServiceTypeInfoAbsA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 // A Single Address definition.
@@ -588,7 +584,7 @@ type
   TServiceInfoW = SERVICE_INFOW;
   PServiceInfoW = PSERVICE_INFOW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   SERVICE_INFO = SERVICE_INFOW;
   {$EXTERNALSYM SERVICE_INFO}
   PSERVICE_INFO = PSERVICE_INFOW;
@@ -597,7 +593,7 @@ type
   {$EXTERNALSYM LPSERVICE_INFO}
   TServiceInfo = TServiceInfoW;
   PServiceInfo = PServiceInfoW;
-{$ELSE}
+  {$ELSE}
   SERVICE_INFO = SERVICE_INFOA;
   {$EXTERNALSYM SERVICE_INFO}
   PSERVICE_INFO = PSERVICE_INFOA;
@@ -606,7 +602,7 @@ type
   {$EXTERNALSYM LPSERVICE_INFO}
   TServiceInfo = TServiceInfoA;
   PServiceInfo = PServiceInfoA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 // Name Space & Service Information
@@ -644,7 +640,7 @@ type
   TNsServiceInfoW = NS_SERVICE_INFOW;
   PNsServiceInfoW = LPNS_SERVICE_INFOW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   NS_SERVICE_INFO = NS_SERVICE_INFOW;
   {$EXTERNALSYM NS_SERVICE_INFO}
   PNS_SERVICE_INFO = PNS_SERVICE_INFOW;
@@ -653,7 +649,7 @@ type
   {$EXTERNALSYM LPNS_SERVICE_INFO}
   TNsServiceInfo = TNsServiceInfoW;
   PNsServiceInfo = PNsServiceInfoW;
-{$ELSE}
+  {$ELSE}
   NS_SERVICE_INFO = NS_SERVICE_INFOA;
   {$EXTERNALSYM NS_SERVICE_INFO}
   PNS_SERVICE_INFO = PNS_SERVICE_INFOA;
@@ -662,7 +658,7 @@ type
   {$EXTERNALSYM LPNS_SERVICE_INFO}
   TNsServiceInfo = TNsServiceInfoA;
   PNsServiceInfo = PNsServiceInfoA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 // SockAddr Information
@@ -750,7 +746,7 @@ type
   TProtocolInfoW = PROTOCOL_INFOW;
   PProtocolInfoW = LPPROTOCOL_INFOW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   PROTOCOL_INFO = PROTOCOL_INFOW;
   {$EXTERNALSYM PROTOCOL_INFO}
   PPROTOCOL_INFO = PPROTOCOL_INFOW;
@@ -759,7 +755,7 @@ type
   {$EXTERNALSYM LPPROTOCOL_INFO}
   TProtocolInfo = TProtocolInfoW;
   PProtocolInfo = PProtocolInfoW;
-{$ELSE}
+  {$ELSE}
   PROTOCOL_INFO = PROTOCOL_INFOA;
   {$EXTERNALSYM PROTOCOL_INFO}
   PPROTOCOL_INFO = PPROTOCOL_INFOA;
@@ -768,7 +764,7 @@ type
   {$EXTERNALSYM LPPROTOCOL_INFO}
   TProtocolInfo = TProtocolInfoA;
   PProtocolInfo = PProtocolInfoA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 // NETRESOURCE2 Structure
@@ -822,7 +818,7 @@ type
   {$EXTERNALSYM NETRESOURCE2W}
   TNetResource2W = NETRESOURCE2W;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   NETRESOURCE2 = NETRESOURCE2W;
   {$EXTERNALSYM NETRESOURCE2}
   PNETRESOURCE2 = PNETRESOURCE2W;
@@ -830,7 +826,7 @@ type
   LPNETRESOURCE2 = LPNETRESOURCE2W;
   {$EXTERNALSYM LPNETRESOURCE2}
   TNetResource2 = TNetResource2W;
-{$ELSE}
+  {$ELSE}
   NETRESOURCE2 = NETRESOURCE2A;
   {$EXTERNALSYM NETRESOURCE2}
   PNETRESOURCE2 = PNETRESOURCE2A;
@@ -838,18 +834,18 @@ type
   LPNETRESOURCE2 = LPNETRESOURCE2A;
   {$EXTERNALSYM LPNETRESOURCE2}
   TNetResource2 = TNetResource2A;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   LPFN_NSPAPI = function: DWORD; stdcall;
   {$EXTERNALSYM LPFN_NSPAPI}
-  TFnNspApi = LPFN_NSPAPI; 
+  TFnNspApi = LPFN_NSPAPI;
 
 //
 // Structures for using the service routines asynchronously.
 //
 
 type
-  LPSERVICE_CALLBACK_PROC = procedure (lParam: LPARAM; hAsyncTaskHandle: HANDLE); stdcall;
+  LPSERVICE_CALLBACK_PROC = procedure(lParam: LPARAM; hAsyncTaskHandle: HANDLE); stdcall;
   {$EXTERNALSYM LPSERVICE_CALLBACK_PROC}
   TServiceCallbackProc = LPSERVICE_CALLBACK_PROC;
 
@@ -877,14 +873,8 @@ function EnumProtocolsA(lpiProtocols: PINT; lpProtocolBuffer: LPVOID; lpdwBuffer
 {$EXTERNALSYM EnumProtocolsA}
 function EnumProtocolsW(lpiProtocols: PINT; lpProtocolBuffer: LPVOID; lpdwBufferLength: LPDWORD): Integer; stdcall;
 {$EXTERNALSYM EnumProtocolsW}
-
-{$IFDEF UNICODE}
 function EnumProtocols(lpiProtocols: PINT; lpProtocolBuffer: LPVOID; lpdwBufferLength: LPDWORD): Integer; stdcall;
 {$EXTERNALSYM EnumProtocols}
-{$ELSE}
-function EnumProtocols(lpiProtocols: PINT; lpProtocolBuffer: LPVOID; lpdwBufferLength: LPDWORD): Integer; stdcall;
-{$EXTERNALSYM EnumProtocols}
-{$ENDIF}
 
 function GetAddressByNameA(dwNameSpace: DWORD; const lpServiceType: TGUID;
   lpServiceName: LPSTR; lpiProtocols: PINT; dwResolution: DWORD;
@@ -896,46 +886,25 @@ function GetAddressByNameW(dwNameSpace: DWORD; const lpServiceType: TGUID;
   lpServiceAsyncInfo: LPSERVICE_ASYNC_INFO; lpCsaddrBuffer: LPVOID;
   var lpdwBufferLength: DWORD; lpAliasBuffer: LPWSTR; lpdwAliasBufferLength: LPDWORD): Integer; stdcall;
 {$EXTERNALSYM GetAddressByNameW}
-
-{$IFDEF UNICODE}
 function GetAddressByName(dwNameSpace: DWORD; const lpServiceType: TGUID;
-  lpServiceName: LPWSTR; lpiProtocols: PINT; dwResolution: DWORD;
+  lpServiceName: LPTSTR; lpiProtocols: PINT; dwResolution: DWORD;
   lpServiceAsyncInfo: LPSERVICE_ASYNC_INFO; lpCsaddrBuffer: LPVOID;
-  var lpdwBufferLength: DWORD; lpAliasBuffer: LPWSTR; lpdwAliasBufferLength: LPDWORD): Integer; stdcall;
+  var lpdwBufferLength: DWORD; lpAliasBuffer: LPTSTR; lpdwAliasBufferLength: LPDWORD): Integer; stdcall;
 {$EXTERNALSYM GetAddressByName}
-{$ELSE}
-function GetAddressByName(dwNameSpace: DWORD; const lpServiceType: TGUID;
-  lpServiceName: LPSTR; lpiProtocols: PINT; dwResolution: DWORD;
-  lpServiceAsyncInfo: LPSERVICE_ASYNC_INFO; lpCsaddrBuffer: LPVOID;
-  var lpdwBufferLength: DWORD; lpAliasBuffer: LPSTR; lpdwAliasBufferLength: LPDWORD): Integer; stdcall;
-{$EXTERNALSYM GetAddressByName}
-{$ENDIF}
 
 function GetTypeByNameA(lpServiceName: LPSTR; var lpServiceType: TGUID): Integer; stdcall;
 {$EXTERNALSYM GetTypeByNameA}
 function GetTypeByNameW(lpServiceName: LPWSTR; var lpServiceType: TGUID): Integer; stdcall;
 {$EXTERNALSYM GetTypeByNameW}
-
-{$IFDEF UNICODE}
-function GetTypeByName(lpServiceName: LPWSTR; var lpServiceType: TGUID): Integer; stdcall;
+function GetTypeByName(lpServiceName: LPTSTR; var lpServiceType: TGUID): Integer; stdcall;
 {$EXTERNALSYM GetTypeByName}
-{$ELSE}
-function GetTypeByName(lpServiceName: LPSTR; var lpServiceType: TGUID): Integer; stdcall;
-{$EXTERNALSYM GetTypeByName}
-{$ENDIF}
 
 function GetNameByTypeA(const lpServiceType: TGUID; lpServiceName: LPSTR; dwNameLength: DWORD): Integer; stdcall;
 {$EXTERNALSYM GetNameByTypeA}
 function GetNameByTypeW(const lpServiceType: TGUID; lpServiceName: LPWSTR; dwNameLength: DWORD): Integer; stdcall;
 {$EXTERNALSYM GetNameByTypeW}
-
-{$IFDEF UNICODE}
-function GetNameByType(const lpServiceType: TGUID; lpServiceName: LPWSTR; dwNameLength: DWORD): Integer; stdcall;
+function GetNameByType(const lpServiceType: TGUID; lpServiceName: LPTSTR; dwNameLength: DWORD): Integer; stdcall;
 {$EXTERNALSYM GetNameByType}
-{$ELSE}
-function GetNameByType(const lpServiceType: TGUID; lpServiceName: LPSTR; dwNameLength: DWORD): Integer; stdcall;
-{$EXTERNALSYM GetNameByType}
-{$ENDIF}
 
 function SetServiceA(dwNameSpace, dwOperation, dwFlags: DWORD;
   const lpServiceInfo: SERVICE_INFOA; lpServiceAsyncInfo: LPSERVICE_ASYNC_INFO;
@@ -945,18 +914,10 @@ function SetServiceW(dwNameSpace, dwOperation, dwFlags: DWORD;
   const lpServiceInfo: SERVICE_INFOW; lpServiceAsyncInfo: LPSERVICE_ASYNC_INFO;
   var lpdwStatusFlags: DWORD): Integer; stdcall;
 {$EXTERNALSYM SetServiceW}
-
-{$IFDEF UNICODE}
 function SetService(dwNameSpace, dwOperation, dwFlags: DWORD;
-  const lpServiceInfo: SERVICE_INFOW; lpServiceAsyncInfo: LPSERVICE_ASYNC_INFO;
+  const lpServiceInfo: SERVICE_INFO; lpServiceAsyncInfo: LPSERVICE_ASYNC_INFO;
   var lpdwStatusFlags: DWORD): Integer; stdcall;
 {$EXTERNALSYM SetService}
-{$ELSE}
-function SetService(dwNameSpace, dwOperation, dwFlags: DWORD;
-  const lpServiceInfo: SERVICE_INFOA; lpServiceAsyncInfo: LPSERVICE_ASYNC_INFO;
-  var lpdwStatusFlags: DWORD): Integer; stdcall;
-{$EXTERNALSYM SetService}
-{$ENDIF}
 
 function GetServiceA(dwNameSpace: DWORD; const lpGuid: TGUID; lpServiceName: LPSTR;
   dwProperties: DWORD; lpBuffer: LPVOID; var lpdwBufferSize: DWORD;
@@ -966,26 +927,18 @@ function GetServiceW(dwNameSpace: DWORD; const lpGuid: TGUID; lpServiceName: LPW
   dwProperties: DWORD; lpBuffer: LPVOID; var lpdwBufferSize: DWORD;
   lpServiceAsyncInfo: LPSERVICE_ASYNC_INFO): Integer; stdcall;
 {$EXTERNALSYM GetServiceW}
-
-{$IFDEF UNICODE}
-function GetService(dwNameSpace: DWORD; const lpGuid: TGUID; lpServiceName: LPWSTR;
+function GetService(dwNameSpace: DWORD; const lpGuid: TGUID; lpServiceName: LPTSTR;
   dwProperties: DWORD; lpBuffer: LPVOID; var lpdwBufferSize: DWORD;
   lpServiceAsyncInfo: LPSERVICE_ASYNC_INFO): Integer; stdcall;
 {$EXTERNALSYM GetService}
-{$ELSE}
-function GetService(dwNameSpace: DWORD; const lpGuid: TGUID; lpServiceName: LPSTR;
-  dwProperties: DWORD; lpBuffer: LPVOID; var lpdwBufferSize: DWORD;
-  lpServiceAsyncInfo: LPSERVICE_ASYNC_INFO): Integer; stdcall;
-{$EXTERNALSYM GetService}
-{$ENDIF}
 
 implementation
 
-const
-  nsplib = 'wsock32.dll';
-
+uses
+  JwaWinDLLNames;
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _EnumProtocolsA: Pointer;
 
@@ -993,16 +946,12 @@ function EnumProtocolsA;
 begin
   GetProcedureAddress(_EnumProtocolsA, nsplib, 'EnumProtocolsA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumProtocolsA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumProtocolsA]
   end;
 end;
-{$ELSE}
-function EnumProtocolsA; external nsplib name 'EnumProtocolsA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumProtocolsW: Pointer;
 
@@ -1010,53 +959,25 @@ function EnumProtocolsW;
 begin
   GetProcedureAddress(_EnumProtocolsW, nsplib, 'EnumProtocolsW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumProtocolsW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumProtocolsW]
   end;
 end;
-{$ELSE}
-function EnumProtocolsW; external nsplib name 'EnumProtocolsW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumProtocols: Pointer;
 
 function EnumProtocols;
 begin
-  GetProcedureAddress(_EnumProtocols, nsplib, 'EnumProtocolsW');
+  GetProcedureAddress(_EnumProtocols, nsplib, 'EnumProtocols' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumProtocols]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumProtocols]
   end;
 end;
-{$ELSE}
-function EnumProtocols; external nsplib name 'EnumProtocolsW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumProtocols: Pointer;
-
-function EnumProtocols;
-begin
-  GetProcedureAddress(_EnumProtocols, nsplib, 'EnumProtocolsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumProtocols]
-  end;
-end;
-{$ELSE}
-function EnumProtocols; external nsplib name 'EnumProtocolsA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetAddressByNameA: Pointer;
 
@@ -1064,16 +985,12 @@ function GetAddressByNameA;
 begin
   GetProcedureAddress(_GetAddressByNameA, nsplib, 'GetAddressByNameA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetAddressByNameA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetAddressByNameA]
   end;
 end;
-{$ELSE}
-function GetAddressByNameA; external nsplib name 'GetAddressByNameA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetAddressByNameW: Pointer;
 
@@ -1081,53 +998,25 @@ function GetAddressByNameW;
 begin
   GetProcedureAddress(_GetAddressByNameW, nsplib, 'GetAddressByNameW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetAddressByNameW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetAddressByNameW]
   end;
 end;
-{$ELSE}
-function GetAddressByNameW; external nsplib name 'GetAddressByNameW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetAddressByName: Pointer;
 
 function GetAddressByName;
 begin
-  GetProcedureAddress(_GetAddressByName, nsplib, 'GetAddressByNameW');
+  GetProcedureAddress(_GetAddressByName, nsplib, 'GetAddressByName' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetAddressByName]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetAddressByName]
   end;
 end;
-{$ELSE}
-function GetAddressByName; external nsplib name 'GetAddressByNameW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetAddressByName: Pointer;
-
-function GetAddressByName;
-begin
-  GetProcedureAddress(_GetAddressByName, nsplib, 'GetAddressByNameA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetAddressByName]
-  end;
-end;
-{$ELSE}
-function GetAddressByName; external nsplib name 'GetAddressByNameA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetTypeByNameA: Pointer;
 
@@ -1135,16 +1024,12 @@ function GetTypeByNameA;
 begin
   GetProcedureAddress(_GetTypeByNameA, nsplib, 'GetTypeByNameA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTypeByNameA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetTypeByNameA]
   end;
 end;
-{$ELSE}
-function GetTypeByNameA; external nsplib name 'GetTypeByNameA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetTypeByNameW: Pointer;
 
@@ -1152,53 +1037,25 @@ function GetTypeByNameW;
 begin
   GetProcedureAddress(_GetTypeByNameW, nsplib, 'GetTypeByNameW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTypeByNameW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetTypeByNameW]
   end;
 end;
-{$ELSE}
-function GetTypeByNameW; external nsplib name 'GetTypeByNameW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetTypeByName: Pointer;
 
 function GetTypeByName;
 begin
-  GetProcedureAddress(_GetTypeByName, nsplib, 'GetTypeByNameW');
+  GetProcedureAddress(_GetTypeByName, nsplib, 'GetTypeByName' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTypeByName]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetTypeByName]
   end;
 end;
-{$ELSE}
-function GetTypeByName; external nsplib name 'GetTypeByNameW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetTypeByName: Pointer;
-
-function GetTypeByName;
-begin
-  GetProcedureAddress(_GetTypeByName, nsplib, 'GetTypeByNameA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTypeByName]
-  end;
-end;
-{$ELSE}
-function GetTypeByName; external nsplib name 'GetTypeByNameA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetNameByTypeA: Pointer;
 
@@ -1206,16 +1063,12 @@ function GetNameByTypeA;
 begin
   GetProcedureAddress(_GetNameByTypeA, nsplib, 'GetNameByTypeA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetNameByTypeA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetNameByTypeA]
   end;
 end;
-{$ELSE}
-function GetNameByTypeA; external nsplib name 'GetNameByTypeA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetNameByTypeW: Pointer;
 
@@ -1223,53 +1076,25 @@ function GetNameByTypeW;
 begin
   GetProcedureAddress(_GetNameByTypeW, nsplib, 'GetNameByTypeW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetNameByTypeW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetNameByTypeW]
   end;
 end;
-{$ELSE}
-function GetNameByTypeW; external nsplib name 'GetNameByTypeW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetNameByType: Pointer;
 
 function GetNameByType;
 begin
-  GetProcedureAddress(_GetNameByType, nsplib, 'GetNameByTypeW');
+  GetProcedureAddress(_GetNameByType, nsplib, 'GetNameByType' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetNameByType]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetNameByType]
   end;
 end;
-{$ELSE}
-function GetNameByType; external nsplib name 'GetNameByTypeW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetNameByType: Pointer;
-
-function GetNameByType;
-begin
-  GetProcedureAddress(_GetNameByType, nsplib, 'GetNameByTypeA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetNameByType]
-  end;
-end;
-{$ELSE}
-function GetNameByType; external nsplib name 'GetNameByTypeA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _SetServiceA: Pointer;
 
@@ -1277,16 +1102,12 @@ function SetServiceA;
 begin
   GetProcedureAddress(_SetServiceA, nsplib, 'SetServiceA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetServiceA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetServiceA]
   end;
 end;
-{$ELSE}
-function SetServiceA; external nsplib name 'SetServiceA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetServiceW: Pointer;
 
@@ -1294,53 +1115,25 @@ function SetServiceW;
 begin
   GetProcedureAddress(_SetServiceW, nsplib, 'SetServiceW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetServiceW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetServiceW]
   end;
 end;
-{$ELSE}
-function SetServiceW; external nsplib name 'SetServiceW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetService: Pointer;
 
 function SetService;
 begin
-  GetProcedureAddress(_SetService, nsplib, 'SetServiceW');
+  GetProcedureAddress(_SetService, nsplib, 'SetService' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetService]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetService]
   end;
 end;
-{$ELSE}
-function SetService; external nsplib name 'SetServiceW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetService: Pointer;
-
-function SetService;
-begin
-  GetProcedureAddress(_SetService, nsplib, 'SetServiceA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetService]
-  end;
-end;
-{$ELSE}
-function SetService; external nsplib name 'SetServiceA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetServiceA: Pointer;
 
@@ -1348,16 +1141,12 @@ function GetServiceA;
 begin
   GetProcedureAddress(_GetServiceA, nsplib, 'GetServiceA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetServiceA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetServiceA]
   end;
 end;
-{$ELSE}
-function GetServiceA; external nsplib name 'GetServiceA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetServiceW: Pointer;
 
@@ -1365,50 +1154,46 @@ function GetServiceW;
 begin
   GetProcedureAddress(_GetServiceW, nsplib, 'GetServiceW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetServiceW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetServiceW]
   end;
 end;
+
+var
+  _GetService: Pointer;
+
+function GetService;
+begin
+  GetProcedureAddress(_GetService, nsplib, 'GetService' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetService]
+  end;
+end;
+
 {$ELSE}
+
+function EnumProtocolsA; external nsplib name 'EnumProtocolsA';
+function EnumProtocolsW; external nsplib name 'EnumProtocolsW';
+function EnumProtocols; external nsplib name 'EnumProtocols' + AWSuffix;
+function GetAddressByNameA; external nsplib name 'GetAddressByNameA';
+function GetAddressByNameW; external nsplib name 'GetAddressByNameW';
+function GetAddressByName; external nsplib name 'GetAddressByName' + AWSuffix;
+function GetTypeByNameA; external nsplib name 'GetTypeByNameA';
+function GetTypeByNameW; external nsplib name 'GetTypeByNameW';
+function GetTypeByName; external nsplib name 'GetTypeByName' + AWSuffix;
+function GetNameByTypeA; external nsplib name 'GetNameByTypeA';
+function GetNameByTypeW; external nsplib name 'GetNameByTypeW';
+function GetNameByType; external nsplib name 'GetNameByType' + AWSuffix;
+function SetServiceA; external nsplib name 'SetServiceA';
+function SetServiceW; external nsplib name 'SetServiceW';
+function SetService; external nsplib name 'SetService' + AWSuffix;
+function GetServiceA; external nsplib name 'GetServiceA';
 function GetServiceW; external nsplib name 'GetServiceW';
+function GetService; external nsplib name 'GetService' + AWSuffix;
+
 {$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetService: Pointer;
-
-function GetService;
-begin
-  GetProcedureAddress(_GetService, nsplib, 'GetServiceW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetService]
-  end;
-end;
-{$ELSE}
-function GetService; external nsplib name 'GetServiceW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetService: Pointer;
-
-function GetService;
-begin
-  GetProcedureAddress(_GetService, nsplib, 'GetServiceA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetService]
-  end;
-end;
-{$ELSE}
-function GetService; external nsplib name 'GetServiceA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
 
 end.

@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Winsock2 RSVP/LPM API interface Unit for Object Pascal                       }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: lpmapi.h, released June 2000. The original Pascal      }
 { code is: LpmApi.pas, released December 2000. The initial developer of the    }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaLpmApi.pas,v 1.8 2005/09/06 16:36:50 marquardt Exp $
 
 unit JwaLpmApi;
 
@@ -49,12 +50,12 @@ unit JwaLpmApi;
 {$HPPEMIT '#include "lpmapi.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinSock2, JwaWinType;
+  JwaWinSock2, JwaWindows;
 
 type
   FLOAT = Single;
@@ -109,7 +110,6 @@ type
   TRsvpObjHdr = RsvpObjHdr;
   PRsvpObjHdr = ^RsvpObjHdr;
   PPRsvpObjHdr = ^PRsvpObjHdr;
-
 
 function ObjLength(const x: TRsvpObjHdr): USHORT;
 {$EXTERNALSYM ObjLength}
@@ -1120,7 +1120,6 @@ const
   POLICY_ERRV_CRAZY_FLOWSPEC     = 57;
   {$EXTERNALSYM POLICY_ERRV_CRAZY_FLOWSPEC}
 
-
 // Other RSVP defined Error codes
 
   RSVP_Err_NO_PATH       = 3;   (* No path state for Resv   *)
@@ -1180,7 +1179,6 @@ const
   {$EXTERNALSYM RSVP_Err_TC_SYS_ERROR}
 
 (* ErrVal = kernel error code   *)
-
 
 (* RSVP System error      *)
 
@@ -1287,11 +1285,11 @@ type
   TRsvpMsgObjs = RSVP_MSG_OBJS;
   PRsvpMsgObjs = ^RSVP_MSG_OBJS;
   
-  PALLOCMEM = function (Size: DWORD): Pointer; stdcall;
+  PALLOCMEM = function(Size: DWORD): Pointer; stdcall;
   {$EXTERNALSYM PALLOCMEM}
   TAllocMem = PALLOCMEM;
 
-  PFREEMEM = procedure (pv: Pointer); stdcall;
+  PFREEMEM = procedure(pv: Pointer); stdcall;
   {$EXTERNALSYM PFREEMEM}
   TFreeMem = PFREEMEM;
 
@@ -1304,13 +1302,13 @@ type
   TPolicyDecision = policy_decision;
   PPolicyDecision = ^policy_decision;
 
-  CBADMITRESULT = function (LpmHandle: LPM_HANDLE; RequestHandle: RHANDLE;
+  CBADMITRESULT = function(LpmHandle: LPM_HANDLE; RequestHandle: RHANDLE;
     ulPcmActionFlags: ULONG; LpmError: Integer; PolicyDecisionsCount: Integer;
     pPolicyDecisions: PPolicyDecision): ULONG; stdcall;
   {$EXTERNALSYM CBADMITRESULT}
   TCbAdmitResult = CBADMITRESULT;
 
-  CBGETRSVPOBJECTS = function (LpmHandle: LPM_HANDLE; RequestHandle: RHANDLE;
+  CBGETRSVPOBJECTS = function(LpmHandle: LPM_HANDLE; RequestHandle: RHANDLE;
     LpmError: Integer; RsvpObjectsCount: Integer; ppRsvpObjects: PPRsvpObjHdr): ULONG; stdcall;
   {$EXTERNALSYM CBGETRSVPOBJECTS}
   TCbGetRsvpObjects = CBGETRSVPOBJECTS;
@@ -1447,7 +1445,6 @@ const
   FLOW_DURATION   = 5;
   {$EXTERNALSYM FLOW_DURATION}
 
-
 procedure LPM_DeleteState(pRcvdIfAddr: PRsvpHop; RsvpMsgType: TMsgType;
   pRsvpSession: PRsvpSession; pRsvpFromHop: PRsvpHop; pResvStyle: PResvStyle;
   FilterSpecCount: Integer; ppFilterSpecList: PFilterSpec; TearDownReason: Integer); stdcall;
@@ -1493,6 +1490,9 @@ procedure LPM_CommitResv(RsvpSession: PRsvpSession; FlowInstalledIntf: PRsvpHop;
 {$EXTERNALSYM LPM_CommitResv}
 
 implementation
+
+uses
+  JwaWinDLLNames;
 
 function ObjLength(const x: TRsvpObjHdr): USHORT;
 begin
@@ -1549,11 +1549,8 @@ begin
   Result := p.issh_len32b;
 end;
 
-const
-  lpmlib = 'msidlpm.dll';
-
-
 {$IFDEF DYNAMIC_LINK}
+
 var
   _LPM_Initialize: Pointer;
 
@@ -1561,16 +1558,12 @@ function LPM_Initialize;
 begin
   GetProcedureAddress(_LPM_Initialize, lpmlib, 'LPM_Initialize');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LPM_Initialize]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LPM_Initialize]
   end;
 end;
-{$ELSE}
-function LPM_Initialize; external lpmlib name 'LPM_Initialize';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LPM_Deinitialize: Pointer;
 
@@ -1578,16 +1571,12 @@ function LPM_Deinitialize;
 begin
   GetProcedureAddress(_LPM_Deinitialize, lpmlib, 'LPM_Deinitialize');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LPM_Deinitialize]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LPM_Deinitialize]
   end;
 end;
-{$ELSE}
-function LPM_Deinitialize; external lpmlib name 'LPM_Deinitialize';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LPM_AdmitRsvpMsg: Pointer;
 
@@ -1595,16 +1584,12 @@ function LPM_AdmitRsvpMsg;
 begin
   GetProcedureAddress(_LPM_AdmitRsvpMsg, lpmlib, 'LPM_AdmitRsvpMsg');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LPM_AdmitRsvpMsg]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LPM_AdmitRsvpMsg]
   end;
 end;
-{$ELSE}
-function LPM_AdmitRsvpMsg; external lpmlib name 'LPM_AdmitRsvpMsg';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LPM_GetRsvpObjects: Pointer;
 
@@ -1612,16 +1597,12 @@ function LPM_GetRsvpObjects;
 begin
   GetProcedureAddress(_LPM_GetRsvpObjects, lpmlib, 'LPM_GetRsvpObjects');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LPM_GetRsvpObjects]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LPM_GetRsvpObjects]
   end;
 end;
-{$ELSE}
-function LPM_GetRsvpObjects; external lpmlib name 'LPM_GetRsvpObjects';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LPM_DeleteState: Pointer;
 
@@ -1629,16 +1610,12 @@ procedure LPM_DeleteState;
 begin
   GetProcedureAddress(_LPM_DeleteState, lpmlib, 'LPM_DeleteState');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LPM_DeleteState]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LPM_DeleteState]
   end;
 end;
-{$ELSE}
-procedure LPM_DeleteState; external lpmlib name 'LPM_DeleteState';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LPM_IpAddressTable: Pointer;
 
@@ -1646,16 +1623,12 @@ function LPM_IpAddressTable;
 begin
   GetProcedureAddress(_LPM_IpAddressTable, lpmlib, 'LPM_IpAddressTable');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LPM_IpAddressTable]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LPM_IpAddressTable]
   end;
 end;
-{$ELSE}
-function LPM_IpAddressTable; external lpmlib name 'LPM_IpAddressTable';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _LPM_CommitResv: Pointer;
 
@@ -1663,13 +1636,22 @@ procedure LPM_CommitResv;
 begin
   GetProcedureAddress(_LPM_CommitResv, lpmlib, 'LPM_CommitResv');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LPM_CommitResv]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LPM_CommitResv]
   end;
 end;
+
 {$ELSE}
+
+function LPM_Initialize; external lpmlib name 'LPM_Initialize';
+function LPM_Deinitialize; external lpmlib name 'LPM_Deinitialize';
+function LPM_AdmitRsvpMsg; external lpmlib name 'LPM_AdmitRsvpMsg';
+function LPM_GetRsvpObjects; external lpmlib name 'LPM_GetRsvpObjects';
+procedure LPM_DeleteState; external lpmlib name 'LPM_DeleteState';
+function LPM_IpAddressTable; external lpmlib name 'LPM_IpAddressTable';
 procedure LPM_CommitResv; external lpmlib name 'LPM_CommitResv';
+
 {$ENDIF DYNAMIC_LINK}
 
 end.

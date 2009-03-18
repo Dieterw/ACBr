@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Windows User API interface Unit for Object Pascal                            }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: winuser.h, released June 2000. The original Pascal     }
 { code is: WinUser.pas, released December 2000. The initial developer of the   }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,25 +35,33 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaWinUser.pas,v 1.16 2005/09/06 16:36:51 marquardt Exp $
+
+{$IFNDEF JWA_INCLUDEMODE}
 
 unit JwaWinUser;
 
 {$WEAKPACKAGEUNIT}
 
-{$HPPEMIT ''}
-{$HPPEMIT '#include "WinUser.h"'}
-{$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
   JwaWinBase, JwaWinGDI, JwaWinNT, JwaWinType;
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_INTERFACESECTION}
+
+{$HPPEMIT ''}
+{$HPPEMIT '#include "WinUser.h"'}
+{$HPPEMIT ''}
 
 const
   UINT_MAX = UINT($FFFFFFFF); // from limits.h TODO
@@ -69,83 +76,79 @@ type
   MENUTEMPLATEW = Pointer;
   {$EXTERNALSYM MENUTEMPLATEW}
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   MENUTEMPLATE = MENUTEMPLATEW;
   {$EXTERNALSYM MENUTEMPLATE}
-{$ELSE}
+  {$ELSE}
   MENUTEMPLATE = MENUTEMPLATEA;
   {$EXTERNALSYM MENUTEMPLATE}
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   LPMENUTEMPLATEA = PVOID;
   {$EXTERNALSYM LPMENUTEMPLATEA}
   LPMENUTEMPLATEW = PVOID;
   {$EXTERNALSYM LPMENUTEMPLATEW}
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   LPMENUTEMPLATE = LPMENUTEMPLATEW;
   {$EXTERNALSYM LPMENUTEMPLATE}
-{$ELSE}
+  {$ELSE}
   LPMENUTEMPLATE = LPMENUTEMPLATEA;
   {$EXTERNALSYM LPMENUTEMPLATE}
-{$ENDIF}
+  {$ENDIF UNICODE}
 
-  WNDPROC = function (hWnd: HWND; uMsg: UINT; lParam: WPARAM; wParam: LPARAM): LRESULT;
+  WNDPROC = function(hWnd: HWND; uMsg: UINT; lParam: WPARAM; wParam: LPARAM): LRESULT; stdcall;
   {$EXTERNALSYM WNDPROC}
 
-  DLGPROC = function (hwndDlg: HWND; wMsg: UINT; wParam: WPARAM; lParam: LPARAM): INT_PTR; stdcall;
+  DLGPROC = function(hwndDlg: HWND; wMsg: UINT; wParam: WPARAM; lParam: LPARAM): INT_PTR; stdcall;
   {$EXTERNALSYM DLGPROC}
-  TIMERPROC = procedure (hwnd: HWND; uMsg: UINT; idEvent: UINT_PTR; dwTime: DWORD); stdcall;
+  TIMERPROC = procedure(hwnd: HWND; uMsg: UINT; idEvent: UINT_PTR; dwTime: DWORD); stdcall;
   {$EXTERNALSYM TIMERPROC}
-  GRAYSTRINGPROC = function (hdc: HDC; lpData: LPARAM; cchData: Integer): BOOL; stdcall;
+  GRAYSTRINGPROC = function(hdc: HDC; lpData: LPARAM; cchData: Integer): BOOL; stdcall;
   {$EXTERNALSYM GRAYSTRINGPROC}
-  WNDENUMPROC = function (hwnd: HWND; lParam: LPARAM): BOOL; stdcall;
+  WNDENUMPROC = function(hwnd: HWND; lParam: LPARAM): BOOL; stdcall;
   {$EXTERNALSYM WNDENUMPROC}
-  HOOKPROC = function (nCode: Integer; wParam: WPARAM; lParam: LPARAM): LRESULT; stdcall;
+  HOOKPROC = function(nCode: Integer; wParam: WPARAM; lParam: LPARAM): LRESULT; stdcall;
   {$EXTERNALSYM HOOKPROC}
-  SENDASYNCPROC = procedure (hwnd: HWND; uMsg: UINT; dwData: ULONG_PTR; lResult: LRESULT); stdcall;
+  SENDASYNCPROC = procedure(hwnd: HWND; uMsg: UINT; dwData: ULONG_PTR; lResult: LRESULT); stdcall;
   {$EXTERNALSYM SENDASYNCPROC}
 
-  PROPENUMPROCA = function (hwnd: HWND; lpszString: LPCSTR; hData: HANDLE): BOOL; stdcall;
+  PROPENUMPROCA = function(hwnd: HWND; lpszString: LPCSTR; hData: HANDLE): BOOL; stdcall;
   {$EXTERNALSYM PROPENUMPROCA}
-  PROPENUMPROCW = function (hwnd: HWND; lpszString: LPCWSTR; hData: HANDLE): BOOL; stdcall;
+  PROPENUMPROCW = function(hwnd: HWND; lpszString: LPCWSTR; hData: HANDLE): BOOL; stdcall;
   {$EXTERNALSYM PROPENUMPROCW}
 
-  PROPENUMPROCEXA = function (hwnd: HWND; lpszString: LPSTR; hData: HANDLE; dwData: ULONG_PTR): BOOL; stdcall;
+  PROPENUMPROCEXA = function(hwnd: HWND; lpszString: LPSTR; hData: HANDLE; dwData: ULONG_PTR): BOOL; stdcall;
   {$EXTERNALSYM PROPENUMPROCEXA}
-  PROPENUMPROCEXW = function (hwnd: HWND; lpszString: LPWSTR; hData: HANDLE; dwData: ULONG_PTR): BOOL; stdcall;
+  PROPENUMPROCEXW = function(hwnd: HWND; lpszString: LPWSTR; hData: HANDLE; dwData: ULONG_PTR): BOOL; stdcall;
   {$EXTERNALSYM PROPENUMPROCEXW}
 
-  EDITWORDBREAKPROCA = function (lpch: LPSTR; ichCurrent: Integer; cch, code: Integer): Integer; stdcall;
+  EDITWORDBREAKPROCA = function(lpch: LPSTR; ichCurrent: Integer; cch, code: Integer): Integer; stdcall;
   {$EXTERNALSYM EDITWORDBREAKPROCA}
-  EDITWORDBREAKPROCW = function (lpch: LPWSTR; ichCurrent: Integer; cch, code: Integer): Integer; stdcall;
+  EDITWORDBREAKPROCW = function(lpch: LPWSTR; ichCurrent: Integer; cch, code: Integer): Integer; stdcall;
   {$EXTERNALSYM EDITWORDBREAKPROCW}
 
-  DRAWSTATEPROC = function (hdc: HDC; lData: LPARAM; wData: WPARAM; cx, cy: Integer): BOOL; stdcall;
+  DRAWSTATEPROC = function(hdc: HDC; lData: LPARAM; wData: WPARAM; cx, cy: Integer): BOOL; stdcall;
   {$EXTERNALSYM DRAWSTATEPROC}
 
-{$IFDEF UNICODE}
-
+  {$IFDEF UNICODE}
   PROPENUMPROC = PROPENUMPROCW;
   {$EXTERNALSYM PROPENUMPROC}
   PROPENUMPROCEX = PROPENUMPROCEXW;
   {$EXTERNALSYM PROPENUMPROCEX}
   EDITWORDBREAKPROC = EDITWORDBREAKPROCW;
   {$EXTERNALSYM EDITWORDBREAKPROC}
-
-{$ELSE}
-
+  {$ELSE}
   PROPENUMPROC = PROPENUMPROCA;
   {$EXTERNALSYM PROPENUMPROC}
   PROPENUMPROCEX = PROPENUMPROCEXA;
   {$EXTERNALSYM PROPENUMPROCEX}
   EDITWORDBREAKPROC = EDITWORDBREAKPROCA;
   {$EXTERNALSYM EDITWORDBREAKPROC}
+  {$ENDIF UNICODE}
 
-{$ENDIF}
-
-  NAMEENUMPROCA = function (lpstr: LPSTR; lParam: LPARAM): BOOL; stdcall;
+  NAMEENUMPROCA = function(lpstr: LPSTR; lParam: LPARAM): BOOL; stdcall;
   {$EXTERNALSYM NAMEENUMPROCA}
-  NAMEENUMPROCW = function (lpstr: LPWSTR; lParam: LPARAM): BOOL; stdcall;
+  NAMEENUMPROCW = function(lpstr: LPWSTR; lParam: LPARAM): BOOL; stdcall;
   {$EXTERNALSYM NAMEENUMPROCW}
 
   WINSTAENUMPROCA = NAMEENUMPROCA;
@@ -157,21 +160,17 @@ type
   DESKTOPENUMPROCW = NAMEENUMPROCW;
   {$EXTERNALSYM DESKTOPENUMPROCW}
 
-{$IFDEF UNICODE}
-
+  {$IFDEF UNICODE}
   WINSTAENUMPROC = WINSTAENUMPROCW;
   {$EXTERNALSYM WINSTAENUMPROC}
   DESKTOPENUMPROC = DESKTOPENUMPROCW;
   {$EXTERNALSYM DESKTOPENUMPROC}
-
-{$ELSE}
-
+  {$ELSE}
   WINSTAENUMPROC = WINSTAENUMPROCA;
   {$EXTERNALSYM WINSTAENUMPROC}
   DESKTOPENUMPROC = DESKTOPENUMPROCA;
   {$EXTERNALSYM DESKTOPENUMPROC}
-
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 function IS_INTRESOURCE(wInteger: WORD): BOOL;
 {$EXTERNALSYM IS_INTRESOURCE}
@@ -181,13 +180,13 @@ type
   {$EXTERNALSYM MAKEINTRESOURCEA}
   MAKEINTRESOURCEW = LPWSTR;
   {$EXTERNALSYM MAKEINTRESOURCEW}
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   MAKEINTRESOURCE = MAKEINTRESOURCEW;
   {$EXTERNALSYM MAKEINTRESOURCE}
-{$ELSE}
+  {$ELSE}
   MAKEINTRESOURCE = MAKEINTRESOURCEA;
   {$EXTERNALSYM MAKEINTRESOURCE}
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 // Predefined Resource Types
@@ -258,27 +257,15 @@ function wvsprintfA(Output: LPSTR; Format: LPCSTR; arglist: va_list): Integer; s
 {$EXTERNALSYM wvsprintfA}
 function wvsprintfW(Output: LPWSTR; Format: LPCWSTR; arglist: va_list): Integer; stdcall;
 {$EXTERNALSYM wvsprintfW}
-
-{$IFDEF UNICODE}
-function wvsprintf(Output: LPWSTR; Format: LPCWSTR; arglist: va_list): Integer; stdcall;
+function wvsprintf(Output: LPTSTR; Format: LPCTSTR; arglist: va_list): Integer; stdcall;
 {$EXTERNALSYM wvsprintf}
-{$ELSE}
-function wvsprintf(Output: LPSTR; Format: LPCSTR; arglist: va_list): Integer; stdcall;
-{$EXTERNALSYM wvsprintf}
-{$ENDIF}
 
 function wsprintfA(Output: LPSTR; Format: LPCSTR): Integer; stdcall;
 {$EXTERNALSYM wsprintfA}
 function wsprintfW(Output: LPWSTR; Format: LPCWSTR): Integer; stdcall;
 {$EXTERNALSYM wsprintfW}
-
-{$IFDEF UNICODE}
-function wsprintf(Output: LPWSTR; Format: LPCWSTR): Integer; stdcall;
+function wsprintf(Output: LPTSTR; Format: LPCTSTR): Integer; stdcall;
 {$EXTERNALSYM wsprintf}
-{$ELSE}
-function wsprintf(Output: LPSTR; Format: LPCSTR): Integer; stdcall;
-{$EXTERNALSYM wsprintf}
-{$ENDIF}
 
 //
 // SPI_SETDESKWALLPAPER defined constants
@@ -452,10 +439,12 @@ const
   VK_MBUTTON = $04; // NOT contiguous with L & RBUTTON
   {$EXTERNALSYM VK_MBUTTON}
 
+  {$IFDEF WIN98ME_UP}
   VK_XBUTTON1 = $05; // NOT contiguous with L & RBUTTON
   {$EXTERNALSYM VK_XBUTTON1}
   VK_XBUTTON2 = $06; // NOT contiguous with L & RBUTTON
   {$EXTERNALSYM VK_XBUTTON2}
+  {$ENDIF WIN98ME_UP}
 
 //
 // 0x07 : unassigned
@@ -701,6 +690,8 @@ const
   VK_RMENU    = $A5;
   {$EXTERNALSYM VK_RMENU}
 
+  {$IFDEF WIN98ME_UP}
+
   VK_BROWSER_BACK      = $A6;
   {$EXTERNALSYM VK_BROWSER_BACK}
   VK_BROWSER_FORWARD   = $A7;
@@ -738,6 +729,8 @@ const
   {$EXTERNALSYM VK_LAUNCH_APP1}
   VK_LAUNCH_APP2         = $B7;
   {$EXTERNALSYM VK_LAUNCH_APP2}
+
+  {$ENDIF WIN98ME_UP}
 
 //
 // 0xB8 - 0xB9 : reserved
@@ -800,8 +793,10 @@ const
   VK_ICO_CLEAR = $E6;
   {$EXTERNALSYM VK_ICO_CLEAR}
 
+  {$IFDEF WIN98ME_UP}
   VK_PACKET = $E7;
   {$EXTERNALSYM VK_PACKET}
+  {$ENDIF WIN98ME_UP}
 
 //
 // 0xE8 : unassigned
@@ -861,7 +856,6 @@ const
 // 0xFF : reserved
 //
 
-
 //
 // SetWindowsHook() codes
 //
@@ -897,23 +891,20 @@ const
   WH_CALLWNDPROCRET  = 12;
   {$EXTERNALSYM WH_CALLWNDPROCRET}
 
+  {$IFDEF WINNT4_UP}
   WH_KEYBOARD_LL = 13;
   {$EXTERNALSYM WH_KEYBOARD_LL}
   WH_MOUSE_LL    = 14;
   {$EXTERNALSYM WH_MOUSE_LL}
+  {$ENDIF WINNT4_UP}
 
-{$IFDEF WINVER_0400_UP}
-  {$IFDEF WINNT_0400_UP}
+  {$IFDEF WINNT4_UP}
   WH_MAX = 14;
   {$EXTERNALSYM WH_MAX}
   {$ELSE}
   WH_MAX = 12;
   {$EXTERNALSYM WH_MAX}
-  {$ENDIF}
-{$ELSE}
-  WH_MAX = 11;
-  {$EXTERNALSYM WH_MAX}
-{$ENDIF}
+  {$ENDIF WINNT4_UP}
 
   WH_MINHOOK = WH_MIN;
   {$EXTERNALSYM WH_MINHOOK}
@@ -981,6 +972,8 @@ type
   TCbtActivateStruct = CBTACTIVATESTRUCT;
   PCbtActivateStruct = LPCBTACTIVATESTRUCT;
 
+{$IFDEF WINXP_UP}
+
 //
 // WTSSESSION_NOTIFICATION struct pointed by lParam, for WM_WTSSESSION_CHANGE
 //
@@ -1020,6 +1013,8 @@ const
   {$EXTERNALSYM WTS_SESSION_UNLOCK}
   WTS_SESSION_REMOTE_CONTROL = $9;
   {$EXTERNALSYM WTS_SESSION_REMOTE_CONTROL}
+
+{$ENDIF WINXP_UP}
 
 //
 // WH_MSGFILTER Filter Proc Codes
@@ -1062,13 +1057,32 @@ const
   {$EXTERNALSYM HSHELL_TASKMAN}
   HSHELL_LANGUAGE        = 8;
   {$EXTERNALSYM HSHELL_LANGUAGE}
+  HSHELL_SYSMENU            = 9;
+  {$EXTERNALSYM HSHELL_SYSMENU}
+  HSHELL_ENDTASK            = 10;
+  {$EXTERNALSYM HSHELL_ENDTASK}
+  {$IFDEF WIN2000_UP}
   HSHELL_ACCESSIBILITYSTATE = 11;
   {$EXTERNALSYM HSHELL_ACCESSIBILITYSTATE}
   HSHELL_APPCOMMAND      = 12;
   {$EXTERNALSYM HSHELL_APPCOMMAND}
+  {$ENDIF WIN2000_UP}
 
+  {$IFDEF WINXP_UP}
   HSHELL_WINDOWREPLACED  = 13;
   {$EXTERNALSYM HSHELL_WINDOWREPLACED}
+  {$ENDIF WINXP_UP}
+  HSHELL_WINDOWREPLACING = 14;
+  {$EXTERNALSYM HSHELL_WINDOWREPLACING}
+
+  HSHELL_HIGHBIT          = $8000;
+  {$EXTERNALSYM HSHELL_HIGHBIT}
+  HSHELL_FLASH            = HSHELL_REDRAW or HSHELL_HIGHBIT;
+  {$EXTERNALSYM HSHELL_FLASH}
+  HSHELL_RUDEAPPACTIVATED = HSHELL_WINDOWACTIVATED or HSHELL_HIGHBIT;
+  {$EXTERNALSYM HSHELL_RUDEAPPACTIVATED}
+
+{$IFDEF WIN2000_UP}
 
 // wparam for HSHELL_ACCESSIBILITYSTATE//
 
@@ -1127,6 +1141,7 @@ const
   {$EXTERNALSYM APPCOMMAND_TREBLE_DOWN}
   APPCOMMAND_TREBLE_UP           = 23;
   {$EXTERNALSYM APPCOMMAND_TREBLE_UP}
+  {$IFDEF WINXP_UP}
   APPCOMMAND_MICROPHONE_VOLUME_MUTE = 24;
   {$EXTERNALSYM APPCOMMAND_MICROPHONE_VOLUME_MUTE}
   APPCOMMAND_MICROPHONE_VOLUME_DOWN = 25;
@@ -1171,6 +1186,7 @@ const
   {$EXTERNALSYM APPCOMMAND_MIC_ON_OFF_TOGGLE}
   APPCOMMAND_CORRECTION_LIST        = 45;
   {$EXTERNALSYM APPCOMMAND_CORRECTION_LIST}
+  {$ENDIF WINXP_UP}
   APPCOMMAND_MEDIA_PLAY             = 46;
   {$EXTERNALSYM APPCOMMAND_MEDIA_PLAY}
   APPCOMMAND_MEDIA_PAUSE            = 47;
@@ -1195,7 +1211,7 @@ const
   FAPPCOMMAND_MASK  = $F000;
   {$EXTERNALSYM FAPPCOMMAND_MASK}
 
-function GET_APPCOMMAND_LPARAM(lParam: LPARAM): Shortint;
+function GET_APPCOMMAND_LPARAM(lParam: LPARAM): WORD;
 {$EXTERNALSYM GET_APPCOMMAND_LPARAM}
 
 function GET_DEVICE_LPARAM(lParam: LPARAM): WORD;
@@ -1209,6 +1225,19 @@ function GET_FLAGS_LPARAM(lParam: LPARAM): Integer;
 
 function GET_KEYSTATE_LPARAM(lParam: LPARAM): Integer;
 {$EXTERNALSYM GET_KEYSTATE_LPARAM}
+
+{$ENDIF WIN2000_UP}
+
+type
+  SHELLHOOKINFO = record
+    hwnd: HWND;
+    rc: RECT;
+  end;
+  {$EXTERNALSYM SHELLHOOKINFO}
+  LPSHELLHOOKINFO = ^SHELLHOOKINFO;
+  {$EXTERNALSYM LPSHELLHOOKINFO}
+  TShellHookInfo = SHELLHOOKINFO;
+  PShellHookInfo = LPSHELLHOOKINFO;
 
 //
 // Message Structure used in Journaling
@@ -1284,13 +1313,13 @@ type
 //
 
 const
-  LLKHF_EXTENDED = (KF_EXTENDED shr 8);
+  LLKHF_EXTENDED = KF_EXTENDED shr 8;
   {$EXTERNALSYM LLKHF_EXTENDED}
   LLKHF_INJECTED = $00000010;
   {$EXTERNALSYM LLKHF_INJECTED}
-  LLKHF_ALTDOWN  = (KF_ALTDOWN shr 8);
+  LLKHF_ALTDOWN  = KF_ALTDOWN shr 8;
   {$EXTERNALSYM LLKHF_ALTDOWN}
-  LLKHF_UP       = (KF_UP shr 8);
+  LLKHF_UP       = KF_UP shr 8;
   {$EXTERNALSYM LLKHF_UP}
 
   LLMHF_INJECTED = $00000001;
@@ -1453,22 +1482,11 @@ function LoadKeyboardLayoutA(pwszKLID: LPCSTR; Flags: UINT): HKL; stdcall;
 {$EXTERNALSYM LoadKeyboardLayoutA}
 function LoadKeyboardLayoutW(pwszKLID: LPCWSTR; Flags: UINT): HKL; stdcall;
 {$EXTERNALSYM LoadKeyboardLayoutW}
-
-{$IFDEF UNICODE}
-function LoadKeyboardLayout(pwszKLID: LPCWSTR; Flags: UINT): HKL; stdcall;
+function LoadKeyboardLayout(pwszKLID: LPCTSTR; Flags: UINT): HKL; stdcall;
 {$EXTERNALSYM LoadKeyboardLayout}
-{$ELSE}
-function LoadKeyboardLayout(pwszKLID: LPCSTR; Flags: UINT): HKL; stdcall;
-{$EXTERNALSYM LoadKeyboardLayout}
-{$ENDIF}
 
-{$IFDEF WINVER_0400_GREATER}
 function ActivateKeyboardLayout(hkl: HKL; Flags: UINT): HKL; stdcall;
 {$EXTERNALSYM ActivateKeyboardLayout}
-{$ELSE}
-function ActivateKeyboardLayout(hkl: HKL; Flags: UINT): BOOL; stdcall;
-{$EXTERNALSYM ActivateKeyboardLayout}
-{$ENDIF}
 
 function ToUnicodeEx(wVirtKey, wScanCode: UINT; lpKeyState: PBYTE;
   pwszBuff: LPWSTR; cchBuff: Integer; wFlags: UINT; dwhkl: HKL): Integer; stdcall;
@@ -1481,14 +1499,8 @@ function GetKeyboardLayoutNameA(pwszKLID: LPSTR): BOOL; stdcall;
 {$EXTERNALSYM GetKeyboardLayoutNameA}
 function GetKeyboardLayoutNameW(pwszKLID: LPWSTR): BOOL; stdcall;
 {$EXTERNALSYM GetKeyboardLayoutNameW}
-
-{$IFDEF UNICODE}
-function GetKeyboardLayoutName(pwszKLID: LPWSTR): BOOL; stdcall;
+function GetKeyboardLayoutName(pwszKLID: LPTSTR): BOOL; stdcall;
 {$EXTERNALSYM GetKeyboardLayoutName}
-{$ELSE}
-function GetKeyboardLayoutName(pwszKLID: LPSTR): BOOL; stdcall;
-{$EXTERNALSYM GetKeyboardLayoutName}
-{$ENDIF}
 
 function GetKeyboardLayoutList(nBuff: Integer; lpList: PHKL): Integer; stdcall;
 {$EXTERNALSYM GetKeyboardLayoutList}
@@ -1562,16 +1574,9 @@ function CreateDesktopA(lpszDesktop, lpszDevice: LPCSTR; pDevmode: LPDEVMODEA;
 function CreateDesktopW(lpszDesktop, lpszDevice: LPCWSTR; pDevmode: LPDEVMODEW;
   dwFlags: DWORD; dwDesiredAccess: ACCESS_MASK; lpsa: LPSECURITY_ATTRIBUTES): HDESK; stdcall;
 {$EXTERNALSYM CreateDesktopW}
-
-{$IFDEF UNICODE}
-function CreateDesktop(lpszDesktop, lpszDevice: LPCWSTR; pDevmode: LPDEVMODEW;
+function CreateDesktop(lpszDesktop, lpszDevice: LPCTSTR; pDevmode: LPDEVMODE;
   dwFlags: DWORD; dwDesiredAccess: ACCESS_MASK; lpsa: LPSECURITY_ATTRIBUTES): HDESK; stdcall;
 {$EXTERNALSYM CreateDesktop}
-{$ELSE}
-function CreateDesktop(lpszDesktop, lpszDevice: LPCSTR; pDevmode: LPDEVMODEA;
-  dwFlags: DWORD; dwDesiredAccess: ACCESS_MASK; lpsa: LPSECURITY_ATTRIBUTES): HDESK; stdcall;
-{$EXTERNALSYM CreateDesktop}
-{$ENDIF}
 
 function OpenDesktopA(lpszDesktop: LPCSTR; dwFlags: DWORD; fInherit: BOOL;
   dwDesiredAccess: ACCESS_MASK): HDESK; stdcall;
@@ -1579,16 +1584,9 @@ function OpenDesktopA(lpszDesktop: LPCSTR; dwFlags: DWORD; fInherit: BOOL;
 function OpenDesktopW(lpszDesktop: LPCWSTR; dwFlags: DWORD; fInherit: BOOL;
   dwDesiredAccess: ACCESS_MASK): HDESK; stdcall;
 {$EXTERNALSYM OpenDesktopW}
-
-{$IFDEF UNICODE}
-function OpenDesktop(lpszDesktop: LPCWSTR; dwFlags: DWORD; fInherit: BOOL;
+function OpenDesktop(lpszDesktop: LPCTSTR; dwFlags: DWORD; fInherit: BOOL;
   dwDesiredAccess: ACCESS_MASK): HDESK; stdcall;
 {$EXTERNALSYM OpenDesktop}
-{$ELSE}
-function OpenDesktop(lpszDesktop: LPCSTR; dwFlags: DWORD; fInherit: BOOL;
-  dwDesiredAccess: ACCESS_MASK): HDESK; stdcall;
-{$EXTERNALSYM OpenDesktop}
-{$ENDIF}
 
 function OpenInputDesktop(dwFlags: DWORD; fInherit: BOOL;
   dwDesiredAccess: ACCESS_MASK): HDESK; stdcall;
@@ -1600,16 +1598,9 @@ function EnumDesktopsA(hwinsta: HWINSTA; lpEnumFunc: DESKTOPENUMPROCA;
 function EnumDesktopsW(hwinsta: HWINSTA; lpEnumFunc: DESKTOPENUMPROCW;
   lParam: LPARAM): BOOL; stdcall;
 {$EXTERNALSYM EnumDesktopsW}
-
-{$IFDEF UNICODE}
-function EnumDesktops(hwinsta: HWINSTA; lpEnumFunc: DESKTOPENUMPROCW;
+function EnumDesktops(hwinsta: HWINSTA; lpEnumFunc: DESKTOPENUMPROC;
   lParam: LPARAM): BOOL; stdcall;
 {$EXTERNALSYM EnumDesktops}
-{$ELSE}
-function EnumDesktops(hwinsta: HWINSTA; lpEnumFunc: DESKTOPENUMPROCA;
-  lParam: LPARAM): BOOL; stdcall;
-{$EXTERNALSYM EnumDesktops}
-{$ENDIF}
 
 function EnumDesktopWindows(hDesktop: HDESK; lpfn: WNDENUMPROC; lParam: LPARAM): BOOL; stdcall;
 {$EXTERNALSYM EnumDesktopWindows}
@@ -1656,28 +1647,28 @@ const
   {$EXTERNALSYM WINSTA_ALL_ACCESS}
 
 //
+// Windowstation creation flags.
+//
+
+  CWF_CREATE_ONLY          = $0001;
+  {$EXTERNALSYM CWF_CREATE_ONLY}
+
+//
 // Windowstation-specific attribute flags
 //
 
   WSF_VISIBLE = $0001;
   {$EXTERNALSYM WSF_VISIBLE}
 
-function CreateWindowStationA(lpwinsta: LPCSTR; dwReserved: DWORD;
+function CreateWindowStationA(lpwinsta: LPCSTR; dwFlags: DWORD;
   dwDesiredAccess: ACCESS_MASK; lpsa: LPSECURITY_ATTRIBUTES): HWINSTA; stdcall;
 {$EXTERNALSYM CreateWindowStationA}
-function CreateWindowStationW(lpwinsta: LPCWSTR; dwReserved: DWORD;
+function CreateWindowStationW(lpwinsta: LPCWSTR; dwFlags: DWORD;
   dwDesiredAccess: ACCESS_MASK; lpsa: LPSECURITY_ATTRIBUTES): HWINSTA; stdcall;
 {$EXTERNALSYM CreateWindowStationW}
-
-{$IFDEF UNICODE}
-function CreateWindowStation(lpwinsta: LPCWSTR; dwReserved: DWORD;
+function CreateWindowStation(lpwinsta: LPCTSTR; dwFlags: DWORD;
   dwDesiredAccess: ACCESS_MASK; lpsa: LPSECURITY_ATTRIBUTES): HWINSTA; stdcall;
 {$EXTERNALSYM CreateWindowStation}
-{$ELSE}
-function CreateWindowStation(lpwinsta: LPCSTR; dwReserved: DWORD;
-  dwDesiredAccess: ACCESS_MASK; lpsa: LPSECURITY_ATTRIBUTES): HWINSTA; stdcall;
-{$EXTERNALSYM CreateWindowStation}
-{$ENDIF}
 
 function OpenWindowStationA(lpszWinSta: LPCSTR; fInherit: BOOL;
   dwDesiredAccess: ACCESS_MASK): HWINSTA; stdcall;
@@ -1685,29 +1676,16 @@ function OpenWindowStationA(lpszWinSta: LPCSTR; fInherit: BOOL;
 function OpenWindowStationW(lpszWinSta: LPCWSTR; fInherit: BOOL;
   dwDesiredAccess: ACCESS_MASK): HWINSTA; stdcall;
 {$EXTERNALSYM OpenWindowStationW}
-
-{$IFDEF UNICODE}
-function OpenWindowStation(lpszWinSta: LPCWSTR; fInherit: BOOL;
+function OpenWindowStation(lpszWinSta: LPCTSTR; fInherit: BOOL;
   dwDesiredAccess: ACCESS_MASK): HWINSTA; stdcall;
 {$EXTERNALSYM OpenWindowStation}
-{$ELSE}
-function OpenWindowStation(lpszWinSta: LPCSTR; fInherit: BOOL;
-  dwDesiredAccess: ACCESS_MASK): HWINSTA; stdcall;
-{$EXTERNALSYM OpenWindowStation}
-{$ENDIF}
 
 function EnumWindowStationsA(lpEnumFunc: WINSTAENUMPROCA; lParam: LPARAM): BOOL; stdcall;
 {$EXTERNALSYM EnumWindowStationsA}
 function EnumWindowStationsW(lpEnumFunc: WINSTAENUMPROCW; lParam: LPARAM): BOOL; stdcall;
 {$EXTERNALSYM EnumWindowStationsW}
-
-{$IFDEF UNICODE}
-function EnumWindowStations(lpEnumFunc: WINSTAENUMPROCW; lParam: LPARAM): BOOL; stdcall;
+function EnumWindowStations(lpEnumFunc: WINSTAENUMPROC; lParam: LPARAM): BOOL; stdcall;
 {$EXTERNALSYM EnumWindowStations}
-{$ELSE}
-function EnumWindowStations(lpEnumFunc: WINSTAENUMPROCA; lParam: LPARAM): BOOL; stdcall;
-{$EXTERNALSYM EnumWindowStations}
-{$ENDIF}
 
 function CloseWindowStation(hWinSta: HWINSTA): BOOL; stdcall;
 {$EXTERNALSYM CloseWindowStation}
@@ -1754,16 +1732,9 @@ function GetUserObjectInformationA(hObj: HANDLE; nIndex: Integer; pvInfo: PVOID;
 function GetUserObjectInformationW(hObj: HANDLE; nIndex: Integer; pvInfo: PVOID;
   nLength: DWORD; var lpnLengthNeeded: DWORD): BOOL; stdcall;
 {$EXTERNALSYM GetUserObjectInformationW}
-
-{$IFDEF UNICODE}
 function GetUserObjectInformation(hObj: HANDLE; nIndex: Integer; pvInfo: PVOID;
   nLength: DWORD; var lpnLengthNeeded: DWORD): BOOL; stdcall;
 {$EXTERNALSYM GetUserObjectInformation}
-{$ELSE}
-function GetUserObjectInformation(hObj: HANDLE; nIndex: Integer; pvInfo: PVOID;
-  nLength: DWORD; var lpnLengthNeeded: DWORD): BOOL; stdcall;
-{$EXTERNALSYM GetUserObjectInformation}
-{$ENDIF}
 
 function SetUserObjectInformationA(hObj: HANDLE; nIndex: Integer; pvInfo: PVOID;
   nLength: DWORD): BOOL; stdcall;
@@ -1771,16 +1742,9 @@ function SetUserObjectInformationA(hObj: HANDLE; nIndex: Integer; pvInfo: PVOID;
 function SetUserObjectInformationW(hObj: HANDLE; nIndex: Integer; pvInfo: PVOID;
   nLength: DWORD): BOOL; stdcall;
 {$EXTERNALSYM SetUserObjectInformationW}
-
-{$IFDEF UNICODE}
 function SetUserObjectInformation(hObj: HANDLE; nIndex: Integer; pvInfo: PVOID;
   nLength: DWORD): BOOL; stdcall;
 {$EXTERNALSYM SetUserObjectInformation}
-{$ELSE}
-function SetUserObjectInformation(hObj: HANDLE; nIndex: Integer; pvInfo: PVOID;
-  nLength: DWORD): BOOL; stdcall;
-{$EXTERNALSYM SetUserObjectInformation}
-{$ENDIF}
 
 type
   LPWNDCLASSEXA = ^WNDCLASSEXA;
@@ -1792,7 +1756,7 @@ type
     lpfnWndProc: WNDPROC;
     cbClsExtra: Integer;
     cbWndExtra: Integer;
-    hInstance: HINSTANCE;
+    hInstance: HINST;
     hIcon: HICON;
     hCursor: HCURSOR;
     hbrBackground: HBRUSH;
@@ -1818,7 +1782,7 @@ type
     lpfnWndProc: WNDPROC;
     cbClsExtra: Integer;
     cbWndExtra: Integer;
-    hInstance: HINSTANCE;
+    hInstance: HINST;
     hIcon: HICON;
     hCursor: HCURSOR;
     hbrBackground: HBRUSH;
@@ -1835,7 +1799,7 @@ type
   TWndClassExW = WNDCLASSEXW;
   PWndClassExW = LPWNDCLASSEXW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   WNDCLASSEX = WNDCLASSEXW;
   {$EXTERNALSYM WNDCLASSEX}
   NPWNDCLASSEX = NPWNDCLASSEXW;
@@ -1844,7 +1808,7 @@ type
   {$EXTERNALSYM LPWNDCLASSEX}
   TWndClassEx = TWndClassExW;
   PWndClassEx = PWndClassExW;
-{$ELSE}
+  {$ELSE}
   WNDCLASSEX = WNDCLASSEXA;
   {$EXTERNALSYM WNDCLASSEX}
   NPWNDCLASSEX = NPWNDCLASSEXA;
@@ -1853,7 +1817,7 @@ type
   {$EXTERNALSYM LPWNDCLASSEX}
   TWndClassEx = TWndClassExA;
   PWndClassEx = PWndClassExA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   LPWNDCLASSA = ^WNDCLASSA;
   {$EXTERNALSYM LPWNDCLASSA}
@@ -1862,7 +1826,7 @@ type
     lpfnWndProc: WNDPROC;
     cbClsExtra: Integer;
     cbWndExtra: Integer;
-    hInstance: HINSTANCE;
+    hInstance: HINST;
     hIcon: HICON;
     hCursor: HCURSOR;
     hbrBackground: HBRUSH;
@@ -1884,7 +1848,7 @@ type
     lpfnWndProc: WNDPROC;
     cbClsExtra: Integer;
     cbWndExtra: Integer;
-    hInstance: HINSTANCE;
+    hInstance: HINST;
     hIcon: HICON;
     hCursor: HCURSOR;
     hbrBackground: HBRUSH;
@@ -1899,7 +1863,7 @@ type
   TWndClassW = WNDCLASSW;
   PWndClassW = LPWNDCLASSW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   WNDCLASS = WNDCLASSW;
   {$EXTERNALSYM WNDCLASS}
   NPWNDCLASS = NPWNDCLASSW;
@@ -1908,7 +1872,7 @@ type
   {$EXTERNALSYM LPWNDCLASS}
   TWndClass = TWndClassW;
   PWndClass = PWndClassW;
-{$ELSE}
+  {$ELSE}
   WNDCLASS = WNDCLASSA;
   {$EXTERNALSYM WNDCLASS}
   NPWNDCLASS = NPWNDCLASSA;
@@ -1917,10 +1881,13 @@ type
   {$EXTERNALSYM LPWNDCLASS}
   TWndClass = TWndClassA;
   PWndClass = PWndClassA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 function IsHungAppWindow(hwnd: HWND): BOOL; stdcall;
 {$EXTERNALSYM IsHungAppWindow}
+
+procedure DisableProcessWindowsGhosting; stdcall;
+{$EXTERNALSYM DisableProcessWindowsGhosting}
 
 //
 // Message structure
@@ -2333,17 +2300,17 @@ const
   {$EXTERNALSYM WM_SYSCHAR}
   WM_SYSDEADCHAR = $0107;
   {$EXTERNALSYM WM_SYSDEADCHAR}
-{$IFDEF WIN32_WINNT_GREATER_EQUAL_0501}
+  {$IFDEF WINXP_UP}
   WM_UNICHAR     = $0109;
   {$EXTERNALSYM WM_UNICHAR}
   WM_KEYLAST     = $0109;
   {$EXTERNALSYM WM_KEYLAST}
   UNICODE_NOCHAR = $FFFF;
   {$EXTERNALSYM UNICODE_NOCHAR}
-{$ELSE}
+  {$ELSE}
   WM_KEYLAST     = $0108;
   {$EXTERNALSYM WM_KEYLAST}
-{$ENDIF}
+  {$ENDIF WINXP_UP}
 
   WM_IME_STARTCOMPOSITION = $010D;
   {$EXTERNALSYM WM_IME_STARTCOMPOSITION}
@@ -2430,6 +2397,8 @@ const
   {$EXTERNALSYM WM_CTLCOLORSCROLLBAR}
   WM_CTLCOLORSTATIC    = $0138;
   {$EXTERNALSYM WM_CTLCOLORSTATIC}
+  MN_GETHMENU          = $01E1;
+  {$EXTERNALSYM MN_GETHMENU}
 
   WM_MOUSEFIRST    = $0200;
   {$EXTERNALSYM WM_MOUSEFIRST}
@@ -2462,23 +2431,23 @@ const
   WM_XBUTTONDBLCLK = $020D;
   {$EXTERNALSYM WM_XBUTTONDBLCLK}
 
-{$IFDEF WINNT_0500_GREATER}
+  {$IFDEF WIN2000_UP}
   WM_MOUSELAST = $020D;
   {$EXTERNALSYM WM_MOUSELAST}
-{$ELSE}
-  {$IFDEF WINNT_0400_GREATER}
+  {$ELSE}
+  {$IFDEF WINNT4}
   WM_MOUSELAST = $020A;
   {$EXTERNALSYM WM_MOUSELAST}
   {$ELSE}
-    {$IFDEF WINDOWS_0400_GREATER}
+  {$IFDEF WIN95_UP}
   WM_MOUSELAST = $020A;
   {$EXTERNALSYM WM_MOUSELAST}
-    {$ELSE}
+  {$ELSE}
   WM_MOUSELAST = $0209;
   {$EXTERNALSYM WM_MOUSELAST}
-    {$ENDIF}
-  {$ENDIF}
-{$ENDIF}
+  {$ENDIF WIN95_UP}
+  {$ENDIF WINNT4}
+  {$ENDIF WIN2000_UP}
 
 // Value for rolling one detent//
 
@@ -2836,14 +2805,8 @@ function RegisterWindowMessageA(lpString: LPCSTR): UINT; stdcall;
 {$EXTERNALSYM RegisterWindowMessageA}
 function RegisterWindowMessageW(lpString: LPCWSTR): UINT; stdcall;
 {$EXTERNALSYM RegisterWindowMessageW}
-
-{$IFDEF UNICODE}
-function RegisterWindowMessage(lpString: LPCWSTR): UINT; stdcall;
+function RegisterWindowMessage(lpString: LPCTSTR): UINT; stdcall;
 {$EXTERNALSYM RegisterWindowMessage}
-{$ELSE}
-function RegisterWindowMessage(lpString: LPCSTR): UINT; stdcall;
-{$EXTERNALSYM RegisterWindowMessage}
-{$ENDIF}
 
 //
 // WM_SIZE message wParam values
@@ -2929,7 +2892,7 @@ const
   {$EXTERNALSYM WVR_HREDRAW}
   WVR_VREDRAW     = $0200;
   {$EXTERNALSYM WVR_VREDRAW}
-  WVR_REDRAW      = (WVR_HREDRAW or WVR_VREDRAW);
+  WVR_REDRAW      = WVR_HREDRAW or WVR_VREDRAW;
   {$EXTERNALSYM WVR_REDRAW}
   WVR_VALIDRECTS  = $0400;
   {$EXTERNALSYM WVR_VALIDRECTS}
@@ -3046,10 +3009,10 @@ const
                          WS_THICKFRAME or WS_MINIMIZEBOX or WS_MAXIMIZEBOX);
   {$EXTERNALSYM WS_OVERLAPPEDWINDOW}
 
-  WS_POPUPWINDOW = (WS_POPUP or WS_BORDER or WS_SYSMENU);
+  WS_POPUPWINDOW = WS_POPUP or WS_BORDER or WS_SYSMENU;
   {$EXTERNALSYM WS_POPUPWINDOW}
 
-  WS_CHILDWINDOW = (WS_CHILD);
+  WS_CHILDWINDOW = WS_CHILD;
   {$EXTERNALSYM WS_CHILDWINDOW}
 
   WS_TILEDWINDOW = WS_OVERLAPPEDWINDOW;
@@ -3099,9 +3062,9 @@ const
   WS_EX_APPWINDOW      = $00040000;
   {$EXTERNALSYM WS_EX_APPWINDOW}
 
-  WS_EX_OVERLAPPEDWINDOW = (WS_EX_WINDOWEDGE or WS_EX_CLIENTEDGE);
+  WS_EX_OVERLAPPEDWINDOW = WS_EX_WINDOWEDGE or WS_EX_CLIENTEDGE;
   {$EXTERNALSYM WS_EX_OVERLAPPEDWINDOW}
-  WS_EX_PALETTEWINDOW    = (WS_EX_WINDOWEDGE or WS_EX_TOOLWINDOW or WS_EX_TOPMOST);
+  WS_EX_PALETTEWINDOW    = WS_EX_WINDOWEDGE or WS_EX_TOOLWINDOW or WS_EX_TOPMOST;
   {$EXTERNALSYM WS_EX_PALETTEWINDOW}
 
   WS_EX_LAYERED = $00080000;
@@ -3175,22 +3138,22 @@ const
   BDR_SUNKENINNER = $0008;
   {$EXTERNALSYM BDR_SUNKENINNER}
 
-  BDR_OUTER  = (BDR_RAISEDOUTER or BDR_SUNKENOUTER);
+  BDR_OUTER  = BDR_RAISEDOUTER or BDR_SUNKENOUTER;
   {$EXTERNALSYM BDR_OUTER}
-  BDR_INNER  = (BDR_RAISEDINNER or BDR_SUNKENINNER);
+  BDR_INNER  = BDR_RAISEDINNER or BDR_SUNKENINNER;
   {$EXTERNALSYM BDR_INNER}
-  BDR_RAISED = (BDR_RAISEDOUTER or BDR_RAISEDINNER);
+  BDR_RAISED = BDR_RAISEDOUTER or BDR_RAISEDINNER;
   {$EXTERNALSYM BDR_RAISED}
-  BDR_SUNKEN = (BDR_SUNKENOUTER or BDR_SUNKENINNER);
+  BDR_SUNKEN = BDR_SUNKENOUTER or BDR_SUNKENINNER;
   {$EXTERNALSYM BDR_SUNKEN}
 
-  EDGE_RAISED = (BDR_RAISEDOUTER or BDR_RAISEDINNER);
+  EDGE_RAISED = BDR_RAISEDOUTER or BDR_RAISEDINNER;
   {$EXTERNALSYM EDGE_RAISED}
-  EDGE_SUNKEN = (BDR_SUNKENOUTER or BDR_SUNKENINNER);
+  EDGE_SUNKEN = BDR_SUNKENOUTER or BDR_SUNKENINNER;
   {$EXTERNALSYM EDGE_SUNKEN}
-  EDGE_ETCHED = (BDR_SUNKENOUTER or BDR_RAISEDINNER);
+  EDGE_ETCHED = BDR_SUNKENOUTER or BDR_RAISEDINNER;
   {$EXTERNALSYM EDGE_ETCHED}
-  EDGE_BUMP   = (BDR_RAISEDOUTER or BDR_SUNKENINNER);
+  EDGE_BUMP   = BDR_RAISEDOUTER or BDR_SUNKENINNER;
   {$EXTERNALSYM EDGE_BUMP}
 
 // Border flags//
@@ -3204,15 +3167,15 @@ const
   BF_BOTTOM = $0008;
   {$EXTERNALSYM BF_BOTTOM}
 
-  BF_TOPLEFT     = (BF_TOP or BF_LEFT);
+  BF_TOPLEFT     = BF_TOP or BF_LEFT;
   {$EXTERNALSYM BF_TOPLEFT}
-  BF_TOPRIGHT    = (BF_TOP or BF_RIGHT);
+  BF_TOPRIGHT    = BF_TOP or BF_RIGHT;
   {$EXTERNALSYM BF_TOPRIGHT}
-  BF_BOTTOMLEFT  = (BF_BOTTOM or BF_LEFT);
+  BF_BOTTOMLEFT  = BF_BOTTOM or BF_LEFT;
   {$EXTERNALSYM BF_BOTTOMLEFT}
-  BF_BOTTOMRIGHT = (BF_BOTTOM or BF_RIGHT);
+  BF_BOTTOMRIGHT = BF_BOTTOM or BF_RIGHT;
   {$EXTERNALSYM BF_BOTTOMRIGHT}
-  BF_RECT        = (BF_LEFT or BF_TOP or BF_RIGHT or BF_BOTTOM);
+  BF_RECT        = BF_LEFT or BF_TOP or BF_RIGHT or BF_BOTTOM;
   {$EXTERNALSYM BF_RECT}
 
   BF_DIAGONAL = $0010;
@@ -3221,13 +3184,13 @@ const
 // For diagonal lines, the BF_RECT flags specify the end point of the
 // vector bounded by the rectangle parameter.
 
-  BF_DIAGONAL_ENDTOPRIGHT    = (BF_DIAGONAL or BF_TOP or BF_RIGHT);
+  BF_DIAGONAL_ENDTOPRIGHT    = BF_DIAGONAL or BF_TOP or BF_RIGHT;
   {$EXTERNALSYM BF_DIAGONAL_ENDTOPRIGHT}
-  BF_DIAGONAL_ENDTOPLEFT     = (BF_DIAGONAL or BF_TOP or BF_LEFT);
+  BF_DIAGONAL_ENDTOPLEFT     = BF_DIAGONAL or BF_TOP or BF_LEFT;
   {$EXTERNALSYM BF_DIAGONAL_ENDTOPLEFT}
-  BF_DIAGONAL_ENDBOTTOMLEFT  = (BF_DIAGONAL or BF_BOTTOM or BF_LEFT);
+  BF_DIAGONAL_ENDBOTTOMLEFT  = BF_DIAGONAL or BF_BOTTOM or BF_LEFT;
   {$EXTERNALSYM BF_DIAGONAL_ENDBOTTOMLEFT}
-  BF_DIAGONAL_ENDBOTTOMRIGHT = (BF_DIAGONAL or BF_BOTTOM or BF_RIGHT);
+  BF_DIAGONAL_ENDBOTTOMRIGHT = BF_DIAGONAL or BF_BOTTOM or BF_RIGHT;
   {$EXTERNALSYM BF_DIAGONAL_ENDBOTTOMRIGHT}
 
   BF_MIDDLE = $0800; // Fill in the middle
@@ -3397,18 +3360,13 @@ const
   CF_DIBV5        = 17;
   {$EXTERNALSYM CF_DIBV5}
 
-{$IFDEF WINVER_0500_GREATER}
+  {$IFDEF WIN98ME_UP}
   CF_MAX = 18;
   {$EXTERNALSYM CF_MAX}
-{$ELSE}
-  {$IFDEF WINVER_0400_GREATER}
+  {$ELSE}
   CF_MAX = 17;
   {$EXTERNALSYM CF_MAX}
-  {$ELSE}
-  CF_MAX = 15;
-  {$EXTERNALSYM CF_MAX}
-  {$ENDIF}
-{$ENDIF}
+  {$ENDIF WIN98ME_UP}
 
   CF_OWNERDISPLAY    = $0080;
   {$EXTERNALSYM CF_OWNERDISPLAY}
@@ -3490,7 +3448,7 @@ type
   {$EXTERNALSYM LPCREATESTRUCTA}
   tagCREATESTRUCTA = record
     lpCreateParams: LPVOID;
-    hInstance: HINSTANCE;
+    hInstance: HINST;
     hMenu: HMENU;
     hwndParent: HWND;
     cy: Integer;
@@ -3512,7 +3470,7 @@ type
   {$EXTERNALSYM LPCREATESTRUCTW}
   tagCREATESTRUCTW = record
     lpCreateParams: LPVOID;
-    hInstance: HINSTANCE;
+    hInstance: HINST;
     hMenu: HMENU;
     hwndParent: HWND;
     cy: Integer;
@@ -3530,21 +3488,21 @@ type
   TCreateStructW = CREATESTRUCTW;
   PCreateStructW = LPCREATESTRUCTW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   CREATESTRUCT = CREATESTRUCTW;
   {$EXTERNALSYM CREATESTRUCT}
   LPCREATESTRUCT = LPCREATESTRUCTW;
   {$EXTERNALSYM LPCREATESTRUCT}
   TCreateStruct = TCreateStructW;
   PCreateStruct = PCreateStructW;
-{$ELSE}
+  {$ELSE}
   CREATESTRUCT = CREATESTRUCTA;
   {$EXTERNALSYM CREATESTRUCT}
   LPCREATESTRUCT = LPCREATESTRUCTA;
   {$EXTERNALSYM LPCREATESTRUCT}
   TCreateStruct = TCreateStructA;
   PCreateStruct = PCreateStructA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 // HCBT_CREATEWND parameters pointed to by lParam
@@ -3579,17 +3537,17 @@ type
   TCbtCreateWndW = CBT_CREATEWNDW;
   PCbtCreateWndW = LPCBT_CREATEWNDW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   CBT_CREATEWND = CBT_CREATEWNDW;
   {$EXTERNALSYM CBT_CREATEWND}
   LPCBT_CREATEWND = LPCBT_CREATEWNDW;
   {$EXTERNALSYM LPCBT_CREATEWND}
-{$ELSE}
+  {$ELSE}
   CBT_CREATEWND = CBT_CREATEWNDA;
   {$EXTERNALSYM CBT_CREATEWND}
   LPCBT_CREATEWND = LPCBT_CREATEWNDA;
   {$EXTERNALSYM LPCBT_CREATEWND}
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   LPWINDOWPLACEMENT = ^WINDOWPLACEMENT;
   {$EXTERNALSYM LPWINDOWPLACEMENT}
@@ -3788,14 +3746,8 @@ function GetMessageA(lpMsg: LPMSG; hWnd: HWND; wMsgFilterMin, wMsgFilterMax: UIN
 {$EXTERNALSYM GetMessageA}
 function GetMessageW(lpMsg: LPMSG; hWnd: HWND; wMsgFilterMin, wMsgFilterMax: UINT): BOOL; stdcall;
 {$EXTERNALSYM GetMessageW}
-
-{$IFDEF UNICODE}
 function GetMessage(lpMsg: LPMSG; hWnd: HWND; wMsgFilterMin, wMsgFilterMax: UINT): BOOL; stdcall;
 {$EXTERNALSYM GetMessage}
-{$ELSE}
-function GetMessage(lpMsg: LPMSG; hWnd: HWND; wMsgFilterMin, wMsgFilterMax: UINT): BOOL; stdcall;
-{$EXTERNALSYM GetMessage}
-{$ENDIF}
 
 function TranslateMessage(lpMsg: LPMSG): BOOL; stdcall;
 {$EXTERNALSYM TranslateMessage}
@@ -3804,14 +3756,8 @@ function DispatchMessageA(lpMsg: LPMSG): LRESULT; stdcall;
 {$EXTERNALSYM DispatchMessageA}
 function DispatchMessageW(lpMsg: LPMSG): LRESULT; stdcall;
 {$EXTERNALSYM DispatchMessageW}
-
-{$IFDEF UNICODE}
 function DispatchMessage(lpMsg: LPMSG): LRESULT; stdcall;
 {$EXTERNALSYM DispatchMessage}
-{$ELSE}
-function DispatchMessage(lpMsg: LPMSG): LRESULT; stdcall;
-{$EXTERNALSYM DispatchMessage}
-{$ENDIF}
 
 function SetMessageQueue(cMessagesMax: Integer): BOOL; stdcall;
 {$EXTERNALSYM SetMessageQueue}
@@ -3822,16 +3768,9 @@ function PeekMessageA(var lpMsg: MSG; hWnd: HWND;
 function PeekMessageW(var lpMsg: MSG; hWnd: HWND;
   wMsgFilterMin, wMsgFilterMax, wRemoveMsg: UINT): BOOL; stdcall;
 {$EXTERNALSYM PeekMessageW}
-
-{$IFDEF UNICODE}
 function PeekMessage(var lpMsg: MSG; hWnd: HWND;
   wMsgFilterMin, wMsgFilterMax, wRemoveMsg: UINT): BOOL; stdcall;
 {$EXTERNALSYM PeekMessage}
-{$ELSE}
-function PeekMessage(var lpMsg: MSG; hWnd: HWND;
-  wMsgFilterMin, wMsgFilterMax, wRemoveMsg: UINT): BOOL; stdcall;
-{$EXTERNALSYM PeekMessage}
-{$ENDIF}
 
 //
 // Queue status flags for GetQueueStatus() and MsgWaitForMultipleObjects()
@@ -3859,13 +3798,13 @@ const
   QS_RAWINPUT       = $0400;
   {$EXTERNALSYM QS_RAWINPUT}
 
-  QS_MOUSE = (QS_MOUSEMOVE or QS_MOUSEBUTTON);
+  QS_MOUSE = QS_MOUSEMOVE or QS_MOUSEBUTTON;
   {$EXTERNALSYM QS_MOUSE}
 
-  QS_INPUT = (QS_MOUSE or QS_KEY {$IFDEF WINDOWSXP}or QS_RAWINPUT{$ENDIF});
+  QS_INPUT = QS_MOUSE or QS_KEY {$IFDEF WINXP_UP} or QS_RAWINPUT {$ENDIF};
   {$EXTERNALSYM QS_INPUT}
 
-  QS_ALLEVENTS = (QS_INPUT or QS_POSTMESSAGE or QS_TIMER or QS_PAINT or QS_HOTKEY);
+  QS_ALLEVENTS = QS_INPUT or QS_POSTMESSAGE or QS_TIMER or QS_PAINT or QS_HOTKEY;
   {$EXTERNALSYM QS_ALLEVENTS}
 
   QS_ALLINPUT = (QS_INPUT or QS_POSTMESSAGE or QS_TIMER or QS_PAINT or
@@ -3883,13 +3822,13 @@ const
   {$EXTERNALSYM PM_REMOVE}
   PM_NOYIELD        = $0002;
   {$EXTERNALSYM PM_NOYIELD}
-  PM_QS_INPUT       = (QS_INPUT shl 16);
+  PM_QS_INPUT       = QS_INPUT shl 16;
   {$EXTERNALSYM PM_QS_INPUT}
-  PM_QS_POSTMESSAGE = ((QS_POSTMESSAGE or QS_HOTKEY or QS_TIMER) shl 16);
+  PM_QS_POSTMESSAGE = (QS_POSTMESSAGE or QS_HOTKEY or QS_TIMER) shl 16;
   {$EXTERNALSYM PM_QS_POSTMESSAGE}
-  PM_QS_PAINT       = (QS_PAINT shl 16);
+  PM_QS_PAINT       = QS_PAINT shl 16;
   {$EXTERNALSYM PM_QS_PAINT}
-  PM_QS_SENDMESSAGE = (QS_SENDMESSAGE shl 16);
+  PM_QS_SENDMESSAGE = QS_SENDMESSAGE shl 16;
   {$EXTERNALSYM PM_QS_SENDMESSAGE}
 
 function RegisterHotKey(hWnd: HWND; id: Integer; fsModifiers, vk: UINT): BOOL; stdcall;
@@ -3955,14 +3894,8 @@ function SendMessageA(hWnd: HWND; Msg: UINT; wParam: WPARAM; lParam: LPARAM): LR
 {$EXTERNALSYM SendMessageA}
 function SendMessageW(hWnd: HWND; Msg: UINT; wParam: WPARAM; lParam: LPARAM): LRESULT; stdcall;
 {$EXTERNALSYM SendMessageW}
-
-{$IFDEF UNICODE}
 function SendMessage(hWnd: HWND; Msg: UINT; wParam: WPARAM; lParam: LPARAM): LRESULT; stdcall;
 {$EXTERNALSYM SendMessage}
-{$ELSE}
-function SendMessage(hWnd: HWND; Msg: UINT; wParam: WPARAM; lParam: LPARAM): LRESULT; stdcall;
-{$EXTERNALSYM SendMessage}
-{$ENDIF}
 
 function SendMessageTimeoutA(hWnd: HWND; Msg: UINT; wParam: WPARAM; lParam: LPARAM;
   fuFlags, uTimeout: UINT; var lpdwResult: DWORD_PTR): LRESULT; stdcall;
@@ -3970,29 +3903,16 @@ function SendMessageTimeoutA(hWnd: HWND; Msg: UINT; wParam: WPARAM; lParam: LPAR
 function SendMessageTimeoutW(hWnd: HWND; Msg: UINT; wParam: WPARAM; lParam: LPARAM;
   fuFlags, uTimeout: UINT; var lpdwResult: DWORD_PTR): LRESULT; stdcall;
 {$EXTERNALSYM SendMessageTimeoutW}
-
-{$IFDEF UNICODE}
 function SendMessageTimeout(hWnd: HWND; Msg: UINT; wParam: WPARAM; lParam: LPARAM;
   fuFlags, uTimeout: UINT; var lpdwResult: DWORD_PTR): LRESULT; stdcall;
 {$EXTERNALSYM SendMessageTimeout}
-{$ELSE}
-function SendMessageTimeout(hWnd: HWND; Msg: UINT; wParam: WPARAM; lParam: LPARAM;
-  fuFlags, uTimeout: UINT; var lpdwResult: DWORD_PTR): LRESULT; stdcall;
-{$EXTERNALSYM SendMessageTimeout}
-{$ENDIF}
 
 function SendNotifyMessageA(hWnd: HWND; Msg: UINT; wParam: WPARAM; lParam: LPARAM): BOOL; stdcall;
 {$EXTERNALSYM SendNotifyMessageA}
 function SendNotifyMessageW(hWnd: HWND; Msg: UINT; wParam: WPARAM; lParam: LPARAM): BOOL; stdcall;
 {$EXTERNALSYM SendNotifyMessageW}
-
-{$IFDEF UNICODE}
 function SendNotifyMessage(hWnd: HWND; Msg: UINT; wParam: WPARAM; lParam: LPARAM): BOOL; stdcall;
 {$EXTERNALSYM SendNotifyMessage}
-{$ELSE}
-function SendNotifyMessage(hWnd: HWND; Msg: UINT; wParam: WPARAM; lParam: LPARAM): BOOL; stdcall;
-{$EXTERNALSYM SendNotifyMessage}
-{$ENDIF}
 
 function SendMessageCallbackA(hWnd: HWND; Msg: UINT; wParam: WPARAM; lParam: LPARAM;
   lpResultCallBack: SENDASYNCPROC; dwData: ULONG_PTR): BOOL; stdcall;
@@ -4000,16 +3920,9 @@ function SendMessageCallbackA(hWnd: HWND; Msg: UINT; wParam: WPARAM; lParam: LPA
 function SendMessageCallbackW(hWnd: HWND; Msg: UINT; wParam: WPARAM; lParam: LPARAM;
   lpResultCallBack: SENDASYNCPROC; dwData: ULONG_PTR): BOOL; stdcall;
 {$EXTERNALSYM SendMessageCallbackW}
-
-{$IFDEF UNICODE}
 function SendMessageCallback(hWnd: HWND; Msg: UINT; wParam: WPARAM; lParam: LPARAM;
   lpResultCallBack: SENDASYNCPROC; dwData: ULONG_PTR): BOOL; stdcall;
 {$EXTERNALSYM SendMessageCallback}
-{$ELSE}
-function SendMessageCallback(hWnd: HWND; Msg: UINT; wParam: WPARAM; lParam: LPARAM;
-  lpResultCallBack: SENDASYNCPROC; dwData: ULONG_PTR): BOOL; stdcall;
-{$EXTERNALSYM SendMessageCallback}
-{$ENDIF}
 
 type
   BSMINFO = record
@@ -4028,16 +3941,9 @@ function BroadcastSystemMessageExA(dwFlags: DWORD; lpwRecipients: LPDWORD; uiMes
 function BroadcastSystemMessageExW(dwFlags: DWORD; lpwRecipients: LPDWORD; uiMessage: UINT;
   wParam: WPARAM; lParam: LPARAM; pBSMInfo: PBSMINFO): Longint; stdcall;
 {$EXTERNALSYM BroadcastSystemMessageExW}
-
-{$IFDEF UNICODE}
 function BroadcastSystemMessageEx(dwFlags: DWORD; lpwRecipients: LPDWORD; uiMessage: UINT;
   wParam: WPARAM; lParam: LPARAM; pBSMInfo: PBSMINFO): Longint; stdcall;
 {$EXTERNALSYM BroadcastSystemMessageEx}
-{$ELSE}
-function BroadcastSystemMessageEx(dwFlags: DWORD; lpwRecipients: LPDWORD; uiMessage: UINT;
-  wParam: WPARAM; lParam: LPARAM; pBSMInfo: PBSMINFO): Longint; stdcall;
-{$EXTERNALSYM BroadcastSystemMessageEx}
-{$ENDIF}
 
 function BroadcastSystemMessageA(dwFlags: DWORD; lpdwRecipients: LPDWORD;
   uiMessage: UINT; wParam: WPARAM; lParam: LPARAM): Longint; stdcall;
@@ -4045,16 +3951,9 @@ function BroadcastSystemMessageA(dwFlags: DWORD; lpdwRecipients: LPDWORD;
 function BroadcastSystemMessageW(dwFlags: DWORD; lpdwRecipients: LPDWORD;
   uiMessage: UINT; wParam: WPARAM; lParam: LPARAM): Longint; stdcall;
 {$EXTERNALSYM BroadcastSystemMessageW}
-
-{$IFDEF UNICODE}
 function BroadcastSystemMessage(dwFlags: DWORD; lpdwRecipients: LPDWORD;
   uiMessage: UINT; wParam: WPARAM; lParam: LPARAM): Longint; stdcall;
 {$EXTERNALSYM BroadcastSystemMessage}
-{$ELSE}
-function BroadcastSystemMessage(dwFlags: DWORD; lpdwRecipients: LPDWORD;
-  uiMessage: UINT; wParam: WPARAM; lParam: LPARAM): Longint; stdcall;
-{$EXTERNALSYM BroadcastSystemMessage}
-{$ENDIF}
 
 //Broadcast Special Message Recipient list
 
@@ -4123,16 +4022,9 @@ function RegisterDeviceNotificationA(hRecipient: HANDLE; NotificationFilter: LPV
 function RegisterDeviceNotificationW(hRecipient: HANDLE; NotificationFilter: LPVOID;
   Flags: DWORD): HDEVNOTIFY; stdcall;
 {$EXTERNALSYM RegisterDeviceNotificationW}
-
-{$IFDEF UNICODE}
 function RegisterDeviceNotification(hRecipient: HANDLE; NotificationFilter: LPVOID;
   Flags: DWORD): HDEVNOTIFY; stdcall;
 {$EXTERNALSYM RegisterDeviceNotification}
-{$ELSE}
-function RegisterDeviceNotification(hRecipient: HANDLE; NotificationFilter: LPVOID;
-  Flags: DWORD): HDEVNOTIFY; stdcall;
-{$EXTERNALSYM RegisterDeviceNotification}
-{$ENDIF}
 
 function UnregisterDeviceNotification(Handle: HDEVNOTIFY): BOOL; stdcall;
 {$EXTERNALSYM UnregisterDeviceNotification}
@@ -4141,41 +4033,22 @@ function PostMessageA(hWnd: HWND; Msg: UINT; wParam: WPARAM; lParam: LPARAM): BO
 {$EXTERNALSYM PostMessageA}
 function PostMessageW(hWnd: HWND; Msg: UINT; wParam: WPARAM; lParam: LPARAM): BOOL; stdcall;
 {$EXTERNALSYM PostMessageW}
-
-{$IFDEF UNICODE}
 function PostMessage(hWnd: HWND; Msg: UINT; wParam: WPARAM; lParam: LPARAM): BOOL; stdcall;
 {$EXTERNALSYM PostMessage}
-{$ELSE}
-function PostMessage(hWnd: HWND; Msg: UINT; wParam: WPARAM; lParam: LPARAM): BOOL; stdcall;
-{$EXTERNALSYM PostMessage}
-{$ENDIF}
 
 function PostThreadMessageA(idThread: DWORD; Msg: UINT; wParam: WPARAM; lParam: LPARAM): BOOL; stdcall;
 {$EXTERNALSYM PostThreadMessageA}
 function PostThreadMessageW(idThread: DWORD; Msg: UINT; wParam: WPARAM; lParam: LPARAM): BOOL; stdcall;
 {$EXTERNALSYM PostThreadMessageW}
-
-{$IFDEF UNICODE}
 function PostThreadMessage(idThread: DWORD; Msg: UINT; wParam: WPARAM; lParam: LPARAM): BOOL; stdcall;
 {$EXTERNALSYM PostThreadMessage}
-{$ELSE}
-function PostThreadMessage(idThread: DWORD; Msg: UINT; wParam: WPARAM; lParam: LPARAM): BOOL; stdcall;
-{$EXTERNALSYM PostThreadMessage}
-{$ENDIF}
 
 function PostAppMessageA(idThread: DWORD; wMsg: UINT; wParam: WPARAM; lParam: LPARAM): BOOL;
 {$EXTERNALSYM PostAppMessageA}
-
 function PostAppMessageW(idThread: DWORD; wMsg: UINT; wParam: WPARAM; lParam: LPARAM): BOOL;
 {$EXTERNALSYM PostAppMessageW}
-
-{$IFDEF UNICODE}
 function PostAppMessage(idThread: DWORD; wMsg: UINT; wParam: WPARAM; lParam: LPARAM): BOOL;
 {$EXTERNALSYM PostAppMessage}
-{$ELSE}
-function PostAppMessage(idThread: DWORD; wMsg: UINT; wParam: WPARAM; lParam: LPARAM): BOOL;
-{$EXTERNALSYM PostAppMessage}
-{$ENDIF}
 
 //
 // Special HWND value for use with PostMessage() and SendMessage()
@@ -4204,14 +4077,8 @@ function DefWindowProcA(hWnd: HWND; Msg: UINT; wParam: WPARAM; lParam: LPARAM): 
 {$EXTERNALSYM DefWindowProcA}
 function DefWindowProcW(hWnd: HWND; Msg: UINT; wParam: WPARAM; lParam: LPARAM): LRESULT; stdcall;
 {$EXTERNALSYM DefWindowProcW}
-
-{$IFDEF UNICODE}
 function DefWindowProc(hWnd: HWND; Msg: UINT; wParam: WPARAM; lParam: LPARAM): LRESULT; stdcall;
 {$EXTERNALSYM DefWindowProc}
-{$ELSE}
-function DefWindowProc(hWnd: HWND; Msg: UINT; wParam: WPARAM; lParam: LPARAM): LRESULT; stdcall;
-{$EXTERNALSYM DefWindowProc}
-{$ENDIF}
 
 procedure PostQuitMessage(nExitCode: Integer); stdcall;
 {$EXTERNALSYM PostQuitMessage}
@@ -4222,16 +4089,9 @@ function CallWindowProcA(lpPrevWndFunc: WNDPROC; hWnd: HWND; Msg: UINT;
 function CallWindowProcW(lpPrevWndFunc: WNDPROC; hWnd: HWND; Msg: UINT;
   wParam: WPARAM; lParam: LPARAM): LRESULT; stdcall;
 {$EXTERNALSYM CallWindowProcW}
-
-{$IFDEF UNICODE}
 function CallWindowProc(lpPrevWndFunc: WNDPROC; hWnd: HWND; Msg: UINT;
   wParam: WPARAM; lParam: LPARAM): LRESULT; stdcall;
 {$EXTERNALSYM CallWindowProc}
-{$ELSE}
-function CallWindowProc(lpPrevWndFunc: WNDPROC; hWnd: HWND; Msg: UINT;
-  wParam: WPARAM; lParam: LPARAM): LRESULT; stdcall;
-{$EXTERNALSYM CallWindowProc}
-{$ENDIF}
 
 function InSendMessage: BOOL; stdcall;
 {$EXTERNALSYM InSendMessage}
@@ -4265,70 +4125,39 @@ function RegisterClassA(const lpWndClass: WNDCLASSA): ATOM; stdcall;
 {$EXTERNALSYM RegisterClassA}
 function RegisterClassW(const lpWndClass: WNDCLASSW): ATOM; stdcall;
 {$EXTERNALSYM RegisterClassW}
-
-{$IFDEF UNICODE}
-function RegisterClass(const lpWndClass: WNDCLASSW): ATOM; stdcall;
+function RegisterClass(const lpWndClass: WNDCLASS): ATOM; stdcall;
 {$EXTERNALSYM RegisterClass}
-{$ELSE}
-function RegisterClass(const lpWndClass: WNDCLASSA): ATOM; stdcall;
-{$EXTERNALSYM RegisterClass}
-{$ENDIF}
 
-function UnregisterClassA(lpClassName: LPCSTR; hInstance: HINSTANCE): BOOL; stdcall;
+function UnregisterClassA(lpClassName: LPCSTR; hInstance: HINST): BOOL; stdcall;
 {$EXTERNALSYM UnregisterClassA}
-function UnregisterClassW(lpClassName: LPCWSTR; hInstance: HINSTANCE): BOOL; stdcall;
+function UnregisterClassW(lpClassName: LPCWSTR; hInstance: HINST): BOOL; stdcall;
 {$EXTERNALSYM UnregisterClassW}
-
-{$IFDEF UNICODE}
-function UnregisterClass(lpClassName: LPCWSTR; hInstance: HINSTANCE): BOOL; stdcall;
+function UnregisterClass(lpClassName: LPCTSTR; hInstance: HINST): BOOL; stdcall;
 {$EXTERNALSYM UnregisterClass}
-{$ELSE}
-function UnregisterClass(lpClassName: LPCSTR; hInstance: HINSTANCE): BOOL; stdcall;
-{$EXTERNALSYM UnregisterClass}
-{$ENDIF}
 
-function GetClassInfoA(hInstance: HINSTANCE; lpClassName: LPCSTR;
+function GetClassInfoA(hInstance: HINST; lpClassName: LPCSTR;
   var lpWndClass: WNDCLASSA): BOOL; stdcall;
 {$EXTERNALSYM GetClassInfoA}
-function GetClassInfoW(hInstance: HINSTANCE; lpClassName: LPCWSTR;
+function GetClassInfoW(hInstance: HINST; lpClassName: LPCWSTR;
   var lpWndClass: WNDCLASSW): BOOL; stdcall;
 {$EXTERNALSYM GetClassInfoW}
-
-{$IFDEF UNICODE}
-function GetClassInfo(hInstance: HINSTANCE; lpClassName: LPCWSTR;
-  var lpWndClass: WNDCLASSW): BOOL; stdcall;
+function GetClassInfo(hInstance: HINST; lpClassName: LPCTSTR;
+  var lpWndClass: WNDCLASS): BOOL; stdcall;
 {$EXTERNALSYM GetClassInfo}
-{$ELSE}
-function GetClassInfo(hInstance: HINSTANCE; lpClassName: LPCSTR;
-  var lpWndClass: WNDCLASSA): BOOL; stdcall;
-{$EXTERNALSYM GetClassInfo}
-{$ENDIF}
 
 function RegisterClassExA(const lpwcx: WNDCLASSEXA): ATOM; stdcall;
 {$EXTERNALSYM RegisterClassExA}
 function RegisterClassExW(const lpwcx: WNDCLASSEXW): ATOM; stdcall;
 {$EXTERNALSYM RegisterClassExW}
-
-{$IFDEF UNICODE}
-function RegisterClassEx(const lpwcx: WNDCLASSEXW): ATOM; stdcall;
+function RegisterClassEx(const lpwcx: WNDCLASSEX): ATOM; stdcall;
 {$EXTERNALSYM RegisterClassEx}
-{$ELSE}
-function RegisterClassEx(const lpwcx: WNDCLASSEXA): ATOM; stdcall;
-{$EXTERNALSYM RegisterClassEx}
-{$ENDIF}
 
-function GetClassInfoExA(hinst: HINSTANCE; lpszClass: LPCSTR; var lpwcx: WNDCLASSEXA): BOOL; stdcall;
+function GetClassInfoExA(hinst: HINST; lpszClass: LPCSTR; var lpwcx: WNDCLASSEXA): BOOL; stdcall;
 {$EXTERNALSYM GetClassInfoExA}
-function GetClassInfoExW(hinst: HINSTANCE; lpszClass: LPCWSTR; var lpwcx: WNDCLASSEXW): BOOL; stdcall;
+function GetClassInfoExW(hinst: HINST; lpszClass: LPCWSTR; var lpwcx: WNDCLASSEXW): BOOL; stdcall;
 {$EXTERNALSYM GetClassInfoExW}
-
-{$IFDEF UNICODE}
-function GetClassInfoEx(hinst: HINSTANCE; lpszClass: LPCWSTR; var lpwcx: WNDCLASSEXW): BOOL; stdcall;
+function GetClassInfoEx(hinst: HINST; lpszClass: LPCTSTR; var lpwcx: WNDCLASSEX): BOOL; stdcall;
 {$EXTERNALSYM GetClassInfoEx}
-{$ELSE}
-function GetClassInfoEx(hinst: HINSTANCE; lpszClass: LPCSTR; var lpwcx: WNDCLASSEXA): BOOL; stdcall;
-{$EXTERNALSYM GetClassInfoEx}
-{$ENDIF}
 
 const
   CW_USEDEFAULT = Integer($80000000);
@@ -4343,51 +4172,34 @@ const
   {$EXTERNALSYM HWND_DESKTOP}
 
 type
-  PREGISTERCLASSNAMEW = function (p: LPCWSTR): LongBool; stdcall;
+  PREGISTERCLASSNAMEW = function(p: LPCWSTR): LongBool; stdcall;
   {$EXTERNALSYM PREGISTERCLASSNAMEW}
 
 function CreateWindowExA(dwExStyle: DWORD; lpClassName, lpWindowName: LPCSTR;
   dwStyle: DWORD; X, Y, nWidth, nHeight: Integer; hWndParent: HWND;
-  hMenu: HMENU; hInstance: HINSTANCE; lpParam: LPVOID): HWND; stdcall;
+  hMenu: HMENU; hInstance: HINST; lpParam: LPVOID): HWND; stdcall;
 {$EXTERNALSYM CreateWindowExA}
 function CreateWindowExW(dwExStyle: DWORD; lpClassName, lpWindowName: LPCWSTR;
   dwStyle: DWORD; X, Y, nWidth, nHeight: Integer; hWndParent: HWND;
-  hMenu: HMENU; hInstance: HINSTANCE; lpParam: LPVOID): HWND; stdcall;
+  hMenu: HMENU; hInstance: HINST; lpParam: LPVOID): HWND; stdcall;
 {$EXTERNALSYM CreateWindowExW}
-
-{$IFDEF UNICODE}
-function CreateWindowEx(dwExStyle: DWORD; lpClassName, lpWindowName: LPCWSTR;
+function CreateWindowEx(dwExStyle: DWORD; lpClassName, lpWindowName: LPCTSTR;
   dwStyle: DWORD; X, Y, nWidth, nHeight: Integer; hWndParent: HWND;
-  hMenu: HMENU; hInstance: HINSTANCE; lpParam: LPVOID): HWND; stdcall;
+  hMenu: HMENU; hInstance: HINST; lpParam: LPVOID): HWND; stdcall;
 {$EXTERNALSYM CreateWindowEx}
-{$ELSE}
-function CreateWindowEx(dwExStyle: DWORD; lpClassName, lpWindowName: LPCSTR;
-  dwStyle: DWORD; X, Y, nWidth, nHeight: Integer; hWndParent: HWND;
-  hMenu: HMENU; hInstance: HINSTANCE; lpParam: LPVOID): HWND; stdcall;
-{$EXTERNALSYM CreateWindowEx}
-{$ENDIF}
 
 function CreateWindowA(lpClassName, lpWindowName: LPCSTR; dwStyle: DWORD;
   x, y, nWidth, nHeight: Integer; hWndParent: HWND; hMenu: HMENU;
-  hInstance: HINSTANCE; lpParam: LPVOID): HWND;
+  hInstance: HINST; lpParam: LPVOID): HWND;
 {$EXTERNALSYM CreateWindowA}
-
 function CreateWindowW(lpClassName, lpWindowName: LPCWSTR; dwStyle: DWORD;
   x, y, nWidth, nHeight: Integer; hWndParent: HWND; hMenu: HMENU;
-  hInstance: HINSTANCE; lpParam: LPVOID): HWND;
+  hInstance: HINST; lpParam: LPVOID): HWND;
 {$EXTERNALSYM CreateWindowW}
-
-{$IFDEF UNICODE}
-function CreateWindow(lpClassName, lpWindowName: LPCWSTR; dwStyle: DWORD;
+function CreateWindow(lpClassName, lpWindowName: LPCTSTR; dwStyle: DWORD;
   x, y, nWidth, nHeight: Integer; hWndParent: HWND; hMenu: HMENU;
-  hInstance: HINSTANCE; lpParam: LPVOID): HWND;
+  hInstance: HINST; lpParam: LPVOID): HWND;
 {$EXTERNALSYM CreateWindow}
-{$ELSE}
-function CreateWindow(lpClassName, lpWindowName: LPCSTR; dwStyle: DWORD;
-  x, y, nWidth, nHeight: Integer; hWndParent: HWND; hMenu: HMENU;
-  hInstance: HINSTANCE; lpParam: LPVOID): HWND;
-{$EXTERNALSYM CreateWindow}
-{$ENDIF}
 
 function IsWindow(hWnd: HWND): BOOL; stdcall;
 {$EXTERNALSYM IsWindow}
@@ -4470,7 +4282,7 @@ const
   {$EXTERNALSYM FLASHW_CAPTION}
   FLASHW_TRAY      = $00000002;
   {$EXTERNALSYM FLASHW_TRAY}
-  FLASHW_ALL       = (FLASHW_CAPTION or FLASHW_TRAY);
+  FLASHW_ALL       = FLASHW_CAPTION or FLASHW_TRAY;
   {$EXTERNALSYM FLASHW_ALL}
   FLASHW_TIMER     = $00000004;
   {$EXTERNALSYM FLASHW_TIMER}
@@ -4606,17 +4418,17 @@ type
   LPCDLGTEMPLATEW = ^DLGTEMPLATE;
   {$EXTERNALSYM LPCDLGTEMPLATEW}
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   LPDLGTEMPLATE = LPDLGTEMPLATEW;
   {$EXTERNALSYM LPDLGTEMPLATE}
   LPCDLGTEMPLATE = LPCDLGTEMPLATEW;
   {$EXTERNALSYM LPCDLGTEMPLATE}
-{$ELSE}
+  {$ELSE}
   LPDLGTEMPLATE = LPDLGTEMPLATEA;
   {$EXTERNALSYM LPDLGTEMPLATE}
   LPCDLGTEMPLATE = LPCDLGTEMPLATEA;
   {$EXTERNALSYM LPCDLGTEMPLATE}
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 // 32 bit Dialog item template.
@@ -4644,161 +4456,102 @@ type
   LPDLGITEMTEMPLATEW = ^DLGITEMTEMPLATE;
   {$EXTERNALSYM LPDLGITEMTEMPLATE}
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   PDLGITEMTEMPLATE = PDLGITEMTEMPLATEW;
   {$EXTERNALSYM PDLGITEMTEMPLATE}
   LPDLGITEMTEMPLATE = PDLGITEMTEMPLATEW;
   {$EXTERNALSYM LPDLGITEMTEMPLATE}
-{$ELSE}
+  {$ELSE}
   PDLGITEMTEMPLATE = PDLGITEMTEMPLATEA;
   {$EXTERNALSYM PDLGITEMTEMPLATE}
   LPDLGITEMTEMPLATE = PDLGITEMTEMPLATEA;
   {$EXTERNALSYM LPDLGITEMTEMPLATE}
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 // #include <poppack.h> // Resume normal packing//
 
-function CreateDialogParamA(hInstance: HINSTANCE; lpTemplateName: LPCSTR;
+function CreateDialogParamA(hInstance: HINST; lpTemplateName: LPCSTR;
   hWndParent: HWND; lpDialogFunc: DLGPROC; dwInitParam: LPARAM): HWND; stdcall;
 {$EXTERNALSYM CreateDialogParamA}
-function CreateDialogParamW(hInstance: HINSTANCE; lpTemplateName: LPCWSTR;
+function CreateDialogParamW(hInstance: HINST; lpTemplateName: LPCWSTR;
   hWndParent: HWND; lpDialogFunc: DLGPROC; dwInitParam: LPARAM): HWND; stdcall;
 {$EXTERNALSYM CreateDialogParamW}
-
-{$IFDEF UNICODE}
-function CreateDialogParam(hInstance: HINSTANCE; lpTemplateName: LPCWSTR;
+function CreateDialogParam(hInstance: HINST; lpTemplateName: LPCTSTR;
   hWndParent: HWND; lpDialogFunc: DLGPROC; dwInitParam: LPARAM): HWND; stdcall;
 {$EXTERNALSYM CreateDialogParam}
-{$ELSE}
-function CreateDialogParam(hInstance: HINSTANCE; lpTemplateName: LPCSTR;
-  hWndParent: HWND; lpDialogFunc: DLGPROC; dwInitParam: LPARAM): HWND; stdcall;
-{$EXTERNALSYM CreateDialogParam}
-{$ENDIF}
 
-function CreateDialogIndirectParamA(hInstance: HINSTANCE; const lpTemplate: DLGTEMPLATE;
+function CreateDialogIndirectParamA(hInstance: HINST; const lpTemplate: DLGTEMPLATE;
   hWndParent: HWND; lpDialogFunc: DLGPROC; dwInitParam: LPARAM): HWND; stdcall;
 {$EXTERNALSYM CreateDialogIndirectParamA}
-function CreateDialogIndirectParamW(hInstance: HINSTANCE; const lpTemplate: DLGTEMPLATE;
+function CreateDialogIndirectParamW(hInstance: HINST; const lpTemplate: DLGTEMPLATE;
   hWndParent: HWND; lpDialogFunc: DLGPROC; dwInitParam: LPARAM): HWND; stdcall;
 {$EXTERNALSYM CreateDialogIndirectParamW}
-
-{$IFDEF UNICODE}
-function CreateDialogIndirectParam(hInstance: HINSTANCE; const lpTemplate: DLGTEMPLATE;
+function CreateDialogIndirectParam(hInstance: HINST; const lpTemplate: DLGTEMPLATE;
   hWndParent: HWND; lpDialogFunc: DLGPROC; dwInitParam: LPARAM): HWND; stdcall;
 {$EXTERNALSYM CreateDialogIndirectParam}
-{$ELSE}
-function CreateDialogIndirectParam(hInstance: HINSTANCE; const lpTemplate: DLGTEMPLATE;
-  hWndParent: HWND; lpDialogFunc: DLGPROC; dwInitParam: LPARAM): HWND; stdcall;
-{$EXTERNALSYM CreateDialogIndirectParam}
-{$ENDIF}
 
-function CreateDialogA(hInstance: HINSTANCE; lpName: LPCSTR; hWndParent: HWND;
+function CreateDialogA(hInstance: HINST; lpName: LPCSTR; hWndParent: HWND;
   lpDialogFunc: DLGPROC): HWND;
 {$EXTERNALSYM CreateDialogA}
-function CreateDialogW(hInstance: HINSTANCE; lpName: LPCWSTR; hWndParent: HWND;
+function CreateDialogW(hInstance: HINST; lpName: LPCWSTR; hWndParent: HWND;
   lpDialogFunc: DLGPROC): HWND;
 {$EXTERNALSYM CreateDialogW}
-
-{$IFDEF UNICODE}
-function CreateDialog(hInstance: HINSTANCE; lpName: LPCWSTR; hWndParent: HWND;
+function CreateDialog(hInstance: HINST; lpName: LPCTSTR; hWndParent: HWND;
   lpDialogFunc: DLGPROC): HWND;
 {$EXTERNALSYM CreateDialog}
-{$ELSE}
-function CreateDialog(hInstance: HINSTANCE; lpName: LPCSTR; hWndParent: HWND;
-  lpDialogFunc: DLGPROC): HWND;
-{$EXTERNALSYM CreateDialog}
-{$ENDIF}
 
-function CreateDialogIndirectA(hInstance: HINSTANCE; const lpTemplate: DLGTEMPLATE;
+function CreateDialogIndirectA(hInstance: HINST; const lpTemplate: DLGTEMPLATE;
   hWndParent: HWND; lpDialogFunc: DLGPROC): HWND;
 {$EXTERNALSYM CreateDialogIndirectA}
-function CreateDialogIndirectW(hInstance: HINSTANCE; const lpTemplate: DLGTEMPLATE;
+function CreateDialogIndirectW(hInstance: HINST; const lpTemplate: DLGTEMPLATE;
   hWndParent: HWND; lpDialogFunc: DLGPROC): HWND;
 {$EXTERNALSYM CreateDialogIndirectW}
-
-{$IFDEF UNICODE}
-function CreateDialogIndirect(hInstance: HINSTANCE; const lpTemplate: DLGTEMPLATE;
+function CreateDialogIndirect(hInstance: HINST; const lpTemplate: DLGTEMPLATE;
   hWndParent: HWND; lpDialogFunc: DLGPROC): HWND;
 {$EXTERNALSYM CreateDialogIndirect}
-{$ELSE}
-function CreateDialogIndirect(hInstance: HINSTANCE; const lpTemplate: DLGTEMPLATE;
-  hWndParent: HWND; lpDialogFunc: DLGPROC): HWND;
-{$EXTERNALSYM CreateDialogIndirect}
-{$ENDIF}
 
-function DialogBoxParamA(hInstance: HINSTANCE; lpTemplateName: LPCSTR;
+function DialogBoxParamA(hInstance: HINST; lpTemplateName: LPCSTR;
   hWndParent: HWND; lpDialogFunc: DLGPROC; dwInitParam: LPARAM): INT_PTR; stdcall;
 {$EXTERNALSYM DialogBoxParamA}
-function DialogBoxParamW(hInstance: HINSTANCE; lpTemplateName: LPCWSTR;
+function DialogBoxParamW(hInstance: HINST; lpTemplateName: LPCWSTR;
   hWndParent: HWND; lpDialogFunc: DLGPROC; dwInitParam: LPARAM): INT_PTR; stdcall;
 {$EXTERNALSYM DialogBoxParamW}
-
-{$IFDEF UNICODE}
-function DialogBoxParam(hInstance: HINSTANCE; lpTemplateName: LPCWSTR;
+function DialogBoxParam(hInstance: HINST; lpTemplateName: LPCTSTR;
   hWndParent: HWND; lpDialogFunc: DLGPROC; dwInitParam: LPARAM): INT_PTR; stdcall;
 {$EXTERNALSYM DialogBoxParam}
-{$ELSE}
-function DialogBoxParam(hInstance: HINSTANCE; lpTemplateName: LPCSTR;
-  hWndParent: HWND; lpDialogFunc: DLGPROC; dwInitParam: LPARAM): INT_PTR; stdcall;
-{$EXTERNALSYM DialogBoxParam}
-{$ENDIF}
 
-function DialogBoxIndirectParamA(hInstance: HINSTANCE;
+function DialogBoxIndirectParamA(hInstance: HINST;
   const hDialogTemplate: DLGTEMPLATE; hWndParent: HWND; lpDialogFunc: DLGPROC;
   dwInitParam: LPARAM): INT_PTR; stdcall;
 {$EXTERNALSYM DialogBoxIndirectParamA}
-function DialogBoxIndirectParamW(hInstance: HINSTANCE;
+function DialogBoxIndirectParamW(hInstance: HINST;
   const hDialogTemplate: DLGTEMPLATE; hWndParent: HWND; lpDialogFunc: DLGPROC;
   dwInitParam: LPARAM): INT_PTR; stdcall;
 {$EXTERNALSYM DialogBoxIndirectParamW}
-
-{$IFDEF UNICODE}
-function DialogBoxIndirectParam(hInstance: HINSTANCE;
+function DialogBoxIndirectParam(hInstance: HINST;
   const hDialogTemplate: DLGTEMPLATE; hWndParent: HWND; lpDialogFunc: DLGPROC;
   dwInitParam: LPARAM): INT_PTR; stdcall;
 {$EXTERNALSYM DialogBoxIndirectParam}
-{$ELSE}
-function DialogBoxIndirectParam(hInstance: HINSTANCE;
-  const hDialogTemplate: DLGTEMPLATE; hWndParent: HWND; lpDialogFunc: DLGPROC;
-  dwInitParam: LPARAM): INT_PTR; stdcall;
-{$EXTERNALSYM DialogBoxIndirectParam}
-{$ENDIF}
 
-function DialogBoxA(hInstance: HINSTANCE; lpTemplate: LPCSTR; hWndParent: HWND;
+function DialogBoxA(hInstance: HINST; lpTemplate: LPCSTR; hWndParent: HWND;
   lpDialogFunc: DLGPROC): INT_PTR;
 {$EXTERNALSYM DialogBoxA}
-
-function DialogBoxW(hInstance: HINSTANCE; lpTemplate: LPCWSTR; hWndParent: HWND;
+function DialogBoxW(hInstance: HINST; lpTemplate: LPCWSTR; hWndParent: HWND;
   lpDialogFunc: DLGPROC): INT_PTR;
 {$EXTERNALSYM DialogBoxW}
-
-{$IFDEF UNICODE}
-function DialogBox(hInstance: HINSTANCE; lpTemplate: LPCWSTR; hWndParent: HWND;
+function DialogBox(hInstance: HINST; lpTemplate: LPCTSTR; hWndParent: HWND;
   lpDialogFunc: DLGPROC): INT_PTR;
 {$EXTERNALSYM DialogBox}
-{$ELSE}
-function DialogBox(hInstance: HINSTANCE; lpTemplate: LPCSTR; hWndParent: HWND;
-  lpDialogFunc: DLGPROC): INT_PTR;
-{$EXTERNALSYM DialogBox}
-{$ENDIF}
 
-function DialogBoxIndirectA(hInstance: HINSTANCE; const lpTemplate: DLGTEMPLATE;
+function DialogBoxIndirectA(hInstance: HINST; const lpTemplate: DLGTEMPLATE;
   hWndParent: HWND; lpDialogFunc: DLGPROC): INT_PTR;
 {$EXTERNALSYM DialogBoxIndirectA}
-
-function DialogBoxIndirectW(hInstance: HINSTANCE; const lpTemplate: DLGTEMPLATE;
+function DialogBoxIndirectW(hInstance: HINST; const lpTemplate: DLGTEMPLATE;
   hWndParent: HWND; lpDialogFunc: DLGPROC): INT_PTR;
 {$EXTERNALSYM DialogBoxIndirectW}
-
-{$IFDEF UNICODE}
-function DialogBoxIndirect(hInstance: HINSTANCE; const lpTemplate: DLGTEMPLATE;
+function DialogBoxIndirect(hInstance: HINST; const lpTemplate: DLGTEMPLATE;
   hWndParent: HWND; lpDialogFunc: DLGPROC): INT_PTR;
 {$EXTERNALSYM DialogBoxIndirect}
-{$ELSE}
-function DialogBoxIndirect(hInstance: HINSTANCE; const lpTemplate: DLGTEMPLATE;
-  hWndParent: HWND; lpDialogFunc: DLGPROC): INT_PTR;
-{$EXTERNALSYM DialogBoxIndirect}
-{$ENDIF}
 
 function EndDialog(hDlg: HWND; nResult: INT_PTR): BOOL; stdcall;
 {$EXTERNALSYM EndDialog}
@@ -4817,14 +4570,8 @@ function SetDlgItemTextA(hDlg: HWND; nIDDlgItem: Integer; lpString: LPCSTR): BOO
 {$EXTERNALSYM SetDlgItemTextA}
 function SetDlgItemTextW(hDlg: HWND; nIDDlgItem: Integer; lpString: LPCWSTR): BOOL; stdcall;
 {$EXTERNALSYM SetDlgItemTextW}
-
-{$IFDEF UNICODE}
-function SetDlgItemText(hDlg: HWND; nIDDlgItem: Integer; lpString: LPCWSTR): BOOL; stdcall;
+function SetDlgItemText(hDlg: HWND; nIDDlgItem: Integer; lpString: LPCTSTR): BOOL; stdcall;
 {$EXTERNALSYM SetDlgItemText}
-{$ELSE}
-function SetDlgItemText(hDlg: HWND; nIDDlgItem: Integer; lpString: LPCSTR): BOOL; stdcall;
-{$EXTERNALSYM SetDlgItemText}
-{$ENDIF}
 
 function GetDlgItemTextA(hDlg: HWND; nIDDlgItem: Integer; lpString: LPSTR;
   nMaxCount: Integer): UINT; stdcall;
@@ -4832,16 +4579,9 @@ function GetDlgItemTextA(hDlg: HWND; nIDDlgItem: Integer; lpString: LPSTR;
 function GetDlgItemTextW(hDlg: HWND; nIDDlgItem: Integer; lpString: LPWSTR;
   nMaxCount: Integer): UINT; stdcall;
 {$EXTERNALSYM GetDlgItemTextW}
-
-{$IFDEF UNICODE}
-function GetDlgItemText(hDlg: HWND; nIDDlgItem: Integer; lpString: LPWSTR;
+function GetDlgItemText(hDlg: HWND; nIDDlgItem: Integer; lpString: LPTSTR;
   nMaxCount: Integer): UINT; stdcall;
 {$EXTERNALSYM GetDlgItemText}
-{$ELSE}
-function GetDlgItemText(hDlg: HWND; nIDDlgItem: Integer; lpString: LPSTR;
-  nMaxCount: Integer): UINT; stdcall;
-{$EXTERNALSYM GetDlgItemText}
-{$ENDIF}
 
 function CheckDlgButton(hDlg: HWND; nIDButton: Integer; uCheck: UINT): BOOL; stdcall;
 {$EXTERNALSYM CheckDlgButton}
@@ -4859,16 +4599,9 @@ function SendDlgItemMessageA(hDlg: HWND; nIDDlgItem: Integer; Msg: UINT;
 function SendDlgItemMessageW(hDlg: HWND; nIDDlgItem: Integer; Msg: UINT;
   wParam: WPARAM; lParam: LPARAM): LRESULT; stdcall;
 {$EXTERNALSYM SendDlgItemMessageW}
-
-{$IFDEF UNICODE}
 function SendDlgItemMessage(hDlg: HWND; nIDDlgItem: Integer; Msg: UINT;
   wParam: WPARAM; lParam: LPARAM): LRESULT; stdcall;
 {$EXTERNALSYM SendDlgItemMessage}
-{$ELSE}
-function SendDlgItemMessage(hDlg: HWND; nIDDlgItem: Integer; Msg: UINT;
-  wParam: WPARAM; lParam: LPARAM): LRESULT; stdcall;
-{$EXTERNALSYM SendDlgItemMessage}
-{$ENDIF}
 
 function GetNextDlgGroupItem(hDlg: HWND; hCtl: HWND; bPrevious: BOOL): HWND; stdcall;
 {$EXTERNALSYM GetNextDlgGroupItem}
@@ -4886,14 +4619,8 @@ function DefDlgProcA(hDlg: HWND; Msg: UINT; wParam: WPARAM; lParam: LPARAM): LRE
 {$EXTERNALSYM DefDlgProcA}
 function DefDlgProcW(hDlg: HWND; Msg: UINT; wParam: WPARAM; lParam: LPARAM): LRESULT; stdcall;
 {$EXTERNALSYM DefDlgProcW}
-
-{$IFDEF UNICODE}
 function DefDlgProc(hDlg: HWND; Msg: UINT; wParam: WPARAM; lParam: LPARAM): LRESULT; stdcall;
 {$EXTERNALSYM DefDlgProc}
-{$ELSE}
-function DefDlgProc(hDlg: HWND; Msg: UINT; wParam: WPARAM; lParam: LPARAM): LRESULT; stdcall;
-{$EXTERNALSYM DefDlgProc}
-{$ENDIF}
 
 //
 // Window extra byted needed for private dialog classes.
@@ -4907,14 +4634,8 @@ function CallMsgFilterA(lpMsg: LPMSG; nCode: Integer): BOOL; stdcall;
 {$EXTERNALSYM CallMsgFilterA}
 function CallMsgFilterW(lpMsg: LPMSG; nCode: Integer): BOOL; stdcall;
 {$EXTERNALSYM CallMsgFilterW}
-
-{$IFDEF UNICODE}
 function CallMsgFilter(lpMsg: LPMSG; nCode: Integer): BOOL; stdcall;
 {$EXTERNALSYM CallMsgFilter}
-{$ELSE}
-function CallMsgFilter(lpMsg: LPMSG; nCode: Integer): BOOL; stdcall;
-{$EXTERNALSYM CallMsgFilter}
-{$ENDIF}
 
 //
 // Clipboard Manager Functions
@@ -4951,14 +4672,8 @@ function RegisterClipboardFormatA(lpszFormat: LPCSTR): UINT; stdcall;
 {$EXTERNALSYM RegisterClipboardFormatA}
 function RegisterClipboardFormatW(lpszFormat: LPCWSTR): UINT; stdcall;
 {$EXTERNALSYM RegisterClipboardFormatW}
-
-{$IFDEF UNICODE}
-function RegisterClipboardFormat(lpszFormat: LPCWSTR): UINT; stdcall;
+function RegisterClipboardFormat(lpszFormat: LPCTSTR): UINT; stdcall;
 {$EXTERNALSYM RegisterClipboardFormat}
-{$ELSE}
-function RegisterClipboardFormat(lpszFormat: LPCSTR): UINT; stdcall;
-{$EXTERNALSYM RegisterClipboardFormat}
-{$ENDIF}
 
 function CountClipboardFormats: Integer; stdcall;
 {$EXTERNALSYM CountClipboardFormats}
@@ -4972,16 +4687,9 @@ function GetClipboardFormatNameA(format: UINT; lpszFormatName: LPSTR;
 function GetClipboardFormatNameW(format: UINT; lpszFormatName: LPWSTR;
   cchMaxCount: Integer): Integer; stdcall;
 {$EXTERNALSYM GetClipboardFormatNameW}
-
-{$IFDEF UNICODE}
-function GetClipboardFormatName(format: UINT; lpszFormatName: LPWSTR;
+function GetClipboardFormatName(format: UINT; lpszFormatName: LPTSTR;
   cchMaxCount: Integer): Integer; stdcall;
 {$EXTERNALSYM GetClipboardFormatName}
-{$ELSE}
-function GetClipboardFormatName(format: UINT; lpszFormatName: LPSTR;
-  cchMaxCount: Integer): Integer; stdcall;
-{$EXTERNALSYM GetClipboardFormatName}
-{$ENDIF}
 
 function EmptyClipboard: BOOL; stdcall;
 {$EXTERNALSYM EmptyClipboard}
@@ -5003,131 +4711,71 @@ function CharToOemA(lpszSrc: LPCSTR; lpszDst: LPSTR): BOOL; stdcall;
 {$EXTERNALSYM CharToOemA}
 function CharToOemW(lpszSrc: LPCWSTR; lpszDst: LPSTR): BOOL; stdcall;
 {$EXTERNALSYM CharToOemW}
-
-{$IFDEF UNICODE}
-function CharToOem(lpszSrc: LPCWSTR; lpszDst: LPSTR): BOOL; stdcall;
+function CharToOem(lpszSrc: LPCTSTR; lpszDst: LPSTR): BOOL; stdcall;
 {$EXTERNALSYM CharToOem}
-{$ELSE}
-function CharToOem(lpszSrc: LPCSTR; lpszDst: LPSTR): BOOL; stdcall;
-{$EXTERNALSYM CharToOem}
-{$ENDIF}
 
 function OemToCharA(lpszSrc: LPCSTR; lpszDst: LPSTR): BOOL; stdcall;
 {$EXTERNALSYM OemToCharA}
 function OemToCharW(lpszSrc: LPCSTR; lpszDst: LPWSTR): BOOL; stdcall;
 {$EXTERNALSYM OemToCharW}
-
-{$IFDEF UNICODE}
-function OemToChar(lpszSrc: LPCSTR; lpszDst: LPWSTR): BOOL; stdcall;
+function OemToChar(lpszSrc: LPCSTR; lpszDst: LPTSTR): BOOL; stdcall;
 {$EXTERNALSYM OemToChar}
-{$ELSE}
-function OemToChar(lpszSrc: LPCSTR; lpszDst: LPSTR): BOOL; stdcall;
-{$EXTERNALSYM OemToChar}
-{$ENDIF}
 
 function CharToOemBuffA(lpszSrc: LPCSTR; lpszDst: LPSTR; cchDstLength: DWORD): BOOL; stdcall;
 {$EXTERNALSYM CharToOemBuffA}
 function CharToOemBuffW(lpszSrc: LPCWSTR; lpszDst: LPSTR; cchDstLength: DWORD): BOOL; stdcall;
 {$EXTERNALSYM CharToOemBuffW}
-
-{$IFDEF UNICODE}
-function CharToOemBuff(lpszSrc: LPCWSTR; lpszDst: LPSTR; cchDstLength: DWORD): BOOL; stdcall;
+function CharToOemBuff(lpszSrc: LPCTSTR; lpszDst: LPSTR; cchDstLength: DWORD): BOOL; stdcall;
 {$EXTERNALSYM CharToOemBuff}
-{$ELSE}
-function CharToOemBuff(lpszSrc: LPCSTR; lpszDst: LPSTR; cchDstLength: DWORD): BOOL; stdcall;
-{$EXTERNALSYM CharToOemBuff}
-{$ENDIF}
 
 function OemToCharBuffA(lpszSrc: LPCSTR; lpszDst: LPSTR; cchDstLength: DWORD): BOOL; stdcall;
 {$EXTERNALSYM OemToCharBuffA}
 function OemToCharBuffW(lpszSrc: LPCSTR; lpszDst: LPWSTR; cchDstLength: DWORD): BOOL; stdcall;
 {$EXTERNALSYM OemToCharBuffW}
-
-{$IFDEF UNICODE}
-function OemToCharBuff(lpszSrc: LPCSTR; lpszDst: LPWSTR; cchDstLength: DWORD): BOOL; stdcall;
+function OemToCharBuff(lpszSrc: LPCSTR; lpszDst: LPTSTR; cchDstLength: DWORD): BOOL; stdcall;
 {$EXTERNALSYM OemToCharBuff}
-{$ELSE}
-function OemToCharBuff(lpszSrc: LPCSTR; lpszDst: LPSTR; cchDstLength: DWORD): BOOL; stdcall;
-{$EXTERNALSYM OemToCharBuff}
-{$ENDIF}
 
 function CharUpperA(lpsz: LPSTR): LPSTR; stdcall;
 {$EXTERNALSYM CharUpperA}
 function CharUpperW(lpsz: LPWSTR): LPWSTR; stdcall;
 {$EXTERNALSYM CharUpperW}
-
-{$IFDEF UNICODE}
-function CharUpper(lpsz: LPWSTR): LPWSTR; stdcall;
+function CharUpper(lpsz: LPTSTR): LPTSTR; stdcall;
 {$EXTERNALSYM CharUpper}
-{$ELSE}
-function CharUpper(lpsz: LPSTR): LPSTR; stdcall;
-{$EXTERNALSYM CharUpper}
-{$ENDIF}
 
 function CharUpperBuffA(lpsz: LPSTR; cchLength: DWORD): DWORD; stdcall;
 {$EXTERNALSYM CharUpperBuffA}
 function CharUpperBuffW(lpsz: LPWSTR; cchLength: DWORD): DWORD; stdcall;
 {$EXTERNALSYM CharUpperBuffW}
-
-{$IFDEF UNICODE}
-function CharUpperBuff(lpsz: LPWSTR; cchLength: DWORD): DWORD; stdcall;
+function CharUpperBuff(lpsz: LPTSTR; cchLength: DWORD): DWORD; stdcall;
 {$EXTERNALSYM CharUpperBuff}
-{$ELSE}
-function CharUpperBuff(lpsz: LPSTR; cchLength: DWORD): DWORD; stdcall;
-{$EXTERNALSYM CharUpperBuff}
-{$ENDIF}
 
 function CharLowerA(lpsz: LPSTR): LPSTR; stdcall;
 {$EXTERNALSYM CharLowerA}
 function CharLowerW(lpsz: LPWSTR): LPWSTR; stdcall;
 {$EXTERNALSYM CharLowerW}
-
-{$IFDEF UNICODE}
-function CharLower(lpsz: LPWSTR): LPWSTR; stdcall;
+function CharLower(lpsz: LPTSTR): LPTSTR; stdcall;
 {$EXTERNALSYM CharLower}
-{$ELSE}
-function CharLower(lpsz: LPSTR): LPSTR; stdcall;
-{$EXTERNALSYM CharLower}
-{$ENDIF}
 
 function CharLowerBuffA(lpsz: LPSTR; cchLength: DWORD): DWORD; stdcall;
 {$EXTERNALSYM CharLowerBuffA}
 function CharLowerBuffW(lpsz: LPWSTR; cchLength: DWORD): DWORD; stdcall;
 {$EXTERNALSYM CharLowerBuffW}
-
-{$IFDEF UNICODE}
-function CharLowerBuff(lpsz: LPWSTR; cchLength: DWORD): DWORD; stdcall;
+function CharLowerBuff(lpsz: LPTSTR; cchLength: DWORD): DWORD; stdcall;
 {$EXTERNALSYM CharLowerBuff}
-{$ELSE}
-function CharLowerBuff(lpsz: LPSTR; cchLength: DWORD): DWORD; stdcall;
-{$EXTERNALSYM CharLowerBuff}
-{$ENDIF}
 
 function CharNextA(lpsz: LPCSTR): LPSTR; stdcall;
 {$EXTERNALSYM CharNextA}
 function CharNextW(lpsz: LPCWSTR): LPWSTR; stdcall;
 {$EXTERNALSYM CharNextW}
-
-{$IFDEF UNICODE}
-function CharNext(lpsz: LPCWSTR): LPWSTR; stdcall;
+function CharNext(lpsz: LPCTSTR): LPTSTR; stdcall;
 {$EXTERNALSYM CharNext}
-{$ELSE}
-function CharNext(lpsz: LPCSTR): LPSTR; stdcall;
-{$EXTERNALSYM CharNext}
-{$ENDIF}
 
 function CharPrevA(lpszStart: LPCSTR; lpszCurrent: LPCSTR): LPSTR; stdcall;
 {$EXTERNALSYM CharPrevA}
 function CharPrevW(lpszStart: LPCWSTR; lpszCurrent: LPCWSTR): LPWSTR; stdcall;
 {$EXTERNALSYM CharPrevW}
-
-{$IFDEF UNICODE}
-function CharPrev(lpszStart: LPCWSTR; lpszCurrent: LPCWSTR): LPWSTR; stdcall;
+function CharPrev(lpszStart: LPCTSTR; lpszCurrent: LPCTSTR): LPTSTR; stdcall;
 {$EXTERNALSYM CharPrev}
-{$ELSE}
-function CharPrev(lpszStart: LPCSTR; lpszCurrent: LPCSTR): LPSTR; stdcall;
-{$EXTERNALSYM CharPrev}
-{$ENDIF}
 
 function CharNextExA(CodePage: WORD; lpCurrentChar: LPCSTR; dwFlags: DWORD): LPSTR; stdcall;
 {$EXTERNALSYM CharNextExA}
@@ -5177,53 +4825,29 @@ function IsCharAlphaA(ch: CHAR): BOOL; stdcall;
 {$EXTERNALSYM IsCharAlphaA}
 function IsCharAlphaW(ch: WCHAR): BOOL; stdcall;
 {$EXTERNALSYM IsCharAlphaW}
-
-{$IFDEF UNICODE}
-function IsCharAlpha(ch: WCHAR): BOOL; stdcall;
+function IsCharAlpha(ch: TCHAR): BOOL; stdcall;
 {$EXTERNALSYM IsCharAlpha}
-{$ELSE}
-function IsCharAlpha(ch: CHAR): BOOL; stdcall;
-{$EXTERNALSYM IsCharAlpha}
-{$ENDIF}
 
 function IsCharAlphaNumericA(ch: CHAR): BOOL; stdcall;
 {$EXTERNALSYM IsCharAlphaNumericA}
 function IsCharAlphaNumericW(ch: WCHAR): BOOL; stdcall;
 {$EXTERNALSYM IsCharAlphaNumericW}
-
-{$IFDEF UNICODE}
-function IsCharAlphaNumeric(ch: WCHAR): BOOL; stdcall;
+function IsCharAlphaNumeric(ch: TCHAR): BOOL; stdcall;
 {$EXTERNALSYM IsCharAlphaNumeric}
-{$ELSE}
-function IsCharAlphaNumeric(ch: CHAR): BOOL; stdcall;
-{$EXTERNALSYM IsCharAlphaNumeric}
-{$ENDIF}
 
 function IsCharUpperA(ch: CHAR): BOOL; stdcall;
 {$EXTERNALSYM IsCharUpperA}
 function IsCharUpperW(ch: WCHAR): BOOL; stdcall;
 {$EXTERNALSYM IsCharUpperW}
-
-{$IFDEF UNICODE}
-function IsCharUpper(ch: WCHAR): BOOL; stdcall;
+function IsCharUpper(ch: TCHAR): BOOL; stdcall;
 {$EXTERNALSYM IsCharUpper}
-{$ELSE}
-function IsCharUpper(ch: CHAR): BOOL; stdcall;
-{$EXTERNALSYM IsCharUpper}
-{$ENDIF}
 
 function IsCharLowerA(ch: CHAR): BOOL; stdcall;
 {$EXTERNALSYM IsCharLowerA}
 function IsCharLowerW(ch: WCHAR): BOOL; stdcall;
 {$EXTERNALSYM IsCharLowerW}
-
-{$IFDEF UNICODE}
-function IsCharLower(ch: WCHAR): BOOL; stdcall;
+function IsCharLower(ch: TCHAR): BOOL; stdcall;
 {$EXTERNALSYM IsCharLower}
-{$ELSE}
-function IsCharLower(ch: CHAR): BOOL; stdcall;
-{$EXTERNALSYM IsCharLower}
-{$ENDIF}
 
 function SetFocus(hWnd: HWND): HWND; stdcall;
 {$EXTERNALSYM SetFocus}
@@ -5253,14 +4877,8 @@ function GetKeyNameTextA(lParam: LONG; lpString: LPSTR; nSize: Integer): Integer
 {$EXTERNALSYM GetKeyNameTextA}
 function GetKeyNameTextW(lParam: LONG; lpString: LPWSTR; nSize: Integer): Integer; stdcall;
 {$EXTERNALSYM GetKeyNameTextW}
-
-{$IFDEF UNICODE}
-function GetKeyNameText(lParam: LONG; lpString: LPWSTR; nSize: Integer): Integer; stdcall;
+function GetKeyNameText(lParam: LONG; lpString: LPTSTR; nSize: Integer): Integer; stdcall;
 {$EXTERNALSYM GetKeyNameText}
-{$ELSE}
-function GetKeyNameText(lParam: LONG; lpString: LPSTR; nSize: Integer): Integer; stdcall;
-{$EXTERNALSYM GetKeyNameText}
-{$ENDIF}
 
 function GetKeyboardType(nTypeFlag: Integer): Integer; stdcall;
 {$EXTERNALSYM GetKeyboardType}
@@ -5284,27 +4902,15 @@ function VkKeyScanA(ch: CHAR): SHORT; stdcall;
 {$EXTERNALSYM VkKeyScanA}
 function VkKeyScanW(ch: WCHAR): SHORT; stdcall;
 {$EXTERNALSYM VkKeyScanW}
-
-{$IFDEF UNICODE}
-function VkKeyScan(ch: WCHAR): SHORT; stdcall;
+function VkKeyScan(ch: TCHAR): SHORT; stdcall;
 {$EXTERNALSYM VkKeyScan}
-{$ELSE}
-function VkKeyScan(ch: CHAR): SHORT; stdcall;
-{$EXTERNALSYM VkKeyScan}
-{$ENDIF}
 
 function VkKeyScanExA(ch: CHAR; dwhkl: HKL): SHORT; stdcall;
 {$EXTERNALSYM VkKeyScanExA}
 function VkKeyScanExW(ch: WCHAR; dwhkl: HKL): SHORT; stdcall;
 {$EXTERNALSYM VkKeyScanExW}
-
-{$IFDEF UNICODE}
-function VkKeyScanEx(ch: WCHAR; dwhkl: HKL): SHORT; stdcall;
+function VkKeyScanEx(ch: TCHAR; dwhkl: HKL): SHORT; stdcall;
 {$EXTERNALSYM VkKeyScanEx}
-{$ELSE}
-function VkKeyScanEx(ch: CHAR; dwhkl: HKL): SHORT; stdcall;
-{$EXTERNALSYM VkKeyScanEx}
-{$ENDIF}
 
 const
   KEYEVENTF_EXTENDEDKEY = $0001;
@@ -5439,27 +5045,15 @@ function MapVirtualKeyA(uCode, uMapType: UINT): UINT; stdcall;
 {$EXTERNALSYM MapVirtualKeyA}
 function MapVirtualKeyW(uCode, uMapType: UINT): UINT; stdcall;
 {$EXTERNALSYM MapVirtualKeyW}
-
-{$IFDEF UNICODE}
 function MapVirtualKey(uCode, uMapType: UINT): UINT; stdcall;
 {$EXTERNALSYM MapVirtualKey}
-{$ELSE}
-function MapVirtualKey(uCode, uMapType: UINT): UINT; stdcall;
-{$EXTERNALSYM MapVirtualKey}
-{$ENDIF}
 
 function MapVirtualKeyExA(uCode, uMapType: UINT; dwhkl: HKL): UINT; stdcall;
 {$EXTERNALSYM MapVirtualKeyExA}
 function MapVirtualKeyExW(uCode, uMapType: UINT; dwhkl: HKL): UINT; stdcall;
 {$EXTERNALSYM MapVirtualKeyExW}
-
-{$IFDEF UNICODE}
 function MapVirtualKeyEx(uCode, uMapType: UINT; dwhkl: HKL): UINT; stdcall;
 {$EXTERNALSYM MapVirtualKeyEx}
-{$ELSE}
-function MapVirtualKeyEx(uCode, uMapType: UINT; dwhkl: HKL): UINT; stdcall;
-{$EXTERNALSYM MapVirtualKeyEx}
-{$ENDIF}
 
 function GetInputState: BOOL; stdcall;
 {$EXTERNALSYM GetInputState}
@@ -5512,31 +5106,19 @@ function EnableWindow(hWnd: HWND; bEnable: BOOL): BOOL; stdcall;
 function IsWindowEnabled(hWnd: HWND): BOOL; stdcall;
 {$EXTERNALSYM IsWindowEnabled}
 
-function LoadAcceleratorsA(hInstance: HINSTANCE; lpTableName: LPCSTR): HACCEL; stdcall;
+function LoadAcceleratorsA(hInstance: HINST; lpTableName: LPCSTR): HACCEL; stdcall;
 {$EXTERNALSYM LoadAcceleratorsA}
-function LoadAcceleratorsW(hInstance: HINSTANCE; lpTableName: LPCWSTR): HACCEL; stdcall;
+function LoadAcceleratorsW(hInstance: HINST; lpTableName: LPCWSTR): HACCEL; stdcall;
 {$EXTERNALSYM LoadAcceleratorsW}
-
-{$IFDEF UNICODE}
-function LoadAccelerators(hInstance: HINSTANCE; lpTableName: LPCWSTR): HACCEL; stdcall;
+function LoadAccelerators(hInstance: HINST; lpTableName: LPCTSTR): HACCEL; stdcall;
 {$EXTERNALSYM LoadAccelerators}
-{$ELSE}
-function LoadAccelerators(hInstance: HINSTANCE; lpTableName: LPCSTR): HACCEL; stdcall;
-{$EXTERNALSYM LoadAccelerators}
-{$ENDIF}
 
 function CreateAcceleratorTableA(lpaccl: LPACCEL; cEntries: Integer): HACCEL; stdcall;
 {$EXTERNALSYM CreateAcceleratorTableA}
 function CreateAcceleratorTableW(lpaccl: LPACCEL; cEntries: Integer): HACCEL; stdcall;
 {$EXTERNALSYM CreateAcceleratorTableW}
-
-{$IFDEF UNICODE}
 function CreateAcceleratorTable(lpaccl: LPACCEL; cEntries: Integer): HACCEL; stdcall;
 {$EXTERNALSYM CreateAcceleratorTable}
-{$ELSE}
-function CreateAcceleratorTable(lpaccl: LPACCEL; cEntries: Integer): HACCEL; stdcall;
-{$EXTERNALSYM CreateAcceleratorTable}
-{$ENDIF}
 
 function DestroyAcceleratorTable(hAccel: HACCEL): BOOL; stdcall;
 {$EXTERNALSYM DestroyAcceleratorTable}
@@ -5547,29 +5129,16 @@ function CopyAcceleratorTableA(hAccelSrc: HACCEL; lpAccelDst: LPACCEL;
 function CopyAcceleratorTableW(hAccelSrc: HACCEL; lpAccelDst: LPACCEL;
   cAccelEntries: Integer): Integer; stdcall;
 {$EXTERNALSYM CopyAcceleratorTableW}
-
-{$IFDEF UNICODE}
 function CopyAcceleratorTable(hAccelSrc: HACCEL; lpAccelDst: LPACCEL;
   cAccelEntries: Integer): Integer; stdcall;
 {$EXTERNALSYM CopyAcceleratorTable}
-{$ELSE}
-function CopyAcceleratorTable(hAccelSrc: HACCEL; lpAccelDst: LPACCEL;
-  cAccelEntries: Integer): Integer; stdcall;
-{$EXTERNALSYM CopyAcceleratorTable}
-{$ENDIF}
 
 function TranslateAcceleratorA(hWnd: HWND; hAccTable: HACCEL; lpMsg: LPMSG): Integer; stdcall;
 {$EXTERNALSYM TranslateAcceleratorA}
 function TranslateAcceleratorW(hWnd: HWND; hAccTable: HACCEL; lpMsg: LPMSG): Integer; stdcall;
 {$EXTERNALSYM TranslateAcceleratorW}
-
-{$IFDEF UNICODE}
 function TranslateAccelerator(hWnd: HWND; hAccTable: HACCEL; lpMsg: LPMSG): Integer; stdcall;
 {$EXTERNALSYM TranslateAccelerator}
-{$ELSE}
-function TranslateAccelerator(hWnd: HWND; hAccTable: HACCEL; lpMsg: LPMSG): Integer; stdcall;
-{$EXTERNALSYM TranslateAccelerator}
-{$ENDIF}
 
 //
 // GetSystemMetrics() codes
@@ -5761,18 +5330,16 @@ const
 
 //#endif /* _WIN32_WINNT >= 0x0501 */
 
-{ TODO
-#if (WINVER < 0x0500) && (!defined(_WIN32_WINNT) || (_WIN32_WINNT < 0x0400))
-#define SM_CMETRICS             76
-#elif WINVER == 0x500
-#define SM_CMETRICS             83
-#else
-#define SM_CMETRICS             88
-#endif
-}
-
 const
-  SM_CMETRICS = 76;
+  {$IFNDEF WIN98ME_UP}
+  SM_CMETRICS          = 76;
+  {$ELSE}
+  {$IFDEF WIN98ME}
+  SM_CMETRICS          = 83;
+  {$ELSE}
+  SM_CMETRICS          = 88;
+  {$ENDIF WIN98ME}
+  {$ENDIF !WIN98ME_UP}
   {$EXTERNALSYM SM_CMETRICS}
 
   SM_REMOTESESSION = $1000;
@@ -5787,31 +5354,19 @@ const
 function GetSystemMetrics(nIndex: Integer): Integer; stdcall;
 {$EXTERNALSYM GetSystemMetrics}
 
-function LoadMenuA(hInstance: HINSTANCE; lpMenuName: LPCSTR): HMENU; stdcall;
+function LoadMenuA(hInstance: HINST; lpMenuName: LPCSTR): HMENU; stdcall;
 {$EXTERNALSYM LoadMenuA}
-function LoadMenuW(hInstance: HINSTANCE; lpMenuName: LPCWSTR): HMENU; stdcall;
+function LoadMenuW(hInstance: HINST; lpMenuName: LPCWSTR): HMENU; stdcall;
 {$EXTERNALSYM LoadMenuW}
-
-{$IFDEF UNICODE}
-function LoadMenu(hInstance: HINSTANCE; lpMenuName: LPCWSTR): HMENU; stdcall;
+function LoadMenu(hInstance: HINST; lpMenuName: LPCTSTR): HMENU; stdcall;
 {$EXTERNALSYM LoadMenu}
-{$ELSE}
-function LoadMenu(hInstance: HINSTANCE; lpMenuName: LPCSTR): HMENU; stdcall;
-{$EXTERNALSYM LoadMenu}
-{$ENDIF}
 
 function LoadMenuIndirectA(lpMenuTemplate: LPMENUTEMPLATEA): HMENU; stdcall;
 {$EXTERNALSYM LoadMenuIndirectA}
 function LoadMenuIndirectW(lpMenuTemplate: LPMENUTEMPLATEW): HMENU; stdcall;
 {$EXTERNALSYM LoadMenuIndirectW}
-
-{$IFDEF UNICODE}
-function LoadMenuIndirect(lpMenuTemplate: LPMENUTEMPLATEW): HMENU; stdcall;
+function LoadMenuIndirect(lpMenuTemplate: LPMENUTEMPLATE): HMENU; stdcall;
 {$EXTERNALSYM LoadMenuIndirect}
-{$ELSE}
-function LoadMenuIndirect(lpMenuTemplate: LPMENUTEMPLATEA): HMENU; stdcall;
-{$EXTERNALSYM LoadMenuIndirect}
-{$ENDIF}
 
 function GetMenu(hWnd: HWND): HMENU; stdcall;
 {$EXTERNALSYM GetMenu}
@@ -5825,16 +5380,9 @@ function ChangeMenuA(hMenu: HMENU; cmd: UINT; lpszNewItem: LPCSTR;
 function ChangeMenuW(hMenu: HMENU; cmd: UINT; lpszNewItem: LPCWSTR;
   cmdInsert: UINT; flags: UINT): BOOL; stdcall;
 {$EXTERNALSYM ChangeMenuW}
-
-{$IFDEF UNICODE}
-function ChangeMenu(hMenu: HMENU; cmd: UINT; lpszNewItem: LPCWSTR;
+function ChangeMenu(hMenu: HMENU; cmd: UINT; lpszNewItem: LPCTSTR;
   cmdInsert: UINT; flags: UINT): BOOL; stdcall;
 {$EXTERNALSYM ChangeMenu}
-{$ELSE}
-function ChangeMenu(hMenu: HMENU; cmd: UINT; lpszNewItem: LPCSTR;
-  cmdInsert: UINT; flags: UINT): BOOL; stdcall;
-{$EXTERNALSYM ChangeMenu}
-{$ENDIF}
 
 function HiliteMenuItem(hWnd: HWND; hMenu: HMENU; uIDHiliteItem: UINT; uHilite: UINT): BOOL; stdcall;
 {$EXTERNALSYM HiliteMenuItem}
@@ -5845,16 +5393,9 @@ function GetMenuStringA(hMenu: HMENU; uIDItem: UINT; lpString: LPSTR;
 function GetMenuStringW(hMenu: HMENU; uIDItem: UINT; lpString: LPWSTR;
   nMaxCount: Integer; uFlag: UINT): Integer; stdcall;
 {$EXTERNALSYM GetMenuStringW}
-
-{$IFDEF UNICODE}
-function GetMenuString(hMenu: HMENU; uIDItem: UINT; lpString: LPWSTR;
+function GetMenuString(hMenu: HMENU; uIDItem: UINT; lpString: LPTSTR;
   nMaxCount: Integer; uFlag: UINT): Integer; stdcall;
 {$EXTERNALSYM GetMenuString}
-{$ELSE}
-function GetMenuString(hMenu: HMENU; uIDItem: UINT; lpString: LPSTR;
-  nMaxCount: Integer; uFlag: UINT): Integer; stdcall;
-{$EXTERNALSYM GetMenuString}
-{$ENDIF}
 
 function GetMenuState(hMenu: HMENU; uId, uFlags: UINT): UINT; stdcall;
 {$EXTERNALSYM GetMenuState}
@@ -5899,16 +5440,9 @@ function InsertMenuA(hMenu: HMENU; uPosition, uFlags: UINT; uIDNewItem: UINT_PTR
 function InsertMenuW(hMenu: HMENU; uPosition, uFlags: UINT; uIDNewItem: UINT_PTR;
   lpNewItem: LPCWSTR): BOOL; stdcall;
 {$EXTERNALSYM InsertMenuW}
-
-{$IFDEF UNICODE}
 function InsertMenu(hMenu: HMENU; uPosition, uFlags: UINT; uIDNewItem: UINT_PTR;
-  lpNewItem: LPCWSTR): BOOL; stdcall;
+  lpNewItem: LPCTSTR): BOOL; stdcall;
 {$EXTERNALSYM InsertMenu}
-{$ELSE}
-function InsertMenu(hMenu: HMENU; uPosition, uFlags: UINT; uIDNewItem: UINT_PTR;
-  lpNewItem: LPCSTR): BOOL; stdcall;
-{$EXTERNALSYM InsertMenu}
-{$ENDIF}
 
 function AppendMenuA(hMenu: HMENU; uFlags: UINT; uIDNewItem: UINT_PTR;
   lpNewItem: LPCSTR): BOOL; stdcall;
@@ -5916,16 +5450,9 @@ function AppendMenuA(hMenu: HMENU; uFlags: UINT; uIDNewItem: UINT_PTR;
 function AppendMenuW(hMenu: HMENU; uFlags: UINT; uIDNewItem: UINT_PTR;
   lpNewItem: LPCWSTR): BOOL; stdcall;
 {$EXTERNALSYM AppendMenuW}
-
-{$IFDEF UNICODE}
 function AppendMenu(hMenu: HMENU; uFlags: UINT; uIDNewItem: UINT_PTR;
-  lpNewItem: LPCWSTR): BOOL; stdcall;
+  lpNewItem: LPCTSTR): BOOL; stdcall;
 {$EXTERNALSYM AppendMenu}
-{$ELSE}
-function AppendMenu(hMenu: HMENU; uFlags: UINT; uIDNewItem: UINT_PTR;
-  lpNewItem: LPCSTR): BOOL; stdcall;
-{$EXTERNALSYM AppendMenu}
-{$ENDIF}
 
 function ModifyMenuA(hMnu: HMENU; uPosition: UINT; uFlags: UINT;
   uIDNewItem: UINT_PTR; lpNewItem: LPCSTR): BOOL; stdcall;
@@ -5933,16 +5460,9 @@ function ModifyMenuA(hMnu: HMENU; uPosition: UINT; uFlags: UINT;
 function ModifyMenuW(hMnu: HMENU; uPosition: UINT; uFlags: UINT;
   uIDNewItem: UINT_PTR; lpNewItem: LPCWSTR): BOOL; stdcall;
 {$EXTERNALSYM ModifyMenuW}
-
-{$IFDEF UNICODE}
 function ModifyMenu(hMnu: HMENU; uPosition: UINT; uFlags: UINT;
-  uIDNewItem: UINT_PTR; lpNewItem: LPCWSTR): BOOL; stdcall;
+  uIDNewItem: UINT_PTR; lpNewItem: LPCTSTR): BOOL; stdcall;
 {$EXTERNALSYM ModifyMenu}
-{$ELSE}
-function ModifyMenu(hMnu: HMENU; uPosition: UINT; uFlags: UINT;
-  uIDNewItem: UINT_PTR; lpNewItem: LPCSTR): BOOL; stdcall;
-{$EXTERNALSYM ModifyMenu}
-{$ENDIF}
 
 function RemoveMenu(hMenu: HMENU; uPosition: UINT; uFlags: UINT): BOOL; stdcall;
 {$EXTERNALSYM RemoveMenu}
@@ -6148,9 +5668,9 @@ type
     dwItemData: ULONG_PTR;  // used if MIIM_DATA
     dwTypeData: LPSTR;      // used if MIIM_TYPE (4.0) or MIIM_STRING (>4.0)
     cch: UINT;              // used if MIIM_TYPE (4.0) or MIIM_STRING (>4.0)
-    {$IFDEF WINVER_0500_GREATER}
+    {$IFDEF WIN98ME_UP}
     hbmpItem: HBITMAP;      // used if MIIM_BITMAP
-    {$ENDIF}
+    {$ENDIF WIN98ME_UP}
   end;
   {$EXTERNALSYM tagMENUITEMINFOA}
   MENUITEMINFOA = tagMENUITEMINFOA;
@@ -6172,9 +5692,9 @@ type
     dwItemData: ULONG_PTR;  // used if MIIM_DATA
     dwTypeData: LPWSTR;     // used if MIIM_TYPE (4.0) or MIIM_STRING (>4.0)
     cch: UINT;              // used if MIIM_TYPE (4.0) or MIIM_STRING (>4.0)
-    {$IFDEF WINVER_0500_GREATER}
+    {$IFDEF WIN98ME_UP}
     hbmpItem: HBITMAP;      // used if MIIM_BITMAP
-    {$ENDIF}
+    {$ENDIF WIN98ME_UP}
   end;
   {$EXTERNALSYM tagMENUITEMINFOW}
   MENUITEMINFOW = tagMENUITEMINFOW;
@@ -6187,7 +5707,7 @@ type
   LPCMENUITEMINFOW = ^MENUITEMINFOW;
   {$EXTERNALSYM LPCMENUITEMINFOW}
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   MENUITEMINFO = MENUITEMINFOW;
   {$EXTERNALSYM MENUITEMINFO}
   LPMENUITEMINFO = LPMENUITEMINFOW;
@@ -6196,7 +5716,7 @@ type
   PMenuItemInfo = PMenuItemInfoW;
   LPCMENUITEMINFO = LPCMENUITEMINFOW;
   {$EXTERNALSYM LPCMENUITEMINFO}
-{$ELSE}
+  {$ELSE}
   MENUITEMINFO = MENUITEMINFOA;
   {$EXTERNALSYM MENUITEMINFO}
   LPMENUITEMINFO = LPMENUITEMINFOA;
@@ -6205,7 +5725,7 @@ type
   PMenuItemInfo = PMenuItemInfoA;
   LPCMENUITEMINFO = LPCMENUITEMINFOA;
   {$EXTERNALSYM LPCMENUITEMINFO}
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 function InsertMenuItemA(hMenu: HMENU; uItem: UINT; fByPosition: BOOL;
   const lpmii: MENUITEMINFOA): BOOL; stdcall;
@@ -6213,16 +5733,9 @@ function InsertMenuItemA(hMenu: HMENU; uItem: UINT; fByPosition: BOOL;
 function InsertMenuItemW(hMenu: HMENU; uItem: UINT; fByPosition: BOOL;
   const lpmii: MENUITEMINFOW): BOOL; stdcall;
 {$EXTERNALSYM InsertMenuItemW}
-
-{$IFDEF UNICODE}
 function InsertMenuItem(hMenu: HMENU; uItem: UINT; fByPosition: BOOL;
-  const lpmii: MENUITEMINFOW): BOOL; stdcall;
+  const lpmii: MENUITEMINFO): BOOL; stdcall;
 {$EXTERNALSYM InsertMenuItem}
-{$ELSE}
-function InsertMenuItem(hMenu: HMENU; uItem: UINT; fByPosition: BOOL;
-  const lpmii: MENUITEMINFOA): BOOL; stdcall;
-{$EXTERNALSYM InsertMenuItem}
-{$ENDIF}
 
 function GetMenuItemInfoA(hMenu: HMENU; uItem: UINT; fByPosition: BOOL;
   var lpmii: MENUITEMINFOA): BOOL; stdcall;
@@ -6230,16 +5743,9 @@ function GetMenuItemInfoA(hMenu: HMENU; uItem: UINT; fByPosition: BOOL;
 function GetMenuItemInfoW(hMenu: HMENU; uItem: UINT; fByPosition: BOOL;
   var lpmii: MENUITEMINFOW): BOOL; stdcall;
 {$EXTERNALSYM GetMenuItemInfoW}
-
-{$IFDEF UNICODE}
 function GetMenuItemInfo(hMenu: HMENU; uItem: UINT; fByPosition: BOOL;
-  var lpmii: MENUITEMINFOW): BOOL; stdcall;
+  var lpmii: MENUITEMINFO): BOOL; stdcall;
 {$EXTERNALSYM GetMenuItemInfo}
-{$ELSE}
-function GetMenuItemInfo(hMenu: HMENU; uItem: UINT; fByPosition: BOOL;
-  var lpmii: MENUITEMINFOA): BOOL; stdcall;
-{$EXTERNALSYM GetMenuItemInfo}
-{$ENDIF}
 
 function SetMenuItemInfoA(hMenu: HMENU; uItem: UINT; fByPosition: BOOL;
   const lpmii: MENUITEMINFOA): BOOL; stdcall;
@@ -6247,16 +5753,9 @@ function SetMenuItemInfoA(hMenu: HMENU; uItem: UINT; fByPosition: BOOL;
 function SetMenuItemInfoW(hMenu: HMENU; uItem: UINT; fByPosition: BOOL;
   const lpmii: MENUITEMINFOW): BOOL; stdcall;
 {$EXTERNALSYM SetMenuItemInfoW}
-
-{$IFDEF UNICODE}
 function SetMenuItemInfo(hMenu: HMENU; uItem: UINT; fByPosition: BOOL;
-  const lpmii: MENUITEMINFOW): BOOL; stdcall;
+  const lpmii: MENUITEMINFO): BOOL; stdcall;
 {$EXTERNALSYM SetMenuItemInfo}
-{$ELSE}
-function SetMenuItemInfo(hMenu: HMENU; uItem: UINT; fByPosition: BOOL;
-  const lpmii: MENUITEMINFOA): BOOL; stdcall;
-{$EXTERNALSYM SetMenuItemInfo}
-{$ENDIF}
 
 const
   GMDI_USEDISABLED  = $0001;
@@ -6448,16 +5947,9 @@ function DrawTextA(hDC: HDC; lpString: LPCSTR; nCount: Integer;
 function DrawTextW(hDC: HDC; lpString: LPCWSTR; nCount: Integer;
   var lpRect: RECT; uFormat: UINT): Integer; stdcall;
 {$EXTERNALSYM DrawTextW}
-
-{$IFDEF UNICODE}
-function DrawText(hDC: HDC; lpString: LPCWSTR; nCount: Integer;
+function DrawText(hDC: HDC; lpString: LPCTSTR; nCount: Integer;
   var lpRect: RECT; uFormat: UINT): Integer; stdcall;
 {$EXTERNALSYM DrawText}
-{$ELSE}
-function DrawText(hDC: HDC; lpString: LPCSTR; nCount: Integer;
-  var lpRect: RECT; uFormat: UINT): Integer; stdcall;
-{$EXTERNALSYM DrawText}
-{$ENDIF}
 
 function DrawTextExA(hDc: HDC; lpchText: LPSTR; cchText: Integer;
   var lprc: RECT; dwDTFormat: UINT; lpDTParams: LPDRAWTEXTPARAMS): Integer; stdcall;
@@ -6465,16 +5957,9 @@ function DrawTextExA(hDc: HDC; lpchText: LPSTR; cchText: Integer;
 function DrawTextExW(hDc: HDC; lpchText: LPWSTR; cchText: Integer;
   var lprc: RECT; dwDTFormat: UINT; lpDTParams: LPDRAWTEXTPARAMS): Integer; stdcall;
 {$EXTERNALSYM DrawTextExW}
-
-{$IFDEF UNICODE}
-function DrawTextEx(hDc: HDC; lpchText: LPWSTR; cchText: Integer;
-  var lprc: LPRECT; dwDTFormat: UINT; lpDTParams: LPDRAWTEXTPARAMS): Integer; stdcall;
-{$EXTERNALSYM DrawTextEx}
-{$ELSE}
-function DrawTextEx(hDc: HDC; lpchText: LPSTR; cchText: Integer;
+function DrawTextEx(hDc: HDC; lpchText: LPTSTR; cchText: Integer;
   var lprc: RECT; dwDTFormat: UINT; lpDTParams: LPDRAWTEXTPARAMS): Integer; stdcall;
 {$EXTERNALSYM DrawTextEx}
-{$ENDIF}
 
 function GrayStringA(hDC: HDC; hBrush: HBRUSH; lpOutputFunc: GRAYSTRINGPROC;
   lpData: LPARAM; nCount, X, Y, nWidth, nHeight: Integer): BOOL; stdcall;
@@ -6482,17 +5967,9 @@ function GrayStringA(hDC: HDC; hBrush: HBRUSH; lpOutputFunc: GRAYSTRINGPROC;
 function GrayStringW(hDC: HDC; hBrush: HBRUSH; lpOutputFunc: GRAYSTRINGPROC;
   lpData: LPARAM; nCount, X, Y, nWidth, nHeight: Integer): BOOL; stdcall;
 {$EXTERNALSYM GrayStringW}
-
-{$IFDEF UNICODE}
 function GrayString(hDC: HDC; hBrush: HBRUSH; lpOutputFunc: GRAYSTRINGPROC;
   lpData: LPARAM; nCount, X, Y, nWidth, nHeight: Integer): BOOL; stdcall;
 {$EXTERNALSYM GrayString}
-{$ELSE}
-function GrayString(hDC: HDC; hBrush: HBRUSH; lpOutputFunc: GRAYSTRINGPROC;
-  lpData: LPARAM; nCount, X, Y, nWidth, nHeight: Integer): BOOL; stdcall;
-{$EXTERNALSYM GrayString}
-{$ENDIF}
-
 
 // Monolithic state-drawing routine//
 // Image type//
@@ -6532,16 +6009,9 @@ function DrawStateA(hdc: HDC; hbr: HBRUSH; lputputFunc: DRAWSTATEPROC;
 function DrawStateW(hdc: HDC; hbr: HBRUSH; lputputFunc: DRAWSTATEPROC;
   lData: LPARAM; wData: WPARAM; x, y, cx, cy: Integer; fuFlags: UINT): BOOL; stdcall;
 {$EXTERNALSYM DrawStateW}
-
-{$IFDEF UNICODE}
 function DrawState(hdc: HDC; hbr: HBRUSH; lputputFunc: DRAWSTATEPROC;
   lData: LPARAM; wData: WPARAM; x, y, cx, cy: Integer; fuFlags: UINT): BOOL; stdcall;
 {$EXTERNALSYM DrawState}
-{$ELSE}
-function DrawState(hdc: HDC; hbr: HBRUSH; lputputFunc: DRAWSTATEPROC;
-  lData: LPARAM; wData: WPARAM; x, y, cx, cy: Integer; fuFlags: UINT): BOOL; stdcall;
-{$EXTERNALSYM DrawState}
-{$ENDIF}
 
 function TabbedTextOutA(hDC: HDC; X, Y: Integer; lpString: LPCSTR; nCount,
   nTabPositions: Integer; lpnTabStopPositions: LPINT; nTabOrigin: Integer): LONG; stdcall;
@@ -6549,16 +6019,9 @@ function TabbedTextOutA(hDC: HDC; X, Y: Integer; lpString: LPCSTR; nCount,
 function TabbedTextOutW(hDC: HDC; X, Y: Integer; lpString: LPCWSTR; nCount,
   nTabPositions: Integer; lpnTabStopPositions: LPINT; nTabOrigin: Integer): LONG; stdcall;
 {$EXTERNALSYM TabbedTextOutW}
-
-{$IFDEF UNICODE}
-function TabbedTextOut(hDC: HDC; X, Y: Integer; lpString: LPCWSTR; nCount,
+function TabbedTextOut(hDC: HDC; X, Y: Integer; lpString: LPCTSTR; nCount,
   nTabPositions: Integer; lpnTabStopPositions: LPINT; nTabOrigin: Integer): LONG; stdcall;
 {$EXTERNALSYM TabbedTextOut}
-{$ELSE}
-function TabbedTextOut(hDC: HDC; X, Y: Integer; lpString: LPCSTR; nCount,
-  nTabPositions: Integer; lpnTabStopPositions: LPINT; nTabOrigin: Integer): LONG; stdcall;
-{$EXTERNALSYM TabbedTextOut}
-{$ENDIF}
 
 function GetTabbedTextExtentA(hDC: HDC; lpString: LPCSTR; nCount,
   nTabPositions: Integer; lpnTabStopPositions: LPINT): DWORD; stdcall;
@@ -6566,16 +6029,9 @@ function GetTabbedTextExtentA(hDC: HDC; lpString: LPCSTR; nCount,
 function GetTabbedTextExtentW(hDC: HDC; lpString: LPCWSTR; nCount,
   nTabPositions: Integer; lpnTabStopPositions: LPINT): DWORD; stdcall;
 {$EXTERNALSYM GetTabbedTextExtentW}
-
-{$IFDEF UNICODE}
-function GetTabbedTextExtent(hDC: HDC; lpString: LPCWSTR; nCount,
+function GetTabbedTextExtent(hDC: HDC; lpString: LPCTSTR; nCount,
   nTabPositions: Integer; lpnTabStopPositions: LPINT): DWORD; stdcall;
 {$EXTERNALSYM GetTabbedTextExtent}
-{$ELSE}
-function GetTabbedTextExtent(hDC: HDC; lpString: LPCSTR; nCount,
-  nTabPositions: Integer; lpnTabStopPositions: LPINT): DWORD; stdcall;
-{$EXTERNALSYM GetTabbedTextExtent}
-{$ENDIF}
 
 function UpdateWindow(hWnd: HWND): BOOL; stdcall;
 {$EXTERNALSYM UpdateWindow}
@@ -6805,105 +6261,57 @@ function SetPropA(hWnd: HWND; lpString: LPCSTR; hData: HANDLE): BOOL; stdcall;
 {$EXTERNALSYM SetPropA}
 function SetPropW(hWnd: HWND; lpString: LPCWSTR; hData: HANDLE): BOOL; stdcall;
 {$EXTERNALSYM SetPropW}
-
-{$IFDEF UNICODE}
-function SetProp(hWnd: HWND; lpString: LPCWSTR; hData: HANDLE): BOOL; stdcall;
+function SetProp(hWnd: HWND; lpString: LPCTSTR; hData: HANDLE): BOOL; stdcall;
 {$EXTERNALSYM SetProp}
-{$ELSE}
-function SetProp(hWnd: HWND; lpString: LPCSTR; hData: HANDLE): BOOL; stdcall;
-{$EXTERNALSYM SetProp}
-{$ENDIF}
 
 function GetPropA(hWnd: HWND; lpString: LPCSTR): HANDLE; stdcall;
 {$EXTERNALSYM GetPropA}
 function GetPropW(hWnd: HWND; lpString: LPCWSTR): HANDLE; stdcall;
 {$EXTERNALSYM GetPropW}
-
-{$IFDEF UNICODE}
-function GetProp(hWnd: HWND; lpString: LPCWSTR): HANDLE; stdcall;
+function GetProp(hWnd: HWND; lpString: LPCTSTR): HANDLE; stdcall;
 {$EXTERNALSYM GetProp}
-{$ELSE}
-function GetProp(hWnd: HWND; lpString: LPCSTR): HANDLE; stdcall;
-{$EXTERNALSYM GetProp}
-{$ENDIF}
 
 function RemovePropA(hWnd: HWND; lpString: LPCSTR): HANDLE; stdcall;
 {$EXTERNALSYM RemovePropA}
 function RemovePropW(hWnd: HWND; lpString: LPCWSTR): HANDLE; stdcall;
 {$EXTERNALSYM RemovePropW}
-
-{$IFDEF UNICODE}
-function RemoveProp(hWnd: HWND; lpString: LPCWSTR): HANDLE; stdcall;
+function RemoveProp(hWnd: HWND; lpString: LPCTSTR): HANDLE; stdcall;
 {$EXTERNALSYM RemoveProp}
-{$ELSE}
-function RemoveProp(hWnd: HWND; lpString: LPCSTR): HANDLE; stdcall;
-{$EXTERNALSYM RemoveProp}
-{$ENDIF}
 
 function EnumPropsExA(hWnd: HWND; lpEnumFunc: PROPENUMPROCEXA; lParam: LPARAM): Integer; stdcall;
 {$EXTERNALSYM EnumPropsExA}
 function EnumPropsExW(hWnd: HWND; lpEnumFunc: PROPENUMPROCEXW; lParam: LPARAM): Integer; stdcall;
 {$EXTERNALSYM EnumPropsExW}
-
-{$IFDEF UNICODE}
-function EnumPropsEx(hWnd: HWND; lpEnumFunc: PROPENUMPROCEXW; lParam: LPARAM): Integer; stdcall;
+function EnumPropsEx(hWnd: HWND; lpEnumFunc: PROPENUMPROCEX; lParam: LPARAM): Integer; stdcall;
 {$EXTERNALSYM EnumPropsEx}
-{$ELSE}
-function EnumPropsEx(hWnd: HWND; lpEnumFunc: PROPENUMPROCEXA; lParam: LPARAM): Integer; stdcall;
-{$EXTERNALSYM EnumPropsEx}
-{$ENDIF}
 
 function EnumPropsA(hWnd: HWND; lpEnumFunc: PROPENUMPROCA): Integer; stdcall;
 {$EXTERNALSYM EnumPropsA}
 function EnumPropsW(hWnd: HWND; lpEnumFunc: PROPENUMPROCW): Integer; stdcall;
 {$EXTERNALSYM EnumPropsW}
-
-{$IFDEF UNICODE}
-function EnumProps(hWnd: HWND; lpEnumFunc: PROPENUMPROCW): Integer; stdcall;
+function EnumProps(hWnd: HWND; lpEnumFunc: PROPENUMPROC): Integer; stdcall;
 {$EXTERNALSYM EnumProps}
-{$ELSE}
-function EnumProps(hWnd: HWND; lpEnumFunc: PROPENUMPROCA): Integer; stdcall;
-{$EXTERNALSYM EnumProps}
-{$ENDIF}
 
 function SetWindowTextA(hWnd: HWND; lpString: LPCSTR): BOOL; stdcall;
 {$EXTERNALSYM SetWindowTextA}
 function SetWindowTextW(hWnd: HWND; lpString: LPCWSTR): BOOL; stdcall;
 {$EXTERNALSYM SetWindowTextW}
-
-{$IFDEF UNICODE}
-function SetWindowText(hWnd: HWND; lpString: LPCWSTR): BOOL; stdcall;
+function SetWindowText(hWnd: HWND; lpString: LPCTSTR): BOOL; stdcall;
 {$EXTERNALSYM SetWindowText}
-{$ELSE}
-function SetWindowText(hWnd: HWND; lpString: LPCSTR): BOOL; stdcall;
-{$EXTERNALSYM SetWindowText}
-{$ENDIF}
 
 function GetWindowTextA(hWnd: HWND; lpString: LPSTR; nMaxCount: Integer): Integer; stdcall;
 {$EXTERNALSYM GetWindowTextA}
 function GetWindowTextW(hWnd: HWND; lpString: LPWSTR; nMaxCount: Integer): Integer; stdcall;
 {$EXTERNALSYM GetWindowTextW}
-
-{$IFDEF UNICODE}
-function GetWindowText(hWnd: HWND; lpString: LPWSTR; nMaxCount: Integer): Integer; stdcall;
+function GetWindowText(hWnd: HWND; lpString: LPTSTR; nMaxCount: Integer): Integer; stdcall;
 {$EXTERNALSYM GetWindowText}
-{$ELSE}
-function GetWindowText(hWnd: HWND; lpString: LPSTR; nMaxCount: Integer): Integer; stdcall;
-{$EXTERNALSYM GetWindowText}
-{$ENDIF}
 
 function GetWindowTextLengthA(hWnd: HWND): Integer; stdcall;
 {$EXTERNALSYM GetWindowTextLengthA}
 function GetWindowTextLengthW(hWnd: HWND): Integer; stdcall;
 {$EXTERNALSYM GetWindowTextLengthW}
-
-{$IFDEF UNICODE}
 function GetWindowTextLength(hWnd: HWND): Integer; stdcall;
 {$EXTERNALSYM GetWindowTextLength}
-{$ELSE}
-function GetWindowTextLength(hWnd: HWND): Integer; stdcall;
-{$EXTERNALSYM GetWindowTextLength}
-{$ENDIF}
 
 function GetClientRect(hWnd: HWND; var lpRect: RECT): BOOL; stdcall;
 {$EXTERNALSYM GetClientRect}
@@ -7027,18 +6435,13 @@ const
   {$EXTERNALSYM MB_RTLREADING}
 
 const
-{$IFDEF WINNT}
-  {$IFDEF WINNT_0400_GREATER}
+  {$IFDEF WINNT4_UP}
   MB_SERVICE_NOTIFICATION = $00200000;
   {$EXTERNALSYM MB_SERVICE_NOTIFICATION}
   {$ELSE}
   MB_SERVICE_NOTIFICATION = $00040000;
   {$EXTERNALSYM MB_SERVICE_NOTIFICATION}
-  {$ENDIF}
-{$ELSE}
-  MB_SERVICE_NOTIFICATION_NT3X = $00040000;
-  {$EXTERNALSYM MB_SERVICE_NOTIFICATION_NT3X}
-{$ENDIF}
+  {$ENDIF WINNT4_UP}
 
   MB_TYPEMASK = $0000000F;
   {$EXTERNALSYM MB_TYPEMASK}
@@ -7055,14 +6458,8 @@ function MessageBoxA(hWnd: HWND; lpText, lpCaption: LPCSTR; uType: UINT): Intege
 {$EXTERNALSYM MessageBoxA}
 function MessageBoxW(hWnd: HWND; lpText, lpCaption: LPCWSTR; uType: UINT): Integer; stdcall;
 {$EXTERNALSYM MessageBoxW}
-
-{$IFDEF UNICODE}
-function MessageBox(hWnd: HWND; lpText, lpCaption: LPCWSTR; uType: UINT): Integer; stdcall;
+function MessageBox(hWnd: HWND; lpText, lpCaption: LPCTSTR; uType: UINT): Integer; stdcall;
 {$EXTERNALSYM MessageBox}
-{$ELSE}
-function MessageBox(hWnd: HWND; lpText, lpCaption: LPCSTR; uType: UINT): Integer; stdcall;
-{$EXTERNALSYM MessageBox}
-{$ENDIF}
 
 function MessageBoxExA(hWnd: HWND; lpText, lpCaption: LPCSTR; uType: UINT;
   wLanguageId: WORD): Integer; stdcall;
@@ -7070,19 +6467,12 @@ function MessageBoxExA(hWnd: HWND; lpText, lpCaption: LPCSTR; uType: UINT;
 function MessageBoxExW(hWnd: HWND; lpText, lpCaption: LPCWSTR; uType: UINT;
   wLanguageId: WORD): Integer; stdcall;
 {$EXTERNALSYM MessageBoxExW}
-
-{$IFDEF UNICODE}
-function MessageBoxEx(hWnd: HWND; lpText, lpCaption: LPCWSTR; uType: UINT;
+function MessageBoxEx(hWnd: HWND; lpText, lpCaption: LPCTSTR; uType: UINT;
   wLanguageId: WORD): Integer; stdcall;
 {$EXTERNALSYM MessageBoxEx}
-{$ELSE}
-function MessageBoxEx(hWnd: HWND; lpText, lpCaption: LPCSTR; uType: UINT;
-  wLanguageId: WORD): Integer; stdcall;
-{$EXTERNALSYM MessageBoxEx}
-{$ENDIF}
 
 type
-  MSGBOXCALLBACK = procedure (var lpHelpInfo: HELPINFO); stdcall;
+  MSGBOXCALLBACK = procedure(var lpHelpInfo: HELPINFO); stdcall;
   {$EXTERNALSYM MSGBOXCALLBACK}
   TMsgBoxCallback = MSGBOXCALLBACK;
 
@@ -7091,7 +6481,7 @@ type
   tagMSGBOXPARAMSA = record
     cbSize: UINT;
     hwndOwner: HWND;
-    hInstance: HINSTANCE;
+    hInstance: HINST;
     lpszText: LPCSTR;
     lpszCaption: LPCSTR;
     dwStyle: DWORD;
@@ -7111,7 +6501,7 @@ type
   tagMSGBOXPARAMSW = record
     cbSize: UINT;
     hwndOwner: HWND;
-    hInstance: HINSTANCE;
+    hInstance: HINST;
     lpszText: LPCWSTR;
     lpszCaption: LPCWSTR;
     dwStyle: DWORD;
@@ -7126,34 +6516,28 @@ type
   TMsgBoxParamsW = MSGBOXPARAMSW;
   PMsgBoxParamsW = LPMSGBOXPARAMSW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   MSGBOXPARAMS = MSGBOXPARAMSW;
   {$EXTERNALSYM MSGBOXPARAMS}
   LPMSGBOXPARAMS = LPMSGBOXPARAMSW;
   {$EXTERNALSYM LPMSGBOXPARAMS}
   TMsgBoxParams = TMsgBoxParamsW;
   PMsgBoxParams = PMsgBoxParamsW;
-{$ELSE}
+  {$ELSE}
   MSGBOXPARAMS = MSGBOXPARAMSA;
   {$EXTERNALSYM MSGBOXPARAMS}
   LPMSGBOXPARAMS = LPMSGBOXPARAMSA;
   {$EXTERNALSYM LPMSGBOXPARAMS}
   TMsgBoxParams = TMsgBoxParamsA;
   PMsgBoxParams = PMsgBoxParamsA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 function MessageBoxIndirectA(const lpMsgBoxParams: MSGBOXPARAMSA): Integer; stdcall;
 {$EXTERNALSYM MessageBoxIndirectA}
 function MessageBoxIndirectW(const lpMsgBoxParams: MSGBOXPARAMSW): Integer; stdcall;
 {$EXTERNALSYM MessageBoxIndirectW}
-
-{$IFDEF UNICODE}
-function MessageBoxIndirect(const lpMsgBoxParams: MSGBOXPARAMSW): Integer; stdcall;
+function MessageBoxIndirect(const lpMsgBoxParams: MSGBOXPARAMS): Integer; stdcall;
 {$EXTERNALSYM MessageBoxIndirect}
-{$ELSE}
-function MessageBoxIndirect(const lpMsgBoxParams: MSGBOXPARAMSA): Integer; stdcall;
-{$EXTERNALSYM MessageBoxIndirect}
-{$ENDIF}
 
 function MessageBeep(uType: UINT): BOOL; stdcall;
 {$EXTERNALSYM MessageBeep}
@@ -7394,55 +6778,29 @@ function GetWindowLongA(hWnd: HWND; nIndex: Integer): LONG; stdcall;
 {$EXTERNALSYM GetWindowLongA}
 function GetWindowLongW(hWnd: HWND; nIndex: Integer): LONG; stdcall;
 {$EXTERNALSYM GetWindowLongW}
-
-{$IFDEF UNICODE}
 function GetWindowLong(hWnd: HWND; nIndex: Integer): LONG; stdcall;
 {$EXTERNALSYM GetWindowLong}
-{$ELSE}
-function GetWindowLong(hWnd: HWND; nIndex: Integer): LONG; stdcall;
-{$EXTERNALSYM GetWindowLong}
-{$ENDIF}
 
 function SetWindowLongA(hWnd: HWND; nIndex: Integer; dwNewLong: LONG): LONG; stdcall;
 {$EXTERNALSYM SetWindowLongA}
 function SetWindowLongW(hWnd: HWND; nIndex: Integer; dwNewLong: LONG): LONG; stdcall;
 {$EXTERNALSYM SetWindowLongW}
-
-{$IFDEF UNICODE}
 function SetWindowLong(hWnd: HWND; nIndex: Integer; dwNewLong: LONG): LONG; stdcall;
 {$EXTERNALSYM SetWindowLong}
-{$ELSE}
-function SetWindowLong(hWnd: HWND; nIndex: Integer; dwNewLong: LONG): LONG; stdcall;
-{$EXTERNALSYM SetWindowLong}
-{$ENDIF}
 
 function GetWindowLongPtrA(hWnd: HWND; nIndex: Integer): LONG_PTR;
 {$EXTERNALSYM GetWindowLongPtrA}
-
 function GetWindowLongPtrW(hWnd: HWND; nIndex: Integer): LONG_PTR;
 {$EXTERNALSYM GetWindowLongPtrW}
-
-{$IFDEF UNICODE}
 function GetWindowLongPtr(hWnd: HWND; nIndex: Integer): LONG_PTR;
 {$EXTERNALSYM GetWindowLongPtr}
-{$ELSE}
-function GetWindowLongPtr(hWnd: HWND; nIndex: Integer): LONG_PTR;
-{$EXTERNALSYM GetWindowLongPtr}
-{$ENDIF}
 
 function SetWindowLongPtrA(hWnd: HWND; nIndex: Integer; dwNewLong: LONG_PTR): LONG_PTR;
 {$EXTERNALSYM SetWindowLongPtrA}
-
 function SetWindowLongPtrW(hWnd: HWND; nIndex: Integer; dwNewLong: LONG_PTR): LONG_PTR;
 {$EXTERNALSYM SetWindowLongPtrW}
-
-{$IFDEF UNICODE}
 function SetWindowLongPtr(hWnd: HWND; nIndex: Integer; dwNewLong: LONG_PTR): LONG_PTR;
 {$EXTERNALSYM SetWindowLongPtr}
-{$ELSE}
-function SetWindowLongPtr(hWnd: HWND; nIndex: Integer; dwNewLong: LONG_PTR): LONG_PTR;
-{$EXTERNALSYM SetWindowLongPtr}
-{$ENDIF}
 
 function GetClassWord(hWnd: HWND; nIndex: Integer): WORD; stdcall;
 {$EXTERNALSYM GetClassWord}
@@ -7454,55 +6812,29 @@ function GetClassLongA(hWnd: HWND; nIndex: Integer): DWORD; stdcall;
 {$EXTERNALSYM GetClassLongA}
 function GetClassLongW(hWnd: HWND; nIndex: Integer): DWORD; stdcall;
 {$EXTERNALSYM GetClassLongW}
-
-{$IFDEF UNICODE}
 function GetClassLong(hWnd: HWND; nIndex: Integer): DWORD; stdcall;
 {$EXTERNALSYM GetClassLong}
-{$ELSE}
-function GetClassLong(hWnd: HWND; nIndex: Integer): DWORD; stdcall;
-{$EXTERNALSYM GetClassLong}
-{$ENDIF}
 
 function SetClassLongA(hWnd: HWND; nIndex: Integer; dwNewLong: LONG): DWORD; stdcall;
 {$EXTERNALSYM SetClassLongA}
 function SetClassLongW(hWnd: HWND; nIndex: Integer; dwNewLong: LONG): DWORD; stdcall;
 {$EXTERNALSYM SetClassLongW}
-
-{$IFDEF UNICODE}
 function SetClassLong(hWnd: HWND; nIndex: Integer; dwNewLong: LONG): DWORD; stdcall;
 {$EXTERNALSYM SetClassLong}
-{$ELSE}
-function SetClassLong(hWnd: HWND; nIndex: Integer; dwNewLong: LONG): DWORD; stdcall;
-{$EXTERNALSYM SetClassLong}
-{$ENDIF}
 
 function GetClassLongPtrA(hWnd: HWND; nIndex: Integer): ULONG_PTR;
 {$EXTERNALSYM GetClassLongPtrA}
-
 function GetClassLongPtrW(hWnd: HWND; nIndex: Integer): ULONG_PTR;
 {$EXTERNALSYM GetClassLongPtrW}
-
-{$IFDEF UNICODE}
 function GetClassLongPtr(hWnd: HWND; nIndex: Integer): ULONG_PTR;
 {$EXTERNALSYM GetClassLongPtr}
-{$ELSE}
-function GetClassLongPtr(hWnd: HWND; nIndex: Integer): ULONG_PTR;
-{$EXTERNALSYM GetClassLongPtr}
-{$ENDIF}
 
 function SetClassLongPtrA(hWnd: HWND; nIndex: Integer; dwNewLong: ULONG_PTR): ULONG_PTR;
 {$EXTERNALSYM SetClassLongPtrA}
-
 function SetClassLongPtrW(hWnd: HWND; nIndex: Integer; dwNewLong: ULONG_PTR): ULONG_PTR;
 {$EXTERNALSYM SetClassLongPtrW}
-
-{$IFDEF UNICODE}
 function SetClassLongPtr(hWnd: HWND; nIndex: Integer; dwNewLong: ULONG_PTR): ULONG_PTR;
 {$EXTERNALSYM SetClassLongPtr}
-{$ELSE}
-function SetClassLongPtr(hWnd: HWND; nIndex: Integer; dwNewLong: ULONG_PTR): ULONG_PTR;
-{$EXTERNALSYM SetClassLongPtr}
-{$ENDIF}
 
 function GetProcessDefaultLayout(var pdwDefaultLayout: DWORD): BOOL; stdcall;
 {$EXTERNALSYM GetProcessDefaultLayout}
@@ -7526,30 +6858,24 @@ function FindWindowA(lpClassName, lpWindowName: LPCSTR): HWND; stdcall;
 {$EXTERNALSYM FindWindowA}
 function FindWindowW(lpClassName, lpWindowName: LPCWSTR): HWND; stdcall;
 {$EXTERNALSYM FindWindowW}
-
-{$IFDEF UNICODE}
-function FindWindow(lpClassName, lpWindowName: LPCWSTR): HWND; stdcall;
+function FindWindow(lpClassName, lpWindowName: LPCTSTR): HWND; stdcall;
 {$EXTERNALSYM FindWindow}
-{$ELSE}
-function FindWindow(lpClassName, lpWindowName: LPCSTR): HWND; stdcall;
-{$EXTERNALSYM FindWindow}
-{$ENDIF}
 
 function FindWindowExA(hwndParent, hwndChildAfter: HWND; lpszClass, lpszWindow: LPCSTR): HWND; stdcall;
 {$EXTERNALSYM FindWindowExA}
 function FindWindowExW(hwndParent, hwndChildAfter: HWND; lpszClass, lpszWindow: LPCWSTR): HWND; stdcall;
 {$EXTERNALSYM FindWindowExW}
-
-{$IFDEF UNICODE}
-function FindWindowEx(hwndParent, hwndChildAfter: HWND; lpszClass, lpszWindow: LPCWSTR): HWND; stdcall;
+function FindWindowEx(hwndParent, hwndChildAfter: HWND; lpszClass, lpszWindow: LPCTSTR): HWND; stdcall;
 {$EXTERNALSYM FindWindowEx}
-{$ELSE}
-function FindWindowEx(hwndParent, hwndChildAfter: HWND; lpszClass, lpszWindow: LPCSTR): HWND; stdcall;
-{$EXTERNALSYM FindWindowEx}
-{$ENDIF}
 
 function GetShellWindow: HWND; stdcall;
 {$EXTERNALSYM GetShellWindow}
+
+function RegisterShellHookWindow(h: HWND): BOOL; stdcall;
+{$EXTERNALSYM RegisterShellHookWindow}
+
+function DeregisterShellHookWindow(h: HWND): BOOL; stdcall;
+{$EXTERNALSYM DeregisterShellHookWindow}
 
 function EnumWindows(lpEnumFunc: WNDENUMPROC; lParam: LPARAM): BOOL; stdcall;
 {$EXTERNALSYM EnumWindows}
@@ -7564,14 +6890,8 @@ function GetClassNameA(hWnd: HWND; lpClassName: LPSTR; nMaxCount: Integer): Inte
 {$EXTERNALSYM GetClassNameA}
 function GetClassNameW(hWnd: HWND; lpClassName: LPWSTR; nMaxCount: Integer): Integer; stdcall;
 {$EXTERNALSYM GetClassNameW}
-
-{$IFDEF UNICODE}
-function GetClassName(hWnd: HWND; lpClassName: LPWSTR; nMaxCount: Integer): Integer; stdcall;
+function GetClassName(hWnd: HWND; lpClassName: LPTSTR; nMaxCount: Integer): Integer; stdcall;
 {$EXTERNALSYM GetClassName}
-{$ELSE}
-function GetClassName(hWnd: HWND; lpClassName: LPSTR; nMaxCount: Integer): Integer; stdcall;
-{$EXTERNALSYM GetClassName}
-{$ENDIF}
 
 function GetTopWindow(hWnd: HWND): HWND; stdcall;
 {$EXTERNALSYM GetTopWindow}
@@ -7608,15 +6928,15 @@ const
   {$EXTERNALSYM GW_OWNER}
   GW_CHILD        = 5;
   {$EXTERNALSYM GW_CHILD}
-{$IFNDEF WINVER_0500_GREATER} // #if(WINVER <= 0x0400)
+  {$IFNDEF WIN98_UP} // #if(WINVER <= 0x0400)
   GW_MAX          = 5;
   {$EXTERNALSYM GW_MAX}
-{$ELSE}
+  {$ELSE}
   GW_ENABLEDPOPUP = 6;
   {$EXTERNALSYM GW_ENABLEDPOPUP}
   GW_MAX          = 6;
   {$EXTERNALSYM GW_MAX}
-{$ENDIF}
+  {$ENDIF WIN98ME_UP}
 
 function GetWindow(hWnd: HWND; uCmd: UINT): HWND; stdcall;
 {$EXTERNALSYM GetWindow}
@@ -7625,34 +6945,21 @@ function SetWindowsHookA(nFilterType: Integer; pfnFilterProc: HOOKPROC): HHOOK; 
 {$EXTERNALSYM SetWindowsHookA}
 function SetWindowsHookW(nFilterType: Integer; pfnFilterProc: HOOKPROC): HHOOK; stdcall;
 {$EXTERNALSYM SetWindowsHookW}
-
-{$IFDEF UNICODE}
 function SetWindowsHook(nFilterType: Integer; pfnFilterProc: HOOKPROC): HHOOK; stdcall;
 {$EXTERNALSYM SetWindowsHook}
-{$ELSE}
-function SetWindowsHook(nFilterType: Integer; pfnFilterProc: HOOKPROC): HHOOK; stdcall;
-{$EXTERNALSYM SetWindowsHook}
-{$ENDIF}
 
 function UnhookWindowsHook(nCode: Integer; pfnFilterProc: HOOKPROC): BOOL; stdcall;
 {$EXTERNALSYM UnhookWindowsHook}
 
-function SetWindowsHookExA(idHook: Integer; lpfn: HOOKPROC; hmod: HINSTANCE;
+function SetWindowsHookExA(idHook: Integer; lpfn: HOOKPROC; hmod: HINST;
   dwThreadId: DWORD): HHOOK; stdcall;
 {$EXTERNALSYM SetWindowsHookExA}
-function SetWindowsHookExW(idHook: Integer; lpfn: HOOKPROC; hmod: HINSTANCE;
+function SetWindowsHookExW(idHook: Integer; lpfn: HOOKPROC; hmod: HINST;
   dwThreadId: DWORD): HHOOK; stdcall;
 {$EXTERNALSYM SetWindowsHookExW}
-
-{$IFDEF UNICODE}
-function SetWindowsHookEx(idHook: Integer; lpfn: HOOKPROC; hmod: HINSTANCE;
+function SetWindowsHookEx(idHook: Integer; lpfn: HOOKPROC; hmod: HINST;
   dwThreadId: DWORD): HHOOK; stdcall;
 {$EXTERNALSYM SetWindowsHookEx}
-{$ELSE}
-function SetWindowsHookEx(idHook: Integer; lpfn: HOOKPROC; hmod: HINSTANCE;
-  dwThreadId: DWORD): HHOOK; stdcall;
-{$EXTERNALSYM SetWindowsHookEx}
-{$ENDIF}
 
 function UnhookWindowsHookEx(hhk: HHOOK): BOOL; stdcall;
 {$EXTERNALSYM UnhookWindowsHookEx}
@@ -7862,46 +7169,28 @@ const
 // Resource Loading Routines
 //
 
-function LoadBitmapA(hInstance: HINSTANCE; lpBitmapName: LPCSTR): HBITMAP; stdcall;
+function LoadBitmapA(hInstance: HINST; lpBitmapName: LPCSTR): HBITMAP; stdcall;
 {$EXTERNALSYM LoadBitmapA}
-function LoadBitmapW(hInstance: HINSTANCE; lpBitmapName: LPCWSTR): HBITMAP; stdcall;
+function LoadBitmapW(hInstance: HINST; lpBitmapName: LPCWSTR): HBITMAP; stdcall;
 {$EXTERNALSYM LoadBitmapW}
-
-{$IFDEF UNICODE}
-function LoadBitmap(hInstance: HINSTANCE; lpBitmapName: LPCWSTR): HBITMAP; stdcall;
+function LoadBitmap(hInstance: HINST; lpBitmapName: LPCTSTR): HBITMAP; stdcall;
 {$EXTERNALSYM LoadBitmap}
-{$ELSE}
-function LoadBitmap(hInstance: HINSTANCE; lpBitmapName: LPCSTR): HBITMAP; stdcall;
-{$EXTERNALSYM LoadBitmap}
-{$ENDIF}
 
-function LoadCursorA(hInstance: HINSTANCE; lpCursorName: LPCSTR): HCURSOR; stdcall;
+function LoadCursorA(hInstance: HINST; lpCursorName: LPCSTR): HCURSOR; stdcall;
 {$EXTERNALSYM LoadCursorA}
-function LoadCursorW(hInstance: HINSTANCE; lpCursorName: LPCWSTR): HCURSOR; stdcall;
+function LoadCursorW(hInstance: HINST; lpCursorName: LPCWSTR): HCURSOR; stdcall;
 {$EXTERNALSYM LoadCursorW}
-
-{$IFDEF UNICODE}
-function LoadCursor(hInstance: HINSTANCE; lpCursorName: LPCWSTR): HCURSOR; stdcall;
+function LoadCursor(hInstance: HINST; lpCursorName: LPCTSTR): HCURSOR; stdcall;
 {$EXTERNALSYM LoadCursor}
-{$ELSE}
-function LoadCursor(hInstance: HINSTANCE; lpCursorName: LPCSTR): HCURSOR; stdcall;
-{$EXTERNALSYM LoadCursor}
-{$ENDIF}
 
 function LoadCursorFromFileA(lpFileName: LPCSTR): HCURSOR; stdcall;
 {$EXTERNALSYM LoadCursorFromFileA}
 function LoadCursorFromFileW(lpFileName: LPCWSTR): HCURSOR; stdcall;
 {$EXTERNALSYM LoadCursorFromFileW}
-
-{$IFDEF UNICODE}
-function LoadCursorFromFile(lpFileName: LPCWSTR): HCURSOR; stdcall;
+function LoadCursorFromFile(lpFileName: LPCTSTR): HCURSOR; stdcall;
 {$EXTERNALSYM LoadCursorFromFile}
-{$ELSE}
-function LoadCursorFromFile(lpFileName: LPCSTR): HCURSOR; stdcall;
-{$EXTERNALSYM LoadCursorFromFile}
-{$ENDIF}
 
-function CreateCursor(hInst: HINSTANCE; xHotSpot, yHotSpot, nWidth, nHeight: Integer;
+function CreateCursor(hInst: HINST; xHotSpot, yHotSpot, nWidth, nHeight: Integer;
   pvANDPlane: PVOID; pvXORPlane: PVOID): HCURSOR; stdcall;
 {$EXTERNALSYM CreateCursor}
 
@@ -7966,18 +7255,12 @@ type
   {$EXTERNALSYM ICONINFO}
   TIconInfo = ICONINFO;
 
-function LoadIconA(hInstance: HINSTANCE; lpIconName: LPCSTR): HICON; stdcall;
+function LoadIconA(hInstance: HINST; lpIconName: LPCSTR): HICON; stdcall;
 {$EXTERNALSYM LoadIconA}
-function LoadIconW(hInstance: HINSTANCE; lpIconName: LPCWSTR): HICON; stdcall;
+function LoadIconW(hInstance: HINST; lpIconName: LPCWSTR): HICON; stdcall;
 {$EXTERNALSYM LoadIconW}
-
-{$IFDEF UNICODE}
-function LoadIcon(hInstance: HINSTANCE; lpIconName: LPCWSTR): HICON; stdcall;
+function LoadIcon(hInstance: HINST; lpIconName: LPCTSTR): HICON; stdcall;
 {$EXTERNALSYM LoadIcon}
-{$ELSE}
-function LoadIcon(hInstance: HINSTANCE; lpIconName: LPCSTR): HICON; stdcall;
-{$EXTERNALSYM LoadIcon}
-{$ENDIF}
 
 function PrivateExtractIconsA(szFileName: LPCSTR; nIconIndex, cxIcon, cyIcon: Integer; var phicon: HICON;
   var piconid: UINT; nIcons, flags: UINT): UINT; stdcall;
@@ -7985,18 +7268,11 @@ function PrivateExtractIconsA(szFileName: LPCSTR; nIconIndex, cxIcon, cyIcon: In
 function PrivateExtractIconsW(szFileName: LPCWSTR; nIconIndex, cxIcon, cyIcon: Integer; var phicon: HICON;
   var piconid: UINT; nIcons, flags: UINT): UINT; stdcall;
 {$EXTERNALSYM PrivateExtractIconsW}
-
-{$IFDEF UNICODE}
-function PrivateExtractIcons(szFileName: LPCWSTR; nIconIndex, cxIcon, cyIcon: Integer; var phicon: HICON;
+function PrivateExtractIcons(szFileName: LPCTSTR; nIconIndex, cxIcon, cyIcon: Integer; var phicon: HICON;
   var piconid: UINT; nIcons, flags: UINT): UINT; stdcall;
 {$EXTERNALSYM PrivateExtractIcons}
-{$ELSE}
-function PrivateExtractIcons(szFileName: LPCSTR; nIconIndex, cxIcon, cyIcon: Integer; var phicon: HICON;
-  var piconid: UINT; nIcons, flags: UINT): UINT; stdcall;
-{$EXTERNALSYM PrivateExtractIcons}
-{$ENDIF}
 
-function CreateIcon(hInstance: HINSTANCE; nWidth, nHeight: Integer; cPlanes,
+function CreateIcon(hInstance: HINST; nWidth, nHeight: Integer; cPlanes,
   cBitsPixel: BYTE; lpbANDbits: LPBYTE; lpbXORbits: LPBYTE): HICON; stdcall;
 {$EXTERNALSYM CreateIcon}
 
@@ -8075,22 +7351,15 @@ const
   LR_SHARED           = $8000;
   {$EXTERNALSYM LR_SHARED}
 
-function LoadImageA(hinst: HINSTANCE; lpszName: LPCSTR; uType: UINT;
+function LoadImageA(hinst: HINST; lpszName: LPCSTR; uType: UINT;
   cxDesired, cyDesired: Integer; fuLoad: UINT): HANDLE; stdcall;
 {$EXTERNALSYM LoadImageA}
-function LoadImageW(hinst: HINSTANCE; lpszName: LPCWSTR; uType: UINT;
+function LoadImageW(hinst: HINST; lpszName: LPCWSTR; uType: UINT;
   cxDesired, cyDesired: Integer; fuLoad: UINT): HANDLE; stdcall;
 {$EXTERNALSYM LoadImageW}
-
-{$IFDEF UNICODE}
-function LoadImage(hinst: HINSTANCE; lpszName: LPCWSTR; uType: UINT;
+function LoadImage(hinst: HINST; lpszName: LPCTSTR; uType: UINT;
   cxDesired, cyDesired: Integer; fuLoad: UINT): HANDLE; stdcall;
 {$EXTERNALSYM LoadImage}
-{$ELSE}
-function LoadImage(hinst: HINSTANCE; lpszName: LPCSTR; uType: UINT;
-  cxDesired, cyDesired: Integer; fuLoad: UINT): HANDLE; stdcall;
-{$EXTERNALSYM LoadImage}
-{$ENDIF}
 
 function CopyImage(hinst: HANDLE; lpszName: UINT; cxDesired, cyDesired: Integer;
   fuFlags: UINT): HANDLE; stdcall;
@@ -8283,22 +7552,15 @@ const
   IDI_INFORMATION = IDI_ASTERISK;
   {$EXTERNALSYM IDI_INFORMATION}
 
-function LoadStringA(hInstance: HINSTANCE; uID: UINT; lpBuffer: LPSTR;
+function LoadStringA(hInstance: HINST; uID: UINT; lpBuffer: LPSTR;
   nBufferMax: Integer): Integer; stdcall;
 {$EXTERNALSYM LoadStringA}
-function LoadStringW(hInstance: HINSTANCE; uID: UINT; lpBuffer: LPWSTR;
+function LoadStringW(hInstance: HINST; uID: UINT; lpBuffer: LPWSTR;
   nBufferMax: Integer): Integer; stdcall;
 {$EXTERNALSYM LoadStringW}
-
-{$IFDEF UNICODE}
-function LoadString(hInstance: HINSTANCE; uID: UINT; lpBuffer: LPWSTR;
+function LoadString(hInstance: HINST; uID: UINT; lpBuffer: LPTSTR;
   nBufferMax: Integer): Integer; stdcall;
 {$EXTERNALSYM LoadString}
-{$ELSE}
-function LoadString(hInstance: HINSTANCE; uID: UINT; lpBuffer: LPSTR;
-  nBufferMax: Integer): Integer; stdcall;
-{$EXTERNALSYM LoadString}
-{$ENDIF}
 
 //
 // Dialog Box Command IDs
@@ -8729,7 +7991,7 @@ const
 // Dialog window class
 //
 
-  WC_DIALOG = (MAKEINTATOM($8002));
+  WC_DIALOG = MAKEINTATOM($8002);
   {$EXTERNALSYM WC_DIALOG}
 
 //
@@ -8758,14 +8020,8 @@ function IsDialogMessageA(hDlg: HWND; const lpMsg: MSG): BOOL; stdcall;
 {$EXTERNALSYM IsDialogMessageA}
 function IsDialogMessageW(hDlg: HWND; const lpMsg: MSG): BOOL; stdcall;
 {$EXTERNALSYM IsDialogMessageW}
-
-{$IFDEF UNICODE}
 function IsDialogMessage(hDlg: HWND; const lpMsg: MSG): BOOL; stdcall;
 {$EXTERNALSYM IsDialogMessage}
-{$ELSE}
-function IsDialogMessage(hDlg: HWND; const lpMsg: MSG): BOOL; stdcall;
-{$EXTERNALSYM IsDialogMessage}
-{$ENDIF}
 
 function MapDialogRect(hDlg: HWND; var lpRect: RECT): BOOL; stdcall;
 {$EXTERNALSYM MapDialogRect}
@@ -8776,16 +8032,9 @@ function DlgDirListA(hDlg: HWND; lpPathSpec: LPSTR; nIDListBox: Integer;
 function DlgDirListW(hDlg: HWND; lpPathSpec: LPWSTR; nIDListBox: Integer;
   nIDStaticPath: Integer; uFileType: UINT): Integer; stdcall;
 {$EXTERNALSYM DlgDirListW}
-
-{$IFDEF UNICODE}
-function DlgDirList(hDlg: HWND; lpPathSpec: LPWSTR; nIDListBox: Integer;
+function DlgDirList(hDlg: HWND; lpPathSpec: LPTSTR; nIDListBox: Integer;
   nIDStaticPath: Integer; uFileType: UINT): Integer; stdcall;
 {$EXTERNALSYM DlgDirList}
-{$ELSE}
-function DlgDirList(hDlg: HWND; lpPathSpec: LPSTR; nIDListBox: Integer;
-  nIDStaticPath: Integer; uFileType: UINT): Integer; stdcall;
-{$EXTERNALSYM DlgDirList}
-{$ENDIF}
 
 //
 // DlgDirList, DlgDirListComboBox flags values
@@ -8816,14 +8065,8 @@ function DlgDirSelectExA(hDlg: HWND; lpString: LPSTR; nCount, nIDListBox: Intege
 {$EXTERNALSYM DlgDirSelectExA}
 function DlgDirSelectExW(hDlg: HWND; lpString: LPWSTR; nCount, nIDListBox: Integer): BOOL; stdcall;
 {$EXTERNALSYM DlgDirSelectExW}
-
-{$IFDEF UNICODE}
-function DlgDirSelectEx(hDlg: HWND; lpString: LPWSTR; nCount, nIDListBox: Integer): BOOL; stdcall;
+function DlgDirSelectEx(hDlg: HWND; lpString: LPTSTR; nCount, nIDListBox: Integer): BOOL; stdcall;
 {$EXTERNALSYM DlgDirSelectEx}
-{$ELSE}
-function DlgDirSelectEx(hDlg: HWND; lpString: LPSTR; nCount, nIDListBox: Integer): BOOL; stdcall;
-{$EXTERNALSYM DlgDirSelectEx}
-{$ENDIF}
 
 function DlgDirListComboBoxA(hDlg: HWND; lpPathSpec: LPSTR; nIDComboBox: Integer;
   nIDStaticPath: Integer; uFiletype: UINT): Integer; stdcall;
@@ -8831,16 +8074,9 @@ function DlgDirListComboBoxA(hDlg: HWND; lpPathSpec: LPSTR; nIDComboBox: Integer
 function DlgDirListComboBoxW(hDlg: HWND; lpPathSpec: LPWSTR; nIDComboBox: Integer;
   nIDStaticPath: Integer; uFiletype: UINT): Integer; stdcall;
 {$EXTERNALSYM DlgDirListComboBoxW}
-
-{$IFDEF UNICODE}
-function DlgDirListComboBox(hDlg: HWND; lpPathSpec: LPWSTR; nIDComboBox: Integer;
+function DlgDirListComboBox(hDlg: HWND; lpPathSpec: LPTSTR; nIDComboBox: Integer;
   nIDStaticPath: Integer; uFiletype: UINT): Integer; stdcall;
 {$EXTERNALSYM DlgDirListComboBox}
-{$ELSE}
-function DlgDirListComboBox(hDlg: HWND; lpPathSpec: LPSTR; nIDComboBox: Integer;
-  nIDStaticPath: Integer; uFiletype: UINT): Integer; stdcall;
-{$EXTERNALSYM DlgDirListComboBox}
-{$ENDIF}
 
 function DlgDirSelectComboBoxExA(hDlg: HWND; lpString: LPSTR; nCount: Integer;
   nIDComboBox: Integer): BOOL; stdcall;
@@ -8848,16 +8084,9 @@ function DlgDirSelectComboBoxExA(hDlg: HWND; lpString: LPSTR; nCount: Integer;
 function DlgDirSelectComboBoxExW(hDlg: HWND; lpString: LPWSTR; nCount: Integer;
   nIDComboBox: Integer): BOOL; stdcall;
 {$EXTERNALSYM DlgDirSelectComboBoxExW}
-
-{$IFDEF UNICODE}
-function DlgDirSelectComboBoxEx(hDlg: HWND; lpString: LPWSTR; nCount: Integer;
+function DlgDirSelectComboBoxEx(hDlg: HWND; lpString: LPTSTR; nCount: Integer;
   nIDComboBox: Integer): BOOL; stdcall;
 {$EXTERNALSYM DlgDirSelectComboBoxEx}
-{$ELSE}
-function DlgDirSelectComboBoxEx(hDlg: HWND; lpString: LPSTR; nCount: Integer;
-  nIDComboBox: Integer): BOOL; stdcall;
-{$EXTERNALSYM DlgDirSelectComboBoxEx}
-{$ENDIF}
 
 //
 // Dialog Styles
@@ -8894,7 +8123,7 @@ const
   DS_CONTEXTHELP  = $2000;
   {$EXTERNALSYM DS_CONTEXTHELP}
 
-  DS_SHELLFONT = (DS_SETFONT or DS_FIXEDSYS);
+  DS_SHELLFONT = DS_SETFONT or DS_FIXEDSYS;
   {$EXTERNALSYM DS_SHELLFONT}
 
 //#if(_WIN32_WCE >= 0x0500)
@@ -8902,12 +8131,12 @@ const
   {$EXTERNALSYM DS_USEPIXELS}
 //#endif
 
-  DM_GETDEFID = (WM_USER+0);
+  DM_GETDEFID = WM_USER + 0;
   {$EXTERNALSYM DM_GETDEFID}
-  DM_SETDEFID = (WM_USER+1);
+  DM_SETDEFID = WM_USER + 1;
   {$EXTERNALSYM DM_SETDEFID}
 
-  DM_REPOSITION = (WM_USER+2);
+  DM_REPOSITION = WM_USER + 2;
   {$EXTERNALSYM DM_REPOSITION}
 
 //
@@ -9071,18 +8300,13 @@ const
   LB_GETLISTBOXINFO    = $01B2;
   {$EXTERNALSYM LB_GETLISTBOXINFO}
 
-{$IFDEF WINVER_0400_GREATER}
+  {$IFDEF WINXP_UP}
   LB_MSGMAX = $01B3;
   {$EXTERNALSYM LB_MSGMAX}
-{$ELSE}
-{$IFDEF WINVER_0400_GREATER}
+  {$ELSE}
   LB_MSGMAX = $01B0;
   {$EXTERNALSYM LB_MSGMAX}
-{$ELSE}
-  LB_MSGMAX = $01A8;
-  {$EXTERNALSYM LB_MSGMAX}
-{$ENDIF}
-{$ENDIF}
+  {$ENDIF WINXP_UP}
 
 //
 // Listbox Styles
@@ -9121,7 +8345,7 @@ const
   LBS_COMBOBOX          = $8000;
   {$EXTERNALSYM LBS_COMBOBOX}
   
-  LBS_STANDARD          = (LBS_NOTIFY or LBS_SORT or WS_VSCROLL or WS_BORDER);
+  LBS_STANDARD          = LBS_NOTIFY or LBS_SORT or WS_VSCROLL or WS_BORDER;
   {$EXTERNALSYM LBS_STANDARD}
 
 //
@@ -9270,18 +8494,13 @@ const
   CB_GETCOMBOBOXINFO       = $0164;
   {$EXTERNALSYM CB_GETCOMBOBOXINFO}
 
-{$IFDEF WINVER_0400_GREATER}
+  {$IFDEF WINXP_UP}
   CB_MSGMAX = $0165;
   {$EXTERNALSYM CB_MSGMAX}
-{$ELSE}
-{$IFDEF WINVER_0400_GREATER}
+  {$ELSE}
   CB_MSGMAX = $0162;
   {$EXTERNALSYM CB_MSGMAX}
-{$ELSE}
-  CB_MSGMAX = $015B;
-  {$EXTERNALSYM CB_MSGMAX}
-{$ENDIF}
-{$ENDIF}
+  {$ENDIF WINXP_UP}
 
 //
 // Scroll Bar Styles
@@ -9342,7 +8561,7 @@ const
   {$EXTERNALSYM SIF_DISABLENOSCROLL}
   SIF_TRACKPOS        = $0010;
   {$EXTERNALSYM SIF_TRACKPOS}
-  SIF_ALL             = (SIF_RANGE or SIF_PAGE or SIF_POS or SIF_TRACKPOS);
+  SIF_ALL             = SIF_RANGE or SIF_PAGE or SIF_POS or SIF_TRACKPOS;
   {$EXTERNALSYM SIF_ALL}
 
 type
@@ -9431,21 +8650,21 @@ type
   TMdiCreateStructW = MDICREATESTRUCTW;
   PMdiCreateStructW = LPMDICREATESTRUCTW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   MDICREATESTRUCT = MDICREATESTRUCTW;
   {$EXTERNALSYM MDICREATESTRUCT}
   LPMDICREATESTRUCT = LPMDICREATESTRUCTW;
   {$EXTERNALSYM LPMDICREATESTRUCT}
   TMdiCreateStruct = TMdiCreateStructW;
   PMdiCreateStruct = PMdiCreateStructW;
-{$ELSE}
+  {$ELSE}
   MDICREATESTRUCT = MDICREATESTRUCTA;
   {$EXTERNALSYM MDICREATESTRUCT}
   LPMDICREATESTRUCT = LPMDICREATESTRUCTA;
   {$EXTERNALSYM LPMDICREATESTRUCT}
   TMdiCreateStruct = TMdiCreateStructA;
   PMdiCreateStruct = PMdiCreateStructA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   LPCLIENTCREATESTRUCT = ^CLIENTCREATESTRUCT;
   {$EXTERNALSYM LPCLIENTCREATESTRUCT}
@@ -9465,29 +8684,16 @@ function DefFrameProcA(hWnd: HWND; hWndMDIClient: HWND; uMsg: UINT;
 function DefFrameProcW(hWnd: HWND; hWndMDIClient: HWND; uMsg: UINT;
   wParam: WPARAM; lParam: LPARAM): LRESULT; stdcall;
 {$EXTERNALSYM DefFrameProcW}
-
-{$IFDEF UNICODE}
 function DefFrameProc(hWnd: HWND; hWndMDIClient: HWND; uMsg: UINT;
   wParam: WPARAM; lParam: LPARAM): LRESULT; stdcall;
 {$EXTERNALSYM DefFrameProc}
-{$ELSE}
-function DefFrameProc(hWnd: HWND; hWndMDIClient: HWND; uMsg: UINT;
-  wParam: WPARAM; lParam: LPARAM): LRESULT; stdcall;
-{$EXTERNALSYM DefFrameProc}
-{$ENDIF}
 
 function DefMDIChildProcA(hWnd: HWND; uMsg: UINT; wParam: WPARAM; lParam: LPARAM): LRESULT; stdcall;
 {$EXTERNALSYM DefMDIChildProcA}
 function DefMDIChildProcW(hWnd: HWND; uMsg: UINT; wParam: WPARAM; lParam: LPARAM): LRESULT; stdcall;
 {$EXTERNALSYM DefMDIChildProcW}
-
-{$IFDEF UNICODE}
 function DefMDIChildProc(hWnd: HWND; uMsg: UINT; wParam: WPARAM; lParam: LPARAM): LRESULT; stdcall;
 {$EXTERNALSYM DefMDIChildProc}
-{$ELSE}
-function DefMDIChildProc(hWnd: HWND; uMsg: UINT; wParam: WPARAM; lParam: LPARAM): LRESULT; stdcall;
-{$EXTERNALSYM DefMDIChildProc}
-{$ENDIF}
 
 function TranslateMDISysAccel(hWndClient: HWND; const lpMsg: MSG): BOOL; stdcall;
 {$EXTERNALSYM TranslateMDISysAccel}
@@ -9496,25 +8702,17 @@ function ArrangeIconicWindows(hWnd: HWND): UINT; stdcall;
 {$EXTERNALSYM ArrangeIconicWindows}
 
 function CreateMDIWindowA(lpClassName, lpWindowName: LPCSTR; dwStyle: DWORD;
-  X, Y, nWidth, nHeight: Integer; hWndParent: HWND; hInstance: HINSTANCE;
+  X, Y, nWidth, nHeight: Integer; hWndParent: HWND; hInstance: HINST;
   lParam: LPARAM): HWND; stdcall;
 {$EXTERNALSYM CreateMDIWindowA}
 function CreateMDIWindowW(lpClassName, lpWindowName: LPCWSTR; dwStyle: DWORD;
-  X, Y, nWidth, nHeight: Integer; hWndParent: HWND; hInstance: HINSTANCE;
+  X, Y, nWidth, nHeight: Integer; hWndParent: HWND; hInstance: HINST;
   lParam: LPARAM): HWND; stdcall;
 {$EXTERNALSYM CreateMDIWindowW}
-
-{$IFDEF UNICODE}
-function CreateMDIWindow(lpClassName, lpWindowName: LPCWSTR; dwStyle: DWORD;
-  X, Y, nWidth, nHeight: Integer; hWndParent: HWND; hInstance: HINSTANCE;
+function CreateMDIWindow(lpClassName, lpWindowName: LPCTSTR; dwStyle: DWORD;
+  X, Y, nWidth, nHeight: Integer; hWndParent: HWND; hInstance: HINST;
   lParam: LPARAM): HWND; stdcall;
 {$EXTERNALSYM CreateMDIWindow}
-{$ELSE}
-function CreateMDIWindow(lpClassName, lpWindowName: LPCSTR; dwStyle: DWORD;
-  X, Y, nWidth, nHeight: Integer; hWndParent: HWND; hInstance: HINSTANCE;
-  lParam: LPARAM): HWND; stdcall;
-{$EXTERNALSYM CreateMDIWindow}
-{$ENDIF}
 
 function TileWindows(hwndParent: HWND; wHow: UINT; lpRect: LPRECT; cKids: UINT;
   hwnd: HWND; lpKids: LPHWND): WORD; stdcall;
@@ -9556,21 +8754,21 @@ type
   TMultiKeyHelpW = MULTIKEYHELPW;
   PMultiKeyHelpW = LPMULTIKEYHELPW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   MULTIKEYHELP = MULTIKEYHELPW;
   {$EXTERNALSYM MULTIKEYHELP}
   LPMULTIKEYHELP = LPMULTIKEYHELPW;
   {$EXTERNALSYM LPMULTIKEYHELP}
   TMultiKeyHelp = TMultiKeyHelpW;
   PMultiKeyHelp = PMultiKeyHelpW;
-{$ELSE}
+  {$ELSE}
   MULTIKEYHELP = MULTIKEYHELPA;
   {$EXTERNALSYM MULTIKEYHELP}
   LPMULTIKEYHELP = LPMULTIKEYHELPA;
   {$EXTERNALSYM LPMULTIKEYHELP}
   TMultiKeyHelp = TMultiKeyHelpA;
   PMultiKeyHelp = PMultiKeyHelpA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   LPHELPWININFOA = ^HELPWININFOA;
   {$EXTERNALSYM LPHELPWININFOA}
@@ -9606,21 +8804,21 @@ type
   THelpWinInfoW = HELPWININFOW;
   PHelpWinInfoW = LPHELPWININFOW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   HELPWININFO = HELPWININFOW;
   {$EXTERNALSYM HELPWININFO}
   LPHELPWININFO = LPHELPWININFOW;
   {$EXTERNALSYM LPHELPWININFO}
   THelpWinInfo = THelpWinInfoW;
   PHelpWinInfo = PHelpWinInfoW;
-{$ELSE}
+  {$ELSE}
   HELPWININFO = HELPWININFOA;
   {$EXTERNALSYM HELPWININFO}
   LPHELPWININFO = LPHELPWININFOA;
   {$EXTERNALSYM LPHELPWININFO}
   THelpWinInfo = THelpWinInfoA;
   PHelpWinInfo = PHelpWinInfoA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 // Commands to pass to WinHelp()
@@ -9691,14 +8889,8 @@ function WinHelpA(hWndMain: HWND; lpszHelp: LPCSTR; uCommand: UINT; dwData: ULON
 {$EXTERNALSYM WinHelpA}
 function WinHelpW(hWndMain: HWND; lpszHelp: LPCWSTR; uCommand: UINT; dwData: ULONG_PTR): BOOL; stdcall;
 {$EXTERNALSYM WinHelpW}
-
-{$IFDEF UNICODE}
-function WinHelp(hWndMain: HWND; lpszHelp: LPCWSTR; uCommand: UINT; dwData: ULONG_PTR): BOOL; stdcall;
+function WinHelp(hWndMain: HWND; lpszHelp: LPCTSTR; uCommand: UINT; dwData: ULONG_PTR): BOOL; stdcall;
 {$EXTERNALSYM WinHelp}
-{$ELSE}
-function WinHelp(hWndMain: HWND; lpszHelp: LPCSTR; uCommand: UINT; dwData: ULONG_PTR): BOOL; stdcall;
-{$EXTERNALSYM WinHelp}
-{$ENDIF}
 
 const
   GR_GDIOBJECTS  = 0; // Count of GDI objects
@@ -10149,21 +9341,21 @@ type
   TNonClientMetricsW = NONCLIENTMETRICSW;
   PNonClientMetricsW = LPNONCLIENTMETRICSW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   NONCLIENTMETRICS = NONCLIENTMETRICSW;
   {$EXTERNALSYM NONCLIENTMETRICS}
   LPNONCLIENTMETRICS = LPNONCLIENTMETRICSW;
   {$EXTERNALSYM LPNONCLIENTMETRICS}
   TNonClientMetrics = TNonClientMetricsW;
   PNonClientMetrics = PNonClientMetricsW;
-{$ELSE}
+  {$ELSE}
   NONCLIENTMETRICS = NONCLIENTMETRICSA;
   {$EXTERNALSYM NONCLIENTMETRICS}
   LPNONCLIENTMETRICS = LPNONCLIENTMETRICSA;
   {$EXTERNALSYM LPNONCLIENTMETRICS}
   TNonClientMetrics = TNonClientMetricsA;
   PNonClientMetrics = PNonClientMetricsA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 const
   ARW_BOTTOMLEFT  = $0000;
@@ -10238,21 +9430,21 @@ type
   TIconMetricsW = ICONMETRICSW;
   PIconMetricsW = LPICONMETRICSW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   ICONMETRICS = ICONMETRICSW;
   {$EXTERNALSYM ICONMETRICS}
   LPICONMETRICS = LPICONMETRICSW;
   {$EXTERNALSYM LPICONMETRICS}
   TIconMetrics = TIconMetricsW;
   PIconMetrics = PIconMetricsW;
-{$ELSE}
+  {$ELSE}
   ICONMETRICS = ICONMETRICSA;
   {$EXTERNALSYM ICONMETRICS}
   LPICONMETRICS = LPICONMETRICSA;
   {$EXTERNALSYM LPICONMETRICS}
   TIconMetrics = TIconMetricsA;
   PIconMetrics = PIconMetricsA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   LPANIMATIONINFO = ^ANIMATIONINFO;
   {$EXTERNALSYM LPANIMATIONINFO}
@@ -10300,21 +9492,21 @@ type
   TSerialKeysW = SERIALKEYSW;
   PSerialKeysW = LPSERIALKEYSW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   SERIALKEYS = SERIALKEYSW;
   {$EXTERNALSYM SERIALKEYS}
   LPSERIALKEYS = LPSERIALKEYSW;
   {$EXTERNALSYM LPSERIALKEYS}
   TSerialKeys = TSerialKeysW;
   PSerialKeys = PSerialKeysW;
-{$ELSE}
+  {$ELSE}
   SERIALKEYS = SERIALKEYSA;
   {$EXTERNALSYM SERIALKEYS}
   LPSERIALKEYS = LPSERIALKEYSA;
   {$EXTERNALSYM LPSERIALKEYS}
   TSerialKeys = TSerialKeysA;
   PSerialKeys = PSerialKeysA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 // flags for SERIALKEYS dwFlags field//
 
@@ -10353,21 +9545,21 @@ type
   THighContrastW = HIGHCONTRASTW;
   PHighContrastW = LPHIGHCONTRASTW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   HIGHCONTRAST = HIGHCONTRASTW;
   {$EXTERNALSYM HIGHCONTRAST}
   LPHIGHCONTRAST = LPHIGHCONTRASTW;
   {$EXTERNALSYM LPHIGHCONTRAST}
   THighContrast = THighContrastW;
-  PHighContrast = PHighContrastW;  
-{$ELSE}
+  PHighContrast = PHighContrastW;
+  {$ELSE}
   HIGHCONTRAST = HIGHCONTRASTA;
   {$EXTERNALSYM HIGHCONTRAST}
   LPHIGHCONTRAST = LPHIGHCONTRASTA;
   {$EXTERNALSYM LPHIGHCONTRAST}
   THighContrast = THighContrastA;
   PHighContrast = PHighContrastA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 // flags for HIGHCONTRAST dwFlags field//
 
@@ -10431,14 +9623,8 @@ function ChangeDisplaySettingsA(lpDevMode: LPDEVMODEA; dwFlags: DWORD): LONG; st
 {$EXTERNALSYM ChangeDisplaySettingsA}
 function ChangeDisplaySettingsW(lpDevMode: LPDEVMODEW; dwFlags: DWORD): LONG; stdcall;
 {$EXTERNALSYM ChangeDisplaySettingsW}
-
-{$IFDEF UNICODE}
-function ChangeDisplaySettings(lpDevMode: LPDEVMODEW; dwFlags: DWORD): LONG; stdcall;
+function ChangeDisplaySettings(lpDevMode: LPDEVMODE; dwFlags: DWORD): LONG; stdcall;
 {$EXTERNALSYM ChangeDisplaySettings}
-{$ELSE}
-function ChangeDisplaySettings(lpDevMode: LPDEVMODEA; dwFlags: DWORD): LONG; stdcall;
-{$EXTERNALSYM ChangeDisplaySettings}
-{$ENDIF}
 
 function ChangeDisplaySettingsExA(lpszDeviceName: LPCSTR; lpDevMode: LPDEVMODEA;
   hwnd: HWND; dwflags: DWORD; lParam: LPVOID): LONG; stdcall;
@@ -10446,16 +9632,9 @@ function ChangeDisplaySettingsExA(lpszDeviceName: LPCSTR; lpDevMode: LPDEVMODEA;
 function ChangeDisplaySettingsExW(lpszDeviceName: LPCWSTR; lpDevMode: LPDEVMODEW;
   hwnd: HWND; dwflags: DWORD; lParam: LPVOID): LONG; stdcall;
 {$EXTERNALSYM ChangeDisplaySettingsExW}
-
-{$IFDEF UNICODE}
-function ChangeDisplaySettingsEx(lpszDeviceName: LPCWSTR; lpDevMode: LPDEVMODEW;
+function ChangeDisplaySettingsEx(lpszDeviceName: LPCTSTR; lpDevMode: LPDEVMODE;
   hwnd: HWND; dwflags: DWORD; lParam: LPVOID): LONG; stdcall;
 {$EXTERNALSYM ChangeDisplaySettingsEx}
-{$ELSE}
-function ChangeDisplaySettingsEx(lpszDeviceName: LPCSTR; lpDevMode: LPDEVMODEA;
-  hwnd: HWND; dwflags: DWORD; lParam: LPVOID): LONG; stdcall;
-{$EXTERNALSYM ChangeDisplaySettingsEx}
-{$ENDIF}
 
 const
   ENUM_CURRENT_SETTINGS  = DWORD(-1);
@@ -10469,16 +9648,9 @@ function EnumDisplaySettingsA(lpszDeviceName: LPCSTR; iModeNum: DWORD;
 function EnumDisplaySettingsW(lpszDeviceName: LPCWSTR; iModeNum: DWORD;
   var lpDevMode: DEVMODEW): BOOL; stdcall;
 {$EXTERNALSYM EnumDisplaySettingsW}
-
-{$IFDEF UNICODE}
-function EnumDisplaySettings(lpszDeviceName: LPCWSTR; iModeNum: DWORD;
-  var lpDevMode: DEVMODEW): BOOL; stdcall;
+function EnumDisplaySettings(lpszDeviceName: LPCTSTR; iModeNum: DWORD;
+  var lpDevMode: DEVMODE): BOOL; stdcall;
 {$EXTERNALSYM EnumDisplaySettings}
-{$ELSE}
-function EnumDisplaySettings(lpszDeviceName: LPCSTR; iModeNum: DWORD;
-  var lpDevMode: DEVMODEA): BOOL; stdcall;
-{$EXTERNALSYM EnumDisplaySettings}
-{$ENDIF}
 
 function EnumDisplaySettingsExA(lpszDeviceName: LPCSTR; iModeNum: DWORD;
   var lpDevMode: DEVMODEA; dwFlags: DWORD): BOOL; stdcall;
@@ -10486,16 +9658,9 @@ function EnumDisplaySettingsExA(lpszDeviceName: LPCSTR; iModeNum: DWORD;
 function EnumDisplaySettingsExW(lpszDeviceName: LPCWSTR; iModeNum: DWORD;
   var lpDevMode: DEVMODEW; dwFlags: DWORD): BOOL; stdcall;
 {$EXTERNALSYM EnumDisplaySettingsExW}
-
-{$IFDEF UNICODE}
-function EnumDisplaySettingsEx(lpszDeviceName: LPCWSTR; iModeNum: DWORD;
-  var lpDevMode: DEVMODEW; dwFlags: DWORD): BOOL; stdcall;
+function EnumDisplaySettingsEx(lpszDeviceName: LPCTSTR; iModeNum: DWORD;
+  var lpDevMode: DEVMODE; dwFlags: DWORD): BOOL; stdcall;
 {$EXTERNALSYM EnumDisplaySettingsEx}
-{$ELSE}
-function EnumDisplaySettingsEx(lpszDeviceName: LPCSTR; iModeNum: DWORD;
-  var lpDevMode: DEVMODEA; dwFlags: DWORD): BOOL; stdcall;
-{$EXTERNALSYM EnumDisplaySettingsEx}
-{$ENDIF}
 
 // Flags for EnumDisplaySettingsEx//
 
@@ -10509,16 +9674,9 @@ function EnumDisplayDevicesA(lpDevice: LPCSTR; iDevNum: DWORD;
 function EnumDisplayDevicesW(lpDevice: LPCWSTR; iDevNum: DWORD;
   var lpDisplayDevice: DISPLAY_DEVICEW; dwFlags: DWORD): BOOL; stdcall;
 {$EXTERNALSYM EnumDisplayDevicesW}
-
-{$IFDEF UNICODE}
-function EnumDisplayDevices(lpDevice: LPCWSTR; iDevNum: DWORD;
-  var lpDisplayDevice: DISPLAY_DEVICEW; dwFlags: DWORD): BOOL; stdcall;
+function EnumDisplayDevices(lpDevice: LPCTSTR; iDevNum: DWORD;
+  var lpDisplayDevice: DISPLAY_DEVICE; dwFlags: DWORD): BOOL; stdcall;
 {$EXTERNALSYM EnumDisplayDevices}
-{$ELSE}
-function EnumDisplayDevices(lpDevice: LPCSTR; iDevNum: DWORD;
-  var lpDisplayDevice: DISPLAY_DEVICEA; dwFlags: DWORD): BOOL; stdcall;
-{$EXTERNALSYM EnumDisplayDevices}
-{$ENDIF}
 
 function SystemParametersInfoA(uiAction: UINT; uiParam: UINT;
   pvParam: PVOID; fWinIni: UINT): BOOL; stdcall;
@@ -10526,16 +9684,9 @@ function SystemParametersInfoA(uiAction: UINT; uiParam: UINT;
 function SystemParametersInfoW(uiAction: UINT; uiParam: UINT;
   pvParam: PVOID; fWinIni: UINT): BOOL; stdcall;
 {$EXTERNALSYM SystemParametersInfoW}
-
-{$IFDEF UNICODE}
 function SystemParametersInfo(uiAction: UINT; uiParam: UINT;
   pvParam: PVOID; fWinIni: UINT): BOOL; stdcall;
 {$EXTERNALSYM SystemParametersInfo}
-{$ELSE}
-function SystemParametersInfo(uiAction: UINT; uiParam: UINT;
-  pvParam: PVOID; fWinIni: UINT): BOOL; stdcall;
-{$EXTERNALSYM SystemParametersInfo}
-{$ENDIF}
 
 //
 // Accessibility support
@@ -10797,21 +9948,21 @@ type
   TSoundsEntryW = SOUNDSENTRYW;
   PSoundsEntryW = LPSOUNDSENTRYW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   SOUNDSENTRY = SOUNDSENTRYW;
   {$EXTERNALSYM SOUNDSENTRY}
   LPSOUNDSENTRY = LPSOUNDSENTRYW;
   {$EXTERNALSYM LPSOUNDSENTRY}
   TSoundsEntry = TSoundsEntryW;
   PSoundsEntry = PSoundsEntryW;
-{$ELSE}
+  {$ELSE}
   SOUNDSENTRY = SOUNDSENTRYA;
   {$EXTERNALSYM SOUNDSENTRY}
   LPSOUNDSENTRY = LPSOUNDSENTRYA;
   {$EXTERNALSYM LPSOUNDSENTRY}
   TSoundsEntry = TSoundsEntryA;
   PSoundsEntry = PSoundsEntryA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 // SOUNDSENTRY dwFlags field
@@ -10909,8 +10060,10 @@ const
   MONITORINFOF_PRIMARY = $00000001;
   {$EXTERNALSYM MONITORINFOF_PRIMARY}
 
+  {$IFNDEF JWA_INCLUDEMODE}
   CCHDEVICENAME = 32;
   {$EXTERNALSYM CCHDEVICENAME}
+  {$ENDIF !JWA_INCLUDEMODE}
 
 type
   LPMONITORINFO = ^MONITORINFO;
@@ -10951,37 +10104,31 @@ type
   TMonitorInfoExW = MONITORINFOEXW;
   PMonitorInfoExW = LPMONITORINFOEXW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   MONITORINFOEX = MONITORINFOEXW;
   {$EXTERNALSYM MONITORINFOEX}
   LPMONITORINFOEX = LPMONITORINFOEXW;
   {$EXTERNALSYM LPMONITORINFOEX}
   TMonitorInfoEx = TMonitorInfoExW;
   PMonitorInfoEx = PMonitorInfoExW;
-{$ELSE}
+  {$ELSE}
   MONITORINFOEX = MONITORINFOEXA;
   {$EXTERNALSYM MONITORINFOEX}
   LPMONITORINFOEX = LPMONITORINFOEXA;
   {$EXTERNALSYM LPMONITORINFOEX}
   TMonitorInfoEx = TMonitorInfoExA;
   PMonitorInfoEx = PMonitorInfoExA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
-function GetMonitorInfoA(hMonitor: HMONITOR; pmi: LPMONITORINFO): BOOL; stdcall;
+function GetMonitorInfoA(hMonitor: HMONITOR; lpmi: LPMONITORINFO): BOOL; stdcall;
 {$EXTERNALSYM GetMonitorInfoA}
 function GetMonitorInfoW(hMonitor: HMONITOR; lpmi: LPMONITORINFO): BOOL; stdcall;
 {$EXTERNALSYM GetMonitorInfoW}
-
-{$IFDEF UNICODE}
 function GetMonitorInfo(hMonitor: HMONITOR; lpmi: LPMONITORINFO): BOOL; stdcall;
 {$EXTERNALSYM GetMonitorInfo}
-{$ELSE}
-function GetMonitorInfo(hMonitor: HMONITOR; lpmi: LPMONITORINFO): BOOL; stdcall;
-{$EXTERNALSYM GetMonitorInfo}
-{$ENDIF}
 
 type
-  MONITORENUMPROC = function (hMonitor: HMONITOR; hdcMonitor: HDC;
+  MONITORENUMPROC = function(hMonitor: HMONITOR; hdcMonitor: HDC;
     lprcMonitor: LPRECT; dwData: LPARAM): BOOL; stdcall;
   {$EXTERNALSYM MONITORENUMPROC}
   TMonitorEnumProc = MONITORENUMPROC;
@@ -10998,7 +10145,7 @@ procedure NotifyWinEvent(event: DWORD; hwnd: HWND; idObject: LONG; idChild: LONG
 {$EXTERNALSYM NotifyWinEvent}
 
 type
-  WINEVENTPROC = procedure (hWinEventHook: HWINEVENTHOOK; event: DWORD; hwnd: HWND;
+  WINEVENTPROC = procedure(hWinEventHook: HWINEVENTHOOK; event: DWORD; hwnd: HWND;
     idObject, idChild: LONG; idEventThread, dwmsEventTime: DWORD); stdcall;
   {$EXTERNALSYM WINEVENTPROC}
   TWinEventProc = WINEVENTPROC;
@@ -11039,7 +10186,6 @@ function UnhookWinEvent(hWinEventHook: HWINEVENTHOOK): BOOL; stdcall;
 // lVal the indexChild and pass that in to all methods.  Then you
 // are raring to go.
 //
-
 
 //
 // Common object IDs (cookies, only for sending WM_GETOBJECT to get at the
@@ -11620,14 +10766,8 @@ function GetWindowModuleFileNameA(hwnd: HWND; pszFileName: LPSTR; cchFileNameMax
 {$EXTERNALSYM GetWindowModuleFileNameA}
 function GetWindowModuleFileNameW(hwnd: HWND; pszFileName: LPWSTR; cchFileNameMax: UINT): UINT; stdcall;
 {$EXTERNALSYM GetWindowModuleFileNameW}
-
-{$IFDEF UNICODE}
-function GetWindowModuleFileName(hwnd: HWND; pszFileName: LPWSTR; cchFileNameMax: UINT): UINT; stdcall;
+function GetWindowModuleFileName(hwnd: HWND; pszFileName: LPTSTR; cchFileNameMax: UINT): UINT; stdcall;
 {$EXTERNALSYM GetWindowModuleFileName}
-{$ELSE}
-function GetWindowModuleFileName(hwnd: HWND; pszFileName: LPSTR; cchFileNameMax: UINT): UINT; stdcall;
-{$EXTERNALSYM GetWindowModuleFileName}
-{$ENDIF}
 
 const
   STATE_SYSTEM_UNAVAILABLE     = $00000001; // Disabled
@@ -11895,14 +11035,8 @@ function RealGetWindowClassA(hwnd: HWND; pszType: LPSTR; cchType: UINT): UINT; s
 
 function RealGetWindowClassW(hwnd: HWND; pszType: LPWSTR; cchType: UINT): UINT; stdcall;
 {$EXTERNALSYM RealGetWindowClassW}
-
-{$IFDEF UNICODE}
-function RealGetWindowClass(hwnd: HWND; pszType: LPWSTR; cchType: UINT): UINT; stdcall;
+function RealGetWindowClass(hwnd: HWND; pszType: LPTSTR; cchType: UINT): UINT; stdcall;
 {$EXTERNALSYM RealGetWindowClass}
-{$ELSE}
-function RealGetWindowClass(hwnd: HWND; pszType: LPSTR; cchType: UINT): UINT; stdcall;
-{$EXTERNALSYM RealGetWindowClass}
-{$ENDIF}
 
 //
 // Alt-Tab Switch window information.
@@ -11934,16 +11068,9 @@ function GetAltTabInfoA(hwnd: HWND; iItem: Integer; var pati: ALTTABINFO;
 function GetAltTabInfoW(hwnd: HWND; iItem: Integer; var pati: ALTTABINFO;
   pszItemText: LPWSTR; cchItemText: UINT): BOOL; stdcall;
 {$EXTERNALSYM GetAltTabInfoW}
-
-{$IFDEF UNICODE}
 function GetAltTabInfo(hwnd: HWND; iItem: Integer; var pati: ALTTABINFO;
-  pszItemText: LPWSTR; cchItemText: UINT): BOOL; stdcall;
+  pszItemText: LPTSTR; cchItemText: UINT): BOOL; stdcall;
 {$EXTERNALSYM GetAltTabInfo}
-{$ELSE}
-function GetAltTabInfo(hwnd: HWND; iItem: Integer; var pati: ALTTABINFO;
-  pszItemText: LPSTR; cchItemText: UINT): BOOL; stdcall;
-{$EXTERNALSYM GetAltTabInfo}
-{$ENDIF}
 
 //
 // Listbox information.
@@ -12349,16 +11476,9 @@ function GetRawInputDeviceInfoA(hDevice: HANDLE; uiCommand: UINT; pData: LPVOID;
 function GetRawInputDeviceInfoW(hDevice: HANDLE; uiCommand: UINT; pData: LPVOID;
   var pcbSize: UINT): UINT; stdcall;
 {$EXTERNALSYM GetRawInputDeviceInfoW}
-
-{$IFDEF UNICODE}
 function GetRawInputDeviceInfo(hDevice: HANDLE; uiCommand: UINT; pData: LPVOID;
   var pcbSize: UINT): UINT; stdcall;
 {$EXTERNALSYM GetRawInputDeviceInfo}
-{$ELSE}
-function GetRawInputDeviceInfo(hDevice: HANDLE; uiCommand: UINT; pData: LPVOID;
-  var pcbSize: UINT): UINT; stdcall;
-{$EXTERNALSYM GetRawInputDeviceInfo}
-{$ENDIF}
 
 //
 // Raw Input Bulk Read: GetRawInputBuffer
@@ -12437,10 +11557,18 @@ function GetRawInputDeviceList(pRawInputDeviceList: PRAWINPUTDEVICELIST; var pui
 function DefRawInputProc(paRawInput: PRAWINPUT; nInput: Integer; cbSizeHeader: UINT): LRESULT; stdcall;
 {$EXTERNALSYM DefRawInputProc}
 
+{$ENDIF JWA_INTERFACESECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
+
 implementation
 
-const
-  user32 = 'user32.dll';
+uses
+  JwaWinDLLNames;
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_IMPLEMENTATIONSECTION}
 
 function IS_INTRESOURCE(wInteger: WORD): BOOL;
 begin
@@ -12467,9 +11595,11 @@ begin
   Result := HIWORD(wParam);
 end;
 
-function GET_APPCOMMAND_LPARAM(lParam: LPARAM): Shortint;
+{$IFDEF WIN2000_UP}
+
+function GET_APPCOMMAND_LPARAM(lParam: LPARAM): WORD;
 begin
-  Result := Shortint(HIWORD(lParam) and not FAPPCOMMAND_MASK);
+  Result := WORD(HIWORD(lParam) and not FAPPCOMMAND_MASK);
 end;
 
 function GET_DEVICE_LPARAM(lParam: LPARAM): WORD;
@@ -12491,6 +11621,8 @@ function GET_KEYSTATE_LPARAM(lParam: LPARAM): Integer;
 begin
   Result := GET_FLAGS_LPARAM(lParam);
 end;
+
+{$ENDIF WIN2000_UP}
 
 function MAKEWPARAM(wLow, wHigh: WORD): WPARAM;
 begin
@@ -12522,21 +11654,18 @@ begin
   Result := PostThreadMessageW(idThread, wMsg, wParam, lParam);
 end;
 
-{$IFDEF UNICODE}
 function PostAppMessage(idThread: DWORD; wMsg: UINT; wParam: WPARAM; lParam: LPARAM): BOOL;
 begin
+  {$IFDEF UNICODE}
   Result := PostThreadMessageW(idThread, wMsg, wParam, lParam);
-end;
-{$ELSE}
-function PostAppMessage(idThread: DWORD; wMsg: UINT; wParam: WPARAM; lParam: LPARAM): BOOL;
-begin
+  {$ELSE}
   Result := PostThreadMessageA(idThread, wMsg, wParam, lParam);
+  {$ENDIF UNICODE}
 end;
-{$ENDIF}
 
 function CreateWindowA(lpClassName: LPCSTR; lpWindowName: LPCSTR; dwStyle: DWORD;
   x, y, nWidth, nHeight: Integer; hWndParent: HWND; hMenu: HMENU;
-  hInstance: HINSTANCE; lpParam: LPVOID): HWND;
+  hInstance: HINST; lpParam: LPVOID): HWND;
 begin
   Result := CreateWindowExA(0, lpClassName, lpWindowName, dwStyle, x, y,
     nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam);
@@ -12544,121 +11673,103 @@ end;
 
 function CreateWindowW(lpClassName: LPCWSTR; lpWindowName: LPCWSTR; dwStyle: DWORD;
   x, y, nWidth, nHeight: Integer; hWndParent: HWND; hMenu: HMENU;
-  hInstance: HINSTANCE; lpParam: LPVOID): HWND;
+  hInstance: HINST; lpParam: LPVOID): HWND;
 begin
   Result := CreateWindowExW(0, lpClassName, lpWindowName, dwStyle, x, y,
     nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam);
 end;
 
-{$IFDEF UNICODE}
-function CreateWindow(lpClassName: LPCWSTR; lpWindowName: LPCWSTR; dwStyle: DWORD;
+function CreateWindow(lpClassName: LPCTSTR; lpWindowName: LPCTSTR; dwStyle: DWORD;
   x, y, nWidth, nHeight: Integer; hWndParent: HWND; hMenu: HMENU;
-  hInstance: HINSTANCE; lpParam: LPVOID): HWND;
+  hInstance: HINST; lpParam: LPVOID): HWND;
 begin
+  {$IFDEF UNICODE}
   Result := CreateWindowExW(0, lpClassName, lpWindowName, dwStyle, x, y,
     nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam);
-end;
-{$ELSE}
-function CreateWindow(lpClassName: LPCSTR; lpWindowName: LPCSTR; dwStyle: DWORD;
-  x, y, nWidth, nHeight: Integer; hWndParent: HWND; hMenu: HMENU;
-  hInstance: HINSTANCE; lpParam: LPVOID): HWND;
-begin
+  {$ELSE}
   Result := CreateWindowExA(0, lpClassName, lpWindowName, dwStyle, x, y,
     nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam);
+  {$ENDIF UNICODE}
 end;
-{$ENDIF}
 
-function CreateDialogA(hInstance: HINSTANCE; lpName: LPCSTR; hWndParent: HWND; lpDialogFunc: DLGPROC): HWND;
+function CreateDialogA(hInstance: HINST; lpName: LPCSTR; hWndParent: HWND; lpDialogFunc: DLGPROC): HWND;
 begin
   Result := CreateDialogParamA(hInstance, lpName, hWndParent, lpDialogFunc, 0);
 end;
 
-function CreateDialogW(hInstance: HINSTANCE; lpName: LPCWSTR; hWndParent: HWND; lpDialogFunc: DLGPROC): HWND;
+function CreateDialogW(hInstance: HINST; lpName: LPCWSTR; hWndParent: HWND; lpDialogFunc: DLGPROC): HWND;
 begin
   Result := CreateDialogParamW(hInstance, lpName, hWndParent, lpDialogFunc, 0);
 end;
 
-{$IFDEF UNICODE}
-function CreateDialog(hInstance: HINSTANCE; lpName: LPCWSTR; hWndParent: HWND; lpDialogFunc: DLGPROC): HWND;
+function CreateDialog(hInstance: HINST; lpName: LPCTSTR; hWndParent: HWND; lpDialogFunc: DLGPROC): HWND;
 begin
+  {$IFDEF UNICODE}
   Result := CreateDialogParamW(hInstance, lpName, hWndParent, lpDialogFunc, 0);
-end;
-{$ELSE}
-function CreateDialog(hInstance: HINSTANCE; lpName: LPCSTR; hWndParent: HWND; lpDialogFunc: DLGPROC): HWND;
-begin
+  {$ELSE}
   Result := CreateDialogParamA(hInstance, lpName, hWndParent, lpDialogFunc, 0);
+  {$ENDIF UNICODE}
 end;
-{$ENDIF}
 
-function CreateDialogIndirectA(hInstance: HINSTANCE; const lpTemplate: DLGTEMPLATE;
+function CreateDialogIndirectA(hInstance: HINST; const lpTemplate: DLGTEMPLATE;
   hWndParent: HWND; lpDialogFunc: DLGPROC): HWND;
 begin
   Result := CreateDialogIndirectParamA(hInstance, lpTemplate, hWndParent, lpDialogFunc, 0);
 end;
 
-function CreateDialogIndirectW(hInstance: HINSTANCE; const lpTemplate: DLGTEMPLATE;
+function CreateDialogIndirectW(hInstance: HINST; const lpTemplate: DLGTEMPLATE;
   hWndParent: HWND; lpDialogFunc: DLGPROC): HWND;
 begin
   Result := CreateDialogIndirectParamW(hInstance, lpTemplate, hWndParent, lpDialogFunc, 0);
 end;
 
-{$IFDEF UNICODE}
-function CreateDialogIndirect(hInstance: HINSTANCE; const lpTemplate: DLGTEMPLATE;
+function CreateDialogIndirect(hInstance: HINST; const lpTemplate: DLGTEMPLATE;
   hWndParent: HWND; lpDialogFunc: DLGPROC): HWND;
 begin
+  {$IFDEF UNICODE}
   Result := CreateDialogIndirectParamW(hInstance, lpTemplate, hWndParent, lpDialogFunc, 0);
-end;
-{$ELSE}
-function CreateDialogIndirect(hInstance: HINSTANCE; const lpTemplate: DLGTEMPLATE;
-  hWndParent: HWND; lpDialogFunc: DLGPROC): HWND;
-begin
+  {$ELSE}
   Result := CreateDialogIndirectParamA(hInstance, lpTemplate, hWndParent, lpDialogFunc, 0);
+  {$ENDIF UNICODE}
 end;
-{$ENDIF}
 
-function DialogBoxA(hInstance: HINSTANCE; lpTemplate: LPCSTR; hWndParent: HWND; lpDialogFunc: DLGPROC): INT_PTR;
+function DialogBoxA(hInstance: HINST; lpTemplate: LPCSTR; hWndParent: HWND; lpDialogFunc: DLGPROC): INT_PTR;
 begin
   Result := DialogBoxParamA(hInstance, lpTemplate, hWndParent, lpDialogFunc, 0);
 end;
 
-function DialogBoxW(hInstance: HINSTANCE; lpTemplate: LPCWSTR; hWndParent: HWND; lpDialogFunc: DLGPROC): INT_PTR;
+function DialogBoxW(hInstance: HINST; lpTemplate: LPCWSTR; hWndParent: HWND; lpDialogFunc: DLGPROC): INT_PTR;
 begin
   Result := DialogBoxParamW(hInstance, lpTemplate, hWndParent, lpDialogFunc, 0);
 end;
 
-{$IFDEF UNICODE}
-function DialogBox(hInstance: HINSTANCE; lpTemplate: LPCWSTR; hWndParent: HWND; lpDialogFunc: DLGPROC): INT_PTR;
+function DialogBox(hInstance: HINST; lpTemplate: LPCTSTR; hWndParent: HWND; lpDialogFunc: DLGPROC): INT_PTR;
 begin
+  {$IFDEF UNICODE}
   Result := DialogBoxParamW(hInstance, lpTemplate, hWndParent, lpDialogFunc, 0);
-end;
-{$ELSE}
-function DialogBox(hInstance: HINSTANCE; lpTemplate: LPCSTR; hWndParent: HWND; lpDialogFunc: DLGPROC): INT_PTR;
-begin
+  {$ELSE}
   Result := DialogBoxParamA(hInstance, lpTemplate, hWndParent, lpDialogFunc, 0);
+  {$ENDIF UNICODE}
 end;
-{$ENDIF}
 
-function DialogBoxIndirectA(hInstance: HINSTANCE; const lpTemplate: DLGTEMPLATE; hWndParent: HWND; lpDialogFunc: DLGPROC): INT_PTR;
+function DialogBoxIndirectA(hInstance: HINST; const lpTemplate: DLGTEMPLATE; hWndParent: HWND; lpDialogFunc: DLGPROC): INT_PTR;
 begin
   Result := DialogBoxIndirectParamA(hInstance, lpTemplate, hWndParent, lpDialogFunc, 0);
 end;
 
-function DialogBoxIndirectW(hInstance: HINSTANCE; const lpTemplate: DLGTEMPLATE; hWndParent: HWND; lpDialogFunc: DLGPROC): INT_PTR;
+function DialogBoxIndirectW(hInstance: HINST; const lpTemplate: DLGTEMPLATE; hWndParent: HWND; lpDialogFunc: DLGPROC): INT_PTR;
 begin
   Result := DialogBoxIndirectParamW(hInstance, lpTemplate, hWndParent, lpDialogFunc, 0);
 end;
 
-{$IFDEF UNICODE}
-function DialogBoxIndirect(hInstance: HINSTANCE; const lpTemplate: DLGTEMPLATE; hWndParent: HWND; lpDialogFunc: DLGPROC): INT_PTR;
+function DialogBoxIndirect(hInstance: HINST; const lpTemplate: DLGTEMPLATE; hWndParent: HWND; lpDialogFunc: DLGPROC): INT_PTR;
 begin
+  {$IFDEF UNICODE}
   Result := DialogBoxIndirectParamW(hInstance, lpTemplate, hWndParent, lpDialogFunc, 0);
-end;
-{$ELSE}
-function DialogBoxIndirect(hInstance: HINSTANCE; const lpTemplate: DLGTEMPLATE; hWndParent: HWND; lpDialogFunc: DLGPROC): INT_PTR;
-begin
+  {$ELSE}
   Result := DialogBoxIndirectParamA(hInstance, lpTemplate, hWndParent, lpDialogFunc, 0);
+  {$ENDIF UNICODE}
 end;
-{$ENDIF}
 
 function AnsiToOem(lpszSrc: LPCSTR; lpszDst: LPSTR): BOOL;
 begin
@@ -12720,17 +11831,14 @@ begin
   Result := GetWindowLongW(hWnd, nIndex);
 end;
 
-{$IFDEF UNICODE}
 function GetWindowLongPtr(hWnd: HWND; nIndex: Integer): LONG_PTR;
 begin
+  {$IFDEF UNICODE}
   Result := GetWindowLongW(hWnd, nIndex);
-end;
-{$ELSE}
-function GetWindowLongPtr(hWnd: HWND; nIndex: Integer): LONG_PTR;
-begin
+  {$ELSE}
   Result := GetWindowLongA(hWnd, nIndex);
+  {$ENDIF UNICODE}
 end;
-{$ENDIF}
 
 function SetWindowLongPtrA(hWnd: HWND; nIndex: Integer; dwNewLong: LONG_PTR): LONG_PTR;
 begin
@@ -12742,17 +11850,14 @@ begin
   Result := SetWindowLongW(hWnd, nIndex, dwNewLong);
 end;
 
-{$IFDEF UNICODE}
 function SetWindowLongPtr(hWnd: HWND; nIndex: Integer; dwNewLong: LONG_PTR): LONG_PTR;
 begin
+  {$IFDEF UNICODE}
   Result := SetWindowLongW(hWnd, nIndex, dwNewLong);
-end;
-{$ELSE}
-function SetWindowLongPtr(hWnd: HWND; nIndex: Integer; dwNewLong: LONG_PTR): LONG_PTR;
-begin
+  {$ELSE}
   Result := SetWindowLongA(hWnd, nIndex, dwNewLong);
+  {$ENDIF UNICODE}
 end;
-{$ENDIF}
 
 function GetClassLongPtrA(hWnd: HWND; nIndex: Integer): ULONG_PTR;
 begin
@@ -12764,17 +11869,14 @@ begin
   Result := GetClassLongW(hWnd, nIndex);
 end;
 
-{$IFDEF UNICODE}
 function GetClassLongPtr(hWnd: HWND; nIndex: Integer): ULONG_PTR;
 begin
+  {$IFDEF UNICODE}
   Result := GetClassLongW(hWnd, nIndex);
-end;
-{$ELSE}
-function GetClassLongPtr(hWnd: HWND; nIndex: Integer): ULONG_PTR;
-begin
+  {$ELSE}
   Result := GetClassLongA(hWnd, nIndex);
+  {$ENDIF UNICODE}
 end;
-{$ENDIF}
 
 function SetClassLongPtrA(hWnd: HWND; nIndex: Integer; dwNewLong: ULONG_PTR): ULONG_PTR;
 begin
@@ -12786,17 +11888,14 @@ begin
   Result := SetClassLongW(hWnd, nIndex, dwNewLong);
 end;
 
-{$IFDEF UNICODE}
 function SetClassLongPtr(hWnd: HWND; nIndex: Integer; dwNewLong: ULONG_PTR): ULONG_PTR;
 begin
+  {$IFDEF UNICODE}
   Result := SetClassLongW(hWnd, nIndex, dwNewLong);
-end;
-{$ELSE}
-function SetClassLongPtr(hWnd: HWND; nIndex: Integer; dwNewLong: ULONG_PTR): ULONG_PTR;
-begin
+  {$ELSE}
   Result := SetClassLongA(hWnd, nIndex, dwNewLong);
+  {$ENDIF UNICODE}
 end;
-{$ENDIF}
 
 function EnumTaskWindows(hTask: HANDLE; lpfn: WNDENUMPROC; lParam: LPARAM): BOOL;
 begin
@@ -12823,14473 +11922,6 @@ begin
  Result := HCURSOR(CopyIcon(HICON(pcur)));
 end;
 
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _IsHungAppWindow: Pointer;
-
-function IsHungAppWindow;
-begin
-  GetProcedureAddress(_IsHungAppWindow, user32, 'IsHungAppWindow');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsHungAppWindow]
-  end;
-end;
-{$ELSE}
-function IsHungAppWindow; external user32 name 'IsHungAppWindow';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _wvsprintfA: Pointer;
-
-function wvsprintfA;
-begin
-  GetProcedureAddress(_wvsprintfA, user32, 'wvsprintfA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_wvsprintfA]
-  end;
-end;
-{$ELSE}
-function wvsprintfA; external user32 name 'wvsprintfA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _wvsprintfW: Pointer;
-
-function wvsprintfW;
-begin
-  GetProcedureAddress(_wvsprintfW, user32, 'wvsprintfW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_wvsprintfW]
-  end;
-end;
-{$ELSE}
-function wvsprintfW; external user32 name 'wvsprintfW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _wvsprintf: Pointer;
-
-function wvsprintf;
-begin
-  GetProcedureAddress(_wvsprintf, user32, 'wvsprintfW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_wvsprintf]
-  end;
-end;
-{$ELSE}
-function wvsprintf; external user32 name 'wvsprintfW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _wvsprintf: Pointer;
-
-function wvsprintf;
-begin
-  GetProcedureAddress(_wvsprintf, user32, 'wvsprintfA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_wvsprintf]
-  end;
-end;
-{$ELSE}
-function wvsprintf; external user32 name 'wvsprintfA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _wsprintfA: Pointer;
-
-function wsprintfA;
-begin
-  GetProcedureAddress(_wsprintfA, user32, 'wsprintfA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_wsprintfA]
-  end;
-end;
-{$ELSE}
-function wsprintfA; external user32 name 'wsprintfA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _wsprintfW: Pointer;
-
-function wsprintfW;
-begin
-  GetProcedureAddress(_wsprintfW, user32, 'wsprintfW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_wsprintfW]
-  end;
-end;
-{$ELSE}
-function wsprintfW; external user32 name 'wsprintfW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _wsprintf: Pointer;
-
-function wsprintf;
-begin
-  GetProcedureAddress(_wsprintf, user32, 'wsprintfW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_wsprintf]
-  end;
-end;
-{$ELSE}
-function wsprintf; external user32 name 'wsprintfW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _wsprintf: Pointer;
-
-function wsprintf;
-begin
-  GetProcedureAddress(_wsprintf, user32, 'wsprintfA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_wsprintf]
-  end;
-end;
-{$ELSE}
-function wsprintf; external user32 name 'wsprintfA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadKeyboardLayoutA: Pointer;
-
-function LoadKeyboardLayoutA;
-begin
-  GetProcedureAddress(_LoadKeyboardLayoutA, user32, 'LoadKeyboardLayoutA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadKeyboardLayoutA]
-  end;
-end;
-{$ELSE}
-function LoadKeyboardLayoutA; external user32 name 'LoadKeyboardLayoutA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadKeyboardLayoutW: Pointer;
-
-function LoadKeyboardLayoutW;
-begin
-  GetProcedureAddress(_LoadKeyboardLayoutW, user32, 'LoadKeyboardLayoutW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadKeyboardLayoutW]
-  end;
-end;
-{$ELSE}
-function LoadKeyboardLayoutW; external user32 name 'LoadKeyboardLayoutW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadKeyboardLayout: Pointer;
-
-function LoadKeyboardLayout;
-begin
-  GetProcedureAddress(_LoadKeyboardLayout, user32, 'LoadKeyboardLayoutW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadKeyboardLayout]
-  end;
-end;
-{$ELSE}
-function LoadKeyboardLayout; external user32 name 'LoadKeyboardLayoutW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadKeyboardLayout: Pointer;
-
-function LoadKeyboardLayout;
-begin
-  GetProcedureAddress(_LoadKeyboardLayout, user32, 'LoadKeyboardLayoutA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadKeyboardLayout]
-  end;
-end;
-{$ELSE}
-function LoadKeyboardLayout; external user32 name 'LoadKeyboardLayoutA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ActivateKeyboardLayout: Pointer;
-
-function ActivateKeyboardLayout;
-begin
-  GetProcedureAddress(_ActivateKeyboardLayout, user32, 'ActivateKeyboardLayout');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ActivateKeyboardLayout]
-  end;
-end;
-{$ELSE}
-function ActivateKeyboardLayout; external user32 name 'ActivateKeyboardLayout';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ToUnicodeEx: Pointer;
-
-function ToUnicodeEx;
-begin
-  GetProcedureAddress(_ToUnicodeEx, user32, 'ToUnicodeEx');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ToUnicodeEx]
-  end;
-end;
-{$ELSE}
-function ToUnicodeEx; external user32 name 'ToUnicodeEx';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _UnloadKeyboardLayout: Pointer;
-
-function UnloadKeyboardLayout;
-begin
-  GetProcedureAddress(_UnloadKeyboardLayout, user32, 'UnloadKeyboardLayout');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_UnloadKeyboardLayout]
-  end;
-end;
-{$ELSE}
-function UnloadKeyboardLayout; external user32 name 'UnloadKeyboardLayout';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetKeyboardLayoutNameA: Pointer;
-
-function GetKeyboardLayoutNameA;
-begin
-  GetProcedureAddress(_GetKeyboardLayoutNameA, user32, 'GetKeyboardLayoutNameA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetKeyboardLayoutNameA]
-  end;
-end;
-{$ELSE}
-function GetKeyboardLayoutNameA; external user32 name 'GetKeyboardLayoutNameA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetKeyboardLayoutNameW: Pointer;
-
-function GetKeyboardLayoutNameW;
-begin
-  GetProcedureAddress(_GetKeyboardLayoutNameW, user32, 'GetKeyboardLayoutNameW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetKeyboardLayoutNameW]
-  end;
-end;
-{$ELSE}
-function GetKeyboardLayoutNameW; external user32 name 'GetKeyboardLayoutNameW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetKeyboardLayoutName: Pointer;
-
-function GetKeyboardLayoutName;
-begin
-  GetProcedureAddress(_GetKeyboardLayoutName, user32, 'GetKeyboardLayoutNameW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetKeyboardLayoutName]
-  end;
-end;
-{$ELSE}
-function GetKeyboardLayoutName; external user32 name 'GetKeyboardLayoutNameW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetKeyboardLayoutName: Pointer;
-
-function GetKeyboardLayoutName;
-begin
-  GetProcedureAddress(_GetKeyboardLayoutName, user32, 'GetKeyboardLayoutNameA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetKeyboardLayoutName]
-  end;
-end;
-{$ELSE}
-function GetKeyboardLayoutName; external user32 name 'GetKeyboardLayoutNameA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetKeyboardLayoutList: Pointer;
-
-function GetKeyboardLayoutList;
-begin
-  GetProcedureAddress(_GetKeyboardLayoutList, user32, 'GetKeyboardLayoutList');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetKeyboardLayoutList]
-  end;
-end;
-{$ELSE}
-function GetKeyboardLayoutList; external user32 name 'GetKeyboardLayoutList';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetKeyboardLayout: Pointer;
-
-function GetKeyboardLayout;
-begin
-  GetProcedureAddress(_GetKeyboardLayout, user32, 'GetKeyboardLayout');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetKeyboardLayout]
-  end;
-end;
-{$ELSE}
-function GetKeyboardLayout; external user32 name 'GetKeyboardLayout';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetMouseMovePointsEx: Pointer;
-
-function GetMouseMovePointsEx;
-begin
-  GetProcedureAddress(_GetMouseMovePointsEx, user32, 'GetMouseMovePointsEx');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetMouseMovePointsEx]
-  end;
-end;
-{$ELSE}
-function GetMouseMovePointsEx; external user32 name 'GetMouseMovePointsEx';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateDesktopA: Pointer;
-
-function CreateDesktopA;
-begin
-  GetProcedureAddress(_CreateDesktopA, user32, 'CreateDesktopA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateDesktopA]
-  end;
-end;
-{$ELSE}
-function CreateDesktopA; external user32 name 'CreateDesktopA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateDesktopW: Pointer;
-
-function CreateDesktopW;
-begin
-  GetProcedureAddress(_CreateDesktopW, user32, 'CreateDesktopW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateDesktopW]
-  end;
-end;
-{$ELSE}
-function CreateDesktopW; external user32 name 'CreateDesktopW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateDesktop: Pointer;
-
-function CreateDesktop;
-begin
-  GetProcedureAddress(_CreateDesktop, user32, 'CreateDesktopW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateDesktop]
-  end;
-end;
-{$ELSE}
-function CreateDesktop; external user32 name 'CreateDesktopW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateDesktop: Pointer;
-
-function CreateDesktop;
-begin
-  GetProcedureAddress(_CreateDesktop, user32, 'CreateDesktopA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateDesktop]
-  end;
-end;
-{$ELSE}
-function CreateDesktop; external user32 name 'CreateDesktopA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _OpenDesktopA: Pointer;
-
-function OpenDesktopA;
-begin
-  GetProcedureAddress(_OpenDesktopA, user32, 'OpenDesktopA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_OpenDesktopA]
-  end;
-end;
-{$ELSE}
-function OpenDesktopA; external user32 name 'OpenDesktopA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _OpenDesktopW: Pointer;
-
-function OpenDesktopW;
-begin
-  GetProcedureAddress(_OpenDesktopW, user32, 'OpenDesktopW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_OpenDesktopW]
-  end;
-end;
-{$ELSE}
-function OpenDesktopW; external user32 name 'OpenDesktopW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _OpenDesktop: Pointer;
-
-function OpenDesktop;
-begin
-  GetProcedureAddress(_OpenDesktop, user32, 'OpenDesktopW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_OpenDesktop]
-  end;
-end;
-{$ELSE}
-function OpenDesktop; external user32 name 'OpenDesktopW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _OpenDesktop: Pointer;
-
-function OpenDesktop;
-begin
-  GetProcedureAddress(_OpenDesktop, user32, 'OpenDesktopA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_OpenDesktop]
-  end;
-end;
-{$ELSE}
-function OpenDesktop; external user32 name 'OpenDesktopA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _OpenInputDesktop: Pointer;
-
-function OpenInputDesktop;
-begin
-  GetProcedureAddress(_OpenInputDesktop, user32, 'OpenInputDesktop');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_OpenInputDesktop]
-  end;
-end;
-{$ELSE}
-function OpenInputDesktop; external user32 name 'OpenInputDesktop';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumDesktopsA: Pointer;
-
-function EnumDesktopsA;
-begin
-  GetProcedureAddress(_EnumDesktopsA, user32, 'EnumDesktopsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumDesktopsA]
-  end;
-end;
-{$ELSE}
-function EnumDesktopsA; external user32 name 'EnumDesktopsA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumDesktopsW: Pointer;
-
-function EnumDesktopsW;
-begin
-  GetProcedureAddress(_EnumDesktopsW, user32, 'EnumDesktopsW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumDesktopsW]
-  end;
-end;
-{$ELSE}
-function EnumDesktopsW; external user32 name 'EnumDesktopsW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumDesktops: Pointer;
-
-function EnumDesktops;
-begin
-  GetProcedureAddress(_EnumDesktops, user32, 'EnumDesktopsW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumDesktops]
-  end;
-end;
-{$ELSE}
-function EnumDesktops; external user32 name 'EnumDesktopsW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumDesktops: Pointer;
-
-function EnumDesktops;
-begin
-  GetProcedureAddress(_EnumDesktops, user32, 'EnumDesktopsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumDesktops]
-  end;
-end;
-{$ELSE}
-function EnumDesktops; external user32 name 'EnumDesktopsA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumDesktopWindows: Pointer;
-
-function EnumDesktopWindows;
-begin
-  GetProcedureAddress(_EnumDesktopWindows, user32, 'EnumDesktopWindows');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumDesktopWindows]
-  end;
-end;
-{$ELSE}
-function EnumDesktopWindows; external user32 name 'EnumDesktopWindows';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SwitchDesktop: Pointer;
-
-function SwitchDesktop;
-begin
-  GetProcedureAddress(_SwitchDesktop, user32, 'SwitchDesktop');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SwitchDesktop]
-  end;
-end;
-{$ELSE}
-function SwitchDesktop; external user32 name 'SwitchDesktop';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetThreadDesktop: Pointer;
-
-function SetThreadDesktop;
-begin
-  GetProcedureAddress(_SetThreadDesktop, user32, 'SetThreadDesktop');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetThreadDesktop]
-  end;
-end;
-{$ELSE}
-function SetThreadDesktop; external user32 name 'SetThreadDesktop';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CloseDesktop: Pointer;
-
-function CloseDesktop;
-begin
-  GetProcedureAddress(_CloseDesktop, user32, 'CloseDesktop');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CloseDesktop]
-  end;
-end;
-{$ELSE}
-function CloseDesktop; external user32 name 'CloseDesktop';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetThreadDesktop: Pointer;
-
-function GetThreadDesktop;
-begin
-  GetProcedureAddress(_GetThreadDesktop, user32, 'GetThreadDesktop');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetThreadDesktop]
-  end;
-end;
-{$ELSE}
-function GetThreadDesktop; external user32 name 'GetThreadDesktop';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateWindowStationA: Pointer;
-
-function CreateWindowStationA;
-begin
-  GetProcedureAddress(_CreateWindowStationA, user32, 'CreateWindowStationA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateWindowStationA]
-  end;
-end;
-{$ELSE}
-function CreateWindowStationA; external user32 name 'CreateWindowStationA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateWindowStationW: Pointer;
-
-function CreateWindowStationW;
-begin
-  GetProcedureAddress(_CreateWindowStationW, user32, 'CreateWindowStationW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateWindowStationW]
-  end;
-end;
-{$ELSE}
-function CreateWindowStationW; external user32 name 'CreateWindowStationW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateWindowStation: Pointer;
-
-function CreateWindowStation;
-begin
-  GetProcedureAddress(_CreateWindowStation, user32, 'CreateWindowStationW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateWindowStation]
-  end;
-end;
-{$ELSE}
-function CreateWindowStation; external user32 name 'CreateWindowStationW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateWindowStation: Pointer;
-
-function CreateWindowStation;
-begin
-  GetProcedureAddress(_CreateWindowStation, user32, 'CreateWindowStationA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateWindowStation]
-  end;
-end;
-{$ELSE}
-function CreateWindowStation; external user32 name 'CreateWindowStationA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _OpenWindowStationA: Pointer;
-
-function OpenWindowStationA;
-begin
-  GetProcedureAddress(_OpenWindowStationA, user32, 'OpenWindowStationA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_OpenWindowStationA]
-  end;
-end;
-{$ELSE}
-function OpenWindowStationA; external user32 name 'OpenWindowStationA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _OpenWindowStationW: Pointer;
-
-function OpenWindowStationW;
-begin
-  GetProcedureAddress(_OpenWindowStationW, user32, 'OpenWindowStationW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_OpenWindowStationW]
-  end;
-end;
-{$ELSE}
-function OpenWindowStationW; external user32 name 'OpenWindowStationW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _OpenWindowStation: Pointer;
-
-function OpenWindowStation;
-begin
-  GetProcedureAddress(_OpenWindowStation, user32, 'OpenWindowStationW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_OpenWindowStation]
-  end;
-end;
-{$ELSE}
-function OpenWindowStation; external user32 name 'OpenWindowStationW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _OpenWindowStation: Pointer;
-
-function OpenWindowStation;
-begin
-  GetProcedureAddress(_OpenWindowStation, user32, 'OpenWindowStationA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_OpenWindowStation]
-  end;
-end;
-{$ELSE}
-function OpenWindowStation; external user32 name 'OpenWindowStationA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumWindowStationsA: Pointer;
-
-function EnumWindowStationsA;
-begin
-  GetProcedureAddress(_EnumWindowStationsA, user32, 'EnumWindowStationsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumWindowStationsA]
-  end;
-end;
-{$ELSE}
-function EnumWindowStationsA; external user32 name 'EnumWindowStationsA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumWindowStationsW: Pointer;
-
-function EnumWindowStationsW;
-begin
-  GetProcedureAddress(_EnumWindowStationsW, user32, 'EnumWindowStationsW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumWindowStationsW]
-  end;
-end;
-{$ELSE}
-function EnumWindowStationsW; external user32 name 'EnumWindowStationsW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumWindowStations: Pointer;
-
-function EnumWindowStations;
-begin
-  GetProcedureAddress(_EnumWindowStations, user32, 'EnumWindowStationsW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumWindowStations]
-  end;
-end;
-{$ELSE}
-function EnumWindowStations; external user32 name 'EnumWindowStationsW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumWindowStations: Pointer;
-
-function EnumWindowStations;
-begin
-  GetProcedureAddress(_EnumWindowStations, user32, 'EnumWindowStationsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumWindowStations]
-  end;
-end;
-{$ELSE}
-function EnumWindowStations; external user32 name 'EnumWindowStationsA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CloseWindowStation: Pointer;
-
-function CloseWindowStation;
-begin
-  GetProcedureAddress(_CloseWindowStation, user32, 'CloseWindowStation');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CloseWindowStation]
-  end;
-end;
-{$ELSE}
-function CloseWindowStation; external user32 name 'CloseWindowStation';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetProcessWindowStation: Pointer;
-
-function SetProcessWindowStation;
-begin
-  GetProcedureAddress(_SetProcessWindowStation, user32, 'SetProcessWindowStation');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetProcessWindowStation]
-  end;
-end;
-{$ELSE}
-function SetProcessWindowStation; external user32 name 'SetProcessWindowStation';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetProcessWindowStation: Pointer;
-
-function GetProcessWindowStation;
-begin
-  GetProcedureAddress(_GetProcessWindowStation, user32, 'GetProcessWindowStation');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetProcessWindowStation]
-  end;
-end;
-{$ELSE}
-function GetProcessWindowStation; external user32 name 'GetProcessWindowStation';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetUserObjectSecurity: Pointer;
-
-function SetUserObjectSecurity;
-begin
-  GetProcedureAddress(_SetUserObjectSecurity, user32, 'SetUserObjectSecurity');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetUserObjectSecurity]
-  end;
-end;
-{$ELSE}
-function SetUserObjectSecurity; external user32 name 'SetUserObjectSecurity';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetUserObjectSecurity: Pointer;
-
-function GetUserObjectSecurity;
-begin
-  GetProcedureAddress(_GetUserObjectSecurity, user32, 'GetUserObjectSecurity');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetUserObjectSecurity]
-  end;
-end;
-{$ELSE}
-function GetUserObjectSecurity; external user32 name 'GetUserObjectSecurity';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetUserObjectInformationA: Pointer;
-
-function GetUserObjectInformationA;
-begin
-  GetProcedureAddress(_GetUserObjectInformationA, user32, 'GetUserObjectInformationA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetUserObjectInformationA]
-  end;
-end;
-{$ELSE}
-function GetUserObjectInformationA; external user32 name 'GetUserObjectInformationA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetUserObjectInformationW: Pointer;
-
-function GetUserObjectInformationW;
-begin
-  GetProcedureAddress(_GetUserObjectInformationW, user32, 'GetUserObjectInformationW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetUserObjectInformationW]
-  end;
-end;
-{$ELSE}
-function GetUserObjectInformationW; external user32 name 'GetUserObjectInformationW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetUserObjectInformation: Pointer;
-
-function GetUserObjectInformation;
-begin
-  GetProcedureAddress(_GetUserObjectInformation, user32, 'GetUserObjectInformationW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetUserObjectInformation]
-  end;
-end;
-{$ELSE}
-function GetUserObjectInformation; external user32 name 'GetUserObjectInformationW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetUserObjectInformation: Pointer;
-
-function GetUserObjectInformation;
-begin
-  GetProcedureAddress(_GetUserObjectInformation, user32, 'GetUserObjectInformationA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetUserObjectInformation]
-  end;
-end;
-{$ELSE}
-function GetUserObjectInformation; external user32 name 'GetUserObjectInformationA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetUserObjectInformationA: Pointer;
-
-function SetUserObjectInformationA;
-begin
-  GetProcedureAddress(_SetUserObjectInformationA, user32, 'SetUserObjectInformationA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetUserObjectInformationA]
-  end;
-end;
-{$ELSE}
-function SetUserObjectInformationA; external user32 name 'SetUserObjectInformationA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetUserObjectInformationW: Pointer;
-
-function SetUserObjectInformationW;
-begin
-  GetProcedureAddress(_SetUserObjectInformationW, user32, 'SetUserObjectInformationW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetUserObjectInformationW]
-  end;
-end;
-{$ELSE}
-function SetUserObjectInformationW; external user32 name 'SetUserObjectInformationW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetUserObjectInformation: Pointer;
-
-function SetUserObjectInformation;
-begin
-  GetProcedureAddress(_SetUserObjectInformation, user32, 'SetUserObjectInformationW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetUserObjectInformation]
-  end;
-end;
-{$ELSE}
-function SetUserObjectInformation; external user32 name 'SetUserObjectInformationW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetUserObjectInformation: Pointer;
-
-function SetUserObjectInformation;
-begin
-  GetProcedureAddress(_SetUserObjectInformation, user32, 'SetUserObjectInformationA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetUserObjectInformation]
-  end;
-end;
-{$ELSE}
-function SetUserObjectInformation; external user32 name 'SetUserObjectInformationA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _RegisterWindowMessageA: Pointer;
-
-function RegisterWindowMessageA;
-begin
-  GetProcedureAddress(_RegisterWindowMessageA, user32, 'RegisterWindowMessageA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RegisterWindowMessageA]
-  end;
-end;
-{$ELSE}
-function RegisterWindowMessageA; external user32 name 'RegisterWindowMessageA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _RegisterWindowMessageW: Pointer;
-
-function RegisterWindowMessageW;
-begin
-  GetProcedureAddress(_RegisterWindowMessageW, user32, 'RegisterWindowMessageW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RegisterWindowMessageW]
-  end;
-end;
-{$ELSE}
-function RegisterWindowMessageW; external user32 name 'RegisterWindowMessageW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _RegisterWindowMessage: Pointer;
-
-function RegisterWindowMessage;
-begin
-  GetProcedureAddress(_RegisterWindowMessage, user32, 'RegisterWindowMessageW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RegisterWindowMessage]
-  end;
-end;
-{$ELSE}
-function RegisterWindowMessage; external user32 name 'RegisterWindowMessageW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _RegisterWindowMessage: Pointer;
-
-function RegisterWindowMessage;
-begin
-  GetProcedureAddress(_RegisterWindowMessage, user32, 'RegisterWindowMessageA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RegisterWindowMessage]
-  end;
-end;
-{$ELSE}
-function RegisterWindowMessage; external user32 name 'RegisterWindowMessageA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  __TrackMouseEvent: Pointer;
-
-function TrackMouseEvent;
-begin
-  GetProcedureAddress(__TrackMouseEvent, user32, 'TrackMouseEvent');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [__TrackMouseEvent]
-  end;
-end;
-{$ELSE}
-function TrackMouseEvent; external user32 name 'TrackMouseEvent';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DrawEdge: Pointer;
-
-function DrawEdge;
-begin
-  GetProcedureAddress(_DrawEdge, user32, 'DrawEdge');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DrawEdge]
-  end;
-end;
-{$ELSE}
-function DrawEdge; external user32 name 'DrawEdge';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DrawFrameControl: Pointer;
-
-function DrawFrameControl;
-begin
-  GetProcedureAddress(_DrawFrameControl, user32, 'DrawFrameControl');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DrawFrameControl]
-  end;
-end;
-{$ELSE}
-function DrawFrameControl; external user32 name 'DrawFrameControl';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DrawCaption: Pointer;
-
-function DrawCaption;
-begin
-  GetProcedureAddress(_DrawCaption, user32, 'DrawCaption');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DrawCaption]
-  end;
-end;
-{$ELSE}
-function DrawCaption; external user32 name 'DrawCaption';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DrawAnimatedRects: Pointer;
-
-function DrawAnimatedRects;
-begin
-  GetProcedureAddress(_DrawAnimatedRects, user32, 'DrawAnimatedRects');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DrawAnimatedRects]
-  end;
-end;
-{$ELSE}
-function DrawAnimatedRects; external user32 name 'DrawAnimatedRects';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetMessageA: Pointer;
-
-function GetMessageA;
-begin
-  GetProcedureAddress(_GetMessageA, user32, 'GetMessageA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetMessageA]
-  end;
-end;
-{$ELSE}
-function GetMessageA; external user32 name 'GetMessageA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetMessageW: Pointer;
-
-function GetMessageW;
-begin
-  GetProcedureAddress(_GetMessageW, user32, 'GetMessageW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetMessageW]
-  end;
-end;
-{$ELSE}
-function GetMessageW; external user32 name 'GetMessageW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetMessage: Pointer;
-
-function GetMessage;
-begin
-  GetProcedureAddress(_GetMessage, user32, 'GetMessageW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetMessage]
-  end;
-end;
-{$ELSE}
-function GetMessage; external user32 name 'GetMessageW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetMessage: Pointer;
-
-function GetMessage;
-begin
-  GetProcedureAddress(_GetMessage, user32, 'GetMessageA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetMessage]
-  end;
-end;
-{$ELSE}
-function GetMessage; external user32 name 'GetMessageA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _TranslateMessage: Pointer;
-
-function TranslateMessage;
-begin
-  GetProcedureAddress(_TranslateMessage, user32, 'TranslateMessage');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TranslateMessage]
-  end;
-end;
-{$ELSE}
-function TranslateMessage; external user32 name 'TranslateMessage';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DispatchMessageA: Pointer;
-
-function DispatchMessageA;
-begin
-  GetProcedureAddress(_DispatchMessageA, user32, 'DispatchMessageA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DispatchMessageA]
-  end;
-end;
-{$ELSE}
-function DispatchMessageA; external user32 name 'DispatchMessageA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DispatchMessageW: Pointer;
-
-function DispatchMessageW;
-begin
-  GetProcedureAddress(_DispatchMessageW, user32, 'DispatchMessageW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DispatchMessageW]
-  end;
-end;
-{$ELSE}
-function DispatchMessageW; external user32 name 'DispatchMessageW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DispatchMessage: Pointer;
-
-function DispatchMessage;
-begin
-  GetProcedureAddress(_DispatchMessage, user32, 'DispatchMessageW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DispatchMessage]
-  end;
-end;
-{$ELSE}
-function DispatchMessage; external user32 name 'DispatchMessageW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DispatchMessage: Pointer;
-
-function DispatchMessage;
-begin
-  GetProcedureAddress(_DispatchMessage, user32, 'DispatchMessageA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DispatchMessage]
-  end;
-end;
-{$ELSE}
-function DispatchMessage; external user32 name 'DispatchMessageA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetMessageQueue: Pointer;
-
-function SetMessageQueue;
-begin
-  GetProcedureAddress(_SetMessageQueue, user32, 'SetMessageQueue');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetMessageQueue]
-  end;
-end;
-{$ELSE}
-function SetMessageQueue; external user32 name 'SetMessageQueue';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _PeekMessageA: Pointer;
-
-function PeekMessageA;
-begin
-  GetProcedureAddress(_PeekMessageA, user32, 'PeekMessageA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PeekMessageA]
-  end;
-end;
-{$ELSE}
-function PeekMessageA; external user32 name 'PeekMessageA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _PeekMessageW: Pointer;
-
-function PeekMessageW;
-begin
-  GetProcedureAddress(_PeekMessageW, user32, 'PeekMessageW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PeekMessageW]
-  end;
-end;
-{$ELSE}
-function PeekMessageW; external user32 name 'PeekMessageW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _PeekMessage: Pointer;
-
-function PeekMessage;
-begin
-  GetProcedureAddress(_PeekMessage, user32, 'PeekMessageW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PeekMessage]
-  end;
-end;
-{$ELSE}
-function PeekMessage; external user32 name 'PeekMessageW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _PeekMessage: Pointer;
-
-function PeekMessage;
-begin
-  GetProcedureAddress(_PeekMessage, user32, 'PeekMessageA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PeekMessage]
-  end;
-end;
-{$ELSE}
-function PeekMessage; external user32 name 'PeekMessageA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _RegisterHotKey: Pointer;
-
-function RegisterHotKey;
-begin
-  GetProcedureAddress(_RegisterHotKey, user32, 'RegisterHotKey');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RegisterHotKey]
-  end;
-end;
-{$ELSE}
-function RegisterHotKey; external user32 name 'RegisterHotKey';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _UnregisterHotKey: Pointer;
-
-function UnregisterHotKey;
-begin
-  GetProcedureAddress(_UnregisterHotKey, user32, 'UnregisterHotKey');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_UnregisterHotKey]
-  end;
-end;
-{$ELSE}
-function UnregisterHotKey; external user32 name 'UnregisterHotKey';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ExitWindowsEx: Pointer;
-
-function ExitWindowsEx;
-begin
-  GetProcedureAddress(_ExitWindowsEx, user32, 'ExitWindowsEx');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ExitWindowsEx]
-  end;
-end;
-{$ELSE}
-function ExitWindowsEx; external user32 name 'ExitWindowsEx';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SwapMouseButton: Pointer;
-
-function SwapMouseButton;
-begin
-  GetProcedureAddress(_SwapMouseButton, user32, 'SwapMouseButton');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SwapMouseButton]
-  end;
-end;
-{$ELSE}
-function SwapMouseButton; external user32 name 'SwapMouseButton';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetMessagePos: Pointer;
-
-function GetMessagePos;
-begin
-  GetProcedureAddress(_GetMessagePos, user32, 'GetMessagePos');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetMessagePos]
-  end;
-end;
-{$ELSE}
-function GetMessagePos; external user32 name 'GetMessagePos';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetMessageTime: Pointer;
-
-function GetMessageTime;
-begin
-  GetProcedureAddress(_GetMessageTime, user32, 'GetMessageTime');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetMessageTime]
-  end;
-end;
-{$ELSE}
-function GetMessageTime; external user32 name 'GetMessageTime';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetMessageExtraInfo: Pointer;
-
-function GetMessageExtraInfo;
-begin
-  GetProcedureAddress(_GetMessageExtraInfo, user32, 'GetMessageExtraInfo');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetMessageExtraInfo]
-  end;
-end;
-{$ELSE}
-function GetMessageExtraInfo; external user32 name 'GetMessageExtraInfo';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetMessageExtraInfo: Pointer;
-
-function SetMessageExtraInfo;
-begin
-  GetProcedureAddress(_SetMessageExtraInfo, user32, 'SetMessageExtraInfo');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetMessageExtraInfo]
-  end;
-end;
-{$ELSE}
-function SetMessageExtraInfo; external user32 name 'SetMessageExtraInfo';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SendMessageA: Pointer;
-
-function SendMessageA;
-begin
-  GetProcedureAddress(_SendMessageA, user32, 'SendMessageA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SendMessageA]
-  end;
-end;
-{$ELSE}
-function SendMessageA; external user32 name 'SendMessageA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SendMessageW: Pointer;
-
-function SendMessageW;
-begin
-  GetProcedureAddress(_SendMessageW, user32, 'SendMessageW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SendMessageW]
-  end;
-end;
-{$ELSE}
-function SendMessageW; external user32 name 'SendMessageW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SendMessage: Pointer;
-
-function SendMessage;
-begin
-  GetProcedureAddress(_SendMessage, user32, 'SendMessageW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SendMessage]
-  end;
-end;
-{$ELSE}
-function SendMessage; external user32 name 'SendMessageW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SendMessage: Pointer;
-
-function SendMessage;
-begin
-  GetProcedureAddress(_SendMessage, user32, 'SendMessageA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SendMessage]
-  end;
-end;
-{$ELSE}
-function SendMessage; external user32 name 'SendMessageA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SendMessageTimeoutA: Pointer;
-
-function SendMessageTimeoutA;
-begin
-  GetProcedureAddress(_SendMessageTimeoutA, user32, 'SendMessageTimeoutA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SendMessageTimeoutA]
-  end;
-end;
-{$ELSE}
-function SendMessageTimeoutA; external user32 name 'SendMessageTimeoutA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SendMessageTimeoutW: Pointer;
-
-function SendMessageTimeoutW;
-begin
-  GetProcedureAddress(_SendMessageTimeoutW, user32, 'SendMessageTimeoutW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SendMessageTimeoutW]
-  end;
-end;
-{$ELSE}
-function SendMessageTimeoutW; external user32 name 'SendMessageTimeoutW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SendMessageTimeout: Pointer;
-
-function SendMessageTimeout;
-begin
-  GetProcedureAddress(_SendMessageTimeout, user32, 'SendMessageTimeoutW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SendMessageTimeout]
-  end;
-end;
-{$ELSE}
-function SendMessageTimeout; external user32 name 'SendMessageTimeoutW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SendMessageTimeout: Pointer;
-
-function SendMessageTimeout;
-begin
-  GetProcedureAddress(_SendMessageTimeout, user32, 'SendMessageTimeoutA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SendMessageTimeout]
-  end;
-end;
-{$ELSE}
-function SendMessageTimeout; external user32 name 'SendMessageTimeoutA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SendNotifyMessageA: Pointer;
-
-function SendNotifyMessageA;
-begin
-  GetProcedureAddress(_SendNotifyMessageA, user32, 'SendNotifyMessageA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SendNotifyMessageA]
-  end;
-end;
-{$ELSE}
-function SendNotifyMessageA; external user32 name 'SendNotifyMessageA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SendNotifyMessageW: Pointer;
-
-function SendNotifyMessageW;
-begin
-  GetProcedureAddress(_SendNotifyMessageW, user32, 'SendNotifyMessageW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SendNotifyMessageW]
-  end;
-end;
-{$ELSE}
-function SendNotifyMessageW; external user32 name 'SendNotifyMessageW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SendNotifyMessage: Pointer;
-
-function SendNotifyMessage;
-begin
-  GetProcedureAddress(_SendNotifyMessage, user32, 'SendNotifyMessageW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SendNotifyMessage]
-  end;
-end;
-{$ELSE}
-function SendNotifyMessage; external user32 name 'SendNotifyMessageW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SendNotifyMessage: Pointer;
-
-function SendNotifyMessage;
-begin
-  GetProcedureAddress(_SendNotifyMessage, user32, 'SendNotifyMessageA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SendNotifyMessage]
-  end;
-end;
-{$ELSE}
-function SendNotifyMessage; external user32 name 'SendNotifyMessageA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SendMessageCallbackA: Pointer;
-
-function SendMessageCallbackA;
-begin
-  GetProcedureAddress(_SendMessageCallbackA, user32, 'SendMessageCallbackA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SendMessageCallbackA]
-  end;
-end;
-{$ELSE}
-function SendMessageCallbackA; external user32 name 'SendMessageCallbackA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SendMessageCallbackW: Pointer;
-
-function SendMessageCallbackW;
-begin
-  GetProcedureAddress(_SendMessageCallbackW, user32, 'SendMessageCallbackW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SendMessageCallbackW]
-  end;
-end;
-{$ELSE}
-function SendMessageCallbackW; external user32 name 'SendMessageCallbackW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SendMessageCallback: Pointer;
-
-function SendMessageCallback;
-begin
-  GetProcedureAddress(_SendMessageCallback, user32, 'SendMessageCallbackW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SendMessageCallback]
-  end;
-end;
-{$ELSE}
-function SendMessageCallback; external user32 name 'SendMessageCallbackW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SendMessageCallback: Pointer;
-
-function SendMessageCallback;
-begin
-  GetProcedureAddress(_SendMessageCallback, user32, 'SendMessageCallbackA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SendMessageCallback]
-  end;
-end;
-{$ELSE}
-function SendMessageCallback; external user32 name 'SendMessageCallbackA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _BroadcastSystemMessageExA: Pointer;
-
-function BroadcastSystemMessageExA;
-begin
-  GetProcedureAddress(_BroadcastSystemMessageExA, user32, 'BroadcastSystemMessageExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_BroadcastSystemMessageExA]
-  end;
-end;
-{$ELSE}
-function BroadcastSystemMessageExA; external user32 name 'BroadcastSystemMessageExA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _BroadcastSystemMessageExW: Pointer;
-
-function BroadcastSystemMessageExW;
-begin
-  GetProcedureAddress(_BroadcastSystemMessageExW, user32, 'BroadcastSystemMessageExW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_BroadcastSystemMessageExW]
-  end;
-end;
-{$ELSE}
-function BroadcastSystemMessageExW; external user32 name 'BroadcastSystemMessageExW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _BroadcastSystemMessageEx: Pointer;
-
-function BroadcastSystemMessageEx;
-begin
-  GetProcedureAddress(_BroadcastSystemMessageEx, user32, 'BroadcastSystemMessageExW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_BroadcastSystemMessageEx]
-  end;
-end;
-{$ELSE}
-function BroadcastSystemMessageEx; external user32 name 'BroadcastSystemMessageExW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _BroadcastSystemMessageEx: Pointer;
-
-function BroadcastSystemMessageEx;
-begin
-  GetProcedureAddress(_BroadcastSystemMessageEx, user32, 'BroadcastSystemMessageExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_BroadcastSystemMessageEx]
-  end;
-end;
-{$ELSE}
-function BroadcastSystemMessageEx; external user32 name 'BroadcastSystemMessageExA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _BroadcastSystemMessageA: Pointer;
-
-function BroadcastSystemMessageA;
-begin
-  GetProcedureAddress(_BroadcastSystemMessageA, user32, 'BroadcastSystemMessageA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_BroadcastSystemMessageA]
-  end;
-end;
-{$ELSE}
-function BroadcastSystemMessageA; external user32 name 'BroadcastSystemMessageA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _BroadcastSystemMessageW: Pointer;
-
-function BroadcastSystemMessageW;
-begin
-  GetProcedureAddress(_BroadcastSystemMessageW, user32, 'BroadcastSystemMessageW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_BroadcastSystemMessageW]
-  end;
-end;
-{$ELSE}
-function BroadcastSystemMessageW; external user32 name 'BroadcastSystemMessageW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _BroadcastSystemMessage: Pointer;
-
-function BroadcastSystemMessage;
-begin
-  GetProcedureAddress(_BroadcastSystemMessage, user32, 'BroadcastSystemMessageW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_BroadcastSystemMessage]
-  end;
-end;
-{$ELSE}
-function BroadcastSystemMessage; external user32 name 'BroadcastSystemMessageW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _BroadcastSystemMessage: Pointer;
-
-function BroadcastSystemMessage;
-begin
-  GetProcedureAddress(_BroadcastSystemMessage, user32, 'BroadcastSystemMessageA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_BroadcastSystemMessage]
-  end;
-end;
-{$ELSE}
-function BroadcastSystemMessage; external user32 name 'BroadcastSystemMessageA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _RegisterDeviceNotificationA: Pointer;
-
-function RegisterDeviceNotificationA;
-begin
-  GetProcedureAddress(_RegisterDeviceNotificationA, user32, 'RegisterDeviceNotificationA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RegisterDeviceNotificationA]
-  end;
-end;
-{$ELSE}
-function RegisterDeviceNotificationA; external user32 name 'RegisterDeviceNotificationA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _RegisterDeviceNotificationW: Pointer;
-
-function RegisterDeviceNotificationW;
-begin
-  GetProcedureAddress(_RegisterDeviceNotificationW, user32, 'RegisterDeviceNotificationW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RegisterDeviceNotificationW]
-  end;
-end;
-{$ELSE}
-function RegisterDeviceNotificationW; external user32 name 'RegisterDeviceNotificationW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _RegisterDeviceNotification: Pointer;
-
-function RegisterDeviceNotification;
-begin
-  GetProcedureAddress(_RegisterDeviceNotification, user32, 'RegisterDeviceNotificationW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RegisterDeviceNotification]
-  end;
-end;
-{$ELSE}
-function RegisterDeviceNotification; external user32 name 'RegisterDeviceNotificationW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _RegisterDeviceNotification: Pointer;
-
-function RegisterDeviceNotification;
-begin
-  GetProcedureAddress(_RegisterDeviceNotification, user32, 'RegisterDeviceNotificationA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RegisterDeviceNotification]
-  end;
-end;
-{$ELSE}
-function RegisterDeviceNotification; external user32 name 'RegisterDeviceNotificationA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _UnregisterDeviceNotification: Pointer;
-
-function UnregisterDeviceNotification;
-begin
-  GetProcedureAddress(_UnregisterDeviceNotification, user32, 'UnregisterDeviceNotification');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_UnregisterDeviceNotification]
-  end;
-end;
-{$ELSE}
-function UnregisterDeviceNotification; external user32 name 'UnregisterDeviceNotification';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _PostMessageA: Pointer;
-
-function PostMessageA;
-begin
-  GetProcedureAddress(_PostMessageA, user32, 'PostMessageA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PostMessageA]
-  end;
-end;
-{$ELSE}
-function PostMessageA; external user32 name 'PostMessageA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _PostMessageW: Pointer;
-
-function PostMessageW;
-begin
-  GetProcedureAddress(_PostMessageW, user32, 'PostMessageW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PostMessageW]
-  end;
-end;
-{$ELSE}
-function PostMessageW; external user32 name 'PostMessageW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _PostMessage: Pointer;
-
-function PostMessage;
-begin
-  GetProcedureAddress(_PostMessage, user32, 'PostMessageW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PostMessage]
-  end;
-end;
-{$ELSE}
-function PostMessage; external user32 name 'PostMessageW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _PostMessage: Pointer;
-
-function PostMessage;
-begin
-  GetProcedureAddress(_PostMessage, user32, 'PostMessageA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PostMessage]
-  end;
-end;
-{$ELSE}
-function PostMessage; external user32 name 'PostMessageA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _PostThreadMessageA: Pointer;
-
-function PostThreadMessageA;
-begin
-  GetProcedureAddress(_PostThreadMessageA, user32, 'PostThreadMessageA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PostThreadMessageA]
-  end;
-end;
-{$ELSE}
-function PostThreadMessageA; external user32 name 'PostThreadMessageA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _PostThreadMessageW: Pointer;
-
-function PostThreadMessageW;
-begin
-  GetProcedureAddress(_PostThreadMessageW, user32, 'PostThreadMessageW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PostThreadMessageW]
-  end;
-end;
-{$ELSE}
-function PostThreadMessageW; external user32 name 'PostThreadMessageW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _PostThreadMessage: Pointer;
-
-function PostThreadMessage;
-begin
-  GetProcedureAddress(_PostThreadMessage, user32, 'PostThreadMessageW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PostThreadMessage]
-  end;
-end;
-{$ELSE}
-function PostThreadMessage; external user32 name 'PostThreadMessageW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _PostThreadMessage: Pointer;
-
-function PostThreadMessage;
-begin
-  GetProcedureAddress(_PostThreadMessage, user32, 'PostThreadMessageA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PostThreadMessage]
-  end;
-end;
-{$ELSE}
-function PostThreadMessage; external user32 name 'PostThreadMessageA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _AttachThreadInput: Pointer;
-
-function AttachThreadInput;
-begin
-  GetProcedureAddress(_AttachThreadInput, user32, 'AttachThreadInput');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AttachThreadInput]
-  end;
-end;
-{$ELSE}
-function AttachThreadInput; external user32 name 'AttachThreadInput';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ReplyMessage: Pointer;
-
-function ReplyMessage;
-begin
-  GetProcedureAddress(_ReplyMessage, user32, 'ReplyMessage');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ReplyMessage]
-  end;
-end;
-{$ELSE}
-function ReplyMessage; external user32 name 'ReplyMessage';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WaitMessage: Pointer;
-
-function WaitMessage;
-begin
-  GetProcedureAddress(_WaitMessage, user32, 'WaitMessage');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WaitMessage]
-  end;
-end;
-{$ELSE}
-function WaitMessage; external user32 name 'WaitMessage';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WaitForInputIdle: Pointer;
-
-function WaitForInputIdle;
-begin
-  GetProcedureAddress(_WaitForInputIdle, user32, 'WaitForInputIdle');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WaitForInputIdle]
-  end;
-end;
-{$ELSE}
-function WaitForInputIdle; external user32 name 'WaitForInputIdle';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DefWindowProcA: Pointer;
-
-function DefWindowProcA;
-begin
-  GetProcedureAddress(_DefWindowProcA, user32, 'DefWindowProcA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DefWindowProcA]
-  end;
-end;
-{$ELSE}
-function DefWindowProcA; external user32 name 'DefWindowProcA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DefWindowProcW: Pointer;
-
-function DefWindowProcW;
-begin
-  GetProcedureAddress(_DefWindowProcW, user32, 'DefWindowProcW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DefWindowProcW]
-  end;
-end;
-{$ELSE}
-function DefWindowProcW; external user32 name 'DefWindowProcW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DefWindowProc: Pointer;
-
-function DefWindowProc;
-begin
-  GetProcedureAddress(_DefWindowProc, user32, 'DefWindowProcW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DefWindowProc]
-  end;
-end;
-{$ELSE}
-function DefWindowProc; external user32 name 'DefWindowProcW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DefWindowProc: Pointer;
-
-function DefWindowProc;
-begin
-  GetProcedureAddress(_DefWindowProc, user32, 'DefWindowProcA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DefWindowProc]
-  end;
-end;
-{$ELSE}
-function DefWindowProc; external user32 name 'DefWindowProcA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _PostQuitMessage: Pointer;
-
-procedure PostQuitMessage;
-begin
-  GetProcedureAddress(_PostQuitMessage, user32, 'PostQuitMessage');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PostQuitMessage]
-  end;
-end;
-{$ELSE}
-procedure PostQuitMessage; external user32 name 'PostQuitMessage';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CallWindowProcA: Pointer;
-
-function CallWindowProcA;
-begin
-  GetProcedureAddress(_CallWindowProcA, user32, 'CallWindowProcA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CallWindowProcA]
-  end;
-end;
-{$ELSE}
-function CallWindowProcA; external user32 name 'CallWindowProcA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CallWindowProcW: Pointer;
-
-function CallWindowProcW;
-begin
-  GetProcedureAddress(_CallWindowProcW, user32, 'CallWindowProcW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CallWindowProcW]
-  end;
-end;
-{$ELSE}
-function CallWindowProcW; external user32 name 'CallWindowProcW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CallWindowProc: Pointer;
-
-function CallWindowProc;
-begin
-  GetProcedureAddress(_CallWindowProc, user32, 'CallWindowProcW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CallWindowProc]
-  end;
-end;
-{$ELSE}
-function CallWindowProc; external user32 name 'CallWindowProcW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CallWindowProc: Pointer;
-
-function CallWindowProc;
-begin
-  GetProcedureAddress(_CallWindowProc, user32, 'CallWindowProcA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CallWindowProc]
-  end;
-end;
-{$ELSE}
-function CallWindowProc; external user32 name 'CallWindowProcA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _InSendMessage: Pointer;
-
-function InSendMessage;
-begin
-  GetProcedureAddress(_InSendMessage, user32, 'InSendMessage');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_InSendMessage]
-  end;
-end;
-{$ELSE}
-function InSendMessage; external user32 name 'InSendMessage';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _InSendMessageEx: Pointer;
-
-function InSendMessageEx;
-begin
-  GetProcedureAddress(_InSendMessageEx, user32, 'InSendMessageEx');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_InSendMessageEx]
-  end;
-end;
-{$ELSE}
-function InSendMessageEx; external user32 name 'InSendMessageEx';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetDoubleClickTime: Pointer;
-
-function GetDoubleClickTime;
-begin
-  GetProcedureAddress(_GetDoubleClickTime, user32, 'GetDoubleClickTime');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetDoubleClickTime]
-  end;
-end;
-{$ELSE}
-function GetDoubleClickTime; external user32 name 'GetDoubleClickTime';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetDoubleClickTime: Pointer;
-
-function SetDoubleClickTime;
-begin
-  GetProcedureAddress(_SetDoubleClickTime, user32, 'SetDoubleClickTime');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetDoubleClickTime]
-  end;
-end;
-{$ELSE}
-function SetDoubleClickTime; external user32 name 'SetDoubleClickTime';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _RegisterClassA: Pointer;
-
-function RegisterClassA;
-begin
-  GetProcedureAddress(_RegisterClassA, user32, 'RegisterClassA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RegisterClassA]
-  end;
-end;
-{$ELSE}
-function RegisterClassA; external user32 name 'RegisterClassA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _RegisterClassW: Pointer;
-
-function RegisterClassW;
-begin
-  GetProcedureAddress(_RegisterClassW, user32, 'RegisterClassW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RegisterClassW]
-  end;
-end;
-{$ELSE}
-function RegisterClassW; external user32 name 'RegisterClassW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _RegisterClass: Pointer;
-
-function RegisterClass;
-begin
-  GetProcedureAddress(_RegisterClass, user32, 'RegisterClassW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RegisterClass]
-  end;
-end;
-{$ELSE}
-function RegisterClass; external user32 name 'RegisterClassW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _RegisterClass: Pointer;
-
-function RegisterClass;
-begin
-  GetProcedureAddress(_RegisterClass, user32, 'RegisterClassA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RegisterClass]
-  end;
-end;
-{$ELSE}
-function RegisterClass; external user32 name 'RegisterClassA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _UnregisterClassA: Pointer;
-
-function UnregisterClassA;
-begin
-  GetProcedureAddress(_UnregisterClassA, user32, 'UnregisterClassA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_UnregisterClassA]
-  end;
-end;
-{$ELSE}
-function UnregisterClassA; external user32 name 'UnregisterClassA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _UnregisterClassW: Pointer;
-
-function UnregisterClassW;
-begin
-  GetProcedureAddress(_UnregisterClassW, user32, 'UnregisterClassW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_UnregisterClassW]
-  end;
-end;
-{$ELSE}
-function UnregisterClassW; external user32 name 'UnregisterClassW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _UnregisterClass: Pointer;
-
-function UnregisterClass;
-begin
-  GetProcedureAddress(_UnregisterClass, user32, 'UnregisterClassW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_UnregisterClass]
-  end;
-end;
-{$ELSE}
-function UnregisterClass; external user32 name 'UnregisterClassW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _UnregisterClass: Pointer;
-
-function UnregisterClass;
-begin
-  GetProcedureAddress(_UnregisterClass, user32, 'UnregisterClassA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_UnregisterClass]
-  end;
-end;
-{$ELSE}
-function UnregisterClass; external user32 name 'UnregisterClassA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetClassInfoA: Pointer;
-
-function GetClassInfoA;
-begin
-  GetProcedureAddress(_GetClassInfoA, user32, 'GetClassInfoA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetClassInfoA]
-  end;
-end;
-{$ELSE}
-function GetClassInfoA; external user32 name 'GetClassInfoA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetClassInfoW: Pointer;
-
-function GetClassInfoW;
-begin
-  GetProcedureAddress(_GetClassInfoW, user32, 'GetClassInfoW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetClassInfoW]
-  end;
-end;
-{$ELSE}
-function GetClassInfoW; external user32 name 'GetClassInfoW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetClassInfo: Pointer;
-
-function GetClassInfo;
-begin
-  GetProcedureAddress(_GetClassInfo, user32, 'GetClassInfoW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetClassInfo]
-  end;
-end;
-{$ELSE}
-function GetClassInfo; external user32 name 'GetClassInfoW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetClassInfo: Pointer;
-
-function GetClassInfo;
-begin
-  GetProcedureAddress(_GetClassInfo, user32, 'GetClassInfoA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetClassInfo]
-  end;
-end;
-{$ELSE}
-function GetClassInfo; external user32 name 'GetClassInfoA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _RegisterClassExA: Pointer;
-
-function RegisterClassExA;
-begin
-  GetProcedureAddress(_RegisterClassExA, user32, 'RegisterClassExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RegisterClassExA]
-  end;
-end;
-{$ELSE}
-function RegisterClassExA; external user32 name 'RegisterClassExA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _RegisterClassExW: Pointer;
-
-function RegisterClassExW;
-begin
-  GetProcedureAddress(_RegisterClassExW, user32, 'RegisterClassExW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RegisterClassExW]
-  end;
-end;
-{$ELSE}
-function RegisterClassExW; external user32 name 'RegisterClassExW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _RegisterClassEx: Pointer;
-
-function RegisterClassEx;
-begin
-  GetProcedureAddress(_RegisterClassEx, user32, 'RegisterClassExW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RegisterClassEx]
-  end;
-end;
-{$ELSE}
-function RegisterClassEx; external user32 name 'RegisterClassExW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _RegisterClassEx: Pointer;
-
-function RegisterClassEx;
-begin
-  GetProcedureAddress(_RegisterClassEx, user32, 'RegisterClassExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RegisterClassEx]
-  end;
-end;
-{$ELSE}
-function RegisterClassEx; external user32 name 'RegisterClassExA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetClassInfoExA: Pointer;
-
-function GetClassInfoExA;
-begin
-  GetProcedureAddress(_GetClassInfoExA, user32, 'GetClassInfoExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetClassInfoExA]
-  end;
-end;
-{$ELSE}
-function GetClassInfoExA; external user32 name 'GetClassInfoExA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetClassInfoExW: Pointer;
-
-function GetClassInfoExW;
-begin
-  GetProcedureAddress(_GetClassInfoExW, user32, 'GetClassInfoExW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetClassInfoExW]
-  end;
-end;
-{$ELSE}
-function GetClassInfoExW; external user32 name 'GetClassInfoExW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetClassInfoEx: Pointer;
-
-function GetClassInfoEx;
-begin
-  GetProcedureAddress(_GetClassInfoEx, user32, 'GetClassInfoExW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetClassInfoEx]
-  end;
-end;
-{$ELSE}
-function GetClassInfoEx; external user32 name 'GetClassInfoExW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetClassInfoEx: Pointer;
-
-function GetClassInfoEx;
-begin
-  GetProcedureAddress(_GetClassInfoEx, user32, 'GetClassInfoExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetClassInfoEx]
-  end;
-end;
-{$ELSE}
-function GetClassInfoEx; external user32 name 'GetClassInfoExA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateWindowExA: Pointer;
-
-function CreateWindowExA;
-begin
-  GetProcedureAddress(_CreateWindowExA, user32, 'CreateWindowExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateWindowExA]
-  end;
-end;
-{$ELSE}
-function CreateWindowExA; external user32 name 'CreateWindowExA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateWindowExW: Pointer;
-
-function CreateWindowExW;
-begin
-  GetProcedureAddress(_CreateWindowExW, user32, 'CreateWindowExW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateWindowExW]
-  end;
-end;
-{$ELSE}
-function CreateWindowExW; external user32 name 'CreateWindowExW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateWindowEx: Pointer;
-
-function CreateWindowEx;
-begin
-  GetProcedureAddress(_CreateWindowEx, user32, 'CreateWindowExW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateWindowEx]
-  end;
-end;
-{$ELSE}
-function CreateWindowEx; external user32 name 'CreateWindowExW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateWindowEx: Pointer;
-
-function CreateWindowEx;
-begin
-  GetProcedureAddress(_CreateWindowEx, user32, 'CreateWindowExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateWindowEx]
-  end;
-end;
-{$ELSE}
-function CreateWindowEx; external user32 name 'CreateWindowExA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _IsWindow: Pointer;
-
-function IsWindow;
-begin
-  GetProcedureAddress(_IsWindow, user32, 'IsWindow');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsWindow]
-  end;
-end;
-{$ELSE}
-function IsWindow; external user32 name 'IsWindow';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _IsMenu: Pointer;
-
-function IsMenu;
-begin
-  GetProcedureAddress(_IsMenu, user32, 'IsMenu');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsMenu]
-  end;
-end;
-{$ELSE}
-function IsMenu; external user32 name 'IsMenu';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _IsChild: Pointer;
-
-function IsChild;
-begin
-  GetProcedureAddress(_IsChild, user32, 'IsChild');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsChild]
-  end;
-end;
-{$ELSE}
-function IsChild; external user32 name 'IsChild';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DestroyWindow: Pointer;
-
-function DestroyWindow;
-begin
-  GetProcedureAddress(_DestroyWindow, user32, 'DestroyWindow');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DestroyWindow]
-  end;
-end;
-{$ELSE}
-function DestroyWindow; external user32 name 'DestroyWindow';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ShowWindow: Pointer;
-
-function ShowWindow;
-begin
-  GetProcedureAddress(_ShowWindow, user32, 'ShowWindow');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ShowWindow]
-  end;
-end;
-{$ELSE}
-function ShowWindow; external user32 name 'ShowWindow';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _AnimateWindow: Pointer;
-
-function AnimateWindow;
-begin
-  GetProcedureAddress(_AnimateWindow, user32, 'AnimateWindow');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AnimateWindow]
-  end;
-end;
-{$ELSE}
-function AnimateWindow; external user32 name 'AnimateWindow';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _UpdateLayeredWindow: Pointer;
-
-function UpdateLayeredWindow;
-begin
-  GetProcedureAddress(_UpdateLayeredWindow, user32, 'UpdateLayeredWindow');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_UpdateLayeredWindow]
-  end;
-end;
-{$ELSE}
-function UpdateLayeredWindow; external user32 name 'UpdateLayeredWindow';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetLayeredWindowAttributes: Pointer;
-
-function GetLayeredWindowAttributes;
-begin
-  GetProcedureAddress(_GetLayeredWindowAttributes, user32, 'GetLayeredWindowAttributes');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetLayeredWindowAttributes]
-  end;
-end;
-{$ELSE}
-function GetLayeredWindowAttributes; external user32 name 'GetLayeredWindowAttributes';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _PrintWindow: Pointer;
-
-function PrintWindow;
-begin
-  GetProcedureAddress(_PrintWindow, user32, 'PrintWindow');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PrintWindow]
-  end;
-end;
-{$ELSE}
-function PrintWindow; external user32 name 'PrintWindow';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetLayeredWindowAttributes: Pointer;
-
-function SetLayeredWindowAttributes;
-begin
-  GetProcedureAddress(_SetLayeredWindowAttributes, user32, 'SetLayeredWindowAttributes');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetLayeredWindowAttributes]
-  end;
-end;
-{$ELSE}
-function SetLayeredWindowAttributes; external user32 name 'SetLayeredWindowAttributes';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ShowWindowAsync: Pointer;
-
-function ShowWindowAsync;
-begin
-  GetProcedureAddress(_ShowWindowAsync, user32, 'ShowWindowAsync');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ShowWindowAsync]
-  end;
-end;
-{$ELSE}
-function ShowWindowAsync; external user32 name 'ShowWindowAsync';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _FlashWindow: Pointer;
-
-function FlashWindow;
-begin
-  GetProcedureAddress(_FlashWindow, user32, 'FlashWindow');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FlashWindow]
-  end;
-end;
-{$ELSE}
-function FlashWindow; external user32 name 'FlashWindow';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _FlashWindowEx: Pointer;
-
-function FlashWindowEx;
-begin
-  GetProcedureAddress(_FlashWindowEx, user32, 'FlashWindowEx');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FlashWindowEx]
-  end;
-end;
-{$ELSE}
-function FlashWindowEx; external user32 name 'FlashWindowEx';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ShowOwnedPopups: Pointer;
-
-function ShowOwnedPopups;
-begin
-  GetProcedureAddress(_ShowOwnedPopups, user32, 'ShowOwnedPopups');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ShowOwnedPopups]
-  end;
-end;
-{$ELSE}
-function ShowOwnedPopups; external user32 name 'ShowOwnedPopups';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _OpenIcon: Pointer;
-
-function OpenIcon;
-begin
-  GetProcedureAddress(_OpenIcon, user32, 'OpenIcon');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_OpenIcon]
-  end;
-end;
-{$ELSE}
-function OpenIcon; external user32 name 'OpenIcon';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CloseWindow: Pointer;
-
-function CloseWindow;
-begin
-  GetProcedureAddress(_CloseWindow, user32, 'CloseWindow');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CloseWindow]
-  end;
-end;
-{$ELSE}
-function CloseWindow; external user32 name 'CloseWindow';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _MoveWindow: Pointer;
-
-function MoveWindow;
-begin
-  GetProcedureAddress(_MoveWindow, user32, 'MoveWindow');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MoveWindow]
-  end;
-end;
-{$ELSE}
-function MoveWindow; external user32 name 'MoveWindow';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetWindowPos: Pointer;
-
-function SetWindowPos;
-begin
-  GetProcedureAddress(_SetWindowPos, user32, 'SetWindowPos');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetWindowPos]
-  end;
-end;
-{$ELSE}
-function SetWindowPos; external user32 name 'SetWindowPos';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetWindowPlacement: Pointer;
-
-function GetWindowPlacement;
-begin
-  GetProcedureAddress(_GetWindowPlacement, user32, 'GetWindowPlacement');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetWindowPlacement]
-  end;
-end;
-{$ELSE}
-function GetWindowPlacement; external user32 name 'GetWindowPlacement';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetWindowPlacement: Pointer;
-
-function SetWindowPlacement;
-begin
-  GetProcedureAddress(_SetWindowPlacement, user32, 'SetWindowPlacement');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetWindowPlacement]
-  end;
-end;
-{$ELSE}
-function SetWindowPlacement; external user32 name 'SetWindowPlacement';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _BeginDeferWindowPos: Pointer;
-
-function BeginDeferWindowPos;
-begin
-  GetProcedureAddress(_BeginDeferWindowPos, user32, 'BeginDeferWindowPos');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_BeginDeferWindowPos]
-  end;
-end;
-{$ELSE}
-function BeginDeferWindowPos; external user32 name 'BeginDeferWindowPos';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DeferWindowPos: Pointer;
-
-function DeferWindowPos;
-begin
-  GetProcedureAddress(_DeferWindowPos, user32, 'DeferWindowPos');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DeferWindowPos]
-  end;
-end;
-{$ELSE}
-function DeferWindowPos; external user32 name 'DeferWindowPos';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EndDeferWindowPos: Pointer;
-
-function EndDeferWindowPos;
-begin
-  GetProcedureAddress(_EndDeferWindowPos, user32, 'EndDeferWindowPos');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EndDeferWindowPos]
-  end;
-end;
-{$ELSE}
-function EndDeferWindowPos; external user32 name 'EndDeferWindowPos';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _IsWindowVisible: Pointer;
-
-function IsWindowVisible;
-begin
-  GetProcedureAddress(_IsWindowVisible, user32, 'IsWindowVisible');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsWindowVisible]
-  end;
-end;
-{$ELSE}
-function IsWindowVisible; external user32 name 'IsWindowVisible';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _IsIconic: Pointer;
-
-function IsIconic;
-begin
-  GetProcedureAddress(_IsIconic, user32, 'IsIconic');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsIconic]
-  end;
-end;
-{$ELSE}
-function IsIconic; external user32 name 'IsIconic';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _AnyPopup: Pointer;
-
-function AnyPopup;
-begin
-  GetProcedureAddress(_AnyPopup, user32, 'AnyPopup');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AnyPopup]
-  end;
-end;
-{$ELSE}
-function AnyPopup; external user32 name 'AnyPopup';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _BringWindowToTop: Pointer;
-
-function BringWindowToTop;
-begin
-  GetProcedureAddress(_BringWindowToTop, user32, 'BringWindowToTop');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_BringWindowToTop]
-  end;
-end;
-{$ELSE}
-function BringWindowToTop; external user32 name 'BringWindowToTop';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _IsZoomed: Pointer;
-
-function IsZoomed;
-begin
-  GetProcedureAddress(_IsZoomed, user32, 'IsZoomed');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsZoomed]
-  end;
-end;
-{$ELSE}
-function IsZoomed; external user32 name 'IsZoomed';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateDialogParamA: Pointer;
-
-function CreateDialogParamA;
-begin
-  GetProcedureAddress(_CreateDialogParamA, user32, 'CreateDialogParamA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateDialogParamA]
-  end;
-end;
-{$ELSE}
-function CreateDialogParamA; external user32 name 'CreateDialogParamA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateDialogParamW: Pointer;
-
-function CreateDialogParamW;
-begin
-  GetProcedureAddress(_CreateDialogParamW, user32, 'CreateDialogParamW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateDialogParamW]
-  end;
-end;
-{$ELSE}
-function CreateDialogParamW; external user32 name 'CreateDialogParamW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateDialogParam: Pointer;
-
-function CreateDialogParam;
-begin
-  GetProcedureAddress(_CreateDialogParam, user32, 'CreateDialogParamW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateDialogParam]
-  end;
-end;
-{$ELSE}
-function CreateDialogParam; external user32 name 'CreateDialogParamW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateDialogParam: Pointer;
-
-function CreateDialogParam;
-begin
-  GetProcedureAddress(_CreateDialogParam, user32, 'CreateDialogParamA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateDialogParam]
-  end;
-end;
-{$ELSE}
-function CreateDialogParam; external user32 name 'CreateDialogParamA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateDialogIndirectParamA: Pointer;
-
-function CreateDialogIndirectParamA;
-begin
-  GetProcedureAddress(_CreateDialogIndirectParamA, user32, 'CreateDialogIndirectParamA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateDialogIndirectParamA]
-  end;
-end;
-{$ELSE}
-function CreateDialogIndirectParamA; external user32 name 'CreateDialogIndirectParamA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateDialogIndirectParamW: Pointer;
-
-function CreateDialogIndirectParamW;
-begin
-  GetProcedureAddress(_CreateDialogIndirectParamW, user32, 'CreateDialogIndirectParamW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateDialogIndirectParamW]
-  end;
-end;
-{$ELSE}
-function CreateDialogIndirectParamW; external user32 name 'CreateDialogIndirectParamW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateDialogIndirectParam: Pointer;
-
-function CreateDialogIndirectParam;
-begin
-  GetProcedureAddress(_CreateDialogIndirectParam, user32, 'CreateDialogIndirectParamW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateDialogIndirectParam]
-  end;
-end;
-{$ELSE}
-function CreateDialogIndirectParam; external user32 name 'CreateDialogIndirectParamW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateDialogIndirectParam: Pointer;
-
-function CreateDialogIndirectParam;
-begin
-  GetProcedureAddress(_CreateDialogIndirectParam, user32, 'CreateDialogIndirectParamA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateDialogIndirectParam]
-  end;
-end;
-{$ELSE}
-function CreateDialogIndirectParam; external user32 name 'CreateDialogIndirectParamA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DialogBoxParamA: Pointer;
-
-function DialogBoxParamA;
-begin
-  GetProcedureAddress(_DialogBoxParamA, user32, 'DialogBoxParamA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DialogBoxParamA]
-  end;
-end;
-{$ELSE}
-function DialogBoxParamA; external user32 name 'DialogBoxParamA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DialogBoxParamW: Pointer;
-
-function DialogBoxParamW;
-begin
-  GetProcedureAddress(_DialogBoxParamW, user32, 'DialogBoxParamW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DialogBoxParamW]
-  end;
-end;
-{$ELSE}
-function DialogBoxParamW; external user32 name 'DialogBoxParamW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DialogBoxParam: Pointer;
-
-function DialogBoxParam;
-begin
-  GetProcedureAddress(_DialogBoxParam, user32, 'DialogBoxParamW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DialogBoxParam]
-  end;
-end;
-{$ELSE}
-function DialogBoxParam; external user32 name 'DialogBoxParamW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DialogBoxParam: Pointer;
-
-function DialogBoxParam;
-begin
-  GetProcedureAddress(_DialogBoxParam, user32, 'DialogBoxParamA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DialogBoxParam]
-  end;
-end;
-{$ELSE}
-function DialogBoxParam; external user32 name 'DialogBoxParamA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DialogBoxIndirectParamA: Pointer;
-
-function DialogBoxIndirectParamA;
-begin
-  GetProcedureAddress(_DialogBoxIndirectParamA, user32, 'DialogBoxIndirectParamA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DialogBoxIndirectParamA]
-  end;
-end;
-{$ELSE}
-function DialogBoxIndirectParamA; external user32 name 'DialogBoxIndirectParamA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DialogBoxIndirectParamW: Pointer;
-
-function DialogBoxIndirectParamW;
-begin
-  GetProcedureAddress(_DialogBoxIndirectParamW, user32, 'DialogBoxIndirectParamW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DialogBoxIndirectParamW]
-  end;
-end;
-{$ELSE}
-function DialogBoxIndirectParamW; external user32 name 'DialogBoxIndirectParamW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DialogBoxIndirectParam: Pointer;
-
-function DialogBoxIndirectParam;
-begin
-  GetProcedureAddress(_DialogBoxIndirectParam, user32, 'DialogBoxIndirectParamW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DialogBoxIndirectParam]
-  end;
-end;
-{$ELSE}
-function DialogBoxIndirectParam; external user32 name 'DialogBoxIndirectParamW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DialogBoxIndirectParam: Pointer;
-
-function DialogBoxIndirectParam;
-begin
-  GetProcedureAddress(_DialogBoxIndirectParam, user32, 'DialogBoxIndirectParamA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DialogBoxIndirectParam]
-  end;
-end;
-{$ELSE}
-function DialogBoxIndirectParam; external user32 name 'DialogBoxIndirectParamA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EndDialog: Pointer;
-
-function EndDialog;
-begin
-  GetProcedureAddress(_EndDialog, user32, 'EndDialog');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EndDialog]
-  end;
-end;
-{$ELSE}
-function EndDialog; external user32 name 'EndDialog';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetDlgItem: Pointer;
-
-function GetDlgItem;
-begin
-  GetProcedureAddress(_GetDlgItem, user32, 'GetDlgItem');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetDlgItem]
-  end;
-end;
-{$ELSE}
-function GetDlgItem; external user32 name 'GetDlgItem';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetDlgItemInt: Pointer;
-
-function SetDlgItemInt;
-begin
-  GetProcedureAddress(_SetDlgItemInt, user32, 'SetDlgItemInt');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetDlgItemInt]
-  end;
-end;
-{$ELSE}
-function SetDlgItemInt; external user32 name 'SetDlgItemInt';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetDlgItemInt: Pointer;
-
-function GetDlgItemInt;
-begin
-  GetProcedureAddress(_GetDlgItemInt, user32, 'GetDlgItemInt');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetDlgItemInt]
-  end;
-end;
-{$ELSE}
-function GetDlgItemInt; external user32 name 'GetDlgItemInt';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetDlgItemTextA: Pointer;
-
-function SetDlgItemTextA;
-begin
-  GetProcedureAddress(_SetDlgItemTextA, user32, 'SetDlgItemTextA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetDlgItemTextA]
-  end;
-end;
-{$ELSE}
-function SetDlgItemTextA; external user32 name 'SetDlgItemTextA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetDlgItemTextW: Pointer;
-
-function SetDlgItemTextW;
-begin
-  GetProcedureAddress(_SetDlgItemTextW, user32, 'SetDlgItemTextW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetDlgItemTextW]
-  end;
-end;
-{$ELSE}
-function SetDlgItemTextW; external user32 name 'SetDlgItemTextW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetDlgItemText: Pointer;
-
-function SetDlgItemText;
-begin
-  GetProcedureAddress(_SetDlgItemText, user32, 'SetDlgItemTextW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetDlgItemText]
-  end;
-end;
-{$ELSE}
-function SetDlgItemText; external user32 name 'SetDlgItemTextW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetDlgItemText: Pointer;
-
-function SetDlgItemText;
-begin
-  GetProcedureAddress(_SetDlgItemText, user32, 'SetDlgItemTextA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetDlgItemText]
-  end;
-end;
-{$ELSE}
-function SetDlgItemText; external user32 name 'SetDlgItemTextA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetDlgItemTextA: Pointer;
-
-function GetDlgItemTextA;
-begin
-  GetProcedureAddress(_GetDlgItemTextA, user32, 'GetDlgItemTextA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetDlgItemTextA]
-  end;
-end;
-{$ELSE}
-function GetDlgItemTextA; external user32 name 'GetDlgItemTextA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetDlgItemTextW: Pointer;
-
-function GetDlgItemTextW;
-begin
-  GetProcedureAddress(_GetDlgItemTextW, user32, 'GetDlgItemTextW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetDlgItemTextW]
-  end;
-end;
-{$ELSE}
-function GetDlgItemTextW; external user32 name 'GetDlgItemTextW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetDlgItemText: Pointer;
-
-function GetDlgItemText;
-begin
-  GetProcedureAddress(_GetDlgItemText, user32, 'GetDlgItemTextW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetDlgItemText]
-  end;
-end;
-{$ELSE}
-function GetDlgItemText; external user32 name 'GetDlgItemTextW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetDlgItemText: Pointer;
-
-function GetDlgItemText;
-begin
-  GetProcedureAddress(_GetDlgItemText, user32, 'GetDlgItemTextA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetDlgItemText]
-  end;
-end;
-{$ELSE}
-function GetDlgItemText; external user32 name 'GetDlgItemTextA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CheckDlgButton: Pointer;
-
-function CheckDlgButton;
-begin
-  GetProcedureAddress(_CheckDlgButton, user32, 'CheckDlgButton');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CheckDlgButton]
-  end;
-end;
-{$ELSE}
-function CheckDlgButton; external user32 name 'CheckDlgButton';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CheckRadioButton: Pointer;
-
-function CheckRadioButton;
-begin
-  GetProcedureAddress(_CheckRadioButton, user32, 'CheckRadioButton');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CheckRadioButton]
-  end;
-end;
-{$ELSE}
-function CheckRadioButton; external user32 name 'CheckRadioButton';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _IsDlgButtonChecked: Pointer;
-
-function IsDlgButtonChecked;
-begin
-  GetProcedureAddress(_IsDlgButtonChecked, user32, 'IsDlgButtonChecked');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsDlgButtonChecked]
-  end;
-end;
-{$ELSE}
-function IsDlgButtonChecked; external user32 name 'IsDlgButtonChecked';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SendDlgItemMessageA: Pointer;
-
-function SendDlgItemMessageA;
-begin
-  GetProcedureAddress(_SendDlgItemMessageA, user32, 'SendDlgItemMessageA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SendDlgItemMessageA]
-  end;
-end;
-{$ELSE}
-function SendDlgItemMessageA; external user32 name 'SendDlgItemMessageA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SendDlgItemMessageW: Pointer;
-
-function SendDlgItemMessageW;
-begin
-  GetProcedureAddress(_SendDlgItemMessageW, user32, 'SendDlgItemMessageW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SendDlgItemMessageW]
-  end;
-end;
-{$ELSE}
-function SendDlgItemMessageW; external user32 name 'SendDlgItemMessageW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SendDlgItemMessage: Pointer;
-
-function SendDlgItemMessage;
-begin
-  GetProcedureAddress(_SendDlgItemMessage, user32, 'SendDlgItemMessageW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SendDlgItemMessage]
-  end;
-end;
-{$ELSE}
-function SendDlgItemMessage; external user32 name 'SendDlgItemMessageW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SendDlgItemMessage: Pointer;
-
-function SendDlgItemMessage;
-begin
-  GetProcedureAddress(_SendDlgItemMessage, user32, 'SendDlgItemMessageA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SendDlgItemMessage]
-  end;
-end;
-{$ELSE}
-function SendDlgItemMessage; external user32 name 'SendDlgItemMessageA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetNextDlgGroupItem: Pointer;
-
-function GetNextDlgGroupItem;
-begin
-  GetProcedureAddress(_GetNextDlgGroupItem, user32, 'GetNextDlgGroupItem');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetNextDlgGroupItem]
-  end;
-end;
-{$ELSE}
-function GetNextDlgGroupItem; external user32 name 'GetNextDlgGroupItem';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetNextDlgTabItem: Pointer;
-
-function GetNextDlgTabItem;
-begin
-  GetProcedureAddress(_GetNextDlgTabItem, user32, 'GetNextDlgTabItem');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetNextDlgTabItem]
-  end;
-end;
-{$ELSE}
-function GetNextDlgTabItem; external user32 name 'GetNextDlgTabItem';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetDlgCtrlID: Pointer;
-
-function GetDlgCtrlID;
-begin
-  GetProcedureAddress(_GetDlgCtrlID, user32, 'GetDlgCtrlID');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetDlgCtrlID]
-  end;
-end;
-{$ELSE}
-function GetDlgCtrlID; external user32 name 'GetDlgCtrlID';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetDialogBaseUnits: Pointer;
-
-function GetDialogBaseUnits;
-begin
-  GetProcedureAddress(_GetDialogBaseUnits, user32, 'GetDialogBaseUnits');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetDialogBaseUnits]
-  end;
-end;
-{$ELSE}
-function GetDialogBaseUnits; external user32 name 'GetDialogBaseUnits';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DefDlgProcA: Pointer;
-
-function DefDlgProcA;
-begin
-  GetProcedureAddress(_DefDlgProcA, user32, 'DefDlgProcA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DefDlgProcA]
-  end;
-end;
-{$ELSE}
-function DefDlgProcA; external user32 name 'DefDlgProcA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DefDlgProcW: Pointer;
-
-function DefDlgProcW;
-begin
-  GetProcedureAddress(_DefDlgProcW, user32, 'DefDlgProcW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DefDlgProcW]
-  end;
-end;
-{$ELSE}
-function DefDlgProcW; external user32 name 'DefDlgProcW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DefDlgProc: Pointer;
-
-function DefDlgProc;
-begin
-  GetProcedureAddress(_DefDlgProc, user32, 'DefDlgProcW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DefDlgProc]
-  end;
-end;
-{$ELSE}
-function DefDlgProc; external user32 name 'DefDlgProcW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DefDlgProc: Pointer;
-
-function DefDlgProc;
-begin
-  GetProcedureAddress(_DefDlgProc, user32, 'DefDlgProcA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DefDlgProc]
-  end;
-end;
-{$ELSE}
-function DefDlgProc; external user32 name 'DefDlgProcA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CallMsgFilterA: Pointer;
-
-function CallMsgFilterA;
-begin
-  GetProcedureAddress(_CallMsgFilterA, user32, 'CallMsgFilterA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CallMsgFilterA]
-  end;
-end;
-{$ELSE}
-function CallMsgFilterA; external user32 name 'CallMsgFilterA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CallMsgFilterW: Pointer;
-
-function CallMsgFilterW;
-begin
-  GetProcedureAddress(_CallMsgFilterW, user32, 'CallMsgFilterW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CallMsgFilterW]
-  end;
-end;
-{$ELSE}
-function CallMsgFilterW; external user32 name 'CallMsgFilterW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CallMsgFilter: Pointer;
-
-function CallMsgFilter;
-begin
-  GetProcedureAddress(_CallMsgFilter, user32, 'CallMsgFilterW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CallMsgFilter]
-  end;
-end;
-{$ELSE}
-function CallMsgFilter; external user32 name 'CallMsgFilterW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CallMsgFilter: Pointer;
-
-function CallMsgFilter;
-begin
-  GetProcedureAddress(_CallMsgFilter, user32, 'CallMsgFilterA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CallMsgFilter]
-  end;
-end;
-{$ELSE}
-function CallMsgFilter; external user32 name 'CallMsgFilterA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _OpenClipboard: Pointer;
-
-function OpenClipboard;
-begin
-  GetProcedureAddress(_OpenClipboard, user32, 'OpenClipboard');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_OpenClipboard]
-  end;
-end;
-{$ELSE}
-function OpenClipboard; external user32 name 'OpenClipboard';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CloseClipboard: Pointer;
-
-function CloseClipboard;
-begin
-  GetProcedureAddress(_CloseClipboard, user32, 'CloseClipboard');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CloseClipboard]
-  end;
-end;
-{$ELSE}
-function CloseClipboard; external user32 name 'CloseClipboard';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetClipboardSequenceNumber: Pointer;
-
-function GetClipboardSequenceNumber;
-begin
-  GetProcedureAddress(_GetClipboardSequenceNumber, user32, 'GetClipboardSequenceNumber');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetClipboardSequenceNumber]
-  end;
-end;
-{$ELSE}
-function GetClipboardSequenceNumber; external user32 name 'GetClipboardSequenceNumber';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetClipboardOwner: Pointer;
-
-function GetClipboardOwner;
-begin
-  GetProcedureAddress(_GetClipboardOwner, user32, 'GetClipboardOwner');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetClipboardOwner]
-  end;
-end;
-{$ELSE}
-function GetClipboardOwner; external user32 name 'GetClipboardOwner';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetClipboardViewer: Pointer;
-
-function SetClipboardViewer;
-begin
-  GetProcedureAddress(_SetClipboardViewer, user32, 'SetClipboardViewer');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetClipboardViewer]
-  end;
-end;
-{$ELSE}
-function SetClipboardViewer; external user32 name 'SetClipboardViewer';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetClipboardViewer: Pointer;
-
-function GetClipboardViewer;
-begin
-  GetProcedureAddress(_GetClipboardViewer, user32, 'GetClipboardViewer');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetClipboardViewer]
-  end;
-end;
-{$ELSE}
-function GetClipboardViewer; external user32 name 'GetClipboardViewer';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ChangeClipboardChain: Pointer;
-
-function ChangeClipboardChain;
-begin
-  GetProcedureAddress(_ChangeClipboardChain, user32, 'ChangeClipboardChain');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ChangeClipboardChain]
-  end;
-end;
-{$ELSE}
-function ChangeClipboardChain; external user32 name 'ChangeClipboardChain';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetClipboardData: Pointer;
-
-function SetClipboardData;
-begin
-  GetProcedureAddress(_SetClipboardData, user32, 'SetClipboardData');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetClipboardData]
-  end;
-end;
-{$ELSE}
-function SetClipboardData; external user32 name 'SetClipboardData';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetClipboardData: Pointer;
-
-function GetClipboardData;
-begin
-  GetProcedureAddress(_GetClipboardData, user32, 'GetClipboardData');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetClipboardData]
-  end;
-end;
-{$ELSE}
-function GetClipboardData; external user32 name 'GetClipboardData';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _RegisterClipboardFormatA: Pointer;
-
-function RegisterClipboardFormatA;
-begin
-  GetProcedureAddress(_RegisterClipboardFormatA, user32, 'RegisterClipboardFormatA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RegisterClipboardFormatA]
-  end;
-end;
-{$ELSE}
-function RegisterClipboardFormatA; external user32 name 'RegisterClipboardFormatA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _RegisterClipboardFormatW: Pointer;
-
-function RegisterClipboardFormatW;
-begin
-  GetProcedureAddress(_RegisterClipboardFormatW, user32, 'RegisterClipboardFormatW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RegisterClipboardFormatW]
-  end;
-end;
-{$ELSE}
-function RegisterClipboardFormatW; external user32 name 'RegisterClipboardFormatW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _RegisterClipboardFormat: Pointer;
-
-function RegisterClipboardFormat;
-begin
-  GetProcedureAddress(_RegisterClipboardFormat, user32, 'RegisterClipboardFormatW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RegisterClipboardFormat]
-  end;
-end;
-{$ELSE}
-function RegisterClipboardFormat; external user32 name 'RegisterClipboardFormatW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _RegisterClipboardFormat: Pointer;
-
-function RegisterClipboardFormat;
-begin
-  GetProcedureAddress(_RegisterClipboardFormat, user32, 'RegisterClipboardFormatA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RegisterClipboardFormat]
-  end;
-end;
-{$ELSE}
-function RegisterClipboardFormat; external user32 name 'RegisterClipboardFormatA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CountClipboardFormats: Pointer;
-
-function CountClipboardFormats;
-begin
-  GetProcedureAddress(_CountClipboardFormats, user32, 'CountClipboardFormats');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CountClipboardFormats]
-  end;
-end;
-{$ELSE}
-function CountClipboardFormats; external user32 name 'CountClipboardFormats';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumClipboardFormats: Pointer;
-
-function EnumClipboardFormats;
-begin
-  GetProcedureAddress(_EnumClipboardFormats, user32, 'EnumClipboardFormats');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumClipboardFormats]
-  end;
-end;
-{$ELSE}
-function EnumClipboardFormats; external user32 name 'EnumClipboardFormats';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetClipboardFormatNameA: Pointer;
-
-function GetClipboardFormatNameA;
-begin
-  GetProcedureAddress(_GetClipboardFormatNameA, user32, 'GetClipboardFormatNameA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetClipboardFormatNameA]
-  end;
-end;
-{$ELSE}
-function GetClipboardFormatNameA; external user32 name 'GetClipboardFormatNameA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetClipboardFormatNameW: Pointer;
-
-function GetClipboardFormatNameW;
-begin
-  GetProcedureAddress(_GetClipboardFormatNameW, user32, 'GetClipboardFormatNameW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetClipboardFormatNameW]
-  end;
-end;
-{$ELSE}
-function GetClipboardFormatNameW; external user32 name 'GetClipboardFormatNameW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetClipboardFormatName: Pointer;
-
-function GetClipboardFormatName;
-begin
-  GetProcedureAddress(_GetClipboardFormatName, user32, 'GetClipboardFormatNameW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetClipboardFormatName]
-  end;
-end;
-{$ELSE}
-function GetClipboardFormatName; external user32 name 'GetClipboardFormatNameW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetClipboardFormatName: Pointer;
-
-function GetClipboardFormatName;
-begin
-  GetProcedureAddress(_GetClipboardFormatName, user32, 'GetClipboardFormatNameA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetClipboardFormatName]
-  end;
-end;
-{$ELSE}
-function GetClipboardFormatName; external user32 name 'GetClipboardFormatNameA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EmptyClipboard: Pointer;
-
-function EmptyClipboard;
-begin
-  GetProcedureAddress(_EmptyClipboard, user32, 'EmptyClipboard');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EmptyClipboard]
-  end;
-end;
-{$ELSE}
-function EmptyClipboard; external user32 name 'EmptyClipboard';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _IsClipboardFormatAvailable: Pointer;
-
-function IsClipboardFormatAvailable;
-begin
-  GetProcedureAddress(_IsClipboardFormatAvailable, user32, 'IsClipboardFormatAvailable');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsClipboardFormatAvailable]
-  end;
-end;
-{$ELSE}
-function IsClipboardFormatAvailable; external user32 name 'IsClipboardFormatAvailable';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetPriorityClipboardFormat: Pointer;
-
-function GetPriorityClipboardFormat;
-begin
-  GetProcedureAddress(_GetPriorityClipboardFormat, user32, 'GetPriorityClipboardFormat');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetPriorityClipboardFormat]
-  end;
-end;
-{$ELSE}
-function GetPriorityClipboardFormat; external user32 name 'GetPriorityClipboardFormat';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetOpenClipboardWindow: Pointer;
-
-function GetOpenClipboardWindow;
-begin
-  GetProcedureAddress(_GetOpenClipboardWindow, user32, 'GetOpenClipboardWindow');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetOpenClipboardWindow]
-  end;
-end;
-{$ELSE}
-function GetOpenClipboardWindow; external user32 name 'GetOpenClipboardWindow';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CharToOemA: Pointer;
-
-function CharToOemA;
-begin
-  GetProcedureAddress(_CharToOemA, user32, 'CharToOemA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CharToOemA]
-  end;
-end;
-{$ELSE}
-function CharToOemA; external user32 name 'CharToOemA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CharToOemW: Pointer;
-
-function CharToOemW;
-begin
-  GetProcedureAddress(_CharToOemW, user32, 'CharToOemW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CharToOemW]
-  end;
-end;
-{$ELSE}
-function CharToOemW; external user32 name 'CharToOemW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CharToOem: Pointer;
-
-function CharToOem;
-begin
-  GetProcedureAddress(_CharToOem, user32, 'CharToOemW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CharToOem]
-  end;
-end;
-{$ELSE}
-function CharToOem; external user32 name 'CharToOemW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CharToOem: Pointer;
-
-function CharToOem;
-begin
-  GetProcedureAddress(_CharToOem, user32, 'CharToOemA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CharToOem]
-  end;
-end;
-{$ELSE}
-function CharToOem; external user32 name 'CharToOemA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _OemToCharA: Pointer;
-
-function OemToCharA;
-begin
-  GetProcedureAddress(_OemToCharA, user32, 'OemToCharA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_OemToCharA]
-  end;
-end;
-{$ELSE}
-function OemToCharA; external user32 name 'OemToCharA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _OemToCharW: Pointer;
-
-function OemToCharW;
-begin
-  GetProcedureAddress(_OemToCharW, user32, 'OemToCharW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_OemToCharW]
-  end;
-end;
-{$ELSE}
-function OemToCharW; external user32 name 'OemToCharW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _OemToChar: Pointer;
-
-function OemToChar;
-begin
-  GetProcedureAddress(_OemToChar, user32, 'OemToCharW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_OemToChar]
-  end;
-end;
-{$ELSE}
-function OemToChar; external user32 name 'OemToCharW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _OemToChar: Pointer;
-
-function OemToChar;
-begin
-  GetProcedureAddress(_OemToChar, user32, 'OemToCharA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_OemToChar]
-  end;
-end;
-{$ELSE}
-function OemToChar; external user32 name 'OemToCharA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CharToOemBuffA: Pointer;
-
-function CharToOemBuffA;
-begin
-  GetProcedureAddress(_CharToOemBuffA, user32, 'CharToOemBuffA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CharToOemBuffA]
-  end;
-end;
-{$ELSE}
-function CharToOemBuffA; external user32 name 'CharToOemBuffA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CharToOemBuffW: Pointer;
-
-function CharToOemBuffW;
-begin
-  GetProcedureAddress(_CharToOemBuffW, user32, 'CharToOemBuffW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CharToOemBuffW]
-  end;
-end;
-{$ELSE}
-function CharToOemBuffW; external user32 name 'CharToOemBuffW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CharToOemBuff: Pointer;
-
-function CharToOemBuff;
-begin
-  GetProcedureAddress(_CharToOemBuff, user32, 'CharToOemBuffW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CharToOemBuff]
-  end;
-end;
-{$ELSE}
-function CharToOemBuff; external user32 name 'CharToOemBuffW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CharToOemBuff: Pointer;
-
-function CharToOemBuff;
-begin
-  GetProcedureAddress(_CharToOemBuff, user32, 'CharToOemBuffA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CharToOemBuff]
-  end;
-end;
-{$ELSE}
-function CharToOemBuff; external user32 name 'CharToOemBuffA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _OemToCharBuffA: Pointer;
-
-function OemToCharBuffA;
-begin
-  GetProcedureAddress(_OemToCharBuffA, user32, 'OemToCharBuffA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_OemToCharBuffA]
-  end;
-end;
-{$ELSE}
-function OemToCharBuffA; external user32 name 'OemToCharBuffA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _OemToCharBuffW: Pointer;
-
-function OemToCharBuffW;
-begin
-  GetProcedureAddress(_OemToCharBuffW, user32, 'OemToCharBuffW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_OemToCharBuffW]
-  end;
-end;
-{$ELSE}
-function OemToCharBuffW; external user32 name 'OemToCharBuffW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _OemToCharBuff: Pointer;
-
-function OemToCharBuff;
-begin
-  GetProcedureAddress(_OemToCharBuff, user32, 'OemToCharBuffW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_OemToCharBuff]
-  end;
-end;
-{$ELSE}
-function OemToCharBuff; external user32 name 'OemToCharBuffW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _OemToCharBuff: Pointer;
-
-function OemToCharBuff;
-begin
-  GetProcedureAddress(_OemToCharBuff, user32, 'OemToCharBuffA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_OemToCharBuff]
-  end;
-end;
-{$ELSE}
-function OemToCharBuff; external user32 name 'OemToCharBuffA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CharUpperA: Pointer;
-
-function CharUpperA;
-begin
-  GetProcedureAddress(_CharUpperA, user32, 'CharUpperA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CharUpperA]
-  end;
-end;
-{$ELSE}
-function CharUpperA; external user32 name 'CharUpperA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CharUpperW: Pointer;
-
-function CharUpperW;
-begin
-  GetProcedureAddress(_CharUpperW, user32, 'CharUpperW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CharUpperW]
-  end;
-end;
-{$ELSE}
-function CharUpperW; external user32 name 'CharUpperW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CharUpper: Pointer;
-
-function CharUpper;
-begin
-  GetProcedureAddress(_CharUpper, user32, 'CharUpperW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CharUpper]
-  end;
-end;
-{$ELSE}
-function CharUpper; external user32 name 'CharUpperW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CharUpper: Pointer;
-
-function CharUpper;
-begin
-  GetProcedureAddress(_CharUpper, user32, 'CharUpperA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CharUpper]
-  end;
-end;
-{$ELSE}
-function CharUpper; external user32 name 'CharUpperA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CharUpperBuffA: Pointer;
-
-function CharUpperBuffA;
-begin
-  GetProcedureAddress(_CharUpperBuffA, user32, 'CharUpperBuffA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CharUpperBuffA]
-  end;
-end;
-{$ELSE}
-function CharUpperBuffA; external user32 name 'CharUpperBuffA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CharUpperBuffW: Pointer;
-
-function CharUpperBuffW;
-begin
-  GetProcedureAddress(_CharUpperBuffW, user32, 'CharUpperBuffW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CharUpperBuffW]
-  end;
-end;
-{$ELSE}
-function CharUpperBuffW; external user32 name 'CharUpperBuffW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CharUpperBuff: Pointer;
-
-function CharUpperBuff;
-begin
-  GetProcedureAddress(_CharUpperBuff, user32, 'CharUpperBuffW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CharUpperBuff]
-  end;
-end;
-{$ELSE}
-function CharUpperBuff; external user32 name 'CharUpperBuffW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CharUpperBuff: Pointer;
-
-function CharUpperBuff;
-begin
-  GetProcedureAddress(_CharUpperBuff, user32, 'CharUpperBuffA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CharUpperBuff]
-  end;
-end;
-{$ELSE}
-function CharUpperBuff; external user32 name 'CharUpperBuffA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CharLowerA: Pointer;
-
-function CharLowerA;
-begin
-  GetProcedureAddress(_CharLowerA, user32, 'CharLowerA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CharLowerA]
-  end;
-end;
-{$ELSE}
-function CharLowerA; external user32 name 'CharLowerA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CharLowerW: Pointer;
-
-function CharLowerW;
-begin
-  GetProcedureAddress(_CharLowerW, user32, 'CharLowerW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CharLowerW]
-  end;
-end;
-{$ELSE}
-function CharLowerW; external user32 name 'CharLowerW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CharLower: Pointer;
-
-function CharLower;
-begin
-  GetProcedureAddress(_CharLower, user32, 'CharLowerW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CharLower]
-  end;
-end;
-{$ELSE}
-function CharLower; external user32 name 'CharLowerW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CharLower: Pointer;
-
-function CharLower;
-begin
-  GetProcedureAddress(_CharLower, user32, 'CharLowerA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CharLower]
-  end;
-end;
-{$ELSE}
-function CharLower; external user32 name 'CharLowerA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CharLowerBuffA: Pointer;
-
-function CharLowerBuffA;
-begin
-  GetProcedureAddress(_CharLowerBuffA, user32, 'CharLowerBuffA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CharLowerBuffA]
-  end;
-end;
-{$ELSE}
-function CharLowerBuffA; external user32 name 'CharLowerBuffA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CharLowerBuffW: Pointer;
-
-function CharLowerBuffW;
-begin
-  GetProcedureAddress(_CharLowerBuffW, user32, 'CharLowerBuffW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CharLowerBuffW]
-  end;
-end;
-{$ELSE}
-function CharLowerBuffW; external user32 name 'CharLowerBuffW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CharLowerBuff: Pointer;
-
-function CharLowerBuff;
-begin
-  GetProcedureAddress(_CharLowerBuff, user32, 'CharLowerBuffW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CharLowerBuff]
-  end;
-end;
-{$ELSE}
-function CharLowerBuff; external user32 name 'CharLowerBuffW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CharLowerBuff: Pointer;
-
-function CharLowerBuff;
-begin
-  GetProcedureAddress(_CharLowerBuff, user32, 'CharLowerBuffA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CharLowerBuff]
-  end;
-end;
-{$ELSE}
-function CharLowerBuff; external user32 name 'CharLowerBuffA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CharNextA: Pointer;
-
-function CharNextA;
-begin
-  GetProcedureAddress(_CharNextA, user32, 'CharNextA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CharNextA]
-  end;
-end;
-{$ELSE}
-function CharNextA; external user32 name 'CharNextA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CharNextW: Pointer;
-
-function CharNextW;
-begin
-  GetProcedureAddress(_CharNextW, user32, 'CharNextW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CharNextW]
-  end;
-end;
-{$ELSE}
-function CharNextW; external user32 name 'CharNextW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CharNext: Pointer;
-
-function CharNext;
-begin
-  GetProcedureAddress(_CharNext, user32, 'CharNextW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CharNext]
-  end;
-end;
-{$ELSE}
-function CharNext; external user32 name 'CharNextW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CharNext: Pointer;
-
-function CharNext;
-begin
-  GetProcedureAddress(_CharNext, user32, 'CharNextA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CharNext]
-  end;
-end;
-{$ELSE}
-function CharNext; external user32 name 'CharNextA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CharPrevA: Pointer;
-
-function CharPrevA;
-begin
-  GetProcedureAddress(_CharPrevA, user32, 'CharPrevA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CharPrevA]
-  end;
-end;
-{$ELSE}
-function CharPrevA; external user32 name 'CharPrevA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CharPrevW: Pointer;
-
-function CharPrevW;
-begin
-  GetProcedureAddress(_CharPrevW, user32, 'CharPrevW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CharPrevW]
-  end;
-end;
-{$ELSE}
-function CharPrevW; external user32 name 'CharPrevW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CharPrev: Pointer;
-
-function CharPrev;
-begin
-  GetProcedureAddress(_CharPrev, user32, 'CharPrevW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CharPrev]
-  end;
-end;
-{$ELSE}
-function CharPrev; external user32 name 'CharPrevW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CharPrev: Pointer;
-
-function CharPrev;
-begin
-  GetProcedureAddress(_CharPrev, user32, 'CharPrevA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CharPrev]
-  end;
-end;
-{$ELSE}
-function CharPrev; external user32 name 'CharPrevA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CharNextExA: Pointer;
-
-function CharNextExA;
-begin
-  GetProcedureAddress(_CharNextExA, user32, 'CharNextExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CharNextExA]
-  end;
-end;
-{$ELSE}
-function CharNextExA; external user32 name 'CharNextExA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CharPrevExA: Pointer;
-
-function CharPrevExA;
-begin
-  GetProcedureAddress(_CharPrevExA, user32, 'CharPrevExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CharPrevExA]
-  end;
-end;
-{$ELSE}
-function CharPrevExA; external user32 name 'CharPrevExA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _IsCharAlphaA: Pointer;
-
-function IsCharAlphaA;
-begin
-  GetProcedureAddress(_IsCharAlphaA, user32, 'IsCharAlphaA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsCharAlphaA]
-  end;
-end;
-{$ELSE}
-function IsCharAlphaA; external user32 name 'IsCharAlphaA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _IsCharAlphaW: Pointer;
-
-function IsCharAlphaW;
-begin
-  GetProcedureAddress(_IsCharAlphaW, user32, 'IsCharAlphaW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsCharAlphaW]
-  end;
-end;
-{$ELSE}
-function IsCharAlphaW; external user32 name 'IsCharAlphaW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _IsCharAlpha: Pointer;
-
-function IsCharAlpha;
-begin
-  GetProcedureAddress(_IsCharAlpha, user32, 'IsCharAlphaW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsCharAlpha]
-  end;
-end;
-{$ELSE}
-function IsCharAlpha; external user32 name 'IsCharAlphaW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _IsCharAlpha: Pointer;
-
-function IsCharAlpha;
-begin
-  GetProcedureAddress(_IsCharAlpha, user32, 'IsCharAlphaA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsCharAlpha]
-  end;
-end;
-{$ELSE}
-function IsCharAlpha; external user32 name 'IsCharAlphaA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _IsCharAlphaNumericA: Pointer;
-
-function IsCharAlphaNumericA;
-begin
-  GetProcedureAddress(_IsCharAlphaNumericA, user32, 'IsCharAlphaNumericA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsCharAlphaNumericA]
-  end;
-end;
-{$ELSE}
-function IsCharAlphaNumericA; external user32 name 'IsCharAlphaNumericA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _IsCharAlphaNumericW: Pointer;
-
-function IsCharAlphaNumericW;
-begin
-  GetProcedureAddress(_IsCharAlphaNumericW, user32, 'IsCharAlphaNumericW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsCharAlphaNumericW]
-  end;
-end;
-{$ELSE}
-function IsCharAlphaNumericW; external user32 name 'IsCharAlphaNumericW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _IsCharAlphaNumeric: Pointer;
-
-function IsCharAlphaNumeric;
-begin
-  GetProcedureAddress(_IsCharAlphaNumeric, user32, 'IsCharAlphaNumericW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsCharAlphaNumeric]
-  end;
-end;
-{$ELSE}
-function IsCharAlphaNumeric; external user32 name 'IsCharAlphaNumericW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _IsCharAlphaNumeric: Pointer;
-
-function IsCharAlphaNumeric;
-begin
-  GetProcedureAddress(_IsCharAlphaNumeric, user32, 'IsCharAlphaNumericA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsCharAlphaNumeric]
-  end;
-end;
-{$ELSE}
-function IsCharAlphaNumeric; external user32 name 'IsCharAlphaNumericA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _IsCharUpperA: Pointer;
-
-function IsCharUpperA;
-begin
-  GetProcedureAddress(_IsCharUpperA, user32, 'IsCharUpperA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsCharUpperA]
-  end;
-end;
-{$ELSE}
-function IsCharUpperA; external user32 name 'IsCharUpperA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _IsCharUpperW: Pointer;
-
-function IsCharUpperW;
-begin
-  GetProcedureAddress(_IsCharUpperW, user32, 'IsCharUpperW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsCharUpperW]
-  end;
-end;
-{$ELSE}
-function IsCharUpperW; external user32 name 'IsCharUpperW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _IsCharUpper: Pointer;
-
-function IsCharUpper;
-begin
-  GetProcedureAddress(_IsCharUpper, user32, 'IsCharUpperW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsCharUpper]
-  end;
-end;
-{$ELSE}
-function IsCharUpper; external user32 name 'IsCharUpperW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _IsCharUpper: Pointer;
-
-function IsCharUpper;
-begin
-  GetProcedureAddress(_IsCharUpper, user32, 'IsCharUpperA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsCharUpper]
-  end;
-end;
-{$ELSE}
-function IsCharUpper; external user32 name 'IsCharUpperA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _IsCharLowerA: Pointer;
-
-function IsCharLowerA;
-begin
-  GetProcedureAddress(_IsCharLowerA, user32, 'IsCharLowerA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsCharLowerA]
-  end;
-end;
-{$ELSE}
-function IsCharLowerA; external user32 name 'IsCharLowerA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _IsCharLowerW: Pointer;
-
-function IsCharLowerW;
-begin
-  GetProcedureAddress(_IsCharLowerW, user32, 'IsCharLowerW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsCharLowerW]
-  end;
-end;
-{$ELSE}
-function IsCharLowerW; external user32 name 'IsCharLowerW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _IsCharLower: Pointer;
-
-function IsCharLower;
-begin
-  GetProcedureAddress(_IsCharLower, user32, 'IsCharLowerW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsCharLower]
-  end;
-end;
-{$ELSE}
-function IsCharLower; external user32 name 'IsCharLowerW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _IsCharLower: Pointer;
-
-function IsCharLower;
-begin
-  GetProcedureAddress(_IsCharLower, user32, 'IsCharLowerA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsCharLower]
-  end;
-end;
-{$ELSE}
-function IsCharLower; external user32 name 'IsCharLowerA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetFocus: Pointer;
-
-function SetFocus;
-begin
-  GetProcedureAddress(_SetFocus, user32, 'SetFocus');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetFocus]
-  end;
-end;
-{$ELSE}
-function SetFocus; external user32 name 'SetFocus';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetActiveWindow: Pointer;
-
-function GetActiveWindow;
-begin
-  GetProcedureAddress(_GetActiveWindow, user32, 'GetActiveWindow');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetActiveWindow]
-  end;
-end;
-{$ELSE}
-function GetActiveWindow; external user32 name 'GetActiveWindow';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetFocus: Pointer;
-
-function GetFocus;
-begin
-  GetProcedureAddress(_GetFocus, user32, 'GetFocus');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetFocus]
-  end;
-end;
-{$ELSE}
-function GetFocus; external user32 name 'GetFocus';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetKBCodePage: Pointer;
-
-function GetKBCodePage;
-begin
-  GetProcedureAddress(_GetKBCodePage, user32, 'GetKBCodePage');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetKBCodePage]
-  end;
-end;
-{$ELSE}
-function GetKBCodePage; external user32 name 'GetKBCodePage';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetKeyState: Pointer;
-
-function GetKeyState;
-begin
-  GetProcedureAddress(_GetKeyState, user32, 'GetKeyState');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetKeyState]
-  end;
-end;
-{$ELSE}
-function GetKeyState; external user32 name 'GetKeyState';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetAsyncKeyState: Pointer;
-
-function GetAsyncKeyState;
-begin
-  GetProcedureAddress(_GetAsyncKeyState, user32, 'GetAsyncKeyState');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetAsyncKeyState]
-  end;
-end;
-{$ELSE}
-function GetAsyncKeyState; external user32 name 'GetAsyncKeyState';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetKeyboardState: Pointer;
-
-function GetKeyboardState;
-begin
-  GetProcedureAddress(_GetKeyboardState, user32, 'GetKeyboardState');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetKeyboardState]
-  end;
-end;
-{$ELSE}
-function GetKeyboardState; external user32 name 'GetKeyboardState';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetKeyboardState: Pointer;
-
-function SetKeyboardState;
-begin
-  GetProcedureAddress(_SetKeyboardState, user32, 'SetKeyboardState');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetKeyboardState]
-  end;
-end;
-{$ELSE}
-function SetKeyboardState; external user32 name 'SetKeyboardState';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetKeyNameTextA: Pointer;
-
-function GetKeyNameTextA;
-begin
-  GetProcedureAddress(_GetKeyNameTextA, user32, 'GetKeyNameTextA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetKeyNameTextA]
-  end;
-end;
-{$ELSE}
-function GetKeyNameTextA; external user32 name 'GetKeyNameTextA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetKeyNameTextW: Pointer;
-
-function GetKeyNameTextW;
-begin
-  GetProcedureAddress(_GetKeyNameTextW, user32, 'GetKeyNameTextW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetKeyNameTextW]
-  end;
-end;
-{$ELSE}
-function GetKeyNameTextW; external user32 name 'GetKeyNameTextW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetKeyNameText: Pointer;
-
-function GetKeyNameText;
-begin
-  GetProcedureAddress(_GetKeyNameText, user32, 'GetKeyNameTextW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetKeyNameText]
-  end;
-end;
-{$ELSE}
-function GetKeyNameText; external user32 name 'GetKeyNameTextW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetKeyNameText: Pointer;
-
-function GetKeyNameText;
-begin
-  GetProcedureAddress(_GetKeyNameText, user32, 'GetKeyNameTextA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetKeyNameText]
-  end;
-end;
-{$ELSE}
-function GetKeyNameText; external user32 name 'GetKeyNameTextA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetKeyboardType: Pointer;
-
-function GetKeyboardType;
-begin
-  GetProcedureAddress(_GetKeyboardType, user32, 'GetKeyboardType');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetKeyboardType]
-  end;
-end;
-{$ELSE}
-function GetKeyboardType; external user32 name 'GetKeyboardType';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ToAscii: Pointer;
-
-function ToAscii;
-begin
-  GetProcedureAddress(_ToAscii, user32, 'ToAscii');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ToAscii]
-  end;
-end;
-{$ELSE}
-function ToAscii; external user32 name 'ToAscii';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ToAsciiEx: Pointer;
-
-function ToAsciiEx;
-begin
-  GetProcedureAddress(_ToAsciiEx, user32, 'ToAsciiEx');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ToAsciiEx]
-  end;
-end;
-{$ELSE}
-function ToAsciiEx; external user32 name 'ToAsciiEx';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ToUnicode: Pointer;
-
-function ToUnicode;
-begin
-  GetProcedureAddress(_ToUnicode, user32, 'ToUnicode');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ToUnicode]
-  end;
-end;
-{$ELSE}
-function ToUnicode; external user32 name 'ToUnicode';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _OemKeyScan: Pointer;
-
-function OemKeyScan;
-begin
-  GetProcedureAddress(_OemKeyScan, user32, 'OemKeyScan');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_OemKeyScan]
-  end;
-end;
-{$ELSE}
-function OemKeyScan; external user32 name 'OemKeyScan';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _VkKeyScanA: Pointer;
-
-function VkKeyScanA;
-begin
-  GetProcedureAddress(_VkKeyScanA, user32, 'VkKeyScanA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_VkKeyScanA]
-  end;
-end;
-{$ELSE}
-function VkKeyScanA; external user32 name 'VkKeyScanA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _VkKeyScanW: Pointer;
-
-function VkKeyScanW;
-begin
-  GetProcedureAddress(_VkKeyScanW, user32, 'VkKeyScanW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_VkKeyScanW]
-  end;
-end;
-{$ELSE}
-function VkKeyScanW; external user32 name 'VkKeyScanW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _VkKeyScan: Pointer;
-
-function VkKeyScan;
-begin
-  GetProcedureAddress(_VkKeyScan, user32, 'VkKeyScanW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_VkKeyScan]
-  end;
-end;
-{$ELSE}
-function VkKeyScan; external user32 name 'VkKeyScanW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _VkKeyScan: Pointer;
-
-function VkKeyScan;
-begin
-  GetProcedureAddress(_VkKeyScan, user32, 'VkKeyScanA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_VkKeyScan]
-  end;
-end;
-{$ELSE}
-function VkKeyScan; external user32 name 'VkKeyScanA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _VkKeyScanExA: Pointer;
-
-function VkKeyScanExA;
-begin
-  GetProcedureAddress(_VkKeyScanExA, user32, 'VkKeyScanExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_VkKeyScanExA]
-  end;
-end;
-{$ELSE}
-function VkKeyScanExA; external user32 name 'VkKeyScanExA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _VkKeyScanExW: Pointer;
-
-function VkKeyScanExW;
-begin
-  GetProcedureAddress(_VkKeyScanExW, user32, 'VkKeyScanExW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_VkKeyScanExW]
-  end;
-end;
-{$ELSE}
-function VkKeyScanExW; external user32 name 'VkKeyScanExW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _VkKeyScanEx: Pointer;
-
-function VkKeyScanEx;
-begin
-  GetProcedureAddress(_VkKeyScanEx, user32, 'VkKeyScanExW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_VkKeyScanEx]
-  end;
-end;
-{$ELSE}
-function VkKeyScanEx; external user32 name 'VkKeyScanExW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _VkKeyScanEx: Pointer;
-
-function VkKeyScanEx;
-begin
-  GetProcedureAddress(_VkKeyScanEx, user32, 'VkKeyScanExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_VkKeyScanEx]
-  end;
-end;
-{$ELSE}
-function VkKeyScanEx; external user32 name 'VkKeyScanExA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _keybd_event: Pointer;
-
-procedure keybd_event;
-begin
-  GetProcedureAddress(_keybd_event, user32, 'keybd_event');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_keybd_event]
-  end;
-end;
-{$ELSE}
-procedure keybd_event; external user32 name 'keybd_event';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _mouse_event: Pointer;
-
-procedure mouse_event;
-begin
-  GetProcedureAddress(_mouse_event, user32, 'mouse_event');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_mouse_event]
-  end;
-end;
-{$ELSE}
-procedure mouse_event; external user32 name 'mouse_event';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SendInput: Pointer;
-
-function SendInput;
-begin
-  GetProcedureAddress(_SendInput, user32, 'SendInput');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SendInput]
-  end;
-end;
-{$ELSE}
-function SendInput; external user32 name 'SendInput';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetLastInputInfo: Pointer;
-
-function GetLastInputInfo;
-begin
-  GetProcedureAddress(_GetLastInputInfo, user32, 'GetLastInputInfo');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetLastInputInfo]
-  end;
-end;
-{$ELSE}
-function GetLastInputInfo; external user32 name 'GetLastInputInfo';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _MapVirtualKeyA: Pointer;
-
-function MapVirtualKeyA;
-begin
-  GetProcedureAddress(_MapVirtualKeyA, user32, 'MapVirtualKeyA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MapVirtualKeyA]
-  end;
-end;
-{$ELSE}
-function MapVirtualKeyA; external user32 name 'MapVirtualKeyA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _MapVirtualKeyW: Pointer;
-
-function MapVirtualKeyW;
-begin
-  GetProcedureAddress(_MapVirtualKeyW, user32, 'MapVirtualKeyW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MapVirtualKeyW]
-  end;
-end;
-{$ELSE}
-function MapVirtualKeyW; external user32 name 'MapVirtualKeyW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _MapVirtualKey: Pointer;
-
-function MapVirtualKey;
-begin
-  GetProcedureAddress(_MapVirtualKey, user32, 'MapVirtualKeyW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MapVirtualKey]
-  end;
-end;
-{$ELSE}
-function MapVirtualKey; external user32 name 'MapVirtualKeyW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _MapVirtualKey: Pointer;
-
-function MapVirtualKey;
-begin
-  GetProcedureAddress(_MapVirtualKey, user32, 'MapVirtualKeyA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MapVirtualKey]
-  end;
-end;
-{$ELSE}
-function MapVirtualKey; external user32 name 'MapVirtualKeyA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _MapVirtualKeyExA: Pointer;
-
-function MapVirtualKeyExA;
-begin
-  GetProcedureAddress(_MapVirtualKeyExA, user32, 'MapVirtualKeyExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MapVirtualKeyExA]
-  end;
-end;
-{$ELSE}
-function MapVirtualKeyExA; external user32 name 'MapVirtualKeyExA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _MapVirtualKeyExW: Pointer;
-
-function MapVirtualKeyExW;
-begin
-  GetProcedureAddress(_MapVirtualKeyExW, user32, 'MapVirtualKeyExW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MapVirtualKeyExW]
-  end;
-end;
-{$ELSE}
-function MapVirtualKeyExW; external user32 name 'MapVirtualKeyExW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _MapVirtualKeyEx: Pointer;
-
-function MapVirtualKeyEx;
-begin
-  GetProcedureAddress(_MapVirtualKeyEx, user32, 'MapVirtualKeyExW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MapVirtualKeyEx]
-  end;
-end;
-{$ELSE}
-function MapVirtualKeyEx; external user32 name 'MapVirtualKeyExW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _MapVirtualKeyEx: Pointer;
-
-function MapVirtualKeyEx;
-begin
-  GetProcedureAddress(_MapVirtualKeyEx, user32, 'MapVirtualKeyExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MapVirtualKeyEx]
-  end;
-end;
-{$ELSE}
-function MapVirtualKeyEx; external user32 name 'MapVirtualKeyExA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetInputState: Pointer;
-
-function GetInputState;
-begin
-  GetProcedureAddress(_GetInputState, user32, 'GetInputState');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetInputState]
-  end;
-end;
-{$ELSE}
-function GetInputState; external user32 name 'GetInputState';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetQueueStatus: Pointer;
-
-function GetQueueStatus;
-begin
-  GetProcedureAddress(_GetQueueStatus, user32, 'GetQueueStatus');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetQueueStatus]
-  end;
-end;
-{$ELSE}
-function GetQueueStatus; external user32 name 'GetQueueStatus';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetCapture: Pointer;
-
-function GetCapture;
-begin
-  GetProcedureAddress(_GetCapture, user32, 'GetCapture');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCapture]
-  end;
-end;
-{$ELSE}
-function GetCapture; external user32 name 'GetCapture';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetCapture: Pointer;
-
-function SetCapture;
-begin
-  GetProcedureAddress(_SetCapture, user32, 'SetCapture');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetCapture]
-  end;
-end;
-{$ELSE}
-function SetCapture; external user32 name 'SetCapture';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ReleaseCapture: Pointer;
-
-function ReleaseCapture;
-begin
-  GetProcedureAddress(_ReleaseCapture, user32, 'ReleaseCapture');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ReleaseCapture]
-  end;
-end;
-{$ELSE}
-function ReleaseCapture; external user32 name 'ReleaseCapture';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _MsgWaitForMultipleObjects: Pointer;
-
-function MsgWaitForMultipleObjects;
-begin
-  GetProcedureAddress(_MsgWaitForMultipleObjects, user32, 'MsgWaitForMultipleObjects');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsgWaitForMultipleObjects]
-  end;
-end;
-{$ELSE}
-function MsgWaitForMultipleObjects; external user32 name 'MsgWaitForMultipleObjects';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _MsgWaitForMultipleObjectsEx: Pointer;
-
-function MsgWaitForMultipleObjectsEx;
-begin
-  GetProcedureAddress(_MsgWaitForMultipleObjectsEx, user32, 'MsgWaitForMultipleObjectsEx');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MsgWaitForMultipleObjectsEx]
-  end;
-end;
-{$ELSE}
-function MsgWaitForMultipleObjectsEx; external user32 name 'MsgWaitForMultipleObjectsEx';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetTimer: Pointer;
-
-function SetTimer;
-begin
-  GetProcedureAddress(_SetTimer, user32, 'SetTimer');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetTimer]
-  end;
-end;
-{$ELSE}
-function SetTimer; external user32 name 'SetTimer';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _KillTimer: Pointer;
-
-function KillTimer;
-begin
-  GetProcedureAddress(_KillTimer, user32, 'KillTimer');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_KillTimer]
-  end;
-end;
-{$ELSE}
-function KillTimer; external user32 name 'KillTimer';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _IsWindowUnicode: Pointer;
-
-function IsWindowUnicode;
-begin
-  GetProcedureAddress(_IsWindowUnicode, user32, 'IsWindowUnicode');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsWindowUnicode]
-  end;
-end;
-{$ELSE}
-function IsWindowUnicode; external user32 name 'IsWindowUnicode';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnableWindow: Pointer;
-
-function EnableWindow;
-begin
-  GetProcedureAddress(_EnableWindow, user32, 'EnableWindow');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnableWindow]
-  end;
-end;
-{$ELSE}
-function EnableWindow; external user32 name 'EnableWindow';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _IsWindowEnabled: Pointer;
-
-function IsWindowEnabled;
-begin
-  GetProcedureAddress(_IsWindowEnabled, user32, 'IsWindowEnabled');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsWindowEnabled]
-  end;
-end;
-{$ELSE}
-function IsWindowEnabled; external user32 name 'IsWindowEnabled';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadAcceleratorsA: Pointer;
-
-function LoadAcceleratorsA;
-begin
-  GetProcedureAddress(_LoadAcceleratorsA, user32, 'LoadAcceleratorsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadAcceleratorsA]
-  end;
-end;
-{$ELSE}
-function LoadAcceleratorsA; external user32 name 'LoadAcceleratorsA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadAcceleratorsW: Pointer;
-
-function LoadAcceleratorsW;
-begin
-  GetProcedureAddress(_LoadAcceleratorsW, user32, 'LoadAcceleratorsW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadAcceleratorsW]
-  end;
-end;
-{$ELSE}
-function LoadAcceleratorsW; external user32 name 'LoadAcceleratorsW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadAccelerators: Pointer;
-
-function LoadAccelerators;
-begin
-  GetProcedureAddress(_LoadAccelerators, user32, 'LoadAcceleratorsW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadAccelerators]
-  end;
-end;
-{$ELSE}
-function LoadAccelerators; external user32 name 'LoadAcceleratorsW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadAccelerators: Pointer;
-
-function LoadAccelerators;
-begin
-  GetProcedureAddress(_LoadAccelerators, user32, 'LoadAcceleratorsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadAccelerators]
-  end;
-end;
-{$ELSE}
-function LoadAccelerators; external user32 name 'LoadAcceleratorsA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateAcceleratorTableA: Pointer;
-
-function CreateAcceleratorTableA;
-begin
-  GetProcedureAddress(_CreateAcceleratorTableA, user32, 'CreateAcceleratorTableA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateAcceleratorTableA]
-  end;
-end;
-{$ELSE}
-function CreateAcceleratorTableA; external user32 name 'CreateAcceleratorTableA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateAcceleratorTableW: Pointer;
-
-function CreateAcceleratorTableW;
-begin
-  GetProcedureAddress(_CreateAcceleratorTableW, user32, 'CreateAcceleratorTableW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateAcceleratorTableW]
-  end;
-end;
-{$ELSE}
-function CreateAcceleratorTableW; external user32 name 'CreateAcceleratorTableW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateAcceleratorTable: Pointer;
-
-function CreateAcceleratorTable;
-begin
-  GetProcedureAddress(_CreateAcceleratorTable, user32, 'CreateAcceleratorTableW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateAcceleratorTable]
-  end;
-end;
-{$ELSE}
-function CreateAcceleratorTable; external user32 name 'CreateAcceleratorTableW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateAcceleratorTable: Pointer;
-
-function CreateAcceleratorTable;
-begin
-  GetProcedureAddress(_CreateAcceleratorTable, user32, 'CreateAcceleratorTableA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateAcceleratorTable]
-  end;
-end;
-{$ELSE}
-function CreateAcceleratorTable; external user32 name 'CreateAcceleratorTableA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DestroyAcceleratorTable: Pointer;
-
-function DestroyAcceleratorTable;
-begin
-  GetProcedureAddress(_DestroyAcceleratorTable, user32, 'DestroyAcceleratorTable');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DestroyAcceleratorTable]
-  end;
-end;
-{$ELSE}
-function DestroyAcceleratorTable; external user32 name 'DestroyAcceleratorTable';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CopyAcceleratorTableA: Pointer;
-
-function CopyAcceleratorTableA;
-begin
-  GetProcedureAddress(_CopyAcceleratorTableA, user32, 'CopyAcceleratorTableA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CopyAcceleratorTableA]
-  end;
-end;
-{$ELSE}
-function CopyAcceleratorTableA; external user32 name 'CopyAcceleratorTableA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CopyAcceleratorTableW: Pointer;
-
-function CopyAcceleratorTableW;
-begin
-  GetProcedureAddress(_CopyAcceleratorTableW, user32, 'CopyAcceleratorTableW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CopyAcceleratorTableW]
-  end;
-end;
-{$ELSE}
-function CopyAcceleratorTableW; external user32 name 'CopyAcceleratorTableW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CopyAcceleratorTable: Pointer;
-
-function CopyAcceleratorTable;
-begin
-  GetProcedureAddress(_CopyAcceleratorTable, user32, 'CopyAcceleratorTableW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CopyAcceleratorTable]
-  end;
-end;
-{$ELSE}
-function CopyAcceleratorTable; external user32 name 'CopyAcceleratorTableW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CopyAcceleratorTable: Pointer;
-
-function CopyAcceleratorTable;
-begin
-  GetProcedureAddress(_CopyAcceleratorTable, user32, 'CopyAcceleratorTableA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CopyAcceleratorTable]
-  end;
-end;
-{$ELSE}
-function CopyAcceleratorTable; external user32 name 'CopyAcceleratorTableA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _TranslateAcceleratorA: Pointer;
-
-function TranslateAcceleratorA;
-begin
-  GetProcedureAddress(_TranslateAcceleratorA, user32, 'TranslateAcceleratorA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TranslateAcceleratorA]
-  end;
-end;
-{$ELSE}
-function TranslateAcceleratorA; external user32 name 'TranslateAcceleratorA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _TranslateAcceleratorW: Pointer;
-
-function TranslateAcceleratorW;
-begin
-  GetProcedureAddress(_TranslateAcceleratorW, user32, 'TranslateAcceleratorW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TranslateAcceleratorW]
-  end;
-end;
-{$ELSE}
-function TranslateAcceleratorW; external user32 name 'TranslateAcceleratorW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _TranslateAccelerator: Pointer;
-
-function TranslateAccelerator;
-begin
-  GetProcedureAddress(_TranslateAccelerator, user32, 'TranslateAcceleratorW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TranslateAccelerator]
-  end;
-end;
-{$ELSE}
-function TranslateAccelerator; external user32 name 'TranslateAcceleratorW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _TranslateAccelerator: Pointer;
-
-function TranslateAccelerator;
-begin
-  GetProcedureAddress(_TranslateAccelerator, user32, 'TranslateAcceleratorA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TranslateAccelerator]
-  end;
-end;
-{$ELSE}
-function TranslateAccelerator; external user32 name 'TranslateAcceleratorA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetSystemMetrics: Pointer;
-
-function GetSystemMetrics;
-begin
-  GetProcedureAddress(_GetSystemMetrics, user32, 'GetSystemMetrics');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetSystemMetrics]
-  end;
-end;
-{$ELSE}
-function GetSystemMetrics; external user32 name 'GetSystemMetrics';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadMenuA: Pointer;
-
-function LoadMenuA;
-begin
-  GetProcedureAddress(_LoadMenuA, user32, 'LoadMenuAA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadMenuA]
-  end;
-end;
-{$ELSE}
-function LoadMenuA; external user32 name 'LoadMenuAA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadMenuW: Pointer;
-
-function LoadMenuW;
-begin
-  GetProcedureAddress(_LoadMenuW, user32, 'LoadMenuWA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadMenuW]
-  end;
-end;
-{$ELSE}
-function LoadMenuW; external user32 name 'LoadMenuWA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadMenu: Pointer;
-
-function LoadMenu;
-begin
-  GetProcedureAddress(_LoadMenu, user32, 'LoadMenuW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadMenu]
-  end;
-end;
-{$ELSE}
-function LoadMenu; external user32 name 'LoadMenuW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadMenu: Pointer;
-
-function LoadMenu;
-begin
-  GetProcedureAddress(_LoadMenu, user32, 'LoadMenuA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadMenu]
-  end;
-end;
-{$ELSE}
-function LoadMenu; external user32 name 'LoadMenuA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadMenuIndirectA: Pointer;
-
-function LoadMenuIndirectA;
-begin
-  GetProcedureAddress(_LoadMenuIndirectA, user32, 'LoadMenuIndirectA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadMenuIndirectA]
-  end;
-end;
-{$ELSE}
-function LoadMenuIndirectA; external user32 name 'LoadMenuIndirectA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadMenuIndirectW: Pointer;
-
-function LoadMenuIndirectW;
-begin
-  GetProcedureAddress(_LoadMenuIndirectW, user32, 'LoadMenuIndirectW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadMenuIndirectW]
-  end;
-end;
-{$ELSE}
-function LoadMenuIndirectW; external user32 name 'LoadMenuIndirectW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadMenuIndirect: Pointer;
-
-function LoadMenuIndirect;
-begin
-  GetProcedureAddress(_LoadMenuIndirect, user32, 'LoadMenuIndirectW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadMenuIndirect]
-  end;
-end;
-{$ELSE}
-function LoadMenuIndirect; external user32 name 'LoadMenuIndirectW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadMenuIndirect: Pointer;
-
-function LoadMenuIndirect;
-begin
-  GetProcedureAddress(_LoadMenuIndirect, user32, 'LoadMenuIndirectA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadMenuIndirect]
-  end;
-end;
-{$ELSE}
-function LoadMenuIndirect; external user32 name 'LoadMenuIndirectA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetMenu: Pointer;
-
-function GetMenu;
-begin
-  GetProcedureAddress(_GetMenu, user32, 'GetMenu');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetMenu]
-  end;
-end;
-{$ELSE}
-function GetMenu; external user32 name 'GetMenu';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetMenu: Pointer;
-
-function SetMenu;
-begin
-  GetProcedureAddress(_SetMenu, user32, 'SetMenu');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetMenu]
-  end;
-end;
-{$ELSE}
-function SetMenu; external user32 name 'SetMenu';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ChangeMenuA: Pointer;
-
-function ChangeMenuA;
-begin
-  GetProcedureAddress(_ChangeMenuA, user32, 'ChangeMenuA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ChangeMenuA]
-  end;
-end;
-{$ELSE}
-function ChangeMenuA; external user32 name 'ChangeMenuA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ChangeMenuW: Pointer;
-
-function ChangeMenuW;
-begin
-  GetProcedureAddress(_ChangeMenuW, user32, 'ChangeMenuW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ChangeMenuW]
-  end;
-end;
-{$ELSE}
-function ChangeMenuW; external user32 name 'ChangeMenuW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ChangeMenu: Pointer;
-
-function ChangeMenu;
-begin
-  GetProcedureAddress(_ChangeMenu, user32, 'ChangeMenuW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ChangeMenu]
-  end;
-end;
-{$ELSE}
-function ChangeMenu; external user32 name 'ChangeMenuW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ChangeMenu: Pointer;
-
-function ChangeMenu;
-begin
-  GetProcedureAddress(_ChangeMenu, user32, 'ChangeMenuA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ChangeMenu]
-  end;
-end;
-{$ELSE}
-function ChangeMenu; external user32 name 'ChangeMenuA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _HiliteMenuItem: Pointer;
-
-function HiliteMenuItem;
-begin
-  GetProcedureAddress(_HiliteMenuItem, user32, 'HiliteMenuItem');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_HiliteMenuItem]
-  end;
-end;
-{$ELSE}
-function HiliteMenuItem; external user32 name 'HiliteMenuItem';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetMenuStringA: Pointer;
-
-function GetMenuStringA;
-begin
-  GetProcedureAddress(_GetMenuStringA, user32, 'GetMenuStringA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetMenuStringA]
-  end;
-end;
-{$ELSE}
-function GetMenuStringA; external user32 name 'GetMenuStringA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetMenuStringW: Pointer;
-
-function GetMenuStringW;
-begin
-  GetProcedureAddress(_GetMenuStringW, user32, 'GetMenuStringW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetMenuStringW]
-  end;
-end;
-{$ELSE}
-function GetMenuStringW; external user32 name 'GetMenuStringW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetMenuString: Pointer;
-
-function GetMenuString;
-begin
-  GetProcedureAddress(_GetMenuString, user32, 'GetMenuStringW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetMenuString]
-  end;
-end;
-{$ELSE}
-function GetMenuString; external user32 name 'GetMenuStringW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetMenuString: Pointer;
-
-function GetMenuString;
-begin
-  GetProcedureAddress(_GetMenuString, user32, 'GetMenuStringA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetMenuString]
-  end;
-end;
-{$ELSE}
-function GetMenuString; external user32 name 'GetMenuStringA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetMenuState: Pointer;
-
-function GetMenuState;
-begin
-  GetProcedureAddress(_GetMenuState, user32, 'GetMenuState');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetMenuState]
-  end;
-end;
-{$ELSE}
-function GetMenuState; external user32 name 'GetMenuState';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DrawMenuBar: Pointer;
-
-function DrawMenuBar;
-begin
-  GetProcedureAddress(_DrawMenuBar, user32, 'DrawMenuBar');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DrawMenuBar]
-  end;
-end;
-{$ELSE}
-function DrawMenuBar; external user32 name 'DrawMenuBar';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetSystemMenu: Pointer;
-
-function GetSystemMenu;
-begin
-  GetProcedureAddress(_GetSystemMenu, user32, 'GetSystemMenu');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetSystemMenu]
-  end;
-end;
-{$ELSE}
-function GetSystemMenu; external user32 name 'GetSystemMenu';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateMenu: Pointer;
-
-function CreateMenu;
-begin
-  GetProcedureAddress(_CreateMenu, user32, 'CreateMenu');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateMenu]
-  end;
-end;
-{$ELSE}
-function CreateMenu; external user32 name 'CreateMenu';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreatePopupMenu: Pointer;
-
-function CreatePopupMenu;
-begin
-  GetProcedureAddress(_CreatePopupMenu, user32, 'CreatePopupMenu');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreatePopupMenu]
-  end;
-end;
-{$ELSE}
-function CreatePopupMenu; external user32 name 'CreatePopupMenu';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DestroyMenu: Pointer;
-
-function DestroyMenu;
-begin
-  GetProcedureAddress(_DestroyMenu, user32, 'DestroyMenu');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DestroyMenu]
-  end;
-end;
-{$ELSE}
-function DestroyMenu; external user32 name 'DestroyMenu';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CheckMenuItem: Pointer;
-
-function CheckMenuItem;
-begin
-  GetProcedureAddress(_CheckMenuItem, user32, 'CheckMenuItem');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CheckMenuItem]
-  end;
-end;
-{$ELSE}
-function CheckMenuItem; external user32 name 'CheckMenuItem';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnableMenuItem: Pointer;
-
-function EnableMenuItem;
-begin
-  GetProcedureAddress(_EnableMenuItem, user32, 'EnableMenuItem');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnableMenuItem]
-  end;
-end;
-{$ELSE}
-function EnableMenuItem; external user32 name 'EnableMenuItem';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetSubMenu: Pointer;
-
-function GetSubMenu;
-begin
-  GetProcedureAddress(_GetSubMenu, user32, 'GetSubMenu');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetSubMenu]
-  end;
-end;
-{$ELSE}
-function GetSubMenu; external user32 name 'GetSubMenu';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetMenuItemID: Pointer;
-
-function GetMenuItemID;
-begin
-  GetProcedureAddress(_GetMenuItemID, user32, 'GetMenuItemID');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetMenuItemID]
-  end;
-end;
-{$ELSE}
-function GetMenuItemID; external user32 name 'GetMenuItemID';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetMenuItemCount: Pointer;
-
-function GetMenuItemCount;
-begin
-  GetProcedureAddress(_GetMenuItemCount, user32, 'GetMenuItemCount');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetMenuItemCount]
-  end;
-end;
-{$ELSE}
-function GetMenuItemCount; external user32 name 'GetMenuItemCount';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _InsertMenuA: Pointer;
-
-function InsertMenuA;
-begin
-  GetProcedureAddress(_InsertMenuA, user32, 'InsertMenuA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_InsertMenuA]
-  end;
-end;
-{$ELSE}
-function InsertMenuA; external user32 name 'InsertMenuA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _InsertMenuW: Pointer;
-
-function InsertMenuW;
-begin
-  GetProcedureAddress(_InsertMenuW, user32, 'InsertMenuW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_InsertMenuW]
-  end;
-end;
-{$ELSE}
-function InsertMenuW; external user32 name 'InsertMenuW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _InsertMenu: Pointer;
-
-function InsertMenu;
-begin
-  GetProcedureAddress(_InsertMenu, user32, 'InsertMenuW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_InsertMenu]
-  end;
-end;
-{$ELSE}
-function InsertMenu; external user32 name 'InsertMenuW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _InsertMenu: Pointer;
-
-function InsertMenu;
-begin
-  GetProcedureAddress(_InsertMenu, user32, 'InsertMenuA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_InsertMenu]
-  end;
-end;
-{$ELSE}
-function InsertMenu; external user32 name 'InsertMenuA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _AppendMenuA: Pointer;
-
-function AppendMenuA;
-begin
-  GetProcedureAddress(_AppendMenuA, user32, 'AppendMenuA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AppendMenuA]
-  end;
-end;
-{$ELSE}
-function AppendMenuA; external user32 name 'AppendMenuA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _AppendMenuW: Pointer;
-
-function AppendMenuW;
-begin
-  GetProcedureAddress(_AppendMenuW, user32, 'AppendMenuW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AppendMenuW]
-  end;
-end;
-{$ELSE}
-function AppendMenuW; external user32 name 'AppendMenuW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _AppendMenu: Pointer;
-
-function AppendMenu;
-begin
-  GetProcedureAddress(_AppendMenu, user32, 'AppendMenuW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AppendMenu]
-  end;
-end;
-{$ELSE}
-function AppendMenu; external user32 name 'AppendMenuW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _AppendMenu: Pointer;
-
-function AppendMenu;
-begin
-  GetProcedureAddress(_AppendMenu, user32, 'AppendMenuA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AppendMenu]
-  end;
-end;
-{$ELSE}
-function AppendMenu; external user32 name 'AppendMenuA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ModifyMenuA: Pointer;
-
-function ModifyMenuA;
-begin
-  GetProcedureAddress(_ModifyMenuA, user32, 'ModifyMenuA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ModifyMenuA]
-  end;
-end;
-{$ELSE}
-function ModifyMenuA; external user32 name 'ModifyMenuA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ModifyMenuW: Pointer;
-
-function ModifyMenuW;
-begin
-  GetProcedureAddress(_ModifyMenuW, user32, 'ModifyMenuW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ModifyMenuW]
-  end;
-end;
-{$ELSE}
-function ModifyMenuW; external user32 name 'ModifyMenuW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ModifyMenu: Pointer;
-
-function ModifyMenu;
-begin
-  GetProcedureAddress(_ModifyMenu, user32, 'ModifyMenuW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ModifyMenu]
-  end;
-end;
-{$ELSE}
-function ModifyMenu; external user32 name 'ModifyMenuW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ModifyMenu: Pointer;
-
-function ModifyMenu;
-begin
-  GetProcedureAddress(_ModifyMenu, user32, 'ModifyMenuA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ModifyMenu]
-  end;
-end;
-{$ELSE}
-function ModifyMenu; external user32 name 'ModifyMenuA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _RemoveMenu: Pointer;
-
-function RemoveMenu;
-begin
-  GetProcedureAddress(_RemoveMenu, user32, 'RemoveMenu');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RemoveMenu]
-  end;
-end;
-{$ELSE}
-function RemoveMenu; external user32 name 'RemoveMenu';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DeleteMenu: Pointer;
-
-function DeleteMenu;
-begin
-  GetProcedureAddress(_DeleteMenu, user32, 'DeleteMenu');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DeleteMenu]
-  end;
-end;
-{$ELSE}
-function DeleteMenu; external user32 name 'DeleteMenu';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetMenuItemBitmaps: Pointer;
-
-function SetMenuItemBitmaps;
-begin
-  GetProcedureAddress(_SetMenuItemBitmaps, user32, 'SetMenuItemBitmaps');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetMenuItemBitmaps]
-  end;
-end;
-{$ELSE}
-function SetMenuItemBitmaps; external user32 name 'SetMenuItemBitmaps';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetMenuCheckMarkDimensions: Pointer;
-
-function GetMenuCheckMarkDimensions;
-begin
-  GetProcedureAddress(_GetMenuCheckMarkDimensions, user32, 'GetMenuCheckMarkDimensions');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetMenuCheckMarkDimensions]
-  end;
-end;
-{$ELSE}
-function GetMenuCheckMarkDimensions; external user32 name 'GetMenuCheckMarkDimensions';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _TrackPopupMenu: Pointer;
-
-function TrackPopupMenu;
-begin
-  GetProcedureAddress(_TrackPopupMenu, user32, 'TrackPopupMenu');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TrackPopupMenu]
-  end;
-end;
-{$ELSE}
-function TrackPopupMenu; external user32 name 'TrackPopupMenu';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _TrackPopupMenuEx: Pointer;
-
-function TrackPopupMenuEx;
-begin
-  GetProcedureAddress(_TrackPopupMenuEx, user32, 'TrackPopupMenuEx');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TrackPopupMenuEx]
-  end;
-end;
-{$ELSE}
-function TrackPopupMenuEx; external user32 name 'TrackPopupMenuEx';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetMenuInfo: Pointer;
-
-function GetMenuInfo;
-begin
-  GetProcedureAddress(_GetMenuInfo, user32, 'GetMenuInfo');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetMenuInfo]
-  end;
-end;
-{$ELSE}
-function GetMenuInfo; external user32 name 'GetMenuInfo';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetMenuInfo: Pointer;
-
-function SetMenuInfo;
-begin
-  GetProcedureAddress(_SetMenuInfo, user32, 'SetMenuInfo');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetMenuInfo]
-  end;
-end;
-{$ELSE}
-function SetMenuInfo; external user32 name 'SetMenuInfo';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EndMenu: Pointer;
-
-function EndMenu;
-begin
-  GetProcedureAddress(_EndMenu, user32, 'EndMenu');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EndMenu]
-  end;
-end;
-{$ELSE}
-function EndMenu; external user32 name 'EndMenu';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _InsertMenuItemA: Pointer;
-
-function InsertMenuItemA;
-begin
-  GetProcedureAddress(_InsertMenuItemA, user32, 'InsertMenuItemA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_InsertMenuItemA]
-  end;
-end;
-{$ELSE}
-function InsertMenuItemA; external user32 name 'InsertMenuItemA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _InsertMenuItemW: Pointer;
-
-function InsertMenuItemW;
-begin
-  GetProcedureAddress(_InsertMenuItemW, user32, 'InsertMenuItemW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_InsertMenuItemW]
-  end;
-end;
-{$ELSE}
-function InsertMenuItemW; external user32 name 'InsertMenuItemW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _InsertMenuItem: Pointer;
-
-function InsertMenuItem;
-begin
-  GetProcedureAddress(_InsertMenuItem, user32, 'InsertMenuItemW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_InsertMenuItem]
-  end;
-end;
-{$ELSE}
-function InsertMenuItem; external user32 name 'InsertMenuItemW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _InsertMenuItem: Pointer;
-
-function InsertMenuItem;
-begin
-  GetProcedureAddress(_InsertMenuItem, user32, 'InsertMenuItemA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_InsertMenuItem]
-  end;
-end;
-{$ELSE}
-function InsertMenuItem; external user32 name 'InsertMenuItemA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetMenuItemInfoA: Pointer;
-
-function GetMenuItemInfoA;
-begin
-  GetProcedureAddress(_GetMenuItemInfoA, user32, 'GetMenuItemInfoA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetMenuItemInfoA]
-  end;
-end;
-{$ELSE}
-function GetMenuItemInfoA; external user32 name 'GetMenuItemInfoA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetMenuItemInfoW: Pointer;
-
-function GetMenuItemInfoW;
-begin
-  GetProcedureAddress(_GetMenuItemInfoW, user32, 'GetMenuItemInfoW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetMenuItemInfoW]
-  end;
-end;
-{$ELSE}
-function GetMenuItemInfoW; external user32 name 'GetMenuItemInfoW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetMenuItemInfo: Pointer;
-
-function GetMenuItemInfo;
-begin
-  GetProcedureAddress(_GetMenuItemInfo, user32, 'GetMenuItemInfoW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetMenuItemInfo]
-  end;
-end;
-{$ELSE}
-function GetMenuItemInfo; external user32 name 'GetMenuItemInfoW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetMenuItemInfo: Pointer;
-
-function GetMenuItemInfo;
-begin
-  GetProcedureAddress(_GetMenuItemInfo, user32, 'GetMenuItemInfoA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetMenuItemInfo]
-  end;
-end;
-{$ELSE}
-function GetMenuItemInfo; external user32 name 'GetMenuItemInfoA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetMenuItemInfoA: Pointer;
-
-function SetMenuItemInfoA;
-begin
-  GetProcedureAddress(_SetMenuItemInfoA, user32, 'SetMenuItemInfoA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetMenuItemInfoA]
-  end;
-end;
-{$ELSE}
-function SetMenuItemInfoA; external user32 name 'SetMenuItemInfoA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetMenuItemInfoW: Pointer;
-
-function SetMenuItemInfoW;
-begin
-  GetProcedureAddress(_SetMenuItemInfoW, user32, 'SetMenuItemInfoW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetMenuItemInfoW]
-  end;
-end;
-{$ELSE}
-function SetMenuItemInfoW; external user32 name 'SetMenuItemInfoW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetMenuItemInfo: Pointer;
-
-function SetMenuItemInfo;
-begin
-  GetProcedureAddress(_SetMenuItemInfo, user32, 'SetMenuItemInfoW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetMenuItemInfo]
-  end;
-end;
-{$ELSE}
-function SetMenuItemInfo; external user32 name 'SetMenuItemInfoW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetMenuItemInfo: Pointer;
-
-function SetMenuItemInfo;
-begin
-  GetProcedureAddress(_SetMenuItemInfo, user32, 'SetMenuItemInfoA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetMenuItemInfo]
-  end;
-end;
-{$ELSE}
-function SetMenuItemInfo; external user32 name 'SetMenuItemInfoA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetMenuDefaultItem: Pointer;
-
-function GetMenuDefaultItem;
-begin
-  GetProcedureAddress(_GetMenuDefaultItem, user32, 'GetMenuDefaultItem');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetMenuDefaultItem]
-  end;
-end;
-{$ELSE}
-function GetMenuDefaultItem; external user32 name 'GetMenuDefaultItem';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetMenuDefaultItem: Pointer;
-
-function SetMenuDefaultItem;
-begin
-  GetProcedureAddress(_SetMenuDefaultItem, user32, 'SetMenuDefaultItem');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetMenuDefaultItem]
-  end;
-end;
-{$ELSE}
-function SetMenuDefaultItem; external user32 name 'SetMenuDefaultItem';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetMenuItemRect: Pointer;
-
-function GetMenuItemRect;
-begin
-  GetProcedureAddress(_GetMenuItemRect, user32, 'GetMenuItemRect');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetMenuItemRect]
-  end;
-end;
-{$ELSE}
-function GetMenuItemRect; external user32 name 'GetMenuItemRect';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _MenuItemFromPoint: Pointer;
-
-function MenuItemFromPoint;
-begin
-  GetProcedureAddress(_MenuItemFromPoint, user32, 'MenuItemFromPoint');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MenuItemFromPoint]
-  end;
-end;
-{$ELSE}
-function MenuItemFromPoint; external user32 name 'MenuItemFromPoint';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DragObject: Pointer;
-
-function DragObject;
-begin
-  GetProcedureAddress(_DragObject, user32, 'DragObject');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DragObject]
-  end;
-end;
-{$ELSE}
-function DragObject; external user32 name 'DragObject';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DragDetect: Pointer;
-
-function DragDetect;
-begin
-  GetProcedureAddress(_DragDetect, user32, 'DragDetect');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DragDetect]
-  end;
-end;
-{$ELSE}
-function DragDetect; external user32 name 'DragDetect';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DrawIcon: Pointer;
-
-function DrawIcon;
-begin
-  GetProcedureAddress(_DrawIcon, user32, 'DrawIcon');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DrawIcon]
-  end;
-end;
-{$ELSE}
-function DrawIcon; external user32 name 'DrawIcon';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DrawTextA: Pointer;
-
-function DrawTextA;
-begin
-  GetProcedureAddress(_DrawTextA, user32, 'DrawTextA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DrawTextA]
-  end;
-end;
-{$ELSE}
-function DrawTextA; external user32 name 'DrawTextA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DrawTextW: Pointer;
-
-function DrawTextW;
-begin
-  GetProcedureAddress(_DrawTextW, user32, 'DrawTextW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DrawTextW]
-  end;
-end;
-{$ELSE}
-function DrawTextW; external user32 name 'DrawTextW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DrawText: Pointer;
-
-function DrawText;
-begin
-  GetProcedureAddress(_DrawText, user32, 'DrawTextW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DrawText]
-  end;
-end;
-{$ELSE}
-function DrawText; external user32 name 'DrawTextW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DrawText: Pointer;
-
-function DrawText;
-begin
-  GetProcedureAddress(_DrawText, user32, 'DrawTextA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DrawText]
-  end;
-end;
-{$ELSE}
-function DrawText; external user32 name 'DrawTextA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DrawTextExA: Pointer;
-
-function DrawTextExA;
-begin
-  GetProcedureAddress(_DrawTextExA, user32, 'DrawTextExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DrawTextExA]
-  end;
-end;
-{$ELSE}
-function DrawTextExA; external user32 name 'DrawTextExA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DrawTextExW: Pointer;
-
-function DrawTextExW;
-begin
-  GetProcedureAddress(_DrawTextExW, user32, 'DrawTextExW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DrawTextExW]
-  end;
-end;
-{$ELSE}
-function DrawTextExW; external user32 name 'DrawTextExW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DrawTextEx: Pointer;
-
-function DrawTextEx;
-begin
-  GetProcedureAddress(_DrawTextEx, user32, 'DrawTextExW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DrawTextEx]
-  end;
-end;
-{$ELSE}
-function DrawTextEx; external user32 name 'DrawTextExW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DrawTextEx: Pointer;
-
-function DrawTextEx;
-begin
-  GetProcedureAddress(_DrawTextEx, user32, 'DrawTextExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DrawTextEx]
-  end;
-end;
-{$ELSE}
-function DrawTextEx; external user32 name 'DrawTextExA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GrayStringA: Pointer;
-
-function GrayStringA;
-begin
-  GetProcedureAddress(_GrayStringA, user32, 'GrayStringA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GrayStringA]
-  end;
-end;
-{$ELSE}
-function GrayStringA; external user32 name 'GrayStringA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GrayStringW: Pointer;
-
-function GrayStringW;
-begin
-  GetProcedureAddress(_GrayStringW, user32, 'GrayStringW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GrayStringW]
-  end;
-end;
-{$ELSE}
-function GrayStringW; external user32 name 'GrayStringW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GrayString: Pointer;
-
-function GrayString;
-begin
-  GetProcedureAddress(_GrayString, user32, 'GrayStringW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GrayString]
-  end;
-end;
-{$ELSE}
-function GrayString; external user32 name 'GrayStringW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GrayString: Pointer;
-
-function GrayString;
-begin
-  GetProcedureAddress(_GrayString, user32, 'GrayStringA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GrayString]
-  end;
-end;
-{$ELSE}
-function GrayString; external user32 name 'GrayStringA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DrawStateA: Pointer;
-
-function DrawStateA;
-begin
-  GetProcedureAddress(_DrawStateA, user32, 'DrawStateA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DrawStateA]
-  end;
-end;
-{$ELSE}
-function DrawStateA; external user32 name 'DrawStateA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DrawStateW: Pointer;
-
-function DrawStateW;
-begin
-  GetProcedureAddress(_DrawStateW, user32, 'DrawStateW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DrawStateW]
-  end;
-end;
-{$ELSE}
-function DrawStateW; external user32 name 'DrawStateW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DrawState: Pointer;
-
-function DrawState;
-begin
-  GetProcedureAddress(_DrawState, user32, 'DrawStateW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DrawState]
-  end;
-end;
-{$ELSE}
-function DrawState; external user32 name 'DrawStateW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DrawState: Pointer;
-
-function DrawState;
-begin
-  GetProcedureAddress(_DrawState, user32, 'DrawStateA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DrawState]
-  end;
-end;
-{$ELSE}
-function DrawState; external user32 name 'DrawStateA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _TabbedTextOutA: Pointer;
-
-function TabbedTextOutA;
-begin
-  GetProcedureAddress(_TabbedTextOutA, user32, 'TabbedTextOutA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TabbedTextOutA]
-  end;
-end;
-{$ELSE}
-function TabbedTextOutA; external user32 name 'TabbedTextOutA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _TabbedTextOutW: Pointer;
-
-function TabbedTextOutW;
-begin
-  GetProcedureAddress(_TabbedTextOutW, user32, 'TabbedTextOutW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TabbedTextOutW]
-  end;
-end;
-{$ELSE}
-function TabbedTextOutW; external user32 name 'TabbedTextOutW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _TabbedTextOut: Pointer;
-
-function TabbedTextOut;
-begin
-  GetProcedureAddress(_TabbedTextOut, user32, 'TabbedTextOutW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TabbedTextOut]
-  end;
-end;
-{$ELSE}
-function TabbedTextOut; external user32 name 'TabbedTextOutW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _TabbedTextOut: Pointer;
-
-function TabbedTextOut;
-begin
-  GetProcedureAddress(_TabbedTextOut, user32, 'TabbedTextOutA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TabbedTextOut]
-  end;
-end;
-{$ELSE}
-function TabbedTextOut; external user32 name 'TabbedTextOutA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetTabbedTextExtentA: Pointer;
-
-function GetTabbedTextExtentA;
-begin
-  GetProcedureAddress(_GetTabbedTextExtentA, user32, 'GetTabbedTextExtentA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTabbedTextExtentA]
-  end;
-end;
-{$ELSE}
-function GetTabbedTextExtentA; external user32 name 'GetTabbedTextExtentA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetTabbedTextExtentW: Pointer;
-
-function GetTabbedTextExtentW;
-begin
-  GetProcedureAddress(_GetTabbedTextExtentW, user32, 'GetTabbedTextExtentW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTabbedTextExtentW]
-  end;
-end;
-{$ELSE}
-function GetTabbedTextExtentW; external user32 name 'GetTabbedTextExtentW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetTabbedTextExtent: Pointer;
-
-function GetTabbedTextExtent;
-begin
-  GetProcedureAddress(_GetTabbedTextExtent, user32, 'GetTabbedTextExtentW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTabbedTextExtent]
-  end;
-end;
-{$ELSE}
-function GetTabbedTextExtent; external user32 name 'GetTabbedTextExtentW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetTabbedTextExtent: Pointer;
-
-function GetTabbedTextExtent;
-begin
-  GetProcedureAddress(_GetTabbedTextExtent, user32, 'GetTabbedTextExtentA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTabbedTextExtent]
-  end;
-end;
-{$ELSE}
-function GetTabbedTextExtent; external user32 name 'GetTabbedTextExtentA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _UpdateWindow: Pointer;
-
-function UpdateWindow;
-begin
-  GetProcedureAddress(_UpdateWindow, user32, 'UpdateWindow');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_UpdateWindow]
-  end;
-end;
-{$ELSE}
-function UpdateWindow; external user32 name 'UpdateWindow';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetActiveWindow: Pointer;
-
-function SetActiveWindow;
-begin
-  GetProcedureAddress(_SetActiveWindow, user32, 'SetActiveWindow');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetActiveWindow]
-  end;
-end;
-{$ELSE}
-function SetActiveWindow; external user32 name 'SetActiveWindow';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetForegroundWindow: Pointer;
-
-function GetForegroundWindow;
-begin
-  GetProcedureAddress(_GetForegroundWindow, user32, 'GetForegroundWindow');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetForegroundWindow]
-  end;
-end;
-{$ELSE}
-function GetForegroundWindow; external user32 name 'GetForegroundWindow';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _PaintDesktop: Pointer;
-
-function PaintDesktop;
-begin
-  GetProcedureAddress(_PaintDesktop, user32, 'PaintDesktop');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PaintDesktop]
-  end;
-end;
-{$ELSE}
-function PaintDesktop; external user32 name 'PaintDesktop';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SwitchToThisWindow: Pointer;
-
-procedure SwitchToThisWindow;
-begin
-  GetProcedureAddress(_SwitchToThisWindow, user32, 'SwitchToThisWindow');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SwitchToThisWindow]
-  end;
-end;
-{$ELSE}
-procedure SwitchToThisWindow; external user32 name 'SwitchToThisWindow';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetForegroundWindow: Pointer;
-
-function SetForegroundWindow;
-begin
-  GetProcedureAddress(_SetForegroundWindow, user32, 'SetForegroundWindow');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetForegroundWindow]
-  end;
-end;
-{$ELSE}
-function SetForegroundWindow; external user32 name 'SetForegroundWindow';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _AllowSetForegroundWindow: Pointer;
-
-function AllowSetForegroundWindow;
-begin
-  GetProcedureAddress(_AllowSetForegroundWindow, user32, 'AllowSetForegroundWindow');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AllowSetForegroundWindow]
-  end;
-end;
-{$ELSE}
-function AllowSetForegroundWindow; external user32 name 'AllowSetForegroundWindow';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LockSetForegroundWindow: Pointer;
-
-function LockSetForegroundWindow;
-begin
-  GetProcedureAddress(_LockSetForegroundWindow, user32, 'LockSetForegroundWindow');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LockSetForegroundWindow]
-  end;
-end;
-{$ELSE}
-function LockSetForegroundWindow; external user32 name 'LockSetForegroundWindow';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WindowFromDC: Pointer;
-
-function WindowFromDC;
-begin
-  GetProcedureAddress(_WindowFromDC, user32, 'WindowFromDC');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WindowFromDC]
-  end;
-end;
-{$ELSE}
-function WindowFromDC; external user32 name 'WindowFromDC';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetDC: Pointer;
-
-function GetDC;
-begin
-  GetProcedureAddress(_GetDC, user32, 'GetDC');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetDC]
-  end;
-end;
-{$ELSE}
-function GetDC; external user32 name 'GetDC';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetDCEx: Pointer;
-
-function GetDCEx;
-begin
-  GetProcedureAddress(_GetDCEx, user32, 'GetDCEx');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetDCEx]
-  end;
-end;
-{$ELSE}
-function GetDCEx; external user32 name 'GetDCEx';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetWindowDC: Pointer;
-
-function GetWindowDC;
-begin
-  GetProcedureAddress(_GetWindowDC, user32, 'GetWindowDC');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetWindowDC]
-  end;
-end;
-{$ELSE}
-function GetWindowDC; external user32 name 'GetWindowDC';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ReleaseDC: Pointer;
-
-function ReleaseDC;
-begin
-  GetProcedureAddress(_ReleaseDC, user32, 'ReleaseDC');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ReleaseDC]
-  end;
-end;
-{$ELSE}
-function ReleaseDC; external user32 name 'ReleaseDC';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _BeginPaint: Pointer;
-
-function BeginPaint;
-begin
-  GetProcedureAddress(_BeginPaint, user32, 'BeginPaint');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_BeginPaint]
-  end;
-end;
-{$ELSE}
-function BeginPaint; external user32 name 'BeginPaint';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EndPaint: Pointer;
-
-function EndPaint;
-begin
-  GetProcedureAddress(_EndPaint, user32, 'EndPaint');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EndPaint]
-  end;
-end;
-{$ELSE}
-function EndPaint; external user32 name 'EndPaint';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetUpdateRect: Pointer;
-
-function GetUpdateRect;
-begin
-  GetProcedureAddress(_GetUpdateRect, user32, 'GetUpdateRect');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetUpdateRect]
-  end;
-end;
-{$ELSE}
-function GetUpdateRect; external user32 name 'GetUpdateRect';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetUpdateRgn: Pointer;
-
-function GetUpdateRgn;
-begin
-  GetProcedureAddress(_GetUpdateRgn, user32, 'GetUpdateRgn');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetUpdateRgn]
-  end;
-end;
-{$ELSE}
-function GetUpdateRgn; external user32 name 'GetUpdateRgn';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetWindowRgn: Pointer;
-
-function SetWindowRgn;
-begin
-  GetProcedureAddress(_SetWindowRgn, user32, 'SetWindowRgn');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetWindowRgn]
-  end;
-end;
-{$ELSE}
-function SetWindowRgn; external user32 name 'SetWindowRgn';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetWindowRgn: Pointer;
-
-function GetWindowRgn;
-begin
-  GetProcedureAddress(_GetWindowRgn, user32, 'GetWindowRgn');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetWindowRgn]
-  end;
-end;
-{$ELSE}
-function GetWindowRgn; external user32 name 'GetWindowRgn';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetWindowRgnBox: Pointer;
-
-function GetWindowRgnBox;
-begin
-  GetProcedureAddress(_GetWindowRgnBox, user32, 'GetWindowRgnBox');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetWindowRgnBox]
-  end;
-end;
-{$ELSE}
-function GetWindowRgnBox; external user32 name 'GetWindowRgnBox';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ExcludeUpdateRgn: Pointer;
-
-function ExcludeUpdateRgn;
-begin
-  GetProcedureAddress(_ExcludeUpdateRgn, user32, 'ExcludeUpdateRgn');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ExcludeUpdateRgn]
-  end;
-end;
-{$ELSE}
-function ExcludeUpdateRgn; external user32 name 'ExcludeUpdateRgn';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _InvalidateRect: Pointer;
-
-function InvalidateRect;
-begin
-  GetProcedureAddress(_InvalidateRect, user32, 'InvalidateRect');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_InvalidateRect]
-  end;
-end;
-{$ELSE}
-function InvalidateRect; external user32 name 'InvalidateRect';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ValidateRect: Pointer;
-
-function ValidateRect;
-begin
-  GetProcedureAddress(_ValidateRect, user32, 'ValidateRect');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ValidateRect]
-  end;
-end;
-{$ELSE}
-function ValidateRect; external user32 name 'ValidateRect';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _InvalidateRgn: Pointer;
-
-function InvalidateRgn;
-begin
-  GetProcedureAddress(_InvalidateRgn, user32, 'InvalidateRgn');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_InvalidateRgn]
-  end;
-end;
-{$ELSE}
-function InvalidateRgn; external user32 name 'InvalidateRgn';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ValidateRgn: Pointer;
-
-function ValidateRgn;
-begin
-  GetProcedureAddress(_ValidateRgn, user32, 'ValidateRgn');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ValidateRgn]
-  end;
-end;
-{$ELSE}
-function ValidateRgn; external user32 name 'ValidateRgn';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _RedrawWindow: Pointer;
-
-function RedrawWindow;
-begin
-  GetProcedureAddress(_RedrawWindow, user32, 'RedrawWindow');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RedrawWindow]
-  end;
-end;
-{$ELSE}
-function RedrawWindow; external user32 name 'RedrawWindow';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LockWindowUpdate: Pointer;
-
-function LockWindowUpdate;
-begin
-  GetProcedureAddress(_LockWindowUpdate, user32, 'LockWindowUpdate');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LockWindowUpdate]
-  end;
-end;
-{$ELSE}
-function LockWindowUpdate; external user32 name 'LockWindowUpdate';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ScrollWindow: Pointer;
-
-function ScrollWindow;
-begin
-  GetProcedureAddress(_ScrollWindow, user32, 'ScrollWindow');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ScrollWindow]
-  end;
-end;
-{$ELSE}
-function ScrollWindow; external user32 name 'ScrollWindow';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ScrollDC: Pointer;
-
-function ScrollDC;
-begin
-  GetProcedureAddress(_ScrollDC, user32, 'ScrollDC');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ScrollDC]
-  end;
-end;
-{$ELSE}
-function ScrollDC; external user32 name 'ScrollDC';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ScrollWindowEx: Pointer;
-
-function ScrollWindowEx;
-begin
-  GetProcedureAddress(_ScrollWindowEx, user32, 'ScrollWindowEx');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ScrollWindowEx]
-  end;
-end;
-{$ELSE}
-function ScrollWindowEx; external user32 name 'ScrollWindowEx';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetScrollPos: Pointer;
-
-function SetScrollPos;
-begin
-  GetProcedureAddress(_SetScrollPos, user32, 'SetScrollPos');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetScrollPos]
-  end;
-end;
-{$ELSE}
-function SetScrollPos; external user32 name 'SetScrollPos';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetScrollPos: Pointer;
-
-function GetScrollPos;
-begin
-  GetProcedureAddress(_GetScrollPos, user32, 'GetScrollPos');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetScrollPos]
-  end;
-end;
-{$ELSE}
-function GetScrollPos; external user32 name 'GetScrollPos';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetScrollRange: Pointer;
-
-function SetScrollRange;
-begin
-  GetProcedureAddress(_SetScrollRange, user32, 'SetScrollRange');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetScrollRange]
-  end;
-end;
-{$ELSE}
-function SetScrollRange; external user32 name 'SetScrollRange';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetScrollRange: Pointer;
-
-function GetScrollRange;
-begin
-  GetProcedureAddress(_GetScrollRange, user32, 'GetScrollRange');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetScrollRange]
-  end;
-end;
-{$ELSE}
-function GetScrollRange; external user32 name 'GetScrollRange';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ShowScrollBar: Pointer;
-
-function ShowScrollBar;
-begin
-  GetProcedureAddress(_ShowScrollBar, user32, 'ShowScrollBar');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ShowScrollBar]
-  end;
-end;
-{$ELSE}
-function ShowScrollBar; external user32 name 'ShowScrollBar';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnableScrollBar: Pointer;
-
-function EnableScrollBar;
-begin
-  GetProcedureAddress(_EnableScrollBar, user32, 'EnableScrollBar');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnableScrollBar]
-  end;
-end;
-{$ELSE}
-function EnableScrollBar; external user32 name 'EnableScrollBar';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetPropA: Pointer;
-
-function SetPropA;
-begin
-  GetProcedureAddress(_SetPropA, user32, 'SetPropA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetPropA]
-  end;
-end;
-{$ELSE}
-function SetPropA; external user32 name 'SetPropA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetPropW: Pointer;
-
-function SetPropW;
-begin
-  GetProcedureAddress(_SetPropW, user32, 'SetPropW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetPropW]
-  end;
-end;
-{$ELSE}
-function SetPropW; external user32 name 'SetPropW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetProp: Pointer;
-
-function SetProp;
-begin
-  GetProcedureAddress(_SetProp, user32, 'SetPropW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetProp]
-  end;
-end;
-{$ELSE}
-function SetProp; external user32 name 'SetPropW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetProp: Pointer;
-
-function SetProp;
-begin
-  GetProcedureAddress(_SetProp, user32, 'SetPropA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetProp]
-  end;
-end;
-{$ELSE}
-function SetProp; external user32 name 'SetPropA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetPropA: Pointer;
-
-function GetPropA;
-begin
-  GetProcedureAddress(_GetPropA, user32, 'GetPropA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetPropA]
-  end;
-end;
-{$ELSE}
-function GetPropA; external user32 name 'GetPropA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetPropW: Pointer;
-
-function GetPropW;
-begin
-  GetProcedureAddress(_GetPropW, user32, 'GetPropW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetPropW]
-  end;
-end;
-{$ELSE}
-function GetPropW; external user32 name 'GetPropW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetProp: Pointer;
-
-function GetProp;
-begin
-  GetProcedureAddress(_GetProp, user32, 'GetPropW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetProp]
-  end;
-end;
-{$ELSE}
-function GetProp; external user32 name 'GetPropW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetProp: Pointer;
-
-function GetProp;
-begin
-  GetProcedureAddress(_GetProp, user32, 'GetPropA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetProp]
-  end;
-end;
-{$ELSE}
-function GetProp; external user32 name 'GetPropA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _RemovePropA: Pointer;
-
-function RemovePropA;
-begin
-  GetProcedureAddress(_RemovePropA, user32, 'RemovePropA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RemovePropA]
-  end;
-end;
-{$ELSE}
-function RemovePropA; external user32 name 'RemovePropA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _RemovePropW: Pointer;
-
-function RemovePropW;
-begin
-  GetProcedureAddress(_RemovePropW, user32, 'RemovePropW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RemovePropW]
-  end;
-end;
-{$ELSE}
-function RemovePropW; external user32 name 'RemovePropW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _RemoveProp: Pointer;
-
-function RemoveProp;
-begin
-  GetProcedureAddress(_RemoveProp, user32, 'RemovePropW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RemoveProp]
-  end;
-end;
-{$ELSE}
-function RemoveProp; external user32 name 'RemovePropW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _RemoveProp: Pointer;
-
-function RemoveProp;
-begin
-  GetProcedureAddress(_RemoveProp, user32, 'RemovePropA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RemoveProp]
-  end;
-end;
-{$ELSE}
-function RemoveProp; external user32 name 'RemovePropA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumPropsExA: Pointer;
-
-function EnumPropsExA;
-begin
-  GetProcedureAddress(_EnumPropsExA, user32, 'EnumPropsExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumPropsExA]
-  end;
-end;
-{$ELSE}
-function EnumPropsExA; external user32 name 'EnumPropsExA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumPropsExW: Pointer;
-
-function EnumPropsExW;
-begin
-  GetProcedureAddress(_EnumPropsExW, user32, 'EnumPropsExW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumPropsExW]
-  end;
-end;
-{$ELSE}
-function EnumPropsExW; external user32 name 'EnumPropsExW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumPropsEx: Pointer;
-
-function EnumPropsEx;
-begin
-  GetProcedureAddress(_EnumPropsEx, user32, 'EnumPropsExW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumPropsEx]
-  end;
-end;
-{$ELSE}
-function EnumPropsEx; external user32 name 'EnumPropsExW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumPropsEx: Pointer;
-
-function EnumPropsEx;
-begin
-  GetProcedureAddress(_EnumPropsEx, user32, 'EnumPropsExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumPropsEx]
-  end;
-end;
-{$ELSE}
-function EnumPropsEx; external user32 name 'EnumPropsExA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumPropsA: Pointer;
-
-function EnumPropsA;
-begin
-  GetProcedureAddress(_EnumPropsA, user32, 'EnumPropsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumPropsA]
-  end;
-end;
-{$ELSE}
-function EnumPropsA; external user32 name 'EnumPropsA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumPropsW: Pointer;
-
-function EnumPropsW;
-begin
-  GetProcedureAddress(_EnumPropsW, user32, 'EnumPropsW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumPropsW]
-  end;
-end;
-{$ELSE}
-function EnumPropsW; external user32 name 'EnumPropsW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumProps: Pointer;
-
-function EnumProps;
-begin
-  GetProcedureAddress(_EnumProps, user32, 'EnumPropsW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumProps]
-  end;
-end;
-{$ELSE}
-function EnumProps; external user32 name 'EnumPropsW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumProps: Pointer;
-
-function EnumProps;
-begin
-  GetProcedureAddress(_EnumProps, user32, 'EnumPropsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumProps]
-  end;
-end;
-{$ELSE}
-function EnumProps; external user32 name 'EnumPropsA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetWindowTextA: Pointer;
-
-function SetWindowTextA;
-begin
-  GetProcedureAddress(_SetWindowTextA, user32, 'SetWindowTextA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetWindowTextA]
-  end;
-end;
-{$ELSE}
-function SetWindowTextA; external user32 name 'SetWindowTextA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetWindowTextW: Pointer;
-
-function SetWindowTextW;
-begin
-  GetProcedureAddress(_SetWindowTextW, user32, 'SetWindowTextW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetWindowTextW]
-  end;
-end;
-{$ELSE}
-function SetWindowTextW; external user32 name 'SetWindowTextW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetWindowText: Pointer;
-
-function SetWindowText;
-begin
-  GetProcedureAddress(_SetWindowText, user32, 'SetWindowTextW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetWindowText]
-  end;
-end;
-{$ELSE}
-function SetWindowText; external user32 name 'SetWindowTextW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetWindowText: Pointer;
-
-function SetWindowText;
-begin
-  GetProcedureAddress(_SetWindowText, user32, 'SetWindowTextA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetWindowText]
-  end;
-end;
-{$ELSE}
-function SetWindowText; external user32 name 'SetWindowTextA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetWindowTextA: Pointer;
-
-function GetWindowTextA;
-begin
-  GetProcedureAddress(_GetWindowTextA, user32, 'GetWindowTextA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetWindowTextA]
-  end;
-end;
-{$ELSE}
-function GetWindowTextA; external user32 name 'GetWindowTextA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetWindowTextW: Pointer;
-
-function GetWindowTextW;
-begin
-  GetProcedureAddress(_GetWindowTextW, user32, 'GetWindowTextW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetWindowTextW]
-  end;
-end;
-{$ELSE}
-function GetWindowTextW; external user32 name 'GetWindowTextW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetWindowText: Pointer;
-
-function GetWindowText;
-begin
-  GetProcedureAddress(_GetWindowText, user32, 'GetWindowTextW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetWindowText]
-  end;
-end;
-{$ELSE}
-function GetWindowText; external user32 name 'GetWindowTextW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetWindowText: Pointer;
-
-function GetWindowText;
-begin
-  GetProcedureAddress(_GetWindowText, user32, 'GetWindowTextA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetWindowText]
-  end;
-end;
-{$ELSE}
-function GetWindowText; external user32 name 'GetWindowTextA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetWindowTextLengthA: Pointer;
-
-function GetWindowTextLengthA;
-begin
-  GetProcedureAddress(_GetWindowTextLengthA, user32, 'GetWindowTextLengthA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetWindowTextLengthA]
-  end;
-end;
-{$ELSE}
-function GetWindowTextLengthA; external user32 name 'GetWindowTextLengthA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetWindowTextLengthW: Pointer;
-
-function GetWindowTextLengthW;
-begin
-  GetProcedureAddress(_GetWindowTextLengthW, user32, 'GetWindowTextLengthW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetWindowTextLengthW]
-  end;
-end;
-{$ELSE}
-function GetWindowTextLengthW; external user32 name 'GetWindowTextLengthW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetWindowTextLength: Pointer;
-
-function GetWindowTextLength;
-begin
-  GetProcedureAddress(_GetWindowTextLength, user32, 'GetWindowTextLengthW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetWindowTextLength]
-  end;
-end;
-{$ELSE}
-function GetWindowTextLength; external user32 name 'GetWindowTextLengthW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetWindowTextLength: Pointer;
-
-function GetWindowTextLength;
-begin
-  GetProcedureAddress(_GetWindowTextLength, user32, 'GetWindowTextLengthA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetWindowTextLength]
-  end;
-end;
-{$ELSE}
-function GetWindowTextLength; external user32 name 'GetWindowTextLengthA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetClientRect: Pointer;
-
-function GetClientRect;
-begin
-  GetProcedureAddress(_GetClientRect, user32, 'GetClientRect');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetClientRect]
-  end;
-end;
-{$ELSE}
-function GetClientRect; external user32 name 'GetClientRect';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetWindowRect: Pointer;
-
-function GetWindowRect;
-begin
-  GetProcedureAddress(_GetWindowRect, user32, 'GetWindowRect');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetWindowRect]
-  end;
-end;
-{$ELSE}
-function GetWindowRect; external user32 name 'GetWindowRect';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _AdjustWindowRect: Pointer;
-
-function AdjustWindowRect;
-begin
-  GetProcedureAddress(_AdjustWindowRect, user32, 'AdjustWindowRect');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AdjustWindowRect]
-  end;
-end;
-{$ELSE}
-function AdjustWindowRect; external user32 name 'AdjustWindowRect';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _AdjustWindowRectEx: Pointer;
-
-function AdjustWindowRectEx;
-begin
-  GetProcedureAddress(_AdjustWindowRectEx, user32, 'AdjustWindowRectEx');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AdjustWindowRectEx]
-  end;
-end;
-{$ELSE}
-function AdjustWindowRectEx; external user32 name 'AdjustWindowRectEx';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetWindowContextHelpId: Pointer;
-
-function SetWindowContextHelpId;
-begin
-  GetProcedureAddress(_SetWindowContextHelpId, user32, 'SetWindowContextHelpId');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetWindowContextHelpId]
-  end;
-end;
-{$ELSE}
-function SetWindowContextHelpId; external user32 name 'SetWindowContextHelpId';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetWindowContextHelpId: Pointer;
-
-function GetWindowContextHelpId;
-begin
-  GetProcedureAddress(_GetWindowContextHelpId, user32, 'GetWindowContextHelpId');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetWindowContextHelpId]
-  end;
-end;
-{$ELSE}
-function GetWindowContextHelpId; external user32 name 'GetWindowContextHelpId';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetMenuContextHelpId: Pointer;
-
-function SetMenuContextHelpId;
-begin
-  GetProcedureAddress(_SetMenuContextHelpId, user32, 'SetMenuContextHelpId');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetMenuContextHelpId]
-  end;
-end;
-{$ELSE}
-function SetMenuContextHelpId; external user32 name 'SetMenuContextHelpId';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetMenuContextHelpId: Pointer;
-
-function GetMenuContextHelpId;
-begin
-  GetProcedureAddress(_GetMenuContextHelpId, user32, 'GetMenuContextHelpId');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetMenuContextHelpId]
-  end;
-end;
-{$ELSE}
-function GetMenuContextHelpId; external user32 name 'GetMenuContextHelpId';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _MessageBoxA: Pointer;
-
-function MessageBoxA;
-begin
-  GetProcedureAddress(_MessageBoxA, user32, 'MessageBoxA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MessageBoxA]
-  end;
-end;
-{$ELSE}
-function MessageBoxA; external user32 name 'MessageBoxA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _MessageBoxW: Pointer;
-
-function MessageBoxW;
-begin
-  GetProcedureAddress(_MessageBoxW, user32, 'MessageBoxW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MessageBoxW]
-  end;
-end;
-{$ELSE}
-function MessageBoxW; external user32 name 'MessageBoxW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _MessageBox: Pointer;
-
-function MessageBox;
-begin
-  GetProcedureAddress(_MessageBox, user32, 'MessageBoxW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MessageBox]
-  end;
-end;
-{$ELSE}
-function MessageBox; external user32 name 'MessageBoxW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _MessageBox: Pointer;
-
-function MessageBox;
-begin
-  GetProcedureAddress(_MessageBox, user32, 'MessageBoxA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MessageBox]
-  end;
-end;
-{$ELSE}
-function MessageBox; external user32 name 'MessageBoxA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _MessageBoxExA: Pointer;
-
-function MessageBoxExA;
-begin
-  GetProcedureAddress(_MessageBoxExA, user32, 'MessageBoxExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MessageBoxExA]
-  end;
-end;
-{$ELSE}
-function MessageBoxExA; external user32 name 'MessageBoxExA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _MessageBoxExW: Pointer;
-
-function MessageBoxExW;
-begin
-  GetProcedureAddress(_MessageBoxExW, user32, 'MessageBoxExW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MessageBoxExW]
-  end;
-end;
-{$ELSE}
-function MessageBoxExW; external user32 name 'MessageBoxExW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _MessageBoxEx: Pointer;
-
-function MessageBoxEx;
-begin
-  GetProcedureAddress(_MessageBoxEx, user32, 'MessageBoxExW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MessageBoxEx]
-  end;
-end;
-{$ELSE}
-function MessageBoxEx; external user32 name 'MessageBoxExW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _MessageBoxEx: Pointer;
-
-function MessageBoxEx;
-begin
-  GetProcedureAddress(_MessageBoxEx, user32, 'MessageBoxExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MessageBoxEx]
-  end;
-end;
-{$ELSE}
-function MessageBoxEx; external user32 name 'MessageBoxExA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _MessageBoxIndirectA: Pointer;
-
-function MessageBoxIndirectA;
-begin
-  GetProcedureAddress(_MessageBoxIndirectA, user32, 'MessageBoxIndirectA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MessageBoxIndirectA]
-  end;
-end;
-{$ELSE}
-function MessageBoxIndirectA; external user32 name 'MessageBoxIndirectA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _MessageBoxIndirectW: Pointer;
-
-function MessageBoxIndirectW;
-begin
-  GetProcedureAddress(_MessageBoxIndirectW, user32, 'MessageBoxIndirectW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MessageBoxIndirectW]
-  end;
-end;
-{$ELSE}
-function MessageBoxIndirectW; external user32 name 'MessageBoxIndirectW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _MessageBoxIndirect: Pointer;
-
-function MessageBoxIndirect;
-begin
-  GetProcedureAddress(_MessageBoxIndirect, user32, 'MessageBoxIndirectW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MessageBoxIndirect]
-  end;
-end;
-{$ELSE}
-function MessageBoxIndirect; external user32 name 'MessageBoxIndirectW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _MessageBoxIndirect: Pointer;
-
-function MessageBoxIndirect;
-begin
-  GetProcedureAddress(_MessageBoxIndirect, user32, 'MessageBoxIndirectA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MessageBoxIndirect]
-  end;
-end;
-{$ELSE}
-function MessageBoxIndirect; external user32 name 'MessageBoxIndirectA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _MessageBeep: Pointer;
-
-function MessageBeep;
-begin
-  GetProcedureAddress(_MessageBeep, user32, 'MessageBeep');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MessageBeep]
-  end;
-end;
-{$ELSE}
-function MessageBeep; external user32 name 'MessageBeep';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ShowCursor: Pointer;
-
-function ShowCursor;
-begin
-  GetProcedureAddress(_ShowCursor, user32, 'ShowCursor');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ShowCursor]
-  end;
-end;
-{$ELSE}
-function ShowCursor; external user32 name 'ShowCursor';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetCursorPos: Pointer;
-
-function SetCursorPos;
-begin
-  GetProcedureAddress(_SetCursorPos, user32, 'SetCursorPos');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetCursorPos]
-  end;
-end;
-{$ELSE}
-function SetCursorPos; external user32 name 'SetCursorPos';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetCursor: Pointer;
-
-function SetCursor;
-begin
-  GetProcedureAddress(_SetCursor, user32, 'SetCursor');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetCursor]
-  end;
-end;
-{$ELSE}
-function SetCursor; external user32 name 'SetCursor';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetCursorPos: Pointer;
-
-function GetCursorPos;
-begin
-  GetProcedureAddress(_GetCursorPos, user32, 'GetCursorPos');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCursorPos]
-  end;
-end;
-{$ELSE}
-function GetCursorPos; external user32 name 'GetCursorPos';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ClipCursor: Pointer;
-
-function ClipCursor;
-begin
-  GetProcedureAddress(_ClipCursor, user32, 'ClipCursor');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ClipCursor]
-  end;
-end;
-{$ELSE}
-function ClipCursor; external user32 name 'ClipCursor';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetClipCursor: Pointer;
-
-function GetClipCursor;
-begin
-  GetProcedureAddress(_GetClipCursor, user32, 'GetClipCursor');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetClipCursor]
-  end;
-end;
-{$ELSE}
-function GetClipCursor; external user32 name 'GetClipCursor';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetCursor: Pointer;
-
-function GetCursor;
-begin
-  GetProcedureAddress(_GetCursor, user32, 'GetCursor');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCursor]
-  end;
-end;
-{$ELSE}
-function GetCursor; external user32 name 'GetCursor';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateCaret: Pointer;
-
-function CreateCaret;
-begin
-  GetProcedureAddress(_CreateCaret, user32, 'CreateCaret');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateCaret]
-  end;
-end;
-{$ELSE}
-function CreateCaret; external user32 name 'CreateCaret';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetCaretBlinkTime: Pointer;
-
-function GetCaretBlinkTime;
-begin
-  GetProcedureAddress(_GetCaretBlinkTime, user32, 'GetCaretBlinkTime');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCaretBlinkTime]
-  end;
-end;
-{$ELSE}
-function GetCaretBlinkTime; external user32 name 'GetCaretBlinkTime';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetCaretBlinkTime: Pointer;
-
-function SetCaretBlinkTime;
-begin
-  GetProcedureAddress(_SetCaretBlinkTime, user32, 'SetCaretBlinkTime');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetCaretBlinkTime]
-  end;
-end;
-{$ELSE}
-function SetCaretBlinkTime; external user32 name 'SetCaretBlinkTime';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DestroyCaret: Pointer;
-
-function DestroyCaret;
-begin
-  GetProcedureAddress(_DestroyCaret, user32, 'DestroyCaret');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DestroyCaret]
-  end;
-end;
-{$ELSE}
-function DestroyCaret; external user32 name 'DestroyCaret';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _HideCaret: Pointer;
-
-function HideCaret;
-begin
-  GetProcedureAddress(_HideCaret, user32, 'HideCaret');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_HideCaret]
-  end;
-end;
-{$ELSE}
-function HideCaret; external user32 name 'HideCaret';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ShowCaret: Pointer;
-
-function ShowCaret;
-begin
-  GetProcedureAddress(_ShowCaret, user32, 'ShowCaret');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ShowCaret]
-  end;
-end;
-{$ELSE}
-function ShowCaret; external user32 name 'ShowCaret';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetCaretPos: Pointer;
-
-function SetCaretPos;
-begin
-  GetProcedureAddress(_SetCaretPos, user32, 'SetCaretPos');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetCaretPos]
-  end;
-end;
-{$ELSE}
-function SetCaretPos; external user32 name 'SetCaretPos';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetCaretPos: Pointer;
-
-function GetCaretPos;
-begin
-  GetProcedureAddress(_GetCaretPos, user32, 'GetCaretPos');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCaretPos]
-  end;
-end;
-{$ELSE}
-function GetCaretPos; external user32 name 'GetCaretPos';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ClientToScreen: Pointer;
-
-function ClientToScreen;
-begin
-  GetProcedureAddress(_ClientToScreen, user32, 'ClientToScreen');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ClientToScreen]
-  end;
-end;
-{$ELSE}
-function ClientToScreen; external user32 name 'ClientToScreen';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ScreenToClient: Pointer;
-
-function ScreenToClient;
-begin
-  GetProcedureAddress(_ScreenToClient, user32, 'ScreenToClient');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ScreenToClient]
-  end;
-end;
-{$ELSE}
-function ScreenToClient; external user32 name 'ScreenToClient';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _MapWindowPoints: Pointer;
-
-function MapWindowPoints;
-begin
-  GetProcedureAddress(_MapWindowPoints, user32, 'MapWindowPoints');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MapWindowPoints]
-  end;
-end;
-{$ELSE}
-function MapWindowPoints; external user32 name 'MapWindowPoints';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WindowFromPoint: Pointer;
-
-function WindowFromPoint;
-begin
-  GetProcedureAddress(_WindowFromPoint, user32, 'WindowFromPoint');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WindowFromPoint]
-  end;
-end;
-{$ELSE}
-function WindowFromPoint; external user32 name 'WindowFromPoint';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ChildWindowFromPoint: Pointer;
-
-function ChildWindowFromPoint;
-begin
-  GetProcedureAddress(_ChildWindowFromPoint, user32, 'ChildWindowFromPoint');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ChildWindowFromPoint]
-  end;
-end;
-{$ELSE}
-function ChildWindowFromPoint; external user32 name 'ChildWindowFromPoint';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ChildWindowFromPointEx: Pointer;
-
-function ChildWindowFromPointEx;
-begin
-  GetProcedureAddress(_ChildWindowFromPointEx, user32, 'ChildWindowFromPointEx');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ChildWindowFromPointEx]
-  end;
-end;
-{$ELSE}
-function ChildWindowFromPointEx; external user32 name 'ChildWindowFromPointEx';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetSysColor: Pointer;
-
-function GetSysColor;
-begin
-  GetProcedureAddress(_GetSysColor, user32, 'GetSysColor');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetSysColor]
-  end;
-end;
-{$ELSE}
-function GetSysColor; external user32 name 'GetSysColor';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetSysColorBrush: Pointer;
-
-function GetSysColorBrush;
-begin
-  GetProcedureAddress(_GetSysColorBrush, user32, 'GetSysColorBrush');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetSysColorBrush]
-  end;
-end;
-{$ELSE}
-function GetSysColorBrush; external user32 name 'GetSysColorBrush';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetSysColors: Pointer;
-
-function SetSysColors;
-begin
-  GetProcedureAddress(_SetSysColors, user32, 'SetSysColors');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetSysColors]
-  end;
-end;
-{$ELSE}
-function SetSysColors; external user32 name 'SetSysColors';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DrawFocusRect: Pointer;
-
-function DrawFocusRect;
-begin
-  GetProcedureAddress(_DrawFocusRect, user32, 'DrawFocusRect');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DrawFocusRect]
-  end;
-end;
-{$ELSE}
-function DrawFocusRect; external user32 name 'DrawFocusRect';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _FillRect: Pointer;
-
-function FillRect;
-begin
-  GetProcedureAddress(_FillRect, user32, 'FillRect');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FillRect]
-  end;
-end;
-{$ELSE}
-function FillRect; external user32 name 'FillRect';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _FrameRect: Pointer;
-
-function FrameRect;
-begin
-  GetProcedureAddress(_FrameRect, user32, 'FrameRect');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FrameRect]
-  end;
-end;
-{$ELSE}
-function FrameRect; external user32 name 'FrameRect';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _InvertRect: Pointer;
-
-function InvertRect;
-begin
-  GetProcedureAddress(_InvertRect, user32, 'InvertRect');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_InvertRect]
-  end;
-end;
-{$ELSE}
-function InvertRect; external user32 name 'InvertRect';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetRect: Pointer;
-
-function SetRect;
-begin
-  GetProcedureAddress(_SetRect, user32, 'SetRect');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetRect]
-  end;
-end;
-{$ELSE}
-function SetRect; external user32 name 'SetRect';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetRectEmpty: Pointer;
-
-function SetRectEmpty;
-begin
-  GetProcedureAddress(_SetRectEmpty, user32, 'SetRectEmpty');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetRectEmpty]
-  end;
-end;
-{$ELSE}
-function SetRectEmpty; external user32 name 'SetRectEmpty';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CopyRect: Pointer;
-
-function CopyRect;
-begin
-  GetProcedureAddress(_CopyRect, user32, 'CopyRect');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CopyRect]
-  end;
-end;
-{$ELSE}
-function CopyRect; external user32 name 'CopyRect';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _InflateRect: Pointer;
-
-function InflateRect;
-begin
-  GetProcedureAddress(_InflateRect, user32, 'InflateRect');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_InflateRect]
-  end;
-end;
-{$ELSE}
-function InflateRect; external user32 name 'InflateRect';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _IntersectRect: Pointer;
-
-function IntersectRect;
-begin
-  GetProcedureAddress(_IntersectRect, user32, 'IntersectRect');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IntersectRect]
-  end;
-end;
-{$ELSE}
-function IntersectRect; external user32 name 'IntersectRect';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _UnionRect: Pointer;
-
-function UnionRect;
-begin
-  GetProcedureAddress(_UnionRect, user32, 'UnionRect');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_UnionRect]
-  end;
-end;
-{$ELSE}
-function UnionRect; external user32 name 'UnionRect';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SubtractRect: Pointer;
-
-function SubtractRect;
-begin
-  GetProcedureAddress(_SubtractRect, user32, 'SubtractRect');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SubtractRect]
-  end;
-end;
-{$ELSE}
-function SubtractRect; external user32 name 'SubtractRect';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _OffsetRect: Pointer;
-
-function OffsetRect;
-begin
-  GetProcedureAddress(_OffsetRect, user32, 'OffsetRect');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_OffsetRect]
-  end;
-end;
-{$ELSE}
-function OffsetRect; external user32 name 'OffsetRect';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _IsRectEmpty: Pointer;
-
-function IsRectEmpty;
-begin
-  GetProcedureAddress(_IsRectEmpty, user32, 'IsRectEmpty');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsRectEmpty]
-  end;
-end;
-{$ELSE}
-function IsRectEmpty; external user32 name 'IsRectEmpty';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EqualRect: Pointer;
-
-function EqualRect;
-begin
-  GetProcedureAddress(_EqualRect, user32, 'EqualRect');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EqualRect]
-  end;
-end;
-{$ELSE}
-function EqualRect; external user32 name 'EqualRect';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _PtInRect: Pointer;
-
-function PtInRect;
-begin
-  GetProcedureAddress(_PtInRect, user32, 'PtInRect');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PtInRect]
-  end;
-end;
-{$ELSE}
-function PtInRect; external user32 name 'PtInRect';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetWindowWord: Pointer;
-
-function GetWindowWord;
-begin
-  GetProcedureAddress(_GetWindowWord, user32, 'GetWindowWord');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetWindowWord]
-  end;
-end;
-{$ELSE}
-function GetWindowWord; external user32 name 'GetWindowWord';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetWindowWord: Pointer;
-
-function SetWindowWord;
-begin
-  GetProcedureAddress(_SetWindowWord, user32, 'SetWindowWord');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetWindowWord]
-  end;
-end;
-{$ELSE}
-function SetWindowWord; external user32 name 'SetWindowWord';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetWindowLongA: Pointer;
-
-function GetWindowLongA;
-begin
-  GetProcedureAddress(_GetWindowLongA, user32, 'GetWindowLongA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetWindowLongA]
-  end;
-end;
-{$ELSE}
-function GetWindowLongA; external user32 name 'GetWindowLongA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetWindowLongW: Pointer;
-
-function GetWindowLongW;
-begin
-  GetProcedureAddress(_GetWindowLongW, user32, 'GetWindowLongW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetWindowLongW]
-  end;
-end;
-{$ELSE}
-function GetWindowLongW; external user32 name 'GetWindowLongW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetWindowLong: Pointer;
-
-function GetWindowLong;
-begin
-  GetProcedureAddress(_GetWindowLong, user32, 'GetWindowLongW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetWindowLong]
-  end;
-end;
-{$ELSE}
-function GetWindowLong; external user32 name 'GetWindowLongW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetWindowLong: Pointer;
-
-function GetWindowLong;
-begin
-  GetProcedureAddress(_GetWindowLong, user32, 'GetWindowLongA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetWindowLong]
-  end;
-end;
-{$ELSE}
-function GetWindowLong; external user32 name 'GetWindowLongA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetWindowLongA: Pointer;
-
-function SetWindowLongA;
-begin
-  GetProcedureAddress(_SetWindowLongA, user32, 'SetWindowLongA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetWindowLongA]
-  end;
-end;
-{$ELSE}
-function SetWindowLongA; external user32 name 'SetWindowLongA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetWindowLongW: Pointer;
-
-function SetWindowLongW;
-begin
-  GetProcedureAddress(_SetWindowLongW, user32, 'SetWindowLongW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetWindowLongW]
-  end;
-end;
-{$ELSE}
-function SetWindowLongW; external user32 name 'SetWindowLongW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetWindowLong: Pointer;
-
-function SetWindowLong;
-begin
-  GetProcedureAddress(_SetWindowLong, user32, 'SetWindowLongW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetWindowLong]
-  end;
-end;
-{$ELSE}
-function SetWindowLong; external user32 name 'SetWindowLongW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetWindowLong: Pointer;
-
-function SetWindowLong;
-begin
-  GetProcedureAddress(_SetWindowLong, user32, 'SetWindowLongA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetWindowLong]
-  end;
-end;
-{$ELSE}
-function SetWindowLong; external user32 name 'SetWindowLongA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetClassWord: Pointer;
-
-function GetClassWord;
-begin
-  GetProcedureAddress(_GetClassWord, user32, 'GetClassWord');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetClassWord]
-  end;
-end;
-{$ELSE}
-function GetClassWord; external user32 name 'GetClassWord';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetClassWord: Pointer;
-
-function SetClassWord;
-begin
-  GetProcedureAddress(_SetClassWord, user32, 'SetClassWord');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetClassWord]
-  end;
-end;
-{$ELSE}
-function SetClassWord; external user32 name 'SetClassWord';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetClassLongA: Pointer;
-
-function GetClassLongA;
-begin
-  GetProcedureAddress(_GetClassLongA, user32, 'GetClassLongA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetClassLongA]
-  end;
-end;
-{$ELSE}
-function GetClassLongA; external user32 name 'GetClassLongA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetClassLongW: Pointer;
-
-function GetClassLongW;
-begin
-  GetProcedureAddress(_GetClassLongW, user32, 'GetClassLongW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetClassLongW]
-  end;
-end;
-{$ELSE}
-function GetClassLongW; external user32 name 'GetClassLongW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetClassLong: Pointer;
-
-function GetClassLong;
-begin
-  GetProcedureAddress(_GetClassLong, user32, 'GetClassLongW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetClassLong]
-  end;
-end;
-{$ELSE}
-function GetClassLong; external user32 name 'GetClassLongW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetClassLong: Pointer;
-
-function GetClassLong;
-begin
-  GetProcedureAddress(_GetClassLong, user32, 'GetClassLongA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetClassLong]
-  end;
-end;
-{$ELSE}
-function GetClassLong; external user32 name 'GetClassLongA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetClassLongA: Pointer;
-
-function SetClassLongA;
-begin
-  GetProcedureAddress(_SetClassLongA, user32, 'SetClassLongA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetClassLongA]
-  end;
-end;
-{$ELSE}
-function SetClassLongA; external user32 name 'SetClassLongA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetClassLongW: Pointer;
-
-function SetClassLongW;
-begin
-  GetProcedureAddress(_SetClassLongW, user32, 'SetClassLongW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetClassLongW]
-  end;
-end;
-{$ELSE}
-function SetClassLongW; external user32 name 'SetClassLongW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetClassLong: Pointer;
-
-function SetClassLong;
-begin
-  GetProcedureAddress(_SetClassLong, user32, 'SetClassLongW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetClassLong]
-  end;
-end;
-{$ELSE}
-function SetClassLong; external user32 name 'SetClassLongW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetClassLong: Pointer;
-
-function SetClassLong;
-begin
-  GetProcedureAddress(_SetClassLong, user32, 'SetClassLongA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetClassLong]
-  end;
-end;
-{$ELSE}
-function SetClassLong; external user32 name 'SetClassLongA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetProcessDefaultLayout: Pointer;
-
-function GetProcessDefaultLayout;
-begin
-  GetProcedureAddress(_GetProcessDefaultLayout, user32, 'GetProcessDefaultLayout');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetProcessDefaultLayout]
-  end;
-end;
-{$ELSE}
-function GetProcessDefaultLayout; external user32 name 'GetProcessDefaultLayout';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetProcessDefaultLayout: Pointer;
-
-function SetProcessDefaultLayout;
-begin
-  GetProcedureAddress(_SetProcessDefaultLayout, user32, 'SetProcessDefaultLayout');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetProcessDefaultLayout]
-  end;
-end;
-{$ELSE}
-function SetProcessDefaultLayout; external user32 name 'SetProcessDefaultLayout';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetDesktopWindow: Pointer;
-
-function GetDesktopWindow;
-begin
-  GetProcedureAddress(_GetDesktopWindow, user32, 'GetDesktopWindow');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetDesktopWindow]
-  end;
-end;
-{$ELSE}
-function GetDesktopWindow; external user32 name 'GetDesktopWindow';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetParent: Pointer;
-
-function GetParent;
-begin
-  GetProcedureAddress(_GetParent, user32, 'GetParent');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetParent]
-  end;
-end;
-{$ELSE}
-function GetParent; external user32 name 'GetParent';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetParent: Pointer;
-
-function SetParent;
-begin
-  GetProcedureAddress(_SetParent, user32, 'SetParent');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetParent]
-  end;
-end;
-{$ELSE}
-function SetParent; external user32 name 'SetParent';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumChildWindows: Pointer;
-
-function EnumChildWindows;
-begin
-  GetProcedureAddress(_EnumChildWindows, user32, 'EnumChildWindows');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumChildWindows]
-  end;
-end;
-{$ELSE}
-function EnumChildWindows; external user32 name 'EnumChildWindows';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _FindWindowA: Pointer;
-
-function FindWindowA;
-begin
-  GetProcedureAddress(_FindWindowA, user32, 'FindWindowA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FindWindowA]
-  end;
-end;
-{$ELSE}
-function FindWindowA; external user32 name 'FindWindowA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _FindWindowW: Pointer;
-
-function FindWindowW;
-begin
-  GetProcedureAddress(_FindWindowW, user32, 'FindWindowW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FindWindowW]
-  end;
-end;
-{$ELSE}
-function FindWindowW; external user32 name 'FindWindowW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _FindWindow: Pointer;
-
-function FindWindow;
-begin
-  GetProcedureAddress(_FindWindow, user32, 'FindWindowW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FindWindow]
-  end;
-end;
-{$ELSE}
-function FindWindow; external user32 name 'FindWindowW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _FindWindow: Pointer;
-
-function FindWindow;
-begin
-  GetProcedureAddress(_FindWindow, user32, 'FindWindowA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FindWindow]
-  end;
-end;
-{$ELSE}
-function FindWindow; external user32 name 'FindWindowA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _FindWindowExA: Pointer;
-
-function FindWindowExA;
-begin
-  GetProcedureAddress(_FindWindowExA, user32, 'FindWindowExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FindWindowExA]
-  end;
-end;
-{$ELSE}
-function FindWindowExA; external user32 name 'FindWindowExA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _FindWindowExW: Pointer;
-
-function FindWindowExW;
-begin
-  GetProcedureAddress(_FindWindowExW, user32, 'FindWindowExW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FindWindowExW]
-  end;
-end;
-{$ELSE}
-function FindWindowExW; external user32 name 'FindWindowExW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _FindWindowEx: Pointer;
-
-function FindWindowEx;
-begin
-  GetProcedureAddress(_FindWindowEx, user32, 'FindWindowExW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FindWindowEx]
-  end;
-end;
-{$ELSE}
-function FindWindowEx; external user32 name 'FindWindowExW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _FindWindowEx: Pointer;
-
-function FindWindowEx;
-begin
-  GetProcedureAddress(_FindWindowEx, user32, 'FindWindowExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FindWindowEx]
-  end;
-end;
-{$ELSE}
-function FindWindowEx; external user32 name 'FindWindowExA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetShellWindow: Pointer;
-
-function GetShellWindow;
-begin
-  GetProcedureAddress(_GetShellWindow, user32, 'GetShellWindow');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetShellWindow]
-  end;
-end;
-{$ELSE}
-function GetShellWindow; external user32 name 'GetShellWindow';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumWindows: Pointer;
-
-function EnumWindows;
-begin
-  GetProcedureAddress(_EnumWindows, user32, 'EnumWindows');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumWindows]
-  end;
-end;
-{$ELSE}
-function EnumWindows; external user32 name 'EnumWindows';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumThreadWindows: Pointer;
-
-function EnumThreadWindows;
-begin
-  GetProcedureAddress(_EnumThreadWindows, user32, 'EnumThreadWindows');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumThreadWindows]
-  end;
-end;
-{$ELSE}
-function EnumThreadWindows; external user32 name 'EnumThreadWindows';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetClassNameA: Pointer;
-
-function GetClassNameA;
-begin
-  GetProcedureAddress(_GetClassNameA, user32, 'GetClassNameA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetClassNameA]
-  end;
-end;
-{$ELSE}
-function GetClassNameA; external user32 name 'GetClassNameA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetClassNameW: Pointer;
-
-function GetClassNameW;
-begin
-  GetProcedureAddress(_GetClassNameW, user32, 'GetClassNameW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetClassNameW]
-  end;
-end;
-{$ELSE}
-function GetClassNameW; external user32 name 'GetClassNameW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetClassName: Pointer;
-
-function GetClassName;
-begin
-  GetProcedureAddress(_GetClassName, user32, 'GetClassNameW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetClassName]
-  end;
-end;
-{$ELSE}
-function GetClassName; external user32 name 'GetClassNameW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetClassName: Pointer;
-
-function GetClassName;
-begin
-  GetProcedureAddress(_GetClassName, user32, 'GetClassNameA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetClassName]
-  end;
-end;
-{$ELSE}
-function GetClassName; external user32 name 'GetClassNameA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetTopWindow: Pointer;
-
-function GetTopWindow;
-begin
-  GetProcedureAddress(_GetTopWindow, user32, 'GetTopWindow');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTopWindow]
-  end;
-end;
-{$ELSE}
-function GetTopWindow; external user32 name 'GetTopWindow';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetWindowThreadProcessId: Pointer;
-
-function GetWindowThreadProcessId;
-begin
-  GetProcedureAddress(_GetWindowThreadProcessId, user32, 'GetWindowThreadProcessId');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetWindowThreadProcessId]
-  end;
-end;
-{$ELSE}
-function GetWindowThreadProcessId; external user32 name 'GetWindowThreadProcessId';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _IsGUIThread: Pointer;
-
-function IsGUIThread;
-begin
-  GetProcedureAddress(_IsGUIThread, user32, 'IsGUIThread');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsGUIThread]
-  end;
-end;
-{$ELSE}
-function IsGUIThread; external user32 name 'IsGUIThread';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetLastActivePopup: Pointer;
-
-function GetLastActivePopup;
-begin
-  GetProcedureAddress(_GetLastActivePopup, user32, 'GetLastActivePopup');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetLastActivePopup]
-  end;
-end;
-{$ELSE}
-function GetLastActivePopup; external user32 name 'GetLastActivePopup';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetWindow: Pointer;
-
-function GetWindow;
-begin
-  GetProcedureAddress(_GetWindow, user32, 'GetWindow');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetWindow]
-  end;
-end;
-{$ELSE}
-function GetWindow; external user32 name 'GetWindow';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetWindowsHookA: Pointer;
-
-function SetWindowsHookA;
-begin
-  GetProcedureAddress(_SetWindowsHookA, user32, 'SetWindowsHookA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetWindowsHookA]
-  end;
-end;
-{$ELSE}
-function SetWindowsHookA; external user32 name 'SetWindowsHookA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetWindowsHookW: Pointer;
-
-function SetWindowsHookW;
-begin
-  GetProcedureAddress(_SetWindowsHookW, user32, 'SetWindowsHookW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetWindowsHookW]
-  end;
-end;
-{$ELSE}
-function SetWindowsHookW; external user32 name 'SetWindowsHookW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetWindowsHook: Pointer;
-
-function SetWindowsHook;
-begin
-  GetProcedureAddress(_SetWindowsHook, user32, 'SetWindowsHookW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetWindowsHook]
-  end;
-end;
-{$ELSE}
-function SetWindowsHook; external user32 name 'SetWindowsHookW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetWindowsHook: Pointer;
-
-function SetWindowsHook;
-begin
-  GetProcedureAddress(_SetWindowsHook, user32, 'SetWindowsHookA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetWindowsHook]
-  end;
-end;
-{$ELSE}
-function SetWindowsHook; external user32 name 'SetWindowsHookA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _UnhookWindowsHook: Pointer;
-
-function UnhookWindowsHook;
-begin
-  GetProcedureAddress(_UnhookWindowsHook, user32, 'UnhookWindowsHook');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_UnhookWindowsHook]
-  end;
-end;
-{$ELSE}
-function UnhookWindowsHook; external user32 name 'UnhookWindowsHook';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetWindowsHookExA: Pointer;
-
-function SetWindowsHookExA;
-begin
-  GetProcedureAddress(_SetWindowsHookExA, user32, 'SetWindowsHookExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetWindowsHookExA]
-  end;
-end;
-{$ELSE}
-function SetWindowsHookExA; external user32 name 'SetWindowsHookExA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetWindowsHookExW: Pointer;
-
-function SetWindowsHookExW;
-begin
-  GetProcedureAddress(_SetWindowsHookExW, user32, 'SetWindowsHookExW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetWindowsHookExW]
-  end;
-end;
-{$ELSE}
-function SetWindowsHookExW; external user32 name 'SetWindowsHookExW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetWindowsHookEx: Pointer;
-
-function SetWindowsHookEx;
-begin
-  GetProcedureAddress(_SetWindowsHookEx, user32, 'SetWindowsHookExW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetWindowsHookEx]
-  end;
-end;
-{$ELSE}
-function SetWindowsHookEx; external user32 name 'SetWindowsHookExW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetWindowsHookEx: Pointer;
-
-function SetWindowsHookEx;
-begin
-  GetProcedureAddress(_SetWindowsHookEx, user32, 'SetWindowsHookExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetWindowsHookEx]
-  end;
-end;
-{$ELSE}
-function SetWindowsHookEx; external user32 name 'SetWindowsHookExA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _UnhookWindowsHookEx: Pointer;
-
-function UnhookWindowsHookEx;
-begin
-  GetProcedureAddress(_UnhookWindowsHookEx, user32, 'UnhookWindowsHookEx');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_UnhookWindowsHookEx]
-  end;
-end;
-{$ELSE}
-function UnhookWindowsHookEx; external user32 name 'UnhookWindowsHookEx';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CallNextHookEx: Pointer;
-
-function CallNextHookEx;
-begin
-  GetProcedureAddress(_CallNextHookEx, user32, 'CallNextHookEx');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CallNextHookEx]
-  end;
-end;
-{$ELSE}
-function CallNextHookEx; external user32 name 'CallNextHookEx';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CheckMenuRadioItem: Pointer;
-
-function CheckMenuRadioItem;
-begin
-  GetProcedureAddress(_CheckMenuRadioItem, user32, 'CheckMenuRadioItem');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CheckMenuRadioItem]
-  end;
-end;
-{$ELSE}
-function CheckMenuRadioItem; external user32 name 'CheckMenuRadioItem';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadBitmapA: Pointer;
-
-function LoadBitmapA;
-begin
-  GetProcedureAddress(_LoadBitmapA, user32, 'LoadBitmapA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadBitmapA]
-  end;
-end;
-{$ELSE}
-function LoadBitmapA; external user32 name 'LoadBitmapA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadBitmapW: Pointer;
-
-function LoadBitmapW;
-begin
-  GetProcedureAddress(_LoadBitmapW, user32, 'LoadBitmapW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadBitmapW]
-  end;
-end;
-{$ELSE}
-function LoadBitmapW; external user32 name 'LoadBitmapW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadBitmap: Pointer;
-
-function LoadBitmap;
-begin
-  GetProcedureAddress(_LoadBitmap, user32, 'LoadBitmapW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadBitmap]
-  end;
-end;
-{$ELSE}
-function LoadBitmap; external user32 name 'LoadBitmapW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadBitmap: Pointer;
-
-function LoadBitmap;
-begin
-  GetProcedureAddress(_LoadBitmap, user32, 'LoadBitmapA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadBitmap]
-  end;
-end;
-{$ELSE}
-function LoadBitmap; external user32 name 'LoadBitmapA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadCursorA: Pointer;
-
-function LoadCursorA;
-begin
-  GetProcedureAddress(_LoadCursorA, user32, 'LoadCursorA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadCursorA]
-  end;
-end;
-{$ELSE}
-function LoadCursorA; external user32 name 'LoadCursorA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadCursorW: Pointer;
-
-function LoadCursorW;
-begin
-  GetProcedureAddress(_LoadCursorW, user32, 'LoadCursorW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadCursorW]
-  end;
-end;
-{$ELSE}
-function LoadCursorW; external user32 name 'LoadCursorW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadCursor: Pointer;
-
-function LoadCursor;
-begin
-  GetProcedureAddress(_LoadCursor, user32, 'LoadCursorW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadCursor]
-  end;
-end;
-{$ELSE}
-function LoadCursor; external user32 name 'LoadCursorW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadCursor: Pointer;
-
-function LoadCursor;
-begin
-  GetProcedureAddress(_LoadCursor, user32, 'LoadCursorA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadCursor]
-  end;
-end;
-{$ELSE}
-function LoadCursor; external user32 name 'LoadCursorA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadCursorFromFileA: Pointer;
-
-function LoadCursorFromFileA;
-begin
-  GetProcedureAddress(_LoadCursorFromFileA, user32, 'LoadCursorFromFileA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadCursorFromFileA]
-  end;
-end;
-{$ELSE}
-function LoadCursorFromFileA; external user32 name 'LoadCursorFromFileA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadCursorFromFileW: Pointer;
-
-function LoadCursorFromFileW;
-begin
-  GetProcedureAddress(_LoadCursorFromFileW, user32, 'LoadCursorFromFileW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadCursorFromFileW]
-  end;
-end;
-{$ELSE}
-function LoadCursorFromFileW; external user32 name 'LoadCursorFromFileW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadCursorFromFile: Pointer;
-
-function LoadCursorFromFile;
-begin
-  GetProcedureAddress(_LoadCursorFromFile, user32, 'LoadCursorFromFileW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadCursorFromFile]
-  end;
-end;
-{$ELSE}
-function LoadCursorFromFile; external user32 name 'LoadCursorFromFileW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadCursorFromFile: Pointer;
-
-function LoadCursorFromFile;
-begin
-  GetProcedureAddress(_LoadCursorFromFile, user32, 'LoadCursorFromFileA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadCursorFromFile]
-  end;
-end;
-{$ELSE}
-function LoadCursorFromFile; external user32 name 'LoadCursorFromFileA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateCursor: Pointer;
-
-function CreateCursor;
-begin
-  GetProcedureAddress(_CreateCursor, user32, 'CreateCursor');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateCursor]
-  end;
-end;
-{$ELSE}
-function CreateCursor; external user32 name 'CreateCursor';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DestroyCursor: Pointer;
-
-function DestroyCursor;
-begin
-  GetProcedureAddress(_DestroyCursor, user32, 'DestroyCursor');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DestroyCursor]
-  end;
-end;
-{$ELSE}
-function DestroyCursor; external user32 name 'DestroyCursor';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetSystemCursor: Pointer;
-
-function SetSystemCursor;
-begin
-  GetProcedureAddress(_SetSystemCursor, user32, 'SetSystemCursor');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetSystemCursor]
-  end;
-end;
-{$ELSE}
-function SetSystemCursor; external user32 name 'SetSystemCursor';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadIconA: Pointer;
-
-function LoadIconA;
-begin
-  GetProcedureAddress(_LoadIconA, user32, 'LoadIconA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadIconA]
-  end;
-end;
-{$ELSE}
-function LoadIconA; external user32 name 'LoadIconA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadIconW: Pointer;
-
-function LoadIconW;
-begin
-  GetProcedureAddress(_LoadIconW, user32, 'LoadIconW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadIconW]
-  end;
-end;
-{$ELSE}
-function LoadIconW; external user32 name 'LoadIconW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadIcon: Pointer;
-
-function LoadIcon;
-begin
-  GetProcedureAddress(_LoadIcon, user32, 'LoadIconW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadIcon]
-  end;
-end;
-{$ELSE}
-function LoadIcon; external user32 name 'LoadIconW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadIcon: Pointer;
-
-function LoadIcon;
-begin
-  GetProcedureAddress(_LoadIcon, user32, 'LoadIconA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadIcon]
-  end;
-end;
-{$ELSE}
-function LoadIcon; external user32 name 'LoadIconA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _PrivateExtractIconsA: Pointer;
-
-function PrivateExtractIconsA;
-begin
-  GetProcedureAddress(_PrivateExtractIconsA, user32, 'PrivateExtractIconsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PrivateExtractIconsA]
-  end;
-end;
-{$ELSE}
-function PrivateExtractIconsA; external user32 name 'PrivateExtractIconsA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _PrivateExtractIconsW: Pointer;
-
-function PrivateExtractIconsW;
-begin
-  GetProcedureAddress(_PrivateExtractIconsW, user32, 'PrivateExtractIconsW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PrivateExtractIconsW]
-  end;
-end;
-{$ELSE}
-function PrivateExtractIconsW; external user32 name 'PrivateExtractIconsW';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _PrivateExtractIcons: Pointer;
-
-function PrivateExtractIcons;
-begin
-  GetProcedureAddress(_PrivateExtractIcons, user32, 'PrivateExtractIconsW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PrivateExtractIcons]
-  end;
-end;
-{$ELSE}
-function PrivateExtractIcons; external user32 name 'PrivateExtractIconsW';
-{$ENDIF DYNAMIC_LINK}
-
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _PrivateExtractIcons: Pointer;
-
-function PrivateExtractIcons;
-begin
-  GetProcedureAddress(_PrivateExtractIcons, user32, 'PrivateExtractIconsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PrivateExtractIcons]
-  end;
-end;
-{$ELSE}
-function PrivateExtractIcons; external user32 name 'PrivateExtractIconsA';
-{$ENDIF DYNAMIC_LINK}
-
-{$ENDIF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateIcon: Pointer;
-
-function CreateIcon;
-begin
-  GetProcedureAddress(_CreateIcon, user32, 'CreateIcon');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateIcon]
-  end;
-end;
-{$ELSE}
-function CreateIcon; external user32 name 'CreateIcon';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DestroyIcon: Pointer;
-
-function DestroyIcon;
-begin
-  GetProcedureAddress(_DestroyIcon, user32, 'DestroyIcon');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DestroyIcon]
-  end;
-end;
-{$ELSE}
-function DestroyIcon; external user32 name 'DestroyIcon';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LookupIconIdFromDirectory: Pointer;
-
-function LookupIconIdFromDirectory;
-begin
-  GetProcedureAddress(_LookupIconIdFromDirectory, user32, 'LookupIconIdFromDirectory');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LookupIconIdFromDirectory]
-  end;
-end;
-{$ELSE}
-function LookupIconIdFromDirectory; external user32 name 'LookupIconIdFromDirectory';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LookupIconIdFromDirectoryEx: Pointer;
-
-function LookupIconIdFromDirectoryEx;
-begin
-  GetProcedureAddress(_LookupIconIdFromDirectoryEx, user32, 'LookupIconIdFromDirectoryEx');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LookupIconIdFromDirectoryEx]
-  end;
-end;
-{$ELSE}
-function LookupIconIdFromDirectoryEx; external user32 name 'LookupIconIdFromDirectoryEx';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateIconFromResource: Pointer;
-
-function CreateIconFromResource;
-begin
-  GetProcedureAddress(_CreateIconFromResource, user32, 'CreateIconFromResource');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateIconFromResource]
-  end;
-end;
-{$ELSE}
-function CreateIconFromResource; external user32 name 'CreateIconFromResource';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateIconFromResourceEx: Pointer;
-
-function CreateIconFromResourceEx;
-begin
-  GetProcedureAddress(_CreateIconFromResourceEx, user32, 'CreateIconFromResourceEx');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateIconFromResourceEx]
-  end;
-end;
-{$ELSE}
-function CreateIconFromResourceEx; external user32 name 'CreateIconFromResourceEx';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadImageA: Pointer;
-
-function LoadImageA;
-begin
-  GetProcedureAddress(_LoadImageA, user32, 'LoadImageA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadImageA]
-  end;
-end;
-{$ELSE}
-function LoadImageA; external user32 name 'LoadImageA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadImageW: Pointer;
-
-function LoadImageW;
-begin
-  GetProcedureAddress(_LoadImageW, user32, 'LoadImageW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadImageW]
-  end;
-end;
-{$ELSE}
-function LoadImageW; external user32 name 'LoadImageW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadImage: Pointer;
-
-function LoadImage;
-begin
-  GetProcedureAddress(_LoadImage, user32, 'LoadImageW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadImage]
-  end;
-end;
-{$ELSE}
-function LoadImage; external user32 name 'LoadImageW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadImage: Pointer;
-
-function LoadImage;
-begin
-  GetProcedureAddress(_LoadImage, user32, 'LoadImageA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadImage]
-  end;
-end;
-{$ELSE}
-function LoadImage; external user32 name 'LoadImageA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CopyImage: Pointer;
-
-function CopyImage;
-begin
-  GetProcedureAddress(_CopyImage, user32, 'CopyImage');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CopyImage]
-  end;
-end;
-{$ELSE}
-function CopyImage; external user32 name 'CopyImage';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DrawIconEx: Pointer;
-
-function DrawIconEx;
-begin
-  GetProcedureAddress(_DrawIconEx, user32, 'DrawIconEx');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DrawIconEx]
-  end;
-end;
-{$ELSE}
-function DrawIconEx; external user32 name 'DrawIconEx';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateIconIndirect: Pointer;
-
-function CreateIconIndirect;
-begin
-  GetProcedureAddress(_CreateIconIndirect, user32, 'CreateIconIndirect');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateIconIndirect]
-  end;
-end;
-{$ELSE}
-function CreateIconIndirect; external user32 name 'CreateIconIndirect';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CopyIcon: Pointer;
-
-function CopyIcon;
-begin
-  GetProcedureAddress(_CopyIcon, user32, 'CopyIcon');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CopyIcon]
-  end;
-end;
-{$ELSE}
-function CopyIcon; external user32 name 'CopyIcon';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetIconInfo: Pointer;
-
-function GetIconInfo;
-begin
-  GetProcedureAddress(_GetIconInfo, user32, 'GetIconInfo');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetIconInfo]
-  end;
-end;
-{$ELSE}
-function GetIconInfo; external user32 name 'GetIconInfo';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadStringA: Pointer;
-
-function LoadStringA;
-begin
-  GetProcedureAddress(_LoadStringA, user32, 'LoadStringA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadStringA]
-  end;
-end;
-{$ELSE}
-function LoadStringA; external user32 name 'LoadStringA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadStringW: Pointer;
-
-function LoadStringW;
-begin
-  GetProcedureAddress(_LoadStringW, user32, 'LoadStringW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadStringW]
-  end;
-end;
-{$ELSE}
-function LoadStringW; external user32 name 'LoadStringW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadString: Pointer;
-
-function LoadString;
-begin
-  GetProcedureAddress(_LoadString, user32, 'LoadStringW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadString]
-  end;
-end;
-{$ELSE}
-function LoadString; external user32 name 'LoadStringW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LoadString: Pointer;
-
-function LoadString;
-begin
-  GetProcedureAddress(_LoadString, user32, 'LoadStringA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LoadString]
-  end;
-end;
-{$ELSE}
-function LoadString; external user32 name 'LoadStringA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _IsDialogMessageA: Pointer;
-
-function IsDialogMessageA;
-begin
-  GetProcedureAddress(_IsDialogMessageA, user32, 'IsDialogMessageA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsDialogMessageA]
-  end;
-end;
-{$ELSE}
-function IsDialogMessageA; external user32 name 'IsDialogMessageA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _IsDialogMessageW: Pointer;
-
-function IsDialogMessageW;
-begin
-  GetProcedureAddress(_IsDialogMessageW, user32, 'IsDialogMessageW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsDialogMessageW]
-  end;
-end;
-{$ELSE}
-function IsDialogMessageW; external user32 name 'IsDialogMessageW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _IsDialogMessage: Pointer;
-
-function IsDialogMessage;
-begin
-  GetProcedureAddress(_IsDialogMessage, user32, 'IsDialogMessageW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsDialogMessage]
-  end;
-end;
-{$ELSE}
-function IsDialogMessage; external user32 name 'IsDialogMessageW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _IsDialogMessage: Pointer;
-
-function IsDialogMessage;
-begin
-  GetProcedureAddress(_IsDialogMessage, user32, 'IsDialogMessageA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsDialogMessage]
-  end;
-end;
-{$ELSE}
-function IsDialogMessage; external user32 name 'IsDialogMessageA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _MapDialogRect: Pointer;
-
-function MapDialogRect;
-begin
-  GetProcedureAddress(_MapDialogRect, user32, 'MapDialogRect');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MapDialogRect]
-  end;
-end;
-{$ELSE}
-function MapDialogRect; external user32 name 'MapDialogRect';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DlgDirListA: Pointer;
-
-function DlgDirListA;
-begin
-  GetProcedureAddress(_DlgDirListA, user32, 'DlgDirListA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DlgDirListA]
-  end;
-end;
-{$ELSE}
-function DlgDirListA; external user32 name 'DlgDirListA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DlgDirListW: Pointer;
-
-function DlgDirListW;
-begin
-  GetProcedureAddress(_DlgDirListW, user32, 'DlgDirListW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DlgDirListW]
-  end;
-end;
-{$ELSE}
-function DlgDirListW; external user32 name 'DlgDirListW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DlgDirList: Pointer;
-
-function DlgDirList;
-begin
-  GetProcedureAddress(_DlgDirList, user32, 'DlgDirListW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DlgDirList]
-  end;
-end;
-{$ELSE}
-function DlgDirList; external user32 name 'DlgDirListW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DlgDirList: Pointer;
-
-function DlgDirList;
-begin
-  GetProcedureAddress(_DlgDirList, user32, 'DlgDirListA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DlgDirList]
-  end;
-end;
-{$ELSE}
-function DlgDirList; external user32 name 'DlgDirListA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DlgDirSelectExA: Pointer;
-
-function DlgDirSelectExA;
-begin
-  GetProcedureAddress(_DlgDirSelectExA, user32, 'DlgDirSelectExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DlgDirSelectExA]
-  end;
-end;
-{$ELSE}
-function DlgDirSelectExA; external user32 name 'DlgDirSelectExA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DlgDirSelectExW: Pointer;
-
-function DlgDirSelectExW;
-begin
-  GetProcedureAddress(_DlgDirSelectExW, user32, 'DlgDirSelectExW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DlgDirSelectExW]
-  end;
-end;
-{$ELSE}
-function DlgDirSelectExW; external user32 name 'DlgDirSelectExW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DlgDirSelectEx: Pointer;
-
-function DlgDirSelectEx;
-begin
-  GetProcedureAddress(_DlgDirSelectEx, user32, 'DlgDirSelectExW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DlgDirSelectEx]
-  end;
-end;
-{$ELSE}
-function DlgDirSelectEx; external user32 name 'DlgDirSelectExW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DlgDirSelectEx: Pointer;
-
-function DlgDirSelectEx;
-begin
-  GetProcedureAddress(_DlgDirSelectEx, user32, 'DlgDirSelectExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DlgDirSelectEx]
-  end;
-end;
-{$ELSE}
-function DlgDirSelectEx; external user32 name 'DlgDirSelectExA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DlgDirListComboBoxA: Pointer;
-
-function DlgDirListComboBoxA;
-begin
-  GetProcedureAddress(_DlgDirListComboBoxA, user32, 'DlgDirListComboBoxA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DlgDirListComboBoxA]
-  end;
-end;
-{$ELSE}
-function DlgDirListComboBoxA; external user32 name 'DlgDirListComboBoxA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DlgDirListComboBoxW: Pointer;
-
-function DlgDirListComboBoxW;
-begin
-  GetProcedureAddress(_DlgDirListComboBoxW, user32, 'DlgDirListComboBoxW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DlgDirListComboBoxW]
-  end;
-end;
-{$ELSE}
-function DlgDirListComboBoxW; external user32 name 'DlgDirListComboBoxW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DlgDirListComboBox: Pointer;
-
-function DlgDirListComboBox;
-begin
-  GetProcedureAddress(_DlgDirListComboBox, user32, 'DlgDirListComboBoxW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DlgDirListComboBox]
-  end;
-end;
-{$ELSE}
-function DlgDirListComboBox; external user32 name 'DlgDirListComboBoxW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DlgDirListComboBox: Pointer;
-
-function DlgDirListComboBox;
-begin
-  GetProcedureAddress(_DlgDirListComboBox, user32, 'DlgDirListComboBoxA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DlgDirListComboBox]
-  end;
-end;
-{$ELSE}
-function DlgDirListComboBox; external user32 name 'DlgDirListComboBoxA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DlgDirSelectComboBoxExA: Pointer;
-
-function DlgDirSelectComboBoxExA;
-begin
-  GetProcedureAddress(_DlgDirSelectComboBoxExA, user32, 'DlgDirSelectComboBoxExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DlgDirSelectComboBoxExA]
-  end;
-end;
-{$ELSE}
-function DlgDirSelectComboBoxExA; external user32 name 'DlgDirSelectComboBoxExA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DlgDirSelectComboBoxExW: Pointer;
-
-function DlgDirSelectComboBoxExW;
-begin
-  GetProcedureAddress(_DlgDirSelectComboBoxExW, user32, 'DlgDirSelectComboBoxExW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DlgDirSelectComboBoxExW]
-  end;
-end;
-{$ELSE}
-function DlgDirSelectComboBoxExW; external user32 name 'DlgDirSelectComboBoxExW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DlgDirSelectComboBoxEx: Pointer;
-
-function DlgDirSelectComboBoxEx;
-begin
-  GetProcedureAddress(_DlgDirSelectComboBoxEx, user32, 'DlgDirSelectComboBoxExW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DlgDirSelectComboBoxEx]
-  end;
-end;
-{$ELSE}
-function DlgDirSelectComboBoxEx; external user32 name 'DlgDirSelectComboBoxExW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DlgDirSelectComboBoxEx: Pointer;
-
-function DlgDirSelectComboBoxEx;
-begin
-  GetProcedureAddress(_DlgDirSelectComboBoxEx, user32, 'DlgDirSelectComboBoxExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DlgDirSelectComboBoxEx]
-  end;
-end;
-{$ELSE}
-function DlgDirSelectComboBoxEx; external user32 name 'DlgDirSelectComboBoxExA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetScrollInfo: Pointer;
-
-function SetScrollInfo;
-begin
-  GetProcedureAddress(_SetScrollInfo, user32, 'SetScrollInfo');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetScrollInfo]
-  end;
-end;
-{$ELSE}
-function SetScrollInfo; external user32 name 'SetScrollInfo';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetScrollInfo: Pointer;
-
-function GetScrollInfo;
-begin
-  GetProcedureAddress(_GetScrollInfo, user32, 'GetScrollInfo');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetScrollInfo]
-  end;
-end;
-{$ELSE}
-function GetScrollInfo; external user32 name 'GetScrollInfo';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DefFrameProcA: Pointer;
-
-function DefFrameProcA;
-begin
-  GetProcedureAddress(_DefFrameProcA, user32, 'DefFrameProcA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DefFrameProcA]
-  end;
-end;
-{$ELSE}
-function DefFrameProcA; external user32 name 'DefFrameProcA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DefFrameProcW: Pointer;
-
-function DefFrameProcW;
-begin
-  GetProcedureAddress(_DefFrameProcW, user32, 'DefFrameProcW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DefFrameProcW]
-  end;
-end;
-{$ELSE}
-function DefFrameProcW; external user32 name 'DefFrameProcW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DefFrameProc: Pointer;
-
-function DefFrameProc;
-begin
-  GetProcedureAddress(_DefFrameProc, user32, 'DefFrameProcW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DefFrameProc]
-  end;
-end;
-{$ELSE}
-function DefFrameProc; external user32 name 'DefFrameProcW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DefFrameProc: Pointer;
-
-function DefFrameProc;
-begin
-  GetProcedureAddress(_DefFrameProc, user32, 'DefFrameProcA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DefFrameProc]
-  end;
-end;
-{$ELSE}
-function DefFrameProc; external user32 name 'DefFrameProcA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DefMDIChildProcA: Pointer;
-
-function DefMDIChildProcA;
-begin
-  GetProcedureAddress(_DefMDIChildProcA, user32, 'DefMDIChildProcA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DefMDIChildProcA]
-  end;
-end;
-{$ELSE}
-function DefMDIChildProcA; external user32 name 'DefMDIChildProcA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DefMDIChildProcW: Pointer;
-
-function DefMDIChildProcW;
-begin
-  GetProcedureAddress(_DefMDIChildProcW, user32, 'DefMDIChildProcW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DefMDIChildProcW]
-  end;
-end;
-{$ELSE}
-function DefMDIChildProcW; external user32 name 'DefMDIChildProcW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DefMDIChildProc: Pointer;
-
-function DefMDIChildProc;
-begin
-  GetProcedureAddress(_DefMDIChildProc, user32, 'DefMDIChildProcW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DefMDIChildProc]
-  end;
-end;
-{$ELSE}
-function DefMDIChildProc; external user32 name 'DefMDIChildProcW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _DefMDIChildProc: Pointer;
-
-function DefMDIChildProc;
-begin
-  GetProcedureAddress(_DefMDIChildProc, user32, 'DefMDIChildProcA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DefMDIChildProc]
-  end;
-end;
-{$ELSE}
-function DefMDIChildProc; external user32 name 'DefMDIChildProcA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _TranslateMDISysAccel: Pointer;
-
-function TranslateMDISysAccel;
-begin
-  GetProcedureAddress(_TranslateMDISysAccel, user32, 'TranslateMDISysAccel');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TranslateMDISysAccel]
-  end;
-end;
-{$ELSE}
-function TranslateMDISysAccel; external user32 name 'TranslateMDISysAccel';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ArrangeIconicWindows: Pointer;
-
-function ArrangeIconicWindows;
-begin
-  GetProcedureAddress(_ArrangeIconicWindows, user32, 'ArrangeIconicWindows');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ArrangeIconicWindows]
-  end;
-end;
-{$ELSE}
-function ArrangeIconicWindows; external user32 name 'ArrangeIconicWindows';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateMDIWindowA: Pointer;
-
-function CreateMDIWindowA;
-begin
-  GetProcedureAddress(_CreateMDIWindowA, user32, 'CreateMDIWindowA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateMDIWindowA]
-  end;
-end;
-{$ELSE}
-function CreateMDIWindowA; external user32 name 'CreateMDIWindowA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateMDIWindowW: Pointer;
-
-function CreateMDIWindowW;
-begin
-  GetProcedureAddress(_CreateMDIWindowW, user32, 'CreateMDIWindowW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateMDIWindowW]
-  end;
-end;
-{$ELSE}
-function CreateMDIWindowW; external user32 name 'CreateMDIWindowW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateMDIWindow: Pointer;
-
-function CreateMDIWindow;
-begin
-  GetProcedureAddress(_CreateMDIWindow, user32, 'CreateMDIWindowW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateMDIWindow]
-  end;
-end;
-{$ELSE}
-function CreateMDIWindow; external user32 name 'CreateMDIWindowW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateMDIWindow: Pointer;
-
-function CreateMDIWindow;
-begin
-  GetProcedureAddress(_CreateMDIWindow, user32, 'CreateMDIWindowA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateMDIWindow]
-  end;
-end;
-{$ELSE}
-function CreateMDIWindow; external user32 name 'CreateMDIWindowA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _TileWindows: Pointer;
-
-function TileWindows;
-begin
-  GetProcedureAddress(_TileWindows, user32, 'TileWindows');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TileWindows]
-  end;
-end;
-{$ELSE}
-function TileWindows; external user32 name 'TileWindows';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _CascadeWindows: Pointer;
-
-function CascadeWindows;
-begin
-  GetProcedureAddress(_CascadeWindows, user32, 'CascadeWindows');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CascadeWindows]
-  end;
-end;
-{$ELSE}
-function CascadeWindows; external user32 name 'CascadeWindows';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WinHelpA: Pointer;
-
-function WinHelpA;
-begin
-  GetProcedureAddress(_WinHelpA, user32, 'WinHelpA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WinHelpA]
-  end;
-end;
-{$ELSE}
-function WinHelpA; external user32 name 'WinHelpA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WinHelpW: Pointer;
-
-function WinHelpW;
-begin
-  GetProcedureAddress(_WinHelpW, user32, 'WinHelpW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WinHelpW]
-  end;
-end;
-{$ELSE}
-function WinHelpW; external user32 name 'WinHelpW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WinHelp: Pointer;
-
-function WinHelp;
-begin
-  GetProcedureAddress(_WinHelp, user32, 'WinHelpW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WinHelp]
-  end;
-end;
-{$ELSE}
-function WinHelp; external user32 name 'WinHelpW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WinHelp: Pointer;
-
-function WinHelp;
-begin
-  GetProcedureAddress(_WinHelp, user32, 'WinHelpA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WinHelp]
-  end;
-end;
-{$ELSE}
-function WinHelp; external user32 name 'WinHelpA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetGuiResources: Pointer;
-
-function GetGuiResources;
-begin
-  GetProcedureAddress(_GetGuiResources, user32, 'GetGuiResources');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetGuiResources]
-  end;
-end;
-{$ELSE}
-function GetGuiResources; external user32 name 'GetGuiResources';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ChangeDisplaySettingsA: Pointer;
-
-function ChangeDisplaySettingsA;
-begin
-  GetProcedureAddress(_ChangeDisplaySettingsA, user32, 'ChangeDisplaySettingsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ChangeDisplaySettingsA]
-  end;
-end;
-{$ELSE}
-function ChangeDisplaySettingsA; external user32 name 'ChangeDisplaySettingsA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ChangeDisplaySettingsW: Pointer;
-
-function ChangeDisplaySettingsW;
-begin
-  GetProcedureAddress(_ChangeDisplaySettingsW, user32, 'ChangeDisplaySettingsW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ChangeDisplaySettingsW]
-  end;
-end;
-{$ELSE}
-function ChangeDisplaySettingsW; external user32 name 'ChangeDisplaySettingsW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ChangeDisplaySettings: Pointer;
-
-function ChangeDisplaySettings;
-begin
-  GetProcedureAddress(_ChangeDisplaySettings, user32, 'ChangeDisplaySettingsW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ChangeDisplaySettings]
-  end;
-end;
-{$ELSE}
-function ChangeDisplaySettings; external user32 name 'ChangeDisplaySettingsW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ChangeDisplaySettings: Pointer;
-
-function ChangeDisplaySettings;
-begin
-  GetProcedureAddress(_ChangeDisplaySettings, user32, 'ChangeDisplaySettingsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ChangeDisplaySettings]
-  end;
-end;
-{$ELSE}
-function ChangeDisplaySettings; external user32 name 'ChangeDisplaySettingsA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ChangeDisplaySettingsExA: Pointer;
-
-function ChangeDisplaySettingsExA;
-begin
-  GetProcedureAddress(_ChangeDisplaySettingsExA, user32, 'ChangeDisplaySettingsExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ChangeDisplaySettingsExA]
-  end;
-end;
-{$ELSE}
-function ChangeDisplaySettingsExA; external user32 name 'ChangeDisplaySettingsExA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ChangeDisplaySettingsExW: Pointer;
-
-function ChangeDisplaySettingsExW;
-begin
-  GetProcedureAddress(_ChangeDisplaySettingsExW, user32, 'ChangeDisplaySettingsExW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ChangeDisplaySettingsExW]
-  end;
-end;
-{$ELSE}
-function ChangeDisplaySettingsExW; external user32 name 'ChangeDisplaySettingsExW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ChangeDisplaySettingsEx: Pointer;
-
-function ChangeDisplaySettingsEx;
-begin
-  GetProcedureAddress(_ChangeDisplaySettingsEx, user32, 'ChangeDisplaySettingsExW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ChangeDisplaySettingsEx]
-  end;
-end;
-{$ELSE}
-function ChangeDisplaySettingsEx; external user32 name 'ChangeDisplaySettingsExW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ChangeDisplaySettingsEx: Pointer;
-
-function ChangeDisplaySettingsEx;
-begin
-  GetProcedureAddress(_ChangeDisplaySettingsEx, user32, 'ChangeDisplaySettingsExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ChangeDisplaySettingsEx]
-  end;
-end;
-{$ELSE}
-function ChangeDisplaySettingsEx; external user32 name 'ChangeDisplaySettingsExA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumDisplaySettingsA: Pointer;
-
-function EnumDisplaySettingsA;
-begin
-  GetProcedureAddress(_EnumDisplaySettingsA, user32, 'EnumDisplaySettingsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumDisplaySettingsA]
-  end;
-end;
-{$ELSE}
-function EnumDisplaySettingsA; external user32 name 'EnumDisplaySettingsA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumDisplaySettingsW: Pointer;
-
-function EnumDisplaySettingsW;
-begin
-  GetProcedureAddress(_EnumDisplaySettingsW, user32, 'EnumDisplaySettingsW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumDisplaySettingsW]
-  end;
-end;
-{$ELSE}
-function EnumDisplaySettingsW; external user32 name 'EnumDisplaySettingsW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumDisplaySettings: Pointer;
-
-function EnumDisplaySettings;
-begin
-  GetProcedureAddress(_EnumDisplaySettings, user32, 'EnumDisplaySettingsW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumDisplaySettings]
-  end;
-end;
-{$ELSE}
-function EnumDisplaySettings; external user32 name 'EnumDisplaySettingsW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumDisplaySettings: Pointer;
-
-function EnumDisplaySettings;
-begin
-  GetProcedureAddress(_EnumDisplaySettings, user32, 'EnumDisplaySettingsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumDisplaySettings]
-  end;
-end;
-{$ELSE}
-function EnumDisplaySettings; external user32 name 'EnumDisplaySettingsA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumDisplaySettingsExA: Pointer;
-
-function EnumDisplaySettingsExA;
-begin
-  GetProcedureAddress(_EnumDisplaySettingsExA, user32, 'EnumDisplaySettingsExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumDisplaySettingsExA]
-  end;
-end;
-{$ELSE}
-function EnumDisplaySettingsExA; external user32 name 'EnumDisplaySettingsExA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumDisplaySettingsExW: Pointer;
-
-function EnumDisplaySettingsExW;
-begin
-  GetProcedureAddress(_EnumDisplaySettingsExW, user32, 'EnumDisplaySettingsExW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumDisplaySettingsExW]
-  end;
-end;
-{$ELSE}
-function EnumDisplaySettingsExW; external user32 name 'EnumDisplaySettingsExW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumDisplaySettingsEx: Pointer;
-
-function EnumDisplaySettingsEx;
-begin
-  GetProcedureAddress(_EnumDisplaySettingsEx, user32, 'EnumDisplaySettingsExW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumDisplaySettingsEx]
-  end;
-end;
-{$ELSE}
-function EnumDisplaySettingsEx; external user32 name 'EnumDisplaySettingsExW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumDisplaySettingsEx: Pointer;
-
-function EnumDisplaySettingsEx;
-begin
-  GetProcedureAddress(_EnumDisplaySettingsEx, user32, 'EnumDisplaySettingsExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumDisplaySettingsEx]
-  end;
-end;
-{$ELSE}
-function EnumDisplaySettingsEx; external user32 name 'EnumDisplaySettingsExA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumDisplayDevicesA: Pointer;
-
-function EnumDisplayDevicesA;
-begin
-  GetProcedureAddress(_EnumDisplayDevicesA, user32, 'EnumDisplayDevicesA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumDisplayDevicesA]
-  end;
-end;
-{$ELSE}
-function EnumDisplayDevicesA; external user32 name 'EnumDisplayDevicesA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumDisplayDevicesW: Pointer;
-
-function EnumDisplayDevicesW;
-begin
-  GetProcedureAddress(_EnumDisplayDevicesW, user32, 'EnumDisplayDevicesW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumDisplayDevicesW]
-  end;
-end;
-{$ELSE}
-function EnumDisplayDevicesW; external user32 name 'EnumDisplayDevicesW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumDisplayDevices: Pointer;
-
-function EnumDisplayDevices;
-begin
-  GetProcedureAddress(_EnumDisplayDevices, user32, 'EnumDisplayDevicesW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumDisplayDevices]
-  end;
-end;
-{$ELSE}
-function EnumDisplayDevices; external user32 name 'EnumDisplayDevicesW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumDisplayDevices: Pointer;
-
-function EnumDisplayDevices;
-begin
-  GetProcedureAddress(_EnumDisplayDevices, user32, 'EnumDisplayDevicesA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumDisplayDevices]
-  end;
-end;
-{$ELSE}
-function EnumDisplayDevices; external user32 name 'EnumDisplayDevicesA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SystemParametersInfoA: Pointer;
-
-function SystemParametersInfoA;
-begin
-  GetProcedureAddress(_SystemParametersInfoA, user32, 'SystemParametersInfoA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SystemParametersInfoA]
-  end;
-end;
-{$ELSE}
-function SystemParametersInfoA; external user32 name 'SystemParametersInfoA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SystemParametersInfoW: Pointer;
-
-function SystemParametersInfoW;
-begin
-  GetProcedureAddress(_SystemParametersInfoW, user32, 'SystemParametersInfoW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SystemParametersInfoW]
-  end;
-end;
-{$ELSE}
-function SystemParametersInfoW; external user32 name 'SystemParametersInfoW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SystemParametersInfo: Pointer;
-
-function SystemParametersInfo;
-begin
-  GetProcedureAddress(_SystemParametersInfo, user32, 'SystemParametersInfoW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SystemParametersInfo]
-  end;
-end;
-{$ELSE}
-function SystemParametersInfo; external user32 name 'SystemParametersInfoW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SystemParametersInfo: Pointer;
-
-function SystemParametersInfo;
-begin
-  GetProcedureAddress(_SystemParametersInfo, user32, 'SystemParametersInfoA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SystemParametersInfo]
-  end;
-end;
-{$ELSE}
-function SystemParametersInfo; external user32 name 'SystemParametersInfoA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetDebugErrorLevel: Pointer;
-
-procedure SetDebugErrorLevel;
-begin
-  GetProcedureAddress(_SetDebugErrorLevel, user32, 'SetDebugErrorLevel');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetDebugErrorLevel]
-  end;
-end;
-{$ELSE}
-procedure SetDebugErrorLevel; external user32 name 'SetDebugErrorLevel';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetLastErrorEx: Pointer;
-
-procedure SetLastErrorEx;
-begin
-  GetProcedureAddress(_SetLastErrorEx, user32, 'SetLastErrorEx');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetLastErrorEx]
-  end;
-end;
-{$ELSE}
-procedure SetLastErrorEx; external user32 name 'SetLastErrorEx';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _InternalGetWindowText: Pointer;
-
-function InternalGetWindowText;
-begin
-  GetProcedureAddress(_InternalGetWindowText, user32, 'InternalGetWindowText');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_InternalGetWindowText]
-  end;
-end;
-{$ELSE}
-function InternalGetWindowText; external user32 name 'InternalGetWindowText';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EndTask: Pointer;
-
-function EndTask;
-begin
-  GetProcedureAddress(_EndTask, user32, 'EndTask');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EndTask]
-  end;
-end;
-{$ELSE}
-function EndTask; external user32 name 'EndTask';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _MonitorFromPoint: Pointer;
-
-function MonitorFromPoint;
-begin
-  GetProcedureAddress(_MonitorFromPoint, user32, 'MonitorFromPoint');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MonitorFromPoint]
-  end;
-end;
-{$ELSE}
-function MonitorFromPoint; external user32 name 'MonitorFromPoint';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _MonitorFromRect: Pointer;
-
-function MonitorFromRect;
-begin
-  GetProcedureAddress(_MonitorFromRect, user32, 'MonitorFromRect');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MonitorFromRect]
-  end;
-end;
-{$ELSE}
-function MonitorFromRect; external user32 name 'MonitorFromRect';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _MonitorFromWindow: Pointer;
-
-function MonitorFromWindow;
-begin
-  GetProcedureAddress(_MonitorFromWindow, user32, 'MonitorFromWindow');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_MonitorFromWindow]
-  end;
-end;
-{$ELSE}
-function MonitorFromWindow; external user32 name 'MonitorFromWindow';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetMonitorInfoA: Pointer;
-
-function GetMonitorInfoA;
-begin
-  GetProcedureAddress(_GetMonitorInfoA, user32, 'GetMonitorInfoA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetMonitorInfoA]
-  end;
-end;
-{$ELSE}
-function GetMonitorInfoA; external user32 name 'GetMonitorInfoA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetMonitorInfoW: Pointer;
-
-function GetMonitorInfoW;
-begin
-  GetProcedureAddress(_GetMonitorInfoW, user32, 'GetMonitorInfoW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetMonitorInfoW]
-  end;
-end;
-{$ELSE}
-function GetMonitorInfoW; external user32 name 'GetMonitorInfoW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetMonitorInfo: Pointer;
-
-function GetMonitorInfo;
-begin
-  GetProcedureAddress(_GetMonitorInfo, user32, 'GetMonitorInfoW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetMonitorInfo]
-  end;
-end;
-{$ELSE}
-function GetMonitorInfo; external user32 name 'GetMonitorInfoW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetMonitorInfo: Pointer;
-
-function GetMonitorInfo;
-begin
-  GetProcedureAddress(_GetMonitorInfo, user32, 'GetMonitorInfoA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetMonitorInfo]
-  end;
-end;
-{$ELSE}
-function GetMonitorInfo; external user32 name 'GetMonitorInfoA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumDisplayMonitors: Pointer;
-
-function EnumDisplayMonitors;
-begin
-  GetProcedureAddress(_EnumDisplayMonitors, user32, 'EnumDisplayMonitors');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumDisplayMonitors]
-  end;
-end;
-{$ELSE}
-function EnumDisplayMonitors; external user32 name 'EnumDisplayMonitors';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _NotifyWinEvent: Pointer;
-
-procedure NotifyWinEvent;
-begin
-  GetProcedureAddress(_NotifyWinEvent, user32, 'NotifyWinEvent');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NotifyWinEvent]
-  end;
-end;
-{$ELSE}
-procedure NotifyWinEvent; external user32 name 'NotifyWinEvent';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _SetWinEventHook: Pointer;
-
-function SetWinEventHook;
-begin
-  GetProcedureAddress(_SetWinEventHook, user32, 'SetWinEventHook');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetWinEventHook]
-  end;
-end;
-{$ELSE}
-function SetWinEventHook; external user32 name 'SetWinEventHook';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _IsWinEventHookInstalled: Pointer;
-
-function IsWinEventHookInstalled;
-begin
-  GetProcedureAddress(_IsWinEventHookInstalled, user32, 'IsWinEventHookInstalled');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_IsWinEventHookInstalled]
-  end;
-end;
-{$ELSE}
-function IsWinEventHookInstalled; external user32 name 'IsWinEventHookInstalled';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _UnhookWinEvent: Pointer;
-
-function UnhookWinEvent;
-begin
-  GetProcedureAddress(_UnhookWinEvent, user32, 'UnhookWinEvent');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_UnhookWinEvent]
-  end;
-end;
-{$ELSE}
-function UnhookWinEvent; external user32 name 'UnhookWinEvent';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetGUIThreadInfo: Pointer;
-
-function GetGUIThreadInfo;
-begin
-  GetProcedureAddress(_GetGUIThreadInfo, user32, 'GetGUIThreadInfo');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetGUIThreadInfo]
-  end;
-end;
-{$ELSE}
-function GetGUIThreadInfo; external user32 name 'GetGUIThreadInfo';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetWindowModuleFileNameA: Pointer;
-
-function GetWindowModuleFileNameA;
-begin
-  GetProcedureAddress(_GetWindowModuleFileNameA, user32, 'GetWindowModuleFileNameA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetWindowModuleFileNameA]
-  end;
-end;
-{$ELSE}
-function GetWindowModuleFileNameA; external user32 name 'GetWindowModuleFileNameA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetWindowModuleFileNameW: Pointer;
-
-function GetWindowModuleFileNameW;
-begin
-  GetProcedureAddress(_GetWindowModuleFileNameW, user32, 'GetWindowModuleFileNameW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetWindowModuleFileNameW]
-  end;
-end;
-{$ELSE}
-function GetWindowModuleFileNameW; external user32 name 'GetWindowModuleFileNameW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetWindowModuleFileName: Pointer;
-
-function GetWindowModuleFileName;
-begin
-  GetProcedureAddress(_GetWindowModuleFileName, user32, 'GetWindowModuleFileNameW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetWindowModuleFileName]
-  end;
-end;
-{$ELSE}
-function GetWindowModuleFileName; external user32 name 'GetWindowModuleFileNameW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetWindowModuleFileName: Pointer;
-
-function GetWindowModuleFileName;
-begin
-  GetProcedureAddress(_GetWindowModuleFileName, user32, 'GetWindowModuleFileNameA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetWindowModuleFileName]
-  end;
-end;
-{$ELSE}
-function GetWindowModuleFileName; external user32 name 'GetWindowModuleFileNameA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetCursorInfo: Pointer;
-
-function GetCursorInfo;
-begin
-  GetProcedureAddress(_GetCursorInfo, user32, 'GetCursorInfo');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetCursorInfo]
-  end;
-end;
-{$ELSE}
-function GetCursorInfo; external user32 name 'GetCursorInfo';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetWindowInfo: Pointer;
-
-function GetWindowInfo;
-begin
-  GetProcedureAddress(_GetWindowInfo, user32, 'GetWindowInfo');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetWindowInfo]
-  end;
-end;
-{$ELSE}
-function GetWindowInfo; external user32 name 'GetWindowInfo';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetTitleBarInfo: Pointer;
-
-function GetTitleBarInfo;
-begin
-  GetProcedureAddress(_GetTitleBarInfo, user32, 'GetTitleBarInfo');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetTitleBarInfo]
-  end;
-end;
-{$ELSE}
-function GetTitleBarInfo; external user32 name 'GetTitleBarInfo';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetMenuBarInfo: Pointer;
-
-function GetMenuBarInfo;
-begin
-  GetProcedureAddress(_GetMenuBarInfo, user32, 'GetMenuBarInfo');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetMenuBarInfo]
-  end;
-end;
-{$ELSE}
-function GetMenuBarInfo; external user32 name 'GetMenuBarInfo';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetScrollBarInfo: Pointer;
-
-function GetScrollBarInfo;
-begin
-  GetProcedureAddress(_GetScrollBarInfo, user32, 'GetScrollBarInfo');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetScrollBarInfo]
-  end;
-end;
-{$ELSE}
-function GetScrollBarInfo; external user32 name 'GetScrollBarInfo';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetComboBoxInfo: Pointer;
-
-function GetComboBoxInfo;
-begin
-  GetProcedureAddress(_GetComboBoxInfo, user32, 'GetComboBoxInfo');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetComboBoxInfo]
-  end;
-end;
-{$ELSE}
-function GetComboBoxInfo; external user32 name 'GetComboBoxInfo';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetAncestor: Pointer;
-
-function GetAncestor;
-begin
-  GetProcedureAddress(_GetAncestor, user32, 'GetAncestor');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetAncestor]
-  end;
-end;
-{$ELSE}
-function GetAncestor; external user32 name 'GetAncestor';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _RealChildWindowFromPoint: Pointer;
-
-function RealChildWindowFromPoint;
-begin
-  GetProcedureAddress(_RealChildWindowFromPoint, user32, 'RealChildWindowFromPoint');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RealChildWindowFromPoint]
-  end;
-end;
-{$ELSE}
-function RealChildWindowFromPoint; external user32 name 'RealChildWindowFromPoint';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _RealGetWindowClassA: Pointer;
-
-function RealGetWindowClassA;
-begin
-  GetProcedureAddress(_RealGetWindowClassA, user32, 'RealGetWindowClassA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RealGetWindowClassA]
-  end;
-end;
-{$ELSE}
-function RealGetWindowClassA; external user32 name 'RealGetWindowClassA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _RealGetWindowClassW: Pointer;
-
-function RealGetWindowClassW;
-begin
-  GetProcedureAddress(_RealGetWindowClassW, user32, 'RealGetWindowClassW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RealGetWindowClassW]
-  end;
-end;
-{$ELSE}
-function RealGetWindowClassW; external user32 name 'RealGetWindowClassW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _RealGetWindowClass: Pointer;
-
-function RealGetWindowClass;
-begin
-  GetProcedureAddress(_RealGetWindowClass, user32, 'RealGetWindowClassW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RealGetWindowClass]
-  end;
-end;
-{$ELSE}
-function RealGetWindowClass; external user32 name 'RealGetWindowClassW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _RealGetWindowClass: Pointer;
-
-function RealGetWindowClass;
-begin
-  GetProcedureAddress(_RealGetWindowClass, user32, 'RealGetWindowClassA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RealGetWindowClass]
-  end;
-end;
-{$ELSE}
-function RealGetWindowClass; external user32 name 'RealGetWindowClassA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetAltTabInfoA: Pointer;
-
-function GetAltTabInfoA;
-begin
-  GetProcedureAddress(_GetAltTabInfoA, user32, 'GetAltTabInfoA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetAltTabInfoA]
-  end;
-end;
-{$ELSE}
-function GetAltTabInfoA; external user32 name 'GetAltTabInfoA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetAltTabInfoW: Pointer;
-
-function GetAltTabInfoW;
-begin
-  GetProcedureAddress(_GetAltTabInfoW, user32, 'GetAltTabInfoW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetAltTabInfoW]
-  end;
-end;
-{$ELSE}
-function GetAltTabInfoW; external user32 name 'GetAltTabInfoW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetAltTabInfo: Pointer;
-
-function GetAltTabInfo;
-begin
-  GetProcedureAddress(_GetAltTabInfo, user32, 'GetAltTabInfoW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetAltTabInfo]
-  end;
-end;
-{$ELSE}
-function GetAltTabInfo; external user32 name 'GetAltTabInfoW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetAltTabInfo: Pointer;
-
-function GetAltTabInfo;
-begin
-  GetProcedureAddress(_GetAltTabInfo, user32, 'GetAltTabInfoA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetAltTabInfo]
-  end;
-end;
-{$ELSE}
-function GetAltTabInfo; external user32 name 'GetAltTabInfoA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetListBoxInfo: Pointer;
-
-function GetListBoxInfo;
-begin
-  GetProcedureAddress(_GetListBoxInfo, user32, 'GetListBoxInfo');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetListBoxInfo]
-  end;
-end;
-{$ELSE}
-function GetListBoxInfo; external user32 name 'GetListBoxInfo';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _LockWorkStation: Pointer;
-
-function LockWorkStation;
-begin
-  GetProcedureAddress(_LockWorkStation, user32, 'LockWorkStation');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LockWorkStation]
-  end;
-end;
-{$ELSE}
-function LockWorkStation; external user32 name 'LockWorkStation';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _UserHandleGrantAccess: Pointer;
-
-function UserHandleGrantAccess;
-begin
-  GetProcedureAddress(_UserHandleGrantAccess, user32, 'UserHandleGrantAccess');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_UserHandleGrantAccess]
-  end;
-end;
-{$ELSE}
-function UserHandleGrantAccess; external user32 name 'UserHandleGrantAccess';
-{$ENDIF DYNAMIC_LINK}
-
 function GET_RAWINPUT_CODE_WPARAM(wParam: WPARAM): DWORD;
 begin
   Result := wParam and $ff;
@@ -27305,8 +11937,9139 @@ begin
   Result := PRAWINPUT(DWORD(RAWINPUT_ALIGN(ptr)) + ptr^.header.dwSize);
 end;
 
+function RIDEV_EXMODE(mode: DWORD): DWORD;
+begin
+  Result := mode and RIDEV_EXMODEMASK;
+end;
 
 {$IFDEF DYNAMIC_LINK}
+
+var
+  _IsHungAppWindow: Pointer;
+
+function IsHungAppWindow;
+begin
+  GetProcedureAddress(_IsHungAppWindow, user32, 'IsHungAppWindow');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsHungAppWindow]
+  end;
+end;
+
+var
+  _DisableProcessWindowsGhosting: Pointer;
+
+procedure DisableProcessWindowsGhosting;
+begin
+  GetProcedureAddress(_DisableProcessWindowsGhosting, user32, 'DisableProcessWindowsGhosting');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DisableProcessWindowsGhosting]
+  end;
+end;
+
+var
+  _wvsprintfA: Pointer;
+
+function wvsprintfA;
+begin
+  GetProcedureAddress(_wvsprintfA, user32, 'wvsprintfA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_wvsprintfA]
+  end;
+end;
+
+var
+  _wvsprintfW: Pointer;
+
+function wvsprintfW;
+begin
+  GetProcedureAddress(_wvsprintfW, user32, 'wvsprintfW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_wvsprintfW]
+  end;
+end;
+
+var
+  _wvsprintf: Pointer;
+
+function wvsprintf;
+begin
+  GetProcedureAddress(_wvsprintf, user32, 'wvsprintf' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_wvsprintf]
+  end;
+end;
+
+var
+  _wsprintfA: Pointer;
+
+function wsprintfA;
+begin
+  GetProcedureAddress(_wsprintfA, user32, 'wsprintfA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_wsprintfA]
+  end;
+end;
+
+var
+  _wsprintfW: Pointer;
+
+function wsprintfW;
+begin
+  GetProcedureAddress(_wsprintfW, user32, 'wsprintfW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_wsprintfW]
+  end;
+end;
+
+var
+  _wsprintf: Pointer;
+
+function wsprintf;
+begin
+  GetProcedureAddress(_wsprintf, user32, 'wsprintf' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_wsprintf]
+  end;
+end;
+
+var
+  _LoadKeyboardLayoutA: Pointer;
+
+function LoadKeyboardLayoutA;
+begin
+  GetProcedureAddress(_LoadKeyboardLayoutA, user32, 'LoadKeyboardLayoutA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LoadKeyboardLayoutA]
+  end;
+end;
+
+var
+  _LoadKeyboardLayoutW: Pointer;
+
+function LoadKeyboardLayoutW;
+begin
+  GetProcedureAddress(_LoadKeyboardLayoutW, user32, 'LoadKeyboardLayoutW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LoadKeyboardLayoutW]
+  end;
+end;
+
+var
+  _LoadKeyboardLayout: Pointer;
+
+function LoadKeyboardLayout;
+begin
+  GetProcedureAddress(_LoadKeyboardLayout, user32, 'LoadKeyboardLayout' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LoadKeyboardLayout]
+  end;
+end;
+
+var
+  _ActivateKeyboardLayout: Pointer;
+
+function ActivateKeyboardLayout;
+begin
+  GetProcedureAddress(_ActivateKeyboardLayout, user32, 'ActivateKeyboardLayout');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ActivateKeyboardLayout]
+  end;
+end;
+
+var
+  _ToUnicodeEx: Pointer;
+
+function ToUnicodeEx;
+begin
+  GetProcedureAddress(_ToUnicodeEx, user32, 'ToUnicodeEx');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ToUnicodeEx]
+  end;
+end;
+
+var
+  _UnloadKeyboardLayout: Pointer;
+
+function UnloadKeyboardLayout;
+begin
+  GetProcedureAddress(_UnloadKeyboardLayout, user32, 'UnloadKeyboardLayout');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_UnloadKeyboardLayout]
+  end;
+end;
+
+var
+  _GetKeyboardLayoutNameA: Pointer;
+
+function GetKeyboardLayoutNameA;
+begin
+  GetProcedureAddress(_GetKeyboardLayoutNameA, user32, 'GetKeyboardLayoutNameA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetKeyboardLayoutNameA]
+  end;
+end;
+
+var
+  _GetKeyboardLayoutNameW: Pointer;
+
+function GetKeyboardLayoutNameW;
+begin
+  GetProcedureAddress(_GetKeyboardLayoutNameW, user32, 'GetKeyboardLayoutNameW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetKeyboardLayoutNameW]
+  end;
+end;
+
+var
+  _GetKeyboardLayoutName: Pointer;
+
+function GetKeyboardLayoutName;
+begin
+  GetProcedureAddress(_GetKeyboardLayoutName, user32, 'GetKeyboardLayoutName' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetKeyboardLayoutName]
+  end;
+end;
+
+var
+  _GetKeyboardLayoutList: Pointer;
+
+function GetKeyboardLayoutList;
+begin
+  GetProcedureAddress(_GetKeyboardLayoutList, user32, 'GetKeyboardLayoutList');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetKeyboardLayoutList]
+  end;
+end;
+
+var
+  _GetKeyboardLayout: Pointer;
+
+function GetKeyboardLayout;
+begin
+  GetProcedureAddress(_GetKeyboardLayout, user32, 'GetKeyboardLayout');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetKeyboardLayout]
+  end;
+end;
+
+var
+  _GetMouseMovePointsEx: Pointer;
+
+function GetMouseMovePointsEx;
+begin
+  GetProcedureAddress(_GetMouseMovePointsEx, user32, 'GetMouseMovePointsEx');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetMouseMovePointsEx]
+  end;
+end;
+
+var
+  _CreateDesktopA: Pointer;
+
+function CreateDesktopA;
+begin
+  GetProcedureAddress(_CreateDesktopA, user32, 'CreateDesktopA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateDesktopA]
+  end;
+end;
+
+var
+  _CreateDesktopW: Pointer;
+
+function CreateDesktopW;
+begin
+  GetProcedureAddress(_CreateDesktopW, user32, 'CreateDesktopW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateDesktopW]
+  end;
+end;
+
+var
+  _CreateDesktop: Pointer;
+
+function CreateDesktop;
+begin
+  GetProcedureAddress(_CreateDesktop, user32, 'CreateDesktop' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateDesktop]
+  end;
+end;
+
+var
+  _OpenDesktopA: Pointer;
+
+function OpenDesktopA;
+begin
+  GetProcedureAddress(_OpenDesktopA, user32, 'OpenDesktopA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_OpenDesktopA]
+  end;
+end;
+
+var
+  _OpenDesktopW: Pointer;
+
+function OpenDesktopW;
+begin
+  GetProcedureAddress(_OpenDesktopW, user32, 'OpenDesktopW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_OpenDesktopW]
+  end;
+end;
+
+var
+  _OpenDesktop: Pointer;
+
+function OpenDesktop;
+begin
+  GetProcedureAddress(_OpenDesktop, user32, 'OpenDesktop' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_OpenDesktop]
+  end;
+end;
+
+var
+  _OpenInputDesktop: Pointer;
+
+function OpenInputDesktop;
+begin
+  GetProcedureAddress(_OpenInputDesktop, user32, 'OpenInputDesktop');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_OpenInputDesktop]
+  end;
+end;
+
+var
+  _EnumDesktopsA: Pointer;
+
+function EnumDesktopsA;
+begin
+  GetProcedureAddress(_EnumDesktopsA, user32, 'EnumDesktopsA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumDesktopsA]
+  end;
+end;
+
+var
+  _EnumDesktopsW: Pointer;
+
+function EnumDesktopsW;
+begin
+  GetProcedureAddress(_EnumDesktopsW, user32, 'EnumDesktopsW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumDesktopsW]
+  end;
+end;
+
+var
+  _EnumDesktops: Pointer;
+
+function EnumDesktops;
+begin
+  GetProcedureAddress(_EnumDesktops, user32, 'EnumDesktops' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumDesktops]
+  end;
+end;
+
+var
+  _EnumDesktopWindows: Pointer;
+
+function EnumDesktopWindows;
+begin
+  GetProcedureAddress(_EnumDesktopWindows, user32, 'EnumDesktopWindows');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumDesktopWindows]
+  end;
+end;
+
+var
+  _SwitchDesktop: Pointer;
+
+function SwitchDesktop;
+begin
+  GetProcedureAddress(_SwitchDesktop, user32, 'SwitchDesktop');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SwitchDesktop]
+  end;
+end;
+
+var
+  _SetThreadDesktop: Pointer;
+
+function SetThreadDesktop;
+begin
+  GetProcedureAddress(_SetThreadDesktop, user32, 'SetThreadDesktop');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetThreadDesktop]
+  end;
+end;
+
+var
+  _CloseDesktop: Pointer;
+
+function CloseDesktop;
+begin
+  GetProcedureAddress(_CloseDesktop, user32, 'CloseDesktop');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CloseDesktop]
+  end;
+end;
+
+var
+  _GetThreadDesktop: Pointer;
+
+function GetThreadDesktop;
+begin
+  GetProcedureAddress(_GetThreadDesktop, user32, 'GetThreadDesktop');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetThreadDesktop]
+  end;
+end;
+
+var
+  _CreateWindowStationA: Pointer;
+
+function CreateWindowStationA;
+begin
+  GetProcedureAddress(_CreateWindowStationA, user32, 'CreateWindowStationA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateWindowStationA]
+  end;
+end;
+
+var
+  _CreateWindowStationW: Pointer;
+
+function CreateWindowStationW;
+begin
+  GetProcedureAddress(_CreateWindowStationW, user32, 'CreateWindowStationW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateWindowStationW]
+  end;
+end;
+
+var
+  _CreateWindowStation: Pointer;
+
+function CreateWindowStation;
+begin
+  GetProcedureAddress(_CreateWindowStation, user32, 'CreateWindowStation' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateWindowStation]
+  end;
+end;
+
+var
+  _OpenWindowStationA: Pointer;
+
+function OpenWindowStationA;
+begin
+  GetProcedureAddress(_OpenWindowStationA, user32, 'OpenWindowStationA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_OpenWindowStationA]
+  end;
+end;
+
+var
+  _OpenWindowStationW: Pointer;
+
+function OpenWindowStationW;
+begin
+  GetProcedureAddress(_OpenWindowStationW, user32, 'OpenWindowStationW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_OpenWindowStationW]
+  end;
+end;
+
+var
+  _OpenWindowStation: Pointer;
+
+function OpenWindowStation;
+begin
+  GetProcedureAddress(_OpenWindowStation, user32, 'OpenWindowStation' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_OpenWindowStation]
+  end;
+end;
+
+var
+  _EnumWindowStationsA: Pointer;
+
+function EnumWindowStationsA;
+begin
+  GetProcedureAddress(_EnumWindowStationsA, user32, 'EnumWindowStationsA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumWindowStationsA]
+  end;
+end;
+
+var
+  _EnumWindowStationsW: Pointer;
+
+function EnumWindowStationsW;
+begin
+  GetProcedureAddress(_EnumWindowStationsW, user32, 'EnumWindowStationsW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumWindowStationsW]
+  end;
+end;
+
+var
+  _EnumWindowStations: Pointer;
+
+function EnumWindowStations;
+begin
+  GetProcedureAddress(_EnumWindowStations, user32, 'EnumWindowStations' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumWindowStations]
+  end;
+end;
+
+var
+  _CloseWindowStation: Pointer;
+
+function CloseWindowStation;
+begin
+  GetProcedureAddress(_CloseWindowStation, user32, 'CloseWindowStation');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CloseWindowStation]
+  end;
+end;
+
+var
+  _SetProcessWindowStation: Pointer;
+
+function SetProcessWindowStation;
+begin
+  GetProcedureAddress(_SetProcessWindowStation, user32, 'SetProcessWindowStation');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetProcessWindowStation]
+  end;
+end;
+
+var
+  _GetProcessWindowStation: Pointer;
+
+function GetProcessWindowStation;
+begin
+  GetProcedureAddress(_GetProcessWindowStation, user32, 'GetProcessWindowStation');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetProcessWindowStation]
+  end;
+end;
+
+var
+  _SetUserObjectSecurity: Pointer;
+
+function SetUserObjectSecurity;
+begin
+  GetProcedureAddress(_SetUserObjectSecurity, user32, 'SetUserObjectSecurity');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetUserObjectSecurity]
+  end;
+end;
+
+var
+  _GetUserObjectSecurity: Pointer;
+
+function GetUserObjectSecurity;
+begin
+  GetProcedureAddress(_GetUserObjectSecurity, user32, 'GetUserObjectSecurity');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetUserObjectSecurity]
+  end;
+end;
+
+var
+  _GetUserObjectInformationA: Pointer;
+
+function GetUserObjectInformationA;
+begin
+  GetProcedureAddress(_GetUserObjectInformationA, user32, 'GetUserObjectInformationA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetUserObjectInformationA]
+  end;
+end;
+
+var
+  _GetUserObjectInformationW: Pointer;
+
+function GetUserObjectInformationW;
+begin
+  GetProcedureAddress(_GetUserObjectInformationW, user32, 'GetUserObjectInformationW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetUserObjectInformationW]
+  end;
+end;
+
+var
+  _GetUserObjectInformation: Pointer;
+
+function GetUserObjectInformation;
+begin
+  GetProcedureAddress(_GetUserObjectInformation, user32, 'GetUserObjectInformation' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetUserObjectInformation]
+  end;
+end;
+
+var
+  _SetUserObjectInformationA: Pointer;
+
+function SetUserObjectInformationA;
+begin
+  GetProcedureAddress(_SetUserObjectInformationA, user32, 'SetUserObjectInformationA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetUserObjectInformationA]
+  end;
+end;
+
+var
+  _SetUserObjectInformationW: Pointer;
+
+function SetUserObjectInformationW;
+begin
+  GetProcedureAddress(_SetUserObjectInformationW, user32, 'SetUserObjectInformationW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetUserObjectInformationW]
+  end;
+end;
+
+var
+  _SetUserObjectInformation: Pointer;
+
+function SetUserObjectInformation;
+begin
+  GetProcedureAddress(_SetUserObjectInformation, user32, 'SetUserObjectInformation' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetUserObjectInformation]
+  end;
+end;
+
+var
+  _RegisterWindowMessageA: Pointer;
+
+function RegisterWindowMessageA;
+begin
+  GetProcedureAddress(_RegisterWindowMessageA, user32, 'RegisterWindowMessageA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RegisterWindowMessageA]
+  end;
+end;
+
+var
+  _RegisterWindowMessageW: Pointer;
+
+function RegisterWindowMessageW;
+begin
+  GetProcedureAddress(_RegisterWindowMessageW, user32, 'RegisterWindowMessageW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RegisterWindowMessageW]
+  end;
+end;
+
+var
+  _RegisterWindowMessage: Pointer;
+
+function RegisterWindowMessage;
+begin
+  GetProcedureAddress(_RegisterWindowMessage, user32, 'RegisterWindowMessage' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RegisterWindowMessage]
+  end;
+end;
+
+var
+  __TrackMouseEvent: Pointer;
+
+function TrackMouseEvent;
+begin
+  GetProcedureAddress(__TrackMouseEvent, user32, 'TrackMouseEvent');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [__TrackMouseEvent]
+  end;
+end;
+
+var
+  _DrawEdge: Pointer;
+
+function DrawEdge;
+begin
+  GetProcedureAddress(_DrawEdge, user32, 'DrawEdge');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DrawEdge]
+  end;
+end;
+
+var
+  _DrawFrameControl: Pointer;
+
+function DrawFrameControl;
+begin
+  GetProcedureAddress(_DrawFrameControl, user32, 'DrawFrameControl');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DrawFrameControl]
+  end;
+end;
+
+var
+  _DrawCaption: Pointer;
+
+function DrawCaption;
+begin
+  GetProcedureAddress(_DrawCaption, user32, 'DrawCaption');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DrawCaption]
+  end;
+end;
+
+var
+  _DrawAnimatedRects: Pointer;
+
+function DrawAnimatedRects;
+begin
+  GetProcedureAddress(_DrawAnimatedRects, user32, 'DrawAnimatedRects');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DrawAnimatedRects]
+  end;
+end;
+
+var
+  _GetMessageA: Pointer;
+
+function GetMessageA;
+begin
+  GetProcedureAddress(_GetMessageA, user32, 'GetMessageA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetMessageA]
+  end;
+end;
+
+var
+  _GetMessageW: Pointer;
+
+function GetMessageW;
+begin
+  GetProcedureAddress(_GetMessageW, user32, 'GetMessageW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetMessageW]
+  end;
+end;
+
+var
+  _GetMessage: Pointer;
+
+function GetMessage;
+begin
+  GetProcedureAddress(_GetMessage, user32, 'GetMessage' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetMessage]
+  end;
+end;
+
+var
+  _TranslateMessage: Pointer;
+
+function TranslateMessage;
+begin
+  GetProcedureAddress(_TranslateMessage, user32, 'TranslateMessage');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TranslateMessage]
+  end;
+end;
+
+var
+  _DispatchMessageA: Pointer;
+
+function DispatchMessageA;
+begin
+  GetProcedureAddress(_DispatchMessageA, user32, 'DispatchMessageA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DispatchMessageA]
+  end;
+end;
+
+var
+  _DispatchMessageW: Pointer;
+
+function DispatchMessageW;
+begin
+  GetProcedureAddress(_DispatchMessageW, user32, 'DispatchMessageW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DispatchMessageW]
+  end;
+end;
+
+var
+  _DispatchMessage: Pointer;
+
+function DispatchMessage;
+begin
+  GetProcedureAddress(_DispatchMessage, user32, 'DispatchMessage' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DispatchMessage]
+  end;
+end;
+
+var
+  _SetMessageQueue: Pointer;
+
+function SetMessageQueue;
+begin
+  GetProcedureAddress(_SetMessageQueue, user32, 'SetMessageQueue');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetMessageQueue]
+  end;
+end;
+
+var
+  _PeekMessageA: Pointer;
+
+function PeekMessageA;
+begin
+  GetProcedureAddress(_PeekMessageA, user32, 'PeekMessageA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PeekMessageA]
+  end;
+end;
+
+var
+  _PeekMessageW: Pointer;
+
+function PeekMessageW;
+begin
+  GetProcedureAddress(_PeekMessageW, user32, 'PeekMessageW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PeekMessageW]
+  end;
+end;
+
+var
+  _PeekMessage: Pointer;
+
+function PeekMessage;
+begin
+  GetProcedureAddress(_PeekMessage, user32, 'PeekMessage' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PeekMessage]
+  end;
+end;
+
+var
+  _RegisterHotKey: Pointer;
+
+function RegisterHotKey;
+begin
+  GetProcedureAddress(_RegisterHotKey, user32, 'RegisterHotKey');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RegisterHotKey]
+  end;
+end;
+
+var
+  _UnregisterHotKey: Pointer;
+
+function UnregisterHotKey;
+begin
+  GetProcedureAddress(_UnregisterHotKey, user32, 'UnregisterHotKey');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_UnregisterHotKey]
+  end;
+end;
+
+var
+  _ExitWindowsEx: Pointer;
+
+function ExitWindowsEx;
+begin
+  GetProcedureAddress(_ExitWindowsEx, user32, 'ExitWindowsEx');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ExitWindowsEx]
+  end;
+end;
+
+var
+  _SwapMouseButton: Pointer;
+
+function SwapMouseButton;
+begin
+  GetProcedureAddress(_SwapMouseButton, user32, 'SwapMouseButton');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SwapMouseButton]
+  end;
+end;
+
+var
+  _GetMessagePos: Pointer;
+
+function GetMessagePos;
+begin
+  GetProcedureAddress(_GetMessagePos, user32, 'GetMessagePos');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetMessagePos]
+  end;
+end;
+
+var
+  _GetMessageTime: Pointer;
+
+function GetMessageTime;
+begin
+  GetProcedureAddress(_GetMessageTime, user32, 'GetMessageTime');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetMessageTime]
+  end;
+end;
+
+var
+  _GetMessageExtraInfo: Pointer;
+
+function GetMessageExtraInfo;
+begin
+  GetProcedureAddress(_GetMessageExtraInfo, user32, 'GetMessageExtraInfo');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetMessageExtraInfo]
+  end;
+end;
+
+var
+  _SetMessageExtraInfo: Pointer;
+
+function SetMessageExtraInfo;
+begin
+  GetProcedureAddress(_SetMessageExtraInfo, user32, 'SetMessageExtraInfo');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetMessageExtraInfo]
+  end;
+end;
+
+var
+  _SendMessageA: Pointer;
+
+function SendMessageA;
+begin
+  GetProcedureAddress(_SendMessageA, user32, 'SendMessageA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SendMessageA]
+  end;
+end;
+
+var
+  _SendMessageW: Pointer;
+
+function SendMessageW;
+begin
+  GetProcedureAddress(_SendMessageW, user32, 'SendMessageW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SendMessageW]
+  end;
+end;
+
+var
+  _SendMessage: Pointer;
+
+function SendMessage;
+begin
+  GetProcedureAddress(_SendMessage, user32, 'SendMessage' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SendMessage]
+  end;
+end;
+
+var
+  _SendMessageTimeoutA: Pointer;
+
+function SendMessageTimeoutA;
+begin
+  GetProcedureAddress(_SendMessageTimeoutA, user32, 'SendMessageTimeoutA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SendMessageTimeoutA]
+  end;
+end;
+
+var
+  _SendMessageTimeoutW: Pointer;
+
+function SendMessageTimeoutW;
+begin
+  GetProcedureAddress(_SendMessageTimeoutW, user32, 'SendMessageTimeoutW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SendMessageTimeoutW]
+  end;
+end;
+
+var
+  _SendMessageTimeout: Pointer;
+
+function SendMessageTimeout;
+begin
+  GetProcedureAddress(_SendMessageTimeout, user32, 'SendMessageTimeout' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SendMessageTimeout]
+  end;
+end;
+
+var
+  _SendNotifyMessageA: Pointer;
+
+function SendNotifyMessageA;
+begin
+  GetProcedureAddress(_SendNotifyMessageA, user32, 'SendNotifyMessageA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SendNotifyMessageA]
+  end;
+end;
+
+var
+  _SendNotifyMessageW: Pointer;
+
+function SendNotifyMessageW;
+begin
+  GetProcedureAddress(_SendNotifyMessageW, user32, 'SendNotifyMessageW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SendNotifyMessageW]
+  end;
+end;
+
+var
+  _SendNotifyMessage: Pointer;
+
+function SendNotifyMessage;
+begin
+  GetProcedureAddress(_SendNotifyMessage, user32, 'SendNotifyMessage' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SendNotifyMessage]
+  end;
+end;
+
+var
+  _SendMessageCallbackA: Pointer;
+
+function SendMessageCallbackA;
+begin
+  GetProcedureAddress(_SendMessageCallbackA, user32, 'SendMessageCallbackA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SendMessageCallbackA]
+  end;
+end;
+
+var
+  _SendMessageCallbackW: Pointer;
+
+function SendMessageCallbackW;
+begin
+  GetProcedureAddress(_SendMessageCallbackW, user32, 'SendMessageCallbackW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SendMessageCallbackW]
+  end;
+end;
+
+var
+  _SendMessageCallback: Pointer;
+
+function SendMessageCallback;
+begin
+  GetProcedureAddress(_SendMessageCallback, user32, 'SendMessageCallback' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SendMessageCallback]
+  end;
+end;
+
+var
+  _BroadcastSystemMessageExA: Pointer;
+
+function BroadcastSystemMessageExA;
+begin
+  GetProcedureAddress(_BroadcastSystemMessageExA, user32, 'BroadcastSystemMessageExA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_BroadcastSystemMessageExA]
+  end;
+end;
+
+var
+  _BroadcastSystemMessageExW: Pointer;
+
+function BroadcastSystemMessageExW;
+begin
+  GetProcedureAddress(_BroadcastSystemMessageExW, user32, 'BroadcastSystemMessageExW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_BroadcastSystemMessageExW]
+  end;
+end;
+
+var
+  _BroadcastSystemMessageEx: Pointer;
+
+function BroadcastSystemMessageEx;
+begin
+  GetProcedureAddress(_BroadcastSystemMessageEx, user32, 'BroadcastSystemMessageEx' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_BroadcastSystemMessageEx]
+  end;
+end;
+
+var
+  _BroadcastSystemMessageA: Pointer;
+
+function BroadcastSystemMessageA;
+begin
+  GetProcedureAddress(_BroadcastSystemMessageA, user32, 'BroadcastSystemMessageA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_BroadcastSystemMessageA]
+  end;
+end;
+
+var
+  _BroadcastSystemMessageW: Pointer;
+
+function BroadcastSystemMessageW;
+begin
+  GetProcedureAddress(_BroadcastSystemMessageW, user32, 'BroadcastSystemMessageW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_BroadcastSystemMessageW]
+  end;
+end;
+
+var
+  _BroadcastSystemMessage: Pointer;
+
+function BroadcastSystemMessage;
+begin
+  GetProcedureAddress(_BroadcastSystemMessage, user32, 'BroadcastSystemMessage' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_BroadcastSystemMessage]
+  end;
+end;
+
+var
+  _RegisterDeviceNotificationA: Pointer;
+
+function RegisterDeviceNotificationA;
+begin
+  GetProcedureAddress(_RegisterDeviceNotificationA, user32, 'RegisterDeviceNotificationA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RegisterDeviceNotificationA]
+  end;
+end;
+
+var
+  _RegisterDeviceNotificationW: Pointer;
+
+function RegisterDeviceNotificationW;
+begin
+  GetProcedureAddress(_RegisterDeviceNotificationW, user32, 'RegisterDeviceNotificationW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RegisterDeviceNotificationW]
+  end;
+end;
+
+var
+  _RegisterDeviceNotification: Pointer;
+
+function RegisterDeviceNotification;
+begin
+  GetProcedureAddress(_RegisterDeviceNotification, user32, 'RegisterDeviceNotification' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RegisterDeviceNotification]
+  end;
+end;
+
+var
+  _UnregisterDeviceNotification: Pointer;
+
+function UnregisterDeviceNotification;
+begin
+  GetProcedureAddress(_UnregisterDeviceNotification, user32, 'UnregisterDeviceNotification');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_UnregisterDeviceNotification]
+  end;
+end;
+
+var
+  _PostMessageA: Pointer;
+
+function PostMessageA;
+begin
+  GetProcedureAddress(_PostMessageA, user32, 'PostMessageA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PostMessageA]
+  end;
+end;
+
+var
+  _PostMessageW: Pointer;
+
+function PostMessageW;
+begin
+  GetProcedureAddress(_PostMessageW, user32, 'PostMessageW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PostMessageW]
+  end;
+end;
+
+var
+  _PostMessage: Pointer;
+
+function PostMessage;
+begin
+  GetProcedureAddress(_PostMessage, user32, 'PostMessage' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PostMessage]
+  end;
+end;
+
+var
+  _PostThreadMessageA: Pointer;
+
+function PostThreadMessageA;
+begin
+  GetProcedureAddress(_PostThreadMessageA, user32, 'PostThreadMessageA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PostThreadMessageA]
+  end;
+end;
+
+var
+  _PostThreadMessageW: Pointer;
+
+function PostThreadMessageW;
+begin
+  GetProcedureAddress(_PostThreadMessageW, user32, 'PostThreadMessageW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PostThreadMessageW]
+  end;
+end;
+
+var
+  _PostThreadMessage: Pointer;
+
+function PostThreadMessage;
+begin
+  GetProcedureAddress(_PostThreadMessage, user32, 'PostThreadMessage' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PostThreadMessage]
+  end;
+end;
+
+var
+  _AttachThreadInput: Pointer;
+
+function AttachThreadInput;
+begin
+  GetProcedureAddress(_AttachThreadInput, user32, 'AttachThreadInput');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AttachThreadInput]
+  end;
+end;
+
+var
+  _ReplyMessage: Pointer;
+
+function ReplyMessage;
+begin
+  GetProcedureAddress(_ReplyMessage, user32, 'ReplyMessage');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ReplyMessage]
+  end;
+end;
+
+var
+  _WaitMessage: Pointer;
+
+function WaitMessage;
+begin
+  GetProcedureAddress(_WaitMessage, user32, 'WaitMessage');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WaitMessage]
+  end;
+end;
+
+var
+  _WaitForInputIdle: Pointer;
+
+function WaitForInputIdle;
+begin
+  GetProcedureAddress(_WaitForInputIdle, user32, 'WaitForInputIdle');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WaitForInputIdle]
+  end;
+end;
+
+var
+  _DefWindowProcA: Pointer;
+
+function DefWindowProcA;
+begin
+  GetProcedureAddress(_DefWindowProcA, user32, 'DefWindowProcA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DefWindowProcA]
+  end;
+end;
+
+var
+  _DefWindowProcW: Pointer;
+
+function DefWindowProcW;
+begin
+  GetProcedureAddress(_DefWindowProcW, user32, 'DefWindowProcW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DefWindowProcW]
+  end;
+end;
+
+var
+  _DefWindowProc: Pointer;
+
+function DefWindowProc;
+begin
+  GetProcedureAddress(_DefWindowProc, user32, 'DefWindowProc' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DefWindowProc]
+  end;
+end;
+
+var
+  _PostQuitMessage: Pointer;
+
+procedure PostQuitMessage;
+begin
+  GetProcedureAddress(_PostQuitMessage, user32, 'PostQuitMessage');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PostQuitMessage]
+  end;
+end;
+
+var
+  _CallWindowProcA: Pointer;
+
+function CallWindowProcA;
+begin
+  GetProcedureAddress(_CallWindowProcA, user32, 'CallWindowProcA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CallWindowProcA]
+  end;
+end;
+
+var
+  _CallWindowProcW: Pointer;
+
+function CallWindowProcW;
+begin
+  GetProcedureAddress(_CallWindowProcW, user32, 'CallWindowProcW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CallWindowProcW]
+  end;
+end;
+
+var
+  _CallWindowProc: Pointer;
+
+function CallWindowProc;
+begin
+  GetProcedureAddress(_CallWindowProc, user32, 'CallWindowProc' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CallWindowProc]
+  end;
+end;
+
+var
+  _InSendMessage: Pointer;
+
+function InSendMessage;
+begin
+  GetProcedureAddress(_InSendMessage, user32, 'InSendMessage');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_InSendMessage]
+  end;
+end;
+
+var
+  _InSendMessageEx: Pointer;
+
+function InSendMessageEx;
+begin
+  GetProcedureAddress(_InSendMessageEx, user32, 'InSendMessageEx');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_InSendMessageEx]
+  end;
+end;
+
+var
+  _GetDoubleClickTime: Pointer;
+
+function GetDoubleClickTime;
+begin
+  GetProcedureAddress(_GetDoubleClickTime, user32, 'GetDoubleClickTime');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetDoubleClickTime]
+  end;
+end;
+
+var
+  _SetDoubleClickTime: Pointer;
+
+function SetDoubleClickTime;
+begin
+  GetProcedureAddress(_SetDoubleClickTime, user32, 'SetDoubleClickTime');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetDoubleClickTime]
+  end;
+end;
+
+var
+  _RegisterClassA: Pointer;
+
+function RegisterClassA;
+begin
+  GetProcedureAddress(_RegisterClassA, user32, 'RegisterClassA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RegisterClassA]
+  end;
+end;
+
+var
+  _RegisterClassW: Pointer;
+
+function RegisterClassW;
+begin
+  GetProcedureAddress(_RegisterClassW, user32, 'RegisterClassW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RegisterClassW]
+  end;
+end;
+
+var
+  _RegisterClass: Pointer;
+
+function RegisterClass;
+begin
+  GetProcedureAddress(_RegisterClass, user32, 'RegisterClass' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RegisterClass]
+  end;
+end;
+
+var
+  _UnregisterClassA: Pointer;
+
+function UnregisterClassA;
+begin
+  GetProcedureAddress(_UnregisterClassA, user32, 'UnregisterClassA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_UnregisterClassA]
+  end;
+end;
+
+var
+  _UnregisterClassW: Pointer;
+
+function UnregisterClassW;
+begin
+  GetProcedureAddress(_UnregisterClassW, user32, 'UnregisterClassW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_UnregisterClassW]
+  end;
+end;
+
+var
+  _UnregisterClass: Pointer;
+
+function UnregisterClass;
+begin
+  GetProcedureAddress(_UnregisterClass, user32, 'UnregisterClass' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_UnregisterClass]
+  end;
+end;
+
+var
+  _GetClassInfoA: Pointer;
+
+function GetClassInfoA;
+begin
+  GetProcedureAddress(_GetClassInfoA, user32, 'GetClassInfoA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetClassInfoA]
+  end;
+end;
+
+var
+  _GetClassInfoW: Pointer;
+
+function GetClassInfoW;
+begin
+  GetProcedureAddress(_GetClassInfoW, user32, 'GetClassInfoW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetClassInfoW]
+  end;
+end;
+
+var
+  _GetClassInfo: Pointer;
+
+function GetClassInfo;
+begin
+  GetProcedureAddress(_GetClassInfo, user32, 'GetClassInfo' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetClassInfo]
+  end;
+end;
+
+var
+  _RegisterClassExA: Pointer;
+
+function RegisterClassExA;
+begin
+  GetProcedureAddress(_RegisterClassExA, user32, 'RegisterClassExA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RegisterClassExA]
+  end;
+end;
+
+var
+  _RegisterClassExW: Pointer;
+
+function RegisterClassExW;
+begin
+  GetProcedureAddress(_RegisterClassExW, user32, 'RegisterClassExW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RegisterClassExW]
+  end;
+end;
+
+var
+  _RegisterClassEx: Pointer;
+
+function RegisterClassEx;
+begin
+  GetProcedureAddress(_RegisterClassEx, user32, 'RegisterClassEx' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RegisterClassEx]
+  end;
+end;
+
+var
+  _GetClassInfoExA: Pointer;
+
+function GetClassInfoExA;
+begin
+  GetProcedureAddress(_GetClassInfoExA, user32, 'GetClassInfoExA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetClassInfoExA]
+  end;
+end;
+
+var
+  _GetClassInfoExW: Pointer;
+
+function GetClassInfoExW;
+begin
+  GetProcedureAddress(_GetClassInfoExW, user32, 'GetClassInfoExW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetClassInfoExW]
+  end;
+end;
+
+var
+  _GetClassInfoEx: Pointer;
+
+function GetClassInfoEx;
+begin
+  GetProcedureAddress(_GetClassInfoEx, user32, 'GetClassInfoEx' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetClassInfoEx]
+  end;
+end;
+
+var
+  _CreateWindowExA: Pointer;
+
+function CreateWindowExA;
+begin
+  GetProcedureAddress(_CreateWindowExA, user32, 'CreateWindowExA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateWindowExA]
+  end;
+end;
+
+var
+  _CreateWindowExW: Pointer;
+
+function CreateWindowExW;
+begin
+  GetProcedureAddress(_CreateWindowExW, user32, 'CreateWindowExW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateWindowExW]
+  end;
+end;
+
+var
+  _CreateWindowEx: Pointer;
+
+function CreateWindowEx;
+begin
+  GetProcedureAddress(_CreateWindowEx, user32, 'CreateWindowEx' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateWindowEx]
+  end;
+end;
+
+var
+  _IsWindow: Pointer;
+
+function IsWindow;
+begin
+  GetProcedureAddress(_IsWindow, user32, 'IsWindow');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsWindow]
+  end;
+end;
+
+var
+  _IsMenu: Pointer;
+
+function IsMenu;
+begin
+  GetProcedureAddress(_IsMenu, user32, 'IsMenu');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsMenu]
+  end;
+end;
+
+var
+  _IsChild: Pointer;
+
+function IsChild;
+begin
+  GetProcedureAddress(_IsChild, user32, 'IsChild');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsChild]
+  end;
+end;
+
+var
+  _DestroyWindow: Pointer;
+
+function DestroyWindow;
+begin
+  GetProcedureAddress(_DestroyWindow, user32, 'DestroyWindow');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DestroyWindow]
+  end;
+end;
+
+var
+  _ShowWindow: Pointer;
+
+function ShowWindow;
+begin
+  GetProcedureAddress(_ShowWindow, user32, 'ShowWindow');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ShowWindow]
+  end;
+end;
+
+var
+  _AnimateWindow: Pointer;
+
+function AnimateWindow;
+begin
+  GetProcedureAddress(_AnimateWindow, user32, 'AnimateWindow');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AnimateWindow]
+  end;
+end;
+
+var
+  _UpdateLayeredWindow: Pointer;
+
+function UpdateLayeredWindow;
+begin
+  GetProcedureAddress(_UpdateLayeredWindow, user32, 'UpdateLayeredWindow');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_UpdateLayeredWindow]
+  end;
+end;
+
+var
+  _GetLayeredWindowAttributes: Pointer;
+
+function GetLayeredWindowAttributes;
+begin
+  GetProcedureAddress(_GetLayeredWindowAttributes, user32, 'GetLayeredWindowAttributes');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetLayeredWindowAttributes]
+  end;
+end;
+
+var
+  _PrintWindow: Pointer;
+
+function PrintWindow;
+begin
+  GetProcedureAddress(_PrintWindow, user32, 'PrintWindow');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PrintWindow]
+  end;
+end;
+
+var
+  _SetLayeredWindowAttributes: Pointer;
+
+function SetLayeredWindowAttributes;
+begin
+  GetProcedureAddress(_SetLayeredWindowAttributes, user32, 'SetLayeredWindowAttributes');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetLayeredWindowAttributes]
+  end;
+end;
+
+var
+  _ShowWindowAsync: Pointer;
+
+function ShowWindowAsync;
+begin
+  GetProcedureAddress(_ShowWindowAsync, user32, 'ShowWindowAsync');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ShowWindowAsync]
+  end;
+end;
+
+var
+  _FlashWindow: Pointer;
+
+function FlashWindow;
+begin
+  GetProcedureAddress(_FlashWindow, user32, 'FlashWindow');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_FlashWindow]
+  end;
+end;
+
+var
+  _FlashWindowEx: Pointer;
+
+function FlashWindowEx;
+begin
+  GetProcedureAddress(_FlashWindowEx, user32, 'FlashWindowEx');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_FlashWindowEx]
+  end;
+end;
+
+var
+  _ShowOwnedPopups: Pointer;
+
+function ShowOwnedPopups;
+begin
+  GetProcedureAddress(_ShowOwnedPopups, user32, 'ShowOwnedPopups');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ShowOwnedPopups]
+  end;
+end;
+
+var
+  _OpenIcon: Pointer;
+
+function OpenIcon;
+begin
+  GetProcedureAddress(_OpenIcon, user32, 'OpenIcon');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_OpenIcon]
+  end;
+end;
+
+var
+  _CloseWindow: Pointer;
+
+function CloseWindow;
+begin
+  GetProcedureAddress(_CloseWindow, user32, 'CloseWindow');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CloseWindow]
+  end;
+end;
+
+var
+  _MoveWindow: Pointer;
+
+function MoveWindow;
+begin
+  GetProcedureAddress(_MoveWindow, user32, 'MoveWindow');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MoveWindow]
+  end;
+end;
+
+var
+  _SetWindowPos: Pointer;
+
+function SetWindowPos;
+begin
+  GetProcedureAddress(_SetWindowPos, user32, 'SetWindowPos');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetWindowPos]
+  end;
+end;
+
+var
+  _GetWindowPlacement: Pointer;
+
+function GetWindowPlacement;
+begin
+  GetProcedureAddress(_GetWindowPlacement, user32, 'GetWindowPlacement');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetWindowPlacement]
+  end;
+end;
+
+var
+  _SetWindowPlacement: Pointer;
+
+function SetWindowPlacement;
+begin
+  GetProcedureAddress(_SetWindowPlacement, user32, 'SetWindowPlacement');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetWindowPlacement]
+  end;
+end;
+
+var
+  _BeginDeferWindowPos: Pointer;
+
+function BeginDeferWindowPos;
+begin
+  GetProcedureAddress(_BeginDeferWindowPos, user32, 'BeginDeferWindowPos');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_BeginDeferWindowPos]
+  end;
+end;
+
+var
+  _DeferWindowPos: Pointer;
+
+function DeferWindowPos;
+begin
+  GetProcedureAddress(_DeferWindowPos, user32, 'DeferWindowPos');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DeferWindowPos]
+  end;
+end;
+
+var
+  _EndDeferWindowPos: Pointer;
+
+function EndDeferWindowPos;
+begin
+  GetProcedureAddress(_EndDeferWindowPos, user32, 'EndDeferWindowPos');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EndDeferWindowPos]
+  end;
+end;
+
+var
+  _IsWindowVisible: Pointer;
+
+function IsWindowVisible;
+begin
+  GetProcedureAddress(_IsWindowVisible, user32, 'IsWindowVisible');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsWindowVisible]
+  end;
+end;
+
+var
+  _IsIconic: Pointer;
+
+function IsIconic;
+begin
+  GetProcedureAddress(_IsIconic, user32, 'IsIconic');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsIconic]
+  end;
+end;
+
+var
+  _AnyPopup: Pointer;
+
+function AnyPopup;
+begin
+  GetProcedureAddress(_AnyPopup, user32, 'AnyPopup');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AnyPopup]
+  end;
+end;
+
+var
+  _BringWindowToTop: Pointer;
+
+function BringWindowToTop;
+begin
+  GetProcedureAddress(_BringWindowToTop, user32, 'BringWindowToTop');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_BringWindowToTop]
+  end;
+end;
+
+var
+  _IsZoomed: Pointer;
+
+function IsZoomed;
+begin
+  GetProcedureAddress(_IsZoomed, user32, 'IsZoomed');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsZoomed]
+  end;
+end;
+
+var
+  _CreateDialogParamA: Pointer;
+
+function CreateDialogParamA;
+begin
+  GetProcedureAddress(_CreateDialogParamA, user32, 'CreateDialogParamA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateDialogParamA]
+  end;
+end;
+
+var
+  _CreateDialogParamW: Pointer;
+
+function CreateDialogParamW;
+begin
+  GetProcedureAddress(_CreateDialogParamW, user32, 'CreateDialogParamW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateDialogParamW]
+  end;
+end;
+
+var
+  _CreateDialogParam: Pointer;
+
+function CreateDialogParam;
+begin
+  GetProcedureAddress(_CreateDialogParam, user32, 'CreateDialogParam' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateDialogParam]
+  end;
+end;
+
+var
+  _CreateDialogIndirectParamA: Pointer;
+
+function CreateDialogIndirectParamA;
+begin
+  GetProcedureAddress(_CreateDialogIndirectParamA, user32, 'CreateDialogIndirectParamA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateDialogIndirectParamA]
+  end;
+end;
+
+var
+  _CreateDialogIndirectParamW: Pointer;
+
+function CreateDialogIndirectParamW;
+begin
+  GetProcedureAddress(_CreateDialogIndirectParamW, user32, 'CreateDialogIndirectParamW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateDialogIndirectParamW]
+  end;
+end;
+
+var
+  _CreateDialogIndirectParam: Pointer;
+
+function CreateDialogIndirectParam;
+begin
+  GetProcedureAddress(_CreateDialogIndirectParam, user32, 'CreateDialogIndirectParam' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateDialogIndirectParam]
+  end;
+end;
+
+var
+  _DialogBoxParamA: Pointer;
+
+function DialogBoxParamA;
+begin
+  GetProcedureAddress(_DialogBoxParamA, user32, 'DialogBoxParamA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DialogBoxParamA]
+  end;
+end;
+
+var
+  _DialogBoxParamW: Pointer;
+
+function DialogBoxParamW;
+begin
+  GetProcedureAddress(_DialogBoxParamW, user32, 'DialogBoxParamW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DialogBoxParamW]
+  end;
+end;
+
+var
+  _DialogBoxParam: Pointer;
+
+function DialogBoxParam;
+begin
+  GetProcedureAddress(_DialogBoxParam, user32, 'DialogBoxParam' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DialogBoxParam]
+  end;
+end;
+
+var
+  _DialogBoxIndirectParamA: Pointer;
+
+function DialogBoxIndirectParamA;
+begin
+  GetProcedureAddress(_DialogBoxIndirectParamA, user32, 'DialogBoxIndirectParamA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DialogBoxIndirectParamA]
+  end;
+end;
+
+var
+  _DialogBoxIndirectParamW: Pointer;
+
+function DialogBoxIndirectParamW;
+begin
+  GetProcedureAddress(_DialogBoxIndirectParamW, user32, 'DialogBoxIndirectParamW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DialogBoxIndirectParamW]
+  end;
+end;
+
+var
+  _DialogBoxIndirectParam: Pointer;
+
+function DialogBoxIndirectParam;
+begin
+  GetProcedureAddress(_DialogBoxIndirectParam, user32, 'DialogBoxIndirectParam' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DialogBoxIndirectParam]
+  end;
+end;
+
+var
+  _EndDialog: Pointer;
+
+function EndDialog;
+begin
+  GetProcedureAddress(_EndDialog, user32, 'EndDialog');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EndDialog]
+  end;
+end;
+
+var
+  _GetDlgItem: Pointer;
+
+function GetDlgItem;
+begin
+  GetProcedureAddress(_GetDlgItem, user32, 'GetDlgItem');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetDlgItem]
+  end;
+end;
+
+var
+  _SetDlgItemInt: Pointer;
+
+function SetDlgItemInt;
+begin
+  GetProcedureAddress(_SetDlgItemInt, user32, 'SetDlgItemInt');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetDlgItemInt]
+  end;
+end;
+
+var
+  _GetDlgItemInt: Pointer;
+
+function GetDlgItemInt;
+begin
+  GetProcedureAddress(_GetDlgItemInt, user32, 'GetDlgItemInt');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetDlgItemInt]
+  end;
+end;
+
+var
+  _SetDlgItemTextA: Pointer;
+
+function SetDlgItemTextA;
+begin
+  GetProcedureAddress(_SetDlgItemTextA, user32, 'SetDlgItemTextA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetDlgItemTextA]
+  end;
+end;
+
+var
+  _SetDlgItemTextW: Pointer;
+
+function SetDlgItemTextW;
+begin
+  GetProcedureAddress(_SetDlgItemTextW, user32, 'SetDlgItemTextW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetDlgItemTextW]
+  end;
+end;
+
+var
+  _SetDlgItemText: Pointer;
+
+function SetDlgItemText;
+begin
+  GetProcedureAddress(_SetDlgItemText, user32, 'SetDlgItemText' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetDlgItemText]
+  end;
+end;
+
+var
+  _GetDlgItemTextA: Pointer;
+
+function GetDlgItemTextA;
+begin
+  GetProcedureAddress(_GetDlgItemTextA, user32, 'GetDlgItemTextA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetDlgItemTextA]
+  end;
+end;
+
+var
+  _GetDlgItemTextW: Pointer;
+
+function GetDlgItemTextW;
+begin
+  GetProcedureAddress(_GetDlgItemTextW, user32, 'GetDlgItemTextW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetDlgItemTextW]
+  end;
+end;
+
+var
+  _GetDlgItemText: Pointer;
+
+function GetDlgItemText;
+begin
+  GetProcedureAddress(_GetDlgItemText, user32, 'GetDlgItemText' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetDlgItemText]
+  end;
+end;
+
+var
+  _CheckDlgButton: Pointer;
+
+function CheckDlgButton;
+begin
+  GetProcedureAddress(_CheckDlgButton, user32, 'CheckDlgButton');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CheckDlgButton]
+  end;
+end;
+
+var
+  _CheckRadioButton: Pointer;
+
+function CheckRadioButton;
+begin
+  GetProcedureAddress(_CheckRadioButton, user32, 'CheckRadioButton');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CheckRadioButton]
+  end;
+end;
+
+var
+  _IsDlgButtonChecked: Pointer;
+
+function IsDlgButtonChecked;
+begin
+  GetProcedureAddress(_IsDlgButtonChecked, user32, 'IsDlgButtonChecked');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsDlgButtonChecked]
+  end;
+end;
+
+var
+  _SendDlgItemMessageA: Pointer;
+
+function SendDlgItemMessageA;
+begin
+  GetProcedureAddress(_SendDlgItemMessageA, user32, 'SendDlgItemMessageA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SendDlgItemMessageA]
+  end;
+end;
+
+var
+  _SendDlgItemMessageW: Pointer;
+
+function SendDlgItemMessageW;
+begin
+  GetProcedureAddress(_SendDlgItemMessageW, user32, 'SendDlgItemMessageW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SendDlgItemMessageW]
+  end;
+end;
+
+var
+  _SendDlgItemMessage: Pointer;
+
+function SendDlgItemMessage;
+begin
+  GetProcedureAddress(_SendDlgItemMessage, user32, 'SendDlgItemMessage' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SendDlgItemMessage]
+  end;
+end;
+
+var
+  _GetNextDlgGroupItem: Pointer;
+
+function GetNextDlgGroupItem;
+begin
+  GetProcedureAddress(_GetNextDlgGroupItem, user32, 'GetNextDlgGroupItem');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetNextDlgGroupItem]
+  end;
+end;
+
+var
+  _GetNextDlgTabItem: Pointer;
+
+function GetNextDlgTabItem;
+begin
+  GetProcedureAddress(_GetNextDlgTabItem, user32, 'GetNextDlgTabItem');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetNextDlgTabItem]
+  end;
+end;
+
+var
+  _GetDlgCtrlID: Pointer;
+
+function GetDlgCtrlID;
+begin
+  GetProcedureAddress(_GetDlgCtrlID, user32, 'GetDlgCtrlID');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetDlgCtrlID]
+  end;
+end;
+
+var
+  _GetDialogBaseUnits: Pointer;
+
+function GetDialogBaseUnits;
+begin
+  GetProcedureAddress(_GetDialogBaseUnits, user32, 'GetDialogBaseUnits');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetDialogBaseUnits]
+  end;
+end;
+
+var
+  _DefDlgProcA: Pointer;
+
+function DefDlgProcA;
+begin
+  GetProcedureAddress(_DefDlgProcA, user32, 'DefDlgProcA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DefDlgProcA]
+  end;
+end;
+
+var
+  _DefDlgProcW: Pointer;
+
+function DefDlgProcW;
+begin
+  GetProcedureAddress(_DefDlgProcW, user32, 'DefDlgProcW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DefDlgProcW]
+  end;
+end;
+
+var
+  _DefDlgProc: Pointer;
+
+function DefDlgProc;
+begin
+  GetProcedureAddress(_DefDlgProc, user32, 'DefDlgProc' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DefDlgProc]
+  end;
+end;
+
+var
+  _CallMsgFilterA: Pointer;
+
+function CallMsgFilterA;
+begin
+  GetProcedureAddress(_CallMsgFilterA, user32, 'CallMsgFilterA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CallMsgFilterA]
+  end;
+end;
+
+var
+  _CallMsgFilterW: Pointer;
+
+function CallMsgFilterW;
+begin
+  GetProcedureAddress(_CallMsgFilterW, user32, 'CallMsgFilterW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CallMsgFilterW]
+  end;
+end;
+
+var
+  _CallMsgFilter: Pointer;
+
+function CallMsgFilter;
+begin
+  GetProcedureAddress(_CallMsgFilter, user32, 'CallMsgFilter' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CallMsgFilter]
+  end;
+end;
+
+var
+  _OpenClipboard: Pointer;
+
+function OpenClipboard;
+begin
+  GetProcedureAddress(_OpenClipboard, user32, 'OpenClipboard');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_OpenClipboard]
+  end;
+end;
+
+var
+  _CloseClipboard: Pointer;
+
+function CloseClipboard;
+begin
+  GetProcedureAddress(_CloseClipboard, user32, 'CloseClipboard');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CloseClipboard]
+  end;
+end;
+
+var
+  _GetClipboardSequenceNumber: Pointer;
+
+function GetClipboardSequenceNumber;
+begin
+  GetProcedureAddress(_GetClipboardSequenceNumber, user32, 'GetClipboardSequenceNumber');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetClipboardSequenceNumber]
+  end;
+end;
+
+var
+  _GetClipboardOwner: Pointer;
+
+function GetClipboardOwner;
+begin
+  GetProcedureAddress(_GetClipboardOwner, user32, 'GetClipboardOwner');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetClipboardOwner]
+  end;
+end;
+
+var
+  _SetClipboardViewer: Pointer;
+
+function SetClipboardViewer;
+begin
+  GetProcedureAddress(_SetClipboardViewer, user32, 'SetClipboardViewer');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetClipboardViewer]
+  end;
+end;
+
+var
+  _GetClipboardViewer: Pointer;
+
+function GetClipboardViewer;
+begin
+  GetProcedureAddress(_GetClipboardViewer, user32, 'GetClipboardViewer');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetClipboardViewer]
+  end;
+end;
+
+var
+  _ChangeClipboardChain: Pointer;
+
+function ChangeClipboardChain;
+begin
+  GetProcedureAddress(_ChangeClipboardChain, user32, 'ChangeClipboardChain');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ChangeClipboardChain]
+  end;
+end;
+
+var
+  _SetClipboardData: Pointer;
+
+function SetClipboardData;
+begin
+  GetProcedureAddress(_SetClipboardData, user32, 'SetClipboardData');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetClipboardData]
+  end;
+end;
+
+var
+  _GetClipboardData: Pointer;
+
+function GetClipboardData;
+begin
+  GetProcedureAddress(_GetClipboardData, user32, 'GetClipboardData');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetClipboardData]
+  end;
+end;
+
+var
+  _RegisterClipboardFormatA: Pointer;
+
+function RegisterClipboardFormatA;
+begin
+  GetProcedureAddress(_RegisterClipboardFormatA, user32, 'RegisterClipboardFormatA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RegisterClipboardFormatA]
+  end;
+end;
+
+var
+  _RegisterClipboardFormatW: Pointer;
+
+function RegisterClipboardFormatW;
+begin
+  GetProcedureAddress(_RegisterClipboardFormatW, user32, 'RegisterClipboardFormatW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RegisterClipboardFormatW]
+  end;
+end;
+
+var
+  _RegisterClipboardFormat: Pointer;
+
+function RegisterClipboardFormat;
+begin
+  GetProcedureAddress(_RegisterClipboardFormat, user32, 'RegisterClipboardFormat' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RegisterClipboardFormat]
+  end;
+end;
+
+var
+  _CountClipboardFormats: Pointer;
+
+function CountClipboardFormats;
+begin
+  GetProcedureAddress(_CountClipboardFormats, user32, 'CountClipboardFormats');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CountClipboardFormats]
+  end;
+end;
+
+var
+  _EnumClipboardFormats: Pointer;
+
+function EnumClipboardFormats;
+begin
+  GetProcedureAddress(_EnumClipboardFormats, user32, 'EnumClipboardFormats');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumClipboardFormats]
+  end;
+end;
+
+var
+  _GetClipboardFormatNameA: Pointer;
+
+function GetClipboardFormatNameA;
+begin
+  GetProcedureAddress(_GetClipboardFormatNameA, user32, 'GetClipboardFormatNameA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetClipboardFormatNameA]
+  end;
+end;
+
+var
+  _GetClipboardFormatNameW: Pointer;
+
+function GetClipboardFormatNameW;
+begin
+  GetProcedureAddress(_GetClipboardFormatNameW, user32, 'GetClipboardFormatNameW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetClipboardFormatNameW]
+  end;
+end;
+
+var
+  _GetClipboardFormatName: Pointer;
+
+function GetClipboardFormatName;
+begin
+  GetProcedureAddress(_GetClipboardFormatName, user32, 'GetClipboardFormatName' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetClipboardFormatName]
+  end;
+end;
+
+var
+  _EmptyClipboard: Pointer;
+
+function EmptyClipboard;
+begin
+  GetProcedureAddress(_EmptyClipboard, user32, 'EmptyClipboard');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EmptyClipboard]
+  end;
+end;
+
+var
+  _IsClipboardFormatAvailable: Pointer;
+
+function IsClipboardFormatAvailable;
+begin
+  GetProcedureAddress(_IsClipboardFormatAvailable, user32, 'IsClipboardFormatAvailable');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsClipboardFormatAvailable]
+  end;
+end;
+
+var
+  _GetPriorityClipboardFormat: Pointer;
+
+function GetPriorityClipboardFormat;
+begin
+  GetProcedureAddress(_GetPriorityClipboardFormat, user32, 'GetPriorityClipboardFormat');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetPriorityClipboardFormat]
+  end;
+end;
+
+var
+  _GetOpenClipboardWindow: Pointer;
+
+function GetOpenClipboardWindow;
+begin
+  GetProcedureAddress(_GetOpenClipboardWindow, user32, 'GetOpenClipboardWindow');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetOpenClipboardWindow]
+  end;
+end;
+
+var
+  _CharToOemA: Pointer;
+
+function CharToOemA;
+begin
+  GetProcedureAddress(_CharToOemA, user32, 'CharToOemA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CharToOemA]
+  end;
+end;
+
+var
+  _CharToOemW: Pointer;
+
+function CharToOemW;
+begin
+  GetProcedureAddress(_CharToOemW, user32, 'CharToOemW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CharToOemW]
+  end;
+end;
+
+var
+  _CharToOem: Pointer;
+
+function CharToOem;
+begin
+  GetProcedureAddress(_CharToOem, user32, 'CharToOem' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CharToOem]
+  end;
+end;
+
+var
+  _OemToCharA: Pointer;
+
+function OemToCharA;
+begin
+  GetProcedureAddress(_OemToCharA, user32, 'OemToCharA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_OemToCharA]
+  end;
+end;
+
+var
+  _OemToCharW: Pointer;
+
+function OemToCharW;
+begin
+  GetProcedureAddress(_OemToCharW, user32, 'OemToCharW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_OemToCharW]
+  end;
+end;
+
+var
+  _OemToChar: Pointer;
+
+function OemToChar;
+begin
+  GetProcedureAddress(_OemToChar, user32, 'OemToChar' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_OemToChar]
+  end;
+end;
+
+var
+  _CharToOemBuffA: Pointer;
+
+function CharToOemBuffA;
+begin
+  GetProcedureAddress(_CharToOemBuffA, user32, 'CharToOemBuffA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CharToOemBuffA]
+  end;
+end;
+
+var
+  _CharToOemBuffW: Pointer;
+
+function CharToOemBuffW;
+begin
+  GetProcedureAddress(_CharToOemBuffW, user32, 'CharToOemBuffW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CharToOemBuffW]
+  end;
+end;
+
+var
+  _CharToOemBuff: Pointer;
+
+function CharToOemBuff;
+begin
+  GetProcedureAddress(_CharToOemBuff, user32, 'CharToOemBuff' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CharToOemBuff]
+  end;
+end;
+
+var
+  _OemToCharBuffA: Pointer;
+
+function OemToCharBuffA;
+begin
+  GetProcedureAddress(_OemToCharBuffA, user32, 'OemToCharBuffA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_OemToCharBuffA]
+  end;
+end;
+
+var
+  _OemToCharBuffW: Pointer;
+
+function OemToCharBuffW;
+begin
+  GetProcedureAddress(_OemToCharBuffW, user32, 'OemToCharBuffW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_OemToCharBuffW]
+  end;
+end;
+
+var
+  _OemToCharBuff: Pointer;
+
+function OemToCharBuff;
+begin
+  GetProcedureAddress(_OemToCharBuff, user32, 'OemToCharBuff' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_OemToCharBuff]
+  end;
+end;
+
+var
+  _CharUpperA: Pointer;
+
+function CharUpperA;
+begin
+  GetProcedureAddress(_CharUpperA, user32, 'CharUpperA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CharUpperA]
+  end;
+end;
+
+var
+  _CharUpperW: Pointer;
+
+function CharUpperW;
+begin
+  GetProcedureAddress(_CharUpperW, user32, 'CharUpperW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CharUpperW]
+  end;
+end;
+
+var
+  _CharUpper: Pointer;
+
+function CharUpper;
+begin
+  GetProcedureAddress(_CharUpper, user32, 'CharUpper' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CharUpper]
+  end;
+end;
+
+var
+  _CharUpperBuffA: Pointer;
+
+function CharUpperBuffA;
+begin
+  GetProcedureAddress(_CharUpperBuffA, user32, 'CharUpperBuffA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CharUpperBuffA]
+  end;
+end;
+
+var
+  _CharUpperBuffW: Pointer;
+
+function CharUpperBuffW;
+begin
+  GetProcedureAddress(_CharUpperBuffW, user32, 'CharUpperBuffW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CharUpperBuffW]
+  end;
+end;
+
+var
+  _CharUpperBuff: Pointer;
+
+function CharUpperBuff;
+begin
+  GetProcedureAddress(_CharUpperBuff, user32, 'CharUpperBuff' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CharUpperBuff]
+  end;
+end;
+
+var
+  _CharLowerA: Pointer;
+
+function CharLowerA;
+begin
+  GetProcedureAddress(_CharLowerA, user32, 'CharLowerA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CharLowerA]
+  end;
+end;
+
+var
+  _CharLowerW: Pointer;
+
+function CharLowerW;
+begin
+  GetProcedureAddress(_CharLowerW, user32, 'CharLowerW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CharLowerW]
+  end;
+end;
+
+var
+  _CharLower: Pointer;
+
+function CharLower;
+begin
+  GetProcedureAddress(_CharLower, user32, 'CharLower' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CharLower]
+  end;
+end;
+
+var
+  _CharLowerBuffA: Pointer;
+
+function CharLowerBuffA;
+begin
+  GetProcedureAddress(_CharLowerBuffA, user32, 'CharLowerBuffA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CharLowerBuffA]
+  end;
+end;
+
+var
+  _CharLowerBuffW: Pointer;
+
+function CharLowerBuffW;
+begin
+  GetProcedureAddress(_CharLowerBuffW, user32, 'CharLowerBuffW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CharLowerBuffW]
+  end;
+end;
+
+var
+  _CharLowerBuff: Pointer;
+
+function CharLowerBuff;
+begin
+  GetProcedureAddress(_CharLowerBuff, user32, 'CharLowerBuff' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CharLowerBuff]
+  end;
+end;
+
+var
+  _CharNextA: Pointer;
+
+function CharNextA;
+begin
+  GetProcedureAddress(_CharNextA, user32, 'CharNextA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CharNextA]
+  end;
+end;
+
+var
+  _CharNextW: Pointer;
+
+function CharNextW;
+begin
+  GetProcedureAddress(_CharNextW, user32, 'CharNextW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CharNextW]
+  end;
+end;
+
+var
+  _CharNext: Pointer;
+
+function CharNext;
+begin
+  GetProcedureAddress(_CharNext, user32, 'CharNext' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CharNext]
+  end;
+end;
+
+var
+  _CharPrevA: Pointer;
+
+function CharPrevA;
+begin
+  GetProcedureAddress(_CharPrevA, user32, 'CharPrevA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CharPrevA]
+  end;
+end;
+
+var
+  _CharPrevW: Pointer;
+
+function CharPrevW;
+begin
+  GetProcedureAddress(_CharPrevW, user32, 'CharPrevW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CharPrevW]
+  end;
+end;
+
+var
+  _CharPrev: Pointer;
+
+function CharPrev;
+begin
+  GetProcedureAddress(_CharPrev, user32, 'CharPrev' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CharPrev]
+  end;
+end;
+
+var
+  _CharNextExA: Pointer;
+
+function CharNextExA;
+begin
+  GetProcedureAddress(_CharNextExA, user32, 'CharNextExA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CharNextExA]
+  end;
+end;
+
+var
+  _CharPrevExA: Pointer;
+
+function CharPrevExA;
+begin
+  GetProcedureAddress(_CharPrevExA, user32, 'CharPrevExA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CharPrevExA]
+  end;
+end;
+
+var
+  _IsCharAlphaA: Pointer;
+
+function IsCharAlphaA;
+begin
+  GetProcedureAddress(_IsCharAlphaA, user32, 'IsCharAlphaA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsCharAlphaA]
+  end;
+end;
+
+var
+  _IsCharAlphaW: Pointer;
+
+function IsCharAlphaW;
+begin
+  GetProcedureAddress(_IsCharAlphaW, user32, 'IsCharAlphaW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsCharAlphaW]
+  end;
+end;
+
+var
+  _IsCharAlpha: Pointer;
+
+function IsCharAlpha;
+begin
+  GetProcedureAddress(_IsCharAlpha, user32, 'IsCharAlpha' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsCharAlpha]
+  end;
+end;
+
+var
+  _IsCharAlphaNumericA: Pointer;
+
+function IsCharAlphaNumericA;
+begin
+  GetProcedureAddress(_IsCharAlphaNumericA, user32, 'IsCharAlphaNumericA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsCharAlphaNumericA]
+  end;
+end;
+
+var
+  _IsCharAlphaNumericW: Pointer;
+
+function IsCharAlphaNumericW;
+begin
+  GetProcedureAddress(_IsCharAlphaNumericW, user32, 'IsCharAlphaNumericW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsCharAlphaNumericW]
+  end;
+end;
+
+var
+  _IsCharAlphaNumeric: Pointer;
+
+function IsCharAlphaNumeric;
+begin
+  GetProcedureAddress(_IsCharAlphaNumeric, user32, 'IsCharAlphaNumeric' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsCharAlphaNumeric]
+  end;
+end;
+
+var
+  _IsCharUpperA: Pointer;
+
+function IsCharUpperA;
+begin
+  GetProcedureAddress(_IsCharUpperA, user32, 'IsCharUpperA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsCharUpperA]
+  end;
+end;
+
+var
+  _IsCharUpperW: Pointer;
+
+function IsCharUpperW;
+begin
+  GetProcedureAddress(_IsCharUpperW, user32, 'IsCharUpperW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsCharUpperW]
+  end;
+end;
+
+var
+  _IsCharUpper: Pointer;
+
+function IsCharUpper;
+begin
+  GetProcedureAddress(_IsCharUpper, user32, 'IsCharUpper' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsCharUpper]
+  end;
+end;
+
+var
+  _IsCharLowerA: Pointer;
+
+function IsCharLowerA;
+begin
+  GetProcedureAddress(_IsCharLowerA, user32, 'IsCharLowerA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsCharLowerA]
+  end;
+end;
+
+var
+  _IsCharLowerW: Pointer;
+
+function IsCharLowerW;
+begin
+  GetProcedureAddress(_IsCharLowerW, user32, 'IsCharLowerW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsCharLowerW]
+  end;
+end;
+
+var
+  _IsCharLower: Pointer;
+
+function IsCharLower;
+begin
+  GetProcedureAddress(_IsCharLower, user32, 'IsCharLower' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsCharLower]
+  end;
+end;
+
+var
+  _SetFocus: Pointer;
+
+function SetFocus;
+begin
+  GetProcedureAddress(_SetFocus, user32, 'SetFocus');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetFocus]
+  end;
+end;
+
+var
+  _GetActiveWindow: Pointer;
+
+function GetActiveWindow;
+begin
+  GetProcedureAddress(_GetActiveWindow, user32, 'GetActiveWindow');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetActiveWindow]
+  end;
+end;
+
+var
+  _GetFocus: Pointer;
+
+function GetFocus;
+begin
+  GetProcedureAddress(_GetFocus, user32, 'GetFocus');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetFocus]
+  end;
+end;
+
+var
+  _GetKBCodePage: Pointer;
+
+function GetKBCodePage;
+begin
+  GetProcedureAddress(_GetKBCodePage, user32, 'GetKBCodePage');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetKBCodePage]
+  end;
+end;
+
+var
+  _GetKeyState: Pointer;
+
+function GetKeyState;
+begin
+  GetProcedureAddress(_GetKeyState, user32, 'GetKeyState');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetKeyState]
+  end;
+end;
+
+var
+  _GetAsyncKeyState: Pointer;
+
+function GetAsyncKeyState;
+begin
+  GetProcedureAddress(_GetAsyncKeyState, user32, 'GetAsyncKeyState');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetAsyncKeyState]
+  end;
+end;
+
+var
+  _GetKeyboardState: Pointer;
+
+function GetKeyboardState;
+begin
+  GetProcedureAddress(_GetKeyboardState, user32, 'GetKeyboardState');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetKeyboardState]
+  end;
+end;
+
+var
+  _SetKeyboardState: Pointer;
+
+function SetKeyboardState;
+begin
+  GetProcedureAddress(_SetKeyboardState, user32, 'SetKeyboardState');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetKeyboardState]
+  end;
+end;
+
+var
+  _GetKeyNameTextA: Pointer;
+
+function GetKeyNameTextA;
+begin
+  GetProcedureAddress(_GetKeyNameTextA, user32, 'GetKeyNameTextA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetKeyNameTextA]
+  end;
+end;
+
+var
+  _GetKeyNameTextW: Pointer;
+
+function GetKeyNameTextW;
+begin
+  GetProcedureAddress(_GetKeyNameTextW, user32, 'GetKeyNameTextW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetKeyNameTextW]
+  end;
+end;
+
+var
+  _GetKeyNameText: Pointer;
+
+function GetKeyNameText;
+begin
+  GetProcedureAddress(_GetKeyNameText, user32, 'GetKeyNameText' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetKeyNameText]
+  end;
+end;
+
+var
+  _GetKeyboardType: Pointer;
+
+function GetKeyboardType;
+begin
+  GetProcedureAddress(_GetKeyboardType, user32, 'GetKeyboardType');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetKeyboardType]
+  end;
+end;
+
+var
+  _ToAscii: Pointer;
+
+function ToAscii;
+begin
+  GetProcedureAddress(_ToAscii, user32, 'ToAscii');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ToAscii]
+  end;
+end;
+
+var
+  _ToAsciiEx: Pointer;
+
+function ToAsciiEx;
+begin
+  GetProcedureAddress(_ToAsciiEx, user32, 'ToAsciiEx');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ToAsciiEx]
+  end;
+end;
+
+var
+  _ToUnicode: Pointer;
+
+function ToUnicode;
+begin
+  GetProcedureAddress(_ToUnicode, user32, 'ToUnicode');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ToUnicode]
+  end;
+end;
+
+var
+  _OemKeyScan: Pointer;
+
+function OemKeyScan;
+begin
+  GetProcedureAddress(_OemKeyScan, user32, 'OemKeyScan');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_OemKeyScan]
+  end;
+end;
+
+var
+  _VkKeyScanA: Pointer;
+
+function VkKeyScanA;
+begin
+  GetProcedureAddress(_VkKeyScanA, user32, 'VkKeyScanA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_VkKeyScanA]
+  end;
+end;
+
+var
+  _VkKeyScanW: Pointer;
+
+function VkKeyScanW;
+begin
+  GetProcedureAddress(_VkKeyScanW, user32, 'VkKeyScanW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_VkKeyScanW]
+  end;
+end;
+
+var
+  _VkKeyScan: Pointer;
+
+function VkKeyScan;
+begin
+  GetProcedureAddress(_VkKeyScan, user32, 'VkKeyScan' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_VkKeyScan]
+  end;
+end;
+
+var
+  _VkKeyScanExA: Pointer;
+
+function VkKeyScanExA;
+begin
+  GetProcedureAddress(_VkKeyScanExA, user32, 'VkKeyScanExA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_VkKeyScanExA]
+  end;
+end;
+
+var
+  _VkKeyScanExW: Pointer;
+
+function VkKeyScanExW;
+begin
+  GetProcedureAddress(_VkKeyScanExW, user32, 'VkKeyScanExW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_VkKeyScanExW]
+  end;
+end;
+
+var
+  _VkKeyScanEx: Pointer;
+
+function VkKeyScanEx;
+begin
+  GetProcedureAddress(_VkKeyScanEx, user32, 'VkKeyScanEx' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_VkKeyScanEx]
+  end;
+end;
+
+var
+  _keybd_event: Pointer;
+
+procedure keybd_event;
+begin
+  GetProcedureAddress(_keybd_event, user32, 'keybd_event');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_keybd_event]
+  end;
+end;
+
+var
+  _mouse_event: Pointer;
+
+procedure mouse_event;
+begin
+  GetProcedureAddress(_mouse_event, user32, 'mouse_event');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_mouse_event]
+  end;
+end;
+
+var
+  _SendInput: Pointer;
+
+function SendInput;
+begin
+  GetProcedureAddress(_SendInput, user32, 'SendInput');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SendInput]
+  end;
+end;
+
+var
+  _GetLastInputInfo: Pointer;
+
+function GetLastInputInfo;
+begin
+  GetProcedureAddress(_GetLastInputInfo, user32, 'GetLastInputInfo');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetLastInputInfo]
+  end;
+end;
+
+var
+  _MapVirtualKeyA: Pointer;
+
+function MapVirtualKeyA;
+begin
+  GetProcedureAddress(_MapVirtualKeyA, user32, 'MapVirtualKeyA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MapVirtualKeyA]
+  end;
+end;
+
+var
+  _MapVirtualKeyW: Pointer;
+
+function MapVirtualKeyW;
+begin
+  GetProcedureAddress(_MapVirtualKeyW, user32, 'MapVirtualKeyW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MapVirtualKeyW]
+  end;
+end;
+
+var
+  _MapVirtualKey: Pointer;
+
+function MapVirtualKey;
+begin
+  GetProcedureAddress(_MapVirtualKey, user32, 'MapVirtualKey' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MapVirtualKey]
+  end;
+end;
+
+var
+  _MapVirtualKeyExA: Pointer;
+
+function MapVirtualKeyExA;
+begin
+  GetProcedureAddress(_MapVirtualKeyExA, user32, 'MapVirtualKeyExA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MapVirtualKeyExA]
+  end;
+end;
+
+var
+  _MapVirtualKeyExW: Pointer;
+
+function MapVirtualKeyExW;
+begin
+  GetProcedureAddress(_MapVirtualKeyExW, user32, 'MapVirtualKeyExW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MapVirtualKeyExW]
+  end;
+end;
+
+var
+  _MapVirtualKeyEx: Pointer;
+
+function MapVirtualKeyEx;
+begin
+  GetProcedureAddress(_MapVirtualKeyEx, user32, 'MapVirtualKeyEx' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MapVirtualKeyEx]
+  end;
+end;
+
+var
+  _GetInputState: Pointer;
+
+function GetInputState;
+begin
+  GetProcedureAddress(_GetInputState, user32, 'GetInputState');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetInputState]
+  end;
+end;
+
+var
+  _GetQueueStatus: Pointer;
+
+function GetQueueStatus;
+begin
+  GetProcedureAddress(_GetQueueStatus, user32, 'GetQueueStatus');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetQueueStatus]
+  end;
+end;
+
+var
+  _GetCapture: Pointer;
+
+function GetCapture;
+begin
+  GetProcedureAddress(_GetCapture, user32, 'GetCapture');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetCapture]
+  end;
+end;
+
+var
+  _SetCapture: Pointer;
+
+function SetCapture;
+begin
+  GetProcedureAddress(_SetCapture, user32, 'SetCapture');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetCapture]
+  end;
+end;
+
+var
+  _ReleaseCapture: Pointer;
+
+function ReleaseCapture;
+begin
+  GetProcedureAddress(_ReleaseCapture, user32, 'ReleaseCapture');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ReleaseCapture]
+  end;
+end;
+
+var
+  _MsgWaitForMultipleObjects: Pointer;
+
+function MsgWaitForMultipleObjects;
+begin
+  GetProcedureAddress(_MsgWaitForMultipleObjects, user32, 'MsgWaitForMultipleObjects');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsgWaitForMultipleObjects]
+  end;
+end;
+
+var
+  _MsgWaitForMultipleObjectsEx: Pointer;
+
+function MsgWaitForMultipleObjectsEx;
+begin
+  GetProcedureAddress(_MsgWaitForMultipleObjectsEx, user32, 'MsgWaitForMultipleObjectsEx');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MsgWaitForMultipleObjectsEx]
+  end;
+end;
+
+var
+  _SetTimer: Pointer;
+
+function SetTimer;
+begin
+  GetProcedureAddress(_SetTimer, user32, 'SetTimer');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetTimer]
+  end;
+end;
+
+var
+  _KillTimer: Pointer;
+
+function KillTimer;
+begin
+  GetProcedureAddress(_KillTimer, user32, 'KillTimer');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_KillTimer]
+  end;
+end;
+
+var
+  _IsWindowUnicode: Pointer;
+
+function IsWindowUnicode;
+begin
+  GetProcedureAddress(_IsWindowUnicode, user32, 'IsWindowUnicode');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsWindowUnicode]
+  end;
+end;
+
+var
+  _EnableWindow: Pointer;
+
+function EnableWindow;
+begin
+  GetProcedureAddress(_EnableWindow, user32, 'EnableWindow');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnableWindow]
+  end;
+end;
+
+var
+  _IsWindowEnabled: Pointer;
+
+function IsWindowEnabled;
+begin
+  GetProcedureAddress(_IsWindowEnabled, user32, 'IsWindowEnabled');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsWindowEnabled]
+  end;
+end;
+
+var
+  _LoadAcceleratorsA: Pointer;
+
+function LoadAcceleratorsA;
+begin
+  GetProcedureAddress(_LoadAcceleratorsA, user32, 'LoadAcceleratorsA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LoadAcceleratorsA]
+  end;
+end;
+
+var
+  _LoadAcceleratorsW: Pointer;
+
+function LoadAcceleratorsW;
+begin
+  GetProcedureAddress(_LoadAcceleratorsW, user32, 'LoadAcceleratorsW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LoadAcceleratorsW]
+  end;
+end;
+
+var
+  _LoadAccelerators: Pointer;
+
+function LoadAccelerators;
+begin
+  GetProcedureAddress(_LoadAccelerators, user32, 'LoadAccelerators' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LoadAccelerators]
+  end;
+end;
+
+var
+  _CreateAcceleratorTableA: Pointer;
+
+function CreateAcceleratorTableA;
+begin
+  GetProcedureAddress(_CreateAcceleratorTableA, user32, 'CreateAcceleratorTableA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateAcceleratorTableA]
+  end;
+end;
+
+var
+  _CreateAcceleratorTableW: Pointer;
+
+function CreateAcceleratorTableW;
+begin
+  GetProcedureAddress(_CreateAcceleratorTableW, user32, 'CreateAcceleratorTableW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateAcceleratorTableW]
+  end;
+end;
+
+var
+  _CreateAcceleratorTable: Pointer;
+
+function CreateAcceleratorTable;
+begin
+  GetProcedureAddress(_CreateAcceleratorTable, user32, 'CreateAcceleratorTable' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateAcceleratorTable]
+  end;
+end;
+
+var
+  _DestroyAcceleratorTable: Pointer;
+
+function DestroyAcceleratorTable;
+begin
+  GetProcedureAddress(_DestroyAcceleratorTable, user32, 'DestroyAcceleratorTable');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DestroyAcceleratorTable]
+  end;
+end;
+
+var
+  _CopyAcceleratorTableA: Pointer;
+
+function CopyAcceleratorTableA;
+begin
+  GetProcedureAddress(_CopyAcceleratorTableA, user32, 'CopyAcceleratorTableA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CopyAcceleratorTableA]
+  end;
+end;
+
+var
+  _CopyAcceleratorTableW: Pointer;
+
+function CopyAcceleratorTableW;
+begin
+  GetProcedureAddress(_CopyAcceleratorTableW, user32, 'CopyAcceleratorTableW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CopyAcceleratorTableW]
+  end;
+end;
+
+var
+  _CopyAcceleratorTable: Pointer;
+
+function CopyAcceleratorTable;
+begin
+  GetProcedureAddress(_CopyAcceleratorTable, user32, 'CopyAcceleratorTable' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CopyAcceleratorTable]
+  end;
+end;
+
+var
+  _TranslateAcceleratorA: Pointer;
+
+function TranslateAcceleratorA;
+begin
+  GetProcedureAddress(_TranslateAcceleratorA, user32, 'TranslateAcceleratorA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TranslateAcceleratorA]
+  end;
+end;
+
+var
+  _TranslateAcceleratorW: Pointer;
+
+function TranslateAcceleratorW;
+begin
+  GetProcedureAddress(_TranslateAcceleratorW, user32, 'TranslateAcceleratorW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TranslateAcceleratorW]
+  end;
+end;
+
+var
+  _TranslateAccelerator: Pointer;
+
+function TranslateAccelerator;
+begin
+  GetProcedureAddress(_TranslateAccelerator, user32, 'TranslateAccelerator' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TranslateAccelerator]
+  end;
+end;
+
+var
+  _GetSystemMetrics: Pointer;
+
+function GetSystemMetrics;
+begin
+  GetProcedureAddress(_GetSystemMetrics, user32, 'GetSystemMetrics');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetSystemMetrics]
+  end;
+end;
+
+var
+  _LoadMenuA: Pointer;
+
+function LoadMenuA;
+begin
+  GetProcedureAddress(_LoadMenuA, user32, 'LoadMenuAA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LoadMenuA]
+  end;
+end;
+
+var
+  _LoadMenuW: Pointer;
+
+function LoadMenuW;
+begin
+  GetProcedureAddress(_LoadMenuW, user32, 'LoadMenuWA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LoadMenuW]
+  end;
+end;
+
+var
+  _LoadMenu: Pointer;
+
+function LoadMenu;
+begin
+  GetProcedureAddress(_LoadMenu, user32, 'LoadMenu' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LoadMenu]
+  end;
+end;
+
+var
+  _LoadMenuIndirectA: Pointer;
+
+function LoadMenuIndirectA;
+begin
+  GetProcedureAddress(_LoadMenuIndirectA, user32, 'LoadMenuIndirectA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LoadMenuIndirectA]
+  end;
+end;
+
+var
+  _LoadMenuIndirectW: Pointer;
+
+function LoadMenuIndirectW;
+begin
+  GetProcedureAddress(_LoadMenuIndirectW, user32, 'LoadMenuIndirectW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LoadMenuIndirectW]
+  end;
+end;
+
+var
+  _LoadMenuIndirect: Pointer;
+
+function LoadMenuIndirect;
+begin
+  GetProcedureAddress(_LoadMenuIndirect, user32, 'LoadMenuIndirect' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LoadMenuIndirect]
+  end;
+end;
+
+var
+  _GetMenu: Pointer;
+
+function GetMenu;
+begin
+  GetProcedureAddress(_GetMenu, user32, 'GetMenu');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetMenu]
+  end;
+end;
+
+var
+  _SetMenu: Pointer;
+
+function SetMenu;
+begin
+  GetProcedureAddress(_SetMenu, user32, 'SetMenu');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetMenu]
+  end;
+end;
+
+var
+  _ChangeMenuA: Pointer;
+
+function ChangeMenuA;
+begin
+  GetProcedureAddress(_ChangeMenuA, user32, 'ChangeMenuA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ChangeMenuA]
+  end;
+end;
+
+var
+  _ChangeMenuW: Pointer;
+
+function ChangeMenuW;
+begin
+  GetProcedureAddress(_ChangeMenuW, user32, 'ChangeMenuW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ChangeMenuW]
+  end;
+end;
+
+var
+  _ChangeMenu: Pointer;
+
+function ChangeMenu;
+begin
+  GetProcedureAddress(_ChangeMenu, user32, 'ChangeMenu' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ChangeMenu]
+  end;
+end;
+
+var
+  _HiliteMenuItem: Pointer;
+
+function HiliteMenuItem;
+begin
+  GetProcedureAddress(_HiliteMenuItem, user32, 'HiliteMenuItem');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_HiliteMenuItem]
+  end;
+end;
+
+var
+  _GetMenuStringA: Pointer;
+
+function GetMenuStringA;
+begin
+  GetProcedureAddress(_GetMenuStringA, user32, 'GetMenuStringA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetMenuStringA]
+  end;
+end;
+
+var
+  _GetMenuStringW: Pointer;
+
+function GetMenuStringW;
+begin
+  GetProcedureAddress(_GetMenuStringW, user32, 'GetMenuStringW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetMenuStringW]
+  end;
+end;
+
+var
+  _GetMenuString: Pointer;
+
+function GetMenuString;
+begin
+  GetProcedureAddress(_GetMenuString, user32, 'GetMenuString' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetMenuString]
+  end;
+end;
+
+var
+  _GetMenuState: Pointer;
+
+function GetMenuState;
+begin
+  GetProcedureAddress(_GetMenuState, user32, 'GetMenuState');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetMenuState]
+  end;
+end;
+
+var
+  _DrawMenuBar: Pointer;
+
+function DrawMenuBar;
+begin
+  GetProcedureAddress(_DrawMenuBar, user32, 'DrawMenuBar');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DrawMenuBar]
+  end;
+end;
+
+var
+  _GetSystemMenu: Pointer;
+
+function GetSystemMenu;
+begin
+  GetProcedureAddress(_GetSystemMenu, user32, 'GetSystemMenu');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetSystemMenu]
+  end;
+end;
+
+var
+  _CreateMenu: Pointer;
+
+function CreateMenu;
+begin
+  GetProcedureAddress(_CreateMenu, user32, 'CreateMenu');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateMenu]
+  end;
+end;
+
+var
+  _CreatePopupMenu: Pointer;
+
+function CreatePopupMenu;
+begin
+  GetProcedureAddress(_CreatePopupMenu, user32, 'CreatePopupMenu');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreatePopupMenu]
+  end;
+end;
+
+var
+  _DestroyMenu: Pointer;
+
+function DestroyMenu;
+begin
+  GetProcedureAddress(_DestroyMenu, user32, 'DestroyMenu');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DestroyMenu]
+  end;
+end;
+
+var
+  _CheckMenuItem: Pointer;
+
+function CheckMenuItem;
+begin
+  GetProcedureAddress(_CheckMenuItem, user32, 'CheckMenuItem');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CheckMenuItem]
+  end;
+end;
+
+var
+  _EnableMenuItem: Pointer;
+
+function EnableMenuItem;
+begin
+  GetProcedureAddress(_EnableMenuItem, user32, 'EnableMenuItem');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnableMenuItem]
+  end;
+end;
+
+var
+  _GetSubMenu: Pointer;
+
+function GetSubMenu;
+begin
+  GetProcedureAddress(_GetSubMenu, user32, 'GetSubMenu');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetSubMenu]
+  end;
+end;
+
+var
+  _GetMenuItemID: Pointer;
+
+function GetMenuItemID;
+begin
+  GetProcedureAddress(_GetMenuItemID, user32, 'GetMenuItemID');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetMenuItemID]
+  end;
+end;
+
+var
+  _GetMenuItemCount: Pointer;
+
+function GetMenuItemCount;
+begin
+  GetProcedureAddress(_GetMenuItemCount, user32, 'GetMenuItemCount');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetMenuItemCount]
+  end;
+end;
+
+var
+  _InsertMenuA: Pointer;
+
+function InsertMenuA;
+begin
+  GetProcedureAddress(_InsertMenuA, user32, 'InsertMenuA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_InsertMenuA]
+  end;
+end;
+
+var
+  _InsertMenuW: Pointer;
+
+function InsertMenuW;
+begin
+  GetProcedureAddress(_InsertMenuW, user32, 'InsertMenuW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_InsertMenuW]
+  end;
+end;
+
+var
+  _InsertMenu: Pointer;
+
+function InsertMenu;
+begin
+  GetProcedureAddress(_InsertMenu, user32, 'InsertMenu' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_InsertMenu]
+  end;
+end;
+
+var
+  _AppendMenuA: Pointer;
+
+function AppendMenuA;
+begin
+  GetProcedureAddress(_AppendMenuA, user32, 'AppendMenuA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AppendMenuA]
+  end;
+end;
+
+var
+  _AppendMenuW: Pointer;
+
+function AppendMenuW;
+begin
+  GetProcedureAddress(_AppendMenuW, user32, 'AppendMenuW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AppendMenuW]
+  end;
+end;
+
+var
+  _AppendMenu: Pointer;
+
+function AppendMenu;
+begin
+  GetProcedureAddress(_AppendMenu, user32, 'AppendMenu' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AppendMenu]
+  end;
+end;
+
+var
+  _ModifyMenuA: Pointer;
+
+function ModifyMenuA;
+begin
+  GetProcedureAddress(_ModifyMenuA, user32, 'ModifyMenuA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ModifyMenuA]
+  end;
+end;
+
+var
+  _ModifyMenuW: Pointer;
+
+function ModifyMenuW;
+begin
+  GetProcedureAddress(_ModifyMenuW, user32, 'ModifyMenuW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ModifyMenuW]
+  end;
+end;
+
+var
+  _ModifyMenu: Pointer;
+
+function ModifyMenu;
+begin
+  GetProcedureAddress(_ModifyMenu, user32, 'ModifyMenu' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ModifyMenu]
+  end;
+end;
+
+var
+  _RemoveMenu: Pointer;
+
+function RemoveMenu;
+begin
+  GetProcedureAddress(_RemoveMenu, user32, 'RemoveMenu');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RemoveMenu]
+  end;
+end;
+
+var
+  _DeleteMenu: Pointer;
+
+function DeleteMenu;
+begin
+  GetProcedureAddress(_DeleteMenu, user32, 'DeleteMenu');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DeleteMenu]
+  end;
+end;
+
+var
+  _SetMenuItemBitmaps: Pointer;
+
+function SetMenuItemBitmaps;
+begin
+  GetProcedureAddress(_SetMenuItemBitmaps, user32, 'SetMenuItemBitmaps');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetMenuItemBitmaps]
+  end;
+end;
+
+var
+  _GetMenuCheckMarkDimensions: Pointer;
+
+function GetMenuCheckMarkDimensions;
+begin
+  GetProcedureAddress(_GetMenuCheckMarkDimensions, user32, 'GetMenuCheckMarkDimensions');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetMenuCheckMarkDimensions]
+  end;
+end;
+
+var
+  _TrackPopupMenu: Pointer;
+
+function TrackPopupMenu;
+begin
+  GetProcedureAddress(_TrackPopupMenu, user32, 'TrackPopupMenu');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TrackPopupMenu]
+  end;
+end;
+
+var
+  _TrackPopupMenuEx: Pointer;
+
+function TrackPopupMenuEx;
+begin
+  GetProcedureAddress(_TrackPopupMenuEx, user32, 'TrackPopupMenuEx');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TrackPopupMenuEx]
+  end;
+end;
+
+var
+  _GetMenuInfo: Pointer;
+
+function GetMenuInfo;
+begin
+  GetProcedureAddress(_GetMenuInfo, user32, 'GetMenuInfo');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetMenuInfo]
+  end;
+end;
+
+var
+  _SetMenuInfo: Pointer;
+
+function SetMenuInfo;
+begin
+  GetProcedureAddress(_SetMenuInfo, user32, 'SetMenuInfo');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetMenuInfo]
+  end;
+end;
+
+var
+  _EndMenu: Pointer;
+
+function EndMenu;
+begin
+  GetProcedureAddress(_EndMenu, user32, 'EndMenu');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EndMenu]
+  end;
+end;
+
+var
+  _InsertMenuItemA: Pointer;
+
+function InsertMenuItemA;
+begin
+  GetProcedureAddress(_InsertMenuItemA, user32, 'InsertMenuItemA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_InsertMenuItemA]
+  end;
+end;
+
+var
+  _InsertMenuItemW: Pointer;
+
+function InsertMenuItemW;
+begin
+  GetProcedureAddress(_InsertMenuItemW, user32, 'InsertMenuItemW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_InsertMenuItemW]
+  end;
+end;
+
+var
+  _InsertMenuItem: Pointer;
+
+function InsertMenuItem;
+begin
+  GetProcedureAddress(_InsertMenuItem, user32, 'InsertMenuItem' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_InsertMenuItem]
+  end;
+end;
+
+var
+  _GetMenuItemInfoA: Pointer;
+
+function GetMenuItemInfoA;
+begin
+  GetProcedureAddress(_GetMenuItemInfoA, user32, 'GetMenuItemInfoA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetMenuItemInfoA]
+  end;
+end;
+
+var
+  _GetMenuItemInfoW: Pointer;
+
+function GetMenuItemInfoW;
+begin
+  GetProcedureAddress(_GetMenuItemInfoW, user32, 'GetMenuItemInfoW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetMenuItemInfoW]
+  end;
+end;
+
+var
+  _GetMenuItemInfo: Pointer;
+
+function GetMenuItemInfo;
+begin
+  GetProcedureAddress(_GetMenuItemInfo, user32, 'GetMenuItemInfo' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetMenuItemInfo]
+  end;
+end;
+
+var
+  _SetMenuItemInfoA: Pointer;
+
+function SetMenuItemInfoA;
+begin
+  GetProcedureAddress(_SetMenuItemInfoA, user32, 'SetMenuItemInfoA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetMenuItemInfoA]
+  end;
+end;
+
+var
+  _SetMenuItemInfoW: Pointer;
+
+function SetMenuItemInfoW;
+begin
+  GetProcedureAddress(_SetMenuItemInfoW, user32, 'SetMenuItemInfoW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetMenuItemInfoW]
+  end;
+end;
+
+var
+  _SetMenuItemInfo: Pointer;
+
+function SetMenuItemInfo;
+begin
+  GetProcedureAddress(_SetMenuItemInfo, user32, 'SetMenuItemInfo' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetMenuItemInfo]
+  end;
+end;
+
+var
+  _GetMenuDefaultItem: Pointer;
+
+function GetMenuDefaultItem;
+begin
+  GetProcedureAddress(_GetMenuDefaultItem, user32, 'GetMenuDefaultItem');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetMenuDefaultItem]
+  end;
+end;
+
+var
+  _SetMenuDefaultItem: Pointer;
+
+function SetMenuDefaultItem;
+begin
+  GetProcedureAddress(_SetMenuDefaultItem, user32, 'SetMenuDefaultItem');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetMenuDefaultItem]
+  end;
+end;
+
+var
+  _GetMenuItemRect: Pointer;
+
+function GetMenuItemRect;
+begin
+  GetProcedureAddress(_GetMenuItemRect, user32, 'GetMenuItemRect');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetMenuItemRect]
+  end;
+end;
+
+var
+  _MenuItemFromPoint: Pointer;
+
+function MenuItemFromPoint;
+begin
+  GetProcedureAddress(_MenuItemFromPoint, user32, 'MenuItemFromPoint');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MenuItemFromPoint]
+  end;
+end;
+
+var
+  _DragObject: Pointer;
+
+function DragObject;
+begin
+  GetProcedureAddress(_DragObject, user32, 'DragObject');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DragObject]
+  end;
+end;
+
+var
+  _DragDetect: Pointer;
+
+function DragDetect;
+begin
+  GetProcedureAddress(_DragDetect, user32, 'DragDetect');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DragDetect]
+  end;
+end;
+
+var
+  _DrawIcon: Pointer;
+
+function DrawIcon;
+begin
+  GetProcedureAddress(_DrawIcon, user32, 'DrawIcon');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DrawIcon]
+  end;
+end;
+
+var
+  _DrawTextA: Pointer;
+
+function DrawTextA;
+begin
+  GetProcedureAddress(_DrawTextA, user32, 'DrawTextA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DrawTextA]
+  end;
+end;
+
+var
+  _DrawTextW: Pointer;
+
+function DrawTextW;
+begin
+  GetProcedureAddress(_DrawTextW, user32, 'DrawTextW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DrawTextW]
+  end;
+end;
+
+var
+  _DrawText: Pointer;
+
+function DrawText;
+begin
+  GetProcedureAddress(_DrawText, user32, 'DrawText' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DrawText]
+  end;
+end;
+
+var
+  _DrawTextExA: Pointer;
+
+function DrawTextExA;
+begin
+  GetProcedureAddress(_DrawTextExA, user32, 'DrawTextExA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DrawTextExA]
+  end;
+end;
+
+var
+  _DrawTextExW: Pointer;
+
+function DrawTextExW;
+begin
+  GetProcedureAddress(_DrawTextExW, user32, 'DrawTextExW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DrawTextExW]
+  end;
+end;
+
+var
+  _DrawTextEx: Pointer;
+
+function DrawTextEx;
+begin
+  GetProcedureAddress(_DrawTextEx, user32, 'DrawTextEx' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DrawTextEx]
+  end;
+end;
+
+var
+  _GrayStringA: Pointer;
+
+function GrayStringA;
+begin
+  GetProcedureAddress(_GrayStringA, user32, 'GrayStringA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GrayStringA]
+  end;
+end;
+
+var
+  _GrayStringW: Pointer;
+
+function GrayStringW;
+begin
+  GetProcedureAddress(_GrayStringW, user32, 'GrayStringW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GrayStringW]
+  end;
+end;
+
+var
+  _GrayString: Pointer;
+
+function GrayString;
+begin
+  GetProcedureAddress(_GrayString, user32, 'GrayString' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GrayString]
+  end;
+end;
+
+var
+  _DrawStateA: Pointer;
+
+function DrawStateA;
+begin
+  GetProcedureAddress(_DrawStateA, user32, 'DrawStateA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DrawStateA]
+  end;
+end;
+
+var
+  _DrawStateW: Pointer;
+
+function DrawStateW;
+begin
+  GetProcedureAddress(_DrawStateW, user32, 'DrawStateW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DrawStateW]
+  end;
+end;
+
+var
+  _DrawState: Pointer;
+
+function DrawState;
+begin
+  GetProcedureAddress(_DrawState, user32, 'DrawState' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DrawState]
+  end;
+end;
+
+var
+  _TabbedTextOutA: Pointer;
+
+function TabbedTextOutA;
+begin
+  GetProcedureAddress(_TabbedTextOutA, user32, 'TabbedTextOutA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TabbedTextOutA]
+  end;
+end;
+
+var
+  _TabbedTextOutW: Pointer;
+
+function TabbedTextOutW;
+begin
+  GetProcedureAddress(_TabbedTextOutW, user32, 'TabbedTextOutW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TabbedTextOutW]
+  end;
+end;
+
+var
+  _TabbedTextOut: Pointer;
+
+function TabbedTextOut;
+begin
+  GetProcedureAddress(_TabbedTextOut, user32, 'TabbedTextOut' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TabbedTextOut]
+  end;
+end;
+
+var
+  _GetTabbedTextExtentA: Pointer;
+
+function GetTabbedTextExtentA;
+begin
+  GetProcedureAddress(_GetTabbedTextExtentA, user32, 'GetTabbedTextExtentA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetTabbedTextExtentA]
+  end;
+end;
+
+var
+  _GetTabbedTextExtentW: Pointer;
+
+function GetTabbedTextExtentW;
+begin
+  GetProcedureAddress(_GetTabbedTextExtentW, user32, 'GetTabbedTextExtentW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetTabbedTextExtentW]
+  end;
+end;
+
+var
+  _GetTabbedTextExtent: Pointer;
+
+function GetTabbedTextExtent;
+begin
+  GetProcedureAddress(_GetTabbedTextExtent, user32, 'GetTabbedTextExtent' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetTabbedTextExtent]
+  end;
+end;
+
+var
+  _UpdateWindow: Pointer;
+
+function UpdateWindow;
+begin
+  GetProcedureAddress(_UpdateWindow, user32, 'UpdateWindow');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_UpdateWindow]
+  end;
+end;
+
+var
+  _SetActiveWindow: Pointer;
+
+function SetActiveWindow;
+begin
+  GetProcedureAddress(_SetActiveWindow, user32, 'SetActiveWindow');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetActiveWindow]
+  end;
+end;
+
+var
+  _GetForegroundWindow: Pointer;
+
+function GetForegroundWindow;
+begin
+  GetProcedureAddress(_GetForegroundWindow, user32, 'GetForegroundWindow');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetForegroundWindow]
+  end;
+end;
+
+var
+  _PaintDesktop: Pointer;
+
+function PaintDesktop;
+begin
+  GetProcedureAddress(_PaintDesktop, user32, 'PaintDesktop');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PaintDesktop]
+  end;
+end;
+
+var
+  _SwitchToThisWindow: Pointer;
+
+procedure SwitchToThisWindow;
+begin
+  GetProcedureAddress(_SwitchToThisWindow, user32, 'SwitchToThisWindow');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SwitchToThisWindow]
+  end;
+end;
+
+var
+  _SetForegroundWindow: Pointer;
+
+function SetForegroundWindow;
+begin
+  GetProcedureAddress(_SetForegroundWindow, user32, 'SetForegroundWindow');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetForegroundWindow]
+  end;
+end;
+
+var
+  _AllowSetForegroundWindow: Pointer;
+
+function AllowSetForegroundWindow;
+begin
+  GetProcedureAddress(_AllowSetForegroundWindow, user32, 'AllowSetForegroundWindow');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AllowSetForegroundWindow]
+  end;
+end;
+
+var
+  _LockSetForegroundWindow: Pointer;
+
+function LockSetForegroundWindow;
+begin
+  GetProcedureAddress(_LockSetForegroundWindow, user32, 'LockSetForegroundWindow');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LockSetForegroundWindow]
+  end;
+end;
+
+var
+  _WindowFromDC: Pointer;
+
+function WindowFromDC;
+begin
+  GetProcedureAddress(_WindowFromDC, user32, 'WindowFromDC');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WindowFromDC]
+  end;
+end;
+
+var
+  _GetDC: Pointer;
+
+function GetDC;
+begin
+  GetProcedureAddress(_GetDC, user32, 'GetDC');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetDC]
+  end;
+end;
+
+var
+  _GetDCEx: Pointer;
+
+function GetDCEx;
+begin
+  GetProcedureAddress(_GetDCEx, user32, 'GetDCEx');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetDCEx]
+  end;
+end;
+
+var
+  _GetWindowDC: Pointer;
+
+function GetWindowDC;
+begin
+  GetProcedureAddress(_GetWindowDC, user32, 'GetWindowDC');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetWindowDC]
+  end;
+end;
+
+var
+  _ReleaseDC: Pointer;
+
+function ReleaseDC;
+begin
+  GetProcedureAddress(_ReleaseDC, user32, 'ReleaseDC');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ReleaseDC]
+  end;
+end;
+
+var
+  _BeginPaint: Pointer;
+
+function BeginPaint;
+begin
+  GetProcedureAddress(_BeginPaint, user32, 'BeginPaint');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_BeginPaint]
+  end;
+end;
+
+var
+  _EndPaint: Pointer;
+
+function EndPaint;
+begin
+  GetProcedureAddress(_EndPaint, user32, 'EndPaint');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EndPaint]
+  end;
+end;
+
+var
+  _GetUpdateRect: Pointer;
+
+function GetUpdateRect;
+begin
+  GetProcedureAddress(_GetUpdateRect, user32, 'GetUpdateRect');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetUpdateRect]
+  end;
+end;
+
+var
+  _GetUpdateRgn: Pointer;
+
+function GetUpdateRgn;
+begin
+  GetProcedureAddress(_GetUpdateRgn, user32, 'GetUpdateRgn');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetUpdateRgn]
+  end;
+end;
+
+var
+  _SetWindowRgn: Pointer;
+
+function SetWindowRgn;
+begin
+  GetProcedureAddress(_SetWindowRgn, user32, 'SetWindowRgn');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetWindowRgn]
+  end;
+end;
+
+var
+  _GetWindowRgn: Pointer;
+
+function GetWindowRgn;
+begin
+  GetProcedureAddress(_GetWindowRgn, user32, 'GetWindowRgn');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetWindowRgn]
+  end;
+end;
+
+var
+  _GetWindowRgnBox: Pointer;
+
+function GetWindowRgnBox;
+begin
+  GetProcedureAddress(_GetWindowRgnBox, user32, 'GetWindowRgnBox');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetWindowRgnBox]
+  end;
+end;
+
+var
+  _ExcludeUpdateRgn: Pointer;
+
+function ExcludeUpdateRgn;
+begin
+  GetProcedureAddress(_ExcludeUpdateRgn, user32, 'ExcludeUpdateRgn');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ExcludeUpdateRgn]
+  end;
+end;
+
+var
+  _InvalidateRect: Pointer;
+
+function InvalidateRect;
+begin
+  GetProcedureAddress(_InvalidateRect, user32, 'InvalidateRect');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_InvalidateRect]
+  end;
+end;
+
+var
+  _ValidateRect: Pointer;
+
+function ValidateRect;
+begin
+  GetProcedureAddress(_ValidateRect, user32, 'ValidateRect');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ValidateRect]
+  end;
+end;
+
+var
+  _InvalidateRgn: Pointer;
+
+function InvalidateRgn;
+begin
+  GetProcedureAddress(_InvalidateRgn, user32, 'InvalidateRgn');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_InvalidateRgn]
+  end;
+end;
+
+var
+  _ValidateRgn: Pointer;
+
+function ValidateRgn;
+begin
+  GetProcedureAddress(_ValidateRgn, user32, 'ValidateRgn');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ValidateRgn]
+  end;
+end;
+
+var
+  _RedrawWindow: Pointer;
+
+function RedrawWindow;
+begin
+  GetProcedureAddress(_RedrawWindow, user32, 'RedrawWindow');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RedrawWindow]
+  end;
+end;
+
+var
+  _LockWindowUpdate: Pointer;
+
+function LockWindowUpdate;
+begin
+  GetProcedureAddress(_LockWindowUpdate, user32, 'LockWindowUpdate');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LockWindowUpdate]
+  end;
+end;
+
+var
+  _ScrollWindow: Pointer;
+
+function ScrollWindow;
+begin
+  GetProcedureAddress(_ScrollWindow, user32, 'ScrollWindow');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ScrollWindow]
+  end;
+end;
+
+var
+  _ScrollDC: Pointer;
+
+function ScrollDC;
+begin
+  GetProcedureAddress(_ScrollDC, user32, 'ScrollDC');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ScrollDC]
+  end;
+end;
+
+var
+  _ScrollWindowEx: Pointer;
+
+function ScrollWindowEx;
+begin
+  GetProcedureAddress(_ScrollWindowEx, user32, 'ScrollWindowEx');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ScrollWindowEx]
+  end;
+end;
+
+var
+  _SetScrollPos: Pointer;
+
+function SetScrollPos;
+begin
+  GetProcedureAddress(_SetScrollPos, user32, 'SetScrollPos');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetScrollPos]
+  end;
+end;
+
+var
+  _GetScrollPos: Pointer;
+
+function GetScrollPos;
+begin
+  GetProcedureAddress(_GetScrollPos, user32, 'GetScrollPos');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetScrollPos]
+  end;
+end;
+
+var
+  _SetScrollRange: Pointer;
+
+function SetScrollRange;
+begin
+  GetProcedureAddress(_SetScrollRange, user32, 'SetScrollRange');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetScrollRange]
+  end;
+end;
+
+var
+  _GetScrollRange: Pointer;
+
+function GetScrollRange;
+begin
+  GetProcedureAddress(_GetScrollRange, user32, 'GetScrollRange');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetScrollRange]
+  end;
+end;
+
+var
+  _ShowScrollBar: Pointer;
+
+function ShowScrollBar;
+begin
+  GetProcedureAddress(_ShowScrollBar, user32, 'ShowScrollBar');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ShowScrollBar]
+  end;
+end;
+
+var
+  _EnableScrollBar: Pointer;
+
+function EnableScrollBar;
+begin
+  GetProcedureAddress(_EnableScrollBar, user32, 'EnableScrollBar');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnableScrollBar]
+  end;
+end;
+
+var
+  _SetPropA: Pointer;
+
+function SetPropA;
+begin
+  GetProcedureAddress(_SetPropA, user32, 'SetPropA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetPropA]
+  end;
+end;
+
+var
+  _SetPropW: Pointer;
+
+function SetPropW;
+begin
+  GetProcedureAddress(_SetPropW, user32, 'SetPropW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetPropW]
+  end;
+end;
+
+var
+  _SetProp: Pointer;
+
+function SetProp;
+begin
+  GetProcedureAddress(_SetProp, user32, 'SetProp' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetProp]
+  end;
+end;
+
+var
+  _GetPropA: Pointer;
+
+function GetPropA;
+begin
+  GetProcedureAddress(_GetPropA, user32, 'GetPropA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetPropA]
+  end;
+end;
+
+var
+  _GetPropW: Pointer;
+
+function GetPropW;
+begin
+  GetProcedureAddress(_GetPropW, user32, 'GetPropW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetPropW]
+  end;
+end;
+
+var
+  _GetProp: Pointer;
+
+function GetProp;
+begin
+  GetProcedureAddress(_GetProp, user32, 'GetProp' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetProp]
+  end;
+end;
+
+var
+  _RemovePropA: Pointer;
+
+function RemovePropA;
+begin
+  GetProcedureAddress(_RemovePropA, user32, 'RemovePropA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RemovePropA]
+  end;
+end;
+
+var
+  _RemovePropW: Pointer;
+
+function RemovePropW;
+begin
+  GetProcedureAddress(_RemovePropW, user32, 'RemovePropW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RemovePropW]
+  end;
+end;
+
+var
+  _RemoveProp: Pointer;
+
+function RemoveProp;
+begin
+  GetProcedureAddress(_RemoveProp, user32, 'RemoveProp' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RemoveProp]
+  end;
+end;
+
+var
+  _EnumPropsExA: Pointer;
+
+function EnumPropsExA;
+begin
+  GetProcedureAddress(_EnumPropsExA, user32, 'EnumPropsExA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumPropsExA]
+  end;
+end;
+
+var
+  _EnumPropsExW: Pointer;
+
+function EnumPropsExW;
+begin
+  GetProcedureAddress(_EnumPropsExW, user32, 'EnumPropsExW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumPropsExW]
+  end;
+end;
+
+var
+  _EnumPropsEx: Pointer;
+
+function EnumPropsEx;
+begin
+  GetProcedureAddress(_EnumPropsEx, user32, 'EnumPropsEx' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumPropsEx]
+  end;
+end;
+
+var
+  _EnumPropsA: Pointer;
+
+function EnumPropsA;
+begin
+  GetProcedureAddress(_EnumPropsA, user32, 'EnumPropsA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumPropsA]
+  end;
+end;
+
+var
+  _EnumPropsW: Pointer;
+
+function EnumPropsW;
+begin
+  GetProcedureAddress(_EnumPropsW, user32, 'EnumPropsW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumPropsW]
+  end;
+end;
+
+var
+  _EnumProps: Pointer;
+
+function EnumProps;
+begin
+  GetProcedureAddress(_EnumProps, user32, 'EnumProps' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumProps]
+  end;
+end;
+
+var
+  _SetWindowTextA: Pointer;
+
+function SetWindowTextA;
+begin
+  GetProcedureAddress(_SetWindowTextA, user32, 'SetWindowTextA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetWindowTextA]
+  end;
+end;
+
+var
+  _SetWindowTextW: Pointer;
+
+function SetWindowTextW;
+begin
+  GetProcedureAddress(_SetWindowTextW, user32, 'SetWindowTextW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetWindowTextW]
+  end;
+end;
+
+var
+  _SetWindowText: Pointer;
+
+function SetWindowText;
+begin
+  GetProcedureAddress(_SetWindowText, user32, 'SetWindowText' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetWindowText]
+  end;
+end;
+
+var
+  _GetWindowTextA: Pointer;
+
+function GetWindowTextA;
+begin
+  GetProcedureAddress(_GetWindowTextA, user32, 'GetWindowTextA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetWindowTextA]
+  end;
+end;
+
+var
+  _GetWindowTextW: Pointer;
+
+function GetWindowTextW;
+begin
+  GetProcedureAddress(_GetWindowTextW, user32, 'GetWindowTextW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetWindowTextW]
+  end;
+end;
+
+var
+  _GetWindowText: Pointer;
+
+function GetWindowText;
+begin
+  GetProcedureAddress(_GetWindowText, user32, 'GetWindowText' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetWindowText]
+  end;
+end;
+
+var
+  _GetWindowTextLengthA: Pointer;
+
+function GetWindowTextLengthA;
+begin
+  GetProcedureAddress(_GetWindowTextLengthA, user32, 'GetWindowTextLengthA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetWindowTextLengthA]
+  end;
+end;
+
+var
+  _GetWindowTextLengthW: Pointer;
+
+function GetWindowTextLengthW;
+begin
+  GetProcedureAddress(_GetWindowTextLengthW, user32, 'GetWindowTextLengthW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetWindowTextLengthW]
+  end;
+end;
+
+var
+  _GetWindowTextLength: Pointer;
+
+function GetWindowTextLength;
+begin
+  GetProcedureAddress(_GetWindowTextLength, user32, 'GetWindowTextLength' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetWindowTextLength]
+  end;
+end;
+
+var
+  _GetClientRect: Pointer;
+
+function GetClientRect;
+begin
+  GetProcedureAddress(_GetClientRect, user32, 'GetClientRect');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetClientRect]
+  end;
+end;
+
+var
+  _GetWindowRect: Pointer;
+
+function GetWindowRect;
+begin
+  GetProcedureAddress(_GetWindowRect, user32, 'GetWindowRect');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetWindowRect]
+  end;
+end;
+
+var
+  _AdjustWindowRect: Pointer;
+
+function AdjustWindowRect;
+begin
+  GetProcedureAddress(_AdjustWindowRect, user32, 'AdjustWindowRect');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AdjustWindowRect]
+  end;
+end;
+
+var
+  _AdjustWindowRectEx: Pointer;
+
+function AdjustWindowRectEx;
+begin
+  GetProcedureAddress(_AdjustWindowRectEx, user32, 'AdjustWindowRectEx');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AdjustWindowRectEx]
+  end;
+end;
+
+var
+  _SetWindowContextHelpId: Pointer;
+
+function SetWindowContextHelpId;
+begin
+  GetProcedureAddress(_SetWindowContextHelpId, user32, 'SetWindowContextHelpId');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetWindowContextHelpId]
+  end;
+end;
+
+var
+  _GetWindowContextHelpId: Pointer;
+
+function GetWindowContextHelpId;
+begin
+  GetProcedureAddress(_GetWindowContextHelpId, user32, 'GetWindowContextHelpId');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetWindowContextHelpId]
+  end;
+end;
+
+var
+  _SetMenuContextHelpId: Pointer;
+
+function SetMenuContextHelpId;
+begin
+  GetProcedureAddress(_SetMenuContextHelpId, user32, 'SetMenuContextHelpId');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetMenuContextHelpId]
+  end;
+end;
+
+var
+  _GetMenuContextHelpId: Pointer;
+
+function GetMenuContextHelpId;
+begin
+  GetProcedureAddress(_GetMenuContextHelpId, user32, 'GetMenuContextHelpId');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetMenuContextHelpId]
+  end;
+end;
+
+var
+  _MessageBoxA: Pointer;
+
+function MessageBoxA;
+begin
+  GetProcedureAddress(_MessageBoxA, user32, 'MessageBoxA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MessageBoxA]
+  end;
+end;
+
+var
+  _MessageBoxW: Pointer;
+
+function MessageBoxW;
+begin
+  GetProcedureAddress(_MessageBoxW, user32, 'MessageBoxW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MessageBoxW]
+  end;
+end;
+
+var
+  _MessageBox: Pointer;
+
+function MessageBox;
+begin
+  GetProcedureAddress(_MessageBox, user32, 'MessageBox' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MessageBox]
+  end;
+end;
+
+var
+  _MessageBoxExA: Pointer;
+
+function MessageBoxExA;
+begin
+  GetProcedureAddress(_MessageBoxExA, user32, 'MessageBoxExA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MessageBoxExA]
+  end;
+end;
+
+var
+  _MessageBoxExW: Pointer;
+
+function MessageBoxExW;
+begin
+  GetProcedureAddress(_MessageBoxExW, user32, 'MessageBoxExW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MessageBoxExW]
+  end;
+end;
+
+var
+  _MessageBoxEx: Pointer;
+
+function MessageBoxEx;
+begin
+  GetProcedureAddress(_MessageBoxEx, user32, 'MessageBoxEx' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MessageBoxEx]
+  end;
+end;
+
+var
+  _MessageBoxIndirectA: Pointer;
+
+function MessageBoxIndirectA;
+begin
+  GetProcedureAddress(_MessageBoxIndirectA, user32, 'MessageBoxIndirectA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MessageBoxIndirectA]
+  end;
+end;
+
+var
+  _MessageBoxIndirectW: Pointer;
+
+function MessageBoxIndirectW;
+begin
+  GetProcedureAddress(_MessageBoxIndirectW, user32, 'MessageBoxIndirectW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MessageBoxIndirectW]
+  end;
+end;
+
+var
+  _MessageBoxIndirect: Pointer;
+
+function MessageBoxIndirect;
+begin
+  GetProcedureAddress(_MessageBoxIndirect, user32, 'MessageBoxIndirect' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MessageBoxIndirect]
+  end;
+end;
+
+var
+  _MessageBeep: Pointer;
+
+function MessageBeep;
+begin
+  GetProcedureAddress(_MessageBeep, user32, 'MessageBeep');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MessageBeep]
+  end;
+end;
+
+var
+  _ShowCursor: Pointer;
+
+function ShowCursor;
+begin
+  GetProcedureAddress(_ShowCursor, user32, 'ShowCursor');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ShowCursor]
+  end;
+end;
+
+var
+  _SetCursorPos: Pointer;
+
+function SetCursorPos;
+begin
+  GetProcedureAddress(_SetCursorPos, user32, 'SetCursorPos');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetCursorPos]
+  end;
+end;
+
+var
+  _SetCursor: Pointer;
+
+function SetCursor;
+begin
+  GetProcedureAddress(_SetCursor, user32, 'SetCursor');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetCursor]
+  end;
+end;
+
+var
+  _GetCursorPos: Pointer;
+
+function GetCursorPos;
+begin
+  GetProcedureAddress(_GetCursorPos, user32, 'GetCursorPos');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetCursorPos]
+  end;
+end;
+
+var
+  _ClipCursor: Pointer;
+
+function ClipCursor;
+begin
+  GetProcedureAddress(_ClipCursor, user32, 'ClipCursor');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ClipCursor]
+  end;
+end;
+
+var
+  _GetClipCursor: Pointer;
+
+function GetClipCursor;
+begin
+  GetProcedureAddress(_GetClipCursor, user32, 'GetClipCursor');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetClipCursor]
+  end;
+end;
+
+var
+  _GetCursor: Pointer;
+
+function GetCursor;
+begin
+  GetProcedureAddress(_GetCursor, user32, 'GetCursor');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetCursor]
+  end;
+end;
+
+var
+  _CreateCaret: Pointer;
+
+function CreateCaret;
+begin
+  GetProcedureAddress(_CreateCaret, user32, 'CreateCaret');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateCaret]
+  end;
+end;
+
+var
+  _GetCaretBlinkTime: Pointer;
+
+function GetCaretBlinkTime;
+begin
+  GetProcedureAddress(_GetCaretBlinkTime, user32, 'GetCaretBlinkTime');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetCaretBlinkTime]
+  end;
+end;
+
+var
+  _SetCaretBlinkTime: Pointer;
+
+function SetCaretBlinkTime;
+begin
+  GetProcedureAddress(_SetCaretBlinkTime, user32, 'SetCaretBlinkTime');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetCaretBlinkTime]
+  end;
+end;
+
+var
+  _DestroyCaret: Pointer;
+
+function DestroyCaret;
+begin
+  GetProcedureAddress(_DestroyCaret, user32, 'DestroyCaret');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DestroyCaret]
+  end;
+end;
+
+var
+  _HideCaret: Pointer;
+
+function HideCaret;
+begin
+  GetProcedureAddress(_HideCaret, user32, 'HideCaret');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_HideCaret]
+  end;
+end;
+
+var
+  _ShowCaret: Pointer;
+
+function ShowCaret;
+begin
+  GetProcedureAddress(_ShowCaret, user32, 'ShowCaret');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ShowCaret]
+  end;
+end;
+
+var
+  _SetCaretPos: Pointer;
+
+function SetCaretPos;
+begin
+  GetProcedureAddress(_SetCaretPos, user32, 'SetCaretPos');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetCaretPos]
+  end;
+end;
+
+var
+  _GetCaretPos: Pointer;
+
+function GetCaretPos;
+begin
+  GetProcedureAddress(_GetCaretPos, user32, 'GetCaretPos');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetCaretPos]
+  end;
+end;
+
+var
+  _ClientToScreen: Pointer;
+
+function ClientToScreen;
+begin
+  GetProcedureAddress(_ClientToScreen, user32, 'ClientToScreen');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ClientToScreen]
+  end;
+end;
+
+var
+  _ScreenToClient: Pointer;
+
+function ScreenToClient;
+begin
+  GetProcedureAddress(_ScreenToClient, user32, 'ScreenToClient');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ScreenToClient]
+  end;
+end;
+
+var
+  _MapWindowPoints: Pointer;
+
+function MapWindowPoints;
+begin
+  GetProcedureAddress(_MapWindowPoints, user32, 'MapWindowPoints');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MapWindowPoints]
+  end;
+end;
+
+var
+  _WindowFromPoint: Pointer;
+
+function WindowFromPoint;
+begin
+  GetProcedureAddress(_WindowFromPoint, user32, 'WindowFromPoint');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WindowFromPoint]
+  end;
+end;
+
+var
+  _ChildWindowFromPoint: Pointer;
+
+function ChildWindowFromPoint;
+begin
+  GetProcedureAddress(_ChildWindowFromPoint, user32, 'ChildWindowFromPoint');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ChildWindowFromPoint]
+  end;
+end;
+
+var
+  _ChildWindowFromPointEx: Pointer;
+
+function ChildWindowFromPointEx;
+begin
+  GetProcedureAddress(_ChildWindowFromPointEx, user32, 'ChildWindowFromPointEx');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ChildWindowFromPointEx]
+  end;
+end;
+
+var
+  _GetSysColor: Pointer;
+
+function GetSysColor;
+begin
+  GetProcedureAddress(_GetSysColor, user32, 'GetSysColor');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetSysColor]
+  end;
+end;
+
+var
+  _GetSysColorBrush: Pointer;
+
+function GetSysColorBrush;
+begin
+  GetProcedureAddress(_GetSysColorBrush, user32, 'GetSysColorBrush');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetSysColorBrush]
+  end;
+end;
+
+var
+  _SetSysColors: Pointer;
+
+function SetSysColors;
+begin
+  GetProcedureAddress(_SetSysColors, user32, 'SetSysColors');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetSysColors]
+  end;
+end;
+
+var
+  _DrawFocusRect: Pointer;
+
+function DrawFocusRect;
+begin
+  GetProcedureAddress(_DrawFocusRect, user32, 'DrawFocusRect');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DrawFocusRect]
+  end;
+end;
+
+var
+  _FillRect: Pointer;
+
+function FillRect;
+begin
+  GetProcedureAddress(_FillRect, user32, 'FillRect');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_FillRect]
+  end;
+end;
+
+var
+  _FrameRect: Pointer;
+
+function FrameRect;
+begin
+  GetProcedureAddress(_FrameRect, user32, 'FrameRect');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_FrameRect]
+  end;
+end;
+
+var
+  _InvertRect: Pointer;
+
+function InvertRect;
+begin
+  GetProcedureAddress(_InvertRect, user32, 'InvertRect');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_InvertRect]
+  end;
+end;
+
+var
+  _SetRect: Pointer;
+
+function SetRect;
+begin
+  GetProcedureAddress(_SetRect, user32, 'SetRect');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetRect]
+  end;
+end;
+
+var
+  _SetRectEmpty: Pointer;
+
+function SetRectEmpty;
+begin
+  GetProcedureAddress(_SetRectEmpty, user32, 'SetRectEmpty');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetRectEmpty]
+  end;
+end;
+
+var
+  _CopyRect: Pointer;
+
+function CopyRect;
+begin
+  GetProcedureAddress(_CopyRect, user32, 'CopyRect');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CopyRect]
+  end;
+end;
+
+var
+  _InflateRect: Pointer;
+
+function InflateRect;
+begin
+  GetProcedureAddress(_InflateRect, user32, 'InflateRect');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_InflateRect]
+  end;
+end;
+
+var
+  _IntersectRect: Pointer;
+
+function IntersectRect;
+begin
+  GetProcedureAddress(_IntersectRect, user32, 'IntersectRect');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IntersectRect]
+  end;
+end;
+
+var
+  _UnionRect: Pointer;
+
+function UnionRect;
+begin
+  GetProcedureAddress(_UnionRect, user32, 'UnionRect');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_UnionRect]
+  end;
+end;
+
+var
+  _SubtractRect: Pointer;
+
+function SubtractRect;
+begin
+  GetProcedureAddress(_SubtractRect, user32, 'SubtractRect');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SubtractRect]
+  end;
+end;
+
+var
+  _OffsetRect: Pointer;
+
+function OffsetRect;
+begin
+  GetProcedureAddress(_OffsetRect, user32, 'OffsetRect');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_OffsetRect]
+  end;
+end;
+
+var
+  _IsRectEmpty: Pointer;
+
+function IsRectEmpty;
+begin
+  GetProcedureAddress(_IsRectEmpty, user32, 'IsRectEmpty');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsRectEmpty]
+  end;
+end;
+
+var
+  _EqualRect: Pointer;
+
+function EqualRect;
+begin
+  GetProcedureAddress(_EqualRect, user32, 'EqualRect');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EqualRect]
+  end;
+end;
+
+var
+  _PtInRect: Pointer;
+
+function PtInRect;
+begin
+  GetProcedureAddress(_PtInRect, user32, 'PtInRect');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PtInRect]
+  end;
+end;
+
+var
+  _GetWindowWord: Pointer;
+
+function GetWindowWord;
+begin
+  GetProcedureAddress(_GetWindowWord, user32, 'GetWindowWord');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetWindowWord]
+  end;
+end;
+
+var
+  _SetWindowWord: Pointer;
+
+function SetWindowWord;
+begin
+  GetProcedureAddress(_SetWindowWord, user32, 'SetWindowWord');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetWindowWord]
+  end;
+end;
+
+var
+  _GetWindowLongA: Pointer;
+
+function GetWindowLongA;
+begin
+  GetProcedureAddress(_GetWindowLongA, user32, 'GetWindowLongA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetWindowLongA]
+  end;
+end;
+
+var
+  _GetWindowLongW: Pointer;
+
+function GetWindowLongW;
+begin
+  GetProcedureAddress(_GetWindowLongW, user32, 'GetWindowLongW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetWindowLongW]
+  end;
+end;
+
+var
+  _GetWindowLong: Pointer;
+
+function GetWindowLong;
+begin
+  GetProcedureAddress(_GetWindowLong, user32, 'GetWindowLong' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetWindowLong]
+  end;
+end;
+
+var
+  _SetWindowLongA: Pointer;
+
+function SetWindowLongA;
+begin
+  GetProcedureAddress(_SetWindowLongA, user32, 'SetWindowLongA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetWindowLongA]
+  end;
+end;
+
+var
+  _SetWindowLongW: Pointer;
+
+function SetWindowLongW;
+begin
+  GetProcedureAddress(_SetWindowLongW, user32, 'SetWindowLongW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetWindowLongW]
+  end;
+end;
+
+var
+  _SetWindowLong: Pointer;
+
+function SetWindowLong;
+begin
+  GetProcedureAddress(_SetWindowLong, user32, 'SetWindowLong' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetWindowLong]
+  end;
+end;
+
+var
+  _GetClassWord: Pointer;
+
+function GetClassWord;
+begin
+  GetProcedureAddress(_GetClassWord, user32, 'GetClassWord');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetClassWord]
+  end;
+end;
+
+var
+  _SetClassWord: Pointer;
+
+function SetClassWord;
+begin
+  GetProcedureAddress(_SetClassWord, user32, 'SetClassWord');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetClassWord]
+  end;
+end;
+
+var
+  _GetClassLongA: Pointer;
+
+function GetClassLongA;
+begin
+  GetProcedureAddress(_GetClassLongA, user32, 'GetClassLongA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetClassLongA]
+  end;
+end;
+
+var
+  _GetClassLongW: Pointer;
+
+function GetClassLongW;
+begin
+  GetProcedureAddress(_GetClassLongW, user32, 'GetClassLongW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetClassLongW]
+  end;
+end;
+
+var
+  _GetClassLong: Pointer;
+
+function GetClassLong;
+begin
+  GetProcedureAddress(_GetClassLong, user32, 'GetClassLong' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetClassLong]
+  end;
+end;
+
+var
+  _SetClassLongA: Pointer;
+
+function SetClassLongA;
+begin
+  GetProcedureAddress(_SetClassLongA, user32, 'SetClassLongA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetClassLongA]
+  end;
+end;
+
+var
+  _SetClassLongW: Pointer;
+
+function SetClassLongW;
+begin
+  GetProcedureAddress(_SetClassLongW, user32, 'SetClassLongW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetClassLongW]
+  end;
+end;
+
+var
+  _SetClassLong: Pointer;
+
+function SetClassLong;
+begin
+  GetProcedureAddress(_SetClassLong, user32, 'SetClassLong' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetClassLong]
+  end;
+end;
+
+var
+  _GetProcessDefaultLayout: Pointer;
+
+function GetProcessDefaultLayout;
+begin
+  GetProcedureAddress(_GetProcessDefaultLayout, user32, 'GetProcessDefaultLayout');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetProcessDefaultLayout]
+  end;
+end;
+
+var
+  _SetProcessDefaultLayout: Pointer;
+
+function SetProcessDefaultLayout;
+begin
+  GetProcedureAddress(_SetProcessDefaultLayout, user32, 'SetProcessDefaultLayout');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetProcessDefaultLayout]
+  end;
+end;
+
+var
+  _GetDesktopWindow: Pointer;
+
+function GetDesktopWindow;
+begin
+  GetProcedureAddress(_GetDesktopWindow, user32, 'GetDesktopWindow');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetDesktopWindow]
+  end;
+end;
+
+var
+  _GetParent: Pointer;
+
+function GetParent;
+begin
+  GetProcedureAddress(_GetParent, user32, 'GetParent');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetParent]
+  end;
+end;
+
+var
+  _SetParent: Pointer;
+
+function SetParent;
+begin
+  GetProcedureAddress(_SetParent, user32, 'SetParent');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetParent]
+  end;
+end;
+
+var
+  _EnumChildWindows: Pointer;
+
+function EnumChildWindows;
+begin
+  GetProcedureAddress(_EnumChildWindows, user32, 'EnumChildWindows');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumChildWindows]
+  end;
+end;
+
+var
+  _FindWindowA: Pointer;
+
+function FindWindowA;
+begin
+  GetProcedureAddress(_FindWindowA, user32, 'FindWindowA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_FindWindowA]
+  end;
+end;
+
+var
+  _FindWindowW: Pointer;
+
+function FindWindowW;
+begin
+  GetProcedureAddress(_FindWindowW, user32, 'FindWindowW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_FindWindowW]
+  end;
+end;
+
+var
+  _FindWindow: Pointer;
+
+function FindWindow;
+begin
+  GetProcedureAddress(_FindWindow, user32, 'FindWindow' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_FindWindow]
+  end;
+end;
+
+var
+  _FindWindowExA: Pointer;
+
+function FindWindowExA;
+begin
+  GetProcedureAddress(_FindWindowExA, user32, 'FindWindowExA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_FindWindowExA]
+  end;
+end;
+
+var
+  _FindWindowExW: Pointer;
+
+function FindWindowExW;
+begin
+  GetProcedureAddress(_FindWindowExW, user32, 'FindWindowExW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_FindWindowExW]
+  end;
+end;
+
+var
+  _FindWindowEx: Pointer;
+
+function FindWindowEx;
+begin
+  GetProcedureAddress(_FindWindowEx, user32, 'FindWindowEx' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_FindWindowEx]
+  end;
+end;
+
+var
+  _GetShellWindow: Pointer;
+
+function GetShellWindow;
+begin
+  GetProcedureAddress(_GetShellWindow, user32, 'GetShellWindow');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetShellWindow]
+  end;
+end;
+
+var
+  _RegisterShellHookWindow: Pointer;
+
+function RegisterShellHookWindow;
+begin
+  GetProcedureAddress(_RegisterShellHookWindow, user32, 'RegisterShellHookWindow');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RegisterShellHookWindow]
+  end;
+end;
+
+var
+  _DeregisterShellHookWindow: Pointer;
+
+function DeregisterShellHookWindow;
+begin
+  GetProcedureAddress(_DeregisterShellHookWindow, user32, 'DeregisterShellHookWindow');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DeregisterShellHookWindow]
+  end;
+end;
+
+var
+  _EnumWindows: Pointer;
+
+function EnumWindows;
+begin
+  GetProcedureAddress(_EnumWindows, user32, 'EnumWindows');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumWindows]
+  end;
+end;
+
+var
+  _EnumThreadWindows: Pointer;
+
+function EnumThreadWindows;
+begin
+  GetProcedureAddress(_EnumThreadWindows, user32, 'EnumThreadWindows');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumThreadWindows]
+  end;
+end;
+
+var
+  _GetClassNameA: Pointer;
+
+function GetClassNameA;
+begin
+  GetProcedureAddress(_GetClassNameA, user32, 'GetClassNameA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetClassNameA]
+  end;
+end;
+
+var
+  _GetClassNameW: Pointer;
+
+function GetClassNameW;
+begin
+  GetProcedureAddress(_GetClassNameW, user32, 'GetClassNameW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetClassNameW]
+  end;
+end;
+
+var
+  _GetClassName: Pointer;
+
+function GetClassName;
+begin
+  GetProcedureAddress(_GetClassName, user32, 'GetClassName' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetClassName]
+  end;
+end;
+
+var
+  _GetTopWindow: Pointer;
+
+function GetTopWindow;
+begin
+  GetProcedureAddress(_GetTopWindow, user32, 'GetTopWindow');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetTopWindow]
+  end;
+end;
+
+var
+  _GetWindowThreadProcessId: Pointer;
+
+function GetWindowThreadProcessId;
+begin
+  GetProcedureAddress(_GetWindowThreadProcessId, user32, 'GetWindowThreadProcessId');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetWindowThreadProcessId]
+  end;
+end;
+
+var
+  _IsGUIThread: Pointer;
+
+function IsGUIThread;
+begin
+  GetProcedureAddress(_IsGUIThread, user32, 'IsGUIThread');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsGUIThread]
+  end;
+end;
+
+var
+  _GetLastActivePopup: Pointer;
+
+function GetLastActivePopup;
+begin
+  GetProcedureAddress(_GetLastActivePopup, user32, 'GetLastActivePopup');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetLastActivePopup]
+  end;
+end;
+
+var
+  _GetWindow: Pointer;
+
+function GetWindow;
+begin
+  GetProcedureAddress(_GetWindow, user32, 'GetWindow');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetWindow]
+  end;
+end;
+
+var
+  _SetWindowsHookA: Pointer;
+
+function SetWindowsHookA;
+begin
+  GetProcedureAddress(_SetWindowsHookA, user32, 'SetWindowsHookA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetWindowsHookA]
+  end;
+end;
+
+var
+  _SetWindowsHookW: Pointer;
+
+function SetWindowsHookW;
+begin
+  GetProcedureAddress(_SetWindowsHookW, user32, 'SetWindowsHookW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetWindowsHookW]
+  end;
+end;
+
+var
+  _SetWindowsHook: Pointer;
+
+function SetWindowsHook;
+begin
+  GetProcedureAddress(_SetWindowsHook, user32, 'SetWindowsHook' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetWindowsHook]
+  end;
+end;
+
+var
+  _UnhookWindowsHook: Pointer;
+
+function UnhookWindowsHook;
+begin
+  GetProcedureAddress(_UnhookWindowsHook, user32, 'UnhookWindowsHook');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_UnhookWindowsHook]
+  end;
+end;
+
+var
+  _SetWindowsHookExA: Pointer;
+
+function SetWindowsHookExA;
+begin
+  GetProcedureAddress(_SetWindowsHookExA, user32, 'SetWindowsHookExA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetWindowsHookExA]
+  end;
+end;
+
+var
+  _SetWindowsHookExW: Pointer;
+
+function SetWindowsHookExW;
+begin
+  GetProcedureAddress(_SetWindowsHookExW, user32, 'SetWindowsHookExW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetWindowsHookExW]
+  end;
+end;
+
+var
+  _SetWindowsHookEx: Pointer;
+
+function SetWindowsHookEx;
+begin
+  GetProcedureAddress(_SetWindowsHookEx, user32, 'SetWindowsHookEx' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetWindowsHookEx]
+  end;
+end;
+
+var
+  _UnhookWindowsHookEx: Pointer;
+
+function UnhookWindowsHookEx;
+begin
+  GetProcedureAddress(_UnhookWindowsHookEx, user32, 'UnhookWindowsHookEx');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_UnhookWindowsHookEx]
+  end;
+end;
+
+var
+  _CallNextHookEx: Pointer;
+
+function CallNextHookEx;
+begin
+  GetProcedureAddress(_CallNextHookEx, user32, 'CallNextHookEx');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CallNextHookEx]
+  end;
+end;
+
+var
+  _CheckMenuRadioItem: Pointer;
+
+function CheckMenuRadioItem;
+begin
+  GetProcedureAddress(_CheckMenuRadioItem, user32, 'CheckMenuRadioItem');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CheckMenuRadioItem]
+  end;
+end;
+
+var
+  _LoadBitmapA: Pointer;
+
+function LoadBitmapA;
+begin
+  GetProcedureAddress(_LoadBitmapA, user32, 'LoadBitmapA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LoadBitmapA]
+  end;
+end;
+
+var
+  _LoadBitmapW: Pointer;
+
+function LoadBitmapW;
+begin
+  GetProcedureAddress(_LoadBitmapW, user32, 'LoadBitmapW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LoadBitmapW]
+  end;
+end;
+
+var
+  _LoadBitmap: Pointer;
+
+function LoadBitmap;
+begin
+  GetProcedureAddress(_LoadBitmap, user32, 'LoadBitmap' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LoadBitmap]
+  end;
+end;
+
+var
+  _LoadCursorA: Pointer;
+
+function LoadCursorA;
+begin
+  GetProcedureAddress(_LoadCursorA, user32, 'LoadCursorA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LoadCursorA]
+  end;
+end;
+
+var
+  _LoadCursorW: Pointer;
+
+function LoadCursorW;
+begin
+  GetProcedureAddress(_LoadCursorW, user32, 'LoadCursorW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LoadCursorW]
+  end;
+end;
+
+var
+  _LoadCursor: Pointer;
+
+function LoadCursor;
+begin
+  GetProcedureAddress(_LoadCursor, user32, 'LoadCursor' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LoadCursor]
+  end;
+end;
+
+var
+  _LoadCursorFromFileA: Pointer;
+
+function LoadCursorFromFileA;
+begin
+  GetProcedureAddress(_LoadCursorFromFileA, user32, 'LoadCursorFromFileA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LoadCursorFromFileA]
+  end;
+end;
+
+var
+  _LoadCursorFromFileW: Pointer;
+
+function LoadCursorFromFileW;
+begin
+  GetProcedureAddress(_LoadCursorFromFileW, user32, 'LoadCursorFromFileW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LoadCursorFromFileW]
+  end;
+end;
+
+var
+  _LoadCursorFromFile: Pointer;
+
+function LoadCursorFromFile;
+begin
+  GetProcedureAddress(_LoadCursorFromFile, user32, 'LoadCursorFromFile' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LoadCursorFromFile]
+  end;
+end;
+
+var
+  _CreateCursor: Pointer;
+
+function CreateCursor;
+begin
+  GetProcedureAddress(_CreateCursor, user32, 'CreateCursor');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateCursor]
+  end;
+end;
+
+var
+  _DestroyCursor: Pointer;
+
+function DestroyCursor;
+begin
+  GetProcedureAddress(_DestroyCursor, user32, 'DestroyCursor');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DestroyCursor]
+  end;
+end;
+
+var
+  _SetSystemCursor: Pointer;
+
+function SetSystemCursor;
+begin
+  GetProcedureAddress(_SetSystemCursor, user32, 'SetSystemCursor');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetSystemCursor]
+  end;
+end;
+
+var
+  _LoadIconA: Pointer;
+
+function LoadIconA;
+begin
+  GetProcedureAddress(_LoadIconA, user32, 'LoadIconA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LoadIconA]
+  end;
+end;
+
+var
+  _LoadIconW: Pointer;
+
+function LoadIconW;
+begin
+  GetProcedureAddress(_LoadIconW, user32, 'LoadIconW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LoadIconW]
+  end;
+end;
+
+var
+  _LoadIcon: Pointer;
+
+function LoadIcon;
+begin
+  GetProcedureAddress(_LoadIcon, user32, 'LoadIcon' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LoadIcon]
+  end;
+end;
+
+var
+  _PrivateExtractIconsA: Pointer;
+
+function PrivateExtractIconsA;
+begin
+  GetProcedureAddress(_PrivateExtractIconsA, user32, 'PrivateExtractIconsA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PrivateExtractIconsA]
+  end;
+end;
+
+var
+  _PrivateExtractIconsW: Pointer;
+
+function PrivateExtractIconsW;
+begin
+  GetProcedureAddress(_PrivateExtractIconsW, user32, 'PrivateExtractIconsW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PrivateExtractIconsW]
+  end;
+end;
+
+var
+  _PrivateExtractIcons: Pointer;
+
+function PrivateExtractIcons;
+begin
+  GetProcedureAddress(_PrivateExtractIcons, user32, 'PrivateExtractIcons' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PrivateExtractIcons]
+  end;
+end;
+
+var
+  _CreateIcon: Pointer;
+
+function CreateIcon;
+begin
+  GetProcedureAddress(_CreateIcon, user32, 'CreateIcon');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateIcon]
+  end;
+end;
+
+var
+  _DestroyIcon: Pointer;
+
+function DestroyIcon;
+begin
+  GetProcedureAddress(_DestroyIcon, user32, 'DestroyIcon');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DestroyIcon]
+  end;
+end;
+
+var
+  _LookupIconIdFromDirectory: Pointer;
+
+function LookupIconIdFromDirectory;
+begin
+  GetProcedureAddress(_LookupIconIdFromDirectory, user32, 'LookupIconIdFromDirectory');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LookupIconIdFromDirectory]
+  end;
+end;
+
+var
+  _LookupIconIdFromDirectoryEx: Pointer;
+
+function LookupIconIdFromDirectoryEx;
+begin
+  GetProcedureAddress(_LookupIconIdFromDirectoryEx, user32, 'LookupIconIdFromDirectoryEx');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LookupIconIdFromDirectoryEx]
+  end;
+end;
+
+var
+  _CreateIconFromResource: Pointer;
+
+function CreateIconFromResource;
+begin
+  GetProcedureAddress(_CreateIconFromResource, user32, 'CreateIconFromResource');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateIconFromResource]
+  end;
+end;
+
+var
+  _CreateIconFromResourceEx: Pointer;
+
+function CreateIconFromResourceEx;
+begin
+  GetProcedureAddress(_CreateIconFromResourceEx, user32, 'CreateIconFromResourceEx');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateIconFromResourceEx]
+  end;
+end;
+
+var
+  _LoadImageA: Pointer;
+
+function LoadImageA;
+begin
+  GetProcedureAddress(_LoadImageA, user32, 'LoadImageA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LoadImageA]
+  end;
+end;
+
+var
+  _LoadImageW: Pointer;
+
+function LoadImageW;
+begin
+  GetProcedureAddress(_LoadImageW, user32, 'LoadImageW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LoadImageW]
+  end;
+end;
+
+var
+  _LoadImage: Pointer;
+
+function LoadImage;
+begin
+  GetProcedureAddress(_LoadImage, user32, 'LoadImage' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LoadImage]
+  end;
+end;
+
+var
+  _CopyImage: Pointer;
+
+function CopyImage;
+begin
+  GetProcedureAddress(_CopyImage, user32, 'CopyImage');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CopyImage]
+  end;
+end;
+
+var
+  _DrawIconEx: Pointer;
+
+function DrawIconEx;
+begin
+  GetProcedureAddress(_DrawIconEx, user32, 'DrawIconEx');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DrawIconEx]
+  end;
+end;
+
+var
+  _CreateIconIndirect: Pointer;
+
+function CreateIconIndirect;
+begin
+  GetProcedureAddress(_CreateIconIndirect, user32, 'CreateIconIndirect');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateIconIndirect]
+  end;
+end;
+
+var
+  _CopyIcon: Pointer;
+
+function CopyIcon;
+begin
+  GetProcedureAddress(_CopyIcon, user32, 'CopyIcon');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CopyIcon]
+  end;
+end;
+
+var
+  _GetIconInfo: Pointer;
+
+function GetIconInfo;
+begin
+  GetProcedureAddress(_GetIconInfo, user32, 'GetIconInfo');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetIconInfo]
+  end;
+end;
+
+var
+  _LoadStringA: Pointer;
+
+function LoadStringA;
+begin
+  GetProcedureAddress(_LoadStringA, user32, 'LoadStringA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LoadStringA]
+  end;
+end;
+
+var
+  _LoadStringW: Pointer;
+
+function LoadStringW;
+begin
+  GetProcedureAddress(_LoadStringW, user32, 'LoadStringW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LoadStringW]
+  end;
+end;
+
+var
+  _LoadString: Pointer;
+
+function LoadString;
+begin
+  GetProcedureAddress(_LoadString, user32, 'LoadString' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LoadString]
+  end;
+end;
+
+var
+  _IsDialogMessageA: Pointer;
+
+function IsDialogMessageA;
+begin
+  GetProcedureAddress(_IsDialogMessageA, user32, 'IsDialogMessageA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsDialogMessageA]
+  end;
+end;
+
+var
+  _IsDialogMessageW: Pointer;
+
+function IsDialogMessageW;
+begin
+  GetProcedureAddress(_IsDialogMessageW, user32, 'IsDialogMessageW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsDialogMessageW]
+  end;
+end;
+
+var
+  _IsDialogMessage: Pointer;
+
+function IsDialogMessage;
+begin
+  GetProcedureAddress(_IsDialogMessage, user32, 'IsDialogMessage' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsDialogMessage]
+  end;
+end;
+
+var
+  _MapDialogRect: Pointer;
+
+function MapDialogRect;
+begin
+  GetProcedureAddress(_MapDialogRect, user32, 'MapDialogRect');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MapDialogRect]
+  end;
+end;
+
+var
+  _DlgDirListA: Pointer;
+
+function DlgDirListA;
+begin
+  GetProcedureAddress(_DlgDirListA, user32, 'DlgDirListA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DlgDirListA]
+  end;
+end;
+
+var
+  _DlgDirListW: Pointer;
+
+function DlgDirListW;
+begin
+  GetProcedureAddress(_DlgDirListW, user32, 'DlgDirListW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DlgDirListW]
+  end;
+end;
+
+var
+  _DlgDirList: Pointer;
+
+function DlgDirList;
+begin
+  GetProcedureAddress(_DlgDirList, user32, 'DlgDirList' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DlgDirList]
+  end;
+end;
+
+var
+  _DlgDirSelectExA: Pointer;
+
+function DlgDirSelectExA;
+begin
+  GetProcedureAddress(_DlgDirSelectExA, user32, 'DlgDirSelectExA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DlgDirSelectExA]
+  end;
+end;
+
+var
+  _DlgDirSelectExW: Pointer;
+
+function DlgDirSelectExW;
+begin
+  GetProcedureAddress(_DlgDirSelectExW, user32, 'DlgDirSelectExW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DlgDirSelectExW]
+  end;
+end;
+
+var
+  _DlgDirSelectEx: Pointer;
+
+function DlgDirSelectEx;
+begin
+  GetProcedureAddress(_DlgDirSelectEx, user32, 'DlgDirSelectEx' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DlgDirSelectEx]
+  end;
+end;
+
+var
+  _DlgDirListComboBoxA: Pointer;
+
+function DlgDirListComboBoxA;
+begin
+  GetProcedureAddress(_DlgDirListComboBoxA, user32, 'DlgDirListComboBoxA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DlgDirListComboBoxA]
+  end;
+end;
+
+var
+  _DlgDirListComboBoxW: Pointer;
+
+function DlgDirListComboBoxW;
+begin
+  GetProcedureAddress(_DlgDirListComboBoxW, user32, 'DlgDirListComboBoxW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DlgDirListComboBoxW]
+  end;
+end;
+
+var
+  _DlgDirListComboBox: Pointer;
+
+function DlgDirListComboBox;
+begin
+  GetProcedureAddress(_DlgDirListComboBox, user32, 'DlgDirListComboBox' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DlgDirListComboBox]
+  end;
+end;
+
+var
+  _DlgDirSelectComboBoxExA: Pointer;
+
+function DlgDirSelectComboBoxExA;
+begin
+  GetProcedureAddress(_DlgDirSelectComboBoxExA, user32, 'DlgDirSelectComboBoxExA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DlgDirSelectComboBoxExA]
+  end;
+end;
+
+var
+  _DlgDirSelectComboBoxExW: Pointer;
+
+function DlgDirSelectComboBoxExW;
+begin
+  GetProcedureAddress(_DlgDirSelectComboBoxExW, user32, 'DlgDirSelectComboBoxExW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DlgDirSelectComboBoxExW]
+  end;
+end;
+
+var
+  _DlgDirSelectComboBoxEx: Pointer;
+
+function DlgDirSelectComboBoxEx;
+begin
+  GetProcedureAddress(_DlgDirSelectComboBoxEx, user32, 'DlgDirSelectComboBoxEx' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DlgDirSelectComboBoxEx]
+  end;
+end;
+
+var
+  _SetScrollInfo: Pointer;
+
+function SetScrollInfo;
+begin
+  GetProcedureAddress(_SetScrollInfo, user32, 'SetScrollInfo');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetScrollInfo]
+  end;
+end;
+
+var
+  _GetScrollInfo: Pointer;
+
+function GetScrollInfo;
+begin
+  GetProcedureAddress(_GetScrollInfo, user32, 'GetScrollInfo');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetScrollInfo]
+  end;
+end;
+
+var
+  _DefFrameProcA: Pointer;
+
+function DefFrameProcA;
+begin
+  GetProcedureAddress(_DefFrameProcA, user32, 'DefFrameProcA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DefFrameProcA]
+  end;
+end;
+
+var
+  _DefFrameProcW: Pointer;
+
+function DefFrameProcW;
+begin
+  GetProcedureAddress(_DefFrameProcW, user32, 'DefFrameProcW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DefFrameProcW]
+  end;
+end;
+
+var
+  _DefFrameProc: Pointer;
+
+function DefFrameProc;
+begin
+  GetProcedureAddress(_DefFrameProc, user32, 'DefFrameProc' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DefFrameProc]
+  end;
+end;
+
+var
+  _DefMDIChildProcA: Pointer;
+
+function DefMDIChildProcA;
+begin
+  GetProcedureAddress(_DefMDIChildProcA, user32, 'DefMDIChildProcA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DefMDIChildProcA]
+  end;
+end;
+
+var
+  _DefMDIChildProcW: Pointer;
+
+function DefMDIChildProcW;
+begin
+  GetProcedureAddress(_DefMDIChildProcW, user32, 'DefMDIChildProcW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DefMDIChildProcW]
+  end;
+end;
+
+var
+  _DefMDIChildProc: Pointer;
+
+function DefMDIChildProc;
+begin
+  GetProcedureAddress(_DefMDIChildProc, user32, 'DefMDIChildProc' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DefMDIChildProc]
+  end;
+end;
+
+var
+  _TranslateMDISysAccel: Pointer;
+
+function TranslateMDISysAccel;
+begin
+  GetProcedureAddress(_TranslateMDISysAccel, user32, 'TranslateMDISysAccel');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TranslateMDISysAccel]
+  end;
+end;
+
+var
+  _ArrangeIconicWindows: Pointer;
+
+function ArrangeIconicWindows;
+begin
+  GetProcedureAddress(_ArrangeIconicWindows, user32, 'ArrangeIconicWindows');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ArrangeIconicWindows]
+  end;
+end;
+
+var
+  _CreateMDIWindowA: Pointer;
+
+function CreateMDIWindowA;
+begin
+  GetProcedureAddress(_CreateMDIWindowA, user32, 'CreateMDIWindowA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateMDIWindowA]
+  end;
+end;
+
+var
+  _CreateMDIWindowW: Pointer;
+
+function CreateMDIWindowW;
+begin
+  GetProcedureAddress(_CreateMDIWindowW, user32, 'CreateMDIWindowW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateMDIWindowW]
+  end;
+end;
+
+var
+  _CreateMDIWindow: Pointer;
+
+function CreateMDIWindow;
+begin
+  GetProcedureAddress(_CreateMDIWindow, user32, 'CreateMDIWindow' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateMDIWindow]
+  end;
+end;
+
+var
+  _TileWindows: Pointer;
+
+function TileWindows;
+begin
+  GetProcedureAddress(_TileWindows, user32, 'TileWindows');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TileWindows]
+  end;
+end;
+
+var
+  _CascadeWindows: Pointer;
+
+function CascadeWindows;
+begin
+  GetProcedureAddress(_CascadeWindows, user32, 'CascadeWindows');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CascadeWindows]
+  end;
+end;
+
+var
+  _WinHelpA: Pointer;
+
+function WinHelpA;
+begin
+  GetProcedureAddress(_WinHelpA, user32, 'WinHelpA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WinHelpA]
+  end;
+end;
+
+var
+  _WinHelpW: Pointer;
+
+function WinHelpW;
+begin
+  GetProcedureAddress(_WinHelpW, user32, 'WinHelpW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WinHelpW]
+  end;
+end;
+
+var
+  _WinHelp: Pointer;
+
+function WinHelp;
+begin
+  GetProcedureAddress(_WinHelp, user32, 'WinHelp' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WinHelp]
+  end;
+end;
+
+var
+  _GetGuiResources: Pointer;
+
+function GetGuiResources;
+begin
+  GetProcedureAddress(_GetGuiResources, user32, 'GetGuiResources');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetGuiResources]
+  end;
+end;
+
+var
+  _ChangeDisplaySettingsA: Pointer;
+
+function ChangeDisplaySettingsA;
+begin
+  GetProcedureAddress(_ChangeDisplaySettingsA, user32, 'ChangeDisplaySettingsA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ChangeDisplaySettingsA]
+  end;
+end;
+
+var
+  _ChangeDisplaySettingsW: Pointer;
+
+function ChangeDisplaySettingsW;
+begin
+  GetProcedureAddress(_ChangeDisplaySettingsW, user32, 'ChangeDisplaySettingsW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ChangeDisplaySettingsW]
+  end;
+end;
+
+var
+  _ChangeDisplaySettings: Pointer;
+
+function ChangeDisplaySettings;
+begin
+  GetProcedureAddress(_ChangeDisplaySettings, user32, 'ChangeDisplaySettings' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ChangeDisplaySettings]
+  end;
+end;
+
+var
+  _ChangeDisplaySettingsExA: Pointer;
+
+function ChangeDisplaySettingsExA;
+begin
+  GetProcedureAddress(_ChangeDisplaySettingsExA, user32, 'ChangeDisplaySettingsExA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ChangeDisplaySettingsExA]
+  end;
+end;
+
+var
+  _ChangeDisplaySettingsExW: Pointer;
+
+function ChangeDisplaySettingsExW;
+begin
+  GetProcedureAddress(_ChangeDisplaySettingsExW, user32, 'ChangeDisplaySettingsExW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ChangeDisplaySettingsExW]
+  end;
+end;
+
+var
+  _ChangeDisplaySettingsEx: Pointer;
+
+function ChangeDisplaySettingsEx;
+begin
+  GetProcedureAddress(_ChangeDisplaySettingsEx, user32, 'ChangeDisplaySettingsEx' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ChangeDisplaySettingsEx]
+  end;
+end;
+
+var
+  _EnumDisplaySettingsA: Pointer;
+
+function EnumDisplaySettingsA;
+begin
+  GetProcedureAddress(_EnumDisplaySettingsA, user32, 'EnumDisplaySettingsA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumDisplaySettingsA]
+  end;
+end;
+
+var
+  _EnumDisplaySettingsW: Pointer;
+
+function EnumDisplaySettingsW;
+begin
+  GetProcedureAddress(_EnumDisplaySettingsW, user32, 'EnumDisplaySettingsW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumDisplaySettingsW]
+  end;
+end;
+
+var
+  _EnumDisplaySettings: Pointer;
+
+function EnumDisplaySettings;
+begin
+  GetProcedureAddress(_EnumDisplaySettings, user32, 'EnumDisplaySettings' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumDisplaySettings]
+  end;
+end;
+
+var
+  _EnumDisplaySettingsExA: Pointer;
+
+function EnumDisplaySettingsExA;
+begin
+  GetProcedureAddress(_EnumDisplaySettingsExA, user32, 'EnumDisplaySettingsExA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumDisplaySettingsExA]
+  end;
+end;
+
+var
+  _EnumDisplaySettingsExW: Pointer;
+
+function EnumDisplaySettingsExW;
+begin
+  GetProcedureAddress(_EnumDisplaySettingsExW, user32, 'EnumDisplaySettingsExW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumDisplaySettingsExW]
+  end;
+end;
+
+var
+  _EnumDisplaySettingsEx: Pointer;
+
+function EnumDisplaySettingsEx;
+begin
+  GetProcedureAddress(_EnumDisplaySettingsEx, user32, 'EnumDisplaySettingsEx' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumDisplaySettingsEx]
+  end;
+end;
+
+var
+  _EnumDisplayDevicesA: Pointer;
+
+function EnumDisplayDevicesA;
+begin
+  GetProcedureAddress(_EnumDisplayDevicesA, user32, 'EnumDisplayDevicesA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumDisplayDevicesA]
+  end;
+end;
+
+var
+  _EnumDisplayDevicesW: Pointer;
+
+function EnumDisplayDevicesW;
+begin
+  GetProcedureAddress(_EnumDisplayDevicesW, user32, 'EnumDisplayDevicesW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumDisplayDevicesW]
+  end;
+end;
+
+var
+  _EnumDisplayDevices: Pointer;
+
+function EnumDisplayDevices;
+begin
+  GetProcedureAddress(_EnumDisplayDevices, user32, 'EnumDisplayDevices' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumDisplayDevices]
+  end;
+end;
+
+var
+  _SystemParametersInfoA: Pointer;
+
+function SystemParametersInfoA;
+begin
+  GetProcedureAddress(_SystemParametersInfoA, user32, 'SystemParametersInfoA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SystemParametersInfoA]
+  end;
+end;
+
+var
+  _SystemParametersInfoW: Pointer;
+
+function SystemParametersInfoW;
+begin
+  GetProcedureAddress(_SystemParametersInfoW, user32, 'SystemParametersInfoW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SystemParametersInfoW]
+  end;
+end;
+
+var
+  _SystemParametersInfo: Pointer;
+
+function SystemParametersInfo;
+begin
+  GetProcedureAddress(_SystemParametersInfo, user32, 'SystemParametersInfo' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SystemParametersInfo]
+  end;
+end;
+
+var
+  _SetDebugErrorLevel: Pointer;
+
+procedure SetDebugErrorLevel;
+begin
+  GetProcedureAddress(_SetDebugErrorLevel, user32, 'SetDebugErrorLevel');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetDebugErrorLevel]
+  end;
+end;
+
+var
+  _SetLastErrorEx: Pointer;
+
+procedure SetLastErrorEx;
+begin
+  GetProcedureAddress(_SetLastErrorEx, user32, 'SetLastErrorEx');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetLastErrorEx]
+  end;
+end;
+
+var
+  _InternalGetWindowText: Pointer;
+
+function InternalGetWindowText;
+begin
+  GetProcedureAddress(_InternalGetWindowText, user32, 'InternalGetWindowText');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_InternalGetWindowText]
+  end;
+end;
+
+var
+  _EndTask: Pointer;
+
+function EndTask;
+begin
+  GetProcedureAddress(_EndTask, user32, 'EndTask');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EndTask]
+  end;
+end;
+
+var
+  _MonitorFromPoint: Pointer;
+
+function MonitorFromPoint;
+begin
+  GetProcedureAddress(_MonitorFromPoint, user32, 'MonitorFromPoint');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MonitorFromPoint]
+  end;
+end;
+
+var
+  _MonitorFromRect: Pointer;
+
+function MonitorFromRect;
+begin
+  GetProcedureAddress(_MonitorFromRect, user32, 'MonitorFromRect');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MonitorFromRect]
+  end;
+end;
+
+var
+  _MonitorFromWindow: Pointer;
+
+function MonitorFromWindow;
+begin
+  GetProcedureAddress(_MonitorFromWindow, user32, 'MonitorFromWindow');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_MonitorFromWindow]
+  end;
+end;
+
+var
+  _GetMonitorInfoA: Pointer;
+
+function GetMonitorInfoA;
+begin
+  GetProcedureAddress(_GetMonitorInfoA, user32, 'GetMonitorInfoA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetMonitorInfoA]
+  end;
+end;
+
+var
+  _GetMonitorInfoW: Pointer;
+
+function GetMonitorInfoW;
+begin
+  GetProcedureAddress(_GetMonitorInfoW, user32, 'GetMonitorInfoW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetMonitorInfoW]
+  end;
+end;
+
+var
+  _GetMonitorInfo: Pointer;
+
+function GetMonitorInfo;
+begin
+  GetProcedureAddress(_GetMonitorInfo, user32, 'GetMonitorInfo' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetMonitorInfo]
+  end;
+end;
+
+var
+  _EnumDisplayMonitors: Pointer;
+
+function EnumDisplayMonitors;
+begin
+  GetProcedureAddress(_EnumDisplayMonitors, user32, 'EnumDisplayMonitors');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumDisplayMonitors]
+  end;
+end;
+
+var
+  _NotifyWinEvent: Pointer;
+
+procedure NotifyWinEvent;
+begin
+  GetProcedureAddress(_NotifyWinEvent, user32, 'NotifyWinEvent');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NotifyWinEvent]
+  end;
+end;
+
+var
+  _SetWinEventHook: Pointer;
+
+function SetWinEventHook;
+begin
+  GetProcedureAddress(_SetWinEventHook, user32, 'SetWinEventHook');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetWinEventHook]
+  end;
+end;
+
+var
+  _IsWinEventHookInstalled: Pointer;
+
+function IsWinEventHookInstalled;
+begin
+  GetProcedureAddress(_IsWinEventHookInstalled, user32, 'IsWinEventHookInstalled');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_IsWinEventHookInstalled]
+  end;
+end;
+
+var
+  _UnhookWinEvent: Pointer;
+
+function UnhookWinEvent;
+begin
+  GetProcedureAddress(_UnhookWinEvent, user32, 'UnhookWinEvent');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_UnhookWinEvent]
+  end;
+end;
+
+var
+  _GetGUIThreadInfo: Pointer;
+
+function GetGUIThreadInfo;
+begin
+  GetProcedureAddress(_GetGUIThreadInfo, user32, 'GetGUIThreadInfo');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetGUIThreadInfo]
+  end;
+end;
+
+var
+  _GetWindowModuleFileNameA: Pointer;
+
+function GetWindowModuleFileNameA;
+begin
+  GetProcedureAddress(_GetWindowModuleFileNameA, user32, 'GetWindowModuleFileNameA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetWindowModuleFileNameA]
+  end;
+end;
+
+var
+  _GetWindowModuleFileNameW: Pointer;
+
+function GetWindowModuleFileNameW;
+begin
+  GetProcedureAddress(_GetWindowModuleFileNameW, user32, 'GetWindowModuleFileNameW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetWindowModuleFileNameW]
+  end;
+end;
+
+var
+  _GetWindowModuleFileName: Pointer;
+
+function GetWindowModuleFileName;
+begin
+  GetProcedureAddress(_GetWindowModuleFileName, user32, 'GetWindowModuleFileName' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetWindowModuleFileName]
+  end;
+end;
+
+var
+  _GetCursorInfo: Pointer;
+
+function GetCursorInfo;
+begin
+  GetProcedureAddress(_GetCursorInfo, user32, 'GetCursorInfo');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetCursorInfo]
+  end;
+end;
+
+var
+  _GetWindowInfo: Pointer;
+
+function GetWindowInfo;
+begin
+  GetProcedureAddress(_GetWindowInfo, user32, 'GetWindowInfo');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetWindowInfo]
+  end;
+end;
+
+var
+  _GetTitleBarInfo: Pointer;
+
+function GetTitleBarInfo;
+begin
+  GetProcedureAddress(_GetTitleBarInfo, user32, 'GetTitleBarInfo');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetTitleBarInfo]
+  end;
+end;
+
+var
+  _GetMenuBarInfo: Pointer;
+
+function GetMenuBarInfo;
+begin
+  GetProcedureAddress(_GetMenuBarInfo, user32, 'GetMenuBarInfo');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetMenuBarInfo]
+  end;
+end;
+
+var
+  _GetScrollBarInfo: Pointer;
+
+function GetScrollBarInfo;
+begin
+  GetProcedureAddress(_GetScrollBarInfo, user32, 'GetScrollBarInfo');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetScrollBarInfo]
+  end;
+end;
+
+var
+  _GetComboBoxInfo: Pointer;
+
+function GetComboBoxInfo;
+begin
+  GetProcedureAddress(_GetComboBoxInfo, user32, 'GetComboBoxInfo');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetComboBoxInfo]
+  end;
+end;
+
+var
+  _GetAncestor: Pointer;
+
+function GetAncestor;
+begin
+  GetProcedureAddress(_GetAncestor, user32, 'GetAncestor');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetAncestor]
+  end;
+end;
+
+var
+  _RealChildWindowFromPoint: Pointer;
+
+function RealChildWindowFromPoint;
+begin
+  GetProcedureAddress(_RealChildWindowFromPoint, user32, 'RealChildWindowFromPoint');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RealChildWindowFromPoint]
+  end;
+end;
+
+var
+  _RealGetWindowClassA: Pointer;
+
+function RealGetWindowClassA;
+begin
+  GetProcedureAddress(_RealGetWindowClassA, user32, 'RealGetWindowClassA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RealGetWindowClassA]
+  end;
+end;
+
+var
+  _RealGetWindowClassW: Pointer;
+
+function RealGetWindowClassW;
+begin
+  GetProcedureAddress(_RealGetWindowClassW, user32, 'RealGetWindowClassW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RealGetWindowClassW]
+  end;
+end;
+
+var
+  _RealGetWindowClass: Pointer;
+
+function RealGetWindowClass;
+begin
+  GetProcedureAddress(_RealGetWindowClass, user32, 'RealGetWindowClass' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RealGetWindowClass]
+  end;
+end;
+
+var
+  _GetAltTabInfoA: Pointer;
+
+function GetAltTabInfoA;
+begin
+  GetProcedureAddress(_GetAltTabInfoA, user32, 'GetAltTabInfoA');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetAltTabInfoA]
+  end;
+end;
+
+var
+  _GetAltTabInfoW: Pointer;
+
+function GetAltTabInfoW;
+begin
+  GetProcedureAddress(_GetAltTabInfoW, user32, 'GetAltTabInfoW');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetAltTabInfoW]
+  end;
+end;
+
+var
+  _GetAltTabInfo: Pointer;
+
+function GetAltTabInfo;
+begin
+  GetProcedureAddress(_GetAltTabInfo, user32, 'GetAltTabInfo' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetAltTabInfo]
+  end;
+end;
+
+var
+  _GetListBoxInfo: Pointer;
+
+function GetListBoxInfo;
+begin
+  GetProcedureAddress(_GetListBoxInfo, user32, 'GetListBoxInfo');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetListBoxInfo]
+  end;
+end;
+
+var
+  _LockWorkStation: Pointer;
+
+function LockWorkStation;
+begin
+  GetProcedureAddress(_LockWorkStation, user32, 'LockWorkStation');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LockWorkStation]
+  end;
+end;
+
+var
+  _UserHandleGrantAccess: Pointer;
+
+function UserHandleGrantAccess;
+begin
+  GetProcedureAddress(_UserHandleGrantAccess, user32, 'UserHandleGrantAccess');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_UserHandleGrantAccess]
+  end;
+end;
+
 var
   _GetRawInputData: Pointer;
 
@@ -27314,16 +21077,12 @@ function GetRawInputData;
 begin
   GetProcedureAddress(_GetRawInputData, user32, 'GetRawInputData');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetRawInputData]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetRawInputData]
   end;
 end;
-{$ELSE}
-function GetRawInputData; external user32 name 'GetRawInputData';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetRawInputDeviceInfoA: Pointer;
 
@@ -27331,16 +21090,12 @@ function GetRawInputDeviceInfoA;
 begin
   GetProcedureAddress(_GetRawInputDeviceInfoA, user32, 'GetRawInputDeviceInfoA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetRawInputDeviceInfoA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetRawInputDeviceInfoA]
   end;
 end;
-{$ELSE}
-function GetRawInputDeviceInfoA; external user32 name 'GetRawInputDeviceInfoA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetRawInputDeviceInfoW: Pointer;
 
@@ -27348,53 +21103,25 @@ function GetRawInputDeviceInfoW;
 begin
   GetProcedureAddress(_GetRawInputDeviceInfoW, user32, 'GetRawInputDeviceInfoW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetRawInputDeviceInfoW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetRawInputDeviceInfoW]
   end;
 end;
-{$ELSE}
-function GetRawInputDeviceInfoW; external user32 name 'GetRawInputDeviceInfoW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetRawInputDeviceInfo: Pointer;
 
 function GetRawInputDeviceInfo;
 begin
-  GetProcedureAddress(_GetRawInputDeviceInfo, user32, 'GetRawInputDeviceInfoW');
+  GetProcedureAddress(_GetRawInputDeviceInfo, user32, 'GetRawInputDeviceInfo' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetRawInputDeviceInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetRawInputDeviceInfo]
   end;
 end;
-{$ELSE}
-function GetRawInputDeviceInfo; external user32 name 'GetRawInputDeviceInfoW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetRawInputDeviceInfo: Pointer;
-
-function GetRawInputDeviceInfo;
-begin
-  GetProcedureAddress(_GetRawInputDeviceInfo, user32, 'GetRawInputDeviceInfoA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetRawInputDeviceInfo]
-  end;
-end;
-{$ELSE}
-function GetRawInputDeviceInfo; external user32 name 'GetRawInputDeviceInfoA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetRawInputBuffer: Pointer;
 
@@ -27402,22 +21129,12 @@ function GetRawInputBuffer;
 begin
   GetProcedureAddress(_GetRawInputBuffer, user32, 'GetRawInputBuffer');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetRawInputBuffer]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetRawInputBuffer]
   end;
 end;
-{$ELSE}
-function GetRawInputBuffer; external user32 name 'GetRawInputBuffer';
-{$ENDIF DYNAMIC_LINK}
 
-function RIDEV_EXMODE(mode: DWORD): DWORD;
-begin
-  Result := mode and RIDEV_EXMODEMASK;
-end;
-
-
-{$IFDEF DYNAMIC_LINK}
 var
   _RegisterRawInputDevices: Pointer;
 
@@ -27425,16 +21142,12 @@ function RegisterRawInputDevices;
 begin
   GetProcedureAddress(_RegisterRawInputDevices, user32, 'RegisterRawInputDevices');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RegisterRawInputDevices]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RegisterRawInputDevices]
   end;
 end;
-{$ELSE}
-function RegisterRawInputDevices; external user32 name 'RegisterRawInputDevices';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetRegisteredRawInputDevices: Pointer;
 
@@ -27442,16 +21155,12 @@ function GetRegisteredRawInputDevices;
 begin
   GetProcedureAddress(_GetRegisteredRawInputDevices, user32, 'GetRegisteredRawInputDevices');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetRegisteredRawInputDevices]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetRegisteredRawInputDevices]
   end;
 end;
-{$ELSE}
-function GetRegisteredRawInputDevices; external user32 name 'GetRegisteredRawInputDevices';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetRawInputDeviceList: Pointer;
 
@@ -27459,16 +21168,12 @@ function GetRawInputDeviceList;
 begin
   GetProcedureAddress(_GetRawInputDeviceList, user32, 'GetRawInputDeviceList');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetRawInputDeviceList]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetRawInputDeviceList]
   end;
 end;
-{$ELSE}
-function GetRawInputDeviceList; external user32 name 'GetRawInputDeviceList';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DefRawInputProc: Pointer;
 
@@ -27476,14 +21181,730 @@ function DefRawInputProc;
 begin
   GetProcedureAddress(_DefRawInputProc, user32, 'DefRawInputProc');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DefRawInputProc]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DefRawInputProc]
   end;
 end;
+
 {$ELSE}
+
+function IsHungAppWindow; external user32 name 'IsHungAppWindow';
+procedure DisableProcessWindowsGhosting; external user32 name 'DisableProcessWindowsGhosting';
+function wvsprintfA; external user32 name 'wvsprintfA';
+function wvsprintfW; external user32 name 'wvsprintfW';
+function wvsprintf; external user32 name 'wvsprintf' + AWSuffix;
+function wsprintfA; external user32 name 'wsprintfA';
+function wsprintfW; external user32 name 'wsprintfW';
+function wsprintf; external user32 name 'wsprintf' + AWSuffix;
+function LoadKeyboardLayoutA; external user32 name 'LoadKeyboardLayoutA';
+function LoadKeyboardLayoutW; external user32 name 'LoadKeyboardLayoutW';
+function LoadKeyboardLayout; external user32 name 'LoadKeyboardLayout' + AWSuffix;
+function ActivateKeyboardLayout; external user32 name 'ActivateKeyboardLayout';
+function ToUnicodeEx; external user32 name 'ToUnicodeEx';
+function UnloadKeyboardLayout; external user32 name 'UnloadKeyboardLayout';
+function GetKeyboardLayoutNameA; external user32 name 'GetKeyboardLayoutNameA';
+function GetKeyboardLayoutNameW; external user32 name 'GetKeyboardLayoutNameW';
+function GetKeyboardLayoutName; external user32 name 'GetKeyboardLayoutName' + AWSuffix;
+function GetKeyboardLayoutList; external user32 name 'GetKeyboardLayoutList';
+function GetKeyboardLayout; external user32 name 'GetKeyboardLayout';
+function GetMouseMovePointsEx; external user32 name 'GetMouseMovePointsEx';
+function CreateDesktopA; external user32 name 'CreateDesktopA';
+function CreateDesktopW; external user32 name 'CreateDesktopW';
+function CreateDesktop; external user32 name 'CreateDesktop' + AWSuffix;
+function OpenDesktopA; external user32 name 'OpenDesktopA';
+function OpenDesktopW; external user32 name 'OpenDesktopW';
+function OpenDesktop; external user32 name 'OpenDesktop' + AWSuffix;
+function OpenInputDesktop; external user32 name 'OpenInputDesktop';
+function EnumDesktopsA; external user32 name 'EnumDesktopsA';
+function EnumDesktopsW; external user32 name 'EnumDesktopsW';
+function EnumDesktops; external user32 name 'EnumDesktops' + AWSuffix;
+function EnumDesktopWindows; external user32 name 'EnumDesktopWindows';
+function SwitchDesktop; external user32 name 'SwitchDesktop';
+function SetThreadDesktop; external user32 name 'SetThreadDesktop';
+function CloseDesktop; external user32 name 'CloseDesktop';
+function GetThreadDesktop; external user32 name 'GetThreadDesktop';
+function CreateWindowStationA; external user32 name 'CreateWindowStationA';
+function CreateWindowStationW; external user32 name 'CreateWindowStationW';
+function CreateWindowStation; external user32 name 'CreateWindowStation' + AWSuffix;
+function OpenWindowStationA; external user32 name 'OpenWindowStationA';
+function OpenWindowStationW; external user32 name 'OpenWindowStationW';
+function OpenWindowStation; external user32 name 'OpenWindowStation' + AWSuffix;
+function EnumWindowStationsA; external user32 name 'EnumWindowStationsA';
+function EnumWindowStationsW; external user32 name 'EnumWindowStationsW';
+function EnumWindowStations; external user32 name 'EnumWindowStations' + AWSuffix;
+function CloseWindowStation; external user32 name 'CloseWindowStation';
+function SetProcessWindowStation; external user32 name 'SetProcessWindowStation';
+function GetProcessWindowStation; external user32 name 'GetProcessWindowStation';
+function SetUserObjectSecurity; external user32 name 'SetUserObjectSecurity';
+function GetUserObjectSecurity; external user32 name 'GetUserObjectSecurity';
+function GetUserObjectInformationA; external user32 name 'GetUserObjectInformationA';
+function GetUserObjectInformationW; external user32 name 'GetUserObjectInformationW';
+function GetUserObjectInformation; external user32 name 'GetUserObjectInformation' + AWSuffix;
+function SetUserObjectInformationA; external user32 name 'SetUserObjectInformationA';
+function SetUserObjectInformationW; external user32 name 'SetUserObjectInformationW';
+function SetUserObjectInformation; external user32 name 'SetUserObjectInformation' + AWSuffix;
+function RegisterWindowMessageA; external user32 name 'RegisterWindowMessageA';
+function RegisterWindowMessageW; external user32 name 'RegisterWindowMessageW';
+function RegisterWindowMessage; external user32 name 'RegisterWindowMessage' + AWSuffix;
+function TrackMouseEvent; external user32 name 'TrackMouseEvent';
+function DrawEdge; external user32 name 'DrawEdge';
+function DrawFrameControl; external user32 name 'DrawFrameControl';
+function DrawCaption; external user32 name 'DrawCaption';
+function DrawAnimatedRects; external user32 name 'DrawAnimatedRects';
+function GetMessageA; external user32 name 'GetMessageA';
+function GetMessageW; external user32 name 'GetMessageW';
+function GetMessage; external user32 name 'GetMessage' + AWSuffix;
+function TranslateMessage; external user32 name 'TranslateMessage';
+function DispatchMessageA; external user32 name 'DispatchMessageA';
+function DispatchMessageW; external user32 name 'DispatchMessageW';
+function DispatchMessage; external user32 name 'DispatchMessage' + AWSuffix;
+function SetMessageQueue; external user32 name 'SetMessageQueue';
+function PeekMessageA; external user32 name 'PeekMessageA';
+function PeekMessageW; external user32 name 'PeekMessageW';
+function PeekMessage; external user32 name 'PeekMessage' + AWSuffix;
+function RegisterHotKey; external user32 name 'RegisterHotKey';
+function UnregisterHotKey; external user32 name 'UnregisterHotKey';
+function ExitWindowsEx; external user32 name 'ExitWindowsEx';
+function SwapMouseButton; external user32 name 'SwapMouseButton';
+function GetMessagePos; external user32 name 'GetMessagePos';
+function GetMessageTime; external user32 name 'GetMessageTime';
+function GetMessageExtraInfo; external user32 name 'GetMessageExtraInfo';
+function SetMessageExtraInfo; external user32 name 'SetMessageExtraInfo';
+function SendMessageA; external user32 name 'SendMessageA';
+function SendMessageW; external user32 name 'SendMessageW';
+function SendMessage; external user32 name 'SendMessage' + AWSuffix;
+function SendMessageTimeoutA; external user32 name 'SendMessageTimeoutA';
+function SendMessageTimeoutW; external user32 name 'SendMessageTimeoutW';
+function SendMessageTimeout; external user32 name 'SendMessageTimeout' + AWSuffix;
+function SendNotifyMessageA; external user32 name 'SendNotifyMessageA';
+function SendNotifyMessageW; external user32 name 'SendNotifyMessageW';
+function SendNotifyMessage; external user32 name 'SendNotifyMessage' + AWSuffix;
+function SendMessageCallbackA; external user32 name 'SendMessageCallbackA';
+function SendMessageCallbackW; external user32 name 'SendMessageCallbackW';
+function SendMessageCallback; external user32 name 'SendMessageCallback' + AWSuffix;
+function BroadcastSystemMessageExA; external user32 name 'BroadcastSystemMessageExA';
+function BroadcastSystemMessageExW; external user32 name 'BroadcastSystemMessageExW';
+function BroadcastSystemMessageEx; external user32 name 'BroadcastSystemMessageEx' + AWSuffix;
+function BroadcastSystemMessageA; external user32 name 'BroadcastSystemMessageA';
+function BroadcastSystemMessageW; external user32 name 'BroadcastSystemMessageW';
+function BroadcastSystemMessage; external user32 name 'BroadcastSystemMessage' + AWSuffix;
+function RegisterDeviceNotificationA; external user32 name 'RegisterDeviceNotificationA';
+function RegisterDeviceNotificationW; external user32 name 'RegisterDeviceNotificationW';
+function RegisterDeviceNotification; external user32 name 'RegisterDeviceNotification' + AWSuffix;
+function UnregisterDeviceNotification; external user32 name 'UnregisterDeviceNotification';
+function PostMessageA; external user32 name 'PostMessageA';
+function PostMessageW; external user32 name 'PostMessageW';
+function PostMessage; external user32 name 'PostMessage' + AWSuffix;
+function PostThreadMessageA; external user32 name 'PostThreadMessageA';
+function PostThreadMessageW; external user32 name 'PostThreadMessageW';
+function PostThreadMessage; external user32 name 'PostThreadMessage' + AWSuffix;
+function AttachThreadInput; external user32 name 'AttachThreadInput';
+function ReplyMessage; external user32 name 'ReplyMessage';
+function WaitMessage; external user32 name 'WaitMessage';
+function WaitForInputIdle; external user32 name 'WaitForInputIdle';
+function DefWindowProcA; external user32 name 'DefWindowProcA';
+function DefWindowProcW; external user32 name 'DefWindowProcW';
+function DefWindowProc; external user32 name 'DefWindowProc' + AWSuffix;
+procedure PostQuitMessage; external user32 name 'PostQuitMessage';
+function CallWindowProcA; external user32 name 'CallWindowProcA';
+function CallWindowProcW; external user32 name 'CallWindowProcW';
+function CallWindowProc; external user32 name 'CallWindowProc' + AWSuffix;
+function InSendMessage; external user32 name 'InSendMessage';
+function InSendMessageEx; external user32 name 'InSendMessageEx';
+function GetDoubleClickTime; external user32 name 'GetDoubleClickTime';
+function SetDoubleClickTime; external user32 name 'SetDoubleClickTime';
+function RegisterClassA; external user32 name 'RegisterClassA';
+function RegisterClassW; external user32 name 'RegisterClassW';
+function RegisterClass; external user32 name 'RegisterClass' + AWSuffix;
+function UnregisterClassA; external user32 name 'UnregisterClassA';
+function UnregisterClassW; external user32 name 'UnregisterClassW';
+function UnregisterClass; external user32 name 'UnregisterClass' + AWSuffix;
+function GetClassInfoA; external user32 name 'GetClassInfoA';
+function GetClassInfoW; external user32 name 'GetClassInfoW';
+function GetClassInfo; external user32 name 'GetClassInfo' + AWSuffix;
+function RegisterClassExA; external user32 name 'RegisterClassExA';
+function RegisterClassExW; external user32 name 'RegisterClassExW';
+function RegisterClassEx; external user32 name 'RegisterClassEx' + AWSuffix;
+function GetClassInfoExA; external user32 name 'GetClassInfoExA';
+function GetClassInfoExW; external user32 name 'GetClassInfoExW';
+function GetClassInfoEx; external user32 name 'GetClassInfoEx' + AWSuffix;
+function CreateWindowExA; external user32 name 'CreateWindowExA';
+function CreateWindowExW; external user32 name 'CreateWindowExW';
+function CreateWindowEx; external user32 name 'CreateWindowEx' + AWSuffix;
+function IsWindow; external user32 name 'IsWindow';
+function IsMenu; external user32 name 'IsMenu';
+function IsChild; external user32 name 'IsChild';
+function DestroyWindow; external user32 name 'DestroyWindow';
+function ShowWindow; external user32 name 'ShowWindow';
+function AnimateWindow; external user32 name 'AnimateWindow';
+function UpdateLayeredWindow; external user32 name 'UpdateLayeredWindow';
+function GetLayeredWindowAttributes; external user32 name 'GetLayeredWindowAttributes';
+function PrintWindow; external user32 name 'PrintWindow';
+function SetLayeredWindowAttributes; external user32 name 'SetLayeredWindowAttributes';
+function ShowWindowAsync; external user32 name 'ShowWindowAsync';
+function FlashWindow; external user32 name 'FlashWindow';
+function FlashWindowEx; external user32 name 'FlashWindowEx';
+function ShowOwnedPopups; external user32 name 'ShowOwnedPopups';
+function OpenIcon; external user32 name 'OpenIcon';
+function CloseWindow; external user32 name 'CloseWindow';
+function MoveWindow; external user32 name 'MoveWindow';
+function SetWindowPos; external user32 name 'SetWindowPos';
+function GetWindowPlacement; external user32 name 'GetWindowPlacement';
+function SetWindowPlacement; external user32 name 'SetWindowPlacement';
+function BeginDeferWindowPos; external user32 name 'BeginDeferWindowPos';
+function DeferWindowPos; external user32 name 'DeferWindowPos';
+function EndDeferWindowPos; external user32 name 'EndDeferWindowPos';
+function IsWindowVisible; external user32 name 'IsWindowVisible';
+function IsIconic; external user32 name 'IsIconic';
+function AnyPopup; external user32 name 'AnyPopup';
+function BringWindowToTop; external user32 name 'BringWindowToTop';
+function IsZoomed; external user32 name 'IsZoomed';
+function CreateDialogParamA; external user32 name 'CreateDialogParamA';
+function CreateDialogParamW; external user32 name 'CreateDialogParamW';
+function CreateDialogParam; external user32 name 'CreateDialogParam' + AWSuffix;
+function CreateDialogIndirectParamA; external user32 name 'CreateDialogIndirectParamA';
+function CreateDialogIndirectParamW; external user32 name 'CreateDialogIndirectParamW';
+function CreateDialogIndirectParam; external user32 name 'CreateDialogIndirectParam' + AWSuffix;
+function DialogBoxParamA; external user32 name 'DialogBoxParamA';
+function DialogBoxParamW; external user32 name 'DialogBoxParamW';
+function DialogBoxParam; external user32 name 'DialogBoxParam' + AWSuffix;
+function DialogBoxIndirectParamA; external user32 name 'DialogBoxIndirectParamA';
+function DialogBoxIndirectParamW; external user32 name 'DialogBoxIndirectParamW';
+function DialogBoxIndirectParam; external user32 name 'DialogBoxIndirectParam' + AWSuffix;
+function EndDialog; external user32 name 'EndDialog';
+function GetDlgItem; external user32 name 'GetDlgItem';
+function SetDlgItemInt; external user32 name 'SetDlgItemInt';
+function GetDlgItemInt; external user32 name 'GetDlgItemInt';
+function SetDlgItemTextA; external user32 name 'SetDlgItemTextA';
+function SetDlgItemTextW; external user32 name 'SetDlgItemTextW';
+function SetDlgItemText; external user32 name 'SetDlgItemText' + AWSuffix;
+function GetDlgItemTextA; external user32 name 'GetDlgItemTextA';
+function GetDlgItemTextW; external user32 name 'GetDlgItemTextW';
+function GetDlgItemText; external user32 name 'GetDlgItemText' + AWSuffix;
+function CheckDlgButton; external user32 name 'CheckDlgButton';
+function CheckRadioButton; external user32 name 'CheckRadioButton';
+function IsDlgButtonChecked; external user32 name 'IsDlgButtonChecked';
+function SendDlgItemMessageA; external user32 name 'SendDlgItemMessageA';
+function SendDlgItemMessageW; external user32 name 'SendDlgItemMessageW';
+function SendDlgItemMessage; external user32 name 'SendDlgItemMessage' + AWSuffix;
+function GetNextDlgGroupItem; external user32 name 'GetNextDlgGroupItem';
+function GetNextDlgTabItem; external user32 name 'GetNextDlgTabItem';
+function GetDlgCtrlID; external user32 name 'GetDlgCtrlID';
+function GetDialogBaseUnits; external user32 name 'GetDialogBaseUnits';
+function DefDlgProcA; external user32 name 'DefDlgProcA';
+function DefDlgProcW; external user32 name 'DefDlgProcW';
+function DefDlgProc; external user32 name 'DefDlgProc' + AWSuffix;
+function CallMsgFilterA; external user32 name 'CallMsgFilterA';
+function CallMsgFilterW; external user32 name 'CallMsgFilterW';
+function CallMsgFilter; external user32 name 'CallMsgFilter' + AWSuffix;
+function OpenClipboard; external user32 name 'OpenClipboard';
+function CloseClipboard; external user32 name 'CloseClipboard';
+function GetClipboardSequenceNumber; external user32 name 'GetClipboardSequenceNumber';
+function GetClipboardOwner; external user32 name 'GetClipboardOwner';
+function SetClipboardViewer; external user32 name 'SetClipboardViewer';
+function GetClipboardViewer; external user32 name 'GetClipboardViewer';
+function ChangeClipboardChain; external user32 name 'ChangeClipboardChain';
+function SetClipboardData; external user32 name 'SetClipboardData';
+function GetClipboardData; external user32 name 'GetClipboardData';
+function RegisterClipboardFormatA; external user32 name 'RegisterClipboardFormatA';
+function RegisterClipboardFormatW; external user32 name 'RegisterClipboardFormatW';
+function RegisterClipboardFormat; external user32 name 'RegisterClipboardFormat' + AWSuffix;
+function CountClipboardFormats; external user32 name 'CountClipboardFormats';
+function EnumClipboardFormats; external user32 name 'EnumClipboardFormats';
+function GetClipboardFormatNameA; external user32 name 'GetClipboardFormatNameA';
+function GetClipboardFormatNameW; external user32 name 'GetClipboardFormatNameW';
+function GetClipboardFormatName; external user32 name 'GetClipboardFormatName' + AWSuffix;
+function EmptyClipboard; external user32 name 'EmptyClipboard';
+function IsClipboardFormatAvailable; external user32 name 'IsClipboardFormatAvailable';
+function GetPriorityClipboardFormat; external user32 name 'GetPriorityClipboardFormat';
+function GetOpenClipboardWindow; external user32 name 'GetOpenClipboardWindow';
+function CharToOemA; external user32 name 'CharToOemA';
+function CharToOemW; external user32 name 'CharToOemW';
+function CharToOem; external user32 name 'CharToOem' + AWSuffix;
+function OemToCharA; external user32 name 'OemToCharA';
+function OemToCharW; external user32 name 'OemToCharW';
+function OemToChar; external user32 name 'OemToChar' + AWSuffix;
+function CharToOemBuffA; external user32 name 'CharToOemBuffA';
+function CharToOemBuffW; external user32 name 'CharToOemBuffW';
+function CharToOemBuff; external user32 name 'CharToOemBuff' + AWSuffix;
+function OemToCharBuffA; external user32 name 'OemToCharBuffA';
+function OemToCharBuffW; external user32 name 'OemToCharBuffW';
+function OemToCharBuff; external user32 name 'OemToCharBuff' + AWSuffix;
+function CharUpperA; external user32 name 'CharUpperA';
+function CharUpperW; external user32 name 'CharUpperW';
+function CharUpper; external user32 name 'CharUpper' + AWSuffix;
+function CharUpperBuffA; external user32 name 'CharUpperBuffA';
+function CharUpperBuffW; external user32 name 'CharUpperBuffW';
+function CharUpperBuff; external user32 name 'CharUpperBuff' + AWSuffix;
+function CharLowerA; external user32 name 'CharLowerA';
+function CharLowerW; external user32 name 'CharLowerW';
+function CharLower; external user32 name 'CharLower' + AWSuffix;
+function CharLowerBuffA; external user32 name 'CharLowerBuffA';
+function CharLowerBuffW; external user32 name 'CharLowerBuffW';
+function CharLowerBuff; external user32 name 'CharLowerBuff' + AWSuffix;
+function CharNextA; external user32 name 'CharNextA';
+function CharNextW; external user32 name 'CharNextW';
+function CharNext; external user32 name 'CharNext' + AWSuffix;
+function CharPrevA; external user32 name 'CharPrevA';
+function CharPrevW; external user32 name 'CharPrevW';
+function CharPrev; external user32 name 'CharPrev' + AWSuffix;
+function CharNextExA; external user32 name 'CharNextExA';
+function CharPrevExA; external user32 name 'CharPrevExA';
+function IsCharAlphaA; external user32 name 'IsCharAlphaA';
+function IsCharAlphaW; external user32 name 'IsCharAlphaW';
+function IsCharAlpha; external user32 name 'IsCharAlpha' + AWSuffix;
+function IsCharAlphaNumericA; external user32 name 'IsCharAlphaNumericA';
+function IsCharAlphaNumericW; external user32 name 'IsCharAlphaNumericW';
+function IsCharAlphaNumeric; external user32 name 'IsCharAlphaNumeric' + AWSuffix;
+function IsCharUpperA; external user32 name 'IsCharUpperA';
+function IsCharUpperW; external user32 name 'IsCharUpperW';
+function IsCharUpper; external user32 name 'IsCharUpper' + AWSuffix;
+function IsCharLowerA; external user32 name 'IsCharLowerA';
+function IsCharLowerW; external user32 name 'IsCharLowerW';
+function IsCharLower; external user32 name 'IsCharLower' + AWSuffix;
+function SetFocus; external user32 name 'SetFocus';
+function GetActiveWindow; external user32 name 'GetActiveWindow';
+function GetFocus; external user32 name 'GetFocus';
+function GetKBCodePage; external user32 name 'GetKBCodePage';
+function GetKeyState; external user32 name 'GetKeyState';
+function GetAsyncKeyState; external user32 name 'GetAsyncKeyState';
+function GetKeyboardState; external user32 name 'GetKeyboardState';
+function SetKeyboardState; external user32 name 'SetKeyboardState';
+function GetKeyNameTextA; external user32 name 'GetKeyNameTextA';
+function GetKeyNameTextW; external user32 name 'GetKeyNameTextW';
+function GetKeyNameText; external user32 name 'GetKeyNameText' + AWSuffix;
+function GetKeyboardType; external user32 name 'GetKeyboardType';
+function ToAscii; external user32 name 'ToAscii';
+function ToAsciiEx; external user32 name 'ToAsciiEx';
+function ToUnicode; external user32 name 'ToUnicode';
+function OemKeyScan; external user32 name 'OemKeyScan';
+function VkKeyScanA; external user32 name 'VkKeyScanA';
+function VkKeyScanW; external user32 name 'VkKeyScanW';
+function VkKeyScan; external user32 name 'VkKeyScan' + AWSuffix;
+function VkKeyScanExA; external user32 name 'VkKeyScanExA';
+function VkKeyScanExW; external user32 name 'VkKeyScanExW';
+function VkKeyScanEx; external user32 name 'VkKeyScanEx' + AWSuffix;
+procedure keybd_event; external user32 name 'keybd_event';
+procedure mouse_event; external user32 name 'mouse_event';
+function SendInput; external user32 name 'SendInput';
+function GetLastInputInfo; external user32 name 'GetLastInputInfo';
+function MapVirtualKeyA; external user32 name 'MapVirtualKeyA';
+function MapVirtualKeyW; external user32 name 'MapVirtualKeyW';
+function MapVirtualKey; external user32 name 'MapVirtualKey' + AWSuffix;
+function MapVirtualKeyExA; external user32 name 'MapVirtualKeyExA';
+function MapVirtualKeyExW; external user32 name 'MapVirtualKeyExW';
+function MapVirtualKeyEx; external user32 name 'MapVirtualKeyEx' + AWSuffix;
+function GetInputState; external user32 name 'GetInputState';
+function GetQueueStatus; external user32 name 'GetQueueStatus';
+function GetCapture; external user32 name 'GetCapture';
+function SetCapture; external user32 name 'SetCapture';
+function ReleaseCapture; external user32 name 'ReleaseCapture';
+function MsgWaitForMultipleObjects; external user32 name 'MsgWaitForMultipleObjects';
+function MsgWaitForMultipleObjectsEx; external user32 name 'MsgWaitForMultipleObjectsEx';
+function SetTimer; external user32 name 'SetTimer';
+function KillTimer; external user32 name 'KillTimer';
+function IsWindowUnicode; external user32 name 'IsWindowUnicode';
+function EnableWindow; external user32 name 'EnableWindow';
+function IsWindowEnabled; external user32 name 'IsWindowEnabled';
+function LoadAcceleratorsA; external user32 name 'LoadAcceleratorsA';
+function LoadAcceleratorsW; external user32 name 'LoadAcceleratorsW';
+function LoadAccelerators; external user32 name 'LoadAccelerators' + AWSuffix;
+function CreateAcceleratorTableA; external user32 name 'CreateAcceleratorTableA';
+function CreateAcceleratorTableW; external user32 name 'CreateAcceleratorTableW';
+function CreateAcceleratorTable; external user32 name 'CreateAcceleratorTable' + AWSuffix;
+function DestroyAcceleratorTable; external user32 name 'DestroyAcceleratorTable';
+function CopyAcceleratorTableA; external user32 name 'CopyAcceleratorTableA';
+function CopyAcceleratorTableW; external user32 name 'CopyAcceleratorTableW';
+function CopyAcceleratorTable; external user32 name 'CopyAcceleratorTable' + AWSuffix;
+function TranslateAcceleratorA; external user32 name 'TranslateAcceleratorA';
+function TranslateAcceleratorW; external user32 name 'TranslateAcceleratorW';
+function TranslateAccelerator; external user32 name 'TranslateAccelerator' + AWSuffix;
+function GetSystemMetrics; external user32 name 'GetSystemMetrics';
+function LoadMenuA; external user32 name 'LoadMenuAA';
+function LoadMenuW; external user32 name 'LoadMenuWA';
+function LoadMenu; external user32 name 'LoadMenu' + AWSuffix;
+function LoadMenuIndirectA; external user32 name 'LoadMenuIndirectA';
+function LoadMenuIndirectW; external user32 name 'LoadMenuIndirectW';
+function LoadMenuIndirect; external user32 name 'LoadMenuIndirect' + AWSuffix;
+function GetMenu; external user32 name 'GetMenu';
+function SetMenu; external user32 name 'SetMenu';
+function ChangeMenuA; external user32 name 'ChangeMenuA';
+function ChangeMenuW; external user32 name 'ChangeMenuW';
+function ChangeMenu; external user32 name 'ChangeMenu' + AWSuffix;
+function HiliteMenuItem; external user32 name 'HiliteMenuItem';
+function GetMenuStringA; external user32 name 'GetMenuStringA';
+function GetMenuStringW; external user32 name 'GetMenuStringW';
+function GetMenuString; external user32 name 'GetMenuString' + AWSuffix;
+function GetMenuState; external user32 name 'GetMenuState';
+function DrawMenuBar; external user32 name 'DrawMenuBar';
+function GetSystemMenu; external user32 name 'GetSystemMenu';
+function CreateMenu; external user32 name 'CreateMenu';
+function CreatePopupMenu; external user32 name 'CreatePopupMenu';
+function DestroyMenu; external user32 name 'DestroyMenu';
+function CheckMenuItem; external user32 name 'CheckMenuItem';
+function EnableMenuItem; external user32 name 'EnableMenuItem';
+function GetSubMenu; external user32 name 'GetSubMenu';
+function GetMenuItemID; external user32 name 'GetMenuItemID';
+function GetMenuItemCount; external user32 name 'GetMenuItemCount';
+function InsertMenuA; external user32 name 'InsertMenuA';
+function InsertMenuW; external user32 name 'InsertMenuW';
+function InsertMenu; external user32 name 'InsertMenu' + AWSuffix;
+function AppendMenuA; external user32 name 'AppendMenuA';
+function AppendMenuW; external user32 name 'AppendMenuW';
+function AppendMenu; external user32 name 'AppendMenu' + AWSuffix;
+function ModifyMenuA; external user32 name 'ModifyMenuA';
+function ModifyMenuW; external user32 name 'ModifyMenuW';
+function ModifyMenu; external user32 name 'ModifyMenu' + AWSuffix;
+function RemoveMenu; external user32 name 'RemoveMenu';
+function DeleteMenu; external user32 name 'DeleteMenu';
+function SetMenuItemBitmaps; external user32 name 'SetMenuItemBitmaps';
+function GetMenuCheckMarkDimensions; external user32 name 'GetMenuCheckMarkDimensions';
+function TrackPopupMenu; external user32 name 'TrackPopupMenu';
+function TrackPopupMenuEx; external user32 name 'TrackPopupMenuEx';
+function GetMenuInfo; external user32 name 'GetMenuInfo';
+function SetMenuInfo; external user32 name 'SetMenuInfo';
+function EndMenu; external user32 name 'EndMenu';
+function InsertMenuItemA; external user32 name 'InsertMenuItemA';
+function InsertMenuItemW; external user32 name 'InsertMenuItemW';
+function InsertMenuItem; external user32 name 'InsertMenuItem' + AWSuffix;
+function GetMenuItemInfoA; external user32 name 'GetMenuItemInfoA';
+function GetMenuItemInfoW; external user32 name 'GetMenuItemInfoW';
+function GetMenuItemInfo; external user32 name 'GetMenuItemInfo' + AWSuffix;
+function SetMenuItemInfoA; external user32 name 'SetMenuItemInfoA';
+function SetMenuItemInfoW; external user32 name 'SetMenuItemInfoW';
+function SetMenuItemInfo; external user32 name 'SetMenuItemInfo' + AWSuffix;
+function GetMenuDefaultItem; external user32 name 'GetMenuDefaultItem';
+function SetMenuDefaultItem; external user32 name 'SetMenuDefaultItem';
+function GetMenuItemRect; external user32 name 'GetMenuItemRect';
+function MenuItemFromPoint; external user32 name 'MenuItemFromPoint';
+function DragObject; external user32 name 'DragObject';
+function DragDetect; external user32 name 'DragDetect';
+function DrawIcon; external user32 name 'DrawIcon';
+function DrawTextA; external user32 name 'DrawTextA';
+function DrawTextW; external user32 name 'DrawTextW';
+function DrawText; external user32 name 'DrawText' + AWSuffix;
+function DrawTextExA; external user32 name 'DrawTextExA';
+function DrawTextExW; external user32 name 'DrawTextExW';
+function DrawTextEx; external user32 name 'DrawTextEx' + AWSuffix;
+function GrayStringA; external user32 name 'GrayStringA';
+function GrayStringW; external user32 name 'GrayStringW';
+function GrayString; external user32 name 'GrayString' + AWSuffix;
+function DrawStateA; external user32 name 'DrawStateA';
+function DrawStateW; external user32 name 'DrawStateW';
+function DrawState; external user32 name 'DrawState' + AWSuffix;
+function TabbedTextOutA; external user32 name 'TabbedTextOutA';
+function TabbedTextOutW; external user32 name 'TabbedTextOutW';
+function TabbedTextOut; external user32 name 'TabbedTextOut' + AWSuffix;
+function GetTabbedTextExtentA; external user32 name 'GetTabbedTextExtentA';
+function GetTabbedTextExtentW; external user32 name 'GetTabbedTextExtentW';
+function GetTabbedTextExtent; external user32 name 'GetTabbedTextExtent' + AWSuffix;
+function UpdateWindow; external user32 name 'UpdateWindow';
+function SetActiveWindow; external user32 name 'SetActiveWindow';
+function GetForegroundWindow; external user32 name 'GetForegroundWindow';
+function PaintDesktop; external user32 name 'PaintDesktop';
+procedure SwitchToThisWindow; external user32 name 'SwitchToThisWindow';
+function SetForegroundWindow; external user32 name 'SetForegroundWindow';
+function AllowSetForegroundWindow; external user32 name 'AllowSetForegroundWindow';
+function LockSetForegroundWindow; external user32 name 'LockSetForegroundWindow';
+function WindowFromDC; external user32 name 'WindowFromDC';
+function GetDC; external user32 name 'GetDC';
+function GetDCEx; external user32 name 'GetDCEx';
+function GetWindowDC; external user32 name 'GetWindowDC';
+function ReleaseDC; external user32 name 'ReleaseDC';
+function BeginPaint; external user32 name 'BeginPaint';
+function EndPaint; external user32 name 'EndPaint';
+function GetUpdateRect; external user32 name 'GetUpdateRect';
+function GetUpdateRgn; external user32 name 'GetUpdateRgn';
+function SetWindowRgn; external user32 name 'SetWindowRgn';
+function GetWindowRgn; external user32 name 'GetWindowRgn';
+function GetWindowRgnBox; external user32 name 'GetWindowRgnBox';
+function ExcludeUpdateRgn; external user32 name 'ExcludeUpdateRgn';
+function InvalidateRect; external user32 name 'InvalidateRect';
+function ValidateRect; external user32 name 'ValidateRect';
+function InvalidateRgn; external user32 name 'InvalidateRgn';
+function ValidateRgn; external user32 name 'ValidateRgn';
+function RedrawWindow; external user32 name 'RedrawWindow';
+function LockWindowUpdate; external user32 name 'LockWindowUpdate';
+function ScrollWindow; external user32 name 'ScrollWindow';
+function ScrollDC; external user32 name 'ScrollDC';
+function ScrollWindowEx; external user32 name 'ScrollWindowEx';
+function SetScrollPos; external user32 name 'SetScrollPos';
+function GetScrollPos; external user32 name 'GetScrollPos';
+function SetScrollRange; external user32 name 'SetScrollRange';
+function GetScrollRange; external user32 name 'GetScrollRange';
+function ShowScrollBar; external user32 name 'ShowScrollBar';
+function EnableScrollBar; external user32 name 'EnableScrollBar';
+function SetPropA; external user32 name 'SetPropA';
+function SetPropW; external user32 name 'SetPropW';
+function SetProp; external user32 name 'SetProp' + AWSuffix;
+function GetPropA; external user32 name 'GetPropA';
+function GetPropW; external user32 name 'GetPropW';
+function GetProp; external user32 name 'GetProp' + AWSuffix;
+function RemovePropA; external user32 name 'RemovePropA';
+function RemovePropW; external user32 name 'RemovePropW';
+function RemoveProp; external user32 name 'RemoveProp' + AWSuffix;
+function EnumPropsExA; external user32 name 'EnumPropsExA';
+function EnumPropsExW; external user32 name 'EnumPropsExW';
+function EnumPropsEx; external user32 name 'EnumPropsEx' + AWSuffix;
+function EnumPropsA; external user32 name 'EnumPropsA';
+function EnumPropsW; external user32 name 'EnumPropsW';
+function EnumProps; external user32 name 'EnumProps' + AWSuffix;
+function SetWindowTextA; external user32 name 'SetWindowTextA';
+function SetWindowTextW; external user32 name 'SetWindowTextW';
+function SetWindowText; external user32 name 'SetWindowText' + AWSuffix;
+function GetWindowTextA; external user32 name 'GetWindowTextA';
+function GetWindowTextW; external user32 name 'GetWindowTextW';
+function GetWindowText; external user32 name 'GetWindowText' + AWSuffix;
+function GetWindowTextLengthA; external user32 name 'GetWindowTextLengthA';
+function GetWindowTextLengthW; external user32 name 'GetWindowTextLengthW';
+function GetWindowTextLength; external user32 name 'GetWindowTextLength' + AWSuffix;
+function GetClientRect; external user32 name 'GetClientRect';
+function GetWindowRect; external user32 name 'GetWindowRect';
+function AdjustWindowRect; external user32 name 'AdjustWindowRect';
+function AdjustWindowRectEx; external user32 name 'AdjustWindowRectEx';
+function SetWindowContextHelpId; external user32 name 'SetWindowContextHelpId';
+function GetWindowContextHelpId; external user32 name 'GetWindowContextHelpId';
+function SetMenuContextHelpId; external user32 name 'SetMenuContextHelpId';
+function GetMenuContextHelpId; external user32 name 'GetMenuContextHelpId';
+function MessageBoxA; external user32 name 'MessageBoxA';
+function MessageBoxW; external user32 name 'MessageBoxW';
+function MessageBox; external user32 name 'MessageBox' + AWSuffix;
+function MessageBoxExA; external user32 name 'MessageBoxExA';
+function MessageBoxExW; external user32 name 'MessageBoxExW';
+function MessageBoxEx; external user32 name 'MessageBoxEx' + AWSuffix;
+function MessageBoxIndirectA; external user32 name 'MessageBoxIndirectA';
+function MessageBoxIndirectW; external user32 name 'MessageBoxIndirectW';
+function MessageBoxIndirect; external user32 name 'MessageBoxIndirect' + AWSuffix;
+function MessageBeep; external user32 name 'MessageBeep';
+function ShowCursor; external user32 name 'ShowCursor';
+function SetCursorPos; external user32 name 'SetCursorPos';
+function SetCursor; external user32 name 'SetCursor';
+function GetCursorPos; external user32 name 'GetCursorPos';
+function ClipCursor; external user32 name 'ClipCursor';
+function GetClipCursor; external user32 name 'GetClipCursor';
+function GetCursor; external user32 name 'GetCursor';
+function CreateCaret; external user32 name 'CreateCaret';
+function GetCaretBlinkTime; external user32 name 'GetCaretBlinkTime';
+function SetCaretBlinkTime; external user32 name 'SetCaretBlinkTime';
+function DestroyCaret; external user32 name 'DestroyCaret';
+function HideCaret; external user32 name 'HideCaret';
+function ShowCaret; external user32 name 'ShowCaret';
+function SetCaretPos; external user32 name 'SetCaretPos';
+function GetCaretPos; external user32 name 'GetCaretPos';
+function ClientToScreen; external user32 name 'ClientToScreen';
+function ScreenToClient; external user32 name 'ScreenToClient';
+function MapWindowPoints; external user32 name 'MapWindowPoints';
+function WindowFromPoint; external user32 name 'WindowFromPoint';
+function ChildWindowFromPoint; external user32 name 'ChildWindowFromPoint';
+function ChildWindowFromPointEx; external user32 name 'ChildWindowFromPointEx';
+function GetSysColor; external user32 name 'GetSysColor';
+function GetSysColorBrush; external user32 name 'GetSysColorBrush';
+function SetSysColors; external user32 name 'SetSysColors';
+function DrawFocusRect; external user32 name 'DrawFocusRect';
+function FillRect; external user32 name 'FillRect';
+function FrameRect; external user32 name 'FrameRect';
+function InvertRect; external user32 name 'InvertRect';
+function SetRect; external user32 name 'SetRect';
+function SetRectEmpty; external user32 name 'SetRectEmpty';
+function CopyRect; external user32 name 'CopyRect';
+function InflateRect; external user32 name 'InflateRect';
+function IntersectRect; external user32 name 'IntersectRect';
+function UnionRect; external user32 name 'UnionRect';
+function SubtractRect; external user32 name 'SubtractRect';
+function OffsetRect; external user32 name 'OffsetRect';
+function IsRectEmpty; external user32 name 'IsRectEmpty';
+function EqualRect; external user32 name 'EqualRect';
+function PtInRect; external user32 name 'PtInRect';
+function GetWindowWord; external user32 name 'GetWindowWord';
+function SetWindowWord; external user32 name 'SetWindowWord';
+function GetWindowLongA; external user32 name 'GetWindowLongA';
+function GetWindowLongW; external user32 name 'GetWindowLongW';
+function GetWindowLong; external user32 name 'GetWindowLong' + AWSuffix;
+function SetWindowLongA; external user32 name 'SetWindowLongA';
+function SetWindowLongW; external user32 name 'SetWindowLongW';
+function SetWindowLong; external user32 name 'SetWindowLong' + AWSuffix;
+function GetClassWord; external user32 name 'GetClassWord';
+function SetClassWord; external user32 name 'SetClassWord';
+function GetClassLongA; external user32 name 'GetClassLongA';
+function GetClassLongW; external user32 name 'GetClassLongW';
+function GetClassLong; external user32 name 'GetClassLong' + AWSuffix;
+function SetClassLongA; external user32 name 'SetClassLongA';
+function SetClassLongW; external user32 name 'SetClassLongW';
+function SetClassLong; external user32 name 'SetClassLong' + AWSuffix;
+function GetProcessDefaultLayout; external user32 name 'GetProcessDefaultLayout';
+function SetProcessDefaultLayout; external user32 name 'SetProcessDefaultLayout';
+function GetDesktopWindow; external user32 name 'GetDesktopWindow';
+function GetParent; external user32 name 'GetParent';
+function SetParent; external user32 name 'SetParent';
+function EnumChildWindows; external user32 name 'EnumChildWindows';
+function FindWindowA; external user32 name 'FindWindowA';
+function FindWindowW; external user32 name 'FindWindowW';
+function FindWindow; external user32 name 'FindWindow' + AWSuffix;
+function FindWindowExA; external user32 name 'FindWindowExA';
+function FindWindowExW; external user32 name 'FindWindowExW';
+function FindWindowEx; external user32 name 'FindWindowEx' + AWSuffix;
+function GetShellWindow; external user32 name 'GetShellWindow';
+function RegisterShellHookWindow; external user32 name 'RegisterShellHookWindow';
+function DeregisterShellHookWindow; external user32 name 'DeregisterShellHookWindow';
+function EnumWindows; external user32 name 'EnumWindows';
+function EnumThreadWindows; external user32 name 'EnumThreadWindows';
+function GetClassNameA; external user32 name 'GetClassNameA';
+function GetClassNameW; external user32 name 'GetClassNameW';
+function GetClassName; external user32 name 'GetClassName' + AWSuffix;
+function GetTopWindow; external user32 name 'GetTopWindow';
+function GetWindowThreadProcessId; external user32 name 'GetWindowThreadProcessId';
+function IsGUIThread; external user32 name 'IsGUIThread';
+function GetLastActivePopup; external user32 name 'GetLastActivePopup';
+function GetWindow; external user32 name 'GetWindow';
+function SetWindowsHookA; external user32 name 'SetWindowsHookA';
+function SetWindowsHookW; external user32 name 'SetWindowsHookW';
+function SetWindowsHook; external user32 name 'SetWindowsHook' + AWSuffix;
+function UnhookWindowsHook; external user32 name 'UnhookWindowsHook';
+function SetWindowsHookExA; external user32 name 'SetWindowsHookExA';
+function SetWindowsHookExW; external user32 name 'SetWindowsHookExW';
+function SetWindowsHookEx; external user32 name 'SetWindowsHookEx' + AWSuffix;
+function UnhookWindowsHookEx; external user32 name 'UnhookWindowsHookEx';
+function CallNextHookEx; external user32 name 'CallNextHookEx';
+function CheckMenuRadioItem; external user32 name 'CheckMenuRadioItem';
+function LoadBitmapA; external user32 name 'LoadBitmapA';
+function LoadBitmapW; external user32 name 'LoadBitmapW';
+function LoadBitmap; external user32 name 'LoadBitmap' + AWSuffix;
+function LoadCursorA; external user32 name 'LoadCursorA';
+function LoadCursorW; external user32 name 'LoadCursorW';
+function LoadCursor; external user32 name 'LoadCursor' + AWSuffix;
+function LoadCursorFromFileA; external user32 name 'LoadCursorFromFileA';
+function LoadCursorFromFileW; external user32 name 'LoadCursorFromFileW';
+function LoadCursorFromFile; external user32 name 'LoadCursorFromFile' + AWSuffix;
+function CreateCursor; external user32 name 'CreateCursor';
+function DestroyCursor; external user32 name 'DestroyCursor';
+function SetSystemCursor; external user32 name 'SetSystemCursor';
+function LoadIconA; external user32 name 'LoadIconA';
+function LoadIconW; external user32 name 'LoadIconW';
+function LoadIcon; external user32 name 'LoadIcon' + AWSuffix;
+function PrivateExtractIconsA; external user32 name 'PrivateExtractIconsA';
+function PrivateExtractIconsW; external user32 name 'PrivateExtractIconsW';
+function PrivateExtractIcons; external user32 name 'PrivateExtractIcons' + AWSuffix;
+function CreateIcon; external user32 name 'CreateIcon';
+function DestroyIcon; external user32 name 'DestroyIcon';
+function LookupIconIdFromDirectory; external user32 name 'LookupIconIdFromDirectory';
+function LookupIconIdFromDirectoryEx; external user32 name 'LookupIconIdFromDirectoryEx';
+function CreateIconFromResource; external user32 name 'CreateIconFromResource';
+function CreateIconFromResourceEx; external user32 name 'CreateIconFromResourceEx';
+function LoadImageA; external user32 name 'LoadImageA';
+function LoadImageW; external user32 name 'LoadImageW';
+function LoadImage; external user32 name 'LoadImage' + AWSuffix;
+function CopyImage; external user32 name 'CopyImage';
+function DrawIconEx; external user32 name 'DrawIconEx';
+function CreateIconIndirect; external user32 name 'CreateIconIndirect';
+function CopyIcon; external user32 name 'CopyIcon';
+function GetIconInfo; external user32 name 'GetIconInfo';
+function LoadStringA; external user32 name 'LoadStringA';
+function LoadStringW; external user32 name 'LoadStringW';
+function LoadString; external user32 name 'LoadString' + AWSuffix;
+function IsDialogMessageA; external user32 name 'IsDialogMessageA';
+function IsDialogMessageW; external user32 name 'IsDialogMessageW';
+function IsDialogMessage; external user32 name 'IsDialogMessage' + AWSuffix;
+function MapDialogRect; external user32 name 'MapDialogRect';
+function DlgDirListA; external user32 name 'DlgDirListA';
+function DlgDirListW; external user32 name 'DlgDirListW';
+function DlgDirList; external user32 name 'DlgDirList' + AWSuffix;
+function DlgDirSelectExA; external user32 name 'DlgDirSelectExA';
+function DlgDirSelectExW; external user32 name 'DlgDirSelectExW';
+function DlgDirSelectEx; external user32 name 'DlgDirSelectEx' + AWSuffix;
+function DlgDirListComboBoxA; external user32 name 'DlgDirListComboBoxA';
+function DlgDirListComboBoxW; external user32 name 'DlgDirListComboBoxW';
+function DlgDirListComboBox; external user32 name 'DlgDirListComboBox' + AWSuffix;
+function DlgDirSelectComboBoxExA; external user32 name 'DlgDirSelectComboBoxExA';
+function DlgDirSelectComboBoxExW; external user32 name 'DlgDirSelectComboBoxExW';
+function DlgDirSelectComboBoxEx; external user32 name 'DlgDirSelectComboBoxEx' + AWSuffix;
+function SetScrollInfo; external user32 name 'SetScrollInfo';
+function GetScrollInfo; external user32 name 'GetScrollInfo';
+function DefFrameProcA; external user32 name 'DefFrameProcA';
+function DefFrameProcW; external user32 name 'DefFrameProcW';
+function DefFrameProc; external user32 name 'DefFrameProc' + AWSuffix;
+function DefMDIChildProcA; external user32 name 'DefMDIChildProcA';
+function DefMDIChildProcW; external user32 name 'DefMDIChildProcW';
+function DefMDIChildProc; external user32 name 'DefMDIChildProc' + AWSuffix;
+function TranslateMDISysAccel; external user32 name 'TranslateMDISysAccel';
+function ArrangeIconicWindows; external user32 name 'ArrangeIconicWindows';
+function CreateMDIWindowA; external user32 name 'CreateMDIWindowA';
+function CreateMDIWindowW; external user32 name 'CreateMDIWindowW';
+function CreateMDIWindow; external user32 name 'CreateMDIWindow' + AWSuffix;
+function TileWindows; external user32 name 'TileWindows';
+function CascadeWindows; external user32 name 'CascadeWindows';
+function WinHelpA; external user32 name 'WinHelpA';
+function WinHelpW; external user32 name 'WinHelpW';
+function WinHelp; external user32 name 'WinHelp' + AWSuffix;
+function GetGuiResources; external user32 name 'GetGuiResources';
+function ChangeDisplaySettingsA; external user32 name 'ChangeDisplaySettingsA';
+function ChangeDisplaySettingsW; external user32 name 'ChangeDisplaySettingsW';
+function ChangeDisplaySettings; external user32 name 'ChangeDisplaySettings' + AWSuffix;
+function ChangeDisplaySettingsExA; external user32 name 'ChangeDisplaySettingsExA';
+function ChangeDisplaySettingsExW; external user32 name 'ChangeDisplaySettingsExW';
+function ChangeDisplaySettingsEx; external user32 name 'ChangeDisplaySettingsEx' + AWSuffix;
+function EnumDisplaySettingsA; external user32 name 'EnumDisplaySettingsA';
+function EnumDisplaySettingsW; external user32 name 'EnumDisplaySettingsW';
+function EnumDisplaySettings; external user32 name 'EnumDisplaySettings' + AWSuffix;
+function EnumDisplaySettingsExA; external user32 name 'EnumDisplaySettingsExA';
+function EnumDisplaySettingsExW; external user32 name 'EnumDisplaySettingsExW';
+function EnumDisplaySettingsEx; external user32 name 'EnumDisplaySettingsEx' + AWSuffix;
+function EnumDisplayDevicesA; external user32 name 'EnumDisplayDevicesA';
+function EnumDisplayDevicesW; external user32 name 'EnumDisplayDevicesW';
+function EnumDisplayDevices; external user32 name 'EnumDisplayDevices' + AWSuffix;
+function SystemParametersInfoA; external user32 name 'SystemParametersInfoA';
+function SystemParametersInfoW; external user32 name 'SystemParametersInfoW';
+function SystemParametersInfo; external user32 name 'SystemParametersInfo' + AWSuffix;
+procedure SetDebugErrorLevel; external user32 name 'SetDebugErrorLevel';
+procedure SetLastErrorEx; external user32 name 'SetLastErrorEx';
+function InternalGetWindowText; external user32 name 'InternalGetWindowText';
+function EndTask; external user32 name 'EndTask';
+function MonitorFromPoint; external user32 name 'MonitorFromPoint';
+function MonitorFromRect; external user32 name 'MonitorFromRect';
+function MonitorFromWindow; external user32 name 'MonitorFromWindow';
+function GetMonitorInfoA; external user32 name 'GetMonitorInfoA';
+function GetMonitorInfoW; external user32 name 'GetMonitorInfoW';
+function GetMonitorInfo; external user32 name 'GetMonitorInfo' + AWSuffix;
+function EnumDisplayMonitors; external user32 name 'EnumDisplayMonitors';
+procedure NotifyWinEvent; external user32 name 'NotifyWinEvent';
+function SetWinEventHook; external user32 name 'SetWinEventHook';
+function IsWinEventHookInstalled; external user32 name 'IsWinEventHookInstalled';
+function UnhookWinEvent; external user32 name 'UnhookWinEvent';
+function GetGUIThreadInfo; external user32 name 'GetGUIThreadInfo';
+function GetWindowModuleFileNameA; external user32 name 'GetWindowModuleFileNameA';
+function GetWindowModuleFileNameW; external user32 name 'GetWindowModuleFileNameW';
+function GetWindowModuleFileName; external user32 name 'GetWindowModuleFileName' + AWSuffix;
+function GetCursorInfo; external user32 name 'GetCursorInfo';
+function GetWindowInfo; external user32 name 'GetWindowInfo';
+function GetTitleBarInfo; external user32 name 'GetTitleBarInfo';
+function GetMenuBarInfo; external user32 name 'GetMenuBarInfo';
+function GetScrollBarInfo; external user32 name 'GetScrollBarInfo';
+function GetComboBoxInfo; external user32 name 'GetComboBoxInfo';
+function GetAncestor; external user32 name 'GetAncestor';
+function RealChildWindowFromPoint; external user32 name 'RealChildWindowFromPoint';
+function RealGetWindowClassA; external user32 name 'RealGetWindowClassA';
+function RealGetWindowClassW; external user32 name 'RealGetWindowClassW';
+function RealGetWindowClass; external user32 name 'RealGetWindowClass' + AWSuffix;
+function GetAltTabInfoA; external user32 name 'GetAltTabInfoA';
+function GetAltTabInfoW; external user32 name 'GetAltTabInfoW';
+function GetAltTabInfo; external user32 name 'GetAltTabInfo' + AWSuffix;
+function GetListBoxInfo; external user32 name 'GetListBoxInfo';
+function LockWorkStation; external user32 name 'LockWorkStation';
+function UserHandleGrantAccess; external user32 name 'UserHandleGrantAccess';
+function GetRawInputData; external user32 name 'GetRawInputData';
+function GetRawInputDeviceInfoA; external user32 name 'GetRawInputDeviceInfoA';
+function GetRawInputDeviceInfoW; external user32 name 'GetRawInputDeviceInfoW';
+function GetRawInputDeviceInfo; external user32 name 'GetRawInputDeviceInfo' + AWSuffix;
+function GetRawInputBuffer; external user32 name 'GetRawInputBuffer';
+function RegisterRawInputDevices; external user32 name 'RegisterRawInputDevices';
+function GetRegisteredRawInputDevices; external user32 name 'GetRegisteredRawInputDevices';
+function GetRawInputDeviceList; external user32 name 'GetRawInputDeviceList';
 function DefRawInputProc; external user32 name 'DefRawInputProc';
+
 {$ENDIF DYNAMIC_LINK}
 
-end.
+{$ENDIF JWA_IMPLEMENTATIONSECTION}
 
+{$IFNDEF JWA_INCLUDEMODE}
+end.
+{$ENDIF !JWA_INCLUDEMODE}

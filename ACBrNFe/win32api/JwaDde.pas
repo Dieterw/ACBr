@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Dynamic Data Exchange API interface Unit for Object Pascal                   }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: dde.h, released June 2000. The original Pascal         }
 { code is: Dde.pas, released December 2000. The initial developer of the       }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,56 +35,64 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaDde.pas,v 1.9 2005/09/06 16:36:50 marquardt Exp $
+
+{$IFNDEF JWA_INCLUDEMODE}
 
 unit JwaDde;
 
 {$WEAKPACKAGEUNIT}
 
-{$HPPEMIT ''}
-{$HPPEMIT '#include "Dde.h"'}
-{$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
   JwaWinNT, JwaWinType;
 
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_INTERFACESECTION}
+
+{$HPPEMIT ''}
+{$HPPEMIT '#include "Dde.h"'}
+{$HPPEMIT ''}
+
 // DDE window messages
 
 const
   WM_DDE_FIRST = $03E0;
   {$EXTERNALSYM WM_DDE_FIRST}
-  WM_DDE_INITIATE = (WM_DDE_FIRST);
+  WM_DDE_INITIATE = WM_DDE_FIRST;
   {$EXTERNALSYM WM_DDE_INITIATE}
-  WM_DDE_TERMINATE = (WM_DDE_FIRST + 1);
+  WM_DDE_TERMINATE = WM_DDE_FIRST + 1;
   {$EXTERNALSYM WM_DDE_TERMINATE}
-  WM_DDE_ADVISE = (WM_DDE_FIRST + 2);
+  WM_DDE_ADVISE = WM_DDE_FIRST + 2;
   {$EXTERNALSYM WM_DDE_ADVISE}
-  WM_DDE_UNADVISE = (WM_DDE_FIRST + 3);
+  WM_DDE_UNADVISE = WM_DDE_FIRST + 3;
   {$EXTERNALSYM WM_DDE_UNADVISE}
-  WM_DDE_ACK = (WM_DDE_FIRST + 4);
+  WM_DDE_ACK = WM_DDE_FIRST + 4;
   {$EXTERNALSYM WM_DDE_ACK}
-  WM_DDE_DATA = (WM_DDE_FIRST + 5);
+  WM_DDE_DATA = WM_DDE_FIRST + 5;
   {$EXTERNALSYM WM_DDE_DATA}
-  WM_DDE_REQUEST = (WM_DDE_FIRST + 6);
+  WM_DDE_REQUEST = WM_DDE_FIRST + 6;
   {$EXTERNALSYM WM_DDE_REQUEST}
-  WM_DDE_POKE = (WM_DDE_FIRST + 7);
+  WM_DDE_POKE = WM_DDE_FIRST + 7;
   {$EXTERNALSYM WM_DDE_POKE}
-  WM_DDE_EXECUTE = (WM_DDE_FIRST + 8);
+  WM_DDE_EXECUTE = WM_DDE_FIRST + 8;
   {$EXTERNALSYM WM_DDE_EXECUTE}
-  WM_DDE_LAST = (WM_DDE_FIRST + 8);
+  WM_DDE_LAST = WM_DDE_FIRST + 8;
   {$EXTERNALSYM WM_DDE_LAST}
 
 {*----------------------------------------------------------------------------
 |       DDEACK structure
 |
-|	Structure of wStatus (LOWORD(lParam)) in WM_DDE_ACK message
+|       Structure of wStatus (LOWORD(lParam)) in WM_DDE_ACK message
 |       sent in response to a WM_DDE_DATA, WM_DDE_REQUEST, WM_DDE_POKE,
 |       WM_DDE_ADVISE, or WM_DDE_UNADVISE message.
 |
@@ -106,7 +113,7 @@ type
 {*----------------------------------------------------------------------------
 |       DDEADVISE structure
 |
-|	WM_DDE_ADVISE parameter structure for hOptions (LOWORD(lParam))
+|       WM_DDE_ADVISE parameter structure for hOptions (LOWORD(lParam))
 |
 ----------------------------------------------------------------------------*}
 
@@ -147,9 +154,9 @@ type
   PDdeData = ^DDEDATA;
 
 {*----------------------------------------------------------------------------
-|	DDEPOKE structure
+|       DDEPOKE structure
 |
-|	WM_DDE_POKE parameter structure for hData (LOWORD(lParam)).
+|       WM_DDE_POKE parameter structure for hData (LOWORD(lParam)).
 |       The actual size of this structure depends on the size of
 |       the Value array.
 |
@@ -230,13 +237,21 @@ function FreeDDElParam(msg: UINT; lParam: LPARAM): BOOL; stdcall;
 function ReuseDDElParam(lParam: LPARAM; msgIn, msgOut: UINT; uiLo, uiHi: UINT_PTR): LPARAM; stdcall;
 {$EXTERNALSYM ReuseDDElParam}
 
+{$ENDIF JWA_INTERFACESECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
+
 implementation
 
-const
-  user32 = 'user32.dll';
+uses
+  JwaWinDLLNames;
 
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_IMPLEMENTATIONSECTION}
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _DdeSetQualityOfService: Pointer;
 
@@ -244,16 +259,12 @@ function DdeSetQualityOfService;
 begin
   GetProcedureAddress(_DdeSetQualityOfService, user32, 'DdeSetQualityOfService');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DdeSetQualityOfService]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DdeSetQualityOfService]
   end;
 end;
-{$ELSE}
-function DdeSetQualityOfService; external user32 name 'DdeSetQualityOfService';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ImpersonateDdeClientWindow: Pointer;
 
@@ -261,16 +272,12 @@ function ImpersonateDdeClientWindow;
 begin
   GetProcedureAddress(_ImpersonateDdeClientWindow, user32, 'ImpersonateDdeClientWindow');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ImpersonateDdeClientWindow]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ImpersonateDdeClientWindow]
   end;
 end;
-{$ELSE}
-function ImpersonateDdeClientWindow; external user32 name 'ImpersonateDdeClientWindow';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _PackDDElParam: Pointer;
 
@@ -278,16 +285,12 @@ function PackDDElParam;
 begin
   GetProcedureAddress(_PackDDElParam, user32, 'PackDDElParam');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_PackDDElParam]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_PackDDElParam]
   end;
 end;
-{$ELSE}
-function PackDDElParam; external user32 name 'PackDDElParam';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _UnpackDDElParam: Pointer;
 
@@ -295,16 +298,12 @@ function UnpackDDElParam;
 begin
   GetProcedureAddress(_UnpackDDElParam, user32, 'UnpackDDElParam');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_UnpackDDElParam]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_UnpackDDElParam]
   end;
 end;
-{$ELSE}
-function UnpackDDElParam; external user32 name 'UnpackDDElParam';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _FreeDDElParam: Pointer;
 
@@ -312,16 +311,12 @@ function FreeDDElParam;
 begin
   GetProcedureAddress(_FreeDDElParam, user32, 'FreeDDElParam');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_FreeDDElParam]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_FreeDDElParam]
   end;
 end;
-{$ELSE}
-function FreeDDElParam; external user32 name 'FreeDDElParam';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ReuseDDElParam: Pointer;
 
@@ -329,13 +324,25 @@ function ReuseDDElParam;
 begin
   GetProcedureAddress(_ReuseDDElParam, user32, 'ReuseDDElParam');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ReuseDDElParam]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ReuseDDElParam]
   end;
 end;
+
 {$ELSE}
+
+function DdeSetQualityOfService; external user32 name 'DdeSetQualityOfService';
+function ImpersonateDdeClientWindow; external user32 name 'ImpersonateDdeClientWindow';
+function PackDDElParam; external user32 name 'PackDDElParam';
+function UnpackDDElParam; external user32 name 'UnpackDDElParam';
+function FreeDDElParam; external user32 name 'FreeDDElParam';
 function ReuseDDElParam; external user32 name 'ReuseDDElParam';
+
 {$ENDIF DYNAMIC_LINK}
 
+{$ENDIF JWA_IMPLEMENTATIONSECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
 end.
+{$ENDIF !JWA_INCLUDEMODE}

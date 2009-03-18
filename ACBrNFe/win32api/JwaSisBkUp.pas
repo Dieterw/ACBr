@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Single-Instance Store API interface Unit for Object Pascal                   }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: sisbkup.h, released August 2001. The original Pascal   }
 { code is: SisBkUp.pas, released December 2001. The initial developer of the   }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaSisBkUp.pas,v 1.7 2005/09/06 16:36:50 marquardt Exp $
 
 unit JwaSisBkUp;
 
@@ -49,12 +50,12 @@ unit JwaSisBkUp;
 {$HPPEMIT '#include "sisbkup.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinNT, JwaWinType;
+  JwaWindows;
 
 function SisCreateBackupStructure(volumeRoot: PWCHAR; var sisBackupStructure: PVOID; var commonStoreRootPathname: PWCHAR;
   countOfCommonStoreFilesToBackup: PULONG; var commonStoreFilesToBackup: PWCHAR): BOOL; stdcall;
@@ -89,182 +90,164 @@ function SisFreeAllocatedMemory(allocatedSpace: PVOID): BOOL; stdcall;
 //
 
 type
-  PF_SISCREATEBACKUPSTRUCTURE = function (volumeRoot: PWCHAR; var sisBackupStructure: PVOID; var commonStoreRootPathname: PWCHAR;
+  PF_SISCREATEBACKUPSTRUCTURE = function(volumeRoot: PWCHAR; var sisBackupStructure: PVOID; var commonStoreRootPathname: PWCHAR;
     countOfCommonStoreFilesToBackup: PULONG; var commonStoreFilesToBackup: PWCHAR): BOOL; stdcall;
   {$EXTERNALSYM PF_SISCREATEBACKUPSTRUCTURE}
   TSisCreateBackupStructure = PF_SISCREATEBACKUPSTRUCTURE;
 
-  PF_SISCSFILESTOBACKUPFORLINK = function (sisBackupStructure, reparseData: PVOID; reparseDataSize: ULONG; thisFileContext: PVOID;
+  PF_SISCSFILESTOBACKUPFORLINK = function(sisBackupStructure, reparseData: PVOID; reparseDataSize: ULONG; thisFileContext: PVOID;
     matchingFileContext: PPVOID; countOfCommonStoreFilesToBackup: PULONG; var commonStoreFilesToBackup: PWCHAR): BOOL; stdcall;
   {$EXTERNALSYM PF_SISCSFILESTOBACKUPFORLINK}
   TSisCSFilesToBackupForLink = PF_SISCSFILESTOBACKUPFORLINK;
 
-  PF_SISFREEBACKUPSTRUCTURE = function (sisBackupStructure: PVOID): BOOL; stdcall;
+  PF_SISFREEBACKUPSTRUCTURE = function(sisBackupStructure: PVOID): BOOL; stdcall;
   {$EXTERNALSYM PF_SISFREEBACKUPSTRUCTURE}
   TSusFreeBackupStructure = PF_SISFREEBACKUPSTRUCTURE;
 
-  PF_SISCREATERESTORESTRUCTURE = function (volumeRoot: PWCHAR; var sisRestoreStructure: PVOID; var commonStoreRootPathname: PWCHAR;
+  PF_SISCREATERESTORESTRUCTURE = function(volumeRoot: PWCHAR; var sisRestoreStructure: PVOID; var commonStoreRootPathname: PWCHAR;
     countOfCommonStoreFilesToRestore: PULONG; var commonStoreFilesToRestore: PWCHAR): BOOL; stdcall;
   {$EXTERNALSYM PF_SISCREATERESTORESTRUCTURE}
   TSisCreateRestoreStructure = PF_SISCREATERESTORESTRUCTURE;
 
-  PF_SISRESTOREDLINK = function (sisRestoreStructure: PVOID; restoredFileName: PWCHAR; reparseData: PVOID; reparseDataSize: ULONG;
+  PF_SISRESTOREDLINK = function(sisRestoreStructure: PVOID; restoredFileName: PWCHAR; reparseData: PVOID; reparseDataSize: ULONG;
     countOfCommonStoreFilesToRestore: PULONG; var commonStoreFilesToRestore: PWCHAR): BOOL; stdcall;
   {$EXTERNALSYM PF_SISRESTOREDLINK}
   TSisRestoredLink = PF_SISRESTOREDLINK;
 
-  PF_SISRESTOREDCOMMONSTOREFILE = function (sisRestoreStructure: PVOID; commonStoreFileName: PWCHAR): BOOL; stdcall;
+  PF_SISRESTOREDCOMMONSTOREFILE = function(sisRestoreStructure: PVOID; commonStoreFileName: PWCHAR): BOOL; stdcall;
   {$EXTERNALSYM PF_SISRESTOREDCOMMONSTOREFILE}
   TSisRestoredCommonStoreFile = PF_SISRESTOREDCOMMONSTOREFILE;
 
-  PF_SISFREERESTORESTRUCTURE = function (sisRestoreStructure: PVOID): BOOL; stdcall;
+  PF_SISFREERESTORESTRUCTURE = function(sisRestoreStructure: PVOID): BOOL; stdcall;
   {$EXTERNALSYM PF_SISFREERESTORESTRUCTURE}
   TSisFreeRestoreStructure = PF_SISFREERESTORESTRUCTURE;
 
-  PF_SISFREEALLOCATEDMEMORY = function (allocatedSpace: PVOID): BOOL; stdcall;
+  PF_SISFREEALLOCATEDMEMORY = function(allocatedSpace: PVOID): BOOL; stdcall;
   {$EXTERNALSYM PF_SISFREEALLOCATEDMEMORY}
   TSisFreeAllocatedMemory = PF_SISFREEALLOCATEDMEMORY;
 
 implementation
 
-const
-  sisbkup = 'sisbkup.dll';
-
+uses
+  JwaWinDLLNames;
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _SisCreateBackupStructure: Pointer;
 
 function SisCreateBackupStructure;
 begin
-  GetProcedureAddress(_SisCreateBackupStructure, sisbkup, 'SisCreateBackupStructure');
+  GetProcedureAddress(_SisCreateBackupStructure, sisbkuplib, 'SisCreateBackupStructure');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SisCreateBackupStructure]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SisCreateBackupStructure]
   end;
 end;
-{$ELSE}
-function SisCreateBackupStructure; external sisbkup name 'SisCreateBackupStructure';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SisCSFilesToBackupForLink: Pointer;
 
 function SisCSFilesToBackupForLink;
 begin
-  GetProcedureAddress(_SisCSFilesToBackupForLink, sisbkup, 'SisCSFilesToBackupForLink');
+  GetProcedureAddress(_SisCSFilesToBackupForLink, sisbkuplib, 'SisCSFilesToBackupForLink');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SisCSFilesToBackupForLink]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SisCSFilesToBackupForLink]
   end;
 end;
-{$ELSE}
-function SisCSFilesToBackupForLink; external sisbkup name 'SisCSFilesToBackupForLink';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SisFreeBackupStructure: Pointer;
 
 function SisFreeBackupStructure;
 begin
-  GetProcedureAddress(_SisFreeBackupStructure, sisbkup, 'SisFreeBackupStructure');
+  GetProcedureAddress(_SisFreeBackupStructure, sisbkuplib, 'SisFreeBackupStructure');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SisFreeBackupStructure]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SisFreeBackupStructure]
   end;
 end;
-{$ELSE}
-function SisFreeBackupStructure; external sisbkup name 'SisFreeBackupStructure';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SisCreateRestoreStructure: Pointer;
 
 function SisCreateRestoreStructure;
 begin
-  GetProcedureAddress(_SisCreateRestoreStructure, sisbkup, 'SisCreateRestoreStructure');
+  GetProcedureAddress(_SisCreateRestoreStructure, sisbkuplib, 'SisCreateRestoreStructure');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SisCreateRestoreStructure]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SisCreateRestoreStructure]
   end;
 end;
-{$ELSE}
-function SisCreateRestoreStructure; external sisbkup name 'SisCreateRestoreStructure';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SisRestoredLink: Pointer;
 
 function SisRestoredLink;
 begin
-  GetProcedureAddress(_SisRestoredLink, sisbkup, 'SisRestoredLink');
+  GetProcedureAddress(_SisRestoredLink, sisbkuplib, 'SisRestoredLink');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SisRestoredLink]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SisRestoredLink]
   end;
 end;
-{$ELSE}
-function SisRestoredLink; external sisbkup name 'SisRestoredLink';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SisRestoredCommonStoreFile: Pointer;
 
 function SisRestoredCommonStoreFile;
 begin
-  GetProcedureAddress(_SisRestoredCommonStoreFile, sisbkup, 'SisRestoredCommonStoreFile');
+  GetProcedureAddress(_SisRestoredCommonStoreFile, sisbkuplib, 'SisRestoredCommonStoreFile');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SisRestoredCommonStoreFile]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SisRestoredCommonStoreFile]
   end;
 end;
-{$ELSE}
-function SisRestoredCommonStoreFile; external sisbkup name 'SisRestoredCommonStoreFile';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SisFreeRestoreStructure: Pointer;
 
 function SisFreeRestoreStructure;
 begin
-  GetProcedureAddress(_SisFreeRestoreStructure, sisbkup, 'SisFreeRestoreStructure');
+  GetProcedureAddress(_SisFreeRestoreStructure, sisbkuplib, 'SisFreeRestoreStructure');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SisFreeRestoreStructure]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SisFreeRestoreStructure]
   end;
 end;
-{$ELSE}
-function SisFreeRestoreStructure; external sisbkup name 'SisFreeRestoreStructure';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SisFreeAllocatedMemory: Pointer;
 
 function SisFreeAllocatedMemory;
 begin
-  GetProcedureAddress(_SisFreeAllocatedMemory, sisbkup, 'SisFreeAllocatedMemory');
+  GetProcedureAddress(_SisFreeAllocatedMemory, sisbkuplib, 'SisFreeAllocatedMemory');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SisFreeAllocatedMemory]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SisFreeAllocatedMemory]
   end;
 end;
+
 {$ELSE}
-function SisFreeAllocatedMemory; external sisbkup name 'SisFreeAllocatedMemory';
+
+function SisCreateBackupStructure; external sisbkuplib name 'SisCreateBackupStructure';
+function SisCSFilesToBackupForLink; external sisbkuplib name 'SisCSFilesToBackupForLink';
+function SisFreeBackupStructure; external sisbkuplib name 'SisFreeBackupStructure';
+function SisCreateRestoreStructure; external sisbkuplib name 'SisCreateRestoreStructure';
+function SisRestoredLink; external sisbkuplib name 'SisRestoredLink';
+function SisRestoredCommonStoreFile; external sisbkuplib name 'SisRestoredCommonStoreFile';
+function SisFreeRestoreStructure; external sisbkuplib name 'SisFreeRestoreStructure';
+function SisFreeAllocatedMemory; external sisbkuplib name 'SisFreeAllocatedMemory';
+
 {$ENDIF DYNAMIC_LINK}
 
 end.

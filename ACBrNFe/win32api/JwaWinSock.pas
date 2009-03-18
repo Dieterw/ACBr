@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Winsock API interface Unit for Object Pascal                                 }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: winsock.h, released June 2000. The original Pascal     }
 { code is: WinSock.pas, released December 2000. The initial developer of the   }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,25 +35,33 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaWinSock.pas,v 1.9 2005/09/06 16:36:51 marquardt Exp $
+
+{$IFNDEF JWA_INCLUDEMODE}
 
 unit JwaWinSock;
 
 {$WEAKPACKAGEUNIT}
 
-{$HPPEMIT ''}
-{$HPPEMIT '#include "winsock.h"'}
-{$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinType, JwaWinBase;
+  JwaWinBase, JwaWinType;
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_INTERFACESECTION}
+
+{$HPPEMIT ''}
+{$HPPEMIT '#include "winsock.h"'}
+{$HPPEMIT ''}
 
 (*
  * Basic system type definitions, taken from the BSD file sys/types.h.
@@ -813,7 +820,6 @@ const
   PF_MAX = AF_MAX;
   {$EXTERNALSYM PF_MAX}
 
-
 (*
  * Structure used for manipulating linger option.
  *)
@@ -884,6 +890,7 @@ const
  * the "normal"
  *)
 
+{$IFNDEF JWA_INCLUDEMODE}
   WSABASEERR = 10000;
   {$EXTERNALSYM WSABASEERR}
 
@@ -891,110 +898,110 @@ const
  * Windows Sockets definitions of regular Microsoft C error constants
  *)
 
-  WSAEINTR  = (WSABASEERR+4);
+  WSAEINTR  = WSABASEERR + 4;
   {$EXTERNALSYM WSAEINTR}
-  WSAEBADF  = (WSABASEERR+9);
+  WSAEBADF  = WSABASEERR + 9;
   {$EXTERNALSYM WSAEBADF}
-  WSAEACCES = (WSABASEERR+13);
+  WSAEACCES = WSABASEERR + 13;
   {$EXTERNALSYM WSAEACCES}
-  WSAEFAULT = (WSABASEERR+14);
+  WSAEFAULT = WSABASEERR + 14;
   {$EXTERNALSYM WSAEFAULT}
-  WSAEINVAL = (WSABASEERR+22);
+  WSAEINVAL = WSABASEERR + 22;
   {$EXTERNALSYM WSAEINVAL}
-  WSAEMFILE = (WSABASEERR+24);
+  WSAEMFILE = WSABASEERR + 24;
   {$EXTERNALSYM WSAEMFILE}
 
 (*
  * Windows Sockets definitions of regular Berkeley error constants
  *)
 
-  WSAEWOULDBLOCK     = (WSABASEERR+35);
+  WSAEWOULDBLOCK     = WSABASEERR + 35;
   {$EXTERNALSYM WSAEWOULDBLOCK}
-  WSAEINPROGRESS     = (WSABASEERR+36);
+  WSAEINPROGRESS     = WSABASEERR + 36;
   {$EXTERNALSYM WSAEINPROGRESS}
-  WSAEALREADY        = (WSABASEERR+37);
+  WSAEALREADY        = WSABASEERR + 37;
   {$EXTERNALSYM WSAEALREADY}
-  WSAENOTSOCK        = (WSABASEERR+38);
+  WSAENOTSOCK        = WSABASEERR + 38;
   {$EXTERNALSYM WSAENOTSOCK}
-  WSAEDESTADDRREQ    = (WSABASEERR+39);
+  WSAEDESTADDRREQ    = WSABASEERR + 39;
   {$EXTERNALSYM WSAEDESTADDRREQ}
-  WSAEMSGSIZE        = (WSABASEERR+40);
+  WSAEMSGSIZE        = WSABASEERR + 40;
   {$EXTERNALSYM WSAEMSGSIZE}
-  WSAEPROTOTYPE      = (WSABASEERR+41);
+  WSAEPROTOTYPE      = WSABASEERR + 41;
   {$EXTERNALSYM WSAEPROTOTYPE}
-  WSAENOPROTOOPT     = (WSABASEERR+42);
+  WSAENOPROTOOPT     = WSABASEERR + 42;
   {$EXTERNALSYM WSAENOPROTOOPT}
-  WSAEPROTONOSUPPORT = (WSABASEERR+43);
+  WSAEPROTONOSUPPORT = WSABASEERR + 43;
   {$EXTERNALSYM WSAEPROTONOSUPPORT}
-  WSAESOCKTNOSUPPORT = (WSABASEERR+44);
+  WSAESOCKTNOSUPPORT = WSABASEERR + 44;
   {$EXTERNALSYM WSAESOCKTNOSUPPORT}
-  WSAEOPNOTSUPP      = (WSABASEERR+45);
+  WSAEOPNOTSUPP      = WSABASEERR + 45;
   {$EXTERNALSYM WSAEOPNOTSUPP}
-  WSAEPFNOSUPPORT    = (WSABASEERR+46);
+  WSAEPFNOSUPPORT    = WSABASEERR + 46;
   {$EXTERNALSYM WSAEPFNOSUPPORT}
-  WSAEAFNOSUPPORT    = (WSABASEERR+47);
+  WSAEAFNOSUPPORT    = WSABASEERR + 47;
   {$EXTERNALSYM WSAEAFNOSUPPORT}
-  WSAEADDRINUSE      = (WSABASEERR+48);
+  WSAEADDRINUSE      = WSABASEERR + 48;
   {$EXTERNALSYM WSAEADDRINUSE}
-  WSAEADDRNOTAVAIL   = (WSABASEERR+49);
+  WSAEADDRNOTAVAIL   = WSABASEERR + 49;
   {$EXTERNALSYM WSAEADDRNOTAVAIL}
-  WSAENETDOWN        = (WSABASEERR+50);
+  WSAENETDOWN        = WSABASEERR + 50;
   {$EXTERNALSYM WSAENETDOWN}
-  WSAENETUNREACH     = (WSABASEERR+51);
+  WSAENETUNREACH     = WSABASEERR + 51;
   {$EXTERNALSYM WSAENETUNREACH}
-  WSAENETRESET       = (WSABASEERR+52);
+  WSAENETRESET       = WSABASEERR + 52;
   {$EXTERNALSYM WSAENETRESET}
-  WSAECONNABORTED    = (WSABASEERR+53);
+  WSAECONNABORTED    = WSABASEERR + 53;
   {$EXTERNALSYM WSAECONNABORTED}
-  WSAECONNRESET      = (WSABASEERR+54);
+  WSAECONNRESET      = WSABASEERR + 54;
   {$EXTERNALSYM WSAECONNRESET}
-  WSAENOBUFS         = (WSABASEERR+55);
+  WSAENOBUFS         = WSABASEERR + 55;
   {$EXTERNALSYM WSAENOBUFS}
-  WSAEISCONN         = (WSABASEERR+56);
+  WSAEISCONN         = WSABASEERR + 56;
   {$EXTERNALSYM WSAEISCONN}
-  WSAENOTCONN        = (WSABASEERR+57);
+  WSAENOTCONN        = WSABASEERR + 57;
   {$EXTERNALSYM WSAENOTCONN}
-  WSAESHUTDOWN       = (WSABASEERR+58);
+  WSAESHUTDOWN       = WSABASEERR + 58;
   {$EXTERNALSYM WSAESHUTDOWN}
-  WSAETOOMANYREFS    = (WSABASEERR+59);
+  WSAETOOMANYREFS    = WSABASEERR + 59;
   {$EXTERNALSYM WSAETOOMANYREFS}
-  WSAETIMEDOUT       = (WSABASEERR+60);
+  WSAETIMEDOUT       = WSABASEERR + 60;
   {$EXTERNALSYM WSAETIMEDOUT}
-  WSAECONNREFUSED    = (WSABASEERR+61);
+  WSAECONNREFUSED    = WSABASEERR + 61;
   {$EXTERNALSYM WSAECONNREFUSED}
-  WSAELOOP           = (WSABASEERR+62);
+  WSAELOOP           = WSABASEERR + 62;
   {$EXTERNALSYM WSAELOOP}
-  WSAENAMETOOLONG    = (WSABASEERR+63);
+  WSAENAMETOOLONG    = WSABASEERR + 63;
   {$EXTERNALSYM WSAENAMETOOLONG}
-  WSAEHOSTDOWN       = (WSABASEERR+64);
+  WSAEHOSTDOWN       = WSABASEERR + 64;
   {$EXTERNALSYM WSAEHOSTDOWN}
-  WSAEHOSTUNREACH    = (WSABASEERR+65);
+  WSAEHOSTUNREACH    = WSABASEERR + 65;
   {$EXTERNALSYM WSAEHOSTUNREACH}
-  WSAENOTEMPTY       = (WSABASEERR+66);
+  WSAENOTEMPTY       = WSABASEERR + 66;
   {$EXTERNALSYM WSAENOTEMPTY}
-  WSAEPROCLIM        = (WSABASEERR+67);
+  WSAEPROCLIM        = WSABASEERR + 67;
   {$EXTERNALSYM WSAEPROCLIM}
-  WSAEUSERS          = (WSABASEERR+68);
+  WSAEUSERS          = WSABASEERR + 68;
   {$EXTERNALSYM WSAEUSERS}
-  WSAEDQUOT          = (WSABASEERR+69);
+  WSAEDQUOT          = WSABASEERR + 69;
   {$EXTERNALSYM WSAEDQUOT}
-  WSAESTALE          = (WSABASEERR+70);
+  WSAESTALE          = WSABASEERR + 70;
   {$EXTERNALSYM WSAESTALE}
-  WSAEREMOTE         = (WSABASEERR+71);
+  WSAEREMOTE         = WSABASEERR + 71;
   {$EXTERNALSYM WSAEREMOTE}
 
-  WSAEDISCON         = (WSABASEERR+101);
+  WSAEDISCON         = WSABASEERR + 101;
   {$EXTERNALSYM WSAEDISCON}
 
 (*
  * Extended Windows Sockets error constant definitions
  *)
 
-  WSASYSNOTREADY         = (WSABASEERR+91);
+  WSASYSNOTREADY         = WSABASEERR + 91;
   {$EXTERNALSYM WSASYSNOTREADY}
-  WSAVERNOTSUPPORTED     = (WSABASEERR+92);
+  WSAVERNOTSUPPORTED     = WSABASEERR + 92;
   {$EXTERNALSYM WSAVERNOTSUPPORTED}
-  WSANOTINITIALISED      = (WSABASEERR+93);
+  WSANOTINITIALISED      = WSABASEERR + 93;
   {$EXTERNALSYM WSANOTINITIALISED}
 
 (*
@@ -1010,23 +1017,25 @@ const
 
 // Authoritative Answer: Host not found
 
-  WSAHOST_NOT_FOUND = (WSABASEERR+1001);
+  WSAHOST_NOT_FOUND = WSABASEERR + 1001;
   {$EXTERNALSYM WSAHOST_NOT_FOUND}
 
 // Non-Authoritative: Host not found, or SERVERFAIL
 
-  WSATRY_AGAIN = (WSABASEERR+1002);
+  WSATRY_AGAIN = WSABASEERR + 1002;
   {$EXTERNALSYM WSATRY_AGAIN}
 
 // Non-recoverable errors, FORMERR, REFUSED, NOTIMP
 
-  WSANO_RECOVERY = (WSABASEERR+1003);
+  WSANO_RECOVERY = WSABASEERR + 1003;
   {$EXTERNALSYM WSANO_RECOVERY}
 
 // Valid name, no data record of requested type
 
-  WSANO_DATA = (WSABASEERR+1004);
+  WSANO_DATA = WSABASEERR + 1004;
   {$EXTERNALSYM WSANO_DATA}
+
+{$ENDIF !JWA_INCLUDEMODE}
 
 (*
  * Compatibility macros.
@@ -1136,7 +1145,7 @@ const
   EREMOTE         = WSAEREMOTE;
   {$EXTERNALSYM EREMOTE}
 
-{$ENDIF}
+{$ENDIF FALSE}
 
 (* Socket function prototypes *)
 
@@ -1284,8 +1293,8 @@ function AcceptEx(sListenSocket, sAcceptSocket: TSocket;
 {$EXTERNALSYM AcceptEx}
 procedure GetAcceptExSockaddrs(lpOutputBuffer: Pointer;
   dwReceiveDataLength, dwLocalAddressLength, dwRemoteAddressLength: DWORD;
-  LocalSockaddr: PSockAddr; var LocalSockaddrLength: Integer;
-  RemoteSockaddr: PSockAddr; var RemoteSockaddrLength: Integer); stdcall;
+  out LocalSockaddr: PSockAddr; var LocalSockaddrLength: Integer;
+  out RemoteSockaddr: PSockAddr; var RemoteSockaddrLength: Integer); stdcall;
 {$EXTERNALSYM GetAcceptExSockaddrs}
 
 (* Microsoft Windows Extended data types *)
@@ -1369,28 +1378,18 @@ function WSAGETSELECTEVENT(lParam: DWORD): WORD;
 function WSAGETSELECTERROR(lParam: DWORD): WORD;
 {$EXTERNALSYM WSAGETSELECTERROR}
 
+{$ENDIF JWA_INTERFACESECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
+
 implementation
 
-const
-  wsock32 = 'wsock32.dll';
+uses
+  JwaWinDLLNames;
 
+{$ENDIF !JWA_INCLUDEMODE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  ___WSAFDIsSet: Pointer;
-
-function __WSAFDIsSet;
-begin
-  GetProcedureAddress(___WSAFDIsSet, wsock32, '__WSAFDIsSet');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [___WSAFDIsSet]
-  end;
-end;
-{$ELSE}
-function __WSAFDIsSet; external wsock32 name '__WSAFDIsSet';
-{$ENDIF DYNAMIC_LINK}
+{$IFDEF JWA_IMPLEMENTATIONSECTION}
 
 procedure FD_CLR(fd: TSocket; var fdset: TFdSet);
 var
@@ -1420,7 +1419,8 @@ begin
   I := 0;
   while I < fdset.fd_count do
   begin
-    if fdset.fd_array[I] = fd then Break;
+    if fdset.fd_array[I] = fd then
+      Break;
     Inc(I);
   end;
   if I = fdset.fd_count then
@@ -1489,860 +1489,6 @@ begin
   Result := WSAGetLastError;
 end;
 
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _accept: Pointer;
-
-function accept;
-begin
-  GetProcedureAddress(_accept, wsock32, 'accept');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_accept]
-  end;
-end;
-{$ELSE}
-function accept; external wsock32 name 'accept';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _bind: Pointer;
-
-function bind;
-begin
-  GetProcedureAddress(_bind, wsock32, 'bind');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_bind]
-  end;
-end;
-{$ELSE}
-function bind; external wsock32 name 'bind';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _closesocket: Pointer;
-
-function closesocket;
-begin
-  GetProcedureAddress(_closesocket, wsock32, 'closesocket');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_closesocket]
-  end;
-end;
-{$ELSE}
-function closesocket; external wsock32 name 'closesocket';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _connect: Pointer;
-
-function connect;
-begin
-  GetProcedureAddress(_connect, wsock32, 'connect');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_connect]
-  end;
-end;
-{$ELSE}
-function connect; external wsock32 name 'connect';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ioctlsocket: Pointer;
-
-function ioctlsocket;
-begin
-  GetProcedureAddress(_ioctlsocket, wsock32, 'ioctlsocket');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ioctlsocket]
-  end;
-end;
-{$ELSE}
-function ioctlsocket; external wsock32 name 'ioctlsocket';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _getpeername: Pointer;
-
-function getpeername;
-begin
-  GetProcedureAddress(_getpeername, wsock32, 'getpeername');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_getpeername]
-  end;
-end;
-{$ELSE}
-function getpeername; external wsock32 name 'getpeername';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _getsockname: Pointer;
-
-function getsockname;
-begin
-  GetProcedureAddress(_getsockname, wsock32, 'getsockname');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_getsockname]
-  end;
-end;
-{$ELSE}
-function getsockname; external wsock32 name 'getsockname';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _getsockopt: Pointer;
-
-function getsockopt;
-begin
-  GetProcedureAddress(_getsockopt, wsock32, 'getsockopt');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_getsockopt]
-  end;
-end;
-{$ELSE}
-function getsockopt; external wsock32 name 'getsockopt';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _htonl: Pointer;
-
-function htonl;
-begin
-  GetProcedureAddress(_htonl, wsock32, 'htonl');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_htonl]
-  end;
-end;
-{$ELSE}
-function htonl; external wsock32 name 'htonl';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _htons: Pointer;
-
-function htons;
-begin
-  GetProcedureAddress(_htons, wsock32, 'htons');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_htons]
-  end;
-end;
-{$ELSE}
-function htons; external wsock32 name 'htons';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _inet_addr: Pointer;
-
-function inet_addr;
-begin
-  GetProcedureAddress(_inet_addr, wsock32, 'inet_addr');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_inet_addr]
-  end;
-end;
-{$ELSE}
-function inet_addr; external wsock32 name 'inet_addr';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _inet_ntoa: Pointer;
-
-function inet_ntoa;
-begin
-  GetProcedureAddress(_inet_ntoa, wsock32, 'inet_ntoa');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_inet_ntoa]
-  end;
-end;
-{$ELSE}
-function inet_ntoa; external wsock32 name 'inet_ntoa';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _listen: Pointer;
-
-function listen;
-begin
-  GetProcedureAddress(_listen, wsock32, 'listen');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_listen]
-  end;
-end;
-{$ELSE}
-function listen; external wsock32 name 'listen';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ntohl: Pointer;
-
-function ntohl;
-begin
-  GetProcedureAddress(_ntohl, wsock32, 'ntohl');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ntohl]
-  end;
-end;
-{$ELSE}
-function ntohl; external wsock32 name 'ntohl';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _ntohs: Pointer;
-
-function ntohs;
-begin
-  GetProcedureAddress(_ntohs, wsock32, 'ntohs');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ntohs]
-  end;
-end;
-{$ELSE}
-function ntohs; external wsock32 name 'ntohs';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _recv: Pointer;
-
-function recv;
-begin
-  GetProcedureAddress(_recv, wsock32, 'recv');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_recv]
-  end;
-end;
-{$ELSE}
-function recv; external wsock32 name 'recv';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _recvfrom: Pointer;
-
-function recvfrom;
-begin
-  GetProcedureAddress(_recvfrom, wsock32, 'recvfrom');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_recvfrom]
-  end;
-end;
-{$ELSE}
-function recvfrom; external wsock32 name 'recvfrom';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _select: Pointer;
-
-function select;
-begin
-  GetProcedureAddress(_select, wsock32, 'select');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_select]
-  end;
-end;
-{$ELSE}
-function select; external wsock32 name 'select';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _send: Pointer;
-
-function send;
-begin
-  GetProcedureAddress(_send, wsock32, 'send');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_send]
-  end;
-end;
-{$ELSE}
-function send; external wsock32 name 'send';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _sendto: Pointer;
-
-function sendto;
-begin
-  GetProcedureAddress(_sendto, wsock32, 'sendto');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_sendto]
-  end;
-end;
-{$ELSE}
-function sendto; external wsock32 name 'sendto';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _setsockopt: Pointer;
-
-function setsockopt;
-begin
-  GetProcedureAddress(_setsockopt, wsock32, 'setsockopt');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_setsockopt]
-  end;
-end;
-{$ELSE}
-function setsockopt; external wsock32 name 'setsockopt';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _shutdown: Pointer;
-
-function shutdown;
-begin
-  GetProcedureAddress(_shutdown, wsock32, 'shutdown');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_shutdown]
-  end;
-end;
-{$ELSE}
-function shutdown; external wsock32 name 'shutdown';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _socket: Pointer;
-
-function socket;
-begin
-  GetProcedureAddress(_socket, wsock32, 'socket');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_socket]
-  end;
-end;
-{$ELSE}
-function socket; external wsock32 name 'socket';
-{$ENDIF DYNAMIC_LINK}
-
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _gethostbyaddr: Pointer;
-
-function gethostbyaddr;
-begin
-  GetProcedureAddress(_gethostbyaddr, wsock32, 'gethostbyaddr');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_gethostbyaddr]
-  end;
-end;
-{$ELSE}
-function gethostbyaddr; external wsock32 name 'gethostbyaddr';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _gethostbyname: Pointer;
-
-function gethostbyname;
-begin
-  GetProcedureAddress(_gethostbyname, wsock32, 'gethostbyname');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_gethostbyname]
-  end;
-end;
-{$ELSE}
-function gethostbyname; external wsock32 name 'gethostbyname';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _gethostname: Pointer;
-
-function gethostname;
-begin
-  GetProcedureAddress(_gethostname, wsock32, 'gethostname');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_gethostname]
-  end;
-end;
-{$ELSE}
-function gethostname; external wsock32 name 'gethostname';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _getservbyport: Pointer;
-
-function getservbyport;
-begin
-  GetProcedureAddress(_getservbyport, wsock32, 'getservbyport');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_getservbyport]
-  end;
-end;
-{$ELSE}
-function getservbyport; external wsock32 name 'getservbyport';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _getservbyname: Pointer;
-
-function getservbyname;
-begin
-  GetProcedureAddress(_getservbyname, wsock32, 'getservbyname');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_getservbyname]
-  end;
-end;
-{$ELSE}
-function getservbyname; external wsock32 name 'getservbyname';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _getprotobynumber: Pointer;
-
-function getprotobynumber;
-begin
-  GetProcedureAddress(_getprotobynumber, wsock32, 'getprotobynumber');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_getprotobynumber]
-  end;
-end;
-{$ELSE}
-function getprotobynumber; external wsock32 name 'getprotobynumber';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _getprotobyname: Pointer;
-
-function getprotobyname;
-begin
-  GetProcedureAddress(_getprotobyname, wsock32, 'getprotobyname');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_getprotobyname]
-  end;
-end;
-{$ELSE}
-function getprotobyname; external wsock32 name 'getprotobyname';
-{$ENDIF DYNAMIC_LINK}
-
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WSAStartup: Pointer;
-
-function WSAStartup;
-begin
-  GetProcedureAddress(_WSAStartup, wsock32, 'WSAStartup');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WSAStartup]
-  end;
-end;
-{$ELSE}
-function WSAStartup; external wsock32 name 'WSAStartup';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WSACleanup: Pointer;
-
-function WSACleanup;
-begin
-  GetProcedureAddress(_WSACleanup, wsock32, 'WSACleanup');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WSACleanup]
-  end;
-end;
-{$ELSE}
-function WSACleanup; external wsock32 name 'WSACleanup';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WSASetLastError: Pointer;
-
-procedure WSASetLastError;
-begin
-  GetProcedureAddress(_WSASetLastError, wsock32, 'WSASetLastError');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WSASetLastError]
-  end;
-end;
-{$ELSE}
-procedure WSASetLastError; external wsock32 name 'WSASetLastError';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WSAGetLastError: Pointer;
-
-function WSAGetLastError;
-begin
-  GetProcedureAddress(_WSAGetLastError, wsock32, 'WSAGetLastError');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WSAGetLastError]
-  end;
-end;
-{$ELSE}
-function WSAGetLastError; external wsock32 name 'WSAGetLastError';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WSAIsBlocking: Pointer;
-
-function WSAIsBlocking;
-begin
-  GetProcedureAddress(_WSAIsBlocking, wsock32, 'WSAIsBlocking');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WSAIsBlocking]
-  end;
-end;
-{$ELSE}
-function WSAIsBlocking; external wsock32 name 'WSAIsBlocking';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WSAUnhookBlockingHook: Pointer;
-
-function WSAUnhookBlockingHook;
-begin
-  GetProcedureAddress(_WSAUnhookBlockingHook, wsock32, 'WSAUnhookBlockingHook');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WSAUnhookBlockingHook]
-  end;
-end;
-{$ELSE}
-function WSAUnhookBlockingHook; external wsock32 name 'WSAUnhookBlockingHook';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WSASetBlockingHook: Pointer;
-
-function WSASetBlockingHook;
-begin
-  GetProcedureAddress(_WSASetBlockingHook, wsock32, 'WSASetBlockingHook');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WSASetBlockingHook]
-  end;
-end;
-{$ELSE}
-function WSASetBlockingHook; external wsock32 name 'WSASetBlockingHook';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WSACancelBlockingCall: Pointer;
-
-function WSACancelBlockingCall;
-begin
-  GetProcedureAddress(_WSACancelBlockingCall, wsock32, 'WSACancelBlockingCall');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WSACancelBlockingCall]
-  end;
-end;
-{$ELSE}
-function WSACancelBlockingCall; external wsock32 name 'WSACancelBlockingCall';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WSAAsyncGetServByName: Pointer;
-
-function WSAAsyncGetServByName;
-begin
-  GetProcedureAddress(_WSAAsyncGetServByName, wsock32, 'WSAAsyncGetServByName');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WSAAsyncGetServByName]
-  end;
-end;
-{$ELSE}
-function WSAAsyncGetServByName; external wsock32 name 'WSAAsyncGetServByName';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WSAAsyncGetServByPort: Pointer;
-
-function WSAAsyncGetServByPort;
-begin
-  GetProcedureAddress(_WSAAsyncGetServByPort, wsock32, 'WSAAsyncGetServByPort');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WSAAsyncGetServByPort]
-  end;
-end;
-{$ELSE}
-function WSAAsyncGetServByPort; external wsock32 name 'WSAAsyncGetServByPort';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WSAAsyncGetProtoByName: Pointer;
-
-function WSAAsyncGetProtoByName;
-begin
-  GetProcedureAddress(_WSAAsyncGetProtoByName, wsock32, 'WSAAsyncGetProtoByName');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WSAAsyncGetProtoByName]
-  end;
-end;
-{$ELSE}
-function WSAAsyncGetProtoByName; external wsock32 name 'WSAAsyncGetProtoByName';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WSAAsyncGetProtoByNumber: Pointer;
-
-function WSAAsyncGetProtoByNumber;
-begin
-  GetProcedureAddress(_WSAAsyncGetProtoByNumber, wsock32, 'WSAAsyncGetProtoByNumber');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WSAAsyncGetProtoByNumber]
-  end;
-end;
-{$ELSE}
-function WSAAsyncGetProtoByNumber; external wsock32 name 'WSAAsyncGetProtoByNumber';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WSAAsyncGetHostByName: Pointer;
-
-function WSAAsyncGetHostByName;
-begin
-  GetProcedureAddress(_WSAAsyncGetHostByName, wsock32, 'WSAAsyncGetHostByName');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WSAAsyncGetHostByName]
-  end;
-end;
-{$ELSE}
-function WSAAsyncGetHostByName; external wsock32 name 'WSAAsyncGetHostByName';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WSAAsyncGetHostByAddr: Pointer;
-
-function WSAAsyncGetHostByAddr;
-begin
-  GetProcedureAddress(_WSAAsyncGetHostByAddr, wsock32, 'WSAAsyncGetHostByAddr');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WSAAsyncGetHostByAddr]
-  end;
-end;
-{$ELSE}
-function WSAAsyncGetHostByAddr; external wsock32 name 'WSAAsyncGetHostByAddr';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WSACancelAsyncRequest: Pointer;
-
-function WSACancelAsyncRequest;
-begin
-  GetProcedureAddress(_WSACancelAsyncRequest, wsock32, 'WSACancelAsyncRequest');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WSACancelAsyncRequest]
-  end;
-end;
-{$ELSE}
-function WSACancelAsyncRequest; external wsock32 name 'WSACancelAsyncRequest';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WSAAsyncSelect: Pointer;
-
-function WSAAsyncSelect;
-begin
-  GetProcedureAddress(_WSAAsyncSelect, wsock32, 'WSAAsyncSelect');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WSAAsyncSelect]
-  end;
-end;
-{$ELSE}
-function WSAAsyncSelect; external wsock32 name 'WSAAsyncSelect';
-{$ENDIF DYNAMIC_LINK}
-
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _WSARecvEx: Pointer;
-
-function WSARecvEx;
-begin
-  GetProcedureAddress(_WSARecvEx, wsock32, 'WSARecvEx');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_WSARecvEx]
-  end;
-end;
-{$ELSE}
-function WSARecvEx; external wsock32 name 'WSARecvEx';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _TransmitFile: Pointer;
-
-function TransmitFile;
-begin
-  GetProcedureAddress(_TransmitFile, wsock32, 'TransmitFile');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TransmitFile]
-  end;
-end;
-{$ELSE}
-function TransmitFile; external wsock32 name 'TransmitFile';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _AcceptEx: Pointer;
-
-function AcceptEx;
-begin
-  GetProcedureAddress(_AcceptEx, wsock32, 'AcceptEx');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_AcceptEx]
-  end;
-end;
-{$ELSE}
-function AcceptEx; external wsock32 name 'AcceptEx';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetAcceptExSockaddrs: Pointer;
-
-procedure GetAcceptExSockaddrs;
-begin
-  GetProcedureAddress(_GetAcceptExSockaddrs, wsock32, 'GetAcceptExSockaddrs');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetAcceptExSockaddrs]
-  end;
-end;
-{$ELSE}
-procedure GetAcceptExSockaddrs; external wsock32 name 'GetAcceptExSockaddrs';
-{$ENDIF DYNAMIC_LINK}
-
 function WSAMAKEASYNCREPLY(buflen, error: WORD): DWORD;
 begin
   Result := MAKELONG(buflen, error);
@@ -2373,4 +1519,729 @@ begin
   Result := HIWORD(lParam);
 end;
 
+{$IFDEF DYNAMIC_LINK}
+
+var
+  ___WSAFDIsSet: Pointer;
+
+function __WSAFDIsSet;
+begin
+  GetProcedureAddress(___WSAFDIsSet, wsock32, '__WSAFDIsSet');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [___WSAFDIsSet]
+  end;
+end;
+
+var
+  _accept: Pointer;
+
+function accept;
+begin
+  GetProcedureAddress(_accept, wsock32, 'accept');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_accept]
+  end;
+end;
+
+var
+  _bind: Pointer;
+
+function bind;
+begin
+  GetProcedureAddress(_bind, wsock32, 'bind');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_bind]
+  end;
+end;
+
+var
+  _closesocket: Pointer;
+
+function closesocket;
+begin
+  GetProcedureAddress(_closesocket, wsock32, 'closesocket');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_closesocket]
+  end;
+end;
+
+var
+  _connect: Pointer;
+
+function connect;
+begin
+  GetProcedureAddress(_connect, wsock32, 'connect');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_connect]
+  end;
+end;
+
+var
+  _ioctlsocket: Pointer;
+
+function ioctlsocket;
+begin
+  GetProcedureAddress(_ioctlsocket, wsock32, 'ioctlsocket');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ioctlsocket]
+  end;
+end;
+
+var
+  _getpeername: Pointer;
+
+function getpeername;
+begin
+  GetProcedureAddress(_getpeername, wsock32, 'getpeername');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_getpeername]
+  end;
+end;
+
+var
+  _getsockname: Pointer;
+
+function getsockname;
+begin
+  GetProcedureAddress(_getsockname, wsock32, 'getsockname');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_getsockname]
+  end;
+end;
+
+var
+  _getsockopt: Pointer;
+
+function getsockopt;
+begin
+  GetProcedureAddress(_getsockopt, wsock32, 'getsockopt');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_getsockopt]
+  end;
+end;
+
+var
+  _htonl: Pointer;
+
+function htonl;
+begin
+  GetProcedureAddress(_htonl, wsock32, 'htonl');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_htonl]
+  end;
+end;
+
+var
+  _htons: Pointer;
+
+function htons;
+begin
+  GetProcedureAddress(_htons, wsock32, 'htons');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_htons]
+  end;
+end;
+
+var
+  _inet_addr: Pointer;
+
+function inet_addr;
+begin
+  GetProcedureAddress(_inet_addr, wsock32, 'inet_addr');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_inet_addr]
+  end;
+end;
+
+var
+  _inet_ntoa: Pointer;
+
+function inet_ntoa;
+begin
+  GetProcedureAddress(_inet_ntoa, wsock32, 'inet_ntoa');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_inet_ntoa]
+  end;
+end;
+
+var
+  _listen: Pointer;
+
+function listen;
+begin
+  GetProcedureAddress(_listen, wsock32, 'listen');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_listen]
+  end;
+end;
+
+var
+  _ntohl: Pointer;
+
+function ntohl;
+begin
+  GetProcedureAddress(_ntohl, wsock32, 'ntohl');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ntohl]
+  end;
+end;
+
+var
+  _ntohs: Pointer;
+
+function ntohs;
+begin
+  GetProcedureAddress(_ntohs, wsock32, 'ntohs');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ntohs]
+  end;
+end;
+
+var
+  _recv: Pointer;
+
+function recv;
+begin
+  GetProcedureAddress(_recv, wsock32, 'recv');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_recv]
+  end;
+end;
+
+var
+  _recvfrom: Pointer;
+
+function recvfrom;
+begin
+  GetProcedureAddress(_recvfrom, wsock32, 'recvfrom');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_recvfrom]
+  end;
+end;
+
+var
+  _select: Pointer;
+
+function select;
+begin
+  GetProcedureAddress(_select, wsock32, 'select');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_select]
+  end;
+end;
+
+var
+  _send: Pointer;
+
+function send;
+begin
+  GetProcedureAddress(_send, wsock32, 'send');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_send]
+  end;
+end;
+
+var
+  _sendto: Pointer;
+
+function sendto;
+begin
+  GetProcedureAddress(_sendto, wsock32, 'sendto');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_sendto]
+  end;
+end;
+
+var
+  _setsockopt: Pointer;
+
+function setsockopt;
+begin
+  GetProcedureAddress(_setsockopt, wsock32, 'setsockopt');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_setsockopt]
+  end;
+end;
+
+var
+  _shutdown: Pointer;
+
+function shutdown;
+begin
+  GetProcedureAddress(_shutdown, wsock32, 'shutdown');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_shutdown]
+  end;
+end;
+
+var
+  _socket: Pointer;
+
+function socket;
+begin
+  GetProcedureAddress(_socket, wsock32, 'socket');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_socket]
+  end;
+end;
+
+var
+  _gethostbyaddr: Pointer;
+
+function gethostbyaddr;
+begin
+  GetProcedureAddress(_gethostbyaddr, wsock32, 'gethostbyaddr');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_gethostbyaddr]
+  end;
+end;
+
+var
+  _gethostbyname: Pointer;
+
+function gethostbyname;
+begin
+  GetProcedureAddress(_gethostbyname, wsock32, 'gethostbyname');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_gethostbyname]
+  end;
+end;
+
+var
+  _gethostname: Pointer;
+
+function gethostname;
+begin
+  GetProcedureAddress(_gethostname, wsock32, 'gethostname');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_gethostname]
+  end;
+end;
+
+var
+  _getservbyport: Pointer;
+
+function getservbyport;
+begin
+  GetProcedureAddress(_getservbyport, wsock32, 'getservbyport');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_getservbyport]
+  end;
+end;
+
+var
+  _getservbyname: Pointer;
+
+function getservbyname;
+begin
+  GetProcedureAddress(_getservbyname, wsock32, 'getservbyname');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_getservbyname]
+  end;
+end;
+
+var
+  _getprotobynumber: Pointer;
+
+function getprotobynumber;
+begin
+  GetProcedureAddress(_getprotobynumber, wsock32, 'getprotobynumber');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_getprotobynumber]
+  end;
+end;
+
+var
+  _getprotobyname: Pointer;
+
+function getprotobyname;
+begin
+  GetProcedureAddress(_getprotobyname, wsock32, 'getprotobyname');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_getprotobyname]
+  end;
+end;
+
+var
+  _WSAStartup: Pointer;
+
+function WSAStartup;
+begin
+  GetProcedureAddress(_WSAStartup, wsock32, 'WSAStartup');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WSAStartup]
+  end;
+end;
+
+var
+  _WSACleanup: Pointer;
+
+function WSACleanup;
+begin
+  GetProcedureAddress(_WSACleanup, wsock32, 'WSACleanup');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WSACleanup]
+  end;
+end;
+
+var
+  _WSASetLastError: Pointer;
+
+procedure WSASetLastError;
+begin
+  GetProcedureAddress(_WSASetLastError, wsock32, 'WSASetLastError');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WSASetLastError]
+  end;
+end;
+
+var
+  _WSAGetLastError: Pointer;
+
+function WSAGetLastError;
+begin
+  GetProcedureAddress(_WSAGetLastError, wsock32, 'WSAGetLastError');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WSAGetLastError]
+  end;
+end;
+
+var
+  _WSAIsBlocking: Pointer;
+
+function WSAIsBlocking;
+begin
+  GetProcedureAddress(_WSAIsBlocking, wsock32, 'WSAIsBlocking');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WSAIsBlocking]
+  end;
+end;
+
+var
+  _WSAUnhookBlockingHook: Pointer;
+
+function WSAUnhookBlockingHook;
+begin
+  GetProcedureAddress(_WSAUnhookBlockingHook, wsock32, 'WSAUnhookBlockingHook');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WSAUnhookBlockingHook]
+  end;
+end;
+
+var
+  _WSASetBlockingHook: Pointer;
+
+function WSASetBlockingHook;
+begin
+  GetProcedureAddress(_WSASetBlockingHook, wsock32, 'WSASetBlockingHook');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WSASetBlockingHook]
+  end;
+end;
+
+var
+  _WSACancelBlockingCall: Pointer;
+
+function WSACancelBlockingCall;
+begin
+  GetProcedureAddress(_WSACancelBlockingCall, wsock32, 'WSACancelBlockingCall');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WSACancelBlockingCall]
+  end;
+end;
+
+var
+  _WSAAsyncGetServByName: Pointer;
+
+function WSAAsyncGetServByName;
+begin
+  GetProcedureAddress(_WSAAsyncGetServByName, wsock32, 'WSAAsyncGetServByName');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WSAAsyncGetServByName]
+  end;
+end;
+
+var
+  _WSAAsyncGetServByPort: Pointer;
+
+function WSAAsyncGetServByPort;
+begin
+  GetProcedureAddress(_WSAAsyncGetServByPort, wsock32, 'WSAAsyncGetServByPort');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WSAAsyncGetServByPort]
+  end;
+end;
+
+var
+  _WSAAsyncGetProtoByName: Pointer;
+
+function WSAAsyncGetProtoByName;
+begin
+  GetProcedureAddress(_WSAAsyncGetProtoByName, wsock32, 'WSAAsyncGetProtoByName');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WSAAsyncGetProtoByName]
+  end;
+end;
+
+var
+  _WSAAsyncGetProtoByNumber: Pointer;
+
+function WSAAsyncGetProtoByNumber;
+begin
+  GetProcedureAddress(_WSAAsyncGetProtoByNumber, wsock32, 'WSAAsyncGetProtoByNumber');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WSAAsyncGetProtoByNumber]
+  end;
+end;
+
+var
+  _WSAAsyncGetHostByName: Pointer;
+
+function WSAAsyncGetHostByName;
+begin
+  GetProcedureAddress(_WSAAsyncGetHostByName, wsock32, 'WSAAsyncGetHostByName');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WSAAsyncGetHostByName]
+  end;
+end;
+
+var
+  _WSAAsyncGetHostByAddr: Pointer;
+
+function WSAAsyncGetHostByAddr;
+begin
+  GetProcedureAddress(_WSAAsyncGetHostByAddr, wsock32, 'WSAAsyncGetHostByAddr');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WSAAsyncGetHostByAddr]
+  end;
+end;
+
+var
+  _WSACancelAsyncRequest: Pointer;
+
+function WSACancelAsyncRequest;
+begin
+  GetProcedureAddress(_WSACancelAsyncRequest, wsock32, 'WSACancelAsyncRequest');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WSACancelAsyncRequest]
+  end;
+end;
+
+var
+  _WSAAsyncSelect: Pointer;
+
+function WSAAsyncSelect;
+begin
+  GetProcedureAddress(_WSAAsyncSelect, wsock32, 'WSAAsyncSelect');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WSAAsyncSelect]
+  end;
+end;
+
+var
+  _WSARecvEx: Pointer;
+
+function WSARecvEx;
+begin
+  GetProcedureAddress(_WSARecvEx, wsock32, 'WSARecvEx');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_WSARecvEx]
+  end;
+end;
+
+var
+  _TransmitFile: Pointer;
+
+function TransmitFile;
+begin
+  GetProcedureAddress(_TransmitFile, wsock32, 'TransmitFile');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TransmitFile]
+  end;
+end;
+
+var
+  _AcceptEx: Pointer;
+
+function AcceptEx;
+begin
+  GetProcedureAddress(_AcceptEx, wsock32, 'AcceptEx');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_AcceptEx]
+  end;
+end;
+
+var
+  _GetAcceptExSockaddrs: Pointer;
+
+procedure GetAcceptExSockaddrs;
+begin
+  GetProcedureAddress(_GetAcceptExSockaddrs, wsock32, 'GetAcceptExSockaddrs');
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetAcceptExSockaddrs]
+  end;
+end;
+
+{$ELSE}
+
+function __WSAFDIsSet; external wsock32 name '__WSAFDIsSet';
+function accept; external wsock32 name 'accept';
+function bind; external wsock32 name 'bind';
+function closesocket; external wsock32 name 'closesocket';
+function connect; external wsock32 name 'connect';
+function ioctlsocket; external wsock32 name 'ioctlsocket';
+function getpeername; external wsock32 name 'getpeername';
+function getsockname; external wsock32 name 'getsockname';
+function getsockopt; external wsock32 name 'getsockopt';
+function htonl; external wsock32 name 'htonl';
+function htons; external wsock32 name 'htons';
+function inet_addr; external wsock32 name 'inet_addr';
+function inet_ntoa; external wsock32 name 'inet_ntoa';
+function listen; external wsock32 name 'listen';
+function ntohl; external wsock32 name 'ntohl';
+function ntohs; external wsock32 name 'ntohs';
+function recv; external wsock32 name 'recv';
+function recvfrom; external wsock32 name 'recvfrom';
+function select; external wsock32 name 'select';
+function send; external wsock32 name 'send';
+function sendto; external wsock32 name 'sendto';
+function setsockopt; external wsock32 name 'setsockopt';
+function shutdown; external wsock32 name 'shutdown';
+function socket; external wsock32 name 'socket';
+function gethostbyaddr; external wsock32 name 'gethostbyaddr';
+function gethostbyname; external wsock32 name 'gethostbyname';
+function gethostname; external wsock32 name 'gethostname';
+function getservbyport; external wsock32 name 'getservbyport';
+function getservbyname; external wsock32 name 'getservbyname';
+function getprotobynumber; external wsock32 name 'getprotobynumber';
+function getprotobyname; external wsock32 name 'getprotobyname';
+function WSAStartup; external wsock32 name 'WSAStartup';
+function WSACleanup; external wsock32 name 'WSACleanup';
+procedure WSASetLastError; external wsock32 name 'WSASetLastError';
+function WSAGetLastError; external wsock32 name 'WSAGetLastError';
+function WSAIsBlocking; external wsock32 name 'WSAIsBlocking';
+function WSAUnhookBlockingHook; external wsock32 name 'WSAUnhookBlockingHook';
+function WSASetBlockingHook; external wsock32 name 'WSASetBlockingHook';
+function WSACancelBlockingCall; external wsock32 name 'WSACancelBlockingCall';
+function WSAAsyncGetServByName; external wsock32 name 'WSAAsyncGetServByName';
+function WSAAsyncGetServByPort; external wsock32 name 'WSAAsyncGetServByPort';
+function WSAAsyncGetProtoByName; external wsock32 name 'WSAAsyncGetProtoByName';
+function WSAAsyncGetProtoByNumber; external wsock32 name 'WSAAsyncGetProtoByNumber';
+function WSAAsyncGetHostByName; external wsock32 name 'WSAAsyncGetHostByName';
+function WSAAsyncGetHostByAddr; external wsock32 name 'WSAAsyncGetHostByAddr';
+function WSACancelAsyncRequest; external wsock32 name 'WSACancelAsyncRequest';
+function WSAAsyncSelect; external wsock32 name 'WSAAsyncSelect';
+function WSARecvEx; external wsock32 name 'WSARecvEx';
+function TransmitFile; external wsock32 name 'TransmitFile';
+function AcceptEx; external wsock32 name 'AcceptEx';
+procedure GetAcceptExSockaddrs; external wsock32 name 'GetAcceptExSockaddrs';
+
+{$ENDIF DYNAMIC_LINK}
+
+{$ENDIF JWA_IMPLEMENTATIONSECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
 end.
+{$ENDIF !JWA_INCLUDEMODE}

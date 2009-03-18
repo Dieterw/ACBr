@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Asynchronous RPC API interface Unit for Object Pascal                        }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: rpcnasync.h, released August 2001. The original Pascal }
 { code is: RpcAsync.pas, released December 2000. The initial developer of the  }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,14 +35,31 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaRpcASync.pas,v 1.11 2005/09/06 16:36:50 marquardt Exp $
+
+{$IFNDEF JWA_INCLUDEMODE}
 
 unit JwaRpcASync;
 
 {$WEAKPACKAGEUNIT}
+
+{$I jediapilib.inc}
+
+interface
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFNDEF JWARPC_PAS}
+uses
+  JwaWinBase, JwaWinType, JwaRpcDce;
+{$ENDIF !JWARPC_PAS}
+
+{$IFDEF JWA_INTERFACESECTION}
 
 {$HPPEMIT ''}
 {$HPPEMIT '#include "RpcAsync.h"'}
@@ -51,13 +67,6 @@ unit JwaRpcASync;
 {$HPPEMIT 'typedef RPC_EXTENDED_ERROR_INFO* PRPC_EXTENDED_ERROR_INFO'}
 {$HPPEMIT 'typedef RPC_ERROR_ENUM_HANDLE* PRPC_ERROR_ENUM_HANDLE'}
 {$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
-
-interface
-
-uses
-  JwaRpc, JwaRpcDce, JwaWinBase, JwaWinNT, JwaWinType;
 
 type
   _RPC_NOTIFICATION_TYPES = (
@@ -144,7 +153,7 @@ type
   TRpcASynchState = RPC_ASYNC_STATE;
   PRpcASynchState = PRPC_ASYNC_STATE;
 
-  RPCNOTIFICATION_ROUTINE = procedure (var pAsync: RPC_ASYNC_STATE;
+  RPCNOTIFICATION_ROUTINE = procedure(var pAsync: RPC_ASYNC_STATE;
     Context: Pointer; Event: RPC_ASYNC_EVENT); stdcall;
   {$EXTERNALSYM RPCNOTIFICATION_ROUTINE}
 //  PFN_RPCNOTIFICATION_ROUTINE = ^RPCNOTIFICATION_ROUTINE;
@@ -305,11 +314,11 @@ function RpcSsContextLockShared(ServerBindingHandle: RPC_BINDING_HANDLE; UserCon
 {$EXTERNALSYM RpcSsContextLockShared}
 
 const
-  RPC_CALL_ATTRIBUTES_VERSION                        = (1);
+  RPC_CALL_ATTRIBUTES_VERSION                        = 1;
   {$EXTERNALSYM RPC_CALL_ATTRIBUTES_VERSION}
-  RPC_QUERY_SERVER_PRINCIPAL_NAME                    = (2);
+  RPC_QUERY_SERVER_PRINCIPAL_NAME                    = 2;
   {$EXTERNALSYM RPC_QUERY_SERVER_PRINCIPAL_NAME}
-  RPC_QUERY_CLIENT_PRINCIPAL_NAME                    = (4);
+  RPC_QUERY_CLIENT_PRINCIPAL_NAME                    = 4;
   {$EXTERNALSYM RPC_QUERY_CLIENT_PRINCIPAL_NAME}
 
 type
@@ -344,48 +353,48 @@ type
   RPC_CALL_ATTRIBUTES_V1_A = tagRPC_CALL_ATTRIBUTES_V1_A;
   {$EXTERNALSYM RPC_CALL_ATTRIBUTES_V1_A}
   TRpcCallAttributesV1A = RPC_CALL_ATTRIBUTES_V1_A;
-
-function RpcServerInqCallAttributesW(ClientBinding: RPC_BINDING_HANDLE; RpcCallAttributes: Pointer): RPC_STATUS; stdcall;
-{$EXTERNALSYM RpcServerInqCallAttributesW}
-
-function RpcServerInqCallAttributesA(ClientBinding: RPC_BINDING_HANDLE; RpcCallAttributes: Pointer): RPC_STATUS; stdcall;
-{$EXTERNALSYM RpcServerInqCallAttributesA}
-
-{$IFDEF UNICODE}
-type
+  {$IFDEF UNICODE}
   RPC_CALL_ATTRIBUTES_V1 = RPC_CALL_ATTRIBUTES_V1_W;
   {$EXTERNALSYM RPC_CALL_ATTRIBUTES_V1}
   TRpcCallAttributesV1 = TRpcCallAttributesV1W;
-
-function RpcServerInqCallAttributes(ClientBinding: RPC_BINDING_HANDLE; RpcCallAttributes: Pointer): RPC_STATUS; stdcall;
-{$EXTERNALSYM RpcServerInqCallAttributes}
-{$ELSE}
-type
+  {$ELSE}
   RPC_CALL_ATTRIBUTES_V1 = RPC_CALL_ATTRIBUTES_V1_A;
   {$EXTERNALSYM RPC_CALL_ATTRIBUTES_V1}
   TRpcCallAttributesV1 = TRpcCallAttributesV1A;
+  {$ENDIF UNICODE}
 
+function RpcServerInqCallAttributesW(ClientBinding: RPC_BINDING_HANDLE; RpcCallAttributes: Pointer): RPC_STATUS; stdcall;
+{$EXTERNALSYM RpcServerInqCallAttributesW}
+function RpcServerInqCallAttributesA(ClientBinding: RPC_BINDING_HANDLE; RpcCallAttributes: Pointer): RPC_STATUS; stdcall;
+{$EXTERNALSYM RpcServerInqCallAttributesA}
 function RpcServerInqCallAttributes(ClientBinding: RPC_BINDING_HANDLE; RpcCallAttributes: Pointer): RPC_STATUS; stdcall;
 {$EXTERNALSYM RpcServerInqCallAttributes}
-{$ENDIF}
 
 type
   RPC_CALL_ATTRIBUTES = RPC_CALL_ATTRIBUTES_V1;
   {$EXTERNALSYM RPC_CALL_ATTRIBUTES}
   TRpcCallAttributes = RPC_CALL_ATTRIBUTES;
 
+{$ENDIF JWA_INTERFACESECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
+
 implementation
 
-const
-  rpclib = 'rpc4rt.dll';
+uses
+  JwaWinDLLNames;
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_IMPLEMENTATIONSECTION}
 
 function RpcAsyncGetCallHandle(var pAsync: RPC_ASYNC_STATE): Pointer;
 begin
  Result := pAsync.RuntimeInfo;
 end;
 
-
 {$IFDEF DYNAMIC_LINK}
+
 var
   _RpcAsyncInitializeHandle: Pointer;
 
@@ -393,16 +402,12 @@ function RpcAsyncInitializeHandle;
 begin
   GetProcedureAddress(_RpcAsyncInitializeHandle, rpclib, 'RpcAsyncInitializeHandle');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcAsyncInitializeHandle]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcAsyncInitializeHandle]
   end;
 end;
-{$ELSE}
-function RpcAsyncInitializeHandle; external rpclib name 'RpcAsyncInitializeHandle';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcAsyncRegisterInfo: Pointer;
 
@@ -410,16 +415,12 @@ function RpcAsyncRegisterInfo;
 begin
   GetProcedureAddress(_RpcAsyncRegisterInfo, rpclib, 'RpcAsyncRegisterInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcAsyncRegisterInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcAsyncRegisterInfo]
   end;
 end;
-{$ELSE}
-function RpcAsyncRegisterInfo; external rpclib name 'RpcAsyncRegisterInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcAsyncGetCallStatus: Pointer;
 
@@ -427,16 +428,12 @@ function RpcAsyncGetCallStatus;
 begin
   GetProcedureAddress(_RpcAsyncGetCallStatus, rpclib, 'RpcAsyncGetCallStatus');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcAsyncGetCallStatus]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcAsyncGetCallStatus]
   end;
 end;
-{$ELSE}
-function RpcAsyncGetCallStatus; external rpclib name 'RpcAsyncGetCallStatus';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcAsyncCompleteCall: Pointer;
 
@@ -444,16 +441,12 @@ function RpcAsyncCompleteCall;
 begin
   GetProcedureAddress(_RpcAsyncCompleteCall, rpclib, 'RpcAsyncCompleteCall');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcAsyncCompleteCall]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcAsyncCompleteCall]
   end;
 end;
-{$ELSE}
-function RpcAsyncCompleteCall; external rpclib name 'RpcAsyncCompleteCall';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcAsyncAbortCall: Pointer;
 
@@ -461,16 +454,12 @@ function RpcAsyncAbortCall;
 begin
   GetProcedureAddress(_RpcAsyncAbortCall, rpclib, 'RpcAsyncAbortCall');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcAsyncAbortCall]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcAsyncAbortCall]
   end;
 end;
-{$ELSE}
-function RpcAsyncAbortCall; external rpclib name 'RpcAsyncAbortCall';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcAsyncCancelCall: Pointer;
 
@@ -478,16 +467,12 @@ function RpcAsyncCancelCall;
 begin
   GetProcedureAddress(_RpcAsyncCancelCall, rpclib, 'RpcAsyncCancelCall');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcAsyncCancelCall]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcAsyncCancelCall]
   end;
 end;
-{$ELSE}
-function RpcAsyncCancelCall; external rpclib name 'RpcAsyncCancelCall';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcAsyncCleanupThread: Pointer;
 
@@ -495,16 +480,12 @@ function RpcAsyncCleanupThread;
 begin
   GetProcedureAddress(_RpcAsyncCleanupThread, rpclib, 'RpcAsyncCleanupThread');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcAsyncCleanupThread]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcAsyncCleanupThread]
   end;
 end;
-{$ELSE}
-function RpcAsyncCleanupThread; external rpclib name 'RpcAsyncCleanupThread';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcErrorStartEnumeration: Pointer;
 
@@ -512,16 +493,12 @@ function RpcErrorStartEnumeration;
 begin
   GetProcedureAddress(_RpcErrorStartEnumeration, rpclib, 'RpcErrorStartEnumeration');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcErrorStartEnumeration]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcErrorStartEnumeration]
   end;
 end;
-{$ELSE}
-function RpcErrorStartEnumeration; external rpclib name 'RpcErrorStartEnumeration';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcErrorGetNextRecord: Pointer;
 
@@ -529,16 +506,12 @@ function RpcErrorGetNextRecord;
 begin
   GetProcedureAddress(_RpcErrorGetNextRecord, rpclib, 'RpcErrorGetNextRecord');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcErrorGetNextRecord]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcErrorGetNextRecord]
   end;
 end;
-{$ELSE}
-function RpcErrorGetNextRecord; external rpclib name 'RpcErrorGetNextRecord';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcErrorEndEnumeration: Pointer;
 
@@ -546,16 +519,12 @@ function RpcErrorEndEnumeration;
 begin
   GetProcedureAddress(_RpcErrorEndEnumeration, rpclib, 'RpcErrorEndEnumeration');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcErrorEndEnumeration]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcErrorEndEnumeration]
   end;
 end;
-{$ELSE}
-function RpcErrorEndEnumeration; external rpclib name 'RpcErrorEndEnumeration';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcErrorResetEnumeration: Pointer;
 
@@ -563,16 +532,12 @@ function RpcErrorResetEnumeration;
 begin
   GetProcedureAddress(_RpcErrorResetEnumeration, rpclib, 'RpcErrorResetEnumeration');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcErrorResetEnumeration]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcErrorResetEnumeration]
   end;
 end;
-{$ELSE}
-function RpcErrorResetEnumeration; external rpclib name 'RpcErrorResetEnumeration';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcErrorGetNumberOfRecords: Pointer;
 
@@ -580,16 +545,12 @@ function RpcErrorGetNumberOfRecords;
 begin
   GetProcedureAddress(_RpcErrorGetNumberOfRecords, rpclib, 'RpcErrorGetNumberOfRecords');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcErrorGetNumberOfRecords]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcErrorGetNumberOfRecords]
   end;
 end;
-{$ELSE}
-function RpcErrorGetNumberOfRecords; external rpclib name 'RpcErrorGetNumberOfRecords';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcErrorSaveErrorInfo: Pointer;
 
@@ -597,16 +558,12 @@ function RpcErrorSaveErrorInfo;
 begin
   GetProcedureAddress(_RpcErrorSaveErrorInfo, rpclib, 'RpcErrorSaveErrorInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcErrorSaveErrorInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcErrorSaveErrorInfo]
   end;
 end;
-{$ELSE}
-function RpcErrorSaveErrorInfo; external rpclib name 'RpcErrorSaveErrorInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcErrorLoadErrorInfo: Pointer;
 
@@ -614,16 +571,12 @@ function RpcErrorLoadErrorInfo;
 begin
   GetProcedureAddress(_RpcErrorLoadErrorInfo, rpclib, 'RpcErrorLoadErrorInfo');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcErrorLoadErrorInfo]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcErrorLoadErrorInfo]
   end;
 end;
-{$ELSE}
-function RpcErrorLoadErrorInfo; external rpclib name 'RpcErrorLoadErrorInfo';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcErrorAddRecord: Pointer;
 
@@ -631,16 +584,12 @@ function RpcErrorAddRecord;
 begin
   GetProcedureAddress(_RpcErrorAddRecord, rpclib, 'RpcErrorAddRecord');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcErrorAddRecord]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcErrorAddRecord]
   end;
 end;
-{$ELSE}
-function RpcErrorAddRecord; external rpclib name 'RpcErrorAddRecord';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcErrorClearInformation: Pointer;
 
@@ -648,16 +597,12 @@ procedure RpcErrorClearInformation;
 begin
   GetProcedureAddress(_RpcErrorClearInformation, rpclib, 'RpcErrorClearInformation');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcErrorClearInformation]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcErrorClearInformation]
   end;
 end;
-{$ELSE}
-procedure RpcErrorClearInformation; external rpclib name 'RpcErrorClearInformation';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcGetAuthContextForClient: Pointer;
 
@@ -665,16 +610,12 @@ function RpcGetAuthorizationContextForClient;
 begin
   GetProcedureAddress(_RpcGetAuthContextForClient, rpclib, 'RpcGetAuthorizationContextForClient');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcGetAuthContextForClient]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcGetAuthContextForClient]
   end;
 end;
-{$ELSE}
-function RpcGetAuthorizationContextForClient; external rpclib name 'RpcGetAuthorizationContextForClient';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcFreeAuthorizationContext: Pointer;
 
@@ -682,16 +623,12 @@ function RpcFreeAuthorizationContext;
 begin
   GetProcedureAddress(_RpcFreeAuthorizationContext, rpclib, 'RpcFreeAuthorizationContext');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcFreeAuthorizationContext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcFreeAuthorizationContext]
   end;
 end;
-{$ELSE}
-function RpcFreeAuthorizationContext; external rpclib name 'RpcFreeAuthorizationContext';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcSsContextLockExclusive: Pointer;
 
@@ -699,16 +636,12 @@ function RpcSsContextLockExclusive;
 begin
   GetProcedureAddress(_RpcSsContextLockExclusive, rpclib, 'RpcSsContextLockExclusive');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcSsContextLockExclusive]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcSsContextLockExclusive]
   end;
 end;
-{$ELSE}
-function RpcSsContextLockExclusive; external rpclib name 'RpcSsContextLockExclusive';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcSsContextLockShared: Pointer;
 
@@ -716,16 +649,12 @@ function RpcSsContextLockShared;
 begin
   GetProcedureAddress(_RpcSsContextLockShared, rpclib, 'RpcSsContextLockShared');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcSsContextLockShared]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcSsContextLockShared]
   end;
 end;
-{$ELSE}
-function RpcSsContextLockShared; external rpclib name 'RpcSsContextLockShared';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcServerInqCallAttributesA: Pointer;
 
@@ -733,16 +662,12 @@ function RpcServerInqCallAttributesA;
 begin
   GetProcedureAddress(_RpcServerInqCallAttributesA, rpclib, 'RpcServerInqCallAttributesA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcServerInqCallAttributesA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcServerInqCallAttributesA]
   end;
 end;
-{$ELSE}
-function RpcServerInqCallAttributesA; external rpclib name 'RpcServerInqCallAttributesA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RpcServerInqCallAttributesW: Pointer;
 
@@ -750,52 +675,55 @@ function RpcServerInqCallAttributesW;
 begin
   GetProcedureAddress(_RpcServerInqCallAttributesW, rpclib, 'RpcServerInqCallAttributesW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcServerInqCallAttributesW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcServerInqCallAttributesW]
   end;
 end;
+
+var
+  _RpcServerInqCallAttributes: Pointer;
+
+function RpcServerInqCallAttributes;
+begin
+  GetProcedureAddress(_RpcServerInqCallAttributes, rpclib, 'RpcServerInqCallAttributes' + AWSuffix);
+  asm
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RpcServerInqCallAttributes]
+  end;
+end;
+
 {$ELSE}
+
+function RpcAsyncInitializeHandle; external rpclib name 'RpcAsyncInitializeHandle';
+function RpcAsyncRegisterInfo; external rpclib name 'RpcAsyncRegisterInfo';
+function RpcAsyncGetCallStatus; external rpclib name 'RpcAsyncGetCallStatus';
+function RpcAsyncCompleteCall; external rpclib name 'RpcAsyncCompleteCall';
+function RpcAsyncAbortCall; external rpclib name 'RpcAsyncAbortCall';
+function RpcAsyncCancelCall; external rpclib name 'RpcAsyncCancelCall';
+function RpcAsyncCleanupThread; external rpclib name 'RpcAsyncCleanupThread';
+function RpcErrorStartEnumeration; external rpclib name 'RpcErrorStartEnumeration';
+function RpcErrorGetNextRecord; external rpclib name 'RpcErrorGetNextRecord';
+function RpcErrorEndEnumeration; external rpclib name 'RpcErrorEndEnumeration';
+function RpcErrorResetEnumeration; external rpclib name 'RpcErrorResetEnumeration';
+function RpcErrorGetNumberOfRecords; external rpclib name 'RpcErrorGetNumberOfRecords';
+function RpcErrorSaveErrorInfo; external rpclib name 'RpcErrorSaveErrorInfo';
+function RpcErrorLoadErrorInfo; external rpclib name 'RpcErrorLoadErrorInfo';
+function RpcErrorAddRecord; external rpclib name 'RpcErrorAddRecord';
+procedure RpcErrorClearInformation; external rpclib name 'RpcErrorClearInformation';
+function RpcGetAuthorizationContextForClient; external rpclib name 'RpcGetAuthorizationContextForClient';
+function RpcFreeAuthorizationContext; external rpclib name 'RpcFreeAuthorizationContext';
+function RpcSsContextLockExclusive; external rpclib name 'RpcSsContextLockExclusive';
+function RpcSsContextLockShared; external rpclib name 'RpcSsContextLockShared';
+function RpcServerInqCallAttributesA; external rpclib name 'RpcServerInqCallAttributesA';
 function RpcServerInqCallAttributesW; external rpclib name 'RpcServerInqCallAttributesW';
+function RpcServerInqCallAttributes; external rpclib name 'RpcServerInqCallAttributes' + AWSuffix;
+
 {$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _RpcServerInqCallAttributes: Pointer;
+{$ENDIF JWA_IMPLEMENTATIONSECTION}
 
-function RpcServerInqCallAttributes;
-begin
-  GetProcedureAddress(_RpcServerInqCallAttributes, rpclib, 'RpcServerInqCallAttributesW');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcServerInqCallAttributes]
-  end;
-end;
-{$ELSE}
-function RpcServerInqCallAttributes; external rpclib name 'RpcServerInqCallAttributesW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _RpcServerInqCallAttributes: Pointer;
-
-function RpcServerInqCallAttributes;
-begin
-  GetProcedureAddress(_RpcServerInqCallAttributes, rpclib, 'RpcServerInqCallAttributesA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RpcServerInqCallAttributes]
-  end;
-end;
-{$ELSE}
-function RpcServerInqCallAttributes; external rpclib name 'RpcServerInqCallAttributesA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
+{$IFNDEF JWA_INCLUDEMODE}
 end.
-
-
+{$ENDIF !JWA_INCLUDEMODE}

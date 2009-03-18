@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Intellimouse API interface Unit for Object Pascal                            }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: zmouse.h, released June 2000. The original Pascal      }
 { code is: ZMOUSE.pas, released December 2000. The initial developer of the    }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,17 +35,21 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
 
+// $Id: JwaZMOUSE.pas,v 1.5 2005/09/03 14:27:49 marquardt Exp $
+
 unit JwaZMOUSE;
+
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinUser, JwaWinType;
+  JwaWindows;
 
 {****************************************************************************
 *                                                                           *
@@ -61,24 +64,22 @@ uses
 *                                                                           *
 \***************************************************************************}
 
-
 {**************************************************************************
-	 Client Appplication (API) Defines for Wheel rolling
+ Client Application (API) Defines for Wheel rolling
 ***************************************************************************}
-
 
 // Apps need to call RegisterWindowMessage using the #define below to
 // get the message number that is sent to the foreground window
 // when a wheel roll occurs
 
 const
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   MSH_MOUSEWHEEL = WideString('MSWHEEL_ROLLMSG');
   {$EXTERNALSYM MSH_MOUSEWHEEL}
-{$ELSE}
+  {$ELSE}
   MSH_MOUSEWHEEL = 'MSWHEEL_ROLLMSG';
   {$EXTERNALSYM MSH_MOUSEWHEEL}
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 // wParam = wheel rotation expressed in multiples of WHEEL_DELTA
 // lParam is the mouse coordinates
@@ -90,25 +91,25 @@ const
   {$EXTERNALSYM WM_MOUSEWHEEL}
 
 {**************************************************************************
-    Client Appplication (API) Defines for
-	   *  determining if wheel support active
-	   *  determining # of Scroll Lines
+    Client Application (API) Defines for
+ *  determining if wheel support active
+ *  determining # of Scroll Lines
 ***************************************************************************}
 
 // Class name for MSWHEEL.EXE's invisible window
 // use FindWindow to get hwnd to MSWHEEL
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   MOUSEZ_CLASSNAME  = WideString('MouseZ');           // wheel window class
   {$EXTERNALSYM MOUSEZ_CLASSNAME}
   MOUSEZ_TITLE      = WideString('Magellan MSWHEEL'); // wheel window title
   {$EXTERNALSYM MOUSEZ_TITLE}
-{$ELSE}
+  {$ELSE}
   MOUSEZ_CLASSNAME  = 'MouseZ';           // wheel window class
   {$EXTERNALSYM MOUSEZ_CLASSNAME}
   MOUSEZ_TITLE      = 'Magellan MSWHEEL'; // wheel window title
   {$EXTERNALSYM MOUSEZ_TITLE}
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   MSH_WHEELMODULE_CLASS = MOUSEZ_CLASSNAME;
   {$EXTERNALSYM MSH_WHEELMODULE_CLASS}
@@ -127,27 +128,26 @@ const
 // window or the return from SendMessage is false, then Wheel support
 // is not currently available.
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   MSH_WHEELSUPPORT = WideString('MSH_WHEELSUPPORT_MSG');  // name of msg to send to query for wheel support
   {$EXTERNALSYM MSH_WHEELSUPPORT}
-{$ELSE}
+  {$ELSE}
   MSH_WHEELSUPPORT = 'MSH_WHEELSUPPORT_MSG';  // name of msg to send to query for wheel support
   {$EXTERNALSYM MSH_WHEELSUPPORT}
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 // MSH_WHEELSUPPORT
 //    wParam - not used
 //    lParam - not used
 //    returns BOOL - TRUE if wheel support is active, FALSE otherwise
 
-
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   MSH_SCROLL_LINES = WideString('MSH_SCROLL_LINES_MSG');
   {$EXTERNALSYM MSH_SCROLL_LINES}
-{$ELSE}
+  {$ELSE}
   MSH_SCROLL_LINES = 'MSH_SCROLL_LINES_MSG';
   {$EXTERNALSYM MSH_SCROLL_LINES}
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 // MSH_SCROLL_LINES
 //    wParam - not used

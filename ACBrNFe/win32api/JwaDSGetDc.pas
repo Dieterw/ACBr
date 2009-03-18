@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Directory Services API interface Unit for Object Pascal                      }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: dsgetdc.h, released June 2000. The original Pascal     }
 { code is: DsGetDc.pas, released December 2000. The initial developer of the   }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaDSGetDc.pas,v 1.10 2005/09/06 16:36:50 marquardt Exp $
 
 unit JwaDSGetDc;
 
@@ -49,12 +50,12 @@ unit JwaDSGetDc;
 {$HPPEMIT '#include "DsGetDC.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaNtSecApi, JwaWinNT, JwaWinType;
+  JwaNtSecApi, JwaWindows;
 
 //
 // Structure definitions
@@ -166,21 +167,21 @@ type
   TDomainControllerInfoW = DOMAIN_CONTROLLER_INFOW;
   PDomainControllerInfoW = PDOMAIN_CONTROLLER_INFOW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   DOMAIN_CONTROLLER_INFO = DOMAIN_CONTROLLER_INFOW;
   {$EXTERNALSYM DOMAIN_CONTROLLER_INFO}
   PDOMAIN_CONTROLLER_INFO = PDOMAIN_CONTROLLER_INFOW;
   {$EXTERNALSYM PDOMAIN_CONTROLLER_INFO}
   TDomainControllerInfo = TDomainControllerInfoW;
   PDomainControllerInfo = PDomainControllerInfoW;
-{$ELSE}
+  {$ELSE}
   DOMAIN_CONTROLLER_INFO = DOMAIN_CONTROLLER_INFOA;
   {$EXTERNALSYM DOMAIN_CONTROLLER_INFO}
   PDOMAIN_CONTROLLER_INFO = PDOMAIN_CONTROLLER_INFOA;
   {$EXTERNALSYM PDOMAIN_CONTROLLER_INFO}
   TDomainControllerInfo = TDomainControllerInfoA;
   PDomainControllerInfo = PDomainControllerInfoA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 // Values for DomainControllerAddressType
@@ -236,42 +237,23 @@ function DsGetDcNameA(ComputerName, DomainName: LPCSTR; DomainGuid: LPGUID;
 function DsGetDcNameW(ComputerName, DomainName: LPCWSTR; DomainGuid: LPGUID;
   SiteName: LPCWSTR; Flags: ULONG; var DomainControllerInfo: PDOMAIN_CONTROLLER_INFOW): DWORD; stdcall;
 {$EXTERNALSYM DsGetDcNameW}
-
-{$IFDEF UNICODE}
-function DsGetDcName(ComputerName, DomainName: LPCWSTR; DomainGuid: LPGUID;
-  SiteName: LPCWSTR; Flags: ULONG; var DomainControllerInfo: PDOMAIN_CONTROLLER_INFOW): DWORD; stdcall;
+function DsGetDcName(ComputerName, DomainName: LPCTSTR; DomainGuid: LPGUID;
+  SiteName: LPCTSTR; Flags: ULONG; var DomainControllerInfo: PDOMAIN_CONTROLLER_INFO): DWORD; stdcall;
 {$EXTERNALSYM DsGetDcName}
-{$ELSE}
-function DsGetDcName(ComputerName, DomainName: LPCSTR; DomainGuid: LPGUID;
-  SiteName: LPCSTR; Flags: ULONG; var DomainControllerInfo: PDOMAIN_CONTROLLER_INFOA): DWORD; stdcall;
-{$EXTERNALSYM DsGetDcName}
-{$ENDIF}
 
 function DsGetSiteNameA(ComputerName: LPCSTR; var SiteName: LPSTR): DWORD; stdcall;
 {$EXTERNALSYM DsGetSiteNameA}
 function DsGetSiteNameW(ComputerName: LPCWSTR; var SiteName: LPWSTR): DWORD; stdcall;
 {$EXTERNALSYM DsGetSiteNameW}
-
-{$IFDEF UNICODE}
-function DsGetSiteName(ComputerName: LPCWSTR; var SiteName: LPWSTR): DWORD; stdcall;
+function DsGetSiteName(ComputerName: LPCTSTR; var SiteName: LPTSTR): DWORD; stdcall;
 {$EXTERNALSYM DsGetSiteName}
-{$ELSE}
-function DsGetSiteName(ComputerName: LPCSTR; var SiteName: LPSTR): DWORD; stdcall;
-{$EXTERNALSYM DsGetSiteName}
-{$ENDIF}
 
 function DsValidateSubnetNameA(SubnetName: LPCSTR): DWORD; stdcall;
 {$EXTERNALSYM DsValidateSubnetNameA}
 function DsValidateSubnetNameW(SubnetName: LPCWSTR): DWORD; stdcall;
 {$EXTERNALSYM DsValidateSubnetNameW}
-
-{$IFDEF UNICODE}
-function DsValidateSubnetName(SubnetName: LPCWSTR): DWORD; stdcall;
+function DsValidateSubnetName(SubnetName: LPCTSTR): DWORD; stdcall;
 {$EXTERNALSYM DsValidateSubnetName}
-{$ELSE}
-function DsValidateSubnetName(SubnetName: LPCSTR): DWORD; stdcall;
-{$EXTERNALSYM DsValidateSubnetName}
-{$ENDIF}
 
 //
 // Only include if winsock2.h has been included
@@ -311,16 +293,9 @@ function DsAddressToSiteNamesA(ComputerName: LPCSTR; EntryCount: DWORD;
 function DsAddressToSiteNamesW(ComputerName: LPCWSTR; EntryCount: DWORD;
   SocketAddresses: PSOCKET_ADDRESS; var SiteNames: PPWideChar): DWORD; stdcall;
 {$EXTERNALSYM DsAddressToSiteNamesW}
-
-{$IFDEF UNICODE}
-function DsAddressToSiteNames(ComputerName: LPCWSTR; EntryCount: DWORD;
-  SocketAddresses: PSOCKET_ADDRESS; var SiteNames: PPWideChar): DWORD; stdcall;
+function DsAddressToSiteNames(ComputerName: LPCTSTR; EntryCount: DWORD;
+  SocketAddresses: PSOCKET_ADDRESS; var SiteNames: PPTCHAR): DWORD; stdcall;
 {$EXTERNALSYM DsAddressToSiteNames}
-{$ELSE}
-function DsAddressToSiteNames(ComputerName: LPCSTR; EntryCount: DWORD;
-  SocketAddresses: PSOCKET_ADDRESS; var SiteNames: PPChar): DWORD; stdcall;
-{$EXTERNALSYM DsAddressToSiteNames}
-{$ENDIF}
 
 function DsAddressToSiteNamesExA(ComputerName: LPCSTR; EntryCount: DWORD;
   SocketAddresses: PSOCKET_ADDRESS; var SiteNames, SubnetNames: PPChar): DWORD; stdcall;
@@ -328,16 +303,9 @@ function DsAddressToSiteNamesExA(ComputerName: LPCSTR; EntryCount: DWORD;
 function DsAddressToSiteNamesExW(ComputerName: LPCWSTR; EntryCount: DWORD;
   SocketAddresses: PSOCKET_ADDRESS; var SiteNames, SubnetNames: PPWideChar): DWORD; stdcall;
 {$EXTERNALSYM DsAddressToSiteNamesExW}
-
-{$IFDEF UNICODE}
-function DsAddressToSiteNamesEx(ComputerName: LPCWSTR; EntryCount: DWORD;
-  SocketAddresses: PSOCKET_ADDRESS; var SiteNames, SubnetNames: PPWideChar): DWORD; stdcall;
+function DsAddressToSiteNamesEx(ComputerName: LPCTSTR; EntryCount: DWORD;
+  SocketAddresses: PSOCKET_ADDRESS; var SiteNames, SubnetNames: PPTCHAR): DWORD; stdcall;
 {$EXTERNALSYM DsAddressToSiteNamesEx}
-{$ELSE}
-function DsAddressToSiteNamesEx(ComputerName: LPCSTR; EntryCount: DWORD;
-  SocketAddresses: PSOCKET_ADDRESS; var SiteNames, SubnetNames: PPChar): DWORD; stdcall;
-{$EXTERNALSYM DsAddressToSiteNamesEx}
-{$ENDIF}
 
 //
 // API to enumerate trusted domains
@@ -428,21 +396,21 @@ type
   TDsDomainTrustsA = DS_DOMAIN_TRUSTSA;
   PDsDomainTrustsA = PDS_DOMAIN_TRUSTSA;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   DS_DOMAIN_TRUSTS = DS_DOMAIN_TRUSTSW;
   {$EXTERNALSYM DS_DOMAIN_TRUSTS}
   PDS_DOMAIN_TRUSTS = PDS_DOMAIN_TRUSTSW;
   {$EXTERNALSYM PDS_DOMAIN_TRUSTS}
   TDsDomainTrusts = TDsDomainTrustsW;
   PDsDomainTrusts = PDsDomainTrustsW;
-{$ELSE}
+  {$ELSE}
   DS_DOMAIN_TRUSTS = DS_DOMAIN_TRUSTSA;
   {$EXTERNALSYM DS_DOMAIN_TRUSTS}
   PDS_DOMAIN_TRUSTS = PDS_DOMAIN_TRUSTSA;
   {$EXTERNALSYM PDS_DOMAIN_TRUSTS}
   TDsDomainTrusts = TDsDomainTrustsA;
   PDsDomainTrusts = PDsDomainTrustsA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 function DsEnumerateDomainTrustsA(ServerName: LPSTR; Flags: ULONG;
   var Domains: PDS_DOMAIN_TRUSTSA; var DomainCount: ULONG): DWORD; stdcall;
@@ -450,19 +418,14 @@ function DsEnumerateDomainTrustsA(ServerName: LPSTR; Flags: ULONG;
 function DsEnumerateDomainTrustsW(ServerName: LPWSTR; Flags: ULONG;
   var Domains: PDS_DOMAIN_TRUSTSW; var DomainCount: ULONG): DWORD; stdcall;
 {$EXTERNALSYM DsEnumerateDomainTrustsW}
-
-{$IFDEF UNICODE}
-function DsEnumerateDomainTrusts(ServerName: LPWSTR; Flags: ULONG;
-  var Domains: PDS_DOMAIN_TRUSTSW; var DomainCount: ULONG): DWORD; stdcall;
+function DsEnumerateDomainTrusts(ServerName: LPTSTR; Flags: ULONG;
+  var Domains: PDS_DOMAIN_TRUSTS; var DomainCount: ULONG): DWORD; stdcall;
 {$EXTERNALSYM DsEnumerateDomainTrusts}
-{$ELSE}
-function DsEnumerateDomainTrusts(ServerName: LPSTR; Flags: ULONG;
-  var Domains: PDS_DOMAIN_TRUSTSA; var DomainCount: ULONG): DWORD; stdcall;
-{$EXTERNALSYM DsEnumerateDomainTrusts}
-{$ENDIF}
 
 //
-// Only define this API if the caller has #included the pre-requisite ntlsa.h
+// Only define this API if the caller has #included the pre-requisite 
+// ntlsa.h or ntsecapi.h  
+//
 
 function DsGetForestTrustInformationW(ServerName, TrustedDomainName: LPCWSTR;
   Flags: DWORD; var ForestTrustInfo: PLSA_FOREST_TRUST_INFORMATION): DWORD; stdcall;
@@ -485,16 +448,9 @@ function DsGetDcSiteCoverageA(ServerName: LPCSTR; var EntryCount: ULONG;
 function DsGetDcSiteCoverageW(ServerName: LPCWSTR; var EntryCount: ULONG;
   var SiteNames: PPWideChar): DWORD; stdcall;
 {$EXTERNALSYM DsGetDcSiteCoverageW}
-
-{$IFDEF UNICODE}
-function DsGetDcSiteCoverage(ServerName: LPCWSTR; var EntryCount: ULONG;
-  var SiteNames: PPWideChar): DWORD; stdcall;
+function DsGetDcSiteCoverage(ServerName: LPCTSTR; var EntryCount: ULONG;
+  var SiteNames: PPTCHAR): DWORD; stdcall;
 {$EXTERNALSYM DsGetDcSiteCoverage}
-{$ELSE}
-function DsGetDcSiteCoverage(ServerName: LPCSTR; var EntryCount: ULONG;
-  var SiteNames: PPChar): DWORD; stdcall;
-{$EXTERNALSYM DsGetDcSiteCoverage}
-{$ENDIF}
 
 function DsDeregisterDnsHostRecordsA(ServerName, DnsDomainName: LPSTR;
   DomainGuid, DsaGuid: LPGUID; DnsHostName: LPSTR): DWORD; stdcall;
@@ -502,16 +458,9 @@ function DsDeregisterDnsHostRecordsA(ServerName, DnsDomainName: LPSTR;
 function DsDeregisterDnsHostRecordsW(ServerName, DnsDomainName: LPWSTR;
   DomainGuid, DsaGuid: LPGUID; DnsHostName: LPWSTR): DWORD; stdcall;
 {$EXTERNALSYM DsDeregisterDnsHostRecordsW}
-
-{$IFDEF UNICODE}
-function DsDeregisterDnsHostRecords(ServerName, DnsDomainName: LPWSTR;
-  DomainGuid, DsaGuid: LPGUID; DnsHostName: LPWSTR): DWORD; stdcall;
+function DsDeregisterDnsHostRecords(ServerName, DnsDomainName: LPTSTR;
+  DomainGuid, DsaGuid: LPGUID; DnsHostName: LPTSTR): DWORD; stdcall;
 {$EXTERNALSYM DsDeregisterDnsHostRecords}
-{$ELSE}
-function DsDeregisterDnsHostRecords(ServerName, DnsDomainName: LPSTR;
-  DomainGuid, DsaGuid: LPGUID; DnsHostName: LPSTR): DWORD; stdcall;
-{$EXTERNALSYM DsDeregisterDnsHostRecords}
-{$ENDIF}
 
 //
 // Option flags passed to DsGetDcOpen
@@ -524,7 +473,7 @@ const
   {$EXTERNALSYM DS_NOTIFY_AFTER_SITE_RECORDS}
                                         //  site specific records have been processed.
 
-  DS_OPEN_VALID_OPTION_FLAGS = (DS_ONLY_DO_SITE_NAME or DS_NOTIFY_AFTER_SITE_RECORDS);
+  DS_OPEN_VALID_OPTION_FLAGS = DS_ONLY_DO_SITE_NAME or DS_NOTIFY_AFTER_SITE_RECORDS;
   {$EXTERNALSYM DS_OPEN_VALID_OPTION_FLAGS}
 
 //
@@ -549,36 +498,20 @@ function DsGetDcOpenA(DnsName: LPCSTR; OptionFlags: ULONG; SiteName: LPCSTR;
   DomainGuid: PGUID; DnsForestName: LPCSTR; DcFlags: ULONG;
   var RetGetDcContext: HANDLE): DWORD; stdcall;
 {$EXTERNALSYM DsGetDcOpenA}
-
-{$IFDEF UNICODE}
-function DsGetDcOpen(DnsName: LPCWSTR; OptionFlags: ULONG; SiteName: LPCWSTR;
-  DomainGuid: PGUID; DnsForestName: LPCWSTR; DcFlags: ULONG;
+function DsGetDcOpen(DnsName: LPCTSTR; OptionFlags: ULONG; SiteName: LPCTSTR;
+  DomainGuid: PGUID; DnsForestName: LPCTSTR; DcFlags: ULONG;
   var RetGetDcContext: HANDLE): DWORD; stdcall;
 {$EXTERNALSYM DsGetDcOpen}
-{$ELSE}
-function DsGetDcOpen(DnsName: LPCSTR; OptionFlags: ULONG; SiteName: LPCSTR;
-  DomainGuid: PGUID; DnsForestName: LPCSTR; DcFlags: ULONG;
-  var RetGetDcContext: HANDLE): DWORD; stdcall;
-{$EXTERNALSYM DsGetDcOpen}
-{$ENDIF}
-
-function DsGetDcNextW(GetDcContextHandle: HANDLE; SockAddressCount: PULONG;
-  SockAddresses: LPSOCKET_ADDRESS; DnsHostName: LPWSTR): DWORD; stdcall;
-{$EXTERNALSYM DsGetDcNextW}
 
 function DsGetDcNextA(GetDcContextHandle: HANDLE; SockAddressCount: PULONG;
   SockAddresses: LPSOCKET_ADDRESS; DnsHostName: LPSTR): DWORD; stdcall;
 {$EXTERNALSYM DsGetDcNextA}
-
-{$IFDEF UNICODE}
-function DsGetDcNext(GetDcContextHandle: HANDLE; SockAddressCount: PULONG;
+function DsGetDcNextW(GetDcContextHandle: HANDLE; SockAddressCount: PULONG;
   SockAddresses: LPSOCKET_ADDRESS; DnsHostName: LPWSTR): DWORD; stdcall;
-{$EXTERNALSYM DsGetDcNext}
-{$ELSE}
+{$EXTERNALSYM DsGetDcNextW}
 function DsGetDcNext(GetDcContextHandle: HANDLE; SockAddressCount: PULONG;
-  SockAddresses: LPSOCKET_ADDRESS; DnsHostName: LPSTR): DWORD; stdcall;
+  SockAddresses: LPSOCKET_ADDRESS; DnsHostName: LPTSTR): DWORD; stdcall;
 {$EXTERNALSYM DsGetDcNext}
-{$ENDIF}
 
 procedure DsGetDcCloseW(GetDcContextHandle: HANDLE); stdcall;
 {$EXTERNALSYM DsGetDcCloseW}
@@ -587,11 +520,11 @@ procedure DsGetDcClose(GetDcContextHandle: HANDLE); stdcall;
 
 implementation
 
-const
-  netapi32 = 'netapi32.dll';
-
+uses
+  JwaWinDLLNames;
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _DsGetDcNameA: Pointer;
 
@@ -599,16 +532,12 @@ function DsGetDcNameA;
 begin
   GetProcedureAddress(_DsGetDcNameA, netapi32, 'DsGetDcNameA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsGetDcNameA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsGetDcNameA]
   end;
 end;
-{$ELSE}
-function DsGetDcNameA; external netapi32 name 'DsGetDcNameA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsGetDcNameW: Pointer;
 
@@ -616,53 +545,25 @@ function DsGetDcNameW;
 begin
   GetProcedureAddress(_DsGetDcNameW, netapi32, 'DsGetDcNameW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsGetDcNameW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsGetDcNameW]
   end;
 end;
-{$ELSE}
-function DsGetDcNameW; external netapi32 name 'DsGetDcNameW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsGetDcName: Pointer;
 
 function DsGetDcName;
 begin
-  GetProcedureAddress(_DsGetDcName, netapi32, 'DsGetDcNameW');
+  GetProcedureAddress(_DsGetDcName, netapi32, 'DsGetDcName' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsGetDcName]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsGetDcName]
   end;
 end;
-{$ELSE}
-function DsGetDcName; external netapi32 name 'DsGetDcNameW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsGetDcName: Pointer;
-
-function DsGetDcName;
-begin
-  GetProcedureAddress(_DsGetDcName, netapi32, 'DsGetDcNameA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsGetDcName]
-  end;
-end;
-{$ELSE}
-function DsGetDcName; external netapi32 name 'DsGetDcNameA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsGetSiteNameA: Pointer;
 
@@ -670,16 +571,12 @@ function DsGetSiteNameA;
 begin
   GetProcedureAddress(_DsGetSiteNameA, netapi32, 'DsGetSiteNameA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsGetSiteNameA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsGetSiteNameA]
   end;
 end;
-{$ELSE}
-function DsGetSiteNameA; external netapi32 name 'DsGetSiteNameA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsGetSiteNameW: Pointer;
 
@@ -687,53 +584,25 @@ function DsGetSiteNameW;
 begin
   GetProcedureAddress(_DsGetSiteNameW, netapi32, 'DsGetSiteNameW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsGetSiteNameW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsGetSiteNameW]
   end;
 end;
-{$ELSE}
-function DsGetSiteNameW; external netapi32 name 'DsGetSiteNameW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsGetSiteName: Pointer;
 
 function DsGetSiteName;
 begin
-  GetProcedureAddress(_DsGetSiteName, netapi32, 'DsGetSiteNameW');
+  GetProcedureAddress(_DsGetSiteName, netapi32, 'DsGetSiteName' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsGetSiteName]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsGetSiteName]
   end;
 end;
-{$ELSE}
-function DsGetSiteName; external netapi32 name 'DsGetSiteNameW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsGetSiteName: Pointer;
-
-function DsGetSiteName;
-begin
-  GetProcedureAddress(_DsGetSiteName, netapi32, 'DsGetSiteNameA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsGetSiteName]
-  end;
-end;
-{$ELSE}
-function DsGetSiteName; external netapi32 name 'DsGetSiteNameA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsValidateSubnetNameA: Pointer;
 
@@ -741,16 +610,12 @@ function DsValidateSubnetNameA;
 begin
   GetProcedureAddress(_DsValidateSubnetNameA, netapi32, 'DsValidateSubnetNameA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsValidateSubnetNameA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsValidateSubnetNameA]
   end;
 end;
-{$ELSE}
-function DsValidateSubnetNameA; external netapi32 name 'DsValidateSubnetNameA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsValidateSubnetNameW: Pointer;
 
@@ -758,53 +623,25 @@ function DsValidateSubnetNameW;
 begin
   GetProcedureAddress(_DsValidateSubnetNameW, netapi32, 'DsValidateSubnetNameW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsValidateSubnetNameW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsValidateSubnetNameW]
   end;
 end;
-{$ELSE}
-function DsValidateSubnetNameW; external netapi32 name 'DsValidateSubnetNameW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsValidateSubnetName: Pointer;
 
 function DsValidateSubnetName;
 begin
-  GetProcedureAddress(_DsValidateSubnetName, netapi32, 'DsValidateSubnetNameW');
+  GetProcedureAddress(_DsValidateSubnetName, netapi32, 'DsValidateSubnetName' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsValidateSubnetName]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsValidateSubnetName]
   end;
 end;
-{$ELSE}
-function DsValidateSubnetName; external netapi32 name 'DsValidateSubnetNameW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsValidateSubnetName: Pointer;
-
-function DsValidateSubnetName;
-begin
-  GetProcedureAddress(_DsValidateSubnetName, netapi32, 'DsValidateSubnetNameA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsValidateSubnetName]
-  end;
-end;
-{$ELSE}
-function DsValidateSubnetName; external netapi32 name 'DsValidateSubnetNameA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsAddressToSiteNamesA: Pointer;
 
@@ -812,16 +649,12 @@ function DsAddressToSiteNamesA;
 begin
   GetProcedureAddress(_DsAddressToSiteNamesA, netapi32, 'DsAddressToSiteNamesA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsAddressToSiteNamesA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsAddressToSiteNamesA]
   end;
 end;
-{$ELSE}
-function DsAddressToSiteNamesA; external netapi32 name 'DsAddressToSiteNamesA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsAddressToSiteNamesW: Pointer;
 
@@ -829,53 +662,25 @@ function DsAddressToSiteNamesW;
 begin
   GetProcedureAddress(_DsAddressToSiteNamesW, netapi32, 'DsAddressToSiteNamesW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsAddressToSiteNamesW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsAddressToSiteNamesW]
   end;
 end;
-{$ELSE}
-function DsAddressToSiteNamesW; external netapi32 name 'DsAddressToSiteNamesW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsAddressToSiteNames: Pointer;
 
 function DsAddressToSiteNames;
 begin
-  GetProcedureAddress(_DsAddressToSiteNames, netapi32, 'DsAddressToSiteNamesW');
+  GetProcedureAddress(_DsAddressToSiteNames, netapi32, 'DsAddressToSiteNames' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsAddressToSiteNames]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsAddressToSiteNames]
   end;
 end;
-{$ELSE}
-function DsAddressToSiteNames; external netapi32 name 'DsAddressToSiteNamesW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsAddressToSiteNames: Pointer;
-
-function DsAddressToSiteNames;
-begin
-  GetProcedureAddress(_DsAddressToSiteNames, netapi32, 'DsAddressToSiteNamesA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsAddressToSiteNames]
-  end;
-end;
-{$ELSE}
-function DsAddressToSiteNames; external netapi32 name 'DsAddressToSiteNamesA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsAddressToSiteNamesExA: Pointer;
 
@@ -883,16 +688,12 @@ function DsAddressToSiteNamesExA;
 begin
   GetProcedureAddress(_DsAddressToSiteNamesExA, netapi32, 'DsAddressToSiteNamesExA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsAddressToSiteNamesExA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsAddressToSiteNamesExA]
   end;
 end;
-{$ELSE}
-function DsAddressToSiteNamesExA; external netapi32 name 'DsAddressToSiteNamesExA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsAddressToSiteNamesExW: Pointer;
 
@@ -900,53 +701,25 @@ function DsAddressToSiteNamesExW;
 begin
   GetProcedureAddress(_DsAddressToSiteNamesExW, netapi32, 'DsAddressToSiteNamesExW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsAddressToSiteNamesExW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsAddressToSiteNamesExW]
   end;
 end;
-{$ELSE}
-function DsAddressToSiteNamesExW; external netapi32 name 'DsAddressToSiteNamesExW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsAddressToSiteNamesEx: Pointer;
 
 function DsAddressToSiteNamesEx;
 begin
-  GetProcedureAddress(_DsAddressToSiteNamesEx, netapi32, 'DsAddressToSiteNamesExW');
+  GetProcedureAddress(_DsAddressToSiteNamesEx, netapi32, 'DsAddressToSiteNamesEx' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsAddressToSiteNamesEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsAddressToSiteNamesEx]
   end;
 end;
-{$ELSE}
-function DsAddressToSiteNamesEx; external netapi32 name 'DsAddressToSiteNamesExW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsAddressToSiteNamesEx: Pointer;
-
-function DsAddressToSiteNamesEx;
-begin
-  GetProcedureAddress(_DsAddressToSiteNamesEx, netapi32, 'DsAddressToSiteNamesExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsAddressToSiteNamesEx]
-  end;
-end;
-{$ELSE}
-function DsAddressToSiteNamesEx; external netapi32 name 'DsAddressToSiteNamesExA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsEnumerateDomainTrustsA: Pointer;
 
@@ -954,16 +727,12 @@ function DsEnumerateDomainTrustsA;
 begin
   GetProcedureAddress(_DsEnumerateDomainTrustsA, netapi32, 'DsEnumerateDomainTrustsA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsEnumerateDomainTrustsA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsEnumerateDomainTrustsA]
   end;
 end;
-{$ELSE}
-function DsEnumerateDomainTrustsA; external netapi32 name 'DsEnumerateDomainTrustsA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsEnumerateDomainTrustsW: Pointer;
 
@@ -971,53 +740,25 @@ function DsEnumerateDomainTrustsW;
 begin
   GetProcedureAddress(_DsEnumerateDomainTrustsW, netapi32, 'DsEnumerateDomainTrustsW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsEnumerateDomainTrustsW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsEnumerateDomainTrustsW]
   end;
 end;
-{$ELSE}
-function DsEnumerateDomainTrustsW; external netapi32 name 'DsEnumerateDomainTrustsW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsEnumerateDomainTrusts: Pointer;
 
 function DsEnumerateDomainTrusts;
 begin
-  GetProcedureAddress(_DsEnumerateDomainTrusts, netapi32, 'DsEnumerateDomainTrustsW');
+  GetProcedureAddress(_DsEnumerateDomainTrusts, netapi32, 'DsEnumerateDomainTrusts' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsEnumerateDomainTrusts]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsEnumerateDomainTrusts]
   end;
 end;
-{$ELSE}
-function DsEnumerateDomainTrusts; external netapi32 name 'DsEnumerateDomainTrustsW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsEnumerateDomainTrusts: Pointer;
-
-function DsEnumerateDomainTrusts;
-begin
-  GetProcedureAddress(_DsEnumerateDomainTrusts, netapi32, 'DsEnumerateDomainTrustsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsEnumerateDomainTrusts]
-  end;
-end;
-{$ELSE}
-function DsEnumerateDomainTrusts; external netapi32 name 'DsEnumerateDomainTrustsA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsGetForestTrustInformationW: Pointer;
 
@@ -1025,16 +766,12 @@ function DsGetForestTrustInformationW;
 begin
   GetProcedureAddress(_DsGetForestTrustInformationW, netapi32, 'DsGetForestTrustInformationW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsGetForestTrustInformationW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsGetForestTrustInformationW]
   end;
 end;
-{$ELSE}
-function DsGetForestTrustInformationW; external netapi32 name 'DsGetForestTrustInformationW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsMergeForestTrustInformationW: Pointer;
 
@@ -1042,16 +779,12 @@ function DsMergeForestTrustInformationW;
 begin
   GetProcedureAddress(_DsMergeForestTrustInformationW, netapi32, 'DsMergeForestTrustInformationW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsMergeForestTrustInformationW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsMergeForestTrustInformationW]
   end;
 end;
-{$ELSE}
-function DsMergeForestTrustInformationW; external netapi32 name 'DsMergeForestTrustInformationW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsGetDcSiteCoverageA: Pointer;
 
@@ -1059,16 +792,12 @@ function DsGetDcSiteCoverageA;
 begin
   GetProcedureAddress(_DsGetDcSiteCoverageA, netapi32, 'DsGetDcSiteCoverageA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsGetDcSiteCoverageA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsGetDcSiteCoverageA]
   end;
 end;
-{$ELSE}
-function DsGetDcSiteCoverageA; external netapi32 name 'DsGetDcSiteCoverageA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsGetDcSiteCoverageW: Pointer;
 
@@ -1076,53 +805,25 @@ function DsGetDcSiteCoverageW;
 begin
   GetProcedureAddress(_DsGetDcSiteCoverageW, netapi32, 'DsGetDcSiteCoverageW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsGetDcSiteCoverageW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsGetDcSiteCoverageW]
   end;
 end;
-{$ELSE}
-function DsGetDcSiteCoverageW; external netapi32 name 'DsGetDcSiteCoverageW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsGetDcSiteCoverage: Pointer;
 
 function DsGetDcSiteCoverage;
 begin
-  GetProcedureAddress(_DsGetDcSiteCoverage, netapi32, 'DsGetDcSiteCoverageW');
+  GetProcedureAddress(_DsGetDcSiteCoverage, netapi32, 'DsGetDcSiteCoverage' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsGetDcSiteCoverage]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsGetDcSiteCoverage]
   end;
 end;
-{$ELSE}
-function DsGetDcSiteCoverage; external netapi32 name 'DsGetDcSiteCoverageW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsGetDcSiteCoverage: Pointer;
-
-function DsGetDcSiteCoverage;
-begin
-  GetProcedureAddress(_DsGetDcSiteCoverage, netapi32, 'DsGetDcSiteCoverageA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsGetDcSiteCoverage]
-  end;
-end;
-{$ELSE}
-function DsGetDcSiteCoverage; external netapi32 name 'DsGetDcSiteCoverageA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsDeregisterDnsHostRecordsA: Pointer;
 
@@ -1130,16 +831,12 @@ function DsDeregisterDnsHostRecordsA;
 begin
   GetProcedureAddress(_DsDeregisterDnsHostRecordsA, netapi32, 'DsDeregisterDnsHostRecordsA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsDeregisterDnsHostRecordsA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsDeregisterDnsHostRecordsA]
   end;
 end;
-{$ELSE}
-function DsDeregisterDnsHostRecordsA; external netapi32 name 'DsDeregisterDnsHostRecordsA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsDeregisterDnsHostRecordsW: Pointer;
 
@@ -1147,53 +844,25 @@ function DsDeregisterDnsHostRecordsW;
 begin
   GetProcedureAddress(_DsDeregisterDnsHostRecordsW, netapi32, 'DsDeregisterDnsHostRecordsW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsDeregisterDnsHostRecordsW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsDeregisterDnsHostRecordsW]
   end;
 end;
-{$ELSE}
-function DsDeregisterDnsHostRecordsW; external netapi32 name 'DsDeregisterDnsHostRecordsW';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsDeregisterDnsHostRecords: Pointer;
 
 function DsDeregisterDnsHostRecords;
 begin
-  GetProcedureAddress(_DsDeregisterDnsHostRecords, netapi32, 'DsDeregisterDnsHostRecordsW');
+  GetProcedureAddress(_DsDeregisterDnsHostRecords, netapi32, 'DsDeregisterDnsHostRecords' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsDeregisterDnsHostRecords]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsDeregisterDnsHostRecords]
   end;
 end;
-{$ELSE}
-function DsDeregisterDnsHostRecords; external netapi32 name 'DsDeregisterDnsHostRecordsW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsDeregisterDnsHostRecords: Pointer;
-
-function DsDeregisterDnsHostRecords;
-begin
-  GetProcedureAddress(_DsDeregisterDnsHostRecords, netapi32, 'DsDeregisterDnsHostRecordsA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsDeregisterDnsHostRecords]
-  end;
-end;
-{$ELSE}
-function DsDeregisterDnsHostRecords; external netapi32 name 'DsDeregisterDnsHostRecordsA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsGetDcOpenW: Pointer;
 
@@ -1201,16 +870,12 @@ function DsGetDcOpenW;
 begin
   GetProcedureAddress(_DsGetDcOpenW, netapi32, 'DsGetDcOpenW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsGetDcOpenW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsGetDcOpenW]
   end;
 end;
-{$ELSE}
-function DsGetDcOpenW; external netapi32 name 'DsGetDcOpenW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsGetDcOpenA: Pointer;
 
@@ -1218,53 +883,25 @@ function DsGetDcOpenA;
 begin
   GetProcedureAddress(_DsGetDcOpenA, netapi32, 'DsGetDcOpenA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsGetDcOpenA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsGetDcOpenA]
   end;
 end;
-{$ELSE}
-function DsGetDcOpenA; external netapi32 name 'DsGetDcOpenA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsGetDcOpen: Pointer;
 
 function DsGetDcOpen;
 begin
-  GetProcedureAddress(_DsGetDcOpen, netapi32, 'DsGetDcOpenW');
+  GetProcedureAddress(_DsGetDcOpen, netapi32, 'DsGetDcOpen' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsGetDcOpen]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsGetDcOpen]
   end;
 end;
-{$ELSE}
-function DsGetDcOpen; external netapi32 name 'DsGetDcOpenW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsGetDcOpen: Pointer;
-
-function DsGetDcOpen;
-begin
-  GetProcedureAddress(_DsGetDcOpen, netapi32, 'DsGetDcOpenA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsGetDcOpen]
-  end;
-end;
-{$ELSE}
-function DsGetDcOpen; external netapi32 name 'DsGetDcOpenA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsGetDcNextW: Pointer;
 
@@ -1272,16 +909,12 @@ function DsGetDcNextW;
 begin
   GetProcedureAddress(_DsGetDcNextW, netapi32, 'DsGetDcNextW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsGetDcNextW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsGetDcNextW]
   end;
 end;
-{$ELSE}
-function DsGetDcNextW; external netapi32 name 'DsGetDcNextW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsGetDcNextA: Pointer;
 
@@ -1289,53 +922,25 @@ function DsGetDcNextA;
 begin
   GetProcedureAddress(_DsGetDcNextA, netapi32, 'DsGetDcNextA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsGetDcNextA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsGetDcNextA]
   end;
 end;
-{$ELSE}
-function DsGetDcNextA; external netapi32 name 'DsGetDcNextA';
-{$ENDIF DYNAMIC_LINK}
-{$IFDEF UNICODE}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsGetDcNext: Pointer;
 
 function DsGetDcNext;
 begin
-  GetProcedureAddress(_DsGetDcNext, netapi32, 'DsGetDcNextW');
+  GetProcedureAddress(_DsGetDcNext, netapi32, 'DsGetDcNext' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsGetDcNext]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsGetDcNext]
   end;
 end;
-{$ELSE}
-function DsGetDcNext; external netapi32 name 'DsGetDcNextW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _DsGetDcNext: Pointer;
-
-function DsGetDcNext;
-begin
-  GetProcedureAddress(_DsGetDcNext, netapi32, 'DsGetDcNextA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsGetDcNext]
-  end;
-end;
-{$ELSE}
-function DsGetDcNext; external netapi32 name 'DsGetDcNextA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DsGetDcCloseW: Pointer;
 
@@ -1343,16 +948,12 @@ procedure DsGetDcCloseW;
 begin
   GetProcedureAddress(_DsGetDcCloseW, netapi32, 'DsGetDcCloseW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsGetDcCloseW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsGetDcCloseW]
   end;
 end;
-{$ELSE}
-procedure DsGetDcCloseW; external netapi32 name 'DsGetDcCloseW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _DsGetDcClose: Pointer;
 
@@ -1360,13 +961,49 @@ procedure DsGetDcClose;
 begin
   GetProcedureAddress(_DsGetDcClose, netapi32, 'DsGetDcClose');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DsGetDcClose]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DsGetDcClose]
   end;
 end;
+
 {$ELSE}
+
+function DsGetDcNameA; external netapi32 name 'DsGetDcNameA';
+function DsGetDcNameW; external netapi32 name 'DsGetDcNameW';
+function DsGetDcName; external netapi32 name 'DsGetDcName' + AWSuffix;
+function DsGetSiteNameA; external netapi32 name 'DsGetSiteNameA';
+function DsGetSiteNameW; external netapi32 name 'DsGetSiteNameW';
+function DsGetSiteName; external netapi32 name 'DsGetSiteName' + AWSuffix;
+function DsValidateSubnetNameA; external netapi32 name 'DsValidateSubnetNameA';
+function DsValidateSubnetNameW; external netapi32 name 'DsValidateSubnetNameW';
+function DsValidateSubnetName; external netapi32 name 'DsValidateSubnetName' + AWSuffix;
+function DsAddressToSiteNamesA; external netapi32 name 'DsAddressToSiteNamesA';
+function DsAddressToSiteNamesW; external netapi32 name 'DsAddressToSiteNamesW';
+function DsAddressToSiteNames; external netapi32 name 'DsAddressToSiteNames' + AWSuffix;
+function DsAddressToSiteNamesExA; external netapi32 name 'DsAddressToSiteNamesExA';
+function DsAddressToSiteNamesExW; external netapi32 name 'DsAddressToSiteNamesExW';
+function DsAddressToSiteNamesEx; external netapi32 name 'DsAddressToSiteNamesEx' + AWSuffix;
+function DsEnumerateDomainTrustsA; external netapi32 name 'DsEnumerateDomainTrustsA';
+function DsEnumerateDomainTrustsW; external netapi32 name 'DsEnumerateDomainTrustsW';
+function DsEnumerateDomainTrusts; external netapi32 name 'DsEnumerateDomainTrusts' + AWSuffix;
+function DsGetForestTrustInformationW; external netapi32 name 'DsGetForestTrustInformationW';
+function DsMergeForestTrustInformationW; external netapi32 name 'DsMergeForestTrustInformationW';
+function DsGetDcSiteCoverageA; external netapi32 name 'DsGetDcSiteCoverageA';
+function DsGetDcSiteCoverageW; external netapi32 name 'DsGetDcSiteCoverageW';
+function DsGetDcSiteCoverage; external netapi32 name 'DsGetDcSiteCoverage' + AWSuffix;
+function DsDeregisterDnsHostRecordsA; external netapi32 name 'DsDeregisterDnsHostRecordsA';
+function DsDeregisterDnsHostRecordsW; external netapi32 name 'DsDeregisterDnsHostRecordsW';
+function DsDeregisterDnsHostRecords; external netapi32 name 'DsDeregisterDnsHostRecords' + AWSuffix;
+function DsGetDcOpenW; external netapi32 name 'DsGetDcOpenW';
+function DsGetDcOpenA; external netapi32 name 'DsGetDcOpenA';
+function DsGetDcOpen; external netapi32 name 'DsGetDcOpen' + AWSuffix;
+function DsGetDcNextW; external netapi32 name 'DsGetDcNextW';
+function DsGetDcNextA; external netapi32 name 'DsGetDcNextA';
+function DsGetDcNext; external netapi32 name 'DsGetDcNext' + AWSuffix;
+procedure DsGetDcCloseW; external netapi32 name 'DsGetDcCloseW';
 procedure DsGetDcClose; external netapi32 name 'DsGetDcClose';
+
 {$ENDIF DYNAMIC_LINK}
 
 end.

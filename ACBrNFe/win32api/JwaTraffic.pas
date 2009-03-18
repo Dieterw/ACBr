@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Traffic Control API interface Unit for Object Pascal                         }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: traffic.h, released June 2000. The original Pascal     }
 { code is: Traffic.pas, released December 2000. The initial developer of the   }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaTraffic.pas,v 1.9 2005/09/06 16:36:50 marquardt Exp $
 
 unit JwaTraffic;
 
@@ -49,12 +50,12 @@ unit JwaTraffic;
 {$HPPEMIT '#include "traffic.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinType, JwaQos;
+  JwaWindows, JwaQos;
 
 //---------------------------------------------------------------------------
 //
@@ -125,20 +126,20 @@ const
 //
 
 type
-  TCI_NOTIFY_HANDLER = procedure (ClRegCtx, ClIfcCtx: HANDLE; Event: ULONG;
+  TCI_NOTIFY_HANDLER = procedure(ClRegCtx, ClIfcCtx: HANDLE; Event: ULONG;
     SubCode: HANDLE; BufSize: ULONG; Buffer: PVOID); stdcall;
   {$EXTERNALSYM TCI_NOTIFY_HANDLER}
   TTciNotifyHandler = TCI_NOTIFY_HANDLER;
 
-  TCI_ADD_FLOW_COMPLETE_HANDLER = procedure (ClFlowCtx: HANDLE; Status: ULONG); stdcall;
+  TCI_ADD_FLOW_COMPLETE_HANDLER = procedure(ClFlowCtx: HANDLE; Status: ULONG); stdcall;
   {$EXTERNALSYM TCI_ADD_FLOW_COMPLETE_HANDLER}
   TTciAddFlowCompleteHandler = TCI_ADD_FLOW_COMPLETE_HANDLER;
 
-  TCI_MOD_FLOW_COMPLETE_HANDLER = procedure (ClFlowCtx: HANDLE; Status: ULONG); stdcall;
+  TCI_MOD_FLOW_COMPLETE_HANDLER = procedure(ClFlowCtx: HANDLE; Status: ULONG); stdcall;
   {$EXTERNALSYM TCI_MOD_FLOW_COMPLETE_HANDLER}
   TTciModFlowCompleteHandler = TCI_MOD_FLOW_COMPLETE_HANDLER;
 
-  TCI_DEL_FLOW_COMPLETE_HANDLER = procedure (ClFlowCtx: HANDLE; Status: ULONG); stdcall;
+  TCI_DEL_FLOW_COMPLETE_HANDLER = procedure(ClFlowCtx: HANDLE; Status: ULONG); stdcall;
   {$EXTERNALSYM TCI_DEL_FLOW_COMPLETE_HANDLER}
   TTciDelFlowComlpeteHandler = TCI_DEL_FLOW_COMPLETE_HANDLER;
 
@@ -160,17 +161,17 @@ type
   // TODO NETWORD_ADDRESS and NETWORK_ADDRESS_LIST are from NtDDNdis.h
 
   _NETWORK_ADDRESS = record
-    AddressLength: USHORT;		// length in bytes of Address[] in this
-    AddressType: USHORT;		// type of this address (NDIS_PROTOCOL_ID_XXX above)
-    Address: array [0..0] of UCHAR;	// actually AddressLength bytes long
+    AddressLength: USHORT;              // length in bytes of Address[] in this
+    AddressType: USHORT;                // type of this address (NDIS_PROTOCOL_ID_XXX above)
+    Address: array [0..0] of UCHAR;     // actually AddressLength bytes long
   end;
   NETWORK_ADDRESS = _NETWORK_ADDRESS;
   PNETWORK_ADDRESS = ^NETWORK_ADDRESS;
 
   _NETWORK_ADDRESS_LIST = record
-    AddressCount: LONG;  		// number of addresses following
-    AddressType: USHORT;		// type of this address (NDIS_PROTOCOL_ID_XXX above)
-    Address: array [0..0] of NETWORK_ADDRESS;		// actually AddressCount elements long
+    AddressCount: LONG;                 // number of addresses following
+    AddressType: USHORT;                // type of this address (NDIS_PROTOCOL_ID_XXX above)
+    Address: array [0..0] of NETWORK_ADDRESS; // actually AddressCount elements long
   end;
   NETWORK_ADDRESS_LIST = _NETWORK_ADDRESS_LIST;
   PNETWORK_ADDRESS_LIST = ^NETWORK_ADDRESS_LIST;
@@ -358,15 +359,15 @@ const
   QOS_TRAFFIC_GENERAL_ID_BASE = 4000;
   {$EXTERNALSYM QOS_TRAFFIC_GENERAL_ID_BASE}
 
-  QOS_OBJECT_DS_CLASS      = ($00000001 + QOS_TRAFFIC_GENERAL_ID_BASE);
+  QOS_OBJECT_DS_CLASS      = $00000001 + QOS_TRAFFIC_GENERAL_ID_BASE;
   {$EXTERNALSYM QOS_OBJECT_DS_CLASS}
-  QOS_OBJECT_TRAFFIC_CLASS = ($00000002 + QOS_TRAFFIC_GENERAL_ID_BASE);
+  QOS_OBJECT_TRAFFIC_CLASS = $00000002 + QOS_TRAFFIC_GENERAL_ID_BASE;
   {$EXTERNALSYM QOS_OBJECT_TRAFFIC_CLASS}
-  QOS_OBJECT_DIFFSERV      = ($00000003 + QOS_TRAFFIC_GENERAL_ID_BASE);
+  QOS_OBJECT_DIFFSERV      = $00000003 + QOS_TRAFFIC_GENERAL_ID_BASE;
   {$EXTERNALSYM QOS_OBJECT_DIFFSERV}
-  QOS_OBJECT_TCP_TRAFFIC   = ($00000004 + QOS_TRAFFIC_GENERAL_ID_BASE);
+  QOS_OBJECT_TCP_TRAFFIC   = $00000004 + QOS_TRAFFIC_GENERAL_ID_BASE;
   {$EXTERNALSYM QOS_OBJECT_TCP_TRAFFIC}
-  QOS_OBJECT_FRIENDLY_NAME = ($00000005 + QOS_TRAFFIC_GENERAL_ID_BASE);
+  QOS_OBJECT_FRIENDLY_NAME = $00000005 + QOS_TRAFFIC_GENERAL_ID_BASE;
   {$EXTERNALSYM QOS_OBJECT_FRIENDLY_NAME}
 
 //
@@ -428,7 +429,6 @@ type
   {$EXTERNALSYM QOS_DS_CLASS}
   TQosDsClass = QOS_DS_CLASS;
   PQosDsClass = LPQOS_DS_CLASS;
-
 
 //
 // This structure is used to create DiffServ Flows. This creates flows in the packet scheduler
@@ -532,518 +532,361 @@ function TcDeleteFilter(FilterHandle: HANDLE): ULONG; stdcall;
 function TcEnumerateFlows(IfcHandle: HANDLE; var pEnumHandle: HANDLE; var pFlowCount, pBufSize: ULONG; var Buffer: ENUMERATION_BUFFER): ULONG; stdcall;
 {$EXTERNALSYM TcEnumerateFlows}
 
-{$IFDEF UNICODE}
-
-function TcOpenInterface(pInterfaceName: LPWSTR; ClientHandle, ClIfcCtx: HANDLE; var pIfcHandle: HANDLE): ULONG; stdcall;
+function TcOpenInterface(pInterfaceName: LPTSTR; ClientHandle, ClIfcCtx: HANDLE; var pIfcHandle: HANDLE): ULONG; stdcall;
 {$EXTERNALSYM TcOpenInterface}
-function TcQueryFlow(pFlowName: LPWSTR; const pGuidParam: GUID; var pBufferSize: ULONG; Buffer: PVOID): ULONG; stdcall;
+function TcQueryFlow(pFlowName: LPTSTR; const pGuidParam: GUID; var pBufferSize: ULONG; Buffer: PVOID): ULONG; stdcall;
 {$EXTERNALSYM TcQueryFlow}
-function TcSetFlow(pFlowName: LPWSTR; const pGuidParam: GUID; BufferSize: GUID; Buffer: PVOID): ULONG; stdcall;
+function TcSetFlow(pFlowName: LPTSTR; const pGuidParam: GUID; BufferSize: GUID; Buffer: PVOID): ULONG; stdcall;
 {$EXTERNALSYM TcSetFlow}
-function TcGetFlowName(FlowHandle: HANDLE; StrSize: ULONG; pFlowName: LPWSTR): ULONG; stdcall;
+function TcGetFlowName(FlowHandle: HANDLE; StrSize: ULONG; pFlowName: LPTSTR): ULONG; stdcall;
 {$EXTERNALSYM TcGetFlowName}
-
-{$ELSE}
-
-function TcOpenInterface(pInterfaceName: LPSTR; ClientHandle, ClIfcCtx: HANDLE; var pIfcHandle: HANDLE): ULONG; stdcall;
-{$EXTERNALSYM TcOpenInterface}
-function TcQueryFlow(pFlowName: LPSTR; const pGuidParam: GUID; var pBufferSize: ULONG; Buffer: PVOID): ULONG; stdcall;
-{$EXTERNALSYM TcQueryFlow}
-function TcSetFlow(pFlowName: LPSTR; const pGuidParam: GUID; BufferSize: GUID; Buffer: PVOID): ULONG; stdcall;
-{$EXTERNALSYM TcSetFlow}
-function TcGetFlowName(FlowHandle: HANDLE; StrSize: ULONG; pFlowName: LPSTR): ULONG; stdcall;
-{$EXTERNALSYM TcGetFlowName}
-
-{$ENDIF}
 
 implementation
 
-const
-  traffic_lib = 'traffic.dll';
-
+uses
+  JwaWinDLLNames;
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _TcRegisterClient: Pointer;
 
 function TcRegisterClient;
 begin
-  GetProcedureAddress(_TcRegisterClient, traffic_lib, 'TcRegisterClient');
+  GetProcedureAddress(_TcRegisterClient, trafficlib, 'TcRegisterClient');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TcRegisterClient]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TcRegisterClient]
   end;
 end;
-{$ELSE}
-function TcRegisterClient; external traffic_lib name 'TcRegisterClient';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _TcEnumerateInterfaces: Pointer;
 
 function TcEnumerateInterfaces;
 begin
-  GetProcedureAddress(_TcEnumerateInterfaces, traffic_lib, 'TcEnumerateInterfaces');
+  GetProcedureAddress(_TcEnumerateInterfaces, trafficlib, 'TcEnumerateInterfaces');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TcEnumerateInterfaces]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TcEnumerateInterfaces]
   end;
 end;
-{$ELSE}
-function TcEnumerateInterfaces; external traffic_lib name 'TcEnumerateInterfaces';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _TcOpenInterfaceA: Pointer;
 
 function TcOpenInterfaceA;
 begin
-  GetProcedureAddress(_TcOpenInterfaceA, traffic_lib, 'TcOpenInterfaceA');
+  GetProcedureAddress(_TcOpenInterfaceA, trafficlib, 'TcOpenInterfaceA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TcOpenInterfaceA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TcOpenInterfaceA]
   end;
 end;
-{$ELSE}
-function TcOpenInterfaceA; external traffic_lib name 'TcOpenInterfaceA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _TcOpenInterfaceW: Pointer;
 
 function TcOpenInterfaceW;
 begin
-  GetProcedureAddress(_TcOpenInterfaceW, traffic_lib, 'TcOpenInterfaceW');
+  GetProcedureAddress(_TcOpenInterfaceW, trafficlib, 'TcOpenInterfaceW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TcOpenInterfaceW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TcOpenInterfaceW]
   end;
 end;
-{$ELSE}
-function TcOpenInterfaceW; external traffic_lib name 'TcOpenInterfaceW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _TcCloseInterface: Pointer;
 
 function TcCloseInterface;
 begin
-  GetProcedureAddress(_TcCloseInterface, traffic_lib, 'TcCloseInterface');
+  GetProcedureAddress(_TcCloseInterface, trafficlib, 'TcCloseInterface');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TcCloseInterface]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TcCloseInterface]
   end;
 end;
-{$ELSE}
-function TcCloseInterface; external traffic_lib name 'TcCloseInterface';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _TcQueryInterface: Pointer;
 
 function TcQueryInterface;
 begin
-  GetProcedureAddress(_TcQueryInterface, traffic_lib, 'TcQueryInterface');
+  GetProcedureAddress(_TcQueryInterface, trafficlib, 'TcQueryInterface');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TcQueryInterface]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TcQueryInterface]
   end;
 end;
-{$ELSE}
-function TcQueryInterface; external traffic_lib name 'TcQueryInterface';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _TcSetInterface: Pointer;
 
 function TcSetInterface;
 begin
-  GetProcedureAddress(_TcSetInterface, traffic_lib, 'TcSetInterface');
+  GetProcedureAddress(_TcSetInterface, trafficlib, 'TcSetInterface');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TcSetInterface]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TcSetInterface]
   end;
 end;
-{$ELSE}
-function TcSetInterface; external traffic_lib name 'TcSetInterface';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _TcQueryFlowA: Pointer;
 
 function TcQueryFlowA;
 begin
-  GetProcedureAddress(_TcQueryFlowA, traffic_lib, 'TcQueryFlowA');
+  GetProcedureAddress(_TcQueryFlowA, trafficlib, 'TcQueryFlowA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TcQueryFlowA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TcQueryFlowA]
   end;
 end;
-{$ELSE}
-function TcQueryFlowA; external traffic_lib name 'TcQueryFlowA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _TcQueryFlowW: Pointer;
 
 function TcQueryFlowW;
 begin
-  GetProcedureAddress(_TcQueryFlowW, traffic_lib, 'TcQueryFlowW');
+  GetProcedureAddress(_TcQueryFlowW, trafficlib, 'TcQueryFlowW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TcQueryFlowW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TcQueryFlowW]
   end;
 end;
-{$ELSE}
-function TcQueryFlowW; external traffic_lib name 'TcQueryFlowW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _TcSetFlowA: Pointer;
 
 function TcSetFlowA;
 begin
-  GetProcedureAddress(_TcSetFlowA, traffic_lib, 'TcSetFlowA');
+  GetProcedureAddress(_TcSetFlowA, trafficlib, 'TcSetFlowA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TcSetFlowA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TcSetFlowA]
   end;
 end;
-{$ELSE}
-function TcSetFlowA; external traffic_lib name 'TcSetFlowA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _TcSetFlowW: Pointer;
 
 function TcSetFlowW;
 begin
-  GetProcedureAddress(_TcSetFlowW, traffic_lib, 'TcSetFlowW');
+  GetProcedureAddress(_TcSetFlowW, trafficlib, 'TcSetFlowW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TcSetFlowW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TcSetFlowW]
   end;
 end;
-{$ELSE}
-function TcSetFlowW; external traffic_lib name 'TcSetFlowW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _TcAddFlow: Pointer;
 
 function TcAddFlow;
 begin
-  GetProcedureAddress(_TcAddFlow, traffic_lib, 'TcAddFlow');
+  GetProcedureAddress(_TcAddFlow, trafficlib, 'TcAddFlow');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TcAddFlow]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TcAddFlow]
   end;
 end;
-{$ELSE}
-function TcAddFlow; external traffic_lib name 'TcAddFlow';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _TcGetFlowNameA: Pointer;
 
 function TcGetFlowNameA;
 begin
-  GetProcedureAddress(_TcGetFlowNameA, traffic_lib, 'TcGetFlowNameA');
+  GetProcedureAddress(_TcGetFlowNameA, trafficlib, 'TcGetFlowNameA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TcGetFlowNameA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TcGetFlowNameA]
   end;
 end;
-{$ELSE}
-function TcGetFlowNameA; external traffic_lib name 'TcGetFlowNameA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _TcGetFlowNameW: Pointer;
 
 function TcGetFlowNameW;
 begin
-  GetProcedureAddress(_TcGetFlowNameW, traffic_lib, 'TcGetFlowNameW');
+  GetProcedureAddress(_TcGetFlowNameW, trafficlib, 'TcGetFlowNameW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TcGetFlowNameW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TcGetFlowNameW]
   end;
 end;
-{$ELSE}
-function TcGetFlowNameW; external traffic_lib name 'TcGetFlowNameW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _TcModifyFlow: Pointer;
 
 function TcModifyFlow;
 begin
-  GetProcedureAddress(_TcModifyFlow, traffic_lib, 'TcModifyFlow');
+  GetProcedureAddress(_TcModifyFlow, trafficlib, 'TcModifyFlow');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TcModifyFlow]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TcModifyFlow]
   end;
 end;
-{$ELSE}
-function TcModifyFlow; external traffic_lib name 'TcModifyFlow';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _TcAddFilter: Pointer;
 
 function TcAddFilter;
 begin
-  GetProcedureAddress(_TcAddFilter, traffic_lib, 'TcAddFilter');
+  GetProcedureAddress(_TcAddFilter, trafficlib, 'TcAddFilter');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TcAddFilter]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TcAddFilter]
   end;
 end;
-{$ELSE}
-function TcAddFilter; external traffic_lib name 'TcAddFilter';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _TcDeregisterClient: Pointer;
 
 function TcDeregisterClient;
 begin
-  GetProcedureAddress(_TcDeregisterClient, traffic_lib, 'TcDeregisterClient');
+  GetProcedureAddress(_TcDeregisterClient, trafficlib, 'TcDeregisterClient');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TcDeregisterClient]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TcDeregisterClient]
   end;
 end;
-{$ELSE}
-function TcDeregisterClient; external traffic_lib name 'TcDeregisterClient';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _TcDeleteFlow: Pointer;
 
 function TcDeleteFlow;
 begin
-  GetProcedureAddress(_TcDeleteFlow, traffic_lib, 'TcDeleteFlow');
+  GetProcedureAddress(_TcDeleteFlow, trafficlib, 'TcDeleteFlow');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TcDeleteFlow]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TcDeleteFlow]
   end;
 end;
-{$ELSE}
-function TcDeleteFlow; external traffic_lib name 'TcDeleteFlow';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _TcDeleteFilter: Pointer;
 
 function TcDeleteFilter;
 begin
-  GetProcedureAddress(_TcDeleteFilter, traffic_lib, 'TcDeleteFilter');
+  GetProcedureAddress(_TcDeleteFilter, trafficlib, 'TcDeleteFilter');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TcDeleteFilter]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TcDeleteFilter]
   end;
 end;
-{$ELSE}
-function TcDeleteFilter; external traffic_lib name 'TcDeleteFilter';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _TcEnumerateFlows: Pointer;
 
 function TcEnumerateFlows;
 begin
-  GetProcedureAddress(_TcEnumerateFlows, traffic_lib, 'TcEnumerateFlows');
+  GetProcedureAddress(_TcEnumerateFlows, trafficlib, 'TcEnumerateFlows');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TcEnumerateFlows]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TcEnumerateFlows]
   end;
 end;
-{$ELSE}
-function TcEnumerateFlows; external traffic_lib name 'TcEnumerateFlows';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF UNICODE}
-
-
-{$IFDEF DYNAMIC_LINK}
 var
   _TcOpenInterface: Pointer;
 
 function TcOpenInterface;
 begin
-  GetProcedureAddress(_TcOpenInterface, traffic_lib, 'TcOpenInterfaceW');
+  GetProcedureAddress(_TcOpenInterface, trafficlib, 'TcOpenInterface' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TcOpenInterface]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TcOpenInterface]
   end;
 end;
-{$ELSE}
-function TcOpenInterface; external traffic_lib name 'TcOpenInterfaceW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _TcQueryFlow: Pointer;
 
 function TcQueryFlow;
 begin
-  GetProcedureAddress(_TcQueryFlow, traffic_lib, 'TcQueryFlowW');
+  GetProcedureAddress(_TcQueryFlow, trafficlib, 'TcQueryFlow' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TcQueryFlow]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TcQueryFlow]
   end;
 end;
-{$ELSE}
-function TcQueryFlow; external traffic_lib name 'TcQueryFlowW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _TcSetFlow: Pointer;
 
 function TcSetFlow;
 begin
-  GetProcedureAddress(_TcSetFlow, traffic_lib, 'TcSetFlowW');
+  GetProcedureAddress(_TcSetFlow, trafficlib, 'TcSetFlow' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TcSetFlow]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TcSetFlow]
   end;
 end;
-{$ELSE}
-function TcSetFlow; external traffic_lib name 'TcSetFlowW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _TcGetFlowName: Pointer;
 
 function TcGetFlowName;
 begin
-  GetProcedureAddress(_TcGetFlowName, traffic_lib, 'TcGetFlowNameW');
+  GetProcedureAddress(_TcGetFlowName, trafficlib, 'TcGetFlowName' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TcGetFlowName]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_TcGetFlowName]
   end;
 end;
+
 {$ELSE}
-function TcGetFlowName; external traffic_lib name 'TcGetFlowNameW';
+
+function TcRegisterClient; external trafficlib name 'TcRegisterClient';
+function TcEnumerateInterfaces; external trafficlib name 'TcEnumerateInterfaces';
+function TcOpenInterfaceA; external trafficlib name 'TcOpenInterfaceA';
+function TcOpenInterfaceW; external trafficlib name 'TcOpenInterfaceW';
+function TcCloseInterface; external trafficlib name 'TcCloseInterface';
+function TcQueryInterface; external trafficlib name 'TcQueryInterface';
+function TcSetInterface; external trafficlib name 'TcSetInterface';
+function TcQueryFlowA; external trafficlib name 'TcQueryFlowA';
+function TcQueryFlowW; external trafficlib name 'TcQueryFlowW';
+function TcSetFlowA; external trafficlib name 'TcSetFlowA';
+function TcSetFlowW; external trafficlib name 'TcSetFlowW';
+function TcAddFlow; external trafficlib name 'TcAddFlow';
+function TcGetFlowNameA; external trafficlib name 'TcGetFlowNameA';
+function TcGetFlowNameW; external trafficlib name 'TcGetFlowNameW';
+function TcModifyFlow; external trafficlib name 'TcModifyFlow';
+function TcAddFilter; external trafficlib name 'TcAddFilter';
+function TcDeregisterClient; external trafficlib name 'TcDeregisterClient';
+function TcDeleteFlow; external trafficlib name 'TcDeleteFlow';
+function TcDeleteFilter; external trafficlib name 'TcDeleteFilter';
+function TcEnumerateFlows; external trafficlib name 'TcEnumerateFlows';
+function TcOpenInterface; external trafficlib name 'TcOpenInterface' + AWSuffix;
+function TcQueryFlow; external trafficlib name 'TcQueryFlow' + AWSuffix;
+function TcSetFlow; external trafficlib name 'TcSetFlow' + AWSuffix;
+function TcGetFlowName; external trafficlib name 'TcGetFlowName' + AWSuffix;
+
 {$ENDIF DYNAMIC_LINK}
-
-{$ELSE}
-
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _TcOpenInterface: Pointer;
-
-function TcOpenInterface;
-begin
-  GetProcedureAddress(_TcOpenInterface, traffic_lib, 'TcOpenInterfaceA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TcOpenInterface]
-  end;
-end;
-{$ELSE}
-function TcOpenInterface; external traffic_lib name 'TcOpenInterfaceA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _TcQueryFlow: Pointer;
-
-function TcQueryFlow;
-begin
-  GetProcedureAddress(_TcQueryFlow, traffic_lib, 'TcQueryFlowA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TcQueryFlow]
-  end;
-end;
-{$ELSE}
-function TcQueryFlow; external traffic_lib name 'TcQueryFlowA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _TcSetFlow: Pointer;
-
-function TcSetFlow;
-begin
-  GetProcedureAddress(_TcSetFlow, traffic_lib, 'TcSetFlowA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TcSetFlow]
-  end;
-end;
-{$ELSE}
-function TcSetFlow; external traffic_lib name 'TcSetFlowA';
-{$ENDIF DYNAMIC_LINK}
-
-{$IFDEF DYNAMIC_LINK}
-var
-  _TcGetFlowName: Pointer;
-
-function TcGetFlowName;
-begin
-  GetProcedureAddress(_TcGetFlowName, traffic_lib, 'TcGetFlowNameA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_TcGetFlowName]
-  end;
-end;
-{$ELSE}
-function TcGetFlowName; external traffic_lib name 'TcGetFlowNameA';
-{$ENDIF DYNAMIC_LINK}
-
-{$ENDIF}
 
 end.

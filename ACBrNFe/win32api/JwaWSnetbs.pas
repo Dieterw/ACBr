@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Winsock2 Netbios API interface Unit for Object Pascal                        }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: wsnetbs.h, released June 2000. The original Pascal     }
 { code is: WSnetbs.pas, released December 2000. The initial developer of the   }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaWSnetbs.pas,v 1.5 2004/12/08 08:18:40 marquardt Exp $
 
 unit JwaWSnetbs;
 
@@ -49,7 +50,7 @@ unit JwaWSnetbs;
 {$HPPEMIT '#include "wsnetbs.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
@@ -126,11 +127,13 @@ var
 begin
   SNB.snb_family := AF_NETBIOS;
   SNB.snb_type := _Type;
-  for I := 0 to NETBIOS_NAME_LENGTH - 1 do SNB.snb_name[I] := ' ';
+  for I := 0 to NETBIOS_NAME_LENGTH - 1 do
+    SNB.snb_name[I] := ' ';
   I := 0;
   while I < NETBIOS_NAME_LENGTH - 1 do
   begin
-    if SNB.snb_name[I] = #0 then Break;
+    if SNB.snb_name[I] = #0 then
+      Break;
     SNB.snb_name[I] := SNB.snb_name[I + 1];
     Inc(I);
   end;

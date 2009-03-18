@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Services API interface Unit for Object Pascal                                }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: winsvc.h, released June 2000. The original Pascal      }
 { code is: WinSvc.pas, released December 2000. The initial developer of the    }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,25 +35,33 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaWinSvc.pas,v 1.10 2005/09/06 16:36:51 marquardt Exp $
+
+{$IFNDEF JWA_INCLUDEMODE}
 
 unit JwaWinSvc;
 
 {$WEAKPACKAGEUNIT}
 
-{$HPPEMIT ''}
-{$HPPEMIT '#include "WinSvc.h"'}
-{$HPPEMIT ''}
-
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
   JwaWinNT, JwaWinType;
+
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_INTERFACESECTION}
+
+{$HPPEMIT ''}
+{$HPPEMIT '#include "WinSvc.h"'}
+{$HPPEMIT ''}
 
 //
 // Service database names
@@ -80,7 +87,7 @@ const
   SC_GROUP_IDENTIFIERA = '+';
   {$EXTERNALSYM SC_GROUP_IDENTIFIERA}
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
 
   SERVICES_ACTIVE_DATABASE = SERVICES_ACTIVE_DATABASEW;
   {$EXTERNALSYM SERVICES_ACTIVE_DATABASE}
@@ -90,7 +97,7 @@ const
   SC_GROUP_IDENTIFIER = SC_GROUP_IDENTIFIERW;
   {$EXTERNALSYM SC_GROUP_IDENTIFIER}
 
-{$ELSE}
+  {$ELSE}
 
   SERVICES_ACTIVE_DATABASE = SERVICES_ACTIVE_DATABASEA;
   {$EXTERNALSYM SERVICES_ACTIVE_DATABASE}
@@ -100,7 +107,7 @@ const
   SC_GROUP_IDENTIFIER = SC_GROUP_IDENTIFIERA;
   {$EXTERNALSYM SC_GROUP_IDENTIFIER}
 
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 // Value to indicate no change to an optional parameter
@@ -301,21 +308,21 @@ type
   TServiceDescriptionW = SERVICE_DESCRIPTIONW;
   PServiceDescriptionW = LPSERVICE_DESCRIPTIONW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   SERVICE_DESCRIPTION = SERVICE_DESCRIPTIONW;
   {$EXTERNALSYM SERVICE_DESCRIPTION}
   LPSERVICE_DESCRIPTION = LPSERVICE_DESCRIPTIONW;
   {$EXTERNALSYM LPSERVICE_DESCRIPTION}
   TServiceDescription = TServiceDescriptionW;
   PServiceDescription = PServiceDescriptionW;
-{$ELSE}
+  {$ELSE}
   SERVICE_DESCRIPTION = SERVICE_DESCRIPTIONA;
   {$EXTERNALSYM SERVICE_DESCRIPTION}
   LPSERVICE_DESCRIPTION = LPSERVICE_DESCRIPTIONA;
   {$EXTERNALSYM LPSERVICE_DESCRIPTION}
   TServiceDescription = TServiceDescriptionA;
   PServiceDescription = PServiceDescriptionA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 // Actions to take on service failure
@@ -370,21 +377,21 @@ type
   TServiceFailureActionsW = SERVICE_FAILURE_ACTIONSW;
   PServiceFailureActionsW = LPSERVICE_FAILURE_ACTIONSW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   SERVICE_FAILURE_ACTIONS = SERVICE_FAILURE_ACTIONSW;
   {$EXTERNALSYM SERVICE_FAILURE_ACTIONS}
   LPSERVICE_FAILURE_ACTIONS = LPSERVICE_FAILURE_ACTIONSW;
   {$EXTERNALSYM LPSERVICE_FAILURE_ACTIONS}
   TServiceFailureActions = TServiceFailureActionsW;
   PServiceFailureActions = PServiceFailureActionsW;
-{$ELSE}
+  {$ELSE}
   SERVICE_FAILURE_ACTIONS = SERVICE_FAILURE_ACTIONSA;
   {$EXTERNALSYM SERVICE_FAILURE_ACTIONS}
   LPSERVICE_FAILURE_ACTIONS = LPSERVICE_FAILURE_ACTIONSA;
   {$EXTERNALSYM LPSERVICE_FAILURE_ACTIONS}
   TServiceFailureActions = TServiceFailureActionsA;
   PServiceFailureActions = PServiceFailureActionsA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 // Handle Types
@@ -486,21 +493,21 @@ type
   TEnumServiceStatusW = ENUM_SERVICE_STATUSW;
   PEnumServiceStatusW = LPENUM_SERVICE_STATUSW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   ENUM_SERVICE_STATUS = ENUM_SERVICE_STATUSW;
   {$EXTERNALSYM ENUM_SERVICE_STATUS}
   LPENUM_SERVICE_STATUS = LPENUM_SERVICE_STATUSW;
   {$EXTERNALSYM LPENUM_SERVICE_STATUS}
   TEnumServiceStatus = TEnumServiceStatusW;
   PEnumServiceStatus = PEnumServiceStatusW;
-{$ELSE}
+  {$ELSE}
   ENUM_SERVICE_STATUS = ENUM_SERVICE_STATUSA;
   {$EXTERNALSYM ENUM_SERVICE_STATUS}
   LPENUM_SERVICE_STATUS = LPENUM_SERVICE_STATUSA;
   {$EXTERNALSYM LPENUM_SERVICE_STATUS}
   TEnumServiceStatus = TEnumServiceStatusA;
   PEnumServiceStatus = PEnumServiceStatusA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
   LPENUM_SERVICE_STATUS_PROCESSA = ^ENUM_SERVICE_STATUS_PROCESSA;
   {$EXTERNALSYM LPENUM_SERVICE_STATUS_PROCESSA}
@@ -528,21 +535,21 @@ type
   TEnumServiceStatusProcessW = ENUM_SERVICE_STATUS_PROCESSW;
   PEnumServiceStatusProcessW = LPENUM_SERVICE_STATUS_PROCESSW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   ENUM_SERVICE_STATUS_PROCESS = ENUM_SERVICE_STATUS_PROCESSW;
   {$EXTERNALSYM ENUM_SERVICE_STATUS_PROCESS}
   LPENUM_SERVICE_STATUS_PROCESS = LPENUM_SERVICE_STATUS_PROCESSW;
   {$EXTERNALSYM LPENUM_SERVICE_STATUS_PROCESS}
   TEnumServiceStatusProcess = TEnumServiceStatusProcessW;
   PEnumServiceStatusProcess = PEnumServiceStatusProcessW;
-{$ELSE}
+  {$ELSE}
   ENUM_SERVICE_STATUS_PROCESS = ENUM_SERVICE_STATUS_PROCESSA;
   {$EXTERNALSYM ENUM_SERVICE_STATUS_PROCESS}
   LPENUM_SERVICE_STATUS_PROCESS = LPENUM_SERVICE_STATUS_PROCESSA;
   {$EXTERNALSYM LPENUM_SERVICE_STATUS_PROCESS}
   TEnumServiceStatusProcess = TEnumServiceStatusProcessA;
   PEnumServiceStatusProcess = PEnumServiceStatusProcessA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 // Structures for the Lock API functions
@@ -577,21 +584,21 @@ type
   TQueryServiceLockStatusW = QUERY_SERVICE_LOCK_STATUSW;
   PQueryServiceLockStatusW = LPQUERY_SERVICE_LOCK_STATUSW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   QUERY_SERVICE_LOCK_STATUS = QUERY_SERVICE_LOCK_STATUSW;
   {$EXTERNALSYM QUERY_SERVICE_LOCK_STATUS}
   LPQUERY_SERVICE_LOCK_STATUS = LPQUERY_SERVICE_LOCK_STATUSW;
   {$EXTERNALSYM LPQUERY_SERVICE_LOCK_STATUS}
   TQueryServiceLockStatus = TQueryServiceLockStatusW;
   PQueryServiceLockStatus = PQueryServiceLockStatusW;
-{$ELSE}
+  {$ELSE}
   QUERY_SERVICE_LOCK_STATUS = QUERY_SERVICE_LOCK_STATUSA;
   {$EXTERNALSYM QUERY_SERVICE_LOCK_STATUS}
   LPQUERY_SERVICE_LOCK_STATUS = LPQUERY_SERVICE_LOCK_STATUSA;
   {$EXTERNALSYM LPQUERY_SERVICE_LOCK_STATUS}
   TQueryServiceLockStatus = TQueryServiceLockStatusA;
   PQueryServiceLockStatus = PQueryServiceLockStatusA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 // Query Service Configuration Structure
@@ -635,46 +642,46 @@ type
   TQueryServiceConfigW = QUERY_SERVICE_CONFIGW;
   PQueryServiceConfigW = LPQUERY_SERVICE_CONFIGW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   QUERY_SERVICE_CONFIG = QUERY_SERVICE_CONFIGW;
   {$EXTERNALSYM QUERY_SERVICE_CONFIG}
   LPQUERY_SERVICE_CONFIG = LPQUERY_SERVICE_CONFIGW;
   {$EXTERNALSYM LPQUERY_SERVICE_CONFIG}
   TQueryServiceConfig = TQueryServiceConfigW;
   PQueryServiceConfig = PQueryServiceConfigW;
-{$ELSE}
+  {$ELSE}
   QUERY_SERVICE_CONFIG = QUERY_SERVICE_CONFIGA;
   {$EXTERNALSYM QUERY_SERVICE_CONFIG}
   LPQUERY_SERVICE_CONFIG = LPQUERY_SERVICE_CONFIGA;
   {$EXTERNALSYM LPQUERY_SERVICE_CONFIG}
   TQueryServiceConfig = TQueryServiceConfigA;
   PQueryServiceConfig = PQueryServiceConfigA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 // Function Prototype for the Service Main Function
 //
 
 type
-  LPSERVICE_MAIN_FUNCTIONW = procedure (dwNumServicesArgs: DWORD;
+  LPSERVICE_MAIN_FUNCTIONW = procedure(dwNumServicesArgs: DWORD;
     lpServiceArgVectors: LPWSTR); stdcall;
   {$EXTERNALSYM LPSERVICE_MAIN_FUNCTIONW}
-  LPSERVICE_MAIN_FUNCTIONA = procedure (dwNumServicesArgs: DWORD;
+  LPSERVICE_MAIN_FUNCTIONA = procedure(dwNumServicesArgs: DWORD;
     lpServiceArgVectors: LPSTR); stdcall;
   {$EXTERNALSYM LPSERVICE_MAIN_FUNCTIONA}
 
   TServiceMainFunctionA = LPSERVICE_MAIN_FUNCTIONA;
   TServiceMainFunctionW = LPSERVICE_MAIN_FUNCTIONW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   LPSERVICE_MAIN_FUNCTION = LPSERVICE_MAIN_FUNCTIONW;
   {$EXTERNALSYM LPSERVICE_MAIN_FUNCTION}
   TServiceMainFunction = LPSERVICE_MAIN_FUNCTIONW;
-{$ELSE}
+  {$ELSE}
   LPSERVICE_MAIN_FUNCTION = LPSERVICE_MAIN_FUNCTIONA;
   {$EXTERNALSYM LPSERVICE_MAIN_FUNCTION}
-  TServiceMainFunction = LPSERVICE_MAIN_FUNCTIONA;  
-{$ENDIF}
+  TServiceMainFunction = LPSERVICE_MAIN_FUNCTIONA;
+  {$ENDIF UNICODE}
 
 //
 // Service Start Table
@@ -704,27 +711,27 @@ type
   TServiceTableEntryW = SERVICE_TABLE_ENTRYW;
   PServiceTableEntryW = LPSERVICE_TABLE_ENTRYW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   SERVICE_TABLE_ENTRY = SERVICE_TABLE_ENTRYW;
   LPSERVICE_TABLE_ENTRY = LPSERVICE_TABLE_ENTRYW;
   TServiceTableEntry = TServiceTableEntryW;
   PServiceTableEntry = PServiceTableEntryW;
-{$ELSE}
+  {$ELSE}
   SERVICE_TABLE_ENTRY = SERVICE_TABLE_ENTRYA;
   LPSERVICE_TABLE_ENTRY = LPSERVICE_TABLE_ENTRYA;
   TServiceTableEntry = TServiceTableEntryA;
   PServiceTableEntry = PServiceTableEntryA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 //
 // Prototype for the Service Control Handler Function
 //
 
-  LPHANDLER_FUNCTION = procedure (dwControl: DWORD); stdcall;
+  LPHANDLER_FUNCTION = procedure(dwControl: DWORD); stdcall;
   {$EXTERNALSYM LPHANDLER_FUNCTION}
   THandlerFunction = LPHANDLER_FUNCTION;
 
-  LPHANDLER_FUNCTION_EX = function (dwControl, dwEventType: DWORD;
+  LPHANDLER_FUNCTION_EX = function(dwControl, dwEventType: DWORD;
     lpEventData, lpContext: LPVOID): DWORD; stdcall;
   {$EXTERNALSYM LPHANDLER_FUNCTION_EX}
   THandlerFunctionEx = LPHANDLER_FUNCTION_EX;
@@ -743,20 +750,11 @@ function ChangeServiceConfigW(hService: SC_HANDLE; dwServiceType, dwStartType,
   lpdwTagId: LPDWORD; lpDependencies, lpServiceStartName, lpPassword,
   lpDisplayName: LPCWSTR): BOOL; stdcall;
 {$EXTERNALSYM ChangeServiceConfigW}
-
-{$IFDEF UNICODE}
 function ChangeServiceConfig(hService: SC_HANDLE; dwServiceType, dwStartType,
-  dwErrorControl: DWORD; lpBinaryPathName, lpLoadOrderGroup: LPCWSTR;
+  dwErrorControl: DWORD; lpBinaryPathName, lpLoadOrderGroup: LPCTSTR;
   lpdwTagId: LPDWORD; lpDependencies, lpServiceStartName, lpPassword,
-  lpDisplayName: LPCWSTR): BOOL; stdcall;
+  lpDisplayName: LPCTSTR): BOOL; stdcall;
 {$EXTERNALSYM ChangeServiceConfig}
-{$ELSE}
-function ChangeServiceConfig(hService: SC_HANDLE; dwServiceType, dwStartType,
-  dwErrorControl: DWORD; lpBinaryPathName, lpLoadOrderGroup: LPCSTR;
-  lpdwTagId: LPDWORD; lpDependencies, lpServiceStartName, lpPassword,
-  lpDisplayName: LPCSTR): BOOL; stdcall;
-{$EXTERNALSYM ChangeServiceConfig}
-{$ENDIF}
 
 function ChangeServiceConfig2A(hService: SC_HANDLE; dwInfoLevel: DWORD;
   lpInfo: LPVOID): BOOL; stdcall;
@@ -764,16 +762,9 @@ function ChangeServiceConfig2A(hService: SC_HANDLE; dwInfoLevel: DWORD;
 function ChangeServiceConfig2W(hService: SC_HANDLE; dwInfoLevel: DWORD;
   lpInfo: LPVOID): BOOL; stdcall;
 {$EXTERNALSYM ChangeServiceConfig2W}
-
-{$IFDEF UNICODE}
 function ChangeServiceConfig2(hService: SC_HANDLE; dwInfoLevel: DWORD;
   lpInfo: LPVOID): BOOL; stdcall;
 {$EXTERNALSYM ChangeServiceConfig2}
-{$ELSE}
-function ChangeServiceConfig2(hService: SC_HANDLE; dwInfoLevel: DWORD;
-  lpInfo: LPVOID): BOOL; stdcall;
-{$EXTERNALSYM ChangeServiceConfig2}
-{$ENDIF}
 
 function CloseServiceHandle(hSCObject: SC_HANDLE): BOOL; stdcall;
 {$EXTERNALSYM CloseServiceHandle}
@@ -792,20 +783,11 @@ function CreateServiceW(hSCManager: SC_HANDLE; lpServiceName, lpDisplayName: LPC
   lpBinaryPathName, lpLoadOrderGroup: LPCWSTR; lpdwTagId: LPDWORD;
   lpDependencies, lpServiceStartName, lpPassword: LPCWSTR): SC_HANDLE; stdcall;
 {$EXTERNALSYM CreateServiceW}
-
-{$IFDEF UNICODE}
-function CreateService(hSCManager: SC_HANDLE; lpServiceName, lpDisplayName: LPCWSTR;
+function CreateService(hSCManager: SC_HANDLE; lpServiceName, lpDisplayName: LPCTSTR;
   dwDesiredAccess, dwServiceType, dwStartType, dwErrorControl: DWORD;
-  lpBinaryPathName, lpLoadOrderGroup: LPCWSTR; lpdwTagId: LPDWORD;
-  lpDependencies, lpServiceStartName, lpPassword: LPCWSTR): SC_HANDLE; stdcall;
+  lpBinaryPathName, lpLoadOrderGroup: LPCTSTR; lpdwTagId: LPDWORD;
+  lpDependencies, lpServiceStartName, lpPassword: LPCTSTR): SC_HANDLE; stdcall;
 {$EXTERNALSYM CreateService}
-{$ELSE}
-function CreateService(hSCManager: SC_HANDLE; lpServiceName, lpDisplayName: LPCSTR;
-  dwDesiredAccess, dwServiceType, dwStartType, dwErrorControl: DWORD;
-  lpBinaryPathName, lpLoadOrderGroup: LPCSTR; lpdwTagId: LPDWORD;
-  lpDependencies, lpServiceStartName, lpPassword: LPCSTR): SC_HANDLE; stdcall;
-{$EXTERNALSYM CreateService}
-{$ENDIF}
 
 function DeleteService(hService: SC_HANDLE): BOOL; stdcall;
 {$EXTERNALSYM DeleteService}
@@ -818,18 +800,10 @@ function EnumDependentServicesW(hService: SC_HANDLE; dwServiceState: DWORD;
   lpServices: LPENUM_SERVICE_STATUSW; cbBufSize: DWORD; var pcbBytesNeeded,
   lpServicesReturned: DWORD): BOOL; stdcall;
 {$EXTERNALSYM EnumDependentServicesW}
-
-{$IFDEF UNICODE}
 function EnumDependentServices(hService: SC_HANDLE; dwServiceState: DWORD;
-  lpServices: LPENUM_SERVICE_STATUSW; cbBufSize: DWORD; var pcbBytesNeeded,
+  lpServices: LPENUM_SERVICE_STATUS; cbBufSize: DWORD; var pcbBytesNeeded,
   lpServicesReturned: DWORD): BOOL; stdcall;
 {$EXTERNALSYM EnumDependentServices}
-{$ELSE}
-function EnumDependentServices(hService: SC_HANDLE; dwServiceState: DWORD;
-  lpServices: LPENUM_SERVICE_STATUSA; cbBufSize: DWORD; var pcbBytesNeeded,
-  lpServicesReturned: DWORD): BOOL; stdcall;
-{$EXTERNALSYM EnumDependentServices}
-{$ENDIF}
 
 function EnumServicesStatusA(hSCManager: SC_HANDLE; dwServiceType: DWORD;
   dwServiceState: DWORD; lpServices: LPENUM_SERVICE_STATUSA; cbBufSize: DWORD;
@@ -839,18 +813,10 @@ function EnumServicesStatusW(hSCManager: SC_HANDLE; dwServiceType: DWORD;
   dwServiceState: DWORD; lpServices: LPENUM_SERVICE_STATUSW; cbBufSize: DWORD;
   var pcbBytesNeeded, lpServicesReturned, lpResumeHandle: DWORD): BOOL; stdcall;
 {$EXTERNALSYM EnumServicesStatusW}
-
-{$IFDEF UNICODE}
 function EnumServicesStatus(hSCManager: SC_HANDLE; dwServiceType: DWORD;
-  dwServiceState: DWORD; lpServices: LPENUM_SERVICE_STATUSW; cbBufSize: DWORD;
+  dwServiceState: DWORD; lpServices: LPENUM_SERVICE_STATUS; cbBufSize: DWORD;
   var pcbBytesNeeded, lpServicesReturned, lpResumeHandle: DWORD): BOOL; stdcall;
 {$EXTERNALSYM EnumServicesStatus}
-{$ELSE}
-function EnumServicesStatus(hSCManager: SC_HANDLE; dwServiceType: DWORD;
-  dwServiceState: DWORD; lpServices: LPENUM_SERVICE_STATUSA; cbBufSize: DWORD;
-  var pcbBytesNeeded, lpServicesReturned, lpResumeHandle: DWORD): BOOL; stdcall;
-{$EXTERNALSYM EnumServicesStatus}
-{$ENDIF}
 
 function EnumServicesStatusExA(hSCManager: SC_HANDLE; InfoLevel: SC_ENUM_TYPE;
   dwServiceType: DWORD; dwServiceState: DWORD; lpServices: LPBYTE;
@@ -862,20 +828,11 @@ function EnumServicesStatusExW(hSCManager: SC_HANDLE; InfoLevel: SC_ENUM_TYPE;
   cbBufSize: DWORD; var pcbBytesNeeded, lpServicesReturned, lpResumeHandle: DWORD;
   pszGroupName: LPCWSTR): BOOL; stdcall;
 {$EXTERNALSYM EnumServicesStatusExW}
-
-{$IFDEF UNICODE}
 function EnumServicesStatusEx(hSCManager: SC_HANDLE; InfoLevel: SC_ENUM_TYPE;
   dwServiceType: DWORD; dwServiceState: DWORD; lpServices: LPBYTE;
   cbBufSize: DWORD; var pcbBytesNeeded, lpServicesReturned, lpResumeHandle: DWORD;
-  pszGroupName: LPCWSTR): BOOL; stdcall;
+  pszGroupName: LPCTSTR): BOOL; stdcall;
 {$EXTERNALSYM EnumServicesStatusEx}
-{$ELSE}
-function EnumServicesStatusEx(hSCManager: SC_HANDLE; InfoLevel: SC_ENUM_TYPE;
-  dwServiceType: DWORD; dwServiceState: DWORD; lpServices: LPBYTE;
-  cbBufSize: DWORD; var pcbBytesNeeded, lpServicesReturned, lpResumeHandle: DWORD;
-  pszGroupName: LPCSTR): BOOL; stdcall;
-{$EXTERNALSYM EnumServicesStatusEx}
-{$ENDIF}
 
 function GetServiceKeyNameA(hSCManager: SC_HANDLE; lpDisplayName: LPCSTR;
   lpServiceName: LPSTR; var lpcchBuffer: DWORD): BOOL; stdcall;
@@ -883,16 +840,9 @@ function GetServiceKeyNameA(hSCManager: SC_HANDLE; lpDisplayName: LPCSTR;
 function GetServiceKeyNameW(hSCManager: SC_HANDLE; lpDisplayName: LPCWSTR;
   lpServiceName: LPWSTR; var lpcchBuffer: DWORD): BOOL; stdcall;
 {$EXTERNALSYM GetServiceKeyNameW}
-
-{$IFDEF UNICODE}
-function GetServiceKeyName(hSCManager: SC_HANDLE; lpDisplayName: LPCWSTR;
-  lpServiceName: LPWSTR; var lpcchBuffer: DWORD): BOOL; stdcall;
+function GetServiceKeyName(hSCManager: SC_HANDLE; lpDisplayName: LPCTSTR;
+  lpServiceName: LPTSTR; var lpcchBuffer: DWORD): BOOL; stdcall;
 {$EXTERNALSYM GetServiceKeyName}
-{$ELSE}
-function GetServiceKeyName(hSCManager: SC_HANDLE; lpDisplayName: LPCSTR;
-  lpServiceName: LPSTR; var lpcchBuffer: DWORD): BOOL; stdcall;
-{$EXTERNALSYM GetServiceKeyName}
-{$ENDIF}
 
 function GetServiceDisplayNameA(hSCManager: SC_HANDLE; lpServiceName: LPCSTR;
   lpDisplayName: LPSTR; var lpcchBuffer: DWORD): BOOL; stdcall;
@@ -900,16 +850,9 @@ function GetServiceDisplayNameA(hSCManager: SC_HANDLE; lpServiceName: LPCSTR;
 function GetServiceDisplayNameW(hSCManager: SC_HANDLE; lpServiceName: LPCWSTR;
   lpDisplayName: LPWSTR; var lpcchBuffer: DWORD): BOOL; stdcall;
 {$EXTERNALSYM GetServiceDisplayNameW}
-
-{$IFDEF UNICODE}
-function GetServiceDisplayName(hSCManager: SC_HANDLE; lpServiceName: LPCWSTR;
-  lpDisplayName: LPWSTR; var lpcchBuffer: DWORD): BOOL; stdcall;
+function GetServiceDisplayName(hSCManager: SC_HANDLE; lpServiceName: LPCTSTR;
+  lpDisplayName: LPTSTR; var lpcchBuffer: DWORD): BOOL; stdcall;
 {$EXTERNALSYM GetServiceDisplayName}
-{$ELSE}
-function GetServiceDisplayName(hSCManager: SC_HANDLE; lpServiceName: LPCSTR;
-  lpDisplayName: LPSTR; var lpcchBuffer: DWORD): BOOL; stdcall;
-{$EXTERNALSYM GetServiceDisplayName}
-{$ENDIF}
 
 function LockServiceDatabase(hSCManager: SC_HANDLE): SC_LOCK; stdcall;
 {$EXTERNALSYM LockServiceDatabase}
@@ -923,16 +866,9 @@ function OpenSCManagerA(lpMachineName: LPCSTR; lpDatabaseName: LPCSTR;
 function OpenSCManagerW(lpMachineName: LPCWSTR; lpDatabaseName: LPCWSTR;
   dwDesiredAccess: DWORD): SC_HANDLE; stdcall;
 {$EXTERNALSYM OpenSCManagerW}
-
-{$IFDEF UNICODE}
-function OpenSCManager(lpMachineName: LPCWSTR; lpDatabaseName: LPCWSTR;
+function OpenSCManager(lpMachineName: LPCTSTR; lpDatabaseName: LPCTSTR;
   dwDesiredAccess: DWORD): SC_HANDLE; stdcall;
 {$EXTERNALSYM OpenSCManager}
-{$ELSE}
-function OpenSCManager(lpMachineName: LPCSTR; lpDatabaseName: LPCSTR;
-  dwDesiredAccess: DWORD): SC_HANDLE; stdcall;
-{$EXTERNALSYM OpenSCManager}
-{$ENDIF}
 
 function OpenServiceA(hSCManager: SC_HANDLE; lpServiceName: LPCSTR;
   dwDesiredAccess: DWORD): SC_HANDLE; stdcall;
@@ -940,16 +876,9 @@ function OpenServiceA(hSCManager: SC_HANDLE; lpServiceName: LPCSTR;
 function OpenServiceW(hSCManager: SC_HANDLE; lpServiceName: LPCWSTR;
   dwDesiredAccess: DWORD): SC_HANDLE; stdcall;
 {$EXTERNALSYM OpenServiceW}
-
-{$IFDEF UNICODE}
-function OpenService(hSCManager: SC_HANDLE; lpServiceName: LPCWSTR;
+function OpenService(hSCManager: SC_HANDLE; lpServiceName: LPCTSTR;
   dwDesiredAccess: DWORD): SC_HANDLE; stdcall;
 {$EXTERNALSYM OpenService}
-{$ELSE}
-function OpenService(hSCManager: SC_HANDLE; lpServiceName: LPCSTR;
-  dwDesiredAccess: DWORD): SC_HANDLE; stdcall;
-{$EXTERNALSYM OpenService}
-{$ENDIF}
 
 function QueryServiceConfigA(hService: SC_HANDLE;
   lpServiceConfig: LPQUERY_SERVICE_CONFIGA; cbBufSize: DWORD;
@@ -959,18 +888,10 @@ function QueryServiceConfigW(hService: SC_HANDLE;
   lpServiceConfig: LPQUERY_SERVICE_CONFIGW; cbBufSize: DWORD;
   var pcbBytesNeeded: DWORD): BOOL; stdcall;
 {$EXTERNALSYM QueryServiceConfigW}
-
-{$IFDEF UNICODE}
 function QueryServiceConfig(hService: SC_HANDLE;
-  lpServiceConfig: LPQUERY_SERVICE_CONFIGW; cbBufSize: DWORD;
+  lpServiceConfig: LPQUERY_SERVICE_CONFIG; cbBufSize: DWORD;
   var pcbBytesNeeded: DWORD): BOOL; stdcall;
 {$EXTERNALSYM QueryServiceConfig}
-{$ELSE}
-function QueryServiceConfig(hService: SC_HANDLE;
-  lpServiceConfig: LPQUERY_SERVICE_CONFIGA; cbBufSize: DWORD;
-  var pcbBytesNeeded: DWORD): BOOL; stdcall;
-{$EXTERNALSYM QueryServiceConfig}
-{$ENDIF}
 
 function QueryServiceConfig2A(hService: SC_HANDLE; dwInfoLevel: DWORD;
   lpBuffer: LPBYTE; cbBufSize: DWORD; var pcbBytesNeeded: DWORD): BOOL; stdcall;
@@ -978,16 +899,9 @@ function QueryServiceConfig2A(hService: SC_HANDLE; dwInfoLevel: DWORD;
 function QueryServiceConfig2W(hService: SC_HANDLE; dwInfoLevel: DWORD;
   lpBuffer: LPBYTE; cbBufSize: DWORD; var pcbBytesNeeded: DWORD): BOOL; stdcall;
 {$EXTERNALSYM QueryServiceConfig2W}
-
-{$IFDEF UNICODE}
 function QueryServiceConfig2(hService: SC_HANDLE; dwInfoLevel: DWORD;
   lpBuffer: LPBYTE; cbBufSize: DWORD; var pcbBytesNeeded: DWORD): BOOL; stdcall;
 {$EXTERNALSYM QueryServiceConfig2}
-{$ELSE}
-function QueryServiceConfig2(hService: SC_HANDLE; dwInfoLevel: DWORD;
-  lpBuffer: LPBYTE; cbBufSize: DWORD; var pcbBytesNeeded: DWORD): BOOL; stdcall;
-{$EXTERNALSYM QueryServiceConfig2}
-{$ENDIF}
 
 function QueryServiceLockStatusA(hSCManager: SC_HANDLE;
   lpLockStatus: LPQUERY_SERVICE_LOCK_STATUSA; cbBufSize: DWORD;
@@ -997,18 +911,10 @@ function QueryServiceLockStatusW(hSCManager: SC_HANDLE;
   lpLockStatus: LPQUERY_SERVICE_LOCK_STATUSW; cbBufSize: DWORD;
   var pcbBytesNeeded: DWORD): BOOL; stdcall;
 {$EXTERNALSYM QueryServiceLockStatusW}
-
-{$IFDEF UNICODE}
 function QueryServiceLockStatus(hSCManager: SC_HANDLE;
-  lpLockStatus: LPQUERY_SERVICE_LOCK_STATUSW; cbBufSize: DWORD;
+  lpLockStatus: LPQUERY_SERVICE_LOCK_STATUS; cbBufSize: DWORD;
   var pcbBytesNeeded: DWORD): BOOL; stdcall;
 {$EXTERNALSYM QueryServiceLockStatus}
-{$ELSE}
-function QueryServiceLockStatus(hSCManager: SC_HANDLE;
-  lpLockStatus: LPQUERY_SERVICE_LOCK_STATUSA; cbBufSize: DWORD;
-  var pcbBytesNeeded: DWORD): BOOL; stdcall;
-{$EXTERNALSYM QueryServiceLockStatus}
-{$ENDIF}
 
 function QueryServiceObjectSecurity(hService: SC_HANDLE;
   dwSecurityInformation: SECURITY_INFORMATION;
@@ -1030,16 +936,9 @@ function RegisterServiceCtrlHandlerA(lpServiceName: LPCSTR;
 function RegisterServiceCtrlHandlerW(lpServiceName: LPCWSTR;
   lpHandlerProc: LPHANDLER_FUNCTION): SERVICE_STATUS_HANDLE; stdcall;
 {$EXTERNALSYM RegisterServiceCtrlHandlerW}
-
-{$IFDEF UNICODE}
-function RegisterServiceCtrlHandler(lpServiceName: LPCWSTR;
+function RegisterServiceCtrlHandler(lpServiceName: LPCTSTR;
   lpHandlerProc: LPHANDLER_FUNCTION): SERVICE_STATUS_HANDLE; stdcall;
 {$EXTERNALSYM RegisterServiceCtrlHandler}
-{$ELSE}
-function RegisterServiceCtrlHandler(lpServiceName: LPCSTR;
-  lpHandlerProc: LPHANDLER_FUNCTION): SERVICE_STATUS_HANDLE; stdcall;
-{$EXTERNALSYM RegisterServiceCtrlHandler}
-{$ENDIF}
 
 function RegisterServiceCtrlHandlerExA(lpServiceName: LPCSTR;
   lpHandlerProc: LPHANDLER_FUNCTION_EX; lpContext: LPVOID): SERVICE_STATUS_HANDLE; stdcall;
@@ -1047,16 +946,9 @@ function RegisterServiceCtrlHandlerExA(lpServiceName: LPCSTR;
 function RegisterServiceCtrlHandlerExW(lpServiceName: LPCWSTR;
   lpHandlerProc: LPHANDLER_FUNCTION_EX; lpContext: LPVOID): SERVICE_STATUS_HANDLE; stdcall;
 {$EXTERNALSYM RegisterServiceCtrlHandlerExW}
-
-{$IFDEF UNICODE}
-function RegisterServiceCtrlHandlerEx(lpServiceName: LPCWSTR;
+function RegisterServiceCtrlHandlerEx(lpServiceName: LPCTSTR;
   lpHandlerProc: LPHANDLER_FUNCTION_EX; lpContext: LPVOID): SERVICE_STATUS_HANDLE; stdcall;
 {$EXTERNALSYM RegisterServiceCtrlHandlerEx}
-{$ELSE}
-function RegisterServiceCtrlHandlerEx(lpServiceName: LPCSTR;
-  lpHandlerProc: LPHANDLER_FUNCTION_EX; lpContext: LPVOID): SERVICE_STATUS_HANDLE; stdcall;
-{$EXTERNALSYM RegisterServiceCtrlHandlerEx}
-{$ENDIF}
 
 // 9/4/2002 Changed last parameter from const to pointer - reported by James Ots.
 
@@ -1073,14 +965,8 @@ function StartServiceCtrlDispatcherA(lpServiceStartTable: LPSERVICE_TABLE_ENTRYA
 {$EXTERNALSYM StartServiceCtrlDispatcherA}
 function StartServiceCtrlDispatcherW(lpServiceStartTable: LPSERVICE_TABLE_ENTRYW): BOOL; stdcall;
 {$EXTERNALSYM StartServiceCtrlDispatcherW}
-
-{$IFDEF UNICODE}
-function StartServiceCtrlDispatcher(lpServiceStartTable: LPSERVICE_TABLE_ENTRYW): BOOL; stdcall;
+function StartServiceCtrlDispatcher(lpServiceStartTable: LPSERVICE_TABLE_ENTRY): BOOL; stdcall;
 {$EXTERNALSYM StartServiceCtrlDispatcher}
-{$ELSE}
-function StartServiceCtrlDispatcher(lpServiceStartTable: LPSERVICE_TABLE_ENTRYA): BOOL; stdcall;
-{$EXTERNALSYM StartServiceCtrlDispatcher}
-{$ENDIF}
 
 function StartServiceA(hService: SC_HANDLE; dwNumServiceArgs: DWORD;
   lpServiceArgVectors: LPCSTR): BOOL; stdcall;
@@ -1088,27 +974,28 @@ function StartServiceA(hService: SC_HANDLE; dwNumServiceArgs: DWORD;
 function StartServiceW(hService: SC_HANDLE; dwNumServiceArgs: DWORD;
   lpServiceArgVectors: LPCWSTR): BOOL; stdcall;
 {$EXTERNALSYM StartServiceW}
-
-{$IFDEF UNICODE}
 function StartService(hService: SC_HANDLE; dwNumServiceArgs: DWORD;
-  lpServiceArgVectors: LPCWSTR): BOOL; stdcall;
+  lpServiceArgVectors: LPCTSTR): BOOL; stdcall;
 {$EXTERNALSYM StartService}
-{$ELSE}
-function StartService(hService: SC_HANDLE; dwNumServiceArgs: DWORD;
-  lpServiceArgVectors: LPCSTR): BOOL; stdcall;
-{$EXTERNALSYM StartService}
-{$ENDIF}
 
 function UnlockServiceDatabase(ScLock: SC_LOCK): BOOL; stdcall;
 {$EXTERNALSYM UnlockServiceDatabase}
 
+{$ENDIF JWA_INTERFACESECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
+
 implementation
 
-const
-  advapi32 = 'advapi32.dll';
+uses
+  JwaWinDLLNames;
 
+{$ENDIF !JWA_INCLUDEMODE}
+
+{$IFDEF JWA_IMPLEMENTATIONSECTION}
 
 {$IFDEF DYNAMIC_LINK}
+
 var
   _ChangeServiceConfigA: Pointer;
 
@@ -1116,16 +1003,12 @@ function ChangeServiceConfigA;
 begin
   GetProcedureAddress(_ChangeServiceConfigA, advapi32, 'ChangeServiceConfigA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ChangeServiceConfigA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ChangeServiceConfigA]
   end;
 end;
-{$ELSE}
-function ChangeServiceConfigA; external advapi32 name 'ChangeServiceConfigA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ChangeServiceConfigW: Pointer;
 
@@ -1133,55 +1016,25 @@ function ChangeServiceConfigW;
 begin
   GetProcedureAddress(_ChangeServiceConfigW, advapi32, 'ChangeServiceConfigW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ChangeServiceConfigW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ChangeServiceConfigW]
   end;
 end;
-{$ELSE}
-function ChangeServiceConfigW; external advapi32 name 'ChangeServiceConfigW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _ChangeServiceConfig: Pointer;
 
 function ChangeServiceConfig;
 begin
-  GetProcedureAddress(_ChangeServiceConfig, advapi32, 'ChangeServiceConfigW');
+  GetProcedureAddress(_ChangeServiceConfig, advapi32, 'ChangeServiceConfig' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ChangeServiceConfig]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ChangeServiceConfig]
   end;
 end;
-{$ELSE}
-function ChangeServiceConfig; external advapi32 name 'ChangeServiceConfigW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _ChangeServiceConfig: Pointer;
-
-function ChangeServiceConfig;
-begin
-  GetProcedureAddress(_ChangeServiceConfig, advapi32, 'ChangeServiceConfigA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ChangeServiceConfig]
-  end;
-end;
-{$ELSE}
-function ChangeServiceConfig; external advapi32 name 'ChangeServiceConfigA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-
-{$IFDEF DYNAMIC_LINK}
 var
   _ChangeServiceConfig2A: Pointer;
 
@@ -1189,16 +1042,12 @@ function ChangeServiceConfig2A;
 begin
   GetProcedureAddress(_ChangeServiceConfig2A, advapi32, 'ChangeServiceConfig2A');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ChangeServiceConfig2A]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ChangeServiceConfig2A]
   end;
 end;
-{$ELSE}
-function ChangeServiceConfig2A; external advapi32 name 'ChangeServiceConfig2A';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ChangeServiceConfig2W: Pointer;
 
@@ -1206,55 +1055,25 @@ function ChangeServiceConfig2W;
 begin
   GetProcedureAddress(_ChangeServiceConfig2W, advapi32, 'ChangeServiceConfig2W');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ChangeServiceConfig2W]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ChangeServiceConfig2W]
   end;
 end;
-{$ELSE}
-function ChangeServiceConfig2W; external advapi32 name 'ChangeServiceConfig2W';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _ChangeServiceConfig2: Pointer;
 
 function ChangeServiceConfig2;
 begin
-  GetProcedureAddress(_ChangeServiceConfig2, advapi32, 'ChangeServiceConfig2W');
+  GetProcedureAddress(_ChangeServiceConfig2, advapi32, 'ChangeServiceConfig2' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ChangeServiceConfig2]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ChangeServiceConfig2]
   end;
 end;
-{$ELSE}
-function ChangeServiceConfig2; external advapi32 name 'ChangeServiceConfig2W';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _ChangeServiceConfig2: Pointer;
-
-function ChangeServiceConfig2;
-begin
-  GetProcedureAddress(_ChangeServiceConfig2, advapi32, 'ChangeServiceConfig2A');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ChangeServiceConfig2]
-  end;
-end;
-{$ELSE}
-function ChangeServiceConfig2; external advapi32 name 'ChangeServiceConfig2A';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CloseServiceHandle: Pointer;
 
@@ -1262,16 +1081,12 @@ function CloseServiceHandle;
 begin
   GetProcedureAddress(_CloseServiceHandle, advapi32, 'CloseServiceHandle');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CloseServiceHandle]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CloseServiceHandle]
   end;
 end;
-{$ELSE}
-function CloseServiceHandle; external advapi32 name 'CloseServiceHandle';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _ControlService: Pointer;
 
@@ -1279,17 +1094,12 @@ function ControlService;
 begin
   GetProcedureAddress(_ControlService, advapi32, 'ControlService');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_ControlService]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_ControlService]
   end;
 end;
-{$ELSE}
-function ControlService; external advapi32 name 'ControlService';
-{$ENDIF DYNAMIC_LINK}
 
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateServiceA: Pointer;
 
@@ -1297,16 +1107,12 @@ function CreateServiceA;
 begin
   GetProcedureAddress(_CreateServiceA, advapi32, 'CreateServiceA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateServiceA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateServiceA]
   end;
 end;
-{$ELSE}
-function CreateServiceA; external advapi32 name 'CreateServiceA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateServiceW: Pointer;
 
@@ -1314,55 +1120,25 @@ function CreateServiceW;
 begin
   GetProcedureAddress(_CreateServiceW, advapi32, 'CreateServiceW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateServiceW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateServiceW]
   end;
 end;
-{$ELSE}
-function CreateServiceW; external advapi32 name 'CreateServiceW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _CreateService: Pointer;
 
 function CreateService;
 begin
-  GetProcedureAddress(_CreateService, advapi32, 'CreateServiceW');
+  GetProcedureAddress(_CreateService, advapi32, 'CreateService' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateService]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_CreateService]
   end;
 end;
-{$ELSE}
-function CreateService; external advapi32 name 'CreateServiceW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _CreateService: Pointer;
-
-function CreateService;
-begin
-  GetProcedureAddress(_CreateService, advapi32, 'CreateServiceA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_CreateService]
-  end;
-end;
-{$ELSE}
-function CreateService; external advapi32 name 'CreateServiceA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-
-{$IFDEF DYNAMIC_LINK}
 var
   _DeleteService: Pointer;
 
@@ -1370,17 +1146,12 @@ function DeleteService;
 begin
   GetProcedureAddress(_DeleteService, advapi32, 'DeleteService');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_DeleteService]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_DeleteService]
   end;
 end;
-{$ELSE}
-function DeleteService; external advapi32 name 'DeleteService';
-{$ENDIF DYNAMIC_LINK}
 
-
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumDependentServicesA: Pointer;
 
@@ -1388,16 +1159,12 @@ function EnumDependentServicesA;
 begin
   GetProcedureAddress(_EnumDependentServicesA, advapi32, 'EnumDependentServicesA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumDependentServicesA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumDependentServicesA]
   end;
 end;
-{$ELSE}
-function EnumDependentServicesA; external advapi32 name 'EnumDependentServicesA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumDependentServicesW: Pointer;
 
@@ -1405,55 +1172,25 @@ function EnumDependentServicesW;
 begin
   GetProcedureAddress(_EnumDependentServicesW, advapi32, 'EnumDependentServicesW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumDependentServicesW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumDependentServicesW]
   end;
 end;
-{$ELSE}
-function EnumDependentServicesW; external advapi32 name 'EnumDependentServicesW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumDependentServices: Pointer;
 
 function EnumDependentServices;
 begin
-  GetProcedureAddress(_EnumDependentServices, advapi32, 'EnumDependentServicesW');
+  GetProcedureAddress(_EnumDependentServices, advapi32, 'EnumDependentServices' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumDependentServices]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumDependentServices]
   end;
 end;
-{$ELSE}
-function EnumDependentServices; external advapi32 name 'EnumDependentServicesW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumDependentServices: Pointer;
-
-function EnumDependentServices;
-begin
-  GetProcedureAddress(_EnumDependentServices, advapi32, 'EnumDependentServicesA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumDependentServices]
-  end;
-end;
-{$ELSE}
-function EnumDependentServices; external advapi32 name 'EnumDependentServicesA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumServicesStatusA: Pointer;
 
@@ -1461,16 +1198,12 @@ function EnumServicesStatusA;
 begin
   GetProcedureAddress(_EnumServicesStatusA, advapi32, 'EnumServicesStatusA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumServicesStatusA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumServicesStatusA]
   end;
 end;
-{$ELSE}
-function EnumServicesStatusA; external advapi32 name 'EnumServicesStatusA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumServicesStatusW: Pointer;
 
@@ -1478,55 +1211,25 @@ function EnumServicesStatusW;
 begin
   GetProcedureAddress(_EnumServicesStatusW, advapi32, 'EnumServicesStatusW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumServicesStatusW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumServicesStatusW]
   end;
 end;
-{$ELSE}
-function EnumServicesStatusW; external advapi32 name 'EnumServicesStatusW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumServicesStatus: Pointer;
 
 function EnumServicesStatus;
 begin
-  GetProcedureAddress(_EnumServicesStatus, advapi32, 'EnumServicesStatusW');
+  GetProcedureAddress(_EnumServicesStatus, advapi32, 'EnumServicesStatus' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumServicesStatus]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumServicesStatus]
   end;
 end;
-{$ELSE}
-function EnumServicesStatus; external advapi32 name 'EnumServicesStatusW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumServicesStatus: Pointer;
-
-function EnumServicesStatus;
-begin
-  GetProcedureAddress(_EnumServicesStatus, advapi32, 'EnumServicesStatusA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumServicesStatus]
-  end;
-end;
-{$ELSE}
-function EnumServicesStatus; external advapi32 name 'EnumServicesStatusA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumServicesStatusExA: Pointer;
 
@@ -1534,16 +1237,12 @@ function EnumServicesStatusExA;
 begin
   GetProcedureAddress(_EnumServicesStatusExA, advapi32, 'EnumServicesStatusExA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumServicesStatusExA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumServicesStatusExA]
   end;
 end;
-{$ELSE}
-function EnumServicesStatusExA; external advapi32 name 'EnumServicesStatusExA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumServicesStatusExW: Pointer;
 
@@ -1551,55 +1250,25 @@ function EnumServicesStatusExW;
 begin
   GetProcedureAddress(_EnumServicesStatusExW, advapi32, 'EnumServicesStatusExW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumServicesStatusExW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumServicesStatusExW]
   end;
 end;
-{$ELSE}
-function EnumServicesStatusExW; external advapi32 name 'EnumServicesStatusExW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _EnumServicesStatusEx: Pointer;
 
 function EnumServicesStatusEx;
 begin
-  GetProcedureAddress(_EnumServicesStatusEx, advapi32, 'EnumServicesStatusExW');
+  GetProcedureAddress(_EnumServicesStatusEx, advapi32, 'EnumServicesStatusEx' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumServicesStatusEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_EnumServicesStatusEx]
   end;
 end;
-{$ELSE}
-function EnumServicesStatusEx; external advapi32 name 'EnumServicesStatusExW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _EnumServicesStatusEx: Pointer;
-
-function EnumServicesStatusEx;
-begin
-  GetProcedureAddress(_EnumServicesStatusEx, advapi32, 'EnumServicesStatusExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_EnumServicesStatusEx]
-  end;
-end;
-{$ELSE}
-function EnumServicesStatusEx; external advapi32 name 'EnumServicesStatusExA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetServiceKeyNameA: Pointer;
 
@@ -1607,16 +1276,12 @@ function GetServiceKeyNameA;
 begin
   GetProcedureAddress(_GetServiceKeyNameA, advapi32, 'GetServiceKeyNameA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetServiceKeyNameA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetServiceKeyNameA]
   end;
 end;
-{$ELSE}
-function GetServiceKeyNameA; external advapi32 name 'GetServiceKeyNameA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetServiceKeyNameW: Pointer;
 
@@ -1624,55 +1289,25 @@ function GetServiceKeyNameW;
 begin
   GetProcedureAddress(_GetServiceKeyNameW, advapi32, 'GetServiceKeyNameW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetServiceKeyNameW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetServiceKeyNameW]
   end;
 end;
-{$ELSE}
-function GetServiceKeyNameW; external advapi32 name 'GetServiceKeyNameW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetServiceKeyName: Pointer;
 
 function GetServiceKeyName;
 begin
-  GetProcedureAddress(_GetServiceKeyName, advapi32, 'GetServiceKeyNameW');
+  GetProcedureAddress(_GetServiceKeyName, advapi32, 'GetServiceKeyName' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetServiceKeyName]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetServiceKeyName]
   end;
 end;
-{$ELSE}
-function GetServiceKeyName; external advapi32 name 'GetServiceKeyNameW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetServiceKeyName: Pointer;
-
-function GetServiceKeyName;
-begin
-  GetProcedureAddress(_GetServiceKeyName, advapi32, 'GetServiceKeyNameA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetServiceKeyName]
-  end;
-end;
-{$ELSE}
-function GetServiceKeyName; external advapi32 name 'GetServiceKeyNameA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetServiceDisplayNameA: Pointer;
 
@@ -1680,16 +1315,12 @@ function GetServiceDisplayNameA;
 begin
   GetProcedureAddress(_GetServiceDisplayNameA, advapi32, 'GetServiceDisplayNameA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetServiceDisplayNameA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetServiceDisplayNameA]
   end;
 end;
-{$ELSE}
-function GetServiceDisplayNameA; external advapi32 name 'GetServiceDisplayNameA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _GetServiceDisplayNameW: Pointer;
 
@@ -1697,55 +1328,25 @@ function GetServiceDisplayNameW;
 begin
   GetProcedureAddress(_GetServiceDisplayNameW, advapi32, 'GetServiceDisplayNameW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetServiceDisplayNameW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetServiceDisplayNameW]
   end;
 end;
-{$ELSE}
-function GetServiceDisplayNameW; external advapi32 name 'GetServiceDisplayNameW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _GetServiceDisplayName: Pointer;
 
 function GetServiceDisplayName;
 begin
-  GetProcedureAddress(_GetServiceDisplayName, advapi32, 'GetServiceDisplayNameW');
+  GetProcedureAddress(_GetServiceDisplayName, advapi32, 'GetServiceDisplayName' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetServiceDisplayName]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_GetServiceDisplayName]
   end;
 end;
-{$ELSE}
-function GetServiceDisplayName; external advapi32 name 'GetServiceDisplayNameW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _GetServiceDisplayName: Pointer;
-
-function GetServiceDisplayName;
-begin
-  GetProcedureAddress(_GetServiceDisplayName, advapi32, 'GetServiceDisplayNameA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_GetServiceDisplayName]
-  end;
-end;
-{$ELSE}
-function GetServiceDisplayName; external advapi32 name 'GetServiceDisplayNameA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-
-{$IFDEF DYNAMIC_LINK}
 var
   _LockServiceDatabase: Pointer;
 
@@ -1753,17 +1354,12 @@ function LockServiceDatabase;
 begin
   GetProcedureAddress(_LockServiceDatabase, advapi32, 'LockServiceDatabase');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_LockServiceDatabase]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_LockServiceDatabase]
   end;
 end;
-{$ELSE}
-function LockServiceDatabase; external advapi32 name 'LockServiceDatabase';
-{$ENDIF DYNAMIC_LINK}
 
-
-{$IFDEF DYNAMIC_LINK}
 var
   _NotifyBootConfigStatus: Pointer;
 
@@ -1771,17 +1367,12 @@ function NotifyBootConfigStatus;
 begin
   GetProcedureAddress(_NotifyBootConfigStatus, advapi32, 'NotifyBootConfigStatus');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_NotifyBootConfigStatus]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_NotifyBootConfigStatus]
   end;
 end;
-{$ELSE}
-function NotifyBootConfigStatus; external advapi32 name 'NotifyBootConfigStatus';
-{$ENDIF DYNAMIC_LINK}
 
-
-{$IFDEF DYNAMIC_LINK}
 var
   _OpenSCManagerA: Pointer;
 
@@ -1789,16 +1380,12 @@ function OpenSCManagerA;
 begin
   GetProcedureAddress(_OpenSCManagerA, advapi32, 'OpenSCManagerA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_OpenSCManagerA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_OpenSCManagerA]
   end;
 end;
-{$ELSE}
-function OpenSCManagerA; external advapi32 name 'OpenSCManagerA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _OpenSCManagerW: Pointer;
 
@@ -1806,55 +1393,25 @@ function OpenSCManagerW;
 begin
   GetProcedureAddress(_OpenSCManagerW, advapi32, 'OpenSCManagerW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_OpenSCManagerW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_OpenSCManagerW]
   end;
 end;
-{$ELSE}
-function OpenSCManagerW; external advapi32 name 'OpenSCManagerW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _OpenSCManager: Pointer;
 
 function OpenSCManager;
 begin
-  GetProcedureAddress(_OpenSCManager, advapi32, 'OpenSCManagerW');
+  GetProcedureAddress(_OpenSCManager, advapi32, 'OpenSCManager' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_OpenSCManager]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_OpenSCManager]
   end;
 end;
-{$ELSE}
-function OpenSCManager; external advapi32 name 'OpenSCManagerW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _OpenSCManager: Pointer;
-
-function OpenSCManager;
-begin
-  GetProcedureAddress(_OpenSCManager, advapi32, 'OpenSCManagerA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_OpenSCManager]
-  end;
-end;
-{$ELSE}
-function OpenSCManager; external advapi32 name 'OpenSCManagerA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-
-{$IFDEF DYNAMIC_LINK}
 var
   _OpenServiceA: Pointer;
 
@@ -1862,16 +1419,12 @@ function OpenServiceA;
 begin
   GetProcedureAddress(_OpenServiceA, advapi32, 'OpenServiceA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_OpenServiceA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_OpenServiceA]
   end;
 end;
-{$ELSE}
-function OpenServiceA; external advapi32 name 'OpenServiceA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _OpenServiceW: Pointer;
 
@@ -1879,55 +1432,25 @@ function OpenServiceW;
 begin
   GetProcedureAddress(_OpenServiceW, advapi32, 'OpenServiceW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_OpenServiceW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_OpenServiceW]
   end;
 end;
-{$ELSE}
-function OpenServiceW; external advapi32 name 'OpenServiceW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _OpenService: Pointer;
 
 function OpenService;
 begin
-  GetProcedureAddress(_OpenService, advapi32, 'OpenServiceW');
+  GetProcedureAddress(_OpenService, advapi32, 'OpenService' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_OpenService]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_OpenService]
   end;
 end;
-{$ELSE}
-function OpenService; external advapi32 name 'OpenServiceW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _OpenService: Pointer;
-
-function OpenService;
-begin
-  GetProcedureAddress(_OpenService, advapi32, 'OpenServiceA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_OpenService]
-  end;
-end;
-{$ELSE}
-function OpenService; external advapi32 name 'OpenServiceA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-
-{$IFDEF DYNAMIC_LINK}
 var
   _QueryServiceConfigA: Pointer;
 
@@ -1935,16 +1458,12 @@ function QueryServiceConfigA;
 begin
   GetProcedureAddress(_QueryServiceConfigA, advapi32, 'QueryServiceConfigA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_QueryServiceConfigA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_QueryServiceConfigA]
   end;
 end;
-{$ELSE}
-function QueryServiceConfigA; external advapi32 name 'QueryServiceConfigA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _QueryServiceConfigW: Pointer;
 
@@ -1952,55 +1471,25 @@ function QueryServiceConfigW;
 begin
   GetProcedureAddress(_QueryServiceConfigW, advapi32, 'QueryServiceConfigW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_QueryServiceConfigW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_QueryServiceConfigW]
   end;
 end;
-{$ELSE}
-function QueryServiceConfigW; external advapi32 name 'QueryServiceConfigW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _QueryServiceConfig: Pointer;
 
 function QueryServiceConfig;
 begin
-  GetProcedureAddress(_QueryServiceConfig, advapi32, 'QueryServiceConfigW');
+  GetProcedureAddress(_QueryServiceConfig, advapi32, 'QueryServiceConfig' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_QueryServiceConfig]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_QueryServiceConfig]
   end;
 end;
-{$ELSE}
-function QueryServiceConfig; external advapi32 name 'QueryServiceConfigW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _QueryServiceConfig: Pointer;
-
-function QueryServiceConfig;
-begin
-  GetProcedureAddress(_QueryServiceConfig, advapi32, 'QueryServiceConfigA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_QueryServiceConfig]
-  end;
-end;
-{$ELSE}
-function QueryServiceConfig; external advapi32 name 'QueryServiceConfigA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-
-{$IFDEF DYNAMIC_LINK}
 var
   _QueryServiceConfig2A: Pointer;
 
@@ -2008,16 +1497,12 @@ function QueryServiceConfig2A;
 begin
   GetProcedureAddress(_QueryServiceConfig2A, advapi32, 'QueryServiceConfig2A');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_QueryServiceConfig2A]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_QueryServiceConfig2A]
   end;
 end;
-{$ELSE}
-function QueryServiceConfig2A; external advapi32 name 'QueryServiceConfig2A';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _QueryServiceConfig2W: Pointer;
 
@@ -2025,55 +1510,25 @@ function QueryServiceConfig2W;
 begin
   GetProcedureAddress(_QueryServiceConfig2W, advapi32, 'QueryServiceConfig2W');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_QueryServiceConfig2W]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_QueryServiceConfig2W]
   end;
 end;
-{$ELSE}
-function QueryServiceConfig2W; external advapi32 name 'QueryServiceConfig2W';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _QueryServiceConfig2: Pointer;
 
 function QueryServiceConfig2;
 begin
-  GetProcedureAddress(_QueryServiceConfig2, advapi32, 'QueryServiceConfig2W');
+  GetProcedureAddress(_QueryServiceConfig2, advapi32, 'QueryServiceConfig2' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_QueryServiceConfig2]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_QueryServiceConfig2]
   end;
 end;
-{$ELSE}
-function QueryServiceConfig2; external advapi32 name 'QueryServiceConfig2W';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _QueryServiceConfig2: Pointer;
-
-function QueryServiceConfig2;
-begin
-  GetProcedureAddress(_QueryServiceConfig2, advapi32, 'QueryServiceConfig2A');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_QueryServiceConfig2]
-  end;
-end;
-{$ELSE}
-function QueryServiceConfig2; external advapi32 name 'QueryServiceConfig2A';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-
-{$IFDEF DYNAMIC_LINK}
 var
   _QueryServiceLockStatusA: Pointer;
 
@@ -2081,16 +1536,12 @@ function QueryServiceLockStatusA;
 begin
   GetProcedureAddress(_QueryServiceLockStatusA, advapi32, 'QueryServiceLockStatusA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_QueryServiceLockStatusA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_QueryServiceLockStatusA]
   end;
 end;
-{$ELSE}
-function QueryServiceLockStatusA; external advapi32 name 'QueryServiceLockStatusA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _QueryServiceLockStatusW: Pointer;
 
@@ -2098,55 +1549,25 @@ function QueryServiceLockStatusW;
 begin
   GetProcedureAddress(_QueryServiceLockStatusW, advapi32, 'QueryServiceLockStatusW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_QueryServiceLockStatusW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_QueryServiceLockStatusW]
   end;
 end;
-{$ELSE}
-function QueryServiceLockStatusW; external advapi32 name 'QueryServiceLockStatusW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _QueryServiceLockStatus: Pointer;
 
 function QueryServiceLockStatus;
 begin
-  GetProcedureAddress(_QueryServiceLockStatus, advapi32, 'QueryServiceLockStatusW');
+  GetProcedureAddress(_QueryServiceLockStatus, advapi32, 'QueryServiceLockStatus' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_QueryServiceLockStatus]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_QueryServiceLockStatus]
   end;
 end;
-{$ELSE}
-function QueryServiceLockStatus; external advapi32 name 'QueryServiceLockStatusW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _QueryServiceLockStatus: Pointer;
-
-function QueryServiceLockStatus;
-begin
-  GetProcedureAddress(_QueryServiceLockStatus, advapi32, 'QueryServiceLockStatusA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_QueryServiceLockStatus]
-  end;
-end;
-{$ELSE}
-function QueryServiceLockStatus; external advapi32 name 'QueryServiceLockStatusA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-
-{$IFDEF DYNAMIC_LINK}
 var
   _QueryServiceObjectSecurity: Pointer;
 
@@ -2154,16 +1575,12 @@ function QueryServiceObjectSecurity;
 begin
   GetProcedureAddress(_QueryServiceObjectSecurity, advapi32, 'QueryServiceObjectSecurity');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_QueryServiceObjectSecurity]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_QueryServiceObjectSecurity]
   end;
 end;
-{$ELSE}
-function QueryServiceObjectSecurity; external advapi32 name 'QueryServiceObjectSecurity';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _QueryServiceStatus: Pointer;
 
@@ -2171,16 +1588,12 @@ function QueryServiceStatus;
 begin
   GetProcedureAddress(_QueryServiceStatus, advapi32, 'QueryServiceStatus');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_QueryServiceStatus]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_QueryServiceStatus]
   end;
 end;
-{$ELSE}
-function QueryServiceStatus; external advapi32 name 'QueryServiceStatus';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _QueryServiceStatusEx: Pointer;
 
@@ -2188,17 +1601,12 @@ function QueryServiceStatusEx;
 begin
   GetProcedureAddress(_QueryServiceStatusEx, advapi32, 'QueryServiceStatusEx');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_QueryServiceStatusEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_QueryServiceStatusEx]
   end;
 end;
-{$ELSE}
-function QueryServiceStatusEx; external advapi32 name 'QueryServiceStatusEx';
-{$ENDIF DYNAMIC_LINK}
 
-
-{$IFDEF DYNAMIC_LINK}
 var
   _RegisterServiceCtrlHandlerA: Pointer;
 
@@ -2206,16 +1614,12 @@ function RegisterServiceCtrlHandlerA;
 begin
   GetProcedureAddress(_RegisterServiceCtrlHandlerA, advapi32, 'RegisterServiceCtrlHandlerA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RegisterServiceCtrlHandlerA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RegisterServiceCtrlHandlerA]
   end;
 end;
-{$ELSE}
-function RegisterServiceCtrlHandlerA; external advapi32 name 'RegisterServiceCtrlHandlerA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RegisterServiceCtrlHandlerW: Pointer;
 
@@ -2223,55 +1627,25 @@ function RegisterServiceCtrlHandlerW;
 begin
   GetProcedureAddress(_RegisterServiceCtrlHandlerW, advapi32, 'RegisterServiceCtrlHandlerW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RegisterServiceCtrlHandlerW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RegisterServiceCtrlHandlerW]
   end;
 end;
-{$ELSE}
-function RegisterServiceCtrlHandlerW; external advapi32 name 'RegisterServiceCtrlHandlerW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _RegisterServiceCtrlHandler: Pointer;
 
 function RegisterServiceCtrlHandler;
 begin
-  GetProcedureAddress(_RegisterServiceCtrlHandler, advapi32, 'RegisterServiceCtrlHandlerW');
+  GetProcedureAddress(_RegisterServiceCtrlHandler, advapi32, 'RegisterServiceCtrlHandler' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RegisterServiceCtrlHandler]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RegisterServiceCtrlHandler]
   end;
 end;
-{$ELSE}
-function RegisterServiceCtrlHandler; external advapi32 name 'RegisterServiceCtrlHandlerW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _RegisterServiceCtrlHandler: Pointer;
-
-function RegisterServiceCtrlHandler;
-begin
-  GetProcedureAddress(_RegisterServiceCtrlHandler, advapi32, 'RegisterServiceCtrlHandlerA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RegisterServiceCtrlHandler]
-  end;
-end;
-{$ELSE}
-function RegisterServiceCtrlHandler; external advapi32 name 'RegisterServiceCtrlHandlerA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-
-{$IFDEF DYNAMIC_LINK}
 var
   _RegisterServiceCtrlHandlerExA: Pointer;
 
@@ -2279,16 +1653,12 @@ function RegisterServiceCtrlHandlerExA;
 begin
   GetProcedureAddress(_RegisterServiceCtrlHandlerExA, advapi32, 'RegisterServiceCtrlHandlerExA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RegisterServiceCtrlHandlerExA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RegisterServiceCtrlHandlerExA]
   end;
 end;
-{$ELSE}
-function RegisterServiceCtrlHandlerExA; external advapi32 name 'RegisterServiceCtrlHandlerExA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _RegisterServiceCtrlHandlerExW: Pointer;
 
@@ -2296,55 +1666,25 @@ function RegisterServiceCtrlHandlerExW;
 begin
   GetProcedureAddress(_RegisterServiceCtrlHandlerExW, advapi32, 'RegisterServiceCtrlHandlerExW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RegisterServiceCtrlHandlerExW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RegisterServiceCtrlHandlerExW]
   end;
 end;
-{$ELSE}
-function RegisterServiceCtrlHandlerExW; external advapi32 name 'RegisterServiceCtrlHandlerExW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _RegisterServiceCtrlHandlerEx: Pointer;
 
 function RegisterServiceCtrlHandlerEx;
 begin
-  GetProcedureAddress(_RegisterServiceCtrlHandlerEx, advapi32, 'RegisterServiceCtrlHandlerExW');
+  GetProcedureAddress(_RegisterServiceCtrlHandlerEx, advapi32, 'RegisterServiceCtrlHandlerEx' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RegisterServiceCtrlHandlerEx]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_RegisterServiceCtrlHandlerEx]
   end;
 end;
-{$ELSE}
-function RegisterServiceCtrlHandlerEx; external advapi32 name 'RegisterServiceCtrlHandlerExW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _RegisterServiceCtrlHandlerEx: Pointer;
-
-function RegisterServiceCtrlHandlerEx;
-begin
-  GetProcedureAddress(_RegisterServiceCtrlHandlerEx, advapi32, 'RegisterServiceCtrlHandlerExA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_RegisterServiceCtrlHandlerEx]
-  end;
-end;
-{$ELSE}
-function RegisterServiceCtrlHandlerEx; external advapi32 name 'RegisterServiceCtrlHandlerExA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-
-{$IFDEF DYNAMIC_LINK}
 var
   _SetServiceObjectSecurity: Pointer;
 
@@ -2352,16 +1692,12 @@ function SetServiceObjectSecurity;
 begin
   GetProcedureAddress(_SetServiceObjectSecurity, advapi32, 'SetServiceObjectSecurity');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetServiceObjectSecurity]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetServiceObjectSecurity]
   end;
 end;
-{$ELSE}
-function SetServiceObjectSecurity; external advapi32 name 'SetServiceObjectSecurity';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _SetServiceStatus: Pointer;
 
@@ -2369,17 +1705,12 @@ function SetServiceStatus;
 begin
   GetProcedureAddress(_SetServiceStatus, advapi32, 'SetServiceStatus');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_SetServiceStatus]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_SetServiceStatus]
   end;
 end;
-{$ELSE}
-function SetServiceStatus; external advapi32 name 'SetServiceStatus';
-{$ENDIF DYNAMIC_LINK}
 
-
-{$IFDEF DYNAMIC_LINK}
 var
   _StartServiceCtrlDispatcherA: Pointer;
 
@@ -2387,16 +1718,12 @@ function StartServiceCtrlDispatcherA;
 begin
   GetProcedureAddress(_StartServiceCtrlDispatcherA, advapi32, 'StartServiceCtrlDispatcherA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_StartServiceCtrlDispatcherA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_StartServiceCtrlDispatcherA]
   end;
 end;
-{$ELSE}
-function StartServiceCtrlDispatcherA; external advapi32 name 'StartServiceCtrlDispatcherA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _StartServiceCtrlDispatcherW: Pointer;
 
@@ -2404,55 +1731,25 @@ function StartServiceCtrlDispatcherW;
 begin
   GetProcedureAddress(_StartServiceCtrlDispatcherW, advapi32, 'StartServiceCtrlDispatcherW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_StartServiceCtrlDispatcherW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_StartServiceCtrlDispatcherW]
   end;
 end;
-{$ELSE}
-function StartServiceCtrlDispatcherW; external advapi32 name 'StartServiceCtrlDispatcherW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _StartServiceCtrlDispatcher: Pointer;
 
 function StartServiceCtrlDispatcher;
 begin
-  GetProcedureAddress(_StartServiceCtrlDispatcher, advapi32, 'StartServiceCtrlDispatcherW');
+  GetProcedureAddress(_StartServiceCtrlDispatcher, advapi32, 'StartServiceCtrlDispatcher' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_StartServiceCtrlDispatcher]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_StartServiceCtrlDispatcher]
   end;
 end;
-{$ELSE}
-function StartServiceCtrlDispatcher; external advapi32 name 'StartServiceCtrlDispatcherW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _StartServiceCtrlDispatcher: Pointer;
-
-function StartServiceCtrlDispatcher;
-begin
-  GetProcedureAddress(_StartServiceCtrlDispatcher, advapi32, 'StartServiceCtrlDispatcherA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_StartServiceCtrlDispatcher]
-  end;
-end;
-{$ELSE}
-function StartServiceCtrlDispatcher; external advapi32 name 'StartServiceCtrlDispatcherA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-
-{$IFDEF DYNAMIC_LINK}
 var
   _StartServiceA: Pointer;
 
@@ -2460,16 +1757,12 @@ function StartServiceA;
 begin
   GetProcedureAddress(_StartServiceA, advapi32, 'StartServiceA');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_StartServiceA]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_StartServiceA]
   end;
 end;
-{$ELSE}
-function StartServiceA; external advapi32 name 'StartServiceA';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF DYNAMIC_LINK}
 var
   _StartServiceW: Pointer;
 
@@ -2477,55 +1770,25 @@ function StartServiceW;
 begin
   GetProcedureAddress(_StartServiceW, advapi32, 'StartServiceW');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_StartServiceW]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_StartServiceW]
   end;
 end;
-{$ELSE}
-function StartServiceW; external advapi32 name 'StartServiceW';
-{$ENDIF DYNAMIC_LINK}
 
-{$IFDEF UNICODE}
-
-{$IFDEF DYNAMIC_LINK}
 var
   _StartService: Pointer;
 
 function StartService;
 begin
-  GetProcedureAddress(_StartService, advapi32, 'StartServiceW');
+  GetProcedureAddress(_StartService, advapi32, 'StartService' + AWSuffix);
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_StartService]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_StartService]
   end;
 end;
-{$ELSE}
-function StartService; external advapi32 name 'StartServiceW';
-{$ENDIF DYNAMIC_LINK}
-{$ELSE}
 
-{$IFDEF DYNAMIC_LINK}
-var
-  _StartService: Pointer;
-
-function StartService;
-begin
-  GetProcedureAddress(_StartService, advapi32, 'StartServiceA');
-  asm
-    mov esp, ebp
-    pop ebp
-    jmp [_StartService]
-  end;
-end;
-{$ELSE}
-function StartService; external advapi32 name 'StartServiceA';
-{$ENDIF DYNAMIC_LINK}
-{$ENDIF}
-
-
-{$IFDEF DYNAMIC_LINK}
 var
   _UnlockServiceDatabase: Pointer;
 
@@ -2533,13 +1796,81 @@ function UnlockServiceDatabase;
 begin
   GetProcedureAddress(_UnlockServiceDatabase, advapi32, 'UnlockServiceDatabase');
   asm
-    mov esp, ebp
-    pop ebp
-    jmp [_UnlockServiceDatabase]
+        MOV     ESP, EBP
+        POP     EBP
+        JMP     [_UnlockServiceDatabase]
   end;
 end;
+
 {$ELSE}
+
+function ChangeServiceConfigA; external advapi32 name 'ChangeServiceConfigA';
+function ChangeServiceConfigW; external advapi32 name 'ChangeServiceConfigW';
+function ChangeServiceConfig; external advapi32 name 'ChangeServiceConfig' + AWSuffix;
+function ChangeServiceConfig2A; external advapi32 name 'ChangeServiceConfig2A';
+function ChangeServiceConfig2W; external advapi32 name 'ChangeServiceConfig2W';
+function ChangeServiceConfig2; external advapi32 name 'ChangeServiceConfig2' + AWSuffix;
+function CloseServiceHandle; external advapi32 name 'CloseServiceHandle';
+function ControlService; external advapi32 name 'ControlService';
+function CreateServiceA; external advapi32 name 'CreateServiceA';
+function CreateServiceW; external advapi32 name 'CreateServiceW';
+function CreateService; external advapi32 name 'CreateService' + AWSuffix;
+function DeleteService; external advapi32 name 'DeleteService';
+function EnumDependentServicesA; external advapi32 name 'EnumDependentServicesA';
+function EnumDependentServicesW; external advapi32 name 'EnumDependentServicesW';
+function EnumDependentServices; external advapi32 name 'EnumDependentServices' + AWSuffix;
+function EnumServicesStatusA; external advapi32 name 'EnumServicesStatusA';
+function EnumServicesStatusW; external advapi32 name 'EnumServicesStatusW';
+function EnumServicesStatus; external advapi32 name 'EnumServicesStatus' + AWSuffix;
+function EnumServicesStatusExA; external advapi32 name 'EnumServicesStatusExA';
+function EnumServicesStatusExW; external advapi32 name 'EnumServicesStatusExW';
+function EnumServicesStatusEx; external advapi32 name 'EnumServicesStatusEx' + AWSuffix;
+function GetServiceKeyNameA; external advapi32 name 'GetServiceKeyNameA';
+function GetServiceKeyNameW; external advapi32 name 'GetServiceKeyNameW';
+function GetServiceKeyName; external advapi32 name 'GetServiceKeyName' + AWSuffix;
+function GetServiceDisplayNameA; external advapi32 name 'GetServiceDisplayNameA';
+function GetServiceDisplayNameW; external advapi32 name 'GetServiceDisplayNameW';
+function GetServiceDisplayName; external advapi32 name 'GetServiceDisplayName' + AWSuffix;
+function LockServiceDatabase; external advapi32 name 'LockServiceDatabase';
+function NotifyBootConfigStatus; external advapi32 name 'NotifyBootConfigStatus';
+function OpenSCManagerA; external advapi32 name 'OpenSCManagerA';
+function OpenSCManagerW; external advapi32 name 'OpenSCManagerW';
+function OpenSCManager; external advapi32 name 'OpenSCManager' + AWSuffix;
+function OpenServiceA; external advapi32 name 'OpenServiceA';
+function OpenServiceW; external advapi32 name 'OpenServiceW';
+function OpenService; external advapi32 name 'OpenService' + AWSuffix;
+function QueryServiceConfigA; external advapi32 name 'QueryServiceConfigA';
+function QueryServiceConfigW; external advapi32 name 'QueryServiceConfigW';
+function QueryServiceConfig; external advapi32 name 'QueryServiceConfig' + AWSuffix;
+function QueryServiceConfig2A; external advapi32 name 'QueryServiceConfig2A';
+function QueryServiceConfig2W; external advapi32 name 'QueryServiceConfig2W';
+function QueryServiceConfig2; external advapi32 name 'QueryServiceConfig2' + AWSuffix;
+function QueryServiceLockStatusA; external advapi32 name 'QueryServiceLockStatusA';
+function QueryServiceLockStatusW; external advapi32 name 'QueryServiceLockStatusW';
+function QueryServiceLockStatus; external advapi32 name 'QueryServiceLockStatus' + AWSuffix;
+function QueryServiceObjectSecurity; external advapi32 name 'QueryServiceObjectSecurity';
+function QueryServiceStatus; external advapi32 name 'QueryServiceStatus';
+function QueryServiceStatusEx; external advapi32 name 'QueryServiceStatusEx';
+function RegisterServiceCtrlHandlerA; external advapi32 name 'RegisterServiceCtrlHandlerA';
+function RegisterServiceCtrlHandlerW; external advapi32 name 'RegisterServiceCtrlHandlerW';
+function RegisterServiceCtrlHandler; external advapi32 name 'RegisterServiceCtrlHandler' + AWSuffix;
+function RegisterServiceCtrlHandlerExA; external advapi32 name 'RegisterServiceCtrlHandlerExA';
+function RegisterServiceCtrlHandlerExW; external advapi32 name 'RegisterServiceCtrlHandlerExW';
+function RegisterServiceCtrlHandlerEx; external advapi32 name 'RegisterServiceCtrlHandlerEx' + AWSuffix;
+function SetServiceObjectSecurity; external advapi32 name 'SetServiceObjectSecurity';
+function SetServiceStatus; external advapi32 name 'SetServiceStatus';
+function StartServiceCtrlDispatcherA; external advapi32 name 'StartServiceCtrlDispatcherA';
+function StartServiceCtrlDispatcherW; external advapi32 name 'StartServiceCtrlDispatcherW';
+function StartServiceCtrlDispatcher; external advapi32 name 'StartServiceCtrlDispatcher' + AWSuffix;
+function StartServiceA; external advapi32 name 'StartServiceA';
+function StartServiceW; external advapi32 name 'StartServiceW';
+function StartService; external advapi32 name 'StartService' + AWSuffix;
 function UnlockServiceDatabase; external advapi32 name 'UnlockServiceDatabase';
+
 {$ENDIF DYNAMIC_LINK}
 
+{$ENDIF JWA_IMPLEMENTATIONSECTION}
+
+{$IFNDEF JWA_INCLUDEMODE}
 end.
+{$ENDIF !JWA_INCLUDEMODE}

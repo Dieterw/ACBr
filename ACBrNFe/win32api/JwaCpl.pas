@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Control Panel Applets Interface Unit for Object Pascal                       }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: cpl.h, released June 2000. The original Pascal         }
 { code is: Cpl.pas, released December 2000. The initial developer of the       }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaCpl.pas,v 1.7 2005/09/03 14:27:48 marquardt Exp $
 
 unit JwaCpl;
 
@@ -49,12 +50,12 @@ unit JwaCpl;
 {$HPPEMIT '#include "cpl.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinUser, JwaWinType;
+  JwaWindows;
 
 //
 // General rules for being installed in the Control Panel:
@@ -97,15 +98,15 @@ uses
 //
 
 const
-  WM_CPL_LAUNCH   = (WM_USER + 1000);
+  WM_CPL_LAUNCH   = WM_USER + 1000;
   {$EXTERNALSYM WM_CPL_LAUNCH}
-  WM_CPL_LAUNCHED = (WM_USER + 1001);
+  WM_CPL_LAUNCHED = WM_USER + 1001;
   {$EXTERNALSYM WM_CPL_LAUNCHED}
 
 // A function prototype for CPlApplet()
 
 type
-  APPLET_PROC = function (hwndCpl: HWND; msg: UINT;
+  APPLET_PROC = function(hwndCpl: HWND; msg: UINT;
     lParam1, lParam2: LPARAM): LONG; stdcall;
   {$EXTERNALSYM APPLET_PROC}
   TCPLApplet = APPLET_PROC;
@@ -162,21 +163,21 @@ type
   TNewCplInfoW = NEWCPLINFOW;
   PNewCplInfoW = LPNEWCPLINFOW;
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   NEWCPLINFO = NEWCPLINFOW;
   {$EXTERNALSYM NEWCPLINFO}
   LPNEWCPLINFO = LPNEWCPLINFOW;
   {$EXTERNALSYM LPNEWCPLINFO}
   TNewCplInfo = TNewCplInfoW;
   PNewCplInfo = PNewCplInfoW;
-{$ELSE}
+  {$ELSE}
   NEWCPLINFO = NEWCPLINFOA;
   {$EXTERNALSYM NEWCPLINFO}
   LPNEWCPLINFO = LPNEWCPLINFOA;
   {$EXTERNALSYM LPNEWCPLINFO}
   TNewCplInfo = TNewCplInfoA;
   PNewCplInfo = PNewCplInfoA;
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 const
   CPL_DYNAMIC_RES = 0;
@@ -269,13 +270,13 @@ const
   CPL_STARTWPARMSW = 10;
   {$EXTERNALSYM CPL_STARTWPARMSW}
 
-{$IFDEF UNICODE}
+  {$IFDEF UNICODE}
   CPL_STARTWPARMS = CPL_STARTWPARMSW;
   {$EXTERNALSYM CPL_STARTWPARMS}
-{$ELSE}
+  {$ELSE}
   CPL_STARTWPARMS = CPL_STARTWPARMSA;
   {$EXTERNALSYM CPL_STARTWPARMS}
-{$ENDIF}
+  {$ENDIF UNICODE}
 
 // this message parallels CPL_DBLCLK in that the applet should initiate
 // its dialog box.  where it differs is that this invocation is coming

@@ -1,23 +1,22 @@
 {******************************************************************************}
-{                                                       	               }
+{                                                                              }
 { Background Intelligent Transfer Service API interface Unit for Object Pascal }
-{                                                       	               }
+{                                                                              }
 { Portions created by Microsoft are Copyright (C) 1995-2001 Microsoft          }
 { Corporation. All Rights Reserved.                                            }
-{ 								               }
+{                                                                              }
 { The original file is: bits.h, released August 2001. The original Pascal      }
 { code is: Bits.pas, released October 2001. The initial developer of the       }
-{ Pascal code is Marcel van Brakel (brakelm@chello.nl).                        }
+{ Pascal code is Marcel van Brakel (brakelm att chello dott nl).               }
 {                                                                              }
 { Portions created by Marcel van Brakel are Copyright (C) 1999-2001            }
 { Marcel van Brakel. All Rights Reserved.                                      }
-{ 								               }
+{                                                                              }
 { Obtained through: Joint Endeavour of Delphi Innovators (Project JEDI)        }
-{								               }
-{ You may retrieve the latest version of this file at the Project JEDI home    }
-{ page, located at http://delphi-jedi.org or my personal homepage located at   }
-{ http://members.chello.nl/m.vanbrakel2                                        }
-{								               }
+{                                                                              }
+{ You may retrieve the latest version of this file at the Project JEDI         }
+{ APILIB home page, located at http://jedi-apilib.sourceforge.net              }
+{                                                                              }
 { The contents of this file are used with permission, subject to the Mozilla   }
 { Public License Version 1.1 (the "License"); you may not use this file except }
 { in compliance with the License. You may obtain a copy of the License at      }
@@ -36,10 +35,12 @@
 { replace  them with the notice and other provisions required by the LGPL      }
 { License.  If you do not delete the provisions above, a recipient may use     }
 { your version of this file under either the MPL or the LGPL License.          }
-{ 								               }
+{                                                                              }
 { For more information about the LGPL: http://www.gnu.org/copyleft/lesser.html }
-{ 								               }
+{                                                                              }
 {******************************************************************************}
+
+// $Id: JwaBits.pas,v 1.7 2005/09/03 14:27:47 marquardt Exp $
 
 unit JwaBits;
 
@@ -49,12 +50,12 @@ unit JwaBits;
 {$HPPEMIT '#include "bits.h"'}
 {$HPPEMIT ''}
 
-{$I WINDEFINES.INC}
+{$I jediapilib.inc}
 
 interface
 
 uses
-  JwaWinBase, JwaWinType, JwaBitsMsg;
+  JwaWindows, JwaBitsMsg;
 
 const
   BG_SIZE_UNKNOWN = Int64(-1);
@@ -82,7 +83,7 @@ const
   {$EXTERNALSYM IID_IBackgroundCopyFile}
 
 type
-  IBackgroundCopyFile = interface (IUnknown)
+  IBackgroundCopyFile = interface(IUnknown)
   ['{01b7bd23-fb88-4a77-8490-5891d3e4653a}']
     function GetRemoteName(out pVal: LPWSTR): HRESULT; stdcall;
     function GetLocalName(out pVal: LPWSTR): HRESULT; stdcall;
@@ -98,9 +99,9 @@ const
   {$EXTERNALSYM IID_IEnumBackgroundCopyFiles}
 
 type
-  IEnumBackgroundCopyFiles = interface (IUnknown)
+  IEnumBackgroundCopyFiles = interface(IUnknown)
   ['{ca51e165-c365-424c-8d41-24aaa4ff3c40}']
-    function Next(celt: ULONG; out rgelt: IBackgroundCopyFile; var pceltFetched: ULONG): HRESULT; stdcall;
+    function Next(celt: ULONG; out rgelt: IBackgroundCopyFile;  pceltFetched: PULONG): HRESULT; stdcall;
     function Skip(celt: ULONG): HRESULT; stdcall;
     function Reset: HRESULT; stdcall;
     function Clone(out ppenum: IEnumBackgroundCopyFiles): HRESULT; stdcall;
@@ -129,7 +130,7 @@ const
   {$EXTERNALSYM IID_IBackgroundCopyError}
 
 type
-  IBackgroundCopyError = interface (IUnknown)
+  IBackgroundCopyError = interface(IUnknown)
   ['{19c613a0-fcb8-4f28-81ae-897c3d078f81}']
     function GetError(out pContext: BG_ERROR_CONTEXT; out pCode: HRESULT): HRESULT; stdcall;
     // Returns BG_E_FILE_NOT_AVAILABLE if no file is available
@@ -225,7 +226,7 @@ const
   {$EXTERNALSYM IID_IBackgroundCopyJob}
 
 type
-  IBackgroundCopyJob = interface (IUnknown)
+  IBackgroundCopyJob = interface(IUnknown)
   ['{37668d37-507e-4160-9316-26306d150b12}']
 
     //--------------------------------------------------------------------
@@ -355,9 +356,9 @@ const
   {$EXTERNALSYM IID_IEnumBackgroundCopyJobs}
 
 type
-  IEnumBackgroundCopyJobs = interface (IUnknown)
+  IEnumBackgroundCopyJobs = interface(IUnknown)
   ['{1af4f612-3b71-466f-8f58-7b6f73ac57ad}']
-    function Next(celt: ULONG; out rgelt: IBackgroundCopyJob; var pceltFetched: ULONG): HRESULT; stdcall;
+    function Next(celt: ULONG; out rgelt: IBackgroundCopyJob; pceltFetched: PULONG): HRESULT; stdcall;
     function Skip(celt: ULONG): HRESULT; stdcall;
     function Reset: HRESULT; stdcall;
     function Clone(out ppenum: IEnumBackgroundCopyJobs): HRESULT; stdcall;
@@ -385,7 +386,7 @@ const
   {$EXTERNALSYM IID_IBackgroundCopyCallback}
 
 type
-  IBackgroundCopyCallback = interface (IUnknown)
+  IBackgroundCopyCallback = interface(IUnknown)
   ['{97ea99c7-0186-4ad4-8df9-c5b4e0ed6b22}']
     //
     // A job has transferred successfully.
@@ -419,7 +420,7 @@ const
   {$EXTERNALSYM IID_IBackgroundCopyManager}
 
 type
-  IBackgroundCopyManager = interface (IUnknown)
+  IBackgroundCopyManager = interface(IUnknown)
   ['{5ce34c0d-0dc9-4c1f-897c-daa1b78cee7c}']
     function CreateJob(DisplayName: LPCWSTR; Type_: BG_JOB_TYPE; out pJobId: GUID; out ppJob: IBackgroundCopyJob): HRESULT; stdcall;
     function GetJob(const jobID: GUID; out ppJob: IBackgroundCopyJob): HRESULT; stdcall;

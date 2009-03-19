@@ -48,6 +48,7 @@
 |*  - Adicao do registro 61 (Nota fiscal de venda a consumidor)
 |*  - Adicao do registro 61R (Itens das notas constantes do registro 61
 |*  - Adicao do registro 60I
+|*  - Adicao do registro 60R
 ******************************************************************************}
 
 {$I ACBr.inc}
@@ -517,6 +518,36 @@ type
       read GetObject write SetObject; default;
   end;
 
+  TRegistro60R = class
+  private
+    FBaseDeCalculo: double;
+    FValor: Double;
+    FQtd: Double;
+    FMesAno: string;
+    FCodigo: string;
+    FAliquota: string;
+
+  public
+    property MesAno: string read FMesAno write FMesAno;
+    property Codigo: string read FCodigo write FCodigo;
+    property Qtd: Double read FQtd write FQtd;
+    property Valor: Double read FValor write FValor;
+    property BaseDeCalculo: double read FBaseDeCalculo write FBaseDeCalculo;
+    property Aliquota: string read FAliquota write FAliquota;
+  end;
+
+  {Lista de objetos do tipo Registro60D}
+  TRegistros60R = class(TObjectList)
+  protected
+    procedure SetObject (Index: Integer; Item: TRegistro60R);
+    function GetObject (Index: Integer): TRegistro60R;
+    procedure Insert (Index: Integer; Obj: TRegistro60R);
+  public
+    function Add (Obj: TRegistro60R): Integer;
+    property Objects [Index: Integer]: TRegistro60R
+      read GetObject write SetObject; default;
+  end;
+
   TRegistro60M = class
   private
     FCRO: Integer;
@@ -655,6 +686,7 @@ type
     FRegistros61: TRegistros61;
     FRegistros61R: TRegistros61R;
     FRegistros60I: TRegistros60I;
+    FRegistros60R: TRegistros60R;
 
     procedure GeraRegistro10;
     procedure GeraRegistro11;
@@ -667,6 +699,7 @@ type
     procedure GerarRegistros60A(Registros60A: TRegistros60A);
     procedure GerarRegistros60D(Registros60D: TRegistros60D);
     procedure GerarRegistros60I(Registros60I: TRegistros60I);
+    procedure GerarRegistros60R;
 
     procedure GerarRegistros61;
     procedure GerarRegistros61R;
@@ -690,6 +723,7 @@ type
     property Registros60A: TRegistros60A read FRegistros60A write FRegistros60A;
     property Registros60D: TRegistros60D read FRegistros60D write FRegistros60D;
     property Registros60I: TRegistros60I read FRegistros60I write FRegistros60I;
+    property Registros60R: TRegistros60R read FRegistros60R write FRegistros60R;
     property Registros61: TRegistros61 read FRegistros61 write FRegistros61;
     property Registros61R: TRegistros61R read FRegistros61R write FRegistros61R;
     property Registros70: TRegistros70 read FRegistros70 write FRegistros70;
@@ -737,6 +771,7 @@ FRegistros60M:=TRegistros60M.Create(True);
 FRegistros60A:=TRegistros60A.Create(True);
 FRegistros60D:=TRegistros60D.Create(True);
 FRegistros60I:=TRegistros60I.Create(True);
+FRegistros60R:=TRegistros60R.Create(True);
 FRegistros61:=TRegistros61.Create(True);
 FRegistros61R:=TRegistros61R.Create(True);
 FRegistros70:=TRegistros70.Create(True);
@@ -759,6 +794,7 @@ FRegistros60M.Free;
 FRegistros60A.Free;
 FRegistros60D.Free;
 FRegistros60I.Free;
+FRegistros60R.Free;
 FRegistros61.Free;
 FRegistros61R.Free;
 FRegistros70.Free;
@@ -793,6 +829,7 @@ try
   GerarRegistros53;
   GerarRegistros54;
   GerarConjuntoRegistros60;
+  GerarRegistros60R;
   GerarRegistros61;
   GerarRegistros61R;
   GerarRegistros70;
@@ -1199,7 +1236,7 @@ if Registros54.Count>0 then
   wregistro:=wregistro+'54'+TBStrZero(IntToStr(Registros54.Count),8);
 if Registros60M.Count>0 then
   wregistro:=wregistro+'60'+TBStrZero(IntToStr(Registros60M.Count+Registros60A.Count+
-    Registros60D.Count+Registros60I.Count),8);
+    Registros60D.Count+Registros60I.Count+Registros60R.Count),8);
 if Registros61.Count>0 then
   wregistro:=wregistro+'61'+TBStrZero(IntToStr(Registros61.Count+Registros61R.Count),8);
 if Registros70.Count>0 then
@@ -1249,6 +1286,7 @@ FRegistros60M.Clear;
 FRegistros60A.Clear;
 FRegistros60D.Clear;
 FRegistros60I.Clear;
+FRegistros60R.Clear;
 FRegistros61.Clear;
 FRegistros61R.Clear;
 FRegistros70.Clear;
@@ -1337,6 +1375,28 @@ begin
     FormatFloat('#,##0.00',Registros60I[i].ValorIcms)),12);
   wregistro:=wregistro+Space(16);
   WriteRecord(wregistro);
+end;
+end;
+
+procedure TACBrSintegra.GerarRegistros60R;
+var
+  i: Integer;
+  wregistro: string;
+begin
+for i:=0 to Registros60R.Count-1 do
+begin
+  with Registros60R[i] do
+  begin
+    wregistro:='60R';
+    wregistro:=wregistro+MesAno;
+    wregistro:=wregistro+Padl(Codigo,14);
+    wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,###0.000',Qtd)),13);
+    wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,##0.00',Valor)),16);
+    wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,##0.00',BaseDeCalculo)),16);
+    wregistro:=wregistro+Padl(TiraPontos(Aliquota),4);
+    wregistro:=wregistro+space(54);
+    WriteRecord(wregistro);
+  end;
 end;
 end;
 
@@ -1865,4 +1925,31 @@ begin
   inherited SetItem(Index, Item);
 end;
 
+{ TRegistros60R }
+
+function TRegistros60R.Add(Obj: TRegistro60R): Integer;
+begin
+  Result:=inherited Add(Obj);
+end;
+
+function TRegistros60R.GetObject(Index: Integer): TRegistro60R;
+begin
+Result:= inherited GetItem(Index) as TRegistro60R;
+end;
+
+procedure TRegistros60R.Insert(Index: Integer; Obj: TRegistro60R);
+begin
+inherited Insert(Index, Obj);
+end;
+
+procedure TRegistros60R.SetObject(Index: Integer; Item: TRegistro60R);
+begin
+inherited SetItem(Index, Item);
+end;
+
 end.
+
+
+
+
+

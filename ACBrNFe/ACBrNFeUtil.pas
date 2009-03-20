@@ -1598,6 +1598,12 @@ begin
   PosIni := Pos(Chave,Texto)+length(Chave)+1;
   PosFim := Pos('/'+Chave,Texto);
 
+  if (PosIni = 0) or (PosFim = 0) then
+   begin
+     PosIni := Pos('ns1:'+Chave,Texto)+length(Chave)+5;
+     PosFim := Pos('/ns1:'+Chave,Texto);
+   end;
+
   Result := copy(Texto,PosIni,PosFim-(PosIni+1));
 end;
 

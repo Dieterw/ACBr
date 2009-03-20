@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 331
-  Top = 202
+  Left = 532
+  Top = 158
   Width = 666
   Height = 416
   Caption = 'ACBrNFe'
@@ -33,7 +33,7 @@ object Form1: TForm1
         Top = 15
         Width = 258
         Height = 320
-        ActivePage = TabSheet4
+        ActivePage = TabSheet1
         Align = alClient
         TabOrder = 0
         object TabSheet1: TTabSheet
@@ -726,6 +726,15 @@ object Form1: TForm1
         TabOrder = 5
         OnClick = btnInutilizarClick
       end
+      object btnGerarXMLNFe: TButton
+        Left = 193
+        Top = 95
+        Width = 177
+        Height = 25
+        Caption = 'Gerar XML NFe'
+        TabOrder = 7
+        OnClick = btnGerarXMLNFeClick
+      end
     end
     object PageControl2: TPageControl
       Left = 1
@@ -772,8 +781,8 @@ object Form1: TForm1
       'Arquivos NFE (*-nfe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|To' +
       'dos os Arquivos (*.*)|*.*'
     Title = 'Selecione a NFe'
-    Left = 40
-    Top = 8
+    Left = 288
+    Top = 160
   end
   object ACBrNFe1: TACBrNFe
     Configuracoes.Geral.FormaEmissao = 'Normal on-line'
@@ -783,7 +792,7 @@ object Form1: TForm1
     Configuracoes.WebServices.Visualizar = False
     Configuracoes.WebServices.UF = 'GO'
     Configuracoes.WebServices.Ambiente = 'Teste'
-    Left = 72
-    Top = 8
+    Left = 320
+    Top = 160
   end
 end

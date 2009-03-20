@@ -1,6 +1,6 @@
 object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
-  Left = 378
-  Top = 136
+  Left = 429
+  Top = 131
   Width = 538
   Height = 504
   ActiveControl = btMinimizar

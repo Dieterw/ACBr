@@ -88,7 +88,7 @@ RemoteSymbols=0
 MinStackSize=16384
 MaxStackSize=1048576
 ImageBase=4194304
-ExeDescription=ACBr Automação Comercial Brasil - NFe (http://acbr.sourceforge.net/)
+ExeDescription=ACBrNFe - OpenSSL CLX - (http://acbr.sourceforge.net/)
 [Directories]
 OutputDir=
 UnitOutputDir=
@@ -135,11 +135,32 @@ ProductName=
 ProductVersion=1.0.0.0
 Comments=
 [HistoryLists\hlConditionals]
-Count=1
-Item0=ACBrNFeOpenSSL;VisualCLX;CLX
+Count=2
+Item0=VisualCLX
+Item1=VisualCLX;CLX
 [HistoryLists\hlUnitAliases]
 Count=1
 Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
 [HistoryLists\hlSearchPath]
-Count=1
+Count=10
 Item0=../ACBrComum
+Item1=../synapse
+Item2=..\ACBr\source\synapse
+Item3=..\ACBr\source\Pascal;..\ACBr\dcu
+Item4=..\ACBr\source\Pascal
+Item5=C:\DELPHI\ACBr\source\Pascal\synaser\source
+Item6=synaser/source
+Item7=../Pascal/SynaSer/SOURCE
+Item8=.\SynaSer\SOURCE
+Item9=./SynaSer/SOURCE
+[HistoryLists\hlUnitOutputDirectory]
+Count=1
+Item0=../../dcu
+[HistoryLists\hlBPLOutput]
+Count=2
+Item0=../../bin
+Item1=.\
+[HistoryLists\hlDCPOutput]
+Count=2
+Item0=../../bin
+Item1=.\

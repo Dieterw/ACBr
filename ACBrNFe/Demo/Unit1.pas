@@ -2,9 +2,10 @@ unit Unit1;
 
 interface
 
-uses IniFiles, ACBrNFe, ACBrNFeTypes, 
+uses IniFiles,
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ExtCtrls, Buttons, ComCtrls, OleCtrls, SHDocVw;
+  Dialogs, StdCtrls, ExtCtrls, Buttons, ComCtrls, OleCtrls, SHDocVw,
+  ACBrNFe, ACBrNFeTypes;
 
 type
   TForm1 = class(TForm)
@@ -92,6 +93,7 @@ type
     WBResposta: TWebBrowser;
     edtNumSerie: TEdit;
     Label25: TLabel;
+    btnGerarXMLNFe: TButton;
     procedure sbtnCaminhoCertClick(Sender: TObject);
     procedure sbtnLogoMarcaClick(Sender: TObject);
     procedure sbtnPathSalvarClick(Sender: TObject);
@@ -104,6 +106,7 @@ type
     procedure btnImprimirClick(Sender: TObject);
     procedure btnCriarEnviarClick(Sender: TObject);
     procedure btnInutilizarClick(Sender: TObject);
+    procedure btnGerarXMLNFeClick(Sender: TObject);
   private
     { Private declarations }
     procedure GravarConfiguracao ;
@@ -366,7 +369,7 @@ var
 begin
  if not(InputQuery('WebServices Enviar', 'Numero da Nota', vAux)) then
     exit;
-    
+
   ACBrNFe1.NotasFiscais.Clear;
 
   with ACBrNFe1.NotasFiscais.Add do
@@ -479,7 +482,7 @@ begin
 
   ACBrNFe1.Enviar(0);
   MemoResp.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.Retorno.RetWS);
-  LoadXML(MemoResp, WBResposta);
+  LoadXML(MemoResp, WBResposta);    
 end;
 
 procedure TForm1.btnInutilizarClick(Sender: TObject);
@@ -501,6 +504,129 @@ begin
     exit;
   ACBrNFe1.WebServices.Inutiliza(edtEmitCNPJ.Text, Justificativa, StrToInt(Ano), StrToInt(Modelo), StrToInt(Serie), StrToInt(NumeroInicial), StrToInt(NumeroFinal));
   MemoResp.Lines.Text :=  UTF8Encode(ACBrNFe1.WebServices.Inutilizacao.RetWS);
+  LoadXML(MemoResp, WBResposta);
+end;
+
+procedure TForm1.btnGerarXMLNFeClick(Sender: TObject);
+var
+ vAux : String;
+begin
+ if not(InputQuery('WebServices Enviar', 'Numero da Nota', vAux)) then
+    exit;
+
+  ACBrNFe1.NotasFiscais.Clear;
+
+  with ACBrNFe1.NotasFiscais.Add do
+  begin
+    Identificacao.NaturezaOperacao  := 'VENDA PRODUCAO DO ESTAB.';
+    Identificacao.Codigo            := StrToInt(vAux);
+    Identificacao.Numero            := StrToInt(vAux);
+    Identificacao.Serie             := 1;
+    Identificacao.DataEmissao       := Date;
+    Identificacao.DataSaida         := Date;
+    Identificacao.Tipo              := tSaida;
+    Identificacao.FormaPagamento    := pgAVista;
+
+    Emitente.CNPJ                      := edtEmitCNPJ.Text;
+    Emitente.IE                        := edtEmitIE.Text;
+    Emitente.Nome.RazaoSocial          := edtEmitRazao.Text;
+    Emitente.Nome.Fantasia             := edtEmitFantasia.Text;
+    Emitente.Endereco.Fone             := edtEmitFone.Text;
+    Emitente.Endereco.CEP              := edtEmitCEP.Text;
+    Emitente.Endereco.Logradouro       := edtEmitLogradouro.Text;
+    Emitente.Endereco.Numero           := edtEmitNumero.Text;
+    Emitente.Endereco.Complemento      := edtEmitComp.Text;
+    Emitente.Endereco.Bairro           := edtEmitBairro.Text;
+    Emitente.Endereco.Cidade.Codigo    := StrToInt(edtEmitCodCidade.Text);
+    Emitente.Endereco.Cidade.Descricao := edtEmitCidade.Text;
+    Emitente.Endereco.UF               := edtEmitUF.Text;
+
+    Destinatario.CNPJCPF                   := '05481336000137';
+    Destinatario.Endereco.CEP              := '18270410';
+    Destinatario.Endereco.Logradouro       := 'Praça Anita Costa';
+    Destinatario.Endereco.Numero           := '0034';
+    Destinatario.Endereco.Complemento      := '';
+    Destinatario.Endereco.Bairro           := 'Centro';
+    Destinatario.Endereco.Cidade.Codigo    := 3554003;
+    Destinatario.Endereco.Cidade.Descricao := 'Tatuí';
+    Destinatario.Endereco.UF               := 'SP';
+    Destinatario.Endereco.Fone             := '1532599600';
+    Destinatario.IE                        := '687138770110';
+    Destinatario.NomeRazao                 := 'D.J. COM. E LOCAÇÃO DE SOFTWARES LTDA - ME';
+
+    with DadosProdutos.Add do
+    begin
+      CFOP          := 5101;
+      Codigo        := '67';
+      Descricao     := 'ALHO 400 G';
+      Quantidade    := 100;
+      Unidade       := 'KG';
+      ValorTotal    := 100;
+      ValorUnitario := 10;
+      with Tributos do
+      begin
+        with ICMS do
+        begin
+          CST := '00';
+          ICMS00.Aliquota  := 18;
+          ICMS00.Valor     := 180;
+          ICMS00.ValorBase := 1000;
+        end;
+
+      end;
+    end;
+
+    with DadosProdutos.Add do
+    begin
+      CFOP          := 5101;
+      Codigo        := '68';
+      Descricao     := 'CEBOLA';
+      Quantidade    := 100;
+      Unidade       := 'KG';
+      ValorTotal    := 100;
+      ValorUnitario := 10;
+      with Tributos do
+      begin
+        with ICMS do
+        begin
+          CST := '00';
+          ICMS00.Aliquota  := 18;
+          ICMS00.Valor     := 180;
+          ICMS00.ValorBase := 1000;
+        end;
+      end;
+    end;
+
+    with DadosProdutos.Add do
+    begin
+      CFOP          := 5101;
+      Codigo        := '69';
+      Descricao     := 'SAL';
+      Quantidade    := 100;
+      Unidade       := 'KG';
+      ValorTotal    := 100;
+      ValorUnitario := 10;
+      with Tributos do
+      begin
+        with ICMS do
+        begin
+          CST := '00';
+          ICMS00.Aliquota  := 18;
+          ICMS00.Valor     := 180;
+          ICMS00.ValorBase := 1000;
+        end;
+      end;
+    end;
+
+    ValoresTotais.BaseICMS     := 3000;
+    ValoresTotais.ValorICMS    := 540;
+    ValoresTotais.ValorNota    := 3000;
+    ValoresTotais.ValorProduto := 3000;
+  end;
+
+  ACBrNFe1.NotasFiscais.GerarNFe;
+  ACBrNFe1.NotasFiscais.Items[0].XML.SaveToFile(ExtractFileDir(application.ExeName)+ACBrNFe1.NotasFiscais.Items[0].XML.NFeChave+'-NFe.xml');
+  MemoResp.Lines.LoadFromFile(ExtractFileDir(application.ExeName)+ACBrNFe1.NotasFiscais.Items[0].XML.NFeChave+'-NFe.xml');
   LoadXML(MemoResp, WBResposta);
 end;
 

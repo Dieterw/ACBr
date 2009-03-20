@@ -1228,7 +1228,7 @@ var
  Certs         : ICertificates2;
  Cert          : ICertificate2;
 
- I, J, PosIni  : Integer;
+ I, J, PosIni, PosFim : Integer;
  URI           : String ;
  Tipo : Integer;
 
@@ -1335,6 +1335,10 @@ begin
       XMLAssinado := StringReplace( XMLAssinado, #13, '', [rfReplaceAll] ) ;
       PosIni := Pos('<SignatureValue>',XMLAssinado)+length('<SignatureValue>');
       XMLAssinado := copy(XMLAssinado,1,PosIni-1)+StringReplace( copy(XMLAssinado,PosIni,length(XMLAssinado)), ' ', '', [rfReplaceAll] ) ;
+	  PosIni := Pos('<X509Certificate>',XMLAssinado)-1;
+	  PosFim := NotaUtil.PosLast('<X509Certificate>',XMLAssinado);
+
+	  XMLAssinado := copy(XMLAssinado,1,PosIni)+copy(XMLAssinado,PosFim,length(XMLAssinado));	  
     end
    else
       raise Exception.Create('Assinatura Falhou.');

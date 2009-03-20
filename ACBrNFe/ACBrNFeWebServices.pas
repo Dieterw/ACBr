@@ -123,15 +123,20 @@ type
     constructor Create(AConfiguracoes : TConfiguracoes; ANotasFiscais : TNotasFiscais);reintroduce;
   published
     property Recibo: String read FRecibo write FRecibo;
+    property NFeRetorno: IXMLTRetConsReciNFe read FNFeRetorno write FNFeRetorno;
   end;
 
   TNFeConsulta = Class(TWebServicesBase)
   private
     FNFeChave: WideString;
     FProtocolo: WideString;
+    FDhRecbto: WideString;
+    FXMotivo: WideString;
   public
     function Executar: Boolean;override;
     property Protocolo: WideString read FProtocolo write FProtocolo;
+    property DhRecbto: WideString read FDhRecbto write FDhRecbto;
+    property XMotivo: WideString read FXMotivo write FXMotivo;
   published
     property NFeChave: WideString read FNFeChave write FNFeChave;
   end;
@@ -805,7 +810,7 @@ begin
   for i:= 0 to FNotasFiscais.Count-1 do
   begin
     if not(FNotasFiscais.Items[i].XML.Confirmada) then
-      FMsg:= FMsg+IntToStr(FNotasFiscais.Items[i].Identificacao.Codigo)+'->'+FNotasFiscais.Items[i].XML.Msg+LineBreak;
+      FMsg:= FMsg+IntToStr(FNotasFiscais.Items[i].Identificacao.Numero)+'->'+FNotasFiscais.Items[i].XML.Msg+LineBreak;
   end;
 end;
 
@@ -1000,6 +1005,8 @@ begin
     XmlDoc := LoadXMLData(FRetWS);
     NFeRetorno := GetretConsSitNFe(XmlDoc);
     FProtocolo := NFeRetorno.InfProt.NProt;
+    FDhRecbto  := NFeRetorno.InfProt.DhRecbto;
+    FXMotivo   := NFeRetorno.InfProt.XMotivo;
 
     if FConfiguracoes.WebServices.Visualizar then
     begin

@@ -171,7 +171,7 @@ begin
       Connection.WriteStrData('', XCpl);
       Connection.WriteStrData('', XBairro);
       Connection.WriteStrData('', CMun);
-      Connection.WriteStrData('', XMun);
+      Connection.WriteStrData('', NotaUtil.ParseText(XMun,true));
       Connection.WriteStrData('', UF);
       Connection.WriteStrData('', NotaUtil.FormatarCEP(CEP));
       Connection.WriteStrData('', CPais);
@@ -231,7 +231,7 @@ begin
       Connection.WriteStrData('', XCpl);
       Connection.WriteStrData('', XBairro);
       Connection.WriteStrData('', CMun);
-      Connection.WriteStrData('', XMun);
+      Connection.WriteStrData('', NotaUtil.ParseText(XMun,true));
       Connection.WriteStrData('', UF);
       Connection.WriteStrData('', NotaUtil.FormatarCEP(CEP));
       Connection.WriteStrData('', CPais);
@@ -449,7 +449,7 @@ begin
       Connection.WriteStrData('', XNome);
       Connection.WriteStrData('', IE);
       Connection.WriteStrData('', XEnder);
-      Connection.WriteStrData('', XMun);
+      Connection.WriteStrData('', NotaUtil.ParseText(XMun,true));
       Connection.WriteStrData('', UF);
     end;
   end;
@@ -686,5 +686,8 @@ end;
 
 initialization
   dmACBrNFe := TdmACBrNFe.Create(nil);
+
+finalization
+  dmACBrNFe.Free;
 
 end.

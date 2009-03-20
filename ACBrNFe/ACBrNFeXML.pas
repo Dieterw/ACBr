@@ -656,7 +656,8 @@ begin
     begin
       NFat  := Fatura.Numero;
       VOrig := NotaUtil.FormatFloat(Fatura.ValorOriginal, '0.00');
-      VDesc := NotaUtil.FormatFloat(Fatura.ValorDesconto, '0.00');
+      if NotaUtil.NaoEstaZerado(Fatura.ValorDesconto) then
+         VDesc := NotaUtil.FormatFloat(Fatura.ValorDesconto, '0.00');
       VLiq  := NotaUtil.FormatFloat(Fatura.ValorLiquido, '0.00');
     end;
   end;
@@ -734,7 +735,7 @@ var
   vMsg: String;
 begin
   vMsg := 'Falha na validação dos dados da nota '+
-          IntToStr(NotaFiscal(FNotaFiscal).Identificacao.Codigo)+LineBreak;
+          IntToStr(NotaFiscal(FNotaFiscal).Identificacao.Numero)+LineBreak;
   with NotaFiscal(FNotaFiscal) do
   begin
     NotaUtil.TamanhoIgual(Emitente.CNPJ, 14, vMsg+'Emitente CNPJ inválido!');
@@ -756,7 +757,7 @@ var
   vMsg: String;
 begin
   vMsg := 'Falha na validação dos dados da nota '+
-          IntToStr(NotaFiscal(FNotaFiscal).Identificacao.Codigo)+LineBreak;
+          IntToStr(NotaFiscal(FNotaFiscal).Identificacao.Numero)+LineBreak;
   with NotaFiscal(FNotaFiscal) do
   begin
     if not(NotaUtil.TamanhoIgual(Destinatario.CNPJCPF, 11) or NotaUtil.TamanhoIgual(Destinatario.CNPJCPF,14)) then
@@ -780,7 +781,7 @@ var
   i: Integer;
 begin
   vMsg := 'Falha na validação dos dados da nota '+
-          IntToStr(NotaFiscal(FNotaFiscal).Identificacao.Codigo)+LineBreak;
+          IntToStr(NotaFiscal(FNotaFiscal).Identificacao.Numero)+LineBreak;
 
   with NotaFiscal(FNotaFiscal) do
   begin
@@ -801,7 +802,7 @@ var
   vMsg: String;
 begin
   vMsg := 'Falha na validação dos dados da nota '+
-          IntToStr(NotaFiscal(FNotaFiscal).Identificacao.Codigo)+LineBreak;
+          IntToStr(NotaFiscal(FNotaFiscal).Identificacao.Numero)+LineBreak;
   with NotaFiscal(FNotaFiscal) do
   begin
     if NotaUtil.NaoEstaVazio(Transportador.CNPJCPF) then
@@ -823,7 +824,7 @@ var
   vMsg: String;
 begin
   vMsg := 'Falha na validação dos dados da nota '+
-          IntToStr(NotaFiscal(FNotaFiscal).Identificacao.Codigo)+LineBreak;
+          IntToStr(NotaFiscal(FNotaFiscal).Identificacao.Numero)+LineBreak;
   with NotaFiscal(FNotaFiscal) do
   begin
     NotaUtil.EstaVazio(Identificacao.NaturezaOperacao, vMsg+'Informar a Natureza de Operação!');

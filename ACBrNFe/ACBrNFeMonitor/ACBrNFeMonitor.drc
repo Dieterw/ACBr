@@ -8,193 +8,104 @@
   resources were bound to the produced executable.
 */
 
-#define QConsts_SUnableToWrite 65040
-#define QConsts_SUndo 65041
-#define QConsts_SRedo 65042
-#define QConsts_SLine 65043
-#define QConsts_SCut 65044
-#define QConsts_SCopy 65045
-#define QConsts_SPaste 65046
-#define QConsts_SClear 65047
-#define QConsts_SSelectAll 65048
-#define QConsts_SNoAppInLib 65049
-#define QConsts_SDuplicateApp 65050
-#define QConsts_SMsgDlgIgnore 65056
-#define QConsts_SUnnamed 65057
-#define QConsts_SName 65058
-#define QConsts_SSize 65059
-#define QConsts_SType 65060
-#define QConsts_SDate 65061
-#define QConsts_SAttributes 65062
-#define QConsts_SDuplicateMenus 65063
-#define QConsts_SImageIndexError 65064
-#define QConsts_SInvalidImageDimensions 65065
-#define QConsts_SInvalidImageDimension 65066
-#define QConsts_SInvalidMimeSourceStream 65067
-#define QConsts_SMimeNotSupportedForIcon 65068
-#define QConsts_SOpen 65069
-#define QConsts_SSave 65070
-#define QConsts_SUnknownImageFormat 65071
-#define QConsts_SCloseButton 65072
-#define QConsts_SIgnoreButton 65073
-#define QConsts_SRetryButton 65074
-#define QConsts_SAbortButton 65075
-#define QConsts_SAllButton 65076
-#define QConsts_SCannotDragForm 65077
-#define QConsts_SMsgDlgWarning 65078
-#define QConsts_SMsgDlgError 65079
-#define QConsts_SMsgDlgInformation 65080
-#define QConsts_SMsgDlgConfirm 65081
-#define QConsts_SMsgDlgYes 65082
-#define QConsts_SMsgDlgNo 65083
-#define QConsts_SMsgDlgOK 65084
-#define QConsts_SMsgDlgCancel 65085
-#define QConsts_SMsgDlgAbort 65086
-#define QConsts_SMsgDlgRetry 65087
-#define QConsts_SScrollBarRange 65088
-#define QConsts_SMenuIndexError 65089
-#define QConsts_SMenuReinserted 65090
-#define QConsts_SNoMenuRecursion 65091
-#define QConsts_SMenuNotFound 65092
-#define QConsts_SMenuSetFormError 65093
-#define QConsts_SGroupIndexTooLow 65094
-#define QConsts_SNoMDIForm 65095
-#define QConsts_SNotAnMDIForm 65096
-#define QConsts_SMDIChildNotVisible 65097
-#define QConsts_SControlParentSetToSelf 65098
-#define QConsts_SOKButton 65099
-#define QConsts_SCancelButton 65100
-#define QConsts_SYesButton 65101
-#define QConsts_SNoButton 65102
-#define QConsts_SHelpButton 65103
-#define QConsts_SmkcRight 65104
-#define QConsts_SmkcDown 65105
-#define QConsts_SmkcIns 65106
-#define QConsts_SmkcDel 65107
-#define QConsts_SmkcShift 65108
-#define QConsts_SmkcCtrl 65109
-#define QConsts_SmkcAlt 65110
-#define QConsts_SInvalidPixelFormat 65111
-#define QConsts_SNoCanvasHandle 65112
-#define QConsts_SInvalidCanvasState 65113
-#define QConsts_SInvalidImageSize 65114
-#define QConsts_SInvalidColorDepth 65115
-#define QConsts_SCannotFocus 65116
-#define QConsts_SParentRequired 65117
-#define QConsts_SVisibleChanged 65118
-#define QConsts_SCannotShowModal 65119
-#define XMLConst_SLine 65120
-#define QConsts_SInvalidCreateWidget 65121
-#define QConsts_STooManyMessageBoxButtons 65122
-#define QConsts_SmkcBkSp 65123
-#define QConsts_SmkcTab 65124
-#define QConsts_SmkcBackTab 65125
-#define QConsts_SmkcEsc 65126
-#define QConsts_SmkcReturn 65127
-#define QConsts_SmkcEnter 65128
-#define QConsts_SmkcSpace 65129
-#define QConsts_SmkcPgUp 65130
-#define QConsts_SmkcPgDn 65131
-#define QConsts_SmkcEnd 65132
-#define QConsts_SmkcHome 65133
-#define QConsts_SmkcLeft 65134
-#define QConsts_SmkcUp 65135
-#define XMLConst_SNoDOMNodeEx 65136
-#define XMLConst_SDOMNotSupported 65137
-#define XMLConst_SNodeExpected 65138
-#define XMLConst_SMSDOMNotInstalled 65139
-#define XMLConst_SNotActive 65140
-#define XMLConst_SNodeNotFound 65141
-#define XMLConst_SMissingNode 65142
-#define XMLConst_SNoAttributes 65143
-#define XMLConst_SInvalidNodeType 65144
-#define XMLConst_SMismatchedRegItems 65145
-#define XMLConst_SNotSingleTextNode 65146
-#define XMLConst_SNoDOMParseOptions 65147
-#define XMLConst_SMissingItemTag 65148
-#define XMLConst_SNodeReadOnly 65149
-#define XMLConst_SNoRefresh 65150
-#define XMLConst_SMissingFileName 65151
-#define IdResourceStrings_RSSocksServerHostUnreachableError 65152
-#define IdResourceStrings_RSSocksServerConnectionRefusedError 65153
-#define IdResourceStrings_RSSocksServerTTLExpiredError 65154
-#define IdResourceStrings_RSSocksServerCommandError 65155
-#define IdResourceStrings_RSSocksServerAddressError 65156
-#define IdResourceStrings_RSThreadTerminateAndWaitFor 65157
-#define DBConsts_SBcdOverflow 65158
-#define DBConsts_SInvalidBcdValue 65159
-#define DBConsts_SCouldNotParseTimeStamp 65160
-#define DBConsts_SInvalidSqlTimeStamp 65161
-#define ComConst_SOleError 65162
-#define ComConst_SNoMethod 65163
-#define ComConst_SVarNotObject 65164
-#define ComConst_STooManyParams 65165
-#define XMLConst_SDuplicateRegistration 65166
-#define XMLConst_SNoMatchingDOMVendor 65167
-#define IdResourceStrings_RSStackELOOP 65168
-#define IdResourceStrings_RSStackENAMETOOLONG 65169
-#define IdResourceStrings_RSStackEHOSTDOWN 65170
-#define IdResourceStrings_RSStackEHOSTUNREACH 65171
-#define IdResourceStrings_RSStackENOTEMPTY 65172
-#define IdResourceStrings_RSStackHOST_NOT_FOUND 65173
-#define IdResourceStrings_RSSocksRequestFailed 65174
-#define IdResourceStrings_RSSocksRequestServerFailed 65175
-#define IdResourceStrings_RSSocksRequestIdentFailed 65176
-#define IdResourceStrings_RSSocksUnknownError 65177
-#define IdResourceStrings_RSSocksServerRespondError 65178
-#define IdResourceStrings_RSSocksAuthMethodError 65179
-#define IdResourceStrings_RSSocksAuthError 65180
-#define IdResourceStrings_RSSocksServerGeneralError 65181
-#define IdResourceStrings_RSSocksServerPermissionError 65182
-#define IdResourceStrings_RSSocksServerNetUnreachableError 65183
-#define IdResourceStrings_RSStackEPFNOSUPPORT 65184
-#define IdResourceStrings_RSStackEAFNOSUPPORT 65185
-#define IdResourceStrings_RSStackEADDRINUSE 65186
-#define IdResourceStrings_RSStackEADDRNOTAVAIL 65187
-#define IdResourceStrings_RSStackENETDOWN 65188
-#define IdResourceStrings_RSStackENETUNREACH 65189
-#define IdResourceStrings_RSStackENETRESET 65190
-#define IdResourceStrings_RSStackECONNABORTED 65191
-#define IdResourceStrings_RSStackECONNRESET 65192
-#define IdResourceStrings_RSStackENOBUFS 65193
-#define IdResourceStrings_RSStackEISCONN 65194
-#define IdResourceStrings_RSStackENOTCONN 65195
-#define IdResourceStrings_RSStackESHUTDOWN 65196
-#define IdResourceStrings_RSStackETOOMANYREFS 65197
-#define IdResourceStrings_RSStackETIMEDOUT 65198
-#define IdResourceStrings_RSStackECONNREFUSED 65199
-#define IdResourceStrings_RSStackEBADF 65200
-#define IdResourceStrings_RSStackEACCES 65201
-#define IdResourceStrings_RSStackEFAULT 65202
-#define IdResourceStrings_RSStackEINVAL 65203
-#define IdResourceStrings_RSStackEMFILE 65204
-#define IdResourceStrings_RSStackEWOULDBLOCK 65205
-#define IdResourceStrings_RSStackEINPROGRESS 65206
-#define IdResourceStrings_RSStackEALREADY 65207
-#define IdResourceStrings_RSStackENOTSOCK 65208
-#define IdResourceStrings_RSStackEDESTADDRREQ 65209
-#define IdResourceStrings_RSStackEMSGSIZE 65210
-#define IdResourceStrings_RSStackEPROTOTYPE 65211
-#define IdResourceStrings_RSStackENOPROTOOPT 65212
-#define IdResourceStrings_RSStackEPROTONOSUPPORT 65213
-#define IdResourceStrings_RSStackESOCKTNOSUPPORT 65214
-#define IdResourceStrings_RSStackEOPNOTSUPP 65215
-#define IdResourceStrings_RSInvalidPortRange 65216
-#define IdResourceStrings_RSReadTimeout 65217
-#define IdResourceStrings_RSReadLnMaxLineLengthExceeded 65218
-#define IdResourceStrings_RSNoCommandHandlerFound 65219
-#define IdResourceStrings_RSWS2CallError 65220
-#define IdResourceStrings_RSWS2LoadError 65221
-#define IdResourceStrings_RSStatusResolving 65222
-#define IdResourceStrings_RSStatusConnecting 65223
-#define IdResourceStrings_RSStatusConnected 65224
-#define IdResourceStrings_RSStatusDisconnecting 65225
-#define IdResourceStrings_RSStatusDisconnected 65226
-#define IdResourceStrings_RSStatusText 65227
-#define IdResourceStrings_RSConnectTimeout 65228
-#define IdResourceStrings_RSInvalidServiceName 65229
-#define IdResourceStrings_RSStackError 65230
-#define IdResourceStrings_RSStackEINTR 65231
+#define XMLConst_SMissingFileName 65120
+#define XMLConst_SLine 65121
+#define XMLConst_SNoMatchingDOMVendor 65136
+#define XMLConst_SNoDOMNodeEx 65137
+#define XMLConst_SDOMNotSupported 65138
+#define XMLConst_SNodeExpected 65139
+#define XMLConst_SMSDOMNotInstalled 65140
+#define XMLConst_SNotActive 65141
+#define XMLConst_SNodeNotFound 65142
+#define XMLConst_SMissingNode 65143
+#define XMLConst_SNoAttributes 65144
+#define XMLConst_SInvalidNodeType 65145
+#define XMLConst_SMismatchedRegItems 65146
+#define XMLConst_SNotSingleTextNode 65147
+#define XMLConst_SNoDOMParseOptions 65148
+#define XMLConst_SMissingItemTag 65149
+#define XMLConst_SNodeReadOnly 65150
+#define XMLConst_SNoRefresh 65151
+#define IdResourceStrings_RSSocksServerNetUnreachableError 65152
+#define IdResourceStrings_RSSocksServerHostUnreachableError 65153
+#define IdResourceStrings_RSSocksServerConnectionRefusedError 65154
+#define IdResourceStrings_RSSocksServerTTLExpiredError 65155
+#define IdResourceStrings_RSSocksServerCommandError 65156
+#define IdResourceStrings_RSSocksServerAddressError 65157
+#define IdResourceStrings_RSThreadTerminateAndWaitFor 65158
+#define DBConsts_SBcdOverflow 65159
+#define DBConsts_SInvalidBcdValue 65160
+#define DBConsts_SCouldNotParseTimeStamp 65161
+#define DBConsts_SInvalidSqlTimeStamp 65162
+#define ComConst_SOleError 65163
+#define ComConst_SNoMethod 65164
+#define ComConst_SVarNotObject 65165
+#define ComConst_STooManyParams 65166
+#define XMLConst_SDuplicateRegistration 65167
+#define IdResourceStrings_RSStackECONNREFUSED 65168
+#define IdResourceStrings_RSStackELOOP 65169
+#define IdResourceStrings_RSStackENAMETOOLONG 65170
+#define IdResourceStrings_RSStackEHOSTDOWN 65171
+#define IdResourceStrings_RSStackEHOSTUNREACH 65172
+#define IdResourceStrings_RSStackENOTEMPTY 65173
+#define IdResourceStrings_RSStackHOST_NOT_FOUND 65174
+#define IdResourceStrings_RSSocksRequestFailed 65175
+#define IdResourceStrings_RSSocksRequestServerFailed 65176
+#define IdResourceStrings_RSSocksRequestIdentFailed 65177
+#define IdResourceStrings_RSSocksUnknownError 65178
+#define IdResourceStrings_RSSocksServerRespondError 65179
+#define IdResourceStrings_RSSocksAuthMethodError 65180
+#define IdResourceStrings_RSSocksAuthError 65181
+#define IdResourceStrings_RSSocksServerGeneralError 65182
+#define IdResourceStrings_RSSocksServerPermissionError 65183
+#define IdResourceStrings_RSStackEOPNOTSUPP 65184
+#define IdResourceStrings_RSStackEPFNOSUPPORT 65185
+#define IdResourceStrings_RSStackEAFNOSUPPORT 65186
+#define IdResourceStrings_RSStackEADDRINUSE 65187
+#define IdResourceStrings_RSStackEADDRNOTAVAIL 65188
+#define IdResourceStrings_RSStackENETDOWN 65189
+#define IdResourceStrings_RSStackENETUNREACH 65190
+#define IdResourceStrings_RSStackENETRESET 65191
+#define IdResourceStrings_RSStackECONNABORTED 65192
+#define IdResourceStrings_RSStackECONNRESET 65193
+#define IdResourceStrings_RSStackENOBUFS 65194
+#define IdResourceStrings_RSStackEISCONN 65195
+#define IdResourceStrings_RSStackENOTCONN 65196
+#define IdResourceStrings_RSStackESHUTDOWN 65197
+#define IdResourceStrings_RSStackETOOMANYREFS 65198
+#define IdResourceStrings_RSStackETIMEDOUT 65199
+#define IdResourceStrings_RSStackEINTR 65200
+#define IdResourceStrings_RSStackEBADF 65201
+#define IdResourceStrings_RSStackEACCES 65202
+#define IdResourceStrings_RSStackEFAULT 65203
+#define IdResourceStrings_RSStackEINVAL 65204
+#define IdResourceStrings_RSStackEMFILE 65205
+#define IdResourceStrings_RSStackEWOULDBLOCK 65206
+#define IdResourceStrings_RSStackEINPROGRESS 65207
+#define IdResourceStrings_RSStackEALREADY 65208
+#define IdResourceStrings_RSStackENOTSOCK 65209
+#define IdResourceStrings_RSStackEDESTADDRREQ 65210
+#define IdResourceStrings_RSStackEMSGSIZE 65211
+#define IdResourceStrings_RSStackEPROTOTYPE 65212
+#define IdResourceStrings_RSStackENOPROTOOPT 65213
+#define IdResourceStrings_RSStackEPROTONOSUPPORT 65214
+#define IdResourceStrings_RSStackESOCKTNOSUPPORT 65215
+#define IdResourceStrings_RSCanNotBindRange 65216
+#define IdResourceStrings_RSInvalidPortRange 65217
+#define IdResourceStrings_RSReadTimeout 65218
+#define IdResourceStrings_RSReadLnMaxLineLengthExceeded 65219
+#define IdResourceStrings_RSNoCommandHandlerFound 65220
+#define IdResourceStrings_RSWS2CallError 65221
+#define IdResourceStrings_RSWS2LoadError 65222
+#define IdResourceStrings_RSStatusResolving 65223
+#define IdResourceStrings_RSStatusConnecting 65224
+#define IdResourceStrings_RSStatusConnected 65225
+#define IdResourceStrings_RSStatusDisconnecting 65226
+#define IdResourceStrings_RSStatusDisconnected 65227
+#define IdResourceStrings_RSStatusText 65228
+#define IdResourceStrings_RSConnectTimeout 65229
+#define IdResourceStrings_RSInvalidServiceName 65230
+#define IdResourceStrings_RSStackError 65231
 #define ComStrs_sPageIndexError 65232
 #define WinHelpViewer_hNoKeyword 65233
 #define IdResourceStrings_RSCannotAllocateSocket 65234
@@ -207,10 +118,10 @@
 #define IdResourceStrings_RSFileNotFound 65241
 #define IdResourceStrings_RSOnlyOneAntiFreeze 65242
 #define IdResourceStrings_RSNotConnected 65243
-#define IdResourceStrings_RSTerminateThreadTimeout 65244
-#define IdResourceStrings_RSNoExecuteSpecified 65245
-#define IdResourceStrings_RSIdNoDataToRead 65246
-#define IdResourceStrings_RSCanNotBindRange 65247
+#define IdResourceStrings_RSObjectTypeNotSupported 65244
+#define IdResourceStrings_RSTerminateThreadTimeout 65245
+#define IdResourceStrings_RSNoExecuteSpecified 65246
+#define IdResourceStrings_RSIdNoDataToRead 65247
 #define ExtCtrls_clNameMenu 65248
 #define ExtCtrls_clNameMenuText 65249
 #define ExtCtrls_clNameNone 65250
@@ -501,97 +412,9 @@
 #define SysConst_SInvalidInput 65535
 STRINGTABLE
 BEGIN
-	QConsts_SUnableToWrite,	"Não foi possível criar bitmap"
-	QConsts_SUndo,	"Desfazer"
-	QConsts_SRedo,	"Refazer"
-	QConsts_SLine,	"-"
-	QConsts_SCut,	"Cortar"
-	QConsts_SCopy,	"Copiar"
-	QConsts_SPaste,	"Colar"
-	QConsts_SClear,	"Limpar"
-	QConsts_SSelectAll,	"Selecionar Todos"
-	QConsts_SNoAppInLib,	"Fatal error: Cannot create application object in a shared object or library."
-	QConsts_SDuplicateApp,	"Fatal error: Cannot create more than one TApplication instance"
-	QConsts_SMsgDlgIgnore,	"&Ignorar"
-	QConsts_SUnnamed,	"Sem Nome"
-	QConsts_SName,	"Nome"
-	QConsts_SSize,	"Tamanho"
-	QConsts_SType,	"Tipo"
-	QConsts_SDate,	"Data Modificado"
-	QConsts_SAttributes,	"Atributos"
-	QConsts_SDuplicateMenus,	"Menu '%s' já está sendo usado por outro formulário"
-	QConsts_SImageIndexError,	"Invalid ImageList Index"
-	QConsts_SInvalidImageDimensions,	"Image width and heigth must match"
-	QConsts_SInvalidImageDimension,	"Invalid image dimension"
-	QConsts_SInvalidMimeSourceStream,	"MimeSource format must have an associated data stream"
-	QConsts_SMimeNotSupportedForIcon,	"Mime format not supported for TIcon"
-	QConsts_SOpen,	"Abrir"
-	QConsts_SSave,	"Gravar"
-	QConsts_SUnknownImageFormat,	"Formato de Imagem não reconhecido"
-	QConsts_SCloseButton,	"&Fechar"
-	QConsts_SIgnoreButton,	"&Ignorar"
-	QConsts_SRetryButton,	"&ReTentar"
-	QConsts_SAbortButton,	"Abortar"
-	QConsts_SAllButton,	"To&dos"
-	QConsts_SCannotDragForm,	"Cannot drag a form"
-	QConsts_SMsgDlgWarning,	"Alerta"
-	QConsts_SMsgDlgError,	"Erro"
-	QConsts_SMsgDlgInformation,	"Informação"
-	QConsts_SMsgDlgConfirm,	"Confirmação"
-	QConsts_SMsgDlgYes,	"&Sim"
-	QConsts_SMsgDlgNo,	"&Não"
-	QConsts_SMsgDlgOK,	"OK"
-	QConsts_SMsgDlgCancel,	"Cancelar"
-	QConsts_SMsgDlgAbort,	"&Abortar"
-	QConsts_SMsgDlgRetry,	"&ReTentar"
-	QConsts_SScrollBarRange,	"Scrollbar property out of range"
-	QConsts_SMenuIndexError,	"Menu index out of range"
-	QConsts_SMenuReinserted,	"Menu inserted twice"
-	QConsts_SNoMenuRecursion,	"Menu insertion recursion not allowed"
-	QConsts_SMenuNotFound,	"Sub-menu is not in menu"
-	QConsts_SMenuSetFormError,	"TMenu.SetForm: argument must be TCustomForm"
-	QConsts_SGroupIndexTooLow,	"GroupIndex cannot be less than a previous menu item's GroupIndex"
-	QConsts_SNoMDIForm,	"Cannot create form. No MDI forms are currently active"
-	QConsts_SNotAnMDIForm,	"Invalid MDIParent for class %s"
-	QConsts_SMDIChildNotVisible,	"Cannot hide an MDI Child Form"
-	QConsts_SControlParentSetToSelf,	"A control cannot have itself as its parent"
-	QConsts_SOKButton,	"OK"
-	QConsts_SCancelButton,	"Cancelar"
-	QConsts_SYesButton,	"&Sim"
-	QConsts_SNoButton,	"&Não"
-	QConsts_SHelpButton,	"&Ajuda"
-	QConsts_SmkcRight,	"Right"
-	QConsts_SmkcDown,	"Down"
-	QConsts_SmkcIns,	"Ins"
-	QConsts_SmkcDel,	"Del"
-	QConsts_SmkcShift,	"Shift+"
-	QConsts_SmkcCtrl,	"Ctrl+"
-	QConsts_SmkcAlt,	"Alt+"
-	QConsts_SInvalidPixelFormat,	"Invalid pixel format"
-	QConsts_SNoCanvasHandle,	"Canvas does not allow drawing"
-	QConsts_SInvalidCanvasState,	"Invalid canvas state request"
-	QConsts_SInvalidImageSize,	"Invalid image size"
-	QConsts_SInvalidColorDepth,	"Color depth must be 1, 8 or 32 bpp"
-	QConsts_SCannotFocus,	"Cannot focus a disabled or invisible window (%s)"
-	QConsts_SParentRequired,	"Control '%s' has no parent widget"
-	QConsts_SVisibleChanged,	"Cannot change Visible in OnShow or OnHide"
-	QConsts_SCannotShowModal,	"Cannot make a visible window modal"
+	XMLConst_SMissingFileName,	"FileName cannot be blank"
 	XMLConst_SLine,	"Line"
-	QConsts_SInvalidCreateWidget,	"Class %s could not create QT widget"
-	QConsts_STooManyMessageBoxButtons,	"Too many buttons specified for message box"
-	QConsts_SmkcBkSp,	"Backspace"
-	QConsts_SmkcTab,	"Tab"
-	QConsts_SmkcBackTab,	"BackTab"
-	QConsts_SmkcEsc,	"Esc"
-	QConsts_SmkcReturn,	"Return"
-	QConsts_SmkcEnter,	"Enter"
-	QConsts_SmkcSpace,	"Space"
-	QConsts_SmkcPgUp,	"PgUp"
-	QConsts_SmkcPgDn,	"PgDn"
-	QConsts_SmkcEnd,	"End"
-	QConsts_SmkcHome,	"Home"
-	QConsts_SmkcLeft,	"Left"
-	QConsts_SmkcUp,	"Up"
+	XMLConst_SNoMatchingDOMVendor,	"No matching DOM Vendor: \"%s\""
 	XMLConst_SNoDOMNodeEx,	"Selected DOM Vendor does not support this property or method"
 	XMLConst_SDOMNotSupported,	"Property or Method \"%s\" is not supported by DOM Vendor \"%s\""
 	XMLConst_SNodeExpected,	"Node cannot be null"
@@ -607,7 +430,7 @@ BEGIN
 	XMLConst_SMissingItemTag,	"ItemTag property is not initialized"
 	XMLConst_SNodeReadOnly,	"Node is readonly"
 	XMLConst_SNoRefresh,	"Refresh is only supported if the FileName or XML properties are set"
-	XMLConst_SMissingFileName,	"FileName cannot be blank"
+	IdResourceStrings_RSSocksServerNetUnreachableError,	"Network unreachable."
 	IdResourceStrings_RSSocksServerHostUnreachableError,	"Host unreachable."
 	IdResourceStrings_RSSocksServerConnectionRefusedError,	"Connection refused."
 	IdResourceStrings_RSSocksServerTTLExpiredError,	"TTL expired."
@@ -623,7 +446,7 @@ BEGIN
 	ComConst_SVarNotObject,	"Variant does not reference an automation object"
 	ComConst_STooManyParams,	"Dispatch methods do not support more than 64 parameters"
 	XMLConst_SDuplicateRegistration,	"\"%s\" DOMImplementation already registered"
-	XMLConst_SNoMatchingDOMVendor,	"No matching DOM Vendor: \"%s\""
+	IdResourceStrings_RSStackECONNREFUSED,	"Connection refused."
 	IdResourceStrings_RSStackELOOP,	"Too many levels of symbolic links."
 	IdResourceStrings_RSStackENAMETOOLONG,	"File name too long."
 	IdResourceStrings_RSStackEHOSTDOWN,	"Host is down."
@@ -639,7 +462,7 @@ BEGIN
 	IdResourceStrings_RSSocksAuthError,	"Authentication error to socks server."
 	IdResourceStrings_RSSocksServerGeneralError,	"General SOCKS server failure."
 	IdResourceStrings_RSSocksServerPermissionError,	"Connection not allowed by ruleset."
-	IdResourceStrings_RSSocksServerNetUnreachableError,	"Network unreachable."
+	IdResourceStrings_RSStackEOPNOTSUPP,	"Operation not supported on socket."
 	IdResourceStrings_RSStackEPFNOSUPPORT,	"Protocol family not supported."
 	IdResourceStrings_RSStackEAFNOSUPPORT,	"Address family not supported by protocol family."
 	IdResourceStrings_RSStackEADDRINUSE,	"Address already in use."
@@ -655,7 +478,7 @@ BEGIN
 	IdResourceStrings_RSStackESHUTDOWN,	"Cannot send or receive after socket is closed."
 	IdResourceStrings_RSStackETOOMANYREFS,	"Too many references, cannot splice."
 	IdResourceStrings_RSStackETIMEDOUT,	"Connection timed out."
-	IdResourceStrings_RSStackECONNREFUSED,	"Connection refused."
+	IdResourceStrings_RSStackEINTR,	"Interrupted system call."
 	IdResourceStrings_RSStackEBADF,	"Bad file number."
 	IdResourceStrings_RSStackEACCES,	"Access denied."
 	IdResourceStrings_RSStackEFAULT,	"Bad address."
@@ -671,7 +494,7 @@ BEGIN
 	IdResourceStrings_RSStackENOPROTOOPT,	"Bad protocol option."
 	IdResourceStrings_RSStackEPROTONOSUPPORT,	"Protocol not supported."
 	IdResourceStrings_RSStackESOCKTNOSUPPORT,	"Socket type not supported."
-	IdResourceStrings_RSStackEOPNOTSUPP,	"Operation not supported on socket."
+	IdResourceStrings_RSCanNotBindRange,	"Can not bind in port range (%d - %d)"
 	IdResourceStrings_RSInvalidPortRange,	"Invalid Port Range (%d - %d)"
 	IdResourceStrings_RSReadTimeout,	"Read Timeout"
 	IdResourceStrings_RSReadLnMaxLineLengthExceeded,	"Max line length exceeded."
@@ -687,7 +510,6 @@ BEGIN
 	IdResourceStrings_RSConnectTimeout,	"Connect timed out."
 	IdResourceStrings_RSInvalidServiceName,	"%s is not a valid service."
 	IdResourceStrings_RSStackError,	"Socket Error # %d\r\n%s"
-	IdResourceStrings_RSStackEINTR,	"Interrupted system call."
 	ComStrs_sPageIndexError,	"%d is an invalid PageIndex value.  PageIndex must be between 0 and %d"
 	WinHelpViewer_hNoKeyword,	"No help keyword specified."
 	IdResourceStrings_RSCannotAllocateSocket,	"Cannot allocate socket."
@@ -700,10 +522,10 @@ BEGIN
 	IdResourceStrings_RSFileNotFound,	"File \"%s\" not found"
 	IdResourceStrings_RSOnlyOneAntiFreeze,	"Only one TIdAntiFreeze can exist per application."
 	IdResourceStrings_RSNotConnected,	"Not Connected"
+	IdResourceStrings_RSObjectTypeNotSupported,	"Object type not supported."
 	IdResourceStrings_RSTerminateThreadTimeout,	"Terminate Thread Timeout"
 	IdResourceStrings_RSNoExecuteSpecified,	"No execute handler found."
 	IdResourceStrings_RSIdNoDataToRead,	"No data to read."
-	IdResourceStrings_RSCanNotBindRange,	"Can not bind in port range (%d - %d)"
 	ExtCtrls_clNameMenu,	"Menu Background"
 	ExtCtrls_clNameMenuText,	"Menu Text"
 	ExtCtrls_clNameNone,	"None"

@@ -137,7 +137,6 @@ type
     procedure SalvarIni ;
     procedure AjustaLinhasLog ;
 
-    procedure Processar ;
     procedure Resposta(Comando, Resposta : string);
 
     procedure AddLinesLog ;
@@ -151,6 +150,7 @@ type
     nid: TNotifyIconData;
     Conexao : TIdPeerThread ;
 
+    procedure Processar ;
   end;
 
 var
@@ -545,8 +545,11 @@ begin
   begin
      Application.ProcessMessages ;
 
-     Linha := Trim( mCmd.Lines[0] );
-     mCmd.Lines.Delete(0);
+//     Linha := Trim( mCmd.Lines[0] );
+//     mCmd.Lines.Delete(0);
+
+     Linha := Trim( mCmd.Lines.Text );
+     mCmd.Lines.Text := '';
 
      if Linha <> '' then
      begin
@@ -829,17 +832,27 @@ begin
 end;
 
 procedure TfrmAcbrNfeMonitor.TCPServerExecute(AThread: TIdPeerThread);
-Var Cmd : String ;
+{Var Cmd : String ;
 begin
-  { Le o que foi enviado atravez da conexao TCP }
   Cmd := trim(AThread.Connection.ReadLn()) ;
   if Cmd <> '' then
   begin
      Conexao := AThread ;
      NewLines:= Cmd  ;
-     { precisa do Synchronize, pois "Processar" atualiza controles visuais }
      AThread.Synchronize( Processar );
-//     Processar ;
+  end ;
+end;}
+Var
+  SL : TStringList;
+begin
+  { Le o que foi enviado atravez da conexao TCP }
+  SL := TStringList.Create ;
+  try
+     AThread.Connection.Capture( SL );
+     NewLines:= SL.Text;
+     AThread.Synchronize( Processar );
+  finally
+     SL.Free ;
   end ;
 end;
 

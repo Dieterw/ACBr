@@ -2,7 +2,8 @@ program ACBrNFeMonitor;
 
 uses
   Forms,
-  ACBrNFeMonitor1 in 'ACBrNFeMonitor1.pas' {frmAcbrNfeMonitor};
+  ACBrNFeMonitor1 in 'ACBrNFeMonitor1.pas' {frmAcbrNfeMonitor},
+  DoACBrNFeUnit in 'DoACBrNFeUnit.pas';
 
 {$R *.res}
 

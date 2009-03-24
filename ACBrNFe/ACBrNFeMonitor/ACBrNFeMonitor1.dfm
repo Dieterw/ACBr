@@ -1,8 +1,8 @@
 object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
   Left = 429
-  Top = 131
+  Top = 132
   Width = 538
-  Height = 504
+  Height = 503
   ActiveControl = btMinimizar
   Caption = 'ACBrNFe Monitor'
   Color = clBtnFace
@@ -25,7 +25,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
     Left = 0
     Top = 0
     Width = 530
-    Height = 196
+    Height = 195
     Align = alClient
     TabOrder = 0
     object Splitter1: TSplitter
@@ -82,7 +82,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       Left = 1
       Top = 92
       Width = 528
-      Height = 103
+      Height = 102
       Align = alClient
       TabOrder = 1
       object pTodResp: TPanel
@@ -98,7 +98,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
         Left = 1
         Top = 18
         Width = 526
-        Height = 84
+        Height = 83
         Align = alClient
         Lines.Strings = (
           '')
@@ -111,7 +111,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
   end
   object pBotoes: TPanel
     Left = 0
-    Top = 411
+    Top = 410
     Width = 530
     Height = 40
     Align = alBottom
@@ -4087,7 +4087,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 451
+    Top = 450
     Width = 530
     Height = 19
     Panels = <
@@ -4100,7 +4100,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
   end
   object pConfig: TPanel
     Left = 0
-    Top = 196
+    Top = 195
     Width = 530
     Height = 215
     Align = alBottom

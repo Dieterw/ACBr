@@ -457,8 +457,6 @@ begin
             Imposto.II.VIOF := NotaUtil.FormatFloat(ValorIOF, '0.00');
         end;
 
-// Fim Alteracao IPI e II  >
-
         with DadosProdutos.Items[i].Tributos.PIS do
         begin
           if (CST = '01') or (CST = '02') then

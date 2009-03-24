@@ -184,12 +184,12 @@ begin
                begin
                  for I:= 0 to ACBrNFe1.NotasFiscais.Count-1 do
                   begin
-                    if ACBrNFe1.NotasFiscais.Items[i].XML.Confirmada and (Cmd.Params(2) = '1') then
+                    if ACBrNFe1.NotasFiscais.Items[i].XML.Confirmada then
                      begin
-
                        Cmd.Resposta :=  Cmd.Resposta+sLineBreak+
                                         ACBrNFe1.NotasFiscais.Items[i].XML.NFe.InfNFe.Ide.NNF+' - '+ACBrNFe1.NotasFiscais.Items[i].XML.Msg;
-                       ACBrNFe1.NotasFiscais.Items[i].XML.Imprimir;
+                       if (Cmd.Params(2) = '1') then
+                          ACBrNFe1.NotasFiscais.Items[i].XML.Imprimir;
                      end;
                   end;
                end;

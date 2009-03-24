@@ -4111,7 +4111,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       Top = 2
       Width = 528
       Height = 212
-      ActivePage = Monitor
+      ActivePage = TabSheet1
       Align = alBottom
       TabOrder = 0
       object Monitor: TTabSheet

@@ -832,16 +832,6 @@ begin
 end;
 
 procedure TfrmAcbrNfeMonitor.TCPServerExecute(AThread: TIdPeerThread);
-{Var Cmd : String ;
-begin
-  Cmd := trim(AThread.Connection.ReadLn()) ;
-  if Cmd <> '' then
-  begin
-     Conexao := AThread ;
-     NewLines:= Cmd  ;
-     AThread.Synchronize( Processar );
-  end ;
-end;}
 Var
   SL : TStringList;
 begin

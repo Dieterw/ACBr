@@ -42,11 +42,14 @@ procedure GerarIniNFe( AStr: WideString ) ;
 implementation
 
 Uses IniFiles, StrUtils, DateUtils,
-  Windows, Forms, sndkey32,
+  Windows, Forms, sndkey32, XMLIntf, XMLDoc, 
   ACBrUtil, ACBrNFeMonitor1 , ACBrNFeWebServices, ACBrNFe,
   ACBrNFeConfiguracoes, ACBrNFeTypes, ACBrNFeNotasFiscais,
   ACBrNFeDadosProdutos, ACBrNFeXML, ACBrNFeTransportador,
-  ACBrNFeDadosAdicionais;
+  ACBrNFeDadosAdicionais,
+  ACBrNFe_retConsReciNFe, ACBrNFe_retConsStatServ,
+  ACBrNFe_retEnviNFe, ACBrNFe_retConsSitNFe,
+  ACBrNFe_retCancNFe, ACBrNFe_retInutNFe;
 
 Procedure DoACBrNFe( Cmd : TACBrNFeCmd ) ;
 var
@@ -54,6 +57,14 @@ var
   ArqNFe : String;
   Salva  : Boolean;
   SL     : TStringList;
+
+  XmlDoc: IXMLDocument;
+  NFeRetConsStatServ : IXMLTRetConsStatServ;
+  NFeRetConsSitNFe   : IXMLTRetConsSitNFe;
+  NFeRetCancNFe      : IXMLTRetCancNFe;
+  NFeRetEnviNFe      : IXMLTRetEnviNFe;
+  NFeRetConsReciNFe  : IXMLTRetConsReciNFe;
+  NFeRetInutNFe      : IXMLTRetInutNFe;
 begin
  with frmAcbrNfeMonitor do
   begin
@@ -61,7 +72,23 @@ begin
         if Cmd.Metodo = 'statusservico' then
          begin
            if ACBrNFe1.WebServices.StatusServico.Executar then
-              Cmd.Resposta := ACBrNFe1.WebServices.StatusServico.Msg
+            begin
+              XmlDoc     := LoadXMLData(ACBrNFe1.WebServices.StatusServico.RetWS);
+              NFeRetConsStatServ := GetretConsStatServ(XmlDoc);
+
+              Cmd.Resposta := ACBrNFe1.WebServices.StatusServico.Msg+
+                              '[STATUS]'+sLineBreak+
+                              'Versao='+NFeRetConsStatServ.Versao+sLineBreak+
+                              'TpAmb='+NFeRetConsStatServ.TpAmb+sLineBreak+
+                              'VerAplic='+NFeRetConsStatServ.VerAplic+sLineBreak+
+                              'CStat='+NFeRetConsStatServ.CStat+sLineBreak+
+                              'XMotivo='+NFeRetConsStatServ.XMotivo+sLineBreak+
+                              'CUF='+NFeRetConsStatServ.CUF+sLineBreak+
+                              'DhRecbto='+NFeRetConsStatServ.DhRecbto+sLineBreak+
+                              'TMed='+NFeRetConsStatServ.TMed+sLineBreak+
+                              'DhRetorno='+NFeRetConsStatServ.DhRetorno+sLineBreak+
+                              'XObs='+NFeRetConsStatServ.XObs+sLineBreak;
+            end;
          end
 
         else if Cmd.Metodo = 'validarnfe' then
@@ -89,10 +116,28 @@ begin
         else if Cmd.Metodo = 'consultarnfe' then
          begin
            ACBrNFe1.WebServices.Consulta.NFeChave := Cmd.Params(0);
-           if ACBrNFe1.WebServices.Consulta.Executar then
-              Cmd.Resposta := ACBrNFe1.WebServices.Consulta.Msg
-           else
+           try
+              ACBrNFe1.WebServices.Consulta.Executar;
+              XmlDoc     := LoadXMLData(ACBrNFe1.WebServices.Consulta.RetWS);
+              NFeRetConsSitNFe := GetretConsSitNFe(XmlDoc);
+
+              Cmd.Resposta := ACBrNFe1.WebServices.Consulta.Msg+sLineBreak+
+                              '[CONSULTA]'+sLineBreak+
+                              'Versao='+NFeRetConsSitNFe.Versao+sLineBreak+
+                              'Id='+NFeRetConsSitNFe.InfProt.Id+sLineBreak+
+                              'TpAmb='+NFeRetConsSitNFe.InfProt.TpAmb+sLineBreak+
+                              'VerAplic='+NFeRetConsSitNFe.InfProt.VerAplic+sLineBreak+
+                              'CStat='+NFeRetConsSitNFe.InfProt.CStat+sLineBreak+
+                              'XMotivo='+NFeRetConsSitNFe.InfProt.XMotivo+sLineBreak+
+                              'CUF='+NFeRetConsSitNFe.InfProt.CUF+sLineBreak+
+                              'ChNFe='+NFeRetConsSitNFe.InfProt.ChNFe+sLineBreak+
+                              'DhRecbto='+NFeRetConsSitNFe.InfProt.DhRecbto+sLineBreak+
+                              'NProt='+NFeRetConsSitNFe.InfProt.NProt+sLineBreak+
+                              'DigVal='+NFeRetConsSitNFe.InfProt.DigVal+sLineBreak;
+
+           except
               raise Exception.Create(ACBrNFe1.WebServices.Consulta.Msg);
+           end;
          end
 
         else if Cmd.Metodo = 'cancelarnfe' then
@@ -103,10 +148,26 @@ begin
            ACBrNFe1.WebServices.Cancelamento.NFeChave      := ACBrNFe1.WebServices.Consulta.NFeChave;
            ACBrNFe1.WebServices.Cancelamento.Protocolo     := ACBrNFe1.WebServices.Consulta.Protocolo;
            ACBrNFe1.WebServices.Cancelamento.Justificativa := Cmd.Params(1);
-           if ACBrNFe1.WebServices.Cancelamento.Executar then
-              Cmd.Resposta := ACBrNFe1.WebServices.Cancelamento.Msg
-           else
+           try
+              ACBrNFe1.WebServices.Cancelamento.Executar;
+              XmlDoc     := LoadXMLData(ACBrNFe1.WebServices.Cancelamento.RetWS);
+              NFeRetCancNFe := GetretCancNFe(XmlDoc);
+
+              Cmd.Resposta := ACBrNFe1.WebServices.Cancelamento.Msg+sLineBreak+
+                              '[CANCELAMENTO]'+sLineBreak+
+                              'Versao='+NFeRetCancNFe.Versao+sLineBreak+
+                              'Id='+NFeRetCancNFe.InfCanc.Id+sLineBreak+
+                              'TpAmb='+NFeRetCancNFe.InfCanc.TpAmb+sLineBreak+
+                              'VerAplic='+NFeRetCancNFe.InfCanc.VerAplic+sLineBreak+
+                              'CStat='+NFeRetCancNFe.InfCanc.CStat+sLineBreak+
+                              'XMotivo='+NFeRetCancNFe.InfCanc.XMotivo+sLineBreak+
+                              'CUF='+NFeRetCancNFe.InfCanc.CUF+sLineBreak+
+                              'ChNFe='+NFeRetCancNFe.InfCanc.ChNFe+sLineBreak+
+                              'DhRecbto='+NFeRetCancNFe.InfCanc.DhRecbto+sLineBreak+
+                              'NProt='+NFeRetCancNFe.InfCanc.DhRecbto+sLineBreak;
+           except
               raise Exception.Create(ACBrNFe1.WebServices.Cancelamento.Msg);
+           end;
          end
 
         else if Cmd.Metodo = 'imprimirdanfe' then
@@ -125,7 +186,21 @@ begin
         else if Cmd.Metodo = 'inutilizarnfe' then
          begin                            //CNPJ         //Justificat   //Ano                    //Modelo                 //Série                  //Num.Inicial            //Num.Final
            ACBrNFe1.WebServices.Inutiliza(Cmd.Params(0), Cmd.Params(1), StrToInt(Cmd.Params(2)), StrToInt(Cmd.Params(3)), StrToInt(Cmd.Params(4)), StrToInt(Cmd.Params(5)), StrToInt(Cmd.Params(6)));
-           Cmd.Resposta := ACBrNFe1.WebServices.Inutilizacao.Msg;
+
+           XmlDoc := LoadXMLData(ACBrNFe1.WebServices.Inutilizacao.RetWS);
+           NFeRetInutNFe := GetretInutNFe(XmlDoc);
+
+           Cmd.Resposta := ACBrNFe1.WebServices.Inutilizacao.Msg+sLineBreak+
+                           '[INUTILIZACAO]'+sLineBreak+
+                           'Versao='+NFeRetInutNFe.Versao+sLineBreak+
+                           'Id='+NFeRetInutNFe.InfInut.Id+sLineBreak+
+                           'TpAmb='+NFeRetInutNFe.InfInut.TpAmb+sLineBreak+
+                           'VerAplic='+NFeRetInutNFe.InfInut.VerAplic+sLineBreak+
+                           'CStat='+NFeRetInutNFe.InfInut.CStat+sLineBreak+
+                           'XMotivo='+NFeRetInutNFe.InfInut.XMotivo+sLineBreak+
+                           'CUF='+NFeRetInutNFe.InfInut.CUF+sLineBreak+
+                           'DhRecbto='+NFeRetInutNFe.InfInut.DhRecbto+sLineBreak+
+                           'NProt='+NFeRetInutNFe.InfInut.NProt+sLineBreak;
          end
 
         else if Cmd.Metodo = 'enviarnfe' then
@@ -141,17 +216,69 @@ begin
 
            ACBrNFe1.NotasFiscais.Valida;
 
-           if ACBrNFe1.WebServices.Envia(StrToInt(Cmd.Params(1))) then
-            begin
-              for I:= 0 to ACBrNFe1.NotasFiscais.Count-1 do
-               begin
-                 if ACBrNFe1.NotasFiscais.Items[i].XML.Confirmada and (Cmd.Params(3) = '1') then
-                    ACBrNFe1.NotasFiscais.Items[i].XML.Imprimir;
-               end;
-            end;
-           Cmd.Resposta :=  ACBrNFe1.WebServices.Retorno.Msg;
-         end
+           if not(ACBrNFe1.WebServices.StatusServico.Executar) then
+            raise Exception.Create(ACBrNFe1.WebServices.StatusServico.Msg);
 
+           ACBrNFe1.WebServices.Enviar.Lote := StrToInt(Cmd.Params(1));
+           if not(ACBrNFe1.WebServices.Enviar.Executar) then
+            raise Exception.Create(ACBrNFe1.WebServices.Enviar.Msg);
+
+           XmlDoc     := LoadXMLData(ACBrNFe1.WebServices.Enviar.RetWS);
+           NFeRetEnviNFe := GetretEnviNFe(XmlDoc);
+
+           Cmd.Resposta :=  ACBrNFe1.WebServices.Enviar.Msg+sLineBreak+
+                            '[ENVIO]'+sLineBreak+
+                            'Versao='+NFeRetEnviNFe.Versao+sLineBreak+
+                            'TpAmb='+NFeRetEnviNFe.TpAmb+sLineBreak+
+                            'VerAplic='+NFeRetEnviNFe.VerAplic+sLineBreak+
+                            'CStat='+NFeRetEnviNFe.CStat+sLineBreak+
+                            'XMotivo='+NFeRetEnviNFe.XMotivo+sLineBreak+
+                            'CUF='+NFeRetEnviNFe.CUF+sLineBreak+
+                            'NRec='+NFeRetEnviNFe.InfRec.NRec+sLineBreak+
+                            'DhRecbto='+NFeRetEnviNFe.InfRec.DhRecbto+sLineBreak+
+                            'TMed='+NFeRetEnviNFe.InfRec.TMed+sLineBreak;
+
+           ACBrNFe1.WebServices.Retorno.Recibo := ACBrNFe1.WebServices.Enviar.Recibo;
+           if not(ACBrNFe1.WebServices.Retorno.Executar) then
+            raise Exception.Create(ACBrNFe1.WebServices.Retorno.Msg);
+
+           NFeRetConsReciNFe := ACBrNFe1.WebServices.Retorno.NFeRetorno;
+
+           Cmd.Resposta :=  Cmd.Resposta+
+                            ACBrNFe1.WebServices.Retorno.Msg+sLineBreak+
+                            '[RETORNO]'+sLineBreak+
+                            'Versao='+NFeRetConsReciNFe.Versao+sLineBreak+
+                            'TpAmb='+NFeRetConsReciNFe.TpAmb+sLineBreak+
+                            'VerAplic='+NFeRetConsReciNFe.VerAplic+sLineBreak+
+                            'NRec='+NFeRetConsReciNFe.NRec+sLineBreak+
+                            'CStat='+NFeRetConsReciNFe.CStat+sLineBreak+
+                            'XMotivo='+NFeRetConsReciNFe.XMotivo+sLineBreak+
+                            'CUF='+NFeRetConsReciNFe.CUF+sLineBreak;
+           for I:= 0 to ACBrNFe1.NotasFiscais.Count-1 do
+            begin
+              ACBrNFe1.WebServices.Consulta.NFeChave := ACBrNFe1.NotasFiscais.Items[i].XML.GetNFeChave;
+              ACBrNFe1.WebServices.Consulta.Executar;
+              XmlDoc     := LoadXMLData(ACBrNFe1.WebServices.Consulta.RetWS);
+              NFeRetConsSitNFe := GetretConsSitNFe(XmlDoc);
+
+              Cmd.Resposta := Cmd.Resposta+
+                             '[NFE'+Trim(ACBrNFe1.NotasFiscais.Items[i].XML.NFe.InfNFe.Ide.NNF)+']'+sLineBreak+
+                             'Versao='+NFeRetConsSitNFe.Versao+sLineBreak+
+                             'Id='+NFeRetConsSitNFe.InfProt.Id+sLineBreak+
+                             'TpAmb='+NFeRetConsSitNFe.InfProt.TpAmb+sLineBreak+
+                             'VerAplic='+NFeRetConsSitNFe.InfProt.VerAplic+sLineBreak+
+                             'CStat='+NFeRetConsSitNFe.InfProt.CStat+sLineBreak+
+                             'XMotivo='+NFeRetConsSitNFe.InfProt.XMotivo+sLineBreak+
+                             'CUF='+NFeRetConsSitNFe.InfProt.CUF+sLineBreak+
+                             'ChNFe='+NFeRetConsSitNFe.InfProt.ChNFe+sLineBreak+
+                             'DhRecbto='+NFeRetConsSitNFe.InfProt.DhRecbto+sLineBreak+
+                             'NProt='+NFeRetConsSitNFe.InfProt.NProt+sLineBreak+
+                             'DigVal='+NFeRetConsSitNFe.InfProt.DigVal+sLineBreak;
+
+              if ACBrNFe1.NotasFiscais.Items[i].XML.Confirmada and (Cmd.Params(3) = '1') then
+                 ACBrNFe1.NotasFiscais.Items[i].XML.Imprimir;
+            end;
+         end
         else if (Cmd.Metodo = 'criarnfe') or (Cmd.Metodo = 'criarenviarnfe')then
          begin
            GerarIniNFe( Cmd.Params(0)  ) ;
@@ -180,20 +307,70 @@ begin
            SL.Free;
            if Cmd.Metodo = 'criarenviarnfe' then
             begin
-              if ACBrNFe1.WebServices.Envia(StrToInt(Cmd.Params(1))) then
+              if not(ACBrNFe1.WebServices.StatusServico.Executar) then
+               raise Exception.Create(ACBrNFe1.WebServices.StatusServico.Msg);
+
+              ACBrNFe1.WebServices.Enviar.Lote := StrToInt(Cmd.Params(1));
+              if not(ACBrNFe1.WebServices.Enviar.Executar) then
+               raise Exception.Create(ACBrNFe1.WebServices.Enviar.Msg);
+
+              XmlDoc     := LoadXMLData(ACBrNFe1.WebServices.Enviar.RetWS);
+              NFeRetEnviNFe := GetretEnviNFe(XmlDoc);
+
+              Cmd.Resposta :=  ACBrNFe1.WebServices.Enviar.Msg+sLineBreak+
+                              '[ENVIO]'+sLineBreak+
+                              'Versao='+NFeRetEnviNFe.Versao+sLineBreak+
+                              'TpAmb='+NFeRetEnviNFe.TpAmb+sLineBreak+
+                              'VerAplic='+NFeRetEnviNFe.VerAplic+sLineBreak+
+                              'CStat='+NFeRetEnviNFe.CStat+sLineBreak+
+                              'XMotivo='+NFeRetEnviNFe.XMotivo+sLineBreak+
+                              'CUF='+NFeRetEnviNFe.CUF+sLineBreak+
+                              'NRec='+NFeRetEnviNFe.InfRec.NRec+sLineBreak+
+                              'DhRecbto='+NFeRetEnviNFe.InfRec.DhRecbto+sLineBreak+
+                              'TMed='+NFeRetEnviNFe.InfRec.TMed+sLineBreak;
+
+              ACBrNFe1.WebServices.Retorno.Recibo := ACBrNFe1.WebServices.Enviar.Recibo;
+              if not(ACBrNFe1.WebServices.Retorno.Executar) then
+               raise Exception.Create(ACBrNFe1.WebServices.Retorno.Msg);
+
+              NFeRetConsReciNFe := ACBrNFe1.WebServices.Retorno.NFeRetorno;
+
+              Cmd.Resposta :=  Cmd.Resposta+
+                               ACBrNFe1.WebServices.Retorno.Msg+sLineBreak+
+                              '[RETORNO]'+sLineBreak+
+                              'Versao='+NFeRetConsReciNFe.Versao+sLineBreak+
+                              'TpAmb='+NFeRetConsReciNFe.TpAmb+sLineBreak+
+                              'VerAplic='+NFeRetConsReciNFe.VerAplic+sLineBreak+
+                              'NRec='+NFeRetConsReciNFe.NRec+sLineBreak+
+                              'CStat='+NFeRetConsReciNFe.CStat+sLineBreak+
+                              'XMotivo='+NFeRetConsReciNFe.XMotivo+sLineBreak+
+                              'CUF='+NFeRetConsReciNFe.CUF+sLineBreak;
+
+              for I:= 0 to ACBrNFe1.NotasFiscais.Count-1 do
                begin
-                 for I:= 0 to ACBrNFe1.NotasFiscais.Count-1 do
-                  begin
-                    if ACBrNFe1.NotasFiscais.Items[i].XML.Confirmada then
-                     begin
-                       Cmd.Resposta :=  Cmd.Resposta+sLineBreak+
-                                        ACBrNFe1.NotasFiscais.Items[i].XML.NFe.InfNFe.Ide.NNF+' - '+ACBrNFe1.NotasFiscais.Items[i].XML.Msg;
-                       if (Cmd.Params(2) = '1') then
-                          ACBrNFe1.NotasFiscais.Items[i].XML.Imprimir;
-                     end;
-                  end;
-               end;
-              Cmd.Resposta :=  Cmd.Resposta+sLineBreak+ACBrNFe1.WebServices.Retorno.Msg;
+                 ACBrNFe1.WebServices.Consulta.NFeChave := ACBrNFe1.NotasFiscais.Items[i].XML.GetNFeChave;
+                 ACBrNFe1.WebServices.Consulta.Executar;
+                 XmlDoc     := LoadXMLData(ACBrNFe1.WebServices.Consulta.RetWS);
+                 NFeRetConsSitNFe := GetretConsSitNFe(XmlDoc);
+
+                 Cmd.Resposta := Cmd.Resposta+
+                                '[NFE'+Trim(ACBrNFe1.NotasFiscais.Items[i].XML.NFe.InfNFe.Ide.NNF)+']'+sLineBreak+
+                                'Versao='+NFeRetConsSitNFe.Versao+sLineBreak+
+                                'Id='+NFeRetConsSitNFe.InfProt.Id+sLineBreak+
+                                'TpAmb='+NFeRetConsSitNFe.InfProt.TpAmb+sLineBreak+
+                                'VerAplic='+NFeRetConsSitNFe.InfProt.VerAplic+sLineBreak+
+                                'CStat='+NFeRetConsSitNFe.InfProt.CStat+sLineBreak+
+                                'XMotivo='+NFeRetConsSitNFe.InfProt.XMotivo+sLineBreak+
+                                'CUF='+NFeRetConsSitNFe.InfProt.CUF+sLineBreak+
+                                'ChNFe='+NFeRetConsSitNFe.InfProt.ChNFe+sLineBreak+
+                                'DhRecbto='+NFeRetConsSitNFe.InfProt.DhRecbto+sLineBreak+
+                                'NProt='+NFeRetConsSitNFe.InfProt.NProt+sLineBreak+
+                                'DigVal='+NFeRetConsSitNFe.InfProt.DigVal+sLineBreak;
+
+                 if ACBrNFe1.NotasFiscais.Items[i].XML.Confirmada and (Cmd.Params(2) = '1') then
+                    ACBrNFe1.NotasFiscais.Items[i].XML.Imprimir;
+            end;
+
             end;
          end
 

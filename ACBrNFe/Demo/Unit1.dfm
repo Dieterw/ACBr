@@ -33,7 +33,7 @@ object Form1: TForm1
         Top = 15
         Width = 258
         Height = 320
-        ActivePage = TabSheet1
+        ActivePage = TabSheet4
         Align = alClient
         TabOrder = 0
         object TabSheet1: TTabSheet
@@ -371,7 +371,7 @@ object Form1: TForm1
                 'TO')
             end
           end
-          object GroupBox5: TGroupBox
+          object gbProxy: TGroupBox
             Left = 0
             Top = 136
             Width = 250

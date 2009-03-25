@@ -38,7 +38,7 @@ type
     edtPathLogs: TEdit;
     sbtnPathSalvar: TSpeedButton;
     ckSalvar: TCheckBox;
-    GroupBox5: TGroupBox;
+    gbProxy: TGroupBox;
     Label8: TLabel;
     Label9: TLabel;
     Label10: TLabel;
@@ -182,12 +182,27 @@ begin
 
   Ini := TIniFile.Create( IniFile );
   try
+{$IFNDEF ACBrNFeCAPICOM}
       edtCaminho.Text  := Ini.ReadString( 'Certificado','Caminho' ,'') ;
       edtSenha.Text    := Ini.ReadString( 'Certificado','Senha'   ,'') ;
-      edtNumSerie.Text := Ini.ReadString( 'Certificado','NumSerie','') ;
       ACBrNFe1.Configuracoes.Certificados.Certificado  := edtCaminho.Text;
       ACBrNFe1.Configuracoes.Certificados.Senha        := edtSenha.Text;
-//      ACBrNFe1.Configuracoes.Certificados.NumeroSerie := edtNumSerie.Text;
+      edtNumSerie.Visible := False;
+      Label25.Visible := False;
+{$ELSE}
+      edtNumSerie.Text := Ini.ReadString( 'Certificado','NumSerie','') ;
+      ACBrNFe1.Configuracoes.Certificados.NumeroSerie := edtNumSerie.Text;
+      Label1.Caption := 'Informe o número de série do certificado'#13+
+                        'Disponível no Internet Explorer'#13+
+                        'menu Ferramentas, opções da internet '#13+
+                        'na página conteúdo, Certificados, Exibir,'#13+
+                        'Detalhes, Número do certificado'#13+
+                        'É necessario retirar os espaços em branco '#13+
+                        'e as letras para maiúsculo';
+      Label2.Visible := False;
+      edtCaminho.Visible := False;
+      edtSenha.Visible   := False;
+{$ENDIF}
 
       cbDanfe.Text        := Ini.ReadString( 'Geral','DANFE'       ,'Retrato') ;
       cbFormaEmissao.Text :=Ini.ReadString( 'Geral','FormaEmissao','Normal on-line') ;
@@ -207,6 +222,7 @@ begin
       ACBrNFe1.Configuracoes.WebServices.Ambiente   := cbAmbiente.Text;
       ACBrNFe1.Configuracoes.WebServices.Visualizar := ckVisualizar.Checked;
 
+{$IFNDEF ACBrNFeCAPICOM}
       edtProxyHost.Text  := Ini.ReadString( 'Proxy','Host'   ,'') ;
       edtProxyPorta.Text := Ini.ReadString( 'Proxy','Porta'  ,'') ;
       edtProxyUser.Text  := Ini.ReadString( 'Proxy','User'   ,'') ;
@@ -215,6 +231,9 @@ begin
       ACBrNFe1.Configuracoes.WebServices.ProxyPort := edtProxyPorta.Text;
       ACBrNFe1.Configuracoes.WebServices.ProxyUser := edtProxyUser.Text;
       ACBrNFe1.Configuracoes.WebServices.ProxyPass := edtProxySenha.Text;
+{$ELSE}
+      gbProxy.Visible := False;      
+{$ENDIF}
 
       edtEmitCNPJ.Text       := Ini.ReadString( 'Emitente','CNPJ'       ,'') ;
       edtEmitIE.Text         := Ini.ReadString( 'Emitente','IE'         ,'') ;

@@ -110,7 +110,15 @@ begin
            else
               raise Exception.Create('Arquivo '+Cmd.Params(0)+' não encontrado.');
 
+           Salva := ACBrNFe1.Configuracoes.Geral.Salvar;
+           if not Salva then
+            begin
+             ForceDirectories(PathWithDelim(ExtractFilePath(Application.ExeName))+'Logs');
+             ACBrNFe1.Configuracoes.Geral.PathSalvar := PathWithDelim(ExtractFilePath(Application.ExeName))+'Logs';
+            end;
+           ACBrNFe1.Configuracoes.Geral.Salvar := True;
            ACBrNFe1.NotasFiscais.Assinar;
+           ACBrNFe1.Configuracoes.Geral.Salvar := Salva;
          end
 
         else if Cmd.Metodo = 'consultarnfe' then

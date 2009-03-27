@@ -145,16 +145,23 @@ interface
 uses ACBrECFClass, ACBrDevice, ACBrUtil, ACBrCHQClass,
      Classes ;
 
-const  ENQ = #05  ;
+const  NUL = #00 ;
+       ENQ = #05  ;
        ACK = #06  ;
+       BELL= #07  ;
+       BS  = #08  ;
        LF  = #10  ;
        CR  = #13  ;
        ESC = #27  ;
        FS  = #28  ;
        GS  = #29  ;
        FF  = #255 ;
-
 type
+
+{ Tipo enumerado para separar os modelos daruma }
+TACBrModelosDaruma = (fs315, fs345, fs2000, fs600, fs2100T, fs600USB, fs700L, fs700H,
+                      fs700M, MACH1, MACH2, MACH3, fsIndefinido);
+
 { Classe filha de TACBrECFClass com implementaçao para Daruma }
 TACBrECFDaruma = class( TACBrECFClass )
  private
@@ -168,19 +175,22 @@ TACBrECFDaruma = class( TACBrECFClass )
     fsTipoRel     : Char ;
     fsEsperaFFCR  : Boolean ;
 
+    fsModeloDaruma  : TACBrModelosDaruma;
+
     fsRet244: AnsiString ;
     fsNumCRO: String ;
     fsErro, fsErroSTD : Integer ;
 
-
     Function PreparaCmd( cmd : AnsiString ) : AnsiString ;
     function GetComprovantesNaoFiscaisVinculado: TACBrECFComprovantesNaoFiscais;
+    function GetRelatoriosGerenciais: TACBrECFRelatoriosGerenciais;
     function LimpaRetorno( Retorno : AnsiString ) : AnsiString ;
 
     function GetRet244: AnsiString;
     property Ret244 : AnsiString read GetRet244 ;
     function LimpaStr(AString: AnsiString): AnsiString;
     function EnviaComando_ECF_Daruma(cmd: AnsiString): AnsiString;
+    Function DocumentosToStr(Documentos : TACBrECFTipoDocumentoSet) : String ;
  protected
     function GetDataHora: TDateTime; override ;
     function GetNumCupom: String; override ;
@@ -234,24 +244,31 @@ TACBrECFDaruma = class( TACBrECFClass )
     Function EnviaComando_ECF( cmd : AnsiString ) : AnsiString ; override ;
 
     Procedure AbreCupom ; override ;
+    procedure LegendaInmetroProximoItem ; override ; // Função implementada até o momento apenas para Daruma
     Procedure VendeItem( Codigo, Descricao : String; AliquotaECF : String;
        Qtd : Double ; ValorUnitario : Double; ValorDescontoAcrescimo : Double = 0;
        Unidade : String = ''; TipoDescontoAcrescimo : String = '%';
        DescontoAcrescimo : String = 'D' ) ; override ;
     Procedure SubtotalizaCupom( DescontoAcrescimo : Double = 0;
        MensagemRodape : AnsiString  = '' ) ; override ;
+    procedure CancelaDescontoAcrescimoSubTotal(TipoAcrescimoDesconto: Char) ;
+       override ;//A -> Acrescimo D -> Desconto  // Função implementada até o momento apenas para Daruma
     Procedure EfetuaPagamento( CodFormaPagto : String; Valor : Double;
        Observacao : AnsiString = ''; ImprimeVinculado : Boolean = false) ;
        override ;
-    Procedure FechaCupom( Observacao : AnsiString = '') ; override ;
+    procedure EstornoPagamento(IndiceEstornado: Integer; IndiceEfetivado: Integer;
+      Valor: Double; Observacao : AnsiString = '') ; override ; // Função implementada até o momento apenas para Daruma
+    Procedure FechaCupom( Observacao : AnsiString = ''; IndiceBMP : Integer = 0) ; override ;
     Procedure CancelaCupom ; override ;
     Procedure CancelaItemVendido( NumItem : Integer ) ; override ;
-
+    procedure CancelaItemVendidoParcial( NumItem : Integer;
+      Quantidade : Double) ; override ; // Função implementada até o momento apenas para Daruma
+    procedure CancelaDescontoAcrescimoItem( NumItem : Integer) ;override ; // Função implementada até o momento apenas para Daruma
     Procedure LeituraX ; override ;
     Procedure LeituraXSerial( var Linhas : TStringList) ; override ;
     Procedure ReducaoZ(DataHora : TDateTime = 0 ) ; override ;
-    Procedure AbreRelatorioGerencial ; override ;
-    Procedure LinhaRelatorioGerencial( Linha : AnsiString ) ; override ;
+    Procedure AbreRelatorioGerencial(Indice: Integer = 0) ; override ;
+    Procedure LinhaRelatorioGerencial( Linha : AnsiString; IndiceBMP: Integer = 0 ) ; override ;
     Procedure AbreCupomVinculado(COO, CodFormaPagto, CodComprovanteNaoFiscal :
        String; Valor : Double) ; override ;
     Procedure LinhaCupomVinculado( Linha : AnsiString ) ; override ;
@@ -274,15 +291,17 @@ TACBrECFDaruma = class( TACBrECFClass )
     Procedure LeituraMemoriaFiscalSerial( ReducaoInicial, ReducaoFinal : Integer;
        var Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
     Procedure LeituraMFDSerial( DataInicial, DataFinal : TDateTime;
-       var Linhas : TStringList ) ; overload ; override ;
+       var Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
     Procedure LeituraMFDSerial( COOInicial, COOFinal : Integer;
-       var Linhas : TStringList ) ; overload ; override ;
+       var Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
     Procedure IdentificaOperador ( Nome: String); override;
     Procedure IdentificaPAF( Linha1, Linha2 : String) ; override ;
+    Function RetornaInfoECF( Registrador : String ) : AnsiString; override ;
+    function DecodificaTexto(Operacao: Char; Texto: String; var Resposta: String): Boolean; override;
 
     { Procedimentos de Cupom Não Fiscal }
     procedure NaoFiscalCompleto(CodCNF: String; Valor: Double;
-      CodFormaPagto: String; Obs: AnsiString); override ;
+      CodFormaPagto: String; Obs: AnsiString; IndiceBMP : Integer = 0); override ;
     Procedure AbreNaoFiscal( CPF_CNPJ : String = '') ; override ;
     Procedure RegistraItemNaoFiscal( CodCNF : String; Valor : Double;
        Obs : AnsiString = '') ; override ;
@@ -290,7 +309,7 @@ TACBrECFDaruma = class( TACBrECFClass )
        MensagemRodape: AnsiString = '') ; override ;
     Procedure EfetuaPagamentoNaoFiscal( CodFormaPagto : String; Valor : Double;
        Observacao : AnsiString = ''; ImprimeVinculado : Boolean = false) ; override ;
-    Procedure FechaNaoFiscal( Observacao : AnsiString = '') ; override ;
+    Procedure FechaNaoFiscal( Observacao : AnsiString = ''; IndiceBMP : Integer = 0) ; override ;
     Procedure CancelaNaoFiscal ; override ;
 
     procedure Sangria( const Valor: Double;  Obs: AnsiString; DescricaoCNF,
@@ -312,6 +331,10 @@ TACBrECFDaruma = class( TACBrECFClass )
     Procedure ProgramaFormaPagamento( var Descricao: String;
        PermiteVinculado : Boolean = true; Posicao : String = '' ) ; override ;
 
+    procedure CarregaRelatoriosGerenciais ; override ;
+    Procedure ProgramaRelatorioGerencial( var Descricao: String;
+       Posicao : String = '') ; override ;
+
     procedure CarregaComprovantesNaoFiscais ; override ;
     procedure LerTotaisComprovanteNaoFiscal; override ;
     Procedure ProgramaComprovanteNaoFiscal( var Descricao: String;
@@ -325,7 +348,8 @@ TACBrECFDaruma = class( TACBrECFClass )
        TACBrECFComprovanteNaoFiscal ;
 
     Procedure CortaPapel( const CorteParcial : Boolean = false) ; override ;
-
+    // Função para mudar inpressora para modo online automaticamente
+    procedure ComutaOnLine;
  end ;
 
 implementation
@@ -382,16 +406,20 @@ begin
   fsArredonda := ' ';
   fsnumcupom  := '';
 
-  fpMFD     := False ;
-  fpTermica := False ;
-  fsTipoRel := ' ' ;
-  fsEsperaFFCR := False ;
+  fpMFD       := False ;
+  fpTermica   := False ;
+  fsTipoRel   := ' ' ;
+  fsEsperaFFCR    := False ;
+  fsModeloDaruma  :=  fsIndefinido;
 
   try
      { Testando a comunicaçao com a porta e se é MFD }
      if NumVersao = '' then
         raise EACBrECFNaoInicializado.Create(
                  'Erro inicializando a impressora '+ModeloStr );
+
+     // Função para comutar as impressoras termicas para OnLine
+     ComutaOnLine;
   except
      Desativar ;
      raise ;
@@ -434,7 +462,8 @@ begin
 end ;
 
 Function TACBrECFDaruma.EnviaComando_ECF_Daruma( cmd : AnsiString ) : AnsiString ;
-Var ErroMsg : String ;
+Var
+  ErroMsg : String ;
 begin
   result  := '' ;
   ErroMsg := '' ;
@@ -527,6 +556,7 @@ begin
           30 : ErroMsg := 'Comprovante NÃO Fiscal inválido ou não programado' ;
           38 : ErroMsg := 'Forma de pagamento selecionada não é‚ válida' ;
           39 : ErroMsg := 'Erro na sequência de fechamento do cupom fiscal' ;
+          41 : ErroMsg := 'Data inválida. Data fornecida é inferior à última gravada na Memória Fiscal' ;
           42 : ErroMsg := 'Leitura X inicial ainda não foi emitida' ;
           43 : ErroMsg := 'Não pode mais emitir CNF Vinculado solicitado';
           50 : ErroMsg := 'Sem Papel' ;
@@ -933,7 +963,30 @@ begin
         try
            TimeOut  := 1 ;
            Retentar := false ;
-           RetCmd   := EnviaComando(FS + 'R' + #200 + '083', 1) ;
+           RetCmd   := EnviaComando(FS + 'R' + #200 + '082') ;
+           if copy(RetCmd,1,5) = ':'+#200+'082' then
+           begin
+             if Copy(RetCmd, 6, 6) = '010053' then
+                fsModeloDaruma  :=  fs600
+             else if Copy(RetCmd, 6, 6) = '010054' then
+                fsModeloDaruma  :=  fs2100T
+             else if Copy(RetCmd, 6, 6) = '010058' then
+                fsModeloDaruma  :=  fs600USB
+             else if Copy(RetCmd, 6, 6) = '010059' then
+                fsModeloDaruma  :=  fs700L
+             else if Copy(RetCmd, 6, 6) = '010060' then
+                fsModeloDaruma  :=  fs700H
+             else if Copy(RetCmd, 6, 6) = '010061' then
+                fsModeloDaruma  :=  fs700M
+             else if Copy(RetCmd, 6, 6) = '010063' then
+                fsModeloDaruma  :=  MACH1
+             else if Copy(RetCmd, 6, 6) = '010064' then
+                fsModeloDaruma  :=  MACH2
+             else if Copy(RetCmd, 6, 6) = '010062' then
+                fsModeloDaruma  :=  MACH3
+           end ;
+
+           RetCmd   := EnviaComando(FS + 'R' + #200 + '083') ;
            if copy(RetCmd,1,5) = ':'+#200+'083' then
            begin
               fsNumVersao := copy(RetCmd, 6, 6) ;
@@ -969,13 +1022,25 @@ begin
         end ;
 
         if RetCmd = ':10043' then
-           fsNumVersao := '345'
+         begin
+           fsNumVersao    :=  '345';
+           fsModeloDaruma :=  fs345;
+         end
         else if RetCmd = ':10033' then
-           fsNumVersao := '315'
+         begin
+           fsNumVersao    :=  '315';
+           fsModeloDaruma :=  fs315;
+         end
         else if retcmd=':10004' then
-           fsNumVersao:='2000'
+         begin
+           fsNumVersao    :=  '2000';
+           fsModeloDaruma :=  fs2000;
+         end
         else
-           fsNumVersao := copy(RetCmd,2,length(RetCmd)-2) ;
+         begin
+           fsNumVersao    :=  copy(RetCmd,2,length(RetCmd)-2) ;
+           fsModeloDaruma :=  fsIndefinido;
+         end;
      end ;
   end ;
 
@@ -1062,7 +1127,7 @@ begin
       end
      else if fpMFD then
       begin
-        RetCmd1 := EnviaComando( GS + ACK ) ;
+        RetCmd1 := EnviaComando( GS + ACK, 1) ;
 
         if TestBit(StrToInt('$'+RetCmd1[5]),3) then
            fpEstado := estBloqueada
@@ -1362,6 +1427,18 @@ begin
      EnviaComando(ESC + #205 + IntToStrZero( NumItem ,3) ) ;
 end;
 
+procedure TACBrECFDaruma.CancelaItemVendidoParcial(NumItem: Integer;
+  Quantidade: Double);
+begin
+   EnviaComando(FS + 'F' + #204 +  IntToStrZero(NumItem,3) +
+                          IntToStrZero(Round(Quantidade * power(10,fpDecimaisQtd)), 7));
+end;
+
+procedure TACBrECFDaruma.CancelaDescontoAcrescimoItem(NumItem: Integer);
+begin
+   EnviaComando(FS + 'F' + #205 +  IntToStrZero(NumItem,3));
+end;
+
 procedure TACBrECFDaruma.EfetuaPagamento(CodFormaPagto: String;
   Valor: Double; Observacao: AnsiString; ImprimeVinculado: Boolean);
 Var RetCmd : AnsiString ;
@@ -1391,8 +1468,19 @@ begin
   fsRet244      := '' ;
 end;
 
-procedure TACBrECFDaruma.FechaCupom(Observacao: AnsiString);
-Var Obs, StrConsumidor : AnsiString ;
+procedure TACBrECFDaruma.EstornoPagamento(IndiceEstornado,
+  IndiceEfetivado: Integer; Valor: Double; Observacao : AnsiString = '');
+begin
+   EnviaComando(FS + 'F' + #228 +  IntToStrZero(IndiceEstornado,2) +
+            IntToStrZero(IndiceEfetivado,2) +
+            IntToStrZero( Round( Valor * power(10,2)),12) +
+            LeftStr( Observacao, 619 ) + FF);  
+end;
+
+procedure TACBrECFDaruma.FechaCupom(Observacao: AnsiString; IndiceBMP : Integer);
+Var
+  Obs, StrConsumidor : AnsiString ;
+  TipoCodBarra  : Integer;
 begin
   Obs := Observacao ;
   if (not Consumidor.Enviado) then
@@ -1409,7 +1497,7 @@ begin
                                   PadL(Consumidor.Nome,42)   +
                                   PadL(Consumidor.Endereco,42), 153) ;
 
-           EnviaComando( ESC + #208 + StrConsumidor )
+           EnviaComando( ESC + #208 + StrConsumidor ) ;
          end 
         else
          begin
@@ -1417,7 +1505,7 @@ begin
                             PadL(Consumidor.Endereco,84) +
                             PadL(Consumidor.Documento,84) ;
 
-           EnviaComando( ESC + #201 + StrConsumidor )
+           EnviaComando( ESC + #201 + StrConsumidor ) ;
          end ;
 
         Consumidor.Enviado := True ;
@@ -1430,7 +1518,31 @@ begin
 
   AguardaImpressao := True ;
   if fpMFD then
-     EnviaComando( FS + 'F' + #210 + '0' + Obs, 5 )
+   begin
+     { Verifico se tenho que mandar o indice de alguma imagem ou um código de barras }
+     { e permitido apenas um BMP ou um Código de barras }
+     if (IndiceBMP > 0) and (Not CodBarras.Adicionado) then
+        Obs :=  ESC + 'B' + IntToStrZero(IndiceBMP,1) + Obs
+     else if (CodBarras.Adicionado) then
+      begin
+       if CodBarras.ImpVertical then
+        begin
+         Obs :=  ESC + 'a' + IntToStrZero((Integer (CodBarras.Tipo) + 1), 2) +
+                 IntToStrZero(CodBarras.Largura, 1) + IntToStrZero(CodBarras.Altura, 3) +
+                 IfThen(CodBarras.ImpCodEmbaixo, '1', '0') + CodBarras.Codigo +
+                 NUL + #022 + #018 + Obs;
+        end
+       else
+        begin
+         Obs :=  ESC + 'b' + IntToStrZero((Integer (CodBarras.Tipo) + 1), 2) +
+                 IntToStrZero(CodBarras.Largura, 1) + IntToStrZero(CodBarras.Altura, 3) +
+                 IfThen(CodBarras.ImpCodEmbaixo, '1', '0') + CodBarras.Codigo +
+                 NUL + Obs;
+        end;
+      end;
+      
+     EnviaComando( FS + 'F' + #210 + '0' + Obs, 5 );
+   end
   else if fsNumVersao = '2000' then
      EnviaComando( ESC + #209 + Obs, 10)
   else
@@ -1466,6 +1578,22 @@ begin
   fsEmPagamento := true ;
   fsTotalAPagar := RoundTo( StrToFloatDef( copy(RetCmd,2,12),0 ) / 100, -2) ;
   fsRet244      := '' ;
+end;
+
+procedure TACBrECFDaruma.CancelaDescontoAcrescimoSubTotal(
+  TipoAcrescimoDesconto: Char);
+begin
+   if TipoAcrescimoDesconto = 'D' then
+      TipoAcrescimoDesconto:= '0'
+   else if TipoAcrescimoDesconto = 'A' then
+       TipoAcrescimoDesconto:= '1';
+
+   EnviaComando(FS + 'F' + #208 +  TipoAcrescimoDesconto);
+end;
+
+procedure TACBrECFDaruma.LegendaInmetroProximoItem;
+begin
+   EnviaComando(FS + 'C' + #215 + '1');
 end;
 
 Procedure TACBrECFDaruma.VendeItem( Codigo, Descricao : String;
@@ -1940,6 +2068,99 @@ begin
    end ;
 end;
 
+procedure TACBrECFDaruma.CarregaRelatoriosGerenciais;
+Var
+  RetCmd, Token1, Token2, Descricao,
+  StrRG, StrCER : AnsiString ;
+  Cont, Indice, CER : Integer ;
+  RG  : TACBrECFRelatorioGerencial ;
+begin
+  inherited CarregaRelatoriosGerenciais ;   {Inicializa fpRelatoriosGerenciais}
+
+  try
+    if fsNumVersao = '2000' then
+    begin
+
+    end
+    else if fpMFD then // Para daruma FS600 e FS700
+    begin
+      RetCmd  := EnviaComando( FS + 'R' +  #200 + '128' ) ;
+      StrRG   := copy(RetCmd, 6, 300) ;
+
+      RetCmd  := EnviaComando( FS + 'R' +  #200 + '044' ) ;
+      StrCER  := copy(RetCmd, 6, 80) ;
+
+      for Cont := 1 to 20 do
+      begin
+        { Adicionando os Relatorios Gerenciais }
+        Token1    := copy(StrRG, ((Cont-1) * 15) + 1, 15) ;
+        Descricao := Trim(Token1) ;
+
+        Token2:= copy(StrCER, ((Cont-1) * 4) + 1, 4) ;
+        CER   := StrToIntDef(Token2, 0) ;
+        if (Descricao <> '') and (Descricao[2] <> #255) then
+          begin
+            RG := TACBrECFRelatorioGerencial.create ;
+
+            RG.Indice     := IntToStrZero(Cont,2);
+
+            RG.Descricao  := Descricao ;
+
+            RG.Contador   :=  CER;
+
+            fpRelatoriosGerenciais.Add( RG ) ;
+          end ;
+      end ;
+    end ;
+    // A impressora FS345 não tem opção de relatorios gerenciais
+  except
+      { Se falhou ao carregar, deve "nilzar" as variaveis para que as rotinas
+        "Acha*" tentem carregar novamente }
+      fpRelatoriosGerenciais.Free ;
+      fpRelatoriosGerenciais := nil ;
+
+      raise ;
+  end ;
+
+end;
+
+procedure TACBrECFDaruma.ProgramaRelatorioGerencial(var Descricao: String; Posicao: String);
+Var
+  ProxIndice : Integer ;
+begin
+  CarregaRelatoriosGerenciais ;
+
+  Descricao := Trim(Descricao) ;
+  ProxIndice := StrToIntDef(Posicao, -1) ;
+
+  if fsNumVersao = '2000' then
+     raise Exception.Create('ProgramaRelatorioGerencial ainda não implemenado na FS2000')
+
+  else if fpMFD then
+  begin
+    if AchaCNFDescricao(Descricao, True) <> nil then
+      raise Exception.Create('Relatório Gerencial ('+Descricao+') já existe.') ;
+
+    if (ProxIndice < 2) or (ProxIndice > 20) then { Indice passado é válido ? }
+    begin
+      For ProxIndice := 2 to 20 do  { Procurando Lacuna }
+      begin
+        if AchaRGIndice(IntToStrZero(ProxIndice,2)) = nil then
+        break ;
+      end ;
+    end ;
+
+    if ProxIndice > 20 then
+      raise Exception.create('Não há espaço para programar novos RGs');
+
+    EnviaComando( FS + 'C' + #205 + IntToStrZero(ProxIndice,2) + PadL(Descricao,15) ) ;
+  end
+  else
+    raise Exception.Create('ECF FS345 não suporta RelatorioGerencial');
+
+  CarregaRelatoriosGerenciais ;
+end;
+
 procedure TACBrECFDaruma.CarregaComprovantesNaoFiscais;
 begin
   CarregaFormasPagamento ;
@@ -2007,13 +2228,28 @@ begin
 end;
 
 
-procedure TACBrECFDaruma.AbreRelatorioGerencial;
+procedure TACBrECFDaruma.AbreRelatorioGerencial(Indice: Integer);
+Var
+  IndiceStr : String;
+  RG  : TACBrECFRelatorioGerencial;
 begin
   AguardaImpressao := True ;
+  IndiceStr :=  IntToStrZero(Indice, 2);
   if fpMFD then
    begin
-     EnviaComando(FS + 'F' + #230 + '01', 5) ;
-     fsTipoRel := 'G' ;
+    if Indice > 0 then
+    begin
+      RG  := AchaRGIndice( IndiceStr ) ;
+      if RG = nil then
+        raise Exception.create( 'Relatório Gerencial: '+IndiceStr+
+                                ' não foi cadastrado.' ) ;
+
+      EnviaComando(FS + 'F' + #230 + IndiceStr, 5) ;
+    end
+    else
+      EnviaComando(FS + 'F' + #230 + '01', 5) ;
+
+    fsTipoRel := 'G' ;
    end
   else if fsNumVersao='2000' then
      EnviaComando(ESC + #214, 30)
@@ -2021,7 +2257,7 @@ begin
      EnviaComando(ESC + #211, 30) ;
 end;
 
-procedure TACBrECFDaruma.LinhaRelatorioGerencial(Linha: AnsiString);
+procedure TACBrECFDaruma.LinhaRelatorioGerencial(Linha: AnsiString; IndiceBMP: Integer);
 Var Linhas : TStringList ;
     P, Espera : Integer ;
     Buffer : AnsiString ;
@@ -2071,6 +2307,26 @@ begin
 
         Buffer := copy( Linha, 1, P)  ;
         Espera := Trunc( CountStr( Buffer, #10 ) / 4) ;
+
+        if (IndiceBMP > 0) and (Not CodBarras.Adicionado) then
+           Buffer  :=  ESC + 'B' + IntToStrZero(IndiceBMP, 1) + Buffer
+        else if (CodBarras.Adicionado) then
+         begin
+           if CodBarras.ImpVertical then
+            begin
+              Buffer  :=  ESC + 'a' + IntToStrZero((Integer (CodBarras.Tipo) + 1), 2) +
+                  IntToStrZero(CodBarras.Largura, 1) + IntToStrZero(CodBarras.Altura, 3) +
+                  IfThen(CodBarras.ImpCodEmbaixo, '1', '0') + CodBarras.Codigo +
+                  NUL + #022 + #018 + Buffer;
+           end
+          else
+           begin
+              Buffer  :=  ESC + 'b' + IntToStrZero((Integer (CodBarras.Tipo) + 1), 2) +
+                  IntToStrZero(CodBarras.Largura, 1) + IntToStrZero(CodBarras.Altura, 3) +
+                  IfThen(CodBarras.ImpCodEmbaixo, '1', '0') + CodBarras.Codigo + NUL;
+           end;
+         end;
+
 
         AguardaImpressao := (Espera > 3) ;
         if fsTipoRel = 'V' then
@@ -2271,9 +2527,38 @@ begin
   Linhas.Text := RetCmd ;
 end;
 
+Function TACBrECFDaruma.DocumentosToStr(Documentos : TACBrECFTipoDocumentoSet) : String ;
+begin
+  if (Documentos - [docTodos]) = [] then
+     Result := StringOfChar('1',18)
+  else
+   begin
+     Result := '' ;
+     Result := Result + IfThen(docRZ              in Documentos, '1', '0');
+     Result := Result + IfThen(docLX              in Documentos, '1', '0');
+     Result := Result + IfThen(docCF              in Documentos, '1', '0');
+     Result := Result + IfThen(docCFBP            in Documentos, '1', '0');
+     Result := Result + IfThen(docCupomAdicional  in Documentos, '1', '0');
+     Result := Result + IfThen(docCFCancelamento  in Documentos, '1', '0');
+     Result := Result + IfThen(docCCD             in Documentos, '1', '0');
+     Result := Result + IfThen(docAdicionalCCD    in Documentos, '1', '0');
+     Result := Result + IfThen(docSegViaCCD       in Documentos, '1', '0');
+     Result := Result + IfThen(docReimpressaoCCD  in Documentos, '1', '0');
+     Result := Result + IfThen(docEstornoCCD      in Documentos, '1', '0');
+     Result := Result + IfThen(docCNF             in Documentos, '1', '0');
+     Result := Result + IfThen(docCNFCancelamento in Documentos, '1', '0');
+     Result := Result + IfThen(docSangria         in Documentos, '1', '0');
+     Result := Result + IfThen(docSuprimento      in Documentos, '1', '0');
+     Result := Result + IfThen(docEstoquePagto    in Documentos, '1', '0');
+     Result := Result + IfThen(docRG              in Documentos, '1', '0');
+     Result := Result + IfThen(docLMF             in Documentos, '1', '0');
+   end ;
+
+  Result := PadL( Result, 31, '1') ;
+end ;
+
 procedure TACBrECFDaruma.LeituraMFDSerial(COOInicial, COOFinal: Integer;
-  var Linhas: TStringList);
-// Autor: José Luís Schiavo
+  var Linhas: TStringList; Documentos : TACBrECFTipoDocumentoSet);
  Var Espera : Integer;
      RetCmd : AnsiString ;
 begin
@@ -2282,27 +2567,34 @@ begin
     ainda mais o TimeOut. Cfe. testes realizados, faixas de 100 COOs ainda são
     grandes demais p/ um TimeOut de 300 seg., aconselha-se fazer a leitura por
     faixas de 50 em 50 COOs ( Aprox. 220 COOs em 8min em uma FS600 V.1.03) }
-  Espera := 20 + (COOFinal - COOInicial) ;
-  fsEsperaFFCR := True ;
-  RetCmd := EnviaComando(FS + 'R' + #201 + '023' +
-                           IntToStrZero(COOInicial,6)+
-                           IntToStrZero(COOFinal  ,6), Espera );
+
+  Espera := 20 + (COOFinal - COOInicial) * 2 ;
+  fsEsperaFFCR  :=  True ;
+
+  RetCmd := EnviaComando( FS + 'R' + #201 + '024' +
+                          IntToStrZero(COOInicial,6) +
+                          IntToStrZero(COOFinal  ,6) + '12' +
+                          DocumentosToStr(Documentos), Espera );
+
   RetCmd := LimpaStr( RetCmd ) ;  { Troca #0 dentro da String por espaços }
   Linhas.Clear ;
   Linhas.Text := RetCmd ;
 end;
 
 procedure TACBrECFDaruma.LeituraMFDSerial(DataInicial,
-  DataFinal: TDateTime; var Linhas: TStringList);
+  DataFinal: TDateTime; var Linhas: TStringList;
+  Documentos : TACBrECFTipoDocumentoSet);
  Var Espera : Integer;
      RetCmd : AnsiString ;
 begin
-  Espera := 20 + DaysBetween(DataInicial,DataFinal) ;
+  Espera := 20 + (DaysBetween(DataInicial,DataFinal)) * 2 ;
   fsEsperaFFCR := True ;
-  RetCmd := EnviaComando(FS + 'R' + #201 + '024' +
-                           FormatDateTime('ddmmyy',DataInicial)+
-                           FormatDateTime('ddmmyy',DataFinal) + '01' +
-                           StringOfChar('1',31) , Espera );
+  
+  RetCmd := EnviaComando( FS + 'R' + #201 + '024' +
+                          FormatDateTime('ddmmyy',DataInicial)+
+                          FormatDateTime('ddmmyy',DataFinal) + '11' +
+                          DocumentosToStr(Documentos), Espera );
+
   RetCmd := LimpaStr( RetCmd ) ;  { Troca #0 dentro da String por espaços }
   Linhas.Clear ;
   Linhas.Text := RetCmd ;
@@ -2323,6 +2615,13 @@ begin
   end ;
 end;
 
+function TACBrECFDaruma.GetRelatoriosGerenciais: TACBrECFRelatoriosGerenciais;
+begin
+  if not Assigned( fpRelatoriosGerenciais ) then
+     CarregaRelatoriosGerenciais ;
+
+  Result := fpRelatoriosGerenciais ;
+end;
 
 function TACBrECFDaruma.GetComprovantesNaoFiscaisVinculado: TACBrECFComprovantesNaoFiscais;
 begin
@@ -2522,10 +2821,21 @@ begin
   fsRet244 := '' ;
 end;
 
-procedure TACBrECFDaruma.FechaNaoFiscal(Observacao: AnsiString);
+procedure TACBrECFDaruma.FechaNaoFiscal(Observacao: AnsiString; IndiceBMP : Integer);
+Var
+  Obs : String;
 begin
+  Obs :=  LeftStr(Observacao,619);
+
+  Obs := StringReplace(Obs,#10,CR+LF,[rfReplaceAll]) + FF ;
+
   if fpMFD then
-     EnviaComando( FS + 'F' + #226 + LeftStr(Observacao,619) + FF ) ;
+  begin
+     if IndiceBMP > 0 then
+        Obs :=  ESC + 'B' + IntToStrZero(IndiceBMP,1) + Obs;
+
+     EnviaComando( FS + 'F' + #226 + Obs ) ;
+  end;
 
   fsEmPagamento := false;   { Linha adicionada por Marciano Lizzoni }
   fsRet244      := '' ;
@@ -2903,6 +3213,15 @@ begin
          fpComprovantesNaoFiscais[A].Total   := RoundTo( StrToFloatDef(Copy(RetCmd,1,13),0)
                                           / 100, -2 );
       end;
+      
+      // Autor: Maicon da Silva e Gustava Montagoli
+      for A := 0 to fpComprovantesNaoFiscais.Count -1 do
+      begin
+         RetCmd := EnviaComando( FS + 'R' + #201 + '011'+ IntToStrZero(A+1,2) + CR);
+         RetCmd := Copy(RetCmd, 6, Length(RetCmd));
+
+         fpComprovantesNaoFiscais[A].Contador   := StrToIntDef(Copy(RetCmd,1,4),0);
+      end;
     end
 
    else if fsNumVersao = '2000' then
@@ -3004,7 +3323,29 @@ end;
 
 procedure TACBrECFDaruma.IdentificaPAF(Linha1, Linha2: String);
 begin
-  EnviaComando( FS + 'C' + #214 + PadL(Linha1,42) + PadL(Linha2,42) );
+  if fpMFD then
+    EnviaComando( FS + 'C' + #214 + PadL(Linha1,42) + PadL(Linha2,42) );
+end;
+
+Function TACBrECFDaruma.RetornaInfoECF( Registrador: String) : AnsiString;
+ Var Indice : Integer ;
+begin
+  Result := '' ;
+  
+  if fpMFD then
+  begin
+    // Implementação pedida pela daruma apenas para facilitar a vida de alguns
+    // desenvolvedores que necessitam de alguma informação que não esta
+    // disponivel em propriedades do ACBrECF
+
+    Indice := StrToIntDef(Registrador,0) ;
+    if (Indice < 1) or (Indice > 578) then
+      raise Exception.create( 'Não existe nenhum Informação com o Registrador: '+Registrador+'('+IntToStr(Indice)+')') ;
+
+    Registrador := IntToStrZero(Indice, 3);
+    Result := EnviaComando( FS + 'R' + #200 + Registrador);
+    Result := Copy(Result, 6, Length(Result));
+  end;
 end;
 
 procedure TACBrECFDaruma.CortaPapel(const CorteParcial: Boolean);
@@ -3045,7 +3386,7 @@ begin
 end;
 
 procedure TACBrECFDaruma.NaoFiscalCompleto(CodCNF: String; Valor: Double;
-  CodFormaPagto: String; Obs: AnsiString);
+  CodFormaPagto: String; Obs: AnsiString; IndiceBMP : Integer);
 begin
   { Chama rotinas da classe Pai (fpOwner) para atualizar os Memos }
   with TACBrECF(fpOwner) do
@@ -3058,7 +3399,7 @@ begin
            EfetuaPagamentoNaoFiscal(CodFormaPagto, Valor );
         except
         end ;
-        FechaNaoFiscal( Obs );
+        FechaNaoFiscal( Obs, IndiceBMP );
      except
         try
            CancelaNaoFiscal
@@ -3069,6 +3410,38 @@ begin
      end ;
   end ;
 end;
+
+procedure TACBrECFDaruma.ComutaOnLine;
+begin
+  if fpMFD then
+     EnviaComando(GS + BS {+ BELL});
+end;
+
+function TACBrECFDaruma.DecodificaTexto(Operacao: Char; Texto: String;
+  var Resposta: String): Boolean;
+Var
+  RetCmd : AnsiString ;
+begin
+   Result := False;
+   if (fpMFD) then
+   begin
+      if ( (fsModeloDaruma in [fs600, fs600USB]) and (StrToInt(fsNumVersao) > 10400) ) or
+         ( (fsModeloDaruma in [fs700L, fs700H, fs700M]) and (StrToInt(fsNumVersao) > 10000) ) then
+       begin
+         RetCmd   := EnviaComando(FS + 'F' + #244 + Operacao + Texto + FF, 10);
+         Resposta := copy(RetCmd, 10, Length(RetCmd) - 12);
+         Result   := True;
+         if (Operacao = 'V') then
+            if Resposta = '0' then
+               Result := False;
+       end
+      else
+         raise Exception.Create( 'Versão do Firmeware da Impressora não suporta este comando ! ' );
+   end
+   else
+      raise Exception.Create( 'A  Impressora não suporta este comando ! ' );
+end;
+
 
 end.
 

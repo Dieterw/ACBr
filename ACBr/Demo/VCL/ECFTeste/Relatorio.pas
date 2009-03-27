@@ -68,15 +68,15 @@ begin
         StrToFloatDef( edValor.Text,0 ), mRelat.Lines,
         StrToIntDef(edVias.Text,1) )
   else
-     Form1.ACBrECF1.RelatorioGerencial(mRelat.Lines,StrToIntDef(edVias.Text,1));
+     Form1.ACBrECF1.RelatorioGerencial(mRelat.Lines,StrToIntDef(edVias.Text,1), StrToIntDef(edCupom.Text, 0));
 end;
 
 procedure TfrRelatorio.FormShow(Sender: TObject);
 begin
 //  mRelat.WrapAtValue := Form1.ACBrECF1.Colunas ;
   edFPG.Visible   := (TipoRelatorio = 'V') ;
-  lCupom.Visible  := edFPG.Visible ;
-  edCupom.Visible := edFPG.Visible ;
+//  lCupom.Visible  := edFPG.Visible ;
+//  edCupom.Visible := edFPG.Visible ;
   lCodFPG.Visible := edFPG.Visible ;
   sbFPG.Visible   := edFPG.Visible ;
   lValor.Visible  := edFPG.Visible ;
@@ -93,7 +93,11 @@ begin
   if TipoRelatorio = 'V' then
      Caption := 'Cupom NAO Fiscal Vinculado'
   else
+  begin
      Caption := 'Relatório Gerêncial' ;
+     lCupom.Caption :=  '&Indice Relatório Rerencial';
+     edCupom.Text   :=  '01';
+  end;
 end;
 
 procedure TfrRelatorio.sbFPGClick(Sender: TObject);

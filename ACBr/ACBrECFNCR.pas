@@ -176,14 +176,14 @@ TACBrECFNCR = class( TACBrECFClass )
     Procedure EfetuaPagamento( CodFormaPagto : String; Valor : Double;
        Observacao : AnsiString = ''; ImprimeVinculado : Boolean = false) ;
        override ;
-    Procedure FechaCupom( Observacao : AnsiString = '') ; override ;
+    Procedure FechaCupom( Observacao : AnsiString = ''; IndiceBMP : Integer = 0) ; override ;
     Procedure CancelaCupom ; override ;
     Procedure CancelaItemVendido( NumItem : Integer ) ; override ;
 
     Procedure LeituraX ; override ;
     Procedure ReducaoZ(DataHora : TDateTime) ; override ;
-    Procedure AbreRelatorioGerencial ; override ;
-    Procedure LinhaRelatorioGerencial( Linha : AnsiString ) ; override ;
+    Procedure AbreRelatorioGerencial(Indice: Integer = 0) ; override ;
+    Procedure LinhaRelatorioGerencial( Linha : AnsiString; IndiceBMP: Integer = 0 ) ; override ;
     Procedure AbreCupomVinculado(COO, CodFormaPagto, CodComprovanteNaoFiscal :
        String; Valor : Double) ; override ;
     Procedure LinhaCupomVinculado( Linha : AnsiString ) ; override ;
@@ -209,10 +209,10 @@ TACBrECFNCR = class( TACBrECFClass )
        MensagemRodape: AnsiString = '') ; override ;
     Procedure EfetuaPagamentoNaoFiscal( CodFormaPagto : String; Valor : Double;
        Observacao : AnsiString = ''; ImprimeVinculado : Boolean = false) ; override ;
-    Procedure FechaNaoFiscal( Observacao : AnsiString = '') ; override ;
+    Procedure FechaNaoFiscal( Observacao : AnsiString = ''; IndiceBMP : Integer = 0) ; override ;
     Procedure CancelaNaoFiscal ; override ;
     procedure NaoFiscalCompleto(CodCNF: String; Valor: Double;
-      CodFormaPagto: String; Obs: AnsiString); override ;
+      CodFormaPagto: String; Obs: AnsiString; IndiceBMP : Integer = 0); override ;
 
     procedure CarregaAliquotas ; override ;
     procedure LerTotaisAliquota ; override ;
@@ -1523,7 +1523,7 @@ begin
   EnviaComando ;
 end;
 
-procedure TACBrECFNCR.FechaCupom(Observacao: AnsiString);
+procedure TACBrECFNCR.FechaCupom(Observacao: AnsiString; IndiceBMP : Integer);
  Var SL : TStringList ;
      I  : Integer ;
 begin
@@ -1901,7 +1901,7 @@ begin
   EnviaComando ;
 end;
 
-procedure TACBrECFNCR.LinhaRelatorioGerencial(Linha: AnsiString);
+procedure TACBrECFNCR.LinhaRelatorioGerencial(Linha: AnsiString; IndiceBMP: Integer);
 Var I  : Integer ;
     SL : TStringList ;
 begin
@@ -2178,13 +2178,13 @@ begin
   EfetuaPagamento(CodFormaPagto, Valor, Observacao, ImprimeVinculado) ;
 end;
 
-procedure TACBrECFNCR.FechaNaoFiscal(Observacao: AnsiString);
+procedure TACBrECFNCR.FechaNaoFiscal(Observacao: AnsiString; IndiceBMP : Integer);
 begin
   FechaCupom( Observacao ) ;
 end;
 
 procedure TACBrECFNCR.NaoFiscalCompleto(CodCNF: String; Valor: Double;
-  CodFormaPagto: String; Obs: AnsiString);
+  CodFormaPagto: String; Obs: AnsiString; IndiceBMP : Integer);
 begin
   { Chama rotinas da classe Pai (fpOwner) para atualizar os Memos }
   with TACBrECF(fpOwner) do

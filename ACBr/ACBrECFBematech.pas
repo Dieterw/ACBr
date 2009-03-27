@@ -217,13 +217,13 @@ TACBrECFBematech = class( TACBrECFClass )
     Procedure EfetuaPagamento( CodFormaPagto : String; Valor : Double;
        Observacao : AnsiString = ''; ImprimeVinculado : Boolean = false) ;
        override ;
-    Procedure FechaCupom( Observacao : AnsiString = '') ; override ;
+    Procedure FechaCupom( Observacao : AnsiString = ''; IndiceBMP : Integer = 0) ; override ;
     Procedure CancelaCupom ; override ;
     Procedure CancelaItemVendido( NumItem : Integer ) ; override ;
 
     { Procedimentos de Cupom Não Fiscal }
     Procedure NaoFiscalCompleto( CodCNF : String; Valor : Double;
-       CodFormaPagto  : String; Obs : AnsiString ) ; override ;
+       CodFormaPagto  : String; Obs : AnsiString; IndiceBMP : Integer = 0) ; override ;
     Procedure AbreNaoFiscal( CPF_CNPJ : String = '') ; override ;
     Procedure RegistraItemNaoFiscal( CodCNF : String; Valor : Double;
        Obs : AnsiString = '') ; override ;
@@ -231,14 +231,14 @@ TACBrECFBematech = class( TACBrECFClass )
        MensagemRodape: AnsiString = '') ; override ;
     Procedure EfetuaPagamentoNaoFiscal( CodFormaPagto : String; Valor : Double;
        Observacao : AnsiString = ''; ImprimeVinculado : Boolean = false) ; override ;
-    Procedure FechaNaoFiscal( Observacao : AnsiString = '') ; override ;
+    Procedure FechaNaoFiscal( Observacao : AnsiString = ''; IndiceBMP : Integer = 0) ; override ;
     Procedure CancelaNaoFiscal ; override ;
 
     Procedure LeituraX ; override ;
     Procedure LeituraXSerial( var Linhas : TStringList) ; override ;
     Procedure ReducaoZ(DataHora : TDateTime = 0 ) ; override ;
-    Procedure AbreRelatorioGerencial ; override ;
-    Procedure LinhaRelatorioGerencial( Linha : AnsiString ) ; override ;
+    Procedure AbreRelatorioGerencial(Indice: Integer = 0) ; override ;
+    Procedure LinhaRelatorioGerencial( Linha : AnsiString; IndiceBMP: Integer = 0 ) ; override ;
     Procedure AbreCupomVinculado(COO, CodFormaPagto, CodComprovanteNaoFiscal :
        String; Valor : Double) ; override ;
     Procedure LinhaCupomVinculado( Linha : AnsiString ) ; override ;
@@ -1061,7 +1061,7 @@ begin
   fsTotalPago := fsTotalPago + RoundTo(Valor,-2) ;
 end;
 
-procedure TACBrECFBematech.FechaCupom(Observacao: AnsiString);
+procedure TACBrECFBematech.FechaCupom(Observacao: AnsiString; IndiceBMP : Integer);
 begin
   Observacao := TrimRight( Observacao ) ;
   if Copy( Observacao, length( Observacao ), 1) <> #10 then
@@ -1531,7 +1531,7 @@ begin
   EnviaComando( #20, Espera) ;
 end;
 
-procedure TACBrECFBematech.LinhaRelatorioGerencial(Linha: AnsiString);
+procedure TACBrECFBematech.LinhaRelatorioGerencial(Linha: AnsiString; IndiceBMP: Integer);
 Var P, Espera : Integer ;
     Buffer : AnsiString ;
     MaxChars : Integer ;
@@ -1880,7 +1880,7 @@ begin
 end ;
 
 procedure TACBrECFBematech.NaoFiscalCompleto(CodCNF: String; Valor: Double;
-  CodFormaPagto: String; Obs: AnsiString);
+  CodFormaPagto: String; Obs: AnsiString; IndiceBMP : Integer);
   Var FPG : TACBrECFFormaPagamento ;
 begin
   if fs25MFD then
@@ -1974,7 +1974,7 @@ begin
                 IntToStrZero( Round( DescontoAcrescimo * 100),14) );
 end;
 
-procedure TACBrECFBematech.FechaNaoFiscal(Observacao: AnsiString);
+procedure TACBrECFBematech.FechaNaoFiscal(Observacao: AnsiString; IndiceBMP : Integer);
 begin
   if fs25MFD then
      FechaCupom(Observacao)

@@ -192,6 +192,9 @@ TACBrECFSweda = class( TACBrECFClass )
     function GetDataHora: TDateTime; override ;
     function GetNumCupom: String; override ;
     function GetNumCCF: String; override ;
+    function GetNumGNF: String; override ;
+    function GetNumGRG: String; override ;
+    function GetNumCDC: String; override ;
     function GetNumECF: String; override ;
     function GetNumCRO: String; override ;
     function GetNumSerie: String; override ;
@@ -225,7 +228,7 @@ TACBrECFSweda = class( TACBrECFClass )
        var TempoLimite: TDateTime) : Boolean ; override ;
     function VerificaFimImpressao(var TempoLimite: TDateTime) : Boolean ; override ;
 
-    procedure ListaRelatorioGerencial(Relatorio : TStrings; Vias : Integer = 1);
+    procedure ListaRelatorioGerencial(Relatorio : TStrings; Vias : Integer = 1; Indice: Integer = 0);
        override ;
     Procedure ListaCupomVinculado( Relatorio : TStrings; Vias : Integer = 1) ;
       override ;
@@ -250,7 +253,7 @@ TACBrECFSweda = class( TACBrECFClass )
     Procedure EfetuaPagamento( CodFormaPagto : String; Valor : Double;
        Observacao : AnsiString = ''; ImprimeVinculado : Boolean = false) ;
        override ;
-    Procedure FechaCupom( Observacao : AnsiString = '') ; override ;
+    Procedure FechaCupom( Observacao : AnsiString = ''; IndiceBMP : Integer = 0) ; override ;
     Procedure CancelaCupom ; override ;
     Procedure CancelaItemVendido( NumItem : Integer ) ; override ;
 
@@ -258,7 +261,7 @@ TACBrECFSweda = class( TACBrECFClass )
     function AchaCNFDescricao( Descricao : String;
        BuscaExata : Boolean = False  ) : TACBrECFComprovanteNaoFiscal ; override ;
     Procedure NaoFiscalCompleto( CodCNF : String; Valor : Double;
-       CodFormaPagto  : String; Obs : AnsiString ) ; override ;
+       CodFormaPagto  : String; Obs : AnsiString; IndiceBMP : Integer = 0 ) ; override ;
     Procedure AbreNaoFiscal( CPF_CNPJ : String = '') ; override ;
     Procedure RegistraItemNaoFiscal( CodCNF : String; Valor : Double;
        Obs : AnsiString = '') ; override ;
@@ -266,8 +269,8 @@ TACBrECFSweda = class( TACBrECFClass )
     Procedure LeituraX ; override ;
     Procedure LeituraXSerial( var Linhas : TStringList) ; override ;
     Procedure ReducaoZ(DataHora : TDateTime = 0 ) ; override ;
-    Procedure AbreRelatorioGerencial ; override ;
-    Procedure LinhaRelatorioGerencial( Linha : AnsiString ) ; override ;
+    Procedure AbreRelatorioGerencial(Indice: Integer = 0) ; override ;
+    Procedure LinhaRelatorioGerencial( Linha : AnsiString; IndiceBMP: Integer = 0 ) ; override ;
     Procedure AbreCupomVinculado(COO, CodFormaPagto, CodComprovanteNaoFiscal :
        String; Valor : Double) ; override ;
     Procedure LinhaCupomVinculado( Linha : AnsiString ) ; override ;
@@ -1348,7 +1351,7 @@ begin
   fsTotalPago := fsTotalPago + Valor ;
 end;
 
-procedure TACBrECFSweda.FechaCupom(Observacao: AnsiString);
+procedure TACBrECFSweda.FechaCupom(Observacao: AnsiString; IndiceBMP : Integer);
 Var Linhas   : TStringList ;
     I        : Integer ;
     Obs, Cmd : AnsiString ;
@@ -1997,7 +2000,7 @@ begin
   EnviaComando( '13' + Cmd ,Espera ) ;
 end;
 
-procedure TACBrECFSweda.LinhaRelatorioGerencial(Linha: AnsiString);
+procedure TACBrECFSweda.LinhaRelatorioGerencial(Linha: AnsiString; IndiceBMP: Integer);
 begin
   ImprimirLinhaALinha( Linha, '080' ) ;
 end;
@@ -2130,7 +2133,7 @@ end;
 
 
 procedure TACBrECFSweda.ListaRelatorioGerencial(Relatorio: TStrings;
-  Vias: Integer);
+  Vias: Integer; Indice: Integer);
 Var Imp, Linha : Integer ;
     Texto : AnsiString ;
     Bufferiza : Boolean ;
@@ -2771,7 +2774,7 @@ begin
 end;
 
 procedure TACBrECFSweda.NaoFiscalCompleto(CodCNF: String; Valor: Double;
-  CodFormaPagto: String; Obs: AnsiString);
+  CodFormaPagto: String; Obs: AnsiString; IndiceBMP : Integer);
 begin
   { Chama rotinas da classe Pai (fpOwner) para atualizar os Memos }
   with TACBrECF(fpOwner) do
@@ -2822,6 +2825,81 @@ begin
   end ;
 end;
 
+function TACBrECFSweda.GetNumGNF: String;
+ Var RetCmd : AnsiString ;
+     Tentavias : Integer ;
+begin
+  Result    := '' ;
+
+  For Tentavias := 1 to 3 do
+  begin
+     if fpMFD then
+      begin
+        RetCmd := EnviaComando( '27'+'H' ) ;
+
+        if LeftStr(RetCmd, 3) = '.+C' then
+           Result := IntToStrZero( StrToIntDef( copy(RetCmd,49,6), 0), 6) ;
+      end
+     else
+      begin
+        RetCmd := EnviaComando( '27'+'1' ) ;
+
+        if LeftStr(RetCmd, 3) = '.+C' then
+           Result := IntToStrZero( StrToIntDef( copy(RetCmd,117,4), 0), 6) ;
+      end ;
+
+      if Result <> '' then
+         break ;
+
+      Sleep(100) ;
+  end ;
+end;
+
+function TACBrECFSweda.GetNumGRG: String;
+ Var RetCmd : AnsiString ;
+     Tentavias : Integer ;
+begin
+  Result    := '' ;
+
+  For Tentavias := 1 to 3 do
+  begin
+     if fpMFD then
+      begin
+        RetCmd := EnviaComando( '27'+'H' ) ;
+
+        if LeftStr(RetCmd, 3) = '.+C' then
+           Result := IntToStrZero( StrToIntDef( copy(RetCmd,55,6), 0), 6) ;
+      end;
+
+      if Result <> '' then
+         break ;
+
+      Sleep(100) ;
+  end ;
+end;
+
+function TACBrECFSweda.GetNumCDC: String;
+ Var RetCmd : AnsiString ;
+     Tentavias : Integer ;
+begin
+  Result    := '' ;
+
+  For Tentavias := 1 to 3 do
+  begin
+     if fpMFD then
+      begin
+        RetCmd := EnviaComando( '27'+'H' ) ;
+
+        if LeftStr(RetCmd, 3) = '.+C' then
+           Result := IntToStrZero( StrToIntDef( copy(RetCmd,79,4), 0), 4) ;
+      end;
+
+      if Result <> '' then
+         break ;
+
+      Sleep(100) ;
+  end ;
+end;
 
 end.
 

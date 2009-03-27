@@ -101,6 +101,19 @@ TACBrGAVAberturaAntecipada = ( aaIgnorar , aaException, aaAguardar ) ;
 
 TACBrETQOrientacao = (orNormal, or270, or180, or90);
 
+{Criando o tipo enumerado para tipos de código de barras }
+TACBrECFTipoCodBarra =  ( barEAN13, barEAN8, barSTANDARD, barINTERLEAVED,
+                         barCODE128, barCODE39, barCODE93, barUPCA,
+                         barCODABAR, barMSI, barCODE11 );
+
+{Criando o tipo enumerado para tipo de documentos em Leitura da MFD }
+TACBrECFTipoDocumento = ( docRZ, docLX, docCF, docCFBP, docCupomAdicional,
+                          docCFCancelamento, docCCD, docAdicionalCCD,
+                          docSegViaCCD, docReimpressaoCCD, docEstornoCCD,
+                          docCNF, docCNFCancelamento, docSangria, docSuprimento,
+                          docEstoquePagto, docRG, docLMF, docTodos);
+TACBrECFTipoDocumentoSet = set of TACBrECFTipoDocumento;
+
 TACBrSerialParity = (pNone, pOdd, pEven, pMark, pSpace) ;
 TACBrSerialStop   = (s1, s1eMeio, s2) ;
 TACBrHandShake    = (hsNenhum, hsXON_XOFF, hsRTS_CTS, hsDTR_DSR) ;

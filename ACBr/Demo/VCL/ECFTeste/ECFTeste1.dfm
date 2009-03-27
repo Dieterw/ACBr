@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 387
-  Top = 235
+  Left = 191
+  Top = 111
   Width = 440
   Height = 422
   VertScrollBar.Range = 59
@@ -41,7 +41,7 @@ object Form1: TForm1
     Top = 0
     Width = 432
     Height = 309
-    ActivePage = TabSheet4
+    ActivePage = TabSheet8
     Align = alClient
     TabOrder = 1
     object TabSheet4: TTabSheet
@@ -751,6 +751,211 @@ object Form1: TForm1
         end
       end
     end
+    object TabSheet8: TTabSheet
+      Caption = 'C'#243'digo de Barras'
+      ImageIndex = 5
+      DesignSize = (
+        424
+        281)
+      object Label23: TLabel
+        Left = 101
+        Top = 0
+        Width = 222
+        Height = 16
+        Caption = 'Impress'#227'o de C'#243'digo de Barras'
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'MS Sans Serif'
+        Font.Pitch = fpVariable
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label27: TLabel
+        Left = 176
+        Top = 24
+        Width = 96
+        Height = 13
+        Caption = 'Largura da Barra'
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Pitch = fpVariable
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label28: TLabel
+        Left = 328
+        Top = 24
+        Width = 86
+        Height = 13
+        Caption = 'Altura da Barra'
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Pitch = fpVariable
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label29: TLabel
+        Left = 176
+        Top = 64
+        Width = 34
+        Height = 13
+        Caption = 'String'
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Pitch = fpVariable
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object RdgTipoBarra: TRadioGroup
+        Left = 0
+        Top = 18
+        Width = 169
+        Height = 225
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Pitch = fpVariable
+        Font.Style = [fsBold]
+        ItemIndex = 0
+        Items.Strings = (
+          'EAN-13'
+          'EAN-8'
+          'STANDARD 2 OF 5'
+          'INTERLEAVED 2 OF 5'
+          'CODE128'
+          'CODE39'
+          'CODE93'
+          'UPC-A'
+          'CODABAR'
+          'MSI'
+          'CODE11')
+        ParentFont = False
+        TabOrder = 0
+        OnClick = RdgTipoBarraClick
+      end
+      object SpEdAlturaBarra: TSpinEdit
+        Left = 371
+        Top = 40
+        Width = 46
+        Height = 22
+        AutoSize = False
+        MaxValue = 200
+        MinValue = 50
+        TabOrder = 1
+        Value = 80
+        OnChange = seTimeOutChange
+      end
+      object EdtCodBarras: TEdit
+        Left = 176
+        Top = 80
+        Width = 241
+        Height = 21
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Pitch = fpVariable
+        Font.Style = [fsBold]
+        ParentFont = False
+        TabOrder = 2
+        Text = '789000000001'
+      end
+      object ChImpTextoVertical: TCheckBox
+        Left = 0
+        Top = 247
+        Width = 177
+        Height = 17
+        Caption = 'Imprime C'#243'digo na Vertical'
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Pitch = fpVariable
+        Font.Style = [fsBold]
+        ParentFont = False
+        TabOrder = 3
+        OnClick = ChImpTextoVerticalClick
+      end
+      object ChImpTextoAbaixoBarras: TCheckBox
+        Left = 0
+        Top = 263
+        Width = 201
+        Height = 17
+        Caption = 'Imprime texto abaixo das barras'
+        Checked = True
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Pitch = fpVariable
+        Font.Style = [fsBold]
+        ParentFont = False
+        State = cbChecked
+        TabOrder = 4
+      end
+      object MenTextoBarras: TMemo
+        Left = 176
+        Top = 104
+        Width = 241
+        Height = 137
+        Enabled = False
+        Lines.Strings = (
+          'TEXTO LIVRE'
+          'At'#233' 600 caracteres'
+          'LINHA 3'
+          ''
+          'LINHA 4'
+          ''
+          'LINHA 5')
+        TabOrder = 5
+      end
+      object BitBtn6: TBitBtn
+        Left = 301
+        Top = 248
+        Width = 121
+        Height = 28
+        Anchors = [akTop, akRight]
+        Cancel = True
+        Caption = 'Enviar Linha Gerencial'
+        Default = True
+        ModalResult = 1
+        TabOrder = 6
+        OnClick = BitBtn6Click
+      end
+      object BitBtn7: TBitBtn
+        Left = 204
+        Top = 248
+        Width = 90
+        Height = 28
+        Anchors = [akTop, akRight]
+        Cancel = True
+        Caption = 'Fechar Cupom'
+        Default = True
+        ModalResult = 1
+        TabOrder = 7
+        OnClick = BitBtn7Click
+      end
+      object SpEdtLarguraBarra: TSpinEdit
+        Left = 230
+        Top = 40
+        Width = 46
+        Height = 22
+        AutoSize = False
+        MaxValue = 5
+        MinValue = 2
+        TabOrder = 8
+        Value = 2
+        OnChange = seTimeOutChange
+      end
+    end
     object TabSheet7: TTabSheet
       Caption = 'TEF'
       ImageIndex = 4
@@ -1146,12 +1351,11 @@ object Form1: TForm1
   end
   object MainMenu1: TMainMenu
     Left = 72
-    Top = 341
+    Top = 317
     object Principal1: TMenuItem
       Caption = 'Principal'
       object Ativcar1: TMenuItem
         Caption = 'Ativar'
-        OnClick = Ativcar1Click
       end
       object Desativar1: TMenuItem
         Caption = 'Desativar'
@@ -1338,6 +1542,17 @@ object Form1: TForm1
           Caption = 'Ler Totais Aliquotas'
           OnClick = LerTotaisAliquotas1Click
         end
+        object N34: TMenuItem
+          Caption = '-'
+        end
+        object AchaAliquotaporIndice1: TMenuItem
+          Caption = 'Acha Aliquota por Indice'
+          OnClick = AchaAliquotaporIndice1Click
+        end
+        object AchaAliquotaporValor1: TMenuItem
+          Caption = 'Acha Aliquota por Valor'
+          OnClick = AchaAliquotaporValor1Click
+        end
       end
       object FormasdePagamento2: TMenuItem
         Caption = 'Formas de Pagamento'
@@ -1349,6 +1564,17 @@ object Form1: TForm1
           Caption = 'Ler Totais Forma de Pagamento'
           OnClick = LerTotaisFormadePagamento1Click
         end
+        object N35: TMenuItem
+          Caption = '-'
+        end
+        object AcharMeioPagamentoporIndice1: TMenuItem
+          Caption = 'Achar Formas Pagamento por Indice'
+          OnClick = AcharMeioPagamentoporIndice1Click
+        end
+        object AcharMeiodePagametoporDescrio1: TMenuItem
+          Caption = 'Achar Formas Pagameto por Descri'#231#227'o'
+          OnClick = AcharMeiodePagametoporDescrio1Click
+        end
       end
       object ComprovantesNaoFiscais1: TMenuItem
         Caption = 'Comprovantes Nao Fiscais'
@@ -1359,6 +1585,35 @@ object Form1: TForm1
         object LerTotaisComprovanetNaoFiscal1: TMenuItem
           Caption = 'Ler Totais Comprovante Nao Fiscal'
           OnClick = LerTotaisComprovanetNaoFiscal1Click
+        end
+        object N36: TMenuItem
+          Caption = '-'
+        end
+        object AchaCNFporIndice1: TMenuItem
+          Caption = 'Acha CNF por Indice'
+          OnClick = AchaCNFporIndice1Click
+        end
+        object AchaCNFporDescrio1: TMenuItem
+          Caption = 'Acha CNF por Descri'#231#227'o'
+          OnClick = AchaCNFporDescrio1Click
+        end
+      end
+      object RelatriosGerenciais1: TMenuItem
+        Caption = 'Relat'#243'rios Gerenciais'
+        object CarregaRelatriosGerenciais1: TMenuItem
+          Caption = 'Carrega Relat'#243'rios Gerenciais'
+          OnClick = CarregaRelatriosGerenciais1Click
+        end
+        object N37: TMenuItem
+          Caption = '-'
+        end
+        object AchaRGporIndice1: TMenuItem
+          Caption = 'Acha RG por Indice '
+          OnClick = AchaRGporIndice1Click
+        end
+        object AchaRGporDescrio1: TMenuItem
+          Caption = 'Acha RG por Descri'#231#227'o'
+          OnClick = AchaRGporDescrio1Click
         end
       end
       object CarregaUnidadesdeMedida1: TMenuItem
@@ -1472,12 +1727,23 @@ object Form1: TForm1
       object LeituraMFD1: TMenuItem
         Caption = 'Leitura MFD Serial'
         object PorCOO1: TMenuItem
-          Caption = 'Por COO'
+          Caption = 'Por Intervalo de COO'
           OnClick = PorCOO1Click
         end
         object PorPeriodo1: TMenuItem
-          Caption = 'Por Periodo'
+          Caption = 'Por Intervalo de Periodo'
           OnClick = PorPeriodo1Click
+        end
+        object N38: TMenuItem
+          Caption = '-'
+        end
+        object PorCOO2: TMenuItem
+          Caption = 'Por COO'
+          OnClick = PorCOO2Click
+        end
+        object PorDatadeMovimento1: TMenuItem
+          Caption = 'Por Data de Movimento'
+          OnClick = PorDatadeMovimento1Click
         end
       end
     end
@@ -1505,9 +1771,24 @@ object Form1: TForm1
         Caption = 'Vende Item'
         OnClick = VenderItem1Click
       end
+      object LegendaInmetroproximoItem1: TMenuItem
+        Caption = 'Legenda Inmetro proximo item '
+        OnClick = LegendaInmetroproximoItem1Click
+      end
+      object N30: TMenuItem
+        Caption = '-'
+      end
       object CancelarItemVendido1: TMenuItem
         Caption = 'Cancela Item Vendido'
         OnClick = CancelarItemVendido1Click
+      end
+      object CancelaItemVendidoParcial1: TMenuItem
+        Caption = 'Cancela Item Vendido Parcial'
+        OnClick = CancelaItemVendidoParcial1Click
+      end
+      object CancelaDescontoAcrescimoItem1: TMenuItem
+        Caption = 'Cancela DescontoAcrescimo Item'
+        OnClick = CancelaDescontoAcrescimoItem1Click
       end
       object N6: TMenuItem
         Caption = '-'
@@ -1516,9 +1797,23 @@ object Form1: TForm1
         Caption = 'SubTotaliza Cupom'
         OnClick = Sub1Click
       end
+      object CancelaDescontoAcrescimoSubTotal1: TMenuItem
+        Caption = 'Cancela DescontoAcrescimo SubTotal'
+        OnClick = CancelaDescontoAcrescimoSubTotal1Click
+      end
+      object N31: TMenuItem
+        Caption = '-'
+      end
       object EfetuarPagamento1: TMenuItem
         Caption = 'Efetua Pagamento'
         OnClick = EfetuarPagamento1Click
+      end
+      object EstornaMeiodePagamento1: TMenuItem
+        Caption = 'Estorna Meio de Pagamento'
+        OnClick = EstornaMeiodePagamento1Click
+      end
+      object N33: TMenuItem
+        Caption = '-'
       end
       object FecharCupom1: TMenuItem
         Caption = 'Fecha Cupom'
@@ -1652,9 +1947,24 @@ object Form1: TForm1
         Caption = 'Programa Comprovante NAO Fiscal'
         OnClick = ProgramaComprovanteNAOFiscal1Click
       end
+      object ProgramaRelatrioGerencial1: TMenuItem
+        Caption = 'Programa Relat'#243'rio Gerencial'
+        OnClick = ProgramaRelatrioGerencial1Click
+      end
       object ProgramaUnidadeMedida1: TMenuItem
         Caption = 'Programa Unidade Medida'
         OnClick = ProgramaUnidadeMedida1Click
+      end
+      object N32: TMenuItem
+        Caption = '-'
+      end
+      object ConsultaRegistradorECF1: TMenuItem
+        Caption = 'Consulta Registrador ECF'
+        OnClick = ConsultaRegistradorECF1Click
+      end
+      object DeCodificaTexto1: TMenuItem
+        Caption = 'De/Codifica Texto'
+        OnClick = DeCodificaTexto1Click
       end
       object N13: TMenuItem
         Caption = '-'
@@ -1705,6 +2015,7 @@ object Form1: TForm1
     OnMsgAguarde = ACBrECF1MsgAguarde
     OnAguardandoRespostaChange = ACBrECF1AguardandoRespostaChange
     OnMsgPoucoPapel = ACBrECF1MsgPoucoPapel
+    DecimaisPreco = 2
     MemoBobina = mBobina
     MemoParams.Strings = (
       '[Cabecalho]'
@@ -1745,11 +2056,11 @@ object Form1: TForm1
     OnBobinaAdicionaLinhas = ACBrECF1BobinaAdicionaLinhas
     ArqLOG = 'acbrlog.txt'
     Left = 128
-    Top = 341
+    Top = 317
   end
   object ACBrRFD1: TACBrRFD
     Left = 180
-    Top = 341
+    Top = 317
   end
   object ACBrTEF1: TACBrTEF
     ECF = ACBrECF1
@@ -1768,6 +2079,6 @@ object Form1: TForm1
     IgnoraECFDesativado = False
     Handle = 0
     Left = 228
-    Top = 339
+    Top = 315
   end
 end

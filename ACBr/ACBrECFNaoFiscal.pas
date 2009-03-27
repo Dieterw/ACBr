@@ -311,14 +311,14 @@ TACBrECFNaoFiscal = class( TACBrECFClass )
     Procedure EfetuaPagamento( CodFormaPagto : String; Valor : Double;
        Observacao : AnsiString = ''; ImprimeVinculado : Boolean = false) ;
        override ;
-    Procedure FechaCupom( Observacao : AnsiString = '') ; override ;
+    Procedure FechaCupom( Observacao : AnsiString = ''; IndiceBMP : Integer = 0) ; override ;
     Procedure CancelaCupom ; override ;
     Procedure CancelaItemVendido( NumItem : Integer ) ; override ;
 
     Procedure LeituraX ; override ;
     Procedure ReducaoZ(DataHora : TDateTime = 0 ) ; override ;
-    Procedure AbreRelatorioGerencial ; override ;
-    Procedure LinhaRelatorioGerencial( Linha : AnsiString ) ; override ;
+    Procedure AbreRelatorioGerencial(Indice: Integer = 0) ; override ;
+    Procedure LinhaRelatorioGerencial( Linha : AnsiString; IndiceBMP: Integer = 0 ) ; override ;
     Procedure AbreCupomVinculado(COO, CodFormaPagto, CodComprovanteNaoFiscal :
        String; Valor : Double) ; override ;
     Procedure LinhaCupomVinculado( Linha : AnsiString ) ; override ;
@@ -1023,7 +1023,7 @@ begin
   end ;
 end;
 
-procedure TACBrECFNaoFiscal.FechaCupom(Observacao: AnsiString);
+procedure TACBrECFNaoFiscal.FechaCupom(Observacao: AnsiString; IndiceBMP : Integer);
 var wEstado : TACBrECFEstado ;
 begin
   if Estado <> estPagamento then
@@ -1296,7 +1296,7 @@ begin
   end ;
 end;
 
-procedure TACBrECFNaoFiscal.LinhaRelatorioGerencial(Linha: AnsiString);
+procedure TACBrECFNaoFiscal.LinhaRelatorioGerencial(Linha: AnsiString; IndiceBMP: Integer);
  Var AStringList : TStringList ;
 begin
   Linha := AjustaLinhas( Linha, Colunas );

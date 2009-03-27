@@ -130,15 +130,15 @@ TACBrECFICash = class( TACBrECFClass )
     Procedure EfetuaPagamento( CodFormaPagto : String; Valor : Double;
        Observacao : AnsiString = ''; ImprimeVinculado : Boolean = false) ;
        override ;
-    Procedure FechaCupom( Observacao : AnsiString = '') ; override ;
+    Procedure FechaCupom( Observacao : AnsiString = ''; IndiceBMP : Integer = 0) ; override ;
     Procedure CancelaCupom ; override ;
     Procedure CancelaItemVendido( NumItem : Integer ) ; override ;
 
     Procedure LeituraX ; override ;
     Procedure LeituraXSerial( var Linhas : TStringList) ; override ;
     Procedure ReducaoZ(DataHora : TDateTime = 0 ) ; override ;
-    Procedure AbreRelatorioGerencial ; override ;
-    Procedure LinhaRelatorioGerencial( Linha : AnsiString ) ; override ;
+    Procedure AbreRelatorioGerencial(Indice: Integer = 0) ; override ;
+    Procedure LinhaRelatorioGerencial( Linha : AnsiString; IndiceBMP: Integer = 0 ) ; override ;
     Procedure AbreCupomVinculado(COO, CodFormaPagto, CodComprovanteNaoFiscal :
        String; Valor : Double) ; override ;
     Procedure LinhaCupomVinculado( Linha : AnsiString ) ; override ;
@@ -185,7 +185,7 @@ TACBrECFICash = class( TACBrECFClass )
        MensagemRodape: AnsiString = '') ; override ;
     Procedure EfetuaPagamentoNaoFiscal( CodFormaPagto : String; Valor : Double;
        Observacao : AnsiString = ''; ImprimeVinculado : Boolean = false) ; override ;
-    Procedure FechaNaoFiscal( Observacao : AnsiString = '') ; override ;
+    Procedure FechaNaoFiscal( Observacao : AnsiString = ''; IndiceBMP : Integer = 0) ; override ;
     Procedure CancelaNaoFiscal ; override ;
 
     procedure Sangria(const Valor: Double; Obs: AnsiString; DescricaoCNF,
@@ -773,7 +773,7 @@ begin
   EnviaComando( '22' + CodFormaPagto + IntToStrZero( Round(Valor*100) ,13) );
 end;
 
-procedure TACBrECFICash.FechaCupom(Observacao: AnsiString);
+procedure TACBrECFICash.FechaCupom(Observacao: AnsiString; IndiceBMP : Integer);
 Var Linhas    : TStringList ;
     I         : Integer ;
     Obs1, Obs2: String ;
@@ -1010,7 +1010,7 @@ begin
    EnviaComando( '5601', 50 ) ;
 end;
 
-procedure TACBrECFICash.LinhaRelatorioGerencial(Linha: AnsiString);
+procedure TACBrECFICash.LinhaRelatorioGerencial(Linha: AnsiString;IndiceBMP: Integer);
 begin
   ImprimirLinhaALinha(Linha, '570' );
 end;
@@ -1272,7 +1272,7 @@ begin
       EnviaComando( '39', 16 );  // Cancela N.Fiscal Anterior
 end;
 
-procedure TACBrECFICash.FechaNaoFiscal(Observacao: AnsiString);
+procedure TACBrECFICash.FechaNaoFiscal(Observacao: AnsiString; IndiceBMP : Integer);
 Var Linhas    : TStringList ;
     I         : Integer ;
     Obs1, Obs2: String ;

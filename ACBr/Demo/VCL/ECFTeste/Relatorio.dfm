@@ -1,6 +1,6 @@
 object frRelatorio: TfrRelatorio
-  Left = 359
-  Top = 198
+  Left = 191
+  Top = 107
   Width = 311
   Height = 363
   HorzScrollBar.Range = 298

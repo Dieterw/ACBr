@@ -169,6 +169,31 @@ TACBrECFUnidadesMedida = class(TObjectList)
       read GetObject write SetObject; default;
   end;
 
+{ Definindo novo tipo para armazenar os Reletórios Gerenciais (RG) }
+TACBrECFRelatorioGerencial = class
+ private
+    fsIndice: String;
+    fsDescricao: String;
+    fsContador: Integer;
+ public
+    constructor create ;
+    property Indice    : String read fsIndice    write fsIndice ;
+    property Descricao : String read fsDescricao write fsDescricao ;
+    property Contador : Integer read fsContador write fsContador;
+ end;
+
+{ Lista de Objetos do tipo TACBrECFRelatoriosGerencial }
+TACBrECFRelatoriosGerenciais = class(TObjectList)
+  protected
+    procedure SetObject (Index: Integer; Item: TACBrECFRelatorioGerencial);
+    function GetObject (Index: Integer): TACBrECFRelatorioGerencial;
+  public
+    function Add (Obj: TACBrECFRelatorioGerencial): Integer;
+    procedure Insert (Index: Integer; Obj: TACBrECFRelatorioGerencial);
+    property Objects [Index: Integer]: TACBrECFRelatorioGerencial
+      read GetObject write SetObject; default;
+  end;
+
 { Definindo novo tipo para armazenar os Comprovantes NAO Fiscais (CNF) }
 TACBrECFComprovanteNaoFiscal = class
  private
@@ -190,12 +215,14 @@ TACBrECFComprovanteNaoFiscal = class
     property Contador : Integer read fsContador write fsContador;
  end;
 
+
+{ Definindo novo tipo para armazenar o Consumidor que será impresso no CF }
 TACBrECFConsumidor = class
  private
-    fsNome: String;
-    fsEndereco: String;
-    fsDocumento: String;
-    fsEnviado: Boolean;
+    fsNome      : String;
+    fsEndereco  : String;
+    fsDocumento : String;
+    fsEnviado   : Boolean;
     function GetEnviado: Boolean;
     function GetAtribuido: Boolean;
  public
@@ -210,6 +237,34 @@ TACBrECFConsumidor = class
     procedure Zera;
 end ;
 
+{ Definindo novo tipo para armazenar o Código de Barras que será impresso no Documento }
+TACBrECFCodBarras = class
+ private
+    fsTipoBarra   : TACBrECFTipoCodBarra;
+    fsLanguraBarra: Integer;
+    fsAlturaBarra : Integer;
+    fsCodigo      : String;
+    fsImpCodEmbaixo: Boolean;
+    fsImpVertical : Boolean;
+    fsEnviado     : Boolean;
+    function GetEnviado: Boolean;
+    function GetAdicionado: Boolean;
+ public
+    constructor create ;
+    property Enviado      : Boolean               read GetEnviado write fsEnviado ;
+    property Tipo         : TACBrECFTipoCodBarra  read fsTipoBarra ;
+    property Largura      : Integer               read fsLanguraBarra ;
+    property Altura       : Integer               read fsAlturaBarra  ;
+    property Codigo       : String                read fsCodigo  ;
+    property ImpCodEmbaixo: Boolean               read fsImpCodEmbaixo ;
+    property ImpVertical  : Boolean               read fsImpVertical ;
+    property Adicionado   : Boolean               read GetAdicionado ;
+
+    procedure AdicionarCodBarra(TipoBarra: TACBrECFTipoCodBarra; LanguraBarra,
+      AlturaBarra: Integer; CodBarra: String; ImprimeCodEmbaixo : Boolean = True;
+      ImprimeVertical : Boolean = False );
+    procedure Zera;
+end ;
 
 { Lista de Objetos do tipo TACBrECFComprovanteNaoFiscal }
 TACBrECFComprovantesNaoFiscais = class(TObjectList)
@@ -293,6 +348,7 @@ TACBrECFClass = class
 
     fsRelatorio : TStrings ;
     fsVias      : Word ;
+    fsIndiceRG  : Integer;
 
     procedure SetAtivo(const Value: Boolean);
     procedure SetTimeOut(const Value: Integer);
@@ -325,6 +381,7 @@ TACBrECFClass = class
     procedure DoLeResposta ;
     procedure DoRelatorioGerencial ;
     procedure DoCupomVinculado ;
+    function GetRelatoriosGerenciais: TACBrECFRelatoriosGerenciais;
  Protected
     fpDevice : TACBrDevice ;
     fpOwner  : TComponent ;   { Componente ACBrECF }
@@ -349,12 +406,16 @@ TACBrECFClass = class
     fpAliquotas: TACBrECFAliquotas;
     { Coleçao de objetos TACBrECFFormasPagamento }
     fpFormasPagamentos : TACBrECFFormasPagamento;
-    { Coleçao de objetos TACBrECFFormasPagamento }
+    { Coleçao de objetos TACBrECFRelatórios Gerenciais }
+    fpRelatoriosGerenciais : TACBrECFRelatoriosGerenciais;
+    { Coleçao de objetos TACBrECFComprovantesNaoFiscais }
     fpComprovantesNaoFiscais : TACBrECFComprovantesNaoFiscais;
     { Coleçao de objetos TACBrECFUnidadesMedida}
     fpUnidadesMedida : TACBrECFUnidadesMedida;
 
     fpConsumidor : TACBrECFConsumidor ;
+
+    fpCodBarras  : TACBrECFCodBarras ;
 
     procedure GeraErro( E : Exception ) ;
 
@@ -408,7 +469,7 @@ TACBrECFClass = class
     function VerificaFimImpressao(var TempoLimite: TDateTime) : Boolean ; virtual ;
     Procedure VerificaEmLinha( TimeOut : Integer = 3) ; virtual ;
 
-    procedure ListaRelatorioGerencial(Relatorio : TStrings; Vias : Integer = 1);
+    procedure ListaRelatorioGerencial(Relatorio : TStrings; Vias : Integer = 1; Indice: Integer = 0);
        virtual ;
     Procedure ListaCupomVinculado( Relatorio : TStrings; Vias : Integer = 1) ;
        virtual ;
@@ -559,6 +620,17 @@ TACBrECFClass = class
     Procedure ProgramaFormaPagamento( var Descricao: String;
        PermiteVinculado : Boolean = true; Posicao : String = '' ) ; virtual ;
 
+    { Relatório Gerencial (RG) }
+    procedure CarregaRelatoriosGerenciais ; virtual ;
+    Property RelatoriosGerenciais : TACBrECFRelatoriosGerenciais
+       read GetRelatoriosGerenciais ;
+    function AchaRGDescricao( Descricao : String;
+       BuscaExata : Boolean = False ) : TACBrECFRelatorioGerencial ; virtual ;
+    function AchaRGIndice( Indice : String ) : TACBrECFRelatorioGerencial ;
+       virtual ;
+    Procedure ProgramaRelatorioGerencial( var Descricao: String;
+       Posicao : String = '') ; virtual ;
+
     { Comprovantes Nao Fiscais (CNF) }
     procedure CarregaComprovantesNaoFiscais ; virtual ;
     procedure LerTotaisComprovanteNaoFiscal ; virtual ;
@@ -595,6 +667,7 @@ TACBrECFClass = class
     { Procedimentos de Cupom Fiscal }
     property Consumidor : TACBrECFConsumidor read fpConsumidor ;
     Procedure AbreCupom ; virtual ;
+    procedure LegendaInmetroProximoItem ; Virtual ; 
     Procedure VendeItem( Codigo, Descricao : String; AliquotaECF : String;
        Qtd : Double ; ValorUnitario : Double; ValorDescontoAcrescimo : Double = 0;
        Unidade : String = ''; TipoDescontoAcrescimo : String = '%';
@@ -602,20 +675,28 @@ TACBrECFClass = class
     Procedure SubtotalizaCupom( DescontoAcrescimo : Double = 0;
        MensagemRodape : AnsiString = '' ) ;
        virtual ;
+    procedure CancelaDescontoAcrescimoSubTotal(TipoAcrescimoDesconto: Char) ;
+       Virtual ;{ A -> Acrescimo D -> Desconto } 
     Procedure EfetuaPagamento( CodFormaPagto : String; Valor : Double;
        Observacao : AnsiString = ''; ImprimeVinculado : Boolean = false) ;
-       virtual ; 
+       virtual ;
+    procedure EstornoPagamento(IndiceEstornado: Integer; IndiceEfetivado: Integer;
+      Valor: Double; Observacao : AnsiString = '') ; Virtual ; 
+
     { Para quebrar linhas nos parametros Observacao use #10 ou chr(10),
       Geralmente o ECF aceita no máximo 8 linhas }
-    Procedure FechaCupom( Observacao : AnsiString = '') ; virtual ;
+    Procedure FechaCupom( Observacao : AnsiString = ''; IndiceBMP : Integer = 0) ; virtual ;
     Procedure CancelaCupom ; virtual ;
     Procedure CancelaItemVendido( NumItem : Integer ) ; virtual ;
+    procedure CancelaItemVendidoParcial( NumItem : Integer;
+      Quantidade : Double) ; Virtual ; 
+    procedure CancelaDescontoAcrescimoItem( NumItem : Integer) ; Virtual ; 
     Property Subtotal  : Double read GetSubTotal ;
     Property TotalPago : Double read GetTotalPago ;
 
     { Procedimentos de Cupom Não Fiscal }
     Procedure NaoFiscalCompleto( CodCNF : String; Valor : Double;
-       CodFormaPagto  : String; Obs : AnsiString ) ; virtual ;
+       CodFormaPagto  : String; Obs : AnsiString = ''; IndiceBMP : Integer = 0 ) ; virtual ;
     Procedure AbreNaoFiscal( CPF_CNPJ : String = '') ; virtual ;
     Procedure RegistraItemNaoFiscal( CodCNF : String; Valor : Double;
        Obs : AnsiString = '') ; virtual ;
@@ -623,7 +704,7 @@ TACBrECFClass = class
        MensagemRodape: AnsiString = '') ; virtual ;
     Procedure EfetuaPagamentoNaoFiscal( CodFormaPagto : String; Valor : Double;
        Observacao : AnsiString = ''; ImprimeVinculado : Boolean = false) ; virtual ;
-    Procedure FechaNaoFiscal( Observacao : AnsiString = '') ; virtual ;
+    Procedure FechaNaoFiscal( Observacao : AnsiString = ''; IndiceBMP : Integer = 0) ; virtual ;
     Procedure CancelaNaoFiscal ; virtual ;
 
     procedure Sangria( const Valor: Double;  Obs : AnsiString;
@@ -639,9 +720,9 @@ TACBrECFClass = class
     Procedure LeituraX ; virtual ;
     Procedure LeituraXSerial( var Linhas : TStringList) ; virtual ;
     Procedure ReducaoZ( DataHora : TDateTime = 0 ) ; virtual ;
-    Procedure RelatorioGerencial(Relatorio : TStrings; Vias : Integer = 1) ;
-    Procedure AbreRelatorioGerencial ; virtual ;
-    Procedure LinhaRelatorioGerencial( Linha : AnsiString ) ; virtual ;
+    Procedure RelatorioGerencial(Relatorio : TStrings; Vias : Integer = 1; Indice: Integer = 0) ;
+    Procedure AbreRelatorioGerencial(Indice: Integer = 0) ; virtual ;
+    Procedure LinhaRelatorioGerencial( Linha : AnsiString; IndiceBMP: Integer = 0 ) ; virtual ;
 
     Procedure CupomVinculado(COO, CodFormaPagto, CodComprovanteNaoFiscal :
        String; Valor : Double;  Relatorio : TStrings;
@@ -681,11 +762,12 @@ TACBrECFClass = class
        var Linhas : TStringList; Simplificada : Boolean = False ) ;
        overload ; virtual ;
     Procedure LeituraMFDSerial( DataInicial, DataFinal : TDateTime;
-       var Linhas : TStringList ) ; overload ; virtual ;
+       var Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; virtual ;
     Procedure LeituraMFDSerial( COOInicial, COOFinal : Integer;
-       var Linhas : TStringList ) ; overload ; virtual ;
+       var Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; virtual ;
     Procedure IdentificaOperador(Nome : String); virtual;
     Procedure IdentificaPAF( Linha1, Linha2 : String) ; virtual ;
+    Function RetornaInfoECF( Registrador: String) : AnsiString; Virtual ;
 
     { Retorna a Resposta do ECF }
     Function EnviaComando( cmd : AnsiString = '') : AnsiString ; overload ;
@@ -697,6 +779,12 @@ TACBrECFClass = class
 
     { Gera erro se nao puder abrir Cupom, informando o motivo }
     Function TestaPodeAbrirCupom : Boolean ; virtual ;
+
+    { Obs: De/Codifica e Verifica Textos C-->  Codifica D--> Decodifica V--> Verifica }
+    function DecodificaTexto(Operacao: Char; Texto: String; var Resposta: String): Boolean; virtual;
+
+    { priedade que acessa as informações do codbarras }
+    property CodBarras : TACBrECFCodBarras read fpCodBarras ;
 
 end ;
 
@@ -874,6 +962,41 @@ begin
 end;
 
 
+{------------------------- TACBrECFRelatoriosGerenciais -----------------------}
+{ TACBrECFRelatorioGerencial }
+
+constructor TACBrECFRelatorioGerencial.create;
+begin
+  fsIndice           := '' ;
+  fsDescricao        := '' ;
+  fsContador         := 0 ;
+end;
+
+function TACBrECFRelatoriosGerenciais.Add(
+  Obj: TACBrECFRelatorioGerencial): Integer;
+begin
+  Result := inherited Add(Obj) ;
+end;
+
+function TACBrECFRelatoriosGerenciais.GetObject(
+  Index: Integer): TACBrECFRelatorioGerencial;
+begin
+  Result := inherited GetItem(Index) as TACBrECFRelatorioGerencial ;
+end;
+
+procedure TACBrECFRelatoriosGerenciais.Insert(Index: Integer;
+  Obj: TACBrECFRelatorioGerencial);
+begin
+  inherited Insert(Index, Obj);
+end;
+
+procedure TACBrECFRelatoriosGerenciais.SetObject(Index: Integer;
+  Item: TACBrECFRelatorioGerencial);
+begin
+  inherited SetItem (Index, Item) ;
+end;
+               
+
 { ---------------------- TACBrECFComprovantesNaoFiscais --------------------- }
 
 { TACBrECFComprovanteNaoFiscal }
@@ -1004,6 +1127,7 @@ begin
   fpDecimaisQtd           := 3 ;
   fpAliquotas             := nil ;
   fpFormasPagamentos      := nil ;
+  fpRelatoriosGerenciais  := nil ;
   fpComprovantesNaoFiscais:= nil ;
   fpTermica               := False ;
   fpMFD                   := False ;
@@ -1011,7 +1135,9 @@ begin
   fpArqLOG                := '' ;
   fpComandoLOG            := '' ;
 
-  fpConsumidor := TACBrECFConsumidor.create ;
+  fpConsumidor  :=  TACBrECFConsumidor.create ;
+
+  fpCodBarras   :=  TACBrECFCodBarras.create;
   
   {$IFNDEF CONSOLE}
     fsFormMsg                   := nil ;
@@ -1033,6 +1159,9 @@ begin
   if Assigned( fpFormasPagamentos ) then
      fpFormasPagamentos.Free ;
 
+  if Assigned( fpRelatoriosGerenciais ) then
+     fpRelatoriosGerenciais.Free ;
+
   if Assigned( fpComprovantesNaoFiscais ) then
      fpComprovantesNaoFiscais.Free ;
 
@@ -1040,6 +1169,8 @@ begin
     fpUnidadesMedida.Free; 
 
   fpConsumidor.Free ;
+
+  fpCodBarras.Free ;
 
   {$IFNDEF CONSOLE}
     if Assigned( fsFormMsg ) then
@@ -1555,13 +1686,13 @@ end;
 
 
 procedure TACBrECFClass.LeituraMFDSerial(DataInicial, DataFinal: TDateTime;
-  var Linhas: TStringList);
+  var Linhas: TStringList; Documentos : TACBrECFTipoDocumentoSet );
 begin
   ErroAbstract('LeituraMFDSerial');
 end;
 
 procedure TACBrECFClass.LeituraMFDSerial(COOInicial,
-  COOFinal: Integer; var Linhas: TStringList);
+  COOFinal: Integer; var Linhas: TStringList; Documentos : TACBrECFTipoDocumentoSet);
 begin
   ErroAbstract('LeituraMFDSerial');
 end;
@@ -1664,7 +1795,13 @@ begin
   ErroAbstract('EfetuaPagamento');
 end;
 
-procedure TACBrECFClass.FechaCupom(Observacao: AnsiString);
+procedure TACBrECFClass.EstornoPagamento(IndiceEstornado,
+  IndiceEfetivado: Integer; Valor: Double; Observacao : AnsiString);
+begin
+  ErroAbstract('EstornoPagamento');
+end;
+
+procedure TACBrECFClass.FechaCupom(Observacao: AnsiString; IndiceBMP : Integer);
 begin
   ErroAbstract('FechaCupom');
 end;
@@ -1690,13 +1827,13 @@ begin
   EfetuaPagamento( CodFormaPagto, Valor, Observacao, ImprimeVinculado );
 end;
 
-procedure TACBrECFClass.FechaNaoFiscal(Observacao: AnsiString);
+procedure TACBrECFClass.FechaNaoFiscal(Observacao: AnsiString; IndiceBMP : Integer);
 begin
-  FechaCupom(Observacao);
+  FechaCupom(Observacao, IndiceBMP);
 end;
 
 procedure TACBrECFClass.NaoFiscalCompleto(CodCNF: String; Valor: Double;
-  CodFormaPagto: String; Obs: AnsiString);
+  CodFormaPagto: String; Obs: AnsiString; IndiceBMP : Integer);
 begin
   { Chama rotinas da classe Pai (fpOwner) para atualizar os Memos }
   with TACBrECF(fpOwner) do
@@ -1706,7 +1843,7 @@ begin
         RegistraItemNaoFiscal(CodCNF, Valor);
         SubtotalizaNaoFiscal(0);
         EfetuaPagamentoNaoFiscal(CodFormaPagto, Valor );
-        FechaNaoFiscal( Obs );
+        FechaNaoFiscal( Obs, IndiceBMP);
      except
         try
            CancelaNaoFiscal
@@ -1916,7 +2053,10 @@ begin
   ErroAbstract('IdentificaPAF');
 end;
 
-
+Function TACBrECFClass.RetornaInfoECF( Registrador : String ) : AnsiString ;
+begin
+   ErroAbstract('RetornaInfoECF');
+end;
 
 procedure TACBrECFClass.PreparaTEF;
 begin
@@ -1941,12 +2081,34 @@ begin
   ErroAbstract('SubtotalizaCupom');
 end;
 
+procedure TACBrECFClass.CancelaDescontoAcrescimoSubTotal(
+  TipoAcrescimoDesconto: Char);
+begin
+  ErroAbstract('CancelaDescontoAcrescimoSubTotal');
+end;
+
+procedure TACBrECFClass.LegendaInmetroProximoItem;
+begin
+  ErroAbstract('LegendaInmetroProximoItem');
+end;
+
 Procedure TACBrECFClass.VendeItem( Codigo, Descricao : String;
   AliquotaECF : String; Qtd : Double ; ValorUnitario : Double;
   ValorDescontoAcrescimo : Double; Unidade : String;
   TipoDescontoAcrescimo : String; DescontoAcrescimo : String) ;
 begin
   ErroAbstract('VendeItem');
+end;
+
+procedure TACBrECFClass.CancelaDescontoAcrescimoItem(NumItem: Integer);
+begin
+  ErroAbstract('CancelaDescontoAcrescimoItem');
+end;
+
+procedure TACBrECFClass.CancelaItemVendidoParcial(NumItem: Integer;
+  Quantidade: Double);
+begin
+  ErroAbstract('CancelaItemVendidoParcial');
 end;
 
 procedure TACBrECFClass.ErroAbstract(NomeProcedure: String);
@@ -2264,6 +2426,80 @@ begin
   end ;
 end;
 
+{---------------------------- Relatórios Gerenciais ---------------------------}
+procedure TACBrECFClass.CarregaRelatoriosGerenciais;
+begin
+  if Assigned( fpRelatoriosGerenciais ) then
+     fpRelatoriosGerenciais.Free ;
+
+  fpRelatoriosGerenciais := TACBrECFRelatoriosGerenciais.Create( true ) ;
+end;
+
+procedure TACBrECFClass.ProgramaRelatorioGerencial(var Descricao: String;
+  Posicao: String);
+begin
+  ErroAbstract('ProgramaRelatóriosGerenciais');
+end;
+
+function TACBrECFClass.GetRelatoriosGerenciais: TACBrECFRelatoriosGerenciais;
+begin
+  if not Assigned( fpRelatoriosGerenciais ) then
+     CarregaRelatoriosGerenciais ;
+
+  result := fpRelatoriosGerenciais ;
+end;
+
+function TACBrECFClass.AchaRGDescricao(Descricao: String;
+  BuscaExata: Boolean): TACBrECFRelatorioGerencial;
+var Tamanho, A : Integer ;
+     DescrECF : String ;
+begin
+  if not Assigned( fpRelatoriosGerenciais ) then
+     CarregaRelatoriosGerenciais ;
+
+  result := nil ;
+  with fpRelatoriosGerenciais do
+  begin
+     Descricao := Trim(UpperCase( Descricao )) ;
+     Tamanho   := Length( Descricao ) ;
+     For A := 0 to Count -1 do
+     begin
+        DescrECF := TrimRight( UpperCase(Objects[A].Descricao) ) ;
+        if not BuscaExata then
+           DescrECF := LeftStr( DescrECF, Tamanho) ;
+
+        if DescrECF = Descricao then
+        begin
+           result := Objects[A] ;
+           Break ;
+        end ;
+     end ;
+  end ;
+end;
+
+function TACBrECFClass.AchaRGIndice(
+  Indice: String): TACBrECFRelatorioGerencial;
+var A : Integer ;
+begin
+  if not Assigned( fpRelatoriosGerenciais ) then
+     CarregaRelatoriosGerenciais ;
+
+  result := nil ;
+  with fpRelatoriosGerenciais do
+  begin
+     For A := 0 to Count -1 do
+     begin
+        if Objects[A].Indice = Indice then
+        begin
+           result := Objects[A] ;
+           Break ;
+        end ;
+     end ;
+  end ;
+
+end;
+
+
 {------------------------- COMPROVANTES NAO FISCAIS ---------------------------}
 procedure TACBrECFClass.CarregaComprovantesNaoFiscais;
 begin
@@ -2531,7 +2767,7 @@ begin
 end;
 
 { ------------------------------ Relatorio Gerencial -------------------------}
-procedure TACBrECFClass.RelatorioGerencial(Relatorio: TStrings; Vias: Integer);
+procedure TACBrECFClass.RelatorioGerencial(Relatorio: TStrings; Vias: Integer; Indice: Integer);
 Var wMsgAguarde : String ;
     wRetentar : Boolean ;
 begin
@@ -2544,7 +2780,7 @@ begin
   wMsgAguarde := MsgAguarde ;
   MsgAguarde  := cACBrECFAbrindoRelatorioGerencial ;
   try
-     TACBrECF(fpOwner).AbreRelatorioGerencial ;
+     TACBrECF(fpOwner).AbreRelatorioGerencial(Indice) ;
   finally
      MsgAguarde := wMsgAguarde ;
   end ;
@@ -2554,6 +2790,7 @@ begin
      Retentar    := false ;
      fsVias      := Vias ;
      fsRelatorio := Relatorio ;
+     fsIndiceRG  := Indice;
 
      {$IFNDEF CONSOLE}
        if not ExibeMensagem  then
@@ -2577,7 +2814,7 @@ end;
 
 procedure TACBrECFClass.DoRelatorioGerencial;
 begin
-   ListaRelatorioGerencial( fsRelatorio, fsVias )
+   ListaRelatorioGerencial( fsRelatorio, fsVias, fsIndiceRG )
 end;
 
 procedure TACBrECFClass.AbreRelatorioGerencial;
@@ -2585,13 +2822,86 @@ begin
   ErroAbstract('AbreRelatorioGerencial');
 end;
 
-procedure TACBrECFClass.LinhaRelatorioGerencial(Linha: AnsiString);
+procedure TACBrECFClass.LinhaRelatorioGerencial(Linha: AnsiString; IndiceBMP: Integer);
 begin
   ErroAbstract('LinhaRelatorioGerencial');
 end;
 
+function TACBrECFClass.DecodificaTexto(Operacao: Char; Texto: String;
+  var Resposta: String): Boolean;
+begin
+  ErroAbstract('DecodificaTexto');
+end;
+
+{ TACBrECFCodBarras }
+
+constructor TACBrECFCodBarras.create;
+begin
+  Zera;
+end;
+
+procedure TACBrECFCodBarras.AdicionarCodBarra(TipoBarra: TACBrECFTipoCodBarra;
+  LanguraBarra, AlturaBarra: Integer; CodBarra: String; ImprimeCodEmbaixo: Boolean;
+  ImprimeVertical : Boolean);
+begin
+  if TipoBarra = barEAN13 then
+    if (Length(CodBarra) <> 12) or (StrToInt64Def(CodBarra, -1) = -1) then
+      raise Exception.Create( 'EAN-13 suporta 12 dígitos de 0 a 9' ) ;
+
+  if TipoBarra = barEAN8 then
+    if (Length(CodBarra) <> 7) or (StrToInt64Def(CodBarra, -1) = -1) then
+      raise Exception.Create( 'EAN-8 suporta 7 dígitos de 0 a 9' ) ;
+
+  if TipoBarra = barUPCA then
+    if (Length(CodBarra) <> 11) or (StrToInt64Def(CodBarra, -1) = -1) then
+      raise Exception.Create( 'UPC-A suporta 11 dígitos de 0 a 9' ) ;
+
+  if TipoBarra = barCODE11 then
+    if (StrToInt64Def(CodBarra, -1) = -1) then
+      raise Exception.Create( 'CODE 11 suporta Tamanho variável. 0 a 9 ' ) ;
+
+  if TipoBarra = barInterleaved then
+    if (StrToInt64Def(CodBarra, -1) = -1) then
+      raise Exception.Create( 'Interleaved 2 of 5 Tamanho sempre par. 0 a 9' ) ;
+
+  if TipoBarra = barStandard then
+    if (StrToInt64Def(CodBarra, -1) = -1) then
+      raise Exception.Create( 'Standard 2 of 5 Tamanho variável. 0 a 9' ) ;
+
+  if TipoBarra = barMSI  then
+    if (StrToInt64Def(CodBarra, -1) = -1) then
+      raise Exception.Create( 'MSI Tamanho variável. 0 a 9' ) ;
+
+  fsTipoBarra     :=  TipoBarra;
+  fsLanguraBarra  :=  LanguraBarra;
+  fsAlturaBarra   :=  AlturaBarra;
+  fsCodigo        :=  CodBarra;
+  fsImpCodEmbaixo :=  ImprimeCodEmbaixo;
+  fsImpVertical   :=  ImprimeVertical;
+end;
+
+procedure TACBrECFCodBarras.Zera;
+begin
+  fsTipoBarra     :=  barEAN13;
+  fsLanguraBarra  :=  0;
+  fsAlturaBarra   :=  0;
+  fsCodigo        :=  '';
+  fsImpCodEmbaixo :=  False;
+end;
+
+function TACBrECFCodBarras.GetAdicionado: Boolean;
+begin
+  Result := (fsCodigo <> '') ;
+end;
+
+function TACBrECFCodBarras.GetEnviado: Boolean;
+begin
+  Result := fsEnviado or (not Adicionado) ;
+end;
+
+
 procedure TACBrECFClass.ListaRelatorioGerencial(Relatorio: TStrings;
-  Vias: Integer);
+  Vias: Integer; Indice: Integer);
 Var Imp, Lin : Integer ;
     Texto : String ;
 begin

@@ -9,6 +9,7 @@
       <PathDelim Value="\"/>
       <SearchPaths>
         <OtherUnitFiles Value="..\ACBrComum\"/>
+        <UnitOutputDirectory Value="..\ACBr"/>
       </SearchPaths>
       <Parsing>
         <SyntaxOptions>

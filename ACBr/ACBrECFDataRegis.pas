@@ -260,15 +260,15 @@ TACBrECFDataRegis = class( TACBrECFClass )
     Procedure EfetuaPagamento( CodFormaPagto : String; Valor : Double;
        Observacao : AnsiString = ''; ImprimeVinculado : Boolean = false) ;
        override ;
-    Procedure FechaCupom( Observacao : AnsiString = '') ; override ;
+    Procedure FechaCupom( Observacao : AnsiString = ''; IndiceBMP : Integer = 0) ; override ;
     Procedure CancelaCupom ; override ;
     Procedure CancelaItemVendido( NumItem : Integer ) ; override ;
 
     Procedure LeituraX ; override ;
     Procedure LeituraXSerial( var Linhas : TStringList) ; override ;
     Procedure ReducaoZ(DataHora : TDateTime = 0 ) ; override ;
-    Procedure AbreRelatorioGerencial ; override ;
-    Procedure LinhaRelatorioGerencial( Linha : AnsiString ) ; override ;
+    Procedure AbreRelatorioGerencial(Indice: Integer = 0) ; override ;
+    Procedure LinhaRelatorioGerencial( Linha : AnsiString; IndiceBMP: Integer = 0 ) ; override ;
     Procedure AbreCupomVinculado(COO, CodFormaPagto, CodComprovanteNaoFiscal :
        String; Valor : Double) ; override ;
     Procedure LinhaCupomVinculado( Linha : AnsiString ) ; override ;
@@ -317,7 +317,7 @@ TACBrECFDataRegis = class( TACBrECFClass )
 
     { Procedimentos de Cupom Não Fiscal }
     Procedure NaoFiscalCompleto( CodCNF : String; Valor : Double;
-       CodFormaPagto  : String; Obs : AnsiString ) ; override ;
+       CodFormaPagto  : String; Obs : AnsiString; IndiceBMP : Integer = 0) ; override ;
     Procedure AbreNaoFiscal( CPF_CNPJ : String = '') ; override ;
     Procedure RegistraItemNaoFiscal( CodCNF : String; Valor : Double;
        Obs : AnsiString = '') ; override ;
@@ -325,7 +325,7 @@ TACBrECFDataRegis = class( TACBrECFClass )
        MensagemRodape: AnsiString = '') ; override ;
     Procedure EfetuaPagamentoNaoFiscal( CodFormaPagto : String; Valor : Double;
        Observacao : AnsiString = ''; ImprimeVinculado : Boolean = false) ; override ;
-    Procedure FechaNaoFiscal( Observacao : AnsiString = '') ; override ;
+    Procedure FechaNaoFiscal( Observacao : AnsiString = ''; IndiceBMP : Integer = 0) ; override ;
     Procedure CancelaNaoFiscal ; override ;
 
     Procedure IdentificaOperador ( Nome: String); override;
@@ -1111,7 +1111,7 @@ begin
    GravaArqINI ;
 end;
 
-procedure TACBrECFDataRegis.FechaCupom(Observacao: AnsiString);
+procedure TACBrECFDataRegis.FechaCupom(Observacao: AnsiString; IndiceBMP : Integer );
 begin
   {Compativel com 02.03 e 02.05}
   {Dataregis não precisa fechar cupom, ele é fechado sozinho}
@@ -1477,7 +1477,7 @@ begin
       EnviaComando('j' + '00' + StringOfChar(#32,Colunas),15); //LINHA EM BRANCO SO PARA ABRIR O RELATORIO
 end;
 
-procedure TACBrECFDataRegis.LinhaRelatorioGerencial(Linha: AnsiString);
+procedure TACBrECFDataRegis.LinhaRelatorioGerencial(Linha: AnsiString; IndiceBMP: Integer);
 begin
   {Compativel com 02.03 e 02.05}
   {Impressora 02.05 pede o indice do relatorio gerencial, 00 é o default}
@@ -2363,14 +2363,14 @@ begin
    fsDescontoAcrescimo := 0;
 end;
 
-procedure TACBrECFDataRegis.FechaNaoFiscal(Observacao: AnsiString);
+procedure TACBrECFDataRegis.FechaNaoFiscal(Observacao: AnsiString; IndiceBMP : Integer);
 begin
    {Impressora Dataregis não possui esse recurso}
    EnviaMensagem(Observacao);
 end;
 
 procedure TACBrECFDataRegis.NaoFiscalCompleto(CodCNF: String;
-  Valor: Double; CodFormaPagto: String; Obs: AnsiString);
+  Valor: Double; CodFormaPagto: String; Obs: AnsiString; IndiceBMP : Integer);
 begin
    AbreNaoFiscal();
    RegistraItemNaoFiscal(CodCNF, Valor, Obs);

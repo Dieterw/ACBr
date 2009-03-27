@@ -109,21 +109,21 @@ TACBrECFUrano = class( TACBrECFClass )
     Procedure EfetuaPagamento( CodFormaPagto : String; Valor : Double;
        Observacao : AnsiString = ''; ImprimeVinculado : Boolean = false) ;
        override ;
-    Procedure FechaCupom( Observacao : AnsiString = '') ; override ;
+    Procedure FechaCupom( Observacao : AnsiString = ''; IndiceBMP : Integer = 0) ; override ;
     Procedure CancelaCupom ; override ;
     Procedure CancelaItemVendido( NumItem : Integer ) ; override ;
 
     { Procedimentos de Cupom Não Fiscal }
     Procedure NaoFiscalCompleto( CodCNF : String; Valor : Double;
-       CodFormaPagto  : String; Obs : AnsiString ) ; override ;
+       CodFormaPagto  : String; Obs : AnsiString; IndiceBMP : Integer = 0 ) ; override ;
     Procedure AbreNaoFiscal( CPF_CNPJ : String = '') ; override ;
     Procedure RegistraItemNaoFiscal( CodCNF : String; Valor : Double;
        Obs : AnsiString = '') ; override ;
 
     Procedure LeituraX ; override ;
     Procedure ReducaoZ(DataHora : TDateTime) ; override ;
-    Procedure AbreRelatorioGerencial ; override ;
-    Procedure LinhaRelatorioGerencial( Linha : AnsiString ) ; override ;
+    Procedure AbreRelatorioGerencial(Indice: Integer = 0) ; override ;
+    Procedure LinhaRelatorioGerencial( Linha : AnsiString; IndiceBMP: Integer = 0 ) ; override ;
     Procedure AbreCupomVinculado(COO, CodFormaPagto, CodComprovanteNaoFiscal :
        String; Valor : Double) ; override ;
     Procedure LinhaCupomVinculado( Linha : AnsiString ) ; override ;
@@ -587,7 +587,7 @@ begin
   EnviaComando('04' + CodFormaPagto + Observacao + ValorStr + Vinculado + R);
 end;
 
-procedure TACBrECFUrano.FechaCupom(Observacao: AnsiString);
+procedure TACBrECFUrano.FechaCupom(Observacao: AnsiString; IndiceBMP : Integer);
 var
   Nome,
   Tipo,
@@ -847,7 +847,7 @@ begin
 //  EnviaComando( '11' + '2' + R , 35 ) ;
 end;
 
-procedure TACBrECFUrano.LinhaRelatorioGerencial(Linha: AnsiString);
+procedure TACBrECFUrano.LinhaRelatorioGerencial(Linha: AnsiString; IndiceBMP: Integer);
 Var Linhas : TStringList ;
     I : Integer ;
     Buffer : String ;
@@ -972,7 +972,7 @@ begin
 end;
 
 procedure TACBrECFUrano.NaoFiscalCompleto(CodCNF: String; Valor: Double;
-  CodFormaPagto: String; Obs: AnsiString);
+  CodFormaPagto: String; Obs: AnsiString; IndiceBMP : Integer);
 begin
   { Chama rotinas da classe Pai (fpOwner) para atualizar os Memos }
   with TACBrECF(fpOwner) do

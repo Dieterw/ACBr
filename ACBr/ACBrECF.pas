@@ -226,6 +226,7 @@ TACBrECF = class( TACBrComponent )
     function GetAliquotasClass: TACBrECFAliquotas;
     function GetFormasPagamentoClass: TACBrECFFormasPagamento;
     function GetComprovantesNaoFiscaisClass : TACBrECFComprovantesNaoFiscais;
+    function GetRelatoriosGerenciaisClass : TACBrECFRelatoriosGerenciais;
     function GetModeloStrClass: String;
     function GetRFDIDClass: String;
     function GetDescricaoGrande: Boolean;
@@ -297,6 +298,7 @@ TACBrECF = class( TACBrComponent )
     function GetTotalNaoFiscalClass: Double;
     function GetNumUltimoItemClass: Integer;
     function GetConsumidorClass: TACBrECFConsumidor;
+    function GetCodBarrasClass: TACBrECFCodBarras;
     procedure SetRFD(const Value: TACBrRFD);
     Function RFDAtivo : Boolean ;
   protected
@@ -404,6 +406,16 @@ TACBrECF = class( TACBrComponent )
     Procedure ProgramaComprovanteNaoFiscal( var Descricao: String;
        Tipo : String = ''; Posicao : String = '') ;
 
+    { RelatoriosGerenciais (RG) }
+    Property RelatoriosGerenciais : TACBrECFRelatoriosGerenciais
+                               read GetRelatoriosGerenciaisClass;
+    procedure CarregaRelatoriosGerenciais ;
+    function AchaRGDescricao( Descricao : String;
+       BuscaExata : Boolean = False  ) : TACBrECFRelatorioGerencial ;
+    function AchaRGIndice( Indice : String ) : TACBrECFRelatorioGerencial ;
+    Procedure ProgramaRelatoriosGerenciais( var Descricao: String;
+       Posicao : String = '') ;
+
     { Unidades de Medida (UMD) }
     Property UnidadesMedida : TACBrECFUnidadesMedida
                                read GetUnidadesMedidaClass;
@@ -429,6 +441,7 @@ TACBrECF = class( TACBrComponent )
        Endereco : String = '') ;
     Procedure AbreCupom( CPF_CNPJ : String = ''; Nome : String = '';
        Endereco : String = '') ;
+    procedure LegendaInmetroProximoItem; 
     Procedure VendeItem( Codigo, Descricao : String; AliquotaICMS : String;
        Qtd : Double ; ValorUnitario : Double; ValorDescontoAcrescimo : Double = 0;
        Unidade : String = ''; TipoDescontoAcrescimo : String = '%';
@@ -439,15 +452,19 @@ TACBrECF = class( TACBrComponent )
        Observacao : AnsiString = ''; ImprimeVinculado : Boolean = false) ;
     { Para quebrar linhas nos parametros Observacao use: '|' (pipe),
        #10 ou chr(10).      Geralmente o ECF aceita no máximo 8 linhas }
-    Procedure FechaCupom( Observacao : AnsiString = '') ;
+    Procedure FechaCupom( Observacao : AnsiString = ''; IndiceBMP : Integer  = 0) ;
     Procedure CancelaCupom ;
     Procedure CancelaItemVendido( NumItem : Integer ) ;
+    procedure CancelaItemVendidoParcial( NumItem : Integer; Quantidade : Double); 
+    procedure CancelaDescontoAcrescimoItem( NumItem : Integer); 
+    procedure CancelaDescontoAcrescimoSubTotal(TipoAcrescimoDesconto: Char); //A -> Acrescimo D -> Desconto 
+    procedure EstornoPagamento(IndiceEstornado: Integer; IndiceEfetivado: Integer; Valor: Double; MsgPromocional: String); 
     Property Subtotal  : Double read GetSubTotalClass ;
     Property TotalPago : Double read GetTotalPagoClass ;
 
     { Procedimentos de Cupom Não Fiscal }
     Procedure NaoFiscalCompleto( CodCNF : String; Valor : Double;
-       CodFormaPagto  : String; Obs : AnsiString ) ;
+       CodFormaPagto  : String; Obs : AnsiString = ''; IndiceBMP : Integer = 0 ) ;
     Procedure AbreNaoFiscal( CPF_CNPJ : String = '') ;
     Procedure RegistraItemNaoFiscal( CodCNF : String; Valor : Double;
        Obs : AnsiString = '' ) ;
@@ -455,7 +472,7 @@ TACBrECF = class( TACBrComponent )
        MensagemRodape: AnsiString = '') ;
     Procedure EfetuaPagamentoNaoFiscal( CodFormaPagto : String; Valor : Double;
        Observacao : AnsiString = ''; ImprimeVinculado : Boolean = false) ;
-    Procedure FechaNaoFiscal( Observacao : AnsiString = '') ;
+    Procedure FechaNaoFiscal( Observacao : AnsiString = ''; IndiceBMP : Integer = 0) ;
     Procedure CancelaNaoFiscal ;
 
     procedure Sangria( const Valor: Double; Obs: AnsiString;
@@ -471,9 +488,9 @@ TACBrECF = class( TACBrComponent )
     Procedure LeituraX ;
     Procedure LeituraXSerial( var Linhas : TStringList) ;
     Procedure ReducaoZ( DataHora : TDateTime = 0 ) ;
-    Procedure RelatorioGerencial(Relatorio : TStrings; Vias : Integer = 1) ;
-    Procedure AbreRelatorioGerencial ;
-    Procedure LinhaRelatorioGerencial( Linha : AnsiString ) ;
+    Procedure RelatorioGerencial(Relatorio : TStrings; Vias : Integer = 1; Indice: Integer = 0) ;
+    Procedure AbreRelatorioGerencial(Indice: Integer = 0) ;
+    Procedure LinhaRelatorioGerencial( Linha : AnsiString; IndiceBMP: Integer = 0 ) ;
     Procedure CupomVinculado(COO, CodFormaPagto : String; Valor : Double;
               Relatorio : TStrings; Vias : Integer = 1) ; overload ;
     Procedure CupomVinculado(COO, CodFormaPagto, CodComprovanteNaoFiscal :
@@ -513,11 +530,12 @@ TACBrECF = class( TACBrComponent )
     Procedure LeituraMemoriaFiscalSerial( ReducaoInicial, ReducaoFinal : Integer;
        var Linhas : TStringList; Simplificada : Boolean = False ) ; overload ;
     Procedure LeituraMFDSerial( DataInicial, DataFinal : TDateTime;
-       var Linhas : TStringList ) ; overload ;
+       var Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ;
     Procedure LeituraMFDSerial( COOInicial, COOFinal : Integer;
-       var Linhas : TStringList ) ; overload ;
+       var Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ;
     Procedure IdentificaOperador( Nome : String) ;
     Procedure IdentificaPAF( Linha1, Linha2 : String) ;
+    Function RetornaInfoECF( Registrador : String ) : AnsiString;
 
     procedure ArredondarPorQtd( var Qtd: Double; const ValorUnitario: Double;
        const Precisao : Integer = -2 ) ;
@@ -529,6 +547,21 @@ TACBrECF = class( TACBrComponent )
 
     { Gera erro se nao puder abrir Cupom, informando o motivo }
     Procedure TestaPodeAbrirCupom ;
+
+    { Obs: De/Codifica e Verifica Textos C-->  Codifica D--> Decodifica V--> Verifica }
+     //---Informação De/Codificada
+     //---No Caso da opção "V" a função ira retornar:
+     //--- True  se as informaçõe coicidem com os valores atuais
+     //--- False se não coicidem
+    function DecodificaTexto(Operacao: Char; Texto: String; var Resposta: String): Boolean;
+
+    { Metodo para imprimir o Código de Barras em Fechamento de CF "MSG PROMO"; }
+    { Não Fiscal Vinculado; Gerencial }
+    property CodigodeBarras : TACBrECFCodBarras read GetCodBarrasClass ;
+
+    { Grava dados do Código de Barras para ser usado nos Documento }
+    Procedure InformaCodBarras( TipoBarra: TACBrECFTipoCodBarra; LanguraBarra,
+      AlturaBarra: Integer; CodBarra: String; ImprimeCodEmbaixo: Boolean) ;
 
     {$IFNDEF CONSOLE}
      Procedure MemoLeParams ;
@@ -1650,6 +1683,7 @@ begin
 
   fsMensagemRodape := '' ;
   Consumidor.Zera ;
+  CodigodeBarras.Zera;
 
   {$IFNDEF CONSOLE}
    if MemoAssigned then
@@ -1693,6 +1727,14 @@ begin
   fsECF.TestaPodeAbrirCupom ;
 end;
 
+{ Insere Legenda do Imetro para o Proximo Item a ser vendido }
+procedure TACBrECF.LegendaInmetroProximoItem;
+begin
+  ComandoLOG := 'LegendaInmetroProximoItem' ;
+  fsECF.LegendaInmetroProximoItem ;
+end;
+
+{ Vende o Item }
 procedure TACBrECF.VendeItem(Codigo, Descricao: String; AliquotaICMS : String ;
   Qtd: Double; ValorUnitario: Double; ValorDescontoAcrescimo: Double;
   Unidade: String; TipoDescontoAcrescimo : String; DescontoAcrescimo : String);
@@ -1848,6 +1890,13 @@ begin
 
 end;
 
+{ Cancela o Acrescimo ou o Desconto do Item informado }
+procedure TACBrECF.CancelaDescontoAcrescimoItem(NumItem: Integer);
+begin
+  ComandoLOG := 'CancelaDescontoAcrescimoItem' ;
+  fsECF.CancelaDescontoAcrescimoItem(NumItem) ;
+end;
+
 procedure TACBrECF.CancelaImpressaoCheque;
 begin
   ComandoLOG := 'CancelaImpressaoCheque' ;
@@ -1899,6 +1948,22 @@ begin
      fsRFD.SubTotalizaCupom( DescontoAcrescimo ) ;
 end;
 
+{ Cancela o Acrescimo ou Desconto do Subtotal do Cupom }
+procedure TACBrECF.CancelaDescontoAcrescimoSubTotal(
+  TipoAcrescimoDesconto: Char);
+begin
+  ComandoLOG := 'CancelaDescontoAcrescimoSubTotal' ;
+  fsECF.CancelaDescontoAcrescimoSubTotal(TipoAcrescimoDesconto) ;
+end;
+
+{ Cancela um item parcialmente }
+procedure TACBrECF.CancelaItemVendidoParcial(NumItem: Integer;
+  Quantidade: Double);
+begin
+  ComandoLOG := 'CancelaItemVendidoParcial' ;
+  fsECF.CancelaItemVendidoParcial(NumItem,Quantidade);
+end;
+
 procedure TACBrECF.EfetuaPagamento(CodFormaPagto: String; Valor: Double;
   Observacao: AnsiString; ImprimeVinculado: Boolean);
  Var FPG : TACBrECFFormaPagamento ;
@@ -1933,7 +1998,15 @@ begin
      fsRFD.EfetuaPagamento( FPG.Descricao, Valor ) ;
 end;
 
-procedure TACBrECF.FechaCupom(Observacao: AnsiString);
+{ Estorna um Pagamento Efetuado }
+procedure TACBrECF.EstornoPagamento(IndiceEstornado,
+  IndiceEfetivado: Integer; Valor: Double; MsgPromocional: String);
+begin
+  ComandoLOG := 'EstornoPagamento' ;
+  fsECF.EstornoPagamento(IndiceEstornado,IndiceEfetivado,Valor,MsgPromocional);
+end;
+
+procedure TACBrECF.FechaCupom(Observacao: AnsiString; IndiceBMP : Integer);
 begin
   if (Observacao = '') then
      Observacao := fsMensagemRodape ;
@@ -1955,7 +2028,7 @@ begin
   Observacao := StringReplace(Observacao,'|',#10,[rfReplaceAll]) ;
 
   ComandoLOG := 'FechaCupom( '+Observacao+' )' ;
-  fsECF.FechaCupom( Observacao ) ;
+  fsECF.FechaCupom( Observacao, IndiceBMP ) ;
 
   {$IFNDEF CONSOLE}
    if MemoAssigned then
@@ -1972,6 +2045,7 @@ begin
 
   fsMensagemRodape := '' ;
   Consumidor.Zera ;
+  CodigodeBarras.Zera ;
 
 end;
 
@@ -2002,7 +2076,7 @@ end;
 
 
 procedure TACBrECF.NaoFiscalCompleto(CodCNF: String; Valor: Double;
-  CodFormaPagto: String; Obs: AnsiString);
+  CodFormaPagto: String; Obs: AnsiString; IndiceBMP : Integer);
 begin
   if RFDAtivo then
      fsRFD.VerificaParametros ;
@@ -2012,7 +2086,7 @@ begin
 
   ComandoLOG := 'NaoFiscalCompleto(' +CodCNF+' , '+FloatToStr(Valor)+' , '+
                 CodFormaPagto+' , '+Obs+' )' ;
-  fsECF.NaoFiscalCompleto(CodCNF, Valor, CodFormaPagto, Obs);
+  fsECF.NaoFiscalCompleto(CodCNF, Valor, CodFormaPagto, Obs, IndiceBMP);
 
   if RFDAtivo and (not fsRegistrouRFDCNF) then
      fsRFD.Documento('CN');
@@ -2160,7 +2234,7 @@ begin
   {$ENDIF}
 end;
 
-procedure TACBrECF.FechaNaoFiscal(Observacao: AnsiString);
+procedure TACBrECF.FechaNaoFiscal(Observacao: AnsiString; IndiceBMP : Integer);
 begin
   if (Observacao = '') then
      Observacao := fsMensagemRodape ;
@@ -2170,7 +2244,7 @@ begin
   Observacao := StringReplace(Observacao,'|',#10,[rfReplaceAll]) ;
 
   ComandoLOG := 'FechaNaoFiscal( '+Observacao+' )' ;
-  fsECF.FechaNaoFiscal( Observacao ) ;
+  fsECF.FechaNaoFiscal( Observacao, IndiceBMP ) ;
 
   fsMensagemRodape := '' ;
   Consumidor.Zera ;
@@ -2337,25 +2411,25 @@ begin
 end;
 
 procedure TACBrECF.LeituraMFDSerial(DataInicial, DataFinal: TDateTime;
-  var Linhas: TStringList);
+  var Linhas: TStringList; Documentos : TACBrECFTipoDocumentoSet );
 begin
   if not MFD then
      raise Exception.Create( 'ECF '+ModeloStr+' não é MFD') ;
 
   ComandoLOG := 'LeituraMFDSerial( '+DateToStr(DataInicial)+' , '+
                     DateToStr(DataFinal)+' , Linhas) ';
-  fsECF.LeituraMFDSerial(DataInicial, DataFinal, Linhas) ;
+  fsECF.LeituraMFDSerial( DataInicial, DataFinal, Linhas, Documentos ) ;
 end;
 
 procedure TACBrECF.LeituraMFDSerial(COOInicial, COOFinal: Integer;
-  var Linhas: TStringList);
+  var Linhas: TStringList; Documentos : TACBrECFTipoDocumentoSet );
 begin
   if not MFD then
      raise Exception.Create( 'ECF '+ModeloStr+' não é MFD') ;
 
   ComandoLOG := 'LeituraMFDSerial( '+IntToStr(COOInicial)+' , '+
                     IntToStr(COOFinal)+' , Linhas) ';
-  fsECF.LeituraMFDSerial(COOInicial, COOFinal, Linhas) ;
+  fsECF.LeituraMFDSerial( COOInicial, COOFinal, Linhas, Documentos ) ;
 end;
 
 procedure TACBrECF.ImprimeCheque(Banco: String; Valor: Double; Favorecido,
@@ -2556,6 +2630,41 @@ begin
   fsECF.ProgramaFormaPagamento(Descricao, PermiteVinculado, Posicao);
 end;
 
+function TACBrECF.GetRelatoriosGerenciaisClass: TACBrECFRelatoriosGerenciais;
+begin
+  ComandoLOG := 'RelatoriosGerenciais' ;
+  Result := fsECF.RelatoriosGerenciais ;
+end;
+
+procedure TACBrECF.CarregaRelatoriosGerenciais;
+begin
+  ComandoLOG := 'CarregaRelatoriosGerenciais' ;
+  fsECF.CarregaRelatoriosGerenciais ;
+end;
+
+function TACBrECF.AchaRGDescricao(Descricao: String;
+  BuscaExata: Boolean): TACBrECFRelatorioGerencial;
+begin
+  ComandoLOG := 'AchaRGDescricao( '+Descricao+', '+BoolToStr(BuscaExata)+' )' ;
+  Result := fsECF.AchaRGDescricao( Descricao, BuscaExata ) ;
+end;
+
+function TACBrECF.AchaRGIndice(
+  Indice: String): TACBrECFRelatorioGerencial;
+begin
+  ComandoLOG := 'AchaRGIndice( '+Indice+' )' ;
+  Result := fsECF.AchaRGIndice( Indice ) ;
+end;
+
+
+procedure TACBrECF.ProgramaRelatoriosGerenciais(var Descricao: String;
+  Posicao: String);
+begin
+  ComandoLOG := 'ProgramaRelatoriosGerenciais( '+Descricao+' , '+ Posicao+' )';
+  fsECF.ProgramaRelatorioGerencial(Descricao, Posicao);
+end;
+
+
 function TACBrECF.GetComprovantesNaoFiscaisClass: TACBrECFComprovantesNaoFiscais;
 begin
   ComandoLOG := 'ComprovantesNaoFiscais' ;
@@ -2635,20 +2744,20 @@ begin
   fsECF.ProgramaUnidadeMedida(Descricao);
 end;
 
-procedure TACBrECF.RelatorioGerencial(Relatorio: TStrings; Vias: Integer);
+procedure TACBrECF.RelatorioGerencial(Relatorio: TStrings; Vias: Integer; Indice: Integer);
 begin
-  ComandoLOG := 'RelatorioGerencial( '+Relatorio.Text+' , '+
-                    IntToStr(Vias)+' )' ;
-  fsECF.RelatorioGerencial( Relatorio, Vias ) ;
+  ComandoLOG := 'RelatorioGerencial( ' + Relatorio.Text + ' , ' +
+                    IntToStr(Vias) + ' , ' + IntToStr(indice) + ' )' ;
+  fsECF.RelatorioGerencial( Relatorio, Vias, Indice ) ;
 end;
 
-procedure TACBrECF.AbreRelatorioGerencial;
+procedure TACBrECF.AbreRelatorioGerencial(Indice: Integer);
 begin
   if RFDAtivo then
      fsRFD.VerificaParametros ;
      
   ComandoLOG := 'AbreRelatorioGerencial' ;
-  fsECF.AbreRelatorioGerencial ;
+  fsECF.AbreRelatorioGerencial(Indice) ;
 
   {$IFNDEF CONSOLE}
    if MemoAssigned then
@@ -2658,15 +2767,15 @@ begin
       MemoTitulo('RELATORIO GERENCIAL');
    end ;
   {$ENDIF}
-  
+
   if RFDAtivo then
      fsRFD.Documento('RG') ;
 end;
 
-procedure TACBrECF.LinhaRelatorioGerencial(Linha: AnsiString);
+procedure TACBrECF.LinhaRelatorioGerencial(Linha: AnsiString; IndiceBMP: Integer);
 begin
   ComandoLOG := 'LinhaRelatorioGerencial( '+Linha+' )';
-  fsECF.LinhaRelatorioGerencial( Linha );
+  fsECF.LinhaRelatorioGerencial( Linha, IndiceBMP );
 
   {$IFNDEF CONSOLE}
    if MemoAssigned then
@@ -3319,6 +3428,34 @@ begin
   fsECF.IdentificaPAF(Linha1, Linha2);
 end;
 
+Function TACBrECF.RetornaInfoECF( Registrador : String ) : AnsiString;
+begin
+  ComandoLOG := 'RetornaInfoECF('+Registrador+')';
+
+  Result := fsECF.RetornaInfoECF( Registrador );
+end;
+
+function TACBrECF.GetCodBarrasClass: TACBrECFCodBarras;
+begin
+  Result := fsECF.CodBarras ;
+end;
+
+function TACBrECF.DecodificaTexto(Operacao: Char; Texto: String;
+  var Resposta: String): Boolean;
+begin
+   ComandoLOG := 'DecodificaTexto';
+   Result := fsECF.DecodificaTexto(Operacao,Texto,Resposta) ;
+end;
+
+procedure TACBrECF.InformaCodBarras(TipoBarra: TACBrECFTipoCodBarra;
+  LanguraBarra, AlturaBarra: Integer; CodBarra: String;
+  ImprimeCodEmbaixo: Boolean);
+begin
+  fsECF.CodBarras.AdicionarCodBarra(TipoBarra, LanguraBarra, AlturaBarra,
+      CodBarra, ImprimeCodEmbaixo);
+end;
+
+
 (* Muita coisa a fazer....
 
 LeituraXSerial
@@ -3347,7 +3484,6 @@ Número do CDC relativo ao respectivo documento
 - TotalNaoTributadoISS
 - TotalIsencaoISS
  *)
-
 
 end.
 

@@ -170,14 +170,14 @@ TACBrECFMecaf = class( TACBrECFClass )
     Procedure EfetuaPagamento( CodFormaPagto : String; Valor : Double;
        Observacao : AnsiString = ''; ImprimeVinculado : Boolean = false) ;
        override ;
-    Procedure FechaCupom( Observacao : AnsiString = '') ; override ;
+    Procedure FechaCupom( Observacao : AnsiString = ''; IndiceBMP : Integer = 0) ; override ;
     Procedure CancelaCupom ; override ;
     Procedure CancelaItemVendido( NumItem : Integer ) ; override ;
 
     Procedure LeituraX ; override ;
     Procedure ReducaoZ(DataHora : TDateTime = 0 ) ; override ;
-    Procedure AbreRelatorioGerencial ; override ;
-    Procedure LinhaRelatorioGerencial( Linha : AnsiString ) ; override ;
+    Procedure AbreRelatorioGerencial(Indice: Integer = 0) ; override ;
+    Procedure LinhaRelatorioGerencial( Linha : AnsiString; IndiceBMP: Integer = 0 ) ; override ;
     Procedure AbreCupomVinculado(COO, CodFormaPagto, CodComprovanteNaoFiscal :
        String; Valor : Double) ; override ;
     Procedure LinhaCupomVinculado( Linha : AnsiString ) ; override ;
@@ -205,7 +205,7 @@ TACBrECFMecaf = class( TACBrECFClass )
        Obs : AnsiString = '') ; override ;
     Procedure SubtotalizaNaoFiscal( DescontoAcrescimo : Double = 0;
        MensagemRodape: AnsiString = '') ; override ;
-    Procedure FechaNaoFiscal( Observacao : AnsiString = '') ; override ;
+    Procedure FechaNaoFiscal( Observacao : AnsiString = ''; IndiceBMP : Integer = 0) ; override ;
     Procedure CancelaNaoFiscal ; override ;
 
     Procedure AbreGaveta ; override ;
@@ -731,7 +731,7 @@ begin
   end ;
 end;
 
-procedure TACBrECFMecaf.FechaCupom(Observacao: AnsiString);
+procedure TACBrECFMecaf.FechaCupom(Observacao: AnsiString; IndiceBMP : Integer);
 Var Linhas : Integer ;
     Obs    : String ;
 begin
@@ -1109,7 +1109,7 @@ begin
   EnviaComando( '151' ,40 ) ;
 end;
 
-procedure TACBrECFMecaf.LinhaRelatorioGerencial(Linha: AnsiString);
+procedure TACBrECFMecaf.LinhaRelatorioGerencial(Linha: AnsiString; IndiceBMP: Integer);
 begin
   Linha := TiraAcentos(Linha) ;  // Mecaf não imprime se tiver acentos
   ImprimirLinhaALinha( Linha, '260' );
@@ -1268,7 +1268,7 @@ begin
  {Não diponivel na Mecaf}
 end;
 
-procedure TACBrECFMecaf.FechaNaoFiscal(Observacao: AnsiString);
+procedure TACBrECFMecaf.FechaNaoFiscal(Observacao: AnsiString; IndiceBMP : Integer);
 begin
   EnviaComando( '21' ,12 ) ;
 end;

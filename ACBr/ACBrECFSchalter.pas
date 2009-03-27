@@ -157,7 +157,7 @@ TACBrECFSchalter = class( TACBrECFClass )
     Procedure EfetuaPagamento( CodFormaPagto : String; Valor : Double;
        Observacao : AnsiString = ''; ImprimeVinculado : Boolean = false) ;
        override ;
-    Procedure FechaCupom( Observacao : AnsiString = '') ; override ;
+    Procedure FechaCupom( Observacao : AnsiString = ''; IndiceBMP : Integer = 0) ; override ;
     Procedure CancelaCupom ; override ;
     Procedure CancelaItemVendido( NumItem : Integer ) ; override ;
 
@@ -167,8 +167,8 @@ TACBrECFSchalter = class( TACBrECFClass )
     Procedure LeituraX ; override ;
     Procedure LeituraXSerial( var Linhas : TStringList) ; override ;
     Procedure ReducaoZ(DataHora : TDateTime = 0 ) ; override ;
-    Procedure AbreRelatorioGerencial ; override ;
-    Procedure LinhaRelatorioGerencial( Linha : AnsiString ) ; override ;
+    Procedure AbreRelatorioGerencial(Indice: Integer = 0) ; override ;
+    Procedure LinhaRelatorioGerencial( Linha : AnsiString; IndiceBMP: Integer = 0 ) ; override ;
     Procedure AbreCupomVinculado(COO, CodFormaPagto, CodComprovanteNaoFiscal :
        String; Valor : Double) ; override ;
     Procedure LinhaCupomVinculado( Linha : AnsiString ) ; override ;
@@ -901,7 +901,7 @@ begin
   end ;
 end;
 
-procedure TACBrECFSchalter.FechaCupom(Observacao: AnsiString);
+procedure TACBrECFSchalter.FechaCupom(Observacao: AnsiString; IndiceBMP : Integer);
 begin
   Observacao := AjustaLinhas(Observacao, Colunas,  8 ) ;
 
@@ -1372,7 +1372,7 @@ begin
   fsDadosLeituraX := '' ;
 end;
 
-procedure TACBrECFSchalter.LinhaRelatorioGerencial(Linha: AnsiString);
+procedure TACBrECFSchalter.LinhaRelatorioGerencial(Linha: AnsiString; IndiceBMP: Integer);
 begin
   ImprimirLinhaALinha( Linha, #110 );
 end;

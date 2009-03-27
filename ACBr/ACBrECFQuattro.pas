@@ -141,15 +141,15 @@ TACBrECFQuattro = class( TACBrECFClass )
     Procedure EfetuaPagamento( CodFormaPagto : String; Valor : Double;
        Observacao : AnsiString = ''; ImprimeVinculado : Boolean = false) ;
        override ;
-    Procedure FechaCupom( Observacao : AnsiString = '') ; override ;
+    Procedure FechaCupom( Observacao : AnsiString = ''; IndiceBMP : Integer = 0) ; override ;
     Procedure CancelaCupom ; override ;
     Procedure CancelaItemVendido( NumItem : Integer ) ; override ;
 
     Procedure LeituraX ; override ;
     Procedure LeituraXSerial( var Linhas : TStringList) ; override ;
     Procedure ReducaoZ(DataHora : TDateTime = 0 ) ; override ;
-    Procedure AbreRelatorioGerencial ; override ;
-    Procedure LinhaRelatorioGerencial( Linha : AnsiString ) ; override ;
+    Procedure AbreRelatorioGerencial(Indice: Integer = 0) ; override ;
+    Procedure LinhaRelatorioGerencial( Linha : AnsiString; IndiceBMP: Integer = 0 ) ; override ;
     Procedure AbreCupomVinculado(COO, CodFormaPagto, CodComprovanteNaoFiscal :
        String; Valor : Double) ; override ;
     Procedure LinhaCupomVinculado( Linha : AnsiString ) ; override ;
@@ -196,7 +196,7 @@ TACBrECFQuattro = class( TACBrECFClass )
        Obs: AnsiString); override;
     procedure EfetuaPagamentoNaoFiscal(CodFormaPagto: string; Valor: Double;
        Observacao: AnsiString; ImprimeVinculado: Boolean); override;
-    procedure FechaNaoFiscal(Observacao: AnsiString);override;
+    procedure FechaNaoFiscal(Observacao: AnsiString; IndiceBMP : Integer = 0);override;
 
 
  end ;
@@ -891,7 +891,7 @@ begin
   fsFechando := true ;
 end;
 
-procedure TACBrECFQuattro.FechaCupom(Observacao: AnsiString);
+procedure TACBrECFQuattro.FechaCupom(Observacao: AnsiString; IndiceBMP : Integer);
 Var Linhas : TStringList ;
     I      : Integer ;
     Obs    : AnsiString ;
@@ -1316,7 +1316,7 @@ begin
   EnviaComando( '13' + 'S' ,50 );
 end;
 
-procedure TACBrECFQuattro.LinhaRelatorioGerencial(Linha: AnsiString);
+procedure TACBrECFQuattro.LinhaRelatorioGerencial(Linha: AnsiString; IndiceBMP: Integer);
 begin
   ImprimirLinhaALinha( Linha, '080' );
 end;
@@ -1604,7 +1604,7 @@ begin
                      Observacao , 5, 5) ;
 end;
 
-procedure TACBrECFQuattro.FechaNaoFiscal(Observacao: AnsiString);
+procedure TACBrECFQuattro.FechaNaoFiscal(Observacao: AnsiString; IndiceBMP : Integer);
 begin
   EnviaComando('12', 10); { 12-Fecha Não fiscla }
 end;

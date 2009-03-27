@@ -165,7 +165,10 @@ begin
            continue ;
 
         if fsTexto <> '' then { Se ja existe texto, concatena com "," ou "e"}
-           fsTexto := fsTexto + IfThen(Casa = 3,' e ',', ') ;
+           if Casa = 3 then
+              fsTexto := fsTexto + ' e '
+           else
+              fsTexto := fsTexto + ', ' ;
 
         fsTexto := fsTexto + ExtensoAux( aStrCasas[ Casa ] ) ;
 

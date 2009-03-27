@@ -147,14 +147,14 @@ TACBrECFYanco = class( TACBrECFClass )
     Procedure EfetuaPagamento( CodFormaPagto : String; Valor : Double;
        Observacao : AnsiString = ''; ImprimeVinculado : Boolean = false) ;
        override ;
-    Procedure FechaCupom( Observacao : AnsiString = '') ; override ;
+    Procedure FechaCupom( Observacao : AnsiString = ''; IndiceBMP : Integer = 0) ; override ;
     Procedure CancelaCupom ; override ;
     Procedure CancelaItemVendido( NumItem : Integer ) ; override ;
 
     Procedure LeituraX ; override ;
     Procedure ReducaoZ(DataHora : TDateTime) ; override ;
-    Procedure AbreRelatorioGerencial ; override ;
-    Procedure LinhaRelatorioGerencial( Linha : AnsiString ) ; override ;
+    Procedure AbreRelatorioGerencial(Indice: Integer = 0) ; override ;
+    Procedure LinhaRelatorioGerencial( Linha : AnsiString; IndiceBMP: Integer = 0 ) ; override ;
     Procedure AbreCupomVinculado(COO, CodFormaPagto, CodComprovanteNaoFiscal :
        String; Valor : Double) ; override ;
     Procedure LinhaCupomVinculado( Linha : AnsiString ) ; override ;
@@ -647,7 +647,7 @@ begin
   fsEmPagamento := true ;
 end;
 
-procedure TACBrECFYanco.FechaCupom(Observacao: AnsiString);
+procedure TACBrECFYanco.FechaCupom(Observacao: AnsiString; IndiceBMP : Integer);
 begin
   Observacao := StringReplace(Observacao, #10, '', [rfReplaceAll]) ;
   Observacao := padl(Observacao, 168);
@@ -825,7 +825,7 @@ begin
      EnviaComando( '240             ',40) ;
 end;
 
-procedure TACBrECFYanco.LinhaRelatorioGerencial(Linha: AnsiString);
+procedure TACBrECFYanco.LinhaRelatorioGerencial(Linha: AnsiString; IndiceBMP: Integer);
 begin
    EnviaComando( '2A0'+padL(linha,46));
 end;

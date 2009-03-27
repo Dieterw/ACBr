@@ -254,11 +254,54 @@ type
     EdtValorVendaTEF: TEdit;
     Label26: TLabel;
     ACBrTEF1: TACBrTEF;
+    ProgramaRelatrioGerencial1: TMenuItem;
+    RelatriosGerenciais1: TMenuItem;
+    CarregaRelatriosGerenciais1: TMenuItem;
+    LegendaInmetroproximoItem1: TMenuItem;
+    CancelaItemVendidoParcial1: TMenuItem;
+    N30: TMenuItem;
+    CancelaDescontoAcrescimoItem1: TMenuItem;
+    CancelaDescontoAcrescimoSubTotal1: TMenuItem;
+    N31: TMenuItem;
+    N32: TMenuItem;
+    ConsultaRegistradorECF1: TMenuItem;
+    N33: TMenuItem;
+    EstornaMeiodePagamento1: TMenuItem;
+    DeCodificaTexto1: TMenuItem;
+    TabSheet8: TTabSheet;
+    Label23: TLabel;
+    RdgTipoBarra: TRadioGroup;
+    Label27: TLabel;
+    Label28: TLabel;
+    SpEdAlturaBarra: TSpinEdit;
+    EdtCodBarras: TEdit;
+    Label29: TLabel;
+    ChImpTextoVertical: TCheckBox;
+    ChImpTextoAbaixoBarras: TCheckBox;
+    MenTextoBarras: TMemo;
+    BitBtn6: TBitBtn;
+    BitBtn7: TBitBtn;
+    SpEdtLarguraBarra: TSpinEdit;
+    N34: TMenuItem;
+    AchaAliquotaporIndice1: TMenuItem;
+    AchaAliquotaporValor1: TMenuItem;
+    N35: TMenuItem;
+    AcharMeioPagamentoporIndice1: TMenuItem;
+    AcharMeiodePagametoporDescrio1: TMenuItem;
+    N36: TMenuItem;
+    AchaCNFporIndice1: TMenuItem;
+    AchaCNFporDescrio1: TMenuItem;
+    N37: TMenuItem;
+    AchaRGporIndice1: TMenuItem;
+    AchaRGporDescrio1: TMenuItem;
+    N38: TMenuItem;
+    PorCOO2: TMenuItem;
+    PorDatadeMovimento1: TMenuItem;
     procedure cbxModeloChange(Sender: TObject);
     procedure Sair1Click(Sender: TObject);
     procedure bAtivarClick(Sender: TObject);
     procedure cbxPortaChange(Sender: TObject);
-    procedure Ativcar1Click(Sender: TObject);
+    procedure Ativar1Click(Sender: TObject);
     procedure Desativar1Click(Sender: TObject);
     procedure chTentarClick(Sender: TObject);
     procedure chBloqueiaClick(Sender: TObject);
@@ -403,6 +446,29 @@ type
     procedure BitBtn4Click(Sender: TObject);
     procedure BitBtn1Click(Sender: TObject);
     procedure BitBtn5Click(Sender: TObject);
+    procedure ProgramaRelatrioGerencial1Click(Sender: TObject);
+    procedure CarregaRelatriosGerenciais1Click(Sender: TObject);
+    procedure LegendaInmetroproximoItem1Click(Sender: TObject);
+    procedure CancelaItemVendidoParcial1Click(Sender: TObject);
+    procedure CancelaDescontoAcrescimoItem1Click(Sender: TObject);
+    procedure CancelaDescontoAcrescimoSubTotal1Click(Sender: TObject);
+    procedure ConsultaRegistradorECF1Click(Sender: TObject);
+    procedure EstornaMeiodePagamento1Click(Sender: TObject);
+    procedure DeCodificaTexto1Click(Sender: TObject);
+    procedure BitBtn6Click(Sender: TObject);
+    procedure ChImpTextoVerticalClick(Sender: TObject);
+    procedure BitBtn7Click(Sender: TObject);
+    procedure RdgTipoBarraClick(Sender: TObject);
+    procedure AchaAliquotaporIndice1Click(Sender: TObject);
+    procedure AchaAliquotaporValor1Click(Sender: TObject);
+    procedure AcharMeioPagamentoporIndice1Click(Sender: TObject);
+    procedure AcharMeiodePagametoporDescrio1Click(Sender: TObject);
+    procedure AchaCNFporIndice1Click(Sender: TObject);
+    procedure AchaCNFporDescrio1Click(Sender: TObject);
+    procedure AchaRGporIndice1Click(Sender: TObject);
+    procedure AchaRGporDescrio1Click(Sender: TObject);
+    procedure PorCOO2Click(Sender: TObject);
+    procedure PorDatadeMovimento1Click(Sender: TObject);
   private
     { Private declarations }
     Function Converte( cmd : String) : String;
@@ -524,7 +590,7 @@ end;
 procedure TForm1.bAtivarClick(Sender: TObject);
 begin
   if bAtivar.Caption = 'Ativar' then
-     Ativcar1Click( Sender )
+     Ativar1Click( Sender )
   else
      Desativar1Click( Sender );
 end;
@@ -538,7 +604,7 @@ begin
   end ;
 end;
 
-procedure TForm1.Ativcar1Click(Sender: TObject);
+procedure TForm1.Ativar1Click(Sender: TObject);
 begin
   try
      ACBrECF1.Porta := cbxPorta.Text ;
@@ -725,7 +791,7 @@ begin
      mResp.Lines.Add( 'Aliquota: '+ACBrECF1.Aliquotas[A].Indice +' - '+
                       FloatToStr( ACBrECF1.Aliquotas[A].Aliquota ) + ' Tipo: '+
                       ACBrECF1.Aliquotas[A].Tipo+ ' -> '+
-                      FloatToStr( ACBrECF1.Aliquotas[A].Total ) );
+                      FormatFloat('###,##0.00', ACBrECF1.Aliquotas[A].Total ) );
   end ;
   mResp.Lines.Add('---------------------------------');
 end;
@@ -756,7 +822,7 @@ begin
      if ACBrECF1.FormasPagamento[A].Descricao <> '' then
         mResp.Lines.Add( 'Forma Pagto: '+ACBrECF1.FormasPagamento[A].Indice+' - '+
            ACBrECF1.FormasPagamento[A].Descricao+'  -> '+
-           FloatToStr(ACBrECF1.FormasPagamento[A].Total)) ;
+           FormatFloat('###,##0.00',ACBrECF1.FormasPagamento[A].Total)) ;
   end ;
   mResp.Lines.Add('---------------------------------');
 end;
@@ -778,6 +844,23 @@ begin
   mResp.Lines.Add('---------------------------------');
 end;
 
+procedure TForm1.CarregaRelatriosGerenciais1Click(Sender: TObject);
+var
+  A : Integer ;
+begin
+  ACBrECF1.CarregaRelatoriosGerenciais ;
+
+  for A := 0 to ACBrECF1.RelatoriosGerenciais.Count -1 do
+  begin
+     if ACBrECF1.RelatoriosGerenciais[A].Descricao <> '' then
+        mResp.Lines.Add( 'RG: '+ACBrECF1.RelatoriosGerenciais[A].Indice+' -> '
+        + PadL(ACBrECF1.RelatoriosGerenciais[A].Descricao, 15) + ' CER:'
+        + IntToStr(ACBrECF1.RelatoriosGerenciais[A].Contador)) ; 
+  end;
+  mResp.Lines.Add('---------------------------------');
+
+end;
+
 procedure TForm1.LerTotaisComprovanetNaoFiscal1Click(Sender: TObject);
 var A : Integer ;
 begin
@@ -787,9 +870,9 @@ begin
   begin
      if ACBrECF1.ComprovantesNaoFiscais[A].Descricao <> '' then
         mResp.Lines.Add( 'CNF: '+ACBrECF1.ComprovantesNaoFiscais[A].Indice+' - '+
-           ACBrECF1.ComprovantesNaoFiscais[A].Descricao+' ('+
-           IntToStr(ACBrECF1.ComprovantesNaoFiscais[A].Contador)+') -> '+
-           FloatToStr(ACBrECF1.ComprovantesNaoFiscais[A].Total)) ;
+           ACBrECF1.ComprovantesNaoFiscais[A].Descricao+' CON ('+
+           IntToStrZero(ACBrECF1.ComprovantesNaoFiscais[A].Contador, 4)+') -> '+
+           FormatFloat('###,##0.00', ACBrECF1.ComprovantesNaoFiscais[A].Total)) ;
   end ;
   mResp.Lines.Add('---------------------------------');
 end;
@@ -910,8 +993,14 @@ begin
   frVendeItem.Show ;
 end;
 
+procedure TForm1.LegendaInmetroproximoItem1Click(Sender: TObject);
+begin
+  ACBrECF1.LegendaInmetroProximoItem;
+end;
+
 procedure TForm1.CancelarItemVendido1Click(Sender: TObject);
-Var Item : String ;
+Var
+  Item : String ;
 begin
   Item := '1' ;
   if InputQuery('Cancelar Item Vendido',
@@ -921,6 +1010,39 @@ begin
      mResp.Lines.Add( 'Cancela Item Vendido: '+Item );
      AtualizaMemos ;
   end ;
+end;
+
+procedure TForm1.CancelaItemVendidoParcial1Click(Sender: TObject);
+Var
+  Item : String ;
+  Qdte : String;
+begin
+  Item := '1' ;
+  if InputQuery('Cancelar Item Vendido',
+                'Informe o número da Sequencia de Venda', Item ) then
+
+  if InputQuery('Quantidade do Item a cancelar',
+                'Informe quantidade do Item a cancelar', Qdte ) then
+  begin
+     ACBrECF1.CancelaItemVendidoParcial( StrToIntDef(Item,0), StrToFloatDef(Qdte, 0) );
+     mResp.Lines.Add( 'Cancela Item Vendido Parcial: '+Item + ', Qdte: ' + Qdte);
+     AtualizaMemos ;
+  end ;
+end;
+
+procedure TForm1.CancelaDescontoAcrescimoItem1Click(Sender: TObject);
+Var
+  Item : String ;
+begin
+  Item := '1' ;
+  if InputQuery('Cancelar DescontoAcrescimo do Item Vendido',
+                'Informe o número da Sequencia de Venda', Item ) then
+  begin
+     ACBrECF1.CancelaDescontoAcrescimoItem( StrToIntDef(Item,0) );
+     mResp.Lines.Add( 'Cancelar AcrescimoDesconto: '+Item );
+     AtualizaMemos ;
+  end ;
+
 end;
 
 procedure TForm1.Sub1Click(Sender: TObject);
@@ -946,6 +1068,24 @@ begin
   end ;
 end;
 
+procedure TForm1.CancelaDescontoAcrescimoSubTotal1Click(Sender: TObject);
+Var
+  Info : String ;
+  Tipo : Char ;
+begin
+  Tipo  := 'D' ;
+
+  if  InputQuery('Cancela DescontoAcrescimo SubTotal do Cupom',
+              'Digite "A" para cancelar Acrescimo ou "D" para Desconto' , Info) then
+  begin
+     Tipo :=  Info[1];
+     ACBrECF1.CancelaDescontoAcrescimoSubTotal(Tipo);
+     mResp.Lines.Add( 'Cancela DescontoAcrescimo SubTotal do Cupom: '+ Tipo );
+     AtualizaMemos ;
+  end ;
+
+end;
+
 procedure TForm1.EfetuarPagamento1Click(Sender: TObject);
 begin
   if not (ACBrECF1.Modelo in [ecfDataRegis, ecfFiscNET]) then
@@ -958,16 +1098,25 @@ begin
 end;
 
 procedure TForm1.FecharCupom1Click(Sender: TObject);
-Var Obs : String ;
+Var
+  Obs : String ;
+  IndiceBMP : String;
 begin
   Obs := 'Componentes ACBr|http://acbr.sourceforge.net' ;
+  IndiceBMP :=  '0';
   if InputQuery('Fechar Cupom',
                 'Se Necessário digite alguma Observaçao (até 8 linhas)'+#10+
                 'O sinal | (pipe) será convertido para #10 (quebra de linha)' ,
                 Obs ) then
   begin
+     if (ACBrECF1.Modelo = ecfDaruma) and (ACBrECF1.MFD) then
+       if Not InputQuery('Impressao de imagem BMP ',
+                  'Digite o Indice do BMP que deseja utilizar' ,
+                   IndiceBMP ) then
+        Exit;
+        
      Obs := StringReplace(Obs,'|',#10,[rfReplaceAll,rfIgnoreCase]) ;
-     ACBrECF1.FechaCupom( Obs );
+     ACBrECF1.FechaCupom( Obs, StrToIntDef(IndiceBMP, 0) );
      mResp.Lines.Add( 'Fecha Cupom: '+#10+Obs );
      AtualizaMemos ;
   end ;
@@ -1445,6 +1594,21 @@ begin
   CarregaComprovantesNAOFiscais1Click(Sender);
 end;
 
+procedure TForm1.ProgramaRelatrioGerencial1Click(Sender: TObject);
+var
+   Descricao : String;
+begin
+  if not InputQuery('Programaçao de Relatórios Gerenciais',
+                    'Entre com a Descrição do Relatório Gerencial:', Descricao ) then
+     exit ;
+  if MessageDlg('O Relatório: [' + Descricao + '] será programado.'+sLineBreak+sLineBreak+
+                'Cuidado a programação de Relatórios Gerenciais é irreversivel'+sLineBreak+
+                'Confirma a operação ?',mtConfirmation,mbYesNoCancel,0) <> mrYes then
+     exit ;
+  ACBrECF1.ProgramaRelatoriosGerenciais( Descricao );
+  CarregaRelatriosGerenciais1Click(Sender)
+end;
+
 procedure TForm1.ACBrECF1MsgPoucoPapel(Sender: TObject);
 begin
   mResp.Lines.Add('ATENÇÃO... POUCO PAPEL') ;
@@ -1549,8 +1713,15 @@ begin
 end;
 
 procedure TForm1.AbreRelatorioGerencial1Click(Sender: TObject);
+Var
+  IndiceStr : String;
 begin
-  ACBrECF1.AbreRelatorioGerencial ;
+  IndiceStr :=  '1';
+  if not InputQuery('Abertura de Relatório Gerencial',
+                    'Digite o Indice do Relatório Gerencial a ser utilizado',
+                    IndiceStr ) then
+     exit ;
+  ACBrECF1.AbreRelatorioGerencial(StrToIntDef(IndiceStr, 0)) ;
 end;
 
 procedure TForm1.AbreCupomVinculado1Click(Sender: TObject);
@@ -1602,7 +1773,7 @@ begin
                     'Digite a linha a imprimir',
                     Linha ) then
      exit ;
-  ACBrECF1.LinhaRelatorioGerencial( Linha );
+  ACBrECF1.LinhaRelatorioGerencial( Linha, 1 );
 end;
 
 procedure TForm1.ImprimeLinhaVinculado1Click(Sender: TObject);
@@ -1919,7 +2090,7 @@ begin
 
   Linhas := TStringList.Create ;
   try
-     ACBrECF1.LeituraMFDSerial(nCOOIni, nCOOFim, Linhas);
+     ACBrECF1.LeituraMFDSerial(nCOOIni, nCOOFim, Linhas );
 
      For I := 0 to Linhas.Count - 1 do
         mResp.Lines.Add(Linhas[I]) ;
@@ -2056,16 +2227,24 @@ begin
 end;
 
 procedure TForm1.FechaNoFiscal1Click(Sender: TObject);
-Var Obs : String ;
+Var
+  Obs : String ;
+  IndiceBMP: String;
 begin
   Obs := 'Componentes ACBr|http://acbr.sourceforge.net' ;
+  IndiceBMP :=  '0';
   if InputQuery('Fecha Não Fiscal',
                 'Se Necessário digite alguma Observaçao (até 8 linhas)'+#10+
                 'O sinal | (pipe) será convertido para #10 (quebra de linha)' ,
                 Obs ) then
   begin
+     if (ACBrECF1.Modelo = ecfDaruma) and (ACBrECF1.MFD) then
+       InputQuery('Impressao de imagem BMP ',
+                  'Digite o Indice do BMP que deseja utilizar' ,
+                   IndiceBMP );
+
      Obs := StringReplace(Obs,'|',#10,[rfReplaceAll,rfIgnoreCase]) ;
-     ACBrECF1.FechaNaoFiscal( Obs );
+     ACBrECF1.FechaNaoFiscal( Obs, StrToIntDef(IndiceBMP, 0) );
      mResp.Lines.Add( 'Fecha Não Fiscal: '+#10+Obs );
      AtualizaMemos ;
   end ;
@@ -2567,6 +2746,351 @@ end;
 procedure TForm1.BitBtn5Click(Sender: TObject);
 begin
    ACBrTEF1.CancelaCupomTEF;
+end;
+
+procedure TForm1.ConsultaRegistradorECF1Click(Sender: TObject);
+var
+   Indice : String;
+   Linhas : String ;
+begin
+  if not InputQuery('Consulta Registrador ECF',
+                    'Entre com o Indice da Informação:', Indice ) then
+    Exit;
+
+  Linhas := ACBrECF1.RetornaInfoECF( Indice );
+
+  mResp.Lines.Add('Informação: ' + Linhas) ;
+  AtualizaMemos();
+end;
+
+procedure TForm1.EstornaMeiodePagamento1Click(Sender: TObject);
+begin
+  frPagamento.Estado:= 'Estorno';
+  frPagamento.Show ;
+end;
+
+procedure TForm1.DeCodificaTexto1Click(Sender: TObject);
+Var
+  Operacao : String;
+  Texto    : String;
+  Resposta : String;
+begin
+  Operacao:= 'C';
+  if not InputQuery('De/Codificacao',
+                'Informe a operação a ser realizada "C", "D" ou "V"', Operacao) then
+    exit;
+
+  Texto:= 'ACBr';
+  if not InputQuery('Texto a ser de/codificado ou verificado',
+                'Informe o texto a ser decodificado', Texto ) then
+    exit;
+
+  ACBrECF1.DeCodificaTexto(Operacao[1],Texto, Resposta);
+
+  mResp.Lines.Add( 'Resposta: '+ Resposta );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.BitBtn6Click(Sender: TObject);
+begin
+  ACBrECF1.CodigodeBarras.AdicionarCodBarra(TACBrECFTipoCodBarra(RdgTipoBarra.ItemIndex),
+    SpEdtLarguraBarra.Value, SpEdAlturaBarra.Value, EdtCodBarras.Text,
+    ChImpTextoAbaixoBarras.Checked, ChImpTextoVertical.Checked);
+
+  ACBrECF1.LinhaRelatorioGerencial( MenTextoBarras.Text );
+end;
+
+procedure TForm1.BitBtn7Click(Sender: TObject);
+begin
+  ACBrECF1.CodigodeBarras.AdicionarCodBarra(TACBrECFTipoCodBarra(RdgTipoBarra.ItemIndex),
+    SpEdtLarguraBarra.Value, SpEdAlturaBarra.Value, EdtCodBarras.Text,
+    ChImpTextoAbaixoBarras.Checked, ChImpTextoVertical.Checked);
+
+  ACBrECF1.FechaCupom( MenTextoBarras.Text );
+end;
+
+procedure TForm1.ChImpTextoVerticalClick(Sender: TObject);
+begin
+  MenTextoBarras.Enabled  :=  ChImpTextoVertical.Enabled;
+end;
+
+procedure TForm1.RdgTipoBarraClick(Sender: TObject);
+begin
+  Case RdgTipoBarra.ItemIndex of
+    0 : EdtCodBarras.Text :=  '789000000001';
+    1 : EdtCodBarras.Text :=  '0000000';
+    2 : EdtCodBarras.Text :=  '123456';
+    3 : EdtCodBarras.Text :=  '123456';
+    4 : EdtCodBarras.Text :=  'abcABC123';
+    5 : EdtCodBarras.Text :=  'ABC123';
+    6 : EdtCodBarras.Text :=  'ABC123';
+    7 : EdtCodBarras.Text :=  '00000000000';
+    8 : EdtCodBarras.Text :=  '123456';
+    9 : EdtCodBarras.Text :=  '123456';
+    10: EdtCodBarras.Text :=  '123456';
+  end;
+end;
+
+procedure TForm1.AchaAliquotaporIndice1Click(Sender: TObject);
+var
+  Aliquota  : TACBrECFAliquota;
+  Indice    : String;
+begin
+  ACBrECF1.LerTotaisAliquota ;
+
+  if not InputQuery('Acha Aliquota por Indice',
+                    'Entre com o Indice:', Indice ) then
+    Exit;
+
+  Aliquota  :=  ACBrECF1.AchaICMSIndice(Indice);
+
+  if Aliquota <> Nil then
+  begin
+    mResp.Lines.Add('Indice  : ' + Aliquota.Indice);
+    mResp.Lines.Add('Aliquota: ' + FormatFloat('###,##0.00',Aliquota.Aliquota));
+    mResp.Lines.Add('Valor atual do totalizador R$ ' + FormatFloat('###,##0.00',Aliquota.Total));
+  end
+  else
+    mResp.Lines.Add('Indice (' + Indice + ') não encontrado!');
+
+  AtualizaMemos();
+end;
+
+procedure TForm1.AchaAliquotaporValor1Click(Sender: TObject);
+var
+  Aliquota  : TACBrECFAliquota;
+  ValorStr  : String;
+begin
+  ACBrECF1.LerTotaisAliquota ;
+
+  if not InputQuery('Acha Aliquota por Valor',
+                    'Entre com o Valor:', ValorStr ) then
+    Exit;
+
+  Aliquota  :=  ACBrECF1.AchaICMSAliquota(StrToFloatDef(ValorStr, 0));
+
+  if Aliquota <> Nil then
+  begin
+    mResp.Lines.Add('Indice  : ' + Aliquota.Indice);
+    mResp.Lines.Add('Aliquota: ' + FormatFloat('###,##0.00',Aliquota.Aliquota));
+    mResp.Lines.Add('Valor atual do totalizador R$ ' + FormatFloat('###,##0.00',Aliquota.Total));
+  end
+  else
+    mResp.Lines.Add('Aliquota (' + ValorStr + ') não encontrada!');
+
+  AtualizaMemos();
+
+end;
+
+procedure TForm1.AcharMeioPagamentoporIndice1Click(Sender: TObject);
+var
+  FormaPagto: TACBrECFFormaPagamento;
+  Indice    : String;
+begin
+  ACBrECF1.LerTotaisFormaPagamento ;
+
+  if not InputQuery('Acha Forma Pagamento por Indice',
+                    'Entre com o Indice:', Indice ) then
+    Exit;
+
+  FormaPagto  :=  ACBrECF1.AchaFPGIndice(Indice);
+
+  if FormaPagto <> Nil then
+  begin
+    mResp.Lines.Add('Indice   : ' + FormaPagto.Indice);
+    mResp.Lines.Add('Descrição: ' + FormaPagto.Descricao);
+    mResp.Lines.Add('Valor atual do totalizador R$ ' + FormatFloat('###,##0.00',FormaPagto.Total));
+  end
+  else
+    mResp.Lines.Add('Indice (' + Indice + ') não encontrado!');
+
+  AtualizaMemos();
+end;
+
+procedure TForm1.AcharMeiodePagametoporDescrio1Click(Sender: TObject);
+var
+  FormaPagto: TACBrECFFormaPagamento;
+  Descricao : String;
+begin
+  ACBrECF1.LerTotaisFormaPagamento ;
+
+  if not InputQuery('Acha Forma Pagamento por Descrição',
+                    'Entre com a descrição:', Descricao ) then
+    Exit;
+
+  FormaPagto  :=  ACBrECF1.AchaFPGDescricao(Descricao);
+
+  if FormaPagto <> Nil then
+  begin
+    mResp.Lines.Add('Indice   : ' + FormaPagto.Indice);
+    mResp.Lines.Add('Descrição: ' + FormaPagto.Descricao);
+    mResp.Lines.Add('Valor atual do totalizador R$ ' + FormatFloat('###,##0.00',FormaPagto.Total));
+  end
+  else
+    mResp.Lines.Add('Forma de Pagamento (' + Descricao + ') não encontrada!');
+
+  AtualizaMemos();
+
+end;
+
+procedure TForm1.AchaCNFporIndice1Click(Sender: TObject);
+var
+  CNF     : TACBrECFComprovanteNaoFiscal;
+  Indice  : String;
+begin
+  ACBrECF1.LerTotaisComprovanteNaoFiscal ;
+
+  if not InputQuery('Acha CNF por Indice',
+                    'Entre com o Indice:', Indice ) then
+    Exit;
+
+  CNF  :=  ACBrECF1.AchaCNFIndice(Indice);
+
+  if CNF <> Nil then
+  begin
+    mResp.Lines.Add('Indice   : ' + CNF.Indice);
+    mResp.Lines.Add('CON      : ' + IntToStrZero(CNF.Contador, 4));
+    mResp.Lines.Add('Descrição: ' + CNF.Descricao);
+    mResp.Lines.Add('Valor atual do totalizador R$ ' + FormatFloat('###,##0.00',CNF.Total));
+  end
+  else
+    mResp.Lines.Add('Indice (' + Indice + ') não encontrado!');
+
+  AtualizaMemos();
+end;
+
+procedure TForm1.AchaCNFporDescrio1Click(Sender: TObject);
+var
+  CNF       : TACBrECFComprovanteNaoFiscal;
+  Descricao : String;
+begin
+  ACBrECF1.LerTotaisComprovanteNaoFiscal ;
+
+  if not InputQuery('Acha CNF por Descrição',
+                    'Entre com o descricao:', Descricao ) then
+    Exit;
+
+  CNF  :=  ACBrECF1.AchaCNFDescricao(Descricao);
+
+  if CNF <> Nil then
+  begin
+    mResp.Lines.Add('Indice   : ' + CNF.Indice);
+    mResp.Lines.Add('CON      : ' + IntToStrZero(CNF.Contador, 4));
+    mResp.Lines.Add('Descrição: ' + CNF.Descricao);
+    mResp.Lines.Add('Valor atual do totalizador R$ ' + FormatFloat('###,##0.00',CNF.Total));
+  end
+  else
+    mResp.Lines.Add('CNF (' + Descricao + ') não encontrado!');
+
+  AtualizaMemos();
+end;
+
+procedure TForm1.AchaRGporIndice1Click(Sender: TObject);
+var
+  RG      : TACBrECFRelatorioGerencial;
+  Indice  : String;
+begin
+  ACBrECF1.CarregaRelatoriosGerenciais ;
+
+  if not InputQuery('Acha Relatório Gerencial por Indice',
+                    'Entre com o Indice:', Indice ) then
+    Exit;
+
+  RG  :=  ACBrECF1.AchaRGIndice(Indice);
+
+  if RG <> Nil then
+  begin
+    mResp.Lines.Add('Indice   : ' + RG.Indice);
+    mResp.Lines.Add('Descrição: ' + RG.Descricao);
+    mResp.Lines.Add('CER:     : ' + FormatFloat('0000',RG.Contador));
+  end
+  else
+    mResp.Lines.Add('Indice (' + Indice + ') não encontrado!');
+
+  AtualizaMemos(); 
+end;
+
+procedure TForm1.AchaRGporDescrio1Click(Sender: TObject);
+var
+  RG       : TACBrECFRelatorioGerencial;
+  Descricao: String;
+begin
+  ACBrECF1.CarregaRelatoriosGerenciais ;
+
+  if not InputQuery('Acha Relatório Gerencial por Indice',
+                    'Entre com o Indice:', Descricao ) then
+    Exit;
+
+  RG  :=  ACBrECF1.AchaRGDescricao(Descricao);
+
+  if RG <> Nil then
+  begin
+    mResp.Lines.Add('Indice   : ' + RG.Indice);
+    mResp.Lines.Add('Descrição: ' + RG.Descricao);
+    mResp.Lines.Add('CER:     : ' + FormatFloat('0000',RG.Contador));
+  end
+  else
+    mResp.Lines.Add('Relatório Gerencial (' + Descricao + ') não encontrado!');
+
+  AtualizaMemos();
+end;
+
+procedure TForm1.PorCOO2Click(Sender: TObject);
+Var Linhas : TStringList ;
+    cCOO   : String ;
+    I, nCOO: Integer ;
+begin
+  cCOO  := '0' ;
+
+  if not InputQuery('Captura da MFD',
+                'Entre com o COO que deseja capturar:', cCOO ) then
+     exit ;
+
+  nCOO  := StrToIntDef(cCOO,-1) ;
+
+  if nCOO < 0 then exit ;
+
+  Linhas := TStringList.Create ;
+  try
+     ACBrECF1.LeituraMFDSerial(nCOO, nCOO, Linhas);
+
+     For I := 0 to Linhas.Count - 1 do
+        mResp.Lines.Add(Linhas[I]) ;
+  finally
+     Linhas.Free ;
+  end ;
+  mResp.Lines.Add('---------------------------------');
+end;
+
+procedure TForm1.PorDatadeMovimento1Click(Sender: TObject);
+Var Linhas : TStringList ;
+    cData  : String ;
+    dData  : TDateTime ;
+    I : Integer ;
+begin
+  cData := FormatDateTime('dd/mm/yy',now) ;
+
+  if not InputQuery('Captura da MFD',
+                'Entre com o a Data do Movimento (DD/MM/AA):', cData ) then
+     exit ;
+  try
+     dData  := StrToDateTime( StringReplace(cData,'/', DateSeparator,
+                                [rfReplaceAll] ) ) ;
+  except
+     exit ;
+  end ;
+
+  Linhas := TStringList.Create ;
+  try
+     ACBrECF1.LeituraMFDSerial(dData, dData, Linhas);
+
+     For I := 0 to Linhas.Count - 1 do
+        mResp.Lines.Add(Linhas[I]) ;
+  finally
+     Linhas.Free ;
+  end ;
+  mResp.Lines.Add('---------------------------------');
+
 end;
 
 END.

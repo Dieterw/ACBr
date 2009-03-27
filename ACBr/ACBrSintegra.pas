@@ -47,6 +47,7 @@
 |* 13/11/2008: Ederson Selvati
 |*  - Adicao do registro 61 (Nota fiscal de venda a consumidor)
 |*  - Adicao do registro 61R (Itens das notas constantes do registro 61
+|* 12/03/2009: Ederson Selvati
 |*  - Adicao do registro 60I
 |*  - Adicao do registro 60R
 ******************************************************************************}
@@ -103,7 +104,7 @@ type
     property Endereco: string read FEndereco write FEndereco;
     property Numero: string read FNumero write FNumero;
     property Complemento: string read FComplemento write FComplemento;
-    property Bairo: string read FBairro write FBairro;
+    property Bairro: string read FBairro write FBairro;
     property Cep: string read FCep write FCep;
     property Responsavel: string read FResponsavel write FResponsavel;
     property Telefone: string read FTelefone write FTelefone;
@@ -563,10 +564,11 @@ type
     FRegs60A: TRegistros60A;
     FRegs60D: TRegistros60D;
     FRegs60I: TRegistros60I;
+  public
     property Regs60A: TRegistros60A read FRegs60A write FRegs60A;
     property Regs60D: TRegistros60D read FRegs60D write FRegs60D;
     property Regs60I: TRegistros60I read FRegs60I write FRegs60I;
-  public
+    
     property Emissao: TDateTime read FEmissao write FEmissao;
     property NumSerie: string read FNumSerie write FNumSerie;
     property NumOrdem: Integer read FNumOrdem write FNumOrdem;
@@ -748,6 +750,7 @@ type
   function Sort60M(Item1: Pointer;Item2: Pointer): Integer;
   function Sort60A(Item1: Pointer;Item2: Pointer): Integer;
   function Sort60D(Item1: Pointer;Item2: Pointer): Integer;
+  function Sort60I(Item1: Pointer;Item2: Pointer): Integer;
   function Sort70(Item1: Pointer;Item2: Pointer): Integer;
   function Sort74(Item1: Pointer;Item2: Pointer): Integer;
   function Sort75(Item1: Pointer;Item2: Pointer): Integer;
@@ -876,7 +879,7 @@ begin
     wregistro60M.Regs60D.Add(Registros60D[i]);
   end;
 
-  //60D
+  //60I
   for i:=0 to Registros60I.Count - 1 do
   begin
     wregistro60M:=GetRegistro60M(Registros60I[i].Emissao,Registros60I[i].NumSerie);
@@ -892,6 +895,7 @@ begin
   begin
     Registros60M[i].Regs60A.Sort(Sort60A);
     Registros60M[i].Regs60D.Sort(Sort60D);
+    Registros60M[i].Regs60I.Sort(Sort60I);
     GerarRegistros60M(Registros60M[i]);
     GerarRegistros60A(Registros60M[i].Regs60A);
     GerarRegistros60D(Registros60M[i].Regs60D);
@@ -908,6 +912,7 @@ begin
   GerarRegistros60A(Registros60A);
   Registros60D.Sort(Sort60D);
   GerarRegistros60D(Registros60D);
+  Registros60I.Sort(Sort60I);
   GerarRegistros60I(Registros60I);
 end;
 end;
@@ -938,7 +943,7 @@ wregistro:='11';
 wregistro:=wregistro+Padl(Copy(Registro11.Endereco,1,34),34);
 wregistro:=wregistro+TBStrZero(TiraPontos(Registro11.Numero),5);
 wregistro:=wregistro+Padl(Copy(Registro11.Complemento,1,22),22);
-wregistro:=wregistro+Padl(Copy(Registro11.Bairo,1,15),15);
+wregistro:=wregistro+Padl(Copy(Registro11.Bairro,1,15),15);
 wregistro:=wregistro+TBStrZero(TiraPontos(Registro11.Cep),8);
 wregistro:=wregistro+Padl(Copy(Registro11.Responsavel,1,28),28);
 wregistro:=wregistro+TBStrZero(TiraPontos(Registro11.Telefone),12);
@@ -1383,21 +1388,21 @@ var
   i: Integer;
   wregistro: string;
 begin
-for i:=0 to Registros60R.Count-1 do
-begin
-  with Registros60R[i] do
+  for i:=0 to Registros60R.Count-1 do
   begin
-    wregistro:='60R';
-    wregistro:=wregistro+MesAno;
-    wregistro:=wregistro+Padl(Codigo,14);
-    wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,###0.000',Qtd)),13);
-    wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,##0.00',Valor)),16);
-    wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,##0.00',BaseDeCalculo)),16);
-    wregistro:=wregistro+Padl(TiraPontos(Aliquota),4);
-    wregistro:=wregistro+space(54);
-    WriteRecord(wregistro);
+    with Registros60R[i] do
+    begin
+      wregistro:='60R';
+      wregistro:=wregistro+MesAno;
+      wregistro:=wregistro+Padl(Codigo,14);
+      wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,###0.000',Qtd)),13);
+      wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,##0.00',Valor)),16);
+      wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,##0.00',BaseDeCalculo)),16);
+      wregistro:=wregistro+Padl(TiraPontos(Aliquota),4);
+      wregistro:=wregistro+space(54);
+      WriteRecord(wregistro);
+    end;
   end;
-end;
 end;
 
 { TRegistros50 }
@@ -1925,6 +1930,41 @@ begin
   inherited SetItem(Index, Item);
 end;
 
+function Sort60I(Item1, Item2: Pointer): Integer;
+var
+  witem1, witem2 : TRegistro60I;
+begin
+  witem1 := TRegistro60I(Item1);
+  witem2 := TRegistro60I(Item2);
+  if witem1.Emissao>witem2.Emissao then
+  begin
+    if witem1.NumSerie>witem2.NumSerie then
+      Result:=1
+    else if witem1.NumSerie=witem2.NumSerie then
+      Result:=0
+    else
+      Result:=-1;
+  end
+  else if witem1.Emissao = witem2.Emissao then
+  begin
+    if witem1.NumSerie>witem2.NumSerie then
+      Result:=1
+    else if witem1.NumSerie=witem2.NumSerie then
+      Result:=0
+    else
+      Result:=-1;
+  end
+  else
+  begin
+    if witem1.NumSerie>witem2.NumSerie then
+      Result:=1
+    else if witem1.NumSerie=witem2.NumSerie then
+      Result:=0
+    else
+      Result:=-1;
+  end;
+end;
+
 { TRegistros60R }
 
 function TRegistros60R.Add(Obj: TRegistro60R): Integer;
@@ -1948,8 +1988,3 @@ inherited SetItem(Index, Item);
 end;
 
 end.
-
-
-
-
-

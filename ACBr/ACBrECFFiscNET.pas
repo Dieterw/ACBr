@@ -185,7 +185,7 @@ TACBrECFFiscNET = class( TACBrECFClass )
     Procedure EfetuaPagamento( CodFormaPagto : String; Valor : Double;
        Observacao : AnsiString = ''; ImprimeVinculado : Boolean = false) ;
        override ;
-    Procedure FechaCupom( Observacao : AnsiString = '') ; override ;
+    Procedure FechaCupom( Observacao : AnsiString = ''; IndiceBMP : Integer = 0) ; override ;
     Procedure CancelaCupom ; override ;
     Procedure CancelaItemVendido( NumItem : Integer ) ; override ;
 
@@ -194,13 +194,13 @@ TACBrECFFiscNET = class( TACBrECFClass )
     Procedure RegistraItemNaoFiscal( CodCNF : String; Valor : Double;
        Obs : AnsiString = '') ; override ;
     procedure NaoFiscalCompleto(CodCNF: String; Valor: Double;
-      CodFormaPagto: String; Obs: AnsiString); override ;
+      CodFormaPagto: String; Obs: AnsiString; IndiceBMP : Integer = 0); override ;
 
     Procedure LeituraX ; override ;
     Procedure LeituraXSerial( var Linhas : TStringList) ; override ;
     Procedure ReducaoZ(DataHora : TDateTime) ; override ;
-    Procedure AbreRelatorioGerencial ; override ;
-    Procedure LinhaRelatorioGerencial( Linha : AnsiString ) ; override ;
+    Procedure AbreRelatorioGerencial(Indice: Integer = 0) ; override ;
+    Procedure LinhaRelatorioGerencial( Linha : AnsiString; IndiceBMP: Integer = 0 ) ; override ;
     Procedure AbreCupomVinculado(COO, CodFormaPagto, CodComprovanteNaoFiscal :
        String; Valor : Double) ; override ;
     Procedure LinhaCupomVinculado( Linha : AnsiString ) ; override ;
@@ -222,9 +222,9 @@ TACBrECFFiscNET = class( TACBrECFClass )
     Procedure LeituraMemoriaFiscalSerial( ReducaoInicial, ReducaoFinal : Integer;
        var Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
     Procedure LeituraMFDSerial( DataInicial, DataFinal : TDateTime;
-       var Linhas : TStringList ) ; overload ; override ;
+       var Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
     Procedure LeituraMFDSerial( COOInicial, COOFinal : Integer;
-       var Linhas : TStringList ) ; overload ; override ;
+       var Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
 
     Procedure ImprimeCheque(Banco : String; Valor : Double ; Favorecido,
        Cidade : String; Data : TDateTime ;Observacao : String = '') ; override ;
@@ -1041,7 +1041,7 @@ begin
   EnviaComando ;
 end;
 
-procedure TACBrECFFiscNET.FechaCupom(Observacao: AnsiString);
+procedure TACBrECFFiscNET.FechaCupom(Observacao: AnsiString; IndiceBMP : Integer);
 Var Obs : AnsiString ;
 begin
   Obs := Observacao ;
@@ -1478,7 +1478,7 @@ begin
   EnviaComando ;
 end;
 
-procedure TACBrECFFiscNET.LinhaRelatorioGerencial(Linha: AnsiString);
+procedure TACBrECFFiscNET.LinhaRelatorioGerencial(Linha: AnsiString; IndiceBMP: Integer);
 Var P, Espera : Integer ;
     Buffer : AnsiString ;
     MaxChars : Integer ;
@@ -1670,7 +1670,7 @@ begin
 end;
 
 procedure TACBrECFFiscNET.LeituraMFDSerial(DataInicial,
-  DataFinal: TDateTime; var Linhas: TStringList);
+  DataFinal: TDateTime; var Linhas: TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos]);
 // Autor: Nei José Van Lare Junior
 Var Leitura : AnsiString ;
 begin
@@ -1700,7 +1700,7 @@ begin
 end;
 
 procedure TACBrECFFiscNET.LeituraMFDSerial(COOInicial,
-  COOFinal: Integer; var Linhas: TStringList);
+  COOFinal: Integer; var Linhas: TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos]);
 // Autor: Nei José Van Lare Junior
 Var Leitura : AnsiString ;
 begin
@@ -2026,7 +2026,7 @@ begin
 end;
 
 procedure TACBrECFFiscNET.NaoFiscalCompleto(CodCNF: String; Valor: Double;
-  CodFormaPagto: String; Obs: AnsiString);
+  CodFormaPagto: String; Obs: AnsiString; IndiceBMP : Integer);
 begin
   { Chama rotinas da classe Pai (fpOwner) para atualizar os Memos }
   with TACBrECF(fpOwner) do

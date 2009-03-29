@@ -52,3 +52,11 @@ Versão 0.01a   18/02/09
 [+] Início do Projeto
 [+] Primeira Versao lançada baseado no componente fornecido por Wemerson Souto.
 
+
+Versão 0.02a   29/03/09
+---------------
+[+] Adicionado opção para gerar Danfe em PDF
+[-] Corrigido XML de Cancelamento e Inutilização para incluir o encoding=UTF-8
+[+] Adicionada função que permite que ; (ponto e vírgula) seja considerada que-
+    bra de linha no campo informações complementares.
+

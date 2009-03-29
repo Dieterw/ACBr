@@ -125,7 +125,7 @@ var
 
 implementation
 
-uses ACBrNFeUtil, ACBrNFeConst, StrUtils;
+uses ACBrNFeUtil, ACBrNFeConst, StrUtils ;
 
 {$R *.dfm}
 

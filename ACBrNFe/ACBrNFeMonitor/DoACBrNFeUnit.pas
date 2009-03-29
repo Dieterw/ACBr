@@ -183,12 +183,18 @@ begin
            Restaurar1.Click;
            Application.BringToFront;
            ACBrNFe1.NotasFiscais.Clear;
-           if FileExists(Cmd.Params(0)) then
-              ACBrNFe1.NotasFiscais.Add.XML.LoadFromFile(Cmd.Params(0))
+           if FileExists(Cmd.Params(0)) or FileExists(PathWithDelim(ExtractFilePath(Application.ExeName))+'Logs\'+Cmd.Params(0)) then
+            begin
+              if FileExists(Cmd.Params(0)) then
+                 ACBrNFe1.NotasFiscais.Add.XML.LoadFromFile(Cmd.Params(0))
+              else
+                 ACBrNFe1.NotasFiscais.Add.XML.LoadFromFile(PathWithDelim(ExtractFilePath(Application.ExeName))+'Logs\'+Cmd.Params(0));
+            end
            else
               raise Exception.Create('Arquivo '+Cmd.Params(0)+' não encontrado.');
 
            ACBrNFe1.NotasFiscais.Imprimir;
+           Cmd.Resposta := 'Danfe Impresso com sucesso';
            Ocultar1.Click;
          end
 

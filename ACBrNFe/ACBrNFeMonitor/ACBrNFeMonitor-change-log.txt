@@ -33,11 +33,19 @@
 |* PROPÓSITO: Registro de Alterações
 ******************************************************************************}
 
+Para ver os comandos dispoíveis do ACBrNFeMonitor acesse:
+http://acbr.sourceforge.net/drupal/?q=node/40
+
 Símbolo : Significado
 
 [+]     : Novo recurso
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
+
+Versão 0.2.0a    26/03/09
+
+[+]    Adicionada opção de gerar NFe a partir de um arquivo INI
+[+]    Adicionado comando para gerar danfe em PDF - NFE.ImprimirDanfePDF
 
 Versão 0.1.0a    18/03/09
 

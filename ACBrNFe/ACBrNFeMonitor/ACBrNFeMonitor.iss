@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "ACBrNFeMonitor"
-#define MyAppVerName "ACBrNFeMonitor-0.2.0a"
+#define MyAppVerName "ACBrNFeMonitor-0.2.0b"
 #define MyAppPublisher "Projeto ACBr"
 #define MyAppURL "http://acbr.sourceforge.net/drupal/"
 #define MyAppUrlName "ACBrNFeMonitor.url"

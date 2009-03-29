@@ -676,12 +676,40 @@ begin
   Connection.WriteField('OBS', dtMemo,5000,'','');
 end;
 
+type
+  ArrOfStr = array of string;
+
+function explode(sPart, sInput: string): ArrOfStr;
+begin
+  while Pos(sPart, sInput) <> 0 do
+    begin
+      SetLength(Result, Length(Result) + 1);
+      Result[Length(Result) - 1] := Copy(sInput, 0, Pos(sPart, sInput) - 1);
+      Delete(sInput, 1, Pos(sPart, sInput));
+  end;
+
+  SetLength(Result, Length(Result) + 1);
+  Result[Length(Result) - 1] := sInput;
+end;
+
+function implode(sPart:string;tokens:ArrOfStr):string;
+var i:integer;
+begin
+   result := '';
+   for i := 0 to Length(tokens) - 1 do
+     result:=result+(tokens[i])+sPart;
+end;
+
+
 procedure TdmACBrNFe.CustomInformacoesAdicionaisCXNGetRow(
   Connection: TRvCustomConnection);
 var
   i: Integer;
   vTemp: TStringList;
   vStream: TMemoryStream;
+
+  IndexCampo:Integer;
+  Campos:ArrOfStr;
 begin
   with FNFe.InfNFe.InfAdic do
   begin
@@ -694,7 +722,10 @@ begin
           vTemp.Add(XCampo+': '+XTexto);
       end;
 
-      vTemp.Add(InfCpl);
+      Campos := explode(';',InfCpl);
+      for indexCampo:=0 to Length(Campos)-1 do
+         vTemp.Add(Campos[indexCampo]);
+
       vTemp.SaveToStream(vStream);
       vStream.Position := 0;
       Connection.WriteBlobData(vStream.Memory^, vStream.Size);

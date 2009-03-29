@@ -615,14 +615,20 @@ end;
 
 class function NotaUtil.FormatarCPF(AValue: String): String;
 begin
-  Result := copy(AValue,1,3) + '.' + copy(AValue,4 ,3) + '.' +
-            copy(AValue,7,3) + '-' + copy(AValue,10,2) ;
+  if Length(AValue) = 0 then
+     Result := AValue
+  else
+     Result := copy(AValue,1,3) + '.' + copy(AValue,4 ,3) + '.' +
+               copy(AValue,7,3) + '-' + copy(AValue,10,2) ;
 end;
 
 class function NotaUtil.FormatarCNPJ(AValue: String): String;
 begin
-  Result := copy(AValue,1,2) + '.' + copy(AValue,3,3) + '.' +
-            copy(AValue,6,3) + '/' + copy(AValue,9,4) + '-' + copy(AValue,13,2) ;
+  if Length(AValue) = 0 then
+     Result := AValue
+  else
+     Result := copy(AValue,1,2) + '.' + copy(AValue,3,3) + '.' +
+               copy(AValue,6,3) + '/' + copy(AValue,9,4) + '-' + copy(AValue,13,2) ;
 end;
 
 class function NotaUtil.FormatarCEP(AValue: String): String;

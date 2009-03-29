@@ -1284,8 +1284,6 @@ begin
          XML := XML + '</cancNFe>'
       else if Tipo = 3 then
          XML := XML + '</inutNFe>';
-
-
     end;
 
    xmldoc := CoDOMDocument50.Create;
@@ -1407,7 +1405,7 @@ begin
      else if Tipo = 2 then
         AStr := copy(AStr,1,I+1) + cDTDCanc + Copy(AStr,I+2,Length(AStr))
      else if Tipo = 3 then
-        AStr := copy(AStr,1,I+1) + cDTDInut + Copy(AStr,I+2,Length(AStr));}
+        AStr := copy(AStr,1,I+1) + cDTDInut + Copy(AStr,I+2,Length(AStr));
    end;
 
   //// Inserindo Template da Assinatura digital ////

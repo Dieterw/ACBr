@@ -193,15 +193,15 @@ begin
       edtNumSerie.Text := Ini.ReadString( 'Certificado','NumSerie','') ;
       ACBrNFe1.Configuracoes.Certificados.NumeroSerie := edtNumSerie.Text;
       Label1.Caption := 'Informe o número de série do certificado'#13+
-                        'Disponível no Internet Explorer'#13+
-                        'menu Ferramentas, opções da internet '#13+
-                        'na página conteúdo, Certificados, Exibir,'#13+
-                        'Detalhes, Número do certificado'#13+
+                        'Disponível no Internet Explorer no menu'#13+
+                        'Ferramentas - Opções da Internet - Conteúdo '#13+
+                        'Certificados - Exibir - Detalhes - Número do certificado'#13+
                         'É necessario retirar os espaços em branco '#13+
                         'e as letras para maiúsculo';
       Label2.Visible := False;
       edtCaminho.Visible := False;
       edtSenha.Visible   := False;
+      sbtnCaminhoCert.Visible := False;
 {$ENDIF}
 
       cbDanfe.Text        := Ini.ReadString( 'Geral','DANFE'       ,'Retrato') ;
@@ -313,6 +313,7 @@ end;
 procedure TForm1.btnStatusServClick(Sender: TObject);
 begin
  ACBrNFe1.WebServices.StatusServico.Executar;
+ ShowMessage(ACBrNFe1.WebServices.StatusServico.Msg);
  MemoResp.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.StatusServico.RetWS);
  LoadXML(MemoResp, WBResposta);
 end;

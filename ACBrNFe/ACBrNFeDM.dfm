@@ -115,4 +115,16 @@ object dmACBrNFe: TdmACBrNFe
     Left = 206
     Top = 333
   end
+  object RvRenderPDF1: TRvRenderPDF
+    DisplayName = 'Adobe Acrobat (PDF)'
+    FileExtension = '*.pdf'
+    EmbedFonts = False
+    ImageQuality = 90
+    MetafileDPI = 300
+    FontEncoding = feWinAnsiEncoding
+    DocInfo.Creator = 'Rave (http://www.nevrona.com/rave)'
+    DocInfo.Producer = 'Nevrona Designs'
+    Left = 40
+    Top = 136
+  end
 end

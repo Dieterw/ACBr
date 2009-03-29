@@ -92,6 +92,7 @@ type
     procedure Assinar;
     procedure Valida;
     procedure Imprimir;
+    procedure ImprimirPDF;
     function  Add: NotaFiscal;
     function Insert(Index: Integer): NotaFiscal;
     property Items[Index: Integer]: NotaFiscal read GetItem  write SetItem;
@@ -172,6 +173,15 @@ begin
   for i:= 0 to Self.Count-1 do
     Self.Items[i].XML.Imprimir;
 end;
+
+procedure TNotasFiscais.ImprimirPDF;
+var
+  i: Integer;
+begin
+  for i:= 0 to Self.Count-1 do
+    Self.Items[i].XML.ImprimirPDF;
+end;
+
 
 function TNotasFiscais.Insert(Index: Integer): NotaFiscal;
 begin

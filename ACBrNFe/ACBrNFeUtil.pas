@@ -1390,22 +1390,25 @@ begin
 
   //// Adicionando Cabeçalho DTD, necessário para xmlsec encontrar o ID ////
   I := pos('?>',AStr) ;
-//if I = 0 then
-//   raise Exception.Create('Não encontrei inicio do XML: <?xml version="1.0" encoding="UTF-8"?>') ;
 
-//  AStr := copy(AStr,1,I+1) + cDTD + Copy(AStr,I+2,Length(AStr)) ;
-  if Tipo = 1 then
-     AStr := cDTD + Copy(AStr,I,Length(AStr))
-  else if Tipo = 2 then
-     AStr := cDTDCanc + Copy(AStr,I+2,Length(AStr))
-  else if Tipo = 3 then
-     AStr := cDTDInut + Copy(AStr,I+2,Length(AStr));
-{  if Tipo = 1 then
-     AStr := copy(AStr,1,I+1) + cDTD     + Copy(AStr,I+2,Length(AStr))
-  else if Tipo = 2 then
-     AStr := copy(AStr,1,I+1) + cDTDCanc + Copy(AStr,I+2,Length(AStr))
-  else if Tipo = 3 then
-     AStr := copy(AStr,1,I+1) + cDTDInut + Copy(AStr,I+2,Length(AStr));}
+  if I = 0 then
+   begin
+     if Tipo = 1 then
+        AStr := cDTD + Copy(AStr,I,Length(AStr))
+     else if Tipo = 2 then
+        AStr := cDTDCanc + Copy(AStr,I+2,Length(AStr))
+     else if Tipo = 3 then
+        AStr := cDTDInut + Copy(AStr,I+2,Length(AStr));
+   end
+  else
+   begin
+     if Tipo = 1 then
+        AStr := copy(AStr,1,I+1) + cDTD     + Copy(AStr,I+2,Length(AStr))
+     else if Tipo = 2 then
+        AStr := copy(AStr,1,I+1) + cDTDCanc + Copy(AStr,I+2,Length(AStr))
+     else if Tipo = 3 then
+        AStr := copy(AStr,1,I+1) + cDTDInut + Copy(AStr,I+2,Length(AStr));}
+   end;
 
   //// Inserindo Template da Assinatura digital ////
   if Tipo = 1 then

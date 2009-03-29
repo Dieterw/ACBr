@@ -294,8 +294,11 @@ begin
 {$ENDIF}
 
   if not(NotaUtil.Valida(FDadosMsg, FMsg)) then
-    raise Exception.Create('Falha na validação dos dados da nota '+LineBreak+FMsg);
+    raise Exception.Create('Falha na validação dos dados do cancelamento '+LineBreak+FMsg);
 
+  XmlDoc := LoadXMLData(FDadosMsg);
+  XmlDoc.Encoding := 'UTF-8';
+  FDadosMsg := XmlDoc.XML.Text;
 end;
 
 procedure TWebServicesBase.DoNFeConsulta;
@@ -361,6 +364,13 @@ begin
   if not(NotaUtil.Assinar(XmlDoc.XML.Text, TConfiguracoes(FConfiguracoes).Certificados.Certificado , TConfiguracoes(FConfiguracoes).Certificados.Senha, FDadosMsg, FMsg)) then
     raise Exception.Create('Falha ao assinar Inutilização Nota Fiscal Eletrônica '+LineBreak+FMsg);
 {$ENDIF}
+
+  if not(NotaUtil.Valida(FDadosMsg, FMsg)) then
+    raise Exception.Create('Falha na validação dos dados da inutilização '+LineBreak+FMsg);
+
+  XmlDoc := LoadXMLData(FDadosMsg);
+  XmlDoc.Encoding := 'UTF-8';
+  FDadosMsg := XmlDoc.XML.Text;
 end;
 
 procedure TWebServicesBase.DoNFeRecepcao;

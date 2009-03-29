@@ -181,6 +181,7 @@ begin
         else if Cmd.Metodo = 'imprimirdanfe' then
          begin
            Restaurar1.Click;
+           Application.BringToFront;
            ACBrNFe1.NotasFiscais.Clear;
            if FileExists(Cmd.Params(0)) then
               ACBrNFe1.NotasFiscais.Add.XML.LoadFromFile(Cmd.Params(0))
@@ -189,6 +190,22 @@ begin
 
            ACBrNFe1.NotasFiscais.Imprimir;
            Ocultar1.Click;
+         end
+
+        else if Cmd.Metodo = 'imprimirdanfepdf' then
+         begin
+           ACBrNFe1.NotasFiscais.Clear;
+           if FileExists(Cmd.Params(0)) then
+              ACBrNFe1.NotasFiscais.Add.XML.LoadFromFile(Cmd.Params(0))
+           else
+              raise Exception.Create('Arquivo '+Cmd.Params(0)+' não encontrado.');
+
+           try
+              ACBrNFe1.NotasFiscais.ImprimirPDF;
+              Cmd.Resposta := 'Arquivo criado em '+ExtractFileDir(application.ExeName)+'\'+ACBrNFe1.NotasFiscais.Items[0].XML.NFe.InfNFe.Id+'.pdf'
+           except
+              raise Exception.Create('Erro ao criar o arquivo PDF');
+           end;
          end
 
         else if Cmd.Metodo = 'inutilizarnfe' then
@@ -375,8 +392,15 @@ begin
                                 'NProt='+NFeRetConsSitNFe.InfProt.NProt+sLineBreak+
                                 'DigVal='+NFeRetConsSitNFe.InfProt.DigVal+sLineBreak;
 
+                 if (Cmd.Params(2) = '1') then
+                  begin
+                    Restaurar1.Click;
+                    Application.BringToFront;
+                  end;
                  if ACBrNFe1.NotasFiscais.Items[i].XML.Confirmada and (Cmd.Params(2) = '1') then
                     ACBrNFe1.NotasFiscais.Items[i].XML.Imprimir;
+                 if (Cmd.Params(2) = '1') then
+                    Ocultar1.Click;
             end;
 
             end;

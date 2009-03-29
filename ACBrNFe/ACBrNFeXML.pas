@@ -74,6 +74,7 @@ type
     procedure LoadFromFile(Const AFile: String);
     procedure SaveToFile(AFile: String='');
     procedure Imprimir;
+    procedure ImprimirPDF;
     function GetNFeChave: String;
     property Msg: WideString read FMsg write FMsg;
     property Confirmada: Boolean read FConfirmada write FConfirmada;
@@ -113,6 +114,7 @@ begin
 {$ENDIF}
 
   vXmlDoc := LoadXMLData(vAssinada);
+  vXmlDoc.Encoding := 'UTF-8';
   FNFe := GetNFe(vXmlDoc);
   if TConfiguracoes(FConfiguracoes).Geral.Salvar then
     TConfiguracoes(FConfiguracoes).Geral.Save(StringReplace(FNFe.InfNFe.Id, 'NFe', '', [rfIgnoreCase])+'-nfe.xml', NFe.XML);
@@ -695,6 +697,11 @@ end;
 procedure TNotaFiscalXML.Imprimir;
 begin
   dmACBrNFe.Imprimir(FNFe, TConfiguracoes(FConfiguracoes).Geral.LogoMarca);
+end;
+
+procedure TNotaFiscalXML.ImprimirPDF;
+begin
+  dmACBrNFe.ImprimirPDF(FNFe, TConfiguracoes(FConfiguracoes).Geral.LogoMarca);
 end;
 
 procedure TNotaFiscalXML.LoadFromFile(Const AFile: String);

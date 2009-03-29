@@ -47,7 +47,8 @@ interface
 uses
   Forms, SysUtils, Classes, 
   RpRave, RpBase,
-  RpSystem, RpDefine, RpCon, ACBrNFe_nfe, XMLIntf, XMLDoc;
+  RpSystem, RpDefine, RpCon, ACBrNFe_nfe, XMLIntf, XMLDoc, RpRender,
+  RpRenderPDF;
 
 type
   TdmACBrNFe = class(TDataModule)
@@ -64,6 +65,7 @@ type
     CustomVeiculoCXN: TRvCustomConnection;
     CustomVolumesCXN: TRvCustomConnection;
     CustomInformacoesAdicionaisCXN: TRvCustomConnection;
+    RvRenderPDF1: TRvRenderPDF;
     procedure CustomDestinatarioCXNGetCols(Connection: TRvCustomConnection);
     procedure CustomDestinatarioCXNGetRow(Connection: TRvCustomConnection);
     procedure CustomDestinatarioCXNOpen(Connection: TRvCustomConnection);
@@ -115,6 +117,7 @@ type
   public
     { Public declarations }
     procedure Imprimir(ANFe: IXMLTNFe; ALogo: String = '');
+    procedure ImprimirPDF(ANFe: IXMLTNFe; ALogo: String = '');    
   end;
 
 var
@@ -133,6 +136,30 @@ begin
   RvProject.ProjectFile := ExtractFileDir(application.ExeName)+'\Report\NotaFiscalEletronica.rav';
   RvProject.Execute;
 end;
+
+procedure TdmACBrNFe.ImprimirPDF(ANFe: IXMLTNFe; ALogo: String);
+begin
+  FNFe  := ANFe;
+  FLogo := ALogo;
+
+  RvSystem1.DefaultDest := rdFile;
+  RvSystem1.DoNativeOutput:=false;
+  RvSystem1.RenderObject:= RvRenderPDF1;
+  RvSystem1.OutputFileName:=  ExtractFileDir(application.ExeName)+'\'+FNFe.InfNFe.Id+'.pdf';
+  RvSystem1.SystemSetups:=RvSystem1.SystemSetups - [ssAllowSetup];
+  RvProject.Engine := RvSystem1;
+
+  RvProject.ProjectFile := ExtractFileDir(application.ExeName)+'\Report\NotaFiscalEletronica.rav';
+  RvProject.Execute;
+
+  RvSystem1.DoNativeOutput := True;
+  RvSystem1.DefaultDest    := rdPrinter;
+  RvSystem1.RenderObject   := nil;
+  RvSystem1.OutputFileName := '';
+  RvSystem1.SystemSetups:=RvSystem1.SystemSetups + [ssAllowSetup];
+end;
+
+
 
 procedure TdmACBrNFe.CustomDestinatarioCXNGetCols(
   Connection: TRvCustomConnection);
@@ -443,8 +470,8 @@ begin
     with Transporta do
     begin
       if NotaUtil.NaoEstaVazio(CNPJ) then
-        Connection.WriteStrData('', NotaUtil.FormatarCNPJ(CNPJ));
-      if NotaUtil.NaoEstaVazio(CPF) then
+        Connection.WriteStrData('', NotaUtil.FormatarCNPJ(CNPJ))
+      else 
         Connection.WriteStrData('', NotaUtil.FormatarCPF(CPF));
       Connection.WriteStrData('', XNome);
       Connection.WriteStrData('', IE);

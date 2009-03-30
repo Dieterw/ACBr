@@ -539,8 +539,10 @@ begin
                CFOP          := INIRec.ReadInteger(sSecao,'CFOP'     ,0);
                Codigo        := INIRec.ReadString( sSecao,'Codigo'   ,'');
                Descricao     := INIRec.ReadString( sSecao,'Descricao','');
-               EAN           := INIRec.ReadString( sSecao,'EAN'      ,'');
-               NCM           := INIRec.ReadString( sSecao,'NCM'      ,'');
+               if Length(INIRec.ReadString( sSecao,'EAN','')) > 0 then
+                  EAN           := INIRec.ReadString( sSecao,'EAN'      ,'');
+               if Length(INIRec.ReadString( sSecao,'NCM','')) > 0 then
+                  NCM           := INIRec.ReadString( sSecao,'NCM'      ,'');
                Unidade       := INIRec.ReadString( sSecao,'Unidade'  ,'');
                Quantidade    := StringToFloatDef( INIRec.ReadString(sSecao,'Quantidade'   ,'') ,0) ;
                ValorUnitario := StringToFloatDef( INIRec.ReadString(sSecao,'ValorUnitario','') ,0) ;

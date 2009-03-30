@@ -215,7 +215,7 @@ uses {$IFNDEF ACBrNFeCAPICOM}
      ACBrNFe_consStatServ, ACBrNFe_enviNFe, ACBrNFe_retEnviNFe,
      ACBrNFe_consReciNFe, ACBrNFe_consSitNFe, ACBrNFe_retConsSitNFe,
      ACBrNFe_inutNFe, ACBrNFe_cancNFe, ACBrNFe_retCancNFe, ACBrNFe_retInutNFe,
-     ACBrNFeUtil, ACBrNFeConst, ACBrNFeXML, ACBrNFe;
+     ACBrNFeUtil, ACBrNFeConst, ACBrNFeXML, ACBrNFe, ACBrUtil;
 
 const
   INTERNET_OPTION_CLIENT_CERT_CONTEXT = 84;
@@ -347,7 +347,11 @@ begin
 
   vDados := NewinutNFe;
   vDados.Versao        := NFeinutNFe;
-  vDados.InfInut.Id    := TNFeInutilizacao(Self).NFeChave;
+  vDados.InfInut.Id    := 'ID' + IntToStrZero(FConfiguracoes.WebServices.UFCodigo, 2) +
+      TNFeInutilizacao(Self).CNPJ + IntToStrZero(TNFeInutilizacao(Self).Modelo, 2) +
+      IntToStrZero(TNFeInutilizacao(Self).Serie, 3) +
+      IntToStrZero(TNFeInutilizacao(Self).NumeroInicial, 9) + IntToStrZero(TNFeInutilizacao(Self).NumeroFinal, 9);
+
   vDados.InfInut.TpAmb := IntToStr(FConfiguracoes.WebServices.AmbienteCodigo);
   vDados.InfInut.XServ := 'INUTILIZAR';
   vDados.InfInut.CUF   := IntToStr(FConfiguracoes.WebServices.UFCodigo);

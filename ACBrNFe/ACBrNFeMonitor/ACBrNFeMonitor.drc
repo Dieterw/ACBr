@@ -8,6 +8,87 @@
   resources were bound to the produced executable.
 */
 
+#define QConsts_SDuplicateApp 65024
+#define QConsts_SInvalidImageDimension 65040
+#define QConsts_SInvalidMimeSourceStream 65041
+#define QConsts_SMimeNotSupportedForIcon 65042
+#define QConsts_SOpen 65043
+#define QConsts_SSave 65044
+#define QConsts_SUnknownImageFormat 65045
+#define QConsts_SUnableToWrite 65046
+#define QConsts_SUndo 65047
+#define QConsts_SRedo 65048
+#define QConsts_SLine 65049
+#define QConsts_SCut 65050
+#define QConsts_SCopy 65051
+#define QConsts_SPaste 65052
+#define QConsts_SClear 65053
+#define QConsts_SSelectAll 65054
+#define QConsts_SNoAppInLib 65055
+#define QConsts_SMsgDlgYes 65056
+#define QConsts_SMsgDlgNo 65057
+#define QConsts_SMsgDlgOK 65058
+#define QConsts_SMsgDlgCancel 65059
+#define QConsts_SMsgDlgAbort 65060
+#define QConsts_SMsgDlgRetry 65061
+#define QConsts_SMsgDlgIgnore 65062
+#define QConsts_SUnnamed 65063
+#define QConsts_SName 65064
+#define QConsts_SSize 65065
+#define QConsts_SType 65066
+#define QConsts_SDate 65067
+#define QConsts_SAttributes 65068
+#define QConsts_SDuplicateMenus 65069
+#define QConsts_SImageIndexError 65070
+#define QConsts_SInvalidImageDimensions 65071
+#define QConsts_SControlParentSetToSelf 65072
+#define QConsts_SOKButton 65073
+#define QConsts_SCancelButton 65074
+#define QConsts_SYesButton 65075
+#define QConsts_SNoButton 65076
+#define QConsts_SHelpButton 65077
+#define QConsts_SCloseButton 65078
+#define QConsts_SIgnoreButton 65079
+#define QConsts_SRetryButton 65080
+#define QConsts_SAbortButton 65081
+#define QConsts_SAllButton 65082
+#define QConsts_SCannotDragForm 65083
+#define QConsts_SMsgDlgWarning 65084
+#define QConsts_SMsgDlgError 65085
+#define QConsts_SMsgDlgInformation 65086
+#define QConsts_SMsgDlgConfirm 65087
+#define QConsts_SInvalidImageSize 65088
+#define QConsts_SInvalidColorDepth 65089
+#define QConsts_SCannotFocus 65090
+#define QConsts_SParentRequired 65091
+#define QConsts_SVisibleChanged 65092
+#define QConsts_SCannotShowModal 65093
+#define QConsts_SScrollBarRange 65094
+#define QConsts_SMenuIndexError 65095
+#define QConsts_SMenuReinserted 65096
+#define QConsts_SNoMenuRecursion 65097
+#define QConsts_SMenuNotFound 65098
+#define QConsts_SMenuSetFormError 65099
+#define QConsts_SGroupIndexTooLow 65100
+#define QConsts_SNoMDIForm 65101
+#define QConsts_SNotAnMDIForm 65102
+#define QConsts_SMDIChildNotVisible 65103
+#define QConsts_SmkcPgUp 65104
+#define QConsts_SmkcPgDn 65105
+#define QConsts_SmkcEnd 65106
+#define QConsts_SmkcHome 65107
+#define QConsts_SmkcLeft 65108
+#define QConsts_SmkcUp 65109
+#define QConsts_SmkcRight 65110
+#define QConsts_SmkcDown 65111
+#define QConsts_SmkcIns 65112
+#define QConsts_SmkcDel 65113
+#define QConsts_SmkcShift 65114
+#define QConsts_SmkcCtrl 65115
+#define QConsts_SmkcAlt 65116
+#define QConsts_SInvalidPixelFormat 65117
+#define QConsts_SNoCanvasHandle 65118
+#define QConsts_SInvalidCanvasState 65119
 #define XMLConst_SNodeReadOnly 65120
 #define XMLConst_SNoRefresh 65121
 #define XMLConst_SMissingFileName 65122
@@ -15,6 +96,15 @@
 #define JConsts_sChangeJPGSize 65124
 #define JConsts_sJPEGError 65125
 #define JConsts_sJPEGImageFile 65126
+#define QConsts_SInvalidCreateWidget 65127
+#define QConsts_STooManyMessageBoxButtons 65128
+#define QConsts_SmkcBkSp 65129
+#define QConsts_SmkcTab 65130
+#define QConsts_SmkcBackTab 65131
+#define QConsts_SmkcEsc 65132
+#define QConsts_SmkcReturn 65133
+#define QConsts_SmkcEnter 65134
+#define QConsts_SmkcSpace 65135
 #define ComConst_STooManyParams 65136
 #define XMLConst_SDuplicateRegistration 65137
 #define XMLConst_SNoMatchingDOMVendor 65138
@@ -417,6 +507,87 @@
 #define SysConst_SInvalidInput 65535
 STRINGTABLE
 BEGIN
+	QConsts_SDuplicateApp,	"Fatal error: Cannot create more than one TApplication instance"
+	QConsts_SInvalidImageDimension,	"Invalid image dimension"
+	QConsts_SInvalidMimeSourceStream,	"MimeSource format must have an associated data stream"
+	QConsts_SMimeNotSupportedForIcon,	"Mime format not supported for TIcon"
+	QConsts_SOpen,	"Abrir"
+	QConsts_SSave,	"Gravar"
+	QConsts_SUnknownImageFormat,	"Formato de Imagem não reconhecido"
+	QConsts_SUnableToWrite,	"Não foi possível criar bitmap"
+	QConsts_SUndo,	"Desfazer"
+	QConsts_SRedo,	"Refazer"
+	QConsts_SLine,	"-"
+	QConsts_SCut,	"Cortar"
+	QConsts_SCopy,	"Copiar"
+	QConsts_SPaste,	"Colar"
+	QConsts_SClear,	"Limpar"
+	QConsts_SSelectAll,	"Selecionar Todos"
+	QConsts_SNoAppInLib,	"Fatal error: Cannot create application object in a shared object or library."
+	QConsts_SMsgDlgYes,	"&Sim"
+	QConsts_SMsgDlgNo,	"&Não"
+	QConsts_SMsgDlgOK,	"OK"
+	QConsts_SMsgDlgCancel,	"Cancelar"
+	QConsts_SMsgDlgAbort,	"&Abortar"
+	QConsts_SMsgDlgRetry,	"&ReTentar"
+	QConsts_SMsgDlgIgnore,	"&Ignorar"
+	QConsts_SUnnamed,	"Sem Nome"
+	QConsts_SName,	"Nome"
+	QConsts_SSize,	"Tamanho"
+	QConsts_SType,	"Tipo"
+	QConsts_SDate,	"Data Modificado"
+	QConsts_SAttributes,	"Atributos"
+	QConsts_SDuplicateMenus,	"Menu '%s' já está sendo usado por outro formulário"
+	QConsts_SImageIndexError,	"Invalid ImageList Index"
+	QConsts_SInvalidImageDimensions,	"Image width and heigth must match"
+	QConsts_SControlParentSetToSelf,	"A control cannot have itself as its parent"
+	QConsts_SOKButton,	"OK"
+	QConsts_SCancelButton,	"Cancelar"
+	QConsts_SYesButton,	"&Sim"
+	QConsts_SNoButton,	"&Não"
+	QConsts_SHelpButton,	"&Ajuda"
+	QConsts_SCloseButton,	"&Fechar"
+	QConsts_SIgnoreButton,	"&Ignorar"
+	QConsts_SRetryButton,	"&ReTentar"
+	QConsts_SAbortButton,	"Abortar"
+	QConsts_SAllButton,	"To&dos"
+	QConsts_SCannotDragForm,	"Cannot drag a form"
+	QConsts_SMsgDlgWarning,	"Alerta"
+	QConsts_SMsgDlgError,	"Erro"
+	QConsts_SMsgDlgInformation,	"Informação"
+	QConsts_SMsgDlgConfirm,	"Confirmação"
+	QConsts_SInvalidImageSize,	"Invalid image size"
+	QConsts_SInvalidColorDepth,	"Color depth must be 1, 8 or 32 bpp"
+	QConsts_SCannotFocus,	"Cannot focus a disabled or invisible window (%s)"
+	QConsts_SParentRequired,	"Control '%s' has no parent widget"
+	QConsts_SVisibleChanged,	"Cannot change Visible in OnShow or OnHide"
+	QConsts_SCannotShowModal,	"Cannot make a visible window modal"
+	QConsts_SScrollBarRange,	"Scrollbar property out of range"
+	QConsts_SMenuIndexError,	"Menu index out of range"
+	QConsts_SMenuReinserted,	"Menu inserted twice"
+	QConsts_SNoMenuRecursion,	"Menu insertion recursion not allowed"
+	QConsts_SMenuNotFound,	"Sub-menu is not in menu"
+	QConsts_SMenuSetFormError,	"TMenu.SetForm: argument must be TCustomForm"
+	QConsts_SGroupIndexTooLow,	"GroupIndex cannot be less than a previous menu item's GroupIndex"
+	QConsts_SNoMDIForm,	"Cannot create form. No MDI forms are currently active"
+	QConsts_SNotAnMDIForm,	"Invalid MDIParent for class %s"
+	QConsts_SMDIChildNotVisible,	"Cannot hide an MDI Child Form"
+	QConsts_SmkcPgUp,	"PgUp"
+	QConsts_SmkcPgDn,	"PgDn"
+	QConsts_SmkcEnd,	"End"
+	QConsts_SmkcHome,	"Home"
+	QConsts_SmkcLeft,	"Left"
+	QConsts_SmkcUp,	"Up"
+	QConsts_SmkcRight,	"Right"
+	QConsts_SmkcDown,	"Down"
+	QConsts_SmkcIns,	"Ins"
+	QConsts_SmkcDel,	"Del"
+	QConsts_SmkcShift,	"Shift+"
+	QConsts_SmkcCtrl,	"Ctrl+"
+	QConsts_SmkcAlt,	"Alt+"
+	QConsts_SInvalidPixelFormat,	"Invalid pixel format"
+	QConsts_SNoCanvasHandle,	"Canvas does not allow drawing"
+	QConsts_SInvalidCanvasState,	"Invalid canvas state request"
 	XMLConst_SNodeReadOnly,	"Node is readonly"
 	XMLConst_SNoRefresh,	"Refresh is only supported if the FileName or XML properties are set"
 	XMLConst_SMissingFileName,	"FileName cannot be blank"
@@ -424,6 +595,15 @@ BEGIN
 	JConsts_sChangeJPGSize,	"Cannot change the size of a JPEG image"
 	JConsts_sJPEGError,	"JPEG error #%d"
 	JConsts_sJPEGImageFile,	"JPEG Image File"
+	QConsts_SInvalidCreateWidget,	"Class %s could not create QT widget"
+	QConsts_STooManyMessageBoxButtons,	"Too many buttons specified for message box"
+	QConsts_SmkcBkSp,	"Backspace"
+	QConsts_SmkcTab,	"Tab"
+	QConsts_SmkcBackTab,	"BackTab"
+	QConsts_SmkcEsc,	"Esc"
+	QConsts_SmkcReturn,	"Return"
+	QConsts_SmkcEnter,	"Enter"
+	QConsts_SmkcSpace,	"Space"
 	ComConst_STooManyParams,	"Dispatch methods do not support more than 64 parameters"
 	XMLConst_SDuplicateRegistration,	"\"%s\" DOMImplementation already registered"
 	XMLConst_SNoMatchingDOMVendor,	"No matching DOM Vendor: \"%s\""

@@ -18,6 +18,7 @@ object dmACBrNFe: TdmACBrNFe
     TitlePreview = 'Report Preview'
     DefaultDest = rdPrinter
     SystemFiler.StatusFormat = 'Generating page %p'
+    SystemPreview.FormState = wsMaximized
     SystemPreview.MarginPercent = 2.500000000000000000
     SystemPreview.ShadowDepth = 5
     SystemPreview.ZoomFactor = 100.000000000000000000

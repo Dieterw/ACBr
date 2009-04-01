@@ -425,25 +425,30 @@ begin
 
       with Imposto.IPI do
       begin
-        Connection.WriteFloatData('', 0);
-        Connection.WriteFloatData('', 0);
-{        if (IPITrib.CST = '00') or (IPITrib.CST = '49') or
+//        Connection.WriteFloatData('', 0);
+//        Connection.WriteFloatData('', 0);
+        if (IPITrib.CST = '00') or (IPITrib.CST = '49') or
            (IPITrib.CST = '50') or (IPITrib.CST = '99') then
           begin
-            Connection.WriteStrData('', IPITrib.CST);
-            Connection.WriteFloatData('', NotaUtil.StringToFloatDef(IPITrib.VBC,0));
-            Connection.WriteFloatData('', NotaUtil.StringToFloatDef(IPITrib.PIPI,0));
+//            Connection.WriteStrData('', IPITrib.CST);
+//            Connection.WriteFloatData('', NotaUtil.StringToFloatDef(IPITrib.VBC,0));
             Connection.WriteFloatData('', NotaUtil.StringToFloatDef(IPITrib.VIPI,0));
+            Connection.WriteFloatData('', NotaUtil.StringToFloatDef(IPITrib.PIPI,0));
           end
         else if (IPINT.CST = '01') or (IPINT.CST = '02') or (IPINT.CST = '03') or
                 (IPINT.CST = '04') or (IPINT.CST = '51') or (IPINT.CST = '52') or
                 (IPINT.CST = '53') or (IPINT.CST = '54') or (IPINT.CST = '55') then
           begin
-            Connection.WriteStrData('', IPINT.CST);
+//            Connection.WriteStrData('', IPINT.CST);
+//            Connection.WriteFloatData('', 0);
             Connection.WriteFloatData('', 0);
             Connection.WriteFloatData('', 0);
-            Connection.WriteFloatData('', 0);
-          end}
+          end
+        else
+         begin
+           Connection.WriteFloatData('', 0);
+           Connection.WriteFloatData('', 0);
+         end;
       end;
     end;
   end;

@@ -33,16 +33,19 @@
 unit DoACBrNFeUnit ;
 
 interface
-Uses Classes, TypInfo, SysUtils, CmdUnitNFe, Types ;
+Uses Classes, TypInfo, SysUtils, CmdUnitNFe, Types, smtpsend, ssl_openssl, mimemess, mimepart ;
 
 Procedure DoACBrNFe( Cmd : TACBrNFeCmd ) ;
 Function ConvertStrRecived( AStr: String ) : String ;
+function UFparaCodigo(const UF: string): integer;
+function ObterCodigoMunicipio(const xMun, xUF: string): integer;
 procedure GerarIniNFe( AStr: WideString ) ;
+procedure EnviarEmail(const sSmtpHost, sSmtpPort, sSmtpUser, sSmtpPasswd, sFrom, sTo, sAssunto, sAttachment, sAttachment2: String; sMensagem : TStrings; SSL : Boolean);
 
 implementation
 
 Uses IniFiles, StrUtils, DateUtils,
-  Windows, Forms, sndkey32, XMLIntf, XMLDoc, 
+  Windows, Forms, XMLIntf, XMLDoc,
   ACBrUtil, ACBrNFeMonitor1 , ACBrNFeWebServices, ACBrNFe,
   ACBrNFeConfiguracoes, ACBrNFeTypes, ACBrNFeNotasFiscais,
   ACBrNFeDadosProdutos, ACBrNFeXML, ACBrNFeTransportador,
@@ -54,7 +57,7 @@ Uses IniFiles, StrUtils, DateUtils,
 Procedure DoACBrNFe( Cmd : TACBrNFeCmd ) ;
 var
   I : Integer;
-  ArqNFe : String;
+  ArqNFe, ArqPDF : String;
   Salva  : Boolean;
   SL     : TStringList;
 
@@ -412,6 +415,33 @@ begin
             end;
          end
 
+        else if Cmd.Metodo = 'enviaremail' then
+         begin
+           if FileExists(Cmd.Params(1)) then
+            begin
+              ACBrNFe1.NotasFiscais.Clear;
+              ACBrNFe1.NotasFiscais.Add.XML.LoadFromFile(Cmd.Params(1));
+            end  
+           else
+              raise Exception.Create('Arquivo '+Cmd.Params(1)+' não encontrado.');
+
+           if (Cmd.Params(2) = '1') then
+            begin
+              try
+                 ACBrNFe1.NotasFiscais.ImprimirPDF;
+                 ArqPDF := ExtractFileDir(application.ExeName)+'\'+ACBrNFe1.NotasFiscais.Items[0].XML.NFe.InfNFe.Id+'.pdf'
+              except
+                 raise Exception.Create('Erro ao criar o arquivo PDF');
+              end;
+            end;
+            try
+               EnviarEmail(edtSmtpHost.Text, edtSmtpPort.Text, edtSmtpUser.Text, edtSmtpPass.Text, edtSmtpUser.Text, Cmd.Params(0), edtEmailAssunto.Text, Cmd.Params(1), ArqPDF, mmEmailMsg.Lines, cbxEmailSSL.Checked);
+               Cmd.Resposta := 'Email enviado com sucesso';
+            except
+               raise Exception.Create('Erro ao enviar email');
+            end;
+         end
+
         else if Cmd.Metodo = 'restaurar' then
            Restaurar1Click( frmAcbrNfeMonitor )
 
@@ -465,6 +495,41 @@ begin
   end ;
 end ;
 
+function UFparaCodigo(const UF: string): integer;
+const
+  (**)UFS = '.AC.AL.AP.AM.BA.CE.DF.ES.GO.MA.MT.MS.MG.PA.PB.PR.PE.PI.RJ.RN.RS.RO.RR.SC.SP.SE.TO.';
+  CODIGOS = '.12.27.16.13.29.23.53.32.52.21.51.50.31.15.25.41.26.22.33.24.43.11.14.42.35.28.17.';
+begin
+  try
+    result := StrToInt(copy(CODIGOS, pos('.' + UF + '.', UFS) + 1, 2));
+  except
+    result := 0;
+  end;
+end;
+
+function ObterCodigoMunicipio(const xMun, xUF: string): integer;
+var
+  i: integer;
+  PathArquivo: string;
+  List: TstringList;
+begin
+  result := 0;
+  PathArquivo :=  PathWithDelim(ExtractFilePath(Application.ExeName))+ 'MunIBGE\MunIBGE-UF' + InttoStr(UFparaCodigo(xUF)) + '.txt';
+  if FileExists(PathArquivo) then
+   begin
+     List := TstringList.Create;
+     List.LoadFromFile(PathArquivo);
+     i := 0;
+     while (i < list.count) and (result = 0) do
+      begin
+       if pos(UpperCase(xMun), UpperCase(TiraAcentos(List[i]))) > 0 then
+          result := StrToInt(Trim(copy(list[i],1,7)));
+       inc(i);
+      end;
+     List.free;
+   end;
+end;
+
 procedure GerarIniNFe( AStr: WideString ) ;
 var
   I, J : Integer;
@@ -507,6 +572,8 @@ begin
          Emitente.Endereco.Cidade.Codigo    := INIRec.ReadInteger( 'Emitente','CidadeCod'  ,0);
          Emitente.Endereco.Cidade.Descricao := INIRec.ReadString(  'Emitente','Cidade'     ,'');
          Emitente.Endereco.UF               := INIRec.ReadString(  'Emitente','UF'         ,'');
+         if Emitente.Endereco.Cidade.Codigo <= 0 then
+            Emitente.Endereco.Cidade.Codigo := ObterCodigoMunicipio(Emitente.Endereco.Cidade.Descricao,Emitente.Endereco.UF);
          Emitente.Endereco.Pais.Codigo      := INIRec.ReadInteger( 'Emitente','PaisCod'    ,0);
          Emitente.Endereco.Pais.Descricao   := INIRec.ReadString(  'Emitente','Pais'       ,'');
 
@@ -523,6 +590,8 @@ begin
          Destinatario.Endereco.Cidade.Codigo    := INIRec.ReadInteger( 'Destinatario','CidadeCod'  ,0);
          Destinatario.Endereco.Cidade.Descricao := INIRec.ReadString(  'Destinatario','Cidade'     ,'');
          Destinatario.Endereco.UF               := INIRec.ReadString(  'Destinatario','UF'         ,'');
+         if Destinatario.Endereco.Cidade.Codigo <= 0 then
+            Destinatario.Endereco.Cidade.Codigo := ObterCodigoMunicipio(Destinatario.Endereco.Cidade.Descricao,Destinatario.Endereco.UF);
          Destinatario.Endereco.Pais.Codigo      := INIRec.ReadInteger( 'Destinatario','PaisCod'    ,0);
          Destinatario.Endereco.Pais.Descricao   := INIRec.ReadString(  'Destinatario','Pais'       ,'');
 
@@ -886,6 +955,58 @@ begin
    finally
       INIRec.Free ;
    end;
+  end;
+end;
+
+procedure EnviarEmail(const sSmtpHost, sSmtpPort, sSmtpUser, sSmtpPasswd, sFrom, sTo, sAssunto, sAttachment, sAttachment2: String; sMensagem : TStrings; SSL : Boolean);
+var
+  smtp: TSMTPSend;
+  msg_lines: TStringList;
+  m:TMimemess;
+  p: TMimepart;
+begin
+  try
+     m:=TMimemess.create;
+     p := m.AddPartMultipart('mixed', nil);
+     if sMensagem <> nil then
+        m.AddPartText(sMensagem, p);
+     if sAttachment <> '' then
+       m.AddPartBinaryFromFile(sAttachment, p);
+     if sAttachment2 <> '' then
+       m.AddPartBinaryFromFile(sAttachment2, p);
+     m.header.tolist.add(sTo);
+     m.header.From := sFrom;
+     m.header.subject:=sAssunto;
+     m.EncodeMessage;
+
+     msg_lines := TStringList.Create;
+     smtp := TSMTPSend.Create;
+     msg_lines.Add(m.Lines.Text);
+
+     smtp.UserName := sSmtpUser;
+     smtp.Password := sSmtpPasswd;
+
+     smtp.TargetHost := sSmtpHost;
+     smtp.TargetPort := sSmtpPort;
+
+     smtp.FullSSL := SSL;
+     smtp.AutoTLS := SSL;
+     if not smtp.Login() then
+       raise Exception.Create('SMTP ERROR: Login:' + smtp.EnhCodeString);
+
+     if not smtp.MailFrom(sFrom, Length(sFrom)) then
+       raise Exception.Create('SMTP ERROR: MailFrom:' + smtp.EnhCodeString);
+     if not smtp.MailTo(sTo) then
+       raise Exception.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString);
+     if not smtp.MailData(msg_lines) then
+       raise Exception.Create('SMTP ERROR: MailData:' + smtp.EnhCodeString);
+
+     if not smtp.Logout() then
+       raise Exception.Create('SMTP ERROR: Logout:' + smtp.EnhCodeString);
+  finally
+     msg_lines.Free;
+     smtp.Free;
+     m.free;
   end;
 end;
 

@@ -58,6 +58,7 @@ Source: ..\DLLs\OpenSSL\zlib1.dll; DestDir: {app}; Flags: ; Components: programa
 Source: ..\DLLs\iconv.dll; DestDir: {app}; Flags: ; Components: programa
 Source: Report\NotaFiscalEletronica.rav; DestDir: {app}\Report; Flags: ; Components: programa
 Source: Schemas\*.*; DestDir: {app}\Schemas; Flags: ; Components: programa
+Source: MunIBGE\*.*; DestDir: {app}\MunIBGE; Flags: ; Components: programa
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [INI]

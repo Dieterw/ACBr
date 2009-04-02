@@ -1,6 +1,6 @@
 object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
-  Left = 463
-  Top = 125
+  Left = 571
+  Top = 159
   Width = 538
   Height = 503
   ActiveControl = btMinimizar
@@ -4112,7 +4112,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       Top = 2
       Width = 528
       Height = 212
-      ActivePage = TabSheet1
+      ActivePage = Email
       Align = alBottom
       TabOrder = 0
       object Monitor: TTabSheet
@@ -4328,7 +4328,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           OnClick = cbLogClick
         end
       end
-      object TabSheet2: TTabSheet
+      object Certificado: TTabSheet
         Caption = 'Certificado/DANFe'
         ImageIndex = 1
         object GroupBox2: TGroupBox
@@ -4371,6 +4371,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
               B3333337FFFF77377FF333B000000333BB33337777777F3377FF3BB3333BB333
               3BB33773333773333773B333333B3333333B7333333733333337}
             NumGlyphs = 2
+            OnClick = sbArquivoCertClick
           end
           object edtCaminho: TEdit
             Left = 8
@@ -4435,6 +4436,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
               B3333337FFFF77377FF333B000000333BB33337777777F3377FF3BB3333BB333
               3BB33773333773333773B333333B3333333B7333333733333337}
             NumGlyphs = 2
+            OnClick = sbLogoMarcaClick
           end
           object cbDanfe: TComboBox
             Left = 8
@@ -4486,7 +4488,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           end
         end
       end
-      object TabSheet1: TTabSheet
+      object WebService: TTabSheet
         Caption = 'WebService'
         ImageIndex = 2
         object GroupBox4: TGroupBox
@@ -4541,6 +4543,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
               B3333337FFFF77377FF333B000000333BB33337777777F3377FF3BB3333BB333
               3BB33773333773333773B333333B3333333B7333333733333337}
             NumGlyphs = 2
+            OnClick = sbPathSalvarClick
           end
           object cbAmbiente: TComboBox
             Left = 8
@@ -4692,6 +4695,110 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
             Height = 21
             PasswordChar = '*'
             TabOrder = 3
+          end
+        end
+      end
+      object Email: TTabSheet
+        Caption = 'Email'
+        ImageIndex = 3
+        object GroupBox1: TGroupBox
+          Left = 8
+          Top = 4
+          Width = 513
+          Height = 173
+          Caption = 'Email'
+          TabOrder = 0
+          object Label20: TLabel
+            Left = 8
+            Top = 16
+            Width = 72
+            Height = 13
+            Caption = 'Servidor SMTP'
+          end
+          object Label21: TLabel
+            Left = 217
+            Top = 16
+            Width = 25
+            Height = 13
+            Caption = 'Porta'
+          end
+          object Label22: TLabel
+            Left = 8
+            Top = 56
+            Width = 36
+            Height = 13
+            Caption = 'Usu'#225'rio'
+          end
+          object Label23: TLabel
+            Left = 144
+            Top = 56
+            Width = 31
+            Height = 13
+            Caption = 'Senha'
+          end
+          object Label24: TLabel
+            Left = 8
+            Top = 96
+            Width = 121
+            Height = 13
+            Caption = 'Assunto do email enviado'
+          end
+          object Label25: TLabel
+            Left = 288
+            Top = 16
+            Width = 95
+            Height = 13
+            Caption = 'Mensagem do Email'
+          end
+          object edtSmtpHost: TEdit
+            Left = 8
+            Top = 32
+            Width = 203
+            Height = 21
+            TabOrder = 0
+          end
+          object edtSmtpPort: TEdit
+            Left = 217
+            Top = 32
+            Width = 57
+            Height = 21
+            TabOrder = 1
+          end
+          object edtSmtpUser: TEdit
+            Left = 8
+            Top = 72
+            Width = 130
+            Height = 21
+            TabOrder = 2
+          end
+          object edtSmtpPass: TEdit
+            Left = 144
+            Top = 72
+            Width = 130
+            Height = 21
+            TabOrder = 3
+          end
+          object edtEmailAssunto: TEdit
+            Left = 8
+            Top = 112
+            Width = 266
+            Height = 21
+            TabOrder = 4
+          end
+          object cbxEmailSSL: TCheckBox
+            Left = 10
+            Top = 144
+            Width = 167
+            Height = 17
+            Caption = 'SMTP exige conex'#227'o segura'
+            TabOrder = 5
+          end
+          object mmEmailMsg: TMemo
+            Left = 288
+            Top = 32
+            Width = 217
+            Height = 129
+            TabOrder = 6
           end
         end
       end
@@ -5157,5 +5264,9 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       84318811800BFFFF80818421800BFFFF810181C1EFFBFFFF80018001E003FFFF
       80018001E003FFFFFFFFFFFFE003FFFF00000000000000000000000000000000
       000000000000}
+  end
+  object OpenDialog1: TOpenDialog
+    Left = 265
+    Top = 33
   end
 end

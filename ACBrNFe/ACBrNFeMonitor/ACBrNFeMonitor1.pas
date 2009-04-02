@@ -2,7 +2,7 @@ unit ACBrNFeMonitor1;
 
 interface
 
-uses IniFiles, CmdUnitNFe,
+uses IniFiles, CmdUnitNFe, FileCtrl,
   IdBaseComponent, IdComponent, IdTCPServer,
   ShellAPI,                                { Unit para criar icone no Systray }
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
@@ -63,7 +63,7 @@ type
     cbSenha: TCheckBox;
     rbTXT: TRadioButton;
     cbLog: TCheckBox;
-    TabSheet2: TTabSheet;
+    Certificado: TTabSheet;
     GroupBox2: TGroupBox;
     Label1: TLabel;
     Label2: TLabel;
@@ -78,7 +78,7 @@ type
     cbDanfe: TComboBox;
     cbFormaEmissao: TComboBox;
     edtLogoMarca: TEdit;
-    TabSheet1: TTabSheet;
+    WebService: TTabSheet;
     GroupBox4: TGroupBox;
     Label5: TLabel;
     Label6: TLabel;
@@ -102,6 +102,22 @@ type
     ImageList1: TImageList;
     btCancelar: TBitBtn;
     Image1: TImage;
+    OpenDialog1: TOpenDialog;
+    Email: TTabSheet;
+    GroupBox1: TGroupBox;
+    edtSmtpHost: TEdit;
+    edtSmtpPort: TEdit;
+    edtSmtpUser: TEdit;
+    edtSmtpPass: TEdit;
+    edtEmailAssunto: TEdit;
+    Label20: TLabel;
+    Label21: TLabel;
+    Label22: TLabel;
+    Label23: TLabel;
+    Label24: TLabel;
+    cbxEmailSSL: TCheckBox;
+    mmEmailMsg: TMemo;
+    Label25: TLabel;
     procedure DoACBrTimer(Sender: TObject);
     procedure edOnlyNumbers(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
@@ -120,6 +136,9 @@ type
     procedure TCPServerConnect(AThread: TIdPeerThread);
     procedure TCPServerDisconnect(AThread: TIdPeerThread);
     procedure TCPServerExecute(AThread: TIdPeerThread);
+    procedure sbArquivoCertClick(Sender: TObject);
+    procedure sbLogoMarcaClick(Sender: TObject);
+    procedure sbPathSalvarClick(Sender: TObject);
   private
     { Private declarations }
     ACBrNFeMonitorINI : string;
@@ -159,6 +178,9 @@ var
 implementation
 
 uses ACBrUtil, IdStack, UtilUnit, DoACBrNFeUnit;
+
+const
+  SELDIRHELP = 1000;
 
 {$R *.dfm}
 procedure TfrmAcbrNfeMonitor.Inicializar;
@@ -431,6 +453,14 @@ begin
      ACBrNFe1.Configuracoes.WebServices.ProxyPort := edtProxyPorta.Text;
      ACBrNFe1.Configuracoes.WebServices.ProxyUser := edtProxyUser.Text;
      ACBrNFe1.Configuracoes.WebServices.ProxyPass := edtProxySenha.Text;
+
+     edtSmtpHost.Text      := Ini.ReadString( 'Email','Host'   ,'') ;
+     edtSmtpPort.Text      := Ini.ReadString( 'Email','Port'   ,'') ;
+     edtSmtpUser.Text      := Ini.ReadString( 'Email','User'   ,'') ;
+     edtSmtpPass.Text      := StrCrypt(Ini.ReadString( 'Email','Pass'   ,''),IntToStr(fsHashSenha)) ;
+     edtEmailAssunto.Text  := Ini.ReadString( 'Email','Assunto','') ;
+     cbxEmailSSL.Checked   := Ini.ReadBool(   'Email','SSL'    ,False) ;
+     mmEmailMsg.Lines.Text := Ini.ReadString( 'Email','Mensagem','') ;
   finally
      Ini.Free ;
   end ;
@@ -481,6 +511,14 @@ begin
      Ini.WriteString( 'Proxy','Porta'  ,edtProxyPorta.Text) ;
      Ini.WriteString( 'Proxy','User'   ,edtProxyUser.Text) ;
      Ini.WriteString( 'Proxy','Pass'   ,edtProxySenha.Text) ;
+
+     Ini.WriteString( 'Email','Host'    ,edtSmtpHost.Text) ;
+     Ini.WriteString( 'Email','Port'    ,edtSmtpPort.Text) ;
+     Ini.WriteString( 'Email','User'    ,edtSmtpUser.Text) ;
+     Ini.WriteString( 'Email','Pass'    ,StrCrypt(edtSmtpPass.Text,IntToStr(fsHashSenha))) ;
+     Ini.WriteString( 'Email','Assunto' ,edtEmailAssunto.Text) ;
+     Ini.WriteBool(   'Email','SSL'     ,cbxEmailSSL.Checked ) ;
+     Ini.WriteString( 'Email','Mensagem',mmEmailMsg.Lines.Text) ;
   finally
      Ini.Free ;
   end ;
@@ -844,6 +882,43 @@ begin
   finally
      SL.Free ;
   end ;
+end;
+
+procedure TfrmAcbrNfeMonitor.sbArquivoCertClick(Sender: TObject);
+begin
+  OpenDialog1.Title := 'Selecione o Certificado';
+  OpenDialog1.DefaultExt := '*.pfx';
+  OpenDialog1.Filter := 'Arquivos PFX (*.pfx)|*.pfx|Todos os Arquivos (*.*)|*.*';
+  OpenDialog1.InitialDir := ExtractFileDir(application.ExeName);
+  if OpenDialog1.Execute then
+  begin
+    edtCaminho.Text := OpenDialog1.FileName;
+  end;
+end;
+
+procedure TfrmAcbrNfeMonitor.sbLogoMarcaClick(Sender: TObject);
+begin
+  OpenDialog1.Title := 'Selecione o Logo';
+  OpenDialog1.DefaultExt := '*.bmp';
+  OpenDialog1.Filter := 'Arquivos BMP (*.bmp)|*.bmp|Todos os Arquivos (*.*)|*.*';
+  OpenDialog1.InitialDir := ExtractFileDir(application.ExeName);
+  if OpenDialog1.Execute then
+  begin
+    edtLogoMarca.Text := OpenDialog1.FileName;
+  end;
+end;
+
+procedure TfrmAcbrNfeMonitor.sbPathSalvarClick(Sender: TObject);
+var
+  Dir: string;
+begin
+  if Length(edtPathLogs.Text) <= 0 then
+     Dir := ExtractFileDir(application.ExeName)
+  else
+     Dir := edtPathLogs.Text;
+
+  if SelectDirectory(Dir, [sdAllowCreate, sdPerformCreate, sdPrompt],SELDIRHELP) then
+    edtPathLogs.Text := Dir;
 end;
 
 end.

@@ -525,7 +525,7 @@ begin
      i := 0;
      while (i < list.count) and (result = 0) do
       begin
-       if pos(UpperCase(xMun), UpperCase(TiraAcentos(List[i]))) > 0 then
+       if pos(UpperCase(TiraAcentos(xMun)), UpperCase(TiraAcentos(List[i]))) > 0 then
           result := StrToInt(Trim(copy(list[i],1,7)));
        inc(i);
       end;

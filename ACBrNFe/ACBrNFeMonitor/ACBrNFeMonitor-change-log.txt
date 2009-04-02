@@ -44,6 +44,8 @@ Símbolo : Significado
 
 Versão 0.3.0a    02/04/09
 
+[+]    Na criação da nota, se o código da cidade não for passado, o componente
+       tentara descobrir baseado nos arquivos da pasta MunIBGE        
 [+]    Adicionada opção para configurar a impressora padrão que será impresso o 
        DANFE
 [+]    Adicionado comando para enviar NFe por email. Além do XML é possível 

@@ -993,7 +993,7 @@ begin
         // 8000 - ErroCMDForaDeSequencia
         // 8086 - ErroCMDCancelamentoInvalido
         // Todos CCD´s vinculados ao cupom devem ser estornados antes da operacao de cancelamento
-        while (pos('CCD',Erro) <> 0) and ((pos('8000',Erro) <> 0) or (pos('8086',Erro) <> 0) ) do
+        while {pos('CCD',Erro) <> 0) and }((pos('8000',Erro) <> 0) or (pos('8086',Erro) <> 0) ) do
         begin
            try
               Erro := '' ;

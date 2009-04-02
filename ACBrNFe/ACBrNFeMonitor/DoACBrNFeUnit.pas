@@ -33,7 +33,7 @@
 unit DoACBrNFeUnit ;
 
 interface
-Uses Classes, TypInfo, SysUtils, CmdUnitNFe, Types, smtpsend, ssl_openssl, mimemess, mimepart ;
+Uses Classes, TypInfo, SysUtils, CmdUnitNFe, Types, smtpsend, ssl_openssl, mimemess, mimepart, RpDevice ;
 
 Procedure DoACBrNFe( Cmd : TACBrNFeCmd ) ;
 Function ConvertStrRecived( AStr: String ) : String ;
@@ -196,6 +196,7 @@ begin
            else
               raise Exception.Create('Arquivo '+Cmd.Params(0)+' não encontrado.');
 
+           RPDev.DeviceIndex := cbxImpressora.ItemIndex;    
            ACBrNFe1.NotasFiscais.Imprimir;
            Cmd.Resposta := 'Danfe Impresso com sucesso';
            Ocultar1.Click;
@@ -309,6 +310,7 @@ begin
                              'NProt='+NFeRetConsSitNFe.InfProt.NProt+sLineBreak+
                              'DigVal='+NFeRetConsSitNFe.InfProt.DigVal+sLineBreak;
 
+              RPDev.DeviceIndex := cbxImpressora.ItemIndex; 
               if ACBrNFe1.NotasFiscais.Items[i].XML.Confirmada and (Cmd.Params(3) = '1') then
                  ACBrNFe1.NotasFiscais.Items[i].XML.Imprimir;
             end;
@@ -406,6 +408,7 @@ begin
                     Restaurar1.Click;
                     Application.BringToFront;
                   end;
+                 RPDev.DeviceIndex := cbxImpressora.ItemIndex;                   
                  if ACBrNFe1.NotasFiscais.Items[i].XML.Confirmada and (Cmd.Params(2) = '1') then
                     ACBrNFe1.NotasFiscais.Items[i].XML.Imprimir;
                  if (Cmd.Params(2) = '1') then
@@ -435,7 +438,7 @@ begin
               end;
             end;
             try
-               EnviarEmail(edtSmtpHost.Text, edtSmtpPort.Text, edtSmtpUser.Text, edtSmtpPass.Text, edtSmtpUser.Text, Cmd.Params(0), edtEmailAssunto.Text, Cmd.Params(1), ArqPDF, mmEmailMsg.Lines, cbxEmailSSL.Checked);
+               EnviarEmail(edtSmtpHost.Text, edtSmtpPort.Text, edtSmtpUser.Text, edtSmtpPass.Text, edtSmtpUser.Text, Cmd.Params(0), edtEmailAssunto.Text, Cmd.Params(1), ArqPDF, mmEmailMsg.Lines, cbEmailSSL.Checked);
                Cmd.Resposta := 'Email enviado com sucesso';
             except
                raise Exception.Create('Erro ao enviar email');

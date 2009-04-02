@@ -2,7 +2,7 @@ unit ACBrNFeMonitor1;
 
 interface
 
-uses IniFiles, CmdUnitNFe, FileCtrl,
+uses IniFiles, CmdUnitNFe, FileCtrl, Printers,
   IdBaseComponent, IdComponent, IdTCPServer,
   ShellAPI,                                { Unit para criar icone no Systray }
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
@@ -115,9 +115,11 @@ type
     Label22: TLabel;
     Label23: TLabel;
     Label24: TLabel;
-    cbxEmailSSL: TCheckBox;
+    cbEmailSSL: TCheckBox;
     mmEmailMsg: TMemo;
     Label25: TLabel;
+    GroupBox6: TGroupBox;
+    cbxImpressora: TComboBox;
     procedure DoACBrTimer(Sender: TObject);
     procedure edOnlyNumbers(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
@@ -189,6 +191,7 @@ Var
   Erro   : String ;
   A : Integer ;
 begin
+  cbxImpressora.Items.Assign(Printer.Printers);
   Timer1.Enabled := false ;
   Inicio         := false ;
   Erro           := '' ;
@@ -430,10 +433,11 @@ begin
      ACBrNFe1.Configuracoes.Certificados.Senha        := edtSenha.Text;
 
      cbDanfe.Text        := Ini.ReadString( 'Geral','DANFE'       ,'Retrato') ;
-     cbFormaEmissao.Text :=Ini.ReadString( 'Geral','FormaEmissao','Normal on-line') ;
+     cbFormaEmissao.Text := Ini.ReadString( 'Geral','FormaEmissao','Normal on-line') ;
      edtLogoMarca.Text   := Ini.ReadString( 'Geral','LogoMarca'   ,'') ;
      ckSalvar.Checked    := Ini.ReadBool(   'Geral','Salvar'      ,True) ;
      edtPathLogs.Text    := Ini.ReadString( 'Geral','PathSalvar'  ,'') ;
+     cbxImpressora.ItemIndex   := cbxImpressora.Items.IndexOf(Ini.ReadString( 'Geral','Impressora','0')) ;
      ACBrNFe1.Configuracoes.Geral.DANFE        := cbDanfe.Text;
      ACBrNFe1.Configuracoes.Geral.FormaEmissao := cbFormaEmissao.Text;
      ACBrNFe1.Configuracoes.Geral.LogoMarca    := edtLogoMarca.Text;
@@ -459,7 +463,7 @@ begin
      edtSmtpUser.Text      := Ini.ReadString( 'Email','User'   ,'') ;
      edtSmtpPass.Text      := StrCrypt(Ini.ReadString( 'Email','Pass'   ,''),IntToStr(fsHashSenha)) ;
      edtEmailAssunto.Text  := Ini.ReadString( 'Email','Assunto','') ;
-     cbxEmailSSL.Checked   := Ini.ReadBool(   'Email','SSL'    ,False) ;
+     cbEmailSSL.Checked    := Ini.ReadBool(   'Email','SSL'    ,False) ;
      mmEmailMsg.Lines.Text := Ini.ReadString( 'Email','Mensagem','') ;
   finally
      Ini.Free ;
@@ -503,6 +507,7 @@ begin
      Ini.WriteString( 'Geral','LogoMarca'   ,edtLogoMarca.Text) ;
      Ini.WriteBool(   'Geral','Salvar'      ,ckSalvar.Checked) ;
      Ini.WriteString( 'Geral','PathSalvar'  ,edtPathLogs.Text) ;
+      Ini.WriteString('Geral','Impressora'  ,cbxImpressora.Text) ;
 
      Ini.WriteString( 'WebService','UF'        ,cbUF.Text) ;
      Ini.WriteString( 'WebService','Ambiente'  ,cbAmbiente.Text) ;
@@ -517,7 +522,7 @@ begin
      Ini.WriteString( 'Email','User'    ,edtSmtpUser.Text) ;
      Ini.WriteString( 'Email','Pass'    ,StrCrypt(edtSmtpPass.Text,IntToStr(fsHashSenha))) ;
      Ini.WriteString( 'Email','Assunto' ,edtEmailAssunto.Text) ;
-     Ini.WriteBool(   'Email','SSL'     ,cbxEmailSSL.Checked ) ;
+     Ini.WriteBool(   'Email','SSL'     ,cbEmailSSL.Checked ) ;
      Ini.WriteString( 'Email','Mensagem',mmEmailMsg.Lines.Text) ;
   finally
      Ini.Free ;

@@ -4112,7 +4112,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       Top = 2
       Width = 528
       Height = 212
-      ActivePage = Email
+      ActivePage = Certificado
       Align = alBottom
       TabOrder = 0
       object Monitor: TTabSheet
@@ -4487,6 +4487,22 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
             TabOrder = 2
           end
         end
+        object GroupBox6: TGroupBox
+          Left = 8
+          Top = 112
+          Width = 242
+          Height = 57
+          Caption = 'Impressora Padr'#227'o'
+          TabOrder = 2
+          object cbxImpressora: TComboBox
+            Left = 8
+            Top = 24
+            Width = 225
+            Height = 21
+            ItemHeight = 13
+            TabOrder = 0
+          end
+        end
       end
       object WebService: TTabSheet
         Caption = 'WebService'
@@ -4785,7 +4801,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
             Height = 21
             TabOrder = 4
           end
-          object cbxEmailSSL: TCheckBox
+          object cbEmailSSL: TCheckBox
             Left = 10
             Top = 144
             Width = 167

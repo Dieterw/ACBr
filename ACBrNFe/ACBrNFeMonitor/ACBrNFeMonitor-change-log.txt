@@ -42,6 +42,13 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.3.0a    02/04/09
+
+[+]    Adicionada opção para configurar a impressora padrão que será impresso o 
+       DANFE
+[+]    Adicionado comando para enviar NFe por email. Além do XML é possível 
+       enviar o DANFe em formato PDF
+
 Versão 0.2.0a    26/03/09
 
 [+]    Adicionada opção de gerar NFe a partir de um arquivo INI

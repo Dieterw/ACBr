@@ -186,7 +186,7 @@ begin
   with NotaFiscal(FNotaFiscal), FNFe.InfNFe.Emit do
   begin
     CNPJ  := Emitente.Cnpj;
-    XNome := Emitente.Nome.RazaoSocial;
+    XNome := NotaUtil.ParseText(Emitente.Nome.RazaoSocial);
     if NotaUtil.NaoEstaVazio(Emitente.Nome.Fantasia) then
       XFant := NotaUtil.ParseText(Emitente.Nome.Fantasia);
 
@@ -226,7 +226,7 @@ begin
     else
       CPF := Destinatario.CNPJCPF;
 
-    XNome := Destinatario.NomeRazao;
+    XNome := NotaUtil.ParseText(Destinatario.NomeRazao);
     with EnderDest do
     begin
       XLgr    := NotaUtil.ParseText(Destinatario.Endereco.Logradouro);
@@ -668,7 +668,7 @@ begin
     end;
 
     if NotaUtil.NaoEstaVazio(Transportador.NomeRazao) then
-      Transporta.XNome := Transportador.NomeRazao;
+      Transporta.XNome := NotaUtil.ParseText(Transportador.NomeRazao);
     if NotaUtil.NaoEstaVazio(Transportador.IE) then
       Transporta.IE := Transportador.IE;
     if NotaUtil.NaoEstaVazio(Transportador.Endereco) then

@@ -383,6 +383,7 @@ procedure TfrmAcbrNfeMonitor.LerIni ;
 var
   Ini : TIniFile;
   Senha :String ;
+  StreamMemo : TMemoryStream;
 begin
   Ini := TIniFile.Create( ACBrNFeMonitorINI ) ;
 
@@ -445,7 +446,7 @@ begin
      ACBrNFe1.Configuracoes.Geral.PathSalvar   := edtPathLogs.Text;
 
      cbUF.ItemIndex       := cbUF.Items.IndexOf(Ini.ReadString( 'WebService','UF','SP')) ;
-     cbAmbiente.Text      := Ini.ReadString( 'WebService','Ambiente'  ,'Teste') ;
+     cbAmbiente.ItemIndex := Ini.ReadInteger( 'WebService','Ambiente'  ,0) ;
      ACBrNFe1.Configuracoes.WebServices.UF         := cbUF.Text;
      ACBrNFe1.Configuracoes.WebServices.Ambiente   := cbAmbiente.Text;
 
@@ -464,7 +465,10 @@ begin
      edtSmtpPass.Text      := StrCrypt(Ini.ReadString( 'Email','Pass'   ,''),IntToStr(fsHashSenha)) ;
      edtEmailAssunto.Text  := Ini.ReadString( 'Email','Assunto','') ;
      cbEmailSSL.Checked    := Ini.ReadBool(   'Email','SSL'    ,False) ;
-     mmEmailMsg.Lines.Text := Ini.ReadString( 'Email','Mensagem','') ;
+     StreamMemo := TMemoryStream.Create;
+     Ini.ReadBinaryStream( 'Email','Mensagem',StreamMemo) ;
+     mmEmailMsg.Lines.LoadFromStream(StreamMemo);
+     StreamMemo.Free;
   finally
      Ini.Free ;
   end ;
@@ -474,6 +478,7 @@ end;
 procedure TfrmAcbrNfeMonitor.SalvarIni;
 var
   Ini : TIniFile;
+  StreamMemo : TMemoryStream;
   OldMonitoraTXT, OldMonitoraTCP : Boolean ;
 begin
   if cbSenha.Checked and (edSenha.Text <> 'NADAAQUI') and (edSenha.Text <> '') then
@@ -510,7 +515,7 @@ begin
       Ini.WriteString('Geral','Impressora'  ,cbxImpressora.Text) ;
 
      Ini.WriteString( 'WebService','UF'        ,cbUF.Text) ;
-     Ini.WriteString( 'WebService','Ambiente'  ,cbAmbiente.Text) ;
+     Ini.WriteInteger('WebService','Ambiente'  ,cbAmbiente.ItemIndex) ;
 
      Ini.WriteString( 'Proxy','Host'   ,edtProxyHost.Text) ;
      Ini.WriteString( 'Proxy','Porta'  ,edtProxyPorta.Text) ;
@@ -523,7 +528,11 @@ begin
      Ini.WriteString( 'Email','Pass'    ,StrCrypt(edtSmtpPass.Text,IntToStr(fsHashSenha))) ;
      Ini.WriteString( 'Email','Assunto' ,edtEmailAssunto.Text) ;
      Ini.WriteBool(   'Email','SSL'     ,cbEmailSSL.Checked ) ;
-     Ini.WriteString( 'Email','Mensagem',mmEmailMsg.Lines.Text) ;
+     StreamMemo := TMemoryStream.Create;
+     mmEmailMsg.Lines.SaveToStream(StreamMemo);
+     StreamMemo.Seek(0,soFromBeginning);
+     Ini.WriteBinaryStream( 'Email','Mensagem',StreamMemo) ;
+     StreamMemo.Free;
   finally
      Ini.Free ;
   end ;

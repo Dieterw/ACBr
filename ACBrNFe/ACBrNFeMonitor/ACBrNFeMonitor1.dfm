@@ -4112,7 +4112,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       Top = 2
       Width = 528
       Height = 212
-      ActivePage = Certificado
+      ActivePage = Monitor
       Align = alBottom
       TabOrder = 0
       object Monitor: TTabSheet

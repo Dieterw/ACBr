@@ -39,16 +39,18 @@
 |*
 |* 16/12/2008: Wemerson Souto
 |*  - Doação do componente para o Projeto ACBr
+|* 13/03/2009: Dulcemar P. Zilli
+|*  - Atualização para pacote Pl_005c
 ******************************************************************************}
 
-{*****************************************************************************************}
-{                                                                                         }
-{                                    XML Data Binding                                     }
-{                                                                                         }
-{         Generated on: 22/07/2008 15:57:05                                               }
-{       Generated from: PL_005a\retEnviNFe_v1.10.xsd                                      }
-{                                                                                         }
-{*****************************************************************************************}
+{*********************************************************}
+{                                                         }
+{                    XML Data Binding                     }
+{                                                         }
+{         Generated on: 13/03/2009 11:28:12               }
+{       Generated from: .\PL_005c\retEnviNFe_v1.10.xsd   }
+{                                                         }
+{*********************************************************}
 
 unit ACBrNFe_retEnviNFe;
 
@@ -66,7 +68,7 @@ type
 { IXMLTRetEnviNFe }
 
   IXMLTRetEnviNFe = interface(IXMLNode)
-    ['{2473FB7C-289C-4667-BD0D-57DDEEE4FF80}']
+    ['{416FAF30-28AA-41FB-8032-477378BF95BB}']
     { Property Accessors }
     function Get_Versao: WideString;
     function Get_TpAmb: WideString;
@@ -94,7 +96,7 @@ type
 { IXMLInfRec }
 
   IXMLInfRec = interface(IXMLNode)
-    ['{517E0219-FB05-474B-BB54-64881D6370D6}']
+    ['{A1F02CAA-A674-4D81-BE5C-5129F0A48DD2}']
     { Property Accessors }
     function Get_NRec: WideString;
     function Get_DhRecbto: WideString;

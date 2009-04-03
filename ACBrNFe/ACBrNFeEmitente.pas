@@ -39,6 +39,8 @@
 |*
 |* 16/12/2008: Wemerson Souto
 |*  - Doação do componente para o Projeto ACBr
+|* 14/03/2009: Dulcemar P. Zilli
+|*  - Complementação Emitente, IEST, IM, CNAE 
 ******************************************************************************}
 unit ACBrNFeEmitente;
 
@@ -68,7 +70,13 @@ type
     FEndereco: TEndereco;
     FCNPJ : String;
     FIE : String;
+    FIM: String;
+    FIEST: String;
+    FCNAE: String;
     procedure SetCNPJ(AValue: String);
+    procedure SetCNAE(const Value: String);
+    procedure SetIEST(const Value: String);
+    procedure SetIM(const Value: String);
   public
     constructor Create;
     destructor Destroy; override;
@@ -78,7 +86,9 @@ type
     property Endereco : TEndereco read FEndereco write FEndereco;
     property CNPJ : String read FCNPJ write SetCNPJ;
     property IE : String read FIE write FIE;
-
+    property IEST: String read FIEST write SetIEST;
+    property IM: String read FIM write SetIM;
+    property CNAE: String read FCNAE write SetCNAE;
   end;
 
 implementation
@@ -100,9 +110,24 @@ begin
   inherited;
 end;
 
+procedure TEmitente.SetCNAE(const Value: String);
+begin
+  FCNAE := Value;
+end;
+
 procedure TEmitente.SetCNPJ(AValue: String);
 begin
   FCNPJ := NotaUtil.LimpaNumero(AValue);
+end;
+
+procedure TEmitente.SetIEST(const Value: String);
+begin
+  FIEST := Value;
+end;
+
+procedure TEmitente.SetIM(const Value: String);
+begin
+  FIM := Value;
 end;
 
 { TNome }

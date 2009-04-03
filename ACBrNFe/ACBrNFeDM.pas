@@ -39,14 +39,20 @@
 |*
 |* 16/12/2008: Wemerson Souto
 |*  - Doação do componente para o Projeto ACBr
+|* 09/03/2009: Dulcemar P.Zilli
+|*  - Correcao impressão informações IPI
+|* 11/03/2008: Dulcemar P.Zilli
+|*  - Inclusão Observações Fisco
+|* 11/03/2008: Dulcemar P.Zilli
+|*  - Inclusão totais ISSQN 
 ******************************************************************************}
 unit ACBrNFeDM;
 
 interface
 
 uses
-  Forms, SysUtils, Classes, 
-  RpRave, RpBase, 
+  Forms, SysUtils, Classes,
+  RpRave, RpBase,
   RpSystem, RpDefine, RpCon, ACBrNFe_nfe, XMLIntf, XMLDoc, RpRender,
   RpRenderPDF;
 
@@ -110,6 +116,15 @@ type
       Connection: TRvCustomConnection);
     procedure CustomInformacoesAdicionaisCXNOpen(
       Connection: TRvCustomConnection);
+    procedure CustomObservacaoFiscoCXNGetCols(
+      Connection: TRvCustomConnection);
+    procedure CustomObservacaoFiscoCXNGetRow(
+      Connection: TRvCustomConnection);
+    procedure CustomObservacaoFiscoCXNOpen(
+      Connection: TRvCustomConnection);
+    procedure CustomISSQNCXNGetCols(Connection: TRvCustomConnection);
+    procedure CustomISSQNCXNGetRow(Connection: TRvCustomConnection);
+    procedure CustomISSQNCXNOpen(Connection: TRvCustomConnection);
   private
     { Private declarations }
     FNFe: IXMLTNFe;
@@ -235,6 +250,9 @@ begin
   Connection.WriteField('XPais', dtString, 60, '', '');
   Connection.WriteField('Fone', dtString, 15, '', '');
   Connection.WriteField('IE', dtString, 14, '', '');
+
+  Connection.WriteField('IM', dtString, 15, '', '');
+
 end;
 
 procedure TdmACBrNFe.CustomEmitenteCXNOpen(
@@ -266,6 +284,7 @@ begin
       Connection.WriteStrData('', NotaUtil.FormatarFone(Fone));
     end;
     Connection.WriteStrData('', IE);
+    Connection.WriteStrData('', IM);
   end;
 end;
 
@@ -425,13 +444,9 @@ begin
 
       with Imposto.IPI do
       begin
-//        Connection.WriteFloatData('', 0);
-//        Connection.WriteFloatData('', 0);
         if (IPITrib.CST = '00') or (IPITrib.CST = '49') or
            (IPITrib.CST = '50') or (IPITrib.CST = '99') then
           begin
-//            Connection.WriteStrData('', IPITrib.CST);
-//            Connection.WriteFloatData('', NotaUtil.StringToFloatDef(IPITrib.VBC,0));
             Connection.WriteFloatData('', NotaUtil.StringToFloatDef(IPITrib.VIPI,0));
             Connection.WriteFloatData('', NotaUtil.StringToFloatDef(IPITrib.PIPI,0));
           end
@@ -439,8 +454,6 @@ begin
                 (IPINT.CST = '04') or (IPINT.CST = '51') or (IPINT.CST = '52') or
                 (IPINT.CST = '53') or (IPINT.CST = '54') or (IPINT.CST = '55') then
           begin
-//            Connection.WriteStrData('', IPINT.CST);
-//            Connection.WriteFloatData('', 0);
             Connection.WriteFloatData('', 0);
             Connection.WriteFloatData('', 0);
           end
@@ -743,6 +756,71 @@ end;
 
 procedure TdmACBrNFe.CustomInformacoesAdicionaisCXNOpen(
   Connection: TRvCustomConnection);
+begin
+  Connection.DataRows := 1;
+end;
+
+procedure TdmACBrNFe.CustomObservacaoFiscoCXNGetCols(
+  Connection: TRvCustomConnection);
+begin
+  Connection.WriteField('OBSF', dtMemo,5000,'','');
+end;
+
+procedure TdmACBrNFe.CustomObservacaoFiscoCXNGetRow(
+  Connection: TRvCustomConnection);
+var
+  i: Integer;
+  vTemp: TStringList;
+  vStream: TMemoryStream;
+begin
+  with FNFe.InfNFe.InfAdic do
+  begin
+    vTemp := TStringList.Create;
+    vStream := TMemoryStream.Create;
+    try
+      for i:=0  to ObsFisco.Count-1 do
+      begin
+        with ObsFisco.Items[i] do
+          vTemp.Add(XCampo+': '+XTexto);
+      end;
+
+      vTemp.Add(InfAdFisco);
+      vTemp.SaveToStream(vStream);
+      vStream.Position := 0;
+      Connection.WriteBlobData(vStream.Memory^, vStream.Size);
+    finally
+      vTemp.Free;
+      vStream.Free;
+    end;
+  end;
+
+end;
+
+procedure TdmACBrNFe.CustomObservacaoFiscoCXNOpen(
+  Connection: TRvCustomConnection);
+begin
+  Connection.DataRows := 1;
+end;
+
+procedure TdmACBrNFe.CustomISSQNCXNGetCols(
+  Connection: TRvCustomConnection);
+begin
+  Connection.WriteField('vSERV', dtFloat, 15, '', '');
+  Connection.WriteField('vBC', dtFloat, 15, '', '');
+  Connection.WriteField('vISS', dtFloat, 15, '', '');
+
+end;
+
+procedure TdmACBrNFe.CustomISSQNCXNGetRow(Connection: TRvCustomConnection);
+begin
+  with FNFe.InfNFe.Total.ISSQNtot do begin
+    Connection.WriteFloatData('', NotaUtil.StringToFloatDef(VServ,0));
+    Connection.WriteFloatData('', NotaUtil.StringToFloatDef(VBC,0));
+    Connection.WriteFloatData('', NotaUtil.StringToFloatDef(VISS,0));
+  end;
+end;
+
+procedure TdmACBrNFe.CustomISSQNCXNOpen(Connection: TRvCustomConnection);
 begin
   Connection.DataRows := 1;
 end;

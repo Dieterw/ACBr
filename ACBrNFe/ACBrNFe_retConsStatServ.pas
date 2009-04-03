@@ -39,16 +39,18 @@
 |*
 |* 16/12/2008: Wemerson Souto
 |*  - Doação do componente para o Projeto ACBr
+|* 13/03/2009: Dulcemar P. Zilli
+|*  - Atualização para pacote Pl_005c
 ******************************************************************************}
 
-{**********************************************************************************************}
-{                                                                                              }
-{                                       XML Data Binding                                       }
-{                                                                                              }
-{         Generated on: 22/07/2008 14:59:29                                                    }
-{       Generated from: PL_005a\retConsStatServ_v1.07.xsd                                      }
-{                                                                                              }
-{**********************************************************************************************}
+{**************************************************************}
+{                                                              }
+{                       XML Data Binding                       }
+{                                                              }
+{         Generated on: 13/03/2009 11:32:12                    }
+{       Generated from: .\PL_005c\retConsStatServ_v1.07.xsd   }
+{                                                              }
+{**************************************************************}
 
 unit ACBrNFe_retConsStatServ;
 
@@ -65,7 +67,7 @@ type
 { IXMLTRetConsStatServ }
 
   IXMLTRetConsStatServ = interface(IXMLNode)
-    ['{377E559F-2E20-445C-A8CB-3CC609CF75E9}']
+    ['{868A9253-0434-431A-9856-9D4AE12145A3}']
     { Property Accessors }
     function Get_Versao: WideString;
     function Get_TpAmb: WideString;

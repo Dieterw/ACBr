@@ -39,16 +39,18 @@
 |*
 |* 16/12/2008: Wemerson Souto
 |*  - Doação do componente para o Projeto ACBr
+|* 13/03/2009: Dulcemar P. Zilli
+|*  - Atualização para Pacote Pl_005c
 ******************************************************************************}
 
-{******************************************************************************************}
-{                                                                                          }
-{                                     XML Data Binding                                     }
-{                                                                                          }
-{         Generated on: 28/07/2008 15:44:34                                                }
-{       Generated from: PL_005a\consReciNFe_v1.10.xsd                                      }
-{                                                                                          }
-{******************************************************************************************}
+{**********************************************************}
+{                                                          }
+{                     XML Data Binding                     }
+{                                                          }
+{         Generated on: 13/03/2009 11:19:47                }
+{       Generated from: .\PL_005c\consReciNFe_v1.10.xsd   }
+{                                                          }
+{**********************************************************}
 
 unit ACBrNFe_consReciNFe;
 
@@ -65,7 +67,7 @@ type
 { IXMLTConsReciNFe }
 
   IXMLTConsReciNFe = interface(IXMLNode)
-    ['{CFCB27E8-61D6-4751-80B0-0465852893D4}']
+    ['{01DF78DE-A678-406A-9B42-35E5CDFC04CC}']
     { Property Accessors }
     function Get_Versao: WideString;
     function Get_TpAmb: WideString;

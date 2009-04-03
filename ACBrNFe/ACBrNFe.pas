@@ -59,7 +59,7 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-    function Enviar(ALote: Integer): Boolean;
+    function Enviar(ALote: Integer; Imprimir:Boolean = True): Boolean;
     function Cancelamento(AJustificativa:WideString): Boolean;
     function Consultar: Boolean;
     property WebServices: TWebServices read FWebServices write FWebServices;
@@ -110,6 +110,8 @@ begin
   begin
     WebServices.Consulta.NFeChave := self.NotasFiscais.Items[0].XML.NFeChave;
     WebServices.Consulta.Executar;
+    if not(Configuracoes.WebServices.Visualizar) then
+      raise Exception.Create( WebServices.Consulta.Msg );
   end;
   Result := True;
 
@@ -134,11 +136,13 @@ begin
   FWebServices.Free;
   {$IFNDEF ACBrNFeCAPICOM}
      NotaUtil.ShutDownXmlSec ;
-  {$ENDIF}   
+  {$ENDIF}
+
+  MyNFe.FreeOnRelease;   
   inherited;
 end;
 
-function TACBrNFe.Enviar(ALote: Integer): Boolean;
+function TACBrNFe.Enviar(ALote: Integer; Imprimir:Boolean = True): Boolean;
 var
   i: Integer;
 begin
@@ -148,11 +152,13 @@ begin
 
   Result := WebServices.Envia(ALote);
 
-  for i:= 0 to NotasFiscais.Count-1 do
-  begin
-    if NotasFiscais.Items[i].XML.Confirmada then
-      NotasFiscais.Items[i].XML.Imprimir;
-  end;
+  if Imprimir then begin
+    for i:= 0 to NotasFiscais.Count-1 do
+    begin
+      if NotasFiscais.Items[i].XML.Confirmada then
+        NotasFiscais.Items[i].XML.Imprimir;
+    end;
+  end;  
 end;
 
 end.

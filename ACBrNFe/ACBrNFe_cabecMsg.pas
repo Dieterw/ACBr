@@ -39,16 +39,18 @@
 |*
 |* 16/12/2008: Wemerson Souto
 |*  - Doação do componente para o Projeto ACBr
+|* 13/03/2009: Dulcemar P. Zilli
+|*  - Atualização para Pacote Pl_005c
 ******************************************************************************}
 
-{***************************************************************************************}
-{                                                                                       }
-{                                   XML Data Binding                                    }
-{                                                                                       }
-{         Generated on: 24/07/2008 08:45:54                                             }
-{       Generated from: PL_005a\cabecMsg_v1.02.xsd                                      }
-{                                                                                       }
-{***************************************************************************************}
+{*******************************************************}
+{                                                       }
+{                   XML Data Binding                    }
+{                                                       }
+{         Generated on: 13/03/2009 11:07:47             }
+{       Generated from: .\PL_005c\cabecMsg_v1.02.xsd   }
+{                                                       }
+{*******************************************************}
 
 unit ACBrNFe_cabecMsg;
 
@@ -65,7 +67,7 @@ type
 { IXMLCabecMsg }
 
   IXMLCabecMsg = interface(IXMLNode)
-    ['{A4ECC7E2-2B91-4869-93B4-DA17E8F45095}']
+    ['{00BBE9D2-757D-443D-B7C3-67A4AF851EC4}']
     { Property Accessors }
     function Get_Versao: WideString;
     function Get_VersaoDados: WideString;

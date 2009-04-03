@@ -41,6 +41,8 @@
 |*  - Doação do componente para o Projeto ACBr
 |* 09/03/2009: Dulcemar P.Zilli
 |*  - Inclusão IPI, II e DI 
+|* 14/03/2009: Dulcemar P.Zilli
+|*  - Inclusão ISSQN 
 ******************************************************************************}
 unit ACBrNFeDadosProdutos;
 
@@ -538,6 +540,27 @@ type
     property ValorIOF: Double read FValorIOF write SetValorIOF;
   end;
 
+  TISSQN = Class(TPersistent)
+  private
+    FValorISSQN: Double;
+    FAliquota: Double;
+    FValorBase: Double;
+    FMunicipioFatoGerador: Integer;
+    FCodigoServico: String;
+    procedure SetAliquota(const Value: Double);
+    procedure SetMunicipioFatoGerador(const Value: Integer);
+    procedure SetValorBase(const Value: Double);
+    procedure SetValorISSQN(const Value: Double);
+    procedure SetCodigoServico(const Value: String);
+  public
+  published
+    property ValorBase:Double read FValorBase write SetValorBase;
+    property Aliquota:Double read FAliquota write SetAliquota;
+    property ValorISSQN:Double read FValorISSQN write SetValorISSQN;
+    property MunicipioFatoGerador: Integer read FMunicipioFatoGerador write SetMunicipioFatoGerador;
+    property CodigoServico:String read FCodigoServico write SetCodigoServico;
+  end;
+
 
   TTributos = Class(TPersistent)
   private
@@ -548,10 +571,12 @@ type
     FII: TII;
     FPISST: TPISST;
     FCOFINSST: TCOFINSST;
+    FISSQN: TISSQN;
     procedure SetIPI(const Value: TIPI);
     procedure SetII(const Value: TII);
     procedure SetPISST(const Value: TPISST);
     procedure SetCOFINSST(const Value: TCOFINSST);
+    procedure SetISSQN(const Value: TISSQN);
   public
     constructor Create;
     destructor Destroy; override;
@@ -564,7 +589,9 @@ type
     property II:TII read FII write SetII;
     property PISST : TPISST read FPISST write SetPISST;
     property COFINSST: TCOFINSST read FCOFINSST write SetCOFINSST;
+    property ISSQN: TISSQN read FISSQN write SetISSQN;
   end;
+
 
   DadoProduto = class(TCollectionItem)
   private
@@ -580,12 +607,20 @@ type
     FValorTotal : Double;
     FValorDesconto: Double;
     FDI: TDI;
+    FQuantidadeTributavel: Double;
+    FValorUnitarioTributacao: Double;
+    FUnidadeTributavel: String;
+    FGTINUnidadeTributavel: String;
     procedure SetCodigo(AValue: String);
     procedure SetEAN(AValue: String);
     procedure SetDescricao(AValue: String);
     procedure SetNCM(AValue: String);
     procedure SetUnidade(AValue: String);
     procedure SetDI(const Value: TDI);
+    procedure SetQuantidadeTributavel(const Value: Double);
+    procedure SetUnidadeTributavel(const Value: String);
+    procedure SetValorUnitarioTributacao(const Value: Double);
+    procedure SetGTINUnidadeTributavel(const Value: String);
   public
     constructor Create(Collection: TCollection); override;
     destructor Destroy; override;
@@ -600,6 +635,12 @@ type
     property Unidade : String read FUnidade write SetUnidade;
     property Quantidade : Double read FQuantidade write FQuantidade;
     property ValorUnitario : Double read FValorUnitario write FValorUnitario;
+
+    property GTINUnidadeTributavel: String read FGTINUnidadeTributavel write SetGTINUnidadeTributavel;
+    property UnidadeTributavel: String read FUnidadeTributavel write SetUnidadeTributavel;
+    property QuantidadeTributavel: Double read FQuantidadeTributavel write SetQuantidadeTributavel;
+    property ValorUnitarioTributacao: Double read FValorUnitarioTributacao write SetValorUnitarioTributacao;
+
     property ValorTotal : Double read FValorTotal write FValorTotal;
     property ValorDesconto : Double read FValorDesconto write FValorDesconto;
     property DI : TDI read FDI write SetDI;
@@ -671,13 +712,14 @@ end;
 
 constructor TTributos.Create;
 begin
-  FICMS   := TICMS.Create;
-  FPIS    := TPIS.Create;
-  FCOFINS := TCOFINS.Create;
-  FIPI    := TIPI.Create;
-  FII     := TII.Create;
-  FPISST  := TPISST.Create;
+  FICMS     := TICMS.Create;
+  FPIS      := TPIS.Create;
+  FCOFINS   := TCOFINS.Create;
+  FIPI      := TIPI.Create;
+  FII       := TII.Create;
+  FPISST    := TPISST.Create;
   FCOFINSST := TCOFINSST.Create;
+  FISSQN    := TISSQN.Create;
 end;
 
 destructor TTributos.Destroy;
@@ -689,6 +731,7 @@ begin
   FII.Free;
   FPISST.Free;
   FCOFINSST.Free;
+  FISSQN.Free;
   inherited;
 end;
 
@@ -705,6 +748,11 @@ end;
 procedure TTributos.SetIPI(const Value: TIPI);
 begin
   FIPI := Value;
+end;
+
+procedure TTributos.SetISSQN(const Value: TISSQN);
+begin
+  FISSQN := Value;
 end;
 
 procedure TTributos.SetPISST(const Value: TPISST);
@@ -752,15 +800,35 @@ begin
   end
 end;
 
+procedure DadoProduto.SetGTINUnidadeTributavel(const Value: String);
+begin
+  FGTINUnidadeTributavel := Value;
+end;
+
 procedure DadoProduto.SetNCM(AValue: String);
 begin
   if NotaUtil.NaoEstaVazio(AValue) then
     FNCM := NotaUtil.Poem_Zeros(NotaUtil.LimpaNumero(AValue), 8);
 end;
 
+procedure DadoProduto.SetQuantidadeTributavel(const Value: Double);
+begin
+  FQuantidadeTributavel := Value;
+end;
+
 procedure DadoProduto.SetUnidade(AValue: String);
 begin
   FUnidade := NotaUtil.CortaD(AValue, 6);
+end;
+
+procedure DadoProduto.SetUnidadeTributavel(const Value: String);
+begin
+  FUnidadeTributavel := Value;
+end;
+
+procedure DadoProduto.SetValorUnitarioTributacao(const Value: Double);
+begin
+  FValorUnitarioTributacao := Value;
 end;
 
 { TDadosProdutos }
@@ -1010,6 +1078,8 @@ begin
   inherited;
 end;
 
+
+
 { TIPI }
 
 constructor TIPI.Create;
@@ -1206,6 +1276,33 @@ end;
 procedure TCOFINSST.SetValorCOFINSST(const Value: Double);
 begin
   FValorCOFINSST := Value;
+end;
+
+{ TISSQN }
+
+procedure TISSQN.SetAliquota(const Value: Double);
+begin
+  FAliquota := Value;
+end;
+
+procedure TISSQN.SetCodigoServico(const Value: String);
+begin
+  FCodigoServico := Value;
+end;
+
+procedure TISSQN.SetMunicipioFatoGerador(const Value: Integer);
+begin
+  FMunicipioFatoGerador := Value;
+end;
+
+procedure TISSQN.SetValorBase(const Value: Double);
+begin
+  FValorBase := Value;
+end;
+
+procedure TISSQN.SetValorISSQN(const Value: Double);
+begin
+  FValorISSQN := Value;
 end;
 
 end.

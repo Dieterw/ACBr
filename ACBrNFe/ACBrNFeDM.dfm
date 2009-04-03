@@ -1,9 +1,9 @@
 object dmACBrNFe: TdmACBrNFe
   OldCreateOrder = False
-  Left = 420
-  Top = 213
+  Left = 242
+  Top = 176
   Height = 444
-  Width = 601
+  Width = 743
   object CustomDestinatarioCXN: TRvCustomConnection
     RuntimeVisibility = rtDeveloper
     OnGetCols = CustomDestinatarioCXNGetCols
@@ -115,6 +115,22 @@ object dmACBrNFe: TdmACBrNFe
     OnOpen = CustomInformacoesAdicionaisCXNOpen
     Left = 206
     Top = 333
+  end
+  object CustomObservacaoFiscoCXN: TRvCustomConnection
+    RuntimeVisibility = rtDeveloper
+    OnGetCols = CustomObservacaoFiscoCXNGetCols
+    OnGetRow = CustomObservacaoFiscoCXNGetRow
+    OnOpen = CustomObservacaoFiscoCXNOpen
+    Left = 342
+    Top = 333
+  end
+  object CustomISSQNCXN: TRvCustomConnection
+    RuntimeVisibility = rtDeveloper
+    OnGetCols = CustomISSQNCXNGetCols
+    OnGetRow = CustomISSQNCXNGetRow
+    OnOpen = CustomISSQNCXNOpen
+    Left = 488
+    Top = 80
   end
   object RvRenderPDF1: TRvRenderPDF
     DisplayName = 'Adobe Acrobat (PDF)'

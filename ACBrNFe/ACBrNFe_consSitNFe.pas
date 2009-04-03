@@ -39,16 +39,18 @@
 |*
 |* 16/12/2008: Wemerson Souto
 |*  - Doação do componente para o Projeto ACBr
+|* 13/03/2009: Dulcemar P. Zilli
+|*  - Atualização para Pacote Pl_005c
 ******************************************************************************}
 
-{*****************************************************************************************}
-{                                                                                         }
-{                                    XML Data Binding                                     }
-{                                                                                         }
-{         Generated on: 04/08/2008 15:44:11                                               }
-{       Generated from: PL_005a\consSitNFe_v1.07.xsd                                      }
-{                                                                                         }
-{*****************************************************************************************}
+{*********************************************************}
+{                                                         }
+{                    XML Data Binding                     }
+{                                                         }
+{         Generated on: 13/03/2009 11:21:57               }
+{       Generated from: .\PL_005c\consSitNFe_v1.07.xsd   }
+{                                                         }
+{*********************************************************}
 
 unit ACBrNFe_consSitNFe;
 
@@ -65,7 +67,7 @@ type
 { IXMLTConsSitNFe }
 
   IXMLTConsSitNFe = interface(IXMLNode)
-    ['{2A6EDAC5-4750-4FCD-BE26-4F408B682505}']
+    ['{AAE56C63-6E50-4794-AFC4-170008885BF9}']
     { Property Accessors }
     function Get_Versao: WideString;
     function Get_TpAmb: WideString;

@@ -39,6 +39,9 @@
 |*
 |* 16/12/2008: Wemerson Souto
 |*  - Doação do componente para o Projeto ACBr
+|* 14/03/2009: Dulcemar P. Zilli
+|*  - Implementação Totais ISSQN
+|*  - Implementacao Totais Retenções Tributos
 ******************************************************************************}
 unit ACBrNFeValoresTotais;
 
@@ -48,6 +51,39 @@ uses
   Classes;
 
 type
+
+  TISSQNTOT = Class(Tpersistent)
+  private
+    FValorServicos:Double;
+    FValorBase:Double;
+    FValorISSQN:Double;
+    FValorPIS: Double;
+    FValorCOFINS:Double;
+  public
+  published
+    property ValorServicos:Double read FValorServicos write FValorServicos;
+    property ValorBase:Double read FValorBase write FValorBase;
+    property ValorISSQN:Double read FValorISSQN write FValorISSQN;
+    property ValorPIS: Double read FValorPIS write FValorPIS;
+    property ValorCOFINS:Double read FValorCOFINS write FValorCOFINS;
+  end;
+
+  TRETTRIB = Class(TPersistent)
+  private
+    FValorRetidoPIS:Double;
+    FValorRetidoCOFINS:Double;
+    FValorRetidoCSLL:Double;
+    FBaseCalculoIRRF:Double;
+    FValorIRRF:Double;
+    FValorRetidoINSS:Double;
+  published
+    property ValorRetidoPIS:Double read FValorRetidoPIS write FValorRetidoPIS;
+    property ValorRetidoCOFINS:Double read FValorRetidoCOFINS write FValorRetidoCOFINS;
+    property ValorRetidoCSLL:Double read FValorRetidoCSLL write FValorRetidoCSLL;
+    property BaseCalculoIRRF:Double read FBaseCalculoIRRF write FBaseCalculoIRRF;
+    property ValorIRRF:Double read FValorIRRF write FValorIRRF;
+    property ValorRetidoINSS:Double read FValorRetidoINSS write FValorRetidoINSS;
+  end;
 
   TValoresTotais = class(TPersistent)
   private
@@ -65,6 +101,13 @@ type
     FValorCOFINS:Double;
     FValorOutrasDespesas:Double;
     FValorNota:Double;
+    FISSQNTot: TISSQNTOT;
+    FRetencoes: TRETTRIB;
+    procedure SetISSQNTOT(const Value: TISSQNTOT);
+    procedure SetRetencoes(const Value: TRETTRIB);
+  public
+    constructor Create;
+    destructor Destroy; override;
   published
     property BaseICMS: Double read FBaseICMS write FBaseICMS;
     property ValorICMS: Double read FValorICMS write FValorICMS;
@@ -80,9 +123,36 @@ type
     property ValorCOFINS: Double read FValorCOFINS write FValorCOFINS;
     property ValorOutrasDespesas: Double read FValorOutrasDespesas write FValorOutrasDespesas;
     property ValorNota: Double read FValorNota write FValorNota;
+    property ISSQNTot: TISSQNTOT read FISSQNTOT write SetISSQNTOT;
+    property Retencoes: TRETTRIB read FRetencoes write SetRetencoes;
   end;
 
 
 implementation
+
+{ TValoresTotais }
+
+constructor TValoresTotais.Create;
+begin
+  FISSQNTOT  := TISSQNTOT.Create;
+  FRetencoes := TRETTRIB.Create;
+end;
+
+destructor TValoresTotais.Destroy;
+begin
+  FISSQNTOT.Free;
+  FRetencoes.Free;
+  inherited;
+end;
+
+procedure TValoresTotais.SetISSQNTOT(const Value: TISSQNTOT);
+begin
+  FISSQNTOT := Value;
+end;
+
+procedure TValoresTotais.SetRetencoes(const Value: TRETTRIB);
+begin
+  FRetencoes := Value;
+end;
 
 end.

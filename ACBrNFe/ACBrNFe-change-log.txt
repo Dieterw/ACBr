@@ -47,6 +47,23 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Alterações 02/04/09 - Realizadas por Dulcemar Zilli
+[*] Ajustes para o Pacote PL_005c
+[+] Acrescentado Observações do Fisco
+[+] Incluida Informações Reboque Transportador
+[+] Incluida Informações ISSQN e Retenções Tributos e Totalizadores Gerais
+[+] Adicionadas as Complementação Emitente, IEST, IM, CNAE
+[-] Separados GTIN da Unidade Tributavel, Unidade Tributavel, Quantidade Tributavel e 
+    Valor Unitario Tributavel de EAN, Unidade de Comercializações, Quantidade e 
+    Valor Unitario pois não necessariamente as duas são iguais e  nem todos os 
+    produtos tem estas informação, que é aplicado mais em casos de 
+    comercialização de combustiveis. No caso da Unidade de Tributação não ser 
+    informada ela usa por default a Unidade de Comercialização, neste caso a GTIN 
+    fica em branco e os demais campo zerado.  
+[*] Alterado relatorio da DANFE p/ impressão de ISSQN e totais, bem como IPI, 
+    Observações do Fisco, etc.
+
+
 Versão 0.01a   18/02/09
 ---------------
 [+] Início do Projeto

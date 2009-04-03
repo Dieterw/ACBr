@@ -39,6 +39,8 @@
 |*
 |* 16/12/2008: Wemerson Souto
 |*  - Doação do componente para o Projeto ACBr
+|* 11/03/2009: Dulcemar P. Zilli
+|*  - Inclusao Observações Fisco
 ******************************************************************************}
 unit ACBrNFeDadosAdicionais;
 
@@ -71,17 +73,44 @@ type
     function GetNamePath: string; override;
   end;
 
+
+  Fisco = class(TCollectionItem)
+  private
+    FTexto: String;
+    FCampo: String;
+    procedure SetCampo(const Value: String);
+    procedure SetTexto(const Value: String);
+  published
+    property Campo: String read FCampo write SetCampo;
+    property Texto: String read FTexto write SetTexto;
+  end;
+
+  TFisco = class(TOwnedCollection)
+  private
+    function GetItem(Index: Integer): Fisco;
+    procedure SetItem(Index: Integer; const Value: Fisco);
+  public
+    function  Add: Fisco;
+    function Insert(Index: Integer): Fisco;
+    property Items[Index: Integer]: Fisco read GetItem  write SetItem;
+    function GetNamePath: string; override;
+  end;
+
+
   TDadosAdicionais = class(TComponent)
   private
     FComplemento: String;
     FInformacoes: TInformacoes;
+    FObsFisco: TFisco;
     procedure SetComplemento(AValue: String);
+    procedure SetObsFisco(const Value: TFisco);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
   published
     property Complemento: String read FComplemento write SetComplemento;
     property Informacoes: TInformacoes read FInformacoes write FInformacoes;
+    property ObsFisco: TFisco read FObsFisco write SetObsFisco;
   end;
 
 implementation
@@ -123,17 +152,24 @@ constructor TDadosAdicionais.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   FInformacoes := TInformacoes.Create(self , Informacao);
+  FObsFisco := TFisco.Create(self , Fisco);
 end;
 
 destructor TDadosAdicionais.Destroy;
 begin
   FInformacoes.Free;
+  FObsFisco.Free;
   inherited;
 end;
 
 procedure TDadosAdicionais.SetComplemento(AValue: String);
 begin
   FComplemento := NotaUtil.TrataString(AValue);
+end;
+
+procedure TDadosAdicionais.SetObsFisco(const Value: TFisco);
+begin
+  FObsFisco := Value;
 end;
 
 { Informacao }
@@ -146,6 +182,47 @@ end;
 procedure Informacao.SetTexto(AValue: String);
 begin
   FTexto := NotaUtil.TrataString(AValue, 60);
+end;
+
+{ Fisco }
+
+procedure Fisco.SetCampo(const Value: String);
+begin
+  FCampo := Value;
+end;
+
+procedure Fisco.SetTexto(const Value: String);
+begin
+  FTexto := Value;
+end;
+
+{ TFisco }
+
+function TFisco.Add: Fisco;
+begin
+  if Self.Count > 10 then
+    raise Exception.Create('Numero máximo de Informações atingido(10)!');
+  Result := Fisco(inherited Add);
+end;
+
+function TFisco.GetItem(Index: Integer): Fisco;
+begin
+  Result := Fisco(inherited Items[Index]);
+end;
+
+function TFisco.GetNamePath: string;
+begin
+  Result := 'Fisco';
+end;
+
+function TFisco.Insert(Index: Integer): Fisco;
+begin
+  Result := Fisco(inherited Insert(Index));
+end;
+
+procedure TFisco.SetItem(Index: Integer; const Value: Fisco);
+begin
+  Items[Index].Assign(Value);
 end;
 
 end.

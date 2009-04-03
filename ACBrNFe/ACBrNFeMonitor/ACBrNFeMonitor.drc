@@ -8,28 +8,28 @@
   resources were bound to the produced executable.
 */
 
-#define XMLConst_SNoDOMParseOptions 65104
-#define XMLConst_SMissingItemTag 65105
-#define XMLConst_SNodeReadOnly 65106
-#define XMLConst_SNoRefresh 65107
-#define XMLConst_SMissingFileName 65108
-#define XMLConst_SLine 65109
-#define JConsts_sChangeJPGSize 65120
-#define JConsts_sJPEGError 65121
-#define JConsts_sJPEGImageFile 65122
-#define XMLConst_SDuplicateRegistration 65123
-#define XMLConst_SNoMatchingDOMVendor 65124
-#define XMLConst_SNoDOMNodeEx 65125
-#define XMLConst_SDOMNotSupported 65126
-#define XMLConst_SNodeExpected 65127
-#define XMLConst_SMSDOMNotInstalled 65128
-#define XMLConst_SNotActive 65129
-#define XMLConst_SNodeNotFound 65130
-#define XMLConst_SMissingNode 65131
-#define XMLConst_SNoAttributes 65132
-#define XMLConst_SInvalidNodeType 65133
-#define XMLConst_SMismatchedRegItems 65134
-#define XMLConst_SNotSingleTextNode 65135
+#define XMLConst_SNoRefresh 65104
+#define XMLConst_SMissingFileName 65105
+#define XMLConst_SLine 65106
+#define JConsts_sChangeJPGSize 65107
+#define JConsts_sJPEGError 65108
+#define JConsts_sJPEGImageFile 65109
+#define XMLConst_SDuplicateRegistration 65120
+#define XMLConst_SNoMatchingDOMVendor 65121
+#define XMLConst_SNoDOMNodeEx 65122
+#define XMLConst_SDOMNotSupported 65123
+#define XMLConst_SNodeExpected 65124
+#define XMLConst_SMSDOMNotInstalled 65125
+#define XMLConst_SNotActive 65126
+#define XMLConst_SNodeNotFound 65127
+#define XMLConst_SMissingNode 65128
+#define XMLConst_SNoAttributes 65129
+#define XMLConst_SInvalidNodeType 65130
+#define XMLConst_SMismatchedRegItems 65131
+#define XMLConst_SNotSingleTextNode 65132
+#define XMLConst_SNoDOMParseOptions 65133
+#define XMLConst_SMissingItemTag 65134
+#define XMLConst_SNodeReadOnly 65135
 #define IdResourceStrings_RSSocksRequestFailed 65136
 #define IdResourceStrings_RSSocksRequestServerFailed 65137
 #define IdResourceStrings_RSSocksRequestIdentFailed 65138
@@ -432,9 +432,6 @@
 #define SysConst_SInvalidInput 65535
 STRINGTABLE
 BEGIN
-	XMLConst_SNoDOMParseOptions,	"DOM Implementation does not support IDOMParseOptions"
-	XMLConst_SMissingItemTag,	"ItemTag property is not initialized"
-	XMLConst_SNodeReadOnly,	"Node is readonly"
 	XMLConst_SNoRefresh,	"Refresh is only supported if the FileName or XML properties are set"
 	XMLConst_SMissingFileName,	"FileName cannot be blank"
 	XMLConst_SLine,	"Line"
@@ -454,6 +451,9 @@ BEGIN
 	XMLConst_SInvalidNodeType,	"Invalid node type"
 	XMLConst_SMismatchedRegItems,	"Mismatched paramaters to RegisterChildNodes"
 	XMLConst_SNotSingleTextNode,	"Element does not contain a single text node"
+	XMLConst_SNoDOMParseOptions,	"DOM Implementation does not support IDOMParseOptions"
+	XMLConst_SMissingItemTag,	"ItemTag property is not initialized"
+	XMLConst_SNodeReadOnly,	"Node is readonly"
 	IdResourceStrings_RSSocksRequestFailed,	"Request rejected or failed."
 	IdResourceStrings_RSSocksRequestServerFailed,	"Request rejected because SOCKS server cannot connect."
 	IdResourceStrings_RSSocksRequestIdentFailed,	"Request rejected because the client program and identd report different user-ids."

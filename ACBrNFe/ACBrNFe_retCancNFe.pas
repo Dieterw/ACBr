@@ -39,16 +39,18 @@
 |*
 |* 16/12/2008: Wemerson Souto
 |*  - Doação do componente para o Projeto ACBr
+|* 13/03/2009: Dulcemar P. Zilli
+|*  - Atualização para pacote Pl_005c
 ******************************************************************************}
 
-{*****************************************************************************************}
-{                                                                                         }
-{                                    XML Data Binding                                     }
-{                                                                                         }
-{         Generated on: 12/08/2008 11:00:57                                               }
-{       Generated from: PL_005a\retCancNFe_v1.07.xsd                                      }
-{                                                                                         }
-{*****************************************************************************************}
+{*********************************************************}
+{                                                         }
+{                    XML Data Binding                     }
+{                                                         }
+{         Generated on: 13/03/2009 11:29:41               }
+{       Generated from: .\PL_005c\retCancNFe_v1.07.xsd   }
+{                                                         }
+{*********************************************************}
 
 unit ACBrNFe_retCancNFe;
 
@@ -77,7 +79,7 @@ type
 { IXMLTRetCancNFe }
 
   IXMLTRetCancNFe = interface(IXMLNode)
-    ['{5DD43D22-2AAE-4F87-9745-73F30F90F64D}']
+    ['{2AB44DA7-1269-47C8-AC1B-36A0E1E1E727}']
     { Property Accessors }
     function Get_Versao: WideString;
     function Get_InfCanc: IXMLInfCanc;
@@ -92,7 +94,7 @@ type
 { IXMLInfCanc }
 
   IXMLInfCanc = interface(IXMLNode)
-    ['{97FA7DEB-18D9-475B-9DAF-E2E51EAEDEF5}']
+    ['{6975B56A-F84A-489D-8532-CAED9BD3551F}']
     { Property Accessors }
     function Get_Id: WideString;
     function Get_TpAmb: WideString;
@@ -127,7 +129,7 @@ type
 { IXMLSignatureType }
 
   IXMLSignatureType = interface(IXMLNode)
-    ['{3527ECBA-3F5E-4FDF-A988-039F46A62D9A}']
+    ['{CCC9FB6A-368C-424C-B8CB-CD2D8AED7C64}']
     { Property Accessors }
     function Get_Id: WideString;
     function Get_SignedInfo: IXMLSignedInfoType;
@@ -144,7 +146,7 @@ type
 { IXMLSignedInfoType }
 
   IXMLSignedInfoType = interface(IXMLNode)
-    ['{16D126FE-CCE1-4471-B904-954839E85219}']
+    ['{F53AA5C8-50CC-4C4E-ABEE-0216D7AAFC21}']
     { Property Accessors }
     function Get_Id: WideString;
     function Get_CanonicalizationMethod: IXMLCanonicalizationMethod;
@@ -161,7 +163,7 @@ type
 { IXMLCanonicalizationMethod }
 
   IXMLCanonicalizationMethod = interface(IXMLNode)
-    ['{FFE81AF7-8473-4D51-96EF-C3D76D157208}']
+    ['{8289298A-F5A4-49F1-A5EA-9C6A08CB20E2}']
     { Property Accessors }
     function Get_Algorithm: WideString;
     procedure Set_Algorithm(Value: WideString);
@@ -172,7 +174,7 @@ type
 { IXMLSignatureMethod }
 
   IXMLSignatureMethod = interface(IXMLNode)
-    ['{52EBCCCB-D4A7-441E-9009-8FCE3C795AC3}']
+    ['{BB39E329-212D-495C-860F-74FABAB321CE}']
     { Property Accessors }
     function Get_Algorithm: WideString;
     procedure Set_Algorithm(Value: WideString);
@@ -183,7 +185,7 @@ type
 { IXMLReferenceType }
 
   IXMLReferenceType = interface(IXMLNode)
-    ['{0151F6F5-F9A9-4F9B-8B80-1A5B7B3DA657}']
+    ['{4725AFF1-B91F-4B82-87A1-2E5B31869E76}']
     { Property Accessors }
     function Get_Id: WideString;
     function Get_URI: WideString;
@@ -207,7 +209,7 @@ type
 { IXMLTransformsType }
 
   IXMLTransformsType = interface(IXMLNodeCollection)
-    ['{A27E78E6-5E99-4A06-AD1A-E204B459D160}']
+    ['{3140223A-100F-4F68-8837-D596F85F067F}']
     { Property Accessors }
     function Get_Transform(Index: Integer): IXMLTransformType;
     { Methods & Properties }
@@ -219,7 +221,7 @@ type
 { IXMLTransformType }
 
   IXMLTransformType = interface(IXMLNodeCollection)
-    ['{C18F9A8B-C2BD-48DA-BCB8-14C7A4BFC897}']
+    ['{43F49839-683A-4590-AB3B-8993683A651C}']
     { Property Accessors }
     function Get_Algorithm: WideString;
     function Get_XPath(Index: Integer): WideString;
@@ -234,7 +236,7 @@ type
 { IXMLDigestMethod }
 
   IXMLDigestMethod = interface(IXMLNode)
-    ['{AE2BB13E-CE91-4B4D-B9CC-60A002037B57}']
+    ['{2DE302C5-D2B4-4C03-9F30-89553B2B6011}']
     { Property Accessors }
     function Get_Algorithm: WideString;
     procedure Set_Algorithm(Value: WideString);
@@ -245,7 +247,7 @@ type
 { IXMLSignatureValueType }
 
   IXMLSignatureValueType = interface(IXMLNode)
-    ['{478554C7-DBBD-47B2-B7D1-770B48120941}']
+    ['{2B5700B3-6356-4560-9BEF-082A6A5C410B}']
     { Property Accessors }
     function Get_Id: WideString;
     procedure Set_Id(Value: WideString);
@@ -256,7 +258,7 @@ type
 { IXMLKeyInfoType }
 
   IXMLKeyInfoType = interface(IXMLNode)
-    ['{36EEEF25-7DDB-4B4C-801C-022098FA5D47}']
+    ['{D71746E6-9583-40B3-BEA8-16033992EC01}']
     { Property Accessors }
     function Get_Id: WideString;
     function Get_X509Data: IXMLX509DataType;
@@ -269,7 +271,7 @@ type
 { IXMLX509DataType }
 
   IXMLX509DataType = interface(IXMLNode)
-    ['{1A026BF6-6B1D-49FC-9B4F-0947470481D0}']
+    ['{E9C67302-9A56-41F4-AFA7-CB692C1F9DB8}']
     { Property Accessors }
     function Get_X509Certificate: WideString;
     procedure Set_X509Certificate(Value: WideString);

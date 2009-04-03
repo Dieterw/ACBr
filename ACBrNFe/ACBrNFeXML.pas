@@ -41,6 +41,14 @@
 |*  - Doação do componente para o Projeto ACBr
 |* 09/03/2009: Dulcemar P. Zilli
 |*  - Incluido IPI, II e  DI
+|* 11/03/2009: Dulcemar P. Zilli
+|*  - Observações do Fisco
+|* 13/03/2009: Dulcemar P. Zilli
+|*  - Incluida Informações Reboque Transportador
+|* 14/03/2009: Dulcemar P. Zilli
+|*  - Incluida Informações ISSQN, Retenções Tributos
+|* 17/03/2009: Dulcemar P. Zilli
+|*  - Separado unidade Tributavel da Unidade de Comercialização
 ******************************************************************************}
 
 unit ACBrNFeXML;
@@ -156,7 +164,7 @@ begin
   begin
     CUF     := IntToStr(Emitente.Endereco.UFCodigo);
     CNF     := NotaUtil.Poem_Zeros(Identificacao.Codigo, 9);
-    NatOp   := Identificacao.NaturezaOperacao;
+    NatOp   := NotaUtil.ParseText(Identificacao.NaturezaOperacao, True);
     IndPag  := IntToStr(Ord(Identificacao.FormaPagamento));
     Mod_    := NotaUtil.Poem_Zeros(Identificacao.Modelo, 2);
     Serie   := IntToStr(Identificacao.Serie);
@@ -180,28 +188,35 @@ begin
     CNPJ  := Emitente.Cnpj;
     XNome := Emitente.Nome.RazaoSocial;
     if NotaUtil.NaoEstaVazio(Emitente.Nome.Fantasia) then
-      XFant := Emitente.Nome.Fantasia;
+      XFant := NotaUtil.ParseText(Emitente.Nome.Fantasia);
 
     with EnderEmit do
     begin
-      XLgr    := Emitente.Endereco.Logradouro;
-      Nro     := Emitente.Endereco.Numero;
+      XLgr    := NotaUtil.ParseText(Emitente.Endereco.Logradouro);
+      Nro     := Trim(Emitente.Endereco.Numero);
       if NotaUtil.NaoEstaVazio(Emitente.Endereco.Complemento) then
-        XCpl := Emitente.Endereco.Complemento;
-      XBairro := Emitente.Endereco.Bairro;
+        XCpl := NotaUtil.ParseText(Emitente.Endereco.Complemento);
+      XBairro := NotaUtil.ParseText(Emitente.Endereco.Bairro);
       CMun    := IntToStr(Emitente.Endereco.Cidade.Codigo);
-      XMun    := Emitente.Endereco.Cidade.Descricao;
+      XMun    := NotaUtil.ParseText(Emitente.Endereco.Cidade.Descricao);
       UF      := Emitente.Endereco.UF;
       if NotaUtil.NaoEstaVazio(Emitente.Endereco.Cep) then
         CEP := Emitente.Endereco.Cep;
       if NotaUtil.NaoEstaZerado(Emitente.Endereco.Pais.Codigo) then
         CPais := NotaUtil.Poem_Zeros(Emitente.Endereco.Pais.Codigo, 4);
       if NotaUtil.NaoEstaVazio(Emitente.Endereco.Pais.Descricao) then
-        XPais := Emitente.Endereco.Pais.Descricao;
+        XPais := NotaUtil.ParseText(Emitente.Endereco.Pais.Descricao);
       if NotaUtil.NaoEstaVazio(Emitente.Endereco.Fone) then
         Fone := Emitente.Endereco.Fone;
     end;
     IE := Emitente.IE;
+    if NotaUtil.NaoEstaVazio(Emitente.IM) then
+      IM := Emitente.IM;
+    if NotaUtil.NaoEstaVazio(Emitente.IEST) then
+      IEST := Emitente.IEST;
+    if NotaUtil.NaoEstaVazio(Emitente.CNAE) then
+      CNAE := Emitente.CNAE;
+
   end;
 
   with NotaFiscal(FNotaFiscal), FNFe.InfNFe.Dest do
@@ -214,20 +229,20 @@ begin
     XNome := Destinatario.NomeRazao;
     with EnderDest do
     begin
-      XLgr    := Destinatario.Endereco.Logradouro;
-      Nro     := Destinatario.Endereco.Numero;
+      XLgr    := NotaUtil.ParseText(Destinatario.Endereco.Logradouro);
+      Nro     := Trim(Destinatario.Endereco.Numero);
       if NotaUtil.NaoEstaVazio(Destinatario.Endereco.Complemento) then
-        XCpl    := Destinatario.Endereco.Complemento;
-      XBairro := Destinatario.Endereco.Bairro;
+        XCpl    := NotaUtil.ParseText(Destinatario.Endereco.Complemento);
+      XBairro := NotaUtil.ParseText(Destinatario.Endereco.Bairro, True);
       CMun    := IntToStr(Destinatario.Endereco.Cidade.Codigo);
-      XMun    := Destinatario.Endereco.Cidade.Descricao;
+      XMun    := NotaUtil.ParseText(Destinatario.Endereco.Cidade.Descricao);
       UF      := Destinatario.Endereco.UF;
       if NotaUtil.NaoEstaVazio(Destinatario.Endereco.Cep) then
         CEP     := Destinatario.Endereco.CEP;
       if NotaUtil.NaoEstaZerado(Destinatario.Endereco.Pais.Codigo) then
         CPais   := IntToStr(Destinatario.Endereco.Pais.Codigo);
       if NotaUtil.NaoEstaVazio(Destinatario.Endereco.Pais.Descricao) then
-        XPais   := Destinatario.Endereco.Pais.Descricao;
+        XPais   := NotaUtil.ParseText(Destinatario.Endereco.Pais.Descricao);
       if NotaUtil.NaoEstaVazio(Destinatario.Endereco.Fone) then
         Fone    := Destinatario.Endereco.Fone;
     end;
@@ -248,18 +263,25 @@ begin
         begin
           CProd    := DadosProdutos.Items[i].Codigo;
           CEAN := DadosProdutos.Items[i].EAN;
-          XProd    := DadosProdutos.Items[i].Descricao;
+          XProd    := NotaUtil.ParseText(DadosProdutos.Items[i].Descricao);
           if NotaUtil.NaoEstaVazio(DadosProdutos.Items[i].NCM) then
             NCM := DadosProdutos.Items[i].NCM;
           CFOP     := IntToStr(DadosProdutos.Items[i].CFOP);
+
           UCom     := DadosProdutos.Items[i].Unidade;
           QCom     := NotaUtil.FormatFloat(DadosProdutos.Items[i].Quantidade, '0.0000');
           VUnCom   := NotaUtil.FormatFloat(DadosProdutos.Items[i].ValorUnitario, '0.0000');
+
           VProd    := NotaUtil.FormatFloat(DadosProdutos.Items[i].ValorTotal, '0.00');
-          CEANTrib := DadosProdutos.Items[i].EAN;
-          UTrib    := DadosProdutos.Items[i].Unidade;
-          QTrib    := NotaUtil.FormatFloat(DadosProdutos.Items[i].Quantidade, '0.0000');
-          VUnTrib  := NotaUtil.FormatFloat(DadosProdutos.Items[i].ValorUnitario, '0.0000');
+
+          CEANTrib := DadosProdutos.Items[i].GTINUnidadeTributavel;
+          if (Trim(DadosProdutos.Items[i].UnidadeTributavel) = '') then
+            UTrib    := DadosProdutos.Items[i].Unidade
+          else
+            UTrib    := DadosProdutos.Items[i].UnidadeTributavel;
+          QTrib    := NotaUtil.FormatFloat(DadosProdutos.Items[i].QuantidadeTributavel, '0.0000');
+          VUnTrib  := NotaUtil.FormatFloat(DadosProdutos.Items[i].ValorUnitarioTributacao, '0.0000');
+
           if NotaUtil.NaoEstaZerado(DadosProdutos.Items[i].ValorDesconto) then
             VDesc := NotaUtil.FormatFloat(DadosProdutos.Items[i].ValorDesconto, '0.00');
         end;
@@ -295,6 +317,7 @@ begin
             end;
           end;
         end;
+
 
         with DadosProdutos.Items[i].Tributos.ICMS do
         begin
@@ -459,6 +482,7 @@ begin
             Imposto.II.VIOF := NotaUtil.FormatFloat(ValorIOF, '0.00');
         end;
 
+
         with DadosProdutos.Items[i].Tributos.PIS do
         begin
           if (CST = '01') or (CST = '02') then
@@ -562,6 +586,25 @@ begin
 
         end;
 
+        with DadosProdutos.Items[i].Tributos.ISSQN do
+        begin
+          if (ValorBase > 0) or (Aliquota > 0) or (ValorISSQN > 0) or (CodigoServico <> '') then begin
+            with Imposto.ISSQN do begin
+
+              if (ValorBase > 0) then
+                VBC := NotaUtil.FormatFloat(ValorBase, '0.00');
+              if (Aliquota > 0) then
+                VAliq := NotaUtil.FormatFloat(Aliquota, '0.00');
+              if (ValorISSQN > 0) then
+                VISSQN := NotaUtil.FormatFloat(ValorISSQN, '0.00');
+              if (MunicipioFatoGerador > 0) then
+                CMunFG := IntToStr(MunicipioFatoGerador);
+              if (CodigoServico <> '') then
+                CListServ := CodigoServico;
+            end;
+          end;  
+        end;
+
       end;
     end;
   end;
@@ -582,6 +625,35 @@ begin
     VCOFINS := NotaUtil.FormatFloat(ValoresTotais.ValorCOFINS, '0.00');
     VOutro  := NotaUtil.FormatFloat(ValoresTotais.ValorOutrasDespesas, '0.00');
     VNF     := NotaUtil.FormatFloat(ValoresTotais.ValorNota, '0.00');
+
+    With ValoresTotais.ISSQNTot, FNFe.InfNFe.Total.ISSQNtot do begin
+      if NotaUtil.NaoEstaZerado(ValorServicos) then
+        VServ := NotaUtil.FormatFloat(ValorServicos, '0.00');
+      if NotaUtil.NaoEstaZerado(ValorBase) then
+        VBC := NotaUtil.FormatFloat(ValorBase, '0.00');
+      if NotaUtil.NaoEstaZerado(ValorISSQN) then
+        VISS := NotaUtil.FormatFloat(ValorISSQN, '0.00');
+      if NotaUtil.NaoEstaZerado(ValorPIS) then
+        VPIS := NotaUtil.FormatFloat(ValorPIS, '0.00');
+      if NotaUtil.NaoEstaZerado(ValorCOFINS) then
+        VCOFINS := NotaUtil.FormatFloat(ValorCOFINS, '0.00');
+    end;
+
+    With ValoresTotais.Retencoes, FNFe.InfNFe.Total.RetTrib do begin
+      if NotaUtil.NaoEstaZerado(ValorRetidoPIS) then
+        VRetPIS := NotaUtil.FormatFloat(ValorRetidoPIS, '0.00');
+      if NotaUtil.NaoEstaZerado(ValorRetidoCOFINS) then
+        VRetCOFINS := NotaUtil.FormatFloat(ValorRetidoCOFINS, '0.00');
+      if NotaUtil.NaoEstaZerado(ValorRetidoCSLL) then
+        VRetCSLL := NotaUtil.FormatFloat(ValorRetidoCSLL, '0.00');
+      if NotaUtil.NaoEstaZerado(BaseCalculoIRRF) then
+        VBCIRRF := NotaUtil.FormatFloat(BaseCalculoIRRF, '0.00');
+      if NotaUtil.NaoEstaZerado(ValorIRRF) then
+        VIRRF := NotaUtil.FormatFloat(ValorIRRF, '0.00');
+      if NotaUtil.NaoEstaZerado(ValorRetidoINSS) then
+        VRetPrev := NotaUtil.FormatFloat(ValorRetidoINSS, '0.00');
+    end;
+
   end;
 
   with NotaFiscal(FNotaFiscal), FNFe.InfNFe.Transp do
@@ -630,6 +702,18 @@ begin
       end;
     end;
 
+    for i:= 0 to Transportador.Reboque.Count -1 do begin
+      with Reboque.Add do begin
+        if NotaUtil.NaoEstaVazio(Transportador.Reboque.Items[i].Placa) then begin
+          Placa := Transportador.Reboque.Items[i].Placa;
+          if NotaUtil.NaoEstaVazio(Transportador.Reboque.Items[i].UF) then
+            UF := Transportador.Reboque.Items[i].UF;
+          if NotaUtil.NaoEstaVazio(Transportador.Reboque.Items[i].RNTC) then
+            RNTC := Transportador.Reboque.Items[i].RNTC;
+        end;
+      end;
+    end;
+
     for  i:=0  to Transportador.Volumes.Count-1 do
     begin
       with Vol.Add do
@@ -637,9 +721,9 @@ begin
         if NotaUtil.NaoEstaZerado(Transportador.Volumes.Items[i].Quantidade) then
           QVol  := IntToStr(Transportador.Volumes.Items[i].Quantidade);
         if NotaUtil.NaoEstaVazio(Transportador.Volumes.Items[i].Especie) then
-          Esp   := Transportador.Volumes.Items[i].Especie;
+          Esp   := NotaUtil.ParseText(Transportador.Volumes.Items[i].Especie);
         if NotaUtil.NaoEstaVazio(Transportador.Volumes.Items[i].Marca) then
-          Marca := Transportador.Volumes.Items[i].Marca;
+          Marca := NotaUtil.ParseText(Transportador.Volumes.Items[i].Marca);
         if NotaUtil.NaoEstaVazio(Transportador.Volumes.Items[i].Numeracao) then
           NVol  := Transportador.Volumes.Items[i].Numeracao;
         if NotaUtil.NaoEstaZerado(Transportador.Volumes.Items[i].PesoLiquido) then
@@ -678,7 +762,7 @@ begin
   if NotaUtil.NaoEstaVazio(NotaFiscal(FNotaFiscal).DadosAdicionais.Complemento) then
   begin
     with NotaFiscal(FNotaFiscal), FNFe.InfNFe.InfAdic do
-      InfCpl := DadosAdicionais.Complemento;
+      InfCpl := NotaUtil.ParseText(DadosAdicionais.Complemento);
   end;
 
   if NotaUtil.NaoEstaZerado(NotaFiscal(FNotaFiscal).DadosAdicionais.Informacoes.Count) then
@@ -687,11 +771,24 @@ begin
     begin
       with NotaFiscal(FNotaFiscal), FNFe.InfNFe.InfAdic.ObsCont.Add do
       begin
-        XCampo  := DadosAdicionais.Informacoes.Items[i].Campo;
-        XTexto  := DadosAdicionais.Informacoes.Items[i].Texto;
+        XCampo  := NotaUtil.ParseText(DadosAdicionais.Informacoes.Items[i].Campo);
+        XTexto  := NotaUtil.ParseText(DadosAdicionais.Informacoes.Items[i].Texto);
       end;
     end;
   end;
+
+  if NotaUtil.NaoEstaZerado(NotaFiscal(FNotaFiscal).DadosAdicionais.ObsFisco.Count) then
+  begin
+    for i:= 0 to NotaFiscal(FNotaFiscal).DadosAdicionais.ObsFisco.Count-1 do
+    begin
+      with NotaFiscal(FNotaFiscal), FNFe.InfNFe.InfAdic.ObsFisco.Add do
+      begin
+        XCampo  := NotaUtil.ParseText(DadosAdicionais.ObsFisco.Items[i].Campo);
+        XTexto  := NotaUtil.ParseText(DadosAdicionais.ObsFisco.Items[i].Texto);
+      end;
+    end;
+  end;
+
 end;
 
 procedure TNotaFiscalXML.Imprimir;

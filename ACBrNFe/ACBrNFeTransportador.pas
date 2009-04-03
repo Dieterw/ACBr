@@ -39,6 +39,8 @@
 |*
 |* 16/12/2008: Wemerson Souto
 |*  - Doação do componente para o Projeto ACBr
+|* 13/03/2009: Dulcemar P. Zilli
+|*  - Incluida Informações Reboque
 ******************************************************************************}
 unit ACBrNFeTransportador;
 
@@ -69,6 +71,7 @@ type
     property Items[Index: Integer]: Lacre read GetItem  write SetItem;
     function GetNamePath: string; override;
   end;
+
 
   Volume = class(TCollectionItem)
   private
@@ -107,6 +110,8 @@ type
     function GetNamePath: string; override;
   end;
 
+
+
   TVeiculo = class(TPersistent)
   private
     FPlaca: String;
@@ -120,6 +125,32 @@ type
     property UF: String read FUF write SetUF;
     property RNTC: String read FRNTC write SetRNTC;
   end;
+
+  Reboq = class(TCollectionItem)
+  private
+    FRNTC: String;
+    FPlaca: String;
+    FUF: String;
+    procedure SetPlaca(const Value: String);
+    procedure SetRNTC(const Value: String);
+    procedure SetUF(const Value: String);
+  published
+    property Placa: String read FPlaca write SetPlaca;
+    property UF: String read FUF write SetUF;
+    property RNTC: String read FRNTC write SetRNTC;
+  end;
+
+  TReboque = class(TOwnedCollection)
+  private
+    function GetItem(Index: Integer): Reboq;
+    procedure SetItem(Index: Integer; const Value: Reboq);
+  public
+    function  Add: Reboq;
+    function Insert(Index: Integer): Reboq;
+    property Items[Index: Integer]: Reboq read GetItem  write SetItem;
+    function GetNamePath: string; override;
+  end;
+
 
   TRetencaoICMS = class(TPersistent)
   private
@@ -150,11 +181,13 @@ type
     FRetencaoICMS: TRetencaoICMS;
     FVeiculo: TVeiculo;
     FVolumes: TVolumes;
+    FReboque: TReboque;
     procedure SetNomeRazao(AValue: String);
     procedure SetCnpjCpf(AValue: String);
     procedure SetEndereco(AValue: String);
     procedure SetCidade(AValue: String);
     procedure SetUF(AValue: String);
+    procedure SetReboque(const Value: TReboque);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -170,6 +203,7 @@ type
     property RetencaoICMS: TRetencaoICMS read FRetencaoICMS write FRetencaoICMS;
     property Veiculo: TVeiculo read FVeiculo write FVeiculo;
     property Volumes: TVolumes read FVolumes write FVolumes;
+    property Reboque: TReboque read FReboque write SetReboque;
   end;
 
 implementation
@@ -185,6 +219,8 @@ begin
   FRetencaoICMS  := TRetencaoICMS.Create;
   FVeiculo       := TVeiculo.Create;
   FVolumes       := TVolumes.Create(Self, Volume);
+  FReboque       := TReboque.Create(Self, Reboq);
+
 end;
 
 destructor TTransportador.Destroy;
@@ -192,6 +228,8 @@ begin
   FRetencaoICMS.Free;
   FVeiculo.Free;
   FVolumes.Free;
+  FReboque.Free;
+
   inherited;
 end;
 
@@ -213,6 +251,11 @@ end;
 procedure TTransportador.SetNomeRazao(AValue: String);
 begin
   FNomeRazao := NotaUtil.TrataString(AValue, 60);
+end;
+
+procedure TTransportador.SetReboque(const Value: TReboque);
+begin
+  FReboque := Value;
 end;
 
 procedure TTransportador.SetUF(AValue: String);
@@ -325,6 +368,51 @@ end;
 procedure Lacre.SetLacre(AValue: String);
 begin
   FLacre := NotaUtil.TrataString(AValue, 60);
+end;
+
+
+{ Reboq }
+
+procedure Reboq.SetPlaca(const Value: String);
+begin
+  FPlaca := Value;
+end;
+
+procedure Reboq.SetRNTC(const Value: String);
+begin
+  FRNTC := Value;
+end;
+
+procedure Reboq.SetUF(const Value: String);
+begin
+  FUF := Value;
+end;
+
+{ TReboque }
+
+function TReboque.Add: Reboq;
+begin
+  Result := Reboq(inherited Add);
+end;
+
+function TReboque.GetItem(Index: Integer): Reboq;
+begin
+  Result := Reboq(inherited Items[Index]);
+end;
+
+function TReboque.GetNamePath: string;
+begin
+ Result := 'Reboq';
+end;
+
+function TReboque.Insert(Index: Integer): Reboq;
+begin
+  Result := Reboq(inherited Insert(Index));
+end;
+
+procedure TReboque.SetItem(Index: Integer; const Value: Reboq);
+begin
+  Items[Index].Assign(Value);
 end;
 
 end.

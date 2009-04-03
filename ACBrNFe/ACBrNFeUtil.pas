@@ -157,7 +157,7 @@ type
     class function StringToFloatDef(const AValue: String; const DefaultValue: Double): Double;
     class procedure ConfAmbiente;
     class function PathAplication: String;
-    class function ParseText( Texto : AnsiString; Decode : Boolean ) : AnsiString;
+    class function ParseText( Texto : AnsiString; Decode : Boolean = True) : AnsiString;
     class function SeparaDados( Texto : AnsiString; Chave : String ) : AnsiString;
   published
 
@@ -1230,6 +1230,7 @@ end;
 function AssinarMSXML(XML : WideString; Certificado : ICertificate2; out XMLAssinado : WideString): Boolean;
 var
  CertStore     : IStore3;
+ CertStoreMem  : IStore3;
  PrivateKey    : IPrivateKey;
  Certs         : ICertificates2;
  Cert          : ICertificate2;
@@ -1316,16 +1317,19 @@ begin
    CertStore := CoStore.Create;
    CertStore.Open(CAPICOM_CURRENT_USER_STORE, 'My', CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED);
 
+   CertStoreMem := CoStore.Create;
+   CertStoreMem.Open(CAPICOM_MEMORY_STORE, 'Memoria', CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED);
+
    Certs := CertStore.Certificates as ICertificates2;
    for i:= 1 to Certs.Count do
    begin
      Cert := IInterface(Certs.Item[i]) as ICertificate2;
-     if Cert.SerialNumber <> Certificado.SerialNumber then
-        CertStore.Remove(Cert);
+     if Cert.SerialNumber = Certificado.SerialNumber then
+        CertStoreMem.Add(Cert);
    end;
 
    OleCheck(IDispatch(Certificado.PrivateKey).QueryInterface(IPrivateKey,PrivateKey));
-   xmldsig.store := CertStore;
+   xmldsig.store := CertStoreMem;
 
    dsigKey := xmldsig.createKeyFromCSP(PrivateKey.ProviderType, PrivateKey.ProviderName, PrivateKey.ContainerName, 0);
    if (dsigKey = nil) then
@@ -1342,7 +1346,7 @@ begin
 	  PosIni := Pos('<X509Certificate>',XMLAssinado)-1;
 	  PosFim := NotaUtil.PosLast('<X509Certificate>',XMLAssinado);
 
-	  XMLAssinado := copy(XMLAssinado,1,PosIni)+copy(XMLAssinado,PosFim,length(XMLAssinado));	  
+	  XMLAssinado := copy(XMLAssinado,1,PosIni)+copy(XMLAssinado,PosFim,length(XMLAssinado));
     end
    else
       raise Exception.Create('Assinatura Falhou.');
@@ -1548,7 +1552,7 @@ begin
   Result := ExtractFilePath(Application.ExeName);
 end;
 
-class function NotaUtil.ParseText( Texto : AnsiString; Decode : Boolean ) : AnsiString;
+class function NotaUtil.ParseText( Texto : AnsiString; Decode : Boolean = True) : AnsiString;
 begin
   if Decode then
    begin

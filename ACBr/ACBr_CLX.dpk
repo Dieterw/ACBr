@@ -32,7 +32,7 @@ requires
   visualclx;
 
 contains
-  ACBrEnterTabCLX in 'ACBrEnterTabCLX.pas',
+  ACBrEnterTab in 'ACBrEnterTab.pas',
   ACBrBase in 'ACBrBase.pas',
   ACBrCalculadora in 'ACBrCalculadora.pas',
   ACBrCHQ in 'ACBrCHQ.pas',

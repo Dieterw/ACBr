@@ -40,15 +40,26 @@
 
 {$I ACBr.inc}
 
-unit ACBrEnterTabCLX;
+unit ACBrEnterTab;
 
 interface
 
 uses
  ACBrBase,
- Classes, SysUtils, QControls, QForms, QStdCtrls;
+ Classes,
+ {$IFDEF VisualCLX}
+  QControls, QForms, QStdCtrls,
+ {$ELSE}
+  Controls, Forms, StdCtrls,
+ {$ENDIF}
+ SysUtils ;
+
 
 type
+  THackForm = class(TForm);
+
+  THackButtomControl = class(TButtonControl);
+
   TACBrEnterTab = class ( TACBrComponent )
   private
     FAllowDefault: Boolean;
@@ -68,61 +79,7 @@ type
        default true ;
   end;
 
-{ Funçoes extraidas e adaptadas de QControls.pas }
-function _FindNextControl(AParent, CurControl: TWidgetControl;
-  GoForward, CheckTabStop, CheckParent: Boolean): TWidgetControl;
-function _SelectNext(AParent, CurControl: TWidgetControl;
-  GoForward, CheckTabStop: Boolean): Boolean;
-
 implementation
-
-function _SelectNext(AParent, CurControl: TWidgetControl;
-  GoForward, CheckTabStop: Boolean): Boolean;
-begin
-  CurControl := _FindNextControl(AParent, CurControl, GoForward,
-    CheckTabStop, not CheckTabStop);
-  Result := (CurControl <> nil);
-  if Result then
-    CurControl.SetFocus;
-end;
-
-function _FindNextControl(AParent, CurControl: TWidgetControl;
-  GoForward, CheckTabStop, CheckParent: Boolean): TWidgetControl;
-var
-  I, StartIndex: Integer;
-  List: TList;
-begin
-  Result := nil;
-  List := TList.Create;
-  try
-    AParent.GetTabOrderList(List);
-    if List.Count > 0 then
-    begin
-      StartIndex := List.IndexOf(CurControl);
-      if StartIndex = -1 then
-        if GoForward then StartIndex := List.Count - 1 else StartIndex := 0;
-      I := StartIndex;
-      repeat
-        if GoForward then
-        begin
-          Inc(I);
-	  if I = List.Count then I := 0;
-        end else
-        begin
-          if I = 0 then I := List.Count;
-          Dec(I);
-        end;
-        CurControl := List[I];
-        if CurControl.CanFocus and
-          (not CheckTabStop or CurControl.TabStop) and
-          (not CheckParent or (CurControl.Parent = AParent)) then
-          Result := CurControl;
-      until (Result <> nil) or (I = StartIndex);
-    end;
-  finally
-    List.Free;
-  end;
-end;
 
 { TACBrEnterTab }
 constructor TACBrEnterTab.Create( AOwner: TComponent );
@@ -167,17 +124,15 @@ begin
      begin
         if (TForm(AForm).ActiveControl is TButtonControl) and FAllowDefault then
         begin
-           TButtonControl( TForm(AForm).ActiveControl ).AnimateClick ;
+           {$IFDEF VisualCLX}
+            TButtonControl( TForm(AForm).ActiveControl ).AnimateClick ;
+           {$ELSE}
+            THackButtomControl( TForm(AForm).ActiveControl ).Click ;
+           {$ENDIF}
            exit ;
         end ;
 
-        with TForm(AForm) do
-        begin
-           if ActiveControl is TWidgetControl then
-           begin
-              _SelectNext(TForm(AForm), TWidgetControl(ActiveControl),True, True );
-           end ;
-        end;
+        THackForm( AForm ).SelectNext( TForm(AForm).ActiveControl, True, True );
      end ;
   finally
      if Assigned( FOldOnKeyPress ) then

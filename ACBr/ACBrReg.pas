@@ -115,7 +115,7 @@ type
 procedure Register;
 
 implementation
-Uses {$IFDEF VisualCLX}ACBrEnterTabCLX, {$ENDIF}
+Uses ACBrEnterTab,
      {$IFDEF AnimGIF}ACBrGIF, {$ENDIF}
      ACBrECF, ACBrCalculadora, ACBrGAV, ACBrExtenso, ACBrTroco, ACBrValidador,
      ACBrCHQ, ACBrLCB, ACBrDIS, ACBrTER, ACBrBAL, ACBrCMC7, ACBrFala, ACBrETQ,
@@ -131,9 +131,8 @@ procedure Register;
 begin
   RegisterComponents('ACBr', [TACBrECF, TACBrRFD, TACBrCalculadora, TACBrGAV, TACBrCHQ,
      TACBrLCB, TACBrDIS, TACBrTER, TACBrBAL, TACBrCMC7, TACBrExtenso, TACBrTroco,
-     TACBrValidador, TACBrFala, TACBrETQ, TACBrSintegra
+     TACBrValidador, TACBrFala, TACBrETQ, TACBrSintegra, TACBrEnterTab
      {$IFDEF WIN32}, TACBrTEF {$ENDIF}
-     {$IFDEF VisualCLX}, TACBrEnterTab {$ENDIF}
      {$IFDEF AnimGIF}, TACBrGIF {$ENDIF}, TACBrBarCode, TACBrTCPServer ]);
 
   { Registrando os Editores de Propriedade }

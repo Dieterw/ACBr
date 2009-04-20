@@ -7,10 +7,10 @@ unit ACBr_LCL;
 interface
 
 uses
-    ACBrCHQ, ACBrBase, ACBrDIS, ACBrExtenso, ACBrGAV, ACBrLCB, ACBrValidador, 
-  ACBrReg, ACBrECF, ACBrTroco, ACBrBAL, ACBrCMC7, ACBrTER, ACBrFala, ACBrGIF, 
-  ACBrSintegra, ACBrBarCode, ACBrSocket, ACBrDevice, ACBrUtil, 
-  LazarusPackageIntf;
+      ACBrCHQ, ACBrBase, ACBrDIS, ACBrExtenso, ACBrGAV, ACBrLCB, 
+   ACBrValidador, ACBrReg, ACBrECF, ACBrTroco, ACBrBAL, ACBrCMC7, ACBrTER, 
+   ACBrFala, ACBrGIF, ACBrSintegra, ACBrBarCode, ACBrSocket, ACBrDevice, 
+   ACBrUtil, LazarusPackageIntf;
 
 implementation
 

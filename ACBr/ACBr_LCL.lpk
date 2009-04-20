@@ -26,7 +26,7 @@
     <License Value="LGPL
 "/>
     <Version Minor="8" Release="8"/>
-    <Files Count="21">
+    <Files Count="22">
       <Item1>
         <Filename Value="ACBrCHQ.pas"/>
         <UnitName Value="ACBrCHQ"/>
@@ -112,6 +112,10 @@
         <Filename Value="ACBrDevice.pas"/>
         <UnitName Value="ACBrDevice"/>
       </Item21>
+      <Item22>
+        <Filename Value="..\ACBrComum\ACBrUtil.pas"/>
+        <UnitName Value="ACBrUtil"/>
+      </Item22>
     </Files>
     <Type Value="RunAndDesignTime"/>
     <RequiredPkgs Count="3">

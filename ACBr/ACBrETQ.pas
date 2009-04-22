@@ -40,6 +40,8 @@
 |*
 |* 27/03/2007: Andrews R Bejatto/ Anderson R Bejatto/ Daniel Simões de Almeida
 |*  - Primeira Versao ACBrETQ
+|* 17/04/2009: Alexsander da Rosa
+|*  - Parametro "SubFonte" na procedure ImprimirTexto
 ******************************************************************************}
 
 {$I ACBr.inc}
@@ -93,7 +95,7 @@ TACBrETQ = class( TACBrComponent )
 
     procedure ImprimirTexto(Orientacao: TACBrETQOrientacao; Fonte: Integer;
       MultiplicadorH, MultiplicadorV: Char ; Vertical, Horizontal: Integer;
-      Texto: String);
+      Texto: String; SubFonte: Integer = 0);
     procedure ImprimirBarras(Orientacao: TACBrETQOrientacao; TipoBarras,
       LarguraBarraLarga, LarguraBarraFina: Char; Vertical, Horizontal: Integer;
       Texto: String; AlturaCodBarras: Integer = 0);
@@ -256,7 +258,7 @@ end;
 
 procedure TACBrETQ.ImprimirTexto(Orientacao: TACBrETQOrientacao; Fonte: Integer;
   MultiplicadorH, MultiplicadorV: Char; Vertical, Horizontal: Integer;
-  Texto: String);
+  Texto: String; SubFonte: Integer);
 begin
   if not Ativo then
      Ativar;
@@ -264,7 +266,7 @@ begin
   fsETQ.ImprimirTexto( Orientacao, Fonte,
                        MultiplicadorH, MultiplicadorV,
                        Vertical, Horizontal,
-                       Texto);
+                       Texto, SubFonte);
 end;
 
 procedure TACBrETQ.Imprimir(Copias, AvancoEtq: Integer);

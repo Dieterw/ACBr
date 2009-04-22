@@ -37,6 +37,8 @@
 |*
 |* 27/03/2007: Andrews R Bejatto/ Anderson R Bejatto/ Daniel Simões de Almeida
 |*  - Primeira versao ACBrETQPpla
+|* 17/04/2009: Alexsander da Rosa
+|*  - Parametro "SubFonte" na procedure ImprimirTexto
 ******************************************************************************}
 
 {$I ACBr.inc}
@@ -57,7 +59,7 @@ type
 
     procedure ImprimirTexto(Orientacao: TACBrETQOrientacao; Fonte: Integer;
       MultiplicadorH, MultiplicadorV: Char; Vertical, Horizontal: Integer;
-      Texto: String); override;
+      Texto: String; SubFonte: Integer = 0); override;
     procedure ImprimirBarras(Orientacao: TACBrETQOrientacao; TipoBarras,
       LarguraBarraLarga, LarguraBarraFina: Char; Vertical, Horizontal: Integer;
       Texto: String; AlturaCodBarras: Integer = 0); override;
@@ -219,17 +221,20 @@ end;
 
 procedure TACBrETQPpla.ImprimirTexto(Orientacao: TACBrETQOrientacao; Fonte: Integer;
   MultiplicadorH, MultiplicadorV: Char; Vertical, Horizontal: Integer;
-  Texto: String);
+  Texto: String; SubFonte: Integer);
 var
-   eixoY, eixoX: String;
+   eixoY, eixoX, Smooth: String;
 begin
   Cmd := '';
 
   if ((Integer(Orientacao) + 1) < 1) or ((Integer(Orientacao) + 1) > 4) then
      Raise Exception.Create('Informe um valor entre 1 e 4 para Orientação');
 
-  if (Fonte < 0) or (Fonte > 8) then
-     Raise Exception.Create('Informe um valor entre 0 e 8 para Fonte');
+  if (Fonte < 0) or (Fonte > 9) then
+     Raise Exception.Create('Informe um valor entre 0 e 9 para Fonte');
+
+  if (SubFonte < 0) or (SubFonte > 7) then
+     Raise Exception.Create('Informe um valor entre 0 e 7 para SubFonte');
 
 { Multiplicador Horizontal, Multiplicador Vertical:
  De 0 a 9 e de A até O representa as escalas de multiplicação (A=10, B=11,..., O=24)}
@@ -245,8 +250,13 @@ begin
   if Length(Texto) > 255 then
      Raise Exception.Create('Tamanho maximo para o texto 255 caracteres');
 
+  if Fonte < 9 then
+    Smooth := '000'
+  else
+    Smooth := padR(IntToStr(SubFonte), 3, '0');
+
   Cmd := IntToStr(Integer(Orientacao) + 1) + IntToStr(Fonte) + MultiplicadorH +
-         MultiplicadorV + '000' + eixoY + eixoX + Texto;
+         MultiplicadorV + Smooth + eixoY + eixoX + Texto;
 
   ListaCmd.Add(Cmd);
 end;

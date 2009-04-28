@@ -172,7 +172,9 @@ Instalação no Borland C++ Builder:
 3. Na janela que se abriu (Directories), clique novamente no botão de reticências.
 4. Localize o diretório onde se encontra o código-fonte do projeto ACBr e clique em OK.
 5. Clique então no botão Add e então em OK.
-6. Novamente clique em OK para confirmar.
+6. Localize o diretório ACBrComum e clique em OK.
+7. Clique então no botão Add e então em OK.
+8. Novamente clique em OK para confirmar.
 
 # Abra, compile e instale o componente.
 

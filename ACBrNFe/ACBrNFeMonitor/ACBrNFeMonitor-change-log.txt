@@ -42,6 +42,9 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.4.0a    28/04/09
+[+]     : Adicionado comando para recuperar recibo de lote da NFE - NFE.RECIBONFE("nREC")
+
 Versão 0.3.0a    02/04/09
 
 [+]    Na criação da nota, se o código da cidade não for passado, o componente

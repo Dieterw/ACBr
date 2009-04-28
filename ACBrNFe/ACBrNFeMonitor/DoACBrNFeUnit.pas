@@ -315,6 +315,39 @@ begin
                  ACBrNFe1.NotasFiscais.Items[i].XML.Imprimir;
             end;
          end
+        else if (Cmd.Metodo = 'recibonfe')then
+         begin
+           ACBrNFe1.WebServices.Recibo.Recibo := Cmd.Params(0);
+           if not(ACBrNFe1.WebServices.Recibo.Executar) then
+             raise Exception.Create(ACBrNFe1.WebServices.Recibo.Msg);
+
+           NFeRetConsReciNFe := ACBrNFe1.WebServices.Recibo.NFeRetorno;
+
+{           ACBrNFe1.WebServices.Retorno.Recibo :=  Cmd.Params(0);
+           if not(ACBrNFe1.WebServices.Retorno.Executar) then
+            raise Exception.Create(ACBrNFe1.WebServices.Retorno.Msg);
+
+           NFeRetConsReciNFe := ACBrNFe1.WebServices.Retorno.NFeRetorno;}
+
+           Cmd.Resposta :=  Cmd.Resposta+
+                            ACBrNFe1.WebServices.Recibo.Msg+sLineBreak+
+                           '[RETORNO]'+sLineBreak+
+                           'Versao='+NFeRetConsReciNFe.Versao+sLineBreak+
+                           'TpAmb='+NFeRetConsReciNFe.TpAmb+sLineBreak+
+                           'VerAplic='+NFeRetConsReciNFe.VerAplic+sLineBreak+
+                           'NRec='+NFeRetConsReciNFe.NRec+sLineBreak+
+                           'CStat='+NFeRetConsReciNFe.CStat+sLineBreak+
+                           'XMotivo='+NFeRetConsReciNFe.XMotivo+sLineBreak+
+                           'CUF='+NFeRetConsReciNFe.CUF+sLineBreak;
+
+           if ACBrNFe1.Configuracoes.Geral.Salvar then
+            begin
+              Cmd.Resposta :=  Cmd.Resposta+
+              'Arquivo='+ACBrNFe1.Configuracoes.Geral.PathSalvar+Cmd.Params(0)+'-pro-rec.xml';
+            end;  
+
+
+         end
         else if (Cmd.Metodo = 'criarnfe') or (Cmd.Metodo = 'criarenviarnfe')then
          begin
            GerarIniNFe( Cmd.Params(0)  ) ;

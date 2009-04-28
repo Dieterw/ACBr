@@ -63,6 +63,7 @@ type
     procedure DoNFeStatusServico;
     procedure DoNFeRecepcao;
     procedure DoNFeRetRecepcao;
+    procedure DoNFeRecibo;    
     procedure DoNFeConsulta;
     procedure DoNFeCancelamento;
     procedure DoNFeInutilizacao;
@@ -126,6 +127,19 @@ type
     property NFeRetorno: IXMLTRetConsReciNFe read FNFeRetorno write FNFeRetorno;
   end;
 
+  TNFeRecibo = Class(TWebServicesBase)
+  private
+    FRecibo: String;
+    FNFeRetorno: IXMLTRetConsReciNFe;
+  public
+    function Executar: Boolean; override;
+    constructor Create(AConfiguracoes : TConfiguracoes);reintroduce;
+  published
+    property Recibo: String read FRecibo write FRecibo;
+    property NFeRetorno: IXMLTRetConsReciNFe read FNFeRetorno write FNFeRetorno;
+  end;
+
+
   TNFeConsulta = Class(TWebServicesBase)
   private
     FNFeChave: WideString;
@@ -184,6 +198,7 @@ type
     FStatusServico: TNFeStatusServico;
     FEnviar: TNFeRecepcao;
     FRetorno: TNFeRetRecepcao;
+    FRecibo: TNFeRecibo;
     FConsulta: TNFeConsulta;
     FCancelamento: TNFeCancelamento;
     FInutilizacao: TNFeInutilizacao;
@@ -197,6 +212,7 @@ type
     property StatusServico: TNFeStatusServico read FStatusServico write FStatusServico;
     property Enviar: TNFeRecepcao read FEnviar write FEnviar;
     property Retorno: TNFeRetRecepcao read FRetorno write FRetorno;
+    property Recibo: TNFeRecibo read FRecibo write FRecibo;    
     property Consulta: TNFeConsulta read FConsulta write FConsulta;
     property Cancelamento: TNFeCancelamento read FCancelamento write FCancelamento;
     property Inutilizacao: TNFeInutilizacao read FInutilizacao write FInutilizacao;
@@ -433,6 +449,31 @@ begin
   FDadosMsg := XmlDoc.XML.Text;
 end;
 
+procedure TWebServicesBase.DoNFeRecibo;
+var
+  vCabecalho: IXMLCabecMsg;
+  vDados: IXMLTConsReciNFe;
+  XmlDoc: IXMLDocument;
+begin
+  vCabecalho             := NewcabecMsg;
+  vCabecalho.Versao      := NFecabMsg;
+  vCabecalho.VersaoDados := NFeconsReciNFe;
+  XmlDoc := LoadXMLData(vCabecalho.XML);
+  XmlDoc.Encoding   := 'UTF-8';
+  XmlDoc.StandAlone := 'no';
+  FCabMsg := XmlDoc.XML.Text;
+
+  vDados        := NewconsReciNFe;
+  vDados.Versao := NFeconsReciNFe;
+  vDados.TpAmb  := IntToStr(FConfiguracoes.WebServices.AmbienteCodigo);
+  vDados.NRec   := TNFeRecibo(Self).Recibo;
+  XmlDoc := LoadXMLData(vDados.XML);
+  XmlDoc.Encoding   := 'UTF-8';
+  XmlDoc.StandAlone := 'no';
+  FDadosMsg := XmlDoc.XML.Text;
+end;
+
+
 procedure TWebServicesBase.DoNFeStatusServico;
 var
   vCabecalho: IXMLCabecMsg;
@@ -473,6 +514,8 @@ begin
     DoNFeRecepcao
   else if self is TNFeRetRecepcao then
     DoNFeRetRecepcao
+  else if self is TNFeRecibo then
+    DoNFeRecibo
   else if self is TNFeConsulta then
     DONFeConsulta
   else if self is TNFeCancelamento then
@@ -487,7 +530,7 @@ begin
     FURL  := NotaUtil.GetURL(FConfiguracoes.WebServices.UFCodigo, FConfiguracoes.WebServices.AmbienteCodigo, LayNfeStatusServico)
   else if self is TNFeRecepcao then
     FURL  := NotaUtil.GetURL(FConfiguracoes.WebServices.UFCodigo, FConfiguracoes.WebServices.AmbienteCodigo, LayNfeRecepcao)
-  else if self is TNFeRetRecepcao then
+  else if (self is TNFeRetRecepcao) or (self is TNFeRecibo) then
     FURL  := NotaUtil.GetURL(FConfiguracoes.WebServices.UFCodigo, FConfiguracoes.WebServices.AmbienteCodigo, LayNfeRetRecepcao)
   else if self is TNFeConsulta then
     FURL  := NotaUtil.GetURL(FConfiguracoes.WebServices.UFCodigo, FConfiguracoes.WebServices.AmbienteCodigo, LayNfeConsulta)
@@ -538,6 +581,7 @@ begin
   FStatusServico    := TNFeStatusServico.Create(Self.FConfiguracoes);
   FEnviar           := TNFeRecepcao.Create(Self.FConfiguracoes, TACBrNFe(AFNotaFiscalEletronica).NotasFiscais);
   FRetorno          := TNFeRetRecepcao.Create(Self.FConfiguracoes, TACBrNFe(AFNotaFiscalEletronica).NotasFiscais);
+  FRecibo           := TNFeRecibo.Create(Self.FConfiguracoes);  
   FConsulta         := TNFeConsulta.Create(Self.FConfiguracoes);
   FCancelamento     := TNFeCancelamento.Create(Self.FConfiguracoes);
   FInutilizacao     := TNFeInutilizacao.Create(Self.FConfiguracoes);
@@ -548,6 +592,7 @@ begin
   FStatusServico.Free;
   FEnviar.Free;
   FRetorno.Free;
+  FRecibo.Free;
   FConsulta.Free;
   FCancelamento.Free;
   FInutilizacao.Free;
@@ -953,6 +998,107 @@ begin
   if FConfiguracoes.Geral.Salvar then
     FConfiguracoes.Geral.Save(Recibo+'-pro-rec.xml', FRetWS);
 
+end;
+
+{ TNFeRecibo }
+constructor TNFeRecibo.Create(AConfiguracoes: TConfiguracoes);
+begin
+  inherited Create(AConfiguracoes);
+end;
+
+function TNFeRecibo.Executar: Boolean;
+var
+ XmlDoc: IXMLDocument;
+ {$IFDEF ACBrNFeCAPICOM}
+    Nota: NfeRetRecepcao;
+    Rio: THTTPRIO;
+ {$ELSE}
+    Texto : String;
+    Acao  : TStringList ;
+    Stream: TMemoryStream;
+    StrStream: TStringStream;
+    HTTP: THTTPSend;
+ {$ENDIF}
+begin
+  Result := inherited Executar;
+ {$IFDEF ACBrNFeCAPICOM}
+    Rio := THTTPRIO.Create(nil);
+    Rio.HTTPWebNode.OnBeforePost := OnBeforePost;
+ {$ELSE}
+    Acao := TStringList.Create;
+    Stream := TMemoryStream.Create;
+    Texto := '<?xml version="1.0" encoding="utf-8"?>';
+    Texto := Texto + '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">';
+    Texto := Texto + '  <soap:Body>';
+    Texto := Texto + '    <nfeRetRecepcao xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetRecepcao">';
+    Texto := Texto + '      <nfeCabecMsg>';
+
+    Texto := Texto + NotaUtil.ParseText(FCabMsg,False);
+
+    Texto := Texto + '      </nfeCabecMsg>';
+    Texto := Texto + '      <nfeDadosMsg>';
+
+    Texto := Texto + NotaUtil.ParseText(FDadosMsg,False);
+
+    Texto := Texto + '      </nfeDadosMsg>';
+    Texto := Texto + '    </nfeRetRecepcao>';
+    Texto := Texto + '  </soap:Body>';
+    Texto := Texto + '</soap:Envelope>';
+
+    Acao.Text := Texto;
+
+    Acao.SaveToStream(Stream);
+
+    HTTP := THTTPSend.Create;
+ {$ENDIF}
+ try
+   if FConfiguracoes.Geral.Salvar then
+     FConfiguracoes.Geral.Save(Recibo+'-ped-rec.xml', FDadosMsg);
+
+   {$IFDEF ACBrNFeCAPICOM}
+      Nota   := GetNfeRetRecepcao( False, FURL, Rio);
+      FRetWS := Nota.nfeRetRecepcao(FCabMsg, FDadosMsg);
+   {$ELSE}
+      HTTP.Document.LoadFromStream(Stream);
+      ConfiguraHTTP(HTTP,'SOAPAction: "http://www.portalfiscal.inf.br/nfe/wsdl/NfeRetRecepcao/nfeRetRecepcao"');
+      HTTP.HTTPMethod('POST', FURL);
+
+      StrStream := TStringStream.Create('');
+      StrStream.CopyFrom(HTTP.Document, 0);
+
+      FRetWS := NotaUtil.SeparaDados( NotaUtil.ParseText(StrStream.DataString, True),'nfeRetRecepcaoResult');
+      StrStream.Free;
+   {$ENDIF}
+   XmlDoc     := LoadXMLData(FRetWS);
+   FNFeRetorno := GetretConsReciNFe(XmlDoc);
+
+   if FConfiguracoes.WebServices.Visualizar then
+   begin
+     ShowMessage('Versão Leiaute : '+FNFeRetorno.Versao+LineBreak+
+                 'Ambiente : '+NotaUtil.SeSenao(FNFeRetorno.TpAmb='1', 'Produção', 'Teste')+LineBreak+
+                 'Versão Aplicativo : '+FNFeRetorno.VerAplic+LineBreak+
+                 'Recibo : '+FNFeRetorno.NRec+LineBreak+
+                 'Status Código : '+FNFeRetorno.CStat+LineBreak+
+                 'Status Descrição : '+FNFeRetorno.XMotivo+LineBreak+
+                 'UF : '+FNFeRetorno.CUF+LineBreak);
+   end;
+
+   Result := (StrToIntDef(NFeRetorno.CStat, 0) in [104,105]);
+   FMsg   := FNFeRetorno.XMotivo;
+
+  if FConfiguracoes.Geral.Salvar then
+    FConfiguracoes.Geral.Save(Recibo+'-pro-rec.xml', FRetWS);   
+
+ finally
+   {$IFDEF ACBrNFeCAPICOM}
+//      Rio.Free;
+   {$ELSE}
+      HTTP.Free;
+      Acao.Free;
+      Stream.Free;
+   {$ENDIF}
+   NotaUtil.ConfAmbiente;
+ end;
 end;
 
 { TNFeConsulta }

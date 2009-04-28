@@ -518,6 +518,10 @@ begin
       38  : Result := Result + '&amp;'; //&
       34  : Result := Result + '&quot;';//"
       39  : Result := Result + '&#39;'; //'
+      32  : begin          // Retira espaços duplos
+              if ( Ord(AValue[Pred(A)]) <> 32 ) then
+                 Result := Result + ' ';
+            end;
       193 : Result := Result + 'A';//Á
       224 : Result := Result + 'a';//à
       226 : Result := Result + 'a';//â

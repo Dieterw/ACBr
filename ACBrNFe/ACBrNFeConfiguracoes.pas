@@ -143,7 +143,7 @@ type
 
 implementation
 
-uses ACBrNFeConst, ACBrNFeUtil, ACBrNFeDM, Math;
+uses ACBrNFeConst, ACBrNFeUtil, ACBrNFeDM, ACBrUtil;
 
 { TConfiguracoes }
 

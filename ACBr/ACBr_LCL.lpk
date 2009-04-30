@@ -8,6 +8,7 @@
       <Version Value="8"/>
       <PathDelim Value="\"/>
       <SearchPaths>
+        <IncludeFiles Value="..\ACBrComum\"/>
         <OtherUnitFiles Value="..\ACBrComum\"/>
         <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
         <SrcPath Value="..\ACBrComum\"/>
@@ -26,7 +27,7 @@
     <License Value="LGPL
 "/>
     <Version Minor="8" Release="8"/>
-    <Files Count="22">
+    <Files Count="21">
       <Item1>
         <Filename Value="ACBrCHQ.pas"/>
         <UnitName Value="ACBrCHQ"/>
@@ -56,66 +57,62 @@
         <UnitName Value="ACBrValidador"/>
       </Item7>
       <Item8>
-        <Filename Value="ACBr.inc"/>
-        <Type Value="Include"/>
-      </Item8>
-      <Item9>
         <Filename Value="ACBrReg.pas"/>
         <HasRegisterProc Value="True"/>
         <UnitName Value="ACBrReg"/>
-      </Item9>
-      <Item10>
+      </Item8>
+      <Item9>
         <Filename Value="ACBrECF.pas"/>
         <UnitName Value="ACBrECF"/>
-      </Item10>
-      <Item11>
+      </Item9>
+      <Item10>
         <Filename Value="ACBr_LCL.lrs"/>
         <Type Value="LRS"/>
-      </Item11>
-      <Item12>
+      </Item10>
+      <Item11>
         <Filename Value="ACBrTroco.pas"/>
         <UnitName Value="ACBrTroco"/>
-      </Item12>
-      <Item13>
+      </Item11>
+      <Item12>
         <Filename Value="ACBrBAL.pas"/>
         <UnitName Value="ACBrBAL"/>
-      </Item13>
-      <Item14>
+      </Item12>
+      <Item13>
         <Filename Value="ACBrCMC7.pas"/>
         <UnitName Value="ACBrCMC7"/>
-      </Item14>
-      <Item15>
+      </Item13>
+      <Item14>
         <Filename Value="ACBrTER.pas"/>
         <UnitName Value="ACBrTER"/>
-      </Item15>
-      <Item16>
+      </Item14>
+      <Item15>
         <Filename Value="ACBrFala.pas"/>
         <UnitName Value="ACBrFala"/>
-      </Item16>
-      <Item17>
+      </Item15>
+      <Item16>
         <Filename Value="ACBrGIF.pas"/>
         <UnitName Value="ACBrGIF"/>
-      </Item17>
-      <Item18>
+      </Item16>
+      <Item17>
         <Filename Value="ACBrSintegra.pas"/>
         <UnitName Value="ACBrSintegra"/>
-      </Item18>
-      <Item19>
+      </Item17>
+      <Item18>
         <Filename Value="ACBrBarCode.pas"/>
         <UnitName Value="ACBrBarCode"/>
-      </Item19>
-      <Item20>
+      </Item18>
+      <Item19>
         <Filename Value="ACBrSocket.pas"/>
         <UnitName Value="ACBrSocket"/>
-      </Item20>
-      <Item21>
+      </Item19>
+      <Item20>
         <Filename Value="ACBrDevice.pas"/>
         <UnitName Value="ACBrDevice"/>
-      </Item21>
-      <Item22>
+      </Item20>
+      <Item21>
         <Filename Value="..\ACBrComum\ACBrUtil.pas"/>
         <UnitName Value="ACBrUtil"/>
-      </Item22>
+      </Item21>
     </Files>
     <Type Value="RunAndDesignTime"/>
     <RequiredPkgs Count="3">

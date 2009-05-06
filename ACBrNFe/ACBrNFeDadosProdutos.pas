@@ -42,7 +42,9 @@
 |* 09/03/2009: Dulcemar P.Zilli
 |*  - Inclusão IPI, II e DI 
 |* 14/03/2009: Dulcemar P.Zilli
-|*  - Inclusão ISSQN 
+|*  - Inclusão ISSQN
+|* 02/05/2009: João H. Souza
+|*  - Inclusão: Frete, Seguro em DadosProduto
 ******************************************************************************}
 unit ACBrNFeDadosProdutos;
 
@@ -605,6 +607,8 @@ type
     FQuantidade : Double;
     FValorUnitario : Double;
     FValorTotal : Double;
+    FValorFrete: Double;
+    FValorSeguro: Double;
     FValorDesconto: Double;
     FDI: TDI;
     FQuantidadeTributavel: Double;
@@ -642,6 +646,8 @@ type
     property ValorUnitarioTributacao: Double read FValorUnitarioTributacao write SetValorUnitarioTributacao;
 
     property ValorTotal : Double read FValorTotal write FValorTotal;
+    property ValorFrete : Double read FValorFrete write FValorFrete;
+    property ValorSeguro : Double read FValorSeguro write FValorSeguro;
     property ValorDesconto : Double read FValorDesconto write FValorDesconto;
     property DI : TDI read FDI write SetDI;
   end;

@@ -49,6 +49,8 @@
 |*  - Incluida Informações ISSQN, Retenções Tributos
 |* 17/03/2009: Dulcemar P. Zilli
 |*  - Separado unidade Tributavel da Unidade de Comercialização
+|* 02/05/2009: João H. Souza
+|*  - Inclusão: Frete, Seguro de DadosProduto
 ******************************************************************************}
 
 unit ACBrNFeXML;
@@ -282,6 +284,10 @@ begin
           QTrib    := NotaUtil.FormatFloat(DadosProdutos.Items[i].QuantidadeTributavel, '0.0000');
           VUnTrib  := NotaUtil.FormatFloat(DadosProdutos.Items[i].ValorUnitarioTributacao, '0.0000');
 
+          if NotaUtil.NaoEstaZerado(DadosProdutos.Items[i].ValorFrete) then
+            VFrete := NotaUtil.FormatFloat(DadosProdutos.Items[i].ValorFrete, '0.00');
+          if NotaUtil.NaoEstaZerado(DadosProdutos.Items[i].ValorSeguro) then
+            VSeg := NotaUtil.FormatFloat(DadosProdutos.Items[i].ValorSeguro, '0.00');
           if NotaUtil.NaoEstaZerado(DadosProdutos.Items[i].ValorDesconto) then
             VDesc := NotaUtil.FormatFloat(DadosProdutos.Items[i].ValorDesconto, '0.00');
         end;
@@ -453,13 +459,13 @@ begin
             if pos(CST, '00 45 50 99') > 0 then
               begin
                 Imposto.IPI.IPITrib.CST     := CST;
-                Imposto.IPI.IPITrib.VBC     := NotaUtil.FormatFloat(ValorBase, '0.00');
+                Imposto.IPI.IPITrib.VIPI  := NotaUtil.FormatFloat(Valor, '0.00');
                 if (Quantidade > 0) then begin
-                  Imposto.IPI.IPITrib.QUnid := NotaUtil.FormatFloat(Quantidade, '0.00');
-                  Imposto.IPI.IPITrib.VUnid := NotaUtil.FormatFloat(ValorUnidade, '0.00');
+                  Imposto.IPI.IPITrib.QUnid := NotaUtil.FormatFloat(Quantidade, '0.0000');
+                  Imposto.IPI.IPITrib.VUnid := NotaUtil.FormatFloat(ValorUnidade, '0.0000');
                 end else begin
+                  Imposto.IPI.IPITrib.VBC     := NotaUtil.FormatFloat(ValorBase, '0.00');
                   Imposto.IPI.IPITrib.PIPI  := NotaUtil.FormatFloat(Aliquota, '0.00');
-                  Imposto.IPI.IPITrib.VIPI  := NotaUtil.FormatFloat(Valor, '0.00');
                 end;
               end
             else if pos(CST, '01 02 03 04 05 51 52 53 54 55') > 0 then begin

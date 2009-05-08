@@ -368,9 +368,9 @@ begin
               Imposto.ICMS.ICMS30.Orig     := IntToStr(Ord(ICMS30.Origem));
               Imposto.ICMS.ICMS30.CST      := CST;
               Imposto.ICMS.ICMS30.ModBCST  := IntToStr(Ord(ICMS30.ModalidadeST));
-              if not(ICMS10.PercentualMargemST = 0) then
+              if not(ICMS30.PercentualMargemST = 0) then
                 Imposto.ICMS.ICMS30.PMVAST   := NotaUtil.FormatFloat(ICMS30.PercentualMargemST, '0.00');
-              if not(ICMS10.PercentualReducaoST = 0) then
+              if not(ICMS30.PercentualReducaoST = 0) then
                 Imposto.ICMS.ICMS30.PRedBCST := NotaUtil.FormatFloat(ICMS30.PercentualReducaoST, '0.00');
               Imposto.ICMS.ICMS30.VBCST    := NotaUtil.FormatFloat(ICMS30.ValorBaseST, '0.00');
               Imposto.ICMS.ICMS30.PICMSST  := NotaUtil.FormatFloat(ICMS30.AliquotaST, '0.00');
@@ -456,7 +456,7 @@ begin
             if (CodigoEnquadramento <> '') then
               Imposto.IPI.CEnq  := CodigoEnquadramento;
 
-            if pos(CST, '00 45 50 99') > 0 then
+            if pos(CST, '00 49 50 99') > 0 then
               begin
                 Imposto.IPI.IPITrib.CST     := CST;
                 Imposto.IPI.IPITrib.VIPI  := NotaUtil.FormatFloat(Valor, '0.00');

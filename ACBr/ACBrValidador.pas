@@ -82,7 +82,7 @@ TACBrCalcDigito = class
       fsMultIni: Integer;
       fsMultFim: Integer;
       fsFormulaDigito: TACBrCalcDigFormula;
-      fsDocto: String;
+      fsDocto: AnsiString;
       fsDigitoFinal: Integer;
       fsSomaDigitos: Integer;
 
@@ -91,7 +91,7 @@ TACBrCalcDigito = class
       Procedure Calcular ;
       Procedure CalculoPadrao ;
 
-      Property Documento : String read fsDocto write fsDocto ;
+      Property Documento : AnsiString read fsDocto write fsDocto ;
       Property MultiplicadorInicial : Integer read fsMultIni write fsMultIni ;
       Property MultiplicadorFinal   : Integer read fsMultFim write fsMultFim ;
       Property DigitoFinal : Integer read fsDigitoFinal ;
@@ -108,10 +108,10 @@ type
 TACBrValidador = class( TACBrComponent )
   private
     { Propriedades do Componente ACBrValidador }
-    fsIgnorarChar: String;
-    fsDocumento: String;
-    fsComplemento: String;
-    fsDocto    : String;
+    fsIgnorarChar: AnsiString;
+    fsDocumento: AnsiString;
+    fsComplemento: AnsiString;
+    fsDocto    : AnsiString;
     fsMsgErro: String;
     fsRaiseExcept: Boolean;
     fsOnMsgErro: TACBrValidadorMsg;
@@ -120,15 +120,15 @@ TACBrValidador = class( TACBrComponent )
     fsAjustarTamanho: Boolean;
     fsModulo: TACBrCalcDigito;
     fsExibeDigitoCorreto: Boolean;
-    fsDigitoCalculado: String;
+    fsDigitoCalculado: AnsiString;
 
-    procedure SetDocumento(const Value: String);
-    procedure SetComplemento(const Value: String);
-    Function LimpaDocto(const AString : String) : String ;
+    procedure SetDocumento(const Value: AnsiString);
+    procedure SetComplemento(const Value: AnsiString);
+    Function LimpaDocto(const AString : AnsiString) : AnsiString ;
 
     Procedure ValidarCPF  ;
     Procedure ValidarCNPJ ;
-    Procedure ValidarUF( UF : String) ;
+    Procedure ValidarUF( UF : AnsiString) ;
     Procedure ValidarIE ;
     Procedure ValidarCheque ;
     Procedure ValidarPIS  ;
@@ -138,30 +138,30 @@ TACBrValidador = class( TACBrComponent )
     constructor Create(AOwner: TComponent); override;
     Destructor Destroy  ; override ;
 
-    property DoctoValidado : String read fsDocto ;
+    property DoctoValidado : AnsiString read fsDocto ;
 
     Property MsgErro : String read fsMsgErro ;
     Property Modulo  : TACBrCalcDigito read fsModulo write fsModulo ;
-    Property DigitoCalculado : String read fsDigitoCalculado ;
+    Property DigitoCalculado : AnsiString read fsDigitoCalculado ;
 
     Function Validar  : Boolean;
-    Function Formatar : String ;
+    Function Formatar : AnsiString ;
 
-    Function FormatarCPF( AString : String )    : String ;
-    Function FormatarCNPJ( AString : String )   : String ;
-    Function FormatarCheque( AString : String ) : String ;
-    Function FormatarPIS( AString : String )    : String ;
-    Function FormatarCEP( AString: String )     : String ;
+    Function FormatarCPF( AString : AnsiString )    : AnsiString ;
+    Function FormatarCNPJ( AString : AnsiString )   : AnsiString ;
+    Function FormatarCheque( AString : AnsiString ) : AnsiString ;
+    Function FormatarPIS( AString : AnsiString )    : AnsiString ;
+    Function FormatarCEP( AString: AnsiString )     : AnsiString ;
   published
     property TipoDocto : TACBrValTipoDocto read fsTipoDocto write fsTipoDocto
        default docCPF ;
-    property Documento : String read fsDocumento write SetDocumento
+    property Documento : AnsiString read fsDocumento write SetDocumento
        stored false;
-    property Complemento : String read fsComplemento write SetComplemento
+    property Complemento : AnsiString read fsComplemento write SetComplemento
        stored false;
     property ExibeDigitoCorreto : Boolean read fsExibeDigitoCorreto
        write fsExibeDigitoCorreto default false ;
-    property IgnorarChar : String read fsIgnorarChar write fsIgnorarChar ;
+    property IgnorarChar : AnsiString read fsIgnorarChar write fsIgnorarChar ;
     property AjustarTamanho : Boolean read fsAjustarTamanho
        write fsAjustarTamanho default false ;
     property PermiteVazio : Boolean read fsPermiteVazio write fsPermiteVazio
@@ -203,7 +203,7 @@ begin
   inherited Destroy ;
 end;
 
-procedure TACBrValidador.SetDocumento(const Value: String);
+procedure TACBrValidador.SetDocumento(const Value: AnsiString);
 begin
   if fsDocumento = Value then exit ;
 
@@ -214,7 +214,7 @@ begin
   fsDocto := LimpaDocto( fsDocumento ) ;
 end;
 
-Function TACBrValidador.LimpaDocto(const AString : String) : String ;
+Function TACBrValidador.LimpaDocto(const AString : AnsiString) : AnsiString ;
 Var A : Integer ;
 begin
   Result := '' ;
@@ -226,7 +226,7 @@ begin
   Result := Trim(Result) ;
 end ;
 
-procedure TACBrValidador.SetComplemento(const Value: String);
+procedure TACBrValidador.SetComplemento(const Value: AnsiString);
 begin
   fsComplemento := Value;
 end;
@@ -271,7 +271,7 @@ begin
 
 end;
 
-function TACBrValidador.Formatar: String;
+function TACBrValidador.Formatar: AnsiString;
 begin
   Result := fsDocumento  ;
 
@@ -284,15 +284,15 @@ begin
   end;
 end;
 
-function TACBrValidador.FormatarCheque(AString: String): String;
-Var S : String ;
+function TACBrValidador.FormatarCheque(AString: AnsiString): AnsiString;
+Var S : AnsiString ;
 begin
   S := padR( LimpaDocto(AString), 7, '0') ; { Prenche zeros a esquerda }
   Result := copy(S,1,6) + '-' + copy(S,7,1) ;
 end;
 
-function TACBrValidador.FormatarCEP(AString: String): String;
-Var S : String ;
+function TACBrValidador.FormatarCEP(AString: AnsiString): AnsiString;
+Var S : AnsiString ;
 begin
   S := padL( LimpaDocto(AString), 8, '0') ; { Prenche zeros a direita }
   Result := copy(S,1,5) + '-' + copy(S,6,3) ;
@@ -320,8 +320,8 @@ begin
   end ;
 end;
 
-function TACBrValidador.FormatarCNPJ(AString: String): String;
-Var S : String ;
+function TACBrValidador.FormatarCNPJ(AString: AnsiString): AnsiString;
+Var S : AnsiString ;
 begin
   S := padR( LimpaDocto(AString), 14, '0') ;
   Result := copy(S,1,2) + '.' + copy(S,3,3) + '.' +
@@ -329,7 +329,7 @@ begin
 end;
 
 Procedure TACBrValidador.ValidarCNPJ ;
-Var DV1, DV2 : String ;
+Var DV1, DV2 : AnsiString ;
 begin
   if fsAjustarTamanho then
      fsDocto := padR( fsDocto, 14, '0') ;
@@ -366,8 +366,8 @@ begin
   end ;
 end;
 
-function TACBrValidador.FormatarCPF(AString: String): String;
-Var S : String ;
+function TACBrValidador.FormatarCPF(AString: AnsiString): AnsiString;
+Var S : AnsiString ;
 begin
   S := padR( LimpaDocto(AString), 11, '0') ;
   Result := copy(S,1,3) + '.' + copy(S,4 ,3) + '.' +
@@ -375,7 +375,7 @@ begin
 end;
 
 Procedure TACBrValidador.ValidarCPF ;
-Var DV1, DV2 : String ;
+Var DV1, DV2 : AnsiString ;
 begin
   if fsAjustarTamanho then
      fsDocto := padR( fsDocto, 11, '0') ;
@@ -534,7 +534,7 @@ end;
 
 Procedure TACBrValidador.ValidarIE ;
 Const
-   c0_9 : String = '0-9' ;
+   c0_9 : AnsiString = '0-9' ;
    cPesos : array[1..13] of array[1..14] of Integer =
       ((0 ,2 ,3 ,4 ,5 ,6 ,7 ,8 ,9 ,2 ,3 ,4 ,5 ,6 ),
        (0 ,0 ,2 ,3 ,4 ,5 ,6 ,7 ,8 ,9 ,2 ,3 ,4 ,5 ),
@@ -551,8 +551,8 @@ Const
        (0 ,2 ,3 ,4 ,5 ,6 ,7 ,8 ,9 ,10,2 ,3 ,0, 0 ) ) ;
 
 Var
-   vDigitos : array of String ;
-   xROT, yROT :  String ;
+   vDigitos : array of AnsiString ;
+   xROT, yROT :  AnsiString ;
    Tamanho, FatorF, FatorG, I, xMD, xTP, yMD, yTP, DV, DVX, DVY : Integer ;
    SOMA, SOMAq, nD, M : Integer ;
    OK : Boolean ;
@@ -986,15 +986,15 @@ begin
 
 end;
 
-Procedure TACBrValidador.ValidarUF(UF: String) ;
+Procedure TACBrValidador.ValidarUF(UF: AnsiString) ;
 begin
  if pos( ','+UF+',', ',AC,AL,AP,AM,BA,CE,DF,ES,GO,MA,MT,MS,MG,PA,PB,PR,PE,PI,'+
                      'RJ,RN,RS,RO,RR,SC,SP,SE,TO,') = 0 then
     fsMsgErro := 'UF inválido: '+UF ;
 end;
 
-function TACBrValidador.FormatarPIS(AString: String): String;
-Var S : String ;
+function TACBrValidador.FormatarPIS(AString: AnsiString): AnsiString;
+Var S : AnsiString ;
 begin
   S := padR( LimpaDocto(AString), 11, '0') ;
   Result := copy(S,1,2) + '.' + copy(S,3,5) + '.' +

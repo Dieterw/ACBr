@@ -1727,7 +1727,7 @@ begin
   end ;
 
   WB_LoadHTML(wbBobina, mBobina.Text);
-  Application.ProcessMessages ;
+//  Application.ProcessMessages ;
 
   WB_ScrollToBottom(wbBobina);
 end;
@@ -1750,7 +1750,6 @@ begin
      NewHTML.LoadFromStream(ms);
 
      WebBrowser.SetHtml(NewHTML);
-
   finally
      ms.Free;
      sl.Free;
@@ -1759,12 +1758,14 @@ end;
 
 procedure TForm1.WB_ScrollToTop(WebBrowser1: TIpHtmlPanel);
 begin
-  //Não implementado
+  WebBrowser1.Scroll(hsaHome);
+  Application.ProcessMessages;
 end;
 
 procedure TForm1.WB_ScrollToBottom(WebBrowser1: TIpHtmlPanel);
 begin
-  //Não implementado
+  WebBrowser1.Scroll(hsaEnd);
+  Application.ProcessMessages;
 end;
 
 procedure TForm1.HTMLGetImageX(Sender: TIpHtmlNode; const URL: string;

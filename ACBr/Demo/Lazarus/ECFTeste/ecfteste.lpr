@@ -11,10 +11,7 @@ uses
   { you can add units after this }, ECFTeste1, ACBr_LCL, ConfiguraSerial,
 EfetuaPagamento, Relatorio, Sobre, VendeItem, TurboPowerIPro;
 
-{$IFNDEF UNIX}
-{$R manifest.res}
-{$ENDIF}
-{$R ecfteste.res}
+{$IFDEF WINDOWS}{$R ecfteste.rc}{$ENDIF}
 
 begin
   Application.Initialize;

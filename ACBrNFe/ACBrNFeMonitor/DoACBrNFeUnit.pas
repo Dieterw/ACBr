@@ -892,11 +892,14 @@ begin
                    begin
                      sSecao    := 'ISSQN'+IntToStrZero(I,3) ;
 
-                     ValorBase     := StringToFloatDef( INIRec.ReadString(sSecao,'ValorBase'    ,'') ,0);
-                     Aliquota      := StringToFloatDef( INIRec.ReadString(sSecao,'Aliquota' ,'') ,0);
-                     ValorISSQN    := StringToFloatDef( INIRec.ReadString(sSecao,'ValorISSQN'   ,'') ,0);
-                     MunicipioFatoGerador := StrToInt( INIRec.ReadString(sSecao,'MunicipioFatoGerador',''));
-                     CodigoServico := INIRec.ReadString(sSecao,'CodigoServico','');
+                     if StringToFloatDef( INIRec.ReadString(sSecao,'ValorBase'    ,'') ,0) > 0 then
+                      begin
+                        ValorBase     := StringToFloatDef( INIRec.ReadString(sSecao,'ValorBase'    ,'') ,0);
+                        Aliquota      := StringToFloatDef( INIRec.ReadString(sSecao,'Aliquota' ,'') ,0);
+                        ValorISSQN    := StringToFloatDef( INIRec.ReadString(sSecao,'ValorISSQN'   ,'') ,0);
+                        MunicipioFatoGerador := StrToInt( INIRec.ReadString(sSecao,'MunicipioFatoGerador',''));
+                        CodigoServico := INIRec.ReadString(sSecao,'CodigoServico','');
+                      end;  
                    end;
 
                 end;

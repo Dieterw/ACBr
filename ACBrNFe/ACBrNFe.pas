@@ -47,7 +47,7 @@ interface
 uses
   Classes, Sysutils, 
   ACBrNFeConfiguracoes, ACBrNFeNotasFiscais,
-  ACBrNFeWebServices, ACBrNFeUtil;
+  ACBrNFeWebServices, ACBrNFeUtil, ACBrNFeTypes;
 
 type
 
@@ -56,6 +56,8 @@ type
     FNotasFiscais: TNotasFiscais;
     FWebServices: TWebServices;
     FConfiguracoes: TConfiguracoes;
+    FStatus : TStatusACBrNFe;
+    FOnStatusChange: TNotifyEvent;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -64,9 +66,11 @@ type
     function Consultar: Boolean;
     property WebServices: TWebServices read FWebServices write FWebServices;
     property NotasFiscais: TNotasFiscais read FNotasFiscais write FNotasFiscais;
-
+    property Status: TStatusACBrNFe read FStatus;
+    procedure SetStatus( const stNewStatus : TStatusACBrNFe );
   published
     property Configuracoes: TConfiguracoes read FConfiguracoes write FConfiguracoes;
+    property OnStatusChange: TNotifyEvent read FOnStatusChange write FOnStatusChange;
   end;
 
 var
@@ -110,8 +114,6 @@ begin
   begin
     WebServices.Consulta.NFeChave := self.NotasFiscais.Items[0].XML.NFeChave;
     WebServices.Consulta.Executar;
-    if not(Configuracoes.WebServices.Visualizar) then
-      raise Exception.Create( WebServices.Consulta.Msg );
   end;
   Result := True;
 
@@ -124,6 +126,8 @@ begin
   FConfiguracoes     := TConfiguracoes.Create;
   FNotasFiscais      := TNotasFiscais.Create(Self, NotaFiscal);
   FWebServices       := TWebServices.Create(Self);
+  FOnStatusChange    := nil;
+  FStatus            := stIDle;
   {$IFNDEF ACBrNFeCAPICOM}
      NotaUtil.InitXmlSec ;
   {$ENDIF}
@@ -131,6 +135,7 @@ end;
 
 destructor TACBrNFe.Destroy;
 begin
+  FOnStatusChange := nil;
   FConfiguracoes.Free;
   FNotasFiscais.Free;
   FWebServices.Free;
@@ -140,6 +145,16 @@ begin
 
   MyNFe.FreeOnRelease;   
   inherited;
+end;
+
+procedure TACBrNFe.SetStatus( const stNewStatus : TStatusACBrNFe );
+begin
+  if ( stNewStatus <> FStatus ) then
+  begin
+    FStatus := stNewStatus;
+    if Assigned(fOnStatusChange) then
+      FOnStatusChange(Self);
+  end;
 end;
 
 function TACBrNFe.Enviar(ALote: Integer; Imprimir:Boolean = True): Boolean;

@@ -51,6 +51,8 @@
 |*  - Separado unidade Tributavel da Unidade de Comercialização
 |* 02/05/2009: João H. Souza
 |*  - Inclusão: Frete, Seguro de DadosProduto
+|* 11/05/2009: João H. Souza
+|*  - Inclusão: Notas Fiscais Referenciadas
 ******************************************************************************}
 
 unit ACBrNFeXML;
@@ -176,6 +178,26 @@ begin
       DSaiEnt := FormatDateTime('YYYY-MM-DD', Identificacao.DataSaida);
     TpNF    := IntToStr(Ord(Identificacao.Tipo));
     CMunFG  := IntToStr(Emitente.Endereco.Cidade.Codigo);
+    if (Identificacao.NFRef.ANFRef.Count>0) then
+    begin
+      for x:=0 to Identificacao.NFRef.ANFRef.Count-1 do
+      begin
+         with NFRef.Add do
+         begin
+            if NotaUtil.NaoEstaVazio(Identificacao.NFRef.ANFRef.Items[x].RefNFe) then
+               NFRef.Items[x].RefNFe:=Identificacao.NFRef.ANFRef.Items[x].RefNFe
+            else
+            begin
+               NFRef.Items[x].RefNF.CUF:=Identificacao.NFRef.ANFRef.Items[x].UF;
+               NFRef.Items[x].RefNF.AAMM:=Identificacao.NFRef.ANFRef.Items[x].AAMM;
+               NFRef.Items[x].RefNF.CNPJ:=NotaUtil.LimpaNumero(Identificacao.NFRef.ANFRef.Items[x].CNPJ);
+               NFRef.Items[x].RefNF.Mod_:=Identificacao.NFRef.ANFRef.Items[x].Modelo;
+               NFRef.Items[x].RefNF.Serie:=Identificacao.NFRef.ANFRef.Items[x].Serie;
+               NFRef.Items[x].RefNF.NNF:=Identificacao.NFRef.ANFRef.Items[x].nNF;
+            end;
+         end;
+      end;
+    end;
     TpImp   := IntToStr(TConfiguracoes(FConfiguracoes).Geral.DANFECodigo);
     TpEmis  := IntToStr(TConfiguracoes(FConfiguracoes).Geral.FormaEmissaoCodigo);
     CDV     := NotaUtil.LasString(FNFe.InfNFe.Id);
@@ -459,7 +481,6 @@ begin
             if pos(CST, '00 49 50 99') > 0 then
               begin
                 Imposto.IPI.IPITrib.CST     := CST;
-                Imposto.IPI.IPITrib.VIPI  := NotaUtil.FormatFloat(Valor, '0.00');
                 if (Quantidade > 0) then begin
                   Imposto.IPI.IPITrib.QUnid := NotaUtil.FormatFloat(Quantidade, '0.0000');
                   Imposto.IPI.IPITrib.VUnid := NotaUtil.FormatFloat(ValorUnidade, '0.0000');
@@ -467,6 +488,7 @@ begin
                   Imposto.IPI.IPITrib.VBC     := NotaUtil.FormatFloat(ValorBase, '0.00');
                   Imposto.IPI.IPITrib.PIPI  := NotaUtil.FormatFloat(Aliquota, '0.00');
                 end;
+                Imposto.IPI.IPITrib.VIPI  := NotaUtil.FormatFloat(Valor, '0.00');
               end
             else if pos(CST, '01 02 03 04 05 51 52 53 54 55') > 0 then begin
               Imposto.IPI.IPINT.CST        := CST;

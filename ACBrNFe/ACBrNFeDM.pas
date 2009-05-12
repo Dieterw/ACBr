@@ -125,6 +125,7 @@ type
     procedure CustomISSQNCXNGetCols(Connection: TRvCustomConnection);
     procedure CustomISSQNCXNGetRow(Connection: TRvCustomConnection);
     procedure CustomISSQNCXNOpen(Connection: TRvCustomConnection);
+    procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }
     FNFe: IXMLTNFe;
@@ -340,6 +341,7 @@ procedure TdmACBrNFe.CustomDadosProdutosCXNGetCols(
 begin
   Connection.WriteField('CProd', dtString, 60, '', ''); //Codigo
   Connection.WriteField('XProd', dtString, 120, '', ''); //Descricao
+  Connection.WriteField('CObs', dtString, 500, '', ''); //Observações do Produto
   Connection.WriteField('NCM', dtString, 8, '', ''); //NCM
   Connection.WriteField('CFOP', dtString, 4, '', ''); //CFOP
   Connection.WriteField('UCom', dtString, 6, '', ''); //Unidade
@@ -369,6 +371,7 @@ begin
     begin
       Connection.WriteStrData('', CProd);
       Connection.WriteStrData('', XProd);
+      Connection.WriteStrData('', InfAdProd);
       Connection.WriteStrData('', NCM);
       Connection.WriteStrData('', CFOP);
       Connection.WriteStrData('', UCom);
@@ -686,6 +689,11 @@ procedure TdmACBrNFe.CustomVolumesCXNOpen(
   Connection: TRvCustomConnection);
 begin
   Connection.DataRows := FNFe.InfNFe.Transp.Vol.Count;
+end;
+
+procedure TdmACBrNFe.DataModuleCreate(Sender: TObject);
+begin
+  RPDefine.DataID := IntToStr(Application.Handle);
 end;
 
 procedure TdmACBrNFe.CustomInformacoesAdicionaisCXNGetCols(

@@ -887,6 +887,18 @@ begin
                      AliquotaValor := StringToFloatDef( INIRec.ReadString(sSecao,'AliquotaValor','') ,0);
                      ValorCOFINSST := StringToFloatDef( INIRec.ReadString(sSecao,'ValorCOFINSST','') ,0);
                    end;
+
+                  with ISSQN do
+                   begin
+                     sSecao    := 'ISSQN'+IntToStrZero(I,3) ;
+
+                     ValorBase     := StringToFloatDef( INIRec.ReadString(sSecao,'ValorBase'    ,'') ,0);
+                     Aliquota      := StringToFloatDef( INIRec.ReadString(sSecao,'Aliquota' ,'') ,0);
+                     ValorISSQN    := StringToFloatDef( INIRec.ReadString(sSecao,'ValorISSQN'   ,'') ,0);
+                     MunicipioFatoGerador := StrToInt( INIRec.ReadString(sSecao,'MunicipioFatoGerador',''));
+                     CodigoServico := INIRec.ReadString(sSecao,'CodigoServico','');
+                   end;
+
                 end;
 
              end;
@@ -906,6 +918,11 @@ begin
          ValoresTotais.ValorPIS      := StringToFloatDef( INIRec.ReadString('Total','ValorPIS'     ,'') ,0) ;
          ValoresTotais.ValorCOFINS   := StringToFloatDef( INIRec.ReadString('Total','ValorCOFINS'  ,'') ,0) ;
          ValoresTotais.ValorOutrasDespesas := StringToFloatDef( INIRec.ReadString('Total','ValorOutrasDespesas','') ,0) ;
+         ValoresTotais.ISSQNTot.ValorServicos := StringToFloatDef( INIRec.ReadString('Total','ValorServicos','') ,0) ;
+         ValoresTotais.ISSQNTot.ValorBase     := StringToFloatDef( INIRec.ReadString('Total','ValorBaseISS','') ,0) ;
+         ValoresTotais.ISSQNTot.ValorISSQN    := StringToFloatDef( INIRec.ReadString('Total','ValorISSQN','') ,0) ;
+         ValoresTotais.ISSQNTot.ValorPIS      := StringToFloatDef( INIRec.ReadString('Total','ValorPISISS','') ,0) ;
+         ValoresTotais.ISSQNTot.ValorCOFINS   := StringToFloatDef( INIRec.ReadString('Total','ValorCONFINSISS','') ,0) ;
          ValoresTotais.ValorNota     := StringToFloatDef( INIRec.ReadString('Total','ValorNota'    ,'') ,0) ;
 
          Transportador.FretePorConta := TNFeFrete(INIRec.ReadInteger('Transportador','FretePorConta',0));

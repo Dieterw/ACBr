@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 532
-  Top = 158
+  Left = 230
+  Top = 163
   Width = 666
   Height = 416
   Caption = 'ACBrNFe'
@@ -18,7 +18,7 @@ object Form1: TForm1
     Left = 0
     Top = 0
     Width = 278
-    Height = 382
+    Height = 380
     Align = alLeft
     TabOrder = 0
     object GroupBox1: TGroupBox
@@ -652,14 +652,14 @@ object Form1: TForm1
   object Panel2: TPanel
     Left = 278
     Top = 0
-    Width = 380
-    Height = 382
+    Width = 372
+    Height = 380
     Align = alClient
     TabOrder = 1
     object Panel3: TPanel
       Left = 1
       Top = 1
-      Width = 378
+      Width = 370
       Height = 128
       Align = alTop
       TabOrder = 0
@@ -739,8 +739,8 @@ object Form1: TForm1
     object PageControl2: TPageControl
       Left = 1
       Top = 129
-      Width = 378
-      Height = 252
+      Width = 370
+      Height = 250
       ActivePage = TabSheet6
       Align = alClient
       TabOrder = 1
@@ -761,12 +761,12 @@ object Form1: TForm1
         object WBResposta: TWebBrowser
           Left = 0
           Top = 0
-          Width = 370
-          Height = 224
+          Width = 362
+          Height = 222
           Align = alClient
           TabOrder = 0
           ControlData = {
-            4C0000003E260000271700000000000000000000000000000000000000000000
+            4C0000006A250000F21600000000000000000000000000000000000000000000
             000000004C000000000000000000000001000000E0D057007335CF11AE690800
             2B2E126208000000000000004C0000000114020000000000C000000000000046
             8000000000000000000000000000000000000000000000000000000000000000
@@ -792,6 +792,7 @@ object Form1: TForm1
     Configuracoes.WebServices.Visualizar = False
     Configuracoes.WebServices.UF = 'GO'
     Configuracoes.WebServices.Ambiente = 'Teste'
+    OnStatusChange = ACBrNFe1StatusChange
     Left = 320
     Top = 160
   end

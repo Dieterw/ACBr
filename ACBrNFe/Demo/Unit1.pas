@@ -107,6 +107,7 @@ type
     procedure btnCriarEnviarClick(Sender: TObject);
     procedure btnInutilizarClick(Sender: TObject);
     procedure btnGerarXMLNFeClick(Sender: TObject);
+    procedure ACBrNFe1StatusChange(Sender: TObject);
   private
     { Private declarations }
     procedure GravarConfiguracao ;
@@ -121,7 +122,7 @@ var
 
 implementation
 
-uses FileCtrl, ACBrNFeDadosProdutos;
+uses FileCtrl, ACBrNFeDadosProdutos, ufrmStatus;
 
 const
   SELDIRHELP = 1000;
@@ -434,7 +435,7 @@ begin
     begin
       CFOP          := 5101;
       Codigo        := '67';
-      Descricao     := 'ALHO 400 G';
+      Descricao     := 'BUCHA BLOQ.DIFER.DIANT./TRAS. LA/LG 1819';
       Quantidade    := 100;
       Unidade       := 'KG';
       ValorTotal    := 100;
@@ -449,6 +450,20 @@ begin
           ICMS00.ValorBase := 1000;
         end;
 
+        with IPI do
+        begin
+          CST := '50';
+          FSituacaoTributaria := '50';
+          ClasseEnquadramento := '0';
+          CodigoSeloIPI := '0';
+          QuantidadeSelos := 1;
+          CodigoEnquadramento := '0';
+          ValorUnidade := 5;
+          CNPJProdutor := '00000000000000';//removecaracter(rs_empresa.fieldbyname('cnpj').AsString);
+          ValorBase := 1000;
+          Aliquota := 5;
+          Valor := 50;
+        end;
       end;
     end;
 
@@ -648,6 +663,74 @@ begin
   ACBrNFe1.NotasFiscais.Items[0].XML.SaveToFile(ExtractFileDir(application.ExeName)+ACBrNFe1.NotasFiscais.Items[0].XML.NFeChave+'-NFe.xml');
   MemoResp.Lines.LoadFromFile(ExtractFileDir(application.ExeName)+ACBrNFe1.NotasFiscais.Items[0].XML.NFeChave+'-NFe.xml');
   LoadXML(MemoResp, WBResposta);
+end;
+
+procedure TForm1.ACBrNFe1StatusChange(Sender: TObject);
+begin
+  case ACBrNFe1.Status of
+    stIdle :
+    begin
+      if ( frmStatus <> nil ) then
+        frmStatus.Hide;
+    end;
+    stNFeStatusServico :
+    begin
+      if ( frmStatus = nil ) then
+        frmStatus := TfrmStatus.Create(Application);
+      frmStatus.lblStatus.Caption := 'Verificando Status do servico...';
+      frmStatus.Show;
+      frmStatus.BringToFront;
+    end;
+    stNFeRecepcao :
+    begin
+      if ( frmStatus = nil ) then
+        frmStatus := TfrmStatus.Create(Application);
+      frmStatus.lblStatus.Caption := 'Enviando dados da NFe...';
+      frmStatus.Show;
+      frmStatus.BringToFront;
+    end;
+    stNfeRetRecepcao :
+    begin
+      if ( frmStatus = nil ) then
+        frmStatus := TfrmStatus.Create(Application);
+      frmStatus.lblStatus.Caption := 'Recebendo dados da NFe...';
+      frmStatus.Show;
+      frmStatus.BringToFront;
+    end;
+    stNfeConsulta :
+    begin
+      if ( frmStatus = nil ) then
+        frmStatus := TfrmStatus.Create(Application);
+      frmStatus.lblStatus.Caption := 'Consultando NFe...';
+      frmStatus.Show;
+      frmStatus.BringToFront;
+    end;
+    stNfeCancelamento :
+    begin
+      if ( frmStatus = nil ) then
+        frmStatus := TfrmStatus.Create(Application);
+      frmStatus.lblStatus.Caption := 'Enviando cancelamento de NFe...';
+      frmStatus.Show;
+      frmStatus.BringToFront;
+    end;
+    stNfeInutilizacao :
+    begin
+      if ( frmStatus = nil ) then
+        frmStatus := TfrmStatus.Create(Application);
+      frmStatus.lblStatus.Caption := 'Enviando pedido de Inutilização...';
+      frmStatus.Show;
+      frmStatus.BringToFront;
+    end;
+    stNFeRecibo :
+    begin
+      if ( frmStatus = nil ) then
+        frmStatus := TfrmStatus.Create(Application);
+      frmStatus.lblStatus.Caption := 'Consultando Recibo de Lote...';
+      frmStatus.Show;
+      frmStatus.BringToFront;
+    end;
+  end;
+  Application.ProcessMessages;
 end;
 
 end.

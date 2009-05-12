@@ -1,7 +1,6 @@
 object dmACBrNFe: TdmACBrNFe
   OldCreateOrder = False
-  Left = 242
-  Top = 176
+  OnCreate = DataModuleCreate
   Height = 444
   Width = 743
   object CustomDestinatarioCXN: TRvCustomConnection

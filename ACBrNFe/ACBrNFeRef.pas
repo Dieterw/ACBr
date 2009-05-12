@@ -39,79 +39,165 @@
 |*
 |* 16/12/2008: Wemerson Souto
 |*  - Doação do componente para o Projeto ACBr
-|* 11/05/2009: João H. Souza
-|*  - Adicionado Notas Fiscais Referenciadas
+|* 04/05/2009: João Henrique de Souza
+|*  - Incluidas informações Referentes a NFRef
 ******************************************************************************}
-unit ACBrNFeIdentificacao;
+unit ACBrNFeRef;
 
 interface
 
 uses
-  Classes, Sysutils,
-   ACBrNFeTypes, ACBrNFeRef;
+  Classes, ACBrNFeTypes,Controls;
 
 type
 
-  TIdentificacao = Class(TPersistent)
+  TANFRef = Class(TCollectionItem)
   private
-    FCodigo: Integer;
-    FNaturezaOperacao : String;
-    FFormaPagamento: TNFeFormaPagamento;
-    FModelo: Integer;
-    FSerie: Integer;
-    FNumero: Integer;
-    FDataEmissao : TDateTime;
-    FDataSaida : TDateTime;
-    FTipo: TNFeTipo;
-    FFinalidade: TNFeFinalidade;
-    FNFRef: TNFRef;
-    procedure SetNaturezaOperacao(AValue: String);
-    procedure SetNFRef(const Value: TNFRef);
+    FRefNFe: String;
+    FUF: string;
+    FAAMM: String;
+    FCNPJ: String;
+    FModelo: string;
+    FSerie: string;
+    FnNF: string;
+    procedure SetRefNFe(const Value: String);
+    procedure SetUF(const Value: String);
+    procedure SetAAMM(const Value: String);
+    procedure SetCNPJ(const Value: String);
+    procedure SetModelo(const Value: String);
+    procedure SetSerie(const Value: String);
+    procedure SetnNF(const Value: string);
   public
     constructor Create;
     destructor Destroy; override;
-
   published
-    property Codigo: Integer read FCodigo write FCodigo;
-    property NaturezaOperacao : String read FNaturezaOperacao write SetNaturezaOperacao;
-    property FormaPagamento : TNFeFormaPagamento read FFormaPagamento write FFormaPagamento;
-    property Modelo: Integer read FModelo write FModelo;
-    property Serie: Integer read FSerie write FSerie;
-    property Numero: Integer read FNumero write FNumero;
-    property DataEmissao : TDateTime read FDataEmissao write FDataEmissao;
-    property DataSaida : TDateTime read FDataSaida write FDataSaida;
-    property Tipo : TNFeTipo read FTipo write FTipo;
-    property Finalidade : TNFeFinalidade read FFinalidade write FFinalidade;
-    property NFRef : TNFRef read FNFRef write FNFRef;
+    property RefNFe:string read FRefNFe write SetRefNFe;
+    property UF:string read FUF write SetUF;
+    property AAMM:string read FAAMM write SetAAMM;
+    property CNPJ:string read FCNPJ write SetCNPJ;
+    property Modelo:string read FModelo write SetModelo;
+    property Serie:string read FSerie write SetSerie;
+    property nNF:string read FnNF write SetnNF;
   end;
+
+  NFRef = class(TCollection)
+  protected
+    function GetItem(Index: Integer): TANFRef;
+    procedure SetItem(Index: Integer; const Value: TANFRef);
+  public
+    function  Add: TANFRef;
+    function Insert(Index: Integer): TANFRef;
+    property Items[Index: Integer]: TANFRef read GetItem  write SetItem;
+    //function GetNamePath: string; override;
+  end;
+
+  TNFRef = class(Tpersistent)
+  private
+    FNFRef: NFRef;
+    procedure SetNFRef(const Value: NFRef);
+  public
+    constructor Create;
+    destructor Destroy; override;
+  published
+    property ANFRef : NFRef read FNFRef write SetNFRef;
+  end;
+
 
 implementation
 
-uses ACBrNFeUtil, ACBrNFe;
+{ TANFRef }
 
-{ TIdentificacao }
-
-constructor TIdentificacao.Create;
+constructor TANFRef.Create;
 begin
-  FTipo   := tSaida;
-  FModelo := 55;
-  FNFRef  := TNFRef.Create;
+  inherited Create(Collection);
 end;
 
-destructor TIdentificacao.Destroy;
+destructor TANFRef.Destroy;
+begin
+  inherited;
+end;
+
+procedure TANFRef.SetRefNFe(const Value: String);
+begin
+  FRefNfe := Value;
+end;
+
+procedure TANFRef.SetUF(const Value: String);
+begin
+  FUF := Value;
+end;
+
+procedure TANFRef.SetAAMM(const Value: String);
+begin
+   FAAMM := Value;
+end;
+
+procedure TANFRef.SetCNPJ(const Value: String);
+begin
+   FCNPJ := Value;
+end;
+
+procedure TANFRef.SetModelo(const Value: String);
+begin
+   FModelo := Value;
+end;
+
+procedure TANFRef.SetSerie(const Value: String);
+begin
+   FSerie := Value;
+end;
+
+procedure TANFRef.SetnNF(const Value: string);
+begin
+   FnNF := Value;
+end;
+
+
+{ NFRef }
+
+function NFRef.Add: TANFRef;
+begin
+  Result := TANFRef(inherited Add);
+end;
+
+function NFRef.GetItem(Index: Integer): TANFRef;
+begin
+  Result := TANFRef(inherited Items[Index]);
+end;
+
+function NFRef.Insert(Index: Integer): TANFRef;
+begin
+  Result := TANFRef(inherited Insert(Index));
+end;
+
+procedure NFRef.SetItem(Index: Integer; const Value: TANFRef);
+begin
+  Items[Index].Assign(Value);
+end;
+
+{function NFRef.GetNamePath: string;
+begin
+  Result := 'ANFRef';
+end;}
+
+
+{ TNFRef }
+
+constructor TNFRef.Create;
+begin
+  FNFRef := NFRef.Create(TANFRef);
+end;
+
+destructor TNFRef.Destroy;
 begin
   FNFRef.Free;
   inherited;
 end;
 
-procedure TIdentificacao.SetNaturezaOperacao(AValue: String);
+procedure TNFRef.SetNFRef(const Value: NFRef);
 begin
-  FNaturezaOperacao := NotaUtil.TrataString(AValue, 60);
-end;
-
-procedure TIdentificacao.SetNFRef(const Value: TNFRef);
-begin
-  FNFref := Value;
+  FNFRef := Value;
 end;
 
 end.
+

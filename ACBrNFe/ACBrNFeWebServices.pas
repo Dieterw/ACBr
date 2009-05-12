@@ -665,6 +665,7 @@ begin
   {$ENDIF}
 
   try
+    MyNFe.SetStatus( stNFeStatusServico );
     if FConfiguracoes.Geral.Salvar then
       FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+'-ped-sta.xml', FDadosMsg);
 
@@ -685,6 +686,7 @@ begin
       XmlDoc     := LoadXMLData(FRetWS);
       NFeRetorno := GetretConsStatServ(XmlDoc);
 
+      MyNFe.SetStatus( stIdle );
       if FConfiguracoes.WebServices.Visualizar then
       begin
         ShowMessage('Versão Leiaute : '+NFeRetorno.Versao+LineBreak+
@@ -721,6 +723,7 @@ begin
        Stream.Free;
     {$ENDIF}
     NotaUtil.ConfAmbiente;
+    MyNFe.SetStatus( stIdle );
   end;
 end;
 
@@ -779,6 +782,7 @@ begin
      HTTP := THTTPSend.Create;
   {$ENDIF}
   try
+    MyNFe.SetStatus( stNFeRecepcao );
     if FConfiguracoes.Geral.Salvar then
       FConfiguracoes.Geral.Save(IntToStr(Lote)+'-env-lot.xml', FDadosMsg);
     {$IFDEF ACBrNFeCAPICOM}
@@ -797,6 +801,7 @@ begin
     XmlDoc     := LoadXMLData(FRetWS);
     NFeRetorno := GetretEnviNFe(XmlDoc);
 
+    MyNFe.SetStatus( stIdle );
     if FConfiguracoes.WebServices.Visualizar then
     begin
       ShowMessage('Versão Leiaute : '+NFeRetorno.Versao+LineBreak+
@@ -825,6 +830,7 @@ begin
        Stream.Free;
     {$ENDIF}
     NotaUtil.ConfAmbiente;
+    MyNFe.SetStatus( stIdle );
   end;
 end;
 
@@ -931,6 +937,7 @@ function TNFeRetRecepcao.Executar: Boolean;
        HTTP := THTTPSend.Create;
     {$ENDIF}
     try
+      MyNFe.SetStatus( stNfeRetRecepcao );
       if FConfiguracoes.Geral.Salvar then
         FConfiguracoes.Geral.Save(Recibo+'-ped-rec.xml', FDadosMsg);
 
@@ -951,6 +958,7 @@ function TNFeRetRecepcao.Executar: Boolean;
       XmlDoc     := LoadXMLData(FRetWS);
       FNFeRetorno := GetretConsReciNFe(XmlDoc);
 
+      MyNFe.SetStatus( stIdle );
       if FConfiguracoes.WebServices.Visualizar then
       begin
         ShowMessage('Versão Leiaute : '+FNFeRetorno.Versao+LineBreak+
@@ -974,6 +982,7 @@ function TNFeRetRecepcao.Executar: Boolean;
          Stream.Free;
       {$ENDIF}
       NotaUtil.ConfAmbiente;
+      MyNFe.SetStatus( stIdle );
     end;
   end;
 
@@ -1052,6 +1061,7 @@ begin
     HTTP := THTTPSend.Create;
  {$ENDIF}
  try
+   MyNFe.SetStatus( stNFeRecibo );
    if FConfiguracoes.Geral.Salvar then
      FConfiguracoes.Geral.Save(Recibo+'-ped-rec.xml', FDadosMsg);
 
@@ -1072,6 +1082,7 @@ begin
    XmlDoc     := LoadXMLData(FRetWS);
    FNFeRetorno := GetretConsReciNFe(XmlDoc);
 
+   MyNFe.SetStatus( stIdle );
    if FConfiguracoes.WebServices.Visualizar then
    begin
      ShowMessage('Versão Leiaute : '+FNFeRetorno.Versao+LineBreak+
@@ -1150,6 +1161,7 @@ begin
      HTTP := THTTPSend.Create;
   {$ENDIF}
   try
+    MyNFe.SetStatus( stNfeConsulta );
     if FConfiguracoes.Geral.Salvar then
       FConfiguracoes.Geral.Save(FNFeChave+'-ped-sit.xml', FDadosMsg);
 
@@ -1173,6 +1185,7 @@ begin
     FDhRecbto  := NFeRetorno.InfProt.DhRecbto;
     FXMotivo   := NFeRetorno.InfProt.XMotivo;
 
+    MyNFe.SetStatus( stIdle );
     if FConfiguracoes.WebServices.Visualizar then
     begin
       ShowMessage('Versão Leiaute : '+NFeRetorno.Versao+LineBreak+
@@ -1202,6 +1215,7 @@ begin
        Stream.Free;
     {$ENDIF}
     NotaUtil.ConfAmbiente;
+    MyNFe.SetStatus( stIdle );
   end;
 end;
 
@@ -1255,6 +1269,7 @@ begin
      HTTP := THTTPSend.Create;
   {$ENDIF}
   try
+    MyNFe.SetStatus( stNfeCancelamento );
     if FConfiguracoes.Geral.Salvar then
       FConfiguracoes.Geral.Save(FNFeChave+'-ped-can.xml', FDadosMsg);
 
@@ -1275,6 +1290,7 @@ begin
     XmlDoc := LoadXMLData(FRetWS);
     NFeRetorno := GetretCancNFe(XmlDoc);
 
+    MyNFe.SetStatus( stIdle );
     if FConfiguracoes.WebServices.Visualizar then
     begin
       ShowMessage('Versão Leiaute : '+NFeRetorno.Versao+LineBreak+
@@ -1303,6 +1319,7 @@ begin
        Stream.Free;
     {$ENDIF}
     NotaUtil.ConfAmbiente;
+    MyNFe.SetStatus( stIdle );
   end;
 end;
 
@@ -1366,6 +1383,7 @@ begin
      HTTP := THTTPSend.Create;
   {$ENDIF}
   try
+    MyNFe.SetStatus( stNfeInutilizacao );
     if FConfiguracoes.Geral.Salvar then
       FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+FNFeChave+'-ped-inu.xml', FDadosMsg);
 
@@ -1386,6 +1404,7 @@ begin
     XmlDoc := LoadXMLData(FRetWS);
     NFeRetorno := GetretInutNFe(XmlDoc);
 
+    MyNFe.SetStatus( stIdle );
     if FConfiguracoes.WebServices.Visualizar then
     begin
       ShowMessage('Versão Leiaute : '+NFeRetorno.Versao+LineBreak+
@@ -1413,6 +1432,7 @@ begin
        Stream.Free;
     {$ENDIF}
     NotaUtil.ConfAmbiente;
+    MyNFe.SetStatus( stIdle );
   end;
 end;
 

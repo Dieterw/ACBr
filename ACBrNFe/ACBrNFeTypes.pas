@@ -59,6 +59,16 @@ type
   TNFeFrete = (freEmitente, freDestinatario);
 //  TNFeOperacao = (wseInsert, wseUpdate);
   TLayOut = (LayNfeRecepcao,LayNfeRetRecepcao,LayNfeCancelamento,LayNfeInutilizacao,LayNfeConsulta,LayNfeStatusServico,LayNfeCadastro);
+  // TStatusACBrNFe=Estado atual do componente
+  // stIdle = Componente em estado de espera
+  // stNFeStatusServico = Realizando pedido de Status
+  // stNFeRecepcao = Realizando Envio de NFe
+  // stNFeRetRecepcao = Realizando Retorno de NFe
+  // stNFeConsulta = Realizando Consulta de NFe
+  // stNfeCancelamento = Realizando Cancelamento de NFe
+  // stNfeInutilizacao = Realizando Inutilização de NFe
+  TStatusACBrNFe = ( stIdle, stNFeStatusServico, stNFeRecepcao, stNfeRetRecepcao, stNfeConsulta, stNfeCancelamento, stNfeInutilizacao, stNFeRecibo );
+
 
 
 implementation

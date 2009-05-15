@@ -47,7 +47,7 @@ unit ACBrSocket;
 
 interface
 uses SysUtils, Classes, Contnrs,
-     blcksock, synsock,  {Units da Synapse}
+     blcksock, synsock, synamisc,  {Units da Synapse}
      ACBrBase ;
 
 type

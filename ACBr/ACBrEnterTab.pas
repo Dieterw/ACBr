@@ -127,7 +127,9 @@ begin
            {$IFDEF VisualCLX}
             TButtonControl( TForm(AForm).ActiveControl ).AnimateClick ;
            {$ELSE}
-            THackButtomControl( TForm(AForm).ActiveControl ).Click ;
+            {$IFNDEF FPC}
+             THackButtomControl( TForm(AForm).ActiveControl ).Click ;
+            {$ENDIF}
            {$ENDIF}
            exit ;
         end ;

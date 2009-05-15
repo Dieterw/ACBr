@@ -115,6 +115,8 @@ begin
 end;
 
 procedure TACBrEnterTab.DoEnterAsTab(AForm: TObject; var Key: Char);
+Var
+  DoClick : Boolean ;
 begin
   try
      if not (AForm is TForm) then
@@ -127,9 +129,14 @@ begin
            {$IFDEF VisualCLX}
             TButtonControl( TForm(AForm).ActiveControl ).AnimateClick ;
            {$ELSE}
-            {$IFNDEF FPC}
-             THackButtomControl( TForm(AForm).ActiveControl ).Click ;
+             DoClick := True;
+            {$IFDEF FPC}
+             {$IFNDEF Linux}
+              DoClick := False;  // Para evitar Click ocorre 2x em FPC com Win32
+             {$ENDIF}
             {$ENDIF}
+            if DoClick then
+               THackButtomControl( TForm(AForm).ActiveControl ).Click ;
            {$ENDIF}
            exit ;
         end ;

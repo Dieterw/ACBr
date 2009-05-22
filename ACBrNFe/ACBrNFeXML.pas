@@ -840,25 +840,13 @@ begin
 end;
 
 procedure TNotaFiscalXML.Imprimir;
-var dmRave:TdmACBrNFe;
 begin
-  try
-    dmRave := TdmACBrNFe.Create(nil);
-    dmRave.Imprimir(FNFe, TConfiguracoes(FConfiguracoes).Geral.LogoMarca);
-  finally
-    FreeAndNil(dmRave);
-  end;
+  dmACBrNFe.Imprimir(FNFe, TConfiguracoes(FConfiguracoes).Geral.LogoMarca);
 end;
 
 procedure TNotaFiscalXML.ImprimirPDF;
-var dmRave:TdmACBrNFe;
 begin
-  try
-    dmRave := TdmACBrNFe.Create(nil);
-    dmACBrNFe.ImprimirPDF(FNFe, TConfiguracoes(FConfiguracoes).Geral.LogoMarca);
-  finally
-    FreeAndNil(dmRave);
-  end;
+  dmACBrNFe.ImprimirPDF(FNFe, TConfiguracoes(FConfiguracoes).Geral.LogoMarca);
 end;
 
 procedure TNotaFiscalXML.LoadFromFile(Const AFile: String);

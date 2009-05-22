@@ -838,11 +838,11 @@ procedure TdmACBrNFe.CustomISSQNCXNOpen(Connection: TRvCustomConnection);
 begin
   Connection.DataRows := 1;
 end;
-{
+
 initialization
   dmACBrNFe := TdmACBrNFe.Create(nil);
 
 finalization
   dmACBrNFe.Free;
-}
+
 end.

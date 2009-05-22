@@ -49,10 +49,21 @@
 |*  - Incluida Informações ISSQN, Retenções Tributos
 |* 17/03/2009: Dulcemar P. Zilli
 |*  - Separado unidade Tributavel da Unidade de Comercialização
+|* 14/04/2009: Dulcemar P. Zilli
+|*  - Incluido informação adicional produtos
+|* 23/04/2009: Dulcemar P. Zilli
+|*  - Alterada forma de Validação do Destinatario, motivo operações com os
+|*    exterior - EX
+|*  - Alterado Destinatario, selecionar tag 'CNPJ' quando se tratar de operação
+|*    com o exterior, codigo país <> 1058.
 |* 02/05/2009: João H. Souza
 |*  - Inclusão: Frete, Seguro de DadosProduto
 |* 11/05/2009: João H. Souza
 |*  - Inclusão: Notas Fiscais Referenciadas
+|* 11/05/2009: Dulcemar P. Zilli
+|*  - Alterada procedures Imprimir e ImprimirPDF p/ criação do TdmACBrNFe de
+|*    forma dinamica. Conforme sugestão de Fernando Fiorentin, reduzindo o tempo
+|*    de descarga do componente.
 ******************************************************************************}
 
 unit ACBrNFeXML;
@@ -91,7 +102,7 @@ type
     property Msg: WideString read FMsg write FMsg;
     property Confirmada: Boolean read FConfirmada write FConfirmada;
     property NFe: IXMLTNFe read FNFe write FNFe;
-    property NFeChave: String read FNFeChave write FNFeChave;
+    property NFeChave: String read GetNFeChave write FNFeChave;
     constructor Create(AOwner: TPersistent; ANotaFiscalEletronica: TPersistent);reintroduce;
     destructor Destroy; override;
   published
@@ -245,7 +256,7 @@ begin
 
   with NotaFiscal(FNotaFiscal), FNFe.InfNFe.Dest do
   begin
-    if Length(Destinatario.CNPJCPF) > 11 then
+    if (Length(Destinatario.CNPJCPF) > 11) or (Destinatario.Endereco.Pais.Codigo <> 1058) then
       CNPJ := Destinatario.CNPJCPF
     else
       CPF := Destinatario.CNPJCPF;
@@ -289,7 +300,10 @@ begin
           CEAN := DadosProdutos.Items[i].EAN;
           XProd    := NotaUtil.ParseText(DadosProdutos.Items[i].Descricao);
           if NotaUtil.NaoEstaVazio(DadosProdutos.Items[i].NCM) then
-            NCM := DadosProdutos.Items[i].NCM;
+          begin   
+             NCM    := DadosProdutos.Items[i].NCM;
+             Genero := copy(DadosProdutos.Items[i].NCM,1,2);
+          end;
           CFOP     := IntToStr(DadosProdutos.Items[i].CFOP);
 
           UCom     := DadosProdutos.Items[i].Unidade;
@@ -339,7 +353,8 @@ begin
                   NAdicao := IntToStr(DadosProdutos.Items[i].DI.LADI.Items[x].NumeroAdicao);
                   NSeqAdic := IntToStr(x+1);
                   CFabricante := DadosProdutos.Items[i].DI.LADI.Items[x].CodigoFrabricante;
-                  VDescDI := NotaUtil.FormatFloat(DadosProdutos.Items[i].DI.LADI.Items[x].ValorDesconto,'0.00');
+                  if DadosProdutos.Items[i].DI.LADI.Items[x].ValorDesconto > 0 then
+                    VDescDI := NotaUtil.FormatFloat(DadosProdutos.Items[i].DI.LADI.Items[x].ValorDesconto,'0.00');
                 end;
               end;
             end;
@@ -630,7 +645,12 @@ begin
               if (CodigoServico <> '') then
                 CListServ := CodigoServico;
             end;
-          end;  
+          end;
+        end;
+
+        with Prod do begin
+          if NotaUtil.NaoEstaVazio(DadosProdutos.Items[i].InformacaoAdicional) then
+            InfAdProd :=  NotaUtil.ParseText(DadosProdutos.Items[i].InformacaoAdicional);
         end;
 
       end;
@@ -700,9 +720,9 @@ begin
     if NotaUtil.NaoEstaVazio(Transportador.IE) then
       Transporta.IE := Transportador.IE;
     if NotaUtil.NaoEstaVazio(Transportador.Endereco) then
-      Transporta.XEnder := Transportador.Endereco;
+      Transporta.XEnder := NotaUtil.ParseText(Transportador.Endereco);
     if NotaUtil.NaoEstaVazio(Transportador.Cidade) then
-      Transporta.XMun := Transportador.Cidade;
+      Transporta.XMun :=  NotaUtil.ParseText(Transportador.Cidade);
     if NotaUtil.NaoEstaVazio(Transportador.UF) then
       Transporta.UF := Transportador.UF;
 
@@ -820,13 +840,25 @@ begin
 end;
 
 procedure TNotaFiscalXML.Imprimir;
+var dmRave:TdmACBrNFe;
 begin
-  dmACBrNFe.Imprimir(FNFe, TConfiguracoes(FConfiguracoes).Geral.LogoMarca);
+  try
+    dmRave := TdmACBrNFe.Create(nil);
+    dmRave.Imprimir(FNFe, TConfiguracoes(FConfiguracoes).Geral.LogoMarca);
+  finally
+    FreeAndNil(dmRave);
+  end;
 end;
 
 procedure TNotaFiscalXML.ImprimirPDF;
+var dmRave:TdmACBrNFe;
 begin
-  dmACBrNFe.ImprimirPDF(FNFe, TConfiguracoes(FConfiguracoes).Geral.LogoMarca);
+  try
+    dmRave := TdmACBrNFe.Create(nil);
+    dmACBrNFe.ImprimirPDF(FNFe, TConfiguracoes(FConfiguracoes).Geral.LogoMarca);
+  finally
+    FreeAndNil(dmRave);
+  end;
 end;
 
 procedure TNotaFiscalXML.LoadFromFile(Const AFile: String);
@@ -890,9 +922,11 @@ begin
           IntToStr(NotaFiscal(FNotaFiscal).Identificacao.Numero)+LineBreak;
   with NotaFiscal(FNotaFiscal) do
   begin
-    if not(NotaUtil.TamanhoIgual(Destinatario.CNPJCPF, 11) or NotaUtil.TamanhoIgual(Destinatario.CNPJCPF,14)) then
-      raise Exception.Create(vMsg+'Destinatário com CNPJ ou CPF inválido!');
-
+    if (Destinatario.Endereco.UF <> 'EX') then begin
+      if not(NotaUtil.TamanhoIgual(Destinatario.CNPJCPF, 11) or NotaUtil.TamanhoIgual(Destinatario.CNPJCPF,14)) then
+        raise Exception.Create(vMsg+'Destinatário com CNPJ ou CPF inválido!');
+      NotaUtil.EstaVazio(Destinatario.Endereco.Bairro, vMsg+'Informar o Bairro no endereço do Destinatário!');
+    end;
     NotaUtil.EstaVazio(Destinatario.NomeRazao, vMsg+'Informar o Razão Social ou Nome do Destinatário!');
     NotaUtil.EstaVazio(Destinatario.Endereco.Logradouro, vMsg+'Informar o Logradouro no endereço do Destinatário!');
     NotaUtil.EstaVazio(Destinatario.Endereco.Bairro, vMsg+'Informar o Bairro no endereço do Destinatário!');

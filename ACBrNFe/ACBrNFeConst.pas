@@ -40,7 +40,9 @@
 |* 16/12/2008: Wemerson Souto
 |*  - Doação do componente para o Projeto ACBr
 |* 09/03/2009: Dulcemar P. Zilli
-|*  - Incluido IPI e II 
+|*  - Incluido IPI e II
+|* 23/04/2009: Dulcemar P. Zilli
+|*  - Alterada Tabela Unidades da Federação, incluida EX p/ oper. com exterior
 ******************************************************************************}
 unit ACBrNFeConst;
 
@@ -114,11 +116,11 @@ const
    '09 - Operação com Suspensão da Contribuição',
    '99 - Outras Operações');
 
-  NFeUF: array[0..26] of String =
+  NFeUF: array[0..27] of String =
   ('AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA',
-   'PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO');
-  NFeUFCodigo: array[0..26] of Integer =
-  (12,27,16,13,29,23,53,32,52,21,51,50,31,15,25,41,26,22,33,24,43,11,14,42,35,28,17);
+   'PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO','EX');
+  NFeUFCodigo: array[0..27] of Integer =
+  (12,27,16,13,29,23,53,32,52,21,51,50,31,15,25,41,26,22,33,24,43,11,14,42,35,28,17,99);
 
   NFeAmbiente: array[0..1] of String =
   ('Producao','Teste');

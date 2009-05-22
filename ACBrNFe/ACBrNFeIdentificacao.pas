@@ -82,7 +82,7 @@ type
     property DataSaida : TDateTime read FDataSaida write FDataSaida;
     property Tipo : TNFeTipo read FTipo write FTipo;
     property Finalidade : TNFeFinalidade read FFinalidade write FFinalidade;
-    property NFRef : TNFRef read FNFRef write FNFRef;
+    property NFRef : TNFRef read FNFRef write SetNFRef;
   end;
 
 implementation

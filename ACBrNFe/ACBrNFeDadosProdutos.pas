@@ -42,6 +42,9 @@
 |* 09/03/2009: Dulcemar P.Zilli
 |*  - Inclusão IPI, II e DI 
 |* 14/03/2009: Dulcemar P.Zilli
+|*  - Inclusão ISSQN 
+|* 14/04/2009: Dulcemar P. Zilli
+|*  - Incluido informação adicional produtos
 |*  - Inclusão ISSQN
 |* 02/05/2009: João H. Souza
 |*  - Inclusão: Frete, Seguro em DadosProduto
@@ -615,6 +618,7 @@ type
     FValorUnitarioTributacao: Double;
     FUnidadeTributavel: String;
     FGTINUnidadeTributavel: String;
+    FInformacaoAdicional: String;
     procedure SetCodigo(AValue: String);
     procedure SetEAN(AValue: String);
     procedure SetDescricao(AValue: String);
@@ -625,6 +629,7 @@ type
     procedure SetUnidadeTributavel(const Value: String);
     procedure SetValorUnitarioTributacao(const Value: Double);
     procedure SetGTINUnidadeTributavel(const Value: String);
+    procedure SetInformacaoAdicional(const Value: String);
   public
     constructor Create(Collection: TCollection); override;
     destructor Destroy; override;
@@ -649,6 +654,9 @@ type
     property ValorFrete : Double read FValorFrete write FValorFrete;
     property ValorSeguro : Double read FValorSeguro write FValorSeguro;
     property ValorDesconto : Double read FValorDesconto write FValorDesconto;
+
+    property InformacaoAdicional:String read FInformacaoAdicional write SetInformacaoAdicional;
+    
     property DI : TDI read FDI write SetDI;
   end;
 
@@ -809,6 +817,11 @@ end;
 procedure DadoProduto.SetGTINUnidadeTributavel(const Value: String);
 begin
   FGTINUnidadeTributavel := Value;
+end;
+
+procedure DadoProduto.SetInformacaoAdicional(const Value: String);
+begin
+  FInformacaoAdicional := Value;
 end;
 
 procedure DadoProduto.SetNCM(AValue: String);

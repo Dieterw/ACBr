@@ -253,6 +253,7 @@ begin
   Connection.WriteField('IE', dtString, 14, '', '');
 
   Connection.WriteField('IM', dtString, 15, '', '');
+  Connection.WriteField('IEST', dtString, 15, '', '');
 
 end;
 
@@ -286,6 +287,7 @@ begin
     end;
     Connection.WriteStrData('', IE);
     Connection.WriteStrData('', IM);
+    Connection.WriteStrData('', IEST);
   end;
 end;
 
@@ -490,10 +492,14 @@ begin
     Connection.WriteStrData('', ModFrete);
     with Transporta do
     begin
-      if NotaUtil.NaoEstaVazio(CNPJ) then
-        Connection.WriteStrData('', NotaUtil.FormatarCNPJ(CNPJ))
-      else 
-        Connection.WriteStrData('', NotaUtil.FormatarCPF(CPF));
+      if (Trim(CNPJ)='') then
+        Connection.WriteStrData('', '')
+      else begin
+        if NotaUtil.NaoEstaVazio(CNPJ) then
+          Connection.WriteStrData('', NotaUtil.FormatarCNPJ(CNPJ))
+        else
+          Connection.WriteStrData('', NotaUtil.FormatarCPF(CPF));
+      end;
       Connection.WriteStrData('', XNome);
       Connection.WriteStrData('', IE);
       Connection.WriteStrData('', XEnder);
@@ -832,11 +838,11 @@ procedure TdmACBrNFe.CustomISSQNCXNOpen(Connection: TRvCustomConnection);
 begin
   Connection.DataRows := 1;
 end;
-
+{
 initialization
   dmACBrNFe := TdmACBrNFe.Create(nil);
 
 finalization
   dmACBrNFe.Free;
-
+}
 end.

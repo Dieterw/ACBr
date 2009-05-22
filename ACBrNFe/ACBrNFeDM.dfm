@@ -1,7 +1,9 @@
 object dmACBrNFe: TdmACBrNFe
   OldCreateOrder = False
   OnCreate = DataModuleCreate
-  Height = 444
+  Left = 362
+  Top = 200
+  Height = 428
   Width = 743
   object CustomDestinatarioCXN: TRvCustomConnection
     RuntimeVisibility = rtDeveloper

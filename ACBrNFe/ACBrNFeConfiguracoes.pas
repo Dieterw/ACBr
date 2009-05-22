@@ -284,7 +284,8 @@ begin
   end;
 
   if not(Assigned(Result)) then
-    raise Exception.Create('Certificado Digital não encontrado!');
+    raise Exception.Create('Certificado Digital não encontrado!'#13+
+      '  Verique se o número de série foi informado corretamente.');
 
 end;
 

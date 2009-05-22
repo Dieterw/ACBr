@@ -556,7 +556,7 @@ Var
    Tamanho, FatorF, FatorG, I, xMD, xTP, yMD, yTP, DV, DVX, DVY : Integer ;
    SOMA, SOMAq, nD, M : Integer ;
    OK : Boolean ;
-   Passo, D : Char ;
+   Passo, D : AnsiChar ;
 
 begin
 

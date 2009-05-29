@@ -341,6 +341,14 @@ object Form1: TForm1
         Text = 'Impressora est'#225' trabalhando'
         OnChange = edMsgTrabalhandoChange
       end
+      object Button1: TButton
+        Left = 280
+        Top = 240
+        Width = 75
+        Height = 25
+        Caption = 'Button1'
+        TabOrder = 23
+      end
     end
     object TabSheet1: TTabSheet
       Caption = 'Cmd/Resp'

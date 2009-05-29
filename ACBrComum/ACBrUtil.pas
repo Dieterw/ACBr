@@ -123,13 +123,13 @@ Function HexToAscii(const HexStr : AnsiString) : AnsiString ;
 Function AsciiToHex(const AString: AnsiString): AnsiString;
 
 function padL(const AString : AnsiString; const nLen : Integer;
-   const Caracter : Char = ' ') : AnsiString;
+   const Caracter : AnsiChar = ' ') : AnsiString;
 function padR(const AString : AnsiString; const nLen : Integer;
-   const Caracter : Char = ' ') : AnsiString;
+   const Caracter : AnsiChar = ' ') : AnsiString;
 function padC(const AString : AnsiString; const nLen : Integer;
-   const Caracter : Char = ' ') : AnsiString;
+   const Caracter : AnsiChar = ' ') : AnsiString;
 function padS(const AString : AnsiString; const nLen : Integer; Separador : String;
-   const Caracter : Char = ' ') : AnsiString ;
+   const Caracter : AnsiChar = ' ') : AnsiString ;
 function RemoveString(const sSubStr, sString: AnsiString): AnsiString;
 function RandomName(const LenName : Integer = 8) : String ;
 
@@ -176,9 +176,9 @@ function DTtoS( ADateTime : TDateTime) : String;
 function StrIsAlpha(const S: String): Boolean;
 function StrIsAlphaNum(const S: String): Boolean;
 function StrIsNumber(const S: String): Boolean;
-function CharIsAlpha(const C: Char): Boolean;
-function CharIsAlphaNum(const C: Char): Boolean;
-function CharIsNum(const C: Char): Boolean;
+function CharIsAlpha(const C: AnsiChar): Boolean;
+function CharIsAlphaNum(const C: AnsiChar): Boolean;
+function CharIsNum(const C: AnsiChar): Boolean;
 function OnlyNumber(const Value: string): String;
 function OnlyAlpha(const Value: string): String;
 function OnlyAlphaNum(const Value: string): String;
@@ -375,7 +375,7 @@ end;
   a <AString> a Esquerda. Se <AString> for maior que <nLen>, ela será truncada
  ---------------------------------------------------------------------------- }
 function padL(const AString : AnsiString; const nLen : Integer;
-   const Caracter : Char) : AnsiString ;
+   const Caracter : AnsiChar) : AnsiString ;
 begin
   Result := copy(AString,1,nLen) ;
   if Length(Result) < nLen then
@@ -387,7 +387,7 @@ end ;
   a <AString> a Direita. Se <AString> for maior que <nLen>, ela será truncada
  ---------------------------------------------------------------------------- }
 function padR(const AString : AnsiString; const nLen : Integer;
-   const Caracter : Char) : AnsiString ;
+   const Caracter : AnsiChar) : AnsiString ;
 begin
   Result := copy(AString,1,nLen) ;
   if Length(Result) < nLen then
@@ -398,7 +398,7 @@ end ;
  Completa <AString> Centralizando, preenchendo com <Caracter> a esquerda e direita
  ---------------------------------------------------------------------------- }
 function padC(const AString : AnsiString; const nLen : Integer;
-   const Caracter : Char) : AnsiString ;
+   const Caracter : AnsiChar) : AnsiString ;
 Var nCharLeft : Integer ;
     D : Double ;
 begin
@@ -413,7 +413,7 @@ end ;
   substituindo <Separador> por n X <Caracter>  (Justificado)
  ---------------------------------------------------------------------------- }
 function padS(const AString : AnsiString; const nLen : Integer;
-   Separador : String; const Caracter : Char = ' ') : AnsiString ;
+   Separador : String; const Caracter : AnsiChar = ' ') : AnsiString ;
 var StuffStr : AnsiString ;
     nSep, nCharSep, nResto, nFeito, Ini : Integer ;
     D : Double ;
@@ -464,7 +464,7 @@ end;
  ---------------------------------------------------------------------------- }
 function RandomName(const LenName : Integer ) : String ;
  Var I, N : Integer ;
-     C : Char ;
+     C : AnsiChar ;
 begin
    if not Randomized then
    begin
@@ -477,7 +477,7 @@ begin
    For I := 1 to LenName do
    begin
       N := Random( 25 ) ;
-      C := char( 65 + N ) ;
+      C := AnsiChar( 65 + N ) ;
 
       Result := Result + C ;
    end ;
@@ -803,7 +803,7 @@ end ;
  *** Extraido de JclStrings.pas  - Project JEDI Code Library (JCL) ***
   Retorna <True> se <C> é Alpha maiusculo/minusculo 
  ---------------------------------------------------------------------------- }
-function CharIsAlpha(const C: Char): Boolean;
+function CharIsAlpha(const C: AnsiChar): Boolean;
 begin
   Result := ( C in ['A'..'Z','a'..'z'] ) ;
 end ;
@@ -812,7 +812,7 @@ end ;
  *** Extraido de JclStrings.pas  - Project JEDI Code Library (JCL) ***
   Retorna <True> se <C> é Númerico 
  ---------------------------------------------------------------------------- }
-function CharIsNum(const C: Char): Boolean;
+function CharIsNum(const C: AnsiChar): Boolean;
 begin
   Result := ( C in ['0'..'9'] ) ;
 end ;
@@ -821,7 +821,7 @@ end ;
  *** Extraido de JclStrings.pas  - Project JEDI Code Library (JCL) ***
   Retorna <True> se <C> é Alpha maiusculo/minusculo ou Numerico
  ---------------------------------------------------------------------------- }
-function CharIsAlphaNum(const C: Char): Boolean;
+function CharIsAlphaNum(const C: AnsiChar): Boolean;
 begin
   Result := ( CharIsAlpha( C ) or CharIsNum( C ) );
 end ;
@@ -1594,7 +1594,7 @@ end;
 
 function TBStrZero(const i: string; const Casas: byte): string;
 var
-  Ch: Char;
+  Ch: AnsiChar;
 begin
 Result := I;
 if length(i)>Casas then begin

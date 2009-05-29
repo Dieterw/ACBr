@@ -244,6 +244,7 @@ type
     IdentificaPAF1: TMenuItem;
     PAF1: TMenuItem;
     LeituraXSerial1: TMenuItem;
+    Button1: TButton;
     procedure cbxModeloChange(Sender: TObject);
     procedure Sair1Click(Sender: TObject);
     procedure bAtivarClick(Sender: TObject);

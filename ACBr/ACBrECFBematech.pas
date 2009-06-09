@@ -92,10 +92,13 @@
 |*    Redução Z automáticamente
 |* 11/04/2008:  Daniel Simoes de Almeida
 |*  - Adicionado método CortarPapel
-|*  - EnviaComando_ECF melhorada para diminuir frequencia de msgs de ACK inválido 
+|*  - EnviaComando_ECF melhorada para diminuir frequencia de msgs de ACK inválido
 |*  - VerificaFimImpressao melhorada para detectar que o ECF está trabalhando
 |*    e com isso aumentar o Tempo de estouro do TimeOut.
 |*    - Com isso, não é necessário setar TimeOuts muito grandes
+|* 09/06/2009:  Daniel Simoes de Almeida
+|*  - Correção em GetDadosUltimaReducaoZ, para somar TotalCancelamentos em
+|*    VendaBruta. Por: Brener B. Leão
 ******************************************************************************}
 
 {$I ACBr.inc}
@@ -2122,14 +2125,15 @@ RRGGGGGGGGGGGGGGGGGGCCCCCCCCCCCCCCDDDDDDDDDDDDDDT001T002T003T004T005T006T007T008
 
   try
      V := RoundTo( StrToFloatDef( copy(RetCmd,35,14),0) / 100, -2)  ;
-     Result := Result + 'TotalDescontos = ' + FloatToStr( V )  + sLineBreak ;
+     Result := Result + 'TotalDescontos = ' + FloatToStr( V ) + sLineBreak ;
      VBruta := VBruta + V ;
   except
   end ;
 
   try
-     Result := Result + 'TotalCancelamentos = ' + FloatToStr(
-         RoundTo( StrToFloatDef( copy(RetCmd,21,14),0) / 100, -2) )  + sLineBreak ;
+     V := RoundTo( StrToFloatDef( copy(RetCmd,21,14),0) / 100, -2)  ;
+     Result := Result + 'TotalCancelamentos = ' + FloatToStr( V ) + sLineBreak ;
+     VBruta := VBruta + V ;
   except
   end ;
 

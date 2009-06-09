@@ -245,6 +245,10 @@ TACBrECFFiscNET = class( TACBrECFClass )
     Procedure ProgramaFormaPagamento( var Descricao: String;
        PermiteVinculado : Boolean = true; Posicao : String = '' ) ; override ;
 
+    procedure CarregaRelatoriosGerenciais ; override ;
+    Procedure ProgramaRelatorioGerencial( var Descricao: String;
+       Posicao : String = '') ; override ;
+       
     procedure CarregaComprovantesNaoFiscais ; override ;
     procedure LerTotaisComprovanteNaoFiscal ; override ;
     Procedure ProgramaComprovanteNaoFiscal( var Descricao: String;
@@ -1456,25 +1460,28 @@ begin
   end ;
 end;
 
-procedure TACBrECFFiscNET.AbreRelatorioGerencial;
+procedure TACBrECFFiscNET.AbreRelatorioGerencial(Indice: Integer = 0);
 begin
-  try
-     { Procurando por Relatorio Gerencial na posição 0.. Se nao achar, programa }
-     FiscNETComando.NomeComando := 'LeGerencial' ;
-     FiscNETComando.AddParamInteger('CodGerencial', 0 ) ;
-     EnviaComando ;
-  except
-     { Se nao existir,  gera exceção e nesse caso programa a posicao 0 }
-     FiscNETComando.NomeComando := 'DefineGerencial' ;
-     FiscNETComando.AddParamInteger('CodGerencial', 0 ) ;
-     FiscNETComando.AddParamString('DescricaoGerencial','Relatorio Gerencial') ;
-     FiscNETComando.AddParamString('NomeGerencial','Relatorio Gerencial') ;
-     EnviaComando ;
+  if Indice = 0 then
+  begin
+     try
+        { Procurando por Relatorio Gerencial na posição informada na variável Indice... Se nao achar, programa }
+        FiscNETComando.NomeComando := 'LeGerencial' ;
+        FiscNETComando.AddParamInteger('CodGerencial', Indice ) ;
+        EnviaComando ;
+     except
+        { Se nao existir,  gera exceção e nesse caso programa a posicao }
+        FiscNETComando.NomeComando := 'DefineGerencial' ;
+        FiscNETComando.AddParamInteger('CodGerencial', Indice ) ;
+        FiscNETComando.AddParamString('DescricaoGerencial','Relatorio Gerencial') ;
+        FiscNETComando.AddParamString('NomeGerencial','Relatorio Gerencial') ;
+        EnviaComando ;
+     end ;
   end ;
 
   FiscNETComando.NomeComando := 'AbreGerencial' ;
   FiscNETComando.TimeOut     := 5 ;
-  FiscNETComando.AddParamInteger('CodGerencial', 0 ) ;
+  FiscNETComando.AddParamInteger('CodGerencial', Indice ) ;
   EnviaComando ;
 end;
 
@@ -2054,6 +2061,19 @@ begin
         raise ;
      end ;
   end ;
+end;
+
+procedure TACBrECFFiscNET.CarregaRelatoriosGerenciais;
+begin
+  inherited;
+
+end;
+
+procedure TACBrECFFiscNET.ProgramaRelatorioGerencial(var Descricao: String;
+  Posicao: String);
+begin
+  inherited;
+
 end;
 
 end.

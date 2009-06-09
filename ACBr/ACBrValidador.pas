@@ -510,7 +510,9 @@ begin
   if ((fsDocto >= '78000000') and (fsDocto <= '78899999')) and { MT }
      ((fsComplemento = 'MT')  or  (fsComplemento = '')) then exit ;
 
-  if ((fsDocto >= '78900000') and (fsDocto <= '78999999')) and { RO }
+(* if ((fsDocto >= '78900000') and (fsDocto <= '78999999')) and { RO }
+ Faixa antiga foi removida: http://acbr.sourceforge.net/mantis/view.php?id=19 *)  
+  if ((fsDocto >= '76800000') and (fsDocto <= '76999999')) and { RO }
      ((fsComplemento = 'RO')  or  (fsComplemento = '')) then exit ;
 
   if ((fsDocto >= '79000000') and (fsDocto <= '79999999')) and { MS }

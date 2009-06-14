@@ -42,6 +42,8 @@
 |*                            GetChequePronto, LeituraCMC7
 |* 11/04/2008: Daniel Simões de Almeida
 |* - Adicionados métodos: CortaPapel, IdentificaConsumidor, Suprimento
+|* 14/06/2009: Daniel Simões de Almeida
+|* - Adicionada propriedades: CDC, GNF, GRG. Por: José Nilton Pace
 ******************************************************************************}
 
 {$I ACBr.inc}

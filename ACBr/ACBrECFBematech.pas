@@ -99,6 +99,9 @@
 |* 09/06/2009:  Daniel Simoes de Almeida
 |*  - Correção em GetDadosUltimaReducaoZ, para somar TotalCancelamentos em
 |*    VendaBruta. Por: Brener B. Leão
+|* 10/06/2009:  Daniel Simoes de Almeida
+|*  - Implementação da programação de relatorio gerencial
+|*    Por: Franklin Haut
 ******************************************************************************}
 
 {$I ACBr.inc}
@@ -282,6 +285,9 @@ TACBrECFBematech = class( TACBrECFClass )
        override ;
     Procedure ProgramaFormaPagamento( var Descricao: String;
        PermiteVinculado : Boolean = true; Posicao : String = '' ) ; override ;
+    procedure CarregaRelatoriosGerenciais ; override ;
+    Procedure ProgramaRelatorioGerencial( var Descricao: String;
+       Posicao : String = '') ; override ;
 
     procedure CarregaComprovantesNaoFiscais ; override ;
     procedure LerTotaisComprovanteNaoFiscal ; override ;
@@ -1309,6 +1315,51 @@ begin
   end ;
 end;
 
+procedure TACBrECFBematech.CarregaRelatoriosGerenciais;
+Var
+  RetCmd, Token1, Token2, Descricao : AnsiString ;
+  Cont, Indice, CER : Integer ;
+  RG  : TACBrECFRelatorioGerencial ;
+begin
+  inherited CarregaRelatoriosGerenciais ;   {Inicializa fpRelatoriosGerenciais}
+
+  try
+    if fpMFD then
+    begin
+      BytesResp  := 570;
+      RetCmd  := EnviaComando( #35 + #51 );
+
+      for Cont := 1 to 30 do
+      begin
+        { Adicionando os Relatorios Gerenciais }
+        Token1    := copy(RetCmd, ((Cont-1) * 19) +3, 17) ;
+        Descricao := Trim(Token1) ;
+
+        Token2:= BcdToAsc(  copy(RetCmd, ((Cont-1) * 19) + 1, 2) ) ;
+        CER   := StrToIntDef(Token2, 0) ;
+
+        if (Descricao <> '') and (Descricao[2] <> #255) then
+        begin
+          RG := TACBrECFRelatorioGerencial.create ;
+          RG.Indice     := IntToStrZero(Cont,2);
+          RG.Descricao  := Descricao ;
+          RG.Contador   := CER;
+
+          fpRelatoriosGerenciais.Add( RG ) ;
+        end ;
+      end ;
+    end ;
+  except
+    { Se falhou ao carregar, deve "nilzar" as variaveis para que as rotinas
+      "Acha*" tentem carregar novamente }
+    fpRelatoriosGerenciais.Free ;
+    fpRelatoriosGerenciais := nil ;
+
+    raise ;
+  end ;
+
+end;
+
 procedure TACBrECFBematech.LerTotaisFormaPagamento;
 begin
   CarregaFormasPagamento ;
@@ -1382,6 +1433,40 @@ begin
         Descricao := FPagto.Descricao ;
      end ;
   end ;
+end;
+
+procedure TACBrECFBematech.ProgramaRelatorioGerencial( var Descricao: String; Posicao: String);
+Var
+  ProxIndice : Integer ;
+begin
+  CarregaRelatoriosGerenciais ;
+
+  Descricao := Trim(Descricao) ;
+  ProxIndice := StrToIntDef(Posicao, -1) ;
+
+  if fpMFD then
+   begin
+     if AchaRGDescricao(Descricao, True) <> nil then
+        raise Exception.Create('Relatório Gerencial ('+Descricao+') já existe.') ;
+
+     if (ProxIndice < 2) or (ProxIndice > 30) then { Indice passado é válido ? }
+     begin
+        For ProxIndice := 2 to 30 do  { Procurando Lacuna }
+        begin
+           if AchaRGIndice(IntToStrZero(ProxIndice,2)) = nil then
+              break ;
+        end ;
+     end ;
+
+     if ProxIndice > 30 then
+        raise Exception.create('Não há espaço para programar novos RGs');
+
+     EnviaComando( #82 + IntToStrZero(ProxIndice,2) + PadL(Descricao,17) ) ;
+   end
+  else
+     raise Exception.Create('Impressoras sem MFD não suportam Programação de Relatórios Gerenciais');
+
+  CarregaRelatoriosGerenciais ;
 end;
 
 procedure TACBrECFBematech.CarregaComprovantesNaoFiscais;
@@ -1522,16 +1607,29 @@ begin
   EnviaComando( #124 + IntToStr( Value ) ) ;
 end;
 
-procedure TACBrECFBematech.AbreRelatorioGerencial;
+procedure TACBrECFBematech.AbreRelatorioGerencial(Indice: Integer = 0);
  Var Espera : Integer ;
+  IndiceStr : String;
+  RG  : TACBrECFRelatorioGerencial;
 begin
   Espera := 30 ;
-  if fpMFD then
-     Espera := 10 ;
-
+  IndiceStr :=  IntToStrZero(Indice, 2);
   BytesResp := 0 ;
   AguardaImpressao := True ;
-  EnviaComando( #20, Espera) ;
+
+  if fpMFD and (Indice > 0) then
+   begin
+     Espera := 10 ;
+     RG  := AchaRGIndice( IndiceStr ) ;
+     if RG = nil then
+        raise Exception.create( 'Relatório Gerencial: '+IndiceStr+
+                                ' não foi cadastrado.' );
+
+     EnviaComando( #83 + IndiceStr, Espera);
+   end
+  else
+     EnviaComando(#20, Espera);
+
 end;
 
 procedure TACBrECFBematech.LinhaRelatorioGerencial(Linha: AnsiString; IndiceBMP: Integer);
@@ -2183,7 +2281,7 @@ begin
            if CorteParcial then
               LinhaRelatorioGerencial( #27 + #109 )
            else
-               LinhaRelatorioGerencial( #27 + #119 );
+              LinhaRelatorioGerencial( #27 + #119 );
          end
         else
            inherited CortaPapel ;

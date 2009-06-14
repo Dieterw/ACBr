@@ -183,7 +183,6 @@ TACBrECFDaruma = class( TACBrECFClass )
 
     Function PreparaCmd( cmd : AnsiString ) : AnsiString ;
     function GetComprovantesNaoFiscaisVinculado: TACBrECFComprovantesNaoFiscais;
-    function GetRelatoriosGerenciais: TACBrECFRelatoriosGerenciais;
     function LimpaRetorno( Retorno : AnsiString ) : AnsiString ;
 
     function GetRet244: AnsiString;
@@ -2138,7 +2137,7 @@ begin
 
   else if fpMFD then
   begin
-    if AchaCNFDescricao(Descricao, True) <> nil then
+    if AchaRGDescricao(Descricao, True) <> nil then
       raise Exception.Create('Relatório Gerencial ('+Descricao+') já existe.') ;
 
     if (ProxIndice < 2) or (ProxIndice > 20) then { Indice passado é válido ? }
@@ -2613,14 +2612,6 @@ begin
      else
         Result := Result + AString[A] ;
   end ;
-end;
-
-function TACBrECFDaruma.GetRelatoriosGerenciais: TACBrECFRelatoriosGerenciais;
-begin
-  if not Assigned( fpRelatoriosGerenciais ) then
-     CarregaRelatoriosGerenciais ;
-
-  Result := fpRelatoriosGerenciais ;
 end;
 
 function TACBrECFDaruma.GetComprovantesNaoFiscaisVinculado: TACBrECFComprovantesNaoFiscais;

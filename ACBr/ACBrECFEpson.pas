@@ -148,6 +148,11 @@ TACBrECFEpson = class( TACBrECFClass )
     function GetNumCupom: String; override ;
     function GetNumCCF: String; override ;
     function GetNumECF: String; override ;
+    function GetNumCRO: String; override ;
+    function GetNumCRZ: String; override ;
+    function GetNumGNF: String; override ;
+    function GetNumGRG: String; override ;
+    function GetNumCDC: String; override ;
     function GetNumLoja: String; override ;
     function GetNumSerie: String; override ;
     function GetNumVersao: String; override ;
@@ -164,8 +169,6 @@ TACBrECFEpson = class( TACBrECFClass )
     function GetPAF: String; override ;
     function GetDataMovimento: TDateTime; override ;
     function GetGrandeTotal: Double; override ;
-    function GetNumCRO: String; override ;
-    function GetNumCRZ: String; override ;
     function GetVendaBruta: Double; override ;
     function GetTotalAcrescimos: Double; override ;
     function GetTotalCancelamentos: Double; override ;
@@ -1097,6 +1100,30 @@ function TACBrECFEpson.GetNumCRO: String;
 begin
   EpsonResposta.Resposta := Ret0907 ;
   Result := EpsonResposta.Params[2] ;
+end;
+
+function TACBrECFEpson.GetNumCRZ: String;
+begin
+  EpsonResposta.Resposta := Ret0907 ;
+  Result := EpsonResposta.Params[1] ;
+end;
+
+function TACBrECFEpson.GetNumGNF: String;
+begin
+  EpsonResposta.Resposta := Ret0907 ;
+  Result := EpsonResposta.Params[3] ;
+end;
+
+function TACBrECFEpson.GetNumGRG: String;
+begin
+  EpsonResposta.Resposta := Ret0907 ;
+  Result := EpsonResposta.Params[6] ;
+end;
+
+function TACBrECFEpson.GetNumCDC: String;
+begin
+  EpsonResposta.Resposta := Ret0907 ;
+  Result := EpsonResposta.Params[4] ;
 end;
 
 function TACBrECFEpson.GetNumLoja: String;
@@ -2123,12 +2150,6 @@ function TACBrECFEpson.GetGrandeTotal: Double;
 begin
   EpsonResposta.Resposta := Ret0906 ;
   Result := RoundTo( StrToFloatDef(EpsonResposta.Params[0],0) /100, -2) ;
-end;
-
-function TACBrECFEpson.GetNumCRZ: String;
-begin
-  EpsonResposta.Resposta := Ret0907 ;
-  Result := EpsonResposta.Params[1] ;
 end;
 
 function TACBrECFEpson.GetTotalAcrescimos: Double;

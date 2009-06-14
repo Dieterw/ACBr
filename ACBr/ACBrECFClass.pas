@@ -360,6 +360,7 @@ TACBrECFClass = class
     procedure SetAguardandoResposta(const Value: Boolean);
     function GetComprovantesNaoFiscais: TACBrECFComprovantesNaoFiscais;
     function GetUnidadesMedida: TACBrECFUnidadesMedida;
+    function GetRelatoriosGerenciais: TACBrECFRelatoriosGerenciais;
 
     {$IFNDEF CONSOLE}
       procedure FormMsgTimer(Sender: TObject);
@@ -381,7 +382,6 @@ TACBrECFClass = class
     procedure DoLeResposta ;
     procedure DoRelatorioGerencial ;
     procedure DoCupomVinculado ;
-    function GetRelatoriosGerenciais: TACBrECFRelatoriosGerenciais;
  Protected
     fpDevice : TACBrDevice ;
     fpOwner  : TComponent ;   { Componente ACBrECF }

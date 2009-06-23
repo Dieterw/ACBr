@@ -253,7 +253,7 @@ TACBrRFD = class( TACBrComponent )     { Componente ACBrRFD }
 
     fsECF_CROAtual: Integer;
     fsECF_RFDID: String;
-    fsECF_NumSerie: String ;
+    fsECF_NumSerie: AnsiString ;
     fsECF_DataHoraSwBasico: TDateTime;
 
     fsCONT_RazaoSocial: String;

@@ -54,21 +54,21 @@ type
   TACBrCMC7 = class(TACBrComponent)
   private
     { Private declarations }
-    FCMC7        : String;
+    FCMC7        : AnsiString;
     FCMC7Bloco1  : String;
     FCMC7Bloco3  : String;
     FCMC7Bloco2  : String;
     FBanco       : String;
     FAgencia     : String;
-    FDvCCT       : Char;
+    FDvCCT       : AnsiChar;
     FComp        : String;
     FNumero      : String;
     FConta       : String;
-    FTipificacao : Char;
-    FDvBcoAg     : Char;
-    FDvCMC7      : Char;
+    FTipificacao : AnsiChar;
+    FDvBcoAg     : AnsiChar;
+    FDvCMC7      : AnsiChar;
     function DigitosaIgnorarConta(Banco: String) : integer;
-    procedure SetCMC7(Banda: String);
+    procedure SetCMC7(Banda: AnsiString);
     procedure ZeraCampos ;
   protected
     { Protected declarations }
@@ -81,19 +81,19 @@ type
     Procedure MontaCMC7(Bloco1, Bloco2, Bloco3 : String) ; overload ;
   published
     { Published declarations }
-    property CMC7        : String read FCMC7  write SetCMC7 stored false ;
+    property CMC7        : AnsiString read FCMC7  write SetCMC7 stored false ;
     property CMC7Bloco1  : String read FCMC7Bloco1  stored false ;
     property CMC7Bloco2  : String read FCMC7Bloco2  stored false ;
     property CMC7Bloco3  : String read FCMC7Bloco3  stored false ;
     property Banco       : String read FBanco       stored false ;
     property Agencia     : String read FAgencia     stored false ;
-    property DvCCT       : Char   read FDvCCT       stored false ; { Díg.Verif. Comp+Cheque+Tipificação }
+    property DvCCT       : AnsiChar read FDvCCT     stored false ; { Díg.Verif. Comp+Cheque+Tipificação }
     property Comp        : String read FComp        stored false ;
     property Numero      : String read FNumero      stored false ;
     property Conta       : String read FConta       stored false ;
-    property Tipificacao : Char   read FTipificacao stored false ; { Tipificação(5-Comum 6-Bancário 7-Salário 8-Administr. 9-CPMF) }
-    property DvBcoAg     : Char   read FDvBcoAg     stored false ; { Dígito verificador do Banco+Agência: }
-    property DvCMC7      : Char   read FDvCMC7      stored false ;
+    property Tipificacao : AnsiChar read FTipificacao stored false ; { Tipificação(5-Comum 6-Bancário 7-Salário 8-Administr. 9-CPMF) }
+    property DvBcoAg     : AnsiChar read FDvBcoAg   stored false ; { Dígito verificador do Banco+Agência: }
+    property DvCMC7      : AnsiChar read FDvCMC7    stored false ;
   end;
 
 function ValidaCMC7(CMC7: String) : Boolean;
@@ -221,8 +221,8 @@ begin
   end;
 end;
 
-procedure TACBrCMC7.SetCMC7(Banda: String);
-Const  vDigitos = '<99999999<9999999999>999999999999:' ;
+procedure TACBrCMC7.SetCMC7(Banda: AnsiString);
+Const  vDigitos = AnsiString('<99999999<9999999999>999999999999:') ;
 var
   Ignorar : Integer;
   I : Integer ;

@@ -173,15 +173,15 @@ function StoD( YYYYMMDDhhnnss: String) : TDateTime;
 function DtoS( ADate : TDateTime) : String;
 function DTtoS( ADateTime : TDateTime) : String;
 
-function StrIsAlpha(const S: String): Boolean;
-function StrIsAlphaNum(const S: String): Boolean;
-function StrIsNumber(const S: String): Boolean;
+function StrIsAlpha(const S: AnsiString): Boolean;
+function StrIsAlphaNum(const S: AnsiString): Boolean;
+function StrIsNumber(const S: AnsiString): Boolean;
 function CharIsAlpha(const C: AnsiChar): Boolean;
 function CharIsAlphaNum(const C: AnsiChar): Boolean;
 function CharIsNum(const C: AnsiChar): Boolean;
-function OnlyNumber(const Value: string): String;
-function OnlyAlpha(const Value: string): String;
-function OnlyAlphaNum(const Value: string): String;
+function OnlyNumber(const Value: AnsiString): String;
+function OnlyAlpha(const Value: AnsiString): String;
+function OnlyAlphaNum(const Value: AnsiString): String;
 function StrIsIP(const Value: string): Boolean;
 
 function TiraAcentos( const AString : AnsiString ) : AnsiString ;
@@ -754,7 +754,7 @@ end ;
  *** Extraido de JclStrings.pas  - Project JEDI Code Library (JCL) ***
   Retorna <True> se <S> contem apenas caracteres Alpha maiusculo/minuscula
  ---------------------------------------------------------------------------- }
-function StrIsAlpha(const S: String): Boolean;
+function StrIsAlpha(const S: AnsiString): Boolean;
 Var A : Integer ;
 begin
   Result := true ;
@@ -770,7 +770,7 @@ end ;
  *** Extraido de JclStrings.pas  - Project JEDI Code Library (JCL) ***
   Retorna <True> se <S> contem apenas caracteres Numericos
  ---------------------------------------------------------------------------- }
-function StrIsNumber(const S: String): Boolean;
+function StrIsNumber(const S: AnsiString): Boolean;
 Var A : Integer ;
 begin
   Result := true ;
@@ -787,7 +787,7 @@ end ;
   Retorna <True> se <S> contem apenas caracteres Alpha maiusculo/minuscula
   ou Numericos
  ---------------------------------------------------------------------------- }
-function StrIsAlphaNum(const S: String): Boolean;
+function StrIsAlphaNum(const S: AnsiString): Boolean;
 Var A : Integer ;
 begin
   Result := true ;
@@ -829,7 +829,7 @@ end ;
 {-----------------------------------------------------------------------------
   Retorna uma String apenas com os char Numericos contidos em <Value>
  ---------------------------------------------------------------------------- }
-function OnlyNumber(const Value: string): String;
+function OnlyNumber(const Value: AnsiString): String;
 Var I : Integer ;
 begin
   Result := '' ;
@@ -843,7 +843,7 @@ end ;
 {-----------------------------------------------------------------------------
   Retorna uma String apenas com os char Alpha contidos em <Value>
  ---------------------------------------------------------------------------- }
-function OnlyAlpha(const Value: string): String;
+function OnlyAlpha(const Value: AnsiString): String;
 Var I : Integer ;
 begin
   Result := '' ;
@@ -856,7 +856,7 @@ end ;
 {-----------------------------------------------------------------------------
   Retorna uma String apenas com os char Alpha-Numericos contidos em <Value>
  ---------------------------------------------------------------------------- }
-function OnlyAlphaNum(const Value: string): String;
+function OnlyAlphaNum(const Value: AnsiString): String;
 Var I : Integer ;
 begin
   Result := '' ;

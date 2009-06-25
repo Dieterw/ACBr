@@ -1207,14 +1207,27 @@ begin
   end ;
 end;
 
-
+{  Ordem de Retorno do Estado da Impressora
+   estNaoInicializada - Não Inicializada (Nova)
+   estDesconhecido    - Desconhecido
+   estPagamento       - Cupom Venda Aberto em Pagamento
+   estVenda           - Cupom Venda Aberto em Itens
+   estNaoFiscal       - Cupom Não Fiscal Aberto
+   estRelatorio       - Cupom Vinculado Aberto | Relatório Gerencial Aberto
+   estBloqueada       - Impressora Bloqueada para venda
+   estRequerZ         - Requer Emissão da Redução da Z
+   estRequerX         - Requer Leitura X
+   estLivre           - Livre para vender
+}
 function TACBrECFEpson.GetEstado: TACBrECFEstado;
   Var BitS : AnsiString ;
 begin
-  if (not fpAtivo) then
-     fpEstado := estNaoInicializada
-  else
-   begin
+   Result := fpEstado ;  // Suprimir Warning
+   try
+      fpEstado := estNaoInicializada ;
+      if (not fpAtivo) then
+         exit ;
+
       fpEstado := estDesconhecido ;
 
       EpsonComando.Comando := '0810' ;
@@ -1223,21 +1236,9 @@ begin
       BitS := ACBrUtil.IntToBin(EpsonResposta.StatusFiscal, 16) ;
 
       if copy(BitS,1,2) <> '11' then  // Diferente de Modo fiscalizado ?
-         fpEstado := estDesconhecido
+         exit ;
 
-      else if (EpsonResposta.Params[0] = '4') then
-         fpEstado := estRequerZ
-
-      else if (EpsonResposta.Params[0] = '3') then
-         fpEstado := estRequerX
-
-      else if (EpsonResposta.Params[0] = '2') then
-         fpEstado := estBloqueada
-
-      else if copy(BitS,13,4) = '0000' then
-         fpEstado := estLivre
-
-      else if copy(BitS,13,4) = '0001' then
+      if copy(BitS,13,4) = '0001' then
        begin
          EpsonComando.Comando := '0A0A' ;
          EnviaComando ;
@@ -1247,16 +1248,27 @@ begin
          else
             fpEstado := estVenda
        end
+      else if copy(BitS,13,4) = '1000' then
+         fpEstado := estNaoFiscal
 
       else if pos(copy(BitS,13,4),'0010|0011|0100') > 0 then
          fpEstado := estRelatorio
 
-      else if copy(BitS,13,4) = '1000' then
-         fpEstado := estNaoFiscal ;
+      else if (EpsonResposta.Params[0] = '2') then
+         fpEstado := estBloqueada
 
+      else if (EpsonResposta.Params[0] = '4') then
+         fpEstado := estRequerZ
+
+      else if (EpsonResposta.Params[0] = '3') then
+         fpEstado := estRequerX
+
+      else if copy(BitS,13,4) = '0000' then
+         fpEstado := estLivre;
+
+   finally
+      Result := fpEstado ;
    end ;
-
-  Result := fpEstado ;
 end;
 
 function TACBrECFEpson.GetGavetaAberta: Boolean;

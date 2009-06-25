@@ -1318,7 +1318,7 @@ end;
 procedure TACBrECFBematech.CarregaRelatoriosGerenciais;
 Var
   RetCmd, Token1, Token2, Descricao : AnsiString ;
-  Cont, Indice, CER : Integer ;
+  Cont, CER : Integer ;
   RG  : TACBrECFRelatorioGerencial ;
 begin
   inherited CarregaRelatoriosGerenciais ;   {Inicializa fpRelatoriosGerenciais}

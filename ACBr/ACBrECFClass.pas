@@ -2830,6 +2830,7 @@ end;
 function TACBrECFClass.DecodificaTexto(Operacao: Char; Texto: String;
   var Resposta: String): Boolean;
 begin
+  Result := False ;
   ErroAbstract('DecodificaTexto');
 end;
 

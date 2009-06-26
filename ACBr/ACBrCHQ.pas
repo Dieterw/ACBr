@@ -92,6 +92,9 @@ TACBrCHQ = class( TACBrComponent )
     function GetArquivoBemaFiINI : String;
     procedure SetArquivoBemaFiINI(const Value: String);
 
+    function GetCMC7Class : String;
+    function GetBomParaClass : TDatetime;
+    procedure SetBomParaClass(const Value: TDateTime);
   protected
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
 
@@ -116,6 +119,9 @@ TACBrCHQ = class( TACBrComponent )
     procedure ImprimirVerso( AStringList : TStrings ) ; Virtual ;
 
     property ChequePronto : Boolean read GetChequeProntoClass ;
+
+    property CMC7 : String read GetCMC7Class;
+    property BomPara : TDateTime read GetBomParaClass write SetBomParaClass;
 
   published
      property Modelo : TACBrCHQModelo read fsModelo write SetModelo
@@ -336,6 +342,21 @@ begin
   finally
      Ativo := wAtivo ;
   end ;
+end;
+
+function TACBrCHQ.GetCMC7Class : String;
+begin
+  Result := fsCHQ.CMC7;
+end;
+
+function TACBrCHQ.GetBomParaClass : TDateTime;
+begin
+  Result := fsCHQ.BomPara;
+end;
+
+procedure TACBrCHQ.SetBomParaClass(const Value: TDateTime);
+begin
+  fsCHQ.BomPara := Value;
 end;
 
 function TACBrCHQ.GetModeloStrClass: String;

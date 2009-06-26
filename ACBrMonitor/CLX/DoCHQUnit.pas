@@ -110,9 +110,13 @@ begin
 
         else if Cmd.Metodo = 'data' then
            Cmd.Resposta := FormatDateTime('dd/mm/yy', Data )
-
         else if Cmd.Metodo = 'setdata' then
            Data := StringToDateTime( Cmd.Params(0) )
+
+        else if Cmd.Metodo = 'bompara' then
+           Cmd.Resposta := FormatDateTime('dd/mm/yy', BomPara)
+        else if Cmd.Metodo = 'setbompara' then
+           BomPara := StringToDateTime(Cmd.Params(0))
 
         else if Cmd.Metodo = 'imprimircheque' then
          begin
@@ -122,8 +126,8 @@ begin
              if dm.VerificaCheque then
            {$ENDIF}
               raise Exception.Create('Formulário de Cheque não posicionado');
-              
-           ImprimirCheque ;
+
+           ImprimirCheque;
          end
 
         else if Cmd.Metodo = 'travarcheque' then
@@ -131,6 +135,9 @@ begin
 
         else if Cmd.Metodo = 'destravarcheque' then
            DestravarCheque
+
+        else if Cmd.Metodo = 'cmc7' then
+           Cmd.Resposta := CMC7
 
         else if Cmd.Metodo = 'imprimirlinha' then
            ImprimirLinha( Cmd.Params(0) )

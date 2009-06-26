@@ -67,6 +67,14 @@
 |*    da janela, pois estava tendo problema com foco
 |*  - Foi alterada as funções  FechavendaTEF e FechavendaCartao, agora pode ser
 |*    passado o handle da janela atual
+|* 27/05/2009: Maicon da Silva Evangelista
+|*  - Foram criadas as funções -VendaTEF e -VendaCheque que faram as vendas TEF
+|*    sem fechar o cupom fiscal no final, possibilitando o pagamento com
+|*    multiplos cartões.
+|*
+|*  TODO
+|*  - Verificar tratamente de queda de energia para multiplos pagamento.
+|*  -
 *******************************************************************************}
 
 {*Componente para realizar transações por meio do sistema TEF*}
@@ -177,14 +185,21 @@ TACBrTEF = class ( TACBrComponent )
       Procedure ADM; // Chama o Modulo Adminstrativo do GP
 
       {$IFDEF VisualCLX}
+       Function VendaTEF(CodFormaPagto: String;  Valor: Double; fpHandle: QWidgetH): Boolean; // Realiza uma venda TEF sem fechar o cupom fiscal
+       Function VendaCheque(CodFormaPagto: String;  Valor: Double; fpHandle: QWidgetH): Boolean; // Realiza uma venda Cheque sem fechar o cupom fiscal
+
        Function FechaVendaTEF(CodFormaPagto: String; CodComprovanteNaoFiscal: String; Valor: Double; fpHandle: QWidgetH; Observacao: String = '') : Boolean; // Fecha a venda com TEF
        Function FechaVendaCheque(CodFormaPagto: String; CodComprovanteNaoFiscal: String; Valor: Double; fpHandle: QWidgetH; Observacao: String = '') : Boolean; // Fecha a venda com Cheque
       {$ELSE}
+       Function VendaTEF(CodFormaPagto: String; Valor: Double; fpHandle: THandle = 0): Boolean; // Realiza uma venda TEF sem fechar o cupom fiscal
+       Function VendaCheque(CodFormaPagto: String; Valor: Double; fpHandle: THandle = 0): Boolean; // Realiza uma venda Cheque sem fechar o cupom fiscal
+
        Function FechaVendaTEF(CodFormaPagto: String; CodComprovanteNaoFiscal: String; Valor: Double; fpHandle: THandle = 0; Observacao: String = '') : Boolean; // Fecha a venda com TEF
        Function FechaVendaCheque(CodFormaPagto: String; CodComprovanteNaoFiscal: String; Valor: Double; fpHandle: THandle = 0; Observacao: String = '') : Boolean; // Fecha a venda com Cheque
       {$ENDIF}
       
       procedure CancelaCupomTEF; // Cancela a ultima transação TEF e o seu Cupom
+      function NCN: Boolean; // Não confirmação da venda e/ ou da impressão
 
       procedure VerificaTransacaoPendente; //Verifica se existe alguma transação pendente (Queda de Energia)
 
@@ -395,6 +410,64 @@ begin
 end;
 
 {$IFDEF VisualCLX}
+Function TACBrTEF.VendaTEF(CodFormaPagto: String;  Valor: Double; fpHandle: QWidgetH): Boolean;
+{$ELSE}
+Function TACBrTEF.VendaTEF(CodFormaPagto: String; Valor: Double; fpHandle: THandle = 0): Boolean;
+{$ENDIF}
+begin
+   If Not Ativo then
+      AtivarGP;
+
+   If Not fsECF.Ativo then
+      raise Exception.Create(RS_ECFDESLIGADA);
+
+   fsTEF.Handle   := fpHandle;
+
+   try
+      result   := fsTEF.VendaTEF(CodFormaPagto, Valor);
+   except
+      on Exc: Exception do
+      begin
+         {$IFDEF VisualCLX}
+          QWidget_setActiveWindow(fpHandle);
+         {$ELSE}
+          SetForeGroundWindow(fpHandle);
+         {$ENDIF}
+         Raise Exception.Create(Exc.Message);
+      end;
+   end;
+end;
+
+{$IFDEF VisualCLX}
+Function TACBrTEF.VendaCheque(CodFormaPagto: String;  Valor: Double; fpHandle: QWidgetH): Boolean;
+{$ELSE}
+Function TACBrTEF.VendaCheque(CodFormaPagto: String;  Valor: Double; fpHandle: THandle = 0): Boolean;
+{$ENDIF}
+begin
+   If Not Ativo then
+      AtivarGP;
+
+   If Not fsECF.Ativo then
+      raise Exception.Create(RS_ECFDESLIGADA);
+
+   fsTEF.Handle   := fpHandle;
+
+   try
+      result   := fsTEF.VendaCheque(CodFormaPagto, Valor);
+   except
+      on Exc: Exception do
+      begin
+         {$IFDEF VisualCLX}
+          QWidget_setActiveWindow(fpHandle);
+         {$ELSE}
+          SetForeGroundWindow(fpHandle);
+         {$ENDIF}
+         Raise Exception.Create(Exc.Message);
+      end;
+   end;
+end;
+
+{$IFDEF VisualCLX}
 function TACBrTEF.FechaVendaTEF(CodFormaPagto: String; CodComprovanteNaoFiscal: String; Valor: Double; fpHandle: QWidgetH; Observacao: String = ''): Boolean;
 {$ELSE}
 function TACBrTEF.FechaVendaTEF(CodFormaPagto: String; CodComprovanteNaoFiscal: String; Valor: Double; fpHandle: THandle = 0; Observacao: String = ''): Boolean;
@@ -486,6 +559,14 @@ begin
       raise Exception.Create(RS_INACTIVETEF);
 
    fsTEF.CancelaCupomTEF;
+end;
+
+function TACBrTEF.NCN: Boolean; // Não confirmação da venda e/ ou da impressão
+begin
+   If Not Ativo then
+      raise Exception.Create(RS_INACTIVETEF);
+
+   fsTEF.NCN;
 end;
 
 procedure TACBrTEF.Notification(AComponent: TComponent;

@@ -70,6 +70,7 @@ TACBrCHQModelo = class
     fsColunaFavorecido: Integer;
     fsColunaAno: Integer;
     fsBanco: String;
+
  public
     property Banco         : String  read fsBanco         write fsBanco ;
     property LinhaValor    : Integer read fsLinhaValor    write fsLinhaValor ;
@@ -127,8 +128,6 @@ TACBrCHQClass = class
   private
     procedure SetAtivo(const Value: Boolean);
     procedure SetfpBanco(const Value: String);
-    procedure SetfpCidade(const Value: String);
-    procedure SetfpFavorecido(const Value: String);
     procedure SetfpObservacao(const Value: String);
 
   protected
@@ -139,14 +138,26 @@ TACBrCHQClass = class
     fpAtivo   : Boolean ;
     fpModeloStr: String;
 
+    { comando enviado para a impressora }
+    fpComandoEnviado  : String ;
+
+    { resposta recebida da impressora }
+    fpRespostaComando : String ;
+
     fpValor: Double;
     fpCidade: String;
     fpFavorecido: String;
     fpBanco: String;
     fpData: TDateTime;
     fpObservacao : String;
+    fpCMC7 : String;
+    fpBomPara : TDateTime;
 
     function GetChequePronto: Boolean; Virtual ;
+    procedure SetfpData(const Value: TDateTime);
+    procedure SetfpCidade(const Value: String);
+    procedure SetfpFavorecido(const Value: String);
+    procedure SetBomPara(const Value: TDateTime); virtual;
 
   public
     constructor Create(AOwner: TComponent);
@@ -159,12 +170,17 @@ TACBrCHQClass = class
     Property ECF : TACBrECF read fpECF write fpECF ;
     Property ModeloStr: String  read fpModeloStr ;
 
-    property Banco : String      read fpBanco      write SetfpBanco ;
-    property Valor : Double      read fpValor      write fpValor ;
-    property Data  : TDateTime   read fpData       write fpData ;
-    property Cidade: String      read fpCidade     write SetfpCidade ;
-    property Favorecido : String read fpFavorecido write SetfpFavorecido ;
-    property Observacao : String read fpObservacao write SetfpObservacao ;
+    property Banco      : String    read fpBanco      write SetfpBanco ;
+    property Valor      : Double    read fpValor      write fpValor ;
+    property Data       : TDateTime read fpData       write SetfpData ;
+    property Cidade     : String    read fpCidade     write SetfpCidade ;
+    property Favorecido : String    read fpFavorecido write SetfpFavorecido ;
+    property Observacao : String    read fpObservacao write SetfpObservacao ;
+
+    Property ComandoEnviado  : String    read fpComandoEnviado ;
+    property RespostaComando : String    read fpRespostaComando;
+    property CMC7            : String    read fpCMC7;
+    property BomPara         : TDateTime read fpBomPara         write SetBomPara;
 
     property ChequePronto : Boolean read GetChequePronto ;
 
@@ -198,12 +214,16 @@ begin
   fpAtivo      := false ;
   fpModeloStr  := 'Não Definida' ;
 
+  fpRespostaComando := '';
+  fpComandoEnviado  := '';
+
   fpValor      := 0  ;
   fpCidade     := '' ;
   fpFavorecido := '' ;
   fpBanco      := '' ;
   fpData       := now;
   fpObservacao := '' ;
+  fpCMC7       := '' ;
 end;
 
 destructor TACBrCHQClass.Destroy;
@@ -302,6 +322,11 @@ begin
    end ;
 end;
 
+procedure TACBrCHQClass.SetfpData(const Value: TDateTime);
+begin
+   fpData := Value;
+end;
+
 procedure TACBrCHQClass.SetfpCidade(const Value: String);
 begin
   fpCidade := TiraAcentos( Value );
@@ -317,6 +342,10 @@ begin
   fpObservacao := TiraAcentos( Value );
 end;
 
+procedure TACBrCHQClass.SetBomPara(const Value: TDateTime);
+begin
+  fpBomPara := Value;
+end;
 
 
 

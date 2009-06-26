@@ -258,6 +258,8 @@ TACBrTEFClass = class
       procedure LineFeed(ALineCount: Integer);
       function ImprimeFiscalTEF(Resposta: TRespostaTransacao): Boolean;
       function ImprimeGerencialTEF(Resposta: TRespostaTransacao): Boolean;
+      function VendaTEF(CodFormaPagto: String; Valor: Double): Boolean;    // Realiza as transações TEF
+      function VendaCheque(CodFormaPagto: String; Valor: Double): Boolean; // REaliza as transações com Cheque (REDECARD)
       function FechaVendaTEF(CodFormaPagto: String; CodComprovanteNaoFiscal: String; Valor: Double; Observacao: String = ''): Boolean;
       function FechaVendaCheque(CodFormaPagto: String; CodComprovanteNaoFiscal: String; Valor: Double; Observacao: String = ''): Boolean;
       procedure CancelaCupomTEF;
@@ -767,7 +769,7 @@ var
 begin
    Result := False;
    Try
-      if ImpressoesPendentes.Count > 0 then
+      if (ImpressoesPendentes.Count > 0) then
       begin
          fsIdle := False;
          tmpResposta := TRespostaTransacao(ImpressoesPendentes.Objects[0]);
@@ -800,7 +802,7 @@ begin
             end;
          finally
             fsIdle := True;
-            
+
             tmpResposta.Free;
             fsImpressoesPendentes.Clear;
             DeleteFile(PChar(RespTempDataFileName));
@@ -856,6 +858,28 @@ begin
       On Exc: Exception do
          MessageDlg('Ocorreu um erro ao tentar Verificar Transações Pendentes ! ' + Exc.Message, mtError, mbOKCancel, 0);
    end;
+end;
+
+function TACBrTEFClass.VendaTEF(CodFormaPagto: String; Valor: Double): Boolean;
+begin
+   Result   := False;
+
+   fpCodFormaPagto:= CodFormaPagto;
+   fpValorTEF     := Valor;
+
+   if CRT(fpValorTEF) then
+      Result   := True; // Se tudo der certo!!!
+end;
+
+function TACBrTEFClass.VendaCheque(CodFormaPagto: String; Valor: Double): Boolean;
+begin
+   Result   := False;
+
+   fpCodFormaPagto:= CodFormaPagto;
+   fpValorTEF     := Valor;
+
+   if CHQ(fpValorTEF) then
+      Result   := True; // Se tudo der certo!!!
 end;
 
 function TACBrTEFClass.FechaVendaTEF(CodFormaPagto: String; CodComprovanteNaoFiscal: String; Valor: Double; Observacao: String = ''): Boolean;
@@ -1154,7 +1178,6 @@ begin
 
   result := fpParcelas ;
 end;
-
 
 { TACBrTEFParcela }
 

@@ -51,31 +51,29 @@ uses ACBrCHQClass,
      Classes ;
 
 Const cCmdImpCheque = ';D' ;
-     
+
 type TACBrCHQPerto = class( TACBrCHQClass )
   private
     fsAguardandoResposta : Boolean ;
-    fsComandoEnviado     : String ;
-    fsRespostaComando    : String ;
     fsBancoLido: String;
     fsContaLida: String;
     fsAgenciaLida: String;
     fsChequeLido: String;
     fsCompLida: String;
     fsCmdImpCheque: String;
+
   protected
-  
+    procedure SetBomPara(const Value : TDateTime); override;
+
   public
     constructor Create(AOwner: TComponent);
 
     procedure Ativar ; override ;
 
-    Function EnviaComando( cmd : String; SecTimeOut : Integer = 1 ) : String ;
+    Function EnviaComando( cmd : String; SecTimeOut : Integer = 2 ) : String ;
     Function PreparaCmd( cmd : String ) : String ;
     Procedure VerificaErro( Err : String ) ;
 
-    Property RespostaComando : String read fsRespostaComando ;
-    Property ComandoEnviado  : String read fsComandoEnviado ;
     Property AguardandoResposta : Boolean read fsAguardandoResposta ;
 
     Property CmdImpCheque : String read fsCmdImpCheque write fsCmdImpCheque ;
@@ -89,6 +87,7 @@ type TACBrCHQPerto = class( TACBrCHQClass )
     procedure ImprimirVerso( AStringList : TStrings ) ; Override ;
     Procedure TravarCheque ;  Override ;
     Procedure DestravarCheque ;  Override ;
+
 end ;
 
 implementation
@@ -107,8 +106,6 @@ begin
 
   fsCmdImpCheque       := cCmdImpCheque ;
   fsAguardandoResposta := false ;
-  fsRespostaComando    := '' ;
-  fsComandoEnviado     := '' ;
   fsBancoLido          := '' ;
   fsContaLida          := '' ;
   fsAgenciaLida        := '' ;
@@ -124,7 +121,7 @@ begin
 
   fsAguardandoResposta := false ;
   fpDevice.HandShake := hsDTR_DSR ;
-  
+ 
   inherited Ativar ; { Abre porta serial }
 end;
 
@@ -137,7 +134,7 @@ begin
   fsChequeLido  := '' ;
   fsCompLida    := '' ;
 
-  Resp := EnviaComando('=') ; { Ler e Alinhar Cheque }
+  Resp := EnviaComando('=', 30) ; { Ler e Alinhar Cheque }
   VerificaErro( Resp ) ;
 
   fsBancoLido   := copy( Resp,4,3) ;
@@ -145,7 +142,7 @@ begin
   fsContaLida   := copy( Resp,11,10) ;
   fsChequeLido  := copy( Resp,21,6) ;
   fsCompLida    := copy( Resp,27,3) ;
-
+  fpCMC7        := Resp;
 end;
 
 procedure TACBrCHQPerto.DestravarCheque;
@@ -159,16 +156,18 @@ begin
   TravarCheque ;
 
   { Favorecido }
-  VerificaErro( EnviaComando( '%'+Trim(UpperCase(fpFavorecido)) ));
+  VerificaErro( EnviaComando( '%' + Trim(UpperCase(fpFavorecido)) ));
+
   { Cidade }
-  VerificaErro( EnviaComando( '#'+Trim(UpperCase(fpCidade)) ));
+  VerificaErro( EnviaComando( '#' + Trim(UpperCase(fpCidade)) ));
+
   { Data }
-  DataStr := FormatDateTime('ddmmyy',fpData) ;
-  VerificaErro( EnviaComando( '!'+DataStr ));
+  DataStr := FormatDateTime('ddmmyy', fpData) ;
+  VerificaErro( EnviaComando( '!' + DataStr ));
 
   { Comanda Preenchimento }
   ValStr := IntToStrZero( Round( fpValor * 100), 12) ;
-  VerificaErro( EnviaComando( fsCmdImpCheque + ValStr + fpBanco ));
+  VerificaErro( EnviaComando( fsCmdImpCheque + ValStr + fpBanco, 30));
 end;
 
 procedure TACBrCHQPerto.ImprimirVerso(AStringList: TStrings);
@@ -199,20 +198,17 @@ begin
 
 end;
 
-
-
 function TACBrCHQPerto.EnviaComando(cmd: String; SecTimeOut : Integer): String;
 Var ACK : Byte ;
     wTempoLimite : TDateTime ;
 begin
 
   result  := '' ;
-  ACK     := 0 ;
   SecTimeOut := SecTimeOut * 1000 ;
 
-  try
-     fpDevice.Serial.DTR := true ;
+  fpDevice.Serial.DeadlockTimeout := SecTimeOut ; { Ajusta Timeout }
 
+  try
      if not fpDevice.EmLinha( 3 ) then  { Impressora está em-linha ? }
        raise Exception.Create('A impressora de Cheques '+ModeloStr+
                               ' não está pronta.') ;
@@ -222,59 +218,68 @@ begin
      try
         { Codificando CMD de acordo com o protocolo da PertoCheck }
         cmd := PreparaCmd( cmd ) ;
-        fsComandoEnviado := cmd ;
+        fpComandoEnviado := cmd ;
 
-        fpDevice.Serial.DeadlockTimeout := SecTimeOut ; { Ajusta Timeout }
-        fpDevice.Serial.Purge ;                         { Limpa a Porta }
+        repeat
+           if fpDevice.HandShake = hsDTR_DSR then
+              fpDevice.Serial.DTR := False ;  { DesLiga o DTR para enviar }
 
-        while (ACK <> 6) do     { Se ACK = 6 Comando foi reconhecido }
-        begin
+           if fpDevice.HandShake = hsRTS_CTS then
+              fpDevice.Serial.RTS := False ;  { DesLiga o RTS para enviar }
+
            try
+              fpDevice.Serial.Purge;
               fpDevice.Serial.SendString( cmd );   { Eviando o comando }
+
+              { põe pra dormir para atualizar o buffer da porta serial... }
+              Sleep(200);
            except
               raise Exception.create('Erro ao enviar comandos para a PertoCheck') ;
            end ;
 
-           { espera ACK chegar na Porta por 1,5 seg }
+           if fpDevice.HandShake = hsDTR_DSR then
+              fpDevice.Serial.DTR := True ;  { Liga o DTR para ler a Resposta }
+
+           if fpDevice.HandShake = hsRTS_CTS then
+              fpDevice.Serial.RTS := True  ;  { sLiga o RTS para para ler a Resposta }
+
            try
-              ACK := fpDevice.Serial.RecvByte( SecTimeOut ) ;
+              ACK := fpDevice.Serial.RecvByte(SecTimeOut) ;
            except
-              raise Exception.create('PertoCheck não responde') ;
+              raise Exception.create('PertoCheck não responde');
            end ;
 
-           if ACK <> 6 then
-              raise Exception.create('PertoCheck não reconheceu o comando') ;
-        end ;
+           if ACK = 21 then
+              raise Exception.create('PertoCheck não reconheceu o comando')
+        until ACK = 6;
 
         { Le conteudo da porta }
         { Calcula Tempo Limite. Espera resposta até Tempo Limite. Se a resposta
           for Lida antes, já encerra. Se nao chegar até TempoLimite, gera erro.}
-        fsRespostaComando := '' ;
+        fpRespostaComando := '' ;
         wTempoLimite := IncMilliSecond( now, SecTimeOut) ;
 
-        while (length(fsRespostaComando) < 3) and
-              (copy(fsRespostaComando,length(fsRespostaComando)-1,1) <> #3) do
-        begin
+        repeat
            try
-              fsRespostaComando := fsRespostaComando + { Le conteudo da porta }
-                                   fpDevice.Serial.RecvPacket(100) ;
+              fpRespostaComando := fpRespostaComando + { Le conteudo da porta }
+                                   fpDevice.Serial.RecvPacket(SecTimeOut) ;
            except
               { Exceçao silenciosa }
            end ;
 
            if now > wTempoLimite then       { TimeOut }
               raise Exception.create('Impressora PertoCheck não está respondendo') ;
-        end ;
+        until (copy(fpRespostaComando, length(fpRespostaComando) - 1, 1) = #3);
 
         { Separando o Retorno... Tirando STX, cmd, ETX, BCC }
-        Result := copy(fsRespostaComando, 3, length(fsRespostaComando)-4) ;
+        fpRespostaComando := copy(fpRespostaComando, 3, length(fpRespostaComando)-4);
+        Result := fpRespostaComando;
      finally
         fsAguardandoResposta := false ;
      end ;
   except
-     raise ;
+     raise;
   end ;
-
 end;
 
 Function TACBrCHQPerto.PreparaCmd( cmd : String ) : String ;
@@ -356,6 +361,12 @@ begin
 
   raise Exception.Create(MsgErro);
 
+end;
+
+procedure TACBrCHQPerto.SetBomPara(const Value : TDateTime);
+begin
+  inherited SetBomPara(Value);
+  VerificaErro( EnviaComando('+BOM PARA: ' + FormatDateTime('dd/mm/yy', fpBomPara), 2) );
 end;
 
 end.

@@ -1,6 +1,6 @@
 object Form1: TForm1
   Left = 191
-  Top = 111
+  Top = 113
   Width = 440
   Height = 422
   VertScrollBar.Range = 59
@@ -41,7 +41,7 @@ object Form1: TForm1
     Top = 0
     Width = 432
     Height = 309
-    ActivePage = TabSheet8
+    ActivePage = TabSheet4
     Align = alClient
     TabOrder = 1
     object TabSheet4: TTabSheet
@@ -960,30 +960,16 @@ object Form1: TForm1
       Caption = 'TEF'
       ImageIndex = 4
       object Label22: TLabel
-        Left = 12
+        Left = 4
         Top = 0
         Width = 84
         Height = 13
         Caption = '* Administradoras:'
       end
-      object Label25: TLabel
-        Left = 179
-        Top = 172
-        Width = 60
-        Height = 13
-        Caption = 'Forma Pagto'
-      end
-      object Label26: TLabel
-        Left = 168
-        Top = 141
-        Width = 73
-        Height = 13
-        Caption = 'Valor da Venda'
-      end
       object CbxTipoTEF: TComboBox
-        Left = 12
+        Left = 4
         Top = 16
-        Width = 105
+        Width = 101
         Height = 21
         Style = csDropDownList
         ItemHeight = 13
@@ -998,9 +984,9 @@ object Form1: TForm1
           'tefHiper')
       end
       object GroupBox1: TGroupBox
-        Left = 175
+        Left = 111
         Top = 0
-        Width = 249
+        Width = 309
         Height = 73
         Caption = 'Informa'#231#245'es sobre Bandeiras'
         TabOrder = 1
@@ -1016,74 +1002,207 @@ object Form1: TForm1
         end
       end
       object BtnAtivarTEF: TBitBtn
-        Left = 33
+        Left = 5
         Top = 45
-        Width = 113
+        Width = 100
         Height = 25
         Caption = 'Ativar ACBrTEF'
         TabOrder = 2
         OnClick = BtnAtivarTEFClick
       end
-      object BitBtn2: TBitBtn
-        Left = 8
-        Top = 104
-        Width = 153
+      object BtnVerificaGPAtivo: TBitBtn
+        Left = 5
+        Top = 74
+        Width = 100
         Height = 25
-        Caption = 'Ger'#234'nciador Padr'#227'o Ativo ?'
+        Caption = 'Verifica GP Ativo ?'
         TabOrder = 3
-        OnClick = BitBtn2Click
+        OnClick = BtnVerificaGPAtivoClick
       end
-      object BitBtn1: TBitBtn
-        Left = 184
-        Top = 88
-        Width = 75
+      object BtnChamaADM: TBitBtn
+        Left = 5
+        Top = 102
+        Width = 100
         Height = 25
         Caption = 'Chamar ADM'
         TabOrder = 4
-        OnClick = BitBtn1Click
+        OnClick = BtnChamaADMClick
       end
-      object BitBtn3: TBitBtn
-        Left = 8
-        Top = 152
-        Width = 153
-        Height = 25
-        Caption = 'Efetua Venda Completa'
+      object GroupBox2: TGroupBox
+        Left = 110
+        Top = 74
+        Width = 309
+        Height = 102
+        Caption = 'Venda TEF com fechamento'
         TabOrder = 5
-        OnClick = BitBtn3Click
+        object Label26: TLabel
+          Left = 8
+          Top = 47
+          Width = 67
+          Height = 13
+          Caption = 'Valor Itens R$'
+        end
+        object Label25: TLabel
+          Left = 156
+          Top = 47
+          Width = 92
+          Height = 13
+          Caption = 'Indice Forma Pagto'
+        end
+        object Label30: TLabel
+          Left = 155
+          Top = 12
+          Width = 149
+          Height = 26
+          Caption = '<- Abre um Cupom e efetua um '#13'    venda de um produto teste.'
+        end
+        object Label31: TLabel
+          Left = 129
+          Top = 68
+          Width = 124
+          Height = 26
+          Caption = '<- Realiza a venda TEF e '#13'    fecha o cupom fiscal'
+        end
+        object EdtValorItensTEF: TEdit
+          Left = 87
+          Top = 44
+          Width = 66
+          Height = 21
+          Cursor = crIBeam
+          TabOrder = 0
+          Text = '1,00'
+        end
+        object EdtFormaPgtoTEF: TEdit
+          Left = 253
+          Top = 44
+          Width = 53
+          Height = 21
+          TabOrder = 1
+          Text = '03'
+        end
+        object BtnEfetuaVendaItensTEF: TBitBtn
+          Left = 8
+          Top = 16
+          Width = 137
+          Height = 25
+          Caption = '1-Efetua Venda Completa'
+          TabOrder = 2
+          OnClick = BtnEfetuaVendaItensTEFClick
+        end
+        object BtnFechaVendaTEFCompleta: TBitBtn
+          Left = 8
+          Top = 69
+          Width = 113
+          Height = 25
+          Caption = '2-Fecha a Venda TEF'
+          TabOrder = 3
+          OnClick = BtnFechaVendaTEFCompletaClick
+        end
       end
-      object BitBtn4: TBitBtn
-        Left = 8
-        Top = 200
-        Width = 153
-        Height = 25
-        Caption = 'Efetua Pagamento TEF'
+      object GroupBox3: TGroupBox
+        Left = 4
+        Top = 177
+        Width = 415
+        Height = 101
+        Caption = 'Venda TEF sem fechamento do cupom ao final'
         TabOrder = 6
-        OnClick = BitBtn4Click
+        object Label32: TLabel
+          Left = 152
+          Top = 20
+          Width = 67
+          Height = 13
+          Caption = 'Valor Itens R$'
+        end
+        object Label34: TLabel
+          Left = 4
+          Top = 79
+          Width = 92
+          Height = 13
+          Caption = 'Indice Forma Pagto'
+        end
+        object Label35: TLabel
+          Left = 168
+          Top = 79
+          Width = 64
+          Height = 13
+          Caption = 'Valor TEF R$'
+        end
+        object Label33: TLabel
+          Left = 155
+          Top = 44
+          Width = 111
+          Height = 26
+          Caption = '<- Efetua o pagamento '#13'    com TEF.'
+        end
+        object Label36: TLabel
+          Left = 312
+          Top = 16
+          Width = 98
+          Height = 39
+          Caption = 'Fecha a venda  TEF'#13'e imprime os '#13'comprovantes TEF'
+        end
+        object BtnEfetuaPagtoTEFMult: TBitBtn
+          Left = 8
+          Top = 46
+          Width = 137
+          Height = 25
+          Caption = '2-Efetua Pagamento TEF'
+          TabOrder = 0
+          OnClick = BtnEfetuaPagtoTEFMultClick
+        end
+        object EdtValorItensTEFMult: TEdit
+          Left = 223
+          Top = 16
+          Width = 66
+          Height = 21
+          Cursor = crIBeam
+          TabOrder = 1
+          Text = '1,00'
+        end
+        object BtnEfetuaVendaItensTEFMult: TBitBtn
+          Left = 8
+          Top = 16
+          Width = 137
+          Height = 25
+          Caption = '1-Efetua Venda Completa'
+          TabOrder = 2
+          OnClick = BtnEfetuaVendaItensTEFMultClick
+        end
+        object EdtFormaPgtoTEFMult: TEdit
+          Left = 101
+          Top = 76
+          Width = 53
+          Height = 21
+          TabOrder = 3
+          Text = '03'
+        end
+        object EdtValorPagtoTEF: TEdit
+          Left = 239
+          Top = 75
+          Width = 66
+          Height = 21
+          Cursor = crIBeam
+          TabOrder = 4
+          Text = '1,00'
+        end
+        object BtnFechaVendaTEFMult: TButton
+          Left = 312
+          Top = 72
+          Width = 97
+          Height = 25
+          Caption = 'Fecha Venda'
+          TabOrder = 5
+          OnClick = BtnFechaVendaTEFMultClick
+        end
       end
-      object BitBtn5: TBitBtn
-        Left = 184
-        Top = 200
-        Width = 121
+      object BtnCancelaCupomTEF: TBitBtn
+        Left = 5
+        Top = 130
+        Width = 100
         Height = 25
-        Caption = 'Cancela Venda TEF'
+        Caption = 'Cancela Ultimo TEF'
         TabOrder = 7
-        OnClick = BitBtn5Click
-      end
-      object EdtFormaPgto: TEdit
-        Left = 252
-        Top = 168
-        Width = 53
-        Height = 21
-        TabOrder = 8
-        Text = '03'
-      end
-      object EdtValorVendaTEF: TEdit
-        Left = 252
-        Top = 138
-        Width = 121
-        Height = 21
-        Cursor = crIBeam
-        TabOrder = 9
+        OnClick = BtnCancelaCupomTEFClick
       end
     end
   end

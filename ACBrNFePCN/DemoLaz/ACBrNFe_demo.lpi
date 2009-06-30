@@ -1,0 +1,304 @@
+<?xml version="1.0"?>
+<CONFIG>
+  <ProjectOptions>
+    <PathDelim Value="\"/>
+    <Version Value="7"/>
+    <General>
+      <MainUnit Value="0"/>
+      <TargetFileExt Value=".exe"/>
+      <Icon Value="0"/>
+      <UseXPManifest Value="True"/>
+      <ActiveEditorIndexAtStart Value="1"/>
+    </General>
+    <VersionInfo>
+      <ProjectVersion Value=""/>
+    </VersionInfo>
+    <PublishOptions>
+      <Version Value="2"/>
+      <IgnoreBinaries Value="False"/>
+      <IncludeFileFilter Value="*.(pas|pp|inc|lfm|lpr|lrs|lpi|lpk|sh|xml)"/>
+      <ExcludeFileFilter Value="*.(bak|ppu|ppw|o|so);*~;backup"/>
+    </PublishOptions>
+    <RunParams>
+      <local>
+        <FormatVersion Value="1"/>
+        <LaunchingApplication PathPlusParams="/usr/X11R6/bin/xterm -T 'Lazarus Run Output' -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
+      </local>
+    </RunParams>
+    <RequiredPackages Count="5">
+      <Item1>
+        <PackageName Value="ACBrNFePCN_LCL"/>
+      </Item1>
+      <Item2>
+        <PackageName Value="SynEdit"/>
+        <MinVersion Major="1" Valid="True"/>
+      </Item2>
+      <Item3>
+        <PackageName Value="ACBr_LCL"/>
+        <MinVersion Minor="8" Release="8" Valid="True"/>
+      </Item3>
+      <Item4>
+        <PackageName Value="TurboPowerIPro"/>
+        <MinVersion Major="1" Valid="True"/>
+      </Item4>
+      <Item5>
+        <PackageName Value="LCL"/>
+      </Item5>
+    </RequiredPackages>
+    <Units Count="30">
+      <Unit0>
+        <Filename Value="ACBrNFe_demo.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ACBrNFe_demo"/>
+        <CursorPos X="9" Y="9"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="30"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="Unit1.pas"/>
+        <ComponentName Value="Form1"/>
+        <HasResources Value="True"/>
+        <IsPartOfProject Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="Unit1"/>
+        <CursorPos X="1" Y="246"/>
+        <TopLine Value="233"/>
+        <EditorIndex Value="0"/>
+        <UsageCount Value="30"/>
+        <Loaded Value="True"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="C:\Lazarus\lcl\include\application.inc"/>
+        <CursorPos X="1" Y="1875"/>
+        <TopLine Value="1862"/>
+        <UsageCount Value="10"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="C:\Lazarus\lcl\include\customform.inc"/>
+        <CursorPos X="58" Y="1471"/>
+        <TopLine Value="1462"/>
+        <UsageCount Value="10"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="..\ACBrNFe.pas"/>
+        <UnitName Value="ACBrNFe"/>
+        <CursorPos X="1" Y="1"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="10"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="..\ACBrNFeWebServices.pas"/>
+        <UnitName Value="ACBrNFeWebServices"/>
+        <CursorPos X="14" Y="91"/>
+        <TopLine Value="78"/>
+        <UsageCount Value="11"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="..\..\..\trunk\ACBr\ACBrBase.pas"/>
+        <UnitName Value="ACBrBase"/>
+        <CursorPos X="39" Y="42"/>
+        <TopLine Value="38"/>
+        <UsageCount Value="10"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="..\..\..\trunk\ACBr\ACBrDevice.pas"/>
+        <UnitName Value="ACBrDevice"/>
+        <CursorPos X="32" Y="224"/>
+        <TopLine Value="211"/>
+        <UsageCount Value="10"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="..\..\..\trunk\ACBr\ACBrECF.pas"/>
+        <UnitName Value="ACBrECF"/>
+        <CursorPos X="31" Y="636"/>
+        <TopLine Value="622"/>
+        <UsageCount Value="10"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="C:\Lazarus\fpc\2.2.5\source\rtl\objpas\classes\classesh.inc"/>
+        <CursorPos X="14" Y="583"/>
+        <TopLine Value="570"/>
+        <UsageCount Value="10"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="..\ACBrNFeConfiguracoes.pas"/>
+        <UnitName Value="ACBrNFeConfiguracoes"/>
+        <CursorPos X="38" Y="127"/>
+        <TopLine Value="114"/>
+        <UsageCount Value="10"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="Unit1.lfm"/>
+        <CursorPos X="1" Y="1"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="10"/>
+        <SyntaxHighlighter Value="LFM"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="..\..\..\trunk\ACBr\ACBrReg.pas"/>
+        <UnitName Value="ACBrReg"/>
+        <CursorPos X="1" Y="151"/>
+        <TopLine Value="144"/>
+        <UsageCount Value="10"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="..\ACBrNFeReg.pas"/>
+        <UnitName Value="ACBrNFeReg"/>
+        <CursorPos X="19" Y="158"/>
+        <TopLine Value="133"/>
+        <UsageCount Value="10"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="..\pcnRetConsStatServ.pas"/>
+        <UnitName Value="pcnRetConsStatServ"/>
+        <CursorPos X="3" Y="119"/>
+        <TopLine Value="104"/>
+        <UsageCount Value="11"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="..\pcnConversao.pas"/>
+        <UnitName Value="pcnConversao"/>
+        <CursorPos X="20" Y="122"/>
+        <TopLine Value="108"/>
+        <UsageCount Value="11"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="..\pcnLeitor.pas"/>
+        <UnitName Value="pcnLeitor"/>
+        <CursorPos X="14" Y="72"/>
+        <TopLine Value="59"/>
+        <UsageCount Value="12"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="C:\Lazarus\fpc\2.2.5\source\rtl\objpas\sysutils\datih.inc"/>
+        <CursorPos X="10" Y="109"/>
+        <TopLine Value="96"/>
+        <UsageCount Value="11"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="..\ACBrNFeNotasFiscais.pas"/>
+        <UnitName Value="ACBrNFeNotasFiscais"/>
+        <CursorPos X="17" Y="133"/>
+        <TopLine Value="127"/>
+        <EditorIndex Value="1"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
+      </Unit18>
+      <Unit19>
+        <Filename Value="..\ACBrNFeUtil.pas"/>
+        <UnitName Value="ACBrNFeUtil"/>
+        <CursorPos X="1" Y="1142"/>
+        <TopLine Value="1129"/>
+        <UsageCount Value="11"/>
+      </Unit19>
+      <Unit20>
+        <Filename Value="..\pcnNFeW.pas"/>
+        <UnitName Value="pcnNFeW"/>
+        <CursorPos X="1" Y="169"/>
+        <TopLine Value="156"/>
+        <UsageCount Value="10"/>
+      </Unit20>
+      <Unit21>
+        <Filename Value="..\pcnNFeR.pas"/>
+        <UnitName Value="pcnNFeR"/>
+        <CursorPos X="1" Y="675"/>
+        <TopLine Value="650"/>
+        <UsageCount Value="11"/>
+      </Unit21>
+      <Unit22>
+        <Filename Value="C:\Lazarus\fpc\2.2.5\source\packages\fcl-xml\src\xmlwrite.pp"/>
+        <UnitName Value="XMLWrite"/>
+        <CursorPos X="37" Y="27"/>
+        <TopLine Value="14"/>
+        <UsageCount Value="10"/>
+      </Unit22>
+      <Unit23>
+        <Filename Value="C:\Lazarus\fpc\2.2.5\source\packages\fcl-xml\src\dom.pp"/>
+        <UnitName Value="DOM"/>
+        <CursorPos X="3" Y="468"/>
+        <TopLine Value="455"/>
+        <UsageCount Value="10"/>
+      </Unit23>
+      <Unit24>
+        <Filename Value="..\ACBrNFeDMLaz.pas"/>
+        <ComponentName Value="dmACBrNFe"/>
+        <ResourceBaseClass Value="DataModule"/>
+        <UnitName Value="ACBrNFeDMLaz"/>
+        <CursorPos X="96" Y="50"/>
+        <TopLine Value="33"/>
+        <UsageCount Value="21"/>
+      </Unit24>
+      <Unit25>
+        <Filename Value="..\ACBrNFeDM.pas"/>
+        <UnitName Value="ACBrNFeDM"/>
+        <CursorPos X="2" Y="52"/>
+        <TopLine Value="36"/>
+        <UsageCount Value="10"/>
+      </Unit25>
+      <Unit26>
+        <Filename Value="..\libxml2.pas"/>
+        <UnitName Value="libxml2"/>
+        <CursorPos X="7" Y="4416"/>
+        <TopLine Value="4401"/>
+        <UsageCount Value="12"/>
+      </Unit26>
+      <Unit27>
+        <Filename Value="C:\Lazarus\fpc\2.2.5\source\rtl\win\wininc\ascdef.inc"/>
+        <CursorPos X="113" Y="70"/>
+        <TopLine Value="56"/>
+        <UsageCount Value="12"/>
+      </Unit27>
+      <Unit28>
+        <Filename Value="C:\Lazarus\fpc\2.2.5\source\rtl\inc\dynlibs.pas"/>
+        <UnitName Value="dynlibs"/>
+        <CursorPos X="27" Y="33"/>
+        <TopLine Value="15"/>
+        <UsageCount Value="12"/>
+      </Unit28>
+      <Unit29>
+        <Filename Value="C:\Lazarus\fpc\2.2.5\source\rtl\win32\windows.pp"/>
+        <UnitName Value="windows"/>
+        <CursorPos X="10" Y="63"/>
+        <TopLine Value="37"/>
+        <UsageCount Value="12"/>
+      </Unit29>
+    </Units>
+    <JumpHistory Count="1" HistoryIndex="0">
+      <Position1>
+        <Filename Value="Unit1.pas"/>
+        <Caret Line="246" Column="1" TopLine="233"/>
+      </Position1>
+    </JumpHistory>
+  </ProjectOptions>
+  <CompilerOptions>
+    <Version Value="8"/>
+    <PathDelim Value="\"/>
+    <SearchPaths>
+      <IncludeFiles Value="$(ProjOutDir)\"/>
+      <OtherUnitFiles Value="D:\delphi\ACBr\branches\ACBrNFePCN - Lazarus\"/>
+    </SearchPaths>
+    <Linking>
+      <Options>
+        <Win32>
+          <GraphicApplication Value="True"/>
+        </Win32>
+      </Options>
+    </Linking>
+    <Other>
+      <CompilerPath Value="$(CompPath)"/>
+    </Other>
+  </CompilerOptions>
+  <Debugging>
+    <Exceptions Count="3">
+      <Item1>
+        <Name Value="EAbort"/>
+      </Item1>
+      <Item2>
+        <Name Value="ECodetoolError"/>
+      </Item2>
+      <Item3>
+        <Name Value="EFOpenError"/>
+      </Item3>
+    </Exceptions>
+  </Debugging>
+</CONFIG>

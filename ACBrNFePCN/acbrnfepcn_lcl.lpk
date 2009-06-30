@@ -1,0 +1,202 @@
+<?xml version="1.0"?>
+<CONFIG>
+  <Package Version="3">
+    <PathDelim Value="\"/>
+    <Name Value="ACBrNFePCN_LCL"/>
+    <CompilerOptions>
+      <Version Value="8"/>
+      <PathDelim Value="\"/>
+      <SearchPaths>
+        <IncludeFiles Value="..\..\trunk\ACBrComum\"/>
+        <OtherUnitFiles Value="..\..\trunk\ACBrComum\"/>
+        <UnitOutputDirectory Value="..\..\trunk\ACBr\lib\$(TargetCPU)-$(TargetOS)"/>
+        <SrcPath Value="..\..\trunk\ACBrComum\"/>
+      </SearchPaths>
+      <Other>
+        <CompilerPath Value="$(CompPath)"/>
+      </Other>
+    </CompilerOptions>
+    <Files Count="39">
+      <Item1>
+        <Filename Value="ACBrNFe.pas"/>
+        <UnitName Value="ACBrNFe"/>
+      </Item1>
+      <Item2>
+        <Filename Value="ACBrNFeConfiguracoes.pas"/>
+        <UnitName Value="ACBrNFeConfiguracoes"/>
+      </Item2>
+      <Item3>
+        <Filename Value="pcnAuxiliar.pas"/>
+        <UnitName Value="pcnAuxiliar"/>
+      </Item3>
+      <Item4>
+        <Filename Value="pcnCabecalho.pas"/>
+        <UnitName Value="pcnCabecalho"/>
+      </Item4>
+      <Item5>
+        <Filename Value="pcnCadEmiDFe.pas"/>
+        <UnitName Value="pcnCadEmiDFe"/>
+      </Item5>
+      <Item6>
+        <Filename Value="pcnCancNFe.pas"/>
+        <UnitName Value="pcnCancNFe"/>
+      </Item6>
+      <Item7>
+        <Filename Value="pcnConsCad.pas"/>
+        <UnitName Value="pcnConsCad"/>
+      </Item7>
+      <Item8>
+        <Filename Value="pcnConsReciNFe.pas"/>
+        <UnitName Value="pcnConsReciNFe"/>
+      </Item8>
+      <Item9>
+        <Filename Value="pcnConsSitNFe.pas"/>
+        <UnitName Value="pcnConsSitNFe"/>
+      </Item9>
+      <Item10>
+        <Filename Value="pcnConsStatServ.pas"/>
+        <UnitName Value="pcnConsStatServ"/>
+      </Item10>
+      <Item11>
+        <Filename Value="pcnConversao.pas"/>
+        <UnitName Value="pcnConversao"/>
+      </Item11>
+      <Item12>
+        <Filename Value="pcnEnvNFe.pas"/>
+        <UnitName Value="pcnEnvNFe"/>
+      </Item12>
+      <Item13>
+        <Filename Value="pcnGerador.pas"/>
+        <UnitName Value="pcnGerador"/>
+      </Item13>
+      <Item14>
+        <Filename Value="pcnInutNFe.pas"/>
+        <UnitName Value="pcnInutNFe"/>
+      </Item14>
+      <Item15>
+        <Filename Value="pcnLayoutTXT.pas"/>
+        <UnitName Value="pcnLayoutTXT"/>
+      </Item15>
+      <Item16>
+        <Filename Value="pcnLeitor.pas"/>
+        <UnitName Value="pcnLeitor"/>
+      </Item16>
+      <Item17>
+        <Filename Value="pcnModeloNFe.pas"/>
+        <UnitName Value="pcnModeloNFe"/>
+      </Item17>
+      <Item18>
+        <Filename Value="pcnNFe.pas"/>
+        <UnitName Value="pcnNFe"/>
+      </Item18>
+      <Item19>
+        <Filename Value="pcnNFeR.pas"/>
+        <UnitName Value="pcnNFeR"/>
+      </Item19>
+      <Item20>
+        <Filename Value="pcnNFeW.pas"/>
+        <UnitName Value="pcnNFeW"/>
+      </Item20>
+      <Item21>
+        <Filename Value="pcnProcNFe.pas"/>
+        <UnitName Value="pcnProcNFe"/>
+      </Item21>
+      <Item22>
+        <Filename Value="pcnRetAtuCadEmiDFe.pas"/>
+        <UnitName Value="pcnRetAtuCadEmiDFe"/>
+      </Item22>
+      <Item23>
+        <Filename Value="pcnRetCancNFe.pas"/>
+        <UnitName Value="pcnRetCancNFe"/>
+      </Item23>
+      <Item24>
+        <Filename Value="pcnRetConsCad.pas"/>
+        <UnitName Value="pcnRetConsCad"/>
+      </Item24>
+      <Item25>
+        <Filename Value="pcnRetConsReciNFe.pas"/>
+        <UnitName Value="pcnRetConsReciNFe"/>
+      </Item25>
+      <Item26>
+        <Filename Value="pcnRetConsSitNFe.pas"/>
+        <UnitName Value="pcnRetConsSitNFe"/>
+      </Item26>
+      <Item27>
+        <Filename Value="pcnRetConsStatServ.pas"/>
+        <UnitName Value="pcnRetConsStatServ"/>
+      </Item27>
+      <Item28>
+        <Filename Value="pcnRetEnvNFe.pas"/>
+        <UnitName Value="pcnRetEnvNFe"/>
+      </Item28>
+      <Item29>
+        <Filename Value="pcnRetInutNFe.pas"/>
+        <UnitName Value="pcnRetInutNFe"/>
+      </Item29>
+      <Item30>
+        <Filename Value="pcnSignature.pas"/>
+        <UnitName Value="pcnSignature"/>
+      </Item30>
+      <Item31>
+        <Filename Value="ACBrNFeUtil.pas"/>
+        <UnitName Value="ACBrNFeUtil"/>
+      </Item31>
+      <Item32>
+        <Filename Value="ACBrNFeWebServices.pas"/>
+        <UnitName Value="ACBrNFeWebServices"/>
+      </Item32>
+      <Item33>
+        <Filename Value="pcnAtuCadEmiDFe.pas"/>
+        <UnitName Value="pcnAtuCadEmiDFe"/>
+      </Item33>
+      <Item34>
+        <Filename Value="ACBrNFeReg.pas"/>
+        <HasRegisterProc Value="True"/>
+        <UnitName Value="ACBrNFeReg"/>
+      </Item34>
+      <Item35>
+        <Filename Value="ACBrNFeNotasFiscais.pas"/>
+        <UnitName Value="ACBrNFeNotasFiscais"/>
+      </Item35>
+      <Item36>
+        <Filename Value="libxslt.pas"/>
+        <UnitName Value="libxslt"/>
+      </Item36>
+      <Item37>
+        <Filename Value="libxml2.pas"/>
+        <UnitName Value="libxml2"/>
+      </Item37>
+      <Item38>
+        <Filename Value="libxmlsec.pas"/>
+        <UnitName Value="libxmlsec"/>
+      </Item38>
+      <Item39>
+        <Filename Value="ACBrNFeDMLaz.pas"/>
+        <UnitName Value="ACBrNFeDMLaz"/>
+      </Item39>
+    </Files>
+    <Type Value="RunAndDesignTime"/>
+    <RequiredPkgs Count="4">
+      <Item1>
+        <PackageName Value="lazreport"/>
+      </Item1>
+      <Item2>
+        <PackageName Value="LCL"/>
+      </Item2>
+      <Item3>
+        <PackageName Value="IDEIntf"/>
+      </Item3>
+      <Item4>
+        <PackageName Value="FCL"/>
+        <MinVersion Major="1" Valid="True"/>
+      </Item4>
+    </RequiredPkgs>
+    <UsageOptions>
+      <UnitPath Value="$(PkgOutDir)"/>
+    </UsageOptions>
+    <PublishOptions>
+      <Version Value="2"/>
+      <IgnoreBinaries Value="False"/>
+    </PublishOptions>
+  </Package>
+</CONFIG>

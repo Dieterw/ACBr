@@ -20,12 +20,13 @@ type
     FImprimirHoraSaida : Boolean;
     FMostrarPreview : Boolean;
     FTipoDANFE : TpcnTipoImpressao;
+    FNumCopias : Integer;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-    procedure ImprimirDANFE(NFE : TNFe = nil; NumCopias : Integer = 1); virtual ;
-    procedure ImprimirDANFEPDF(NFE : TNFe = nil; NumCopias : Integer = 1); virtual ;
+    procedure ImprimirDANFE(NFE : TNFe = nil); virtual ;
+    procedure ImprimirDANFEPDF(NFE : TNFe = nil); virtual ;
   published
     property ACBrNFe : TComponent  read FACBrNFe write SetNFE ;
     property Logo: String read FLogo write FLogo ;
@@ -36,6 +37,7 @@ type
     property ImprimirHoraSaida: Boolean read FImprimirHoraSaida write FImprimirHoraSaida ;
     property MostrarPreview: Boolean read FMostrarPreview write FMostrarPreview ;
     property TipoDANFE: TpcnTipoImpressao read FTipoDANFE write FTipoDANFE ;
+    property NumCopias: Integer read FNumCopias write FNumCopias ;
   end;
 
 implementation
@@ -54,6 +56,7 @@ begin
   FImpressora   := '' ;
   FImprimirHoraSaida    := False;
   FMostrarPreview       := True;
+  FNumCopias := 1;
 end;
 
 destructor TACBrNFeDANFEClass.Destroy;
@@ -62,12 +65,12 @@ begin
   inherited Destroy ;
 end;
 
-procedure TACBrNFeDANFEClass.ImprimirDANFE(NFE : TNFe = nil; NumCopias : Integer = 1) ;
+procedure TACBrNFeDANFEClass.ImprimirDANFE(NFE : TNFe = nil) ;
 begin
   ErroAbstract('Imprimir');
 end;
 
-procedure TACBrNFeDANFEClass.ImprimirDANFEPDF(NFE : TNFe = nil; NumCopias : Integer = 1) ;
+procedure TACBrNFeDANFEClass.ImprimirDANFEPDF(NFE : TNFe = nil) ;
 begin
   ErroAbstract('ImprimirPDF');
 end;

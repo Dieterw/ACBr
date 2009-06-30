@@ -65,8 +65,8 @@ type
    public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-    procedure ImprimirDANFE(NFE : TNFe = nil; NumCopias : Integer = 1); override ;
-    procedure ImprimirDANFEPDF(NFE : TNFe = nil; NumCopias : Integer = 1); override ;
+    procedure ImprimirDANFE(NFE : TNFe = nil); override ;
+    procedure ImprimirDANFEPDF(NFE : TNFe = nil); override ;
 
   published
     property RavFile : String read FRaveFile write FRaveFile ;
@@ -90,7 +90,7 @@ begin
   inherited Destroy ;
 end;
 
-procedure TACBrNFeDANFERave.ImprimirDANFE(NFE : TNFe = nil; NumCopias : Integer = 1);
+procedure TACBrNFeDANFERave.ImprimirDANFE(NFE : TNFe = nil);
 var
  i : Integer;
 begin
@@ -151,7 +151,7 @@ begin
 
 end;
 
-procedure TACBrNFeDANFERave.ImprimirDANFEPDF(NFE : TNFe = nil; NumCopias : Integer = 1);
+procedure TACBrNFeDANFERave.ImprimirDANFEPDF(NFE : TNFe = nil);
 var
  i : Integer;
 begin

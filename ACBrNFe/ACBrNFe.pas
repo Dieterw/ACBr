@@ -45,7 +45,7 @@ unit ACBrNFe;
 interface
 
 uses
-  Classes, Sysutils, 
+  Classes, Sysutils,
   ACBrNFeConfiguracoes, ACBrNFeNotasFiscais,
   ACBrNFeWebServices, ACBrNFeUtil, ACBrNFeTypes;
 

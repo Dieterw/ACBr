@@ -79,10 +79,12 @@ type
     FUFCodigo: Integer;
     FAmbiente: String;
     FAmbienteCodigo: Integer;
-    FProxyHost: String;
-    FProxyPort: String;
-    FProxyUser: String;
-    FProxyPass: String;
+    {$IFNDEF ACBrNFeCAPICOM}
+       FProxyHost: String;
+       FProxyPort: String;
+       FProxyUser: String;
+       FProxyPass: String;
+    {$ENDIF}   
     procedure SetUF(AValue: String);
     procedure SetAmbiente(AValue: String);
   public

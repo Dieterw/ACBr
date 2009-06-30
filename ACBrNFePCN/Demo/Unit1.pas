@@ -4,10 +4,10 @@ unit Unit1;
 
 interface
 
-uses IniFiles, 
+uses IniFiles,
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, Buttons, ComCtrls, OleCtrls, SHDocVw,
-  ACBrNFe, pcnConversao, ACBrNFeDANFEClass, ACBrNFeDANFERave;
+  ACBrNFe, pcnConversao, ACBrNFeDANFEClass, ACBrNFeDANFERave, pcnNFeW;
 
 type
   TForm1 = class(TForm)
@@ -94,6 +94,7 @@ type
     ACBrNFe1: TACBrNFe;
     ACBrNFeDANFERave1: TACBrNFeDANFERave;
     sbtnGetCert: TSpeedButton;
+    btnGerarNFE: TButton;
     procedure sbtnCaminhoCertClick(Sender: TObject);
     procedure sbtnLogoMarcaClick(Sender: TObject);
     procedure sbtnPathSalvarClick(Sender: TObject);
@@ -108,6 +109,7 @@ type
     procedure btnInutilizarClick(Sender: TObject);
     procedure ACBrNFe1StatusChange(Sender: TObject);
     procedure sbtnGetCertClick(Sender: TObject);
+    procedure btnGerarNFEClick(Sender: TObject);
   private
     { Private declarations }
     procedure GravarConfiguracao ;
@@ -122,7 +124,7 @@ var
 
 implementation
 
-uses FileCtrl, pcnNFe, ufrmStatus;
+uses FileCtrl, pcnNFe, ufrmStatus, ACBrNFeNotasFiscais;
 
 const
   SELDIRHELP = 1000;
@@ -391,7 +393,7 @@ procedure TForm1.btnCriarEnviarClick(Sender: TObject);
 var
  vAux : String;
 begin
- if not(InputQuery('WebServices Enviar', 'Numero da Nota', vAux)) then
+if not(InputQuery('WebServices Enviar', 'Numero da Nota', vAux)) then
     exit;
 
   ACBrNFe1.NotasFiscais.Clear;
@@ -742,6 +744,135 @@ begin
    {$IFNDEF ACBrNFeOpenSSL}
    edtNumSerie.Text := ACBrNFe1.Configuracoes.Certificados.SelecionarCertificado;;
    {$ENDIF}
+end;
+
+procedure TForm1.btnGerarNFEClick(Sender: TObject);
+var
+ vAux : String;
+ LocNFeW : TNFeW;
+begin
+if not(InputQuery('WebServices Enviar', 'Numero da Nota', vAux)) then
+    exit;
+
+  ACBrNFe1.NotasFiscais.Clear;
+
+  with ACBrNFe1.NotasFiscais.Add.NFe do
+  begin
+    infNFe.ID := vAux;
+
+    Ide.natOp     := 'VENDA PRODUCAO DO ESTAB.';
+    Ide.nNF       := StrToInt(vAux);
+    Ide.cNF       := StrToInt(vAux);
+    Ide.modelo    := 55;
+    Ide.serie     := 1;
+    Ide.dEmi      := Date;
+    Ide.dSaiEnt   := Date;
+    Ide.tpAmb     := taHomologacao;
+    Ide.tpNF      := tnSaida;
+    Ide.indPag    := ipVista;
+    Ide.verProc   := '1.0.0.0';
+    Ide.cUF       := 35;
+    Ide.cMunFG    := 3554003;
+
+    Emit.CNPJCPF           := edtEmitCNPJ.Text;
+    Emit.IE                := edtEmitIE.Text;
+    Emit.xNome             := edtEmitRazao.Text;
+    Emit.xFant             := edtEmitFantasia.Text;
+    Emit.EnderEmit.fone    := edtEmitFone.Text;
+    Emit.EnderEmit.CEP     := StrToInt(edtEmitCEP.Text);
+    Emit.EnderEmit.xLgr    := edtEmitLogradouro.Text;
+    Emit.EnderEmit.nro     := edtEmitNumero.Text;
+    Emit.EnderEmit.xCpl    := edtEmitComp.Text;
+    Emit.EnderEmit.xBairro := edtEmitBairro.Text;
+    Emit.EnderEmit.cMun    := StrToInt(edtEmitCodCidade.Text);
+    Emit.EnderEmit.xMun    := edtEmitCidade.Text;
+    Emit.EnderEmit.UF      := edtEmitUF.Text;
+    Emit.enderEmit.cPais   := 1058;
+    Emit.enderEmit.xPais   := 'BRASIL';
+
+    Dest.CNPJCPF           := '05481336000137';
+    Dest.EnderDest.CEP     := 18270410;
+    Dest.EnderDest.xLgr    := 'Praça Anita Costa';
+    Dest.EnderDest.nro     := '0034';
+    Dest.EnderDest.xCpl    := '';
+    Dest.EnderDest.xBairro := 'Centro';
+    Dest.EnderDest.cMun    := 3554003;
+    Dest.EnderDest.xMun    := 'Tatuí';
+    Dest.EnderDest.UF      := 'SP';
+    Dest.EnderDest.Fone    := '1532599600';
+    Dest.IE                := '687138770110';
+    Dest.xNome             := 'D.J. COM. E LOCAÇÃO DE SOFTWARES LTDA - ME';
+    Dest.EnderDest.cPais   := 1058;
+    Dest.EnderDest.xPais   := 'BRASIL';
+
+    with Det.Add do
+    begin
+      Prod.nItem    := 1;
+      Prod.CFOP     := '5101';
+      Prod.cProd    := '67';
+      Prod.xProd    := 'ALHO 400 G';
+      Prod.qCom     := 100;
+      Prod.uCom     := 'KG';
+      Prod.vProd    := 100;
+      Prod.vUnCom   := 10;
+      Prod.qTrib    := 100;
+      Prod.uTrib    := 'KG';
+      Prod.vUnTrib  := 10;
+      infAdProd := 'Teste informacao adicional';
+      with Imposto do
+      begin
+        with ICMS do
+        begin
+          CST := cst00;
+          ICMS.modBC  := dbiPrecoTabelado;
+          ICMS.pICMS  := 18;
+          ICMS.vICMS  := 180;
+          ICMS.vBC    := 1000;
+        end;
+        IPI.CST := ipi01;
+      end;
+    end;
+
+    with Det.Add do
+    begin
+      Prod.nItem    := 2;
+      Prod.CFOP     := '5101';
+      Prod.cProd    := '68';
+      Prod.xProd    := 'CEBOLA 400 G';
+      Prod.qCom     := 100;
+      Prod.uCom     := 'KG';
+      Prod.vProd    := 100;
+      Prod.vUnCom   := 10;
+      Prod.qTrib    := 100;
+      Prod.uTrib    := 'KG';
+      Prod.vUnTrib  := 10;
+      with Imposto do
+      begin
+        with ICMS do
+        begin
+          CST := cst00;
+          ICMS.modBC  := dbiPrecoTabelado;
+          ICMS.pICMS  := 18;
+          ICMS.vICMS  := 180;
+          ICMS.vBC    := 1000;
+        end;
+        IPI.CST := ipi01;
+      end;
+    end;
+
+    Total.ICMSTot.vBC   := 1000;
+    Total.ICMSTot.vICMS := 180;
+    Total.ICMSTot.vNF   := 1000;
+    Total.ICMSTot.vProd := 1000;
+  end;
+
+  ACBrNFe1.NotasFiscais.GerarNFe;
+  LocNFeW := TNFeW.Create(ACBrNFe1.NotasFiscais.Items[0].NFe);
+  LocNFeW.schema := TsPL005c;
+  LocNFeW.GerarXml;
+  LocNFeW.Gerador.SalvarArquivo(ExtractFileDir(application.ExeName)+'\'+copy(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID, (length(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml');
+  MemoResp.Lines.LoadFromFile(ExtractFileDir(application.ExeName)+'\'+copy(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID, (length(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml');
+  LoadXML(MemoResp, WBResposta);
 end;
 
 end.

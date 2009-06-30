@@ -701,6 +701,15 @@ object Form1: TForm1
         TabOrder = 5
         OnClick = btnInutilizarClick
       end
+      object btnGerarNFE: TButton
+        Left = 192
+        Top = 96
+        Width = 177
+        Height = 25
+        Caption = 'Gerar NFe'
+        TabOrder = 7
+        OnClick = btnGerarNFEClick
+      end
     end
     object PageControl2: TPageControl
       Left = 1

@@ -1050,9 +1050,11 @@ function TNFeRetRecepcao.Executar: Boolean;
       FverAplic := FNFeRetorno.verAplic;
       FcStat    := FNFeRetorno.cStat;
       FcUF      := FNFeRetorno.cUF;
+      FMsg      := FNFeRetorno.xMotivo;
+      FxMotivo  := FNFeRetorno.xMotivo;
 
       Result := FNFeRetorno.CStat = 105;
-      if Result then
+      if FNFeRetorno.CStat = 104 then
       begin
          FMsg   := FNFeRetorno.ProtNFe.Items[0].xMotivo;
          FxMotivo  := FNFeRetorno.ProtNFe.Items[0].xMotivo;

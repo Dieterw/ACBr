@@ -334,13 +334,16 @@
   EXTENDEDSYNTAX_ON     Compilando com o estado X+ (Delphi extended syntax enabled)
 *)
 
+//{$DEFINE ACBrNFeOpenSSL}  // Para Usar OpenSSL no ACBrNFe em Delphi, descomente essa linha
+
 {$DEFINE BORLAND}
 
 { Ajusta FreePascal para o modo Delphi }
 {$IFDEF FPC}
+  {$DEFINE ACBrNFeOpenSSL}
   {$MODE DELPHI}
   {$DEFINE VCL}
-  {$DEFINE UNICODE}     // Lazarus 0.9.26 usa UnicodeString como default para String 
+  {$DEFINE UNICODE}     // Lazarus 0.9.26 usa UnicodeString como default para String
   {$DEFINE DELPHI6_UP}
   {$DEFINE COMPILER6_UP}
   {$ASMMODE Intel}
@@ -349,6 +352,7 @@
 
 {$IFDEF BORLAND}
   {$IFDEF LINUX}
+    {$DEFINE ACBrNFeOpenSSL}
     {$DEFINE KYLIX}
   {$ENDIF LINUX}
 {$ENDIF BORLAND}
@@ -1266,5 +1270,4 @@
   {$WARN UNSAFE_CODE OFF}
   {$WARN UNSAFE_CAST OFF}
 {$ENDIF}
-
 

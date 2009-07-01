@@ -124,7 +124,7 @@ var
 
 implementation
 
-uses FileCtrl, pcnNFe, ufrmStatus, ACBrNFeNotasFiscais;
+uses FileCtrl, pcnNFe, ufrmStatus, ACBrNFeNotasFiscais, DateUtils;
 
 const
   SELDIRHELP = 1000;
@@ -808,17 +808,18 @@ if not(InputQuery('WebServices Enviar', 'Numero da Nota', vAux)) then
     with Det.Add do
     begin
       Prod.nItem    := 1;
-      Prod.CFOP     := '5101';
       Prod.cProd    := '67';
-      Prod.xProd    := 'ALHO 400 G';
-      Prod.qCom     := 100;
+      Prod.xProd    := 'PRODUTO VENDIDO POR QUILO';
+      Prod.CFOP     := '5101';
       Prod.uCom     := 'KG';
-      Prod.vProd    := 100;
+      Prod.qCom     := 10;
       Prod.vUnCom   := 10;
-      Prod.qTrib    := 100;
-      Prod.uTrib    := 'KG';
+      Prod.vProd    := 100;
+      Prod.qTrib    := 10;
       Prod.vUnTrib  := 10;
+      Prod.uTrib    := 'KG';
       infAdProd := 'Teste informacao adicional';
+
       with Imposto do
       begin
         with ICMS do
@@ -826,8 +827,8 @@ if not(InputQuery('WebServices Enviar', 'Numero da Nota', vAux)) then
           CST := cst00;
           ICMS.modBC  := dbiPrecoTabelado;
           ICMS.pICMS  := 18;
-          ICMS.vICMS  := 180;
-          ICMS.vBC    := 1000;
+          ICMS.vICMS  := 18;
+          ICMS.vBC    := 100;
         end;
         IPI.CST := ipi01;
       end;
@@ -838,14 +839,76 @@ if not(InputQuery('WebServices Enviar', 'Numero da Nota', vAux)) then
       Prod.nItem    := 2;
       Prod.CFOP     := '5101';
       Prod.cProd    := '68';
-      Prod.xProd    := 'CEBOLA 400 G';
-      Prod.qCom     := 100;
-      Prod.uCom     := 'KG';
-      Prod.vProd    := 100;
-      Prod.vUnCom   := 10;
-      Prod.qTrib    := 100;
-      Prod.uTrib    := 'KG';
-      Prod.vUnTrib  := 10;
+      Prod.xProd    := 'CARRO NOVO';
+      Prod.qCom     := 1;
+      Prod.uCom     := 'PC';
+      Prod.vProd    := 25000;
+      Prod.vUnCom   := 25000;
+      Prod.qTrib    := 1;
+      Prod.uTrib    := 'PC';
+      Prod.vUnTrib  := 1;
+
+      with Prod.veicProd do
+       begin
+          tpOP   := toVendaConcessionaria;
+          chassi := '';
+          cCor   := '1234';
+          xCor   := 'Descricao da Cor';
+          pot    := '1000';
+          CM3    := '1000';
+          pesoL  := '1000';
+          pesoB  := '1000';
+          nSerie := '123456789';
+          tpComb := 'Gasolina';
+          nMotor := '1234567890A';
+          CMKG   := '123456789';
+          dist   := '1234';
+          RENAVAM := '123456789';
+          anoMod := 2009;
+          anoFab := 2009;
+          tpPint := 'A';
+          tpVeic := 1;
+          espVeic:= 1;
+          VIN    := 'A';
+          condVeic := cvAcabado;
+          cMod   := 1;
+       end;
+
+      with Imposto do
+      begin
+        with ICMS do
+        begin
+          CST := cst00;
+          ICMS.modBC  := dbiPrecoTabelado;
+          ICMS.pICMS  := 12;
+          ICMS.vICMS  := 3000;
+          ICMS.vBC    := 25000;
+        end;
+        IPI.CST := ipi01;
+      end;
+
+    with Det.Add do
+    begin
+      Prod.nItem    := 3;
+      Prod.cProd    := '69';
+      Prod.xProd    := 'ARMAMENTO';
+      Prod.CFOP     := '5101';
+      Prod.uCom     := 'PC';
+      Prod.qCom     := 1;
+      Prod.vUnCom   := 500;
+      Prod.vProd    := 500;
+      Prod.qTrib    := 1;
+      Prod.vUnTrib  := 500;
+      Prod.uTrib    := 'PC';
+
+      with Prod.arma.Add do
+       begin
+          tpArma := taUsoPermitido;
+          nSerie := 1234;
+          nCano  := 1234;
+          descr  := 'Calibre Marca Capacidade Tipo de Funcionamento';
+       end;
+
       with Imposto do
       begin
         with ICMS do
@@ -853,17 +916,19 @@ if not(InputQuery('WebServices Enviar', 'Numero da Nota', vAux)) then
           CST := cst00;
           ICMS.modBC  := dbiPrecoTabelado;
           ICMS.pICMS  := 18;
-          ICMS.vICMS  := 180;
-          ICMS.vBC    := 1000;
+          ICMS.vICMS  := 90;
+          ICMS.vBC    := 500;
         end;
         IPI.CST := ipi01;
       end;
     end;
+    end;
 
-    Total.ICMSTot.vBC   := 1000;
-    Total.ICMSTot.vICMS := 180;
-    Total.ICMSTot.vNF   := 1000;
-    Total.ICMSTot.vProd := 1000;
+    Total.ICMSTot.vBC   := 25680;
+    Total.ICMSTot.vICMS := 3108;
+    Total.ICMSTot.vNF   := 25680;
+    Total.ICMSTot.vProd := 25680;
+    Total.retTrib.vRetPrev := 100;
   end;
 
   ACBrNFe1.NotasFiscais.GerarNFe;

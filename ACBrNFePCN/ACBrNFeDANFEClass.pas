@@ -21,12 +21,15 @@ type
     FMostrarPreview : Boolean;
     FTipoDANFE : TpcnTipoImpressao;
     FNumCopias : Integer;
+    FFax  : String;
+    FSite : String;
+    FEmail: String;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-    procedure ImprimirDANFE(NFE : TNFe = nil); virtual ;
-    procedure ImprimirDANFEPDF(NFE : TNFe = nil); virtual ;
+    procedure ImprimirDANFE(NFE : TNFe = nil); virtual;
+    procedure ImprimirDANFEPDF(NFE : TNFe = nil); virtual;
   published
     property ACBrNFe : TComponent  read FACBrNFe write SetNFE ;
     property Logo: String read FLogo write FLogo ;
@@ -38,6 +41,9 @@ type
     property MostrarPreview: Boolean read FMostrarPreview write FMostrarPreview ;
     property TipoDANFE: TpcnTipoImpressao read FTipoDANFE write FTipoDANFE ;
     property NumCopias: Integer read FNumCopias write FNumCopias ;
+    property Fax  : String read FFax   write FFax ;
+    property Site : String read FSite  write FSite ;
+    property Email: String read FEmail write FEmail ;
   end;
 
 implementation

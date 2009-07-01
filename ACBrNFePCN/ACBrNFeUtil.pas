@@ -141,7 +141,7 @@ type
     class function FormatarFone(AValue : String ): String;
     class function FormatarNumeroDocumentoFiscal(AValue : String ): String;
     class function FormatarChaveAcesso(AValue : String ): String;
-    class function GetURL(Const AUF, AAmbiente: Integer; ALayOut: TLayOut): WideString;
+    class function GetURL(Const AUF, AAmbiente, FormaEmissao: Integer; ALayOut: TLayOut): WideString;
     class function Valida(Const AXML: AnsiString; var AMsg: AnsiString): Boolean;
 {$IFDEF ACBrNFeOpenSSL}
     class function Assinar(const AXML, ArqPFX, PFXSenha: AnsiString; out AXMLAssinado, FMensagem: AnsiString): Boolean;
@@ -656,40 +656,54 @@ begin
             copy(AValue,44,2);
 end;
 
-class function NotaUtil.GetURL(const AUF, AAmbiente: Integer;
+class function NotaUtil.GetURL(const AUF, AAmbiente, FormaEmissao : Integer;
   ALayOut: TLayOut): WideString;
 begin
 //  (AC,AL,AP,AM,BA,CE,DF,ES,GO,MA,MT,MS,MG,PA,PB,PR,PE,PI,RJ,RN,RS,RO,RR,SC,SP,SE,TO);
 //  (12,27,16,13,29,23,53,32,52,21,51,50,31,15,25,41,26,22,33,24,43,11,14,42,35,28,17);
 
-  case AUF of
-    12: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //AC
-    27: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //AL
-    16: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //AP
-    13: Result := NotaUtil.GetURLAM(AAmbiente,ALayOut); //AM
-    29: Result := NotaUtil.GetURLBA(AAmbiente,ALayOut); //BA
-    23: Result := NotaUtil.GetURLCE(AAmbiente,ALayOut); //CE
-    53: Result := NotaUtil.GetURLDF(AAmbiente,ALayOut); //DF
-    32: Result := NotaUtil.GetURLES(AAmbiente,ALayOut); //ES
-    52: Result := NotaUtil.GetURLGO(AAmbiente,ALayOut); //GO
-    21: Result := NotaUtil.GetURLSVAN(AAmbiente,ALayOut); //MA
-    51: Result := NotaUtil.GetURLMT(AAmbiente,ALayOut); //MT
-    50: Result := NotaUtil.GetURLMS(AAmbiente,ALayOut); //MS
-    31: Result := NotaUtil.GetURLMG(AAmbiente,ALayOut); //MG
-    15: Result := NotaUtil.GetURLSVAN(AAmbiente,ALayOut); //PA
-    25: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //PB
-    41: Result := NotaUtil.GetURLPR(AAmbiente,ALayOut); //PR
-    26: Result := NotaUtil.GetURLPE(AAmbiente,ALayOut); //PE
-    22: Result := NotaUtil.GetURLSVAN(AAmbiente,ALayOut); //PI
-    33: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //RJ
-    24: Result := NotaUtil.GetURLSVAN(AAmbiente,ALayOut); //RN
-    43: Result := NotaUtil.GetURLRS(AAmbiente,ALayOut); //RS
-    11: Result := NotaUtil.GetURLRO(AAmbiente,ALayOut); //RO
-    14: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //RR
-    42: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //SC
-    35: Result := NotaUtil.GetURLSP(AAmbiente,ALayOut); //SP
-    28: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //SE
-    17: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //TO
+case FormAEmissao of
+  1: begin
+      case AUF of
+         12: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //AC
+         27: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //AL
+         16: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //AP
+         13: Result := NotaUtil.GetURLAM(AAmbiente,ALayOut); //AM
+         29: Result := NotaUtil.GetURLBA(AAmbiente,ALayOut); //BA
+         23: Result := NotaUtil.GetURLCE(AAmbiente,ALayOut); //CE
+         53: Result := NotaUtil.GetURLDF(AAmbiente,ALayOut); //DF
+         32: Result := NotaUtil.GetURLES(AAmbiente,ALayOut); //ES
+         52: Result := NotaUtil.GetURLGO(AAmbiente,ALayOut); //GO
+         21: Result := NotaUtil.GetURLSVAN(AAmbiente,ALayOut); //MA
+         51: Result := NotaUtil.GetURLMT(AAmbiente,ALayOut); //MT
+         50: Result := NotaUtil.GetURLMS(AAmbiente,ALayOut); //MS
+         31: Result := NotaUtil.GetURLMG(AAmbiente,ALayOut); //MG
+         15: Result := NotaUtil.GetURLSVAN(AAmbiente,ALayOut); //PA
+         25: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //PB
+         41: Result := NotaUtil.GetURLPR(AAmbiente,ALayOut); //PR
+         26: Result := NotaUtil.GetURLPE(AAmbiente,ALayOut); //PE
+         22: Result := NotaUtil.GetURLSVAN(AAmbiente,ALayOut); //PI
+         33: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //RJ
+         24: Result := NotaUtil.GetURLSVAN(AAmbiente,ALayOut); //RN
+         43: Result := NotaUtil.GetURLRS(AAmbiente,ALayOut); //RS
+         11: Result := NotaUtil.GetURLRO(AAmbiente,ALayOut); //RO
+         14: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //RR
+         42: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //SC
+         35: Result := NotaUtil.GetURLSP(AAmbiente,ALayOut); //SP
+         28: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //SE
+         17: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //TO
+      end;
+     end;
+  3 : begin
+       case ALayOut of
+         LayNfeRecepcao : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://scan.fazenda.gov.br/nferecepcao/NfeRecepcao.asmx','https://hom.nfe.fazenda.gov.br/SCAN/nferecepcao/NfeRecepcao.asmx');
+         LayNfeRetRecepcao : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://scan.fazenda.gov.br/nferetrecepcao/NfeRetRecepcao.asmx','https://hom.nfe.fazenda.gov.br/SCAN/nferetrecepcao/NfeRetRecepcao.asmx');
+         LayNfeCancelamento : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://scan.fazenda.gov.br/nfecancelamento/NfeCancelamento.asmx','https://hom.nfe.fazenda.gov.br/SCAN/nfecancelamento/NfeCancelamento.asmx');
+         LayNfeInutilizacao : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://scan.fazenda.gov.br/nfeinutilizacao/NfeInutilizacao.asmx','https://hom.nfe.fazenda.gov.br/SCAN/nfeinutilizacao/NfeInutilizacao.asmx');
+         LayNfeConsulta : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://scan.fazenda.gov.br/nfeconsulta/NfeConsulta.asmx','https://hom.nfe.fazenda.gov.br/SCAN/nfeconsulta/NfeConsulta.asmx');
+         LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://scan.fazenda.gov.br/nfestatusservico/NfeStatusServico.asmx','https://hom.nfe.fazenda.gov.br/SCAN/nfestatusservico/NfeStatusServico.asmx');
+       end;
+     end;
   end;
 end;
 

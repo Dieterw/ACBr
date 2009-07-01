@@ -773,10 +773,14 @@ object Form1: TForm1
     ImprimirHoraSaida = False
     MostrarPreview = True
     TipoDANFE = tiRetrato
+    NumCopias = 1
+    Fax = '(15)3259-2822'
+    Site = 'www.djsystem.com.br'
+    Email = 'andre@djsystem.com.br'
     RavFile = 
-      'D:\delphi\ACBr\branches\ACBrNFePCN - Lazarus\Demo\Report\NotaFis' +
-      'calEletronica.rav'
-    Left = 363
+      'D:\delphi\ACBr\trunk\ACBrNFePCN\Demo\Report\NotaFiscalEletronica' +
+      '.rav'
+    Left = 355
     Top = 161
   end
 end

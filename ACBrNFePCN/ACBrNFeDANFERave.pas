@@ -67,7 +67,6 @@ type
     destructor Destroy; override;
     procedure ImprimirDANFE(NFE : TNFe = nil); override ;
     procedure ImprimirDANFEPDF(NFE : TNFe = nil); override ;
-
   published
     property RavFile : String read FRaveFile write FRaveFile ;
   end;

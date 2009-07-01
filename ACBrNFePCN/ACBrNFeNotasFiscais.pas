@@ -68,6 +68,7 @@ type
     constructor Create(Collection2: TCollection); override;
     destructor Destroy; override;
     procedure Imprimir;
+    procedure ImprimirPDF;    
   published
     property NFe: TNFe  read FNFe write FNFe;
     property XML: AnsiString  read FXML write FXML;
@@ -138,6 +139,11 @@ end;
 procedure NotaFiscal.Imprimir;
 begin
   TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.ImprimirDANFE(NFe);
+end;
+
+procedure NotaFiscal.ImprimirPDF;
+begin
+  TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.ImprimirDANFEPDF(NFe);
 end;
 
 { TNotasFiscais }

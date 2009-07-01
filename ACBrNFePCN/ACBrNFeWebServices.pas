@@ -147,6 +147,8 @@ type
   TNFeRetRecepcao = Class(TWebServicesBase)
   private
     FRecibo: String;
+    FProtocolo: String; 
+    FChaveNFe: String; 
     FNotasFiscais: TNotasFiscais;
     FNFeRetorno: TRetConsReciNFe;
     FTpAmb: TpcnTipoAmbiente;
@@ -163,8 +165,10 @@ type
     property cStat: Integer read FcStat;
     property cUF: Integer read FcUF;
     property xMotivo: String read FxMotivo;
+    property Recibo: String read FRecibo write FRecibo; //linha movida de PUBLISHED
+    property Protocolo: String read FProtocolo write FProtocolo; //linha adicionada
+    property ChaveNFe: String read FChaveNFe write FChaveNFe; //linha adicionada
   published
-    property Recibo: String read FRecibo write FRecibo;
     property NFeRetorno: TRetConsReciNFe read FNFeRetorno write FNFeRetorno;
   end;
 
@@ -586,17 +590,17 @@ end;
 procedure TWebServicesBase.LoadURL;
 begin
   if self is TNFeStatusServico then
-    FURL  := NotaUtil.GetURL(FConfiguracoes.WebServices.UFCodigo, FConfiguracoes.WebServices.AmbienteCodigo, LayNfeStatusServico)
+    FURL  := NotaUtil.GetURL(FConfiguracoes.WebServices.UFCodigo, FConfiguracoes.WebServices.AmbienteCodigo, FConfiguracoes.Geral.FormaEmissaoCodigo, LayNfeStatusServico)
   else if self is TNFeRecepcao then
-    FURL  := NotaUtil.GetURL(FConfiguracoes.WebServices.UFCodigo, FConfiguracoes.WebServices.AmbienteCodigo, LayNfeRecepcao)
+    FURL  := NotaUtil.GetURL(FConfiguracoes.WebServices.UFCodigo, FConfiguracoes.WebServices.AmbienteCodigo, FConfiguracoes.Geral.FormaEmissaoCodigo, LayNfeRecepcao)
   else if (self is TNFeRetRecepcao) or (self is TNFeRecibo) then
-    FURL  := NotaUtil.GetURL(FConfiguracoes.WebServices.UFCodigo, FConfiguracoes.WebServices.AmbienteCodigo, LayNfeRetRecepcao)
+    FURL  := NotaUtil.GetURL(FConfiguracoes.WebServices.UFCodigo, FConfiguracoes.WebServices.AmbienteCodigo, FConfiguracoes.Geral.FormaEmissaoCodigo, LayNfeRetRecepcao)
   else if self is TNFeConsulta then
-    FURL  := NotaUtil.GetURL(FConfiguracoes.WebServices.UFCodigo, FConfiguracoes.WebServices.AmbienteCodigo, LayNfeConsulta)
+    FURL  := NotaUtil.GetURL(FConfiguracoes.WebServices.UFCodigo, FConfiguracoes.WebServices.AmbienteCodigo, FConfiguracoes.Geral.FormaEmissaoCodigo, LayNfeConsulta)
   else if self is TNFeCancelamento then
-    FURL  := NotaUtil.GetURL(FConfiguracoes.WebServices.UFCodigo, FConfiguracoes.WebServices.AmbienteCodigo, LayNfeCancelamento)
+    FURL  := NotaUtil.GetURL(FConfiguracoes.WebServices.UFCodigo, FConfiguracoes.WebServices.AmbienteCodigo, FConfiguracoes.Geral.FormaEmissaoCodigo, LayNfeCancelamento)
   else if self is TNFeInutilizacao then
-    FURL  := NotaUtil.GetURL(FConfiguracoes.WebServices.UFCodigo, FConfiguracoes.WebServices.AmbienteCodigo, LayNfeInutilizacao)
+    FURL  := NotaUtil.GetURL(FConfiguracoes.WebServices.UFCodigo, FConfiguracoes.WebServices.AmbienteCodigo, FConfiguracoes.Geral.FormaEmissaoCodigo, LayNfeInutilizacao)
 end;
 
 { TWebServices }
@@ -1105,6 +1109,11 @@ begin
        AProcNFe.Free;
     end;
   end;
+
+  fChaveNfe  := FNFeRetorno.ProtNFe.Items[0].chNFe; //linha adicionada
+  fProtocolo := FNFeRetorno.ProtNFe.Items[0].nProt; //linha adicionada
+  fcStat     := FNFeRetorno.ProtNFe.Items[0].cStat; //linha adicionada
+
   FNFeRetorno.Free;
 end;
 
@@ -1413,7 +1422,7 @@ begin
     FxMotivo  := NFeRetorno.xMotivo;
     FcUF      := NFeRetorno.cUF;
     FDhRecbto := NFeRetorno.dhRecbto;
-
+    Fprotocolo:= NFeRetorno.nProt; 
     FMsg   := NFeRetorno.XMotivo;
     Result := (NFeRetorno.CStat = 101);
     NFeRetorno.Free;

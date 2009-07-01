@@ -198,9 +198,14 @@ begin
   with FNFe.Dest do
   begin
     if NotaUtil.NaoEstaVazio(CNPJCPF) then
-      Connection.WriteStrData('', NotaUtil.FormatarCNPJ(CNPJCPF))
+     begin
+       if Length(CNPJCPF) > 11 then
+          Connection.WriteStrData('', NotaUtil.FormatarCNPJ(CNPJCPF))
+       else
+          Connection.WriteStrData('', NotaUtil.FormatarCPF(CNPJCPF));
+     end
     else
-      Connection.WriteStrData('', NotaUtil.FormatarCPF(CNPJCPF));
+       Connection.WriteStrData('', '');
 
     Connection.WriteStrData('', XNome);
     with EnderDest do
@@ -338,14 +343,24 @@ procedure TdmACBrNFeRave.CustomDadosProdutosCXNGetCols(
   Connection: TRvCustomConnection);
 begin
   Connection.WriteField('CProd', dtString, 60, '', ''); //Codigo
+  Connection.WriteField('cEAN', dtString, 60, '', ''); //GTIN
   Connection.WriteField('XProd', dtMemo, 120, '', ''); //Descricao
   Connection.WriteField('infAdProd', dtMemo, 500, '', ''); //Inf. Adic. Produto
   Connection.WriteField('NCM', dtString, 8, '', ''); //NCM
+  Connection.WriteField('EXTIPI', dtString, 8, '', ''); //EX_TIPI
+  Connection.WriteField('genero', dtString, 8, '', ''); //genero
   Connection.WriteField('CFOP', dtString, 4, '', ''); //CFOP
   Connection.WriteField('UCom', dtString, 6, '', ''); //Unidade
   Connection.WriteField('QCom', dtFloat, 12, '', ''); //Quantidade
   Connection.WriteField('VUnCom', dtFloat, 16, '', ''); //ValorUnitario
   Connection.WriteField('VProd', dtFloat, 15, '', ''); //ValorTotal
+  Connection.WriteField('cEANTrib', dtString, 60, '', ''); //GTIN Trib.
+  Connection.WriteField('UTrib', dtString, 6, '', ''); //Unidade
+  Connection.WriteField('QTrib', dtFloat, 12, '', ''); //Quantidade
+  Connection.WriteField('VUnTrib', dtFloat, 16, '', ''); //ValorUnitario
+  Connection.WriteField('vFrete', dtFloat, 16, '', ''); //Total do Frete
+  Connection.WriteField('vSeg', dtFloat, 16, '', ''); //Total do Seguro
+  Connection.WriteField('vDesc', dtFloat, 16, '', ''); //Desconto
   Connection.WriteField('ORIGEM', dtString, 1, '', ''); //ORIGEM
   Connection.WriteField('CST', dtString, 2, '', ''); //CST
   Connection.WriteField('VBC', dtFloat, 15, '', ''); //ValorBase
@@ -373,7 +388,8 @@ begin
    begin
       with Prod do
       begin
-         Connection.WriteStrData('', CProd);
+         Connection.WriteStrData('', cProd);
+         Connection.WriteStrData('', cEAN);
          vTemp := TStringList.Create;
          vStream := TMemoryStream.Create;
          try
@@ -404,14 +420,24 @@ begin
             vStream2.Free;
          end;
          Connection.WriteStrData('', NCM);
+         Connection.WriteStrData('', EXTIPI);
+         Connection.WriteStrData('', IntToStr(genero));
          Connection.WriteStrData('', CFOP);
          Connection.WriteStrData('', UCom);
          Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(QCom),0));
          Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(VUnCom),0));
          Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(VProd),0));
+         Connection.WriteStrData('', cEANTrib);
+         Connection.WriteStrData('', uTrib);
+         Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(qTrib),0));
+         Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(vUnTrib),0));
+         Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(vFrete),0));
+         Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(vSeg),0));
+         Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(vDesc),0));
          with Imposto.ICMS do
          begin
-           Connection.WriteStrData('', NotaUtil.SeSenao(orig = oeNacional,'0',NotaUtil.SeSenao(orig = oeEstrangeiraImportacaoDireta,'1','2')));
+           Connection.WriteStrData('',OrigToStr(orig));
+//           NotaUtil.SeSenao(orig = oeNacional,'0',NotaUtil.SeSenao(orig = oeEstrangeiraImportacaoDireta,'1','2')));
            if CST = cst00 then
              begin
                Connection.WriteStrData('', CSTICMSToStr(cst00));
@@ -528,9 +554,14 @@ begin
     with Transporta do
     begin
       if NotaUtil.NaoEstaVazio(CNPJCPF) then
-        Connection.WriteStrData('', NotaUtil.FormatarCNPJ(CNPJCPF))
+       begin
+         if Length(CNPJCPF) > 11 then
+            Connection.WriteStrData('', NotaUtil.FormatarCNPJ(CNPJCPF))
+         else
+            Connection.WriteStrData('', NotaUtil.FormatarCPF(CNPJCPF));
+       end
       else
-        Connection.WriteStrData('', NotaUtil.FormatarCPF(CNPJCPF));
+         Connection.WriteStrData('', '');
       Connection.WriteStrData('', XNome);
       Connection.WriteStrData('', IE);
       Connection.WriteStrData('', XEnder);
@@ -552,7 +583,10 @@ begin
   Connection.WriteField('Mensagem0', dtString, 60, '', '');
   Connection.WriteField('Imagem', dtBlob, 60, '', '');
   Connection.WriteField('Sistema', dtString, 60, '', '');
-  Connection.WriteField('Usuario', dtString, 60, '', '');  
+  Connection.WriteField('Usuario', dtString, 60, '', '');
+  Connection.WriteField('Fax', dtString, 60, '', '');
+  Connection.WriteField('Site', dtString, 60, '', '');
+  Connection.WriteField('Email', dtString, 60, '', '');
 end;
 
 procedure TdmACBrNFeRave.CustomParametrosCXNOpen(
@@ -582,8 +616,23 @@ begin
     vStream.Free;
   end;
 
-  Connection.WriteStrData('', FDANFEClassOwner.Sistema);
-  Connection.WriteStrData('', FDANFEClassOwner.Usuario);
+  if FDANFEClassOwner.Sistema <> '' then
+     Connection.WriteStrData('', FDANFEClassOwner.Sistema)
+  else
+     Connection.WriteStrData('', 'Projeto ACBr - http://acbr.sf.net');
+
+  if FDANFEClassOwner.Usuario <> '' then
+     Connection.WriteStrData('', ' - '+FDANFEClassOwner.Usuario)
+  else
+     Connection.WriteStrData('', '');
+
+  if FDANFEClassOwner.Fax <> '' then
+     Connection.WriteStrData('', ' - FAX '+FDANFEClassOwner.Fax)
+  else
+     Connection.WriteStrData('', '');
+
+  Connection.WriteStrData('', FDANFEClassOwner.Site);
+  Connection.WriteStrData('', FDANFEClassOwner.Email);
 end;
 
 procedure TdmACBrNFeRave.CustomIdentificacaoCXNGetCols(

@@ -54,7 +54,7 @@ unit ACBrNFeDANFERaveDM;
 
 interface
 
-uses
+uses Dialogs,
   Forms, SysUtils, Classes,
   RpRave, RpBase, RpSystem, RpDefine, RpCon, RpRender, RpRenderPDF,
   pcnNFe, pcnConversao, ACBrNFeDANFEClass;
@@ -360,7 +360,7 @@ begin
   Connection.WriteField('VUnTrib', dtFloat, 16, '', ''); //ValorUnitario
   Connection.WriteField('vFrete', dtFloat, 16, '', ''); //Total do Frete
   Connection.WriteField('vSeg', dtFloat, 16, '', ''); //Total do Seguro
-  Connection.WriteField('vDesc', dtFloat, 16, '', ''); //Desconto
+  Connection.WriteField('vDesc', dtString, 16, '', ''); //Desconto
   Connection.WriteField('ORIGEM', dtString, 1, '', ''); //ORIGEM
   Connection.WriteField('CST', dtString, 2, '', ''); //CST
   Connection.WriteField('VBC', dtFloat, 15, '', ''); //ValorBase
@@ -433,7 +433,17 @@ begin
          Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(vUnTrib),0));
          Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(vFrete),0));
          Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(vSeg),0));
-         Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(vDesc),0));
+         if FDANFEClassOwner.ImprimirDescPorc then
+          begin
+            if vDesc > 0 then
+             begin
+               Connection.WriteStrData('', NotaUtil.FormatFloat(100-((((VUnCom*QCom)-vDesc)/(VUnCom*QCom))*100))+'%' );
+             end
+            else
+               Connection.WriteStrData('', NotaUtil.FormatFloat(vDesc));
+          end
+         else
+            Connection.WriteStrData('', NotaUtil.FormatFloat(vDesc));
          with Imposto.ICMS do
          begin
            Connection.WriteStrData('',OrigToStr(orig));
@@ -587,6 +597,7 @@ begin
   Connection.WriteField('Fax', dtString, 60, '', '');
   Connection.WriteField('Site', dtString, 60, '', '');
   Connection.WriteField('Email', dtString, 60, '', '');
+  Connection.WriteField('Desconto', dtString, 60, '', '');
 end;
 
 procedure TdmACBrNFeRave.CustomParametrosCXNOpen(
@@ -633,6 +644,11 @@ begin
 
   Connection.WriteStrData('', FDANFEClassOwner.Site);
   Connection.WriteStrData('', FDANFEClassOwner.Email);
+
+  if FDANFEClassOwner.ImprimirDescPorc then
+     Connection.WriteStrData('', 'DESC %')
+  else
+     Connection.WriteStrData('', 'V.DESC.');
 end;
 
 procedure TdmACBrNFeRave.CustomIdentificacaoCXNGetCols(

@@ -24,6 +24,7 @@ type
     FFax  : String;
     FSite : String;
     FEmail: String;
+    FImprimeDescPorc : Boolean;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
   public
     constructor Create(AOwner: TComponent); override;
@@ -44,6 +45,7 @@ type
     property Fax  : String read FFax   write FFax ;
     property Site : String read FSite  write FSite ;
     property Email: String read FEmail write FEmail ;
+    property ImprimirDescPorc: Boolean read FImprimeDescPorc write FImprimeDescPorc ;
   end;
 
 implementation
@@ -63,6 +65,10 @@ begin
   FImprimirHoraSaida    := False;
   FMostrarPreview       := True;
   FNumCopias := 1;
+  FFax   := '' ;
+  FSite  := '' ;
+  FEmail := '' ;
+  FImprimeDescPorc := False;
 end;
 
 destructor TACBrNFeDANFEClass.Destroy;

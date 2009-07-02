@@ -2,7 +2,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
   Left = 571
   Top = 159
   Width = 551
-  Height = 503
+  Height = 511
   ActiveControl = btMinimizar
   Caption = 'ACBrNFe Monitor'
   Color = clBtnFace
@@ -25,7 +25,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
     Left = 0
     Top = 0
     Width = 535
-    Height = 193
+    Height = 184
     Align = alClient
     TabOrder = 0
     object Splitter1: TSplitter
@@ -82,7 +82,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       Left = 1
       Top = 92
       Width = 533
-      Height = 100
+      Height = 91
       Align = alClient
       TabOrder = 1
       object pTodResp: TPanel
@@ -98,7 +98,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
         Left = 1
         Top = 18
         Width = 531
-        Height = 81
+        Height = 72
         Align = alClient
         Lines.Strings = (
           '')
@@ -112,7 +112,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
   end
   object pBotoes: TPanel
     Left = 0
-    Top = 408
+    Top = 416
     Width = 535
     Height = 40
     Align = alBottom
@@ -4088,7 +4088,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 448
+    Top = 456
     Width = 535
     Height = 19
     Panels = <
@@ -4101,18 +4101,18 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
   end
   object pConfig: TPanel
     Left = 0
-    Top = 193
+    Top = 184
     Width = 535
-    Height = 215
+    Height = 232
     Align = alBottom
     TabOrder = 3
     Visible = False
     object PageControl1: TPageControl
       Left = 1
-      Top = -1
+      Top = 0
       Width = 533
-      Height = 215
-      ActivePage = Certificado
+      Height = 231
+      ActivePage = TabSheet1
       Align = alBottom
       TabOrder = 0
       object Monitor: TTabSheet
@@ -4411,7 +4411,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           Left = 8
           Top = 4
           Width = 250
-          Height = 168
+          Height = 189
           Caption = 'WebService'
           TabOrder = 0
           object Label6: TLabel
@@ -4429,7 +4429,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           end
           object sbPathSalvar: TSpeedButton
             Left = 219
-            Top = 134
+            Top = 158
             Width = 23
             Height = 24
             Glyph.Data = {
@@ -4495,7 +4495,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           end
           object ckSalvar: TCheckBox
             Left = 8
-            Top = 120
+            Top = 144
             Width = 209
             Height = 15
             Caption = 'Salvar Arquivos de Envio e Resposta'
@@ -4509,16 +4509,16 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           end
           object edtPathLogs: TEdit
             Left = 8
-            Top = 136
+            Top = 160
             Width = 211
             Height = 21
             TabOrder = 2
           end
           object rgTipoAmb: TRadioGroup
             Left = 8
-            Top = 61
+            Top = 69
             Width = 233
-            Height = 52
+            Height = 60
             Caption = 'Selecione o Ambiente de Destino'
             Columns = 2
             ItemIndex = 1
@@ -4532,66 +4532,82 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           Left = 264
           Top = 4
           Width = 250
-          Height = 105
+          Height = 100
           Caption = 'Proxy'
           TabOrder = 1
           object Label8: TLabel
             Left = 8
-            Top = 16
+            Top = 14
             Width = 22
             Height = 13
             Caption = 'Host'
           end
           object Label9: TLabel
             Left = 192
-            Top = 16
+            Top = 14
             Width = 25
             Height = 13
             Caption = 'Porta'
           end
           object Label10: TLabel
             Left = 8
-            Top = 56
+            Top = 54
             Width = 36
             Height = 13
             Caption = 'Usu'#225'rio'
           end
           object Label11: TLabel
             Left = 130
-            Top = 56
+            Top = 54
             Width = 31
             Height = 13
             Caption = 'Senha'
           end
           object edtProxyHost: TEdit
             Left = 8
-            Top = 32
+            Top = 30
             Width = 177
             Height = 21
             TabOrder = 0
           end
           object edtProxyPorta: TEdit
             Left = 192
-            Top = 32
+            Top = 30
             Width = 50
             Height = 21
             TabOrder = 1
           end
           object edtProxyUser: TEdit
             Left = 8
-            Top = 72
+            Top = 70
             Width = 114
             Height = 21
             TabOrder = 2
           end
           object edtProxySenha: TEdit
             Left = 128
-            Top = 72
+            Top = 70
             Width = 114
             Height = 21
             PasswordChar = '*'
             TabOrder = 3
           end
+        end
+        object rgFormaEmissao: TRadioGroup
+          Left = 264
+          Top = 105
+          Width = 250
+          Height = 91
+          Caption = 'Forma de Emiss'#227'o'
+          Columns = 2
+          ItemIndex = 0
+          Items.Strings = (
+            'Normal'
+            'Conting'#234'ncia'
+            'SCAN'
+            'DPEC'
+            'FSDA')
+          TabOrder = 2
         end
       end
       object Email: TTabSheet
@@ -4703,14 +4719,14 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
         ImageIndex = 4
         object Label7: TLabel
           Left = 7
-          Top = 143
+          Top = 52
           Width = 57
           Height = 13
           Caption = 'Logo Marca'
         end
         object sbLogoMarca: TSpeedButton
           Left = 218
-          Top = 157
+          Top = 66
           Width = 23
           Height = 24
           Glyph.Data = {
@@ -4730,27 +4746,11 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           OnClick = sbLogoMarcaClick
         end
         object Label5: TLabel
-          Left = 272
-          Top = 143
+          Left = 8
+          Top = 92
           Width = 88
           Height = 13
           Caption = 'Impressora Padr'#227'o'
-        end
-        object rgFormaEmissao: TRadioGroup
-          Left = 8
-          Top = 49
-          Width = 250
-          Height = 91
-          Caption = 'Forma de Emiss'#227'o'
-          Columns = 2
-          ItemIndex = 0
-          Items.Strings = (
-            'Normal'
-            'Conting'#234'ncia'
-            'SCAN'
-            'DPEC'
-            'FSDA')
-          TabOrder = 0
         end
         object rgTipoDanfe: TRadioGroup
           Left = 8
@@ -4763,14 +4763,14 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           Items.Strings = (
             'Retrato'
             'Paisagem')
-          TabOrder = 1
+          TabOrder = 0
         end
         object edtLogoMarca: TEdit
           Left = 7
-          Top = 159
+          Top = 68
           Width = 211
           Height = 21
-          TabOrder = 2
+          TabOrder = 1
         end
         object GroupBox3: TGroupBox
           Left = 272
@@ -4778,7 +4778,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           Width = 242
           Height = 135
           Caption = 'Dados Empresa Emissora'
-          TabOrder = 3
+          TabOrder = 2
           object Label3: TLabel
             Left = 7
             Top = 12
@@ -4823,11 +4823,19 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           end
         end
         object cbxImpressora: TComboBox
-          Left = 272
-          Top = 157
+          Left = 8
+          Top = 108
           Width = 242
           Height = 21
           ItemHeight = 13
+          TabOrder = 3
+        end
+        object cbxImpDescPorc: TCheckBox
+          Left = 8
+          Top = 136
+          Width = 241
+          Height = 17
+          Caption = 'Imprimir Desconto em Porcentagem'
           TabOrder = 4
         end
       end
@@ -4888,6 +4896,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
     MostrarPreview = True
     TipoDANFE = tiRetrato
     NumCopias = 1
+    ImprimirDescPorc = True
     Left = 201
     Top = 25
   end

@@ -159,7 +159,7 @@ begin
   FGerador := TGerador.Create;
   FGerador.FIgnorarTagNivel := '|?xml version|NFe xmlns|infNFe versao|obsCont|obsFisco|';
   FOpcoes := TGeradorOpcoes.Create;
-  FOpcoes.FAjustarTagNro := False;
+  FOpcoes.FAjustarTagNro := True;
   FOpcoes.FGerarTXTSimultaneamente := False;
   FOpcoes.FGerarTagIPIparaNaoTributado := True;
   FOpcoes.FNormatizarMunicipios := False;

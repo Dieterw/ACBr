@@ -11,7 +11,7 @@ uses IniFiles, CmdUnitNFe, FileCtrl, Printers,
 
 const
    BufferMemoResposta = 1000 ;              { Maximo de Linhas no MemoResposta }
-   _C = 'tYk*5W@' ;   
+   _C = 'tYk*5W@' ;
    wm_IconMessage = wm_User;
 
 {$I versao.txt}
@@ -111,7 +111,6 @@ type
     ImageList1: TImageList;
     rgTipoAmb: TRadioGroup;
     TabSheet1: TTabSheet;
-    rgFormaEmissao: TRadioGroup;
     rgTipoDanfe: TRadioGroup;
     edtLogoMarca: TEdit;
     Label7: TLabel;
@@ -127,6 +126,8 @@ type
     Label26: TLabel;
     Label27: TLabel;
     edtSoftwareHouse: TEdit;
+    rgFormaEmissao: TRadioGroup;
+    cbxImpDescPorc: TCheckBox;
     procedure DoACBrTimer(Sender: TObject);
     procedure edOnlyNumbers(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
@@ -466,10 +467,12 @@ begin
 
      rgTipoDanfe.ItemIndex     := Ini.ReadInteger( 'Geral','DANFE'       ,0) ;
      edtLogoMarca.Text         := Ini.ReadString( 'Geral','LogoMarca'   ,'') ;
-     edtSoftwareHouse.Text := Ini.ReadString( 'DANFE','SoftwareHouse'   ,'') ;
-     edtSiteEmpresa.Text   := Ini.ReadString( 'DANFE','Site' ,'') ;
-     edtEmailEmpresa.Text  := Ini.ReadString( 'DANFE','Email','') ;
-     edtFaxEmpresa.Text    := Ini.ReadString( 'DANFE','Fax'  ,'') ;
+     edtSoftwareHouse.Text   := Ini.ReadString( 'DANFE','SoftwareHouse'   ,'') ;
+     edtSiteEmpresa.Text     := Ini.ReadString( 'DANFE','Site' ,'') ;
+     edtEmailEmpresa.Text    := Ini.ReadString( 'DANFE','Email','') ;
+     edtFaxEmpresa.Text      := Ini.ReadString( 'DANFE','Fax'  ,'') ;
+     cbxImpDescPorc.Checked  := Ini.ReadBool(   'DANFE','ImpDescPorc',False) ;
+
      if ACBrNFe1.DANFE <> nil then
       begin
         ACBrNFe1.DANFE.TipoDANFE  := StrToTpImp(OK,IntToStr(rgTipoDanfe.ItemIndex+1));
@@ -479,6 +482,7 @@ begin
         ACBrNFeDANFERave1.Site    := edtSiteEmpresa.Text;
         ACBrNFeDANFERave1.Email   := edtEmailEmpresa.Text;
         ACBrNFeDANFERave1.Fax     := edtFaxEmpresa.Text;
+        ACBrNFeDANFERave1.ImprimirDescPorc := ImpDescPorc.Checked;
       end;
 
      edtSmtpHost.Text      := Ini.ReadString( 'Email','Host'   ,'') ;
@@ -560,6 +564,7 @@ begin
      Ini.WriteString( 'DANFE','Site' ,edtSiteEmpresa.Text) ;
      Ini.WriteString( 'DANFE','Email',edtEmailEmpresa.Text) ;
      Ini.WriteString( 'DANFE','Fax'  ,edtFaxEmpresa.Text) ;
+     Ini.WriteBool(   'DANFE','ImpDescPorc',ImpDescPorc.Checked);
   finally
      Ini.Free ;
   end ;

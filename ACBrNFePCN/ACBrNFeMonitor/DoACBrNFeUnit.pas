@@ -214,7 +214,7 @@ begin
               raise Exception.Create('Arquivo '+Cmd.Params(0)+' não encontrado.');
 
            try
-//              ACBrNFe1.NotasFiscais.ImprimirPDF;
+              ACBrNFe1.NotasFiscais.ImprimirPDF;
               Cmd.Resposta := 'Arquivo criado em '+ExtractFileDir(application.ExeName)+'\'+copy(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID, (length(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID)-44)+1, 44)+'.pdf'
            except
               raise Exception.Create('Erro ao criar o arquivo PDF');
@@ -473,7 +473,7 @@ begin
            if (Cmd.Params(2) = '1') then
             begin
               try
-//                 ACBrNFe1.NotasFiscais.ImprimirPDF;
+                 ACBrNFe1.NotasFiscais.ImprimirPDF;
                  ArqPDF := ExtractFileDir(application.ExeName)+'\'+ACBrNFe1.NotasFiscais.Items[0].NFe.InfNFe.Id+'.pdf'
               except
                  raise Exception.Create('Erro ao criar o arquivo PDF');

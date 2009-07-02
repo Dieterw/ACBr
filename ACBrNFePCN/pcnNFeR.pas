@@ -604,7 +604,7 @@ begin
       (*Y06*)NFe.Cobr.Fat.vLiq := Leitor.rCampo(tcDe2, 'vLiq');
     end;
     i := 0;
-    while Leitor.rExtrai(2, 'dup', '', i + 1) <> '' do
+    while Leitor.rExtrai(1, 'dup', '', i + 1) <> '' do
     begin
       NFe.Cobr.Dup.Add;
       (*Y08*)NFe.Cobr.Dup[i].nDup := Leitor.rCampo(tcStr, 'nDup');

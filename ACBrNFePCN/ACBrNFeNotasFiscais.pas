@@ -90,6 +90,7 @@ type
     procedure Assinar;
     procedure Valida;
     procedure Imprimir;
+    procedure ImprimirPDF;
     function  Add: NotaFiscal;
     function Insert(Index: Integer): NotaFiscal;
     property Items[Index: Integer]: NotaFiscal read GetItem  write SetItem;
@@ -226,6 +227,11 @@ end;
 procedure TNotasFiscais.Imprimir;
 begin
   TACBrNFe( FACBrNFe ).DANFE.ImprimirDANFE(nil);
+end;
+
+procedure TNotasFiscais.ImprimirPDF;
+begin
+  TACBrNFe( FACBrNFe ).DANFE.ImprimirDANFEPDF(nil);
 end;
 
 function TNotasFiscais.Insert(Index: Integer): NotaFiscal;

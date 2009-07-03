@@ -1219,13 +1219,14 @@ var
  URI           : String ;
  Tipo : Integer;
 
+ xmlHeaderAntes, xmlHeaderDepois : AnsiString ;
  xmldoc  : IXMLDOMDocument3;
  xmldsig : IXMLDigitalSignature;
  dsigKey   : IXMLDSigKey;
  signedKey : IXMLDSigKey;
 begin
    if Pos('<Signature',XML) <= 0 then
-    begin
+   begin
       I := pos('<infNFe',XML) ;
       Tipo := 1;
 
@@ -1237,8 +1238,7 @@ begin
             Tipo := 3;
        end;
 
-      I := 0;
-      I := NotaUtil.PosEx('Id=',XML,I+6) ;
+      I := NotaUtil.PosEx('Id=',XML,6) ;
       if I = 0 then
          raise Exception.Create('Não encontrei inicio do URI: Id=') ;
       I := NotaUtil.PosEx('"',XML,I+2) ;
@@ -1268,9 +1268,13 @@ begin
          XML := XML + '</cancNFe>'
       else if Tipo = 3 then
          XML := XML + '</inutNFe>';
+   end;
 
-
-    end;
+   // Lendo Header antes de assinar //
+   xmlHeaderAntes := '' ;
+   I := pos('?>',XML) ;
+   if I > 0 then
+      xmlHeaderAntes := copy(XML,1,I+1) ;
 
    xmldoc := CoDOMDocument50.Create;
 
@@ -1329,6 +1333,19 @@ begin
     end
    else
       raise Exception.Create('Assinatura Falhou.');
+
+   if xmlHeaderAntes <> '' then
+   begin
+      I := pos('?>',XMLAssinado) ;
+      if I > 0 then
+       begin
+         xmlHeaderDepois := copy(XMLAssinado,1,I+1) ;
+         if xmlHeaderAntes <> xmlHeaderDepois then
+            XMLAssinado := StuffString(XMLAssinado,1,length(xmlHeaderDepois),xmlHeaderAntes) ;
+       end
+      else
+         XMLAssinado := xmlHeaderAntes + XMLAssinado ;
+   end ;
 
    dsigKey   := nil;
    signedKey := nil;

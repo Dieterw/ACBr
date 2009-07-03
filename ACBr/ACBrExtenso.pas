@@ -174,9 +174,10 @@ begin
 
         if Casa < 3 then { Se for acima da casa dos Cem pegue um titulo }
            { Se a CASA tiver valor de UM usa singular, senao usa o plural }
-           fsTexto := fsTexto + ' ' +
-                    IfThen( StrToIntDef(aStrCasas[Casa],0) = 1,
-                            cMilharSin[Casa], cMilharPlu[Casa] ) ;
+           if StrToIntDef(aStrCasas[Casa],0) = 1 then
+              fsTexto := fsTexto + ' ' + cMilharSin[Casa]
+           else
+              fsTexto := fsTexto + ' ' + cMilharPlu[Casa]  ;
      end ;
 
      { Se nao possui valores na casa dos MIL ou dos CEM, concatena ' de' }
@@ -190,9 +191,19 @@ begin
   { Se o valor total for UM usa moeda singular, senao no Plurar }
   if fsTexto <> '' then
      if fsFormato = extDolar then
-        fsTexto := IfThen( Inteiros = 1, fsMoeda, fsMoedas ) + ' ' + fsTexto  
+      begin
+        If Inteiros = 1 then
+           fsTexto := fsMoeda  + ' ' + fsTexto
+        else
+           fsTexto := fsMoedas + ' ' + fsTexto ;
+      end  
      else
-        fsTexto := fsTexto + ' ' + IfThen( Inteiros = 1, fsMoeda, fsMoedas ) ;
+      begin
+        If Inteiros = 1 Then
+           fsTexto := fsTexto + ' ' + fsMoeda
+        else
+           fsTexto := fsTexto + ' ' + fsMoedas ;
+      end ;
 
   { PROCESSANDO OS DECIMAIS }
   if fsFormato = extDolar then
@@ -211,7 +222,10 @@ begin
         fsTexto := fsTexto + ExtensoAux( IntToStrZero(Decimais,3) ) ;
 
         { Se o valor total dos decimais for UM usa singular, senao no Plurar }
-        fsTexto := fsTexto + ' ' + IfThen(Decimais = 1, fsCentavo, fsCentavos ) ;
+        If Decimais = 1 Then
+           fsTexto := fsTexto + ' ' + fsCentavo
+        else
+           fsTexto := fsTexto + ' ' + fsCentavos ;
      end ;
 end;
 

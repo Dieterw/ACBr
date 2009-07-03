@@ -206,7 +206,7 @@ begin
       Connection.WriteStrData('', inttostr(CMun));
       Connection.WriteStrData('', NotaUtil.ParseText(XMun,true));
       Connection.WriteStrData('', UF);
-      Connection.WriteStrData('', NotaUtil.FormatarCEP(inttostr(CEP)));
+      Connection.WriteStrData('', NotaUtil.FormatarCEP(NotaUtil.Poem_Zeros(CEP,8)));
       Connection.WriteStrData('', inttostr(CPais));
       Connection.WriteStrData('', XPais);
       Connection.WriteStrData('', NotaUtil.FormatarFone(Fone));
@@ -270,7 +270,7 @@ begin
       Connection.WriteStrData('', inttostr(CMun));
       Connection.WriteStrData('', NotaUtil.ParseText(XMun,true));
       Connection.WriteStrData('', UF);
-      Connection.WriteStrData('', NotaUtil.FormatarCEP(inttostr(CEP)));
+      Connection.WriteStrData('', NotaUtil.FormatarCEP(NotaUtil.Poem_Zeros(CEP,8)));
       Connection.WriteStrData('', inttostr(CPais));
       Connection.WriteStrData('', XPais);
       Connection.WriteStrData('', NotaUtil.FormatarFone(Fone));

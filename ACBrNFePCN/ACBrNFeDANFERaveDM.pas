@@ -77,8 +77,6 @@ type
     CustomInformacoesAdicionaisCXN: TRvCustomConnection;
     
     constructor create( AOwner : TComponent ); override ;
-
-    procedure RvSystem1BeforePrint(Sender: TObject);
     procedure CustomDestinatarioCXNGetCols(Connection: TRvCustomConnection);
     procedure CustomDestinatarioCXNGetRow(Connection: TRvCustomConnection);
     procedure CustomDestinatarioCXNOpen(Connection: TRvCustomConnection);
@@ -162,15 +160,6 @@ begin
   inherited;
 
   FDANFEClassOwner := TACBrNFeDANFEClass( AOwner ) ;
-end;
-
-procedure TdmACBrNFeRave.RvSystem1BeforePrint(Sender: TObject);
-begin
-   RvProject.SetParam('wcontador_fatura','0');
-   if (FNFe.Ide.tpEmis=teNormal) then
-      RvProject.SetParam('Contigencia','')
-   else
-      RvProject.SetParam('Contigencia','DANFE em contigência, impresso em decorrência de problemas técnicos');
 end;
 
 procedure TdmACBrNFeRave.CustomDestinatarioCXNGetCols(
@@ -598,6 +587,10 @@ begin
   Connection.WriteField('Site', dtString, 60, '', '');
   Connection.WriteField('Email', dtString, 60, '', '');
   Connection.WriteField('Desconto', dtString, 60, '', '');
+  Connection.WriteField('ChaveAcesso_Descricao', dtString, 90, '', '');
+  Connection.WriteField('Contigencia_ID', dtString, 36, '', '');
+  Connection.WriteField('Contigencia_Descricao', dtString, 60, '', '');
+  Connection.WriteField('Contigencia_Valor', dtString, 60, '', '');
 end;
 
 procedure TdmACBrNFeRave.CustomParametrosCXNOpen(
@@ -608,8 +601,105 @@ end;
 
 procedure TdmACBrNFeRave.CustomParametrosCXNGetRow(
   Connection: TRvCustomConnection);
+   function GerarDigito_Contigencia(var Digito: integer; chave: string): boolean;
+   var
+     i, j: integer;
+   const
+     PESO = '43298765432987654329876543298765432';
+   begin
+     // Manual Integracao Contribuinte v2.02a - Página: 70 //
+     chave := NotaUtil.LimpaNumero(chave);
+     j := 0;
+     Digito := 0;
+     result := True;
+     try
+       for i := 1 to 35 do
+         j := j + StrToInt(copy(chave, i, 1)) * StrToInt(copy(PESO, i, 1));
+       Digito := 11 - (j mod 11);
+       if (j mod 11) < 2 then
+         Digito := 0;
+     except
+       result := False;
+     end;
+     if length(chave) <> 35 then
+       result := False;
+   end;
+   function ZeroEsquerda(const I: string; const Casas: byte): string;
+   var
+     Ch: Char;
+   begin
+     Result := I;
+     if Length(Result) > Casas then begin
+       Ch := '*';
+       Result := '';
+     end else
+       Ch := '0';
+
+     while Length(Result) < Casas do
+       Result := Ch + Result;
+   end;
+   function Chave_Contigencia: string;
+   var
+      wchave: string;
+      i: integer;
+      wicms_s, wicms_p: string;
+      wd,wm,wa: word;
+      Digito: integer;
+   begin
+      wchave:=copy(inttostr(FNFe.Dest.EnderDest.cMun),1,2);
+
+      if FNFe.Ide.tpEmis=teNormal then
+         wchave:=wchave+'1'
+      else if FNFe.Ide.tpEmis=teContingencia then
+         wchave:=wchave+'2'
+      else if FNFe.Ide.tpEmis=teSCAN then
+         wchave:=wchave+'3'
+      else if FNFe.Ide.tpEmis=teDPEC then
+         wchave:=wchave+'4'
+      else if FNFe.Ide.tpEmis=teFSDA then
+         wchave:=wchave+'5';
+      wchave:=wchave+ZeroEsquerda(FNFe.Dest.CNPJCPF,14);
+
+      wchave:=wchave+ZeroEsquerda(NotaUtil.LimpaNumero(Floattostrf(FNFe.Total.ICMSTot.vNF,ffFixed,18,2)),14);
+
+      wicms_s:='0';
+      wicms_p:='0';
+      for I := 0 to FNFe.Det.Count - 1 do
+      begin
+         if (FNFe.Det.Items[i].Imposto.ICMS.CST in [cst00, cst20, cst40, cst41, cst50, cst51]) then
+            wicms_p:='1'
+         else if (FNFe.Det.Items[i].Imposto.ICMS.CST in [cst10, cst30, cst60, cst70]) then
+            wicms_s:='1'
+         else if (FNFe.Det.Items[i].Imposto.ICMS.CST in [cst90]) then
+         begin //precisa testar
+            if (FNFe.Det.Items[i].Imposto.ICMS.vICMS > 0) then
+               wicms_p:='1';
+            if (FNFe.Det.Items[i].Imposto.ICMS.vICMSST > 0) then
+               wicms_s:='1';
+         end;
+      end;
+      wchave:=wchave+wicms_p+wicms_s;
+
+      decodedate(FNFe.Ide.dEmi,wa,wm,wd);
+      wchave:=wchave+ZeroEsquerda(inttostr(wd),2);
+
+      GerarDigito_Contigencia(Digito,wchave);
+      wchave:=wchave+inttostr(digito);
+
+      result:=wchave;
+   end;
+   function FormatarChave_Contigencia(AValue: String): String;
+   begin
+     AValue := NotaUtil.LimpaNumero(AValue);
+     Result := copy(AValue,1,4)  + ' ' + copy(AValue,5,4)  + ' ' +
+               copy(AValue,9,4)  + ' ' + copy(AValue,13,4) + ' ' +
+               copy(AValue,17,4) + ' ' + copy(AValue,21,4) + ' ' +
+               copy(AValue,25,4) + ' ' + copy(AValue,29,4) + ' ' +
+               copy(AValue,33,4) ;
+   end;
 var
   vStream: TMemoryStream;
+  vChave_Contigencia: string;
 begin
   with FNFe.Ide do
     Connection.WriteStrData('', NotaUtil.SeSenao(TpAmb = taHomologacao,'Nota Fiscal sem valor Fiscal', ''));
@@ -649,6 +739,22 @@ begin
      Connection.WriteStrData('', 'DESC %')
   else
      Connection.WriteStrData('', 'V.DESC.');
+
+   if (FNFe.Ide.tpEmis=teNormal) then
+   begin
+      Connection.WriteStrData('', 'CHAVE DE ACESSO DA NF-e P/CONSULTA DE AUTENTICIDADE NO SITE www.nfe.fazenda.gov.br');
+      Connection.WriteStrData('', '');
+      Connection.WriteStrData('', 'PROTOCOLO DE AUTORIZAÇÃO DE USO');
+      Connection.WriteStrData('', FDANFEClassOwner.ProtocoloNFe);
+   end
+   else
+   begin
+      vChave_Contigencia:=Chave_Contigencia;
+      Connection.WriteStrData('', 'CHAVE DE ACESSO DA NF-e');
+      Connection.WriteStrData('', vChave_Contigencia);
+      Connection.WriteStrData('', 'DADOS DA NF-e');
+      Connection.WriteStrData('', FormatarChave_Contigencia(vChave_Contigencia));
+   end;
 end;
 
 procedure TdmACBrNFeRave.CustomIdentificacaoCXNGetCols(
@@ -696,7 +802,7 @@ begin
   begin
 //    Connection.WriteStrData('', IntToStr(Versao));
     Connection.WriteStrData('', NotaUtil.LimpaNumero(Id));
-    Connection.WriteStrData('', NotaUtil.FormatarChaveAcesso(Id));
+    Connection.WriteStrData('', FormatarChave_DANFE(Id));
   end;
 
   with FNFe.Ide do
@@ -818,6 +924,7 @@ procedure TdmACBrNFeRave.CustomInformacoesAdicionaisCXNGetCols(
   Connection: TRvCustomConnection);
 begin
   Connection.WriteField('OBS', dtMemo,5000,'','');
+  Connection.WriteField('Contigencia', dtString,70,'','');
 end;
 
 procedure TdmACBrNFeRave.CustomInformacoesAdicionaisCXNGetRow(
@@ -853,6 +960,11 @@ begin
       vStream.Free;
     end;
   end;
+
+  if not (FNFe.Ide.tpEmis=teNormal) then
+     Connection.WriteStrData('','DANFE EM CONTIGÊNCIA, IMPRESSO EM DECORRÊNCIA DE PROBLEMAS TÉCNICOS')
+  else
+     Connection.WriteStrData('','');
 end;
 
 procedure TdmACBrNFeRave.CustomInformacoesAdicionaisCXNOpen(

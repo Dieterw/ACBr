@@ -482,7 +482,7 @@ begin
         ACBrNFeDANFERave1.Site    := edtSiteEmpresa.Text;
         ACBrNFeDANFERave1.Email   := edtEmailEmpresa.Text;
         ACBrNFeDANFERave1.Fax     := edtFaxEmpresa.Text;
-        ACBrNFeDANFERave1.ImprimirDescPorc := ImpDescPorc.Checked;
+        ACBrNFeDANFERave1.ImprimirDescPorc := cbxImpDescPorc.Checked;
       end;
 
      edtSmtpHost.Text      := Ini.ReadString( 'Email','Host'   ,'') ;
@@ -564,7 +564,7 @@ begin
      Ini.WriteString( 'DANFE','Site' ,edtSiteEmpresa.Text) ;
      Ini.WriteString( 'DANFE','Email',edtEmailEmpresa.Text) ;
      Ini.WriteString( 'DANFE','Fax'  ,edtFaxEmpresa.Text) ;
-     Ini.WriteBool(   'DANFE','ImpDescPorc',ImpDescPorc.Checked);
+     Ini.WriteBool(   'DANFE','ImpDescPorc',cbxImpDescPorc.Checked);
   finally
      Ini.Free ;
   end ;

@@ -25,6 +25,7 @@ type
     FSite : String;
     FEmail: String;
     FImprimeDescPorc : Boolean;
+	FProtocoloNFe: string;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
   public
     constructor Create(AOwner: TComponent); override;
@@ -46,6 +47,7 @@ type
     property Site : String read FSite  write FSite ;
     property Email: String read FEmail write FEmail ;
     property ImprimirDescPorc: Boolean read FImprimeDescPorc write FImprimeDescPorc ;
+    property ProtocoloNFe: String read FProtocoloNFe write FProtocoloNFe ; //linha adicionada
   end;
 
 implementation
@@ -69,6 +71,7 @@ begin
   FSite  := '' ;
   FEmail := '' ;
   FImprimeDescPorc := False;
+  FProtocoloNFe := '';
 end;
 
 destructor TACBrNFeDANFEClass.Destroy;

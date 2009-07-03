@@ -54,8 +54,8 @@ unit ACBrNFeDANFERave;
 
 interface
 
-uses Forms, SysUtils, Classes, RpDefine,
-  ACBrNFeDANFEClass, ACBrNFeDANFERaveDM, pcnNFe;
+uses Forms, SysUtils, Classes, RpDefine, RVClass, RVProj, RVCsBars,
+  ACBrNFeDANFEClass, ACBrNFeDANFERaveDM, pcnNFe, pcnConversao;
 
 type
   TACBrNFeDANFERave = class( TACBrNFeDANFEClass )
@@ -92,6 +92,8 @@ end;
 procedure TACBrNFeDANFERave.ImprimirDANFE(NFE : TNFe = nil);
 var
  i : Integer;
+ MyPage: TRavePage;
+ MyBarcode: TRaveCode128BarCode;
 begin
   if FRaveFile = '' then
       raise Exception.Create(' Arquivo de Relatório nao informado.') ;
@@ -139,13 +141,33 @@ begin
      for i:= 0 to TACBrNFe(ACBrNFe).NotasFiscais.Count-1 do
       begin
         dmDanfe.NFe := TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe;
-        dmDanfe.RvProject.Execute;
+        //exibir código barras de contigencia
+        dmDanfe.RvProject.Open;
+        With dmDanfe.RvProject.ProjMan do
+        begin
+           MyPage := FindRaveComponent('GlobalDANFE',nil) as TRavePage;
+           MyBarcode := FindRaveComponent('BarCode_Contigencia',MyPage) as TRaveCode128BarCode;
+           if (dmDanfe.NFe.Ide.tpEmis = teNormal) and (MyBarcode <> nil) then
+              MyBarCode.Left := 30;
+        end;
+        dmDanfe.RvProject.ExecuteReport('DANFE1');
+        dmDanfe.RvProject.Close;
       end;
    end
   else
    begin
      dmDanfe.NFe := NFE;
-     dmDanfe.RvProject.Execute;
+     //exibir código barras de contigencia
+     dmDanfe.RvProject.Open;
+     With dmDanfe.RvProject.ProjMan do
+     begin
+        MyPage := FindRaveComponent('GlobalDANFE',nil) as TRavePage;
+        MyBarcode := FindRaveComponent('BarCode_Contigencia',MyPage) as TRaveCode128BarCode;
+        if dmDanfe.NFe.Ide.tpEmis = teNormal then
+           MyBarCode.Left := 30;
+     end;
+     dmDanfe.RvProject.ExecuteReport('DANFE1');
+     dmDanfe.RvProject.Close;
    end;
 
 end;
@@ -153,6 +175,8 @@ end;
 procedure TACBrNFeDANFERave.ImprimirDANFEPDF(NFE : TNFe = nil);
 var
  i : Integer;
+ MyPage: TRavePage;
+ MyBarcode: TRaveCode128BarCode;
 begin
   dmDanfe.RvSystem1.DefaultDest := rdFile;
   dmDanfe.RvSystem1.DoNativeOutput:=false;
@@ -171,15 +195,35 @@ begin
       begin
         dmDanfe.NFe := TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe;
         dmDanfe.RvSystem1.OutputFileName := PathWithDelim(FPathArquivos)+dmDanfe.NFe.infNFe.ID+'.pdf';
-        dmDanfe.RvProject.Execute;
+        //exibir código barras de contigencia
+        dmDanfe.RvProject.Open;
+        With dmDanfe.RvProject.ProjMan do
+        begin
+           MyPage := FindRaveComponent('GlobalDANFE',nil) as TRavePage;
+           MyBarcode := FindRaveComponent('BarCode_Contigencia',MyPage) as TRaveCode128BarCode;
+           if dmDanfe.NFe.Ide.tpEmis = teNormal then
+              MyBarCode.Left := 30;
+        end;
+        dmDanfe.RvProject.ExecuteReport('DANFE1');
+        dmDanfe.RvProject.Close;
       end;
    end
   else
    begin
      dmDanfe.NFe := NFE;
      dmDanfe.RvSystem1.OutputFileName := PathWithDelim(FPathArquivos)+dmDanfe.NFe.infNFe.ID+'.pdf';
-     dmDanfe.RvProject.Execute;
-   end; 
+     //exibir código barras de contigencia
+     dmDanfe.RvProject.Open;
+     With dmDanfe.RvProject.ProjMan do
+     begin
+        MyPage := FindRaveComponent('GlobalDANFE',nil) as TRavePage;
+        MyBarcode := FindRaveComponent('BarCode_Contigencia',MyPage) as TRaveCode128BarCode;
+        if dmDanfe.NFe.Ide.tpEmis = teNormal then
+           MyBarCode.Left := 30;
+     end;
+     dmDanfe.RvProject.ExecuteReport('DANFE1');
+     dmDanfe.RvProject.Close;
+   end;
 
   dmDanfe.RvRenderPDF1.Active:=False;   
 end;

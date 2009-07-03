@@ -1047,7 +1047,7 @@ function TNFeRetRecepcao.Executar: Boolean;
                     'Versão Aplicativo : '+FNFeRetorno.verAplic+LineBreak+
                     'Recibo : '+FNFeRetorno.nRec+LineBreak+
                     'Status Código : '+IntToStr(FNFeRetorno.cStat)+LineBreak+
-                    'Status Descrição : '+FNFeRetorno.ProtNFe.Items[0].xMotivo+LineBreak+
+                    'Status Descrição : '+FNFeRetorno.xMotivo+LineBreak+
                     'UF : '+CodigoParaUF(FNFeRetorno.cUF)+LineBreak);
       end;
       FTpAmb    := FNFeRetorno.TpAmb;

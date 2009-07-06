@@ -142,6 +142,7 @@ TACBrECFBematech = class( TACBrECFClass )
     { Tamanho da Resposta Esperada ao comando. Necessário, pois a Bematech nao
       usa um Sufixo padrão no fim da resposta da Impressora. }
     fs25MFD     : Boolean ;  // True se for MP25 ou Superior (MFD)
+    fsPAF       : String ;
     fsBytesResp : Integer ;
     fsFalhasFimImpressao : Integer ;
     fsNumVersao : String ;
@@ -177,10 +178,14 @@ TACBrECFBematech = class( TACBrECFClass )
 
     function GetCNPJ: String; override ;
     function GetIE: String; override ;
+    function GetPAF: String; override ;
     function GetDataMovimento: TDateTime; override ;
     function GetGrandeTotal: Double; override ;
     function GetNumCRO: String; override ;
     function GetNumCCF: String; override ;
+    function GetNumGNF: String; override ;
+    function GetNumGRG: String; override ;
+    function GetNumCDC: String; override ;
     function GetNumCRZ: String; override ;
     function GetVendaBruta: Double; override ;
     function GetTotalAcrescimos: Double; override ;
@@ -268,6 +273,7 @@ TACBrECFBematech = class( TACBrECFClass )
     Procedure LeituraMemoriaFiscalSerial( ReducaoInicial, ReducaoFinal : Integer;
        var Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
     Procedure IdentificaPAF( Linha1, Linha2 : String) ; override ;
+    Function RetornaInfoECF( Registrador: String) : AnsiString; override ;
 
     Procedure AbreGaveta ; override ;
 
@@ -316,6 +322,7 @@ begin
   fsACK       := 0 ;
   fsBytesResp := 0 ;
   fsTotalPago := 0 ;
+  fsPAF       := '' ;
   fsNumVersao := '' ;
   fsNumECF    := '' ;
   fsNumLoja   := '' ;
@@ -628,8 +635,7 @@ function TACBrECFBematech.GetDataHora: TDateTime;
 Var RetCmd : AnsiString ;
     OldShortDateFormat : String ;
 begin
-  BytesResp := 6 ;
-  RetCmd := BcdToAsc( EnviaComando( #35 + #23 ) );
+  RetCmd := RetornaInfoECF( '23' ) ;
   OldShortDateFormat := ShortDateFormat ;
   try
      ShortDateFormat := 'dd/mm/yy' ;
@@ -653,10 +659,7 @@ end;
 function TACBrECFBematech.GetNumCRO: String;
 begin
   if fsNumCRO = '' then
-  begin
-     BytesResp := 2 ;
-     fsNumCRO := Trim( BcdToAsc( EnviaComando( #35+#10 ) )) ;
-  end ;
+     fsNumCRO := RetornaInfoECF( '10' ) ;
 
   Result := fsNumCRO ;
 end;
@@ -668,8 +671,7 @@ begin
   begin
      try
         { Comando disponivel apenas a partir da MP2100 }
-        BytesResp := 3 ;
-        Result := Trim( BcdToAsc( EnviaComando( #35+#55, 1 ) )) ;
+        Result := RetornaInfoECF( '55' ) ;
      except
      end ;
   end ;
@@ -678,10 +680,7 @@ end;
 function TACBrECFBematech.GetNumLoja: String;
 begin
   if fsNumLoja = '' then
-  begin
-     BytesResp := 2 ;
-     fsNumLoja := Trim( BcdToAsc( EnviaComando( #35+#15 ) )) ;
-  end ;
+     fsNumLoja := RetornaInfoECF( '15' ) ;
 
   Result := fsNumLoja ;
 end;
@@ -689,10 +688,7 @@ end;
 function TACBrECFBematech.GetNumECF: String;
 begin
   if fsNumECF = '' then
-  begin
-     BytesResp := 2 ;
-     fsNumECF  := Trim( BcdToAsc( EnviaComando( #35+#14 ) )) ;
-  end ;
+     fsNumECF  := RetornaInfoECF( '14' ) ;
 
   Result := fsNumECF ;
 end;
@@ -1820,40 +1816,27 @@ end;
 function TACBrECFBematech.GetCNPJ: String;
 begin
   if fs25MFD then
-   begin
-     BytesResp  := 20 ;
-     Result     := Trim( EnviaComando( #35+#42 ) ) ;
-   end
+     Result := RetornaInfoECF( '42' )
   else
-   begin
-     BytesResp  := 33 ;
-     Result     := copy(Trim( EnviaComando( #35+#02 ) ),1,18) ;
-   end ;
+     Result := copy(Trim( RetornaInfoECF( '02' ) ),1,18) ;
 end;
 
 function TACBrECFBematech.GetIE: String;
 begin
   if fs25MFD then
-   begin
-     BytesResp  := 20 ;
-     Result     := Trim( EnviaComando( #35+#43 ) ) ;
-   end
+     Result  := RetornaInfoECF( '43' )
   else
-   begin
-     BytesResp  := 33 ;
-     Result     := copy(Trim( EnviaComando( #35+#02 ) ),19,18) ;
-   end ;
+     Result  := copy(Trim( RetornaInfoECF( '02' ) ),19,18) ;
 end;
 
 function TACBrECFBematech.GetDataMovimento: TDateTime;
 Var RetCmd : AnsiString ;
     OldShortDateFormat : String ;
 begin
-   BytesResp := 3 ;
-   RetCmd    := BcdToAsc( EnviaComando( #35 + #27 ) ) ;
+   RetCmd    := RetornaInfoECF( '27' ) ;
 
    if RetCmd = '000000' then
-      Result := DataHora 
+      Result := DataHora
    else
     begin
       OldShortDateFormat := ShortDateFormat ;
@@ -1869,42 +1852,32 @@ begin
 end;
 
 function TACBrECFBematech.GetGrandeTotal: Double;
-Var RetCmd : AnsiString ;
 begin
-  BytesResp := 9 ;
-  RetCmd    := EnviaComando( #35 + #03 ) ;
-  Result := StrToFloatDef( BcdToAsc( RetCmd ) ,0) / 100 ;
+  Result := StrToFloatDef(  RetornaInfoECF( '03' )  ,0) / 100 ;
   Result := RoundTo( Result, -2) ;
 end;
 
 function TACBrECFBematech.GetNumCRZ: String;
 begin
-  BytesResp := 2 ;
-  Result    := Trim( BcdToAsc( EnviaComando( #35+#09 ) )) ;
+  Result := RetornaInfoECF( '09' ) ;
 end;
 
 function TACBrECFBematech.GetTotalAcrescimos: Double;
-Var RetCmd : AnsiString ;
 begin
-  BytesResp := 7 ;
-  RetCmd    := EnviaComando( #35 + #30 ) ;
-  Result := StrToFloatDef( BcdToAsc( RetCmd ) ,0) / 100 ;
+  Result := StrToFloatDef( RetornaInfoECF( '30' ) ,0) / 100 ;
+  Result := RoundTo( Result, -2) ;
 end;
 
 function TACBrECFBematech.GetTotalCancelamentos: Double;
-Var RetCmd : AnsiString ;
 begin
-  BytesResp := 7 ;
-  RetCmd    := EnviaComando( #35 + #04 ) ;
-  Result := StrToFloatDef( BcdToAsc( RetCmd ) ,0) / 100 ;
+  Result := StrToFloatDef( RetornaInfoECF( '04' ) ,0) / 100 ;
+  Result := RoundTo( Result, -2) ;
 end;
 
 function TACBrECFBematech.GetTotalDescontos: Double;
-Var RetCmd : AnsiString ;
 begin
-  BytesResp := 7 ;
-  RetCmd    := EnviaComando( #35 + #05 ) ;
-  Result := StrToFloatDef( BcdToAsc( RetCmd ) ,0 ) / 100 ;
+  Result := StrToFloatDef( RetornaInfoECF( '05' ) ,0 ) / 100 ;
+  Result := RoundTo( Result, -2) ;
 end;
 
 function TACBrECFBematech.GetTotalIsencao: Double;
@@ -1933,11 +1906,8 @@ begin
 end;
 
 function TACBrECFBematech.GetNumUltimoItem: Integer;
-Var RetCmd : AnsiString ;
 begin
-  BytesResp := 2 ;
-  RetCmd    := EnviaComando( #35 + #12 ) ;
-  Result    := StrToIntDef( BcdToAsc( RetCmd ), 0)  ;
+  Result := StrToIntDef( RetornaInfoECF( '12' ), 0)  ;
 end;
 
 function TACBrECFBematech.GetVendaBruta: Double;
@@ -2291,7 +2261,89 @@ end;
 
 procedure TACBrECFBematech.IdentificaPAF(Linha1, Linha2: String);
 begin
-  EnviaComando(#62 + #64 + padL(Linha1,42) + padL(Linha2,42)) ;
+  fsPAF := padL(Linha1,42) + padL(Linha2,42) ;
+  EnviaComando(#62 + #64 + fsPAF) ;
+end;
+
+function TACBrECFBematech.GetPAF: String;
+begin
+  Result := fsPAF ;
+end;
+
+function TACBrECFBematech.GetNumCDC: String;
+begin
+  Result := '';
+  if fpMFD then
+  begin
+    try
+      { Comando disponivel apenas a partir da MP2100 }
+      Result := RetornaInfoECF( '52' ) ;
+    except
+    end;
+  end;
+end;
+
+function TACBrECFBematech.GetNumGNF: String;
+begin
+  BytesResp := 3;
+  Result    := RetornaInfoECF( '7' ) ;
+end;
+
+function TACBrECFBematech.GetNumGRG: String;
+begin
+  Result := '';
+  if fpMFD then
+  begin
+     try
+       { Comando disponivel apenas a partir da MP2100 }
+       Result := RetornaInfoECF( '54' ) ;
+     except
+     end;
+  end;
+end;
+
+function TACBrECFBematech.RetornaInfoECF(Registrador: String): AnsiString;
+ Var ByteReg : Byte ;
+     IsBCD   : Boolean ;
+     Resp    : AnsiString ;
+begin
+  IsBCD     := True ;
+  BytesResp := 2 ;
+
+  ByteReg := StrToIntDef( Registrador, 0 ) ;
+
+  Case ByteReg of
+     0            : begin BytesResp := 15 ; IsBCD := False ; end ;
+     2            : begin BytesResp := 33 ; IsBCD := False ; end ;
+     3,68         : BytesResp := 9 ;
+     4,5,22,30,66 : BytesResp := 7 ;
+     6,7,27,31,41,54,55,56,67 : BytesResp := 3 ;
+     13           : begin BytesResp := 186 ; IsBCD := False ; end ;
+     16,29,70     : IsBCD := False ;
+     17,20,21,28,65,74,75,253 : begin BytesResp := 1 ; IsBCD := False ; end ;
+     23,26,64,72  : BytesResp := 6 ;
+     24           : BytesResp := 18 ;
+     25           : BytesResp := 171 ;
+     32           : begin BytesResp := 1925 ; IsBCD := False ; end ;
+     33           : begin BytesResp := 1550 ; IsBCD := False ; end ;
+     34           : begin BytesResp := 600  ; IsBCD := False ; end ;
+     40,42,43,44,58 : begin BytesResp := 20 ; IsBCD := False ; end ;
+     47           : BytesResp := 60 ;
+     48,51        : begin BytesResp := 570; IsBCD := False ; end ;
+     49           : begin BytesResp := 620; IsBCD := False ; end ;
+     50           : begin BytesResp := 780; IsBCD := False ; end ;
+     60           : BytesResp := 42 ;
+     61           : BytesResp := 6 ;
+     62,63        : BytesResp := 10 ;
+     73           : BytesResp := 18 ;
+  end ;
+
+  Resp := EnviaComando( #35 + chr(ByteReg) ) ;
+
+  if IsBCD then
+     Result := Trim( BcdToAsc( Resp ) )
+  else
+     Result := Resp ;
 end;
 
 end.

@@ -248,6 +248,7 @@ type
   TNFeInutilizacao = Class(TWebServicesBase)
   private
     FNFeChave: WideString;
+    FProtocolo: string; 
     FModelo: Integer;
     FSerie: Integer;
     FCNPJ: String;
@@ -266,6 +267,7 @@ type
     function Executar: Boolean;override;
   published
     property NFeChave: WideString read FNFeChave write FNFeChave;
+    property Protocolo: String read FProtocolo write FProtocolo; 
     property Modelo: Integer read FModelo write FModelo;
     property Serie: Integer read FSerie write FSerie;
     property CNPJ: String read FCNPJ write FCNPJ;
@@ -1538,7 +1540,7 @@ begin
     FxMotivo  := NFeRetorno.xMotivo;
     FcUF      := NFeRetorno.cUF ;
     FdhRecbto := NFeRetorno.dhRecbto;
-
+    Fprotocolo:= NFeRetorno.nProt; 
     FMsg   := NFeRetorno.XMotivo;
     Result := (NFeRetorno.cStat = 102);
     NFeRetorno.Free;

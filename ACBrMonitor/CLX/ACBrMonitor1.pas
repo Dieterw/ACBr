@@ -45,6 +45,9 @@
 |*   - Adicionada configuração para numero máximo de linhas no LOG. O Arquivo é
 |*     ajustado sempre que o ACBrMonitor é iniciado
 |*   - Adicionada configuração para Inverter o sinal da Gaveta de Dinheiro
+|* 07/07/2009: Marcelo Correia Pinheiro
+|*   - Adicionado suporte para leitura de parâmetros de configuração para
+|*     impressoras de cheque
 ******************************************************************************}
 {$DEFINE VisualCLX}
 {$I ACBr.inc}
@@ -323,6 +326,7 @@ type
     Label66: TLabel;
     edTCNaoEncontrado: TEdit;
     TimerTC: TTimer;
+    sbCHQSerial: TSpeedButton;
     procedure FormCreate(Sender: TObject);
     procedure ACBrECF1MsgAguarde(Mensagem: String);
     procedure ACBrECF1MsgPoucoPapel(Sender: TObject);
@@ -459,6 +463,7 @@ type
     procedure sbTCArqPrecosFindClick(Sender: TObject);
     procedure TimerTCTimer(Sender: TObject);
     procedure TCPServerTCConnect(AThread: TIdPeerThread);
+    procedure sbCHQSerialClick(Sender: TObject);
 (*    procedure TCPServerTCConecta(const TCPBlockSocket: TTCPBlockSocket;
       var Enviar: String);
     procedure TCPServerTCDesConecta(
@@ -992,7 +997,7 @@ end;
 procedure TFrmACBrMonitor.LerIni ;
 var Ini : TIniFile;
     ECFAtivado, CHQAtivado, GAVAtivado, DISAtivado, BALAtivado, ETQAtivado  : Boolean ;
-    Senha, ECFDeviceParams :String ;
+    Senha, ECFDeviceParams, CHQDeviceParams :String ;
 begin
   Ini := TIniFile.Create( ACBrMonitorINI ) ;
 
@@ -1066,6 +1071,7 @@ begin
      edCHQFavorecido.Text  := Ini.ReadString('CHQ','Favorecido','');
      edCHQCidade.Text      := Ini.ReadString('CHQ','Cidade','');
      edCHQBemafiINI.Text   := Ini.ReadString('CHQ','PathBemafiINI','');
+     CHQDeviceParams       := Ini.ReadString('CHQ', 'SerialParams', '');
 
      { Parametros do GAV }
      cbGAVPorta.Text       := Ini.ReadString('GAV','Porta','');
@@ -1148,8 +1154,11 @@ begin
      Desativar ;
      Modelo  := TACBrCHQModelo( cbCHQModelo.ItemIndex ) ;
      Porta   := cbCHQPorta.Text ;
+     if CHQDeviceParams <> '' then
+        Device.ParamsString  := CHQDeviceParams ;
      Favorecido := edCHQFavorecido.Text ;
      Cidade     := edCHQCidade.Text ;
+
      if edCHQBemafiINI.Text <> '' then
      begin
         try
@@ -1348,6 +1357,7 @@ begin
      { Parametros do CHQ }
      Ini.WriteInteger('CHQ','Modelo',cbCHQModelo.ItemIndex);
      Ini.WriteString('CHQ','Porta',cbCHQPorta.Text);
+     Ini.WriteString('CHQ','SerialParams',ACBrCHQ1.Device.ParamsString);
      Ini.WriteBool('CHQ','VerificaFormulario',chCHQVerForm.Checked);
      Ini.WriteString('CHQ','Favorecido',edCHQFavorecido.Text);
      Ini.WriteString('CHQ','Cidade',edCHQCidade.Text);
@@ -1851,7 +1861,7 @@ begin
   try
      if ACBrECF1.Ativo then
         bECFAtivar.Click ;
-        
+
     frConfiguraSerial.Device.Porta        := ACBrECF1.Device.Porta ;
     frConfiguraSerial.cmbPortaSerial.Text := cbECFPorta.Text ;
     frConfiguraSerial.Device.ParamsString := ACBrECF1.Device.ParamsString ;
@@ -3364,5 +3374,28 @@ begin
   end ;
 end;
 *)
+procedure TFrmACBrMonitor.sbCHQSerialClick(Sender: TObject);
+begin
+  frConfiguraSerial := TfrConfiguraSerial.Create(self);
+
+  try
+     if ACBrCHQ1.Ativo then
+        ACBrCHQ1.Desativar ;
+
+    frConfiguraSerial.Device.Porta        := ACBrCHQ1.Device.Porta ;
+    frConfiguraSerial.cmbPortaSerial.Text := cbCHQPorta.Text ;
+    frConfiguraSerial.Device.ParamsString := ACBrCHQ1.Device.ParamsString ;
+
+    if frConfiguraSerial.ShowModal = mrOk then
+    begin
+       cbCHQPorta.Text              := frConfiguraSerial.Device.Porta ;
+       ACBrCHQ1.Device.ParamsString := frConfiguraSerial.Device.ParamsString ;
+    end ;
+  finally
+     FreeAndNil( frConfiguraSerial ) ;
+  end ;
+
+end;
+
 end.
 

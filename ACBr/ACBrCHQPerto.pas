@@ -40,6 +40,9 @@
 |*
 |* 24/08/2004: Daniel Simoes de Almeida
 |*  - Primeira Versao ACBrCHQPerto
+|* 07/07/2009: Marcelo Correia Pinheiro
+|*  - Corrigido bug na comuicação com a impressora e definição de timeouts
+|*    para comandos enviados à impressora.
 ******************************************************************************}
 
 {$I ACBr.inc}
@@ -147,7 +150,7 @@ end;
 
 procedure TACBrCHQPerto.DestravarCheque;
 begin
-  VerificaErro( EnviaComando('>') ) { Expulsar Cheque }
+  VerificaErro( EnviaComando('>', 30) ) { Expulsar Cheque }
 end;
 
 procedure TACBrCHQPerto.ImprimirCheque;
@@ -156,14 +159,14 @@ begin
   TravarCheque ;
 
   { Favorecido }
-  VerificaErro( EnviaComando( '%' + Trim(UpperCase(fpFavorecido)) ));
+  VerificaErro( EnviaComando( '%' + Trim(UpperCase(fpFavorecido)), 2 ));
 
   { Cidade }
-  VerificaErro( EnviaComando( '#' + Trim(UpperCase(fpCidade)) ));
+  VerificaErro( EnviaComando( '#' + Trim(UpperCase(fpCidade)), 2 ));
 
   { Data }
   DataStr := FormatDateTime('ddmmyy', fpData) ;
-  VerificaErro( EnviaComando( '!' + DataStr ));
+  VerificaErro( EnviaComando( '!' + DataStr, 2 ));
 
   { Comanda Preenchimento }
   ValStr := IntToStrZero( Round( fpValor * 100), 12) ;
@@ -206,6 +209,7 @@ begin
   result  := '' ;
   SecTimeOut := SecTimeOut * 1000 ;
 
+  fpDevice.Serial.DTR := true;
   fpDevice.Serial.DeadlockTimeout := SecTimeOut ; { Ajusta Timeout }
 
   try
@@ -221,12 +225,6 @@ begin
         fpComandoEnviado := cmd ;
 
         repeat
-           if fpDevice.HandShake = hsDTR_DSR then
-              fpDevice.Serial.DTR := False ;  { DesLiga o DTR para enviar }
-
-           if fpDevice.HandShake = hsRTS_CTS then
-              fpDevice.Serial.RTS := False ;  { DesLiga o RTS para enviar }
-
            try
               fpDevice.Serial.Purge;
               fpDevice.Serial.SendString( cmd );   { Eviando o comando }
@@ -236,12 +234,6 @@ begin
            except
               raise Exception.create('Erro ao enviar comandos para a PertoCheck') ;
            end ;
-
-           if fpDevice.HandShake = hsDTR_DSR then
-              fpDevice.Serial.DTR := True ;  { Liga o DTR para ler a Resposta }
-
-           if fpDevice.HandShake = hsRTS_CTS then
-              fpDevice.Serial.RTS := True  ;  { sLiga o RTS para para ler a Resposta }
 
            try
               ACK := fpDevice.Serial.RecvByte(SecTimeOut) ;

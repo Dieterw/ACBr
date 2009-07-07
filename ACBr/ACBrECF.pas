@@ -452,13 +452,16 @@ TACBrECF = class( TACBrComponent )
        Observacao : AnsiString = ''; ImprimeVinculado : Boolean = false) ;
     { Para quebrar linhas nos parametros Observacao use: '|' (pipe),
        #10 ou chr(10).      Geralmente o ECF aceita no máximo 8 linhas }
+    procedure EstornaPagamento(const CodFormaPagtoEstornar,
+      CodFormaPagtoEfetivar : String; const Valor: Double;
+      Observacao : AnsiString = '') ;
     Procedure FechaCupom( Observacao : AnsiString = ''; IndiceBMP : Integer  = 0) ;
     Procedure CancelaCupom ;
     Procedure CancelaItemVendido( NumItem : Integer ) ;
-    procedure CancelaItemVendidoParcial( NumItem : Integer; Quantidade : Double); 
-    procedure CancelaDescontoAcrescimoItem( NumItem : Integer); 
-    procedure CancelaDescontoAcrescimoSubTotal(TipoAcrescimoDesconto: Char); //A -> Acrescimo D -> Desconto 
-    procedure EstornoPagamento(IndiceEstornado: Integer; IndiceEfetivado: Integer; Valor: Double; MsgPromocional: String); 
+    procedure CancelaItemVendidoParcial( NumItem : Integer; Quantidade : Double);
+    procedure CancelaDescontoAcrescimoItem( NumItem : Integer);
+    procedure CancelaDescontoAcrescimoSubTotal(TipoAcrescimoDesconto: Char); //A -> Acrescimo D -> Desconto
+
     Property Subtotal  : Double read GetSubTotalClass ;
     Property TotalPago : Double read GetTotalPagoClass ;
 
@@ -1999,11 +2002,14 @@ begin
 end;
 
 { Estorna um Pagamento Efetuado }
-procedure TACBrECF.EstornoPagamento(IndiceEstornado,
-  IndiceEfetivado: Integer; Valor: Double; MsgPromocional: String);
+procedure TACBrECF.EstornaPagamento(const CodFormaPagtoEstornar,
+   CodFormaPagtoEfetivar : String; const Valor: Double;
+   Observacao : AnsiString = '') ;
 begin
-  ComandoLOG := 'EstornoPagamento' ;
-  fsECF.EstornoPagamento(IndiceEstornado,IndiceEfetivado,Valor,MsgPromocional);
+  ComandoLOG := 'EstornaPagamento( '+CodFormaPagtoEstornar+', '+
+           CodFormaPagtoEfetivar+', '+ FloatToStr(Valor)+' , '+Observacao +' )';
+  fsECF.EstornaPagamento( CodFormaPagtoEstornar,CodFormaPagtoEfetivar,
+                          Valor, Observacao);
 end;
 
 procedure TACBrECF.FechaCupom(Observacao: AnsiString; IndiceBMP : Integer);

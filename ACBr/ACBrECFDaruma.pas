@@ -266,8 +266,9 @@ TACBrECFDaruma = class( TACBrECFClass )
     Procedure EfetuaPagamento( CodFormaPagto : String; Valor : Double;
        Observacao : AnsiString = ''; ImprimeVinculado : Boolean = false) ;
        override ;
-    procedure EstornoPagamento(IndiceEstornado: Integer; IndiceEfetivado: Integer;
-      Valor: Double; Observacao : AnsiString = '') ; override ; // Função implementada até o momento apenas para Daruma
+    procedure EstornaPagamento(const CodFormaPagtoEstornar,
+      CodFormaPagtoEfetivar : String; const Valor: Double;
+      Observacao : AnsiString = '') ; override ;
     Procedure FechaCupom( Observacao : AnsiString = ''; IndiceBMP : Integer = 0) ; override ;
     Procedure CancelaCupom ; override ;
     Procedure CancelaItemVendido( NumItem : Integer ) ; override ;
@@ -1045,7 +1046,6 @@ end;
 function TACBrECFDaruma.GetTotalPago: Double;
 Var RetCmd : AnsiString ;
 begin
-  Result := 0 ;
   if fpMFD then
   begin
     RetCmd  :=  RetornaInfoECF('48') ;
@@ -1494,14 +1494,14 @@ begin
   fsRet244      := '' ;
 end;
 
-procedure TACBrECFDaruma.EstornoPagamento(IndiceEstornado,
-  IndiceEfetivado: Integer; Valor: Double; Observacao : AnsiString = '');
+procedure TACBrECFDaruma.EstornaPagamento(const CodFormaPagtoEstornar,
+  CodFormaPagtoEfetivar : String; const Valor: Double;
+  Observacao : AnsiString = '') ;
 begin
   if fpMFD then
   begin
-    EnviaComando(FS + 'F' + #228 +  IntToStrZero(IndiceEstornado,2) +
-            IntToStrZero(IndiceEfetivado,2) +
-            IntToStrZero( Round( Valor * power(10,2)),12) +
+    EnviaComando(FS + 'F' + #228 +  CodFormaPagtoEstornar +
+            CodFormaPagtoEfetivar + IntToStrZero( Round( Valor * 100),12) +
             LeftStr( Observacao, 619 ) + FF);
   end ;
 end;
@@ -2841,21 +2841,16 @@ begin
   else if fsNumVersao='2000' then
   begin
     RetCmd := EnviaComando( ESC + #235 ) ;
-    if LeftStr(RetCmd, 1) <> ':' then
-      Result := 0
-    else
+    if LeftStr(RetCmd, 1) = ':' then
       Result := StrToFloatDef(copy(RetCmd,41,18),0)/100 ;
   end
   else
   begin
     RetCmd := EnviaComando( ESC + #239 ) ;
-    if LeftStr(RetCmd, 3) <> ':' + ESC + #239 then
-      Result := 0
-    else
+    if LeftStr(RetCmd, 3) = ':' + ESC + #239 then
       Result := StrToFloatDef(copy(RetCmd,43,18),0)/100 ;
   end;
 
-  //Alterado por: Maicon da Silva Evangelista
   Result := RoundTo( Result, -2);
 end;
 

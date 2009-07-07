@@ -139,6 +139,9 @@
 |*      ajustado para usar no máximo 10 seg em fsEsperaMinima
 |*  - LeituraMemoriaFiscalSerial, aumentado TimeOut (10) das respostas
 |*    intermediárias (++), evitando leituras incompletas por TimeOut
+|* 25/06/2009: José Nilton Pace
+|*   - Ajustado Retorno do Estado da Impressora
+|*   - Ajustado Retorno do COOInicial, estava trazendo o CCF Inicial 
 ******************************************************************************}
 {$I ACBr.inc}
 
@@ -994,66 +997,77 @@ begin
      Result := RoundTo(StrToFloatDef(copy(RetCmd,P-24,12),0) / 100, -2) ;
 end;
 
+{  Ordem de Retorno do Estado da Impressora
+   estNaoInicializada - Não Inicializada (Nova)
+   estDesconhecido    - Desconhecido
+   estPagamento       - Cupom Venda Aberto em Pagamento
+   estVenda           - Cupom Venda Aberto em Itens
+   estNaoFiscal       - Cupom Não Fiscal Aberto
+   estRelatorio       - Cupom Vinculado Aberto | Relatório Gerencial Aberto
+   estBloqueada       - Impressora Bloqueada para venda
+   estRequerZ         - Requer Emissão da Redução da Z
+   estRequerX         - Requer Leitura X
+   estLivre           - Livre para vender
+}
 function TACBrECFSweda.GetEstado: TACBrECFEstado;
 Var RetCmd, Status, Transacao : AnsiString ;
     P, I : Integer ;
     FlagZ, FlagX : AnsiChar ;
-    SubTot, Falta : Double ;
+    SubTot, Falta, Receb : Double ;
 begin
-  if (not fpAtivo) then
-     fpEstado := estNaoInicializada
-  else
-   begin
-     RetCmd := EnviaComando( '28' ) ;
-     P      := pos('!',RetCmd) ;
-     if P > 0 then
+  Result := fpEstado ;  // Suprimir Warning
+  try
+    fpEstado := estNaoInicializada ;
+    if (not fpAtivo) then
+      exit ;
+
+    fpEstado := estDesconhecido ;
+
+    RetCmd := EnviaComando( '28' ) ;
+    P      := pos('!',RetCmd) ;
+    if P = 0 then
+       exit ;
+
+    try FlagX := RetCmd[P+76] except FlagX := ' ' end ;
+    try FlagZ := RetCmd[P+77] except FlagZ := ' ' end ;
+
+    SubTot := RoundTo(StrToFloatDef(copy(RetCmd,P-24,12),0) / 100, -2) ;
+    Falta  := RoundTo(StrToFloatDef(copy(RetCmd,P+52,12),0) / 100, -2) ;
+    Receb  := RoundTo(StrToFloatDef(copy(RetCmd,P+64,12),0) / 100, -2) ;
+
+    If fsVersaoSweda > swdA then I := 10 else I := 07 ;
+
+    { Status pode ser: C - concluida, P - Pendente, E - Erro no Comando }
+    Status    := UpperCase(copy(RetCmd,I,1)) ;
+    Transacao := UpperCase(Trim(copy(RetCmd,I+1,8))) ;
+
+    if (Status <> 'C') then
      begin
-        try
-           FlagX := RetCmd[P+76]
-        except
-           FlagX := ' '
-        end ;
-        try
-           FlagZ := RetCmd[P+77]
-        except
-           FlagZ := ' '
-        end ;
-        SubTot := RoundTo(StrToFloatDef(copy(RetCmd,P-24,12),0) / 100, -2) ;
-        Falta  := RoundTo(StrToFloatDef(copy(RetCmd,P+52,12),0) / 100, -2) ;
-
-        If fsVersaoSweda > swdA then I := 10 else I := 07 ;
-        { Status pode ser: C - concluida, P - Pendente, E - Erro no Comando }
-        Status    := UpperCase(copy(RetCmd,I,1)) ;
-        Transacao := UpperCase(Trim(copy(RetCmd,I+1,8))) ;
-        fpEstado  := estDesconhecido ;
-
-        if FlagZ = 'S' then
-           fpEstado := estBloqueada
-        else if FlagZ = 'F' then
-           fpEstado := estRequerZ
-        else if not (Status[1] in ['C']) then
-         begin
-           if (Transacao = 'N.FISCAL') then
-              fpEstado := estNaoFiscal
-           else if (Transacao = 'LEIT. X')  then
-              fpEstado := estRelatorio
-           else if (fsTotalPago >= 0) or ((SubTot <> 0) and (SubTot <> Falta) and (Status<>'E')) then
-              fpEstado := estPagamento
-           else if (Transacao = 'VENDAS')  then
-              fpEstado := estVenda ;
-         end ;
-
-        if fpEstado = estDesconhecido then
-        begin
-           if FlagX = 'F' then
-              fpEstado := estRequerX
-           else if Status[1] in ['C','E'] then
-              fpEstado := estLivre ;
-        end ;
-     end ;
-   end ;
-
-  Result := fpEstado ;
+      if (Transacao = 'N.FISCAL') and (Receb > 0) then
+        fpEstado := estNaoFiscal
+      else if (Transacao = 'N.FISCAL') and (Receb = 0) then
+        fpEstado := estRelatorio
+      else if (Transacao = 'LEIT. X')  then
+        fpEstado := estRelatorio
+      else if (fsTotalPago >= 0) or ((SubTot <> 0) and (SubTot <> Falta) and (Status<>'E')) then
+        fpEstado := estPagamento  { Verificação de estPagamento, antes, falha em algumas situações }
+      else if (Transacao = 'VENDAS')  then
+        fpEstado := estVenda
+     end
+    else
+     begin
+      if FlagZ = 'S' then
+        fpEstado := estBloqueada
+      else if FlagZ = 'F' then
+        fpEstado := estRequerZ
+      else if FlagX = 'F' then
+        fpEstado := estRequerX
+      else if Status[1] in ['C','E'] then
+        fpEstado := estLivre ;
+    end ;
+  finally
+    Result := fpEstado ;
+  end ;
 end;
 
 function TACBrECFSweda.GetGavetaAberta: Boolean;
@@ -2504,11 +2518,19 @@ var
   wretorno: AnsiString;
 begin
   Result   := '';
-  if fsVersaoSweda < swdST then
+
+  if fsVersaoSweda = swdA then
+   begin
+     wretorno := EnviaComando('27'+'1');
+     if copy(wretorno,1,3) = '.+C' then
+        Result := Copy(wretorno,14,4)
+   end
+  else
+  if (fsVersaoSweda > swdA) and (fsVersaoSweda < swdST) then
    begin
      wretorno := EnviaComando('27'+'G');
      if copy(wretorno,1,3) = '.+C' then
-        Result := Copy(wretorno,12,4)
+        Result := Copy(wretorno,8,4)
    end
   else
    begin

@@ -777,68 +777,82 @@ begin
   Result    := StrToFloatDef( BcdToAsc( RetCmd ), 0) / 100 ;
 end;
 
+{  Ordem de Retorno do Estado da Impressora
+   estNaoInicializada - Não Inicializada (Nova)
+   estDesconhecido    - Desconhecido
+   estPagamento       - Cupom Venda Aberto em Pagamento
+   estVenda           - Cupom Venda Aberto em Itens
+   estNaoFiscal       - Cupom Não Fiscal Aberto
+   estRelatorio       - Cupom Vinculado Aberto | Relatório Gerencial Aberto
+   estBloqueada       - Impressora Bloqueada para venda
+   estRequerZ         - Requer Emissão da Redução da Z
+   estRequerX         - Requer Leitura X
+   estLivre           - Livre para vender
+}
 function TACBrECFBematech.GetEstado: TACBrECFEstado;
 Var RetCmd : AnsiString ;
     DataMov, DataHora : String ;
-    B : Byte ;
+    B1, B2 : Byte ;
 begin
-  if (not fpAtivo) then
-     fpEstado := estNaoInicializada
-  else
-   begin
-      BytesResp := 1 ;
-      RetCmd    := EnviaComando( #35+#17 ) ;
-      try B := ord( RetCmd[1] ) except B := 0 end ;
+  Result := fpEstado ;  // Suprimir Warning
+  try
+    fpEstado := estNaoInicializada ;
+    if (not fpAtivo) then
+      exit ;
 
-      fpEstado  := estLivre ;
+    fpEstado := estDesconhecido ;
 
-      if TestBit( B ,3) then
-        fpEstado := estBloqueada
-      else if TestBit( B ,1) then
-        fpEstado := estPagamento
-      else if TestBit( B ,0) then
-        fpEstado := estVenda ;
+    BytesResp := 1 ;
+    RetCmd    := EnviaComando( #35+#17 ) ;
+    try B1 := ord( RetCmd[1] ) except B1 := 0 end ;
 
-      if {fs25MFD and} (fpEstado = estLivre) then
-      begin
-         BytesResp := 3 ;
-         DataMov   := BcdToAsc( EnviaComando( #35 + #27 ) ) ;
-
-         if DataMov = '000000' then
-//          fpEstado := estRequerX
-            { OBS.: comentado pois a Leitura X na Bematech não abre o Movimento,
-              apenas a abertura de cupom, inicializa a DataMov }
-         else
-          begin
-            BytesResp := 6 ;
-            DataHora  := BcdToAsc( EnviaComando( #35 + #23 ) ) ;
-
-            if DataMov <> copy(DataHora,1,6) then
-               fpEstado := estRequerZ ;
-          end ;
-      end ;
-
-      if fpMFD and fpTermica and (fpEstado = estLivre) then
-      begin
-         try
+    if TestBit( B1 ,1) then
+      fpEstado := estPagamento
+    else if TestBit( B1 ,0) then
+      fpEstado := estVenda
+    else
+     begin
+       if fpMFD and fpTermica then    { Bematech Matricial, nao possui Flag para }
+       begin                          { inidicar se está Imprimindo Relatório }
+         try                          { (Cupom Fiscal Vinculado ou Relatorio Gerencial) }
             BytesResp := 1 ;
             RetCmd    := EnviaComando( #35+#65 ) ;
-            try B := ord( RetCmd[1] ) except B := 0 end ;
+            B2        := ord( RetCmd[1] )  ;
 
-            if TestBit( B ,0) then
+            if TestBit( B2 ,0) then
               fpEstado := estNaoFiscal
-            else if TestBit( B ,1) then
+            else if TestBit( B2 ,1) or TestBit( B2 ,2) then
               fpEstado := estRelatorio
-            else if TestBit( B ,2) then
-              fpEstado := estRelatorio ;
          except
          end ;
-      end ;
-   end ;
+       end ;
+     end ;
 
-  Result := fpEstado ;
-  { Bematech Matricial, nao possui Flag para inidicar se está Imprimindo
-    Relatório (Cupom Fiscal Vinculado ou Relatorio Gerencial) }
+    if fpEstado = estDesconhecido then
+    begin
+      if TestBit( B1 ,3) then
+         fpEstado := estBloqueada
+      else
+       begin
+         fpEstado  := estLivre ;
+         BytesResp := 3 ;
+         DataMov   := RetornaInfoECF( '27' ) ;
+
+         if DataMov <> '000000' then
+          begin
+            DataHora := RetornaInfoECF( '23' ) ;
+            if DataMov <> copy(DataHora,1,6) then
+              fpEstado := estRequerZ ;
+          end
+         else
+//          fpEstado :=  estRequerX ;
+            { OBS.: comentado pois a Leitura X na Bematech não abre o Movimento,
+              apenas a abertura de cupom, inicializa a DataMov }
+       end ;
+    end ;
+  finally
+    Result := fpEstado ;
+  end ;
 end;
 
 function TACBrECFBematech.GetGavetaAberta: Boolean;

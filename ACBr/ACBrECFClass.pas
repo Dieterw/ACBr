@@ -680,8 +680,9 @@ TACBrECFClass = class
     Procedure EfetuaPagamento( CodFormaPagto : String; Valor : Double;
        Observacao : AnsiString = ''; ImprimeVinculado : Boolean = false) ;
        virtual ;
-    procedure EstornoPagamento(IndiceEstornado: Integer; IndiceEfetivado: Integer;
-      Valor: Double; Observacao : AnsiString = '') ; Virtual ; 
+    procedure EstornaPagamento(const CodFormaPagtoEstornar,
+      CodFormaPagtoEfetivar : String; const Valor: Double;
+      Observacao : AnsiString = '') ; Virtual ;
 
     { Para quebrar linhas nos parametros Observacao use #10 ou chr(10),
       Geralmente o ECF aceita no máximo 8 linhas }
@@ -1795,10 +1796,11 @@ begin
   ErroAbstract('EfetuaPagamento');
 end;
 
-procedure TACBrECFClass.EstornoPagamento(IndiceEstornado,
-  IndiceEfetivado: Integer; Valor: Double; Observacao : AnsiString);
+procedure TACBrECFClass.EstornaPagamento(const CodFormaPagtoEstornar,
+  CodFormaPagtoEfetivar : String; const Valor: Double;
+   Observacao : AnsiString = '') ;
 begin
-  ErroAbstract('EstornoPagamento');
+  ErroAbstract('EstornaPagamento');
 end;
 
 procedure TACBrECFClass.FechaCupom(Observacao: AnsiString; IndiceBMP : Integer);

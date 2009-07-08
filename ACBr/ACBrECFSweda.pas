@@ -581,9 +581,9 @@ begin
            fpDevice.Serial.RTS := False ;  { DesLiga o RTS para enviar }
 
         if fsVersaoSweda = swdA then
-           fpDevice.Serial.SendString( #27 + '.271}' )   { Pede Numcupom }
+           fpDevice.EnviaString( #27 + '.271}' )   { Pede Numcupom }
         else
-           fpDevice.Serial.SendString( #27 + '.23}' );   { Pede Status }
+           fpDevice.EnviaString( #27 + '.23}' );   { Pede Status }
            
         if fpDevice.HandShake = hsDTR_DSR then
            fpDevice.Serial.DTR := True ;  { Liga o DTR para ler a Resposta }

@@ -5320,6 +5320,8 @@ object Form1: TForm1
       'HTML_Title_Size=2'
       'HTML_Font=<font size="5" face="Fixed">')
     OnBobinaAdicionaLinhas = ACBrECF1BobinaAdicionaLinhas
+    Device.SendBytesCount = 10
+    Device.SendBytesInterval = 10
     ArqLOG = 'acbrlog.txt'
     Left = 166
     Top = 309

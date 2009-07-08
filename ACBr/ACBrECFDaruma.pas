@@ -709,7 +709,7 @@ begin
      try
         Sleep(100) ;
         fpDevice.Serial.Purge ;  { Limpa buffer de Entrada e Saida }
-        fpDevice.Serial.SendString( Cmd );
+        fpDevice.EnviaString( Cmd );
      except
      end ;
 

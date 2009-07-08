@@ -569,7 +569,7 @@ begin
         GravaLog('Bematech VerificaFimImpressao: Pedindo o Status') ;
         
         fpDevice.Serial.Purge ;              // Limpa buffer de Entrada e Saida //
-        fpDevice.Serial.SendString( Cmd );   // Envia comando //}
+        fpDevice.EnviaString( Cmd );   // Envia comando //}
 
         // espera ACK chegar na Porta por 1,5s //
         wACK := fpDevice.Serial.RecvByte( 1500 ) ;

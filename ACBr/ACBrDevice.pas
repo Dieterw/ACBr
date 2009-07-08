@@ -133,10 +133,12 @@ TACBrDevice = class( TComponent )
     fsAtivo: Boolean;
 
     fsHandShake: TACBrHandShake;
+    fsSendBytesCount: Integer;
+    fsSendBytesInterval: Integer;
 
     procedure ConfiguraSerial ;
     {$IFDEF ThreadEnviaLPT}
-    procedure EnviaStrThread( AString : String ) ;
+    procedure EnviaStrThread( AString : AnsiString ) ;
     {$ENDIF}
 
     procedure SetBaud(const Value: Integer);
@@ -174,9 +176,9 @@ TACBrDevice = class( TComponent )
 
     procedure Ativar ;
     procedure Desativar ;
-    Procedure EnviaString( AString : String ) ;
+    Procedure EnviaString( const AString : AnsiString ) ;
 
-    Procedure ImprimePos(Linha, Coluna : Integer; AString: String) ;
+    Procedure ImprimePos(const Linha, Coluna : Integer; const AString: AnsiString) ;
     Procedure Eject ;
 
     Procedure SetDefaultValues ;
@@ -190,8 +192,12 @@ TACBrDevice = class( TComponent )
                          default pNone ;
      property Stop     : TACBrSerialStop read GetStop write SetStop
                          default s1 ;
-     property MaxBandwidth : Integer read GetMaxBandwidth
+     property MaxBandwidth : Integer read  GetMaxBandwidth
                                      write SetMaxBandwidth default 0 ;
+     property SendBytesCount : Integer read  fsSendBytesCount
+                                       write fsSendBytesCount  default 0 ;
+     property SendBytesInterval : Integer read  fsSendBytesInterval
+                                       write fsSendBytesInterval  default 0 ;
      property HandShake : TACBrHandShake read fsHandShake write SetHandShake
                          default hsNenhum ;
      property SoftFlow : Boolean read fsSoftFlow write SetSoftFlow
@@ -231,6 +237,9 @@ begin
   { Variaveis Internas }
   fsPorta   := '' ;
   fsTimeOut := cTimeout ;
+
+  fsSendBytesCount    := 0 ;
+  fsSendBytesInterval := 0 ;
 
   SetDefaultValues ;
 end;
@@ -438,7 +447,7 @@ end;
 
 procedure TACBrDevice.SetMaxBandwidth(const Value: Integer);
 begin
-  Serial.MaxBandwidth := Value ;
+  Serial.MaxLineLength := Value ;
 end;
 
 procedure TACBrDevice.SetHardFlow(const Value: Boolean);
@@ -669,13 +678,28 @@ begin
 end;
 
 
-procedure TACBrDevice.EnviaString(AString: String);
+procedure TACBrDevice.EnviaString( const AString: AnsiString);
+Var I, Max, NBytes : Integer ;
 {$IFNDEF ThreadEnviaLPT}
-   Var ArqPrn : TextFile ;
+   ArqPrn : TextFile ;
 {$ENDIF}
 begin
+  I   := 1 ;
+  Max := Length(AString) ;
+  NBytes := fsSendBytesCount ;
+  if NBytes = 0 then
+     NBytes := Max ;
+
   if IsSerialPort then
-     Serial.SendString( AString )     { Envia para Porta Serial }
+   begin
+     while I <= Max do
+     begin
+        Serial.SendString( copy(AString, I, NBytes ) ) ;    { Envia para Porta Serial }
+        if fsSendBytesInterval > 0 then
+           Sleep( fsSendBytesInterval ) ;
+        I := I + NBytes ;
+     end ;
+   end
   else
    begin
      {$IFNDEF ThreadEnviaLPT}
@@ -686,16 +710,20 @@ begin
            else
               Rewrite( ArqPrn ) ;
 
-           Write( ArqPrn, AString ) ;
+           while I <= Max do
+           begin
+              Write( ArqPrn, copy(AString, I, NBytes ) ) ;
+              if fsSendBytesInterval > 0 then
+                 Sleep( fsSendBytesInterval ) ;
+              I := I + NBytes ;
+           end ;
+
            Flush( ArqPrn ) ;
         finally
            {$I+}
            {$IFNDEF FPC}System.{$ENDIF}CloseFile( ArqPrn ) ;
            {$I+}
         end ;
-
-        if not IsTXTFilePort then
-           Sleep(10) ;
      {$ELSE}
         EnviaStrThread( AString );
      {$ENDIF}
@@ -710,7 +738,7 @@ end;
   é cancelada e é gerado um TIMEOUT. Isso evita o "travamento" do programa
   quando a porta ou arquivo não estão prontos para a gravaçao com o comando
   Write() }
-procedure TACBrDevice.EnviaStrThread(AString: String);
+procedure TACBrDevice.EnviaStrThread(AString: AnsiString);
 Var IsTimeOut  : Boolean ;
     TempoFinal : TDateTime ;
     UltimaLinhaImpressa : Integer ;
@@ -748,7 +776,8 @@ begin
 end;
 {$ENDIF}
 
-procedure TACBrDevice.ImprimePos(Linha, Coluna : Integer; AString: String);
+procedure TACBrDevice.ImprimePos(const Linha, Coluna : Integer;
+  const AString: AnsiString);
 Var Cmd : String ;
 begin
   if (AString = '') or

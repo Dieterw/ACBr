@@ -477,7 +477,7 @@ begin
         Cmd    := PreparaCmd( #223 + '  ') ;
         try
            fpDevice.Serial.Purge ;  { Limpa buffer de Entrada e Saida }
-           fpDevice.Serial.SendString( Cmd );   { Pede Status }
+           fpDevice.EnviaString( Cmd );   { Pede Status }
            Sleep(100) ;
         except
         end ;

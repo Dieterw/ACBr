@@ -1457,7 +1457,7 @@ begin
   Result := True ;
 
   try
-     fpDevice.Serial.SendString( cmd );   { Eviando o comando }
+     fpDevice.EnviaString( cmd );   { Eviando o comando }
   except
      if not DoOnMsgRetentar(Format(cACBrECFCmdSemRespostaException, [ ModeloStr ]),
        'TransmitirComando') then

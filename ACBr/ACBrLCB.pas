@@ -439,7 +439,7 @@ begin
      raise Exception.Create('Componente ACBrLCB não está ATIVO');
 
   fsDevice.Serial.Purge ;
-  fsDevice.Serial.SendString( AString );
+  fsDevice.EnviaString( AString );
 end;
 
 function TACBrLCB.LerString: AnsiString;

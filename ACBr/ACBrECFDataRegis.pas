@@ -644,14 +644,14 @@ begin
                  Result := False ;
                  cmd    := PreparaCmd('R') ;
                  fpDevice.Serial.Purge ;              { Limpa a porta }
-                 fpDevice.Serial.SendString( cmd );   { Eviando o comando }
+                 fpDevice.EnviaString( cmd );   { Eviando o comando }
               end ;
            end ;
         end ;
       end
      else
       begin
-        fpDevice.Serial.SendString(_ACKN); { confirmando Leitura do bloco }
+        fpDevice.EnviaString(_ACKN); { confirmando Leitura do bloco }
         Result := (RightStr( Retorno, 2) = _EOM+_END) { Mensagem terminou ? }
       end ;
   end ;
@@ -683,7 +683,7 @@ begin
   Cmd    := PreparaCmd( 'R' ) ;
   try
      fpDevice.Serial.Purge ;  { Limpa buffer de Entrada e Saida }
-     fpDevice.Serial.SendString( Cmd );   { Pede Status }
+     fpDevice.EnviaString( Cmd );   { Pede Status }
      //Sleep(10) ;
   except
   end ;

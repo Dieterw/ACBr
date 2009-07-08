@@ -227,7 +227,7 @@ begin
         repeat
            try
               fpDevice.Serial.Purge;
-              fpDevice.Serial.SendString( cmd );   { Eviando o comando }
+              fpDevice.EnviaString( cmd );   { Eviando o comando }
 
               { põe pra dormir para atualizar o buffer da porta serial... }
               Sleep(200);

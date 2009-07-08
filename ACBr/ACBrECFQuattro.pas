@@ -489,7 +489,7 @@ begin
      I      := 0 ;
      try
         fpDevice.Serial.Purge ;  { Limpa buffer de Entrada e Saida }
-        fpDevice.Serial.SendString( #27 + '.23}' );   { Pede Status }
+        fpDevice.EnviaString( #27 + '.23}' );   { Pede Status }
         Sleep(20) ;
      except
      end ;

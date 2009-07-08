@@ -1,6 +1,6 @@
 {******************************************************************************}
 { Projeto: ACBr Monitor                                                        }
-{  Executavel multiplataforma que faz uso do conjunto de componentes ACBr para }
+{  Executavel multiplataforma que faz usocdo conjunto de componentes ACBr para }
 { criar uma interface de comunicação com equipamentos de automacao comercial.  }
 {                                                                              }
 { Direitos Autorais Reservados (c) 2006 Daniel Simoes de Almeida               }

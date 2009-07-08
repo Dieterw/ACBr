@@ -155,6 +155,8 @@ TACBrDevice = class( TComponent )
     procedure SetHandShake(const Value: TACBrHandShake);
     function GetParamsString: String;
     procedure SetParamsString(const Value: String);
+    function GetMaxBandwidth: Integer;
+    procedure SetMaxBandwidth(const Value: Integer);
   public
     Serial : TBlockSerial ;
     PosImp : TPoint;
@@ -188,6 +190,8 @@ TACBrDevice = class( TComponent )
                          default pNone ;
      property Stop     : TACBrSerialStop read GetStop write SetStop
                          default s1 ;
+     property MaxBandwidth : Integer read GetMaxBandwidth
+                                     write SetMaxBandwidth default 0 ;
      property HandShake : TACBrHandShake read fsHandShake write SetHandShake
                          default hsNenhum ;
      property SoftFlow : Boolean read fsSoftFlow write SetSoftFlow
@@ -427,6 +431,16 @@ begin
   ConfiguraSerial ;
 end;
 
+function TACBrDevice.GetMaxBandwidth: Integer;
+begin
+  Result := Serial.MaxSendBandwidth ;
+end;
+
+procedure TACBrDevice.SetMaxBandwidth(const Value: Integer);
+begin
+  Serial.MaxBandwidth := Value ;
+end;
+
 procedure TACBrDevice.SetHardFlow(const Value: Boolean);
 begin
   if Value then
@@ -589,6 +603,9 @@ begin
   if fsSoftFlow then
      Result := Result + ' SOFTFLOW' ;
 
+  if MaxBandwidth > 0 then
+     Result := Result + ' MAXBANDWIDTH='+IntToStr(MaxBandwidth) ;
+     
   Result := Trim(Result) ;
 end;
 
@@ -646,6 +663,9 @@ begin
      HandShake := hsDTR_DSR
   else if S = 'RTS/CTS' then
      HandShake := hsRTS_CTS ;
+
+  S := GetValue(Linha,'MAXBANDWIDTH') ;
+  MaxBandwidth := StrToIntDef(S,MaxBandwidth) ;
 end;
 
 
@@ -774,7 +794,7 @@ end;
 constructor TACBrThreadEnviaLPT.Create(AOwner : TObject; AString: String ) ;
 begin
   if not (AOwner is TACBrDevice) then
-     raise Exception.Create('Uso Inv√°lido da TACBrThreadEnviaLPT');
+     raise Exception.Create('Uso Inv·lido da TACBrThreadEnviaLPT');
 
   inherited Create( false ) ; { Rodar Imediatemanete }
   FreeOnTerminate := true ;

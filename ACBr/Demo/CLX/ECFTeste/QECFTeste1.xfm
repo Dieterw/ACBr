@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 484
-  Top = 173
+  Left = 653
+  Top = 176
   Width = 500
   Height = 410
   VertScrollBar.Range = 59
@@ -340,6 +340,23 @@ object Form1: TForm1
         TabOrder = 22
         Text = 'Impressora est'#225' trabalhando'
         OnChange = edMsgTrabalhandoChange
+      end
+      object seBandWidth: TSpinEdit
+        Left = 307
+        Top = 264
+        Width = 54
+        Height = 23
+        Max = 1000
+        Increment = 10
+        TabOrder = 23
+        OnChanged = seBandWidthChanged
+      end
+      object Label22: TLabel
+        Left = 307
+        Top = 245
+        Width = 60
+        Height = 15
+        Caption = 'BandWidth'
       end
     end
     object TabSheet1: TTabSheet

@@ -244,6 +244,8 @@ type
     IdentificaPAF1: TMenuItem;
     PAF1: TMenuItem;
     LeituraXSerial1: TMenuItem;
+    seBandWidth: TSpinEdit;
+    Label22: TLabel;
     procedure cbxModeloChange(Sender: TObject);
     procedure Sair1Click(Sender: TObject);
     procedure bAtivarClick(Sender: TObject);
@@ -393,6 +395,7 @@ type
     procedure IdentificaPAF1Click(Sender: TObject);
     procedure PAF1Click(Sender: TObject);
     procedure LeituraXSerial1Click(Sender: TObject);
+    procedure seBandWidthChanged(Sender: TObject; NewValue: Integer);
   private
     { Private declarations }
     Function Converte( cmd : String) : String;
@@ -2143,6 +2146,7 @@ begin
      INI.WriteString('ECF','ArqLog',edLog.Text);
      INI.WriteString('ECF','SerialParams',ACBrECF1.Device.ParamsString);
      INI.WriteString('ECF','Operador',ACBrECF1.Operador);
+     INI.WriteInteger('ECF','BandWidth',seBandWidth.Value);
 
      INI.WriteBool('RFD','GerarRFD',chRFD.Checked);
      INI.WriteString('RFD','DirRFD',edDirRFD.Text);
@@ -2184,6 +2188,7 @@ begin
      edLog.Text := INI.ReadString('ECF','ArqLog',edLog.Text);
      ACBrECF1.Device.ParamsString := INI.ReadString('ECF','SerialParams','');
      edOperador.Text := INI.ReadString('ECF','Operador','');
+     seBandWidth.Value := INI.ReadInteger('ECF','BandWidth',seBandWidth.Value);
 
      chRFD.Checked := INI.ReadBool('RFD','GerarRFD',chRFD.Checked);
      edDirRFD.Text := INI.ReadString('RFD','DirRFD',edDirRFD.Text);
@@ -2606,6 +2611,11 @@ begin
      Linhas.Free ;
   end ;
   mResp.Lines.Add('---------------------------------');
+end;
+
+procedure TForm1.seBandWidthChanged(Sender: TObject; NewValue: Integer);
+begin
+  ACBrECF1.Device.MaxBandwidth := seBandWidth.Value ;
 end;
 
 END.

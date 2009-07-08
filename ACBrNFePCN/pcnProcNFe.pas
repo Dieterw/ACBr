@@ -140,6 +140,8 @@ begin
       else
       begin
         XMLinfProt.LoadFromFile(FPathRetConsReciNFe);
+        XMLinfProt.text := StringReplace( XMLinfProt.text, #10, '', [rfReplaceAll] ) ;
+        XMLinfProt.text := StringReplace( XMLinfProt.text, #13, '', [rfReplaceAll] ) ;
         if RetornarConteudoEntre(XMLinfProt.text, '<chNFe>', '</chNFe>') = FchNFe then
           FnProt := RetornarConteudoEntre(XMLinfProt.text, '</dhRecbto><nProt>', '</nProt>');
         if trim(FnProt) = '' then

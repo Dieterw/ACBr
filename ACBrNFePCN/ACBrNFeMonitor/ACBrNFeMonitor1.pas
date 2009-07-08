@@ -128,6 +128,7 @@ type
     edtSoftwareHouse: TEdit;
     rgFormaEmissao: TRadioGroup;
     cbxImpDescPorc: TCheckBox;
+    cbxMostrarPreview: TCheckBox;
     procedure DoACBrTimer(Sender: TObject);
     procedure edOnlyNumbers(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
@@ -467,11 +468,12 @@ begin
 
      rgTipoDanfe.ItemIndex     := Ini.ReadInteger( 'Geral','DANFE'       ,0) ;
      edtLogoMarca.Text         := Ini.ReadString( 'Geral','LogoMarca'   ,'') ;
-     edtSoftwareHouse.Text   := Ini.ReadString( 'DANFE','SoftwareHouse'   ,'') ;
-     edtSiteEmpresa.Text     := Ini.ReadString( 'DANFE','Site' ,'') ;
-     edtEmailEmpresa.Text    := Ini.ReadString( 'DANFE','Email','') ;
-     edtFaxEmpresa.Text      := Ini.ReadString( 'DANFE','Fax'  ,'') ;
-     cbxImpDescPorc.Checked  := Ini.ReadBool(   'DANFE','ImpDescPorc',False) ;
+     edtSoftwareHouse.Text     := Ini.ReadString( 'DANFE','SoftwareHouse'   ,'') ;
+     edtSiteEmpresa.Text       := Ini.ReadString( 'DANFE','Site' ,'') ;
+     edtEmailEmpresa.Text      := Ini.ReadString( 'DANFE','Email','') ;
+     edtFaxEmpresa.Text        := Ini.ReadString( 'DANFE','Fax'  ,'') ;
+     cbxImpDescPorc.Checked    := Ini.ReadBool(   'DANFE','ImpDescPorc',False) ;
+     cbxMostrarPreview.Checked := Ini.ReadBool(   'DANFE','MostrarPreview',False) ;
 
      if ACBrNFe1.DANFE <> nil then
       begin
@@ -483,6 +485,7 @@ begin
         ACBrNFeDANFERave1.Email   := edtEmailEmpresa.Text;
         ACBrNFeDANFERave1.Fax     := edtFaxEmpresa.Text;
         ACBrNFeDANFERave1.ImprimirDescPorc := cbxImpDescPorc.Checked;
+        ACBrNFeDANFERave1.MostrarPreview   := cbxMostrarPreview.Checked;
       end;
 
      edtSmtpHost.Text      := Ini.ReadString( 'Email','Host'   ,'') ;
@@ -565,6 +568,7 @@ begin
      Ini.WriteString( 'DANFE','Email',edtEmailEmpresa.Text) ;
      Ini.WriteString( 'DANFE','Fax'  ,edtFaxEmpresa.Text) ;
      Ini.WriteBool(   'DANFE','ImpDescPorc',cbxImpDescPorc.Checked);
+     Ini.WriteBool(   'DANFE','MostrarPreview',cbxMostrarPreview.Checked);
   finally
      Ini.Free ;
   end ;

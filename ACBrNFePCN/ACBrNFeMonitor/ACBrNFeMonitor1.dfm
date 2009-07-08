@@ -4838,6 +4838,14 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           Caption = 'Imprimir Desconto em Porcentagem'
           TabOrder = 4
         end
+        object cbxMostrarPreview: TCheckBox
+          Left = 8
+          Top = 160
+          Width = 241
+          Height = 17
+          Caption = 'Mostrar Preview antes da impress'#227'o'
+          TabOrder = 5
+        end
       end
     end
   end
@@ -4893,7 +4901,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
   object ACBrNFeDANFERave1: TACBrNFeDANFERave
     ACBrNFe = ACBrNFe1
     ImprimirHoraSaida = False
-    MostrarPreview = True
+    MostrarPreview = False
     TipoDANFE = tiRetrato
     NumCopias = 1
     ImprimirDescPorc = True

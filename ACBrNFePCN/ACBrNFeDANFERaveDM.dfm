@@ -1,7 +1,7 @@
 object dmACBrNFeRave: TdmACBrNFeRave
   OldCreateOrder = False
-  Left = 396
-  Top = 136
+  Left = 193
+  Top = 131
   Height = 444
   Width = 743
   object CustomDestinatarioCXN: TRvCustomConnection
@@ -129,8 +129,8 @@ object dmACBrNFeRave: TdmACBrNFeRave
     OnGetCols = CustomISSQNCXNGetCols
     OnGetRow = CustomISSQNCXNGetRow
     OnOpen = CustomISSQNCXNOpen
-    Left = 520
-    Top = 80
+    Left = 517
+    Top = 79
   end
   object RvRenderPDF1: TRvRenderPDF
     DisplayName = 'Adobe Acrobat (PDF)'
@@ -143,5 +143,13 @@ object dmACBrNFeRave: TdmACBrNFeRave
     DocInfo.Producer = 'Nevrona Designs'
     Left = 40
     Top = 136
+  end
+  object CustomFaturaCXN: TRvCustomConnection
+    RuntimeVisibility = rtDeveloper
+    OnGetCols = CustomFaturaCXNGetCols
+    OnGetRow = CustomFaturaCXNGetRow
+    OnOpen = CustomFaturaCXNOpen
+    Left = 518
+    Top = 128
   end
 end

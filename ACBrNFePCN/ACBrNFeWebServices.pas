@@ -165,9 +165,9 @@ type
     property cStat: Integer read FcStat;
     property cUF: Integer read FcUF;
     property xMotivo: String read FxMotivo;
-    property Recibo: String read FRecibo write FRecibo; //linha movida de PUBLISHED
-    property Protocolo: String read FProtocolo write FProtocolo; //linha adicionada
-    property ChaveNFe: String read FChaveNFe write FChaveNFe; //linha adicionada
+    property Recibo: String read FRecibo write FRecibo;
+    property Protocolo: String read FProtocolo write FProtocolo;
+    property ChaveNFe: String read FChaveNFe write FChaveNFe; 
   published
     property NFeRetorno: TRetConsReciNFe read FNFeRetorno write FNFeRetorno;
   end;

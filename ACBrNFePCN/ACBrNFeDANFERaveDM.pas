@@ -75,6 +75,7 @@ type
     CustomVeiculoCXN: TRvCustomConnection;
     CustomVolumesCXN: TRvCustomConnection;
     CustomInformacoesAdicionaisCXN: TRvCustomConnection;
+    CustomFaturaCXN: TRvCustomConnection;
     
     constructor create( AOwner : TComponent ); override ;
     procedure CustomDestinatarioCXNGetCols(Connection: TRvCustomConnection);
@@ -116,6 +117,9 @@ type
     procedure CustomISSQNCXNGetCols(Connection: TRvCustomConnection);
     procedure CustomISSQNCXNGetRow(Connection: TRvCustomConnection);
     procedure CustomISSQNCXNOpen(Connection: TRvCustomConnection);
+    procedure CustomFaturaCXNGetCols(Connection: TRvCustomConnection);
+    procedure CustomFaturaCXNGetRow(Connection: TRvCustomConnection);
+    procedure CustomFaturaCXNOpen(Connection: TRvCustomConnection);
   private
     FDANFEClassOwner : TACBrNFeDANFEClass ;
     FNFe : TNFe;
@@ -251,6 +255,41 @@ procedure TdmACBrNFeRave.CustomEmitenteCXNOpen(
   Connection: TRvCustomConnection);
 begin
   Connection.DataRows := 1;
+end;
+
+procedure TdmACBrNFeRave.CustomFaturaCXNGetCols(
+  Connection: TRvCustomConnection);
+begin
+  Connection.WriteField('Pagamento', dtString, 20, '', '');
+  Connection.WriteField('nFat', dtString, 60, '', '');
+  Connection.WriteField('vOrig', dtFloat, 10, '', '');
+  Connection.WriteField('vDesc', dtFloat, 15, '', '');
+  Connection.WriteField('vLiq', dtFloat, 15, '', '');
+end;
+
+procedure TdmACBrNFeRave.CustomFaturaCXNGetRow(Connection: TRvCustomConnection);
+begin
+  if FNFe.Ide.indPag=ipVista then
+     Connection.WriteStrData('', 'PAGAMENTO À VISTA')
+  else
+     Connection.WriteStrData('', '');
+
+  with FNFe.Cobr.Fat do
+  begin
+    Connection.WriteStrData('', nFat);
+    Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(vOrig),0));
+    Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(vDesc),0));
+    Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(vLiq),0));
+  end;
+end;
+
+procedure TdmACBrNFeRave.CustomFaturaCXNOpen(Connection: TRvCustomConnection);
+begin
+  if ((FNFe.Ide.indPag=ipVista) or
+      (length(FNFe.Cobr.Fat.nFat)>0)) then
+     Connection.DataRows := 1
+  else
+     Connection.DataRows := 0;
 end;
 
 procedure TdmACBrNFeRave.CustomEmitenteCXNGetRow(

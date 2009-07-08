@@ -186,8 +186,11 @@ begin
 
         else if Cmd.Metodo = 'imprimirdanfe' then
          begin
-           Restaurar1.Click;
-           Application.BringToFront;
+           if ACBrNFeDANFERave1.MostrarPreview then
+            begin
+              Restaurar1.Click;
+              Application.BringToFront;
+            end;
            ACBrNFe1.NotasFiscais.Clear;
            if FileExists(Cmd.Params(0)) or FileExists(PathWithDelim(ExtractFilePath(Application.ExeName))+'Logs\'+Cmd.Params(0)) then
             begin
@@ -199,10 +202,11 @@ begin
            else
               raise Exception.Create('Arquivo '+Cmd.Params(0)+' não encontrado.');
 
-           RPDev.DeviceIndex := cbxImpressora.ItemIndex;    
+           RPDev.DeviceIndex := cbxImpressora.ItemIndex;
            ACBrNFe1.NotasFiscais.Imprimir;
            Cmd.Resposta := 'Danfe Impresso com sucesso';
-           Ocultar1.Click;
+           if ACBrNFeDANFERave1.MostrarPreview then
+              Ocultar1.Click;
          end
 
         else if Cmd.Metodo = 'imprimirdanfepdf' then
@@ -445,15 +449,15 @@ begin
                                 'NProt='+NFeRetConsSitNFe.NProt+sLineBreak+
                                 'DigVal='+NFeRetConsSitNFe.DigVal+sLineBreak;
 
-                 if (Cmd.Params(2) = '1') then
+                 if (Cmd.Params(2) = '1') and ACBrNFeDANFERave1.MostrarPreview then
                   begin
                     Restaurar1.Click;
                     Application.BringToFront;
                   end;
-                 RPDev.DeviceIndex := cbxImpressora.ItemIndex;                   
+                 RPDev.DeviceIndex := cbxImpressora.ItemIndex;
                  if ACBrNFe1.NotasFiscais.Items[i].Confirmada and (Cmd.Params(2) = '1') then
                     ACBrNFe1.NotasFiscais.Items[i].Imprimir;
-                 if (Cmd.Params(2) = '1') then
+                 if (Cmd.Params(2) = '1') and ACBrNFeDANFERave1.MostrarPreview then
                     Ocultar1.Click;
             end;
 

@@ -479,7 +479,7 @@ begin
       begin
         ACBrNFe1.DANFE.TipoDANFE  := StrToTpImp(OK,IntToStr(rgTipoDanfe.ItemIndex+1));
         ACBrNFe1.DANFE.Logo       := edtLogoMarca.Text;
-        ACBrNFeDANFERave1.RavFile := PathWithDelim(ExtractFilePath(Application.ExeName))+'Report\NotaFiscalEletronica.rav';
+        ACBrNFeDANFERave1.RavFile := PathWithDelim(ExtractFilePath(Application.ExeName))+'Report\DANFE_Rave513.rav';
         ACBrNFeDANFERave1.Sistema := edtSoftwareHouse.Text;
         ACBrNFeDANFERave1.Site    := edtSiteEmpresa.Text;
         ACBrNFeDANFERave1.Email   := edtEmailEmpresa.Text;

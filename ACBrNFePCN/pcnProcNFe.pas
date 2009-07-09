@@ -140,10 +140,8 @@ begin
       else
       begin
         XMLinfProt.LoadFromFile(FPathRetConsReciNFe);
-        XMLinfProt.text := StringReplace( XMLinfProt.text, #10, '', [rfReplaceAll] ) ;
-        XMLinfProt.text := StringReplace( XMLinfProt.text, #13, '', [rfReplaceAll] ) ;
         if RetornarConteudoEntre(XMLinfProt.text, '<chNFe>', '</chNFe>') = FchNFe then
-          FnProt := RetornarConteudoEntre(XMLinfProt.text, '</dhRecbto><nProt>', '</nProt>');
+          FnProt := RetornarConteudoEntre(XMLinfProt.text, '<nProt>', '</nProt>');
         if trim(FnProt) = '' then
           Gerador.wAlerta('XR01', 'PROTOCOLO/NFe', 'Numero do protocolo', ERR_MSG_VAZIO)
         else

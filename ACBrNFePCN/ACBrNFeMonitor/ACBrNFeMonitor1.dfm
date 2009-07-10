@@ -4112,7 +4112,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       Top = 0
       Width = 533
       Height = 231
-      ActivePage = DANFE
+      ActivePage = Testes
       Align = alBottom
       TabOrder = 0
       object Monitor: TTabSheet
@@ -4936,7 +4936,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
             Align = alClient
             TabOrder = 0
             ControlData = {
-              4C000000D4250000041300000000000000000000000000000000000000000000
+              4C0000003E260000041300000000000000000000000000000000000000000000
               000000004C000000000000000000000001000000E0D057007335CF11AE690800
               2B2E126208000000000000004C0000000114020000000000C000000000000046
               8000000000000000000000000000000000000000000000000000000000000000

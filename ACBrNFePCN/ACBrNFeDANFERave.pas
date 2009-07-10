@@ -55,7 +55,7 @@ unit ACBrNFeDANFERave;
 interface
 
 uses Forms, SysUtils, Classes,
-  RpDefine, RVClass, RVProj, RVCsBars, RVCsStd, RVCsData,
+  RpDefine, RpDevice, RVClass, RVProj, RVCsBars, RVCsStd, RVCsData,
   ACBrNFeDANFEClass, ACBrNFeDANFERaveDM, pcnNFe, pcnConversao;
 
 type
@@ -193,7 +193,8 @@ begin
   dmDanfe.RvSystem1.SystemPrinter.UnitsFactor:=25.4;
 
   if Length(Impressora) > 0 then
-     dmDanfe.RvSystem1.BaseReport.SelectPrinter(Impressora);
+     RpDev.SelectPrinter(Impressora, false);
+//     dmDanfe.RvSystem1.BaseReport.SelectPrinter(Impressora);
   if NFE = nil then
    begin
      for i:= 0 to TACBrNFe(ACBrNFe).NotasFiscais.Count-1 do

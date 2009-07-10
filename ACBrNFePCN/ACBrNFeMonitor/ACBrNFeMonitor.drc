@@ -8,369 +8,374 @@
   resources were bound to the produced executable.
 */
 
-#define SOAPConst_SInvalidContentLength 65008
-#define SOAPConst_SMimeReadError 65009
-#define SOAPConst_STempFileAccessError 65010
-#define SOAPConst_SCantLoadLocation 65011
-#define xdom_SOddSizeInvalid 65012
-#define xdom_SNegativeSizeInvalid 65013
-#define xdom_SCapacityLessSize 65014
-#define xdom_STargetNil 65015
-#define JConsts_sChangeJPGSize 65016
-#define JConsts_sJPEGError 65017
-#define JConsts_sJPEGImageFile 65018
-#define SOAPConst_SInvalidMillisecond 65024
-#define SOAPConst_SInvalidHourOffset 65025
-#define SOAPConst_SInvalidDay 65026
-#define SOAPConst_SInvalidMonth 65027
-#define SOAPConst_SInvalidDuration 65028
-#define SOAPConst_SInvalidTimeOffset 65029
-#define SOAPConst_SInvalidHexValue 65030
-#define SOAPConst_SInvalidHTTPRequest 65031
-#define SOAPConst_SEmptyURL 65032
-#define SOAPConst_SInvalidURL 65033
-#define SOAPConst_SMethNoRTTI 65034
-#define SOAPConst_SUnsupportedVariant 65035
-#define SOAPConst_SNoVarDispatch 65036
-#define SOAPConst_SNoErrorDispatch 65037
-#define SOAPConst_SEmptyStream 65038
-#define SOAPConst_SMethodNotSupported 65039
-#define SOAPConst_STooManyParameters 65040
-#define SOAPConst_SNoArrayElemRTTI 65041
-#define SOAPConst_SInvalidResponse 65042
-#define SOAPConst_SVariantCastNotSupported 65043
-#define SOAPConst_SHeaderError 65044
-#define SOAPConst_SMissingSoapReturn 65045
-#define SOAPConst_SNoMessageConverter 65046
-#define SOAPConst_SNoMsgProcessingNode 65047
-#define SOAPConst_SHeaderAttributeError 65048
-#define SOAPConst_SNoRTTI 65049
-#define SOAPConst_SNoRTTIParam 65050
-#define SOAPConst_SInvalidDateString 65051
-#define SOAPConst_SInvalidTimeString 65052
-#define SOAPConst_SInvalidHour 65053
-#define SOAPConst_SInvalidMinute 65054
-#define SOAPConst_SInvalidSecond 65055
-#define SOAPConst_STypeMismatchInParam 65056
-#define SOAPConst_SNoSuchMethod 65057
-#define SOAPConst_SInterfaceNotReg 65058
-#define SOAPConst_SInterfaceNoRTTI 65059
-#define SOAPConst_SNoWSDL 65060
-#define SOAPConst_SWSDLError 65061
-#define SOAPConst_SEmptyWSDL 65062
-#define SOAPConst_sNoWSDLURL 65063
-#define SOAPConst_sCantGetURL 65064
-#define SOAPConst_SDataTypeNotSupported 65065
-#define SOAPConst_SNoSerializeGraphs 65066
-#define SOAPConst_SUnsuportedClassType 65067
-#define SOAPConst_SUnexpectedDataType 65068
-#define SOAPConst_SInvalidContentType 65069
-#define SOAPConst_SArrayTooManyElem 65070
-#define SOAPConst_SWrongDocElem 65071
-#define XMLConst_SInvalidGroupDecl 65072
-#define XMLConst_SMissingName 65073
-#define XMLConst_SInvalidDerivation 65074
-#define XMLConst_SNoNameOnRef 65075
-#define XMLConst_SNoGlobalRef 65076
-#define XMLConst_SNoRefPropSet 65077
-#define XMLConst_SSetGroupRefProp 65078
-#define XMLConst_SNoContentModel 65079
-#define XMLConst_SNoFacetsAllowed 65080
-#define XMLConst_SNotBuiltInType 65081
-#define SOAPConst_SUnsupportedEncodingSyle 65082
-#define SOAPConst_SInvalidSoapRequest 65083
-#define SOAPConst_SInvalidSoapResponse 65084
-#define SOAPConst_SMultiBodyNotSupported 65085
-#define SOAPConst_SUnsupportedCCIntfMeth 65086
-#define SOAPConst_SRemTypeNotRegistered 65087
-#define XMLConst_SNotActive 65088
-#define XMLConst_SNodeNotFound 65089
-#define XMLConst_SMissingNode 65090
-#define XMLConst_SNoAttributes 65091
-#define XMLConst_SInvalidNodeType 65092
-#define XMLConst_SMismatchedRegItems 65093
-#define XMLConst_SNotSingleTextNode 65094
-#define XMLConst_SNoDOMParseOptions 65095
-#define XMLConst_SMissingItemTag 65096
-#define XMLConst_SNodeReadOnly 65097
-#define XMLConst_SNoRefresh 65098
-#define XMLConst_SMissingFileName 65099
-#define XMLConst_SLine 65100
-#define XMLConst_SInvalidSchema 65101
-#define XMLConst_SNoLocalTypeName 65102
-#define XMLConst_SUnknownDataType 65103
-#define XMLConst_SWRONG_DOCUMENT_ERR 65104
-#define XMLConst_SINVALID_CHARACTER_ERR 65105
-#define XMLConst_SNO_DATA_ALLOWED_ERR 65106
-#define XMLConst_SNO_MODIFICATION_ALLOWED_ERR 65107
-#define XMLConst_SNOT_FOUND_ERR 65108
-#define XMLConst_SNOT_SUPPORTED_ERR 65109
-#define XMLConst_SINUSE_ATTRIBUTE_ERR 65110
-#define XMLConst_SINVALID_STATE_ERR 65111
-#define XMLConst_SSYNTAX_ERR 65112
-#define XMLConst_SINVALID_MODIFICATION_ERR 65113
-#define XMLConst_SNAMESPACE_ERR 65114
-#define XMLConst_SINVALID_ACCESS_ERR 65115
-#define XMLConst_SBadTransformArgs 65116
-#define XMLConst_SErrorWritingFile 65117
-#define XMLConst_SUnhandledXercesErr 65118
-#define XMLConst_SDOMError 65119
-#define IdResourceStrings_RSSocksServerTTLExpiredError 65120
-#define IdResourceStrings_RSSocksServerCommandError 65121
-#define IdResourceStrings_RSSocksServerAddressError 65122
-#define IdResourceStrings_RSThreadTerminateAndWaitFor 65123
-#define OleConst_sNoRunningObject 65124
-#define XMLConst_SDuplicateRegistration 65125
-#define XMLConst_SNoMatchingDOMVendor 65126
-#define XMLConst_SNoDOMNodeEx 65127
-#define XMLConst_SDOMNotSupported 65128
-#define XMLConst_SNodeExpected 65129
-#define XMLConst_SMSDOMNotInstalled 65130
-#define XMLConst_SErrorDownloadingURL 65131
-#define XMLConst_SUrlMonDllMissing 65132
-#define XMLConst_SINDEX_SIZE_ERR 65133
-#define XMLConst_SDOMSTRING_SIZE_ERR 65134
-#define XMLConst_SHIERARCHY_REQUEST_ERR 65135
-#define IdResourceStrings_RSStackEHOSTDOWN 65136
-#define IdResourceStrings_RSStackEHOSTUNREACH 65137
-#define IdResourceStrings_RSStackENOTEMPTY 65138
-#define IdResourceStrings_RSStackHOST_NOT_FOUND 65139
-#define IdResourceStrings_RSSocksRequestFailed 65140
-#define IdResourceStrings_RSSocksRequestServerFailed 65141
-#define IdResourceStrings_RSSocksRequestIdentFailed 65142
-#define IdResourceStrings_RSSocksUnknownError 65143
-#define IdResourceStrings_RSSocksServerRespondError 65144
-#define IdResourceStrings_RSSocksAuthMethodError 65145
-#define IdResourceStrings_RSSocksAuthError 65146
-#define IdResourceStrings_RSSocksServerGeneralError 65147
-#define IdResourceStrings_RSSocksServerPermissionError 65148
-#define IdResourceStrings_RSSocksServerNetUnreachableError 65149
-#define IdResourceStrings_RSSocksServerHostUnreachableError 65150
-#define IdResourceStrings_RSSocksServerConnectionRefusedError 65151
-#define IdResourceStrings_RSStackEADDRINUSE 65152
-#define IdResourceStrings_RSStackEADDRNOTAVAIL 65153
-#define IdResourceStrings_RSStackENETDOWN 65154
-#define IdResourceStrings_RSStackENETUNREACH 65155
-#define IdResourceStrings_RSStackENETRESET 65156
-#define IdResourceStrings_RSStackECONNABORTED 65157
-#define IdResourceStrings_RSStackECONNRESET 65158
-#define IdResourceStrings_RSStackENOBUFS 65159
-#define IdResourceStrings_RSStackEISCONN 65160
-#define IdResourceStrings_RSStackENOTCONN 65161
-#define IdResourceStrings_RSStackESHUTDOWN 65162
-#define IdResourceStrings_RSStackETOOMANYREFS 65163
-#define IdResourceStrings_RSStackETIMEDOUT 65164
-#define IdResourceStrings_RSStackECONNREFUSED 65165
-#define IdResourceStrings_RSStackELOOP 65166
-#define IdResourceStrings_RSStackENAMETOOLONG 65167
-#define IdResourceStrings_RSStackEFAULT 65168
-#define IdResourceStrings_RSStackEINVAL 65169
-#define IdResourceStrings_RSStackEMFILE 65170
-#define IdResourceStrings_RSStackEWOULDBLOCK 65171
-#define IdResourceStrings_RSStackEINPROGRESS 65172
-#define IdResourceStrings_RSStackEALREADY 65173
-#define IdResourceStrings_RSStackENOTSOCK 65174
-#define IdResourceStrings_RSStackEDESTADDRREQ 65175
-#define IdResourceStrings_RSStackEMSGSIZE 65176
-#define IdResourceStrings_RSStackEPROTOTYPE 65177
-#define IdResourceStrings_RSStackENOPROTOOPT 65178
-#define IdResourceStrings_RSStackEPROTONOSUPPORT 65179
-#define IdResourceStrings_RSStackESOCKTNOSUPPORT 65180
-#define IdResourceStrings_RSStackEOPNOTSUPP 65181
-#define IdResourceStrings_RSStackEPFNOSUPPORT 65182
-#define IdResourceStrings_RSStackEAFNOSUPPORT 65183
-#define IdResourceStrings_RSReadLnMaxLineLengthExceeded 65184
-#define IdResourceStrings_RSNoCommandHandlerFound 65185
-#define IdResourceStrings_RSWS2CallError 65186
-#define IdResourceStrings_RSWS2LoadError 65187
-#define IdResourceStrings_RSStatusResolving 65188
-#define IdResourceStrings_RSStatusConnecting 65189
-#define IdResourceStrings_RSStatusConnected 65190
-#define IdResourceStrings_RSStatusDisconnecting 65191
-#define IdResourceStrings_RSStatusDisconnected 65192
-#define IdResourceStrings_RSStatusText 65193
-#define IdResourceStrings_RSConnectTimeout 65194
-#define IdResourceStrings_RSInvalidServiceName 65195
-#define IdResourceStrings_RSStackError 65196
-#define IdResourceStrings_RSStackEINTR 65197
-#define IdResourceStrings_RSStackEBADF 65198
-#define IdResourceStrings_RSStackEACCES 65199
-#define IdResourceStrings_RSConnectionClosedGracefully 65200
-#define IdResourceStrings_RSCouldNotBindSocket 65201
-#define IdResourceStrings_RSNotEnoughDataInBuffer 65202
-#define IdResourceStrings_RSWinsockInitializationError 65203
-#define IdResourceStrings_RSSetSizeExceeded 65204
-#define IdResourceStrings_RSThreadClassNotSpecified 65205
-#define IdResourceStrings_RSFileNotFound 65206
-#define IdResourceStrings_RSOnlyOneAntiFreeze 65207
-#define IdResourceStrings_RSNotConnected 65208
-#define IdResourceStrings_RSObjectTypeNotSupported 65209
-#define IdResourceStrings_RSTerminateThreadTimeout 65210
-#define IdResourceStrings_RSNoExecuteSpecified 65211
-#define IdResourceStrings_RSIdNoDataToRead 65212
-#define IdResourceStrings_RSCanNotBindRange 65213
-#define IdResourceStrings_RSInvalidPortRange 65214
-#define IdResourceStrings_RSReadTimeout 65215
-#define ComStrs_sTabFailGetObject 65216
-#define ComStrs_sTabFailSet 65217
-#define ComStrs_sTabFailSetObject 65218
-#define ComStrs_sTabMustBeMultiLine 65219
-#define ComStrs_sPageIndexError 65220
-#define WinHelpViewer_hNoKeyword 65221
-#define DBConsts_SBcdOverflow 65222
-#define DBConsts_SInvalidBcdValue 65223
-#define DBConsts_SCouldNotParseTimeStamp 65224
-#define DBConsts_SInvalidSqlTimeStamp 65225
-#define ComConst_SOleError 65226
-#define ComConst_SNoMethod 65227
-#define ComConst_SVarNotObject 65228
-#define ComConst_STooManyParams 65229
-#define ComConst_SDCOMNotInstalled 65230
-#define IdResourceStrings_RSCannotAllocateSocket 65231
-#define ExtCtrls_clNameInactiveCaption 65232
-#define ExtCtrls_clNameInactiveCaptionText 65233
-#define ExtCtrls_clNameInfoBk 65234
-#define ExtCtrls_clNameInfoText 65235
-#define ExtCtrls_clNameMenu 65236
-#define ExtCtrls_clNameMenuText 65237
-#define ExtCtrls_clNameNone 65238
-#define ExtCtrls_clNameScrollBar 65239
-#define ExtCtrls_clName3DDkShadow 65240
-#define ExtCtrls_clName3DLight 65241
-#define ExtCtrls_clNameWindow 65242
-#define ExtCtrls_clNameWindowFrame 65243
-#define ExtCtrls_clNameWindowText 65244
-#define ComStrs_sTabFailClear 65245
-#define ComStrs_sTabFailDelete 65246
-#define ComStrs_sTabFailRetrieve 65247
-#define ExtCtrls_clNameCream 65248
-#define ExtCtrls_clNameMedGray 65249
-#define ExtCtrls_clNameActiveBorder 65250
-#define ExtCtrls_clNameActiveCaption 65251
-#define ExtCtrls_clNameAppWorkSpace 65252
-#define ExtCtrls_clNameBackground 65253
-#define ExtCtrls_clNameBtnFace 65254
-#define ExtCtrls_clNameBtnHighlight 65255
-#define ExtCtrls_clNameBtnShadow 65256
-#define ExtCtrls_clNameBtnText 65257
-#define ExtCtrls_clNameCaptionText 65258
-#define ExtCtrls_clNameDefault 65259
-#define ExtCtrls_clNameGrayText 65260
-#define ExtCtrls_clNameHighlight 65261
-#define ExtCtrls_clNameHighlightText 65262
-#define ExtCtrls_clNameInactiveBorder 65263
-#define ExtCtrls_clNameGreen 65264
-#define ExtCtrls_clNameOlive 65265
-#define ExtCtrls_clNameNavy 65266
-#define ExtCtrls_clNamePurple 65267
-#define ExtCtrls_clNameTeal 65268
-#define ExtCtrls_clNameGray 65269
-#define ExtCtrls_clNameSilver 65270
-#define ExtCtrls_clNameRed 65271
-#define ExtCtrls_clNameLime 65272
-#define ExtCtrls_clNameYellow 65273
-#define ExtCtrls_clNameBlue 65274
-#define ExtCtrls_clNameFuchsia 65275
-#define ExtCtrls_clNameAqua 65276
-#define ExtCtrls_clNameWhite 65277
-#define ExtCtrls_clNameMoneyGreen 65278
-#define ExtCtrls_clNameSkyBlue 65279
-#define Consts_SInvalidMemoSize 65280
-#define Consts_SNoDefaultPrinter 65281
-#define Consts_SDuplicateMenus 65282
-#define Consts_SDockedCtlNeedsName 65283
-#define Consts_SDockTreeRemoveError 65284
-#define Consts_SDockZoneNotFound 65285
-#define Consts_SDockZoneHasNoCtl 65286
-#define Consts_SSeparator 65287
-#define Consts_SErrorSettingCount 65288
-#define Consts_SListBoxMustBeVirtual 65289
-#define HelpIntfs_hNoTableOfContents 65290
-#define HelpIntfs_hNothingFound 65291
-#define HelpIntfs_hNoContext 65292
-#define HelpIntfs_hNoTopics 65293
-#define ExtCtrls_clNameBlack 65294
-#define ExtCtrls_clNameMaroon 65295
-#define Consts_SmkcDown 65296
-#define Consts_SmkcIns 65297
-#define Consts_SmkcDel 65298
-#define Consts_SmkcShift 65299
-#define Consts_SmkcCtrl 65300
-#define Consts_SmkcAlt 65301
-#define Consts_SInsertLineError 65302
-#define Consts_SConfirmCreateDir 65303
-#define Consts_SSelectDirCap 65304
-#define Consts_SDirNameCap 65305
-#define Consts_SDrivesCap 65306
-#define Consts_SDirsCap 65307
-#define Consts_SFilesCap 65308
-#define Consts_SNetworkCap 65309
-#define Consts_SIconToClipboard 65310
-#define Consts_SCannotOpenClipboard 65311
-#define Consts_SMsgDlgIgnore 65312
-#define Consts_SMsgDlgAll 65313
-#define Consts_SMsgDlgNoToAll 65314
-#define Consts_SMsgDlgYesToAll 65315
-#define Consts_SmkcBkSp 65316
-#define Consts_SmkcTab 65317
-#define Consts_SmkcEsc 65318
-#define Consts_SmkcEnter 65319
-#define Consts_SmkcSpace 65320
-#define Consts_SmkcPgUp 65321
-#define Consts_SmkcPgDn 65322
-#define Consts_SmkcEnd 65323
-#define Consts_SmkcHome 65324
-#define Consts_SmkcLeft 65325
-#define Consts_SmkcUp 65326
-#define Consts_SmkcRight 65327
-#define Consts_SCannotDragForm 65328
-#define Consts_SVMetafiles 65329
-#define Consts_SVEnhMetafiles 65330
-#define Consts_SVIcons 65331
-#define Consts_SVBitmaps 65332
-#define Consts_SMsgDlgWarning 65333
-#define Consts_SMsgDlgError 65334
-#define Consts_SMsgDlgInformation 65335
-#define Consts_SMsgDlgConfirm 65336
-#define Consts_SMsgDlgYes 65337
-#define Consts_SMsgDlgNo 65338
-#define Consts_SMsgDlgOK 65339
-#define Consts_SMsgDlgCancel 65340
-#define Consts_SMsgDlgHelp 65341
-#define Consts_SMsgDlgAbort 65342
-#define Consts_SMsgDlgRetry 65343
-#define Consts_SInvalidPrinter 65344
-#define Consts_SDeviceOnPort 65345
-#define Consts_SGroupIndexTooLow 65346
-#define Consts_SNoMDIForm 65347
-#define Consts_SImageCanvasNeedsBitmap 65348
-#define Consts_SControlParentSetToSelf 65349
-#define Consts_SOKButton 65350
-#define Consts_SCancelButton 65351
-#define Consts_SYesButton 65352
-#define Consts_SNoButton 65353
-#define Consts_SHelpButton 65354
-#define Consts_SCloseButton 65355
-#define Consts_SIgnoreButton 65356
-#define Consts_SRetryButton 65357
-#define Consts_SAbortButton 65358
-#define Consts_SAllButton 65359
-#define Consts_SImageWriteFail 65360
-#define Consts_SWindowDCError 65361
-#define Consts_SWindowClass 65362
-#define Consts_SCannotFocus 65363
-#define Consts_SParentRequired 65364
-#define Consts_SParentGivenNotAParent 65365
-#define Consts_SMDIChildNotVisible 65366
-#define Consts_SVisibleChanged 65367
-#define Consts_SCannotShowModal 65368
-#define Consts_SPropertyOutOfRange 65369
-#define Consts_SMenuIndexError 65370
-#define Consts_SMenuReinserted 65371
-#define Consts_SMenuNotFound 65372
-#define Consts_SNoTimers 65373
-#define Consts_SNotPrinting 65374
-#define Consts_SPrinting 65375
+#define SOAPConst_SUnsupportedVariant 65008
+#define SOAPConst_SNoVarDispatch 65009
+#define SOAPConst_SNoErrorDispatch 65010
+#define SOAPConst_SEmptyStream 65011
+#define SOAPConst_SMethodNotSupported 65012
+#define SOAPConst_SInvalidContentLength 65013
+#define SOAPConst_SMimeReadError 65014
+#define SOAPConst_STempFileAccessError 65015
+#define SOAPConst_SCantLoadLocation 65016
+#define xdom_SOddSizeInvalid 65017
+#define xdom_SNegativeSizeInvalid 65018
+#define xdom_SCapacityLessSize 65019
+#define xdom_STargetNil 65020
+#define JConsts_sChangeJPGSize 65021
+#define JConsts_sJPEGError 65022
+#define JConsts_sJPEGImageFile 65023
+#define SOAPConst_SInvalidDateString 65024
+#define SOAPConst_SInvalidTimeString 65025
+#define SOAPConst_SInvalidHour 65026
+#define SOAPConst_SInvalidMinute 65027
+#define SOAPConst_SInvalidSecond 65028
+#define SOAPConst_SInvalidMillisecond 65029
+#define SOAPConst_SInvalidHourOffset 65030
+#define SOAPConst_SInvalidDay 65031
+#define SOAPConst_SInvalidMonth 65032
+#define SOAPConst_SInvalidDuration 65033
+#define SOAPConst_SInvalidTimeOffset 65034
+#define SOAPConst_SInvalidHexValue 65035
+#define SOAPConst_SInvalidHTTPRequest 65036
+#define SOAPConst_SEmptyURL 65037
+#define SOAPConst_SInvalidURL 65038
+#define SOAPConst_SMethNoRTTI 65039
+#define SOAPConst_SUnsuportedClassType 65040
+#define SOAPConst_SUnexpectedDataType 65041
+#define SOAPConst_SInvalidContentType 65042
+#define SOAPConst_SArrayTooManyElem 65043
+#define SOAPConst_SWrongDocElem 65044
+#define SOAPConst_STooManyParameters 65045
+#define SOAPConst_SNoArrayElemRTTI 65046
+#define SOAPConst_SInvalidResponse 65047
+#define SOAPConst_SVariantCastNotSupported 65048
+#define SOAPConst_SHeaderError 65049
+#define SOAPConst_SMissingSoapReturn 65050
+#define SOAPConst_SNoMessageConverter 65051
+#define SOAPConst_SNoMsgProcessingNode 65052
+#define SOAPConst_SHeaderAttributeError 65053
+#define SOAPConst_SNoRTTI 65054
+#define SOAPConst_SNoRTTIParam 65055
+#define SOAPConst_SInvalidSoapRequest 65056
+#define SOAPConst_SInvalidSoapResponse 65057
+#define SOAPConst_SMultiBodyNotSupported 65058
+#define SOAPConst_SUnsupportedCCIntfMeth 65059
+#define SOAPConst_SRemTypeNotRegistered 65060
+#define SOAPConst_STypeMismatchInParam 65061
+#define SOAPConst_SNoSuchMethod 65062
+#define SOAPConst_SInterfaceNotReg 65063
+#define SOAPConst_SInterfaceNoRTTI 65064
+#define SOAPConst_SNoWSDL 65065
+#define SOAPConst_SWSDLError 65066
+#define SOAPConst_SEmptyWSDL 65067
+#define SOAPConst_sNoWSDLURL 65068
+#define SOAPConst_sCantGetURL 65069
+#define SOAPConst_SDataTypeNotSupported 65070
+#define SOAPConst_SNoSerializeGraphs 65071
+#define XMLConst_SMissingFileName 65072
+#define XMLConst_SLine 65073
+#define XMLConst_SInvalidSchema 65074
+#define XMLConst_SNoLocalTypeName 65075
+#define XMLConst_SUnknownDataType 65076
+#define XMLConst_SInvalidGroupDecl 65077
+#define XMLConst_SMissingName 65078
+#define XMLConst_SInvalidDerivation 65079
+#define XMLConst_SNoNameOnRef 65080
+#define XMLConst_SNoGlobalRef 65081
+#define XMLConst_SNoRefPropSet 65082
+#define XMLConst_SSetGroupRefProp 65083
+#define XMLConst_SNoContentModel 65084
+#define XMLConst_SNoFacetsAllowed 65085
+#define XMLConst_SNotBuiltInType 65086
+#define SOAPConst_SUnsupportedEncodingSyle 65087
+#define XMLConst_SINVALID_ACCESS_ERR 65088
+#define XMLConst_SBadTransformArgs 65089
+#define XMLConst_SErrorWritingFile 65090
+#define XMLConst_SUnhandledXercesErr 65091
+#define XMLConst_SDOMError 65092
+#define XMLConst_SNotActive 65093
+#define XMLConst_SNodeNotFound 65094
+#define XMLConst_SMissingNode 65095
+#define XMLConst_SNoAttributes 65096
+#define XMLConst_SInvalidNodeType 65097
+#define XMLConst_SMismatchedRegItems 65098
+#define XMLConst_SNotSingleTextNode 65099
+#define XMLConst_SNoDOMParseOptions 65100
+#define XMLConst_SMissingItemTag 65101
+#define XMLConst_SNodeReadOnly 65102
+#define XMLConst_SNoRefresh 65103
+#define XMLConst_SErrorDownloadingURL 65104
+#define XMLConst_SUrlMonDllMissing 65105
+#define XMLConst_SINDEX_SIZE_ERR 65106
+#define XMLConst_SDOMSTRING_SIZE_ERR 65107
+#define XMLConst_SHIERARCHY_REQUEST_ERR 65108
+#define XMLConst_SWRONG_DOCUMENT_ERR 65109
+#define XMLConst_SINVALID_CHARACTER_ERR 65110
+#define XMLConst_SNO_DATA_ALLOWED_ERR 65111
+#define XMLConst_SNO_MODIFICATION_ALLOWED_ERR 65112
+#define XMLConst_SNOT_FOUND_ERR 65113
+#define XMLConst_SNOT_SUPPORTED_ERR 65114
+#define XMLConst_SINUSE_ATTRIBUTE_ERR 65115
+#define XMLConst_SINVALID_STATE_ERR 65116
+#define XMLConst_SSYNTAX_ERR 65117
+#define XMLConst_SINVALID_MODIFICATION_ERR 65118
+#define XMLConst_SNAMESPACE_ERR 65119
+#define IdResourceStrings_RSSocksServerConnectionRefusedError 65120
+#define IdResourceStrings_RSSocksServerTTLExpiredError 65121
+#define IdResourceStrings_RSSocksServerCommandError 65122
+#define IdResourceStrings_RSSocksServerAddressError 65123
+#define IdResourceStrings_RSThreadTerminateAndWaitFor 65124
+#define OleConst_SCannotActivate 65125
+#define OleConst_SNoWindowHandle 65126
+#define OleConst_SInvalidLicense 65127
+#define OleConst_SNotLicensed 65128
+#define OleConst_sNoRunningObject 65129
+#define XMLConst_SDuplicateRegistration 65130
+#define XMLConst_SNoMatchingDOMVendor 65131
+#define XMLConst_SNoDOMNodeEx 65132
+#define XMLConst_SDOMNotSupported 65133
+#define XMLConst_SNodeExpected 65134
+#define XMLConst_SMSDOMNotInstalled 65135
+#define IdResourceStrings_RSStackENAMETOOLONG 65136
+#define IdResourceStrings_RSStackEHOSTDOWN 65137
+#define IdResourceStrings_RSStackEHOSTUNREACH 65138
+#define IdResourceStrings_RSStackENOTEMPTY 65139
+#define IdResourceStrings_RSStackHOST_NOT_FOUND 65140
+#define IdResourceStrings_RSSocksRequestFailed 65141
+#define IdResourceStrings_RSSocksRequestServerFailed 65142
+#define IdResourceStrings_RSSocksRequestIdentFailed 65143
+#define IdResourceStrings_RSSocksUnknownError 65144
+#define IdResourceStrings_RSSocksServerRespondError 65145
+#define IdResourceStrings_RSSocksAuthMethodError 65146
+#define IdResourceStrings_RSSocksAuthError 65147
+#define IdResourceStrings_RSSocksServerGeneralError 65148
+#define IdResourceStrings_RSSocksServerPermissionError 65149
+#define IdResourceStrings_RSSocksServerNetUnreachableError 65150
+#define IdResourceStrings_RSSocksServerHostUnreachableError 65151
+#define IdResourceStrings_RSStackEAFNOSUPPORT 65152
+#define IdResourceStrings_RSStackEADDRINUSE 65153
+#define IdResourceStrings_RSStackEADDRNOTAVAIL 65154
+#define IdResourceStrings_RSStackENETDOWN 65155
+#define IdResourceStrings_RSStackENETUNREACH 65156
+#define IdResourceStrings_RSStackENETRESET 65157
+#define IdResourceStrings_RSStackECONNABORTED 65158
+#define IdResourceStrings_RSStackECONNRESET 65159
+#define IdResourceStrings_RSStackENOBUFS 65160
+#define IdResourceStrings_RSStackEISCONN 65161
+#define IdResourceStrings_RSStackENOTCONN 65162
+#define IdResourceStrings_RSStackESHUTDOWN 65163
+#define IdResourceStrings_RSStackETOOMANYREFS 65164
+#define IdResourceStrings_RSStackETIMEDOUT 65165
+#define IdResourceStrings_RSStackECONNREFUSED 65166
+#define IdResourceStrings_RSStackELOOP 65167
+#define IdResourceStrings_RSStackEACCES 65168
+#define IdResourceStrings_RSStackEFAULT 65169
+#define IdResourceStrings_RSStackEINVAL 65170
+#define IdResourceStrings_RSStackEMFILE 65171
+#define IdResourceStrings_RSStackEWOULDBLOCK 65172
+#define IdResourceStrings_RSStackEINPROGRESS 65173
+#define IdResourceStrings_RSStackEALREADY 65174
+#define IdResourceStrings_RSStackENOTSOCK 65175
+#define IdResourceStrings_RSStackEDESTADDRREQ 65176
+#define IdResourceStrings_RSStackEMSGSIZE 65177
+#define IdResourceStrings_RSStackEPROTOTYPE 65178
+#define IdResourceStrings_RSStackENOPROTOOPT 65179
+#define IdResourceStrings_RSStackEPROTONOSUPPORT 65180
+#define IdResourceStrings_RSStackESOCKTNOSUPPORT 65181
+#define IdResourceStrings_RSStackEOPNOTSUPP 65182
+#define IdResourceStrings_RSStackEPFNOSUPPORT 65183
+#define IdResourceStrings_RSReadTimeout 65184
+#define IdResourceStrings_RSReadLnMaxLineLengthExceeded 65185
+#define IdResourceStrings_RSNoCommandHandlerFound 65186
+#define IdResourceStrings_RSWS2CallError 65187
+#define IdResourceStrings_RSWS2LoadError 65188
+#define IdResourceStrings_RSStatusResolving 65189
+#define IdResourceStrings_RSStatusConnecting 65190
+#define IdResourceStrings_RSStatusConnected 65191
+#define IdResourceStrings_RSStatusDisconnecting 65192
+#define IdResourceStrings_RSStatusDisconnected 65193
+#define IdResourceStrings_RSStatusText 65194
+#define IdResourceStrings_RSConnectTimeout 65195
+#define IdResourceStrings_RSInvalidServiceName 65196
+#define IdResourceStrings_RSStackError 65197
+#define IdResourceStrings_RSStackEINTR 65198
+#define IdResourceStrings_RSStackEBADF 65199
+#define IdResourceStrings_RSCannotAllocateSocket 65200
+#define IdResourceStrings_RSConnectionClosedGracefully 65201
+#define IdResourceStrings_RSCouldNotBindSocket 65202
+#define IdResourceStrings_RSNotEnoughDataInBuffer 65203
+#define IdResourceStrings_RSWinsockInitializationError 65204
+#define IdResourceStrings_RSSetSizeExceeded 65205
+#define IdResourceStrings_RSThreadClassNotSpecified 65206
+#define IdResourceStrings_RSFileNotFound 65207
+#define IdResourceStrings_RSOnlyOneAntiFreeze 65208
+#define IdResourceStrings_RSNotConnected 65209
+#define IdResourceStrings_RSObjectTypeNotSupported 65210
+#define IdResourceStrings_RSTerminateThreadTimeout 65211
+#define IdResourceStrings_RSNoExecuteSpecified 65212
+#define IdResourceStrings_RSIdNoDataToRead 65213
+#define IdResourceStrings_RSCanNotBindRange 65214
+#define IdResourceStrings_RSInvalidPortRange 65215
+#define ComStrs_sTabFailRetrieve 65216
+#define ComStrs_sTabFailGetObject 65217
+#define ComStrs_sTabFailSet 65218
+#define ComStrs_sTabFailSetObject 65219
+#define ComStrs_sTabMustBeMultiLine 65220
+#define ComStrs_sPageIndexError 65221
+#define WinHelpViewer_hNoKeyword 65222
+#define DBConsts_SBcdOverflow 65223
+#define DBConsts_SInvalidBcdValue 65224
+#define DBConsts_SCouldNotParseTimeStamp 65225
+#define DBConsts_SInvalidSqlTimeStamp 65226
+#define ComConst_SOleError 65227
+#define ComConst_SNoMethod 65228
+#define ComConst_SVarNotObject 65229
+#define ComConst_STooManyParams 65230
+#define ComConst_SDCOMNotInstalled 65231
+#define ExtCtrls_clNameInactiveBorder 65232
+#define ExtCtrls_clNameInactiveCaption 65233
+#define ExtCtrls_clNameInactiveCaptionText 65234
+#define ExtCtrls_clNameInfoBk 65235
+#define ExtCtrls_clNameInfoText 65236
+#define ExtCtrls_clNameMenu 65237
+#define ExtCtrls_clNameMenuText 65238
+#define ExtCtrls_clNameNone 65239
+#define ExtCtrls_clNameScrollBar 65240
+#define ExtCtrls_clName3DDkShadow 65241
+#define ExtCtrls_clName3DLight 65242
+#define ExtCtrls_clNameWindow 65243
+#define ExtCtrls_clNameWindowFrame 65244
+#define ExtCtrls_clNameWindowText 65245
+#define ComStrs_sTabFailClear 65246
+#define ComStrs_sTabFailDelete 65247
+#define ExtCtrls_clNameSkyBlue 65248
+#define ExtCtrls_clNameCream 65249
+#define ExtCtrls_clNameMedGray 65250
+#define ExtCtrls_clNameActiveBorder 65251
+#define ExtCtrls_clNameActiveCaption 65252
+#define ExtCtrls_clNameAppWorkSpace 65253
+#define ExtCtrls_clNameBackground 65254
+#define ExtCtrls_clNameBtnFace 65255
+#define ExtCtrls_clNameBtnHighlight 65256
+#define ExtCtrls_clNameBtnShadow 65257
+#define ExtCtrls_clNameBtnText 65258
+#define ExtCtrls_clNameCaptionText 65259
+#define ExtCtrls_clNameDefault 65260
+#define ExtCtrls_clNameGrayText 65261
+#define ExtCtrls_clNameHighlight 65262
+#define ExtCtrls_clNameHighlightText 65263
+#define ExtCtrls_clNameMaroon 65264
+#define ExtCtrls_clNameGreen 65265
+#define ExtCtrls_clNameOlive 65266
+#define ExtCtrls_clNameNavy 65267
+#define ExtCtrls_clNamePurple 65268
+#define ExtCtrls_clNameTeal 65269
+#define ExtCtrls_clNameGray 65270
+#define ExtCtrls_clNameSilver 65271
+#define ExtCtrls_clNameRed 65272
+#define ExtCtrls_clNameLime 65273
+#define ExtCtrls_clNameYellow 65274
+#define ExtCtrls_clNameBlue 65275
+#define ExtCtrls_clNameFuchsia 65276
+#define ExtCtrls_clNameAqua 65277
+#define ExtCtrls_clNameWhite 65278
+#define ExtCtrls_clNameMoneyGreen 65279
+#define Consts_SCannotOpenClipboard 65280
+#define Consts_SInvalidMemoSize 65281
+#define Consts_SNoDefaultPrinter 65282
+#define Consts_SDuplicateMenus 65283
+#define Consts_SDockedCtlNeedsName 65284
+#define Consts_SDockTreeRemoveError 65285
+#define Consts_SDockZoneNotFound 65286
+#define Consts_SDockZoneHasNoCtl 65287
+#define Consts_SSeparator 65288
+#define Consts_SErrorSettingCount 65289
+#define Consts_SListBoxMustBeVirtual 65290
+#define HelpIntfs_hNoTableOfContents 65291
+#define HelpIntfs_hNothingFound 65292
+#define HelpIntfs_hNoContext 65293
+#define HelpIntfs_hNoTopics 65294
+#define ExtCtrls_clNameBlack 65295
+#define Consts_SmkcRight 65296
+#define Consts_SmkcDown 65297
+#define Consts_SmkcIns 65298
+#define Consts_SmkcDel 65299
+#define Consts_SmkcShift 65300
+#define Consts_SmkcCtrl 65301
+#define Consts_SmkcAlt 65302
+#define Consts_SInsertLineError 65303
+#define Consts_SConfirmCreateDir 65304
+#define Consts_SSelectDirCap 65305
+#define Consts_SDirNameCap 65306
+#define Consts_SDrivesCap 65307
+#define Consts_SDirsCap 65308
+#define Consts_SFilesCap 65309
+#define Consts_SNetworkCap 65310
+#define Consts_SIconToClipboard 65311
+#define Consts_SMsgDlgRetry 65312
+#define Consts_SMsgDlgIgnore 65313
+#define Consts_SMsgDlgAll 65314
+#define Consts_SMsgDlgNoToAll 65315
+#define Consts_SMsgDlgYesToAll 65316
+#define Consts_SmkcBkSp 65317
+#define Consts_SmkcTab 65318
+#define Consts_SmkcEsc 65319
+#define Consts_SmkcEnter 65320
+#define Consts_SmkcSpace 65321
+#define Consts_SmkcPgUp 65322
+#define Consts_SmkcPgDn 65323
+#define Consts_SmkcEnd 65324
+#define Consts_SmkcHome 65325
+#define Consts_SmkcLeft 65326
+#define Consts_SmkcUp 65327
+#define Consts_SAllButton 65328
+#define Consts_SCannotDragForm 65329
+#define Consts_SVMetafiles 65330
+#define Consts_SVEnhMetafiles 65331
+#define Consts_SVIcons 65332
+#define Consts_SVBitmaps 65333
+#define Consts_SMsgDlgWarning 65334
+#define Consts_SMsgDlgError 65335
+#define Consts_SMsgDlgInformation 65336
+#define Consts_SMsgDlgConfirm 65337
+#define Consts_SMsgDlgYes 65338
+#define Consts_SMsgDlgNo 65339
+#define Consts_SMsgDlgOK 65340
+#define Consts_SMsgDlgCancel 65341
+#define Consts_SMsgDlgHelp 65342
+#define Consts_SMsgDlgAbort 65343
+#define Consts_SPrinting 65344
+#define Consts_SInvalidPrinter 65345
+#define Consts_SDeviceOnPort 65346
+#define Consts_SGroupIndexTooLow 65347
+#define Consts_SNoMDIForm 65348
+#define Consts_SImageCanvasNeedsBitmap 65349
+#define Consts_SControlParentSetToSelf 65350
+#define Consts_SOKButton 65351
+#define Consts_SCancelButton 65352
+#define Consts_SYesButton 65353
+#define Consts_SNoButton 65354
+#define Consts_SHelpButton 65355
+#define Consts_SCloseButton 65356
+#define Consts_SIgnoreButton 65357
+#define Consts_SRetryButton 65358
+#define Consts_SAbortButton 65359
+#define Consts_SImageReadFail 65360
+#define Consts_SImageWriteFail 65361
+#define Consts_SWindowDCError 65362
+#define Consts_SWindowClass 65363
+#define Consts_SCannotFocus 65364
+#define Consts_SParentRequired 65365
+#define Consts_SParentGivenNotAParent 65366
+#define Consts_SMDIChildNotVisible 65367
+#define Consts_SVisibleChanged 65368
+#define Consts_SCannotShowModal 65369
+#define Consts_SPropertyOutOfRange 65370
+#define Consts_SMenuIndexError 65371
+#define Consts_SMenuReinserted 65372
+#define Consts_SMenuNotFound 65373
+#define Consts_SNoTimers 65374
+#define Consts_SNotPrinting 65375
 #define Consts_SInvalidTabPosition 65376
 #define Consts_SInvalidTabStyle 65377
 #define Consts_SInvalidBitmap 65378
@@ -379,14 +384,14 @@
 #define Consts_SInvalidPixelFormat 65381
 #define Consts_SScanLine 65382
 #define Consts_SChangeIconSize 65383
-#define Consts_SUnknownClipboardFormat 65384
-#define Consts_SOutOfResources 65385
-#define Consts_SNoCanvasHandle 65386
-#define Consts_SInvalidImageSize 65387
-#define Consts_SInvalidImageList 65388
-#define Consts_SReplaceImage 65389
-#define Consts_SImageIndexError 65390
-#define Consts_SImageReadFail 65391
+#define Consts_SOleGraphic 65384
+#define Consts_SUnknownClipboardFormat 65385
+#define Consts_SOutOfResources 65386
+#define Consts_SNoCanvasHandle 65387
+#define Consts_SInvalidImageSize 65388
+#define Consts_SInvalidImageList 65389
+#define Consts_SReplaceImage 65390
+#define Consts_SImageIndexError 65391
 #define RTLConsts_SListCountError 65392
 #define RTLConsts_SListIndexError 65393
 #define RTLConsts_SMemoryStreamError 65394
@@ -533,6 +538,11 @@
 #define SysConst_SDiskFull 65535
 STRINGTABLE
 BEGIN
+	SOAPConst_SUnsupportedVariant,	"Unsuppported variant type %d"
+	SOAPConst_SNoVarDispatch,	"varDispatch type not supported"
+	SOAPConst_SNoErrorDispatch,	"varError type not supported"
+	SOAPConst_SEmptyStream,	"TAggregateStream Error: no internal streams"
+	SOAPConst_SMethodNotSupported,	"method not supported"
 	SOAPConst_SInvalidContentLength,	"Insufficient data for Content-Length"
 	SOAPConst_SMimeReadError,	"Error reading from Mime Request Stream"
 	SOAPConst_STempFileAccessError,	"No access to temporary file"
@@ -544,6 +554,11 @@ BEGIN
 	JConsts_sChangeJPGSize,	"Cannot change the size of a JPEG image"
 	JConsts_sJPEGError,	"JPEG error #%d"
 	JConsts_sJPEGImageFile,	"JPEG Image File"
+	SOAPConst_SInvalidDateString,	"Invalid date string: %s"
+	SOAPConst_SInvalidTimeString,	"Invalid time string: %s"
+	SOAPConst_SInvalidHour,	"Invalid hour: %d"
+	SOAPConst_SInvalidMinute,	"Invalid minute: %d"
+	SOAPConst_SInvalidSecond,	"Invalid second: %d"
 	SOAPConst_SInvalidMillisecond,	"Invalid millisecond: %d"
 	SOAPConst_SInvalidHourOffset,	"Invalid hour offset: %d"
 	SOAPConst_SInvalidDay,	"Invalid day: %d"
@@ -555,11 +570,11 @@ BEGIN
 	SOAPConst_SEmptyURL,	"No URL was specified for 'GET'"
 	SOAPConst_SInvalidURL,	"Invalid url '%s' - only supports 'http' and 'https' schemes"
 	SOAPConst_SMethNoRTTI,	"Method has no RTTI"
-	SOAPConst_SUnsupportedVariant,	"Unsuppported variant type %d"
-	SOAPConst_SNoVarDispatch,	"varDispatch type not supported"
-	SOAPConst_SNoErrorDispatch,	"varError type not supported"
-	SOAPConst_SEmptyStream,	"TAggregateStream Error: no internal streams"
-	SOAPConst_SMethodNotSupported,	"method not supported"
+	SOAPConst_SUnsuportedClassType,	"Conversion from class %s to SOAP is not supported - SOAP classes must derive from TRemotable"
+	SOAPConst_SUnexpectedDataType,	"Internal error: data type kind %s not expected in this context"
+	SOAPConst_SInvalidContentType,	"Received content of invalid Content-Type setting: %s - SOAP expects \"text/xml\""
+	SOAPConst_SArrayTooManyElem,	"Array Node: %s has too many elements"
+	SOAPConst_SWrongDocElem,	"DocumentElement %s:%s expected, %s:%s found"
 	SOAPConst_STooManyParameters,	"Too many parameters in method %s"
 	SOAPConst_SNoArrayElemRTTI,	"Element of Array type %s has no RTTI"
 	SOAPConst_SInvalidResponse,	"Invalid SOAP Response"
@@ -571,11 +586,11 @@ BEGIN
 	SOAPConst_SHeaderAttributeError,	"Soap header %s with attribute 'mustUnderstand' set to true was not handled"
 	SOAPConst_SNoRTTI,	"Interface %s has no RTTI"
 	SOAPConst_SNoRTTIParam,	"Parameter %s on Method %s of Interface %s has no RTTI"
-	SOAPConst_SInvalidDateString,	"Invalid date string: %s"
-	SOAPConst_SInvalidTimeString,	"Invalid time string: %s"
-	SOAPConst_SInvalidHour,	"Invalid hour: %d"
-	SOAPConst_SInvalidMinute,	"Invalid minute: %d"
-	SOAPConst_SInvalidSecond,	"Invalid second: %d"
+	SOAPConst_SInvalidSoapRequest,	"Invalid SOAP request"
+	SOAPConst_SInvalidSoapResponse,	"Invalid SOAP response"
+	SOAPConst_SMultiBodyNotSupported,	"Multiple body elements not supported"
+	SOAPConst_SUnsupportedCCIntfMeth,	"Remote Method Call: unsupported calling convention %s for method %s on interface %s"
+	SOAPConst_SRemTypeNotRegistered,	"Remotable Type %s not registered"
 	SOAPConst_STypeMismatchInParam,	"Type mismatch in parameter %s"
 	SOAPConst_SNoSuchMethod,	"No method named '%s' is supported by interface '%s'"
 	SOAPConst_SInterfaceNotReg,	"Interface not registered, UUID = %s"
@@ -587,11 +602,11 @@ BEGIN
 	SOAPConst_sCantGetURL,	"Unable to retrieve the URL endpoint for Service/Port '%s'/'%s' from WSDL '%s'"
 	SOAPConst_SDataTypeNotSupported,	"Datatype of TypeKind: %s not supported as argument for remote invocation"
 	SOAPConst_SNoSerializeGraphs,	"Must enable multiref output for objects when serializing a graph of objects - (%s)"
-	SOAPConst_SUnsuportedClassType,	"Conversion from class %s to SOAP is not supported - SOAP classes must derive from TRemotable"
-	SOAPConst_SUnexpectedDataType,	"Internal error: data type kind %s not expected in this context"
-	SOAPConst_SInvalidContentType,	"Received content of invalid Content-Type setting: %s - SOAP expects \"text/xml\""
-	SOAPConst_SArrayTooManyElem,	"Array Node: %s has too many elements"
-	SOAPConst_SWrongDocElem,	"DocumentElement %s:%s expected, %s:%s found"
+	XMLConst_SMissingFileName,	"FileName cannot be blank"
+	XMLConst_SLine,	"Line"
+	XMLConst_SInvalidSchema,	"Invalid or unsupported XML Schema document"
+	XMLConst_SNoLocalTypeName,	"Local type declarations cannot have a name.  Element: %s"
+	XMLConst_SUnknownDataType,	"Unknown datatype \"%s\""
 	XMLConst_SInvalidGroupDecl,	"Invalid group declaration in \"%s\""
 	XMLConst_SMissingName,	"Missing Type name"
 	XMLConst_SInvalidDerivation,	"Invalid complex type derivation: %s"
@@ -603,11 +618,11 @@ BEGIN
 	XMLConst_SNoFacetsAllowed,	"Facets and Enumeration not allowed on this kind of datatype \"%s\""
 	XMLConst_SNotBuiltInType,	"Invalid built-in type name \"%s\""
 	SOAPConst_SUnsupportedEncodingSyle,	"Unsupported SOAP encodingStyle %s"
-	SOAPConst_SInvalidSoapRequest,	"Invalid SOAP request"
-	SOAPConst_SInvalidSoapResponse,	"Invalid SOAP response"
-	SOAPConst_SMultiBodyNotSupported,	"Multiple body elements not supported"
-	SOAPConst_SUnsupportedCCIntfMeth,	"Remote Method Call: unsupported calling convention %s for method %s on interface %s"
-	SOAPConst_SRemTypeNotRegistered,	"Remotable Type %s not registered"
+	XMLConst_SINVALID_ACCESS_ERR,	"Invalid access"
+	XMLConst_SBadTransformArgs,	"TransformNode most be called using a document node (not a document element) for the source and the stylesheet."
+	XMLConst_SErrorWritingFile,	"Error creating file \"%s\""
+	XMLConst_SUnhandledXercesErr,	"Unhandled Xerces DOM error (no message available): %d"
+	XMLConst_SDOMError,	"DOM Error: "
 	XMLConst_SNotActive,	"No active document"
 	XMLConst_SNodeNotFound,	"Node \"%s\" not found"
 	XMLConst_SMissingNode,	"IDOMNode required"
@@ -619,11 +634,11 @@ BEGIN
 	XMLConst_SMissingItemTag,	"ItemTag property is not initialized"
 	XMLConst_SNodeReadOnly,	"Node is readonly"
 	XMLConst_SNoRefresh,	"Refresh is only supported if the FileName or XML properties are set"
-	XMLConst_SMissingFileName,	"FileName cannot be blank"
-	XMLConst_SLine,	"Line"
-	XMLConst_SInvalidSchema,	"Invalid or unsupported XML Schema document"
-	XMLConst_SNoLocalTypeName,	"Local type declarations cannot have a name.  Element: %s"
-	XMLConst_SUnknownDataType,	"Unknown datatype \"%s\""
+	XMLConst_SErrorDownloadingURL,	"Error downloading URL: %s"
+	XMLConst_SUrlMonDllMissing,	"Unable to load %s"
+	XMLConst_SINDEX_SIZE_ERR,	"Invalid string offset"
+	XMLConst_SDOMSTRING_SIZE_ERR,	"Invalid DOMString size"
+	XMLConst_SHIERARCHY_REQUEST_ERR,	"Cannot insert child node"
 	XMLConst_SWRONG_DOCUMENT_ERR,	"Node is owned by a different document"
 	XMLConst_SINVALID_CHARACTER_ERR,	"Invalid character in name"
 	XMLConst_SNO_DATA_ALLOWED_ERR,	"No data allowed"
@@ -635,15 +650,15 @@ BEGIN
 	XMLConst_SSYNTAX_ERR,	"Invalid syntax"
 	XMLConst_SINVALID_MODIFICATION_ERR,	"Invalid modification"
 	XMLConst_SNAMESPACE_ERR,	"Invalid namespace request"
-	XMLConst_SINVALID_ACCESS_ERR,	"Invalid access"
-	XMLConst_SBadTransformArgs,	"TransformNode most be called using a document node (not a document element) for the source and the stylesheet."
-	XMLConst_SErrorWritingFile,	"Error creating file \"%s\""
-	XMLConst_SUnhandledXercesErr,	"Unhandled Xerces DOM error (no message available): %d"
-	XMLConst_SDOMError,	"DOM Error: "
+	IdResourceStrings_RSSocksServerConnectionRefusedError,	"Connection refused."
 	IdResourceStrings_RSSocksServerTTLExpiredError,	"TTL expired."
 	IdResourceStrings_RSSocksServerCommandError,	"Command not supported."
 	IdResourceStrings_RSSocksServerAddressError,	"Address type not supported."
 	IdResourceStrings_RSThreadTerminateAndWaitFor,	"Cannot call TerminateAndWaitFor on FreeAndTerminate threads"
+	OleConst_SCannotActivate,	"OLE control activation failed"
+	OleConst_SNoWindowHandle,	"Could not obtain OLE control window handle"
+	OleConst_SInvalidLicense,	"License information for %s is invalid"
+	OleConst_SNotLicensed,	"License information for %s not found. You cannot use this control in design mode"
 	OleConst_sNoRunningObject,	"Unable to retrieve a pointer to a running object registered with OLE for %s/%s"
 	XMLConst_SDuplicateRegistration,	"\"%s\" DOMImplementation already registered"
 	XMLConst_SNoMatchingDOMVendor,	"No matching DOM Vendor: \"%s\""
@@ -651,11 +666,7 @@ BEGIN
 	XMLConst_SDOMNotSupported,	"Property or Method \"%s\" is not supported by DOM Vendor \"%s\""
 	XMLConst_SNodeExpected,	"Node cannot be null"
 	XMLConst_SMSDOMNotInstalled,	"Microsoft MSXML is not installed"
-	XMLConst_SErrorDownloadingURL,	"Error downloading URL: %s"
-	XMLConst_SUrlMonDllMissing,	"Unable to load %s"
-	XMLConst_SINDEX_SIZE_ERR,	"Invalid string offset"
-	XMLConst_SDOMSTRING_SIZE_ERR,	"Invalid DOMString size"
-	XMLConst_SHIERARCHY_REQUEST_ERR,	"Cannot insert child node"
+	IdResourceStrings_RSStackENAMETOOLONG,	"File name too long."
 	IdResourceStrings_RSStackEHOSTDOWN,	"Host is down."
 	IdResourceStrings_RSStackEHOSTUNREACH,	"No route to host."
 	IdResourceStrings_RSStackENOTEMPTY,	"Directory not empty"
@@ -671,7 +682,7 @@ BEGIN
 	IdResourceStrings_RSSocksServerPermissionError,	"Connection not allowed by ruleset."
 	IdResourceStrings_RSSocksServerNetUnreachableError,	"Network unreachable."
 	IdResourceStrings_RSSocksServerHostUnreachableError,	"Host unreachable."
-	IdResourceStrings_RSSocksServerConnectionRefusedError,	"Connection refused."
+	IdResourceStrings_RSStackEAFNOSUPPORT,	"Address family not supported by protocol family."
 	IdResourceStrings_RSStackEADDRINUSE,	"Address already in use."
 	IdResourceStrings_RSStackEADDRNOTAVAIL,	"Cannot assign requested address."
 	IdResourceStrings_RSStackENETDOWN,	"Network is down."
@@ -687,7 +698,7 @@ BEGIN
 	IdResourceStrings_RSStackETIMEDOUT,	"Connection timed out."
 	IdResourceStrings_RSStackECONNREFUSED,	"Connection refused."
 	IdResourceStrings_RSStackELOOP,	"Too many levels of symbolic links."
-	IdResourceStrings_RSStackENAMETOOLONG,	"File name too long."
+	IdResourceStrings_RSStackEACCES,	"Access denied."
 	IdResourceStrings_RSStackEFAULT,	"Bad address."
 	IdResourceStrings_RSStackEINVAL,	"Invalid argument."
 	IdResourceStrings_RSStackEMFILE,	"Too many open files."
@@ -703,7 +714,7 @@ BEGIN
 	IdResourceStrings_RSStackESOCKTNOSUPPORT,	"Socket type not supported."
 	IdResourceStrings_RSStackEOPNOTSUPP,	"Operation not supported on socket."
 	IdResourceStrings_RSStackEPFNOSUPPORT,	"Protocol family not supported."
-	IdResourceStrings_RSStackEAFNOSUPPORT,	"Address family not supported by protocol family."
+	IdResourceStrings_RSReadTimeout,	"Read Timeout"
 	IdResourceStrings_RSReadLnMaxLineLengthExceeded,	"Max line length exceeded."
 	IdResourceStrings_RSNoCommandHandlerFound,	"No command handler found."
 	IdResourceStrings_RSWS2CallError,	"Error on call Winsock2 library function %s"
@@ -719,7 +730,7 @@ BEGIN
 	IdResourceStrings_RSStackError,	"Socket Error # %d\r\n%s"
 	IdResourceStrings_RSStackEINTR,	"Interrupted system call."
 	IdResourceStrings_RSStackEBADF,	"Bad file number."
-	IdResourceStrings_RSStackEACCES,	"Access denied."
+	IdResourceStrings_RSCannotAllocateSocket,	"Cannot allocate socket."
 	IdResourceStrings_RSConnectionClosedGracefully,	"Connection Closed Gracefully."
 	IdResourceStrings_RSCouldNotBindSocket,	"Could not bind socket. Address and port are already in use."
 	IdResourceStrings_RSNotEnoughDataInBuffer,	"Not enough data in buffer."
@@ -735,7 +746,7 @@ BEGIN
 	IdResourceStrings_RSIdNoDataToRead,	"No data to read."
 	IdResourceStrings_RSCanNotBindRange,	"Can not bind in port range (%d - %d)"
 	IdResourceStrings_RSInvalidPortRange,	"Invalid Port Range (%d - %d)"
-	IdResourceStrings_RSReadTimeout,	"Read Timeout"
+	ComStrs_sTabFailRetrieve,	"Failed to retrieve tab at index %d"
 	ComStrs_sTabFailGetObject,	"Failed to get object at index %d"
 	ComStrs_sTabFailSet,	"Failed to set tab \"%s\" at index %d"
 	ComStrs_sTabFailSetObject,	"Failed to set object at index %d"
@@ -751,7 +762,7 @@ BEGIN
 	ComConst_SVarNotObject,	"Variant does not reference an automation object"
 	ComConst_STooManyParams,	"Dispatch methods do not support more than 64 parameters"
 	ComConst_SDCOMNotInstalled,	"DCOM not installed"
-	IdResourceStrings_RSCannotAllocateSocket,	"Cannot allocate socket."
+	ExtCtrls_clNameInactiveBorder,	"Inactive Border"
 	ExtCtrls_clNameInactiveCaption,	"Inactive Caption"
 	ExtCtrls_clNameInactiveCaptionText,	"Inactive Caption Text"
 	ExtCtrls_clNameInfoBk,	"Info Background"
@@ -767,7 +778,7 @@ BEGIN
 	ExtCtrls_clNameWindowText,	"Window Text"
 	ComStrs_sTabFailClear,	"Failed to clear tab control"
 	ComStrs_sTabFailDelete,	"Failed to delete tab at index %d"
-	ComStrs_sTabFailRetrieve,	"Failed to retrieve tab at index %d"
+	ExtCtrls_clNameSkyBlue,	"Sky Blue"
 	ExtCtrls_clNameCream,	"Cream"
 	ExtCtrls_clNameMedGray,	"Medium Gray"
 	ExtCtrls_clNameActiveBorder,	"Active Border"
@@ -783,7 +794,7 @@ BEGIN
 	ExtCtrls_clNameGrayText,	"Gray Text"
 	ExtCtrls_clNameHighlight,	"Highlight Background"
 	ExtCtrls_clNameHighlightText,	"Highlight Text"
-	ExtCtrls_clNameInactiveBorder,	"Inactive Border"
+	ExtCtrls_clNameMaroon,	"Maroon"
 	ExtCtrls_clNameGreen,	"Green"
 	ExtCtrls_clNameOlive,	"Olive"
 	ExtCtrls_clNameNavy,	"Navy"
@@ -799,7 +810,7 @@ BEGIN
 	ExtCtrls_clNameAqua,	"Aqua"
 	ExtCtrls_clNameWhite,	"White"
 	ExtCtrls_clNameMoneyGreen,	"Money Green"
-	ExtCtrls_clNameSkyBlue,	"Sky Blue"
+	Consts_SCannotOpenClipboard,	"Cannot open clipboard"
 	Consts_SInvalidMemoSize,	"Text exceeds memo capacity"
 	Consts_SNoDefaultPrinter,	"There is no default printer currently selected"
 	Consts_SDuplicateMenus,	"Menu '%s' is already being used by another form"
@@ -815,7 +826,7 @@ BEGIN
 	HelpIntfs_hNoContext,	"No context-sensitive help installed"
 	HelpIntfs_hNoTopics,	"No topic-based help system installed"
 	ExtCtrls_clNameBlack,	"Black"
-	ExtCtrls_clNameMaroon,	"Maroon"
+	Consts_SmkcRight,	"Right"
 	Consts_SmkcDown,	"Down"
 	Consts_SmkcIns,	"Ins"
 	Consts_SmkcDel,	"Del"
@@ -831,7 +842,7 @@ BEGIN
 	Consts_SFilesCap,	"&Files: (*.*)"
 	Consts_SNetworkCap,	"Ne&twork..."
 	Consts_SIconToClipboard,	"Clipboard does not support Icons"
-	Consts_SCannotOpenClipboard,	"Cannot open clipboard"
+	Consts_SMsgDlgRetry,	"&Retry"
 	Consts_SMsgDlgIgnore,	"&Ignore"
 	Consts_SMsgDlgAll,	"&All"
 	Consts_SMsgDlgNoToAll,	"N&o to All"
@@ -847,7 +858,7 @@ BEGIN
 	Consts_SmkcHome,	"Home"
 	Consts_SmkcLeft,	"Left"
 	Consts_SmkcUp,	"Up"
-	Consts_SmkcRight,	"Right"
+	Consts_SAllButton,	"&All"
 	Consts_SCannotDragForm,	"Cannot drag a form"
 	Consts_SVMetafiles,	"Metafiles"
 	Consts_SVEnhMetafiles,	"Enhanced Metafiles"
@@ -863,7 +874,7 @@ BEGIN
 	Consts_SMsgDlgCancel,	"Cancel"
 	Consts_SMsgDlgHelp,	"&Help"
 	Consts_SMsgDlgAbort,	"&Abort"
-	Consts_SMsgDlgRetry,	"&Retry"
+	Consts_SPrinting,	"Printing in progress"
 	Consts_SInvalidPrinter,	"Printer selected is not valid"
 	Consts_SDeviceOnPort,	"%s on %s"
 	Consts_SGroupIndexTooLow,	"GroupIndex cannot be less than a previous menu item's GroupIndex"
@@ -879,7 +890,7 @@ BEGIN
 	Consts_SIgnoreButton,	"&Ignore"
 	Consts_SRetryButton,	"&Retry"
 	Consts_SAbortButton,	"Abort"
-	Consts_SAllButton,	"&All"
+	Consts_SImageReadFail,	"Failed to read ImageList data from stream"
 	Consts_SImageWriteFail,	"Failed to write ImageList data to stream"
 	Consts_SWindowDCError,	"Error creating window device context"
 	Consts_SWindowClass,	"Error creating window class"
@@ -895,7 +906,6 @@ BEGIN
 	Consts_SMenuNotFound,	"Sub-menu is not in menu"
 	Consts_SNoTimers,	"Not enough timers available"
 	Consts_SNotPrinting,	"Printer is not currently printing"
-	Consts_SPrinting,	"Printing in progress"
 	Consts_SInvalidTabPosition,	"Tab position incompatible with current tab style"
 	Consts_SInvalidTabStyle,	"Tab style incompatible with current tab position"
 	Consts_SInvalidBitmap,	"Bitmap image is not valid"
@@ -904,6 +914,7 @@ BEGIN
 	Consts_SInvalidPixelFormat,	"Invalid pixel format"
 	Consts_SScanLine,	"Scan line index out of range"
 	Consts_SChangeIconSize,	"Cannot change the size of an icon"
+	Consts_SOleGraphic,	"Invalid operation on TOleGraphic"
 	Consts_SUnknownClipboardFormat,	"Unsupported clipboard format"
 	Consts_SOutOfResources,	"Out of system resources"
 	Consts_SNoCanvasHandle,	"Canvas does not allow drawing"
@@ -911,7 +922,6 @@ BEGIN
 	Consts_SInvalidImageList,	"Invalid ImageList"
 	Consts_SReplaceImage,	"Unable to Replace Image"
 	Consts_SImageIndexError,	"Invalid ImageList Index"
-	Consts_SImageReadFail,	"Failed to read ImageList data from stream"
 	RTLConsts_SListCountError,	"List count out of bounds (%d)"
 	RTLConsts_SListIndexError,	"List index out of bounds (%d)"
 	RTLConsts_SMemoryStreamError,	"Out of memory while expanding memory stream"

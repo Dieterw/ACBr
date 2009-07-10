@@ -201,7 +201,8 @@ begin
          Label1.Caption := 'Informe o número de série do certificado'#13+
                            'Disponível no Internet Explorer no menu'#13+
                            'Ferramentas - Opções da Internet - Conteúdo '#13+
-                           'Certificados - Exibir - Detalhes - Número do certificado';
+                           'Certificados - Exibir - Detalhes - '#13+
+                           'Número do certificado';
          Label2.Visible := False;
          edtCaminho.Visible := False;
          edtSenha.Visible   := False;
@@ -449,6 +450,7 @@ if not(InputQuery('WebServices Enviar', 'Numero da Nota', vAux)) then
 
     with Det.Add do
     begin
+      infAdProd     := 'Teste de informacao adicional;Teste de Segunda Linha';
       Prod.nItem    := 1;
       Prod.CFOP     := '5101';
       Prod.cProd    := '67';

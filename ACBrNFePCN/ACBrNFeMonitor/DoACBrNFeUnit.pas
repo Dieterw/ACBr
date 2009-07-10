@@ -53,7 +53,8 @@ Uses IniFiles, StrUtils, DateUtils,
   pcnCancNFe, pcnRetCancNFe,
   pcnConsSitNFe, pcnRetConsSitNFe,
   pcnInutNFe, pcnRetInutNFe,
-  pcnRetEnvNFe, pcnConsReciNFe;
+  pcnRetEnvNFe, pcnConsReciNFe,
+  pcnNFeRTXT;
 
 Procedure DoACBrNFe( Cmd : TACBrNFeCmd ) ;
 var
@@ -68,6 +69,7 @@ var
   NFeRetEnviNFe      : TRetEnvNFe;
   NFeRetConsReciNFe  : TRetConsReciNFe;
   NFeRetInutNFe      : TRetInutNFe;
+  NFeRTXT            : TNFeRTXT;
 begin
  with frmAcbrNfeMonitor do
   begin
@@ -359,9 +361,29 @@ begin
 
 
          end
-        else if (Cmd.Metodo = 'criarnfe') or (Cmd.Metodo = 'criarenviarnfe')then
+        else if (Cmd.Metodo = 'criarnfe') or (Cmd.Metodo = 'criarenviarnfe') or
+                (Cmd.Metodo = 'criarnfesefaz') or (Cmd.Metodo = 'criarenviarnfesefaz') then
          begin
-           GerarIniNFe( Cmd.Params(0)  ) ;
+           if (Cmd.Metodo = 'criarnfe') or (Cmd.Metodo = 'criarenviarnfe') then
+              GerarIniNFe( Cmd.Params(0)  )
+           else
+            begin
+              if not FileExists(Cmd.Params(0)) then
+                 raise Exception.Create('Arquivo '+Cmd.Params(0)+' não encontrado.')
+              else
+               begin
+                 ACBrNFe1.NotasFiscais.Clear;
+                 ACBrNFe1.NotasFiscais.Add;
+                 NFeRTXT := TNFeRTXT.Create(ACBrNFe1.NotasFiscais.Items[0].NFe);
+                 try
+                    NFeRTXT.CarregarArquivo(Cmd.Params(0));
+                    if not NFeRTXT.LerTxt then
+                       raise Exception.Create('Arquivo inválido!');
+                 finally
+                    NFeRTXT.Free;
+                 end;
+               end;
+            end;
 
            Salva := ACBrNFe1.Configuracoes.Geral.Salvar;
            if not Salva then
@@ -371,21 +393,22 @@ begin
             end;
            ACBrNFe1.Configuracoes.Geral.Salvar := True;
            ACBrNFe1.NotasFiscais.GerarNFe;
-           ACBrNFe1.NotasFiscais.Assinar;
            ACBrNFe1.NotasFiscais.Valida;
            ACBrNFe1.Configuracoes.Geral.Salvar := Salva;
 
            ArqNFe := PathWithDelim(ACBrNFe1.Configuracoes.Geral.PathSalvar)+StringReplace(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID, 'NFe', '', [rfIgnoreCase])+'-nfe.xml';
 
-           SL := TStringList.Create;
-           SL.LoadFromFile(ArqNFe);
-           if (Cmd.Metodo = 'criarnfe') and (Cmd.Params(1) = '1') then
-              Cmd.Resposta :=  'NFe criada em: '+ArqNFe+sLineBreak+SL.Text
+           if ((Cmd.Metodo = 'criarnfe') or (Cmd.Metodo = 'criarnfesefaz')) and (Cmd.Params(1) = '1') then
+            begin
+              SL := TStringList.Create;
+              SL.LoadFromFile(ArqNFe);
+              Cmd.Resposta :=  'NFe criada em: '+ArqNFe+sLineBreak+SL.Text;
+              SL.Free;
+            end
            else
               Cmd.Resposta :=  'NFe criada em: '+ArqNFe;
 
-           SL.Free;
-           if Cmd.Metodo = 'criarenviarnfe' then
+           if (Cmd.Metodo = 'criarenviarnfe') or (Cmd.Metodo = 'criarenviarnfesefaz') then
             begin
               if not(ACBrNFe1.WebServices.StatusServico.Executar) then
                raise Exception.Create(ACBrNFe1.WebServices.StatusServico.Msg);
@@ -589,7 +612,10 @@ var
 begin
  INIRec := TMemIniFile.create( 'nfe.ini' ) ;
  SL := TStringList.Create;
- Sl.Text := ConvertStrRecived( Astr );
+ if FilesExists(Astr) then
+    SL.LoadFromFile(AStr)
+ else
+    Sl.Text := ConvertStrRecived( Astr );
  INIRec.SetStrings( SL );
  SL.Free ;
  with frmAcbrNfeMonitor do

@@ -4112,7 +4112,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       Top = 0
       Width = 533
       Height = 231
-      ActivePage = WebService
+      ActivePage = DANFE
       Align = alBottom
       TabOrder = 0
       object Monitor: TTabSheet
@@ -4714,7 +4714,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           end
         end
       end
-      object TabSheet1: TTabSheet
+      object DANFE: TTabSheet
         Caption = 'DANFE'
         ImageIndex = 4
         object Label7: TLabel
@@ -4845,6 +4845,119 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           Height = 17
           Caption = 'Mostrar Preview antes da impress'#227'o'
           TabOrder = 5
+        end
+      end
+      object Testes: TTabSheet
+        Caption = 'Testes'
+        ImageIndex = 5
+        object Panel1: TPanel
+          Left = 0
+          Top = 0
+          Width = 153
+          Height = 203
+          Align = alLeft
+          TabOrder = 0
+          object btnStatusServ: TButton
+            Left = 5
+            Top = 6
+            Width = 140
+            Height = 25
+            Caption = 'Status Servi'#231'o'
+            TabOrder = 0
+            OnClick = btnStatusServClick
+          end
+          object btnValidarXML: TButton
+            Left = 5
+            Top = 118
+            Width = 140
+            Height = 25
+            Caption = 'Validar XML'
+            TabOrder = 1
+            OnClick = btnValidarXMLClick
+          end
+          object btnImprimir: TButton
+            Left = 5
+            Top = 146
+            Width = 140
+            Height = 25
+            Caption = 'Imprimir'
+            TabOrder = 2
+            OnClick = btnImprimirClick
+          end
+          object btnInutilizar: TButton
+            Left = 5
+            Top = 174
+            Width = 140
+            Height = 25
+            Caption = 'Inutilizar NFe'
+            TabOrder = 3
+            OnClick = btnInutilizarClick
+          end
+          object btnConsultar: TButton
+            Left = 5
+            Top = 62
+            Width = 140
+            Height = 25
+            Caption = 'Consultar'
+            TabOrder = 4
+            OnClick = btnConsultarClick
+          end
+          object btnCancNF: TButton
+            Left = 5
+            Top = 90
+            Width = 140
+            Height = 25
+            Caption = 'Cancelamento NFe'
+            TabOrder = 5
+            OnClick = btnCancNFClick
+          end
+          object btnEnviar: TButton
+            Left = 5
+            Top = 34
+            Width = 140
+            Height = 25
+            Caption = 'Enviar XML NFe'
+            TabOrder = 6
+            OnClick = btnEnviarClick
+          end
+        end
+        object Panel2: TPanel
+          Left = 153
+          Top = 0
+          Width = 372
+          Height = 203
+          Align = alClient
+          TabOrder = 1
+          object WBResposta: TWebBrowser
+            Left = 1
+            Top = 18
+            Width = 370
+            Height = 184
+            Align = alClient
+            TabOrder = 0
+            ControlData = {
+              4C000000D4250000041300000000000000000000000000000000000000000000
+              000000004C000000000000000000000001000000E0D057007335CF11AE690800
+              2B2E126208000000000000004C0000000114020000000000C000000000000046
+              8000000000000000000000000000000000000000000000000000000000000000
+              00000000000000000100000000000000000000000000000000000000}
+          end
+          object Panel3: TPanel
+            Left = 1
+            Top = 1
+            Width = 370
+            Height = 17
+            Align = alTop
+            Alignment = taLeftJustify
+            Caption = 'Respota WebService'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clNavy
+            Font.Height = -11
+            Font.Name = 'MS Sans Serif'
+            Font.Style = [fsBold]
+            ParentFont = False
+            TabOrder = 1
+          end
         end
       end
     end

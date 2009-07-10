@@ -9,7 +9,8 @@ uses IniFiles, CmdUnitNFe, FileCtrl, Printers,
   ShellAPI,                                { Unit para criar icone no Systray }
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ComCtrls, ExtCtrls, Buttons, Spin, Menus, ImgList,
-  ACBrNFe, ACBrNFeDANFEClass, ACBrNFeDANFERave, pcnConversao;
+  ACBrNFe, ACBrNFeDANFEClass, ACBrNFeDANFERave, pcnConversao, OleCtrls,
+  SHDocVw;
 
 const
    BufferMemoResposta = 1000 ;              { Maximo de Linhas no MemoResposta }
@@ -112,7 +113,7 @@ type
     OpenDialog1: TOpenDialog;
     ImageList1: TImageList;
     rgTipoAmb: TRadioGroup;
-    TabSheet1: TTabSheet;
+    DANFE: TTabSheet;
     rgTipoDanfe: TRadioGroup;
     edtLogoMarca: TEdit;
     Label7: TLabel;
@@ -131,6 +132,18 @@ type
     rgFormaEmissao: TRadioGroup;
     cbxImpDescPorc: TCheckBox;
     cbxMostrarPreview: TCheckBox;
+    Testes: TTabSheet;
+    Panel1: TPanel;
+    btnStatusServ: TButton;
+    btnValidarXML: TButton;
+    btnImprimir: TButton;
+    btnInutilizar: TButton;
+    btnConsultar: TButton;
+    btnCancNF: TButton;
+    btnEnviar: TButton;
+    Panel2: TPanel;
+    WBResposta: TWebBrowser;
+    Panel3: TPanel;
     procedure DoACBrTimer(Sender: TObject);
     procedure edOnlyNumbers(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
@@ -152,6 +165,13 @@ type
     procedure sbArquivoCertClick(Sender: TObject);
     procedure sbLogoMarcaClick(Sender: TObject);
     procedure sbPathSalvarClick(Sender: TObject);
+    procedure btnStatusServClick(Sender: TObject);
+    procedure btnConsultarClick(Sender: TObject);
+    procedure btnCancNFClick(Sender: TObject);
+    procedure btnValidarXMLClick(Sender: TObject);
+    procedure btnImprimirClick(Sender: TObject);
+    procedure btnInutilizarClick(Sender: TObject);
+    procedure btnEnviarClick(Sender: TObject);
   private
     { Private declarations }
     ACBrNFeMonitorINI : string;
@@ -162,6 +182,7 @@ type
     fsLinesLog : AnsiString ;
     Cmd : TACBrNFeCmd ;
 
+    procedure ExibeResp( Resposta : AnsiString );
     procedure Inicializar ;
     procedure EscondeConfig ;
     procedure ExibeConfig ;
@@ -196,6 +217,17 @@ const
   SELDIRHELP = 1000;
 
 {$R *.dfm}
+procedure TfrmAcbrNfeMonitor.ExibeResp( Resposta : AnsiString );
+var
+ StrLstResposta : TStringList;
+begin
+ StrLstResposta := TStringList.Create;
+ StrLstResposta.Text := UTF8Encode(Resposta);
+ StrLstResposta.SaveToFile(PathWithDelim(ExtractFileDir(application.ExeName))+'temp.xml');
+ WBResposta.Navigate(PathWithDelim(ExtractFileDir(application.ExeName))+'temp.xml');
+ StrLstResposta.Free;
+end;
+
 procedure TfrmAcbrNfeMonitor.Inicializar;
 Var
   Txt    : String ;
@@ -506,6 +538,7 @@ begin
         ACBrNFeDANFERave1.Fax     := edtFaxEmpresa.Text;
         ACBrNFeDANFERave1.ImprimirDescPorc := cbxImpDescPorc.Checked;
         ACBrNFeDANFERave1.MostrarPreview   := cbxMostrarPreview.Checked;
+        ACBrNFeDANFERave1.Impressora := cbxImpressora.Text;
       end;
 
      edtSmtpHost.Text      := Ini.ReadString( 'Email','Host'   ,'') ;
@@ -997,6 +1030,117 @@ begin
 
   if SelectDirectory(Dir, [sdAllowCreate, sdPerformCreate, sdPrompt],SELDIRHELP) then
     edtPathLogs.Text := Dir;
+end;
+
+procedure TfrmAcbrNfeMonitor.btnStatusServClick(Sender: TObject);
+begin
+ ACBrNFe1.WebServices.StatusServico.Executar;
+ ExibeResp(ACBrNFe1.WebServices.StatusServico.RetWS);
+end;
+
+procedure TfrmAcbrNfeMonitor.btnConsultarClick(Sender: TObject);
+begin
+  OpenDialog1.Title := 'Selecione a NFE';
+  OpenDialog1.DefaultExt := '*-nfe.XML';
+  OpenDialog1.Filter := 'Arquivos NFE (*-nfe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
+  OpenDialog1.InitialDir := ACBrNFe1.Configuracoes.Geral.PathSalvar;
+  if OpenDialog1.Execute then
+  begin
+    ACBrNFe1.NotasFiscais.Clear;
+    ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
+    ACBrNFe1.Consultar;
+    ExibeResp(ACBrNFe1.WebServices.Consulta.RetWS);
+  end;
+end;
+
+procedure TfrmAcbrNfeMonitor.btnCancNFClick(Sender: TObject);
+var
+  vAux : String;
+begin
+  OpenDialog1.Title := 'Selecione a NFE';
+  OpenDialog1.DefaultExt := '*-nfe.XML';
+  OpenDialog1.Filter := 'Arquivos NFE (*-nfe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
+  OpenDialog1.InitialDir := ACBrNFe1.Configuracoes.Geral.PathSalvar;
+  if OpenDialog1.Execute then
+  begin
+    ACBrNFe1.NotasFiscais.Clear;
+    ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
+    if not(InputQuery('WebServices Cancelamento', 'Justificativa', vAux)) then
+       exit;
+     ACBrNFe1.Cancelamento(vAux);
+     ExibeResp(ACBrNFe1.WebServices.Cancelamento.RetWS);
+  end;
+end;
+
+procedure TfrmAcbrNfeMonitor.btnValidarXMLClick(Sender: TObject);
+begin
+  OpenDialog1.Title := 'Selecione a NFE';
+  OpenDialog1.DefaultExt := '*-nfe.XML';
+  OpenDialog1.Filter := 'Arquivos NFE (*-nfe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
+  OpenDialog1.InitialDir := ACBrNFe1.Configuracoes.Geral.PathSalvar;
+  if OpenDialog1.Execute then
+  begin
+    ACBrNFe1.NotasFiscais.Clear;
+    ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
+    ACBrNFe1.NotasFiscais.Valida;
+    showmessage('Nota Fiscal Eletrônica Valida');
+  end;
+end;
+
+procedure TfrmAcbrNfeMonitor.btnImprimirClick(Sender: TObject);
+begin
+  OpenDialog1.Title := 'Selecione a NFE';
+  OpenDialog1.DefaultExt := '*-nfe.XML';
+  OpenDialog1.Filter := 'Arquivos NFE (*-nfe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
+  OpenDialog1.InitialDir := ACBrNFe1.Configuracoes.Geral.PathSalvar;
+  if OpenDialog1.Execute then
+  begin
+    ACBrNFe1.NotasFiscais.Clear;
+    ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
+    ACBrNFe1.NotasFiscais.Imprimir;
+  end;
+end;
+
+procedure TfrmAcbrNfeMonitor.btnInutilizarClick(Sender: TObject);
+var
+ CNPJ, Modelo, Serie, Ano, NumeroInicial, NumeroFinal, Justificativa : String;
+begin
+ if not(InputQuery('WebServices Inutilização ', 'CNPJ',   CNPJ)) then
+    exit;
+ if not(InputQuery('WebServices Inutilização ', 'Ano',    Ano)) then
+    exit;
+ if not(InputQuery('WebServices Inutilização ', 'Modelo', Modelo)) then
+    exit;
+ if not(InputQuery('WebServices Inutilização ', 'Serie',  Serie)) then
+    exit;
+ if not(InputQuery('WebServices Inutilização ', 'Número Inicial', NumeroInicial)) then
+    exit;
+ if not(InputQuery('WebServices Inutilização ', 'Número Inicial', NumeroFinal)) then
+    exit;
+
+ if not(InputQuery('WebServices Inutilização ', 'Justificativa', Justificativa)) then
+    exit;
+  ACBrNFe1.WebServices.Inutiliza(CNPJ, Justificativa, StrToInt(Ano), StrToInt(Modelo), StrToInt(Serie), StrToInt(NumeroInicial), StrToInt(NumeroFinal));
+  ExibeResp(ACBrNFe1.WebServices.Inutilizacao.RetWS);
+end;
+
+procedure TfrmAcbrNfeMonitor.btnEnviarClick(Sender: TObject);
+var
+ vAux : String;
+begin
+  if not(InputQuery('WebServices Enviar', 'Numero do Lote', vAux)) then
+    exit;
+  OpenDialog1.Title := 'Selecione a NFE';
+  OpenDialog1.DefaultExt := '*-nfe.XML';
+  OpenDialog1.Filter := 'Arquivos NFE (*-nfe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
+  OpenDialog1.InitialDir := ACBrNFe1.Configuracoes.Geral.PathSalvar;
+  if OpenDialog1.Execute then
+  begin
+    ACBrNFe1.NotasFiscais.Clear;
+    ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
+    ACBrNFe1.Enviar(StrToInt(vAux));
+    ExibeResp(ACBrNFe1.WebServices.Retorno.RetWS);
+  end;
 end;
 
 end.

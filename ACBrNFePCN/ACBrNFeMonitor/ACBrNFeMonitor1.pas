@@ -1,3 +1,5 @@
+{$I ACBr.inc}
+
 unit ACBrNFeMonitor1;
 
 interface
@@ -64,9 +66,9 @@ type
     rbTXT: TRadioButton;
     cbLog: TCheckBox;
     Certificado: TTabSheet;
-    GroupBox2: TGroupBox;
-    Label1: TLabel;
-    Label2: TLabel;
+    gbxCertificado: TGroupBox;
+    lblCaminho: TLabel;
+    lblSenha: TLabel;
     sbArquivoCert: TSpeedButton;
     edtCaminho: TEdit;
     edtSenha: TEdit;
@@ -77,7 +79,7 @@ type
     cbUF: TComboBox;
     ckSalvar: TCheckBox;
     edtPathLogs: TEdit;
-    GroupBox5: TGroupBox;
+    gbxProxy: TGroupBox;
     Label8: TLabel;
     Label9: TLabel;
     Label10: TLabel;
@@ -438,11 +440,6 @@ begin
      TcpServer.MaxConnectionReply.Text.Add(
         'Número máximo de conexões ('+sedConexoesTCP.Text+') já atingido' ) ;
 
-     edtCaminho.Text  := Ini.ReadString( 'Certificado','Caminho' ,'') ;
-     edtSenha.Text    := Ini.ReadString( 'Certificado','Senha'   ,'') ;
-     ACBrNFe1.Configuracoes.Certificados.Certificado  := edtCaminho.Text;
-     ACBrNFe1.Configuracoes.Certificados.Senha        := edtSenha.Text;
-
      rgFormaEmissao.ItemIndex := Ini.ReadInteger( 'Geral','FormaEmissao',0) ;
      ckSalvar.Checked    := Ini.ReadBool(   'Geral','Salvar'      ,True) ;
      edtPathLogs.Text    := Ini.ReadString( 'Geral','PathSalvar'  ,'') ;
@@ -457,6 +454,18 @@ begin
      ACBrNFe1.Configuracoes.WebServices.UF         := cbUF.Text;
      ACBrNFe1.Configuracoes.WebServices.Ambiente   := StrToTpAmb(Ok,IntToStr(rgTipoAmb.ItemIndex+1));
 
+     {$IFDEF ACBrNFeOpenSSL}
+     gbxCertificado.Height := 109;
+     rgFormaEmissao.Top := 105;
+     lblCaminho.Caption := 'Arquivo PFX';
+     edtSenha.Visible := True;
+     lblSenha.Visible := True;
+     edtCaminho.Text  := Ini.ReadString( 'Certificado','Caminho' ,'') ;
+     edtSenha.Text    := Ini.ReadString( 'Certificado','Senha'   ,'') ;
+     ACBrNFe1.Configuracoes.Certificados.Certificado  := edtCaminho.Text;
+     ACBrNFe1.Configuracoes.Certificados.Senha        := edtSenha.Text;
+
+     gbxProxy.Visible := True;
      edtProxyHost.Text  := Ini.ReadString( 'Proxy','Host'   ,'') ;
      edtProxyPorta.Text := Ini.ReadString( 'Proxy','Porta'  ,'') ;
      edtProxyUser.Text  := Ini.ReadString( 'Proxy','User'   ,'') ;
@@ -465,6 +474,17 @@ begin
      ACBrNFe1.Configuracoes.WebServices.ProxyPort := edtProxyPorta.Text;
      ACBrNFe1.Configuracoes.WebServices.ProxyUser := edtProxyUser.Text;
      ACBrNFe1.Configuracoes.WebServices.ProxyPass := edtProxySenha.Text;
+     {$ELSE}
+     edtSenha.Visible := False;
+     gbxProxy.Visible := False;
+     lblSenha.Visible := False;
+     gbxCertificado.Height := 69;
+     rgFormaEmissao.Top := 4;
+     lblCaminho.Caption := 'Número de Série';
+     edtCaminho.Text  := Ini.ReadString( 'Certificado','Caminho' ,'') ;
+     ACBrNFe1.Configuracoes.Certificados.NumeroSerie := edtCaminho.Text;
+     edtCaminho.Text := ACBrNFe1.Configuracoes.Certificados.NumeroSerie;
+     {$ENDIF}
 
      rgTipoDanfe.ItemIndex     := Ini.ReadInteger( 'Geral','DANFE'       ,0) ;
      edtLogoMarca.Text         := Ini.ReadString( 'Geral','LogoMarca'   ,'') ;
@@ -534,7 +554,9 @@ begin
      Ini.WriteInteger('ACBrNFeMonitor','Linhas_Log',sedLogLinhas.Value);
 
      Ini.WriteString( 'Certificado','Caminho' ,edtCaminho.Text) ;
+     {$IFDEF ACBrNFeOpenSSL}
      Ini.WriteString( 'Certificado','Senha'   ,edtSenha.Text) ;
+     {$ENDIF}
 
      Ini.WriteInteger( 'Geral','DANFE'       ,rgTipoDanfe.ItemIndex) ;
      Ini.WriteInteger( 'Geral','FormaEmissao',rgFormaEmissao.ItemIndex) ;
@@ -546,10 +568,12 @@ begin
      Ini.WriteString( 'WebService','UF'        ,cbUF.Text) ;
      Ini.WriteInteger( 'WebService','Ambiente'  ,rgTipoAmb.ItemIndex) ;
 
+     {$IFDEF ACBrNFeOpenSSL}
      Ini.WriteString( 'Proxy','Host'   ,edtProxyHost.Text) ;
      Ini.WriteString( 'Proxy','Porta'  ,edtProxyPorta.Text) ;
      Ini.WriteString( 'Proxy','User'   ,edtProxyUser.Text) ;
      Ini.WriteString( 'Proxy','Pass'   ,edtProxySenha.Text) ;
+     {$ENDIF}
 
      Ini.WriteString( 'Email','Host'    ,edtSmtpHost.Text) ;
      Ini.WriteString( 'Email','Port'    ,edtSmtpPort.Text) ;
@@ -936,14 +960,18 @@ end;
 
 procedure TfrmAcbrNfeMonitor.sbArquivoCertClick(Sender: TObject);
 begin
+ {$IFDEF ACBrNFeOpenSSL}
   OpenDialog1.Title := 'Selecione o Certificado';
   OpenDialog1.DefaultExt := '*.pfx';
   OpenDialog1.Filter := 'Arquivos PFX (*.pfx)|*.pfx|Todos os Arquivos (*.*)|*.*';
   OpenDialog1.InitialDir := ExtractFileDir(application.ExeName);
   if OpenDialog1.Execute then
-  begin
+   begin
     edtCaminho.Text := OpenDialog1.FileName;
-  end;
+   end;
+  {$ELSE}
+   edtCaminho.Text := ACBrNFe1.Configuracoes.Certificados.SelecionarCertificado;
+  {$ENDIF}
 end;
 
 procedure TfrmAcbrNfeMonitor.sbLogoMarcaClick(Sender: TObject);

@@ -70,6 +70,14 @@ const
 const
   DSIGNS = 'xmlns:ds="http://www.w3.org/2000/09/xmldsig#"';
 {$ENDIF}
+{$IFNDEF ACBrNFeOpenSSL}
+var
+  CertStore     : IStore3;
+  CertStoreMem  : IStore3;
+  PrivateKey    : IPrivateKey;
+  Certs         : ICertificates2;
+  Cert          : ICertificate2;
+{$ENDIF}
 
 type
   NotaUtil = class
@@ -100,7 +108,7 @@ type
     {$IFDEF ACBrNFeOpenSSL}
        class Procedure InitXmlSec ;
        class Procedure ShutDownXmlSec ;
-    {$ENDIF}   
+    {$ENDIF}
     class function PosEx(const SubStr, S: AnsiString; Offset: Cardinal = 1): Integer;
     class function PosLast(const SubStr, S: AnsiString ): Integer;
     class function PadE(const AString : string; const nLen : Integer; const Caracter : Char = ' ') : String;
@@ -160,7 +168,7 @@ type
   end;
 
 implementation
-                                                                 
+
 uses {$IFDEF ACBrNFeOpenSSL}libxml2, libxmlsec, libxslt, {$ELSE} ComObj, {$ENDIF} Sysutils,
   Variants;
 
@@ -1209,12 +1217,6 @@ end;
 {$ELSE}
 function AssinarMSXML(XML : AnsiString; Certificado : ICertificate2; out XMLAssinado : AnsiString): Boolean;
 var
- CertStore     : IStore3;
- CertStoreMem  : IStore3;
- PrivateKey    : IPrivateKey;
- Certs         : ICertificates2;
- Cert          : ICertificate2;
-
  I, J, PosIni, PosFim : Integer;
  URI           : String ;
  Tipo : Integer;
@@ -1297,18 +1299,21 @@ begin
    if (xmldsig.signature = nil) then
       raise Exception.Create('É preciso carregar o template antes de assinar.');
 
-   CertStore := CoStore.Create;
-   CertStore.Open(CAPICOM_CURRENT_USER_STORE, 'My', CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED);
+   if  CertStoreMem = nil then
+    begin
+      CertStore := CoStore.Create;
+      CertStore.Open(CAPICOM_CURRENT_USER_STORE, 'My', CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED);
 
-   CertStoreMem := CoStore.Create;
-   CertStoreMem.Open(CAPICOM_MEMORY_STORE, 'Memoria', CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED);
+      CertStoreMem := CoStore.Create;
+      CertStoreMem.Open(CAPICOM_MEMORY_STORE, 'Memoria', CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED);
 
-   Certs := CertStore.Certificates as ICertificates2;
-   for i:= 1 to Certs.Count do
-   begin
-     Cert := IInterface(Certs.Item[i]) as ICertificate2;
-     if Cert.SerialNumber = Certificado.SerialNumber then
-        CertStoreMem.Add(Cert);
+      Certs := CertStore.Certificates as ICertificates2;
+      for i:= 1 to Certs.Count do
+      begin
+        Cert := IInterface(Certs.Item[i]) as ICertificate2;
+        if Cert.SerialNumber = Certificado.SerialNumber then
+           CertStoreMem.Add(Cert);
+      end;
    end;
 
    OleCheck(IDispatch(Certificado.PrivateKey).QueryInterface(IPrivateKey,PrivateKey));

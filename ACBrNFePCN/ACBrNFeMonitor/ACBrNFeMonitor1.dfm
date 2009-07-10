@@ -4112,7 +4112,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       Top = 0
       Width = 533
       Height = 231
-      ActivePage = Monitor
+      ActivePage = WebService
       Align = alBottom
       TabOrder = 0
       object Monitor: TTabSheet
@@ -4338,21 +4338,21 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           Height = 13
           Caption = 'Nome Software House'
         end
-        object GroupBox2: TGroupBox
+        object gbxCertificado: TGroupBox
           Left = 8
           Top = 4
           Width = 242
           Height = 109
           Caption = 'Certificado'
           TabOrder = 0
-          object Label1: TLabel
+          object lblCaminho: TLabel
             Left = 8
             Top = 20
             Width = 59
             Height = 13
             Caption = 'Arquivo PFX'
           end
-          object Label2: TLabel
+          object lblSenha: TLabel
             Left = 8
             Top = 60
             Width = 31
@@ -4528,7 +4528,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
             TabOrder = 3
           end
         end
-        object GroupBox5: TGroupBox
+        object gbxProxy: TGroupBox
           Left = 264
           Top = 4
           Width = 250

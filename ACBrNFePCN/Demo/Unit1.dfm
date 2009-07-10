@@ -33,7 +33,7 @@ object Form1: TForm1
         Top = 15
         Width = 258
         Height = 320
-        ActivePage = TabSheet3
+        ActivePage = TabSheet1
         Align = alClient
         TabOrder = 0
         object TabSheet1: TTabSheet
@@ -774,12 +774,11 @@ object Form1: TForm1
     MostrarPreview = True
     TipoDANFE = tiRetrato
     NumCopias = 1
-    Fax = '(15)3259-2822'
+    Fax = '(15)XXXX-XXXX'
     Site = 'www.djsystem.com.br'
     Email = 'andre@djsystem.com.br'
-    RavFile = 
-      'D:\delphi\ACBr\trunk\ACBrNFePCN\Demo\Report\NotaFiscalEletronica' +
-      '.rav'
+    ImprimirDescPorc = True
+    RavFile = 'D:\delphi\ACBr\trunk\ACBrNFePCN\Demo\Report\DANFE_Rave513.rav'
     Left = 355
     Top = 161
   end

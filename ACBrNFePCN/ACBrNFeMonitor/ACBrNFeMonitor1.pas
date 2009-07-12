@@ -249,6 +249,21 @@ begin
                'IMPORTANTE: Após configurar o '+
                'Método de Monitoramento o ACBrMonitor'+
                ' deve ser reiniciado.',mtInformation,[mbok],0) ;
+    {$IFDEF ACBrNFeOpenSSL}
+       gbxCertificado.Height := 109;
+       rgFormaEmissao.Top := 105;
+       lblCaminho.Caption := 'Arquivo PFX';
+       edtSenha.Visible := True;
+       lblSenha.Visible := True;
+       gbxProxy.Visible := True;
+    {$ELSE}
+       edtSenha.Visible := False;
+       gbxProxy.Visible := False;
+       lblSenha.Visible := False;
+       gbxCertificado.Height := 69;
+       rgFormaEmissao.Top := 4;
+       lblCaminho.Caption := 'Número de Série';
+    {$ENDIF}
     btConfig.Click ;
     exit ;
   end;

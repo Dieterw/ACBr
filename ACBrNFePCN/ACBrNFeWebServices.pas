@@ -930,8 +930,8 @@ begin
   begin
     for j:= 0 to FNotasFiscais.Count-1 do
     begin
-//      if 'NFe'+AInfProt.Items[i].chNFe = FNotasFiscais.Items[j].NFe.InfNFe.Id  then
-      if AInfProt.Items[i].chNFe = FNotasFiscais.Items[j].NFe.InfNFe.Id  then
+      if 'NFe'+AInfProt.Items[i].chNFe = FNotasFiscais.Items[j].NFe.InfNFe.Id  then
+//      if AInfProt.Items[i].chNFe = FNotasFiscais.Items[j].NFe.InfNFe.Id  then
       begin
         FNotasFiscais.Items[j].Confirmada := (AInfProt.Items[i].cStat = 100);
         FNotasFiscais.Items[j].Msg        := AInfProt.Items[i].xMotivo;

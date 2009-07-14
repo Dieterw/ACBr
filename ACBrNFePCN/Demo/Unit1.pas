@@ -95,6 +95,7 @@ type
     ACBrNFeDANFERave1: TACBrNFeDANFERave;
     sbtnGetCert: TSpeedButton;
     btnGerarNFE: TButton;
+    btnConsCad: TButton;
     procedure sbtnCaminhoCertClick(Sender: TObject);
     procedure sbtnLogoMarcaClick(Sender: TObject);
     procedure sbtnPathSalvarClick(Sender: TObject);
@@ -110,6 +111,7 @@ type
     procedure ACBrNFe1StatusChange(Sender: TObject);
     procedure sbtnGetCertClick(Sender: TObject);
     procedure btnGerarNFEClick(Sender: TObject);
+    procedure btnConsCadClick(Sender: TObject);
   private
     { Private declarations }
     procedure GravarConfiguracao ;
@@ -124,7 +126,7 @@ var
 
 implementation
 
-uses FileCtrl, pcnNFe, ufrmStatus, ACBrNFeNotasFiscais, DateUtils;
+uses FileCtrl, pcnNFe, ufrmStatus, ACBrNFeNotasFiscais, DateUtils, ACBrNFeUtil;
 
 const
   SELDIRHELP = 1000;
@@ -531,7 +533,6 @@ begin
     exit;
  if not(InputQuery('WebServices Inutilização ', 'Número Inicial', NumeroFinal)) then
     exit;
-
  if not(InputQuery('WebServices Inutilização ', 'Justificativa', Justificativa)) then
     exit;
   ACBrNFe1.WebServices.Inutiliza(edtEmitCNPJ.Text, Justificativa, StrToInt(Ano), StrToInt(Modelo), StrToInt(Serie), StrToInt(NumeroInicial), StrToInt(NumeroFinal));
@@ -600,6 +601,14 @@ begin
       if ( frmStatus = nil ) then
         frmStatus := TfrmStatus.Create(Application);
       frmStatus.lblStatus.Caption := 'Consultando Recibo de Lote...';
+      frmStatus.Show;
+      frmStatus.BringToFront;
+    end;
+    stNFeCadastro :
+    begin
+      if ( frmStatus = nil ) then
+        frmStatus := TfrmStatus.Create(Application);
+      frmStatus.lblStatus.Caption := 'Consultando Cadastro...';
       frmStatus.Show;
       frmStatus.BringToFront;
     end;
@@ -806,6 +815,30 @@ if not(InputQuery('WebServices Enviar', 'Numero da Nota', vAux)) then
   LocNFeW.Gerador.SalvarArquivo(ExtractFileDir(application.ExeName)+'\'+copy(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID, (length(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml');
   MemoResp.Lines.LoadFromFile(ExtractFileDir(application.ExeName)+'\'+copy(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID, (length(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml');
   LoadXML(MemoResp, WBResposta);
+end;
+
+procedure TForm1.btnConsCadClick(Sender: TObject);
+var
+ UF, Documento : String;
+begin
+ if not(InputQuery('WebServices Consulta Cadastro ', 'UF do Documento a ser Consultado:',    UF)) then
+    exit;
+ if not(InputQuery('WebServices Consulta Cadastro ', 'Documento(CPF/CNPJ)',    Documento)) then
+    exit;
+  Documento :=  Trim(NotaUtil.LimpaNumero(Documento));
+
+  ACBrNFe1.WebServices.ConsultaCadastro.UF  := UF;
+  if Length(Documento) > 11 then
+     ACBrNFe1.WebServices.ConsultaCadastro.CNPJ := Documento
+  else
+     ACBrNFe1.WebServices.ConsultaCadastro.CPF := Documento;
+  ACBrNFe1.WebServices.ConsultaCadastro.Executar;
+
+  MemoResp.Lines.Text :=  UTF8Encode(ACBrNFe1.WebServices.ConsultaCadastro.RetWS);
+  LoadXML(MemoResp, WBResposta);
+
+  ShowMessage(ACBrNFe1.WebServices.ConsultaCadastro.xMotivo);
+  ShowMessage(ACBrNFe1.WebServices.ConsultaCadastro.RetConsCad.InfCad.Items[0].xNome);
 end;
 
 end.

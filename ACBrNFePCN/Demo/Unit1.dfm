@@ -2,7 +2,7 @@ object Form1: TForm1
   Left = 406
   Top = 161
   Width = 666
-  Height = 416
+  Height = 418
   Caption = 'ACBrNFe'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -18,7 +18,7 @@ object Form1: TForm1
     Left = 0
     Top = 0
     Width = 278
-    Height = 380
+    Height = 382
     Align = alLeft
     TabOrder = 0
     object GroupBox1: TGroupBox
@@ -628,14 +628,14 @@ object Form1: TForm1
     Left = 278
     Top = 0
     Width = 372
-    Height = 380
+    Height = 382
     Align = alClient
     TabOrder = 1
     object Panel3: TPanel
       Left = 1
       Top = 1
       Width = 370
-      Height = 128
+      Height = 156
       Align = alTop
       TabOrder = 0
       object btnImprimir: TButton
@@ -710,12 +710,21 @@ object Form1: TForm1
         TabOrder = 7
         OnClick = btnGerarNFEClick
       end
+      object btnConsCad: TButton
+        Left = 9
+        Top = 126
+        Width = 177
+        Height = 25
+        Caption = 'Consulta Cadastro'
+        TabOrder = 8
+        OnClick = btnConsCadClick
+      end
     end
     object PageControl2: TPageControl
       Left = 1
-      Top = 129
+      Top = 157
       Width = 370
-      Height = 250
+      Height = 224
       ActivePage = TabSheet6
       Align = alClient
       TabOrder = 1
@@ -737,11 +746,11 @@ object Form1: TForm1
           Left = 0
           Top = 0
           Width = 362
-          Height = 222
+          Height = 196
           Align = alClient
           TabOrder = 0
           ControlData = {
-            4C0000006A250000F21600000000000000000000000000000000000000000000
+            4C0000006A250000421400000000000000000000000000000000000000000000
             000000004C000000000000000000000001000000E0D057007335CF11AE690800
             2B2E126208000000000000004C0000000114020000000000C000000000000046
             8000000000000000000000000000000000000000000000000000000000000000

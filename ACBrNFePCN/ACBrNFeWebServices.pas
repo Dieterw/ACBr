@@ -54,7 +54,7 @@ uses Classes, SysUtils,
      SoapHTTPClient, SOAPHTTPTrans, JwaWinCrypt, WinInet, ACBrNFeCAPICOM_TLB,
   {$ENDIF}
   pcnNFe, pcnNFeW,
-  pcnRetConsReciNFe, pcnAuxiliar, pcnConversao,
+  pcnRetConsReciNFe, pcnRetConsCad, pcnAuxiliar, pcnConversao,
   ACBrNFeNotasFiscais,
   ACBrNFeConfiguracoes ;
 
@@ -69,6 +69,7 @@ type
     procedure DoNFeConsulta;
     procedure DoNFeCancelamento;
     procedure DoNFeInutilizacao;
+    procedure DoNFeConsultaCadastro;
     {$IFDEF ACBrNFeOpenSSL}
        procedure ConfiguraHTTP( HTTP : THTTPSend; Action : AnsiString);
     {$ELSE}
@@ -87,7 +88,6 @@ type
   public
     function Executar: Boolean;virtual;
     constructor Create(AOwner : TComponent); virtual;
-  published
     property CabMsg: WideString read FCabMsg;
     property DadosMsg: AnsiString read FDadosMsg;
     property RetWS: AnsiString read FRetWS;
@@ -116,7 +116,6 @@ type
     property TMed : Integer read FTMed;
     property dhRetorno : TDateTime read FdhRetorno;
     property xObs :  String read FxObs;
-  published
   end;
 
   TNFeRecepcao = Class(TWebServicesBase)
@@ -140,7 +139,6 @@ type
     property xMotivo: String read FxMotivo;
     property dhRecbto: TDateTime read FdhRecbto;
     property TMed: Integer read FTMed;
-  published
     property Lote: Integer read FLote write FLote;
   end;
 
@@ -168,7 +166,6 @@ type
     property Recibo: String read FRecibo write FRecibo;
     property Protocolo: String read FProtocolo write FProtocolo;
     property ChaveNFe: String read FChaveNFe write FChaveNFe; 
-  published
     property NFeRetorno: TRetConsReciNFe read FNFeRetorno write FNFeRetorno;
   end;
 
@@ -189,7 +186,6 @@ type
     property cStat: Integer read FcStat;
     property xMotivo: String read FxMotivo;
     property cUF: Integer read FcUF;
-  published
     property Recibo: String read FRecibo write FRecibo;
     property NFeRetorno: TRetConsReciNFe read FNFeRetorno write FNFeRetorno;
   end;
@@ -207,7 +203,6 @@ type
     FdigVal : String;
   public
     function Executar: Boolean;override;
-  published
     property NFeChave: WideString read FNFeChave write FNFeChave;
     property Protocolo: WideString read FProtocolo write FProtocolo;
     property DhRecbto: WideString read FDhRecbto write FDhRecbto;
@@ -239,7 +234,6 @@ type
     property xMotivo: String read FxMotivo;
     property cUF: Integer read FcUF;
     property DhRecbto: TDateTime read FDhRecbto;
-  published
     property NFeChave: WideString read FNFeChave write FNFeChave;
     property Protocolo: WideString read FProtocolo write FProtocolo;
     property Justificativa: WideString read FJustificativa write SetJustificativa;
@@ -283,6 +277,34 @@ type
     property dhRecbto: TDateTime read FdhRecbto;
   end;
 
+  TNFeConsultaCadastro = Class(TWebServicesBase)
+  private
+    FverAplic: String;
+    FcStat: Integer;
+    FxMotivo: String;
+    FUF: String;
+    FIE: String;
+    FCNPJ: String;
+    FCPF: String;
+    FcUF: Integer;
+    FdhCons: TDateTime;
+    FRetConsCad : TRetConsCad;
+  public
+    function Executar: Boolean;override;
+    property verAplic: String read FverAplic;
+    property cStat: Integer read FcStat;
+    property xMotivo: String read FxMotivo;
+    property DhCons: TDateTime read FdhCons;
+    property cUF: Integer read FcUF;
+    property RetConsCad: TRetConsCad read FRetConsCad;
+
+    property UF:   String read FUF write FUF;
+    property IE:   String read FIE write FIE;
+    property CNPJ: String read FCNPJ write FCNPJ;
+    property CPF:  String read FCPF write FCPF;
+  end;
+
+
   TWebServices = Class(TWebServicesBase)
   private
     FACBrNFe : TComponent;
@@ -293,6 +315,7 @@ type
     FConsulta: TNFeConsulta;
     FCancelamento: TNFeCancelamento;
     FInutilizacao: TNFeInutilizacao;
+    FConsultaCadastro: TNFeConsultaCadastro;
   public
     constructor Create(AFNotaFiscalEletronica: TComponent);reintroduce;
     destructor Destroy; override;
@@ -308,6 +331,7 @@ type
     property Consulta: TNFeConsulta read FConsulta write FConsulta;
     property Cancelamento: TNFeCancelamento read FCancelamento write FCancelamento;
     property Inutilizacao: TNFeInutilizacao read FInutilizacao write FInutilizacao;
+    property ConsultaCadastro: TNFeConsultaCadastro read FConsultaCadastro write FConsultaCadastro;    
   end;
 
 implementation
@@ -325,7 +349,9 @@ uses {$IFDEF ACBrNFeOpenSSL}
      pcnCancNFe, pcnRetCancNFe,
      pcnConsSitNFe, pcnRetConsSitNFe,
      pcnInutNFe, pcnRetInutNFe,
-     pcnRetEnvNFe, pcnConsReciNFe , pcnNFeR, pcnLeitor, pcnProcNFe;
+     pcnRetEnvNFe, pcnConsReciNFe ,
+     pcnConsCad,
+     pcnNFeR, pcnLeitor, pcnProcNFe;
 
 {$IFNDEF ACBrNFeOpenSSL}
 const
@@ -467,6 +493,32 @@ begin
   InutNFe.Free
 end;
 
+procedure TWebServicesBase.DoNFeConsultaCadastro;
+var
+  Cabecalho: TCabecalho;
+  ConCadNFe: TConsCad;
+begin
+  Cabecalho := TCabecalho.Create;
+  Cabecalho.Versao       := NFecabMsg;
+  Cabecalho.VersaoDados  := NFeconsCad;
+  Cabecalho.GerarXML;
+
+  FCabMsg := Cabecalho.Gerador.ArquivoFormatoXML;
+  Cabecalho.Free;
+
+  ConCadNFe := TConsCad.Create;
+  ConCadNFe.schema := TsPL005c;
+  ConCadNFe.UF     := TNFeConsultaCadastro(Self).UF;
+  ConCadNFe.IE     := TNFeConsultaCadastro(Self).IE;
+  ConCadNFe.CNPJ   := TNFeConsultaCadastro(Self).CNPJ;
+  ConCadNFe.CPF    := TNFeConsultaCadastro(Self).CPF;
+  ConCadNFe.GerarXML;
+
+  FDadosMsg := ConCadNFe.Gerador.ArquivoFormatoXML;
+
+  ConCadNFe.Free
+end;
+
 procedure TWebServicesBase.DoNFeRecepcao;
 var
   Cabecalho: TCabecalho;
@@ -587,6 +639,8 @@ begin
     DONFeCancelamento
   else if self is TNFeInutilizacao then
     DoNFeInutilizacao
+  else if self is TNFeConsultaCadastro then
+    DoNFeConsultaCadastro
 end;
 
 procedure TWebServicesBase.LoadURL;
@@ -603,6 +657,8 @@ begin
     FURL  := NotaUtil.GetURL(FConfiguracoes.WebServices.UFCodigo, FConfiguracoes.WebServices.AmbienteCodigo, FConfiguracoes.Geral.FormaEmissaoCodigo, LayNfeCancelamento)
   else if self is TNFeInutilizacao then
     FURL  := NotaUtil.GetURL(FConfiguracoes.WebServices.UFCodigo, FConfiguracoes.WebServices.AmbienteCodigo, FConfiguracoes.Geral.FormaEmissaoCodigo, LayNfeInutilizacao)
+  else if self is TNFeConsultaCadastro then
+    FURL  := NotaUtil.GetURL(FConfiguracoes.WebServices.UFCodigo, FConfiguracoes.WebServices.AmbienteCodigo, FConfiguracoes.Geral.FormaEmissaoCodigo, LayNfeCadastro)
 end;
 
 { TWebServices }
@@ -651,6 +707,7 @@ begin
   FConsulta         := TNFeConsulta.Create(AFNotaFiscalEletronica);
   FCancelamento     := TNFeCancelamento.Create(AFNotaFiscalEletronica);
   FInutilizacao     := TNFeInutilizacao.Create(AFNotaFiscalEletronica);
+  FConsultaCadastro := TNFeConsultaCadastro.Create(AFNotaFiscalEletronica);
 end;
 
 destructor TWebServices.Destroy;
@@ -1541,7 +1598,7 @@ begin
     FxMotivo  := NFeRetorno.xMotivo;
     FcUF      := NFeRetorno.cUF ;
     FdhRecbto := NFeRetorno.dhRecbto;
-    Fprotocolo:= NFeRetorno.nProt; 
+    Fprotocolo:= NFeRetorno.nProt;
     FMsg   := NFeRetorno.XMotivo;
     Result := (NFeRetorno.cStat = 102);
     NFeRetorno.Free;
@@ -1553,7 +1610,7 @@ begin
        HTTP.Free;
        Acao.Free;
        Stream.Free;
-    {$ELSE}       
+    {$ELSE}
 //       Rio.Free;
     {$ENDIF}
     NotaUtil.ConfAmbiente;
@@ -1571,5 +1628,116 @@ begin
   else
     FJustificativa := Trim(AValue);
 end;
+
+{ TNFeConsultaCadastro }
+function TNFeConsultaCadastro.Executar: Boolean;
+var
+  {$IFDEF ACBrNFeOpenSSL}
+     Texto : String;
+     Acao  : TStringList ;
+     Stream: TMemoryStream;
+     StrStream: TStringStream;
+     HTTP: THTTPSend;
+  {$ELSE}
+     Nota: NfeInutilizacao;
+     Rio: THTTPRIO;
+  {$ENDIF}
+begin
+  Result := inherited Executar;
+
+  {$IFDEF ACBrNFeOpenSSL}
+     Acao := TStringList.Create;
+     Stream := TMemoryStream.Create;
+     Texto := '<?xml version="1.0" encoding="utf-8"?>';
+     Texto := Texto + '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">';
+     Texto := Texto + '  <soap:Body>';
+     Texto := Texto + '    <consultaCadastro xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro">';
+     Texto := Texto + '      <nfeCabecMsg>';
+
+     Texto := Texto + NotaUtil.ParseText(FCabMsg,False);
+
+     Texto := Texto + '      </nfeCabecMsg>';
+     Texto := Texto + '      <nfeDadosMsg>';
+
+     Texto := Texto + NotaUtil.ParseText(FDadosMsg,False);
+
+     Texto := Texto + '      </nfeDadosMsg>';
+     Texto := Texto + '    </consultaCadastro>';
+     Texto := Texto + '  </soap:Body>';
+     Texto := Texto + '</soap:Envelope>';
+     Acao.Text := Texto;
+
+     Acao.SaveToStream(Stream);
+
+     HTTP := THTTPSend.Create;
+  {$ELSE}
+     Rio := THTTPRIO.Create(nil);
+     Rio.HTTPWebNode.OnBeforePost := OnBeforePost;
+  {$ENDIF}
+  try
+    TACBrNFe( FACBrNFe ).SetStatus( stNFeCadastro );
+    if FConfiguracoes.Geral.Salvar then
+      FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+'-ped-cad.xml', FDadosMsg);
+
+    {$IFDEF ACBrNFeOpenSSL}
+       HTTP.Document.LoadFromStream(Stream);
+       ConfiguraHTTP(HTTP,'SOAPAction: "http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro/consultaCadastro"');
+       HTTP.HTTPMethod('POST', FURL);
+
+       StrStream := TStringStream.Create('');
+       StrStream.CopyFrom(HTTP.Document, 0);
+       FRetWS := NotaUtil.SeparaDados( NotaUtil.ParseText(StrStream.DataString, True),'consultaCadastroResult');
+       StrStream.Free;
+    {$ELSE}
+       Nota   := GetNfeInutilizacao(False, FURL, Rio);
+       FRetWS := Nota.nfeInutilizacaoNF(FCabMsg, FDadosMsg);
+    {$ENDIF}
+
+    if FRetConsCad = nil then
+       FRetConsCad := TRetConsCad.Create;
+    FRetConsCad.Leitor.Arquivo := FRetWS;
+    FRetConsCad.LerXml;
+
+    TACBrNFe( FACBrNFe ).SetStatus( stIdle );
+    if FConfiguracoes.WebServices.Visualizar then
+    begin
+      ShowMessage('Versão Aplicativo : '+FRetConsCad.verAplic+LineBreak+
+                  'Status Código : '+IntToStr(FRetConsCad.cStat)+LineBreak+
+                  'Status Descrição : '+FRetConsCad.xMotivo+LineBreak+
+                  'UF : '+CodigoParaUF(FRetConsCad.cUF)+LineBreak+
+                  'Consulta : '+DateTimeToStr(FRetConsCad.dhCons));
+    end;
+    FverAplic := FRetConsCad.verAplic;
+    FcStat    := FRetConsCad.cStat;
+    FxMotivo  := FRetConsCad.xMotivo;
+    FdhCons   := FRetConsCad.dhCons;
+    FcUF      := FRetConsCad.cUF ;
+
+    if FRetConsCad.cStat = 111 then
+     begin
+       FUF   := FRetConsCad.UF ;
+       FIE   := FRetConsCad.IE ;
+       FCNPJ := FRetConsCad.CNPJ ;
+       FCPF  := FRetConsCad.CPF ;
+     end;
+
+    FMsg      := FRetConsCad.XMotivo;
+//    FRetConsCad.Free;
+
+    if FConfiguracoes.Geral.Salvar then
+      FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+'-cad.xml', FRetWS);
+  finally
+    {$IFDEF ACBrNFeOpenSSL}
+       HTTP.Free;
+       Acao.Free;
+       Stream.Free;
+    {$ELSE}
+//       Rio.Free;
+    {$ENDIF}
+    NotaUtil.ConfAmbiente;
+    TACBrNFe( FACBrNFe ).SetStatus( stIdle );
+  end;
+end;
+
 
 end.

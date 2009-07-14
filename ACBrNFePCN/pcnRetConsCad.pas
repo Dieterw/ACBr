@@ -127,11 +127,13 @@ implementation
 constructor TRetConsCad.Create;
 begin
   FLeitor := TLeitor.Create;
+  FInfCad := TInfCadCollection.Create(Self);
 end;
 
 destructor TRetConsCad.Destroy;
 begin
   FLeitor.Free;
+  FInfCad.Free;
   inherited;
 end;
 
@@ -181,8 +183,10 @@ begin
       (*GR06d*)FCPF := Leitor.rCampo(tcStr, 'CPF');
       (*GR06e*)FdhCons := Leitor.rCampo(tcDatHor, 'dhCons');
       (*GR06f*)FcUF := Leitor.rCampo(tcInt, 'cUF');
+      if Leitor.rExtrai(2, 'infCad', '', i + 1) = ''  then
+         InfCad.Add;
       i := 0;
-      while Leitor.rExtrai(2, 'InfCad', '', i + 1) <> '' do
+      while Leitor.rExtrai(2, 'infCad', '', i + 1) <> '' do
       begin
         InfCad.Add;
         (*GR08*)InfCad[i].FIE := Leitor.rCampo(tcStr, 'IE');

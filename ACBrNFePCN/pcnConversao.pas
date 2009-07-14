@@ -55,7 +55,7 @@ interface uses
 
 type
 
-  TStatusACBrNFe = ( stIdle, stNFeStatusServico, stNFeRecepcao, stNfeRetRecepcao, stNfeConsulta, stNfeCancelamento, stNfeInutilizacao, stNFeRecibo );
+  TStatusACBrNFe = ( stIdle, stNFeStatusServico, stNFeRecepcao, stNfeRetRecepcao, stNfeConsulta, stNfeCancelamento, stNfeInutilizacao, stNFeRecibo, stNFeCadastro );
   (* IMPORTANTE - Sempre que alterar um Tipo efetuar a atualização das funções de conversão correspondentes *)
   TLayOut = (LayNfeRecepcao,LayNfeRetRecepcao,LayNfeCancelamento,LayNfeInutilizacao,LayNfeConsulta,LayNfeStatusServico,LayNfeCadastro);
 
@@ -103,6 +103,7 @@ const
   NFeconsSitNFe   = '1.07';
   NFecancNFe      = '1.07';
   NFeinutNFe      = '1.07';
+  NFeconsCad      = '1.01';
 
   LineBreak = #13#10;
 

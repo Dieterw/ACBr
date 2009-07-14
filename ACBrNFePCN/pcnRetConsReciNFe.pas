@@ -182,7 +182,9 @@ begin
       (*BR06a*)FcUF := Leitor.rCampo(tcInt, 'cUF');
       i := 0;
       if FcStat = 104 then
-      begin
+       begin
+        if Leitor.rExtrai(1, 'infProt', '', i + 1) = '' then
+           ProtNFe.Add;
         while Leitor.rExtrai(1, 'infProt', '', i + 1) <> '' do
         begin
           ProtNFe.Add;
@@ -196,7 +198,9 @@ begin
           (*PR12*)ProtNFe[i].FxMotivo := Leitor.rCampo(tcStr, 'xMotivo');
           inc(i);
         end;
-      end;
+       end
+      else
+        ProtNFe.Add; 
       Result := True;
     end;
   except

@@ -771,7 +771,7 @@ begin
     LayNfeInutilizacao  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.ba.gov.br/webservices/nfe/NfeInutilizacao.asmx', 'https://hnfe.sefaz.ba.gov.br/webservices/nfe/NfeInutilizacao.asmx');
     LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.ba.gov.br/webservices/nfe/NfeConsulta.asmx', 'https://hnfe.sefaz.ba.gov.br/webservices/nfe/NfeConsulta.asmx');
     LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.ba.gov.br/webservices/nfe/NfeStatusServico.asmx', 'https://hnfe.sefaz.ba.gov.br/webservices/nfe/NfeStatusServico.asmx');
-//    LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.ba.gov.br/webservices/nfe/NfeConsulta.asmx', '');
+    LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.ba.gov.br/webservices/nfe/NfeConsulta.asmx', '');
   end;
 end;
 

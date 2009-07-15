@@ -342,6 +342,7 @@ uses {$IFDEF ACBrNFeOpenSSL}
         ACBrNFeNfeStatusServicoU, ACBrNFeNfeRecepcaoU,
         ACBrNFeNfeRetRecepcaoU, ACBrNFeNfeConsultaU,
         ACBrNFeNfeCancelamentoU, ACBrNFeNfeInutilizacaoU,
+        ACBrNFeCadConsultaCadastroU,
      {$ENDIF}
      ACBrNFeUtil, ACBrNFe,
      pcnGerador, pcnCabecalho,
@@ -1639,7 +1640,7 @@ var
      StrStream: TStringStream;
      HTTP: THTTPSend;
   {$ELSE}
-     Nota: NfeInutilizacao;
+     Nota: CadConsultaCadastro;
      Rio: THTTPRIO;
   {$ENDIF}
 begin
@@ -1689,8 +1690,8 @@ begin
        FRetWS := NotaUtil.SeparaDados( NotaUtil.ParseText(StrStream.DataString, True),'consultaCadastroResult');
        StrStream.Free;
     {$ELSE}
-       Nota   := GetNfeInutilizacao(False, FURL, Rio);
-       FRetWS := Nota.nfeInutilizacaoNF(FCabMsg, FDadosMsg);
+       Nota   := GetCadConsultaCadastro(False, FURL, Rio);
+       FRetWS := Nota.consultaCadastro(FCabMsg, FDadosMsg);
     {$ENDIF}
 
     if FRetConsCad = nil then

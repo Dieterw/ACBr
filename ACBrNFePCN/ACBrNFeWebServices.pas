@@ -1624,7 +1624,7 @@ end;
 procedure TNFeInutilizacao.SetJustificativa(AValue: WideString);
 begin
   if NotaUtil.EstaVazio(AValue) then
-    raise Exception.Create('Informar uma Justificativa para Inutilização de numeração da Nota Fiscal Eletronica');
+    raise Exception.Create('Informar uma Justificativa para Inutilização de numeração da Nota Fiscal Eletronica')
   else
     AValue := NotaUtil.TrataString(AValue);    
 

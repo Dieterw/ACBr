@@ -1171,11 +1171,11 @@ begin
     end;
   end;
 
-  fChaveNfe  := FNFeRetorno.ProtNFe.Items[0].chNFe; //linha adicionada
-  fProtocolo := FNFeRetorno.ProtNFe.Items[0].nProt; //linha adicionada
-  fcStat     := FNFeRetorno.ProtNFe.Items[0].cStat; //linha adicionada
+  fChaveNfe  := FNFeRetorno.ProtNFe.Items[0].chNFe;
+  fProtocolo := FNFeRetorno.ProtNFe.Items[0].nProt;
+  fcStat     := FNFeRetorno.ProtNFe.Items[0].cStat;
 
-  FNFeRetorno.Free;
+//  FNFeRetorno.Free;
 end;
 
 { TNFeRecibo }

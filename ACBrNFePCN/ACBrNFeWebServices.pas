@@ -1506,7 +1506,7 @@ end;
 procedure TNFeCancelamento.SetJustificativa(AValue: WideString);
 begin
   if NotaUtil.EstaVazio(AValue) then
-    raise Exception.Create('Informar uma Justificativa para cancelar a Nota Fiscal Eletronica');
+    raise Exception.Create('Informar uma Justificativa para cancelar a Nota Fiscal Eletronica')
   else
     AValue := NotaUtil.TrataString(AValue);
 

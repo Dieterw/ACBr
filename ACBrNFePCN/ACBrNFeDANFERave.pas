@@ -214,6 +214,18 @@ procedure TACBrNFeDANFERave.ImprimirDANFEPDF(NFE : TNFe = nil);
 var
  i : Integer;
 begin
+  if FRaveFile = '' then
+      raise Exception.Create(' Arquivo de Relatório nao informado.') ;
+
+  if not FilesExists(FRaveFile) then
+     raise Exception.Create('Arquivo '+FRaveFile+' Nao encontrado');
+
+  {$IFDEF RAVE50VCL}
+     RPDefine.DataID := IntToStr(Application.Handle);  // Evita msg de erro;...
+  {$ENDIF}
+     
+  dmDanfe.RvProject.ProjectFile := FRaveFile ; //ExtractFileDir(application.ExeName)+'\Report\NotaFiscalEletronica.rav';
+
   dmDanfe.RvSystem1.DefaultDest := rdFile;
   dmDanfe.RvSystem1.DoNativeOutput:=false;
   dmDanfe.RvSystem1.RenderObject:= dmDanfe.RvRenderPDF1;

@@ -1001,7 +1001,7 @@ begin
   end;
 
   if not (FNFe.Ide.tpEmis=teNormal) then
-     Connection.WriteStrData('','DANFE EM CONTIGÊNCIA, IMPRESSO EM DECORRÊNCIA DE PROBLEMAS TÉCNICOS')
+     Connection.WriteStrData('','DANFE EM CONTINGÊNCIA, IMPRESSO EM DECORRÊNCIA DE PROBLEMAS TÉCNICOS')
   else
      Connection.WriteStrData('','');
 end;

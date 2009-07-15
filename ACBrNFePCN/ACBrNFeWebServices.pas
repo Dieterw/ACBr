@@ -1507,6 +1507,8 @@ procedure TNFeCancelamento.SetJustificativa(AValue: WideString);
 begin
   if NotaUtil.EstaVazio(AValue) then
     raise Exception.Create('Informar uma Justificativa para cancelar a Nota Fiscal Eletronica');
+  else
+    AValue := NotaUtil.TrataString(AValue);
 
   if Length(AValue) < 15 then
     FJustificativa := NotaUtil.PadE(AValue, 15,'-')
@@ -1623,6 +1625,8 @@ procedure TNFeInutilizacao.SetJustificativa(AValue: WideString);
 begin
   if NotaUtil.EstaVazio(AValue) then
     raise Exception.Create('Informar uma Justificativa para Inutilização de numeração da Nota Fiscal Eletronica');
+  else
+    AValue := NotaUtil.TrataString(AValue);    
 
   if Length(Trim(AValue)) < 15 then
    raise Exception.Create('A Justificativa para Inutilização de numeração da Nota Fiscal Eletronica deve ter no minimo 15 caracteres')

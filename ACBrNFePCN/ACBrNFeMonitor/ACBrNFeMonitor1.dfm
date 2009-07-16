@@ -117,6 +117,9 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
     Height = 40
     Align = alBottom
     TabOrder = 1
+    DesignSize = (
+      535
+      40)
     object Image1: TImage
       Left = 1
       Top = 1
@@ -3973,6 +3976,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       Top = 3
       Width = 96
       Height = 37
+      Anchors = [akTop, akRight]
       Caption = 'Cancelar'
       TabOrder = 2
       Visible = False
@@ -4010,6 +4014,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       Top = 2
       Width = 96
       Height = 37
+      Anchors = [akTop, akRight]
       Caption = 'Minimizar'
       TabOrder = 0
       OnClick = btMinimizarClick
@@ -4046,6 +4051,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       Top = 2
       Width = 96
       Height = 37
+      Anchors = [akTop, akRight]
       Caption = 'Configurar'
       TabOrder = 1
       OnClick = btConfigClick
@@ -4827,7 +4833,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           Top = 108
           Width = 242
           Height = 21
-          ItemHeight = 0
+          ItemHeight = 13
           TabOrder = 3
         end
         object cbxImpDescPorc: TCheckBox

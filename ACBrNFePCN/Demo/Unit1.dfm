@@ -33,7 +33,7 @@ object Form1: TForm1
         Top = 15
         Width = 258
         Height = 320
-        ActivePage = TabSheet1
+        ActivePage = TabSheet2
         Align = alClient
         TabOrder = 0
         object TabSheet1: TTabSheet
@@ -718,6 +718,15 @@ object Form1: TForm1
         Caption = 'Consulta Cadastro'
         TabOrder = 8
         OnClick = btnConsCadClick
+      end
+      object btnGerarPDF: TButton
+        Left = 192
+        Top = 126
+        Width = 177
+        Height = 25
+        Caption = 'Gerar PDF'
+        TabOrder = 9
+        OnClick = btnGerarPDFClick
       end
     end
     object PageControl2: TPageControl

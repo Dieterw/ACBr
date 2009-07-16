@@ -96,6 +96,7 @@ type
     sbtnGetCert: TSpeedButton;
     btnGerarNFE: TButton;
     btnConsCad: TButton;
+    btnGerarPDF: TButton;
     procedure sbtnCaminhoCertClick(Sender: TObject);
     procedure sbtnLogoMarcaClick(Sender: TObject);
     procedure sbtnPathSalvarClick(Sender: TObject);
@@ -112,6 +113,7 @@ type
     procedure sbtnGetCertClick(Sender: TObject);
     procedure btnGerarNFEClick(Sender: TObject);
     procedure btnConsCadClick(Sender: TObject);
+    procedure btnGerarPDFClick(Sender: TObject);
   private
     { Private declarations }
     procedure GravarConfiguracao ;
@@ -517,6 +519,8 @@ if not(InputQuery('WebServices Enviar', 'Numero da Nota', vAux)) then
 
   MemoResp.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.Retorno.RetWS);
   LoadXML(MemoResp, WBResposta);
+
+   ACBrNFe1.NotasFiscais.Clear;
 end;
 
 procedure TForm1.btnInutilizarClick(Sender: TObject);
@@ -839,6 +843,20 @@ begin
 
   ShowMessage(ACBrNFe1.WebServices.ConsultaCadastro.xMotivo);
   ShowMessage(ACBrNFe1.WebServices.ConsultaCadastro.RetConsCad.InfCad.Items[0].xNome);
+end;
+
+procedure TForm1.btnGerarPDFClick(Sender: TObject);
+begin
+  OpenDialog1.Title := 'Selecione a NFE';
+  OpenDialog1.DefaultExt := '*-nfe.XML';
+  OpenDialog1.Filter := 'Arquivos NFE (*-nfe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
+  OpenDialog1.InitialDir := ACBrNFe1.Configuracoes.Geral.PathSalvar;
+  if OpenDialog1.Execute then
+  begin
+    ACBrNFe1.NotasFiscais.Clear;
+    ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
+    ACBrNFe1.NotasFiscais.ImprimirPDF;
+  end;
 end;
 
 end.

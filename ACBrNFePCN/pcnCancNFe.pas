@@ -110,7 +110,7 @@ begin
     if not ValidarChave('NFe' + SomenteNumeros(FchNFe)) then
       Gerador.wAlerta('CP07', 'chNFe', '', 'Chave de NFe inválida');
     Gerador.wCampo(tcEsp, 'CP08', 'nProt', 015, 015, 1, SomenteNumeros(FnProt), DSC_NPROT);
-    Gerador.wCampo(tcStr, 'CP09', 'xJust', 015, 255, 1, FxJust, DSC_XJUST);
+    Gerador.wCampo(tcStr, 'CP09', 'xJust', 015, 255, 1, FiltrarTextoXML(true, FxJust), DSC_XJUST);
     Gerador.wGrupo('/infCanc');
     Gerador.wGrupo('/cancNFe');
     Result := (Gerador.ListaDeAlertas.Count = 0);

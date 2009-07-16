@@ -671,7 +671,7 @@ begin
 //  (12,27,16,13,29,23,53,32,52,21,51,50,31,15,25,41,26,22,33,24,43,11,14,42,35,28,17);
 
 case FormAEmissao of
-  1: begin
+  1 or 5: begin
       case AUF of
          12: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //AC
          27: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //AL

@@ -121,6 +121,7 @@ const
   ERR_MSG_GERAR_CHAVE = 'Erro ao gerar a chave da NFe!';
   ERR_MSG_FINAL_MENOR_INICIAL = 'O numero final não pode ser menor que o inicial';
   ERR_MSG_ARQUIVO_NAO_ENCONTRADO = 'Arquivo não encontrado';
+  ERR_MSG_SOMENTE_UM = 'Somente um campo deve ser preenchido';
 
   CODIGO_BRASIL = 1058;
 
@@ -128,9 +129,10 @@ const
   ENCODING_UTF8_STD = '?xml version="1.0" encoding="UTF-8" standalone="no"?';
   NAME_SPACE = 'xmlns="http://www.portalfiscal.inf.br/nfe"';
 
+  V1_00 = 'versao="1.00"';
+  V1_01 = 'versao="1.01"';
   V1_07 = 'versao="1.07"';
   V1_10 = 'versao="1.10"';
-  V1_01 = 'versao="1.01"';
 
   // NFE //
 
@@ -284,7 +286,7 @@ const
   DSC_VERPROC = 'Versão do Processo de emissão da NF-e';
   DSC_VFRETE = 'Valor Total do Frete';
   DSC_VICMS = 'Valor do ICMS';
-  DSC_VICMSRET = 'Valor doi ICMS Retido';
+  DSC_VICMSRET = 'Valor do ICMS Retido';
   DSC_VICMSST = 'Valor do ICMS Substituição Tributaria';
   DSC_VICMSSTCONS = 'Valor do ICMS Substituição Tributaria da UF de Consumo';
   DSC_VICMSSTDEST = 'Valor do ICMS Substituição Tributaria da UF de Destino';
@@ -344,6 +346,10 @@ const
   DSC_NPROT = 'Numero do protocolo';
   DSC_NREC = 'Numero do recibo';
   DSC_IDLOTE = 'Numero do Lote';
+  DSC_VERAPLIC = 'Versão do aplicativo';
+  DSC_NREGDPEC = 'Número de registro do DPEC';
+  DSC_DPEC_ID = 'Grupo de Identificação da TAG a ser assinada. DPEC + CNPJ do emissor.';
+
 implementation
 
 { TGerador }

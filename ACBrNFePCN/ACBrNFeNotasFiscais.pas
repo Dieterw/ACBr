@@ -218,7 +218,7 @@ begin
         NomeArq := TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).Configuracoes.Geral.PathSalvar
      else
         NomeArq := TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.PathPDF;
-//     m.AddPartBinaryFromFile(PathWithDelim(NomeArq)+NFe.infNFe.ID+'.pdf', p);
+     m.AddPartBinaryFromFile(PathWithDelim(NomeArq)+NFe.infNFe.ID+'.pdf', p);
      m.header.tolist.add(sTo);
      m.header.From := sFrom;
      m.header.subject:=sAssunto;

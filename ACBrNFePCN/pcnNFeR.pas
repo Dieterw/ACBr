@@ -437,7 +437,7 @@ begin
     end;
     if Leitor.rExtrai(3, 'IPINT') <> '' then
     begin
-      (*O09*)NFe.Det[i].Imposto.IPI.CST := StrToCSTIPI(ok,Leitor.rCampo(tcStr, 'CST'));
+      (*O09*)NFe.Det[i].Imposto.IPI.CST := StrToCSTIPI(ok, Leitor.rCampo(tcStr, 'CST'));
     end;
     if Leitor.rExtrai(3, 'II') <> '' then
     begin

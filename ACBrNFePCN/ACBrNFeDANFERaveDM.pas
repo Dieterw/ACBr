@@ -854,7 +854,7 @@ begin
     Connection.WriteStrData('', inttostr(Serie));
     Connection.WriteStrData('', NotaUtil.FormatarNumeroDocumentoFiscal(inttostr(NNF)));
     Connection.WriteStrData('', NotaUtil.FormatDate(datetostr(DEmi)));
-    Connection.WriteStrData('', IfThen(NotaUtil.NaoEstaVazio(datetostr(DSaiEnt)), NotaUtil.FormatDate(datetostr(DSaiEnt))));
+    Connection.WriteStrData('', IfThen(DSaiEnt<>0, NotaUtil.FormatDate(datetostr(DSaiEnt))));
     Connection.WriteStrData('', NotaUtil.SeSenao(TpNF=tnEntrada,'0','1'));
     Connection.WriteStrData('', inttostr(CMunFG));
     Connection.WriteStrData('', NotaUtil.SeSenao(TpImp=tiRetrato,'1','2'));

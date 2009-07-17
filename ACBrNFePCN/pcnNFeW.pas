@@ -163,7 +163,7 @@ begin
   FOpcoes.FGerarTXTSimultaneamente := False;
   FOpcoes.FGerarTagIPIparaNaoTributado := True;
   FOpcoes.FNormatizarMunicipios := False;
-  FOpcoes.FGerarTagAssinatura := taNunca;
+  FOpcoes.FGerarTagAssinatura := taSomenteSeAssinada;
   FOpcoes.FValidarInscricoes := False;
   FOpcoes.FValidarListaServicos := False;
 end;

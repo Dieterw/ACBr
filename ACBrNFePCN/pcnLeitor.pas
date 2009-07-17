@@ -177,15 +177,20 @@ begin
   if Tipo = tcStr then
     result := ReverterFiltroTextoXML(ConteudoTag)
   else if Tipo = tcDat then
-    result := EncodeDate(StrToInt(copy(ConteudoTag, 01, 4)), StrToInt(copy(ConteudoTag, 06, 2)), StrToInt(copy(ConteudoTag, 09, 2)))
+   begin
+      if length(ConteudoTag)>0 then
+         result := EncodeDate(StrToInt(copy(ConteudoTag, 01, 4)), StrToInt(copy(ConteudoTag, 06, 2)), StrToInt(copy(ConteudoTag, 09, 2)))
+      else
+         result:=0;
+   end
   else if Tipo = tcDatHor then
-  begin
+   begin
       if length(ConteudoTag)>0 then
          result := EncodeDate(StrToInt(copy(ConteudoTag, 01, 4)), StrToInt(copy(ConteudoTag, 06, 2)), StrToInt(copy(ConteudoTag, 09, 2))) +
                    EncodeTime(StrToInt(copy(ConteudoTag, 12, 2)), StrToInt(copy(ConteudoTag, 15, 2)), StrToInt(copy(ConteudoTag, 18, 2)), 0)
       else
          result:=0;
-  end
+   end
   else if (Tipo = tcDe2) or (Tipo = tcDe3) or (Tipo = tcDe4) then
     result := StrToFloat(StringReplace('0' + ConteudoTag, '.', DecimalSeparator, []))
   else if Tipo = tcEsp then

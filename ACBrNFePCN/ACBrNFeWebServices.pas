@@ -158,6 +158,7 @@ type
   public
     function Executar: Boolean; override;
     constructor Create(AOwner : TComponent; ANotasFiscais : TNotasFiscais);reintroduce;
+    destructor destroy; override;
     property TpAmb: TpcnTipoAmbiente read FTpAmb;
     property verAplic: String read FverAplic;
     property cStat: Integer read FcStat;
@@ -181,6 +182,7 @@ type
   public
     function Executar: Boolean; override;
     constructor Create(AOwner : TComponent);reintroduce;
+    destructor destroy; override;
     property TpAmb: TpcnTipoAmbiente read FTpAmb;
     property verAplic: String read FverAplic;
     property cStat: Integer read FcStat;
@@ -720,6 +722,7 @@ begin
   FConsulta.Free;
   FCancelamento.Free;
   FInutilizacao.Free;
+  FConsultaCadastro.Free;
   inherited;
 end;
 
@@ -1033,6 +1036,13 @@ begin
   FNotasFiscais := ANotasFiscais;
 end;
 
+destructor TNFeRetRecepcao.destroy;
+begin
+   if assigned(FNFeRetorno) then
+      FNFeRetorno.Free;
+   inherited;
+end;
+
 function TNFeRetRecepcao.Executar: Boolean;
   function Processando: Boolean;
   var
@@ -1096,6 +1106,9 @@ function TNFeRetRecepcao.Executar: Boolean;
          Nota   := GetNfeRetRecepcao( False, FURL, Rio);
          FRetWS := Nota.nfeRetRecepcao(FCabMsg, FDadosMsg);
       {$ENDIF}
+      if assigned(FNFeRetorno) then
+         FNFeRetorno.Free;
+
       FNFeRetorno := TRetConsReciNFe.Create;
       FNFeRetorno.Leitor.Arquivo := FRetWS;
       FNFeRetorno.LerXML;
@@ -1184,6 +1197,13 @@ begin
   inherited Create(AOwner);
 end;
 
+destructor TNFeRecibo.destroy;
+begin
+   if assigned(FNFeRetorno) then
+      FNFeRetorno.Free;
+  inherited;
+end;
+
 function TNFeRecibo.Executar: Boolean;
 var
  {$IFDEF ACBrNFeOpenSSL}
@@ -1246,6 +1266,8 @@ begin
       Nota   := GetNfeRetRecepcao( False, FURL, Rio);
       FRetWS := Nota.nfeRetRecepcao(FCabMsg, FDadosMsg);
    {$ENDIF}
+   if assigned(FNFeRetorno) then
+      FNFeRetorno.Free;
    FNFeRetorno := TRetConsReciNFe.Create;
    FNFeRetorno.Leitor.Arquivo := FRetWS;
    FNFeRetorno.LerXML;

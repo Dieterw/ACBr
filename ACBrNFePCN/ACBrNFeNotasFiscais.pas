@@ -284,25 +284,28 @@ begin
   for i:= 0 to Self.Count-1 do
    begin
      LocNFeW := TNFeW.Create(Self.Items[i].NFe);
-     LocNFeW.schema := TsPL005c;
-     LocNFeW.GerarXml;
+     try
+        LocNFeW.schema := TsPL005c;
+        LocNFeW.GerarXml;
 
 {$IFDEF ACBrNFeOpenSSL}
-     if not(NotaUtil.Assinar(LocNFeW.Gerador.ArquivoFormatoXML, FConfiguracoes.Certificados.Certificado , FConfiguracoes.Certificados.Senha, vAssinada, FMsg)) then
-       raise Exception.Create('Falha ao assinar Nota Fiscal Eletrônica '+
-                               IntToStr(Self.Items[i].NFe.Ide.cNF)+FMsg);
+        if not(NotaUtil.Assinar(LocNFeW.Gerador.ArquivoFormatoXML, FConfiguracoes.Certificados.Certificado , FConfiguracoes.Certificados.Senha, vAssinada, FMsg)) then
+           raise Exception.Create('Falha ao assinar Nota Fiscal Eletrônica '+
+                                   IntToStr(Self.Items[i].NFe.Ide.cNF)+FMsg);
 {$ELSE}
-     if not(NotaUtil.Assinar(LocNFeW.Gerador.ArquivoFormatoXML, FConfiguracoes.Certificados.GetCertificado , vAssinada, FMsg)) then
-       raise Exception.Create('Falha ao assinar Nota Fiscal Eletrônica '+
-                               IntToStr(Self.Items[i].NFe.Ide.cNF)+FMsg);
+        if not(NotaUtil.Assinar(LocNFeW.Gerador.ArquivoFormatoXML, FConfiguracoes.Certificados.GetCertificado , vAssinada, FMsg)) then
+           raise Exception.Create('Falha ao assinar Nota Fiscal Eletrônica '+
+                                   IntToStr(Self.Items[i].NFe.Ide.cNF)+FMsg);
 {$ENDIF}
-     vAssinada := StringReplace( vAssinada, '<'+ENCODING_UTF8_STD+'>', '', [rfReplaceAll] ) ;
-     vAssinada := StringReplace( vAssinada, '<?xml version="1.0"?>', '', [rfReplaceAll] ) ;
-     Self.Items[i].XML := vAssinada;
-     if FConfiguracoes.Geral.Salvar then
-        FConfiguracoes.Geral.Save(StringReplace(Self.Items[i].NFe.infNFe.ID, 'NFe', '', [rfIgnoreCase])+'-nfe.xml', vAssinada);
+        vAssinada := StringReplace( vAssinada, '<'+ENCODING_UTF8_STD+'>', '', [rfReplaceAll] ) ;
+        vAssinada := StringReplace( vAssinada, '<?xml version="1.0"?>', '', [rfReplaceAll] ) ;
+        Self.Items[i].XML := vAssinada;
+        if FConfiguracoes.Geral.Salvar then
+           FConfiguracoes.Geral.Save(StringReplace(Self.Items[i].NFe.infNFe.ID, 'NFe', '', [rfIgnoreCase])+'-nfe.xml', vAssinada);
 
-     LocNFeW.Free;
+     finally
+        LocNFeW.Free;
+     end;
    end;
 
 end;
@@ -315,9 +318,13 @@ begin
  for i:= 0 to Self.Count-1 do
   begin
     LocNFeW := TNFeW.Create(Self.Items[i].NFe);
-    LocNFeW.schema := TsPL005c;
-//    LocNFeW.Gerador.Opcoes.GerarTagIPIparaNaoTributado := False;
-    LocNFeW.GerarXml;
+    try
+       LocNFeW.schema := TsPL005c;
+//       LocNFeW.Gerador.Opcoes.GerarTagIPIparaNaoTributado := False;
+       LocNFeW.GerarXml;
+    finally
+       LocNFeW.Free;
+    end;
   end;
 end;
 

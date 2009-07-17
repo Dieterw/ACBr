@@ -170,6 +170,7 @@ function TRetConsCad.LerXML: boolean;
 var
   i: integer;
 begin
+  i := 0; 
   Result := False;
   try
     if Leitor.rExtrai(1, 'infCons') <> '' then

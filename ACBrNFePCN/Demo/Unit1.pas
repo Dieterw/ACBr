@@ -97,6 +97,22 @@ type
     btnGerarNFE: TButton;
     btnConsCad: TButton;
     btnGerarPDF: TButton;
+    btnEnviarEmail: TButton;
+    TabSheet7: TTabSheet;
+    GroupBox5: TGroupBox;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    Label26: TLabel;
+    Label27: TLabel;
+    Label28: TLabel;
+    edtSmtpHost: TEdit;
+    edtSmtpPort: TEdit;
+    edtSmtpUser: TEdit;
+    edtSmtpPass: TEdit;
+    edtEmailAssunto: TEdit;
+    cbEmailSSL: TCheckBox;
+    mmEmailMsg: TMemo;
     procedure sbtnCaminhoCertClick(Sender: TObject);
     procedure sbtnLogoMarcaClick(Sender: TObject);
     procedure sbtnPathSalvarClick(Sender: TObject);
@@ -114,6 +130,7 @@ type
     procedure btnGerarNFEClick(Sender: TObject);
     procedure btnConsCadClick(Sender: TObject);
     procedure btnGerarPDFClick(Sender: TObject);
+    procedure btnEnviarEmailClick(Sender: TObject);
   private
     { Private declarations }
     procedure GravarConfiguracao ;
@@ -138,6 +155,7 @@ const
 procedure TForm1.GravarConfiguracao;
 Var IniFile : String ;
     Ini     : TIniFile ;
+    StreamMemo : TMemoryStream;
 begin
   IniFile := ChangeFileExt( Application.ExeName, '.ini') ;
 
@@ -175,6 +193,18 @@ begin
       Ini.WriteString( 'Emitente','CodCidade'  ,edtEmitCodCidade.Text) ;
       Ini.WriteString( 'Emitente','Cidade'     ,edtEmitCidade.Text) ;
       Ini.WriteString( 'Emitente','UF'         ,edtEmitUF.Text) ;
+
+      Ini.WriteString( 'Email','Host'    ,edtSmtpHost.Text) ;
+      Ini.WriteString( 'Email','Port'    ,edtSmtpPort.Text) ;
+      Ini.WriteString( 'Email','User'    ,edtSmtpUser.Text) ;
+      Ini.WriteString( 'Email','Pass'    ,edtSmtpPass.Text) ;
+      Ini.WriteString( 'Email','Assunto' ,edtEmailAssunto.Text) ;
+      Ini.WriteBool(   'Email','SSL'     ,cbEmailSSL.Checked ) ;
+      StreamMemo := TMemoryStream.Create;
+      mmEmailMsg.Lines.SaveToStream(StreamMemo);
+      StreamMemo.Seek(0,soFromBeginning);
+      Ini.WriteBinaryStream( 'Email','Mensagem',StreamMemo) ;
+      StreamMemo.Free;
   finally
      Ini.Free ;
   end;
@@ -185,6 +215,7 @@ procedure TForm1.LerConfiguracao;
 Var IniFile  : String ;
     Ini     : TIniFile ;
     Ok : Boolean;
+    StreamMemo : TMemoryStream;
 begin
   IniFile := ChangeFileExt( Application.ExeName, '.ini') ;
 
@@ -262,6 +293,16 @@ begin
       edtEmitCidade.Text     :=Ini.ReadString( 'Emitente','Cidade'     ,'') ;
       edtEmitUF.Text         := Ini.ReadString( 'Emitente','UF'         ,'') ;
 
+      edtSmtpHost.Text      := Ini.ReadString( 'Email','Host'   ,'') ;
+      edtSmtpPort.Text      := Ini.ReadString( 'Email','Port'   ,'') ;
+      edtSmtpUser.Text      := Ini.ReadString( 'Email','User'   ,'') ;
+      edtSmtpPass.Text      := Ini.ReadString( 'Email','Pass'   ,'') ;
+      edtEmailAssunto.Text  := Ini.ReadString( 'Email','Assunto','') ;
+      cbEmailSSL.Checked    := Ini.ReadBool(   'Email','SSL'    ,False) ;
+      StreamMemo := TMemoryStream.Create;
+      Ini.ReadBinaryStream( 'Email','Mensagem',StreamMemo) ;
+      mmEmailMsg.Lines.LoadFromStream(StreamMemo);
+      StreamMemo.Free;
   finally
      Ini.Free ;
   end;
@@ -616,6 +657,14 @@ begin
       frmStatus.Show;
       frmStatus.BringToFront;
     end;
+    stEmail :
+    begin
+      if ( frmStatus = nil ) then
+        frmStatus := TfrmStatus.Create(Application);
+      frmStatus.lblStatus.Caption := 'Enviando Email...';
+      frmStatus.Show;
+      frmStatus.BringToFront;
+    end;
   end;
   Application.ProcessMessages;
 end;
@@ -812,12 +861,8 @@ if not(InputQuery('WebServices Enviar', 'Numero da Nota', vAux)) then
     Total.retTrib.vRetPrev := 100;
   end;
 
-  ACBrNFe1.NotasFiscais.GerarNFe;
-  LocNFeW := TNFeW.Create(ACBrNFe1.NotasFiscais.Items[0].NFe);
-  LocNFeW.schema := TsPL005c;
-  LocNFeW.GerarXml;
-  LocNFeW.Gerador.SalvarArquivo(ExtractFileDir(application.ExeName)+'\'+copy(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID, (length(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml');
-  MemoResp.Lines.LoadFromFile(ExtractFileDir(application.ExeName)+'\'+copy(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID, (length(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml');
+  ACBrNFe1.NotasFiscais.Items[0].SaveToFile;
+  MemoResp.Lines.LoadFromFile(ACBrNFe1.Configuracoes.Geral.PathSalvar+'\'+copy(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID, (length(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml');
   LoadXML(MemoResp, WBResposta);
 end;
 
@@ -847,6 +892,8 @@ end;
 
 procedure TForm1.btnGerarPDFClick(Sender: TObject);
 begin
+  ACBrNFe1.DANFE.PathPDF := 'd:\temp\danfes';
+
   OpenDialog1.Title := 'Selecione a NFE';
   OpenDialog1.DefaultExt := '*-nfe.XML';
   OpenDialog1.Filter := 'Arquivos NFE (*-nfe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
@@ -856,6 +903,25 @@ begin
     ACBrNFe1.NotasFiscais.Clear;
     ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
     ACBrNFe1.NotasFiscais.ImprimirPDF;
+  end;
+end;
+
+procedure TForm1.btnEnviarEmailClick(Sender: TObject);
+var
+ Para : String;
+begin
+  if not(InputQuery('Enviar Email', 'Email de destino', Para)) then
+    exit;
+
+  OpenDialog1.Title := 'Selecione a NFE';
+  OpenDialog1.DefaultExt := '*-nfe.XML';
+  OpenDialog1.Filter := 'Arquivos NFE (*-nfe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
+  OpenDialog1.InitialDir := ACBrNFe1.Configuracoes.Geral.PathSalvar;
+  if OpenDialog1.Execute then
+  begin
+    ACBrNFe1.NotasFiscais.Clear;
+    ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
+    ACBrNFe1.NotasFiscais.Items[0].EnviarEmail(edtSmtpHost.Text, edtSmtpPort.Text, edtSmtpUser.Text, edtSmtpPass.Text, edtSmtpUser.Text, Para, edtEmailAssunto.Text, mmEmailMsg.Lines, cbEmailSSL.Checked);
   end;
 end;
 

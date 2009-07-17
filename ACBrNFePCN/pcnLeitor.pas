@@ -67,7 +67,8 @@ type
     function rCampo(const Tipo: TpcnTipoCampo; TAG: string): variant;
     function rCampoCNPJCPF: string;
     function rAtributo(Atributo: string): variant;
-    function CarregarArquivo(const CaminhoArquivo: string): boolean;
+    function CarregarArquivo(const CaminhoArquivo: string): boolean; overload;
+    function CarregarArquivo(const Stream: TStringStream): boolean; overload;
   published
     property Arquivo: AnsiString read FArquivo write FArquivo;
     property Grupo: AnsiString read FGrupo write FGrupo;
@@ -110,6 +111,18 @@ begin
     end;
   finally
     ArquivoXML.Free;
+  end;
+end;
+
+function TLeitor.CarregarArquivo(const Stream: TStringStream): boolean;
+begin
+  //NOTA: Carrega o arquivo xml na memória para posterior leitura de sua tag's
+  try
+    FArquivo := Stream.DataString;
+    Result := True;
+  except
+    Result := False;
+    raise;
   end;
 end;
 

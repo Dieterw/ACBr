@@ -46,14 +46,15 @@ unit ACBrNFeNotasFiscais;
 
 interface
 
-uses
+uses 
   Classes, Sysutils,
   ACBrNFeUtil, ACBrNFeConfiguracoes,
   {$IFDEF FPC}
      ACBrNFeDMLaz,
   {$ELSE}
-     ACBrNFeDANFEClass,  
+     ACBrNFeDANFEClass,
   {$ENDIF}
+  smtpsend, ssl_openssl, mimemess, mimepart, // units para enviar email
   pcnNFe, pcnNFeR, pcnNFeW, pcnConversao;
 
 type
@@ -68,7 +69,11 @@ type
     constructor Create(Collection2: TCollection); override;
     destructor Destroy; override;
     procedure Imprimir;
-    procedure ImprimirPDF;    
+    procedure ImprimirPDF;
+    function SaveToFile(CaminhoArquivo: string = ''): boolean;
+    function SaveToStream(Stream: TStringStream): boolean;
+    procedure EnviarEmail(const sSmtpHost, sSmtpPort, sSmtpUser, sSmtpPasswd, sFrom, sTo, sAssunto: String; sMensagem : TStrings; SSL : Boolean);
+
   published
     property NFe: TNFe  read FNFe write FNFe;
     property XML: AnsiString  read FXML write FXML;
@@ -98,13 +103,15 @@ type
 
     function GetNamePath: string; override ;
     function LoadFromFile(CaminhoArquivo: string): boolean;
+    function LoadFromStream(Stream: TStringStream): boolean;
+    function SaveToFile(PathArquivo: string = ''): boolean;
 
     property ACBrNFe : TComponent read FACBrNFe ;
   end;
 
 implementation
 
-uses ACBrNFe, pcnGerador;
+uses ACBrNFe, ACBrUtil, pcnGerador;
 
 { NotaFiscal }
 
@@ -128,7 +135,7 @@ begin
   FNFe.Dest.EnderDest.xPais := 'BRASIL';
   FNFe.Dest.EnderDest.cPais := 1058;
   FNFe.Dest.EnderDest.nro   := 'SEM NUMERO';
-  
+
 end;
 
 destructor NotaFiscal.Destroy;
@@ -145,6 +152,106 @@ end;
 procedure NotaFiscal.ImprimirPDF;
 begin
   TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.ImprimirDANFEPDF(NFe);
+end;
+
+function NotaFiscal.SaveToFile(CaminhoArquivo: string = ''): boolean;
+var
+  LocNFeW : TNFeW;
+begin
+  try
+     Result := True;
+     LocNFeW := TNFeW.Create(NFe);
+     try
+        LocNFeW.schema := TsPL005c;
+        LocNFeW.GerarXml;
+        if NotaUtil.EstaVazio(CaminhoArquivo) then
+           CaminhoArquivo := PathWithDelim(TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).Configuracoes.Geral.PathSalvar)+copy(NFe.infNFe.ID, (length(NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml';
+        LocNFeW.Gerador.SalvarArquivo(CaminhoArquivo);
+     finally
+        LocNFeW.Free;
+     end;
+  except
+     Result := False;
+  end;
+end;
+
+function NotaFiscal.SaveToStream(Stream: TStringStream): boolean;
+var
+  LocNFeW : TNFeW;
+begin
+  try
+     Result := True;
+     LocNFeW := TNFeW.Create(NFe);
+     try
+        LocNFeW.schema := TsPL005c;
+        LocNFeW.GerarXml;
+        Stream.WriteString(LocNFeW.Gerador.ArquivoFormatoXML);
+     finally
+        LocNFeW.Free;
+     end;
+  except
+     Result := False;
+  end;
+end;
+
+procedure NotaFiscal.EnviarEmail(const sSmtpHost, sSmtpPort, sSmtpUser, sSmtpPasswd, sFrom, sTo, sAssunto: String; sMensagem : TStrings; SSL : Boolean);
+var
+  smtp: TSMTPSend;
+  msg_lines: TStringList;
+  m:TMimemess;
+  p: TMimepart;
+  StreamNFe : TStringStream;
+  NomeArq : String;
+begin
+  msg_lines := TStringList.Create;
+  smtp := TSMTPSend.Create;
+  m:=TMimemess.create;
+  try
+     p := m.AddPartMultipart('mixed', nil);
+     if sMensagem <> nil then
+        m.AddPartText(sMensagem, p);
+     StreamNFe := TStringStream.Create('');
+     SaveToStream(StreamNFe) ;
+     m.AddPartBinary(StreamNFe,copy(NFe.infNFe.ID, (length(NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml', p);
+     TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.ImprimirDANFEPDF(NFe);
+     if NotaUtil.EstaVazio(TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.PathPDF) then
+        NomeArq := TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).Configuracoes.Geral.PathSalvar
+     else
+        NomeArq := TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.PathPDF;
+//     m.AddPartBinaryFromFile(PathWithDelim(NomeArq)+NFe.infNFe.ID+'.pdf', p);
+     m.header.tolist.add(sTo);
+     m.header.From := sFrom;
+     m.header.subject:=sAssunto;
+     m.EncodeMessage;
+     msg_lines.Add(m.Lines.Text);
+
+     smtp.UserName := sSmtpUser;
+     smtp.Password := sSmtpPasswd;
+
+     smtp.TargetHost := sSmtpHost;
+     smtp.TargetPort := sSmtpPort;
+
+     smtp.FullSSL := SSL;
+     smtp.AutoTLS := SSL;
+     TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).SetStatus( stEmail );
+     if not smtp.Login() then
+       raise Exception.Create('SMTP ERROR: Login:' + smtp.EnhCodeString);
+
+     if not smtp.MailFrom(sFrom, Length(sFrom)) then
+       raise Exception.Create('SMTP ERROR: MailFrom:' + smtp.EnhCodeString);
+     if not smtp.MailTo(sTo) then
+       raise Exception.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString);
+     if not smtp.MailData(msg_lines) then
+       raise Exception.Create('SMTP ERROR: MailData:' + smtp.EnhCodeString);
+
+     if not smtp.Logout() then
+       raise Exception.Create('SMTP ERROR: Logout:' + smtp.EnhCodeString);
+     TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).SetStatus( stIdle );
+  finally
+     msg_lines.Free;
+     smtp.Free;
+     m.free;
+  end;
 end;
 
 { TNotasFiscais }
@@ -262,11 +369,52 @@ function TNotasFiscais.LoadFromFile(CaminhoArquivo: string): boolean;
 var
  LocNFeR : TNFeR;
 begin
+ try
+    Result := True;
+    LocNFeR := TNFeR.Create(Self.Add.NFe);
+    try
+       LocNFeR.Leitor.CarregarArquivo(CaminhoArquivo);
+       LocNFeR.LerXml;
+    finally
+       LocNFeR.Free;
+    end;
+ except
+    Result := False;
+ end;
+end;
+
+function TNotasFiscais.LoadFromStream(Stream: TStringStream): boolean;
+var
+ LocNFeR : TNFeR;
+begin
+  try
+    Result := True;
+    LocNFeR := TNFeR.Create(Self.Add.NFe);
+    try
+       LocNFeR.Leitor.CarregarArquivo(Stream);
+       LocNFeR.LerXml;
+    finally
+       LocNFeR.Free
+    end;
+  except
+    Result := False;
+  end;
+end;
+
+function TNotasFiscais.SaveToFile(PathArquivo: string = ''): boolean;
+var
+ i : integer;
+ CaminhoArquivo : String;
+begin
  Result := True;
  try
-    LocNFeR := TNFeR.Create(Self.Add.NFe);
-    LocNFeR.Leitor.CarregarArquivo(CaminhoArquivo);
-    LocNFeR.LerXml;
+    for i:= 0 to TACBrNFe( FACBrNFe ).NotasFiscais.Count-1 do
+     begin
+        if NotaUtil.EstaVazio(PathArquivo) then
+           PathArquivo := TACBrNFe( FACBrNFe ).Configuracoes.Geral.PathSalvar;
+        CaminhoArquivo := PathWithDelim(PathArquivo)+copy(TACBrNFe( FACBrNFe ).NotasFiscais.Items[0].NFe.infNFe.ID, (length(TACBrNFe( FACBrNFe ).NotasFiscais.Items[0].NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml';
+        TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].SaveToFile(CaminhoArquivo)
+     end;
  except
     Result := False;
  end;

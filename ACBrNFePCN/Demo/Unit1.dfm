@@ -2,7 +2,7 @@ object Form1: TForm1
   Left = 406
   Top = 161
   Width = 666
-  Height = 418
+  Height = 483
   Caption = 'ACBrNFe'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -18,22 +18,22 @@ object Form1: TForm1
     Left = 0
     Top = 0
     Width = 278
-    Height = 382
+    Height = 447
     Align = alLeft
     TabOrder = 0
     object GroupBox1: TGroupBox
       Left = 8
       Top = 8
       Width = 262
-      Height = 337
+      Height = 401
       Caption = 'Configura'#231#245'es'
       TabOrder = 0
       object PageControl1: TPageControl
         Left = 2
         Top = 15
         Width = 258
-        Height = 320
-        ActivePage = TabSheet2
+        Height = 384
+        ActivePage = TabSheet7
         Align = alClient
         TabOrder = 0
         object TabSheet1: TTabSheet
@@ -598,11 +598,115 @@ object Form1: TForm1
             TabOrder = 12
           end
         end
+        object TabSheet7: TTabSheet
+          Caption = 'Email'
+          ImageIndex = 4
+          object GroupBox5: TGroupBox
+            Left = 1
+            Top = 4
+            Width = 246
+            Height = 324
+            Caption = 'Email'
+            TabOrder = 0
+            object Label3: TLabel
+              Left = 8
+              Top = 16
+              Width = 72
+              Height = 13
+              Caption = 'Servidor SMTP'
+            end
+            object Label4: TLabel
+              Left = 198
+              Top = 16
+              Width = 26
+              Height = 13
+              Caption = 'Porta'
+            end
+            object Label5: TLabel
+              Left = 8
+              Top = 56
+              Width = 36
+              Height = 13
+              Caption = 'Usu'#225'rio'
+            end
+            object Label26: TLabel
+              Left = 129
+              Top = 56
+              Width = 31
+              Height = 13
+              Caption = 'Senha'
+            end
+            object Label27: TLabel
+              Left = 8
+              Top = 96
+              Width = 121
+              Height = 13
+              Caption = 'Assunto do email enviado'
+            end
+            object Label28: TLabel
+              Left = 8
+              Top = 168
+              Width = 95
+              Height = 13
+              Caption = 'Mensagem do Email'
+            end
+            object edtSmtpHost: TEdit
+              Left = 8
+              Top = 32
+              Width = 185
+              Height = 21
+              TabOrder = 0
+            end
+            object edtSmtpPort: TEdit
+              Left = 198
+              Top = 32
+              Width = 40
+              Height = 21
+              TabOrder = 1
+            end
+            object edtSmtpUser: TEdit
+              Left = 8
+              Top = 72
+              Width = 110
+              Height = 21
+              TabOrder = 2
+            end
+            object edtSmtpPass: TEdit
+              Left = 129
+              Top = 72
+              Width = 110
+              Height = 21
+              TabOrder = 3
+            end
+            object edtEmailAssunto: TEdit
+              Left = 8
+              Top = 112
+              Width = 230
+              Height = 21
+              TabOrder = 4
+            end
+            object cbEmailSSL: TCheckBox
+              Left = 10
+              Top = 144
+              Width = 167
+              Height = 17
+              Caption = 'SMTP exige conex'#227'o segura'
+              TabOrder = 5
+            end
+            object mmEmailMsg: TMemo
+              Left = 8
+              Top = 184
+              Width = 230
+              Height = 130
+              TabOrder = 6
+            end
+          end
+        end
       end
     end
     object btnSalvarConfig: TBitBtn
-      Left = 62
-      Top = 352
+      Left = 70
+      Top = 416
       Width = 153
       Height = 25
       Caption = 'Salvar Configura'#231#245'es'
@@ -628,14 +732,14 @@ object Form1: TForm1
     Left = 278
     Top = 0
     Width = 372
-    Height = 382
+    Height = 447
     Align = alClient
     TabOrder = 1
     object Panel3: TPanel
       Left = 1
       Top = 1
       Width = 370
-      Height = 156
+      Height = 187
       Align = alTop
       TabOrder = 0
       object btnImprimir: TButton
@@ -728,12 +832,21 @@ object Form1: TForm1
         TabOrder = 9
         OnClick = btnGerarPDFClick
       end
+      object btnEnviarEmail: TButton
+        Left = 9
+        Top = 156
+        Width = 177
+        Height = 25
+        Caption = 'Enviar NFe Email'
+        TabOrder = 10
+        OnClick = btnEnviarEmailClick
+      end
     end
     object PageControl2: TPageControl
       Left = 1
-      Top = 157
+      Top = 188
       Width = 370
-      Height = 224
+      Height = 258
       ActivePage = TabSheet6
       Align = alClient
       TabOrder = 1
@@ -755,11 +868,11 @@ object Form1: TForm1
           Left = 0
           Top = 0
           Width = 362
-          Height = 196
+          Height = 230
           Align = alClient
           TabOrder = 0
           ControlData = {
-            4C0000006A250000421400000000000000000000000000000000000000000000
+            4C0000006A250000C51700000000000000000000000000000000000000000000
             000000004C000000000000000000000001000000E0D057007335CF11AE690800
             2B2E126208000000000000004C0000000114020000000000C000000000000046
             8000000000000000000000000000000000000000000000000000000000000000
@@ -775,7 +888,7 @@ object Form1: TForm1
       'dos os Arquivos (*.*)|*.*'
     Title = 'Selecione a NFe'
     Left = 288
-    Top = 160
+    Top = 224
   end
   object ACBrNFe1: TACBrNFe
     Configuracoes.Geral.PathSalvar = 'C:\Program Files\Borland\Delphi7\Bin\'
@@ -783,7 +896,7 @@ object Form1: TForm1
     OnStatusChange = ACBrNFe1StatusChange
     DANFE = ACBrNFeDANFERave1
     Left = 323
-    Top = 161
+    Top = 225
   end
   object ACBrNFeDANFERave1: TACBrNFeDANFERave
     ACBrNFe = ACBrNFe1
@@ -796,8 +909,10 @@ object Form1: TForm1
     Site = 'www.djsystem.com.br'
     Email = 'andre@djsystem.com.br'
     ImprimirDescPorc = True
-    RavFile = 'D:\delphi\ACBr\trunk\ACBrNFePCN\Demo\Report\DANFE_Rave513.rav'
+    RavFile = 
+      'D:\delphi\ACBr\trunk\ACBrNFePCN\Demo\Report\NotaFiscalEletronica' +
+      '.rav'
     Left = 355
-    Top = 161
+    Top = 225
   end
 end

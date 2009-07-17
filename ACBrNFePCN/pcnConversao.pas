@@ -55,7 +55,7 @@ interface uses
 
 type
 
-  TStatusACBrNFe = ( stIdle, stNFeStatusServico, stNFeRecepcao, stNfeRetRecepcao, stNfeConsulta, stNfeCancelamento, stNfeInutilizacao, stNFeRecibo, stNFeCadastro );
+  TStatusACBrNFe = ( stIdle, stNFeStatusServico, stNFeRecepcao, stNfeRetRecepcao, stNfeConsulta, stNfeCancelamento, stNfeInutilizacao, stNFeRecibo, stNFeCadastro, stEmail );
   (* IMPORTANTE - Sempre que alterar um Tipo efetuar a atualização das funções de conversão correspondentes *)
   TLayOut = (LayNfeRecepcao,LayNfeRetRecepcao,LayNfeCancelamento,LayNfeInutilizacao,LayNfeConsulta,LayNfeStatusServico,LayNfeCadastro);
 

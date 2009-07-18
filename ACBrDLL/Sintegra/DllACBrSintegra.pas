@@ -150,7 +150,7 @@ try
     begin
       Registro11.Endereco:=Endereco;
       Registro11.Numero:=Numero;
-      Registro11.Bairo:=Bairro;
+      Registro11.Bairro:=Bairro;
       Registro11.Cep:=Cep;
       Registro11.Responsavel:=Responsavel;
       Registro11.Telefone:=Telefone;

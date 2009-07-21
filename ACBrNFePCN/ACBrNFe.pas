@@ -230,10 +230,16 @@ begin
 
   Result := WebServices.Envia(ALote);
 
-  for i:= 0 to NotasFiscais.Count-1 do
+  if DANFE <> nil then
   begin
-    if NotasFiscais.Items[i].Confirmada then
-       NotasFiscais.Items[i].Imprimir;
+     for i:= 0 to NotasFiscais.Count-1 do
+     begin
+       if NotasFiscais.Items[i].Confirmada then
+       begin
+          Danfe.ProtocoloNFe:=WebServices.Retorno.NFeRetorno.ProtNFe.Items[i].nProt;
+          NotasFiscais.Items[i].Imprimir;
+       end;
+     end;
   end;
 end;
 

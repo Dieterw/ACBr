@@ -76,6 +76,8 @@ type
     CustomVolumesCXN: TRvCustomConnection;
     CustomInformacoesAdicionaisCXN: TRvCustomConnection;
     CustomFaturaCXN: TRvCustomConnection;
+    CustomLocalRetiradaCXN: TRvCustomConnection;
+    CustomLocalEntregaCXN: TRvCustomConnection;
     
     constructor create( AOwner : TComponent ); override ;
     procedure CustomDestinatarioCXNGetCols(Connection: TRvCustomConnection);
@@ -120,6 +122,12 @@ type
     procedure CustomFaturaCXNGetCols(Connection: TRvCustomConnection);
     procedure CustomFaturaCXNGetRow(Connection: TRvCustomConnection);
     procedure CustomFaturaCXNOpen(Connection: TRvCustomConnection);
+    procedure CustomLocalRetiradaCXNGetCols(Connection: TRvCustomConnection);
+    procedure CustomLocalRetiradaCXNGetRow(Connection: TRvCustomConnection);
+    procedure CustomLocalRetiradaCXNOpen(Connection: TRvCustomConnection);
+    procedure CustomLocalEntregaCXNGetCols(Connection: TRvCustomConnection);
+    procedure CustomLocalEntregaCXNGetRow(Connection: TRvCustomConnection);
+    procedure CustomLocalEntregaCXNOpen(Connection: TRvCustomConnection);
   private
     FDANFEClassOwner : TACBrNFeDANFEClass ;
     FNFe : TNFe;
@@ -663,20 +671,6 @@ procedure TdmACBrNFeRave.CustomParametrosCXNGetRow(
      if length(chave) <> 35 then
        result := False;
    end;
-   function ZeroEsquerda(const I: string; const Casas: byte): string;
-   var
-     Ch: Char;
-   begin
-     Result := I;
-     if Length(Result) > Casas then begin
-       Ch := '*';
-       Result := '';
-     end else
-       Ch := '0';
-
-     while Length(Result) < Casas do
-       Result := Ch + Result;
-   end;
    function Chave_Contigencia: string;
    var
       wchave: string;
@@ -697,9 +691,9 @@ procedure TdmACBrNFeRave.CustomParametrosCXNGetRow(
          wchave:=wchave+'4'
       else if FNFe.Ide.tpEmis=teFSDA then
          wchave:=wchave+'5';
-      wchave:=wchave+ZeroEsquerda(FNFe.Dest.CNPJCPF,14);
+      wchave:=wchave+NotaUtil.Poem_Zeros(FNFe.Dest.CNPJCPF,14);
 
-      wchave:=wchave+ZeroEsquerda(NotaUtil.LimpaNumero(Floattostrf(FNFe.Total.ICMSTot.vNF,ffFixed,18,2)),14);
+      wchave:=wchave+NotaUtil.Poem_Zeros(NotaUtil.LimpaNumero(Floattostrf(FNFe.Total.ICMSTot.vNF,ffFixed,18,2)),14);
 
       wicms_s:='0';
       wicms_p:='0';
@@ -720,7 +714,7 @@ procedure TdmACBrNFeRave.CustomParametrosCXNGetRow(
       wchave:=wchave+wicms_p+wicms_s;
 
       decodedate(FNFe.Ide.dEmi,wa,wm,wd);
-      wchave:=wchave+ZeroEsquerda(inttostr(wd),2);
+      wchave:=wchave+NotaUtil.Poem_Zeros(inttostr(wd),2);
 
       GerarDigito_Contigencia(Digito,wchave);
       wchave:=wchave+inttostr(digito);
@@ -1000,8 +994,11 @@ begin
     end;
   end;
 
-  if not (FNFe.Ide.tpEmis=teNormal) then
+  if ((FNFe.Ide.tpEmis=teContingencia) or
+      (FNFe.Ide.tpEmis=teFSDA)) then
      Connection.WriteStrData('','DANFE EM CONTINGÊNCIA, IMPRESSO EM DECORRÊNCIA DE PROBLEMAS TÉCNICOS')
+  else if (FNFe.Ide.tpEmis=teDPEC) then
+     Connection.WriteStrData('','DANFE IMPRESSO EM CONTINGÊNCIA - DPEC REGULARMENTE RECEBIDA PELA RECEITA FEDERAL DO BRASIL')
   else
      Connection.WriteStrData('','');
 end;
@@ -1080,6 +1077,90 @@ begin
       Connection.DataRows := 0
    else
       Connection.DataRows := 1;
+end;
+
+procedure TdmACBrNFeRave.CustomLocalEntregaCXNGetCols(
+  Connection: TRvCustomConnection);
+begin
+  Connection.WriteField('CNPJ',dtString,18,'','');
+  Connection.WriteField('XLgr',dtString,60,'','');
+  Connection.WriteField('Nro',dtString,60,'','');
+  Connection.WriteField('XCpl',dtString,60,'','');
+  Connection.WriteField('XBairro',dtString,60,'','');
+  Connection.WriteField('CMun',dtString,7,'','');
+  Connection.WriteField('XMun',dtString,60,'','');
+  Connection.WriteField('UF',dtString,2,'','');
+end;
+
+procedure TdmACBrNFeRave.CustomLocalEntregaCXNGetRow(
+  Connection: TRvCustomConnection);
+begin
+  with FNFe.Entrega do
+  begin
+    if NotaUtil.NaoEstaVazio(CNPJ) then
+      Connection.WriteStrData('', NotaUtil.FormatarCNPJ(CNPJ))
+    else
+       Connection.WriteStrData('', NotaUtil.FormatarCNPJ(NotaUtil.Poem_Zeros(0,18)));
+
+    Connection.WriteStrData('', XLgr);
+    Connection.WriteStrData('', Nro);
+    Connection.WriteStrData('', XCpl);
+    Connection.WriteStrData('', XBairro);
+    Connection.WriteStrData('', inttostr(CMun));
+    Connection.WriteStrData('', NotaUtil.ParseText(XMun,true));
+    Connection.WriteStrData('', UF);
+  end;
+end;
+
+procedure TdmACBrNFeRave.CustomLocalEntregaCXNOpen(
+  Connection: TRvCustomConnection);
+begin
+   if NotaUtil.NaoEstaVazio(FNFe.Entrega.CNPJ) then
+      Connection.DataRows := 1
+   else
+      Connection.DataRows := 0;
+end;
+
+procedure TdmACBrNFeRave.CustomLocalRetiradaCXNGetCols(
+  Connection: TRvCustomConnection);
+begin
+  Connection.WriteField('CNPJ',dtString,18,'','');
+  Connection.WriteField('XLgr',dtString,60,'','');
+  Connection.WriteField('Nro',dtString,60,'','');
+  Connection.WriteField('XCpl',dtString,60,'','');
+  Connection.WriteField('XBairro',dtString,60,'','');
+  Connection.WriteField('CMun',dtString,7,'','');
+  Connection.WriteField('XMun',dtString,60,'','');
+  Connection.WriteField('UF',dtString,2,'','');
+end;
+
+procedure TdmACBrNFeRave.CustomLocalRetiradaCXNGetRow(
+  Connection: TRvCustomConnection);
+begin
+  with FNFe.Retirada do
+  begin
+    if NotaUtil.NaoEstaVazio(CNPJ) then
+      Connection.WriteStrData('', NotaUtil.FormatarCNPJ(CNPJ))
+    else
+       Connection.WriteStrData('', NotaUtil.FormatarCNPJ(NotaUtil.Poem_Zeros(0,18)));
+
+    Connection.WriteStrData('', XLgr);
+    Connection.WriteStrData('', Nro);
+    Connection.WriteStrData('', XCpl);
+    Connection.WriteStrData('', XBairro);
+    Connection.WriteStrData('', inttostr(CMun));
+    Connection.WriteStrData('', NotaUtil.ParseText(XMun,true));
+    Connection.WriteStrData('', UF);
+  end;
+end;
+
+procedure TdmACBrNFeRave.CustomLocalRetiradaCXNOpen(
+  Connection: TRvCustomConnection);
+begin
+   if NotaUtil.NaoEstaVazio(FNFe.Retirada.CNPJ) then
+      Connection.DataRows := 1
+   else
+      Connection.DataRows := 0;
 end;
 
 end.

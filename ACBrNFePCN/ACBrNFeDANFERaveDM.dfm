@@ -1,9 +1,9 @@
 object dmACBrNFeRave: TdmACBrNFeRave
   OldCreateOrder = False
-  Left = 193
-  Top = 131
+  Left = 197
+  Top = 121
   Height = 444
-  Width = 743
+  Width = 627
   object CustomDestinatarioCXN: TRvCustomConnection
     RuntimeVisibility = rtDeveloper
     OnGetCols = CustomDestinatarioCXNGetCols
@@ -151,5 +151,21 @@ object dmACBrNFeRave: TdmACBrNFeRave
     OnOpen = CustomFaturaCXNOpen
     Left = 518
     Top = 128
+  end
+  object CustomLocalRetiradaCXN: TRvCustomConnection
+    RuntimeVisibility = rtDeveloper
+    OnGetCols = CustomLocalRetiradaCXNGetCols
+    OnGetRow = CustomLocalRetiradaCXNGetRow
+    OnOpen = CustomLocalRetiradaCXNOpen
+    Left = 520
+    Top = 177
+  end
+  object CustomLocalEntregaCXN: TRvCustomConnection
+    RuntimeVisibility = rtDeveloper
+    OnGetCols = CustomLocalEntregaCXNGetCols
+    OnGetRow = CustomLocalEntregaCXNGetRow
+    OnOpen = CustomLocalEntregaCXNOpen
+    Left = 520
+    Top = 225
   end
 end

@@ -234,7 +234,7 @@ begin
   begin
      for i:= 0 to NotasFiscais.Count-1 do
      begin
-       if NotasFiscais.Items[i].Confirmada then
+       if NotasFiscais.Items[i].Confirmada and Imprimir then
        begin
           Danfe.ProtocoloNFe:=WebServices.Retorno.NFeRetorno.ProtNFe.Items[i].nProt;
           NotasFiscais.Items[i].Imprimir;

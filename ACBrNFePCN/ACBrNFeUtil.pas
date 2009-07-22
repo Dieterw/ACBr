@@ -92,7 +92,6 @@ type
     class function GetURLBA(AAmbiente: Integer; ALayOut: TLayOut): WideString;
     class function GetURLCE(AAmbiente: Integer; ALayOut: TLayOut): WideString;
     class function GetURLDF(AAmbiente: Integer; ALayOut: TLayOut): WideString;
-    class function GetURLES(AAmbiente: Integer; ALayOut: TLayOut): WideString;
     class function GetURLGO(AAmbiente: Integer; ALayOut: TLayOut): WideString;
     class function GetURLMT(AAmbiente: Integer; ALayOut: TLayOut): WideString;
     class function GetURLMS(AAmbiente: Integer; ALayOut: TLayOut): WideString;
@@ -680,7 +679,7 @@ case FormaEmissao of
          29: Result := NotaUtil.GetURLBA(AAmbiente,ALayOut); //BA
          23: Result := NotaUtil.GetURLCE(AAmbiente,ALayOut); //CE
          53: Result := NotaUtil.GetURLDF(AAmbiente,ALayOut); //DF
-         32: Result := NotaUtil.GetURLES(AAmbiente,ALayOut); //ES
+         32: Result := NotaUtil.GetURLSVAN(AAmbiente,ALayOut); //ES
          52: Result := NotaUtil.GetURLGO(AAmbiente,ALayOut); //GO
          21: Result := NotaUtil.GetURLSVAN(AAmbiente,ALayOut); //MA
          51: Result := NotaUtil.GetURLMT(AAmbiente,ALayOut); //MT
@@ -711,7 +710,7 @@ case FormaEmissao of
          29: Result := NotaUtil.GetURLBA(AAmbiente,ALayOut); //BA
          23: Result := NotaUtil.GetURLCE(AAmbiente,ALayOut); //CE
          53: Result := NotaUtil.GetURLDF(AAmbiente,ALayOut); //DF
-         32: Result := NotaUtil.GetURLES(AAmbiente,ALayOut); //ES
+         32: Result := NotaUtil.GetURLSVAN(AAmbiente,ALayOut); //ES
          52: Result := NotaUtil.GetURLGO(AAmbiente,ALayOut); //GO
          21: Result := NotaUtil.GetURLSVAN(AAmbiente,ALayOut); //MA
          51: Result := NotaUtil.GetURLMT(AAmbiente,ALayOut); //MT
@@ -831,20 +830,6 @@ begin
     LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://dec.fazenda.df.gov.br/nfe/ServiceConsulta.asmx', 'https://homolog.nfe.fazenda.df.gov.br/nfe/ServiceConsulta.asmx');
     LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://dec.fazenda.df.gov.br/nfe/ServiceStatus.asmx', 'https://homolog.nfe.fazenda.df.gov.br/nfe/ServiceStatus.asmx');
     LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://dec.fazenda.df.gov.br/nfe/ServiceConsultaCadastro.asmx', 'https://homolog.nfe.fazenda.df.gov.br/nfe/ServiceConsultaCadastro.asmx');
-  end;
-end;
-
-class function NotaUtil.GetURLES(AAmbiente: Integer;
-  ALayOut: TLayOut): WideString;
-begin
-  case ALayOut of
-    LayNfeRecepcao      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.es.gov.br/Nfe/services/NfeRecepcao', 'https://hnfe.sefaz.es.gov.br/Nfe/services/NfeRecepcao');
-    LayNfeRetRecepcao   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.es.gov.br/Nfe/services/NfeRetRecepcao', 'https://hnfe.sefaz.es.gov.br/Nfe/services/NfeRetRecepcao');
-    LayNfeCancelamento  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.es.gov.br/Nfe/services/NfeCancelamento', 'https://hnfe.sefaz.es.gov.br/Nfe/services/NfeCancelamento');
-    LayNfeInutilizacao  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.es.gov.br/Nfe/services/NfeInutilizacao', 'https://hnfe.sefaz.es.gov.br/Nfe/services/NfeInutilizacao');
-    LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.es.gov.br/Nfe/services/NfeConsulta', 'https://hnfe.sefaz.es.gov.br/Nfe/services/NfeConsulta');
-    LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.es.gov.br/Nfe/services/NfeStatusServico', 'https://hnfe.sefaz.es.gov.br/Nfe/services/NfeStatusServico');
-    LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.es.gov.br/Nfe/services/CadConsultaCadastro', '');
   end;
 end;
 

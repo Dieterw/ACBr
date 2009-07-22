@@ -374,6 +374,11 @@ begin
   HTTP.Sock.SSL.PFXfile     := FConfiguracoes.Certificados.Certificado;
   HTTP.Sock.SSL.KeyPassword := FConfiguracoes.Certificados.Senha;
 
+  HTTP.ProxyHost  := FConfiguracoes.WebServices.ProxyHost;
+  HTTP.ProxyPort  := FConfiguracoes.WebServices.ProxyPort;
+  HTTP.ProxyUser  := FConfiguracoes.WebServices.ProxyUser;
+  HTTP.ProxyPass  := FConfiguracoes.WebServices.ProxyPass;
+
   HTTP.Sock.RaiseExcept := True;
 
   HTTP.MimeType := 'text/xml; charset=utf-8';

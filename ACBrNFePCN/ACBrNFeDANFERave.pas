@@ -93,10 +93,14 @@ end;
 
 procedure TACBrNFeDANFERave.ExecutaReport;
 var
-   MyPage,MyPage2: TRavePage;
+   MyReport : TRaveReport;
+   MyPage,MyPage2, MyPage3, MyPage4: TRavePage;
    MyBarcode: TRaveCode128BarCode;
-   MyDataText1,MyDataText2,MyDataText3,MyDataText4: TRaveDataText;
+   MyDataText1,MyDataText2,MyDataText3,MyDataText4,MyDataText5,MyDataText6: TRaveDataText;
    MyText1,MyText2,MyText3,MyText4: TRaveText;
+   MySection: TRaveSection;
+
+   vMargemInferiorAtual, vMargemInferior, vHeightPadrao: double;
 begin
    try
       dmDanfe.RvProject.Open;
@@ -140,6 +144,29 @@ begin
             if (MyDataText4 <> nil) then
                MyDataText4.Left := 30;
          end;
+
+         //Margem Inferior
+         MyReport := FindRaveComponent('DANFE1',nil) as TRaveReport;
+         MyPage3 := FindRaveComponent('Page1',MyReport) as TRavePage;
+         MyDataText5 := FindRaveComponent('DataText1',MyPage3) as TRaveDataText;
+         MyDataText6 := FindRaveComponent('DataText2',MyPage3) as TRaveDataText;
+         MyPage4 := FindRaveComponent('GlobalDadosAdicionais',nil) as TRavePage;
+         MySection := FindRaveComponent('Section_DadosAdicionais',MyPage4) as TRaveSection;
+         if (MyDataText5 <> nil) then
+            vMargemInferiorAtual:=(MyPage3.PageHeight-MyDataText5.Top)
+         else
+            vMargemInferiorAtual:=0.8/2.54;
+         vMargemInferior := FMargemInferior/2.54;
+         if (MyDataText5 <> nil) then
+            vHeightPadrao:=MyDataText5.Height
+         else           
+            vHeightPadrao:=0;
+         if (MyDataText5 <> nil) then
+            MyDataText5.Top := MyDataText5.Top-vHeightPadrao-(vMargemInferior-vMargemInferiorAtual);
+         if (MyDataText6 <> nil) then
+            MyDataText6.Top := MyDataText6.Top-vHeightPadrao-(vMargemInferior-vMargemInferiorAtual);
+         if (MySection <> nil) then
+            MySection.Height := MySection.Height-vHeightPadrao-(vMargemInferior-vMargemInferiorAtual);
       end;
    finally
       dmDanfe.RvProject.ExecuteReport('DANFE1');
@@ -160,7 +187,7 @@ begin
   {$IFDEF RAVE50VCL}
      RPDefine.DataID := IntToStr(Application.Handle);  // Evita msg de erro;...
   {$ENDIF}
-     
+
   dmDanfe.RvProject.ProjectFile := FRaveFile ; //ExtractFileDir(application.ExeName)+'\Report\NotaFiscalEletronica.rav';
 
   dmDanfe.RvSystem1.DoNativeOutput := True;
@@ -223,7 +250,7 @@ begin
   {$IFDEF RAVE50VCL}
      RPDefine.DataID := IntToStr(Application.Handle);  // Evita msg de erro;...
   {$ENDIF}
-     
+
   dmDanfe.RvProject.ProjectFile := FRaveFile ; //ExtractFileDir(application.ExeName)+'\Report\NotaFiscalEletronica.rav';
 
   dmDanfe.RvSystem1.DefaultDest := rdFile;

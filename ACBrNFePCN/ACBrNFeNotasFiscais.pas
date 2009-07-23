@@ -287,7 +287,7 @@ begin
      try
         LocNFeW.schema := TsPL005c;
         LocNFeW.GerarXml;
-
+        Self.Items[i].Alertas := LocNFeW.Gerador.ListaDeAlertas.Text;
 {$IFDEF ACBrNFeOpenSSL}
         if not(NotaUtil.Assinar(LocNFeW.Gerador.ArquivoFormatoXML, FConfiguracoes.Certificados.Certificado , FConfiguracoes.Certificados.Senha, vAssinada, FMsg)) then
            raise Exception.Create('Falha ao assinar Nota Fiscal Eletrônica '+
@@ -383,7 +383,7 @@ begin
     LocNFeR := TNFeR.Create(Self.Add.NFe);
     try
        LocNFeR.Leitor.CarregarArquivo(CaminhoArquivo);
-       LocNFeR.LerXml;
+       LocNFeR.LerXml;   
     finally
        LocNFeR.Free;
     end;

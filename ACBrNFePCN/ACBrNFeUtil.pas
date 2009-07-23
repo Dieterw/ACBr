@@ -997,14 +997,18 @@ begin
  doc := xmlParseDoc(PAnsiChar(Axml));
  if ((doc = nil) or (xmlDocGetRootElement(doc) = nil)) then
   begin
-    raise Exception.Create('Error: unable to parse');
+    AMsg := 'Erro: unable to parse';
+    Result := False;
+    exit;
   end;
 
  schema_doc  := xmlReadFile(schema_filename, nil, XML_DETECT_IDS);
 //  the schema cannot be loaded or is not well-formed
  if (schema_doc = nil) then
   begin
-    raise Exception.Create('Error: the schema cannot be loaded or is not well-formed');
+    AMsg := 'Erro: Schema não pode ser carregado ou está corrompido';
+    Result := False;
+    exit;
   end;
 
   parser_ctxt  := xmlSchemaNewDocParserCtxt(schema_doc);
@@ -1012,7 +1016,9 @@ begin
     if (parser_ctxt = nil) then
      begin
         xmlFreeDoc(schema_doc);
-        raise Exception.Create('Error: unable to create a parser context for the schema');
+        AMsg := 'Erro: unable to create a parser context for the schema';
+        Result := False;
+        exit;
      end;
 
    schema := xmlSchemaParse(parser_ctxt);
@@ -1021,7 +1027,9 @@ begin
      begin
         xmlSchemaFreeParserCtxt(parser_ctxt);
         xmlFreeDoc(schema_doc);
-        raise Exception.Create('Error: the schema itself is not valid');
+        AMsg := 'Error: the schema itself is not valid';
+        Result := False;
+        exit;
      end;
 
     valid_ctxt := xmlSchemaNewValidCtxt(schema);
@@ -1031,13 +1039,17 @@ begin
         xmlSchemaFree(schema);
         xmlSchemaFreeParserCtxt(parser_ctxt);
         xmlFreeDoc(schema_doc);
-        raise Exception.Create('Error: unable to create a validation context for the schema');
+        AMsg := 'Error: unable to create a validation context for the schema';
+        Result := False;
+        exit;
      end;
 
     if (xmlSchemaValidateDoc(valid_ctxt, doc) <> 0) then
      begin
        schemError := xmlGetLastError();
-       raise Exception.Create(IntToStr(schemError^.code)+' - '+schemError^.message);
+       AMsg := IntToStr(schemError^.code)+' - '+schemError^.message;
+       Result := False;
+       exit;
      end;
 
     xmlSchemaFreeValidCtxt(valid_ctxt);

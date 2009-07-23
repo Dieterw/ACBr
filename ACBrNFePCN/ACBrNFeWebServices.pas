@@ -1222,6 +1222,8 @@ var
     Rio: THTTPRIO;
  {$ENDIF}
 begin
+   Result := inherited Executar;
+
  {$IFDEF ACBrNFeOpenSSL}
     Acao := TStringList.Create;
     Stream := TMemoryStream.Create;

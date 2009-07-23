@@ -1,3 +1,7 @@
+ATENÇÃO - SE VOCÊ ESTÁ COMEÇANDO A UTILIZAR O COMPONENTE, UTILIZE OS ARQUIVOS DA PASTA ACBRNFEPCN
+ESTÁ VERSÃO - ACBRNFE - NAO RECEBERA MAIS ATUALIZACOES. A VERSÃO ACBRNFEPCN GERA O XML COM TODAS AS TAGS DO MANUAL E IMPRIME
+O DANFE CONFOME O MANUAL DE INTEGRAÇÃO 3.0
+
 Instalando ACBrNFe 
 
 Primeiro, as diferenças entre as versões OpenSSL e CAPICOM
@@ -36,6 +40,10 @@ clique em "Project, Build ACBr", Volte ao pacote e clique em compile.
 pacote ACBr_CLX ou ACBr_VCL clique em Cancel. Clique em Install e ao ser solicitado para adicionar o
 pacote ACBr_CLX ou ACBr_VCL clique em Cancel
 
+ATENÇÃO - SE VOCÊ ESTÁ COMEÇANDO A UTILIZAR O COMPONENTE, UTILIZE OS ARQUIVOS DA PASTA ACBRNFEPCN
+ESTÁ VERSÃO - ACBRNFE - NAO RECEBERA MAIS ATUALIZACOES. A VERSÃO ACBRNFEPCN GERA O XML COM TODAS AS TAGS DO MANUAL E IMPRIME
+O DANFE CONFOME O MANUAL DE INTEGRAÇÃO 3.0
+
 Versão CAPICOM
 
 -Copie as DLLs da pasta ACBr\ACBrNFe\DLLs\Capicom (capicom.dll, msxml5.dll e msxml5r.dll) para a pasta Windows\System32.
@@ -61,3 +69,7 @@ clique em "Project, Build ACBr", Volte ao pacote e clique em compile.
 -Na IDE do Delphi, clique em "File - Close All"
 
 -Abra o arquivo ACBr_NFe_CAPICOM.dpk, clique em compile e depois em Install
+
+ATENÇÃO - SE VOCÊ ESTÁ COMEÇANDO A UTILIZAR O COMPONENTE, UTILIZE OS ARQUIVOS DA PASTA ACBRNFEPCN
+ESTÁ VERSÃO - ACBRNFE - NAO RECEBERA MAIS ATUALIZACOES. A VERSÃO ACBRNFEPCN GERA O XML COM TODAS AS TAGS DO MANUAL E IMPRIME
+O DANFE CONFOME O MANUAL DE INTEGRAÇÃO 3.0

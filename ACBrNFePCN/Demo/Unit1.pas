@@ -403,6 +403,8 @@ begin
      ACBrNFe1.Cancelamento(vAux);
      MemoResp.Lines.Text :=  UTF8Encode(ACBrNFe1.WebServices.Cancelamento.RetWS);
      LoadXML(MemoResp, WBResposta);
+     ShowMessage(IntToStr(ACBrNFe1.WebServices.Cancelamento.cStat));
+     ShowMessage(ACBrNFe1.WebServices.Cancelamento.xMotivo);
   end;
 end;
 

@@ -161,7 +161,6 @@ type
     class function PathAplication: String;
     class function ParseText( Texto : AnsiString; Decode : Boolean = True) : AnsiString;
     class function SeparaDados( Texto : AnsiString; Chave : String ) : AnsiString;
-    class function EliminarCaracter (sTexto: AnsiString; sCaracter:String):AnsiString;
   published
 
   end;
@@ -206,7 +205,7 @@ begin
        if (dsigCtx = nil) then
          raise Exception.Create('Error :failed to create signature context');
 
-       // { load private key, assuming that there is not password }
+       // { load private key}
        dsigCtx^.signKey := xmlSecCryptoAppKeyLoad(key_file, xmlSecKeyDataFormatPkcs12, senha, nil, nil);
        if (dsigCtx^.signKey = nil) then
           raise Exception.Create('Error: failed to load private pem key from "' + key_file + '"');
@@ -636,7 +635,7 @@ begin
   Result := AValue;
   if NotaUtil.NaoEstaVazio(AValue) then
   begin
-    AValue := NotaUtil.Poem_Zeros(AValue, 10);
+    AValue := NotaUtil.Poem_Zeros(NotaUtil.LimpaNumero(AValue), 10);
     Result := '('+copy(AValue,1,2) + ')' + copy(AValue,3,8);
   end;
 end;
@@ -1178,27 +1177,29 @@ begin
    end;
 
 
-  AStr := copy(AStr,1,I-1) +
-         '<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">'+
-           '<SignedInfo>'+
-             '<CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>'+
-             '<SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />'+
-             '<Reference URI="#'+URI+'">'+
-               '<Transforms>'+
-                 '<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />'+
-                 '<Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />'+
-               '</Transforms>'+
-               '<DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />'+
-               '<DigestValue></DigestValue>'+
-             '</Reference>'+
-           '</SignedInfo>'+
-           '<SignatureValue></SignatureValue>'+
-           '<KeyInfo>'+
-             '<X509Data>'+
-               '<X509Certificate></X509Certificate>'+
-             '</X509Data>'+
-           '</KeyInfo>'+
-         '</Signature>';
+  if pos('<Signature',AStr) > 0 then
+     I := pos('<Signature',AStr);
+     AStr := copy(AStr,1,I-1) +
+            '<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">'+
+              '<SignedInfo>'+
+                '<CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>'+
+                '<SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />'+
+                '<Reference URI="#'+URI+'">'+
+                  '<Transforms>'+
+                    '<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />'+
+                    '<Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />'+
+                  '</Transforms>'+
+                  '<DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />'+
+                  '<DigestValue></DigestValue>'+
+                '</Reference>'+
+              '</SignedInfo>'+
+              '<SignatureValue></SignatureValue>'+
+              '<KeyInfo>'+
+                '<X509Data>'+
+                  '<X509Certificate></X509Certificate>'+
+                '</X509Data>'+
+              '</KeyInfo>'+
+            '</Signature>';
 
   if Tipo = 1 then
      AStr := AStr + '</NFe>'
@@ -1500,21 +1501,6 @@ begin
    end;
 
   Result := copy(Texto,PosIni,PosFim-(PosIni+1));
-end;
-
-class function NotaUtil.EliminarCaracter (sTexto: AnsiString; sCaracter:String):AnsiString;
-var
-  nPos, nTam: Integer;
-begin
-  Result := '';
-  nPos := 1;
-  nTam := Length(sTexto);
-  while nPos <= nTam do
-   begin
-     if not (sTexto[nPos] = sCaracter) then
-        Result := Result +sTexto[nPos];
-     Inc(nPos);
-   end;
 end;
 
 end.

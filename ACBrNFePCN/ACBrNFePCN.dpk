@@ -73,13 +73,10 @@ requires
   rtl,
   designide,
   xmlrtl,
-  inet,
-  soaprtl,
-  {$IFDEF CLX}
-    visualclx;
-  {$ELSE}
-    vcl ;
+  {$IFNDEF ACBrNFeOpenSSL}
+     soaprtl,
   {$ENDIF}
+  inet;
 
 contains
 
@@ -92,7 +89,7 @@ contains
      ACBrNFeNfeRetRecepcaoU in 'ACBrNFeNfeRetRecepcaoU.pas',
 	 ACBrNFeNfeRecepcaoU in 'ACBrNFeNfeRecepcaoU.pas',
      ACBrNFeNfeStatusServicoU in 'ACBrNFeNfeStatusServicoU.pas',
-  {$ENDIF}	 
+  {$ENDIF}
   ACBrNFe in 'ACBrNFe.pas',
   ACBrNFeUtil in 'ACBrNFeUtil.pas',
   ACBrNFeNotasFiscais in 'ACBrNFeNotasFiscais.pas',

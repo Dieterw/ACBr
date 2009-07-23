@@ -141,33 +141,3 @@ C:\ARQUIV~1\Borland\Delphi7\Projects\Bpl\JclProjectAnalysisExpert70.bpl=JCL Proj
 C:\ARQUIV~1\Borland\Delphi7\Projects\Bpl\JclFavoriteFoldersExpert70.bpl=JCL Open and Save IDE dialogs with favorite folders
 C:\ARQUIV~1\Borland\Delphi7\Projects\Bpl\JclUsesExpert70.bpl=JCL Uses Wizard
 C:\ARQUIV~1\Borland\Delphi7\Projects\Bpl\JclSIMDViewExpert70.bpl=JCL Debug Window of XMM registers
-[HistoryLists\hlConditionals]
-Count=2
-Item0=VisualCLX
-Item1=VisualCLX;CLX
-[HistoryLists\hlUnitAliases]
-Count=1
-Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
-[HistoryLists\hlSearchPath]
-Count=10
-Item0=../ACBrComum
-Item1=../synapse
-Item2=..\ACBr\source\synapse
-Item3=..\ACBr\source\Pascal;..\ACBr\dcu
-Item4=..\ACBr\source\Pascal
-Item5=C:\DELPHI\ACBr\source\Pascal\synaser\source
-Item6=synaser/source
-Item7=../Pascal/SynaSer/SOURCE
-Item8=.\SynaSer\SOURCE
-Item9=./SynaSer/SOURCE
-[HistoryLists\hlUnitOutputDirectory]
-Count=1
-Item0=../../dcu
-[HistoryLists\hlBPLOutput]
-Count=2
-Item0=../../bin
-Item1=.\
-[HistoryLists\hlDCPOutput]
-Count=2
-Item0=../../bin
-Item1=.\

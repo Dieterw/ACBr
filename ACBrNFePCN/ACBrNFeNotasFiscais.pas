@@ -46,7 +46,7 @@ unit ACBrNFeNotasFiscais;
 
 interface
 
-uses 
+uses
   Classes, Sysutils,
   ACBrNFeUtil, ACBrNFeConfiguracoes,
   {$IFDEF FPC}
@@ -65,6 +65,7 @@ type
     FXML: AnsiString;
     FConfirmada : Boolean;
     FMsg : AnsiString ;
+    FAlertas: AnsiString;
   public
     constructor Create(Collection2: TCollection); override;
     destructor Destroy; override;
@@ -73,12 +74,11 @@ type
     function SaveToFile(CaminhoArquivo: string = ''): boolean;
     function SaveToStream(Stream: TStringStream): boolean;
     procedure EnviarEmail(const sSmtpHost, sSmtpPort, sSmtpUser, sSmtpPasswd, sFrom, sTo, sAssunto: String; sMensagem : TStrings; SSL : Boolean);
-
-  published
     property NFe: TNFe  read FNFe write FNFe;
     property XML: AnsiString  read FXML write FXML;
     property Confirmada: Boolean  read FConfirmada write FConfirmada;
     property Msg: AnsiString  read FMsg write FMsg;
+    property Alertas: AnsiString read FAlertas write FAlertas;
   end;
 
   TNotasFiscais = class(TOwnedCollection)
@@ -320,8 +320,9 @@ begin
     LocNFeW := TNFeW.Create(Self.Items[i].NFe);
     try
        LocNFeW.schema := TsPL005c;
-//       LocNFeW.Gerador.Opcoes.GerarTagIPIparaNaoTributado := False;
        LocNFeW.GerarXml;
+       Self.Items[i].XML := LocNFeW.Gerador.ArquivoFormatoXML;
+       Self.Items[i].Alertas := LocNFeW.Gerador.ListaDeAlertas.Text;
     finally
        LocNFeW.Free;
     end;
@@ -365,10 +366,11 @@ var
 begin
   for i:= 0 to Self.Count-1 do
    begin
-     Assinar;
+     if pos('<Signature',Self.Items[i].XML) = 0 then
+        Assinar;
      if not(NotaUtil.Valida(Self.Items[i].XML, FMsg)) then
        raise Exception.Create('Falha na validação dos dados da nota '+
-                               IntToStr(Self.Items[i].NFe.Ide.cNF)+FMsg);
+                               IntToStr(Self.Items[i].NFe.Ide.cNF)+sLineBreak+Self.Items[i].Alertas+FMsg);
   end;
 end;
 

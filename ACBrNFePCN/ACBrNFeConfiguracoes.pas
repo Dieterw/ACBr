@@ -295,12 +295,12 @@ end;
 
 function TCertificadosConf.GetNumeroSerie: AnsiString;
 begin
-  Result := Trim(UpperCase(NotaUtil.EliminarCaracter(FNumeroSerie,' ')));
+  Result := Trim(UpperCase(StringReplace(FNumeroSerie,' ','',[rfReplaceAll] )));
 end;
 
 procedure TCertificadosConf.SetNumeroSerie(const Value: AnsiString);
 begin
-  FNumeroSerie := Trim(UpperCase(NotaUtil.EliminarCaracter(Value,' ')));
+  FNumeroSerie := Trim(UpperCase(StringReplace(Value,' ','',[rfReplaceAll] )));
 end;
 
 function TCertificadosConf.SelecionarCertificado: AnsiString;

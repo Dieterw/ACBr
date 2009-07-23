@@ -54,7 +54,7 @@ Uses IniFiles, StrUtils, DateUtils,
   pcnConsSitNFe, pcnRetConsSitNFe,
   pcnInutNFe, pcnRetInutNFe,
   pcnRetEnvNFe, pcnConsReciNFe,
-  pcnNFeRTXT;
+  pcnNFeRTXT, ACBrNFeNotasFiscais;
 
 Procedure DoACBrNFe( Cmd : TACBrNFeCmd ) ;
 var
@@ -62,6 +62,7 @@ var
   ArqNFe, ArqPDF : String;
   Salva  : Boolean;
   SL     : TStringList;
+  Alertas : AnsiString;
 
   NFeRetConsStatServ : TRetConsStatServ;
   NFeRetConsSitNFe   : TRetConsSitNFe;
@@ -391,22 +392,22 @@ begin
              ForceDirectories(PathWithDelim(ExtractFilePath(Application.ExeName))+'Logs');
              ACBrNFe1.Configuracoes.Geral.PathSalvar := PathWithDelim(ExtractFilePath(Application.ExeName))+'Logs';
             end;
-           ACBrNFe1.Configuracoes.Geral.Salvar := True;
            ACBrNFe1.NotasFiscais.GerarNFe;
+           Alertas := ACBrNFe1.NotasFiscais.Items[0].Alertas;
            ACBrNFe1.NotasFiscais.Valida;
-           ACBrNFe1.Configuracoes.Geral.Salvar := Salva;
-
            ArqNFe := PathWithDelim(ACBrNFe1.Configuracoes.Geral.PathSalvar)+StringReplace(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID, 'NFe', '', [rfIgnoreCase])+'-nfe.xml';
+           ACBrNFe1.NotasFiscais.SaveToFile(ArqNFe);
 
+           Cmd.Resposta :=  'NFe criada em: '+ArqNFe;
+           if Alertas <> '' then
+              Cmd.Resposta :=  Cmd.Resposta+sLineBreak+'Alertas:'+Alertas;
            if ((Cmd.Metodo = 'criarnfe') or (Cmd.Metodo = 'criarnfesefaz')) and (Cmd.Params(1) = '1') then
             begin
               SL := TStringList.Create;
               SL.LoadFromFile(ArqNFe);
-              Cmd.Resposta :=  'NFe criada em: '+ArqNFe+sLineBreak+SL.Text;
+              Cmd.Resposta :=  Cmd.Resposta+sLineBreak+SL.Text;
               SL.Free;
-            end
-           else
-              Cmd.Resposta :=  'NFe criada em: '+ArqNFe;
+            end;
 
            if (Cmd.Metodo = 'criarenviarnfe') or (Cmd.Metodo = 'criarenviarnfesefaz') then
             begin
@@ -709,7 +710,7 @@ begin
                if Length(INIRec.ReadString( sSecao,'cEANTrib','')) > 0 then
                   Prod.cEANTrib      := INIRec.ReadString( sSecao,'cEANTrib'      ,'');
                Prod.uTrib     := INIRec.ReadString( sSecao,'uTrin'  , Prod.uCom);
-               Prod.qTrib     := StringToFloatDef( INIRec.ReadString(sSecao,'qTrib'   ,'') ,Prod.qCom) ;
+               Prod.qTrib     := StringToFloatDef( INIRec.ReadString(sSecao,'qTrib'  ,''), Prod.qTrib);
                Prod.vUnTrib   := StringToFloatDef( INIRec.ReadString(sSecao,'vUnTrib','') ,Prod.vUnCom) ;
 
                Prod.vFrete    := StringToFloatDef( INIRec.ReadString(sSecao,'vFrete','') ,0) ;

@@ -224,7 +224,6 @@ function TACBrNFe.Enviar(ALote: Integer; Imprimir:Boolean = True): Boolean;
 var
   i: Integer;
 begin
-  NotasFiscais.GerarNFe;
   NotasFiscais.Assinar;
   NotasFiscais.Valida;
 

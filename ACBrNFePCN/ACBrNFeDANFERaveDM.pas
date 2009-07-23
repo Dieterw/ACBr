@@ -139,7 +139,7 @@ type
 
 implementation
 
-uses ACBrNFe, ACBrNFeUtil, StrUtils ;
+uses ACBrNFe, ACBrNFeUtil, StrUtils , Math;
 
 {$R *.dfm}
 type
@@ -473,7 +473,7 @@ begin
           begin
             if vDesc > 0 then
              begin
-               Connection.WriteStrData('', NotaUtil.FormatFloat(100-((((VUnCom*QCom)-vDesc)/(VUnCom*QCom))*100))+'%' );
+               Connection.WriteStrData('', NotaUtil.FormatFloat(RoundTo(100-((((VUnCom*QCom)-vDesc)/(VUnCom*QCom))*100),-1))+'%' );
              end
             else
                Connection.WriteStrData('', NotaUtil.FormatFloat(vDesc));

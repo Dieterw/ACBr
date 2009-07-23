@@ -618,7 +618,7 @@ object Form1: TForm1
             object Label4: TLabel
               Left = 198
               Top = 16
-              Width = 26
+              Width = 25
               Height = 13
               Caption = 'Porta'
             end
@@ -909,6 +909,7 @@ object Form1: TForm1
     Site = 'www.djsystem.com.br'
     Email = 'andre@djsystem.com.br'
     ImprimirDescPorc = True
+    MargemInferior = 0.800000000000000000
     RavFile = 
       'D:\delphi\ACBr\trunk\ACBrNFePCN\Demo\Report\NotaFiscalEletronica' +
       '.rav'

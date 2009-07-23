@@ -73,8 +73,6 @@ requires
   rtl,
   designide,
   xmlrtl,
-  inet,
-  soaprtl,
   Rave50VCL,
   ACBrNFePCN;
 

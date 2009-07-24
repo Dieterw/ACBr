@@ -78,7 +78,7 @@ type
     CustomFaturaCXN: TRvCustomConnection;
     CustomLocalRetiradaCXN: TRvCustomConnection;
     CustomLocalEntregaCXN: TRvCustomConnection;
-    
+
     constructor create( AOwner : TComponent ); override ;
     procedure CustomDestinatarioCXNGetCols(Connection: TRvCustomConnection);
     procedure CustomDestinatarioCXNGetRow(Connection: TRvCustomConnection);
@@ -145,7 +145,6 @@ uses ACBrNFe, ACBrNFeUtil, StrUtils , Math;
 type
   ArrOfStr = array of string;
 
-
 function explode(sPart, sInput: string): ArrOfStr;
 begin
   while Pos(sPart, sInput) <> 0 do
@@ -165,6 +164,44 @@ begin
    result := '';
    for i := 0 to Length(tokens) - 1 do
      result:=result+(tokens[i])+sPart;
+end;
+
+function CollateBr(Str: String): String;
+var
+   resultado,temp: string;
+   vChar: char;
+   tamanho, i: integer;
+begin
+   result:='';
+   Tamanho:=length(str);
+   i:=1;
+   while i <= Tamanho do
+   begin
+      temp:=copy(str,i,1);
+      vChar:=temp[1];
+      case vChar of
+         'á', 'â', 'ã', 'à', 'ä', 'å',
+         'Á', 'Â', 'Ã', 'À', 'Ä', 'Å': Resultado := 'A';
+         'é', 'ê', 'è', 'ë',
+         'É', 'Ê', 'È', 'Ë': Resultado := 'E';
+         'í', 'î', 'ì', 'ï',
+         'Í', 'Î', 'Ì', 'Ï': Resultado := 'I';
+         'ó', 'ô', 'õ', 'ò', 'ö',
+         'Ó', 'Ô', 'Õ', 'Ò', 'Ö': Resultado := 'O';
+         'ú', 'û', 'ù', 'ü',
+         'Ú', 'Û', 'Ù', 'Ü': Resultado := 'U';
+         'ç', 'Ç': Resultado := 'C';
+         'ñ', 'Ñ': Resultado := 'N';
+         'ý', 'ÿ', 'Ý', 'Y': Resultado := 'Y';
+      else
+         if vChar > #127 then
+           Resultado := #32
+         else if vChar in ['a'..'z','A'..'Z','0'..'9','-'] then
+           resultado:=uppercase(vCHAR);
+      end;
+      result:=result+resultado;
+      i:=i+1;
+  end;
 end;
 
 constructor TdmACBrNFeRave.create(AOwner: TComponent);
@@ -216,7 +253,7 @@ begin
       Connection.WriteStrData('', XCpl);
       Connection.WriteStrData('', XBairro);
       Connection.WriteStrData('', inttostr(CMun));
-      Connection.WriteStrData('', NotaUtil.ParseText(XMun,true));
+      Connection.WriteStrData('', CollateBr(XMun));
       Connection.WriteStrData('', UF);
       Connection.WriteStrData('', NotaUtil.FormatarCEP(NotaUtil.Poem_Zeros(CEP,8)));
       Connection.WriteStrData('', inttostr(CPais));
@@ -315,7 +352,7 @@ begin
       Connection.WriteStrData('', XCpl);
       Connection.WriteStrData('', XBairro);
       Connection.WriteStrData('', inttostr(CMun));
-      Connection.WriteStrData('', NotaUtil.ParseText(XMun,true));
+      Connection.WriteStrData('', CollateBr(XMun));
       Connection.WriteStrData('', UF);
       Connection.WriteStrData('', NotaUtil.FormatarCEP(NotaUtil.Poem_Zeros(CEP,8)));
       Connection.WriteStrData('', inttostr(CPais));
@@ -611,7 +648,7 @@ begin
       Connection.WriteStrData('', XNome);
       Connection.WriteStrData('', IE);
       Connection.WriteStrData('', XEnder);
-      Connection.WriteStrData('', NotaUtil.ParseText(XMun,true));
+      Connection.WriteStrData('', CollateBr(XMun));
       Connection.WriteStrData('', UF);
     end;
   end;
@@ -1107,7 +1144,7 @@ begin
     Connection.WriteStrData('', XCpl);
     Connection.WriteStrData('', XBairro);
     Connection.WriteStrData('', inttostr(CMun));
-    Connection.WriteStrData('', NotaUtil.ParseText(XMun,true));
+    Connection.WriteStrData('', CollateBr(XMun));
     Connection.WriteStrData('', UF);
   end;
 end;
@@ -1149,7 +1186,7 @@ begin
     Connection.WriteStrData('', XCpl);
     Connection.WriteStrData('', XBairro);
     Connection.WriteStrData('', inttostr(CMun));
-    Connection.WriteStrData('', NotaUtil.ParseText(XMun,true));
+    Connection.WriteStrData('', CollateBr(XMun));
     Connection.WriteStrData('', UF);
   end;
 end;

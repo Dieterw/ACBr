@@ -80,6 +80,7 @@ type
     CustomLocalEntregaCXN: TRvCustomConnection;
 
     constructor create( AOwner : TComponent ); override ;
+    procedure RvSystem1BeforePrint(Sender: TObject);
     procedure CustomDestinatarioCXNGetCols(Connection: TRvCustomConnection);
     procedure CustomDestinatarioCXNGetRow(Connection: TRvCustomConnection);
     procedure CustomDestinatarioCXNOpen(Connection: TRvCustomConnection);
@@ -142,6 +143,7 @@ implementation
 uses ACBrNFe, ACBrNFeUtil, StrUtils , Math;
 
 {$R *.dfm}
+
 type
   ArrOfStr = array of string;
 
@@ -209,6 +211,17 @@ begin
   inherited;
 
   FDANFEClassOwner := TACBrNFeDANFEClass( AOwner ) ;
+end;
+
+procedure TdmACBrNFeRave.RvSystem1BeforePrint(Sender: TObject);
+begin
+   //processo para não exibir o quadro ISSQN no DANFE_Rave513
+   if ((FNFe.Total.ISSQNtot.VServ=0) and
+       (FNFe.Total.ISSQNtot.VBC=0) and
+       (FNFe.Total.ISSQNtot.VISS=0)) then
+      rvPROJECT.SetParam('wISSQN','N')
+   else
+      rvPROJECT.SetParam('wISSQN','S');
 end;
 
 procedure TdmACBrNFeRave.CustomDestinatarioCXNGetCols(
@@ -1108,12 +1121,7 @@ end;
 
 procedure TdmACBrNFeRave.CustomISSQNCXNOpen(Connection: TRvCustomConnection);
 begin
-   if ((FNFe.Total.ISSQNtot.VServ=0) and
-       (FNFe.Total.ISSQNtot.VBC=0) and
-       (FNFe.Total.ISSQNtot.VISS=0)) then
-      Connection.DataRows := 0
-   else
-      Connection.DataRows := 1;
+   Connection.DataRows := 1;
 end;
 
 procedure TdmACBrNFeRave.CustomLocalEntregaCXNGetCols(

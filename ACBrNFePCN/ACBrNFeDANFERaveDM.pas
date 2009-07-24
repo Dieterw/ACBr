@@ -196,7 +196,7 @@ begin
       else
          if vChar > #127 then
            Resultado := #32
-         else if vChar in ['a'..'z','A'..'Z','0'..'9','-'] then
+         else if vChar in ['a'..'z','A'..'Z','0'..'9','-',' '] then
            resultado:=uppercase(vCHAR);
       end;
       result:=result+resultado;

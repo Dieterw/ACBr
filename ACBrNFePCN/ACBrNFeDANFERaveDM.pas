@@ -555,7 +555,7 @@ begin
                   Connection.WriteStrData('', CSTICMSToStr(cst40))
                else if (CST = cst41) then
                   Connection.WriteStrData('', CSTICMSToStr(cst41))
-               else if (CST = cst40) then
+               else if (CST = cst50) then
                   Connection.WriteStrData('', CSTICMSToStr(cst50));
                Connection.WriteFloatData('', 0);
                Connection.WriteFloatData('', 0);

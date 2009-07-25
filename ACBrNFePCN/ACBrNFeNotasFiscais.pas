@@ -39,6 +39,8 @@
 |*
 |* 16/12/2008: Wemerson Souto
 |*  - Doação do componente para o Projeto ACBr
+|* 25/07/2009: Gilson Carmo
+|*  - Envio do e-mail utilizando Thread
 ******************************************************************************}
 {$I ACBr.inc}
 
@@ -108,6 +110,22 @@ type
 
     property ACBrNFe : TComponent read FACBrNFe ;
   end;
+
+  TSendMailThread = class(TThread)
+  private
+    FException : Exception;
+    procedure DoHandleException;
+  public
+    smtp : TSMTPSend;
+    sFrom : String;
+    sTo : String;
+    slmsg_Lines : TStrings;
+    constructor Enviar;
+  protected
+    procedure Execute; override;
+    procedure HandleException;
+  end;
+
 
 implementation
 
@@ -196,16 +214,14 @@ end;
 
 procedure NotaFiscal.EnviarEmail(const sSmtpHost, sSmtpPort, sSmtpUser, sSmtpPasswd, sFrom, sTo, sAssunto: String; sMensagem : TStrings; SSL : Boolean);
 var
-  smtp: TSMTPSend;
-  msg_lines: TStringList;
+  ThreadSMTP : TSendMailThread;
   m:TMimemess;
   p: TMimepart;
   StreamNFe : TStringStream;
   NomeArq : String;
 begin
-  msg_lines := TStringList.Create;
-  smtp := TSMTPSend.Create;
   m:=TMimemess.create;
+  ThreadSMTP := TSendMailThread.Enviar;
   try
      p := m.AddPartMultipart('mixed', nil);
      if sMensagem <> nil then
@@ -213,43 +229,40 @@ begin
      StreamNFe := TStringStream.Create('');
      SaveToStream(StreamNFe) ;
      m.AddPartBinary(StreamNFe,copy(NFe.infNFe.ID, (length(NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml', p);
-     TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.ImprimirDANFEPDF(NFe);
-     if NotaUtil.EstaVazio(TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.PathPDF) then
-        NomeArq := TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).Configuracoes.Geral.PathSalvar
-     else
-        NomeArq := TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.PathPDF;
-     m.AddPartBinaryFromFile(PathWithDelim(NomeArq)+NFe.infNFe.ID+'.pdf', p);
+     //só enviar PDF se o path for especificado - algumas empresas não querem o PDF
+     //melhor criar uma variavel na solicitacao do envio do email??
+     //if not (NotaUtil.EstaVazio(TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.PathPDF)) then
+     begin
+        TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.ImprimirDANFEPDF(NFe);
+        if NotaUtil.EstaVazio(TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.PathPDF) then
+           NomeArq := TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).Configuracoes.Geral.PathSalvar
+        else
+           NomeArq := TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.PathPDF;
+        m.AddPartBinaryFromFile(PathWithDelim(NomeArq)+NFe.infNFe.ID+'.pdf', p);
+     end;
      m.header.tolist.add(sTo);
      m.header.From := sFrom;
      m.header.subject:=sAssunto;
      m.EncodeMessage;
-     msg_lines.Add(m.Lines.Text);
 
-     smtp.UserName := sSmtpUser;
-     smtp.Password := sSmtpPasswd;
+     ThreadSMTP.sFrom := sFrom;
+     ThreadSMTP.sTo := sTo;
+     ThreadSMTP.slmsg_Lines.Add(m.Lines.Text);
 
-     smtp.TargetHost := sSmtpHost;
-     smtp.TargetPort := sSmtpPort;
+     ThreadSMTP.smtp.UserName := sSmtpUser;
+     ThreadSMTP.smtp.Password := sSmtpPasswd;
 
-     smtp.FullSSL := SSL;
-     smtp.AutoTLS := SSL;
+     ThreadSMTP.smtp.TargetHost := sSmtpHost;
+     ThreadSMTP.smtp.TargetPort := sSmtpPort;
+
+     ThreadSMTP.smtp.FullSSL := SSL;
+     ThreadSMTP.smtp.AutoTLS := SSL;
      TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).SetStatus( stEmail );
-     if not smtp.Login() then
-       raise Exception.Create('SMTP ERROR: Login:' + smtp.EnhCodeString);
 
-     if not smtp.MailFrom(sFrom, Length(sFrom)) then
-       raise Exception.Create('SMTP ERROR: MailFrom:' + smtp.EnhCodeString);
-     if not smtp.MailTo(sTo) then
-       raise Exception.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString);
-     if not smtp.MailData(msg_lines) then
-       raise Exception.Create('SMTP ERROR: MailData:' + smtp.EnhCodeString);
+     ThreadSMTP.Resume; // inicia a thread
 
-     if not smtp.Logout() then
-       raise Exception.Create('SMTP ERROR: Logout:' + smtp.EnhCodeString);
      TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).SetStatus( stIdle );
   finally
-     msg_lines.Free;
-     smtp.Free;
      m.free;
   end;
 end;
@@ -427,6 +440,59 @@ begin
  except
     Result := False;
  end;
+end;
+
+{ TSendMailThread }
+
+procedure TSendMailThread.DoHandleException;
+begin
+  Sysutils.ShowException(FException, nil );
+end;
+
+constructor TSendMailThread.Enviar;
+begin
+  Create(True);
+  FreeOnTerminate := True;
+  smtp := TSMTPSend.Create;
+  slmsg_Lines := TStringList.Create;
+  sFrom := '';
+  sTo := '';
+end;
+
+procedure TSendMailThread.Execute;
+begin
+   inherited;
+   try
+      try
+         if not smtp.Login() then
+            raise Exception.Create('SMTP ERROR: Login:' + smtp.EnhCodeString);
+         if not smtp.MailFrom( sFrom, Length(sFrom)) then
+            raise Exception.Create('SMTP ERROR: MailFrom:' + smtp.EnhCodeString);
+         if not smtp.MailTo(sTo) then
+            raise Exception.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString);
+         if not smtp.MailData(slmsg_Lines) then
+            raise Exception.Create('SMTP ERROR: MailData:' + smtp.EnhCodeString);
+         if not smtp.Logout() then
+            raise Exception.Create('SMTP ERROR: Logout:' + smtp.EnhCodeString);
+      except
+         HandleException;
+      end;
+   finally
+      if Assigned(slmsg_lines) then
+         slmsg_lines.free;
+   end;
+end;
+
+procedure TSendMailThread.HandleException;
+begin
+  FException := Exception(ExceptObject);
+  try
+    // Não mostra mensagens de EAbort
+    if not (FException is EAbort) then
+      Synchronize(DoHandleException);
+  finally
+    FException := nil;
+  end;
 end;
 
 end.

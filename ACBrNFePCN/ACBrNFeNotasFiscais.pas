@@ -49,7 +49,7 @@ unit ACBrNFeNotasFiscais;
 interface
 
 uses
-  Classes, Sysutils,
+  Classes, Sysutils, Dialogs,
   ACBrNFeUtil, ACBrNFeConfiguracoes,
   {$IFDEF FPC}
      ACBrNFeDMLaz,
@@ -75,7 +75,7 @@ type
     procedure ImprimirPDF;
     function SaveToFile(CaminhoArquivo: string = ''): boolean;
     function SaveToStream(Stream: TStringStream): boolean;
-    procedure EnviarEmail(const sSmtpHost, sSmtpPort, sSmtpUser, sSmtpPasswd, sFrom, sTo, sAssunto: String; sMensagem : TStrings; SSL : Boolean);
+    procedure EnviarEmail(const sSmtpHost, sSmtpPort, sSmtpUser, sSmtpPasswd, sFrom, sTo, sAssunto: String; sMensagem : TStrings; SSL : Boolean; EnviaPDF: Boolean = true);
     property NFe: TNFe  read FNFe write FNFe;
     property XML: AnsiString  read FXML write FXML;
     property Confirmada: Boolean  read FConfirmada write FConfirmada;
@@ -212,7 +212,7 @@ begin
   end;
 end;
 
-procedure NotaFiscal.EnviarEmail(const sSmtpHost, sSmtpPort, sSmtpUser, sSmtpPasswd, sFrom, sTo, sAssunto: String; sMensagem : TStrings; SSL : Boolean);
+procedure NotaFiscal.EnviarEmail(const sSmtpHost, sSmtpPort, sSmtpUser, sSmtpPasswd, sFrom, sTo, sAssunto: String; sMensagem : TStrings; SSL : Boolean; EnviaPDF: Boolean = true);
 var
   ThreadSMTP : TSendMailThread;
   m:TMimemess;
@@ -229,9 +229,7 @@ begin
      StreamNFe := TStringStream.Create('');
      SaveToStream(StreamNFe) ;
      m.AddPartBinary(StreamNFe,copy(NFe.infNFe.ID, (length(NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml', p);
-     //só enviar PDF se o path for especificado - algumas empresas não querem o PDF
-     //melhor criar uma variavel na solicitacao do envio do email??
-     //if not (NotaUtil.EstaVazio(TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.PathPDF)) then
+     if (EnviaPDF) then
      begin
         TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.ImprimirDANFEPDF(NFe);
         if NotaUtil.EstaVazio(TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.PathPDF) then

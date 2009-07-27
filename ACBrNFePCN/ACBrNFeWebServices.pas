@@ -196,7 +196,7 @@ type
   private
     FNFeChave: WideString;
     FProtocolo: WideString;
-    FDhRecbto: WideString;
+    FDhRecbto: TDateTime;
     FXMotivo: WideString;
     FTpAmb : TpcnTipoAmbiente;
     FverAplic : String;
@@ -207,7 +207,7 @@ type
     function Executar: Boolean;override;
     property NFeChave: WideString read FNFeChave write FNFeChave;
     property Protocolo: WideString read FProtocolo write FProtocolo;
-    property DhRecbto: WideString read FDhRecbto write FDhRecbto;
+    property DhRecbto: TDateTime read FDhRecbto write FDhRecbto;
     property XMotivo: WideString read FXMotivo write FXMotivo;
     property TpAmb: TpcnTipoAmbiente read FTpAmb;
     property verAplic: String read FverAplic;
@@ -841,7 +841,7 @@ begin
       FTMed     := NFeRetorno.TMed;
       FdhRetorno:= NFeRetorno.dhRetorno;
       FxObs     := NFeRetorno.xObs;
-      
+
       FMsg   := NFeRetorno.XMotivo+ LineBreak+NFeRetorno.XObs;
       Result := (NFeRetorno.CStat = 107);
       NFeRetorno.Free;
@@ -1402,6 +1402,8 @@ begin
     FcStat    := NFeRetorno.cStat;
     FcUF      := NFeRetorno.cUF;
     FdigVal   := NFeRetorno.digVal;
+    FdhRecbto := NFeRetorno.DhRecbto;
+    FxMotivo  := NFeRetorno.xMotivo;
 
     FMsg   := NFeRetorno.XMotivo;
     Result := (NFeRetorno.CStat in [100,101,110]);
@@ -1512,7 +1514,8 @@ begin
     FxMotivo  := NFeRetorno.xMotivo;
     FcUF      := NFeRetorno.cUF;
     FDhRecbto := NFeRetorno.dhRecbto;
-    Fprotocolo:= NFeRetorno.nProt; 
+    Fprotocolo:= NFeRetorno.nProt;
+
     FMsg   := NFeRetorno.XMotivo;
     Result := (NFeRetorno.CStat = 101);
     NFeRetorno.Free;

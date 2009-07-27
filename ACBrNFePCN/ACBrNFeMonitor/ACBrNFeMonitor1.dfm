@@ -5024,6 +5024,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
     TipoDANFE = tiRetrato
     NumCopias = 1
     ImprimirDescPorc = True
+    MargemInferior = 0.800000000000000000
     Left = 201
     Top = 25
   end

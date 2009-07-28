@@ -558,6 +558,7 @@ begin
         ACBrNFeDANFERave1.MostrarPreview   := cbxMostrarPreview.Checked;
         ACBrNFeDANFERave1.Impressora := cbxImpressora.Text;
         ACBrNFeDANFERave1.NumCopias  := StrToInt(edtNumCopia.Text);
+        ACBrNFeDANFERave1.PathPDF    := PathWithDelim(ExtractFileDir(application.ExeName));
       end;
 
      edtSmtpHost.Text      := Ini.ReadString( 'Email','Host'   ,'') ;

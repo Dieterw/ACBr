@@ -1009,7 +1009,7 @@ begin
                            ICMS.modBCST  := StrTomodBCST(OK, INIRec.ReadString(sSecao,'ModalidadeST','0'));
                            ICMS.pMVAST   := StringToFloatDef( INIRec.ReadString(sSecao,'PercentualMargemST','') ,0);
                            ICMS.pRedBCST := StringToFloatDef( INIRec.ReadString(sSecao,'PercentualReducaoST','') ,0);
-                           ICMS.vBC      := StringToFloatDef( INIRec.ReadString(sSecao,'ValorBaseST','') ,0);
+                           ICMS.vBCST    := StringToFloatDef( INIRec.ReadString(sSecao,'ValorBaseST','') ,0);
                            ICMS.pICMSST  := StringToFloatDef( INIRec.ReadString(sSecao,'AliquotaST' ,'') ,0);
                            ICMS.vICMSST  := StringToFloatDef( INIRec.ReadString(sSecao,'ValorST'    ,'') ,0);
                          end

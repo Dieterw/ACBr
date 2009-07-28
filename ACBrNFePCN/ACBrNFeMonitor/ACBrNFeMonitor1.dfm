@@ -4118,7 +4118,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       Top = 0
       Width = 533
       Height = 231
-      ActivePage = Email
+      ActivePage = DANFE
       Align = alBottom
       TabOrder = 0
       object Monitor: TTabSheet
@@ -4758,6 +4758,13 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           Height = 13
           Caption = 'Impressora Padr'#227'o'
         end
+        object Label1: TLabel
+          Left = 7
+          Top = 132
+          Width = 87
+          Height = 13
+          Caption = 'N'#250'mero de C'#243'pias'
+        end
         object rgTipoDanfe: TRadioGroup
           Left = 8
           Top = 4
@@ -4833,24 +4840,31 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           Top = 108
           Width = 242
           Height = 21
-          ItemHeight = 0
+          ItemHeight = 13
           TabOrder = 3
         end
         object cbxImpDescPorc: TCheckBox
-          Left = 8
-          Top = 136
-          Width = 241
+          Left = 278
+          Top = 174
+          Width = 193
           Height = 17
           Caption = 'Imprimir Desconto em Porcentagem'
-          TabOrder = 4
+          TabOrder = 6
         end
         object cbxMostrarPreview: TCheckBox
           Left = 8
-          Top = 160
+          Top = 176
           Width = 241
           Height = 17
           Caption = 'Mostrar Preview antes da impress'#227'o'
           TabOrder = 5
+        end
+        object edtNumCopia: TEdit
+          Left = 7
+          Top = 148
+          Width = 90
+          Height = 21
+          TabOrder = 4
         end
       end
       object Testes: TTabSheet

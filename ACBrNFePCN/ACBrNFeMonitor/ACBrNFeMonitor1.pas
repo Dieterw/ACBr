@@ -144,6 +144,8 @@ type
     Panel2: TPanel;
     WBResposta: TWebBrowser;
     Panel3: TPanel;
+    Label1: TLabel;
+    edtNumCopia: TEdit;
     procedure DoACBrTimer(Sender: TObject);
     procedure edOnlyNumbers(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
@@ -536,11 +538,12 @@ begin
      rgTipoDanfe.ItemIndex     := Ini.ReadInteger( 'Geral','DANFE'       ,0) ;
      edtLogoMarca.Text         := Ini.ReadString( 'Geral','LogoMarca'   ,'') ;
      edtSoftwareHouse.Text     := Ini.ReadString( 'DANFE','SoftwareHouse'   ,'') ;
-     edtSiteEmpresa.Text       := Ini.ReadString( 'DANFE','Site' ,'') ;
-     edtEmailEmpresa.Text      := Ini.ReadString( 'DANFE','Email','') ;
-     edtFaxEmpresa.Text        := Ini.ReadString( 'DANFE','Fax'  ,'') ;
+     edtSiteEmpresa.Text       := Ini.ReadString( 'DANFE','Site'  ,'') ;
+     edtEmailEmpresa.Text      := Ini.ReadString( 'DANFE','Email' ,'') ;
+     edtFaxEmpresa.Text        := Ini.ReadString( 'DANFE','Fax'   ,'') ;
      cbxImpDescPorc.Checked    := Ini.ReadBool(   'DANFE','ImpDescPorc',False) ;
      cbxMostrarPreview.Checked := Ini.ReadBool(   'DANFE','MostrarPreview',False) ;
+     edtNumCopia.Text          := Ini.ReadString( 'DANFE','Copias','1') ;
 
      if ACBrNFe1.DANFE <> nil then
       begin
@@ -554,6 +557,7 @@ begin
         ACBrNFeDANFERave1.ImprimirDescPorc := cbxImpDescPorc.Checked;
         ACBrNFeDANFERave1.MostrarPreview   := cbxMostrarPreview.Checked;
         ACBrNFeDANFERave1.Impressora := cbxImpressora.Text;
+        ACBrNFeDANFERave1.NumCopias  := StrToInt(edtNumCopia.Text);
       end;
 
      edtSmtpHost.Text      := Ini.ReadString( 'Email','Host'   ,'') ;
@@ -641,6 +645,7 @@ begin
      Ini.WriteString( 'DANFE','Fax'  ,edtFaxEmpresa.Text) ;
      Ini.WriteBool(   'DANFE','ImpDescPorc',cbxImpDescPorc.Checked);
      Ini.WriteBool(   'DANFE','MostrarPreview',cbxMostrarPreview.Checked);
+     Ini.WriteString( 'DANFE','Copias'  ,edtNumCopia.Text) ;     
   finally
      Ini.Free ;
   end ;

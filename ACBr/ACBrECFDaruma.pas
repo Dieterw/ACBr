@@ -1053,7 +1053,7 @@ begin
   end
   else
   begin
-    Result := Subtotal;
+    Result := 0;
     if fsTotalAPagar <> 0 then
       Result := Subtotal - fsTotalAPagar ;
   end ;

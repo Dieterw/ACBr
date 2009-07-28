@@ -27,6 +27,7 @@ object dmACBrNFeRave: TdmACBrNFeRave
     SystemPrinter.StatusFormat = 'Printing page %p'
     SystemPrinter.Title = 'ReportPrinter Report'
     SystemPrinter.UnitsFactor = 1.000000000000000000
+    OnBeforePrint = RvSystem1BeforePrint
     Left = 107
     Top = 80
   end

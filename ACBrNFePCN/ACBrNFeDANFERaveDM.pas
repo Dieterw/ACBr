@@ -462,13 +462,17 @@ begin
   Connection.DataRows := FNFe.Det.Count;
 end;
 
+
 procedure TdmACBrNFeRave.CustomDadosProdutosCXNGetRow(
-  Connection: TRvCustomConnection);
+Connection: TRvCustomConnection);
 var
-  vTemp, vTemp2: TStringList;
-  vStream, vStream2: TMemoryStream;
-  IndexCampo,IndexCampo2:Integer;
-  Campos,Campos2:ArrOfStr;
+   vTemp, vTemp2: TStringList;
+   IndexCampo,IndexCampo2:Integer;
+   Campos,Campos2:ArrOfStr;
+
+   BufferXProd, BufferXInfProd : PAnsiChar;
+   size:integer;
+   TmpStr : String;
 begin
    with FNFe.Det.Items[Connection.DataIndex] do
    begin
@@ -476,35 +480,41 @@ begin
       begin
          Connection.WriteStrData('', cProd);
          Connection.WriteStrData('', cEAN);
+
          vTemp := TStringList.Create;
-         vStream := TMemoryStream.Create;
          try
             Campos := explode(';',XProd);
             for indexCampo:=0 to Length(Campos)-1 do
-               vTemp.Add(Campos[indexCampo]);
-            vTemp.SaveToStream(vStream);
-            vStream.Position := 0;
-            Connection.WriteBlobData(vStream.Memory^, vStream.Size);
+               vTemp.Add(Trim(Campos[indexCampo]));
+            TmpStr := vTemp.Text;
+            Size := Length(TmpStr);// * 2;
+            BufferXProd := PAnsiChar(TmPStr);
+            Connection.WriteBlobData(BufferXProd^, Size);
          finally
             vTemp.Free;
-            vStream.Free;
          end;
+
          vTemp2 := TStringList.Create;
-         vStream2 := TMemoryStream.Create;
          try
-            Campos2 := explode(';',infAdProd);
-            for indexCampo2:=0 to Length(Campos2)-1 do
-               vTemp2.Add(Campos2[indexCampo2]);
-            vTemp2.SaveToStream(vStream2);
-            vStream2.Position := 0;
-            if (length(infAdProd) > 0) then
-               Connection.WriteBlobData(vStream2.Memory^, vStream2.Size)
+            if (Trim(infAdProd) <> '') then
+            begin
+               Campos2 := explode(';',infAdProd);
+               for IndexCampo2:=0 to Length(Campos2)-1 do
+                  vTemp2.Add(Trim(Campos2[IndexCampo2]));
+               TmpStr := vTemp2.Text;
+               Size := Length(TmpStr);// * 2;
+               BufferXInfProd := PAnsiChar(TmPStr);
+            end
             else
-               Connection.WriteBlobData(vStream2.Memory^, 0)
+            begin
+               Size := 0;
+               BufferXInfProd := #0;
+            end;
+            Connection.WriteBlobData(BufferXInfProd^, Size);
          finally
             vTemp2.Free;
-            vStream2.Free;
          end;
+
          Connection.WriteStrData('', NCM);
          Connection.WriteStrData('', EXTIPI);
          Connection.WriteStrData('', IntToStr(genero));
@@ -1015,15 +1025,15 @@ procedure TdmACBrNFeRave.CustomInformacoesAdicionaisCXNGetRow(
 var
   i: Integer;
   vTemp: TStringList;
-  vStream: TMemoryStream;
-
   IndexCampo:Integer;
   Campos: ArrOfStr;
+  BufferInfCpl: PAnsiChar;
+  size: integer;
+  TmpStr: String;
 begin
   with FNFe.InfAdic do
   begin
     vTemp := TStringList.Create;
-    vStream := TMemoryStream.Create;
     try
       for i:=0  to ObsCont.Count-1 do
       begin
@@ -1031,16 +1041,24 @@ begin
           vTemp.Add(XCampo+': '+XTexto);
       end;
 
-      Campos := explode(';',InfCpl);
-      for indexCampo:=0 to Length(Campos)-1 do
-         vTemp.Add(Campos[indexCampo]);
-
-      vTemp.SaveToStream(vStream);
-      vStream.Position := 0;
-      Connection.WriteBlobData(vStream.Memory^, vStream.Size);
+      if ((trim(InfCpl) <> '') or
+          (trim(vTemp.Text) <> '')) then
+      begin
+         Campos := explode(';',InfCpl);
+         for indexCampo:=0 to Length(Campos)-1 do
+            vTemp.Add(Campos[indexCampo]);
+         TmpStr := vTemp.Text;
+         Size:=Length(TmpStr);
+         BufferInfCpl:=PAnsiChar(TmpStr);
+      end
+      else
+      begin
+         Size:=0;
+         BufferInfCpl:=#0;
+      end;
+      Connection.WriteBlobData(BufferInfCpl^, Size);
     finally
       vTemp.Free;
-      vStream.Free;
     end;
   end;
 
@@ -1070,12 +1088,15 @@ procedure TdmACBrNFeRave.CustomObservacaoFiscoCXNGetRow(
 var
   i: Integer;
   vTemp: TStringList;
-  vStream: TMemoryStream;
+  IndexCampo:Integer;
+  Campos: ArrOfStr;
+  BufferInfAdFisco: PAnsiChar;
+  size: integer;
+  TmpStr: String;
 begin
   with FNFe.InfAdic do
   begin
     vTemp := TStringList.Create;
-    vStream := TMemoryStream.Create;
     try
       for i:=0  to ObsFisco.Count-1 do
       begin
@@ -1083,16 +1104,26 @@ begin
           vTemp.Add(XCampo+': '+XTexto);
       end;
 
-      vTemp.Add(InfAdFisco);
-      vTemp.SaveToStream(vStream);
-      vStream.Position := 0;
-      Connection.WriteBlobData(vStream.Memory^, vStream.Size);
+      if ((trim(InfAdFisco) <> '') or
+          (trim(vTemp.Text) <> '')) then
+      begin
+         Campos := explode(';',InfAdFisco);
+         for indexCampo:=0 to Length(Campos)-1 do
+            vTemp.Add(Campos[indexCampo]);
+         TmpStr := vTemp.Text;
+         Size:=Length(TmpStr);
+         BufferInfAdFisco:=PAnsiChar(TmpStr);
+      end
+      else
+      begin
+         Size:=0;
+         BufferInfAdFisco:=#0;
+      end;
+      Connection.WriteBlobData(BufferInfAdFisco^, Size);
     finally
       vTemp.Free;
-      vStream.Free;
     end;
   end;
-
 end;
 
 procedure TdmACBrNFeRave.CustomObservacaoFiscoCXNOpen(

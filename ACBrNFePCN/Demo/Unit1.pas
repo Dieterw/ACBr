@@ -404,7 +404,7 @@ begin
      MemoResp.Lines.Text :=  UTF8Encode(ACBrNFe1.WebServices.Cancelamento.RetWS);
      LoadXML(MemoResp, WBResposta);
      ShowMessage(IntToStr(ACBrNFe1.WebServices.Cancelamento.cStat));
-     ShowMessage(ACBrNFe1.WebServices.Cancelamento.xMotivo);
+     ShowMessage(ACBrNFe1.WebServices.Cancelamento.Protocolo);
   end;
 end;
 
@@ -699,7 +699,6 @@ if not(InputQuery('WebServices Enviar', 'Numero da Nota', vAux)) then
     Ide.serie     := 1;
     Ide.dEmi      := Date;
     Ide.dSaiEnt   := Date;
-    Ide.tpAmb     := taHomologacao;
     Ide.tpNF      := tnSaida;
     Ide.indPag    := ipVista;
     Ide.verProc   := '1.0.0.0';

@@ -700,6 +700,37 @@ case FormaEmissao of
          17: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //TO
       end;
      end;
+  2 : begin
+      case AUF of
+         12: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //AC
+         27: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //AL
+         16: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //AP
+         13: Result := NotaUtil.GetURLAM(AAmbiente,ALayOut); //AM
+         29: Result := NotaUtil.GetURLBA(AAmbiente,ALayOut); //BA
+         23: Result := NotaUtil.GetURLCE(AAmbiente,ALayOut); //CE
+         53: Result := NotaUtil.GetURLDF(AAmbiente,ALayOut); //DF
+         32: Result := NotaUtil.GetURLSVAN(AAmbiente,ALayOut); //ES
+         52: Result := NotaUtil.GetURLGO(AAmbiente,ALayOut); //GO
+         21: Result := NotaUtil.GetURLSVAN(AAmbiente,ALayOut); //MA
+         51: Result := NotaUtil.GetURLMT(AAmbiente,ALayOut); //MT
+         50: Result := NotaUtil.GetURLMS(AAmbiente,ALayOut); //MS
+         31: Result := NotaUtil.GetURLMG(AAmbiente,ALayOut); //MG
+         15: Result := NotaUtil.GetURLSVAN(AAmbiente,ALayOut); //PA
+         25: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //PB
+         41: Result := NotaUtil.GetURLPR(AAmbiente,ALayOut); //PR
+         26: Result := NotaUtil.GetURLPE(AAmbiente,ALayOut); //PE
+         22: Result := NotaUtil.GetURLSVAN(AAmbiente,ALayOut); //PI
+         33: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //RJ
+         24: Result := NotaUtil.GetURLSVAN(AAmbiente,ALayOut); //RN
+         43: Result := NotaUtil.GetURLRS(AAmbiente,ALayOut); //RS
+         11: Result := NotaUtil.GetURLRO(AAmbiente,ALayOut); //RO
+         14: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //RR
+         42: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //SC
+         35: Result := NotaUtil.GetURLSP(AAmbiente,ALayOut); //SP
+         28: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //SE
+         17: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //TO
+      end;
+     end;
   5 : begin
       case AUF of
          12: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //AC

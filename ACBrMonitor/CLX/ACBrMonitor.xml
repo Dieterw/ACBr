@@ -80,19 +80,19 @@
                             <origin>./QECFTeste</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>./Exemplos/TesteTXT.BAT</origin>
+                            <origin>../Exemplos/TesteTXT.BAT</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>./Exemplos/Clipper_TXT_xHarbour_Socket.zip</origin>
+                            <origin>../Exemplos/Clipper_TXT_xHarbour_Socket.zip</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>./Exemplos/Cobol_TXT_Socket.zip</origin>
+                            <origin>../Exemplos/Cobol_TXT_Socket.zip</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>./Exemplos/Oracle.txt</origin>
+                            <origin>../Exemplos/Oracle.txt</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>./Exemplos/php_socket.zip</origin>
+                            <origin>../Exemplos/php_socket.zip</origin>
                         </distributionFile>
                         <distributionFile>
                             <origin>/usr/local/kylix3/bin/libborqt-6.9.0-qt2.3.so</origin>

@@ -3,8 +3,8 @@
     <fullName>ACBr</fullName>
     <version>0.8.7b</version>
     <installerFilename>${product_shortname}-${product_version}-${platform_name}-installer.${platform_exec_suffix}</installerFilename>
-    <readmeFile>/mnt/hgfs/d/delphi/ACBr/source/Monitor/clx/leia-me.txt</readmeFile>
-    <licenseFile>/mnt/hgfs/d/delphi/ACBr/source/Monitor/clx/licenca.txt</licenseFile>
+    <readmeFile>./leia-me.txt</readmeFile>
+    <licenseFile>./licenca.txt</licenseFile>
     <wrapLicenseFileText>1</wrapLicenseFileText>
     <leftImage></leftImage>
     <logoImage></logoImage>
@@ -74,52 +74,52 @@
                     <platforms>linux</platforms>
                     <distributionFileList>
                         <distributionFile>
-                            <origin>/mnt/hgfs/d/delphi/ACBr/source/Monitor/clx/ACBrMonitor</origin>
+                            <origin>./ACBrMonitor</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/mnt/hgfs/d/delphi/ACBr/source/Monitor/clx/QECFTeste</origin>
+                            <origin>./QECFTeste</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/mnt/hgfs/d/delphi/ACBr/source/Monitor/clx/Exemplos/TesteTXT.BAT</origin>
+                            <origin>./Exemplos/TesteTXT.BAT</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/mnt/hgfs/d/delphi/ACBr/source/Monitor/clx/Exemplos/Clipper_TXT_xHarbour_Socket.zip</origin>
+                            <origin>./Exemplos/Clipper_TXT_xHarbour_Socket.zip</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/mnt/hgfs/d/delphi/ACBr/source/Monitor/clx/Exemplos/Cobol_TXT_Socket.zip</origin>
+                            <origin>./Exemplos/Cobol_TXT_Socket.zip</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/mnt/hgfs/d/delphi/ACBr/source/Monitor/clx/Exemplos/Oracle.txt</origin>
+                            <origin>./Exemplos/Oracle.txt</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/mnt/hgfs/d/delphi/ACBr/source/Monitor/clx/Exemplos/php_socket.zip</origin>
+                            <origin>./Exemplos/php_socket.zip</origin>
                         </distributionFile>
                         <distributionFile>
                             <origin>/usr/local/kylix3/bin/libborqt-6.9.0-qt2.3.so</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/mnt/hgfs/d/delphi/ACBr/source/Monitor/clx/posinstall.sh</origin>
+                            <origin>./posinstall.sh</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/mnt/hgfs/d/delphi/ACBr/tools/imagens/ACBrMonitor.ico</origin>
+                            <origin>./ACBrMonitor.ico</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/mnt/hgfs/d/delphi/ACBr/tools/imagens/ECFTeste.ico</origin>
+                            <origin>./ECFTeste.ico</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/mnt/hgfs/d/delphi/ACBr/source/Monitor/clx/preuninstall.sh</origin>
+                            <origin>./preuninstall.sh</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/mnt/hgfs/d/delphi/ACBr/source/Monitor/clx/ACBrMonitor-change-log.txt</origin>
+                            <origin>./ACBrMonitor-change-log.txt</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/mnt/hgfs/d/delphi/ACBr/source/Monitor/clx/leia-me.txt</origin>
+                            <origin>./leia-me.txt</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/mnt/hgfs/d/delphi/ACBr/source/Monitor/clx/ACBrMonitor.chm</origin>
+                            <origin>./ACBrMonitor.chm</origin>
                         </distributionFile>
                         <distributionFile>
-                            <origin>/mnt/hgfs/d/delphi/ACBr/source/Monitor/clx/ACBrMonitorConsole</origin>
+                            <origin>./ACBrMonitorConsole</origin>
                         </distributionFile>
                     </distributionFileList>
                     <shortcutList>

@@ -487,7 +487,11 @@ begin
             for indexCampo:=0 to Length(Campos)-1 do
                vTemp.Add(Trim(Campos[indexCampo]));
             TmpStr := vTemp.Text;
-            Size := Length(TmpStr);// * 2;
+            {$IFDEF VER200} //Delphi2009
+               Size := Length(TmpStr) * 2;
+            {$ELSE}
+               Size := Length(TmpStr);
+            {$ENDIF}
             BufferXProd := PAnsiChar(TmPStr);
             Connection.WriteBlobData(BufferXProd^, Size);
          finally
@@ -502,7 +506,11 @@ begin
                for IndexCampo2:=0 to Length(Campos2)-1 do
                   vTemp2.Add(Trim(Campos2[IndexCampo2]));
                TmpStr := vTemp2.Text;
-               Size := Length(TmpStr);// * 2;
+               {$IFDEF VER200} //Delphi2009
+                  Size := Length(TmpStr) * 2;
+               {$ELSE}
+                  Size := Length(TmpStr);
+               {$ENDIF}
                BufferXInfProd := PAnsiChar(TmPStr);
             end
             else
@@ -1048,7 +1056,11 @@ begin
          for indexCampo:=0 to Length(Campos)-1 do
             vTemp.Add(Campos[indexCampo]);
          TmpStr := vTemp.Text;
-         Size:=Length(TmpStr);
+         {$IFDEF VER200} //Delphi2009
+            Size := Length(TmpStr) * 2;
+         {$ELSE}
+            Size := Length(TmpStr);
+         {$ENDIF}
          BufferInfCpl:=PAnsiChar(TmpStr);
       end
       else
@@ -1111,7 +1123,11 @@ begin
          for indexCampo:=0 to Length(Campos)-1 do
             vTemp.Add(Campos[indexCampo]);
          TmpStr := vTemp.Text;
-         Size:=Length(TmpStr);
+         {$IFDEF VER200} //Delphi2009
+            Size := Length(TmpStr) * 2;
+         {$ELSE}
+            Size := Length(TmpStr);
+         {$ENDIF}
          BufferInfAdFisco:=PAnsiChar(TmpStr);
       end
       else

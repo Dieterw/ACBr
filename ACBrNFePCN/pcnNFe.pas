@@ -528,7 +528,7 @@ type
     FespVeic: integer;
     FVIN: string;
     FcondVeic: TpcnCondicaoVeiculo;
-    FcMod: integer;
+    FcMod: string;
   published
     property tpOP: TpcnTipoOperacao read FtpOP write FtpOP;
     property chassi: string read Fchassi write Fchassi;
@@ -551,7 +551,7 @@ type
     property espVeic: integer read FespVeic write FespVeic;
     property VIN: string read FVIN write FVIN;
     property condVeic: TpcnCondicaoVeiculo read FcondVeic write FcondVeic;
-    property cMod: integer read FcMod write FcMod;
+    property cMod: string read FcMod write FcMod;
   end;
 
   TMedCollection = class(TCollection)

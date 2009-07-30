@@ -334,7 +334,7 @@ begin
     NFe.Det[i].prod.veicProd.espVeic := 0;          // J20 - Espécie de Veículo (Utilizar Tabela RENAVAM)
     NFe.Det[i].prod.veicProd.VIN := '';             // J21 - Condição do VIN
     NFe.Det[i].prod.veicProd.condVeic := cvAcabado; // J22 - Condição do Veículo (1-Acabado; 2-Inacabado; 3-Semi-acabado)
-    NFe.Det[i].prod.veicProd.cMod := 0;             // J23 - Código Marca Modelo (Utilizar Tabela RENAVAM)
+    NFe.Det[i].prod.veicProd.cMod := '';             // J23 - Código Marca Modelo (Utilizar Tabela RENAVAM)
 
     //                                              TAG de grupo do detalhamento de Medicamentos - <med> - Ocorrência 0-N
     for j := 0 to 1 do

@@ -306,7 +306,6 @@ type
     property CPF:  String read FCPF write FCPF;
   end;
 
-
   TWebServices = Class(TWebServicesBase)
   private
     FACBrNFe : TComponent;

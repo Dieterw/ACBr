@@ -1,0 +1,10 @@
+ATENCAO!!
+
+A versão ACBrNFe foi descontinuada. Use a versão disponível na pasta ACBRNFePCN.
+
+Caso queira continuar utilizando a versão ACBrNFe, 
+baixe via SVN usando a URL https://acbr.svn.sourceforge.net/svnroot/acbr/tags
+e use os arquivos da pasta ACBrNFe
+
+
+

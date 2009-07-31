@@ -55,9 +55,11 @@ interface uses
 
 type
 
-  TStatusACBrNFe = ( stIdle, stNFeStatusServico, stNFeRecepcao, stNfeRetRecepcao, stNfeConsulta, stNfeCancelamento, stNfeInutilizacao, stNFeRecibo, stNFeCadastro, stEmail );
+  TStatusACBrNFe = ( stIdle, stNFeStatusServico, stNFeRecepcao, stNFeRetRecepcao, stNFeConsulta, stNFeCancelamento, stNFeInutilizacao, stNFeRecibo, stNFeCadastro, stEmail );
+  TStatusACBrCTe = ( stCTeIdle, stCTeStatusServico, stCTeRecepcao, stCTeRetRecepcao, stCTeConsulta, stCTeCancelamento, stCTeInutilizacao, stCTeRecibo, stCTeCadastro, stCTeEmail );
   (* IMPORTANTE - Sempre que alterar um Tipo efetuar a atualização das funções de conversão correspondentes *)
-  TLayOut = (LayNfeRecepcao,LayNfeRetRecepcao,LayNfeCancelamento,LayNfeInutilizacao,LayNfeConsulta,LayNfeStatusServico,LayNfeCadastro);
+  TLayOut = (LayNfeRecepcao,LayNfeRetRecepcao,LayNfeCancelamento,LayNfeInutilizacao,LayNfeConsulta,LayNfeStatusServico,LayNfeCadastro,
+             LayCTeRecepcao,LayCTeRetRecepcao,LayCTeCancelamento,LayCTeInutilizacao,LayCTeConsultaCT,LayCTeStatusServico,LayCTeCadastro );
 
   TpcnSchema = (TsPL005c);
   TpcnTipoLayout = (tlAtuCadEmiDFe, tlCadEmiDFe, tlCancNFe, tlConsCad, tlConsReciNFe, tlConsSitNFe, tlConsStatServ,
@@ -104,6 +106,13 @@ const
   NFecancNFe      = '1.07';
   NFeinutNFe      = '1.07';
   NFeconsCad      = '1.01';
+
+  CTecabMsg       = '1.02';
+  CTeconsStatServ = '1.01';
+  CTeconsSitCTe   = '1.01';
+  CTecancCTe      = '1.01';
+  CTeinutCTe      = '1.01';
+  CTenviCTe       = '1.02';
 
   LineBreak = #13#10;
 

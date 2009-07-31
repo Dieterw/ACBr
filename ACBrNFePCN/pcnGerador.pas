@@ -128,6 +128,7 @@ const
   ENCODING_UTF8 = '?xml version="1.0" encoding="UTF-8"?';
   ENCODING_UTF8_STD = '?xml version="1.0" encoding="UTF-8" standalone="no"?';
   NAME_SPACE = 'xmlns="http://www.portalfiscal.inf.br/nfe"';
+  NAME_SPACE_CTE = 'xmlns="http://www.portalfiscal.inf.br/cte"';  
 
   V1_00 = 'versao="1.00"';
   V1_01 = 'versao="1.01"';
@@ -349,6 +350,8 @@ const
   DSC_VERAPLIC = 'Versão do aplicativo';
   DSC_NREGDPEC = 'Número de registro do DPEC';
   DSC_DPEC_ID = 'Grupo de Identificação da TAG a ser assinada. DPEC + CNPJ do emissor.';
+
+  DSC_CHCTE = 'Chave da CTe';
 
 implementation
 

@@ -1,8 +1,8 @@
-del ACBrNFe.ZIP
+del ACBrNFePCN.ZIP
 
-winrar a ACBrNFe.ZIP ACBrNFe\*.* -afZIP -m5 -r -ed -x@ACBrNFe\MakeIgnore.TXT 
+C:\Progra~1\WinRAR\winrar.exe a ACBrNFePCN.ZIP ACBrNFePCN\*.* -afZIP -m5 -r -ed -x@ACBrNFePCN\MakeIgnore.TXT 
 pause
-winrar a ACBrNFe.ZIP synapse\*.* -afZIP -m5 -r -ed -x@ACBrNFe\MakeIgnore.TXT 
+C:\Progra~1\WinRAR\winrar.exe a ACBrNFePCN.ZIP ACBrComum\*.* -afZIP -m5 -r -ed -x@ACBrNFePCN\MakeIgnore.TXT 
 pause
 
 

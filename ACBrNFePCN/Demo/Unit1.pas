@@ -802,7 +802,7 @@ if not(InputQuery('WebServices Enviar', 'Numero da Nota', vAux)) then
           espVeic:= 1;
           VIN    := 'A';
           condVeic := cvAcabado;
-          cMod   := 1;
+          cMod   := '1';
        end;
 
       with Imposto do

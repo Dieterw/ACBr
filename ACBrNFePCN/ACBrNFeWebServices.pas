@@ -261,9 +261,8 @@ type
     procedure SetJustificativa(AValue: WideString);
   public
     function Executar: Boolean;override;
-  published
     property NFeChave: WideString read FNFeChave write FNFeChave;
-    property Protocolo: String read FProtocolo write FProtocolo; 
+    property Protocolo: String read FProtocolo write FProtocolo;
     property Modelo: Integer read FModelo write FModelo;
     property Serie: Integer read FSerie write FSerie;
     property CNPJ: String read FCNPJ write FCNPJ;
@@ -332,7 +331,7 @@ type
     property Consulta: TNFeConsulta read FConsulta write FConsulta;
     property Cancelamento: TNFeCancelamento read FCancelamento write FCancelamento;
     property Inutilizacao: TNFeInutilizacao read FInutilizacao write FInutilizacao;
-    property ConsultaCadastro: TNFeConsultaCadastro read FConsultaCadastro write FConsultaCadastro;    
+    property ConsultaCadastro: TNFeConsultaCadastro read FConsultaCadastro write FConsultaCadastro;
   end;
 
 implementation

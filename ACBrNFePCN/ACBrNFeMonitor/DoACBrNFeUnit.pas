@@ -847,7 +847,7 @@ begin
                     espVeic := INIRec.ReadInteger(sSecao,'espVeic',0);
                     VIN     := INIRec.ReadString( sSecao,'VIN'    ,'');
                     condVeic := StrTocondVeic(OK,INIRec.ReadString( sSecao,'condVeic','1'));
-                    cMod    := INIRec.ReadInteger( sSecao,'cMod',0);
+                    cMod    := INIRec.ReadString( sSecao,'cMod','');
                   end;
                end;
 

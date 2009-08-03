@@ -986,6 +986,7 @@ end;
 function TNFeRetRecepcao.Confirma(AInfProt: TProtNFeCollection): Boolean;
 var
   i,j : Integer;
+  AProcNFe: TProcNFe;
 begin
   Result := False;
 
@@ -999,6 +1000,12 @@ begin
       begin
         FNotasFiscais.Items[j].Confirmada := (AInfProt.Items[i].cStat = 100);
         FNotasFiscais.Items[j].Msg        := AInfProt.Items[i].xMotivo;
+        AProcNFe:=TProcNFe.Create;
+        AProcNFe.PathNFe:=FConfiguracoes.Geral.PathSalvar+'\'+FNFeRetorno.ProtNFe.Items[j].chNFe+'-nfe.xml';
+        AProcNFe.PathRetConsReciNFe:=FConfiguracoes.Geral.PathSalvar+'\'+FNFeRetorno.nRec+'-pro-rec.xml';
+        AProcNFe.GerarXML;
+        AProcNFe.Gerador.SalvarArquivo(FConfiguracoes.Geral.PathSalvar+'\'+FNFeRetorno.ProtNFe.Items[j].chNFe+'-nfe.xml');
+        AProcNFe.Free;
         break;
       end;
     end;
@@ -1112,6 +1119,9 @@ function TNFeRetRecepcao.Executar: Boolean;
       if assigned(FNFeRetorno) then
          FNFeRetorno.Free;
 
+      if FConfiguracoes.Geral.Salvar then
+         FConfiguracoes.Geral.Save(Recibo+'-pro-rec.xml', FRetWS);
+
       FNFeRetorno := TRetConsReciNFe.Create;
       FNFeRetorno.Leitor.Arquivo := FRetWS;
       FNFeRetorno.LerXML;
@@ -1156,7 +1166,6 @@ function TNFeRetRecepcao.Executar: Boolean;
 
 var
   vCont: Integer;
-  AProcNFe: TProcNFe;
 begin
   Result := inherited Executar;
   Result := False;
@@ -1172,20 +1181,6 @@ begin
 
   if FNFeRetorno.CStat = 104 then
     Result := Confirma(FNFeRetorno.ProtNFe);
-
-  if FConfiguracoes.Geral.Salvar then
-  begin
-    FConfiguracoes.Geral.Save(Recibo+'-pro-rec.xml', FRetWS);
-    if Result then
-    begin
-       AProcNFe:=TProcNFe.Create;
-       AProcNFe.PathNFe:=FConfiguracoes.Geral.PathSalvar+'\'+FNFeRetorno.ProtNFe.Items[0].chNFe+'-nfe.xml';
-       AProcNFe.PathRetConsReciNFe:=FConfiguracoes.Geral.PathSalvar+'\'+FNFeRetorno.nRec+'-pro-rec.xml';
-       AProcNFe.GerarXML;
-       AProcNFe.Gerador.SalvarArquivo(FConfiguracoes.Geral.PathSalvar+'\'+FNFeRetorno.ProtNFe.Items[0].chNFe+'-nfe.xml');
-       AProcNFe.Free;
-    end;
-  end;
 
   fChaveNfe  := FNFeRetorno.ProtNFe.Items[0].chNFe;
   fProtocolo := FNFeRetorno.ProtNFe.Items[0].nProt;

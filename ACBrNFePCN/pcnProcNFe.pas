@@ -46,7 +46,7 @@
 unit pcnProcNFe;
 
 interface uses
-  SysUtils, Classes, pcnAuxiliar, pcnConversao, pcnGerador;
+  SysUtils, Classes, pcnAuxiliar, pcnConversao, pcnGerador, pcnLeitor;
 
 type
 
@@ -110,6 +110,8 @@ var
   XMLNFe: TstringList;
   XMLinfProt: TstringList;
   xProtNFe: string;
+  LocLeitor: TLeitor;
+  i : Integer;
 begin
   Result := False;
   if retornarVersaoLayout(FSchema, tlProcNFe) = '1.10' then
@@ -140,12 +142,24 @@ begin
       else
       begin
         XMLinfProt.LoadFromFile(FPathRetConsReciNFe);
-        if RetornarConteudoEntre(XMLinfProt.text, '<chNFe>', '</chNFe>') = FchNFe then
-          FnProt := RetornarConteudoEntre(XMLinfProt.text, '<nProt>', '</nProt>');
-        if trim(FnProt) = '' then
-          Gerador.wAlerta('XR01', 'PROTOCOLO/NFe', 'Numero do protocolo', ERR_MSG_VAZIO)
-        else
-          xProtNFe := '<protNFe' + RetornarConteudoEntre(XMLinfProt.Text, '<protNFe', '</protNFe>') + '</protNFe>';
+        I := 0;
+        LocLeitor := TLeitor.Create;
+        LocLeitor.CarregarArquivo(FPathRetConsReciNFe);
+        while LocLeitor.rExtrai(1, 'protNFe', '', i + 1) <> '' do
+         begin
+           if LocLeitor.rCampo(tcStr, 'chNFe') = FchNFe then
+             FnProt := LocLeitor.rCampo(tcStr, 'nProt');
+           if trim(FnProt) = '' then
+             Gerador.wAlerta('XR01', 'PROTOCOLO/NFe', 'Numero do protocolo', ERR_MSG_VAZIO)
+           else
+            begin
+             xProtNFe := LocLeitor.rExtrai(1, 'protNFe', '', i + 1)+'</protNFe>';
+             Gerador.ListaDeAlertas.Clear;
+             break;
+            end;
+            I := I + 1;
+         end;
+         LocLeitor.Free;
       end;
     end;
 

@@ -71,8 +71,8 @@ procedure TForm1.FormCreate(Sender: TObject);
 begin
  ACBrCTe := TACBrCTe.Create(Self);
 {$IFDEF ACBrCTeOpenSSL}
- ACBrCTe.Configuracoes.Certificados.Certificado := 'D:\delphi\ACBr\trunk\ACBrNFe\Demo\Americanfarma Distribuidora Ltda_A1.pfx';
- ACBrCTe.Configuracoes.Certificados.Senha := 'af2009';
+ ACBrCTe.Configuracoes.Certificados.Certificado := 'arquivo.pfx';
+ ACBrCTe.Configuracoes.Certificados.Senha := 'senha';
 {$ELSE}
  ACBrCTe.Configuracoes.Certificados.SelecionarCertificado;
 {$ENDIF}

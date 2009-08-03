@@ -96,20 +96,15 @@ contains
   ACBrNFeConfiguracoes in 'ACBrNFeConfiguracoes.pas',
   ACBrNFeWebServices in 'ACBrNFeWebServices.pas',
   ACBrNFeReg in 'ACBrNFeReg.pas',
-  pcnValidador in 'pcnValidador.pas',
   pcnAtuCadEmiDFe in 'pcnAtuCadEmiDFe.pas',
   pcnAuxiliar in 'pcnAuxiliar.pas',
-  pcnCabecalho in 'pcnCabecalho.pas',
   pcnCadEmiDFe in 'pcnCadEmiDFe.pas',
   pcnCancNFe in 'pcnCancNFe.pas',
   pcnConsCad in 'pcnConsCad.pas',
   pcnConsReciNFe in 'pcnConsReciNFe.pas',
   pcnConsSitNFe in 'pcnConsSitNFe.pas',
   pcnConsStatServ in 'pcnConsStatServ.pas',
-  pcnConversao in 'pcnConversao.pas',
-  pcnGerador in 'pcnGerador.pas',
   pcnInutNFe in 'pcnInutNFe.pas',
-  pcnLeitor in 'pcnLeitor.pas',
   pcnModeloNFe in 'pcnModeloNFe.pas',
   pcnNFe in 'pcnNFe.pas',
   pcnNFeR in 'pcnNFeR.pas',
@@ -122,7 +117,6 @@ contains
   pcnRetConsStatServ in 'pcnRetConsStatServ.pas',
   pcnRetEnvNFe in 'pcnRetEnvNFe.pas',
   pcnRetInutNFe in 'pcnRetInutNFe.pas',
-  pcnLayoutTXT in 'pcnLayoutTXT.pas',
-  pcnSignature in 'pcnSignature.pas'  ;
+  pcnLayoutTXT in 'pcnLayoutTXT.pas' ;
 
 end.

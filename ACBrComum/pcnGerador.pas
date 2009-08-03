@@ -352,6 +352,10 @@ const
   DSC_DPEC_ID = 'Grupo de Identificação da TAG a ser assinada. DPEC + CNPJ do emissor.';
 
   DSC_CHCTE = 'Chave da CTe';
+  DSC_TPCTe = 'Tipo do Conhecimento';
+  DSC_REFCTE = 'Chave de acesso do CT-e referenciado';
+  DSC_CMUNEMI = 'Código do Município onde o CT-e está sendo emitido';
+
 
 implementation
 

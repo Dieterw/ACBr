@@ -90,6 +90,13 @@ type
   TpcnModalidadeFrete = (mfContaEmitente, mfContaDestinatario);
   TpcnIndicadorProcesso = (ipSEFAZ, ipJusticaFederal, ipJusticaEstadual, ipSecexRFB, ipOutros);
 
+  TpcteFormaPagamento = (fpPago, fpAPagar, fpOutros);
+  TpcteTipoCTe = (tcNormal, tcComplemento, tcAnulacao, tcSubstituto);
+  TpcteModal = (mdRodoviario, mdAereo, mdAquaviario, mdFerroviario, mdDutoviario);
+  TpcteTipoServico = (tsNormal, tsSubcontratacao, tsRedespacho, tsIntermediario);
+  TpcteRetira = (rtSim, rtNao);
+  TpcteTomador = ( tmRemetente, tmExpedidor, tmRecebedor, tmDestinatario, tmOutros);
+
 const
   NFeUF: array[0..26] of String =
   ('AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA',
@@ -166,6 +173,18 @@ function modFreteToStr(const t: TpcnModalidadeFrete): string;
 function StrTomodFrete(var ok: boolean; const s: string): TpcnModalidadeFrete;
 function indProcToStr(const t: TpcnIndicadorProcesso): string;
 function StrToindProc(var ok: boolean; const s: string): TpcnIndicadorProcesso;
+function tpforPagToStr(const t: TpcteFormaPagamento): string;
+function StrTotpforPag(var ok: boolean; const s: string): TpcteFormaPagamento;
+function tpCTePagToStr(const t: TpcteTipoCTe): string;
+function StrTotpCTe(var ok: boolean; const s: string): TpcteTipoCTe;
+function TpModalToStr(const t: TpcteModal): string;
+function StrToTpModal(var ok: boolean; const s: string): TpcteModal;
+function TpServPagToStr(const t: TpcteTipoServico): string;
+function StrToTpServ(var ok: boolean; const s: string): TpcteTipoServico;
+function TpRetiraPagToStr(const t: TpcteRetira): string;
+function StrToTpRetira(var ok: boolean; const s: string): TpcteRetira;
+function TpTomadorPagToStr(const t: TpcteTomador): string;
+function StrToTpTomador(var ok: boolean; const s: string): TpcteTomador;
 
 implementation
 
@@ -509,6 +528,66 @@ end;
 function StrToindProc(var ok: boolean; const s: string): TpcnIndicadorProcesso;
 begin
   result := StrToEnumerado(ok, s, ['0', '1', '2', '3', '4'], [ipSEFAZ, ipJusticaFederal, ipJusticaEstadual, ipSecexRFB, ipOutros]);
+end;
+
+function tpforPagToStr(const t: TpcteFormaPagamento): string;
+begin
+  result := EnumeradoToStr(t, ['0','1', '2'], [fpPago, fpAPagar, fpOutros]);
+end;
+
+function StrTotpforPag(var ok: boolean; const s: string): TpcteFormaPagamento;
+begin
+  result := StrToEnumerado(ok, s, ['0', '1', '2'], [fpPago, fpAPagar, fpOutros]);
+end;
+
+function tpCTePagToStr(const t: TpcteTipoCTe): string;
+begin
+  result := EnumeradoToStr(t, ['0','1', '2', '3'], [tcNormal, tcComplemento, tcAnulacao, tcSubstituto]);
+end;
+
+function StrTotpCTe(var ok: boolean; const s: string): TpcteTipoCTe;
+begin
+  result := StrToEnumerado(ok, s, ['0', '1', '2', '3'], [tcNormal, tcComplemento, tcAnulacao, tcSubstituto]);
+end;
+
+function TpModalToStr(const t: TpcteModal): string;
+begin
+  result := EnumeradoToStr(t, ['0','1', '2', '3', '4'], [mdRodoviario, mdAereo, mdAquaviario, mdFerroviario, mdDutoviario]);
+end;
+
+function StrToTpModal(var ok: boolean; const s: string): TpcteModal;
+begin
+  result := StrToEnumerado(ok, s, ['0', '1', '2', '3', '4'], [mdRodoviario, mdAereo, mdAquaviario, mdFerroviario, mdDutoviario]);
+end;
+
+function TpServPagToStr(const t: TpcteTipoServico): string;
+begin
+  result := EnumeradoToStr(t, ['0','1', '2', '3'], [tsNormal, tsSubcontratacao, tsRedespacho, tsIntermediario]);
+end;
+
+function StrToTpServ(var ok: boolean; const s: string): TpcteTipoServico;
+begin
+  result := StrToEnumerado(ok, s, ['0', '1', '2', '3'], [tsNormal, tsSubcontratacao, tsRedespacho, tsIntermediario]);
+end;
+
+function TpRetiraPagToStr(const t: TpcteRetira): string;
+begin
+  result := EnumeradoToStr(t, ['0','1'], [rtSim, rtNao]);
+end;
+
+function StrToTpRetira(var ok: boolean; const s: string): TpcteRetira;
+begin
+  result := StrToEnumerado(ok, s, ['0', '1'], [rtSim, rtNao]);
+end;
+
+function TpTomadorPagToStr(const t: TpcteTomador): string;
+begin
+  result := EnumeradoToStr(t, ['0','1', '2', '3', '4'], [tmRemetente, tmExpedidor, tmRecebedor, tmDestinatario, tmOutros]);
+end;
+
+function StrToTpTomador(var ok: boolean; const s: string): TpcteTomador;
+begin
+  result := StrToEnumerado(ok, s, ['0', '1', '2', '3', '4'], [tmRemetente, tmExpedidor, tmRecebedor, tmDestinatario, tmOutros]);
 end;
 
 end.

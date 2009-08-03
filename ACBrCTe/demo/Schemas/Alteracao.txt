@@ -1,0 +1,9 @@
+Mudanças exclusivas para o modal ferroviário:
+
+CTe/infCte/infCTeNorm/ferrov/vFrete 	- de TDec_1203 para TDec_1302
+CTe/infCte/infCTeNorm/ferrov/DCL/pCalc	- de TDec_1203 para TDec_1302
+CTe/infCte/infCTeNorm/ferrov/DCL/vTar	- de TDec_1203 para TDec_1302
+CTe/infCte/infCTeNorm/ferrov/DCL/vFrete	- de TDec_1203 para TDec_1302
+CTe/infCte/infCTeNorm/ferrov/DCL/vSAcess- de TDec_1203 para TDec_1302
+CTe/infCte/infCTeNorm/ferrov/DCL/VTServ	- de TDec_1203 para TDec_1302
+CTe/infCte/infCTeNorm/ferrov/detVag/nVag- alterado o pattern de [1-9]{1}[0-9]{7} para [0-9]{8}

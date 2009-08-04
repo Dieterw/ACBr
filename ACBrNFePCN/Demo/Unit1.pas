@@ -7,7 +7,7 @@ interface
 uses IniFiles,
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, Buttons, ComCtrls, OleCtrls, SHDocVw,
-  ACBrNFe, pcnConversao, ACBrNFeDANFEClass, ACBrNFeDANFERave, pcnNFeW;
+  ACBrNFe, pcnConversao, ACBrNFeDANFEClass, ACBrNFeDANFERave, pcnNFeW, pcnLeitor;
 
 type
   TForm1 = class(TForm)
@@ -424,6 +424,8 @@ begin
 end;
 
 procedure TForm1.btnImprimirClick(Sender: TObject);
+var
+   wnProt: TLeitor;
 begin
   OpenDialog1.Title := 'Selecione a NFE';
   OpenDialog1.DefaultExt := '*-nfe.XML';
@@ -433,7 +435,12 @@ begin
   begin
     ACBrNFe1.NotasFiscais.Clear;
     ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
+    wnProt:=TLeitor.Create;
+    wnProt.CarregarArquivo(OpenDialog1.FileName);
+    wnProt.Grupo:=wnProt.Arquivo;
+    ACBrNFe1.DANFE.ProtocoloNFe:=wnProt.rCampo(tcStr,'nProt');
     ACBrNFe1.NotasFiscais.Imprimir;
+    wnProt.Free;
   end;
 end;
 

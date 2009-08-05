@@ -4,7 +4,7 @@
 //                                                                            //
 //   Descrição: Classes para geração/leitura dos arquivos xml da NFe          //
 //                                                                            //
-//        site: www.projetocooperar.org/nfe                                   //
+//        site: www.projetocooperar.org                                       //
 //       email: projetocooperar@zipmail.com.br                                //
 //       forum: http://br.groups.yahoo.com/group/projeto_cooperar_nfe/        //
 //     projeto: http://code.google.com/p/projetocooperar/                     //
@@ -186,6 +186,7 @@ function TNFeW.GerarXml: boolean;
 var
   chave: string;
   Gerar: boolean;
+  xProtNFe : String;
 begin
   chave := '';
   if not GerarChave(Chave, nfe.ide.cUF, nfe.ide.cNF, nfe.ide.modelo, nfe.ide.serie,
@@ -201,6 +202,11 @@ begin
   Gerador.ArquivoFormatoXML := '';
   Gerador.ArquivoFormatoTXT := '';
 //  Gerador.wGrupo(ENCODING_UTF8_STD, '', False);
+  if nfe.procNFe.nProt <> '' then
+   begin
+      Gerador.wGrupo(ENCODING_UTF8, '', False);
+      Gerador.wGrupo('nfeProc ' + V1_10 + ' ' + NAME_SPACE, '');
+   end;
   Gerador.wGrupo('NFe ' + NAME_SPACE);
   Gerador.wGrupo('infNFe ' + V1_10 + ' Id="' + nfe.infNFe.ID + '"');
   (**)GerarInfNFe;
@@ -222,6 +228,26 @@ begin
     end;
   end;
   Gerador.wGrupo('/NFe');
+
+  if nfe.procNFe.nProt <> '' then
+   begin
+     xProtNFe :=
+       (**)'<protNFe versao="1.10">' +
+     (******)'<infProt>'+
+     (*********)'<tpAmb>'+TpAmbToStr(nfe.procNFe.tpAmb)+'</tpAmb>'+
+     (*********)'<verAplic>'+nfe.procNFe.verAplic+'</verAplic>'+
+     (*********)'<chNFe>'+nfe.procNFe.chNFe+'</chNFe>'+
+     (*********)'<dhRecbto>'+DateTimeToStr(nfe.procNFe.dhRecbto)+'</dhRecbto>'+
+     (*********)'<nProt>'+nfe.procNFe.nProt+'</nProt>'+
+     (*********)'<digVal>'+nfe.procNFe.digVal+'</digVal>'+
+     (*********)'<cStat>'+IntToStr(nfe.procNFe.cStat)+'</cStat>'+
+     (*********)'<xMotivo>'+nfe.procNFe.xMotivo+'</xMotivo>'+
+     (******)'</infProt>'+
+     {****}'</protNFe>';
+
+     (**)Gerador.wTexto(xProtNFe);
+     Gerador.wGrupo('/nfeProc');
+   end;
   Gerador.gtAjustarRegistros(nfe.infNFe.ID);
   Result := (Gerador.ListaDeAlertas.Count = 0);
 end;

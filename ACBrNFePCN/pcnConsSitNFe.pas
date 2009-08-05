@@ -4,7 +4,7 @@
 //                                                                            //
 //   Descrição: Classes para geração/leitura dos arquivos xml da NFe          //
 //                                                                            //
-//        site: www.projetocooperar.org/nfe                                   //
+//        site: www.projetocooperar.org                                       //
 //       email: projetocooperar@zipmail.com.br                                //
 //       forum: http://br.groups.yahoo.com/group/projeto_cooperar_nfe/        //
 //     projeto: http://code.google.com/p/projetocooperar/                     //
@@ -109,6 +109,7 @@ begin
     Result := (Gerador.ListaDeAlertas.Count = 0);
   end;
 end;
+
 
 end.
 

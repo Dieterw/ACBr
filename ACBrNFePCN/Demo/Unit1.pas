@@ -563,6 +563,117 @@ if not(InputQuery('WebServices Enviar', 'Numero da Nota', vAux)) then
     Total.ICMSTot.vProd := 1000;
   end;
 
+  with ACBrNFe1.NotasFiscais.Add.NFe do
+  begin
+    infNFe.ID := vAux;
+
+    Ide.natOp     := 'VENDA PRODUCAO DO ESTAB.';
+    Ide.nNF       := StrToInt(vAux)+1;
+    Ide.cNF       := StrToInt(vAux)+1;
+    Ide.modelo    := 55;
+    Ide.serie     := 1;
+    Ide.dEmi      := Date;
+    Ide.dSaiEnt   := Date;
+    Ide.tpAmb     := taHomologacao;
+    Ide.tpNF      := tnSaida;
+    Ide.indPag    := ipVista;
+    Ide.verProc   := '1.0.0.0';
+    Ide.cUF       := 35;
+    Ide.cMunFG    := 3554003;
+
+    Emit.CNPJCPF           := edtEmitCNPJ.Text;
+    Emit.IE                := edtEmitIE.Text;
+    Emit.xNome             := edtEmitRazao.Text;
+    Emit.xFant             := edtEmitFantasia.Text;
+    Emit.EnderEmit.fone    := edtEmitFone.Text;
+    Emit.EnderEmit.CEP     := StrToInt(edtEmitCEP.Text);
+    Emit.EnderEmit.xLgr    := edtEmitLogradouro.Text;
+    Emit.EnderEmit.nro     := edtEmitNumero.Text;
+    Emit.EnderEmit.xCpl    := edtEmitComp.Text;
+    Emit.EnderEmit.xBairro := edtEmitBairro.Text;
+    Emit.EnderEmit.cMun    := StrToInt(edtEmitCodCidade.Text);
+    Emit.EnderEmit.xMun    := edtEmitCidade.Text;
+    Emit.EnderEmit.UF      := edtEmitUF.Text;
+    Emit.enderEmit.cPais   := 1058;
+    Emit.enderEmit.xPais   := 'BRASIL';
+
+    Dest.CNPJCPF           := '05481336000137';
+    Dest.EnderDest.CEP     := 18270410;
+    Dest.EnderDest.xLgr    := 'Praça Anita Costa';
+    Dest.EnderDest.nro     := '0034';
+    Dest.EnderDest.xCpl    := '';
+    Dest.EnderDest.xBairro := 'Centro';
+    Dest.EnderDest.cMun    := 3554003;
+    Dest.EnderDest.xMun    := 'Tatuí';
+    Dest.EnderDest.UF      := 'SP';
+    Dest.EnderDest.Fone    := '1532599600';
+    Dest.IE                := '687138770110';
+    Dest.xNome             := 'D.J. COM. E LOCAÇÃO DE SOFTWARES LTDA - ME';
+    Dest.EnderDest.cPais   := 1058;
+    Dest.EnderDest.xPais   := 'BRASIL';
+
+    with Det.Add do
+    begin
+      infAdProd     := 'Teste de informacao adicional;Teste de Segunda Linha';
+      Prod.nItem    := 1;
+      Prod.CFOP     := '5101';
+      Prod.cProd    := '67';
+      Prod.xProd    := 'ALHO 400 G';
+      Prod.qCom     := 100;
+      Prod.uCom     := 'KG';
+      Prod.vProd    := 100;
+      Prod.vUnCom   := 10;
+      Prod.qTrib    := 100;
+      Prod.uTrib    := 'KG';
+      Prod.vUnTrib  := 10;
+      with Imposto do
+      begin
+        with ICMS do
+        begin
+          CST := cst00;
+          ICMS.modBC  := dbiPrecoTabelado;
+          ICMS.pICMS  := 18;
+          ICMS.vICMS  := 180;
+          ICMS.vBC    := 1000;
+        end;
+        IPI.CST := ipi01;
+      end;
+    end;
+
+    with Det.Add do
+    begin
+      Prod.nItem    := 2;
+      Prod.CFOP     := '5101';
+      Prod.cProd    := '68';
+      Prod.xProd    := 'CEBOLA 400 G';
+      Prod.qCom     := 100;
+      Prod.uCom     := 'KG';
+      Prod.vProd    := 100;
+      Prod.vUnCom   := 10;
+      Prod.qTrib    := 100;
+      Prod.uTrib    := 'KG';
+      Prod.vUnTrib  := 10;
+      with Imposto do
+      begin
+        with ICMS do
+        begin
+          CST := cst00;
+          ICMS.modBC  := dbiPrecoTabelado;
+          ICMS.pICMS  := 18;
+          ICMS.vICMS  := 180;
+          ICMS.vBC    := 1000;
+        end;
+        IPI.CST := ipi01;
+      end;
+    end;
+
+    Total.ICMSTot.vBC   := 1000;
+    Total.ICMSTot.vICMS := 180;
+    Total.ICMSTot.vNF   := 1000;
+    Total.ICMSTot.vProd := 1000;
+  end;
+
+
   ACBrNFe1.Enviar(0);
   ShowMessage(ACBrNFe1.WebServices.Retorno.Protocolo);
   ShowMessage(ACBrNFe1.WebServices.Retorno.Recibo);

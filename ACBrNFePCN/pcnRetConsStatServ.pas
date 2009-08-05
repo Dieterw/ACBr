@@ -4,7 +4,7 @@
 //                                                                            //
 //   Descrição: Classes para geração/leitura dos arquivos xml da NFe          //
 //                                                                            //
-//        site: www.projetocooperar.org/nfe                                   //
+//        site: www.projetocooperar.org                                       //
 //       email: projetocooperar@zipmail.com.br                                //
 //       forum: http://br.groups.yahoo.com/group/projeto_cooperar_nfe/        //
 //     projeto: http://code.google.com/p/projetocooperar/                     //
@@ -116,7 +116,7 @@ begin
       (*FR07*)FcUF := Leitor.rCampo(tcInt, 'cUF');
       (*FR08*)FdhRecbto := Leitor.rCampo(tcDatHor, 'dhRecbto');
       (*FR09*)FtMed := Leitor.rCampo(tcInt, 'tMed');
-//      (*FR10*)FdhRetorno := Leitor.rCampo(tcDatHor, 'dhRetorno');
+      (*FR10*)FdhRetorno := Leitor.rCampo(tcDatHor, 'dhRetorno');
       (*FR11*)FxObs := Leitor.rCampo(tcStr, 'xObs');
       Result := True;
     end;

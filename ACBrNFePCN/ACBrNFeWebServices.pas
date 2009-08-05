@@ -1309,6 +1309,7 @@ end;
 function TNFeConsulta.Executar: Boolean;
 var
   NFeRetorno: TRetConsSitNFe;
+  AProcNFe: TProcNFe;
   {$IFDEF ACBrNFeOpenSSL}
      Texto : String;
      Acao  : TStringList ;
@@ -1403,7 +1404,18 @@ begin
     NFeRetorno.Free;
 
     if FConfiguracoes.Geral.Salvar then
-      FConfiguracoes.Geral.Save(FNFeChave+'-sit.xml', FRetWS);
+     begin
+       FConfiguracoes.Geral.Save(FNFeChave+'-sit.xml', FRetWS);
+       if FileExists(FConfiguracoes.Geral.PathSalvar+'\'+FNFeChave+'-nfe.xml') then
+        begin
+          AProcNFe:=TProcNFe.Create;
+          AProcNFe.PathNFe:=FConfiguracoes.Geral.PathSalvar+'\'+FNFeChave+'-nfe.xml';
+          AProcNFe.PathRetConsSitNFe:=FConfiguracoes.Geral.PathSalvar+'\'+FNFeChave+'-sit.xml';
+          AProcNFe.GerarXML;
+          AProcNFe.Gerador.SalvarArquivo(FConfiguracoes.Geral.PathSalvar+'\'+FNFeChave+'-nfe.xml');
+          AProcNFe.Free;
+        end;
+     end;
   finally
     {$IFDEF ACBrNFeOpenSSL}
        HTTP.Free;

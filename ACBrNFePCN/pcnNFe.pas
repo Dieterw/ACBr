@@ -4,7 +4,7 @@
 //                                                                            //
 //   Descrição: Classes para geração/leitura dos arquivos xml da NFe          //
 //                                                                            //
-//        site: www.projetocooperar.org/nfe                                   //
+//        site: www.projetocooperar.org                                       //
 //       email: projetocooperar@zipmail.com.br                                //
 //       forum: http://br.groups.yahoo.com/group/projeto_cooperar_nfe/        //
 //     projeto: http://code.google.com/p/projetocooperar/                     //
@@ -51,7 +51,7 @@ interface uses
 {$IFNDEF VER130}
   Variants,
 {$ENDIF}
-  pcnConversao, pcnSignature;
+  pcnConversao, pcnSignature, pcnProcNFe;
 
 type
 
@@ -140,6 +140,7 @@ type
     Fexporta: Texporta;
     Fcompra: Tcompra;
     FSignature: TSignature;
+    FProcNFe: TProcNFe;
     procedure SetDet(Value: TDetCollection);
   public
     constructor Create;
@@ -162,6 +163,7 @@ type
     property exporta: Texporta read Fexporta write Fexporta;
     property compra: Tcompra read Fcompra write Fcompra;
     property signature: Tsignature read Fsignature write Fsignature;
+    property procNFe: TProcNFe read FProcNFe write FProcNFe;    
   end;
 
   TinfNFe = class(TPersistent)
@@ -1284,21 +1286,22 @@ implementation
 
 constructor TNFe.Create;
 begin
-  FinfNFe := TinfNFe.Create;
-  FIde := TIde.Create(Self);
-  FEmit := TEmit.Create(Self);
-  FAvulsa := TAvulsa.Create;
-  FDest := TDest.Create(Self);
+  FinfNFe  := TinfNFe.Create;
+  FIde     := TIde.Create(Self);
+  FEmit    := TEmit.Create(Self);
+  FAvulsa  := TAvulsa.Create;
+  FDest    := TDest.Create(Self);
   FRetirada := TRetirada.Create;
   FEntrega := TEntrega.Create;
-  FDet := TDetCollection.Create(Self);
-  FTotal := TTotal.Create(self);
-  FCobr := TCobr.Create(Self);
-  FTransp := TTransp.Create(Self);
+  FDet     := TDetCollection.Create(Self);
+  FTotal   := TTotal.Create(self);
+  FCobr    := TCobr.Create(Self);
+  FTransp  := TTransp.Create(Self);
   FinfAdic := TinfAdic.Create(self);
   FExporta := TExporta.Create;
-  FCompra := TCompra.Create;
+  FCompra  := TCompra.Create;
   Fsignature := Tsignature.create;
+  FProcNFe := TProcNFe.create;
 end;
 
 destructor TNFe.Destroy;
@@ -1318,6 +1321,7 @@ begin
   FExporta.Free;
   FCompra.Free;
   Fsignature.Free;
+  FProcNFe.Free;
   inherited Destroy;
 end;
 

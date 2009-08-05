@@ -4,7 +4,7 @@
 //                                                                            //
 //   Descrição: Classes para geração/leitura dos arquivos xml da NFe          //
 //                                                                            //
-//        site: www.projetocooperar.org/nfe                                   //
+//        site: www.projetocooperar.org                                       //
 //       email: projetocooperar@zipmail.com.br                                //
 //       forum: http://br.groups.yahoo.com/group/projeto_cooperar_nfe/        //
 //     projeto: http://code.google.com/p/projetocooperar/                     //
@@ -669,6 +669,20 @@ begin
   NFE.signature.DigestValue := Leitor.rCampo(tcStr, 'DigestValue');
   NFE.signature.SignatureValue := Leitor.rCampo(tcStr, 'SignatureValue');
   NFE.signature.X509Certificate := Leitor.rCampo(tcStr, 'X509Certificate');
+
+  (* Grupo da TAG <protNFe> ****************************************************)
+  if Leitor.rExtrai(1, 'protNFe') <> '' then
+  begin
+     NFe.procNFe.tpAmb    := StrToTpAmb(ok, Leitor.rCampo(tcStr, 'tpAmb'));
+     NFe.procNFe.verAplic := Leitor.rCampo(tcStr, 'verAplic');
+     NFe.procNFe.chNFe    := Leitor.rCampo(tcStr, 'chNFe');
+     NFe.procNFe.dhRecbto := Leitor.rCampo(tcDatHor, 'dhRecbto');
+     NFe.procNFe.nProt    := Leitor.rCampo(tcStr, 'nProt');
+     NFe.procNFe.digVal   := Leitor.rCampo(tcStr, 'digVal');
+     NFe.procNFe.cStat    := Leitor.rCampo(tcInt, 'cStat');
+     NFe.procNFe.xMotivo  := Leitor.rCampo(tcStr, 'xMotivo');
+  end;
+
   Result := true;
 
 end;

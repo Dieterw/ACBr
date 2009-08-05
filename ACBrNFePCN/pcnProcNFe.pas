@@ -46,7 +46,7 @@
 unit pcnProcNFe;
 
 interface uses
-  SysUtils, Classes, pcnAuxiliar, pcnConversao, pcnGerador, pcnLeitor;
+  SysUtils, Classes, pcnAuxiliar, pcnConversao, pcnGerador;
 
 type
 
@@ -59,8 +59,14 @@ type
     FPathNFe: string;
     FPathRetConsReciNFe: string;
     FPathRetConsSitNFe: string;
-    FnProt: string;
+    FtpAmb: TpcnTipoAmbiente;
+    FverAplic: string;
     FchNFe: string;
+    FdhRecbto: TDateTime;
+    FnProt: string;
+    FdigVal: string;
+    FcStat: integer;
+    FxMotivo: string;
   public
     constructor Create;
     destructor Destroy; override;
@@ -72,9 +78,19 @@ type
     property PathNFe: string read FPathNFe write FPathNFe;
     property PathRetConsReciNFe: string read FPathRetConsReciNFe write FPathRetConsReciNFe;
     property PathRetConsSitNFe: string read FPathRetConsSitNFe write FPathRetConsSitNFe;
+    property tpAmb: TpcnTipoAmbiente read FtpAmb write FtpAmb;
+    property verAplic: string read FverAplic write FverAplic;
+    property chNFe: string read FchNFe write FchNFe;
+    property dhRecbto: TDateTime read FdhRecbto write FdhRecbto;
+    property nProt: string read FnProt write FnProt;
+    property digVal: string read FdigVal write FdigVal;
+    property cStat: integer read FcStat write FcStat;
+    property xMotivo: string read FxMotivo write FxMotivo;
   end;
 
 implementation
+
+uses pcnLeitor;
 
 { TProcNFe }
 
@@ -112,8 +128,10 @@ var
   xProtNFe: string;
   LocLeitor: TLeitor;
   i : Integer;
+  ProtLido : Boolean; //Protocolo lido do arquivo
 begin
   Result := False;
+  ProtLido := False;
   if retornarVersaoLayout(FSchema, tlProcNFe) = '1.10' then
   begin
 
@@ -132,16 +150,20 @@ begin
       Gerador.wAlerta('XR01', 'ID/NFE', 'Numero da chave da NFe', ERR_MSG_VAZIO);
 
     if (FPathRetConsReciNFe = '') and (FPathRetConsSitNFe = '') then
-      Gerador.wAlerta('XR06', 'RECIBO/SITUA플O', 'RECIBO/SITUA플O', ERR_MSG_ARQUIVO_NAO_ENCONTRADO);
+     begin
+      if (FchNFe = '') and (FnProt = '') then
+         Gerador.wAlerta('XR06', 'RECIBO/SITUA플O', 'RECIBO/SITUA플O', ERR_MSG_ARQUIVO_NAO_ENCONTRADO)
+      else
+         ProtLido := True;
+     end;
 
     // Gerar arquivo pelo Recibo da NFe                                       //
-    if (FPathRetConsReciNFe <> '') and (FPathRetConsSitNFe = '') then
+    if (FPathRetConsReciNFe <> '') and (FPathRetConsSitNFe = '') and (not ProtLido) then
     begin
       if not FileExists(FPathRetConsReciNFe) then
         Gerador.wAlerta('XR06', 'PROTOCOLO', 'PROTOCOLO', ERR_MSG_ARQUIVO_NAO_ENCONTRADO)
       else
       begin
-        XMLinfProt.LoadFromFile(FPathRetConsReciNFe);
         I := 0;
         LocLeitor := TLeitor.Create;
         LocLeitor.CarregarArquivo(FPathRetConsReciNFe);
@@ -164,7 +186,7 @@ begin
     end;
 
     // Gerar arquivo pelo arquivo de consulta da situa豫o da NFe              //
-    if (FPathRetConsReciNFe = '') and (FPathRetConsSitNFe <> '') then
+    if (FPathRetConsReciNFe = '') and (FPathRetConsSitNFe <> '') and (not ProtLido) then
     begin
       if not FileExists(FPathRetConsSitNFe) then
         Gerador.wAlerta('XR06', 'SITUA플O', 'SITUA플O', ERR_MSG_ARQUIVO_NAO_ENCONTRADO)
@@ -186,6 +208,24 @@ begin
         {****}'</protNFe>';
       end;
     end;
+
+    if ProtLido then
+     begin
+        xProtNFe :=
+          (**)'<protNFe versao="1.10">' +
+        (******)'<infProt>'+
+        (*********)'<tpAmb>'+TpAmbToStr(FtpAmb)+'</tpAmb>'+
+        (*********)'<verAplic>'+FverAplic+'</verAplic>'+
+        (*********)'<chNFe>'+FchNFe+'</chNFe>'+
+        (*********)'<dhRecbto>'+DateTimeToStr(FdhRecbto)+'</dhRecbto>'+
+        (*********)'<nProt>'+FnProt+'</nProt>'+
+        (*********)'<digVal>'+FdigVal+'</digVal>'+
+        (*********)'<cStat>'+IntToStr(FcStat)+'</cStat>'+
+        (*********)'<xMotivo>'+FxMotivo+'</xMotivo>'+
+        (******)'</infProt>'+
+        {****}'</protNFe>';
+
+     end;
 
     // Gerar arquivo
     if Gerador.ListaDeAlertas.Count = 0 then

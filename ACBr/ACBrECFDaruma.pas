@@ -2697,7 +2697,7 @@ begin
      Result := Result + IfThen(docCNFCancelamento in Documentos, '1', '0');
      Result := Result + IfThen(docSangria         in Documentos, '1', '0');
      Result := Result + IfThen(docSuprimento      in Documentos, '1', '0');
-     Result := Result + IfThen(docEstoquePagto    in Documentos, '1', '0');
+     Result := Result + IfThen(docEstornoPagto    in Documentos, '1', '0');
      Result := Result + IfThen(docRG              in Documentos, '1', '0');
      Result := Result + IfThen(docLMF             in Documentos, '1', '0');
    end ;

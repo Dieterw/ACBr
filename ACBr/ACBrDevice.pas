@@ -111,7 +111,7 @@ TACBrECFTipoDocumento = ( docRZ, docLX, docCF, docCFBP, docCupomAdicional,
                           docCFCancelamento, docCCD, docAdicionalCCD,
                           docSegViaCCD, docReimpressaoCCD, docEstornoCCD,
                           docCNF, docCNFCancelamento, docSangria, docSuprimento,
-                          docEstoquePagto, docRG, docLMF, docTodos);
+                          docEstornoPagto, docRG, docLMF, docTodos);
 TACBrECFTipoDocumentoSet = set of TACBrECFTipoDocumento;
 
 TACBrSerialParity = (pNone, pOdd, pEven, pMark, pSpace) ;

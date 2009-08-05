@@ -124,6 +124,7 @@ TACBrECFFiscNET = class( TACBrECFClass )
 
     Function PreparaCmd( cmd : AnsiString ) : AnsiString ;
     Procedure AjustaStringList( AStringList : TStringList ) ;
+    function DocumentosToStr(Documentos: TACBrECFTipoDocumentoSet): String;
  protected
     function GetDataHora: TDateTime; override ;
     function GetNumCupom: String; override ;
@@ -505,7 +506,7 @@ begin
   fsNumLoja   := '' ;
   fsArredonda := -1 ;
   fpModeloStr := 'FiscNET' ;
-  fpColunas   := 48 ;
+  fpColunas   := 57 ;
   fpMFD       := True ;
   fpTermica   := True ;
   fpIdentificaConsumidorRodape := True ;
@@ -1680,13 +1681,18 @@ procedure TACBrECFFiscNET.LeituraMFDSerial(DataInicial,
   DataFinal: TDateTime; var Linhas: TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos]);
 // Autor: Nei José Van Lare Junior
 Var Leitura : AnsiString ;
+    Doctos  : String ;
 begin
+  Doctos := DocumentosToStr(Documentos) ;
+
   with FiscNETComando do
   begin
      NomeComando := 'EmiteLeituraFitaDetalhe' ;
      AddParamDateTime('DataFinal',DataFinal);
      AddParamDateTime('DataInicial',DataInicial);
      AddParamString('Destino','S') ;
+     if Doctos <> '' then
+        AddParamString('TipoDocumento',Doctos);
   end ;
   FiscNETComando.TimeOut := 5 + DaysBetween(DataInicial,DataFinal) ;
   EnviaComando ;
@@ -1710,13 +1716,18 @@ procedure TACBrECFFiscNET.LeituraMFDSerial(COOInicial,
   COOFinal: Integer; var Linhas: TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos]);
 // Autor: Nei José Van Lare Junior
 Var Leitura : AnsiString ;
+    Doctos  : String ;
 begin
+  Doctos := DocumentosToStr(Documentos) ;
+
   with FiscNETComando do
   begin
      NomeComando := 'EmiteLeituraFitaDetalhe' ;
      AddParamInteger('COOFinal',COOFinal);
      AddParamInteger('COOInicial',COOInicial);
      AddParamString('Destino','S') ;
+     if Doctos <> '' then
+        AddParamString('TipoDocumento',Doctos);
   end ;
   FiscNETComando.TimeOut := 5 + (COOFinal - COOInicial) ;
   EnviaComando ;
@@ -1735,6 +1746,33 @@ begin
   AjustaStringList( Linhas );
 end;
 
+Function TACBrECFFiscNET.DocumentosToStr(Documentos : TACBrECFTipoDocumentoSet) : String ;
+begin
+  Result := '' ;
+  if (docTodos in Documentos) then
+     exit ;
+
+  if docLX              in Documentos then Result := Result + '1,' ;
+  if docRZ              in Documentos then Result := Result + '2,' ;
+  if docCF              in Documentos then Result := Result + '3,' ;
+  if docCNF             in Documentos then Result := Result + '4,5,6,'
+  else
+   begin
+     if docSuprimento   in Documentos then Result := Result + '5,' ;
+     if docSangria      in Documentos then Result := Result + '6,' ;
+   end ;
+  if docCFCancelamento  in Documentos then Result := Result + '7,8,' ;
+  if docCNFCancelamento in Documentos then Result := Result + '9,' ;
+  if docCupomAdicional  in Documentos then Result := Result + '10,' ;
+  if docLMF             in Documentos then Result := Result + '11,' ;
+  if docCCD             in Documentos then Result := Result + '12,13,14,' ;
+  if docRG              in Documentos then Result := Result + '15,' ;
+  if docEstornoPagto    in Documentos then Result := Result + '16,' ;
+  if docEstornoCCD      in Documentos then Result := Result + '17,' ;
+
+  Result := copy(Result,1,Length(Result)-1) ; // Remove a ultima Virgula
+end ;
+
 procedure TACBrECFFiscNET.AjustaStringList(AStringList: TStringList);
 Var Texto : AnsiString ;
     NewStringList : TStringList ;
@@ -1747,17 +1785,24 @@ begin
       For A := 0 to AStringList.Count-1 do
       begin
         Texto := AStringList[A] ;
-        Texto := StringReplace(Texto, #27 + 'E' + '1', '', [rfReplaceAll]);
-        Texto := StringReplace(Texto, #27 + 'E' + '0', '', [rfReplaceAll]);
-        Texto := StringReplace(Texto, #27 + '!' + '(', '', [rfReplaceAll]);
-        Texto := StringReplace(Texto, #27 + '!' + #01, '', [rfReplaceAll]);
-        Texto := StringReplace(Texto, #27 + '!' + #02, '', [rfReplaceAll]);
+        if pos( #27, Texto) > 0 then
+        begin
+           Texto := StringReplace(Texto, #27 + 'E' + '1', '', [rfReplaceAll]);
+           Texto := StringReplace(Texto, #27 + 'E' + '0', '', [rfReplaceAll]);
+           Texto := StringReplace(Texto, #27 + 'E'      , '', [rfReplaceAll]);
+           Texto := StringReplace(Texto, #27 + 'F'      , '', [rfReplaceAll]);
+           Texto := StringReplace(Texto, #27 + '!' + '(', '', [rfReplaceAll]);
+           Texto := StringReplace(Texto, #27 + '!' + #01, '', [rfReplaceAll]);
+           Texto := StringReplace(Texto, #27 + '!' + #02, '', [rfReplaceAll]);
+           Texto := StringReplace(Texto, #27 + 'W1'     , '', [rfReplaceAll]);
+           Texto := StringReplace(Texto, #27 + 'W0'     , '', [rfReplaceAll]);
+        end ;
 
-         while Length(Texto) > 0 do
-         begin
-            NewStringList.Add( copy(Texto, 1, Colunas) );
-            Delete(Texto, 1, Colunas);
-         end;
+        while Length(Texto) > 0 do
+        begin
+           NewStringList.Add( copy(Texto, 1, Colunas) );
+           Delete(Texto, 1, Colunas);
+        end;
       end ;
 
       AStringList.Clear ;

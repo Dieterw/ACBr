@@ -846,7 +846,10 @@ begin
       Connection.WriteStrData('', 'CHAVE DE ACESSO DA NF-e P/CONSULTA DE AUTENTICIDADE NO SITE www.nfe.fazenda.gov.br');
       Connection.WriteStrData('', '');
       Connection.WriteStrData('', 'PROTOCOLO DE AUTORIZAÇÃO DE USO');
-      Connection.WriteStrData('', FDANFEClassOwner.ProtocoloNFe);
+      if notautil.EstaVazio(FDANFEClassOwner.ProtocoloNFe) then
+         Connection.WriteStrData('', FNFe.procNFe.nProt)
+      else
+         Connection.WriteStrData('', FDANFEClassOwner.ProtocoloNFe);
    end
    else
    begin

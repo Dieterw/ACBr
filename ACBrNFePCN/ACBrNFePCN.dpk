@@ -73,43 +73,36 @@ requires
   rtl,
   designide,
   xmlrtl,
-  {$IFNDEF ACBrNFeOpenSSL}
-     soaprtl,
-  {$ENDIF}
-  inet;
+  soaprtl,
+  inet,
+  vcl,
+  dbrtl,
+  dsnap;
 
 contains
-
-  {$IFNDEF ACBrNFeOpenSSL}
-     ACBrNFeMSXML2_TLB in 'ACBrNFeMSXML2_TLB.pas',
-     ACBrNFeCAPICOM_TLB in 'ACBrNFeCAPICOM_TLB.pas',
-     ACBrNFeNfeInutilizacaoU in 'ACBrNFeNfeInutilizacaoU.pas',
-     ACBrNFeNfeCancelamentoU in 'ACBrNFeNfeCancelamentoU.pas',	 
-     ACBrNFeNfeConsultaU in 'ACBrNFeNfeConsultaU.pas',
-     ACBrNFeNfeRetRecepcaoU in 'ACBrNFeNfeRetRecepcaoU.pas',
-	 ACBrNFeNfeRecepcaoU in 'ACBrNFeNfeRecepcaoU.pas',
-     ACBrNFeNfeStatusServicoU in 'ACBrNFeNfeStatusServicoU.pas',
-  {$ENDIF}
+  ACBrNFeMSXML2_TLB in 'ACBrNFeMSXML2_TLB.pas',
+  ACBrNFeCAPICOM_TLB in 'ACBrNFeCAPICOM_TLB.pas',
+  ACBrNFeNfeInutilizacaoU in 'ACBrNFeNfeInutilizacaoU.pas',
+  ACBrNFeNfeCancelamentoU in 'ACBrNFeNfeCancelamentoU.pas',
+  ACBrNFeNfeConsultaU in 'ACBrNFeNfeConsultaU.pas',
+  ACBrNFeNfeRetRecepcaoU in 'ACBrNFeNfeRetRecepcaoU.pas',
+  ACBrNFeNfeRecepcaoU in 'ACBrNFeNfeRecepcaoU.pas',
+  ACBrNFeNfeStatusServicoU in 'ACBrNFeNfeStatusServicoU.pas',
   ACBrNFe in 'ACBrNFe.pas',
   ACBrNFeUtil in 'ACBrNFeUtil.pas',
   ACBrNFeNotasFiscais in 'ACBrNFeNotasFiscais.pas',
   ACBrNFeConfiguracoes in 'ACBrNFeConfiguracoes.pas',
   ACBrNFeWebServices in 'ACBrNFeWebServices.pas',
   ACBrNFeReg in 'ACBrNFeReg.pas',
-  pcnAtuCadEmiDFe in 'pcnAtuCadEmiDFe.pas',
-  pcnAuxiliar in 'pcnAuxiliar.pas',
-  pcnCadEmiDFe in 'pcnCadEmiDFe.pas',
   pcnCancNFe in 'pcnCancNFe.pas',
   pcnConsCad in 'pcnConsCad.pas',
   pcnConsReciNFe in 'pcnConsReciNFe.pas',
   pcnConsSitNFe in 'pcnConsSitNFe.pas',
   pcnConsStatServ in 'pcnConsStatServ.pas',
   pcnInutNFe in 'pcnInutNFe.pas',
-  pcnModeloNFe in 'pcnModeloNFe.pas',
   pcnNFe in 'pcnNFe.pas',
   pcnNFeR in 'pcnNFeR.pas',
   pcnNFeW in 'pcnNFeW.pas',
-  pcnRetAtuCadEmiDFe in 'pcnRetAtuCadEmiDFe.pas',
   pcnRetCancNFe in 'pcnRetCancNFe.pas',
   pcnRetConsCad in 'pcnRetConsCad.pas',
   pcnRetConsReciNFe in 'pcnRetConsReciNFe.pas',
@@ -117,6 +110,11 @@ contains
   pcnRetConsStatServ in 'pcnRetConsStatServ.pas',
   pcnRetEnvNFe in 'pcnRetEnvNFe.pas',
   pcnRetInutNFe in 'pcnRetInutNFe.pas',
-  pcnLayoutTXT in 'pcnLayoutTXT.pas' ;
+  pcnLayoutTXT in 'pcnLayoutTXT.pas',
+  pcnEnvNFe in 'pcnEnvNFe.pas',
+  pcnNFeRTXT in 'pcnNFeRTXT.pas',
+  pcnProcNFe in 'pcnProcNFe.pas',
+  ACBrNFeCadConsultaCadastroU in 'ACBrNFeCadConsultaCadastroU.pas',
+  ACBrNFeDANFEClass in 'ACBrNFeDANFEClass.pas';
 
 end.

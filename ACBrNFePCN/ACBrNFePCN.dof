@@ -94,7 +94,7 @@ OutputDir=
 UnitOutputDir=
 PackageDLLOutputDir=
 PackageDCPOutputDir=
-SearchPath=
+SearchPath=..\ACBrComum
 Packages=rtl;vcl;vclx;indy;vclie;xmlrtl;inetdbbde;inet;inetdbxpress;dbrtl;soaprtl;dsnap;VclSmp;dbexpress;vcldb;dbxcds;bdertl;vcldbx;adortl;teeui;teedb;tee;ibxpress;visualclx;visualdbclx;vclactnband;vclshlctrls;IntrawebDB_50_70;Intraweb_50_70;dclOfficeXP;Rave50CLX;Rave50VCL;Jcl;tdbf_d7d;tdbf_d7r;PDBDataManD7
 Conditionals=
 DebugSourceDirs=
@@ -136,8 +136,11 @@ ProductVersion=1.0.0.0
 Comments=
 [Excluded Packages]
 C:\ARQUIV~1\Borland\Delphi7\Projects\Bpl\JclBaseExpert70.bpl=JCL Package containing common units for JCL Experts
-C:\ARQUIV~1\Borland\Delphi7\Projects\Bpl\JclDebugExpert70.bpl=JCL Debug IDE extension
-C:\ARQUIV~1\Borland\Delphi7\Projects\Bpl\JclProjectAnalysisExpert70.bpl=JCL Project Analyzer
-C:\ARQUIV~1\Borland\Delphi7\Projects\Bpl\JclFavoriteFoldersExpert70.bpl=JCL Open and Save IDE dialogs with favorite folders
 C:\ARQUIV~1\Borland\Delphi7\Projects\Bpl\JclUsesExpert70.bpl=JCL Uses Wizard
 C:\ARQUIV~1\Borland\Delphi7\Projects\Bpl\JclSIMDViewExpert70.bpl=JCL Debug Window of XMM registers
+[HistoryLists\hlUnitAliases]
+Count=1
+Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
+[HistoryLists\hlSearchPath]
+Count=1
+Item0=..\ACBrComum

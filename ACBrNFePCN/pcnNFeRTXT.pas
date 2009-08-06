@@ -117,7 +117,7 @@ begin
   // Ler o arquivo
   if FConteudoArquivo.Count = 0 then
     exit;
-  if copy(FconteudoArquivo[0], 1, 10) <> 'NOTAFISCAL' then
+  if (copy(FconteudoArquivo[0], 1, 10) <> 'NOTAFISCAL') and (copy(FconteudoArquivo[0], 1, 11) <> 'NOTA FISCAL') then
     exit;
   versao := copy(FconteudoArquivo[1], 3, 4);
   if pos('|' + Versao + '|', VERSOES_VALIDAS_LAYOUT_TXT) = 0 then

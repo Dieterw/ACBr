@@ -649,7 +649,7 @@ begin
   (* Grupo da TAG <exporta> ***************************************************)
   if Leitor.rExtrai(1, 'exporta') <> '' then
   begin
-    (*ZA02*)NFe.exporta.UFembarq := Leitor.rCampo(tcStr, 'UFembarq');
+    (*ZA02*)NFe.exporta.UFembarq := Leitor.rCampo(tcStr, 'UFEmbarq');
     (*ZA03*)NFe.exporta.xLocEmbarq := Leitor.rCampo(tcStr, 'xLocEmbarq');
   end;
 

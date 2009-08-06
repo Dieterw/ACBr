@@ -1447,9 +1447,9 @@ begin
   if trim(nfe.exporta.UFembarq) + trim(nfe.exporta.xLocEmbarq) <> '' then
   begin
     Gerador.wGrupo('exporta', 'ZA01');
-    Gerador.wCampo(tcStr, 'ZA02', 'UFembarq', 02, 02, 1, nfe.exporta.UFembarq, DSC_UFEMBARQ);
+    Gerador.wCampo(tcStr, 'ZA02', 'UFEmbarq', 02, 02, 1, nfe.exporta.UFembarq, DSC_UFEMBARQ);
     if not ValidarUF(nfe.exporta.UFembarq) then
-      Gerador.wAlerta('ZA02', 'UFembarq', DSC_UFEMBARQ, ERR_MSG_INVALIDO);
+      Gerador.wAlerta('ZA02', 'UFEmbarq', DSC_UFEMBARQ, ERR_MSG_INVALIDO);
     Gerador.wCampo(tcStr, 'ZA03', 'xLocEmbarq', 01, 60, 1, nfe.exporta.xLocEmbarq, DSC_XLOCEMBARQ);
     Gerador.wGrupo('/exporta');
   end;

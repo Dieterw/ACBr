@@ -421,10 +421,15 @@ begin
 
     // Inicializa CST com sendo Não tributada e conforme o TIPO entrada ou saida
     // Caso a Tag não seja informada sera gravada com sendo não tributada
-    if NFe.ide.tpNF = tnEntrada then
-      NFe.Det[i].Imposto.IPI.CST := ipi53;
-    if NFe.ide.tpNF = tnSaida then
-      NFe.Det[i].Imposto.IPI.CST := ipi03;
+    // **Foi realizado um ajuste para só gravar (mesmo não tributada) somente se
+    //   especificar o cEnq**
+    if (NFe.Det.Items[i].Imposto.IPI.cEnq <> '') then
+    begin
+       if NFe.ide.tpNF = tnEntrada then
+         NFe.Det[i].Imposto.IPI.CST := ipi53;
+       if NFe.ide.tpNF = tnSaida then
+         NFe.Det[i].Imposto.IPI.CST := ipi03;
+    end;
 
     if Leitor.rExtrai(3, 'IPITrib') <> '' then
     begin

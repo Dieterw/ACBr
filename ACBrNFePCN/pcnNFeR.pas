@@ -417,32 +417,28 @@ begin
       (*O04*)NFe.Det[i].Imposto.IPI.cSelo := Leitor.rCampo(tcStr, 'cSelo');
       (*O05*)NFe.Det[i].Imposto.IPI.qSelo := Leitor.rCampo(tcInt, 'qSelo');
       (*O06*)NFe.Det[i].Imposto.IPI.cEnq := Leitor.rCampo(tcStr, 'cEnq');
-    end;
 
-    // Inicializa CST com sendo Não tributada e conforme o TIPO entrada ou saida
-    // Caso a Tag não seja informada sera gravada com sendo não tributada
-    // **Foi realizado um ajuste para só gravar (mesmo não tributada) somente se
-    //   especificar o cEnq**
-    if (NFe.Det.Items[i].Imposto.IPI.cEnq <> '') then
-    begin
-       if NFe.ide.tpNF = tnEntrada then
-         NFe.Det[i].Imposto.IPI.CST := ipi53;
-       if NFe.ide.tpNF = tnSaida then
-         NFe.Det[i].Imposto.IPI.CST := ipi03;
-    end;
 
-    if Leitor.rExtrai(3, 'IPITrib') <> '' then
-    begin
-      (*O09*)NFe.Det[i].Imposto.IPI.CST := StrToCSTIPI(ok, Leitor.rCampo(tcStr, 'CST'));
-      (*O10*)NFe.Det[i].Imposto.IPI.vBC := Leitor.rCampo(tcDe2, 'vBC');
-      (*O11*)NFe.Det[i].Imposto.IPI.qUnid := Leitor.rCampo(tcDe4, 'qUnid');
-      (*O12*)NFe.Det[i].Imposto.IPI.vUnid := Leitor.rCampo(tcDe4, 'vUnid');
-      (*O13*)NFe.Det[i].Imposto.IPI.pIPI := Leitor.rCampo(tcDe2, 'pIPI');
-      (*O14*)NFe.Det[i].Imposto.IPI.vIPI := Leitor.rCampo(tcDe2, 'vIPI');
-    end;
-    if Leitor.rExtrai(3, 'IPINT') <> '' then
-    begin
-      (*O09*)NFe.Det[i].Imposto.IPI.CST := StrToCSTIPI(ok, Leitor.rCampo(tcStr, 'CST'));
+      // Inicializa CST com sendo Não tributada e conforme o TIPO entrada ou saida
+      // Caso a Tag não seja informada sera gravada com sendo não tributada
+      if NFe.ide.tpNF = tnEntrada then
+        NFe.Det[i].Imposto.IPI.CST := ipi53;
+      if NFe.ide.tpNF = tnSaida then
+        NFe.Det[i].Imposto.IPI.CST := ipi03;
+
+      if Leitor.rExtrai(3, 'IPITrib') <> '' then
+      begin
+        (*O09*)NFe.Det[i].Imposto.IPI.CST := StrToCSTIPI(ok, Leitor.rCampo(tcStr, 'CST'));
+        (*O10*)NFe.Det[i].Imposto.IPI.vBC := Leitor.rCampo(tcDe2, 'vBC');
+        (*O11*)NFe.Det[i].Imposto.IPI.qUnid := Leitor.rCampo(tcDe4, 'qUnid');
+        (*O12*)NFe.Det[i].Imposto.IPI.vUnid := Leitor.rCampo(tcDe4, 'vUnid');
+        (*O13*)NFe.Det[i].Imposto.IPI.pIPI := Leitor.rCampo(tcDe2, 'pIPI');
+        (*O14*)NFe.Det[i].Imposto.IPI.vIPI := Leitor.rCampo(tcDe2, 'vIPI');
+      end;
+      if Leitor.rExtrai(3, 'IPINT') <> '' then
+      begin
+        (*O09*)NFe.Det[i].Imposto.IPI.CST := StrToCSTIPI(ok, Leitor.rCampo(tcStr, 'CST'));
+      end;
     end;
     if Leitor.rExtrai(3, 'II') <> '' then
     begin

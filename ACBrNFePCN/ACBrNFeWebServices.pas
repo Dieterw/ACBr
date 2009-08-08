@@ -1000,12 +1000,15 @@ begin
       begin
         FNotasFiscais.Items[j].Confirmada := (AInfProt.Items[i].cStat = 100);
         FNotasFiscais.Items[j].Msg        := AInfProt.Items[i].xMotivo;
-        AProcNFe:=TProcNFe.Create;
-        AProcNFe.PathNFe:=FConfiguracoes.Geral.PathSalvar+'\'+FNFeRetorno.ProtNFe.Items[j].chNFe+'-nfe.xml';
-        AProcNFe.PathRetConsReciNFe:=FConfiguracoes.Geral.PathSalvar+'\'+FNFeRetorno.nRec+'-pro-rec.xml';
-        AProcNFe.GerarXML;
-        AProcNFe.Gerador.SalvarArquivo(FConfiguracoes.Geral.PathSalvar+'\'+FNFeRetorno.ProtNFe.Items[j].chNFe+'-nfe.xml');
-        AProcNFe.Free;
+        if FConfiguracoes.Geral.Salvar then
+        begin
+           AProcNFe:=TProcNFe.Create;
+           AProcNFe.PathNFe:=FConfiguracoes.Geral.PathSalvar+'\'+FNFeRetorno.ProtNFe.Items[j].chNFe+'-nfe.xml';
+           AProcNFe.PathRetConsReciNFe:=FConfiguracoes.Geral.PathSalvar+'\'+FNFeRetorno.nRec+'-pro-rec.xml';
+           AProcNFe.GerarXML;
+           AProcNFe.Gerador.SalvarArquivo(FConfiguracoes.Geral.PathSalvar+'\'+FNFeRetorno.ProtNFe.Items[j].chNFe+'-nfe.xml');
+           AProcNFe.Free;
+        end;
         break;
       end;
     end;

@@ -996,10 +996,17 @@ begin
     for j:= 0 to FNotasFiscais.Count-1 do
     begin
       if 'NFe'+AInfProt.Items[i].chNFe = FNotasFiscais.Items[j].NFe.InfNFe.Id  then
-//      if AInfProt.Items[i].chNFe = FNotasFiscais.Items[j].NFe.InfNFe.Id  then
       begin
         FNotasFiscais.Items[j].Confirmada := (AInfProt.Items[i].cStat = 100);
         FNotasFiscais.Items[j].Msg        := AInfProt.Items[i].xMotivo;
+        FNotasFiscais.Items[j].NFe.procNFe.tpAmb    := AInfProt.Items[i].tpAmb;
+        FNotasFiscais.Items[j].NFe.procNFe.verAplic := AInfProt.Items[i].verAplic;
+        FNotasFiscais.Items[j].NFe.procNFe.chNFe    := AInfProt.Items[i].chNFe;
+        FNotasFiscais.Items[j].NFe.procNFe.dhRecbto := AInfProt.Items[i].dhRecbto;
+        FNotasFiscais.Items[j].NFe.procNFe.nProt    := AInfProt.Items[i].nProt;
+        FNotasFiscais.Items[j].NFe.procNFe.digVal   := AInfProt.Items[i].digVal;
+        FNotasFiscais.Items[j].NFe.procNFe.cStat    := AInfProt.Items[i].cStat;
+        FNotasFiscais.Items[j].NFe.procNFe.xMotivo  := AInfProt.Items[i].xMotivo;
         if FConfiguracoes.Geral.Salvar then
         begin
            AProcNFe:=TProcNFe.Create;
@@ -1289,11 +1296,11 @@ begin
    FTpAmb    := FNFeRetorno.TpAmb;
    FverAplic := FNFeRetorno.verAplic;
    FcStat    := FNFeRetorno.cStat;
-   FxMotivo  := FNFeRetorno.ProtNFe.Items[0].xMotivo;
+   FxMotivo  := FNFeRetorno.xMotivo;
    FcUF      := FNFeRetorno.cUF;
 
-   Result := FNFeRetorno.CStat = 105;
-   FMsg   := FNFeRetorno.ProtNFe.Items[0].xMotivo;
+   Result := FNFeRetorno.CStat = 104;
+   FMsg   := FNFeRetorno.xMotivo;
 
  finally
    {$IFDEF ACBrNFeOpenSSL}

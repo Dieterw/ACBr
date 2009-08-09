@@ -240,6 +240,7 @@ end;
 procedure TACBrNFeDANFERave.ImprimirDANFEPDF(NFE : TNFe = nil);
 var
  i : Integer;
+ NomeArq : String;
 begin
   if FRaveFile = '' then
       raise Exception.Create(' Arquivo de Relatório nao informado.') ;
@@ -269,7 +270,11 @@ begin
      for i:= 0 to TACBrNFe(ACBrNFe).NotasFiscais.Count-1 do
       begin
         dmDanfe.NFe := TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe;
-        dmDanfe.RvSystem1.OutputFileName := PathWithDelim(FPathArquivos)+dmDanfe.NFe.infNFe.ID+'.pdf';
+        if NotaUtil.EstaVazio(FPathArquivos) then
+           NomeArq := TACBrNFe(ACBrNFe).Configuracoes.Geral.PathSalvar
+        else
+           NomeArq := FPathArquivos;
+        dmDanfe.RvSystem1.OutputFileName := PathWithDelim(NomeArq)+dmDanfe.NFe.infNFe.ID+'.pdf';
         ExecutaReport;
       end;
    end

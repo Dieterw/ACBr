@@ -49,7 +49,7 @@ unit ACBrNFeNotasFiscais;
 interface
 
 uses
-  Classes, Sysutils, Dialogs,
+  Classes, Sysutils, Dialogs, Forms,
   ACBrNFeUtil, ACBrNFeConfiguracoes,
   {$IFDEF FPC}
      ACBrNFeDMLaz,
@@ -57,7 +57,7 @@ uses
      ACBrNFeDANFEClass,
   {$ENDIF}
   smtpsend, ssl_openssl, mimemess, mimepart, // units para enviar email
-  pcnNFe, pcnNFeR, pcnNFeW, pcnConversao, pcnAuxiliar;
+  pcnNFe, pcnNFeR, pcnNFeW, pcnConversao, pcnAuxiliar, pcnLeitor;
 
 type
 
@@ -233,8 +233,9 @@ begin
      if (EnviaPDF) then
      begin
         TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.ImprimirDANFEPDF(NFe);
+
         if NotaUtil.EstaVazio(TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.PathPDF) then
-           NomeArq := TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).Configuracoes.Geral.PathSalvar
+           NomeArq := ExtractFilePath(Application.ExeName)
         else
            NomeArq := TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.PathPDF;
         m.AddPartBinaryFromFile(PathWithDelim(NomeArq)+NFe.infNFe.ID+'.pdf', p);
@@ -291,6 +292,7 @@ var
   i: Integer;
   vAssinada : AnsiString;
   LocNFeW : TNFeW;
+  Leitor: TLeitor;
   FMsg : AnsiString;
 begin
   for i:= 0 to Self.Count-1 do
@@ -312,6 +314,15 @@ begin
         vAssinada := StringReplace( vAssinada, '<'+ENCODING_UTF8_STD+'>', '', [rfReplaceAll] ) ;
         vAssinada := StringReplace( vAssinada, '<?xml version="1.0"?>', '', [rfReplaceAll] ) ;
         Self.Items[i].XML := vAssinada;
+
+        Leitor := TLeitor.Create;
+        leitor.Grupo := Leitor.Arquivo;
+        Self.Items[i].NFe.signature.URI := Leitor.rAtributo('Reference URI=');
+        Self.Items[i].NFe.signature.DigestValue := Leitor.rCampo(tcStr, 'DigestValue');
+        Self.Items[i].NFe.signature.SignatureValue := Leitor.rCampo(tcStr, 'SignatureValue');
+        Self.Items[i].NFe.signature.X509Certificate := Leitor.rCampo(tcStr, 'X509Certificate');
+        Leitor.Free;
+        
         if FConfiguracoes.Geral.Salvar then
            FConfiguracoes.Geral.Save(StringReplace(Self.Items[i].NFe.infNFe.ID, 'NFe', '', [rfIgnoreCase])+'-nfe.xml', vAssinada);
 

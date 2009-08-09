@@ -74,3 +74,6 @@ Para instalar o DANFe, siga os passos abaixo:
 -Abra o arquivo ACBrNFeDanfeRV.dpk, clique em compile e ao ser solicitado para adicionar o
 pacote ACBr_CLX ou ACBr_VCL clique em Cancel. Clique em Install e ao ser solicitado para adicionar o
 pacote ACBr_CLX ou ACBr_VCL clique em Cancel
+
+Caso esteja usando a versão CAPICOM, e mesmo após registrar as DLLs continuar recebendo a mensagem de
+classe não registrada, use o seguinte arquivo: https://wwws.prodemge.gov.br/images/stories/exe/capicom.exe

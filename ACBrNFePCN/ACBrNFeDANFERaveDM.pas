@@ -763,8 +763,8 @@ procedure TdmACBrNFeRave.CustomParametrosCXNGetRow(
 
       wchave:=wchave+NotaUtil.Poem_Zeros(NotaUtil.LimpaNumero(Floattostrf(FNFe.Total.ICMSTot.vNF,ffFixed,18,2)),14);
 
-      wicms_s:='0';
-      wicms_p:='0';
+      wicms_s:='2';
+      wicms_p:='2';
       for I := 0 to FNFe.Det.Count - 1 do
       begin
          if (FNFe.Det.Items[i].Imposto.ICMS.CST in [cst00, cst20, cst40, cst41, cst50, cst51]) then

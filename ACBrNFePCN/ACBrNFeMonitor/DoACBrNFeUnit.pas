@@ -366,10 +366,10 @@ begin
               ACBrNFe1.WebServices.ConsultaCadastro.IE := Cmd.Params(1)
            else
             begin
-              if Length(Cmd.Params(0)) > 11 then
-                 ACBrNFe1.WebServices.ConsultaCadastro.CNPJ := Cmd.Params(0)
+              if Length(Cmd.Params(1)) > 11 then
+                 ACBrNFe1.WebServices.ConsultaCadastro.CNPJ := Cmd.Params(1)
               else
-                 ACBrNFe1.WebServices.ConsultaCadastro.CPF := Cmd.Params(0);
+                 ACBrNFe1.WebServices.ConsultaCadastro.CPF := Cmd.Params(1);
             end;
             ACBrNFe1.WebServices.ConsultaCadastro.Executar;
 

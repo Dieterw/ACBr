@@ -426,7 +426,8 @@ begin
               ArqNFe := PathWithDelim(PathWithDelim(ExtractFilePath(Application.ExeName))+'Lotes\'+'Lote'+Cmd.Params(1))+StringReplace(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID, 'NFe', '', [rfIgnoreCase])+'-nfe.xml';
               ACBrNFe1.NotasFiscais.SaveToFile(ExtractFilePath(ArqNFe));
             end
-           else if (Cmd.Metodo = 'criarnfe')  or (Cmd.Metodo = 'criarnfesefaz') then
+           else if (Cmd.Metodo = 'criarnfe')  or (Cmd.Metodo = 'criarnfesefaz') or
+           (Cmd.Metodo = 'criarenviarnfe') or (Cmd.Metodo = 'criarenviarnfesefaz') then
             begin
               Salva := ACBrNFe1.Configuracoes.Geral.Salvar;
               if not Salva then

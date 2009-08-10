@@ -274,6 +274,11 @@ begin
     (*C14*)NFe.Emit.enderEmit.cPais := LerCampo(tcInt, 'cPais');
     (*C15*)NFe.Emit.enderEmit.xPais := LerCampo(tcStr, 'xPais');
     (*C16*)NFe.Emit.enderEmit.fone := LerCampo(tcStr, 'fone');
+    if NFe.Emit.enderEmit.cPais = 0 then
+     begin
+       (*C14*)NFe.Emit.enderEmit.cPais := 1058;
+       (*C15*)NFe.Emit.enderEmit.xPais := 'BRASIL';
+     end;
   end;
 
   if ID = 'D' then (* Grupo da TAG <avulsa> ***********************************)
@@ -315,6 +320,12 @@ begin
     (*E14*)NFe.Dest.enderDest.cPais := LerCampo(tcInt, 'cPais');
     (*E15*)NFe.Dest.enderDest.xPais := LerCampo(tcStr, 'xPais');
     (*E16*)NFe.Dest.enderDest.fone := LerCampo(tcStr, 'fone');
+    if NFe.Dest.enderEmit.cPais = 0 then
+     begin
+       (*E14*)NFe.Dest.enderEmit.cPais := 1058;
+       (*E15*)NFe.Dest.enderEmit.xPais := 'BRASIL';
+     end;
+
   end;
 
   if ID = 'F' then (* Grupo da TAG <retirada> *********************************)

@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "ACBrNFeMonitor"
-#define MyAppVerName "ACBrNFeMonitor-0.5.0a"
+#define MyAppVerName "ACBrNFeMonitor-OpenSSL-0.5.1a"
 #define MyAppPublisher "Projeto ACBr"
 #define MyAppURL "http://acbr.sourceforge.net/drupal/"
 #define MyAppUrlName "ACBrNFeMonitor.url"
@@ -67,7 +67,7 @@ Filename: "{app}\{#MyAppUrlName}"; Section: "InternetShortcut"; Key: "URL"; Stri
 [Icons]
 Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}; Components: programa
 Name: {group}\LEIA-ME.TXT; Filename: notepad; Parameters: leia-me.txt; WorkingDir: {app}; Components: help
-Name: {group}\Manual do ACBrNFeMonitor; Filename: {app}\ACBrMonitor.chm; WorkingDir: {app}; Components: help
+Name: {group}\Manual do ACBrNFeMonitor; Filename: {app}\ACBrNFeMonitor.chm; WorkingDir: {app}; Components: help
 Name: {userdesktop}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}; Tasks: desktopicon
 Name: {userstartup}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {app}
 Name: "{group}\{cm:ProgramOnTheWeb,{#MyAppName}}"; Filename: "{app}\{#MyAppUrlName}"; Components: help

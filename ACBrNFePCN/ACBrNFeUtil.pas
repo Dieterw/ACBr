@@ -873,7 +873,7 @@ begin
     LayNfeInutilizacao  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.go.gov.br/nfe/services/NfeInutilizacao', 'https://homolog.sefaz.go.gov.br/nfe/services/NfeInutilizacao');
     LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.go.gov.br/nfe/services/NfeConsulta', 'https://homolog.sefaz.go.gov.br/nfe/services/NfeConsulta');
     LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.go.gov.br/nfe/services/NfeStatusServico', 'https://homolog.sefaz.go.gov.br/nfe/services/NfeStatusServico');
-    LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'http://nfe.sefaz.go.gov.br/nfe/services/CadConsultaCadastro', 'http://homolog.sefaz.go.gov.br/nfe/services/CadConsultaCadastro');
+    LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.go.gov.br/nfe/services/CadConsultaCadastro', 'https://homolog.sefaz.go.gov.br/nfe/services/CadConsultaCadastro');
   end;
 end;
 

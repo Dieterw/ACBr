@@ -232,13 +232,18 @@ begin
      m.AddPartBinary(StreamNFe,copy(NFe.infNFe.ID, (length(NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml', p);
      if (EnviaPDF) then
      begin
-        TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.ImprimirDANFEPDF(NFe);
-
-        if NotaUtil.EstaVazio(TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.PathPDF) then
-           NomeArq := ExtractFilePath(Application.ExeName)
-        else
-           NomeArq := TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.PathPDF;
-        m.AddPartBinaryFromFile(PathWithDelim(NomeArq)+NFe.infNFe.ID+'.pdf', p);
+        if TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE <> nil then
+        begin
+           TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.ImprimirDANFEPDF(NFe);
+           NomeArq := NFe.infNFe.ID;
+           if length(NomeArq)>44 then
+              NomeArq := copy(NomeArq,(length(NomeArq)-44)+1,44);
+           if NotaUtil.EstaVazio(TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.PathPDF) then
+             NomeArq := PathWithDelim(TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).Configuracoes.Geral.PathSalvar)+NomeArq
+           else
+             NomeArq := PathWithDelim(TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.PathPDF)+NomeArq;
+           m.AddPartBinaryFromFile(NomeArq+'.pdf', p);
+        end;
      end;
      m.header.tolist.add(sTo);
      m.header.From := sFrom;

@@ -265,24 +265,34 @@ begin
   dmDanfe.RvRenderPDF1.UseCompression:=False;
   dmDanfe.RvRenderPDF1.Active:=True;
 
-  if NFE = nil then
+   if NFE = nil then
    begin
-     for i:= 0 to TACBrNFe(ACBrNFe).NotasFiscais.Count-1 do
+      for i:= 0 to TACBrNFe(ACBrNFe).NotasFiscais.Count-1 do
       begin
-        dmDanfe.NFe := TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe;
-        if NotaUtil.EstaVazio(FPathArquivos) then
-           NomeArq := TACBrNFe(ACBrNFe).Configuracoes.Geral.PathSalvar
-        else
-           NomeArq := FPathArquivos;
-        dmDanfe.RvSystem1.OutputFileName := PathWithDelim(NomeArq)+dmDanfe.NFe.infNFe.ID+'.pdf';
-        ExecutaReport;
+         dmDanfe.NFe := TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe;
+         NomeArq := TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe.infNFe.ID;
+         if length(NomeArq)>44 then
+            NomeArq := copy(NomeArq,(length(NomeArq)-44)+1,44);
+         if NotaUtil.EstaVazio(FPathArquivos) then
+            NomeArq := PathWithDelim(TACBrNFe(ACBrNFe).Configuracoes.Geral.PathSalvar)+NomeArq
+         else
+            NomeArq := PathWithDelim(FPathArquivos)+NomeArq;
+         dmDanfe.RvSystem1.OutputFileName := NomeArq+'.pdf';
+         ExecutaReport;
       end;
    end
-  else
+   else
    begin
-     dmDanfe.NFe := NFE;
-     dmDanfe.RvSystem1.OutputFileName := PathWithDelim(FPathArquivos)+dmDanfe.NFe.infNFe.ID+'.pdf';
-     ExecutaReport;
+      dmDanfe.NFe := NFE;
+      NomeArq := NFe.infNFe.ID;
+      if length(NomeArq)>44 then
+         NomeArq := copy(NomeArq,(length(NomeArq)-44)+1,44);
+      if NotaUtil.EstaVazio(FPathArquivos) then
+         NomeArq := PathWithDelim(TACBrNFe(ACBrNFe).Configuracoes.Geral.PathSalvar)+NomeArq
+      else
+         NomeArq := PathWithDelim(FPathArquivos)+NomeArq;
+      dmDanfe.RvSystem1.OutputFileName := NomeArq+'.pdf';
+      ExecutaReport;
    end;
 
   dmDanfe.RvRenderPDF1.Active:=False;

@@ -83,12 +83,10 @@ type
     FUFCodigo: Integer;
     FAmbiente: TpcnTipoAmbiente;
     FAmbienteCodigo: Integer;
-    {$IFDEF ACBrNFeOpenSSL}
-       FProxyHost: String;
-       FProxyPort: String;
-       FProxyUser: String;
-       FProxyPass: String;
-    {$ENDIF}
+    FProxyHost: String;
+    FProxyPort: String;
+    FProxyUser: String;
+    FProxyPass: String;
     procedure SetUF(AValue: String);
     procedure SetAmbiente(AValue: TpcnTipoAmbiente);
   public
@@ -101,13 +99,10 @@ type
     property Ambiente: TpcnTipoAmbiente read FAmbiente write SetAmbiente
       default taHomologacao ;
     property AmbienteCodigo: Integer read FAmbienteCodigo;
-    {$IFDEF ACBrNFeOpenSSL}
-       property ProxyHost: String read FProxyHost write FProxyHost;
-       property ProxyPort: String read FProxyPort write FProxyPort;
-       property ProxyUser: String read FProxyUser write FProxyUser;
-       property ProxyPass: String read FProxyPass write FProxyPass;
-    {$ENDIF}   
-
+    property ProxyHost: String read FProxyHost write FProxyHost;
+    property ProxyPort: String read FProxyPort write FProxyPort;
+    property ProxyUser: String read FProxyUser write FProxyUser;
+    property ProxyPass: String read FProxyPass write FProxyPass;
   end;
 
   TGeralConf = class(TComponent)

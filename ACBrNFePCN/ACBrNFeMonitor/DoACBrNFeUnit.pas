@@ -54,7 +54,7 @@ Uses IniFiles, StrUtils, DateUtils,
   pcnConsSitNFe, pcnRetConsSitNFe,
   pcnInutNFe, pcnRetInutNFe,
   pcnRetEnvNFe, pcnConsReciNFe,
-  pcnNFeRTXT, ACBrNFeNotasFiscais;
+  pcnNFeRTXT, ACBrNFeNotasFiscais, pcnRetConsCad;
 
 Procedure DoACBrNFe( Cmd : TACBrNFeCmd ) ;
 var
@@ -63,6 +63,8 @@ var
   Salva  : Boolean;
   SL     : TStringList;
   Alertas : AnsiString;
+  RetFind   : Integer ;
+  SearchRec : TSearchRec ;
 
   NFeRetConsStatServ : TRetConsStatServ;
   NFeRetConsSitNFe   : TRetConsSitNFe;
@@ -324,7 +326,7 @@ begin
                              'NProt='+NFeRetConsSitNFe.NProt+sLineBreak+
                              'DigVal='+NFeRetConsSitNFe.DigVal+sLineBreak;
 
-              RPDev.DeviceIndex := cbxImpressora.ItemIndex; 
+              RPDev.DeviceIndex := cbxImpressora.ItemIndex;
               if ACBrNFe1.NotasFiscais.Items[i].Confirmada and (Cmd.Params(3) = '1') then
                  ACBrNFe1.NotasFiscais.Items[i].Imprimir;
             end;
@@ -333,15 +335,9 @@ begin
          begin
            ACBrNFe1.WebServices.Recibo.Recibo := Cmd.Params(0);
            if not(ACBrNFe1.WebServices.Recibo.Executar) then
-             raise Exception.Create(ACBrNFe1.WebServices.Recibo.Msg);
+             raise Exception.Create(ACBrNFe1.WebServices.Recibo.xMotivo);
 
            NFeRetConsReciNFe := ACBrNFe1.WebServices.Recibo.NFeRetorno;
-
-{           ACBrNFe1.WebServices.Retorno.Recibo :=  Cmd.Params(0);
-           if not(ACBrNFe1.WebServices.Retorno.Executar) then
-            raise Exception.Create(ACBrNFe1.WebServices.Retorno.Msg);
-
-           NFeRetConsReciNFe := ACBrNFe1.WebServices.Retorno.NFeRetorno;}
 
            Cmd.Resposta :=  Cmd.Resposta+
                             ACBrNFe1.WebServices.Recibo.Msg+sLineBreak+
@@ -352,51 +348,98 @@ begin
                            'NRec='+NFeRetConsReciNFe.NRec+sLineBreak+
                            'CStat='+IntToStr(NFeRetConsReciNFe.CStat)+sLineBreak+
                            'XMotivo='+NFeRetConsReciNFe.XMotivo+sLineBreak+
-                           'CUF='+IntToStr(NFeRetConsReciNFe.CUF)+sLineBreak;
+                           'CUF='+IntToStr(NFeRetConsReciNFe.CUF)+sLineBreak+
+                           'ChNFe='+NFeRetConsReciNFe.ProtNFe.Items[0].chNFe+sLineBreak+
+                           'NProt='+NFeRetConsReciNFe.ProtNFe.Items[0].nProt+sLineBreak+
+                           'MotivoNFe='+NFeRetConsReciNFe.ProtNFe.Items[0].xMotivo+sLineBreak;
 
            if ACBrNFe1.Configuracoes.Geral.Salvar then
             begin
               Cmd.Resposta :=  Cmd.Resposta+
               'Arquivo='+ACBrNFe1.Configuracoes.Geral.PathSalvar+Cmd.Params(0)+'-pro-rec.xml';
-            end;  
-
-
+            end;
          end
-        else if (Cmd.Metodo = 'criarnfe') or (Cmd.Metodo = 'criarenviarnfe') or
-                (Cmd.Metodo = 'criarnfesefaz') or (Cmd.Metodo = 'criarenviarnfesefaz') then
+        else if (Cmd.Metodo = 'consultacadastro')then
          begin
-           if (Cmd.Metodo = 'criarnfe') or (Cmd.Metodo = 'criarenviarnfe') then
+           ACBrNFe1.WebServices.ConsultaCadastro.UF   := Cmd.Params(0);
+           if Cmd.Params(2) = '1' then
+              ACBrNFe1.WebServices.ConsultaCadastro.IE := Cmd.Params(1)
+           else
+            begin
+              if Length(Cmd.Params(0)) > 11 then
+                 ACBrNFe1.WebServices.ConsultaCadastro.CNPJ := Cmd.Params(0)
+              else
+                 ACBrNFe1.WebServices.ConsultaCadastro.CPF := Cmd.Params(0);
+            end;
+            ACBrNFe1.WebServices.ConsultaCadastro.Executar;
+
+            Cmd.Resposta :=  Cmd.Resposta+
+                             ACBrNFe1.WebServices.ConsultaCadastro.Msg+sLineBreak+
+                             'VerAplic='+ACBrNFe1.WebServices.ConsultaCadastro.verAplic+sLineBreak+
+                             'cStat='+IntToStr(ACBrNFe1.WebServices.ConsultaCadastro.cStat)+sLineBreak+
+                             'xMotivo='+ACBrNFe1.WebServices.ConsultaCadastro.xMotivo+sLineBreak+
+                             'DhCons='+DateTimeToStr(ACBrNFe1.WebServices.ConsultaCadastro.DhCons)+sLineBreak+
+                             'cUF='+IntToStr(ACBrNFe1.WebServices.ConsultaCadastro.cUF)+sLineBreak+
+                             'IE='+ACBrNFe1.WebServices.ConsultaCadastro.RetConsCad.InfCad.Items[0].IE+sLineBreak+
+                             'CNPJ='+ACBrNFe1.WebServices.ConsultaCadastro.RetConsCad.InfCad.Items[0].CNPJ+sLineBreak+
+                             'CPF='+ACBrNFe1.WebServices.ConsultaCadastro.RetConsCad.InfCad.Items[0].CPF+sLineBreak+
+                             'UF='+ACBrNFe1.WebServices.ConsultaCadastro.RetConsCad.InfCad.Items[0].UF+sLineBreak+
+                             'cSit='+IntToStr(ACBrNFe1.WebServices.ConsultaCadastro.RetConsCad.InfCad.Items[0].cSit)+sLineBreak+
+                             'xNome='+ACBrNFe1.WebServices.ConsultaCadastro.RetConsCad.InfCad.Items[0].xNome+sLineBreak;
+         end
+        else if (Cmd.Metodo = 'criarnfe')      or (Cmd.Metodo = 'criarenviarnfe') or
+                (Cmd.Metodo = 'criarnfesefaz') or (Cmd.Metodo = 'criarenviarnfesefaz') or
+                (Cmd.Metodo = 'adicionarnfe')  or (Cmd.Metodo = 'adicionarnfesefaz') or
+                (Cmd.Metodo = 'enviarlotenfe') then
+         begin
+           if (Cmd.Metodo = 'criarnfe') or (Cmd.Metodo = 'criarenviarnfe') or
+              (Cmd.Metodo = 'adicionarnfe') then
               GerarIniNFe( Cmd.Params(0)  )
            else
             begin
-              if not FileExists(Cmd.Params(0)) then
-                 raise Exception.Create('Arquivo '+Cmd.Params(0)+' não encontrado.')
-              else
-               begin
-                 ACBrNFe1.NotasFiscais.Clear;
-                 ACBrNFe1.NotasFiscais.Add;
-                 NFeRTXT := TNFeRTXT.Create(ACBrNFe1.NotasFiscais.Items[0].NFe);
-                 try
-                    NFeRTXT.CarregarArquivo(Cmd.Params(0));
-                    if not NFeRTXT.LerTxt then
-                       raise Exception.Create('Arquivo inválido!');
-                 finally
-                    NFeRTXT.Free;
-                 end;
-               end;
+              if (Cmd.Metodo = 'criarnfesefaz') or (Cmd.Metodo = 'criarenviarnfesefaz') or
+                 (Cmd.Metodo = 'adicionarnfesefaz') then
+                  begin
+                    if not FileExists(Cmd.Params(0)) then
+                       raise Exception.Create('Arquivo '+Cmd.Params(0)+' não encontrado.')
+                    else
+                     begin
+                       ACBrNFe1.NotasFiscais.Clear;
+                       ACBrNFe1.NotasFiscais.Add;
+                       NFeRTXT := TNFeRTXT.Create(ACBrNFe1.NotasFiscais.Items[0].NFe);
+                       try
+                          NFeRTXT.CarregarArquivo(Cmd.Params(0));
+                          if not NFeRTXT.LerTxt then
+                             raise Exception.Create('Arquivo inválido!');
+                       finally
+                          NFeRTXT.Free;
+                       end;
+                     end;
+                  end;
             end;
-
-           Salva := ACBrNFe1.Configuracoes.Geral.Salvar;
-           if not Salva then
+           if (Cmd.Metodo = 'adicionarnfe')  or (Cmd.Metodo = 'adicionarnfesefaz') then
             begin
-             ForceDirectories(PathWithDelim(ExtractFilePath(Application.ExeName))+'Logs');
-             ACBrNFe1.Configuracoes.Geral.PathSalvar := PathWithDelim(ExtractFilePath(Application.ExeName))+'Logs';
+              ForceDirectories(PathWithDelim(ExtractFilePath(Application.ExeName))+'Lotes\'+'Lote'+Cmd.Params(1));
+              ACBrNFe1.NotasFiscais.GerarNFe;
+              Alertas := ACBrNFe1.NotasFiscais.Items[0].Alertas;
+              ACBrNFe1.NotasFiscais.Valida;
+              ArqNFe := PathWithDelim(PathWithDelim(ExtractFilePath(Application.ExeName))+'Lotes\'+'Lote'+Cmd.Params(1))+StringReplace(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID, 'NFe', '', [rfIgnoreCase])+'-nfe.xml';
+              ACBrNFe1.NotasFiscais.SaveToFile(ExtractFilePath(ArqNFe));
+            end
+           else if (Cmd.Metodo = 'criarnfe')  or (Cmd.Metodo = 'criarnfesefaz') then
+            begin
+              Salva := ACBrNFe1.Configuracoes.Geral.Salvar;
+              if not Salva then
+               begin
+                ForceDirectories(PathWithDelim(ExtractFilePath(Application.ExeName))+'Logs');
+                ACBrNFe1.Configuracoes.Geral.PathSalvar := PathWithDelim(ExtractFilePath(Application.ExeName))+'Logs';
+               end;
+              ACBrNFe1.NotasFiscais.GerarNFe;
+              Alertas := ACBrNFe1.NotasFiscais.Items[0].Alertas;
+              ACBrNFe1.NotasFiscais.Valida;
+              ArqNFe := PathWithDelim(ACBrNFe1.Configuracoes.Geral.PathSalvar)+StringReplace(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID, 'NFe', '', [rfIgnoreCase])+'-nfe.xml';
+              ACBrNFe1.NotasFiscais.SaveToFile(ArqNFe);
             end;
-           ACBrNFe1.NotasFiscais.GerarNFe;
-           Alertas := ACBrNFe1.NotasFiscais.Items[0].Alertas;
-           ACBrNFe1.NotasFiscais.Valida;
-           ArqNFe := PathWithDelim(ACBrNFe1.Configuracoes.Geral.PathSalvar)+StringReplace(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID, 'NFe', '', [rfIgnoreCase])+'-nfe.xml';
-           ACBrNFe1.NotasFiscais.SaveToFile(ArqNFe);
 
            Cmd.Resposta :=  'NFe criada em: '+ArqNFe;
            if Alertas <> '' then
@@ -409,14 +452,38 @@ begin
               SL.Free;
             end;
 
-           if (Cmd.Metodo = 'criarenviarnfe') or (Cmd.Metodo = 'criarenviarnfesefaz') then
+           if (Cmd.Metodo = 'criarenviarnfe') or (Cmd.Metodo = 'criarenviarnfesefaz') or (Cmd.Metodo = 'enviarlotenfe') then
             begin
+              //Carregar Notas quando enviar lote
+              if Cmd.Metodo = 'enviarlotenfe' then
+               begin
+                 if not DirectoryExists(PathWithDelim(ExtractFilePath(Application.ExeName))+'Lotes\'+'Lote'+Cmd.Params(0)) then
+                    raise Exception.Create('Diretório não encontrado:'+PathWithDelim(ExtractFilePath(Application.ExeName))+'Lotes\'+'Lote'+Cmd.Params(0))
+                 else
+                  begin
+                    ACBrNFe1.NotasFiscais.Clear;
+                    RetFind := SysUtils.FindFirst( PathWithDelim(ExtractFilePath(Application.ExeName))+'Lotes\'+'Lote'+Cmd.Params(0)+'\*-nfe.xml', faAnyFile, SearchRec) ;
+                    if (RetFind = 0) then
+                     begin
+                       while RetFind = 0 do
+                        begin
+                           ACBrNFe1.NotasFiscais.LoadFromFile(PathWithDelim(ExtractFilePath(Application.ExeName))+'Lotes\'+'Lote'+Cmd.Params(0)+'\'+SearchRec.Name);
+                           RetFind := FindNext(SearchRec);
+                        end;
+                     end
+                    else
+                       raise Exception.Create('Não foi encontrada nenhuma nota para o Lote: '+Cmd.Params(0) );
+                  end;   
+               end;
+
               if not(ACBrNFe1.WebServices.StatusServico.Executar) then
                raise Exception.Create(ACBrNFe1.WebServices.StatusServico.Msg);
 
-              ACBrNFe1.WebServices.Enviar.Lote := StrToInt(Cmd.Params(1));
-              if not(ACBrNFe1.WebServices.Enviar.Executar) then
-               raise Exception.Create(ACBrNFe1.WebServices.Enviar.Msg);
+              if (Cmd.Metodo = 'criarenviarnfe') or (Cmd.Metodo = 'criarenviarnfesefaz') then
+                 ACBrNFe1.WebServices.Enviar.Lote := StrToInt(Cmd.Params(1))
+              else
+                 ACBrNFe1.WebServices.Enviar.Lote := StrToInt(Cmd.Params(0));
+              ACBrNFe1.WebServices.Enviar.Executar ;
 
               NFeRetEnviNFe := TRetEnvNFe.Create;
               NFeRetEnviNFe.Leitor.Arquivo :=  ACBrNFe1.WebServices.Enviar.RetWS;
@@ -432,12 +499,12 @@ begin
                               'CUF='+IntToStr(NFeRetEnviNFe.CUF)+sLineBreak+
                               'NRec='+NFeRetEnviNFe.InfRec.NRec+sLineBreak+
                               'DhRecbto='+DateTimeToStr(NFeRetEnviNFe.InfRec.DhRecbto)+sLineBreak+
-                              'TMed='+IntToStr(NFeRetEnviNFe.InfRec.TMed)+sLineBreak;
+                              'TMed='+IntToStr(NFeRetEnviNFe.InfRec.TMed)+sLineBreak+
+                              'Msg='+ACBrNFe1.WebServices.Enviar.Msg+sLineBreak;
 
               ACBrNFe1.WebServices.Retorno.Recibo := ACBrNFe1.WebServices.Enviar.Recibo;
-              if not(ACBrNFe1.WebServices.Retorno.Executar) then
-               raise Exception.Create(ACBrNFe1.WebServices.Retorno.Msg);
 
+              ACBrNFe1.WebServices.Retorno.Executar;
               NFeRetConsReciNFe := ACBrNFe1.WebServices.Retorno.NFeRetorno;
 
               Cmd.Resposta :=  Cmd.Resposta+
@@ -463,15 +530,15 @@ begin
                                 '[NFE'+Trim(IntToStr(ACBrNFe1.NotasFiscais.Items[i].NFe.Ide.NNF))+']'+sLineBreak+
                                 'Versao='+NFeRetConsSitNFe.verAplic+sLineBreak+
 //                                'Id='+NFeRetConsSitNFe.InfProt.Id+sLineBreak+
-                                'TpAmb='+TpAmbToStr(NFeRetConsSitNFe.TpAmb)+sLineBreak+
-                                'VerAplic='+NFeRetConsSitNFe.VerAplic+sLineBreak+
-                                'CStat='+IntToStr(NFeRetConsSitNFe.CStat)+sLineBreak+
-                                'XMotivo='+NFeRetConsSitNFe.XMotivo+sLineBreak+
-                                'CUF='+IntToStr(NFeRetConsSitNFe.CUF)+sLineBreak+
-                                'ChNFe='+NFeRetConsSitNFe.ChNFe+sLineBreak+
-                                'DhRecbto='+DateTimeToStr(NFeRetConsSitNFe.DhRecbto)+sLineBreak+
-                                'NProt='+NFeRetConsSitNFe.NProt+sLineBreak+
-                                'DigVal='+NFeRetConsSitNFe.DigVal+sLineBreak;
+                                'TpAmb='+TpAmbToStr(ACBrNFe1.WebServices.Consulta.TpAmb)+sLineBreak+
+                                'VerAplic='+ACBrNFe1.WebServices.Consulta.VerAplic+sLineBreak+
+                                'CStat='+IntToStr(ACBrNFe1.WebServices.Consulta.CStat)+sLineBreak+
+                                'XMotivo='+ACBrNFe1.WebServices.Consulta.XMotivo+sLineBreak+
+                                'CUF='+IntToStr(ACBrNFe1.WebServices.Consulta.CUF)+sLineBreak+
+                                'ChNFe='+ACBrNFe1.WebServices.Consulta.NFeChave+sLineBreak+
+                                'DhRecbto='+DateTimeToStr(ACBrNFe1.WebServices.Consulta.DhRecbto)+sLineBreak+
+                                'NProt='+ACBrNFe1.WebServices.Consulta.Protocolo+sLineBreak+
+                                'DigVal='+ACBrNFe1.WebServices.Consulta.DigVal+sLineBreak;
 
                  if (Cmd.Params(2) = '1') and ACBrNFeDANFERave1.MostrarPreview then
                   begin
@@ -494,7 +561,7 @@ begin
             begin
               ACBrNFe1.NotasFiscais.Clear;
               ACBrNFe1.NotasFiscais.LoadFromFile(Cmd.Params(1));
-            end  
+            end
            else
               raise Exception.Create('Arquivo '+Cmd.Params(1)+' não encontrado.');
 
@@ -523,6 +590,9 @@ begin
 
         else if Cmd.Metodo = 'encerrarmonitor' then
            Application.Terminate
+
+        else if Cmd.Metodo = 'ativo' then
+           Cmd.Resposta := 'Ativo'
 
         else if pos('|'+Cmd.Metodo+'|', '|exit|bye|fim|sair|') > 0 then {fecha conexao}
          begin

@@ -178,7 +178,7 @@ type
     { Private declarations }
     ACBrNFeMonitorINI : string;
     Inicio  : Boolean ;
-    ArqSaiTXT, ArqSaiTMP, ArqEntTXT, ArqLogTXT : String ;
+    ArqSaiTXT, ArqSaiTMP, ArqEntTXT, ArqLogTXT, ArqEntOrig, ArqSaiOrig : String ;
     NewLines : String ;
     fsHashSenha:Integer;
     fsLinesLog : AnsiString ;
@@ -257,13 +257,10 @@ begin
        lblCaminho.Caption := 'Arquivo PFX';
        edtSenha.Visible := True;
        lblSenha.Visible := True;
-       gbxProxy.Visible := True;
     {$ELSE}
        edtSenha.Visible := False;
-       gbxProxy.Visible := False;
        lblSenha.Visible := False;
        gbxCertificado.Height := 69;
-       rgFormaEmissao.Top := 4;
        lblCaminho.Caption := 'Número de Série';
     {$ENDIF}
     btConfig.Click ;
@@ -479,7 +476,9 @@ begin
      sedLogLinhas.Value   := Ini.ReadInteger('ACBrNFeMonitor','Linhas_Log',0);
 
      ArqEntTXT := AcertaPath( edEntTXT.Text ) ;
+     ArqEntOrig := ArqEntTXT;
      ArqSaiTXT := AcertaPath( edSaiTXT.Text ) ;
+     ArqSaiOrig := ArqSaiTXT;     
      ArqSaiTMP := ChangeFileExt( ArqSaiTXT, '.tmp' ) ;
      ArqLogTXT := AcertaPath( edLogArq.Text ) ;
 
@@ -513,8 +512,16 @@ begin
      edtSenha.Text    := Ini.ReadString( 'Certificado','Senha'   ,'') ;
      ACBrNFe1.Configuracoes.Certificados.Certificado  := edtCaminho.Text;
      ACBrNFe1.Configuracoes.Certificados.Senha        := edtSenha.Text;
+     {$ELSE}
+     edtSenha.Visible := False;
+     lblSenha.Visible := False;
+     gbxCertificado.Height := 69;
+     lblCaminho.Caption := 'Número de Série';
+     edtCaminho.Text  := Ini.ReadString( 'Certificado','Caminho' ,'') ;
+     ACBrNFe1.Configuracoes.Certificados.NumeroSerie := edtCaminho.Text;
+     edtCaminho.Text := ACBrNFe1.Configuracoes.Certificados.NumeroSerie;
+     {$ENDIF}
 
-     gbxProxy.Visible := True;
      edtProxyHost.Text  := Ini.ReadString( 'Proxy','Host'   ,'') ;
      edtProxyPorta.Text := Ini.ReadString( 'Proxy','Porta'  ,'') ;
      edtProxyUser.Text  := Ini.ReadString( 'Proxy','User'   ,'') ;
@@ -523,17 +530,6 @@ begin
      ACBrNFe1.Configuracoes.WebServices.ProxyPort := edtProxyPorta.Text;
      ACBrNFe1.Configuracoes.WebServices.ProxyUser := edtProxyUser.Text;
      ACBrNFe1.Configuracoes.WebServices.ProxyPass := edtProxySenha.Text;
-     {$ELSE}
-     edtSenha.Visible := False;
-     gbxProxy.Visible := False;
-     lblSenha.Visible := False;
-     gbxCertificado.Height := 69;
-     rgFormaEmissao.Top := 4;
-     lblCaminho.Caption := 'Número de Série';
-     edtCaminho.Text  := Ini.ReadString( 'Certificado','Caminho' ,'') ;
-     ACBrNFe1.Configuracoes.Certificados.NumeroSerie := edtCaminho.Text;
-     edtCaminho.Text := ACBrNFe1.Configuracoes.Certificados.NumeroSerie;
-     {$ENDIF}
 
      rgTipoDanfe.ItemIndex     := Ini.ReadInteger( 'Geral','DANFE'       ,0) ;
      edtLogoMarca.Text         := Ini.ReadString( 'Geral','LogoMarca'   ,'') ;
@@ -781,7 +777,11 @@ begin
 end;
 
 procedure TfrmAcbrNfeMonitor.DoACBrTimer(Sender: TObject);
-var SL    : TStringList ;
+var
+   SL    : TStringList ;
+   RetFind   : Integer ;
+   SearchRec : TSearchRec ;
+   NomeArqEnt, NomeArqSai : String;
 begin
   Timer1.Enabled := false;
 
@@ -792,6 +792,21 @@ begin
   end ;
 
   try
+     try
+        NomeArqEnt := PathWithDelim(ExtractFileDir(ArqEntOrig)) + StringReplace(ExtractFileName(ArqEntOrig),ExtractFileExt(ArqEntOrig),'',[rfReplaceAll]) +'*'+ExtractFileExt(ArqEntOrig);
+        RetFind := SysUtils.FindFirst( NomeArqEnt, faAnyFile, SearchRec) ;
+        if (RetFind = 0) then
+         begin
+           NomeArqEnt := StringReplace(ExtractFileName(ArqEntOrig),ExtractFileExt(ArqEntOrig),'',[rfReplaceAll]);
+           NomeArqSai := StringReplace(ExtractFileName(ArqSaiOrig),ExtractFileExt(ArqSaiOrig),'',[rfReplaceAll]);
+           ArqEntTXT  := PathWithDelim(ExtractFileDir(ArqEntOrig)) + SearchRec.Name ;  { Arquivo de Requisicao }
+           ArqSaiTXT  := StringReplace( LowerCase(ArqEntTXT),LowerCase(NomeArqEnt),LowerCase(NomeArqSai),[rfReplaceAll]) ;
+           ArqSaiTMP  := ChangeFileExt(ArqSaiTXT,'.tmp');
+         end;  
+     finally
+        SysUtils.FindClose(SearchRec) ;
+     end ;
+
      if FileExists( ArqEntTXT ) then  { Existe arquivo para ler ? }
      begin
        { Lendo em StringList temporário para nao apagar comandos nao processados }
@@ -946,10 +961,10 @@ begin
   if rbTXT.Checked then
    begin
      if edENTTXT.Text = '' then
-        edENTTXT.Text := 'ENT.TXT' ;
+        edENTTXT.Text := 'ENTNFE.TXT' ;
 
      if edSAITXT.Text = '' then
-        edSAITXT.Text := 'SAI.TXT' ;
+        edSAITXT.Text := 'SAINFE.TXT' ;
    end
   else
    begin

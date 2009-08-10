@@ -73,6 +73,7 @@ type
     {$IFDEF ACBrNFeOpenSSL}
        procedure ConfiguraHTTP( HTTP : THTTPSend; Action : AnsiString);
     {$ELSE}
+       procedure ConfiguraRio( Rio : THTTPRIO);
        procedure OnBeforePost(const HTTPReqResp: THTTPReqResp; Data:Pointer);
     {$ENDIF}
   protected
@@ -166,7 +167,7 @@ type
     property xMotivo: String read FxMotivo;
     property Recibo: String read FRecibo write FRecibo;
     property Protocolo: String read FProtocolo write FProtocolo;
-    property ChaveNFe: String read FChaveNFe write FChaveNFe; 
+    property ChaveNFe: String read FChaveNFe write FChaveNFe;
     property NFeRetorno: TRetConsReciNFe read FNFeRetorno write FNFeRetorno;
   end;
 
@@ -387,6 +388,16 @@ begin
 end;
 
 {$ELSE}
+procedure TWebServicesBase.ConfiguraRio( Rio : THTTPRIO);
+begin
+  if FConfiguracoes.WebServices.ProxyHost <> '' then
+   begin
+     Rio.HTTPWebNode.Proxy        := FConfiguracoes.WebServices.ProxyHost+':'+FConfiguracoes.WebServices.ProxyPort;
+     Rio.HTTPWebNode.UserName     := FConfiguracoes.WebServices.ProxyUser;
+     Rio.HTTPWebNode.Password     := FConfiguracoes.WebServices.ProxyPass;
+   end;
+  Rio.HTTPWebNode.OnBeforePost := OnBeforePost;
+end;
 
 procedure TWebServicesBase.OnBeforePost(const HTTPReqResp: THTTPReqResp;
   Data: Pointer);
@@ -789,7 +800,7 @@ begin
      HTTP := THTTPSend.Create;
   {$ELSE}
      Rio := THTTPRIO.Create(nil);
-     Rio.HTTPWebNode.OnBeforePost := OnBeforePost;
+     ConfiguraRio( Rio );
   {$ENDIF}
 
   try
@@ -917,7 +928,7 @@ begin
      HTTP := THTTPSend.Create;
   {$ELSE}
      Rio := THTTPRIO.Create(nil);
-     Rio.HTTPWebNode.OnBeforePost := OnBeforePost;
+     ConfiguraRio(Rio);
   {$ENDIF}
   try
     TACBrNFe( FACBrNFe ).SetStatus( stNFeRecepcao );
@@ -1105,7 +1116,7 @@ function TNFeRetRecepcao.Executar: Boolean;
        HTTP := THTTPSend.Create;
     {$ELSE}
        Rio := THTTPRIO.Create(nil);
-       Rio.HTTPWebNode.OnBeforePost := OnBeforePost;
+       ConfiguraRio(Rio);
     {$ENDIF}
     try
       TACBrNFe( FACBrNFe ).SetStatus( stNfeRetRecepcao );
@@ -1255,7 +1266,7 @@ begin
     HTTP := THTTPSend.Create;
  {$ELSE}
     Rio := THTTPRIO.Create(nil);
-    Rio.HTTPWebNode.OnBeforePost := OnBeforePost;
+    ConfiguraRio(Rio);
  {$ENDIF}
  try
    TACBrNFe( FACBrNFe ).SetStatus( stNfeRetRecepcao );
@@ -1360,7 +1371,7 @@ begin
      HTTP := THTTPSend.Create;
   {$ELSE}
      Rio := THTTPRIO.Create(nil);
-     Rio.HTTPWebNode.OnBeforePost := OnBeforePost;
+     ConfiguraRio(Rio);
   {$ENDIF}
   try
     TACBrNFe( FACBrNFe ).SetStatus( stNfeConsulta );
@@ -1484,7 +1495,7 @@ begin
      HTTP := THTTPSend.Create;
   {$ELSE}
      Rio := THTTPRIO.Create(nil);
-     Rio.HTTPWebNode.OnBeforePost := OnBeforePost;
+     ConfiguraRio(Rio);
   {$ENDIF}
   try
     TACBrNFe( FACBrNFe ).SetStatus( stNfeCancelamento );
@@ -1607,7 +1618,7 @@ begin
      HTTP := THTTPSend.Create;
   {$ELSE}
      Rio := THTTPRIO.Create(nil);
-     Rio.HTTPWebNode.OnBeforePost := OnBeforePost;
+     ConfiguraRio(Rio);
   {$ENDIF}
   try
     TACBrNFe( FACBrNFe ).SetStatus( stNfeInutilizacao );
@@ -1724,7 +1735,7 @@ begin
      HTTP := THTTPSend.Create;
   {$ELSE}
      Rio := THTTPRIO.Create(nil);
-     Rio.HTTPWebNode.OnBeforePost := OnBeforePost;
+     ConfiguraRio(Rio);
   {$ENDIF}
   try
     TACBrNFe( FACBrNFe ).SetStatus( stNFeCadastro );

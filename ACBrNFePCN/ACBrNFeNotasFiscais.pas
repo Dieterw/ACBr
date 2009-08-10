@@ -411,6 +411,7 @@ begin
     LocNFeR := TNFeR.Create(Self.Add.NFe);
     try
        LocNFeR.Leitor.CarregarArquivo(CaminhoArquivo);
+       Items[Self.Count-1].XML := LocNFeR.Leitor.Arquivo;
        LocNFeR.LerXml;
     finally
        LocNFeR.Free;
@@ -429,6 +430,7 @@ begin
     LocNFeR := TNFeR.Create(Self.Add.NFe);
     try
        LocNFeR.Leitor.CarregarArquivo(Stream);
+       Items[Self.Count-1].XML := LocNFeR.Leitor.Arquivo;
        LocNFeR.LerXml;
     finally
        LocNFeR.Free

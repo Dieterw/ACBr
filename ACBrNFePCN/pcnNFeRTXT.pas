@@ -320,10 +320,10 @@ begin
     (*E14*)NFe.Dest.enderDest.cPais := LerCampo(tcInt, 'cPais');
     (*E15*)NFe.Dest.enderDest.xPais := LerCampo(tcStr, 'xPais');
     (*E16*)NFe.Dest.enderDest.fone := LerCampo(tcStr, 'fone');
-    if NFe.Dest.enderEmit.cPais = 0 then
+    if NFe.Dest.EnderDest.cPais = 0 then
      begin
-       (*E14*)NFe.Dest.enderEmit.cPais := 1058;
-       (*E15*)NFe.Dest.enderEmit.xPais := 'BRASIL';
+       (*E14*)NFe.Dest.EnderDest.cPais := 1058;
+       (*E15*)NFe.Dest.EnderDest.xPais := 'BRASIL';
      end;
 
   end;

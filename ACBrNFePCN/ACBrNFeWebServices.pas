@@ -1331,6 +1331,7 @@ function TNFeConsulta.Executar: Boolean;
 var
   NFeRetorno: TRetConsSitNFe;
   AProcNFe: TProcNFe;
+  i : Integer;
   {$IFDEF ACBrNFeOpenSSL}
      Texto : String;
      Acao  : TStringList ;
@@ -1422,6 +1423,23 @@ begin
 
     FMsg   := NFeRetorno.XMotivo;
     Result := (NFeRetorno.CStat in [100,101,110]);
+
+    for i:= 0 to TACBrNFe( FACBrNFe ).NotasFiscais.Count-1 do
+     begin
+        if TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NFe.infNFe.ID = FNFeChave then
+         begin
+           TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NFe.procNFe.tpAmb    := NFeRetorno.tpAmb;
+           TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NFe.procNFe.verAplic := NFeRetorno.verAplic;
+           TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NFe.procNFe.chNFe    := NFeRetorno.chNFe;
+           TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NFe.procNFe.dhRecbto := NFeRetorno.dhRecbto;
+           TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NFe.procNFe.nProt    := NFeRetorno.nProt;
+           TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NFe.procNFe.digVal   := NFeRetorno.digVal;
+           TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NFe.procNFe.cStat    := NFeRetorno.cStat;
+           TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NFe.procNFe.xMotivo  := NFeRetorno.xMotivo;
+           break;
+         end;
+     end;
+
     NFeRetorno.Free;
 
     if FConfiguracoes.Geral.Salvar then

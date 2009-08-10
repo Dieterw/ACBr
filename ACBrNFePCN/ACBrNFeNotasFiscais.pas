@@ -316,7 +316,7 @@ begin
         Self.Items[i].XML := vAssinada;
 
         Leitor := TLeitor.Create;
-        leitor.Grupo := Leitor.Arquivo;
+        leitor.Grupo := vAssinada;
         Self.Items[i].NFe.signature.URI := Leitor.rAtributo('Reference URI=');
         Self.Items[i].NFe.signature.DigestValue := Leitor.rCampo(tcStr, 'DigestValue');
         Self.Items[i].NFe.signature.SignatureValue := Leitor.rCampo(tcStr, 'SignatureValue');

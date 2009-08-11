@@ -398,7 +398,7 @@ begin
         else if Cmd.Metodo = 'registraitemnaofiscal' then
            RegistraItemNaoFiscal( Cmd.Params(0),                      { CodCNF }
                               StringToFloat(Cmd.Params(1)),            { Valor }
-                              Cmd.Params(3) )                            { Obs }
+                              Cmd.Params(2) )                            { Obs }
 
         else if Cmd.Metodo = 'subtotalizanaofiscal' then
            SubtotalizaNaoFiscal( StringToFloatDef( Cmd.Params(0), 0) )  {Acresc/Desc}

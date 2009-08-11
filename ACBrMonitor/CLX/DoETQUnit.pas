@@ -91,18 +91,22 @@ begin
            Avanco := StrToInt( Cmd.Params(0) )
 
         else if Cmd.Metodo = 'imprimirtexto' then
-           ImprimirTexto(TACBrETQOrientacao( GetEnumValue(
-                                             TypeInfo(TACBrETQOrientacao),Cmd.Params(0))), { Orientacao }
+        begin
+           ImprimirTexto(
+                         TACBrETQOrientacao(StrToInt(Cmd.Params(0))), { Orientacao }
                          StrToInt(Cmd.Params(1)),                { Fonte }
                          StrToChr(Trim(Cmd.Params(2)),1),        { MultiplicadorH }
                          StrToChr(Trim(Cmd.Params(3)),1),        { MultiplicadorV }
                          StrToInt(Cmd.Params(4)),                { Vertical }
                          StrToInt(Cmd.Params(5)),                { Horizontal }
-                         Cmd.Params(6))                          { Texto }
+                         Cmd.Params(6),                          { Texto }
+                         StrToInt(Cmd.Params(7))                 { Subfonte }
+                         );
+        end
 
         else if Cmd.Metodo = 'imprimirbarras' then
-           ImprimirBarras(TACBrETQOrientacao( GetEnumValue(
-                                             TypeInfo(TACBrETQOrientacao),Cmd.Params(0))), { Orientacao }
+           ImprimirBarras(
+                         TACBrETQOrientacao(StrToInt(Cmd.Params(0))), { Orientacao }
                          StrToChr(Trim(Cmd.Params(1)),1),        { TipoBarras }
                          StrToChr(Trim(Cmd.Params(2)),1),        { LarguraBarraLarga }
                          StrToChr(Trim(Cmd.Params(3)),1),        { LarguraBarraFina }

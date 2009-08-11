@@ -1,9 +1,8 @@
 <project>
     <shortName>ACBrMonitor</shortName>
     <fullName>ACBr</fullName>
-    <version>0.8.7b</version>
+    <version>0.8.10b</version>
     <installerFilename>${product_shortname}-${product_version}-${platform_name}-installer.${platform_exec_suffix}</installerFilename>
-    <readmeFile>./leia-me.txt</readmeFile>
     <licenseFile>./licenca.txt</licenseFile>
     <wrapLicenseFileText>1</wrapLicenseFileText>
     <leftImage></leftImage>

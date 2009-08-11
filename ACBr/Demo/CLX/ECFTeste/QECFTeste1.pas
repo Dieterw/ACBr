@@ -1922,7 +1922,7 @@ begin
 
   Linhas := TStringList.Create ;
   try
-     ACBrECF1.LeituraMFDSerial(dDatIni, dDatFim, Linhas);
+     ACBrECF1.LeituraMFDSerial(dDatIni, dDatFim, Linhas, [docRZ, docLX]);
 
      For I := 0 to Linhas.Count - 1 do
         mResp.Lines.Add(Linhas[I]) ;

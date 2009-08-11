@@ -10244,7 +10244,7 @@ object frmSobre: TfrmSobre
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnShortCut = FormShortCut
-  PixelsPerInch = 84
+  PixelsPerInch = 96
   object lVersao: TLabel
     Left = 86
     Top = 62
@@ -10260,7 +10260,7 @@ object frmSobre: TfrmSobre
   end
   object lDesenvolvedores: TLabel
     Left = 86
-    Top = 151
+    Top = 143
     Width = 321
     Height = 34
     Cursor = crHandPoint
@@ -10268,7 +10268,8 @@ object frmSobre: TfrmSobre
     AutoSize = False
     Caption = 
       'Daniel Sim'#245'es de Almeida - <font color=blue>www.djsystem.com.br<' +
-      '/font>'
+      '/font>'#13#10'Andr'#233' Ferreira de Moraes - <font color=blue>www.djsystem' +
+      '.com.br</font>'
     Masked = True
     Transparent = True
     OnClick = lDesenvolvedoresClick
@@ -10347,7 +10348,7 @@ object frmSobre: TfrmSobre
   end
   object Label1: TLabel
     Left = 86
-    Top = 131
+    Top = 123
     Width = 321
     Height = 19
     Alignment = taCenter
@@ -10365,7 +10366,7 @@ object frmSobre: TfrmSobre
   end
   object Label2: TLabel
     Left = 86
-    Top = 186
+    Top = 202
     Width = 321
     Height = 19
     Alignment = taCenter
@@ -10383,14 +10384,15 @@ object frmSobre: TfrmSobre
   end
   object lColaboradores: TLabel
     Left = 86
-    Top = 206
+    Top = 222
     Width = 321
     Height = 67
     Alignment = taCenter
     AutoSize = False
     Caption = 
       'Fabio Rogerio Baia<br>Wagner Nunes da Silva  -  <font color=blue' +
-      '>www.vagucs.com.br</font><br>Gabriel Frones'
+      '>www.vagucs.com.br</font><br>Gabriel Frones<br>'#13#10'Marcelo Correia' +
+      ' Pinheiro'
     Masked = True
     Transparent = True
   end

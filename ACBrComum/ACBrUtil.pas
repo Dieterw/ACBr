@@ -1531,6 +1531,7 @@ begin
 
   repeat
      try
+        {$I-}
         try
            Inc(Tentativas) ;
            AssignFile( Arq, ArqTXT) ;
@@ -1542,10 +1543,9 @@ begin
            Writeln( Arq, AString ) ;
            Tentativas := 2 ;  { Tudo OK, saia do loop }
         finally
-           {$I-}
-             CloseFile( Arq ) ;
-           {$I+}
+           CloseFile( Arq ) ;
         end ;
+        {$I+}
      except
      end ;
    until Tentativas > 1

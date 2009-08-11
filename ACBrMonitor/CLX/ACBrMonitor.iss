@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "ACBrMonitor"
-#define MyAppVerName "ACBrMonitor-0.8.9b"
+#define MyAppVerName "ACBrMonitor-0.8.10b"
 #define MyAppPublisher "Projeto ACBr"
 #define MyAppURL "http://acbr.sourceforge.net/wiki/index.php/Monitor"
 #define MyAppUrlName "ACBrMonitor.url"
@@ -45,16 +45,16 @@ Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:Ad
 Source: ACBrMonitor.exe; DestDir: {app}; Flags: ignoreversion; Components: programa
 Source: ACBrMonitorConsole.exe; DestDir: {app}; Flags: ignoreversion; Components: console
 Source: QECFTeste.exe; DestDir: {app}; Flags: ignoreversion; Components: programa
-Source: Exemplos\TesteTXT.BAT; DestDir: {app}\Exemplos; Flags: ignoreversion; Components: exemplos
-Source: Exemplos\Clipper_TXT_xHarbour_Socket.zip; DestDir: {app}\Exemplos; Flags: ignoreversion; Components: exemplos
-Source: Exemplos\Cobol_TXT_Socket.zip; DestDir: {app}\Exemplos; Flags: ignoreversion; Components: exemplos
-Source: leia-me.txt; DestDir: {app}; Flags: isreadme ignoreversion; Components: programa
+Source: ..\Exemplos\TesteTXT.BAT; DestDir: {app}\Exemplos; Flags: ignoreversion; Components: exemplos
+Source: ..\Exemplos\Clipper_TXT_xHarbour_Socket.zip; DestDir: {app}\Exemplos; Flags: ignoreversion; Components: exemplos
+Source: ..\Exemplos\Cobol_TXT_Socket.zip; DestDir: {app}\Exemplos; Flags: ignoreversion; Components: exemplos
+Source: leia-me.txt; DestDir: {app}; Flags: ignoreversion; Components: programa
 Source: LICENCA.TXT; DestDir: {app}; Flags: ignoreversion; Components: programa
 Source: LICENSE.TXT; DestDir: {app}; Flags: ignoreversion; Components: programa
 Source: ACBrMonitor.chm; DestDir: {app}; Flags: ignoreversion; Components: help
 Source: ACBrMonitor-change-log.txt; DestDir: {app}; Flags: ignoreversion; Components: help
-Source: {#QTDLL}; DestDir: {sys}; Flags: ; Components: programa
-Source: inpout32.dll; DestDir: {sys}; Flags: ; Components: programa
+Source: DLLs\{#QTDLL}; DestDir: {sys}; Flags: ; Components: programa
+Source: DLLs\inpout32.dll; DestDir: {sys}; Flags: ; Components: programa
 Source: OpenSSL\openssl.exe; DestDir: {app}; Flags: ; Components: programa
 Source: OpenSSL\libeay32.dll; DestDir: {app}; Flags: ; Components: programa
 Source: OpenSSL\ssleay32.dll; DestDir: {app}; Flags: ; Components: programa

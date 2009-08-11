@@ -89,7 +89,7 @@ begin
         begin
            Top := Top - 1 ;
 
-           if Top <= -20 then
+           if Top <= -60 then
               Top := Parent.Height + 1
         end ;
      end ;
@@ -122,7 +122,11 @@ end;
 
 procedure TfrmSobre.bAjudaClick(Sender: TObject);
 begin
+ {$IFDEF Linux}
   OpenURL('file:///'+ExtractFilePath(Application.ExeName)+'ManualACBrMonitor.html');
+ {$ELSE}
+  OpenURL('file:///'+ExtractFilePath(Application.ExeName)+'ACBrMonitor.chm');
+ {$ENDIF}
 end;
 
 procedure TfrmSobre.FormShortCut(Key: Integer; Shift: TShiftState;

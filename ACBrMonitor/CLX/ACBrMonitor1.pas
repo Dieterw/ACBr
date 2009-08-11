@@ -48,6 +48,15 @@
 |* 07/07/2009: Marcelo Correia Pinheiro
 |*   - Adicionado suporte para leitura de parâmetros de configuração para
 |*     impressoras de cheque
+|* 21/07/2009: Marcelo Correia Pinheiro
+|*   - Inclusão do componente ETQ na constante Objetos (linha 38),
+|*     para prover suporte a etiquetas.
+|* 06/08/2009: Marcelo Correia Pinheiro
+|*   - DoECFUnit.pas: Correção na linha 401, onde o código atual envia o quarto
+|*     parâmetro e não o terceiro, na chamada do método "RegistraItemNaoFiscal".
+|*   - DoECFUnit.pas: Correção nas chamadas dos métodos ImprimirTexto e
+|*     ImprimirBarras, onde a conversão para o tipo TACBrETQOrientacao gerava
+|*     um erro no ACBrMonitor.
 ******************************************************************************}
 {$DEFINE VisualCLX}
 {$I ACBr.inc}

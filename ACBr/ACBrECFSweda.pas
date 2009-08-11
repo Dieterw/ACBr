@@ -296,6 +296,7 @@ TACBrECFSweda = class( TACBrECFClass )
        var Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
     Procedure LeituraMemoriaFiscalSerial( ReducaoInicial, ReducaoFinal : Integer;
        var Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
+    procedure IdentificaPAF(Linha1, Linha2: String); override ;
 
     Procedure AbreGaveta ; override ;
 
@@ -315,6 +316,8 @@ TACBrECFSweda = class( TACBrECFClass )
     procedure LerTotaisComprovanteNaoFiscal ; override ;
     Procedure ProgramaComprovanteNaoFiscal( var Descricao: String;
        Tipo : String = ''; Posicao : String = '') ; override ;
+
+
  end ;
 
 implementation
@@ -2921,6 +2924,12 @@ begin
 
       Sleep(100) ;
   end ;
+end;
+
+Procedure TACBrECFSweda.IdentificaPAF(Linha1,Linha2: String);
+begin
+  if fpMFD then
+     EnviaComando('57'+ padL(Linha1,42) + padL(Linha2,42)) ;
 end;
 
 end.

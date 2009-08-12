@@ -237,7 +237,7 @@ begin
      (*********)'<tpAmb>'+TpAmbToStr(nfe.procNFe.tpAmb)+'</tpAmb>'+
      (*********)'<verAplic>'+nfe.procNFe.verAplic+'</verAplic>'+
      (*********)'<chNFe>'+nfe.procNFe.chNFe+'</chNFe>'+
-     (*********)'<dhRecbto>'+DateTimeToStr(nfe.procNFe.dhRecbto)+'</dhRecbto>'+
+     (*********)'<dhRecbto>'+FormatDateTime('yyyy-mm-dd"T"hh:nn:ss',nfe.procNFe.dhRecbto)+'</dhRecbto>'+
      (*********)'<nProt>'+nfe.procNFe.nProt+'</nProt>'+
      (*********)'<digVal>'+nfe.procNFe.digVal+'</digVal>'+
      (*********)'<cStat>'+IntToStr(nfe.procNFe.cStat)+'</cStat>'+

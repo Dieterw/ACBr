@@ -305,8 +305,8 @@ type
     property xMun: string read FxMun write FxMun;
     property UF: string read FUF write FUF;
     property CEP: integer read FCEP write FCEP;
-    property cPais: integer read FcPais write FcPais;
-    property xPais: string read FxPais write FxPais;
+    property cPais: integer read FcPais write FcPais ;
+    property xPais: string read FxPais write FxPais ;
     property fone: string read Ffone write Ffone;
   end;
 
@@ -377,8 +377,8 @@ type
     property xMun: string read FxMun write FxMun;
     property UF: string read FUF write FUF;
     property CEP: integer read FCEP write FCEP;
-    property cPais: integer read FcPais write FcPais;
-    property xPais: string read FxPais write FxPais;
+    property cPais: integer read FcPais write FcPais ;
+    property xPais: string read FxPais write FxPais ;
     property fone: string read Ffone write Ffone;
   end;
 
@@ -1302,6 +1302,14 @@ begin
   FCompra  := TCompra.Create;
   Fsignature := Tsignature.create;
   FProcNFe := TProcNFe.create;
+
+  FEmit.EnderEmit.xPais := 'BRASIL';
+  FEmit.EnderEmit.cPais := 1058;
+  FEmit.EnderEmit.nro   := 'SEM NUMERO';
+
+  FDest.EnderDest.xPais := 'BRASIL';
+  FDest.EnderDest.cPais := 1058;
+  FDest.EnderDest.nro   := 'SEM NUMERO';
 end;
 
 destructor TNFe.Destroy;

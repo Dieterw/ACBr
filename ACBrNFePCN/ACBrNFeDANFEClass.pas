@@ -71,7 +71,9 @@ type
     FImprimeDescPorc : Boolean;
 	 FProtocoloNFe: string;
     FMargemInferior: Double;
+    FCasasDecimais_QCom: integer;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
+    procedure SetCasasDecimais_QCom(AValue: integer);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -94,6 +96,7 @@ type
     property ImprimirDescPorc: Boolean read FImprimeDescPorc write FImprimeDescPorc ;
     property ProtocoloNFe: String read FProtocoloNFe write FProtocoloNFe ;
     property MargemInferior: Double read FMargemInferior write FMargemInferior ;
+    property CasasDecimais_QCom: Integer read FCasasDecimais_QCom write SetCasasDecimais_QCom;
   end;
 
 implementation
@@ -119,6 +122,7 @@ begin
   FImprimeDescPorc := False;
   FProtocoloNFe := '';
   FMargemInferior := 0.8;
+  FCasasDecimais_QCom := 2;
 end;
 
 destructor TACBrNFeDANFEClass.Destroy;
@@ -144,6 +148,15 @@ begin
 
   if (Operation = opRemove) and (FACBrNFe <> nil) and (AComponent is TACBrNFe) then
      FACBrNFe := nil ;
+end;
+
+procedure TACBrNFeDANFEClass.SetCasasDecimais_QCom(AValue: integer);
+begin
+  if ((AValue >= 0) and
+      (AValue <= 4))  then
+    FCasasDecimais_QCom := AValue
+  else
+    FCasasDecimais_QCom := 2;
 end;
 
 procedure TACBrNFeDANFEClass.SetNFE(const Value: TComponent);

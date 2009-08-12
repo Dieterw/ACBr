@@ -56,6 +56,7 @@ interface
 
 uses Forms, SysUtils, Classes,
   RpDefine, RpDevice, RVClass, RVProj, RVCsBars, RVCsStd, RVCsData,
+  RvDirectDataView, RVDataField,
   ACBrNFeDANFEClass, ACBrNFeDANFERaveDM, pcnNFe, pcnConversao;
 
 type
@@ -99,6 +100,8 @@ var
    MyDataText1,MyDataText2,MyDataText3,MyDataText4,MyDataText5,MyDataText6: TRaveDataText;
    MyText1,MyText2,MyText3,MyText4: TRaveText;
    MySection: TRaveSection;
+   MyDataView: TRaveDataView;
+   MyFloatField: TRaveFloatField;
 
    vMargemInferiorAtual, vMargemInferior, vHeightPadrao: double;
 begin
@@ -106,7 +109,7 @@ begin
       dmDanfe.RvProject.Open;
       with dmDanfe.RvProject.ProjMan do
       begin
-         //contigencia
+         //contingencia
          if (dmDanfe.NFe.Ide.tpEmis = teNormal) then
          begin
             MyPage := FindRaveComponent('GlobalDANFE',nil) as TRavePage;
@@ -145,6 +148,23 @@ begin
                MyDataText4.Left := 30;
          end;
 
+         //Casas Decimais da Quantidade (QCom)
+         MyDataView := FindRaveComponent('CustomDadosProdutosCX',nil) as TRaveDataView;
+         MyFloatField := FindRaveComponent('CustomDadosProdutosCXQCom',MyDataView) as TRaveFloatField;
+         if (MyFloatField <> nil) then
+         begin
+            if FCasasDecimais_QCom=0 then
+               MyFloatField.DisplayFormat:='#0'
+            else if FCasasDecimais_QCom=1 then
+               MyFloatField.DisplayFormat:='#,#0.0'
+            else if FCasasDecimais_QCom=2 then
+               MyFloatField.DisplayFormat:='#,##0.00'
+            else if FCasasDecimais_QCom=3 then
+               MyFloatField.DisplayFormat:='#,###0.000'
+            else if FCasasDecimais_QCom=4 then
+               MyFloatField.DisplayFormat:='#,####0.0000';
+         end;
+
          //Margem Inferior
          MyReport := FindRaveComponent('DANFE1',nil) as TRaveReport;
          MyPage3 := FindRaveComponent('Page1',MyReport) as TRavePage;
@@ -153,14 +173,16 @@ begin
          MyPage4 := FindRaveComponent('GlobalDadosAdicionais',nil) as TRavePage;
          MySection := FindRaveComponent('Section_DadosAdicionais',MyPage4) as TRaveSection;
          if (MyDataText5 <> nil) then
-            vMargemInferiorAtual:=(MyPage3.PageHeight-MyDataText5.Top)
+         begin
+            vMargemInferiorAtual:=(MyPage3.PageHeight-MyDataText5.Top);
+            vHeightPadrao:=MyDataText5.Height;
+         end
          else
+         begin
             vMargemInferiorAtual:=0.8/2.54;
-         vMargemInferior := FMargemInferior/2.54;
-         if (MyDataText5 <> nil) then
-            vHeightPadrao:=MyDataText5.Height
-         else           
             vHeightPadrao:=0;
+         end;
+         vMargemInferior := FMargemInferior/2.54;
          if (MyDataText5 <> nil) then
             MyDataText5.Top := MyDataText5.Top-vHeightPadrao-(vMargemInferior-vMargemInferiorAtual);
          if (MyDataText6 <> nil) then

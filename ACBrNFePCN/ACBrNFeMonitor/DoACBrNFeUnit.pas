@@ -268,8 +268,7 @@ begin
             raise Exception.Create(ACBrNFe1.WebServices.StatusServico.Msg);
 
            ACBrNFe1.WebServices.Enviar.Lote := StrToInt(Cmd.Params(1));
-           if not(ACBrNFe1.WebServices.Enviar.Executar) then
-            raise Exception.Create(ACBrNFe1.WebServices.Enviar.Msg);
+           ACBrNFe1.WebServices.Enviar.Executar;
 
            NFeRetEnviNFe := TRetEnvNFe.Create;
            NFeRetEnviNFe.Leitor.Arquivo := ACBrNFe1.WebServices.Enviar.RetWS;
@@ -288,8 +287,7 @@ begin
                             'TMed='+IntToStr( NFeRetEnviNFe.infRec.tMed)+sLineBreak;
 
            ACBrNFe1.WebServices.Retorno.Recibo := ACBrNFe1.WebServices.Enviar.Recibo;
-           if not(ACBrNFe1.WebServices.Retorno.Executar) then
-            raise Exception.Create(ACBrNFe1.WebServices.Retorno.Msg);
+           ACBrNFe1.WebServices.Retorno.Executar;
 
            NFeRetConsReciNFe := ACBrNFe1.WebServices.Retorno.NFeRetorno;
 

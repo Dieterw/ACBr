@@ -773,6 +773,8 @@ case FormaEmissao of
        end;
      end;
   end;
+  if Result = '' then
+     raise Exception.Create('URL não disponível para o estado solicitado.');
 end;
 
 //AC,AL,AP,MA,PA,PB,PI,RJ,RN,RR,SC,SE,TO - Estados sem WebServices próprios

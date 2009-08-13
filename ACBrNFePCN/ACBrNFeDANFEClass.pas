@@ -50,6 +50,22 @@ uses Forms, SysUtils, Classes,
   pcnNFe, pcnConversao;
 
 type
+
+  TCasasDecimais = class(TComponent)
+  private
+    FqCom: integer;
+    FvUnCom: integer;
+
+    procedure Set_qCom(AValue: integer);
+    procedure Set_vUnCom(AValue: integer);
+  public
+    constructor Create(AOwner: TComponent); override ;
+    destructor Destroy; override;
+  published
+    property _qCom: Integer read FQCom write Set_qCom;
+    property _vUnCom: Integer read FvUnCom write Set_vUnCom;
+  end;
+
   TACBrNFeDANFEClass = class( TComponent )
    private
     procedure SetNFE(const Value: TComponent);
@@ -71,9 +87,8 @@ type
     FImprimeDescPorc : Boolean;
 	 FProtocoloNFe: string;
     FMargemInferior: Double;
-    FCasasDecimais_QCom: integer;
+    FCasasDecimais: TCasasDecimais;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
-    procedure SetCasasDecimais_QCom(AValue: integer);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -96,13 +111,47 @@ type
     property ImprimirDescPorc: Boolean read FImprimeDescPorc write FImprimeDescPorc ;
     property ProtocoloNFe: String read FProtocoloNFe write FProtocoloNFe ;
     property MargemInferior: Double read FMargemInferior write FMargemInferior ;
-    property CasasDecimais_QCom: Integer read FCasasDecimais_QCom write SetCasasDecimais_QCom;
+    property CasasDecimais: TCasasDecimais read FCasasDecimais ;
   end;
 
 implementation
 
 uses ACBrNFe ;
 
+//Casas Decimais
+constructor TCasasDecimais.Create(AOwner: TComponent);
+begin
+  inherited create( AOwner );
+
+  FQCom := 2;
+  FvUnCom := 2;
+end;
+
+destructor TCasasDecimais.Destroy;
+begin
+
+  inherited Destroy ;
+end;
+
+procedure TCasasDecimais.Set_qCom(AValue: integer);
+begin
+  if ((AValue >= 0) and
+      (AValue <= 4))  then
+    FqCom := AValue
+  else
+    FqCom := 2;
+end;
+
+procedure TCasasDecimais.Set_vUnCom(AValue: integer);
+begin
+  if ((AValue >= 0) and
+      (AValue <= 4))  then
+    FvUnCom := AValue
+  else
+    FvUnCom := 2;
+end;
+
+//DANFE CLASS
 constructor TACBrNFeDANFEClass.Create(AOwner: TComponent);
 begin
   inherited create( AOwner );
@@ -122,7 +171,12 @@ begin
   FImprimeDescPorc := False;
   FProtocoloNFe := '';
   FMargemInferior := 0.8;
-  FCasasDecimais_QCom := 2;
+  FCasasDecimais := TCasasDecimais.Create(self);
+  FCasasDecimais.Name:= 'CasasDecimais' ;
+  {$IFDEF COMPILER6_UP}
+      FCasasDecimais.SetSubComponent( true );{ para gravar no DFM/XFM }
+  {$ENDIF}
+
 end;
 
 destructor TACBrNFeDANFEClass.Destroy;
@@ -148,15 +202,6 @@ begin
 
   if (Operation = opRemove) and (FACBrNFe <> nil) and (AComponent is TACBrNFe) then
      FACBrNFe := nil ;
-end;
-
-procedure TACBrNFeDANFEClass.SetCasasDecimais_QCom(AValue: integer);
-begin
-  if ((AValue >= 0) and
-      (AValue <= 4))  then
-    FCasasDecimais_QCom := AValue
-  else
-    FCasasDecimais_QCom := 2;
 end;
 
 procedure TACBrNFeDANFEClass.SetNFE(const Value: TComponent);

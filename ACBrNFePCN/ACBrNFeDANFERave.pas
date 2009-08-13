@@ -101,7 +101,7 @@ var
    MyText1,MyText2,MyText3,MyText4: TRaveText;
    MySection: TRaveSection;
    MyDataView: TRaveDataView;
-   MyFloatField: TRaveFloatField;
+   MyFloatField,MyFloatField2: TRaveFloatField;
 
    vMargemInferiorAtual, vMargemInferior, vHeightPadrao: double;
 begin
@@ -148,21 +148,36 @@ begin
                MyDataText4.Left := 30;
          end;
 
-         //Casas Decimais da Quantidade (QCom)
+         //Casas Decimais (qCom)
          MyDataView := FindRaveComponent('CustomDadosProdutosCX',nil) as TRaveDataView;
          MyFloatField := FindRaveComponent('CustomDadosProdutosCXQCom',MyDataView) as TRaveFloatField;
          if (MyFloatField <> nil) then
          begin
-            if FCasasDecimais_QCom=0 then
+            if FCasasDecimais._QCom=0 then
                MyFloatField.DisplayFormat:='#0'
-            else if FCasasDecimais_QCom=1 then
+            else if FCasasDecimais._QCom=1 then
                MyFloatField.DisplayFormat:='#,#0.0'
-            else if FCasasDecimais_QCom=2 then
+            else if FCasasDecimais._QCom=2 then
                MyFloatField.DisplayFormat:='#,##0.00'
-            else if FCasasDecimais_QCom=3 then
+            else if FCasasDecimais._QCom=3 then
                MyFloatField.DisplayFormat:='#,###0.000'
-            else if FCasasDecimais_QCom=4 then
+            else if FCasasDecimais._QCom=4 then
                MyFloatField.DisplayFormat:='#,####0.0000';
+         end;
+         //Casas Decimais (vUnCom)
+         MyFloatField2 := FindRaveComponent('CustomDadosProdutosCXVUnCom',MyDataView) as TRaveFloatField;
+         if (MyFloatField2 <> nil) then
+         begin
+            if FCasasDecimais._vUnCom=0 then
+               MyFloatField2.DisplayFormat:='#0'
+            else if FCasasDecimais._vUnCom=1 then
+               MyFloatField2.DisplayFormat:='#,#0.0'
+            else if FCasasDecimais._vUnCom=2 then
+               MyFloatField2.DisplayFormat:='#,##0.00'
+            else if FCasasDecimais._vUnCom=3 then
+               MyFloatField2.DisplayFormat:='#,###0.000'
+            else if FCasasDecimais._vUnCom=4 then
+               MyFloatField2.DisplayFormat:='#,####0.0000';
          end;
 
          //Margem Inferior

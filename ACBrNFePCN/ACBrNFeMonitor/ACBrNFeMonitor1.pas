@@ -109,7 +109,6 @@ type
     cbEmailSSL: TCheckBox;
     mmEmailMsg: TMemo;
     Label25: TLabel;
-    ACBrNFeDANFERave1: TACBrNFeDANFERave;
     OpenDialog1: TOpenDialog;
     ImageList1: TImageList;
     rgTipoAmb: TRadioGroup;
@@ -146,6 +145,9 @@ type
     Panel3: TPanel;
     Label1: TLabel;
     edtNumCopia: TEdit;
+    ACBrNFeDANFERave1: TACBrNFeDANFERave;
+    Label2: TLabel;
+    edtMargemInf: TEdit;
     procedure DoACBrTimer(Sender: TObject);
     procedure edOnlyNumbers(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
@@ -174,6 +176,8 @@ type
     procedure btnImprimirClick(Sender: TObject);
     procedure btnInutilizarClick(Sender: TObject);
     procedure btnEnviarClick(Sender: TObject);
+    procedure edtNumCopiaKeyPress(Sender: TObject; var Key: Char);
+    procedure edtMargemInfKeyPress(Sender: TObject; var Key: Char);
   private
     { Private declarations }
     ACBrNFeMonitorINI : string;
@@ -540,6 +544,7 @@ begin
      cbxImpDescPorc.Checked    := Ini.ReadBool(   'DANFE','ImpDescPorc',False) ;
      cbxMostrarPreview.Checked := Ini.ReadBool(   'DANFE','MostrarPreview',False) ;
      edtNumCopia.Text          := Ini.ReadString( 'DANFE','Copias','1') ;
+     edtMargemInf.Text         := Ini.ReadString( 'DANFE','Margem','0,8') ;
 
      if ACBrNFe1.DANFE <> nil then
       begin
@@ -554,6 +559,7 @@ begin
         ACBrNFeDANFERave1.MostrarPreview   := cbxMostrarPreview.Checked;
         ACBrNFeDANFERave1.Impressora := cbxImpressora.Text;
         ACBrNFeDANFERave1.NumCopias  := StrToInt(edtNumCopia.Text);
+        ACBrNFeDANFERave1.MargemInferior  := StrToFloat(edtMargemInf.Text);        
         ACBrNFeDANFERave1.PathPDF    := PathWithDelim(ExtractFileDir(application.ExeName));
       end;
 
@@ -640,7 +646,8 @@ begin
      Ini.WriteString( 'DANFE','Fax'  ,edtFaxEmpresa.Text) ;
      Ini.WriteBool(   'DANFE','ImpDescPorc',cbxImpDescPorc.Checked);
      Ini.WriteBool(   'DANFE','MostrarPreview',cbxMostrarPreview.Checked);
-     Ini.WriteString( 'DANFE','Copias'  ,edtNumCopia.Text) ;     
+     Ini.WriteString( 'DANFE','Copias'  ,edtNumCopia.Text) ;
+     Ini.WriteString( 'DANFE','Margem'  ,edtMargemInf.Text) ;
   finally
      Ini.Free ;
   end ;
@@ -1175,6 +1182,23 @@ begin
     ACBrNFe1.Enviar(StrToInt(vAux));
     ExibeResp(ACBrNFe1.WebServices.Retorno.RetWS);
   end;
+end;
+
+procedure TfrmAcbrNfeMonitor.edtNumCopiaKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+  if ((Key in ['0'..'9'] = False) and (Word(Key) <> VK_BACK)) then
+    Key := #0;
+end;
+
+procedure TfrmAcbrNfeMonitor.edtMargemInfKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+  if (((Key in ['0'..'9'] = False) and (Key in ['.',','] = false)) and (Word(Key) <> VK_BACK)) then
+    Key := #0
+  else
+    if Key = '.' then
+       Key := ',';  
 end;
 
 end.

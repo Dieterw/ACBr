@@ -4118,7 +4118,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       Top = 0
       Width = 533
       Height = 231
-      ActivePage = Monitor
+      ActivePage = DANFE
       Align = alBottom
       TabOrder = 0
       object Monitor: TTabSheet
@@ -4731,7 +4731,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           Caption = 'Logo Marca'
         end
         object sbLogoMarca: TSpeedButton
-          Left = 218
+          Left = 226
           Top = 66
           Width = 23
           Height = 24
@@ -4765,6 +4765,13 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           Height = 13
           Caption = 'N'#250'mero de C'#243'pias'
         end
+        object Label2: TLabel
+          Left = 104
+          Top = 132
+          Width = 73
+          Height = 13
+          Caption = 'Margem Inferior'
+        end
         object rgTipoDanfe: TRadioGroup
           Left = 8
           Top = 4
@@ -4781,7 +4788,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
         object edtLogoMarca: TEdit
           Left = 7
           Top = 68
-          Width = 211
+          Width = 218
           Height = 21
           TabOrder = 1
         end
@@ -4840,7 +4847,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           Top = 108
           Width = 242
           Height = 21
-          ItemHeight = 0
+          ItemHeight = 13
           TabOrder = 3
         end
         object cbxImpDescPorc: TCheckBox
@@ -4865,6 +4872,15 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           Width = 90
           Height = 21
           TabOrder = 4
+          OnKeyPress = edtNumCopiaKeyPress
+        end
+        object edtMargemInf: TEdit
+          Left = 104
+          Top = 148
+          Width = 90
+          Height = 21
+          TabOrder = 7
+          OnKeyPress = edtMargemInfKeyPress
         end
       end
       object Testes: TTabSheet
@@ -5030,17 +5046,6 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
     DANFE = ACBrNFeDANFERave1
     Left = 160
     Top = 24
-  end
-  object ACBrNFeDANFERave1: TACBrNFeDANFERave
-    ACBrNFe = ACBrNFe1
-    ImprimirHoraSaida = False
-    MostrarPreview = False
-    TipoDANFE = tiRetrato
-    NumCopias = 1
-    ImprimirDescPorc = True
-    MargemInferior = 0.800000000000000000
-    Left = 201
-    Top = 25
   end
   object OpenDialog1: TOpenDialog
     Left = 249
@@ -5452,5 +5457,18 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       84318811800BFFFF80818421800BFFFF810181C1EFFBFFFF80018001E003FFFF
       80018001E003FFFFFFFFFFFFE003FFFF00000000000000000000000000000000
       000000000000}
+  end
+  object ACBrNFeDANFERave1: TACBrNFeDANFERave
+    ACBrNFe = ACBrNFe1
+    ImprimirHoraSaida = False
+    MostrarPreview = True
+    TipoDANFE = tiRetrato
+    NumCopias = 1
+    ImprimirDescPorc = False
+    MargemInferior = 0.800000000000000000
+    CasasDecimais._qCom = 2
+    CasasDecimais._vUnCom = 2
+    Left = 193
+    Top = 25
   end
 end

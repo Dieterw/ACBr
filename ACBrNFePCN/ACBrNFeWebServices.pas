@@ -51,7 +51,7 @@ uses Classes, SysUtils,
   {$IFDEF ACBrNFeOpenSSL}
     HTTPSend,
   {$ELSE}
-     SoapHTTPClient, SOAPHTTPTrans, JwaWinCrypt, WinInet, ACBrNFeCAPICOM_TLB,
+     SoapHTTPClient, SOAPHTTPTrans, WinInet, ACBrNFeCAPICOM_TLB,
   {$ENDIF}
   pcnNFe, pcnNFeW,
   pcnRetConsReciNFe, pcnRetConsCad, pcnAuxiliar, pcnConversao,
@@ -127,6 +127,7 @@ type
     FTpAmb: TpcnTipoAmbiente;
     FverAplic: String;
     FcStat: Integer;
+    FcUF: Integer;
     FxMotivo: String;
     FdhRecbto: TDateTime;
     FTMed: Integer;
@@ -137,6 +138,7 @@ type
     property TpAmb: TpcnTipoAmbiente read FTpAmb;
     property verAplic: String read FverAplic;
     property cStat: Integer read FcStat;
+    property cUF: Integer read FcUF;
     property xMotivo: String read FxMotivo;
     property dhRecbto: TDateTime read FdhRecbto;
     property TMed: Integer read FTMed;
@@ -146,7 +148,7 @@ type
   TNFeRetRecepcao = Class(TWebServicesBase)
   private
     FRecibo: String;
-    FProtocolo: String; 
+    FProtocolo: String;
     FChaveNFe: String; 
     FNotasFiscais: TNotasFiscais;
     FNFeRetorno: TRetConsReciNFe;
@@ -410,8 +412,8 @@ begin
   CertContext :=  Cert as ICertContext;
   CertContext.Get_CertContext(Integer(PCertContext));
 
-  if not InternetSetOption(Data, INTERNET_OPTION_CLIENT_CERT_CONTEXT, PCertContext, Sizeof(CERT_CONTEXT)) then
-    ShowMessage( 'Erro OnBeforePost' );
+  if not InternetSetOption(Data, INTERNET_OPTION_CLIENT_CERT_CONTEXT, PCertContext,sizeof(CertContext)*5) then
+    raise Exception.Create( 'Erro OnBeforePost: ' + IntToStr(GetLastError) );
 end;
 {$ENDIF}
 
@@ -970,9 +972,10 @@ begin
     FxMotivo  := NFeRetorno.xMotivo;
     FdhRecbto := NFeRetorno.infRec.dhRecbto;
     FTMed     := NFeRetorno.infRec.tMed;
+    FcUF      := NFeRetorno.cUF;
 
     FMsg    := NFeRetorno.xMotivo;
-    FRecibo := NFeRetorno.InfRec.NRec;
+    FRecibo := NFeRetorno.infRec.nRec;
     Result := (NFeRetorno.CStat = 103);
 
     NFeRetorno.Free;

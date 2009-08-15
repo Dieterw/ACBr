@@ -576,9 +576,12 @@ begin
            else if CST = cst30 then
              begin
                Connection.WriteStrData('', CSTICMSToStr(cst30));
-               Connection.WriteFloatData('', VBCST);
-               Connection.WriteFloatData('', PICMSST);
-               Connection.WriteFloatData('', VICMSST);
+//               Connection.WriteFloatData('', VBCST);
+//               Connection.WriteFloatData('', PICMSST);
+//               Connection.WriteFloatData('', VICMSST);
+               Connection.WriteFloatData('', 0);
+               Connection.WriteFloatData('', 0);
+               Connection.WriteFloatData('', 0);
              end
            else if (CST = cst40) or (CST = cst41) or (CST = cst50) then
              begin
@@ -602,9 +605,12 @@ begin
            else if (CST = cst60) then
              begin
                Connection.WriteStrData('', CSTICMSToStr(cst60));
-               Connection.WriteFloatData('', VBCST);
+//               Connection.WriteFloatData('', VBCST);
+//               Connection.WriteFloatData('', 0);
+//               Connection.WriteFloatData('', VICMSST);
                Connection.WriteFloatData('', 0);
-               Connection.WriteFloatData('', VICMSST);
+               Connection.WriteFloatData('', 0);
+               Connection.WriteFloatData('', 0);
              end
            else if (CST = cst70) then
              begin

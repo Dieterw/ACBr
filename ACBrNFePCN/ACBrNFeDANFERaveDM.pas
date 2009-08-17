@@ -775,7 +775,10 @@ procedure TdmACBrNFeRave.CustomParametrosCXNGetRow(
          wchave:=wchave+'0'; //esta valor caracteriza ERRO, valor tem q ser  2 ou 5
 
       //CNPJ OU CPF
-      wchave:=wchave+NotaUtil.Poem_Zeros(FNFe.Dest.CNPJCPF,14);
+      if (FNFe.Dest.EnderDest.UF='EX') then
+         wchave:=wchave+NotaUtil.Poem_Zeros('0',14)
+      else
+         wchave:=wchave+NotaUtil.Poem_Zeros(FNFe.Dest.CNPJCPF,14);
 
       //VALOR DA NF
       wchave:=wchave+NotaUtil.Poem_Zeros(NotaUtil.LimpaNumero(Floattostrf(FNFe.Total.ICMSTot.vNF,ffFixed,18,2)),14);

@@ -1777,8 +1777,9 @@ begin
        FRetWS := Nota.consultaCadastro(FCabMsg, FDadosMsg);
     {$ENDIF}
 
-    if FRetConsCad = nil then
-       FRetConsCad := TRetConsCad.Create;
+    if assigned(FRetConsCad) then
+       FRetConsCad.Free;
+    FRetConsCad := TRetConsCad.Create;
     FRetConsCad.Leitor.Arquivo := FRetWS;
     FRetConsCad.LerXml;
 

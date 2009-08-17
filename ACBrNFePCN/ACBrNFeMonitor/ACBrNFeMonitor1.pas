@@ -148,6 +148,9 @@ type
     ACBrNFeDANFERave1: TACBrNFeDANFERave;
     Label2: TLabel;
     edtMargemInf: TEdit;
+    edtPathPDF: TEdit;
+    sbPathPDF: TSpeedButton;
+    Label28: TLabel;
     procedure DoACBrTimer(Sender: TObject);
     procedure edOnlyNumbers(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
@@ -178,6 +181,7 @@ type
     procedure btnEnviarClick(Sender: TObject);
     procedure edtNumCopiaKeyPress(Sender: TObject; var Key: Char);
     procedure edtMargemInfKeyPress(Sender: TObject; var Key: Char);
+    procedure sbPathPDFClick(Sender: TObject);
   private
     { Private declarations }
     ACBrNFeMonitorINI : string;
@@ -545,6 +549,7 @@ begin
      cbxMostrarPreview.Checked := Ini.ReadBool(   'DANFE','MostrarPreview',False) ;
      edtNumCopia.Text          := Ini.ReadString( 'DANFE','Copias','1') ;
      edtMargemInf.Text         := Ini.ReadString( 'DANFE','Margem','0,8') ;
+     edtPathPDF.Text           := Ini.ReadString( 'DANFE','PathPDF',PathWithDelim(ExtractFilePath(Application.ExeName))) ;
 
      if ACBrNFe1.DANFE <> nil then
       begin
@@ -559,8 +564,8 @@ begin
         ACBrNFeDANFERave1.MostrarPreview   := cbxMostrarPreview.Checked;
         ACBrNFeDANFERave1.Impressora := cbxImpressora.Text;
         ACBrNFeDANFERave1.NumCopias  := StrToInt(edtNumCopia.Text);
-        ACBrNFeDANFERave1.MargemInferior  := StrToFloat(edtMargemInf.Text);        
-        ACBrNFeDANFERave1.PathPDF    := PathWithDelim(ExtractFileDir(application.ExeName));
+        ACBrNFeDANFERave1.MargemInferior  := StrToFloat(edtMargemInf.Text);
+        ACBrNFeDANFERave1.PathPDF    := edtPathPDF.Text;
       end;
 
      edtSmtpHost.Text      := Ini.ReadString( 'Email','Host'   ,'') ;
@@ -648,6 +653,7 @@ begin
      Ini.WriteBool(   'DANFE','MostrarPreview',cbxMostrarPreview.Checked);
      Ini.WriteString( 'DANFE','Copias'  ,edtNumCopia.Text) ;
      Ini.WriteString( 'DANFE','Margem'  ,edtMargemInf.Text) ;
+     Ini.WriteString( 'DANFE','PathPDF'  ,edtPathPDF.Text) ;
   finally
      Ini.Free ;
   end ;
@@ -805,7 +811,7 @@ begin
            NomeArqEnt := StringReplace(ExtractFileName(ArqEntOrig),ExtractFileExt(ArqEntOrig),'',[rfReplaceAll]);
            NomeArqSai := StringReplace(ExtractFileName(ArqSaiOrig),ExtractFileExt(ArqSaiOrig),'',[rfReplaceAll]);
            ArqEntTXT  := PathWithDelim(ExtractFileDir(ArqEntOrig)) + SearchRec.Name ;  { Arquivo de Requisicao }
-           ArqSaiTXT  := StringReplace( LowerCase(ArqEntTXT),LowerCase(NomeArqEnt),LowerCase(NomeArqSai),[rfReplaceAll]) ;
+           ArqSaiTXT  := PathWithDelim(ExtractFilePath(ArqSaiOrig))+StringReplace( ExtractFileName(LowerCase(ArqEntTXT)),LowerCase(NomeArqEnt),LowerCase(NomeArqSai),[rfReplaceAll]) ;
            ArqSaiTMP  := ChangeFileExt(ArqSaiTXT,'.tmp');
          end;  
      finally
@@ -1199,6 +1205,19 @@ begin
   else
     if Key = '.' then
        Key := ',';  
+end;
+
+procedure TfrmAcbrNfeMonitor.sbPathPDFClick(Sender: TObject);
+var
+  Dir: string;
+begin
+  if Length(edtPathPDF.Text) <= 0 then
+     Dir := ExtractFileDir(application.ExeName)
+  else
+     Dir := edtPathPDF.Text;
+
+  if SelectDirectory(Dir, [sdAllowCreate, sdPerformCreate, sdPrompt],SELDIRHELP) then
+    edtPathPDF.Text := Dir;
 end;
 
 end.

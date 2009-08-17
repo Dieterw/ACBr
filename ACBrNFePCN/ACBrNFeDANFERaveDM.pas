@@ -745,7 +745,7 @@ procedure TdmACBrNFeRave.CustomParametrosCXNGetRow(
      if length(chave) <> 35 then
        result := False;
    end;
-   function Chave_Contigencia: string;
+   function Chave_Contingencia: string;
    var
       wchave: string;
       i: integer;
@@ -753,22 +753,34 @@ procedure TdmACBrNFeRave.CustomParametrosCXNGetRow(
       wd,wm,wa: word;
       Digito: integer;
    begin
-      wchave:=copy(inttostr(FNFe.Dest.EnderDest.cMun),1,2);
+      //ajustado de acordo com nota tecnica 2009.003
 
-      if FNFe.Ide.tpEmis=teNormal then
-         wchave:=wchave+'1'
-      else if FNFe.Ide.tpEmis=teContingencia then
+      //UF
+      if FNFe.Dest.EnderDest.UF='EX' then
+         wchave:='99' //exterior
+      else
+      begin
+         if FNFe.Ide.tpNF=tnSaida then
+            wchave:=copy(inttostr(FNFe.Dest.EnderDest.cMun),1,2) //saida
+         else
+            wchave:=copy(inttostr(FNFe.Emit.EnderEmit.cMun),1,2); //entrada
+      end;
+
+      //TIPO DE EMISSAO
+      if FNFe.Ide.tpEmis=teContingencia then
          wchave:=wchave+'2'
-      else if FNFe.Ide.tpEmis=teSCAN then
-         wchave:=wchave+'3'
-      else if FNFe.Ide.tpEmis=teDPEC then
-         wchave:=wchave+'4'
       else if FNFe.Ide.tpEmis=teFSDA then
-         wchave:=wchave+'5';
+         wchave:=wchave+'5'
+      else
+         wchave:=wchave+'0'; //esta valor caracteriza ERRO, valor tem q ser  2 ou 5
+
+      //CNPJ OU CPF
       wchave:=wchave+NotaUtil.Poem_Zeros(FNFe.Dest.CNPJCPF,14);
 
+      //VALOR DA NF
       wchave:=wchave+NotaUtil.Poem_Zeros(NotaUtil.LimpaNumero(Floattostrf(FNFe.Total.ICMSTot.vNF,ffFixed,18,2)),14);
 
+      //DESTAQUE ICMS PROPRIO E ST
       wicms_s:='2';
       wicms_p:='2';
       for I := 0 to FNFe.Det.Count - 1 do
@@ -787,12 +799,15 @@ procedure TdmACBrNFeRave.CustomParametrosCXNGetRow(
       end;
       wchave:=wchave+wicms_p+wicms_s;
 
+      //DIA DA EMISSAO
       decodedate(FNFe.Ide.dEmi,wa,wm,wd);
       wchave:=wchave+NotaUtil.Poem_Zeros(inttostr(wd),2);
 
+      //DIGITO VERIFICADOR
       GerarDigito_Contigencia(Digito,wchave);
       wchave:=wchave+inttostr(digito);
 
+      //RETORNA A CHAVE DE CONTINGENCIA
       result:=wchave;
    end;
    function FormatarChave_Contigencia(AValue: String): String;
@@ -806,7 +821,7 @@ procedure TdmACBrNFeRave.CustomParametrosCXNGetRow(
    end;
 var
   vStream: TMemoryStream;
-  vChave_Contigencia: string;
+  vChave_Contingencia: string;
 begin
   with FNFe.Ide do
     Connection.WriteStrData('', NotaUtil.SeSenao(TpAmb = taHomologacao,'Nota Fiscal sem valor Fiscal', ''));
@@ -847,23 +862,34 @@ begin
   else
      Connection.WriteStrData('', 'V.DESC.');
 
-   if (FNFe.Ide.tpEmis=teNormal) then
+   if ((FNFe.Ide.tpEmis=teNormal) or
+       (FNFe.Ide.tpEmis=teSCAN)) then
    begin
-      Connection.WriteStrData('', 'CHAVE DE ACESSO DA NF-e P/CONSULTA DE AUTENTICIDADE NO SITE www.nfe.fazenda.gov.br');
+      Connection.WriteStrData('', 'CHAVE DE ACESSO');
       Connection.WriteStrData('', '');
       Connection.WriteStrData('', 'PROTOCOLO DE AUTORIZAÇÃO DE USO');
       if notautil.EstaVazio(FDANFEClassOwner.ProtocoloNFe) then
-         Connection.WriteStrData('', FNFe.procNFe.nProt)
+         Connection.WriteStrData('', FNFe.procNFe.nProt+' '+DateTimeToStr(FNFe.procNFe.dhRecbto))
       else
          Connection.WriteStrData('', FDANFEClassOwner.ProtocoloNFe);
    end
    else
    begin
-      vChave_Contigencia:=Chave_Contigencia;
-      Connection.WriteStrData('', 'CHAVE DE ACESSO DA NF-e');
-      Connection.WriteStrData('', vChave_Contigencia);
-      Connection.WriteStrData('', 'DADOS DA NF-e');
-      Connection.WriteStrData('', FormatarChave_Contigencia(vChave_Contigencia));
+      vChave_Contingencia:=Chave_Contingencia;
+      Connection.WriteStrData('', 'CHAVE DE ACESSO');
+      Connection.WriteStrData('', vChave_Contingencia);
+      if ((FNFe.Ide.tpEmis=teContingencia) or
+          (FNFe.Ide.tpEmis=teFSDA)) then
+      begin
+         Connection.WriteStrData('', 'DADOS DA NF-E');
+         Connection.WriteStrData('', FormatarChave_Contigencia(vChave_Contingencia));
+      end
+      else if (FNFe.Ide.tpEmis=teDPEC) then
+      begin
+         Connection.WriteStrData('', 'NÚMERO DE REGISTRO DPEC');
+         //precisa testar
+         Connection.WriteStrData('', FDANFEClassOwner.ProtocoloNFe);
+      end;
    end;
 end;
 

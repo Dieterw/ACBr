@@ -97,6 +97,7 @@ var
    MyReport : TRaveReport;
    MyPage,MyPage2, MyPage3, MyPage4: TRavePage;
    MyBarcode: TRaveCode128BarCode;
+   MyDataText01, MyDataText02: TRaveDataText;
    MyDataText1,MyDataText2,MyDataText3,MyDataText4,MyDataText5,MyDataText6: TRaveDataText;
    MyText1,MyText2,MyText3,MyText4: TRaveText;
    MySection: TRaveSection;
@@ -110,12 +111,26 @@ begin
       with dmDanfe.RvProject.ProjMan do
       begin
          //contingencia
-         if (dmDanfe.NFe.Ide.tpEmis = teNormal) then
+         MyPage := FindRaveComponent('GlobalDANFE',nil) as TRavePage;
+         if ((dmDanfe.NFe.Ide.tpEmis = teNormal) or
+             (dmDanfe.NFe.Ide.tpEmis = teDPEC) or
+             (dmDanfe.NFe.Ide.tpEmis = teSCAN)) then
          begin
-            MyPage := FindRaveComponent('GlobalDANFE',nil) as TRavePage;
+            //não exibe código de barras adicional
             MyBarcode := FindRaveComponent('BarCode_Contigencia',MyPage) as TRaveCode128BarCode;
             if (MyBarcode <> nil) then
                MyBarCode.Left := 30;
+         end
+         else if ((dmDanfe.NFe.Ide.tpEmis = teContingencia) or
+                  (dmDanfe.NFe.Ide.tpEmis = teFSDA)) then
+         begin
+            //não exibe textos
+            MyDataText01:=FindRaveComponent('DataText_DANFE1',MyPage) as TRaveDataText;
+            MyDataText02:=FindRaveComponent('DataText_DANFE2',MyPage) as TRaveDataText;
+            if (MyDataText01 <> nil) then
+               MyDataText01.Left := 30;
+            if (MyDataText02 <> nil) then
+               MyDataText02.Left := 30;
          end;
 
          //quadro fatura

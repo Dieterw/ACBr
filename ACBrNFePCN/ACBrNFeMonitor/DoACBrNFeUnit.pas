@@ -148,7 +148,8 @@ begin
         else if Cmd.Metodo = 'cancelarnfe' then
          begin
            ACBrNFe1.WebServices.Consulta.NFeChave := Cmd.Params(0);
-           ACBrNFe1.WebServices.Consulta.Executar;
+           if not ACBrNFe1.WebServices.Consulta.Executar then
+              raise Exception.Create(ACBrNFe1.WebServices.Consulta.Msg);
 
            ACBrNFe1.WebServices.Cancelamento.NFeChave      := ACBrNFe1.WebServices.Consulta.NFeChave;
            ACBrNFe1.WebServices.Cancelamento.Protocolo     := ACBrNFe1.WebServices.Consulta.Protocolo;

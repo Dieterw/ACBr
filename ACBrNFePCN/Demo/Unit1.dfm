@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 406
+  Left = 334
   Top = 161
-  Width = 666
+  Width = 694
   Height = 483
   Caption = 'ACBrNFe'
   Color = clBtnFace
@@ -17,23 +17,23 @@ object Form1: TForm1
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 278
+    Width = 297
     Height = 447
     Align = alLeft
     TabOrder = 0
     object GroupBox1: TGroupBox
       Left = 8
       Top = 8
-      Width = 262
+      Width = 281
       Height = 401
       Caption = 'Configura'#231#245'es'
       TabOrder = 0
       object PageControl1: TPageControl
         Left = 2
         Top = 15
-        Width = 258
+        Width = 277
         Height = 384
-        ActivePage = TabSheet7
+        ActivePage = TabSheet1
         Align = alClient
         TabOrder = 0
         object TabSheet1: TTabSheet
@@ -41,7 +41,7 @@ object Form1: TForm1
           object GroupBox2: TGroupBox
             Left = 0
             Top = 4
-            Width = 250
+            Width = 265
             Height = 144
             Caption = 'Certificado'
             TabOrder = 0
@@ -60,7 +60,7 @@ object Form1: TForm1
               Caption = 'Senha'
             end
             object sbtnCaminhoCert: TSpeedButton
-              Left = 219
+              Left = 235
               Top = 32
               Width = 23
               Height = 24
@@ -88,7 +88,7 @@ object Form1: TForm1
               Caption = 'N'#250'mero de S'#233'rie'
             end
             object sbtnGetCert: TSpeedButton
-              Left = 219
+              Left = 235
               Top = 110
               Width = 23
               Height = 24
@@ -111,14 +111,14 @@ object Form1: TForm1
             object edtCaminho: TEdit
               Left = 8
               Top = 32
-              Width = 211
+              Width = 225
               Height = 21
               TabOrder = 0
             end
             object edtSenha: TEdit
               Left = 8
               Top = 72
-              Width = 234
+              Width = 249
               Height = 21
               PasswordChar = '*'
               TabOrder = 1
@@ -126,7 +126,7 @@ object Form1: TForm1
             object edtNumSerie: TEdit
               Left = 8
               Top = 112
-              Width = 211
+              Width = 225
               Height = 21
               TabOrder = 2
             end
@@ -138,7 +138,7 @@ object Form1: TForm1
           object GroupBox3: TGroupBox
             Left = 0
             Top = 4
-            Width = 250
+            Width = 265
             Height = 269
             Caption = 'Geral'
             TabOrder = 0
@@ -150,7 +150,7 @@ object Form1: TForm1
               Caption = 'Logo Marca'
             end
             object sbtnLogoMarca: TSpeedButton
-              Left = 219
+              Left = 235
               Top = 188
               Width = 23
               Height = 24
@@ -171,7 +171,7 @@ object Form1: TForm1
               OnClick = sbtnLogoMarcaClick
             end
             object sbtnPathSalvar: TSpeedButton
-              Left = 219
+              Left = 235
               Top = 236
               Width = 23
               Height = 24
@@ -194,14 +194,14 @@ object Form1: TForm1
             object edtLogoMarca: TEdit
               Left = 8
               Top = 192
-              Width = 211
+              Width = 228
               Height = 21
               TabOrder = 0
             end
             object edtPathLogs: TEdit
               Left = 8
               Top = 240
-              Width = 211
+              Width = 228
               Height = 21
               TabOrder = 1
             end
@@ -222,7 +222,7 @@ object Form1: TForm1
             object rgTipoDanfe: TRadioGroup
               Left = 8
               Top = 16
-              Width = 233
+              Width = 249
               Height = 49
               Caption = 'DANFE'
               Columns = 2
@@ -235,7 +235,7 @@ object Form1: TForm1
             object rgFormaEmissao: TRadioGroup
               Left = 8
               Top = 72
-              Width = 233
+              Width = 249
               Height = 97
               Caption = 'Forma de Emiss'#227'o'
               Columns = 2
@@ -256,7 +256,7 @@ object Form1: TForm1
           object GroupBox4: TGroupBox
             Left = 0
             Top = 4
-            Width = 250
+            Width = 265
             Height = 141
             Caption = 'WebService'
             TabOrder = 0
@@ -290,7 +290,7 @@ object Form1: TForm1
             object cbUF: TComboBox
               Left = 8
               Top = 32
-              Width = 234
+              Width = 249
               Height = 24
               Style = csDropDownList
               Font.Charset = DEFAULT_CHARSET
@@ -335,7 +335,7 @@ object Form1: TForm1
             object rgTipoAmb: TRadioGroup
               Left = 8
               Top = 61
-              Width = 233
+              Width = 249
               Height = 52
               Caption = 'Selecione o Ambiente de Destino'
               Columns = 2
@@ -349,7 +349,7 @@ object Form1: TForm1
           object gbProxy: TGroupBox
             Left = 0
             Top = 152
-            Width = 250
+            Width = 265
             Height = 105
             Caption = 'Proxy'
             TabOrder = 1
@@ -361,7 +361,7 @@ object Form1: TForm1
               Caption = 'Host'
             end
             object Label9: TLabel
-              Left = 192
+              Left = 208
               Top = 16
               Width = 25
               Height = 13
@@ -375,7 +375,7 @@ object Form1: TForm1
               Caption = 'Usu'#225'rio'
             end
             object Label11: TLabel
-              Left = 130
+              Left = 138
               Top = 56
               Width = 31
               Height = 13
@@ -384,12 +384,12 @@ object Form1: TForm1
             object edtProxyHost: TEdit
               Left = 8
               Top = 32
-              Width = 177
+              Width = 193
               Height = 21
               TabOrder = 0
             end
             object edtProxyPorta: TEdit
-              Left = 192
+              Left = 208
               Top = 32
               Width = 50
               Height = 21
@@ -398,14 +398,14 @@ object Form1: TForm1
             object edtProxyUser: TEdit
               Left = 8
               Top = 72
-              Width = 114
+              Width = 123
               Height = 21
               TabOrder = 2
             end
             object edtProxySenha: TEdit
-              Left = 128
+              Left = 135
               Top = 72
-              Width = 114
+              Width = 123
               Height = 21
               PasswordChar = '*'
               TabOrder = 3
@@ -423,7 +423,7 @@ object Form1: TForm1
             Caption = 'CNPJ'
           end
           object Label13: TLabel
-            Left = 128
+            Left = 136
             Top = 4
             Width = 41
             Height = 13
@@ -451,7 +451,7 @@ object Form1: TForm1
             Caption = 'Logradouro'
           end
           object Label17: TLabel
-            Left = 192
+            Left = 208
             Top = 164
             Width = 37
             Height = 13
@@ -465,7 +465,7 @@ object Form1: TForm1
             Caption = 'Complemento'
           end
           object Label19: TLabel
-            Left = 128
+            Left = 136
             Top = 204
             Width = 27
             Height = 13
@@ -486,14 +486,14 @@ object Form1: TForm1
             Caption = 'Cidade'
           end
           object Label22: TLabel
-            Left = 208
+            Left = 225
             Top = 244
             Width = 14
             Height = 13
             Caption = 'UF'
           end
           object Label23: TLabel
-            Left = 128
+            Left = 136
             Top = 124
             Width = 21
             Height = 13
@@ -509,54 +509,54 @@ object Form1: TForm1
           object edtEmitCNPJ: TEdit
             Left = 8
             Top = 20
-            Width = 114
+            Width = 123
             Height = 21
             TabOrder = 0
           end
           object edtEmitIE: TEdit
-            Left = 128
+            Left = 137
             Top = 20
-            Width = 114
+            Width = 123
             Height = 21
             TabOrder = 1
           end
           object edtEmitRazao: TEdit
             Left = 8
             Top = 60
-            Width = 234
+            Width = 252
             Height = 21
             TabOrder = 2
           end
           object edtEmitFantasia: TEdit
             Left = 8
             Top = 100
-            Width = 234
+            Width = 252
             Height = 21
             TabOrder = 3
           end
           object edtEmitFone: TEdit
             Left = 8
             Top = 140
-            Width = 114
+            Width = 125
             Height = 21
             TabOrder = 4
           end
           object edtEmitCEP: TEdit
-            Left = 128
+            Left = 137
             Top = 140
-            Width = 114
+            Width = 123
             Height = 21
             TabOrder = 5
           end
           object edtEmitLogradouro: TEdit
             Left = 8
             Top = 180
-            Width = 177
+            Width = 196
             Height = 21
             TabOrder = 6
           end
           object edtEmitNumero: TEdit
-            Left = 192
+            Left = 210
             Top = 180
             Width = 50
             Height = 21
@@ -565,14 +565,14 @@ object Form1: TForm1
           object edtEmitComp: TEdit
             Left = 8
             Top = 220
-            Width = 114
+            Width = 123
             Height = 21
             TabOrder = 8
           end
           object edtEmitBairro: TEdit
-            Left = 128
+            Left = 137
             Top = 220
-            Width = 114
+            Width = 123
             Height = 21
             TabOrder = 9
           end
@@ -586,14 +586,14 @@ object Form1: TForm1
           object edtEmitCidade: TEdit
             Left = 76
             Top = 260
-            Width = 126
+            Width = 142
             Height = 21
             TabOrder = 11
           end
           object edtEmitUF: TEdit
-            Left = 208
+            Left = 225
             Top = 260
-            Width = 34
+            Width = 35
             Height = 21
             TabOrder = 12
           end
@@ -604,7 +604,7 @@ object Form1: TForm1
           object GroupBox5: TGroupBox
             Left = 1
             Top = 4
-            Width = 246
+            Width = 264
             Height = 324
             Caption = 'Email'
             TabOrder = 0
@@ -616,7 +616,7 @@ object Form1: TForm1
               Caption = 'Servidor SMTP'
             end
             object Label4: TLabel
-              Left = 198
+              Left = 206
               Top = 16
               Width = 25
               Height = 13
@@ -630,7 +630,7 @@ object Form1: TForm1
               Caption = 'Usu'#225'rio'
             end
             object Label26: TLabel
-              Left = 129
+              Left = 137
               Top = 56
               Width = 31
               Height = 13
@@ -653,35 +653,35 @@ object Form1: TForm1
             object edtSmtpHost: TEdit
               Left = 8
               Top = 32
-              Width = 185
+              Width = 193
               Height = 21
               TabOrder = 0
             end
             object edtSmtpPort: TEdit
-              Left = 198
+              Left = 206
               Top = 32
-              Width = 40
+              Width = 51
               Height = 21
               TabOrder = 1
             end
             object edtSmtpUser: TEdit
               Left = 8
               Top = 72
-              Width = 110
+              Width = 120
               Height = 21
               TabOrder = 2
             end
             object edtSmtpPass: TEdit
-              Left = 129
+              Left = 137
               Top = 72
-              Width = 110
+              Width = 120
               Height = 21
               TabOrder = 3
             end
             object edtEmailAssunto: TEdit
               Left = 8
               Top = 112
-              Width = 230
+              Width = 249
               Height = 21
               TabOrder = 4
             end
@@ -696,7 +696,7 @@ object Form1: TForm1
             object mmEmailMsg: TMemo
               Left = 8
               Top = 184
-              Width = 230
+              Width = 249
               Height = 130
               TabOrder = 6
             end
@@ -729,16 +729,16 @@ object Form1: TForm1
     end
   end
   object Panel2: TPanel
-    Left = 278
+    Left = 297
     Top = 0
-    Width = 372
+    Width = 381
     Height = 447
     Align = alClient
     TabOrder = 1
     object Panel3: TPanel
       Left = 1
       Top = 1
-      Width = 370
+      Width = 379
       Height = 187
       Align = alTop
       TabOrder = 0
@@ -854,7 +854,7 @@ object Form1: TForm1
     object PageControl2: TPageControl
       Left = 1
       Top = 188
-      Width = 370
+      Width = 379
       Height = 258
       ActivePage = TabSheet6
       Align = alClient
@@ -876,12 +876,12 @@ object Form1: TForm1
         object WBResposta: TWebBrowser
           Left = 0
           Top = 0
-          Width = 362
+          Width = 371
           Height = 230
           Align = alClient
           TabOrder = 0
           ControlData = {
-            4C0000006A250000C51700000000000000000000000000000000000000000000
+            4C00000058260000C51700000000000000000000000000000000000000000000
             000000004C000000000000000000000001000000E0D057007335CF11AE690800
             2B2E126208000000000000004C0000000114020000000000C000000000000046
             8000000000000000000000000000000000000000000000000000000000000000

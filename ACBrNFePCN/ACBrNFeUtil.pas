@@ -770,12 +770,12 @@ case FormaEmissao of
      end;
   3 : begin
        case ALayOut of
-         LayNfeRecepcao : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://scan.fazenda.gov.br/nferecepcao/NfeRecepcao.asmx','https://hom.nfe.fazenda.gov.br/SCAN/nferecepcao/NfeRecepcao.asmx');
-         LayNfeRetRecepcao : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://scan.fazenda.gov.br/nferetrecepcao/NfeRetRecepcao.asmx','https://hom.nfe.fazenda.gov.br/SCAN/nferetrecepcao/NfeRetRecepcao.asmx');
-         LayNfeCancelamento : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://scan.fazenda.gov.br/nfecancelamento/NfeCancelamento.asmx','https://hom.nfe.fazenda.gov.br/SCAN/nfecancelamento/NfeCancelamento.asmx');
-         LayNfeInutilizacao : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://scan.fazenda.gov.br/nfeinutilizacao/NfeInutilizacao.asmx','https://hom.nfe.fazenda.gov.br/SCAN/nfeinutilizacao/NfeInutilizacao.asmx');
-         LayNfeConsulta : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://scan.fazenda.gov.br/nfeconsulta/NfeConsulta.asmx','https://hom.nfe.fazenda.gov.br/SCAN/nfeconsulta/NfeConsulta.asmx');
-         LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://scan.fazenda.gov.br/nfestatusservico/NfeStatusServico.asmx','https://hom.nfe.fazenda.gov.br/SCAN/nfestatusservico/NfeStatusServico.asmx');
+         LayNfeRecepcao : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.scan.fazenda.gov.br/NfeRecepcao/NfeRecepcao.asmx','https://hom.nfe.fazenda.gov.br/SCAN/nferecepcao/NfeRecepcao.asmx');
+         LayNfeRetRecepcao : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.scan.fazenda.gov.br/NfeRetRecepcao/NfeRetRecepcao.asmx','https://hom.nfe.fazenda.gov.br/SCAN/nferetrecepcao/NfeRetRecepcao.asmx');
+         LayNfeCancelamento : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.scan.fazenda.gov.br/NfeCancelamento/NfeCancelamento.asmx','https://hom.nfe.fazenda.gov.br/SCAN/nfecancelamento/NfeCancelamento.asmx');
+         LayNfeInutilizacao : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.scan.fazenda.gov.br/NfeInutilizacao/NfeInutilizacao.asmx','https://hom.nfe.fazenda.gov.br/SCAN/nfeinutilizacao/NfeInutilizacao.asmx');
+         LayNfeConsulta : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.scan.fazenda.gov.br/NfeConsulta/NfeConsulta.asmx','https://hom.nfe.fazenda.gov.br/SCAN/nfeconsulta/NfeConsulta.asmx');
+         LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.scan.fazenda.gov.br/NfeStatusServico/NfeStatusServico.asmx','https://hom.nfe.fazenda.gov.br/SCAN/nfestatusservico/NfeStatusServico.asmx');
        end;
      end;
   end;

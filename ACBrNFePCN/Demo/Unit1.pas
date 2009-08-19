@@ -4,7 +4,7 @@ unit Unit1;
 
 interface
 
-uses IniFiles,
+uses IniFiles, 
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, Buttons, ComCtrls, OleCtrls, SHDocVw,
   ACBrNFe, pcnConversao, ACBrNFeDANFEClass, ACBrNFeDANFERave, pcnNFeW, pcnLeitor;
@@ -92,7 +92,6 @@ type
     rgTipoDanfe: TRadioGroup;
     rgFormaEmissao: TRadioGroup;
     ACBrNFe1: TACBrNFe;
-    ACBrNFeDANFERave1: TACBrNFeDANFERave;
     sbtnGetCert: TSpeedButton;
     btnGerarNFE: TButton;
     btnConsCad: TButton;
@@ -113,6 +112,8 @@ type
     edtEmailAssunto: TEdit;
     cbEmailSSL: TCheckBox;
     mmEmailMsg: TMemo;
+    ACBrNFeDANFERave1: TACBrNFeDANFERave;
+    btnConsultarRecibo: TButton;
     procedure sbtnCaminhoCertClick(Sender: TObject);
     procedure sbtnLogoMarcaClick(Sender: TObject);
     procedure sbtnPathSalvarClick(Sender: TObject);
@@ -131,6 +132,7 @@ type
     procedure btnConsCadClick(Sender: TObject);
     procedure btnGerarPDFClick(Sender: TObject);
     procedure btnEnviarEmailClick(Sender: TObject);
+    procedure btnConsultarReciboClick(Sender: TObject);
   private
     { Private declarations }
     procedure GravarConfiguracao ;
@@ -424,8 +426,6 @@ begin
 end;
 
 procedure TForm1.btnImprimirClick(Sender: TObject);
-var
-   wnProt: TLeitor;
 begin
   OpenDialog1.Title := 'Selecione a NFE';
   OpenDialog1.DefaultExt := '*-nfe.XML';
@@ -435,12 +435,7 @@ begin
   begin
     ACBrNFe1.NotasFiscais.Clear;
     ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
-    wnProt:=TLeitor.Create;
-    wnProt.CarregarArquivo(OpenDialog1.FileName);
-    wnProt.Grupo:=wnProt.Arquivo;
-    ACBrNFe1.DANFE.ProtocoloNFe:=wnProt.rCampo(tcStr,'nProt');
     ACBrNFe1.NotasFiscais.Imprimir;
-    wnProt.Free;
   end;
 end;
 
@@ -549,6 +544,7 @@ if not(InputQuery('WebServices Enviar', 'Numero da Nota', vAux)) then
         begin
           CST := cst00;
           ICMS.modBC  := dbiPrecoTabelado;
+          ICMS.orig   := oeNacional;
           ICMS.pICMS  := 18;
           ICMS.vICMS  := 180;
           ICMS.vBC    := 1000;
@@ -563,7 +559,7 @@ if not(InputQuery('WebServices Enviar', 'Numero da Nota', vAux)) then
     Total.ICMSTot.vProd := 1000;
   end;
 
-  with ACBrNFe1.NotasFiscais.Add.NFe do
+{  with ACBrNFe1.NotasFiscais.Add.NFe do
   begin
     infNFe.ID := vAux;
 
@@ -671,8 +667,7 @@ if not(InputQuery('WebServices Enviar', 'Numero da Nota', vAux)) then
     Total.ICMSTot.vICMS := 180;
     Total.ICMSTot.vNF   := 1000;
     Total.ICMSTot.vProd := 1000;
-  end;
-
+  end;}
 
   ACBrNFe1.Enviar(0);
   ShowMessage(ACBrNFe1.WebServices.Retorno.Protocolo);
@@ -1011,8 +1006,6 @@ end;
 
 procedure TForm1.btnGerarPDFClick(Sender: TObject);
 begin
-  ACBrNFe1.DANFE.PathPDF := 'd:\temp\danfes';
-
   OpenDialog1.Title := 'Selecione a NFE';
   OpenDialog1.DefaultExt := '*-nfe.XML';
   OpenDialog1.Filter := 'Arquivos NFE (*-nfe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
@@ -1042,6 +1035,19 @@ begin
     ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
     ACBrNFe1.NotasFiscais.Items[0].EnviarEmail(edtSmtpHost.Text, edtSmtpPort.Text, edtSmtpUser.Text, edtSmtpPass.Text, edtSmtpUser.Text, Para, edtEmailAssunto.Text, mmEmailMsg.Lines, cbEmailSSL.Checked);
   end;
+end;
+
+procedure TForm1.btnConsultarReciboClick(Sender: TObject);
+var
+  aux : String;
+begin
+  if not(InputQuery('Consultar Recibo Lote', 'Número do Recibo', aux)) then
+    exit;
+  ACBrNFe1.WebServices.Recibo.Recibo := aux;;
+  ACBrNFe1.WebServices.Recibo.Executar;
+
+  MemoResp.Lines.Text :=  UTF8Encode(ACBrNFe1.WebServices.Recibo.RetWS);
+  LoadXML(MemoResp, WBResposta);
 end;
 
 end.

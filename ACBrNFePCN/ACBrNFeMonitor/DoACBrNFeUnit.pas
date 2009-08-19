@@ -237,6 +237,7 @@ begin
            else
               raise Exception.Create('Arquivo '+Cmd.Params(0)+' não encontrado.');
 
+           ACBrNFe1.NotasFiscais.GerarNFe;   
            if Cmd.Params(2) <> '0' then
               ACBrNFe1.NotasFiscais.Assinar;
 
@@ -439,10 +440,13 @@ begin
                            ACBrNFe1.NotasFiscais.LoadFromFile(PathWithDelim(ExtractFilePath(Application.ExeName))+'Lotes\'+'Lote'+Cmd.Params(0)+'\'+SearchRec.Name);
                            RetFind := FindNext(SearchRec);
                         end;
+                        ACBrNFe1.NotasFiscais.GerarNFe;
+                        ACBrNFe1.NotasFiscais.Assinar;
+                        ACBrNFe1.NotasFiscais.Valida;
                      end
                     else
                        raise Exception.Create('Não foi encontrada nenhuma nota para o Lote: '+Cmd.Params(0) );
-                  end;   
+                  end;
                end;
 
               if not(ACBrNFe1.WebServices.StatusServico.Executar) then

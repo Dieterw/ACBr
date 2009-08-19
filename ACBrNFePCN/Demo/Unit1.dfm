@@ -841,6 +841,15 @@ object Form1: TForm1
         TabOrder = 10
         OnClick = btnEnviarEmailClick
       end
+      object btnConsultarRecibo: TButton
+        Left = 192
+        Top = 156
+        Width = 177
+        Height = 25
+        Caption = 'Consultar Recibo Lote'
+        TabOrder = 11
+        OnClick = btnConsultarReciboClick
+      end
     end
     object PageControl2: TPageControl
       Left = 1
@@ -900,20 +909,18 @@ object Form1: TForm1
   end
   object ACBrNFeDANFERave1: TACBrNFeDANFERave
     ACBrNFe = ACBrNFe1
-    Sistema = 'DJSystem Inform'#225'tica'
     ImprimirHoraSaida = False
     MostrarPreview = True
     TipoDANFE = tiRetrato
     NumCopias = 1
-    Fax = '(15)XXXX-XXXX'
-    Site = 'www.djsystem.com.br'
-    Email = 'andre@djsystem.com.br'
-    ImprimirDescPorc = True
+    ImprimirDescPorc = False
     MargemInferior = 0.800000000000000000
+    CasasDecimais._qCom = 2
+    CasasDecimais._vUnCom = 2
     RavFile = 
       'D:\delphi\ACBr\trunk\ACBrNFePCN\Demo\Report\NotaFiscalEletronica' +
       '.rav'
-    Left = 355
-    Top = 225
+    Left = 363
+    Top = 228
   end
 end

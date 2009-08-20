@@ -50,6 +50,7 @@ interface
 
 uses
   SysUtils, Classes, ACBrNFeDANFERave, 
+  {$IFDEF VisualCLX} QDialogs {$ELSE} Dialogs{$ENDIF},
   {$IFDEF FPC}
      LResources, LazarusPackageIntf, PropEdits, componenteditors
   {$ELSE}
@@ -61,6 +62,13 @@ uses
     {$ENDIF}
   {$ENDIF} ;
 
+Type
+  { Editor de Proriedades de Componente para chamar OpenDialog dos Relatorios }
+  TACBrNFeDANFERaveFileNameProperty = class( TStringProperty )
+  public
+    procedure Edit; override;
+    function GetAttributes: TPropertyAttributes; override;
+  end;
 
 
 procedure Register;
@@ -70,10 +78,36 @@ implementation
 procedure Register;
 begin
   RegisterComponents('ACBr', [TACBrNFeDANFERave]);
+
+  RegisterPropertyEditor(TypeInfo(String), TACBrNFeDANFERave, 'RavFile',
+     TACBrNFeDANFERaveFileNameProperty);
 end;
 
-{$IFDEF FPC}
+{ TACBrNFeDANFERaveFileNameProperty }
+
+procedure TACBrNFeDANFERaveFileNameProperty.Edit;
+var Dlg : TOpenDialog ;
+begin
+  Dlg := TOpenDialog.Create( nil );
+  try
+     Dlg.FileName   := GetValue ;
+     Dlg.InitialDir := ExtractFilePath( GetValue ) ;
+     Dlg.Filter     := 'Arquivos RAV|*.rav' ;
+
+     if Dlg.Execute then
+        SetValue( Dlg.FileName );
+  finally
+     Dlg.Free ;
+  end ;
+end;
+
+function TACBrNFeDANFERaveFileNameProperty.GetAttributes: TPropertyAttributes;
+begin
+  Result := [paDialog];
+end;
+
 initialization
+{$IFDEF FPC}
 //   {$i acbrnfepcn_lcl.lrs}
 {$ENDIF}
 

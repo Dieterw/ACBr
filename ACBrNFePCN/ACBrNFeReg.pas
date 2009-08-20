@@ -50,6 +50,7 @@ interface
 
 uses
   SysUtils, Classes, ACBrNFe, pcnConversao,
+  {$IFDEF VisualCLX} QDialogs {$ELSE} Dialogs, FileCtrl {$ENDIF},
   {$IFDEF FPC}
      LResources, LazarusPackageIntf, PropEdits, componenteditors
   {$ELSE}
@@ -77,6 +78,14 @@ type
     procedure GetValues( Proc : TGetStrProc) ; override;
     procedure SetValue(const Value : ansistring); override;
   end;
+
+  { Editor de Proriedades de Componente para chamar OpenDialog }
+  TACBrNFeDirProperty = class( TStringProperty )
+  public
+    procedure Edit; override;
+    function GetAttributes: TPropertyAttributes; override;
+  end;
+
 
 procedure Register;
 
@@ -109,6 +118,10 @@ begin
 
   RegisterPropertyEditor(TypeInfo(TGeralConf), TConfiguracoes, 'Geral',
     TClassProperty);
+
+  RegisterPropertyEditor(TypeInfo(String), TGeralConf, 'PathSalvar',
+     TACBrNFeDirProperty);
+
 end;
 
 { TACBrAboutDialogProperty }
@@ -149,9 +162,30 @@ begin
 
 end;
 
+{ TACBrNFeDirProperty }
 
-{$IFDEF FPC}
+procedure TACBrNFeDirProperty.Edit;
+Var
+{$IFNDEF VisualCLX} Dir : String ; {$ELSE} Dir : WideString ; {$ENDIF}
+begin
+  {$IFNDEF VisualCLX}
+  Dir := GetValue ;
+  if SelectDirectory(Dir,[],0) then
+     SetValue( Dir ) ;
+  {$ELSE}
+  Dir := '' ;
+  if SelectDirectory('Selecione o Diretório','',Dir) then
+     SetValue( Dir ) ;
+  {$ENDIF}
+end;
+
+function TACBrNFeDirProperty.GetAttributes: TPropertyAttributes;
+begin
+  Result := [paDialog];
+end;
+
 initialization
+{$IFDEF FPC}
 //   {$i acbrnfepcn_lcl.lrs}
 {$ENDIF}
 

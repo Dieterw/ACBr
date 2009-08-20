@@ -61,8 +61,6 @@ uses
     {$ENDIF}
   {$ENDIF} ;
 
-
-
 procedure Register;
 
 implementation
@@ -72,8 +70,8 @@ begin
   RegisterComponents('ACBr', [TACBrNFeDANFERave]);
 end;
 
-{$IFDEF FPC}
 initialization
+{$IFDEF FPC}
 //   {$i acbrnfepcn_lcl.lrs}
 {$ENDIF}
 

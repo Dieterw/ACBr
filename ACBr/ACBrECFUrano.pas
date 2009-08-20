@@ -45,6 +45,25 @@
 |* 11/03/2008:  Gelson Oliveira
 |*  - Adequacao da Rotina FechaCupom para imprimir a mensagem promocional.
 |*  (Quatro linhas ao final do cupom contendo 48 caracteres cada linha.)
+|* 13/07/2009:  Carlos Antonio da Silva
+|*  - Alteração do método GetEstado para obter estado de Redução Z
+|*  - Implementados novos métodos:
+|*    - RetornaInfoECF
+|*    - GetCNPJ
+|*    - GetIE
+|*    - GetGrandeTotal
+|*    - GetVendaBruta
+|*    - GetNumCRZ
+|*    - GetNumGNF
+|*    - GetNumCOOInicial
+|*    - GetTotalCancelamentos
+|*    - GetTotalDescontos
+|*    - GetTotalAcrescimos
+|*    - GetTotalIsencao
+|*    - GetTotalNaoTributado
+|*    - GetTotalSubstituicaoTributaria
+|*    - LerTotaisAliquota
+|*    - LerTotaisFormaPagamento
 ******************************************************************************}
 
 {$I ACBr.inc}
@@ -71,6 +90,8 @@ TACBrECFUrano = class( TACBrECFClass )
     fsArredonda : Char ;
 
     Function PreparaCmd( cmd : AnsiString ) : AnsiString ;
+
+    function RetornaInfoECFValor(ARegistrador: string) : Double;
  protected
     function GetDataHora: TDateTime; override ;
     function GetNumCupom: String; override ;
@@ -86,6 +107,20 @@ TACBrECFUrano = class( TACBrECFClass )
     function GetPoucoPapel : Boolean; override ;
     function GetHorarioVerao: Boolean; override ;
     function GetArredonda: Boolean; override ;
+
+    function GetCNPJ: String; override;
+    function GetIE: String; override;
+    function GetGrandeTotal: Double; override;
+    function GetVendaBruta: Double; override;
+    function GetNumCRZ: String; override;
+    function GetNumGNF: String; override;
+    function GetNumCOOInicial: String; override;
+    function GetTotalCancelamentos: Double; override;
+    function GetTotalDescontos: Double; override;
+    function GetTotalAcrescimos: Double; override;
+    function GetTotalIsencao: Double; override;
+    function GetTotalNaoTributado: Double; override;
+    function GetTotalSubstituicaoTributaria: Double; override;
 
     Function VerificaFimLeitura(var Retorno: AnsiString;
        var TempoLimite: TDateTime) : Boolean ; override ;
@@ -147,20 +182,23 @@ TACBrECFUrano = class( TACBrECFClass )
     procedure CarregaAliquotas ; override ;
     function AchaICMSAliquota( var AliquotaICMS : String ) :
        TACBrECFAliquota ;  override;
+    procedure LerTotaisAliquota; override;
 
     procedure CarregaFormasPagamento ; override ;
     Procedure ProgramaFormaPagamento( var Descricao: String;
        PermiteVinculado : Boolean = true; Posicao : String = '' ) ; override ;
+    procedure LerTotaisFormaPagamento; override;
 
     procedure CarregaComprovantesNaoFiscais ; override ;
     Procedure ProgramaComprovanteNaoFiscal( var Descricao: String;
        Tipo : String = ''; Posicao : String = '') ; override ;
 
+    function RetornaInfoECF(Registrador: String): String; override;
  end ;
 
 implementation
-Uses {$IFDEF COMPILER6_UP} DateUtils, StrUtils {$ELSE} ACBrD5, Windows{$ENDIF},
-     SysUtils,  Math, ACBrECF ;
+Uses {$IFDEF COMPILER6_UP} DateUtils, StrUtils {$ELSE} ACBrD5, SysUtils, Windows{$ENDIF},
+     SysUtils,  Math, ACBrECF;
 
 { ----------------------------- TACBrECFUrano ------------------------------ }
 
@@ -366,8 +404,7 @@ function TACBrECFUrano.GetDataHora: TDateTime;
 Var RetCmd : AnsiString ;
     OldShortDateFormat : String ;
 begin
-  BytesResp := 21 ;
-  RetCmd := EnviaComando( '24' + '27' + R ) ;
+  RetCmd := RetornaInfoECF('27');
   OldShortDateFormat := ShortDateFormat ;
   try
      ShortDateFormat := 'dd/mm/yy' ;
@@ -376,65 +413,42 @@ begin
   finally
      ShortDateFormat := OldShortDateFormat ;
   end ;
-  BytesResp := 21 ;
-  RetCmd := Trim( EnviaComando( '24' + '28' + R ) );
+  RetCmd := RetornaInfoECF('28');
   result := RecodeHour(  result,StrToInt(copy(RetCmd,1,2))) ;
   result := RecodeMinute(result,StrToInt(copy(RetCmd,4,2))) ;
   result := RecodeSecond(result,StrToInt(copy(RetCmd,7,2))) ;
 end;
 
 function TACBrECFUrano.GetNumCupom: String;
-Var RetCmd : AnsiString ;
 begin
-  BytesResp := 21 ;
-  RetCmd := EnviaComando( '24' + '18' + R ) ;
-  result := Trim( RetCmd ) ;            
+  Result := RetornaInfoECF('18');
 end;
 
 function TACBrECFUrano.GetNumCRO: String;
-Var RetCmd : AnsiString ;
 begin
   if fsNumCRO = '' then
-  begin
-     BytesResp := 21 ;
-     RetCmd := EnviaComando( '24' + '23' + R ) ;
-     fsNumCRO := Trim( RetCmd ) ;   
-  end ;
+    fsNumCRO := RetornaInfoECF('23');
 
   Result := fsNumCRO ;
 end;
 
 function TACBrECFUrano.GetNumECF: String;
-Var RetCmd : AnsiString ;
 begin
   if fsNumECF = '' then
-  begin
-     BytesResp := 21 ;
-     RetCmd := EnviaComando( '24' + '26' + R ) ;
-     fsNumECF  := Trim( RetCmd ) ;     { 3 mesmo ??? }
-  end ;
+    fsNumECF := RetornaInfoECF('26');
 
   Result := fsNumECF ;
 end;
 
 function TACBrECFUrano.GetNumSerie: String;
-Var RetCmd : AnsiString ;
 begin
-  BytesResp := 21 ;
-  RetCmd := EnviaComando( '24' + '25' + R ) ;
-  Result := Trim( RetCmd ) ;   { 15 mesmo ??? }
+  Result := RetornaInfoECF('25');
 end;
 
 function TACBrECFUrano.GetNumVersao: String ;
-Var RetCmd : AnsiString ;
 begin
   if fsNumVersao = '' then
-  begin
-     BytesResp := 21 ;
-     RetCmd := EnviaComando( '24' + '97' + R ) ;
-
-     fsNumVersao := Trim( RetCmd ) ;   { Qual o tamanho ??? }
-  end ;
+    fsNumVersao := RetornaInfoECF('97');
 
   Result := fsNumVersao ;
 end;
@@ -445,11 +459,8 @@ begin
 end;
 
 function TACBrECFUrano.GetSubTotal: Double;
-Var RetCmd : AnsiString ;
 begin
-  BytesResp := 21 ;
-  RetCmd := EnviaComando( '24' + '00' + R ) ;
-  Result := RoundTo( StrToFloatDef(RetCmd,0), -2) ;
+  Result := RetornaInfoECFValor('00');
 end;
 
 
@@ -466,12 +477,13 @@ begin
 
       { Como detectar estados Requer Z e Requer X  ??? }
       case B of
+        50  : fpEstado := estRequerZ;
         124 : fpEstado := estBloqueada ;
         120,121 : fpEstado := estPagamento ;
         119 : fpEstado := estVenda ;
         125,126,127 : fpEstado := estRelatorio ;
         118 : fpEstado := estLivre ;
-      else ;
+      else
         fpEstado := estDesconhecido ;
       end;
 
@@ -613,7 +625,7 @@ begin
   end;
 
   if Trim( Observacao ) <> '' then
-     EnviaComando( '170' + Observacao + R, 10 );
+     EnviaComando( '170' + padL(Observacao, 192) + R, 10 );
   
     EnviaComando('050' + padL(Operador, 8) + R, 10);  
 end;
@@ -992,6 +1004,107 @@ begin
   end ;
 end;
 
+
+function TACBrECFUrano.GetCNPJ: String;
+begin
+  Result := RetornaInfoECF('30');
+end;
+
+function TACBrECFUrano.GetIE: String;
+begin
+  Result := RetornaInfoECF('31');
+end;
+
+function TACBrECFUrano.GetGrandeTotal: Double;
+begin
+  Result := RetornaInfoECFValor('01');
+end;
+
+function TACBrECFUrano.GetNumCRZ: String;
+begin
+  Result := RetornaInfoECF('24');
+end;
+
+function TACBrECFUrano.GetNumGNF: String;
+begin
+  Result := RetornaInfoECF('20');
+end;
+
+function TACBrECFUrano.GetNumCOOInicial: String;
+begin
+  Result := RetornaInfoECF('17');
+end;
+
+function TACBrECFUrano.GetTotalCancelamentos: Double;
+begin
+  Result := RetornaInfoECFValor('02');
+end;
+
+function TACBrECFUrano.GetTotalDescontos: Double;
+begin
+  Result := RetornaInfoECFValor('04');
+end;
+
+function TACBrECFUrano.GetTotalAcrescimos: Double;
+begin
+  Result := RetornaInfoECFValor('05'); 
+end;
+
+function TACBrECFUrano.GetTotalIsencao: Double;
+begin
+  Result := RetornaInfoECFValor('13');
+end;
+
+function TACBrECFUrano.GetTotalNaoTributado: Double;
+begin
+  Result := RetornaInfoECFValor('14');
+end;
+
+function TACBrECFUrano.GetTotalSubstituicaoTributaria: Double;
+begin
+  Result := RetornaInfoECFValor('15');
+end;
+
+function TACBrECFUrano.GetVendaBruta: Double;
+begin
+  // GT final - GT inicial
+  Result := GrandeTotal - RetornaInfoECFValor('32');
+end;
+
+procedure TACBrECFUrano.LerTotaisAliquota;
+var i : Integer ;
+begin
+  if not Assigned( fpAliquotas ) then
+     CarregaAliquotas ;
+
+  for i := 0 to Aliquotas.Count-1 do
+    Aliquotas[i].Total := RetornaInfoECFValor(IntToStrZero(i + 6, 2));
+end;
+
+procedure TACBrECFUrano.LerTotaisFormaPagamento;
+var i : Integer ;
+begin
+  if not Assigned( fpFormasPagamentos ) then
+     CarregaFormasPagamento ;
+
+  for i := 0 to FormasPagamento.Count-1 do
+    FormasPagamento[i].Total := RetornaInfoECFValor(IntToStrZero(i + 52, 2));
+end;
+
+function TACBrECFUrano.RetornaInfoECF(Registrador: String): String;
+begin
+  BytesResp := 21 ;
+  Result := EnviaComando( '24' + Registrador + R ) ;
+  Result := Trim( Result ) ;
+end;
+
+function TACBrECFUrano.RetornaInfoECFValor(ARegistrador: string): Double;
+var RetCmd : AnsiString;
+begin
+  RetCmd := RetornaInfoECF(ARegistrador) ;
+  RetCmd := StringReplace( RetCmd, '.', DecimalSeparator, []);
+  Result := RoundTo(StrToFloatDef(RetCmd, 0), -2);
+end;
 
 end.
 

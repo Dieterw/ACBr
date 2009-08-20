@@ -494,6 +494,7 @@ type
     fsHashSenha:Integer;
     fsCNPJSWOK: Boolean ;
     TipoCMD : String ;
+    pCanClose : Boolean ;
 
     fsSLPrecos : TStringList ;
     fsDTPrecos : Integer ;
@@ -572,6 +573,7 @@ begin
   NewLines  := '' ;
   DISWorking:= false ;
 
+  pCanClose      := False ;
   fsRFDIni       := '' ;
   fsRFDLeuParams := False ;
   fsCNPJSWOK     := False ;
@@ -724,10 +726,10 @@ begin
      CanClose := false ;
   end ;
 
-  if CanClose then
-     CanClose := ( MessageDlg('<b>Deseja realmente encerrar o <br>'+
-                              '<font color=blue><b>ACBrMonitor</b></font> ?</b>',
-                    mtConfirmation,[mbNo,mbYes] ,0 ) = mrYes );
+  CanClose := pCanClose ;
+
+  if not CanClose then
+     Application.Minimize ;
 end;
 
 {------------------------------------------------------------------------------}
@@ -828,6 +830,7 @@ end;
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.Encerrar1Click(Sender: TObject);
 begin
+  pCanClose := True ;
   close ;
 end;
 

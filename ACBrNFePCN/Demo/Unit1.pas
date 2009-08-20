@@ -114,6 +114,8 @@ type
     mmEmailMsg: TMemo;
     ACBrNFeDANFERave1: TACBrNFeDANFERave;
     btnConsultarRecibo: TButton;
+    btnEnvDPEC: TButton;
+    btnConsultarDPEC: TButton;
     procedure sbtnCaminhoCertClick(Sender: TObject);
     procedure sbtnLogoMarcaClick(Sender: TObject);
     procedure sbtnPathSalvarClick(Sender: TObject);
@@ -133,6 +135,8 @@ type
     procedure btnGerarPDFClick(Sender: TObject);
     procedure btnEnviarEmailClick(Sender: TObject);
     procedure btnConsultarReciboClick(Sender: TObject);
+    procedure btnEnvDPECClick(Sender: TObject);
+    procedure btnConsultarDPECClick(Sender: TObject);
   private
     { Private declarations }
     procedure GravarConfiguracao ;
@@ -260,18 +264,14 @@ begin
       ACBrNFe1.Configuracoes.WebServices.Ambiente   := StrToTpAmb(Ok,IntToStr(rgTipoAmb.ItemIndex+1));
       ACBrNFe1.Configuracoes.WebServices.Visualizar := ckVisualizar.Checked;
 
-      {$IFDEF ACBrNFeOpenSSL}
-         edtProxyHost.Text  := Ini.ReadString( 'Proxy','Host'   ,'') ;
-         edtProxyPorta.Text := Ini.ReadString( 'Proxy','Porta'  ,'') ;
-         edtProxyUser.Text  := Ini.ReadString( 'Proxy','User'   ,'') ;
-         edtProxySenha.Text := Ini.ReadString( 'Proxy','Pass'   ,'') ;
-         ACBrNFe1.Configuracoes.WebServices.ProxyHost := edtProxyHost.Text;
-         ACBrNFe1.Configuracoes.WebServices.ProxyPort := edtProxyPorta.Text;
-         ACBrNFe1.Configuracoes.WebServices.ProxyUser := edtProxyUser.Text;
-         ACBrNFe1.Configuracoes.WebServices.ProxyPass := edtProxySenha.Text;
-      {$ELSE}
-         gbProxy.Visible := False;  
-      {$ENDIF}
+      edtProxyHost.Text  := Ini.ReadString( 'Proxy','Host'   ,'') ;
+      edtProxyPorta.Text := Ini.ReadString( 'Proxy','Porta'  ,'') ;
+      edtProxyUser.Text  := Ini.ReadString( 'Proxy','User'   ,'') ;
+      edtProxySenha.Text := Ini.ReadString( 'Proxy','Pass'   ,'') ;
+      ACBrNFe1.Configuracoes.WebServices.ProxyHost := edtProxyHost.Text;
+      ACBrNFe1.Configuracoes.WebServices.ProxyPort := edtProxyPorta.Text;
+      ACBrNFe1.Configuracoes.WebServices.ProxyUser := edtProxyUser.Text;
+      ACBrNFe1.Configuracoes.WebServices.ProxyPass := edtProxySenha.Text;
 
       rgTipoDanfe.ItemIndex     := Ini.ReadInteger( 'Geral','DANFE'       ,0) ;
       edtLogoMarca.Text         := Ini.ReadString( 'Geral','LogoMarca'   ,'') ;
@@ -772,7 +772,23 @@ begin
       frmStatus.Show;
       frmStatus.BringToFront;
     end;
-    stEmail :
+    stNFeEnvDPEC :
+    begin
+      if ( frmStatus = nil ) then
+        frmStatus := TfrmStatus.Create(Application);
+      frmStatus.lblStatus.Caption := 'Enviando DPEC...';
+      frmStatus.Show;
+      frmStatus.BringToFront;
+    end;
+    stNFeConsultaDPEC :
+    begin
+      if ( frmStatus = nil ) then
+        frmStatus := TfrmStatus.Create(Application);
+      frmStatus.lblStatus.Caption := 'Consultando DPEC...';
+      frmStatus.Show;
+      frmStatus.BringToFront;
+    end;
+    stNFeEmail :
     begin
       if ( frmStatus = nil ) then
         frmStatus := TfrmStatus.Create(Application);
@@ -1048,6 +1064,264 @@ begin
 
   MemoResp.Lines.Text :=  UTF8Encode(ACBrNFe1.WebServices.Recibo.RetWS);
   LoadXML(MemoResp, WBResposta);
+end;
+
+procedure TForm1.btnEnvDPECClick(Sender: TObject);
+var
+ vAux : String;
+begin
+if not(InputQuery('WebServices DPEC', 'Numero da Nota', vAux)) then
+    exit;
+
+  ACBrNFe1.NotasFiscais.Clear;
+
+  with ACBrNFe1.NotasFiscais.Add.NFe do
+  begin
+    infNFe.ID := vAux;
+
+    Ide.natOp     := 'VENDA PRODUCAO DO ESTAB.';
+    Ide.nNF       := StrToInt(vAux);
+    Ide.cNF       := StrToInt(vAux);
+    Ide.modelo    := 55;
+    Ide.serie     := 1;
+    Ide.dEmi      := Date;
+    Ide.dSaiEnt   := Date;
+    Ide.tpAmb     := taHomologacao;
+    Ide.tpNF      := tnSaida;
+    Ide.indPag    := ipVista;
+    Ide.verProc   := '1.0.0.0';
+    Ide.cUF       := 35;
+    Ide.cMunFG    := 3554003;
+
+    Emit.CNPJCPF           := edtEmitCNPJ.Text;
+    Emit.IE                := edtEmitIE.Text;
+    Emit.xNome             := edtEmitRazao.Text;
+    Emit.xFant             := edtEmitFantasia.Text;
+    Emit.EnderEmit.fone    := edtEmitFone.Text;
+    Emit.EnderEmit.CEP     := StrToInt(edtEmitCEP.Text);
+    Emit.EnderEmit.xLgr    := edtEmitLogradouro.Text;
+    Emit.EnderEmit.nro     := edtEmitNumero.Text;
+    Emit.EnderEmit.xCpl    := edtEmitComp.Text;
+    Emit.EnderEmit.xBairro := edtEmitBairro.Text;
+    Emit.EnderEmit.cMun    := StrToInt(edtEmitCodCidade.Text);
+    Emit.EnderEmit.xMun    := edtEmitCidade.Text;
+    Emit.EnderEmit.UF      := edtEmitUF.Text;
+    Emit.enderEmit.cPais   := 1058;
+    Emit.enderEmit.xPais   := 'BRASIL';
+
+    Dest.CNPJCPF           := '05481336000137';
+    Dest.EnderDest.CEP     := 18270410;
+    Dest.EnderDest.xLgr    := 'Praça Anita Costa';
+    Dest.EnderDest.nro     := '0034';
+    Dest.EnderDest.xCpl    := '';
+    Dest.EnderDest.xBairro := 'Centro';
+    Dest.EnderDest.cMun    := 3554003;
+    Dest.EnderDest.xMun    := 'Tatuí';
+    Dest.EnderDest.UF      := 'SP';
+    Dest.EnderDest.Fone    := '1532599600';
+    Dest.IE                := '687138770110';
+    Dest.xNome             := 'D.J. COM. E LOCAÇÃO DE SOFTWARES LTDA - ME';
+    Dest.EnderDest.cPais   := 1058;
+    Dest.EnderDest.xPais   := 'BRASIL';
+
+    with Det.Add do
+    begin
+      infAdProd     := 'Teste de informacao adicional;Teste de Segunda Linha';
+      Prod.nItem    := 1;
+      Prod.CFOP     := '5101';
+      Prod.cProd    := '67';
+      Prod.xProd    := 'ALHO 400 G';
+      Prod.qCom     := 100;
+      Prod.uCom     := 'KG';
+      Prod.vProd    := 100;
+      Prod.vUnCom   := 10;
+      Prod.qTrib    := 100;
+      Prod.uTrib    := 'KG';
+      Prod.vUnTrib  := 10;
+      with Imposto do
+      begin
+        with ICMS do
+        begin
+          CST := cst00;
+          ICMS.modBC  := dbiPrecoTabelado;
+          ICMS.pICMS  := 18;
+          ICMS.vICMS  := 180;
+          ICMS.vBC    := 1000;
+        end;
+        IPI.CST := ipi01;
+      end;
+    end;
+
+    with Det.Add do
+    begin
+      Prod.nItem    := 2;
+      Prod.CFOP     := '5101';
+      Prod.cProd    := '68';
+      Prod.xProd    := 'CEBOLA 400 G';
+      Prod.qCom     := 100;
+      Prod.uCom     := 'KG';
+      Prod.vProd    := 100;
+      Prod.vUnCom   := 10;
+      Prod.qTrib    := 100;
+      Prod.uTrib    := 'KG';
+      Prod.vUnTrib  := 10;
+      with Imposto do
+      begin
+        with ICMS do
+        begin
+          CST := cst00;
+          ICMS.modBC  := dbiPrecoTabelado;
+          ICMS.orig   := oeNacional;
+          ICMS.pICMS  := 18;
+          ICMS.vICMS  := 180;
+          ICMS.vBC    := 1000;
+        end;
+        IPI.CST := ipi01;
+      end;
+    end;
+
+    Total.ICMSTot.vBC   := 1000;
+    Total.ICMSTot.vICMS := 180;
+    Total.ICMSTot.vNF   := 1000;
+    Total.ICMSTot.vProd := 1000;
+  end;
+
+{  with ACBrNFe1.NotasFiscais.Add.NFe do
+  begin
+    infNFe.ID := vAux;
+
+    Ide.natOp     := 'VENDA PRODUCAO DO ESTAB.';
+    Ide.nNF       := StrToInt(vAux)+1;
+    Ide.cNF       := StrToInt(vAux)+1;
+    Ide.modelo    := 55;
+    Ide.serie     := 1;
+    Ide.dEmi      := Date;
+    Ide.dSaiEnt   := Date;
+    Ide.tpAmb     := taHomologacao;
+    Ide.tpNF      := tnSaida;
+    Ide.indPag    := ipVista;
+    Ide.verProc   := '1.0.0.0';
+    Ide.cUF       := 35;
+    Ide.cMunFG    := 3554003;
+
+    Emit.CNPJCPF           := edtEmitCNPJ.Text;
+    Emit.IE                := edtEmitIE.Text;
+    Emit.xNome             := edtEmitRazao.Text;
+    Emit.xFant             := edtEmitFantasia.Text;
+    Emit.EnderEmit.fone    := edtEmitFone.Text;
+    Emit.EnderEmit.CEP     := StrToInt(edtEmitCEP.Text);
+    Emit.EnderEmit.xLgr    := edtEmitLogradouro.Text;
+    Emit.EnderEmit.nro     := edtEmitNumero.Text;
+    Emit.EnderEmit.xCpl    := edtEmitComp.Text;
+    Emit.EnderEmit.xBairro := edtEmitBairro.Text;
+    Emit.EnderEmit.cMun    := StrToInt(edtEmitCodCidade.Text);
+    Emit.EnderEmit.xMun    := edtEmitCidade.Text;
+    Emit.EnderEmit.UF      := edtEmitUF.Text;
+    Emit.enderEmit.cPais   := 1058;
+    Emit.enderEmit.xPais   := 'BRASIL';
+
+    Dest.CNPJCPF           := '05481336000137';
+    Dest.EnderDest.CEP     := 18270410;
+    Dest.EnderDest.xLgr    := 'Praça Anita Costa';
+    Dest.EnderDest.nro     := '0034';
+    Dest.EnderDest.xCpl    := '';
+    Dest.EnderDest.xBairro := 'Centro';
+    Dest.EnderDest.cMun    := 3554003;
+    Dest.EnderDest.xMun    := 'Tatuí';
+    Dest.EnderDest.UF      := 'SP';
+    Dest.EnderDest.Fone    := '1532599600';
+    Dest.IE                := '687138770110';
+    Dest.xNome             := 'D.J. COM. E LOCAÇÃO DE SOFTWARES LTDA - ME';
+    Dest.EnderDest.cPais   := 1058;
+    Dest.EnderDest.xPais   := 'BRASIL';
+
+    with Det.Add do
+    begin
+      infAdProd     := 'Teste de informacao adicional;Teste de Segunda Linha';
+      Prod.nItem    := 1;
+      Prod.CFOP     := '5101';
+      Prod.cProd    := '67';
+      Prod.xProd    := 'ALHO 400 G';
+      Prod.qCom     := 100;
+      Prod.uCom     := 'KG';
+      Prod.vProd    := 100;
+      Prod.vUnCom   := 10;
+      Prod.qTrib    := 100;
+      Prod.uTrib    := 'KG';
+      Prod.vUnTrib  := 10;
+      with Imposto do
+      begin
+        with ICMS do
+        begin
+          CST := cst00;
+          ICMS.modBC  := dbiPrecoTabelado;
+          ICMS.pICMS  := 18;
+          ICMS.vICMS  := 180;
+          ICMS.vBC    := 1000;
+        end;
+        IPI.CST := ipi01;
+      end;
+    end;
+
+    with Det.Add do
+    begin
+      Prod.nItem    := 2;
+      Prod.CFOP     := '5101';
+      Prod.cProd    := '68';
+      Prod.xProd    := 'CEBOLA 400 G';
+      Prod.qCom     := 100;
+      Prod.uCom     := 'KG';
+      Prod.vProd    := 100;
+      Prod.vUnCom   := 10;
+      Prod.qTrib    := 100;
+      Prod.uTrib    := 'KG';
+      Prod.vUnTrib  := 10;
+      with Imposto do
+      begin
+        with ICMS do
+        begin
+          CST := cst00;
+          ICMS.modBC  := dbiPrecoTabelado;
+          ICMS.pICMS  := 18;
+          ICMS.vICMS  := 180;
+          ICMS.vBC    := 1000;
+        end;
+        IPI.CST := ipi01;
+      end;
+    end;
+
+    Total.ICMSTot.vBC   := 1000;
+    Total.ICMSTot.vICMS := 180;
+    Total.ICMSTot.vNF   := 1000;
+    Total.ICMSTot.vProd := 1000;
+  end;}
+
+  ACBrNFe1.WebServices.EnviarDPEC.Executar;
+  ShowMessage(DateTimeToStr(ACBrNFe1.WebServices.EnviarDPEC.DhRegDPEC));
+  ShowMessage(ACBrNFe1.WebServices.EnviarDPEC.nRegDPEC);
+
+  MemoResp.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.EnviarDPEC.RetWS);
+  LoadXML(MemoResp, WBResposta);
+
+  ACBrNFe1.NotasFiscais.Clear;
+end;
+
+procedure TForm1.btnConsultarDPECClick(Sender: TObject);
+var
+ vAux : String;
+begin
+  if not(InputQuery('WebServices DPEC', 'Informe o Numero do Registro do DPEC ou a Chave da NFe', vAux)) then
+    exit;
+
+  if Length(Trim(vAux)) < 44 then
+     ACBrNFe1.WebServices.ConsultaDPEC.nRegDPEC := vAux
+  else
+     ACBrNFe1.WebServices.ConsultaDPEC.NFeChave := vAux;
+  ACBrNFe1.WebServices.ConsultaDPEC.Executar;
+
+  MemoResp.Lines.Text :=  UTF8Encode(ACBrNFe1.WebServices.ConsultaDPEC.RetWS);
+  LoadXML(MemoResp, WBResposta);
+    
 end;
 
 end.

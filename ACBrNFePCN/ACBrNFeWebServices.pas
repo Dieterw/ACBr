@@ -47,14 +47,14 @@ unit ACBrNFeWebServices;
 interface
 
 uses Classes, SysUtils,
-  {$IFDEF VCL} Dialogs, {$ELSE} QDialogs, {$ENDIF}
+  {$IFDEF CLX} QDialogs,{$ELSE} Dialogs,{$ENDIF}
   {$IFDEF ACBrNFeOpenSSL}
     HTTPSend,
   {$ELSE}
      SoapHTTPClient, SOAPHTTPTrans, WinInet, ACBrNFeCAPICOM_TLB,
   {$ENDIF}
   pcnNFe, pcnNFeW,
-  pcnRetConsReciNFe, pcnRetConsCad, pcnAuxiliar, pcnConversao,
+  pcnRetConsReciNFe, pcnRetConsCad, pcnAuxiliar, pcnConversao, pcnRetDPEC,
   ACBrNFeNotasFiscais,
   ACBrNFeConfiguracoes ;
 
@@ -70,6 +70,8 @@ type
     procedure DoNFeCancelamento;
     procedure DoNFeInutilizacao;
     procedure DoNFeConsultaCadastro;
+    procedure DoNFeEnvDPEC;
+    procedure DoNFeConsultaDPEC;
     {$IFDEF ACBrNFeOpenSSL}
        procedure ConfiguraHTTP( HTTP : THTTPSend; Action : AnsiString);
     {$ELSE}
@@ -247,7 +249,7 @@ type
   TNFeInutilizacao = Class(TWebServicesBase)
   private
     FNFeChave: WideString;
-    FProtocolo: string; 
+    FProtocolo: string;
     FModelo: Integer;
     FSerie: Integer;
     FCNPJ: String;
@@ -293,6 +295,9 @@ type
     FcUF: Integer;
     FdhCons: TDateTime;
     FRetConsCad : TRetConsCad;
+    procedure SetCNPJ(const Value: String);
+    procedure SetCPF(const Value: String);
+    procedure SetIE(const Value: String);
   public
     function Executar: Boolean;override;
     property verAplic: String read FverAplic;
@@ -303,9 +308,54 @@ type
     property RetConsCad: TRetConsCad read FRetConsCad;
 
     property UF:   String read FUF write FUF;
-    property IE:   String read FIE write FIE;
-    property CNPJ: String read FCNPJ write FCNPJ;
-    property CPF:  String read FCPF write FCPF;
+    property IE:   String read FIE write SetIE;
+    property CNPJ: String read FCNPJ write SetCNPJ;
+    property CPF:  String read FCPF write SetCPF;
+  end;
+
+  TNFeEnvDPEC = Class(TWebServicesBase)
+  private
+    FId: String;
+    FverAplic: String;
+    FcStat: Integer;
+    FTpAmb: TpcnTipoAmbiente;
+    FxMotivo: String;
+    FdhRegDPEC: TDateTime;
+    FnRegDPEC: String;
+    FNFeChave: String;
+  public
+    function Executar: Boolean;override;
+    property ID: String read FId;
+    property verAplic: String read FverAplic;
+    property cStat: Integer read FcStat;
+    property TpAmb: TpcnTipoAmbiente read FTpAmb;
+    property xMotivo: String read FxMotivo;
+    property DhRegDPEC: TDateTime read FdhRegDPEC;
+    property nRegDPEC: String read FnRegDPEC;
+    property NFeChave: String read FNFeChave;
+  end;
+
+  TNFeConsultaDPEC = Class(TWebServicesBase)
+  private
+    FverAplic: String;
+    FcStat: Integer;
+    FTpAmb: TpcnTipoAmbiente;
+    FxMotivo: String;
+    FretDPEC: TRetDPEC;
+    FnRegDPEC: String;
+    FNFeChave: String;
+    procedure SetNFeChave(const Value: String);
+    procedure SetnRegDPEC(const Value: String);
+  public
+    function Executar: Boolean;override;
+    property verAplic: String read FverAplic;
+    property cStat: Integer read FcStat;
+    property TpAmb: TpcnTipoAmbiente read FTpAmb;
+    property xMotivo: String read FxMotivo;
+    property retDPEC: TRetDPEC read FretDPEC;
+
+    property nRegDPEC: String read FnRegDPEC write SetnRegDPEC;
+    property NFeChave: String read FNFeChave write SetNFeChave;
   end;
 
   TWebServices = Class(TWebServicesBase)
@@ -319,6 +369,8 @@ type
     FCancelamento: TNFeCancelamento;
     FInutilizacao: TNFeInutilizacao;
     FConsultaCadastro: TNFeConsultaCadastro;
+    FEnviaDPEC: TNFeEnvDPEC;
+    FConsultaDPEC: TNFeConsultaDPEC;
   public
     constructor Create(AFNotaFiscalEletronica: TComponent);reintroduce;
     destructor Destroy; override;
@@ -335,6 +387,8 @@ type
     property Cancelamento: TNFeCancelamento read FCancelamento write FCancelamento;
     property Inutilizacao: TNFeInutilizacao read FInutilizacao write FInutilizacao;
     property ConsultaCadastro: TNFeConsultaCadastro read FConsultaCadastro write FConsultaCadastro;
+    property EnviarDPEC: TNFeEnvDPEC read FEnviaDPEC write FEnviaDPEC;
+    property ConsultaDPEC: TNFeConsultaDPEC read FConsultaDPEC write FConsultaDPEC;
   end;
 
 implementation
@@ -355,7 +409,8 @@ uses {$IFDEF ACBrNFeOpenSSL}
      pcnInutNFe, pcnRetInutNFe,
      pcnRetEnvNFe, pcnConsReciNFe ,
      pcnConsCad,
-     pcnNFeR, pcnLeitor, pcnProcNFe;
+     pcnNFeR, pcnLeitor, pcnProcNFe,
+     pcnEnvDPEC, pcnConsDPEC, Math;
 
 {$IFNDEF ACBrNFeOpenSSL}
 const
@@ -538,6 +593,78 @@ begin
   ConCadNFe.Free
 end;
 
+procedure TWebServicesBase.DoNFeEnvDPEC;
+var
+  EnvDPEC: TEnvDPEC;
+  i : Integer;
+begin
+  EnvDPEC := TEnvDPEC.Create;
+  EnvDPEC.schema := TsPL005c;
+
+  TACBrNFe( FACBrNFe ).NotasFiscais.GerarNFe; //Gera NFe pra pegar a Chave
+  if TACBrNFe( FACBrNFe ).Configuracoes.Geral.Salvar then
+     TACBrNFe( FACBrNFe ).NotasFiscais.SaveToFile; // Se tiver configurado pra salvar, salva as NFes
+
+  with EnvDPEC.infDPEC do
+   begin
+     ID := TACBrNFe( FACBrNFe ).NotasFiscais.Items[0].NFe.Emit.CNPJCPF;
+
+     IdeDec.cUF   := TACBrNFe( FACBrNFe ).Configuracoes.WebServices.UFCodigo;
+     ideDec.tpAmb := TACBrNFe( FACBrNFe ).Configuracoes.WebServices.Ambiente;
+     ideDec.verProc := ACBRNFE_VERSAO;
+     ideDec.CNPJ := TACBrNFe( FACBrNFe ).NotasFiscais.Items[0].NFe.Emit.CNPJCPF;
+     ideDec.IE   := TACBrNFe( FACBrNFe ).NotasFiscais.Items[0].NFe.Emit.IE;
+
+     for i:= 0 to TACBrNFe( FACBrNFe ).NotasFiscais.Count-1 do
+      begin
+        with resNFe.Add do
+         begin
+           chNFe   := StringReplace(TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NFe.infNFe.id,'NFe','',[rfReplaceAll]);
+           CNPJCPF := TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NFe.dest.CNPJCPF;
+           UF      := TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NFe.dest.enderdEST.UF;
+           vNF     := TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NFe.Total.ICMSTot.vNF;
+           vICMS   := TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NFe.Total.ICMSTot.vICMS;
+           vST     := TACBrNFe( FACBrNFe ).NotasFiscais.Items[I].NFe.Total.ICMSTot.vST;
+         end;
+      end;
+   end;
+  EnvDPEC.GerarXML;
+
+{$IFDEF ACBrNFeOpenSSL}
+  if not(NotaUtil.Assinar(EnvDPEC.Gerador.ArquivoFormatoXML, TConfiguracoes(FConfiguracoes).Certificados.Certificado , TConfiguracoes(FConfiguracoes).Certificados.Senha, FDadosMsg, FMsg)) then
+    raise Exception.Create('Falha ao assinar DPEC'+LineBreak+FMsg);
+{$ELSE}
+  if not(NotaUtil.Assinar(EnvDPEC.Gerador.ArquivoFormatoXML, TConfiguracoes(FConfiguracoes).Certificados.GetCertificado , FDadosMsg, FMsg)) then
+    raise Exception.Create('Falha ao assinar DPEC '+LineBreak+FMsg);
+{$ENDIF}
+  EnvDPEC.Free ;
+
+  FDadosMsg := StringReplace( FDadosMsg, '<'+ENCODING_UTF8_STD+'>', '', [rfReplaceAll] ) ;
+  FDadosMsg := StringReplace( FDadosMsg, '<'+ENCODING_UTF8+'>', '', [rfReplaceAll] ) ;
+  FDadosMsg := StringReplace( FDadosMsg, '<?xml version="1.0"?>', '', [rfReplaceAll] ) ;
+end;
+
+procedure TWebServicesBase.DoNFeConsultaDPEC;
+var
+  ConsDPEC: TConsDPEC;
+begin
+  ConsDPEC := TConsDPEC.Create;
+  ConsDPEC.schema   := TsPL005c;
+  ConsDPEC.tpAmb    := TpcnTipoAmbiente(FConfiguracoes.WebServices.AmbienteCodigo-1);
+  ConsDPEC.verAplic := NfVersao;
+  ConsDPEC.nRegDPEC := TNFeConsultaDPEC(Self).nRegDPEC;
+  ConsDPEC.chNFe    := TNFeConsultaDPEC(Self).NFeChave;
+  ConsDPEC.GerarXML;
+
+  FDadosMsg := ConsDPEC.Gerador.ArquivoFormatoXML;
+
+  ConsDPEC.Free;
+
+  FDadosMsg := StringReplace( FDadosMsg, '<'+ENCODING_UTF8_STD+'>', '', [rfReplaceAll] ) ;
+  FDadosMsg := StringReplace( FDadosMsg, '<'+ENCODING_UTF8+'>', '', [rfReplaceAll] ) ;  
+  FDadosMsg := StringReplace( FDadosMsg, '<?xml version="1.0"?>', '', [rfReplaceAll] ) ;
+end;
+
 procedure TWebServicesBase.DoNFeRecepcao;
 var
   Cabecalho: TCabecalho;
@@ -660,6 +787,10 @@ begin
     DoNFeInutilizacao
   else if self is TNFeConsultaCadastro then
     DoNFeConsultaCadastro
+  else if self is TNFeEnvDPEC then
+    DoNFeEnvDPEC
+  else if self is TNFeConsultaDPEC then
+    DoNFeConsultaDPEC
 end;
 
 procedure TWebServicesBase.LoadURL;
@@ -678,6 +809,10 @@ begin
     FURL  := NotaUtil.GetURL(FConfiguracoes.WebServices.UFCodigo, FConfiguracoes.WebServices.AmbienteCodigo, FConfiguracoes.Geral.FormaEmissaoCodigo, LayNfeInutilizacao)
   else if self is TNFeConsultaCadastro then
     FURL  := NotaUtil.GetURL(UFparaCodigo(TNFeConsultaCadastro(Self).UF), FConfiguracoes.WebServices.AmbienteCodigo, FConfiguracoes.Geral.FormaEmissaoCodigo, LayNfeCadastro)
+  else if self is TNFeEnvDPEC then
+    FURL  := NotaUtil.GetURL(FConfiguracoes.WebServices.UFCodigo, FConfiguracoes.WebServices.AmbienteCodigo, FConfiguracoes.Geral.FormaEmissaoCodigo, LayNfeEnvDPEC)
+  else if self is TNFeConsultaDPEC then
+    FURL  := NotaUtil.GetURL(FConfiguracoes.WebServices.UFCodigo, FConfiguracoes.WebServices.AmbienteCodigo, FConfiguracoes.Geral.FormaEmissaoCodigo, LayNfeConsultaDPEC)
 end;
 
 { TWebServices }
@@ -727,6 +862,8 @@ begin
   FCancelamento     := TNFeCancelamento.Create(AFNotaFiscalEletronica);
   FInutilizacao     := TNFeInutilizacao.Create(AFNotaFiscalEletronica);
   FConsultaCadastro := TNFeConsultaCadastro.Create(AFNotaFiscalEletronica);
+  FEnviaDPEC        := TNFeEnvDPEC.Create(AFNotaFiscalEletronica);
+  FConsultaDPEC     := TNFeConsultaDPEC.Create(AFNotaFiscalEletronica);
 end;
 
 destructor TWebServices.Destroy;
@@ -1762,7 +1899,7 @@ begin
     TACBrNFe( FACBrNFe ).SetStatus( stNFeCadastro );
     if FConfiguracoes.Geral.Salvar then
       FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+'-ped-cad.xml', FDadosMsg);
-
+    FRetWS := '';
     {$IFDEF ACBrNFeOpenSSL}
        HTTP.Document.LoadFromStream(Stream);
        ConfiguraHTTP(HTTP,'SOAPAction: "http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro/consultaCadastro"');
@@ -1798,14 +1935,6 @@ begin
     FdhCons   := FRetConsCad.dhCons;
     FcUF      := FRetConsCad.cUF ;
 
-    if FRetConsCad.cStat = 111 then
-     begin
-       FUF   := FRetConsCad.UF ;
-       FIE   := FRetConsCad.IE ;
-       FCNPJ := FRetConsCad.CNPJ ;
-       FCPF  := FRetConsCad.CPF ;
-     end;
-
     FMsg      := FRetConsCad.XMotivo;
 //    FRetConsCad.Free;
 
@@ -1824,5 +1953,264 @@ begin
   end;
 end;
 
+procedure TNFeConsultaCadastro.SetCNPJ(const Value: String);
+begin
+  if NotaUtil.NaoEstaVazio(Value) then
+   begin
+     FIE   := '';
+     FCPF  := '';
+   end;
+  FCNPJ := Value;
+end;
+
+procedure TNFeConsultaCadastro.SetCPF(const Value: String);
+begin
+  if NotaUtil.NaoEstaVazio(Value) then
+   begin
+     FIE   := '';
+     FCNPJ := '';
+   end;
+  FCPF  := Value;
+end;
+
+procedure TNFeConsultaCadastro.SetIE(const Value: String);
+begin
+  if NotaUtil.NaoEstaVazio(Value) then
+   begin
+     FCNPJ := '';
+     FCPF  := '';
+   end;  
+  FIE   := Value;
+end;
+
+{ TNFeEnvDPEC }
+function TNFeEnvDPEC.Executar: Boolean;
+var
+  Texto : String;
+  Acao  : TStringList ;
+  Stream: TMemoryStream;
+  StrStream: TStringStream;
+  {$IFDEF ACBrNFeOpenSSL}
+     HTTP: THTTPSend;
+  {$ELSE}
+     ReqResp: THTTPReqResp;
+  {$ENDIF}
+  RetDPEC : TRetDPEC;
+begin
+  Result := inherited Executar;
+
+  Acao := TStringList.Create;
+  Stream := TMemoryStream.Create;
+  Texto := '<?xml version="1.0" encoding="utf-8"?>';
+  Texto := Texto + '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">';
+  Texto := Texto + '<soap:Header>';
+  Texto := Texto + '  <sceCabecMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/SCERecepcaoRFB">';
+  Texto := Texto + '    <versaoDados>'+NFeEnvDPEC+'</versaoDados>';
+  Texto := Texto + '  </sceCabecMsg>';
+  Texto := Texto + '</soap:Header>';
+  Texto := Texto + '<soap:Body>';
+  Texto := Texto + '  <sceDadosMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/SCERecepcaoRFB">';
+  Texto := Texto + FDadosMsg;
+  Texto := Texto +   '</sceDadosMsg>';
+  Texto := Texto + '</soap:Body>';
+  Texto := Texto + '</soap:Envelope>';
+
+  Acao.Text := Texto;
+
+  Acao.SaveToStream(Stream);
+
+  {$IFDEF ACBrNFeOpenSSL}
+     HTTP := THTTPSend.Create;
+  {$ELSE}
+     ReqResp := THTTPReqResp.Create(nil);
+     ReqResp.OnBeforePost := OnBeforePost;
+     ReqResp.URL := FURL;
+     ReqResp.UseUTF8InHeader := True;
+     ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/nfe/wsdl/SCERecepcaoRFB/sceRecepcaoDPEC';
+  {$ENDIF}
+
+  try
+    TACBrNFe( FACBrNFe ).SetStatus( stNFeEnvDPEC );
+    if FConfiguracoes.Geral.Salvar then
+      FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+'-env-dpec.xml', FDadosMsg);
+    FRetWS := '';
+    {$IFDEF ACBrNFeOpenSSL}
+       HTTP.Document.LoadFromStream(Stream);
+       ConfiguraHTTP(HTTP,'SOAPAction: "http://www.portalfiscal.inf.br/nfe/wsdl/SCERecepcaoRFB/sceRecepcaoDPEC"');
+       HTTP.HTTPMethod('POST', FURL);
+
+       StrStream := TStringStream.Create('');
+       StrStream.CopyFrom(HTTP.Document, 0);
+       FRetWS := NotaUtil.SeparaDados( NotaUtil.ParseText(StrStream.DataString, True),'sceRecepcaoDPECResult',True);
+       StrStream.Free;
+    {$ELSE}
+       ReqResp.Execute(Acao.Text, Stream);
+       StrStream := TStringStream.Create('');
+       StrStream.CopyFrom(Stream, 0);
+       FRetWS := NotaUtil.SeparaDados( NotaUtil.ParseText(StrStream.DataString, True),'sceRecepcaoDPECResult',True);
+       StrStream.Free;
+    {$ENDIF}
+
+    RetDPEC := TRetDPEC.Create;
+    RetDPEC.Leitor.Arquivo := FRetWS;
+    RetDPEC.LerXml;
+
+    TACBrNFe( FACBrNFe ).SetStatus( stIdle );
+    if FConfiguracoes.WebServices.Visualizar then
+    begin
+      ShowMessage('Versão Aplicativo : '+RetDPEC.verAplic+LineBreak+
+                  'ID : '+RetDPEC.Id+LineBreak+
+                  'Status Código : '+IntToStr(RetDPEC.cStat)+LineBreak+
+                  'Status Descrição : '+RetDPEC.xMotivo+LineBreak+
+                  'Data Registro : '+DateTimeToStr(RetDPEC.dhRegDPEC)+LineBreak+
+                  'nRegDPEC : '+RetDPEC.nRegDPEC+LineBreak+
+                  'ChaveNFe : '+RetDPEC.chNFE);
+    end;
+    FverAplic := RetDPEC.verAplic;
+    FcStat    := RetDPEC.cStat;
+    FxMotivo  := RetDPEC.xMotivo;
+    FId       := RetDPEC.Id;
+    FTpAmb    := RetDPEC.tpAmb;
+    FdhRegDPEC := RetDPEC.dhRegDPEC;
+    FnRegDPEC  := RetDPEC.nRegDPEC;
+    FNFeChave  := RetDPEC.chNFE;
+
+    FMsg      := RetDPEC.XMotivo;
+    RetDPEC.Free;
+
+    if FConfiguracoes.Geral.Salvar then
+      FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+'-ret-dpec.xml', FRetWS);
+  finally
+    {$IFDEF ACBrNFeOpenSSL}
+       HTTP.Free;
+    {$ENDIF}
+    Acao.Free;
+    Stream.Free;
+    NotaUtil.ConfAmbiente;
+    TACBrNFe( FACBrNFe ).SetStatus( stIdle );
+  end;
+end;
+
+{ TNFeConsultaDPEC }
+function TNFeConsultaDPEC.Executar: Boolean;
+var
+  Texto : String;
+  Acao  : TStringList ;
+  Stream: TMemoryStream;
+  StrStream: TStringStream;
+  {$IFDEF ACBrNFeOpenSSL}
+     HTTP: THTTPSend;
+  {$ELSE}
+     ReqResp: THTTPReqResp;
+  {$ENDIF}
+  RetDPEC : TRetDPEC;
+begin
+  Result := inherited Executar;
+
+  Acao := TStringList.Create;
+  Stream := TMemoryStream.Create;
+  Texto := '<?xml version="1.0" encoding="utf-8"?>';
+  Texto := Texto + '<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">';
+  Texto := Texto + '  <soap:Header>';
+  Texto := Texto + '    <sceCabecMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/SCEConsultaRFB">';
+  Texto := Texto + '      <versaoDados>'+NFeConsDPEC+'</versaoDados>';
+  Texto := Texto + '    </sceCabecMsg>';
+  Texto := Texto + '  </soap:Header>';
+  Texto := Texto + '  <soap:Body>';
+  Texto := Texto + '    <sceDadosMsg xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/SCEConsultaRFB">';
+  Texto := Texto + FDadosMsg;
+  Texto := Texto +     '</sceDadosMsg>';
+  Texto := Texto + '  </soap:Body>';
+  Texto := Texto + '</soap:Envelope>';
+
+  Acao.Text := Texto;
+
+  Acao.SaveToStream(Stream);
+
+  {$IFDEF ACBrNFeOpenSSL}
+     HTTP := THTTPSend.Create;
+  {$ELSE}
+     ReqResp := THTTPReqResp.Create(nil);
+     ReqResp.OnBeforePost := OnBeforePost;
+     ReqResp.URL := FURL;
+     ReqResp.UseUTF8InHeader := True;
+     ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/nfe/wsdl/SCEConsultaRFB/sceConsultaDPEC';
+  {$ENDIF}
+
+  try
+    TACBrNFe( FACBrNFe ).SetStatus( stNFeConsultaDPEC );
+    if FConfiguracoes.Geral.Salvar then
+      FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+'-cons-dpec.xml', FDadosMsg);
+    FRetWS := '';
+    {$IFDEF ACBrNFeOpenSSL}
+       HTTP.Document.LoadFromStream(Stream);
+       ConfiguraHTTP(HTTP,'SOAPAction: "http://www.portalfiscal.inf.br/nfe/wsdl/SCEConsultaRFB/sceConsultaDPEC"');
+       HTTP.HTTPMethod('POST', FURL);
+
+       StrStream := TStringStream.Create('');
+       StrStream.CopyFrom(HTTP.Document, 0);
+       FRetWS := NotaUtil.SeparaDados( NotaUtil.ParseText(StrStream.DataString, True),'sceConsultaDPECResult',True);
+       StrStream.Free;
+    {$ELSE}
+       ReqResp.Execute(Acao.Text, Stream);
+       StrStream := TStringStream.Create('');
+       StrStream.CopyFrom(Stream, 0);
+       FRetWS := NotaUtil.SeparaDados( NotaUtil.ParseText(StrStream.DataString, True),'sceConsultaDPECResult',True);
+       StrStream.Free;
+    {$ENDIF}
+
+    RetDPEC := TRetDPEC.Create;
+    RetDPEC.Leitor.Arquivo := FRetWS;
+    RetDPEC.LerXml;
+
+    TACBrNFe( FACBrNFe ).SetStatus( stIdle );
+    if FConfiguracoes.WebServices.Visualizar then
+    begin
+      ShowMessage('Versão Aplicativo : '+RetDPEC.verAplic+LineBreak+
+                  'ID : '+RetDPEC.Id+LineBreak+
+                  'Status Código : '+IntToStr(RetDPEC.cStat)+LineBreak+
+                  'Status Descrição : '+RetDPEC.xMotivo+LineBreak+
+                  'Data Registro : '+DateTimeToStr(RetDPEC.dhRegDPEC)+LineBreak+
+                  'nRegDPEC : '+RetDPEC.nRegDPEC+LineBreak+
+                  'ChaveNFe : '+RetDPEC.chNFE);
+    end;
+    FverAplic := RetDPEC.verAplic;
+    FcStat    := RetDPEC.cStat;
+    FxMotivo  := RetDPEC.xMotivo;
+//    FId       := RetDPEC.Id;
+    FTpAmb    := RetDPEC.tpAmb;
+//    FdhRegDPEC := RetDPEC.dhRegDPEC;
+    FnRegDPEC  := RetDPEC.nRegDPEC;
+    FNFeChave  := RetDPEC.chNFE;
+
+    FMsg      := RetDPEC.XMotivo;
+    RetDPEC.Free;
+
+    if FConfiguracoes.Geral.Salvar then
+      FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+'-sit-dpec.xml', FRetWS);
+  finally
+    {$IFDEF ACBrNFeOpenSSL}
+       HTTP.Free;
+    {$ENDIF}
+    Acao.Free;
+    Stream.Free;
+    NotaUtil.ConfAmbiente;
+    TACBrNFe( FACBrNFe ).SetStatus( stIdle );
+  end;
+end;
+
+procedure TNFeConsultaDPEC.SetNFeChave(const Value: String);
+begin
+  if NotaUtil.NaoEstaVazio(Value) then
+     FnRegDPEC := '';
+  FNFeChave := Value;
+end;
+
+procedure TNFeConsultaDPEC.SetnRegDPEC(const Value: String);
+begin
+  if NotaUtil.NaoEstaVazio(Value) then
+     FNFeChave := '';
+  FnRegDPEC := Value;
+end;
 
 end.

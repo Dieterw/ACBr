@@ -48,19 +48,15 @@ interface
 
 uses
   Classes, Sysutils,
-  {$IFDEF VisualCLX}
-     QDialogs,
-  {$ELSE}
-     Dialogs,
-  {$ENDIF}
   pcnNFe, pcnConversao,
+  {$IFDEF CLX} QDialogs,{$ELSE} Dialogs,{$ENDIF}
   ACBrNFeNotasFiscais,
   ACBrNFeConfiguracoes,
   ACBrNFeWebServices, ACBrNFeUtil,
   ACBrNFeDANFEClass;
 
 const
-  ACBRNFE_VERSAO = '0.2.0a';
+  ACBRNFE_VERSAO = '0.3.0a';
   
 type
  TACBrNFeAboutInfo = (ACBrNFeAbout);

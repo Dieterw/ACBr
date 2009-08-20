@@ -66,6 +66,7 @@ const
  cDTD     = '<!DOCTYPE test [<!ATTLIST infNFe Id ID #IMPLIED>]>' ;
  cDTDCanc = '<!DOCTYPE test [<!ATTLIST infCanc Id ID #IMPLIED>]>' ;
  cDTDInut = '<!DOCTYPE test [<!ATTLIST infInut Id ID #IMPLIED>]>' ;
+ cDTDDpec = '<!DOCTYPE test [<!ATTLIST infDPEC Id ID #IMPLIED>]>' ; 
 {$ELSE}
 const
   DSIGNS = 'xmlns:ds="http://www.w3.org/2000/09/xmldsig#"';
@@ -160,7 +161,7 @@ type
     class procedure ConfAmbiente;
     class function PathAplication: String;
     class function ParseText( Texto : AnsiString; Decode : Boolean = True) : AnsiString;
-    class function SeparaDados( Texto : AnsiString; Chave : String ) : AnsiString;
+    class function SeparaDados( Texto : AnsiString; Chave : String; MantemChave : Boolean = False ) : AnsiString;
   published
 
   end;
@@ -691,69 +692,7 @@ begin
 //  (12,27,16,13,29,23,53,32,52,21,51,50,31,15,25,41,26,22,33,24,43,11,14,42,35,28,17);
 
 case FormaEmissao of
-  1 : begin
-      case AUF of
-         12: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //AC
-         27: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //AL
-         16: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //AP
-         13: Result := NotaUtil.GetURLAM(AAmbiente,ALayOut); //AM
-         29: Result := NotaUtil.GetURLBA(AAmbiente,ALayOut); //BA
-         23: Result := NotaUtil.GetURLCE(AAmbiente,ALayOut); //CE
-         53: Result := NotaUtil.GetURLDF(AAmbiente,ALayOut); //DF
-         32: Result := NotaUtil.GetURLSVAN(AAmbiente,ALayOut); //ES
-         52: Result := NotaUtil.GetURLGO(AAmbiente,ALayOut); //GO
-         21: Result := NotaUtil.GetURLSVAN(AAmbiente,ALayOut); //MA
-         51: Result := NotaUtil.GetURLMT(AAmbiente,ALayOut); //MT
-         50: Result := NotaUtil.GetURLMS(AAmbiente,ALayOut); //MS
-         31: Result := NotaUtil.GetURLMG(AAmbiente,ALayOut); //MG
-         15: Result := NotaUtil.GetURLSVAN(AAmbiente,ALayOut); //PA
-         25: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //PB
-         41: Result := NotaUtil.GetURLPR(AAmbiente,ALayOut); //PR
-         26: Result := NotaUtil.GetURLPE(AAmbiente,ALayOut); //PE
-         22: Result := NotaUtil.GetURLSVAN(AAmbiente,ALayOut); //PI
-         33: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //RJ
-         24: Result := NotaUtil.GetURLSVAN(AAmbiente,ALayOut); //RN
-         43: Result := NotaUtil.GetURLRS(AAmbiente,ALayOut); //RS
-         11: Result := NotaUtil.GetURLRO(AAmbiente,ALayOut); //RO
-         14: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //RR
-         42: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //SC
-         35: Result := NotaUtil.GetURLSP(AAmbiente,ALayOut); //SP
-         28: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //SE
-         17: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //TO
-      end;
-     end;
-  2 : begin
-      case AUF of
-         12: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //AC
-         27: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //AL
-         16: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //AP
-         13: Result := NotaUtil.GetURLAM(AAmbiente,ALayOut); //AM
-         29: Result := NotaUtil.GetURLBA(AAmbiente,ALayOut); //BA
-         23: Result := NotaUtil.GetURLCE(AAmbiente,ALayOut); //CE
-         53: Result := NotaUtil.GetURLDF(AAmbiente,ALayOut); //DF
-         32: Result := NotaUtil.GetURLSVAN(AAmbiente,ALayOut); //ES
-         52: Result := NotaUtil.GetURLGO(AAmbiente,ALayOut); //GO
-         21: Result := NotaUtil.GetURLSVAN(AAmbiente,ALayOut); //MA
-         51: Result := NotaUtil.GetURLMT(AAmbiente,ALayOut); //MT
-         50: Result := NotaUtil.GetURLMS(AAmbiente,ALayOut); //MS
-         31: Result := NotaUtil.GetURLMG(AAmbiente,ALayOut); //MG
-         15: Result := NotaUtil.GetURLSVAN(AAmbiente,ALayOut); //PA
-         25: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //PB
-         41: Result := NotaUtil.GetURLPR(AAmbiente,ALayOut); //PR
-         26: Result := NotaUtil.GetURLPE(AAmbiente,ALayOut); //PE
-         22: Result := NotaUtil.GetURLSVAN(AAmbiente,ALayOut); //PI
-         33: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //RJ
-         24: Result := NotaUtil.GetURLSVAN(AAmbiente,ALayOut); //RN
-         43: Result := NotaUtil.GetURLRS(AAmbiente,ALayOut); //RS
-         11: Result := NotaUtil.GetURLRO(AAmbiente,ALayOut); //RO
-         14: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //RR
-         42: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //SC
-         35: Result := NotaUtil.GetURLSP(AAmbiente,ALayOut); //SP
-         28: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //SE
-         17: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //TO
-      end;
-     end;
-  5 : begin
+  1,2,5 : begin
       case AUF of
          12: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //AC
          27: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //AL
@@ -792,6 +731,12 @@ case FormaEmissao of
          LayNfeInutilizacao : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.scan.fazenda.gov.br/NfeInutilizacao/NfeInutilizacao.asmx','https://hom.nfe.fazenda.gov.br/SCAN/nfeinutilizacao/NfeInutilizacao.asmx');
          LayNfeConsulta : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.scan.fazenda.gov.br/NfeConsulta/NfeConsulta.asmx','https://hom.nfe.fazenda.gov.br/SCAN/nfeconsulta/NfeConsulta.asmx');
          LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.scan.fazenda.gov.br/NfeStatusServico/NfeStatusServico.asmx','https://hom.nfe.fazenda.gov.br/SCAN/nfestatusservico/NfeStatusServico.asmx');
+       end;
+     end;
+  4 : begin
+       case ALayOut of
+         LayNfeEnvDPEC : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.nfe.fazenda.gov.br/SCERecepcaoRFB/SCERecepcaoRFB.asmx','https://hom.nfe.fazenda.gov.br/SCERecepcaoRFB/SCERecepcaoRFB.asmx');
+         LayNfeConsultaDPEC : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.nfe.fazenda.gov.br/SCEConsultaRFB/SCEConsultaRFB.asmx','https://hom.nfe.fazenda.gov.br/SCEConsultaRFB/SCEConsultaRFB.asmx');
        end;
      end;
   end;
@@ -1031,9 +976,16 @@ begin
   if I = 0  then
    begin
      I := pos('<infCanc',AXML) ;
-     Tipo := 2;
-     if I = 0 then
-       Tipo := 3;
+     if I > 0 then
+        Tipo := 2
+     else
+      begin
+        I := pos('<infInut',AXML) ;
+        if I > 0 then
+           Tipo := 3
+        else
+           Tipo := 4;   
+      end;
    end;
 
  if Tipo = 1 then
@@ -1041,7 +993,9 @@ begin
  else if Tipo = 2 then
     schema_filename := pchar(ExtractFileDir(application.ExeName)+'\Schemas\cancNFe_v1.07.xsd')
  else if Tipo = 3 then
-    schema_filename := pchar(ExtractFileDir(application.ExeName)+'\Schemas\inutNFe_v1.07.xsd');
+    schema_filename := pchar(ExtractFileDir(application.ExeName)+'\Schemas\inutNFe_v1.07.xsd')
+ else if Tipo = 4 then
+    schema_filename := pchar(ExtractFileDir(application.ExeName)+'\Schemas\envDPEC_v1.01.xsd');    
 
  doc         := nil;
  schema_doc  := nil;
@@ -1126,9 +1080,16 @@ begin
   if I = 0  then
    begin
      I := pos('<infCanc',XML) ;
-     Tipo := 2;
-     if I = 0 then
-       Tipo := 3;
+     if I > 0 then
+        Tipo := 2
+     else
+      begin
+        I := pos('<infInut',XML) ;
+        if I > 0 then
+           Tipo := 3
+        else
+           Tipo := 4;   
+      end;
    end;
 
   DOMDocument := CoDOMDocument50.Create;
@@ -1143,7 +1104,10 @@ begin
   else if Tipo = 2 then
      Schema.add( 'http://www.portalfiscal.inf.br/nfe', ExtractFileDir(application.ExeName)+'\Schemas\cancNFe_v1.07.xsd')
   else if Tipo = 3 then
-     Schema.add( 'http://www.portalfiscal.inf.br/nfe', ExtractFileDir(application.ExeName)+'\Schemas\inutNFe_v1.07.xsd');
+     Schema.add( 'http://www.portalfiscal.inf.br/nfe', ExtractFileDir(application.ExeName)+'\Schemas\inutNFe_v1.07.xsd')
+  else if Tipo = 3 then
+     Schema.add( 'http://www.portalfiscal.inf.br/nfe', ExtractFileDir(application.ExeName)+'\Schemas\envDPEC_v1.01.xsd');
+     
   DOMDocument.schemas := Schema;
   ParseError := DOMDocument.validate;
   Result := (ParseError.errorCode = 0);
@@ -1181,16 +1145,18 @@ begin
   if I = 0  then
    begin
      I := pos('<infCanc',AStr) ;
-     Tipo := 2;
-     if I = 0 then
+     if I > 0 then
+        Tipo := 2
+     else
       begin
         I := pos('<infInut',AStr) ;
-        Tipo := 3;
+        if I > 0 then
+           Tipo := 3
+        else
+           Tipo := 4;
       end;
    end;
 
-  if I = 0 then
-     raise Exception.Create('Não encontrei inicio do URI: <infNFe') ;
   I := NotaUtil.PosEx('Id=',AStr,I+6) ;
   if I = 0 then
      raise Exception.Create('Não encontrei inicio do URI: Id=') ;
@@ -1205,23 +1171,15 @@ begin
 
   //// Adicionando Cabeçalho DTD, necessário para xmlsec encontrar o ID ////
   I := pos('?>',AStr) ;
-//if I = 0 then
-//   raise Exception.Create('Não encontrei inicio do XML: <?xml version="1.0" encoding="UTF-8"?>') ;
-
-//  AStr := copy(AStr,1,I+1) + cDTD + Copy(AStr,I+2,Length(AStr)) ;
-{  if Tipo = 1 then
-     AStr := cDTD + Copy(AStr,I,Length(AStr))
-  else if Tipo = 2 then
-     AStr := cDTDCanc + Copy(AStr,I+2,Length(AStr))
-  else if Tipo = 3 then
-     AStr := cDTDInut + Copy(AStr,I+2,Length(AStr));}
 
   if Tipo = 1 then
      AStr := copy(AStr,1,StrToInt(VarToStr(NotaUtil.SeSenao(I>0,I+1,I)))) + cDTD     + Copy(AStr,StrToInt(VarToStr(NotaUtil.SeSenao(I>0,I+2,I))),Length(AStr))
   else if Tipo = 2 then
      AStr := copy(AStr,1,StrToInt(VarToStr(NotaUtil.SeSenao(I>0,I+1,I)))) + cDTDCanc + Copy(AStr,StrToInt(VarToStr(NotaUtil.SeSenao(I>0,I+2,I))),Length(AStr))
   else if Tipo = 3 then
-     AStr := copy(AStr,1,StrToInt(VarToStr(NotaUtil.SeSenao(I>0,I+1,I)))) + cDTDInut + Copy(AStr,StrToInt(VarToStr(NotaUtil.SeSenao(I>0,I+2,I))),Length(AStr));
+     AStr := copy(AStr,1,StrToInt(VarToStr(NotaUtil.SeSenao(I>0,I+1,I)))) + cDTDInut + Copy(AStr,StrToInt(VarToStr(NotaUtil.SeSenao(I>0,I+2,I))),Length(AStr))
+  else if Tipo = 4 then
+     AStr := copy(AStr,1,StrToInt(VarToStr(NotaUtil.SeSenao(I>0,I+1,I)))) + cDTDDpec + Copy(AStr,StrToInt(VarToStr(NotaUtil.SeSenao(I>0,I+2,I))),Length(AStr));
 
   //// Inserindo Template da Assinatura digital ////
   if Tipo = 1 then
@@ -1241,6 +1199,12 @@ begin
      I := pos('</inutNFe>',AStr) ;
      if I = 0 then
         raise Exception.Create('Não encontrei final do XML: </inutNFe>') ;
+   end
+  else if Tipo = 4 then
+   begin
+     I := pos('</envDPEC>',AStr) ;
+     if I = 0 then
+        raise Exception.Create('Não encontrei final do XML: </envDPEC>') ;
    end;
 
 
@@ -1273,7 +1237,9 @@ begin
   else if Tipo = 2 then
      AStr := AStr + '</cancNFe>'
   else if Tipo = 3 then
-     AStr := AStr + '</inutNFe>';
+     AStr := AStr + '</inutNFe>'
+  else if Tipo = 4 then
+     AStr := AStr + '</envDPEC>';
 
   XmlAss := sign_file(PChar(AStr), PChar(ArqPFX), PChar(PFXSenha)) ;
 
@@ -1287,7 +1253,9 @@ begin
   else if Tipo = 2 then
      XmlAss := StringReplace( XmlAss, cDTDCanc, '', [] )
   else if Tipo = 3 then
-     XmlAss := StringReplace( XmlAss, cDTDInut, '', [] );
+     XmlAss := StringReplace( XmlAss, cDTDInut, '', [] )
+  else if Tipo = 4 then
+     XmlAss := StringReplace( XmlAss, cDTDDpec, '', [] );
 
   PosIni := Pos('<X509Certificate>',XmlAss)-1;
   PosFim := NotaUtil.PosLast('<X509Certificate>',XmlAss);
@@ -1319,9 +1287,16 @@ begin
       if I = 0  then
        begin
          I := pos('<infCanc',XML) ;
-         Tipo := 2;
-         if I = 0 then
-            Tipo := 3;
+         if I > 0 then
+            Tipo := 2
+         else
+          begin
+            I := pos('<infInut',XML) ;
+            if I > 0 then
+               Tipo := 3
+            else
+               Tipo := 4;
+          end;
        end;
 
       I := NotaUtil.PosEx('Id=',XML,6) ;
@@ -1341,7 +1316,9 @@ begin
       else if Tipo = 2 then
          XML := copy(XML,1,pos('</cancNFe>',XML)-1)
       else if Tipo = 3 then
-         XML := copy(XML,1,pos('</inutNFe>',XML)-1);
+         XML := copy(XML,1,pos('</inutNFe>',XML)-1)
+      else if Tipo = 4 then
+         XML := copy(XML,1,pos('</envDPEC>',XML)-1);
 
       XML := XML + '<Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />';
       XML := XML + '<Reference URI="#'+URI+'">';
@@ -1353,7 +1330,9 @@ begin
       else if Tipo = 2 then
          XML := XML + '</cancNFe>'
       else if Tipo = 3 then
-         XML := XML + '</inutNFe>';
+         XML := XML + '</inutNFe>'
+      else if Tipo = 4 then
+         XML := XML + '</envDPEC>';
    end;
 
    // Lendo Header antes de assinar //
@@ -1376,9 +1355,6 @@ begin
    xmldoc.setProperty('SelectionNamespaces', DSIGNS);
 
    xmldsig.signature := xmldoc.selectSingleNode('.//ds:Signature');
-
-   if (xmldsig.signature = nil) then
-      raise Exception.Create('Falha ao setar assinatura.');
 
    if (xmldsig.signature = nil) then
       raise Exception.Create('É preciso carregar o template antes de assinar.');
@@ -1554,19 +1530,32 @@ begin
   Result := Texto;
 end;
 
-class function NotaUtil.SeparaDados( Texto : AnsiString; Chave : String ) : AnsiString;
+class function NotaUtil.SeparaDados( Texto : AnsiString; Chave : String; MantemChave : Boolean = False ) : AnsiString;
 var
   PosIni, PosFim : Integer;
 begin
-  PosIni := Pos(Chave,Texto)+length(Chave)+1;
-  PosFim := Pos('/'+Chave,Texto);
-
-  if (PosIni = 0) or (PosFim = 0) then
+  if MantemChave then
    begin
-     PosIni := Pos('ns1:'+Chave,Texto)+length(Chave)+5;
-     PosFim := Pos('/ns1:'+Chave,Texto);
-   end;
+     PosIni := Pos(Chave,Texto)-1;
+     PosFim := Pos('/'+Chave,Texto)+length(Chave)+3;
 
+     if (PosIni = 0) or (PosFim = 0) then
+      begin
+        PosIni := Pos('ns1:'+Chave,Texto)-1;
+        PosFim := Pos('/ns1:'+Chave,Texto)+length(Chave)+3;
+      end;
+   end
+  else
+   begin
+     PosIni := Pos(Chave,Texto)+length(Chave)+1;
+     PosFim := Pos('/'+Chave,Texto);
+
+     if (PosIni = 0) or (PosFim = 0) then
+      begin
+        PosIni := Pos('ns1:'+Chave,Texto)+length(Chave)+5;
+        PosFim := Pos('/ns1:'+Chave,Texto);
+      end;
+   end;
   Result := copy(Texto,PosIni,PosFim-(PosIni+1));
 end;
 

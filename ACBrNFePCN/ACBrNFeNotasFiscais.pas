@@ -263,7 +263,7 @@ begin
 
      ThreadSMTP.smtp.FullSSL := SSL;
      ThreadSMTP.smtp.AutoTLS := SSL;
-     TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).SetStatus( stEmail );
+     TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).SetStatus( stNFeEmail );
 
      ThreadSMTP.Resume; // inicia a thread
 

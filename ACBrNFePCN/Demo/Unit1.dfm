@@ -2,7 +2,7 @@ object Form1: TForm1
   Left = 334
   Top = 161
   Width = 694
-  Height = 483
+  Height = 540
   Caption = 'ACBrNFe'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -18,7 +18,7 @@ object Form1: TForm1
     Left = 0
     Top = 0
     Width = 297
-    Height = 447
+    Height = 504
     Align = alLeft
     TabOrder = 0
     object GroupBox1: TGroupBox
@@ -33,7 +33,7 @@ object Form1: TForm1
         Top = 15
         Width = 277
         Height = 384
-        ActivePage = TabSheet2
+        ActivePage = TabSheet1
         Align = alClient
         TabOrder = 0
         object TabSheet1: TTabSheet
@@ -732,14 +732,14 @@ object Form1: TForm1
     Left = 297
     Top = 0
     Width = 381
-    Height = 447
+    Height = 504
     Align = alClient
     TabOrder = 1
     object Panel3: TPanel
       Left = 1
       Top = 1
       Width = 379
-      Height = 187
+      Height = 216
       Align = alTop
       TabOrder = 0
       object btnImprimir: TButton
@@ -850,12 +850,30 @@ object Form1: TForm1
         TabOrder = 11
         OnClick = btnConsultarReciboClick
       end
+      object btnEnvDPEC: TButton
+        Left = 9
+        Top = 186
+        Width = 177
+        Height = 25
+        Caption = 'Enviar DPEC'
+        TabOrder = 12
+        OnClick = btnEnvDPECClick
+      end
+      object btnConsultarDPEC: TButton
+        Left = 192
+        Top = 186
+        Width = 177
+        Height = 25
+        Caption = 'Consultar DPEC'
+        TabOrder = 13
+        OnClick = btnConsultarDPECClick
+      end
     end
     object PageControl2: TPageControl
       Left = 1
-      Top = 188
+      Top = 217
       Width = 379
-      Height = 258
+      Height = 286
       ActivePage = TabSheet6
       Align = alClient
       TabOrder = 1
@@ -877,11 +895,11 @@ object Form1: TForm1
           Left = 0
           Top = 0
           Width = 371
-          Height = 230
+          Height = 258
           Align = alClient
           TabOrder = 0
           ControlData = {
-            4C00000058260000C51700000000000000000000000000000000000000000000
+            4C00000058260000AA1A00000000000000000000000000000000000000000000
             000000004C000000000000000000000001000000E0D057007335CF11AE690800
             2B2E126208000000000000004C0000000114020000000000C000000000000046
             8000000000000000000000000000000000000000000000000000000000000000

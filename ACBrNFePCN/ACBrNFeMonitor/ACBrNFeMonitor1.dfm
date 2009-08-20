@@ -4118,7 +4118,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       Top = 0
       Width = 533
       Height = 231
-      ActivePage = Testes
+      ActivePage = Monitor
       Align = alBottom
       TabOrder = 0
       object Monitor: TTabSheet
@@ -4875,7 +4875,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           Top = 108
           Width = 242
           Height = 21
-          ItemHeight = 13
+          ItemHeight = 0
           TabOrder = 3
         end
         object cbxImpDescPorc: TCheckBox

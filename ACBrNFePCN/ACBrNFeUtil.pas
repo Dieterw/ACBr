@@ -388,12 +388,20 @@ end;
 class function NotaUtil.FormatDate(const AString: string): String;
 var
   vTemp: TDateTime;
+{$IFDEF VER140} //delphi6
+{$ELSE}
   FFormato : TFormatSettings;
+{$ENDIF}
 begin
   try
+{$IFDEF VER140} //delphi6
+    DateSeparator := '/';
+    ShortDateFormat := 'dd/mm/yyyy';
+{$ELSE}
     FFormato.DateSeparator   := '-';
     FFormato.ShortDateFormat := 'yyyy-mm-dd';
 //    vTemp := StrToDate(AString, FFormato);
+{$ENDIF}
     vTemp := StrToDate(AString);
     Result := DateToStr(vTemp);
   except
@@ -403,11 +411,19 @@ end;
 
 class function NotaUtil.FormatFloat(AValue: Extended;
   const AFormat: string): string;
+{$IFDEF VER140} //delphi6
+{$ELSE}
 var
   vFormato: TFormatSettings;
+{$ENDIF}
 begin
+{$IFDEF VER140} //delphi6
+  DecimalSeparator := '.';
+  Result := SysUtils.FormatFloat(AFormat, AValue);
+{$ELSE}
   vFormato.DecimalSeparator := '.';
   Result := SysUtils.FormatFloat(AFormat, AValue, vFormato);
+{$ENDIF}
 end;
 
 class function NotaUtil.LasString(AString: String): String;

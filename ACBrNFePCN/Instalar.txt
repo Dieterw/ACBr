@@ -6,13 +6,15 @@ Primeiro, as diferenças entre as versões OpenSSL e CAPICOM
 (Assinatura e validação do XML) - Apenas funciona no Delphi e Windows. 
 Funciona com certificados do tipo A1 e A3.
 - OpenSSL - Usa Projetos OpenSource: Synapse+OpenSSL (conexão segura) e 
-LibXml2 + XmlSEC (Assinatura e validação do XML) - Será compatível com Lazarus, Kylix e com Linux.
+LibXml2 + XmlSEC (Assinatura e validação do XML) - Será compatível com DELPHI6, Lazarus, Kylix e com Linux.
 Funciona apenas com certificados do tipo A1.
 
 - Se vc pretende desenvolver apenas para Windows e não pretende usar o Lazarus, de preferência a 
 versão CAPICOM
 
 - ATENÇÃO!! SE VOCE JA UTILIZAVA A VERSAO DO ACBrNFe SEM pcn, RETIRE DO LIBRARY PATH DO DELPHI A PASTA ACBr\ACBrNFe
+
+- IMPORTANTE: USUÁRIOS DO DELPHI 6 DEVEM USAR A VERSÃO OPENSSL (somente certificados A1)
 
 Versão OpenSSL
 - Abra o arquivo ACBr\ACBrComum\ACBr.inc e procure por {$DEFINE ACBrNFeOpenSSL}. Esta linha estará comentada,

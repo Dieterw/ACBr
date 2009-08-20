@@ -140,7 +140,7 @@ type
 
 implementation
 
-uses ACBrNFeUtil,  Math;
+uses ACBrNFeUtil, Math, StrUtils, ACBrUtil;
 
 { TConfiguracoes }
 
@@ -193,19 +193,25 @@ begin
     Result := NotaUtil.PathAplication
   else
     Result := FPathSalvar;
+
+  Result := PathWithDelim( Trim(Result) ) ;
 end;
 
 function TGeralConf.Save(AXMLName: String; AXMLFile: WideString): Boolean;
 var
   vSalvar: TStrings;
+  aPath: String ;
 begin
   Result := False;
   vSalvar := TStringList.Create;
   try
     try
       vSalvar.Text := AXMLFile;
-      ForceDirectories(FPathSalvar);
-      vSalvar.SaveToFile(FPathSalvar+PathDelim+AXMLName);
+      aPath := PathSalvar ;
+      if not DirectoryExists( aPath ) then
+         ForceDirectories( aPath );
+
+      vSalvar.SaveToFile( aPath + AXMLName);
       Result := True;
     except on E: Exception do
       raise Exception.Create('Erro ao salvar .'+E.Message);
@@ -268,6 +274,9 @@ var
   Cert         : ICertificate2;
   i            : Integer;
 begin
+  if NotaUtil.EstaVazio( FNumeroSerie ) then
+    raise Exception.Create('Número de Série do Certificado Digital não especificado !');
+
   Result := nil;
   Store := CoStore.Create;
   Store.Open(CAPICOM_CURRENT_USER_STORE, 'My', CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED);

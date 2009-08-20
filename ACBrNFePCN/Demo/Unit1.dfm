@@ -33,7 +33,7 @@ object Form1: TForm1
         Top = 15
         Width = 277
         Height = 384
-        ActivePage = TabSheet1
+        ActivePage = TabSheet2
         Align = alClient
         TabOrder = 0
         object TabSheet1: TTabSheet
@@ -917,9 +917,7 @@ object Form1: TForm1
     MargemInferior = 0.800000000000000000
     CasasDecimais._qCom = 2
     CasasDecimais._vUnCom = 2
-    RavFile = 
-      'D:\delphi\ACBr\trunk\ACBrNFePCN\Demo\Report\NotaFiscalEletronica' +
-      '.rav'
+    RavFile = '.\Report\NotaFiscalEletronica.rav'
     Left = 363
     Top = 228
   end

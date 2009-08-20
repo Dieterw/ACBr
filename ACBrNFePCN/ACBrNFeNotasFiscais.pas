@@ -258,7 +258,8 @@ begin
      ThreadSMTP.smtp.Password := sSmtpPasswd;
 
      ThreadSMTP.smtp.TargetHost := sSmtpHost;
-     ThreadSMTP.smtp.TargetPort := sSmtpPort;
+     if not NotaUtil.EstaVazio( sSmtpPort ) then     // Usa default 
+        ThreadSMTP.smtp.TargetPort := sSmtpPort;
 
      ThreadSMTP.smtp.FullSSL := SSL;
      ThreadSMTP.smtp.AutoTLS := SSL;

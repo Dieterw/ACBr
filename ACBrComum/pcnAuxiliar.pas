@@ -313,6 +313,10 @@ begin
       Result := '1.10';
     if Layout = tlProcCancNFe then
       Result := '1.07';
+    if Layout = tlEnvDPEC then
+      Result := '1.01';
+    if Layout = tlConsDPEC then
+      Result := '1.01';
   end;
 end;
 

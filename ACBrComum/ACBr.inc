@@ -1273,3 +1273,8 @@
   {$WARN UNSAFE_CAST OFF}
 {$ENDIF}
 
+// Delphi 6 ou inferior tem suporte apenas por OpenSSL  
+{$IFNDEF COMPILER7_UP}
+  {$DEFINE ACBrNFeOpenSSL}
+  {$DEFINE ACBrCTeOpenSSL}
+{$ENDIF}

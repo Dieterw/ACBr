@@ -66,63 +66,40 @@ package ACBrCTePCN;
 {$WRITEABLECONST OFF}
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
-{$DESCRIPTION 'ACBrNFePCN - (http://acbr.sourceforge.net/)'}
+{$DESCRIPTION 'ACBrCTe - (http://acbr.sourceforge.net/)'}
 {$IMPLICITBUILD ON}
 
 requires
   rtl,
   designide,
   xmlrtl,
-  {$IFNDEF ACBrNFeOpenSSL}
-     soaprtl,
-  {$ENDIF}
-  inet;
+  soaprtl,
+  inet,
+  vcl,
+  dbrtl,
+  dsnap;
 
 contains
-
-  {$IFNDEF ACBrNFeOpenSSL}
-     ACBrNFeMSXML2_TLB in 'ACBrNFeMSXML2_TLB.pas',
-     ACBrNFeCAPICOM_TLB in 'ACBrNFeCAPICOM_TLB.pas',
-     ACBrNFeNfeInutilizacaoU in 'ACBrNFeNfeInutilizacaoU.pas',
-     ACBrNFeNfeCancelamentoU in 'ACBrNFeNfeCancelamentoU.pas',	 
-     ACBrNFeNfeConsultaU in 'ACBrNFeNfeConsultaU.pas',
-     ACBrNFeNfeRetRecepcaoU in 'ACBrNFeNfeRetRecepcaoU.pas',
-	 ACBrNFeNfeRecepcaoU in 'ACBrNFeNfeRecepcaoU.pas',
-     ACBrNFeNfeStatusServicoU in 'ACBrNFeNfeStatusServicoU.pas',
-  {$ENDIF}
-  ACBrNFe in 'ACBrNFe.pas',
-  ACBrNFeUtil in 'ACBrNFeUtil.pas',
-  ACBrNFeNotasFiscais in 'ACBrNFeNotasFiscais.pas',
-  ACBrNFeConfiguracoes in 'ACBrNFeConfiguracoes.pas',
-  ACBrNFeWebServices in 'ACBrNFeWebServices.pas',
-  ACBrNFeReg in 'ACBrNFeReg.pas',
-  pcnValidador in 'pcnValidador.pas',
-  pcnAtuCadEmiDFe in 'pcnAtuCadEmiDFe.pas',
-  pcnAuxiliar in 'pcnAuxiliar.pas',
-  pcnCabecalho in 'pcnCabecalho.pas',
-  pcnCadEmiDFe in 'pcnCadEmiDFe.pas',
-  pcnCancNFe in 'pcnCancNFe.pas',
-  pcnConsCad in 'pcnConsCad.pas',
-  pcnConsReciNFe in 'pcnConsReciNFe.pas',
-  pcnConsSitNFe in 'pcnConsSitNFe.pas',
-  pcnConsStatServ in 'pcnConsStatServ.pas',
-  pcnConversao in 'pcnConversao.pas',
-  pcnGerador in 'pcnGerador.pas',
-  pcnInutNFe in 'pcnInutNFe.pas',
-  pcnLeitor in 'pcnLeitor.pas',
-  pcnModeloNFe in 'pcnModeloNFe.pas',
-  pcnNFe in 'pcnNFe.pas',
-  pcnNFeR in 'pcnNFeR.pas',
-  pcnNFeW in 'pcnNFeW.pas',
-  pcnRetAtuCadEmiDFe in 'pcnRetAtuCadEmiDFe.pas',
-  pcnRetCancNFe in 'pcnRetCancNFe.pas',
-  pcnRetConsCad in 'pcnRetConsCad.pas',
-  pcnRetConsReciNFe in 'pcnRetConsReciNFe.pas',
-  pcnRetConsSitNFe in 'pcnRetConsSitNFe.pas',
-  pcnRetConsStatServ in 'pcnRetConsStatServ.pas',
-  pcnRetEnvNFe in 'pcnRetEnvNFe.pas',
-  pcnRetInutNFe in 'pcnRetInutNFe.pas',
-  pcnLayoutTXT in 'pcnLayoutTXT.pas',
-  pcnSignature in 'pcnSignature.pas'  ;
+  ACBrCTe in 'ACBrCTe.pas',
+  ACBrCTeConfiguracoes in 'ACBrCTeConfiguracoes.pas',
+  ACBrCTeConhecimentos in 'ACBrCTeConhecimentos.pas',
+  ACBrCTeDACTEClass in 'ACBrCTeDACTEClass.pas',
+  ACBrCTeReg in 'ACBrCTeReg.pas',
+  ACBrCTeStatusServico in 'ACBrCTeStatusServico.pas',
+  ACBrCTeUtil in 'ACBrCTeUtil.pas',
+  ACBrCTeWebServices in 'ACBrCTeWebServices.pas',
+  pcteCancCTe in 'pcteCancCTe.pas',
+  pcteConsCad in 'pcteConsCad.pas',
+  pcteConsSitCTe in 'pcteConsSitCTe.pas',
+  pcteConsStatServ in 'pcteConsStatServ.pas',
+  pcteCTe in 'pcteCTe.pas',
+  pcteCTeR in 'pcteCTeR.pas',
+  pcteCTeW in 'pcteCTeW.pas',
+  pcteInutCTe in 'pcteInutCTe.pas',
+  pcteRetCancCTe in 'pcteRetCancCTe.pas',
+  pcteRetConsCad in 'pcteRetConsCad.pas',
+  pcteRetConsSitCTe in 'pcteRetConsSitCTe.pas',
+  pcteRetConsStatServ in 'pcteRetConsStatServ.pas',
+  pcteRetInutCTe in 'pcteRetInutCTe.pas';
 
 end.

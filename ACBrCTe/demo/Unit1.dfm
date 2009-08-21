@@ -1,8 +1,8 @@
 object Form1: TForm1
-  Left = 192
-  Top = 122
-  Width = 870
-  Height = 500
+  Left = 393
+  Top = 212
+  Width = 531
+  Height = 303
   Caption = 'ACBrCTe'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -68,12 +68,10 @@ object Form1: TForm1
     TabOrder = 5
     OnClick = Button5Click
   end
-  object HTTPRIO1: THTTPRIO
-    HTTPWebNode.Agent = 'Borland SOAP 1.2'
-    HTTPWebNode.UseUTF8InHeader = False
-    HTTPWebNode.InvokeOptions = [soIgnoreInvalidCerts, soNoSOAPActionHeader, soAutoCheckAccessPointViaUDDI]
-    Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soCacheMimeResponse, soUTF8EncodeXML]
-    Left = 144
-    Top = 104
+  object ACBrCTe1: TACBrCTe
+    Configuracoes.Geral.PathSalvar = 'C:\Program Files\Borland\Delphi7\Bin\'
+    Configuracoes.WebServices.UF = 'SP'
+    Left = 16
+    Top = 176
   end
 end

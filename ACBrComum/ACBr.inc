@@ -343,6 +343,7 @@
 { Ajusta FreePascal para o modo Delphi }
 {$IFDEF FPC}
   {$DEFINE ACBrNFeOpenSSL}
+  {$DEFINE ACBrCTeOpenSSL}
   {$MODE DELPHI}
   {$DEFINE VCL}
   {$DEFINE UNICODE}     // Lazarus 0.9.26 usa UnicodeString como default para String
@@ -355,6 +356,7 @@
 {$IFDEF BORLAND}
   {$IFDEF LINUX}
     {$DEFINE ACBrNFeOpenSSL}
+    {$DEFINE ACBrCTeOpenSSL}
     {$DEFINE KYLIX}
   {$ENDIF LINUX}
 {$ENDIF BORLAND}

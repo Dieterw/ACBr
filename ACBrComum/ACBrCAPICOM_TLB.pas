@@ -1,6 +1,6 @@
 {$I ACBr.inc}
 
-unit ACBrNFeCAPICOM_TLB;
+unit ACBrCAPICOM_TLB;
 
 // ************************************************************************ //
 // WARNING                                                                    
@@ -3942,7 +3942,7 @@ type
 {$ENDIF}
 
 
-procedure Register;
+//procedure Register;
 
 resourcestring
   dtlServerPage = 'ActiveX';
@@ -6796,12 +6796,12 @@ end;
 
 {$ENDIF}
 
-procedure Register;
+{procedure Register;
 begin
-  RegisterComponents(dtlServerPage, [TSettings, TCertificate, TCertificates, TChain, 
-    TStore, TAttribute, TSigner, TSignedData, TEnvelopedData, 
-    TEncryptedData, TOID, TExtendedProperty, TPrivateKey, TSignedCode, 
+  RegisterComponents(dtlServerPage, [TSettings, TCertificate, TCertificates, TChain,
+    TStore, TAttribute, TSigner, TSignedData, TEnvelopedData,
+    TEncryptedData, TOID, TExtendedProperty, TPrivateKey, TSignedCode,
     THashedData, TUtilities]);
-end;
+end;}
 
 end.

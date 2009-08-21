@@ -1,6 +1,6 @@
 {$I ACBr.inc}
 
-unit ACBrNFeMSXML2_TLB;
+unit ACBrMSXML2_TLB;
 
 // ************************************************************************ //
 // WARNING                                                                    
@@ -9182,7 +9182,7 @@ type
     class function CreateRemote(const MachineName: string): IXMLDocument2;
   end;
 
-procedure Register;
+//procedure Register;
 
 resourcestring
   dtlServerPage = 'ActiveX';
@@ -19966,19 +19966,19 @@ begin
   Result := CreateRemoteComObject(MachineName, CLASS_XMLDocument) as IXMLDocument2;
 end;
 
-procedure Register;
+{procedure Register;
 begin
-  RegisterComponents(dtlServerPage, [TDOMDocument, TDOMDocument26, TDOMDocument30, TDOMDocument40, 
-    TDOMDocument50, TFreeThreadedDOMDocument, TFreeThreadedDOMDocument26, TFreeThreadedDOMDocument30, TFreeThreadedDOMDocument40, 
-    TFreeThreadedDOMDocument50, TXMLSchemaCache, TXMLSchemaCache26, TXMLSchemaCache30, TXMLSchemaCache40, 
-    TXMLSchemaCache50, TXSLTemplate, TXSLTemplate26, TXSLTemplate30, TXSLTemplate40, 
-    TXSLTemplate50, TDSOControl, TDSOControl26, TDSOControl30, TDSOControl40, 
-    TDSOControl50, TXMLHTTP, TXMLHTTP26, TXMLHTTP30, TXMLHTTP40, 
-    TXMLHTTP50, TServerXMLHTTP, TServerXMLHTTP30, TServerXMLHTTP40, TServerXMLHTTP50, 
-    TSAXXMLReader, TSAXXMLReader30, TSAXXMLReader40, TSAXXMLReader50, TMXXMLWriter, 
-    TMXXMLWriter30, TMXXMLWriter40, TMXXMLWriter50, TMXHTMLWriter, TMXHTMLWriter30, 
-    TMXHTMLWriter40, TMXHTMLWriter50, TSAXAttributes, TSAXAttributes30, TSAXAttributes40, 
+  RegisterComponents(dtlServerPage, [TDOMDocument, TDOMDocument26, TDOMDocument30, TDOMDocument40,
+    TDOMDocument50, TFreeThreadedDOMDocument, TFreeThreadedDOMDocument26, TFreeThreadedDOMDocument30, TFreeThreadedDOMDocument40,
+    TFreeThreadedDOMDocument50, TXMLSchemaCache, TXMLSchemaCache26, TXMLSchemaCache30, TXMLSchemaCache40,
+    TXMLSchemaCache50, TXSLTemplate, TXSLTemplate26, TXSLTemplate30, TXSLTemplate40,
+    TXSLTemplate50, TDSOControl, TDSOControl26, TDSOControl30, TDSOControl40,
+    TDSOControl50, TXMLHTTP, TXMLHTTP26, TXMLHTTP30, TXMLHTTP40,
+    TXMLHTTP50, TServerXMLHTTP, TServerXMLHTTP30, TServerXMLHTTP40, TServerXMLHTTP50,
+    TSAXXMLReader, TSAXXMLReader30, TSAXXMLReader40, TSAXXMLReader50, TMXXMLWriter,
+    TMXXMLWriter30, TMXXMLWriter40, TMXXMLWriter50, TMXHTMLWriter, TMXHTMLWriter30,
+    TMXHTMLWriter40, TMXHTMLWriter50, TSAXAttributes, TSAXAttributes30, TSAXAttributes40,
     TSAXAttributes50, TMXNamespaceManager, TMXNamespaceManager40, TMXNamespaceManager50, TMXDigitalSignature50]);
-end;
+end;}
 
 end.

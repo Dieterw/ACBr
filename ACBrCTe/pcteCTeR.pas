@@ -93,7 +93,7 @@ end;
 function TCTeR.LerXml: boolean;
 var
   ok: boolean;
-  i, j, k: integer;
+  i, j: integer;
 begin
 
   I := 0;

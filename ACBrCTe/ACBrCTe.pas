@@ -4,6 +4,7 @@
 { eletrônica - CTe - http://www.CTe.fazenda.gov.br                          }
 {                                                                              }
 { Direitos Autorais Reservados (c) 2008 Wemerson Souto                         }
+{                                       Wiliam Zacarias da Silva Rosa          }
 {                                       Daniel Simoes de Almeida               }
 {                                       André Ferreira de Moraes               }
 {                                                                              }
@@ -57,27 +58,28 @@ uses
   pcnConversao,
   ACBrCTeConhecimentos,
   ACBrCTeConfiguracoes,
-  ACBrCTeWebServices, ACBrCTeUtil;
-//  ACBrCTeDACTeClass;
+  ACBrCTeWebServices,
+  ACBrCTeUtil,
+  ACBrCTeDACTeClass;
 
 const
-  ACBRCTE_VERSAO = '0.1.0a';
-  
+  ACBRCTE_VERSAO = '0.1.0d';
+
 type
  TACBrCTeAboutInfo = (ACBrCTeAbout);
 
   TACBrCTe = class(TComponent)
   private
     fsAbout: TACBrCTeAboutInfo;
-//    FDACTe : TACBrCTeDACTeClass;
+    FDACTe : TACBrCTeDACTeClass;
     FConhecimentos: TConhecimentos;
     FWebServices: TWebServices;
     FConfiguracoes: TConfiguracoes;
     FStatus : TStatusACBrCTe;
-    FOnStatusChange: TNotifyEvent;    
-//	procedure SetDACTe(const Value: TACBrCTeDACTeClass);
+    FOnStatusChange: TNotifyEvent;
+  	procedure SetDACTe(const Value: TACBrCTeDACTeClass);
   protected
-    procedure Notification(AComponent: TComponent; Operation: TOperation); override;    
+    procedure Notification(AComponent: TComponent; Operation: TOperation); override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -91,7 +93,7 @@ type
   published
     property Configuracoes: TConfiguracoes read FConfiguracoes write FConfiguracoes;
     property OnStatusChange: TNotifyEvent read FOnStatusChange write FOnStatusChange;
-//  	property DACTe: TACBrCTeDACTeClass read FDACTe write SetDACTe ;
+  	property DACTe: TACBrCTeDACTeClass read FDACTe write SetDACTe ;
     property AboutACBrCTe : TACBrCTeAboutInfo read fsAbout write fsAbout
                           stored false ;
   end;
@@ -124,8 +126,8 @@ begin
    FConfiguracoes.SetSubComponent( true );{ para gravar no DFM/XFM }
   {$ENDIF}
 
-  //FNotasFiscais      := TNotasFiscais.Create(Self,NotaFiscal);
-  //FNotasFiscais.Configuracoes := FConfiguracoes;
+  FConhecimentos      := TConhecimentos.Create(Self,Conhecimento);
+  FConhecimentos.Configuracoes := FConfiguracoes;
   FWebServices       := TWebServices.Create(Self);
   {$IFDEF ACBrCTeOpenSSL}
      CteUtil.InitXmlSec ;
@@ -135,7 +137,7 @@ end;
 destructor TACBrCTe.Destroy;
 begin
   FConfiguracoes.Free;
-  //FNotasFiscais.Free;
+  FConhecimentos.Free;
   FWebServices.Free;
   {$IFDEF ACBrCTeOpenSSL}
      CteUtil.ShutDownXmlSec ;
@@ -147,11 +149,11 @@ procedure TACBrCTe.Notification(AComponent: TComponent; Operation: TOperation);
 begin
   inherited Notification(AComponent, Operation);
 
-//  if (Operation = opRemove) and (FDACTe <> nil) and (AComponent is TACBrCTeDACTeClass) then
-//     FDACTe := nil ;
+  if (Operation = opRemove) and (FDACTe <> nil) and (AComponent is TACBrCTeDACTeClass) then
+     FDACTe := nil ;
 end;
 
-{procedure TACBrCTe.SetDACTe(const Value: TACBrCTeDACTeClass);
+procedure TACBrCTe.SetDACTe(const Value: TACBrCTeDACTeClass);
  Var OldValue: TACBrCTeDACTeClass ;
 begin
   if Value <> FDACTe then
@@ -173,7 +175,7 @@ begin
      end ;
   end ;
 end;
- }
+
 procedure TACBrCTe.SetStatus( const stNewStatus : TStatusACBrCTe );
 begin
   if ( stNewStatus <> FStatus ) then
@@ -189,18 +191,18 @@ function TACBrCTe.Cancelamento(
 var
   i : Integer;
 begin
-//  if Self.NotasFiscais.Count = 0 then
-//    raise Exception.Create('Nenhuma Nota Fiscal Eletrônica Informada!');
+  if Self.Conhecimentos.Count = 0 then
+    raise Exception.Create('Nenhum Conhecimento de Transporte Eletrônico Informado!');
 
-//  for i:= 0 to self.NotasFiscais.Count-1 do
-//    self.NotasFiscais.Items[i].XML.CTeChave := self.NotasFiscais.Items[i].CTe.infCTe.ID;;
+//  for i:= 0 to self.Conhecimentos.Count-1 do
+//    self.Conhecimentos.Items[i].XML.CTeChave := self.NotasFiscais.Items[i].CTe.infCTe.ID;;
 
-//  for i:= 0 to self.NotasFiscais.Count-1 do
-//  begin
-//    WebServices.Cancelamento.CTeChave := copy(self.NotasFiscais.Items[0].CTe.infCTe.ID, (length(self.NotasFiscais.Items[0].CTe.infCTe.ID)-44)+1, 44);
+  for i:= 0 to self.Conhecimentos.Count-1 do
+  begin
+    WebServices.Cancelamento.CTeChave := copy(self.Conhecimentos.Items[0].CTe.infCTe.ID, (length(self.Conhecimentos.Items[0].CTe.infCTe.ID)-44)+1, 44);
     WebServices.Consulta.CTeChave := WebServices.Cancelamento.CTeChave;
     WebServices.Cancela(AJustificativa);
-//  end;
+  end;
 
   Result := true;
 end;
@@ -209,38 +211,37 @@ function TACBrCTe.Consultar: Boolean;
 var
   i : Integer;
 begin
-{  if Self.NotasFiscais.Count = 0 then
-    raise Exception.Create('Nenhuma Nota Fiscal Eletrônica Informada!');
+  if Self.Conhecimentos.Count = 0 then
+    raise Exception.Create('Nenhum Conhecimento de Transporte Eletrônico Informado!');
 
-  for i := 0 to Self.NotasFiscais.Count-1 do
+  for i := 0 to Self.Conhecimentos.Count-1 do
   begin
-    WebServices.Consulta.CTeChave := copy(self.NotasFiscais.Items[0].CTe.infCTe.ID, (length(self.NotasFiscais.Items[0].CTe.infCTe.ID)-44)+1, 44);
+    WebServices.Consulta.CTeChave := copy(self.Conhecimentos.Items[0].CTe.infCTe.ID, (length(self.Conhecimentos.Items[0].CTe.infCTe.ID)-44)+1, 44);
     WebServices.Consulta.Executar;
   end;
   Result := True;
- }
 end;
 
 function TACBrCTe.Enviar(ALote: Integer; Imprimir:Boolean = True): Boolean;
 var
   i: Integer;
 begin
-  //NotasFiscais.Assinar;
-  //NotasFiscais.Valida;
+  Conhecimentos.Assinar;
+  Conhecimentos.Valida;
 
-//  Result := WebServices.Envia(ALote);
+  Result := WebServices.Envia(ALote);
 
-{  if DACTe <> nil then
+  if DACTe <> nil then
   begin
-     for i:= 0 to NotasFiscais.Count-1 do
+     for i:= 0 to Conhecimentos.Count-1 do
      begin
-       if NotasFiscais.Items[i].Confirmada and Imprimir then
+       if Conhecimentos.Items[i].Confirmada and Imprimir then
        begin
-          DaCTe.ProtocoloCTe:=WebServices.Retorno.CTeRetorno.ProtCTe.Items[i].nProt;
-          NotasFiscais.Items[i].Imprimir;
+          //DaCTe.ProtocoloCTe:=WebServices.Retorno.CTeRetorno.ProtCTe.Items[i].nProt;
+          Conhecimentos.Items[i].Imprimir;
        end;
      end;
-  end;}
+  end;
 end;
 
 end.

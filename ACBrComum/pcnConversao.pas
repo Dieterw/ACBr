@@ -14,6 +14,9 @@
 //                                                                            //
 //      Equipe: Vide o arquivo leiame.txt na pasta raiz do projeto            //
 //                                                                            //
+// Desenvolvimento                                                            //
+//         de Cte: Wiliam Zacarias da Silva Rosa                              //
+//                                                                            //
 //      Versão: Vide o arquivo leiame.txt na pasta raiz do projeto            //
 //                                                                            //
 //     Licença: GNU Lesser General Public License (GNU LGPL)                  //
@@ -81,7 +84,7 @@ type
   TpcnCondicaoVeiculo = (cvAcabado, cvInacabado, cvSemiAcabado);
   TpcnTipoArma = (taUsoPermitido, taUsoRestrito);
   TpcnOrigemMercadoria = (oeNacional, oeEstrangeiraImportacaoDireta, oeEstrangeiraAdquiridaBrasil);
-  TpcnCSTIcms = (cst00, cst10, cst20, cst30, cst40, cst41, cst50, cst51, cst60, cst70, cst90);
+  TpcnCSTIcms = (cst00, cst10, cst20, cst30, cst40, cst41, cst50, cst51, cst60, cst70, cst80, cst81, cst90); //80 e 81 apenas para CTe
   TpcnDeterminacaoBaseIcms = (dbiMargemValorAgregado, dbiPauta, dbiPrecoTabelado, dbiValorOperacao);
   TpcnDeterminacaoBaseIcmsST = (dbisPrecoTabelado, dbisListaNegativa, dbisListaPositiva, dbisListaNeutra, dbisMargemValorAgregado, dbisPauta);
   TpcnCstIpi = (ipi00, ipi49, ipi50, ipi99, ipi01, ipi02, ipi03, ipi04, ipi05, ipi51, ipi52, ipi53, ipi54, ipi55);
@@ -96,6 +99,9 @@ type
   TpcteTipoServico = (tsNormal, tsSubcontratacao, tsRedespacho, tsIntermediario);
   TpcteRetira = (rtSim, rtNao);
   TpcteTomador = ( tmRemetente, tmExpedidor, tmRecebedor, tmDestinatario, tmOutros);
+  TpcteRspSeg = (rsRemetente, rsExpedidor, rsRecebedor, rsDestinatario, rsEmitenteCTe, rsTomadorServico);
+  TpcteLocacao = (ltNao, ltsim);
+  TpcteProp = (tpTACAgregado, tpTACIndependente, tpOutros);
 
 const
   NFeUF: array[0..26] of String =
@@ -185,8 +191,14 @@ function TpServPagToStr(const t: TpcteTipoServico): string;
 function StrToTpServ(var ok: boolean; const s: string): TpcteTipoServico;
 function TpRetiraPagToStr(const t: TpcteRetira): string;
 function StrToTpRetira(var ok: boolean; const s: string): TpcteRetira;
-function TpTomadorPagToStr(const t: TpcteTomador): string;
-function StrToTpTomador(var ok: boolean; const s: string): TpcteTomador;
+function TpTomadorToStr(const t: TpcteTomador): String;
+function StrToTpTomador(var ok: boolean; const s: String ): TpcteTomador;
+function TpRspSeguroToStr(const t: TpcteRspSeg): String;
+function StrToTpRspSeguro(var ok: boolean; const s: String ): TpcteRspSeg;
+function TpLotacaoToStr(const t: TpcteLocacao): string;
+function StrToTpLotacao(var ok: boolean; const s: String ): TpcteLocacao;
+function TpPropToStr(const t: TpcteProp): String;
+function StrToTpProp(var ok: boolean; const s: String ): TpcteProp;
 
 implementation
 
@@ -411,9 +423,11 @@ begin
   // ID -> N07 - Diferimento A exigência do preenchimento das informações do ICMS diferido fica à critério de cada UF.
   // ID -> N08 - ICMS cobrado anteriormente por substituição
   // ID -> N09 - Com redução de base de cálculo e cobrança do ICMS por substituição tributária
-  // ID -> N10 - Outros
-  result := EnumeradoToStr(t, ['00', '10', '20', '30', '40', '41', '50', '51', '60', '70', '90'],
-    [cst00, cst10, cst20, cst30, cst40, cst41, cst50, cst51, cst60, cst70, cst90]);
+  // ID -> N10 - ICMS pagto atribuído ao tomador ou ao terceiro previsto na legislação p/ ST
+  // ID -> N11 - ICMS devido para outras UF
+  // ID -> N12 - Outros
+  result := EnumeradoToStr(t, ['00', '10', '20', '30', '40', '41', '50', '51', '60', '70', '80', '81', '90'],
+    [cst00, cst10, cst20, cst30, cst40, cst41, cst50, cst51, cst60, cst70, cst80, cst81, cst90]);
 end;
 
 function StrToCSTICMS(var ok: boolean; const s: string): TpcnCSTIcms;
@@ -582,14 +596,44 @@ begin
   result := StrToEnumerado(ok, s, ['0', '1'], [rtSim, rtNao]);
 end;
 
-function TpTomadorPagToStr(const t: TpcteTomador): string;
+function TpTomadorToStr(const t: TpcteTomador): String;
 begin
-  result := EnumeradoToStr(t, ['0','1', '2', '3', '4'], [tmRemetente, tmExpedidor, tmRecebedor, tmDestinatario, tmOutros]);
+  result := EnumeradoToStr(t, ['0', '1', '2', '3', '4'], [tmRemetente, tmExpedidor, tmRecebedor, tmDestinatario, tmOutros]);
 end;
 
-function StrToTpTomador(var ok: boolean; const s: string): TpcteTomador;
+function StrToTpTomador(var ok: boolean; const s: String ): TpcteTomador;
 begin
   result := StrToEnumerado(ok, s, ['0', '1', '2', '3', '4'], [tmRemetente, tmExpedidor, tmRecebedor, tmDestinatario, tmOutros]);
+end;
+
+function TpRspSeguroToStr(const t: TpcteRspSeg): String;
+begin
+  result := EnumeradoToStr(t, ['0', '1', '2', '3', '4', '5'], [rsRemetente, rsExpedidor, rsRecebedor, rsDestinatario, rsEmitenteCTe, rsTomadorServico]);
+end;
+
+function StrToTpRspSeguro(var ok: boolean; const s: String ): TpcteRspSeg;
+begin
+  result := StrToEnumerado(ok, s, ['0', '1', '2', '3', '4', '5'], [rsRemetente, rsExpedidor, rsRecebedor, rsDestinatario, rsEmitenteCTe, rsTomadorServico]);
+end;
+
+function TpLotacaoToStr(const t: TpcteLocacao): string;
+begin
+  result := EnumeradoToStr(t, ['0','1'], [ltNao, ltSim]);
+end;
+
+function StrToTpLotacao(var ok: boolean; const s: String ): TpcteLocacao;
+begin
+  result := StrToEnumerado(ok, s, ['0', '1'], [ltNao, ltSim]);
+end;
+
+function TpPropToStr(const t: TpcteProp): String;
+begin
+  result := EnumeradoToStr(t, ['0', '1', '2'], [tpTACAgregado, tpTACIndependente, tpOutros]);
+end;
+
+function StrToTpProp(var ok: boolean; const s: String ): TpcteProp;
+begin
+  result := StrToEnumerado(ok, s, ['0', '1', '2'], [tpTACAgregado, tpTACIndependente, tpOutros]);
 end;
 
 end.

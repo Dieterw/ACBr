@@ -80,8 +80,6 @@ requires
   dsnap;
 
 contains
-  ACBrNFeMSXML2_TLB in 'ACBrNFeMSXML2_TLB.pas',
-  ACBrNFeCAPICOM_TLB in 'ACBrNFeCAPICOM_TLB.pas',
   ACBrNFeNfeInutilizacaoU in 'ACBrNFeNfeInutilizacaoU.pas',
   ACBrNFeNfeCancelamentoU in 'ACBrNFeNfeCancelamentoU.pas',
   ACBrNFeNfeConsultaU in 'ACBrNFeNfeConsultaU.pas',

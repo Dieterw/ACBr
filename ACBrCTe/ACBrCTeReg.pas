@@ -85,7 +85,7 @@ implementation
 uses ACBrCTeConfiguracoes;
 
 {$IFNDEF FPC}
-   {$R ACBrCTe.dcr}
+//   {$R ACBrCTe.dcr}
 {$ENDIF}
 
 procedure Register;
@@ -139,8 +139,8 @@ var
  i : integer;
 begin
   inherited;
-  for i:= 0 to High(CTeUF) do
-    Proc(CTeUF[i]);
+  for i:= 0 to High(NFeUF) do
+    Proc(NFeUF[i]);
 end;
 
 procedure THRWEBSERVICEUFProperty.SetValue(const Value: ansistring);

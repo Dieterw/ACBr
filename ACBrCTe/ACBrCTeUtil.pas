@@ -1,9 +1,10 @@
 {******************************************************************************}
 { Projeto: Componente ACBrCTe                                                  }
 {  Biblioteca multiplataforma de componentes Delphi para emissão de Nota Fiscal}
-{ eletrônica - CTe - http://www.CTe.fazenda.gov.br                          }
+{ eletrônica - CTe - http://www.CTe.fazenda.gov.br                             }
 {                                                                              }
-{ Direitos Autorais Reservados (c) 2008 Wemerson Souto                         }
+{ Direitos Autorais Reservados (c) 2008 Wiliam Zacarias da Silva Rosa          }
+{                                       Wemerson Souto                         }
 {                                       Daniel Simoes de Almeida               }
 {                                       André Ferreira de Moraes               }
 {                                                                              }
@@ -44,6 +45,8 @@
 |* 18/02/2009: André Ferreira de Moraes
 |*  - Criado Assinatura baseado em código passado por Daniel Simões
 |*  - Criado Validação do XML da CTe baseado em código passado por Daniel Simões
+|* 07/08/2009 : Wiliam Zacarias da Silva Rosa
+|*  - Adicionado URL do estado de MT
 ******************************************************************************}
 {$I ACBr.inc}
 
@@ -51,7 +54,7 @@ unit ACBrCTeUtil;
 
 interface
 
-uses {$IFNDEF ACBrCTeOpenSSL}ACBrNFeCAPICOM_TLB, ACBrNFeMSXML2_TLB, {$ENDIF}
+uses {$IFNDEF ACBrCTeOpenSSL}ACBrCAPICOM_TLB, ACBrMSXML2_TLB, {$ENDIF}
   Classes, Forms,
   {$IFDEF FPC}
      LResources, Controls, Graphics, Dialogs,
@@ -84,6 +87,7 @@ type
   private
     class function GetURLRS(AAmbiente: Integer; ALayOut: TLayOut): WideString;
     class function GetURLSP(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+    class function GetURLMT(AAmbiente: Integer; ALayOut: TLayOut): WideString;
   protected
 
   public
@@ -173,6 +177,7 @@ case FormaEmissao of
       case AUF of
          43: Result := CTeUtil.GetURLRS(AAmbiente,ALayOut); //RS
          35: Result := CTeUtil.GetURLSP(AAmbiente,ALayOut); //SP
+         51: Result := CTeUtil.GetURLMT(AAmbiente,ALayOut); //MT         
       end;
      end;
   end;
@@ -203,6 +208,22 @@ begin
     LayCTeInutilizacao  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.sp.gov.br/cteWEB/services/cteinutilizacao.asmx','https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteinutilizacao.asmx');
     LayCTeRecepcao      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx','https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteRecepcao.asmx');
     LayCTeRetRecepcao   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.sp.gov.br/cteWEB/services/cteRetRecepcao.asmx','https://homologacao.nfe.fazenda.sp.gov.br/cteWEB/services/cteRetRecepcao.asmx');
+  end;
+end;
+
+class function CTeUtil.GetURLMT(AAmbiente: Integer;
+  ALayOut: TLayOut): WideString;
+begin
+  case ALayOut of
+
+    LayCTeRecepcao      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://sefaz.mt.gov.br/ctews/services/CteRecepcao', ' https://homologacao.sefaz.mt.gov.br/ctews/services/CteRecepcao?WSDL');
+    LayCTeRetRecepcao   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://sefaz.mt.gov.br/ctews/services/CteRetRecepcao', 'https://homologacao.sefaz.mt.gov.br/ctews/services/CteRetRecepcao?WSDL');
+    LayCTeCancelamento  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://sefaz.mt.gov.br/ctews/services/CteCancelamento', 'https://homologacao.sefaz.mt.gov.br/ctews/services/CteCancelamento');
+    LayCTeInutilizacao  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://sefaz.mt.gov.br/ctews/services/CteInutilizacao', 'https://homologacao.sefaz.mt.gov.br/ctews/services/CteInutilizacao ');
+    LayCTeConsultaCT    : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://sefaz.mt.gov.br/ctews/services/CteConsulta', 'https://homologacao.sefaz.mt.gov.br/ctews/services/CteConsulta');
+    LayCTeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://sefaz.mt.gov.br/ctews/services/CteStatusServico', 'https://homologacao.sefaz.mt.gov.br/ctews/services/CteStatusServico?WSDL');
+
+    LayCTeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://sefaz.mt.gov.br/ctews/services/cadConsultaCadastro', 'https://homologacao.sefaz.mt.gov.br/ctews/services/cadConsultaCadastro');
   end;
 end;
 

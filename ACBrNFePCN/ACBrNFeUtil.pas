@@ -51,7 +51,7 @@ unit ACBrNFeUtil;
 
 interface
 
-uses {$IFNDEF ACBrNFeOpenSSL}ACBrNFeCAPICOM_TLB, ACBrNFeMSXML2_TLB, {$ENDIF}
+uses {$IFNDEF ACBrNFeOpenSSL}ACBrCAPICOM_TLB, ACBrMSXML2_TLB, {$ENDIF}
   Classes, Forms,
   {$IFDEF FPC}
      LResources, Controls, Graphics, Dialogs,
@@ -692,8 +692,12 @@ begin
 //  (12,27,16,13,29,23,53,32,52,21,51,50,31,15,25,41,26,22,33,24,43,11,14,42,35,28,17);
 
 case FormaEmissao of
-  1,2,5 : begin
-      case AUF of
+  1,2,4,5 : begin
+       case ALayOut of
+         LayNfeEnvDPEC : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.nfe.fazenda.gov.br/SCERecepcaoRFB/SCERecepcaoRFB.asmx','https://hom.nfe.fazenda.gov.br/SCERecepcaoRFB/SCERecepcaoRFB.asmx');
+         LayNfeConsultaDPEC : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.nfe.fazenda.gov.br/SCEConsultaRFB/SCEConsultaRFB.asmx','https://hom.nfe.fazenda.gov.br/SCEConsultaRFB/SCEConsultaRFB.asmx');
+       end;
+       case AUF of
          12: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //AC
          27: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //AL
          16: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //AP
@@ -731,12 +735,6 @@ case FormaEmissao of
          LayNfeInutilizacao : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.scan.fazenda.gov.br/NfeInutilizacao/NfeInutilizacao.asmx','https://hom.nfe.fazenda.gov.br/SCAN/nfeinutilizacao/NfeInutilizacao.asmx');
          LayNfeConsulta : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.scan.fazenda.gov.br/NfeConsulta/NfeConsulta.asmx','https://hom.nfe.fazenda.gov.br/SCAN/nfeconsulta/NfeConsulta.asmx');
          LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.scan.fazenda.gov.br/NfeStatusServico/NfeStatusServico.asmx','https://hom.nfe.fazenda.gov.br/SCAN/nfestatusservico/NfeStatusServico.asmx');
-       end;
-     end;
-  4 : begin
-       case ALayOut of
-         LayNfeEnvDPEC : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.nfe.fazenda.gov.br/SCERecepcaoRFB/SCERecepcaoRFB.asmx','https://hom.nfe.fazenda.gov.br/SCERecepcaoRFB/SCERecepcaoRFB.asmx');
-         LayNfeConsultaDPEC : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://www.nfe.fazenda.gov.br/SCEConsultaRFB/SCEConsultaRFB.asmx','https://hom.nfe.fazenda.gov.br/SCEConsultaRFB/SCEConsultaRFB.asmx');
        end;
      end;
   end;

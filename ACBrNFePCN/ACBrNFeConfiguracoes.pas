@@ -46,7 +46,7 @@ unit ACBrNFeConfiguracoes;
 
 interface
 
-uses {$IFNDEF ACBrNFeOpenSSL} ACBrNFeCAPICOM_TLB, {$ENDIF}
+uses {$IFNDEF ACBrNFeOpenSSL} ACBrCAPICOM_TLB, {$ENDIF}
   Classes, Sysutils, pcnConversao;
 
 

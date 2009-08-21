@@ -1,9 +1,10 @@
 {******************************************************************************}
 { Projeto: Componente ACBrCTe                                                  }
 {  Biblioteca multiplataforma de componentes Delphi para emissão de Nota Fiscal}
-{ eletrônica - CTe - http://www.CTe.fazenda.gov.br                          }
+{ eletrônica - CTe - http://www.CTe.fazenda.gov.br                             }
 {                                                                              }
-{ Direitos Autorais Reservados (c) 2008 Wemerson Souto                         }
+{ Direitos Autorais Reservados (c) 2008 Wiliam Zacarias da Silva Rosa          }
+{                                       Wemerson Souto                         }
 {                                       Daniel Simoes de Almeida               }
 {                                       André Ferreira de Moraes               }
 {                                                                              }
@@ -32,6 +33,8 @@
 { Daniel Simões de Almeida  -  daniel@djsystem.com.br  -  www.djsystem.com.br  }
 {              Praça Anita Costa, 34 - Tatuí - SP - 18270-410                  }
 {                                                                              }
+{ Wiliam Zacarias da Silva Rosa  -  wrosa2009@yahoo.com.br -  www.motta.com.br }
+{                                                                              }
 {******************************************************************************}
 
 {******************************************************************************
@@ -51,10 +54,10 @@ uses Classes, SysUtils,
   {$IFDEF ACBrCTeOpenSSL}
     HTTPSend,
   {$ELSE}
-     SOAPHTTPTrans, JwaWinCrypt, WinInet, ACBrNFeCAPICOM_TLB,
+     SOAPHTTPTrans, WinInet, ACBrCAPICOM_TLB,
   {$ENDIF}
   pcnAuxiliar, pcnConversao, pcteRetConsCad,
-  ACBrCTeConfiguracoes ;
+  ACBrCTeConfiguracoes, ACBrCteConhecimentos;
 
 type
 
@@ -192,7 +195,7 @@ type
   TCTeInutilizacao = Class(TWebServicesBase)
   private
     FCTeChave: WideString;
-    FProtocolo: string; 
+    FProtocolo: string;
     FModelo: Integer;
     FSerie: Integer;
     FCNPJ: String;
@@ -230,7 +233,7 @@ type
   private
     FLote: Integer;
     FRecibo : String;
-//    FCTes : TCTes;
+    FCTes : TConhecimentos;
     FTpAmb: TpcnTipoAmbiente;
     FverAplic: String;
     FcStat: Integer;
@@ -239,7 +242,7 @@ type
     FTMed: Integer;
   public
     function Executar: Boolean; override;
-//    constructor Create(AOwner : TComponent; ACTes : TCTes);reintroduce;
+    constructor Create(AOwner : TComponent; ACTes : TConhecimentos);reintroduce;
     property Recibo: String read FRecibo;
     property TpAmb: TpcnTipoAmbiente read FTpAmb;
     property verAplic: String read FverAplic;
@@ -249,7 +252,62 @@ type
     property TMed: Integer read FTMed;
     property Lote: Integer read FLote write FLote;
   end;
+///////////
+{
+  TNFeRecepcao = Class(TWebServicesBase)
+  private
+    FLote: Integer;
+    FRecibo : String;
+//    FNotasFiscais : TNotasFiscais;
+    FTpAmb: TpcnTipoAmbiente;
+    FverAplic: String;
+    FcStat: Integer;
+    FxMotivo: String;
+    FdhRecbto: TDateTime;
+    FTMed: Integer;
+  public
+    function Executar: Boolean; override;
+    constructor Create(AOwner : TComponent; ANotasFiscais : TNotasFiscais);reintroduce;
+    property Recibo: String read FRecibo;
+    property TpAmb: TpcnTipoAmbiente read FTpAmb;
+    property verAplic: String read FverAplic;
+    property cStat: Integer read FcStat;
+    property xMotivo: String read FxMotivo;
+    property dhRecbto: TDateTime read FdhRecbto;
+    property TMed: Integer read FTMed;
+    property Lote: Integer read FLote write FLote;
+  end;
+{
+  TNFeRetRecepcao = Class(TWebServicesBase)
+  private
+    FRecibo: String;
+    FProtocolo: String; 
+    FChaveNFe: String; 
+    FNotasFiscais: TNotasFiscais;
+    FNFeRetorno: TRetConsReciNFe;
+    FTpAmb: TpcnTipoAmbiente;
+    FverAplic: String;
+    FcStat: Integer;
+    FcUF: Integer;
+    FxMotivo: String;
+    function Confirma(AInfProt: TProtNFeCollection): Boolean;
+  public
+    function Executar: Boolean; override;
+    constructor Create(AOwner : TComponent; ANotasFiscais : TNotasFiscais);reintroduce;
+    destructor destroy; override;
+    property TpAmb: TpcnTipoAmbiente read FTpAmb;
+    property verAplic: String read FverAplic;
+    property cStat: Integer read FcStat;
+    property cUF: Integer read FcUF;
+    property xMotivo: String read FxMotivo;
+    property Recibo: String read FRecibo write FRecibo;
+    property Protocolo: String read FProtocolo write FProtocolo;
+    property ChaveNFe: String read FChaveNFe write FChaveNFe; 
+    property NFeRetorno: TRetConsReciNFe read FNFeRetorno write FNFeRetorno;
+  end;
 
+}
+//////////
   TWebServices = Class(TWebServicesBase)
   private
     FACBrCTe : TComponent;
@@ -259,6 +317,7 @@ type
     FCancelamento: TCTeCancelamento;
     FInutilizacao: TCTeInutilizacao;
     FEnviar: TCTeRecepcao;
+//    FRetorno: TCTeRetRecepcao;
   public
     constructor Create(AFCTe: TComponent);reintroduce;
     procedure Cancela(AJustificativa: String);
@@ -273,6 +332,7 @@ type
     property Cancelamento: TCTeCancelamento read FCancelamento write FCancelamento;
     property Inutilizacao: TCTeInutilizacao read FInutilizacao write FInutilizacao;
     property Enviar: TCTeRecepcao read FEnviar write FEnviar;
+//    property Retorno: TCTeRetRecepcao read FRetorno write FRetorno;
   end;
 
 implementation
@@ -333,8 +393,8 @@ begin
   CertContext :=  Cert as ICertContext;
   CertContext.Get_CertContext(Integer(PCertContext));
 
-  if not InternetSetOption(Data, INTERNET_OPTION_CLIENT_CERT_CONTEXT, PCertContext, Sizeof(CERT_CONTEXT)) then
-    ShowMessage( 'Erro OnBeforePost' );
+  if not InternetSetOption(Data, INTERNET_OPTION_CLIENT_CERT_CONTEXT, PCertContext,sizeof(CertContext)*5) then
+    raise Exception.Create( 'Erro OnBeforePost: ' + IntToStr(GetLastError) );
 end;
 {$ENDIF}
 
@@ -351,7 +411,6 @@ begin
 
   FDadosMsg := ConsStatServ.Gerador.ArquivoFormatoXML;
   ConsStatServ.Free;
-
 end;
 
 procedure TWebServicesBase.DoCTeConsultaCadastro;
@@ -415,7 +474,7 @@ begin
 {$ENDIF}
 
   if not(CTeUtil.Valida(FDadosMsg, FMsg)) then
-    raise Exception.Create('Falha na validação dos dados do cancelamento '+LineBreak+FMsg);
+   raise Exception.Create('Falha na validação dos dados do cancelamento '+LineBreak+FMsg);
 
   CancCTe.Free;
 end;
@@ -1166,13 +1225,11 @@ begin
     FJustificativa := Trim(AValue);
 end;
 
-{ TCTeRecepcao }
-{constructor TCTeRecepcao.Create(AOwner : TComponent;
-  ANotasFiscais: TNotasFiscais);
+constructor TCTeRecepcao.Create(AOwner: TComponent; ACTes: TConhecimentos);
 begin
   inherited Create(AOwner);
-  FNotasFiscais := ANotasFiscais;
-end;}
+  FCTes := ACTes;
+end;
 
 function TCTeRecepcao.Executar: Boolean;
 var
@@ -1188,7 +1245,6 @@ var
   {$ENDIF}
 begin
   Result := inherited Executar;
-  {$IFDEF ACBrNFeOpenSSL}
      Acao := TStringList.Create;
      Stream := TMemoryStream.Create;
      Texto := '<?xml version="1.0" encoding="utf-8"?>';
@@ -1212,6 +1268,7 @@ begin
 
      Acao.SaveToStream(Stream);
 
+  {$IFDEF ACBrNFeOpenSSL}
      HTTP := THTTPSend.Create;
   {$ELSE}
 {     Rio := THTTPRIO.Create(nil);

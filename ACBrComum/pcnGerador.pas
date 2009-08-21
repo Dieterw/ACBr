@@ -14,6 +14,10 @@
 //                                                                            //
 //      Equipe: Vide o arquivo leiame.txt na pasta raiz do projeto            //
 //                                                                            //
+// Desenvolvimento                                                            //
+//         de Cte: Wiliam Zacarias da Silva Rosa                              //
+//                                                                            //
+//                                                                            //
 //      Versão: Vide o arquivo leiame.txt na pasta raiz do projeto            //
 //                                                                            //
 //     Licença: GNU Lesser General Public License (GNU LGPL)                  //
@@ -351,11 +355,42 @@ const
   DSC_NREGDPEC = 'Número de registro do DPEC';
   DSC_DPEC_ID = 'Grupo de Identificação da TAG a ser assinada. DPEC + CNPJ do emissor.';
 
-  DSC_CHCTE = 'Chave da CTe';
-  DSC_TPCTe = 'Tipo do Conhecimento';
-  DSC_REFCTE = 'Chave de acesso do CT-e referenciado';
-  DSC_CMUNEMI = 'Código do Município onde o CT-e está sendo emitido';
+  // CTE //
 
+  DSC_CHCTE    = 'Chave do CTe';
+  DSC_TPCTe    = 'Tipo do Conhecimento';
+  DSC_REFCTE   = 'Chave de acesso do CT-e referenciado';
+  DSC_CMUNEMI  = 'Código do Município onde o CT-e está sendo emitido';
+  DSC_ORIGCALC = 'Município origem para efeito de cálculo do frete';
+  DSC_DESTCALC = 'Município destino para efeito de cálculo do frete';
+  DSC_XOBS     = 'Observações Gerais';
+  DSC_TOMA     = 'Tomador do Serviço';
+  DSC_INFNF    = 'Informações da Nota Fiscal';
+  DSC_INFNFE   = 'Informações da Nota Fiscal Eletrônica';
+  DSC_NDOC     = 'Número da Nota Fiscal';
+  DSC_PESO     = 'Peso';
+  DSC_TPDOC    = 'Tipo de documento originário';
+  DSC_OUTROS   = 'Descrição';
+  DSC_VTPREST  = 'Valor total da prestação do serviço';
+  DSC_VREC     = 'Valor a Receber';
+  DSC_XNOMEC   = 'Nome do Componente';
+  DSC_VCOMP    = 'Valor do Componente';
+  DSC_VCRED    = 'Valor do Crédito outorgado/presumido';
+  DSC_RESPSEG  = 'Responsável pelo Seguro';
+  DSC_XSEG     = 'Nome da Seguradora';
+  DSC_NAPOL    = 'Número da Apólice';
+  DSC_NAVER    = 'Número da Averbação';
+  DSC_VMERC    = 'Valor da mercadoria para efeito de averbação';
+
+  DSC_INFSEG   = 'Informações de seguro da carga';
+  DSC_RNTRC    = 'Registro Nacional de Transportadores Rodoviários de Carga';
+  DSC_DPREV    = 'Data prevista de entrega';
+  DSC_LOTA     = 'Indicador de lotação';
+  DSC_CINT     = 'Código interno do emitente';
+  DSC_LACR     = 'Grupo de lacres';
+  DSC_TPPROP   = 'Tipo de Proprietário';
+  DSC_INFOUTRO = 'informações dos demais documentos';
+  DSC_VDOC     = 'Valor do documento';
 
 implementation
 

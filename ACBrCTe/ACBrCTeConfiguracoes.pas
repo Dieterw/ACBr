@@ -46,7 +46,7 @@ unit ACBrCTeConfiguracoes;
 
 interface
 
-uses {$IFNDEF ACBrCTeOpenSSL} ACBrNFeCAPICOM_TLB, {$ENDIF}
+uses {$IFNDEF ACBrCTeOpenSSL} ACBrCAPICOM_TLB, {$ENDIF}
   Classes, Sysutils, pcnConversao;
 
 
@@ -273,6 +273,9 @@ var
   Cert         : ICertificate2;
   i            : Integer;
 begin
+  if NotaUtil.EstaVazio( FNumeroSerie ) then
+    raise Exception.Create('Número de Série do Certificado Digital não especificado !');
+
   Result := nil;
   Store := CoStore.Create;
   Store.Open(CAPICOM_CURRENT_USER_STORE, 'My', CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED);

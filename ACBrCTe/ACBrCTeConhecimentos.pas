@@ -290,11 +290,11 @@ begin
         Self.Items[i].Alertas := LocCTeW.Gerador.ListaDeAlertas.Text;
 {$IFDEF ACBrCTeOpenSSL}
         if not(CTeUtil.Assinar(LocCTeW.Gerador.ArquivoFormatoXML, FConfiguracoes.Certificados.Certificado , FConfiguracoes.Certificados.Senha, vAssinada, FMsg)) then
-           raise Exception.Create('Falha ao assinar Nota Fiscal Eletrônica '+
+           raise Exception.Create('Falha ao assinar Conhecimento de Transporte Eletrônico '+
                                    IntToStr(Self.Items[i].CTe.Ide.cNF)+FMsg);
 {$ELSE}
         if not(CTeUtil.Assinar(LocCTeW.Gerador.ArquivoFormatoXML, FConfiguracoes.Certificados.GetCertificado , vAssinada, FMsg)) then
-           raise Exception.Create('Falha ao assinar Nota Fiscal Eletrônica '+
+           raise Exception.Create('Falha ao assinar Conhecimento de Transporte Eletrônico '+
                                    IntToStr(Self.Items[i].CTe.Ide.cCT)+FMsg);
 {$ENDIF}
         vAssinada := StringReplace( vAssinada, '<'+ENCODING_UTF8_STD+'>', '', [rfReplaceAll] ) ;
@@ -369,7 +369,7 @@ begin
      if pos('<Signature',Self.Items[i].XML) = 0 then
         Assinar;
      if not(CTeUtil.Valida(Self.Items[i].XML, FMsg)) then
-       raise Exception.Create('Falha na validação dos dados da nota '+
+       raise Exception.Create('Falha na validação dos dados do conhecimento '+
                                IntToStr(Self.Items[i].CTe.Ide.cCT)+sLineBreak+Self.Items[i].Alertas+FMsg);
   end;
 end;

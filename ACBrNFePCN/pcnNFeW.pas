@@ -164,8 +164,8 @@ begin
   FOpcoes.FGerarTagIPIparaNaoTributado := True;
   FOpcoes.FNormatizarMunicipios := False;
   FOpcoes.FGerarTagAssinatura := taSomenteSeAssinada;
-  FOpcoes.FValidarInscricoes := False;
-  FOpcoes.FValidarListaServicos := False;
+  FOpcoes.FValidarInscricoes := True;
+  FOpcoes.FValidarListaServicos := True;
 end;
 
 destructor TNFeW.Destroy;

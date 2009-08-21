@@ -430,10 +430,13 @@ begin
   (**)GerarDestEnderDest(UF);
   Gerador.IDNivel := 'E01';
   // Inscrição Estadual
-  Gerador.wCampo(tcStr, 'E17', 'IE     ', 00, 14, 1, SomenteNumeros(nfe.Dest.IE), DSC_IE);
+  if nfe.Dest.IE = 'ISENTO' then
+     Gerador.wCampo(tcStr, 'E17', 'IE ', 00, 14, 1, nfe.Dest.IE, DSC_IE)
+  else
+     Gerador.wCampo(tcStr, 'E17', 'IE     ', 00, 14, 1, SomenteNumeros(nfe.Dest.IE), DSC_IE);
   if (length(nfe.Dest.CNPJCPF) = 11) and (SomenteNumeros(nfe.Dest.IE) <> '') then
     Gerador.wAlerta('E17', 'IE', DSC_IE, ERR_MSG_INVALIDO);
-  if (FOpcoes.ValidarInscricoes) and (nfe.Dest.IE <> '') then
+  if (FOpcoes.ValidarInscricoes) and (nfe.Dest.IE <> '') and (nfe.Dest.IE <> 'ISENTO') then
     if not ValidarIE(nfe.Dest.IE, UF) then
       Gerador.wAlerta('E17', 'IE', DSC_IE, ERR_MSG_INVALIDO);
   //

@@ -7,7 +7,7 @@ interface
 uses IniFiles, 
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, Buttons, ComCtrls, OleCtrls, SHDocVw,
-  ACBrNFe, pcnConversao, ACBrNFeDANFEClass, ACBrNFeDANFERave, pcnNFeW, pcnLeitor;
+  ACBrNFe, pcnConversao, ACBrNFeDANFEClass, ACBrNFeDANFERave;
 
 type
   TForm1 = class(TForm)
@@ -435,6 +435,12 @@ begin
   begin
     ACBrNFe1.NotasFiscais.Clear;
     ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
+    if ACBrNFe1.NotasFiscais.Items[0].NFe.Ide.tpEmis = teDPEC then
+     begin
+       ACBrNFe1.WebServices.ConsultaDPEC.NFeChave := ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID;
+       ACBrNFe1.WebServices.ConsultaDPEC.Executar;
+       ACBrNFe1.DANFE.ProtocoloNFe := ACBrNFe1.WebServices.ConsultaDPEC.nRegDPEC +' '+ DateTimeToStr(ACBrNFe1.WebServices.ConsultaDPEC.retDPEC.dhRegDPEC);
+     end;
     ACBrNFe1.NotasFiscais.Imprimir;
   end;
 end;
@@ -810,7 +816,6 @@ end;
 procedure TForm1.btnGerarNFEClick(Sender: TObject);
 var
  vAux : String;
- LocNFeW : TNFeW;
 begin
 if not(InputQuery('WebServices Enviar', 'Numero da Nota', vAux)) then
     exit;
@@ -1305,6 +1310,9 @@ if not(InputQuery('WebServices DPEC', 'Numero da Nota', vAux)) then
 
   ShowMessage(DateTimeToStr(ACBrNFe1.WebServices.EnviarDPEC.DhRegDPEC));
   ShowMessage(ACBrNFe1.WebServices.EnviarDPEC.nRegDPEC);
+
+  ACBrNFe1.DANFE.ProtocoloNFe := ACBrNFe1.WebServices.EnviarDPEC.nRegDPEC +' '+ DateTimeToStr(ACBrNFe1.WebServices.EnviarDPEC.DhRegDPEC);
+  ACBrNFe1.NotasFiscais.Imprimir;
 
   MemoResp.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.EnviarDPEC.RetWS);
   LoadXML(MemoResp, WBResposta);

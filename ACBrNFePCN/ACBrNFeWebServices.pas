@@ -2103,7 +2103,6 @@ var
   {$ELSE}
      ReqResp: THTTPReqResp;
   {$ENDIF}
-  RetDPEC : TRetDPEC;
 begin
   Result := inherited Executar;
 
@@ -2159,9 +2158,11 @@ begin
        StrStream.Free;
     {$ENDIF}
 
-    RetDPEC := TRetDPEC.Create;
-    RetDPEC.Leitor.Arquivo := FRetWS;
-    RetDPEC.LerXml;
+    if Assigned(FretDPEC) then
+       FretDPEC.Free;
+    FretDPEC := TRetDPEC.Create;
+    FretDPEC.Leitor.Arquivo := FRetWS;
+    FretDPEC.LerXml;
 
     TACBrNFe( FACBrNFe ).SetStatus( stIdle );
     if FConfiguracoes.WebServices.Visualizar then
@@ -2177,14 +2178,11 @@ begin
     FverAplic := RetDPEC.verAplic;
     FcStat    := RetDPEC.cStat;
     FxMotivo  := RetDPEC.xMotivo;
-//    FId       := RetDPEC.Id;
     FTpAmb    := RetDPEC.tpAmb;
-//    FdhRegDPEC := RetDPEC.dhRegDPEC;
     FnRegDPEC  := RetDPEC.nRegDPEC;
     FNFeChave  := RetDPEC.chNFE;
 
     FMsg      := RetDPEC.XMotivo;
-    RetDPEC.Free;
 
     if FConfiguracoes.Geral.Salvar then
       FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+'-sit-dpec.xml', FRetWS);
@@ -2203,7 +2201,7 @@ procedure TNFeConsultaDPEC.SetNFeChave(const Value: String);
 begin
   if NotaUtil.NaoEstaVazio(Value) then
      FnRegDPEC := '';
-  FNFeChave := Value;
+  FNFeChave := StringReplace(Value,'NFe','',[rfReplaceAll]);
 end;
 
 procedure TNFeConsultaDPEC.SetnRegDPEC(const Value: String);

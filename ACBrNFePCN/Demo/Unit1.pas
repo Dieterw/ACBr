@@ -1297,6 +1297,12 @@ if not(InputQuery('WebServices DPEC', 'Numero da Nota', vAux)) then
   end;}
 
   ACBrNFe1.WebServices.EnviarDPEC.Executar;
+
+  //protocolo de envio ao DPEC e impressão do DANFE
+  ACBrNFe1.DANFE.ProtocoloNFe:=ACBrNFe1.WebServices.EnviarDPEC.nRegDPEC+' '+
+                               DateTimeToStr(ACBrNFe1.WebServices.EnviarDPEC.DhRegDPEC);
+  ACBrNFe1.NotasFiscais.Imprimir;
+
   ShowMessage(DateTimeToStr(ACBrNFe1.WebServices.EnviarDPEC.DhRegDPEC));
   ShowMessage(ACBrNFe1.WebServices.EnviarDPEC.nRegDPEC);
 

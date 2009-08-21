@@ -223,6 +223,7 @@ begin
    finally
       dmDanfe.RvProject.ExecuteReport('DANFE1');
       dmDanfe.RvProject.Close;
+      ProtocoloNFe:='';
    end;
 end;
 

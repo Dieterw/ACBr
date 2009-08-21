@@ -876,6 +876,8 @@ begin
   FCancelamento.Free;
   FInutilizacao.Free;
   FConsultaCadastro.Free;
+  FEnviaDPEC.free;
+  FConsultaDPEC.free;
   inherited;
 end;
 

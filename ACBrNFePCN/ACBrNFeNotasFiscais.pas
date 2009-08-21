@@ -433,7 +433,8 @@ begin
     try
        LocNFeR.Leitor.CarregarArquivo(Stream);
        LocNFeR.LerXml;
-       Items[Self.Count-1].XML := LocNFeR.Leitor.Arquivo;       
+       Items[Self.Count-1].XML := LocNFeR.Leitor.Arquivo;
+       GerarNFe;       
     finally
        LocNFeR.Free
     end;

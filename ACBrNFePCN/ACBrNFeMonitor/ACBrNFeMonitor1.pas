@@ -191,6 +191,7 @@ type
     fsHashSenha:Integer;
     fsLinesLog : AnsiString ;
     Cmd : TACBrNFeCmd ;
+    pCanClose : Boolean ;
 
     procedure ExibeResp( Resposta : AnsiString );
     procedure Inicializar ;
@@ -490,7 +491,7 @@ begin
      ArqSaiTMP := ChangeFileExt( ArqSaiTXT, '.tmp' ) ;
      ArqLogTXT := AcertaPath( edLogArq.Text ) ;
 
-     TcpServer.DefaultPort    := StrToInt( edPortaTCP.Text ) ;
+     TcpServer.DefaultPort    := StrToIntDef( edPortaTCP.Text, 3436 ) ;
      TcpServer.MaxConnections := sedConexoesTCP.Value ;
      TcpServer.MaxConnectionReply.Text.Add( 'Pedido de conexão negado.') ;
      TcpServer.MaxConnectionReply.Text.Add(
@@ -517,7 +518,7 @@ begin
      edtSenha.Visible := True;
      lblSenha.Visible := True;
      edtCaminho.Text  := Ini.ReadString( 'Certificado','Caminho' ,'') ;
-     edtSenha.Text    := Ini.ReadString( 'Certificado','Senha'   ,'') ;
+     edtSenha.Text    := LeINICrypt(INI,'Certificado','Senha', _C) ;
      ACBrNFe1.Configuracoes.Certificados.Certificado  := edtCaminho.Text;
      ACBrNFe1.Configuracoes.Certificados.Senha        := edtSenha.Text;
      {$ELSE}
@@ -533,7 +534,7 @@ begin
      edtProxyHost.Text  := Ini.ReadString( 'Proxy','Host'   ,'') ;
      edtProxyPorta.Text := Ini.ReadString( 'Proxy','Porta'  ,'') ;
      edtProxyUser.Text  := Ini.ReadString( 'Proxy','User'   ,'') ;
-     edtProxySenha.Text := Ini.ReadString( 'Proxy','Pass'   ,'') ;
+     edtProxySenha.Text := LeINICrypt(INI, 'Proxy','Pass', _C) ;
      ACBrNFe1.Configuracoes.WebServices.ProxyHost := edtProxyHost.Text;
      ACBrNFe1.Configuracoes.WebServices.ProxyPort := edtProxyPorta.Text;
      ACBrNFe1.Configuracoes.WebServices.ProxyUser := edtProxyUser.Text;
@@ -563,15 +564,15 @@ begin
         ACBrNFeDANFERave1.ImprimirDescPorc := cbxImpDescPorc.Checked;
         ACBrNFeDANFERave1.MostrarPreview   := cbxMostrarPreview.Checked;
         ACBrNFeDANFERave1.Impressora := cbxImpressora.Text;
-        ACBrNFeDANFERave1.NumCopias  := StrToInt(edtNumCopia.Text);
-        ACBrNFeDANFERave1.MargemInferior  := StrToFloat(edtMargemInf.Text);
+        ACBrNFeDANFERave1.NumCopias  := StrToIntDef(edtNumCopia.Text, 1);
+        ACBrNFeDANFERave1.MargemInferior  := StrToFloatDef(edtMargemInf.Text,0.8);
         ACBrNFeDANFERave1.PathPDF    := edtPathPDF.Text;
       end;
 
      edtSmtpHost.Text      := Ini.ReadString( 'Email','Host'   ,'') ;
      edtSmtpPort.Text      := Ini.ReadString( 'Email','Port'   ,'') ;
      edtSmtpUser.Text      := Ini.ReadString( 'Email','User'   ,'') ;
-     edtSmtpPass.Text      := StrCrypt(Ini.ReadString( 'Email','Pass'   ,''),IntToStr(fsHashSenha)) ;
+     edtSmtpPass.Text      := LeINICrypt( INI, 'Email','Pass' ,_C) ;
      edtEmailAssunto.Text  := Ini.ReadString( 'Email','Assunto','') ;
      cbEmailSSL.Checked    := Ini.ReadBool(   'Email','SSL'    ,False) ;
      StreamMemo := TMemoryStream.Create;
@@ -615,7 +616,7 @@ begin
 
      Ini.WriteString( 'Certificado','Caminho' ,edtCaminho.Text) ;
      {$IFDEF ACBrNFeOpenSSL}
-     Ini.WriteString( 'Certificado','Senha'   ,edtSenha.Text) ;
+     GravaINICrypt(INI,'Certificado','Senha', ,edtSenha.Text, _C) ;
      {$ENDIF}
 
      Ini.WriteInteger( 'Geral','DANFE'       ,rgTipoDanfe.ItemIndex) ;
@@ -631,12 +632,12 @@ begin
      Ini.WriteString( 'Proxy','Host'   ,edtProxyHost.Text) ;
      Ini.WriteString( 'Proxy','Porta'  ,edtProxyPorta.Text) ;
      Ini.WriteString( 'Proxy','User'   ,edtProxyUser.Text) ;
-     Ini.WriteString( 'Proxy','Pass'   ,edtProxySenha.Text) ;
+     GravaINICrypt( INI, 'Proxy','Pass' ,edtProxySenha.Text, _C) ;
 
      Ini.WriteString( 'Email','Host'    ,edtSmtpHost.Text) ;
      Ini.WriteString( 'Email','Port'    ,edtSmtpPort.Text) ;
      Ini.WriteString( 'Email','User'    ,edtSmtpUser.Text) ;
-     Ini.WriteString( 'Email','Pass'    ,StrCrypt(edtSmtpPass.Text,IntToStr(fsHashSenha))) ;
+     GravaINICrypt(INI, 'Email','Pass' , edtSmtpPass.Text, _C) ;
      Ini.WriteString( 'Email','Assunto' ,edtEmailAssunto.Text) ;
      Ini.WriteBool(   'Email','SSL'     ,cbEmailSSL.Checked ) ;
      StreamMemo := TMemoryStream.Create;
@@ -851,6 +852,7 @@ begin
   mCmd.Clear ;
   Cmd       := TACBrNFeCmd.Create ;
 
+  pCanClose := False ;
   Inicio    := true ;
   ArqSaiTXT := '' ;
   ArqSaiTMP := '' ;
@@ -902,6 +904,7 @@ end;
 
 procedure TfrmAcbrNfeMonitor.EncerrarMonitor1Click(Sender: TObject);
 begin
+  pCanClose := True ;
   close ;
 end;
 
@@ -933,12 +936,13 @@ begin
                 'efetuadas antes de fechar o programa',
                  mtWarning,[mbOk],0 ) ;
      CanClose := false ;
+     exit ;
   end ;
 
-  if CanClose then
-     CanClose := ( MessageDlg('Deseja realmente encerrar o '+#13+#10+
-                              'ACBrNfeMonitor?',
-                    mtConfirmation,[mbNo,mbYes] ,0 ) = mrYes );
+  CanClose := pCanClose ;
+
+  if not CanClose then
+     Application.Minimize ;
 end;
 
 procedure TfrmAcbrNfeMonitor.btConfigClick(Sender: TObject);

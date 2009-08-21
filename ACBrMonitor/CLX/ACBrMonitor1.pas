@@ -724,6 +724,7 @@ begin
                 'efetuadas antes de fechar o programa',
                  mtWarning,[mbOk],0 ) ;
      CanClose := false ;
+     exit ;
   end ;
 
   CanClose := pCanClose ;

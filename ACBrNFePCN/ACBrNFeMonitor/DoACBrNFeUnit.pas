@@ -181,12 +181,12 @@ begin
               Application.BringToFront;
             end;
            ACBrNFe1.NotasFiscais.Clear;
-           if FileExists(Cmd.Params(0)) or FileExists(PathWithDelim(ExtractFilePath(Application.ExeName))+'Logs\'+Cmd.Params(0)) then
+           if FileExists(Cmd.Params(0)) or FileExists(PathWithDelim(ExtractFilePath(Application.ExeName))+'Logs'+PathDelim+Cmd.Params(0)) then
             begin
               if FileExists(Cmd.Params(0)) then
                  ACBrNFe1.NotasFiscais.LoadFromFile(Cmd.Params(0))
               else
-                 ACBrNFe1.NotasFiscais.LoadFromFile(PathWithDelim(ExtractFilePath(Application.ExeName))+'Logs\'+Cmd.Params(0));
+                 ACBrNFe1.NotasFiscais.LoadFromFile(PathWithDelim(ExtractFilePath(Application.ExeName))+'Logs'+PathDelim+Cmd.Params(0));
             end
            else
               raise Exception.Create('Arquivo '+Cmd.Params(0)+' não encontrado.');
@@ -208,7 +208,7 @@ begin
 
            try
               ACBrNFe1.NotasFiscais.ImprimirPDF;
-              Cmd.Resposta := 'Arquivo criado em '+ExtractFileDir(application.ExeName)+'\'+copy(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID, (length(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID)-44)+1, 44)+'.pdf'
+              Cmd.Resposta := 'Arquivo criado em '+ExtractFileDir(application.ExeName)+PathDelim+copy(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID, (length(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID)-44)+1, 44)+'.pdf'
            except
               raise Exception.Create('Erro ao criar o arquivo PDF');
            end;
@@ -389,11 +389,11 @@ begin
             end;
            if (Cmd.Metodo = 'adicionarnfe')  or (Cmd.Metodo = 'adicionarnfesefaz') then
             begin
-              ForceDirectories(PathWithDelim(ExtractFilePath(Application.ExeName))+'Lotes\'+'Lote'+Cmd.Params(1));
+              ForceDirectories(PathWithDelim(ExtractFilePath(Application.ExeName))+'Lotes'+PathDelim+'Lote'+Cmd.Params(1));
               ACBrNFe1.NotasFiscais.GerarNFe;
               Alertas := ACBrNFe1.NotasFiscais.Items[0].Alertas;
               ACBrNFe1.NotasFiscais.Valida;
-              ArqNFe := PathWithDelim(PathWithDelim(ExtractFilePath(Application.ExeName))+'Lotes\'+'Lote'+Cmd.Params(1))+StringReplace(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID, 'NFe', '', [rfIgnoreCase])+'-nfe.xml';
+              ArqNFe := PathWithDelim(PathWithDelim(ExtractFilePath(Application.ExeName))+'Lotes'+PathDelim+'Lote'+Cmd.Params(1))+StringReplace(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID, 'NFe', '', [rfIgnoreCase])+'-nfe.xml';
               ACBrNFe1.NotasFiscais.SaveToFile(ExtractFilePath(ArqNFe));
             end
            else if (Cmd.Metodo = 'criarnfe')  or (Cmd.Metodo = 'criarnfesefaz') or
@@ -428,17 +428,17 @@ begin
               //Carregar Notas quando enviar lote
               if Cmd.Metodo = 'enviarlotenfe' then
                begin
-                 if not DirectoryExists(PathWithDelim(ExtractFilePath(Application.ExeName))+'Lotes\'+'Lote'+Cmd.Params(0)) then
-                    raise Exception.Create('Diretório não encontrado:'+PathWithDelim(ExtractFilePath(Application.ExeName))+'Lotes\'+'Lote'+Cmd.Params(0))
+                 if not DirectoryExists(PathWithDelim(ExtractFilePath(Application.ExeName))+'Lotes'+PathDelim+'Lote'+Cmd.Params(0)) then
+                    raise Exception.Create('Diretório não encontrado:'+PathWithDelim(ExtractFilePath(Application.ExeName))+'Lotes'+PathDelim+'Lote'+Cmd.Params(0))
                  else
                   begin
                     ACBrNFe1.NotasFiscais.Clear;
-                    RetFind := SysUtils.FindFirst( PathWithDelim(ExtractFilePath(Application.ExeName))+'Lotes\'+'Lote'+Cmd.Params(0)+'\*-nfe.xml', faAnyFile, SearchRec) ;
+                    RetFind := SysUtils.FindFirst( PathWithDelim(ExtractFilePath(Application.ExeName))+'Lotes'+PathDelim+'Lote'+Cmd.Params(0)+PathDelim+'*-nfe.xml', faAnyFile, SearchRec) ;
                     if (RetFind = 0) then
                      begin
                        while RetFind = 0 do
                         begin
-                           ACBrNFe1.NotasFiscais.LoadFromFile(PathWithDelim(ExtractFilePath(Application.ExeName))+'Lotes\'+'Lote'+Cmd.Params(0)+'\'+SearchRec.Name);
+                           ACBrNFe1.NotasFiscais.LoadFromFile(PathWithDelim(ExtractFilePath(Application.ExeName))+'Lotes'+PathDelim+'Lote'+Cmd.Params(0)+PathDelim+SearchRec.Name);
                            RetFind := FindNext(SearchRec);
                         end;
                         ACBrNFe1.NotasFiscais.GerarNFe;
@@ -537,7 +537,7 @@ begin
             begin
               try
                  ACBrNFe1.NotasFiscais.ImprimirPDF;
-                 ArqPDF := ExtractFileDir(application.ExeName)+'\'+ACBrNFe1.NotasFiscais.Items[0].NFe.InfNFe.Id+'.pdf'
+                 ArqPDF := ExtractFileDir(application.ExeName)+PathDelim+ACBrNFe1.NotasFiscais.Items[0].NFe.InfNFe.Id+'.pdf'
               except
                  raise Exception.Create('Erro ao criar o arquivo PDF');
               end;
@@ -625,7 +625,7 @@ var
   List: TstringList;
 begin
   result := 0;
-  PathArquivo :=  PathWithDelim(ExtractFilePath(Application.ExeName))+ 'MunIBGE\MunIBGE-UF' + InttoStr(UFparaCodigo(xUF)) + '.txt';
+  PathArquivo :=  PathWithDelim(ExtractFilePath(Application.ExeName))+ 'MunIBGE'+PathDelim+'MunIBGE-UF' + InttoStr(UFparaCodigo(xUF)) + '.txt';
   if FileExists(PathArquivo) then
    begin
      List := TstringList.Create;

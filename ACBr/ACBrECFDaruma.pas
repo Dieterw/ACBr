@@ -1903,12 +1903,18 @@ begin
     if ProxIndice > 16 then
       raise Exception.create('Não há espaço para programar novas Aliquotas !');
 
+{  Código comentado, pois o comando abaixo está errado...
     if TipoStr <> 'S' then
       TipoStr := '1' // Serviço
     else
       TipoStr := '0';// Produto
 
     EnviaComando( FS + 'C' + #201 + IntToStrZero(ProxIndice,2) + TipoStr + ValStr ) ;
+}    
+    if TipoStr <> 'S' then
+       TipoStr := '' ;
+    EnviaComando( ESC + #220 + TipoStr + ValStr ) ;
+
   end
   else
   begin

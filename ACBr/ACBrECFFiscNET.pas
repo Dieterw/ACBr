@@ -1115,13 +1115,14 @@ begin
      raise EACBrECFCMDInvalido.Create('Aliquota Inválida: '+AliquotaECF);
   end ;
 
-  if fsComandoVendeItem = '' then
-     fsComandoVendeItem := 'VendeItem' ;
-
   try
     with FiscNETComando do
     begin
-       NomeComando := fsComandoVendeItem ;
+       if fsComandoVendeItem = '' then
+          NomeComando := 'VendeItem'
+       else
+          NomeComando := fsComandoVendeItem ;
+          
        AddParamInteger('CodAliquota',CodAliq) ;
        AddParamString('CodProduto',LeftStr(Codigo,48));
        AddParamString('NomeProduto',LeftStr(Descricao,200));

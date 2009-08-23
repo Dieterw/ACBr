@@ -121,6 +121,7 @@ TACBrECFFiscNET = class( TACBrECFClass )
     fsArredonda : Integer ;
     fsFiscNETComando: TACBrECFFiscNETComando;
     fsFiscNETResposta: TACBrECFFiscNETResposta;
+    fsComandoVendeItem : String ;
 
     Function PreparaCmd( cmd : AnsiString ) : AnsiString ;
     Procedure AjustaStringList( AStringList : TStringList ) ;
@@ -505,6 +506,7 @@ begin
   fsNumECF    := '' ;
   fsNumLoja   := '' ;
   fsArredonda := -1 ;
+  fsComandoVendeItem := '' ;
   fpModeloStr := 'FiscNET' ;
   fpColunas   := 57 ;
   fpMFD       := True ;
@@ -532,6 +534,7 @@ begin
   fsNumECF    := '' ;
   fsNumLoja   := '' ;
   fsArredonda := -1 ;
+  fsComandoVendeItem := '' ;
 
   { FiscNET sempre aceita até 3 decimais na QTD e PrecoUnit }
   fpDecimaisQtd   := 3 ;
@@ -1111,21 +1114,37 @@ begin
   except
      raise EACBrECFCMDInvalido.Create('Aliquota Inválida: '+AliquotaECF);
   end ;
-  
-  with FiscNETComando do
-  begin
-     if fsNumVersao = '01.00.01' then  // TermoPrinter usa comando errado na 01.00.01
-        NomeComando := 'VendaDeItem'
-     else
-        NomeComando := 'VendeItem' ;
-     AddParamInteger('CodAliquota',CodAliq) ;
-     AddParamString('CodProduto',LeftStr(Codigo,48));
-     AddParamString('NomeProduto',LeftStr(Descricao,200));
-     AddParamDouble('PrecoUnitario',ValorUnitario);
-     AddParamDouble('Quantidade',Qtd);
-     AddParamString('Unidade',Unidade);
+
+  if fsComandoVendeItem = '' then
+     fsComandoVendeItem := 'VendeItem' ;
+
+  try
+    with FiscNETComando do
+    begin
+       NomeComando := fsComandoVendeItem ;
+       AddParamInteger('CodAliquota',CodAliq) ;
+       AddParamString('CodProduto',LeftStr(Codigo,48));
+       AddParamString('NomeProduto',LeftStr(Descricao,200));
+       AddParamDouble('PrecoUnitario',ValorUnitario);
+       AddParamDouble('Quantidade',Qtd);
+       AddParamString('Unidade',Unidade);
+    end ;
+    EnviaComando ;
+  except
+     on E : Exception do
+     begin
+        if (fsComandoVendeItem = '') and
+           (pos('ComandoInexistente',E.Message) > 0) then   // Não reconheceu o comando
+         begin
+           fsComandoVendeItem := 'VendaDeItem' ;
+           VendeItem( Codigo,Descricao,AliquotaECF,Qtd,ValorUnitario,
+                      ValorDescontoAcrescimo,Unidade,TipoDescontoAcrescimo,
+                      DescontoAcrescimo );
+         end
+        else
+           raise ;
+     end ;
   end ;
-  EnviaComando ;
 
   { Se o desconto é maior que zero dá o comando de desconto de item }
   if ValorDescontoAcrescimo > 0 then

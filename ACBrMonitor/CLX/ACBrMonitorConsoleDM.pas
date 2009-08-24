@@ -39,7 +39,7 @@ uses
   CmdUnit, ACBrRFD, ACBrBAL, ACBrETQ, ACBrBase ;
 
 const
-   Versao = '0.7b' ;
+   Versao = '0.8b' ;
    _C = 'tYk*5W@' ;
 
 type

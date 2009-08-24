@@ -54,7 +54,7 @@ Uses IniFiles, StrUtils, DateUtils,
   pcnConsSitNFe, pcnRetConsSitNFe,
   pcnInutNFe, pcnRetInutNFe,
   pcnRetEnvNFe, pcnConsReciNFe,
-  pcnNFeRTXT, ACBrNFeNotasFiscais, pcnRetConsCad;
+  pcnNFeRTXT, ACBrNFeNotasFiscais, pcnRetConsCad, StdCtrls;
 
 Procedure DoACBrNFe( Cmd : TACBrNFeCmd ) ;
 var
@@ -208,7 +208,9 @@ begin
 
            try
               ACBrNFe1.NotasFiscais.ImprimirPDF;
-              Cmd.Resposta := 'Arquivo criado em '+ExtractFileDir(application.ExeName)+PathDelim+copy(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID, (length(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID)-44)+1, 44)+'.pdf'
+              ArqPDF := ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID ;
+              Cmd.Resposta := 'Arquivo criado em: '+ edtPathPDF.Text +
+                              copy(ArqPDF, (length(ArqPDF)-44)+1, 44)+'.pdf' ;
            except
               raise Exception.Create('Erro ao criar o arquivo PDF');
            end;
@@ -537,7 +539,8 @@ begin
             begin
               try
                  ACBrNFe1.NotasFiscais.ImprimirPDF;
-                 ArqPDF := ExtractFileDir(application.ExeName)+PathDelim+ACBrNFe1.NotasFiscais.Items[0].NFe.InfNFe.Id+'.pdf'
+                 ArqPDF := ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID ;
+                 ArqPDF := edtPathPDF.Text + copy(ArqPDF, (length(ArqPDF)-44)+1, 44)+'.pdf'
               except
                  raise Exception.Create('Erro ao criar o arquivo PDF');
               end;

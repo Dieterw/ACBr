@@ -550,7 +550,7 @@ begin
      cbxMostrarPreview.Checked := Ini.ReadBool(   'DANFE','MostrarPreview',False) ;
      edtNumCopia.Text          := Ini.ReadString( 'DANFE','Copias','1') ;
      edtMargemInf.Text         := Ini.ReadString( 'DANFE','Margem','0,8') ;
-     edtPathPDF.Text           := Ini.ReadString( 'DANFE','PathPDF',PathWithDelim(ExtractFilePath(Application.ExeName))) ;
+     edtPathPDF.Text           := PathWithDelim(Ini.ReadString( 'DANFE','PathPDF',ExtractFilePath(Application.ExeName))) ;
 
      if ACBrNFe1.DANFE <> nil then
       begin
@@ -1221,7 +1221,7 @@ begin
      Dir := edtPathPDF.Text;
 
   if SelectDirectory(Dir, [sdAllowCreate, sdPerformCreate, sdPrompt],SELDIRHELP) then
-    edtPathPDF.Text := Dir;
+    edtPathPDF.Text := PathWithDelim( Dir );
 end;
 
 end.

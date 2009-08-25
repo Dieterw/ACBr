@@ -132,7 +132,6 @@ type
   private
     FDANFEClassOwner : TACBrNFeDANFEClass ;
     FNFe : TNFe;
-
   public
     property NFe : TNFe read FNFe write FNFe;
     property DANFEClassOwner : TACBrNFeDANFEClass read FDANFEClassOwner ;

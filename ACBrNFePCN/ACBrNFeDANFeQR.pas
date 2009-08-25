@@ -144,14 +144,14 @@ end;
 
 procedure TfqrDANFeQR.SetBarCodeImage(ACode: String; QRImage: TQRImage);
 var
- b : TSPEDBarCode ;
+ b : TBarCode128c ;
 begin
-   b :=  TSPEDBarCode.Create(Self);
-   b.Parent := QRImage.Parent;
-   b.Width  := QRImage.Width ;
-   b.Text := ACode ;
-   b.PaintTo( QRImage.Canvas, QRImage.ClientRect.Top, QRImage.ClientRect.Left );
+   b := TBarCode128c.Create;
+//      Width  := QRImage.Width ;
+   b.Code := ACode ;
+   b.PaintCodeToCanvas( ACode, QRImage.Canvas, QRImage.ClientRect );
    b.free ;
+
 end;
 
 end.

@@ -43,582 +43,682 @@
 |*  - Doação units para geração do Danfe via QuickReport
 ******************************************************************************}
 {$I ACBr.inc}
-{$B-}
-{$WARNINGS OFF}
 unit ACBrNFeQRCodeBar ;
 
-{Change History
-July 17th 1998   Before testing whether canvas is qreport.printer.canvas, check
-whether it is self.canvas.  Can be asked to draw self when qreportprinter
-not initialised}
+{*********************************************************
+ Código de barras Code128C com DV baseado na :
+ Turbo Power SysTools 4.03 Unit : StBarC.pas
+
+ ***** BEGIN LICENSE BLOCK *****
+ * Version: MPL 1.1
+ *
+ * The contents of this file are subject to the Mozilla Public License Version
+ * 1.1 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+ * for the specific language governing rights and limitations under the
+ * License.
+ *
+ * The Original Code is TurboPower SysTools
+ *
+ * The Initial Developer of the Original Code is
+ * TurboPower Software
+ *
+ * Portions created by the Initial Developer are Copyright (C) 1996-2002
+ * the Initial Developer. All Rights Reserved.
+ *
+ * Contributor(s):
+ *
+ * ***** END LICENSE BLOCK ***** }
 
 interface
 
 uses
-   WinTypes, WinProcs, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-   ExtCtrls, printers, QuickRpt, QRCtrls, db, dbctrls, dbTables;
+  Windows,
+  Classes, ClipBrd, Controls, Graphics, Messages, SysUtils ;
 
+const
+  bcMaxBarCodeLen = 255;
+  bcGuardBarAbove = True;
+  bcGuardBarBelow = True;
+  bcDefNarrowToWideRatio = 2;
 
 type
-  TcsicsiBarCodeType = ( Code128, EAN128);{Postnet & ean8/13.. determines which by Data provided }
+  TBarKind = (bkSpace, bkBar, bkThreeQuarterBar, bkHalfBar, bkGuard, bkSupplement, bkBlankSpace);
 
-  TSPEDBarCode = class(TQRImage)
-  private
-   {for Barcoding}
-    FBarCodeType : TcsicsiBarCodeType;{MAY KEEP THIS.. NOT SURE}
-    SavePenColor : TColor;
-    SaveBrushColor : TColor;
-    SaveFont : TFont;
-    FClearZone : boolean;
-    FWidthInInches : Double;
-    FLeftInInches : Double;
+  TBarKindSet = set of TBarKind;
+  TStDigitArray = array[1..bcMaxBarCodeLen] of Byte;
 
-    procedure SetText(const Value: TCaption);
-
-  protected
-      StartX1, StartY1, StartX2, StartY2 : integer;
-      NewX1, NewY1, NewX2, NewY2 : integer;
-      LastX1, LastY1, LastX2, LastY2 : integer;
-      StartMX, StartMY : integer; {for start move pos}
-      MoveTop, MoveLeft, MoveRight, MoveBottom, MoveAll : boolean;
-      function GetHeightInInches : Double;{only Ean}
-      function GetWidthInInches : Double;{only Ean}
-      function GetTopInInches : Double;{only Ean}
-      function GetLeftInInches : Double;{only Ean}
-      procedure SetHeightInInches(Value : Double);
-      procedure SetWidthInInches(Value : Double);
-      procedure SetTopInInches(Value : Double);
-      procedure SetLeftInInches(Value : Double);
+  TBarData = class
+    FKind    : TBarKindSet;
+    FModules : Integer;
   public
-    constructor Create(AOwner : TComponent); override;
-    destructor Destroy; override;
-    procedure Paint; override;
-    procedure Print(OfsX, OfsY : integer); override;
-    procedure DrawBarCode(PrintWhere : TObject;UsePixelsPerInchX : integer);
-
-   { Public declarations }
-  published
-    Property Text write SetText;
-    Property ClearZone : boolean read FClearZone write FClearZone default true;
-    Property HeightInInches : Double Read GetHeightInInches write SetHeightInInches;
-    Property WidthInInches : double Read GetWidthInInches write SetWidthInInches;
-    Property TopInInches : Double Read GetTopInInches write SetTopInInches;
-    Property LeftInInches : double Read GetLeftInInches write SetLeftInInches;
-    { Published declarations }
+    property Kind : TBarKindSet
+      read FKind
+      write FKind;
+    property Modules : Integer
+      read FModules
+      write FModules;
   end;
 
-var TempPaintBox : TPaintBox;
+  TBarCode128cInfo = class
+  private
+    FBars       : TList;
+    function GetBars(Index : Integer) : TBarData;
+    function GetCount : Integer;
+  public
+    constructor Create; virtual;
+    destructor Destroy; override;
+    procedure Add(ModuleCount : Integer; BarKind : TBarKindSet);
+    procedure Clear;
+    property Bars[Index : Integer] : TBarData read GetBars; default;
+    property Count : Integer read GetCount;
+  end;
+
+  TBarCode128c = class ( TCanvas ) //class(TGraphicControl)
+  protected {private}
+    {property variables}
+    FAddCheckChar     : Boolean;
+    FBarColor         : TColor;
+    FBarToSpaceRatio  : Double;
+    FBarNarrowToWideRatio : Integer;
+    FBarWidth         : Double;         {in mils}
+    FBearerBars       : Boolean;
+
+    {internal variables}
+    bcBarInfo        : TBarCode128cInfo;
+    bcBarModWidth    : Integer; {width of single bar}
+    bcCheckK         : Integer; {"K" check character for use by Code11}
+    bcDigits         : TStDigitArray;
+    bcDigitCount     : Integer;
+    bcSpaceModWidth  : Integer; {width of empty space between bars}
+    bcNormalWidth    : Integer;
+    bcSpaceWidth     : Integer;
+    bcSupplementWidth: Integer;
+    FCode : string ;
+
+    {property methods}
+    function GetCode : string;
+    procedure SetBarNarrowToWideRatio(Value: Integer);
+    procedure SetBarWidth(Value : Double);
+    procedure SetBearerBars(Value : Boolean);
+    procedure SetCode(const Value : string);
+
+    {internal methods}
+    procedure CalcBarCode;
+    procedure CalcBarCodeWidth;
+    procedure DrawBarCode(const R : TRect);
+    function GetDigits(Characters : string) : Integer;
+    procedure PaintPrim(const R : TRect);
+    function SmallestLineWidth(PixelsPerInch : Integer) : Double;
+
+  public
+    constructor Create ; reintroduce ;
+    destructor Destroy; override;
+
+    procedure GetCheckCharacters(const S : string; var C, K : Integer);
+
+  published
+    {properties}
+    property BarNarrowToWideRatio : Integer read FBarNarrowToWideRatio write SetBarNarrowToWideRatio default bcDefNarrowToWideRatio;
+    property BarWidth : Double read FBarWidth write SetBarWidth;
+    property BearerBars : Boolean read FBearerBars write SetBearerBars ;
+    property Code : string read GetCode write SetCode;
+
+    class procedure PaintCodeToCanvas( ACode : string ; ACanvas : TCanvas; ARect : TRect);
+
+  end;
+
 
 implementation
 
-var
-  UseHeight, UseWidth : integer;
-
 const
-   bars : array [ 0..105 ] of string = (
-    '212222', '222122', '222221', '121223', '121322', '131222', '122213', '122312', '132212', '221213',
-    '221312', '231212', '112232', '122132', '122231', '113222', '123122', '123221', '223211', '221132',
-    '221231', '213212', '223112', '312131', '311222', '321122', '321221', '312212', '322112', '322211',
-    '212123', '212321', '232121', '111323', '131123', '131321', '112313', '132113', '132311', '211313',
-    '231113', '231311', '112133', '112331', '132131', '113123', '113321', '133121', '313121', '211331',
-    '231131', '213113', '213311', '213131', '311123', '311321', '331121', '312113', '312311', '332111',
-    '314111', '221411', '431111', '111224', '111422', '121124', '121421', '141122', '141221', '112214',
-    '112412', '122114', '122411', '142112', '142211', '241211', '221114', '413111', '241112', '134111',
-    '111242', '121142', '121241', '114212', '124112', '124211', '411212', '421112', '421211', '212141',
-    '214121', '412121', '111143', '111341', '131141', '114113', '114311', '411113', '411311', '113141',
-    '114131', '311141', '411131', '211412', '211214', '211232' ) ;
+
+  Code128 : array[0..106] of string[7] =
+     {BSBSBS}   {Value  CodeA  CodeB   CodeC}
+    ('212222',  {0	SPACE	SPACE	00}
+     '222122',  {1	!	!	01}
+     '222221',  {2	"	"	02}
+     '121223',  {3	#	#	03}
+     '121322',  {4	$	$	04}
+     '131222',  {5	%	%	05}
+     '122213',  {6	&	&	06}
+     '122312',  {7	'	'	07}
+     '132212',  {8	(	(	08}
+     '221213',  {9	)	)	09}
+     '221312',  {10	* 	*	10}
+     '231212',  {11	+	+	11}
+     '112232',  {12	,	,	12}
+     '122132',  {13	-	-	13}
+     '122231',  {14	.	.	14}
+     '113222',  {15	/	/	15}
+     '123122',  {16	0	0	16}
+     '123221',  {17	1	1	17}
+     '223211',  {18	2	2	18}
+     '221132',  {19	3	3	19}
+     '221231',  {20	4	4	20}
+     '213212',  {21	5	5	21}
+     '223112',  {22	6	6	22}
+     '312131',  {23	7	7	23}
+     '311222',  {24	8	8	24}
+     '321122',  {25	9	9	25}
+     '321221',  {26	:	:	26}
+     '312212',  {27	;	;	27}
+     '322112',  {28	<	<	28}
+     '322211',  {29	= 	= 	29}
+     '212123',  {30	>	>	30}
+     '212321',  {31	?	?	31}
+     '232121',  {32	@	@	32}
+     '111323',  {33	A	A	33}
+     '131123',  {34	B	B	34}
+     '131321',  {35	C	C	35}
+     '112313',  {36	D	D	36}
+     '132113',  {37	E	E	37}
+     '132311',  {38	F	F	38}
+     '211313',  {39	G	G	39}
+     '231113',  {40	H	H	40}
+     '231311',  {41	I	I	41}
+     '112133',  {42	J	J	42}
+     '112331',  {43	K	K	43}
+     '132131',  {44	L	L	44}
+     '113123',  {45	M	M	45}
+     '113321',  {46	N	N	46}
+     '133121',  {47	O	O	47}
+     '313121',  {48	P	P	48}
+     '211331',  {49	Q	Q	49}
+     '231131',  {50	R	R	50}
+     '213113',  {51	S	S	51}
+     '213311',  {52	T	T	52}
+     '213131',  {53	U	U	53}
+     '311123',  {54	V	V	54}
+     '311321',  {55	W	W	55}
+     '331121',  {56	X	X	56}
+     '312113',  {57	Y	Y	57}
+     '312311',  {58	Z	Z	58}
+     '332111',  {59	[	[	59}
+     '314111',  {60	\	\	60}
+     '221411',  {61	]	]	61}
+     '431111',  {62	^	^	62}
+     '111224',  {63	_ 	_ 	63}
+     '111422',  {64	NU	`	64}
+     '121124',  {65	SH	a	65}
+     '121421',  {66	SX	b	66}
+     '141122',  {67	EX	c	67}
+     '141221',  {68	ET	d	68}
+     '112214',  {69	EQ	e	69}
+     '112412',  {70	AK	f	70}
+     '122114',  {71	BL	g	71}
+     '122411',  {72	BS	h	72}
+     '142112',  {73	HT	i	73}
+     '142211',  {74	LF	j	74}
+     '241211',  {75	VT	k	75}
+     '221114',  {76	FF	l	76}
+     '413111',  {77	CR	m	77}
+     '241112',  {78	SO	n	78}
+     '134111',  {79	SI	o	79}
+     '111242',  {80	DL	p	80}
+     '121142',  {81	D1	q	81}
+     '121241',  {82	D2	r	82}
+     '114212',  {83	D3	s	83}
+     '124112',  {84	D4	t	84}
+     '124211',  {85	NK	u	85}
+     '411212',  {86	SY	v	86}
+     '421112',  {87	EB	w	87}
+     '421211',  {88	CN	x	88}
+     '212141',  {89	EM	y	89}
+     '214121',  {90	SB	z	90}
+     '412121',  (*91	EC	{	91*)
+     '111143',  {92	FS		92}
+     '111341',  (*93	GS	}	93*)
+     '131141',  {94	RS	~	94}
+     '114113',  {95	US	DEL	95}
+     '114311',  {96	FNC 3	FNC 3	96}      {use #132}
+     '411113',  {97	FNC 2	FNC 2	97}      {use #131}
+     '411311',  {98	SHIFT	SHIFT	98}      {use #130}
+     '113141',  {99	CODE C	CODE C	99}      {use #135}
+     '114131',  {100	CODE B	FNC 4	CODE B}  {use #134}
+     '311141',  {101	FNC 4	CODE A	CODE A}  {use #133}
+     '411131',  {102	FNC 1	FNC 1	FNC 1 }  {use #130}
+     '211412',  {103	CODE A}                  {use #136}
+     '211214',  {104	CODE B}                  {use #137}
+     '211232',  {105	CODE C}                  {use #138}
+     '2331112');{106    STOP}                    {use #139}
 
 
-procedure TSPEDBarCode.DrawBarCode(PrintWhere : TObject;UsePixelsPerInchX : integer);
-var
-//  MinLength : integer;
-  LeadIn : integer;
-  Wide : integer; {# pixels}
-  StartPoint : integer; {where BarCode next bar Starts}
-  StartX, StartY : integer;
-  WhichCanvas : TCanvas;
-  UsePixelsPerInchY : integer;
+{*** helper routines ***}
 
-{128} procedure PCode128(S : string; Sender: TCanvas; EAN128 : Boolean);
-{128}   {EAN 128 ADDS EAN FNC1 .. otherwise Code128 standard}
-{128}   {Type NumberSet = (A,B,C);}
-{128} var Drk : boolean;
-{128}      CodeChars : array[1..400] of char;
-{128}      CCPtr,  {alway 1 greater than last code added}
-{128}      SI : integer;
-{128}       ThisHeight : integer;
-{128}
-{128}
-{128}
-{128} procedure  printbar(Sender : TCanvas; drk: boolean; NoOfWide : integer); {Uses global vars so all procs can call}
-{128} var Barwidth : integer;
-{128} begin
-{128}
-{128}   with  Sender do
-{128}   begin
-{128}   if drk then
-{128}      Pen.Color := clBlack
-{128}   else
-{128}      Pen.Color := Self.color;
+function RectWidth(const R : TRect) : Integer;
+begin
+  Result := R.Right-R.Left;
+end;
 
-        Brush.Color := Pen.Color ;
-
-{128}   Barwidth := Wide * NoOfWide;
-{128}   Rectangle(StartPOint + StartX,0+ StartY,StartPOint + BarWidth + StartX,ThisHeight + StartY {+ (5 * wide)});
-{128}   StartPoint := StartPOint + BarWidth;
-{128}
-{128}   end
-{128} end;
-{128}
-{128}
-{128} procedure barchar(ch : char);
-{128} var i : integer;
-{128}    BarWidths : string ;
-{128} begin
-{128}   Sender.Brush.color := Self.Color;
-{128}   BarWidths := bars [ ord(ch) ] ; {returned in BarsWidths}
-{128}   drk := true;
-{128}   for i := 1 to 6  do
-{128}   begin
-{128}   printbar(Sender,drk,StrToInt( BarWidths[i] ));
-{128}   drk := not Drk;
-{128}   end;
-{128} end;
-{128}
-{128} procedure AddCC(ch : char);
-{128} begin
-{128}    CodeChars[CCPtr] := ch;
-{128}    CCPtr := CCPtr + 1;
-{128} end;
-{128}
-{128} procedure AddNCode(ch : char);
-{128} begin
-{128}   if ord(ch) < 32 then AddCC(chr(ord(ch) + 64))
-{128}   else
-{128}   AddCC(chr(ord(ch) - 32))
-{128} end;
-{128}
-{128}
-{128}
-{128}
-{128} procedure TranslateCode;
-{128} TYPE CodeTypeS = (A,B,C,None);
-{128} VAR SPtr, SLen, NextC : integer;
-{128}     CodeType : CodeTypes;
-{128}
-{128} function  TrySetC(TempPtr : integer) : Boolean;
-{128} var i : integer;
-{128} begin
-{128}    result := false;
-{128}    if TempPtr > SLen - 3 then exit;
-{128} {test for 4 consec digits}
-{128}     for i := TempPtr to  (TempPtr + 3) DO
-{128}     if not (s[i] in ['0'..'9']) then exit;
-{128}     result := true;
-{128}  end;
-{128}
-{128}  procedure DoSetC;
-{128}  var ch : char;
-{128}  begin
-{128}     if CodeType <> C then AddCC(#99);
-{128}     Codetype := C;
-{128}     while (SPtr <= SLen - 1)
-{128}             and (s[SPtr] in ['0'..'9'])
-{128}             and (s[SPtr + 1] in ['0'..'9']) do
-{128}     begin
-{128}        ch :=   chr(10 * (ord(s[SPtr]) - 48)  + ord(s[SPtr + 1]) - 48);
-{128}        AddCC(ch);
-{128}        SPtr := SPtr + 2;
-{128}     end;
-{128}
-{128}  end;
-{128}
-{128}  function TryNextCode(startPtr : integer) : CodeTypeS;
-{128}  var Found : boolean;
-{128}     i : integer;
-{128}  begin
-{128}    result  := B;
-{128}    if StartPtr > SLen then exit;
-{128}    i := StartPtr - 1;
-{128}    found := false;
-{128}    REPEAT
-{128}      i := i + 1;
-{128}      if ord(s[i]) <= 31 then
-{128}      begin
-{128}        Result := A;
-{128}        Found := true;
-{128}      end;
-{128}      if ord(s[i]) >= 96 then
-{128}      begin
-{128}      Result := B;
-{128}      Found := true;
-{128}      end;
-{128}    UNTIL (i = SLen) or found;
-{128}
-{128}  end;
-{128}
-{128}
-{128}  procedure FindNextC;
-{128}  var i : integer;
-{128}  begin
-{128}    {ie not before end of string}
-{128}    i := SPtr -1;
-{128}    REPEAT
-{128}      i := i + 1;
-{128}    UNTIL (i >= SLen) or TrySetC(i);
-{128}    NextC := i;
-{128}    if NextC = SLen then NextC := SLen + 1{(i = SLen + 1) means  not before end of string}
-{128}  end;
-{128}
-{128}
-{128}  procedure DoSetA;
-{128} Var NextB : integer;
-{128}     MustStop : boolean;
-{128}
-{128}  procedure TryNextB(startPtr : integer;var ItsPtr : integer);
-{128}  begin
-{128}       ItsPtr := StartPtr - 1;
-{128}    REPEAT
-{128}      ItsPtr := ItsPtr + 1;
-{128}    UNTIL (ItsPtr > SLen) or (ord(s[ItsPtr]) >= 96);
-{128}  end;
-{128}
-{128}
-{128}
-{128}  begin
-{128}     if CodeType <> A then AddCC(#101);
-{128}     Codetype := A;
-{128}     MustStop := false;
-{128}     TryNextB(SPtr,NextB);
-{128}     REPEAT
-{128}     while (SPtr <= NextB - 1) and (SPtr <= NextC - 1) and (SPtr <= SLen) do
-{128}     begin
-{128}        AddNCode(s[SPtr]);
-{128}        SPtr := SPtr + 1;
-{128}     end;
-{128}     if SPtr >= NextC then MustStop := true {nextC <= SLen}
-{128}     else
-{128}     if SPtr > SLen then MustStop := true {nextC <= SLen}
-{128}     else
-{128}     begin {CAN ASSUME SPtr = NEXT A}
-{128}        if TryNextCode(SPtr + 1) = B then MustStop := true
-{128}       else
-{128}       AddCC(chr(98));{ONE CODE B ONLY.. USE SHIFT}
-{128}     end;
-{128}     UNTIL MustStop;
-{128}  end;
-{128}
-{128}
-{128}
-{128}  procedure DoSetB;
-{128} Var NextA : integer;
-{128}         MustStop : boolean;
-{128}
-{128}  procedure TryNextA(startPtr : integer;var ItsPtr : integer);
-{128}  begin
-{128}       ItsPtr := StartPtr - 1;
-{128}    REPEAT
-{128}      ItsPtr := ItsPtr + 1;
-{128}    UNTIL (ItsPtr > SLen) or (ord(s[ItsPtr]) >= 96);
-{128}  end;
-{128}
-{128}
-{128}  begin
-{128}     if CodeType <> B then AddCC(#100);
-{128}     Codetype := B;
-{128}     MustStop := false;
-{128}     TryNextA(SPtr,NextA);
-{128}     REPEAT
-{128}     while (SPtr <= NextA - 1) and (SPtr <= NextC - 1) and (SPtr <= SLen) do
-{128}     begin
-{128}        AddNCode(s[SPtr]);
-{128}        SPtr := SPtr + 1;
-{128}     end;
-{128}     if SPtr >= NextC then MustStop := true {nextC <= SLen ie if end of string , this is true}
-{128}     else
-{128}     if SPtr > SLen then MustStop := true
-{128}     else
-{128}     begin {CAN ASSUME SPtr = NEXT A}
-{128}        if TryNextCode(SPtr + 1) = A then MustStop := true
-{128}       else
-{128}       begin
-{128}        TryNextA(SPtr + 1,NextA);{Move Next A on further}
-{128}        AddCC(chr(98));{ONE CODE A ONLY.. USE SHIFT}
-{128}       end;
-{128}     end;
-{128}     UNTIL MustStop;
-{128}  end;
-{128}
-{128}
-{128}
-{128}  begin {TranslateCode}
-{128}   SPtr := 1; CCPtr := 1;
-{128}   SLen := length(s);
-{128}   FindNextC;
-{128}   if NextC = 1 then
-{128}           begin
-{128}              CodeType := C;
-{128}              AddCC(chr(105));
-{128}           end {startC}
-{128}   else if TryNextCode(1) = A then
-{128}           begin
-{128}             Codetype := A;
-{128}             AddCC(chr(103));
-{128}           end
-{128}   else
-{128}           begin
-{128}              CodeType := B;
-{128}              AddCC(chr(104));
-{128}           end;
-{128}
-{128}   if EAN128 then AddCC(#102);
-{128}   REPEAT
-{128}     if  TrySetC(SPtr)  then DoSetC;
-{128}     FindNextC;
-{128}     if (SPtr <= (NextC - 1)) then
-{128}     begin
-{128}       if TryNextCode(SPtr) = A then DoSetA  else DoSetB;
-{128}     end;
-{128}   UNTIL SPtr > SLen;
-{128} end;
-{128}
-{128}
-{128} procedure AddCheckSum;
-{128} var i, ExtraChar : integer;
-{128}     ChkSum : longint;{can hve long BarCodes}
-{128} begin
-{128} //  ChkSum := 0;
-{128} {  Test differnt checksum .. replace ean128 with true}
-{128}   if true then
-{128}   begin
-{128}   ExtraChar := 1;
-{128}   ChkSum := ord(CodeChars[1]);
-{128}   end
-{128}   else ExtraChar  := 0;
-{128}   for i := (1 )  to   (CCPtr -1 - ExtraChar) do
-{128}     ChkSum := ChkSum + ord(CodeChars[i + ExtraChar]) * i;
-{128}   ChkSum := ChkSum mod 103;
-{128}   AddCC(chr(ChkSum));
-{128} end;
-{128}
-{128} begin{PCode128}
-{128}     Wide := 1;
-{128}     ThisHeight := Self.Height;
-{128}     TranslateCode;
-{128}     AddCheckSum;
-{128}     Wide :=  Self.WIdth div (11 * (CCPtr - 1) + 13   { +2 * Leadin });
-{128}     if Wide < 1 then
-{128}        exit;
-{128}     Leadin := Self.width - Wide * (11 * (CCPtr- 1) + 13);
-{128}     Sender.Font.Assign(Self.font);
-{128}     Sender.Font.Height := Wide * 4;{must be after wide is allocated}
-{128}     Sender.Font.Style := [fsBold];
-{128}     Sender.Pen.color := Self.color;
-{128}     Sender.Rectangle(StartX,StartY,
-{128}             Wide * 11 * (CCPtr -1 ) + 13 * wide + 2 * Leadin * Wide + StartX,
-{128}             ThisHeight + StartY {+ (11 * wide)});
-{128}     Sender.Brush.color := Self.Color;
-{128}     StartPoint := 0;
-{128}
-{128}     {space at start}
-{128}     PrintBar(Sender,false,Leadin);
-{128}     SI := 1;
-{128}     REPEAT
-{128}       BarChar(CodeChars[SI]);
-{128}       SI := SI + 1;
-{128}     UNTIL (SI >= CCPtr);
-{128}         {Stop Symbol}
-{128}     PrintBar(Sender,true,2);
-{128}     PrintBar(Sender,False,3);
-{128}     PrintBar(Sender,true,3);
-{128}     PrintBar(Sender,False,1);
-{128}     PrintBar(Sender,true,1);
-{128}     PrintBar(Sender,False,1);
-{128}     PrintBar(Sender,true,2);
-{128}     {space at end .. done in rect}
-{128}     PrintBar(Sender,false,Leadin);
-{128}   end;
-{128}
-
-begin{DrawBarCode}
-    if UsePixelsPerInchX < 5 then
-        UsePixelsPerInchX := Screen.PixelsPerInch;
-
-    IF PrintWhere is TCanvas then
-      begin
-        try {can't assume parentreport.qrprinter ok it would seem}
-          if not (csdesigning in ComponentState) then
-              if  WhichCanvas <> Self.Canvas then
-                  if PrintWhere = ParentReport.QRPrinter.Canvas then
-                     begin
-                       UsePixelsPerInchX :=
-                          GetDeviceCaps(ParentReport.QRPrinter.Canvas.Handle,LOGPIXELSX);
-                       UsePixelsPerInchY :=
-                           GetDeviceCaps(ParentReport.QRPrinter.Canvas.Handle, LOGPIXELSY);
-                     end;
-        except
-        end;
-        WhichCanvas := TCanvas(PrintWhere);
-      end
-      else
-        begin
-          WhichCanvas := Self.Canvas;
-        end;
-    {POSITIONING}
-
-//    if whichCanvas = Self.canvas then
-//       begin
-        StartX := 0;
-        StartY := 0;
-//      end
-//    else
-//      begin
-//        StartY := Self.top;
-//        StartX := Self.Left;
-//      end;
-
-  UseHeight := Self.Height;
-  UseWidth := Self.Width;
-  SavePenColor := WHichCanvas.pen.color;
-  SaveBrushColor := WHichCanvas.Brush.color;
-  SaveFont.Assign(WHichCanvas.Font);
-
-  case Self.FBarCodeType of
-    Code128 : PCode128(Self.text,WhichCanvas,false);
-    EAN128 : PCode128(Self.text,WhichCanvas,TRUE);
-  end;
-  WHichCanvas.Font.Assign(SaveFont);
-  WHichCanvas.pen.color := SavePenColor ;
-  WHichCanvas.Brush.color := SaveBrushColor;
+function RectHeight(const R : TRect) : Integer;
+begin
+  Result := R.Bottom-R.Top;
 end;
 
 
-procedure TSPEDBarCode.Print(OfsX, OfsY : integer);
-var
-  TempLeft,
-  TempTop,
-  TempHeight,
-  TempWidth : Longint;
-begin
-{May need to test for Default Fields here}
+{*** TBarCode128cInfo ***}
 
-  with ParentReport.QRPrinter do
+procedure TBarCode128cInfo.Add(ModuleCount : Integer; BarKind : TBarKindSet);
+var
+  Bar : TBarData;
+begin
+  Bar := TBarData.Create;
+  Bar.Modules := ModuleCount;
+  Bar.Kind := BarKind;
+  FBars.Add(Bar);
+end;
+
+procedure TBarCode128cInfo.Clear;
+var
+  I : Integer;
+begin
+  for I := 0 to FBars.Count-1 do
+    TBarData(FBars[I]).Free;
+  FBars.Clear;
+end;
+
+constructor TBarCode128cInfo.Create;
+begin
+  inherited Create;
+
+  FBars := TList.Create;
+end;
+
+destructor TBarCode128cInfo.Destroy;
+begin
+  Clear;
+  FBars.Free;
+  FBars := nil;
+
+  inherited Destroy;
+end;
+
+function TBarCode128cInfo.GetBars(Index : Integer) : TBarData;
+begin
+  Result := FBars[Index];
+end;
+
+function TBarCode128cInfo.GetCount : Integer;
+begin
+  Result := FBars.Count;
+end;
+
+
+{*** TBarCode128c ***}
+
+procedure TBarCode128c.CalcBarCode;
+var
+  I  : Integer;
+  CheckC  : Integer;
+  CheckK  : Integer;
+  C       : string;
+
+  procedure AddCode(const S : string; AKind : TBarKindSet);
+  var
+    I : Integer;
   begin
-    TempLeft := Left;
-    TempTop := Top;
-    TempHeight := Height;
-    TempWidth := Width;
-    Left := XPos(OfsX + Size.Left);
-    Top := YPos(OfsY + Size.Top);
-    Width := XPos(OfsX + Size.Left + Size.Width) - XPos(OfsX + Size.Left);
-    Height := YPos(OfsY + Size.Top + Size.Height) - YPos(OfsY + Size.Top);
-    DrawBarCode(Canvas,0);
-    Left := TempLeft;
-    Top := TempTop;
-    Height := TempHeight;
-    Width := TempWidth;
+    for I := 1 to Length(S) do
+      if S[I] = '0' then
+        bcBarInfo.Add(1, AKind - [bkBar, bkThreeQuarterBar, bkHalfBar] + [bkSpace])
+      else
+        bcBarInfo.Add(StrToInt(S[I]), AKind);
+  end;
+
+
+  procedure AddCodeModules(const S : string);
+  var
+    K : Integer;
+  begin
+    for K := 1 to Length(S) do begin
+      if Odd(K) then
+        bcBarInfo.Add(StrToInt(S[K]), [bkBar])
+      else
+        bcBarInfo.Add(StrToInt(S[K]), [bkSpace]);
+    end;
+  end;
+
+  procedure AddCodeWideNarrow(const S : string);
+  var
+    K : Integer;
+  begin
+    for K := 1 to Length(S) do begin
+      case S[K] of
+        '0' : if Odd(K) then
+                bcBarInfo.Add(1, [bkBar])
+              else
+                bcBarInfo.Add(1, [bkSpace]);
+        '1' : if Odd(K) then
+                bcBarInfo.Add(FBarNarrowToWideRatio, [bkBar])
+              else
+                bcBarInfo.Add(FBarNarrowToWideRatio, [bkSpace]);
+      end;
+    end;
+  end;
+
+begin
+
+  bcBarInfo.Clear;
+  if Code = '' then
+    Exit;
+
+  {get copy of code}
+  C := Code;
+
+  {get digits}
+  {add start code}
+  if ( C[1] <> #138 ) then
+     C := #138 + C;
+
+  bcDigitCount := GetDigits(C);
+
+  {add check character}
+  GetCheckCharacters(C, CheckC, CheckK);
+  Inc(bcDigitCount);
+  bcDigits[bcDigitCount] := CheckC;
+
+  {add stop code}
+  Inc(bcDigitCount);
+  bcDigits[bcDigitCount] := 106;
+
+  for I  := 1 to bcDigitCount do
+    AddCodeModules(Code128[bcDigits[I]]);
+
+end;
+
+procedure TBarCode128c.CalcBarCodeWidth;
+var
+  I : Integer;
+begin
+  bcNormalWidth := 0;
+  bcSpaceWidth := 0;
+  bcSupplementWidth := 0;
+  for I := 0 to bcBarInfo.Count-1 do begin
+    if bkSpace in bcBarInfo[I].Kind then
+    begin
+      if bkBlankSpace in bcBarInfo[I].Kind then
+        Inc(bcSpaceWidth, bcSpaceModWidth*bcBarInfo[I].Modules)
+      else if bkSupplement in bcBarInfo[I].Kind then
+        Inc(bcSupplementWidth, bcSpaceModWidth*bcBarInfo[I].Modules)
+      else
+        Inc(bcNormalWidth, bcSpaceModWidth*bcBarInfo[I].Modules)
+    end else begin
+      if bkBlankSpace in bcBarInfo[I].Kind then
+        Inc(bcSpaceWidth, bcBarModWidth*bcBarInfo[I].Modules)
+      else if bkSupplement in bcBarInfo[I].Kind then
+        Inc(bcSupplementWidth, bcBarModWidth*bcBarInfo[I].Modules)
+      else
+        Inc(bcNormalWidth, bcBarModWidth*bcBarInfo[I].Modules)
+    end;
   end;
 end;
 
-procedure TSPEDBarCode.SetText(const Value: TCaption);
+constructor TBarCode128c.Create ;
+begin
+  inherited Create ;
+
+  bcBarInfo := TBarCode128cInfo.Create;
+
+  {defaults}
+  FBarColor := clBlack;
+  FBarToSpaceRatio := 1;
+  FBarNarrowToWideRatio := bcDefNarrowToWideRatio;
+  FBarWidth := 12;
+
+end;
+
+destructor TBarCode128c.Destroy;
+begin
+  bcBarInfo.Free;
+  bcBarInfo := nil;
+
+  inherited Destroy;
+end;
+
+
+procedure TBarCode128c.DrawBarCode(const R : TRect);
 var
-   TempPChar : PChar;
+  I, X, Y, TQ    : Integer;
+  BarCodeHeight  : Integer;
+  BarCodeWidth   : Integer;
+  PixelsPerInchX : Integer;
+  SmallestWidth  : Double;
+
+  function DrawBar(XPos, YPos, AWidth, AHeight : Integer) : Integer;
+  begin
+    Rectangle(XPos, YPos, XPos+AWidth, YPos+AHeight);
+    Result := XPos + AWidth;
+  end;
+
 begin
-   TempPChar := StrAlloc(280);
-   StrPlCopy(TempPchar,Value,280);
-   SetTextBuf(TempPCHAR);
-   Invalidate;
+  Brush.Color := FBarColor;
+  Brush.Style := bsSolid;
+
+  PixelsPerInchX := GetDeviceCaps( Handle, LOGPIXELSX ) ;
+
+  {determine narrowest line width}
+  SmallestWidth := SmallestLineWidth(PixelsPerInchX);
+
+  {find sizes for the BarCode elements}
+  bcBarModWidth := Round(FBarWidth/1000 * PixelsPerInchX);
+  if bcBarModWidth < FBarToSpaceRatio then
+    bcBarModWidth := Round(FBarToSpaceRatio);
+  if bcBarModWidth < SmallestWidth then
+    bcBarModWidth := Round(SmallestWidth);
+  bcSpaceModWidth := Round(bcBarModWidth / FBarToSpaceRatio);
+
+  {total width of BarCode and position within rect}
+  CalcBarCodeWidth;
+  BarCodeWidth := bcNormalWidth + bcSpaceWidth + bcSupplementWidth;
+  BarCodeHeight := RectHeight(R);
+  if BarCodeWidth < RectWidth(R) then
+    X := R.Left + (RectWidth(R)-BarCodeWidth) div 2
+  else
+    X := R.Left;
+  Y := R.Top;
+
+  {three quarter height bar adjustment}
+  TQ := BarCodeHeight div 4;
+
+  {draw the bar code}
+  for I := 0 to bcBarInfo.Count-1 do begin
+    if bkSpace in bcBarInfo[I].Kind then
+      Inc(X, bcSpaceModWidth*bcBarInfo[I].Modules)
+    else if (bkBar in bcBarInfo[I].Kind) or (bkGuard in bcBarInfo[I].Kind) then
+      X := DrawBar(X, Y, bcBarModWidth*bcBarInfo[I].Modules, BarCodeHeight)
+    else if (bkThreeQuarterBar in bcBarInfo[I].Kind) then
+      X := DrawBar(X, Y+TQ, bcBarModWidth*bcBarInfo[I].Modules, BarCodeHeight-TQ);
+  end;
 end;
 
 
-procedure TSPEDBarCode.SetHeightInInches(Value : Double);{only Ean}
-var Calc : integer;
+procedure TBarCode128c.GetCheckCharacters(const S : string; var C, K : Integer);
+var
+  I  : Integer;
+  C1 : Integer;
+  St : string;
 begin
-  Calc := GetDeviceCaps(Canvas.Handle, LOGPIXELSY);
-  Self.height := Round(Value * Calc);
-  Invalidate;
+  C := -1;
+  K := -1;
+  St := S;
+
+  {get digits}
+  bcDigitCount := GetDigits(St);
+
+  C1 := bcDigits[1];
+  for I := 2 to bcDigitCount do
+    C1 := C1 + bcDigits[I]*(I-1);
+
+  C := C1 mod 103;
+  if C = 103 then
+    C := 0;
 end;
 
-procedure TSPEDBarCode.SetWidthInInches(Value : Double);{only Ean}
+function TBarCode128c.GetCode : string;
 begin
-  Self.Width := Round(Value * GetDeviceCaps(Canvas.Handle, LOGPIXELSX));
-  Invalidate;
+  Result := FCode ;
+end;
+
+function TBarCode128c.GetDigits(Characters : string) : Integer;
+var
+ I             : Integer;
+ RLen          : Integer;
+ NeedCharCount : Boolean;
+
+  procedure GetACode128CDigit ;
+  var
+    J : Integer;
+
+  begin
+    case ( Characters [ I ] ) of
+      #130     : bcDigits[RLen + 1] := 98;  {rest are manufactured characters}
+      #131     : bcDigits[RLen + 1] := 97;
+      #132     : bcDigits[RLen + 1] := 96;
+      #133     : bcDigits[RLen + 1] := 98;
+      #134     : bcDigits[RLen + 1] := 100;
+      #135     : bcDigits[RLen + 1] := 99;
+      #136     : bcDigits[RLen + 1] := 103;
+      #137     : bcDigits[RLen + 1] := 104;
+      #138     : bcDigits[RLen + 1] := 105;
+      #139     : bcDigits[RLen + 1] := 106;
+    else
+      try
+        J := StrToInt (Copy (Characters, I, 2));
+        bcDigits[RLen + 1] := J;
+        Inc (I);
+      except
+        Raise Exception.Create( 'Caracteres inválidos' );
+      end;
+    end;
+    Inc (I);
+    Inc (RLen);
+  end;
+
+
+  function CountCode128Digits (Index : Integer) : Integer;
+  begin
+    Result := 0;
+    while (Index <= Length (Characters)) and
+          (Characters[Index] >= '0') and (Characters[Index] <= '9') do begin
+      Inc (Result);
+      Inc (Index);
+    end;
+  end;
+
+  function CheckCode128Digits (Index : Integer; CharsLen : Integer) : Boolean;
+  var
+    NumDigits : Integer;
+  begin
+    Result := False;
+    NumDigits := CountCode128Digits (Index);
+    if NumDigits mod 2 <> 0 then
+    begin
+      Characters := Copy (Characters, 1, Index - 1) +
+                    '0' + Copy (Characters, Index, CharsLen - Index + 1);
+      Result := True;
+    end;
+  end;
+
+
+begin
+  FillChar(bcDigits, SizeOf(bcDigits), #0);
+
+  I := 1;
+  Result := Length (Characters);
+  RLen := 0;
+  NeedCharCount := True ;
+
+  while I <= Result do
+    begin
+      if (NeedCharCount) and (Characters[I] >= '0') and (Characters[I] <= '9') then
+         begin
+            NeedCharCount := False;
+            if CheckCode128Digits (I, RLen) then
+               Inc (RLen);
+         end;
+
+      GetACode128CDigit ;
+
+    end;
+  Result := RLen;
+
+end;
+
+procedure TBarCode128c.PaintPrim(const R : TRect);
+begin
+  Brush.Style := bsClear;
+  Brush.Color := FBarColor;
+  Pen.Color := FBarColor;
+  DrawBarCode(R);
+end;
+
+class procedure TBarCode128c.PaintCodeToCanvas(ACode : string ; ACanvas : TCanvas; ARect : TRect);
+var
+  Margin  : Integer;
+  SavedDC : LongInt;
+  R       : TRect;
+begin
+  with Create do
+     try
+        Code := ACode ;
+        CalcBarCode ;
+
+        Handle := ACanvas.Handle;
+        SavedDC := SaveDC(ACanvas.Handle);
+        try
+          {clear the specified area of the canvas}
+          Brush.Color := clWhite ;
+          Brush.Style := bsSolid;
+          FillRect(ARect);
+
+          {adjust height of rect to provide top and bottom margin}
+          R := ARect;
+          Margin := RectHeight(R)*10 div 100;
+          InflateRect(R, 0, -Margin);
+          PaintPrim(R);
+        finally
+          Handle := 0;
+          RestoreDC(ACanvas.Handle, SavedDC);
+        end;
+     finally
+        Free ;
+     end ;
 end;
 
 
-function TSPEDBarCode.GetHeightInInches : Double;{only Ean}
-var Calc : integer; LCalc : longint;
+procedure TBarCode128c.SetBarNarrowToWideRatio(Value : Integer);
 begin
-   Calc := GetDeviceCaps(Canvas.Handle, LOGPIXELSY);
-  LCalc := round((Self.height / Calc) * 1000);
-  result := LCalc / 1000;
-
+  if Value <> FBarNarrowToWideRatio then
+     FBarNarrowToWideRatio := Value ;
 end;
 
-function TSPEDBarCode.GetWidthInInches : Double;{only Ean}
-var LCalc : double;
+procedure TBarCode128c.SetBarWidth(Value : Double);
 begin
-  LCalc := (Self.Width /GetDeviceCaps(Canvas.Handle, LOGPIXELSX));
-  FWidthInInches := (round(LCalc * 1000) / 1000); {redundant}
-  Result := FWidthInInches;
+  if Value <> FBarWidth then
+    FBarWidth := Value;
 end;
 
-procedure TSPEDBarCode.SetTopInInches(Value : Double);{only Ean}
-var Calc : integer;
+procedure TBarCode128c.SetBearerBars(Value : Boolean);
 begin
-  Calc := GetDeviceCaps(Canvas.Handle, LOGPIXELSY);
-  Self.top := Round(Value * Calc);
+  if Value <> FBearerBars then
+    FBearerBars := Value;
 end;
 
-procedure TSPEDBarCode.SetLeftInInches(Value : Double);{only Ean}
+procedure TBarCode128c.SetCode(const Value : string);
 begin
-  Self.Left := Round(Value * GetDeviceCaps(Canvas.Handle, LOGPIXELSX));
-  Invalidate;
+    FCode := Value;
 end;
 
 
-function TSPEDBarCode.GetTopInInches : Double;{only Ean}
-var Calc : integer; LCalc : longint;
+function TBarCode128c.SmallestLineWidth(PixelsPerInch : Integer) : Double;
 begin
-   Calc := GetDeviceCaps(Self.Canvas.Handle, LOGPIXELSY);
-  LCalc := round((Self.top / Calc) * 1000);
-  result := LCalc / 1000;
-  Invalidate;
-end;
-
-function TSPEDBarCode.GetLeftInInches : Double;{only Ean}
-var LCalc : double;
-begin
-  LCalc := (Self.Left /GetDeviceCaps(Self.Canvas.Handle, LOGPIXELSX));
-  FLeftInInches := (round(LCalc * 1000) / 1000); {redundant}
-  Result := FLeftInInches;
-  Invalidate;
-
-end;
-
-procedure TSPEDBarCode.Paint;
-begin
-  DrawBarCode(Canvas,0);
-end;
-
-
-constructor TSPEDBarCode.Create(AOwner: TComponent);
-begin
-  inherited Create(AOwner);
-
-  FBarCodeType := Code128 ;
-  ClearZone := true;
-
-  Color := clWhite;
-  text := '12';
-  SaveFont := TFont.Create;
-
-  if Width < 120 then width := 120;
-end;
-
-Destructor TSPEDBarCode.Destroy;
-begin
-  Inherited Destroy;
+  Result := PixelsPerInch * 0.010; {10 mils}
+  if Result < 1 then
+    Result := 1;
 end;
 
 end.

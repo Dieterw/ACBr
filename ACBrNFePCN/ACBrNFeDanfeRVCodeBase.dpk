@@ -39,40 +39,48 @@
 |*
 |* 16/12/2008: Wemerson Souto
 |*  - Doação do componente para o Projeto ACBr
-|* 09/03/2009: Dulcemar P.Zilli
-|*  - Incluido IPI e II
+|* 25/06/2009: André Ferreira de Moraes
+|*  - Componente convertido para utilizar units do PCN
 ******************************************************************************}
-{$I ACBr.inc}
+package ACBrNFeDanfeRVCodeBase;
 
-unit ACBrNFeDANFEQRReg;
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'ACBrNFeDanfeRVCodeBase - (http://acbr.sourceforge.net/)'}
+{$IMPLICITBUILD ON}
 
-interface
+requires
+  rtl,
+  designide,
+  xmlrtl,
+  Rave50VCL,
+  ACBrNFePCN;
 
-uses
-  SysUtils, Classes, ACBrNFeDANFEQR, 
-  {$IFDEF FPC}
-     LResources, LazarusPackageIntf, PropEdits, componenteditors
-  {$ELSE}
-    {$IFNDEF COMPILER6_UP}
-       DsgnIntf
-    {$ELSE}
-       DesignIntf,
-       DesignEditors
-    {$ENDIF}
-  {$ENDIF} ;
-
-procedure Register;
-
-implementation
-
-procedure Register;
-begin
-  RegisterComponents('ACBr', [TACBrNFeDANFERave]);
-end;
-
-initialization
-{$IFDEF FPC}
-//   {$i acbrnfepcn_lcl.lrs}
-{$ENDIF}
+contains
+  ACBrNFeDANFERaveCB in 'ACBrNFeDANFERaveCB.pas',
+  ACBrNFeDANFECBRVReg in 'ACBrNFeDANFECBRVReg.pas',
+  ACBrDANFeCBRave in 'ACBrDANFeCBRave.pas',
+  ACBrDANFeCBRaveRetrato in 'ACBrDANFeCBRaveRetrato.pas',
+  ACBrDANFeCBRavePaisagem in 'ACBrDANFeCBRavePaisagem.pas';
 
 end.

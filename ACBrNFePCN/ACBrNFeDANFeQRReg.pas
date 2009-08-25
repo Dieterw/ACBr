@@ -39,96 +39,41 @@
 |*
 |* 16/12/2008: Wemerson Souto
 |*  - Doação do componente para o Projeto ACBr
-|* 20/08/2009: João Paulo
-|*  - Doação units para geração do Danfe via código usando Rave
+|* 20/08/2009: Caique Rodrigues
+|*  - Doação units para geração do Danfe via QuickReport
 ******************************************************************************}
 {$I ACBr.inc}
-unit ACBrNFeDANFERaveCB;
+{$I ACBr.inc}
+
+unit ACBrNFeDANFeQRReg;
 
 interface
 
-uses Forms, SysUtils, Classes,
-  RpDefine, RpDevice, RVClass, RVProj, RVCsBars, RVCsStd, RVCsData,
-  RvDirectDataView, RVDataField, jpeg,
-  ACBrNFeDANFEClass, ACBrDANFeCBRave, pcnNFe, pcnConversao;
+uses
+  SysUtils, Classes, ACBrNFeDANFeQRClass, 
+  {$IFDEF VisualCLX} QDialogs {$ELSE} Dialogs{$ENDIF},
+  {$IFDEF FPC}
+     LResources, LazarusPackageIntf, PropEdits, componenteditors
+  {$ELSE}
+    {$IFNDEF COMPILER6_UP}
+       DsgnIntf
+    {$ELSE}
+       DesignIntf,
+       DesignEditors
+    {$ENDIF}
+  {$ENDIF} ;
 
-type
-  TACBrNFeDANFERaveCB = class( TACBrNFeDANFEClass )
-   private
-   public
-    constructor Create(AOwner: TComponent); override;
-    destructor Destroy; override;
-    procedure ImprimirDANFE(NFE : TNFe = nil); override ;
-    procedure ImprimirDANFEPDF(NFE : TNFe = nil); override ;
-  end;
+procedure Register;
 
 implementation
 
-uses ACBrNFe, ACBrNFeUtil, ACBrUtil, StrUtils, Dialogs;
-
-constructor TACBrNFeDANFERaveCB.Create(AOwner: TComponent);
+procedure Register;
 begin
-  inherited create( AOwner );
+  RegisterComponents('ACBr', [TACBrNFeDANFEQR]);
 end;
-
-destructor TACBrNFeDANFERaveCB.Destroy;
-begin
-  inherited Destroy ;
-end;
-
-
-procedure TACBrNFeDANFERaveCB.ImprimirDANFE(NFE : TNFe = nil);
-var
- i : Integer;
- LogoMarcaEmpresa:TJPEGImage;
-begin
-    try
-      if NotaUtil.NaoEstaVazio(Logo) then
-       begin
-         LogoMarcaEmpresa:=TJPEGImage.Create;
-         LogoMarcaEmpresa.LoadFromFile(Logo);
-       end;
-      ImprimirDANFeRave(TACBrNFe(ACBrNFe),
-                       Email,
-                       Fax,
-                       Sistema,
-                       Usuario,
-                       ProtocoloNFe,
-                       LogoMarcaEmpresa,
-                       NotaUtil.SeSenao((TipoDANFE=tiRetrato),poPortrait,poLandScape),
-                       NotaUtil.SeSenao(MostrarPreview,tsPreview,tsPrint),
-                       NumCopias,
-                       Impressora,
-                       '');
-    finally
-      LogoMarcaEmpresa.Free;
-    end;
-end;
-
-procedure TACBrNFeDANFERaveCB.ImprimirDANFEPDF(NFE : TNFe = nil);
-var
- i : Integer;
- LogoMarcaEmpresa:TJPEGImage;
- NomeArq : String;
-begin
-    try
-      LogoMarcaEmpresa.LoadFromFile(Logo);
-      ImprimirDANFeRave(TACBrNFe(ACBrNFe),
-                       Email,
-                       Fax,
-                       Sistema,
-                       Usuario,
-                       ProtocoloNFe,
-                       LogoMarcaEmpresa,
-                       NotaUtil.SeSenao((TipoDANFE=tiRetrato),poPortrait,poLandScape),
-                       tsPDF,
-                       NumCopias,
-                       Impressora,
-                       NomeArq);
-    finally
-      LogoMarcaEmpresa.Free;
-    end;
-end;
-
+initialization
+{$IFDEF FPC}
+//   {$i acbrnfepcn_lcl.lrs}
+{$ENDIF}
 
 end.

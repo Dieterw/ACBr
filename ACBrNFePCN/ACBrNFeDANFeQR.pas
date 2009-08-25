@@ -39,96 +39,119 @@
 |*
 |* 16/12/2008: Wemerson Souto
 |*  - Doação do componente para o Projeto ACBr
-|* 20/08/2009: João Paulo
-|*  - Doação units para geração do Danfe via código usando Rave
+|* 20/08/2009: Caique Rodrigues
+|*  - Doação units para geração do Danfe via QuickReport
 ******************************************************************************}
 {$I ACBr.inc}
-unit ACBrNFeDANFERaveCB;
+unit ACBrNFeDANFeQR;
 
 interface
 
-uses Forms, SysUtils, Classes,
-  RpDefine, RpDevice, RVClass, RVProj, RVCsBars, RVCsStd, RVCsData,
-  RvDirectDataView, RVDataField, jpeg,
-  ACBrNFeDANFEClass, ACBrDANFeCBRave, pcnNFe, pcnConversao;
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ExtCtrls, QuickRpt, 
+  QRCtrls, ACBrNFeQRCodeBar, pcnNFe ;
 
 type
-  TACBrNFeDANFERaveCB = class( TACBrNFeDANFEClass )
-   private
-   public
-    constructor Create(AOwner: TComponent); override;
-    destructor Destroy; override;
-    procedure ImprimirDANFE(NFE : TNFe = nil); override ;
-    procedure ImprimirDANFEPDF(NFE : TNFe = nil); override ;
+  TfqrDANFeQR = class(TForm)
+    QRNFe: TQuickRep;
+  private
+    { Private declarations }
+  protected
+    //BarCode : TBarCode128c ;
+    FNFe: TNFe;
+    FLogo: String;
+    FUrl: String;
+    AfterPreview : boolean ;
+    ChangedPos : boolean ;
+    FSemValorFiscal : boolean ;
+    procedure qrlSemValorFiscalPrint(sender: TObject; var Value: String);
+    procedure SetBarCodeImage ( ACode : String ; QRImage : TQRImage ) ;
+  public
+    { Public declarations }
+    class procedure Imprimir(ANFe: TNFe; ALogo: String = ''; AUrl: String = '' ; APreview : Boolean = True );
+    class procedure SavePDF(AFile: String; ANFe: TNFe; ALogo, AUrl: String);
+
   end;
+
 
 implementation
 
-uses ACBrNFe, ACBrNFeUtil, ACBrUtil, StrUtils, Dialogs;
+uses MaskUtils;
 
-constructor TACBrNFeDANFERaveCB.Create(AOwner: TComponent);
+{$R *.dfm}
+
+class procedure TfqrDANFeQR.Imprimir(ANFe: TNFe; ALogo: String = ''; AUrl: String = '' ; APreview : Boolean = True );
 begin
-  inherited create( AOwner );
+  with Create ( nil ) do
+     try
+        FNFe  := ANFe;
+        FLogo := ALogo;
+        FUrl  := AUrl;
+
+        if APreview then
+           QRNFe.Preview
+        else
+           begin
+              AfterPreview := True ;
+              QRNFe.Print ;
+           end ;
+     finally
+        Free ;
+     end ;
 end;
 
-destructor TACBrNFeDANFERaveCB.Destroy;
+class procedure TfqrDANFeQR.SavePDF(AFile: String; ANFe: TNFe; ALogo, AUrl: String);
+Var
+  i: Integer;
+//  qf : TQRPDFDocumentFilter ;
 begin
-  inherited Destroy ;
+{  with Create ( nil ) do
+     try
+        FNFe  := ANFe;
+        FLogo := ALogo;
+        FUrl  := AUrl;
+
+        For i := 0 to ComponentCount -1 do
+          begin
+            if (Components[i] is TQRShape) and (TQRShape(Components[i]).Shape = qrsRoundRect) then
+              begin
+                TQRShape(Components[i]).Shape := qrsRectangle;
+                TQRShape(Components[i]).Pen.Width := 1;
+              end;
+          end;
+
+        AfterPreview := True ;
+        QRNFe.Prepare;
+
+        qf := TQRPDFDocumentFilter.Create(AFile) ;
+        qf.CompressionOn := False;
+        qf.SetDocumentInfo( 'TurboCode NFe/CTe Integrator', 'www.turbocode.com.br', 'NFe', 'DANFe'  );
+        QRNFe.QRPrinter.ExportToFilter( qf );
+        qf.Free ;
+     finally
+        Free ;
+     end ;}
 end;
 
+procedure TfqrDANFeQR.qrlSemValorFiscalPrint(sender: TObject;
+  var Value: String);
+begin
+  inherited;
+  if FSemValorFiscal then
+     Value := '' ;
+end;
 
-procedure TACBrNFeDANFERaveCB.ImprimirDANFE(NFE : TNFe = nil);
+procedure TfqrDANFeQR.SetBarCodeImage(ACode: String; QRImage: TQRImage);
 var
- i : Integer;
- LogoMarcaEmpresa:TJPEGImage;
+ b : TSPEDBarCode ;
 begin
-    try
-      if NotaUtil.NaoEstaVazio(Logo) then
-       begin
-         LogoMarcaEmpresa:=TJPEGImage.Create;
-         LogoMarcaEmpresa.LoadFromFile(Logo);
-       end;
-      ImprimirDANFeRave(TACBrNFe(ACBrNFe),
-                       Email,
-                       Fax,
-                       Sistema,
-                       Usuario,
-                       ProtocoloNFe,
-                       LogoMarcaEmpresa,
-                       NotaUtil.SeSenao((TipoDANFE=tiRetrato),poPortrait,poLandScape),
-                       NotaUtil.SeSenao(MostrarPreview,tsPreview,tsPrint),
-                       NumCopias,
-                       Impressora,
-                       '');
-    finally
-      LogoMarcaEmpresa.Free;
-    end;
+   b :=  TSPEDBarCode.Create(Self);
+   b.Parent := QRImage.Parent;
+   b.Width  := QRImage.Width ;
+   b.Text := ACode ;
+   b.PaintTo( QRImage.Canvas, QRImage.ClientRect.Top, QRImage.ClientRect.Left );
+   b.free ;
 end;
-
-procedure TACBrNFeDANFERaveCB.ImprimirDANFEPDF(NFE : TNFe = nil);
-var
- i : Integer;
- LogoMarcaEmpresa:TJPEGImage;
- NomeArq : String;
-begin
-    try
-      LogoMarcaEmpresa.LoadFromFile(Logo);
-      ImprimirDANFeRave(TACBrNFe(ACBrNFe),
-                       Email,
-                       Fax,
-                       Sistema,
-                       Usuario,
-                       ProtocoloNFe,
-                       LogoMarcaEmpresa,
-                       NotaUtil.SeSenao((TipoDANFE=tiRetrato),poPortrait,poLandScape),
-                       tsPDF,
-                       NumCopias,
-                       Impressora,
-                       NomeArq);
-    finally
-      LogoMarcaEmpresa.Free;
-    end;
-end;
-
 
 end.

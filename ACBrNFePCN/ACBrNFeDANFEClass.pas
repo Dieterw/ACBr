@@ -85,7 +85,7 @@ type
     FSite : String;
     FEmail: String;
     FImprimeDescPorc : Boolean;
-	 FProtocoloNFe: string;
+ 	  FProtocoloNFe: string;
     FMargemInferior: Double;
     FCasasDecimais: TCasasDecimais;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
@@ -211,7 +211,7 @@ begin
   begin
      if Value <> nil then
         if not (Value is TACBrNFe) then
-           raise Exception.Create('ACBrDANFERave.NFE deve ser do tipo TACBrNFe') ;
+           raise Exception.Create('ACBrDANFE.NFE deve ser do tipo TACBrNFe') ;
 
      if Assigned(FACBrNFe) then
         FACBrNFe.RemoveFreeNotification(Self);

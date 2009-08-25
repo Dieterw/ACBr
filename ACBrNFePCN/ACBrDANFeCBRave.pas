@@ -291,7 +291,7 @@ begin
     end
     else begin
      SystemPrinter.MarginLeft:=6;
-     SystemPrinter.MarginRight:=3;
+     SystemPrinter.MarginRight:=5.3;
   end;
   OnPrint:=RavePrint;
   OnBeforePrint:=RaveBeforePrint;

@@ -54,7 +54,7 @@ uses Graphics, Forms, Windows, SysUtils, Classes,
      RpRenderText, RpRenderRTF, RpRenderHTML, RpRender, RpRenderPDF,
      ACBrNFe, pcnConversao, ACBrDANFeCBRave;
 
-const 
+const
       FontSizeGroup:Integer=7;
       FontSizeTitle:Integer=6;
       FontSizeText:Integer=8;
@@ -94,12 +94,15 @@ begin
         PrintCenter('Emissão: '+NotaUtil.FormatDate(DateToStr(Ide.DEmi))+'  Destinatário/Remetente: '+Dest.XNome+'  Valor Total: '+NotaUtil.FormatFloat(Total.ICMSTot.VNF),PosX+(aWidthOutros/2));
 
         GotoXY(0,PosY+GetFontHeigh);
-        PrintCenter('NOTA FISCAL (NF-e)',FLastX-aWidthNFe+(aWidthNFe/2));
         NewLine;
+        PrintCenter('NF-e',FLastX-aWidthNFe+(aWidthNFe/2));
         NewLine;
-        PrintXY(FLastX-aWidthNFe+1,YPos,'Nº: '+FNumeroNF);
+        //NewLine;
+        //PrintXY(FLastX-aWidthNFe+1,YPos,'Nº: '+FNumeroNF);
+        PrintCenter('Nº: '+FNumeroNF,FLastX-aWidthNFe+(aWidthNFe/2));
         NewLine;
-        PrintXY(FLastX-aWidthNFe+1,YPos,'SÉRIE: '+FSerie);
+        //PrintXY(FLastX-aWidthNFe+1,YPos,'SÉRIE: '+FSerie);
+        PrintCenter('SÉRIE: '+FSerie,FLastX-aWidthNFe+(aWidthNFe/2));
 
         SetPen(clBlack,psDot,2,pmCopy);
         MoveTo(PosX,PosY+aHeigth+3);
@@ -186,7 +189,7 @@ begin
             vEnd:=vEnd+', '+XCpl;
          PrintCenter(vEnd,CenterX);
          NewLine;
-         vEnd:=XBairro+' - '+NotaUtil.FormatarCEP(IntToStr(CEP));
+         vEnd:=XBairro+' - '+NotaUtil.FormatarCEP(NotaUtil.Poem_Zeros(CEP,8));
          PrintCenter(vEnd,CenterX);
          NewLine;
          vEnd:=XMun+' - '+UF;
@@ -243,6 +246,16 @@ begin
 end;
 
 function ImprimirCodigoBarras(PosX, PosY: Double):Double;
+   function FormatarChave_DANFE(AValue: String): String;
+   begin
+     AValue := NotaUtil.LimpaNumero(AValue);
+     Result := copy(AValue,1,4)  + ' ' + copy(AValue,5,4)  + ' ' +
+               copy(AValue,9,4)  + ' ' + copy(AValue,13,4) + ' ' +
+               copy(AValue,17,4) + ' ' + copy(AValue,21,4) + ' ' +
+               copy(AValue,25,4) + ' ' + copy(AValue,29,4) + ' ' +
+               copy(AValue,33,4) + ' ' + copy(AValue,37,4) + ' ' +
+               copy(AValue,41,4) ;
+   end;
 var PosYCodBarraContigencia, aWidth, CenterX:Double;
     aChaveAcesso, aProtocolo, aChaveContigencia:String;
 begin
@@ -253,8 +266,8 @@ begin
      if FEspelho then
         aChaveAcesso:='SEM VALOR FISCAL (SOMENTE CONFERENCIA)'
        else
-        aChaveAcesso:=NotaUtil.FormatarChaveAcesso(FChaveNFe);
-     Box([fsLeft,fsTop],PosX,YPos,aWidth,aHeigthPadrao,'CHAVE DE ACESSO DA NF-e',aChaveAcesso,taCenter,True);
+        aChaveAcesso:=FormatarChave_DANFE(FChaveNFe);
+     Box([fsLeft,fsTop],PosX,YPos,aWidth,aHeigthPadrao,'CHAVE DE ACESSO',aChaveAcesso,taCenter,True);
 
 //     aChaveContigencia:=Gerar_ChaveContigencia(ACBrNFe.NotasFiscais.Items[FNFIndex].NFe);
 
@@ -262,11 +275,11 @@ begin
      Box([fsLeft,fsTop],PosX,YPos,aWidth,12.27,'','',taLeftJustify,True);
      Result:=YPos;
      if aChaveContigencia<>'' then
-        Box([fsLeft,fsTop],PosX,YPos,aWidth,aHeigthPadrao,'DADOS DANFe',aChaveContigencia,taCenter,True)
+        Box([fsLeft,fsTop],PosX,YPos,aWidth,aHeigthPadrao,'DADOS DA NFe',aChaveContigencia,taCenter,True)
       else
        begin
         if NotaUtil.EstaVazio(ProtocoloNFe) then
-           aProtocolo:=Trim(procNFe.nProt)+' '+DateToStr(procNFe.dhRecbto)
+           aProtocolo:=Trim(procNFe.nProt)+' '+DateTimeToStr(procNFe.dhRecbto)
         else
            aProtocolo := ProtocoloNFe;
         Box([fsLeft,fsTop],PosX,YPos,aWidth,aHeigthPadrao,'PROTOCOLO DE AUTORIZAÇÃO DE USO',aProtocolo,taCenter,True);
@@ -280,8 +293,8 @@ begin
           CodePage:=cpCodeC;
           BarCodeJustify:=pjCenter;
           UseChecksum:=false;
-          BarWidth:=0.26;
-          BarHeight:=11.2;
+          BarWidth:=0.254;
+          BarHeight:=10.0;
           WideFactor:=BarWidth;
           PrintReadable:=False;
           Text:=NotaUtil.LimpaNumero(FChaveNFe);
@@ -375,7 +388,7 @@ begin
           vEnd:=vEnd+', '+XCpl;
        Box([fsTop],PosX,YPos,93,aHeigthPadrao,'Endereço',vEnd);
        Box([fsTop,fsLeft],XPos,YPos,50,aHeigthPadrao,'Bairro',XBairro);
-       Box([fsTop,fsLeft],XPos,YPos,30,aHeigthPadrao,'CEP',NotaUtil.FormatarCEP(IntToStr(CEP)),taCenter);
+       Box([fsTop,fsLeft],XPos,YPos,30,aHeigthPadrao,'CEP',NotaUtil.FormatarCEP(NotaUtil.Poem_Zeros(CEP,8)),taCenter);
        Box([fsTop,fsLeft],XPos,YPos,21,aHeigthPadrao,'Data da Saída',NotaUtil.FormatDate(DateToStr(Ide.DSaiEnt)),taCenter,True);
        Box([fsTop],PosX,YPos,85,aHeigthPadrao,'Município',XMun);
        Box([fsTop,fsLeft],XPos,YPos,40,aHeigthPadrao,'Fone / Fax',NotaUtil.FormatarFone(Fone),taCenter);
@@ -742,6 +755,8 @@ begin
           finally
             Memo.Free;
           end;
+          MoveTo(PosX,YPos+0.3);
+          LineTo(FLastX,YPos+0.3);
           NewLine;
         end;
      end;

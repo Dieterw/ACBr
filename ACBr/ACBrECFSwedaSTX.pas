@@ -413,11 +413,11 @@ begin
         Resposta fica gravada na váriavel "fpRespostaComando" }
       LeResposta ;
 
-      ACK_PC := ACK ;
+      ACK_PC := ACK ;  // retornar ACK, OK
       { Verificando o CheckSum }
       if CalcCheckSum(LeftStr(fpRespostaComando,Length(fpRespostaComando)-1)) <>
          RightStr(fpRespostaComando,1) then
-         ACK_PC := NACK  
+         ACK_PC := NACK   // Erro no CheckSum, retornar NACK
       else
          if Ord( fpRespostaComando[2] ) <> fsSEQ then
             raise Exception.Create('Sequencia de Resposta diferente da enviada') ;
@@ -431,9 +431,9 @@ begin
       raise Exception( 'Erro no digito Verificador da Resposta.'+sLineBreak+
                        'Falha: '+IntToStr(FalhasRX) ) ;
 
-   { Separando o Retorno. Exemplo:  STX + SEQ + [Result] + ETX + CHK }
+   { Limpando o Retorno. Exemplo:  STX + SEQ + [Dados] + ETX + CHK }
    P := pos(ETX,fpRespostaComando) ;
-   Result := copy(fpRespostaComando, 3, P-3) ;
+   Result := copy(fpRespostaComando, 1, P) ;
 
    fsTarefa   := copy(fpRespostaComando,3,2) ;
    fsTipo     := copy(fpRespostaComando,5,1) ;
@@ -1799,13 +1799,18 @@ begin
 
   RetCmd := EnviaComando( '34|' + Registrador ) ;
 
-  if LeftStr(RetCmd,2) = '34' then
-     Result := copy( RetCmd, 8, Length(RetCmd) ) ;
+  { Extraindo "DADOS" do bloco abaixo :
+    STX[1]+Seq[1]+Tarefa[1]+Tipo[1]+Secao[4]+Dados[N]+ETX[1]+CHK[1] }
+  if Copy(RetCmd,3,2) = '34' then
+     Result := copy( RetCmd, 10, Length(RetCmd)-10 ) ;
 
+  if pos('I8',Registrador) > 0 then  // Sem cache para Data/Hora
+     exit ;
+     
+  { Adicionando resposta no Cache }
   Info := TACBrECFSwedaInfo34.create ;
   Info.Secao := Registrador ;
   Info.Dados := Result ;
-
   fsCache34.Add( Info ) ;
 end;
 

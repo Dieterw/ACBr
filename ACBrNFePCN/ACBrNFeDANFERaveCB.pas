@@ -89,6 +89,7 @@ begin
          LogoMarcaEmpresa.LoadFromFile(Logo);
        end;
       ImprimirDANFeRave(TACBrNFe(ACBrNFe),
+                       Site,
                        Email,
                        Fax,
                        Sistema,
@@ -118,6 +119,7 @@ begin
     try
       LogoMarcaEmpresa.LoadFromFile(Logo);
       ImprimirDANFeRave(TACBrNFe(ACBrNFe),
+                       Site,
                        Email,
                        Fax,
                        Sistema,

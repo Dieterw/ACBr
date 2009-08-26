@@ -97,11 +97,8 @@ begin
         NewLine;
         PrintCenter('NF-e',FLastX-aWidthNFe+(aWidthNFe/2));
         NewLine;
-        //NewLine;
-        //PrintXY(FLastX-aWidthNFe+1,YPos,'Nº: '+FNumeroNF);
         PrintCenter('Nº: '+FNumeroNF,FLastX-aWidthNFe+(aWidthNFe/2));
         NewLine;
-        //PrintXY(FLastX-aWidthNFe+1,YPos,'SÉRIE: '+FSerie);
         PrintCenter('SÉRIE: '+FSerie,FLastX-aWidthNFe+(aWidthNFe/2));
 
         SetPen(clBlack,psDot,2,pmCopy);
@@ -157,7 +154,7 @@ begin
        if LogoMarca<>nil then
           LogoMarca.SaveToStream(stLogo);
        stLogo.Position:=0;
-       aWidth:=88;
+       aWidth:=86;
        Result:=PosX+aWidth;
 
        Box([],PosX,PosY,aWidth,30,'IDENTIFICAÇÃO DO EMITENTE');
@@ -179,7 +176,6 @@ begin
        CenterX:=PosX+aWidthLogo+((aWidth-aWidthLogo)/2);
        SetFont(FontNameUsed,FontSizeEmit_Outros);
        Bold:=True;
-       NewLine;
        with Emit.EnderEmit do
         begin
          vEnd:=XLgr;
@@ -195,10 +191,13 @@ begin
          vEnd:=XMun+' - '+UF;
          PrintCenter(vEnd,CenterX);
          NewLine;
-         vEnd:='FONE: '+fone+' / FAX: '+FaxDoEmitente;
+         vEnd:='FONE: '+NotaUtil.FormatarFone(Fone)+' / FAX: '+FaxDoEmitente;
          PrintCenter(vEnd,CenterX);
          NewLine;
-         vEnd:='EMAIL: '+EmailDoEmitente;
+         vEnd:=SiteDoEmitente;
+         PrintCenter(vEnd,CenterX);
+         NewLine;
+         vEnd:=EmailDoEmitente;
          PrintCenter(vEnd,CenterX);
          Bold:=False;
         end;
@@ -213,10 +212,10 @@ var aWidth, CenterX:Double;
 begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
-     aWidth:=39;
+     aWidth:=36;
      Result:=PosX+aWidth;
      Box([fsLeft],PosX,PosY,aWidth,30);
-     CenterX:=PosX+20;
+     CenterX:=PosX+(aWidth/2);
      GotoXY(PosX,PosY);
      SetFont(FontNameUsed,FontSizeIdentDoc_DANFE);
      Bold:=True;
@@ -225,9 +224,9 @@ begin
      PrintCenter('DANFE',CenterX);
      SetFont(FontNameUsed,FontSizeIdentDoc_TipoOperacao);
      NewLine;
-     PrintCenter('DOCUMENTO AUXILIAR DA',CenterX);
+     PrintCenter('Documento Auxiliar da',CenterX);
      NewLine;
-     PrintCenter('NOTA FISCAL ELETRÔNICA',CenterX);
+     PrintCenter('Nota Fiscal Eletrônica',CenterX);
      NewLine;
      PrintXY(PosX+10,YPos+0.5,'0 - ENTRADA');
      NewLine;
@@ -576,12 +575,16 @@ begin
      Result:=FLastY-GetFontHeigh;
      GotoXY(PosX,Result);
      NewLine;
-     PrintXY(PosX,YPos,NomeDoERP);
-     vEnd:='Emitido ';
+     vEnd:='DATA E HORA DA IMPRESSÃO: '+FormatDateTime('dd/mm/yyyy hh:mm:ss',Now);
      if Trim(NomeDoUsuario)>'' then
-        vEnd:=vEnd+' por '+NomeDoUsuario;
-     vEnd:=vEnd+' as '+FormatDateTime('dd/mm/yyyy hh:mm:ss',Now);
-     PrintRight(vEnd,FLastX);
+        vEnd:=vEnd+' - '+NomeDoUsuario;
+     PrintXY(PosX,YPos,vEnd);
+
+     if Trim(NomeDoERP)>'' then
+     begin
+        vEnd:='Desenvolvido por '+NomeDoERP;
+        PrintRight(vEnd,FLastX);
+     end;
   end;
 end;
 

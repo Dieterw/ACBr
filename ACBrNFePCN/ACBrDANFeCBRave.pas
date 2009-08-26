@@ -80,6 +80,7 @@ type
   private
      FACBrNFe:TACBrNFe;
      FEmail:String;
+     FSite:string;
      FFax:String;
      FSistema:String;
      FUsuario:String;
@@ -100,6 +101,7 @@ type
      procedure Box(FlagsHideLine:TFlagsShowLine;aX,aY:Double; aWith,aHeight:Double;aTitle:String='';aText:String='';aAlignment:TAlignment=taLeftJustify;PositionNewLine:Boolean=False;Zebrado:Boolean=False;LarguraAutomatica:Boolean=True);
      property ACBrNFe:TACBrNFe read FACBrNFe write FACBrNFe;
      property EmailDoEmitente:String read FEmail write FEmail;
+     property SiteDoEmitente:String read FSite write FSite;
      property FaxDoEmitente:String read FFax write FFax;
      property NomeDoERP:String read FSistema write FSistema;
      property NomeDoUsuario:String read FUsuario write FUsuario;
@@ -109,6 +111,7 @@ type
   end;
 
 procedure ImprimirDANFeRave(aACBrNFe:TACBrNFe;
+                            aSite,
                             aEmail,
                             aFax,
                             aNomeDoERP,
@@ -132,6 +135,7 @@ implementation
 uses ACBrNFeUtil, ACBrDANFeCBRavePaisagem, ACBrDANFeCBRaveRetrato;
 
 procedure ImprimirDANFeRave(aACBrNFe:TACBrNFe;
+                            aSite,
                             aEmail,
                             aFax,
                             aNomeDoERP,
@@ -166,6 +170,7 @@ begin
     rvPDF.Active:=True;
     DANFeRave.ACBrNFe:=aACBrNFe;
     DANFeRave.EmailDoEmitente:=aEmail;
+    DANFeRave.SiteDoEmitente:=aSite;
     DANFeRave.FaxDoEmitente:=aFax;
     DANFeRave.NomeDoERP:=aNomeDoERP;
     DANFeRave.NomeDoUsuario:=aNomeDoUsuario;

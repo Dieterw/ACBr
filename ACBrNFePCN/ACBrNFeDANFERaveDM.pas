@@ -783,22 +783,12 @@ procedure TdmACBrNFeRave.CustomParametrosCXNGetRow(
       wchave:=wchave+NotaUtil.Poem_Zeros(NotaUtil.LimpaNumero(Floattostrf(FNFe.Total.ICMSTot.vNF,ffFixed,18,2)),14);
 
       //DESTAQUE ICMS PROPRIO E ST
-      wicms_s:='2';
       wicms_p:='2';
-      for I := 0 to FNFe.Det.Count - 1 do
-      begin
-         if (FNFe.Det.Items[i].Imposto.ICMS.CST in [cst00, cst20, cst40, cst41, cst50, cst51]) then
-            wicms_p:='1'
-         else if (FNFe.Det.Items[i].Imposto.ICMS.CST in [cst10, cst30, cst60, cst70]) then
-            wicms_s:='1'
-         else if (FNFe.Det.Items[i].Imposto.ICMS.CST in [cst90]) then
-         begin //precisa testar
-            if (FNFe.Det.Items[i].Imposto.ICMS.vICMS > 0) then
-               wicms_p:='1';
-            if (FNFe.Det.Items[i].Imposto.ICMS.vICMSST > 0) then
-               wicms_s:='1';
-         end;
-      end;
+      wicms_s:='2';
+      if (NotaUtil.NaoEstaZerado(FNFe.Total.ICMSTot.vICMS)) then
+         wicms_p:='1';
+      if (NotaUtil.NaoEstaZerado(FNFe.Total.ICMSTot.vST)) then
+         wicms_s:='1';
       wchave:=wchave+wicms_p+wicms_s;
 
       //DIA DA EMISSAO

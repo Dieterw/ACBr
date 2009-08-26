@@ -134,7 +134,8 @@ type
   equipamentos. (Favor reportar possiveis BUGS) }
 TACBrECFModelo = (ecfNenhum, ecfNaoFiscal, ecfBematech, ecfSweda, ecfDaruma,
                   ecfSchalter, ecfMecaf, ecfYanco, ecfDataRegis, ecfUrano,
-                  ecfICash, ecfQuattro, ecfFiscNET, ecfEpson, ecfNCR );
+                  ecfICash, ecfQuattro, ecfFiscNET, ecfEpson, ecfNCR,
+                  ecfSwedaSTX );
 
 { Componente ACBrECF }
 TACBrECF = class( TACBrComponent )
@@ -645,8 +646,9 @@ end ;
 implementation
 Uses ACBrUtil, ACBrECFBematech, ACBrECFNaoFiscal, ACBrECFDaruma, ACBrECFSchalter,
      ACBrECFMecaf, ACBrECFSweda, ACBrECFDataRegis, ACBrECFUrano, ACBrECFYanco,
-     ACBrECFICash, ACBrECFQuattro, ACBrECFFiscNET, ACBrECFEpson, ACBrECFNCR {, ACBrECFSCU}
-    {$IFDEF COMPILER6_UP} ,StrUtils {$ELSE},ACBrD5 ,Windows {$ENDIF}, Math,
+     ACBrECFICash, ACBrECFQuattro, ACBrECFFiscNET, ACBrECFEpson, ACBrECFNCR,
+     ACBrECFSwedaSTX, {ACBrECFSCU, }
+    {$IFDEF COMPILER6_UP} StrUtils {$ELSE}ACBrD5 ,Windows {$ENDIF}, Math,
     IniFiles ;
 
 { TACBrECF }
@@ -693,7 +695,7 @@ begin
                         QTD         x UNITARIO       Aliq     VALOR (R$) }
     fsMemoMascItens := 'III CCCCCCCCCCCCC DDDDDDDDDDDDDDDDDDDDDDDDDDDDDD'+
                        'QQQQQQQQ UU x VVVVVVVVVVVVV AAAAAA TTTTTTTTTTTTT' ;
-
+                 
     fsMemoParams := TStringList.Create ;
     fsMemoParams.Add( '[Cabecalho]' ) ;
     fsMemoParams.Add( 'LIN000=<center><b>Nome da Empresa</b></center>' ) ;
@@ -815,7 +817,8 @@ begin
     ecfQuattro   : fsECF := TACBrECFQuattro.create( Self ) ;
     ecfFiscNET   : fsECF := TACBrECFFiscNET.create( Self ) ;
     ecfEpson     : fsECF := TACBrECFEpson.create( Self ) ;
-    ecfNCR       : fsECF := TACBrECFNCR.create( Self ) ;  
+    ecfNCR       : fsECF := TACBrECFNCR.create( Self ) ;
+    ecfSwedaSTX  : fsECF := TACBrECFSwedaSTX.Create( self );
   else
      fsECF := TACBrECFClass.create( Self ) ;
   end;

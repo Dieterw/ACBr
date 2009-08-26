@@ -99,7 +99,11 @@ begin
                        NotaUtil.SeSenao(MostrarPreview,tsPreview,tsPrint),
                        NumCopias,
                        Impressora,
-                       '');
+                       '',
+                       MargemInferior*10,
+                       MargemSuperior*10,
+                       MargemEsquerda*10,
+                       MargemDireita*10);
     finally
       LogoMarcaEmpresa.Free;
     end;
@@ -124,7 +128,11 @@ begin
                        tsPDF,
                        NumCopias,
                        Impressora,
-                       NomeArq);
+                       NomeArq,
+                       MargemInferior*10,
+                       MargemSuperior*10,
+                       MargemEsquerda*10,
+                       MargemDireita*10);
     finally
       LogoMarcaEmpresa.Free;
     end;

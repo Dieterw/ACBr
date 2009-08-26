@@ -87,6 +87,9 @@ type
     FImprimeDescPorc : Boolean;
  	  FProtocoloNFe: string;
     FMargemInferior: Double;
+    FMargemSuperior: Double;
+    FMargemEsquerda: Double;
+    FMargemDireita: Double;
     FCasasDecimais: TCasasDecimais;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
   public
@@ -111,6 +114,9 @@ type
     property ImprimirDescPorc: Boolean read FImprimeDescPorc write FImprimeDescPorc ;
     property ProtocoloNFe: String read FProtocoloNFe write FProtocoloNFe ;
     property MargemInferior: Double read FMargemInferior write FMargemInferior ;
+    property MargemSuperior: Double read FMargemSuperior write FMargemSuperior ;
+    property MargemEsquerda: Double read FMargemEsquerda write FMargemEsquerda ;
+    property MargemDireita: Double read FMargemDireita write FMargemDireita ;
     property CasasDecimais: TCasasDecimais read FCasasDecimais ;
   end;
 
@@ -171,6 +177,9 @@ begin
   FImprimeDescPorc := False;
   FProtocoloNFe := '';
   FMargemInferior := 0.8;
+  FMargemSuperior := 0.8;
+  FMargemEsquerda := 0.6;
+  FMargemDireita  := 0.54;
   FCasasDecimais := TCasasDecimais.Create(self);
   FCasasDecimais.Name:= 'CasasDecimais' ;
   {$IFDEF COMPILER6_UP}

@@ -67,7 +67,7 @@ const aHeigthPadrao:Double=5.7;
       ColsTitle:array[1..17] of String=('CÓDIGO','DESCRIÇÃO DO PRODUTO / SERVIÇO','NCM/SH','CST','CFOP','UNID','QUANTIDADE','VALOR','VALOR','VALOR','BASE CÁLC.','B.CÁLC.ICMS','VAL.ICMS','VALOR','VALOR','ALÍQ.','ALÍQ.');
       ColsTitleAux:array[1..17] of String=('','','','','','','','UNITÁRIO','TOTAL','DESC.','DO ICMS','SUBST.TRIB.','SUBST.TRIB.','ICMS','IPI','ICMS','IPI');
       ColsAlingment:array[1..17] of TPrintJustify=(pjCenter,pjLeft,pjCenter,pjCenter,pjCenter,pjCenter,pjRight,pjRight,pjRight,pjRight,pjRight,pjRight,pjRight,pjRight,pjRight,pjCenter,pjCenter);
-      
+
 type
   TTipoSaida=(tsPrint,tsPreview,tsPDF,tsText,tsHTML,tsRTF);
   TFlagsShowLine=Set of (fsTop,fsBottom,fsLeft,fsRigth);
@@ -119,7 +119,11 @@ procedure ImprimirDANFeRave(aACBrNFe:TACBrNFe;
                             aOpcaoDeSaida:TTipoSaida=tsPreview;
                             aNumeroDeCopias:Integer=1;
                             aNomeImpressora:string='';
-                            aArquivoSaida:String='');
+                            aArquivoSaida:String='';
+                            aMargemInferior:double=8;
+                            aMargemSuperior:double=8;
+                            aMargemEsquerda:double=6;
+                            aMargemDireita:double=5.30);
 
 var DANFeRave:TDANFeRave;
 
@@ -132,13 +136,17 @@ procedure ImprimirDANFeRave(aACBrNFe:TACBrNFe;
                             aFax,
                             aNomeDoERP,
                             aNomeDoUsuario:String;
-                            aProtocoloNFe:String;                            
+                            aProtocoloNFe:String;
                             aLogoMarca:TJPEGImage;
                             aOrientacaoPapel:TOrientation;
                             aOpcaoDeSaida:TTipoSaida=tsPreview;
                             aNumeroDeCopias:Integer=1;
                             aNomeImpressora:string='';
-                            aArquivoSaida:String='');
+                            aArquivoSaida:String='';
+                            aMargemInferior:double=8;
+                            aMargemSuperior:double=8;
+                            aMargemEsquerda:double=6;
+                            aMargemDireita:double=5.3);
 var DANFeRave:TDANFeRave;
     rvPDF:TRvRenderPDF;
     rvTXT:TRvRenderText;
@@ -162,6 +170,10 @@ begin
     DANFeRave.NomeDoERP:=aNomeDoERP;
     DANFeRave.NomeDoUsuario:=aNomeDoUsuario;
     DANFeRave.ProtocoloNFe:=aProtocoloNFe;
+    DANFeRave.SystemPrinter.MarginTop:=aMargemSuperior;
+    DANFeRave.SystemPrinter.MarginBottom:=aMargemInferior;
+    DANFeRave.SystemPrinter.MarginLeft:=aMargemEsquerda;
+    DANFeRave.SystemPrinter.MarginRight:=aMargemDireita;
     if aLogoMarca<>nil then
      begin
        DANFeRave.LogoMarca:=TJPEGImage.Create;
@@ -283,16 +295,7 @@ end;
 constructor TDANFeRave.Create(AOwner: TComponent);
 begin
   inherited;
-  SystemPrinter.MarginTop:=8;
-  SystemPrinter.MarginBottom:=8;
-  if SystemPrinter.Orientation=poLandScape then begin
-     SystemPrinter.MarginLeft:=8;
-     SystemPrinter.MarginRight:=8;
-    end
-    else begin
-     SystemPrinter.MarginLeft:=6;
-     SystemPrinter.MarginRight:=5.3;
-  end;
+
   OnPrint:=RavePrint;
   OnBeforePrint:=RaveBeforePrint;
   OnDecodeImage:=RaveDecodeImage;

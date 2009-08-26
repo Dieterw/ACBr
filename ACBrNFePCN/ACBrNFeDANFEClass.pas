@@ -179,7 +179,7 @@ begin
   FMargemInferior := 0.8;
   FMargemSuperior := 0.8;
   FMargemEsquerda := 0.6;
-  FMargemDireita  := 0.54;
+  FMargemDireita  := 0.51;
   FCasasDecimais := TCasasDecimais.Create(self);
   FCasasDecimais.Name:= 'CasasDecimais' ;
   {$IFDEF COMPILER6_UP}

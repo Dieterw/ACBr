@@ -124,18 +124,18 @@ begin
 end;
 
 procedure ImprimirMensagensDeFundo(PosX:Double);
-var YY:Double;
+var CenterX,YY:Double;
 begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
-     YY:=MarginTop;
+     YY:=FLastY-5;
      if FEspelho then
       begin
         SetFont(FontNameUsed,33);
         FontColor:=clSilver;
         Bold:=True;
         Underline:=True;
-        GotoXY(PosX+5,YY+180);
+        GotoXY(PosX+5,YY);
         FontRotation:=35;
         Print('SEM VALOR FISCAL (PARA CONFERÊNCIA)');
       end
@@ -147,10 +147,29 @@ begin
            FontColor:=clSilver;
            Bold:=True;
            Underline:=True;
-           GotoXY(PosX+5,YY+180);
+           GotoXY(PosX+5,YY);
            FontRotation:=33;
            Print('AMBIENTE DE HOMOLOGAÇÃO - SEM VALOR FISCAL');
          end;
+        SetFont(FontNameUsed,22);
+        FontColor:=clSilver;
+        Bold:=True;
+        GotoXY(PosX+5,YY-10);
+        CenterX:=XPos+((PageWidth-MarginRight-XPos)/2);
+        case Ide.tpEmis of
+           teDPEC: begin
+                     PrintCenter('DANFE impresso em contingência - DPEC regularmente ',CenterX);
+                     NewLine;
+                     PrintCenter('recebida pela Receita Federal do Brasil',CenterX);
+                   end;
+           teFSDA,
+           teContingencia:
+                   begin
+                     PrintCenter('DANFE em Contingência - impresso em',CenterX);
+                     NewLine;
+                     PrintCenter('decorrência de problemas técnicos',CenterX);
+                   end;
+        end;
       end;
      FontRotation:=0;
    end;
@@ -345,12 +364,12 @@ begin
 end;
 
 function ImprimirEmitenteOutrosDados(PosX,
-  PosY: Double): Double;
+  PosY, WidthNaturezaOperacao: Double): Double;
 begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
      PosX:=PosX+aWidthTituloBloco;
-     Box([fsTop],PosX,PosY,141,aHeigthPadrao,'NATUREZA DA OPERAÇÃO',ide.natOp,taLeftJustify,True,False,False);
+     Box([fsTop],PosX,PosY,WidthNaturezaOperacao,aHeigthPadrao,'NATUREZA DA OPERAÇÃO',ide.natOp,taLeftJustify,True,False,False);
      Box([fsTop],PosX,YPos,82,aHeigthPadrao,'INSCRIÇÃO ESTADUAL',Emit.IE,taCenter);
      Box([fsTop,fsLeft],XPos,YPos,82,aHeigthPadrao,'INSCRIÇÃO ESTADUAL DO SUBST. TRIBUTÁRIO',Emit.IEST,taCenter);
      Box([fsTop,fsLeft],XPos,YPos,87,aHeigthPadrao,'C.N.P.J.',NotaUtil.FormatarCNPJ(Emit.CNPJCPF),taCenter,True);
@@ -671,7 +690,7 @@ begin
 end;
 
 function MontarPagina:Double;
-var XX,YY:Double;
+var aWidthNatOper,XX,YY:Double;
 begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
@@ -693,8 +712,9 @@ begin
     ImprimirMensagensDeFundo(XX);
     XX:=ImprimirEmitente(XX,YY);
     XX:=ImprimirTituloDANFe(XX,YY);
+    aWidthNatOper:=XX-Result;
     YY:=ImprimirCodigoBarras(XX,YY);
-    YY:=ImprimirEmitenteOutrosDados(Result,YY);
+    YY:=ImprimirEmitenteOutrosDados(Result,YY,aWidthNatOper);
 
     //Imprime somente na primeira folha
     if FPageNum=1 then
@@ -760,7 +780,13 @@ begin
            begin
              NewPage;
              MontarPagina;
-           end;
+           end
+           else
+            if i>0 then
+             begin
+               MoveTo(PosX,YPos+0.1-aFontHeigth);
+               LineTo(FLastX,YPos+0.1-aFontHeigth);
+             end;
 
           PrintTab(Prod.CProd);
           PrintTab('');

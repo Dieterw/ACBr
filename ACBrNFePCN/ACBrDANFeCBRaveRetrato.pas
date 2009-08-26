@@ -58,8 +58,8 @@ const
       FontSizeGroup:Integer=7;
       FontSizeTitle:Integer=6;
       FontSizeText:Integer=8;
-
-      ColsWidth:array[1..17] of Double=(15,60,18,6,7,8,12,13,15,0,12,0,0,10,10,7,7);
+                                      //      18
+      ColsWidth:array[1..17] of Double=(15,60,15,6,7,8,12,13,15,0,12,0,0,10,10,8,8);
 
 procedure ImprimirRetrato(aRaveSystem:TDANFeRave);
 
@@ -112,16 +112,18 @@ begin
 end;
 
 procedure ImprimirMensagensDeFundo;
+var CenterX,YY:Double;
 begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
+     YY:=FLastY-5;
      if FEspelho then
       begin
         SetFont(FontNameUsed,33);
         FontColor:=clSilver;
         Bold:=True;
         Underline:=True;
-        GotoXY(FFirstX,FLastY);
+        GotoXY(FFirstX,YY);
         FontRotation:=47;
         Print('SEM VALOR FISCAL (PARA CONFERÊNCIA)');
       end
@@ -133,10 +135,29 @@ begin
            FontColor:=clSilver;
            Bold:=True;
            Underline:=True;
-           GotoXY(FFirstX+5,FLastY-5);
+           GotoXY(FFirstX+5,YY);
            FontRotation:=45;
            Print('AMBIENTE DE HOMOLOGAÇÃO - SEM VALOR FISCAL');
          end;
+        SetFont(FontNameUsed,22);
+        FontColor:=clSilver;
+        Bold:=True;
+        GotoXY(FFirstX+5,YY-10);
+        CenterX:=XPos+((PageWidth-MarginRight-XPos)/2);
+        case Ide.tpEmis of
+           teDPEC: begin
+                     PrintCenter('DANFE impresso em contingência - DPEC regularmente ',CenterX);
+                     NewLine;
+                     PrintCenter('recebida pela Receita Federal do Brasil',CenterX);
+                   end;
+           teFSDA,
+           teContingencia:
+                   begin
+                     PrintCenter('DANFE em Contingência - impresso em',CenterX);
+                     NewLine;
+                     PrintCenter('decorrência de problemas técnicos',CenterX);
+                   end;
+        end;
       end;
      FontRotation:=0;
   end;
@@ -245,16 +266,6 @@ begin
 end;
 
 function ImprimirCodigoBarras(PosX, PosY: Double):Double;
-   function FormatarChave_DANFE(AValue: String): String;
-   begin
-     AValue := NotaUtil.LimpaNumero(AValue);
-     Result := copy(AValue,1,4)  + ' ' + copy(AValue,5,4)  + ' ' +
-               copy(AValue,9,4)  + ' ' + copy(AValue,13,4) + ' ' +
-               copy(AValue,17,4) + ' ' + copy(AValue,21,4) + ' ' +
-               copy(AValue,25,4) + ' ' + copy(AValue,29,4) + ' ' +
-               copy(AValue,33,4) + ' ' + copy(AValue,37,4) + ' ' +
-               copy(AValue,41,4) ;
-   end;
 var PosYCodBarraContigencia, aWidth, CenterX:Double;
     aChaveAcesso, aProtocolo, aChaveContigencia:String;
 begin
@@ -265,23 +276,30 @@ begin
      if FEspelho then
         aChaveAcesso:='SEM VALOR FISCAL (SOMENTE CONFERENCIA)'
        else
-        aChaveAcesso:=FormatarChave_DANFE(FChaveNFe);
+        aChaveAcesso:=NotaUtil.FormatarChaveAcesso(FChaveNFe);
      Box([fsLeft,fsTop],PosX,YPos,aWidth,aHeigthPadrao,'CHAVE DE ACESSO',aChaveAcesso,taCenter,True);
 
-//     aChaveContigencia:=Gerar_ChaveContigencia(ACBrNFe.NotasFiscais.Items[FNFIndex].NFe);
+     if ACBrNFe.NotasFiscais.Items[FNFIndex].NFe.Ide.tpEmis in [teContingencia,teFSDA] then
+        aChaveContigencia:=NotaUtil.GerarChaveContingencia(ACBrNFe.NotasFiscais.Items[FNFIndex].NFe)
+     else
+        aChaveContigencia:='';
 
      PosYCodBarraContigencia:=YPos;
      Box([fsLeft,fsTop],PosX,YPos,aWidth,12.27,'','',taLeftJustify,True);
      Result:=YPos;
      if aChaveContigencia<>'' then
-        Box([fsLeft,fsTop],PosX,YPos,aWidth,aHeigthPadrao,'DADOS DA NFe',aChaveContigencia,taCenter,True)
+        Box([fsLeft,fsTop],PosX,YPos,aWidth,aHeigthPadrao,'DADOS DA NFe',NotaUtil.FormatarChaveContigencia(aChaveContigencia),taCenter,True)
       else
-       begin
-        if NotaUtil.EstaVazio(ProtocoloNFe) then
-           aProtocolo:=Trim(procNFe.nProt)+' '+DateTimeToStr(procNFe.dhRecbto)
-        else
-           aProtocolo := ProtocoloNFe;
-        Box([fsLeft,fsTop],PosX,YPos,aWidth,aHeigthPadrao,'PROTOCOLO DE AUTORIZAÇÃO DE USO',aProtocolo,taCenter,True);
+      begin
+        aProtocolo := ProtocoloNFe;
+        if (ACBrNFe.NotasFiscais.Items[FNFIndex].NFe.Ide.tpEmis in [teNormal,teSCAN]) then
+        begin
+           if NotaUtil.EstaVazio(aProtocolo) then
+              aProtocolo:=Trim(procNFe.nProt)+' '+DateTimeToStr(procNFe.dhRecbto);
+           Box([fsLeft,fsTop],PosX,YPos,aWidth,aHeigthPadrao,'PROTOCOLO DE AUTORIZAÇÃO DE USO',aProtocolo,taCenter,True);
+        end
+        else if (ACBrNFe.NotasFiscais.Items[FNFIndex].NFe.Ide.tpEmis in [teDPEC]) then
+           Box([fsLeft,fsTop],PosX,YPos,aWidth,aHeigthPadrao,'NÚMERO DE REGISTRO DPEC',aProtocolo,taCenter,True);
       end;
 
      if not FEspelho then
@@ -297,7 +315,7 @@ begin
           WideFactor:=BarWidth;
           PrintReadable:=False;
           Text:=NotaUtil.LimpaNumero(FChaveNFe);
-          PrintXY(PosX+(aWidth/2),PosY+0.5);
+          PrintXY(PosX+(aWidth/2),PosY+1);
           Free;
          end;
 
@@ -309,12 +327,12 @@ begin
              CodePage:=cpCodeC;
              BarCodeJustify:=pjCenter;
              UseChecksum:=false;
-             BarWidth:=0.39;
-             BarHeight:=11.2;
+             BarWidth:=0.254;
+             BarHeight:=10.0;
              WideFactor:=BarWidth;
              PrintReadable:=False;
              Text:=NotaUtil.LimpaNumero(aChaveContigencia);
-             PrintXY(PosX+(aWidth/2),PosYCodBarraContigencia+0.5);
+             PrintXY(PosX+(aWidth/2),PosYCodBarraContigencia+1);
              Free;
             end;
          end
@@ -345,11 +363,11 @@ begin
 end;
 
 function ImprimirEmitenteOutrosDados(PosX,
-  PosY: Double): Double;
+  PosY, WidthNaturezaOperacao: Double): Double;
 begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
-     Box([fsTop],PosX,PosY,127,aHeigthPadrao,'NATUREZA DA OPERAÇÃO',ide.natOp,taLeftJustify,True,False,False);
+     Box([fsTop],PosX,PosY,WidthNaturezaOperacao,aHeigthPadrao,'NATUREZA DA OPERAÇÃO',ide.natOp,taLeftJustify,True,False,False);
      Box([fsTop],PosX,YPos,82,aHeigthPadrao,'INSCRIÇÃO ESTADUAL',Emit.IE,taCenter);
      Box([fsTop,fsLeft],XPos,YPos,82,aHeigthPadrao,'INSCRIÇÃO ESTADUAL DO SUBST. TRIBUTÁRIO',Emit.IEST,taCenter);
      Box([fsTop,fsLeft],XPos,YPos,87,aHeigthPadrao,'C.N.P.J.',NotaUtil.FormatarCNPJ(Emit.CNPJCPF),taCenter,True);
@@ -421,8 +439,8 @@ begin
      for i:=1 to 3 do
       begin
         SetTab(XX+1,pjLeft,25,0,0,0);
-        SetTab(XX+26,pjCenter,19,0,0,0);
-        SetTab(XX+45,pjRight,20,0,0,0);
+        SetTab(XX+22,pjCenter,19,0,0,0);
+        SetTab(XX+42,pjRight,20,0,0,0);
         XX:=XX+67;
       end;
      GotoXY(XX,YY);
@@ -479,7 +497,7 @@ begin
      Box([fsTop,fsLeft],XPos,YPos,30.4,aHeigthPadrao,'Desconto',NotaUtil.FormatFloat(Total.ICMSTot.VDesc),taRightJustify);
      Box([fsTop,fsLeft],XPos,YPos,30.4,aHeigthPadrao,'Outras Desp. Acessórias',NotaUtil.FormatFloat(Total.ICMSTot.VOutro),taRightJustify);
      Box([fsTop,fsLeft],XPos,YPos,30.4,aHeigthPadrao,'Valor do IPI',NotaUtil.FormatFloat(Total.ICMSTot.VIPI),taRightJustify);
-     Box([fsTop,fsLeft],XPos,YPos,42,aHeigthPadrao,'VALOR TOTAL DA NOTA FISCAL',NotaUtil.FormatFloat(Total.ICMSTot.VNF),taRightJustify,True,True);
+     Box([fsTop,fsLeft],XPos,YPos,42,aHeigthPadrao,'VALOR TOTAL DA NOTA FISCAL',NotaUtil.FormatFloat(Total.ICMSTot.VNF),taRightJustify,True,False);
 
      Result:=YPos;
   end;
@@ -642,7 +660,7 @@ begin
 end;
 
 function MontarPagina:Double;
-var XX,YY:Double;
+var aWidthNatOper,XX,YY:Double;
 begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
@@ -663,8 +681,9 @@ begin
     ImprimirMensagensDeFundo;
     XX:=ImprimirEmitente(XX,YY);
     XX:=ImprimirTituloDANFe(XX,YY);
+    aWidthNatOper:=XX-Result;
     YY:=ImprimirCodigoBarras(XX,YY);
-    YY:=ImprimirEmitenteOutrosDados(Result,YY);
+    YY:=ImprimirEmitenteOutrosDados(Result,YY,aWidthNatOper);
 
     //Imprime somente na primeira folha
     if FPageNum=1 then
@@ -728,7 +747,13 @@ begin
            begin
              NewPage;
              MontarPagina;
-           end;
+           end
+           else
+            if i>0 then
+             begin
+               MoveTo(PosX,YPos+0.1-aFontHeigth);
+               LineTo(FLastX,YPos+0.1-aFontHeigth);
+             end;
 
           PrintTab(Prod.CProd);
           PrintTab('');
@@ -744,6 +769,8 @@ begin
           PrintTab(NotaUtil.FormatFloat(Prod.VProd));
           PrintTab(NotaUtil.FormatFloat(Prod.vDesc));
           PrintTab(NotaUtil.FormatFloat(Imposto.ICMS.vBC));
+          PrintTab(NotaUtil.FormatFloat(Imposto.ICMS.vBCST));
+          PrintTab(NotaUtil.FormatFloat(Imposto.ICMS.vICMSST));
           PrintTab(NotaUtil.FormatFloat(Imposto.ICMS.vICMS));
           PrintTab(NotaUtil.FormatFloat(Imposto.IPI.vIPI));
           PrintTab(NotaUtil.FormatFloat(Imposto.ICMS.pICMS));
@@ -758,8 +785,6 @@ begin
           finally
             Memo.Free;
           end;
-          MoveTo(PosX,YPos+0.3);
-          LineTo(FLastX,YPos+0.3);
           NewLine;
         end;
      end;

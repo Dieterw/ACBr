@@ -58,7 +58,7 @@ uses {$IFNDEF ACBrNFeOpenSSL}ACBrCAPICOM_TLB, ACBrMSXML2_TLB, {$ENDIF}
   {$ELSE}
      StrUtils,
   {$ENDIF}
-  ACBrNFeConfiguracoes, pcnConversao;
+  ACBrNFeConfiguracoes, pcnConversao, pcnNFe;
 
 
 {$IFDEF ACBrNFeOpenSSL}
@@ -66,7 +66,7 @@ const
  cDTD     = '<!DOCTYPE test [<!ATTLIST infNFe Id ID #IMPLIED>]>' ;
  cDTDCanc = '<!DOCTYPE test [<!ATTLIST infCanc Id ID #IMPLIED>]>' ;
  cDTDInut = '<!DOCTYPE test [<!ATTLIST infInut Id ID #IMPLIED>]>' ;
- cDTDDpec = '<!DOCTYPE test [<!ATTLIST infDPEC Id ID #IMPLIED>]>' ; 
+ cDTDDpec = '<!DOCTYPE test [<!ATTLIST infDPEC Id ID #IMPLIED>]>' ;
 {$ELSE}
 const
   DSIGNS = 'xmlns:ds="http://www.w3.org/2000/09/xmldsig#"';
@@ -162,6 +162,9 @@ type
     class function PathAplication: String;
     class function ParseText( Texto : AnsiString; Decode : Boolean = True) : AnsiString;
     class function SeparaDados( Texto : AnsiString; Chave : String; MantemChave : Boolean = False ) : AnsiString;
+    class function GerarChaveContingencia(FNFe:TNFe): String;
+    class function FormatarChaveContigencia(AValue: String): String;
+
   published
 
   end;
@@ -674,7 +677,7 @@ end;
 class function NotaUtil.FormatarChaveAcesso(AValue: String): String;
 begin
   AValue := NotaUtil.LimpaNumero(AValue);
-  Result := copy(AValue,1,2)  + '-' + copy(AValue,3,2) + '/' +
+{  Result := copy(AValue,1,2)  + '-' + copy(AValue,3,2) + '/' +
             copy(AValue,5,2)  + '-' + copy(AValue,7,2) + '.' +
             copy(AValue,9,3)  + '.' + copy(AValue,12,3)+ '/' +
             copy(AValue,15,4) + '-' + copy(AValue,19,2)+ '-' +
@@ -682,7 +685,13 @@ begin
             copy(AValue,26,3) + '.' + copy(AValue,29,3)+ '.' +
             copy(AValue,32,3) + '-' + copy(AValue,35,3)+ '.' +
             copy(AValue,38,3) + '.' + copy(AValue,41,3)+ '-' +
-            copy(AValue,44,2);
+            copy(AValue,44,2);}
+  Result := copy(AValue,1,4)  + ' ' + copy(AValue,5,4)  + ' ' +
+            copy(AValue,9,4)  + ' ' + copy(AValue,13,4) + ' ' +
+            copy(AValue,17,4) + ' ' + copy(AValue,21,4) + ' ' +
+            copy(AValue,25,4) + ' ' + copy(AValue,29,4) + ' ' +
+            copy(AValue,33,4) + ' ' + copy(AValue,37,4) + ' ' +
+            copy(AValue,41,4) ;
 end;
 
 class function NotaUtil.GetURL(const AUF, AAmbiente, FormaEmissao : Integer;
@@ -1555,6 +1564,97 @@ begin
       end;
    end;
   Result := copy(Texto,PosIni,PosFim-(PosIni+1));
+end;
+
+class function NotaUtil.GerarChaveContingencia(FNFe:TNFe): string;
+   function GerarDigito_Contigencia(var Digito: integer; chave: string): boolean;
+   var
+     i, j: integer;
+   const
+     PESO = '43298765432987654329876543298765432';
+   begin
+     // Manual Integracao Contribuinte v2.02a - Página: 70 //
+     chave := NotaUtil.LimpaNumero(chave);
+     j := 0;
+     Digito := 0;
+     result := True;
+     try
+       for i := 1 to 35 do
+         j := j + StrToInt(copy(chave, i, 1)) * StrToInt(copy(PESO, i, 1));
+       Digito := 11 - (j mod 11);
+       if (j mod 11) < 2 then
+         Digito := 0;
+     except
+       result := False;
+     end;
+     if length(chave) <> 35 then
+       result := False;
+   end;
+var
+   wchave: string;
+   wicms_s, wicms_p: string;
+   wd,wm,wa: word;
+   Digito: integer;
+begin
+   //ajustado de acordo com nota tecnica 2009.003
+
+   //UF
+   if FNFe.Dest.EnderDest.UF='EX' then
+      wchave:='99' //exterior
+   else
+   begin
+      if FNFe.Ide.tpNF=tnSaida then
+         wchave:=copy(inttostr(FNFe.Dest.EnderDest.cMun),1,2) //saida
+      else
+         wchave:=copy(inttostr(FNFe.Emit.EnderEmit.cMun),1,2); //entrada
+   end;
+
+   //TIPO DE EMISSAO
+   if FNFe.Ide.tpEmis=teContingencia then
+      wchave:=wchave+'2'
+   else if FNFe.Ide.tpEmis=teFSDA then
+      wchave:=wchave+'5'
+   else
+      wchave:=wchave+'0'; //esta valor caracteriza ERRO, valor tem q ser  2 ou 5
+
+   //CNPJ OU CPF
+   if (FNFe.Dest.EnderDest.UF='EX') then
+      wchave:=wchave+NotaUtil.Poem_Zeros('0',14)
+   else
+      wchave:=wchave+NotaUtil.Poem_Zeros(FNFe.Dest.CNPJCPF,14);
+
+   //VALOR DA NF
+   wchave:=wchave+NotaUtil.Poem_Zeros(NotaUtil.LimpaNumero(Floattostrf(FNFe.Total.ICMSTot.vNF,ffFixed,18,2)),14);
+
+   //DESTAQUE ICMS PROPRIO E ST
+   wicms_p:='2';
+   wicms_s:='2';
+   if (NotaUtil.NaoEstaZerado(FNFe.Total.ICMSTot.vICMS)) then
+      wicms_p:='1';
+   if (NotaUtil.NaoEstaZerado(FNFe.Total.ICMSTot.vST)) then
+      wicms_s:='1';
+   wchave:=wchave+wicms_p+wicms_s;
+
+   //DIA DA EMISSAO
+   decodedate(FNFe.Ide.dEmi,wa,wm,wd);
+   wchave:=wchave+NotaUtil.Poem_Zeros(inttostr(wd),2);
+
+   //DIGITO VERIFICADOR
+   //GerarDigito_Contigencia(Digito,wchave);
+   //wchave:=wchave+inttostr(digito);
+
+   //RETORNA A CHAVE DE CONTINGENCIA
+   result:=wchave;
+end;
+
+class function NotaUtil.FormatarChaveContigencia(AValue: String): String;
+begin
+  AValue := NotaUtil.LimpaNumero(AValue);
+  Result := copy(AValue,1,4)  + ' ' + copy(AValue,5,4)  + ' ' +
+            copy(AValue,9,4)  + ' ' + copy(AValue,13,4) + ' ' +
+            copy(AValue,17,4) + ' ' + copy(AValue,21,4) + ' ' +
+            copy(AValue,25,4) + ' ' + copy(AValue,29,4) + ' ' +
+            copy(AValue,33,4) ;
 end;
 
 end.

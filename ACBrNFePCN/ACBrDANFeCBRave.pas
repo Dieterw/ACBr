@@ -52,7 +52,7 @@ uses Graphics, Forms, Windows, SysUtils, Classes,
      Controls, ExtCtrls, Mask, jpeg, MaskUtils,
      RpDefine, RpBase, RpSystem, RpBars, RpMemo,
      RpRenderText, RpRenderRTF, RpRenderHTML, RpRender, RpRenderPDF,
-     ACBrNFe, pcnConversao;
+     ACBrNFe, pcnConversao, pcnNFe;
 
 const aHeigthPadrao:Double=5.7;      
       FontNameUsed='Times New Roman';
@@ -126,7 +126,7 @@ procedure ImprimirDANFeRave(aACBrNFe:TACBrNFe;
                             aMargemInferior:double=8;
                             aMargemSuperior:double=8;
                             aMargemEsquerda:double=6;
-                            aMargemDireita:double=5.30);
+                            aMargemDireita:double=5.1);
 
 var DANFeRave:TDANFeRave;
 
@@ -150,7 +150,7 @@ procedure ImprimirDANFeRave(aACBrNFe:TACBrNFe;
                             aMargemInferior:double=8;
                             aMargemSuperior:double=8;
                             aMargemEsquerda:double=6;
-                            aMargemDireita:double=5.3);
+                            aMargemDireita:double=5.1);
 var DANFeRave:TDANFeRave;
     rvPDF:TRvRenderPDF;
     rvTXT:TRvRenderText;

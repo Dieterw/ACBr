@@ -721,96 +721,6 @@ end;
 
 procedure TdmACBrNFeRave.CustomParametrosCXNGetRow(
   Connection: TRvCustomConnection);
-   function GerarDigito_Contigencia(var Digito: integer; chave: string): boolean;
-   var
-     i, j: integer;
-   const
-     PESO = '43298765432987654329876543298765432';
-   begin
-     // Manual Integracao Contribuinte v2.02a - Página: 70 //
-     chave := NotaUtil.LimpaNumero(chave);
-     j := 0;
-     Digito := 0;
-     result := True;
-     try
-       for i := 1 to 35 do
-         j := j + StrToInt(copy(chave, i, 1)) * StrToInt(copy(PESO, i, 1));
-       Digito := 11 - (j mod 11);
-       if (j mod 11) < 2 then
-         Digito := 0;
-     except
-       result := False;
-     end;
-     if length(chave) <> 35 then
-       result := False;
-   end;
-   function Chave_Contingencia: string;
-   var
-      wchave: string;
-      i: integer;
-      wicms_s, wicms_p: string;
-      wd,wm,wa: word;
-      Digito: integer;
-   begin
-      //ajustado de acordo com nota tecnica 2009.003
-
-      //UF
-      if FNFe.Dest.EnderDest.UF='EX' then
-         wchave:='99' //exterior
-      else
-      begin
-         if FNFe.Ide.tpNF=tnSaida then
-            wchave:=copy(inttostr(FNFe.Dest.EnderDest.cMun),1,2) //saida
-         else
-            wchave:=copy(inttostr(FNFe.Emit.EnderEmit.cMun),1,2); //entrada
-      end;
-
-      //TIPO DE EMISSAO
-      if FNFe.Ide.tpEmis=teContingencia then
-         wchave:=wchave+'2'
-      else if FNFe.Ide.tpEmis=teFSDA then
-         wchave:=wchave+'5'
-      else
-         wchave:=wchave+'0'; //esta valor caracteriza ERRO, valor tem q ser  2 ou 5
-
-      //CNPJ OU CPF
-      if (FNFe.Dest.EnderDest.UF='EX') then
-         wchave:=wchave+NotaUtil.Poem_Zeros('0',14)
-      else
-         wchave:=wchave+NotaUtil.Poem_Zeros(FNFe.Dest.CNPJCPF,14);
-
-      //VALOR DA NF
-      wchave:=wchave+NotaUtil.Poem_Zeros(NotaUtil.LimpaNumero(Floattostrf(FNFe.Total.ICMSTot.vNF,ffFixed,18,2)),14);
-
-      //DESTAQUE ICMS PROPRIO E ST
-      wicms_p:='2';
-      wicms_s:='2';
-      if (NotaUtil.NaoEstaZerado(FNFe.Total.ICMSTot.vICMS)) then
-         wicms_p:='1';
-      if (NotaUtil.NaoEstaZerado(FNFe.Total.ICMSTot.vST)) then
-         wicms_s:='1';
-      wchave:=wchave+wicms_p+wicms_s;
-
-      //DIA DA EMISSAO
-      decodedate(FNFe.Ide.dEmi,wa,wm,wd);
-      wchave:=wchave+NotaUtil.Poem_Zeros(inttostr(wd),2);
-
-      //DIGITO VERIFICADOR
-      GerarDigito_Contigencia(Digito,wchave);
-      wchave:=wchave+inttostr(digito);
-
-      //RETORNA A CHAVE DE CONTINGENCIA
-      result:=wchave;
-   end;
-   function FormatarChave_Contigencia(AValue: String): String;
-   begin
-     AValue := NotaUtil.LimpaNumero(AValue);
-     Result := copy(AValue,1,4)  + ' ' + copy(AValue,5,4)  + ' ' +
-               copy(AValue,9,4)  + ' ' + copy(AValue,13,4) + ' ' +
-               copy(AValue,17,4) + ' ' + copy(AValue,21,4) + ' ' +
-               copy(AValue,25,4) + ' ' + copy(AValue,29,4) + ' ' +
-               copy(AValue,33,4) ;
-   end;
 var
   vStream: TMemoryStream;
   vChave_Contingencia: string;
@@ -867,14 +777,14 @@ begin
    end
    else
    begin
-      vChave_Contingencia:=Chave_Contingencia;
+      vChave_Contingencia:=NotaUtil.GerarChaveContingencia(FNFe);
       Connection.WriteStrData('', 'CHAVE DE ACESSO');
       Connection.WriteStrData('', vChave_Contingencia);
       if ((FNFe.Ide.tpEmis=teContingencia) or
           (FNFe.Ide.tpEmis=teFSDA)) then
       begin
          Connection.WriteStrData('', 'DADOS DA NF-E');
-         Connection.WriteStrData('', FormatarChave_Contigencia(vChave_Contingencia));
+         Connection.WriteStrData('', NotaUtil.FormatarChaveContigencia(vChave_Contingencia));
       end
       else if (FNFe.Ide.tpEmis=teDPEC) then
       begin
@@ -918,22 +828,12 @@ end;
 
 procedure TdmACBrNFeRave.CustomIdentificacaoCXNGetRow(
   Connection: TRvCustomConnection);
-   function FormatarChave_DANFE(AValue: String): String;
-   begin
-     AValue := NotaUtil.LimpaNumero(AValue);
-     Result := copy(AValue,1,4)  + ' ' + copy(AValue,5,4)  + ' ' +
-               copy(AValue,9,4)  + ' ' + copy(AValue,13,4) + ' ' +
-               copy(AValue,17,4) + ' ' + copy(AValue,21,4) + ' ' +
-               copy(AValue,25,4) + ' ' + copy(AValue,29,4) + ' ' +
-               copy(AValue,33,4) + ' ' + copy(AValue,37,4) + ' ' +
-               copy(AValue,41,4) ;
-   end;
 begin
   with FNFe.infNFe do
   begin
 //    Connection.WriteStrData('', IntToStr(Versao));
     Connection.WriteStrData('', NotaUtil.LimpaNumero(Id));
-    Connection.WriteStrData('', FormatarChave_DANFE(Id));
+    Connection.WriteStrData('', NotaUtil.FormatarChaveAcesso(Id));
   end;
 
   with FNFe.Ide do

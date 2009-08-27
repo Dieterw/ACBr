@@ -616,7 +616,7 @@ begin
 
      Ini.WriteString( 'Certificado','Caminho' ,edtCaminho.Text) ;
      {$IFDEF ACBrNFeOpenSSL}
-     GravaINICrypt(INI,'Certificado','Senha', ,edtSenha.Text, _C) ;
+     GravaINICrypt(INI,'Certificado','Senha', edtSenha.Text, _C) ;
      {$ENDIF}
 
      Ini.WriteInteger( 'Geral','DANFE'       ,rgTipoDanfe.ItemIndex) ;

@@ -1162,12 +1162,17 @@ begin
         FNotasFiscais.Items[j].NFe.procNFe.xMotivo  := AInfProt.Items[i].xMotivo;
         if FConfiguracoes.Geral.Salvar then
         begin
-           AProcNFe:=TProcNFe.Create;
-           AProcNFe.PathNFe:=FConfiguracoes.Geral.PathSalvar+'\'+FNFeRetorno.ProtNFe.Items[j].chNFe+'-nfe.xml';
-           AProcNFe.PathRetConsReciNFe:=FConfiguracoes.Geral.PathSalvar+'\'+FNFeRetorno.nRec+'-pro-rec.xml';
-           AProcNFe.GerarXML;
-           AProcNFe.Gerador.SalvarArquivo(FConfiguracoes.Geral.PathSalvar+'\'+FNFeRetorno.ProtNFe.Items[j].chNFe+'-nfe.xml');
-           AProcNFe.Free;
+           if FileExists(FConfiguracoes.Geral.PathSalvar+'\'+FNFeRetorno.ProtNFe.Items[j].chNFe+'-nfe.xml') and
+              FileExists(FConfiguracoes.Geral.PathSalvar+'\'+FNFeRetorno.nRec+'-pro-rec.xml') then
+            begin
+              AProcNFe:=TProcNFe.Create;
+              AProcNFe.PathNFe:=FConfiguracoes.Geral.PathSalvar+'\'+FNFeRetorno.ProtNFe.Items[j].chNFe+'-nfe.xml';
+              AProcNFe.PathRetConsReciNFe:=FConfiguracoes.Geral.PathSalvar+'\'+FNFeRetorno.nRec+'-pro-rec.xml';
+              AProcNFe.GerarXML;
+              if NotaUtil.NaoEstaVazio(AProcNFe.Gerador.ArquivoFormatoXML) then
+                 AProcNFe.Gerador.SalvarArquivo(FConfiguracoes.Geral.PathSalvar+'\'+FNFeRetorno.ProtNFe.Items[j].chNFe+'-nfe.xml');
+              AProcNFe.Free;
+            end;
         end;
         break;
       end;

@@ -83,9 +83,6 @@ TACBrECFSwedaCache = class(TObjectList)
 TACBrECFSwedaSTX = class( TACBrECFClass )
  private
     fsSEQ       : Byte ;
-    fsTarefa    : String ;
-    fsTipo      : Char ;
-    fsMensagem  : String ;
     fsVerProtocolo : String ;
     fsCache34   : TACBrECFSwedaCache ;
     fsRespostasComando : String ;
@@ -339,7 +336,7 @@ end ;
 
 
 Function TACBrECFSwedaSTX.EnviaComando_ECF( cmd : AnsiString ) : AnsiString ;
-Var ErroMsg  : String ;
+Var ErroMsg, Mensagem : String ;
     FalhasTX : Integer;
     ACK_ECF  : Byte ;
 begin
@@ -348,9 +345,9 @@ begin
    fpRespostaComando  := '' ;
    fsRespostasComando := '' ;
    fsFalhasRX         := 0 ;
-   fsTarefa           := '' ;
-   fsTipo             := #0 ;
-   fsMensagem         := '' ;
+
+   if (LeftStr(cmd,2) <> '34') then
+      fsCache34.Clear ;         // Limpa o Cache do 34
 
    { Codificando CMD de acordo com o protocolo da SwedaSTX }
    cmd := PreparaCmd( cmd ) ;
@@ -370,7 +367,7 @@ begin
       try
          { espera ACK chegar na Porta por 7s }
          try
-            ACK_ECF := fpDevice.Serial.RecvByte( 7000 ) ;
+            ACK_ECF := fpDevice.Serial.RecvByte( TimeOut * 1000 ) ;
          except
          end ;
 
@@ -415,21 +412,21 @@ begin
      Resposta fica gravada na váriavel "fpRespostaComando" }
    LeResposta ;
 
+   { Captura informações do Ultimo Bloco Enviado }
+   Mensagem := copy(fpRespostaComando,6,4) ;
+
    fpRespostaComando := fsRespostasComando ;   // Respostas Acumuladas
-   
+
    { Limpando de "fpRespostaComando" os Status não solicitados }
    fpRespostaComando := AjustaRetorno( fpRespostaComando  );
 
-   if (fsTarefa <> '34') then
-      fsCache34.Clear ;         // Limpa o Cache do 34
-
-   ErroMsg := DescreveErro( StrToIntDef(fsMensagem,-1) ) ;
+   ErroMsg := DescreveErro( StrToIntDef(Mensagem,-1) ) ;
 
    if ErroMsg <> '' then
     begin
       ErroMsg := 'Erro retornado pela Impressora: '+ModeloStr+
                  sLineBreak+sLineBreak+
-                 'Erro ('+fsMensagem+') '+ErroMsg ;
+                 'Erro ('+Mensagem+') '+ErroMsg ;
       raise EACBrECFSemResposta.create(ErroMsg) ;
     end
    else
@@ -488,8 +485,10 @@ begin
     043 : Result := 'Valor do estorno excede a soma dos pagamentos registrados no meio indicado' ;
     044 : Result := 'Valor efetivado é insuficiente para o pagamento!' ;
     050 : Result := 'Campo de Descrição não informado' ;
+    058 : Result := 'Comando ou operação inválida!' ;
+    060 : Result := 'É necessária a emissão do documento de Redução Z!' ;
 
-// TODO: completar DEscrição dos Erros
+  // TODO: completar DEscrição dos Erros
 
     124 : Result := 'Tampa Aberta' ;
     125 : Result := 'Sem Papel' ;
@@ -509,8 +508,9 @@ function TACBrECFSwedaSTX.VerificaFimLeitura(var Retorno: AnsiString;
    var TempoLimite: TDateTime) : Boolean ;
 Var
   LenRet, PosETX, PosSTX : Integer ;
-  Bloco : AnsiString ;
+  Bloco, Tarefa : AnsiString ;
   Sequencia, ACK_PC : Byte ;
+  Tipo : Char ;
 begin
   LenRet := Length(Retorno) ;
   Result := False ;
@@ -532,44 +532,67 @@ begin
      exit ;
 
   { Ok, temos um bloco completo... Vamos trata-lo}
-  Bloco := copy(Retorno, 1, PosETX+1) ;
+  Bloco     := copy(Retorno, 1, PosETX+1) ;
+  Result    := True ;
+  Sequencia := Ord( Bloco[2] ) ;
+  Tarefa    := copy(Bloco,3,2) ;
+  Tipo      := Bloco[5] ;
 
-  Sequencia  := Ord( Bloco[2] ) ;
-  fsTarefa   := copy(Bloco,3,2) ;
-  fsTipo     := Bloco[5] ;
-  fsMensagem := copy(Bloco,6,4) ;
+  GravaLog( 'SwedaSTX VerificaFimLeitura: Verificando Bloco: '+Bloco) ;
 
-  if fsTipo = '!' then  // Bloco de Satus não solicitado, Descartando
-     Retorno := '' 
+  if Tipo = '!' then  // Bloco de Satus não solicitado, Descartando
+   begin
+     GravaLog( 'SwedaSTX VerificaFimLeitura: Bloco (!) Descartado: '+Bloco) ;
+     Result := False ;
+   end
   else
    begin
      { Verificando a Sequencia }
      if Sequencia <> fsSEQ then
-        raise Exception.Create('Sequencia de Resposta diferente da enviada') ;
+     begin
+        Result := False ;  // Ignore o Bloco, pois não é a resposta do CMD solicitado
+        GravaLog( 'Sequencia de Resposta ('+IntToStr(Sequencia)+')'+
+                  'diferente da enviada ('+IntToStr(fsSEQ)+')' ) ;
+     end ;
 
      { Verificando o CheckSum }
      ACK_PC := ACK ;
 
-     if CalcCheckSum(LeftStr(Bloco,Length(Bloco)-1)) <> RightStr(Bloco,1) then
+     if Result and
+       ( CalcCheckSum(LeftStr(Bloco,Length(Bloco)-1)) <> RightStr(Bloco,1) ) then
      begin
        ACK_PC := NACK ;  // Erro no CheckSum, retornar NACK
        if fsFalhasRX > CFALHAS then
           raise Exception( 'Erro no digito Verificador da Resposta.'+sLineBreak+
                            'Falha: '+IntToStr(fsFalhasRX) ) ;
        Inc( fsFalhasRX ) ;  // Incrementa numero de Falhas
-       Retorno := '' ;      // Descarta o Bloco
+       Result := False ;
      end ;
 
      ChangeHandShake(False);            { Desliga o DTR ou RTS para enviar }
      fpDevice.Serial.SendByte(ACK_PC);
 
-     fsRespostasComando := fsRespostasComando + Retorno ;  // Salva este Bloco
+     if Result then
+        fsRespostasComando := fsRespostasComando + Retorno ;  // Salva este Bloco
 
-     if (ACK_PC = ACK) and ( not (fsTipo in ['+','-'])) then   // Não é o Ultimo Bloco ?
-        Retorno := '' ;             // Zera para Ler proximo Bloco
+     if (ACK_PC = ACK) then           // ACK OK ?
+     begin
+        if Tipo = '-' then            // Erro ocorrido,
+           AguardaImpressao := False  //   portanto, Desliga AguardaImpressao (caso estivesse ligado)
+        else if Tipo <> '+' then      // Tipo não é '-' nem '+', portanto não é o Ultimo Bloco
+           Result := False ;          //   portanto Zera para Ler proximo Bloco
+     end ;
+
+     GravaLog( 'SwedaSTX VerificaFimLeitura: Seq:'+IntToStr(Sequencia)+' Tarefa:'+
+               Tarefa+' Tipo: '+Tipo+' ACK:'+IntToStr(ACK_PC)+' Result: '+IfThen(Result,'True','False') ) ;
    end ;
 
-  Result := (Retorno <> '')
+  if not Result then
+  begin
+     GravaLog('Retorno Antes do ajuste: '+Retorno);
+     Retorno := copy(Retorno, PosETX+2, Length(Retorno) ) ;
+     GravaLog('Retorno APOS o ajuste: '+Retorno);
+  end ;
 end;
 
 function TACBrECFSwedaSTX.VerificaFimImpressao(var TempoLimite: TDateTime): Boolean;
@@ -584,7 +607,7 @@ begin
     comando '34' diretamente para a Serial, e aguarda por 5 segundos a resposta...
     Se a SwedaSTX conseguir responder, significa que a Impressão Terminou }
   Result := false ;
-  
+
   if not EmLinha() then
    begin
      Sleep(100) ;
@@ -596,33 +619,43 @@ begin
      Cmd    := PreparaCmd( '34' ) ;           // Pede Status //
 
      try
-        GravaLog('SwedaSTX VerificaFimImpressao: Pedindo o Status') ;
+        GravaLog('SwedaSTX VerificaFimImpressao: Pedindo o Status. Seq:'+IntToStr(fsSEQ)) ;
 
         fpDevice.Serial.Purge ;          // Limpa buffer de Entrada e Saida //
         ChangeHandShake(False);          // DesLiga o DTR para enviar //
         fpDevice.EnviaString( Cmd );     // Envia comando //
 
         ChangeHandShake(True);           // Liga o DTR para receber //
-        wACK := fpDevice.Serial.RecvByte( 2000 ) ; // espera ACK chegar na Porta por 2s //
+        wACK := fpDevice.Serial.RecvByte( TimeOut * 1000 ) ; // espera ACK chegar na Porta  //
 
         if wACK = 6 then   // ECF Respondeu corretamente, portanto está trabalhando //
         begin
-           GravaLog('SwedaSTX VerificaFimImpressao: ACK = 6, OK... Aguardando ETX') ;
+           GravaLog('SwedaSTX VerificaFimImpressao: ACK = 6, OK... Aguardando Bloco') ;
 
-           // Aguarda por ETX  até 5 seg //
+           // Aguarda por Bloco até 2 seg //
            I := 0 ;
-           repeat
+           while (I < 20) and (not Result) do
+           begin
               TempoLimite := IncSecond(now, TimeOut);
-              Ret := fpDevice.Serial.RecvPacket(100) ;
+              try
+                 Ret := fpDevice.Serial.RecvPacket(100) ;
+              except
+              end ;
 
               RetCmd := RetCmd + Ret ;
               Inc( I ) ;
-           until (I > 50) or ( VerificaFimLeitura( RetCmd, TempoLimite) )  ;
 
-           Result := VerificaFimLeitura( RetCmd, TempoLimite) and
-                     (copy(RetCmd,11,1) = 'A') ;
+              GravaLog('SwedaSTX VerificaFimImpressao: I: '+IntToStr(I)+' Bloco Lido: '+RetCmd ) ;
+              Result :=  VerificaFimLeitura( RetCmd, TempoLimite)   ;
+           end ;
+
+           Result := Result and (pos(copy(RetCmd,11,1), 'ACDGI') > 0) ;
         end ;
      except
+       On E : Exception  do
+       begin
+         GravaLog('SwedaSTX VerificaFimImpressao: Exception:'+E.Message ) ;
+       end ;
      end ;
    end ;
 end;
@@ -698,19 +731,28 @@ function TACBrECFSwedaSTX.DescompactaRetorno( const Dados : AnsiString ) : AnsiS
 Var P      : Integer ;
     AChar  : Char ;
     NTimes : Byte ;
+    LenDados : Integer ;
 begin
-   Result := Dados ;
+   Result   := Dados ;
+   LenDados := Length( Dados ) ;
 
    P := pos(ESC, Result) ;
-   while P > 0 do
+   while (P > 0) and (P < LenDados) do
    begin
-      AChar  := copy( Result, P-1, 1)[1] ;
-      NTimes := ord( copy( Result, P+1, 1)[1] ) - 31 ;
+      AChar  := Result[P-1] ;
 
-      Result := StuffString(Result, P, 2, StringOfChar(AChar,NTimes) ) ;
+      if AChar = ETX then  // Não usa caso ESC esteja no CHK
+         Result := StuffString(Result, P, 1, '[ESC]' )   // Troca por String para não atrapalhar
+      else
+       begin
+         NTimes := ord( copy( Result, P+1, 1)[1] ) - 31 ;
+         Result := StuffString(Result, P, 2, StringOfChar(AChar,NTimes) ) ;
+       end ;
 
       P := pos( ESC, Result) ;
    end ;
+
+   Result := StringReplace(Result,'[ESC]',ESC,[rfReplaceAll]) ; // Volta ESC em CHK
 end ;
 
 
@@ -793,7 +835,7 @@ end;
 function TACBrECFSwedaSTX.GetEstado: TACBrECFEstado;
 Var RetCmd : AnsiString ;
     Estado, Docto : Char ;
-    Sinalizadores, BinStr, FaseEmissao : String ;
+    Sinalizadores : String ;
 begin
   Result := fpEstado ;  // Suprimir Warning
   try
@@ -817,20 +859,17 @@ begin
           case Docto of
              'A' :
                begin
-                 if TestBit( Ord(Sinalizadores[1]), 1 ) then
-                    fpEstado := estRequerX
-                 else
+//               if TestBit( Ord(Sinalizadores[1]), 1 ) then
+//                  fpEstado := estRequerX
+//               else
                    fpEstado := estLivre ;
                end ;
              
              'C' :
                begin
-                 BinStr      := IntToBin( Ord(Sinalizadores[2]), 8 ) ;
-                 FaseEmissao := copy(BinStr,4,3) ;
-
-                 if FaseEmissao = '010' then
+                 if TestBit( Ord(Sinalizadores[2]), 5 )  then
                    fpEstado := estPagamento
-                 else if FaseEmissao = '001' then
+                 else if TestBit( Ord(Sinalizadores[2]), 4 )  then
                    fpEstado := estVenda ;
                end ;
 
@@ -902,6 +941,7 @@ begin
      Cmd := Cmd + '|' + FormatDateTime('dd"/"mm"/"yyyy',DataHora) +
                   '|' + FormatDateTime('hh":"nn":"ss',DataHora) ;
 
+  AguardaImpressao := True ;
   EnviaComando( Cmd ) ;
 end;
 
@@ -917,78 +957,35 @@ end;
 
 
 procedure TACBrECFSwedaSTX.AbreCupom  ;
-Var StrConsumidor : String ;
 begin
-  StrConsumidor := '' ;
   if Trim(Consumidor.Documento) <> '' then    { Tem Docto ? }
   begin
-     StrConsumidor := padL(Consumidor.Documento ,29) ;
-
-        if Trim(Consumidor.Nome) <> '' then      { Tem Nome ? }
-        begin
-           StrConsumidor := StrConsumidor + padL(Consumidor.Nome ,30) ;
-
-           if Trim(Consumidor.Endereco) <> '' then  { Tem endereço ? }
-              StrConsumidor := StrConsumidor + padL(Consumidor.Endereco ,80) ;
-        end ;
+     EnviaComando('12|'+Trim(LeftStr(Consumidor.Documento ,20))+'|'+
+                        Trim(LeftStr(Consumidor.Nome      ,30))+'|'+
+                        Trim(LeftStr(Consumidor.Endereco  ,79))+'|0') ;
+     Consumidor.Enviado := True ;
   end ;
-
 
   fpUltimaMsgPoucoPapel := 0 ;  { Zera tempo pra msg de pouco papel }
   AguardaImpressao := True ;
-  EnviaComando( #00 + StrConsumidor, 10) ;
-
-  Consumidor.Enviado := ( StrConsumidor <> '' ) ;
+  EnviaComando( '01' ) ;
 end;
 
 procedure TACBrECFSwedaSTX.CancelaCupom;
- Var RetCmd : AnsiString ;
-     B      : Byte ;
-     TemRel : Boolean ;
 begin
-  RetCmd := EnviaComando( #35+#17 ) ;
-  try B := ord( RetCmd[1] ) except B := 0 end ;
+  // TODO: Procurar por CCDs em aberto e Estorna-los
 
-  if not TestBit(B, 5) then         { Não Permite cancelar cupom fiscal ?? }
-  begin
-        { Vamos verificar se o último documento é Vinculado (CDC) }
-        try
-           RetCmd := EnviaComando( #35+#65 ) ;
-           B := ord( RetCmd[1] )
-        except
-           B := 0
-        end ;
+  EnviaComando('08') ;
 
-        if TestBit(B, 6) then             // Pode cancelar CDC ?
-        begin
-           try
-              AguardaImpressao := True ;
-              EnviaComando( #102 , 5) ;   // Cancelando o CDC
-           except
-           end ;
-        end ;
-  end ;
-
-  AguardaImpressao := True ;
-  EnviaComando( #14 , 15) ;
-
-  if fpMFD then
-     TemRel := (Estado = estRelatorio)  // MFD sinaliza estado Relatorio //
-  else
-     TemRel := True ;                   // Nao MFD não há flag para sinalizar Relatorio Aberto
-
-  if TemRel then
-  begin
-     try
-       FechaRelatorio ;   { Fecha relatorio se ficou algum aberto (só por garantia)}
-     except   // Exceçao silenciosa, pois a Impressora pode nao estar em Estado
-     end ;    // de Relatorio.
-  end ;
+  try
+    FechaRelatorio ;   { Fecha relatorio se ficou algum aberto (só por garantia)}
+  except   // Exceçao silenciosa, pois a Impressora pode nao estar em Estado
+  end ;    // de Relatorio.
 end;
 
 procedure TACBrECFSwedaSTX.CancelaItemVendido(NumItem: Integer);
 begin
-  EnviaComando( #31 + IntToStrZero(NumItem ,4) ) ;
+  EnviaComando( '05|' + IntToStr(NumItem) ) ;
 end;
 
 procedure TACBrECFSwedaSTX.EfetuaPagamento(CodFormaPagto: String;
@@ -2018,6 +2015,12 @@ begin
 end;
 
 end.
+
+
+
+
+
+
 
   Buffer := Retorno ;
   while (Buffer <> '') do

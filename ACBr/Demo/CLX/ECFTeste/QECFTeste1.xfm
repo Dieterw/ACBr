@@ -23,7 +23,7 @@ object Form1: TForm1
   PixelsPerInch = 96
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 368
+    Top = 366
     Width = 500
     Height = 19
     Panels = <
@@ -37,7 +37,7 @@ object Form1: TForm1
     Left = 0
     Top = 0
     Width = 500
-    Height = 328
+    Height = 326
     ActivePage = TabSheet4
     Align = alClient
     TabOrder = 1
@@ -77,7 +77,7 @@ object Form1: TForm1
       object Label5: TLabel
         Left = 323
         Top = 5
-        Width = 47
+        Width = 48
         Height = 15
         Caption = 'TimeOut'
       end
@@ -365,7 +365,7 @@ object Form1: TForm1
         Left = 0
         Top = 71
         Width = 492
-        Height = 227
+        Height = 225
         Align = alClient
         Font.CharSet = fcsLatin1
         Font.Color = clBlack
@@ -417,7 +417,7 @@ object Form1: TForm1
         Left = 0
         Top = 41
         Width = 492
-        Height = 257
+        Height = 255
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
@@ -425,7 +425,7 @@ object Form1: TForm1
           Left = 0
           Top = 0
           Width = 492
-          Height = 257
+          Height = 255
           Align = alClient
           Font.CharSet = fcsLatin1
           Font.Color = clBlack
@@ -444,7 +444,7 @@ object Form1: TForm1
           Left = 0
           Top = 0
           Width = 492
-          Height = 257
+          Height = 255
           Align = alClient
           TabOrder = 1
         end
@@ -495,7 +495,7 @@ object Form1: TForm1
         Left = 0
         Top = 55
         Width = 492
-        Height = 243
+        Height = 241
         ActivePage = tsSWH
         Align = alClient
         TabOrder = 1
@@ -687,7 +687,7 @@ object Form1: TForm1
           Caption = 'ACBrRFD.INI'
           object Panel4: TPanel
             Left = 0
-            Top = 179
+            Top = 177
             Width = 484
             Height = 34
             Align = alBottom
@@ -716,7 +716,7 @@ object Form1: TForm1
             Left = 0
             Top = 0
             Width = 484
-            Height = 179
+            Height = 177
             Align = alClient
             Font.CharSet = fcsLatin1
             Font.Color = clBlack
@@ -793,7 +793,7 @@ object Form1: TForm1
   end
   object pBotoes: TPanel
     Left = 0
-    Top = 328
+    Top = 326
     Width = 500
     Height = 40
     Cursor = crHelp

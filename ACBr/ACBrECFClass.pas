@@ -1343,7 +1343,7 @@ Var Fim : Boolean ;
     TempoInicio, TempoLimite : TDateTime ;
     TempoRestante, LenResp : Integer ;
     Texto : AnsiString ;
-    ProcessaFormMsg : Boolean ;
+    ProcessaFormMsg, FimLeitura : Boolean ;
 begin
   try
      fpRespostaComando := '' ;
@@ -1356,6 +1356,7 @@ begin
      TempoLimite := IncSecond( now, TimeOut) ;
      TempoInicio := IncSecond( now, TempoInicioMsg) ;
      Fim := True ;
+     FimLeitura := False ;
 
      { - Le até atingir a condiçao descrita na funçao VerificaFimLeitura que
          é particular de cada Classe Filha (override)
@@ -1409,15 +1410,15 @@ begin
         end ;
 
         Fim := True ;
-        if not VerificaFimLeitura(fpRespostaComando, TempoLimite) then
+        if not FimLeitura then
          begin
-           Fim := False ;
+           Fim  := False ;
            try
               fpRespostaComando := fpRespostaComando + { Le conteudo da porta }
                                    fpDevice.Serial.RecvPacket(100) ;
 
               LenResp := Length( fpRespostaComando ) ;
-              if LenResp > fsBytesRec then
+              if LenResp <> fsBytesRec then
               begin
                  // ECF está respondendo, portanto está trabalhando //
                  TempoLimite := IncSecond(now, TimeOut);
@@ -1426,6 +1427,8 @@ begin
            except
               sleep(10) ;
            end ;
+
+           FimLeitura := VerificaFimLeitura(fpRespostaComando, TempoLimite) ;
          end
         else
            if AguardaImpressao then

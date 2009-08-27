@@ -89,9 +89,10 @@ begin
         SetFont(FontNameUsed,8);
         Bold:=True;
         GotoXY(0,PosY+GetFontHeigh);
-        PrintCenter('Recebemos de '+Emit.XNome+' os produtos constantes da Nota Fiscal indicada ao lado',PosX+(aWidthOutros/2));
         NewLine;
-        PrintCenter('Emissão: '+NotaUtil.FormatDate(DateToStr(Ide.DEmi))+'  Destinatário/Remetente: '+Dest.XNome+'  Valor Total: '+NotaUtil.FormatFloat(Total.ICMSTot.VNF),PosX+(aWidthOutros/2));
+        PrintCenter('Recebemos de '+Emit.XNome+' os produtos constantes da Nota Fiscal indicada ao lado',PosX+(aWidthOutros/2));
+        //NewLine;
+        //PrintCenter('Emissão: '+NotaUtil.FormatDate(DateToStr(Ide.DEmi))+'  Destinatário/Remetente: '+Dest.XNome+'  Valor Total: '+NotaUtil.FormatFloat(Total.ICMSTot.VNF),PosX+(aWidthOutros/2));
 
         GotoXY(0,PosY+GetFontHeigh);
         NewLine;
@@ -166,7 +167,7 @@ end;
 function ImprimirEmitente(PosX,PosY:Double):Double;
 var aHeigthLogo, aWidthLogo, aWidth,CenterX:Double;
     stLogo:TMemoryStream;
-    vEnd:String;
+    vEnd,vTemp:String;
 begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
@@ -204,9 +205,16 @@ begin
             vEnd:=vEnd+' '+Nro;
          if Trim(XCpl)>'' then
             vEnd:=vEnd+', '+XCpl;
+         if length(vEnd)>38 then
+         begin
+            vtemp:=copy(vEnd,39,length(vEnd)-38)+' - ';
+            vEnd:=copy(vEnd,1,38);
+         end
+         else
+            vTemp:='';
          PrintCenter(vEnd,CenterX);
          NewLine;
-         vEnd:=XBairro+' - '+NotaUtil.FormatarCEP(NotaUtil.Poem_Zeros(CEP,8));
+         vEnd:=vTemp+XBairro+' - '+NotaUtil.FormatarCEP(NotaUtil.Poem_Zeros(CEP,8));
          PrintCenter(vEnd,CenterX);
          NewLine;
          vEnd:=XMun+' - '+UF;

@@ -62,7 +62,7 @@ uses Forms, SysUtils, Classes,
 type
   TACBrNFeDANFERave = class( TACBrNFeDANFEClass )
    private
-    dmDanfe : TdmACBrNFeRave;
+    FdmDanfe : TdmACBrNFeRave;
     FRaveFile: String;
     procedure ExecutaReport;
    public
@@ -72,6 +72,7 @@ type
     procedure ImprimirDANFEPDF(NFE : TNFe = nil); override ;
   published
     property RavFile : String read FRaveFile write FRaveFile ;
+    property dmDanfe : TdmACBrNFeRave read FdmDanfe;
   end;
 
 implementation
@@ -81,7 +82,7 @@ uses ACBrNFe, ACBrNFeUtil, ACBrUtil, StrUtils, Dialogs;
 constructor TACBrNFeDANFERave.Create(AOwner: TComponent);
 begin
   inherited create( AOwner );
-  dmDanfe := TdmACBrNFeRave.Create(Self);
+  FdmDanfe := TdmACBrNFeRave.Create(Self);
   FRaveFile := '' ;
 end;
 

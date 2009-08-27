@@ -117,7 +117,21 @@ var
  NomeArq : String;
 begin
     try
-      LogoMarcaEmpresa.LoadFromFile(Logo);
+      if NotaUtil.NaoEstaVazio(Logo) then
+       begin
+         LogoMarcaEmpresa:=TJPEGImage.Create;
+         LogoMarcaEmpresa.LoadFromFile(Logo);
+       end;
+
+      NomeArq := TACBrNFe(ACBrNFe).NotasFiscais.Items[0].NFe.infNFe.ID;
+      if length(NomeArq)>44 then
+         NomeArq := copy(NomeArq,(length(NomeArq)-44)+1,44);
+      if NotaUtil.EstaVazio(FPathArquivos) then
+         NomeArq := PathWithDelim(TACBrNFe(ACBrNFe).Configuracoes.Geral.PathSalvar)+NomeArq
+      else
+         NomeArq := PathWithDelim(FPathArquivos)+NomeArq;
+      NomeArq := NomeArq+'.pdf';
+
       ImprimirDANFeRave(TACBrNFe(ACBrNFe),
                        Site,
                        Email,

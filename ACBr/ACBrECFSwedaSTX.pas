@@ -72,7 +72,7 @@ TACBrECFSwedaCache = class(TObjectList)
     function GetObject (Index: Integer): TACBrECFSwedaInfo34;
     procedure Insert (Index: Integer; Obj: TACBrECFSwedaInfo34);
   public
-    function AchaSecao( Secao : String ) : Integer ; 
+    function AchaSecao( Secao : String ) : Integer ;
     function Add (Obj: TACBrECFSwedaInfo34): Integer;
     property Objects [Index: Integer]: TACBrECFSwedaInfo34
       read GetObject write SetObject; default;
@@ -84,16 +84,19 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
  private
     fsSEQ       : Byte ;
     fsTarefa    : String ;
-    fsTipo      : String ;
+    fsTipo      : Char ;
     fsMensagem  : String ;
     fsVerProtocolo : String ;
-    fsArredonda : Char ;
     fsCache34   : TACBrECFSwedaCache ;
+    fsRespostasComando : String ;
+    fsFalhasRX : Byte ;
 
     Function PreparaCmd( cmd : AnsiString ) : AnsiString ;
     function CalcCheckSum(cmd: AnsiString): AnsiChar;
     procedure ChangeHandShake(Value: Boolean);
     function DescompactaRetorno(const Dados: AnsiString): AnsiString;
+    function DescreveErro(Erro: Integer): String;
+    function AjustaRetorno(Retorno: AnsiString): AnsiString;
  protected
     function GetDataHora: TDateTime; override ;
     function GetNumCupom: String; override ;
@@ -281,9 +284,10 @@ begin
   { Variaveis internas dessa classe }
   fsVerProtocolo := '' ;
   fsCache34   := TACBrECFSwedaCache.create( True );
-  fsArredonda := ' ';
   fsSEQ       := 42 ;
-
+  fsRespostasComando := '' ;
+  fsFalhasRX         := 0 ;
+  
   fpModeloStr := 'SwedaSTX' ;
   fpRFDID     := 'SW' ;
 end;
@@ -307,8 +311,9 @@ begin
   fsVerProtocolo := '' ;
   fpMFD       := True ;
   fpTermica   := True ;
-  fsArredonda := ' ';
   fsCache34.Clear ;
+  fsRespostasComando := '' ;
+  fsFalhasRX         := 0 ;
 
   try
      { Testando a comunicaçao com a porta }
@@ -334,16 +339,18 @@ end ;
 
 
 Function TACBrECFSwedaSTX.EnviaComando_ECF( cmd : AnsiString ) : AnsiString ;
-Var ErroMsg : String ;
-    Erro, FalhasRX, FalhasTX, P : Integer;
-    ACK_ECF, ACK_PC : Byte ;
+Var ErroMsg  : String ;
+    FalhasTX : Integer;
+    ACK_ECF  : Byte ;
 begin
-   Result            := '' ;
-   fpComandoEnviado  := '' ;
-   fpRespostaComando := '' ;
-   fsTarefa          := '' ;
-   fsTipo            := '' ;
-   fsMensagem        := ''  ;
+   Result             := '' ;
+   fpComandoEnviado   := '' ;
+   fpRespostaComando  := '' ;
+   fsRespostasComando := '' ;
+   fsFalhasRX         := 0 ;
+   fsTarefa           := '' ;
+   fsTipo             := #0 ;
+   fsMensagem         := '' ;
 
    { Codificando CMD de acordo com o protocolo da SwedaSTX }
    cmd := PreparaCmd( cmd ) ;
@@ -401,148 +408,233 @@ begin
 
    fpComandoEnviado := cmd ;
 
-   ACK_PC   := 0 ;
-   FalhasRX := 0 ;
-     
-   while (ACK_PC <> ACK) and (FalhasRX < CFALHAS) do
-   begin
-      ChangeHandShake(True);     { Liga o DTR ou RTS para ler a Resposta }
+   ChangeHandShake(True);     { Liga o DTR ou RTS para ler a Resposta }
 
-      { Chama Rotina da Classe mãe TACBrClass para ler Resposta. Se houver
-        falha na leitura LeResposta dispara Exceçao.
-        Resposta fica gravada na váriavel "fpRespostaComando" }
-      LeResposta ;
+   { Chama Rotina da Classe mãe TACBrClass para ler Resposta. Se houver
+     falha na leitura LeResposta dispara Exceçao.
+     Resposta fica gravada na váriavel "fpRespostaComando" }
+   LeResposta ;
 
-      ACK_PC := ACK ;  // retornar ACK, OK
-      { Verificando o CheckSum }
-      if CalcCheckSum(LeftStr(fpRespostaComando,Length(fpRespostaComando)-1)) <>
-         RightStr(fpRespostaComando,1) then
-         ACK_PC := NACK   // Erro no CheckSum, retornar NACK
-      else
-         if Ord( fpRespostaComando[2] ) <> fsSEQ then
-            raise Exception.Create('Sequencia de Resposta diferente da enviada') ;
-
-      ChangeHandShake(False);            { Desliga o DTR ou RTS para enviar }
-      fpDevice.Serial.SendByte(ACK_PC);
-      Inc( FalhasRX ) ;
-   end ;
-
-   if ACK_PC <> ACK then
-      raise Exception( 'Erro no digito Verificador da Resposta.'+sLineBreak+
-                       'Falha: '+IntToStr(FalhasRX) ) ;
-
-   { Limpando o Retorno. Exemplo:  STX + SEQ + [Dados] + ETX + CHK }
-   P := pos(ETX,fpRespostaComando) ;
-   Result := copy(fpRespostaComando, 1, P) ;
-
-   fsTarefa   := copy(fpRespostaComando,3,2) ;
-   fsTipo     := copy(fpRespostaComando,5,1) ;
-   fsMensagem := copy(fpRespostaComando,6,4) ;
-
-   Erro := StrToIntDef(fsMensagem,-1) ;
+   fpRespostaComando := fsRespostasComando ;   // Respostas Acumuladas
+   
+   { Limpando de "fpRespostaComando" os Status não solicitados }
+   fpRespostaComando := AjustaRetorno( fpRespostaComando  );
 
    if (fsTarefa <> '34') then
-      fsCache34.Clear
-   else
-      if (fsTipo <> '-') then  // Não é Erro
-         Erro := 0 ;
+      fsCache34.Clear ;         // Limpa o Cache do 34
 
-   case Erro of
-       -1 : ErroMsg := 'Erro na Interpretação da Resposta do ECF' ;
-      000 : ErroMsg := '' ;
-      002 : ErroMsg := 'Documento já Cancelado' ;
-      003 : ErroMsg := 'Documento já foi Totalmente Pago' ;
-      004 : ErroMsg := 'Documento ainda não foi Totalmente Pago' ;
-      005 : ErroMsg := 'Documento já foi Totalizado' ;
-      006 : ErroMsg := 'Item Inválido' ;
-      007 : ErroMsg := 'Item Cancelado' ;
-      023 : ErroMsg := 'Erro na Sintaxe do Comando Enviado' ;
-      124 : ErroMsg := 'Tampa Aberta' ;
-      125 : ErroMsg := 'Sem Papel' ;
-      126 : ErroMsg := 'Avançando Papel' ;
-      127 : ErroMsg := 'Substituir Bobina' ;
-      24,38,39,45..47,65,66,69..73,75..79,81..86,88..91,97,100..102,106,118,119,
-      129,137,138,145..147,150,152..155,158,173..183,185,186,188..191,199,210,
-      219,221,225,230,235..237,241,242,244..248
-          : ErroMsg := 'Chamar Assistência Técnica' ;
-   else
-      ErroMsg := 'Erro ('+IntToStr(Erro)+') consulte o manual' ;
-   end ;
+   ErroMsg := DescreveErro( StrToIntDef(fsMensagem,-1) ) ;
 
    if ErroMsg <> '' then
     begin
-      ErroMsg := 'Erro retornado pela Impressora: '+ModeloStr+sLineBreak+
-                 sLineBreak+ErroMsg ;
+      ErroMsg := 'Erro retornado pela Impressora: '+ModeloStr+
+                 sLineBreak+sLineBreak+
+                 'Erro ('+fsMensagem+') '+ErroMsg ;
       raise EACBrECFSemResposta.create(ErroMsg) ;
     end
    else
       Sleep( IntervaloAposComando ) ;  { Pequena pausa entre comandos }
 
    { Descompactando Strings dentro do Retorno }
-   Result := DescompactaRetorno( Result ) ;
+   Result := DescompactaRetorno( fpRespostaComando ) ;
 end;
 
-function TACBrECFSwedaSTX.DescompactaRetorno( const Dados : AnsiString ) : AnsiString ;
-Var P      : Integer ;
-    AChar  : Char ;
-    NTimes : Byte ;
+function TACBrECFSwedaSTX.DescreveErro( Erro : Integer ) : String ;
 begin
-   Result := Dados ;
+  Result := '' ;
 
-   P := pos(ESC, Result) ;
-   while P > 0 do
-   begin
-      AChar  := copy( Result, P-1, 1)[1] ;
-      NTimes := ord( copy( Result, P+1, 1)[1] ) - 31 ;
+  case Erro of
+     -1 : Result := 'Erro na Interpretação da Resposta do ECF' ;
+      0 : Result := '' ;
 
-      Result := StuffString(Result, P, 2, StringOfChar(AChar,NTimes) ) ;
+    002 : Result := 'Documento já Cancelado' ;
+    003 : Result := 'Documento já foi Totalmente Pago' ;
+    004 : Result := 'Documento ainda não foi Totalmente Pago' ;
+    005 : Result := 'Documento já foi Totalizado' ;
+    006 : Result := 'Item Inválido' ;
+    007 : Result := 'Item Cancelado' ;
+    008 : Result := 'Total apurado igual a Zero' ;
+    009 : Result := 'Acréscimo já aplicado sobre este Item' ;
+    010 : Result := 'Não há Acréscimo sobre este Item' ;
+    011 : Result := 'Desconto já aplicado sobre este Item' ;
+    012 : Result := 'Não há Desconto sobre este Item' ;
+    013 : Result := 'Valor de Desconto superior ao Total do Item' ;
+    014 : Result := 'Acréscimo já aplicado em Subtotal' ;
+    015 : Result := 'Não há Acréscimo aplicado no Subtotal' ;
+    016 : Result := 'Desconto já aplicado em Subtotal' ;
+    017 : Result := 'Não há Desconto aplicado no Subtotal' ;
+    018 : Result := 'Valor de Desconto superior ao Total do Documento' ;
+    019 : Result := 'Meio de Pagamento não programado' ;
+    020 : Result := 'Atingido Limite de Itens por Cupom' ;
+    021 : Result := 'Alíquota de Imposto não programada' ;
+    022 : Result := 'Alteração de Estilo de Fonte não permitida nesse comando' ;
+    023 : Result := 'Erro na Sintaxe do Comando Enviado' ;
+    025 : Result := 'Informado Valor Nulo' ;
+    027 : Result := 'Data com formato inválido' ;
+    028 : Result := 'Hora com formato inválido' ;
+    029 : Result := 'Comando não reconhecido' ;
+    030 : Result := 'Tabela Cheia' ;
+    031 : Result := 'Faixa Informada é Inválida' ;
+    032 : Result := 'Tentativa de registro em um mesmo comprovante de '+
+                     'operações não fiscais cadastradas com sinais distintos' ;
+    033 : Result := 'Informado Sinal Inválido' ;
+    034 : Result := 'Excedida capacidade de pagamento por meio de CCD' ;
+    035 : Result := 'Operação de TEF informada pelo comando de abertura do comprovante não encontrada' ;
+    036 : Result := 'Classificação do meio de pagamento inválida' ;
+    037 : Result := 'Título informado na abertura de Relatório Gerencial não encontrado' ;
+    040 : Result := 'Mensagem: Abertura do Movimento' ;
+    041 : Result := 'Denominação informada no Registro de Operação não fiscal não encontrada ' ;
+    042 : Result := 'Valor total do Item excedido' ;
+    043 : Result := 'Valor do estorno excede a soma dos pagamentos registrados no meio indicado' ;
+    044 : Result := 'Valor efetivado é insuficiente para o pagamento!' ;
+    050 : Result := 'Campo de Descrição não informado' ;
 
-      P := pos( ESC, Result) ;
-   end ;
+// TODO: completar DEscrição dos Erros
+
+    124 : Result := 'Tampa Aberta' ;
+    125 : Result := 'Sem Papel' ;
+    126 : Result := 'Avançando Papel' ;
+    127 : Result := 'Substituir Bobina' ;
+    193 : Result := 'Falha de comunicação na transmissão das informações' ;
+    24,38,39,45..47,65,66,69..73,75..79,81..86,88..91,97,100..102,106,118,119,
+    129,137,138,145..147,150,152..155,158,173..183,185,186,188..191,199,210,
+    219,221,225,230,235..237,241,242,244..248
+        : Result := 'Chamar Assistência Técnica' ;
+  else
+    Result := 'Consulte o manual' ;
+  end ;
 end ;
 
 function TACBrECFSwedaSTX.VerificaFimLeitura(var Retorno: AnsiString;
    var TempoLimite: TDateTime) : Boolean ;
- Var LenRet, P : Integer ;
+Var
+  LenRet, PosETX, PosSTX : Integer ;
+  Bloco : AnsiString ;
+  Sequencia, ACK_PC : Byte ;
 begin
   LenRet := Length(Retorno) ;
   Result := False ;
 
-  if LenRet > 3 then
-  begin
-     if Retorno[1] <> STX then  // Não Inicia com STX 
+  if LenRet < 5 then
+     exit ;
+
+  PosSTX := Pos(STX,Retorno);
+  if PosSTX < 1 then     // Não recebeu o STX
+     exit
+  else if PosSTX > 1 then
+     Retorno := copy(Retorno, PosSTX, Length(Retorno) ) ;  // STX deve estar no inicio.
+
+  PosETX := Pos(ETX, Retorno) ;
+  if PosETX < 1 then    // Não recebeu ETX
+     exit ;
+
+  if (LenRet = PosETX) then  // Sem CHK
+     exit ;
+
+  { Ok, temos um bloco completo... Vamos trata-lo}
+  Bloco := copy(Retorno, 1, PosETX+1) ;
+
+  Sequencia  := Ord( Bloco[2] ) ;
+  fsTarefa   := copy(Bloco,3,2) ;
+  fsTipo     := Bloco[5] ;
+  fsMensagem := copy(Bloco,6,4) ;
+
+  if fsTipo = '!' then  // Bloco de Satus não solicitado, Descartando
+     Retorno := '' 
+  else
+   begin
+     { Verificando a Sequencia }
+     if Sequencia <> fsSEQ then
+        raise Exception.Create('Sequencia de Resposta diferente da enviada') ;
+
+     { Verificando o CheckSum }
+     ACK_PC := ACK ;
+
+     if CalcCheckSum(LeftStr(Bloco,Length(Bloco)-1)) <> RightStr(Bloco,1) then
      begin
-        P := pos(STX,Retorno);
-        if P > 0 then
-           Retorno := copy(Retorno, P, Length(Retorno) )
-        else
-           Retorno := '' ;
+       ACK_PC := NACK ;  // Erro no CheckSum, retornar NACK
+       if fsFalhasRX > CFALHAS then
+          raise Exception( 'Erro no digito Verificador da Resposta.'+sLineBreak+
+                           'Falha: '+IntToStr(fsFalhasRX) ) ;
+       Inc( fsFalhasRX ) ;  // Incrementa numero de Falhas
+       Retorno := '' ;      // Descarta o Bloco
      end ;
 
-     Result := (LeftStr(Retorno,1) = STX) and (pos(ETX, Retorno) > 0)
-  end ;
+     ChangeHandShake(False);            { Desliga o DTR ou RTS para enviar }
+     fpDevice.Serial.SendByte(ACK_PC);
+
+     fsRespostasComando := fsRespostasComando + Retorno ;  // Salva este Bloco
+
+     if (ACK_PC = ACK) and ( not (fsTipo in ['+','-'])) then   // Não é o Ultimo Bloco ?
+        Retorno := '' ;             // Zera para Ler proximo Bloco
+   end ;
+
+  Result := (Retorno <> '')
 end;
 
 function TACBrECFSwedaSTX.VerificaFimImpressao(var TempoLimite: TDateTime): Boolean;
+Var Cmd, Ret, RetCmd : AnsiString ;
+    wACK : Byte ;
+    I : Integer ;
 begin
   { Essa função só é chamada se AguardaImpressao = True,
     Como essa função é executada dentro da "LeResposta", que por sua vez foi
     chamada por "EnviaComando", não podemos usar o método "EnviaComando" (ou
     teriamos uma chamada recursiva infinita), por isso o Loop abaixo envia o
-    comando #19 diretamente para a Serial, e aguarda por 1 segundo a resposta...
-     Se a Sweda conseguir responder, significa que a Impressão Terminou }
+    comando '34' diretamente para a Serial, e aguarda por 5 segundos a resposta...
+    Se a SwedaSTX conseguir responder, significa que a Impressão Terminou }
+  Result := false ;
+  
+  if not EmLinha() then
+   begin
+     Sleep(100) ;
+     GravaLog('SwedaSTX VerificaFimImpressao: ECF fora de linha') ;
+   end
+  else
+   begin
+     RetCmd := '' ;
+     Cmd    := PreparaCmd( '34' ) ;           // Pede Status //
 
-// A FAZER     
+     try
+        GravaLog('SwedaSTX VerificaFimImpressao: Pedindo o Status') ;
+
+        fpDevice.Serial.Purge ;          // Limpa buffer de Entrada e Saida //
+        ChangeHandShake(False);          // DesLiga o DTR para enviar //
+        fpDevice.EnviaString( Cmd );     // Envia comando //
+
+        ChangeHandShake(True);           // Liga o DTR para receber //
+        wACK := fpDevice.Serial.RecvByte( 2000 ) ; // espera ACK chegar na Porta por 2s //
+
+        if wACK = 6 then   // ECF Respondeu corretamente, portanto está trabalhando //
+        begin
+           GravaLog('SwedaSTX VerificaFimImpressao: ACK = 6, OK... Aguardando ETX') ;
+
+           // Aguarda por ETX  até 5 seg //
+           I := 0 ;
+           repeat
+              TempoLimite := IncSecond(now, TimeOut);
+              Ret := fpDevice.Serial.RecvPacket(100) ;
+
+              RetCmd := RetCmd + Ret ;
+              Inc( I ) ;
+           until (I > 50) or ( VerificaFimLeitura( RetCmd, TempoLimite) )  ;
+
+           Result := VerificaFimLeitura( RetCmd, TempoLimite) and
+                     (copy(RetCmd,11,1) = 'A') ;
+        end ;
+     except
+     end ;
+   end ;
 end;
 
-Function TACBrECFSwedaSTX.PreparaCmd( cmd : AnsiString ) : AnsiString ;  
+Function TACBrECFSwedaSTX.PreparaCmd( cmd : AnsiString ) : AnsiString ;
 begin
   Result := '' ;
 
   if cmd = '' then exit ;
 
   Inc(fsSEQ) ;
-  if fsSEQ > 255 then
+  if fsSEQ = 255 then
      fsSEQ := 43 ;
 
   cmd := STX + AnsiChar(chr( fsSEQ )) + cmd + ETX ;   { Prefixo ESC }
@@ -564,6 +656,64 @@ begin
 
   Result := AnsiChar( Chr( CheckSum ) ) ;
 end ;
+
+{ Remove Blocos de Resposta de Status não solicitados  (envio automático pelo ECF)}
+Function TACBrECFSwedaSTX.AjustaRetorno(Retorno: AnsiString) : AnsiString ;
+Var
+  LenRet, PosETX, PosSTX : Integer ;
+  Bloco, Tipo : AnsiString ;
+begin
+  LenRet := Length(Retorno) ;
+  Result := Retorno ;
+
+  if LenRet < 5 then
+     exit ;
+
+  PosSTX := Pos(STX,Result);
+  if PosSTX < 1 then
+     Result := ''               // Não recebeu o STX, invalida Retorno
+  else if PosSTX > 1 then
+     Result := copy(Result, PosSTX, Length(Result) ) ;  // Deve iniciar em STX
+
+  while PosSTX > 0 do
+  begin
+     PosETX := PosEx(ETX, Result, PosSTX ) ;
+     if PosETX < 1 then          // Ainda não recebeu o ETX final
+        break ;
+
+     Bloco := copy(Result, PosSTX, PosETX-PosSTX + 2  ) ;  // Pega um Bloco; +2 para pegar CHK
+     Tipo  := copy(Bloco,5,1) ;
+
+     if Tipo = '!' then  // Bloco de Status nao solicitado, excluindo
+     begin
+        Delete(Result, PosSTX, PosETX-PosSTX + 2 ) ;
+        PosETX := max(PosSTX - 2,0) ; 
+     end ;
+
+     PosSTX := PosEx( STX , Result, PosETX);
+  end ;
+end ;
+
+function TACBrECFSwedaSTX.DescompactaRetorno( const Dados : AnsiString ) : AnsiString ;
+Var P      : Integer ;
+    AChar  : Char ;
+    NTimes : Byte ;
+begin
+   Result := Dados ;
+
+   P := pos(ESC, Result) ;
+   while P > 0 do
+   begin
+      AChar  := copy( Result, P-1, 1)[1] ;
+      NTimes := ord( copy( Result, P+1, 1)[1] ) - 31 ;
+
+      Result := StuffString(Result, P, 2, StringOfChar(AChar,NTimes) ) ;
+
+      P := pos( ESC, Result) ;
+   end ;
+end ;
+
+
 
 
 function TACBrECFSwedaSTX.GetDataHora: TDateTime;
@@ -642,8 +792,8 @@ end;
 }
 function TACBrECFSwedaSTX.GetEstado: TACBrECFEstado;
 Var RetCmd : AnsiString ;
-    DataMov, DataHora : String ;
-    B1, B2 : Byte ;
+    Estado, Docto : Char ;
+    Sinalizadores, BinStr, FaseEmissao : String ;
 begin
   Result := fpEstado ;  // Suprimir Warning
   try
@@ -653,36 +803,85 @@ begin
 
     fpEstado := estDesconhecido ;
 
-//    RetCmd    := EnviaComando( #35+#17 ) ;
+    RetCmd := EnviaComando( '34' ) ;
+    if (copy(RetCmd,3,2) <> '34') or (Length(RetCmd) < 18) then
+       exit ;         // Retorno inválido
+
+    Estado := RetCmd[10] ;
+    Docto  := RetCmd[11] ;
+    Sinalizadores := copy(RetCmd,12,5) ;
+
+    case Estado of
+      'A' :
+        begin
+          case Docto of
+             'A' :
+               begin
+                 if TestBit( Ord(Sinalizadores[1]), 1 ) then
+                    fpEstado := estRequerX
+                 else
+                   fpEstado := estLivre ;
+               end ;
+             
+             'C' :
+               begin
+                 BinStr      := IntToBin( Ord(Sinalizadores[2]), 8 ) ;
+                 FaseEmissao := copy(BinStr,4,3) ;
+
+                 if FaseEmissao = '010' then
+                   fpEstado := estPagamento
+                 else if FaseEmissao = '001' then
+                   fpEstado := estVenda ;
+               end ;
+
+             'D' : fpEstado := estNaoFiscal ;
+
+             'E','G','I' : fpEstado := estRelatorio ;
+          end ;
+        end ;
+
+      'B' : fpEstado := estBloqueada ;
+        
+      'C' : fpEstado := estRequerZ ;
+    end ;
   finally
     Result := fpEstado ;
   end ;
 end;
 
 function TACBrECFSwedaSTX.GetGavetaAberta: Boolean;
+Var RetCmd : AnsiString ;
 begin
+  Result := False ;
+  RetCmd := EnviaComando( '34' ) ;
+  if (copy(RetCmd,3,2) <> '34') or (Length(RetCmd) < 18) then
+     Result := TestBit( Ord(RetCmd[12]), 2 ) ;
 end;
 
 function TACBrECFSwedaSTX.GetPoucoPapel: Boolean;
+Var RetCmd : AnsiString ;
 begin
+  Result := False ;
+  RetCmd := EnviaComando( '34' ) ;
+  if (copy(RetCmd,3,2) <> '34') or (Length(RetCmd) < 18) then
+     Result := TestBit( Ord(RetCmd[12]), 5 ) ;
 end;
 
 function TACBrECFSwedaSTX.GetHorarioVerao: Boolean;
+Var RetCmd : AnsiString ;
 begin
+  RetCmd := Trim(RetornaInfoECF( 'I8' )) ;
+  Result := (UpperCase( copy(RetCmd,20,1) ) = 'V') ;
 end;
 
 function TACBrECFSwedaSTX.GetArredonda: Boolean;
 begin
-  if fsArredonda = ' ' then
-  begin
-//     RetCmd    := EnviaComando( #35+#28 ) ;
-  end ;
-
-  Result := (fsArredonda = 'S') ;
+  Result := (fsVerProtocolo > 'D') ;
 end;
 
 Procedure TACBrECFSwedaSTX.LeituraX ;
 begin
+  AguardaImpressao := True ;
   EnviaComando( '15' ) ;
 end;
 
@@ -696,7 +895,14 @@ begin
 end;
 
 Procedure TACBrECFSwedaSTX.ReducaoZ(DataHora: TDateTime) ;
+Var Cmd : String ;
 begin
+  Cmd := '16' ;
+  if DataHora <> 0 then
+     Cmd := Cmd + '|' + FormatDateTime('dd"/"mm"/"yyyy',DataHora) +
+                  '|' + FormatDateTime('hh":"nn":"ss',DataHora) ;
+
+  EnviaComando( Cmd ) ;
 end;
 
 Procedure TACBrECFSwedaSTX.MudaHorarioVerao ;
@@ -942,12 +1148,9 @@ begin
 end;
 
 procedure TACBrECFSwedaSTX.LerTotaisAliquota;
-Var A : Integer ;
 begin
   if not Assigned( fpAliquotas ) then
      CarregaAliquotas ;
-
-
 end;
 
 
@@ -1802,7 +2005,7 @@ begin
   { Extraindo "DADOS" do bloco abaixo :
     STX[1]+Seq[1]+Tarefa[1]+Tipo[1]+Secao[4]+Dados[N]+ETX[1]+CHK[1] }
   if Copy(RetCmd,3,2) = '34' then
-     Result := copy( RetCmd, 10, Length(RetCmd)-10 ) ;
+     Result := copy( RetCmd, 10, Length(RetCmd)-11 ) ;
 
   if pos('I8',Registrador) > 0 then  // Sem cache para Data/Hora
      exit ;
@@ -1816,4 +2019,65 @@ end;
 
 end.
 
+  Buffer := Retorno ;
+  while (Buffer <> '') do
+  begin
+     PosSTX := Pos(STX,Buffer);
+     if PosSTX < 1 then   // Não recebeu o STX
+        break
+     else if PosSTX > 1 then
+        Buffer := copy(Buffer, PosSTX, Length(Buffer) ) ;  // Deve iniciar em STX
+
+     PosETX := Pos(ETX, Buffer) ;
+     if PosETX < 1 then          // Ainda não recebeu o ETX
+        break ;
+
+     Bloco  := copy(Buffer, 1, PosETX + 1  ) ;  // Pega um Bloco; +1 para pegar CHK
+     Tipo   := copy(Bloco,5,1) ;
+
+     Result := (Pos(Tipo,'+-') > 0) and     // É o Envio de Status
+               (Length(Buffer) > PosETX) ;  // Tem o CHK
+
+     if Result then
+        break
+     else
+        Buffer := copy(Buffer, PosETX+2, Length( Buffer) )  // Buffer restante
+
+
+
+
+*******
+   ACK_PC   := 0 ;
+   FalhasRX := 0 ;
+   fpRespostaComando := '' ;
+
+   while (ACK_PC <> ACK) and (FalhasRX < CFALHAS) do
+   begin
+      ChangeHandShake(True);     { Liga o DTR ou RTS para ler a Resposta }
+
+      { Chama Rotina da Classe mãe TACBrClass para ler Resposta. Se houver
+        falha na leitura LeResposta dispara Exceçao.
+        Resposta fica gravada na váriavel "fpRespostaComando" }
+      LeResposta ;
+
+      fsTarefa    := '' ;
+      fsTipo      := '' ;
+      fsMensagem  := ''  ;
+
+      PosSTX := PosLast(STX, fpRespostaComando);
+      PosETX := PosEx(ETX, fpRespostaComando, PosSTX) ;
+      Bloco  := copy(fpRespostaComando, PosStX, PosETX-PosSTX+2 ) ;
+
+      fsTarefa   := copy(Bloco,3,2) ;
+      fsTipo     := copy(Bloco,5,1) ;
+      fsMensagem := copy(Bloco,6,4) ;
+      CheckSum   := Bloco[ Length(Bloco) ] ;
+
+      ACK_PC := ACK ;  // retornar ACK, OK
+      { Verificando o CheckSum }
+      if CalcCheckSum(LeftStr(Bloco,Length(Bloco)-1)) <> CheckSum then
+         ACK_PC := NACK   // Erro no CheckSum, retornar NACK
+      else
+         if Ord( Bloco[2] ) <> Seq then
+            raise Exception.Create('Sequencia de Resposta diferente da enviada') ;
 

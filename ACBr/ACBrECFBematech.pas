@@ -558,7 +558,7 @@ begin
   if not EmLinha() then
    begin
      Sleep(100) ;
-     GravaLog('Bematech VerificaFimImpressao: ECF fora de linha') ;
+//   GravaLog('Bematech VerificaFimImpressao: ECF fora de linha') ;
    end
   else
    begin
@@ -566,7 +566,7 @@ begin
      Cmd    := PreparaCmd( #19 ) ;           // Pede Status //
 
      try
-        GravaLog('Bematech VerificaFimImpressao: Pedindo o Status') ;
+//      GravaLog('Bematech VerificaFimImpressao: Pedindo o Status') ;
         
         fpDevice.Serial.Purge ;              // Limpa buffer de Entrada e Saida //
         fpDevice.EnviaString( Cmd );   // Envia comando //}

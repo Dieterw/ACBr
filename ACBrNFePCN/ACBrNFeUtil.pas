@@ -1733,8 +1733,8 @@ begin
    wchave:=wchave+NotaUtil.Poem_Zeros(inttostr(wd),2);
 
    //DIGITO VERIFICADOR
-   //GerarDigito_Contigencia(Digito,wchave);
-   //wchave:=wchave+inttostr(digito);
+   GerarDigito_Contigencia(Digito,wchave);
+   wchave:=wchave+inttostr(digito);
 
    //RETORNA A CHAVE DE CONTINGENCIA
    result:=wchave;

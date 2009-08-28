@@ -91,6 +91,7 @@ type
     FMargemEsquerda: Double;
     FMargemDireita: Double;
     FCasasDecimais: TCasasDecimais;
+    FExibeResumoCanhoto: boolean;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
   public
     constructor Create(AOwner: TComponent); override;
@@ -118,6 +119,7 @@ type
     property MargemEsquerda: Double read FMargemEsquerda write FMargemEsquerda ;
     property MargemDireita: Double read FMargemDireita write FMargemDireita ;
     property CasasDecimais: TCasasDecimais read FCasasDecimais ;
+    property ExibirResumoCanhoto: Boolean read FExibeResumoCanhoto write FExibeResumoCanhoto ;
   end;
 
 implementation
@@ -180,6 +182,7 @@ begin
   FMargemSuperior := 0.8;
   FMargemEsquerda := 0.6;
   FMargemDireita  := 0.51;
+  FExibeResumoCanhoto := false;
   FCasasDecimais := TCasasDecimais.Create(self);
   FCasasDecimais.Name:= 'CasasDecimais' ;
   {$IFDEF COMPILER6_UP}

@@ -89,10 +89,11 @@ begin
         SetFont(FontNameUsed,8);
         Bold:=True;
         GotoXY(0,PosY+GetFontHeigh);
-        NewLine;
-        PrintCenter('Recebemos de '+Emit.XNome+' os produtos constantes da Nota Fiscal indicada ao lado',PosX+(aWidthOutros/2));
         //NewLine;
-        //PrintCenter('Emissão: '+NotaUtil.FormatDate(DateToStr(Ide.DEmi))+'  Destinatário/Remetente: '+Dest.XNome+'  Valor Total: '+NotaUtil.FormatFloat(Total.ICMSTot.VNF),PosX+(aWidthOutros/2));
+        PrintCenter('Recebemos de '+Emit.XNome+' os produtos constantes da Nota Fiscal indicada ao lado',PosX+(aWidthOutros/2));
+        NewLine;
+        if ExibirResumoCanhoto then
+           PrintCenter('Emissão: '+NotaUtil.FormatDate(DateToStr(Ide.DEmi))+'  Destinatário/Remetente: '+Dest.XNome+'  Valor Total: '+NotaUtil.FormatFloat(Total.ICMSTot.VNF),PosX+(aWidthOutros/2));
 
         GotoXY(0,PosY+GetFontHeigh);
         NewLine;
@@ -223,7 +224,7 @@ begin
          vEnd:=XMun+' - '+UF;
          PrintCenter(vEnd,CenterX);
          NewLine;
-         vEnd:='FONE: '+NotaUtil.FormatarFone(Fone)+' / FAX: '+FaxDoEmitente;
+         vEnd:='FONE: '+NotaUtil.FormatarFone(Fone)+' / FAX: '+NotaUtil.FormatarFone(FaxDoEmitente);
          PrintCenter(vEnd,CenterX);
          NewLine;
          vEnd:=SiteDoEmitente;
@@ -539,8 +540,8 @@ begin
         Box([fsTop,fsLeft],XPos,YPos,34,aHeigthPadrao,'Espécie',Transp.Vol.Items[0].esp,taCenter);
         Box([fsTop,fsLeft],XPos,YPos,50,aHeigthPadrao,'Marca',Transp.Vol.Items[0].marca,taCenter);
         Box([fsTop,fsLeft],XPos,YPos,30,aHeigthPadrao,'Numero','',taCenter);
-        Box([fsTop,fsLeft],XPos,YPos,30,aHeigthPadrao,'Peso Bruto',NotaUtil.FormatFloat(Transp.Vol.Items[0].pesoB),taRightJustify);
-        Box([fsTop,fsLeft],XPos,YPos,30,aHeigthPadrao,'Peso Líquido',NotaUtil.FormatFloat(Transp.Vol.Items[0].pesoL),taRightJustify,True);
+        Box([fsTop,fsLeft],XPos,YPos,30,aHeigthPadrao,'Peso Bruto',NotaUtil.FormatFloat(Transp.Vol.Items[0].pesoB,NotaUtil.PreparaCasasDecimais(3)),taRightJustify);
+        Box([fsTop,fsLeft],XPos,YPos,30,aHeigthPadrao,'Peso Líquido',NotaUtil.FormatFloat(Transp.Vol.Items[0].pesoL,NotaUtil.PreparaCasasDecimais(3)),taRightJustify,True);
      end;
      
      Result:=YPos;
@@ -775,8 +776,8 @@ begin
           PrintTab(OrigToStr(Imposto.ICMS.orig)+CSTICMSToStr(Imposto.ICMS.CST));
           PrintTab(Prod.CFOP);
           PrintTab(Prod.UCom);
-          PrintTab(NotaUtil.FormatFloat(Prod.QCom));
-          PrintTab(NotaUtil.FormatFloat(Prod.VUnCom));
+          PrintTab(NotaUtil.FormatFloat(Prod.QCom,NotaUtil.PreparaCasasDecimais(CasasDecimais_qCom)));
+          PrintTab(NotaUtil.FormatFloat(Prod.VUnCom,NotaUtil.PreparaCasasDecimais(CasasDecimais_vUnCom)));
           PrintTab(NotaUtil.FormatFloat(Prod.VProd));
           PrintTab(NotaUtil.FormatFloat(Prod.vDesc));
           PrintTab(NotaUtil.FormatFloat(Imposto.ICMS.vBC));

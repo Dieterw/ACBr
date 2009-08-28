@@ -165,6 +165,7 @@ type
     class function SeparaDados( Texto : AnsiString; Chave : String; MantemChave : Boolean = False ) : AnsiString;
     class function GerarChaveContingencia(FNFe:TNFe): String;
     class function FormatarChaveContigencia(AValue: String): String;
+    class function PreparaCasasDecimais(AValue: Integer): String;
 
   published
 
@@ -489,7 +490,7 @@ begin
   DecimalSeparator := '.';
   Result := SysUtils.FormatFloat(AFormat, AValue);
 {$ELSE}
-  vFormato.DecimalSeparator := '.';
+  vFormato.DecimalSeparator := ',';
   Result := SysUtils.FormatFloat(AFormat, AValue, vFormato);
 {$ENDIF}
 end;
@@ -1738,6 +1739,18 @@ begin
             copy(AValue,17,4) + ' ' + copy(AValue,21,4) + ' ' +
             copy(AValue,25,4) + ' ' + copy(AValue,29,4) + ' ' +
             copy(AValue,33,4) ;
+end;
+
+class function NotaUtil.PreparaCasasDecimais(AValue: Integer): String;
+var
+   i: integer;
+
+begin
+   Result:='0';
+   if AValue > 0 then
+      Result:=Result+'.';
+   for I := 0 to AValue-1 do
+      Result:=Result+'0';
 end;
 
 end.

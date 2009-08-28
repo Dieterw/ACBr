@@ -87,6 +87,9 @@ type
      FLogoMarca:TJPEGImage;
      FImpressora:String;
      FProtocoloNFe:String;
+     FCasasDecimais_qCom:integer;
+     FCasasDecimais_vUnCom:integer;
+     FExibirResumoCanhoto:boolean;
   public
      FPageNum, FNFIndex:Integer;
      FChaveNFe, FNumeroNF, FSerie: String;
@@ -108,6 +111,9 @@ type
      property LogoMarca:TJPEGImage read FLogoMarca write FLogoMarca;
      property NomeDaImpressora:String read FImpressora write FImpressora;
      property ProtocoloNFe:String read FProtocoloNFe write FProtocoloNFe;
+     property CasasDecimais_qCom:integer read FCasasDecimais_qCom write FCasasDecimais_qCom;
+     property CasasDecimais_vUnCom:integer read FCasasDecimais_vUnCom write FCasasDecimais_vUnCom;
+     property ExibirResumoCanhoto:boolean read FExibirResumoCanhoto write FExibirResumoCanhoto;
   end;
 
 procedure ImprimirDANFeRave(aACBrNFe:TACBrNFe;
@@ -126,7 +132,10 @@ procedure ImprimirDANFeRave(aACBrNFe:TACBrNFe;
                             aMargemInferior:double=8;
                             aMargemSuperior:double=8;
                             aMargemEsquerda:double=6;
-                            aMargemDireita:double=5.1);
+                            aMargemDireita:double=5.1;
+                            aCasasDecimais_qCom:integer=2;
+                            aCasasDecimais_vUnCom:integer=2;
+                            aExibirResumoCanhoto:boolean=false);
 
 var DANFeRave:TDANFeRave;
 
@@ -150,7 +159,10 @@ procedure ImprimirDANFeRave(aACBrNFe:TACBrNFe;
                             aMargemInferior:double=8;
                             aMargemSuperior:double=8;
                             aMargemEsquerda:double=6;
-                            aMargemDireita:double=5.1);
+                            aMargemDireita:double=5.1;
+                            aCasasDecimais_qCom:integer=2;
+                            aCasasDecimais_vUnCom:integer=2;
+                            aExibirResumoCanhoto:boolean=false);
 var DANFeRave:TDANFeRave;
     rvPDF:TRvRenderPDF;
     rvTXT:TRvRenderText;
@@ -179,6 +191,9 @@ begin
     DANFeRave.SystemPrinter.MarginBottom:=aMargemInferior;
     DANFeRave.SystemPrinter.MarginLeft:=aMargemEsquerda;
     DANFeRave.SystemPrinter.MarginRight:=aMargemDireita;
+    DANFeRave.CasasDecimais_qCom:=aCasasDecimais_qCom;
+    DANFeRave.CasasDecimais_vUnCom:=aCasasDecimais_vUnCom;
+    DANFeRave.ExibirResumoCanhoto:=aExibirResumoCanhoto;
     if aLogoMarca<>nil then
      begin
        DANFeRave.LogoMarca:=TJPEGImage.Create;

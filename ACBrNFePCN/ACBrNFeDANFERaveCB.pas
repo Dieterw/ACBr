@@ -104,7 +104,10 @@ begin
                        MargemInferior*10,
                        MargemSuperior*10,
                        MargemEsquerda*10,
-                       MargemDireita*10);
+                       MargemDireita*10,
+                       CasasDecimais._qCom,
+                       CasasDecimais._vUnCom,
+                       ExibirResumoCanhoto);
     finally
       LogoMarcaEmpresa.Free;
     end;
@@ -148,7 +151,10 @@ begin
                        MargemInferior*10,
                        MargemSuperior*10,
                        MargemEsquerda*10,
-                       MargemDireita*10);
+                       MargemDireita*10,
+                       CasasDecimais._qCom,
+                       CasasDecimais._vUnCom,
+                       ExibirResumoCanhoto);
     finally
       LogoMarcaEmpresa.Free;
     end;

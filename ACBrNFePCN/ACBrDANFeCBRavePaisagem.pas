@@ -61,7 +61,7 @@ const aWidthTituloBloco:Double=6;
       FontSizeTitle:Integer=6;
       FontSizeText:Integer=10;
 
-      ColsWidth:array[1..17] of Double=(17,78,18,6,7,8,15,13,13,0,15,15,11,11,11,7,7);
+      ColsWidth:array[1..17] of Double=(17,85,15,6,7,8,15,13,13,0,15,15,11,11,11,8,8);
 
 
 procedure ImprimirPaisagem(aRaveSystem:TDANFeRave);
@@ -102,14 +102,18 @@ begin
         PrintCenter('Nº',PosX+8);
         FontRotation:=90;
         PrintXY(PosX+1.5+((aWidth-LineHeight)/2),PosY+33,FNumeroNF);
+        FontRotation:=90;
+        PrintXY(PosX+LineHeight+1.5+((aWidth-LineHeight)/2),PosY+33,'Série: '+IntToStr(Ide.Serie));
 
         SetFontTitle;
         FontRotation:=90;
         Bold:=True;
         GotoXY(PosX+FontHeight+0.5,FLastY-2);
+        //GotoXY(PosX+LineHeight,FLastY-2);
         Print('Recebemos de '+Emit.XNome+' os produtos constantes da Nota Fiscal indicada ao lado');
         GotoXY(PosX+FontHeight+FontHeight+0.5,FLastY-2);
-        Print('Emissão: '+NotaUtil.FormatDate(DateToStr(Ide.DEmi))+'  Destinatário/Remetente: '+Dest.XNome+'  Valor Total: '+NotaUtil.FormatFloat(Total.ICMSTot.VNF));
+        if ExibirResumoCanhoto then
+           Print('Emissão: '+NotaUtil.FormatDate(DateToStr(Ide.DEmi))+'  Destinatário/Remetente: '+Dest.XNome+'  Valor Total: '+NotaUtil.FormatFloat(Total.ICMSTot.VNF));
 
         Bold:=False;
         GotoXY(PosX+aWidthReceb+LineHeight,PosY+aHeigthNumSerie+aHeigthIdent-1);
@@ -209,7 +213,6 @@ begin
        CenterX:=PosX+aWidthLogo+((aWidth-aWidthLogo)/2);
        SetFont(FontNameUsed,FontSizeEmit_Outros);
        Bold:=True;
-       NewLine;
        with Emit.EnderEmit do
         begin
          vEnd:=XLgr;
@@ -219,16 +222,19 @@ begin
             vEnd:=vEnd+', '+XCpl;
          PrintCenter(vEnd,CenterX);
          NewLine;
-         vEnd:=XBairro+' - '+NotaUtil.FormatarCEP(IntToStr(CEP));
+         vEnd:=XBairro+' - '+NotaUtil.FormatarCEP(NotaUtil.Poem_Zeros(CEP,8));
          PrintCenter(vEnd,CenterX);
          NewLine;
          vEnd:=XMun+' - '+UF;
          PrintCenter(vEnd,CenterX);
          NewLine;
-         vEnd:='FONE: '+fone+' / FAX: '+FaxDoEmitente;
+         vEnd:='FONE: '+NotaUtil.FormatarFone(Fone)+' / FAX: '+NotaUtil.FormatarFone(FaxDoEmitente);
          PrintCenter(vEnd,CenterX);
          NewLine;
-         vEnd:='EMAIL: '+EmailDoEmitente;
+         vEnd:=SiteDoEmitente;
+         PrintCenter(vEnd,CenterX);
+         NewLine;
+         vEnd:=EmailDoEmitente;
          PrintCenter(vEnd,CenterX);
          Bold:=False;
         end;
@@ -255,9 +261,9 @@ begin
      PrintCenter('DANFE',CenterX);
      SetFont(FontNameUsed,FontSizeIdentDoc_TipoOperacao);
      NewLine;
-     PrintCenter('DOCUMENTO AUXILIAR DA',CenterX);
+     PrintCenter('Documento Auxiliar da',CenterX);
      NewLine;
-     PrintCenter('NOTA FISCAL ELETRÔNICA',CenterX);
+     PrintCenter('Nota Fiscal Eletrônica',CenterX);
      NewLine;
      PrintXY(PosX+10,YPos+0.5,'0 - ENTRADA');
      NewLine;
@@ -279,88 +285,95 @@ function ImprimirCodigoBarras(PosX, PosY: Double):Double;
 var PosYCodBarraContigencia, aWidth, CenterX:Double;
     aChaveAcesso, aProtocolo, aChaveContigencia:String;
 begin
-  with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
+   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
-     aWidth:=FLastX-PosX;
-     Box([fsLeft],PosX,PosY,aWidth,12.27,'','',taLeftJustify,True);
-     if FEspelho then
-        aChaveAcesso:='SEM VALOR FISCAL (SOMENTE CONFERENCIA)'
-       else
-        aChaveAcesso:=NotaUtil.FormatarChaveAcesso(FChaveNFe);
-     Box([fsLeft,fsTop],PosX,YPos,aWidth,aHeigthPadrao,'CHAVE DE ACESSO DA NF-e',aChaveAcesso,taCenter,True);
-
-//     aChaveContigencia:=Gerar_ChaveContigencia(ACBrNFe.NotasFiscais.Items[FNFIndex].NFe);
-
-     PosYCodBarraContigencia:=YPos;
-     Box([fsLeft,fsTop],PosX,YPos,aWidth,12.27,'','',taLeftJustify,True);
-     Result:=YPos;
-     if aChaveContigencia<>'' then
-        Box([fsLeft,fsTop],PosX,YPos,aWidth,aHeigthPadrao,'DADOS DANFe',aChaveContigencia,taCenter,True)
+      aWidth:=FLastX-PosX;
+      Box([fsLeft],PosX,PosY,aWidth,12.27,'','',taLeftJustify,True);
+      if FEspelho then
+         aChaveAcesso:='SEM VALOR FISCAL (SOMENTE CONFERENCIA)'
       else
-       begin
-        if NotaUtil.EstaVazio(ProtocoloNFe) then
-           aProtocolo:=Trim(procNFe.nProt)+' '+DateToStr(procNFe.dhRecbto)
-        else
-           aProtocolo := ProtocoloNFe;
-        Box([fsLeft,fsTop],PosX,YPos,aWidth,aHeigthPadrao,NotaUtil.SeSenao(Ide.tpEmis=teDPEC,'NÚMERO DE REGISTRO DPEC','PROTOCOLO DE AUTORIZAÇÃO DE USO'),aProtocolo,taCenter,True);
-       end;
+         aChaveAcesso:=NotaUtil.FormatarChaveAcesso(FChaveNFe);
+      Box([fsLeft,fsTop],PosX,YPos,aWidth,aHeigthPadrao,'CHAVE DE ACESSO',aChaveAcesso,taCenter,True);
 
-     if not FEspelho then
+      if ACBrNFe.NotasFiscais.Items[FNFIndex].NFe.Ide.tpEmis in [teContingencia,teFSDA] then
+         aChaveContigencia:=NotaUtil.GerarChaveContingencia(ACBrNFe.NotasFiscais.Items[FNFIndex].NFe)
+      else
+         aChaveContigencia:='';
+
+      PosYCodBarraContigencia:=YPos;
+      Box([fsLeft,fsTop],PosX,YPos,aWidth,12.27,'','',taLeftJustify,True);
+      Result:=YPos;
+      if aChaveContigencia<>'' then
+         Box([fsLeft,fsTop],PosX,YPos,aWidth,aHeigthPadrao,'DADOS DA NFe',NotaUtil.FormatarChaveContigencia(aChaveContigencia),taCenter,True)
+      else
       begin
-        with TRPBarsCode128.Create(DANFeRave.BaseReport) do
+         aProtocolo := ProtocoloNFe;
+         if (ACBrNFe.NotasFiscais.Items[FNFIndex].NFe.Ide.tpEmis in [teNormal,teSCAN]) then
          begin
-          BaseReport:=DANFeRave.BaseReport;
-          CodePage:=cpCodeC;
-          BarCodeJustify:=pjCenter;
-          UseChecksum:=false;
-          BarWidth:=0.39;
-          BarHeight:=11.2;
-          WideFactor:=BarWidth;
-          PrintReadable:=False;
-          Text:=NotaUtil.LimpaNumero(FChaveNFe);
-          PrintXY(PosX+(aWidth/2),PosY+0.5);
-          Free;
+            if NotaUtil.EstaVazio(aProtocolo) then
+               aProtocolo:=Trim(procNFe.nProt)+' '+DateTimeToStr(procNFe.dhRecbto);
+            Box([fsLeft,fsTop],PosX,YPos,aWidth,aHeigthPadrao,'PROTOCOLO DE AUTORIZAÇÃO DE USO',aProtocolo,taCenter,True);
+         end
+         else if (ACBrNFe.NotasFiscais.Items[FNFIndex].NFe.Ide.tpEmis in [teDPEC]) then
+            Box([fsLeft,fsTop],PosX,YPos,aWidth,aHeigthPadrao,'NÚMERO DE REGISTRO DPEC',aProtocolo,taCenter,True);
+      end;
+
+      if not FEspelho then
+      begin
+         with TRPBarsCode128.Create(DANFeRave.BaseReport) do
+         begin
+            BaseReport:=DANFeRave.BaseReport;
+            CodePage:=cpCodeC;
+            BarCodeJustify:=pjCenter;
+            UseChecksum:=false;
+            BarWidth:=0.39;
+            BarHeight:=10.0;
+            WideFactor:=BarWidth;
+            PrintReadable:=False;
+            Text:=NotaUtil.LimpaNumero(FChaveNFe);
+            PrintXY(PosX+(aWidth/2),PosY+1);
+            Free;
          end;
 
-        if aChaveContigencia<>'' then
+         if aChaveContigencia<>'' then
          begin
-           with TRPBarsCode128.Create(DANFeRave.BaseReport) do
+            with TRPBarsCode128.Create(DANFeRave.BaseReport) do
             begin
-             BaseReport:=DANFeRave.BaseReport;
-             CodePage:=cpCodeC;
-             BarCodeJustify:=pjCenter;
-             UseChecksum:=false;
-             BarWidth:=0.465;
-             BarHeight:=11.2;
-             WideFactor:=BarWidth;
-             PrintReadable:=False;
-             Text:=NotaUtil.LimpaNumero(aChaveContigencia);
-             PrintXY(PosX+(aWidth/2),PosYCodBarraContigencia+0.5);
-             Free;
+               BaseReport:=DANFeRave.BaseReport;
+               CodePage:=cpCodeC;
+               BarCodeJustify:=pjCenter;
+               UseChecksum:=false;
+               BarWidth:=0.39;
+               BarHeight:=10.0;
+               WideFactor:=BarWidth;
+               PrintReadable:=False;
+               Text:=NotaUtil.LimpaNumero(aChaveContigencia);
+               PrintXY(PosX+(aWidth/2),PosYCodBarraContigencia+1);
+               Free;
             end;
          end
-        else
+         else
          begin
-          SetFont(FontNameUsed,11);
-          GotoXY(PosX,PosYCodBarraContigencia+5);
-          CenterX:=PosX+(aWidth/2);
-          PrintCenter('Consulta de autenticidade no portal nacional da NF-e',CenterX);
-          NewLine;
-          PrintCenter('www.nfe.fazenda.gov.br/portal ou no site da Sefaz Autorizadora',CenterX);
+            SetFont(FontNameUsed,11);
+            GotoXY(PosX,PosYCodBarraContigencia+5);
+            CenterX:=PosX+(aWidth/2);
+            PrintCenter('Consulta de autenticidade no portal nacional da NF-e',CenterX);
+            NewLine;
+            PrintCenter('www.nfe.fazenda.gov.br/portal ou no site da Sefaz Autorizadora',CenterX);
          end;
-       end
+      end
       else
-       begin
-        SetFont(FontNameUsed,24);
-        Bold:=True;
-        Underline:=True;
-        GotoXY(PosX+1,PosY);
-        NewLine;
-        PrintXY(PosX+5,YPos-1,'SEM VALOR FISCAL');
-        Bold:=False;
-        Underline:=False;
-       end;
-     end;
+      begin
+         SetFont(FontNameUsed,24);
+         Bold:=True;
+         Underline:=True;
+         GotoXY(PosX+1,PosY);
+         NewLine;
+         PrintXY(PosX+5,YPos-1,'SEM VALOR FISCAL');
+         Bold:=False;
+         Underline:=False;
+      end;
+   end;
 end;
 
 function ImprimirEmitenteOutrosDados(PosX,
@@ -368,7 +381,7 @@ function ImprimirEmitenteOutrosDados(PosX,
 begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
-     PosX:=PosX+aWidthTituloBloco;
+     //PosX:=PosX+aWidthTituloBloco;
      Box([fsTop],PosX,PosY,WidthNaturezaOperacao,aHeigthPadrao,'NATUREZA DA OPERAÇÃO',ide.natOp,taLeftJustify,True,False,False);
      Box([fsTop],PosX,YPos,82,aHeigthPadrao,'INSCRIÇÃO ESTADUAL',Emit.IE,taCenter);
      Box([fsTop,fsLeft],XPos,YPos,82,aHeigthPadrao,'INSCRIÇÃO ESTADUAL DO SUBST. TRIBUTÁRIO',Emit.IEST,taCenter);
@@ -428,10 +441,10 @@ begin
           vEnd:=vEnd+', '+XCpl;
        Box([fsTop],PosX,YPos,136,aWidthTituloBloco,'Endereço',vEnd);
        Box([fsTop,fsLeft],XPos,YPos,56,aWidthTituloBloco,'Bairro',XBairro);
-       Box([fsTop,fsLeft],XPos,YPos,38,aWidthTituloBloco,'CEP',NotaUtil.FormatarCEP(IntToStr(CEP)),taCenter);
+       Box([fsTop,fsLeft],XPos,YPos,38,aWidthTituloBloco,'CEP',NotaUtil.FormatarCEP(NotaUtil.Poem_Zeros(CEP,8)),taCenter);
        Box([fsTop,fsLeft],XPos,YPos,21,aWidthTituloBloco,'Data da Saída',NotaUtil.FormatDate(DateToStr(Ide.DSaiEnt)),taCenter,True);
        Box([fsTop],PosX,YPos,136,aWidthTituloBloco,'Município',XMun);
-       Box([fsTop,fsLeft],XPos,YPos,43,aWidthTituloBloco,'Fone / Fax',NotaUtil.FormatarFone(Fone),taCenter);
+       Box([fsTop,fsLeft],XPos,YPos,43,aWidthTituloBloco,'Fone / Fax',NotaUtil.FormatarFone(FONE),taCenter);
        Box([fsTop,fsLeft],XPos,YPos,13,aWidthTituloBloco,'Estado',UF,taCenter);
        Box([fsTop,fsLeft],XPos,YPos,38,aWidthTituloBloco,'Inscrição Estadual',Dest.IE,taCenter);
        Box([fsTop,fsLeft],XPos,YPos,21,aWidthTituloBloco,'Hora da Saída','',taCenter,True);
@@ -495,7 +508,8 @@ begin
         end;
       end;
 
-     aHeight:=YPos-PosY-GetFontHeigh;
+     //aHeight:=YPos-PosY-GetFontHeigh;
+     aHeight:=YPos-PosY+1;
 
      Box([fsTop],PosX,YY,63,aHeight);
      Box([fsTop,fsLeft],XPos,YY,63,aHeight);
@@ -525,7 +539,7 @@ begin
      Box([fsTop,fsLeft],XPos,YPos,39,aHeigthPadrao,'Desconto',NotaUtil.FormatFloat(Total.ICMSTot.VDesc),taRightJustify);
      Box([fsTop,fsLeft],XPos,YPos,40,aHeigthPadrao,'Outras Despesas Acessórias',NotaUtil.FormatFloat(Total.ICMSTot.VOutro),taRightJustify);
      Box([fsTop,fsLeft],XPos,YPos,41,aHeigthPadrao,'Valor do IPI',NotaUtil.FormatFloat(Total.ICMSTot.VIPI),taRightJustify);
-     Box([fsTop,fsLeft],XPos,YPos,51,aHeigthPadrao,'VALOR TOTAL DA NOTA FISCAL',NotaUtil.FormatFloat(Total.ICMSTot.VNF),taRightJustify,True,True);
+     Box([fsTop,fsLeft],XPos,YPos,51,aHeigthPadrao,'VALOR TOTAL DA NOTA FISCAL',NotaUtil.FormatFloat(Total.ICMSTot.VNF),taRightJustify,True,false);
 
      Result:=YPos;
      TituloDoBloco([fsTop],PosY,PosX,YPos,'CALCULO','IMPOSTO');
@@ -557,8 +571,8 @@ begin
         Box([fsTop,fsLeft],XPos,YPos,43,aHeigthPadrao+aIncHeigth,'Espécie',Transp.Vol.Items[0].esp,taCenter);
         Box([fsTop,fsLeft],XPos,YPos,44,aHeigthPadrao+aIncHeigth,'Marca',Transp.Vol.Items[0].marca,taCenter);
         Box([fsTop,fsLeft],XPos,YPos,41,aHeigthPadrao+aIncHeigth,'Numero','',taCenter);
-        Box([fsTop,fsLeft],XPos,YPos,41,aHeigthPadrao+aIncHeigth,'Peso Bruto',NotaUtil.FormatFloat(Transp.Vol.Items[0].pesoB),taRightJustify);
-        Box([fsTop,fsLeft],XPos,YPos,41,aHeigthPadrao+aIncHeigth,'Peso Líquido',NotaUtil.FormatFloat(Transp.Vol.Items[0].pesoL),taRightJustify,True);
+        Box([fsTop,fsLeft],XPos,YPos,41,aHeigthPadrao+aIncHeigth,'Peso Bruto',NotaUtil.FormatFloat(Transp.Vol.Items[0].pesoB,NotaUtil.PreparaCasasDecimais(3)),taRightJustify);
+        Box([fsTop,fsLeft],XPos,YPos,41,aHeigthPadrao+aIncHeigth,'Peso Líquido',NotaUtil.FormatFloat(Transp.Vol.Items[0].pesoL,NotaUtil.PreparaCasasDecimais(3)),taRightJustify,True);
       end;
 
      Result:=YPos;
@@ -797,9 +811,10 @@ begin
           PrintTab(OrigToStr(Imposto.ICMS.orig)+CSTICMSToStr(Imposto.ICMS.CST));
           PrintTab(Prod.CFOP);
           PrintTab(Prod.UCom);
-          PrintTab(NotaUtil.FormatFloat(Prod.QCom));
-          PrintTab(NotaUtil.FormatFloat(Prod.VUnCom));
+          PrintTab(NotaUtil.FormatFloat(Prod.QCom,NotaUtil.PreparaCasasDecimais(CasasDecimais_qCom)));
+          PrintTab(NotaUtil.FormatFloat(Prod.VUnCom,NotaUtil.PreparaCasasDecimais(CasasDecimais_vUnCom)));
           PrintTab(NotaUtil.FormatFloat(Prod.VProd));
+          PrintTab(NotaUtil.FormatFloat(Prod.vDesc));
           PrintTab(NotaUtil.FormatFloat(Imposto.ICMS.vBC));
           PrintTab(NotaUtil.FormatFloat(Imposto.ICMS.vBCST));
           PrintTab(NotaUtil.FormatFloat(Imposto.ICMS.vICMSST));

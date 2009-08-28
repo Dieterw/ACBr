@@ -194,11 +194,8 @@ begin
 
        aWidthLogo:=26;
        aHeigthLogo:=20;
-//       if Assigned(LogoMarca) then
-//          PrintImageRect(PosX+1,YPos,PosX+aWidthLogo,YPos+aHeigthLogo,stLogo,'JPG');
-
-       //Assigned(stLogo);
-       PrintImageRect(PosX+1,YPos,PosX+aWidthLogo,YPos+aHeigthLogo,stLogo,'JPG');
+       if Assigned(LogoMarca) then
+          PrintImageRect(PosX+1,YPos,PosX+aWidthLogo,YPos+aHeigthLogo,stLogo,'JPG');
 
        GotoXY(PosX,YPos+1.5);
        CenterX:=PosX+aWidthLogo+((aWidth-aWidthLogo)/2);

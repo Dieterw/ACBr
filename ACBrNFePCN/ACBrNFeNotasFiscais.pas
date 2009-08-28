@@ -311,11 +311,11 @@ begin
 {$IFDEF ACBrNFeOpenSSL}
         if not(NotaUtil.Assinar(LocNFeW.Gerador.ArquivoFormatoXML, FConfiguracoes.Certificados.Certificado , FConfiguracoes.Certificados.Senha, vAssinada, FMsg)) then
            raise Exception.Create('Falha ao assinar Nota Fiscal Eletrônica '+
-                                   IntToStr(Self.Items[i].NFe.Ide.cNF)+FMsg);
+                                   IntToStr(Self.Items[i].NFe.Ide.nNF)+FMsg);
 {$ELSE}
         if not(NotaUtil.Assinar(LocNFeW.Gerador.ArquivoFormatoXML, FConfiguracoes.Certificados.GetCertificado , vAssinada, FMsg)) then
            raise Exception.Create('Falha ao assinar Nota Fiscal Eletrônica '+
-                                   IntToStr(Self.Items[i].NFe.Ide.cNF)+FMsg);
+                                   IntToStr(Self.Items[i].NFe.Ide.nNF)+FMsg);
 {$ENDIF}
         vAssinada := StringReplace( vAssinada, '<'+ENCODING_UTF8_STD+'>', '', [rfReplaceAll] ) ;
         vAssinada := StringReplace( vAssinada, '<?xml version="1.0"?>', '', [rfReplaceAll] ) ;
@@ -399,7 +399,7 @@ begin
         Assinar;
      if not(NotaUtil.Valida(('<NFe xmlns' + RetornarConteudoEntre(Self.Items[i].XML, '<NFe xmlns', '</NFe>')+ '</NFe>'), FMsg)) then
        raise Exception.Create('Falha na validação dos dados da nota '+
-                               IntToStr(Self.Items[i].NFe.Ide.cNF)+sLineBreak+Self.Items[i].Alertas+FMsg);
+                               IntToStr(Self.Items[i].NFe.Ide.nNF)+sLineBreak+Self.Items[i].Alertas+FMsg);
   end;
 end;
 

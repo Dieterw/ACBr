@@ -78,6 +78,7 @@ var
   PrivateKey    : IPrivateKey;
   Certs         : ICertificates2;
   Cert          : ICertificate2;
+  NumCertCarregado : String;
 {$ENDIF}
 
 type
@@ -177,7 +178,7 @@ uses {$IFDEF ACBrNFeOpenSSL}libxml2, libxmlsec, libxslt, {$ELSE} ComObj, {$ENDIF
 { NotaUtil }
 
 {$IFDEF ACBrNFeOpenSSL}
-function sign_file(const Axml: PChar; const key_file: PChar; const senha: PChar): AnsiString;
+function sign_file(const Axml: PAnsiChar; const key_file: PChar; const senha: PChar): AnsiString;
 var
   doc: xmlDocPtr;
   node: xmlNodePtr;
@@ -200,7 +201,7 @@ begin
          raise Exception.Create('Error: unable to parse');
 
        { find start node }
-       node := xmlSecFindNode(xmlDocGetRootElement(doc), PChar(xmlSecNodeSignature), PChar(xmlSecDSigNs));
+       node := xmlSecFindNode(xmlDocGetRootElement(doc), PAnsiChar(xmlSecNodeSignature), PAnsiChar(xmlSecDSigNs));
        if (node = nil) then
          raise Exception.Create('Error: start node not found');
 
@@ -211,6 +212,69 @@ begin
 
        // { load private key}
        dsigCtx^.signKey := xmlSecCryptoAppKeyLoad(key_file, xmlSecKeyDataFormatPkcs12, senha, nil, nil);
+       if (dsigCtx^.signKey = nil) then
+          raise Exception.Create('Error: failed to load private pem key from "' + key_file + '"');
+
+       { set key name to the file name, this is just an example! }
+       if (xmlSecKeySetName(dsigCtx^.signKey, PAnsiChar(key_file)) < 0) then
+         raise Exception.Create('Error: failed to set key name for key from "' + key_file + '"');
+
+       { sign the template }
+       if (xmlSecDSigCtxSign(dsigCtx, node) < 0) then
+         raise Exception.Create('Error: signature failed');
+
+       { print signed document to stdout }
+       // xmlDocDump(stdout, doc);
+       // Can't use "stdout" from Delphi, so we'll use xmlDocDumpMemory instead...
+       buffer := nil;
+       xmlDocDumpMemory(doc, @buffer, @bufSize);
+       if (buffer <> nil) then
+          { success }
+          result := buffer ;
+   finally
+       { cleanup }
+       if (dsigCtx <> nil) then
+         xmlSecDSigCtxDestroy(dsigCtx);
+
+       if (doc <> nil) then
+         xmlFreeDoc(doc);
+   end ;
+end;
+
+function sign_memory(const Axml: PChar; const key_file: Pchar; const senha: PChar; Size: Cardinal; Ponteiro: Pointer): AnsiString;
+var
+  doc: xmlDocPtr;
+  node: xmlNodePtr;
+  dsigCtx: xmlSecDSigCtxPtr;
+  buffer: PChar;
+  bufSize: integer;
+label done;
+begin
+    doc := nil;
+    node := nil;
+    dsigCtx := nil;
+    result := '';
+
+    if (Axml = nil) or (key_file = nil) then Exit;
+    try
+       { load template }
+       doc := xmlParseDoc(Axml);
+       if ((doc = nil) or (xmlDocGetRootElement(doc) = nil)) then
+         raise Exception.Create('Error: unable to parse');
+
+       { find start node }
+       node := xmlSecFindNode(xmlDocGetRootElement(doc), PChar(xmlSecNodeSignature), PChar(xmlSecDSigNs));
+       if (node = nil) then
+         raise Exception.Create('Error: start node not found');
+
+       { create signature context, we don't need keys manager in this example }
+       dsigCtx := xmlSecDSigCtxCreate(nil);
+       if (dsigCtx = nil) then
+         raise Exception.Create('Error :failed to create signature context');
+
+       // { load private key, assuming that there is not password }
+       dsigCtx^.signKey := xmlSecCryptoAppKeyLoadMemory(Ponteiro, size, xmlSecKeyDataFormatPkcs12, senha, nil, nil);
+
        if (dsigCtx^.signKey = nil) then
           raise Exception.Create('Error: failed to load private pem key from "' + key_file + '"');
 
@@ -1114,7 +1178,7 @@ begin
      Schema.add( 'http://www.portalfiscal.inf.br/nfe', ExtractFileDir(application.ExeName)+'\Schemas\inutNFe_v1.07.xsd')
   else if Tipo = 3 then
      Schema.add( 'http://www.portalfiscal.inf.br/nfe', ExtractFileDir(application.ExeName)+'\Schemas\envDPEC_v1.01.xsd');
-     
+
   DOMDocument.schemas := Schema;
   ParseError := DOMDocument.validate;
   Result := (ParseError.errorCode = 0);
@@ -1142,6 +1206,8 @@ function AssinarLibXML(const AXML, ArqPFX, PFXSenha : AnsiString;
  Var I, J, PosIni, PosFim : Integer ;
      URI, AStr, XmlAss : AnsiString ;
      Tipo : Integer; // 1 - NFE 2 - Cancelamento 3 - Inutilizacao
+     Cert: TMemoryStream;
+     Cert2: TStringStream;
 begin
   AStr := AXML ;
 
@@ -1248,7 +1314,18 @@ begin
   else if Tipo = 4 then
      AStr := AStr + '</envDPEC>';
 
-  XmlAss := sign_file(PChar(AStr), PChar(ArqPFX), PChar(PFXSenha)) ;
+
+  if FileExists(ArqPFX) then
+    XmlAss := sign_file(PChar(AStr), PChar(ArqPFX), PChar(PFXSenha))
+  else
+  begin
+    Cert := TMemoryStream.Create;
+    Cert2 := TStringStream.Create(ArqPFX);
+
+    Cert.LoadFromStream(Cert2);
+
+    XmlAss := sign_memory(PChar(AStr), PChar(ArqPFX), PChar(PFXSenha), Cert.Size, Cert.Memory) ;
+  end;
 
   // Removendo quebras de linha //
   XmlAss := StringReplace( XmlAss, #10, '', [rfReplaceAll] ) ;
@@ -1366,6 +1443,9 @@ begin
    if (xmldsig.signature = nil) then
       raise Exception.Create('É preciso carregar o template antes de assinar.');
 
+   if NumCertCarregado <> Certificado.SerialNumber then
+      CertStoreMem := nil;
+
    if  CertStoreMem = nil then
     begin
       CertStore := CoStore.Create;
@@ -1379,7 +1459,10 @@ begin
       begin
         Cert := IInterface(Certs.Item[i]) as ICertificate2;
         if Cert.SerialNumber = Certificado.SerialNumber then
+         begin
            CertStoreMem.Add(Cert);
+           NumCertCarregado := Certificado.SerialNumber;
+         end;
       end;
    end;
 

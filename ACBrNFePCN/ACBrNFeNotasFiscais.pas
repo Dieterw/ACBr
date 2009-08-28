@@ -485,15 +485,15 @@ begin
    try
       try
          if not smtp.Login() then
-            raise Exception.Create('SMTP ERROR: Login:' + smtp.EnhCodeString);
+            raise Exception.Create('SMTP ERROR: Login:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
          if not smtp.MailFrom( sFrom, Length(sFrom)) then
-            raise Exception.Create('SMTP ERROR: MailFrom:' + smtp.EnhCodeString);
+            raise Exception.Create('SMTP ERROR: MailFrom:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
          if not smtp.MailTo(sTo) then
-            raise Exception.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString);
+            raise Exception.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
          if not smtp.MailData(slmsg_Lines) then
-            raise Exception.Create('SMTP ERROR: MailData:' + smtp.EnhCodeString);
+            raise Exception.Create('SMTP ERROR: MailData:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
          if not smtp.Logout() then
-            raise Exception.Create('SMTP ERROR: Logout:' + smtp.EnhCodeString);
+            raise Exception.Create('SMTP ERROR: Logout:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
       except
          HandleException;
       end;

@@ -427,7 +427,11 @@ end;
 {$IFDEF ACBrNFeOpenSSL}
 procedure TWebServicesBase.ConfiguraHTTP( HTTP : THTTPSend; Action : AnsiString);
 begin
-  HTTP.Sock.SSL.PFXfile     := FConfiguracoes.Certificados.Certificado;
+  if FileExists(FConfiguracoes.Certificados.Certificado) then
+    HTTP.Sock.SSL.PFXfile   := FConfiguracoes.Certificados.Certificado
+  else
+    HTTP.Sock.SSL.PFX       := FConfiguracoes.Certificados.Certificado;
+
   HTTP.Sock.SSL.KeyPassword := FConfiguracoes.Certificados.Senha;
 
   HTTP.ProxyHost  := FConfiguracoes.WebServices.ProxyHost;

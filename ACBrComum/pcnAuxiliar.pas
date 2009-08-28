@@ -134,7 +134,8 @@ begin
   begin
 {$WARNINGS OFF}
     if Pos(aTexto[i], COM_ACENTO) <> 0 then
-      aTexto[i] := SEM_ACENTO[Pos(aTexto[i], COM_ACENTO)];
+      aTexto[i] := AnsiChar(SEM_ACENTO[Pos(aTexto[i], COM_ACENTO)]);
+//      aTexto[i] := SEM_ACENTO[Pos(aTexto[i], COM_ACENTO)];
     if not (aTexto[i] in [' '..'~']) then
       aTexto[i] := ' ';
 {$WARNINGS ON}

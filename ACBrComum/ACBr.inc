@@ -359,6 +359,11 @@
     {$DEFINE ACBrCTeOpenSSL}
     {$DEFINE KYLIX}
   {$ENDIF LINUX}
+  {$IFNDEF CLR}
+    {$DEFINE CPU386}  // For Borland compilers select the x86 compat assembler by default
+    {$DEFINE CPU32}   // Assume Borland compilers are 32-bit (rather than 64-bit)
+    {$DEFINE CPUASM}
+  {$ENDIF ~CLR}
 {$ENDIF BORLAND}
 
 //------------------------------------------------------------------------------
@@ -369,6 +374,21 @@
   {$IFDEF KYLIX}
     {$I ACBr_kylix.inc} // FPC incompatible stuff
   {$ELSE ~KYLIX}
+
+    {$IFDEF VER210} // RAD Studio 2010
+      {$DEFINE BDS}
+      {$DEFINE BDS7}
+      {$DEFINE COMPILER14}
+      {$IFDEF BCB}
+        {$DEFINE BCB14}
+      {$ELSE}
+        {$DEFINE DELPHI14}
+        {$DEFINE DELPHI2010} // synonym to DELPHI14
+        {$DEFINE DELPHICOMPILER14}
+      {$ENDIF BCB}
+      {$DEFINE RTL210_UP}
+      {$UNDEF UNKNOWN_COMPILER_VERSION}
+    {$ENDIF VER210}
 
     {$IFDEF VER200}
       {H+}
@@ -383,6 +403,13 @@
       {$DEFINE DELPHI11}
       {$DEFINE DELPHICOMPILER11}
       {$DEFINE RTL190_UP}
+    {$ENDIF}
+
+    {$IFDEF VER185}
+      {$DEFINE COMPILER11}
+      {$DEFINE DELPHI11}
+      {$DEFINE DELPHICOMPILER11}
+      {$DEFINE RTL185_UP}
     {$ENDIF}
 
     {$IFDEF VER180}
@@ -502,6 +529,23 @@
 //------------------------------------------------------------------------------
 // DELPHIX_UP à partir dos mapeamentos DELPHIX
 //------------------------------------------------------------------------------
+
+{$IFDEF DELPHI14}
+  {$DEFINE DELPHI14_UP}
+  {$DEFINE DELPHI13_UP}
+  {$DEFINE DELPHI12_UP}
+  {$DEFINE DELPHI11_UP}
+  {$DEFINE DELPHI10_UP}
+  {$DEFINE DELPHI9_UP}
+  {$DEFINE DELPHI8_UP}
+  {$DEFINE DELPHI7_UP}
+  {$DEFINE DELPHI6_UP}
+  {$DEFINE DELPHI5_UP}
+  {$DEFINE DELPHI4_UP}
+  {$DEFINE DELPHI3_UP}
+  {$DEFINE DELPHI2_UP}
+  {$DEFINE DELPHI1_UP}
+{$ENDIF}
 
 {$IFDEF DELPHI12}
   {$DEFINE DELPHI12_UP}
@@ -683,6 +727,23 @@
 // DELPHICOMPILERX_UP à partir dos mapeamentos DELPHICOMPILERX
 //------------------------------------------------------------------------------
 
+{$IFDEF DELPHICOMPILER14}
+  {$DEFINE DELPHICOMPILER14_UP}
+  {$DEFINE DELPHICOMPILER13_UP}
+  {$DEFINE DELPHICOMPILER12_UP}
+  {$DEFINE DELPHICOMPILER11_UP}
+  {$DEFINE DELPHICOMPILER10_UP}
+  {$DEFINE DELPHICOMPILER9_UP}
+  {$DEFINE DELPHICOMPILER8_UP}
+  {$DEFINE DELPHICOMPILER7_UP}
+  {$DEFINE DELPHICOMPILER6_UP}
+  {$DEFINE DELPHICOMPILER5_UP}
+  {$DEFINE DELPHICOMPILER4_UP}
+  {$DEFINE DELPHICOMPILER3_UP}
+  {$DEFINE DELPHICOMPILER2_UP}
+  {$DEFINE DELPHICOMPILER1_UP}
+{$ENDIF}
+
 {$IFDEF DELPHICOMPILER12}
   {$DEFINE DELPHICOMPILER12_UP}
   {$DEFINE DELPHICOMPILER11_UP}
@@ -800,6 +861,24 @@
 //------------------------------------------------------------------------------
 // COMPILERX_UP à partir do mapeamento de nomes COMPILERX
 //------------------------------------------------------------------------------
+
+{$IFDEF COMPILER14}
+  {$DEFINE COMPILER14_UP}
+  {$DEFINE COMPILER13_UP}
+  {$DEFINE COMPILER12_UP}
+  {$DEFINE COMPILER11_UP}
+  {$DEFINE COMPILER10_UP}
+  {$DEFINE COMPILER9_UP}
+  {$DEFINE COMPILER8_UP}
+  {$DEFINE COMPILER7_UP}
+  {$DEFINE COMPILER6_UP}
+  {$DEFINE COMPILER5_UP}
+  {$DEFINE COMPILER4_UP}
+  {$DEFINE COMPILER35_UP}
+  {$DEFINE COMPILER3_UP}
+  {$DEFINE COMPILER2_UP}
+  {$DEFINE COMPILER1_UP}
+{$ENDIF}
 
 {$IFDEF COMPILER12}
   {$DEFINE COMPILER12_UP}
@@ -944,6 +1023,14 @@
 //------------------------------------------------------------------------------
 // RTLX_UP à partir dos mapeamentos RTLX_UP
 //------------------------------------------------------------------------------
+
+{$IFDEF RTL200_UP}
+  {$DEFINE RTL185_UP}
+{$ENDIF}
+
+{$IFDEF RTL185_UP}
+  {$DEFINE RTL180_UP}
+{$ENDIF}
 
 {$IFDEF RTL180_UP}
   {$DEFINE RTL170_UP}

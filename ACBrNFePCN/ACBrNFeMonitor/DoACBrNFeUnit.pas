@@ -391,11 +391,11 @@ begin
             end;
            if (Cmd.Metodo = 'adicionarnfe')  or (Cmd.Metodo = 'adicionarnfesefaz') then
             begin
-              ForceDirectories(PathWithDelim(ExtractFilePath(Application.ExeName))+'Lotes'+PathDelim+'Lote'+Cmd.Params(1));
+              ForceDirectories(PathWithDelim(ExtractFilePath(Application.ExeName))+'Lotes'+PathDelim+'Lote'+trim(Cmd.Params(1)));
               ACBrNFe1.NotasFiscais.GerarNFe;
               Alertas := ACBrNFe1.NotasFiscais.Items[0].Alertas;
               ACBrNFe1.NotasFiscais.Valida;
-              ArqNFe := PathWithDelim(PathWithDelim(ExtractFilePath(Application.ExeName))+'Lotes'+PathDelim+'Lote'+Cmd.Params(1))+StringReplace(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID, 'NFe', '', [rfIgnoreCase])+'-nfe.xml';
+              ArqNFe := PathWithDelim(PathWithDelim(ExtractFilePath(Application.ExeName))+'Lotes'+PathDelim+'Lote'+trim(Cmd.Params(1)))+StringReplace(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID, 'NFe', '', [rfIgnoreCase])+'-nfe.xml';
               ACBrNFe1.NotasFiscais.SaveToFile(ExtractFilePath(ArqNFe));
             end
            else if (Cmd.Metodo = 'criarnfe')  or (Cmd.Metodo = 'criarnfesefaz') or
@@ -430,8 +430,8 @@ begin
               //Carregar Notas quando enviar lote
               if Cmd.Metodo = 'enviarlotenfe' then
                begin
-                 if not DirectoryExists(PathWithDelim(ExtractFilePath(Application.ExeName))+'Lotes'+PathDelim+'Lote'+Cmd.Params(0)) then
-                    raise Exception.Create('Diretório não encontrado:'+PathWithDelim(ExtractFilePath(Application.ExeName))+'Lotes'+PathDelim+'Lote'+Cmd.Params(0))
+                 if not DirectoryExists(PathWithDelim(ExtractFilePath(Application.ExeName))+'Lotes'+PathDelim+'Lote'+trim(Cmd.Params(0))) then
+                    raise Exception.Create('Diretório não encontrado:'+PathWithDelim(ExtractFilePath(Application.ExeName))+'Lotes'+PathDelim+'Lote'+trim(Cmd.Params(0)))
                  else
                   begin
                     ACBrNFe1.NotasFiscais.Clear;
@@ -1445,17 +1445,17 @@ begin
      smtp.FullSSL := SSL;
      smtp.AutoTLS := SSL;
      if not smtp.Login() then
-       raise Exception.Create('SMTP ERROR: Login:' + smtp.EnhCodeString);
+       raise Exception.Create('SMTP ERROR: Login:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
 
      if not smtp.MailFrom(sFrom, Length(sFrom)) then
-       raise Exception.Create('SMTP ERROR: MailFrom:' + smtp.EnhCodeString);
+       raise Exception.Create('SMTP ERROR: MailFrom:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
      if not smtp.MailTo(sTo) then
-       raise Exception.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString);
+       raise Exception.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
      if not smtp.MailData(msg_lines) then
-       raise Exception.Create('SMTP ERROR: MailData:' + smtp.EnhCodeString);
+       raise Exception.Create('SMTP ERROR: MailData:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
 
      if not smtp.Logout() then
-       raise Exception.Create('SMTP ERROR: Logout:' + smtp.EnhCodeString);
+       raise Exception.Create('SMTP ERROR: Logout:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
   finally
      msg_lines.Free;
      smtp.Free;

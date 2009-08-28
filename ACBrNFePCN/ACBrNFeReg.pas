@@ -76,7 +76,6 @@ type
   public
     function GetAttributes: TPropertyAttributes; override;
     procedure GetValues( Proc : TGetStrProc) ; override;
-    procedure SetValue(const Value : ansistring); override;
   end;
 
   { Editor de Proriedades de Componente para chamar OpenDialog }
@@ -154,12 +153,6 @@ begin
   inherited;
   for i:= 0 to High(NFeUF) do
     Proc(NFeUF[i]);
-end;
-
-procedure THRWEBSERVICEUFProperty.SetValue(const Value: ansistring);
-begin
-  inherited;
-
 end;
 
 { TACBrNFeDirProperty }

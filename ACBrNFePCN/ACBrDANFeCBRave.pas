@@ -171,9 +171,12 @@ var DANFeRave:TDANFeRave;
 begin
   DANFeRave:=TDANFeRave.Create(nil);
   rvPDF:=TRvRenderPDF.Create(DANFeRave);
+  rvPDF.OnDecodeImage:=DANFeRave.RaveDecodeImage;
   rvTXT:=TRvRenderText.Create(DANFeRave);
   rvHTML:=TRvRenderHTML.Create(DANFeRave);
+  rvHTML.OnDecodeImage:=DANFeRave.RaveDecodeImage;
   rvRTF:=TRvRenderRTF.Create(DANFeRave);
+  rvRTF.OnDecodeImage:=DANFeRave.RaveDecodeImage;
   try
     rvPDF.EmbedFonts:=False;
     rvPDF.ImageQuality:=90;

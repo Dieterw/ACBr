@@ -174,7 +174,7 @@ type
 implementation
 
 uses {$IFDEF ACBrNFeOpenSSL}libxml2, libxmlsec, libxslt, {$ELSE} ComObj, {$ENDIF} Sysutils,
-  Variants;
+  Variants, ACBrUtil;
 
 { NotaUtil }
 
@@ -1056,9 +1056,13 @@ begin
         if I > 0 then
            Tipo := 3
         else
-           Tipo := 4;   
+           Tipo := 4;
       end;
    end;
+
+ if not DirectoryExists(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas') then
+    raise Exception.Create('Diretório de Schemas não encontrado'+sLineBreak+
+                           PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas');
 
  if Tipo = 1 then
     schema_filename := pchar(ExtractFileDir(application.ExeName)+'\Schemas\nfe_v1.10.xsd')
@@ -1171,6 +1175,11 @@ begin
   DOMDocument.loadXML(XML);
 
   Schema := CoXMLSchemaCache50.Create;
+
+  if not DirectoryExists(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas') then
+     raise Exception.Create('Diretório de Schemas não encontrado'+sLineBreak+
+                            PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas');
+
   if Tipo = 1 then
      Schema.add( 'http://www.portalfiscal.inf.br/nfe', ExtractFileDir(application.ExeName)+'\Schemas\nfe_v1.10.xsd')
   else if Tipo = 2 then

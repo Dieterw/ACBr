@@ -641,13 +641,17 @@ begin
      Result:=FLastY-GetFontHeigh;
      GotoXY(PosX,Result);
      NewLine;
-     PrintXY(PosX,YPos,NomeDoERP);
-     vEnd:='Emitido ';
+     vEnd:='DATA E HORA DA IMPRESSÃO: '+FormatDateTime('dd/mm/yyyy hh:mm:ss',Now);
      if Trim(NomeDoUsuario)>'' then
-        vEnd:=vEnd+' por '+NomeDoUsuario;
-     vEnd:=vEnd+' as '+FormatDateTime('dd/mm/yyyy hh:mm:ss',Now);
-     PrintRight(vEnd,FLastX);
-   end;
+        vEnd:=vEnd+' - '+NomeDoUsuario;
+     PrintXY(PosX,YPos,vEnd);
+
+     if Trim(NomeDoERP)>'' then
+     begin
+        vEnd:='Desenvolvido por '+NomeDoERP;
+        PrintRight(vEnd,FLastX);
+     end;
+  end;
 end;
 
 procedure PrepararItens(PosX, FirstY, LastY: Double);

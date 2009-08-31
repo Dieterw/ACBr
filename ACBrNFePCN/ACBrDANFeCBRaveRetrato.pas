@@ -686,7 +686,8 @@ begin
        FSerie:=IntToStr(Ide.serie);
        FNumeroNF:=FormatFloat('000000000',Ide.NNF);
        FNumeroNF:=Copy(FNumeroNF,1,3)+'.'+Copy(FNumeroNF,4,3)+'.'+Copy(FNumeroNF,7,3);
-       FEspelho:=Trim(procNFe.nProt)='';
+       //FEspelho:=Trim(procNFe.nProt)='';
+       FEspelho:=false; //funcionalidade de espelho suspensa devido reclamações
        FChaveNFe:=RightStr(infNFe.ID,44);
      end;
 

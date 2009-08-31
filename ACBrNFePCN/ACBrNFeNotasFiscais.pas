@@ -68,6 +68,7 @@ type
     FConfirmada : Boolean;
     FMsg : AnsiString ;
     FAlertas: AnsiString;
+    FNomeArq: String;
   public
     constructor Create(Collection2: TCollection); override;
     destructor Destroy; override;
@@ -81,6 +82,7 @@ type
     property Confirmada: Boolean  read FConfirmada write FConfirmada;
     property Msg: AnsiString  read FMsg write FMsg;
     property Alertas: AnsiString read FAlertas write FAlertas;
+    property NomeArq: String read FNomeArq write FNomeArq;
   end;
 
   TNotasFiscais = class(TOwnedCollection)
@@ -414,6 +416,7 @@ begin
        LocNFeR.Leitor.CarregarArquivo(CaminhoArquivo);
        LocNFeR.LerXml;
        Items[Self.Count-1].XML := LocNFeR.Leitor.Arquivo;
+       Items[Self.Count-1].NomeArq := CaminhoArquivo;       
        GerarNFe;  
     finally
        LocNFeR.Free;

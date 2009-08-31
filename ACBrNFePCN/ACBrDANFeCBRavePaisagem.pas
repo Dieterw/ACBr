@@ -113,7 +113,7 @@ begin
         Print('Recebemos de '+Emit.XNome+' os produtos constantes da Nota Fiscal indicada ao lado');
         GotoXY(PosX+FontHeight+FontHeight+0.5,FLastY-2);
         if ExibirResumoCanhoto then
-           Print('Emissão: '+NotaUtil.FormatDate(DateToStr(Ide.DEmi))+'  Destinatário/Remetente: '+Dest.XNome+'  Valor Total: '+NotaUtil.FormatFloat(Total.ICMSTot.VNF));
+           Print('Emissão: '+NotaUtil.FormatDate(DateToStr(Ide.DEmi))+'  Dest/Rem: '+Dest.XNome+'  Valor Total: '+NotaUtil.FormatFloat(Total.ICMSTot.VNF));
 
         Bold:=False;
         GotoXY(PosX+aWidthReceb+LineHeight,PosY+aHeigthNumSerie+aHeigthIdent-1);
@@ -430,7 +430,10 @@ begin
    begin
      PosX:=PosX+aWidthTituloBloco;
      Box([fsTop],PosX,PosY,192,aWidthTituloBloco,'Nome / Razão Social',Dest.XNome);
-     Box([fsTop,fsLeft],XPos,YPos,38,aWidthTituloBloco,'CNPJ / CPF',NotaUtil.FormatarCNPJ(Dest.CNPJCPF),taCenter);
+     if Length(Dest.CNPJCPF) > 11 then
+       Box([fsTop,fsLeft],XPos,YPos,38,aWidthTituloBloco,'CNPJ / CPF',NotaUtil.FormatarCNPJ(Dest.CNPJCPF),taCenter)
+     else
+       Box([fsTop,fsLeft],XPos,YPos,38,aWidthTituloBloco,'CNPJ / CPF',NotaUtil.FormatarCPF(Dest.CNPJCPF),taCenter);
      Box([fsTop,fsLeft],XPos,YPos,21,aWidthTituloBloco,'Data de Emissão',NotaUtil.FormatDate(DateToStr(Ide.DEmi)),taCenter,True);
      with Dest.EnderDest do
       begin

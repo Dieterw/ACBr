@@ -59,8 +59,10 @@ type
        FSenhaCert: AnsiString;
     {$ELSE}
        FNumeroSerie: AnsiString;
+       FDataVenc: TDateTime;
        procedure SetNumeroSerie(const Value: AnsiString);
        function GetNumeroSerie: AnsiString;
+    function GetDataVenc: TDateTime;
     {$ENDIF}
   public
     {$IFNDEF ACBrNFeOpenSSL}
@@ -73,6 +75,7 @@ type
        property Senha: AnsiString read FSenhaCert write FSenhaCert;
     {$ELSE}
        property NumeroSerie: AnsiString read GetNumeroSerie write SetNumeroSerie;
+       property DataVenc: TDateTime read GetDataVenc; 
     {$ENDIF}
   end;
 
@@ -288,6 +291,7 @@ begin
     if Cert.SerialNumber = FNumeroSerie then
     begin
       Result := Cert;
+      FDataVenc := Cert.ValidToDate;      
       break;
     end;
   end;
@@ -324,11 +328,19 @@ begin
   begin
     Cert := IInterface(Certs2.Item[1]) as ICertificate2;
     FNumeroSerie := Cert.SerialNumber;
+    FDataVenc    := Cert.ValidToDate;
   end;
 
   Result := FNumeroSerie;
 end;
 
 {$ENDIF}
+
+function TCertificadosConf.GetDataVenc: TDateTime;
+begin
+ if FDataVenc = 0 then
+    GetCertificado;
+ Result := FDataVenc;
+end;
 
 end.

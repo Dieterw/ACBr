@@ -39,8 +39,8 @@ clique em "Project, Build ACBr", Volte ao pacote e clique em compile.
 -Na IDE do Delphi, clique em "File - Close All"
 
 -Abra o arquivo ACBrNFePCN.dpk, clique em compile e ao ser solicitado para adicionar o
-pacote ACBr_CLX ou ACBr_VCL clique em Cancel. Clique em Install e ao ser solicitado para adicionar o
-pacote ACBr_CLX ou ACBr_VCL clique em Cancel
+pacote ACBr_CLX ou ACBr_VCL clique em Cancel (se der erro tente clicar em OK). Clique em Install e ao ser solicitado para adicionar o
+pacote ACBr_CLX ou ACBr_VCL clique em Cancel (se der erro tente clicar em OK)
 
 Versão CAPICOM
 
@@ -67,15 +67,15 @@ clique em "Project, Build ACBr", Volte ao pacote e clique em compile.
 -Na IDE do Delphi, clique em "File - Close All"
 
 -Abra o arquivo ACBrNFePCN.dpk, clique em compile e ao ser solicitado para adicionar o
-pacote ACBr_CLX ou ACBr_VCL clique em Cancel. Clique em Install e ao ser solicitado para adicionar o
-pacote ACBr_CLX ou ACBr_VCL clique em Cancel
+pacote ACBr_CLX ou ACBr_VCL clique em Cancel (se der erro tente clicar em OK). Clique em Install e ao ser solicitado para adicionar o
+pacote ACBr_CLX ou ACBr_VCL clique em Cancel (se der erro tente clicar em OK).
 
 Para instalar o DANFe, siga os passos abaixo:
 
 -Na IDE do Delphi, clique em "File - Close All"
 -Abra o arquivo ACBrNFeDanfeRV.dpk, clique em compile e ao ser solicitado para adicionar o
-pacote ACBr_CLX ou ACBr_VCL clique em Cancel. Clique em Install e ao ser solicitado para adicionar o
-pacote ACBr_CLX ou ACBr_VCL clique em Cancel
+pacote ACBr_CLX ou ACBr_VCL clique em Cancel (se der erro tente clicar em OK). Clique em Install e ao ser solicitado para adicionar o
+pacote ACBr_CLX ou ACBr_VCL clique em Cancel (se der erro tente clicar em OK)
 
 Caso esteja usando a versão CAPICOM, e mesmo após registrar as DLLs continuar recebendo a mensagem de
 classe não registrada, use o seguinte arquivo: https://wwws.prodemge.gov.br/images/stories/exe/capicom.exe

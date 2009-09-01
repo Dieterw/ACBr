@@ -224,7 +224,9 @@ begin
          vEnd:=XMun+' - '+UF;
          PrintCenter(vEnd,CenterX);
          NewLine;
-         vEnd:='FONE: '+NotaUtil.FormatarFone(Fone)+' / FAX: '+NotaUtil.FormatarFone(FaxDoEmitente);
+         vEnd:='FONE: '+NotaUtil.FormatarFone(Fone);
+         if trim(FaxDoEmitente)>'' then
+            vEnd:=vEnd+' / FAX: '+NotaUtil.FormatarFone(FaxDoEmitente);
          PrintCenter(vEnd,CenterX);
          NewLine;
          vEnd:=SiteDoEmitente;
@@ -242,6 +244,8 @@ end;
 
 function ImprimirTituloDANFe(PosX, PosY: Double):Double;
 var aWidth, CenterX:Double;
+    i:Integer;
+    VarNumPage:String;
 begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
@@ -272,7 +276,15 @@ begin
      NewLine;
      PrintCenter('N.º '+FNumeroNF,CenterX);
      NewLine;
-     PrintCenter('SÉRIE '+IntToStr(Ide.Serie)+' - FOLHA '+Macro(midCurrentPage)+'/'+Macro(midTotalPages),CenterX);
+
+     for i:=FPageNum-1 downto 1 do begin
+         VarNumPage:='PAGE'+FormatFloat('000000',FCurrentPage-(FPageNum-i));
+         SetPIVar(VarNumPage,IntToStr(i)+'/'+IntToStr(FPageNum));
+     end;
+     VarNumPage:='PAGE'+FormatFloat('000000',FCurrentPage);
+     SetPIVar(VarNumPage,IntToStr(FPageNum)+'/'+IntToStr(FPageNum));
+
+     PrintCenter('SÉRIE '+IntToStr(Ide.Serie)+' - FOLHA '+PIVar(VarNumPage),CenterX);
      Bold:=False;
   end;
 end;
@@ -683,6 +695,7 @@ begin
    begin
     SetPen(clBlack,psSolid,5,pmCopy);
     Inc(FPageNum);
+    Inc(FCurrentPage);
     if FPageNum=1 then
      begin
        FSerie:=IntToStr(Ide.serie);

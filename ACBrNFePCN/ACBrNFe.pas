@@ -231,9 +231,11 @@ begin
      begin
        if NotasFiscais.Items[i].Confirmada and Imprimir then
        begin
-          Danfe.ProtocoloNFe:=WebServices.Retorno.NFeRetorno.ProtNFe.Items[i].nProt+' '+
-                              DateTimeToStr(WebServices.Retorno.NFeRetorno.ProtNFe.Items[i].dhRecbto);
+//          Danfe.ProtocoloNFe:=WebServices.Retorno.NFeRetorno.ProtNFe.Items[i].nProt+' '+
+//                              DateTimeToStr(WebServices.Retorno.NFeRetorno.ProtNFe.Items[i].dhRecbto);
           NotasFiscais.Items[i].Imprimir;
+          if (DANFE.ClassName='TACBrNFeDANFERaveCB') then
+            Break;          
        end;
      end;
   end;

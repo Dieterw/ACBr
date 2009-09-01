@@ -91,7 +91,7 @@ type
      FCasasDecimais_vUnCom:integer;
      FExibirResumoCanhoto:boolean;
   public
-     FPageNum, FNFIndex:Integer;
+     FCurrentPage, FPageNum, FNFIndex:Integer;
      FChaveNFe, FNumeroNF, FSerie: String;
      FEspelho:Boolean;
      FLastItens:Double;
@@ -364,6 +364,7 @@ procedure TDANFeRave.RavePrint(Sender: TObject);
 begin
   with BaseReport  do begin
     FNFIndex:=0;
+    FCurrentPage:=0;
     while FNFIndex<FACBrNFe.NotasFiscais.Count do begin
       FPageNum:=0;
 

@@ -334,13 +334,12 @@ begin
   Result := FNumeroSerie;
 end;
 
-{$ENDIF}
-
 function TCertificadosConf.GetDataVenc: TDateTime;
 begin
  if FDataVenc = 0 then
     GetCertificado;
  Result := FDataVenc;
 end;
+{$ENDIF}
 
 end.

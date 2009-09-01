@@ -209,6 +209,8 @@ type
 
     procedure IconTray (var Msg: TMessage);
     message wm_IconMessage;
+    procedure WMEndSession (var Msg : TWMEndSession); message WM_ENDSESSION;
+
   public
     { Public declarations }
     nid: TNotifyIconData;
@@ -785,7 +787,13 @@ begin
     Ocultar1.Click
   else
    Restaurar1.Click;
+end;
 
+procedure TfrmAcbrNfeMonitor.WMEndSession (var Msg : TWMEndSession);
+begin
+ if Msg.EndSession then
+   pCanClose := True;
+ inherited;
 end;
 
 procedure TfrmAcbrNfeMonitor.DoACBrTimer(Sender: TObject);

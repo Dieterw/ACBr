@@ -117,7 +117,7 @@ type
     edtLogoMarca: TEdit;
     Label7: TLabel;
     sbLogoMarca: TSpeedButton;
-    GroupBox3: TGroupBox;
+    gbxEmpresa: TGroupBox;
     Label3: TLabel;
     edtSiteEmpresa: TEdit;
     Label4: TLabel;
@@ -146,11 +146,21 @@ type
     Label1: TLabel;
     edtNumCopia: TEdit;
     ACBrNFeDANFERave1: TACBrNFeDANFERave;
-    Label2: TLabel;
-    edtMargemInf: TEdit;
     edtPathPDF: TEdit;
     sbPathPDF: TSpeedButton;
     Label28: TLabel;
+    gbxMargem: TGroupBox;
+    Label2: TLabel;
+    edtMargemInf: TEdit;
+    edtMargemSup: TEdit;
+    Label29: TLabel;
+    edtMargemDir: TEdit;
+    Label30: TLabel;
+    edtMargemEsq: TEdit;
+    Label31: TLabel;
+    rgCasasDecimaisQtd: TRadioGroup;
+    cbxHoraSaida: TCheckBox;
+    rgCasasDecimaisValor: TRadioGroup;
     procedure DoACBrTimer(Sender: TObject);
     procedure edOnlyNumbers(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
@@ -550,9 +560,15 @@ begin
      edtFaxEmpresa.Text        := Ini.ReadString( 'DANFE','Fax'   ,'') ;
      cbxImpDescPorc.Checked    := Ini.ReadBool(   'DANFE','ImpDescPorc',False) ;
      cbxMostrarPreview.Checked := Ini.ReadBool(   'DANFE','MostrarPreview',False) ;
+     cbxHoraSaida.Checked      := Ini.ReadBool(   'DANFE','ImprimirHora',False) ;
      edtNumCopia.Text          := Ini.ReadString( 'DANFE','Copias','1') ;
      edtMargemInf.Text         := Ini.ReadString( 'DANFE','Margem','0,8') ;
+     edtMargemSup.Text         := Ini.ReadString( 'DANFE','MargemSup','0,8') ;
+     edtMargemDir.Text         := Ini.ReadString( 'DANFE','MargemDir','0,51') ;
+     edtMargemEsq.Text         := Ini.ReadString( 'DANFE','MargemEsq','0,6') ;
      edtPathPDF.Text           := PathWithDelim(Ini.ReadString( 'DANFE','PathPDF',ExtractFilePath(Application.ExeName))) ;
+     rgCasasDecimaisQtd.ItemIndex   := Ini.ReadInteger('DANFE','DecimaisQTD',0) ;
+     rgCasasDecimaisValor.ItemIndex := Ini.ReadInteger('DANFE','DecimaisValor',0) ;
 
      if ACBrNFe1.DANFE <> nil then
       begin
@@ -563,12 +579,18 @@ begin
         ACBrNFeDANFERave1.Site    := edtSiteEmpresa.Text;
         ACBrNFeDANFERave1.Email   := edtEmailEmpresa.Text;
         ACBrNFeDANFERave1.Fax     := edtFaxEmpresa.Text;
-        ACBrNFeDANFERave1.ImprimirDescPorc := cbxImpDescPorc.Checked;
-        ACBrNFeDANFERave1.MostrarPreview   := cbxMostrarPreview.Checked;
+        ACBrNFeDANFERave1.ImprimirDescPorc  := cbxImpDescPorc.Checked;
+        ACBrNFeDANFERave1.MostrarPreview    := cbxMostrarPreview.Checked;
+        ACBrNFeDANFERave1.ImprimirHoraSaida := cbxHoraSaida.Checked;
         ACBrNFeDANFERave1.Impressora := cbxImpressora.Text;
         ACBrNFeDANFERave1.NumCopias  := StrToIntDef(edtNumCopia.Text, 1);
         ACBrNFeDANFERave1.MargemInferior  := StrToFloatDef(edtMargemInf.Text,0.8);
+        ACBrNFeDANFERave1.MargemSuperior  := StrToFloatDef(edtMargemSup.Text,0.8);
+        ACBrNFeDANFERave1.MargemDireita   := StrToFloatDef(edtMargemDir.Text,0.51);
+        ACBrNFeDANFERave1.MargemEsquerda  := StrToFloatDef(edtMargemEsq.Text,0.6);
         ACBrNFeDANFERave1.PathPDF    := edtPathPDF.Text;
+        ACBrNFeDANFERave1.CasasDecimais._qCom   := rgCasasDecimaisQtd.ItemIndex+2;
+        ACBrNFeDANFERave1.CasasDecimais._vUnCom := rgCasasDecimaisValor.ItemIndex+2;
       end;
 
      edtSmtpHost.Text      := Ini.ReadString( 'Email','Host'   ,'') ;
@@ -654,9 +676,17 @@ begin
      Ini.WriteString( 'DANFE','Fax'  ,edtFaxEmpresa.Text) ;
      Ini.WriteBool(   'DANFE','ImpDescPorc',cbxImpDescPorc.Checked);
      Ini.WriteBool(   'DANFE','MostrarPreview',cbxMostrarPreview.Checked);
+     Ini.WriteBool(   'DANFE','ImprimirHora',cbxHoraSaida.Checked);
      Ini.WriteString( 'DANFE','Copias'  ,edtNumCopia.Text) ;
-     Ini.WriteString( 'DANFE','Margem'  ,edtMargemInf.Text) ;
+     Ini.WriteString( 'DANFE','Margem'   ,edtMargemInf.Text) ;
+     Ini.WriteString( 'DANFE','MargemSup',edtMargemSup.Text) ;
+     Ini.WriteString( 'DANFE','MargemDir',edtMargemDir.Text) ;
+     Ini.WriteString( 'DANFE','MargemEsq',edtMargemEsq.Text) ;
      Ini.WriteString( 'DANFE','PathPDF'  ,edtPathPDF.Text) ;
+     Ini.WriteInteger('DANFE','DecimaisQTD'  ,rgCasasDecimaisQtd.ItemIndex  );
+     Ini.WriteInteger('DANFE','DecimaisValor',rgCasasDecimaisValor.ItemIndex);
+
+
   finally
      Ini.Free ;
   end ;

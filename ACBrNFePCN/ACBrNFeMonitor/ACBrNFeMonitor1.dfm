@@ -2,7 +2,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
   Left = 571
   Top = 159
   Width = 545
-  Height = 485
+  Height = 501
   ActiveControl = btMinimizar
   Caption = 'ACBrNFe Monitor'
   Color = clBtnFace
@@ -27,7 +27,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
     Left = 0
     Top = 0
     Width = 529
-    Height = 158
+    Height = 149
     Align = alClient
     TabOrder = 0
     object Splitter1: TSplitter
@@ -84,7 +84,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       Left = 1
       Top = 92
       Width = 527
-      Height = 65
+      Height = 56
       Align = alClient
       TabOrder = 1
       object pTodResp: TPanel
@@ -100,7 +100,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
         Left = 1
         Top = 18
         Width = 525
-        Height = 46
+        Height = 37
         Align = alClient
         Lines.Strings = (
           '')
@@ -114,7 +114,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
   end
   object pBotoes: TPanel
     Left = 0
-    Top = 390
+    Top = 406
     Width = 529
     Height = 40
     Align = alBottom
@@ -4096,7 +4096,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 430
+    Top = 446
     Width = 529
     Height = 19
     Panels = <
@@ -4109,9 +4109,9 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
   end
   object pConfig: TPanel
     Left = 0
-    Top = 158
+    Top = 149
     Width = 529
-    Height = 232
+    Height = 257
     Align = alBottom
     TabOrder = 3
     Visible = False
@@ -4119,8 +4119,8 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       Left = 1
       Top = 0
       Width = 527
-      Height = 231
-      ActivePage = Monitor
+      Height = 256
+      ActivePage = DANFE
       Align = alBottom
       TabOrder = 0
       object Monitor: TTabSheet
@@ -4341,7 +4341,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
         ImageIndex = 1
         DesignSize = (
           519
-          203)
+          228)
         object Label27: TLabel
           Left = 8
           Top = 116
@@ -4535,9 +4535,9 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           end
           object rgTipoAmb: TRadioGroup
             Left = 8
-            Top = 69
+            Top = 64
             Width = 233
-            Height = 60
+            Height = 68
             Caption = 'Selecione o Ambiente de Destino'
             Columns = 2
             ItemIndex = 1
@@ -4634,7 +4634,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
         ImageIndex = 3
         DesignSize = (
           519
-          203)
+          228)
         object GroupBox1: TGroupBox
           Left = 3
           Top = 4
@@ -4747,17 +4747,17 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
         ImageIndex = 4
         DesignSize = (
           519
-          203)
+          228)
         object Label7: TLabel
           Left = 7
-          Top = 52
+          Top = 36
           Width = 57
           Height = 13
           Caption = 'Logo Marca'
         end
         object sbLogoMarca: TSpeedButton
           Left = 226
-          Top = 66
+          Top = 48
           Width = 23
           Height = 24
           Glyph.Data = {
@@ -4778,24 +4778,17 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
         end
         object Label5: TLabel
           Left = 8
-          Top = 92
+          Top = 72
           Width = 88
           Height = 13
           Caption = 'Impressora Padr'#227'o'
         end
         object Label1: TLabel
-          Left = 7
-          Top = 132
-          Width = 87
+          Left = 183
+          Top = 72
+          Width = 60
           Height = 13
-          Caption = 'N'#250'mero de C'#243'pias'
-        end
-        object Label2: TLabel
-          Left = 104
-          Top = 132
-          Width = 73
-          Height = 13
-          Caption = 'Margem Inferior'
+          Caption = 'N'#250'm. C'#243'pias'
         end
         object sbPathPDF: TSpeedButton
           Left = 490
@@ -4829,8 +4822,8 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
         object rgTipoDanfe: TRadioGroup
           Left = 8
           Top = 4
-          Width = 250
-          Height = 41
+          Width = 242
+          Height = 33
           Caption = 'DANFE'
           Columns = 2
           ItemIndex = 0
@@ -4841,19 +4834,19 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
         end
         object edtLogoMarca: TEdit
           Left = 7
-          Top = 68
+          Top = 52
           Width = 218
           Height = 21
           TabOrder = 1
         end
-        object GroupBox3: TGroupBox
+        object gbxEmpresa: TGroupBox
           Left = 272
           Top = 4
           Width = 242
           Height = 129
           Anchors = [akLeft, akTop, akRight]
           Caption = 'Dados Empresa Emissora'
-          TabOrder = 2
+          TabOrder = 7
           DesignSize = (
             242
             129)
@@ -4905,45 +4898,36 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
         end
         object cbxImpressora: TComboBox
           Left = 8
-          Top = 108
-          Width = 242
+          Top = 88
+          Width = 169
           Height = 21
-          ItemHeight = 0
-          TabOrder = 3
+          ItemHeight = 13
+          TabOrder = 2
         end
         object cbxImpDescPorc: TCheckBox
           Left = 278
-          Top = 174
-          Width = 193
+          Top = 170
+          Width = 200
           Height = 17
           Caption = 'Imprimir Desconto em Porcentagem'
-          TabOrder = 6
+          TabOrder = 9
         end
         object cbxMostrarPreview: TCheckBox
-          Left = 8
-          Top = 176
-          Width = 241
+          Left = 278
+          Top = 188
+          Width = 200
           Height = 17
           Caption = 'Mostrar Preview antes da impress'#227'o'
-          TabOrder = 5
+          TabOrder = 10
         end
         object edtNumCopia: TEdit
-          Left = 7
-          Top = 148
-          Width = 90
+          Left = 183
+          Top = 88
+          Width = 66
           Height = 21
-          TabOrder = 4
+          TabOrder = 3
           Text = '1'
           OnKeyPress = edtNumCopiaKeyPress
-        end
-        object edtMargemInf: TEdit
-          Left = 104
-          Top = 148
-          Width = 90
-          Height = 21
-          TabOrder = 7
-          Text = '0,8'
-          OnKeyPress = edtMargemInfKeyPress
         end
         object edtPathPDF: TEdit
           Left = 272
@@ -4952,6 +4936,114 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           Height = 21
           Anchors = [akLeft, akTop, akRight]
           TabOrder = 8
+        end
+        object gbxMargem: TGroupBox
+          Left = 8
+          Top = 109
+          Width = 242
+          Height = 54
+          Caption = 'Margens'
+          TabOrder = 4
+          object Label2: TLabel
+            Left = 8
+            Top = 12
+            Width = 32
+            Height = 13
+            Caption = 'Inferior'
+          end
+          object Label29: TLabel
+            Left = 66
+            Top = 12
+            Width = 39
+            Height = 13
+            Caption = 'Superior'
+          end
+          object Label30: TLabel
+            Left = 124
+            Top = 12
+            Width = 30
+            Height = 13
+            Caption = 'Direita'
+          end
+          object Label31: TLabel
+            Left = 181
+            Top = 12
+            Width = 45
+            Height = 13
+            Caption = 'Esquerda'
+          end
+          object edtMargemInf: TEdit
+            Left = 7
+            Top = 28
+            Width = 54
+            Height = 21
+            TabOrder = 0
+            Text = '0,8'
+            OnKeyPress = edtMargemInfKeyPress
+          end
+          object edtMargemSup: TEdit
+            Left = 65
+            Top = 28
+            Width = 54
+            Height = 21
+            TabOrder = 1
+            Text = '0,8'
+            OnKeyPress = edtMargemInfKeyPress
+          end
+          object edtMargemDir: TEdit
+            Left = 123
+            Top = 28
+            Width = 54
+            Height = 21
+            TabOrder = 2
+            Text = '0,51'
+            OnKeyPress = edtMargemInfKeyPress
+          end
+          object edtMargemEsq: TEdit
+            Left = 180
+            Top = 28
+            Width = 54
+            Height = 21
+            TabOrder = 3
+            Text = '0,6'
+            OnKeyPress = edtMargemInfKeyPress
+          end
+        end
+        object rgCasasDecimaisQtd: TRadioGroup
+          Left = 8
+          Top = 163
+          Width = 241
+          Height = 32
+          Caption = 'Casas Decimais Quantidade'
+          Columns = 3
+          ItemIndex = 0
+          Items.Strings = (
+            '2'
+            '3'
+            '4')
+          TabOrder = 5
+        end
+        object cbxHoraSaida: TCheckBox
+          Left = 278
+          Top = 206
+          Width = 200
+          Height = 17
+          Caption = 'Imprimir Hora de Sa'#237'da '
+          TabOrder = 11
+        end
+        object rgCasasDecimaisValor: TRadioGroup
+          Left = 8
+          Top = 195
+          Width = 241
+          Height = 32
+          Caption = 'Casas Decimais Valor Unit'#225'rio'
+          Columns = 3
+          ItemIndex = 0
+          Items.Strings = (
+            '2'
+            '3'
+            '4')
+          TabOrder = 6
         end
       end
       object Testes: TTabSheet

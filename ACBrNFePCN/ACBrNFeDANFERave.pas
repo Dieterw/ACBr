@@ -72,7 +72,7 @@ type
     procedure ImprimirDANFEPDF(NFE : TNFe = nil); override ;
   published
     property RavFile : String read FRaveFile write FRaveFile ;
-    property dmDanfe : TdmACBrNFeRave read FdmDanfe;
+    property dmDanfe : TdmACBrNFeRave read FdmDanfe write FdmDanfe;
   end;
 
 implementation

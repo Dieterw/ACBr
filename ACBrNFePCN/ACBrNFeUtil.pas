@@ -1186,7 +1186,7 @@ begin
      Schema.add( 'http://www.portalfiscal.inf.br/nfe', ExtractFileDir(application.ExeName)+'\Schemas\cancNFe_v1.07.xsd')
   else if Tipo = 3 then
      Schema.add( 'http://www.portalfiscal.inf.br/nfe', ExtractFileDir(application.ExeName)+'\Schemas\inutNFe_v1.07.xsd')
-  else if Tipo = 3 then
+  else if Tipo = 4 then
      Schema.add( 'http://www.portalfiscal.inf.br/nfe', ExtractFileDir(application.ExeName)+'\Schemas\envDPEC_v1.01.xsd');
 
   DOMDocument.schemas := Schema;

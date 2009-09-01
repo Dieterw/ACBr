@@ -69,6 +69,7 @@ type
     FMsg : AnsiString ;
     FAlertas: AnsiString;
     FNomeArq: String;
+    function GetNFeXML: AnsiString;
   public
     constructor Create(Collection2: TCollection); override;
     destructor Destroy; override;
@@ -78,7 +79,7 @@ type
     function SaveToStream(Stream: TStringStream): boolean;
     procedure EnviarEmail(const sSmtpHost, sSmtpPort, sSmtpUser, sSmtpPasswd, sFrom, sTo, sAssunto: String; sMensagem : TStrings; SSL : Boolean; EnviaPDF: Boolean = true);
     property NFe: TNFe  read FNFe write FNFe;
-    property XML: AnsiString  read FXML write FXML;
+    property XML: AnsiString  read GetNFeXML write FXML;
     property Confirmada: Boolean  read FConfirmada write FConfirmada;
     property Msg: AnsiString  read FMsg write FMsg;
     property Alertas: AnsiString read FAlertas write FAlertas;
@@ -273,6 +274,20 @@ begin
   finally
      m.free;
   end;
+end;
+
+function NotaFiscal.GetNFeXML: AnsiString;
+var
+ LocNFeW : TNFeW;
+begin
+ LocNFeW := TNFeW.Create(Self.NFe);
+ try
+    LocNFeW.schema := TsPL005c;
+    LocNFeW.GerarXml;
+    Result := LocNFeW.Gerador.ArquivoFormatoXML;
+ finally
+    LocNFeW.Free;
+ end;
 end;
 
 { TNotasFiscais }

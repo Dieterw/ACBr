@@ -262,7 +262,7 @@ begin
   dmDanfe.RvSystem1.TitleSetup:='Configurações';
   dmDanfe.RvSystem1.TitleStatus:='Status da Impressão';
   dmDanfe.RvSystem1.SystemFiler.StatusFormat:='Gerando página %p';
-  dmDanfe.RvSystem1.SystemFiler.StreamMode:=smTempFile;
+  dmDanfe.RvSystem1.SystemFiler.StreamMode:=smMemory;
   dmDanfe.RvSystem1.SystemOptions:=[soShowStatus,soAllowPrintFromPreview,soPreviewModal];
   dmDanfe.RvSystem1.SystemPreview.FormState:=wsMaximized;
   dmDanfe.RvSystem1.SystemPreview.ZoomFactor:=100;

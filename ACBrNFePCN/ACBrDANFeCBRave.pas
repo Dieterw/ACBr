@@ -90,6 +90,7 @@ type
      FCasasDecimais_qCom:integer;
      FCasasDecimais_vUnCom:integer;
      FExibirResumoCanhoto:boolean;
+     FImprimirHoraSaida:boolean;
   public
      FCurrentPage, FPageNum, FNFIndex:Integer;
      FChaveNFe, FNumeroNF, FSerie: String;
@@ -114,6 +115,7 @@ type
      property CasasDecimais_qCom:integer read FCasasDecimais_qCom write FCasasDecimais_qCom;
      property CasasDecimais_vUnCom:integer read FCasasDecimais_vUnCom write FCasasDecimais_vUnCom;
      property ExibirResumoCanhoto:boolean read FExibirResumoCanhoto write FExibirResumoCanhoto;
+     property ImprimirHoraSaida:boolean read FImprimirHoraSaida write FImprimirHoraSaida;
   end;
 
 procedure ImprimirDANFeRave(aACBrNFe:TACBrNFe;
@@ -135,7 +137,8 @@ procedure ImprimirDANFeRave(aACBrNFe:TACBrNFe;
                             aMargemDireita:double=5.1;
                             aCasasDecimais_qCom:integer=2;
                             aCasasDecimais_vUnCom:integer=2;
-                            aExibirResumoCanhoto:boolean=false);
+                            aExibirResumoCanhoto:boolean=false;
+                            aImprimirHoraSaida:boolean=false);
 
 var DANFeRave:TDANFeRave;
 
@@ -162,7 +165,8 @@ procedure ImprimirDANFeRave(aACBrNFe:TACBrNFe;
                             aMargemDireita:double=5.1;
                             aCasasDecimais_qCom:integer=2;
                             aCasasDecimais_vUnCom:integer=2;
-                            aExibirResumoCanhoto:boolean=false);
+                            aExibirResumoCanhoto:boolean=false;
+                            aImprimirHoraSaida:boolean=false);
 var DANFeRave:TDANFeRave;
     rvPDF:TRvRenderPDF;
     rvTXT:TRvRenderText;
@@ -197,6 +201,7 @@ begin
     DANFeRave.CasasDecimais_qCom:=aCasasDecimais_qCom;
     DANFeRave.CasasDecimais_vUnCom:=aCasasDecimais_vUnCom;
     DANFeRave.ExibirResumoCanhoto:=aExibirResumoCanhoto;
+    DANFeRave.ImprimirHoraSaida:=aImprimirHoraSaida;
     if aLogoMarca<>nil then
      begin
        DANFeRave.LogoMarca:=TJPEGImage.Create;

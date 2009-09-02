@@ -107,7 +107,8 @@ begin
                        MargemDireita*10,
                        CasasDecimais._qCom,
                        CasasDecimais._vUnCom,
-                       ExibirResumoCanhoto);
+                       ExibirResumoCanhoto,
+                       ImprimirHoraSaida);
     finally
       LogoMarcaEmpresa.Free;
     end;
@@ -154,7 +155,8 @@ begin
                        MargemDireita*10,
                        CasasDecimais._qCom,
                        CasasDecimais._vUnCom,
-                       ExibirResumoCanhoto);
+                       ExibirResumoCanhoto,
+                       ImprimirHoraSaida);
     finally
       LogoMarcaEmpresa.Free;
     end;

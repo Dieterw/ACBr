@@ -61,6 +61,7 @@ const aWidthTituloBloco:Double=6;
       FontSizeTitle:Integer=6;
       FontSizeText:Integer=10;
 
+var
       ColsWidth:array[1..17] of Double=(17,85,15,6,7,8,15,13,13,0,15,15,11,11,11,8,8);
 
 
@@ -462,7 +463,10 @@ begin
        Box([fsTop,fsLeft],XPos,YPos,43,aWidthTituloBloco,'Fone / Fax',NotaUtil.FormatarFone(FONE),taCenter);
        Box([fsTop,fsLeft],XPos,YPos,13,aWidthTituloBloco,'Estado',UF,taCenter);
        Box([fsTop,fsLeft],XPos,YPos,38,aWidthTituloBloco,'Inscrição Estadual',Dest.IE,taCenter);
-       Box([fsTop,fsLeft],XPos,YPos,21,aWidthTituloBloco,'Hora da Saída','',taCenter,True);
+       if ImprimirHoraSaida then
+          Box([fsTop,fsLeft],XPos,YPos,21,aWidthTituloBloco,'Hora da Saída',TimeToStr(now),taCenter,True)
+       else
+          Box([fsTop,fsLeft],XPos,YPos,21,aWidthTituloBloco,'Hora da Saída','',taCenter,True);
       end;
      Result:=YPos;
      TituloDoBloco([],PosY,PosX,YPos,'DESTINATÁRIO /','REMETENTE');
@@ -677,6 +681,9 @@ var aIncWidht,XX,YY:Double;
 begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
+     if (SystemPrinter.MarginRight <> 5.1) then
+        ColsWidth[1]:=ColsWidth[1]-(SystemPrinter.MarginRight-5.1);
+
      PosX:=PosX+aWidthTituloBloco;
      TituloDoBloco([],FirstY,PosX,LastY,'DADOS DOS PRODUTOS / SERVIÇOS');
      GotoXY(PosX,FirstY);

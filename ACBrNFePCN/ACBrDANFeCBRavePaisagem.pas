@@ -473,6 +473,68 @@ begin
    end;
 end;
 
+function ImprimirLocalRetirada(PosX,
+  PosY: Double): Double;
+var vEnd:String;
+begin
+  with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
+   begin
+     //Ocultar Local se não for informado CNPJ
+     if NotaUtil.EstaVazio(Retirada.CNPJ) then
+      begin
+        Result:=PosY;
+        exit;
+      end;
+
+     PosX:=PosX+aWidthTituloBloco;
+     with Retirada do
+     begin
+       Box([],PosX,PosY,50,aHeigthPadrao+1,'CNPJ',NotaUtil.FormatarCNPJ(CNPJ),taCenter);
+       vEnd:=XLgr;
+       if (Trim(Nro)>'') and (Nro<>'SN') and (Pos(Nro,vEnd)=0) then
+          vEnd:=vEnd+' '+Nro;
+       if Trim(XCpl)>'' then
+          vEnd:=vEnd+', '+XCpl;
+       vEnd:=vEnd+' - '+xBairro+' - '+xMun+' - '+UF;
+       Box([fsLeft],XPos,YPos,21,aHeigthPadrao+1,'Endereço',vEnd,taLeftJustify,true);
+     end;
+
+     Result:=YPos;
+     TituloDoBloco([fsTop],PosY,PosX,YPos,'RETI','RADA');
+  end;
+end;
+
+function ImprimirLocalEntrega(PosX,
+  PosY: Double): Double;
+var vEnd:String;
+begin
+  with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
+   begin
+     //Ocultar Local se não for informado CNPJ
+     if NotaUtil.EstaVazio(Entrega.CNPJ) then
+      begin
+        Result:=PosY;
+        exit;
+      end;
+
+     PosX:=PosX+aWidthTituloBloco;
+     with Entrega do
+     begin
+       Box([],PosX,PosY,50,aHeigthPadrao+1,'CNPJ',NotaUtil.FormatarCNPJ(CNPJ),taCenter);
+       vEnd:=XLgr;
+       if (Trim(Nro)>'') and (Nro<>'SN') and (Pos(Nro,vEnd)=0) then
+          vEnd:=vEnd+' '+Nro;
+       if Trim(XCpl)>'' then
+          vEnd:=vEnd+', '+XCpl;
+       vEnd:=vEnd+' - '+xBairro+' - '+xMun+' - '+UF;
+       Box([fsLeft],XPos,YPos,21,aHeigthPadrao+1,'Endereço',vEnd,taLeftJustify,true);
+     end;
+
+     Result:=YPos;
+     TituloDoBloco([fsTop],PosY,PosX,YPos,'ENTRE','GA');
+  end;
+end;
+
 function ImprimirFaturas(PosX, PosY: Double): Double;
 var i:Integer;
     aHeight, XX,YY:Double;
@@ -591,9 +653,18 @@ begin
         Box([fsTop],PosX,YPos,41,aHeigthPadrao+aIncHeigth,'Quantidade',IntToStr(Transp.Vol.Items[0].qVol),taRightJustify);
         Box([fsTop,fsLeft],XPos,YPos,43,aHeigthPadrao+aIncHeigth,'Espécie',Transp.Vol.Items[0].esp,taCenter);
         Box([fsTop,fsLeft],XPos,YPos,44,aHeigthPadrao+aIncHeigth,'Marca',Transp.Vol.Items[0].marca,taCenter);
-        Box([fsTop,fsLeft],XPos,YPos,41,aHeigthPadrao+aIncHeigth,'Numero','',taCenter);
+        Box([fsTop,fsLeft],XPos,YPos,41,aHeigthPadrao+aIncHeigth,'Numero',Transp.Vol.Items[0].nVol,taCenter);
         Box([fsTop,fsLeft],XPos,YPos,41,aHeigthPadrao+aIncHeigth,'Peso Bruto',NotaUtil.FormatFloat(Transp.Vol.Items[0].pesoB,NotaUtil.PreparaCasasDecimais(3)),taRightJustify);
         Box([fsTop,fsLeft],XPos,YPos,41,aHeigthPadrao+aIncHeigth,'Peso Líquido',NotaUtil.FormatFloat(Transp.Vol.Items[0].pesoL,NotaUtil.PreparaCasasDecimais(3)),taRightJustify,True);
+      end
+      else
+      begin
+        Box([fsTop],PosX,YPos,41,aHeigthPadrao+aIncHeigth,'Quantidade','',taRightJustify);
+        Box([fsTop,fsLeft],XPos,YPos,43,aHeigthPadrao+aIncHeigth,'Espécie','',taCenter);
+        Box([fsTop,fsLeft],XPos,YPos,44,aHeigthPadrao+aIncHeigth,'Marca','',taCenter);
+        Box([fsTop,fsLeft],XPos,YPos,41,aHeigthPadrao+aIncHeigth,'Numero','',taCenter);
+        Box([fsTop,fsLeft],XPos,YPos,41,aHeigthPadrao+aIncHeigth,'Peso Bruto','',taRightJustify);
+        Box([fsTop,fsLeft],XPos,YPos,41,aHeigthPadrao+aIncHeigth,'Peso Líquido','',taRightJustify,True);
       end;
 
      Result:=YPos;
@@ -764,6 +835,8 @@ begin
     if FPageNum=1 then
      begin
        YY:=ImprimirRemetenteDestinatario(Result,YY);
+       YY:=ImprimirLocalRetirada(Result,YY);
+       YY:=ImprimirLocalEntrega(Result,YY);
        YY:=ImprimirFaturas(Result,YY);
        YY:=ImprimirCalculoImposto(Result,YY);
        YY:=ImprimirTransportadorVolumes(Result,YY);

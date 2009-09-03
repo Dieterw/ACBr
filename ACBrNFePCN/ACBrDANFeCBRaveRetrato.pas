@@ -59,8 +59,8 @@ const
       FontSizeTitle:Integer=6;
       FontSizeText:Integer=8;
 
-var                                      //      18
-      ColsWidth:array[1..17] of Double=(15,60,15,6,7,8,12,13,15,0,12,0,0,10,10,8,8);
+var
+   ColsWidth:array[1..17] of Double;
 
 procedure ImprimirRetrato(aRaveSystem:TDANFeRave);
 
@@ -510,64 +510,98 @@ end;
 
 function ImprimirFaturas(PosX, PosY: Double): Double;
 var i:Integer;
-    aHeight, XX,YY:Double;
+    aHeight, XX,YY,YY2:Double;
     q, f:integer;
 begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
-     //Ocultar Faturas se não for informado nenhuma
-     if Cobr.Dup.Count=0 then
+     //Ocultar se não for informado nenhuma
+     if ((NotaUtil.EstaVazio(Cobr.Fat.nFat)) and
+         (Cobr.Dup.Count=0)) then
       begin
-        Result:=PosY;
-        exit;
+         //se for outras não exibe nada
+         if (ide.indPag=ipOutras) then
+         begin
+           Result:=PosY;
+           exit;
+         end
+         else
+         begin
+            //exibir somemte informação se não for OUTRAS
+            TituloDoBloco(PosX,PosY,'FATURA/DUPLICATAS');
+            if (ide.indPag=ipVista) then
+               Box([],XPos,YPos,35,aHeigthPadrao,' ','PAGAMENTO À VISTA',taLeftJustify,True)
+            else if (ide.indPag=ipPrazo) then
+               Box([],XPos,YPos,35,aHeigthPadrao,' ','PAGAMENTO À PRAZO',taLeftJustify,True);
+           Result:=PosY+(aHeigthPadrao+LineHeight);
+           exit;
+         end;
       end;
 
-     TituloDoBloco(PosX,PosY,'FATURAS');
+     TituloDoBloco(PosX,PosY,'FATURA/DUPLICATAS');
+     YY:=YPos;
+     XX:=PosX;
+     YY2:=0;
+     if not (NotaUtil.EstaVazio(Cobr.Fat.nFat)) then
+     begin
+        if (ide.indPag=ipVista) then
+           Box([fsRigth],XPos,YPos,50,aHeigthPadrao,' ','PAGAMENTO À VISTA',taLeftJustify)
+        else if (ide.indPag=ipPrazo) then
+           Box([fsRigth],XPos,YPos,50,aHeigthPadrao,' ','PAGAMENTO À PRAZO',taLeftJustify);
+        Box([fsRigth],XPos,YPos,30,aHeigthPadrao,'Número da Fatura',Cobr.Fat.nFat,taLeftJustify);
+        Box([fsLeft,fsRigth],XPos,YPos,30,aHeigthPadrao,'Valor Original',NotaUtil.FormatFloat(Cobr.Fat.vOrig),taLeftJustify);
+        Box([fsLeft,fsRigth],XPos,YPos,30,aHeigthPadrao,'Valor do Desconto',NotaUtil.FormatFloat(Cobr.Fat.vDesc),taLeftJustify);
+        Box([fsLeft],XPos,YPos,30,aHeigthPadrao,'Valor Líquido',NotaUtil.FormatFloat(Cobr.Fat.vLiq),taLeftJustify,true);
+        YY2:=aHeigthPadrao;
+     end;
 
      YY:=YPos;
      XX:=PosX;
-     ClearAllTabs;
-     for i:=1 to 3 do
-      begin
-        SetTab(XX+1,pjLeft,25,0,0,0);
-        SetTab(XX+22,pjCenter,19,0,0,0);
-        SetTab(XX+42,pjRight,20,0,0,0);
-        XX:=XX+67;
-      end;
-     GotoXY(XX,YY);
-     NewLine;
-     SetFontTitle;
-     Underline:=True;
-     for i:=1 to 3 do
-      begin
-        PrintTab('NÚMERO');
-        PrintTab('VENCIMENTO');
-        PrintTab('VALOR');
-      end;
-     SetFontText;
-     NewLine;
-     q:=1;
-     for f:=0 to Cobr.Dup.Count-1 do
-      begin
-       with Cobr.Dup.Items[f] do
-        begin
-         PrintTab(NDup);
-         PrintTab(NotaUtil.FormatDate(DateToStr(DVenc)));
-         PrintTab(NotaUtil.FormatFloat(VDup));
-         Inc(q);
-         if q>3 then
-          begin
-            NewLine;
-            q:=1;
-          end;
-        end;
-      end;
+     if not (Cobr.Dup.Count=0) then
+     begin
+        ClearAllTabs;
+        for i:=1 to 3 do
+         begin
+           SetTab(XX+1,pjLeft,25,0,0,0);
+           SetTab(XX+22,pjCenter,19,0,0,0);
+           SetTab(XX+42,pjRight,20,0,0,0);
+           XX:=XX+67;
+         end;
+        GotoXY(XX,YY);
+        NewLine;
+        SetFontTitle;
+        Underline:=True;
+        for i:=1 to 3 do
+         begin
+           PrintTab('NÚMERO');
+           PrintTab('VENCIMENTO');
+           PrintTab('VALOR');
+         end;
+        SetFontText;
+        NewLine;
+        q:=1;
+        for f:=0 to Cobr.Dup.Count-1 do
+         begin
+          with Cobr.Dup.Items[f] do
+           begin
+            PrintTab(NDup);
+            PrintTab(NotaUtil.FormatDate(DateToStr(DVenc)));
+            PrintTab(NotaUtil.FormatFloat(VDup));
+            Inc(q);
+            if q>3 then
+             begin
+               NewLine;
+               q:=1;
+             end;
+           end;
+         end;
 
-     aHeight:=YPos-PosY-GetFontHeigh;
+        aHeight:=YPos-PosY-GetFontHeigh-YY2;
 
-     Box([],PosX,YY,67,aHeight);
-     Box([fsLeft],XPos,YY,67,aHeight);
-     Box([fsLeft],XPos,YY,67,aHeight,'','',taLeftJustify,True);
+        Box([],PosX,YY,67,aHeight);
+        Box([fsLeft],XPos,YY,67,aHeight);
+        Box([fsLeft],XPos,YY,67,aHeight,'','',taLeftJustify,True);
+     end;
      Result:=YPos;
   end;
 end;
@@ -706,7 +740,7 @@ begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
      if (SystemPrinter.MarginRight <> 5.1) then
-        ColsWidth[1]:=ColsWidth[1]-(SystemPrinter.MarginRight-5.1);
+        ColsWidth[2]:=ColsWidth[2]-(SystemPrinter.MarginRight-5.1);
 
      TituloDoBloco(PosX,FirstY,'DADOS DOS PRODUTOS / SERVIÇOS');
      FirstY:=YPos;
@@ -893,6 +927,24 @@ end;
 
 procedure ImprimirRetrato(aRaveSystem:TDANFeRave);
 begin
+  ColsWidth[1]:=15;
+  ColsWidth[2]:=60;
+  ColsWidth[3]:=15;
+  ColsWidth[4]:=6;
+  ColsWidth[5]:=7;
+  ColsWidth[6]:=8;
+  ColsWidth[7]:=12;
+  ColsWidth[8]:=13;
+  ColsWidth[9]:=15;
+  ColsWidth[10]:=0;
+  ColsWidth[11]:=12;
+  ColsWidth[12]:=0;
+  ColsWidth[13]:=0;
+  ColsWidth[14]:=10;
+  ColsWidth[15]:=10;
+  ColsWidth[16]:=8;
+  ColsWidth[17]:=8;
+
   DANFeRave:=aRaveSystem;
   ImprimirItens(MontarPagina);
 end;

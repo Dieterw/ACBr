@@ -326,27 +326,48 @@ end;
 
 procedure TdmACBrNFeRave.CustomFaturaCXNGetRow(Connection: TRvCustomConnection);
 begin
-  if FNFe.Ide.indPag=ipVista then
-     Connection.WriteStrData('', 'PAGAMENTO À VISTA')
-  else
-     Connection.WriteStrData('', '');
+   if FNFe.Ide.indPag=ipVista then
+      Connection.WriteStrData('', 'PAGAMENTO À VISTA')
+   else if FNFe.Ide.indPag=ipPrazo then
+      Connection.WriteStrData('', 'PAGAMENTO À PRAZO')
+   else
+      Connection.WriteStrData('', '');
 
-  with FNFe.Cobr.Fat do
-  begin
-    Connection.WriteStrData('', nFat);
-    Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(vOrig),0));
-    Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(vDesc),0));
-    Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(vLiq),0));
-  end;
+   with FNFe.Cobr.Fat do
+   begin
+      Connection.WriteStrData('', nFat);
+      Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(vOrig),0));
+      Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(vDesc),0));
+      Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(vLiq),0));
+   end;
 end;
 
 procedure TdmACBrNFeRave.CustomFaturaCXNOpen(Connection: TRvCustomConnection);
 begin
-  if ((FNFe.Ide.indPag=ipVista) or
+   //Ocultar se não for informado nenhuma
+   if (NotaUtil.EstaVazio(FNFe.Cobr.Fat.nFat)) then
+   begin
+      //se for outras não exibe nada
+      if (FNFe.ide.indPag=ipOutras) then
+         Connection.DataRows := 0
+      else if FNFe.Ide.indPag=ipVista then
+         Connection.DataRows := 1
+      else if FNFe.Ide.indPag=ipPrazo then
+      begin
+         if (FNFe.Cobr.Dup.Count > 0) then
+            Connection.DataRows := 0
+         else
+            Connection.DataRows := 1;
+      end;
+   end
+   else
+      Connection.DataRows := 1;
+
+  {if ((FNFe.Ide.indPag=ipVista) or
       (length(FNFe.Cobr.Fat.nFat)>0)) then
      Connection.DataRows := 1
   else
-     Connection.DataRows := 0;
+     Connection.DataRows := 0;}
 end;
 
 procedure TdmACBrNFeRave.CustomEmitenteCXNGetRow(

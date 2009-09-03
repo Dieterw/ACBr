@@ -33,7 +33,9 @@
 unit DoACBrNFeUnit ;
 
 interface
-Uses Classes, TypInfo, SysUtils, CmdUnitNFe, Types, smtpsend, ssl_openssl, mimemess, mimepart, RpDevice ;
+Uses Classes, TypInfo, SysUtils, CmdUnitNFe, Types,
+     smtpsend, ssl_openssl, mimemess, mimepart,
+     ACBrNFeUtil, RpDevice ;
 
 Procedure DoACBrNFe( Cmd : TACBrNFeCmd ) ;
 Function ConvertStrRecived( AStr: String ) : String ;
@@ -191,7 +193,11 @@ begin
            else
               raise Exception.Create('Arquivo '+Cmd.Params(0)+' não encontrado.');
 
-           RPDev.DeviceIndex := cbxImpressora.ItemIndex;
+           if NotaUtil.NaoEstaVazio(Cmd.Params(1)) then
+              RPDev.Device := Cmd.Params(1)
+           else
+              RPDev.DeviceIndex := cbxImpressora.ItemIndex;
+
            ACBrNFe1.NotasFiscais.Imprimir;
            Cmd.Resposta := 'Danfe Impresso com sucesso';
            if ACBrNFeDANFERave1.MostrarPreview then
@@ -240,7 +246,7 @@ begin
            else
               raise Exception.Create('Arquivo '+Cmd.Params(0)+' não encontrado.');
 
-           ACBrNFe1.NotasFiscais.GerarNFe;   
+           ACBrNFe1.NotasFiscais.GerarNFe;
            if Cmd.Params(2) <> '0' then
               ACBrNFe1.NotasFiscais.Assinar;
 
@@ -300,7 +306,11 @@ begin
                 end;
               end;
 
-              RPDev.DeviceIndex := cbxImpressora.ItemIndex;
+              if NotaUtil.NaoEstaVazio(Cmd.Params(4)) then
+                 RPDev.Device := Cmd.Params(4)
+              else
+                 RPDev.DeviceIndex := cbxImpressora.ItemIndex;
+
               if ACBrNFe1.NotasFiscais.Items[i].Confirmada and (Cmd.Params(3) = '1') then
                  ACBrNFe1.NotasFiscais.Items[i].Imprimir;
             end;

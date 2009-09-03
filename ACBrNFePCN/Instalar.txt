@@ -75,5 +75,16 @@ Para instalar o DANFe, siga os passos abaixo:
 -Abra o arquivo ACBrNFeDanfeRV.dpk, clique em compile e ao ser solicitado para adicionar o
 pacote ACBr_CLX ou ACBr_VCL clique em OK. Clique em Install
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 Caso esteja usando a versão CAPICOM, e mesmo após registrar as DLLs continuar recebendo a mensagem de
 classe não registrada, use o seguinte arquivo: https://wwws.prodemge.gov.br/images/stories/exe/capicom.exe
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ATENÇÃO - Caso esteja usando o pacote ACBrNFeDanfeRV.dpk para impressão do DANFE, use o arquivo DANFE_Rave513.rav apenas quando
+possuir o Rave na versão 5.1.3 ou superior. Caso possua uma versão inferior ao Rave 5.1.3 use o arquivo NotaFiscalEletronica.rav 
+na propriedade RavFile do componente ACBrNFeDanfeRave. Se vc tentar utilizar o arquivo DANFE_Rave513.rav em versões inferiores
+ao Rave 5.1.3 irá receber um erro de Accesss Violation no momento da impressão.
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+

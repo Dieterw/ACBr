@@ -518,7 +518,7 @@ Var
   LenRet, PosETX, PosSTX : Integer ;
   Bloco, Tarefa : AnsiString ;
   Sequencia, ACK_PC : Byte ;
-  Tipo : Char ;
+  Tipo : AnsiChar ;
 begin
   LenRet := Length(Retorno) ;
   Result := False ;
@@ -762,7 +762,7 @@ end ;
 
 function TACBrECFSwedaSTX.DescompactaRetorno( const Dados : AnsiString ) : AnsiString ;
 Var P      : Integer ;
-    AChar  : Char ;
+    AChar  : AnsiChar ;
     NTimes : Byte ;
 begin
    Result   := Dados ;
@@ -868,8 +868,8 @@ end;
 }
 function TACBrECFSwedaSTX.GetEstado: TACBrECFEstado;
 Var RetCmd : AnsiString ;
-    Estado, Docto : Char ;
-    Sinalizadores : String ;
+    Estado, Docto : AnsiChar ;
+    Sinalizadores : AnsiString ;
 begin
   Result := fpEstado ;  // Suprimir Warning
   try

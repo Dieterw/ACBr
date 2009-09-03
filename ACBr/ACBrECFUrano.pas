@@ -193,7 +193,7 @@ TACBrECFUrano = class( TACBrECFClass )
     Procedure ProgramaComprovanteNaoFiscal( var Descricao: String;
        Tipo : String = ''; Posicao : String = '') ; override ;
 
-    function RetornaInfoECF(Registrador: String): String; override;
+    function RetornaInfoECF(Registrador: String): AnsiString; override;
  end ;
 
 implementation
@@ -1091,7 +1091,7 @@ begin
     FormasPagamento[i].Total := RetornaInfoECFValor(IntToStrZero(i + 52, 2));
 end;
 
-function TACBrECFUrano.RetornaInfoECF(Registrador: String): String;
+function TACBrECFUrano.RetornaInfoECF(Registrador: String): AnsiString;
 begin
   BytesResp := 21 ;
   Result := EnviaComando( '24' + Registrador + R ) ;

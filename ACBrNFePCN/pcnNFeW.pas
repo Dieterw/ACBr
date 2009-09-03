@@ -194,6 +194,7 @@ begin
     Gerador.wAlerta('A01', 'infNFe', DSC_CHAVE, ERR_MSG_GERAR_CHAVE);
   nfe.infNFe.ID := chave;
   nfe.ide.cDV := RetornarDigito(nfe.infNFe.ID);
+  nfe.Ide.cNF := RetornarCodigoNumerico(nfe.infNFe.ID);
   // Carrega Layout que sera utilizado para gera o txt
   Gerador.LayoutArquivoTXT.Clear;
   if FOpcoes.GerarTXTSimultaneamente then

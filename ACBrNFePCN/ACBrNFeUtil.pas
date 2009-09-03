@@ -472,7 +472,10 @@ begin
 //    vTemp := StrToDate(AString, FFormato);
 {$ENDIF}
     vTemp := StrToDate(AString);
-    Result := DateToStr(vTemp);
+    if vTemp = 0 then
+      Result := ''
+    else
+      Result := DateToStr(vTemp);
   except
     Result := '';
   end;

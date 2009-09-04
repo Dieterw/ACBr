@@ -77,7 +77,17 @@ type
     procedure ImprimirPDF;
     function SaveToFile(CaminhoArquivo: string = ''): boolean;
     function SaveToStream(Stream: TStringStream): boolean;
-    procedure EnviarEmail(const sSmtpHost, sSmtpPort, sSmtpUser, sSmtpPasswd, sFrom, sTo, sAssunto: String; sMensagem : TStrings; SSL : Boolean; EnviaPDF: Boolean = true);
+    procedure EnviarEmail(const sSmtpHost,
+                                sSmtpPort,
+                                sSmtpUser,
+                                sSmtpPasswd,
+                                sFrom,
+                                sTo,
+                                sAssunto: String;
+                                sMensagem : TStrings;
+                                SSL : Boolean;
+                                EnviaPDF: Boolean = true;
+                                sCC: TStrings = nil);
     property NFe: TNFe  read FNFe write FNFe;
     property XML: AnsiString  read GetNFeXML write FXML;
     property Confirmada: Boolean  read FConfirmada write FConfirmada;
@@ -122,6 +132,7 @@ type
     smtp : TSMTPSend;
     sFrom : String;
     sTo : String;
+    sCC : TStrings;
     slmsg_Lines : TStrings;
     constructor Enviar;
   protected
@@ -216,13 +227,24 @@ begin
   end;
 end;
 
-procedure NotaFiscal.EnviarEmail(const sSmtpHost, sSmtpPort, sSmtpUser, sSmtpPasswd, sFrom, sTo, sAssunto: String; sMensagem : TStrings; SSL : Boolean; EnviaPDF: Boolean = true);
+procedure NotaFiscal.EnviarEmail(const sSmtpHost,
+                                       sSmtpPort,
+                                       sSmtpUser,
+                                       sSmtpPasswd,
+                                       sFrom,
+                                       sTo,
+                                       sAssunto: String;
+                                       sMensagem : TStrings;
+                                       SSL : Boolean;
+                                       EnviaPDF: Boolean = true;
+                                       sCC: TStrings=nil);
 var
   ThreadSMTP : TSendMailThread;
   m:TMimemess;
   p: TMimepart;
   StreamNFe : TStringStream;
   NomeArq : String;
+  i: integer;
 begin
   m:=TMimemess.create;
   ThreadSMTP := TSendMailThread.Enviar;
@@ -253,6 +275,11 @@ begin
 
      ThreadSMTP.sFrom := sFrom;
      ThreadSMTP.sTo := sTo;
+     if sCC <> nil then
+     begin
+        for I := 0 to sCC.Count - 1 do
+          ThreadSMTP.sCC.Add(sCC.Strings[i]);
+     end;
      ThreadSMTP.slmsg_Lines.Add(m.Lines.Text);
 
      ThreadSMTP.smtp.UserName := sSmtpUser;
@@ -431,7 +458,7 @@ begin
        LocNFeR.LerXml;
        Items[Self.Count-1].XML := LocNFeR.Leitor.Arquivo;
        Items[Self.Count-1].NomeArq := CaminhoArquivo;       
-       GerarNFe;  
+       GerarNFe;
     finally
        LocNFeR.Free;
     end;
@@ -494,11 +521,14 @@ begin
   FreeOnTerminate := True;
   smtp := TSMTPSend.Create;
   slmsg_Lines := TStringList.Create;
+  sCC := TStringList.Create;
   sFrom := '';
   sTo := '';
 end;
 
 procedure TSendMailThread.Execute;
+var
+   i: integer;
 begin
    inherited;
    try
@@ -509,6 +539,14 @@ begin
             raise Exception.Create('SMTP ERROR: MailFrom:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
          if not smtp.MailTo(sTo) then
             raise Exception.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+         if (sCC <> nil) then
+         begin
+            for I := 0 to sCC.Count - 1 do
+            begin
+               if not smtp.MailTo(sCC.Strings[i]) then
+                  raise Exception.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+            end;
+         end;
          if not smtp.MailData(slmsg_Lines) then
             raise Exception.Create('SMTP ERROR: MailData:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
          if not smtp.Logout() then

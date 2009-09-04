@@ -1042,6 +1042,7 @@ end;
 procedure TForm1.btnEnviarEmailClick(Sender: TObject);
 var
  Para : String;
+ CC: Tstrings;
 begin
   if not(InputQuery('Enviar Email', 'Email de destino', Para)) then
     exit;
@@ -1054,7 +1055,22 @@ begin
   begin
     ACBrNFe1.NotasFiscais.Clear;
     ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
-    ACBrNFe1.NotasFiscais.Items[0].EnviarEmail(edtSmtpHost.Text, edtSmtpPort.Text, edtSmtpUser.Text, edtSmtpPass.Text, edtSmtpUser.Text, Para, edtEmailAssunto.Text, mmEmailMsg.Lines, cbEmailSSL.Checked);
+    CC:=TstringList.Create;
+    CC.Add('email_1@provedor.com'); //especifique um email válido
+    CC.Add('email_2@provedor.com.br'); //especifique um email válido
+    ACBrNFe1.NotasFiscais.Items[0].EnviarEmail(edtSmtpHost.Text
+                                             , edtSmtpPort.Text
+                                             , edtSmtpUser.Text
+                                             , edtSmtpPass.Text
+                                             , edtSmtpUser.Text
+                                             , Para
+                                             , edtEmailAssunto.Text
+                                             , mmEmailMsg.Lines
+                                             , cbEmailSSL.Checked
+                                             , True //Enviar PDF junto
+                                             //, CC //com copia
+                                               );
+    CC.Free;
   end;
 end;
 

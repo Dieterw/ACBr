@@ -561,7 +561,7 @@ begin
                if (ide.indPag=ipVista) then
                   Box([fstop],PosX,PosY,50,aHeigthPadrao,' ','PAGAMENTO À VISTA',taLeftJustify,True)
                else if (ide.indPag=ipPrazo) then
-                  Box([fstop],PosX,PosY,50,aHeigthPadrao,' ','PAGAMENTO À PRAZO',taLeftJustify,True);
+                  Box([fstop],PosX,PosY,50,aHeigthPadrao,' ','PAGAMENTO A PRAZO',taLeftJustify,True);
               Result:=YPos;
               TituloDoBloco([fsTop],PosY,PosX,YPos,'FATU','RAS');
               exit;

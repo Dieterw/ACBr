@@ -532,7 +532,7 @@ begin
                if Ide.indPag=ipVista then
                   Box([],XPos,YPos,35,aHeigthPadrao,' ','PAGAMENTO À VISTA',taLeftJustify,True)
                else if Ide.indPag=ipPrazo then
-                  Box([],XPos,YPos,35,aHeigthPadrao,' ','PAGAMENTO À PRAZO',taLeftJustify,True);
+                  Box([],XPos,YPos,35,aHeigthPadrao,' ','PAGAMENTO A PRAZO',taLeftJustify,True);
                Result:=PosY+aHeigthPadrao+LineHeight;
                exit;
             end;

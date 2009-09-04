@@ -334,7 +334,7 @@ begin
          if FNFe.Ide.indPag=ipVista then
             Connection.WriteStrData('', 'PAGAMENTO À VISTA')
          else if FNFe.Ide.indPag=ipPrazo then
-            Connection.WriteStrData('', 'PAGAMENTO À PRAZO')
+            Connection.WriteStrData('', 'PAGAMENTO A PRAZO')
          else
             Connection.WriteStrData('', '')
       end

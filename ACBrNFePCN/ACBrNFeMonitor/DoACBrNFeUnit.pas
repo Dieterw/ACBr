@@ -407,6 +407,8 @@ begin
               ACBrNFe1.NotasFiscais.Valida;
               ArqNFe := PathWithDelim(PathWithDelim(ExtractFilePath(Application.ExeName))+'Lotes'+PathDelim+'Lote'+trim(Cmd.Params(1)))+StringReplace(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID, 'NFe', '', [rfIgnoreCase])+'-nfe.xml';
               ACBrNFe1.NotasFiscais.SaveToFile(ExtractFilePath(ArqNFe));
+              if not FileExists(ArqNFe) then
+                 raise Exception.Create('Não foi possível criar o arquivo '+ArqNFe);
             end
            else if (Cmd.Metodo = 'criarnfe')  or (Cmd.Metodo = 'criarnfesefaz') or
            (Cmd.Metodo = 'criarenviarnfe') or (Cmd.Metodo = 'criarenviarnfesefaz') then
@@ -422,6 +424,8 @@ begin
               ACBrNFe1.NotasFiscais.Valida;
               ArqNFe := PathWithDelim(ACBrNFe1.Configuracoes.Geral.PathSalvar)+StringReplace(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID, 'NFe', '', [rfIgnoreCase])+'-nfe.xml';
               ACBrNFe1.NotasFiscais.SaveToFile(ArqNFe);
+              if not FileExists(ArqNFe) then
+                raise Exception.Create('Não foi possível criar o arquivo '+ArqNFe);
             end;
 
            Cmd.Resposta :=  'NFe criada em: '+ArqNFe;
@@ -493,7 +497,7 @@ begin
                  if (Cmd.Params(2) = '1') and ACBrNFeDANFERave1.MostrarPreview then
                     Ocultar1.Click;
                end
-              else
+              else //enviarlotenfe
                begin
                  if not(ACBrNFe1.WebServices.StatusServico.Executar) then
                   raise Exception.Create(ACBrNFe1.WebServices.StatusServico.Msg);
@@ -548,7 +552,8 @@ begin
                                    'ChNFe='+ACBrNFe1.WebServices.Retorno.NFeRetorno.ProtNFe.Items[i].chNFe+sLineBreak+
                                    'DhRecbto='+DateTimeToStr(ACBrNFe1.WebServices.Retorno.NFeRetorno.ProtNFe.Items[i].dhRecbto)+sLineBreak+
                                    'NProt='+ACBrNFe1.WebServices.Retorno.NFeRetorno.ProtNFe.Items[i].nProt+sLineBreak+
-                                   'DigVal='+ACBrNFe1.WebServices.Retorno.NFeRetorno.ProtNFe.Items[i].digVal+sLineBreak;
+                                   'DigVal='+ACBrNFe1.WebServices.Retorno.NFeRetorno.ProtNFe.Items[i].digVal+sLineBreak+
+                                   'Arquivo='+PathWithDelim(ACBrNFe1.Configuracoes.Geral.PathSalvar)+StringReplace(ACBrNFe1.NotasFiscais.Items[j].NFe.infNFe.ID, 'NFe', '', [rfIgnoreCase])+'-nfe.xml';
                         if (Cmd.Params(2) = '1') and ACBrNFeDANFERave1.MostrarPreview then
                          begin
                            Restaurar1.Click;

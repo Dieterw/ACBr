@@ -1357,12 +1357,13 @@ begin
   end;
 
   if FNFeRetorno.CStat = 104 then
+   begin
     Result := Confirma(FNFeRetorno.ProtNFe);
-
-  fChaveNfe  := FNFeRetorno.ProtNFe.Items[0].chNFe;
-  fProtocolo := FNFeRetorno.ProtNFe.Items[0].nProt;
-  fcStat     := FNFeRetorno.ProtNFe.Items[0].cStat;
-
+    fChaveNfe  := FNFeRetorno.ProtNFe.Items[0].chNFe;
+    fProtocolo := FNFeRetorno.ProtNFe.Items[0].nProt;
+    fcStat     := FNFeRetorno.ProtNFe.Items[0].cStat;
+   end;
+   
 //  FNFeRetorno.Free;
 end;
 

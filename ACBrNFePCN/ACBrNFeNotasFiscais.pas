@@ -238,9 +238,7 @@ begin
         if TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE <> nil then
         begin
            TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.ImprimirDANFEPDF(NFe);
-           NomeArq := NFe.infNFe.ID;
-           if length(NomeArq)>44 then
-              NomeArq := copy(NomeArq,(length(NomeArq)-44)+1,44);
+           NomeArq :=  StringReplace(NFe.infNFe.ID,'NFe', '', [rfIgnoreCase]);
            if NotaUtil.EstaVazio(TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.PathPDF) then
              NomeArq := PathWithDelim(TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).Configuracoes.Geral.PathSalvar)+NomeArq
            else
@@ -472,8 +470,10 @@ begin
     for i:= 0 to TACBrNFe( FACBrNFe ).NotasFiscais.Count-1 do
      begin
         if NotaUtil.EstaVazio(PathArquivo) then
-           PathArquivo := TACBrNFe( FACBrNFe ).Configuracoes.Geral.PathSalvar;
-        CaminhoArquivo := PathWithDelim(PathArquivo)+copy(TACBrNFe( FACBrNFe ).NotasFiscais.Items[0].NFe.infNFe.ID, (length(TACBrNFe( FACBrNFe ).NotasFiscais.Items[0].NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml';
+           PathArquivo := TACBrNFe( FACBrNFe ).Configuracoes.Geral.PathSalvar
+        else
+           PathArquivo := ExtractFilePath(PathArquivo);   
+        CaminhoArquivo := PathWithDelim(PathArquivo)+StringReplace(TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NFe.infNFe.ID, 'NFe', '', [rfIgnoreCase])+'-NFe.xml';
         TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].SaveToFile(CaminhoArquivo)
      end;
  except

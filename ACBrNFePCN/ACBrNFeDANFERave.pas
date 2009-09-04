@@ -324,9 +324,7 @@ begin
       for i:= 0 to TACBrNFe(ACBrNFe).NotasFiscais.Count-1 do
       begin
          dmDanfe.NFe := TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe;
-         NomeArq := TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe.infNFe.ID;
-         if length(NomeArq)>44 then
-            NomeArq := copy(NomeArq,(length(NomeArq)-44)+1,44);
+         NomeArq := StringReplace(TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe.infNFe.ID,'NFe', '', [rfIgnoreCase]);
          if NotaUtil.EstaVazio(FPathArquivos) then
             NomeArq := PathWithDelim(TACBrNFe(ACBrNFe).Configuracoes.Geral.PathSalvar)+NomeArq
          else

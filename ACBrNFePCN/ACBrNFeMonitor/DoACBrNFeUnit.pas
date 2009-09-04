@@ -194,7 +194,7 @@ begin
               raise Exception.Create('Arquivo '+Cmd.Params(0)+' não encontrado.');
 
            if NotaUtil.NaoEstaVazio(Cmd.Params(1)) then
-              RPDev.Device := Cmd.Params(1)
+              RpDev.SelectPrinter(Cmd.Params(1), false)
            else
               RPDev.DeviceIndex := cbxImpressora.ItemIndex;
 
@@ -307,7 +307,7 @@ begin
               end;
 
               if NotaUtil.NaoEstaVazio(Cmd.Params(4)) then
-                 RPDev.Device := Cmd.Params(4)
+                 RpDev.SelectPrinter(Cmd.Params(4), false)
               else
                  RPDev.DeviceIndex := cbxImpressora.ItemIndex;
 
@@ -504,7 +504,7 @@ begin
                     ACBrNFe1.WebServices.Enviar.Lote := StrToInt(Cmd.Params(0));
                  ACBrNFe1.WebServices.Enviar.Executar ;
 
-                 Cmd.Resposta :=  ACBrNFe1.WebServices.Enviar.Msg+sLineBreak+
+                 Cmd.Resposta :=  Cmd.Resposta+sLineBreak+.WebServices.Enviar.Msg+sLineBreak+
                                  '[ENVIO]'+sLineBreak+
                                  'Versao='+ACBrNFe1.WebServices.Enviar.verAplic+sLineBreak+
                                  'TpAmb='+TpAmbToStr(ACBrNFe1.WebServices.Enviar.TpAmb)+sLineBreak+

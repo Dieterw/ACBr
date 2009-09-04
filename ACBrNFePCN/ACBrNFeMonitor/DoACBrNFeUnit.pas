@@ -504,7 +504,7 @@ begin
                     ACBrNFe1.WebServices.Enviar.Lote := StrToInt(Cmd.Params(0));
                  ACBrNFe1.WebServices.Enviar.Executar ;
 
-                 Cmd.Resposta :=  Cmd.Resposta+sLineBreak+.WebServices.Enviar.Msg+sLineBreak+
+                 Cmd.Resposta :=  ACBrNFe1.WebServices.Enviar.Msg+sLineBreak+
                                  '[ENVIO]'+sLineBreak+
                                  'Versao='+ACBrNFe1.WebServices.Enviar.verAplic+sLineBreak+
                                  'TpAmb='+TpAmbToStr(ACBrNFe1.WebServices.Enviar.TpAmb)+sLineBreak+

@@ -326,10 +326,21 @@ end;
 
 procedure TdmACBrNFeRave.CustomFaturaCXNGetRow(Connection: TRvCustomConnection);
 begin
-   if FNFe.Ide.indPag=ipVista then
-      Connection.WriteStrData('', 'PAGAMENTO À VISTA')
-   else if FNFe.Ide.indPag=ipPrazo then
-      Connection.WriteStrData('', 'PAGAMENTO À PRAZO')
+   //Ocultar se não for informado nenhuma
+   if (NotaUtil.EstaVazio(FNFe.Cobr.Fat.nFat)) then
+   begin
+      if (FNFe.Cobr.Dup.Count=0) then
+      begin
+         if FNFe.Ide.indPag=ipVista then
+            Connection.WriteStrData('', 'PAGAMENTO À VISTA')
+         else if FNFe.Ide.indPag=ipPrazo then
+            Connection.WriteStrData('', 'PAGAMENTO À PRAZO')
+         else
+            Connection.WriteStrData('', '')
+      end
+      else
+         Connection.WriteStrData('', '')
+   end
    else
       Connection.WriteStrData('', '');
 
@@ -347,27 +358,19 @@ begin
    //Ocultar se não for informado nenhuma
    if (NotaUtil.EstaVazio(FNFe.Cobr.Fat.nFat)) then
    begin
-      //se for outras não exibe nada
-      if (FNFe.ide.indPag=ipOutras) then
-         Connection.DataRows := 0
-      else if FNFe.Ide.indPag=ipVista then
-         Connection.DataRows := 1
-      else if FNFe.Ide.indPag=ipPrazo then
+      if (FNFe.Cobr.Dup.Count=0) then
       begin
-         if (FNFe.Cobr.Dup.Count > 0) then
+         //se for outras não exibe nada
+         if (FNFe.ide.indPag=ipOutras) then
             Connection.DataRows := 0
-         else
-            Connection.DataRows := 1;
-      end;
+         else //vista e prazo exibe
+            Connection.DataRows := 1
+      end
+      else
+         Connection.DataRows := 0;
    end
    else
       Connection.DataRows := 1;
-
-  {if ((FNFe.Ide.indPag=ipVista) or
-      (length(FNFe.Cobr.Fat.nFat)>0)) then
-     Connection.DataRows := 1
-  else
-     Connection.DataRows := 0;}
 end;
 
 procedure TdmACBrNFeRave.CustomEmitenteCXNGetRow(

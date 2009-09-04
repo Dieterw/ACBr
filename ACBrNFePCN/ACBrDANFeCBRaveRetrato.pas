@@ -515,26 +515,27 @@ var i:Integer;
 begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
-     //Ocultar se não for informado nenhuma
-     if ((NotaUtil.EstaVazio(Cobr.Fat.nFat)) and
-         (Cobr.Dup.Count=0)) then
+      //Ocultar se não for informado nenhuma
+      if (NotaUtil.EstaVazio(Cobr.Fat.nFat)) then
       begin
-         //se for outras não exibe nada
-         if (ide.indPag=ipOutras) then
-         begin
-           Result:=PosY;
-           exit;
-         end
-         else
+         if (Cobr.Dup.Count=0) then
          begin
             //exibir somemte informação se não for OUTRAS
-            TituloDoBloco(PosX,PosY,'FATURA/DUPLICATAS');
-            if (ide.indPag=ipVista) then
-               Box([],XPos,YPos,35,aHeigthPadrao,' ','PAGAMENTO À VISTA',taLeftJustify,True)
-            else if (ide.indPag=ipPrazo) then
-               Box([],XPos,YPos,35,aHeigthPadrao,' ','PAGAMENTO À PRAZO',taLeftJustify,True);
-           Result:=PosY+(aHeigthPadrao+LineHeight);
-           exit;
+            if Ide.indPag=ipOutras then
+            begin
+              Result:=PosY;
+              exit;
+            end
+            else
+            begin
+               TituloDoBloco(PosX,PosY,'FATURA/DUPLICATAS');
+               if Ide.indPag=ipVista then
+                  Box([],XPos,YPos,35,aHeigthPadrao,' ','PAGAMENTO À VISTA',taLeftJustify,True)
+               else if Ide.indPag=ipPrazo then
+                  Box([],XPos,YPos,35,aHeigthPadrao,' ','PAGAMENTO À PRAZO',taLeftJustify,True);
+               Result:=PosY+aHeigthPadrao+LineHeight;
+               exit;
+            end;
          end;
       end;
 
@@ -544,17 +545,12 @@ begin
      YY2:=0;
      if not (NotaUtil.EstaVazio(Cobr.Fat.nFat)) then
      begin
-        if (ide.indPag=ipVista) then
-           Box([fsRigth],XPos,YPos,50,aHeigthPadrao,' ','PAGAMENTO À VISTA',taLeftJustify)
-        else if (ide.indPag=ipPrazo) then
-           Box([fsRigth],XPos,YPos,50,aHeigthPadrao,' ','PAGAMENTO À PRAZO',taLeftJustify);
         Box([fsRigth],XPos,YPos,30,aHeigthPadrao,'Número da Fatura',Cobr.Fat.nFat,taLeftJustify);
         Box([fsLeft,fsRigth],XPos,YPos,30,aHeigthPadrao,'Valor Original',NotaUtil.FormatFloat(Cobr.Fat.vOrig),taLeftJustify);
         Box([fsLeft,fsRigth],XPos,YPos,30,aHeigthPadrao,'Valor do Desconto',NotaUtil.FormatFloat(Cobr.Fat.vDesc),taLeftJustify);
         Box([fsLeft],XPos,YPos,30,aHeigthPadrao,'Valor Líquido',NotaUtil.FormatFloat(Cobr.Fat.vLiq),taLeftJustify,true);
         YY2:=aHeigthPadrao;
      end;
-
      YY:=YPos;
      XX:=PosX;
      if not (Cobr.Dup.Count=0) then

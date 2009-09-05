@@ -115,7 +115,7 @@ begin
   begin
 
     FIDInutilizacao := 'ID' + IntToStrZero(FcUF, 2) +
-      FCNPJ + IntToStrZero(Fmodelo, 2) + IntToStrZero(Fserie, 3) +
+      SomenteNumeros(FCNPJ) + IntToStrZero(Fmodelo, 2) + IntToStrZero(Fserie, 3) +
       IntToStrZero(FnNFIni, 9) + IntToStrZero(FnNFFin, 9);
 
     Gerador.ArquivoFormatoXML := '';
@@ -130,7 +130,7 @@ begin
     if not ValidarCodigoUF(FcUF) then
       Gerador.wAlerta('DP07', 'cUF', DSC_CUF, ERR_MSG_INVALIDO);
     Gerador.wCampo(tcInt, 'DP08', 'ano   ', 002, 002, 1, Fano, DSC_ANO);
-    Gerador.wCampo(tcStr, 'DP09', 'CNPJ  ', 014, 014, 1, FCNPJ, DSC_CNPJ);
+    Gerador.wCampo(tcStr, 'DP09', 'CNPJ  ', 014, 014, 1, SomenteNumeros(FCNPJ), DSC_CNPJ);
     if not ValidarCNPJ(FCNPJ) then
       Gerador.wAlerta('DP09', 'CNPJ', DSC_CNPJ, ERR_MSG_INVALIDO);
     Gerador.wCampo(tcInt, 'DP10', 'mod   ', 002, 002, 1, Fmodelo, DSC_MOD);

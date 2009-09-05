@@ -54,6 +54,7 @@ Alterações   03/09/09
 [*] Alterado função para calcular nome do arquivo PDF. Será gerado apenas com a chave da nfe .pdf sem a literal NFe
 [-] Alterado função NotasFiscais.SaveToFile para pegar apenas Path do Nome passado na função.
 [-] Corrigido CSTAT do retorno do envio para atribuir CSTAT da Nota apenas qdo lote estiver processado.
+[*] Alterado geração da Inutilização para CNPJ ser gerado somente com números, sem máscara.
 
 
 Alterações 02/04/09 - Realizadas por Dulcemar Zilli

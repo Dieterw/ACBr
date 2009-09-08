@@ -1084,6 +1084,7 @@ try
   GerarRegistros51;
   GerarRegistros53;
   GerarRegistros54;
+  GerarRegistros55;
   GerarConjuntoRegistros60;
   GerarRegistros60R;
   GerarRegistros61;
@@ -1094,6 +1095,7 @@ try
   GerarRegistros75;
   GerarRegistros85;
   GerarRegistros86;
+  GerarRegistros88Ean;
 
   GerarRegistros90;
 finally
@@ -1608,6 +1610,8 @@ if Registros85.Count>0 then
   wregistro:=wregistro+'85'+TBStrZero(IntToStr(Registros85.Count),8);
 if Registros86.Count>0 then
   wregistro:=wregistro+'86'+TBStrZero(IntToStr(Registros86.Count),8);
+if Registros88Ean.Count>0 then
+  wregistro:=wregistro+'88EAN'+TBStrZero(IntToStr(Registros88Ean.Count),8);
 
 wregistro:=wregistro+Space(125-length(wregistro))+'2';
 WriteRecord(wregistro);

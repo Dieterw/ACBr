@@ -5053,7 +5053,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           Left = 0
           Top = 0
           Width = 153
-          Height = 203
+          Height = 228
           Align = alLeft
           TabOrder = 0
           object btnStatusServ: TButton
@@ -5124,18 +5124,18 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           Left = 153
           Top = 0
           Width = 366
-          Height = 203
+          Height = 228
           Align = alClient
           TabOrder = 1
           object WBResposta: TWebBrowser
             Left = 1
             Top = 18
             Width = 364
-            Height = 184
+            Height = 209
             Align = alClient
             TabOrder = 0
             ControlData = {
-              4C0000009F250000041300000000000000000000000000000000000000000000
+              4C0000009F2500009A1500000000000000000000000000000000000000000000
               000000004C000000000000000000000001000000E0D057007335CF11AE690800
               2B2E126208000000000000004C0000000114020000000000C000000000000046
               8000000000000000000000000000000000000000000000000000000000000000

@@ -47,6 +47,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Alterações   08/09/09
+---------------
+[-] Alterado rotina de consulta da NFe para atualizar a tag procNfe qdo o arquivo for carregado(LoadFromFile)
+
 Alterações   06/09/09
 ---------------
 [-] Alterado forma de atualização da tag procNFe no arquivo XML da NFe.

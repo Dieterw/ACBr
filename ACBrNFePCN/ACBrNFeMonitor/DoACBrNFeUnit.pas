@@ -125,7 +125,14 @@ begin
 
         else if Cmd.Metodo = 'consultarnfe' then
          begin
-           ACBrNFe1.WebServices.Consulta.NFeChave := Cmd.Params(0);
+           if FileExists(Cmd.Params(0)) then
+            begin
+              ACBrNFe1.NotasFiscais.Clear;
+              ACBrNFe1.NotasFiscais.LoadFromFile(Cmd.Params(0));
+              ACBrNFe1.WebServices.Consulta.NFeChave := StringReplace(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID,'NFe','',[rfIgnoreCase]);
+            end
+           else
+              ACBrNFe1.WebServices.Consulta.NFeChave := Cmd.Params(0);
            try
               ACBrNFe1.WebServices.Consulta.Executar;
 

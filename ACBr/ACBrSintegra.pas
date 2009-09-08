@@ -56,6 +56,9 @@
 |* 27/07/2009: Jose Aparecido da Silva
 |   - Adicao do registro 85
 |   - Adicao do registro 86
+|* 08/09/2009: Ederson Selvati
+|   - Adicao do registro 55 GNRE
+|   - Adicao do registro 88EAN MG?
 ******************************************************************************}
 
 {$I ACBr.inc}
@@ -163,6 +166,46 @@ type
   public
     function Add (Obj: TRegistro54): Integer;
     property Objects [Index: Integer]: TRegistro54
+      read GetObject write SetObject; default;
+  end;
+
+  TRegistro55 = class
+  private
+    FValor: double;
+    FAgencia: Integer;
+    FBanco: Integer;
+    FNumeroConvenio: string;
+    FInscricao: string;
+    FMesAno: string;
+    FCNPJ: string;
+    FUF: string;
+    FNumero: string;
+    FDataPagamento: TDateTime;
+    FVencimento: TDateTime;
+
+  public
+    property CNPJ: string read FCNPJ write FCNPJ;
+    property Inscricao: string read FInscricao write FInscricao;
+    property DataPagamento: TDateTime read FDataPagamento write FDataPagamento;
+    property UF: string read FUF write FUF;
+    property UFFavorecida: string read FUF write FUF;
+    property Banco: Integer read FBanco write FBanco;
+    property Agencia: Integer read FAgencia write FAgencia;
+    property Numero: string read FNumero write FNumero;
+    property Valor: double read FValor write FValor;
+    property Vencimento: TDateTime read FVencimento write FVencimento;
+    property MesAno: string read FMesAno write FMesAno;
+    property NumeroConvenio: string read FNumeroConvenio write FNumeroConvenio;
+  end;
+
+  TRegistros55 = class(TObjectList)
+  protected
+    procedure SetObject (Index: Integer; Item: TRegistro55);
+    function GetObject (Index: Integer): TRegistro55;
+    procedure Insert (Index: Integer; Obj: TRegistro55);
+  public
+    function Add (Obj: TRegistro55): Integer;
+    property Objects [Index: Integer]: TRegistro55
       read GetObject write SetObject; default;
   end;
 
@@ -816,6 +859,34 @@ type
       read GetObject write SetObject; default;
   end;
 
+  TRegistro88Ean = class
+  private
+    FVersaoEan: Integer;
+    FCodigoBarras: string;
+    FUnidade: string;
+    FDescricao: string;
+    FCodigo: Integer;
+
+  public
+    property VersaoEan: Integer read FVersaoEan write FVersaoEan;
+    property Codigo: Integer read FCodigo write FCodigo;
+    property Descricao: string read FDescricao write FDescricao;
+    property Unidade: string read FUnidade write FUnidade;
+    property CodigoBarras: string read FCodigoBarras write FCodigoBarras;
+  end;
+
+  TRegistros88Ean = class(TObjectList)
+  protected
+    procedure SetObject (Index: Integer; Item: TRegistro88Ean);
+    function GetObject (Index: Integer): TRegistro88Ean;
+    procedure Insert (Index: Integer; Obj: TRegistro88Ean);
+  public
+    function Add (Obj: TRegistro88Ean): Integer;
+    property Objects [Index: Integer]: TRegistro88Ean
+      read GetObject write SetObject; default;
+  end;
+
+
   TACBrSintegra = class(TComponent)
   private
     FFileName: string;
@@ -842,6 +913,8 @@ type
     FRegistros60R: TRegistros60R;
     FRegistros85: TRegistros85;
     FRegistros86: TRegistros86;
+    FRegistros55: TRegistros55;
+    FRegistros88Ean: TRegistros88Ean;
 
     procedure GeraRegistro10;
     procedure GeraRegistro11;
@@ -849,6 +922,7 @@ type
     procedure GerarRegistros51;
     procedure GerarRegistros53;
     procedure GerarRegistros54;
+    procedure GerarRegistros55;
 
     procedure GerarRegistros60M(Registro60M: TRegistro60M);
     procedure GerarRegistros60A(Registros60A: TRegistros60A);
@@ -865,6 +939,8 @@ type
     procedure GerarRegistros75;
     procedure GerarRegistros85;
     procedure GerarRegistros86;
+    procedure GerarRegistros88Ean;
+
     procedure GerarRegistros90;
     procedure WriteRecord(Rec: string);
     function GetRegistro60M(Emissao: TDateTime;NumSerie: string): TRegistro60M;
@@ -876,7 +952,10 @@ type
     property Registros50: TRegistros50 read FRegistros50 write FRegistros50;
     property Registros51: TRegistros51 read FRegistros51 write FRegistros51;
     property Registros53: TRegistros53 read FRegistros53 write FRegistros53;
+
     property Registros54: TRegistros54 read FRegistros54 write FRegistros54;
+    property Registros55: TRegistros55 read FRegistros55 write FRegistros55;
+
     property Registros60M: TRegistros60M read FRegistros60M write FRegistros60M;
     property Registros60A: TRegistros60A read FRegistros60A write FRegistros60A;
     property Registros60D: TRegistros60D read FRegistros60D write FRegistros60D;
@@ -890,6 +969,7 @@ type
     property Registros75: TRegistros75 read FRegistros75 write FRegistros75;
     property Registros85: TRegistros85 read FRegistros85 write FRegistros85;
     property Registros86: TRegistros86 read FRegistros86 write FRegistros86;
+    property Registros88Ean: TRegistros88Ean read FRegistros88Ean write FRegistros88Ean;
     property Ativo: Boolean read FAtivo write FAtivo;
     procedure LimparRegistros;
     procedure GeraArquivo;
@@ -906,6 +986,7 @@ type
   function Sort50(Item1: Pointer;Item2: Pointer): Integer;
   function Sort51(Item1: Pointer;Item2: Pointer): Integer;
   function Sort53(Item1: Pointer;Item2: Pointer): Integer;
+
   function Sort60M(Item1: Pointer;Item2: Pointer): Integer;
   function Sort60A(Item1: Pointer;Item2: Pointer): Integer;
   function Sort60D(Item1: Pointer;Item2: Pointer): Integer;
@@ -932,6 +1013,7 @@ FRegistros50:=TRegistros50.Create(True);
 FRegistros51:=TRegistros51.Create(True);
 FRegistros53:=TRegistros53.Create(True);
 FRegistros54:=TRegistros54.Create(True);
+FRegistros55:=TRegistros55.Create(True);
 FRegistros60M:=TRegistros60M.Create(True);
 FRegistros60A:=TRegistros60A.Create(True);
 FRegistros60D:=TRegistros60D.Create(True);
@@ -943,8 +1025,9 @@ FRegistros70:=TRegistros70.Create(True);
 FRegistros71:=TRegistros71.Create(True);
 FRegistros74:=TRegistros74.Create(True);
 FRegistros75:=TRegistros75.Create(True);
-    FRegistros85:=TRegistros85.Create(True);
-    FRegistros86:=TRegistros86.Create(True);
+FRegistros85:=TRegistros85.Create(True);
+FRegistros86:=TRegistros86.Create(True);
+FRegistros88Ean:=TRegistros88Ean.Create(True);
 FVersaoValidador:=vv524;
 Ativo:=True;
 end;
@@ -958,6 +1041,7 @@ FRegistros50.Free;
 FRegistros51.Free;
 FRegistros53.Free;
 FRegistros54.Free;
+FRegistros55.Free;
 FRegistros60M.Free;
 FRegistros60A.Free;
 FRegistros60D.Free;
@@ -969,8 +1053,9 @@ FRegistros70.Free;
 FRegistros71.Free;
 FRegistros74.Free;
 FRegistros75.Free;
-    FRegistros85.Free;
-    FRegistros86.Free;
+FRegistros85.Free;
+FRegistros86.Free;
+FRegistros88Ean.Free;
 Ativo:=False;
   inherited;
 end;
@@ -1494,6 +1579,7 @@ var
 begin
 wregistro:='90'+TBStrZero(TiraPontos(Registro10.CNPJ),14);
 wregistro:=wregistro+Padl(TiraPontos(Registro10.Inscricao),14);
+
 if Registros50.Count>0 then
   wregistro:=wregistro+'50'+TBStrZero(IntToStr(Registros50.Count),8);
 if Registros51.Count>0 then
@@ -1502,6 +1588,9 @@ if Registros53.Count>0 then
   wregistro:=wregistro+'53'+TBStrZero(IntToStr(Registros53.Count),8);
 if Registros54.Count>0 then
   wregistro:=wregistro+'54'+TBStrZero(IntToStr(Registros54.Count),8);
+if Registros55.Count>0 then
+  wregistro:=wregistro+'55'+TBStrZero(IntToStr(Registros55.Count),8);
+
 if Registros60M.Count>0 then
   wregistro:=wregistro+'60'+TBStrZero(IntToStr(Registros60M.Count+Registros60A.Count+
     Registros60D.Count+Registros60I.Count+Registros60R.Count),8);
@@ -1526,7 +1615,7 @@ WriteRecord(wregistro);
 wregistro:='90'+TBStrZero(TiraPontos(Registro10.CNPJ),14);
 wregistro:=wregistro+Padl(TiraPontos(Registro10.Inscricao),14);
 wregistro:=wregistro+'99'+TBStrZero(IntToStr(Registros50.Count+Registros51.Count+
-  Registros53.Count+Registros54.Count+
+  Registros53.Count+Registros54.Count+Registros55.Count+
   (Registros60M.Count+Registros60A.Count+Registros60D.Count+Registros60I.Count+Registros60R.Count)+
   (Registros61.Count+Registros61R.Count)+
    Registros70.Count+Registros71.Count+Registros74.Count+Registros75.Count+Registros85.Count+Registros86.Count+4),8);
@@ -1558,6 +1647,7 @@ FRegistros50.Clear;
 FRegistros51.Clear;
 FRegistros53.Clear;
 FRegistros54.Clear;
+FRegistros55.Clear;
 FRegistros60M.Clear;
 FRegistros60A.Clear;
 FRegistros60D.Clear;
@@ -1569,8 +1659,9 @@ FRegistros70.Clear;
 FRegistros71.Clear;
 FRegistros74.Clear;
 FRegistros75.Clear;
-    FRegistros85.Clear;
-    FRegistros86.Clear;
+FRegistros85.Clear;
+FRegistros86.Clear;
+FRegistros88Ean.Clear;
 end;
 
 function TACBrSintegra.GetVersao: string;
@@ -1677,6 +1768,48 @@ begin
       WriteRecord(wregistro);
     end;
   end;
+end;
+
+procedure TACBrSintegra.GerarRegistros55;
+var
+  wregistro: string;
+  i: Integer;
+begin
+for I := 0 to Registros55.Count - 1 do
+begin
+  wregistro:='55';
+  wregistro:=wregistro+TBStrZero(TiraPontos(Registros55[i].CNPJ),14)+
+    Padl(TiraPontos(Registros55[i].Inscricao),14);
+  wregistro:=wregistro+FormatDateTime('yyyymmdd',Registros55[i].DataPagamento);
+  wregistro:=wregistro+Padl(Registros55[i].UF,2);
+  wregistro:=wregistro+Padl(Registros55[i].UFFavorecida,2);
+  wregistro:=wregistro+TBStrZero(IntToStr(Registros55[i].Banco),3);
+  wregistro:=wregistro+TBStrZero(IntToStr(Registros55[i].Agencia),4);
+  wregistro:=wregistro+Padl(Registros55[i].Numero,20);
+  wregistro:=wregistro+TBStrZero(TiraPontos(FormatFloat('#,##0.00',Registros55[i].Valor)),13);
+  wregistro:=wregistro+FormatDateTime('yyyymmdd',Registros55[i].Vencimento);
+  wregistro:=wregistro+Padl(Registros55[i].MesAno,6);
+  wregistro:=wregistro+Padl(Registros55[i].NumeroConvenio,30);
+  WriteRecord(wregistro);
+end;
+end;
+
+procedure TACBrSintegra.GerarRegistros88Ean;
+var
+  wregistro: string;
+  i: Integer;
+begin
+for I := 0 to Registros88Ean.Count - 1 do
+begin
+  wregistro:='88EAN';
+  wregistro:=wregistro+TBStrZero(IntToStr(Registros88Ean[i].VersaoEan),2);
+  wregistro:=wregistro+TBStrZero(IntToStr(Registros88Ean[i].Codigo),14);
+  wregistro:=wregistro+Padl(Registros88Ean[i].Descricao,53);
+  wregistro:=wregistro+Padl(Registros88Ean[i].Unidade,6);
+  wregistro:=wregistro+Padl(Registros88Ean[i].CodigoBarras,14);
+  wregistro:=wregistro+Space(32);
+  WriteRecord(wregistro);
+end;
 end;
 
 { TRegistros50 }
@@ -2364,6 +2497,51 @@ end;
 function TRegistros86.Add(Obj: TRegistro86): Integer;
 begin
   Result := inherited Add(Obj) ;
+end;
+
+{ TRegistros55 }
+
+function TRegistros55.Add(Obj: TRegistro55): Integer;
+begin
+  Result := inherited Add(Obj);
+end;
+
+function TRegistros55.GetObject(Index: Integer): TRegistro55;
+begin
+  Result := inherited GetItem(Index) as TRegistro55;
+end;
+
+procedure TRegistros55.Insert(Index: Integer; Obj: TRegistro55);
+begin
+  inherited Insert(Index, Obj);
+end;
+
+procedure TRegistros55.SetObject(Index: Integer; Item: TRegistro55);
+begin
+  inherited SetItem(Index, Item);
+end;
+
+{ TRegistros88Ean }
+
+function TRegistros88Ean.Add(Obj: TRegistro88Ean): Integer;
+begin
+  Result := inherited Add(Obj);
+
+end;
+
+function TRegistros88Ean.GetObject(Index: Integer): TRegistro88Ean;
+begin
+  Result := inherited GetItem(Index) as TRegistro88Ean;
+end;
+
+procedure TRegistros88Ean.Insert(Index: Integer; Obj: TRegistro88Ean);
+begin
+  inherited Insert(Index, Obj);
+end;
+
+procedure TRegistros88Ean.SetObject(Index: Integer; Item: TRegistro88Ean);
+begin
+  inherited SetItem(Index, Item);
 end;
 
 end.

@@ -29,6 +29,7 @@
 {              Praça Anita Costa, 34 - Tatuí - SP - 18270-410                  }
 {                                                                              }
 {******************************************************************************}
+{$I ACBr.inc}
 
 unit DoACBrNFeUnit ;
 
@@ -605,6 +606,25 @@ begin
             except
                raise Exception.Create('Erro ao enviar email');
             end;
+         end
+
+        else if Cmd.Metodo = 'setcertificado' then
+         begin
+           if (Cmd.Params(0)<>'') then
+           begin
+             {$IFDEF ACBrNFeOpenSSL}
+                ACBrNFe1.Configuracoes.Certificados.Certificado := Cmd.Params(0);
+                ACBrNFe1.Configuracoes.Certificados.Senha       := Cmd.Params(1);
+                edtCaminho.Text := ACBrNFe1.Configuracoes.Certificados.Certificado;
+                edtSenha.Text   := ACBrNFe1.Configuracoes.Certificados.Senha;
+             {$ELSE}
+                ACBrNFe1.Configuracoes.Certificados.NumeroSerie := Cmd.Params(0);
+                edtCaminho.Text := ACBrNFe1.Configuracoes.Certificados.NumeroSerie;
+             {$ENDIF}
+                frmAcbrNfeMonitor.SalvarIni;
+           end
+           else
+              raise Exception.Create('Certificado '+Cmd.Params(0)+' Inválido.');
          end
 
         else if Cmd.Metodo = 'restaurar' then

@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "ACBrNFeMonitor"
-#define MyAppVerName "ACBrNFeMonitor-OpenSSL-0.5.3b"
+#define MyAppVerName "ACBrNFeMonitor-OpenSSL-0.5.3c"
 #define MyAppPublisher "Projeto ACBr"
 #define MyAppURL "http://acbr.sourceforge.net/drupal/"
 #define MyAppUrlName "ACBrNFeMonitor.url"

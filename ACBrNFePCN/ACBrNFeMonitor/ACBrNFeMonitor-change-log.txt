@@ -45,6 +45,8 @@ Símbolo : Significado
 
 09/09/09
 [-]	: Correção na rotina de consulta para quando não houver nota carregada no componente(Consulta efetuada apenas pela chave)
+[+]	: Adicionado comando NFe.SetCertificado onde poderá ser alterado o certificado em tempo de execução, útil para quem utiliza
+	  o mesmo ACBrNFeMonitor para vários emitentes. (marcio <marcio@ntsinfo.com.br>)
 
 08/09/09
 [-]	: Alterado comando NFe.ConsultarNFe onde poderá ser passado a Chave da NFe ou o caminho para o arquivo para que

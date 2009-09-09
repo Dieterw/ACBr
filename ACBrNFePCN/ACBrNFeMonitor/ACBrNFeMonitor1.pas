@@ -207,8 +207,6 @@ type
     procedure Inicializar ;
     procedure EscondeConfig ;
     procedure ExibeConfig ;
-    procedure LerIni ;
-    procedure SalvarIni ;
     procedure AjustaLinhasLog ;
 
     procedure Resposta(Comando, Resposta : string);
@@ -227,6 +225,8 @@ type
     Conexao : TIdPeerThread ;
 
     procedure Processar ;
+    procedure LerIni ;
+    procedure SalvarIni ;
   end;
 
 var

@@ -1599,23 +1599,28 @@ begin
 
     NFeRetorno.Free;
 
-    if FConfiguracoes.Geral.Salvar or NotaUtil.NaoEstaVazio(TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NomeArq)  then
-     begin
+    if FConfiguracoes.Geral.Salvar  then
        FConfiguracoes.Geral.Save(FNFeChave+'-sit.xml', FRetWS);
-       if FileExists(FConfiguracoes.Geral.PathSalvar+'\'+FNFeChave+'-nfe.xml') or NotaUtil.NaoEstaVazio(TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NomeArq) then
+
+     if TACBrNFe( FACBrNFe ).NotasFiscais.Count > 0 then
+      begin
+       if FConfiguracoes.Geral.Salvar or NotaUtil.NaoEstaVazio(TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NomeArq)  then
         begin
-          AProcNFe:=TProcNFe.Create;
-          if NotaUtil.NaoEstaVazio(TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NomeArq) then
-             AProcNFe.PathNFe:=TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NomeArq
-          else
-             AProcNFe.PathNFe:=FConfiguracoes.Geral.PathSalvar+'\'+FNFeChave+'-nfe.xml';
-          AProcNFe.PathRetConsSitNFe:=FConfiguracoes.Geral.PathSalvar+'\'+FNFeChave+'-sit.xml';
-          AProcNFe.GerarXML;
-          if NotaUtil.NaoEstaVazio(AProcNFe.Gerador.ArquivoFormatoXML) then
-             AProcNFe.Gerador.SalvarArquivo(AProcNFe.PathNFe);
-          AProcNFe.Free;
+          if FileExists(FConfiguracoes.Geral.PathSalvar+'\'+FNFeChave+'-nfe.xml') or NotaUtil.NaoEstaVazio(TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NomeArq) then
+           begin
+             AProcNFe:=TProcNFe.Create;
+             if NotaUtil.NaoEstaVazio(TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NomeArq) then
+                AProcNFe.PathNFe:=TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NomeArq
+             else
+                AProcNFe.PathNFe:=FConfiguracoes.Geral.PathSalvar+'\'+FNFeChave+'-nfe.xml';
+             AProcNFe.PathRetConsSitNFe:=FConfiguracoes.Geral.PathSalvar+'\'+FNFeChave+'-sit.xml';
+             AProcNFe.GerarXML;
+             if NotaUtil.NaoEstaVazio(AProcNFe.Gerador.ArquivoFormatoXML) then
+                AProcNFe.Gerador.SalvarArquivo(AProcNFe.PathNFe);
+             AProcNFe.Free;
+           end;
         end;
-     end;
+      end;
   finally
     {$IFDEF ACBrNFeOpenSSL}
        HTTP.Free;

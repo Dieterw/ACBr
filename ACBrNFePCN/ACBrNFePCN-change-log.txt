@@ -51,6 +51,7 @@ Alterações   09/09/09
 ---------------
 [*] Adicionado URL de Consulta ao Cadastro em ambiente de produção para MG
 [-] Correção na rotina de consulta para quando não houver nota carregada no componente(Consulta efetuada apenas pela chave)
+[*] Impressão dos campos InfAdic.obsCont nas Informações Adicionais do RAVE em CB
 
 
 Alterações   08/09/09

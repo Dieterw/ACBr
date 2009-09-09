@@ -733,6 +733,8 @@ end;
 function ImprimirDadosAdicionais(PosX,PosY: Double): Double;
 var aHeigth:Double;
     memo:TMemoBuf;
+    i:integer;
+    wtemp:string;
 begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
@@ -751,7 +753,14 @@ begin
        Memo.PrintStart:=PosX+1;
        Memo.PrintEnd:=PosX+174;
        Memo.NoNewLine:=True;
-       memo.Text:=StringReplace(InfAdic.InfCpl,';',#13,[rfReplaceAll]);
+       wtemp:='';
+       for i:=0  to InfAdic.ObsCont.Count-1 do
+       begin
+         with InfAdic.ObsCont.Items[i] do
+           wTemp:=wtemp+XCampo+': '+XTexto;
+         wtemp:=wtemp+';';
+       end;
+       memo.Text:=StringReplace(wtemp+InfAdic.InfCpl,';',#13,[rfReplaceAll]);
        PrintMemo(Memo,0,false);
      finally
        Memo.Free;

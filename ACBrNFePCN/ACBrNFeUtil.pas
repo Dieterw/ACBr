@@ -960,7 +960,7 @@ begin
     LayNfeInutilizacao  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.mg.gov.br/nfe/services/NfeInutilizacao', 'https://hnfe.fazenda.mg.gov.br/nfe/services/NfeInutilizacao');
     LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.mg.gov.br/nfe/services/NfeConsulta', 'https://hnfe.fazenda.mg.gov.br/nfe/services/NfeConsulta');
     LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.mg.gov.br/nfe/services/NfeStatusServico', 'https://hnfe.fazenda.mg.gov.br/nfe/services/NfeStatusServico');
-    LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, '', 'https://hnfe.fazenda.mg.gov.br/nfe/services/CadConsultaCadastro');
+    LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.mg.gov.br/nfe/services/CadConsultaCadastro', 'https://hnfe.fazenda.mg.gov.br/nfe/services/CadConsultaCadastro');
   end;
 end;
 

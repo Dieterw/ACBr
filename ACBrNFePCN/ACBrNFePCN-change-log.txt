@@ -47,6 +47,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Alterações   10/09/09
+---------------
+[-] Corrigido função LerCampo (unit pcnNFeRTXT), para quando ler um campo data vazio, não retornar erro.
+
 Alterações   09/09/09
 ---------------
 [*] Adicionado URL de Consulta ao Cadastro em ambiente de produção para MG

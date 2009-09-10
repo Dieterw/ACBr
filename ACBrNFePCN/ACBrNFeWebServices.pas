@@ -1581,6 +1581,10 @@ begin
     FMsg   := NFeRetorno.XMotivo;
     Result := (NFeRetorno.CStat in [100,101,110]);
 
+    if FConfiguracoes.Geral.Salvar  then
+      FConfiguracoes.Geral.Save(FNFeChave+'-sit.xml', FRetWS);
+
+
     for i:= 0 to TACBrNFe( FACBrNFe ).NotasFiscais.Count-1 do
      begin
         if StringReplace(TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NFe.infNFe.ID,'NFe','',[rfIgnoreCase]) = FNFeChave then
@@ -1593,29 +1597,41 @@ begin
            TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NFe.procNFe.digVal   := NFeRetorno.digVal;
            TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NFe.procNFe.cStat    := NFeRetorno.cStat;
            TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NFe.procNFe.xMotivo  := NFeRetorno.xMotivo;
+
+          if FileExists(FConfiguracoes.Geral.PathSalvar+'\'+FNFeChave+'-nfe.xml') or NotaUtil.NaoEstaVazio(TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NomeArq) then
+           begin
+             AProcNFe:=TProcNFe.Create;
+             if NotaUtil.NaoEstaVazio(TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NomeArq) then
+                AProcNFe.PathNFe:=TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NomeArq
+             else
+                AProcNFe.PathNFe:=FConfiguracoes.Geral.PathSalvar+'\'+FNFeChave+'-nfe.xml';
+             AProcNFe.PathRetConsSitNFe:=FConfiguracoes.Geral.PathSalvar+'\'+FNFeChave+'-sit.xml';
+             AProcNFe.GerarXML;
+             if NotaUtil.NaoEstaVazio(AProcNFe.Gerador.ArquivoFormatoXML) then
+                AProcNFe.Gerador.SalvarArquivo(AProcNFe.PathNFe);
+             AProcNFe.Free;
+           end;
+
            break;
          end;
      end;
 
     NFeRetorno.Free;
 
-    if FConfiguracoes.Geral.Salvar  then
-       FConfiguracoes.Geral.Save(FNFeChave+'-sit.xml', FRetWS);
-
-    if FConfiguracoes.Geral.Salvar or NotaUtil.NaoEstaVazio(TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NomeArq)  then
+    if (TACBrNFe( FACBrNFe ).NotasFiscais.Count <= 0) then
      begin
-       if FileExists(FConfiguracoes.Geral.PathSalvar+'\'+FNFeChave+'-nfe.xml') or NotaUtil.NaoEstaVazio(TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NomeArq) then
+       if FConfiguracoes.Geral.Salvar then
         begin
-          AProcNFe:=TProcNFe.Create;
-          if (TACBrNFe( FACBrNFe ).NotasFiscais.Count > 0)and  NotaUtil.NaoEstaVazio(TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NomeArq) then
-             AProcNFe.PathNFe:=TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NomeArq
-          else
+          if FileExists(FConfiguracoes.Geral.PathSalvar+'\'+FNFeChave+'-nfe.xml') then
+           begin
+             AProcNFe:=TProcNFe.Create;
              AProcNFe.PathNFe:=FConfiguracoes.Geral.PathSalvar+'\'+FNFeChave+'-nfe.xml';
-          AProcNFe.PathRetConsSitNFe:=FConfiguracoes.Geral.PathSalvar+'\'+FNFeChave+'-sit.xml';
-          AProcNFe.GerarXML;
-          if NotaUtil.NaoEstaVazio(AProcNFe.Gerador.ArquivoFormatoXML) then
-             AProcNFe.Gerador.SalvarArquivo(AProcNFe.PathNFe);
-          AProcNFe.Free;
+             AProcNFe.PathRetConsSitNFe:=FConfiguracoes.Geral.PathSalvar+'\'+FNFeChave+'-sit.xml';
+             AProcNFe.GerarXML;
+             if NotaUtil.NaoEstaVazio(AProcNFe.Gerador.ArquivoFormatoXML) then
+                AProcNFe.Gerador.SalvarArquivo(AProcNFe.PathNFe);
+             AProcNFe.Free;
+           end;
         end;
      end;
   finally

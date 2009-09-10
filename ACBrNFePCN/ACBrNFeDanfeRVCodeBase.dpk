@@ -73,7 +73,6 @@ requires
   rtl,
   designide,
   xmlrtl,
-  Rave50VCL,
   ACBrNFePCN;
 
 contains

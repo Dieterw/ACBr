@@ -73,9 +73,7 @@ requires
   rtl,
   designide,
   xmlrtl,
-  Rave50VCL,
   ACBrNFePCN,
-  visualclx,
   vcldb,
   qrpt;
 

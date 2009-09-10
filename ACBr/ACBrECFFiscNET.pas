@@ -811,20 +811,49 @@ begin
 end;
 
 
+{  Ordem de Retorno do Estado da Impressora
+   estNaoInicializada - Não Inicializada (Nova)
+   estDesconhecido    - Desconhecido
+   estPagamento       - Cupom Venda Aberto em Pagamento
+   estVenda           - Cupom Venda Aberto em Itens
+   estNaoFiscal       - Cupom Não Fiscal Aberto
+   estRelatorio       - Cupom Vinculado Aberto | Relatório Gerencial Aberto
+   estBloqueada       - Impressora Bloqueada para venda
+   estRequerZ         - Requer Emissão da Redução da Z
+   estRequerX         - Requer Leitura X
+   estLivre           - Livre para vender
+}
 function TACBrECFFiscNET.GetEstado: TACBrECFEstado;
 Var Est, Ind : Integer ;
 begin
-  if (not fpAtivo) then
-     fpEstado := estNaoInicializada
-  else
-   begin
-      fpEstado := estDesconhecido ;
+  Result := fpEstado ;  // Suprimir Warning
+  try
+    fpEstado := estNaoInicializada ;
+    if (not fpAtivo) then
+      exit ;
 
+    fpEstado := estDesconhecido ;
+
+    FiscNETComando.NomeComando := 'LeInteiro' ;
+    FiscNETComando.AddParamString('NomeInteiro','EstadoFiscal') ;
+    EnviaComando ;
+
+    Est := StrToIntDef( FiscNETResposta.Params.Values['ValorInteiro'] ,0) ;
+
+    case Est of
+      1      : fpEstado := estLivre ;
+      2      : fpEstado := estVenda ;
+      4,8,16 : fpEstado := estPagamento ;
+      32,64  : fpEstado := estRelatorio ;
+      128    : fpEstado := estNaoFiscal ;
+    end ;
+
+    if fpEstado in [estDesconhecido, estLivre] then
+    begin
       FiscNETComando.NomeComando := 'LeInteiro' ;
       FiscNETComando.AddParamString('NomeInteiro','Indicadores') ;
       EnviaComando ;
       Ind := StrToIntDef( FiscNETResposta.Params.Values['ValorInteiro'] ,0) ;
-
 
       if TestBit(Ind,5) then
          fpEstado := estBloqueada
@@ -832,28 +861,13 @@ begin
       else if TestBit(Ind,7) then
          fpEstado := estRequerZ
 
-//      else if not TestBit(Ind,6) then
-//         fpEstado := estRequerX
+//    else if not TestBit(Ind,6) then
+//       fpEstado := estRequerX
 
-      else
-       begin
-         FiscNETComando.NomeComando := 'LeInteiro' ;
-         FiscNETComando.AddParamString('NomeInteiro','EstadoFiscal') ;
-         EnviaComando ;
-
-         Est := StrToIntDef( FiscNETResposta.Params.Values['ValorInteiro'] ,0) ;
-
-         case Est of
-            1      : fpEstado := estLivre ;
-            2      : fpEstado := estVenda ;
-            4,8,16 : fpEstado := estPagamento ;
-            32,64  : fpEstado := estRelatorio ;
-            128    : fpEstado := estNaoFiscal ;
-         end ;
-       end ;
-   end ;
-
-  Result := fpEstado ;
+    end ;
+  finally
+    Result := fpEstado ;
+  end ;
 end;
 
 function TACBrECFFiscNET.GetGavetaAberta: Boolean;
@@ -1796,11 +1810,24 @@ end ;
 procedure TACBrECFFiscNET.AjustaStringList(AStringList: TStringList);
 Var Texto : AnsiString ;
     NewStringList : TStringList ;
-    A : Integer ;
+    A, Cols : Integer ;
 begin
   NewStringList := TStringList.create ;
   try
       NewStringList.Clear ;
+
+      { Detectando o número de Colunas (não encontrei registrador no ECF que
+        retorne o Numero de Colunas) }
+      Texto := AStringList.Text ;
+      A := pos(StringOfChar('-',40), Texto ) ;
+      if A < 1 then
+         Cols := Colunas
+      else
+       begin
+         Cols := 40 ;
+         while copy(Texto,A+Cols,1) = '-' do
+            Inc( Cols ) ;
+       end ;
 
       For A := 0 to AStringList.Count-1 do
       begin
@@ -1820,8 +1847,8 @@ begin
 
         while Length(Texto) > 0 do
         begin
-           NewStringList.Add( copy(Texto, 1, Colunas) );
-           Delete(Texto, 1, Colunas);
+           NewStringList.Add( copy(Texto, 1, Cols) );
+           Delete(Texto, 1, Cols);
         end;
       end ;
 

@@ -695,15 +695,17 @@ end ;
 Function StringToDateTime( const DateTimeString : String;
    const Format : String = '') : TDateTime ;
  Var
-    OldShortDateFormat : String ;
+    OldShortDateFormat, AStr : String ;
 begin
   OldShortDateFormat := ShortDateFormat ;
   try
      if Format <> '' then
         ShortDateFormat := Format ;
 
-     Result := StrToDateTime( Trim(
-                StringReplace(DateTimeString,'/',DateSeparator, [rfReplaceAll])) ) ;
+     AStr := Trim( StringReplace(DateTimeString,'/',DateSeparator, [rfReplaceAll])) ;
+     AStr := StringReplace(AStr,':',TimeSeparator, [rfReplaceAll]) ;
+
+     Result := StrToDateTime( AStr ) ;
   finally
      ShortDateFormat := OldShortDateFormat ;
   end ;
@@ -719,9 +721,9 @@ begin
   OldShortDateFormat := ShortDateFormat ;
   try
      ShortDateFormat := 'yyyy/mm/dd' ;
-     Result := StrToDate(copy(YYYYMMDDhhnnss, 1,4) + DateSeparator +
-                         copy(YYYYMMDDhhnnss, 5,2) + DateSeparator +
-                         copy(YYYYMMDDhhnnss, 7,2)) ;
+     Result := StrToDateDef( copy(YYYYMMDDhhnnss, 1,4) + DateSeparator +
+                             copy(YYYYMMDDhhnnss, 5,2) + DateSeparator +
+                             copy(YYYYMMDDhhnnss, 7,2), 0 ) ;
   finally
      ShortDateFormat := OldShortDateFormat ;
   end ;

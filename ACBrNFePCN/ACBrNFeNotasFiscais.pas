@@ -302,18 +302,18 @@ begin
 end;
 
 function NotaFiscal.GetNFeXML: AnsiString;
-//var
-// LocNFeW : TNFeW;
+var
+ LocNFeW : TNFeW;
 begin
-{ LocNFeW := TNFeW.Create(Self.NFe);
+ LocNFeW := TNFeW.Create(Self.NFe);
  try
     LocNFeW.schema := TsPL005c;
     LocNFeW.GerarXml;
     Result := LocNFeW.Gerador.ArquivoFormatoXML;
  finally
     LocNFeW.Free;
- end;}
- Result := FXML;
+ end;
+// Result := FXML;
 end;
 
 { TNotasFiscais }

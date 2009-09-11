@@ -47,6 +47,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Alterações   11/09/09
+---------------
+[-] Correção para leitura da variável XML com o protocolo de autorização, quando lida após o envio da NFe
+
 Alterações   10/09/09
 ---------------
 [-] Corrigido função LerCampo (unit pcnNFeRTXT), para quando ler um campo data vazio, não retornar erro.

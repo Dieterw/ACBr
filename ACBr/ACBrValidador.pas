@@ -704,6 +704,9 @@ begin
 
   if fsComplemento = 'MT' then
   begin
+     if Length(fsDocto) = 9 then
+        fsDocto := padR(fsDocto,11,'0') ;
+
      Tamanho := 11 ;
      vDigitos := VarArrayOf(
         ['DVX',c0_9,c0_9,c0_9,c0_9,c0_9,c0_9,c0_9,c0_9,c0_9,c0_9,'','',''] ) ;

@@ -311,6 +311,9 @@ TACBrECFSweda = class( TACBrECFClass )
     procedure LerTotaisFormaPagamento ; override ;
     Procedure ProgramaFormaPagamento( var Descricao: String;
        PermiteVinculado : Boolean = true; Posicao : String = '' ) ; override ;
+    procedure CarregaRelatoriosGerenciais ; override ;
+    Procedure ProgramaRelatorioGerencial( var Descricao: String;
+       Posicao : String = '') ; override ;
 
     procedure CarregaComprovantesNaoFiscais ; override ;
     procedure LerTotaisComprovanteNaoFiscal ; override ;
@@ -1818,6 +1821,70 @@ begin
   end
 end;
 
+procedure TACBrECFSweda.CarregaRelatoriosGerenciais;
+Var
+  StrLeg, StrCER, RetCmd, Token1, Token2, Descricao : AnsiString ;
+  Cont, CER : Integer ;
+  RG  : TACBrECFRelatorioGerencial ;
+begin
+  inherited CarregaRelatoriosGerenciais ;   {Inicializa fpRelatoriosGerenciais}
+
+  try
+    if fpMFD then
+    begin
+      // Descricao do relatorio gerencial
+      RetCmd := EnviaComando('29' + 'M') ;
+      if copy(RetCmd,1,3) <> '.+T' then exit ;
+      StrLeg := copy(RetCmd, 8, 120) ;
+
+      RetCmd := EnviaComando('29' + 'N') ;
+      if copy(RetCmd,1,3) <> '.+T' then exit ;
+      StrLeg := StrLeg + copy(RetCmd, 8, 120) ;
+
+      RetCmd := EnviaComando('29' + 'O') ;
+      if copy(RetCmd,1,3) <> '.+T' then exit ;
+      StrLeg := StrLeg + copy(RetCmd, 8, 120) ;
+
+      RetCmd := EnviaComando('29' + 'P') ;
+      if copy(RetCmd,1,3) <> '.+T' then exit ;
+      StrLeg := StrLeg + copy(RetCmd, 8, 90) ;
+
+      // Contador de relatorio gerencial
+      RetCmd := EnviaComando('27' + 'K') ;
+      if copy(RetCmd,1,3) <> '.+C' then exit ;
+      StrCER := copy(RetCmd, 8, 120) ;
+
+
+      for Cont := 1 to 30 do
+      begin
+        { Adicionando os Relatorios Gerenciais }
+        Token1    := copy(StrLeg, ((Cont-1) * 15), 15);
+        Descricao := Trim(Token1) ;
+        Token2    := copy(StrCER, ((Cont-1) * 4) , 04);
+        CER       := StrToIntDef(Token2, 0) ;
+
+        if (Descricao <> '') and (Descricao[2] <> #255) then
+        begin
+          RG := TACBrECFRelatorioGerencial.create ;
+          RG.Indice     := IntToStrZero(Cont,2);
+          RG.Descricao  := Descricao ;
+          RG.Contador   := CER;
+
+          fpRelatoriosGerenciais.Add( RG ) ;
+        end ;
+      end ;
+    end ;
+  except
+    { Se falhou ao carregar, deve "nilzar" as variaveis para que as rotinas
+      "Acha*" tentem carregar novamente }
+    fpRelatoriosGerenciais.Free ;
+    fpRelatoriosGerenciais := nil ;
+
+    raise ;
+  end ;
+
+end;
+
 procedure TACBrECFSweda.ProgramaFormaPagamento(var Descricao: String;
   PermiteVinculado: Boolean; Posicao : String);
 Var ProxIndice, I : Integer ;
@@ -1838,7 +1905,7 @@ begin
   CmdIns := CmdIns + padL(Descricao,15) ;
 
   if fsVersaoSweda >=  swdST then
-     Cmd := CmdIns 
+     Cmd := CmdIns
   else
    begin
      CarregaFormasPagamento ;
@@ -1882,6 +1949,40 @@ begin
   FPagto.Descricao := Descricao ;
   FPagto.PermiteVinculado := PermiteVinculado ;
   fpFormasPagamentos.Add( FPagto ) ;
+end;
+
+procedure TACBrECFSweda.ProgramaRelatorioGerencial(var Descricao: String; Posicao: String);
+Var
+  ProxIndice : Integer ;
+begin
+  CarregaRelatoriosGerenciais ;
+
+  Descricao := Trim(Descricao) ;
+  ProxIndice := StrToIntDef(Posicao, -1) ;
+
+  if fpMFD then
+   begin
+     if AchaRGDescricao(Descricao, True) <> nil then
+        raise Exception.Create('Relatório Gerencial ('+Descricao+') já existe.') ;
+
+     if (ProxIndice < 2) or (ProxIndice > 30) then { Indice passado é válido ? }
+     begin
+        For ProxIndice := 2 to 30 do  { Procurando Lacuna }
+        begin
+           if AchaRGIndice(IntToStrZero(ProxIndice,2)) = nil then
+              break ;
+        end ;
+     end ;
+
+     if ProxIndice > 30 then
+        raise Exception.create('Não há espaço para programar novos RGs');
+
+     EnviaComando( '32' + PadL(Descricao,15) ) ;
+   end
+  else
+     raise Exception.Create('Impressoras sem MFD não suportam Programação de Relatórios Gerenciais');
+
+  CarregaRelatoriosGerenciais ;
 end;
 
 procedure TACBrECFSweda.CarregaComprovantesNaoFiscais;
@@ -2002,9 +2103,10 @@ begin
 end;
 
 
-procedure TACBrECFSweda.AbreRelatorioGerencial;
+procedure TACBrECFSweda.AbreRelatorioGerencial(Indice: Integer = 0);
 Var Espera : Integer ;
     Cmd    : AnsiString ;
+  RG  : TACBrECFRelatorioGerencial;
 begin
   Espera := IfThen( fsVersaoSweda >= swdST, 10,  50) ;
   Cmd := 'S' ;
@@ -2014,6 +2116,16 @@ begin
   AguardaImpressao := True ;
   if fsVersaoSweda <= swdD then
      fsEsperaMinima := IncSecond( now, 30) ;  { Espera no minimo 30 seg }
+
+  if Indice > 0 then
+     begin
+       RG  := AchaRGIndice( IntToStrZero(Indice, 2 ) ) ;
+       if RG = nil then
+          raise Exception.create( 'Relatório Gerencial: '+IntToStr(Indice)+
+                                  ' não foi cadastrado.' );
+       Cmd := Cmd + PadL(RG.Descricao,15);
+     end;
+
   EnviaComando( '13' + Cmd ,Espera ) ;
 end;
 

@@ -328,7 +328,12 @@ begin
          if NotaUtil.EstaVazio(FPathArquivos) then
             NomeArq := PathWithDelim(TACBrNFe(ACBrNFe).Configuracoes.Geral.PathSalvar)+NomeArq
          else
-            NomeArq := PathWithDelim(FPathArquivos)+NomeArq;
+            begin
+               if NotaUtil.NaoEstaVazio(TACBrNFe(ACBrNFe).Configuracoes.Geral.PathSalvar) then
+                  NomeArq := PathWithDelim(TACBrNFe(ACBrNFe).Configuracoes.Geral.PathSalvar)+NomeArq
+               else
+                  NomeArq := PathWithDelim(ExtractFilePath(Application.ExeName))+NomeArq;
+            end;
          dmDanfe.RvSystem1.OutputFileName := NomeArq+'.pdf';
          ExecutaReport;
       end;

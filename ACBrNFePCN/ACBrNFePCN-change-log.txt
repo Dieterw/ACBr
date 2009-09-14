@@ -47,6 +47,14 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Alterações   14/09/09
+---------------
+[-] Corrigido criação do arquivo PDF na pasta correta quando estiver configurado a propriedade PathPDF. Caso a propriedade PathPDF
+    não esteja preenchida, será usado o valor da variável PathSalvar e caso também não esteja preenchida, será gravado na 
+    pasta do programa.
+[-] Corrigido geração do campo cPais do destinatário, para sempre gerar com 4 dígitos.
+
+
 Alterações   11/09/09
 ---------------
 [-] Correção para leitura da variável XML com o protocolo de autorização, quando lida após o envio da NFe

@@ -43,6 +43,11 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+14/09/09
+[+]	: Adicionada opção para usar Rave CodeBase ou o Rave via arquivo. Com o Rave CodeBase será possível imprimir o DANFE em modo 
+ 	  paisagem
+
+
 09/09/09
 [-]	: Correção na rotina de consulta para quando não houver nota carregada no componente(Consulta efetuada apenas pela chave)
 [+]	: Adicionado comando NFe.SetCertificado onde poderá ser alterado o certificado em tempo de execução, útil para quem utiliza

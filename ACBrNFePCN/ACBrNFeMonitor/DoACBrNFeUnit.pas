@@ -222,9 +222,9 @@ begin
 
            try
               ACBrNFe1.NotasFiscais.ImprimirPDF;
-              ArqPDF := ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID ;
-              Cmd.Resposta := 'Arquivo criado em: '+ edtPathPDF.Text +
-                              copy(ArqPDF, (length(ArqPDF)-44)+1, 44)+'.pdf' ;
+              ArqPDF := StringReplace(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID,'NFe','',[rfIgnoreCase]) ;
+              Cmd.Resposta := 'Arquivo criado em: '+ PathWithDelim(edtPathPDF.Text) +
+                              ArqPDF+'.pdf' ;
            except
               raise Exception.Create('Erro ao criar o arquivo PDF');
            end;

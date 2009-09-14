@@ -10,7 +10,7 @@ uses IniFiles, CmdUnitNFe, FileCtrl, Printers,
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ComCtrls, ExtCtrls, Buttons, Spin, Menus, ImgList,
   ACBrNFe, ACBrNFeDANFEClass, ACBrNFeDANFERave, pcnConversao, OleCtrls,
-  SHDocVw;
+  SHDocVw, ACBrNFeDANFERaveCB;
 
 const
    BufferMemoResposta = 1000 ;              { Maximo de Linhas no MemoResposta }
@@ -161,6 +161,8 @@ type
     rgCasasDecimaisQtd: TRadioGroup;
     cbxHoraSaida: TCheckBox;
     rgCasasDecimaisValor: TRadioGroup;
+    ACBrNFeDANFERaveCB1: TACBrNFeDANFERaveCB;
+    rgModeloDanfe: TRadioGroup;
     procedure DoACBrTimer(Sender: TObject);
     procedure edOnlyNumbers(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
@@ -192,6 +194,7 @@ type
     procedure edtNumCopiaKeyPress(Sender: TObject; var Key: Char);
     procedure edtMargemInfKeyPress(Sender: TObject; var Key: Char);
     procedure sbPathPDFClick(Sender: TObject);
+    procedure rgModeloDanfeClick(Sender: TObject);
   private
     { Private declarations }
     ACBrNFeMonitorINI : string;
@@ -511,7 +514,7 @@ begin
 
      rgFormaEmissao.ItemIndex := Ini.ReadInteger( 'Geral','FormaEmissao',0) ;
      ckSalvar.Checked    := Ini.ReadBool(   'Geral','Salvar'      ,True) ;
-     edtPathLogs.Text    := Ini.ReadString( 'Geral','PathSalvar'  ,'') ;
+     edtPathLogs.Text    := Ini.ReadString( 'Geral','PathSalvar'  ,     PathWithDelim(ExtractFilePath(Application.ExeName))+'Logs') ;
      cbxImpressora.ItemIndex   := cbxImpressora.Items.IndexOf(Ini.ReadString( 'Geral','Impressora','0')) ;
 
      ACBrNFe1.Configuracoes.Geral.FormaEmissao := StrToTpEmis(OK,IntToStr(rgFormaEmissao.ItemIndex+1));
@@ -552,8 +555,9 @@ begin
      ACBrNFe1.Configuracoes.WebServices.ProxyUser := edtProxyUser.Text;
      ACBrNFe1.Configuracoes.WebServices.ProxyPass := edtProxySenha.Text;
 
-     rgTipoDanfe.ItemIndex     := Ini.ReadInteger( 'Geral','DANFE'       ,0) ;
-     edtLogoMarca.Text         := Ini.ReadString( 'Geral','LogoMarca'   ,'') ;
+     rgTipoDanfe.ItemIndex     := Ini.ReadInteger( 'Geral','DANFE'   ,0) ;
+     edtLogoMarca.Text         := Ini.ReadString( 'Geral','LogoMarca','') ;
+     rgModeloDanfe.ItemIndex   := Ini.ReadInteger('DANFE','Modelo'   ,0) ;
      edtSoftwareHouse.Text     := Ini.ReadString( 'DANFE','SoftwareHouse'   ,'') ;
      edtSiteEmpresa.Text       := Ini.ReadString( 'DANFE','Site'  ,'') ;
      edtEmailEmpresa.Text      := Ini.ReadString( 'DANFE','Email' ,'') ;
@@ -570,27 +574,34 @@ begin
      rgCasasDecimaisQtd.ItemIndex   := Ini.ReadInteger('DANFE','DecimaisQTD',0) ;
      rgCasasDecimaisValor.ItemIndex := Ini.ReadInteger('DANFE','DecimaisValor',0) ;
 
+     if rgModeloDanfe.ItemIndex = 0 then
+        ACBrNFe1.DANFE := ACBrNFeDANFERave1
+     else
+        ACBrNFe1.DANFE := ACBrNFeDANFERaveCB1;   
+
+     if ACBrNFe1.DANFE = ACBrNFeDANFERave1 then
+        ACBrNFeDANFERave1.RavFile := PathWithDelim(ExtractFilePath(Application.ExeName))+'Report\DANFE_Rave513.rav';
+
      if ACBrNFe1.DANFE <> nil then
       begin
         ACBrNFe1.DANFE.TipoDANFE  := StrToTpImp(OK,IntToStr(rgTipoDanfe.ItemIndex+1));
         ACBrNFe1.DANFE.Logo       := edtLogoMarca.Text;
-        ACBrNFeDANFERave1.RavFile := PathWithDelim(ExtractFilePath(Application.ExeName))+'Report\DANFE_Rave513.rav';
-        ACBrNFeDANFERave1.Sistema := edtSoftwareHouse.Text;
-        ACBrNFeDANFERave1.Site    := edtSiteEmpresa.Text;
-        ACBrNFeDANFERave1.Email   := edtEmailEmpresa.Text;
-        ACBrNFeDANFERave1.Fax     := edtFaxEmpresa.Text;
-        ACBrNFeDANFERave1.ImprimirDescPorc  := cbxImpDescPorc.Checked;
-        ACBrNFeDANFERave1.MostrarPreview    := cbxMostrarPreview.Checked;
-        ACBrNFeDANFERave1.ImprimirHoraSaida := cbxHoraSaida.Checked;
-        ACBrNFeDANFERave1.Impressora := cbxImpressora.Text;
-        ACBrNFeDANFERave1.NumCopias  := StrToIntDef(edtNumCopia.Text, 1);
-        ACBrNFeDANFERave1.MargemInferior  := StrToFloatDef(edtMargemInf.Text,0.8);
-        ACBrNFeDANFERave1.MargemSuperior  := StrToFloatDef(edtMargemSup.Text,0.8);
-        ACBrNFeDANFERave1.MargemDireita   := StrToFloatDef(edtMargemDir.Text,0.51);
-        ACBrNFeDANFERave1.MargemEsquerda  := StrToFloatDef(edtMargemEsq.Text,0.6);
-        ACBrNFeDANFERave1.PathPDF    := edtPathPDF.Text;
-        ACBrNFeDANFERave1.CasasDecimais._qCom   := rgCasasDecimaisQtd.ItemIndex+2;
-        ACBrNFeDANFERave1.CasasDecimais._vUnCom := rgCasasDecimaisValor.ItemIndex+2;
+        ACBrNFe1.DANFE.Sistema := edtSoftwareHouse.Text;
+        ACBrNFe1.DANFE.Site    := edtSiteEmpresa.Text;
+        ACBrNFe1.DANFE.Email   := edtEmailEmpresa.Text;
+        ACBrNFe1.DANFE.Fax     := edtFaxEmpresa.Text;
+        ACBrNFe1.DANFE.ImprimirDescPorc  := cbxImpDescPorc.Checked;
+        ACBrNFe1.DANFE.MostrarPreview    := cbxMostrarPreview.Checked;
+        ACBrNFe1.DANFE.ImprimirHoraSaida := cbxHoraSaida.Checked;
+        ACBrNFe1.DANFE.Impressora := cbxImpressora.Text;
+        ACBrNFe1.DANFE.NumCopias  := StrToIntDef(edtNumCopia.Text, 1);
+        ACBrNFe1.DANFE.MargemInferior  := StrToFloatDef(edtMargemInf.Text,0.8);
+        ACBrNFe1.DANFE.MargemSuperior  := StrToFloatDef(edtMargemSup.Text,0.8);
+        ACBrNFe1.DANFE.MargemDireita   := StrToFloatDef(edtMargemDir.Text,0.51);
+        ACBrNFe1.DANFE.MargemEsquerda  := StrToFloatDef(edtMargemEsq.Text,0.6);
+        ACBrNFe1.DANFE.PathPDF    := edtPathPDF.Text;
+        ACBrNFe1.DANFE.CasasDecimais._qCom   := rgCasasDecimaisQtd.ItemIndex+2;
+        ACBrNFe1.DANFE.CasasDecimais._vUnCom := rgCasasDecimaisValor.ItemIndex+2;
       end;
 
      edtSmtpHost.Text      := Ini.ReadString( 'Email','Host'   ,'') ;
@@ -670,6 +681,7 @@ begin
      Ini.WriteBinaryStream( 'Email','Mensagem',StreamMemo) ;
      StreamMemo.Free;
 
+     Ini.WriteInteger('DANFE','Modelo'       ,rgModeloDanfe.ItemIndex) ;
      Ini.WriteString( 'DANFE','SoftwareHouse',edtSoftwareHouse.Text) ;
      Ini.WriteString( 'DANFE','Site' ,edtSiteEmpresa.Text) ;
      Ini.WriteString( 'DANFE','Email',edtEmailEmpresa.Text) ;
@@ -1099,13 +1111,42 @@ end;
 procedure TfrmAcbrNfeMonitor.sbLogoMarcaClick(Sender: TObject);
 begin
   OpenDialog1.Title := 'Selecione o Logo';
-  OpenDialog1.DefaultExt := '*.bmp';
-  OpenDialog1.Filter := 'Arquivos BMP (*.bmp)|*.bmp|Todos os Arquivos (*.*)|*.*';
+  if rgModeloDanfe.ItemIndex = 0 then
+   begin
+     OpenDialog1.DefaultExt := '*.bmp';
+     OpenDialog1.Filter := 'Arquivos BMP (*.bmp)|*.bmp|Todos os Arquivos (*.*)|*.*';
+   end
+  else
+   begin
+     OpenDialog1.DefaultExt := '*.jpg';
+     OpenDialog1.Filter := 'Arquivos JPG (*.jpg)|*.jpg|Todos os Arquivos (*.*)|*.*';
+   end;
   OpenDialog1.InitialDir := ExtractFileDir(application.ExeName);
   if OpenDialog1.Execute then
   begin
     edtLogoMarca.Text := OpenDialog1.FileName;
   end;
+
+ if Length(Trim(edtLogoMarca.Text)) > 0 then
+  begin
+    if rgModeloDanfe.ItemIndex = 0 then
+     begin
+       if ExtractFileExt(edtLogoMarca.Text) <> '.bmp' then
+        begin
+          MessageDlg('O arquivo de logo deve ser no formato BMP.',mtError,[mbOk],0);
+          edtLogoMarca.SetFocus;
+        end;
+     end
+    else
+     begin
+       if ExtractFileExt(edtLogoMarca.Text) <> '.jpg' then
+        begin
+          MessageDlg('O arquivo de logo deve ser no formato JPG.',mtError,[mbOk],0);
+          edtLogoMarca.SetFocus;
+        end;
+     end;
+  end;
+  
 end;
 
 procedure TfrmAcbrNfeMonitor.sbPathSalvarClick(Sender: TObject);
@@ -1204,11 +1245,11 @@ begin
     exit;
  if not(InputQuery('WebServices Inutilização ', 'Número Inicial', NumeroInicial)) then
     exit;
- if not(InputQuery('WebServices Inutilização ', 'Número Inicial', NumeroFinal)) then
+ if not(InputQuery('WebServices Inutilização ', 'Número Final', NumeroFinal)) then
     exit;
-
  if not(InputQuery('WebServices Inutilização ', 'Justificativa', Justificativa)) then
     exit;
+    
   ACBrNFe1.WebServices.Inutiliza(CNPJ, Justificativa, StrToInt(Ano), StrToInt(Modelo), StrToInt(Serie), StrToInt(NumeroInicial), StrToInt(NumeroFinal));
   ExibeResp(ACBrNFe1.WebServices.Inutilizacao.RetWS);
 end;
@@ -1260,6 +1301,29 @@ begin
 
   if SelectDirectory(Dir, [sdAllowCreate, sdPerformCreate, sdPrompt],SELDIRHELP) then
     edtPathPDF.Text := PathWithDelim( Dir );
+end;
+
+procedure TfrmAcbrNfeMonitor.rgModeloDanfeClick(Sender: TObject);
+begin
+ if Length(Trim(edtLogoMarca.Text)) > 0 then
+  begin
+    if rgModeloDanfe.ItemIndex = 0 then
+     begin
+       if ExtractFileExt(edtLogoMarca.Text) <> '.bmp' then
+        begin
+          MessageDlg('O arquivo de logo deve ser no formato BMP.',mtError,[mbOk],0);
+          edtLogoMarca.SetFocus;
+        end;
+     end
+    else
+     begin
+       if ExtractFileExt(edtLogoMarca.Text) <> '.jpg' then
+        begin
+          MessageDlg('O arquivo de logo deve ser no formato JPG.',mtError,[mbOk],0);
+          edtLogoMarca.SetFocus;
+        end;
+     end;
+  end;
 end;
 
 end.

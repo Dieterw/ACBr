@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "ACBrNFeMonitor"
-#define MyAppVerName "ACBrNFeMonitor-OpenSSL-0.5.4a"
+#define MyAppVerName "ACBrNFeMonitor-CAPICOM-0.5.4a"
 #define MyAppPublisher "Projeto ACBr"
 #define MyAppURL "http://acbr.sourceforge.net/drupal/"
 #define MyAppUrlName "ACBrNFeMonitor.url"
@@ -48,14 +48,12 @@ Source: LICENSE.TXT; DestDir: {app}; Flags: ignoreversion; Components: programa
 Source: ACBrNFeMonitor.chm; DestDir: {app}; Flags: ignoreversion; Components: help
 Source: ACBrNFeMonitor-change-log.txt; DestDir: {app}; Flags: ignoreversion; Components: help
 Source: {#QTDLL}; DestDir: {sys}; Flags: ; Components: programa
+Source: ..\DLLs\Capicom\capicom.dll; DestDir: {sys}; Flags: ; Components: programa
+Source: ..\DLLs\Capicom\msxml5.dll; DestDir: {sys}; Flags: ; Components: programa
+Source: ..\DLLs\Capicom\msxml5r.dll; DestDir: {sys}; Flags: ; Components: programa
+Source: ..\DLLs\Capicom\instala.bat; DestDir: {app}; Flags: ; Components: programa
 Source: ..\DLLs\OpenSSL\libeay32.dll; DestDir: {app}; Flags: ; Components: programa
-Source: ..\DLLs\OpenSSL\libxml2.dll; DestDir: {app}; Flags: ; Components: programa
-Source: ..\DLLs\OpenSSL\libxmlsec.dll; DestDir: {app}; Flags: ; Components: programa
-Source: ..\DLLs\OpenSSL\libxmlsec-openssl.dll; DestDir: {app}; Flags: ; Components: programa
-Source: ..\DLLs\OpenSSL\libxslt.dll; DestDir: {app}; Flags: ; Components: programa
 Source: ..\DLLs\OpenSSL\ssleay32.dll; DestDir: {app}; Flags: ; Components: programa
-Source: ..\DLLs\OpenSSL\zlib1.dll; DestDir: {app}; Flags: ; Components: programa
-Source: ..\DLLs\iconv.dll; DestDir: {app}; Flags: ; Components: programa
 Source: Report\DANFE_Rave513.rav; DestDir: {app}\Report; Flags: ; Components: programa
 Source: Schemas\*.*; DestDir: {app}\Schemas; Flags: ; Components: programa
 Source: MunIBGE\*.*; DestDir: {app}\MunIBGE; Flags: ; Components: programa
@@ -73,5 +71,6 @@ Name: {userstartup}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; WorkingDir: {
 Name: "{group}\{cm:ProgramOnTheWeb,{#MyAppName}}"; Filename: "{app}\{#MyAppUrlName}"; Components: help
 
 [Run]
+Filename: {app}\instala.bat; Description: {cm:LaunchProgram,instala.bat}; Flags: nowait postinstall skipifsilent
 Filename: {app}\{#MyAppExeName}; Description: {cm:LaunchProgram,{#MyAppName}}; Flags: nowait postinstall skipifsilent
 

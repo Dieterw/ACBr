@@ -490,7 +490,7 @@ var
 {$ENDIF}
 begin
 {$IFDEF VER140} //delphi6
-  DecimalSeparator := '.';
+  DecimalSeparator := ',';
   Result := SysUtils.FormatFloat(AFormat, AValue);
 {$ELSE}
   vFormato.DecimalSeparator := ',';

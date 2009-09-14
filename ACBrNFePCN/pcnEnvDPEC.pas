@@ -173,7 +173,7 @@ end;
 
 { TInfDPEC }
 
-constructor TInfDPEC.Create;
+constructor TInfDPEC.Create(AOwner: TEnvDPEC);
 begin
   inherited Create;
   FIdeDec := TideDec.Create;

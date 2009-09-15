@@ -47,6 +47,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Alterações   15/09/09
+---------------
+[*] Na rotina de consulta, adicionada linha para atualizar a propriedade Confirmada da NFe(cStat = 100).
+
 Alterações   14/09/09
 ---------------
 [-] Corrigido criação do arquivo PDF na pasta correta quando estiver configurado a propriedade PathPDF. Caso a propriedade PathPDF

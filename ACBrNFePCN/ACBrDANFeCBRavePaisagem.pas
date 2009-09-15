@@ -324,7 +324,7 @@ begin
          if (ACBrNFe.NotasFiscais.Items[FNFIndex].NFe.Ide.tpEmis in [teNormal,teSCAN]) then
          begin
             if NotaUtil.EstaVazio(aProtocolo) then
-               aProtocolo:=Trim(procNFe.nProt)+' '+DateTimeToStr(procNFe.dhRecbto);
+               aProtocolo:=Trim(procNFe.nProt)+' '+NotaUtil.SeSenao(procNFe.dhRecbto<>0,DateTimeToStr(procNFe.dhRecbto),'');
             Box([fsLeft,fsTop],PosX,YPos,aWidth,aHeigthPadrao,'PROTOCOLO DE AUTORIZAÇÃO DE USO',aProtocolo,taCenter,True);
          end
          else if (ACBrNFe.NotasFiscais.Items[FNFIndex].NFe.Ide.tpEmis in [teDPEC]) then

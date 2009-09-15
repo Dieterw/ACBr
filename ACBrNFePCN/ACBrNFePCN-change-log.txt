@@ -50,6 +50,7 @@ Símbolo : Significado
 Alterações   15/09/09
 ---------------
 [*] Na rotina de consulta, adicionada linha para atualizar a propriedade Confirmada da NFe(cStat = 100).
+[-] Na impressão do DANFE, caso não exista o protocolo não será mais impresso a data 31/12/1899
 
 Alterações   14/09/09
 ---------------

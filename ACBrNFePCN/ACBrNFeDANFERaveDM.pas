@@ -795,7 +795,7 @@ begin
       Connection.WriteStrData('', '');
       Connection.WriteStrData('', 'PROTOCOLO DE AUTORIZAÇÃO DE USO');
       if notautil.EstaVazio(FDANFEClassOwner.ProtocoloNFe) then
-         Connection.WriteStrData('', FNFe.procNFe.nProt+' '+DateTimeToStr(FNFe.procNFe.dhRecbto))
+         Connection.WriteStrData('', FNFe.procNFe.nProt+' '+NotaUtil.SeSenao(FNFe.procNFe.dhRecbto<>0,DateTimeToStr(FNFe.procNFe.dhRecbto),''))
       else
          Connection.WriteStrData('', FDANFEClassOwner.ProtocoloNFe);
    end

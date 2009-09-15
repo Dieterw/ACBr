@@ -4120,7 +4120,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       Top = 0
       Width = 527
       Height = 256
-      ActivePage = DANFE
+      ActivePage = Testes
       Align = alBottom
       TabOrder = 0
       object Monitor: TTabSheet
@@ -5133,6 +5133,15 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
             TabOrder = 6
             OnClick = btnEnviarClick
           end
+          object btnEnviarEmail: TButton
+            Left = 5
+            Top = 201
+            Width = 140
+            Height = 25
+            Caption = 'Enviar Email'
+            TabOrder = 7
+            OnClick = btnEnviarEmailClick
+          end
         end
         object Panel2: TPanel
           Left = 153
@@ -5162,7 +5171,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
             Height = 17
             Align = alTop
             Alignment = taLeftJustify
-            Caption = 'Respota WebService'
+            Caption = 'Resposta WebService'
             Font.Charset = DEFAULT_CHARSET
             Font.Color = clNavy
             Font.Height = -11

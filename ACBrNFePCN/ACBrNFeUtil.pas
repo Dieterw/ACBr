@@ -884,7 +884,7 @@ class function NotaUtil.GetURLCE(AAmbiente: Integer;
   ALayOut: TLayOut): WideString;
 begin
   case ALayOut of
-    LayNfeRecepcao      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.ce.gov.br/nfe/services/NfeRecepcao', 'https://nfeh.sefaz.ce.gov.br/nfe/services/NfeRecepcao ');
+    LayNfeRecepcao      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.ce.gov.br/nfe/services/NfeRecepcao', 'https://nfeh.sefaz.ce.gov.br/nfe/services/NfeRecepcao');
     LayNfeRetRecepcao   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.ce.gov.br/nfe/services/NfeRetRecepcao', 'https://nfeh.sefaz.ce.gov.br/nfe/services/NfeRetRecepcao');
     LayNfeCancelamento  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.ce.gov.br/nfe/services/NfeCancelamento', 'https://nfeh.sefaz.ce.gov.br/nfe/services/NfeCancelamento');
     LayNfeInutilizacao  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.ce.gov.br/nfe/services/NfeInutilizacao', 'https://nfeh.sefaz.ce.gov.br/nfe/services/NfeInutilizacao');

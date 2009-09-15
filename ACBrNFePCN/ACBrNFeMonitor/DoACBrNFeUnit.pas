@@ -629,7 +629,10 @@ begin
                EnviarEmail(edtSmtpHost.Text, edtSmtpPort.Text, edtSmtpUser.Text, edtSmtpPass.Text, edtSmtpUser.Text, Cmd.Params(0), edtEmailAssunto.Text, Cmd.Params(1), ArqPDF, mmEmailMsg.Lines, cbEmailSSL.Checked);
                Cmd.Resposta := 'Email enviado com sucesso';
             except
-               raise Exception.Create('Erro ao enviar email');
+               on E: Exception do
+                begin
+                  raise Exception.Create('Erro ao enviar email'+sLineBreak+E.Message);
+                end;
             end;
          end
 

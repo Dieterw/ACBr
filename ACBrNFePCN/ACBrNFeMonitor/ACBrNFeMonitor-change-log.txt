@@ -51,6 +51,7 @@ Símbolo : Significado
 15/09/09
 [*]	: Consulta de cadastro irá retornar todos os campos disponíveis no manual de integração(Nem todos estarão preenchidos, depende de 
 	  cada estado)
+[+]	: Adicionadao botão para enviar email na aba Testes
 
 14/09/09
 [+]	: Adicionada opção para usar Rave CodeBase ou o Rave via arquivo. Com o Rave CodeBase será possível imprimir o DANFE em modo 

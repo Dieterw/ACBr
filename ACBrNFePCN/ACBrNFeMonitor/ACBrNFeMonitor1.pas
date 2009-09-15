@@ -10,7 +10,7 @@ uses IniFiles, CmdUnitNFe, FileCtrl, Printers,
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ComCtrls, ExtCtrls, Buttons, Spin, Menus, ImgList,
   ACBrNFe, ACBrNFeDANFEClass, ACBrNFeDANFERave, pcnConversao, OleCtrls,
-  SHDocVw, ACBrNFeDANFERaveCB;
+  SHDocVw, ACBrNFeDANFERaveCB, ACBrNFeUtil;
 
 const
    BufferMemoResposta = 1000 ;              { Maximo de Linhas no MemoResposta }
@@ -163,6 +163,7 @@ type
     rgCasasDecimaisValor: TRadioGroup;
     ACBrNFeDANFERaveCB1: TACBrNFeDANFERaveCB;
     rgModeloDanfe: TRadioGroup;
+    btnEnviarEmail: TButton;
     procedure DoACBrTimer(Sender: TObject);
     procedure edOnlyNumbers(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
@@ -195,6 +196,7 @@ type
     procedure sbPathPDFClick(Sender: TObject);
     procedure rgModeloDanfeClick(Sender: TObject);
     procedure EncerrarMonitor1Click(Sender: TObject);
+    procedure btnEnviarEmailClick(Sender: TObject);
   private
     { Private declarations }
     ACBrNFeMonitorINI : string;
@@ -1309,6 +1311,47 @@ end;
 procedure TfrmAcbrNfeMonitor.EncerrarMonitor1Click(Sender: TObject);
 begin
  Close;
+end;
+
+procedure TfrmAcbrNfeMonitor.btnEnviarEmailClick(Sender: TObject);
+var
+  ArqPDF, vPara : String;
+begin
+  OpenDialog1.Title := 'Selecione a NFE';
+  OpenDialog1.DefaultExt := '*-nfe.XML';
+  OpenDialog1.Filter := 'Arquivos NFE (*-nfe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
+  OpenDialog1.InitialDir := ACBrNFe1.Configuracoes.Geral.PathSalvar;
+  if OpenDialog1.Execute then
+  begin
+    ACBrNFe1.NotasFiscais.Clear;
+    ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
+    ACBrNFe1.NotasFiscais.ImprimirPDF;
+    ArqPDF := ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID ;
+
+    ArqPDF := StringReplace(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID,'NFe', '', [rfIgnoreCase]);
+    if NotaUtil.EstaVazio(ACBrNFe1.DANFE.PathPDF) then
+       ArqPDF := PathWithDelim(ACBrNFe1.Configuracoes.Geral.PathSalvar)+ArqPDF
+    else
+     begin
+       if NotaUtil.NaoEstaVazio(ACBrNFe1.Configuracoes.Geral.PathSalvar) then
+          ArqPDF := PathWithDelim(ACBrNFe1.Configuracoes.Geral.PathSalvar)+ArqPDF
+       else
+          ArqPDF := PathWithDelim(ExtractFilePath(Application.ExeName))+ArqPDF;
+     end;
+    ArqPDF := ArqPDF+'.pdf';
+    if not(InputQuery('Enviar Email', 'Email de Destino', vPara)) then
+       exit;
+    try
+       EnviarEmail(edtSmtpHost.Text, edtSmtpPort.Text, edtSmtpUser.Text, edtSmtpPass.Text, edtSmtpUser.Text, vPara, edtEmailAssunto.Text, OpenDialog1.FileName, ArqPDF, mmEmailMsg.Lines, cbEmailSSL.Checked);
+    except
+       on E: Exception do
+        begin
+          raise Exception.Create('Erro ao enviar email'+sLineBreak+E.Message);
+          exit;
+        end;
+    end;
+    ShowMessage('Email enviado com sucesso!');
+  end;
 end;
 
 end.

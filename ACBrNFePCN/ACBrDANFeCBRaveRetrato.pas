@@ -72,6 +72,7 @@ function ImprimirCanhoto(PosX,PosY:Double):Double;
 var aWidthOutros,aWidthNFe,
     aWidthData,
     aHeigth,aHeigthReceb: Double;
+    vEnd: string;
 begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
@@ -91,10 +92,22 @@ begin
         Bold:=True;
         GotoXY(0,PosY+GetFontHeigh);
         //NewLine;
-        PrintCenter('Recebemos de '+Emit.XNome+' os produtos constantes da Nota Fiscal indicada ao lado',PosX+(aWidthOutros/2));
-        NewLine;
-        if ExibirResumoCanhoto then
-           PrintCenter('Emissão: '+NotaUtil.FormatDate(DateToStr(Ide.DEmi))+'  Dest/Reme: '+Dest.XNome+'  Valor Total: '+NotaUtil.FormatFloat(Total.ICMSTot.VNF),PosX+(aWidthOutros/2));
+        vEnd:='Recebemos de '+Emit.XNome+' os produtos constantes da Nota Fiscal indicada ao lado';
+        if Length(vEnd)>110 then
+        begin
+           vEnd:='Recebemos de '+Emit.XNome;
+           PrintCenter(vEnd,PosX+(aWidthOutros/2));
+           NewLine;
+           vEnd:='os produtos constantes da Nota Fiscal indicada ao lado';
+           PrintCenter(vEnd,PosX+(aWidthOutros/2));
+        end
+        else
+        begin
+           PrintCenter(vEnd,PosX+(aWidthOutros/2));
+           NewLine;
+           if ExibirResumoCanhoto then
+              PrintCenter('Emissão: '+NotaUtil.FormatDate(DateToStr(Ide.DEmi))+'  Dest/Reme: '+Dest.XNome+'  Valor Total: '+NotaUtil.FormatFloat(Total.ICMSTot.VNF),PosX+(aWidthOutros/2));
+        end;
 
         GotoXY(0,PosY+GetFontHeigh);
         NewLine;
@@ -167,9 +180,11 @@ begin
 end;
 
 function ImprimirEmitente(PosX,PosY:Double):Double;
-var aHeigthLogo, aWidthLogo, aWidth,CenterX:Double;
+var aHeigthLogo, aWidthLogo, aWidth, CenterX:Double;
+    aWidthTexto: integer;
     stLogo:TMemoryStream;
     vEnd,vTemp:String;
+    vDuasLinhas: boolean;
 begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
@@ -189,16 +204,41 @@ begin
        NewLine;
        Bold:=True;
        vEnd:=Emit.XNome;
-       if length(vEnd)>31 then
-         vEnd:=copy(vEnd,1,31);
+       vDuasLinhas:=false;
+       if length(vEnd)>30 then
+       begin
+         vtemp:=copy(vEnd,31,length(vEnd)-30);
+         vEnd:=copy(vEnd,1,30);
+         vDuasLinhas:=true;
+       end
+       else
+         vTemp:='';
        PrintCenter(vEnd,CenterX);
+       if Length(Vtemp)>0 then
+       begin
+          NewLine;
+          PrintCenter(vTemp,CenterX);
+       end;
        GotoXY(PosX,YPos+2);
 
-       aWidthLogo:=26;
-       aHeigthLogo:=20;
+       aWidthLogo:=0;
+       aHeigthLogo:=0;
+       aWidthTexto:=48;
        if Assigned(LogoMarca) then
-          PrintImageRect(PosX+1,YPos,PosX+aWidthLogo,YPos+aHeigthLogo,stLogo,'JPG');
-
+       begin
+         if vDuasLinhas then
+         begin
+            aWidthLogo:=26-5;
+            aHeigthLogo:=20-5
+         end
+         else
+         begin
+            aWidthLogo:=26;
+            aHeigthLogo:=20;
+         end;
+         aWidthTexto:=38;
+         PrintImageRect(PosX+1,YPos,PosX+aWidthLogo,YPos+aHeigthLogo,stLogo,'JPG');
+       end;
        GotoXY(PosX,YPos+1.5);
        CenterX:=PosX+aWidthLogo+((aWidth-aWidthLogo)/2);
        SetFont(FontNameUsed,FontSizeEmit_Outros);
@@ -210,10 +250,10 @@ begin
             vEnd:=vEnd+' '+Nro;
          if Trim(XCpl)>'' then
             vEnd:=vEnd+', '+XCpl;
-         if length(vEnd)>38 then
+         if length(vEnd)>aWidthTexto then
          begin
-            vtemp:=copy(vEnd,39,length(vEnd)-38)+' - ';
-            vEnd:=copy(vEnd,1,38);
+            vtemp:=copy(vEnd,aWidthTexto+1,length(vEnd)-aWidthTexto)+' - ';
+            vEnd:=copy(vEnd,1,aWidthTexto);
          end
          else
             vTemp:='';
@@ -230,11 +270,19 @@ begin
             vEnd:=vEnd+' / FAX: '+NotaUtil.FormatarFone(FaxDoEmitente);
          PrintCenter(vEnd,CenterX);
          NewLine;
-         vEnd:=SiteDoEmitente;
-         PrintCenter(vEnd,CenterX);
-         NewLine;
-         vEnd:=EmailDoEmitente;
-         PrintCenter(vEnd,CenterX);
+         if vDuasLinhas then
+         begin
+            vEnd:=SiteDoEmitente+' - '+EmailDoEmitente;
+            PrintCenter(vEnd,CenterX);
+         end
+         else
+         begin
+            vEnd:=SiteDoEmitente;
+            PrintCenter(vEnd,CenterX);
+            NewLine;
+            vEnd:=EmailDoEmitente;
+            PrintCenter(vEnd,CenterX);
+         end;
          Bold:=False;
         end;
     finally

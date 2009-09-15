@@ -42,6 +42,9 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+15/09/09
+[*]	: Consulta de cadastro irá retornar todos os campos disponíveis no manual de integração(Nem todos estarão preenchidos, depende de 
+	  cada estado)
 
 14/09/09
 [+]	: Adicionada opção para usar Rave CodeBase ou o Rave via arquivo. Com o Rave CodeBase será possível imprimir o DANFE em modo 

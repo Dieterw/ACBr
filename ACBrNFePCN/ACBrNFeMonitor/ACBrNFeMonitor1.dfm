@@ -4853,21 +4853,21 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           object Label3: TLabel
             Left = 7
             Top = 12
-            Width = 20
+            Width = 18
             Height = 13
             Caption = 'Site'
           end
           object Label4: TLabel
             Left = 7
             Top = 50
-            Width = 27
+            Width = 25
             Height = 13
             Caption = 'Email'
           end
           object Label26: TLabel
             Left = 7
             Top = 88
-            Width = 19
+            Width = 17
             Height = 13
             Caption = 'Fax'
           end

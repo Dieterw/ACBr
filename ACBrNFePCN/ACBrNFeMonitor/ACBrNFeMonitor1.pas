@@ -168,7 +168,6 @@ type
     procedure FormCreate(Sender: TObject);
     procedure Restaurar1Click(Sender: TObject);
     procedure Ocultar1Click(Sender: TObject);
-    procedure EncerrarMonitor1Click(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -195,6 +194,7 @@ type
     procedure edtMargemInfKeyPress(Sender: TObject; var Key: Char);
     procedure sbPathPDFClick(Sender: TObject);
     procedure rgModeloDanfeClick(Sender: TObject);
+    procedure EncerrarMonitor1Click(Sender: TObject);
   private
     { Private declarations }
     ACBrNFeMonitorINI : string;
@@ -204,7 +204,6 @@ type
     fsHashSenha:Integer;
     fsLinesLog : AnsiString ;
     Cmd : TACBrNFeCmd ;
-    pCanClose : Boolean ;
 
     procedure ExibeResp( Resposta : AnsiString );
     procedure Inicializar ;
@@ -220,7 +219,6 @@ type
 
     procedure IconTray (var Msg: TMessage);
     message wm_IconMessage;
-    procedure WMEndSession (var Msg : TWMEndSession); message WM_ENDSESSION;
 
   public
     { Public declarations }
@@ -831,13 +829,6 @@ begin
    Restaurar1.Click;
 end;
 
-procedure TfrmAcbrNfeMonitor.WMEndSession (var Msg : TWMEndSession);
-begin
- if Msg.EndSession then
-   pCanClose := True;
- inherited;
-end;
-
 procedure TfrmAcbrNfeMonitor.DoACBrTimer(Sender: TObject);
 var
    SL    : TStringList ;
@@ -902,7 +893,6 @@ begin
   mCmd.Clear ;
   Cmd       := TACBrNFeCmd.Create ;
 
-  pCanClose := False ;
   Inicio    := true ;
   ArqSaiTXT := '' ;
   ArqSaiTMP := '' ;
@@ -952,12 +942,6 @@ begin
   Application.ProcessMessages ;
 end;
 
-procedure TfrmAcbrNfeMonitor.EncerrarMonitor1Click(Sender: TObject);
-begin
-  pCanClose := True ;
-  close ;
-end;
-
 procedure TfrmAcbrNfeMonitor.FormDestroy(Sender: TObject);
 begin
   Cmd.Free ;
@@ -989,10 +973,6 @@ begin
      exit ;
   end ;
 
-  CanClose := pCanClose ;
-
-  if not CanClose then
-     Application.Minimize ;
 end;
 
 procedure TfrmAcbrNfeMonitor.btConfigClick(Sender: TObject);
@@ -1324,6 +1304,11 @@ begin
         end;
      end;
   end;
+end;
+
+procedure TfrmAcbrNfeMonitor.EncerrarMonitor1Click(Sender: TObject);
+begin
+ Close;
 end;
 
 end.

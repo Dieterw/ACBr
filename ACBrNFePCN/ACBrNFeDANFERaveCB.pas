@@ -127,7 +127,7 @@ begin
          LogoMarcaEmpresa.LoadFromFile(Logo);
        end;
 
-      NomeArq := StringReplace(TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe.infNFe.ID,'NFe', '', [rfIgnoreCase]);
+      NomeArq := StringReplace(TACBrNFe(ACBrNFe).NotasFiscais.Items[0].NFe.infNFe.ID,'NFe', '', [rfIgnoreCase]);
       if NotaUtil.EstaVazio(FPathArquivos) then
          NomeArq := PathWithDelim(TACBrNFe(ACBrNFe).Configuracoes.Geral.PathSalvar)+NomeArq
       else

@@ -82,6 +82,11 @@ classe não registrada, use o seguinte arquivo: https://wwws.prodemge.gov.br/imag
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Para utilizar o ACBrNFe ou ACBrNfeMonitor no Windows 2003, veja http://acbr.sourceforge.net/mantis/view.php?id=164
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ATENÇÃO - Caso esteja usando o pacote ACBrNFeDanfeRV.dpk para impressão do DANFE, use o arquivo DANFE_Rave513.rav apenas quando
 possuir o Rave na versão 5.1.3 ou superior. Caso possua uma versão inferior ao Rave 5.1.3 use o arquivo NotaFiscalEletronica.rav 
 na propriedade RavFile do componente ACBrNFeDanfeRave. Se vc tentar utilizar o arquivo DANFE_Rave513.rav em versões inferiores

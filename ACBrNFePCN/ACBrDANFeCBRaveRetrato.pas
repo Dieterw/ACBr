@@ -180,6 +180,26 @@ begin
 end;
 
 function ImprimirEmitente(PosX,PosY:Double):Double;
+   //função para dividir texto - Créditos: Luis
+   function DivideTexto( var vTexto:string; aMax:integer ):string;
+   var
+    vPalavra,vRetorno:string;
+   begin
+    vRetorno := '';
+    while length(vTexto)>aMax do
+    begin
+       vPalavra := RightStr(vTexto,1);
+       vTexto   := Copy( vTexto, 1, Length(vTexto)-1 );
+       while ( length(vTexto) > 0 ) and ( RightStr(vTexto,1) <> ' ' ) and ( RightStr(vTexto,1) <> '.' ) do
+       begin
+          vPalavra := RightStr(vTexto,1)+vPalavra;
+          vTexto   := Copy( vTexto, 1, Length(vTexto)-1 );
+       end;
+       vRetorno := vPalavra + vRetorno;
+    end;
+    if length(vRetorno)>aMax then vRetorno := Copy( vRetorno, 1, aMax );
+    Result := vRetorno;
+   end;
 var aHeigthLogo, aWidthLogo, aWidth, CenterX:Double;
     aWidthTexto: integer;
     stLogo:TMemoryStream;
@@ -207,8 +227,7 @@ begin
        vDuasLinhas:=false;
        if length(vEnd)>30 then
        begin
-         vtemp:=copy(vEnd,31,length(vEnd)-30);
-         vEnd:=copy(vEnd,1,30);
+         vtemp := DivideTexto(vEnd,30);
          vDuasLinhas:=true;
        end
        else
@@ -251,10 +270,7 @@ begin
          if Trim(XCpl)>'' then
             vEnd:=vEnd+', '+XCpl;
          if length(vEnd)>aWidthTexto then
-         begin
-            vtemp:=copy(vEnd,aWidthTexto+1,length(vEnd)-aWidthTexto)+' - ';
-            vEnd:=copy(vEnd,1,aWidthTexto);
-         end
+            vtemp := DivideTexto(vEnd,aWidthTexto)
          else
             vTemp:='';
          PrintCenter(vEnd,CenterX);

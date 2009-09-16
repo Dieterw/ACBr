@@ -74,6 +74,7 @@ uses ACBrNFeUtil, StrUtils, pcnNFe;
 function ImprimirCanhoto(PosX,PosY:Double):Double;
 var aHeigthNumSerie, aHeigthIdent,
     aWidth, aWidthReceb: Double;
+    vEnd: string;
 begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
@@ -111,11 +112,22 @@ begin
         Bold:=True;
         GotoXY(PosX+FontHeight+0.5,FLastY-2);
         //GotoXY(PosX+LineHeight,FLastY-2);
-        Print('Recebemos de '+Emit.XNome+' os produtos constantes da Nota Fiscal indicada ao lado');
-        GotoXY(PosX+FontHeight+FontHeight+0.5,FLastY-2);
-        if ExibirResumoCanhoto then
-           Print('Emissão: '+NotaUtil.FormatDate(DateToStr(Ide.DEmi))+'  Dest/Rem: '+Dest.XNome+'  Valor Total: '+NotaUtil.FormatFloat(Total.ICMSTot.VNF));
-
+        vEnd:='Recebemos de '+Emit.XNome+' os produtos constantes da Nota Fiscal indicada ao lado';
+        if Length(vEnd)>110 then
+        begin
+           vEnd:='Recebemos de '+Emit.XNome;
+           Print(vEnd);
+           NewLine;
+           vEnd:='os produtos constantes da Nota Fiscal indicada ao lado';
+           Print(vEnd);
+        end
+        else
+        begin
+           Print(vEnd);
+           GotoXY(PosX+FontHeight+FontHeight+0.5,FLastY-2);
+           if ExibirResumoCanhoto then
+              Print('Emissão: '+NotaUtil.FormatDate(DateToStr(Ide.DEmi))+'  Dest/Rem: '+Dest.XNome+'  Valor Total: '+NotaUtil.FormatFloat(Total.ICMSTot.VNF));
+        end;
         Bold:=False;
         GotoXY(PosX+aWidthReceb+LineHeight,PosY+aHeigthNumSerie+aHeigthIdent-1);
         Print('Identificação e Assinatura do Recebedor');
@@ -181,9 +193,31 @@ begin
 end;
 
 function ImprimirEmitente(PosX,PosY:Double):Double;
+   //função para dividir texto - Créditos: Luis
+   function DivideTexto( var vTexto:string; aMax:integer ):string;
+   var
+    vPalavra,vRetorno:string;
+   begin
+    vRetorno := '';
+    while length(vTexto)>aMax do
+    begin
+       vPalavra := RightStr(vTexto,1);
+       vTexto   := Copy( vTexto, 1, Length(vTexto)-1 );
+       while ( length(vTexto) > 0 ) and ( RightStr(vTexto,1) <> ' ' ) and ( RightStr(vTexto,1) <> '.' ) do
+       begin
+          vPalavra := RightStr(vTexto,1)+vPalavra;
+          vTexto   := Copy( vTexto, 1, Length(vTexto)-1 );
+       end;
+       vRetorno := vPalavra + vRetorno;
+    end;
+    if length(vRetorno)>aMax then vRetorno := Copy( vRetorno, 1, aMax );
+    Result := vRetorno;
+   end;
 var aHeigthLogo, aWidthLogo, aWidth,CenterX:Double;
+    aWidthTexto: integer;
     stLogo:TMemoryStream;
-    vEnd:String;
+    vEnd,vTemp:String;
+    vDuasLinhas: boolean;
 begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
@@ -202,14 +236,41 @@ begin
        SetFont(FontNameUsed,FontSizeEmit_Nome);
        NewLine;
        Bold:=True;
-       PrintCenter(Emit.XNome,CenterX);
+       vEnd:=Emit.XNome;
+       vDuasLinhas:=false;
+       if length(vEnd)>38 then
+       begin
+         vtemp := DivideTexto(vEnd,38);
+         vDuasLinhas:=true;
+       end
+       else
+         vTemp:='';
+       PrintCenter(vEnd,CenterX);
+       if Length(Vtemp)>0 then
+       begin
+          NewLine;
+          PrintCenter(vTemp,CenterX);
+       end;
        GotoXY(PosX,YPos+2);
 
-       aWidthLogo:=26;
-       aHeigthLogo:=20;
+       aWidthLogo:=0;
+       aHeigthLogo:=0;
+       aWidthTexto:=64;
        if Assigned(LogoMarca) then
-          PrintImageRect(PosX+1,YPos,PosX+aWidthLogo,YPos+aHeigthLogo,stLogo,'JPG');
-
+       begin
+         if vDuasLinhas then
+         begin
+            aWidthLogo:=26-5;
+            aHeigthLogo:=20-5
+         end
+         else
+         begin
+            aWidthLogo:=26;
+            aHeigthLogo:=20;
+         end;
+         aWidthTexto:=54;
+         PrintImageRect(PosX+1,YPos,PosX+aWidthLogo,YPos+aHeigthLogo,stLogo,'JPG');
+       end;
        GotoXY(PosX,YPos+1.5);
        CenterX:=PosX+aWidthLogo+((aWidth-aWidthLogo)/2);
        SetFont(FontNameUsed,FontSizeEmit_Outros);
@@ -221,9 +282,13 @@ begin
             vEnd:=vEnd+' '+Nro;
          if Trim(XCpl)>'' then
             vEnd:=vEnd+', '+XCpl;
+         if length(vEnd)>aWidthTexto then
+            vtemp := DivideTexto(vEnd,aWidthTexto)
+         else
+            vTemp:='';
          PrintCenter(vEnd,CenterX);
          NewLine;
-         vEnd:=XBairro+' - '+NotaUtil.FormatarCEP(NotaUtil.Poem_Zeros(CEP,8));
+         vEnd:=vTemp+XBairro+' - '+NotaUtil.FormatarCEP(NotaUtil.Poem_Zeros(CEP,8));
          PrintCenter(vEnd,CenterX);
          NewLine;
          vEnd:=XMun+' - '+UF;
@@ -234,11 +299,19 @@ begin
             vEnd:=vEnd+' / FAX: '+NotaUtil.FormatarFone(FaxDoEmitente);
          PrintCenter(vEnd,CenterX);
          NewLine;
-         vEnd:=SiteDoEmitente;
-         PrintCenter(vEnd,CenterX);
-         NewLine;
-         vEnd:=EmailDoEmitente;
-         PrintCenter(vEnd,CenterX);
+         if vDuasLinhas then
+         begin
+            vEnd:=SiteDoEmitente+' - '+EmailDoEmitente;
+            PrintCenter(vEnd,CenterX);
+         end
+         else
+         begin
+            vEnd:=SiteDoEmitente;
+            PrintCenter(vEnd,CenterX);
+            NewLine;
+            vEnd:=EmailDoEmitente;
+            PrintCenter(vEnd,CenterX);
+         end;
          Bold:=False;
         end;
     finally

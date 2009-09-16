@@ -47,6 +47,14 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+
+Alterações   16/09/09
+---------------
+[*] Na impressão do DANFE (RAVE CB) quando a razão social for muito grande, a mesma será quebrada em duas linhas.
+    Se (devido ao tamanho Razão Social) o espaço do canhoto "estourar", o mesmo será impresso em duas linhas e será desconsiderado
+    a propriedade ExibirResumoCanhoto
+[-] Corrigido impressão de Separador de Milhar (.) na função FormatFloat da unit ACBrNFeUtil.pas
+
 Alterações   15/09/09
 ---------------
 [*] Na rotina de consulta, adicionada linha para atualizar a propriedade Confirmada da NFe(cStat = 100).
@@ -59,7 +67,6 @@ Alterações   14/09/09
     não esteja preenchida, será usado o valor da variável PathSalvar e caso também não esteja preenchida, será gravado na 
     pasta do programa.
 [-] Corrigido geração do campo cPais do destinatário, para sempre gerar com 4 dígitos.
-
 
 Alterações   11/09/09
 ---------------
@@ -74,7 +81,6 @@ Alterações   09/09/09
 [*] Adicionado URL de Consulta ao Cadastro em ambiente de produção para MG
 [-] Correção na rotina de consulta para quando não houver nota carregada no componente(Consulta efetuada apenas pela chave)
 [*] Impressão dos campos InfAdic.obsCont nas Informações Adicionais do RAVE em CB
-
 
 Alterações   08/09/09
 ---------------
@@ -91,7 +97,6 @@ Alterações   03/09/09
 [-] Alterado função NotasFiscais.SaveToFile para pegar apenas Path do Nome passado na função.
 [-] Corrigido CSTAT do retorno do envio para atribuir CSTAT da Nota apenas qdo lote estiver processado.
 [*] Alterado geração da Inutilização para CNPJ ser gerado somente com números, sem máscara.
-
 
 Alterações 02/04/09 - Realizadas por Dulcemar Zilli
 [*] Ajustes para o Pacote PL_005c

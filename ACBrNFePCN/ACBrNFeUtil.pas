@@ -116,7 +116,7 @@ type
     class function PadD(const AString : string; const nLen : Integer; const Caracter : Char = ' ') : String;
     class function padC(const AString : string; const nLen : Integer; const Caracter : Char = ' ') : String;
     class function SeSenao(ACondicao: Boolean; ATrue, AFalse: Variant) : Variant;
-    class function FormatFloat(AValue: Extended; const AFormat: string = '0.00'): String;
+    class function FormatFloat(AValue: Extended; const AFormat: string = ',0.00'): String;
     class function Poem_Zeros(const Texto : String; const Tamanho : Integer) : String;overload;
     class function Poem_Zeros(const Valor : Integer; const Tamanho : Integer) : String;overload;
     class function Modulo11(Valor: string): String;
@@ -490,10 +490,12 @@ var
 {$ENDIF}
 begin
 {$IFDEF VER140} //delphi6
-  DecimalSeparator := ',';
+  DecimalSeparator  := ',';
+  ThousandSeparator := '.';
   Result := SysUtils.FormatFloat(AFormat, AValue);
 {$ELSE}
-  vFormato.DecimalSeparator := ',';
+  vFormato.DecimalSeparator  := ',';
+  vFormato.ThousandSeparator := '.';
   Result := SysUtils.FormatFloat(AFormat, AValue, vFormato);
 {$ENDIF}
 end;

@@ -202,9 +202,9 @@ begin
               raise Exception.Create('Arquivo '+Cmd.Params(0)+' não encontrado.');
 
            if NotaUtil.NaoEstaVazio(Cmd.Params(1)) then
-              RpDev.SelectPrinter(Cmd.Params(1), false)
+              ACBrNFe1.DANFE.Impressora := Cmd.Params(1)
            else
-              RPDev.DeviceIndex := cbxImpressora.ItemIndex;
+              ACBrNFe1.DANFE.Impressora := cbxImpressora.Text;
 
            ACBrNFe1.NotasFiscais.Imprimir;
            Cmd.Resposta := 'Danfe Impresso com sucesso';
@@ -315,9 +315,9 @@ begin
               end;
 
               if NotaUtil.NaoEstaVazio(Cmd.Params(4)) then
-                 RpDev.SelectPrinter(Cmd.Params(4), false)
+                 ACBrNFe1.DANFE.Impressora := Cmd.Params(4)
               else
-                 RPDev.DeviceIndex := cbxImpressora.ItemIndex;
+                 ACBrNFe1.DANFE.Impressora := cbxImpressora.Text;
 
               if ACBrNFe1.NotasFiscais.Items[i].Confirmada and (Cmd.Params(3) = '1') then
                  ACBrNFe1.NotasFiscais.Items[i].Imprimir;
@@ -507,7 +507,7 @@ begin
                     Restaurar1.Click;
                     Application.BringToFront;
                   end;
-                 RPDev.DeviceIndex := cbxImpressora.ItemIndex;
+                 ACBrNFe1.DANFE.Impressora := cbxImpressora.Text;
                  for I:= 0 to ACBrNFe1.NotasFiscais.Count-1 do
                   begin
                     if (Cmd.Params(1) = '1') and EnviadoDPEC then
@@ -581,7 +581,7 @@ begin
                            Restaurar1.Click;
                            Application.BringToFront;
                          end;
-                        RPDev.DeviceIndex := cbxImpressora.ItemIndex;
+                        ACBrNFe1.DANFE.Impressora := cbxImpressora.Text;
                         if ACBrNFe1.NotasFiscais.Items[i].Confirmada and (Cmd.Params(2) = '1') then
                            ACBrNFe1.NotasFiscais.Items[i].Imprimir;
                         if (Cmd.Params(2) = '1') and ACBrNFeDANFERave1.MostrarPreview then

@@ -51,6 +51,7 @@ Símbolo : Significado
 17/09/09
 [*]	: Corrigido criação do arquivo PDF para que seja criado na pasta configurada no ACBrNfeMonitor.
 [+]	: Impressão dos campos de medicamento no DANFe modelo Rave CB
+[-]	: Corrigido seleção da impressora
 
 15/09/09
 [*]	: Consulta de cadastro irá retornar todos os campos disponíveis no manual de integração(Nem todos estarão preenchidos, depende de 

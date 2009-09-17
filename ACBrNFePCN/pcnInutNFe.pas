@@ -86,6 +86,7 @@ type
     property nNFIni: integer read FnNFIni write FnNFIni;
     property nNFFin: integer read FnNFFin write FnNFFin;
     property xJust: string read FxJust write FxJust;
+    property ID: string read FIDInutilizacao;
   end;
 
 implementation

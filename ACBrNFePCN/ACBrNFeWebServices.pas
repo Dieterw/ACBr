@@ -248,7 +248,7 @@ type
 
   TNFeInutilizacao = Class(TWebServicesBase)
   private
-    FNFeChave: WideString;
+    FID: WideString;
     FProtocolo: string;
     FModelo: Integer;
     FSerie: Integer;
@@ -266,7 +266,7 @@ type
     procedure SetJustificativa(AValue: WideString);
   public
     function Executar: Boolean;override;
-    property NFeChave: WideString read FNFeChave write FNFeChave;
+    property ID: WideString read FID write FID;
     property Protocolo: String read FProtocolo write FProtocolo;
     property Modelo: Integer read FModelo write FModelo;
     property Serie: Integer read FSerie write FSerie;
@@ -401,7 +401,7 @@ uses {$IFDEF ACBrNFeOpenSSL}
         ACBrNFeNfeCancelamentoU, ACBrNFeNfeInutilizacaoU,
         ACBrNFeCadConsultaCadastroU,
      {$ENDIF}
-     ACBrNFeUtil, ACBrNFe,
+     ACBrUtil, ACBrNFeUtil, ACBrNFe,
      pcnGerador, pcnCabecalho,
      pcnConsStatServ, pcnRetConsStatServ,
      pcnCancNFe, pcnRetCancNFe,
@@ -567,6 +567,8 @@ begin
   if not(NotaUtil.Assinar(InutNFe.Gerador.ArquivoFormatoXML, TConfiguracoes(FConfiguracoes).Certificados.GetCertificado , FDadosMsg, FMsg)) then
     raise Exception.Create('Falha ao assinar Inutilização Nota Fiscal Eletrônica '+LineBreak+FMsg);
 {$ENDIF}
+
+  TNFeInutilizacao(Self).ID := InutNFe.ID;
 
   InutNFe.Free
 end;
@@ -841,7 +843,6 @@ begin
   if not(Self.StatusServico.Executar) then
     raise Exception.Create(Self.StatusServico.Msg);
 
-  Self.Inutilizacao.NFeChave      := 'ID';
   Self.Inutilizacao.CNPJ   := CNPJ;
   Self.Inutilizacao.Modelo := Modelo;
   Self.Inutilizacao.Serie  := Serie;
@@ -1165,7 +1166,7 @@ begin
         FNotasFiscais.Items[j].NFe.procNFe.cStat    := AInfProt.Items[i].cStat;
         FNotasFiscais.Items[j].NFe.procNFe.xMotivo  := AInfProt.Items[i].xMotivo;
         if FConfiguracoes.Geral.Salvar or NotaUtil.NaoEstaVazio(FNotasFiscais.Items[j].NomeArq) then
-        begin
+         begin
            if FileExists(FConfiguracoes.Geral.PathSalvar+'\'+AInfProt.Items[i].chNFe+'-nfe.xml') and
               FileExists(FConfiguracoes.Geral.PathSalvar+'\'+FNFeRetorno.nRec+'-pro-rec.xml') then
             begin
@@ -1182,7 +1183,9 @@ begin
                end;
               AProcNFe.Free;
             end;
-        end;
+         end;
+        if FConfiguracoes.Arquivos.Salvar then
+           FNotasFiscais.Items[j].SaveToFile(PathWithDelim(FConfiguracoes.Arquivos.PathNFe)+StringReplace(FNotasFiscais.Items[j].NFe.InfNFe.Id,'NFe','',[rfIgnoreCase])+'-nfe.xml');
         break;
       end;
     end;
@@ -1614,6 +1617,9 @@ begin
              AProcNFe.Free;
            end;
 
+           if FConfiguracoes.Arquivos.Salvar then
+              TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].SaveToFile(PathWithDelim(FConfiguracoes.Arquivos.PathNFe)+StringReplace(TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NFe.InfNFe.Id,'NFe','',[rfIgnoreCase])+'-nfe.xml');
+
            break;
          end;
      end;
@@ -1701,6 +1707,9 @@ begin
     if FConfiguracoes.Geral.Salvar then
       FConfiguracoes.Geral.Save(FNFeChave+'-ped-can.xml', FDadosMsg);
 
+    if FConfiguracoes.Arquivos.Salvar then
+      FConfiguracoes.Geral.Save(FNFeChave+'-ped-can.xml', FDadosMsg, FConfiguracoes.Arquivos.PathCan );
+
     {$IFDEF ACBrNFeOpenSSL}
        HTTP.Document.LoadFromStream(Stream);
        ConfiguraHTTP(HTTP,'SOAPAction: "http://www.portalfiscal.inf.br/nfe/wsdl/NfeCancelamento/nfeCancelamentoNF"');
@@ -1747,6 +1756,10 @@ begin
 
     if FConfiguracoes.Geral.Salvar then
       FConfiguracoes.Geral.Save(FNFeChave+'-can.xml', FRetWS);
+
+    if FConfiguracoes.Arquivos.Salvar then
+      FConfiguracoes.Geral.Save(FNFeChave+'-can.xml', FRetWS, FConfiguracoes.Arquivos.PathCan );
+
   finally
     {$IFDEF ACBrNFeOpenSSL}
        HTTP.Free;
@@ -1822,7 +1835,10 @@ begin
   try
     TACBrNFe( FACBrNFe ).SetStatus( stNfeInutilizacao );
     if FConfiguracoes.Geral.Salvar then
-      FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+FNFeChave+'-ped-inu.xml', FDadosMsg);
+      FConfiguracoes.Geral.Save(StringReplace(FID,'ID','',[rfIgnoreCase])+'-ped-inu.xml', FDadosMsg);
+
+    if FConfiguracoes.Arquivos.Salvar then
+      FConfiguracoes.Geral.Save(StringReplace(FID,'ID','',[rfIgnoreCase])+'-ped-inu.xml', FDadosMsg, FConfiguracoes.Arquivos.PathInu);
 
     {$IFDEF ACBrNFeOpenSSL}
        HTTP.Document.LoadFromStream(Stream);
@@ -1864,7 +1880,11 @@ begin
     NFeRetorno.Free;
 
     if FConfiguracoes.Geral.Salvar then
-      FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+FNFeChave+'-inu.xml', FRetWS);
+      FConfiguracoes.Geral.Save(StringReplace(FID,'ID','',[rfIgnoreCase])+'-inu.xml', FRetWS);
+
+    if FConfiguracoes.Arquivos.Salvar then
+      FConfiguracoes.Geral.Save(StringReplace(FID,'ID','',[rfIgnoreCase])+'-inu.xml', FRetWS, FConfiguracoes.Arquivos.PathInu);
+
   finally
     {$IFDEF ACBrNFeOpenSSL}
        HTTP.Free;
@@ -2074,6 +2094,10 @@ begin
     TACBrNFe( FACBrNFe ).SetStatus( stNFeEnvDPEC );
     if FConfiguracoes.Geral.Salvar then
       FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+'-env-dpec.xml', FDadosMsg);
+
+    if FConfiguracoes.Arquivos.Salvar then
+      FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+'-env-dpec.xml', FDadosMsg, FConfiguracoes.Arquivos.PathDPEC);
+
     FRetWS := '';
     {$IFDEF ACBrNFeOpenSSL}
        HTTP.Document.LoadFromStream(Stream);
@@ -2121,6 +2145,10 @@ begin
 
     if FConfiguracoes.Geral.Salvar then
       FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+'-ret-dpec.xml', FRetWS);
+
+    if FConfiguracoes.Arquivos.Salvar then
+      FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+'-ret-dpec.xml', FRetWS, FConfiguracoes.Arquivos.PathDPEC);
+
   finally
     {$IFDEF ACBrNFeOpenSSL}
        HTTP.Free;

@@ -1113,6 +1113,7 @@ if not(InputQuery('WebServices DPEC', 'Numero da Nota', vAux)) then
     Ide.verProc   := '1.0.0.0';
     Ide.cUF       := 35;
     Ide.cMunFG    := 3554003;
+    Ide.tpEmis    := teDPEC;
 
     Emit.CNPJCPF           := edtEmitCNPJ.Text;
     Emit.IE                := edtEmitIE.Text;
@@ -1326,9 +1327,6 @@ if not(InputQuery('WebServices DPEC', 'Numero da Nota', vAux)) then
 
   ShowMessage(DateTimeToStr(ACBrNFe1.WebServices.EnviarDPEC.DhRegDPEC));
   ShowMessage(ACBrNFe1.WebServices.EnviarDPEC.nRegDPEC);
-
-  ACBrNFe1.DANFE.ProtocoloNFe := ACBrNFe1.WebServices.EnviarDPEC.nRegDPEC +' '+ DateTimeToStr(ACBrNFe1.WebServices.EnviarDPEC.DhRegDPEC);
-  ACBrNFe1.NotasFiscais.Imprimir;
 
   MemoResp.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.EnviarDPEC.RetWS);
   LoadXML(MemoResp, WBResposta);

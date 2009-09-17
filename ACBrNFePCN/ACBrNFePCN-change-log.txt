@@ -52,6 +52,19 @@ Alterações   17/09/09
 ---------------
 [+] Impressão dos campos de medicamento do DANFe Rave CB
 [*] Leitura da propriedade PathPDF modificada, para verificar se o diretório configurado existe e caso não exista será criado automaticamente
+[+] Adicionada novas propriedades no componente ACBrNFe para salvar arquivos em pastas separadas.
+    -Salvar  - Propriedade booleana para indicar se os arquivos devem ou não ser salvos em pastas específicas
+    -PathNfe - Pasta para salvar os arquivos da NFE, terminados com -nfe.xml
+    -PathCan - Pasta para salvar arquivos de pedido e resposta de cancelamento, terminados em -ped-can.xml e -can.xml
+    -PathInu - Pasta para salvar arquivos de pedido e resposta de inutilização, terminados em -ped-inu.xml e -inu.xml
+    -PathDPEC - Pasta para salvar arquivos de pedido e resposta de DPEC, terminados em -env-dpec.xml e ret-dpec.xml
+    -PastaMensal - Propriedade booleana para indicar se deve ser criado um subdiretório com mes e ano dentro das pastas configuradas
+		   nas propriedades Path.. citadas acima. Exemplo: PathNFe = C:\ACBr\NFe os arquivos serao salvos em C:\ACBr\NFe\200909
+
+    -AdicionarLiteral - Propriedade booleana para indicar se deve ser adicionada a literal do arquivo na pasta. Exemplo: 
+	                PathNFe = C:\ACBr\Arqs será criado a pasta C:\ACBr\Arqs\NFe
+			Caso a propriedade PastaMensal esteja True e AdicionarLiteral tabém esteja True, as pastas serão criadas da
+                        seguinte forma: PathNFe = C:\ACBr\Arqs será criado a pasta C:\ACBr\Arqs\200909\NFe 
 
 
 Alterações   16/09/09

@@ -121,6 +121,21 @@ begin
   RegisterPropertyEditor(TypeInfo(String), TGeralConf, 'PathSalvar',
      TACBrNFeDirProperty);
 
+  RegisterPropertyEditor(TypeInfo(TArquivosConf), TConfiguracoes, 'Arquivos',
+    TClassProperty);
+
+  RegisterPropertyEditor(TypeInfo(String), TArquivosConf, 'PathNFe',
+     TACBrNFeDirProperty);
+
+  RegisterPropertyEditor(TypeInfo(String), TArquivosConf, 'PathCan',
+     TACBrNFeDirProperty);
+
+  RegisterPropertyEditor(TypeInfo(String), TArquivosConf, 'PathInu',
+     TACBrNFeDirProperty);
+
+  RegisterPropertyEditor(TypeInfo(String), TArquivosConf, 'PathDPEC',
+     TACBrNFeDirProperty);
+
 end;
 
 { TACBrAboutDialogProperty }

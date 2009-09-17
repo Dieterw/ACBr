@@ -3542,198 +3542,170 @@ end;
 
 
 function TACBrECFDaruma.GetDadosUltimaReducaoZ: AnsiString;
- Var RetCmd : AnsiString ;
+Var RetCmd : AnsiString ;
+    I:Integer;
+    VBruta,TOPNF,V:Double;
+    S:String;
 begin
-  try
-     RetCmd := RetornaInfoECF('140') ;
-  except
-     Result := '' ;
-     exit ;
-  end ;
+//Fernando Gutierres Damaceno( lampada )
+//17/09/2009
+//Comando 140 - Retorno:1164 caracteres
 
-{ Extraido do Manual da DAruma, página 23/24
+//                         INICIO    TAM
+//Data do Movimento 8     ( 1         08 )
+//Grande Total 18         ( 9         18 )
+//Grande Total Inicial 18 ( 27        18 )
+//Descontos ICMS 14       ( 45        14 )
+//Descontos ISS 14        ( 59        14 )
+//Cancelamentos ICMS 14   ( 73        14 )
+//Cancelamentos ISS 14    ( 87        14 )
+//Acréscimos ICMS 14      ( 101       14 )
+//Acréscimos ISS 14       ( 115       14 )
+//Tributados ICMS/ISS 224 ( 129       224)
+//F1 ICMS 14              ( 353       14 )
+//F2 ICMS 14              ( 367       14 )
+//I1 ICMS 14              ( 381       14 )
+//I2 ICMS 14              ( 395       14 )
+//N1 ICMS 14              ( 409       14 )
+//N2 ICMS 14              ( 423       14 )
+//F1 ISS 14               ( 437       14 )
+//F2 ISS 14               ( 451       14 )
+//I1 ISS 14               ( 465       14 )
+//I2 ISS 14               ( 479       14 )
+//N1 ISS 14               ( 493       14 )
+//N2 ISS 14               ( 507       14 )
+//Totalizadores NF 280    ( 521       280)
+//Descontos NF 14         ( 801       14 )
+//Cancelamentos NF 14     ( 815       14 )
+//Acréscimos NF 14        ( 829       14 )
+//Alíquotas 80            ( 843       80 )
+//CRO 4                   ( 923       04 )
+//CRZ 4                   ( 927       04 )
+//CRZ Restante 4          ( 931       04 )
+//COO 6                   ( 935       06 )
+//GNF 6                   ( 941       06 )
+//CCF 6                   ( 947       06 )
+//CVC 6                   ( 953       06 )
+//GRG 6                   ( 959       06 )
+//CFD 6                   ( 965       06 )
+//CBP 6                   ( 971       06 )
+//NFC 4                   ( 977       04 )
+//CMV 4                   ( 981       04 )
+//CFC 4                   ( 985       04 )
+//CNC 4                   ( 989       04 )
+//CBC 4                   ( 993       04 )
+//NCN 4                   ( 997       04 )
+//CDC 4                   ( 1001      04 )
+//CON 80                  ( 1005      80 )
+//CER 80                  ( 1085      80 )
+  if fpMFD then
+  begin
+    try
+      RetCmd := RetornaInfoECF('140');
+    except
+      Result := '';
+      Exit;
+    end;
 
-140 1164 N Informações da última RZ
-     Data do Movimento 8
-     Grande Total 18
-     Grande Total Inicial 18
-     Descontos ICMS 14
-     Descontos ISS 14
-     Cancelamentos ICMS 14
-     Cancelamentos ISS 14
-     Acréscimos ICMS 14
-     Acréscimos ISS 14
-     Tributados ICMS/ISS 224
-     F1 ICMS 14
-     F2 ICMS 14
-     I1 ICMS 14
-     I2 ICMS 14
-     N1 ICMS 14
-     N2 ICMS 14
-     F1 ISS 14
-     F2 ISS 14
-     I1 ISS 14
-     I2 ISS 14
-     N1 ISS 14
-     N2 ISS 14
-     Totalizadores NF 280
-     Descontos NF 14
-     Cancelamentos NF 14
-     Acréscimos NF 14
-     Alíquotas 80
-     CRO 4
-     CRZ 4
-     CRZ Restante 4
-     COO 6
-     GNF 6
-     CCF 6
-     CVC 6
-     GRG 6
-     CFD 6
-     CBP 6
-     NFC 4
-     CMV 4
-     CFC 4
-     CNC 4
-     CBC 4
-     NCN 4
-     CDC 4
-     CON 80
-     CER 80
-}
+    Result := '[ECF]'+sLineBreak ;
+    Result := Result + 'DataMovimento = ' +
+              copy(RetCmd,1,2)+DateSeparator+
+              copy(RetCmd,3,2)+DateSeparator+
+              copy(RetCmd,7,2)+sLineBreak ;
 
-  Result := '[ECF]'+sLineBreak ;
-  try
-     Result := Result + 'DataMovimento = ' +
-               copy(RetCmd,1,2)+DateSeparator+
-               copy(RetCmd,3,2)+DateSeparator+
-               copy(RetCmd,8,2)+sLineBreak ;
-  except
-  end ;
+    Result := Result + 'NumSerie = ' + NumSerie + sLineBreak ;
+    Result := Result + 'NumLoja = ' + NumLoja + sLineBreak ;
+    Result := Result + 'NumECF = ' + NumECF + sLineBreak ;
 
-  try
-     Result := Result + 'NumSerie = ' + NumSerie + sLineBreak ;
-  except
-  end ;
+    Result := Result + 'NumCOO = ' + copy(RetCmd,935,6) + sLineBreak ;
 
-  try
-     Result := Result + 'NumLoja = ' + NumLoja + sLineBreak ;
-     Result := Result + 'NumECF = ' + NumECF + sLineBreak ;
-  except
-  end ;
+    Result := Result + 'NumCRZ = ' + Copy(RetCmd,927,4) + sLineBreak;
+    Result := Result + 'NumCRO = ' + Copy(RetCmd,923,4) + sLineBreak ;
 
-(* TODO: MODIFICAR O Código abaixo conforme a posição dos Retornos na String
-  try
-     Result := Result + 'NumCOO = ' + copy(RetCmd,569,6) + sLineBreak ;
-  except
-  end ;
+    { base de calculo }
+    { Inicia na coluna 129 com 14 posicoes cada base de calculo, na ordem de cadastro}
+    Result := Result + sLineBreak + '[Aliquotas]'+sLineBreak ;
 
-  try
-     Result := Result + 'NumCRZ = ' + NumCRZ + sLineBreak ;
-  except
-  end ;
+    //carrega as aliquotas da impressora
+    VBruta := 0;
+    TOPNF  := 0;
+    S := Copy(RetCmd,129,224);
+    if not Assigned( fpAliquotas ) then
+      CarregaAliquotas ;
 
-  try
-     Result := Result + 'NumCRO = ' + NumCRO + sLineBreak ;
-  except
-  end ;
+    for I := 0 to Aliquotas.Count - 1 do
+    begin
+       V := RoundTo(StrToFloatDef( copy(S,(I*14)+1,14),0) / 100, -2);
+       Result := Result + padL(Aliquotas[I].Indice,2) +
+                          Aliquotas[I].Tipo +
+                          IntToStrZero(Trunc(Aliquotas[I].Aliquota*100),4) + ' = '+
+                          FloatToStr( V) + sLineBreak ;
 
-  VBruta := 0 ;
-  TOPNF  := 0 ;
+       VBruta := V + VBruta;
+    end;
+    Result  := Result + sLineBreak + '[OutrasICMS]'+sLineBreak ;
 
-  try
-     Result := Result + sLineBreak + '[Aliquotas]'+sLineBreak ;
-     
-     if not Assigned( fpAliquotas ) then
-        CarregaAliquotas ;
+    { Substituição F1 + F2 }
+    V := RoundTo( StrToFloatDef(Copy(RetCmd,353,14),0)/100,-2 ) + RoundTo( StrToFloatDef(Copy(RetCmd,367,14),0)/100,-2);
+    Result  := Result + 'TotalSubstituicaoTributaria = ' + FloatToStr(V) + sLineBreak ;
+    VBruta := VBruta + V;
 
-     S := copy(RetCmd,113,224) ;
-     For I := 0 to Aliquotas.Count-1 do
-     begin
-        V := RoundTo( StrToFloatDef( copy(S,(I*14)+1,14),0) / 100, -2) ;
-        Result := Result + padL(Aliquotas[I].Indice,2) +
-                           Aliquotas[I].Tipo +
-                           IntToStrZero(Trunc(Aliquotas[I].Aliquota*100),4) + ' = '+
-                           FloatToStr( V ) + sLineBreak ;
-        VBruta := VBruta + V ;
-     end ;
-  except
-  end ;
+    { Não tributado N1 + N2 }
+    V := RoundTo( StrToFloatDef(Copy(RetCmd,409,14),0)/100,-2 ) + RoundTo( StrToFloatDef(Copy(RetCmd,423,14),0)/100,-2);
+    Result := Result + 'TotalNaoTributado = ' + FloatToStr(V) + sLineBreak ;
+    VBruta := VBruta + V;
 
-  try
-     Result := Result + sLineBreak + '[OutrasICMS]'+sLineBreak ;
-     V := RoundTo( StrToFloatDef( copy(RetCmd,365,14),0) / 100, -2) ;
-     Result := Result + 'TotalSubstituicaoTributaria = ' + FloatToStr(V) + sLineBreak ;
-     VBruta := VBruta + V ;
+    { Isento  I1 + I2 }
+    V := RoundTo( StrToFloatDef(Copy(RetCmd,381,14),0)/100,-2) + RoundTo( StrToFloatDef(Copy(RetCmd,395,14),0)/100,-2);
+    Result := Result + 'TotalIsencao = ' + FloatToStr(V) + sLineBreak ;
+    VBruta := VBruta + V;
 
-     V := RoundTo( StrToFloatDef( copy(RetCmd,351,14),0) / 100, -2) ;
-     Result := Result + 'TotalNaoTributado = ' + FloatToStr(V) + sLineBreak ;
-     VBruta := VBruta + V ;
+    Result := Result + sLineBreak + '[NaoFiscais]'+sLineBreak ;
 
-     V := RoundTo( StrToFloatDef( copy(RetCmd,337,14),0) / 100, -2) ;
-     Result := Result + 'TotalIsencao = ' + FloatToStr(V) + sLineBreak ;
-     VBruta := VBruta + V ;
-  except
-  end ;
+    {Carregar os comprovantes não fiscais }
+    if not Assigned( fpComprovantesNaoFiscais ) then
+      CarregaComprovantesNaoFiscais ;
 
-  try
-     Result := Result + sLineBreak + '[NaoFiscais]'+sLineBreak ;
+    {String Totalizadores não fiscas, 521,280}
+    S := Copy(RetCmd,521,280);
+    for I := 0 to ComprovantesNaoFiscais.Count - 1 do
+    begin
+       V := RoundTo(StrToFloatDef( copy(S,(I*14)+1,14),0) / 100, -2);
+       Result := Result + padL(ComprovantesNaoFiscais[I].Indice,2) + '_'+
+                          ComprovantesNaoFiscais[I].Descricao +' = '+
+                          FloatToStr( V ) + sLineBreak ;
+       TOPNF := V + TOPNF;
+    end;
 
-     if not Assigned( fpComprovantesNaoFiscais ) then
-        CarregaComprovantesNaoFiscais ;
+    Result := Result + sLineBreak + '[Totalizadores]'+sLineBreak;
 
-     S := copy(RetCmd,379,126) ;
+    //Descontos ISS
+    V := RoundTo( StrToFloatDef( copy(RetCmd,59,14),0) / 100, -2)  ;
+    //Desconto ISS + ICMS
+    V := V + RoundTo( StrToFloatDef( copy(RetCmd,45,14),0) / 100, -2)  ;
+    Result := Result + 'TotalDescontos = ' + FloatToStr( V ) + sLineBreak ;
+    VBruta := VBruta + V ;
 
-     For I := 0 to min(ComprovantesNaoFiscais.Count-1,11) do
-     begin
-        V := RoundTo( StrToFloatDef( copy(S,(I*14)+1,14),0) / 100, -2) ;
-        Result := Result + padL(ComprovantesNaoFiscais[I].Indice,2) + '_' +
-                           ComprovantesNaoFiscais[I].Descricao +' = '+
-                           FloatToStr(V) + sLineBreak ;
-        TOPNF := TOPNF + V ;
-     end ;
-  except
-  end ;
+    //Cancelamentos ISS
+    V := RoundTo( StrToFloatDef( copy(RetCmd,59,14),0) / 100, -2)  ;
+    //Cancelamentos ISS + ICMS
+    V := V + RoundTo( StrToFloatDef( copy(RetCmd,73,14),0) / 100, -2)  ;
+    Result := Result + 'TotalCancelamentos = ' + FloatToStr( V ) + sLineBreak ;
+    VBruta := VBruta + V ;
 
-  Result := Result + sLineBreak + '[Totalizadores]'+sLineBreak;
+    //Acrescimos ISS
+    V := RoundTo( StrToFloatDef( copy(RetCmd,101,14),0) / 100, -2) ;
+    //Acrescimos ISS + ICMS
+    V := V + RoundTo( StrToFloatDef( copy(RetCmd,115,14),0) / 100, -2) ;
+    Result := Result + 'TotalAcrescimos = ' + FloatToStr(V)  + sLineBreak ;
 
-  try
-     V := RoundTo( StrToFloatDef( copy(RetCmd,35,14),0) / 100, -2)  ;
-     Result := Result + 'TotalDescontos = ' + FloatToStr( V ) + sLineBreak ;
-     VBruta := VBruta + V ;
-  except
-  end ;
+    Result := Result + 'TotalNaoFiscal = ' + FloatToStr(TOPNF) + sLineBreak ;
+    Result := Result + 'VendaBruta = ' + FloatToStr(VBruta) + sLineBreak ;
 
-  try
-     V := RoundTo( StrToFloatDef( copy(RetCmd,21,14),0) / 100, -2)  ;
-     Result := Result + 'TotalCancelamentos = ' + FloatToStr( V ) + sLineBreak ;
-     VBruta := VBruta + V ;
-  except
-  end ;
-
-  try
-     Result := Result + 'TotalAcrescimos = ' + FloatToStr(
-         RoundTo( StrToFloatDef( copy(RetCmd,589,14),0) / 100, -2) )  + sLineBreak ;
-  except
-  end ;
-
-  try
-     Result := Result + 'TotalNaoFiscal = ' + FloatToStr(TOPNF) + sLineBreak ;
-  except
-  end ;
-
-  try
-     Result := Result + 'VendaBruta = ' + FloatToStr(VBruta) + sLineBreak ;
-  except
-  end ;
-
-  try
-     Result := Result + 'GrandeTotal = ' + FloatToStr(
-         RoundTo( StrToFloatDef( copy(RetCmd,3,18),0) / 100, -2) )  + sLineBreak ;
-  except
-  end ;
-*)
-end;
+    Result := Result + 'GrandeTotal = ' + FloatToStr(
+    RoundTo( StrToFloatDef( copy(RetCmd,9,18),0) / 100, -2) )  + sLineBreak ;
+  end;
+end ;
 
 end.
 

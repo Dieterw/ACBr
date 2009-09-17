@@ -253,10 +253,12 @@ end;
 function TACBrNFeDANFEClass.GetPathArquivos: String;
 begin
   if NotaUtil.EstaVazio(FPathArquivos) then
-     FPathArquivos := TACBrNFe(ACBrNFe).Configuracoes.Geral.PathSalvar;
+     if Assigned(FACBrNFe) then
+        FPathArquivos := TACBrNFe(FACBrNFe).Configuracoes.Geral.PathSalvar;
 
-  if not DirectoryExists(FPathArquivos) then
-     ForceDirectories(FPathArquivos);
+  if NotaUtil.NaoEstaVazio(FPathArquivos) then
+     if not DirectoryExists(FPathArquivos) then
+        ForceDirectories(FPathArquivos);
 
   Result := PathWithDelim(FPathArquivos);
 end;

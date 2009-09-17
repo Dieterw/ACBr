@@ -920,6 +920,13 @@ object Form1: TForm1
   object ACBrNFe1: TACBrNFe
     Configuracoes.Geral.PathSalvar = 'C:\Program Files\Borland\Delphi7\Bin\'
     Configuracoes.WebServices.UF = 'SP'
+    Configuracoes.Arquivos.Salvar = True
+    Configuracoes.Arquivos.PastaMensal = True
+    Configuracoes.Arquivos.AdicionarLiteral = True
+    Configuracoes.Arquivos.PathNFe = 'D:\delphi\ACBr\trunk\ACBrNFePCN\ACBrNFeMonitor\Arqs'
+    Configuracoes.Arquivos.PathCan = 'D:\delphi\ACBr\trunk\ACBrNFePCN\ACBrNFeMonitor\Arqs'
+    Configuracoes.Arquivos.PathInu = 'D:\delphi\ACBr\trunk\ACBrNFePCN\ACBrNFeMonitor\Arqs'
+    Configuracoes.Arquivos.PathDPEC = 'D:\delphi\ACBr\trunk\ACBrNFePCN\ACBrNFeMonitor\Arqs'
     OnStatusChange = ACBrNFe1StatusChange
     DANFE = ACBrNFeDANFERave1
     Left = 323
@@ -927,17 +934,20 @@ object Form1: TForm1
   end
   object ACBrNFeDANFERave1: TACBrNFeDANFERave
     ACBrNFe = ACBrNFe1
+    PathPDF = 'C:\Program Files\Borland\Delphi7\Bin\'
     ImprimirHoraSaida = False
     MostrarPreview = True
     TipoDANFE = tiRetrato
     NumCopias = 1
-    ImprimirDescPorc = False
+    ImprimirDescPorc = True
     MargemInferior = 0.800000000000000000
+    MargemSuperior = 0.800000000000000000
+    MargemEsquerda = 0.600000000000000000
+    MargemDireita = 0.510000000000000000
     CasasDecimais._qCom = 2
     CasasDecimais._vUnCom = 2
-    RavFile = 
-      'D:\delphi\ACBr\trunk\ACBrNFePCN\Demo\Report\NotaFiscalEletronica' +
-      '.rav'
+    ExibirResumoCanhoto = False
+    RavFile = 'D:\delphi\ACBr\trunk\ACBrNFePCN\Demo\Report\DANFE_Rave513.rav'
     Left = 355
     Top = 228
   end

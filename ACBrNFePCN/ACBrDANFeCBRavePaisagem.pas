@@ -117,7 +117,7 @@ begin
         begin
            vEnd:='Recebemos de '+Emit.XNome;
            Print(vEnd);
-           NewLine;
+           GotoXY(PosX+FontHeight+FontHeight+0.5,FLastY-2);
            vEnd:='os produtos constantes da Nota Fiscal indicada ao lado';
            Print(vEnd);
         end

@@ -1329,16 +1329,8 @@ begin
     ArqPDF := ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID ;
 
     ArqPDF := StringReplace(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID,'NFe', '', [rfIgnoreCase]);
-    if NotaUtil.EstaVazio(ACBrNFe1.DANFE.PathPDF) then
-       ArqPDF := PathWithDelim(ACBrNFe1.Configuracoes.Geral.PathSalvar)+ArqPDF
-    else
-     begin
-       if NotaUtil.NaoEstaVazio(ACBrNFe1.Configuracoes.Geral.PathSalvar) then
-          ArqPDF := PathWithDelim(ACBrNFe1.Configuracoes.Geral.PathSalvar)+ArqPDF
-       else
-          ArqPDF := PathWithDelim(ExtractFilePath(Application.ExeName))+ArqPDF;
-     end;
-    ArqPDF := ArqPDF+'.pdf';
+    ArqPDF :=PathWithDelim(ACBrNFe1.DANFE.PathPDF)+ ArqPDF+'.pdf';
+
     if not(InputQuery('Enviar Email', 'Email de Destino', vPara)) then
        exit;
     try

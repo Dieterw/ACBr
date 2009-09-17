@@ -70,6 +70,7 @@ type
    private
     procedure SetNFE(const Value: TComponent);
     procedure ErroAbstract( NomeProcedure : String ) ;
+    procedure GetPathArquivos(const Value: String);
   protected
     FACBrNFe : TComponent;
     FLogo: String;
@@ -103,7 +104,7 @@ type
     property Logo: String read FLogo write FLogo ;
     property Sistema: String read FSistema write FSistema ;
     property Usuario: String read FUsuario write FUsuario ;
-    property PathPDF: String read FPathArquivos write FPathArquivos ;
+    property PathPDF: String read FPathArquivos write GetPathArquivos ;
     property Impressora: String read FImpressora write FImpressora ;
     property ImprimirHoraSaida: Boolean read FImprimirHoraSaida write FImprimirHoraSaida ;
     property MostrarPreview: Boolean read FMostrarPreview write FMostrarPreview ;
@@ -124,7 +125,7 @@ type
 
 implementation
 
-uses ACBrNFe ;
+uses ACBrNFe, ACBrNFeUtil ;
 
 //Casas Decimais
 constructor TCasasDecimais.Create(AOwner: TComponent);
@@ -246,6 +247,17 @@ end;
 procedure TACBrNFeDANFEClass.ErroAbstract(NomeProcedure: String);
 begin
   raise Exception.Create( NomeProcedure ) ;
+end;
+
+procedure TACBrNFeDANFEClass.GetPathArquivos(const Value: String);
+begin
+  if NotaUtil.EstaVazio(Value) then
+     FPathArquivos := TACBrNFe(ACBrNFe).Configuracoes.Geral.PathSalvar
+  else
+     FPathArquivos := Value;
+
+  if not DirectoryExists(FPathArquivos) then
+     ForceDirectories(FPathArquivos);   
 end;
 
 end.

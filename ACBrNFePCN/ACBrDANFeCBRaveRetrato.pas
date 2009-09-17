@@ -907,7 +907,7 @@ begin
 end;
 
 procedure ImprimirItens(PosX:Double);
-var QtdeMin,i:Integer;
+var QtdeMin,i,j:Integer;
     aDescProduto, vEnd:String;
     Memo:TMemoBuf;
     aFontHeigth:Double;
@@ -936,6 +936,23 @@ begin
               end;
              QtdeMin:=QtdeMin+6;
            end;
+
+          if Prod.med.Count > 0 then
+           begin
+             for j:=0 to Prod.med.Count-1 do
+              begin
+                with Prod.med.Items[j] do
+                 begin
+                  aDescProduto:=aDescProduto+
+                                ' - LOTE: '+nLote+
+//                                ' QTDADE: '+NotaUtil.FormatFloat(qLote)+#13+
+                                ' FABR.: '+NotaUtil.FormatDate(DateToStr(dFab))+
+                                ' VAL.: '+NotaUtil.FormatDate(DateToStr(dVal))+
+                                NotaUtil.SeSenao(vPMC>0,' PMC: '+NotaUtil.FormatFloat(vPMC),'');
+                 end;
+                QtdeMin:=QtdeMin+1;
+              end;
+           end;           
 
           if Trim(infAdProd)>'' then
            begin

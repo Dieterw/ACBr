@@ -128,16 +128,7 @@ begin
        end;
 
       NomeArq := StringReplace(TACBrNFe(ACBrNFe).NotasFiscais.Items[0].NFe.infNFe.ID,'NFe', '', [rfIgnoreCase]);
-      if NotaUtil.EstaVazio(FPathArquivos) then
-         NomeArq := PathWithDelim(TACBrNFe(ACBrNFe).Configuracoes.Geral.PathSalvar)+NomeArq
-      else
-         begin
-            if NotaUtil.NaoEstaVazio(TACBrNFe(ACBrNFe).Configuracoes.Geral.PathSalvar) then
-               NomeArq := PathWithDelim(TACBrNFe(ACBrNFe).Configuracoes.Geral.PathSalvar)+NomeArq
-            else
-               NomeArq := PathWithDelim(ExtractFilePath(Application.ExeName))+NomeArq;
-         end;
-      NomeArq := NomeArq+'.pdf';
+      NomeArq := PathWithDelim(Self.PathPDF)+NomeArq+'.pdf';
 
       ImprimirDANFeRave(TACBrNFe(ACBrNFe),
                        Site,

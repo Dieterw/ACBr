@@ -56,6 +56,7 @@ Source: ..\DLLs\OpenSSL\libxslt.dll; DestDir: {app}; Flags: ; Components: progra
 Source: ..\DLLs\OpenSSL\ssleay32.dll; DestDir: {app}; Flags: ; Components: programa
 Source: ..\DLLs\OpenSSL\zlib1.dll; DestDir: {app}; Flags: ; Components: programa
 Source: ..\DLLs\iconv.dll; DestDir: {app}; Flags: ; Components: programa
+Source: ..\DLLs\msvcr71.dll; DestDir: {app}; Flags: ; Components: programa
 Source: Report\DANFE_Rave513.rav; DestDir: {app}\Report; Flags: ; Components: programa
 Source: Schemas\*.*; DestDir: {app}\Schemas; Flags: ; Components: programa
 Source: MunIBGE\*.*; DestDir: {app}\MunIBGE; Flags: ; Components: programa

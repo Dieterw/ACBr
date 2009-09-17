@@ -222,9 +222,9 @@ begin
 
            try
               ACBrNFe1.NotasFiscais.ImprimirPDF;
-              ArqPDF := StringReplace(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID,'NFe','',[rfIgnoreCase]) ;
-              Cmd.Resposta := 'Arquivo criado em: '+ PathWithDelim(edtPathPDF.Text) +
-                              ArqPDF+'.pdf' ;
+              ArqPDF := StringReplace(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID,'NFe','',[rfIgnoreCase])+'.pdf';
+              Cmd.Resposta := 'Arquivo criado em: '+ PathWithDelim(ACBrNFe1.DANFE.PathPDF) +
+                              ArqPDF ;
            except
               raise Exception.Create('Erro ao criar o arquivo PDF');
            end;
@@ -611,16 +611,7 @@ begin
                  ArqPDF := ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID ;
 
                  ArqPDF := StringReplace(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID,'NFe', '', [rfIgnoreCase]);
-                 if NotaUtil.EstaVazio(ACBrNFe1.DANFE.PathPDF) then
-                    ArqPDF := PathWithDelim(ACBrNFe1.Configuracoes.Geral.PathSalvar)+ArqPDF
-                 else
-                    begin
-                       if NotaUtil.NaoEstaVazio(ACBrNFe1.Configuracoes.Geral.PathSalvar) then
-                          ArqPDF := PathWithDelim(ACBrNFe1.Configuracoes.Geral.PathSalvar)+ArqPDF
-                       else
-                          ArqPDF := PathWithDelim(ExtractFilePath(Application.ExeName))+ArqPDF;
-                    end;
-                 ArqPDF := ArqPDF+'.pdf';
+                 ArqPDF := PathWithDelim(ACBrNFe1.DANFE.PathPDF)+ArqPDF+'.pdf';
               except
                  raise Exception.Create('Erro ao criar o arquivo PDF');
               end;

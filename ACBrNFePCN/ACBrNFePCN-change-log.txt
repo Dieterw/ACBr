@@ -48,6 +48,12 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   17/09/09
+---------------
+[+] Impressão dos campos de medicamento do DANFe Rave CB
+[*] Leitura da propriedade PathPDF modificada, para verificar se o diretório configurado existe e caso não exista será criado automaticamente
+
+
 Alterações   16/09/09
 ---------------
 [*] Na impressão do DANFE (RAVE CB) quando a razão social for muito grande, a mesma será quebrada em duas linhas.

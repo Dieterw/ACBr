@@ -324,31 +324,21 @@ begin
       for i:= 0 to TACBrNFe(ACBrNFe).NotasFiscais.Count-1 do
       begin
          dmDanfe.NFe := TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe;
+
          NomeArq := StringReplace(TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe.infNFe.ID,'NFe', '', [rfIgnoreCase]);
-         if NotaUtil.EstaVazio(FPathArquivos) then
-            NomeArq := PathWithDelim(TACBrNFe(ACBrNFe).Configuracoes.Geral.PathSalvar)+NomeArq
-         else
-            begin
-               if NotaUtil.NaoEstaVazio(TACBrNFe(ACBrNFe).Configuracoes.Geral.PathSalvar) then
-                  NomeArq := PathWithDelim(TACBrNFe(ACBrNFe).Configuracoes.Geral.PathSalvar)+NomeArq
-               else
-                  NomeArq := PathWithDelim(ExtractFilePath(Application.ExeName))+NomeArq;
-            end;
-         dmDanfe.RvSystem1.OutputFileName := NomeArq+'.pdf';
+         NomeArq := PathWithDelim(Self.PathPDF)+NomeArq+'.pdf';
+
+         dmDanfe.RvSystem1.OutputFileName := NomeArq;
          ExecutaReport;
       end;
    end
    else
    begin
       dmDanfe.NFe := NFE;
-      NomeArq := NFe.infNFe.ID;
-      if length(NomeArq)>44 then
-         NomeArq := copy(NomeArq,(length(NomeArq)-44)+1,44);
-      if NotaUtil.EstaVazio(FPathArquivos) then
-         NomeArq := PathWithDelim(TACBrNFe(ACBrNFe).Configuracoes.Geral.PathSalvar)+NomeArq
-      else
-         NomeArq := PathWithDelim(FPathArquivos)+NomeArq;
-      dmDanfe.RvSystem1.OutputFileName := NomeArq+'.pdf';
+      NomeArq := StringReplace(NFe.infNFe.ID,'NFe', '', [rfIgnoreCase]);
+      NomeArq := PathWithDelim(Self.PathPDF)+NomeArq+'.pdf';
+
+      dmDanfe.RvSystem1.OutputFileName := NomeArq;
       ExecutaReport;
    end;
 

@@ -10,7 +10,7 @@ uses IniFiles, CmdUnitNFe, FileCtrl, Printers,
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ComCtrls, ExtCtrls, Buttons, Spin, Menus, ImgList,
   ACBrNFe, ACBrNFeDANFEClass, ACBrNFeDANFERave, pcnConversao, OleCtrls,
-  SHDocVw, ACBrNFeDANFERaveCB, ACBrNFeUtil;
+  SHDocVw, ACBrNFeUtil, ACBrNFeDANFERaveCB;
 
 const
    BufferMemoResposta = 1000 ;              { Maximo de Linhas no MemoResposta }
@@ -146,9 +146,6 @@ type
     Label1: TLabel;
     edtNumCopia: TEdit;
     ACBrNFeDANFERave1: TACBrNFeDANFERave;
-    edtPathPDF: TEdit;
-    sbPathPDF: TSpeedButton;
-    Label28: TLabel;
     gbxMargem: TGroupBox;
     Label2: TLabel;
     edtMargemInf: TEdit;
@@ -161,9 +158,28 @@ type
     rgCasasDecimaisQtd: TRadioGroup;
     cbxHoraSaida: TCheckBox;
     rgCasasDecimaisValor: TRadioGroup;
-    ACBrNFeDANFERaveCB1: TACBrNFeDANFERaveCB;
     rgModeloDanfe: TRadioGroup;
     btnEnviarEmail: TButton;
+    ACBrNFeDANFERaveCB1: TACBrNFeDANFERaveCB;
+    Diretorios: TTabSheet;
+    cbxSalvarArqs: TCheckBox;
+    cbxPastaMensal: TCheckBox;
+    cbxAdicionaLiteral: TCheckBox;
+    edtPathNFe: TEdit;
+    sbPathNFe: TSpeedButton;
+    Label32: TLabel;
+    Label33: TLabel;
+    edtPathCan: TEdit;
+    sbPathCan: TSpeedButton;
+    Label34: TLabel;
+    edtPathInu: TEdit;
+    sbPathInu: TSpeedButton;
+    Label35: TLabel;
+    edtPathDPEC: TEdit;
+    sbPathDPEC: TSpeedButton;
+    Label28: TLabel;
+    edtPathPDF: TEdit;
+    sbPathPDF: TSpeedButton;
     procedure DoACBrTimer(Sender: TObject);
     procedure edOnlyNumbers(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
@@ -183,7 +199,7 @@ type
     procedure TCPServerExecute(AThread: TIdPeerThread);
     procedure sbArquivoCertClick(Sender: TObject);
     procedure sbLogoMarcaClick(Sender: TObject);
-    procedure sbPathSalvarClick(Sender: TObject);
+    procedure PathClick(Sender: TObject);
     procedure btnStatusServClick(Sender: TObject);
     procedure btnConsultarClick(Sender: TObject);
     procedure btnCancNFClick(Sender: TObject);
@@ -197,6 +213,11 @@ type
     procedure rgModeloDanfeClick(Sender: TObject);
     procedure EncerrarMonitor1Click(Sender: TObject);
     procedure btnEnviarEmailClick(Sender: TObject);
+    procedure sbPathNFeClick(Sender: TObject);
+    procedure sbPathSalvarClick(Sender: TObject);
+    procedure sbPathCanClick(Sender: TObject);
+    procedure sbPathInuClick(Sender: TObject);
+    procedure sbPathDPECClick(Sender: TObject);
   private
     { Private declarations }
     ACBrNFeMonitorINI : string;
@@ -614,6 +635,22 @@ begin
      Ini.ReadBinaryStream( 'Email','Mensagem',StreamMemo) ;
      mmEmailMsg.Lines.LoadFromStream(StreamMemo);
      StreamMemo.Free;
+
+     cbxSalvarArqs.Checked      := Ini.ReadBool(   'Arquivos','Salvar'     ,false);
+     cbxPastaMensal.Checked     := Ini.ReadBool(   'Arquivos','PastaMensal',false);
+     cbxAdicionaLiteral.Checked := Ini.ReadBool(   'Arquivos','AddLiteral' ,false);
+     edtPathNFe.Text            := Ini.ReadString( 'Arquivos','PathNFe'    ,'') ;
+     edtPathCan.Text            := Ini.ReadString( 'Arquivos','PathCan'    ,'') ;
+     edtPathInu.Text            := Ini.ReadString( 'Arquivos','PathInu'    ,'') ;
+     edtPathDPEC.Text           := Ini.ReadString( 'Arquivos','PathDPEC'   ,'') ;
+
+     ACBrNFe1.Configuracoes.Arquivos.Salvar           := cbxSalvarArqs.Checked;
+     ACBrNFe1.Configuracoes.Arquivos.PastaMensal      := cbxPastaMensal.Checked;
+     ACBrNFe1.Configuracoes.Arquivos.AdicionarLiteral := cbxAdicionaLiteral.Checked;
+     ACBrNFe1.Configuracoes.Arquivos.PathNFe  := edtPathNFe.Text;
+     ACBrNFe1.Configuracoes.Arquivos.PathCan  := edtPathCan.Text;
+     ACBrNFe1.Configuracoes.Arquivos.PathInu  := edtPathInu.Text;
+     ACBrNFe1.Configuracoes.Arquivos.PathDPEC := edtPathDPEC.Text;
   finally
      Ini.Free ;
   end ;
@@ -698,6 +735,13 @@ begin
      Ini.WriteInteger('DANFE','DecimaisQTD'  ,rgCasasDecimaisQtd.ItemIndex  );
      Ini.WriteInteger('DANFE','DecimaisValor',rgCasasDecimaisValor.ItemIndex);
 
+     Ini.WriteBool(   'Arquivos','Salvar'     ,cbxSalvarArqs.Checked);
+     Ini.WriteBool(   'Arquivos','PastaMensal',cbxPastaMensal.Checked);
+     Ini.WriteBool(   'Arquivos','AddLiteral' ,cbxAdicionaLiteral.Checked);
+     Ini.WriteString( 'Arquivos','PathNFe'    ,edtPathNFe.Text) ;
+     Ini.WriteString( 'Arquivos','PathCan'    ,edtPathCan.Text) ;
+     Ini.WriteString( 'Arquivos','PathInu'    ,edtPathInu.Text) ;
+     Ini.WriteString( 'Arquivos','PathDPEC'   ,edtPathDPEC.Text) ;
 
   finally
      Ini.Free ;
@@ -1131,17 +1175,17 @@ begin
   
 end;
 
-procedure TfrmAcbrNfeMonitor.sbPathSalvarClick(Sender: TObject);
+procedure TfrmAcbrNfeMonitor.PathClick(Sender: TObject);
 var
   Dir: string;
 begin
-  if Length(edtPathLogs.Text) <= 0 then
+  if Length(TEdit(Sender).Text) <= 0 then
      Dir := ExtractFileDir(application.ExeName)
   else
-     Dir := edtPathLogs.Text;
+     Dir := TEdit(Sender).Text;
 
   if SelectDirectory(Dir, [sdAllowCreate, sdPerformCreate, sdPrompt],SELDIRHELP) then
-    edtPathLogs.Text := Dir;
+    TEdit(Sender).Text := Dir;
 end;
 
 procedure TfrmAcbrNfeMonitor.btnStatusServClick(Sender: TObject);
@@ -1273,16 +1317,8 @@ begin
 end;
 
 procedure TfrmAcbrNfeMonitor.sbPathPDFClick(Sender: TObject);
-var
-  Dir: string;
 begin
-  if Length(edtPathPDF.Text) <= 0 then
-     Dir := ExtractFileDir(application.ExeName)
-  else
-     Dir := edtPathPDF.Text;
-
-  if SelectDirectory(Dir, [sdAllowCreate, sdPerformCreate, sdPrompt],SELDIRHELP) then
-    edtPathPDF.Text := PathWithDelim( Dir );
+ PathClick(edtPathPDF);
 end;
 
 procedure TfrmAcbrNfeMonitor.rgModeloDanfeClick(Sender: TObject);
@@ -1344,6 +1380,31 @@ begin
     end;
     ShowMessage('Email enviado com sucesso!');
   end;
+end;
+
+procedure TfrmAcbrNfeMonitor.sbPathNFeClick(Sender: TObject);
+begin
+ PathClick(edtPathNFe);
+end;
+
+procedure TfrmAcbrNfeMonitor.sbPathSalvarClick(Sender: TObject);
+begin
+ PathClick(edtPathLogs);
+end;
+
+procedure TfrmAcbrNfeMonitor.sbPathCanClick(Sender: TObject);
+begin
+ PathClick(edtPathCan);
+end;
+
+procedure TfrmAcbrNfeMonitor.sbPathInuClick(Sender: TObject);
+begin
+ PathClick(edtPathInu);
+end;
+
+procedure TfrmAcbrNfeMonitor.sbPathDPECClick(Sender: TObject);
+begin
+ PathClick(edtPathDPEC);
 end;
 
 end.

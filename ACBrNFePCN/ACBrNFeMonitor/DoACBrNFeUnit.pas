@@ -43,7 +43,7 @@ Function ConvertStrRecived( AStr: String ) : String ;
 function UFparaCodigo(const UF: string): integer;
 function ObterCodigoMunicipio(const xMun, xUF: string): integer;
 procedure GerarIniNFe( AStr: WideString ) ;
-procedure EnviarEmail(const sSmtpHost, sSmtpPort, sSmtpUser, sSmtpPasswd, sFrom, sTo, sAssunto, sAttachment, sAttachment2: String; sMensagem : TStrings; SSL : Boolean);
+procedure EnviarEmail(const sSmtpHost, sSmtpPort, sSmtpUser, sSmtpPasswd, sFrom, sTo, sAssunto, sAttachment, sAttachment2: String; sMensagem : TStrings; SSL : Boolean; sCopias: String='');
 
 implementation
 
@@ -63,7 +63,7 @@ Procedure DoACBrNFe( Cmd : TACBrNFeCmd ) ;
 var
   I,J : Integer;
   ArqNFe, ArqPDF : String;
-  Salva, EnviadoDPEC : Boolean;
+  Salva, EnviadoDPEC, OK : Boolean;
   SL     : TStringList;
   Alertas : AnsiString;
   RetFind   : Integer ;
@@ -617,7 +617,7 @@ begin
               end;
             end;
             try
-               EnviarEmail(edtSmtpHost.Text, edtSmtpPort.Text, edtSmtpUser.Text, edtSmtpPass.Text, edtSmtpUser.Text, Cmd.Params(0), edtEmailAssunto.Text, Cmd.Params(1), ArqPDF, mmEmailMsg.Lines, cbEmailSSL.Checked);
+               EnviarEmail(edtSmtpHost.Text, edtSmtpPort.Text, edtSmtpUser.Text, edtSmtpPass.Text, edtSmtpUser.Text, Cmd.Params(0),NotaUtil.SeSenao(NotaUtil.NaoEstaVazio(Cmd.Params(3)),Cmd.Params(3),edtEmailAssunto.Text), Cmd.Params(1), ArqPDF, mmEmailMsg.Lines, cbEmailSSL.Checked,Cmd.Params(4));
                Cmd.Resposta := 'Email enviado com sucesso';
             except
                on E: Exception do
@@ -630,7 +630,7 @@ begin
         else if Cmd.Metodo = 'setcertificado' then
          begin
            if (Cmd.Params(0)<>'') then
-           begin
+            begin
              {$IFDEF ACBrNFeOpenSSL}
                 ACBrNFe1.Configuracoes.Certificados.Certificado := Cmd.Params(0);
                 ACBrNFe1.Configuracoes.Certificados.Senha       := Cmd.Params(1);
@@ -641,9 +641,33 @@ begin
                 edtCaminho.Text := ACBrNFe1.Configuracoes.Certificados.NumeroSerie;
              {$ENDIF}
                 frmAcbrNfeMonitor.SalvarIni;
-           end
+            end
            else
               raise Exception.Create('Certificado '+Cmd.Params(0)+' Inválido.');
+         end
+
+        else if Cmd.Metodo = 'setambiente' then //1-Produção 2-Homologação
+         begin
+           if (StrToInt(Cmd.Params(0))>=1) and (StrToInt(Cmd.Params(0))<=2) then
+            begin
+              ACBrNFe1.Configuracoes.WebServices.Ambiente := StrToTpAmb(OK, Cmd.Params(0));
+              rgTipoAmb.ItemIndex := ACBrNFe1.Configuracoes.WebServices.AmbienteCodigo-1;
+              frmAcbrNfeMonitor.SalvarIni;
+            end
+           else
+              raise Exception.Create('Ambiente Inválido.');
+         end
+
+        else if Cmd.Metodo = 'setformaemissao' then //1-Normal 2-Contingencia 3-SCAN 4-DPEC 5-FSDA
+         begin
+           if (StrToInt(Cmd.Params(0))>=1) and (StrToInt(Cmd.Params(0))<=5) then
+            begin
+              ACBrNFe1.Configuracoes.Geral.FormaEmissao := StrToTpEmis(OK, Cmd.Params(0));
+              rgFormaEmissao.ItemIndex := ACBrNFe1.Configuracoes.Geral.FormaEmissaoCodigo-1;
+              frmAcbrNfeMonitor.SalvarIni;
+            end
+           else
+              raise Exception.Create('Forma de Emissão Inválida.');
          end
 
         else if Cmd.Metodo = 'restaurar' then
@@ -1512,7 +1536,7 @@ begin
   end;
 end;
 
-procedure EnviarEmail(const sSmtpHost, sSmtpPort, sSmtpUser, sSmtpPasswd, sFrom, sTo, sAssunto, sAttachment, sAttachment2: String; sMensagem : TStrings; SSL : Boolean);
+procedure EnviarEmail(const sSmtpHost, sSmtpPort, sSmtpUser, sSmtpPasswd, sFrom, sTo, sAssunto, sAttachment, sAttachment2: String; sMensagem : TStrings; SSL : Boolean; sCopias: String='');
 var
   smtp: TSMTPSend;
   msg_lines: TStringList;
@@ -1531,6 +1555,8 @@ begin
      if sAttachment2 <> '' then
        m.AddPartBinaryFromFile(sAttachment2, p);
      m.header.tolist.add(sTo);
+     if NotaUtil.NaoEstaVazio(sCopias) then
+        m.header.CCList.Add(StringReplace(sCopias,';',sLineBreak,[rfReplaceAll]));
      m.header.From := sFrom;
      m.header.subject:=sAssunto;
      m.EncodeMessage;

@@ -52,6 +52,14 @@ Símbolo : Significado
 [*]	: Corrigido criação do arquivo PDF para que seja criado na pasta configurada no ACBrNfeMonitor.
 [+]	: Impressão dos campos de medicamento no DANFe modelo Rave CB
 [-]	: Corrigido seleção da impressora
+[+]	: Adicionado campos para configurar diretórios separados para salvar arquivos da NFe, Cancelamento, Inutilização e DPEC
+[+]	: Adicionado comando SetAmbiente para permitir trocar ambiente de envio(1-Produção 2-Homologação) sem precisar intervenção 
+	  pela interface
+[+]	: Adicionado comando SetFormaEmissao para permitir trocar Forma de Emissão(1-Normal 2-Contingencia 3-SCAN 4-DPEC 5-FSDA) 
+	  sem precisar intervenção pela interface
+[*]	: Comando enviar email permite passar parâmetros Titulo do Email e Email para enviar Copia - 
+	  NFE.EnviarEmail( cPara, cArquivo, [ nEnviaDanfePDF ], [ cTituloEmail], [ cEmailCopia] )
+
 
 15/09/09
 [*]	: Consulta de cadastro irá retornar todos os campos disponíveis no manual de integração(Nem todos estarão preenchidos, depende de 

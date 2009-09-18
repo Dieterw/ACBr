@@ -4120,7 +4120,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       Top = 0
       Width = 527
       Height = 256
-      ActivePage = Testes
+      ActivePage = WebService
       Align = alBottom
       TabOrder = 0
       object Monitor: TTabSheet
@@ -4790,35 +4790,6 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           Height = 13
           Caption = 'N'#250'm. C'#243'pias'
         end
-        object sbPathPDF: TSpeedButton
-          Left = 490
-          Top = 146
-          Width = 23
-          Height = 24
-          Anchors = [akTop, akRight]
-          Glyph.Data = {
-            76010000424D7601000000000000760000002800000020000000100000000100
-            04000000000000010000130B0000130B00001000000000000000000000000000
-            800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
-            FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF0033333333B333
-            333B33FF33337F3333F73BB3777BB7777BB3377FFFF77FFFF77333B000000000
-            0B3333777777777777333330FFFFFFFF07333337F33333337F333330FFFFFFFF
-            07333337F3FF3FFF7F333330F00F000F07333337F77377737F333330FFFFFFFF
-            07333FF7F3FFFF3F7FFFBBB0F0000F0F0BB37777F7777373777F3BB0FFFFFFFF
-            0BBB3777F3FF3FFF77773330F00F000003333337F773777773333330FFFF0FF0
-            33333337F3FF7F37F3333330F08F0F0B33333337F7737F77FF333330FFFF003B
-            B3333337FFFF77377FF333B000000333BB33337777777F3377FF3BB3333BB333
-            3BB33773333773333773B333333B3333333B7333333733333337}
-          NumGlyphs = 2
-          OnClick = sbPathPDFClick
-        end
-        object Label28: TLabel
-          Left = 296
-          Top = 134
-          Width = 117
-          Height = 13
-          Caption = 'Salvar arquivos PDF em:'
-        end
         object rgTipoDanfe: TRadioGroup
           Left = 148
           Top = 4
@@ -4901,24 +4872,24 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           Top = 88
           Width = 209
           Height = 21
-          ItemHeight = 0
+          ItemHeight = 13
           TabOrder = 3
         end
         object cbxImpDescPorc: TCheckBox
           Left = 297
-          Top = 172
+          Top = 140
           Width = 200
           Height = 17
           Caption = 'Imprimir Desconto em Porcentagem'
-          TabOrder = 10
+          TabOrder = 9
         end
         object cbxMostrarPreview: TCheckBox
           Left = 297
-          Top = 190
+          Top = 166
           Width = 200
           Height = 17
           Caption = 'Mostrar Preview antes da impress'#227'o'
-          TabOrder = 11
+          TabOrder = 10
         end
         object edtNumCopia: TEdit
           Left = 223
@@ -4928,14 +4899,6 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           TabOrder = 4
           Text = '1'
           OnKeyPress = edtNumCopiaKeyPress
-        end
-        object edtPathPDF: TEdit
-          Left = 296
-          Top = 148
-          Width = 194
-          Height = 21
-          Anchors = [akLeft, akTop, akRight]
-          TabOrder = 9
         end
         object gbxMargem: TGroupBox
           Left = 8
@@ -5025,11 +4988,11 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
         end
         object cbxHoraSaida: TCheckBox
           Left = 297
-          Top = 208
+          Top = 192
           Width = 200
           Height = 17
           Caption = 'Imprimir Hora de Sa'#237'da '
-          TabOrder = 12
+          TabOrder = 11
         end
         object rgCasasDecimaisValor: TRadioGroup
           Left = 8
@@ -5182,6 +5145,214 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           end
         end
       end
+      object Diretorios: TTabSheet
+        Caption = 'Diret'#243'rios'
+        ImageIndex = 6
+        DesignSize = (
+          519
+          228)
+        object sbPathNFe: TSpeedButton
+          Left = 219
+          Top = 94
+          Width = 23
+          Height = 24
+          Glyph.Data = {
+            76010000424D7601000000000000760000002800000020000000100000000100
+            04000000000000010000130B0000130B00001000000000000000000000000000
+            800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+            FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF0033333333B333
+            333B33FF33337F3333F73BB3777BB7777BB3377FFFF77FFFF77333B000000000
+            0B3333777777777777333330FFFFFFFF07333337F33333337F333330FFFFFFFF
+            07333337F3FF3FFF7F333330F00F000F07333337F77377737F333330FFFFFFFF
+            07333FF7F3FFFF3F7FFFBBB0F0000F0F0BB37777F7777373777F3BB0FFFFFFFF
+            0BBB3777F3FF3FFF77773330F00F000003333337F773777773333330FFFF0FF0
+            33333337F3FF7F37F3333330F08F0F0B33333337F7737F77FF333330FFFF003B
+            B3333337FFFF77377FF333B000000333BB33337777777F3377FF3BB3333BB333
+            3BB33773333773333773B333333B3333333B7333333733333337}
+          NumGlyphs = 2
+          OnClick = sbPathNFeClick
+        end
+        object Label32: TLabel
+          Left = 8
+          Top = 80
+          Width = 94
+          Height = 13
+          Caption = 'Pasta Arquivos NFe'
+        end
+        object Label33: TLabel
+          Left = 8
+          Top = 120
+          Width = 142
+          Height = 13
+          Caption = 'Pasta Arquivos Cancelamento'
+        end
+        object sbPathCan: TSpeedButton
+          Left = 219
+          Top = 134
+          Width = 23
+          Height = 24
+          Glyph.Data = {
+            76010000424D7601000000000000760000002800000020000000100000000100
+            04000000000000010000130B0000130B00001000000000000000000000000000
+            800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+            FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF0033333333B333
+            333B33FF33337F3333F73BB3777BB7777BB3377FFFF77FFFF77333B000000000
+            0B3333777777777777333330FFFFFFFF07333337F33333337F333330FFFFFFFF
+            07333337F3FF3FFF7F333330F00F000F07333337F77377737F333330FFFFFFFF
+            07333FF7F3FFFF3F7FFFBBB0F0000F0F0BB37777F7777373777F3BB0FFFFFFFF
+            0BBB3777F3FF3FFF77773330F00F000003333337F773777773333330FFFF0FF0
+            33333337F3FF7F37F3333330F08F0F0B33333337F7737F77FF333330FFFF003B
+            B3333337FFFF77377FF333B000000333BB33337777777F3377FF3BB3333BB333
+            3BB33773333773333773B333333B3333333B7333333733333337}
+          NumGlyphs = 2
+          OnClick = sbPathCanClick
+        end
+        object Label34: TLabel
+          Left = 272
+          Top = 80
+          Width = 127
+          Height = 13
+          Caption = 'Pasta Arquivos Inutiliza'#231#227'o'
+        end
+        object sbPathInu: TSpeedButton
+          Left = 483
+          Top = 94
+          Width = 23
+          Height = 24
+          Glyph.Data = {
+            76010000424D7601000000000000760000002800000020000000100000000100
+            04000000000000010000130B0000130B00001000000000000000000000000000
+            800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+            FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF0033333333B333
+            333B33FF33337F3333F73BB3777BB7777BB3377FFFF77FFFF77333B000000000
+            0B3333777777777777333330FFFFFFFF07333337F33333337F333330FFFFFFFF
+            07333337F3FF3FFF7F333330F00F000F07333337F77377737F333330FFFFFFFF
+            07333FF7F3FFFF3F7FFFBBB0F0000F0F0BB37777F7777373777F3BB0FFFFFFFF
+            0BBB3777F3FF3FFF77773330F00F000003333337F773777773333330FFFF0FF0
+            33333337F3FF7F37F3333330F08F0F0B33333337F7737F77FF333330FFFF003B
+            B3333337FFFF77377FF333B000000333BB33337777777F3377FF3BB3333BB333
+            3BB33773333773333773B333333B3333333B7333333733333337}
+          NumGlyphs = 2
+          OnClick = sbPathInuClick
+        end
+        object Label35: TLabel
+          Left = 272
+          Top = 120
+          Width = 103
+          Height = 13
+          Caption = 'Pasta Arquivos DPEC'
+        end
+        object sbPathDPEC: TSpeedButton
+          Left = 483
+          Top = 134
+          Width = 23
+          Height = 24
+          Glyph.Data = {
+            76010000424D7601000000000000760000002800000020000000100000000100
+            04000000000000010000130B0000130B00001000000000000000000000000000
+            800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+            FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF0033333333B333
+            333B33FF33337F3333F73BB3777BB7777BB3377FFFF77FFFF77333B000000000
+            0B3333777777777777333330FFFFFFFF07333337F33333337F333330FFFFFFFF
+            07333337F3FF3FFF7F333330F00F000F07333337F77377737F333330FFFFFFFF
+            07333FF7F3FFFF3F7FFFBBB0F0000F0F0BB37777F7777373777F3BB0FFFFFFFF
+            0BBB3777F3FF3FFF77773330F00F000003333337F773777773333330FFFF0FF0
+            33333337F3FF7F37F3333330F08F0F0B33333337F7737F77FF333330FFFF003B
+            B3333337FFFF77377FF333B000000333BB33337777777F3377FF3BB3333BB333
+            3BB33773333773333773B333333B3333333B7333333733333337}
+          NumGlyphs = 2
+          OnClick = sbPathDPECClick
+        end
+        object Label28: TLabel
+          Left = 8
+          Top = 160
+          Width = 117
+          Height = 13
+          Caption = 'Salvar arquivos PDF em:'
+        end
+        object sbPathPDF: TSpeedButton
+          Left = 219
+          Top = 172
+          Width = 23
+          Height = 24
+          Anchors = [akTop, akRight]
+          Glyph.Data = {
+            76010000424D7601000000000000760000002800000020000000100000000100
+            04000000000000010000130B0000130B00001000000000000000000000000000
+            800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+            FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF0033333333B333
+            333B33FF33337F3333F73BB3777BB7777BB3377FFFF77FFFF77333B000000000
+            0B3333777777777777333330FFFFFFFF07333337F33333337F333330FFFFFFFF
+            07333337F3FF3FFF7F333330F00F000F07333337F77377737F333330FFFFFFFF
+            07333FF7F3FFFF3F7FFFBBB0F0000F0F0BB37777F7777373777F3BB0FFFFFFFF
+            0BBB3777F3FF3FFF77773330F00F000003333337F773777773333330FFFF0FF0
+            33333337F3FF7F37F3333330F08F0F0B33333337F7737F77FF333330FFFF003B
+            B3333337FFFF77377FF333B000000333BB33337777777F3377FF3BB3333BB333
+            3BB33773333773333773B333333B3333333B7333333733333337}
+          NumGlyphs = 2
+          OnClick = sbPathPDFClick
+        end
+        object cbxSalvarArqs: TCheckBox
+          Left = 8
+          Top = 8
+          Width = 210
+          Height = 17
+          Caption = 'Salvar Arquivos em Pastas Separadas'
+          TabOrder = 0
+        end
+        object cbxPastaMensal: TCheckBox
+          Left = 8
+          Top = 32
+          Width = 210
+          Height = 17
+          Caption = 'Criar Pastas Mensalmente'
+          TabOrder = 1
+        end
+        object cbxAdicionaLiteral: TCheckBox
+          Left = 8
+          Top = 56
+          Width = 210
+          Height = 17
+          Caption = 'Adicionar Literal no nome das pastas'
+          TabOrder = 2
+        end
+        object edtPathNFe: TEdit
+          Left = 8
+          Top = 96
+          Width = 211
+          Height = 21
+          TabOrder = 3
+        end
+        object edtPathCan: TEdit
+          Left = 8
+          Top = 136
+          Width = 211
+          Height = 21
+          TabOrder = 4
+        end
+        object edtPathInu: TEdit
+          Left = 272
+          Top = 96
+          Width = 211
+          Height = 21
+          TabOrder = 5
+        end
+        object edtPathDPEC: TEdit
+          Left = 272
+          Top = 136
+          Width = 211
+          Height = 21
+          TabOrder = 6
+        end
+        object edtPathPDF: TEdit
+          Left = 8
+          Top = 174
+          Width = 211
+          Height = 21
+          Anchors = [akLeft, akTop, akRight]
+          TabOrder = 7
+        end
+      end
     end
   end
   object pmTray: TPopupMenu
@@ -5230,7 +5401,11 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
   object ACBrNFe1: TACBrNFe
     Configuracoes.Geral.PathSalvar = 'C:\Program Files\Borland\Delphi7\Bin\'
     Configuracoes.WebServices.UF = 'SP'
-    DANFE = ACBrNFeDANFERave1
+    Configuracoes.Arquivos.PathNFe = 'C:\Program Files\Borland\Delphi7\Bin\'
+    Configuracoes.Arquivos.PathCan = 'C:\Program Files\Borland\Delphi7\Bin\'
+    Configuracoes.Arquivos.PathInu = 'C:\Program Files\Borland\Delphi7\Bin\'
+    Configuracoes.Arquivos.PathDPEC = 'C:\Program Files\Borland\Delphi7\Bin\'
+    DANFE = ACBrNFeDANFERaveCB1
     Left = 136
     Top = 24
   end
@@ -5646,7 +5821,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       000000000000}
   end
   object ACBrNFeDANFERave1: TACBrNFeDANFERave
-    ACBrNFe = ACBrNFe1
+    PathPDF = 'C:\Program Files\Borland\Delphi7\Bin\'
     ImprimirHoraSaida = False
     MostrarPreview = True
     TipoDANFE = tiRetrato
@@ -5658,10 +5833,13 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
     MargemDireita = 0.510000000000000000
     CasasDecimais._qCom = 2
     CasasDecimais._vUnCom = 2
+    ExibirResumoCanhoto = False
     Left = 169
     Top = 25
   end
   object ACBrNFeDANFERaveCB1: TACBrNFeDANFERaveCB
+    ACBrNFe = ACBrNFe1
+    PathPDF = 'C:\Program Files\Borland\Delphi7\Bin\'
     ImprimirHoraSaida = False
     MostrarPreview = True
     TipoDANFE = tiRetrato
@@ -5673,7 +5851,8 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
     MargemDireita = 0.510000000000000000
     CasasDecimais._qCom = 2
     CasasDecimais._vUnCom = 2
-    Left = 201
+    ExibirResumoCanhoto = False
+    Left = 209
     Top = 25
   end
 end

@@ -48,6 +48,22 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   18/09/09
+---------------
+[+] Danfe em Rave Arquivo (.rav) imprime um resumo no canhoto igual ao RAVE em DANFE CB.
+    Quando a propriedade ExibirResumoCanhoto estiver TRUE será exibido esse resumo.
+    Funcionalidade já existia no DANFE em RAVE CB e agora foi incluida no DANFE em RAVE ARQUIVO.
+    IMPORTANTE: ATUALIZE OS ARQUIVOS .RAV NO SEU SISTEMA
+[+] Incluída propriedade TamanhoCampoCódigo no Danfe em RAVE CB.
+    Quando o valor dessa propriedade for ZERO será utilizado o valor padrão da mesma.
+[+] Incluída propriedade ImprimirTotalLiquido no componente DANFE (Arquivo e CB)
+    Se estiver TRUE será exibido V.LIQUIDO no quadro DADOS DO PRODUTO/SERVICO e o valor da mesma sera vProd-vDesc
+    Padrão da Propriedade é FALSE.
+[+] Incluído a impressão do campo VALOR DESCONTO/DESC % no DANFE em RAVE CB (retrato e paisagem)
+    Se a propriedade ImprimirDescPorc for TRUE será impresso o desconto em percentual.
+    Funcionalidade já existia no DANFE em RAVE ARQUIVO e agora foi incluida no DANFE em RAVE CB.
+
+
 Alterações   17/09/09
 ---------------
 [+] Impressão dos campos de medicamento do DANFe Rave CB

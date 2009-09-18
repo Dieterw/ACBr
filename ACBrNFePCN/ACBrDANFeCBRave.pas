@@ -64,7 +64,7 @@ const aHeigthPadrao:Double=5.7;
       FontSizeItens:Integer=6;
       FontSizeInfComplementares:Integer=6;
 
-      ColsTitle:array[1..17] of String=('CÓDIGO','DESCRIÇÃO DO PRODUTO / SERVIÇO','NCM/SH','CST','CFOP','UNID','QUANTIDADE','VALOR','VALOR','VALOR','BASE CÁLC.','B.CÁLC.ICMS','VAL.ICMS','VALOR','VALOR','ALÍQ.','ALÍQ.');
+      ColsTitle:array[1..17] of String=('CÓDIGO','DESCRIÇÃO DO PRODUTO / SERVIÇO','NCM/SH','CST','CFOP','UNID','QUANT.','VALOR','VALOR','VALOR','B.CÁLC.','B.CÁLC.ICMS','VAL.ICMS','VALOR','VALOR','ALÍQ.','ALÍQ.');
       ColsTitleAux:array[1..17] of String=('','','','','','','','UNITÁRIO','TOTAL','DESC.','DO ICMS','SUBST.TRIB.','SUBST.TRIB.','ICMS','IPI','ICMS','IPI');
       ColsAlingment:array[1..17] of TPrintJustify=(pjCenter,pjLeft,pjCenter,pjCenter,pjCenter,pjCenter,pjRight,pjRight,pjRight,pjRight,pjRight,pjRight,pjRight,pjRight,pjRight,pjCenter,pjCenter);
 
@@ -91,6 +91,9 @@ type
      FCasasDecimais_vUnCom:integer;
      FExibirResumoCanhoto:boolean;
      FImprimirHoraSaida:boolean;
+     FImprimirDescPorc: boolean;
+     FImprimirValorLiquido: boolean;
+     FTamanhoCampoCodigo:integer;
   public
      FCurrentPage, FPageNum, FNFIndex:Integer;
      FChaveNFe, FNumeroNF, FSerie: String;
@@ -116,6 +119,9 @@ type
      property CasasDecimais_vUnCom:integer read FCasasDecimais_vUnCom write FCasasDecimais_vUnCom;
      property ExibirResumoCanhoto:boolean read FExibirResumoCanhoto write FExibirResumoCanhoto;
      property ImprimirHoraSaida:boolean read FImprimirHoraSaida write FImprimirHoraSaida;
+     property ImprimirDescPorc:boolean read FImprimirDescPorc write FImprimirDescPorc;
+     property ImprimirValorLiquido:boolean read FImprimirValorLiquido write FImprimirValorLiquido;
+     property TamanhoCampoCodigo:integer read FTamanhoCampoCodigo write FTamanhoCampoCodigo;
   end;
 
 procedure ImprimirDANFeRave(aACBrNFe:TACBrNFe;
@@ -137,8 +143,11 @@ procedure ImprimirDANFeRave(aACBrNFe:TACBrNFe;
                             aMargemDireita:double=5.1;
                             aCasasDecimais_qCom:integer=2;
                             aCasasDecimais_vUnCom:integer=2;
+                            aTamanhoCampoCodigo:integer=0;
                             aExibirResumoCanhoto:boolean=false;
-                            aImprimirHoraSaida:boolean=false);
+                            aImprimirHoraSaida:boolean=false;
+                            aImprimirDescPorc:boolean=false;
+                            aImprimirValorLiquido:boolean=false);
 
 var DANFeRave:TDANFeRave;
 
@@ -165,8 +174,11 @@ procedure ImprimirDANFeRave(aACBrNFe:TACBrNFe;
                             aMargemDireita:double=5.1;
                             aCasasDecimais_qCom:integer=2;
                             aCasasDecimais_vUnCom:integer=2;
+                            aTamanhoCampoCodigo:integer=0;
                             aExibirResumoCanhoto:boolean=false;
-                            aImprimirHoraSaida:boolean=false);
+                            aImprimirHoraSaida:boolean=false;
+                            aImprimirDescPorc:boolean=false;
+                            aImprimirValorLiquido:boolean=false);
 var DANFeRave:TDANFeRave;
     rvPDF:TRvRenderPDF;
     rvTXT:TRvRenderText;
@@ -200,8 +212,11 @@ begin
     DANFeRave.SystemPrinter.MarginRight:=aMargemDireita;
     DANFeRave.CasasDecimais_qCom:=aCasasDecimais_qCom;
     DANFeRave.CasasDecimais_vUnCom:=aCasasDecimais_vUnCom;
+    DANFeRave.TamanhoCampoCodigo:=aTamanhoCampoCodigo;
     DANFeRave.ExibirResumoCanhoto:=aExibirResumoCanhoto;
     DANFeRave.ImprimirHoraSaida:=aImprimirHoraSaida;
+    DANFeRave.ImprimirDescPorc:=aImprimirDescPorc;
+    DANFeRave.ImprimirValorLiquido:=aImprimirValorLiquido;
     if aLogoMarca<>nil then
      begin
        DANFeRave.LogoMarca:=TJPEGImage.Create;

@@ -96,11 +96,11 @@ end;
 procedure TACBrNFeDANFERave.ExecutaReport;
 var
    MyReport : TRaveReport;
-   MyPage,MyPage2, MyPage3, MyPage4: TRavePage;
+   MyPage,MyPage2, MyPage3, MyPage4, MyPage5: TRavePage;
    MyBarcode: TRaveCode128BarCode;
    MyDataText01, MyDataText02: TRaveDataText;
    MyDataText1,MyDataText2,MyDataText3,MyDataText4,MyDataText5,MyDataText6: TRaveDataText;
-   MyText1,MyText2,MyText3,MyText4: TRaveText;
+   MyText1,MyText2,MyText3,MyText4, MyText5: TRaveText;
    MySection: TRaveSection;
    MyDataView: TRaveDataView;
    MyFloatField,MyFloatField2: TRaveFloatField;
@@ -162,6 +162,15 @@ begin
                MyDataText3.Left := 30;
             if (MyDataText4 <> nil) then
                MyDataText4.Left := 30;
+         end;
+
+         //Total2Liquido
+         if FImprimirTotalLiquido then
+         begin
+            MyPage5 := FindRaveComponent('GlobalDadosProdutos',nil) as TRavePage;
+            MyText5 := FindRaveComponent('Text_vTotal',MyPage5) as TRaveText;
+            if (MyText5 <> nil) then
+               MyText5.Text:='V.LÍQUIDO';
          end;
 
          //Casas Decimais (qCom)

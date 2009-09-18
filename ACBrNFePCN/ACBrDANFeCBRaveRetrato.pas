@@ -836,10 +836,22 @@ begin
      Bold:=True;
      NewLine;
      for i:=Low(ColsTitle) to High(ColsTitle) do
-         PrintTab(ColsTitle[i]);
+     begin
+         if (i=10) and ImprimirDescPorc then
+            PrintTab('DESC. %')
+         else
+            PrintTab(ColsTitle[i]);
+     end;
      NewLine;
      for i:=Low(ColsTitleAux) to High(ColsTitleAux) do
-         PrintTab(ColsTitleAux[i]);
+     begin
+         if (i=9) and ImprimirValorLiquido then
+            PrintTab('LÍQUIDO')
+         else if (i=10) and ImprimirDescPorc then
+            PrintTab('')
+         else
+            PrintTab(ColsTitleAux[i]);
+     end;
      NewLine;
      SetFont(FontNameUsed,FontSizeItens);
      MoveTo(PosX,YPos-(LineHeight/1.2));
@@ -952,7 +964,7 @@ begin
                  end;
                 QtdeMin:=QtdeMin+1;
               end;
-           end;           
+           end;
 
           if Trim(infAdProd)>'' then
            begin
@@ -986,8 +998,22 @@ begin
           PrintTab(Prod.UCom);
           PrintTab(NotaUtil.FormatFloat(Prod.QCom,NotaUtil.PreparaCasasDecimais(CasasDecimais_qCom)));
           PrintTab(NotaUtil.FormatFloat(Prod.VUnCom,NotaUtil.PreparaCasasDecimais(CasasDecimais_vUnCom)));
-          PrintTab(NotaUtil.FormatFloat(Prod.VProd));
-          PrintTab(NotaUtil.FormatFloat(Prod.vDesc));
+
+          if ImprimirValorLiquido then
+             PrintTab(NotaUtil.FormatFloat(Prod.VProd-Prod.VDesc))
+          else
+             PrintTab(NotaUtil.FormatFloat(Prod.VProd));
+
+          if ImprimirDescPorc then
+          begin
+            if Prod.vDesc > 0 then
+               PrintTab(NotaUtil.FormatFloat(RoundTo(100-((((Prod.VUnCom*Prod.QCom)-Prod.vDesc)/(Prod.VUnCom*Prod.QCom))*100),-1))+'%')
+            else
+               PrintTab(NotaUtil.FormatFloat(Prod.vDesc));
+          end
+          else
+            PrintTab(NotaUtil.FormatFloat(Prod.vDesc));
+
           PrintTab(NotaUtil.FormatFloat(Imposto.ICMS.vBC));
           PrintTab(NotaUtil.FormatFloat(Imposto.ICMS.vBCST));
           PrintTab(NotaUtil.FormatFloat(Imposto.ICMS.vICMSST));
@@ -1012,17 +1038,20 @@ begin
 end;
 
 procedure ImprimirRetrato(aRaveSystem:TDANFeRave);
+var
+   wtemp: double;
 begin
+  //tamanho padrao das colunas
   ColsWidth[1]:=15;
-  ColsWidth[2]:=60;
-  ColsWidth[3]:=15;
+  ColsWidth[2]:=56;
+  ColsWidth[3]:=10;
   ColsWidth[4]:=6;
   ColsWidth[5]:=7;
-  ColsWidth[6]:=8;
+  ColsWidth[6]:=7;
   ColsWidth[7]:=12;
   ColsWidth[8]:=13;
   ColsWidth[9]:=15;
-  ColsWidth[10]:=0;
+  ColsWidth[10]:=11;
   ColsWidth[11]:=12;
   ColsWidth[12]:=0;
   ColsWidth[13]:=0;
@@ -1032,6 +1061,18 @@ begin
   ColsWidth[17]:=8;
 
   DANFeRave:=aRaveSystem;
+
+  //ajusta tamanho da coluna codigo
+  with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
+  begin
+    if TamanhoCampoCodigo <> 0 then
+    begin
+      wtemp:=ColsWidth[1]-TamanhoCampoCodigo;
+      ColsWidth[1]:=ColsWidth[1]-wtemp;
+      ColsWidth[2]:=ColsWidth[2]+wtemp;
+    end;
+  end;
+
   ImprimirItens(MontarPagina);
 end;
 

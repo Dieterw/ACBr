@@ -79,6 +79,7 @@ type
     FPathArquivos : String;
     FImpressora : String;
     FImprimirHoraSaida : Boolean;
+    FImprimirTotalLiquido: boolean;
     FMostrarPreview : Boolean;
     FTipoDANFE : TpcnTipoImpressao;
     FNumCopias : Integer;
@@ -114,6 +115,7 @@ type
     property Site : String read FSite  write FSite ;
     property Email: String read FEmail write FEmail ;
     property ImprimirDescPorc: Boolean read FImprimeDescPorc write FImprimeDescPorc ;
+    property ImprimirTotalLiquido: Boolean read FImprimirTotalLiquido write FImprimirTotalLiquido ;    
     property ProtocoloNFe: String read FProtocoloNFe write FProtocoloNFe ;
     property MargemInferior: Double read FMargemInferior write FMargemInferior ;
     property MargemSuperior: Double read FMargemSuperior write FMargemSuperior ;
@@ -172,6 +174,7 @@ begin
   FPathArquivos := '' ;
   FImpressora   := '' ;
   FImprimirHoraSaida    := False;
+  FImprimirTotalLiquido := False;  
   FMostrarPreview       := True;
   FNumCopias := 1;
   FFax   := '' ;

@@ -55,11 +55,14 @@ uses Forms, SysUtils, Classes,
 type
   TACBrNFeDANFERaveCB = class( TACBrNFeDANFEClass )
    private
+     FTamanhoCampoCodigo: integer;
    public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure ImprimirDANFE(NFE : TNFe = nil); override ;
     procedure ImprimirDANFEPDF(NFE : TNFe = nil); override ;
+  published
+     property TamanhoCampoCodigo:integer read FTamanhoCampoCodigo write FTamanhoCampoCodigo;
   end;
 
 implementation
@@ -69,6 +72,8 @@ uses ACBrNFe, ACBrNFeUtil, ACBrUtil, StrUtils, Dialogs;
 constructor TACBrNFeDANFERaveCB.Create(AOwner: TComponent);
 begin
   inherited create( AOwner );
+
+  FTamanhoCampoCodigo:=0;
 end;
 
 destructor TACBrNFeDANFERaveCB.Destroy;
@@ -107,8 +112,11 @@ begin
                        MargemDireita*10,
                        CasasDecimais._qCom,
                        CasasDecimais._vUnCom,
+                       TamanhoCampoCodigo,
                        ExibirResumoCanhoto,
-                       ImprimirHoraSaida);
+                       ImprimirHoraSaida,
+                       ImprimirDescPorc,
+                       ImprimirTotalLiquido);
     finally
       LogoMarcaEmpresa.Free;
     end;
@@ -149,8 +157,11 @@ begin
                        MargemDireita*10,
                        CasasDecimais._qCom,
                        CasasDecimais._vUnCom,
+                       TamanhoCampoCodigo,
                        ExibirResumoCanhoto,
-                       ImprimirHoraSaida);
+                       ImprimirHoraSaida,
+                       ImprimirDescPorc,
+                       ImprimirTotalLiquido);
     finally
       LogoMarcaEmpresa.Free;
     end;

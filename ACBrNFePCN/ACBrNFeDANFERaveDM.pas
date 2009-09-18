@@ -553,7 +553,10 @@ begin
          Connection.WriteStrData('', UCom);
          Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(QCom),0));
          Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(VUnCom),0));
-         Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(VProd),0));
+         if FDANFEClassOwner.ImprimirTotalLiquido then
+            Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(VProd-vDesc),0))
+         else
+            Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(VProd),0));
          Connection.WriteStrData('', cEANTrib);
          Connection.WriteStrData('', uTrib);
          Connection.WriteFloatData('', NotaUtil.StringToFloatDef(floattostr(qTrib),0));
@@ -723,6 +726,7 @@ end;
 procedure TdmACBrNFeRave.CustomParametrosCXNGetCols(
   Connection: TRvCustomConnection);
 begin
+  Connection.WriteField('ResumoCanhoto', dtString, 200, '', '');
   Connection.WriteField('Mensagem0', dtString, 60, '', '');
   Connection.WriteField('Imagem', dtBlob, 60, '', '');
   Connection.WriteField('Sistema', dtString, 60, '', '');
@@ -748,17 +752,24 @@ procedure TdmACBrNFeRave.CustomParametrosCXNGetRow(
 var
   vStream: TMemoryStream;
   vChave_Contingencia: string;
+  vResumo: string;
 begin
+  if DANFEClassOwner.ExibirResumoCanhoto then
+     vResumo:='Emissão: '+NotaUtil.FormatDate(DateToStr(FNFe.Ide.DEmi))+'  Dest/Reme: '+FNFe.Dest.XNome+'  Valor Total: '+NotaUtil.FormatFloat(FNFe.Total.ICMSTot.VNF)
+  else
+     vResumo:='';
+  Connection.WriteStrData('', vResumo);
+
   with FNFe.Ide do
     Connection.WriteStrData('', NotaUtil.SeSenao(TpAmb = taHomologacao,'Nota Fiscal sem valor Fiscal', ''));
 
   vStream := TMemoryStream.Create;
   try
     if NotaUtil.NaoEstaVazio(DANFEClassOwner.Logo) then
-     begin
+    begin
        if FileExists(DANFEClassOwner.Logo) then
           vStream.LoadFromFile(DANFEClassOwner.Logo);
-     end;
+    end;
     vStream.Position := 0;
     Connection.WriteBlobData(vStream.Memory^, vStream.Size);
   finally

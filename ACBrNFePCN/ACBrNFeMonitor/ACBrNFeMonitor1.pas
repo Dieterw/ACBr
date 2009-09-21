@@ -180,6 +180,8 @@ type
     Label28: TLabel;
     edtPathPDF: TEdit;
     sbPathPDF: TSpeedButton;
+    cbxExibeResumo: TCheckBox;
+    cbxImpValLiq: TCheckBox;
     procedure DoACBrTimer(Sender: TObject);
     procedure edOnlyNumbers(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
@@ -594,6 +596,8 @@ begin
      edtPathPDF.Text           := PathWithDelim(Ini.ReadString( 'DANFE','PathPDF',ExtractFilePath(Application.ExeName))) ;
      rgCasasDecimaisQtd.ItemIndex   := Ini.ReadInteger('DANFE','DecimaisQTD',0) ;
      rgCasasDecimaisValor.ItemIndex := Ini.ReadInteger('DANFE','DecimaisValor',0) ;
+     cbxExibeResumo.Checked    := Ini.ReadBool(   'DANFE','ExibeResumo',False) ;
+     cbxImpValLiq.Checked      := Ini.ReadBool(   'DANFE','ImprimirValLiq',False) ;
 
      if rgModeloDanfe.ItemIndex = 0 then
         ACBrNFe1.DANFE := ACBrNFeDANFERave1
@@ -734,6 +738,9 @@ begin
      Ini.WriteString( 'DANFE','PathPDF'  ,edtPathPDF.Text) ;
      Ini.WriteInteger('DANFE','DecimaisQTD'  ,rgCasasDecimaisQtd.ItemIndex  );
      Ini.WriteInteger('DANFE','DecimaisValor',rgCasasDecimaisValor.ItemIndex);
+     Ini.WriteBool(   'DANFE','ExibeResumo',cbxExibeResumo.Checked) ;
+     Ini.WriteBool(   'DANFE','ImprimirValLiq',cbxImpValLiq.Checked) ;
+
 
      Ini.WriteBool(   'Arquivos','Salvar'     ,cbxSalvarArqs.Checked);
      Ini.WriteBool(   'Arquivos','PastaMensal',cbxPastaMensal.Checked);

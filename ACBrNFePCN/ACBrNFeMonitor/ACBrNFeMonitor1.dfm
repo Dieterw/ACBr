@@ -4120,7 +4120,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       Top = 0
       Width = 527
       Height = 256
-      ActivePage = WebService
+      ActivePage = Diretorios
       Align = alBottom
       TabOrder = 0
       object Monitor: TTabSheet
@@ -4876,16 +4876,16 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           TabOrder = 3
         end
         object cbxImpDescPorc: TCheckBox
-          Left = 297
-          Top = 140
+          Left = 298
+          Top = 137
           Width = 200
           Height = 17
           Caption = 'Imprimir Desconto em Porcentagem'
           TabOrder = 9
         end
         object cbxMostrarPreview: TCheckBox
-          Left = 297
-          Top = 166
+          Left = 298
+          Top = 155
           Width = 200
           Height = 17
           Caption = 'Mostrar Preview antes da impress'#227'o'
@@ -4987,8 +4987,8 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           TabOrder = 6
         end
         object cbxHoraSaida: TCheckBox
-          Left = 297
-          Top = 192
+          Left = 298
+          Top = 173
           Width = 200
           Height = 17
           Caption = 'Imprimir Hora de Sa'#237'da '
@@ -5021,6 +5021,22 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
             'Rave CB')
           TabOrder = 0
           OnClick = rgModeloDanfeClick
+        end
+        object cbxExibeResumo: TCheckBox
+          Left = 298
+          Top = 191
+          Width = 200
+          Height = 17
+          Caption = 'Exibir Resumo no Canhoto'
+          TabOrder = 12
+        end
+        object cbxImpValLiq: TCheckBox
+          Left = 298
+          Top = 209
+          Width = 200
+          Height = 17
+          Caption = 'Imprimir Valor L'#237'quido do Produto'
+          TabOrder = 13
         end
       end
       object Testes: TTabSheet
@@ -5827,6 +5843,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
     TipoDANFE = tiRetrato
     NumCopias = 1
     ImprimirDescPorc = False
+    ImprimirTotalLiquido = False
     MargemInferior = 0.800000000000000000
     MargemSuperior = 0.800000000000000000
     MargemEsquerda = 0.600000000000000000
@@ -5845,6 +5862,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
     TipoDANFE = tiRetrato
     NumCopias = 1
     ImprimirDescPorc = False
+    ImprimirTotalLiquido = False
     MargemInferior = 0.800000000000000000
     MargemSuperior = 0.800000000000000000
     MargemEsquerda = 0.600000000000000000
@@ -5852,6 +5870,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
     CasasDecimais._qCom = 2
     CasasDecimais._vUnCom = 2
     ExibirResumoCanhoto = False
+    TamanhoCampoCodigo = 0
     Left = 209
     Top = 25
   end

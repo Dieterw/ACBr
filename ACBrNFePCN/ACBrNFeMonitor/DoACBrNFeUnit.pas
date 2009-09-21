@@ -2205,7 +2205,7 @@ begin
       IniNFe := TStringList.Create;
       INIRec.GetStrings(IniNfe);
       INIRec.Free ;
-      Result := IniNFe.Text;
+      Result := StringReplace(IniNFe.Text,sLineBreak+sLineBreak,sLineBreak,[rfReplaceAll]);
       IniNFe.Free;
    end;
   end;

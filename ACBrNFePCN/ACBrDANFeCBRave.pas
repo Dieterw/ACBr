@@ -91,9 +91,11 @@ type
      FCasasDecimais_vUnCom:integer;
      FExibirResumoCanhoto:boolean;
      FImprimirHoraSaida:boolean;
+     FImprimirHoraSaida_Hora:string;
      FImprimirDescPorc: boolean;
      FImprimirValorLiquido: boolean;
      FTamanhoCampoCodigo:integer;
+     FFormularioContinuo: boolean;
   public
      FCurrentPage, FPageNum, FNFIndex:Integer;
      FChaveNFe, FNumeroNF, FSerie: String;
@@ -119,9 +121,11 @@ type
      property CasasDecimais_vUnCom:integer read FCasasDecimais_vUnCom write FCasasDecimais_vUnCom;
      property ExibirResumoCanhoto:boolean read FExibirResumoCanhoto write FExibirResumoCanhoto;
      property ImprimirHoraSaida:boolean read FImprimirHoraSaida write FImprimirHoraSaida;
+     property ImprimirHoraSaida_Hora:string read FImprimirHoraSaida_Hora write FImprimirHoraSaida_Hora;
      property ImprimirDescPorc:boolean read FImprimirDescPorc write FImprimirDescPorc;
      property ImprimirValorLiquido:boolean read FImprimirValorLiquido write FImprimirValorLiquido;
      property TamanhoCampoCodigo:integer read FTamanhoCampoCodigo write FTamanhoCampoCodigo;
+     property FormularioContinuo:boolean read FFormularioContinuo write FFormularioContinuo;
   end;
 
 procedure ImprimirDANFeRave(aACBrNFe:TACBrNFe;
@@ -146,8 +150,10 @@ procedure ImprimirDANFeRave(aACBrNFe:TACBrNFe;
                             aTamanhoCampoCodigo:integer=0;
                             aExibirResumoCanhoto:boolean=false;
                             aImprimirHoraSaida:boolean=false;
+                            aImprimirHoraSaida_Hora:string='';
                             aImprimirDescPorc:boolean=false;
-                            aImprimirValorLiquido:boolean=false);
+                            aImprimirValorLiquido:boolean=false;
+                            aFormularioContinuo:boolean=false);
 
 var DANFeRave:TDANFeRave;
 
@@ -177,8 +183,10 @@ procedure ImprimirDANFeRave(aACBrNFe:TACBrNFe;
                             aTamanhoCampoCodigo:integer=0;
                             aExibirResumoCanhoto:boolean=false;
                             aImprimirHoraSaida:boolean=false;
+                            aImprimirHoraSaida_Hora:string='';
                             aImprimirDescPorc:boolean=false;
-                            aImprimirValorLiquido:boolean=false);
+                            aImprimirValorLiquido:boolean=false;
+                            aFormularioContinuo:boolean=false);
 var DANFeRave:TDANFeRave;
     rvPDF:TRvRenderPDF;
     rvTXT:TRvRenderText;
@@ -215,8 +223,10 @@ begin
     DANFeRave.TamanhoCampoCodigo:=aTamanhoCampoCodigo;
     DANFeRave.ExibirResumoCanhoto:=aExibirResumoCanhoto;
     DANFeRave.ImprimirHoraSaida:=aImprimirHoraSaida;
+    DANFeRave.ImprimirHoraSaida_Hora:=aImprimirHoraSaida_Hora;
     DANFeRave.ImprimirDescPorc:=aImprimirDescPorc;
     DANFeRave.ImprimirValorLiquido:=aImprimirValorLiquido;
+    DANFeRave.FormularioContinuo:=aFormularioContinuo;
     if aLogoMarca<>nil then
      begin
        DANFeRave.LogoMarca:=TJPEGImage.Create;
@@ -232,7 +242,7 @@ begin
     DANFeRave.SystemPreview.FormState:=wsMaximized;
     DANFeRave.SystemPreview.ZoomFactor:=100;
     DANFeRave.SystemPrinter.Copies:=aNumeroDeCopias;
-    DANFeRave.SystemPrinter.LinesPerInch:=8;
+    DANFeRave.SystemPrinter.LinesPerInch:=20;
     DANFeRave.SystemPrinter.StatusFormat:='Imprimindo página %p';
     DANFeRave.SystemPrinter.Title:='NFe - Impressão do DANFE';
     DANFeRave.SystemPrinter.Units:=unMM;

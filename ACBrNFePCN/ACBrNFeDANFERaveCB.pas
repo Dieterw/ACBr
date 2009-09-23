@@ -115,8 +115,10 @@ begin
                        TamanhoCampoCodigo,
                        ExibirResumoCanhoto,
                        ImprimirHoraSaida,
+                       ImprimirHoraSaida_Hora,
                        ImprimirDescPorc,
-                       ImprimirTotalLiquido);
+                       ImprimirTotalLiquido,
+                       FormularioContinuo);
     finally
       LogoMarcaEmpresa.Free;
     end;
@@ -160,8 +162,10 @@ begin
                        TamanhoCampoCodigo,
                        ExibirResumoCanhoto,
                        ImprimirHoraSaida,
+                       ImprimirHoraSaida_Hora,
                        ImprimirDescPorc,
-                       ImprimirTotalLiquido);
+                       ImprimirTotalLiquido,
+                       FormularioContinuo);
     finally
       LogoMarcaEmpresa.Free;
     end;

@@ -894,9 +894,14 @@ begin
   end;
 
   if FDANFEClassOwner.ImprimirHoraSaida then
-     Connection.WriteStrData('', TimeToStr(Now))
+  begin
+     if NotaUtil.EstaVazio(FDANFEClassOwner.ImprimirHoraSaida_Hora) then
+        Connection.WriteStrData('', TimeToStr(Now))
+     else
+        Connection.WriteStrData('', FDANFEClassOwner.ImprimirHoraSaida_Hora);
+  end
   else
-     Connection.WriteStrData('', '');  
+     Connection.WriteStrData('', '');
 end;
 
 procedure TdmACBrNFeRave.CustomIdentificacaoCXNOpen(

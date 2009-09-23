@@ -537,7 +537,12 @@ begin
        Box([fsTop,fsLeft],XPos,YPos,13,aWidthTituloBloco,'Estado',UF,taCenter);
        Box([fsTop,fsLeft],XPos,YPos,38,aWidthTituloBloco,'Inscrição Estadual',Dest.IE,taCenter);
        if ImprimirHoraSaida then
-          Box([fsTop,fsLeft],XPos,YPos,21,aWidthTituloBloco,'Hora da Saída',TimeToStr(now),taCenter,True)
+       begin
+          if NotaUtil.EstaVazio(ImprimirHoraSaida_Hora) then
+             Box([fsTop,fsLeft],XPos,YPos,21,aWidthTituloBloco,'Hora da Saída',TimeToStr(now),taCenter,True)
+          else
+             Box([fsTop,fsLeft],XPos,YPos,21,aWidthTituloBloco,'Hora da Saída',ImprimirHoraSaida_Hora,taCenter,True)
+       end
        else
           Box([fsTop,fsLeft],XPos,YPos,21,aWidthTituloBloco,'Hora da Saída','',taCenter,True);
       end;
@@ -852,7 +857,10 @@ begin
      Result:=FLastY-GetFontHeigh;
      GotoXY(PosX,Result);
      NewLine;
-     vEnd:='DATA E HORA DA IMPRESSÃO: '+FormatDateTime('dd/mm/yyyy hh:mm:ss',Now);
+     if ImprimirHoraSaida then
+        vEnd:='DATA DA IMPRESSÃO: '+DateToStr(Now)
+     else
+        vEnd:='DATA E HORA DA IMPRESSÃO: '+FormatDateTime('dd/mm/yyyy hh:mm:ss',Now);
      if Trim(NomeDoUsuario)>'' then
         vEnd:=vEnd+' - '+NomeDoUsuario;
      PrintXY(PosX,YPos,vEnd);

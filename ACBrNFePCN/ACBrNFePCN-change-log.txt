@@ -48,6 +48,17 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   23/09/09
+---------------
+[+] Incluída propriedade ImprimirHoraSaida_Hora nos componentes DANFE.
+    Se a propriedade ImprimirHoraSaida estiver true e a propriedade ImprimirHoraSaida_Hora estiver preenchida
+    será impressa o valor estipulado na propriedade ImprimirHoraSaida_Hora. Caso não tenha nenhum valor especificado
+    será impresso a HORA ATUAL.
+[+] Incluído propriedade FormularioContinuo nos componentes DANFE.
+    Se estiver TRUE não será impresso molduras e descrições de campo no canhoto e EMITENTE.
+    OBS: Por enquanto essa propriedade esta funcional somente para opção do DANFE em ARQUIVO (.rav)
+
+
 Alterações   18/09/09
 ---------------
 [+] Danfe em Rave Arquivo (.rav) imprime um resumo no canhoto igual ao RAVE em DANFE CB.

@@ -56,7 +56,7 @@ interface
 
 uses Forms, SysUtils, Classes,
   RpDefine, RpDevice, RVClass, RVProj, RVCsBars, RVCsStd, RVCsData,
-  RvDirectDataView, RVDataField,
+  RvDirectDataView, RVDataField, RVCsDraw,
   ACBrNFeDANFEClass, ACBrNFeDANFERaveDM, pcnNFe, pcnConversao;
 
 type
@@ -105,12 +105,106 @@ var
    MyDataView: TRaveDataView;
    MyFloatField,MyFloatField2: TRaveFloatField;
 
+   i: integer;
+   fcPage1,fcPage2: TRavePage;
+   fcText: array[1..13] of TRaveText;
+   fcDataText: array[1..20] of TRaveDataText;
+   fcDataMemo: array[1..1] of TRaveDataMemo;
+   fcHLine: array[1..2] of TRaveHLine;
+   fcVLine: array[1..4] of TRaveVLine;
+   fcRectangle: array[1..7] of TRaveRectangle;
+   fcSquare: array[1..1] of TRaveSquare;
+   fcBitmap: array[1..1] of TRaveBitmap;
+
    vMargemInferiorAtual, vMargemInferior, vHeightPadrao: double;
 begin
    try
       dmDanfe.RvProject.Open;
       with dmDanfe.RvProject.ProjMan do
       begin
+         //Formulario Continuo
+         if FFormularioContinuo then
+         begin
+            //canhoto
+            fcPage1 := FindRaveComponent('GlobalRecibo',nil) as TRavePage;
+            fcDataText[1] := FindRaveComponent('DataText1',fcPage1) as TRaveDataText;
+            if (fcDataText[1] <> nil) then
+               fcDataText[1].Left:=30;
+            i:=3;
+            while i>0 do
+            begin
+               fcText[i] := FindRaveComponent('Text'+inttostr(i),fcPage1) as TRaveText;
+               if (fcText[i] <> nil) then
+                  fcText[i].Left:=30;
+               i:=i-1;
+            end;
+            fcRectangle[1] := FindRaveComponent('Rectangle1',fcPage1) as TRaveRectangle;
+            if (fcRectangle[1] <> nil) then
+               fcRectangle[1].Left:=30;
+            i:=2;
+            while i>0 do
+            begin
+               fcHLine[i] := FindRaveComponent('HLine'+inttostr(i),fcPage1) as TRaveHLine;
+               if (fcHLine[i] <> nil) then
+                  fcHline[i].Left:=30;
+               i:=i-1;
+            end;
+            i:=2;
+            while i>0 do
+            begin
+               fcVLine[i] := FindRaveComponent('VLine'+inttostr(i),fcPage1) as TRaveVLine;
+               if (fcVLine[i] <> nil) then
+                  fcVline[i].Left:=30;
+               i:=i-1;
+            end;
+            //cabecalho e dados do emitente
+            fcPage2 := FindRaveComponent('GlobalDANFE',nil) as TRavePage;
+            i:=7;
+            while i>0 do
+            begin
+               fcRectangle[i] := FindRaveComponent('Rectangle'+inttostr(i),fcPage2) as TRaveRectangle;
+               if (fcRectangle[i] <> nil) then
+                  fcRectangle[i].Left:=30;
+               i:=i-1;
+            end;
+            fcSquare[1] := FindRaveComponent('Square1',fcPage2) as TRaveSquare;
+            if (fcSquare[1] <> nil) then
+               fcSquare[1].Left:=30;
+            fcBitmap[1] := FindRaveComponent('Bitmap1',fcPage2) as TRaveBitmap;
+            if (fcBitmap[1] <> nil) then
+               fcBitmap[1].Left:=30;
+            i:=4;
+            while i>0 do
+            begin
+               fcVLine[i] := FindRaveComponent('VLine'+inttostr(i),fcPage2) as TRaveVLine;
+               if (fcVLine[i] <> nil) then
+                  fcVline[i].Left:=30;
+               i:=i-1;
+            end;
+            i:=13;
+            while i>0 do
+            begin
+               fcText[i] := FindRaveComponent('Text'+inttostr(i),fcPage2) as TRaveText;
+               if (fcText[i] <> nil) then
+                  fcText[i].Left:=30;
+               i:=i-1;
+            end;
+            fcDataMemo[1] := FindRaveComponent('DataMemo1',fcPage2) as TRaveDataMemo;
+            if (fcDataMemo[1] <> nil) then
+               fcDataMemo[1].Left:=30;
+            i:=20;
+            while i>0 do
+            begin
+               if (i in [2,3,4,8,10,12,14,15,16,18,20]) then
+               begin
+                  fcDataText[i] := FindRaveComponent('DataText'+inttostr(i),fcPage2) as TRaveDataText;
+                  if (fcDataText[i] <> nil) then
+                     fcDataText[i].Left:=30;
+               end;
+               i:=i-1;
+            end;
+         end;
+
          //contingencia
          MyPage := FindRaveComponent('GlobalDANFE',nil) as TRavePage;
          if ((dmDanfe.NFe.Ide.tpEmis = teNormal) or

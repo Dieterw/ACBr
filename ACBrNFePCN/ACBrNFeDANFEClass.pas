@@ -79,6 +79,7 @@ type
     FPathArquivos : String;
     FImpressora : String;
     FImprimirHoraSaida : Boolean;
+    FImprimirHoraSaida_Hora : string;
     FImprimirTotalLiquido: boolean;
     FMostrarPreview : Boolean;
     FTipoDANFE : TpcnTipoImpressao;
@@ -94,6 +95,7 @@ type
     FMargemDireita: Double;
     FCasasDecimais: TCasasDecimais;
     FExibeResumoCanhoto: boolean;
+    FFormularioContinuo: boolean;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
   public
     constructor Create(AOwner: TComponent); override;
@@ -108,6 +110,7 @@ type
     property PathPDF: String read GetPathArquivos write FPathArquivos  ;
     property Impressora: String read FImpressora write FImpressora ;
     property ImprimirHoraSaida: Boolean read FImprimirHoraSaida write FImprimirHoraSaida ;
+    property ImprimirHoraSaida_Hora: string read FImprimirHoraSaida_Hora write FImprimirHoraSaida_Hora ;
     property MostrarPreview: Boolean read FMostrarPreview write FMostrarPreview ;
     property TipoDANFE: TpcnTipoImpressao read FTipoDANFE write FTipoDANFE ;
     property NumCopias: Integer read FNumCopias write FNumCopias ;
@@ -115,7 +118,7 @@ type
     property Site : String read FSite  write FSite ;
     property Email: String read FEmail write FEmail ;
     property ImprimirDescPorc: Boolean read FImprimeDescPorc write FImprimeDescPorc ;
-    property ImprimirTotalLiquido: Boolean read FImprimirTotalLiquido write FImprimirTotalLiquido ;    
+    property ImprimirTotalLiquido: Boolean read FImprimirTotalLiquido write FImprimirTotalLiquido ;
     property ProtocoloNFe: String read FProtocoloNFe write FProtocoloNFe ;
     property MargemInferior: Double read FMargemInferior write FMargemInferior ;
     property MargemSuperior: Double read FMargemSuperior write FMargemSuperior ;
@@ -123,6 +126,7 @@ type
     property MargemDireita: Double read FMargemDireita write FMargemDireita ;
     property CasasDecimais: TCasasDecimais read FCasasDecimais ;
     property ExibirResumoCanhoto: Boolean read FExibeResumoCanhoto write FExibeResumoCanhoto ;
+    property FormularioContinuo: Boolean read FFormularioContinuo write FFormularioContinuo ;
   end;
 
 implementation
@@ -173,9 +177,10 @@ begin
   FUsuario      := '' ;
   FPathArquivos := '' ;
   FImpressora   := '' ;
-  FImprimirHoraSaida    := False;
-  FImprimirTotalLiquido := False;  
-  FMostrarPreview       := True;
+  FImprimirHoraSaida      := False;
+  FImprimirHoraSaida_Hora := '';
+  FImprimirTotalLiquido   := False;
+  FMostrarPreview         := True;
   FNumCopias := 1;
   FFax   := '' ;
   FSite  := '' ;
@@ -187,6 +192,7 @@ begin
   FMargemEsquerda := 0.6;
   FMargemDireita  := 0.51;
   FExibeResumoCanhoto := false;
+  FFormularioContinuo := false;
   FCasasDecimais := TCasasDecimais.Create(self);
   FCasasDecimais.Name:= 'CasasDecimais' ;
   {$IFDEF COMPILER6_UP}

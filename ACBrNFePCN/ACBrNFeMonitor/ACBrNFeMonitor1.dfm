@@ -4120,7 +4120,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       Top = 0
       Width = 527
       Height = 256
-      ActivePage = Diretorios
+      ActivePage = DANFE
       Align = alBottom
       TabOrder = 0
       object Monitor: TTabSheet
@@ -4745,298 +4745,310 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       object DANFE: TTabSheet
         Caption = 'DANFE'
         ImageIndex = 4
-        DesignSize = (
-          519
-          228)
-        object Label7: TLabel
-          Left = 7
-          Top = 36
-          Width = 57
-          Height = 13
-          Caption = 'Logo Marca'
-        end
-        object sbLogoMarca: TSpeedButton
-          Left = 266
-          Top = 48
-          Width = 23
-          Height = 24
-          Glyph.Data = {
-            76010000424D7601000000000000760000002800000020000000100000000100
-            04000000000000010000130B0000130B00001000000000000000000000000000
-            800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
-            FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF0033333333B333
-            333B33FF33337F3333F73BB3777BB7777BB3377FFFF77FFFF77333B000000000
-            0B3333777777777777333330FFFFFFFF07333337F33333337F333330FFFFFFFF
-            07333337F3FF3FFF7F333330F00F000F07333337F77377737F333330FFFFFFFF
-            07333FF7F3FFFF3F7FFFBBB0F0000F0F0BB37777F7777373777F3BB0FFFFFFFF
-            0BBB3777F3FF3FFF77773330F00F000003333337F773777773333330FFFF0FF0
-            33333337F3FF7F37F3333330F08F0F0B33333337F7737F77FF333330FFFF003B
-            B3333337FFFF77377FF333B000000333BB33337777777F3377FF3BB3333BB333
-            3BB33773333773333773B333333B3333333B7333333733333337}
-          NumGlyphs = 2
-          OnClick = sbLogoMarcaClick
-        end
-        object Label5: TLabel
-          Left = 8
-          Top = 72
-          Width = 88
-          Height = 13
-          Caption = 'Impressora Padr'#227'o'
-        end
-        object Label1: TLabel
-          Left = 223
-          Top = 72
-          Width = 60
-          Height = 13
-          Caption = 'N'#250'm. C'#243'pias'
-        end
-        object rgTipoDanfe: TRadioGroup
-          Left = 148
-          Top = 4
-          Width = 144
-          Height = 33
-          Caption = 'DANFE'
-          Columns = 2
-          ItemIndex = 0
-          Items.Strings = (
-            'Retrato'
-            'Paisagem')
-          TabOrder = 1
-        end
-        object edtLogoMarca: TEdit
-          Left = 7
-          Top = 52
-          Width = 258
-          Height = 21
-          TabOrder = 2
-        end
-        object gbxEmpresa: TGroupBox
-          Left = 296
-          Top = 4
-          Width = 217
-          Height = 129
-          Anchors = [akLeft, akTop, akRight]
-          Caption = 'Dados Empresa Emissora'
-          TabOrder = 8
-          DesignSize = (
-            217
-            129)
-          object Label3: TLabel
-            Left = 7
-            Top = 12
-            Width = 18
-            Height = 13
-            Caption = 'Site'
-          end
-          object Label4: TLabel
-            Left = 7
-            Top = 50
-            Width = 25
-            Height = 13
-            Caption = 'Email'
-          end
-          object Label26: TLabel
-            Left = 7
-            Top = 88
-            Width = 17
-            Height = 13
-            Caption = 'Fax'
-          end
-          object edtSiteEmpresa: TEdit
-            Left = 7
-            Top = 28
-            Width = 202
-            Height = 21
-            Anchors = [akLeft, akTop, akRight]
-            TabOrder = 0
-          end
-          object edtEmailEmpresa: TEdit
-            Left = 7
-            Top = 64
-            Width = 202
-            Height = 21
-            Anchors = [akLeft, akTop, akRight]
-            TabOrder = 1
-          end
-          object edtFaxEmpresa: TEdit
-            Left = 7
-            Top = 102
-            Width = 202
-            Height = 21
-            Anchors = [akLeft, akTop, akRight]
-            TabOrder = 2
-          end
-        end
-        object cbxImpressora: TComboBox
-          Left = 8
-          Top = 88
-          Width = 209
-          Height = 21
-          ItemHeight = 13
-          TabOrder = 3
-        end
-        object cbxImpDescPorc: TCheckBox
-          Left = 298
-          Top = 137
-          Width = 200
-          Height = 17
-          Caption = 'Imprimir Desconto em Porcentagem'
-          TabOrder = 9
-        end
-        object cbxMostrarPreview: TCheckBox
-          Left = 298
-          Top = 155
-          Width = 200
-          Height = 17
-          Caption = 'Mostrar Preview antes da impress'#227'o'
-          TabOrder = 10
-        end
-        object edtNumCopia: TEdit
-          Left = 223
-          Top = 88
-          Width = 66
-          Height = 21
-          TabOrder = 4
-          Text = '1'
-          OnKeyPress = edtNumCopiaKeyPress
-        end
-        object gbxMargem: TGroupBox
-          Left = 8
-          Top = 109
-          Width = 281
-          Height = 54
-          Caption = 'Margens'
-          TabOrder = 5
-          object Label2: TLabel
-            Left = 8
-            Top = 12
-            Width = 32
-            Height = 13
-            Caption = 'Inferior'
-          end
-          object Label29: TLabel
-            Left = 76
-            Top = 12
-            Width = 39
-            Height = 13
-            Caption = 'Superior'
-          end
-          object Label30: TLabel
-            Left = 145
-            Top = 12
-            Width = 30
-            Height = 13
-            Caption = 'Direita'
-          end
-          object Label31: TLabel
-            Left = 213
-            Top = 12
-            Width = 45
-            Height = 13
-            Caption = 'Esquerda'
-          end
-          object edtMargemInf: TEdit
-            Left = 7
-            Top = 28
-            Width = 64
-            Height = 21
-            TabOrder = 0
-            Text = '0,8'
-            OnKeyPress = edtMargemInfKeyPress
-          end
-          object edtMargemSup: TEdit
-            Left = 75
-            Top = 28
-            Width = 64
-            Height = 21
-            TabOrder = 1
-            Text = '0,8'
-            OnKeyPress = edtMargemInfKeyPress
-          end
-          object edtMargemDir: TEdit
-            Left = 144
-            Top = 28
-            Width = 64
-            Height = 21
-            TabOrder = 2
-            Text = '0,51'
-            OnKeyPress = edtMargemInfKeyPress
-          end
-          object edtMargemEsq: TEdit
-            Left = 212
-            Top = 28
-            Width = 64
-            Height = 21
-            TabOrder = 3
-            Text = '0,6'
-            OnKeyPress = edtMargemInfKeyPress
-          end
-        end
-        object rgCasasDecimaisQtd: TRadioGroup
-          Left = 8
-          Top = 163
-          Width = 281
-          Height = 32
-          Caption = 'Casas Decimais Quantidade'
-          Columns = 3
-          ItemIndex = 0
-          Items.Strings = (
-            '2'
-            '3'
-            '4')
-          TabOrder = 6
-        end
-        object cbxHoraSaida: TCheckBox
-          Left = 298
-          Top = 173
-          Width = 200
-          Height = 17
-          Caption = 'Imprimir Hora de Sa'#237'da '
-          TabOrder = 11
-        end
-        object rgCasasDecimaisValor: TRadioGroup
-          Left = 8
-          Top = 195
-          Width = 281
-          Height = 32
-          Caption = 'Casas Decimais Valor Unit'#225'rio'
-          Columns = 3
-          ItemIndex = 0
-          Items.Strings = (
-            '2'
-            '3'
-            '4')
-          TabOrder = 7
-        end
-        object rgModeloDanfe: TRadioGroup
-          Left = 8
-          Top = 4
-          Width = 136
-          Height = 33
-          Caption = 'Modelo'
-          Columns = 2
-          ItemIndex = 0
-          Items.Strings = (
-            'Rave'
-            'Rave CB')
+        object PageControl2: TPageControl
+          Left = 0
+          Top = 0
+          Width = 519
+          Height = 228
+          ActivePage = TabSheet1
+          Align = alClient
           TabOrder = 0
-          OnClick = rgModeloDanfeClick
-        end
-        object cbxExibeResumo: TCheckBox
-          Left = 298
-          Top = 191
-          Width = 200
-          Height = 17
-          Caption = 'Exibir Resumo no Canhoto'
-          TabOrder = 12
-        end
-        object cbxImpValLiq: TCheckBox
-          Left = 298
-          Top = 209
-          Width = 200
-          Height = 17
-          Caption = 'Imprimir Valor L'#237'quido do Produto'
-          TabOrder = 13
+          object TabSheet1: TTabSheet
+            Caption = 'Danfe'
+            object Label5: TLabel
+              Left = 8
+              Top = 40
+              Width = 88
+              Height = 13
+              Caption = 'Impressora Padr'#227'o'
+            end
+            object Label1: TLabel
+              Left = 223
+              Top = 40
+              Width = 60
+              Height = 13
+              Caption = 'N'#250'm. C'#243'pias'
+            end
+            object rgTipoDanfe: TRadioGroup
+              Left = 148
+              Top = 4
+              Width = 144
+              Height = 33
+              Caption = 'DANFE'
+              Columns = 2
+              ItemIndex = 0
+              Items.Strings = (
+                'Retrato'
+                'Paisagem')
+              TabOrder = 1
+            end
+            object cbxImpressora: TComboBox
+              Left = 8
+              Top = 56
+              Width = 209
+              Height = 21
+              ItemHeight = 13
+              TabOrder = 2
+            end
+            object cbxImpDescPorc: TCheckBox
+              Left = 298
+              Top = 2
+              Width = 200
+              Height = 17
+              Caption = 'Imprimir Desconto em Porcentagem'
+              TabOrder = 7
+            end
+            object cbxMostrarPreview: TCheckBox
+              Left = 298
+              Top = 20
+              Width = 200
+              Height = 17
+              Caption = 'Mostrar Preview antes da impress'#227'o'
+              TabOrder = 8
+            end
+            object edtNumCopia: TEdit
+              Left = 223
+              Top = 56
+              Width = 66
+              Height = 21
+              TabOrder = 3
+              Text = '1'
+              OnKeyPress = edtNumCopiaKeyPress
+            end
+            object gbxMargem: TGroupBox
+              Left = 8
+              Top = 77
+              Width = 281
+              Height = 54
+              Caption = 'Margens'
+              TabOrder = 4
+              object Label2: TLabel
+                Left = 8
+                Top = 12
+                Width = 32
+                Height = 13
+                Caption = 'Inferior'
+              end
+              object Label29: TLabel
+                Left = 76
+                Top = 12
+                Width = 39
+                Height = 13
+                Caption = 'Superior'
+              end
+              object Label30: TLabel
+                Left = 145
+                Top = 12
+                Width = 30
+                Height = 13
+                Caption = 'Direita'
+              end
+              object Label31: TLabel
+                Left = 213
+                Top = 12
+                Width = 45
+                Height = 13
+                Caption = 'Esquerda'
+              end
+              object edtMargemInf: TEdit
+                Left = 7
+                Top = 28
+                Width = 64
+                Height = 21
+                TabOrder = 0
+                Text = '0,8'
+                OnKeyPress = edtMargemInfKeyPress
+              end
+              object edtMargemSup: TEdit
+                Left = 75
+                Top = 28
+                Width = 64
+                Height = 21
+                TabOrder = 1
+                Text = '0,8'
+                OnKeyPress = edtMargemInfKeyPress
+              end
+              object edtMargemDir: TEdit
+                Left = 144
+                Top = 28
+                Width = 64
+                Height = 21
+                TabOrder = 2
+                Text = '0,51'
+                OnKeyPress = edtMargemInfKeyPress
+              end
+              object edtMargemEsq: TEdit
+                Left = 212
+                Top = 28
+                Width = 64
+                Height = 21
+                TabOrder = 3
+                Text = '0,6'
+                OnKeyPress = edtMargemInfKeyPress
+              end
+            end
+            object rgCasasDecimaisQtd: TRadioGroup
+              Left = 8
+              Top = 132
+              Width = 281
+              Height = 32
+              Caption = 'Casas Decimais Quantidade'
+              Columns = 3
+              ItemIndex = 0
+              Items.Strings = (
+                '2'
+                '3'
+                '4')
+              TabOrder = 5
+            end
+            object cbxHoraSaida: TCheckBox
+              Left = 298
+              Top = 38
+              Width = 200
+              Height = 17
+              Caption = 'Imprimir Hora de Sa'#237'da '
+              TabOrder = 9
+            end
+            object rgCasasDecimaisValor: TRadioGroup
+              Left = 8
+              Top = 168
+              Width = 281
+              Height = 32
+              Caption = 'Casas Decimais Valor Unit'#225'rio'
+              Columns = 3
+              ItemIndex = 0
+              Items.Strings = (
+                '2'
+                '3'
+                '4')
+              TabOrder = 6
+            end
+            object rgModeloDanfe: TRadioGroup
+              Left = 8
+              Top = 4
+              Width = 136
+              Height = 33
+              Caption = 'Modelo'
+              Columns = 2
+              ItemIndex = 0
+              Items.Strings = (
+                'Rave'
+                'Rave CB')
+              TabOrder = 0
+              OnClick = rgModeloDanfeClick
+            end
+            object cbxExibeResumo: TCheckBox
+              Left = 298
+              Top = 56
+              Width = 200
+              Height = 17
+              Caption = 'Exibir Resumo no Canhoto'
+              TabOrder = 10
+            end
+            object cbxImpValLiq: TCheckBox
+              Left = 298
+              Top = 74
+              Width = 200
+              Height = 17
+              Caption = 'Imprimir Valor L'#237'quido do Produto'
+              TabOrder = 11
+            end
+            object cbxFormCont: TCheckBox
+              Left = 298
+              Top = 92
+              Width = 200
+              Height = 17
+              Caption = 'Formulario Pr'#233'-Impresso'
+              TabOrder = 12
+            end
+          end
+          object TabSheet2: TTabSheet
+            Caption = 'Dados Empresa'
+            ImageIndex = 1
+            DesignSize = (
+              511
+              200)
+            object Label3: TLabel
+              Left = 7
+              Top = 4
+              Width = 18
+              Height = 13
+              Caption = 'Site'
+            end
+            object Label4: TLabel
+              Left = 214
+              Top = 5
+              Width = 25
+              Height = 13
+              Caption = 'Email'
+            end
+            object Label26: TLabel
+              Left = 7
+              Top = 44
+              Width = 17
+              Height = 13
+              Caption = 'Fax'
+            end
+            object Label7: TLabel
+              Left = 135
+              Top = 44
+              Width = 57
+              Height = 13
+              Caption = 'Logo Marca'
+            end
+            object sbLogoMarca: TSpeedButton
+              Left = 394
+              Top = 56
+              Width = 23
+              Height = 24
+              Glyph.Data = {
+                76010000424D7601000000000000760000002800000020000000100000000100
+                04000000000000010000130B0000130B00001000000000000000000000000000
+                800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+                FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF0033333333B333
+                333B33FF33337F3333F73BB3777BB7777BB3377FFFF77FFFF77333B000000000
+                0B3333777777777777333330FFFFFFFF07333337F33333337F333330FFFFFFFF
+                07333337F3FF3FFF7F333330F00F000F07333337F77377737F333330FFFFFFFF
+                07333FF7F3FFFF3F7FFFBBB0F0000F0F0BB37777F7777373777F3BB0FFFFFFFF
+                0BBB3777F3FF3FFF77773330F00F000003333337F773777773333330FFFF0FF0
+                33333337F3FF7F37F3333330F08F0F0B33333337F7737F77FF333330FFFF003B
+                B3333337FFFF77377FF333B000000333BB33337777777F3377FF3BB3333BB333
+                3BB33773333773333773B333333B3333333B7333333733333337}
+              NumGlyphs = 2
+              OnClick = sbLogoMarcaClick
+            end
+            object edtSiteEmpresa: TEdit
+              Left = 7
+              Top = 20
+              Width = 202
+              Height = 21
+              Anchors = [akLeft, akTop, akRight]
+              TabOrder = 0
+            end
+            object edtEmailEmpresa: TEdit
+              Left = 214
+              Top = 19
+              Width = 202
+              Height = 21
+              Anchors = [akLeft, akTop, akRight]
+              TabOrder = 1
+            end
+            object edtFaxEmpresa: TEdit
+              Left = 7
+              Top = 60
+              Width = 122
+              Height = 21
+              Anchors = [akLeft, akTop, akRight]
+              TabOrder = 2
+            end
+            object edtLogoMarca: TEdit
+              Left = 135
+              Top = 60
+              Width = 258
+              Height = 21
+              TabOrder = 3
+            end
+          end
         end
       end
       object Testes: TTabSheet
@@ -5851,6 +5863,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
     CasasDecimais._qCom = 2
     CasasDecimais._vUnCom = 2
     ExibirResumoCanhoto = False
+    FormularioContinuo = False
     Left = 169
     Top = 25
   end
@@ -5870,6 +5883,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
     CasasDecimais._qCom = 2
     CasasDecimais._vUnCom = 2
     ExibirResumoCanhoto = False
+    FormularioContinuo = False
     TamanhoCampoCodigo = 0
     Left = 209
     Top = 25

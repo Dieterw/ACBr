@@ -1,7 +1,9 @@
 program ACBrNFeMonitor;
 
 uses
-  Forms, RPDefine, SysUtils,
+  Forms,
+  RPDefine,
+  SysUtils,
   ACBrNFeMonitor1 in 'ACBrNFeMonitor1.pas' {frmAcbrNfeMonitor},
   DoACBrNFeUnit in 'DoACBrNFeUnit.pas';
 

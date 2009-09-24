@@ -67,6 +67,11 @@ var
   Salva, EnviadoDPEC, OK : Boolean;
   SL     : TStringList;
   Alertas : AnsiString;
+
+  Memo   : TStringList ;
+  Files  : String ;
+  dtFim  : TDateTime ;
+
   RetFind   : Integer ;
   SearchRec : TSearchRec ;
 
@@ -123,6 +128,10 @@ begin
            ACBrNFe1.Configuracoes.Geral.Salvar := True;
            ACBrNFe1.NotasFiscais.Assinar;
            ACBrNFe1.Configuracoes.Geral.Salvar := Salva;
+           if NotaUtil.NaoEstaVazio(ACBrNFe1.NotasFiscais.Items[0].NomeArq) then
+              Cmd.Resposta := ACBrNFe1.NotasFiscais.Items[0].NomeArq
+           else
+              Cmd.Resposta := PathWithDelim(ACBrNFe1.Configuracoes.Geral.PathSalvar)+StringReplace(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID, 'NFe', '', [rfIgnoreCase])+'-nfe.xml';
          end
 
         else if Cmd.Metodo = 'consultarnfe' then
@@ -451,7 +460,7 @@ begin
                 raise Exception.Create('Não foi possível criar o arquivo '+ArqNFe);
             end;
 
-           Cmd.Resposta :=  'NFe criada em: '+ArqNFe;
+           Cmd.Resposta := ArqNFe;
            if Alertas <> '' then
               Cmd.Resposta :=  Cmd.Resposta+sLineBreak+'Alertas:'+Alertas;
            if ((Cmd.Metodo = 'criarnfe') or (Cmd.Metodo = 'criarnfesefaz')) and (Cmd.Params(1) = '1') then
@@ -681,6 +690,47 @@ begin
                   raise Exception.Create('Erro ao gerar INI da NFe.'+sLineBreak+E.Message);
                 end;
            end;
+         end
+
+        else if Cmd.Metodo = 'savetofile' then
+         begin
+           Memo := TStringList.Create ;
+           try
+              Memo.Clear ;
+              Memo.Text := ConvertStrRecived( cmd.Params(1) );
+              Memo.SaveToFile( Cmd.Params(0) );
+           finally
+              Memo.Free ;
+           end ;
+         end
+
+        else if Cmd.Metodo = 'loadfromfile' then
+         begin
+           Files := Cmd.Params(0) ;
+           dtFim := IncSecond(now, StrToIntDef(Cmd.Params(1),1) ) ;
+           while now <= dtFim do
+           begin
+              if FileExists( Files ) then
+              begin
+                 Memo  := TStringList.Create ;
+                 try
+                    Memo.Clear ;
+                    Memo.LoadFromFile( Files ) ;
+                    Cmd.Resposta := Memo.Text ;
+                    Break ;
+                 finally
+                    Memo.Free ;
+                 end ;
+              end ;
+
+              {$IFNDEF CONSOLE}
+               Application.ProcessMessages ;
+              {$ENDIF}
+              sleep(100) ;
+           end ;
+
+           if not FileExists( Cmd.Params(0) ) then
+              raise Exception.Create('Arquivo '+Cmd.Params(0)+' não encontrado')
          end
 
         else if Cmd.Metodo = 'restaurar' then

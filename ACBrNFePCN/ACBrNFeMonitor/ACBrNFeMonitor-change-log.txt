@@ -48,6 +48,15 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+24/09/09
+[*]	: Comando NFe.AssinarNFe irá retornar o caminho para o arquivo que foi assinado
+[+]	: Adicionado comando NFe.SaveToFile(cNomeArq,cConteudoArquivo), util para quem usa comunicação via TCP/IP e precisa salvar 
+	  um arquivo no terminal
+[+]	: Adicionado comando NFe.LoadFromFile(cNomeArq), util para quem usa comunicação via TCP/IP e precisa ler um arquivo no terminal
+	  como por exemplo ler o arquivo XML da NFe para salvar em sua base de dados.
+[*]	: Comando Nfe.CriarEnviarNFe irá retornar na chave [NFEXXX] o campo Arquivo=cPathArq onde cPathArq conterá o caminho para o arquivo 
+	  da NFe que foi enviado.
+
 18/09/09
 [+]	: Adicionado comando NFe.LerNFe(cArqNFe) onde deverá ser passado o caminho do arquivo XML da NFe e o monitor irá responder
 	  um arquivo no formato INI com os dados da NFE lida.
@@ -58,9 +67,9 @@ Símbolo : Significado
 [-]	: Corrigido seleção da impressora
 [+]	: Adicionado campos para configurar diretórios separados para salvar arquivos da NFe, Cancelamento, Inutilização e DPEC
 [+]	: Adicionado comando SetAmbiente para permitir trocar ambiente de envio(1-Produção 2-Homologação) sem precisar intervenção 
-	  pela interface
+	  pela interface. Ex: NFe.SetAmbiente (1)
 [+]	: Adicionado comando SetFormaEmissao para permitir trocar Forma de Emissão(1-Normal 2-Contingencia 3-SCAN 4-DPEC 5-FSDA) 
-	  sem precisar intervenção pela interface
+	  sem precisar intervenção pela interface. Ex: NFe.SetFormaEmissao(1)
 [*]	: Comando enviar email permite passar parâmetros Titulo do Email e Email para enviar Copia - 
 	  NFE.EnviarEmail( cPara, cArquivo, [ nEnviaDanfePDF ], [ cTituloEmail], [ cEmailCopia] )
 

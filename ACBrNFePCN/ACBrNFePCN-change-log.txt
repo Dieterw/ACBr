@@ -48,6 +48,12 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   24/09/09
+---------------
+[*] Alterado URLs do DF para usarem URLs do SVRS
+[-] Corrigida funcção TACBrNFe.Consultar que estava consultando apenas primeira nota quando existia mais de uma nota carregada no componente.
+[*] Alterado função Assinar para atualizar XML quando for usado o comando LoadFromFile
+
 Alterações   23/09/09
 ---------------
 [+] Incluída propriedade ImprimirHoraSaida_Hora nos componentes DANFE.

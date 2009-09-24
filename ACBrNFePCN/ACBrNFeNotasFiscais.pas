@@ -372,6 +372,9 @@ begin
         if FConfiguracoes.Geral.Salvar then
            FConfiguracoes.Geral.Save(StringReplace(Self.Items[i].NFe.infNFe.ID, 'NFe', '', [rfIgnoreCase])+'-nfe.xml', vAssinada);
 
+        if NotaUtil.NaoEstaVazio(Self.Items[i].NomeArq) then
+           FConfiguracoes.Geral.Save(Self.Items[i].NomeArq, vAssinada);
+
      finally
         LocNFeW.Free;
      end;

@@ -783,7 +783,8 @@ case FormaEmissao of
          13: Result := NotaUtil.GetURLAM(AAmbiente,ALayOut); //AM
          29: Result := NotaUtil.GetURLBA(AAmbiente,ALayOut); //BA
          23: Result := NotaUtil.GetURLCE(AAmbiente,ALayOut); //CE
-         53: Result := NotaUtil.GetURLDF(AAmbiente,ALayOut); //DF
+//         53: Result := NotaUtil.GetURLDF(AAmbiente,ALayOut); //DF  A partir do dia 04/10/2009 todos os contribuintes do DF deverão modificar seus sistemas para utilizarem os serviços da SEFAZ Virtual do Rio Grande do Sul (SVRS).
+         53: Result := NotaUtil.GetURLSVRS(AAmbiente,ALayOut); //DF
          32: Result := NotaUtil.GetURLSVAN(AAmbiente,ALayOut); //ES
          52: Result := NotaUtil.GetURLGO(AAmbiente,ALayOut); //GO
          21: Result := NotaUtil.GetURLSVAN(AAmbiente,ALayOut); //MA

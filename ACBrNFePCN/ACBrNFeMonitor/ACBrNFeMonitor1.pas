@@ -631,6 +631,9 @@ begin
         ACBrNFe1.DANFE.PathPDF    := edtPathPDF.Text;
         ACBrNFe1.DANFE.CasasDecimais._qCom   := rgCasasDecimaisQtd.ItemIndex+2;
         ACBrNFe1.DANFE.CasasDecimais._vUnCom := rgCasasDecimaisValor.ItemIndex+2;
+        ACBrNFe1.DANFE.ExibirResumoCanhoto  :=  cbxExibeResumo.Checked;
+        ACBrNFe1.DANFE.ImprimirTotalLiquido := cbxImpValLiq.Checked;
+        ACBrNFe1.DANFE.FormularioContinuo   := cbxFormCont.Checked;
       end;
 
      edtSmtpHost.Text      := Ini.ReadString( 'Email','Host'   ,'') ;

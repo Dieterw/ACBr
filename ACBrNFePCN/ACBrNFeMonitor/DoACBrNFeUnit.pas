@@ -1,9 +1,9 @@
 {******************************************************************************}
-{ Projeto: ACBr Monitor                                                        }
+{ Projeto: ACBrNFeMonitor                                                        }
 {  Executavel multiplataforma que faz uso do conjunto de componentes ACBr para }
 { criar uma interface de comunicação com equipamentos de automacao comercial.  }
 {                                                                              }
-{ Direitos Autorais Reservados (c) 2006 Daniel Simoes de Almeida               }
+{ Direitos Autorais Reservados (c) 2009 Daniel Simoes de Almeida               }
 {                                                                              }
 { Colaboradores nesse arquivo:                                                 }
 {                                                                              }
@@ -732,6 +732,9 @@ begin
            if not FileExists( Cmd.Params(0) ) then
               raise Exception.Create('Arquivo '+Cmd.Params(0)+' não encontrado')
          end
+
+        else if Cmd.Metodo = 'LerIni' then // Recarrega configurações do arquivo INI
+           frmAcbrNfeMonitor.LerIni
 
         else if Cmd.Metodo = 'restaurar' then
            Restaurar1Click( frmAcbrNfeMonitor )

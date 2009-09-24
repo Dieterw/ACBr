@@ -110,7 +110,7 @@ begin
     begin
       (*ER05 *)FtpAmb := StrToTpAmb(ok, leitor.rCampo(tcStr, 'tpAmb'));
       (*ER06 *)FverAplic := leitor.rCampo(tcStr, 'verAplic');
-      (*ER07 *)FcStat := leitor.rCampo(tcStr, 'cStat');
+      (*ER07 *)FcStat := leitor.rCampo(tcInt, 'cStat');
       (*ER08 *)FxMotivo := leitor.rCampo(tcStr, 'xMotivo');
       (*ER08a*)FcUF := leitor.rCampo(tcInt, 'cUF');
       (*ER09 *)FchNFe := leitor.rCampo(tcStr, 'chNFe');

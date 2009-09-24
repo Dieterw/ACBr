@@ -192,7 +192,7 @@ begin
 
   for i:= 0 to self.NotasFiscais.Count-1 do
   begin
-    WebServices.Cancelamento.NFeChave := copy(self.NotasFiscais.Items[0].NFe.infNFe.ID, (length(self.NotasFiscais.Items[0].NFe.infNFe.ID)-44)+1, 44);
+    WebServices.Cancelamento.NFeChave := copy(self.NotasFiscais.Items[i].NFe.infNFe.ID, (length(self.NotasFiscais.Items[i].NFe.infNFe.ID)-44)+1, 44);
     WebServices.Consulta.NFeChave := WebServices.Cancelamento.NFeChave;
     WebServices.Cancela(AJustificativa);
   end;
@@ -209,7 +209,7 @@ begin
 
   for i := 0 to Self.NotasFiscais.Count-1 do
   begin
-    WebServices.Consulta.NFeChave := copy(self.NotasFiscais.Items[i].NFe.infNFe.ID, (length(self.NotasFiscais.Items[0].NFe.infNFe.ID)-44)+1, 44);
+    WebServices.Consulta.NFeChave := copy(self.NotasFiscais.Items[i].NFe.infNFe.ID, (length(self.NotasFiscais.Items[i].NFe.infNFe.ID)-44)+1, 44);
     WebServices.Consulta.Executar;
   end;
   Result := True;

@@ -108,7 +108,7 @@ type
 implementation
 
 
-uses {$IFDEF ACBrNFeOpenSSL}libxml2, libxmlsec, libxslt, {$ELSE} ComObj, {$ENDIF} Sysutils,
+uses {$IFDEF ACBrCTeOpenSSL}libxml2, libxmlsec, libxslt, {$ELSE} ComObj, {$ENDIF} Sysutils,
   Variants;
 
 { CTeUtil }
@@ -243,7 +243,7 @@ begin
   Result := copy(Texto,PosIni,PosFim-(PosIni+1));
 end;
 
-{$IFDEF ACBrNFeOpenSSL}
+{$IFDEF ACBrCTeOpenSSL}
 function ValidaLibXML(const AXML: AnsiString;
   var AMsg: AnsiString): Boolean;
 var
@@ -351,7 +351,7 @@ var
   Schema: XMLSchemaCache;
   Tipo, I : Integer;
 begin
-  I := pos('<infNFe',XML) ;
+  I := pos('<infCTe',XML) ;
   Tipo := 1;
   if I = 0  then
    begin
@@ -388,14 +388,14 @@ end;
 class function CTeUtil.Valida(const AXML: AnsiString;
   var AMsg: AnsiString): Boolean;
 begin
-{$IFDEF ACBrNFeOpenSSL}
+{$IFDEF ACBrCTeOpenSSL}
   Result := ValidaLibXML(AXML,AMsg);
 {$ELSE}
   Result := ValidaMSXML(AXML,AMsg);
 {$ENDIF}
 end;
 
-{$IFDEF ACBrNFeOpenSSL}
+{$IFDEF ACBrCTeOpenSSL}
 function AssinarLibXML(const AXML, ArqPFX, PFXSenha : AnsiString;
   out AXMLAssinado, FMensagem: AnsiString): Boolean;
  Var I, J, PosIni, PosFim : Integer ;
@@ -529,6 +529,7 @@ begin
   Result := True;
 end;
 {$ELSE}
+
 function AssinarMSXML(XML : AnsiString; Certificado : ICertificate2; out XMLAssinado : AnsiString): Boolean;
 var
  I, J, PosIni, PosFim : Integer;
@@ -543,7 +544,7 @@ var
 begin
    if Pos('<Signature',XML) <= 0 then
    begin
-      I := pos('<infCTe',XML) ;
+      I := pos('<infCte',XML) ;
       Tipo := 1;
 
       if I = 0  then
@@ -681,7 +682,7 @@ class function CTeUtil.Assinar(const AXML, ArqPFX, PFXSenha: AnsiString; out AXM
 class function CTeUtil.Assinar(const AXML: AnsiString; Certificado : ICertificate2; out AXMLAssinado, FMensagem: AnsiString): Boolean;
 {$ENDIF}
 begin
-{$IFDEF ACBrNFeOpenSSL}
+{$IFDEF ACBrCTeOpenSSL}
   Result := AssinarLibXML(AXML, ArqPFX, PFXSenha, AXMLAssinado, FMensagem);
 {$ELSE}
   Result := AssinarMSXML(AXML,Certificado,AXMLAssinado);

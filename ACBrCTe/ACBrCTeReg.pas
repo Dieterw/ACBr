@@ -85,7 +85,7 @@ implementation
 uses ACBrCTeConfiguracoes;
 
 {$IFNDEF FPC}
-//   {$R ACBrCTe.dcr}
+   {$R ACBrCTe.dcr}
 {$ENDIF}
 
 procedure Register;

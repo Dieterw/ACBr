@@ -7,7 +7,8 @@
 {                                       Daniel Simoes de Almeida               }
 {                                       André Ferreira de Moraes               }
 {                                                                              }
-{ Colaboradores nesse arquivo:                                                 }
+{ Desenvolvimento                                                              }
+{         de Cte: Wiliam Zacarias da Silva Rosa                                }
 {                                                                              }
 {  Você pode obter a última versão desse arquivo na pagina do Projeto ACBr     }
 { Componentes localizado em http://www.sourceforge.net/projects/acbr           }
@@ -153,12 +154,12 @@ end;
 
 procedure Conhecimento.Imprimir;
 begin
-//  TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).DACTE.ImprimirDACTE(CTe);
+  TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).DACTE.ImprimirDACTE(CTe);
 end;
 
 procedure Conhecimento.ImprimirPDF;
 begin
-//  TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).DACTE.ImprimirDACTEPDF(CTe);
+  TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).DACTE.ImprimirDACTEPDF(CTe);
 end;
 
 function Conhecimento.SaveToFile(CaminhoArquivo: string = ''): boolean;
@@ -220,11 +221,11 @@ begin
      m.AddPartBinary(StreamCTe,copy(CTe.inFCTe.ID, (length(CTe.inFCTe.ID)-44)+1, 44)+'-CTe.xml', p);
      if (EnviaPDF) then
      begin
-{        TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).DACTe.ImprimirDACTePDF(CTe);
+        TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).DACTe.ImprimirDACTEPDF(CTe);
         if NotaUtil.EstaVazio(TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).DACTe.PathPDF) then
            NomeArq := TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).Configuracoes.Geral.PathSalvar
         else
-           NomeArq := TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).DACTe.PathPDF;}
+           NomeArq := TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).DACTe.PathPDF;
         m.AddPartBinaryFromFile(PathWithDelim(NomeArq)+CTe.inFCTe.ID+'.pdf', p);
      end;
      m.header.tolist.add(sTo);
@@ -313,11 +314,11 @@ end;
 procedure TConhecimentos.GerarCTe;
 var
  i: Integer;
-// LocCTeW : TCTeW;
+ LocCTeW : TCTeW;
 begin
  for i:= 0 to Self.Count-1 do
   begin
-{    LocCTeW := TCTeW.Create(Self.Items[i].CTe);
+    LocCTeW := TCTeW.Create(Self.Items[i].CTe);
     try
        LocCTeW.schema := TsPL005c;
        LocCTeW.GerarXml;
@@ -325,7 +326,7 @@ begin
        Self.Items[i].Alertas := LocCTeW.Gerador.ListaDeAlertas.Text;
     finally
        LocCTeW.Free;
-    end;}
+    end;
   end;
 end;
 
@@ -341,12 +342,12 @@ end;
 
 procedure TConhecimentos.Imprimir;
 begin
-//  TACBrCTe( FACBrCTe ).DACTe.ImprimirDACTe(nil);
+  TACBrCTe( FACBrCTe ).DACTe.ImprimirDACTe(nil);
 end;
 
 procedure TConhecimentos.ImprimirPDF;
 begin
-//  TACBrCTe( FACBrCTe ).DACTe.ImprimirDACTePDF(nil);
+  TACBrCTe( FACBrCTe ).DACTe.ImprimirDACTePDF(nil);
 end;
 
 function TConhecimentos.Insert(Index: Integer): Conhecimento;
@@ -368,6 +369,7 @@ begin
    begin
      if pos('<Signature',Self.Items[i].XML) = 0 then
         Assinar;
+
      if not(CTeUtil.Valida(Self.Items[i].XML, FMsg)) then
        raise Exception.Create('Falha na validação dos dados do conhecimento '+
                                IntToStr(Self.Items[i].CTe.Ide.cCT)+sLineBreak+Self.Items[i].Alertas+FMsg);

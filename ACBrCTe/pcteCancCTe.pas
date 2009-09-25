@@ -98,7 +98,7 @@ function TcancCTe.GerarXML: boolean;
 begin
   //PENDENTE// revisar e inserir as regras de geração e validação
   Result := False;
-  if RetornarVersaoLayout(FSchema, tlCancNFe) = '1.07' then
+  if RetornarVersaoLayout(FSchema, tlCancCTe) = '1.07' then
   begin
     Gerador.ArquivoFormatoXML := '';
 //    Gerador.wGrupo(ENCODING_UTF8, '', False);

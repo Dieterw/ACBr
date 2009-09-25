@@ -1,13 +1,13 @@
 // ************************************************************************ //
 // The types declared in this file were generated from data read from the
 // WSDL File described below:
-// WSDL     : D:\delphi\ACBr\trunk\ACBrCTe\wsdl\cteStatusServico.wsdl
-// Encoding : utf-8
+// WSDL     : C:\CteStatusServico.wsdl
+// Encoding : UTF-8
 // Version  : 1.0
-// (28/07/2009 20:53:20 - 1.33.2.5)
+// (21/8/2009 16:56:03 - 1.33.2.5)
 // ************************************************************************ //
 
-unit ACBrCTeStatusServico;
+unit ACbrCteStatusServico;
 
 interface
 
@@ -30,24 +30,24 @@ type
   // Namespace : http://www.portalfiscal.inf.br/cte/wsdl/CteStatusServico
   // binding   : CteStatusServicoSoap12
   // service   : CteStatusServico
-  // port      : CteStatusServicoSoap12
+  // port      : CteStatusServico
   // ************************************************************************ //
-  CteStatusServico = interface(IInvokable)
-  ['{E75AF039-AF5D-31A0-9BD4-23E527E93890}']
+  CteStatusServicoSoap12 = interface(IInvokable)
+  ['{73C5E5F1-8AFD-41BC-F3B9-8B7C098CE4D9}']
     function  cteStatusServicoCT(const cteDadosMsg: WideString): WideString; stdcall;
   end;
 
-function GetCteStatusServico(UseWSDL: Boolean=System.False; Addr: string=''; HTTPRIO: THTTPRIO = nil): CteStatusServico;
+function GetCteStatusServicoSoap12(UseWSDL: Boolean=System.False; Addr: string=''; HTTPRIO: THTTPRIO = nil): CteStatusServicoSoap12;
 
 
 implementation
 
-function GetCteStatusServico(UseWSDL: Boolean; Addr: string; HTTPRIO: THTTPRIO): CteStatusServico;
+function GetCteStatusServicoSoap12(UseWSDL: Boolean; Addr: string; HTTPRIO: THTTPRIO): CteStatusServicoSoap12;
 const
-  defWSDL = 'D:\delphi\ACBr\trunk\ACBrCTe\wsdl\cteStatusServico.wsdl';
+  defWSDL = 'CteStatusServico.wsdl';
   defURL  = '';
   defSvc  = 'CteStatusServico';
-  defPrt  = 'CteStatusServicoSoap12';
+  defPrt  = 'CteStatusServico';
 var
   RIO: THTTPRIO;
 begin
@@ -64,7 +64,7 @@ begin
   else
     RIO := HTTPRIO;
   try
-    Result := (RIO as CteStatusServico);
+    Result := (RIO as CteStatusServicoSoap12);
     if UseWSDL then
     begin
       RIO.WSDLLocation := Addr;
@@ -78,10 +78,8 @@ begin
   end;
 end;
 
-
 initialization
-  InvRegistry.RegisterInterface(TypeInfo(CteStatusServico), 'http://www.portalfiscal.inf.br/cte/wsdl/CteStatusServico', 'utf-8');
-  InvRegistry.RegisterDefaultSOAPAction(TypeInfo(CteStatusServico), '');
-  InvRegistry.RegisterInvokeOptions(TypeInfo(CteStatusServico), ioDocument);
-
+  InvRegistry.RegisterInterface(TypeInfo(CteStatusServicoSoap12), 'http://www.portalfiscal.inf.br/cte/wsdl/CteStatusServico', 'UTF-8');
+  InvRegistry.RegisterDefaultSOAPAction(TypeInfo(CteStatusServicoSoap12), 'http://www.portalfiscal.inf.br/cte/wsdl/CteStatusServico/cteStatusServicoCT');
+  InvRegistry.RegisterInvokeOptions(TypeInfo(CteStatusServicoSoap12), ioDocument);
 end.

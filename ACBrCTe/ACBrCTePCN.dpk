@@ -41,6 +41,8 @@
 |*  - Doação do componente para o Projeto ACBr
 |* 25/06/2009: André Ferreira de Moraes
 |*  - Componente convertido para utilizar units do PCN
+|* 18/08/2009: Wiliam Zacarias da Silva Rosa
+|*  - Componente convertido para utilizar CT-e
 ******************************************************************************}
 package ACBrCTePCN;
 
@@ -66,7 +68,7 @@ package ACBrCTePCN;
 {$WRITEABLECONST OFF}
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
-{$DESCRIPTION 'ACBrCTe - (http://acbr.sourceforge.net/)'}
+{$DESCRIPTION 'ACBrCTePCN - (http://acbr.sourceforge.net/)'}
 {$IMPLICITBUILD ON}
 
 requires
@@ -80,10 +82,10 @@ requires
   dsnap;
 
 contains
+  pcteRetInutCTe in 'pcteRetInutCTe.pas',
   ACBrCTe in 'ACBrCTe.pas',
   ACBrCTeConfiguracoes in 'ACBrCTeConfiguracoes.pas',
   ACBrCTeConhecimentos in 'ACBrCTeConhecimentos.pas',
-  ACBrCTeDACTEClass in 'ACBrCTeDACTEClass.pas',
   ACBrCTeReg in 'ACBrCTeReg.pas',
   ACBrCTeStatusServico in 'ACBrCTeStatusServico.pas',
   ACBrCTeUtil in 'ACBrCTeUtil.pas',
@@ -100,6 +102,10 @@ contains
   pcteRetConsCad in 'pcteRetConsCad.pas',
   pcteRetConsSitCTe in 'pcteRetConsSitCTe.pas',
   pcteRetConsStatServ in 'pcteRetConsStatServ.pas',
-  pcteRetInutCTe in 'pcteRetInutCTe.pas';
+  ACBrCTeDACTEClass in 'ACBrCTeDACTEClass.pas',
+  pcteRetEnvCTe in 'pcteRetEnvCTe.pas',
+  pcteRetConsReciCTe in 'pcteRetConsReciCTe.pas',
+  pcteProcCTe in 'pcteProcCTe.pas',
+  pcteConsReciCTe in 'pcteConsReciCTe.pas';
 
 end.

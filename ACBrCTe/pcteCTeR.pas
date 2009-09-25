@@ -93,7 +93,7 @@ end;
 function TCTeR.LerXml: boolean;
 var
   ok: boolean;
-  i, j: integer;
+  i, j, k: integer;
 begin
 
   I := 0;
@@ -113,7 +113,7 @@ begin
   if Leitor.rExtrai(1, 'ide') <> '' then
   begin
     (*B02*)CTe.Ide.cUF    := Leitor.rCampo(tcInt, 'cUF');
-    (*B03*)CTe.Ide.cCT    := Leitor.rCampo(tcStr, 'cNF');
+    (*B03*)CTe.Ide.cCT    := Leitor.rCampo(tcStr, 'cCT');
     (*B04*)CTe.Ide.CFOP   := Leitor.rCampo(tcStr, 'CFOP');
     (*B05*)CTe.Ide.natOp  := Leitor.rCampo(tcStr, 'natOp');
     (*B06*)CTe.Ide.forPag := StrTotpforPag(ok, Leitor.rCampo(tcStr, 'forPag'));

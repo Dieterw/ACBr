@@ -7,7 +7,8 @@
 {                                       Daniel Simoes de Almeida               }
 {                                       André Ferreira de Moraes               }
 {                                                                              }
-{ Colaboradores nesse arquivo:                                                 }
+{ Desenvolvimento                                                              }
+{         de Cte: Wiliam Zacarias da Silva Rosa                                }
 {                                                                              }
 {  Você pode obter a última versão desse arquivo na pagina do Projeto ACBr     }
 { Componentes localizado em http://www.sourceforge.net/projects/acbr           }
@@ -125,7 +126,7 @@ type
     property FormaEmissao: TpcnTipoEmissao read FFormaEmissao
       write SetFormaEmissao default teNormal ;
     property FormaEmissaoCodigo: Integer read FFormaEmissaoCodigo;
-    property Salvar: Boolean read FSalvar write FSalvar default False ;
+    property Salvar: Boolean read FSalvar write FSalvar default False;
     property PathSalvar: String read GetPathSalvar write FPathSalvar;
   end;
 
@@ -145,7 +146,7 @@ type
 
 implementation
 
-uses ACBrNFeUtil,  Math;
+uses ACBrNfeUtil, ACBrCteUtil,  Math;
 
 { TConfiguracoes }
 

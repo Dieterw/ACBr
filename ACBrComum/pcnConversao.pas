@@ -67,7 +67,10 @@ type
   TpcnSchema = (TsPL005c);
   TpcnTipoLayout = (tlAtuCadEmiDFe, tlCadEmiDFe, tlCancNFe, tlConsCad, tlConsReciNFe, tlConsSitNFe, tlConsStatServ,
     tlInutNFe, tlNFe, tlProcNFe, tlProcInutNFe, tlRetAtuCadEmiDFe, tlRetCancNFe, tlRetConsCad, tlRetConsReciNFe,
-    tlRetConsStatServ, tlRetConsSitNFe, tlRetEnvNFe, tlRetInutNFe, tlEnvNFe, tlProcCancNFe, tlEnvDPEC, tlConsDPEC);
+    tlRetConsStatServ, tlRetConsSitNFe, tlRetEnvNFe, tlRetInutNFe, tlEnvNFe, tlProcCancNFe,
+                    tlCancCTe, tlConsReciCTe, tlConsSitCTe,
+    tlInutCTe, tlCTe, tlProcCTe, tlProcInutCTe, tlRetCancCTe, tlRetConsReciCTe,
+    tlRetConsSitCTe, tlRetEnvCTe, tlRetInutCTe, tlEnvCTe, tlProcCancCTe, tlEnvDPEC, tlConsDPEC);
   TpcnTipoCampo = (tcStr, tcInt, tcDat, tcDatHor, tcEsp, tcDe2, tcDe3, tcDe4 ); // tcEsp = String: somente numeros;
   TpcnFormatoGravacao = (fgXML, fgTXT);
   TpcnTagAssinatura = (taSempre, taNunca, taSomenteSeAssinada, taSomenteParaNaoAssinada);
@@ -102,6 +105,7 @@ type
   TpcteRspSeg = (rsRemetente, rsExpedidor, rsRecebedor, rsDestinatario, rsEmitenteCTe, rsTomadorServico);
   TpcteLocacao = (ltNao, ltsim);
   TpcteProp = (tpTACAgregado, tpTACIndependente, tpOutros);
+  UnidMed = (uM3,uKG, uTON, uUNIDADE, uLITROS);
 
 const
   NFeUF: array[0..26] of String =
@@ -124,10 +128,12 @@ const
 
   CTecabMsg       = '1.02';
   CTeconsStatServ = '1.01';
-  CTeconsSitCTe   = '1.01';
+  CTeenvCte       = '1.02';
+  CTeconsSitCTe   = '1.02';
   CTecancCTe      = '1.01';
   CTeinutCTe      = '1.01';
   CTenviCTe       = '1.02';
+  CTeconsReciCTe  = '1.02';
 
   LineBreak = #13#10;
 
@@ -191,14 +197,18 @@ function TpServPagToStr(const t: TpcteTipoServico): string;
 function StrToTpServ(var ok: boolean; const s: string): TpcteTipoServico;
 function TpRetiraPagToStr(const t: TpcteRetira): string;
 function StrToTpRetira(var ok: boolean; const s: string): TpcteRetira;
+function TpTomadorPagToStr(const t: TpcteTomador): string;
 function TpTomadorToStr(const t: TpcteTomador): String;
-function StrToTpTomador(var ok: boolean; const s: String ): TpcteTomador;
 function TpRspSeguroToStr(const t: TpcteRspSeg): String;
-function StrToTpRspSeguro(var ok: boolean; const s: String ): TpcteRspSeg;
 function TpLotacaoToStr(const t: TpcteLocacao): string;
-function StrToTpLotacao(var ok: boolean; const s: String ): TpcteLocacao;
 function TpPropToStr(const t: TpcteProp): String;
+function UnidMedToStr(const t: UnidMed): string;
+function StrToTpTomador(var ok: boolean; const s: String ): TpcteTomador;
+function StrToTpRspSeguro(var ok: boolean; const s: String ): TpcteRspSeg;
+function StrToTpLotacao(var ok: boolean; const s: String ): TpcteLocacao;
 function StrToTpProp(var ok: boolean; const s: String ): TpcteProp;
+function StrToUnidMed(var ok: boolean; const s: String ): UnidMed;
+
 
 implementation
 
@@ -246,9 +256,9 @@ begin
   result := EnumeradoToStr(t, ['AtuCadEmiDFe', 'CadEmiDFe', 'CancNFe', 'ConsCad', 'ConsReciNFe', 'ConsSitNFe', 'ConsStatServ',
     'InutNFe', 'NFe', 'ProcNFe', 'ProcInutNFe', 'RetAtuCadEmiDFe', 'RetCancNFe', 'RetConsCad', 'RetConsReciNFe',
       'RetConsStatServ', 'RetConsSitNFe', 'RetEnvNFe', 'RetInutNFe', 'EnvNFe', 'ProcCancNFe'],
-      [tlAtuCadEmiDFe, tlCadEmiDFe, tlCancNFe, tlConsCad, tlConsReciNFe, tlConsSitNFe, tlConsStatServ,
-    tlInutNFe, tlNFe, tlProcNFe, tlProcInutNFe, tlRetAtuCadEmiDFe, tlRetCancNFe, tlRetConsCad, tlRetConsReciNFe,
-      tlRetConsStatServ, tlRetConsSitNFe, tlRetEnvNFe, tlRetInutNFe, tlEnvNFe, tlProcCancNFe]);
+      [tlAtuCadEmiDFe, tlCadEmiDFe, tlCancCTe, tlConsCad, tlConsReciCTe, tlConsSitCTe, tlConsStatServ,
+    tlInutCTe, tlCTe, tlProcCTe, tlProcInutCTe, tlRetAtuCadEmiDFe, tlRetCancCTe, tlRetConsCad, tlRetConsReciCTe,
+      tlRetConsStatServ, tlRetConsSitCTe, tlRetEnvCTe, tlRetInutCTe, tlEnvCTe, tlProcCancCTe]);
 end;
 
 function StrToTipoLayout(var ok: boolean; const s: string): TpcnTipoLayout;
@@ -256,9 +266,9 @@ begin
   result := StrToEnumerado(ok, s, ['AtuCadEmiDFe', 'CadEmiDFe', 'CancNFe', 'ConsCad', 'ConsReciNFe', 'ConsSitNFe', 'ConsStatServ',
     'InutNFe', 'NFe', 'ProcNFe', 'ProcInutNFe', 'RetAtuCadEmiDFe', 'RetCancNFe', 'RetConsCad', 'RetConsReciNFe',
       'RetConsStatServ', 'RetConsSitNFe', 'RetEnvNFe', 'RetInutNFe', 'EnvNFe'],
-      [tlAtuCadEmiDFe, tlCadEmiDFe, tlCancNFe, tlConsCad, tlConsReciNFe, tlConsSitNFe, tlConsStatServ,
-    tlInutNFe, tlNFe, tlProcNFe, tlProcInutNFe, tlRetAtuCadEmiDFe, tlRetCancNFe, tlRetConsCad, tlRetConsReciNFe,
-      tlRetConsStatServ, tlRetConsSitNFe, tlRetEnvNFe, tlRetInutNFe, tlEnvNFe]);
+      [tlAtuCadEmiDFe, tlCadEmiDFe, tlCancCTe, tlConsCad, tlConsReciCTe, tlConsSitCTe, tlConsStatServ,
+    tlInutCTe, tlCTe, tlProcCTe, tlProcInutCTe, tlRetAtuCadEmiDFe, tlRetCancCTe, tlRetConsCad, tlRetConsReciCTe,
+      tlRetConsStatServ, tlRetConsSitCTe, tlRetEnvCTe, tlRetInutCTe, tlEnvCTe]);
 end;
 
 // Indicador do Tipo de pagamento **********************************************
@@ -568,12 +578,12 @@ end;
 
 function TpModalToStr(const t: TpcteModal): string;
 begin
-  result := EnumeradoToStr(t, ['0','1', '2', '3', '4'], [mdRodoviario, mdAereo, mdAquaviario, mdFerroviario, mdDutoviario]);
+  result := EnumeradoToStr(t, ['01','02', '03', '04', '05'], [mdRodoviario, mdAereo, mdAquaviario, mdFerroviario, mdDutoviario]);
 end;
 
 function StrToTpModal(var ok: boolean; const s: string): TpcteModal;
 begin
-  result := StrToEnumerado(ok, s, ['0', '1', '2', '3', '4'], [mdRodoviario, mdAereo, mdAquaviario, mdFerroviario, mdDutoviario]);
+  result := StrToEnumerado(ok, s, ['01', '02', '03', '04', '05'], [mdRodoviario, mdAereo, mdAquaviario, mdFerroviario, mdDutoviario]);
 end;
 
 function TpServPagToStr(const t: TpcteTipoServico): string;
@@ -596,14 +606,14 @@ begin
   result := StrToEnumerado(ok, s, ['0', '1'], [rtSim, rtNao]);
 end;
 
+function TpTomadorPagToStr(const t: TpcteTomador): string;
+begin
+  result := EnumeradoToStr(t, ['0','1', '2', '3', '4'], [tmRemetente, tmExpedidor, tmRecebedor, tmDestinatario, tmOutros]);
+end;
+
 function TpTomadorToStr(const t: TpcteTomador): String;
 begin
   result := EnumeradoToStr(t, ['0', '1', '2', '3', '4'], [tmRemetente, tmExpedidor, tmRecebedor, tmDestinatario, tmOutros]);
-end;
-
-function StrToTpTomador(var ok: boolean; const s: String ): TpcteTomador;
-begin
-  result := StrToEnumerado(ok, s, ['0', '1', '2', '3', '4'], [tmRemetente, tmExpedidor, tmRecebedor, tmDestinatario, tmOutros]);
 end;
 
 function TpRspSeguroToStr(const t: TpcteRspSeg): String;
@@ -611,19 +621,9 @@ begin
   result := EnumeradoToStr(t, ['0', '1', '2', '3', '4', '5'], [rsRemetente, rsExpedidor, rsRecebedor, rsDestinatario, rsEmitenteCTe, rsTomadorServico]);
 end;
 
-function StrToTpRspSeguro(var ok: boolean; const s: String ): TpcteRspSeg;
-begin
-  result := StrToEnumerado(ok, s, ['0', '1', '2', '3', '4', '5'], [rsRemetente, rsExpedidor, rsRecebedor, rsDestinatario, rsEmitenteCTe, rsTomadorServico]);
-end;
-
 function TpLotacaoToStr(const t: TpcteLocacao): string;
 begin
   result := EnumeradoToStr(t, ['0','1'], [ltNao, ltSim]);
-end;
-
-function StrToTpLotacao(var ok: boolean; const s: String ): TpcteLocacao;
-begin
-  result := StrToEnumerado(ok, s, ['0', '1'], [ltNao, ltSim]);
 end;
 
 function TpPropToStr(const t: TpcteProp): String;
@@ -631,10 +631,36 @@ begin
   result := EnumeradoToStr(t, ['0', '1', '2'], [tpTACAgregado, tpTACIndependente, tpOutros]);
 end;
 
+function StrToTpTomador(var ok: boolean; const s: String ): TpcteTomador;
+begin
+  result := StrToEnumerado(ok, s, ['0', '1', '2', '3', '4'], [tmRemetente, tmExpedidor, tmRecebedor, tmDestinatario, tmOutros]);
+end;
+
+function StrToTpRspSeguro(var ok: boolean; const s: String ): TpcteRspSeg;
+begin
+  result := StrToEnumerado(ok, s, ['0', '1', '2', '3', '4', '5'], [rsRemetente, rsExpedidor, rsRecebedor, rsDestinatario, rsEmitenteCTe, rsTomadorServico]);
+end;
+
+function StrToTpLotacao(var ok: boolean; const s: String ): TpcteLocacao;
+begin
+  result := StrToEnumerado(ok, s, ['0', '1'], [ltNao, ltSim]);
+end;
+
 function StrToTpProp(var ok: boolean; const s: String ): TpcteProp;
 begin
   result := StrToEnumerado(ok, s, ['0', '1', '2'], [tpTACAgregado, tpTACIndependente, tpOutros]);
 end;
+
+function UnidMedToStr(const t: UnidMed): string;
+begin
+  result := EnumeradoToStr(t, ['00', '01', '02', '03', '04'], [uM3,uKG, uTON, uUNIDADE, uLITROS]);
+end;
+
+function StrToUnidMed(var ok: boolean; const s: String ): UnidMed;
+begin
+  result := StrToEnumerado(ok, s, ['00', '01', '02', '03', '04'], [uM3,uKG, uTON, uUNIDADE, uLITROS]);
+end;
+
 
 end.
 

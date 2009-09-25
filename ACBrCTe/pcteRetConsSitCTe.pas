@@ -64,10 +64,8 @@ type
     FcStat: Integer;
     FxMotivo: string;
     FcUF: integer;
-    FchCTe: string;
-    FdhRecbto: TDateTime;
-    FnProt: string;
-    FdigVal: string;
+    FprotCTe: string;
+    FretCancCTe : string;
   public
     constructor Create;
     destructor Destroy; override;
@@ -79,10 +77,8 @@ type
     property cStat: Integer read FcStat write FcStat;
     property xMotivo: string read FxMotivo write FxMotivo;
     property cUF: integer read FcUF write FcUF;
-    property chCTe: string read FchCTe write FchCTe;
-    property dhRecbto: TDateTime read FdhRecbto write FdhRecbto;
-    property nProt: string read FnProt write FnProt;
-    property digVal: string read FdigVal write FdigVal;
+    property protCTe: string read FprotCTe write FprotCTe;
+    property retCancCTe: string read FretCancCTe write FprotCTe;
   end;
 
 implementation
@@ -114,10 +110,8 @@ begin
       (*ER04 *)FverAplic := leitor.rCampo(tcStr, 'verAplic');
       (*ER05 *)FcStat := leitor.rCampo(tcStr, 'cStat');
       (*ER06 *)FxMotivo := leitor.rCampo(tcStr, 'xMotivo');
-      (*ER09 *)FchCTe := leitor.rCampo(tcStr, 'chCTe');
-      (*ER10 *)FdhRecbto := leitor.rCampo(tcDatHor, 'dhRecbto');
-      (*ER11 *)FnProt := leitor.rCampo(tcStr, 'nProt');
-      (*ER12 *)FdigVal := leitor.rCampo(tcStr, 'digVal');
+      (*ER08 *)FprotCTe := leitor.rCampo(tcStr, 'nProt');
+      (*ER09 *)FretCancCTe := leitor.rCampo(tcStr, 'retCancCTe');
       Result := True;
     end;
   except

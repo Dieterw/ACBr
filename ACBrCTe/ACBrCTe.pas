@@ -8,7 +8,8 @@
 {                                       Daniel Simoes de Almeida               }
 {                                       André Ferreira de Moraes               }
 {                                                                              }
-{ Colaboradores nesse arquivo:                                                 }
+{ Desenvolvimento                                                              }
+{         de Cte: Wiliam Zacarias da Silva Rosa                                }
 {                                                                              }
 {  Você pode obter a última versão desse arquivo na pagina do Projeto ACBr     }
 { Componentes localizado em http://www.sourceforge.net/projects/acbr           }
@@ -195,7 +196,7 @@ begin
     raise Exception.Create('Nenhum Conhecimento de Transporte Eletrônico Informado!');
 
 //  for i:= 0 to self.Conhecimentos.Count-1 do
-//    self.Conhecimentos.Items[i].XML.CTeChave := self.NotasFiscais.Items[i].CTe.infCTe.ID;;
+//    self.Conhecimentos.Items[i].XML.CTeChave := self.Conhecimentos.Items[i].CTe.infCTe.ID;
 
   for i:= 0 to self.Conhecimentos.Count-1 do
   begin
@@ -237,11 +238,12 @@ begin
      begin
        if Conhecimentos.Items[i].Confirmada and Imprimir then
        begin
-          //DaCTe.ProtocoloCTe:=WebServices.Retorno.CTeRetorno.ProtCTe.Items[i].nProt;
+          DaCTe.ProtocoloCTe:=WebServices.Retorno.CTeRetorno.ProtCTe.Items[i].nProt;
           Conhecimentos.Items[i].Imprimir;
        end;
      end;
   end;
+
 end;
 
 end.

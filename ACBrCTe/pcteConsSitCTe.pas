@@ -97,7 +97,7 @@ end;
 function TConsSitCTe.GerarXML: boolean;
 begin
   Result := False;
-  if retornarVersaoLayout(Fschema, tlConsSitNFe) = '1.07' then
+  if retornarVersaoLayout(Fschema, tlConsSitCTe) = '1.01' then
   begin
     Gerador.ArquivoFormatoXML := '';
 //    Gerador.wGrupo(ENCODING_UTF8, '', False);

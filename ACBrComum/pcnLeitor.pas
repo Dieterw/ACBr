@@ -51,7 +51,7 @@ interface uses
 {$IFNDEF VER130}
   Variants,
 {$ENDIF}
-  pcnAuxiliar, pcnConversao, pcnNFE;
+  pcnAuxiliar, pcnConversao;
 
 type
 

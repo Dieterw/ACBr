@@ -74,7 +74,6 @@ type
   TInfNFECollectionItem = class;
   TInfOutrosCollection  = class;
   TInfOutrosCollectionItem = class;
-//  TInfOutros = class;
   TExped = class;
   TEnderExped = class;
   TReceb = class;
@@ -93,6 +92,9 @@ type
   TCST90 = class;
   TInfSegCollection = class;
   TInfSegCollectionItem = class;
+  TInfCarga = class;
+  TInfQCollection = class;
+  TInfQCollectionItem = class;
   TRodo = class;
   TEmiOCC = class;
   TLacresCollection = class;
@@ -115,6 +117,7 @@ type
     FDest       : TDest;
     FvPrest     : TvPrest;
     FImp        : TImp;
+    FInfCarga   : TInfCarga;
     FInfSeg     : TInfSegCollection;
     FRodo       : TRodo;
     FinfCteComp : TinfCteComp;
@@ -137,6 +140,7 @@ type
     property Dest: TDest read FDest write FDest;
     property vPrest: TvPrest read FvPrest write FvPrest;
     property Imp: TImp read FImp write FImp;
+    property InfCarga: TInfCarga read FInfCarga write FInfCarga;
     property InfSeg: TInfSegCollection read FInfSeg write SetInfSeg;
     property Rodo: TRodo read FRodo write FRodo;
     property InfCteAnuEnt: TInfCteAnuEnt read FInfCteAnuEnt write FInfCteAnuEnt;
@@ -350,7 +354,7 @@ type
     procedure SetInfNFE(Value: TInfNFECollection);
     procedure SetInfOutros(Value: TInfOutrosCollection);
   public
-    constructor Create;
+    constructor Create(AOwner: TCTe);
     destructor Destroy; override;
   published
     property EnderReme: TEnderReme read FEnderReme write FEnderReme;
@@ -404,13 +408,13 @@ type
     Fserie : String;
     FnDoc  : String;
     FdEmi  : TDateTime;
-    FvBC   : String;
-    FvICMS : String;
+    FvBC   : Currency;
+    FvICMS : Currency;
     FvBCST : Currency;
     FvST   : Currency;
     FvProd : Currency;
     FvNF   : Currency;
-    FnCFOP : String;
+    FnCFOP : integer;
     FnPeso : Currency;
   public
     constructor Create; reintroduce;
@@ -419,13 +423,13 @@ type
     property serie: string read Fserie write Fserie;
     property nDoc: string read FnDoc write FnDoc;
     property dEmi: TDateTime read FdEmi write FdEmi;
-    property vBC: string read FvBC write FvBC;
-    property vICMS: string read FvICMS write FvICMS;
+    property vBC: Currency read FvBC write FvBC;
+    property vICMS: Currency read FvICMS write FvICMS;
     property vBCST: Currency read FvBCST write FvBCST;
     property vST: Currency read FvST write FvST;
     property vProd: Currency read FvProd write FvProd;
     property vNF: Currency read FvNF write FvNF;
-    property nCFOP: String read FnCFOP write FnCFOP;
+    property nCFOP: integer read FnCFOP write FnCFOP;
     property nPeso: Currency read FnPeso write FnPeso;
   end;
 
@@ -647,6 +651,7 @@ type
 
   TICMS = class(TPersistent)
   private
+    FSituTrib   : TpcnCSTIcms;
     FCST00 : TCST00;
     FCST20 : TCST20;
     FCST45 : TCST45;
@@ -657,6 +662,7 @@ type
     constructor Create(AOwner: TImp);
     destructor Destroy; override;
   published
+    property SituTrib: TpcnCSTIcms read FSituTrib write FSituTrib;
     property CST00 : TCST00 read FCST00 write FCST00;
     property CST20 : TCST20 read FCST20 write FCST20;
     property CST45 : TCST45 read FCST45 write FCST45;
@@ -745,6 +751,44 @@ type
     property pICMS: Currency read FpICMS write FpICMS;
     property vICMS: Currency read FvICMS write FvICMS;
     property vCred: Currency read FvCred write FvCred;
+  end;
+
+  TInfCarga = class(TPersistent)
+  private
+    FvMerc    : Currency;
+    FproPred  : string;
+    FxOutCat  : string;
+    FInfQ     : TInfQCollection;
+    procedure SetInfQ(const Value: TInfQCollection);
+  public
+    constructor Create(AOwner: TCTe);
+    destructor Destroy; override;
+  published
+    property vMerc : Currency read FvMerc write FvMerc;
+    property proPred : String read FproPred write FproPred;
+    property xOutCat : String read FxOutCat write FxOutCat;
+    property InfQ: TInfQCollection read FInfQ write SetInfQ;
+  end;
+
+  TInfQCollection = class(TCollection)
+  private
+    function GetItem(Index: Integer): TInfQCollectionItem;
+    procedure SetItem(Index: Integer; Value: TInfQCollectionItem);
+  public
+    constructor Create(AOwner: TInfCarga);
+    function Add: TInfQCollectionItem;
+    property Items[Index: Integer]: TInfQCollectionItem read GetItem write SetItem; default;
+  end;
+
+  TInfQCollectionItem = class(TCollectionItem)
+  private
+    FcUnid  : UnidMed;
+    FtpMed  : string;
+    FqCarga : currency;
+  published
+    property cUnid: UnidMed read FcUnid write FcUnid;
+    property tpMed: string read FtpMed write FtpMed;
+    property qCarga: currency read FqCarga write FqCarga;
   end;
 
   TInfSegCollection = class(TCollection)
@@ -889,11 +933,13 @@ begin
   FIde          := TIde.Create(Self);
   FCompl        := TCompl.Create(Self);
   FEmit         := TEmit.Create(Self);
+  FRem          := TRem.Create(Self);;
   FExped        := TExped.Create(Self);
   FReceb        := TReceb.Create(Self);
   FDest         := TDest.Create(Self);
   FvPrest       := TvPrest.Create(Self);
   FImp          := TImp.Create(Self);
+  FInfCarga     := TInfCarga.Create(Self);
   FInfSeg       := TInfSegCollection.Create(Self);
   FRodo         := TRodo.Create(Self);
   FInfCteAnuEnt := TInfCteAnuEnt.Create(Self);
@@ -907,11 +953,13 @@ begin
   FIde.Free;
   FCompl.Free;
   FEmit.Free;
+  FRem.Free;
   FExped.Free;
   FReceb.Free;
   FDest.Free;
   FvPrest.Free;
   FImp.Free;
+  FInfCarga.Free;
   FInfSeg.Free;
   FRodo.Free;
   FInfCteAnuEnt.Free;
@@ -982,8 +1030,9 @@ end;
 
 { TRem }
 
-constructor TRem.Create;
+constructor TRem.Create(AOwner: TCTe);
 begin
+  inherited Create;
   FEnderReme := TEnderReme.Create;
   FInfNF     := TInfNFCollection.Create(Self);
   FInfNFe    := TInfNFeCollection.Create(Self);
@@ -997,7 +1046,7 @@ begin
   FInfNFe.Free;
   FInfOutros.Free;
 
-  inherited Destroy;
+  inherited;
 end;
 
 procedure TRem.SetInfNF(Value: TInfNFCollection);
@@ -1025,7 +1074,7 @@ end;
 
 constructor TInfNFCollection.Create(AOwner: TRem);
 begin
-
+  inherited Create(TInfNFCollectionItem);
 end;
 
 function TInfNFCollection.GetItem(Index: Integer): TInfNFCollectionItem;
@@ -1075,7 +1124,7 @@ end;
 
 constructor TInfNFECollection.Create(AOwner: TRem);
 begin
-
+  inherited Create(TInfNFECollectionItem);
 end;
 
 function TInfNFECollection.GetItem(Index: Integer): TInfNFECollectionItem;
@@ -1192,7 +1241,7 @@ end;
 
 constructor TInfSegCollection.Create(AOwner: TCte);
 begin
-
+  inherited Create(TInfSegCollectionItem);
 end;
 
 function TInfSegCollection.GetItem(Index: Integer): TInfSegCollectionItem;
@@ -1300,7 +1349,7 @@ end;
 
 constructor TInfOutrosCollection.Create(AOwner: TRem);
 begin
-
+  inherited Create(TInfOutrosCollectionItem);
 end;
 
 function TInfOutrosCollection.GetItem(
@@ -1326,6 +1375,46 @@ destructor TInfOutrosCollectionItem.Destroy;
 begin
 
   inherited;
+end;
+
+{ TInfCarga }
+constructor TInfCarga.Create(AOwner: TCTe);
+begin
+  FInfQ := TInfQCollection.Create(self);
+end;
+
+destructor TInfCarga.Destroy;
+begin
+  FInfQ.Free;
+  inherited;
+end;
+
+procedure TInfCarga.SetInfQ(const Value: TInfQCollection);
+begin
+  FInfQ := Value;
+end;
+
+{ TInfQCollection }
+
+function TInfQCollection.Add: TInfQCollectionItem;
+begin
+  Result := TInfQCollectionItem(inherited Add);
+end;
+
+constructor TInfQCollection.Create(AOwner: TInfCarga);
+begin
+  inherited Create(TInfQCollectionItem);
+end;
+
+function TInfQCollection.GetItem(Index: Integer): TInfQCollectionItem;
+begin
+  Result := TInfQCollectionItem(inherited GetItem(Index));
+end;
+
+procedure TInfQCollection.SetItem(Index: Integer;
+  Value: TInfQCollectionItem);
+begin
+  inherited SetItem(Index, Value);
 end;
 
 end.

@@ -111,7 +111,7 @@ end;
 function TinutCTe.GerarXML: boolean;
 begin
   Result := False;
-  if RetornarVersaoLayout(FSchema, tlInutNFe) = '1.07' then
+  if RetornarVersaoLayout(FSchema, tlInutCTe) = '1.07' then
   begin
 
     FIDInutilizacao := 'ID' + IntToStrZero(FcUF, 2) +

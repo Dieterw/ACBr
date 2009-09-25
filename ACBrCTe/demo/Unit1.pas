@@ -16,7 +16,6 @@ type
     Memo1: TMemo;
     Button4: TButton;
     Button5: TButton;
-    ACBrCTe1: TACBrCTe;
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -27,6 +26,7 @@ type
     { Private declarations }
   public
     { Public declarations }
+    ACBrCTe1 : TACBrCTe;
   end;
 
 var
@@ -66,6 +66,7 @@ end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
+ ACBrCTe1 := TACBrCTe.Create(Self);
 {$IFDEF ACBrCTe1OpenSSL}
  ACBrCTe1.Configuracoes.Certificados.Certificado := 'arquivo.pfx';
  ACBrCTe1.Configuracoes.Certificados.Senha := 'senha';

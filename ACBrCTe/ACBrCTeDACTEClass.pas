@@ -8,7 +8,8 @@
 {                                       Daniel Simoes de Almeida               }
 {                                       André Ferreira de Moraes               }
 {                                                                              }
-{ Colaboradores nesse arquivo:  Wiliam Zacarias da Silva Rosa                  }
+{ Desenvolvimento                                                              }
+{         de Cte: Wiliam Zacarias da Silva Rosa                                }
 {                                                                              }
 {  Você pode obter a última versão desse arquivo na pagina do Projeto ACBr     }
 { Componentes localizado em http://www.sourceforge.net/projects/acbr           }

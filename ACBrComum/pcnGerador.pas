@@ -136,6 +136,7 @@ const
 
   V1_00 = 'versao="1.00"';
   V1_01 = 'versao="1.01"';
+  V1_02 = 'versao="1.02"';  
   V1_07 = 'versao="1.07"';
   V1_10 = 'versao="1.10"';
 
@@ -391,8 +392,21 @@ const
   DSC_TPPROP   = 'Tipo de Proprietário';
   DSC_INFOUTRO = 'informações dos demais documentos';
   DSC_VDOC     = 'Valor do documento';
+  DSC_MODAL    = 'Tipo de Modal';
+  DSC_TPSERV   = 'Tipo do Serviço';
+  DSC_RETIRA   = 'Recebedor retira na Filial?';
+  DSC_PRED     = 'Produto predominante';
+  DSC_OUTCAT   = 'Outras características da carga';
+  DSC_VTMERC   = 'Valor total da mercadoria';
+  DSC_INFQ     = 'Informações de quantidades da Carga';
+  DSC_CUNID    = 'Código da unidade de medida';
+  DSC_TPMED    = 'Tipo da Medida';
+  DSC_QTD      = 'Quantidade';
+  DSC_DRET     = 'Detalhes da Retirada';
 
 implementation
+
+uses DateUtils;
 
 { TGerador }
 
@@ -542,7 +556,7 @@ procedure TGerador.wCampo(const Tipo: TpcnTipoCampo; ID, TAG: string; const min,
 var
   NumeroDecimais: smallint;
   Alerta, ConteudoProcessado: string;
-  wAno, wMes, wDia: Word;
+  wAno, wMes, wDia, wHor, wMin, wSeg, wMse: Word;
   EstaVazio: boolean;
 begin
   ID := Trim(ID);
@@ -563,6 +577,19 @@ begin
     ConteudoProcessado := FormatFloat('0000', wAno) + '-' + FormatFloat('00', wMes) + '-' + FormatFloat('00', wDia);
     EstaVazio := ((wAno = 1899) and (wMes = 12) and (wDia = 30));
   end;
+
+  if Tipo = tcDatHor then
+  begin
+    DecodeDateTime(valor, wAno, wMes, wDia, wHor, wMin, wSeg, wMse);
+    ConteudoProcessado := FormatFloat('0000', wAno) + '-' +
+                          FormatFloat('00', wMes) + '-' +
+                          FormatFloat('00', wDia) + 'T' +
+                          FormatFloat('00', wHor) + ':' +
+                          FormatFloat('00', wMin) + ':' +
+                          FormatFloat('00', wSeg);
+    EstaVazio := ((wAno = 1899) and (wMes = 12) and (wDia = 30));
+  end;
+
   // Tipo numerico com decimais
   if (Tipo = tcDe2) or (Tipo = tcDe3) or (Tipo = tcDe4) then
   begin

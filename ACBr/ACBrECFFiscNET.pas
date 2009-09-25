@@ -305,22 +305,12 @@ end;
 
 procedure TACBrECFFiscNETComando.AddParamString(ParamName: String;
   AString: AnsiString);
-var Buf : AnsiString ;
-    I,ASC : Integer ;
+var
+  Buf : AnsiString ;
 begin
   if AString = '' then exit ;
-  
-  AString := StringReplace(AString,'\','\\',[rfReplaceAll]) ;
-  AString :=  StringReplace(AString,'"','\"',[rfReplaceAll]) ;
-  Buf     := '' ;
-  For I := 1 to Length(AString) do
-  begin
-     ASC := Ord(AString[I]) ;
-     if (ASC < 32) or (ASC > 127) then
-        Buf := Buf + '\x'+Trim(IntToHex(ASC,2))
-     else
-        Buf := Buf + AString[I] ;
-  end ;
+
+  Buf := BinaryStringToString(AString);
 
   fsParams.Add( ParamName + '="' + TrimRight( Buf ) + '"' ) ;
 end;
@@ -385,8 +375,8 @@ end;
 procedure TACBrECFFiscNETResposta.SetResposta(const Value: AnsiString);
 Var Buf : AnsiString ;
     P,I : Integer ;
-    Param,Hex : AnsiString ;
-    CharAposIgual, CharHex : AnsiChar ;
+    Param : AnsiString ;
+    CharAposIgual : AnsiChar ;
 begin
   fsParams.Clear ;
   fsCont       := 0 ;
@@ -453,20 +443,7 @@ begin
         Param := copy(Param,1,I) + copy(Param,I+2,(Length(Param)-I-2) ) ;
 
         { Verificando por codigos em Hexa }
-        P := pos('\x',Param) ;
-        while P > 0 do
-        begin
-           Hex := copy(Param,P+2,2) ;
-
-           try
-              CharHex := AnsiChar( Chr(StrToInt('$'+Hex)) ) ;
-           except
-              CharHex := ' ' ;
-           end ;
-
-           Param := StringReplace(Param,'\x'+Hex,CharHex,[rfReplaceAll]) ;
-           P     := pos('\x',Param) ;
-        end ;
+        Param := StringToBinaryString(Param);
      end ;
 
      fsParams.Add(Param) ;

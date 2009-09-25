@@ -78,6 +78,9 @@
 |*   - Adiconada as funções HexToAscii e AsciiToHex ;
 |* 20/06/2008:  Daniel Simoes de Almeida
 |*   - Função IntToStrZero modificada para aceitar Int64
+|* 24/09/2009:  Daniel Simoes de Almeida
+|*   + function BinaryStringToString(AString: AnsiString): AnsiString;
+|*   + function StringToBinaryString(AString: AnsiString): AnsiString;
 ******************************************************************************}
 
 {$I ACBr.inc}
@@ -121,6 +124,9 @@ Function AscToBcd( const ANumStr: AnsiString ; const TamanhoBCD : Byte) : AnsiSt
 
 Function HexToAscii(const HexStr : AnsiString) : AnsiString ;
 Function AsciiToHex(const AString: AnsiString): AnsiString;
+
+function BinaryStringToString(AString: AnsiString): AnsiString;
+function StringToBinaryString(AString: AnsiString): AnsiString;
 
 function padL(const AString : AnsiString; const nLen : Integer;
    const Caracter : AnsiChar = ' ') : AnsiString;
@@ -219,13 +225,14 @@ function TiraPontos(Str: string): string;
 function TBStrZero(const i: string; const Casas: byte): string;
 function Space(Tamanho: Integer): string;
 
-implementation
-var Randomized : Boolean ;
-
 {$IFDEF MSWINDOWS}
 var xInp32 : function (wAddr: word): byte; stdcall;
 var xOut32 : function (wAddr: word; bOut: byte): byte; stdcall;
+var xBlockInput : function (Block: BOOL): BOOL; stdcall;
 {$ENDIF}
+
+implementation
+var Randomized : Boolean ;
 
 {-----------------------------------------------------------------------------
  Corrige, bug da função Trunc.
@@ -1020,6 +1027,58 @@ begin
 end;
 
 {-----------------------------------------------------------------------------
+ Substitui todos os caracteres de Controle ( menor que ASCII 32 ou maior que
+ ASCII 127), de <AString> por sua representação em HEXA. (\xNN)
+ Use StringToBinaryString para Converter para o valor original.
+ ---------------------------------------------------------------------------- }
+function BinaryStringToString(AString: AnsiString): AnsiString;
+var
+   ASC : Integer;
+   I : Integer;
+begin
+  AString := StringReplace(AString,'\','\\',[rfReplaceAll]) ;
+  AString :=  StringReplace(AString,'"','\"',[rfReplaceAll]) ;
+  Result  := '' ;
+  For I := 1 to Length(AString) do
+  begin
+     ASC := Ord(AString[I]) ;
+     if (ASC < 32) or (ASC > 127) then
+        Result := Result + '\x'+Trim(IntToHex(ASC,2))
+     else
+        Result := Result + AString[I] ;
+  end ;
+end ;
+
+{-----------------------------------------------------------------------------
+ Substitui toda representação em HEXA de <AString> (Iniciada por \xNN, (onde NN,
+ é o valor em Hexa)).
+ Retornana o Estado original, AString de BinaryStringToString.
+ ---------------------------------------------------------------------------- }
+function StringToBinaryString(AString: AnsiString): AnsiString;
+var
+   P : LongInt;
+   Hex : String;
+   CharHex : AnsiChar;
+begin
+  Result := AString ;
+
+  P := pos('\x',Result) ;
+  while P > 0 do
+  begin
+     Hex := copy(Result,P+2,2) ;
+
+     try
+        CharHex := AnsiChar( Chr(StrToInt('$'+Hex)) ) ;
+     except
+        CharHex := ' ' ;
+     end ;
+
+     Result := StringReplace(Result,'\x'+Hex,CharHex,[rfReplaceAll]) ;
+     P      := pos('\x',Result) ;
+  end ;
+end ;
+
+{-----------------------------------------------------------------------------
  Retorna a String <AString> encriptada por <StrChave>.
  Use a mesma chave para Encriptar e Desencriptar
  ---------------------------------------------------------------------------- }
@@ -1639,6 +1698,9 @@ initialization
 
   if not FunctionDetect('inpout32.dll','Out32',@xOut32) then
      xOut32 := NIL ;
+
+  if not FunctionDetect('USER32.DLL', 'BlockInput', @xBlockInput) then
+  	 xBlockInput := NIL ;
 {$ENDIF}
 
   Randomized := False ;

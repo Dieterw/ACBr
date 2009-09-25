@@ -78,6 +78,9 @@ uses ACBrBase, ACBrDevice,
        {$IFDEF VCL}
           , Controls, Forms, Graphics, Dialogs, ExtCtrls
        {$ENDIF}
+       {$IFDEF MSWINDOWS}
+         , Messages, Windows
+       {$ENDIF}  
      {$ENDIF} ;
 
 type
@@ -1323,10 +1326,29 @@ end;
 
 {- LE RESPOSTA - Rotina de Leitura da Resposta do ECF com Bloqueio de Teclado -}
 procedure TACBrECFClass.LeResposta;
+var
+   Msg: TMsg;
 begin
   {$IFNDEF CONSOLE}
     if FormMsgExibe then
-       FormMsgDoProcedure( DoLeResposta, 0 )
+     begin
+       if (not ExibeMensagem) and Assigned( xBlockInput ) then
+        begin
+          xBlockInput( True ) ;
+          try
+             DoLeResposta ;
+          finally
+             try
+                // Remove todas as Teclas do Buffer do Teclado //
+                while PeekMessage(Msg, 0, WM_KEYFIRST, WM_KEYLAST, PM_REMOVE or PM_NOYIELD) do;
+             except
+			       end ; 
+             xBlockInput( False ) ;
+          end ;
+        end
+       else
+          FormMsgDoProcedure( DoLeResposta, 0 )
+     end 
     else
   {$ENDIF}
      DoLeResposta ;

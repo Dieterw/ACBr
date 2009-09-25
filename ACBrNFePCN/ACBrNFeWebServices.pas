@@ -1153,41 +1153,41 @@ begin
   begin
     for j:= 0 to FNotasFiscais.Count-1 do
     begin
-      if 'NFe'+AInfProt.Items[i].chNFe = FNotasFiscais.Items[j].NFe.InfNFe.Id  then
-      begin
-        FNotasFiscais.Items[j].Confirmada := (AInfProt.Items[i].cStat = 100);
-        FNotasFiscais.Items[j].Msg        := AInfProt.Items[i].xMotivo;
-        FNotasFiscais.Items[j].NFe.procNFe.tpAmb    := AInfProt.Items[i].tpAmb;
-        FNotasFiscais.Items[j].NFe.procNFe.verAplic := AInfProt.Items[i].verAplic;
-        FNotasFiscais.Items[j].NFe.procNFe.chNFe    := AInfProt.Items[i].chNFe;
-        FNotasFiscais.Items[j].NFe.procNFe.dhRecbto := AInfProt.Items[i].dhRecbto;
-        FNotasFiscais.Items[j].NFe.procNFe.nProt    := AInfProt.Items[i].nProt;
-        FNotasFiscais.Items[j].NFe.procNFe.digVal   := AInfProt.Items[i].digVal;
-        FNotasFiscais.Items[j].NFe.procNFe.cStat    := AInfProt.Items[i].cStat;
-        FNotasFiscais.Items[j].NFe.procNFe.xMotivo  := AInfProt.Items[i].xMotivo;
-        if FConfiguracoes.Geral.Salvar or NotaUtil.NaoEstaVazio(FNotasFiscais.Items[j].NomeArq) then
-         begin
-           if FileExists(FConfiguracoes.Geral.PathSalvar+'\'+AInfProt.Items[i].chNFe+'-nfe.xml') and
-              FileExists(FConfiguracoes.Geral.PathSalvar+'\'+FNFeRetorno.nRec+'-pro-rec.xml') then
-            begin
-              AProcNFe:=TProcNFe.Create;
-              AProcNFe.PathNFe:=FConfiguracoes.Geral.PathSalvar+'\'+AInfProt.Items[i].chNFe+'-nfe.xml';
-              AProcNFe.PathRetConsReciNFe:=FConfiguracoes.Geral.PathSalvar+'\'+FNFeRetorno.nRec+'-pro-rec.xml';
-              AProcNFe.GerarXML;
-              if NotaUtil.NaoEstaVazio(AProcNFe.Gerador.ArquivoFormatoXML) then
-               begin
-                 if NotaUtil.NaoEstaVazio(FNotasFiscais.Items[j].NomeArq) then
-                    AProcNFe.Gerador.SalvarArquivo(FNotasFiscais.Items[j].NomeArq)
-                 else
-                    AProcNFe.Gerador.SalvarArquivo(FConfiguracoes.Geral.PathSalvar+'\'+AInfProt.Items[i].chNFe+'-nfe.xml');
-               end;
-              AProcNFe.Free;
-            end;
-         end;
-        if FConfiguracoes.Arquivos.Salvar then
-           FNotasFiscais.Items[j].SaveToFile(PathWithDelim(FConfiguracoes.Arquivos.PathNFe)+StringReplace(FNotasFiscais.Items[j].NFe.InfNFe.Id,'NFe','',[rfIgnoreCase])+'-nfe.xml');
-        break;
-      end;
+      if AInfProt.Items[i].chNFe = StringReplace(FNotasFiscais.Items[j].NFe.InfNFe.Id,'NFe','',[rfIgnoreCase]) then
+       begin
+         FNotasFiscais.Items[j].Confirmada := (AInfProt.Items[i].cStat = 100);
+         FNotasFiscais.Items[j].Msg        := AInfProt.Items[i].xMotivo;
+         FNotasFiscais.Items[j].NFe.procNFe.tpAmb    := AInfProt.Items[i].tpAmb;
+         FNotasFiscais.Items[j].NFe.procNFe.verAplic := AInfProt.Items[i].verAplic;
+         FNotasFiscais.Items[j].NFe.procNFe.chNFe    := AInfProt.Items[i].chNFe;
+         FNotasFiscais.Items[j].NFe.procNFe.dhRecbto := AInfProt.Items[i].dhRecbto;
+         FNotasFiscais.Items[j].NFe.procNFe.nProt    := AInfProt.Items[i].nProt;
+         FNotasFiscais.Items[j].NFe.procNFe.digVal   := AInfProt.Items[i].digVal;
+         FNotasFiscais.Items[j].NFe.procNFe.cStat    := AInfProt.Items[i].cStat;
+         FNotasFiscais.Items[j].NFe.procNFe.xMotivo  := AInfProt.Items[i].xMotivo;
+         if FConfiguracoes.Geral.Salvar or NotaUtil.NaoEstaVazio(FNotasFiscais.Items[j].NomeArq) then
+          begin
+            if FileExists(FConfiguracoes.Geral.PathSalvar+'\'+AInfProt.Items[i].chNFe+'-nfe.xml') and
+               FileExists(FConfiguracoes.Geral.PathSalvar+'\'+FNFeRetorno.nRec+'-pro-rec.xml') then
+             begin
+               AProcNFe:=TProcNFe.Create;
+               AProcNFe.PathNFe:=FConfiguracoes.Geral.PathSalvar+'\'+AInfProt.Items[i].chNFe+'-nfe.xml';
+               AProcNFe.PathRetConsReciNFe:=FConfiguracoes.Geral.PathSalvar+'\'+FNFeRetorno.nRec+'-pro-rec.xml';
+               AProcNFe.GerarXML;
+               if NotaUtil.NaoEstaVazio(AProcNFe.Gerador.ArquivoFormatoXML) then
+                begin
+                  if NotaUtil.NaoEstaVazio(FNotasFiscais.Items[j].NomeArq) then
+                     AProcNFe.Gerador.SalvarArquivo(FNotasFiscais.Items[j].NomeArq)
+                  else
+                     AProcNFe.Gerador.SalvarArquivo(FConfiguracoes.Geral.PathSalvar+'\'+AInfProt.Items[i].chNFe+'-nfe.xml');
+                end;
+               AProcNFe.Free;
+             end;
+          end;
+         if FConfiguracoes.Arquivos.Salvar then
+            FNotasFiscais.Items[j].SaveToFile(PathWithDelim(FConfiguracoes.Arquivos.GetPathNFe)+StringReplace(FNotasFiscais.Items[j].NFe.InfNFe.Id,'NFe','',[rfIgnoreCase])+'-nfe.xml');
+         break;
+       end;
     end;
   end;
 
@@ -1618,7 +1618,7 @@ begin
            end;
 
            if FConfiguracoes.Arquivos.Salvar then
-              TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].SaveToFile(PathWithDelim(FConfiguracoes.Arquivos.PathNFe)+StringReplace(TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NFe.InfNFe.Id,'NFe','',[rfIgnoreCase])+'-nfe.xml');
+              TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].SaveToFile(PathWithDelim(FConfiguracoes.Arquivos.GetPathNFe)+StringReplace(TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NFe.InfNFe.Id,'NFe','',[rfIgnoreCase])+'-nfe.xml');
 
            break;
          end;
@@ -1708,7 +1708,7 @@ begin
       FConfiguracoes.Geral.Save(FNFeChave+'-ped-can.xml', FDadosMsg);
 
     if FConfiguracoes.Arquivos.Salvar then
-      FConfiguracoes.Geral.Save(FNFeChave+'-ped-can.xml', FDadosMsg, FConfiguracoes.Arquivos.PathCan );
+      FConfiguracoes.Geral.Save(FNFeChave+'-ped-can.xml', FDadosMsg, FConfiguracoes.Arquivos.GetPathCan );
 
     {$IFDEF ACBrNFeOpenSSL}
        HTTP.Document.LoadFromStream(Stream);
@@ -1758,7 +1758,7 @@ begin
       FConfiguracoes.Geral.Save(FNFeChave+'-can.xml', FRetWS);
 
     if FConfiguracoes.Arquivos.Salvar then
-      FConfiguracoes.Geral.Save(FNFeChave+'-can.xml', FRetWS, FConfiguracoes.Arquivos.PathCan );
+      FConfiguracoes.Geral.Save(FNFeChave+'-can.xml', FRetWS, FConfiguracoes.Arquivos.GetPathCan );
 
   finally
     {$IFDEF ACBrNFeOpenSSL}
@@ -1838,7 +1838,7 @@ begin
       FConfiguracoes.Geral.Save(StringReplace(FID,'ID','',[rfIgnoreCase])+'-ped-inu.xml', FDadosMsg);
 
     if FConfiguracoes.Arquivos.Salvar then
-      FConfiguracoes.Geral.Save(StringReplace(FID,'ID','',[rfIgnoreCase])+'-ped-inu.xml', FDadosMsg, FConfiguracoes.Arquivos.PathInu);
+      FConfiguracoes.Geral.Save(StringReplace(FID,'ID','',[rfIgnoreCase])+'-ped-inu.xml', FDadosMsg, FConfiguracoes.Arquivos.GetPathInu);
 
     {$IFDEF ACBrNFeOpenSSL}
        HTTP.Document.LoadFromStream(Stream);
@@ -1883,7 +1883,7 @@ begin
       FConfiguracoes.Geral.Save(StringReplace(FID,'ID','',[rfIgnoreCase])+'-inu.xml', FRetWS);
 
     if FConfiguracoes.Arquivos.Salvar then
-      FConfiguracoes.Geral.Save(StringReplace(FID,'ID','',[rfIgnoreCase])+'-inu.xml', FRetWS, FConfiguracoes.Arquivos.PathInu);
+      FConfiguracoes.Geral.Save(StringReplace(FID,'ID','',[rfIgnoreCase])+'-inu.xml', FRetWS, FConfiguracoes.Arquivos.GetPathInu);
 
   finally
     {$IFDEF ACBrNFeOpenSSL}
@@ -2096,7 +2096,7 @@ begin
       FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+'-env-dpec.xml', FDadosMsg);
 
     if FConfiguracoes.Arquivos.Salvar then
-      FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+'-env-dpec.xml', FDadosMsg, FConfiguracoes.Arquivos.PathDPEC);
+      FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+'-env-dpec.xml', FDadosMsg, FConfiguracoes.Arquivos.GetPathDPEC);
 
     FRetWS := '';
     {$IFDEF ACBrNFeOpenSSL}
@@ -2147,7 +2147,7 @@ begin
       FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+'-ret-dpec.xml', FRetWS);
 
     if FConfiguracoes.Arquivos.Salvar then
-      FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+'-ret-dpec.xml', FRetWS, FConfiguracoes.Arquivos.PathDPEC);
+      FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+'-ret-dpec.xml', FRetWS, FConfiguracoes.Arquivos.GetPathDPEC);
 
   finally
     {$IFDEF ACBrNFeOpenSSL}

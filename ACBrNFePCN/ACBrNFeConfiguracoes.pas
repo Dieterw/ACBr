@@ -135,20 +135,20 @@ type
     FPathCan  : String;
     FPathInu  : String;
     FPathDPEC : String;
+  public
+    constructor Create(AOwner: TComponent); override ;
     function GetPathCan: String;
     function GetPathDPEC: String;
     function GetPathInu: String;
     function GetPathNFe: String;
-  public
-    constructor Create(AOwner: TComponent); override ;
   published
     property Salvar     : Boolean read FSalvar  write FSalvar  default False ;
     property PastaMensal: Boolean read FMensal  write FMensal  default False ;
     property AdicionarLiteral: Boolean read FLiteral write FLiteral default False ;
-    property PathNFe : String read GetPathNFe  write FPathNFe;
-    property PathCan : String read GetPathCan  write FPathCan;
-    property PathInu : String read GetPathInu  write FPathInu;
-    property PathDPEC: String read GetPathDPEC write FPathDPEC;
+    property PathNFe : String read FPathNFe  write FPathNFe;
+    property PathCan : String read FPathCan  write FPathCan;
+    property PathInu : String read FPathInu  write FPathInu;
+    property PathDPEC: String read FPathDPEC write FPathDPEC;
   end;
 
   TConfiguracoes = class(TComponent)
@@ -395,14 +395,18 @@ begin
   else
      Dir := FPathCan;
 
-  if Self.FMensal then
+  if FMensal then
    begin
      DecodeDate(Now, wAno, wMes, wDia);
-     Dir := PathWithDelim(Dir)+IntToStr(wAno)+IntToStrZero(wMes,2);
+     if Pos(IntToStr(wAno)+IntToStrZero(wMes,2),Dir) <= 0 then
+        Dir := PathWithDelim(Dir)+IntToStr(wAno)+IntToStrZero(wMes,2);
    end;
 
   if FLiteral then
-      Dir := PathWithDelim(Dir)+'Can';
+   begin
+     if copy(Dir,length(Dir)-2,3) <> 'Can' then
+        Dir := PathWithDelim(Dir)+'Can';
+   end;
 
   if not DirectoryExists(Dir) then
      ForceDirectories(Dir);
@@ -420,14 +424,18 @@ begin
   else
      Dir := FPathDPEC;
 
-  if Self.FMensal then
+  if FMensal then
    begin
      DecodeDate(Now, wAno, wMes, wDia);
-     Dir := PathWithDelim(Dir)+IntToStr(wAno)+IntToStrZero(wMes,2);
+     if Pos(IntToStr(wAno)+IntToStrZero(wMes,2),Dir) <= 0 then
+        Dir := PathWithDelim(Dir)+IntToStr(wAno)+IntToStrZero(wMes,2);
    end;
 
   if FLiteral then
-      Dir := PathWithDelim(Dir)+'DPEC';
+   begin
+     if copy(Dir,length(Dir)-3,4) <> 'DPEC' then
+        Dir := PathWithDelim(Dir)+'DPEC';
+   end;
 
   if not DirectoryExists(Dir) then
      ForceDirectories(Dir);
@@ -445,14 +453,18 @@ begin
   else
      Dir := FPathInu;
 
-  if Self.FMensal then
+  if FMensal then
    begin
      DecodeDate(Now, wAno, wMes, wDia);
-     Dir := PathWithDelim(Dir)+IntToStr(wAno)+IntToStrZero(wMes,2);
+     if Pos(IntToStr(wAno)+IntToStrZero(wMes,2),Dir) <= 0 then
+        Dir := PathWithDelim(Dir)+IntToStr(wAno)+IntToStrZero(wMes,2);
    end;
 
   if FLiteral then
-      Dir := PathWithDelim(Dir)+'Inu';
+   begin
+     if copy(Dir,length(Dir)-2,3) <> 'Inu' then
+        Dir := PathWithDelim(Dir)+'Inu';
+   end;
 
   if not DirectoryExists(Dir) then
      ForceDirectories(Dir);
@@ -471,14 +483,18 @@ begin
   else
      Dir := FPathNFe;
 
-  if Self.FMensal then
+  if FMensal then
    begin
      DecodeDate(Now, wAno, wMes, wDia);
-     Dir := PathWithDelim(Dir)+IntToStr(wAno)+IntToStrZero(wMes,2);
+     if Pos(IntToStr(wAno)+IntToStrZero(wMes,2),Dir) <= 0 then
+        Dir := PathWithDelim(Dir)+IntToStr(wAno)+IntToStrZero(wMes,2);
    end;
 
   if FLiteral then
-      Dir := PathWithDelim(Dir)+'NFe';
+   begin
+     if copy(Dir,length(Dir)-2,3) <> 'NFe' then
+        Dir := PathWithDelim(Dir)+'NFe';
+   end;
 
   if not DirectoryExists(Dir) then
      ForceDirectories(Dir);

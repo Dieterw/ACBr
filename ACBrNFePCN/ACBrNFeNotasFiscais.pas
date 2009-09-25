@@ -373,7 +373,7 @@ begin
            FConfiguracoes.Geral.Save(StringReplace(Self.Items[i].NFe.infNFe.ID, 'NFe', '', [rfIgnoreCase])+'-nfe.xml', vAssinada);
 
         if NotaUtil.NaoEstaVazio(Self.Items[i].NomeArq) then
-           FConfiguracoes.Geral.Save(Self.Items[i].NomeArq, vAssinada);
+           FConfiguracoes.Geral.Save(ExtractFileName(Self.Items[i].NomeArq), vAssinada, ExtractFilePath(Self.Items[i].NomeArq));
 
      finally
         LocNFeW.Free;

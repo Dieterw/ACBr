@@ -241,10 +241,19 @@ begin
   vSalvar := TStringList.Create;
   try
     try
-      if NotaUtil.EstaVazio(aPath) then
-         aPath := PathSalvar
+      if NotaUtil.NaoEstaVazio(ExtractFilePath(AXMLName)) then
+       begin
+         aPath := ExtractFilePath(AXMLName);
+         AXMLName := StringReplace(AXMLName,aPath,'',[rfIgnoreCase]);
+       end
       else
-         aPath := PathWithDelim(aPath);   
+       begin
+         if NotaUtil.EstaVazio(aPath) then
+            aPath := PathSalvar
+         else
+            aPath := PathWithDelim(aPath);
+       end;
+
       vSalvar.Text := AXMLFile;
       if not DirectoryExists( aPath ) then
          ForceDirectories( aPath );

@@ -216,6 +216,11 @@ begin
            else
               ACBrNFe1.DANFE.Impressora := cbxImpressora.Text;
 
+           if NotaUtil.NaoEstaVazio(Cmd.Params(2)) then
+              ACBrNFe1.DANFE.NumCopias := StrToInt(Cmd.Params(2))
+           else
+              ACBrNFe1.DANFE.NumCopias := StrToInt(edtNumCopia.Text);
+
            ACBrNFe1.NotasFiscais.Imprimir;
            Cmd.Resposta := 'Danfe Impresso com sucesso';
            if ACBrNFeDANFERave1.MostrarPreview then

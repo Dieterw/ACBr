@@ -810,9 +810,10 @@ end;
 
 function ImprimirDadosAdicionais(PosX,PosY: Double): Double;
 var aHeigth:Double;
-    memo:TMemoBuf;
+    memo, memo2:TMemoBuf;
     i:integer;
     wtemp:string;
+    wtempX: double;
 begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
@@ -820,14 +821,16 @@ begin
      aHeigth:=29;
      PosY:=PosY-aHeigth;
      Box([],PosX,PosY,176,aHeigth,'Informações Complementares');
-     Box([fsLeft],XPos,YPos,75,aHeigth,'Reservado ao Fisco','',taLeftJustify,
-     True);
+     Box([fsLeft],XPos,YPos,75,aHeigth,'Reservado ao Fisco','',taLeftJustify,True);
      SetFont(FontNameUsed,FontSizeInfComplementares);
-     GotoXY(PosX,PosY);
-     NewLine;
-     NewLine;
      Memo:=TMemoBuf.Create;
+     Memo2:=TMemoBuf.Create;
      try
+       //informacoes complementares
+       GotoXY(PosX,PosY);
+       wTempX:=PosX;
+       NewLine;
+       NewLine;
        Memo.PrintStart:=PosX+1;
        Memo.PrintEnd:=PosX+174;
        Memo.NoNewLine:=True;
@@ -840,8 +843,19 @@ begin
        end;
        memo.Text:=StringReplace(wtemp+InfAdic.InfCpl,';',#13,[rfReplaceAll]);
        PrintMemo(Memo,0,false);
+
+       //informacoes fisco
+       GotoXY(wTempX,PosY);
+       NewLine;
+       NewLine;
+       Memo2.PrintStart:=PosX+177;
+       Memo2.PrintEnd:=PosX+177+76;
+       Memo2.NoNewLine:=True;
+       memo2.Text:=StringReplace(InfAdic.infAdFisco,';',#13,[rfReplaceAll]);
+       PrintMemo(Memo2,0,false);
      finally
        Memo.Free;
+       Memo2.Free;
      end;
      Result:=PosY;
      TituloDoBloco([fsTop],PosY,PosX,PosY+aHeigth,'DADOS ADICIONAIS');

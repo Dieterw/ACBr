@@ -48,6 +48,11 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   25/09/09
+---------------
+[-] Impressão dos dados (quando houver) no quadro Inf. Adicional do Fisco no RAVE CB
+
+
 Alterações   24/09/09
 ---------------
 [*] Alterado URLs do DF para usarem URLs do SVRS

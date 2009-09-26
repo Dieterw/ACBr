@@ -1036,8 +1036,6 @@ var
    ASC : Integer;
    I : Integer;
 begin
-  AString := StringReplace(AString,'\','\\',[rfReplaceAll]) ;
-  AString :=  StringReplace(AString,'"','\"',[rfReplaceAll]) ;
   Result  := '' ;
   For I := 1 to Length(AString) do
   begin

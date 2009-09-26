@@ -1326,28 +1326,32 @@ end;
 
 {- LE RESPOSTA - Rotina de Leitura da Resposta do ECF com Bloqueio de Teclado -}
 procedure TACBrECFClass.LeResposta;
+{$IFDEF MSWINDOWS}
 var
    Msg: TMsg;
+{$ENDIF}
 begin
   {$IFNDEF CONSOLE}
     if FormMsgExibe then
      begin
-       if (not ExibeMensagem) and Assigned( xBlockInput ) then
-        begin
-          xBlockInput( True ) ;
-          try
-             DoLeResposta ;
-          finally
-             try
-                // Remove todas as Teclas do Buffer do Teclado //
-                while PeekMessage(Msg, 0, WM_KEYFIRST, WM_KEYLAST, PM_REMOVE or PM_NOYIELD) do;
-             except
-			       end ; 
-             xBlockInput( False ) ;
-          end ;
-        end
-       else
-          FormMsgDoProcedure( DoLeResposta, 0 )
+       {$IFDEF MSWINDOWS}
+        if (not ExibeMensagem) and Assigned( xBlockInput ) then
+         begin
+           xBlockInput( True ) ;
+           try
+              DoLeResposta ;
+           finally
+              try
+                 // Remove todas as Teclas do Buffer do Teclado //
+                 while PeekMessage(Msg, 0, WM_KEYFIRST, WM_KEYLAST, PM_REMOVE or PM_NOYIELD) do;
+              except
+              end ;
+              xBlockInput( False ) ;
+           end ;
+         end
+        else
+       {$ENDIF}
+          FormMsgDoProcedure( DoLeResposta, 0 ) ;
      end 
     else
   {$ENDIF}

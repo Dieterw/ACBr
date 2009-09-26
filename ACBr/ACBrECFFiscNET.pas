@@ -310,6 +310,9 @@ var
 begin
   if AString = '' then exit ;
 
+  AString := StringReplace(AString,'\','\\',[rfReplaceAll]) ;
+  AString := StringReplace(AString,'"','\"',[rfReplaceAll]) ;
+
   Buf := BinaryStringToString(AString);
 
   fsParams.Add( ParamName + '="' + TrimRight( Buf ) + '"' ) ;

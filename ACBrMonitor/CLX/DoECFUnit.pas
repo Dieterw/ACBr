@@ -156,7 +156,13 @@ begin
 
         else if Cmd.Metodo = 'ie' then
            Cmd.Resposta := IE
+//IMS
+        else if Cmd.Metodo = 'im' then
+           Cmd.Resposta := IM
 
+        else if Cmd.Metodo = 'cliche' then
+           Cmd.Resposta := Cliche
+//IMS
         else if Cmd.Metodo = 'paf' then
            Cmd.Resposta := PAF
 
@@ -602,7 +608,6 @@ begin
               Linhas.Free ;
            end ;
          end
-
         else if Cmd.Metodo = 'enviacomando' then
            if Cmd.Params(1) <> '' then
               EnviaComando(Cmd.Params(0),StrToInt(Trim(Cmd.Params(1))))

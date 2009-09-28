@@ -159,6 +159,9 @@ TACBrECFBematech = class( TACBrECFClass )
     fsModelosCheque : TACBrCHQModelos ;
 
     Function PreparaCmd( cmd : AnsiString ) : AnsiString ;
+//IMS
+    Function DocumentosToStr(Documentos : TACBrECFTipoDocumentoSet) : String ;
+//IMS    
  protected
     function GetDataHora: TDateTime; override ;
     function GetNumCupom: String; override ;
@@ -178,6 +181,10 @@ TACBrECFBematech = class( TACBrECFClass )
 
     function GetCNPJ: String; override ;
     function GetIE: String; override ;
+//IMS
+    function GetIM: String; override ;
+    function GetCliche: String; override ;    
+//IMS
     function GetPAF: String; override ;
     function GetDataMovimento: TDateTime; override ;
     function GetGrandeTotal: Double; override ;
@@ -272,6 +279,12 @@ TACBrECFBematech = class( TACBrECFClass )
        var Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
     Procedure LeituraMemoriaFiscalSerial( ReducaoInicial, ReducaoFinal : Integer;
        var Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
+//IMS
+    Procedure LeituraMFDSerial(DataInicial, DataFinal : TDateTime;
+       var Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
+    Procedure LeituraMFDSerial( COOInicial, COOFinal : Integer;
+       var Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
+//IMS
     Procedure IdentificaPAF( Linha1, Linha2 : String) ; override ;
     Function RetornaInfoECF( Registrador: String) : AnsiString; override ;
 
@@ -567,7 +580,7 @@ begin
 
      try
 //      GravaLog('Bematech VerificaFimImpressao: Pedindo o Status') ;
-        
+
         fpDevice.Serial.Purge ;              // Limpa buffer de Entrada e Saida //
         fpDevice.EnviaString( Cmd );   // Envia comando //}
 
@@ -1827,6 +1840,78 @@ begin
                                     FormatDateTime('ddmmyy',DataFinal)  +Flag ,Espera);
 end;
 
+//IMS
+Function TACBrECFBematech.DocumentosToStr(Documentos : TACBrECFTipoDocumentoSet) : String ;
+begin
+{  if (Documentos - [docTodos]) = [] then
+     Result := StringOfChar('1',18)
+  else
+   begin
+     Result := '' ;
+     Result := Result + IfThen(docRZ              in Documentos, '1', '0');
+     Result := Result + IfThen(docLX              in Documentos, '1', '0');
+     Result := Result + IfThen(docCF              in Documentos, '1', '0');
+     Result := Result + IfThen(docCFBP            in Documentos, '1', '0');
+     Result := Result + IfThen(docCupomAdicional  in Documentos, '1', '0');
+     Result := Result + IfThen(docCFCancelamento  in Documentos, '1', '0');
+     Result := Result + IfThen(docCCD             in Documentos, '1', '0');
+     Result := Result + IfThen(docAdicionalCCD    in Documentos, '1', '0');
+     Result := Result + IfThen(docSegViaCCD       in Documentos, '1', '0');
+     Result := Result + IfThen(docReimpressaoCCD  in Documentos, '1', '0');
+     Result := Result + IfThen(docEstornoCCD      in Documentos, '1', '0');
+     Result := Result + IfThen(docCNF             in Documentos, '1', '0');
+     Result := Result + IfThen(docCNFCancelamento in Documentos, '1', '0');
+     Result := Result + IfThen(docSangria         in Documentos, '1', '0');
+     Result := Result + IfThen(docSuprimento      in Documentos, '1', '0');
+     Result := Result + IfThen(docEstornoPagto    in Documentos, '1', '0');
+     Result := Result + IfThen(docRG              in Documentos, '1', '0');
+     Result := Result + IfThen(docLMF             in Documentos, '1', '0');
+   end ;
+
+  Result := PadL( Result, 31, '1') ;
+}
+end ;
+
+procedure TACBrECFBematech.LeituraMFDSerial(COOInicial, COOFinal: Integer;
+  var Linhas: TStringList; Documentos : TACBrECFTipoDocumentoSet);
+ Var Espera : Integer ;
+     UsuarioECF : String ;
+begin
+  { O download da MFD é um processo bastante demorado por isso forcei um TimeOut
+    maior. Dependendo da Faixa de COO's a ser baixada pode ser necessário aumantar
+    ainda mais o TimeOut. Cfe. testes realizados, faixas de 100 COOs ainda são
+    grandes demais p/ um TimeOut de 300 seg., aconselha-se fazer a leitura por
+    faixas de 50 em 50 COOs ( Aprox. 220 COOs em 8min em uma FS600 V.1.03) }
+
+  BytesResp := -1 ; { espera por ETX }
+  Espera := 30 + (COOInicial - COOFinal) * 2 ;
+  UsuarioECF := '001' ;
+
+  Linhas.Clear ;
+  Linhas.Text := EnviaComando( #62+#69 + 'C' +
+                               IntToStrZero(COOInicial,6) +
+                               IntToStrZero(COOFinal  ,6) + UsuarioECF , Espera ) ;
+  { Implementar captura do usuario atual do ECF para variavel UsuarioECF
+  }
+
+end;
+
+procedure TACBrECFBematech.LeituraMFDSerial(DataInicial,
+  DataFinal: TDateTime; var Linhas: TStringList;
+  Documentos : TACBrECFTipoDocumentoSet);
+Var
+  Espera : Integer ;
+begin
+  BytesResp := -1 ; { espera por ETX }
+  Espera := Trunc(30 + (DaysBetween(DataInicial,DataFinal)/2) ) ;
+
+  Linhas.Clear ;
+  Linhas.Text := EnviaComando( #62+#69 + 'D' +
+                               FormatDateTime('ddmmyy',DataInicial)+
+                               FormatDateTime('ddmmyy',DataFinal)  ,Espera);
+end;
+//IMS
+
 function TACBrECFBematech.GetCNPJ: String;
 begin
   if fs25MFD then
@@ -1842,6 +1927,22 @@ begin
   else
      Result  := copy(Trim( RetornaInfoECF( '02' ) ),19,18) ;
 end;
+
+//IMS
+function TACBrECFBematech.GetIM: String;
+begin
+  if fs25MFD then
+     Result  := RetornaInfoECF( '44' )
+  else
+     Result  := copy(Trim( RetornaInfoECF( '02' ) ),37,18) ;
+end;
+
+function TACBrECFBematech.GetCliche: String;
+begin
+     Result  := RetornaInfoECF( '13' ) ;
+end;
+
+//IMS
 
 function TACBrECFBematech.GetDataMovimento: TDateTime;
 Var RetCmd : AnsiString ;

@@ -184,6 +184,12 @@ TACBrECFNaoFiscal = class( TACBrECFClass )
     fsArqINI    : String ;
     fsNumSerie  : String ;
     fsNumECF    : String ;
+//IMS
+    fsIE        : String ;
+    fsCNPJ      : String ;
+    fsPAF       : String ;
+    fsIM        : String ;
+//IMS    
     fsCRO       : Integer ;
     fsCabecalho : TStringList ;
     fsCabecalhoItem : TStringList ;
@@ -271,6 +277,12 @@ TACBrECFNaoFiscal = class( TACBrECFClass )
     function GetNumCupom: String; override ;
     function GetNumCCF: String; override ;
     function GetNumECF: String; override ;
+//IMS
+    function GetIE: String; override ;
+    function GetCNPJ: String; override ;
+    function GetPAF: String; override ;
+    function GetIM: String; override ;
+//IMS    
     function GetNumCRO: String; override ;
     function GetNumSerie: String; override ;
     function GetNumVersao: String; override ;
@@ -432,6 +444,12 @@ begin
   fsArqINI    := '' ;
   fsNumSerie  := '' ;
   fsNumECF    := '' ;
+//IMS
+  fsIE        := '012.345.678.90' ;
+  fsCNPJ      := '01.234.567/0001-22' ;
+  fsPAF       := 'ACBrMonitor' ;
+  fsIM        := '1234-0' ;
+//IMS  
   fsCRO       := 1 ;
   fpModeloStr := 'NaoFiscal' ;
   fsBuffer    := TStringList.create ;
@@ -589,6 +607,28 @@ function TACBrECFNaoFiscal.GetNumECF: String;
 begin
   Result := fsNumECF ;
 end;
+
+//IMS
+function TACBrECFNaoFiscal.GetIE: String;
+begin
+  Result := fsIE ;
+end;
+
+function TACBrECFNaoFiscal.GetCNPJ: String;
+begin
+  Result := fsCNPJ ;
+end;
+
+function TACBrECFNaoFiscal.GetPAF: String;
+begin
+  Result := fsPAF ;
+end;
+
+function TACBrECFNaoFiscal.GetIM: String;
+begin
+  Result := fsIM ;
+end;
+//IMS
 
 function TACBrECFNaoFiscal.GetNumSerie: String;
 begin
@@ -1499,6 +1539,12 @@ begin
      Ini.WriteInteger('Variaveis','Estado',Integer( fpEstado) ) ;
      Ini.WriteString('Variaveis','Aviso_Legal',Aviso) ;
      Ini.WriteString('Variaveis','NumECF',fsNumECF) ;
+//IMS
+     Ini.WriteString('Variaveis','IE',fsIE) ;
+     Ini.WriteString('Variaveis','CNPJ',fsCNPJ) ;
+     Ini.WriteString('Variaveis','PAF',fsPAF) ;
+     Ini.WriteString('Variaveis','IM',fsIM) ;          
+//IMS     
      Ini.WriteString('Variaveis','NumSerie',fsNumSerie) ;
      Ini.WriteInteger('Variaveis','CRO',fsCRO) ;
      Ini.WriteInteger('Variaveis','NumCupom',fsNumCupom) ;
@@ -1743,6 +1789,12 @@ begin
      if fsNumECF = '' then
         fsNumECF := Ini.ReadString('Variaveis','NumECF',fsNumECF) ;
 
+//IMS
+     fsIE        := Ini.ReadString('Variaveis','IE',fsIE) ;
+     fsCNPJ      := Ini.ReadString('Variaveis','CNPJ',fsCNPJ) ;
+     fsPAF       := Ini.ReadString('Variaveis','PAF',fsPAF) ;
+     fsIM        := Ini.ReadString('Variaveis','IM',fsIM) ;
+//IMS        
      fpEstado    := TACBrECFEstado( Ini.ReadInteger('Variaveis','Estado',
                        Integer( fpEstado) ) ) ;
      fsNumSerie  := Ini.ReadString('Variaveis','NumSerie',fsNumSerie) ;

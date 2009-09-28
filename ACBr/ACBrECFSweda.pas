@@ -214,6 +214,10 @@ TACBrECFSweda = class( TACBrECFClass )
 
     function GetCNPJ: String; override ;
     function GetIE: String; override ;
+//IMS
+    function GetIM: String; override ;
+    function GetCliche: String; override ;    
+//IMS    
     function GetDataMovimento: TDateTime; override ;
     function GetGrandeTotal: Double; override ;
     function GetNumCRZ: String; override ;
@@ -2594,6 +2598,36 @@ begin
      I := I + 1 ;
   end ;
 end;
+
+//IMS
+function TACBrECFSweda.GetIM: String;
+ var
+  wretorno: Ansistring;
+  I : Integer ;
+begin
+  Result   := '';
+  I      := 0 ;
+  while (Trim(Result) = '') and (I < 5) do
+  begin
+     wretorno := EnviaComando('29'+ AnsiChar( chr(72+I) ));   // 72 = H em ASCII
+     if copy(wretorno,1,3) = '.+T' then
+        Result := Copy(wretorno,51,21);
+     I := I + 1 ;
+  end ;
+end;
+
+function TACBrECFSweda.GetCliche: String;
+ var
+  wretorno: Ansistring;
+begin
+  Result   := '';
+  begin
+     wretorno := EnviaComando('29'+ '1');
+     if copy(wretorno,1,3) = '.+T' then
+        Result := Copy(wretorno,12,40);
+  end ;
+end;
+//IMS
 
 function TACBrECFSweda.GetDataMovimento: TDateTime;
 // Autor: Ederson Selvati, Daniel Simões

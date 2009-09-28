@@ -115,6 +115,10 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
 
     function GetCNPJ: String; override ;
     function GetIE: String; override ;
+//IMS
+    function GetIM: String; override ;
+    function GetCliche: String; override ;    
+//IMS    
     function GetPAF: String; override ;
     function GetDataMovimento: TDateTime; override ;
     function GetGrandeTotal: Double; override ;
@@ -1211,6 +1215,15 @@ end;
 function TACBrECFSwedaSTX.GetIE: String;
 begin
 end;
+
+//IMS
+function TACBrECFSwedaSTX.GetIM: String;
+begin
+end;
+function TACBrECFSwedaSTX.GetCliche: String;
+begin
+end;
+//IMS
 
 function TACBrECFSwedaSTX.GetDataMovimento: TDateTime;
 begin

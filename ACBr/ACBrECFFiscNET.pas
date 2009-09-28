@@ -146,6 +146,10 @@ TACBrECFFiscNET = class( TACBrECFClass )
 
     function GetCNPJ: String; override ;
     function GetIE: String; override ;
+//IMS
+    function GetIM: String; override ;
+    function GetCliche: String; override ;
+//IMS    
     function GetDataMovimento: TDateTime; override ;
     function GetGrandeTotal: Double; override ;
     function GetNumCRO: String; override ;
@@ -1905,6 +1909,26 @@ begin
 
   Result := FiscNETResposta.Params.Values['ValorTexto'] ;
 end;
+
+//IMS
+function TACBrECFFiscNET.GetIM: String;
+begin
+  FiscNETComando.NomeComando := 'LeTexto' ;
+  FiscNETComando.AddParamString('NomeTexto','IM') ;
+  EnviaComando ;
+
+  Result := FiscNETResposta.Params.Values['ValorTexto'] ;
+end;
+
+function TACBrECFFiscNET.GetCliche: String;
+begin
+  FiscNETComando.NomeComando := 'LeTexto' ;
+  FiscNETComando.AddParamString('NomeTexto','Cliche') ;
+  EnviaComando ;
+
+  Result := FiscNETResposta.Params.Values['ValorTexto'] ;
+end;
+//IMS
 
 function TACBrECFFiscNET.GetDataMovimento: TDateTime;
 // Autor: Nei José Van Lare Junior

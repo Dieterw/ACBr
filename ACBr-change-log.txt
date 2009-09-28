@@ -57,7 +57,8 @@ Agradecimentos:
 - Andre Bohn                     ECFNCR, ECFBugFix (Daruma FS600)
 - Joao Victor Maia Fernandes     ECFQuattro
 - Sauli Bueno                    ECFYanco
-                           
+- Ivan Moreira                   ECFs
+
 * Colaboradores:
 - Alexandre Rocha L.Marcondes    Administração
 - Mauro Sano (Sweda)             Emprestimo de ECFs
@@ -93,6 +94,20 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.8.8b  28/09/09
+ 
+[*]  Diversas alterações efetuadas por: Ivan Moreira
+     - ECF´s : Sweda, Bematech, Epson, FiscNet e NaoFiscal
+       Rotinas: ECF.IM = Retorna a Inscrição Municipal; 
+	   ECF.Cliche = Retorna o Cabeçalho;
+ 
+	 - ECF´s: NaoFiscal
+       Rotinas: ECF.CNPJ = Retorna CNPJ; ECF.PAF = Retorna Linha PAF;
+ 
+	 - ECF´s: Bematech
+		Rotinas: ECF.LeituraMFDSerial(dtInicial,dtFinal) = Retorna MFD por Data; 
+		ECF.LeituraMFDSerial(COOInicial,COOFinal) = Retorna MFD por COO;
+ 
 Versão 0.8.8b  01/12/08
 -- ACBrConsts --
 [+]    Mensagens de Erro e Alerta de ACBrECF centralizadas em ACBrConsts.pas,

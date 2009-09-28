@@ -282,6 +282,10 @@ TACBrECF = class( TACBrComponent )
     procedure SetComandoLOGClass(const Value: AnsiString);
     function GetCNPJClass: String;
     function GetIEClass: String;
+//IMS
+    function GetIMClass: String;
+    function GetClicheClass: String;
+//IMS
     function GetPAFClass: String;
     function GetDadosReducaoZ: AnsiString;
     function GetDadosUltimaReducaoZ: AnsiString;
@@ -351,6 +355,10 @@ TACBrECF = class( TACBrComponent )
     Property DataMovimento      : TDateTime  read GetDataMovimentoClass ;
     Property CNPJ               : String     read GetCNPJClass ;
     Property IE                 : String     read GetIEClass ;
+//IMS
+    Property IM                 : String     read GetIMClass ;
+    Property Cliche             : String     read GetClicheClass ;    
+//IMS
     Property PAF                : String     read GetPAFClass ;
     Property NumCRZ             : String     read GetNumCRZClass ;
     Property NumCRO             : String     read GetNumCROClass ;
@@ -1406,6 +1414,19 @@ begin
   ComandoLOG := 'IE' ;
   Result := fsECF.IE ;
 end;
+
+//IMS
+function TACBrECF.GetIMClass: String;
+begin
+  ComandoLOG := 'IM' ;
+  Result := fsECF.IM ;
+end;
+function TACBrECF.GetClicheClass: String;
+begin
+  ComandoLOG := 'Cliche' ;
+  Result := fsECF.Cliche ;
+end;
+//IMS
 
 function TACBrECF.GetPAFClass: String;
 begin

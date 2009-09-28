@@ -434,6 +434,10 @@ TACBrECFClass = class
 
     function GetCNPJ: String; virtual ;
     function GetIE: String; virtual ;
+//IMS
+    function GetIM: String; virtual ;
+    function GetCliche: String; virtual ;
+//IMS    
     function GetPAF: String; virtual ;
     function GetDataMovimento: TDateTime; virtual ;
     function GetGrandeTotal: Double; virtual ;
@@ -577,6 +581,10 @@ TACBrECFClass = class
     Property DataMovimento      : TDateTime  read GetDataMovimento ;
     Property CNPJ               : String     read GetCNPJ ;
     Property IE                 : String     read GetIE ;
+//IMS
+    Property IM                 : String     read GetIM ;
+    Property Cliche             : String     read GetCliche ;    
+//IMS    
     Property PAF                : String     read GetPAF ;
     Property NumCRZ             : String     read GetNumCRZ ;
     Property NumCRO             : String     read GetNumCRO ;
@@ -1965,6 +1973,17 @@ function TACBrECFClass.GetIE: String;
 begin
   Result := '' ;
 end;
+
+//IMS
+function TACBrECFClass.GetIM: String;
+begin
+  Result := '' ;
+end;
+function TACBrECFClass.GetCliche: String;
+begin
+  Result := '' ;
+end;
+//IMS
 
 function TACBrECFClass.GetPAF: String;
 begin

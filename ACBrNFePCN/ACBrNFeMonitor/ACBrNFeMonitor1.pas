@@ -216,6 +216,7 @@ type
     edtLogoMarca: TEdit;
     sbLogoMarca: TSpeedButton;
     cbxFormCont: TCheckBox;
+    rgTipoFonte: TRadioGroup;
     procedure DoACBrTimer(Sender: TObject);
     procedure edOnlyNumbers(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
@@ -633,14 +634,12 @@ begin
      cbxExibeResumo.Checked    := Ini.ReadBool(   'DANFE','ExibeResumo',False) ;
      cbxImpValLiq.Checked      := Ini.ReadBool(   'DANFE','ImprimirValLiq',False) ;
      cbxFormCont.Checked       := Ini.ReadBool(   'DANFE','PreImpresso',False) ;
+     rgTipoFonte.ItemIndex     := Ini.ReadInteger( 'DANFE','Fonte'   ,0) ;
 
      if rgModeloDanfe.ItemIndex = 0 then
         ACBrNFe1.DANFE := ACBrNFeDANFERave1
      else
-        ACBrNFe1.DANFE := ACBrNFeDANFERaveCB1;   
-
-     if ACBrNFe1.DANFE = ACBrNFeDANFERave1 then
-        ACBrNFeDANFERave1.RavFile := PathWithDelim(ExtractFilePath(Application.ExeName))+'Report\DANFE_Rave513.rav';
+        ACBrNFe1.DANFE := ACBrNFeDANFERaveCB1;
 
      if ACBrNFe1.DANFE <> nil then
       begin
@@ -665,6 +664,10 @@ begin
         ACBrNFe1.DANFE.ExibirResumoCanhoto  :=  cbxExibeResumo.Checked;
         ACBrNFe1.DANFE.ImprimirTotalLiquido := cbxImpValLiq.Checked;
         ACBrNFe1.DANFE.FormularioContinuo   := cbxFormCont.Checked;
+        if ACBrNFe1.DANFE = ACBrNFeDANFERave1 then
+           ACBrNFeDANFERave1.RavFile := PathWithDelim(ExtractFilePath(Application.ExeName))+'Report\DANFE_Rave513.rav'
+        else
+           ACBrNFeDANFERaveCB1.Fonte  := NotaUtil.SeSenao(rgTipoFonte.ItemIndex=0,ftTimes,ftCourier);
       end;
 
      edtSmtpHost.Text      := Ini.ReadString( 'Email','Host'   ,'') ;
@@ -779,6 +782,7 @@ begin
      Ini.WriteBool(   'DANFE','ExibeResumo'   ,cbxExibeResumo.Checked) ;
      Ini.WriteBool(   'DANFE','ImprimirValLiq',cbxImpValLiq.Checked) ;
      Ini.WriteBool(   'DANFE','PreImpresso'   ,cbxFormCont.Checked) ;
+     Ini.WriteInteger('DANFE','Fonte'         ,rgTipoFonte.ItemIndex) ;     
 
      Ini.WriteBool(   'Arquivos','Salvar'     ,cbxSalvarArqs.Checked);
      Ini.WriteBool(   'Arquivos','PastaMensal',cbxPastaMensal.Checked);

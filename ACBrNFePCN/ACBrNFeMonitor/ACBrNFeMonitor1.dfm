@@ -4961,6 +4961,18 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
               Caption = 'Formulario Pr'#233'-Impresso'
               TabOrder = 12
             end
+            object rgTipoFonte: TRadioGroup
+              Left = 298
+              Top = 112
+              Width = 212
+              Height = 33
+              Caption = 'Tipo de Fonte(Rave CB)'
+              Columns = 2
+              Items.Strings = (
+                'Times'
+                'Courier')
+              TabOrder = 13
+            end
           end
           object TabSheet2: TTabSheet
             Caption = 'Dados Empresa'

@@ -427,7 +427,7 @@ begin
          end
          else
          begin
-            SetFont(FontNameUsed,9);
+            SetFont(FontNameUsed,NotaUtil.SeSenao(Pos('Courier',FontNameUsed)>0,8,9));
             GotoXY(PosX,PosYCodBarraContigencia+GetFontHeigh+0.5);
             CenterX:=PosX+(aWidth/2);
             PrintCenter('Consulta de autenticidade no portal nacional',CenterX);

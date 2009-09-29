@@ -53,9 +53,12 @@ uses Forms, SysUtils, Classes,
   ACBrNFeDANFEClass, ACBrDANFeCBRave, pcnNFe, pcnConversao;
 
 type
+  TFont=(ftTimes,ftCourier);
+
   TACBrNFeDANFERaveCB = class( TACBrNFeDANFEClass )
    private
      FTamanhoCampoCodigo: integer;
+     FFonte : TFont;
    public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -63,6 +66,7 @@ type
     procedure ImprimirDANFEPDF(NFE : TNFe = nil); override ;
   published
      property TamanhoCampoCodigo:integer read FTamanhoCampoCodigo write FTamanhoCampoCodigo;
+     property Fonte:TFont read FFonte write FFonte;
   end;
 
 implementation

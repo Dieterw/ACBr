@@ -48,6 +48,9 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+29/09/09
+[+]	: Adicionado opção Tipo de Fonte na Aba DANFE, onde pode ser usado Times New Romam ou Courier New
+
 25/09/09
 [*]	: Alterado comando NFe.ImprimirDANFE(cArquivo, cImpressora, nCopias) para permitir passar como terceiro parâmetro(nCopias) 
 	  o número de cópias que o DANFE deve ser impresso.

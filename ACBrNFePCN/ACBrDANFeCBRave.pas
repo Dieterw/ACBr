@@ -52,13 +52,11 @@ uses Graphics, Forms, Windows, SysUtils, Classes,
      Controls, ExtCtrls, Mask, jpeg, MaskUtils,
      RpDefine, RpBase, RpSystem, RpBars, RpMemo,
      RpRenderText, RpRenderRTF, RpRenderHTML, RpRender, RpRenderPDF,
-     ACBrNFe, pcnConversao, pcnNFe;
+     ACBrNFe, ACBrNFeUtil, pcnConversao, pcnNFe;
 
 const aHeigthPadrao:Double=5.7;      
-      FontNameUsed='Times New Roman';
       FontSizeIdentDoc_DANFE:Integer=12;
       FontSizeIdentDoc_TipoOperacao:Integer=8;
-      FontSizeIdentDoc_Outros:Integer=10;
       FontSizeEmit_Nome:Integer=12;
       FontSizeEmit_Outros:Integer=8;
       FontSizeItens:Integer=6;
@@ -102,6 +100,8 @@ type
      FEspelho:Boolean;
      FLastItens:Double;
      FFirstX,FFirstY,FLastX,FLastY:double;
+     FontNameUsed : String;
+     FontSizeIdentDoc_Outros : Integer;
      constructor Create(AOwner:TComponent); override;
      destructor Destroy; override;
      function GetFontHeigh:Double;
@@ -159,7 +159,7 @@ var DANFeRave:TDANFeRave;
 
 implementation
 
-uses ACBrNFeUtil, ACBrDANFeCBRavePaisagem, ACBrDANFeCBRaveRetrato;
+uses ACBrDANFeCBRavePaisagem, ACBrDANFeCBRaveRetrato, ACBrNFeDANFERaveCB;
 
 procedure ImprimirDANFeRave(aACBrNFe:TACBrNFe;
                             aSite,
@@ -194,6 +194,13 @@ var DANFeRave:TDANFeRave;
     rvRTF:TRvRenderRTF;
 begin
   DANFeRave:=TDANFeRave.Create(nil);
+
+  if TACBrNFeDANFERaveCB(aACBrNFe.DANFE).Fonte = ftCourier then
+     DANFeRave.FontNameUsed := 'Courier New'
+  else
+     DANFeRave.FontNameUsed := 'Times New Roman';
+  DANFeRave.FontSizeIdentDoc_Outros := NotaUtil.SeSenao(Pos('Courier',DANFeRave.FontNameUsed)>0,9,10);
+
   rvPDF:=TRvRenderPDF.Create(DANFeRave);
   rvPDF.OnDecodeImage:=DANFeRave.RaveDecodeImage;
   rvTXT:=TRvRenderText.Create(DANFeRave);

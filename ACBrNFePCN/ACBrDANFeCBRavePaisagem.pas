@@ -440,7 +440,7 @@ begin
          end
          else
          begin
-            SetFont(FontNameUsed,11);
+            SetFont(FontNameUsed,NotaUtil.SeSenao(Pos('Courier',FontNameUsed)>0,8,11));
             GotoXY(PosX,PosYCodBarraContigencia+5);
             CenterX:=PosX+(aWidth/2);
             PrintCenter('Consulta de autenticidade no portal nacional da NF-e',CenterX);

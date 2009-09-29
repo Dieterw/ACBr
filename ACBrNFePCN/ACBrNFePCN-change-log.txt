@@ -53,6 +53,8 @@ Alterações   29/09/09
 [-] Alterado linhas onde existia Path+'\' para PathWithDelim(Path)
 [-] Corrigido retorno das funções EnviarDPEC, ConsultarDPEC e Consulta de Cadastro, para retornarem True quando o comando for executado
     com sucesso(Estava retornando sempre False)
+[+] Adicionado propriedade Fonte no componente ACBrNFeDanfeRaveCB, onde pode ser usado ftTimes - para Times New Romam e ftCourier - para
+    Courier New
 
 Alterações   25/09/09
 ---------------

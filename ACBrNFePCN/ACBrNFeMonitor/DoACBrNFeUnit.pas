@@ -611,10 +611,19 @@ begin
 
         else if Cmd.Metodo = 'enviaremail' then
          begin
-           if FileExists(Cmd.Params(1)) then
+           ACBrNFe1.NotasFiscais.Clear;
+           if FileExists(Cmd.Params(1)) or FileExists(PathWithDelim(ACBrNFe1.Configuracoes.Geral.PathSalvar)+Cmd.Params(1)) then
             begin
-              ACBrNFe1.NotasFiscais.Clear;
-              ACBrNFe1.NotasFiscais.LoadFromFile(Cmd.Params(1));
+              if FileExists(Cmd.Params(1)) then
+               begin
+                 ACBrNFe1.NotasFiscais.LoadFromFile(Cmd.Params(1));
+                 ArqNFe := Cmd.Params(1);
+               end
+              else
+               begin
+                 ACBrNFe1.NotasFiscais.LoadFromFile(PathWithDelim(ACBrNFe1.Configuracoes.Geral.PathSalvar)+Cmd.Params(1));
+                 ArqNFe := PathWithDelim(ACBrNFe1.Configuracoes.Geral.PathSalvar)+Cmd.Params(1);
+               end;
             end
            else
               raise Exception.Create('Arquivo '+Cmd.Params(1)+' não encontrado.');
@@ -632,7 +641,7 @@ begin
               end;
             end;
             try
-               EnviarEmail(edtSmtpHost.Text, edtSmtpPort.Text, edtSmtpUser.Text, edtSmtpPass.Text, edtSmtpUser.Text, Cmd.Params(0),NotaUtil.SeSenao(NotaUtil.NaoEstaVazio(Cmd.Params(3)),Cmd.Params(3),edtEmailAssunto.Text), Cmd.Params(1), ArqPDF, mmEmailMsg.Lines, cbEmailSSL.Checked,Cmd.Params(4));
+               EnviarEmail(edtSmtpHost.Text, edtSmtpPort.Text, edtSmtpUser.Text, edtSmtpPass.Text, edtSmtpUser.Text, Cmd.Params(0),NotaUtil.SeSenao(NotaUtil.NaoEstaVazio(Cmd.Params(3)),Cmd.Params(3),edtEmailAssunto.Text), ArqNFe, ArqPDF, mmEmailMsg.Lines, cbEmailSSL.Checked,Cmd.Params(4));
                Cmd.Resposta := 'Email enviado com sucesso';
             except
                on E: Exception do

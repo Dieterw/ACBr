@@ -1167,19 +1167,19 @@ begin
          FNotasFiscais.Items[j].NFe.procNFe.xMotivo  := AInfProt.Items[i].xMotivo;
          if FConfiguracoes.Geral.Salvar or NotaUtil.NaoEstaVazio(FNotasFiscais.Items[j].NomeArq) then
           begin
-            if FileExists(FConfiguracoes.Geral.PathSalvar+'\'+AInfProt.Items[i].chNFe+'-nfe.xml') and
-               FileExists(FConfiguracoes.Geral.PathSalvar+'\'+FNFeRetorno.nRec+'-pro-rec.xml') then
+            if FileExists(PathWithDelim(FConfiguracoes.Geral.PathSalvar)+AInfProt.Items[i].chNFe+'-nfe.xml') and
+               FileExists(PathWithDelim(FConfiguracoes.Geral.PathSalvar)+FNFeRetorno.nRec+'-pro-rec.xml') then
              begin
                AProcNFe:=TProcNFe.Create;
-               AProcNFe.PathNFe:=FConfiguracoes.Geral.PathSalvar+'\'+AInfProt.Items[i].chNFe+'-nfe.xml';
-               AProcNFe.PathRetConsReciNFe:=FConfiguracoes.Geral.PathSalvar+'\'+FNFeRetorno.nRec+'-pro-rec.xml';
+               AProcNFe.PathNFe:=PathWithDelim(FConfiguracoes.Geral.PathSalvar)+AInfProt.Items[i].chNFe+'-nfe.xml';
+               AProcNFe.PathRetConsReciNFe:=PathWithDelim(FConfiguracoes.Geral.PathSalvar)+FNFeRetorno.nRec+'-pro-rec.xml';
                AProcNFe.GerarXML;
                if NotaUtil.NaoEstaVazio(AProcNFe.Gerador.ArquivoFormatoXML) then
                 begin
                   if NotaUtil.NaoEstaVazio(FNotasFiscais.Items[j].NomeArq) then
                      AProcNFe.Gerador.SalvarArquivo(FNotasFiscais.Items[j].NomeArq)
                   else
-                     AProcNFe.Gerador.SalvarArquivo(FConfiguracoes.Geral.PathSalvar+'\'+AInfProt.Items[i].chNFe+'-nfe.xml');
+                     AProcNFe.Gerador.SalvarArquivo(PathWithDelim(FConfiguracoes.Geral.PathSalvar)+AInfProt.Items[i].chNFe+'-nfe.xml');
                 end;
                AProcNFe.Free;
              end;
@@ -1603,14 +1603,14 @@ begin
            TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NFe.procNFe.cStat    := NFeRetorno.cStat;
            TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NFe.procNFe.xMotivo  := NFeRetorno.xMotivo;
 
-          if FileExists(FConfiguracoes.Geral.PathSalvar+'\'+FNFeChave+'-nfe.xml') or NotaUtil.NaoEstaVazio(TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NomeArq) then
+          if FileExists(PathWithDelim(FConfiguracoes.Geral.PathSalvar)+FNFeChave+'-nfe.xml') or NotaUtil.NaoEstaVazio(TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NomeArq) then
            begin
              AProcNFe:=TProcNFe.Create;
              if NotaUtil.NaoEstaVazio(TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NomeArq) then
                 AProcNFe.PathNFe:=TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NomeArq
              else
-                AProcNFe.PathNFe:=FConfiguracoes.Geral.PathSalvar+'\'+FNFeChave+'-nfe.xml';
-             AProcNFe.PathRetConsSitNFe:=FConfiguracoes.Geral.PathSalvar+'\'+FNFeChave+'-sit.xml';
+                AProcNFe.PathNFe:=PathWithDelim(FConfiguracoes.Geral.PathSalvar)+FNFeChave+'-nfe.xml';
+             AProcNFe.PathRetConsSitNFe:=PathWithDelim(FConfiguracoes.Geral.PathSalvar)+FNFeChave+'-sit.xml';
              AProcNFe.GerarXML;
              if NotaUtil.NaoEstaVazio(AProcNFe.Gerador.ArquivoFormatoXML) then
                 AProcNFe.Gerador.SalvarArquivo(AProcNFe.PathNFe);
@@ -1630,11 +1630,11 @@ begin
      begin
        if FConfiguracoes.Geral.Salvar then
         begin
-          if FileExists(FConfiguracoes.Geral.PathSalvar+'\'+FNFeChave+'-nfe.xml') then
+          if FileExists(PathWithDelim(FConfiguracoes.Geral.PathSalvar)+FNFeChave+'-nfe.xml') then
            begin
              AProcNFe:=TProcNFe.Create;
-             AProcNFe.PathNFe:=FConfiguracoes.Geral.PathSalvar+'\'+FNFeChave+'-nfe.xml';
-             AProcNFe.PathRetConsSitNFe:=FConfiguracoes.Geral.PathSalvar+'\'+FNFeChave+'-sit.xml';
+             AProcNFe.PathNFe:=PathWithDelim(FConfiguracoes.Geral.PathSalvar)+FNFeChave+'-nfe.xml';
+             AProcNFe.PathRetConsSitNFe:=PathWithDelim(FConfiguracoes.Geral.PathSalvar)+FNFeChave+'-sit.xml';
              AProcNFe.GerarXML;
              if NotaUtil.NaoEstaVazio(AProcNFe.Gerador.ArquivoFormatoXML) then
                 AProcNFe.Gerador.SalvarArquivo(AProcNFe.PathNFe);

@@ -672,7 +672,7 @@ begin
      Tamanho := 13 ;
      xTP := 2   ;   yROT := 'E'  ;   yMD  := 11   ;   yTP  := 1 ;
      vDigitos  := VarArrayOf(
-        ['DVY','DVX',c0_9,c0_9,c0_9,c0_9,c0_9,c0_9,c0_9,c0_9,'3,4','7','0','']);
+        ['DVY','DVX',c0_9,c0_9,c0_9,c0_9,c0_9,c0_9,c0_9,c0_9,'3,4,5','7','0','']);
   end ;
 
   if fsComplemento = 'ES' then

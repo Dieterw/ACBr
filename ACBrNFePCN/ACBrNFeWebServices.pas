@@ -1997,6 +1997,8 @@ begin
     FcUF      := FRetConsCad.cUF ;
 
     FMsg      := FRetConsCad.XMotivo;
+
+   Result := (FRetConsCad.cStat in [111,112]);
 //    FRetConsCad.Free;
 
     if FConfiguracoes.Geral.Salvar then
@@ -2141,6 +2143,8 @@ begin
     FNFeChave  := RetDPEC.chNFE;
 
     FMsg      := RetDPEC.XMotivo;
+
+    Result := (RetDPEC.cStat = 124);
     RetDPEC.Free;
 
     if FConfiguracoes.Geral.Salvar then
@@ -2252,6 +2256,7 @@ begin
     FNFeChave  := RetDPEC.chNFE;
 
     FMsg      := RetDPEC.XMotivo;
+    Result := (RetDPEC.cStat = 125);
 
     if FConfiguracoes.Geral.Salvar then
       FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+'-sit-dpec.xml', FRetWS);

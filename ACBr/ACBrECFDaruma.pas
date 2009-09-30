@@ -198,7 +198,8 @@ TACBrECFDaruma = class( TACBrECFClass )
 
     function GetRet244: AnsiString;
     property Ret244 : AnsiString read GetRet244 ;
-    function LimpaStr(AString: AnsiString): AnsiString;
+    function LimpaChr0(const AString: AnsiString): AnsiString;
+    function LimpaChrImpressao(const AString: AnsiString): AnsiString;
     function EnviaComando_ECF_Daruma(cmd: AnsiString): AnsiString;
     Function DocumentosToStr(Documentos : TACBrECFTipoDocumentoSet) : String ;
  protected
@@ -1298,7 +1299,7 @@ begin
   begin
      fsEsperaFFCR := True ;
      RetCmd := EnviaComando(FS + 'F' + #235 + '1', 10) ;
-     RetCmd := LimpaStr( RetCmd ) ;  { Troca #0 dentro da String por espaços }
+     RetCmd := LimpaChrImpressao( RetCmd ) ;  { Troca #0 dentro da String por espaços }
      Linhas.Text := RetCmd ;
      fsRet244 := '' ;
   end ;
@@ -2653,8 +2654,8 @@ begin
     RetCmd := EnviaComando(ESC + #209 + Flag +
                             IntToStrZero(ReducaoInicial,6)+
                             IntToStrZero(ReducaoFinal  ,6), Espera ) ;
-                            
-  RetCmd := LimpaStr( RetCmd ) ;  { Troca #0 dentro da String por espaços }
+
+  RetCmd := LimpaChrImpressao( RetCmd ) ;  { Troca #0 dentro da String por espaços }
   Linhas.Clear ;
   Linhas.Text := RetCmd ;
 end;
@@ -2678,7 +2679,7 @@ begin
     RetCmd := EnviaComando(ESC + #209 + Flag +
                             FormatDateTime('ddmmyy',DataInicial)+
                             FormatDateTime('ddmmyy',DataFinal), Espera ) ;
-  RetCmd := LimpaStr( RetCmd ) ;  { Troca #0 dentro da String por espaços }
+  RetCmd := LimpaChrImpressao( RetCmd ) ;  { Troca #0 dentro da String por espaços }
   Linhas.Clear ;
   Linhas.Text := RetCmd ;
 end;
@@ -2732,7 +2733,7 @@ begin
                           IntToStrZero(COOFinal  ,6) + '12' +
                           DocumentosToStr(Documentos), Espera );
 
-  RetCmd := LimpaStr( RetCmd ) ;  { Troca #0 dentro da String por espaços }
+  RetCmd := LimpaChrImpressao( RetCmd ) ;  { Troca #0 dentro da String por espaços }
   Linhas.Clear ;
   Linhas.Text := RetCmd ;
 end;
@@ -2751,24 +2752,51 @@ begin
                           FormatDateTime('ddmmyy',DataFinal) + '11' +
                           DocumentosToStr(Documentos), Espera );
 
-  RetCmd := LimpaStr( RetCmd ) ;  { Troca #0 dentro da String por espaços }
+  RetCmd := LimpaChrImpressao( RetCmd ) ;  { Troca #0 dentro da String por espaços }
   Linhas.Clear ;
   Linhas.Text := RetCmd ;
 end;
 
-function TACBrECFDaruma.LimpaStr(AString: AnsiString): AnsiString;
-Var A,Len : Integer ;
+function TACBrECFDaruma.LimpaChr0(const AString: AnsiString): AnsiString;
 begin
-  Result := '' ;
-  Len    := Length( AString ) ;
+  // Substituindo #0 por ' ' //
+  Result := StringReplace( AString, #0, ' ', [rfReplaceAll] ) ;
+end ;
 
-  For A := 1 to Len do
+function TACBrECFDaruma.LimpaChrImpressao(const AString: AnsiString): AnsiString;
+begin
+  Result := AString ;
+  
+  // Removendo comandos de Impressão //
+  if pos( #14, Result ) > 0 then      // Liga Lagura Dupla 1 linha
   begin
-     if AString[A] = #0 then
-        Result := Result + ' '
-     else
-        Result := Result + AString[A] ;
+     Result := StringReplace( Result, #27+#14, '', [rfReplaceAll] ) ;
+     Result := StringReplace( Result, #14, '', [rfReplaceAll] ) ;
+     Result := StringReplace( Result, #20, '', [rfReplaceAll] ) ;  // Desliga o modo dupla largura por uma linha
   end ;
+
+  if pos( #15, Result ) > 0 then      // Liga o modo condensado
+  begin
+     Result := StringReplace( Result, #27+#15, '', [rfReplaceAll] ) ;
+     Result := StringReplace( Result, #15, '', [rfReplaceAll] ) ;
+     Result := StringReplace( Result, #18, '', [rfReplaceAll] ) ;  // Desliga o modo condensado
+  end ;
+
+  if pos( #27, Result ) > 0 then      // Demais controles
+  begin
+     Result := StringReplace( Result, #27+'W0', '', [rfReplaceAll] ) ;  // Desliga modo dupla largura
+     Result := StringReplace( Result, #27+'W1', '', [rfReplaceAll] ) ;  // liga modo dupla largura
+     Result := StringReplace( Result, #27+'G0', '', [rfReplaceAll] ) ;  // Desliga modo enfatizado
+     Result := StringReplace( Result, #27+'G1', '', [rfReplaceAll] ) ;  // liga modo enfatizado
+     Result := StringReplace( Result, #27+'E0', '', [rfReplaceAll] ) ;  // Desliga modo negrito
+     Result := StringReplace( Result, #27+'E1', '', [rfReplaceAll] ) ;  // liga modo negrito
+     Result := StringReplace( Result, #27+'-0', '', [rfReplaceAll] ) ;  // Desliga modo sublinhado
+     Result := StringReplace( Result, #27+'-1', '', [rfReplaceAll] ) ;  // liga modo sublinhado
+  end ;
+
+  Result := StringReplace( Result, #0 , '', [rfReplaceAll] ) ;  // NUL
+  Result := StringReplace( Result, #3 , '', [rfReplaceAll] ) ;  // ETX
+  Result := StringReplace( Result, #22, '', [rfReplaceAll] ) ;  // SYN
 end;
 
 
@@ -3442,7 +3470,7 @@ begin
 
     Registrador := IntToStrZero(Indice, 3);
     Result := EnviaComando( FS + 'R' + #200 + Registrador);
-    Result  :=  Trim(LimpaStr(Copy(Result, 6, Length(Result) - 6)));
+    Result  :=  Trim(LimpaChr0(Copy(Result, 6, Length(Result) - 6)));
   end;
 end;
 

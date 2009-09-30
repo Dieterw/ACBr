@@ -498,7 +498,8 @@ TACBrECF = class( TACBrComponent )
 
     { Relatorios }
     Procedure LeituraX ;
-    Procedure LeituraXSerial( var Linhas : TStringList) ;
+    Procedure LeituraXSerial( Linhas : TStringList ) ; overload ;
+    Procedure LeituraXSerial( NomeArquivo : String  ); overload ;
     Procedure ReducaoZ( DataHora : TDateTime = 0 ) ;
     Procedure RelatorioGerencial(Relatorio : TStrings; Vias : Integer = 1; Indice: Integer = 0) ;
     Procedure AbreRelatorioGerencial(Indice: Integer = 0) ;
@@ -535,16 +536,27 @@ TACBrECF = class( TACBrComponent )
     Procedure ImpactoAgulhas( NivelForca : Integer = 2);
     Procedure LeituraMemoriaFiscal( DataInicial, DataFinal : TDateTime;
        Simplificada : Boolean = False ) ; overload ;
+
     Procedure LeituraMemoriaFiscal( ReducaoInicial, ReducaoFinal : Integer;
        Simplificada : Boolean = False) ; overload ;
     Procedure LeituraMemoriaFiscalSerial( DataInicial, DataFinal : TDateTime;
-       var Linhas : TStringList; Simplificada : Boolean = False ) ; overload ;
+       Linhas : TStringList; Simplificada : Boolean = False ) ; overload ;
     Procedure LeituraMemoriaFiscalSerial( ReducaoInicial, ReducaoFinal : Integer;
-       var Linhas : TStringList; Simplificada : Boolean = False ) ; overload ;
+       Linhas : TStringList; Simplificada : Boolean = False ) ; overload ;
+    Procedure LeituraMemoriaFiscalSerial( DataInicial, DataFinal : TDateTime;
+       NomeArquivo : String; Simplificada : Boolean = False ) ; overload ;
+    Procedure LeituraMemoriaFiscalSerial( ReducaoInicial, ReducaoFinal : Integer;
+       NomeArquivo : String; Simplificada : Boolean = False ) ; overload ;
+
     Procedure LeituraMFDSerial( DataInicial, DataFinal : TDateTime;
-       var Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ;
+       Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ;
     Procedure LeituraMFDSerial( COOInicial, COOFinal : Integer;
-       var Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ;
+       Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ;
+    Procedure LeituraMFDSerial( DataInicial, DataFinal : TDateTime;
+       NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ;
+    Procedure LeituraMFDSerial( COOInicial, COOFinal : Integer;
+       NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ;
+
     Procedure IdentificaOperador( Nome : String) ;
     Procedure IdentificaPAF( Linha1, Linha2 : String) ;
     Function RetornaInfoECF( Registrador : String ) : AnsiString;
@@ -2422,7 +2434,7 @@ begin
 end;
 
 procedure TACBrECF.LeituraMemoriaFiscalSerial(ReducaoInicial,
-   ReducaoFinal: Integer; var Linhas : TStringList; Simplificada : Boolean );
+   ReducaoFinal: Integer; Linhas : TStringList; Simplificada : Boolean );
 begin
   ComandoLOG := 'LeituraMemoriaFiscalSerial( '+IntToStr(ReducaoInicial)+' , '+
                     IntToStr(ReducaoFinal)+' , Linhas ,'+
@@ -2432,7 +2444,7 @@ begin
 end;
 
 procedure TACBrECF.LeituraMemoriaFiscalSerial(DataInicial,
-   DataFinal: TDateTime; var Linhas : TStringList; Simplificada : Boolean );
+   DataFinal: TDateTime; Linhas : TStringList; Simplificada : Boolean );
 begin
   ComandoLOG := 'LeituraMemoriaFiscalSerial( '+DateToStr(DataInicial)+' , '+
                     DateToStr(DataFinal)+' , Linhas ,'+BoolToStr(Simplificada)+' )';
@@ -2440,8 +2452,45 @@ begin
                                     Simplificada) ;
 end;
 
+procedure TACBrECF.LeituraMemoriaFiscalSerial(ReducaoInicial,
+  ReducaoFinal: Integer; NomeArquivo: String; Simplificada: Boolean);
+ Var AStringList : TStringList ;
+begin
+  ComandoLOG := 'LeituraMemoriaFiscalSerial( '+IntToStr(ReducaoInicial)+' , '+
+                    IntToStr(ReducaoFinal)+' , '+NomeArquivo+' ,'+
+                    BoolToStr(Simplificada)+' )';
+  AStringList := TStringList.Create ;
+  try
+     fsECF.LeituraMemoriaFiscalSerial( ReducaoInicial, ReducaoFinal, AStringList,
+                                       Simplificada ) ;
+
+     AStringList.SaveToFile(NomeArquivo);
+  finally
+     AStringList.Free ;
+  end ;
+end;
+
+procedure TACBrECF.LeituraMemoriaFiscalSerial(DataInicial,
+  DataFinal: TDateTime; NomeArquivo: String; Simplificada: Boolean);
+ Var AStringList : TStringList ;
+begin
+  ComandoLOG := 'LeituraMemoriaFiscalSerial( '+DateToStr(DataInicial)+' , '+
+                    DateToStr(DataFinal)+' , '+NomeArquivo+' ,'+
+                    BoolToStr(Simplificada)+' )';
+  AStringList := TStringList.Create ;
+  try
+     fsECF.LeituraMemoriaFiscalSerial( DataInicial, DataFinal, AStringList,
+                                       Simplificada ) ;
+
+     AStringList.SaveToFile(NomeArquivo);
+  finally
+     AStringList.Free ;
+  end ;
+end;
+
+
 procedure TACBrECF.LeituraMFDSerial(DataInicial, DataFinal: TDateTime;
-  var Linhas: TStringList; Documentos : TACBrECFTipoDocumentoSet );
+  Linhas: TStringList; Documentos : TACBrECFTipoDocumentoSet );
 begin
   if not MFD then
      raise Exception.Create( 'ECF '+ModeloStr+' não é MFD') ;
@@ -2452,7 +2501,7 @@ begin
 end;
 
 procedure TACBrECF.LeituraMFDSerial(COOInicial, COOFinal: Integer;
-  var Linhas: TStringList; Documentos : TACBrECFTipoDocumentoSet );
+  Linhas: TStringList; Documentos : TACBrECFTipoDocumentoSet );
 begin
   if not MFD then
      raise Exception.Create( 'ECF '+ModeloStr+' não é MFD') ;
@@ -2461,6 +2510,41 @@ begin
                     IntToStr(COOFinal)+' , Linhas) ';
   fsECF.LeituraMFDSerial( COOInicial, COOFinal, Linhas, Documentos ) ;
 end;
+
+
+procedure TACBrECF.LeituraMFDSerial(DataInicial, DataFinal: TDateTime;
+  NomeArquivo: String; Documentos: TACBrECFTipoDocumentoSet);
+ Var AStringList : TStringList ;
+begin
+  ComandoLOG := 'LeituraMFDSerial( '+DateToStr(DataInicial)+' , '+
+                    DateToStr(DataFinal)+' , '+NomeArquivo+' ) ';
+  AStringList := TStringList.Create ;
+  try
+     fsECF.LeituraMFDSerial( DataInicial, DataFinal, AStringList, Documentos ) ;
+
+     AStringList.SaveToFile(NomeArquivo);
+  finally
+     AStringList.Free ;
+  end ;
+end;
+
+procedure TACBrECF.LeituraMFDSerial(COOInicial, COOFinal: Integer;
+  NomeArquivo: String; Documentos: TACBrECFTipoDocumentoSet);
+ Var AStringList : TStringList ;
+begin
+  ComandoLOG := 'LeituraMFDSerial( '+IntToStr(COOInicial)+' , '+
+                    IntToStr(COOFinal)+' , '+NomeArquivo+' ) ';
+  AStringList := TStringList.Create ;
+  try
+     fsECF.LeituraMFDSerial( COOInicial, COOFinal, AStringList, Documentos ) ;
+
+     AStringList.SaveToFile(NomeArquivo);
+  finally
+     AStringList.Free ;
+  end ;
+end;
+
+
 
 procedure TACBrECF.ImprimeCheque(Banco: String; Valor: Double; Favorecido,
   Cidade: String; Data: TDateTime; Observacao: String);
@@ -2512,10 +2596,24 @@ begin
   end ;
 end;
 
-procedure TACBrECF.LeituraXSerial(var Linhas: TStringList);
+procedure TACBrECF.LeituraXSerial(Linhas: TStringList);
 begin
   ComandoLOG := 'LeituraXSerial( Linhas )' ;
   fsECF.LeituraXSerial( Linhas ) ;
+end;
+
+procedure TACBrECF.LeituraXSerial(NomeArquivo: String);
+ Var AStringList : TStringList ;
+begin
+  ComandoLOG := 'LeituraXSerial( '+NomeArquivo+' )' ;
+  AStringList := TStringList.Create ;
+  try
+     fsECF.LeituraXSerial(AStringList);
+
+     AStringList.SaveToFile(NomeArquivo);
+  finally
+     AStringList.Free ;
+  end ;
 end;
 
 

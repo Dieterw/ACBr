@@ -2600,16 +2600,28 @@ end;
 procedure TForm1.LeituraXSerial1Click(Sender: TObject);
  Var Linhas : TStringList ;
      I      : Integer ;
+     Arquivo: String ;
 begin
-  Linhas := TStringList.Create ;
-  try
-     ACBrECF1.LeituraXSerial( Linhas );
+  Arquivo := ' ' ;
+  if not InputQuery('LeituraX Serial',
+                    'Nome Arquivo (vazio lista no Memo):', Arquivo ) then
+     exit ;
 
-     For I := 0 to Linhas.Count - 1 do
-        mResp.Lines.Add(Linhas[I]) ;
-  finally
-     Linhas.Free ;
-  end ;
+  Arquivo := Trim(Arquivo) ;
+  if Arquivo <> '' then
+     ACBrECF1.LeituraXSerial(Arquivo)
+  else
+   begin
+     Linhas := TStringList.Create ;
+     try
+        ACBrECF1.LeituraXSerial( Linhas );
+
+        For I := 0 to Linhas.Count - 1 do
+           mResp.Lines.Add(Linhas[I]) ;
+     finally
+        Linhas.Free ;
+     end ;
+   end ;
   mResp.Lines.Add('---------------------------------');
 end;
 

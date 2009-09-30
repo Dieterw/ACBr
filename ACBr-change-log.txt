@@ -94,6 +94,25 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.8.8b  30/09/09
+-- ACBrECF --
+[+]    Sobrecarga nos métodos abaixo para permitir informa "NomeArquivo: String"
+       ao inves de um StringList.
+
+       Procedure LeituraXSerial( NomeArquivo : String  ); overload ;
+       Procedure LeituraMemoriaFiscalSerial( DataInicial, DataFinal : TDateTime;
+          NomeArquivo : String; Simplificada : Boolean = False ) ; overload ;
+       Procedure LeituraMemoriaFiscalSerial( ReducaoInicial, ReducaoFinal : Integer;
+          NomeArquivo : String; Simplificada : Boolean = False ) ; overload ;
+       Procedure LeituraMFDSerial( DataInicial, DataFinal : TDateTime;
+          NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ;
+       Procedure LeituraMFDSerial( COOInicial, COOFinal : Integer;
+          NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ;
+
+-- ACBrECFDaruma --
+[*]    Adicionado mecanismo de "limpeza" de código de controle de Impressao em
+       captura de Documentos pela Serial
+       
 Versão 0.8.8b  28/09/09
  
 [*]  Diversas alterações efetuadas por: Ivan Moreira

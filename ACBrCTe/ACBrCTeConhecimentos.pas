@@ -292,7 +292,7 @@ begin
 {$IFDEF ACBrCTeOpenSSL}
         if not(CTeUtil.Assinar(LocCTeW.Gerador.ArquivoFormatoXML, FConfiguracoes.Certificados.Certificado , FConfiguracoes.Certificados.Senha, vAssinada, FMsg)) then
            raise Exception.Create('Falha ao assinar Conhecimento de Transporte Eletrônico '+
-                                   IntToStr(Self.Items[i].CTe.Ide.cNF)+FMsg);
+                                   IntToStr(Self.Items[i].CTe.Ide.cCT)+FMsg);
 {$ELSE}
         if not(CTeUtil.Assinar(LocCTeW.Gerador.ArquivoFormatoXML, FConfiguracoes.Certificados.GetCertificado , vAssinada, FMsg)) then
            raise Exception.Create('Falha ao assinar Conhecimento de Transporte Eletrônico '+

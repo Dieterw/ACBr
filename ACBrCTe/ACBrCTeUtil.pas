@@ -98,7 +98,7 @@ type
     class function GetURL(Const AUF, AAmbiente, FormaEmissao: Integer; ALayOut: TLayOut): WideString;
     class function SeparaDados( Texto : AnsiString; Chave : String ) : AnsiString;
     class function Valida(Const AXML: AnsiString; var AMsg: AnsiString): Boolean;
-{$IFDEF ACBrNFeOpenSSL}
+{$IFDEF ACBrCTeOpenSSL}
     class function Assinar(const AXML, ArqPFX, PFXSenha: AnsiString; out AXMLAssinado, FMensagem: AnsiString): Boolean;
 {$ELSE}
     class function Assinar(const AXML: AnsiString; Certificado : ICertificate2; out AXMLAssinado, FMensagem: AnsiString): Boolean;
@@ -505,7 +505,7 @@ begin
   else if Tipo = 3 then
      AStr := AStr + '</inutCTe>';
 
-  XmlAss := sign_file(PChar(AStr), PChar(ArqPFX), PChar(PFXSenha)) ;
+  XmlAss := NotaUtil.sign_file(PChar(AStr), PChar(ArqPFX), PChar(PFXSenha)) ;
 
   // Removendo quebras de linha //
   XmlAss := StringReplace( XmlAss, #10, '', [rfReplaceAll] ) ;

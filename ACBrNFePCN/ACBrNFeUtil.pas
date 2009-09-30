@@ -107,6 +107,8 @@ type
 
   public
     {$IFDEF ACBrNFeOpenSSL}
+       class function sign_file(const Axml: PAnsiChar; const key_file: PChar; const senha: PChar): AnsiString;
+       class function sign_memory(const Axml: PChar; const key_file: Pchar; const senha: PChar; Size: Cardinal; Ponteiro: Pointer): AnsiString;
        class Procedure InitXmlSec ;
        class Procedure ShutDownXmlSec ;
     {$ENDIF}
@@ -179,7 +181,7 @@ uses {$IFDEF ACBrNFeOpenSSL}libxml2, libxmlsec, libxslt, {$ELSE} ComObj, {$ENDIF
 { NotaUtil }
 
 {$IFDEF ACBrNFeOpenSSL}
-function sign_file(const Axml: PAnsiChar; const key_file: PChar; const senha: PChar): AnsiString;
+class function NotaUtil.sign_file(const Axml: PAnsiChar; const key_file: PChar; const senha: PChar): AnsiString;
 var
   doc: xmlDocPtr;
   node: xmlNodePtr;
@@ -242,7 +244,7 @@ begin
    end ;
 end;
 
-function sign_memory(const Axml: PChar; const key_file: Pchar; const senha: PChar; Size: Cardinal; Ponteiro: Pointer): AnsiString;
+class function NotaUtil.sign_memory(const Axml: PChar; const key_file: Pchar; const senha: PChar; Size: Cardinal; Ponteiro: Pointer): AnsiString;
 var
   doc: xmlDocPtr;
   node: xmlNodePtr;
@@ -1333,15 +1335,15 @@ begin
 
 
   if FileExists(ArqPFX) then
-    XmlAss := sign_file(PChar(AStr), PChar(ArqPFX), PChar(PFXSenha))
+    XmlAss := NotaUtil.sign_file(PChar(AStr), PChar(ArqPFX), PChar(PFXSenha))
   else
-  begin
+   begin
     Cert := TMemoryStream.Create;
     Cert2 := TStringStream.Create(ArqPFX);
 
     Cert.LoadFromStream(Cert2);
 
-    XmlAss := sign_memory(PChar(AStr), PChar(ArqPFX), PChar(PFXSenha), Cert.Size, Cert.Memory) ;
+    XmlAss := NotaUtil.sign_memory(PChar(AStr), PChar(ArqPFX), PChar(PFXSenha), Cert.Size, Cert.Memory) ;
   end;
 
   // Removendo quebras de linha //

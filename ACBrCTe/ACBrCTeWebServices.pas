@@ -1522,7 +1522,7 @@ function TCteRetRecepcao.Executar: Boolean;
          StrStream := TStringStream.Create('');
          StrStream.CopyFrom(HTTP.Document, 0);
 
-         FRetWS := CTeUtil.SeparaDados( CTeUtil.ParseText(StrStream.DataString, True),'cteRetRecepcaoResult');
+         FRetWS := CTeUtil.SeparaDados( NotaUtil.ParseText(StrStream.DataString, True),'cteRetRecepcaoResult');
          StrStream.Free;
       {$ELSE}
          ReqResp.Execute(Acao.Text, Stream);

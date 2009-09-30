@@ -67,7 +67,7 @@ end;
 procedure TForm1.FormCreate(Sender: TObject);
 begin
  ACBrCTe1 := TACBrCTe.Create(Self);
-{$IFDEF ACBrCTe1OpenSSL}
+{$IFDEF ACBrCTeOpenSSL}
  ACBrCTe1.Configuracoes.Certificados.Certificado := 'arquivo.pfx';
  ACBrCTe1.Configuracoes.Certificados.Senha := 'senha';
 {$ELSE}

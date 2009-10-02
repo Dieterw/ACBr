@@ -590,7 +590,7 @@ begin
                                    'DhRecbto='+DateTimeToStr(ACBrNFe1.WebServices.Retorno.NFeRetorno.ProtNFe.Items[i].dhRecbto)+sLineBreak+
                                    'NProt='+ACBrNFe1.WebServices.Retorno.NFeRetorno.ProtNFe.Items[i].nProt+sLineBreak+
                                    'DigVal='+ACBrNFe1.WebServices.Retorno.NFeRetorno.ProtNFe.Items[i].digVal+sLineBreak+
-                                   'Arquivo='+PathWithDelim(ACBrNFe1.Configuracoes.Geral.PathSalvar)+StringReplace(ACBrNFe1.NotasFiscais.Items[j].NFe.infNFe.ID, 'NFe', '', [rfIgnoreCase])+'-nfe.xml';
+                                   'Arquivo='+PathWithDelim(ACBrNFe1.Configuracoes.Geral.PathSalvar)+StringReplace(ACBrNFe1.NotasFiscais.Items[j].NFe.infNFe.ID, 'NFe', '', [rfIgnoreCase])+'-nfe.xml'+sLineBreak;
                         if (Cmd.Params(2) = '1') and ACBrNFeDANFERave1.MostrarPreview then
                          begin
                            Restaurar1.Click;

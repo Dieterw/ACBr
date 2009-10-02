@@ -940,6 +940,7 @@ object Form1: TForm1
     TipoDANFE = tiRetrato
     NumCopias = 1
     ImprimirDescPorc = True
+    ImprimirTotalLiquido = False
     MargemInferior = 0.800000000000000000
     MargemSuperior = 0.800000000000000000
     MargemEsquerda = 0.600000000000000000
@@ -947,6 +948,7 @@ object Form1: TForm1
     CasasDecimais._qCom = 2
     CasasDecimais._vUnCom = 2
     ExibirResumoCanhoto = False
+    FormularioContinuo = False
     RavFile = 'D:\delphi\ACBr\trunk\ACBrNFePCN\Demo\Report\DANFE_Rave513.rav'
     Left = 355
     Top = 228

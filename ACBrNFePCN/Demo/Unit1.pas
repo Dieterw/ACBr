@@ -4,10 +4,10 @@ unit Unit1;
 
 interface
 
-uses IniFiles, 
+uses IniFiles,
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, Buttons, ComCtrls, OleCtrls, SHDocVw,
-  ACBrNFe, pcnConversao, ACBrNFeDANFEClass, ACBrNFeDANFERave;
+  ACBrNFe, pcnConversao, ACBrNFeDANFEClass, ACBrNFeDANFERave, ACBrUtil;
 
 type
   TForm1 = class(TForm)
@@ -997,7 +997,7 @@ if not(InputQuery('WebServices Enviar', 'Numero da Nota', vAux)) then
   end;
 
   ACBrNFe1.NotasFiscais.Items[0].SaveToFile;
-  MemoResp.Lines.LoadFromFile(ACBrNFe1.Configuracoes.Geral.PathSalvar+'\'+copy(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID, (length(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml');
+  MemoResp.Lines.LoadFromFile(PathWithDelim(ACBrNFe1.Configuracoes.Geral.PathSalvar)+copy(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID, (length(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml');
   LoadXML(MemoResp, WBResposta);
 end;
 

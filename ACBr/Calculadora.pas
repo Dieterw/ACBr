@@ -40,11 +40,13 @@ interface
 uses
   ACBrCalculadora,          
   Messages, SysUtils, Classes, Graphics, Controls, Forms,
-   Dialogs, Menus, StdCtrls, ExtCtrls, 
-  {$ifdef FPC}LCLIntf, LResources, Buttons, {$else} Windows, {$endif}
+   Dialogs, Menus, StdCtrls, ExtCtrls, Windows,
   {$IFDEF COMPILER6_UP} Variants {$ELSE} ACBrD5 {$ENDIF}  ;
 
 type
+
+  { TFrCalculadora }
+
   TFrCalculadora = class(TForm)
     b1: TButton;
     b0: TButton;
@@ -56,6 +58,7 @@ type
     b7: TButton;
     b8: TButton;
     b9: TButton;
+    pValor : TPanel;
     bponto: TButton;
     bigual: TButton;
     bmais: TButton;
@@ -66,7 +69,6 @@ type
     bc: TButton;
     bce: TButton;
     bporc: TButton;
-    pValor: TPanel;
     mBobina: TMemo;
     PopupMenu1: TPopupMenu;
     Limpar1: TMenuItem;
@@ -115,15 +117,8 @@ implementation
 
 uses ACBrUtil, Math;
 
-{$IFNDEF FPC}
-   {$R *.dfm}
-{$ENDIF}
+{$R *.dfm}
 
 {$I incCalculadora.pas}
-
-{$ifdef FPC}
-initialization
-   {$i Calculadora.lrs}
-{$endif}
 
 end.

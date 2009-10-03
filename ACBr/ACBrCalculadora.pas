@@ -63,8 +63,11 @@ uses
 type
   TACBrCalculadoraDisplayChange = procedure(Sender: TObject; Valor : Double) of object;
 
+  { TACBrCalculadora }
+
   TACBrCalculadora = class ( TACBrComponent )
   private
+    FBorderStyle : TFormBorderStyle;
     FTitulo: String ;
     FValor : Double ;
     FTexto : String ;
@@ -99,13 +102,22 @@ type
      property OnCalcKey : TKeyPressEvent read FOnCalcKey write FOnCalcKey;
      property OnDisplayChange: TACBrCalculadoraDisplayChange
                       read FOnDisplayChange write FOnDisplayChange;
+     property BorderStyle : TFormBorderStyle read FBorderStyle write FBorderStyle ;
   end;
 
 implementation
-Uses {$IFDEF VisualCLX} QCalculadora {$ENDIF}
-     {$IFDEF VCL} Calculadora {$ENDIF};
+Uses {$IFDEF VisualCLX}
+       QCalculadora
+     {$ELSE}
+       {$IFDEF FPC}
+         LCalculadora
+       {$ELSE}
+         Calculadora
+       {$ENDIF}
+     {$ENDIF};
 
 { TACBrCalculadora }
+
 constructor TACBrCalculadora.Create(AOwner: TComponent);
 begin
   inherited Create( AOwner );
@@ -115,6 +127,11 @@ begin
   FCor        := clLime ;
   FCentraliza := false ;
   FCorForm    := clBtnFace ;
+  {$IFDEF VisualCLX}
+   FBorderStyle:= fbsDialog;
+  {$ELSE}
+   FBorderStyle:= bsDialog;
+  {$ENDIF}
 end;
 
 function TACBrCalculadora.Execute: Boolean;
@@ -134,6 +151,8 @@ begin
            FrCalculadora.Top  := FCalcTop  ;
            FrCalculadora.Left := FCalcLeft ;
          end ;
+
+     FrCalculadora.BorderStyle := FBorderStyle ;
      FrCalculadora.Caption := FTitulo ;
      FrCalculadora.Color := FCorForm;
      FrCalculadora.pValor.Font.Color := FCor ;

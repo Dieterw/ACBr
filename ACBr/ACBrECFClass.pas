@@ -347,6 +347,7 @@ TACBrECFClass = class
       fsFormMsgEstado             : TACBrFormMsgEstado ;
       fsFormMsgControla : Boolean ;
       fsFormMsgException: String  ;
+      fsUsandoBlockInput : Boolean ;
     {$ENDIF}
 
     fsRelatorio : TStrings ;
@@ -380,11 +381,16 @@ TACBrECFClass = class
        {$ENDIF}
       {$ENDIF}
       function FormMsgExibe : Boolean;
+
+      {$IFDEF MSWINDOWS}
+        procedure BlockInput(const Block, ClearTypeAhead: Boolean);
+      {$ENDIF}
     {$ENDIF}
 
     procedure DoLeResposta ;
     procedure DoRelatorioGerencial ;
     procedure DoCupomVinculado ;
+
  Protected
     fpDevice : TACBrDevice ;
     fpOwner  : TComponent ;   { Componente ACBrECF }
@@ -1084,7 +1090,7 @@ begin
      raise Exception.create( cACBrECFClassCreateException );
 
   fpOwner := AOwner ;
-  
+
   { Criando ponteiro interno para as Propriedade SERIAL e FORMMSG de ACBrECF,
     para permitir as Classes Filhas o acesso a essas propriedades do Componente}
   fpDevice := (AOwner as TACBrECF).Device ;
@@ -1098,7 +1104,7 @@ begin
        fsFormMsgColor := FormMsgColor ;
     end ;
   {$ENDIF}
-  
+
   { Ajustando variaveis Internas }
   fsRetentar             := true ;
   fsOperador             := '' ;
@@ -1124,6 +1130,7 @@ begin
   fsOnMsgErro                  := nil ;
   fsOnMsgAguarde               := nil ;
   fsOnMsgRetentar              := nil ;
+  fsUsandoBlockInput           := False ;
 
   { Variaveis Protected fp___ acessiveis pelas Classes filhas }
   fpAtivo                 := false ;
@@ -1333,11 +1340,8 @@ begin
 end;
 
 {- LE RESPOSTA - Rotina de Leitura da Resposta do ECF com Bloqueio de Teclado -}
+
 procedure TACBrECFClass.LeResposta;
-{$IFDEF MSWINDOWS}
-var
-   Msg: TMsg;
-{$ENDIF}
 begin
   {$IFNDEF CONSOLE}
     if FormMsgExibe then
@@ -1345,16 +1349,11 @@ begin
        {$IFDEF MSWINDOWS}
         if (not ExibeMensagem) and Assigned( xBlockInput ) then
          begin
-           xBlockInput( True ) ;
+           BlockInput(True, False);
            try
               DoLeResposta ;
            finally
-              try
-                 // Remove todas as Teclas do Buffer do Teclado //
-                 while PeekMessage(Msg, 0, WM_KEYFIRST, WM_KEYLAST, PM_REMOVE or PM_NOYIELD) do;
-              except
-              end ;
-              xBlockInput( False ) ;
+              BlockInput(False, True);
            end ;
          end
         else
@@ -2198,8 +2197,23 @@ end;
 
 function TACBrECFClass.DoOnMsgRetentar( const Mensagem : String;
    const Situacao : String = ''): Boolean;
+{$IFDEF MSWINDOWS}
+ Var
+   UsandoBlockInput : Boolean ;
+{$ENDIF}
 begin
   Result := False ;
+  UsandoBlockInput := False ;
+
+  {$IFNDEF CONSOLE}
+    {$IFDEF MSWINDOWS}
+      if fsUsandoBlockInput then
+      begin
+         UsandoBlockInput := True ;
+         BlockInput(False,True);
+      end ;
+    {$ENDIF}
+  {$ENDIF}
 
   if Assigned( fsOnMsgRetentar ) then
      fsOnMsgRetentar( Mensagem, Situacao, Result )
@@ -2212,6 +2226,13 @@ begin
         Result := True ;
      {$ENDIF}
    end ;
+
+  {$IFNDEF CONSOLE}
+    {$IFDEF MSWINDOWS}
+      if UsandoBlockInput then
+         BlockInput(True,False);
+    {$ENDIF}
+  {$ENDIF}
 end;
 
 { Esta rotina é usada por Impressoras que não permitem enviar várias
@@ -3056,6 +3077,28 @@ end;
 
 
 {$IFNDEF CONSOLE}
+  {$IFDEF MSWINDOWS}
+    procedure TACBrECFClass.BlockInput( const Block, ClearTypeAhead : Boolean ) ;
+    var
+       Msg: TMsg;
+    begin
+      if not Assigned( xBlockInput ) then
+         exit ;
+         
+      if ClearTypeAhead then
+      begin
+        try
+           // Remove todas as Teclas do Buffer do Teclado //
+           while PeekMessage(Msg, 0, WM_KEYFIRST, WM_KEYLAST, PM_REMOVE or PM_NOYIELD) do;
+        except
+        end ;
+      end ;
+
+      xBlockInput( Block ) ;
+      fsUsandoBlockInput := Block ;
+    end ;
+  {$ENDIF}
+
   function TACBrECFClass.FormMsgDoProcedure(AProcedure: TACBrFormMsgProcedure;
     TeclaParaFechar: Word): Boolean;
   Var Timer : TTimer ;

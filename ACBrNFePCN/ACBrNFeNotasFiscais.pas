@@ -540,35 +540,31 @@ procedure TSendMailThread.Execute;
 var
    i: integer;
 begin
-   inherited;
-   try
-      try
-         if not smtp.Login() then
-            raise Exception.Create('SMTP ERROR: Login:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
-         if not smtp.MailFrom( sFrom, Length(sFrom)) then
-            raise Exception.Create('SMTP ERROR: MailFrom:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
-         if not smtp.MailTo(sTo) then
-            raise Exception.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
-         if (sCC <> nil) then
-         begin
-            for I := 0 to sCC.Count - 1 do
-            begin
-               if not smtp.MailTo(sCC.Strings[i]) then
-                  raise Exception.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
-            end;
-         end;
-         if not smtp.MailData(slmsg_Lines) then
-            raise Exception.Create('SMTP ERROR: MailData:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
-         if not smtp.Logout() then
-            raise Exception.Create('SMTP ERROR: Logout:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
-      except
-         try smtp.Sock.CloseSocket ; except end ;
-         HandleException;
-      end;
-   finally
-      if Assigned(slmsg_lines) then
-         slmsg_lines.free;
-   end;
+  inherited;
+
+  try
+     if not smtp.Login() then
+        raise Exception.Create('SMTP ERROR: Login:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+     if not smtp.MailFrom( sFrom, Length(sFrom)) then
+        raise Exception.Create('SMTP ERROR: MailFrom:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+     if not smtp.MailTo(sTo) then
+        raise Exception.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+     if (sCC <> nil) then
+     begin
+        for I := 0 to sCC.Count - 1 do
+        begin
+           if not smtp.MailTo(sCC.Strings[i]) then
+              raise Exception.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+        end;
+     end;
+     if not smtp.MailData(slmsg_Lines) then
+        raise Exception.Create('SMTP ERROR: MailData:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+     if not smtp.Logout() then
+        raise Exception.Create('SMTP ERROR: Logout:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+  except
+     try smtp.Sock.CloseSocket ; except end ;
+     HandleException;
+  end;
 end;
 
 procedure TSendMailThread.HandleException;

@@ -1350,11 +1350,12 @@ begin
   Result := inherited Executar;
   Result := False;
 
+  Sleep(TACBrNFe( FACBrNFe ).Configuracoes.WebServices.AguardarConsultaRet);
   vCont := 1000;
   while Processando do
   begin
     sleep(vCont);
-    if vCont > 5000 then
+    if vCont > (TACBrNFe( FACBrNFe ).Configuracoes.WebServices.Tentativas*1000) then
       break;
     vCont := vCont +1000;
   end;

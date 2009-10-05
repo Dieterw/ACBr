@@ -86,7 +86,7 @@ type
   published
     property Configuracoes: TConfiguracoes read FConfiguracoes write FConfiguracoes;
     property OnStatusChange: TNotifyEvent read FOnStatusChange write FOnStatusChange;
-	property DANFE: TACBrNFeDANFEClass read FDANFE write SetDANFE ;
+	  property DANFE: TACBrNFeDANFEClass read FDANFE write SetDANFE ;
     property AboutACBrNFe : TACBrNFeAboutInfo read fsAbout write fsAbout
                           stored false ;
   end;
@@ -122,6 +122,8 @@ begin
   FNotasFiscais      := TNotasFiscais.Create(Self,NotaFiscal);
   FNotasFiscais.Configuracoes := FConfiguracoes;
   FWebServices       := TWebServices.Create(Self);
+  if FConfiguracoes.WebServices.Tentativas <= 0 then
+     FConfiguracoes.WebServices.Tentativas := 5;
   {$IFDEF ACBrNFeOpenSSL}
      NotaUtil.InitXmlSec ;
   {$ENDIF}

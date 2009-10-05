@@ -48,6 +48,15 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   05/10/09
+---------------
+[+] Adicionada propriedades AguardarConsultaRet e Tentativas nas configurações do WebService. Estas propriedades apenas serão utilizadas
+    na consulta de retorno da autorização da NFe, por padrão o números de tentativas atual do componente está como 5, então está propriedade
+    será criada com este valor, mas poderá ser alterado para o valor que o desenvolvedor desejar. A propriedade AguardarConsultaRet  deve
+    ser informada em MiliSegundos, onde 1000 equivale a 1 segundo. O valor informado na propriedade AguardarConsultaRet será usado para 
+    aguardar antes de efetuar a primeira consulta, por padrão está com 0 que é o valor utilizado hoje no componente. Para dias em que os 
+    servidores do sefaz estiverem apresentando problemas de lentidão, esta propriedae poderá ser alterada. 
+
 Alterações   29/09/09
 ---------------
 [-] Alterado linhas onde existia Path+'\' para PathWithDelim(Path)

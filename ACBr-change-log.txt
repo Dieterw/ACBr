@@ -99,7 +99,7 @@ Versão 0.8.8b  02/10/09
 [-]    Novo mecanismo usando BlockInput não liberava Mouse/Teclado durante a pergunta de ReTentar	
 
 -- ACBrECFCalculadora --
-[*]    Nova Propriedade BorderStyle, para permitir ajusta a Borda da Calculadora
+[*]    Nova Propriedade BorderStyle, para permitir ajustar a Borda da Calculadora
 [*]	   Form melhorado para Lazarus, usando OptimalFill no Label do Display de Números
 
 Versão 0.8.8b  30/09/09

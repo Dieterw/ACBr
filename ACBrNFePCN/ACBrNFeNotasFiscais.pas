@@ -134,7 +134,8 @@ type
     sTo : String;
     sCC : TStrings;
     slmsg_Lines : TStrings;
-    constructor Enviar;
+    constructor Create;
+    destructor Destroy ; override ;
   protected
     procedure Execute; override;
     procedure HandleException;
@@ -244,15 +245,14 @@ var
   p: TMimepart;
   StreamNFe : TStringStream;
   NomeArq : String;
-  i: integer;
 begin
   m:=TMimemess.create;
-  ThreadSMTP := TSendMailThread.Enviar;
+  ThreadSMTP := TSendMailThread.Create ;  // Não Libera, pois usa FreeOnTerminate := True ;
+  StreamNFe  := TStringStream.Create('');
   try
      p := m.AddPartMultipart('mixed', nil);
      if sMensagem <> nil then
         m.AddPartText(sMensagem, p);
-     StreamNFe := TStringStream.Create('');
      SaveToStream(StreamNFe) ;
      m.AddPartBinary(StreamNFe,copy(NFe.infNFe.ID, (length(NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml', p);
      if (EnviaPDF) then
@@ -271,19 +271,16 @@ begin
      m.EncodeMessage;
 
      ThreadSMTP.sFrom := sFrom;
-     ThreadSMTP.sTo := sTo;
+     ThreadSMTP.sTo   := sTo;
      if sCC <> nil then
-     begin
-        for I := 0 to sCC.Count - 1 do
-          ThreadSMTP.sCC.Add(sCC.Strings[i]);
-     end;
-     ThreadSMTP.slmsg_Lines.Add(m.Lines.Text);
+        ThreadSMTP.sCC.AddStrings(sCC);
+     ThreadSMTP.slmsg_Lines.AddStrings(m.Lines);
 
      ThreadSMTP.smtp.UserName := sSmtpUser;
      ThreadSMTP.smtp.Password := sSmtpPasswd;
 
      ThreadSMTP.smtp.TargetHost := sSmtpHost;
-     if not NotaUtil.EstaVazio( sSmtpPort ) then     // Usa default 
+     if not NotaUtil.EstaVazio( sSmtpPort ) then     // Usa default
         ThreadSMTP.smtp.TargetPort := sSmtpPort;
 
      ThreadSMTP.smtp.FullSSL := SSL;
@@ -295,6 +292,7 @@ begin
      TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).SetStatus( stIdle );
   finally
      m.free;
+     StreamNFe.Free ;
   end;
 end;
 
@@ -515,15 +513,27 @@ begin
   Sysutils.ShowException(FException, nil );
 end;
 
-constructor TSendMailThread.Enviar;
+constructor TSendMailThread.Create ;
 begin
-  Create(True);
-  FreeOnTerminate := True;
-  smtp := TSMTPSend.Create;
+  smtp        := TSMTPSend.Create;
   slmsg_Lines := TStringList.Create;
-  sCC := TStringList.Create;
+  sCC         := TStringList.Create;
+
   sFrom := '';
-  sTo := '';
+  sTo   := '';
+
+  FreeOnTerminate := True;
+
+  inherited Create(True);
+end;
+
+destructor TSendMailThread.Destroy;
+begin
+  slmsg_Lines.Free ;
+  sCC.Free ;
+  smtp.Free ;
+
+  inherited;
 end;
 
 procedure TSendMailThread.Execute;
@@ -552,6 +562,7 @@ begin
          if not smtp.Logout() then
             raise Exception.Create('SMTP ERROR: Logout:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
       except
+         try smtp.Sock.CloseSocket ; except end ;
          HandleException;
       end;
    finally

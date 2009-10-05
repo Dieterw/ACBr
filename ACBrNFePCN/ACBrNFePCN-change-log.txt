@@ -47,6 +47,8 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Alterações   05/10/09 (Daniel Simões de Almeida)
+[-] Corrigido vazamentos de memória em Thread de envio de e-mail
 
 Alterações   05/10/09
 ---------------

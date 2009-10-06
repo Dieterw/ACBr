@@ -195,7 +195,8 @@ var
 begin
   if Self.NotasFiscais.Count = 0 then
    begin
-      Self.OnGerarLog('ERRO: Nenhuma Nota Fiscal Eletrônica Informada!');
+      if Assigned(Self.OnGerarLog) then
+         Self.OnGerarLog('ERRO: Nenhuma Nota Fiscal Eletrônica Informada!');
       raise Exception.Create('Nenhuma Nota Fiscal Eletrônica Informada!');
    end;
 
@@ -218,7 +219,8 @@ var
 begin
   if Self.NotasFiscais.Count = 0 then
    begin
-     Self.OnGerarLog('ERRO: Nenhuma Nota Fiscal Eletrônica Informada!');
+     if Assigned(Self.OnGerarLog) then
+        Self.OnGerarLog('ERRO: Nenhuma Nota Fiscal Eletrônica Informada!');
      raise Exception.Create('Nenhuma Nota Fiscal Eletrônica Informada!');
    end;
 

@@ -693,7 +693,8 @@ begin
     Gerador.wGrupo('comb', 'L01');
     Gerador.wCampo(tcInt, 'L102', 'cProdANP', 09, 09, 1, nfe.Det[i].Prod.comb.cProdANP, DSC_CPRODANP);
     Gerador.wCampo(tcEsp, 'L103', 'CODIF   ', 00, 21, 1, nfe.Det[i].Prod.comb.CODIF, DSC_CODIF);
-    Gerador.wCampo(tcDe4, 'L104', 'qTemp   ', 01, 16, 1, nfe.Det[i].Prod.comb.qTemp, DSC_QTEMP);
+    if nfe.Det[i].Prod.comb.qTemp <> 0 then
+       Gerador.wCampo(tcDe4, 'L104', 'qTemp   ', 01, 16, 1, nfe.Det[i].Prod.comb.qTemp, DSC_QTEMP);
     (**)GerarDetProdCombCIDE(i);
     (**)GerarDetProdCombICMS(i);
     (**)GerarDetProdCombICMSInter(i);
@@ -747,7 +748,7 @@ begin
     Gerador.wGrupo('ICMSCons', 'L117');
     Gerador.wCampo(tcDe2, 'L118', 'vBCICMSSTCons', 01, 15, 1, nfe.Det[i].Prod.comb.ICMSCons.vBCICMSSTCons, DSC_VBCICMSSTCONS);
     Gerador.wCampo(tcDe2, 'L119', 'vICMSSTCons  ', 01, 15, 1, nfe.Det[i].Prod.comb.ICMSCons.vICMSSTCons, DSC_VICMSSTCONS);
-    Gerador.wCampo(tcStr, 'L120', 'UFcons       ', 02, 02, 1, nfe.Det[i].Prod.comb.ICMSCons.UFcons, DSC_UFCONS);
+    Gerador.wCampo(tcStr, 'L120', 'UFCons       ', 02, 02, 1, nfe.Det[i].Prod.comb.ICMSCons.UFcons, DSC_UFCONS);
     if not ValidarUF(nfe.Det[i].Prod.comb.ICMSCons.UFcons) then
       Gerador.wAlerta('L120', 'UFcons', DSC_UFCONS, ERR_MSG_INVALIDO);
     Gerador.wGrupo('/ICMSCons');

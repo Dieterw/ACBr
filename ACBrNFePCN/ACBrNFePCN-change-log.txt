@@ -55,6 +55,8 @@ Alterações   06/10/09
 [+] Adicionada propriedade AjustaAguardaConsultaRet onde quando for True, a propriedade AguardarConsultaRet será ajustada com o valor do
     campo tmed do retorno de consulta de status do serviço.
 [-] Alterado geração do campo Dest.IE para permitir valor para quando for pessoa física. Em MG produtores rurais possuem CPF e IE
+[-] Alterado geração da tag qTemp para ser gerada apenas qdo tiver algum conteúdo
+[-] Corrigido criação da tag UFCons, estava como UFcons
 
 Alterações   05/10/09 (Daniel Simões de Almeida)
 [-] Corrigido vazamentos de memória em Thread de envio de e-mail

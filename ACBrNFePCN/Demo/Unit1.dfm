@@ -874,7 +874,7 @@ object Form1: TForm1
       Top = 217
       Width = 379
       Height = 286
-      ActivePage = TabSheet6
+      ActivePage = TabSheet8
       Align = alClient
       TabOrder = 1
       object TabSheet5: TTabSheet
@@ -906,6 +906,19 @@ object Form1: TForm1
             00000000000000000100000000000000000000000000000000000000}
         end
       end
+      object TabSheet8: TTabSheet
+        Caption = 'Log'
+        ImageIndex = 2
+        object memoLog: TMemo
+          Left = 0
+          Top = 0
+          Width = 371
+          Height = 258
+          Align = alClient
+          ScrollBars = ssVertical
+          TabOrder = 0
+        end
+      end
     end
   end
   object OpenDialog1: TOpenDialog
@@ -920,6 +933,9 @@ object Form1: TForm1
   object ACBrNFe1: TACBrNFe
     Configuracoes.Geral.PathSalvar = 'C:\Program Files\Borland\Delphi7\Bin\'
     Configuracoes.WebServices.UF = 'SP'
+    Configuracoes.WebServices.AguardarConsultaRet = 15000
+    Configuracoes.WebServices.IntervaloTentativas = 0
+    Configuracoes.WebServices.AjustaAguardaConsultaRet = True
     Configuracoes.Arquivos.Salvar = True
     Configuracoes.Arquivos.PastaMensal = True
     Configuracoes.Arquivos.AdicionarLiteral = True
@@ -929,6 +945,7 @@ object Form1: TForm1
     Configuracoes.Arquivos.PathDPEC = 'D:\delphi\ACBr\trunk\ACBrNFePCN\ACBrNFeMonitor\Arqs'
     OnStatusChange = ACBrNFe1StatusChange
     DANFE = ACBrNFeDANFERave1
+    OnGerarLog = ACBrNFe1GerarLog
     Left = 323
     Top = 225
   end

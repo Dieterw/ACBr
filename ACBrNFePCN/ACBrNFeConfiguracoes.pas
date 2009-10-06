@@ -91,9 +91,12 @@ type
     FProxyPass: String;
     FAguardarConsultaRet : Cardinal;
     FTentativas : Integer;
+    FIntervaloTentativas : Cardinal;
+    FAjustaAguardaConsultaRet : Boolean;
     procedure SetUF(AValue: String);
     procedure SetAmbiente(AValue: TpcnTipoAmbiente);
     procedure SetTentativas(const Value: Integer);
+    procedure SetIntervaloTentativas(const Value: Cardinal);
   public
     constructor Create(AOwner: TComponent); override ;
   published
@@ -110,6 +113,8 @@ type
     property ProxyPass: String read FProxyPass write FProxyPass;
     property AguardarConsultaRet : Cardinal read FAguardarConsultaRet write FAguardarConsultaRet;
     property Tentativas : Integer read FTentativas write SetTentativas default 5;
+    property IntervaloTentativas : Cardinal read FIntervaloTentativas write SetIntervaloTentativas;
+    property AjustaAguardaConsultaRet : Boolean read FAjustaAguardaConsultaRet write FAjustaAguardaConsultaRet;
   end;
 
   TGeralConf = class(TComponent)
@@ -296,6 +301,14 @@ procedure TWebServicesConf.SetAmbiente(AValue: TpcnTipoAmbiente);
 begin
   FAmbiente := AValue;
   FAmbienteCodigo := StrToInt(TpAmbToStr(AValue));
+end;
+
+procedure TWebServicesConf.SetIntervaloTentativas(const Value: Cardinal);
+begin
+  if Value < 1000 then
+     FIntervaloTentativas := 1000
+  else
+     FIntervaloTentativas := Value;
 end;
 
 procedure TWebServicesConf.SetTentativas(const Value: Integer);

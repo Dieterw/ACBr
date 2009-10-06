@@ -435,17 +435,15 @@ begin
      Gerador.wCampo(tcStr, 'E17', 'IE ', 00, 14, 1, nfe.Dest.IE, DSC_IE)
   else
      Gerador.wCampo(tcStr, 'E17', 'IE     ', 00, 14, 1, SomenteNumeros(nfe.Dest.IE), DSC_IE);
-  if (length(nfe.Dest.CNPJCPF) = 11) and (SomenteNumeros(nfe.Dest.IE) <> '') then
-    Gerador.wAlerta('E17', 'IE', DSC_IE, ERR_MSG_INVALIDO);
+//  if (length(nfe.Dest.CNPJCPF) = 11) and (SomenteNumeros(nfe.Dest.IE) <> '') then
+//    Gerador.wAlerta('E17', 'IE', DSC_IE, ERR_MSG_INVALIDO); // Para MG produtor rural possui CPF e IE
   if (FOpcoes.ValidarInscricoes) and (nfe.Dest.IE <> '') and (nfe.Dest.IE <> 'ISENTO') then
     if not ValidarIE(nfe.Dest.IE, UF) then
       Gerador.wAlerta('E17', 'IE', DSC_IE, ERR_MSG_INVALIDO);
-  //
   Gerador.wCampo(tcStr, 'E18', 'ISUF   ', 01, 09, 0, nfe.Dest.ISUF, DSC_ISUF);
   if (FOpcoes.ValidarInscricoes) and (nfe.Dest.ISUF <> '') then
     if not ValidarISUF(nfe.Dest.ISUF) then
       Gerador.wAlerta('E18', 'ISUF', DSC_ISUF, ERR_MSG_INVALIDO);
-  //
   Gerador.wGrupo('/dest');
 end;
 

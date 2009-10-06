@@ -472,7 +472,10 @@ begin
   CertContext.Get_CertContext(Integer(PCertContext));
 
   if not InternetSetOption(Data, INTERNET_OPTION_CLIENT_CERT_CONTEXT, PCertContext,sizeof(CertContext)*5) then
-    raise Exception.Create( 'Erro OnBeforePost: ' + IntToStr(GetLastError) );
+   begin
+     TACBrNFe( FACBrNFe ).OnGerarLog('ERRO: Erro OnBeforePost: ' + IntToStr(GetLastError));
+     raise Exception.Create( 'Erro OnBeforePost: ' + IntToStr(GetLastError) );
+   end;
 end;
 {$ENDIF}
 
@@ -499,14 +502,23 @@ begin
 
 {$IFDEF ACBrNFeOpenSSL}
   if not(NotaUtil.Assinar(CancNFe.Gerador.ArquivoFormatoXML, TConfiguracoes(FConfiguracoes).Certificados.Certificado , TConfiguracoes(FConfiguracoes).Certificados.Senha, FDadosMsg, FMsg)) then
-    raise Exception.Create('Falha ao assinar Cancelamento Nota Fiscal Eletrônica '+LineBreak+FMsg);
+    begin
+      TACBrNFe( FACBrNFe ).OnGerarLog('ERRO: Falha ao assinar Cancelamento Nota Fiscal Eletrônica '+LineBreak+FMsg);
+      raise Exception.Create('Falha ao assinar Cancelamento Nota Fiscal Eletrônica '+LineBreak+FMsg);
+    end;
 {$ELSE}
   if not(NotaUtil.Assinar(CancNFe.Gerador.ArquivoFormatoXML, TConfiguracoes(FConfiguracoes).Certificados.GetCertificado , FDadosMsg, FMsg)) then
-    raise Exception.Create('Falha ao assinar Cancelamento de Nota Fiscal Eletrônica '+LineBreak+FMsg);
+     begin
+       TACBrNFe( FACBrNFe ).OnGerarLog('Falha ao assinar Cancelamento Nota Fiscal Eletrônica '+LineBreak+FMsg);
+       raise Exception.Create('Falha ao assinar Cancelamento de Nota Fiscal Eletrônica '+LineBreak+FMsg);
+     end;
 {$ENDIF}
 
   if not(NotaUtil.Valida(FDadosMsg, FMsg)) then
-    raise Exception.Create('Falha na validação dos dados do cancelamento '+LineBreak+FMsg);
+     begin
+       TACBrNFe( FACBrNFe ).OnGerarLog('Falha na validação dos dados do cancelamento '+LineBreak+FMsg);
+       raise Exception.Create('Falha na validação dos dados do cancelamento '+LineBreak+FMsg);
+     end;
 
   CancNFe.Free;
 end;
@@ -562,10 +574,16 @@ begin
 
 {$IFDEF ACBrNFeOpenSSL}
   if not(NotaUtil.Assinar(InutNFe.Gerador.ArquivoFormatoXML, TConfiguracoes(FConfiguracoes).Certificados.Certificado , TConfiguracoes(FConfiguracoes).Certificados.Senha, FDadosMsg, FMsg)) then
-    raise Exception.Create('Falha ao assinar Inutilização Nota Fiscal Eletrônica '+LineBreak+FMsg);
+     begin
+       TACBrNFe( FACBrNFe ).OnGerarLog('Falha ao assinar Inutilização Nota Fiscal Eletrônica '+LineBreak+FMsg);
+       raise Exception.Create('Falha ao assinar Inutilização Nota Fiscal Eletrônica '+LineBreak+FMsg);
+     end;
 {$ELSE}
   if not(NotaUtil.Assinar(InutNFe.Gerador.ArquivoFormatoXML, TConfiguracoes(FConfiguracoes).Certificados.GetCertificado , FDadosMsg, FMsg)) then
-    raise Exception.Create('Falha ao assinar Inutilização Nota Fiscal Eletrônica '+LineBreak+FMsg);
+     begin
+       TACBrNFe( FACBrNFe ).OnGerarLog('Falha ao assinar Inutilização Nota Fiscal Eletrônica '+LineBreak+FMsg);
+       raise Exception.Create('Falha ao assinar Inutilização Nota Fiscal Eletrônica '+LineBreak+FMsg);
+     end;
 {$ENDIF}
 
   TNFeInutilizacao(Self).ID := InutNFe.ID;
@@ -638,10 +656,16 @@ begin
 
 {$IFDEF ACBrNFeOpenSSL}
   if not(NotaUtil.Assinar(EnvDPEC.Gerador.ArquivoFormatoXML, TConfiguracoes(FConfiguracoes).Certificados.Certificado , TConfiguracoes(FConfiguracoes).Certificados.Senha, FDadosMsg, FMsg)) then
-    raise Exception.Create('Falha ao assinar DPEC'+LineBreak+FMsg);
+     begin
+       TACBrNFe( FACBrNFe ).OnGerarLog('Falha ao assinar DPEC '+LineBreak+FMsg);
+       raise Exception.Create('Falha ao assinar DPEC '+LineBreak+FMsg);
+     end;
 {$ELSE}
   if not(NotaUtil.Assinar(EnvDPEC.Gerador.ArquivoFormatoXML, TConfiguracoes(FConfiguracoes).Certificados.GetCertificado , FDadosMsg, FMsg)) then
-    raise Exception.Create('Falha ao assinar DPEC '+LineBreak+FMsg);
+     begin
+       TACBrNFe( FACBrNFe ).OnGerarLog('Falha ao assinar DPEC '+LineBreak+FMsg);
+       raise Exception.Create('Falha ao assinar DPEC '+LineBreak+FMsg);
+     end;
 {$ENDIF}
   EnvDPEC.Free ;
 
@@ -826,22 +850,34 @@ end;
 procedure TWebServices.Cancela(AJustificativa: String);
 begin
   if not(Self.StatusServico.Executar) then
-    raise Exception.Create(Self.StatusServico.Msg);
+     begin
+       TACBrNFe( FACBrNFe ).OnGerarLog(Self.StatusServico.Msg);
+       raise Exception.Create(Self.StatusServico.Msg);
+     end;
 
   if not(Self.Consulta.Executar) then
-    raise Exception.Create(Self.Consulta.Msg);
+     begin
+       TACBrNFe( FACBrNFe ).OnGerarLog(Self.Consulta.Msg);
+       raise Exception.Create(Self.Consulta.Msg);
+     end;
 
   Self.Cancelamento.NFeChave      := Self.Consulta.FNFeChave;
   Self.Cancelamento.Protocolo     := Self.Consulta.FProtocolo;
   Self.Cancelamento.Justificativa := AJustificativa;
   if not(Self.Cancelamento.Executar) then
-    raise Exception.Create(Self.Cancelamento.Msg);
+     begin
+       TACBrNFe( FACBrNFe ).OnGerarLog(Self.Cancelamento.Msg);
+       raise Exception.Create(Self.Cancelamento.Msg);
+     end;
 end;
 
 procedure TWebServices.Inutiliza(CNPJ, AJustificativa: String; Ano, Modelo, Serie, NumeroInicial, NumeroFinal : Integer);
 begin
   if not(Self.StatusServico.Executar) then
-    raise Exception.Create(Self.StatusServico.Msg);
+     begin
+       TACBrNFe( FACBrNFe ).OnGerarLog(Self.StatusServico.Msg);
+       raise Exception.Create(Self.StatusServico.Msg);
+     end;
 
   Self.Inutilizacao.CNPJ   := CNPJ;
   Self.Inutilizacao.Modelo := Modelo;
@@ -852,7 +888,10 @@ begin
   Self.Inutilizacao.Justificativa := AJustificativa;
 
   if not(Self.Inutilizacao.Executar) then
-    raise Exception.Create(Self.Inutilizacao.Msg);
+     begin
+       TACBrNFe( FACBrNFe ).OnGerarLog(Self.Inutilizacao.Msg);
+       raise Exception.Create(Self.Inutilizacao.Msg);
+     end;
 end;
 
 constructor TWebServices.Create(AFNotaFiscalEletronica: TComponent);
@@ -889,15 +928,24 @@ end;
 function TWebServices.Envia(ALote: Integer): Boolean;
 begin
   if not(Self.StatusServico.Executar) then
-    raise Exception.Create(Self.StatusServico.Msg);
+     begin
+       TACBrNFe( FACBrNFe ).OnGerarLog(Self.StatusServico.Msg);
+       raise Exception.Create(Self.StatusServico.Msg);
+     end;
 
   self.Enviar.FLote := ALote;
   if not(Self.Enviar.Executar) then
-    raise Exception.Create(Self.Enviar.Msg);
+     begin
+       TACBrNFe( FACBrNFe ).OnGerarLog(Self.Enviar.Msg);
+       raise Exception.Create(Self.Enviar.Msg);
+     end;
 
   Self.Retorno.Recibo := Self.Enviar.Recibo;
   if not(Self.Retorno.Executar) then
-    raise Exception.Create(Self.Retorno.Msg);
+     begin
+       TACBrNFe( FACBrNFe ).OnGerarLog(Self.Retorno.Msg);
+       raise Exception.Create(Self.Retorno.Msg);
+     end;
   Result := true;
 end;
 
@@ -905,7 +953,7 @@ end;
 function TNFeStatusServico.Executar: Boolean;
 var
   NFeRetorno: TRetConsStatServ;
-
+  aMsg: string;
   {$IFDEF ACBrNFeOpenSSL}
      Texto : String;
      Acao  : TStringList ;
@@ -973,19 +1021,20 @@ begin
       NFeRetorno.LerXml;
 
       TACBrNFe( FACBrNFe ).SetStatus( stIdle );
+      aMsg := //'Versão Leiaute : '+NFeRetorno.verAplic+LineBreak+
+              'Ambiente : '+TpAmbToStr(NFeRetorno.tpAmb)+LineBreak+
+              'Versão Aplicativo : '+NFeRetorno.verAplic+LineBreak+
+              'Status Código : '+IntToStr(NFeRetorno.cStat)+LineBreak+
+              'Status Descrição : '+NFeRetorno.xMotivo+LineBreak+
+              'UF : '+CodigoParaUF(NFeRetorno.cUF)+LineBreak+
+              'Recebimento : '+NotaUtil.SeSenao(NFeRetorno.DhRecbto = 0, '', DateTimeToStr(NFeRetorno.dhRecbto))+LineBreak+
+              'Tempo Médio : '+IntToStr(NFeRetorno.TMed)+LineBreak+
+              'Retorno : '+ NotaUtil.SeSenao(NFeRetorno.dhRetorno = 0, '', DateTimeToStr(NFeRetorno.dhRetorno))+LineBreak+
+              'Observação : '+NFeRetorno.xObs+LineBreak;
       if FConfiguracoes.WebServices.Visualizar then
-      begin
-        ShowMessage(//'Versão Leiaute : '+NFeRetorno.verAplic+LineBreak+
-                    'Ambiente : '+TpAmbToStr(NFeRetorno.tpAmb)+LineBreak+
-                    'Versão Aplicativo : '+NFeRetorno.verAplic+LineBreak+
-                    'Status Código : '+IntToStr(NFeRetorno.cStat)+LineBreak+
-                    'Status Descrição : '+NFeRetorno.xMotivo+LineBreak+
-                    'UF : '+CodigoParaUF(NFeRetorno.cUF)+LineBreak+
-                    'Recebimento : '+DateTimeToStr(NFeRetorno.dhRecbto)+LineBreak+
-                    'Tempo Médio : '+IntToStr(NFeRetorno.TMed)+LineBreak+
-                    'Retorno : '+DateTimeToStr(NFeRetorno.dhRetorno)+LineBreak+
-                    'Observação : '+NFeRetorno.xObs);
-      end;
+        ShowMessage(aMsg);
+
+      TACBrNFe( FACBrNFe ).OnGerarLog(aMsg);
 
       FtpAmb    := NFeRetorno.tpAmb;
       FverAplic := NFeRetorno.verAplic;
@@ -997,6 +1046,9 @@ begin
       FdhRetorno:= NFeRetorno.dhRetorno;
       FxObs     := NFeRetorno.xObs;
 
+      if TACBrNFe( FACBrNFe ).Configuracoes.WebServices.AjustaAguardaConsultaRet then
+         TACBrNFe( FACBrNFe ).Configuracoes.WebServices.AguardarConsultaRet := FTMed*1000;
+
       FMsg   := NFeRetorno.XMotivo+ LineBreak+NFeRetorno.XObs;
       Result := (NFeRetorno.CStat = 107);
       NFeRetorno.Free;
@@ -1006,9 +1058,12 @@ begin
 
     except on E: Exception do
       begin
-        raise Exception.Create('WebService Consulta Status serviço:'+LineBreak+
-                               '- Inativo ou Inoperante tente novamente.'+LineBreak+
-                               '- '+E.Message);
+       TACBrNFe( FACBrNFe ).OnGerarLog('WebService Consulta Status serviço:'+LineBreak+
+                                    '- Inativo ou Inoperante tente novamente.'+LineBreak+
+                                    '- '+E.Message);
+       raise Exception.Create('WebService Consulta Status serviço:'+LineBreak+
+                              '- Inativo ou Inoperante tente novamente.'+LineBreak+
+                              '- '+E.Message);
       end;
     end;
   finally
@@ -1035,6 +1090,7 @@ end;
 function TNFeRecepcao.Executar: Boolean;
 var
   NFeRetorno: TretEnvNFe;
+  aMsg: string;
   {$IFDEF ACBrNFeOpenSSL}
      Texto : String;
      Acao  : TStringList ;
@@ -1098,18 +1154,20 @@ begin
     NFeRetorno.LerXml;
 
     TACBrNFe( FACBrNFe ).SetStatus( stIdle );
+    aMsg := //'Versão Leiaute : '+NFeRetorno.Versao+LineBreak+
+            'Ambiente : '+TpAmbToStr(NFeRetorno.TpAmb)+LineBreak+
+            'Versão Aplicativo : '+NFeRetorno.verAplic+LineBreak+
+            'Status Código : '+IntToStr(NFeRetorno.cStat)+LineBreak+
+            'Status Descrição : '+NFeRetorno.xMotivo+LineBreak+
+            'UF : '+CodigoParaUF(NFeRetorno.cUF)+LineBreak+
+            'Recibo : '+NFeRetorno.infRec.nRec+LineBreak+
+            'Recebimento : '+NotaUtil.SeSenao(NFeRetorno.InfRec.dhRecbto = 0, '', DateTimeToStr(NFeRetorno.InfRec.dhRecbto))+LineBreak+
+            'Tempo Médio : '+IntToStr(NFeRetorno.InfRec.TMed)+LineBreak;
     if FConfiguracoes.WebServices.Visualizar then
-    begin
-      ShowMessage(//'Versão Leiaute : '+NFeRetorno.Versao+LineBreak+
-                  'Ambiente : '+TpAmbToStr(NFeRetorno.TpAmb)+LineBreak+
-                  'Versão Aplicativo : '+NFeRetorno.verAplic+LineBreak+
-                  'Status Código : '+IntToStr(NFeRetorno.cStat)+LineBreak+
-                  'Status Descrição : '+NFeRetorno.xMotivo+LineBreak+
-                  'UF : '+CodigoParaUF(NFeRetorno.cUF)+LineBreak+
-                  'Recibo : '+NFeRetorno.infRec.nRec+LineBreak+
-                  'Recebimento : '+DateTimeToStr(NFeRetorno.InfRec.dhRecbto)+LineBreak+
-                  'Tempo Médio : '+IntToStr(NFeRetorno.InfRec.TMed)+LineBreak);
-    end;
+       ShowMessage(aMsg);
+
+    TACBrNFe( FACBrNFe ).OnGerarLog(aMsg);
+
     FTpAmb    := NFeRetorno.TpAmb;
     FverAplic := NFeRetorno.verAplic;
     FcStat    := NFeRetorno.cStat;
@@ -1236,6 +1294,7 @@ end;
 function TNFeRetRecepcao.Executar: Boolean;
   function Processando: Boolean;
   var
+    aMsg: string;
     {$IFDEF ACBrNFeOpenSSL}
        Texto : String;
        Acao  : TStringList ;
@@ -1307,16 +1366,18 @@ function TNFeRetRecepcao.Executar: Boolean;
       FNFeRetorno.LerXML;
 
       TACBrNFe( FACBrNFe ).SetStatus( stIdle );
+      aMsg := //'Versão Leiaute : '+FNFeRetorno.Versao+LineBreak+
+              'Ambiente : '+TpAmbToStr(FNFeRetorno.TpAmb)+LineBreak+
+              'Versão Aplicativo : '+FNFeRetorno.verAplic+LineBreak+
+              'Recibo : '+FNFeRetorno.nRec+LineBreak+
+              'Status Código : '+IntToStr(FNFeRetorno.cStat)+LineBreak+
+              'Status Descrição : '+FNFeRetorno.xMotivo+LineBreak+
+              'UF : '+CodigoParaUF(FNFeRetorno.cUF)+LineBreak;
       if FConfiguracoes.WebServices.Visualizar then
-      begin
-        ShowMessage(//'Versão Leiaute : '+FNFeRetorno.Versao+LineBreak+
-                    'Ambiente : '+TpAmbToStr(FNFeRetorno.TpAmb)+LineBreak+
-                    'Versão Aplicativo : '+FNFeRetorno.verAplic+LineBreak+
-                    'Recibo : '+FNFeRetorno.nRec+LineBreak+
-                    'Status Código : '+IntToStr(FNFeRetorno.cStat)+LineBreak+
-                    'Status Descrição : '+FNFeRetorno.xMotivo+LineBreak+
-                    'UF : '+CodigoParaUF(FNFeRetorno.cUF)+LineBreak);
-      end;
+         ShowMessage(aMsg);
+
+      TACBrNFe( FACBrNFe ).OnGerarLog(aMsg);
+
       FTpAmb    := FNFeRetorno.TpAmb;
       FverAplic := FNFeRetorno.verAplic;
       FcStat    := FNFeRetorno.cStat;
@@ -1350,15 +1411,22 @@ begin
   Result := inherited Executar;
   Result := False;
 
+  TACBrNFe( FACBrNFe ).SetStatus( stNfeRetRecepcao );
   Sleep(TACBrNFe( FACBrNFe ).Configuracoes.WebServices.AguardarConsultaRet);
   vCont := 1000;
   while Processando do
   begin
-    sleep(vCont);
+    if TACBrNFe( FACBrNFe ).Configuracoes.WebServices.IntervaloTentativas > 0 then
+       sleep(TACBrNFe( FACBrNFe ).Configuracoes.WebServices.IntervaloTentativas)
+    else
+       sleep(vCont);
+
     if vCont > (TACBrNFe( FACBrNFe ).Configuracoes.WebServices.Tentativas*1000) then
       break;
+      
     vCont := vCont +1000;
   end;
+  TACBrNFe( FACBrNFe ).SetStatus( stIdle );
 
   if FNFeRetorno.CStat = 104 then
    begin
@@ -1386,6 +1454,7 @@ end;
 
 function TNFeRecibo.Executar: Boolean;
 var
+ aMsg: string;
  {$IFDEF ACBrNFeOpenSSL}
     Texto : String;
     Acao  : TStringList ;
@@ -1455,16 +1524,18 @@ begin
    FNFeRetorno.LerXML;
 
    TACBrNFe( FACBrNFe ).SetStatus( stIdle );
+   aMsg := //'Versão Leiaute : '+FNFeRetorno.Versao+LineBreak+
+           'Ambiente : '+TpAmbToStr(FNFeRetorno.TpAmb)+LineBreak+
+           'Versão Aplicativo : '+FNFeRetorno.verAplic+LineBreak+
+           'Recibo : '+FNFeRetorno.nRec+LineBreak+
+           'Status Código : '+IntToStr(FNFeRetorno.cStat)+LineBreak+
+           'Status Descrição : '+FNFeRetorno.ProtNFe.Items[0].xMotivo+LineBreak+
+           'UF : '+CodigoParaUF(FNFeRetorno.cUF)+LineBreak;
    if FConfiguracoes.WebServices.Visualizar then
-   begin
-     ShowMessage(//'Versão Leiaute : '+FNFeRetorno.Versao+LineBreak+
-                 'Ambiente : '+TpAmbToStr(FNFeRetorno.TpAmb)+LineBreak+
-                 'Versão Aplicativo : '+FNFeRetorno.verAplic+LineBreak+
-                 'Recibo : '+FNFeRetorno.nRec+LineBreak+
-                 'Status Código : '+IntToStr(FNFeRetorno.cStat)+LineBreak+
-                 'Status Descrição : '+FNFeRetorno.ProtNFe.Items[0].xMotivo+LineBreak+
-                 'UF : '+CodigoParaUF(FNFeRetorno.cUF)+LineBreak);
-   end;
+     ShowMessage(aMsg);
+
+   TACBrNFe( FACBrNFe ).OnGerarLog(aMsg);
+
    FTpAmb    := FNFeRetorno.TpAmb;
    FverAplic := FNFeRetorno.verAplic;
    FcStat    := FNFeRetorno.cStat;
@@ -1491,6 +1562,7 @@ end;
 function TNFeConsulta.Executar: Boolean;
 var
   NFeRetorno: TRetConsSitNFe;
+  aMsg: string;
   AProcNFe: TProcNFe;
   i : Integer;
   {$IFDEF ACBrNFeOpenSSL}
@@ -1560,20 +1632,22 @@ begin
     FProtocolo := NFeRetorno.nProt;
 
     TACBrNFe( FACBrNFe ).SetStatus( stIdle );
+    aMsg := //'Versão Leiaute : '+NFeRetorno.Versao+LineBreak+
+            'Identificador : '+NFeRetorno.chNFe+LineBreak+
+            'Ambiente : '+TpAmbToStr(NFeRetorno.TpAmb)+LineBreak+
+            'Versão Aplicativo : '+NFeRetorno.verAplic+LineBreak+
+            'Status Código : '+IntToStr(NFeRetorno.CStat)+LineBreak+
+            'Status Descrição : '+NFeRetorno.xMotivo+LineBreak+
+            'UF : '+CodigoParaUF(NFeRetorno.cUF)+LineBreak+
+            'Chave Acesso : '+NFeRetorno.ChNFe+LineBreak+
+            'Recebimento : '+NotaUtil.SeSenao(NFeRetorno.DhRecbto = 0, '', DateTimeToStr(NFeRetorno.DhRecbto))+LineBreak+
+            'Protocolo : '+NFeRetorno.nProt+LineBreak+
+            'Digest Value : '+NFeRetorno.digVal+LineBreak;
     if FConfiguracoes.WebServices.Visualizar then
-    begin
-      ShowMessage(//'Versão Leiaute : '+NFeRetorno.Versao+LineBreak+
-                  'Identificador : '+NFeRetorno.chNFe+LineBreak+
-                  'Ambiente : '+TpAmbToStr(NFeRetorno.TpAmb)+LineBreak+
-                  'Versão Aplicativo : '+NFeRetorno.verAplic+LineBreak+
-                  'Status Código : '+IntToStr(NFeRetorno.CStat)+LineBreak+
-                  'Status Descrição : '+NFeRetorno.xMotivo+LineBreak+
-                  'UF : '+CodigoParaUF(NFeRetorno.cUF)+LineBreak+
-                  'Chave Acesso : '+NFeRetorno.ChNFe+LineBreak+
-                  'Recebimento : '+DateTimeToStr(NFeRetorno.DhRecbto)+LineBreak+
-                  'Protocolo : '+NFeRetorno.nProt+LineBreak+
-                  'Digest Value : '+NFeRetorno.digVal+LineBreak);
-    end;
+      ShowMessage(aMsg);
+
+    TACBrNFe( FACBrNFe ).OnGerarLog(aMsg);
+
     FTpAmb    := NFeRetorno.TpAmb;
     FverAplic := NFeRetorno.verAplic;
     FcStat    := NFeRetorno.cStat;
@@ -1660,7 +1734,7 @@ end;
 function TNFeCancelamento.Executar: Boolean;
 var
   NFeRetorno: TRetCancNFe;
-
+  aMsg: string;
   {$IFDEF ACBrNFeOpenSSL}
      Texto : String;
      Acao  : TStringList ;
@@ -1730,19 +1804,22 @@ begin
     NFeRetorno.LerXml;
 
     TACBrNFe( FACBrNFe ).SetStatus( stIdle );
+    aMsg := //'Versão Leiaute : '+NFeRetorno.Versao+LineBreak+
+            'Identificador : '+ NFeRetorno.chNFE+LineBreak+
+            'Ambiente : '+TpAmbToStr(NFeRetorno.TpAmb)+LineBreak+
+            'Versão Aplicativo : '+NFeRetorno.verAplic+LineBreak+
+            'Status Código : '+IntToStr(NFeRetorno.cStat)+LineBreak+
+            'Status Descrição : '+NFeRetorno.xMotivo+LineBreak+
+            'UF : '+CodigoParaUF(NFeRetorno.cUF)+LineBreak+
+            'Chave Acesso : '+NFeRetorno.chNFE+LineBreak+
+            'Recebimento : '+NotaUtil.SeSenao(NFeRetorno.DhRecbto = 0, '', DateTimeToStr(NFeRetorno.DhRecbto))+LineBreak+
+            'Protocolo : '+NFeRetorno.nProt+LineBreak;
+
     if FConfiguracoes.WebServices.Visualizar then
-    begin
-      ShowMessage(//'Versão Leiaute : '+NFeRetorno.Versao+LineBreak+
-                  'Identificador : '+ NFeRetorno.chNFE+LineBreak+
-                  'Ambiente : '+TpAmbToStr(NFeRetorno.TpAmb)+LineBreak+
-                  'Versão Aplicativo : '+NFeRetorno.verAplic+LineBreak+
-                  'Status Código : '+IntToStr(NFeRetorno.cStat)+LineBreak+
-                  'Status Descrição : '+NFeRetorno.xMotivo+LineBreak+
-                  'UF : '+CodigoParaUF(NFeRetorno.cUF)+LineBreak+
-                  'Chave Acesso : '+NFeRetorno.chNFE+LineBreak+
-                  'Recebimento : '+DateTimeToStr(NFeRetorno.DhRecbto)+LineBreak+
-                  'Protocolo : '+NFeRetorno.nProt+LineBreak);
-    end;
+      ShowMessage(aMsg);
+
+    TACBrNFe( FACBrNFe ).OnGerarLog(aMsg);
+
     FTpAmb    := NFeRetorno.TpAmb;
     FverAplic := NFeRetorno.verAplic;
     FcStat    := NFeRetorno.cStat;
@@ -1777,20 +1854,27 @@ end;
 procedure TNFeCancelamento.SetJustificativa(AValue: WideString);
 begin
   if NotaUtil.EstaVazio(AValue) then
-    raise Exception.Create('Informar uma Justificativa para cancelar a Nota Fiscal Eletronica')
+   begin
+     TACBrNFe( FACBrNFe ).OnGerarLog('ERRO: Informar uma Justificativa para cancelar a Nota Fiscal Eletronica');
+     raise Exception.Create('Informar uma Justificativa para cancelar a Nota Fiscal Eletronica')
+   end
   else
     AValue := NotaUtil.TrataString(AValue);
 
   if Length(AValue) < 15 then
-    FJustificativa := NotaUtil.PadE(AValue, 15,'-')
+   begin
+     TACBrNFe( FACBrNFe ).OnGerarLog('ERRO: A Justificativa para Cancelamento da Nota Fiscal Eletronica deve ter no minimo 15 caracteres');
+     raise Exception.Create('A Justificativa para Cancelamento da Nota Fiscal Eletronica deve ter no minimo 15 caracteres')
+   end
   else
-    FJustificativa := AValue;
+    FJustificativa := Trim(AValue);
 end;
 
 { TNFeInutilizacao }
 function TNFeInutilizacao.Executar: Boolean;
 var
   NFeRetorno: TRetInutNFe;
+  aMsg: string;
   {$IFDEF ACBrNFeOpenSSL}
      Texto : String;
      Acao  : TStringList ;
@@ -1860,15 +1944,17 @@ begin
     NFeRetorno.LerXml;
 
     TACBrNFe( FACBrNFe ).SetStatus( stIdle );
+    aMsg := 'Ambiente : '+TpAmbToStr(NFeRetorno.TpAmb)+LineBreak+
+            'Versão Aplicativo : '+NFeRetorno.verAplic+LineBreak+
+            'Status Código : '+IntToStr(NFeRetorno.cStat)+LineBreak+
+            'Status Descrição : '+NFeRetorno.xMotivo+LineBreak+
+            'UF : '+CodigoParaUF(NFeRetorno.cUF)+LineBreak+
+            'Recebimento : '+NotaUtil.SeSenao(NFeRetorno.DhRecbto = 0, '', DateTimeToStr(NFeRetorno.dhRecbto));
     if FConfiguracoes.WebServices.Visualizar then
-    begin
-      ShowMessage('Ambiente : '+TpAmbToStr(NFeRetorno.TpAmb)+LineBreak+
-                  'Versão Aplicativo : '+NFeRetorno.verAplic+LineBreak+
-                  'Status Código : '+IntToStr(NFeRetorno.cStat)+LineBreak+
-                  'Status Descrição : '+NFeRetorno.xMotivo+LineBreak+
-                  'UF : '+CodigoParaUF(NFeRetorno.cUF)+LineBreak+
-                  'Recebimento : '+DateTimeToStr(NFeRetorno.dhRecbto));
-    end;
+      ShowMessage(aMsg);
+
+    TACBrNFe( FACBrNFe ).OnGerarLog(aMsg);
+
     FTpAmb    := NFeRetorno.TpAmb;
     FverAplic := NFeRetorno.verAplic;
     FcStat    := NFeRetorno.cStat;
@@ -1902,12 +1988,18 @@ end;
 procedure TNFeInutilizacao.SetJustificativa(AValue: WideString);
 begin
   if NotaUtil.EstaVazio(AValue) then
-    raise Exception.Create('Informar uma Justificativa para Inutilização de numeração da Nota Fiscal Eletronica')
+   begin
+     TACBrNFe( FACBrNFe ).OnGerarLog('ERRO: Informar uma Justificativa para Inutilização de numeração da Nota Fiscal Eletronica');
+     raise Exception.Create('Informar uma Justificativa para Inutilização de numeração da Nota Fiscal Eletronica')
+   end
   else
-    AValue := NotaUtil.TrataString(AValue);    
+    AValue := NotaUtil.TrataString(AValue);
 
   if Length(Trim(AValue)) < 15 then
-   raise Exception.Create('A Justificativa para Inutilização de numeração da Nota Fiscal Eletronica deve ter no minimo 15 caracteres')
+   begin
+     TACBrNFe( FACBrNFe ).OnGerarLog('ERRO: A Justificativa para Inutilização de numeração da Nota Fiscal Eletronica deve ter no minimo 15 caracteres');
+     raise Exception.Create('A Justificativa para Inutilização de numeração da Nota Fiscal Eletronica deve ter no minimo 15 caracteres')
+   end
   else
     FJustificativa := Trim(AValue);
 end;
@@ -1915,6 +2007,7 @@ end;
 { TNFeConsultaCadastro }
 function TNFeConsultaCadastro.Executar: Boolean;
 var
+  aMsg : String;
   {$IFDEF ACBrNFeOpenSSL}
      Texto : String;
      Acao  : TStringList ;
@@ -1982,15 +2075,18 @@ begin
     FRetConsCad.Leitor.Arquivo := FRetWS;
     FRetConsCad.LerXml;
 
+    aMsg := 'Versão Aplicativo : '+FRetConsCad.verAplic+LineBreak+
+            'Status Código : '+IntToStr(FRetConsCad.cStat)+LineBreak+
+            'Status Descrição : '+FRetConsCad.xMotivo+LineBreak+
+            'UF : '+CodigoParaUF(FRetConsCad.cUF)+LineBreak+
+            'Consulta : '+DateTimeToStr(FRetConsCad.dhCons);
+
     TACBrNFe( FACBrNFe ).SetStatus( stIdle );
     if FConfiguracoes.WebServices.Visualizar then
-    begin
-      ShowMessage('Versão Aplicativo : '+FRetConsCad.verAplic+LineBreak+
-                  'Status Código : '+IntToStr(FRetConsCad.cStat)+LineBreak+
-                  'Status Descrição : '+FRetConsCad.xMotivo+LineBreak+
-                  'UF : '+CodigoParaUF(FRetConsCad.cUF)+LineBreak+
-                  'Consulta : '+DateTimeToStr(FRetConsCad.dhCons));
-    end;
+       ShowMessage(aMsg);
+
+    TACBrNFe( FACBrNFe ).OnGerarLog(aMsg);
+
     FverAplic := FRetConsCad.verAplic;
     FcStat    := FRetConsCad.cStat;
     FxMotivo  := FRetConsCad.xMotivo;
@@ -2054,6 +2150,7 @@ var
   Acao  : TStringList ;
   Stream: TMemoryStream;
   StrStream: TStringStream;
+  aMsg : String;
   {$IFDEF ACBrNFeOpenSSL}
      HTTP: THTTPSend;
   {$ELSE}
@@ -2123,17 +2220,20 @@ begin
     RetDPEC.Leitor.Arquivo := FRetWS;
     RetDPEC.LerXml;
 
+    aMsg := 'Versão Aplicativo : '+RetDPEC.verAplic+LineBreak+
+            'ID : '+RetDPEC.Id+LineBreak+
+            'Status Código : '+IntToStr(RetDPEC.cStat)+LineBreak+
+            'Status Descrição : '+RetDPEC.xMotivo+LineBreak+
+            'Data Registro : '+DateTimeToStr(RetDPEC.dhRegDPEC)+LineBreak+
+            'nRegDPEC : '+RetDPEC.nRegDPEC+LineBreak+
+            'ChaveNFe : '+RetDPEC.chNFE;
+
     TACBrNFe( FACBrNFe ).SetStatus( stIdle );
     if FConfiguracoes.WebServices.Visualizar then
-    begin
-      ShowMessage('Versão Aplicativo : '+RetDPEC.verAplic+LineBreak+
-                  'ID : '+RetDPEC.Id+LineBreak+
-                  'Status Código : '+IntToStr(RetDPEC.cStat)+LineBreak+
-                  'Status Descrição : '+RetDPEC.xMotivo+LineBreak+
-                  'Data Registro : '+DateTimeToStr(RetDPEC.dhRegDPEC)+LineBreak+
-                  'nRegDPEC : '+RetDPEC.nRegDPEC+LineBreak+
-                  'ChaveNFe : '+RetDPEC.chNFE);
-    end;
+       ShowMessage(aMsg);
+
+    TACBrNFe( FACBrNFe ).OnGerarLog(aMsg);
+
     FverAplic := RetDPEC.verAplic;
     FcStat    := RetDPEC.cStat;
     FxMotivo  := RetDPEC.xMotivo;
@@ -2172,6 +2272,7 @@ var
   Acao  : TStringList ;
   Stream: TMemoryStream;
   StrStream: TStringStream;
+  aMsg : String;
   {$IFDEF ACBrNFeOpenSSL}
      HTTP: THTTPSend;
   {$ELSE}
@@ -2238,17 +2339,20 @@ begin
     FretDPEC.Leitor.Arquivo := FRetWS;
     FretDPEC.LerXml;
 
+    aMsg := 'Versão Aplicativo : '+RetDPEC.verAplic+LineBreak+
+            'ID : '+RetDPEC.Id+LineBreak+
+            'Status Código : '+IntToStr(RetDPEC.cStat)+LineBreak+
+            'Status Descrição : '+RetDPEC.xMotivo+LineBreak+
+            'Data Registro : '+DateTimeToStr(RetDPEC.dhRegDPEC)+LineBreak+
+            'nRegDPEC : '+RetDPEC.nRegDPEC+LineBreak+
+            'ChaveNFe : '+RetDPEC.chNFE;
+
     TACBrNFe( FACBrNFe ).SetStatus( stIdle );
     if FConfiguracoes.WebServices.Visualizar then
-    begin
-      ShowMessage('Versão Aplicativo : '+RetDPEC.verAplic+LineBreak+
-                  'ID : '+RetDPEC.Id+LineBreak+
-                  'Status Código : '+IntToStr(RetDPEC.cStat)+LineBreak+
-                  'Status Descrição : '+RetDPEC.xMotivo+LineBreak+
-                  'Data Registro : '+DateTimeToStr(RetDPEC.dhRegDPEC)+LineBreak+
-                  'nRegDPEC : '+RetDPEC.nRegDPEC+LineBreak+
-                  'ChaveNFe : '+RetDPEC.chNFE);
-    end;
+       ShowMessage(aMsg);
+
+    TACBrNFe( FACBrNFe ).OnGerarLog(aMsg);
+
     FverAplic := RetDPEC.verAplic;
     FcStat    := RetDPEC.cStat;
     FxMotivo  := RetDPEC.xMotivo;

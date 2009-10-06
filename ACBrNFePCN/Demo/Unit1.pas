@@ -116,6 +116,8 @@ type
     btnConsultarRecibo: TButton;
     btnEnvDPEC: TButton;
     btnConsultarDPEC: TButton;
+    TabSheet8: TTabSheet;
+    memoLog: TMemo;
     procedure sbtnCaminhoCertClick(Sender: TObject);
     procedure sbtnLogoMarcaClick(Sender: TObject);
     procedure sbtnPathSalvarClick(Sender: TObject);
@@ -137,6 +139,7 @@ type
     procedure btnConsultarReciboClick(Sender: TObject);
     procedure btnEnvDPECClick(Sender: TObject);
     procedure btnConsultarDPECClick(Sender: TObject);
+    procedure ACBrNFe1GerarLog(const Mensagem: String);
   private
     { Private declarations }
     procedure GravarConfiguracao ;
@@ -1350,6 +1353,11 @@ begin
   MemoResp.Lines.Text :=  UTF8Encode(ACBrNFe1.WebServices.ConsultaDPEC.RetWS);
   LoadXML(MemoResp, WBResposta);
     
+end;
+
+procedure TForm1.ACBrNFe1GerarLog(const Mensagem: String);
+begin
+ memoLog.Lines.Add(Mensagem);
 end;
 
 end.

@@ -47,6 +47,15 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Alterações   06/10/09
+[+] Adicionado evento  OnGerarLog, onde poderá ser usado para gravar as mensagens enviadas pelo componente(Veja no demo como utilizar para 
+    adicionar as mensagens em um memo).
+[+] Adicionada propriedade IntervaloTentativas para definir qual deve ser o intervalo entre as tentativas de consulta de retorno de envio 
+    da NFe. Valor mínimo deve ser 1000(1 segundo)
+[+] Adicionada propriedade AjustaAguardaConsultaRet onde quando for True, a propriedade AguardarConsultaRet será ajustada com o valor do
+    campo tmed do retorno de consulta de status do serviço.
+[-] Alterado geração do campo Dest.IE para permitir valor para quando for pessoa física. Em MG produtores rurais possuem CPF e IE
+
 Alterações   05/10/09 (Daniel Simões de Almeida)
 [-] Corrigido vazamentos de memória em Thread de envio de e-mail
 

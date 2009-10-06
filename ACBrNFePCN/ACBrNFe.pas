@@ -61,6 +61,9 @@ const
 type
  TACBrNFeAboutInfo = (ACBrNFeAbout);
 
+ { Evento para gerar log das mensagens do Componente }
+ TACBrNFeLog = procedure(const Mensagem : String) of object ;
+
   TACBrNFe = class(TComponent)
   private
     fsAbout: TACBrNFeAboutInfo;
@@ -69,10 +72,11 @@ type
     FWebServices: TWebServices;
     FConfiguracoes: TConfiguracoes;
     FStatus : TStatusACBrNFe;
-    FOnStatusChange: TNotifyEvent;    
-	procedure SetDANFE(const Value: TACBrNFeDANFEClass);
+    FOnStatusChange: TNotifyEvent;
+    FOnGerarLog : TACBrNFeLog;
+    procedure SetDANFE(const Value: TACBrNFeDANFEClass);
   protected
-    procedure Notification(AComponent: TComponent; Operation: TOperation); override;    
+    procedure Notification(AComponent: TComponent; Operation: TOperation); override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -86,9 +90,10 @@ type
   published
     property Configuracoes: TConfiguracoes read FConfiguracoes write FConfiguracoes;
     property OnStatusChange: TNotifyEvent read FOnStatusChange write FOnStatusChange;
-	  property DANFE: TACBrNFeDANFEClass read FDANFE write SetDANFE ;
+    property DANFE: TACBrNFeDANFEClass read FDANFE write SetDANFE ;
     property AboutACBrNFe : TACBrNFeAboutInfo read fsAbout write fsAbout
                           stored false ;
+    property OnGerarLog : TACBrNFeLog read FOnGerarLog write FOnGerarLog ;                          
   end;
 
 procedure ACBrAboutDialog ;
@@ -122,11 +127,13 @@ begin
   FNotasFiscais      := TNotasFiscais.Create(Self,NotaFiscal);
   FNotasFiscais.Configuracoes := FConfiguracoes;
   FWebServices       := TWebServices.Create(Self);
+
   if FConfiguracoes.WebServices.Tentativas <= 0 then
      FConfiguracoes.WebServices.Tentativas := 5;
   {$IFDEF ACBrNFeOpenSSL}
      NotaUtil.InitXmlSec ;
   {$ENDIF}
+  FOnGerarLog := nil ;
 end;
 
 destructor TACBrNFe.Destroy;
@@ -187,7 +194,10 @@ var
   i : Integer;
 begin
   if Self.NotasFiscais.Count = 0 then
-    raise Exception.Create('Nenhuma Nota Fiscal Eletrônica Informada!');
+   begin
+      Self.OnGerarLog('ERRO: Nenhuma Nota Fiscal Eletrônica Informada!');
+      raise Exception.Create('Nenhuma Nota Fiscal Eletrônica Informada!');
+   end;
 
 //  for i:= 0 to self.NotasFiscais.Count-1 do
 //    self.NotasFiscais.Items[i].XML.NFeChave := self.NotasFiscais.Items[i].NFe.infNFe.ID;;
@@ -207,7 +217,10 @@ var
   i : Integer;
 begin
   if Self.NotasFiscais.Count = 0 then
-    raise Exception.Create('Nenhuma Nota Fiscal Eletrônica Informada!');
+   begin
+     Self.OnGerarLog('ERRO: Nenhuma Nota Fiscal Eletrônica Informada!');
+     raise Exception.Create('Nenhuma Nota Fiscal Eletrônica Informada!');
+   end;
 
   for i := 0 to Self.NotasFiscais.Count-1 do
   begin

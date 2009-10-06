@@ -59,6 +59,7 @@ type
    private
      FTamanhoCampoCodigo: integer;
      FFonte : TFont;
+     FEspessuraBorda: Integer;
    public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -67,6 +68,7 @@ type
   published
      property TamanhoCampoCodigo:integer read FTamanhoCampoCodigo write FTamanhoCampoCodigo;
      property Fonte:TFont read FFonte write FFonte;
+     property EspessuraBorda:Integer read FEspessuraBorda write FEspessuraBorda;
   end;
 
 implementation
@@ -78,6 +80,7 @@ begin
   inherited create( AOwner );
 
   FTamanhoCampoCodigo:=0;
+  FEspessuraBorda:=2;
 end;
 
 destructor TACBrNFeDANFERaveCB.Destroy;
@@ -117,6 +120,7 @@ begin
                        CasasDecimais._qCom,
                        CasasDecimais._vUnCom,
                        TamanhoCampoCodigo,
+                       EspessuraBorda,
                        ExibirResumoCanhoto,
                        ImprimirHoraSaida,
                        ImprimirHoraSaida_Hora,
@@ -164,6 +168,7 @@ begin
                        CasasDecimais._qCom,
                        CasasDecimais._vUnCom,
                        TamanhoCampoCodigo,
+                       EspessuraBorda,
                        ExibirResumoCanhoto,
                        ImprimirHoraSaida,
                        ImprimirHoraSaida_Hora,

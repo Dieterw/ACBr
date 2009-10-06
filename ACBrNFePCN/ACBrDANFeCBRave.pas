@@ -93,6 +93,7 @@ type
      FImprimirDescPorc: boolean;
      FImprimirValorLiquido: boolean;
      FTamanhoCampoCodigo:integer;
+     FEspessuraBorda:integer;
      FFormularioContinuo: boolean;
   public
      FCurrentPage, FPageNum, FNFIndex:Integer;
@@ -125,6 +126,7 @@ type
      property ImprimirDescPorc:boolean read FImprimirDescPorc write FImprimirDescPorc;
      property ImprimirValorLiquido:boolean read FImprimirValorLiquido write FImprimirValorLiquido;
      property TamanhoCampoCodigo:integer read FTamanhoCampoCodigo write FTamanhoCampoCodigo;
+     property EspessuraBorda:integer read FEspessuraBorda write FEspessuraBorda;
      property FormularioContinuo:boolean read FFormularioContinuo write FFormularioContinuo;
   end;
 
@@ -148,6 +150,7 @@ procedure ImprimirDANFeRave(aACBrNFe:TACBrNFe;
                             aCasasDecimais_qCom:integer=2;
                             aCasasDecimais_vUnCom:integer=2;
                             aTamanhoCampoCodigo:integer=0;
+                            aEspessuraBorda:integer=2;
                             aExibirResumoCanhoto:boolean=false;
                             aImprimirHoraSaida:boolean=false;
                             aImprimirHoraSaida_Hora:string='';
@@ -181,6 +184,7 @@ procedure ImprimirDANFeRave(aACBrNFe:TACBrNFe;
                             aCasasDecimais_qCom:integer=2;
                             aCasasDecimais_vUnCom:integer=2;
                             aTamanhoCampoCodigo:integer=0;
+                            aEspessuraBorda:integer=2;
                             aExibirResumoCanhoto:boolean=false;
                             aImprimirHoraSaida:boolean=false;
                             aImprimirHoraSaida_Hora:string='';
@@ -228,6 +232,7 @@ begin
     DANFeRave.CasasDecimais_qCom:=aCasasDecimais_qCom;
     DANFeRave.CasasDecimais_vUnCom:=aCasasDecimais_vUnCom;
     DANFeRave.TamanhoCampoCodigo:=aTamanhoCampoCodigo;
+    DANFeRave.EspessuraBorda:=aEspessuraBorda;
     DANFeRave.ExibirResumoCanhoto:=aExibirResumoCanhoto;
     DANFeRave.ImprimirHoraSaida:=aImprimirHoraSaida;
     DANFeRave.ImprimirHoraSaida_Hora:=aImprimirHoraSaida_Hora;

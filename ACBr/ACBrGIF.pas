@@ -60,7 +60,7 @@ interface
 {$ENDIF}
 
 uses
- {ACBrBase, }Classes, Types, SysUtils,
+ ACBrBase, Classes, Types, SysUtils,
  {$IFDEF VisualCLX}
   QGraphics, QControls, QExtCtrls, QDialogs,
  {$ELSE}
@@ -164,6 +164,8 @@ type
 
 implementation
 
+Uses ACBrUtil ;
+
 { TACBrGIF }
 constructor TACBrGIF.Create( AOwner: TComponent );
 begin
@@ -253,7 +255,7 @@ begin
   if Value then
   begin
      if (fsGIF.NumFrames <= 0) then
-        raise Exception.Create('Arquivo GIF não informado');
+        raise Exception.Create(ACBrStr('Arquivo GIF não informado'));
 
      fsGIF.CurrentFrame  := StartFrame ;
   end ;
@@ -475,7 +477,7 @@ begin
         FreeAndNil( fsGIF ) ;
 
      fsGIF := TGIFImage.Create ;
-     raise Exception.Create('Erro ao carregar GIF from Stream');
+     raise Exception.Create(ACBrStr('Erro ao carregar GIF from Stream'));
   end ;
 
   Repaint ;

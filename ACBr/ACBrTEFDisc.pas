@@ -94,7 +94,7 @@ begin
       ForceDirectories(ExtractFilePath(RespTempDataFileName));  
 
    if not GPAtivo then
-      raise Exception.Create(RS_INACTIVETEF);
+      raise Exception.Create(ACBrStr(RS_INACTIVETEF));
 
    VerificaTransacaoPendente;
    fpAtivo := True;

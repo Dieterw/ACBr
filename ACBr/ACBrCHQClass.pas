@@ -201,7 +201,7 @@ Uses ACBrCHQ, ACBrUtil,
 constructor TACBrCHQClass.Create(AOwner: TComponent);
 begin
   if not (AOwner is TACBrCHQ) then
-     raise Exception.create('Essa Classe deve ser instanciada por TACBrCHQ');
+     raise Exception.create(ACBrStr('Essa Classe deve ser instanciada por TACBrCHQ'));
 
   { Criando ponteiro interno para as Propriedade SERIAL de ACBrCHQ,
     para permitir as Classes Filhas o acesso a essas propriedades do Componente}
@@ -316,7 +316,7 @@ begin
    begin
      Val := StrToIntDef( Value, 0) ;
      if (Val = 0) or (Val > 999) then
-        raise Exception.Create('Valor do Banco deve ser de 001 a 999');
+        raise Exception.Create(ACBrStr('Valor do Banco deve ser de 001 a 999'));
 
      fpBanco := IntToStrZero( Val, 3) ;
    end ;
@@ -363,7 +363,7 @@ begin
   if fsArquivoBemaFiINI = Value then exit ;
 
   if not FileExists( Value ) then
-     raise Exception.CreateFmt('Arquivo %s não encontrado.',[Value]);
+     raise Exception.CreateFmt(ACBrStr('Arquivo %s não encontrado.'),[Value]);
 
   OldValue := fsArquivoBemaFiINI ;
   fsArquivoBemaFiINI := Value;
@@ -627,9 +627,9 @@ begin
      end ;
   finally
      if ErroMsg <> '' then
-        raise Exception.Create('Erro lendo arquivo: '+ArqTemp + sLineBreak +
-                               ErroMsg + sLineBreak +
-                               '(Valores padrões serão utilizados.)' ) ;
+        raise Exception.Create(ACBrStr('Erro lendo arquivo: '+ArqTemp + sLineBreak +
+                                ErroMsg + sLineBreak +
+                                '(Valores padrões serão utilizados.)') ) ;
   end ;
 end;
 

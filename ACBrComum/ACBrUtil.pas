@@ -113,6 +113,7 @@ Uses SysUtils, Math, Classes,
       {$endif}
     {$endif} ;
 
+function ACBrStr( AString : AnsiString ) : String ;
 function TruncFix( X : Double ) : Integer ;
 
 function TestBit(const Value: Integer; const Bit: Byte): Boolean;
@@ -235,10 +236,25 @@ implementation
 var Randomized : Boolean ;
 
 {-----------------------------------------------------------------------------
+  Todos os Fontes do ACBr usam Encoding CP1252, para manter compatibilidade com
+  D5 a D2007, Porém D2009 e superiores e Lazarus0.9.27 e acima usam UTF8.
+  A função abaixo converte a AString para de ANSI, para UTF8, apenas se o
+  sistema usar UNICODE
+ -----------------------------------------------------------------------------}
+function ACBrStr( AString : AnsiString ) : String ;
+begin
+{$IFDEF UNICODE}
+  Result := AnsiToUtf8( AString ) ;
+{$ELSE}
+  Result := AString
+{$ENDIF}
+end ;
+
+{-----------------------------------------------------------------------------
  Corrige, bug da função Trunc.
  Deve calcular Trunc somente com variaveis e nunca com Expressoes, caso contrá-
  rio o resultado pode não ser o esperado.
- // Valores de Teste: Trunc(1,602 x 0,98) | 5 * 12,991 | 2,09 * 23,5 
+ // Valores de Teste: Trunc(1,602 x 0,98) | 5 * 12,991 | 2,09 * 23,5
  -----------------------------------------------------------------------------}
 function TruncFix( X : Double ) : Integer ;
 begin

@@ -67,7 +67,7 @@ unit ACBrSintegra;
 
 interface
 
-uses Classes, SysUtils, Contnrs, ACBrConsts;
+uses Classes, SysUtils, Contnrs, ACBrBase, ACBrConsts;
 
 type
   TVersaoValidador = (vv523,vv524);
@@ -1063,17 +1063,17 @@ end;
 procedure TACBrSintegra.WriteRecord(Rec: string);
 begin
 if Length(Rec)<>126 then
-  raise Exception.Create('Registro inválido!'+#13+
+  raise Exception.Create(ACBrStr('Registro inválido!'+#13+
     'Deve conter 126 posições. '+#13+
     'Registro: '+Rec+#13+
-    'possui '+IntToStr(Length(Rec))+' posições.');
+    'possui '+IntToStr(Length(Rec))+' posições.'));
 writeln(Arquivo, Rec);
 end;
 
 procedure TACBrSintegra.GeraArquivo;
 begin
 if Trim(FileName)='' then
-  raise Exception.Create('Informe um nome de arquivo!');
+  raise Exception.Create(ACBrStr('Informe um nome de arquivo!'));
 AssignFile(Arquivo,FileName);
 Rewrite(Arquivo);
 try
@@ -1122,8 +1122,8 @@ begin
   begin
     wregistro60M:=GetRegistro60M(Registros60A[i].Emissao,Registros60A[i].NumSerie);
     if not Assigned(wregistro60M) then
-      raise Exception.Create('Registro 60A sem registro 60M correspondente!'+#13+
-        DateToStr(Registros60A[i].Emissao)+' - '+Registros60A[i].NumSerie);
+      raise Exception.Create(ACBrStr('Registro 60A sem registro 60M correspondente!'+#13+
+        DateToStr(Registros60A[i].Emissao)+' - '+Registros60A[i].NumSerie));
     wregistro60M.Regs60A.Add(Registros60A[i]);
   end;
 
@@ -1132,8 +1132,8 @@ begin
   begin
     wregistro60M:=GetRegistro60M(Registros60D[i].Emissao,Registros60D[i].NumSerie);
     if not Assigned(wregistro60M) then
-      raise Exception.Create('Registro 60D sem registro 60M correspondente!'+#13+
-        DateToStr(Registros60D[i].Emissao)+' - '+Registros60D[i].NumSerie);
+      raise Exception.Create(ACBrStr('Registro 60D sem registro 60M correspondente!'+#13+
+        DateToStr(Registros60D[i].Emissao)+' - '+Registros60D[i].NumSerie));
     wregistro60M.Regs60D.Add(Registros60D[i]);
   end;
 
@@ -1142,8 +1142,8 @@ begin
   begin
     wregistro60M:=GetRegistro60M(Registros60I[i].Emissao,Registros60I[i].NumSerie);
     if not Assigned(wregistro60M) then
-      raise Exception.Create('Registro 60I sem registro 60M correspondente!'+#13+
-        DateToStr(Registros60I[i].Emissao)+' - '+Registros60I[i].NumSerie);
+      raise Exception.Create(ACBrStr('Registro 60I sem registro 60M correspondente!'+#13+
+        DateToStr(Registros60I[i].Emissao)+' - '+Registros60I[i].NumSerie));
     wregistro60M.Regs60I.Add(Registros60I[i]);
   end;
 

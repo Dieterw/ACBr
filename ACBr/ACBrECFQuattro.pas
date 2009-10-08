@@ -239,8 +239,8 @@ end;
 procedure TACBrECFQuattro.Ativar;
 begin
   if not fpDevice.IsSerialPort  then
-     raise Exception.Create('A impressora: '+ModeloStr+' requer'+#10+
-                            'Porta Serial:  (COM1, COM2, COM3, ...)');
+     raise Exception.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+#10+
+                            'Porta Serial:  (COM1, COM2, COM3, ...)'));
 
 //  fpDevice.HandShake := hsDTR_DSR ;
   inherited Ativar ; { Abre porta serial }
@@ -256,8 +256,8 @@ begin
 
      { Testando a comunicaçao com a porta }
      if NumVersao = '' then
-        raise EACBrECFNaoInicializado.Create(
-                 'Erro inicializando a impressora '+ModeloStr );
+        raise EACBrECFNaoInicializado.Create( ACBrStr(
+                 'Erro inicializando a impressora '+fpModeloStr ));
   except
      Desativar ;
      raise ;
@@ -448,9 +448,9 @@ begin
 
   if ErroMsg <> '' then
    begin
-     ErroMsg := 'Erro retornado pela Impressora: '+ModeloStr+
+     ErroMsg := ACBrStr('Erro retornado pela Impressora: '+fpModeloStr+
                 sLineBreak + sLineBreak+
-                ErroMsg ;
+                ErroMsg );
      raise EACBrECFSemResposta.create( ErroMsg ) ;
    end
   else
@@ -841,7 +841,7 @@ Var CPF_CNPJ : String ;
 begin
   fpUltimaMsgPoucoPapel := 0 ;  { Zera tempo pra msg de pouco papel }
 //  if Estado = estRequerX then
-//     raise Exception.create('Leitura X inicial ainda não foi emitida');
+//     raise Exception.create(ACBrStr('Leitura X inicial ainda não foi emitida'));
 
   CPF_CNPJ := '' ;
   if (Consumidor.Documento <> '') then
@@ -944,13 +944,13 @@ Var QtdStr, ValorStr, Descr2 : String ;
 begin
   { Obs.: Quattro nao usa parametro Unidade }
   if Qtd > 9999 then
-     raise EACBrECFCMDInvalido.Create(
-           'Quantidade deve ser inferior a 9999.');
+     raise EACBrECFCMDInvalido.Create( ACBrStr(
+           'Quantidade deve ser inferior a 9999.'));
 
   { Quattro não permite Acrescimo por Item }
   if (ValorDescontoAcrescimo > 0) and (DescontoAcrescimo = 'A') then
-     raise EACBrECFCMDInvalido.Create(
-           'ECF '+ModeloStr+' não permite Acréscimo por Item');
+     raise EACBrECFCMDInvalido.Create( ACBrStr(
+           'ECF '+fpModeloStr+' não permite Acréscimo por Item'));
 
   Codigo  := padL(Codigo,13) ;    { Ajustando Tamanhos }
   if Unidade <> '' then
@@ -1097,7 +1097,7 @@ begin
   end ;
 
   if ProxIndice > 15 then
-     raise Exception.create('Não há espaço para programar novas Aliquotas');
+     raise Exception.create(ACBrStr('Não há espaço para programar novas Aliquotas'));
 
   EnviaComando( '33' + Tipo + IntToStrZero(ProxIndice,2) + ValStr ) ;
 
@@ -1295,10 +1295,10 @@ begin
      Tipo := '+' ;
 
   if (pos(Tipo,'&+-') = 0) or (Length(Tipo) > 1) then
-     raise Exception.Create('Os Tipos válidos para Quattro são:'+sLineBreak+
+     raise Exception.Create(ACBrStr('Os Tipos válidos para Quattro são:'+sLineBreak+
                             '&  Criaçao de um novo Grupo (Titulo)'+sLineBreak+
                             '+  Entrada de Recursos'+sLineBreak+
-                            '-  Saida de Recursos'+sLineBreak+sLineBreak ) ;
+                            '-  Saida de Recursos') ) ;
 
   EnviaComando( '38' + 'N' + padL(Tipo + Descricao,15) ) ;
 
@@ -1444,10 +1444,10 @@ end;
 procedure TACBrECFQuattro.CancelaImpressaoCheque;
 begin
    { Quattro não possui comando para cancelar a impressão de cheques}
-   raise Exception.Create('Impressora '+ModeloStr+ ' não possui comando para '+
+   raise Exception.Create(ACBrStr('Impressora '+fpModeloStr+ ' não possui comando para '+
                           'cancelar a impressão de cheques. ' + sLineBreak +
                           'Por favor desligue e ligue a impressora ou insira '+
-                          'um documento.');
+                          'um documento.'));
 end;
 
 function TACBrECFQuattro.AchaModeloBanco(Banco: String): String;
@@ -1471,18 +1471,19 @@ begin
 end;
 
 procedure TACBrECFQuattro.CarregaFormato_ChequeTXT;
-Var ArqTemp : String ;
+Var
+  Msg, ArqTemp : String ;
 begin
   { Verificando se o arquivo é válido }
   if (fsArqFormato_ChequeTXT <> '') and
      (not FileExists( fsArqFormato_ChequeTXT )) then
   begin
+     Msg := ACBrStr( 'Arquivo '+fsArqFormato_ChequeTXT+' não encontrado. '+
+                     'Valores padrões serão utilizados.' ) ;
      {$IFNDEF CONSOLE}
-       MessageDlg('Arquivo '+fsArqFormato_ChequeTXT+' não encontrado. '+
-                  'Valores padrões serão utilizados.',mtWarning,[mbOk],0);
+       MessageDlg(Msg,mtWarning,[mbOk],0);
      {$ELSE}
-       writeln('Arquivo '+fsArqFormato_ChequeTXT+' não encontrado. '+
-                  'Valores padrões serão utilizados.');
+       writeln(Msg);
      {$ENDIF}
 
      fsArqFormato_ChequeTXT := '' ;

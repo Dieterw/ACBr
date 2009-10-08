@@ -430,7 +430,7 @@ begin
   fsResposta := Value ;
 
   if ( LeftStr(fsResposta,1) <> SOH ) and ( LeftStr(fsResposta,1) <> CAN ) then
-     raise Exception.Create('Resposta inválida. Não inicia com SOH (01) ou CAN (24) ') ;
+     raise Exception.Create(ACBrStr('Resposta inválida. Não inicia com SOH (01) ou CAN (24) ')) ;
 
   if ( LeftStr(fsResposta,1) = CAN ) then
   begin
@@ -440,12 +440,12 @@ begin
   begin
     fsChkSum := RightStr(fsResposta,1) ;
     if NCRCheckSum( copy(fsResposta,2,Length(fsResposta)-2) ) <> fsChkSum then
-       raise Exception.create(copy(fsResposta,2,Length(fsResposta)-2) + ' | ' + fsResposta+'Resposta inválida. CheckSum da Resposta não está correto.') ;
+       raise Exception.create(copy(fsResposta,2,Length(fsResposta)-2) + ' | ' + fsResposta+ACBrStr('Resposta inválida. CheckSum da Resposta não está correto.')) ;
 
     try
        fsSeq := ord(fsResposta[2]) ;
     except
-       raise Exception.Create('Resposta inválida. Num.Sequencia inválido') ;
+       raise Exception.Create(ACBrStr('Resposta inválida. Num.Sequencia inválido')) ;
     end ;
 
     fsCmd := ord(fsResposta[3]) ;
@@ -900,8 +900,8 @@ begin
         continue ;
       end
       else
-        raise EACBrECFSemResposta.create(
-              'Impressora '+ModeloStr+' não responde ' );
+        raise EACBrECFSemResposta.create( ACBrStr(
+              'Impressora '+fpModeloStr+' não responde ' ) );
 
     except
       on E : EACBrECFSemResposta do
@@ -924,8 +924,8 @@ end;
 procedure TACBrECFNCR.Ativar;
 begin
   if not fpDevice.IsSerialPort  then
-     raise Exception.Create('A impressora: '+ModeloStr+' requer'+sLineBreak+
-                            'Porta Serial:  (COM1, COM2, COM3, ...)');
+     raise Exception.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+sLineBreak+
+                            'Porta Serial:  (COM1, COM2, COM3, ...)'));
 
   inherited Ativar ; { Abre porta serial }
 
@@ -944,8 +944,8 @@ begin
         EnviaComando ;
 
         if NCRResposta.Params[0] <> '0' then  // Diferente de Modo Normal ?
-           raise Exception.Create('A impressora: '+ModeloStr+' esta em'+sLineBreak+
-                                  'modo de intervenção técnica.');
+           raise Exception.Create(ACBrStr('A impressora: '+fpModeloStr+' esta em'+sLineBreak+
+                                  'modo de intervenção técnica.'));
                                   
         NCRComando.Comando := '187' ;  // Obtendo o numero de colunas
         EnviaComando ;
@@ -954,8 +954,8 @@ begin
         fsImprimeCheque :=  NCRResposta.Params[2] = '1';
         fsLeituraCMC7   :=  NCRResposta.Params[5] = '1';
      except
-        raise EACBrECFNaoInicializado.Create(
-                 'Erro inicializando a impressora '+ModeloStr );
+        raise EACBrECFNaoInicializado.Create( ACBrStr(
+                 'Erro inicializando a impressora '+fpModeloStr ));
      end ;
   except
      Desativar ;
@@ -1001,21 +1001,21 @@ begin
            end ;
 
            if ByteACK = 0 then
-              raise EACBrECFSemResposta.create(
-                    'Impressora '+ModeloStr+' não responde (ACK = 0)' )
+              raise EACBrECFSemResposta.create( ACBrStr(
+                    'Impressora '+fpModeloStr+' não responde (ACK = 0)' ) )
            else if ByteACK = NAK then    { retorno em caracter 21d=15h=NACK }
-              raise EACBrECFSemResposta.create(
-                    'Impressora '+ModeloStr+' não reconheceu o Comando'+
-                    sLineBreak+' (NAK)')
+              raise EACBrECFSemResposta.create( ACBrStr(
+                    'Impressora '+fpModeloStr+' não reconheceu o Comando'+
+                    sLineBreak+' (NAK)') )
            else if ByteACK = WAK then { retorno = WAK espera 1 segundo e reenvia solicitação }
            begin
              sleep( 1000 ) ;
              continue ;
            end
            else if ByteACK <> 6 then
-              raise EACBrECFSemResposta.create(
-                    'Erro. Resposta da Impressora '+ModeloStr+' inválida'+
-                    sLineBreak+' (ACK = '+IntToStr(ByteACK)+')') ;
+              raise EACBrECFSemResposta.create( ACBrStr(
+                    'Erro. Resposta da Impressora '+fpModeloStr+' inválida'+
+                    sLineBreak+' (ACK = '+IntToStr(ByteACK)+')') ) ;
         except
            on E : EACBrECFSemResposta do
             begin
@@ -1051,12 +1051,12 @@ begin
           ByteSOH := ord( fpRespostaComando[1] ) ;
 
           if ByteSOH = 0 then
-             raise EACBrECFSemResposta.create(
-                   'Impressora '+ModeloStr+' não responde (SOH = 0)' )
+             raise EACBrECFSemResposta.create( ACBrStr(
+                   'Impressora '+fpModeloStr+' não responde (SOH = 0)' ) )
           else if ByteSOH = NAK then    { retorno em caracter 21d=15h=NACK }
-             raise EACBrECFSemResposta.create(
-                   'Impressora '+ModeloStr+' não reconheceu o Comando'+
-                   sLineBreak+' (NAK)')
+             raise EACBrECFSemResposta.create( ACBrStr(
+                   'Impressora '+fpModeloStr+' não reconheceu o Comando'+
+                   sLineBreak+' (NAK)') )
           else if ByteSOH = WAK then { retorno = WAK espera 1 segundo e reenvia solicitação }
           begin
             sleep( 1000 ) ;
@@ -1071,13 +1071,13 @@ begin
             break ;
           end
           else if ByteSOH <> 1 then
-             raise EACBrECFSemResposta.create(
-                   'Erro. Resposta da Impressora '+ModeloStr+' inválida'+
-                   sLineBreak+' (SOH = '+IntToStr(ByteSOH)+')') ;
+             raise EACBrECFSemResposta.create( ACBrStr(
+                   'Erro. Resposta da Impressora '+fpModeloStr+' inválida'+
+                   sLineBreak+' (SOH = '+IntToStr(ByteSOH)+')') ) ;
 
           NCRResposta.Resposta := fpRespostaComando ;
           if NCRResposta.Seq <> NCRComando.Seq then
-             raise Exception.Create('Sequencia de Resposta diferente da enviada') ;
+             raise Exception.Create(ACBrStr('Sequencia de Resposta diferente da enviada')) ;
            
        except
           on E : Exception do
@@ -1092,8 +1092,8 @@ begin
 
      if ErroMsg <> '' then
       begin
-        ErroMsg := 'Erro retornado pela Impressora: '+ModeloStr+#10+#10+
-                   ErroMsg ;
+        ErroMsg := ACBrStr('Erro retornado pela Impressora: '+fpModeloStr+#10+#10+
+                   ErroMsg );
         raise EACBrECFSemResposta.create(ErroMsg) ;
       end
      else
@@ -1484,7 +1484,7 @@ begin
   EnviaComando ;
 
   if NCRResposta.Params[0] = '0' then
-     raise Exception.create('Não existe documento para ser cancelado.') ;
+     raise Exception.create(ACBrStr('Não existe documento para ser cancelado.')) ;
 
   SeqVinculado := BuscaSequenciaVinculado;
   if SeqVinculado <> '' then
@@ -1783,8 +1783,8 @@ begin
   end ;
 
   if ProxIndice > 20 then
-     raise Exception.create('Não há espaço para programar novas Formas de '+
-                            'Pagamento');
+     raise Exception.create(ACBrStr('Não há espaço para programar novas Formas de '+
+                            'Pagamento'));
 
   NCRComando.Comando := '109' ;
   NCRComando.AddParam( IntToStr(ProxIndice) ) ;
@@ -1883,8 +1883,8 @@ begin
   end ;
 
   if ProxIndice > 20 then
-     raise Exception.create('Não há espaço para programar novas Formas de '+
-                            'Pagamento');
+     raise Exception.create(ACBrStr('Não há espaço para programar novas Formas de '+
+                            'Pagamento'));
 
   NCRComando.Comando := '104' ;
   NCRComando.AddParam( IntToStr(ProxIndice) ) ;
@@ -1927,7 +1927,7 @@ Var SeqVinculado : String ;
 begin
   SeqVinculado := BuscaSequenciaVinculado( CodFormaPagto ) ;
   if SeqVinculado = '' then
-     raise Exception.create('Não registrado nenhum pagamento para comprovante vinculado.');
+     raise Exception.create(ACBrStr('Não registrado nenhum pagamento para comprovante vinculado.'));
 
   NCRComando.Comando := '210' ;
   NCRComando.AddParam( SeqVinculado ) ; // Seqüência do pagamento

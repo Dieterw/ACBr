@@ -251,8 +251,8 @@ begin
   if fsAtivo then exit ;
 
   if (copy(UpperCase(Porta),1,7) <> 'TECLADO') and (not fsDevice.IsSerialPort)  then
-     raise Exception.Create('O ACBrLCB foi projetado para Leitores de'+#10+
-                            ' Código de Barras ligados a Portas Seriais.');
+     raise Exception.Create(ACBrStr('O ACBrLCB foi projetado para Leitores de'+#10+
+                            ' Código de Barras ligados a Portas Seriais.'));
 
   try
      fsDevice.Ativar ;
@@ -360,8 +360,8 @@ begin
   if Value then
    begin
      if Sufixo = '' then  
-        raise Exception.Create( 'É necessário definir um Sufixo '+sLineBreak+
-                                'para manipular Filas... Ex: #13' ) ;
+        raise Exception.Create( ACBrStr('É necessário definir um Sufixo '+sLineBreak+
+                                'para manipular Filas... Ex: #13' )) ;
 
      if FilaMaxItens = 0 then
         FilaMaxItens := 100 ;
@@ -436,7 +436,7 @@ end;
 procedure TACBrLCB.EnviarString(AString: AnsiString);
 begin
   if not fsAtivo then
-     raise Exception.Create('Componente ACBrLCB não está ATIVO');
+     raise Exception.Create(ACBrStr('Componente ACBrLCB não está ATIVO'));
 
   fsDevice.Serial.Purge ;
   fsDevice.EnviaString( AString );
@@ -445,7 +445,7 @@ end;
 function TACBrLCB.LerString: AnsiString;
 begin
   if not fsAtivo then
-     raise Exception.Create('Componente ACBrLCB não está ATIVO');
+     raise Exception.Create(ACBrStr('Componente ACBrLCB não está ATIVO'));
 
   Result := fsDevice.Serial.RecvPacket(200) ;
 end;

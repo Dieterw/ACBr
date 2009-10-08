@@ -43,7 +43,7 @@
 unit ACBrGAVSerialGerbo;
 
 interface
-uses ACBrGAVClass,
+uses ACBrGAVClass, 
      Classes ;
 
 type
@@ -65,7 +65,7 @@ end ;
 
 implementation
 
-uses SysUtils
+uses SysUtils, ACBrUtil
   {$IFNDEF COMPILER6_UP} ,Windows {$ENDIF} ;
 
 { TACBrGAVSerialGerbo }
@@ -81,8 +81,8 @@ end;
 procedure TACBrGAVSerialGerbo.Ativar;
 begin
   if not fpDevice.IsSerialPort  then
-     raise Exception.Create('Esse modelo de Gaveta requer'+#10+
-                            'Porta Serial: (COM1, COM2, COM3, ...)');
+     raise Exception.Create(ACBrStr('Esse modelo de Gaveta requer'+#10+
+                            'Porta Serial: (COM1, COM2, COM3, ...)'));
 
   inherited Ativar ; { Abre porta serial }
 

@@ -235,8 +235,8 @@ end;
 procedure TACBrECFYanco.Ativar;
 begin
   if not fpDevice.IsSerialPort  then
-     raise Exception.Create('Esse modelo de impressora requer'+#10+
-                            'Porta Serial:  (COM1, COM2, COM3, ...)');
+     raise Exception.Create(ACBrStr('Esse modelo de impressora requer'+#10+
+                            'Porta Serial:  (COM1, COM2, COM3, ...)'));
 
   fpDevice.HandShake := hsRTS_CTS ;
   inherited Ativar ; { Abre porta serial }
@@ -248,8 +248,8 @@ begin
 
   try
      if EnviaComando('1FACBR') <> 'ACBR' then { 1F = Eco }
-        raise EACBrECFNaoInicializado.Create(
-                 'Erro inicializando a impressora '+ModeloStr );
+        raise EACBrECFNaoInicializado.Create( ACBrStr(
+                 'Erro inicializando a impressora '+fpModeloStr ));
 
   except
      Desativar ;
@@ -297,14 +297,14 @@ begin
         end ;
 
         if ACK = 0 then
-           raise EACBrECFSemResposta.create(
-                    'Impressora '+ModeloStr+' não responde (ACK = 0)')
+           raise EACBrECFSemResposta.create( ACBrStr(
+                    'Impressora '+fpModeloStr+' não responde (ACK = 0)'))
         else if ACK = 21 then    { retorno em caracter 21d=15h=NAK }
-           raise EACBrECFSemResposta.create(
-                 'Impressora '+ModeloStr+' não reconheceu o Comando')
+           raise EACBrECFSemResposta.create( ACBrStr(
+                 'Impressora '+fpModeloStr+' não reconheceu o Comando'))
         else if ACK <> 20 then
-           raise EACBrECFSemResposta.create(
-                 'Erro. Resposta da Impressora '+ModeloStr+' inválida') ;
+           raise EACBrECFSemResposta.create( ACBrStr(
+                 'Erro. Resposta da Impressora '+fpModeloStr+' inválida')) ;
      except
         on E : EACBrECFSemResposta do
          begin
@@ -419,8 +419,8 @@ begin
 
   if ErroMsg <> '' then
    begin
-     ErroMsg := 'Erro retornado pela Impressora: '+ModeloStr+#10+#10+
-                ErroMsg ;
+     ErroMsg := ACBrStr('Erro retornado pela Impressora: '+fpModeloStr+#10+#10+
+                ErroMsg);
      raise EACBrECFSemResposta.create(ErroMsg) ;
    end
   else
@@ -690,7 +690,7 @@ Var QtdStr, ValorStr, DescontoStr : String ;
     TotalStr: String;
 begin
   if Qtd > 9999 then
-    raise EACBrECFCMDInvalido.Create('Quantidade deve ser inferior a 9999.');
+    raise EACBrECFCMDInvalido.Create(ACBrStr('Quantidade deve ser inferior a 9999.'));
 
   if not fsEmVenda then
     fsNumItem := 1;
@@ -838,8 +838,8 @@ begin
   FPG := AchaFPGIndice( CodFormaPagto ) ;
 
   if FPG = nil then
-     raise Exception.create( 'Forma de Pagamento: '+CodFormaPagto+
-                             ' não foi cadastrada.' ) ;
+     raise Exception.create( ACBrStr('Forma de Pagamento: '+CodFormaPagto+
+                             ' não foi cadastrada.' )) ;
 
   COO       := Poem_Zeros( trim(COO) ,6) ;
   FPGDesc   := padL( FPG.Descricao, 16 ) ;

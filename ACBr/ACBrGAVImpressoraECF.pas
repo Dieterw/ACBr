@@ -65,7 +65,7 @@ end ;
 
 implementation
 
-uses SysUtils;
+uses ACBrUtil, SysUtils;
 
 { TACBrGAVImpressoraECF }
 
@@ -80,12 +80,12 @@ end;
 procedure TACBrGAVImpressoraECF.Ativar;
 begin
   if not Assigned( fpECF ) then
-     raise Exception.Create('Para Gaveta "gavImpressoraECF", ACBrGAV deve estar'+
-                            ' ligado a um componente ACBrECF');
-                            
+     raise Exception.Create(ACBrStr('Para Gaveta "gavImpressoraECF", ACBrGAV deve estar'+
+                            ' ligado a um componente ACBrECF'));
+
   if not fpECF.Ativo then
-     raise Exception.Create('Para usar Gaveta "gavImpressoraECF", ACBrECF deve'+
-                            ' estar Ativo');
+     raise Exception.Create(ACBrStr('Para usar Gaveta "gavImpressoraECF", ACBrECF deve'+
+                            ' estar Ativo'));
 
   inherited Ativar ; { Apenas ajusta fpAtivo }
 end;

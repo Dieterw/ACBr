@@ -98,7 +98,7 @@ TACBrGAVClass = class
 end ;
 
 implementation
-Uses ACBrGAV,
+Uses ACBrGAV, ACBrUtil,
      SysUtils,
      {$IFDEF COMPILER6_UP} DateUtils {$ELSE} ACBrD5, Windows {$ENDIF} ;
 
@@ -107,7 +107,7 @@ Uses ACBrGAV,
 constructor TACBrGAVClass.Create(AOwner: TComponent);
 begin
   if not (AOwner is TACBrGAV) then
-     raise Exception.create('Essa Classe deve ser instanciada por TACBrGAV');
+     raise Exception.create(ACBrStr('Essa Classe deve ser instanciada por TACBrGAV'));
 
   { Criando ponteiro interno para as Propriedade SERIAL de ACBrGAV,
     para permitir as Classes Filhas o acesso a essas propriedades do Componente}
@@ -167,8 +167,8 @@ begin
            exit ;
 
         aaException :
-           raise Exception.Create('Carregando o Capacitor. Aguarde '+
-                 FormatFloat('##',SecondSpan(Now,fpProximaAbertura))+' segundos') ;
+           raise Exception.Create(ACBrStr('Carregando o Capacitor. Aguarde '+
+                 FormatFloat('##',SecondSpan(Now,fpProximaAbertura))+' segundos')) ;
 
         aaAguardar  :
            while now < fpProximaAbertura do begin

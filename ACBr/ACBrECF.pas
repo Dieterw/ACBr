@@ -793,7 +793,7 @@ begin
   if fsModelo = Value then exit ;
 
   if fsAtivo then
-     raise Exception.Create(cACBrECFSetModeloException);
+     raise Exception.Create(ACBrStr(cACBrECFSetModeloException));
 
   wRetentar             := ReTentar ;
   wTimeOut              := TimeOut ;
@@ -885,7 +885,7 @@ begin
   if fsAtivo then exit ;
 
   if fsModelo = ecfNenhum then
-     raise Exception.Create('Modelo não definido');
+     raise Exception.Create(ACBrStr('Modelo não definido'));
 
   if ((Porta = '') or (LowerCase(Porta) = 'procurar')) then
      AcharPorta ;
@@ -1089,7 +1089,7 @@ end;
 procedure TACBrECF.SetDecimaisPreco(const Value: Integer);
 begin
   if (Value < 0) or (Value > 3) then
-     raise Exception.Create(cACBrECFSetDecimaisPrecoException);
+     raise Exception.Create(ACBrStr(cACBrECFSetDecimaisPrecoException));
 
   fsECF.DecimaisPreco := Value ;
 end;
@@ -1102,7 +1102,7 @@ end;
 procedure TACBrECF.SetDecimaisQtd(const Value: Integer);
 begin
   if (Value < 0) or (Value > 4) then
-     raise Exception.Create(cACBrECFSetDecimaisQtdException);
+     raise Exception.Create(ACBrStr(cACBrECFSetDecimaisQtdException));
 
   fsECF.DecimaisQtd := Value ;
 end;
@@ -1241,17 +1241,15 @@ begin
      WDataHora := DataHora ;
      DateTimeToString(wStrDate,'dd/mm/yyyy hh:nn:ss ', wDataHora) ;
 
-     Msg := 'Impressora: '+ModeloStr + sLineBreak +
+     Msg := 'Impressora: '+fsECF.ModeloStr + sLineBreak +
             'Versão: '+NumVersao + sLineBreak +
             'Colunas: '+IntToStr(Colunas)+ sLineBreak + sLineBreak +
             'Numero de Serie: '+wNumSerie+ sLineBreak +
             'Numero do ECF: '+wNumECF+ sLineBreak +
             'Data / Hora: '+wStrDate ;
 
+     Msg := ACBrStr(Msg);
      {$IFNDEF CONSOLE}
-       {$IFDEF FPC}
-        Msg := AnsiToUtf8(Msg);
-       {$ENDIF}
        MessageDlg(Msg, mtInformation ,[mbOk],0) ;
      {$ELSE}
        writeln( Msg ) ;
@@ -1296,7 +1294,7 @@ end;
 
 function TACBrECF.GetModeloStrClass: String;
 begin
-  Result := fsECF.ModeloStr ;
+  Result := ACBrStr( fsECF.ModeloStr );
 end;
 
 function TACBrECF.GetRFDIDClass: String;
@@ -1788,17 +1786,17 @@ begin
   ValorUnitario := RoundTo( ValorUnitario, -DecimaisPreco) ;
 
   if Qtd <= 0 then
-     raise EACBrECFCMDInvalido.Create( cACBrECFVendeItemQtdeException );
+     raise EACBrECFCMDInvalido.Create( ACBrStr(cACBrECFVendeItemQtdeException) );
 
   if ValorUnitario <= 0 then
-     raise EACBrECFCMDInvalido.Create( cACBrECFVendeItemValorUnitException );
+     raise EACBrECFCMDInvalido.Create( ACBrStr(cACBrECFVendeItemValorUnitException) );
 
   if ValorDescontoAcrescimo < 0 then
-     raise EACBrECFCMDInvalido.Create( cACBrECFVendeItemDescAcreException );
+     raise EACBrECFCMDInvalido.Create( ACBrStr(cACBrECFVendeItemDescAcreException) );
            
   AliquotaICMS := UpperCase( Trim(AliquotaICMS) ) ;
   if AliquotaICMS = '' then
-     raise EACBrECFCMDInvalido.Create( cACBrECFVendeItemAliqICMSException );
+     raise EACBrECFCMDInvalido.Create( ACBrStr(cACBrECFVendeItemAliqICMSException) );
 
   DescontoAcrescimo := UpperCase(DescontoAcrescimo) ;
   if DescontoAcrescimo = '' then
@@ -2009,10 +2007,10 @@ procedure TACBrECF.EfetuaPagamento(CodFormaPagto: String; Valor: Double;
 begin
   FPG := AchaFPGIndice( CodFormaPagto ) ;
   if FPG = nil then
-     raise Exception.Create(Format(cACBrECFAchaFPGIndiceException, [ CodFormaPagto ])) ;
+     raise Exception.Create(Format(ACBrStr(cACBrECFAchaFPGIndiceException), [ CodFormaPagto ])) ;
 
   if ImprimeVinculado and (not FPG.PermiteVinculado) then
-     raise Exception.Create(Format(cACBrECFFPGPermiteVinculadoException, [ CodFormaPagto ])) ;
+     raise Exception.Create(Format(ACBrStr(cACBrECFFPGPermiteVinculadoException), [ CodFormaPagto ])) ;
 
   Observacao := TrimRight(Observacao) ;
   { Tirando os Acentos e os #13 e #10 }
@@ -2173,7 +2171,7 @@ procedure TACBrECF.RegistraItemNaoFiscal(CodCNF: String; Valor: Double;
 begin
   CNF := AchaCNFIndice( CodCNF ) ;
   if CNF = nil then
-     raise Exception.Create(Format(cACBrECFRegistraItemNaoFiscalException, [CodCNF] )) ;
+     raise Exception.Create(Format(ACBrStr(cACBrECFRegistraItemNaoFiscalException), [CodCNF] )) ;
 
   { Tirando os Acentos de OBS }
   Obs := TiraAcentos( TrimRight(Obs) );
@@ -2220,11 +2218,11 @@ procedure TACBrECF.EfetuaPagamentoNaoFiscal(CodFormaPagto: String;
 begin
   FPG := AchaFPGIndice( CodFormaPagto ) ;
   if FPG = nil then
-     raise Exception.Create(Format(cACBrECFAchaFPGIndiceException,
+     raise Exception.Create(Format(ACBrStr(cACBrECFAchaFPGIndiceException),
                                    [ CodFormaPagto ] )) ;
 
   if ImprimeVinculado and (not FPG.PermiteVinculado) then
-     raise Exception.Create(Format(cACBrECFFPGPermiteVinculadoException,
+     raise Exception.Create(Format(ACBrStr(cACBrECFFPGPermiteVinculadoException),
                                    [ CodFormaPagto ] )) ;
 
   Observacao := TrimRight(Observacao) ;
@@ -2493,7 +2491,7 @@ procedure TACBrECF.LeituraMFDSerial(DataInicial, DataFinal: TDateTime;
   Linhas: TStringList; Documentos : TACBrECFTipoDocumentoSet );
 begin
   if not MFD then
-     raise Exception.Create( 'ECF '+ModeloStr+' não é MFD') ;
+     raise Exception.Create( ACBrStr('ECF '+fsECF.ModeloStr+' não é MFD') ) ;
 
   ComandoLOG := 'LeituraMFDSerial( '+DateToStr(DataInicial)+' , '+
                     DateToStr(DataFinal)+' , Linhas) ';
@@ -2504,7 +2502,7 @@ procedure TACBrECF.LeituraMFDSerial(COOInicial, COOFinal: Integer;
   Linhas: TStringList; Documentos : TACBrECFTipoDocumentoSet );
 begin
   if not MFD then
-     raise Exception.Create( 'ECF '+ModeloStr+' não é MFD') ;
+     raise Exception.Create( ACBrStr('ECF '+fsECF.ModeloStr+' não é MFD') ) ;
 
   ComandoLOG := 'LeituraMFDSerial( '+IntToStr(COOInicial)+' , '+
                     IntToStr(COOFinal)+' , Linhas) ';
@@ -3054,10 +3052,10 @@ begin
   if fsProcurandoPorta then exit ;  { para evitar chamadas recursivas }
 
   if fsModelo = ecfNenhum then
-     raise Exception.Create(cACBrECFModeloNaoDefinidoException);
+     raise Exception.Create(ACBrStr(cACBrECFModeloNaoDefinidoException));
 
   if Modelo = ecfNaoFiscal then
-     raise Exception.Create(Format(cACBrECFModeloBuscaPortaException,
+     raise Exception.Create(Format(ACBrStr(cACBrECFModeloBuscaPortaException),
                                    [ ModeloStr ])) ;
 
   wPorta   := Porta ;
@@ -3111,7 +3109,7 @@ procedure TACBrECF.DoAcharPorta ;
            Device.Serial.Purge ;
         except
         end ;
-        Msg := Format(cACBrECFMsgDoAcharPorta, [ModeloStr, Porta] );
+        Msg := Format( ACBrStr(cACBrECFMsgDoAcharPorta), [ModeloStr, Porta] );
         if (ExibeMensagem or BloqueiaMouseTeclado) then
            Msg := Msg {$IFDEF VisualCLX}+sLineBreak{$ENDIF} +
                   ' Pressione <C> para cancelar' ;
@@ -3484,7 +3482,7 @@ procedure TACBrECF.SetRFD(const Value: TACBrRFD);
  Var OldValue: TACBrRFD ;
 begin
   if fsAtivo then
-     raise Exception.Create(cACBrECFSetRFDException);
+     raise Exception.Create(ACBrStr(cACBrECFSetRFDException));
 
   if Value <> fsRFD then
   begin

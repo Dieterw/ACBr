@@ -201,7 +201,7 @@ Begin
         Exit;
 
     If fsAtivo Then
-        Raise Exception.Create( 'Não é possível mudar o Modelo com ACBrTER Ativo' );
+        Raise Exception.Create( ACBrStr('Não é possível mudar o Modelo com ACBrTER Ativo') );
 
     FreeAndNil( fsTER );
 
@@ -246,7 +246,7 @@ End;
 
 Function TACBrTER.GetModeloStrClass : String;
 Begin
-    Result := fsTER.ModeloStr;
+    Result := ACBrStr(fsTER.ModeloStr)
 End;
 
 Function TACBrTER.GetPorta : String;

@@ -65,7 +65,7 @@
 Unit ACBrECFClass ;
 
 interface
-uses ACBrBase, ACBrDevice,
+uses ACBrDevice,
      SysUtils ,
      Classes,
      ACBrConsts,
@@ -877,7 +877,7 @@ begin
      NewVar := 'T' ;
      
   if not (NewVar in ['T','S']) then
-     raise Exception.create(cACBrECFAliquotaSetTipoException);
+     raise Exception.create(ACBrStr(cACBrECFAliquotaSetTipoException));
   fsTipo := Value;
 end;
 
@@ -958,10 +958,10 @@ begin
   Endereco  := Trim( Endereco );
 
   if CPF_CNPJ = '' then
-     raise Exception.Create(cACBrECFConsumidorCPFCNPJException) ;
+     raise Exception.Create(ACBrStr(cACBrECFConsumidorCPFCNPJException)) ;
 
   if (Nome = '') and (Endereco <> '') then
-     raise Exception.Create( cACBrECFConsumidorNomeException ) ;
+     raise Exception.Create( ACBrStr(cACBrECFConsumidorNomeException) ) ;
 
   fsDocumento := CPF_CNPJ ;
   fsNome      := TiraAcentos( Nome );
@@ -1087,7 +1087,7 @@ end;
 constructor TACBrECFClass.create( AOwner : TComponent ) ;
 begin
   if not (AOwner is TACBrECF) then
-     raise Exception.create( cACBrECFClassCreateException );
+     raise Exception.create( ACBrStr(cACBrECFClassCreateException) );
 
   fpOwner := AOwner ;
 
@@ -1264,10 +1264,10 @@ end;
 function TACBrECFClass.EnviaComando(cmd: AnsiString = ''): AnsiString;
 begin
   if (not fpDevice.Ativo) then
-     raise EACBrECFNaoInicializado.create( cACBrECFNaoInicializadoException );
+     raise EACBrECFNaoInicializado.create( ACBrStr(cACBrECFNaoInicializadoException) );
 
   if AguardandoResposta then
-     raise EACBrECFOcupado.create( cACBrECFOcupadoException ) ;
+     raise EACBrECFOcupado.create( ACBrStr(cACBrECFOcupadoException) ) ;
      
   VerificaEmLinha ;
 
@@ -1367,7 +1367,7 @@ begin
   if fpRespostaComando = 'ACBrErro' then
   begin
      fpRespostaComando := '' ;
-     raise EACBrECFSemResposta.create( Format(cACBrECFSemRespostaException, [ModeloStr]) ) ;
+     raise EACBrECFSemResposta.create( Format(ACBrStr(cACBrECFSemRespostaException), [ModeloStr]) ) ;
   end ;
 end;
 
@@ -1497,7 +1497,7 @@ begin
   except
      if not DoOnMsgRetentar(Format(cACBrECFCmdSemRespostaException, [ ModeloStr ]),
        'TransmitirComando') then
-       raise EACBrECFSemResposta.create(Format(cACBrECFEnviaCmdSemRespostaException, [ ModeloStr ])) 
+       raise EACBrECFSemResposta.create(Format(ACBrStr(cACBrECFEnviaCmdSemRespostaException), [ ModeloStr ])) 
      else
         Result := False ;
   end ;
@@ -1508,7 +1508,7 @@ end;
 function TACBrECFClass.VerificaFimLeitura(var Retorno: AnsiString;
    var TempoLimite: TDateTime) : Boolean ;
 begin
-  raise Exception.Create(Format(cACBrECFVerificaFimLeituraException, [ ModeloStr ])) ;
+  raise Exception.Create(Format(ACBrStr(cACBrECFVerificaFimLeituraException), [ ModeloStr ])) ;
 end;
 
 function TACBrECFClass.VerificaFimImpressao(var TempoLimite: TDateTime): Boolean;
@@ -1536,7 +1536,7 @@ begin
           Continue ;
      {$ENDIF}
 
-     raise EACBrECFSemResposta.create(Format(cACBrECFVerificaEmLinhaException,
+     raise EACBrECFSemResposta.create(Format(ACBrStr(cACBrECFVerificaEmLinhaException),
                                      [ ModeloStr ])) ;
   end ;
 end;
@@ -1581,7 +1581,7 @@ begin
   if Msg <> '' then
   begin
      result := false ;
-     GeraErro( EACBrECFCMDInvalido.Create( Msg ) );
+     GeraErro( EACBrECFCMDInvalido.Create( ACBrStr(Msg) ) );
   end ;
 end;
 
@@ -1656,7 +1656,7 @@ end;
 { Essa função DEVE ser override por cada Classe Filha criada }
 Procedure TACBrECFClass.AbreGaveta ;
 begin
-  GeraErro( EACBrECFCMDInvalido.Create( Format(cACBrECFAbreGavetaException, [  ModeloStr] ))) ;
+  GeraErro( EACBrECFCMDInvalido.Create( Format(cACBrECFAbreGavetaException, [ModeloStr] ))) ;
 end;
 
 { Essa função DEVE ser override por cada Classe Filha criada }
@@ -1912,12 +1912,12 @@ procedure TACBrECFClass.Sangria( const Valor: Double; Obs: AnsiString;
 begin
   CNF := AchaCNFDescricao(DescricaoCNF, True) ;
   if CNF = nil then
-     raise Exception.Create(Format(cACBrECFAchaCNFException,
+     raise Exception.Create(Format(ACBrStr(cACBrECFAchaCNFException),
                                    [ DescricaoCNF ] )) ;
 
   FPG := AchaFPGDescricao(DescricaoFPG, True) ;
   if FPG = nil then
-     raise Exception.Create(Format(cACBrECFAchaFPGException,
+     raise Exception.Create(Format(ACBrStr(cACBrECFAchaFPGException),
                                    [ DescricaoFPG ])) ;
 
   NaoFiscalCompleto( CNF.Indice, Valor, FPG.Indice, Obs);
@@ -2162,7 +2162,7 @@ end;
 
 procedure TACBrECFClass.ErroAbstract(NomeProcedure: String);
 begin
-  raise EACBrECFCMDInvalido.create(Format(cACBrECFCMDInvalidoException,
+  raise EACBrECFCMDInvalido.create(Format(ACBrStr(cACBrECFCMDInvalidoException),
                                           [NomeProcedure, ModeloStr] )) ;
 end;
 
@@ -2184,8 +2184,9 @@ begin
         if Mensagem = '' then
            Mensagem := cACBrECFDoOnMsgPoucoPapel;
 
+        Mensagem := ACBrStr( Mensagem ) ;
         {$IFNDEF CONSOLE}
-          MessageDlg(Mensagem,mtError,[mbOk],0)  ;
+          MessageDlg( Mensagem ,mtError,[mbOk],0)  ;
         {$ELSE}
           writeln( Mensagem ) ;
         {$ENDIF}
@@ -2216,12 +2217,12 @@ begin
   {$ENDIF}
 
   if Assigned( fsOnMsgRetentar ) then
-     fsOnMsgRetentar( Mensagem, Situacao, Result )
+     fsOnMsgRetentar( ACBrStr(Mensagem), Situacao, Result )
   else
    begin
      {$IFNDEF CONSOLE}
       if Retentar and
-        (MessageDlg( Mensagem+sLineBreak+sLineBreak + cACBrECFDoOnMsgRetentar,
+        (MessageDlg( ACBrStr( Mensagem+sLineBreak+sLineBreak + cACBrECFDoOnMsgRetentar ),
                      mtConfirmation,[mbYes,mbNo],0) = mrYes) then
         Result := True ;
      {$ENDIF}
@@ -2356,14 +2357,14 @@ begin
            try
               ValAliquota := StringToFloat( AliquotaStr ) ;
            except
-              raise EACBrECFCMDInvalido.Create(cACBrECFAchaICMSAliquotaInvalida + AliquotaICMS);
+              raise EACBrECFCMDInvalido.Create(ACBrStr(cACBrECFAchaICMSAliquotaInvalida) + AliquotaICMS);
            end ;
 
            Result := AchaICMSAliquota( ValAliquota, Tipo ) ;
          end ;
 
         if Result = nil then
-           raise EACBrECFCMDInvalido.Create(cACBrECFAchaICMSCMDInvalido + AliquotaICMS)
+           raise EACBrECFCMDInvalido.Create(ACBrStr(cACBrECFAchaICMSCMDInvalido) + AliquotaICMS)
      end ;
   end ;
 
@@ -2918,19 +2919,19 @@ procedure TACBrECFCodBarras.AdicionarCodBarra(TipoBarra: TACBrECFTipoCodBarra;
 begin
   if TipoBarra = barEAN13 then
     if (Length(CodBarra) <> 12) or (StrToInt64Def(CodBarra, -1) = -1) then
-      raise Exception.Create( 'EAN-13 suporta 12 dígitos de 0 a 9' ) ;
+      raise Exception.Create( ACBrStr('EAN-13 suporta 12 dígitos de 0 a 9') ) ;
 
   if TipoBarra = barEAN8 then
     if (Length(CodBarra) <> 7) or (StrToInt64Def(CodBarra, -1) = -1) then
-      raise Exception.Create( 'EAN-8 suporta 7 dígitos de 0 a 9' ) ;
+      raise Exception.Create( ACBrStr('EAN-8 suporta 7 dígitos de 0 a 9') ) ;
 
   if TipoBarra = barUPCA then
     if (Length(CodBarra) <> 11) or (StrToInt64Def(CodBarra, -1) = -1) then
-      raise Exception.Create( 'UPC-A suporta 11 dígitos de 0 a 9' ) ;
+      raise Exception.Create( ACBrStr('UPC-A suporta 11 dígitos de 0 a 9') ) ;
 
   if TipoBarra = barCODE11 then
     if (StrToInt64Def(CodBarra, -1) = -1) then
-      raise Exception.Create( 'CODE 11 suporta Tamanho variável. 0 a 9 ' ) ;
+      raise Exception.Create( ACBrStr('CODE 11 suporta Tamanho variável. 0 a 9 ') ) ;
 
   if TipoBarra = barInterleaved then
     if (StrToInt64Def(CodBarra, -1) = -1) then
@@ -2938,11 +2939,11 @@ begin
 
   if TipoBarra = barStandard then
     if (StrToInt64Def(CodBarra, -1) = -1) then
-      raise Exception.Create( 'Standard 2 of 5 Tamanho variável. 0 a 9' ) ;
+      raise Exception.Create( ACBrStr('Standard 2 of 5 Tamanho variável. 0 a 9') ) ;
 
   if TipoBarra = barMSI  then
     if (StrToInt64Def(CodBarra, -1) = -1) then
-      raise Exception.Create( 'MSI Tamanho variável. 0 a 9' ) ;
+      raise Exception.Create( ACBrStr('MSI Tamanho variável. 0 a 9') ) ;
 
   fsTipoBarra     :=  TipoBarra;
   fsLanguraBarra  :=  LanguraBarra;
@@ -3114,7 +3115,7 @@ end;
     {$ENDIF}
 
     if Assigned(fsFormMsg) then
-       Raise Exception.Create(cACBrECFFormMsgDoProcedureException) ;
+       Raise Exception.Create(ACBrStr(cACBrECFFormMsgDoProcedureException)) ;
 
     fsFormMsg  := TForm.create( Application ) ;
 
@@ -3165,7 +3166,7 @@ end;
         end ;
 
        if fsFormMsgException <> '' then
-          raise Exception.Create( fsFormMsgException ) ;
+          raise Exception.Create( ACBrStr(fsFormMsgException) ) ;
     finally
        {$IFDEF VisualCLX}
        Application.OnEvent := OldOnEvent;

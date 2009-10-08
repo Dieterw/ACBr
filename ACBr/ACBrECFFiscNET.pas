@@ -404,7 +404,7 @@ begin
   try
      fsCont := StrToInt( copy(Buf,1,(P-1)) ) ;
   except
-     raise Exception.Create('Num.Identificação inválido') ;
+     raise Exception.Create(ACBrStr('Num.Identificação inválido')) ;
   end ;
   Buf := copy(Buf,P+1,Length(Buf)) ;  // Remove a Ident.
 
@@ -412,7 +412,7 @@ begin
   try
      fsCodRetorno := StrToInt( copy(Buf,1,(P-1)) ) ;
   except
-     raise Exception.Create('Cod.Retorno inválido') ;
+     raise Exception.Create(ACBrStr('Cod.Retorno inválido')) ;
   end ;
   Buf := Trim(copy(Buf,P+1,Length(Buf))) ;  // Remove Retorno
 
@@ -509,8 +509,8 @@ end;
 procedure TACBrECFFiscNET.Ativar;
 begin
   if not fpDevice.IsSerialPort  then
-     raise Exception.Create('A impressora: '+ModeloStr+' requer'+sLineBreak+
-                            'Porta Serial:  (COM1, COM2, COM3, ...)');
+     raise Exception.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+sLineBreak+
+                            'Porta Serial:  (COM1, COM2, COM3, ...)'));
 
   inherited Ativar ; { Abre porta serial }
 
@@ -526,8 +526,8 @@ begin
 
   try
      if NumVersao = '' then
-        raise EACBrECFNaoInicializado.Create(
-                 'Erro inicializando a impressora '+ModeloStr );
+        raise EACBrECFNaoInicializado.Create( ACBrStr(
+                 'Erro inicializando a impressora '+fpModeloStr ));
 
      FiscNETComando.NomeComando := 'LeTexto' ;
      FiscNETComando.AddParamString('NomeTexto','Marca') ;
@@ -598,8 +598,8 @@ begin
 
      if ErroMsg <> '' then
       begin
-        ErroMsg := 'Erro retornado pela Impressora: '+ModeloStr+#10+#10+
-                   ErroMsg ;
+        ErroMsg := ACBrStr('Erro retornado pela Impressora: '+fpModeloStr+#10+#10+
+                   ErroMsg ) ;
         raise EACBrECFSemResposta.create(ErroMsg) ;
       end
      else
@@ -1110,7 +1110,7 @@ begin
   try
      CodAliq := StrToInt(AliquotaECF) ;
   except
-     raise EACBrECFCMDInvalido.Create('Aliquota Inválida: '+AliquotaECF);
+     raise EACBrECFCMDInvalido.Create(ACBrStr('Aliquota Inválida: '+AliquotaECF));
   end ;
 
   try
@@ -1283,7 +1283,7 @@ begin
         try
            AliquotaICMS := 'T'+IntToStr(StrToInt(copy(AliquotaICMS,2,2))) ; {Indice}
         except
-            raise EACBrECFCMDInvalido.Create('Aliquota Inválida: '+AliquotaICMS);
+            raise EACBrECFCMDInvalido.Create(ACBrStr('Aliquota Inválida: '+AliquotaICMS));
         end ;
   end ;
 
@@ -1546,8 +1546,8 @@ begin
   FPG := AchaFPGIndice( CodFormaPagto ) ;
 
   if FPG = nil then
-     raise Exception.create( 'Forma de Pagamento: '+CodFormaPagto+
-                             ' não foi cadastrada.' ) ;
+     raise Exception.create( ACBrStr('Forma de Pagamento: '+CodFormaPagto+
+                             ' não foi cadastrada.') ) ;
 
   FiscNETComando.NomeComando := 'AbreCreditoDebito' ;
   FiscNETComando.TimeOut     := 5 ;

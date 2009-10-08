@@ -1,47 +1,44 @@
 {******************************************************************************}
 { Projeto: Componentes ACBr                                                    }
-{  Biblioteca multiplataforma de componentes Delphi para intera√ß√£o com equipa- }
-{ mentos de Automa√ß√£o Comercial utilizados no Brasil                           }
+{  Biblioteca multiplataforma de componentes Delphi para interaÁ„o com equipa- }
+{ mentos de AutomaÁ„o Comercial utilizados no Brasil                           }
 {                                                                              }
 { Direitos Autorais Reservados (c) 2004 Daniel Simoes de Almeida               }
 {                                                                              }
 { Colaboradores nesse arquivo:                                                 }
 {                                                                              }
-{  Voc√™ pode obter a √∫ltima vers√£o desse arquivo na pagina do  Projeto ACBr    }
+{  VocÍ pode obter a ˙ltima vers„o desse arquivo na pagina do  Projeto ACBr    }
 { Componentes localizado em      http://www.sourceforge.net/projects/acbr      }
 {                                                                              }
-{ Esse arquivo usa a classe  SynaSer   Copyright (c)2001-2003, Lukas Gebauer   }
-{  Project : Ararat Synapse     (Found at URL: http://www.ararat.cz/synapse/)  }
+{  Esta biblioteca È software livre; vocÍ pode redistribuÌ-la e/ou modific·-la }
+{ sob os termos da LicenÁa P˙blica Geral Menor do GNU conforme publicada pela  }
+{ Free Software Foundation; tanto a vers„o 2.1 da LicenÁa, ou (a seu critÈrio) }
+{ qualquer vers„o posterior.                                                   }
 {                                                                              }
-{  Esta biblioteca √© software livre; voc√™ pode redistribu√≠-la e/ou modific√°-la }
-{ sob os termos da Licen√ßa P√∫blica Geral Menor do GNU conforme publicada pela  }
-{ Free Software Foundation; tanto a vers√£o 2.1 da Licen√ßa, ou (a seu crit√©rio) }
-{ qualquer vers√£o posterior.                                                   }
+{  Esta biblioteca È distribuÌda na expectativa de que seja ˙til, porÈm, SEM   }
+{ NENHUMA GARANTIA; nem mesmo a garantia implÌcita de COMERCIABILIDADE OU      }
+{ ADEQUA«√O A UMA FINALIDADE ESPECÕFICA. Consulte a LicenÁa P˙blica Geral Menor}
+{ do GNU para mais detalhes. (Arquivo LICEN«A.TXT ou LICENSE.TXT)              }
 {                                                                              }
-{  Esta biblioteca √© distribu√≠da na expectativa de que seja √∫til, por√©m, SEM   }
-{ NENHUMA GARANTIA; nem mesmo a garantia impl√≠cita de COMERCIABILIDADE OU      }
-{ ADEQUA√á√ÉO A UMA FINALIDADE ESPEC√çFICA. Consulte a Licen√ßa P√∫blica Geral Menor}
-{ do GNU para mais detalhes. (Arquivo LICEN√áA.TXT ou LICENSE.TXT)              }
-{                                                                              }
-{  Voc√™ deve ter recebido uma c√≥pia da Licen√ßa P√∫blica Geral Menor do GNU junto}
-{ com esta biblioteca; se n√£o, escreva para a Free Software Foundation, Inc.,  }
-{ no endere√ßo 59 Temple Street, Suite 330, Boston, MA 02111-1307 USA.          }
-{ Voc√™ tamb√©m pode obter uma copia da licen√ßa em:                              }
+{  VocÍ deve ter recebido uma cÛpia da LicenÁa P˙blica Geral Menor do GNU junto}
+{ com esta biblioteca; se n„o, escreva para a Free Software Foundation, Inc.,  }
+{ no endereÁo 59 Temple Street, Suite 330, Boston, MA 02111-1307 USA.          }
+{ VocÍ tambÈm pode obter uma copia da licenÁa em:                              }
 { http://www.opensource.org/licenses/lgpl-license.php                          }
 {                                                                              }
-{ Daniel Sim√µes de Almeida  -  daniel@djsystem.com.br  -  www.djsystem.com.br  }
-{              Pra√ßa Anita Costa, 34 - Tatu√≠ - SP - 18270-410                  }
+{ Daniel Simıes de Almeida  -  daniel@djsystem.com.br  -  www.djsystem.com.br  }
+{              PraÁa Anita Costa, 34 - TatuÌ - SP - 18270-410                  }
 {                                                                              }
 {******************************************************************************}
-
+{                                                                              }
 {******************************************************************************
 |* Historico
 |*
 |* 30/10/2008: Primeira Versao
 |*    Daniel Simoes de Almeida
-|*  - Migra√ß√£o do componente TACBrDevice de ACBrBase.pas para essa Unit para
+|*  - MigraÁao do componente TACBrDevice de ACBrBase.pas para essa Unit para
 |*    evitar que componentes, que usem TACBrComponente (de ACBrBase.pas) mas que
-|*    n√£o usem TACBrDevice, carreguem c√≥digo desnecess√°rio como por exemplo
+|*    nao usem TACBrDevice, carreguem codigo desnecessario como por exemplo
 |*    toda a classe SynaSer
 ******************************************************************************}
 
@@ -50,7 +47,7 @@
 //{$DEFINE ThreadEnviaLPT}  { Use // no inicio dessa linha para desabilitar a Thread}
 
 {$IFDEF LINUX}
-   { Thread TACBrThreadEnviaLPT n√£o funciona muito bem no Linux }
+   { Thread TACBrThreadEnviaLPT nao funciona muito bem no Linux }
    { infelizmente, Strings grandes nao funcionam bem no LINUX usando a Thread}
   {$UNDEF ThreadEnviaLPT}
 {$ENDIF}
@@ -59,9 +56,9 @@ unit ACBrDevice ;
 
 interface
 
-uses synaser, {Unit da SynaSer (comunica√ß√£o serial) }
+uses synaser, {Unit da SynaSer (comunicaÁ„o serial) }
      SysUtils,
-     ACBrConsts,
+     ACBrConsts, 
      {$IFDEF COMPILER6_UP}
         DateUtils, Types, StrUtils,
      {$ELSE}
@@ -82,14 +79,14 @@ TACBrECFEstado = (estNaoInicializada, { Porta Serial ainda nao foi aberta }
                   estDesconhecido, {Porta aberta, mas estado ainda nao definido}
                   estLivre, { Impressora Livre, sem nenhum cupom aberto,
                               pronta para nova venda, Reducao Z e Leitura X ok,
-                              pode ou nao j√° ter ocorrido 1¬™ venda no dia...}
-                  estVenda, { Cupom de Venda Aberto com ou sem venda do 1¬∫ Item}
+                              pode ou nao j· ter ocorrido 1™ venda no dia...}
+                  estVenda, { Cupom de Venda Aberto com ou sem venda do 1∫ Item}
                   estPagamento, { Iniciado Fechamento de Cupom com Formas Pagto
-                                  pode ou n√£o ter efetuado o 1¬∫ pagto. Nao pode
+                                  pode ou nao ter efetuado o 1∫ pagto. Nao pode
                                   mais vender itens, ou alterar Subtotal}
                   estRelatorio, { Imprimindo Cupom Fiscal Vinculado ou
                                   Relatorio Gerencial }
-                  estBloqueada, { Redu√ßao Z j√° emitida, bloqueada at√© as 00:00 }
+                  estBloqueada, { ReduÁao Z j· emitida, bloqueada atÈ as 00:00 }
                   estRequerZ, {Reducao Z dia anterior nao emitida. Emita agora }
                   estRequerX,  {Esta impressora requer Leitura X todo inicio de
                                dia. Imprima uma Leitura X para poder vender}
@@ -101,7 +98,7 @@ TACBrGAVAberturaAntecipada = ( aaIgnorar , aaException, aaAguardar ) ;
 
 TACBrETQOrientacao = (orNormal, or270, or180, or90);
 
-{Criando o tipo enumerado para tipos de c√≥digo de barras }
+{Criando o tipo enumerado para tipos de cÛdigo de barras }
 TACBrECFTipoCodBarra =  ( barEAN13, barEAN8, barSTANDARD, barINTERLEAVED,
                          barCODE128, barCODE39, barCODE93, barUPCA,
                          barCODABAR, barMSI, barCODE11 );
@@ -118,7 +115,7 @@ TACBrSerialParity = (pNone, pOdd, pEven, pMark, pSpace) ;
 TACBrSerialStop   = (s1, s1eMeio, s2) ;
 TACBrHandShake    = (hsNenhum, hsXON_XOFF, hsRTS_CTS, hsDTR_DSR) ;
 
-{ ACBrDevice √© um componente apenas para usarmos o recurso de AutoExpand do
+{ ACBrDevice È um componente apenas para usarmos o recurso de AutoExpand do
   ObjectInspector para SubComponentes, poderia ser uma Classe }
 TACBrDevice = class( TComponent )
   private
@@ -207,7 +204,7 @@ TACBrDevice = class( TComponent )
      property OnStatus : THookSerialStatus read GetOnStatus write SetOnStatus ;
 end ;
 
-{ Essa classe √© usada pela fun√ßao EnviaStrThread para detectar se os Dados
+{ Essa classe È usada pela funÁ„o EnviaStrThread para detectar se os Dados
   estao sendo "gravados" com sucesso na porta paralela ou arquivo. }
 TACBrThreadEnviaLPT = class(TThread)
   private
@@ -224,6 +221,7 @@ TACBrThreadEnviaLPT = class(TThread)
 
 
 implementation
+Uses ACBrUtil ;
 
 { TACBrDevice }
 constructor TACBrDevice.create( AOwner : TComponent );
@@ -281,7 +279,7 @@ begin
   if fsAtivo then exit ;
 
   if fsPorta = '' then
-     raise Exception.Create(cACBrDeviceAtivarPortaException);
+     raise Exception.Create(ACBrStr(cACBrDeviceAtivarPortaException));
 
   if IsSerialPort then
    begin
@@ -291,7 +289,7 @@ begin
         Serial.Connect( fsPorta ) ;
         ConfiguraSerial ;
 
-        Serial.Purge ;  { Limpa Buffer de envio e recep√ß√£o }
+        Serial.Purge ;  { Limpa Buffer de envio e recepÁ„o }
      except
         try
            Serial.RaiseExcept := false ;
@@ -303,10 +301,10 @@ begin
      end ;
    end
   else
-   begin{ Tenta Abrir Arquivo/Porta para ver se est√° existe e est√° disponivel}
+   begin{ Tenta Abrir Arquivo/Porta para ver se xiste e est· disponivel}
       try
          try
-            try    { Tenta 2x pois as vezes o handle n√£o fica livre }
+            try    { Tenta 2x pois as vezes o handle nao fica livre }
                AssignFile( ArqPrn, Porta );
                Rewrite( ArqPrn ) ;
             except
@@ -320,7 +318,7 @@ begin
       except
          on E : Exception do
          begin
-            raise Exception.Create( Format(cACBrDeviceAtivarException,
+            raise Exception.Create( Format(ACBrStr(cACBrDeviceAtivarException),
                                            [ Porta , E.Message]) );
          end ;
       end ;
@@ -373,7 +371,7 @@ begin
   if fsBaud = Value then exit ;
 
   if (Value < 50) or (Value > 4000000) then
-     raise Exception.Create( cACBrDeviceSetBaudException );
+     raise Exception.Create( ACBrStr(cACBrDeviceSetBaudException) );
 
   fsBaud := Value ;
   ConfiguraSerial ;
@@ -384,7 +382,7 @@ begin
   if fsData = Value then exit ;
 
   if (Value < 5) or (Value > 8) then
-     raise Exception.Create( cACBrDeviceSetDataException );
+     raise Exception.Create( ACBrStr(cACBrDeviceSetDataException) );
 
    fsData := Value ;
    ConfiguraSerial ;
@@ -483,7 +481,7 @@ begin
   if fsPorta = Value then exit ;
 
   if Ativo then
-     raise Exception.Create( cACBrDeviceSetPortaException );
+     raise Exception.Create( ACBrStr(cACBrDeviceSetPortaException) );
 
   StrTemp := UpperCase( Value ) ;
   if (pos('LPT',StrTemp) = 1) or (pos('COM',StrTemp) = 1) then
@@ -540,7 +538,7 @@ begin
        hsDTR_DSR :
           Result := Serial.DSR ;
      else ;
-        Result := true ;    { Nao h√° sinal de HandShake para verificar }
+        Result := true ;    { Nao h· sinal de HandShake para verificar }
      end;
 
      if not result then
@@ -731,12 +729,12 @@ begin
 end;
 
 {$IFDEF ThreadEnviaLPT}
-{ A ideia dessa Thread √© testar se os dados est√£o sendo gravados com sucesso na
-  Porta Paralela (ou arquivo). √â criada uma Thread para "gravar" os dados em
-  segundo plano, enquanto o programa monitora se as linhas est√£o sendo enviadas.
+{ A ideia dessa Thread È testar se os dados est„o sendo gravados com sucesso na
+  Porta Paralela (ou arquivo). … criada uma Thread para "gravar" os dados em
+  segundo plano, enquanto o programa monitora se as linhas est„o sendo enviadas.
   Caso a Thread nao consiga enviar uma linha dentro do Timeout definido a Thread
-  √© cancelada e √© gerado um TIMEOUT. Isso evita o "travamento" do programa
-  quando a porta ou arquivo n√£o est√£o prontos para a grava√ßao com o comando
+  È cancelada e È gerado um TIMEOUT. Isso evita o "travamento" do programa
+  quando a porta ou arquivo n„o est„o prontos para a gravaÁ„o com o comando
   Write() }
 procedure TACBrDevice.EnviaStrThread(AString: AnsiString);
 Var IsTimeOut  : Boolean ;
@@ -771,7 +769,7 @@ begin
      ThreadEnviaLPT.Terminate ;
 
      if IsTimeOut then
-        raise Exception.Create( Format(cACBrDeviceEnviaStrThreadException, [ Porta ] )) ;
+        raise Exception.Create( Format(ACBrStr(cACBrDeviceEnviaStrThreadException), [ Porta ] )) ;
   end ;
 end;
 {$ENDIF}
@@ -823,7 +821,7 @@ end;
 constructor TACBrThreadEnviaLPT.Create(AOwner : TObject; AString: String ) ;
 begin
   if not (AOwner is TACBrDevice) then
-     raise Exception.Create('Uso Inv·lido da TACBrThreadEnviaLPT');
+     raise Exception.Create(ACBrStr('Uso Inv·lido da TACBrThreadEnviaLPT'));
 
   inherited Create( false ) ; { Rodar Imediatemanete }
   FreeOnTerminate := true ;

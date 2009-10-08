@@ -94,6 +94,20 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+
+Versão 0.8.8b  08/10/09
+-- ACBr --
+[*]    Todas as Saidas de Mensagem do ACBr, através de Exceptions ou MessageDlg
+       foram revisadas para converter a saida para UTF8 quando o Compilador
+       suportar UNICODE.
+
+-- ACBrUtil --
+[+]    Adicionada: function ACBrStr( AString : AnsiString ) : String ;
+       Todos os Fontes do ACBr usam Encoding CP1252, para manter compatibilidade
+       com D5 a D2007, Porém D2009 e superiores e Lazarus0.9.27 e acima usam UTF8.
+       Essa função converte a "AString" para de ANSI, para UTF8, apenas se o
+       sistema usar UNICODE
+
 Versão 0.8.8b  02/10/09
 -- ACBrECF --
 [-]    Novo mecanismo usando BlockInput não liberava Mouse/Teclado durante a pergunta de ReTentar	

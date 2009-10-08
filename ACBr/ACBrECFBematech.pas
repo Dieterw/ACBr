@@ -109,7 +109,7 @@
 unit ACBrECFBematech ;
 
 interface
-uses ACBrECFClass, ACBrDevice, ACBrUtil, ACBrCHQClass,
+uses ACBrECFClass, ACBrDevice, ACBrBase, ACBrUtil, ACBrCHQClass,
      Classes ;
 
 const ErrosST1 : array[0..7] of string =
@@ -364,8 +364,8 @@ end;
 procedure TACBrECFBematech.Ativar;
 begin
   if not fpDevice.IsSerialPort  then
-     raise Exception.Create('A impressora: '+ModeloStr+' requer'+sLineBreak+
-                            'Porta Serial:  (COM1, COM2, COM3, ...)');
+     raise Exception.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+sLineBreak+
+                            'Porta Serial:  (COM1, COM2, COM3, ...)'));
 
   fpDevice.HandShake := hsRTS_CTS ;
   inherited Ativar ; { Abre porta serial }
@@ -389,8 +389,8 @@ begin
      EnviaComando( #19 ) ;    { Pede Status }
 
      if (fsACK = 21) or (fsACK <> 6) then
-        raise EACBrECFNaoInicializado.Create(
-                 'Erro inicializando a impressora '+ModeloStr );
+        raise EACBrECFNaoInicializado.Create( ACBrStr(
+                 'Erro inicializando a impressora '+fpModeloStr ));
 
      NumVersao ;   { Inicializa fpMFD, fsNumVersao e fpTermica }
 
@@ -446,16 +446,16 @@ begin
            end ;
 
            if fsACK = 0 then
-              raise EACBrECFSemResposta.create(
-                       'Impressora '+ModeloStr+' não responde (ACK = 0)')
+              raise EACBrECFSemResposta.create( ACBrStr(
+                       'Impressora '+fpModeloStr+' não responde (ACK = 0)'))
            else if fsACK = 21 then    { retorno em caracter 21d=15h=NAK }
-              raise EACBrECFSemResposta.create(
-                    'Impressora '+ModeloStr+' não reconheceu o Comando'+
-                    sLineBreak+' (ACK = 21)')
+              raise EACBrECFSemResposta.create( ACBrStr(
+                    'Impressora '+fpModeloStr+' não reconheceu o Comando'+
+                    sLineBreak+' (ACK = 21)'))
            else if fsACK <> 6 then
-              raise EACBrECFSemResposta.create(
-                    'Erro. Resposta da Impressora '+ModeloStr+' inválida'+
-                    sLineBreak+' (ACK = '+IntToStr(fsACK)+')') ;
+              raise EACBrECFSemResposta.create( ACBrStr(
+                    'Erro. Resposta da Impressora '+fpModeloStr+' inválida'+
+                    sLineBreak+' (ACK = '+IntToStr(fsACK)+')')) ;
         except
            on E : EACBrECFSemResposta do
             begin
@@ -520,8 +520,8 @@ begin
 
      if ErroMsg <> '' then
       begin
-        ErroMsg := 'Erro retornado pela Impressora: '+ModeloStr+sLineBreak+
-                   sLineBreak+ErroMsg ;
+        ErroMsg := ACBrStr('Erro retornado pela Impressora: '+fpModeloStr+sLineBreak+
+                   sLineBreak+ErroMsg) ;
         raise EACBrECFSemResposta.create(ErroMsg) ;
       end
      else
@@ -598,7 +598,7 @@ begin
            Result := (Length( RetCmd ) >= 2) ;
          end
         else
-           raise Exception.Create('ACK diferente de 6');
+           raise Exception.Create(ACBrStr('ACK diferente de 6'));
      except
        On E: Exception do
        begin
@@ -612,8 +612,8 @@ begin
    end ;
 
    if fsFalhasFimImpressao > 4 then
-      raise EACBrECFSemResposta.create(
-             'Impressora '+ModeloStr+' não está em linha') ;
+      raise EACBrECFSemResposta.create( ACBrStr(
+             'Impressora '+fpModeloStr+' não está em linha')) ;
 
 end;
 
@@ -1132,8 +1132,8 @@ Var QtdStr, ValorStr, AcrescimoStr, DescontoStr : String ;
     CMD : Byte ;
 begin
   if Qtd > 9999 then
-     raise EACBrECFCMDInvalido.Create(
-           'Quantidade deve ser inferior a 9999.');
+     raise EACBrECFCMDInvalido.Create( ACBrStr(
+           'Quantidade deve ser inferior a 9999.') );
 
   Descricao := trim(Descricao) ;
   Unidade   := padL(Unidade,2) ;
@@ -1470,7 +1470,7 @@ begin
   if fpMFD then
    begin
      if AchaRGDescricao(Descricao, True) <> nil then
-        raise Exception.Create('Relatório Gerencial ('+Descricao+') já existe.') ;
+        raise Exception.Create(ACBrStr('Relatório Gerencial ('+Descricao+') já existe.')) ;
 
      if (ProxIndice < 2) or (ProxIndice > 30) then { Indice passado é válido ? }
      begin
@@ -1482,12 +1482,12 @@ begin
      end ;
 
      if ProxIndice > 30 then
-        raise Exception.create('Não há espaço para programar novos RGs');
+        raise Exception.create(ACBrStr('Não há espaço para programar novos RGs'));
 
      EnviaComando( #82 + IntToStrZero(ProxIndice,2) + PadL(Descricao,17) ) ;
    end
   else
-     raise Exception.Create('Impressoras sem MFD não suportam Programação de Relatórios Gerenciais');
+     raise Exception.Create(ACBrStr('Impressoras sem MFD não suportam Programação de Relatórios Gerenciais'));
 
   CarregaRelatoriosGerenciais ;
 end;
@@ -1560,8 +1560,8 @@ begin
      ProxIndice := ComprovantesNaoFiscais.Count + 1 ;
 
   if ProxIndice > 50 then
-     raise Exception.create('Não há espaço para programar novos Comprovantes'+
-                            ' não Fiscais');
+     raise Exception.create(ACBrStr('Não há espaço para programar novos Comprovantes'+
+                            ' não Fiscais'));
 
   BytesResp := 0 ;
   EnviaComando( #40 + IntToStrZero(ProxIndice,2) + Descricao ) ;
@@ -1589,8 +1589,8 @@ begin
 
   Modelo := fsModelosCheque.AchaModeloBanco( Banco ) ;
   if Modelo = nil then
-     raise Exception.create('Modelo de cheque do Banco: '+Banco+
-                            ' não encontrado');
+     raise Exception.create(ACBrStr('Modelo de cheque do Banco: '+Banco+
+                            ' não encontrado'));
   BytesResp := 0 ;
   with Modelo do
      EnviaComando( #57 + ValStr + Favorecido + Cidade + DataStr +
@@ -1623,8 +1623,8 @@ procedure TACBrECFBematech.ImpactoAgulhas( NivelForca : Integer = 2);
 Var Value : Integer ;
 begin
   if fs25MFD or ( StrToIntDef( NumVersao,0 ) < 310) then
-     raise Exception.Create('Comando para aumentar o impacto das agulhas '+
-                            'não disponível neste modelo de ECF.') ;
+     raise Exception.Create(ACBrStr('Comando para aumentar o impacto das agulhas '+
+                            'não disponível neste modelo de ECF.')) ;
 
   Value := min(max(NivelForca,3),1) ;
   EnviaComando( #124 + IntToStr( Value ) ) ;
@@ -1645,8 +1645,8 @@ begin
      Espera := 10 ;
      RG  := AchaRGIndice( IndiceStr ) ;
      if RG = nil then
-        raise Exception.create( 'Relatório Gerencial: '+IndiceStr+
-                                ' não foi cadastrado.' );
+        raise Exception.create( ACBrStr('Relatório Gerencial: '+IndiceStr+
+                                ' não foi cadastrado.' ));
 
      EnviaComando( #83 + IndiceStr, Espera);
    end
@@ -1699,8 +1699,8 @@ begin
   FPG := AchaFPGIndice( CodFormaPagto ) ;
 
   if FPG = nil then
-     raise Exception.create( 'Forma de Pagamento: '+CodFormaPagto+
-                             ' não foi cadastrada.' ) ;
+     raise Exception.create( ACBrStr('Forma de Pagamento: '+CodFormaPagto+
+                             ' não foi cadastrada.') ) ;
 
   COO       := Poem_Zeros( trim(COO) ,6) ;
   FPGDesc   := padL( FPG.Descricao, 16 ) ;
@@ -2076,8 +2076,8 @@ begin
    begin
      FPG := AchaFPGIndice(CodFormaPagto) ;
      if FPG = nil then
-        raise Exception.create( 'Forma de pagamento: '+CodFormaPagto+
-                                ' não encontrada');
+        raise Exception.create( ACBrStr('Forma de pagamento: '+CodFormaPagto+
+                                ' não encontrada'));
 
      AguardaImpressao := True ;
      EnviaComando( #25 + CodCNF + IntToStrZero(Round(Valor * 100) ,14) +
@@ -2119,8 +2119,8 @@ begin
   else
    begin
      if fsNFCodCNF <> '' then
-        raise Exception.Create('Essa versão de ECF apenas permite o registro '+
-                               'de 1 Item não Fiscal'); 
+        raise Exception.Create(ACBrStr('Essa versão de ECF apenas permite o registro '+
+                               'de 1 Item não Fiscal'));
 
      fsNFCodCNF := CodCNF ;
      fsNFValor  := Valor ;

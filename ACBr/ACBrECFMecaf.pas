@@ -263,8 +263,8 @@ end;
 procedure TACBrECFMecaf.Ativar;
 begin
   if not fpDevice.IsSerialPort  then
-     raise Exception.Create('A impressora: '+ModeloStr+' requer'+#10+
-                            'Porta Serial:  (COM1, COM2, COM3, ...)');
+     raise Exception.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+#10+
+                            'Porta Serial:  (COM1, COM2, COM3, ...)'));
 
   fpDevice.HandShake := hsRTS_CTS ;
   inherited Ativar ; { Abre porta serial }
@@ -279,8 +279,8 @@ begin
   try
      { Testando a comunicaçao com a porta }
      if NumVersao = '' then
-        raise EACBrECFNaoInicializado.Create(
-                 'Erro inicializando a impressora '+ModeloStr );
+        raise EACBrECFNaoInicializado.Create( ACBrStr(
+                 'Erro inicializando a impressora '+fpModeloStr ));
 
      if IsOldMecaf then
         fpColunas := 48   // Mecaf antiga aceita 48 colunas
@@ -384,8 +384,8 @@ begin
 
   if ErroMsg <> '' then
    begin
-     ErroMsg := 'Erro retornado pela Impressora: '+ModeloStr+#10+#10+
-                ErroMsg ;
+     ErroMsg := ACBrStr('Erro retornado pela Impressora: '+fpModeloStr+#10+#10+
+                ErroMsg );
      raise EACBrECFSemResposta.create(ErroMsg) ;
    end
   else
@@ -686,10 +686,10 @@ Var Linhas, CodTroco : String ;
 begin
   if ImprimeVinculado then
      if fsVinculado then
-        raise Exception.Create('Já existe Forma de Pagamento com '+#10+
+        raise Exception.Create(ACBrStr('Já existe Forma de Pagamento com '+#10+
                                'comprovante NAO fiscal vinculado pendente. '+#10+
-                               'Impressora: '+ModeloStr+' aceita apenas um '+#10+
-                               'Comprovante não Fiscal Viculado por Cupom.')
+                               'Impressora: '+fpModeloStr+' aceita apenas um '+#10+
+                               'Comprovante não Fiscal Viculado por Cupom.'))
      else
         fsVinculado := true ;
 
@@ -771,13 +771,13 @@ Var QtdStr, ValorStr, DescontoStr, Fmt: String ;
     FlagDesc : Integer ;
 begin
   if Qtd > 9999 then
-     raise EACBrECFCMDInvalido.Create(
-           'Quantidade deve ser inferior a 9999.');
+     raise EACBrECFCMDInvalido.Create( ACBrStr(
+           'Quantidade deve ser inferior a 9999.'));
 
   { Mecaf não permite Acrescimo por Item }
   if (ValorDescontoAcrescimo > 0) and (DescontoAcrescimo = 'A') then
-     raise EACBrECFCMDInvalido.Create(
-           'ECF '+ModeloStr+' não permite Acréscimo por Item');
+     raise EACBrECFCMDInvalido.Create( ACBrStr(
+           'ECF '+fpModeloStr+' não permite Acréscimo por Item'));
 
   Codigo      := padL(Codigo,13) ;    { Ajustando Tamanhos }
   Unidade     := padL(Unidade,2) ;
@@ -924,7 +924,7 @@ begin
   end ;
 
   if ProxIndice > 15 then
-     raise Exception.create('Não há espaço para programar novas Aliquotas');
+     raise Exception.create(ACBrStr('Não há espaço para programar novas Aliquotas'));
 
   EnviaComando( '46' + IntToStrZero(ProxIndice,2) + ValStr + sTipo ) ;
 
@@ -1021,8 +1021,8 @@ begin
   end ;
 
   if ProxIndice > 15 then
-     raise Exception.create('Não há espaço para programar novas Formas de '+
-                            'Pagamento');
+     raise Exception.create(ACBrStr('Não há espaço para programar novas Formas de '+
+                            'Pagamento'));
 
   EnviaComando( '29' + IntToStrZero(ProxIndice,2) + Descricao ) ;
 
@@ -1091,8 +1091,8 @@ begin
   end ;
 
   if ProxIndice > 31 then
-     raise Exception.create('Não há espaço para programar novos Comprovantes'+
-                            ' não Fiscais');
+     raise Exception.create(ACBrStr('Não há espaço para programar novos Comprovantes'+
+                            ' não Fiscais'));
 
   EnviaComando( '29' + IntToStrZero(ProxIndice,2) + Descricao ) ;
 

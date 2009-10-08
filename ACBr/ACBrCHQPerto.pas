@@ -50,7 +50,7 @@
 unit ACBrCHQPerto;
 
 interface
-uses ACBrCHQClass,
+uses ACBrCHQClass,  
      Classes ;
 
 Const cCmdImpCheque = ';D' ;
@@ -119,8 +119,8 @@ end;
 procedure TACBrCHQPerto.Ativar;
 begin
   if not fpDevice.IsSerialPort then
-     raise Exception.Create('Impressora de Cheques '+fpModeloStr+' requer'+#10+
-                            'Porta Serial (COMn)');
+     raise Exception.Create(ACBrStr('Impressora de Cheques '+fpModeloStr+' requer'+#10+
+                            'Porta Serial (COMn)'));
 
   fsAguardandoResposta := false ;
   fpDevice.HandShake := hsDTR_DSR ;
@@ -214,8 +214,8 @@ begin
 
   try
      if not fpDevice.EmLinha( 3 ) then  { Impressora está em-linha ? }
-       raise Exception.Create('A impressora de Cheques '+ModeloStr+
-                              ' não está pronta.') ;
+       raise Exception.Create(ACBrStr('A impressora de Cheques '+fpModeloStr+
+                              ' não está pronta.')) ;
 
      { Para evita chamadas recursivas, enquanto já está esperando uma resposta }
      fsAguardandoResposta := true ;
@@ -232,17 +232,17 @@ begin
               { põe pra dormir para atualizar o buffer da porta serial... }
               Sleep(200);
            except
-              raise Exception.create('Erro ao enviar comandos para a PertoCheck') ;
+              raise Exception.create(ACBrStr('Erro ao enviar comandos para a PertoCheck')) ;
            end ;
 
            try
               ACK := fpDevice.Serial.RecvByte(SecTimeOut) ;
            except
-              raise Exception.create('PertoCheck não responde');
+              raise Exception.create(ACBrStr('PertoCheck não responde'));
            end ;
 
            if ACK = 21 then
-              raise Exception.create('PertoCheck não reconheceu o comando')
+              raise Exception.create(ACBrStr('PertoCheck não reconheceu o comando')) ;
         until ACK = 6;
 
         { Le conteudo da porta }
@@ -260,7 +260,7 @@ begin
            end ;
 
            if now > wTempoLimite then       { TimeOut }
-              raise Exception.create('Impressora PertoCheck não está respondendo') ;
+              raise Exception.create(ACBrStr('Impressora PertoCheck não está respondendo')) ;
         until (copy(fpRespostaComando, length(fpRespostaComando) - 1, 1) = #3);
 
         { Separando o Retorno... Tirando STX, cmd, ETX, BCC }
@@ -351,7 +351,7 @@ begin
 
   MsgErro := 'PertoCheck retorno erro: '+Err+#10+' '+MsgErro ;
 
-  raise Exception.Create(MsgErro);
+  raise Exception.Create(ACBrStr(MsgErro));
 
 end;
 

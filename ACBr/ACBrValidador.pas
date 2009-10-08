@@ -266,7 +266,7 @@ begin
         fsOnMsgErro( fsMsgErro ) ;
 
      if fsRaiseExcept then
-        raise Exception.Create( fsMsgErro );
+        raise Exception.Create( ACBrStr(fsMsgErro) );
   end ;
 
 end;

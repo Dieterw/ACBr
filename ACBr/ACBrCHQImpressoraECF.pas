@@ -43,7 +43,7 @@
 unit ACBrCHQImpressoraECF;
 
 interface
-uses ACBrCHQClass, 
+uses ACBrCHQClass,  
      Classes ;
 
 type TACBrCHQImpressoraECF = class( TACBrCHQClass )
@@ -63,7 +63,7 @@ type TACBrCHQImpressoraECF = class( TACBrCHQClass )
 end ;
 
 implementation
-Uses SysUtils ;
+Uses ACBrUtil, SysUtils ;
 
 { TACBrCHQImpressoraECF }
 
@@ -78,12 +78,12 @@ end;
 procedure TACBrCHQImpressoraECF.Ativar;
 begin
   if not Assigned( fpECF ) then
-     raise Exception.Create('Para Imp.Cheques "chqImpressoraECF", ACBrCHQ'+
-                            ' deve estar ligado a um componente ACBrECF');
+     raise Exception.Create(ACBrStr('Para Imp.Cheques "chqImpressoraECF", ACBrCHQ'+
+                            ' deve estar ligado a um componente ACBrECF'));
 
   if not fpECF.Ativo then
-     raise Exception.Create('Para usar Imp.Cheques "chqImpressoraECF", ACBrECF'+
-                            ' deve estar Ativo');
+     raise Exception.Create(ACBrStr('Para usar Imp.Cheques "chqImpressoraECF", ACBrECF'+
+                            ' deve estar Ativo'));
 
   inherited Ativar ; { Apenas ajusta fpAtivo }
 end;

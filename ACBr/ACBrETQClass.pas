@@ -46,7 +46,7 @@
 unit ACBrETQClass;
 
 interface
-uses ACBrDevice,
+uses ACBrDevice, 
      Classes,
      {$IFDEF COMPILER6_UP} Types {$ELSE} Windows {$ENDIF} ;
 
@@ -101,7 +101,7 @@ end;
 implementation
 
 Uses
-  ACBrETQ,
+  ACBrETQ, ACBrUtil, 
   SysUtils;
 
 { TACBrBAETQClass }
@@ -109,7 +109,7 @@ Uses
 constructor TACBrETQClass.Create(AOwner: TComponent);
 begin
   if not (AOwner is TACBrETQ) then
-     raise Exception.create('Essa Classe deve ser instanciada por TACBrETQ');
+     raise Exception.create(ACBrStr('Essa Classe deve ser instanciada por TACBrETQ'));
 
   { Criando ponteiro interno para as Propriedade SERIAL de ACBrETQ,
     para permitir as Classes Filhas o acesso a essas propriedades do Componente}
@@ -165,26 +165,26 @@ procedure TACBrETQClass.ImprimirBarras(Orientacao: TACBrETQOrientacao; TipoBarra
   LarguraBarraLarga, LarguraBarraFina: Char; Vertical, Horizontal: Integer;
   Texto: String; AlturaCodBarras: Integer);
 begin
-  raise Exception.Create('Função ImprimirBarras não implementada em: ' + ModeloStr);
+  raise Exception.Create(ACBrStr('Função ImprimirBarras não implementada em: ') + ModeloStr);
 end;
 
 procedure TACBrETQClass.ImprimirCaixa(Vertical, Horizontal, Largura,
   Altura, EspessuraVertical, EspessuraHorizontal: Integer);
 begin
-  raise Exception.Create('Função ImprimirCaixa não implementada em: ' + ModeloStr);
+  raise Exception.Create(ACBrStr('Função ImprimirCaixa não implementada em: ') + ModeloStr);
 end;
 
 procedure TACBrETQClass.ImprimirLinha(Vertical, Horizontal, Largura,
   Altura: Integer);
 begin
-  raise Exception.Create('Função ImprimirLinha não implementada em: ' + ModeloStr);
+  raise Exception.Create(ACBrStr('Função ImprimirLinha não implementada em: ') + ModeloStr);
 end;
 
 procedure TACBrETQClass.ImprimirTexto(Orientacao: TACBrETQOrientacao; Fonte: Integer;
   MultiplicadorH, MultiplicadorV: Char; Vertical, Horizontal: Integer;
   Texto: String; SubFonte: Integer);
 begin
-  raise Exception.Create('Função ImprimirTexto não implementada em: ' + ModeloStr);
+  raise Exception.Create(ACBrStr('Função ImprimirTexto não implementada em: ') + ModeloStr);
 end;
 
 procedure TACBrETQClass.SetTemperatura(const Value: Integer);
@@ -199,7 +199,7 @@ end;
 
 procedure TACBrETQClass.Imprimir(Copias, AvancoEtq: Integer);
 begin
-  raise Exception.Create('Função Imprimir não implementada em: ' + ModeloStr);
+  raise Exception.Create(ACBrStr('Função Imprimir não implementada em: ') + ModeloStr);
 end;
 
 end.

@@ -257,7 +257,7 @@ begin
    if (Trim(Descricao) <> '') and (Valor > 0) then
     begin
       if AchaDinheiroValor(Valor) <> nil then
-         raise Exception.Create('Valor já adicionado');
+         raise Exception.Create(ACBrStr('Valor já adicionado'));
 
       Din := TDinheiro.Create;
 
@@ -267,7 +267,7 @@ begin
       fsDinheiroList.Insert( PosInsercaoDinheiro(Valor), Din );
     end
    else
-      raise Exception.Create('Descrição vazia ou Valor inferior a Zero.');
+      raise Exception.Create(ACBrStr('Descrição vazia ou Valor inferior a Zero.'));
 end;
 
 { Achando a posição correta para inserir o valor. Notas maiores devem ter

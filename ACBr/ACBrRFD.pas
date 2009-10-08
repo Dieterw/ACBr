@@ -435,7 +435,7 @@ end;
 procedure TACBrRFDItemCupom.SetCancelado(const Value: Char);
 begin
   if not (UpCase(Value) in ['S','N']) then
-     raise Exception.Create('Valores válidos para TACBrRFDItemCupom.Cancelado, "S" ou "N"') ;
+     raise Exception.Create(ACBrStr('Valores válidos para TACBrRFDItemCupom.Cancelado, "S" ou "N"')) ;
 
   fsCancelado := UpCase( Value );
 end;
@@ -868,7 +868,7 @@ end;
 procedure TACBrRFDCupom.SetOrdemDA(const Value: Char);
 begin
   if not (UpCase(Value) in ['D','A']) then
-     raise Exception.Create('Valores válidos para TACBrRFDE14.OrdemDA, "D" ou "A"') ;
+     raise Exception.Create(ACBrStr('Valores válidos para TACBrRFDE14.OrdemDA, "D" ou "A"')) ;
 
   fsOrdemDA := UpCase( Value );
 end;
@@ -876,7 +876,7 @@ end;
 procedure TACBrRFDCupom.SetTipoAcrescimo(const Value: Char);
 begin
   if not (UpCase(Value) in ['V','P']) then
-     raise Exception.Create('Valores válidos para TACBrRFDE14.TipoAcrescimo, "V" ou "P"') ;
+     raise Exception.Create(ACBrStr('Valores válidos para TACBrRFDE14.TipoAcrescimo, "V" ou "P"')) ;
 
   fsTipoAcrescimo := UpCase( Value );
 end;
@@ -884,7 +884,7 @@ end;
 procedure TACBrRFDCupom.SetTipoDesconto(const Value: Char);
 begin
   if not (UpCase(Value) in ['V','P']) then
-     raise Exception.Create('Valores válidos para TACBrRFDE14.TipoDesconto, "V" ou "P"') ;
+     raise Exception.Create(ACBrStr('Valores válidos para TACBrRFDE14.TipoDesconto, "V" ou "P"')) ;
 
   fsTipoDesconto := UpCase( Value );
 end;
@@ -892,7 +892,7 @@ end;
 procedure TACBrRFDCupom.SetCancelado(const Value: Char);
 begin
   if not (UpCase(Value) in ['S','N']) then
-     raise Exception.Create('Valores válidos para TACBrRFDE14.Cancelado, "S" ou "N"') ;
+     raise Exception.Create(ACBrStr('Valores válidos para TACBrRFDE14.Cancelado, "S" ou "N"')) ;
 
   fsCancelado := UpCase( Value );
 end;
@@ -993,10 +993,10 @@ begin
       CriarArqRFDID ;
 
   if not Assigned(fsECF) then
-     raise Exception.Create( 'ACBrRFD não está associado a ACBrECF');
+     raise Exception.Create( ACBrStr('ACBrRFD não está associado a ACBrECF'));
 
   if not TACBrECF(fsECF).Ativo then
-     raise Exception.Create( 'ACBrECF associado a ACBrRFD não está Ativo');
+     raise Exception.Create( ACBrStr('ACBrECF associado a ACBrRFD não está Ativo'));
 
   with TACBrECF( fsECF ) do
   begin
@@ -1117,17 +1117,17 @@ procedure TACBrRFD.VerificaParametros;
 //   ArqV, ArqB : String ;
 begin
   if not fsAtivo then
-     raise Exception.Create('ACBrRFD não está Ativo');
+     raise Exception.Create(ACBrStr('ACBrRFD não está Ativo'));
 
   if not Assigned(fsECF) then
-     raise Exception.Create('ACBrRFD não está associado a ACBrECF') ;
+     raise Exception.Create(ACBrStr('ACBrRFD não está associado a ACBrECF')) ;
 
   if not TACBrECF(fsECF).Ativo then
-     raise Exception.Create('ACBrECF não está Ativo');
+     raise Exception.Create(ACBrStr('ACBrECF não está Ativo'));
 
   if fsIgnoraEcfMfd then
      if TACBrECF(fsECF).MFD then
-        raise Exception.Create('ECFs com MFD devem gerar arquivo conforme CAT 17/04');
+        raise Exception.Create(ACBrStr('ECFs com MFD devem gerar arquivo conforme CAT 17/04'));
 
   { Verificando se preencheu propriedades da Sw.House }
   if (SH_CNPJ = '')        or (SH_NomeAplicativo = '')   or
@@ -1155,9 +1155,9 @@ begin
 
       Sleep(300) ;
       if not FileExists( ArqV ) then
-         raise Exception.Create('Não existe método para calculo do registro EAD'+sLineBreak+
+         raise Exception.Create(ACBrStr('Não existe método para calculo do registro EAD'+sLineBreak+
                                '(Instale o programa "openssl", disponível em:'+sLineBreak+
-                               ' http://www.openssl.org/related/binaries.html )') ;
+                               ' http://www.openssl.org/related/binaries.html )')) ;
       DeleteFile( ArqV ) ;
   end ;
 *)
@@ -1254,7 +1254,7 @@ begin
   if fsDirRFD = Value then exit ;
 
   if fsAtivo then
-     raise Exception.Create('DirRFD não pode ser modificado com o ACBrRFD Ativo');
+     raise Exception.Create(ACBrStr('DirRFD não pode ser modificado com o ACBrRFD Ativo'));
 
   fsDirRFD := Trim(Value) ;
 
@@ -1809,7 +1809,7 @@ begin
            EAD := SL.Text ;
            EAD := UpperCase( Trim( copy(EAD, pos('=',EAD)+1, Length(EAD) ))) ;
         except
-           raise Exception.Create( 'Erro ao calcular registro EAD usando o "openssl"' ) ;
+           raise Exception.Create( ACBrStr('Erro ao calcular registro EAD usando o "openssl"' )) ;
         end ;
      finally
         SL.Free ;
@@ -1922,7 +1922,7 @@ procedure TACBrRFD.LerINI;
       wDiaMov : TDateTime ;
 begin
   if not FileExists(ArqINI) then
-     raise Exception.Create('Arquivo: '+ArqINI+' não encontrado.');
+     raise Exception.Create(ACBrStr('Arquivo: '+ArqINI+' não encontrado.'));
 
   Ini := TMemIniFile.Create( ArqINI ) ;
   try
@@ -2081,7 +2081,7 @@ begin
   begin
      if Value <> nil then
         if not (Value is TACBrECF) then
-           raise Exception.Create('ACBrRFD.ECF deve ser do tipo TACBrECF') ;
+           raise Exception.Create(ACBrStr('ACBrRFD.ECF deve ser do tipo TACBrECF')) ;
 
      if Assigned(fsECF) then
         fsECF.RemoveFreeNotification(Self);

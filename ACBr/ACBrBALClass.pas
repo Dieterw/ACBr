@@ -44,7 +44,7 @@
 unit ACBrBALClass;
 
 interface
-uses ACBrDevice,     {Units da ACBr}
+uses ACBrDevice,      {Units da ACBr}
      Classes,
      {$IFDEF COMPILER6_UP} Types {$ELSE} Windows {$ENDIF} ;
 
@@ -81,7 +81,7 @@ end;
 implementation
 
 Uses
-  ACBrBAL,
+  ACBrBAL, ACBrUtil, 
   SysUtils;
 
 { TACBrBALClass }
@@ -89,7 +89,7 @@ Uses
 constructor TACBrBALClass.Create(AOwner: TComponent);
 begin
   if not (AOwner is TACBrBAL) then
-     raise Exception.create('Essa Classe deve ser instanciada por TACBrBAL');
+     raise Exception.create(ACBrStr('Essa Classe deve ser instanciada por TACBrBAL'));
 
   { Criando ponteiro interno para as Propriedade SERIAL de ACBrBAL,
     para permitir as Classes Filhas o acesso a essas propriedades do Componente}
@@ -141,13 +141,13 @@ end;
 function TACBrBALClass.LePeso( MillisecTimeOut : Integer): Double;
 begin
   { Deve ser implementada na Classe Filha }
-  raise Exception.Create('Função LePeso não implementada em: '+ModeloStr);
+  raise Exception.Create(ACBrStr('Função LePeso não implementada em: ')+ModeloStr);
 end;
 
 procedure TACBrBALClass.LeSerial( MillisecTimeOut : Integer) ;
 begin
   { Deve ser implementada na Classe Filha }
-  raise Exception.Create('Procedure LeSerial não implementada em: '+ModeloStr);
+  raise Exception.Create(ACBrStr('Procedure LeSerial não implementada em: ')+ModeloStr);
 end;
 
 end.

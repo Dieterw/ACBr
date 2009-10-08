@@ -43,7 +43,7 @@
 unit ACBrDISClass;
 
 interface
-uses ACBrDevice,     {Units da ACBr}
+uses ACBrDevice,      {Units da ACBr}
      Classes,
      {$IFDEF COMPILER6_UP} Types {$ELSE} Windows {$ENDIF} ;
 
@@ -92,7 +92,7 @@ TACBrDISClass = class
 end ;
 
 implementation
-Uses ACBrDIS,
+Uses ACBrDIS, ACBrUtil, 
      SysUtils ;
 
 { TACBrDISClass }
@@ -100,7 +100,7 @@ Uses ACBrDIS,
 constructor TACBrDISClass.Create(AOwner: TComponent);
 begin
   if not (AOwner is TACBrDIS) then
-     raise Exception.create('Essa Classe deve ser instanciada por TACBrDIS');
+     raise Exception.create(ACBrStr('Essa Classe deve ser instanciada por TACBrDIS'));
 
   { Criando ponteiro interno para as Propriedade SERIAL de ACBrDIS,
     para permitir as Classes Filhas o acesso a essas propriedades do Componente}

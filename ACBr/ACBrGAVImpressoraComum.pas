@@ -79,12 +79,12 @@ end;
 procedure TACBrGAVImpressoraComum.Ativar;
 begin
   if fpDevice.Porta = '' then
-     raise Exception.Create('Para usar Gaveta "gavImpressoraComum" deve ser'+
-                            ' definida uma Porta Paralela ou Serial');
+     raise Exception.Create(ACBrStr('Para usar Gaveta "gavImpressoraComum" deve ser'+
+                            ' definida uma Porta Paralela ou Serial'));
 
   if StrComando = '' then
-     raise Exception.Create('Para usar Gaveta "gavImpressoraComum" deve ser'+
-                            ' definido uma String de comando em StrComando');
+     raise Exception.Create(ACBrStr('Para usar Gaveta "gavImpressoraComum" deve ser'+
+                            ' definido uma String de comando em StrComando'));
 
   inherited Ativar ; { Apenas ajusta fpAtivo }
 

@@ -375,7 +375,7 @@ begin
   if fsModelo = Value then exit ;
 
   if fsAtivo then
-     raise Exception.Create('Não é possível mudar o Modelo com ACBrDIS Ativo');
+     raise Exception.Create(ACBrStr('Não é possível mudar o Modelo com ACBrDIS Ativo'));
 
   FreeAndNil( fsDIS ) ;
 
@@ -423,7 +423,7 @@ end;
 
 function TACBrDIS.GetModeloStrClass: String;
 begin
-  Result := fsDIS.ModeloStr ;
+  Result := ACBrStr( fsDIS.ModeloStr ) ;
 end;
 
 function TACBrDIS.GetPorta: String;
@@ -681,8 +681,8 @@ end;
 procedure TACBrDIS.VerificaLinhaExiste( Linha : Integer ) ;
 begin
   if (Linha < 1) or (Linha > Linhas.Count) then
-     raise Exception.Create('Linha '+IntToStr(Linha)+' fora da Faixa, 1 - '+
-                            IntToStr(Linhas.Count)) ;
+     raise Exception.Create(ACBrStr('Linha '+IntToStr(Linha)+' fora da Faixa, 1 - '+
+                            IntToStr(Linhas.Count))) ;
 end;
 
 procedure TACBrDIS.AtualizaLinhas(Sender: TObject);

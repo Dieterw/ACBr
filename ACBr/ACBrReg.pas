@@ -115,7 +115,7 @@ type
 procedure Register;
 
 implementation
-Uses ACBrEnterTab,
+Uses ACBrEnterTab, ACBrUtil, 
      {$IFDEF AnimGIF}ACBrGIF, {$ENDIF}
      ACBrECF, ACBrCalculadora, ACBrGAV, ACBrExtenso, ACBrTroco, ACBrValidador,
      ACBrCHQ, ACBrLCB, ACBrDIS, ACBrTER, ACBrBAL, ACBrCMC7, ACBrFala, ACBrETQ,
@@ -186,7 +186,7 @@ end;
 
 function TACBrAboutDialogProperty.GetValue: string;
 begin
-  Result := 'Versão: ' + ACBR_VERSAO ;
+  Result := ACBrStr( 'Versão: ' + ACBR_VERSAO ) ;
 end;
 
 { TACBrCalculadoraEditor }

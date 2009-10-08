@@ -109,7 +109,7 @@ begin
          end;
       end
       else
-         raise Exception.Create(RS_INACTIVETEF);
+         raise Exception.Create(ACBrStr(RS_INACTIVETEF));
    end;
    VerificaTransacaoPendente;
    fpAtivo := True;

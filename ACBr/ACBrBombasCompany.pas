@@ -23,7 +23,7 @@ TACBrBombasCompany = class( TACBrBombasClass )
 
 implementation
 
-Uses ACBrBase, SysUtils, DateUtils, StrUtils, Math ;
+Uses SysUtils, DateUtils, StrUtils, Math ;
 
 { --------------------------- TACBrBombasCompany ----------------------------- }
 

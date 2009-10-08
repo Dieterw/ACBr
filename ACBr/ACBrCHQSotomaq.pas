@@ -66,7 +66,7 @@ implementation
 Uses ACBrUtil,
      SysUtils,
    {$IFDEF COMPILER6_UP} DateUtils, {$ELSE} Windows,{$ENDIF}
-     ACBrBase, synaser;
+     synaser;
 
 { TACBrCHQSotomaq }
 
@@ -80,8 +80,8 @@ end;
 procedure TACBrCHQSotomaq.Ativar;
 begin
   if fpDevice.Porta = ''  then
-     raise Exception.Create('Impressora de Cheques '+fpModeloStr+' requer'+#10+
-                            'Porta Serial (COMn) ou Paralela (LPTn)');
+     raise Exception.Create(ACBrStr('Impressora de Cheques '+fpModeloStr+' requer'+#10+
+                            'Porta Serial (COMn) ou Paralela (LPTn)'));
 
   inherited Ativar ; { Abre porta serial }
 end;

@@ -43,7 +43,7 @@
 unit ACBrECFSwedaSTX ;
 
 interface
-uses ACBrECFClass, ACBrDevice, ACBrUtil, Classes, Contnrs ;
+uses ACBrECFClass, ACBrBase, ACBrDevice, ACBrUtil, Classes, Contnrs ;
 
 const
    STX  = #02 ;
@@ -302,8 +302,8 @@ procedure TACBrECFSwedaSTX.Ativar;
 Var RetCmd : AnsiString ;
 begin
   if not fpDevice.IsSerialPort  then
-     raise Exception.Create('A impressora: '+ModeloStr+' requer'+sLineBreak+
-                            'Porta Serial:  (COM1, COM2, COM3, ...)');
+     raise Exception.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+sLineBreak+
+                            'Porta Serial:  (COM1, COM2, COM3, ...)'));
 
   fpDevice.HandShake := hsDTR_DSR ;
   inherited Ativar ; { Abre porta serial }
@@ -320,8 +320,8 @@ begin
      fsVerProtocolo := Trim(copy( RetornaInfoECF( 'I1' ), 82, 1)) ;
 
      if fsVerProtocolo = '' then
-        raise EACBrECFNaoInicializado.Create(
-                 'Erro inicializando a impressora '+ModeloStr );
+        raise EACBrECFNaoInicializado.Create( ACBrStr(
+                 'Erro inicializando a impressora '+fpModeloStr ));
 
      fpDecimaisPreco := 0 ;
      RetCmd := RetornaInfoECF( 'H2' ) ;
@@ -384,16 +384,16 @@ begin
          end ;
 
          if ACK_ECF = 0 then
-            raise EACBrECFSemResposta.create(
-                     'Impressora '+ModeloStr+' não responde (ACK = 0)')
+            raise EACBrECFSemResposta.create( ACBrStr(
+                     'Impressora '+fpModeloStr+' não responde (ACK = 0)') )
          else if ACK_ECF = 21 then    { retorno em caracter 21d=15h=NAK }
-            raise EACBrECFSemResposta.create(
-                  'Impressora '+ModeloStr+' não reconheceu o Comando'+
-                  sLineBreak+' (ACK = 21). Falha: '+IntToStr(FalhasTX))
+            raise EACBrECFSemResposta.create( ACBrStr(
+                  'Impressora '+fpModeloStr+' não reconheceu o Comando'+
+                  sLineBreak+' (ACK = 21). Falha: '+IntToStr(FalhasTX)) )
          else if ACK_ECF <> 6 then
-            raise EACBrECFSemResposta.create(
-                  'Erro. Resposta da Impressora '+ModeloStr+' inválida'+
-                  sLineBreak+' (ACK = '+IntToStr(ACK)+')') ;
+            raise EACBrECFSemResposta.create( ACBrStr(
+                  'Erro. Resposta da Impressora '+fpModeloStr+' inválida'+
+                  sLineBreak+' (ACK = '+IntToStr(ACK)+')') ) ;
       except
          on E : EACBrECFSemResposta do
           begin
@@ -436,9 +436,9 @@ begin
 
    if ErroMsg <> '' then
     begin
-      ErroMsg := 'Erro retornado pela Impressora: '+ModeloStr+
+      ErroMsg := ACBrStr('Erro retornado pela Impressora: '+fpModeloStr+
                  sLineBreak+sLineBreak+
-                 'Erro ('+Mensagem+') '+ErroMsg ;
+                 'Erro ('+Mensagem+') '+ErroMsg ) ;
       raise EACBrECFSemResposta.create(ErroMsg) ;
     end
    else
@@ -575,8 +575,8 @@ begin
      begin
        ACK_PC := NACK ;  // Erro no CheckSum, retornar NACK
        if fsFalhasRX > CFALHAS then
-          raise Exception( 'Erro no digito Verificador da Resposta.'+sLineBreak+
-                           'Falha: '+IntToStr(fsFalhasRX) ) ;
+          raise Exception( ACBrStr('Erro no digito Verificador da Resposta.'+sLineBreak+
+                           'Falha: '+IntToStr(fsFalhasRX)) ) ;
        Inc( fsFalhasRX ) ;  // Incrementa numero de Falhas
        Result := False ;
      end ;
@@ -1066,8 +1066,8 @@ Var
   FlagArr, Cmd : String ;
 begin
   if Qtd > 9999 then
-     raise EACBrECFCMDInvalido.Create(
-           'Quantidade deve ser inferior a 9999.');
+     raise EACBrECFCMDInvalido.Create( ACBrStr(
+           'Quantidade deve ser inferior a 9999.'));
 
   if fsVerProtocolo > 'D' then
      FlagArr := '|A'

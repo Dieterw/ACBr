@@ -226,8 +226,8 @@ end;
 procedure TACBrECFUrano.Ativar;
 begin
   if not fpDevice.IsSerialPort  then
-     raise Exception.Create('A impressora: '+ModeloStr+' requer'+sLineBreak+
-                            'Porta Serial:  (COM1, COM2, COM3, ...)');
+     raise Exception.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+sLineBreak+
+                            'Porta Serial:  (COM1, COM2, COM3, ...)'));
 
   fpDevice.HandShake := hsRTS_CTS ;
   inherited Ativar ; { Abre porta serial }
@@ -241,8 +241,8 @@ begin
   try
      { Testando a comunicaçao com a porta }
      if NumVersao = '' then
-        raise EACBrECFNaoInicializado.Create(
-                 'Erro inicializando a impressora '+ModeloStr );
+        raise EACBrECFNaoInicializado.Create( ACBrStr(
+                 'Erro inicializando a impressora '+fpModeloStr ));
   except
      Desativar ;
      raise ;
@@ -368,8 +368,8 @@ begin
 
      if ErroMsg <> '' then
       begin
-        ErroMsg := 'Erro retornado pela Impressora: '+ModeloStr+#10+#10+
-                   ErroMsg ;
+        ErroMsg := ACBrStr('Erro retornado pela Impressora: '+fpModeloStr+#10+#10+
+                   ErroMsg );
         raise EACBrECFSemResposta.create(ErroMsg) ;
       end
      else
@@ -660,8 +660,8 @@ begin
 
   { Urano não permite Acrescimo por Item }
   if (ValorDescontoAcrescimo > 0) and (DescontoAcrescimo = 'A') then
-     raise EACBrECFCMDInvalido.Create(
-           'ECF '+ModeloStr+' não permite Acréscimo por Item');
+     raise EACBrECFCMDInvalido.Create( ACBrStr(
+           'ECF '+fpModeloStr+' não permite Acréscimo por Item'));
 
   Codigo    := padL(Codigo,13) ;    { Ajustando Tamanhos }
   Descricao := PadL(Copy(Descricao, 1, 66),66) ;
@@ -896,8 +896,8 @@ begin
   FPG := AchaFPGIndice( CodFormaPagto ) ;
 
   if FPG = nil then
-     raise Exception.create( 'Forma de Pagamento: '+CodFormaPagto+
-                             ' não foi cadastrada.' ) ;
+     raise Exception.create( ACBrStr('Forma de Pagamento: '+CodFormaPagto+
+                             ' não foi cadastrada.' )) ;
 
   EnviaComando( '44' + '000000' + '01' + R );
 end;

@@ -152,7 +152,7 @@ end ;
 
 
 implementation
-Uses ACBrCHQImpressoraECF, ACBrCHQImpressoraComum, ACBrCHQBematech,
+Uses ACBrUtil, ACBrCHQImpressoraECF, ACBrCHQImpressoraComum, ACBrCHQBematech,
      ACBrCHQChronos, ACBrCHQSchalter, ACBrCHQPerto, ACBrCHQSotomaq,
      ACBrCHQUrano ;
 
@@ -208,7 +208,7 @@ begin
   if fsModelo = Value then exit ;
 
   if fsAtivo then
-     raise Exception.Create('Não é possível mudar o Modelo com ACBrCHQ Ativo');
+     raise Exception.Create(ACBrStr('Não é possível mudar o Modelo com ACBrCHQ Ativo'));
 
   wBanco      := Banco ;
   wValor      := Valor ;
@@ -261,7 +261,7 @@ begin
   if fsAtivo then exit ;
 
   if fsModelo = chqNenhuma then
-     raise Exception.Create('Modelo não definido');
+     raise Exception.Create(ACBrStr('Modelo não definido'));
 
   fsCHQ.Ativar ;
 
@@ -361,7 +361,7 @@ end;
 
 function TACBrCHQ.GetModeloStrClass: String;
 begin
-  Result := fsCHQ.ModeloStr ;
+  Result := ACBrStr(fsCHQ.ModeloStr) ;
 end;
 
 function TACBrCHQ.GetPorta: String;

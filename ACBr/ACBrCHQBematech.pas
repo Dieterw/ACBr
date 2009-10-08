@@ -47,7 +47,7 @@
 unit ACBrCHQBematech;
 
 interface
-uses ACBrCHQClass, 
+uses ACBrCHQClass,  
      Classes
      {$IFNDEF COMPILER6_UP} ,Windows {$ENDIF} ;
 
@@ -84,8 +84,8 @@ end;
 procedure TACBrCHQBematech.Ativar;
 begin
   if fpDevice.Porta = ''  then
-     raise Exception.Create('Impressora de Cheques '+fpModeloStr+' requer'+#10+
-                            'Porta Serial (COMn) ou Paralela (LPTn)');
+     raise Exception.Create(ACBrStr('Impressora de Cheques '+fpModeloStr+' requer'+#10+
+                            'Porta Serial (COMn) ou Paralela (LPTn)'));
 
   fpDevice.HardFlow := true ;  { Ativar RTS/CTS } 
   inherited Ativar ; { Abre porta serial }
@@ -109,8 +109,8 @@ procedure TACBrCHQBematech.ImprimirCheque;
 Var ValStr, DataStr : String ;
 begin
   if not fpDevice.EmLinha( 3 ) then  { Impressora está em-linha ? }
-    raise Exception.Create('A impressora de Cheques '+ModeloStr+
-                           ' não está pronta.') ;
+    raise Exception.Create(ACBrStr('A impressora de Cheques '+fpModeloStr+
+                           ' não está pronta.')) ;
 
   TravarCheque ;
 

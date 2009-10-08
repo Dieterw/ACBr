@@ -407,8 +407,8 @@ end;
 procedure TACBrECFDaruma.Ativar;
 begin
   if not fpDevice.IsSerialPort  then
-     raise Exception.Create('A impressora: '+ModeloStr+' requer'+#10+
-                            'Porta Serial:  (COM1, COM2, COM3, ...)');
+     raise Exception.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+#10+
+                            'Porta Serial:  (COM1, COM2, COM3, ...)'));
 
 //  fpDevice.HandShake := hsRTS_CTS ;
   inherited Ativar ; { Abre porta serial }
@@ -429,8 +429,8 @@ begin
   try
      { Testando a comunicaçao com a porta e se é MFD }
      if NumVersao = '' then
-        raise EACBrECFNaoInicializado.Create(
-                 'Erro inicializando a impressora '+ModeloStr );
+        raise EACBrECFNaoInicializado.Create( ACBrStr(
+                 'Erro inicializando a impressora '+fpModeloStr ));
 
      // Função para comutar as impressoras termicas para OnLine
      ComutaOnLine;
@@ -589,12 +589,12 @@ begin
 
      if ErroMsg <> '' then
       begin
-        ErroMsg := 'Erro retornado pela Impressora: '+ModeloStr + sLineBreak +
+        ErroMsg := 'Erro retornado pela Impressora: '+fpModeloStr + sLineBreak +
                    sLineBreak + ErroMsg ;
         if fsErroSTD <> 0 then
            ErroMsg := ErroMsg + sLineBreak + 'Erro estendido ('+IntToStrZero(fsErroSTD,3)+')' ;
-            
-        raise EACBrECFSemResposta.create(ErroMsg) ;
+
+        raise EACBrECFSemResposta.create(ACBrStr(ErroMsg)) ;
       end
      else
         Sleep( IntervaloAposComando ) ;  { Pequena pausa entre comandos }
@@ -1429,7 +1429,7 @@ begin
       EnviaComando(FS + 'F' + #211, 15) ;  // Cancela Cupom
     end
     else
-    raise EACBrECFCMDInvalido.Create( 'Não existe documento para cancelar.');
+    raise EACBrECFCMDInvalido.Create( ACBrStr('Não existe documento para cancelar.') );
   end
 
   else if fsNumVersao = '2000' then
@@ -1640,8 +1640,8 @@ Var QtdStr, ValorStr, DescontoStr, SepDec, FlagDesc : String;
     Cmd : AnsiChar ;
 begin
   if Qtd > 99999 then
-     raise EACBrECFCMDInvalido.Create(
-           'Quantidade deve ser inferior a 99999.');
+     raise EACBrECFCMDInvalido.Create( ACBrStr(
+           'Quantidade deve ser inferior a 99999.'));
 
   if fpMFD then
    begin
@@ -1884,14 +1884,14 @@ begin
   TipoStr := UpperCase(Tipo) ;
 
   if fsNumVersao = '2000' then
-     raise Exception.Create('ProgramaAliquota ainda não implemenado na FS2000')
+     raise Exception.Create(ACBrStr('ProgramaAliquota ainda não implemenado na FS2000'))
 
   else if fpMFD then
   begin
     CarregaAliquotas ;
 
     if AchaICMSAliquota(Aliquota, TipoStr[1]) <> nil then
-      raise Exception.Create('Aliquota (' + FormatFloat('###,##0.00', Aliquota) + ') já existe.') ;
+      raise Exception.Create(ACBrStr('Aliquota (' + FormatFloat('###,##0.00', Aliquota) + ') já existe.')) ;
 
     ProxIndice := StrToIntDef(Posicao,0) ;
     if (ProxIndice < 1) or (ProxIndice > 16) then { Indice passado é válido ? }
@@ -1904,7 +1904,7 @@ begin
     end ;
 
     if ProxIndice > 16 then
-      raise Exception.create('Não há espaço para programar novas Aliquotas !');
+      raise Exception.create(ACBrStr('Não há espaço para programar novas Aliquotas !'));
 
 {  Código comentado, pois o comando abaixo está errado...
     if TipoStr <> 'S' then
@@ -2144,12 +2144,12 @@ begin
   { Daruma cadastra qualquer descrição mesmo repetida, por isso vamos ver se ja existe antes }
   FPagto:= AchaFPGDescricao(Trim(Descricao),True);
   if FPagto <> nil then
-     raise Exception.Create('Forma de Pagamento já cadastrada');
+     raise Exception.Create(ACBrStr('Forma de Pagamento já cadastrada'));
 
   ProxIndice := StrToIntDef(Posicao,-1) ;
 
   if fsNumVersao = '2000' then
-     raise Exception.Create('ProgramaFormaPagamento ainda não implemenado na FS2000')
+     raise Exception.Create(ACBrStr('ProgramaFormaPagamento ainda não implemenado na FS2000'))
 
   else if fpMFD then
   begin
@@ -2165,8 +2165,8 @@ begin
     end ;
 
     if ProxIndice > 20 then
-      raise Exception.create('Não há espaço para programar novas Formas de '+
-                               'Pagamento');
+      raise Exception.create(ACBrStr('Não há espaço para programar novas Formas de '+
+                               'Pagamento'));
 
     EnviaComando( FS + 'C' + #203 + IntToStrZero(ProxIndice,2) + Descricao ) ;
 
@@ -2187,8 +2187,8 @@ begin
     end ;
 
     if ProxIndice > 15 then
-      raise Exception.create('Não há espaço para programar novas Formas de '+
-                               'Pagamento');
+      raise Exception.create(ACBrStr('Não há espaço para programar novas Formas de '+
+                               'Pagamento'));
 
     If PermiteVinculado then FlagVinculado := 'V' else FlagVinculado := 'X' ;
     EnviaComando( ESC + #218 + 'PG' + FlagVinculado + chr(65+ProxIndice) +
@@ -2218,7 +2218,7 @@ begin
 
   try
     if fsNumVersao = '2000' then
-      raise Exception.Create('ProgramaRelatorioGerencial ainda não implemenado na FS2000')
+      raise Exception.Create(ACBrStr('ProgramaRelatorioGerencial ainda não implemenado na FS2000'))
 
     else if fpMFD then // Para daruma FS600 e FS700
     begin
@@ -2249,7 +2249,7 @@ begin
       end ;
     end
     else
-      raise Exception.Create('ECF FS345 não suporta RelatorioGerencial');
+      raise Exception.Create(ACBrStr('ECF FS345 não suporta RelatorioGerencial'));
   except
       { Se falhou ao carregar, deve "nilzar" as variaveis para que as rotinas
         "Acha*" tentem carregar novamente }
@@ -2271,12 +2271,12 @@ begin
   ProxIndice := StrToIntDef(Posicao, -1) ;
 
   if fsNumVersao = '2000' then
-     raise Exception.Create('ProgramaRelatorioGerencial ainda não implemenado na FS2000')
+     raise Exception.Create(ACBrStr('ProgramaRelatorioGerencial ainda não implemenado na FS2000'))
 
   else if fpMFD then
   begin
     if AchaRGDescricao(Descricao, True) <> nil then
-      raise Exception.Create('Relatório Gerencial ('+Descricao+') já existe.') ;
+      raise Exception.Create(ACBrStr('Relatório Gerencial ('+Descricao+') já existe.')) ;
 
     if (ProxIndice < 2) or (ProxIndice > 20) then { Indice passado é válido ? }
     begin
@@ -2288,12 +2288,12 @@ begin
     end ;
 
     if ProxIndice > 20 then
-      raise Exception.create('Não há espaço para programar novos RGs');
+      raise Exception.create(ACBrStr('Não há espaço para programar novos RGs'));
 
     EnviaComando( FS + 'C' + #205 + IntToStrZero(ProxIndice,2) + PadL(Descricao,15) ) ;
   end
   else
-    raise Exception.Create('ECF FS345 não suporta RelatorioGerencial');
+    raise Exception.Create(ACBrStr('ECF FS345 não suporta RelatorioGerencial'));
 
   CarregaRelatoriosGerenciais ;
 end;
@@ -2313,12 +2313,12 @@ begin
   ProxIndice := StrToIntDef(Posicao,-1) ;
 
   if fsNumVersao = '2000' then
-     raise Exception.Create('ProgramaComprovanteNaoFiscal ainda não implemenado na FS2000')
+     raise Exception.Create(ACBrStr('ProgramaComprovanteNaoFiscal ainda não implemenado na FS2000'))
 
   else if fpMFD then
   begin
     if AchaCNFDescricao(Descricao, True) <> nil then
-      raise Exception.Create('Comprovante não fiscal ('+Descricao+') já existe.') ;
+      raise Exception.Create(ACBrStr('Comprovante não fiscal ('+Descricao+') já existe.')) ;
 
     if (ProxIndice < 3) or (ProxIndice > 20) then { Indice passado é válido ? }
     begin
@@ -2330,7 +2330,7 @@ begin
     end ;
 
     if ProxIndice > 20 then
-      raise Exception.create('Não há espaço para programar novas CNFs');
+      raise Exception.create(ACBrStr('Não há espaço para programar novas CNFs'));
 
     EnviaComando( FS + 'C' + #204 + IntToStrZero(ProxIndice,2) + PadL(Descricao,15) ) ;
 
@@ -2346,18 +2346,18 @@ begin
       Tipo := UpperCase(Tipo) ;
 
     if pos(Tipo,'V+-') = 0 then
-      raise Exception.Create('Os Tipos válidos para Daruma são:'+sLineBreak+
+      raise Exception.Create(ACBrStr('Os Tipos válidos para Daruma são:'+sLineBreak+
                                'V  Comprovante Vinculado'+sLineBreak+
                                '+  Entrada de Recursos'+sLineBreak+
-                               '-  Saida de Recursos') ;
+                               '-  Saida de Recursos')) ;
     if Tipo = 'V' then
     begin
       if AchaCNFVincDescricao(Descricao) <> nil then
-        raise Exception.Create('Comprovante não fiscal ('+Descricao+') já existe.') ;
+        raise Exception.Create(ACBrStr('Comprovante não fiscal ('+Descricao+') já existe.')) ;
     end
     else
       if AchaCNFDescricao(Descricao, True) <> nil then
-        raise Exception.Create('Comprovante não fiscal ('+Descricao+') já existe.') ;
+        raise Exception.Create(ACBrStr('Comprovante não fiscal ('+Descricao+') já existe.')) ;
 
     EnviaComando( ESC + #226 + Tipo + Descricao ) ;
     CarregaComprovantesNaoFiscais ;
@@ -2378,8 +2378,8 @@ begin
     begin
       RG  := AchaRGIndice( IndiceStr ) ;
       if RG = nil then
-        raise Exception.create( 'Relatório Gerencial: '+IndiceStr+
-                                ' não foi cadastrado.' ) ;
+        raise Exception.create( ACBrStr('Relatório Gerencial: '+IndiceStr+
+                                ' não foi cadastrado.') ) ;
 
       EnviaComando(FS + 'F' + #230 + IndiceStr, 5) ;
     end
@@ -2510,22 +2510,22 @@ begin
   begin
     FPG := AchaFPGIndice( CodFormaPagto ) ;
     if FPG = nil then
-      raise Exception.create( 'Forma de Pagamento: '+CodFormaPagto+
-                                ' não foi cadastrada.' ) ;
+      raise Exception.create( ACBrStr('Forma de Pagamento: '+CodFormaPagto+
+                                ' não foi cadastrada.') ) ;
 
     if CodComprovanteNaoFiscal <> '' then
     begin
       CNF := AchaCNFVincIndice( CodComprovanteNaoFiscal ) ;
       if CNF = nil then
-        raise Exception.create( 'Comprovante NÃO Fiscal Vinculado: '+
-                            CodComprovanteNaoFiscal+' não cadastrado.' ) ;
+        raise Exception.create( ACBrStr('Comprovante NÃO Fiscal Vinculado: '+
+                            CodComprovanteNaoFiscal+' não cadastrado.') ) ;
     end
     else
     begin
       CNF := AchaCNFVincDescricao( FPG.Descricao ) ;
       if CNF = nil then
-        raise Exception.create( 'Não existe nenhum Comprovante NÃO Fiscal Vinculado'+
-                            ' com a Descrição: '+FPG.Descricao) ;
+        raise Exception.create( ACBrStr('Não existe nenhum Comprovante NÃO Fiscal Vinculado'+
+                            ' com a Descrição: '+FPG.Descricao)) ;
     end ;
 
     AguardaImpressao := True ;
@@ -3466,7 +3466,7 @@ begin
 
     Indice := StrToIntDef(Registrador,0) ;
     if (Indice < 1) or (Indice > 578) then
-      raise Exception.create( 'Não existe nenhum Informação com o Registrador: '+Registrador+'('+IntToStr(Indice)+')') ;
+      raise Exception.create( ACBrStr('Não existe nenhum Informação com o Registrador: '+Registrador+'('+IntToStr(Indice)+')')) ;
 
     Registrador := IntToStrZero(Indice, 3);
     Result := EnviaComando( FS + 'R' + #200 + Registrador);
@@ -3562,10 +3562,10 @@ begin
                Result := False;
        end
       else
-         raise Exception.Create( 'Versão do Firmeware da Impressora não suporta este comando ! ' );
+         raise Exception.Create( ACBrStr('Versão do Firmeware da Impressora não suporta este comando ! ') );
    end
    else
-      raise Exception.Create( 'A  Impressora não suporta este comando ! ' );
+      raise Exception.Create( ACBrStr('A  Impressora não suporta este comando ! ') );
 end;
 
 

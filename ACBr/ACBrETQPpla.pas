@@ -46,7 +46,7 @@
 unit ACBrETQPpla;
 
 interface
-uses ACBrETQClass, ACBrUtil, ACBrDevice,
+uses ACBrETQClass, ACBrUtil, ACBrDevice, 
      Classes;
 
 const
@@ -92,11 +92,11 @@ begin
   Cmd := '';
 
   if (Temperatura < 0) or (Temperatura > 20) then
-     Raise Exception.Create('Informe um valor entre 0 e 20 para Temperatura');
+     Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 20 para Temperatura'));
   Temp := IntToStrZero(Temperatura,2);
 
   if (Copias < 0) or (Copias > 9999) then
-     Raise Exception.Create('Tamanho máximo para o Número de Cópias 4 caracteres');
+     Raise Exception.Create(ACBrStr('Tamanho máximo para o Número de Cópias 4 caracteres'));
   NCop := IntToStrZero(Copias,4);
 
   Cmd := STX + 'L' + CRLF + STX + 'm' + CRLF + 'H' + Temp + CRLF + 'D11' + CRLF +
@@ -109,7 +109,7 @@ begin
   if AvancoEtq = 0 then
      AvancoEtq := Avanco;
   if (AvancoEtq < 0) or (AvancoEtq > 779) then
-     Raise Exception.Create('O Valor máximo para o Avanço de Etiquetas é 779');
+     Raise Exception.Create(ACBrStr('O Valor máximo para o Avanço de Etiquetas é 779'));
 
   AvancoEtq := AvancoEtq + 220;
 
@@ -130,21 +130,21 @@ begin
   Cmd := '';
 
   if ((Integer(Orientacao) + 1) < 1) or ((Integer(Orientacao) + 1) > 4) then
-     Raise Exception.Create('Informe um valor entre 1 e 4 para Orientação');
+     Raise Exception.Create(ACBrStr('Informe um valor entre 1 e 4 para Orientação'));
 
 {Tipo de Código de Barras - vai de 'a' até 't' e de 'A' até 'T'
  Largura da Barra Larga, Largura da Barra Fina - De 0 a 9 e de 'A' até 'O'}
 
   if (Vertical < 0) or (Vertical > 999) then
-     Raise Exception.Create('Informe um valor entre 0 e 762 para Vertical');
+     Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 762 para Vertical'));
   eixoY := IntToStrZero(Vertical,4);
 
   if (Horizontal < 0) or (Horizontal > 999) then
-     Raise Exception.Create('Informe um valor entre 0 e 762 para Horizontal');
+     Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 762 para Horizontal'));
   eixoX := IntToStrZero(Horizontal,4);
 
   if (AlturaCodBarras < 0) or (AlturaCodBarras > 999) then
-     Raise Exception.Create('Tamanho máximo para a Altura do Código de Barras 3 caracteres');
+     Raise Exception.Create(ACBrStr('Tamanho máximo para a Altura do Código de Barras 3 caracteres'));
   LCodBarras := IntToStrZero(AlturaCodBarras,3);
 
   Cmd:= IntToStr(Integer(Orientacao) + 1) + TipoBarras + LarguraBarraLarga +
@@ -161,27 +161,27 @@ begin
   Cmd := '';
 
   if (Vertical < 0) or (Vertical > 999) then
-     Raise Exception.Create('Tamanho máximo para Vertical 4 caracteres');
+     Raise Exception.Create(ACBrStr('Tamanho máximo para Vertical 4 caracteres'));
   eixoY := padR(IntToStr(Vertical),4,'0');
 
   if (Horizontal < 0) or (Horizontal > 999) then
-     Raise Exception.Create('Tamanho máximo para Horizontal 4 caracteres');
+     Raise Exception.Create(ACBrStr('Tamanho máximo para Horizontal 4 caracteres'));
   eixoX := padR(IntToStr(Horizontal),4,'0');
 
   if (Largura < 0) or (Largura > 9999) then
-     Raise Exception.Create('Tamanho máximo para a Largura da Linha 4 caracteres');
+     Raise Exception.Create(ACBrStr('Tamanho máximo para a Largura da Linha 4 caracteres'));
   Larg := padR(IntToStr(Largura),3,'0');
 
   if (Altura < 0) or (Altura > 9999) then
-     Raise Exception.Create('Tamanho máximo para a Largura da Linha 4 caracteres');
+     Raise Exception.Create(ACBrStr('Tamanho máximo para a Largura da Linha 4 caracteres'));
   Alt := padR(IntToStr(Altura),3,'0');
 
   if (EspessuraHorizontal < 0) or (EspessuraHorizontal > 9999) then
-     Raise Exception.Create('Tamanho máximo para a Espessura das Linhas Horizontais 4 caracteres');
+     Raise Exception.Create(ACBrStr('Tamanho máximo para a Espessura das Linhas Horizontais 4 caracteres'));
   EspH := padR(IntToStr(EspessuraHorizontal),3,'0');
 
   if (EspessuraVertical < 0) or (EspessuraVertical > 9999) then
-     Raise Exception.Create('Tamanho máximo para a Espessura das Linhas Verticais 4 caracteres');
+     Raise Exception.Create(ACBrStr('Tamanho máximo para a Espessura das Linhas Verticais 4 caracteres'));
   EspV := padR(IntToStr(EspessuraVertical),3,'0');
 
   Cmd := STX + 'n' + CRLF + '1X11000' + eixoY + eixoX + 'B' + Larg + Alt +
@@ -198,19 +198,19 @@ begin
   Cmd := '';
 
   if (Vertical < 0) or (Vertical > 999) then
-     Raise Exception.Create('Informe um valor entre 0 e 762 para Vertical');
+     Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 762 para Vertical'));
   eixoY := padR(IntToStr(Vertical), 4, '0');
 
   if (Horizontal < 0) or (Horizontal > 999) then
-     Raise Exception.Create('Informe um valor entre 0 e 762 para Horizontal');
+     Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 762 para Horizontal'));
   eixoX := padR(IntToStr(Horizontal), 4, '0');
 
   if (Largura < 0) or (Largura > 999) then
-     Raise Exception.Create('Tamanho máximo para a Largura da Linha 3 caracteres');
+     Raise Exception.Create(ACBrStr('Tamanho máximo para a Largura da Linha 3 caracteres'));
   Larg := padR(IntToStr(Largura), 3, '0');
 
   if (Altura < 0) or (Altura > 999) then
-     Raise Exception.Create('Tamanho máximo para a Altura da Linha 3 caracteres');
+     Raise Exception.Create(ACBrStr('Tamanho máximo para a Altura da Linha 3 caracteres'));
   Alt := padR(IntToStr(Altura), 3, '0');
 
   Cmd := STX + 'n' + CRLF + '1X11000' + eixoY + eixoX + 'L' + Larg + Alt + CRLF +
@@ -228,27 +228,27 @@ begin
   Cmd := '';
 
   if ((Integer(Orientacao) + 1) < 1) or ((Integer(Orientacao) + 1) > 4) then
-     Raise Exception.Create('Informe um valor entre 1 e 4 para Orientação');
+     Raise Exception.Create(ACBrStr('Informe um valor entre 1 e 4 para Orientação'));
 
   if (Fonte < 0) or (Fonte > 9) then
-     Raise Exception.Create('Informe um valor entre 0 e 9 para Fonte');
+     Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 9 para Fonte'));
 
   if (SubFonte < 0) or (SubFonte > 7) then
-     Raise Exception.Create('Informe um valor entre 0 e 7 para SubFonte');
+     Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 7 para SubFonte'));
 
 { Multiplicador Horizontal, Multiplicador Vertical:
  De 0 a 9 e de A até O representa as escalas de multiplicação (A=10, B=11,..., O=24)}
 
   if (Vertical < 0) or (Vertical > 1800) then
-     Raise Exception.Create('Informe um valor entre 0 e 1800 para Vertical');
+     Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 1800 para Vertical'));
   eixoY := padR(IntToStr(Vertical), 4, '0');
 
   if (Horizontal < 0) or (Horizontal > 999) then
-     Raise Exception.Create('Informe um valor entre 0 e 762 para Horizontal');
+     Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 762 para Horizontal'));
   eixoX := padR(IntToStr(Horizontal), 4, '0');
 
   if Length(Texto) > 255 then
-     Raise Exception.Create('Tamanho maximo para o texto 255 caracteres');
+     Raise Exception.Create(ACBrStr('Tamanho maximo para o texto 255 caracteres'));
 
   if Fonte < 9 then
     Smooth := '000'

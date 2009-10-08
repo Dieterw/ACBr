@@ -43,7 +43,7 @@
 unit ACBrECFSCU ;
 
 interface
-uses ACBrECFClass, ACBrBase, ACBrUtil,
+uses ACBrECFClass, ACBrUtil,
      Classes ;
 
 const  SOH = #01  ;
@@ -280,7 +280,7 @@ function TACBrECFSCUComando.GetComando: AnsiString;
       CHK : Byte ;
 begin
   if (fsCMD = 255) and (fsEXT = 0) then
-     raise Exception.Create('Para comandos 255, EXT deve ser especificado') ;
+     raise Exception.Create(ACBrStr('Para comandos 255, EXT deve ser especificado')) ;
 
   BCD := '' ;
   For I := 0 to fsParams.Count-1 do
@@ -408,7 +408,7 @@ begin
   CHK := Soma mod 256  ;
 
   if CHK <> fsCHK then
-     raise Exception.Create('CheckSum da Resposta é inválido');
+     raise Exception.Create(ACBrStr('CheckSum da Resposta é inválido'));
 
 (*  { Convertendo caracteres de comando para Hexa para poder armazenar
     corretamente no TStringList }
@@ -456,8 +456,8 @@ end;
 procedure TACBrECFSCU.Ativar;
 begin
   if not fpDevice.IsSerialPort  then
-     raise Exception.Create('A impressora: '+ModeloStr+' requer'+#10+
-                            'Porta Serial:  (COM1, COM2, COM3, ...)');
+     raise Exception.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+#10+
+                            'Porta Serial:  (COM1, COM2, COM3, ...)'));
 
   inherited Ativar ; { Abre porta serial }
 
@@ -474,8 +474,8 @@ begin
   try
      { Testando a comunicaçao com a porta }
      if NumVersao = '' then
-        raise EACBrECFNaoInicializado.Create(
-                 'Erro inicializando a impressora '+ModeloStr );
+        raise EACBrECFNaoInicializado.Create( ACBrStr(
+                 'Erro inicializando a impressora '+fpModeloStr ));
   except
      Desativar ;
      raise ;
@@ -533,8 +533,8 @@ begin
 
      if ErroMsg <> '' then
       begin
-        ErroMsg := 'Erro retornado pela Impressora: '+ModeloStr+#10+#10+
-                   ErroMsg ;
+        ErroMsg := ACBrStr('Erro retornado pela Impressora: '+fpModeloStr+#10+#10+
+                   ErroMsg );
         raise EACBrECFSemResposta.create(ErroMsg) ;
       end
      else
@@ -554,10 +554,10 @@ begin
   BCD := copy(CmdExtBcd,3,Length(CmdExtBcd) ) ;
 
   if (CMD = 255) and (EXT = 0) then
-     raise Exception.Create('Erro ! CMD = 255 e EXT = 0') ;
+     raise Exception.Create(ACBrStr('Erro ! CMD = 255 e EXT = 0')) ;
 
   if (CMD <> 255) and (EXT <> 0) then
-     raise Exception.Create('Erro ! EXT deve ser 0') ;
+     raise Exception.Create(ACBrStr('Erro ! EXT deve ser 0')) ;
 
   SCUComando.CMD := CMD ;
   SCUComando.EXT := EXT ;
@@ -782,8 +782,8 @@ Procedure TACBrECFSCU.VendeItem( Codigo, Descricao : String;
    TipoDescontoAcrescimo: String = '%') ;
 begin
   if Qtd > 99999 then
-     raise EACBrECFCMDInvalido.Create(
-           'Quantidade deve ser inferior a 99999.');
+     raise EACBrECFCMDInvalido.Create( ACBrStr(
+           'Quantidade deve ser inferior a 99999.'));
 
 end;
 

@@ -47,7 +47,7 @@
 unit ACBrBAL;
 
 interface
-uses ACBrBase, ACBrDevice, ACBrBALClass,  {Units da ACBr}
+uses ACBrDevice, ACBrBase, ACBrBALClass,  {Units da ACBr}
      SysUtils
      {$IFNDEF CONSOLE}
        {$IFDEF VisualCLX}, QExtCtrls {$ELSE}, ExtCtrls {$ENDIF}
@@ -174,7 +174,7 @@ begin
   if fsModelo = Value then exit ;
 
   if fsAtivo then
-     raise Exception.Create('Não é possível mudar o Modelo com ACBrBAL Ativo');
+     raise Exception.Create(ACBrStr('Não é possível mudar o Modelo com ACBrBAL Ativo') );
 
   FreeAndNil( fsBAL ) ;
 
@@ -218,7 +218,7 @@ end;
 
 function TACBrBAL.GetModeloStrClass: String;
 begin
-  Result := fsBAL.ModeloStr ;
+  Result := ACBrStr(fsBAL.ModeloStr) ;
 end;
 
 function TACBrBAL.GetPorta: String;

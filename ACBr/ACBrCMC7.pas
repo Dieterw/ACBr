@@ -234,7 +234,7 @@ begin
     exit ;
 
   if Length( Banda ) <> 34 then
-     raise Exception.Create('Banda CMC7 deve ter 34 caracteres');
+     raise Exception.Create(ACBrStr('Banda CMC7 deve ter 34 caracteres'));
 
 // 1234567890123456789012345678901234
 // <00100049<0030000061>900000000109:
@@ -244,16 +244,16 @@ begin
     if vDigitos[I] = '9' then
      begin
        if not CharIsNum(Banda[I]) then
-           raise Exception.CreateFmt('Caracter da posição %d da Banda deve ser numérico',[I]);
+           raise Exception.CreateFmt(ACBrStr('Caracter da posição %d da Banda deve ser numérico'),[I]);
      end
     else
        if vDigitos[I] <> Banda[I] then
-          raise Exception.CreateFmt('Caracter da posição %d da Banda deve ser %s',[I,vDigitos[I]]);
+          raise Exception.CreateFmt(ACBrStr('Caracter da posição %d da Banda deve ser %s'),[I,vDigitos[I]]);
 
   end ;
 
   if not ValidaCMC7(Banda) then
-     raise Exception.Create('CMC7 Inválido');
+     raise Exception.Create(ACBrStr('CMC7 Inválido'));
 
   try
   // '<' + Banco(3) + Agencia(4) + DV2(1) + '<' + CamaraCompesacao(3) +
@@ -303,7 +303,7 @@ begin
   pCamaraCompesacao := Poem_Zeros(pCamaraCompesacao,3);
   Tip := StrToIntDef(pTipificacao,0) ;
   if (Tip < 5) or (Tip > 9) then
-     raise Exception.Create('Campo Tipificação deve estar na faixa 5..9') ;
+     raise Exception.Create(ACBrStr('Campo Tipificação deve estar na faixa 5..9')) ;
 
   // calculo do digito (2)
   vDv2 := CalcDigitoCMC7(pCamaraCompesacao+pNrCheque+pTipificacao,1,2);

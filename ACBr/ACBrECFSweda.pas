@@ -369,8 +369,8 @@ end;
 procedure TACBrECFSweda.Ativar;
 begin
   if not fpDevice.IsSerialPort  then
-     raise Exception.Create('A impressora: '+ModeloStr+' requer'+#10+
-                            'Porta Serial:  (COM1, COM2, COM3, ...)');
+     raise Exception.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+#10+
+                            'Porta Serial:  (COM1, COM2, COM3, ...)'));
 
 //  fpDevice.HandShake := hsDTR_DSR ;
   inherited Ativar ; { Abre porta serial }
@@ -390,8 +390,8 @@ begin
      GetVersaoSweda ;     
 
      if VersaoSweda = swdNenhum then
-        raise EACBrECFNaoInicializado.Create(
-                 'Erro inicializando a impressora '+ModeloStr );
+        raise EACBrECFNaoInicializado.Create( ACBrStr(
+                 'Erro inicializando a impressora '+fpModeloStr ));
   except
      Desativar ;
      raise ;
@@ -531,9 +531,9 @@ begin
 
      if ErroMsg <> '' then
       begin
-        ErroMsg := 'Erro retornado pela Impressora: '+ModeloStr+
+        ErroMsg := ACBrStr('Erro retornado pela Impressora: '+fpModeloStr+
                    sLineBreak + sLineBreak+
-                   ErroMsg ;
+                   ErroMsg );
         raise EACBrECFSemResposta.create( ErroMsg ) ;
       end
      else
@@ -1336,10 +1336,10 @@ Var Espera : Integer ;
 begin
   if ImprimeVinculado then
      if (fsVersaoSweda < swdD) and (fsVinculado > 0) then
-        raise Exception.Create('Já existe Forma de Pagamento com '+sLineBreak+
+        raise Exception.Create(ACBrStr('Já existe Forma de Pagamento com '+sLineBreak+
                        'comprovante NAO fiscal vinculado pendente. '+sLineBreak+
-                       'Impressora: '+ModeloStr+' Modelo: '+fsModeloSweda+sLineBreak+
-                       ' aceita apenas 1 Compr.NAO Fiscal Viculado por Cupom.')
+                       'Impressora: '+fpModeloStr+' Modelo: '+fsModeloSweda+sLineBreak+
+                       ' aceita apenas 1 Compr.NAO Fiscal Viculado por Cupom.'))
      else
         fsVinculado := fsVinculado + 1 ;
 
@@ -1488,13 +1488,13 @@ Var QtdStr, ValorStr, TotalStr, Descr2 : String ;
 begin
   { Obs.: Sweda nao usa parametro Unidade }
   if Qtd > 9999 then
-     raise EACBrECFCMDInvalido.Create(
-           'Quantidade deve ser inferior a 9999.');
+     raise EACBrECFCMDInvalido.Create( ACBrStr(
+           'Quantidade deve ser inferior a 9999.'));
 
   { Sweda não permite Acrescimo por Item }
   if (ValorDescontoAcrescimo > 0) and (DescontoAcrescimo = 'A') then
-     raise EACBrECFCMDInvalido.Create(
-           'ECF '+ModeloStr+' não permite Acréscimo por Item');
+     raise EACBrECFCMDInvalido.Create( ACBrStr(
+           'ECF '+fpModeloStr+' não permite Acréscimo por Item') );
 
   Codigo  := padL(Codigo,13) ;    { Ajustando Tamanhos }
   if Unidade <> '' then
@@ -1700,7 +1700,7 @@ begin
   end ;
 
   if ProxIndice > 15 then
-     raise Exception.create('Não há espaço para programar novas Aliquotas');
+     raise Exception.create(ACBrStr('Não há espaço para programar novas Aliquotas'));
 
   EnviaComando( '33' + Tipo + IntToStrZero(ProxIndice,2) + ValStr ) ;
 
@@ -1941,8 +1941,8 @@ begin
 
      if TemVinculado then LenMax := 160 else LenMax := 150 ;
      if Length(Cmd) > LenMax then
-        raise Exception.create('Não há espaço para programar novas Formas de '+
-                               'Pagamento');
+        raise Exception.create(ACBrStr('Não há espaço para programar novas Formas de '+
+                               'Pagamento'));
    end ;
 
   EnviaComando( '39' + Cmd ) ;
@@ -1967,7 +1967,7 @@ begin
   if fpMFD then
    begin
      if AchaRGDescricao(Descricao, True) <> nil then
-        raise Exception.Create('Relatório Gerencial ('+Descricao+') já existe.') ;
+        raise Exception.Create(ACBrStr('Relatório Gerencial ('+Descricao+') já existe.')) ;
 
      if (ProxIndice < 2) or (ProxIndice > 30) then { Indice passado é válido ? }
      begin
@@ -1979,12 +1979,12 @@ begin
      end ;
 
      if ProxIndice > 30 then
-        raise Exception.create('Não há espaço para programar novos RGs');
+        raise Exception.create(ACBrStr('Não há espaço para programar novos RGs'));
 
      EnviaComando( '32' + PadL(Descricao,15) ) ;
    end
   else
-     raise Exception.Create('Impressoras sem MFD não suportam Programação de Relatórios Gerenciais');
+     raise Exception.Create(ACBrStr('Impressoras sem MFD não suportam Programação de Relatórios Gerenciais'));
 
   CarregaRelatoriosGerenciais ;
 end;
@@ -2064,12 +2064,12 @@ begin
      Tipo := '+' ;
 
   if (pos(Tipo,'&+-') = 0) or (Length(Tipo) > 1) then
-     raise Exception.Create('Os Tipos válidos para Sweda são:'+sLineBreak+
+     raise Exception.Create(ACBrStr('Os Tipos válidos para Sweda são:'+sLineBreak+
                             '&  Criaçao de um novo Grupo (Titulo)'+sLineBreak+
                             '+  Entrada de Recursos'+sLineBreak+
                             '-  Saida de Recursos'+sLineBreak+sLineBreak+
                             'Dentro de um Grupo (titulo) deve ter'+sLineBreak+
-                            'apenas legendas de mesmo sinal') ;
+                            'apenas legendas de mesmo sinal')) ;
 
   if not Assigned( fpComprovantesNaoFiscais ) then
      CarregaComprovantesNaoFiscais;
@@ -2094,8 +2094,8 @@ begin
      Cmd := StuffString(Cmd, (ProxIndice*15)-14,0, padL(Tipo + Descricao,15) ) ;
 
   if Length(Cmd) > 750 then
-     raise Exception.create('Não há espaço para programar novos Comprovantes'+
-                            ' não Fiscais');
+     raise Exception.create(ACBrStr('Não há espaço para programar novos Comprovantes'+
+                            ' não Fiscais'));
 
   EnviaComando( '38' + 'N' + Cmd ) ;
 
@@ -2125,8 +2125,8 @@ begin
      begin
        RG  := AchaRGIndice( IntToStrZero(Indice, 2 ) ) ;
        if RG = nil then
-          raise Exception.create( 'Relatório Gerencial: '+IntToStr(Indice)+
-                                  ' não foi cadastrado.' );
+          raise Exception.create( ACBrStr('Relatório Gerencial: '+IntToStr(Indice)+
+                                  ' não foi cadastrado.' ));
        Cmd := Cmd + PadL(RG.Descricao,15);
      end;
 
@@ -2480,7 +2480,7 @@ Var Dia,Mes,Ano   : String ;
     Espera        : Integer ;
 begin
   if not ChequePronto then
-     raise Exception.Create('Cheque não está posicionado') ;
+     raise Exception.Create(ACBrStr('Cheque não está posicionado')) ;
 
   Espera     := 25 ;
   Banco      := IntToStrZero(StrToIntDef(Banco,1),3) ;
@@ -2533,7 +2533,7 @@ begin
 
         if ComPapel then
            {$IFNDEF CONSOLE}
-              if (MessageDlg('Favor remover o cheque e pressionar OK',
+              if (MessageDlg( ACBrStr('Favor remover o cheque e pressionar OK'),
                              mtConfirmation,[mbOk,mbCancel],0) = mrCancel) then
                  break ;
            {$ELSE}

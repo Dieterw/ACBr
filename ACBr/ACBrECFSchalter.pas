@@ -251,8 +251,8 @@ end;
 procedure TACBrECFSchalter.Ativar;
 begin
   if not fpDevice.IsSerialPort  then
-     raise Exception.Create('A impressora: '+ModeloStr+' requer'+#10+
-                            'Porta Serial:  (COM1, COM2, COM3, ...)');
+     raise Exception.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+#10+
+                            'Porta Serial:  (COM1, COM2, COM3, ...)'));
 
   fpDevice.HandShake := hsRTS_CTS ;
   inherited Ativar ; { Abre porta serial }
@@ -266,8 +266,8 @@ begin
   try
      { Testando a comunicaçao com a porta }
      if Trim(NumSerie) = '' then
-        raise EACBrECFNaoInicializado.Create(
-                 'Erro inicializando a impressora '+ModeloStr );
+        raise EACBrECFNaoInicializado.Create( ACBrStr(
+                 'Erro inicializando a impressora '+fpModeloStr ));
   except
      Desativar ;
      raise ;
@@ -370,7 +370,7 @@ begin
       146 : ErroMsg := 'Não há Cupom Vinculado pendente' ;
       149 : ErroMsg := 'Nenhuma forma de pagamento foi programada' ;
      else
-        ErroMsg := 'Erro na impressora '+ModeloStr+' ('+IntToStr(ERRO)+')' ;
+        ErroMsg := 'Erro na impressora '+fpModeloStr+' ('+IntToStr(ERRO)+')' ;
      end ;
 
      { NAO faz verificaça de tempo de msg para o erro "Pouco Papel", pois:
@@ -379,8 +379,8 @@ begin
         devemos gerar exceção }
      if ErroMsg <> '' then
       begin
-        ErroMsg := 'Erro retornado pela Impressora: '+ModeloStr+#10+#10+
-                   ErroMsg ;
+        ErroMsg := ACBrStr('Erro retornado pela Impressora: '+fpModeloStr+#10+#10+
+                   ErroMsg );
         raise EACBrECFSemResposta.create(ErroMsg) ;
       end
      else
@@ -955,13 +955,13 @@ Var QtdStr, ValorStr, DescontoStr, TotalStr : String ;
     Decimais : Integer ;
 begin
   if Qtd > 99999 then
-     raise EACBrECFCMDInvalido.Create(
-           'Quantidade deve ser inferior a 99999.');
+     raise EACBrECFCMDInvalido.Create( ACBrStr(
+           'Quantidade deve ser inferior a 99999.'));
 
   { Schalter não permite Acrescimo por Item }
   if (ValorDescontoAcrescimo > 0) and (DescontoAcrescimo = 'A') then
-     raise EACBrECFCMDInvalido.Create(
-           'ECF '+ModeloStr+' não permite Acréscimo por Item');
+     raise EACBrECFCMDInvalido.Create( ACBrStr(
+           'ECF '+fpModeloStr+' não permite Acréscimo por Item'));
 
 (*  { SCHALTER TRUNCA quando PrecoUnit tem 3 ou mais decimais, com 2 decimais ela
    arredonda. Caso o PrecoUnit tenha 3 decimais, aumentamos a QTD até o valor
@@ -1096,7 +1096,7 @@ begin
   end ;
 
   if ProxIndice > 15 then
-     raise Exception.create('Não há espaço para programar novas Aliquotas');
+     raise Exception.create(ACBrStr('Não há espaço para programar novas Aliquotas'));
 
   BytesResp := 1 ;
   EnviaComando( #34 + IntToStrZero(ProxIndice,2) + Tipo + ValStr ) ;
@@ -1203,8 +1203,8 @@ begin
   end ;
 
   if ProxIndice > 19 then
-     raise Exception.create('Não há espaço para programar novas Formas de '+
-                            'Pagamento');
+     raise Exception.create(ACBrStr('Não há espaço para programar novas Formas de '+
+                            'Pagamento'));
 
   BytesResp := 1 ;
   EnviaComando( #36 + IntToStrZero(ProxIndice,2) + Descricao ) ;
@@ -1288,12 +1288,12 @@ begin
         begin
            IndiceFPG := StrToIntDef(copy(Tipo, PV + 1 ,2) , -1) ;
            if IndiceFPG = -1 then
-              raise Exception.Create('A impressora '+ModeloStr+' necessita como '+sLineBreak+
+              raise Exception.Create(ACBrStr('A impressora '+fpModeloStr+' necessita como '+sLineBreak+
                     'parâmetro o Indice de uma Forma de Pagamento para permitir '+sLineBreak+
                     'o Vinculado.'+sLineBreak+sLineBreak+
                     'Experimente passar para o parametro Tipo '+sLineBreak+
                     'o valor "V01" onde 01 é o indice da Forma de Pagamento a '+sLineBreak+
-                    'ser usada para o Vinculo.') ;
+                    'ser usada para o Vinculo.')) ;
         end ;
      end ;
    end ;
@@ -1306,8 +1306,8 @@ begin
      begin
         FPG := AchaFPGIndice(IntToStrZero(IndiceFPG,2)) ;
         if FPG = nil then
-           raise Exception.Create('Forma de Pagamento: '+
-                                  IntToStrZero(IndiceFPG,2)+ ' não encontrada.') ;
+           raise Exception.Create(ACBrStr('Forma de Pagamento: '+
+                                  IntToStrZero(IndiceFPG,2)+ ' não encontrada.')) ;
         DescrFPG := FPG.Descricao ;
      end ;
   end ;
@@ -1331,21 +1331,21 @@ begin
   end ;
 
   if ProxIndice > 19 then
-     raise Exception.create('Não há espaço para programar novos Comprovantes'+
-                            ' não Fiscais');
+     raise Exception.create(ACBrStr('Não há espaço para programar novos Comprovantes'+
+                            ' não Fiscais'));
   {$IFNDEF CONSOLE}
     if (IndiceFPG > 0) and (IndiceFPG <> 99) then
     begin
-       if MessageDlg('Atenção. Você irá criar um vinculo entre:'+sLineBreak+
+       if MessageDlg( ACBrStr( 'Atenção. Você irá criar um vinculo entre:'+sLineBreak+
                      'Forma de Pagamento: '+DescrFPG+' e o '+sLineBreak+
                      'Comprovante não Fiscal: '+Descricao+sLineBreak+sLineBreak+
                      'Dessa maneira, toda vez que a Forma de Pagamento for '+
                      'utilizada, será OBRIGATÓRIA a emissao de um Comprovante '+
-                     'Não Fiscal Vinculado. (Consulte o manual da '+ModeloStr+
+                     'Não Fiscal Vinculado. (Consulte o manual da '+fpModeloStr+
                      ')'+sLineBreak+sLineBreak+
-                     'Continua com a operação ?',
+                     'Continua com a operação ?' ) ,
                      mtConfirmation,mbYesNoCancel,0) <> mrYes then
-          raise Exception.create('Programaçao de Comprovante não Fiscal cancelada');
+          raise Exception.create(ACBrStr('Programaçao de Comprovante não Fiscal cancelada'));
     end ;
   {$ENDIF}
   
@@ -1385,27 +1385,27 @@ Var FPG : TACBrECFFormaPagamento ;
 begin
   FPG := AchaFPGIndice( CodFormaPagto ) ;
   if FPG = nil then
-     raise Exception.create( 'Forma de Pagamento: '+CodFormaPagto+
-                             ' não foi cadastrada.' ) ;
+     raise Exception.create( ACBrStr('Forma de Pagamento: '+CodFormaPagto+
+                             ' não foi cadastrada.' )) ;
 
   if CodComprovanteNaoFiscal <> '' then
    begin
      CNF := AchaCNFIndice( CodComprovanteNaoFiscal ) ;
      if CNF = nil then
-        raise Exception.create( 'Comprovante NÃO Fiscal: '+
-                         CodComprovanteNaoFiscal+' não cadastrado.' ) ;
+        raise Exception.create( ACBrStr('Comprovante NÃO Fiscal: '+
+                         CodComprovanteNaoFiscal+' não cadastrado.' )) ;
    end
   else
    begin
      CNF := AchaCNFFormaPagamento( FPG.Indice ) ;
      if CNF = nil then
-        raise Exception.create( 'Não existe nenhum Comprovante NÃO Fiscal '+
-                         ' associado a Forma de Pagamento: '+FPG.Indice ) ;
+        raise Exception.create( ACBrStr('Não existe nenhum Comprovante NÃO Fiscal '+
+                         ' associado a Forma de Pagamento: '+FPG.Indice )) ;
    end ;
 
   if not CNF.PermiteVinculado then
-     raise Exception.create( 'O Comprovante não Fiscal: '+CNF.Descricao+
-                             ' não permite Cupom NÃO Fiscal Vinculado' ) ;
+     raise Exception.create( ACBrStr('O Comprovante não Fiscal: '+CNF.Descricao+
+                             ' não permite Cupom NÃO Fiscal Vinculado' )) ;
 
   COO      := Poem_Zeros( trim(COO) ,6) ;
   StrValor := IntToStrZero( Round(Valor * 100) ,9) ;

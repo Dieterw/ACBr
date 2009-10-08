@@ -45,7 +45,7 @@
 unit ACBrCHQSchalter;
 
 interface
-uses ACBrCHQClass, 
+uses ACBrCHQClass,  
      Classes ;
 
 type TACBrCHQSchalter = class( TACBrCHQClass )
@@ -83,8 +83,8 @@ end;
 procedure TACBrCHQSchalter.Ativar;
 begin
   if fpDevice.Porta = ''  then
-     raise Exception.Create('Impressora de Cheques '+fpModeloStr+' requer'+#10+
-                            'Porta Serial (COMn) ou Paralela (LPTn)');
+     raise Exception.Create(ACBrStr('Impressora de Cheques '+fpModeloStr+' requer'+#10+
+                            'Porta Serial (COMn) ou Paralela (LPTn)'));
 
   inherited Ativar ; { Abre porta serial }
 end;

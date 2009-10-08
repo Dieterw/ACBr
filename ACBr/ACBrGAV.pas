@@ -123,7 +123,7 @@ TACBrGAV = class( TACBrComponent )
 end ;
 
 implementation
-Uses ACBrGAVSerialMenno, ACBrGAVSerialGerbo, ACBrGAVImpressoraECF,
+Uses ACBrUtil, ACBrGAVSerialMenno, ACBrGAVSerialGerbo, ACBrGAVImpressoraECF,
      ACBrGAVImpressoraComum, ACBrECFNaoFiscal ;
 
 { TACBrGAV }
@@ -167,7 +167,7 @@ begin
   if fsModelo = Value then exit ;
 
   if fsAtivo then
-     raise Exception.Create('Não é possível mudar o Modelo com ACBrGAV Ativo');
+     raise Exception.Create(ACBrStr('Não é possível mudar o Modelo com ACBrGAV Ativo'));
 
   wStrComando         := StrComando ;
   wAberturaAntecipada := AberturaAntecipada ;
@@ -214,7 +214,7 @@ begin
   if fsAtivo then exit ;
 
   if fsModelo = gavNenhuma then
-     raise Exception.Create('Modelo não definido');
+     raise Exception.Create(ACBrStr('Modelo não definido'));
 
   fsGAV.Ativar ;
 
@@ -256,7 +256,7 @@ end;
 
 function TACBrGAV.GetModeloStrClass: String;
 begin
-  Result := fsGAV.ModeloStr ;
+  Result := ACBrStr(fsGAV.ModeloStr);
 end;
 
 function TACBrGAV.GetPorta: String;
@@ -280,7 +280,7 @@ end;
 procedure TACBrGAV.SetComandoClass(const Value: String);
 begin
   if fsAtivo then
-     raise Exception.Create('Não é possível mudar StrComando com ACBrGAV Ativo');
+     raise Exception.Create(ACBrStr('Não é possível mudar StrComando com ACBrGAV Ativo'));
 
   fsGAV.StrComando := Value ;
 

@@ -388,8 +388,8 @@ end;
 procedure TACBrECFDataRegis.Ativar;
 begin
   if not fpDevice.IsSerialPort  then
-     raise Exception.Create('Esse modelo de impressora requer'+#10+
-                            'Porta Serial:  (COM1, COM2, COM3, ...)');
+     raise Exception.Create(ACBrStr('Esse modelo de impressora requer'+#10+
+                            'Porta Serial:  (COM1, COM2, COM3, ...)'));
 
   fpDevice.HandShake := hsDTR_DSR ;
   inherited Ativar ; { Abre porta serial }
@@ -402,8 +402,8 @@ begin
   try
      { Testando a comunicaçao com a porta }
      if NumVersao = '' then
-        raise EACBrECFNaoInicializado.Create(
-               'Erro inicializando a impressora '+ModeloStr );
+        raise EACBrECFNaoInicializado.Create( ACBrStr(
+               'Erro inicializando a impressora '+fpModeloStr ));
 
      if NomeArqINI <> '' then
         fsArqINI := NomeArqINI
@@ -541,8 +541,8 @@ begin
 
      if ErroMsg <> '' then
       begin
-        ErroMsg := 'Erro retornado pela Impressora: '+ModeloStr+#10+#10+
-                   ErroMsg ;
+        ErroMsg := ACBrStr('Erro retornado pela Impressora: '+fpModeloStr+#10+#10+
+                   ErroMsg) ;
         raise EACBrECFSemResposta.create(ErroMsg) ;
       end
     else
@@ -1061,7 +1061,7 @@ unidade de medida[2]        Unidade=00 indice da unidade
  Codigo + Descricao + Aliquota + Quant + ValorUnit + Desc + Unidade
 }
   if (NumItem < 1) or (NumItem > fsItensCupom.Count) then
-     raise Exception.create('Item ('+IntToStrZero(NumItem,3)+') não encontrado') ;
+     raise Exception.create(ACBrStr('Item ('+IntToStrZero(NumItem,3)+') não encontrado')) ;
 
 { ATENÇÃO. A DataRegis não extorna corretamente Itens vendidos com 3 casas
   decimais. Esse bug é no Software Básico do ECF }
@@ -1128,7 +1128,7 @@ begin
    {Compativel com 02.03 e 02.05}
    {nao tem subtotalizador e desconto ou acrescimento tem que jogar na forma de pagamento}
    if fsTotalPago <> 0 then
-      raise Exception.Create('SubTotalizaCupom já efetuado');
+      raise Exception.Create(ACBrStr('SubTotalizaCupom já efetuado'));
 
    EnviaMensagem( MensagemRodape );
 
@@ -1148,8 +1148,8 @@ Var QtdStr, ValorStr, DescStr, CodDescr, LinhaItem : String ;
 begin
   Cmd := '';
   if Qtd > 999.999 then
-     raise EACBrECFCMDInvalido.Create(
-           'Quantidade deve ser inferior a 9999.');
+     raise EACBrECFCMDInvalido.Create( ACBrStr(
+           'Quantidade deve ser inferior a 9999.') );
 
 (*  if ArredondaPorQtd {and (not Arredonda)} then
      ArredondarPorQtd( Qtd, ValorUnitario ); *)
@@ -1212,7 +1212,7 @@ begin
      begin
         UMD := AchaUMDDescricao( 'UN' );
         if UMD = nil then
-           raise Exception.Create('Unidade de Medida não cadastrada');
+           raise Exception.Create(ACBrStr('Unidade de Medida não cadastrada'));
      end;
 
      Cmd       := Cmd       + UMD.Indice ;
@@ -1427,7 +1427,7 @@ begin
    { Dataregis cadastra qualquer descrição mesmo repetida, por isso vamos ver se ja existe antes }
    FPagto:= AchaFPGDescricao(Descricao, True);
    if FPagto <> nil then
-      raise Exception.Create('Forma de Pagamento já cadastrada');
+      raise Exception.Create(ACBrStr('Forma de Pagamento já cadastrada'));
 
    Descricao := padL(Trim(Descricao),14) ;         { Ajustando tamanho final }
 
@@ -1453,10 +1453,10 @@ end;
 procedure TACBrECFDataRegis.CancelaImpressaoCheque;
 begin
    { Dataregis não possui comando para cancelar a impressão de cheques}
-   raise Exception.Create('Impressora '+ModeloStr+ ' não possui comando para '+
+   raise Exception.Create(ACBrStr('Impressora '+fpModeloStr+ ' não possui comando para '+
                           'cancelar a impressão de cheques. ' + sLineBreak +
                           'Por favor desligue e ligue a impressora ou insira '+
-                          'um documento.');
+                          'um documento.'));
 end;
 
 function TACBrECFDataRegis.GetChequePronto: Boolean;
@@ -1494,8 +1494,8 @@ begin
    FPG := AchaFPGIndice( CodFormaPagto ) ;
 
    if FPG = nil then
-      raise Exception.create( 'Forma de Pagamento: '+CodFormaPagto+
-                              ' não foi cadastrada.' ) ;
+      raise Exception.create( ACBrStr('Forma de Pagamento: '+CodFormaPagto+
+                              ' não foi cadastrada.') ) ;
 
    {Compativel com 02.03 e 02.05}
    if IsV03 or IsV04 then
@@ -1660,7 +1660,7 @@ begin
    {imprime toda a memória fiscal que ela possui, esse erro foi}
    {corrigido na versão 02.05}
    if IsV03 or IsV04 then
-      raise Exception.Create('Essa Impressora Fiscal não possui este recurso')
+      raise Exception.Create(ACBrStr('Essa Impressora Fiscal não possui este recurso'))
    else
     begin
       {Falta testar}
@@ -1691,7 +1691,7 @@ begin
    // DataRegis não possui Leitura Simplificada
    {Compativel com 02.03 e 02.05}
    if IsV03 or IsV04 then
-      raise Exception.Create('Essa Impressora Fiscal não possui este recurso')
+      raise Exception.Create(ACBrStr('Essa Impressora Fiscal não possui este recurso'))
    else
     begin
       {Falta testar}
@@ -1705,7 +1705,7 @@ end;
 procedure TACBrECFDataRegis.LeituraMemoriaFiscalSerial(ReducaoInicial,
   ReducaoFinal: Integer; var Linhas: TStringList; Simplificada : Boolean);
 begin
-   raise Exception.Create('Impressora fiscal não possui este recurso');
+   raise Exception.Create(ACBrStr('Impressora fiscal não possui este recurso'));
 end;
 
 procedure TACBrECFDataRegis.CarregaComprovantesNaoFiscais;
@@ -1780,8 +1780,8 @@ begin
 
    Formato := AchaModeloBanco( Banco ) ;
    if Formato = '' then
-      raise Exception.create('Modelo de cheque do Banco: '+Banco+
-                             ' não encontrado');
+      raise Exception.create(ACBrStr('Modelo de cheque do Banco: '+Banco+
+                             ' não encontrado'));
 
    ValStr     := IntToStrZero( Round(abs(Valor)*100),14) ;
    Favorecido := Copy( padL(Favorecido,50), 1, 50);
@@ -1826,17 +1826,18 @@ begin
 end;
 
 procedure TACBrECFDataRegis.CarregaPrgBcoTXT ;
-Var ArqTemp : String ;
+Var
+  ArqTemp, Msg : String ;
 begin
   { Verificando se o arquivo é válido }
   if (fsArqPrgBcoTXT <> '') and (not FileExists( fsArqPrgBcoTXT )) then
   begin
+     Msg := ACBrStr( 'Arquivo '+fsArqPrgBcoTXT+' não encontrado. '+
+                     'Valores padrões serão utilizados.' ) ;
      {$IFNDEF CONSOLE}
-       MessageDlg('Arquivo '+fsArqPrgBcoTXT+' não encontrado. '+
-                  'Valores padrões serão utilizados.',mtWarning,[mbOk],0);
+       MessageDlg(Msg,mtWarning,[mbOk],0);
      {$ELSE}
-       writeln('Arquivo '+fsArqPrgBcoTXT+' não encontrado. '+
-                  'Valores padrões serão utilizados.');
+       writeln(Msg);
      {$ENDIF}
      fsArqPrgBcoTXT := '' ;
   end ;
@@ -2121,13 +2122,13 @@ begin
    if IsV03 or IsV04 then
     begin
       if (Codigo < 0) or (Codigo > 999999) then
-         raise Exception.Create('Valor Inválido para o Operador');
+         raise Exception.Create(('Valor Inválido para o Operador'));
          StrCod:= padR(IntToStr(Codigo), 6, '0');
     end
    else
     begin
       if (Codigo < 0) or (Codigo > 9999999999) then
-         raise Exception.Create('Valor Inválido para o Operador');
+         raise Exception.Create(('Valor Inválido para o Operador'));
          StrCod:= padR(IntToStr(Codigo), 10, '0');
     end;
 
@@ -2341,7 +2342,7 @@ end;
 
 procedure TACBrECFDataRegis.CancelaNaoFiscal;
 begin
-   raise Exception.Create('Impressora Dataregis não possui esse recurso');
+   raise Exception.Create(ACBrStr('Impressora Dataregis não possui esse recurso'));
 end;
 
 procedure TACBrECFDataRegis.EfetuaPagamentoNaoFiscal(CodFormaPagto: String;
@@ -2395,7 +2396,7 @@ begin
       Obs := padL(Obs, 76, ' ');
 
    if (StrToInt(CodCNF) < 90) or (StrToInt(CodCNF) > 99) then
-      raise Exception.Create('CodCnf fora da faixa permitida de 90 a 99');
+      raise Exception.Create(ACBrStr('CodCnf fora da faixa permitida de 90 a 99'));
 
    QtdStr := '001000';
 
@@ -2413,7 +2414,7 @@ begin
    EnviaMensagem(MensagemRodape);
 
    if fsTotalPago <> 0 then
-      raise Exception.Create('SubTotalizaCupom já efetuado');
+      raise Exception.Create(ACBrStr('SubTotalizaCupom já efetuado'));
    fsTotalPago := 0 ;
 end;
 

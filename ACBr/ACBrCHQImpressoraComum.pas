@@ -43,7 +43,7 @@
 unit ACBrCHQImpressoraComum;
 
 interface
-uses ACBrCHQClass, 
+uses ACBrCHQClass,  
      Classes ;
 
 const cColCheque = 65 ;
@@ -119,8 +119,8 @@ end;
 procedure TACBrCHQImpressoraComum.Ativar;
 begin
   if fpDevice.Porta = '' then
-     raise Exception.Create('Impressora de Cheques '+fpModeloStr+' requer'+#10+
-                            'Porta Serial (COMn) ou Paralela (LPTn)');
+     raise Exception.Create(ACBrStr('Impressora de Cheques '+fpModeloStr+' requer'+#10+
+                            'Porta Serial (COMn) ou Paralela (LPTn)'));
 
   inherited Ativar ; { Apenas ajusta fpAtivo }
 end;
@@ -138,14 +138,14 @@ Var Modelo : TACBrCHQModelo ;
     Pos,nCharExt1,nCharExt2,nCharLocal,nCharValor : Integer ;
 begin
   if not fpDevice.EmLinha( 3 ) then  { Impressora está em-linha ? }
-    raise Exception.Create('A impressora de Cheques '+ModeloStr+
-                           ' não está pronta.') ;
+    raise Exception.Create(ACBrStr('A impressora de Cheques '+fpModeloStr+
+                           ' não está pronta.')) ;
 
   Modelo := fpModelosCheque.AchaModeloBanco(fpBanco) ;
 
   if Modelo = nil then
-     raise Exception.Create('Modelo de Cheque do Banco:'+fpBanco+
-                            'não encontrado.') ;
+     raise Exception.Create(ACBrStr('Modelo de Cheque do Banco:'+fpBanco+
+                            'não encontrado.')) ;
 
   { Progamando a impressora para Formulário de Tamanho do Cheque }
   fpDevice.EnviaString( CmdImpZera );

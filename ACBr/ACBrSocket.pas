@@ -470,8 +470,8 @@ end;
 procedure TACBrTCPServer.VerificaAtivo;
 begin
   if Ativo then
-     raise Exception.Create( 'Não é possível modificar as propriedades com '+
-                             'o componente Ativo');
+     raise Exception.Create( ACBrStr('Não é possível modificar as propriedades com '+
+                             'o componente Ativo') );
 end;
 
 procedure TACBrTCPServer.EnviarString(const AString : AnsiString;
@@ -479,10 +479,10 @@ procedure TACBrTCPServer.EnviarString(const AString : AnsiString;
  Var I : Integer ;
 begin
   if not Ativo then
-     raise Exception.Create('Componente ACBrTCPServer não está ATIVO');
+     raise Exception.Create(ACBrStr('Componente ACBrTCPServer não está ATIVO'));
 
   if NumConexao >= ThreadList.Count then
-     raise Exception.Create('Numero de conexão inexistente: '+IntToStr(NumConexao));
+     raise Exception.Create(ACBrStr('Numero de conexão inexistente: ')+IntToStr(NumConexao));
 
   if NumConexao < 0 then
    begin

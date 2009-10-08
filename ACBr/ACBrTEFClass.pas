@@ -77,7 +77,7 @@
 unit ACBrTEFClass;
 
 interface
-uses ACBrBase, ACBrECF, ACBrUtil, SysUtils, Classes, Contnrs
+uses ACBrECF, ACBrUtil, SysUtils, Classes, Contnrs
      {$IFDEF COMPILER6_UP}
        ,DateUtils, StrUtils
      {$ELSE}
@@ -326,7 +326,7 @@ end;
 constructor TACBrTEFClass.Create(AOwner: TComponent);
 begin
    if not (AOwner is TACBrTEF) then
-      raise Exception.create('Essa Classe deve ser instanciada por TACBrTEF');
+      raise Exception.create(ACBrStr('Essa Classe deve ser instanciada por TACBrTEF'));
 
    fpECF    := (AOwner as TACBrTEF).ECF ;
 
@@ -408,7 +408,7 @@ begin
       TfrmTimedMessage.ShowMessage(tmpstr);
    Except
       On Exc: Exception do
-         MessageDlg('Ocorreu um erro mostrar a menssagen de cancelamento ! ' + Exc.Message, mtError, mbOKCancel, 0);
+         MessageDlg( ACBrStr( 'Ocorreu um erro mostrar a menssagen de cancelamento ! ') + Exc.Message, mtError, mbOKCancel, 0);
    end;
 end;
 
@@ -444,7 +444,7 @@ begin
       end;
    Except
       On Exc: Exception do
-         MessageDlg('Ocorreu um erro ao tentar chamar o CHQ ! ' + Exc.Message, mtError, mbOKCancel, 0);
+         MessageDlg( ACBrStr( 'Ocorreu um erro ao tentar chamar o CHQ ! ') + Exc.Message, mtError, mbOKCancel, 0);
    end;
 end;
 
@@ -480,7 +480,7 @@ begin
       end;
    Except
       On Exc: Exception do
-         MessageDlg('Ocorreu um erro ao tentar chamar o CNC ! ' + Exc.Message, mtError, mbOKCancel, 0);
+         MessageDlg( ACBrStr( 'Ocorreu um erro ao tentar chamar o CNC ! ') + Exc.Message, mtError, mbOKCancel, 0);
    end;
 end;
 
@@ -588,13 +588,13 @@ begin
                begin
                   fsOnAguardandoDadosGP(Copy(Comando[0], 11, MaxInt), SecondsBetween(Now, Start), KeepWaiting);
                   if not KeepWaiting then
-                     raise Exception.Create(RS_GPGONE);
+                     raise Exception.Create(ACBrStr(RS_GPGONE));
                end;
             end;
          end;
       end;
       if not Answered then
-         raise Exception.Create(RS_INACTIVETEF)
+         raise Exception.Create(ACBrStr(RS_INACTIVETEF))
       else
          DeleteFile(PChar(RespFileName));
    Except
@@ -618,7 +618,7 @@ begin
       end;
    Except
       On Exc: Exception do
-         MessageDlg('Ocorreu um erro ao tentar verificar se o gerenciado padrão esta ativo ! ' + Exc.Message, mtError, mbOKCancel, 0);
+         MessageDlg( ACBrStr('Ocorreu um erro ao tentar verificar se o gerenciado padrão esta ativo ! ') + Exc.Message, mtError, mbOKCancel, 0);
    end;
 end;
 
@@ -645,7 +645,7 @@ begin
             while not done do
             begin
                if fsImpressoesPendentes.Count > 1 then
-                  raise Exception.Create('Logica para pagamento com mais de um cartão não implementada!'); // não coloquei em resourcestring pq tem que implementar isso
+                  raise Exception.Create(ACBrStr('Lógica para pagamento com mais de um cartão não implementada!')); // não coloquei em resourcestring pq tem que implementar isso
 
                try
                   TravaTeclado;
@@ -664,7 +664,7 @@ begin
                      tiFiscal    :  ImprimeFiscalTEF(tmpResposta);
                      tiGerencial :  ImprimeGerencialTEF(tmpResposta);
                      else
-                        raise Exception.Create(RS_PRINTERTYPENOTSUPPORTED);
+                        raise Exception.Create(ACBrStr(RS_PRINTERTYPENOTSUPPORTED));
                      end;
                      Printed := True;
                   end; //if not printed
@@ -757,7 +757,7 @@ begin
       end;
    except
       on Exc: Exception do
-         Raise Exception.Create('Ocorreu um erro ao tentar Imprimir o(s) Cupom(s) Pendente(s)!'+ #13#10 + Exc.Message);
+         Raise Exception.Create(ACBrStr('Ocorreu um erro ao tentar Imprimir o(s) Cupom(s) Pendente(s)!')+ #13#10 + Exc.Message);
    end;
 end;
 
@@ -811,7 +811,7 @@ begin
       end;
    Except
       On Exc: Exception do
-         MessageDlg('Ocorreu um erro ao tentar chamar o NCN Ultima da Transacao ! ' + Exc.Message, mtError, mbOKCancel, 0);
+         MessageDlg( ACBrStr( 'Ocorreu um erro ao tentar chamar o NCN Ultima da Transacao ! ') + Exc.Message, mtError, mbOKCancel, 0);
    end;
 end;
 
@@ -856,7 +856,7 @@ begin
       end;
    Except
       On Exc: Exception do
-         MessageDlg('Ocorreu um erro ao tentar Verificar Transações Pendentes ! ' + Exc.Message, mtError, mbOKCancel, 0);
+         MessageDlg( ACBrStr( 'Ocorreu um erro ao tentar Verificar Transações Pendentes ! ') + Exc.Message, mtError, mbOKCancel, 0);
    end;
 end;
 
@@ -1003,7 +1003,7 @@ begin
       end;
    Except
       On Exc: Exception do
-         MessageDlg('Ocorreu um erro ao tentar Processar a Resposta ! ' + Exc.Message, mtError, mbOKCancel, 0);
+         MessageDlg( ACBrStr('Ocorreu um erro ao tentar Processar a Resposta ! ') + Exc.Message, mtError, mbOKCancel, 0);
    end;
 end;
 
@@ -1106,7 +1106,7 @@ begin
       end;
    Except
       On Exc: Exception do
-         MessageDlg('Ocorreu um erro ao tentar Reprocessar a Resposto do TEF ! ' + Exc.Message, mtError, mbOKCancel, 0);
+         MessageDlg( ACBrStr('Ocorreu um erro ao tentar Reprocessar a Resposto do TEF ! ') + Exc.Message, mtError, mbOKCancel, 0);
    end;
 end;
 

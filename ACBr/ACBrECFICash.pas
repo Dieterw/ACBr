@@ -230,16 +230,16 @@ end;
 procedure TACBrECFICash.Ativar;
 begin
   if not fpDevice.IsSerialPort  then
-     raise Exception.Create('A impressora: '+ModeloStr+' requer'+#10+
-                            'Porta Serial:  (COM1, COM2, COM3, ...)');
+     raise Exception.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+#10+
+                            'Porta Serial:  (COM1, COM2, COM3, ...)'));
 
   inherited Ativar ; { Abre porta serial }
 
   try
      { Testando a comunicaçao com a porta }
      if NumVersao = '' then
-        raise EACBrECFNaoInicializado.Create(
-                 'Erro inicializando a impressora '+ModeloStr );
+        raise EACBrECFNaoInicializado.Create( ACBrStr(
+                 'Erro inicializando a impressora '+fpModeloStr ));
   except
      Desativar ;
      raise ;
@@ -281,16 +281,16 @@ begin
            end ;
 
            if fsACK = 0 then
-              raise EACBrECFSemResposta.create(
-                       'Impressora '+ModeloStr+' não responde (ACK = 0)')
+              raise EACBrECFSemResposta.create( ACBrStr(
+                       'Impressora '+fpModeloStr+' não responde (ACK = 0)') )
            else if fsACK = NACK then    { retorno em caracter 21d=15h=NAK }
-              raise EACBrECFSemResposta.create(
-                    'Impressora '+ModeloStr+' não reconheceu o Comando'+
-                    sLineBreak+' (ACK = 21)')
+              raise EACBrECFSemResposta.create( ACBrStr(
+                    'Impressora '+fpModeloStr+' não reconheceu o Comando'+
+                    sLineBreak+' (ACK = 21)') )
            else if fsACK <> cACK then
-              raise EACBrECFSemResposta.create(
-                    'Erro. Resposta da Impressora '+ModeloStr+' inválida'+
-                    sLineBreak+' (ACK = '+IntToStr(fsACK)+')') ;
+              raise EACBrECFSemResposta.create( ACBrStr(
+                    'Erro. Resposta da Impressora '+fpModeloStr+' inválida'+
+                    sLineBreak+' (ACK = '+IntToStr(fsACK)+')') ) ;
         except
            on E : EACBrECFSemResposta do
             begin
@@ -358,7 +358,7 @@ begin
        71 : StatusMsg := 'Comprovante de Estorno Crédito/Débito Aberto';
        72 : StatusMsg := 'Fora de Período de Vendas';
      else
-        StatusMsg := 'Status retornado pelo ECF '+ModeloStr+': '+IntToStr(fsST1) ;
+        StatusMsg := 'Status retornado pelo ECF '+fpModeloStr+': '+IntToStr(fsST1) ;
      end;
 
      case fsST2 of
@@ -380,17 +380,17 @@ begin
        68 : ErroMsg := 'Efetuar Redução Z';
        79 : ErroMsg := 'Erro não Definido!';
      else
-        ErroMsg := 'Erro retornado pelo ECF '+ModeloStr+': '+IntToStr(fsST2) ;
+        ErroMsg := 'Erro retornado pelo ECF '+fpModeloStr+': '+IntToStr(fsST2) ;
      end;
 
      { ICash não tem mecanismo de alerta de de Pouco Papel }
   
      if ErroMsg <> '' then
       begin
-        ErroMsg := 'Erro retornado pela Impressora: '+ModeloStr+
+        ErroMsg := ACBrStr('Erro retornado pela Impressora: '+fpModeloStr+
                    sLineBreak+sLineBreak+
                    'Erro..: '+ErroMsg  + sLineBreak+
-                   'Status: '+StatusMsg ;
+                   'Status: '+StatusMsg );
         raise EACBrECFSemResposta.create(ErroMsg) ;
       end
      else
@@ -689,8 +689,8 @@ Var QtdStr, ValorStr, DescontoStr : String ;
     NumItem, NumDecimais : Integer;
 begin
    if Qtd > 9999 then
-      raise EACBrECFCMDInvalido.Create(
-           'Quantidade deve ser inferior a 9999.');
+      raise EACBrECFCMDInvalido.Create( ACBrStr(
+           'Quantidade deve ser inferior a 9999.'));
 
    Codigo    := padL(Codigo,14) ;    { Ajustando Tamanhos }
    Descricao := padL(Descricao,28);
@@ -762,10 +762,10 @@ begin
 {  TODO: Mecanismo de vinculados
   if ImprimeVinculado then
      if fsVinculado then
-        raise Exception.Create('Já existe Forma de Pagamento com '+#10+
+        raise Exception.Create(ACBrStr('Já existe Forma de Pagamento com '+#10+
                                'comprovante NAO fiscal vinculado pendente. '+#10+
-                               'Impressora: '+ModeloStr+' aceita apenas um '+#10+
-                               'Comprovante não Fiscal Viculado por Cupom.')
+                               'Impressora: '+fpModeloStr+' aceita apenas um '+#10+
+                               'Comprovante não Fiscal Viculado por Cupom.'))
      else
         fsVinculado := true ;
 }
@@ -855,8 +855,8 @@ end;
 procedure TACBrECFICash.ProgramaAliquota(Aliquota: Double; Tipo: Char;
    Posicao : String);
 begin
-   raise Exception.Create( 'ECF '+ModeloStr+' só permite programação de Aliquotas'+
-                           ' em Estado de Intervenção técnica.') ;
+   raise Exception.Create( ACBrStr('ECF '+fpModeloStr+' só permite programação de Aliquotas'+
+                           ' em Estado de Intervenção técnica.')) ;
 end;
 
 function TACBrECFICash.AchaICMSAliquota( var AliquotaICMS: String):
@@ -1323,13 +1323,13 @@ procedure TACBrECFICash.Sangria( const Valor: Double; Obs: AnsiString;
 begin
   CNF := AchaCNFDescricao(DescricaoCNF, True) ;
   if CNF = nil then
-     raise Exception.Create('Não existe nenhum Comprovante Não Fiscal '+
-                            'cadastrado como: "'+DescricaoCNF+'"') ;
+     raise Exception.Create(ACBrStr('Não existe nenhum Comprovante Não Fiscal '+
+                            'cadastrado como: "'+DescricaoCNF+'"')) ;
 
   FPG := AchaFPGDescricao(DescricaoFPG, True) ;
   if FPG = nil then
-     raise Exception.Create('Não existe nenhuma Forma de Pagamento '+
-                            'cadastrada como: "'+DescricaoFPG+'"') ;
+     raise Exception.Create(ACBrStr('Não existe nenhuma Forma de Pagamento '+
+                            'cadastrada como: "'+DescricaoFPG+'"')) ;
 
   Obs    := AjustaLinhas( Obs, Colunas, 8 );
   ObsStr := '' ;

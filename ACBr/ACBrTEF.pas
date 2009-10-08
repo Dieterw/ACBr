@@ -270,7 +270,7 @@ const
    RS_PRINTERTYPENOTSUPPORTED = 'Tipo de impressão não suportado!';
 
 implementation
-Uses ACBrTEFDial, ACBrTEFDisc, ACBrTEFHiper;
+Uses ACBrUtil, ACBrTEFDial, ACBrTEFDisc, ACBrTEFHiper;
 
 { ACBrTEF }
 Constructor TACBrTEF.Create(AOwner: TComponent);
@@ -317,7 +317,7 @@ begin
    if fsTipo = Value then exit ;
 
    if fsAtivo then
-      raise Exception.Create('Não é possível mudar o Tipo com ACBrTEF Ativo');
+      raise Exception.Create(ACBrStr('Não é possível mudar o Tipo com ACBrTEF Ativo'));
 
    wTimeOut             := TimeOUT;
    wNumVias             := NumVias;
@@ -387,12 +387,12 @@ procedure TACBrTEF.Ativar;
 begin
    if fsAtivo then exit;
    if fsTipo = tefNenhum then
-      raise Exception.Create('Tipo não definido !');
+      raise Exception.Create(ACBrStr('Tipo não definido !'));
    if Not Assigned(fsECF) then
-      raise Exception.Create('ECF não informado !');
+      raise Exception.Create(ACBrStr('ECF não informado !'));
 //   Na roteiro da VISA o componente TEF deve ser habilitado, mesmo que a impressora esteja inoperante ou desligada
    If (Not fsECF.Ativo) and (Not IgnoraECFDesativado) then
-      raise Exception.Create('ECF não esta ativo !');
+      raise Exception.Create(ACBrStr('ECF não esta ativo !'));
 //   MsgAviso;
    fsTEF.Ativar;
    fsAtivo := true;
@@ -419,7 +419,7 @@ begin
       AtivarGP;
 
    If Not fsECF.Ativo then
-      raise Exception.Create(RS_ECFDESLIGADA);
+      raise Exception.Create(ACBrStr(RS_ECFDESLIGADA));
 
    fsTEF.Handle   := fpHandle;
 
@@ -448,7 +448,7 @@ begin
       AtivarGP;
 
    If Not fsECF.Ativo then
-      raise Exception.Create(RS_ECFDESLIGADA);
+      raise Exception.Create(ACBrStr(RS_ECFDESLIGADA));
 
    fsTEF.Handle   := fpHandle;
 
@@ -475,11 +475,11 @@ function TACBrTEF.FechaVendaTEF(CodFormaPagto: String; CodComprovanteNaoFiscal: 
 begin
    If Not Ativo then
       AtivarGP;
-      //raise Exception.Create(RS_INACTIVETEF);
+      //raise Exception.Create(ACBrStr(RS_INACTIVETEF));
 
 
    If Not fsECF.Ativo then
-      raise Exception.Create(RS_ECFDESLIGADA);
+      raise Exception.Create(ACBrStr(RS_ECFDESLIGADA));
 
    fsTEF.Handle   := fpHandle;
 
@@ -506,10 +506,10 @@ function TACBrTEF.FechaVendaCheque(CodFormaPagto: String; CodComprovanteNaoFisca
 {$ENDIF}
 begin
    If Not Ativo then
-      raise Exception.Create(RS_INACTIVETEF);
+      raise Exception.Create(ACBrStr(RS_INACTIVETEF));
 
    If Not fsECF.Ativo then
-      raise Exception.Create(RS_ECFDESLIGADA);   
+      raise Exception.Create(ACBrStr(RS_ECFDESLIGADA));   
 
 
    fsTEF.Handle   := fpHandle;
@@ -536,7 +536,7 @@ function TACBrTEF.GPAtivo: Boolean;
 begin
 //   result := false;
    If Not Ativo then
-      raise Exception.Create(RS_INACTIVETEF);
+      raise Exception.Create(ACBrStr(RS_INACTIVETEF));
 
    result   := fsTEF.GPAtivo;
 end;
@@ -544,10 +544,10 @@ end;
 procedure TACBrTEF.ADM;
 begin
    If Not Ativo then
-      raise Exception.Create(RS_INACTIVETEF);
+      raise Exception.Create(ACBrStr(RS_INACTIVETEF));
 
    If (Not fsECF.Ativo) and (Not IgnoraECFDesativado) then
-      raise Exception.Create(RS_ECFDESLIGADA);
+      raise Exception.Create(ACBrStr(RS_ECFDESLIGADA));
 
    fsTEF.Handle   := fsHandle;
    fsTEF.ADM ;
@@ -556,7 +556,7 @@ end;
 procedure TACBrTEF.CancelaCupomTEF;
 begin
    If Not Ativo then
-      raise Exception.Create(RS_INACTIVETEF);
+      raise Exception.Create(ACBrStr(RS_INACTIVETEF));
 
    fsTEF.CancelaCupomTEF;
 end;
@@ -564,7 +564,7 @@ end;
 function TACBrTEF.NCN: Boolean; // Não confirmação da venda e/ ou da impressão
 begin
    If Not Ativo then
-      raise Exception.Create(RS_INACTIVETEF);
+      raise Exception.Create(ACBrStr(RS_INACTIVETEF));
 
    fsTEF.NCN;
 end;
@@ -687,17 +687,17 @@ end;
 procedure TACBrTEF.MsgAviso;
 begin
    {$IFNDEF CONSOLE}
-    if MessageDlg('Obrigado por usar o ACBrTEF. Esperamos que esse componente facilite a sua jornada'+ sLineBreak +
+    if MessageDlg( ACBrStr( 'Obrigado por usar o ACBrTEF. Esperamos que esse componente facilite a sua jornada'+ sLineBreak +
                   'no processo de homologação TEF. Para continuar usando esse componente você precisa'+ sLineBreak +
                   'concordar com todos os termos existentes na licença LGPL. '+ sLineBreak + sLineBreak +
                   'O uso do ACBrTEF em hipótese alguma exime o programador das necessidades de: '+ sLineBreak +
                   '- Solicitar das homologadoras a documentação atual para o processo homologatório '+ sLineBreak +
-                  '- Efetuar a homologação do software que usa o ACBrTEF '+ sLineBreak + sLineBreak +  
+                  '- Efetuar a homologação do software que usa o ACBrTEF '+ sLineBreak + sLineBreak +
                   'Leia atentamente todo o roteiro de homologação, o Manual de programação do Gerenciador'+ sLineBreak +
                   'Padrão e principalmente os fontes do ACBrTEF.' + sLineBreak +
                   'É fundamental que o programador tenha total controle de todo processo do TEF, caso' + sLineBreak +
                   'contrário será muito difícil passar no processo de homologação ' + sLineBreak + sLineBreak +
-                  'Continua com o uso do ACBrTEF ?'
+                  'Continua com o uso do ACBrTEF ?' )
                   ,mtWarning,mbYesNoCancel,0) <> mrYes then
        raise Exception.Create( 'Uso indevido do ACBrTEF');
   {$ENDIF}

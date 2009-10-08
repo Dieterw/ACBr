@@ -140,6 +140,7 @@ begin
              'Automação Comercial Brasil'+sLineBreak+
              'http://acbr.sourceforge.net'+sLineBreak+
              'Versão: '+ACBR_VERSAO ;
+      Msg := ACBrStr(Msg) ;
       writeln( Msg )
   {$ELSE}
     {$IFDEF VisualCLX}
@@ -153,6 +154,7 @@ begin
              'Automação Comercial Brasil'+#10+#10+
              'http://acbr.sourceforge.net'+#10+#10+
              'Versão: '+ACBR_VERSAO ;
+      Msg := ACBrStr(Msg) ;
     {$ENDIF}
 
      MessageDlg(Msg ,mtInformation ,[mbOk],0) ;

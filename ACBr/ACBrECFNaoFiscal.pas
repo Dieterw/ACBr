@@ -558,7 +558,7 @@ begin
         fpDevice.Serial.Purge ;
 
      if not EmLinha() then
-        raise Exception.Create('Impressora: '+ModeloStr+' não está pronta.') ;
+        raise Exception.Create(ACBrStr('Impressora: '+fpModeloStr+' não está pronta.')) ;
 
      AbreBuffer ;
 
@@ -720,11 +720,11 @@ var
   A: Integer ;
 begin
   if Estado = estBloqueada then
-     raise Exception.Create('Dia já foi fechado. Redução Z já emitida') ;
+     raise Exception.Create(ACBrStr('Dia já foi fechado. Redução Z já emitida')) ;
 
   if not (Estado in [estLivre,estRequerZ]) then
-     raise Exception.create('O Estado da Impressora não é "LIVRE" Cancele o '+
-                            'último Documento') ;
+     raise Exception.create(ACBrStr('O Estado da Impressora não é "LIVRE" Cancele o '+
+                            'último Documento')) ;
 
   ZeraBuffer ;
 
@@ -833,7 +833,7 @@ Var A : Integer ;
 begin
   if ((fsItensCupom.Count = 0) and (Estado <> estVenda) ) and
      ((fsCNFCupom.Count   = 0) and (Estado <> estNaoFiscal) ) then
-     raise Exception.Create('Último Documento não é Cupom') ;
+     raise Exception.Create(ACBrStr('Último Documento não é Cupom')) ;
 
   ZeraBuffer ;
 
@@ -919,17 +919,17 @@ procedure TACBrECFNaoFiscal.CancelaItemVendido(NumItem: Integer);
 Var Ini : TIniFile ;
 begin
   if Estado <> estVenda then
-     raise Exception.create('O Estado da Impressora nao é "VENDA"') ;
+     raise Exception.create(ACBrStr('O Estado da Impressora nao é "VENDA"')) ;
 
   if fsItensCupom.Count = 0 then
-     raise Exception.create('Nenhum Item foi vendido ainda') ;
+     raise Exception.create(ACBrStr('Nenhum Item foi vendido ainda')) ;
 
   if (NumItem < 1) or (NumItem > fsItensCupom.Count) then
-     raise Exception.create('Item ('+IntToStrZero(NumItem,3)+') fora da Faixa.') ;
+     raise Exception.create(ACBrStr('Item ('+IntToStrZero(NumItem,3)+') fora da Faixa.')) ;
 
   if TACBrECFNaoFiscalItemCupom( fsItensCupom[NumItem-1] ).Qtd = 0 then
-     raise Exception.create('Item ('+IntToStrZero(NumItem,3)+
-                            ') já foi cancelado.') ;
+     raise Exception.create(ACBrStr('Item ('+IntToStrZero(NumItem,3)+
+                            ') já foi cancelado.')) ;
 
   ZeraBuffer ;
   fsBuffer.Add( 'CANCELADO ITEM: '+IntToStrZero( NumItem,3) ) ;
@@ -979,11 +979,11 @@ Var FPG    : TACBrECFNaoFiscalFormaPagamento ;
     Pagto  : TACBrECFNaoFiscalPagamentoCupom ;
 begin
   if Estado <> estPagamento then
-     raise Exception.create('O Estado da Impressora nao é "PAGAMENTO"') ;
+     raise Exception.create(ACBrStr('O Estado da Impressora nao é "PAGAMENTO"')) ;
 
   if TotalPago >= SubTotal then
-     raise Exception.create('Total pago já foi atingido Cupom deve ser '+
-                            'encerrado') ;
+     raise Exception.create(ACBrStr('Total pago já foi atingido Cupom deve ser '+
+                            'encerrado')) ;
 
   PosFPG := AchaFPGIndiceNaoFiscal( CodFormaPagto ) ;
   try
@@ -992,7 +992,7 @@ begin
 
      FPG := TACBrECFNaoFiscalFormaPagamento( fsFormasPagamento[ PosFPG ] ) ;
   except
-     raise Exception.create('Forma de Pagamento '+CodFormaPagto+' Inválida') ;
+     raise Exception.create(ACBrStr('Forma de Pagamento '+CodFormaPagto+' Inválida')) ;
   end ;
 
   Troco := 0 ;
@@ -1067,11 +1067,11 @@ procedure TACBrECFNaoFiscal.FechaCupom(Observacao: AnsiString; IndiceBMP : Integ
 var wEstado : TACBrECFEstado ;
 begin
   if Estado <> estPagamento then
-     raise Exception.create('O Estado da Impressora nao é "PAGAMENTO"'+
-                            'Não houve SubTotal') ;
+     raise Exception.create(ACBrStr('O Estado da Impressora nao é "PAGAMENTO"'+
+                            'Não houve SubTotal')) ;
 
   if TotalPago < SubTotal then
-     raise Exception.create('Total Pago é inferior ao Total do Cupom') ;
+     raise Exception.create(ACBrStr('Total Pago é inferior ao Total do Cupom')) ;
 
   Observacao := StringReplace(Observacao,#10,CRLF,[rfReplaceAll]) ;
   
@@ -1098,10 +1098,10 @@ Var Taxa, ValTaxa : Double ;
     A, AjusteSinal: Integer ;
 begin
   if not (Estado in [estVenda, estNaoFiscal]) then
-     raise Exception.create('O Estado da Impressora nao é "VENDA"'+
-                            ' Cupom não Aberto') ;
+     raise Exception.create(ACBrStr('O Estado da Impressora nao é "VENDA"'+
+                            ' Cupom não Aberto')) ;
   if SubTotal <= 0 then
-     raise Exception.create('Nenhum Item foi vendido ainda') ;
+     raise Exception.create(ACBrStr('Nenhum Item foi vendido ainda')) ;
 
   ZeraBuffer ;
 
@@ -1175,17 +1175,17 @@ Var PosAliq : Integer ;
     Ini  : TIniFile ;
 begin
   if Estado <> estVenda then
-     raise Exception.create('O Estado da Impressora nao é "VENDA"'+
-                            ' Cupom não Aberto') ;
+     raise Exception.create(ACBrStr('O Estado da Impressora nao é "VENDA"'+
+                            ' Cupom não Aberto')) ;
 
   if (Qtd <= 0) or (ValorUnitario <= 0) or (Descricao = '') or (Codigo = '') then
-     raise Exception.create('Erro. Parâmetros inválidos.') ;
+     raise Exception.create(ACBrStr('Erro. Parâmetros inválidos.')) ;
 
   try
      PosAliq := StrToInt(AliquotaECF)-1 ;
      Aliq    := TACBrECFNaoFiscalAliquota( fsAliquotas[ PosAliq ] ) ;
   except
-     raise Exception.create('Aliquota '+AliquotaECF+' Inválida') ;
+     raise Exception.create(ACBrStr('Aliquota '+AliquotaECF+' Inválida')) ;
   end ;
 
   if PosAliq > 2 then
@@ -1231,7 +1231,7 @@ begin
      end ;
 
      if Abs(PorcDesc) >= 100 then
-        raise Exception.create(StrDescAcre+' maior do que 99,99%');
+        raise Exception.create(ACBrStr(StrDescAcre+' maior do que 99,99%'));
   end ;
 
   { Inserindo na String da fsMascaraItem }
@@ -1309,7 +1309,7 @@ end ;
 procedure TACBrECFNaoFiscal.AbreRelatorioGerencial;
 begin
   if not (Estado in [estLivre,estRequerZ,estRequerX])  then
-     raise Exception.Create('O Estado da Impressora não é "LIVRE"');
+     raise Exception.Create(ACBrStr('O Estado da Impressora não é "LIVRE"'));
 
   ZeraBuffer ;
   fsBuffer.Add( StringOfChar('-',Colunas) ) ;
@@ -1359,19 +1359,19 @@ Var FPG : TACBrECFNaoFiscalFormaPagamento ;
 begin
 
   if COO = '' then
-     raise Exception.create('COO inválido');
+     raise Exception.create(ACBrStr('COO inválido'));
 
   if Estado <> estLivre  then
-     raise Exception.Create('O Estado da Impressora não é "LIVRE"') ;
+     raise Exception.Create(ACBrStr('O Estado da Impressora não é "LIVRE"')) ;
 
   if fsPagamentosCupom.Count < 1 then
-     raise Exception.Create('Ultimo Documento não é Cupom') ;
+     raise Exception.Create(ACBrStr('Ultimo Documento não é Cupom')) ;
 
   COO := Poem_Zeros(COO,6) ;
 
   PosFPG := AchaFPGIndiceNaoFiscal( CodFormaPagto ) ;
   if PosFPG < 0 then
-     raise Exception.Create('Posição de Pagamento: '+CodFormaPagto+' inválida');
+     raise Exception.Create(ACBrStr('Posição de Pagamento: '+CodFormaPagto+' inválida'));
 
   FPG := TACBrECFNaoFiscalFormaPagamento( fsFormasPagamento[PosFPG] ) ;
 
@@ -1385,8 +1385,8 @@ begin
   end ;
 
   if not UsouPagamento then
-     raise Exception.create('Forma de Pagamento: '+FPG.Descricao+
-                            ' não foi utilizada no Cupom anterior') ;
+     raise Exception.create(ACBrStr('Forma de Pagamento: '+FPG.Descricao+
+                            ' não foi utilizada no Cupom anterior')) ;
 
   ZeraBuffer ;
   fsBuffer.Add( padC('COMPROVANTE NAO FISCAL VINCULADO',Colunas) ) ;
@@ -1477,10 +1477,10 @@ Var CNFCupom : TACBrECFNaoFiscalCNFCupom ;
     PosCNF   : Integer ;
 begin
   if Estado <> estNaoFiscal then
-     raise Exception.create('Comprovante Não Fiscal não foi aberto') ;
+     raise Exception.create(ACBrStr('Comprovante Não Fiscal não foi aberto')) ;
 
   if (Valor <= 0) then
-     raise Exception.create('Erro. Parâmetros inválidos.') ;
+     raise Exception.create(ACBrStr('Erro. Parâmetros inválidos.')) ;
 
   PosCNF := AchaCNFIndiceNaoFiscal( CodCNF ) ;
   try
@@ -1489,7 +1489,7 @@ begin
 
      CNF := TACBrECFNaoFiscalComprovanteNaoFiscal( fsComprovantesNaoFiscais[ PosCNF ] ) ;
   except
-     raise Exception.create('Comprovante Não Fiscal '+CodCNF+' Inválido') ;
+     raise Exception.create(ACBrStr('Comprovante Não Fiscal '+CodCNF+' Inválido')) ;
   end ;
 
   ZeraBuffer ;
@@ -2002,15 +2002,15 @@ end;
 Procedure TACBrECFNaoFiscal.AvisoLegal ;
 begin
   {$IFNDEF CONSOLE}
-    if MessageDlg('Este Emulador destina-se EXCLUSIVAMENTE para auxiliar no '+
+    if MessageDlg(ACBrStr( 'Este Emulador destina-se EXCLUSIVAMENTE para auxiliar no '+
                   'desenvolvimento de aplicativos para as impressoras fiscais. '+
                   sLineBreak + sLineBreak +
                   'Usar o emulador para fins comerciais sem a devida impressão '+
                   'do Cupom Fiscal ou Nota Fiscal pode caracterizar crime de '+
                   'Sonegação Fiscal.' + sLineBreak + sLineBreak +
-                  'Continua com o uso do Emulador ?'
+                  'Continua com o uso do Emulador ?' )
                   ,mtWarning,mbYesNoCancel,0) <> mrYes then
-       raise Exception.Create( 'Uso indevido do emulador');
+       raise Exception.Create( ACBrStr('Uso indevido do emulador'));
   {$ENDIF}
 end;
 
@@ -2028,7 +2028,7 @@ begin
         fsBuffer.LoadFromFile( NomeArqBuffer );
         Reset( fsArqBuf );
         if not SeekEof( fsArqBuf ) then
-           raise Exception.Create('Erro ao posicionar em EOF no arquivo: '+
+           raise Exception.Create(ACBrStr('Erro ao posicionar em EOF no arquivo: ')+
                                   NomeArqBuffer) ;
       end
      else
@@ -2279,11 +2279,11 @@ var Cab : TStringList ;
 begin
 
   if fsDia > now then
-     raise Exception.create('Erro ! A Data da Impressora: '+DateToStr(fsDia)+
-            '‚ maior do que a Data atual: '+DateToStr(now)) ;
+     raise Exception.create(ACBrStr('Erro ! A Data da Impressora: '+DateToStr(fsDia)+
+            '‚ maior do que a Data atual: '+DateToStr(now))) ;
 
   if not EmLinha() then
-     raise Exception.Create('Impressora: '+ModeloStr+' não está pronta.') ;
+     raise Exception.Create(ACBrStr('Impressora: '+fpModeloStr+' não está pronta.')) ;
 
   fsNumCupom := fsNumCupom + 1 ;
   fsCOOFinal := fsNumCupom ;

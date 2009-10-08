@@ -44,7 +44,7 @@ Unit ACBrTERClass;
 
 Interface
 
-Uses ACBrDevice,   {Units da ACBr}
+Uses ACBrDevice,    {Units da ACBr}
      Classes,
      {$IFDEF COMPILER6_UP}Types{$ELSE}Windows{$ENDIF};
 
@@ -81,14 +81,14 @@ Type
 
 Implementation
 
-Uses ACBrTER, SysUtils;
+Uses ACBrTER, ACBrUtil, SysUtils;
 
 { TACBrTERClass }
 
 Constructor TACBrTERClass.Create( AOwner: TComponent );
 Begin
     If Not ( AOwner Is TACBrTER ) Then
-        Raise Exception.Create( 'Essa Classe deve ser instanciada por TACBrTER' );
+        Raise Exception.Create( ACBrStr('Essa Classe deve ser instanciada por TACBrTER') );
 
   { Criando ponteiro interno para as Propriedade SERIAL de ACBrTER,
     para permitir as Classes Filhas o acesso a essas propriedades do Componente }
@@ -142,37 +142,37 @@ End;
 Procedure TACBrTERClass.LeSerial( MillisecTimeOut : Integer );
 Begin
     { Deve ser implementada na Classe Filha }
-    Raise Exception.Create(' Procedure LeSerial não implementada em: ' + ModeloStr );
+    Raise Exception.Create(ACBrStr('Procedure LeSerial não implementada em: ') + ModeloStr );
 End;
 
 Procedure TACBrTERClass.LimpaTela( Terminal : Word = 0 );
 Begin
     { Deve ser implementada na Classe Filha }
-    Raise Exception.Create(' Procedure LimpaTela não implementada em: ' + ModeloStr );
+    Raise Exception.Create(ACBrStr('Procedure LimpaTela não implementada em: ') + ModeloStr );
 End;
 
 Procedure TACBrTERClass.PosicionaCursor( Linha, Coluna : Word; Terminal : Word = 0 );
 Begin
     { Deve ser implementada na Classe Filha }
-    Raise Exception.Create(' Procedure PosicionaCursor não implementada em: ' + ModeloStr );
+    Raise Exception.Create(ACBrStr('Procedure PosicionaCursor não implementada em: ') + ModeloStr );
 End;
 
 Procedure TACBrTERClass.BackSpace( Terminal : Word = 0 );
 Begin
     { Deve ser implementada na Classe Filha }
-    Raise Exception.Create(' Procedure BackSpace não implementada em: ' + ModeloStr );
+    Raise Exception.Create(ACBrStr('Procedure BackSpace não implementada em: ') + ModeloStr );
 End;
 
 Procedure TACBrTERClass.EnviaString( Texto : String; Terminal : Word = 0 );
 Begin
     { Deve ser implementada na Classe Filha }
-    Raise Exception.Create(' Procedure EnviaString não implementada em: ' + ModeloStr );
+    Raise Exception.Create(ACBrStr('Procedure EnviaString não implementada em: ') + ModeloStr );
 End;
 
 Procedure TACBrTERClass.EnviaRotacao( Texto : String; Linha : Word = 0; Terminal : Word = 0 );
 Begin
     { Deve ser implementada na Classe Filha }
-    Raise Exception.Create(' Procedure EnviaRotacao não implementada em: ' + ModeloStr );
+    Raise Exception.Create(ACBrStr('Procedure EnviaRotacao não implementada em: ') + ModeloStr );
 End;
 
 End.

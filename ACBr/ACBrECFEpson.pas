@@ -345,7 +345,7 @@ begin
 
   Tamanho := Length(Trim(Value)) ;
   if (Tamanho <> 2) and (Tamanho <> 4) then
-     raise Exception.Create('Comando Epson deve ter 4 Caracteres em Hexadecimal') ;
+     raise Exception.Create(ACBrStr('Comando Epson deve ter 4 Caracteres em Hexadecimal')) ;
 
   { Zerando instrucoes adicionais do comando }
   fsParams.Clear ;
@@ -363,7 +363,7 @@ procedure TACBrECFEpsonComando.SetExtensao(const Value: AnsiString);
 begin
   Tamanho := Length(Trim(Value)) ;
   if (Tamanho <> 2) and (Tamanho <> 4) then
-     raise Exception.Create('Extensao de Comando Epson deve ter 4 Caracteres em Hexadecimal') ;
+     raise Exception.Create(ACBrStr('Extensao de Comando Epson deve ter 4 Caracteres em Hexadecimal')) ;
 
   if Tamanho = 2 then
      fsExtensao := Value
@@ -454,22 +454,22 @@ begin
   fsResposta := Value ;
 
   if LeftStr(fsResposta,1) <> STX then
-     raise Exception.Create('Resposta inválida. Não inicia com STX (02)') ;
+     raise Exception.Create(ACBrStr('Resposta inválida. Não inicia com STX (02)')) ;
 
   if copy(fsResposta,Length(fsResposta)-4,1) <> ETX then
-     raise Exception.Create('Resposta inválida. Não finaliza com ETX (03)') ;
+     raise Exception.Create(ACBrStr('Resposta inválida. Não finaliza com ETX (03)')) ;
 
   if fsOwner.VerificaChecksum then
   begin
      fsChkSum := RightStr(fsResposta,4) ;
      if EpsonCheckSum( copy(fsResposta,1,Length(fsResposta)-4) ) <> fsChkSum then
-        raise Exception.create('Resposta inválida. CheckSum da Resposta não está correto.') ;
+        raise Exception.create(ACBrStr('Resposta inválida. CheckSum da Resposta não está correto.')) ;
   end ;
 
   try
      fsSeq := ord(fsResposta[2]) ;
   except
-     raise Exception.Create('Resposta inválida. Num.Sequencia inválido') ;
+     raise Exception.Create(ACBrStr('Resposta inválida. Num.Sequencia inválido')) ;
   end ;
 
   { Pega apenas o Frame de Dados }
@@ -490,7 +490,7 @@ begin
   end ;
 
   if fsParams.Count < 4 then
-     raise Exception.Create('Resposta Incompleta');
+     raise Exception.Create(ACBrStr('Resposta Incompleta'));
 
   { Removendo Status Printer de fsParams }
   try
@@ -498,7 +498,7 @@ begin
   except
      on E : Exception do
      begin
-        raise Exception.Create('Resposta Inválida. Erro ao calcular Status da Impressora'+sLineBreak+
+        raise Exception.Create(ACBrStr('Resposta Inválida. Erro ao calcular Status da Impressora')+sLineBreak+
                                E.Message) ;
      end ;
   end ;
@@ -510,7 +510,7 @@ begin
   except
      on E : Exception do
      begin
-        raise Exception.Create('Resposta Inválida. Erro ao calcular Status Fiscal'+sLineBreak+
+        raise Exception.Create(ACBrStr('Resposta Inválida. Erro ao calcular Status Fiscal')+sLineBreak+
                                E.Message) ;
      end ;
   end ;
@@ -524,7 +524,7 @@ begin
   except
      on E : Exception do
      begin
-        raise Exception.Create('Resposta Inválida. Erro ao calcular Cod.Retorno'+sLineBreak+
+        raise Exception.Create(ACBrStr('Resposta Inválida. Erro ao calcular Cod.Retorno')+sLineBreak+
                                E.Message) ;
      end ;
   end ;
@@ -867,8 +867,8 @@ end;
 procedure TACBrECFEpson.Ativar;
 begin
   if not fpDevice.IsSerialPort  then
-     raise Exception.Create('A impressora: '+ModeloStr+' requer'+sLineBreak+
-                            'Porta Serial:  (COM1, COM2, COM3, ...)');
+     raise Exception.Create(ACBrStr('A impressora: '+fpModeloStr+' requer'+sLineBreak+
+                            'Porta Serial:  (COM1, COM2, COM3, ...)'));
 
   inherited Ativar ; { Abre porta serial }
 
@@ -902,8 +902,8 @@ begin
      except
         On E : Exception do
         begin
-           raise EACBrECFNaoInicializado.Create(
-                    'Erro inicializando a impressora '+ModeloStr + sLineBreak +
+           raise EACBrECFNaoInicializado.Create( ACBrStr(
+                    'Erro inicializando a impressora '+fpModeloStr) + sLineBreak +
                     E.Message );
         end;
      end ;
@@ -958,16 +958,16 @@ begin
            end ;
 
            if ByteACK = 0 then
-              raise EACBrECFSemResposta.create(
-                    'Impressora '+ModeloStr+' não responde (ACK = 0)' )
+              raise EACBrECFSemResposta.create( ACBrStr(
+                    'Impressora '+fpModeloStr+' não responde (ACK = 0)' ))
            else if ByteACK = NACK then    { retorno em caracter 21d=15h=NACK }
-              raise EACBrECFSemResposta.create(
-                    'Impressora '+ModeloStr+' não reconheceu o Comando'+
-                    sLineBreak+' (NACK)')
+              raise EACBrECFSemResposta.create( ACBrStr(
+                    'Impressora '+fpModeloStr+' não reconheceu o Comando'+
+                    sLineBreak+' (NACK)') )
            else if ByteACK <> 6 then
-              raise EACBrECFSemResposta.create(
-                    'Erro. Resposta da Impressora '+ModeloStr+' inválida'+
-                    sLineBreak+' (ACK = '+IntToStr(ByteACK)+')') ;
+              raise EACBrECFSemResposta.create( ACBrStr(
+                    'Erro. Resposta da Impressora '+fpModeloStr+' inválida'+
+                    sLineBreak+' (ACK = '+IntToStr(ByteACK)+')')) ;
         except
            on E : EACBrECFSemResposta do
             begin
@@ -996,7 +996,7 @@ begin
      Try
         EpsonResposta.Resposta := fpRespostaComando ;
         if EpsonResposta.Seq <> EpsonComando.Seq then
-           raise Exception.Create('Sequencia de Resposta diferente da enviada') ;
+           raise Exception.Create(ACBrStr('Sequencia de Resposta diferente da enviada')) ;
 
         fpDevice.Serial.SendByte(ACK);
 
@@ -1013,8 +1013,8 @@ begin
 
      if ErroMsg <> '' then
       begin
-        ErroMsg := 'Erro retornado pela Impressora: '+ModeloStr+#10+#10+
-                   ErroMsg ;
+        ErroMsg := ACBrStr('Erro retornado pela Impressora: '+fpModeloStr+#10+#10+
+                   ErroMsg) ;
         raise EACBrECFSemResposta.create(ErroMsg) ;
       end
      else
@@ -1046,10 +1046,10 @@ begin
      end ;
 
      if SL.Count < 1 then
-        raise Exception.create('Erro ao informar comando.  Use:'+sLineBreak+
+        raise Exception.create(ACBrStr('Erro ao informar comando.  Use:'+sLineBreak+
                                'Comando(4 Hex) #28 Extensao(4 Hex) [ #28 PARAM1 [ #28 PARAM2 ... ]] '+sLineBreak+sLineBreak+
                                'Exemplo, Para emitir Leitura X use: '+sLineBreak+
-                               'EnviaComando("0802" + #28 + "0000" ) ' );
+                               'EnviaComando("0802" + #28 + "0000" ) ') );
 
      if SL.Count < 2 then
         SL.Add('0000') ;
@@ -1807,8 +1807,8 @@ begin
   end ;
 
   if ProxIndice > 20 then
-     raise Exception.create('Não há espaço para programar novas Formas de '+
-                            'Pagamento');
+     raise Exception.create(ACBrStr('Não há espaço para programar novas Formas de '+
+                            'Pagamento'));
 
   EpsonComando.Comando := '050C' ;
   if PermiteVinculado then
@@ -1936,8 +1936,8 @@ begin
   FPG := AchaFPGIndice( CodFormaPagto ) ;
 
   if FPG = nil then
-     raise Exception.create( 'Forma de Pagamento: '+CodFormaPagto+
-                             ' não foi cadastrada.' ) ;
+     raise Exception.create( ACBrStr('Forma de Pagamento: '+CodFormaPagto+
+                             ' não foi cadastrada.') ) ;
 
   EpsonComando.Comando := '0E30' ;
   EpsonComando.AddParam( CodFormaPagto ) ;

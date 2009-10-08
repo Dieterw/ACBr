@@ -165,7 +165,7 @@ begin
   wAvanco      := Avanco ;
   
   if fsAtivo then
-     raise Exception.Create('Não é possível mudar o Modelo com ACBrETQ Ativo');
+     raise Exception.Create(ACBrStr('Não é possível mudar o Modelo com ACBrETQ Ativo'));
 
   FreeAndNil(fsETQ) ;
 
@@ -210,7 +210,7 @@ end;
 
 function TACBrETQ.GetModeloStrClass: String;
 begin
-  Result := fsETQ.ModeloStr ;
+  Result := ACBrStr(fsETQ.ModeloStr) ;
 end;
 
 function TACBrETQ.GetPorta: String;

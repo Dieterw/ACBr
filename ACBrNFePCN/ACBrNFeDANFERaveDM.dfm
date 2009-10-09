@@ -1,7 +1,7 @@
 object dmACBrNFeRave: TdmACBrNFeRave
   OldCreateOrder = False
-  Left = 197
-  Top = 121
+  Left = 200
+  Top = 116
   Height = 444
   Width = 627
   object CustomDestinatarioCXN: TRvCustomConnection
@@ -115,14 +115,6 @@ object dmACBrNFeRave: TdmACBrNFeRave
     OnGetRow = CustomInformacoesAdicionaisCXNGetRow
     OnOpen = CustomInformacoesAdicionaisCXNOpen
     Left = 206
-    Top = 333
-  end
-  object CustomObservacaoFiscoCXN: TRvCustomConnection
-    RuntimeVisibility = rtDeveloper
-    OnGetCols = CustomObservacaoFiscoCXNGetCols
-    OnGetRow = CustomObservacaoFiscoCXNGetRow
-    OnOpen = CustomObservacaoFiscoCXNOpen
-    Left = 374
     Top = 333
   end
   object CustomISSQNCXN: TRvCustomConnection

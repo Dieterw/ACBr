@@ -47,7 +47,20 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Alterações   09/10/09
+---------------
+[*] DANFE em RAVE CB (créditos João Paulo S. Leão)
+    - Corrigido impressão de informações Complementares em mais de Uma Página (Retrato e Paisagem)
+[*] DANFE em Rave Arquivo (.rav): 
+    - Corrigido impressão de informações Complementares em mais de Uma Página 
+      IMPORTANTE: Recurso disponível SOMENTE em no Danfe_Rave513.rav, no arquivo NotaFiscalEletronica.rav essa correção não será implementada
+                  por falta de recursos do RAVE 5.0. 
+                  Nesse caso Utilizem o Danfe_Rave513.rav (somente para RAVE 5.1.3 ou superior) ou 
+                  utilizem o DANFE em Rave CB (somente para Rave 5.0.8 ou superior)
+    - Corrigido local de impressão das Informações do Fisco, pois a mesma tem que ser impressa no quadro Informações Complementares
+
 Alterações   06/10/09
+---------------
 [+] Adicionado evento  OnGerarLog, onde poderá ser usado para gravar as mensagens enviadas pelo componente(Veja no demo como utilizar para 
     adicionar as mensagens em um memo).
 [+] Adicionada propriedade IntervaloTentativas para definir qual deve ser o intervalo entre as tentativas de consulta de retorno de envio 
@@ -58,11 +71,9 @@ Alterações   06/10/09
 [-] Alterado geração da tag qTemp para ser gerada apenas qdo tiver algum conteúdo
 [-] Corrigido criação da tag UFCons, estava como UFcons
 
-Alterações   05/10/09 (Daniel Simões de Almeida)
-[-] Corrigido vazamentos de memória em Thread de envio de e-mail
-
-Alterações   05/10/09
+Alterações   05/10/09 
 ---------------
+[-] Corrigido vazamentos de memória em Thread de envio de e-mail (Daniel Simões de Almeida)
 [+] Adicionada propriedades AguardarConsultaRet e Tentativas nas configurações do WebService. Estas propriedades apenas serão utilizadas
     na consulta de retorno da autorização da NFe, por padrão o números de tentativas atual do componente está como 5, então está propriedade
     será criada com este valor, mas poderá ser alterado para o valor que o desenvolvedor desejar. A propriedade AguardarConsultaRet  deve

@@ -99,6 +99,8 @@ type
      FCurrentPage, FPageNum, FNFIndex:Integer;
      FChaveNFe, FNumeroNF, FSerie: String;
      FEspelho:Boolean;
+     FMemoInfCpl:TMemoBuf;
+     FDetIndex:Integer;
      FLastItens:Double;
      FFirstX,FFirstY,FLastX,FLastY:double;
      FontNameUsed : String;
@@ -109,6 +111,8 @@ type
      procedure SetFontTitle;
      procedure SetFontText;
      procedure Box(FlagsHideLine:TFlagsShowLine;aX,aY:Double; aWith,aHeight:Double;aTitle:String='';aText:String='';aAlignment:TAlignment=taLeftJustify;PositionNewLine:Boolean=False;Zebrado:Boolean=False;LarguraAutomatica:Boolean=True);
+     function IsPrintAllProd:boolean;
+     function IsPrintAllInfCpl:boolean;
      property ACBrNFe:TACBrNFe read FACBrNFe write FACBrNFe;
      property EmailDoEmitente:String read FEmail write FEmail;
      property SiteDoEmitente:String read FSite write FSite;
@@ -360,7 +364,7 @@ end;
 constructor TDANFeRave.Create(AOwner: TComponent);
 begin
   inherited;
-
+  FMemoInfCpl:=TMemoBuf.Create;
   OnPrint:=RavePrint;
   OnBeforePrint:=RaveBeforePrint;
   OnDecodeImage:=RaveDecodeImage;
@@ -369,6 +373,7 @@ end;
 destructor TDANFeRave.Destroy;
 begin
   FLogoMarca.Free;
+  FMemoInfCpl.Free;
   inherited;
 end;
 
@@ -409,6 +414,7 @@ begin
     FCurrentPage:=0;
     while FNFIndex<FACBrNFe.NotasFiscais.Count do begin
       FPageNum:=0;
+      FMemoInfCpl.Text:='';
 
       if FNFIndex>0 then
          NewPage;
@@ -431,6 +437,16 @@ end;
 procedure TDANFeRave.SetFontTitle;
 begin
   BaseReport.SetFont(FontNameUsed,FontSizeTitle)
+end;
+
+function TDANFeRave.IsPrintAllProd: boolean;
+begin
+  Result:=FDetIndex>=ACBrNFe.NotasFiscais.Items[FNFIndex].NFe.Det.Count;
+end;
+
+function TDANFeRave.IsPrintAllInfCpl: boolean;
+begin
+  Result:=FMemoInfCpl.Empty;
 end;
 
 end.

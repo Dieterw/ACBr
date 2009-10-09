@@ -55,7 +55,7 @@ unit ACBrNFeDANFERaveDM;
 interface
 
 uses Dialogs,
-  Forms, SysUtils, Classes,
+  Forms, SysUtils, Classes, StdCtrls,
   RpRave, RpBase, RpSystem, RpDefine, RpCon, RpRender, RpRenderPDF,
   pcnNFe, pcnConversao, ACBrNFeDANFEClass;
 
@@ -114,9 +114,6 @@ type
     procedure CustomInformacoesAdicionaisCXNGetCols(Connection: TRvCustomConnection);
     procedure CustomInformacoesAdicionaisCXNGetRow(Connection: TRvCustomConnection);
     procedure CustomInformacoesAdicionaisCXNOpen(Connection: TRvCustomConnection);
-    procedure CustomObservacaoFiscoCXNGetCols(Connection: TRvCustomConnection);
-    procedure CustomObservacaoFiscoCXNGetRow(Connection: TRvCustomConnection);
-    procedure CustomObservacaoFiscoCXNOpen(Connection: TRvCustomConnection);
     procedure CustomISSQNCXNGetCols(Connection: TRvCustomConnection);
     procedure CustomISSQNCXNGetRow(Connection: TRvCustomConnection);
     procedure CustomISSQNCXNOpen(Connection: TRvCustomConnection);
@@ -994,12 +991,43 @@ end;
 procedure TdmACBrNFeRave.CustomInformacoesAdicionaisCXNGetCols(
   Connection: TRvCustomConnection);
 begin
-  Connection.WriteField('OBS', dtMemo,5000,'','');
-  Connection.WriteField('Contigencia', dtString,70,'','');
+  Connection.WriteField('OBS', dtMemo,6900,'','');
+  Connection.WriteField('LinhasOBS', dtInteger,0,'','');
 end;
 
 procedure TdmACBrNFeRave.CustomInformacoesAdicionaisCXNGetRow(
   Connection: TRvCustomConnection);
+   function TotalOBS(wwObs: string): integer;
+   var
+      i: integer;
+      wMemo: TMemo;
+   begin
+      wMemo:=TMemo.Create(self);
+
+      try
+         with wMemo do
+         begin
+            Width := 462;
+            Height := 800;
+            //Font.Charset := ANSI_CHARSET;
+            Font.Height := -8;
+            Font.Name := 'Times New Roman';
+            Font.Style := [];
+            ParentFont := False;
+            TabOrder := 0;
+            Text:=wwObs;
+         end;
+
+         Result:=0;
+         for I := 1 to length(wmemo.Text) do
+         begin
+            if wmemo.Text[i]=#13 then
+               Result:=Result+1;
+         end;
+      finally
+         wmemo.Free;
+      end;
+   end;
 var
   i: Integer;
   vTemp: TStringList;
@@ -1008,23 +1036,57 @@ var
   BufferInfCpl: PAnsiChar;
   size: integer;
   TmpStr: String;
+  wContingencia: string;
+  wObs:string;
+  wLinhasObs: integer;
 begin
   with FNFe.InfAdic do
   begin
+    TmpStr:='';
+    //Fisco
+    if (Length(InfAdFisco)=0) then
+      InfAdFisco:='';
+    for i:=0  to ObsFisco.Count-1 do
+    begin
+      with ObsFisco.Items[i] do
+         TmpStr:=TmpStr+XCampo+': '+XTexto+';';
+    end;
+    wObs:=TmpStr+InfAdFisco;
+    TmpStr:='';
+
+    //Inf. Complementar
+    if (Length(InfCpl)=0) then
+      InfCpl:='';
+    for i:=0  to ObsCont.Count-1 do
+    begin
+      with ObsCont.Items[i] do
+         TmpStr:=TmpStr+XCampo+': '+XTexto+';';
+    end;
+    if length(wobs)>0 then
+      wobs:=wobs+';';
+    wObs:=wObs+TmpStr+InfCpl;
+    TmpStr:='';
+
+    //Contingencia
+    if ((FNFe.Ide.tpEmis=teContingencia) or
+        (FNFe.Ide.tpEmis=teFSDA)) then
+       wcontingencia:='DANFE EM CONTINGÊNCIA, IMPRESSO EM DECORRÊNCIA DE PROBLEMAS TÉCNICOS'
+    else if (FNFe.Ide.tpEmis=teDPEC) then
+       wcontingencia:='DANFE IMPRESSO EM CONTINGÊNCIA - DPEC REGULARMENTE RECEBIDA PELA RECEITA FEDERAL DO BRASIL'
+    else
+       wcontingencia:='';
+    if length(wobs)>0 then
+      wobs:=wobs+';';
+    wObs:=wObs+wContingencia;
+
     vTemp := TStringList.Create;
     try
-      for i:=0  to ObsCont.Count-1 do
+      if (trim(wObs) <> '') then
       begin
-        with ObsCont.Items[i] do
-          vTemp.Add(XCampo+': '+XTexto);
-      end;
-
-      if ((trim(InfCpl) <> '') or
-          (trim(vTemp.Text) <> '')) then
-      begin
-         Campos := explode(';',InfCpl);
+         Campos := explode(';',wObs);
          for indexCampo:=0 to Length(Campos)-1 do
             vTemp.Add(Campos[indexCampo]);
+         wLinhasObs:=TotalObS(vTemp.Text);
          TmpStr := vTemp.Text;
          {$IFDEF VER200} //Delphi2009
             Size := Length(TmpStr) * 2;
@@ -1039,80 +1101,14 @@ begin
          BufferInfCpl:=#0;
       end;
       Connection.WriteBlobData(BufferInfCpl^, Size);
+      Connection.WriteIntData('', wLinhasObs);
     finally
       vTemp.Free;
     end;
   end;
-
-  if ((FNFe.Ide.tpEmis=teContingencia) or
-      (FNFe.Ide.tpEmis=teFSDA)) then
-     Connection.WriteStrData('','DANFE EM CONTINGÊNCIA, IMPRESSO EM DECORRÊNCIA DE PROBLEMAS TÉCNICOS')
-  else if (FNFe.Ide.tpEmis=teDPEC) then
-     Connection.WriteStrData('','DANFE IMPRESSO EM CONTINGÊNCIA - DPEC REGULARMENTE RECEBIDA PELA RECEITA FEDERAL DO BRASIL')
-  else
-     Connection.WriteStrData('','');
 end;
 
 procedure TdmACBrNFeRave.CustomInformacoesAdicionaisCXNOpen(
-  Connection: TRvCustomConnection);
-begin
-  Connection.DataRows := 1;
-end;
-
-procedure TdmACBrNFeRave.CustomObservacaoFiscoCXNGetCols(
-  Connection: TRvCustomConnection);
-begin
-  Connection.WriteField('OBSF', dtMemo,5000,'','');
-end;
-
-procedure TdmACBrNFeRave.CustomObservacaoFiscoCXNGetRow(
-  Connection: TRvCustomConnection);
-var
-  i: Integer;
-  vTemp: TStringList;
-  IndexCampo:Integer;
-  Campos: ArrOfStr;
-  BufferInfAdFisco: PAnsiChar;
-  size: integer;
-  TmpStr: String;
-begin
-  with FNFe.InfAdic do
-  begin
-    vTemp := TStringList.Create;
-    try
-      for i:=0  to ObsFisco.Count-1 do
-      begin
-        with ObsFisco.Items[i] do
-          vTemp.Add(XCampo+': '+XTexto);
-      end;
-
-      if ((trim(InfAdFisco) <> '') or
-          (trim(vTemp.Text) <> '')) then
-      begin
-         Campos := explode(';',InfAdFisco);
-         for indexCampo:=0 to Length(Campos)-1 do
-            vTemp.Add(Campos[indexCampo]);
-         TmpStr := vTemp.Text;
-         {$IFDEF VER200} //Delphi2009
-            Size := Length(TmpStr) * 2;
-         {$ELSE}
-            Size := Length(TmpStr);
-         {$ENDIF}
-         BufferInfAdFisco:=PAnsiChar(TmpStr);
-      end
-      else
-      begin
-         Size:=0;
-         BufferInfAdFisco:=#0;
-      end;
-      Connection.WriteBlobData(BufferInfAdFisco^, Size);
-    finally
-      vTemp.Free;
-    end;
-  end;
-end;
-
-procedure TdmACBrNFeRave.CustomObservacaoFiscoCXNOpen(
   Connection: TRvCustomConnection);
 begin
   Connection.DataRows := 1;

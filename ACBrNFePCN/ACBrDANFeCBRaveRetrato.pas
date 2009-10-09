@@ -746,22 +746,25 @@ begin
   end;
 end;
 
-function ImprimirDadosAdicionais(PosX,PosY: Double): Double;
-var aHeigth:Double;
-    memo, memo2:TMemoBuf;
-    i: integer;
+function ImprimirDadosAdicionais(PosX,PosY,aHeigth: Double): Double;
+var wInfCpl, YFim:Double;
+    memo2:TMemoBuf;
+    qLin, i: integer;
     wTemp: string;
     wTempX: double;
 begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
-     aHeigth:=32;
      PosY:=PosY-aHeigth-4;
      TituloDoBloco(PosX,PosY,'DADOS ADICIONAIS');
-     Box([],PosX,YPos,124,aHeigth,'Informações Complementares');
-     Box([fsLeft],XPos,YPos,70,aHeigth,'Reservado ao Fisco','',taLeftJustify,True);
+     YFim:=YPos+aHeigth;
+     wInfCpl:=124;
+     if FPageNum>1 then
+        wInfCpl:=FLastX-XPos;
+     Box([],PosX,YPos,wInfCpl,aHeigth,'Informações Complementares');
+     if FPageNum=1 then
+        Box([fsLeft],XPos,YPos,70,aHeigth,'Reservado ao Fisco','',taLeftJustify,True);
      SetFont(FontNameUsed,FontSizeInfComplementares);
-     Memo:=TMemoBuf.Create;
      Memo2:=TMemoBuf.Create;
      try
        //informacoes complementares
@@ -769,30 +772,27 @@ begin
        NewLine;
        NewLine;
        wTempX:=PosX;
-       Memo.PrintStart:=PosX+1;
-       Memo.PrintEnd:=PosX+122;
-       Memo.NoNewLine:=True;
-       wtemp:='';
-       for i:=0  to InfAdic.ObsCont.Count-1 do
-       begin
-         with InfAdic.ObsCont.Items[i] do
-           wTemp:=wtemp+XCampo+': '+XTexto;
-         wtemp:=wtemp+';';
-       end;
-       memo.Text:=StringReplace(wtemp+InfAdic.InfCpl,';',#13,[rfReplaceAll]);
-       PrintMemo(Memo,0,false);
+
+       FMemoInfCpl.BaseReport:=BaseReport;
+       FMemoInfCpl.PrintStart:=PosX+1;
+       FMemoInfCpl.PrintEnd:=PosX+wInfCpl-2;
+       FMemoInfCpl.NoNewLine:=True;
+       qLin:=Trunc((YFim-YPos)/GetFontHeigh)-1;
+       FMemoInfCpl.PrintLines(qLin,False);
+
 
        //informacoes fisco
-       GotoXY(wTempX,PosY+4);
-       NewLine;
-       NewLine;
-       Memo2.PrintStart:=PosX+125;
-       Memo2.PrintEnd:=PosX+125+70;
-       Memo2.NoNewLine:=True;
-       memo2.Text:=StringReplace(InfAdic.infAdFisco,';',#13,[rfReplaceAll]);
-       PrintMemo(Memo2,0,false);
+       if FPageNum=1 then begin
+          GotoXY(wTempX,PosY+4);
+          NewLine;
+          NewLine;
+          Memo2.PrintStart:=PosX+125;
+          Memo2.PrintEnd:=PosX+125+70;
+          Memo2.NoNewLine:=True;
+          memo2.Text:=StringReplace(InfAdic.infAdFisco,';',#13,[rfReplaceAll]);
+          PrintMemo(Memo2,0,false);
+       end;
      finally
-       Memo.Free;
        Memo2.Free;
      end;
      Result:=PosY;
@@ -930,18 +930,25 @@ begin
        YY:=ImprimirCalculoImposto(Result,YY);
        YY:=ImprimirTransportadorVolumes(Result,YY);
        FLastItens:=ImprimirRodape(Result);
-       FLastItens:=ImprimirDadosAdicionais(Result,FLastItens);
+       FLastItens:=ImprimirDadosAdicionais(Result,FLastItens,32);
        FLastItens:=ImprimirCalculoISSQN(Result,FLastItens);
      end
-    else
+    else begin
        FLastItens:=ImprimirRodape(Result);
+       if (not IsPrintAllInfCpl) then
+          if not IsPrintAllProd then
+             FLastItens:=ImprimirDadosAdicionais(Result,FLastItens,32)
+            else
+             FLastItens:=ImprimirDadosAdicionais(Result,FLastItens,FLastItens-YY-4);
+    end;
 
-    PrepararItens(Result,YY,FLastItens);
+    if not IsPrintAllProd then
+       PrepararItens(Result,YY,FLastItens);
   end;
 end;
 
 procedure ImprimirItens(PosX:Double);
-var QtdeMin,i,j:Integer;
+var QtdeMin,j:Integer;
     aDescProduto, vEnd:String;
     Memo:TMemoBuf;
     aFontHeigth:Double;
@@ -949,9 +956,9 @@ begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
      aFontHeigth:=GetFontHeigh;
-     for i:=0 to Det.Count-1 do
+     while FDetIndex<Det.Count do
       begin
-        with Det.Items[i] do
+        with Det.Items[FDetIndex] do
          begin
           aDescProduto:=Trim(Prod.XProd);
 
@@ -999,11 +1006,10 @@ begin
           //e caso aconteça, cria uma nova página
           if (YPos+(aFontHeigth*QtdeMin))>FLastItens then
            begin
-             NewPage;
-             MontarPagina;
+             Break;
            end
            else
-            if i>0 then
+            if FDetIndex>0 then
              begin
                MoveTo(PosX,YPos+0.1-aFontHeigth);
                LineTo(FLastX,YPos+0.1-aFontHeigth);
@@ -1053,6 +1059,7 @@ begin
           finally
             Memo.Free;
           end;
+          Inc(FDetIndex);
           NewLine;
         end;
      end;
@@ -1060,8 +1067,10 @@ begin
 end;
 
 procedure ImprimirRetrato(aRaveSystem:TDANFeRave);
-var
-   wtemp: double;
+var wtemp: double;
+    wInfcpl:String;
+    i:Integer;
+    bInicio:boolean;
 begin
   //tamanho padrao das colunas
   ColsWidth[1]:=15;
@@ -1093,9 +1102,28 @@ begin
       ColsWidth[1]:=ColsWidth[1]-wtemp;
       ColsWidth[2]:=ColsWidth[2]+wtemp;
     end;
+
+    FDetIndex:=0;
+
+    wInfcpl:='';
+    for i:=0  to InfAdic.ObsCont.Count-1 do
+    begin
+      with InfAdic.ObsCont.Items[i] do
+        wInfcpl:=wInfcpl+XCampo+': '+XTexto;
+      wInfcpl:=wInfcpl+';';
+    end;
+    FMemoInfCpl.Text:=StringReplace(wInfcpl+InfAdic.InfCpl,';',#13,[rfReplaceAll]);
+
+    bInicio:=True;
+    while not ((IsPrintAllProd) and (IsPrintAllInfCpl)) do begin
+      if not bInicio then
+         NewPage;
+      ImprimirItens(MontarPagina);
+      bInicio:=False;
+    end;
+
   end;
 
-  ImprimirItens(MontarPagina);
 end;
 
 end.

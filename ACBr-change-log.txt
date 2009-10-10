@@ -95,6 +95,11 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Versão 0.8.8b  10/10/09
+-- ACBrECFEpson --
+[*]    Modificação na rotina VerificaFimLeitura tratar corretamente Respostas 
+       Fora da Sequencia, e Respostas com o CheckSum inválido.
+
 Versão 0.8.8b  08/10/09
 -- ACBr --
 [*]    Todas as Saidas de Mensagem do ACBr, através de Exceptions ou MessageDlg

@@ -993,6 +993,7 @@ begin
        Resposta fica gravada na váriavel "fpRespostaComando" }
      LeResposta ;
 
+{
      Try
         EpsonResposta.Resposta := fpRespostaComando ;
         if EpsonResposta.Seq <> EpsonComando.Seq then
@@ -1010,6 +1011,11 @@ begin
            ErroMsg := E.Message ;
         end ;
      end ;
+}
+
+     ErroMsg := EpsonResposta.DescRetorno ;
+     if ErroMsg <> '' then
+        ErroMsg := 'Erro: '+ EpsonResposta.Retorno+ ' - '+ErroMsg  ;
 
      if ErroMsg <> '' then
       begin
@@ -1076,6 +1082,32 @@ begin
      Retorno     := Copy(Retorno, 8, Length(Retorno));
      TempoLimite := IncSecond(now, TimeOut);
      Result      := False ;
+  end ;
+
+  if Result then
+  begin
+     try
+        { Esta atribuição, Já verifica o ChkSum, em csaso de erro gera exception }
+        EpsonResposta.Resposta := Retorno ;
+        fpDevice.Serial.SendByte(ACK);
+
+        if EpsonResposta.Seq <> EpsonComando.Seq then  // Despreza esse Bloco
+        begin
+           GravaLog( 'Sequencia de Resposta ('+IntToStr(EpsonResposta.Seq)+')'+
+                     'diferente da enviada ('+IntToStr(EpsonComando.Seq)+
+                     '). Bloco Desprezado: '+Retorno, True) ;
+           Result  := False ;
+           Retorno := '' ;
+        end;
+     except
+        on E : Exception do
+        begin
+           fpDevice.Serial.SendByte(NACK);
+           GravaLog( 'Pacote Inválido, NACK enviado: '+Retorno, True ) ;
+           Result  := False ;
+           Retorno := '' ;
+        end ;
+     end ;
   end ;
 end;
 

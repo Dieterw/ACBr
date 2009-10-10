@@ -4755,9 +4755,21 @@ object Form1: TForm1
           Caption = 'IE'
           OnClick = IE1Click
         end
+        object IM1: TMenuItem
+          Caption = 'IM'
+          OnClick = IM1Click
+        end
         object PAF1: TMenuItem
           Caption = 'PAF'
           OnClick = PAF1Click
+        end
+        object UsurioAtual1: TMenuItem
+          Caption = 'Usu'#225'rio Atual'
+          OnClick = UsurioAtual1Click
+        end
+        object Cliche1: TMenuItem
+          Caption = 'Cliche'
+          OnClick = Cliche1Click
         end
       end
       object N19: TMenuItem

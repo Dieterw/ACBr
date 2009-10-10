@@ -224,6 +224,9 @@ TACBrECFDaruma = class( TACBrECFClass )
 
     function GetCNPJ: String; override ;
     function GetIE: String; override ;
+    function GetIM: String; override ;  //IMS 09/10/2009
+    function GetCliche: String; override ;  //IMS 09/10/2009
+    function GetUsuarioAtual: String; override ;  //IMS 09/10/2009
     function GetPAF: String; override ;
     function GetDataMovimento: TDateTime; override ;
 
@@ -956,6 +959,7 @@ function TACBrECFDaruma.GetNumVersao: String ;
 Var RetCmd    : AnsiString ;
     wRetentar : Boolean ;
     wTimeOut  : Integer ;
+    SubModelo : String ;
 begin
   if fsNumVersao = '' then
   begin
@@ -970,24 +974,52 @@ begin
         RetCmd := copy(RetCmd,6,6) ;
 
         if RetCmd = '010053' then
-          fsModeloDaruma  :=  fs600
+         begin
+          fsModeloDaruma  :=  fs600 ;
+          SubModelo       :=  'FS-600' ;
+         end
         else if RetCmd = '010054' then
-          fsModeloDaruma  :=  fs2100T
+         begin
+          fsModeloDaruma  :=  fs2100T ;
+          SubModelo       :=  'FS-2100T' ;
+         end
         else if RetCmd = '010058' then
-          fsModeloDaruma  :=  fs600USB
+         begin
+          fsModeloDaruma  :=  fs600USB ;
+          SubModelo       :=  'FS-600 USB' ;
+         end
         else if RetCmd = '010059' then
-          fsModeloDaruma  :=  fs700L
+         begin
+          fsModeloDaruma  :=  fs700L ;
+          SubModelo       :=  'FS-700L' ;
+         end
         else if RetCmd = '010060' then
-          fsModeloDaruma  :=  fs700H
+         begin
+          fsModeloDaruma  :=  fs700H ;
+          SubModelo       :=  'FS-700H' ;
+         end
         else if RetCmd = '010061' then
-          fsModeloDaruma  :=  fs700M
+         begin
+          fsModeloDaruma  :=  fs700M ;
+          SubModelo       :=  'FS-700M' ;
+         end
         else if RetCmd = '010063' then
-          fsModeloDaruma  :=  MACH1
+         begin
+          fsModeloDaruma  :=  MACH1 ;
+          SubModelo       :=  'FS-MACH1' ;
+         end
         else if RetCmd = '010064' then
-          fsModeloDaruma  :=  MACH2
+         begin
+          fsModeloDaruma  :=  MACH2 ;
+          SubModelo       :=  'FS-MACH2' ;
+         end
         else if RetCmd = '010062' then
+         begin
           fsModeloDaruma  :=  MACH3;
+          SubModelo       :=  'FS-MACH3' ;
+         end ;
 
+        fpModeloStr := 'Daruma '+SubModelo ;
         fpMFD       := True ;
         fpTermica   := True ;
 
@@ -1020,26 +1052,32 @@ begin
         TimeOut := wTimeOut;
       end ;
 
-        if RetCmd = ':10043' then
-        begin
-          fsNumVersao    :=  '345';
-          fsModeloDaruma :=  fs345;
-        end
-        else if RetCmd = ':10033' then
-        begin
-          fsNumVersao    :=  '315';
-          fsModeloDaruma :=  fs315;
-        end
-        else if retcmd=':10004' then
-        begin
-          fsNumVersao    :=  '2000';
-          fsModeloDaruma :=  fs2000;
-        end
-        else
-        begin
-          fsNumVersao    :=  copy(RetCmd,2,length(RetCmd)-2) ;
-          fsModeloDaruma :=  fsIndefinido;
-        end;
+      if RetCmd = ':10043' then
+       begin
+         fsNumVersao    :=  '345';
+         fsModeloDaruma :=  fs345;
+         SubModelo      :=  'FS-345'
+       end
+      else if RetCmd = ':10033' then
+       begin
+         fsNumVersao    :=  '315';
+         fsModeloDaruma :=  fs315;
+         SubModelo      :=  'FS-315'
+       end
+      else if retcmd=':10004' then
+       begin
+         fsNumVersao    :=  '2000';
+         fsModeloDaruma :=  fs2000;
+         SubModelo      :=  'FS-2000'
+       end
+      else
+       begin
+         fsNumVersao    :=  copy(RetCmd,2,length(RetCmd)-2) ;
+         fsModeloDaruma :=  fsIndefinido;
+         SubModelo      := '' ;
+       end;
+
+      fpModeloStr := 'Daruma '+SubModelo
     end ;
   end ;
 
@@ -1372,7 +1410,7 @@ begin
 end;
 
 procedure TACBrECFDaruma.MudaArredondamento(Arredondar: Boolean);
- Var FlagArredondar : Char ; 
+ Var FlagArredondar : Char ;
 begin
   If Arredondar then FlagArredondar := '1' else FlagArredondar := '0' ;
   EnviaComando( ESC + #228 + 'XXXX' + FlagArredondar + StringOfChar('X',35) ) ;
@@ -3202,6 +3240,69 @@ begin
   end;
 end;
 
+//IMS 09/10/2009
+function TACBrECFDaruma.GetIM: String;
+var
+   RetCmd: AnsiString;
+begin
+  Result := '';
+
+  if fpMFD then
+    Result := copy( RetornaInfoECF('092'), 06, 20)
+  else if fsNumVersao = '2000' then
+  begin
+    //Falta Implementar
+  end
+  else if StrToInt(fsNumVersao) >= 345 then
+  begin
+    RetCmd := EnviaComando( ESC + #251 + '00' );
+    if LeftStr(RetCmd, 1) = ':' then
+      Result := copy(RetCmd, 56, 15);
+  end;
+end;
+
+function TACBrECFDaruma.GetCliche: String;
+var
+   RetCmd: AnsiString;
+begin
+  Result := '';
+
+  if fpMFD then
+    Result := Trim(RetornaInfoECF('132'))
+  else if fsNumVersao = '2000' then
+  begin
+    //Falta Implementar
+  end
+  else if StrToInt(fsNumVersao) >= 345 then
+  begin
+    RetCmd := EnviaComando( ESC + #232 );
+    if LeftStr(RetCmd, 1) = ':' then
+      Result := copy(RetCmd, 02, 144);
+  end;
+end;
+
+function TACBrECFDaruma.GetUsuarioAtual: String;
+var
+   RetCmd: AnsiString;
+begin
+  Result := '';
+
+  if fpMFD then
+    Result := Trim(RetornaInfoECF('094'))
+  else if fsNumVersao = '2000' then
+  begin
+    //Falta Implementar
+  end
+  else if StrToInt(fsNumVersao) >= 345 then
+  begin
+    RetCmd := EnviaComando( ESC + #251 );
+    if LeftStr(RetCmd, 1) = ':' then
+      Result := copy(RetCmd, 02, 02);
+  end;
+end;
+//IMS
+
+
 function TACBrECFDaruma.GetDataMovimento: TDateTime;
  var
     RetCmd: AnsiString;
@@ -3565,7 +3666,7 @@ begin
          raise Exception.Create( ACBrStr('Versão do Firmeware da Impressora não suporta este comando ! ') );
    end
    else
-      raise Exception.Create( ACBrStr('A  Impressora não suporta este comando ! ') );
+      raise Exception.Create( ACBrStr('A Impressora não suporta este comando ! ') );
 end;
 
 

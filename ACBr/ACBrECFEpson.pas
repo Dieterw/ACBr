@@ -130,10 +130,9 @@ TACBrECFEpson = class( TACBrECFClass )
     fsNumLoja   : String ;
     fsCNPJ      : String ;
     fsIE        : String ;
-//IMS
-    fsIM        : String ;
-    fsCliche    : String ;    
-//IMS    
+    fsIM        : String ;  //IMS 28/09/2009
+    fsCliche    : String ;  //IMS 28/09/2009
+    fsUsuarioAtual       : String ;  //IMS 09/10/2009
     fsRet0906   : AnsiString ;
     fsRet0907   : AnsiString ;
     fsEpsonComando: TACBrECFEpsonComando;
@@ -172,10 +171,9 @@ TACBrECFEpson = class( TACBrECFClass )
 
     function GetCNPJ: String; override ;
     function GetIE: String; override ;
-//IMS
-    function GetIM: String; override ;
-    function GetCliche: String; override ;    
-//IMS    
+    function GetIM: String; override ;  //IMS 28/09/2009
+    function GetCliche: String; override ;  //IMS 28/09/2009
+    function GetUsuarioAtual: String; override ;  //IMS 09/10/2009
     function GetPAF: String; override ;
     function GetDataMovimento: TDateTime; override ;
     function GetGrandeTotal: Double; override ;
@@ -839,10 +837,9 @@ begin
   fsNumLoja   := '' ;
   fsCNPJ      := '' ;
   fsIE        := '' ;
-//IMS
-  fsIM        := '' ;
-  fsCliche    := '' ;  
-//IMS  
+  fsIM        := '' ;  //IMS 28/09/2009
+  fsCliche    := '' ;  //IMS 28/09/2009
+  fsUsuarioAtual    := '' ;  //IMS 09/10/2009
   fpModeloStr := 'Epson' ;
   fpMFD       := True ;
   fpTermica   := True ;
@@ -877,10 +874,9 @@ begin
   fsNumLoja   := '' ;
   fsCNPJ      := '' ;
   fsIE        := '' ;
-//IMS
-  fsIM        := '' ;
-  fsCliche    := '' ;  
-//IMS  
+  fsIM        := '' ;  //IMS 28/09/2009
+  fsCliche    := '' ;  //IMS 28/09/2009
+  fsUsuarioAtual    := '' ;  //IMS 09/10/2009
   fsRet0906   := '' ;
   fsRet0907   := '' ;
 
@@ -1185,10 +1181,9 @@ begin
 
      fsCNPJ    := Trim(EpsonResposta.Params[5]) ;
      fsIE      := Trim(EpsonResposta.Params[6]) ;
-//IMS
-     fsCliche  := Trim(EpsonResposta.Params[0]) ;
-     fsIM      := Trim(EpsonResposta.Params[7]) ;
-//IMS     
+     fsCliche  := Trim(EpsonResposta.Params[0]) ;  //IMS 28/09/2009
+     fsIM      := Trim(EpsonResposta.Params[7]) ;  //IMS 28/09/2009
+     fsUsuarioAtual    := Trim(EpsonResposta.Params[11]) ;  //IMS 09/10/2009
      fsNumECF  := EpsonResposta.Params[8] ;
      fsNumLoja := OnlyNumber( EpsonResposta.Params[9] ) ;
   end ;
@@ -2189,7 +2184,7 @@ begin
   Result := fsIE ;
 end;
 
-//IMS
+//IMS 28/09/2009
 function TACBrECFEpson.GetIM: String;
 begin
   if fsIM = '' then
@@ -2204,6 +2199,14 @@ begin
      GetNumLoja ;
 
   Result := fsCliche ;
+end;
+//IMS 09/10/2009
+function TACBrECFEpson.GetUsuarioAtual: String;
+begin
+  if fsUsuarioAtual = '' then
+     GetNumLoja ;
+
+  Result := fsUsuarioAtual ;
 end;
 //IMS
 

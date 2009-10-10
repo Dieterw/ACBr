@@ -109,7 +109,7 @@
 unit ACBrECFBematech ;
 
 interface
-uses ACBrECFClass, ACBrDevice, ACBrBase, ACBrUtil, ACBrCHQClass,
+uses ACBrECFClass, ACBrDevice, ACBrUtil, ACBrCHQClass,
      Classes ;
 
 const ErrosST1 : array[0..7] of string =
@@ -159,9 +159,8 @@ TACBrECFBematech = class( TACBrECFClass )
     fsModelosCheque : TACBrCHQModelos ;
 
     Function PreparaCmd( cmd : AnsiString ) : AnsiString ;
-//IMS
-    Function DocumentosToStr(Documentos : TACBrECFTipoDocumentoSet) : String ;
-//IMS    
+    Function DocumentosToStr(Documentos : TACBrECFTipoDocumentoSet) : String ;  //IMS 28/09/2009
+    
  protected
     function GetDataHora: TDateTime; override ;
     function GetNumCupom: String; override ;
@@ -181,10 +180,9 @@ TACBrECFBematech = class( TACBrECFClass )
 
     function GetCNPJ: String; override ;
     function GetIE: String; override ;
-//IMS
-    function GetIM: String; override ;
-    function GetCliche: String; override ;    
-//IMS
+    function GetIM: String; override ;  //IMS 28/09/2009
+    function GetCliche: String; override ;  //IMS 28/09/2009
+    function GetUsuarioAtual: String; override ;  //IMS 09/10/2009
     function GetPAF: String; override ;
     function GetDataMovimento: TDateTime; override ;
     function GetGrandeTotal: Double; override ;
@@ -279,7 +277,7 @@ TACBrECFBematech = class( TACBrECFClass )
        var Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
     Procedure LeituraMemoriaFiscalSerial( ReducaoInicial, ReducaoFinal : Integer;
        var Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
-//IMS
+//IMS 28/09/2009
     Procedure LeituraMFDSerial(DataInicial, DataFinal : TDateTime;
        var Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
     Procedure LeituraMFDSerial( COOInicial, COOFinal : Integer;
@@ -1840,36 +1838,10 @@ begin
                                     FormatDateTime('ddmmyy',DataFinal)  +Flag ,Espera);
 end;
 
-//IMS
+//IMS 28/09/2009
 Function TACBrECFBematech.DocumentosToStr(Documentos : TACBrECFTipoDocumentoSet) : String ;
 begin
-{  if (Documentos - [docTodos]) = [] then
-     Result := StringOfChar('1',18)
-  else
-   begin
-     Result := '' ;
-     Result := Result + IfThen(docRZ              in Documentos, '1', '0');
-     Result := Result + IfThen(docLX              in Documentos, '1', '0');
-     Result := Result + IfThen(docCF              in Documentos, '1', '0');
-     Result := Result + IfThen(docCFBP            in Documentos, '1', '0');
-     Result := Result + IfThen(docCupomAdicional  in Documentos, '1', '0');
-     Result := Result + IfThen(docCFCancelamento  in Documentos, '1', '0');
-     Result := Result + IfThen(docCCD             in Documentos, '1', '0');
-     Result := Result + IfThen(docAdicionalCCD    in Documentos, '1', '0');
-     Result := Result + IfThen(docSegViaCCD       in Documentos, '1', '0');
-     Result := Result + IfThen(docReimpressaoCCD  in Documentos, '1', '0');
-     Result := Result + IfThen(docEstornoCCD      in Documentos, '1', '0');
-     Result := Result + IfThen(docCNF             in Documentos, '1', '0');
-     Result := Result + IfThen(docCNFCancelamento in Documentos, '1', '0');
-     Result := Result + IfThen(docSangria         in Documentos, '1', '0');
-     Result := Result + IfThen(docSuprimento      in Documentos, '1', '0');
-     Result := Result + IfThen(docEstornoPagto    in Documentos, '1', '0');
-     Result := Result + IfThen(docRG              in Documentos, '1', '0');
-     Result := Result + IfThen(docLMF             in Documentos, '1', '0');
-   end ;
 
-  Result := PadL( Result, 31, '1') ;
-}
 end ;
 
 procedure TACBrECFBematech.LeituraMFDSerial(COOInicial, COOFinal: Integer;
@@ -1928,7 +1900,7 @@ begin
      Result  := copy(Trim( RetornaInfoECF( '02' ) ),19,18) ;
 end;
 
-//IMS
+//IMS 28/09/2009
 function TACBrECFBematech.GetIM: String;
 begin
   if fs25MFD then
@@ -1940,6 +1912,12 @@ end;
 function TACBrECFBematech.GetCliche: String;
 begin
      Result  := RetornaInfoECF( '13' ) ;
+end;
+
+//IMS 09/10/2009
+function TACBrECFBematech.GetUsuarioAtual: String;
+begin
+     Result  := RetornaInfoECF( '11' ) ;
 end;
 
 //IMS

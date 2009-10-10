@@ -96,10 +96,25 @@ Símbolo : Significado
 
 
 Versão 0.8.8b  10/10/09
+-- ACBrECF --
+[+]    Adicionada a propriedade ACBrECF.UsuarioAtual : String   ( por Ivan Moreira )
+       Retorma so usuario atual da Memória Fiscal 
+	   Implementada para os Modelos: Sweda, Bematech, Epson, FiscNet e Daruma;
+
 -- ACBrECFEpson --
-[*]    Modificação na rotina VerificaFimLeitura tratar corretamente Respostas 
+[*]    Modificação na rotina VerificaFimLeitura tratar corretamente Respostas (Daniel Simões)
        Fora da Sequencia, e Respostas com o CheckSum inválido.
 
+-- ACBrECFDaruma --
+[+]    Rotinas: ECF.IM = Retorna a Inscrição Municipal; ECF.Cliche = Retorna o Cabeçalho; 
+	   Melhoria: ECF.ModeloStr = Esta retornado 'Daruma "Modelo FS-600" ' em vez só de 'Daruma'.
+	   ( por Ivan Moreira )
+
+-- ACBrECFSweda -- 
+[+]    Implementada as rotinas: ECF.LeituraMFDSerial(dtInicial,dtFinal) = Retorna MFD por Data;
+                                ECF.LeituraMFDSerial(COOInicial,COOFinal) = Retorna MFD por COO;
+								( por Ivan Moreira )
+ 	   
 Versão 0.8.8b  08/10/09
 -- ACBr --
 [*]    Todas as Saidas de Mensagem do ACBr, através de Exceptions ou MessageDlg

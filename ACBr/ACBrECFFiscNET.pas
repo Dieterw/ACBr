@@ -146,10 +146,9 @@ TACBrECFFiscNET = class( TACBrECFClass )
 
     function GetCNPJ: String; override ;
     function GetIE: String; override ;
-//IMS
-    function GetIM: String; override ;
-    function GetCliche: String; override ;
-//IMS    
+    function GetIM: String; override ;  //IMS 28/09/2009
+    function GetCliche: String; override ;  //IMS 28/09/2009
+    function GetUsuarioAtual: String; override ;  //IMS 09/10/2009
     function GetDataMovimento: TDateTime; override ;
     function GetGrandeTotal: Double; override ;
     function GetNumCRO: String; override ;
@@ -1910,7 +1909,7 @@ begin
   Result := FiscNETResposta.Params.Values['ValorTexto'] ;
 end;
 
-//IMS
+//IMS 28/09/2009
 function TACBrECFFiscNET.GetIM: String;
 begin
   FiscNETComando.NomeComando := 'LeTexto' ;
@@ -1924,6 +1923,15 @@ function TACBrECFFiscNET.GetCliche: String;
 begin
   FiscNETComando.NomeComando := 'LeTexto' ;
   FiscNETComando.AddParamString('NomeTexto','Cliche') ;
+  EnviaComando ;
+
+  Result := FiscNETResposta.Params.Values['ValorTexto'] ;
+end;
+//IMS 09/10/2009
+function TACBrECFFiscNET.GetUsuarioAtual: String;
+begin
+  FiscNETComando.NomeComando := 'LeTexto' ;
+  FiscNETComando.AddParamString('NomeTexto','ContadorProprietarios') ;
   EnviaComando ;
 
   Result := FiscNETResposta.Params.Values['ValorTexto'] ;

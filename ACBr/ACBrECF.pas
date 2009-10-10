@@ -282,10 +282,9 @@ TACBrECF = class( TACBrComponent )
     procedure SetComandoLOGClass(const Value: AnsiString);
     function GetCNPJClass: String;
     function GetIEClass: String;
-//IMS
-    function GetIMClass: String;
-    function GetClicheClass: String;
-//IMS
+    function GetIMClass: String;  //IMS 28/09/2009
+    function GetClicheClass: String;  //IMS 28/09/2009
+    function GetUsuarioAtualClass: String;  //IMS 09/10/2009
     function GetPAFClass: String;
     function GetDadosReducaoZ: AnsiString;
     function GetDadosUltimaReducaoZ: AnsiString;
@@ -355,10 +354,9 @@ TACBrECF = class( TACBrComponent )
     Property DataMovimento      : TDateTime  read GetDataMovimentoClass ;
     Property CNPJ               : String     read GetCNPJClass ;
     Property IE                 : String     read GetIEClass ;
-//IMS
-    Property IM                 : String     read GetIMClass ;
-    Property Cliche             : String     read GetClicheClass ;    
-//IMS
+    Property IM                 : String     read GetIMClass ;  //IMS 28/09/2009
+    Property Cliche             : String     read GetClicheClass ;  //IMS 28/09/2009
+    Property UsuarioAtual       : String     read GetUsuarioAtualClass ;  //IMS 09/10/2009
     Property PAF                : String     read GetPAFClass ;
     Property NumCRZ             : String     read GetNumCRZClass ;
     Property NumCRO             : String     read GetNumCROClass ;
@@ -1425,7 +1423,7 @@ begin
   Result := fsECF.IE ;
 end;
 
-//IMS
+//IMS 28/09/2009
 function TACBrECF.GetIMClass: String;
 begin
   ComandoLOG := 'IM' ;
@@ -1435,6 +1433,12 @@ function TACBrECF.GetClicheClass: String;
 begin
   ComandoLOG := 'Cliche' ;
   Result := fsECF.Cliche ;
+end;
+//IMS 09/10/2009
+function TACBrECF.GetUsuarioAtualClass: String;
+begin
+  ComandoLOG := 'UsuarioAtual' ;
+  Result := fsECF.UsuarioAtual ;
 end;
 //IMS
 

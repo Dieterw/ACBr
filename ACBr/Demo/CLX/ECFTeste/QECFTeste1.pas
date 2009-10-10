@@ -246,6 +246,9 @@ type
     LeituraXSerial1: TMenuItem;
     seBandWidth: TSpinEdit;
     Label22: TLabel;
+    UsurioAtual1: TMenuItem;
+    IM1: TMenuItem;
+    Cliche1: TMenuItem;
     procedure cbxModeloChange(Sender: TObject);
     procedure Sair1Click(Sender: TObject);
     procedure bAtivarClick(Sender: TObject);
@@ -396,6 +399,9 @@ type
     procedure PAF1Click(Sender: TObject);
     procedure LeituraXSerial1Click(Sender: TObject);
     procedure seBandWidthChanged(Sender: TObject; NewValue: Integer);
+    procedure IM1Click(Sender: TObject);
+    procedure UsurioAtual1Click(Sender: TObject);
+    procedure Cliche1Click(Sender: TObject);
   private
     { Private declarations }
     Function Converte( cmd : String) : String;
@@ -2628,6 +2634,24 @@ end;
 procedure TForm1.seBandWidthChanged(Sender: TObject; NewValue: Integer);
 begin
   ACBrECF1.Device.MaxBandwidth := seBandWidth.Value ;
+end;
+
+procedure TForm1.IM1Click(Sender: TObject);
+begin
+  mResp.Lines.Add( 'IM: ('+ ACBrECF1.IM+')' );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.UsurioAtual1Click(Sender: TObject);
+begin
+  mResp.Lines.Add( 'UsuarioAtual: ('+ ACBrECF1.UsuarioAtual+')' );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.Cliche1Click(Sender: TObject);
+begin
+  mResp.Lines.Add( 'Cliche: ('+ ACBrECF1.Cliche+')' );
+  AtualizaMemos ;
 end;
 
 END.

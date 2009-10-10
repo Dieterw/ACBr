@@ -190,6 +190,7 @@ TACBrECFSweda = class( TACBrECFClass )
        TimeOut : Integer = 2000 ) ;
     Procedure Purge(Id: AnsiString) ;
     procedure LeBufferSerial(Cmd : String; AStringList: TStringList);
+    Function DocumentosToStr(Documentos : TACBrECFTipoDocumentoSet) : String ;  //IMS 09/10/2009
 
  protected
     function GetDataHora: TDateTime; override ;
@@ -214,10 +215,9 @@ TACBrECFSweda = class( TACBrECFClass )
 
     function GetCNPJ: String; override ;
     function GetIE: String; override ;
-//IMS
-    function GetIM: String; override ;
-    function GetCliche: String; override ;    
-//IMS    
+    function GetIM: String; override ;  //IMS 28/09/2009
+    function GetCliche: String; override ;  //IMS 28/09/2009
+    function GetUsuarioAtual: String; override ;  //IMS 09/10/2009
     function GetDataMovimento: TDateTime; override ;
     function GetGrandeTotal: Double; override ;
     function GetNumCRZ: String; override ;
@@ -300,6 +300,13 @@ TACBrECFSweda = class( TACBrECFClass )
        var Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
     Procedure LeituraMemoriaFiscalSerial( ReducaoInicial, ReducaoFinal : Integer;
        var Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
+//IMS 09/10/2009
+    Procedure LeituraMFDSerial(DataInicial, DataFinal : TDateTime;
+       var Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
+    Procedure LeituraMFDSerial( COOInicial, COOFinal : Integer;
+       var Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
+//IMS
+
     procedure IdentificaPAF(Linha1, Linha2: String); override ;
 
     Procedure AbreGaveta ; override ;
@@ -2386,7 +2393,7 @@ end;
 procedure TACBrECFSweda.LeituraMemoriaFiscal(ReducaoInicial,
    ReducaoFinal: Integer; Simplificada : Boolean);
  Var Espera : Integer ;
-     Flag   : String ;  
+     Flag   : String ;
 begin
   Espera := 180 ;
   Flag   := '' ;
@@ -2409,7 +2416,7 @@ end;
 procedure TACBrECFSweda.LeituraMemoriaFiscal(DataInicial, DataFinal: TDateTime;
    Simplificada : Boolean);
   Var Espera : Integer ;
-       Flag  : String ;  
+       Flag  : String ;
 begin
   Espera := 180 ;
   Flag   := '' ;
@@ -2450,7 +2457,7 @@ begin
   Flag := '' ;
   if fsVersaoSweda >= swdST then
      if Simplificada then
-        Flag := 'S' ;  
+        Flag := 'S' ;
 
   LeBufferSerial( '16' + FormatDateTime('ddmmyy',DataInicial)+
                          FormatDateTime('ddmmyy',DataFinal)  + '|' +
@@ -2463,6 +2470,40 @@ begin
   RetCmd := EnviaComando('23') ;
   Result := (copy( RetCmd, 5,1) = '0') ;
 end;
+
+//IMS 09/10/2009
+Function TACBrECFSweda.DocumentosToStr(Documentos : TACBrECFTipoDocumentoSet) : String ;
+begin
+
+end ;
+
+procedure TACBrECFSweda.LeituraMFDSerial(COOInicial, COOFinal: Integer;
+  var Linhas: TStringList; Documentos : TACBrECFTipoDocumentoSet);
+
+begin
+
+  if fsVersaoSweda >= swdST then
+
+  LeBufferSerial( '55' + IntToStrZero(COOInicial,6) +
+                         IntToStrZero(COOFinal  ,6) + '#', Linhas );
+  Sleep(300) ;
+
+end;
+
+procedure TACBrECFSweda.LeituraMFDSerial(DataInicial,
+  DataFinal: TDateTime; var Linhas: TStringList;
+  Documentos : TACBrECFTipoDocumentoSet);
+
+begin
+
+  if fsVersaoSweda >= swdST then
+
+  LeBufferSerial( '56' + FormatDateTime('ddmmyy',DataInicial)+
+                         FormatDateTime('ddmmyy',DataFinal)  + '#', Linhas );
+  Sleep(300) ;
+
+end;
+//IMS
 
 procedure TACBrECFSweda.CancelaImpressaoCheque;
 begin
@@ -2574,10 +2615,10 @@ function TACBrECFSweda.GetCNPJ: String;
 begin
   Result := '';
   I      := 0 ;
-  while (Trim(Result) = '') and (I < 5) do
+  while I < 5 do
   begin
      wretorno := EnviaComando('29'+ AnsiChar( chr(72+I) ));   // 72 = H em ASCII
-     if copy(wretorno,1,3) = '.+T' then
+     if (copy(wretorno,1,3) = '.+T') and (copy(wretorno,8,22) <> Space(22) ) then //IMS 10/10/2009
         Result := Copy(wretorno,8,22);
      I := I + 1 ;
   end ;
@@ -2590,16 +2631,16 @@ function TACBrECFSweda.GetIE: String;
 begin
   Result   := '';
   I      := 0 ;
-  while (Trim(Result) = '') and (I < 5) do
+  while I < 5 do
   begin
      wretorno := EnviaComando('29'+ AnsiChar( chr(72+I) ));   // 72 = H em ASCII
-     if copy(wretorno,1,3) = '.+T' then
+     if (copy(wretorno,1,3) = '.+T') and (copy(wretorno,8,22) <> Space(22) ) then   //IMS 10/10/2009
         Result := Copy(wretorno,30,21);
      I := I + 1 ;
   end ;
 end;
 
-//IMS
+//IMS 28/09/2009
 function TACBrECFSweda.GetIM: String;
  var
   wretorno: Ansistring;
@@ -2607,11 +2648,11 @@ function TACBrECFSweda.GetIM: String;
 begin
   Result   := '';
   I      := 0 ;
-  while (Trim(Result) = '') and (I < 5) do
+  while I < 5 do
   begin
      wretorno := EnviaComando('29'+ AnsiChar( chr(72+I) ));   // 72 = H em ASCII
-     if copy(wretorno,1,3) = '.+T' then
-        Result := Copy(wretorno,51,21);
+     if (copy(wretorno,1,3) = '.+T') and (copy(wretorno,8,22) <> Space(22) ) then   //IMS 10/10/2009
+        Result := Copy(wretorno,51,16);
      I := I + 1 ;
   end ;
 end;
@@ -2619,12 +2660,67 @@ end;
 function TACBrECFSweda.GetCliche: String;
  var
   wretorno: Ansistring;
+  Tipo1: String;
+  Tipo2: String;
+  Tipo3: String;
+
 begin
   Result   := '';
+  Tipo1    := '';
+  Tipo2    := '';
+  Tipo3    := '';
+
   begin
      wretorno := EnviaComando('29'+ '1');
      if copy(wretorno,1,3) = '.+T' then
-        Result := Copy(wretorno,12,40);
+        Tipo1 := Copy(wretorno,12,40) +
+                 AnsiChar( chr(13)) + AnsiChar( chr(10)) +   //IMS Força a Quebra de linha
+                 Copy(wretorno,53,40) +
+                 AnsiChar( chr(13)) + AnsiChar( chr(10)) ;
+
+     wretorno := EnviaComando('29'+ '2');
+     if copy(wretorno,1,3) = '.+T' then
+        Tipo2 := Copy(wretorno,09,40) +
+                 AnsiChar( chr(13)) + AnsiChar( chr(10)) +
+                 Copy(wretorno,50,40) +
+                 AnsiChar( chr(13)) + AnsiChar( chr(10)) ;
+
+     wretorno := EnviaComando('29'+ '3');
+     if copy(wretorno,1,3) = '.+T' then
+        Tipo3 := Copy(wretorno,9,40) ;
+
+     Result := Tipo1 + Tipo2 + Tipo3 ;
+
+  end ;
+end;
+
+//IMS 09/10/2009
+function TACBrECFSweda.GetUsuarioAtual: String;
+ var
+  wretorno: Ansistring;
+  I      : Integer ;
+  Flag   : String ;
+begin
+  Result := '';
+  Flag   := '';
+  I      := 0 ;
+  while I < 5 do
+  begin
+     wretorno := EnviaComando('29'+ AnsiChar( chr(72+I) ));   // 72 = H em ASCII
+     if (copy(wretorno,1,3) = '.+T') and (copy(wretorno,8,22) <> Space(22) ) then   //IMS 10/10/2009
+//      Flag := Copy(wretorno,8,22)
+        if copy(wretorno,7,1) = 'H' then
+           Result := '0001'
+        else if copy(wretorno,7,1) = 'I' then
+           Result := '0002'
+        else if copy(wretorno,7,1) = 'J' then
+           Result := '0003'
+        else if copy(wretorno,7,1) = 'K' then
+           Result := '0004'
+        else if copy(wretorno,7,1) = 'L' then
+           Result := '0005' ;
+
+     I := I + 1 ;
   end ;
 end;
 //IMS

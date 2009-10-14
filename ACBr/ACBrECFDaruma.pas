@@ -2641,7 +2641,7 @@ begin
 
   AguardaImpressao := True ;
   if fpMFD then
-    EnviaComando( FS + 'F' + #233 + IfThen(Simplificada, '3', '2') + IntToStrZero(ReducaoInicial,6)+
+    EnviaComando( FS + 'F' + #233 + IfThen(Simplificada, '2', '3') + IntToStrZero(ReducaoInicial,6)+  //IMS 12/10/2009
                      IntToStrZero(ReducaoFinal  ,6), Espera )
   else if fsNumVersao = '2000' then
     EnviaComando( ESC + #251 + Flag + IntToStrZero(ReducaoInicial,6)+
@@ -2663,7 +2663,7 @@ begin
 
   AguardaImpressao := True ;
   if fpMFD then
-    EnviaComando( FS + 'F' + #233 + IfThen(Simplificada, '3', '2') + FormatDateTime('ddmmyy',DataInicial) +
+    EnviaComando( FS + 'F' + #233 + IfThen(Simplificada, '2', '3') + FormatDateTime('ddmmyy',DataInicial) + //IMS 12/10/2009
                      FormatDateTime('ddmmyy',DataFinal), Espera )
   else if fsNumVersao = '2000' then
      EnviaComando(ESC + #251 + Flag + FormatDateTime('ddmmyy',DataInicial)+
@@ -2803,8 +2803,8 @@ end ;
 
 function TACBrECFDaruma.LimpaChrImpressao(const AString: AnsiString): AnsiString;
 begin
-  Result := AString ;
-  
+  Result := AString  ;
+
   // Removendo comandos de Impressão //
   if pos( #14, Result ) > 0 then      // Liga Lagura Dupla 1 linha
   begin
@@ -2835,6 +2835,10 @@ begin
   Result := StringReplace( Result, #0 , '', [rfReplaceAll] ) ;  // NUL
   Result := StringReplace( Result, #3 , '', [rfReplaceAll] ) ;  // ETX
   Result := StringReplace( Result, #22, '', [rfReplaceAll] ) ;  // SYN
+
+  // DEbug //
+//  WriteToTXT('D:\TEMP\NORMAL.TXT',AString, False);
+//  WriteToTXT('D:\TEMP\LIMPO.TXT',Result, False);
 end;
 
 

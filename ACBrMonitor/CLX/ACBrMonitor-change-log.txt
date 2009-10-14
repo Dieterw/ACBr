@@ -43,6 +43,24 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.8.12b  14/10/09    (Daniel Simões)
+[+]    LeituraMFDSerial. Adicionado novo parâmetro (opcional) "NomeArquivo : String"
+
+       - LeituraMFDSerial( DataInicial, DataFinal : TDateTime[, NomeArquivo : String] )
+       - LeituraMFDSerial( COOInicial, COOFinal : Integer[, NomeArquivo : String] )
+
+       Se NomeArquivo for especificado, o mesmo será criado com a resposta do ECF.
+
+[+]    LeituraMemoriaFiscalSerial. Adicionado novos parâmetros: (opcionais)
+         Simplificada : Boolean = False;  NomeArquivo : String
+
+       - LeituraMemoriaFiscalSerial( DataInicial, DataFinal : TDateTime,
+                               [Simplificada : Boolean, NomeArquivo : String] )
+       - LeituraMemoriaFiscalSerial( COOInicial, COOFinal : Integer,
+                               [Simplificada : Boolean, NomeArquivo : String] )
+                               
+       Se NomeArquivo for especificado, o mesmo será criado com a resposta do ECF.
+
 Versão 0.8.7b  01/12/08
 [+]    Adicionada aba para Servidor de Terminais de Consulta de Preços (Gertec)
 

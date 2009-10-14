@@ -569,44 +569,80 @@ begin
 
         else if Cmd.Metodo = 'leituramemoriafiscalserial' then
          begin
-           Linhas := TStringList.Create ;
-           try
-              if pos(DateSeparator,Cmd.Params(0)) > 0 then
-                 LeituraMemoriaFiscalSerial(
-                     StringToDateTime(Cmd.Params(0)),             { Dt.Inicial }
-                     StringToDateTime(Cmd.Params(1)),               { Dt.Final }
-                     Linhas )                                        { Retorno }
-              else
-                 LeituraMemoriaFiscalSerial(
-                     StrToInt(Trim(Cmd.Params(0))),           { ReducaoInicial }
-                     StrToInt(Trim(Cmd.Params(1))),             { ReducaoFinal }
-                     Linhas ) ;                                      { Retorno }
+           if Cmd.Params(3) <> '' then
+            begin
+               if pos(DateSeparator,Cmd.Params(0)) > 0 then
+                  LeituraMemoriaFiscalSerial(
+                      StringToDateTime(Cmd.Params(0)),            { Dt.Inicial }
+                      StringToDateTime(Cmd.Params(1)),              { Dt.Final }
+                      Cmd.Params(3),                            { Nome Arquivo }
+                      StrToBoolDef(Trim(Cmd.Params(2)),False) )   {Simplificada}
+               else
+                  LeituraMemoriaFiscalSerial(
+                      StrToInt(Trim(Cmd.Params(0))),          { ReducaoInicial }
+                      StrToInt(Trim(Cmd.Params(1))),            { ReducaoFinal }
+                      Cmd.Params(3),                            { Nome Arquivo }
+                      StrToBoolDef(Trim(Cmd.Params(2)),False) ) ; {Simplificada}
+            end
+           else
+            begin
+              Linhas := TStringList.Create ;
+              try
+                 if pos(DateSeparator,Cmd.Params(0)) > 0 then
+                    LeituraMemoriaFiscalSerial(
+                        StringToDateTime(Cmd.Params(0)),          { Dt.Inicial }
+                        StringToDateTime(Cmd.Params(1)),            { Dt.Final }
+                        Linhas,                                      { Retorno }
+                        StrToBoolDef(Trim(Cmd.Params(2)),False) ) {Simplificada}
+                 else
+                    LeituraMemoriaFiscalSerial(
+                        StrToInt(Trim(Cmd.Params(0))),        { ReducaoInicial }
+                        StrToInt(Trim(Cmd.Params(1))),          { ReducaoFinal }
+                        Linhas,                                      { Retorno }
+                        StrToBoolDef(Trim(Cmd.Params(2)),False) );{Simplificada}
 
-              Cmd.Resposta := Linhas.Text ;
-           finally
-              Linhas.Free ;
-           end ;
+                 Cmd.Resposta := Linhas.Text ;
+              finally
+                 Linhas.Free ;
+              end ;
+            end;
          end
 
         else if Cmd.Metodo = 'leituramfdserial' then
          begin
-           Linhas := TStringList.Create ;
-           try
-              if pos(DateSeparator,Cmd.Params(0)) > 0 then
-                 LeituraMFDSerial(
-                     StringToDateTime(Cmd.Params(0)),             { Dt.Inicial }
-                     StringToDateTime(Cmd.Params(1)),               { Dt.Final }
-                     Linhas )                                        { Retorno }
-              else
-                 LeituraMFDSerial(
-                     StrToInt(Trim(Cmd.Params(0))),               { COOInicial }
-                     StrToInt(Trim(Cmd.Params(1))),                 { COOFinal }
-                     Linhas ) ;                                      { Retorno }
+           if Cmd.Params(2) <> '' then
+            begin
+               if pos(DateSeparator,Cmd.Params(0)) > 0 then
+                  LeituraMFDSerial(
+                      StringToDateTime(Cmd.Params(0)),            { Dt.Inicial }
+                      StringToDateTime(Cmd.Params(1)),              { Dt.Final }
+                      Cmd.Params(2) )                        { Nome do Arquivo }
+               else
+                  LeituraMFDSerial(
+                      StrToInt(Trim(Cmd.Params(0))),              { COOInicial }
+                      StrToInt(Trim(Cmd.Params(1))),                { COOFinal }
+                      Cmd.Params(2) ) ;                      { Nome do Arquivo }
+            end
+           else
+            begin
+              Linhas := TStringList.Create ;
+              try
+                 if pos(DateSeparator,Cmd.Params(0)) > 0 then
+                    LeituraMFDSerial(
+                        StringToDateTime(Cmd.Params(0)),          { Dt.Inicial }
+                        StringToDateTime(Cmd.Params(1)),            { Dt.Final }
+                        Linhas )                                     { Retorno }
+                 else
+                    LeituraMFDSerial(
+                        StrToInt(Trim(Cmd.Params(0))),            { COOInicial }
+                        StrToInt(Trim(Cmd.Params(1))),              { COOFinal }
+                        Linhas ) ;                                   { Retorno }
 
-              Cmd.Resposta := Linhas.Text ;
-           finally
-              Linhas.Free ;
-           end ;
+                 Cmd.Resposta := Linhas.Text ;
+              finally
+                 Linhas.Free ;
+              end ;
+            end ;
          end
         else if Cmd.Metodo = 'enviacomando' then
            if Cmd.Params(1) <> '' then

@@ -95,6 +95,11 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Versão 0.8.8b  12/10/09
+-- ACBrECF --
+[-]    No ECF da Daruma ao se comandar a impressão da Leitura da Memória Fiscal o
+       componete estavá invertendo o metodo simplificado pelo completo. (por Ivan Moreira)
+
 Versão 0.8.8b  10/10/09
 -- ACBrECF --
 [+]    Adicionada a propriedade ACBrECF.UsuarioAtual : String   ( por Ivan Moreira )

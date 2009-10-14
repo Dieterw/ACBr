@@ -95,6 +95,7 @@ type
      FTamanhoCampoCodigo:integer;
      FEspessuraBorda:integer;
      FFormularioContinuo: boolean;
+     FExpandirLogoMarca: boolean;
   public
      FCurrentPage, FPageNum, FNFIndex:Integer;
      FChaveNFe, FNumeroNF, FSerie: String;
@@ -105,6 +106,7 @@ type
      FFirstX,FFirstY,FLastX,FLastY:double;
      FontNameUsed : String;
      FontSizeIdentDoc_Outros : Integer;
+     FColorBorders:TColor;
      constructor Create(AOwner:TComponent); override;
      destructor Destroy; override;
      function GetFontHeigh:Double;
@@ -132,6 +134,7 @@ type
      property TamanhoCampoCodigo:integer read FTamanhoCampoCodigo write FTamanhoCampoCodigo;
      property EspessuraBorda:integer read FEspessuraBorda write FEspessuraBorda;
      property FormularioContinuo:boolean read FFormularioContinuo write FFormularioContinuo;
+     property ExpandirLogoMarca:boolean read FExpandirLogoMarca write FExpandirLogoMarca default false;
   end;
 
 procedure ImprimirDANFeRave(aACBrNFe:TACBrNFe;
@@ -160,7 +163,8 @@ procedure ImprimirDANFeRave(aACBrNFe:TACBrNFe;
                             aImprimirHoraSaida_Hora:string='';
                             aImprimirDescPorc:boolean=false;
                             aImprimirValorLiquido:boolean=false;
-                            aFormularioContinuo:boolean=false);
+                            aFormularioContinuo:boolean=false;
+                            aExpadirLogoMarca:boolean=false);
 
 var DANFeRave:TDANFeRave;
 
@@ -194,7 +198,8 @@ procedure ImprimirDANFeRave(aACBrNFe:TACBrNFe;
                             aImprimirHoraSaida_Hora:string='';
                             aImprimirDescPorc:boolean=false;
                             aImprimirValorLiquido:boolean=false;
-                            aFormularioContinuo:boolean=false);
+                            aFormularioContinuo:boolean=false;
+                            aExpadirLogoMarca:boolean=false);
 var DANFeRave:TDANFeRave;
     rvPDF:TRvRenderPDF;
     rvTXT:TRvRenderText;
@@ -243,6 +248,12 @@ begin
     DANFeRave.ImprimirDescPorc:=aImprimirDescPorc;
     DANFeRave.ImprimirValorLiquido:=aImprimirValorLiquido;
     DANFeRave.FormularioContinuo:=aFormularioContinuo;
+    if aFormularioContinuo then
+       DANFeRave.FColorBorders:=clWhite
+      else
+       DANFeRave.FColorBorders:=clBlack;
+    DANFeRave.ExpandirLogoMarca:=aExpadirLogoMarca;
+
     if aLogoMarca<>nil then
      begin
        DANFeRave.LogoMarca:=TJPEGImage.Create;
@@ -333,7 +344,7 @@ begin
        LineTo(aX+aWith,aY+aHeight-0.05);
     end;
 
-    if Trim(aTitle)>'' then begin
+    if aTitle<>'' then begin
        SetFontTitle;
        GotoXY(XX,YY);
        NewLine;

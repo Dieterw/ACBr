@@ -84,6 +84,7 @@ type
     FMostrarPreview : Boolean;
     FTipoDANFE : TpcnTipoImpressao;
     FNumCopias : Integer;
+    FExpandirLogoMarca:Boolean;
     FFax  : String;
     FSite : String;
     FEmail: String;
@@ -127,6 +128,7 @@ type
     property CasasDecimais: TCasasDecimais read FCasasDecimais ;
     property ExibirResumoCanhoto: Boolean read FExibeResumoCanhoto write FExibeResumoCanhoto ;
     property FormularioContinuo: Boolean read FFormularioContinuo write FFormularioContinuo ;
+    property ExpandirLogoMarca: Boolean read FExpandirLogoMarca write FExpandirLogoMarca default false ;
   end;
 
 implementation

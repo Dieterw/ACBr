@@ -126,7 +126,8 @@ begin
                        ImprimirHoraSaida_Hora,
                        ImprimirDescPorc,
                        ImprimirTotalLiquido,
-                       FormularioContinuo);
+                       FormularioContinuo,
+                       ExpandirLogoMarca);
     finally
       LogoMarcaEmpresa.Free;
     end;
@@ -174,7 +175,8 @@ begin
                        ImprimirHoraSaida_Hora,
                        ImprimirDescPorc,
                        ImprimirTotalLiquido,
-                       FormularioContinuo);
+                       FormularioContinuo,
+                       ExpandirLogoMarca);
     finally
       LogoMarcaEmpresa.Free;
     end;

@@ -106,7 +106,7 @@ var
    MyFloatField,MyFloatField2: TRaveFloatField;
 
    i: integer;
-   fcPage1,fcPage2: TRavePage;
+   fcPage1,fcPage2,fcPage3: TRavePage;
    fcText: array[1..13] of TRaveText;
    fcDataText: array[1..20] of TRaveDataText;
    fcDataMemo: array[1..1] of TRaveDataMemo;
@@ -114,7 +114,7 @@ var
    fcVLine: array[1..4] of TRaveVLine;
    fcRectangle: array[1..7] of TRaveRectangle;
    fcSquare: array[1..1] of TRaveSquare;
-   fcBitmap: array[1..1] of TRaveBitmap;
+   fcBitmap: array[1..2] of TRaveBitmap;
 
    vMargemInferiorAtual, vMargemInferior, vHeightPadrao: double;
 begin
@@ -122,6 +122,20 @@ begin
       dmDanfe.RvProject.Open;
       with dmDanfe.RvProject.ProjMan do
       begin
+         //Expande LOGO
+         if FExpandirLogoMarca then
+         begin
+            fcPage3 := FindRaveComponent('GlobalDANFE',nil) as TRavePage;
+            fcBitmap[2] := FindRaveComponent('Bitmap1',fcPage3) as TRaveBitmap;
+            if (fcBitmap[2] <> nil) then
+            begin
+               fcBitmap[2].BringToFront;
+               fcBitmap[2].Top:=0.060;
+               fcBitmap[2].Width:=3.190;
+               fcBitmap[2].Height:=1.110;
+            end;
+         end;
+
          //Formulario Continuo
          if FFormularioContinuo then
          begin

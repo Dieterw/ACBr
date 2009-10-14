@@ -47,6 +47,23 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+
+Alterações   14/10/09
+---------------
+[*] DANFE em RAVE CB (créditos João Paulo S. Leão)
+    - Corrigido local de impressão das Informações do Fisco, pois a mesma tem que ser impressa no quadro Informações Complementares
+    - Propriedade FormularioContinuo agora esta funcional em RAVE CB. Antes só estava funcionando em RAVE ARQUIVO.
+      Se estiver TRUE não será impresso molduras e descrições de campo no canhoto e EMITENTE.  
+[+] DANFE em RAVE CB (créditos João Paulo S. Leão)
+    - Incluída Propriedade EspessuraBorda (padrão 2). Em algumas impressoras esta propriedade pode não surtir efeito.
+    - Incluída Propriedade ExpandirLogoMarca (padrão FALSE). Se a mesma estiver TRUE o logo ocupará todo o espaço do quadro Dados do Emitente.
+      Funcional para quem quiser personalizar o quadro Dados do Emitente. Para isso basta estipular a imagem personalizada no campo LOGO e
+      setar essa propriedade para TRUE.
+[+] DANFE em Rave Arquivo (.rav): 
+    - Incluída Propriedade ExpandirLogoMarca (padrão FALSE). Se a mesma estiver TRUE o logo ocupará todo o espaço do quadro Dados do Emitente.
+      Funcional para quem quiser personalizar o quadro Dados do Emitente. Para isso basta estipular a imagem personalizada no campo LOGO e
+      setar essa propriedade para TRUE.
+
 Alterações   09/10/09
 ---------------
 [*] DANFE em RAVE CB (créditos João Paulo S. Leão)

@@ -116,6 +116,9 @@ var
    fcSquare: array[1..1] of TRaveSquare;
    fcBitmap: array[1..2] of TRaveBitmap;
 
+   qvPage1: TRavePage;
+   qvDataText1: TRaveDataText;
+
    vMargemInferiorAtual, vMargemInferior, vHeightPadrao: double;
 begin
    try
@@ -270,6 +273,18 @@ begin
                MyDataText3.Left := 30;
             if (MyDataText4 <> nil) then
                MyDataText4.Left := 30;
+         end;
+
+         //omitir campos quadro volume
+         if dmDanfe.NFe.Transp.Vol.Count > 0 then
+         begin
+            if dmDanfe.NFe.Transp.Vol.Items[0].qVol=0 then
+            begin
+               qvPage1 := FindRaveComponent('GlobalTransportador',nil) as TRavePage;
+               qvDataText1 := FindRaveComponent('DataText5',qvPage1) as TRaveDataText;
+               if (qvDataText1 <> nil) then
+                  qvDataText1.Left:=30;
+            end;
          end;
 
          //Total2Liquido

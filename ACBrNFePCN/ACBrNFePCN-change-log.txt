@@ -48,6 +48,11 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   15/10/09
+---------------
+[*] DANFE em RAVE ARQUIVO
+    - Quando a TAG qVol tiver valor 0 (zero) a mesma não será impressa no DANFE.
+
 Alterações   14/10/09
 ---------------
 [*] DANFE em RAVE CB (créditos João Paulo S. Leão)

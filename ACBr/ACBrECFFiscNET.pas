@@ -122,9 +122,10 @@ TACBrECFFiscNET = class( TACBrECFClass )
     fsFiscNETComando: TACBrECFFiscNETComando;
     fsFiscNETResposta: TACBrECFFiscNETResposta;
     fsComandoVendeItem : String ;
+    fsComandosImpressao : array[0..9] of AnsiString ;
 
     Function PreparaCmd( cmd : AnsiString ) : AnsiString ;
-    Procedure AjustaStringList( AStringList : TStringList ) ;
+    Function AjustaLeitura( AString : AnsiString ) : AnsiString ;
     function DocumentosToStr(Documentos: TACBrECFTipoDocumentoSet): String;
  protected
     function GetDataHora: TDateTime; override ;
@@ -202,7 +203,7 @@ TACBrECFFiscNET = class( TACBrECFClass )
       CodFormaPagto: String; Obs: AnsiString; IndiceBMP : Integer = 0); override ;
 
     Procedure LeituraX ; override ;
-    Procedure LeituraXSerial( var Linhas : TStringList) ; override ;
+    Procedure LeituraXSerial( Linhas : TStringList) ; override ;
     Procedure ReducaoZ(DataHora : TDateTime) ; override ;
     Procedure AbreRelatorioGerencial(Indice: Integer = 0) ; override ;
     Procedure LinhaRelatorioGerencial( Linha : AnsiString; IndiceBMP: Integer = 0 ) ; override ;
@@ -217,19 +218,19 @@ TACBrECFFiscNET = class( TACBrECFClass )
     Procedure MudaHorarioVerao( EHorarioVerao : Boolean ) ; overload ; override ;
     Procedure CorrigeEstadoErro(Reducao: Boolean = True) ; override ;
 
-    
+
     Procedure LeituraMemoriaFiscal( DataInicial, DataFinal : TDateTime;
        Simplificada : Boolean = False ) ; override ;
     Procedure LeituraMemoriaFiscal( ReducaoInicial, ReducaoFinal : Integer;
        Simplificada : Boolean = False ) ; override ;
     Procedure LeituraMemoriaFiscalSerial( DataInicial, DataFinal : TDateTime;
-       var Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
+       Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
     Procedure LeituraMemoriaFiscalSerial( ReducaoInicial, ReducaoFinal : Integer;
-       var Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
+       Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
     Procedure LeituraMFDSerial( DataInicial, DataFinal : TDateTime;
-       var Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
+       Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
     Procedure LeituraMFDSerial( COOInicial, COOFinal : Integer;
-       var Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
+       Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
 
     Procedure ImprimeCheque(Banco : String; Valor : Double ; Favorecido,
        Cidade : String; Data : TDateTime ;Observacao : String = '') ; override ;
@@ -495,6 +496,18 @@ begin
   fpMFD       := True ;
   fpTermica   := True ;
   fpIdentificaConsumidorRodape := True ;
+
+  { Criando Lista de String com comandos de Impressao a Remover de Leituras }
+  fsComandosImpressao[0]  := #27 + 'E1';
+  fsComandosImpressao[1]  := #27 + 'E0';
+  fsComandosImpressao[2]  := #27 + 'E';
+  fsComandosImpressao[3]  := #27 + 'F';
+  fsComandosImpressao[4]  := #27 + '!(';
+  fsComandosImpressao[5]  := #27 + '!' + #1 ;
+  fsComandosImpressao[6]  := #27 + '!' + #2 ;
+  fsComandosImpressao[7]  := #27 + 'W1';
+  fsComandosImpressao[8]  := #27 + 'W0';
+  fsComandosImpressao[9]  := #30 ;
 end;
 
 destructor TACBrECFFiscNET.Destroy;
@@ -901,8 +914,9 @@ begin
   EnviaComando ;
 end;
 
-procedure TACBrECFFiscNET.LeituraXSerial(var Linhas: TStringList);
- Var Leitura : AnsiString ;
+procedure TACBrECFFiscNET.LeituraXSerial(Linhas: TStringList);
+Var
+  Leitura, RetCmd : AnsiString ;
 begin
   with FiscNETComando do
   begin
@@ -914,17 +928,18 @@ begin
   EnviaComando ;
   Sleep(500);
 
+  Leitura := '' ;
   Linhas.Clear ;
   repeat
      FiscNETComando.NomeComando := 'LeImpressao' ;
      EnviaComando ;
 
-     Leitura := FiscNETResposta.Params.Values['TextoImpressao'] ;
-     Linhas.Text := Linhas.Text + Leitura ;
+     RetCmd  := FiscNETResposta.Params.Values['TextoImpressao'] ;
+     Leitura := Leitura + RetCmd ;
      sleep(100) ;
-  until (Leitura = '') ;
+  until (RetCmd = '') ;
 
-  AjustaStringList( Linhas );
+  Linhas.Text := AjustaLeitura( Leitura );
 end;
 
 
@@ -1635,8 +1650,9 @@ begin
 end;
 
 procedure TACBrECFFiscNET.LeituraMemoriaFiscalSerial(ReducaoInicial,
-   ReducaoFinal: Integer; var Linhas : TStringList; Simplificada : Boolean);
-Var Leitura : AnsiString ;
+   ReducaoFinal: Integer; Linhas : TStringList; Simplificada : Boolean);
+Var
+  Leitura, RetCmd : AnsiString ;
 begin
   with FiscNETComando do
   begin
@@ -1651,22 +1667,24 @@ begin
   EnviaComando ;
   Sleep(500);
 
+  Leitura := '' ;
   Linhas.Clear ;
   repeat
      FiscNETComando.NomeComando := 'LeImpressao' ;
      EnviaComando ;
 
-     Leitura := FiscNETResposta.Params.Values['TextoImpressao'] ;
-     Linhas.Text := Linhas.Text + Leitura ;
+     RetCmd  := FiscNETResposta.Params.Values['TextoImpressao'] ;
+     Leitura := Leitura + RetCmd ;
      sleep(100) ;
-  until (Leitura = '') ;
+  until (RetCmd = '') ;
 
-  AjustaStringList( Linhas );
+  Linhas.Text := AjustaLeitura( Leitura );
 end;
 
 procedure TACBrECFFiscNET.LeituraMemoriaFiscalSerial(DataInicial,
-   DataFinal: TDateTime; var Linhas : TStringList; Simplificada : Boolean);
-Var Leitura : AnsiString ;
+   DataFinal: TDateTime; Linhas : TStringList; Simplificada : Boolean);
+Var
+  Leitura, RetCmd : AnsiString ;
 begin
   with FiscNETComando do
   begin
@@ -1681,24 +1699,25 @@ begin
   EnviaComando ;
   Sleep(500);
 
+  Leitura := '' ;
   Linhas.Clear ;
   repeat
      FiscNETComando.NomeComando := 'LeImpressao' ;
      EnviaComando ;
 
-     Leitura := FiscNETResposta.Params.Values['TextoImpressao'] ;
-     Linhas.Text := Linhas.Text + Leitura ;
+     RetCmd := FiscNETResposta.Params.Values['TextoImpressao'] ;
+     Leitura := Leitura + RetCmd ;
      sleep(100) ;
-  until (Leitura = '') ;
+  until (RetCmd = '') ;
 
-  AjustaStringList( Linhas );
+  Linhas.Text := AjustaLeitura( Leitura );
 end;
 
 procedure TACBrECFFiscNET.LeituraMFDSerial(DataInicial,
-  DataFinal: TDateTime; var Linhas: TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos]);
-// Autor: Nei José Van Lare Junior
-Var Leitura : AnsiString ;
-    Doctos  : String ;
+  DataFinal: TDateTime; Linhas: TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos]);
+Var
+  Leitura, RetCmd : AnsiString ;
+  Doctos : String ;
 begin
   Doctos := DocumentosToStr(Documentos) ;
 
@@ -1715,25 +1734,27 @@ begin
   EnviaComando ;
   Sleep(500);
 
-  Linhas := TStringList.Create;
-  Linhas.Clear ;
+//WriteToTXT('d:\temp\mfd_ret.txt','', False);
+  Leitura := '' ;
   repeat
      FiscNETComando.NomeComando := 'LeImpressao' ;
      EnviaComando ;
 
-     Leitura := FiscNETResposta.Params.Values['TextoImpressao'] ;
-     Linhas.Text := Linhas.Text + Leitura ;
+     RetCmd := FiscNETResposta.Params.Values['TextoImpressao'] ;
+//   WriteToTXT('d:\temp\mfd_ret.txt',RetCmd, True);
+     Leitura := Leitura + RetCmd ;
      sleep(100) ;
-  until (Leitura = '') ;
+  until (RetCmd = '') ;
 
-  AjustaStringList( Linhas );
+  Linhas.Text := AjustaLeitura( Leitura );
+//WriteToTXT('d:\temp\mfd_limpo.txt',Linhas.Text, False);
 end;
 
 procedure TACBrECFFiscNET.LeituraMFDSerial(COOInicial,
-  COOFinal: Integer; var Linhas: TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos]);
-// Autor: Nei José Van Lare Junior
-Var Leitura : AnsiString ;
-    Doctos  : String ;
+  COOFinal: Integer; Linhas: TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos]);
+Var
+  Leitura, RetCmd : AnsiString ;
+  Doctos : String ;
 begin
   Doctos := DocumentosToStr(Documentos) ;
 
@@ -1750,17 +1771,18 @@ begin
   EnviaComando ;
   Sleep(400);
 
+  Leitura := '' ;
   Linhas.Clear ;
   repeat
      FiscNETComando.NomeComando := 'LeImpressao' ;
      EnviaComando ;
 
-     Leitura := FiscNETResposta.Params.Values['TextoImpressao'] ;
-     Linhas.Text := Linhas.Text + Leitura ;
+     RetCmd := FiscNETResposta.Params.Values['TextoImpressao'] ;
+     Leitura := Leitura + RetCmd ;
      sleep(100) ;
-  until (Leitura = '') ;
+  until (RetCmd = '') ;
 
-  AjustaStringList( Linhas );
+  Linhas.Text := AjustaLeitura( Leitura ) ;
 end;
 
 Function TACBrECFFiscNET.DocumentosToStr(Documentos : TACBrECFTipoDocumentoSet) : String ;
@@ -1790,56 +1812,27 @@ begin
   Result := copy(Result,1,Length(Result)-1) ; // Remove a ultima Virgula
 end ;
 
-procedure TACBrECFFiscNET.AjustaStringList(AStringList: TStringList);
-Var Texto : AnsiString ;
-    NewStringList : TStringList ;
-    A, Cols : Integer ;
+Function TACBrECFFiscNET.AjustaLeitura( AString : AnsiString ) : AnsiString ;
+Var
+  A, Cols : Integer ;
 begin
-  NewStringList := TStringList.create ;
-  try
-      NewStringList.Clear ;
+  { Detectando o número de Colunas (não encontrei registrador no ECF que
+    retorne o Numero de Colunas) }
+  A := pos(StringOfChar('-',40), AString ) ;
+  if A < 1 then
+     Cols := Colunas
+  else
+   begin
+     Cols := 40 ;
+     while copy(AString,A+Cols,1) = '-' do
+        Inc( Cols ) ;
+   end ;
 
-      { Detectando o número de Colunas (não encontrei registrador no ECF que
-        retorne o Numero de Colunas) }
-      Texto := AStringList.Text ;
-      A := pos(StringOfChar('-',40), Texto ) ;
-      if A < 1 then
-         Cols := Colunas
-      else
-       begin
-         Cols := 40 ;
-         while copy(Texto,A+Cols,1) = '-' do
-            Inc( Cols ) ;
-       end ;
+  { Remove caracteres de Impressao }
+  Result := RemoveStrings( AString, fsComandosImpressao ) ;
 
-      For A := 0 to AStringList.Count-1 do
-      begin
-        Texto := AStringList[A] ;
-        if pos( #27, Texto) > 0 then
-        begin
-           Texto := StringReplace(Texto, #27 + 'E' + '1', '', [rfReplaceAll]);
-           Texto := StringReplace(Texto, #27 + 'E' + '0', '', [rfReplaceAll]);
-           Texto := StringReplace(Texto, #27 + 'E'      , '', [rfReplaceAll]);
-           Texto := StringReplace(Texto, #27 + 'F'      , '', [rfReplaceAll]);
-           Texto := StringReplace(Texto, #27 + '!' + '(', '', [rfReplaceAll]);
-           Texto := StringReplace(Texto, #27 + '!' + #01, '', [rfReplaceAll]);
-           Texto := StringReplace(Texto, #27 + '!' + #02, '', [rfReplaceAll]);
-           Texto := StringReplace(Texto, #27 + 'W1'     , '', [rfReplaceAll]);
-           Texto := StringReplace(Texto, #27 + 'W0'     , '', [rfReplaceAll]);
-        end ;
-
-        while Length(Texto) > 0 do
-        begin
-           NewStringList.Add( copy(Texto, 1, Cols) );
-           Delete(Texto, 1, Cols);
-        end;
-      end ;
-
-      AStringList.Clear ;
-      AStringList.Assign( NewStringList ) ;
-  finally
-     NewStringList.Free;
-  end ;
+  { Ajusta o Tamanho das Colunas }
+  Result := AjustaLinhas( Result, Cols ) ;
 end;
 
 

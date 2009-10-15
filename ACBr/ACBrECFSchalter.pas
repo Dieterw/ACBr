@@ -165,7 +165,7 @@ TACBrECFSchalter = class( TACBrECFClass )
     Property IE   : String read GetIE ;
 
     Procedure LeituraX ; override ;
-    Procedure LeituraXSerial( var Linhas : TStringList) ; override ;
+    Procedure LeituraXSerial( Linhas : TStringList) ; override ;
     Procedure ReducaoZ(DataHora : TDateTime = 0 ) ; override ;
     Procedure AbreRelatorioGerencial(Indice: Integer = 0) ; override ;
     Procedure LinhaRelatorioGerencial( Linha : AnsiString; IndiceBMP: Integer = 0 ) ; override ;
@@ -184,9 +184,9 @@ TACBrECFSchalter = class( TACBrECFClass )
     Procedure LeituraMemoriaFiscal( ReducaoInicial, ReducaoFinal : Integer;
        Simplificada : Boolean = False); override ;
     Procedure LeituraMemoriaFiscalSerial( DataInicial, DataFinal : TDateTime;
-       var Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
+       Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
     Procedure LeituraMemoriaFiscalSerial( ReducaoInicial, ReducaoFinal : Integer;
-       var Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
+       Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
 
     { Procedimentos de Cupom Não Fiscal }
     Procedure AbreNaoFiscal( CPF_CNPJ : String = '') ; override ;
@@ -678,7 +678,7 @@ begin
   PulaLinhas ;
 end;
 
-procedure TACBrECFSchalter.LeituraXSerial(var Linhas: TStringList);
+procedure TACBrECFSchalter.LeituraXSerial(Linhas: TStringList);
 begin
   // OBS: LeituraX pela Serial na Schalter não tem o mesmo formato da Leitura Impressa // 
   Linhas.Clear ;
@@ -1536,7 +1536,7 @@ begin
 end;
 
 procedure TACBrECFSchalter.LeituraMemoriaFiscalSerial(ReducaoInicial,
-   ReducaoFinal: Integer; var Linhas: TStringList; Simplificada : Boolean);
+   ReducaoFinal: Integer; Linhas: TStringList; Simplificada : Boolean);
  Var Espera : Integer ;
      RetCmd : AnsiString ;
 begin
@@ -1552,7 +1552,7 @@ begin
 end;
 
 procedure TACBrECFSchalter.LeituraMemoriaFiscalSerial(DataInicial,
-   DataFinal: TDateTime; var Linhas: TStringList; Simplificada : Boolean);
+   DataFinal: TDateTime; Linhas: TStringList; Simplificada : Boolean);
  Var Espera : Integer ;
      RetCmd : AnsiString ;
 begin

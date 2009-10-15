@@ -274,7 +274,7 @@ TACBrECFSweda = class( TACBrECFClass )
        Obs : AnsiString = '') ; override ;
 
     Procedure LeituraX ; override ;
-    Procedure LeituraXSerial( var Linhas : TStringList) ; override ;
+    Procedure LeituraXSerial( Linhas : TStringList) ; override ;
     Procedure ReducaoZ(DataHora : TDateTime = 0 ) ; override ;
     Procedure AbreRelatorioGerencial(Indice: Integer = 0) ; override ;
     Procedure LinhaRelatorioGerencial( Linha : AnsiString; IndiceBMP: Integer = 0 ) ; override ;
@@ -297,14 +297,14 @@ TACBrECFSweda = class( TACBrECFClass )
     Procedure LeituraMemoriaFiscal( ReducaoInicial, ReducaoFinal : Integer;
        Simplificada : Boolean = False ) ; override ;
     Procedure LeituraMemoriaFiscalSerial( DataInicial, DataFinal : TDateTime;
-       var Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
+       Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
     Procedure LeituraMemoriaFiscalSerial( ReducaoInicial, ReducaoFinal : Integer;
-       var Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
+       Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
 //IMS 09/10/2009
     Procedure LeituraMFDSerial(DataInicial, DataFinal : TDateTime;
-       var Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
+       Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
     Procedure LeituraMFDSerial( COOInicial, COOFinal : Integer;
-       var Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
+       Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
 //IMS
 
     procedure IdentificaPAF(Linha1, Linha2: String); override ;
@@ -1130,7 +1130,7 @@ begin
   EnviaComando('13N' , Espera ) ;
 end;
 
-procedure TACBrECFSweda.LeituraXSerial(var Linhas: TStringList);
+procedure TACBrECFSweda.LeituraXSerial(Linhas: TStringList);
 begin
   Linhas.Clear ;
   if fsVersaoSweda < swdST then
@@ -2437,7 +2437,7 @@ begin
 end;
 
 procedure TACBrECFSweda.LeituraMemoriaFiscalSerial(ReducaoInicial,
-   ReducaoFinal: Integer; var Linhas : TStringList; Simplificada : Boolean);
+   ReducaoFinal: Integer; Linhas : TStringList; Simplificada : Boolean);
  Var Flag : String ;
 begin
   Flag := '' ;
@@ -2451,7 +2451,7 @@ begin
 end;
 
 procedure TACBrECFSweda.LeituraMemoriaFiscalSerial(DataInicial,
-  DataFinal: TDateTime; var Linhas : TStringList; Simplificada : Boolean);
+  DataFinal: TDateTime; Linhas : TStringList; Simplificada : Boolean);
  Var Flag      : String ;
 begin
   Flag := '' ;
@@ -2478,7 +2478,7 @@ begin
 end ;
 
 procedure TACBrECFSweda.LeituraMFDSerial(COOInicial, COOFinal: Integer;
-  var Linhas: TStringList; Documentos : TACBrECFTipoDocumentoSet);
+  Linhas: TStringList; Documentos : TACBrECFTipoDocumentoSet);
 
 begin
 
@@ -2491,7 +2491,7 @@ begin
 end;
 
 procedure TACBrECFSweda.LeituraMFDSerial(DataInicial,
-  DataFinal: TDateTime; var Linhas: TStringList;
+  DataFinal: TDateTime; Linhas: TStringList;
   Documentos : TACBrECFTipoDocumentoSet);
 
 begin
@@ -2500,6 +2500,7 @@ begin
 
   LeBufferSerial( '56' + FormatDateTime('ddmmyy',DataInicial)+
                          FormatDateTime('ddmmyy',DataFinal)  + '#', Linhas );
+//WriteToTXT('d:\temp\mfd_limpo.txt',Linhas.Text, False);
   Sleep(300) ;
 
 end;

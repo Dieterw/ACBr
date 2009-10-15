@@ -251,7 +251,7 @@ TACBrECFBematech = class( TACBrECFClass )
     Procedure CancelaNaoFiscal ; override ;
 
     Procedure LeituraX ; override ;
-    Procedure LeituraXSerial( var Linhas : TStringList) ; override ;
+    Procedure LeituraXSerial( Linhas : TStringList) ; override ;
     Procedure ReducaoZ(DataHora : TDateTime = 0 ) ; override ;
     Procedure AbreRelatorioGerencial(Indice: Integer = 0) ; override ;
     Procedure LinhaRelatorioGerencial( Linha : AnsiString; IndiceBMP: Integer = 0 ) ; override ;
@@ -274,14 +274,14 @@ TACBrECFBematech = class( TACBrECFClass )
     Procedure LeituraMemoriaFiscal( ReducaoInicial, ReducaoFinal : Integer;
        Simplificada : Boolean = False ); override ;
     Procedure LeituraMemoriaFiscalSerial( DataInicial, DataFinal : TDateTime;
-       var Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
+       Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
     Procedure LeituraMemoriaFiscalSerial( ReducaoInicial, ReducaoFinal : Integer;
-       var Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
+       Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
 //IMS 28/09/2009
     Procedure LeituraMFDSerial(DataInicial, DataFinal : TDateTime;
-       var Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
+       Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
     Procedure LeituraMFDSerial( COOInicial, COOFinal : Integer;
-       var Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
+       Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
 //IMS
     Procedure IdentificaPAF( Linha1, Linha2 : String) ; override ;
     Function RetornaInfoECF( Registrador: String) : AnsiString; override ;
@@ -546,7 +546,10 @@ begin
   if BytesResp >= 0 then
      Result := (LenRet >= (BytesResp + 2) )
   else
-     Result := (pos(ETX, RightStr(Retorno,4)) > 0) ;
+     if (Length(Retorno) >= 2) and (copy(Retorno,1,2) <> #0+#0) then  // Retornou Erro, não virá ETX
+        Result := True
+     else
+        Result := (pos(ETX, RightStr(Retorno,4)) > 0)
 
   { Nota sobre o VerificaFimLeitura: A Bematech responde muito antes da
     Impressao terminar, o que pode causar problemas com comandos enviados logo
@@ -923,7 +926,7 @@ begin
   EnviaComando( #06, Espera ) ;
 end;
 
-procedure TACBrECFBematech.LeituraXSerial(var Linhas: TStringList);
+procedure TACBrECFBematech.LeituraXSerial(Linhas: TStringList);
 begin
   BytesResp := -1 ; { espera por ETX }
   Linhas.Clear ;
@@ -1807,7 +1810,7 @@ begin
 end;
 
 procedure TACBrECFBematech.LeituraMemoriaFiscalSerial(ReducaoInicial,
-   ReducaoFinal: Integer; var Linhas : TStringList; Simplificada : Boolean);
+   ReducaoFinal: Integer; Linhas : TStringList; Simplificada : Boolean);
  Var Espera : Integer ;
      Flag   : Char ;
 begin
@@ -1823,7 +1826,7 @@ begin
 end;
 
 procedure TACBrECFBematech.LeituraMemoriaFiscalSerial(DataInicial,
-   DataFinal: TDateTime; var Linhas : TStringList; Simplificada : Boolean);
+   DataFinal: TDateTime; Linhas : TStringList; Simplificada : Boolean);
  Var Espera : Integer ;
      Flag   : Char ;
 begin
@@ -1836,6 +1839,7 @@ begin
   Linhas.Clear ;
   Linhas.Text := EnviaComando( #8 + FormatDateTime('ddmmyy',DataInicial)+
                                     FormatDateTime('ddmmyy',DataFinal)  +Flag ,Espera);
+//WriteToTXT('d:\temp\mfd_limpo.txt',Linhas.Text, False);
 end;
 
 //IMS 28/09/2009
@@ -1845,7 +1849,7 @@ begin
 end ;
 
 procedure TACBrECFBematech.LeituraMFDSerial(COOInicial, COOFinal: Integer;
-  var Linhas: TStringList; Documentos : TACBrECFTipoDocumentoSet);
+  Linhas: TStringList; Documentos : TACBrECFTipoDocumentoSet);
  Var Espera : Integer ;
      UsuarioECF : String ;
 begin
@@ -1869,7 +1873,7 @@ begin
 end;
 
 procedure TACBrECFBematech.LeituraMFDSerial(DataInicial,
-  DataFinal: TDateTime; var Linhas: TStringList;
+  DataFinal: TDateTime; Linhas: TStringList; 
   Documentos : TACBrECFTipoDocumentoSet);
 Var
   Espera : Integer ;
@@ -1881,6 +1885,7 @@ begin
   Linhas.Text := EnviaComando( #62+#69 + 'D' +
                                FormatDateTime('ddmmyy',DataInicial)+
                                FormatDateTime('ddmmyy',DataFinal)  ,Espera);
+//WriteToTXT('d:\temp\mfd_limpo.txt',Linhas.Text, False);
 end;
 //IMS
 

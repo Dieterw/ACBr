@@ -170,7 +170,7 @@ TACBrECFYanco = class( TACBrECFClass )
 //    Procedure LeituraMemoriaFiscalSerial( DataInicial, DataFinal : TDateTime;
 //       var Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
     Procedure LeituraMemoriaFiscalSerial( ReducaoInicial, ReducaoFinal : Integer;
-       var Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
+       Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
 
 
     Procedure CancelaImpressaoCheque ; override ;
@@ -882,7 +882,7 @@ begin
 end;
 
 procedure TACBrECFYanco.LeituraMemoriaFiscalSerial(ReducaoInicial,
-   ReducaoFinal: Integer; var Linhas: TStringList; Simplificada : Boolean);
+   ReducaoFinal: Integer; Linhas: TStringList; Simplificada : Boolean);
 Var Espera : Integer ;
 begin
   // Yanco não possui Leitura Simplificada

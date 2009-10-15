@@ -50,7 +50,7 @@ Uses ACBrD5, Windows ;
 
 const
   {* Unit ACBrBase *}
-  ACBR_VERSAO = '0.8.8b';
+  ACBR_VERSAO = '0.8.9b';
   CR = #13 ;      { Carriage Return, retorno de carro }
   LF = #10 ;      { Line Feed, Pulo de Linha }
   FF = #12 ;      { Form Feed, Pulo de Pagina }

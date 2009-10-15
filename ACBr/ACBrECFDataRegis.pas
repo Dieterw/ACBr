@@ -265,7 +265,7 @@ TACBrECFDataRegis = class( TACBrECFClass )
     Procedure CancelaItemVendido( NumItem : Integer ) ; override ;
 
     Procedure LeituraX ; override ;
-    Procedure LeituraXSerial( var Linhas : TStringList) ; override ;
+    Procedure LeituraXSerial( Linhas : TStringList) ; override ;
     Procedure ReducaoZ(DataHora : TDateTime = 0 ) ; override ;
     Procedure AbreRelatorioGerencial(Indice: Integer = 0) ; override ;
     Procedure LinhaRelatorioGerencial( Linha : AnsiString; IndiceBMP: Integer = 0 ) ; override ;
@@ -308,9 +308,9 @@ TACBrECFDataRegis = class( TACBrECFClass )
     Procedure LeituraMemoriaFiscal( ReducaoInicial, ReducaoFinal : Integer;
        Simplificada : Boolean = False) ; override ;
     Procedure LeituraMemoriaFiscalSerial( DataInicial, DataFinal : TDateTime;
-       var Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
+       Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
     Procedure LeituraMemoriaFiscalSerial( ReducaoInicial, ReducaoFinal : Integer;
-       var Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
+       Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
 
     function GetOperador: Integer;
     procedure SetOperador(Codigo: Integer);
@@ -923,7 +923,7 @@ begin
   GravaArqINI ;
 end;
 
-procedure TACBrECFDataRegis.LeituraXSerial(var Linhas: TStringList);
+procedure TACBrECFDataRegis.LeituraXSerial(Linhas: TStringList);
 begin
   {Falta testar}
   Linhas.Clear ;
@@ -1685,7 +1685,7 @@ begin
 end;
 
 procedure TACBrECFDataRegis.LeituraMemoriaFiscalSerial(DataInicial,
-  DataFinal: TDateTime; var Linhas: TStringList; Simplificada : Boolean);
+  DataFinal: TDateTime; Linhas: TStringList; Simplificada : Boolean);
 Var Espera : Integer ;
 begin
    // DataRegis não possui Leitura Simplificada
@@ -1703,7 +1703,7 @@ begin
 end;
 
 procedure TACBrECFDataRegis.LeituraMemoriaFiscalSerial(ReducaoInicial,
-  ReducaoFinal: Integer; var Linhas: TStringList; Simplificada : Boolean);
+  ReducaoFinal: Integer; Linhas: TStringList; Simplificada : Boolean);
 begin
    raise Exception.Create(ACBrStr('Impressora fiscal não possui este recurso'));
 end;

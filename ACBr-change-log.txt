@@ -95,6 +95,34 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Versão 0.8.9b  15/10/09 (DSA)
+-- ACBrECF --
+[*]    Modificada a assinatura dos comandos:
+       LeituraMFDSerial, LeituraMemoriaFiscalSerial, LeituraXSerial
+       removendo a declaração "var" do parâmetro Linhas (por ser desnecessário)
+
+-- ACBrUtil --
+[+]    Adicionada function RemoveStrings(const AText: AnsiString;
+            StringsToRemove: array of AnsiString): AnsiString;
+       Remove todas ocorrencias de String do Array <StringsToRemove> da String
+       <AText> retornando a String alterada
+
+-- ACBrECFBematech --
+[-]    Corrigido Bug de "espera inifinita" quando aguardando retorno de comandos
+       de Leitura (Ex: LeituraMFD), em que o ECF respondeu com "Erro"
+
+-- ACBrECFDaruma --
+[*]    Melhorada Rotina de Limpeza dos retorno de comandos de Leitura
+       (Ex: LeituraMFD)
+[-]    Corrigido Bug na rotina de Criação de Arquivo com conteudo do Retorno de
+       Leituras, que em algumas ocasições era Truncado
+
+-- ACBrECFFiscNet --
+[*]    Otimização da Rotina de Limpeza dos retorno de comandos de Leitura
+[-]    Corrigido Bug nos Retornos de Leitura, em que o arquivo era "deslocado",
+       perdendo o lay-out original 
+
+
 Versão 0.8.8b  12/10/09
 -- ACBrECF --
 [-]    No ECF da Daruma ao se comandar a impressão da Leitura da Memória Fiscal o

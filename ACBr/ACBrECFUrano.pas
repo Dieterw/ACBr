@@ -173,9 +173,9 @@ TACBrECFUrano = class( TACBrECFClass )
     Procedure LeituraMemoriaFiscal( ReducaoInicial, ReducaoFinal : Integer;
        Simplificada : Boolean = False); override ;
     Procedure LeituraMemoriaFiscalSerial( DataInicial, DataFinal : TDateTime;
-       var Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
+       Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
     Procedure LeituraMemoriaFiscalSerial( ReducaoInicial, ReducaoFinal : Integer;
-       var Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
+       Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
 
     Procedure AbreGaveta ; override ;
 
@@ -949,13 +949,13 @@ begin
 end;
 
 procedure TACBrECFUrano.LeituraMemoriaFiscalSerial(ReducaoInicial,
-   ReducaoFinal: Integer; var Linhas : TStringList; Simplificada : Boolean);
+   ReducaoFinal: Integer; Linhas : TStringList; Simplificada : Boolean);
 begin
   // Urano não possui Leitura Simplificada
 end;
 
 procedure TACBrECFUrano.LeituraMemoriaFiscalSerial(DataInicial,
-   DataFinal: TDateTime; var Linhas : TStringList; Simplificada : Boolean);
+   DataFinal: TDateTime; Linhas : TStringList; Simplificada : Boolean);
 Var
   Espera : Integer ;
 begin

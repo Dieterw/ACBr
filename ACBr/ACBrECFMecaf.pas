@@ -195,9 +195,9 @@ TACBrECFMecaf = class( TACBrECFClass )
     Procedure LeituraMemoriaFiscal( ReducaoInicial, ReducaoFinal : Integer;
        Simplificada : Boolean = False ); override ;
     Procedure LeituraMemoriaFiscalSerial( DataInicial, DataFinal : TDateTime;
-       var Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
+       Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
     Procedure LeituraMemoriaFiscalSerial( ReducaoInicial, ReducaoFinal : Integer;
-       var Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
+       Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
 
     { Procedimentos de Cupom Não Fiscal }
     Procedure AbreNaoFiscal( CPF_CNPJ : String = '') ; override ;
@@ -1167,7 +1167,7 @@ begin
 end;
 
 procedure TACBrECFMecaf.LeituraMemoriaFiscalSerial(ReducaoInicial,
-   ReducaoFinal: Integer; var Linhas : TStringList; Simplificada : Boolean);
+   ReducaoFinal: Integer; Linhas : TStringList; Simplificada : Boolean);
 Var Espera : Integer ;
     RetCmd : AnsiString ;
 begin
@@ -1182,7 +1182,7 @@ begin
 end;
 
 procedure TACBrECFMecaf.LeituraMemoriaFiscalSerial(DataInicial,
-  DataFinal: TDateTime; var Linhas : TStringList; Simplificada : Boolean);
+  DataFinal: TDateTime; Linhas : TStringList; Simplificada : Boolean);
 Var Espera : Integer ;
     RetCmd : AnsiString ;
 begin

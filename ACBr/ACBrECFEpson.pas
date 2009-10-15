@@ -219,7 +219,7 @@ TACBrECFEpson = class( TACBrECFClass )
     Procedure CancelaItemVendido( NumItem : Integer ) ; override ;
 
     Procedure LeituraX ; override ;
-    Procedure LeituraXSerial( var Linhas : TStringList) ; override ;
+    Procedure LeituraXSerial( Linhas : TStringList) ; override ;
     Procedure ReducaoZ(DataHora : TDateTime) ; override ;
     Procedure AbreRelatorioGerencial(Indice: Integer = 0) ; override ;
     Procedure LinhaRelatorioGerencial( Linha : AnsiString; IndiceBMP: Integer = 0 ) ; override ;
@@ -239,9 +239,9 @@ TACBrECFEpson = class( TACBrECFClass )
     Procedure LeituraMemoriaFiscal( ReducaoInicial, ReducaoFinal : Integer;
        Simplificada : Boolean = False ) ; override ;
     Procedure LeituraMemoriaFiscalSerial( DataInicial, DataFinal : TDateTime;
-       var Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
+       Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
     Procedure LeituraMemoriaFiscalSerial( ReducaoInicial, ReducaoFinal : Integer;
-       var Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
+       Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
 
     Procedure AbreGaveta ; override ;
 
@@ -1357,7 +1357,7 @@ begin
   fsRet0907 := '' ;
 end;
 
-procedure TACBrECFEpson.LeituraXSerial(var Linhas: TStringList);
+procedure TACBrECFEpson.LeituraXSerial(Linhas: TStringList);
   Var I : Integer ;
 begin
   with EpsonComando do
@@ -2052,7 +2052,7 @@ begin
 end;
 
 procedure TACBrECFEpson.LeituraMemoriaFiscalSerial(ReducaoInicial,
-   ReducaoFinal: Integer; var Linhas : TStringList; Simplificada : Boolean);
+   ReducaoFinal: Integer; Linhas : TStringList; Simplificada : Boolean);
   Var I : Integer ;
 begin
   with EpsonComando do
@@ -2102,7 +2102,7 @@ begin
 end;
 
 procedure TACBrECFEpson.LeituraMemoriaFiscalSerial(DataInicial,
-   DataFinal: TDateTime; var Linhas : TStringList; Simplificada : Boolean);
+   DataFinal: TDateTime; Linhas : TStringList; Simplificada : Boolean);
   Var I : Integer ;
 begin
   with EpsonComando do

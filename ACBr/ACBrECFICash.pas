@@ -135,7 +135,7 @@ TACBrECFICash = class( TACBrECFClass )
     Procedure CancelaItemVendido( NumItem : Integer ) ; override ;
 
     Procedure LeituraX ; override ;
-    Procedure LeituraXSerial( var Linhas : TStringList) ; override ;
+    Procedure LeituraXSerial( Linhas : TStringList) ; override ;
     Procedure ReducaoZ(DataHora : TDateTime = 0 ) ; override ;
     Procedure AbreRelatorioGerencial(Indice: Integer = 0) ; override ;
     Procedure LinhaRelatorioGerencial( Linha : AnsiString; IndiceBMP: Integer = 0 ) ; override ;
@@ -152,9 +152,9 @@ TACBrECFICash = class( TACBrECFClass )
     Procedure LeituraMemoriaFiscal( ReducaoInicial, ReducaoFinal : Integer;
        Simplificada : Boolean = False); override ;
     Procedure LeituraMemoriaFiscalSerial( DataInicial, DataFinal : TDateTime;
-       var Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
+       Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
     Procedure LeituraMemoriaFiscalSerial( ReducaoInicial, ReducaoFinal : Integer;
-       var Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
+       Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
 
     Procedure AbreGaveta ; override ;
 
@@ -584,7 +584,7 @@ begin
   EnviaComando( '510', 50 ) ;
 end;
 
-procedure TACBrECFICash.LeituraXSerial(var Linhas: TStringList);
+procedure TACBrECFICash.LeituraXSerial(Linhas: TStringList);
  Var RetCmd : AnsiString ;
 begin
   fsLeDadosSerial := True ;
@@ -1066,7 +1066,7 @@ begin
 end;
 
 procedure TACBrECFICash.LeituraMemoriaFiscalSerial(DataInicial,
-  DataFinal: TDateTime; var Linhas: TStringList; Simplificada : Boolean);
+  DataFinal: TDateTime; Linhas: TStringList; Simplificada : Boolean);
  Var RetCmd : AnsiString ;
 begin
   { ICash não permite informar Inicio e Fim na leitura pela Serial, nem
@@ -1080,7 +1080,7 @@ begin
 end;
 
 procedure TACBrECFICash.LeituraMemoriaFiscalSerial(ReducaoInicial,
-  ReducaoFinal: Integer; var Linhas: TStringList; Simplificada : Boolean);
+  ReducaoFinal: Integer; Linhas: TStringList; Simplificada : Boolean);
 begin
   LeituraMemoriaFiscalSerial(Now, Now, Linhas);
 end;

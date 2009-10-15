@@ -249,6 +249,7 @@ type
     UsurioAtual1: TMenuItem;
     IM1: TMenuItem;
     Cliche1: TMenuItem;
+    Button1: TButton;
     procedure cbxModeloChange(Sender: TObject);
     procedure Sair1Click(Sender: TObject);
     procedure bAtivarClick(Sender: TObject);
@@ -402,6 +403,7 @@ type
     procedure IM1Click(Sender: TObject);
     procedure UsurioAtual1Click(Sender: TObject);
     procedure Cliche1Click(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
   private
     { Private declarations }
     Function Converte( cmd : String) : String;
@@ -2652,6 +2654,53 @@ procedure TForm1.Cliche1Click(Sender: TObject);
 begin
   mResp.Lines.Add( 'Cliche: ('+ ACBrECF1.Cliche+')' );
   AtualizaMemos ;
+end;
+
+procedure TForm1.Button1Click(Sender: TObject);
+Var
+  fsComandosImpressao : array[0..22] of AnsiString ;
+  MS : TMemoryStream ;
+  retcmd, S : AnsiString ;
+  Len : Integer ;
+  P : Pointer ;
+begin
+  fsComandosImpressao[0]  := #0 ;
+  fsComandosImpressao[1]  := #3 ;
+  fsComandosImpressao[2]  := #14 ;
+  fsComandosImpressao[3]  := #15 ;
+  fsComandosImpressao[4]  := #18 ;
+  fsComandosImpressao[5]  := #20 ;
+  fsComandosImpressao[6]  := #22 ;
+  fsComandosImpressao[7]  := #27+#14 ;
+  fsComandosImpressao[8]  := #27+#15 ;
+  fsComandosImpressao[9]  := #27+'W0' ;
+  fsComandosImpressao[10] := #27+'W1' ;
+  fsComandosImpressao[11] := #27+'G0' ;
+  fsComandosImpressao[12] := #27+'G1' ;
+  fsComandosImpressao[13] := #27+'E'+#0 ;
+  fsComandosImpressao[14] := #27+'E'+#1 ;
+  fsComandosImpressao[15] := #27+'-'+#0 ;
+  fsComandosImpressao[16] := #27+'-'+#1 ;
+  fsComandosImpressao[17] := #27+'.'+#0 ;
+  fsComandosImpressao[18] := #27+'.'+#1 ;
+  fsComandosImpressao[19] := #27+'*'+#0 ;
+  fsComandosImpressao[20] := #27+'*'+#1 ;
+  fsComandosImpressao[21] := #27+'@'+#24 ;
+  fsComandosImpressao[22] := #27+'@' ;
+
+  MS := TMemoryStream.Create;
+  try
+     MS.LoadFromFile('d:\temp\mfd_ret.txt');
+     ms.Position := 0 ;
+     SetLength(S,MS.Size);
+     MS.ReadBuffer(pchar(S)^,MS.Size);
+     retcmd := S ;
+  finally
+     MS.Free ;
+  end ;
+
+  RetCmd := RemoveStrings( retcmd, fsComandosImpressao ) ;
+  WriteToTXT('d:\temp\mfd_limpo.txt',RetCmd, False);
 end;
 
 END.

@@ -146,7 +146,7 @@ TACBrECFQuattro = class( TACBrECFClass )
     Procedure CancelaItemVendido( NumItem : Integer ) ; override ;
 
     Procedure LeituraX ; override ;
-    Procedure LeituraXSerial( var Linhas : TStringList) ; override ;
+    Procedure LeituraXSerial( Linhas : TStringList) ; override ;
     Procedure ReducaoZ(DataHora : TDateTime = 0 ) ; override ;
     Procedure AbreRelatorioGerencial(Indice: Integer = 0) ; override ;
     Procedure LinhaRelatorioGerencial( Linha : AnsiString; IndiceBMP: Integer = 0 ) ; override ;
@@ -168,9 +168,9 @@ TACBrECFQuattro = class( TACBrECFClass )
     Procedure LeituraMemoriaFiscal( ReducaoInicial, ReducaoFinal : Integer;
        Simplificada : Boolean = False ); override ;
     Procedure LeituraMemoriaFiscalSerial( DataInicial, DataFinal : TDateTime;
-       var Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
+       Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
     Procedure LeituraMemoriaFiscalSerial( ReducaoInicial, ReducaoFinal : Integer;
-       var Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
+       Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
 
     Procedure AbreGaveta ; override ;
 
@@ -743,7 +743,7 @@ begin
   EnviaComando('13N' , 45 ) ;
 end;
 
-procedure TACBrECFQuattro.LeituraXSerial(var Linhas: TStringList);
+procedure TACBrECFQuattro.LeituraXSerial(Linhas: TStringList);
 begin
   Linhas.Clear ;
   LeBufferSerial('13|', Linhas);
@@ -1386,7 +1386,7 @@ begin
 end;
 
 procedure TACBrECFQuattro.LeituraMemoriaFiscalSerial(ReducaoInicial,
-   ReducaoFinal: Integer; var Linhas : TStringList; Simplificada : Boolean);
+   ReducaoFinal: Integer; Linhas : TStringList; Simplificada : Boolean);
 begin
   // Quattro não possui Leitura Simplificada
   LeBufferSerial( '15' + IntToStrZero(ReducaoInicial,4) +
@@ -1394,7 +1394,7 @@ begin
 end;
 
 procedure TACBrECFQuattro.LeituraMemoriaFiscalSerial(DataInicial,
-  DataFinal: TDateTime; var Linhas : TStringList; Simplificada : Boolean);
+  DataFinal: TDateTime; Linhas : TStringList; Simplificada : Boolean);
 begin
   // Quattro não possui Leitura Simplificada
   LeBufferSerial( '16' + FormatDateTime('ddmmyy',DataInicial)+

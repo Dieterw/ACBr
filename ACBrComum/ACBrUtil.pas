@@ -101,7 +101,7 @@
 unit ACBrUtil;
 
 interface
-Uses SysUtils, Math, Classes,
+Uses SysUtils, Math, Classes, 
     {$IFDEF COMPILER6_UP} StrUtils, DateUtils, {$ELSE} ACBrD5, FileCtrl, {$ENDIF}
     {$ifdef MSWINDOWS}
       Windows, ShellAPI
@@ -138,6 +138,7 @@ function padC(const AString : AnsiString; const nLen : Integer;
 function padS(const AString : AnsiString; const nLen : Integer; Separador : String;
    const Caracter : AnsiChar = ' ') : AnsiString ;
 function RemoveString(const sSubStr, sString: AnsiString): AnsiString;
+function RemoveStrings(const AText: AnsiString; StringsToRemove: array of AnsiString): AnsiString;
 function RandomName(const LenName : Integer = 8) : String ;
 
 { PosEx, retirada de StrUtils.pas do D7, para compatibilizar com o Delphi 6
@@ -475,7 +476,46 @@ begin
 end ;
 
 {-----------------------------------------------------------------------------
-   Remove uma substring de uma string
+   Remove todas ocorrencias do array <StringsToRemove> da String <AText>
+   retornando a String alterada
+ ---------------------------------------------------------------------------- }
+function RemoveStrings(const AText: AnsiString;
+  StringsToRemove: array of AnsiString): AnsiString;
+Var
+  I, J : Integer ;
+  StrToFind : AnsiString ;
+begin
+  Result := AText ;
+  { Verificando parâmetros de Entrada }
+  if (AText = '') or (Length(StringsToRemove) = 0) then
+     exit ;
+
+  { Efetua um Sort no Array de acordo com o Tamanho das Substr a remover,
+    para Pesquisar da Mais Larga a Mais Curta (Pois as Substr Mais Curtas podem
+    estar contidas nas mais Largas) }
+  For I := High( StringsToRemove ) downto Low( StringsToRemove )+1 do
+     for j := Low( StringsToRemove ) to I-1 do
+        if Length(StringsToRemove[J]) > Length(StringsToRemove[J+1]) then
+        begin
+           StrToFind := StringsToRemove[J];
+           StringsToRemove[J] := StringsToRemove[J+1];
+           StringsToRemove[J+1] := StrToFind;
+        end;
+
+  For I := High(StringsToRemove) downto Low(StringsToRemove) do
+  begin
+     StrToFind := StringsToRemove[I] ;
+     J := Pos( StrToFind, Result ) ;
+     while J > 0 do
+     begin
+        Delete( Result, J, Length( StrToFind ) ) ;
+        J := PosEx( StrToFind, Result, J) ;
+     end ;
+  end ;
+end ;
+
+{-----------------------------------------------------------------------------
+   Remove todas ocorrencias <sSubStr> de <sString>, retornando a String alterada
  ---------------------------------------------------------------------------- }
 function RemoveString(const sSubstr, sString: AnsiString): AnsiString;
 begin
@@ -483,7 +523,7 @@ begin
 end;
 
 {-----------------------------------------------------------------------------
-   Remove uma substring de uma string
+   Cria um Nome Aleatório (usado por exemplo, em arquivos temporários) 
  ---------------------------------------------------------------------------- }
 function RandomName(const LenName : Integer ) : String ;
  Var I, N : Integer ;

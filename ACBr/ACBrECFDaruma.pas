@@ -185,6 +185,7 @@ TACBrECFDaruma = class( TACBrECFClass )
     fsCNFVinc     : TACBrECFComprovantesNaoFiscais ;
     fsTipoRel     : Char ;
     fsEsperaFFCR  : Boolean ;
+    fsComandosImpressao : array[0..22] of AnsiString ;
 
     fsModeloDaruma  : TACBrModelosDaruma;
 
@@ -199,7 +200,6 @@ TACBrECFDaruma = class( TACBrECFClass )
     function GetRet244: AnsiString;
     property Ret244 : AnsiString read GetRet244 ;
     function LimpaChr0(const AString: AnsiString): AnsiString;
-    function LimpaChrImpressao(const AString: AnsiString): AnsiString;
     function EnviaComando_ECF_Daruma(cmd: AnsiString): AnsiString;
     Function DocumentosToStr(Documentos : TACBrECFTipoDocumentoSet) : String ;
  protected
@@ -282,7 +282,7 @@ TACBrECFDaruma = class( TACBrECFClass )
       Quantidade : Double) ; override ; // Função implementada até o momento apenas para Daruma
     procedure CancelaDescontoAcrescimoItem( NumItem : Integer) ;override ; // Função implementada até o momento apenas para Daruma
     Procedure LeituraX ; override ;
-    Procedure LeituraXSerial( var Linhas : TStringList) ; override ;
+    Procedure LeituraXSerial( Linhas : TStringList) ; override ;
     Procedure ReducaoZ(DataHora : TDateTime = 0 ) ; override ;
     Procedure AbreRelatorioGerencial(Indice: Integer = 0) ; override ;
     Procedure LinhaRelatorioGerencial( Linha : AnsiString; IndiceBMP: Integer = 0 ) ; override ;
@@ -304,13 +304,13 @@ TACBrECFDaruma = class( TACBrECFClass )
     Procedure LeituraMemoriaFiscal( ReducaoInicial, ReducaoFinal : Integer;
        Simplificada : Boolean = False ); override ;
     Procedure LeituraMemoriaFiscalSerial( DataInicial, DataFinal : TDateTime;
-       var Linhas : TStringList; Simplificada : Boolean = False  ) ; override ;
+       Linhas : TStringList; Simplificada : Boolean = False  ) ; override ;
     Procedure LeituraMemoriaFiscalSerial( ReducaoInicial, ReducaoFinal : Integer;
-       var Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
+       Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
     Procedure LeituraMFDSerial( DataInicial, DataFinal : TDateTime;
-       var Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
+       Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
     Procedure LeituraMFDSerial( COOInicial, COOFinal : Integer;
-       var Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
+       Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
     Procedure IdentificaOperador ( Nome: String); override;
     Procedure IdentificaPAF( Linha1, Linha2 : String) ; override ;
     Function RetornaInfoECF( Registrador : String ) : AnsiString; override ;
@@ -397,6 +397,31 @@ begin
 
   fpModeloStr := 'Daruma' ;
   fpRFDID     := 'DR' ;
+
+  { Criando Lista de String com comandos de Impressao a Remover de Leituras }
+  fsComandosImpressao[0]  := #0 ;
+  fsComandosImpressao[1]  := #3 ;
+  fsComandosImpressao[2]  := #14 ;
+  fsComandosImpressao[3]  := #15 ;
+  fsComandosImpressao[4]  := #18 ;
+  fsComandosImpressao[5]  := #20 ;
+  fsComandosImpressao[6]  := #22 ;
+  fsComandosImpressao[7]  := #27+#14 ;
+  fsComandosImpressao[8]  := #27+#15 ;
+  fsComandosImpressao[9]  := #27+'W0' ;
+  fsComandosImpressao[10] := #27+'W1' ;
+  fsComandosImpressao[11] := #27+'G0' ;
+  fsComandosImpressao[12] := #27+'G1' ;
+  fsComandosImpressao[13] := #27+'E'+#0 ;
+  fsComandosImpressao[14] := #27+'E'+#1 ;
+  fsComandosImpressao[15] := #27+'-'+#0 ;
+  fsComandosImpressao[16] := #27+'-'+#1 ;
+  fsComandosImpressao[17] := #27+'.'+#0 ;
+  fsComandosImpressao[18] := #27+'.'+#1 ;
+  fsComandosImpressao[19] := #27+'*'+#0 ;
+  fsComandosImpressao[20] := #27+'*'+#1 ;
+  fsComandosImpressao[21] := #27+'@'+#24 ;
+  fsComandosImpressao[22] := #27+'@' ;
 end;
 
 destructor TACBrECFDaruma.Destroy;
@@ -1329,7 +1354,7 @@ begin
   fsRet244 := '' ;
 end;
 
-procedure TACBrECFDaruma.LeituraXSerial(var Linhas: TStringList);
+procedure TACBrECFDaruma.LeituraXSerial(Linhas: TStringList);
  Var RetCmd : AnsiString ;
 begin
   Linhas.Clear ;
@@ -1337,7 +1362,7 @@ begin
   begin
      fsEsperaFFCR := True ;
      RetCmd := EnviaComando(FS + 'F' + #235 + '1', 10) ;
-     RetCmd := LimpaChrImpressao( RetCmd ) ;  { Troca #0 dentro da String por espaços }
+     RetCmd := RemoveStrings( RetCmd, fsComandosImpressao ) ;
      Linhas.Text := RetCmd ;
      fsRet244 := '' ;
   end ;
@@ -2674,7 +2699,7 @@ begin
 end;
 
 procedure TACBrECFDaruma.LeituraMemoriaFiscalSerial(ReducaoInicial,
-   ReducaoFinal: Integer; var Linhas: TStringList; Simplificada : Boolean);
+   ReducaoFinal: Integer; Linhas: TStringList; Simplificada : Boolean);
  Var Espera : Integer ;
      RetCmd : AnsiString ;
      Flag   : Char ;
@@ -2693,13 +2718,13 @@ begin
                             IntToStrZero(ReducaoInicial,6)+
                             IntToStrZero(ReducaoFinal  ,6), Espera ) ;
 
-  RetCmd := LimpaChrImpressao( RetCmd ) ;  { Troca #0 dentro da String por espaços }
+  RetCmd := RemoveStrings( RetCmd, fsComandosImpressao ) ;
   Linhas.Clear ;
   Linhas.Text := RetCmd ;
 end;
 
 procedure TACBrECFDaruma.LeituraMemoriaFiscalSerial(DataInicial,
-   DataFinal: TDateTime; var Linhas: TStringList; Simplificada : Boolean);
+   DataFinal: TDateTime; Linhas: TStringList; Simplificada : Boolean);
  Var Espera : Integer ;
      RetCmd : AnsiString ;
      Flag   : Char ;
@@ -2717,7 +2742,7 @@ begin
     RetCmd := EnviaComando(ESC + #209 + Flag +
                             FormatDateTime('ddmmyy',DataInicial)+
                             FormatDateTime('ddmmyy',DataFinal), Espera ) ;
-  RetCmd := LimpaChrImpressao( RetCmd ) ;  { Troca #0 dentro da String por espaços }
+  RetCmd := RemoveStrings( RetCmd, fsComandosImpressao ) ;
   Linhas.Clear ;
   Linhas.Text := RetCmd ;
 end;
@@ -2753,7 +2778,7 @@ begin
 end ;
 
 procedure TACBrECFDaruma.LeituraMFDSerial(COOInicial, COOFinal: Integer;
-  var Linhas: TStringList; Documentos : TACBrECFTipoDocumentoSet);
+  Linhas: TStringList; Documentos : TACBrECFTipoDocumentoSet);
  Var Espera : Integer;
      RetCmd : AnsiString ;
 begin
@@ -2763,7 +2788,7 @@ begin
     grandes demais p/ um TimeOut de 300 seg., aconselha-se fazer a leitura por
     faixas de 50 em 50 COOs ( Aprox. 220 COOs em 8min em uma FS600 V.1.03) }
 
-  Espera := 20 + (COOFinal - COOInicial) * 2 ;
+  Espera := 20 + ((COOFinal - COOInicial) * 5) ;
   fsEsperaFFCR  :=  True ;
 
   RetCmd := EnviaComando( FS + 'R' + #201 + '024' +
@@ -2771,18 +2796,20 @@ begin
                           IntToStrZero(COOFinal  ,6) + '12' +
                           DocumentosToStr(Documentos), Espera );
 
-  RetCmd := LimpaChrImpressao( RetCmd ) ;  { Troca #0 dentro da String por espaços }
+//WriteToTXT('d:\temp\mfd_ret.txt',RetCmd, False);
+  RetCmd := RemoveStrings( RetCmd, fsComandosImpressao ) ;
+//WriteToTXT('d:\temp\mfd_limpo.txt',RetCmd, False);
   Linhas.Clear ;
   Linhas.Text := RetCmd ;
 end;
 
 procedure TACBrECFDaruma.LeituraMFDSerial(DataInicial,
-  DataFinal: TDateTime; var Linhas: TStringList;
+  DataFinal: TDateTime; Linhas: TStringList;
   Documentos : TACBrECFTipoDocumentoSet);
  Var Espera : Integer;
      RetCmd : AnsiString ;
 begin
-  Espera := 20 + (DaysBetween(DataInicial,DataFinal)) * 2 ;
+  Espera := 20 + ((DaysBetween(DataInicial,DataFinal)) * 30) ;
   fsEsperaFFCR := True ;
   
   RetCmd := EnviaComando( FS + 'R' + #201 + '024' +
@@ -2790,7 +2817,9 @@ begin
                           FormatDateTime('ddmmyy',DataFinal) + '11' +
                           DocumentosToStr(Documentos), Espera );
 
-  RetCmd := LimpaChrImpressao( RetCmd ) ;  { Troca #0 dentro da String por espaços }
+//WriteToTXT('d:\temp\mfd_ret.txt',RetCmd, False);
+  RetCmd := RemoveStrings( RetCmd, fsComandosImpressao ) ;
+//WriteToTXT('d:\temp\mfd_limpo.txt',RetCmd, False);
   Linhas.Clear ;
   Linhas.Text := RetCmd ;
 end;
@@ -2800,47 +2829,6 @@ begin
   // Substituindo #0 por ' ' //
   Result := StringReplace( AString, #0, ' ', [rfReplaceAll] ) ;
 end ;
-
-function TACBrECFDaruma.LimpaChrImpressao(const AString: AnsiString): AnsiString;
-begin
-  Result := AString  ;
-
-  // Removendo comandos de Impressão //
-  if pos( #14, Result ) > 0 then      // Liga Lagura Dupla 1 linha
-  begin
-     Result := StringReplace( Result, #27+#14, '', [rfReplaceAll] ) ;
-     Result := StringReplace( Result, #14, '', [rfReplaceAll] ) ;
-     Result := StringReplace( Result, #20, '', [rfReplaceAll] ) ;  // Desliga o modo dupla largura por uma linha
-  end ;
-
-  if pos( #15, Result ) > 0 then      // Liga o modo condensado
-  begin
-     Result := StringReplace( Result, #27+#15, '', [rfReplaceAll] ) ;
-     Result := StringReplace( Result, #15, '', [rfReplaceAll] ) ;
-     Result := StringReplace( Result, #18, '', [rfReplaceAll] ) ;  // Desliga o modo condensado
-  end ;
-
-  if pos( #27, Result ) > 0 then      // Demais controles
-  begin
-     Result := StringReplace( Result, #27+'W0', '', [rfReplaceAll] ) ;  // Desliga modo dupla largura
-     Result := StringReplace( Result, #27+'W1', '', [rfReplaceAll] ) ;  // liga modo dupla largura
-     Result := StringReplace( Result, #27+'G0', '', [rfReplaceAll] ) ;  // Desliga modo enfatizado
-     Result := StringReplace( Result, #27+'G1', '', [rfReplaceAll] ) ;  // liga modo enfatizado
-     Result := StringReplace( Result, #27+'E0', '', [rfReplaceAll] ) ;  // Desliga modo negrito
-     Result := StringReplace( Result, #27+'E1', '', [rfReplaceAll] ) ;  // liga modo negrito
-     Result := StringReplace( Result, #27+'-0', '', [rfReplaceAll] ) ;  // Desliga modo sublinhado
-     Result := StringReplace( Result, #27+'-1', '', [rfReplaceAll] ) ;  // liga modo sublinhado
-  end ;
-
-  Result := StringReplace( Result, #0 , '', [rfReplaceAll] ) ;  // NUL
-  Result := StringReplace( Result, #3 , '', [rfReplaceAll] ) ;  // ETX
-  Result := StringReplace( Result, #22, '', [rfReplaceAll] ) ;  // SYN
-
-  // DEbug //
-//  WriteToTXT('D:\TEMP\NORMAL.TXT',AString, False);
-//  WriteToTXT('D:\TEMP\LIMPO.TXT',Result, False);
-end;
-
 
 function TACBrECFDaruma.GetComprovantesNaoFiscaisVinculado: TACBrECFComprovantesNaoFiscais;
 begin

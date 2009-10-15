@@ -178,7 +178,7 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
     Procedure CancelaNaoFiscal ; override ;
 
     Procedure LeituraX ; override ;
-    Procedure LeituraXSerial( var Linhas : TStringList) ; override ;
+    Procedure LeituraXSerial( Linhas : TStringList) ; override ;
     Procedure ReducaoZ(DataHora : TDateTime = 0 ) ; override ;
     Procedure AbreRelatorioGerencial(Indice: Integer = 0) ; override ;
     Procedure LinhaRelatorioGerencial( Linha : AnsiString; IndiceBMP: Integer = 0 ) ; override ;
@@ -198,9 +198,9 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
     Procedure LeituraMemoriaFiscal( ReducaoInicial, ReducaoFinal : Integer;
        Simplificada : Boolean = False ); override ;
     Procedure LeituraMemoriaFiscalSerial( DataInicial, DataFinal : TDateTime;
-       var Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
+       Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
     Procedure LeituraMemoriaFiscalSerial( ReducaoInicial, ReducaoFinal : Integer;
-       var Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
+       Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
     Procedure IdentificaPAF( Linha1, Linha2 : String) ; override ;
     Function RetornaInfoECF( Registrador: String) : AnsiString; override ;
 
@@ -962,7 +962,7 @@ begin
   EnviaComando( '15' ) ;
 end;
 
-procedure TACBrECFSwedaSTX.LeituraXSerial(var Linhas: TStringList);
+procedure TACBrECFSwedaSTX.LeituraXSerial(Linhas: TStringList);
  Var RetCmd : AnsiString ;
 begin
   RetCmd := EnviaComando('15|TXT|CPWIN') ;
@@ -1199,12 +1199,12 @@ begin
 end;
 
 procedure TACBrECFSwedaSTX.LeituraMemoriaFiscalSerial(ReducaoInicial,
-   ReducaoFinal: Integer; var Linhas : TStringList; Simplificada : Boolean);
+   ReducaoFinal: Integer; Linhas : TStringList; Simplificada : Boolean);
 begin
 end;
 
 procedure TACBrECFSwedaSTX.LeituraMemoriaFiscalSerial(DataInicial,
-   DataFinal: TDateTime; var Linhas : TStringList; Simplificada : Boolean);
+   DataFinal: TDateTime; Linhas : TStringList; Simplificada : Boolean);
 begin
 end;
 

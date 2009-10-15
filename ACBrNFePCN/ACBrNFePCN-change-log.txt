@@ -52,6 +52,7 @@ Alterações   15/10/09
 ---------------
 [*] DANFE em RAVE ARQUIVO
     - Quando a TAG qVol tiver valor 0 (zero) a mesma não será impressa no DANFE.
+[-] Arquivo DANFE_Rave513.rav para o DANFE em Rave Arquivo, não estava imprimindo mais de uma duplicata quando ia reimprimir um XML.
 
 Alterações   14/10/09
 ---------------

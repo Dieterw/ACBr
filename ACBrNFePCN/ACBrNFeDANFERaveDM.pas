@@ -507,11 +507,11 @@ begin
             for indexCampo:=0 to Length(Campos)-1 do
                vTemp.Add(Trim(Campos[indexCampo]));
             TmpStr := vTemp.Text;
-            {$IFDEF VER200} //Delphi2009
+            {$IF CompilerVersion >= 20} //Igual ou Superior ao Delphi2009
                Size := Length(TmpStr) * 2;
             {$ELSE}
                Size := Length(TmpStr);
-            {$ENDIF}
+            {$IFEND}
             BufferXProd := PAnsiChar(TmPStr);
             Connection.WriteBlobData(BufferXProd^, Size);
          finally
@@ -526,11 +526,11 @@ begin
                for IndexCampo2:=0 to Length(Campos2)-1 do
                   vTemp2.Add(Trim(Campos2[IndexCampo2]));
                TmpStr := vTemp2.Text;
-               {$IFDEF VER200} //Delphi2009
+               {$IF CompilerVersion >= 20} //Igual ou Superior ao Delphi2009
                   Size := Length(TmpStr) * 2;
                {$ELSE}
                   Size := Length(TmpStr);
-               {$ENDIF}
+               {$IFEND}
                BufferXInfProd := PAnsiChar(TmPStr);
             end
             else
@@ -1088,11 +1088,11 @@ begin
             vTemp.Add(Campos[indexCampo]);
          wLinhasObs:=TotalObS(vTemp.Text);
          TmpStr := vTemp.Text;
-         {$IFDEF VER200} //Delphi2009
+         {$IF CompilerVersion >= 20} //Igual ou Superior ao Delphi2009
             Size := Length(TmpStr) * 2;
          {$ELSE}
             Size := Length(TmpStr);
-         {$ENDIF}
+         {$IFEND}
          BufferInfCpl:=PAnsiChar(TmpStr);
       end
       else

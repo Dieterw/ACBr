@@ -105,6 +105,9 @@ type
 
 type
 { Componente ACBrValidador }
+
+{ TACBrValidador }
+
 TACBrValidador = class( TACBrComponent )
   private
     { Propriedades do Componente ACBrValidador }
@@ -122,6 +125,7 @@ TACBrValidador = class( TACBrComponent )
     fsExibeDigitoCorreto: Boolean;
     fsDigitoCalculado: AnsiString;
 
+    function GetMsgErro : String;
     procedure SetDocumento(const Value: AnsiString);
     procedure SetComplemento(const Value: AnsiString);
     Function LimpaDocto(const AString : AnsiString) : AnsiString ;
@@ -136,11 +140,11 @@ TACBrValidador = class( TACBrComponent )
     procedure ValidarCartaoCredito ;
   public
     constructor Create(AOwner: TComponent); override;
-    Destructor Destroy  ; override ;
+    Destructor Destroy  ; override;
 
     property DoctoValidado : AnsiString read fsDocto ;
 
-    Property MsgErro : String read fsMsgErro ;
+    Property MsgErro : String read GetMsgErro ;
     Property Modulo  : TACBrCalcDigito read fsModulo write fsModulo ;
     Property DigitoCalculado : AnsiString read fsDigitoCalculado ;
 
@@ -212,6 +216,11 @@ begin
   fsDigitoCalculado := '' ;
 
   fsDocto := LimpaDocto( fsDocumento ) ;
+end;
+
+function TACBrValidador.GetMsgErro : String;
+begin
+   Result := ACBrStr(fsMsgErro);
 end;
 
 Function TACBrValidador.LimpaDocto(const AString : AnsiString) : AnsiString ;

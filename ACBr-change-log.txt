@@ -95,6 +95,13 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Versão 0.8.9b  17/10/09 (DSA)
+--ACBrValidador --
+[*]    ACBrValidador.MsgErro agora usa ACBrStr() para conversão de UTF8 se necessário
+
+-- ACBrCalculadora --
+[+]    Inclusão de Novo Form específico para Lazarus, usando OptimalFill no Display
+
 Versão 0.8.9b  15/10/09 (DSA)
 -- ACBrECF --
 [*]    Modificada a assinatura dos comandos:

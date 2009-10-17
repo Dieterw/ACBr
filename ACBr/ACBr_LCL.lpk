@@ -26,7 +26,7 @@
 "/>
     <License Value="LGPL
 "/>
-    <Version Minor="8" Release="8"/>
+    <Version Minor="8" Release="9"/>
     <Files Count="21">
       <Item1>
         <Filename Value="ACBrCHQ.pas"/>

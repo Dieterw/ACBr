@@ -206,7 +206,7 @@ function SomaAscII(const AString : AnsiString): Integer;
 function StringCrc16(AString : AnsiString ) : word;
 
 Function FilesExists(const FileMask: String) : Boolean ;
-Procedure DeleteFiles(const FileMask: String)  ;
+Procedure DeleteFiles(const FileMask: String; RaiseExceptionOnFail : Boolean = True)  ;
 Procedure TryDeleteFile(const AFile: String; WaitTime: Integer = 100)  ;
 function CopyFileTo(const AFromFileName, AToFileName : String;
    const AFailIfExists : Boolean = false) : Boolean;
@@ -1346,7 +1346,7 @@ end ;
   Semelhante a DeleteFile, mas permite uso de mascaras Ex:(*.BAK, TEST*.PX, etc)
   Gera Exceção se não conseguir apagar algum dos arquivos.
  ---------------------------------------------------------------------------- }
-Procedure DeleteFiles(const FileMask: string)  ;
+Procedure DeleteFiles(const FileMask: string; RaiseExceptionOnFail : Boolean = True)  ;
 var SearchRec : TSearchRec ;
     RetFind   : Integer ;
     LastFile  : string ;
@@ -1363,7 +1363,8 @@ begin
         if pos(LastFile, '..') = 0 then    { ignora . e .. }
         begin
            if not SysUtils.DeleteFile(Path + LastFile) then
-             raise Exception.Create('Erro ao apagar: ' + Path + LastFile);
+             if RaiseExceptionOnFail then
+               raise Exception.Create('Erro ao apagar: ' + Path + LastFile);
         end ;
 
         SysUtils.FindNext(SearchRec) ;

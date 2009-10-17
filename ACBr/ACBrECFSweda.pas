@@ -1058,7 +1058,7 @@ begin
     Status    := UpperCase(copy(RetCmd,I,1)) ;
     Transacao := UpperCase(Trim(copy(RetCmd,I+1,8))) ;
 
-    if (Status <> 'C') then
+    if not (Status[1] in ['C','E']) then
      begin
       if (Transacao = 'N.FISCAL') and (Receb > 0) then
         fpEstado := estNaoFiscal
@@ -1079,7 +1079,7 @@ begin
         fpEstado := estRequerZ
       else if FlagX = 'F' then
         fpEstado := estRequerX
-      else if Status[1] in ['C','E'] then
+      else 
         fpEstado := estLivre ;
     end ;
   finally

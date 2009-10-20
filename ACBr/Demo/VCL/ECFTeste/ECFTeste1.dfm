@@ -1,7 +1,7 @@
 object Form1: TForm1
   Left = 191
   Top = 113
-  Width = 440
+  Width = 552
   Height = 422
   VertScrollBar.Range = 59
   ActiveControl = PageControl1
@@ -25,8 +25,8 @@ object Form1: TForm1
   TextHeight = 13
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 349
-    Width = 432
+    Top = 347
+    Width = 536
     Height = 19
     Panels = <
       item
@@ -39,8 +39,8 @@ object Form1: TForm1
   object PageControl1: TPageControl
     Left = 0
     Top = 0
-    Width = 432
-    Height = 309
+    Width = 536
+    Height = 307
     ActivePage = TabSheet4
     Align = alClient
     TabOrder = 1
@@ -48,10 +48,10 @@ object Form1: TForm1
       Caption = 'ECF'
       ImageIndex = 3
       DesignSize = (
-        424
-        281)
+        528
+        279)
       object SbArqLog: TSpeedButton
-        Left = 393
+        Left = 505
         Top = 216
         Width = 23
         Height = 22
@@ -111,7 +111,7 @@ object Form1: TForm1
         Caption = 'Operador:'
       end
       object Label21: TLabel
-        Left = 226
+        Left = 338
         Top = 141
         Width = 124
         Height = 13
@@ -220,7 +220,7 @@ object Form1: TForm1
       object mMsg: TMemo
         Left = 11
         Top = 160
-        Width = 198
+        Width = 310
         Height = 41
         Anchors = [akLeft, akTop, akRight]
         ScrollBars = ssVertical
@@ -230,7 +230,7 @@ object Form1: TForm1
       object edLog: TEdit
         Left = 56
         Top = 216
-        Width = 337
+        Width = 449
         Height = 21
         Cursor = crIBeam
         Anchors = [akLeft, akTop, akRight]
@@ -264,7 +264,7 @@ object Form1: TForm1
         OnChange = seIntervaloAposComandoChange
       end
       object btSerial: TBitBtn
-        Left = 321
+        Left = 433
         Top = 248
         Width = 88
         Height = 28
@@ -324,7 +324,7 @@ object Form1: TForm1
         OnChange = edOperadorChange
       end
       object edMsgTrabalhando: TEdit
-        Left = 224
+        Left = 336
         Top = 160
         Width = 193
         Height = 21
@@ -474,8 +474,8 @@ object Form1: TForm1
       object PageControl2: TPageControl
         Left = 0
         Top = 55
-        Width = 424
-        Height = 226
+        Width = 528
+        Height = 224
         ActivePage = TabSheet6
         Align = alClient
         TabOrder = 1
@@ -692,16 +692,16 @@ object Form1: TForm1
       object Panel3: TPanel
         Left = 0
         Top = 0
-        Width = 424
+        Width = 528
         Height = 55
         Align = alTop
         BevelOuter = bvNone
         TabOrder = 0
         DesignSize = (
-          424
+          528
           55)
         object sbDirRFD: TSpeedButton
-          Left = 391
+          Left = 503
           Top = 23
           Width = 23
           Height = 22
@@ -735,7 +735,7 @@ object Form1: TForm1
         object edDirRFD: TEdit
           Left = 134
           Top = 23
-          Width = 257
+          Width = 369
           Height = 18
           Cursor = crIBeam
           Anchors = [akLeft, akTop, akRight]
@@ -755,8 +755,8 @@ object Form1: TForm1
       Caption = 'C'#243'digo de Barras'
       ImageIndex = 5
       DesignSize = (
-        424
-        281)
+        528
+        279)
       object Label23: TLabel
         Left = 101
         Top = 0
@@ -918,7 +918,7 @@ object Form1: TForm1
         TabOrder = 5
       end
       object BitBtn6: TBitBtn
-        Left = 301
+        Left = 413
         Top = 248
         Width = 121
         Height = 28
@@ -931,7 +931,7 @@ object Form1: TForm1
         OnClick = BitBtn6Click
       end
       object BitBtn7: TBitBtn
-        Left = 204
+        Left = 316
         Top = 248
         Width = 90
         Height = 28
@@ -1208,8 +1208,8 @@ object Form1: TForm1
   end
   object pBotoes: TPanel
     Left = 0
-    Top = 309
-    Width = 432
+    Top = 307
+    Width = 536
     Height = 40
     Cursor = crHelp
     Hint = 'Sobre o ACBrMonitor ?'
@@ -1217,12 +1217,12 @@ object Form1: TForm1
     TabOrder = 2
     TabStop = True
     DesignSize = (
-      432
+      536
       40)
     object Image1: TImage
       Left = 1
       Top = 1
-      Width = 430
+      Width = 534
       Height = 38
       Align = alClient
       Picture.Data = {
@@ -1428,7 +1428,7 @@ object Form1: TForm1
       OnClick = Image1Click
     end
     object bAtivar: TBitBtn
-      Left = 323
+      Left = 435
       Top = 4
       Width = 96
       Height = 32
@@ -1863,6 +1863,17 @@ object Form1: TForm1
         object PorDatadeMovimento1: TMenuItem
           Caption = 'Por Data de Movimento'
           OnClick = PorDatadeMovimento1Click
+        end
+      end
+      object LeituraSerialMFD1: TMenuItem
+        Caption = 'Leitura MFD Serial DLL'
+        object PorCOO3: TMenuItem
+          Caption = 'Por COO'
+          OnClick = PorCOO3Click
+        end
+        object PorPeriodo2: TMenuItem
+          Caption = 'Por Periodo'
+          OnClick = PorPeriodo2Click
         end
       end
     end

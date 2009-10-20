@@ -94,25 +94,52 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.8.9b  20/10/09 (DSA)
+-- ACBrECF --
+[+]    Implementados métodos para permitir o uso da DLL do fabricante na Leitura da MFD
+	   Implementação nas classes filhas *DEVE* usar carga dinâmica da DLL, para não criar
+	   dependência Estática da DLL do fabricante no componente. 
+	   (Veja o exemplo de implementação na Classe ACBrECFEpson.pas )
+	   
+    Procedure LeituraMFDSerialDLL( DataInicial, DataFinal : TDateTime;
+       NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ;
+    Procedure LeituraMFDSerialDLL( COOInicial, COOFinal : Integer;
+       NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ;
+	   
+-- ACBrECFBematech --
+[-]    Corrigido calculo do intervalo tempo de Espera em LeituraMFDSerial por COO
+
+-- ACBrECFEpson --
+[+]    Implementado LeituraMFDSerialDLL por periodo e COO usando carga dinâmica da DLL
+
+-- ECFTeste --
+[+]    Adicionado opção no Menu "Relatório -> Leitura MFD Serial DLL"
+
+-- ACBrCalculadora --
+[*]    Criação do Form do Componente modificada para usar Owner como Application ao
+       invez de Nil
+   
 
 Versão 0.8.9b  17/10/09 (DSA)
 --ACBrValidador --
-[*]    ACBrValidador.MsgErro agora usa ACBrStr() para conversão de UTF8 se necessário
+[*]    ACBrValidador.MsgErro agora usa ACBrStr() para conversão de UTF8 se
+       necessário
 
 -- Lazarus --
-[+]    Inclusão de Novo Form LCalculadora.pas específico para Lazarus, usando OptimalFill no Display
-[*]    Ajuste no número de versão do Package 
+[+]    Inclusão de Novo Form LCalculadora.pas específico para Lazarus, usando
+       OptimalFill no Display
+[*]    Ajuste no número de versão do Package
 
 -- ACBrUtil --
-[*]    Adicionado Parâmetro "RaiseExceptionOnFail" na Procedure 
+[*]    Adicionado Parâmetro "RaiseExceptionOnFail" na Procedure
        DeleteFiles(const FileMask: String; RaiseExceptionOnFail : Boolean = True)  ;
-	   Se for informado como False, não irá disparar Exception quando não conseguir
-	   apagar determnado arquivo, e continuará o Loop para apagar demais arquivos 
-	   correpondentes a "FileMask". Se omitido, assume True (default)
+       Se for informado como False, não irá disparar Exception quando não conseguir
+       apagar determinado arquivo, e continuará o Loop para apagar demais arquivos
+       correpondentes a "FileMask". Se omitido, assume True (default)
 
 -- ACBrECFSweda --
 [-]    Corrigido Bug na detecção do Status do ECF, quando o ECF sinalizava Status = 'E'
-	   www.forumweb.com.br/foruns/index.php?/topic/78701-ecf-sweda-st120-retornando-estdesconhecido/	
+       www.forumweb.com.br/foruns/index.php?/topic/78701-ecf-sweda-st120-retornando-estdesconhecido/	
  	   
 Versão 0.8.9b  15/10/09 (DSA)
 -- ACBrECF --

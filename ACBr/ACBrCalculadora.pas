@@ -139,7 +139,7 @@ var
   FrCalculadora : TFrCalculadora ;
 begin
   //Result := False;
-  FrCalculadora := TFrCalculadora.Create( nil ) ;
+  FrCalculadora := TFrCalculadora.Create( Application ) ;
   try
      if FCentraliza then
         FrCalculadora.Position := poMainFormCenter

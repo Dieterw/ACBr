@@ -1,13 +1,15 @@
 object FrCalculadora: TFrCalculadora
-  Left = 423
+  Left = 422
   Height = 290
-  Top = 179
+  Top = 178
   Width = 242
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsDialog
   Caption = 'Calculadora'
   ClientHeight = 290
   ClientWidth = 242
+  Constraints.MaxHeight = 290
+  Constraints.MaxWidth = 242
   Constraints.MinHeight = 290
   Constraints.MinWidth = 242
   KeyPreview = True
@@ -15,7 +17,6 @@ object FrCalculadora: TFrCalculadora
   OnKeyPress = FormKeyPress
   OnKeyUp = FormKeyUp
   PopupMenu = PopupMenu1
-  Position = poDesktopCenter
   ShowHint = True
   LCLVersion = '0.9.29'
   object b1: TButton

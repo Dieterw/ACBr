@@ -1860,7 +1860,7 @@ begin
     faixas de 50 em 50 COOs ( Aprox. 220 COOs em 8min em uma FS600 V.1.03) }
 
   BytesResp := -1 ; { espera por ETX }
-  Espera := 30 + (COOInicial - COOFinal) * 2 ;
+  Espera := 30 + (COOFinal - COOInicial) * 2 ;
   UsuarioECF := '001' ;
 
   Linhas.Clear ;

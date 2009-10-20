@@ -546,6 +546,7 @@ TACBrECF = class( TACBrComponent )
     Procedure LeituraMemoriaFiscalSerial( ReducaoInicial, ReducaoFinal : Integer;
        NomeArquivo : String; Simplificada : Boolean = False ) ; overload ;
 
+    procedure TestaSeE_MFD;
     Procedure LeituraMFDSerial( DataInicial, DataFinal : TDateTime;
        Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ;
     Procedure LeituraMFDSerial( COOInicial, COOFinal : Integer;
@@ -553,6 +554,10 @@ TACBrECF = class( TACBrComponent )
     Procedure LeituraMFDSerial( DataInicial, DataFinal : TDateTime;
        NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ;
     Procedure LeituraMFDSerial( COOInicial, COOFinal : Integer;
+       NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ;
+    Procedure LeituraMFDSerialDLL( DataInicial, DataFinal : TDateTime;
+       NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ;
+    Procedure LeituraMFDSerialDLL( COOInicial, COOFinal : Integer;
        NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ;
 
     Procedure IdentificaOperador( Nome : String) ;
@@ -2491,11 +2496,16 @@ begin
 end;
 
 
-procedure TACBrECF.LeituraMFDSerial(DataInicial, DataFinal: TDateTime;
-  Linhas: TStringList; Documentos : TACBrECFTipoDocumentoSet );
+procedure TACBrECF.TestaSeE_MFD ;
 begin
   if not MFD then
      raise Exception.Create( ACBrStr('ECF '+fsECF.ModeloStr+' não é MFD') ) ;
+end ;
+
+procedure TACBrECF.LeituraMFDSerial(DataInicial, DataFinal: TDateTime;
+  Linhas: TStringList; Documentos : TACBrECFTipoDocumentoSet );
+begin
+  TestaSeE_MFD ;
 
   ComandoLOG := 'LeituraMFDSerial( '+DateToStr(DataInicial)+' , '+
                     DateToStr(DataFinal)+' , Linhas) ';
@@ -2505,19 +2515,19 @@ end;
 procedure TACBrECF.LeituraMFDSerial(COOInicial, COOFinal: Integer;
   Linhas: TStringList; Documentos : TACBrECFTipoDocumentoSet );
 begin
-  if not MFD then
-     raise Exception.Create( ACBrStr('ECF '+fsECF.ModeloStr+' não é MFD') ) ;
+  TestaSeE_MFD ;
 
   ComandoLOG := 'LeituraMFDSerial( '+IntToStr(COOInicial)+' , '+
                     IntToStr(COOFinal)+' , Linhas) ';
   fsECF.LeituraMFDSerial( COOInicial, COOFinal, Linhas, Documentos ) ;
 end;
 
-
 procedure TACBrECF.LeituraMFDSerial(DataInicial, DataFinal: TDateTime;
   NomeArquivo: String; Documentos: TACBrECFTipoDocumentoSet);
  Var AStringList : TStringList ;
 begin
+  TestaSeE_MFD ;
+
   ComandoLOG := 'LeituraMFDSerial( '+DateToStr(DataInicial)+' , '+
                     DateToStr(DataFinal)+' , '+NomeArquivo+' ) ';
   AStringList := TStringList.Create ;
@@ -2534,6 +2544,8 @@ procedure TACBrECF.LeituraMFDSerial(COOInicial, COOFinal: Integer;
   NomeArquivo: String; Documentos: TACBrECFTipoDocumentoSet);
  Var AStringList : TStringList ;
 begin
+  TestaSeE_MFD ;
+
   ComandoLOG := 'LeituraMFDSerial( '+IntToStr(COOInicial)+' , '+
                     IntToStr(COOFinal)+' , '+NomeArquivo+' ) ';
   AStringList := TStringList.Create ;
@@ -2546,6 +2558,25 @@ begin
   end ;
 end;
 
+procedure TACBrECF.LeituraMFDSerialDLL(DataInicial, DataFinal: TDateTime;
+  NomeArquivo: String; Documentos: TACBrECFTipoDocumentoSet);
+begin
+  TestaSeE_MFD ;
+
+  ComandoLOG := 'LeituraMFDSerialDLL( '+DateToStr(DataInicial)+' , '+
+                    DateToStr(DataFinal)+' , '+NomeArquivo+' ) ';
+  fsECF.LeituraMFDSerialDLL( DataInicial, DataFinal, NomeArquivo, Documentos ) ;
+end;
+
+procedure TACBrECF.LeituraMFDSerialDLL(COOInicial, COOFinal: Integer;
+  NomeArquivo: String; Documentos: TACBrECFTipoDocumentoSet);
+begin
+  TestaSeE_MFD ;
+
+  ComandoLOG := 'LeituraMFDSerialDLL( '+IntToStr(COOInicial)+' , '+
+                    IntToStr(COOFinal)+' , '+NomeArquivo+' ) ';
+  fsECF.LeituraMFDSerialDLL( COOInicial, COOFinal, NomeArquivo, Documentos ) ;
+end;
 
 
 procedure TACBrECF.ImprimeCheque(Banco: String; Valor: Double; Favorecido,

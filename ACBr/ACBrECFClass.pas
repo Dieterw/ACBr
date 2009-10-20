@@ -778,10 +778,16 @@ TACBrECFClass = class
     Procedure LeituraMemoriaFiscalSerial( ReducaoInicial, ReducaoFinal: Integer;
        Linhas : TStringList; Simplificada : Boolean = False ) ;
        overload ; virtual ;
+
     Procedure LeituraMFDSerial( DataInicial, DataFinal : TDateTime;
        Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; virtual ;
     Procedure LeituraMFDSerial( COOInicial, COOFinal : Integer;
        Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; virtual ;
+    Procedure LeituraMFDSerialDLL( DataInicial, DataFinal : TDateTime;
+       NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ; virtual ;
+    Procedure LeituraMFDSerialDLL( COOInicial, COOFinal : Integer;
+       NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ; virtual ;
+
     Procedure IdentificaOperador(Nome : String); virtual;
     Procedure IdentificaPAF( Linha1, Linha2 : String) ; virtual ;
     Function RetornaInfoECF( Registrador: String) : AnsiString; Virtual ;
@@ -1732,6 +1738,20 @@ procedure TACBrECFClass.LeituraMFDSerial(COOInicial,
 begin
   ErroAbstract('LeituraMFDSerial');
 end;
+
+procedure TACBrECFClass.LeituraMFDSerialDLL(DataInicial,
+  DataFinal: TDateTime; NomeArquivo: String;
+  Documentos: TACBrECFTipoDocumentoSet);
+begin
+  ErroAbstract('LeituraMFDSerialDLL');
+end;
+
+procedure TACBrECFClass.LeituraMFDSerialDLL(COOInicial, COOFinal: Integer;
+  NomeArquivo: String; Documentos: TACBrECFTipoDocumentoSet);
+begin
+  ErroAbstract('LeituraMFDSerialDLL');
+end;
+
 
 { Essa função PODE ser override por cada Classe Filha criada }
 procedure TACBrECFClass.ImprimeCheque(Banco: String; Valor: Double; Favorecido,

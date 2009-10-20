@@ -5055,6 +5055,17 @@ object Form1: TForm1
           OnClick = PorPeriodo1Click
         end
       end
+      object LeituraMFDSerialDLL1: TMenuItem
+        Caption = 'Leitura MFD Serial DLL'
+        object PorCOO2: TMenuItem
+          Caption = 'Por COO'
+          OnClick = PorCOO2Click
+        end
+        object PorPeriodo2: TMenuItem
+          Caption = 'Por Periodo'
+          OnClick = PorPeriodo2Click
+        end
+      end
       object LeituraXSerial1: TMenuItem
         Caption = 'Leitura X Serial'
         OnClick = LeituraXSerial1Click

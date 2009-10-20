@@ -172,7 +172,7 @@ end;
 
 procedure TfrPagamento.btnEstornarClick(Sender: TObject);
 begin
-   Form1.ACBrECF1.EstornoPagamento(StrToInt(EdtTipoCanc.Text),StrToInt(EdtTipoNovo.Text),
+   Form1.ACBrECF1.EstornaPagamento(EdtTipoCanc.Text, EdtTipoNovo.Text,
                                    StrToFloat(EdtValor.Text),EdtMsgPromocional.Text);
    Form1.AtualizaMemos ;
    AtualizaVal ;

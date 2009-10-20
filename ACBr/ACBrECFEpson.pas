@@ -62,6 +62,12 @@ const  STX = #02  ;
        LF  = #10  ;
        ACK = 06  ;
        NACK= 21  ;
+const
+  {$IFDEF LINUX}
+   cLIB_Epson = 'libInterfaceEpson.so';
+  {$ELSE}
+   cLIB_Epson = 'InterfaceEpson.dll';
+  {$ENDIF}
 
 type
 
@@ -141,6 +147,17 @@ TACBrECFEpson = class( TACBrECFClass )
     fsLeituraCMC7  : Boolean;
     fsVerificaChecksum: Boolean;
     fsPAF1, fsPAF2 : String ;
+
+    xEPSON_Serial_Abrir_Porta : function (dwVelocidade:Integer; wPorta:Integer):Integer; StdCall;
+    xEPSON_Serial_Fechar_Porta : function : Integer; StdCall;
+    xEPSON_Serial_Obter_Estado_Com : function : Integer; StdCall;
+    xEPSON_Obter_Dados_MF_MFD : function (pszInicio:PChar; pszFinal:PChar;
+       dwTipoEntrada:Integer; dwEspelhos:Integer; dwAtoCotepe:Integer;
+       dwSintegra:Integer; pszArquivoSaida:PChar) : Integer; StdCall;
+
+    procedure LoadDLLFunctions;
+    Function DocumentosToNum(Documentos : TACBrECFTipoDocumentoSet) : Integer ;
+
     Function  PreparaCmd( cmd : AnsiString ) : AnsiString ;
 
     function  GetRet0906: AnsiString;
@@ -243,6 +260,11 @@ TACBrECFEpson = class( TACBrECFClass )
     Procedure LeituraMemoriaFiscalSerial( ReducaoInicial, ReducaoFinal : Integer;
        Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
 
+    Procedure LeituraMFDSerialDLL( DataInicial, DataFinal : TDateTime;
+       NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
+    Procedure LeituraMFDSerialDLL( COOInicial, COOFinal : Integer;
+       NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
+
     Procedure AbreGaveta ; override ;
 
     { Procedimentos de Cupom Não Fiscal }
@@ -294,7 +316,7 @@ Uses ACBrECF,
      {$IFDEF COMPILER6_UP}
        DateUtils, StrUtils
      {$ELSE}
-       ACBrD5, Windows
+       ACBrD5, SysUtils, SysUtils, SysUtils, SysUtils, SysUtils, Windows
      {$ENDIF},
      SysUtils, Math ;
 
@@ -851,6 +873,11 @@ begin
   fsImprimeCheque := False ;
   fsLeituraCMC7   := False ;
   fsVerificaChecksum := True ;
+
+  xEPSON_Obter_Dados_MF_MFD := NIL ;
+  xEPSON_Serial_Abrir_Porta := NIL ;
+  xEPSON_Serial_Fechar_Porta := NIL ;
+  xEPSON_Serial_Obter_Estado_Com := NIL ;
 end;
 
 destructor TACBrECFEpson.Destroy;
@@ -2655,6 +2682,149 @@ begin
      end ;
   end ;
 end ;
+
+procedure TACBrECFEpson.LoadDLLFunctions ;
+ procedure EpsonFunctionDetect( FuncName: String; var LibPointer: Pointer ) ;
+ begin
+   if not Assigned( LibPointer )  then
+   begin
+     if not FunctionDetect( cLIB_Epson, FuncName, LibPointer) then
+     begin
+        LibPointer := NIL ;
+        raise Exception.Create( ACBrStr( 'Erro ao carregar a função:'+FuncName+' de: '+cLIB_Epson ) ) ;
+     end ;
+   end ;
+ end ;
+begin
+   EpsonFunctionDetect('EPSON_Obter_Dados_MF_MFD', @xEPSON_Obter_Dados_MF_MFD);
+   EpsonFunctionDetect('EPSON_Serial_Abrir_Porta', @xEPSON_Serial_Abrir_Porta);
+   EpsonFunctionDetect('EPSON_Serial_Fechar_Porta', @xEPSON_Serial_Fechar_Porta);
+   EpsonFunctionDetect('EPSON_Serial_Obter_Estado_Com', @xEPSON_Serial_Obter_Estado_Com);
+end ;
+
+procedure TACBrECFEpson.LeituraMFDSerialDLL(DataInicial,
+  DataFinal: TDateTime; NomeArquivo: String;
+  Documentos: TACBrECFTipoDocumentoSet);
+Var
+  Resp, Porta : Integer ;
+  ArqTmp, DiaIni, DiaFim : String ;
+  OldAtivo : Boolean ;
+begin
+  LoadDLLFunctions ;
+
+  ArqTmp := ExtractFilePath( NomeArquivo ) + 'ACBr' ;
+  DeleteFile( ArqTmp + '_ESP.txt' ) ;
+
+  OldAtivo := Ativo ;
+  try
+    Ativo := False ;
+
+    Porta := StrToIntDef( OnlyNumber( fpDevice.Porta ), 0) ;
+
+    Resp := xEPSON_Serial_Abrir_Porta( fpDevice.Baud, Porta ) ;
+    if Resp <> 0 then
+       raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao abrir a Porta com:'+sLineBreak+
+          'EPSON_Serial_Abrir_Porta('+IntToStr(fpDevice.Baud)+', '+IntToStr(Porta)+')' ));
+
+    DiaIni := FormatDateTime('ddmmyyyy',DataInicial) ;
+    DiaFim := FormatDateTime('ddmmyyyy',DataFinal) ;
+
+    Resp := xEPSON_Obter_Dados_MF_MFD(  PChar(DiaIni), PChar(DiaFim),
+                                        0,                // Faixa em Datas
+                                        DocumentosToNum(Documentos),
+                                        0,                // Não Gera Ato Cotepe
+                                        0,                // Nao Gera Sintegra
+                                        PChar( ArqTmp ) );
+    if (Resp <> 0) then
+      raise Exception.Create( ACBrStr( 'Erro ao executar EPSON_Obter_Dados_MF_MFD.'+sLineBreak+
+                                       'Cod.: '+IntToStr(Resp) ))
+  finally
+    xEPSON_Serial_Fechar_Porta ;
+    Ativo := OldAtivo ;
+  end ;
+
+  if FileExists( ArqTmp + '_ESP.txt' ) then
+   begin
+     if not CopyFileTo( ArqTmp + '_ESP.txt', NomeArquivo ) then
+        raise Exception.Create( ACBrStr( 'Erro ao copiar: '+sLineBreak+
+                                ArqTmp + '_ESP.txt'+sLineBreak+
+                                'para'+sLineBreak+NomeArquivo ))
+   end
+  else
+     raise Exception.Create( ACBrStr( 'Erro na execução de EPSON_Obter_Dados_MF_MFD.'+sLineBreak+
+                            'Arquivo: '+ArqTmp + '_ESP.txt não gerado' ))
+end;
+
+procedure TACBrECFEpson.LeituraMFDSerialDLL(COOInicial, COOFinal: Integer;
+  NomeArquivo: String; Documentos: TACBrECFTipoDocumentoSet);
+Var
+  Resp, Porta : Integer ;
+  ArqTmp, CooIni, CooFim : String ;
+  OldAtivo : Boolean ;
+begin
+  LoadDLLFunctions ;
+
+  ArqTmp := ExtractFilePath( NomeArquivo ) + 'ACBr' ;
+  DeleteFile( ArqTmp + '_ESP.txt' ) ;
+
+  OldAtivo := Ativo ;
+  try
+    Ativo := False ;
+
+    Porta := StrToIntDef( OnlyNumber( fpDevice.Porta ), 0) ;
+
+    Resp := xEPSON_Serial_Abrir_Porta( fpDevice.Baud, Porta ) ;
+    if Resp <> 0 then
+       raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao abrir a Porta com:'+sLineBreak+
+          'EPSON_Serial_Abrir_Porta('+IntToStr(fpDevice.Baud)+', '+IntToStr(Porta)+')' ));
+
+    CooIni := IntToStrZero( COOInicial, 6 ) ;
+    CooFim := IntToStrZero( COOFinal, 6 ) ;
+
+    Resp := xEPSON_Obter_Dados_MF_MFD(  PChar(COOIni), PChar(CooFim),
+                                        2,                // Faixa em COO
+                                        DocumentosToNum(Documentos),
+                                        0,                // Não Gera Ato Cotepe
+                                        0,                // Nao Gera Sintegra
+                                        PChar( ArqTmp ) );
+    if (Resp <> 0) then
+      raise Exception.Create( ACBrStr( 'Erro ao executar EPSON_Obter_Dados_MF_MFD.'+sLineBreak+
+                                       'Cod.: '+IntToStr(Resp) ))
+  finally
+    xEPSON_Serial_Fechar_Porta ;
+    Ativo := OldAtivo ;
+  end ;
+
+  if FileExists( ArqTmp + '_ESP.txt' ) then
+   begin
+     if not CopyFileTo( ArqTmp + '_ESP.txt', NomeArquivo ) then
+        raise Exception.Create( ACBrStr( 'Erro ao copiar: '+sLineBreak+
+                                ArqTmp + '_ESP.txt'+sLineBreak+
+                                'para'+sLineBreak+NomeArquivo ))
+   end
+  else
+     raise Exception.Create( ACBrStr( 'Erro na execução de EPSON_Obter_Dados_MF_MFD.'+sLineBreak+
+                            'Arquivo: '+ArqTmp + '_ESP.txt não gerado' ))
+end;
+
+function TACBrECFEpson.DocumentosToNum(
+  Documentos: TACBrECFTipoDocumentoSet): Integer;
+begin
+  Result := 65535 ;
+  if (Documentos - [docTodos]) = [] then exit ;
+
+  Result := 0 ;
+
+  if docCF  in Documentos then Result := Result + 1 ;
+  if docRZ  in Documentos then Result := Result + 2 ;
+  if docLMF in Documentos then Result := Result + 4 ;
+  if docLX  in Documentos then Result := Result + 8 ;
+  if docRG  in Documentos then Result := Result + 16 ;
+  if docCCD in Documentos then Result := Result + 32 ;
+  if docCNF in Documentos then Result := Result + 64 ;
+  if docCNFCancelamento in Documentos then Result := Result + 128 ;
+
+end;
 
 end.
 

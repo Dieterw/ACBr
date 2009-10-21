@@ -52,7 +52,8 @@ Alterações   21/10/09
 [*] Arquivo instala.bat das DLLs da versão CAPICOM alterado para copiar DLLs para o local correto nas versões 64 bits do Windows
 [-] Corrigido erro na leitura da data de vencimento do certificado(Versão CAPICOM) para quando número de série não estava informado
 [*] Sincronizada algumas units do PCN com as versões disponíveis no SVN do Projeto Cooperar.
-
+[+] Função de cancelamento da NFe, quando for feita com a nota carregada no componente, os campos da tag procNFe serão atualizados no
+    arquivo da NFe.
 
 Alterações   16/10/09
 ---------------

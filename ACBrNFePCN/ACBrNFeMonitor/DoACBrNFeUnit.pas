@@ -2285,6 +2285,8 @@ var
   msg_lines: TStringList;
   m:TMimemess;
   p: TMimepart;
+  CC: Tstrings;
+  I : Integer;
 begin
   msg_lines := TStringList.Create;
   smtp := TSMTPSend.Create;
@@ -2297,9 +2299,7 @@ begin
        m.AddPartBinaryFromFile(sAttachment, p);
      if sAttachment2 <> '' then
        m.AddPartBinaryFromFile(sAttachment2, p);
-     m.header.tolist.add(sTo);
-     if NotaUtil.NaoEstaVazio(sCopias) then
-        m.header.CCList.Add(StringReplace(sCopias,';',sLineBreak,[rfReplaceAll]));
+     m.header.tolist.add(sTo);  
      m.header.From := sFrom;
      m.header.subject:=sAssunto;
      m.EncodeMessage;
@@ -2320,6 +2320,17 @@ begin
        raise Exception.Create('SMTP ERROR: MailFrom:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
      if not smtp.MailTo(sTo) then
        raise Exception.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+     if NotaUtil.NaoEstaVazio(sCopias) then
+      begin
+        CC:=TstringList.Create;
+        CC.DelimitedText := sLineBreak;
+        CC.Text := StringReplace(sCopias,';',sLineBreak,[rfReplaceAll]);
+        for I := 0 to CC.Count - 1 do
+        begin
+           if not smtp.MailTo(CC.Strings[i]) then
+              raise Exception.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+        end;
+      end;
      if not smtp.MailData(msg_lines) then
        raise Exception.Create('SMTP ERROR: MailData:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
 

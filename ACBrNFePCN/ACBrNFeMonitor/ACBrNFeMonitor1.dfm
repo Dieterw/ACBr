@@ -1,6 +1,6 @@
 object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
-  Left = 571
-  Top = 159
+  Left = 590
+  Top = 183
   Width = 545
   Height = 501
   ActiveControl = btMinimizar
@@ -4120,7 +4120,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       Top = 0
       Width = 527
       Height = 256
-      ActivePage = DANFE
+      ActivePage = WebService
       Align = alBottom
       TabOrder = 0
       object Monitor: TTabSheet
@@ -4430,7 +4430,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           Left = 8
           Top = 4
           Width = 250
-          Height = 189
+          Height = 139
           Caption = 'WebService'
           TabOrder = 0
           object Label6: TLabel
@@ -4448,7 +4448,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           end
           object sbPathSalvar: TSpeedButton
             Left = 219
-            Top = 158
+            Top = 109
             Width = 23
             Height = 24
             Glyph.Data = {
@@ -4514,7 +4514,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           end
           object ckSalvar: TCheckBox
             Left = 8
-            Top = 144
+            Top = 96
             Width = 209
             Height = 15
             Caption = 'Salvar Arquivos de Envio e Resposta'
@@ -4528,16 +4528,16 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           end
           object edtPathLogs: TEdit
             Left = 8
-            Top = 160
+            Top = 112
             Width = 211
             Height = 21
             TabOrder = 2
           end
           object rgTipoAmb: TRadioGroup
             Left = 8
-            Top = 64
+            Top = 58
             Width = 233
-            Height = 68
+            Height = 35
             Caption = 'Selecione o Ambiente de Destino'
             Columns = 2
             ItemIndex = 1
@@ -4628,6 +4628,74 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
             'FSDA')
           TabOrder = 2
         end
+        object gbxRetornoEnvio: TGroupBox
+          Left = 8
+          Top = 144
+          Width = 250
+          Height = 83
+          Caption = 'Retorno de Envio de NFe'
+          TabOrder = 3
+          object Label36: TLabel
+            Left = 88
+            Top = 38
+            Width = 50
+            Height = 13
+            Caption = 'Tentativas'
+          end
+          object Label37: TLabel
+            Left = 168
+            Top = 38
+            Width = 41
+            Height = 13
+            Caption = 'Intervalo'
+          end
+          object Label38: TLabel
+            Left = 8
+            Top = 38
+            Width = 43
+            Height = 13
+            Hint = 
+              'Aguardar quantos segundos para primeira consulta de retorno de e' +
+              'nvio'
+            Caption = 'Aguardar'
+          end
+          object cbxAjustarAut: TCheckBox
+            Left = 8
+            Top = 17
+            Width = 234
+            Height = 17
+            Caption = 'Ajustar Automaticamente prop. "Aguardar"'
+            TabOrder = 0
+            OnClick = cbxAjustarAutClick
+          end
+          object edtTentativas: TEdit
+            Left = 88
+            Top = 54
+            Width = 75
+            Height = 21
+            TabOrder = 2
+            OnKeyPress = edtNumCopiaKeyPress
+          end
+          object edtIntervalo: TEdit
+            Left = 168
+            Top = 54
+            Width = 75
+            Height = 21
+            TabOrder = 3
+            OnKeyPress = edtNumCopiaKeyPress
+          end
+          object edtAguardar: TEdit
+            Left = 8
+            Top = 54
+            Width = 75
+            Height = 21
+            Hint = 
+              'Aguardar quantos segundos para primeira consulta de retorno de e' +
+              'nvio'
+            TabOrder = 1
+            OnKeyPress = edtNumCopiaKeyPress
+          end
+        end
       end
       object Email: TTabSheet
         Caption = 'Email'
@@ -4701,6 +4769,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
             Width = 57
             Height = 21
             TabOrder = 1
+            OnKeyPress = edtNumCopiaKeyPress
           end
           object edtSmtpUser: TEdit
             Left = 8
@@ -5441,6 +5510,9 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
   object ACBrNFe1: TACBrNFe
     Configuracoes.Geral.PathSalvar = 'C:\Program Files\Borland\Delphi7\Bin\'
     Configuracoes.WebServices.UF = 'SP'
+    Configuracoes.WebServices.AguardarConsultaRet = 0
+    Configuracoes.WebServices.IntervaloTentativas = 0
+    Configuracoes.WebServices.AjustaAguardaConsultaRet = False
     Configuracoes.Arquivos.PathNFe = 'C:\Program Files\Borland\Delphi7\Bin\'
     Configuracoes.Arquivos.PathCan = 'C:\Program Files\Borland\Delphi7\Bin\'
     Configuracoes.Arquivos.PathInu = 'C:\Program Files\Borland\Delphi7\Bin\'
@@ -5897,6 +5969,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
     ExibirResumoCanhoto = False
     FormularioContinuo = False
     TamanhoCampoCodigo = 0
+    Fonte = ftTimes
     Left = 209
     Top = 25
   end

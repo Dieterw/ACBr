@@ -217,6 +217,14 @@ type
     sbLogoMarca: TSpeedButton;
     cbxFormCont: TCheckBox;
     rgTipoFonte: TRadioGroup;
+    gbxRetornoEnvio: TGroupBox;
+    cbxAjustarAut: TCheckBox;
+    edtTentativas: TEdit;
+    edtIntervalo: TEdit;
+    edtAguardar: TEdit;
+    Label36: TLabel;
+    Label37: TLabel;
+    Label38: TLabel;
     procedure DoACBrTimer(Sender: TObject);
     procedure edOnlyNumbers(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
@@ -255,6 +263,7 @@ type
     procedure sbPathCanClick(Sender: TObject);
     procedure sbPathInuClick(Sender: TObject);
     procedure sbPathDPECClick(Sender: TObject);
+    procedure cbxAjustarAutClick(Sender: TObject);
   private
     { Private declarations }
     ACBrNFeMonitorINI : string;
@@ -579,6 +588,16 @@ begin
      ACBrNFe1.Configuracoes.Geral.Salvar       := ckSalvar.Checked;
      ACBrNFe1.Configuracoes.Geral.PathSalvar   := edtPathLogs.Text;
 
+     cbxAjustarAut.Checked  := Ini.ReadBool(   'WebService','AjustarAut' ,False) ;
+     edtAguardar.Text       := Ini.ReadString( 'WebService','Aguardar'  ,'0') ;
+     edtTentativas.Text     := Ini.ReadString( 'WebService','Tentativas','5') ;
+     edtIntervalo.Text      := Ini.ReadString( 'WebService','Intervalo' ,'0') ;
+
+     ACBrNFe1.Configuracoes.WebServices.AjustaAguardaConsultaRet := cbxAjustarAut.Checked;
+     ACBrNFe1.Configuracoes.WebServices.AguardarConsultaRet := NotaUtil.SeSenao(StrToInt(edtAguardar.Text)<1000,StrToInt(edtAguardar.Text)*1000,StrToInt(edtAguardar.Text));
+     ACBrNFe1.Configuracoes.WebServices.Tentativas          := StrToInt(edtTentativas.Text);
+     ACBrNFe1.Configuracoes.WebServices.IntervaloTentativas := NotaUtil.SeSenao(StrToInt(edtIntervalo.Text)<1000,StrToInt(edtIntervalo.Text)*1000,StrToInt(edtIntervalo.Text));
+
      cbUF.ItemIndex       := cbUF.Items.IndexOf(Ini.ReadString( 'WebService','UF','SP')) ;
      rgTipoAmb.ItemIndex  := Ini.ReadInteger( 'WebService','Ambiente'  ,0) ;
      ACBrNFe1.Configuracoes.WebServices.UF         := cbUF.Text;
@@ -736,15 +755,19 @@ begin
      GravaINICrypt(INI,'Certificado','Senha', edtSenha.Text, _C) ;
      {$ENDIF}
 
-     Ini.WriteInteger( 'Geral','DANFE'       ,rgTipoDanfe.ItemIndex) ;
-     Ini.WriteInteger( 'Geral','FormaEmissao',rgFormaEmissao.ItemIndex) ;
+     Ini.WriteInteger('Geral','DANFE'       ,rgTipoDanfe.ItemIndex) ;
+     Ini.WriteInteger('Geral','FormaEmissao',rgFormaEmissao.ItemIndex) ;
      Ini.WriteString( 'Geral','LogoMarca'   ,edtLogoMarca.Text) ;
      Ini.WriteBool(   'Geral','Salvar'      ,ckSalvar.Checked) ;
      Ini.WriteString( 'Geral','PathSalvar'  ,edtPathLogs.Text) ;
-     Ini.WriteString('Geral','Impressora'   ,cbxImpressora.Text) ;
+     Ini.WriteString( 'Geral','Impressora'  ,cbxImpressora.Text) ;
 
-     Ini.WriteString( 'WebService','UF'        ,cbUF.Text) ;
-     Ini.WriteInteger( 'WebService','Ambiente' ,rgTipoAmb.ItemIndex) ;
+     Ini.WriteString( 'WebService','UF'         ,cbUF.Text) ;
+     Ini.WriteInteger('WebService','Ambiente'   ,rgTipoAmb.ItemIndex) ;
+     Ini.WriteBool(   'WebService','AjustarAut' ,cbxAjustarAut.Checked) ;
+     Ini.WriteString( 'WebService','Aguardar'   ,edtAguardar.Text) ;
+     Ini.WriteString( 'WebService','Tentativas' ,edtTentativas.Text) ;
+     Ini.WriteString( 'WebService','Intervalo'  ,edtIntervalo.Text) ;
 
      Ini.WriteString( 'Proxy','Host'   ,edtProxyHost.Text) ;
      Ini.WriteString( 'Proxy','Porta'  ,edtProxyPorta.Text) ;
@@ -1454,6 +1477,11 @@ end;
 procedure TfrmAcbrNfeMonitor.sbPathDPECClick(Sender: TObject);
 begin
  PathClick(edtPathDPEC);
+end;
+
+procedure TfrmAcbrNfeMonitor.cbxAjustarAutClick(Sender: TObject);
+begin
+ edtAguardar.Enabled := not cbxAjustarAut.Checked;
 end;
 
 end.

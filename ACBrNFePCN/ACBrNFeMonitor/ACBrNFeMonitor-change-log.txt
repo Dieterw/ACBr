@@ -48,6 +48,22 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+
+21/10/09
+[+]	: Adicionado propriedades 1-Ajustar Automaticamente prop. "Aguardar", 2-Aguardar, 3-Tentativas e 4-Intervalo na aba WebService
+	  Estas propriedades apenas serão utilizadas na consulta de retorno da autorização da NFe, por padrão o números de tentativas 
+	  atual do componente está como 5, então a propriedade Tentativas será criada com este valor, mas poderá ser alterado para o valor
+          que o desenvolvedor desejar. O valor informado na propriedade Aguardar será usado para aguardar antes de efetuar a primeira 
+	  consulta, por padrão está com 0 que é o valor utilizado hoje no componente. Para dias em que os servidores do sefaz estiverem 
+          apresentando problemas de lentidão, esta propriedae poderá ser alterada. 
+          A propriedade Intervalo é usada para definir qual deve ser o intervalo entre as tentativas de consulta de retorno de envio 
+          da NFe. 
+	  A propriedade Ajustar Automaticamente prop. "Aguardar", quando estiver selecionada, a propriedade Aguardar será ajustada com o 
+          valor do campo tmed do retorno de consulta de status do serviço
+[-]	: Corrigido envio de email com cópias
+[-]	: Corrigido retorno de envio, quando era usado o recurso de envio em lotes, as Chaves [NFEXXX] vinham truncadas na linha da nota
+	  anterior
+
 29/09/09
 [+]	: Adicionado opção Tipo de Fonte na Aba DANFE, onde pode ser usado Times New Romam ou Courier New
 

@@ -364,7 +364,7 @@ end;
 
 function ImprimirCodigoBarras(PosX, PosY: Double):Double;
 var PosYCodBarraContigencia, aWidth, CenterX:Double;
-    aTituloChave, aChaveAcesso, aProtocolo, aChaveContigencia:String;
+    w1,w2,w3,aTituloChave, aChaveAcesso, aProtocolo, aChaveContigencia:String;
 begin
    with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
@@ -440,13 +440,29 @@ begin
          else
          begin
             SetFont(FontNameUsed,NotaUtil.SeSenao(Pos('Courier',FontNameUsed)>0,8,9));
+            if NotaUtil.LimpaNumero(aProtocolo)='' then
+            begin
+              Bold:=True;
+              FontColor:=clRed;
+              w1:='N F E   A I N D A   N Ã O   F O I';
+              w2:='A U T O R I Z A D A   P E L A';
+              w3:=' S E F A Z  (SEM VALIDADE FISCAL)';
+            end
+            else
+            begin
+              w1:='Consulta de autenticidade no portal nacional';
+              w2:='da NF-e www.nfe.fazenda.gov.br/portal ou';
+              w3:='no site da Sefaz Autorizadora';
+            end;
             GotoXY(PosX,PosYCodBarraContigencia+GetFontHeigh+0.5);
             CenterX:=PosX+(aWidth/2);
-            PrintCenter('Consulta de autenticidade no portal nacional',CenterX);
+            PrintCenter(w1,CenterX);
             NewLine;
-            PrintCenter('da NF-e www.nfe.fazenda.gov.br/portal ou',CenterX);
+            PrintCenter(w2,CenterX);
             NewLine;
-            PrintCenter('no site da Sefaz Autorizadora',CenterX);
+            PrintCenter(w3,CenterX);
+            Bold:=False;
+            FontColor:=clBlack;
          end;
       end
       else
@@ -967,37 +983,40 @@ begin
           aDescProduto:=Trim(Prod.XProd);
 
           QtdeMin:=0;
-          if Prod.veicProd.chassi<>'' then
-           begin
-             with Prod.veicProd do
+          if ImprimirDetalhamentoEspecifico then
+          begin
+             if Prod.veicProd.chassi<>'' then
               begin
-               aDescProduto:=aDescProduto+#13+
-                             '  CHASSI: '+Prod.veicProd.chassi+#13+
-                             '  COMBUSTÍVEL: '+tpComb+#13+
-                             '  COR: '+xCor+#13+
-                             '  FAB./MOD.: '+IntToStr(anoFab)+'/'+IntToStr(anoMod)+#13+
-                             '  RENAVAM: '+RENAVAM+#13+
-                             '  Nº DO MOTOR: '+nMotor;
-              end;
-             QtdeMin:=QtdeMin+6;
-           end;
-
-          if Prod.med.Count > 0 then
-           begin
-             for j:=0 to Prod.med.Count-1 do
-              begin
-                with Prod.med.Items[j] do
+                with Prod.veicProd do
                  begin
-                  aDescProduto:=aDescProduto+
-                                ' - LOTE: '+nLote+
-//                                ' QTDADE: '+NotaUtil.FormatFloat(qLote)+#13+
-                                ' FABR.: '+NotaUtil.FormatDate(DateToStr(dFab))+
-                                ' VAL.: '+NotaUtil.FormatDate(DateToStr(dVal))+
-                                NotaUtil.SeSenao(vPMC>0,' PMC: '+NotaUtil.FormatFloat(vPMC),'');
+                  aDescProduto:=aDescProduto+#13+
+                                '  CHASSI: '+Prod.veicProd.chassi+#13+
+                                '  COMBUSTÍVEL: '+tpComb+#13+
+                                '  COR: '+xCor+#13+
+                                '  FAB./MOD.: '+IntToStr(anoFab)+'/'+IntToStr(anoMod)+#13+
+                                '  RENAVAM: '+RENAVAM+#13+
+                                '  Nº DO MOTOR: '+nMotor;
                  end;
-                QtdeMin:=QtdeMin+1;
+                QtdeMin:=QtdeMin+6;
               end;
-           end;
+
+             if Prod.med.Count > 0 then
+              begin
+                for j:=0 to Prod.med.Count-1 do
+                 begin
+                   with Prod.med.Items[j] do
+                    begin
+                     aDescProduto:=aDescProduto+
+                                   ' - LOTE: '+nLote+
+   //                                ' QTDADE: '+NotaUtil.FormatFloat(qLote)+#13+
+                                   ' FABR.: '+NotaUtil.FormatDate(DateToStr(dFab))+
+                                   ' VAL.: '+NotaUtil.FormatDate(DateToStr(dVal))+
+                                   NotaUtil.SeSenao(vPMC>0,' PMC: '+NotaUtil.FormatFloat(vPMC),'');
+                    end;
+                   QtdeMin:=QtdeMin+1;
+                 end;
+              end;
+          end;
 
           if Trim(infAdProd)>'' then
            begin

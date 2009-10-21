@@ -60,6 +60,7 @@ type
      FTamanhoCampoCodigo: integer;
      FFonte : TFont;
      FEspessuraBorda: Integer;
+     FImprimirDetalhamentoEspecifico: Boolean;
    public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -69,6 +70,7 @@ type
      property TamanhoCampoCodigo:integer read FTamanhoCampoCodigo write FTamanhoCampoCodigo;
      property Fonte:TFont read FFonte write FFonte;
      property EspessuraBorda:Integer read FEspessuraBorda write FEspessuraBorda;
+     property ImprimirDetalhamentoEspecifico:boolean read FImprimirDetalhamentoEspecifico write FImprimirDetalhamentoEspecifico;
   end;
 
 implementation
@@ -81,6 +83,7 @@ begin
 
   FTamanhoCampoCodigo:=0;
   FEspessuraBorda:=2;
+  FImprimirDetalhamentoEspecifico:=True;
 end;
 
 destructor TACBrNFeDANFERaveCB.Destroy;
@@ -126,6 +129,7 @@ begin
                        ImprimirHoraSaida_Hora,
                        ImprimirDescPorc,
                        ImprimirTotalLiquido,
+                       ImprimirDetalhamentoEspecifico,
                        FormularioContinuo,
                        ExpandirLogoMarca);
     finally
@@ -175,6 +179,7 @@ begin
                        ImprimirHoraSaida_Hora,
                        ImprimirDescPorc,
                        ImprimirTotalLiquido,
+                       ImprimirDetalhamentoEspecifico,
                        FormularioContinuo,
                        ExpandirLogoMarca);
     finally

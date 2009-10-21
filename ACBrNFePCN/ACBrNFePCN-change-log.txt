@@ -54,6 +54,12 @@ Alterações   21/10/09
 [*] Sincronizada algumas units do PCN com as versões disponíveis no SVN do Projeto Cooperar.
 [+] Função de cancelamento da NFe, quando for feita com a nota carregada no componente, os campos da tag procNFe serão atualizados no
     arquivo da NFe.
+[+] DANFE em RAVE CB
+    - Ao imprimir um DANFE de um XML que ainda não tem número de protocolo e o tipo de emissão é normal ou dpec, ele imprimirá uma 
+      mensagem no DANFE alertando o usuário que a nota ainda não foi autorizada (créditos João Paulo S. Leão)
+    - Incluída propriedade ImprimirDetalhamentoEspecifico (padrão TRUE).
+      Quando for false não serão impressos informações de Detahamento específico (Veiculos, Combustiveis, Medicamentos, etc). 
+      Será útil para quem quiser exibir as referidas informações de maneira personalizada.
 
 Alterações   16/10/09
 ---------------

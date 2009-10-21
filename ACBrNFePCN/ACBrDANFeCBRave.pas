@@ -92,6 +92,7 @@ type
      FImprimirHoraSaida_Hora:string;
      FImprimirDescPorc: boolean;
      FImprimirValorLiquido: boolean;
+     FImprimirDetalhamentoEspecifico: boolean;
      FTamanhoCampoCodigo:integer;
      FEspessuraBorda:integer;
      FFormularioContinuo: boolean;
@@ -131,6 +132,7 @@ type
      property ImprimirHoraSaida_Hora:string read FImprimirHoraSaida_Hora write FImprimirHoraSaida_Hora;
      property ImprimirDescPorc:boolean read FImprimirDescPorc write FImprimirDescPorc;
      property ImprimirValorLiquido:boolean read FImprimirValorLiquido write FImprimirValorLiquido;
+     property ImprimirDetalhamentoEspecifico:boolean read FImprimirDetalhamentoEspecifico write FImprimirDetalhamentoEspecifico;
      property TamanhoCampoCodigo:integer read FTamanhoCampoCodigo write FTamanhoCampoCodigo;
      property EspessuraBorda:integer read FEspessuraBorda write FEspessuraBorda;
      property FormularioContinuo:boolean read FFormularioContinuo write FFormularioContinuo;
@@ -163,6 +165,7 @@ procedure ImprimirDANFeRave(aACBrNFe:TACBrNFe;
                             aImprimirHoraSaida_Hora:string='';
                             aImprimirDescPorc:boolean=false;
                             aImprimirValorLiquido:boolean=false;
+                            aImprimirDetalhamentoEspecifico:boolean=true;
                             aFormularioContinuo:boolean=false;
                             aExpadirLogoMarca:boolean=false);
 
@@ -198,6 +201,7 @@ procedure ImprimirDANFeRave(aACBrNFe:TACBrNFe;
                             aImprimirHoraSaida_Hora:string='';
                             aImprimirDescPorc:boolean=false;
                             aImprimirValorLiquido:boolean=false;
+                            aImprimirDetalhamentoEspecifico:boolean=true;
                             aFormularioContinuo:boolean=false;
                             aExpadirLogoMarca:boolean=false);
 var DANFeRave:TDANFeRave;
@@ -247,6 +251,7 @@ begin
     DANFeRave.ImprimirHoraSaida_Hora:=aImprimirHoraSaida_Hora;
     DANFeRave.ImprimirDescPorc:=aImprimirDescPorc;
     DANFeRave.ImprimirValorLiquido:=aImprimirValorLiquido;
+    DANFeRave.ImprimirDetalhamentoEspecifico:=aImprimirDetalhamentoEspecifico;
     DANFeRave.FormularioContinuo:=aFormularioContinuo;
     if aFormularioContinuo then
        DANFeRave.FColorBorders:=clWhite

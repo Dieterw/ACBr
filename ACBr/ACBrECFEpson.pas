@@ -156,6 +156,8 @@ TACBrECFEpson = class( TACBrECFClass )
        dwSintegra:Integer; pszArquivoSaida:PChar) : Integer; StdCall;
 
     procedure LoadDLLFunctions;
+    procedure AbrePortaSerialDLL;
+    
     Function DocumentosToNum(Documentos : TACBrECFTipoDocumentoSet) : Integer ;
 
     Function  PreparaCmd( cmd : AnsiString ) : AnsiString ;
@@ -2702,11 +2704,23 @@ begin
    EpsonFunctionDetect('EPSON_Serial_Obter_Estado_Com', @xEPSON_Serial_Obter_Estado_Com);
 end ;
 
+procedure TACBrECFEpson.AbrePortaSerialDLL ;
+Var
+  Porta, Resp : Integer ;
+begin
+  Porta := StrToIntDef( OnlyNumber( fpDevice.Porta ), 0) ;
+
+  Resp := xEPSON_Serial_Abrir_Porta( fpDevice.Baud, Porta ) ;
+  if Resp <> 0 then
+     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao abrir a Porta com:'+sLineBreak+
+        'EPSON_Serial_Abrir_Porta('+IntToStr(fpDevice.Baud)+', '+IntToStr(Porta)+')' ));
+end ;
+
 procedure TACBrECFEpson.LeituraMFDSerialDLL(DataInicial,
   DataFinal: TDateTime; NomeArquivo: String;
   Documentos: TACBrECFTipoDocumentoSet);
 Var
-  Resp, Porta : Integer ;
+  Resp : Integer ;
   ArqTmp, DiaIni, DiaFim : String ;
   OldAtivo : Boolean ;
 begin
@@ -2719,12 +2733,7 @@ begin
   try
     Ativo := False ;
 
-    Porta := StrToIntDef( OnlyNumber( fpDevice.Porta ), 0) ;
-
-    Resp := xEPSON_Serial_Abrir_Porta( fpDevice.Baud, Porta ) ;
-    if Resp <> 0 then
-       raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao abrir a Porta com:'+sLineBreak+
-          'EPSON_Serial_Abrir_Porta('+IntToStr(fpDevice.Baud)+', '+IntToStr(Porta)+')' ));
+    AbrePortaSerialDLL ;
 
     DiaIni := FormatDateTime('ddmmyyyy',DataInicial) ;
     DiaFim := FormatDateTime('ddmmyyyy',DataFinal) ;
@@ -2758,7 +2767,7 @@ end;
 procedure TACBrECFEpson.LeituraMFDSerialDLL(COOInicial, COOFinal: Integer;
   NomeArquivo: String; Documentos: TACBrECFTipoDocumentoSet);
 Var
-  Resp, Porta : Integer ;
+  Resp : Integer ;
   ArqTmp, CooIni, CooFim : String ;
   OldAtivo : Boolean ;
 begin
@@ -2771,12 +2780,7 @@ begin
   try
     Ativo := False ;
 
-    Porta := StrToIntDef( OnlyNumber( fpDevice.Porta ), 0) ;
-
-    Resp := xEPSON_Serial_Abrir_Porta( fpDevice.Baud, Porta ) ;
-    if Resp <> 0 then
-       raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao abrir a Porta com:'+sLineBreak+
-          'EPSON_Serial_Abrir_Porta('+IntToStr(fpDevice.Baud)+', '+IntToStr(Porta)+')' ));
+    AbrePortaSerialDLL ;
 
     CooIni := IntToStrZero( COOInicial, 6 ) ;
     CooFim := IntToStrZero( COOFinal, 6 ) ;
@@ -2804,7 +2808,7 @@ begin
    end
   else
      raise Exception.Create( ACBrStr( 'Erro na execução de EPSON_Obter_Dados_MF_MFD.'+sLineBreak+
-                            'Arquivo: '+ArqTmp + '_ESP.txt não gerado' ))
+                            'Arquivo: "'+ArqTmp + '_ESP.txt" não gerado' ))
 end;
 
 function TACBrECFEpson.DocumentosToNum(

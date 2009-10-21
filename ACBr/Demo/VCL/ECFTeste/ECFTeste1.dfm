@@ -1519,6 +1519,10 @@ object Form1: TForm1
           Caption = 'Num Loja'
           OnClick = NumLoja1Click
         end
+        object UsuarioAual1: TMenuItem
+          Caption = 'Usuario Aual'
+          OnClick = UsuarioAual1Click
+        end
         object NSrie1: TMenuItem
           Caption = 'Num S'#233'rie'
           OnClick = NSrie1Click

@@ -245,7 +245,7 @@ begin
    if (Resp <> 1) or (Proprietario = '') then
       raise Exception.Create('Erro ao ler o Numero do proprietário atual');
 
-   Resp := Bematech_FI_DownloadMFD( ArqTmp + '.MFD',
+   Resp := Bematech_FI_DownloadMFD( PChar(ArqTmp + '.MFD' ),
                                     '1',
                                     PChar(FormatDateTime('ddmmyy',DtIni)),
                                     PChar(FormatDateTime('ddmmyy',DtFim)),

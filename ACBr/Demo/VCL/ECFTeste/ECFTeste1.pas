@@ -315,6 +315,7 @@ type
     LeituraSerialMFD1: TMenuItem;
     PorCOO3: TMenuItem;
     PorPeriodo2: TMenuItem;
+    UsuarioAual1: TMenuItem;
     procedure cbxModeloChange(Sender: TObject);
     procedure Sair1Click(Sender: TObject);
     procedure bAtivarClick(Sender: TObject);
@@ -493,6 +494,7 @@ type
     procedure BtnCancelaCupomTEFClick(Sender: TObject);
     procedure PorCOO3Click(Sender: TObject);
     procedure PorPeriodo2Click(Sender: TObject);
+    procedure UsuarioAual1Click(Sender: TObject);
   private
     { Private declarations }
     Function Converte( cmd : String) : String;
@@ -1097,7 +1099,7 @@ Var
   Info : String ;
   Tipo : Char ;
 begin
-  Tipo  := 'D' ;
+  Info := 'D' ;
 
   if  InputQuery('Cancela DescontoAcrescimo SubTotal do Cupom',
               'Digite "A" para cancelar Acrescimo ou "D" para Desconto' , Info) then
@@ -3159,7 +3161,7 @@ procedure TForm1.PorCOO3Click(Sender: TObject);
 Var
   Arquivo: String ;
   cCOOIni, cCOOFim : String ;
-  I, nCOOIni, nCOOFim : Integer ;
+  nCOOIni, nCOOFim : Integer ;
 begin
   Arquivo := 'c:\temp\teste.txt' ;
   if not InputQuery('Captura da MFD DLL',
@@ -3190,7 +3192,6 @@ Var
   Arquivo: String ;
   cDatIni, cDatFim : String ;
   dDatIni, dDatFim : TDateTime ;
-  I : Integer ;
 begin
   Arquivo := 'c:\temp\teste.txt' ;
   if not InputQuery('Captura da MFD DLL',
@@ -3223,6 +3224,12 @@ begin
   ACBrECF1.LeituraMFDSerialDLL(dDatIni, dDatFim, Arquivo);
   mResp.Lines.Add('---------------------------------');
 
+end;
+
+procedure TForm1.UsuarioAual1Click(Sender: TObject);
+begin
+  mResp.Lines.Add( 'UsuarioAtual: ('+ ACBrECF1.UsuarioAtual+')' );
+  AtualizaMemos ;
 end;
 
 END.

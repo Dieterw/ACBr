@@ -94,6 +94,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+
+Versão 0.8.9b  21/10/09 (DSA)
+-- ACBrECFBematech --
+[+]    Implementado LeituraMFDSerialDLL por periodo e COO usando carga dinâmica da DLL
+
 Versão 0.8.9b  20/10/09 (DSA)
 -- ACBrECF --
 [+]    Implementados métodos para permitir o uso da DLL do fabricante na Leitura da MFD

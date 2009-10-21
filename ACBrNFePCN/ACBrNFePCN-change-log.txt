@@ -47,6 +47,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Alterações   21/10/09
+---------------
+[*] Arquivo instala.bat das DLLs da versão CAPICOM alterado para copiar DLLs para o local correto nas versões 64 bits do Windows
+[-] Corrigido erro na leitura da data de vencimento do certificado(Versão CAPICOM) para quando número de série não estava informado
+[*] Sincronizada algumas units do PCN com as versões disponíveis no SVN do Projeto Cooperar.
+
 
 Alterações   16/10/09
 ---------------

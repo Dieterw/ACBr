@@ -177,30 +177,25 @@ begin
       (*BR03 *)FtpAmb := StrToTpAmb(ok, Leitor.rCampo(tcStr, 'tpAmb'));
       (*BR04 *)FverAplic := Leitor.rCampo(tcStr, 'verAplic');
       (*BR04a*)FnRec := Leitor.rCampo(tcStr, 'nRec');
-      FcStat := Leitor.rCampo(tcInt, 'cStat');
+      (*     *)FcStat := Leitor.rCampo(tcInt, 'cStat');
       (*BR06 *)FxMotivo := Leitor.rCampo(tcStr, 'xMotivo');
       (*BR06a*)FcUF := Leitor.rCampo(tcInt, 'cUF');
       i := 0;
-      if FcStat = 104 then
-       begin
-        if Leitor.rExtrai(1, 'infProt', '', i + 1) = '' then
-           ProtNFe.Add;
-        while Leitor.rExtrai(1, 'infProt', '', i + 1) <> '' do
-        begin
-          ProtNFe.Add;
-          (*PR05*)ProtNFe[i].FtpAmb := StrToTpAmb(ok, Leitor.rCampo(tcStr, 'tpAmb'));
-          (*PR06*)ProtNFe[i].FverAplic := Leitor.rCampo(tcStr, 'verAplic');
-          (*PR07*)ProtNFe[i].FchNFe := Leitor.rCampo(tcStr, 'chNFe');
-          (*PR08*)ProtNFe[i].FdhRecbto := Leitor.rCampo(tcDatHor, 'dhRecbto');
-          (*PR09*)ProtNFe[i].FnProt := Leitor.rCampo(tcStr, 'nProt');
-          (*PR10*)ProtNFe[i].FdigVal := Leitor.rCampo(tcStr, 'digVal');
-          (*PR11*)ProtNFe[i].FcStat := Leitor.rCampo(tcInt, 'cStat');
-          (*PR12*)ProtNFe[i].FxMotivo := Leitor.rCampo(tcStr, 'xMotivo');
-          inc(i);
-        end;
-       end
-      else
-        ProtNFe.Add; 
+      while (FcStat = 104) and (Leitor.rExtrai(1, 'infProt', '', i + 1) <> '') do
+      begin
+        ProtNFe.Add;
+        (*PR05*)ProtNFe[i].FtpAmb := StrToTpAmb(ok, Leitor.rCampo(tcStr, 'tpAmb'));
+        (*PR06*)ProtNFe[i].FverAplic := Leitor.rCampo(tcStr, 'verAplic');
+        (*PR07*)ProtNFe[i].FchNFe := Leitor.rCampo(tcStr, 'chNFe');
+        (*PR08*)ProtNFe[i].FdhRecbto := Leitor.rCampo(tcDatHor, 'dhRecbto');
+        (*PR09*)ProtNFe[i].FnProt := Leitor.rCampo(tcStr, 'nProt');
+        (*PR10*)ProtNFe[i].FdigVal := Leitor.rCampo(tcStr, 'digVal');
+        (*PR11*)ProtNFe[i].FcStat := Leitor.rCampo(tcInt, 'cStat');
+        (*PR12*)ProtNFe[i].FxMotivo := Leitor.rCampo(tcStr, 'xMotivo');
+        inc(i);
+      end;
+      if i = 0 then
+        ProtNFe.Add;
       Result := True;
     end;
   except

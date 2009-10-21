@@ -43,7 +43,6 @@
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
-
 unit pcnRetConsCad;
 
 interface uses
@@ -210,9 +209,6 @@ begin
       (*GR06d*)FCPF := Leitor.rCampo(tcStr, 'CPF');
       (*GR06e*)FdhCons := Leitor.rCampo(tcDatHor, 'dhCons');
       (*GR06f*)FcUF := Leitor.rCampo(tcInt, 'cUF');
-      if Leitor.rExtrai(2, 'infCad', '', i + 1) = ''  then
-         InfCad.Add;
-      i := 0;
       while Leitor.rExtrai(2, 'infCad', '', i + 1) <> '' do
       begin
         InfCad.Add;
@@ -224,6 +220,7 @@ begin
         (*GR13*)InfCad[i].FxNome := Leitor.rCampo(tcStr, 'xNome');
 
         {Acrescentado por João Paulo}
+
         (*GR13a*)InfCad[i].FxFant := Leitor.rCampo(tcStr, 'xFant');
         (*GR14*)InfCad[i].FxRegApur := Leitor.rCampo(tcStr, 'xRegApur');
         (*GR15*)InfCad[i].FCNAE := Leitor.rCampo(tcInt, 'CNAE');
@@ -240,6 +237,8 @@ begin
 
         inc(i);
       end;
+      if i = 0 then
+        InfCad.Add;
       Result := True;
     end;
   except

@@ -406,9 +406,14 @@ end;
 
 function TCertificadosConf.GetDataVenc: TDateTime;
 begin
- if FDataVenc = 0 then
-    GetCertificado;
- Result := FDataVenc;
+ if NotaUtil.NaoEstaVazio(FNumeroSerie) then
+  begin
+    if FDataVenc = 0 then
+       GetCertificado;
+    Result := FDataVenc;
+  end
+ else
+    Result := 0;  
 end;
 {$ENDIF}
 

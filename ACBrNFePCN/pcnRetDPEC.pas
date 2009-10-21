@@ -111,9 +111,13 @@ begin
       (*AR06 *)FverAplic := Leitor.rCampo(tcStr, 'verAplic');
       (*AR07 *)FcStat := Leitor.rCampo(tcInt, 'cStat');
       (*AR08 *)FxMotivo := Leitor.rCampo(tcStr, 'xMotivo');
-      (*AR09 *)FdhRegDPEC := Leitor.rCampo(tcDatHor, 'dhRegDPEC');
-      (*AR10 *)nRegDPEC := Leitor.rCampo(tcStr, 'nRegDPEC');
-      (*AR10 *)FchNFe := Leitor.rCampo(tcStr, 'chNFe');
+      if cStat = 101 then
+      begin
+        (*AR09 *)FdhRegDPEC := Leitor.rCampo(tcDatHor, 'dhRegDPEC');
+        (*AR10 *)nRegDPEC := Leitor.rCampo(tcStr, 'nRegDPEC');
+        
+        (*AR10 *)FchNFe := Leitor.rCampo(tcStr, 'chNFe');
+      end;
       Result := True;
     end;
   except

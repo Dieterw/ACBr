@@ -1855,9 +1855,9 @@ var
 begin
   witem1 := TRegistro50(Item1);
   witem2 := TRegistro50(Item2);
-  if witem1.DataDocumento>witem2.DataDocumento then
+  if (witem1.DataDocumento>witem2.DataDocumento) and (witem1.Numero>witem2.Numero) then
     Result := 1
-  else if witem1.DataDocumento = witem2.DataDocumento then
+  else if (witem1.DataDocumento = witem2.DataDocumento) and (witem1.Numero=witem2.Numero) then
     Result := 0
   else
     Result := -1;

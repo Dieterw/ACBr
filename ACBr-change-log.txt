@@ -111,6 +111,8 @@ Versão 0.8.9b  21/10/09
 
 -- ACBrECFSweda --
 [*]    Adicionada Sleep(1000) no método FechaCupom, Se o modelo for Matricial (JNP)
+[+]    Implementado LeituraMFDSerialDLL por periodo e COO usando carga dinâmica
+        da DLL  (por Magno System)
 
 Versão 0.8.9b  20/10/09 (DSA)
 -- ACBrECF --

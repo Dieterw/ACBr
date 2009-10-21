@@ -2622,6 +2622,7 @@ begin
                                 'Arquivo: "'+NomeArquivo + '" não gerado' )) ;
   finally
      xBematech_FI_FechaPortaSerial();
+     DeleteFile( ArqTmp + '.mfd' ) ;
      Ativo := OldAtivo ;
   end;
  {$ENDIF}
@@ -2696,6 +2697,7 @@ begin
                                 'Arquivo: "'+NomeArquivo + '" não gerado' )) ;
   finally
      xBematech_FI_FechaPortaSerial();
+     DeleteFile( ArqTmp + '.mfd' ) ;
      Ativo := OldAtivo ;
   end;
  {$ENDIF}

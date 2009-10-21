@@ -95,9 +95,22 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
-Versão 0.8.9b  21/10/09 (DSA)
+Versão 0.8.9b  21/10/09
+-- ACBrECF --
+[+]    Adicionada a propriedade ACBrECF.DaraHoraSB : TDateTime   ( por Ivan Moreira )
+       Retorma a Data e Hora do Software Básico. Para facilitar no PAF-ECF.
+	   Implementada para os Modelos: Sweda, Epson e Daruma;
+
+[+]    Adicionada a propriedade ACBrECF.SubModeloECF : String   ( por Ivan Moreira )
+       Retorma o Modelo do ECF. Para facilitar no PAF-ECF.
+	   Implementada para os Modelos: Sweda, Bematech, Epson, FiscNet e Daruma;
+
 -- ACBrECFBematech --
-[+]    Implementado LeituraMFDSerialDLL por periodo e COO usando carga dinâmica da DLL
+[+]    Implementado LeituraMFDSerialDLL por periodo e COO usando carga dinâmica
+        da DLL  (DSA)
+
+-- ACBrECFSweda --
+[*]    Adicionada Sleep(1000) no método FechaCupom, Se o modelo for Matricial (JNP)
 
 Versão 0.8.9b  20/10/09 (DSA)
 -- ACBrECF --

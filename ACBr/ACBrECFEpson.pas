@@ -139,6 +139,8 @@ TACBrECFEpson = class( TACBrECFClass )
     fsIM        : String ;  //IMS 28/09/2009
     fsCliche    : String ;  //IMS 28/09/2009
     fsUsuarioAtual       : String ;  //IMS 09/10/2009
+    fsDataHoraSB         : TDateTime ;  //IMS 20/10/2009
+    fsSubModeloECF       : String ; //IMS 20/10/2009
     fsRet0906   : AnsiString ;
     fsRet0907   : AnsiString ;
     fsEpsonComando: TACBrECFEpsonComando;
@@ -193,6 +195,9 @@ TACBrECFEpson = class( TACBrECFClass )
     function GetIM: String; override ;  //IMS 28/09/2009
     function GetCliche: String; override ;  //IMS 28/09/2009
     function GetUsuarioAtual: String; override ;  //IMS 09/10/2009
+    function GetDataHoraSB: TDateTime; override ; //IMS 20/10/2009
+    function GetSubModeloECF: String ; override ; //IMS 20/10/2009
+    
     function GetPAF: String; override ;
     function GetDataMovimento: TDateTime; override ;
     function GetGrandeTotal: Double; override ;
@@ -318,7 +323,7 @@ Uses ACBrECF,
      {$IFDEF COMPILER6_UP}
        DateUtils, StrUtils
      {$ELSE}
-       ACBrD5, SysUtils, SysUtils, SysUtils, SysUtils, SysUtils, Windows
+       ACBrD5, Windows
      {$ENDIF},
      SysUtils, Math ;
 
@@ -864,6 +869,8 @@ begin
   fsIM        := '' ;  //IMS 28/09/2009
   fsCliche    := '' ;  //IMS 28/09/2009
   fsUsuarioAtual    := '' ;  //IMS 09/10/2009
+  fsDataHoraSB      := now ;  //IMS 20/10/2009
+  fsSubModeloECF    := '' ; //IMS 20/10/2009
   fpModeloStr := 'Epson' ;
   fpMFD       := True ;
   fpTermica   := True ;
@@ -906,6 +913,8 @@ begin
   fsIM        := '' ;  //IMS 28/09/2009
   fsCliche    := '' ;  //IMS 28/09/2009
   fsUsuarioAtual    := '' ;  //IMS 09/10/2009
+  fsDataHoraSB      := now ;  //IMS 20/10/2009
+  fsSubModeloECF    := '' ; //IMS 20/10/2009
   fsRet0906   := '' ;
   fsRet0907   := '' ;
 
@@ -2237,6 +2246,40 @@ begin
 
   Result := fsUsuarioAtual ;
 end;
+//IMS 20/10/2009
+function TACBrECFEpson.GetDataHoraSB: TDateTime;
+Var RetCmd : AnsiString ;
+    OldShortDateFormat : String ;
+begin
+  EpsonComando.Comando := '0402' ;
+  EnviaComando ;
+  RetCmd := EpsonResposta.Params[8] ;
+  OldShortDateFormat := ShortDateFormat ;
+  try
+     ShortDateFormat := 'dd/mm/yyyy' ;
+     Result := StrToDate(copy(RetCmd, 1,2) + DateSeparator +
+                         copy(RetCmd, 3,2) + DateSeparator +
+                         copy(RetCmd, 5,4)) ;
+  finally
+     ShortDateFormat := OldShortDateFormat ;
+  end ;
+{Atualmente não tem informações de como pegar a hora por comando direto,
+tem que utilizar a mesma forma que a Bemateh realizar a partir da LMF  a
+ser implementado.}
+  RetCmd := '000000' ;
+  Result := RecodeHour(  Result,StrToInt(copy(RetCmd,1,2))) ;
+  Result := RecodeMinute(Result,StrToInt(copy(RetCmd,3,2))) ;
+  Result := RecodeSecond(Result,StrToInt(copy(RetCmd,5,2))) ;
+end;
+
+function TACBrECFEpson.GetSubModeloECF: String;
+begin
+  EpsonComando.Comando := '0402' ;
+  EnviaComando ;
+
+  Result := EpsonResposta.Params[3] ;
+end;
+
 //IMS
 
 function TACBrECFEpson.GetDataMovimento: TDateTime;

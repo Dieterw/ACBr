@@ -150,6 +150,9 @@ TACBrECFFiscNET = class( TACBrECFClass )
     function GetIM: String; override ;  //IMS 28/09/2009
     function GetCliche: String; override ;  //IMS 28/09/2009
     function GetUsuarioAtual: String; override ;  //IMS 09/10/2009
+    function GetDataHoraSB: TDateTime; override ; //IMS 20/10/2009
+    function GetSubModeloECF: String ; override ; //IMS 20/10/2009
+    
     function GetDataMovimento: TDateTime; override ;
     function GetGrandeTotal: Double; override ;
     function GetNumCRO: String; override ;
@@ -1925,6 +1928,22 @@ function TACBrECFFiscNET.GetUsuarioAtual: String;
 begin
   FiscNETComando.NomeComando := 'LeTexto' ;
   FiscNETComando.AddParamString('NomeTexto','ContadorProprietarios') ;
+  EnviaComando ;
+
+  Result := FiscNETResposta.Params.Values['ValorTexto'] ;
+end;
+//IMS 20/10/2009
+function TACBrECFFiscNET.GetDataHoraSB: TDateTime;
+ {Atualmente não tem informações de como pegar a hora por comando direto,
+tem que utilizar a mesma forma que a Bemateh realizar a partir da LMF  a
+ser implementado.}
+begin
+  Result := now ; //'01/01/95 00:00:00' ;
+end;
+function TACBrECFFiscNET.GetSubModeloECF: String;
+begin
+  FiscNETComando.NomeComando := 'LeTexto' ;
+  FiscNETComando.AddParamString('NomeTexto','Modelo') ;
   EnviaComando ;
 
   Result := FiscNETResposta.Params.Values['ValorTexto'] ;

@@ -227,6 +227,9 @@ TACBrECFDaruma = class( TACBrECFClass )
     function GetIM: String; override ;  //IMS 09/10/2009
     function GetCliche: String; override ;  //IMS 09/10/2009
     function GetUsuarioAtual: String; override ;  //IMS 09/10/2009
+    function GetDataHoraSB: TDateTime; override ; //IMS 20/10/2009
+    function GetSubModeloECF: String ; override ; //IMS 20/10/2009
+
     function GetPAF: String; override ;
     function GetDataMovimento: TDateTime; override ;
 
@@ -3291,6 +3294,53 @@ begin
     if LeftStr(RetCmd, 1) = ':' then
       Result := copy(RetCmd, 02, 02);
   end;
+end;
+
+//IMS 20/10/2009
+function TACBrECFDaruma.GetDataHoraSB: TDateTime;
+Var RetCmd : AnsiString ;
+    OldShortDateFormat : String ;
+begin
+  OldShortDateFormat := ShortDateFormat ;
+  try
+    if fpMFD then
+    begin
+      RetCmd  :=  RetornaInfoECF('85') ;
+
+      ShortDateFormat := 'dd/mm/yyyy' ;
+      result := StrToDate(copy(RetCmd,1,2)+ DateSeparator +
+                          copy(RetCmd,3,2)+ DateSeparator +
+                          copy(RetCmd,5,4)) ;
+
+      Result := RecodeHour(  Result,StrToInt(copy(RetCmd, 9,2))) ;
+      Result := RecodeMinute(Result,StrToInt(copy(RetCmd,11,2))) ;
+      Result := RecodeSecond(Result,StrToInt(copy(RetCmd,13,2))) ;
+    end
+    else
+    begin
+      RetCmd := EnviaComando( ESC + #221 ) ;
+      RetCmd := copy(RetCmd,Length(RetCmd)-12,12) ;
+
+      ShortDateFormat := 'dd/mm/yy' ;
+      result := StrToDate(copy(RetCmd,1,2)+ DateSeparator +
+                          copy(RetCmd,3,2)+ DateSeparator +
+                          copy(RetCmd,5,2)) ;
+
+      Result := RecodeHour(  Result,StrToInt(copy(RetCmd, 7,2))) ;
+      Result := RecodeMinute(Result,StrToInt(copy(RetCmd, 9,2))) ;
+      Result := RecodeSecond(Result,StrToInt(copy(RetCmd,11,2))) ;
+    end ;
+  finally
+     ShortDateFormat := OldShortDateFormat ;
+  end ;
+
+end;
+
+function TACBrECFDaruma.GetSubModeloECF: String;
+var
+   RetCmd: AnsiString;
+begin
+   Result := Trim(RetornaInfoECF('81'))
 end;
 //IMS
 

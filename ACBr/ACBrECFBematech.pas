@@ -159,6 +159,7 @@ TACBrECFBematech = class( TACBrECFClass )
     fsNumECF    : String ;
     fsNumLoja   : String ;
     fsNumCRO    : String ;
+    fsSubModeloECF  : String ;
     fsNumCOOInicial : String ;
     fsArredonda : Char ;
     fsTotalPago : Double ;
@@ -202,6 +203,9 @@ TACBrECFBematech = class( TACBrECFClass )
     function GetIM: String; override ;  //IMS 28/09/2009
     function GetCliche: String; override ;  //IMS 28/09/2009
     function GetUsuarioAtual: String; override ;  //IMS 09/10/2009
+    function GetDataHoraSB: TDateTime; override ; //IMS 20/10/2009
+    function GetSubModeloECF: String ; override ; //IMS 20/10/2009
+
     function GetPAF: String; override ;
     function GetDataMovimento: TDateTime; override ;
     function GetGrandeTotal: Double; override ;
@@ -363,6 +367,7 @@ begin
   fsNumECF    := '' ;
   fsNumLoja   := '' ;
   fsNumCRO    := '' ;
+  fsSubModeloECF  := '' ;
   fsArredonda := ' ';
   fsTotalizadoresParciais := '' ;
   fsFalhasFimImpressao    := 0 ;
@@ -397,6 +402,7 @@ begin
   fsNumECF    := '' ;
   fsNumLoja   := '' ;
   fsNumCRO    := '' ;
+  fsSubModeloECF := '' ;
   fpMFD       := false ;
   fpTermica   := false ;
   fsArredonda := ' ';
@@ -777,6 +783,7 @@ begin
            try
               BytesResp := 42 ;
               RetCmd    := Trim( EnviaComando( #35+#60 )) ;
+              fsSubModeloECF := copy(RetCmd,16,20) ; //IMS 20/10/2009
               fpTermica := (Pos('TH ',RetCmd) > 0) ;
               fpMFD     := fpTermica ;
            except
@@ -1938,7 +1945,40 @@ end;
 //IMS 09/10/2009
 function TACBrECFBematech.GetUsuarioAtual: String;
 begin
-  Result := RetornaInfoECF( '11' ) ;
+     Result  := RetornaInfoECF( '11' ) ;
+end;
+
+//IMS 20/10/2009
+function TACBrECFBematech.GetDataHoraSB: TDateTime;
+{Segundo a Bematech esta informação tem que se colhida a partir da
+Leitura da Memória Fiscal, só para não retornar erro coloquei esta
+informação abaixo, temos que criar uma rotina que leia a LMF serial
+para retornar os valores corretos}
+Var RetCmd : AnsiString ;
+    OldShortDateFormat : String ;
+begin
+  RetCmd := '010195000000' ;
+  OldShortDateFormat := ShortDateFormat ;
+  try
+     ShortDateFormat := 'dd/mm/yy' ;
+     result := StrToDate(copy(RetCmd, 1,2) + DateSeparator +
+                         copy(RetCmd, 3,2) + DateSeparator +
+                         copy(RetCmd, 5,2)) ;
+  finally
+     ShortDateFormat := OldShortDateFormat ;
+  end ;
+  result := RecodeHour(  result,StrToInt(copy(RetCmd, 7,2))) ;
+  result := RecodeMinute(result,StrToInt(copy(RetCmd, 9,2))) ;
+  result := RecodeSecond(result,StrToInt(copy(RetCmd,11,2))) ;
+end;
+
+function TACBrECFBematech.GetSubModeloECF: String;
+
+begin
+    if fsSubModeloECF = '' then
+      fsSubModeloECF := Trim( EnviaComando ( #35+#60 )) ;
+
+    Result  := fsSubModeloECF ;
 end;
 
 //IMS

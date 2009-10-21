@@ -285,6 +285,9 @@ TACBrECF = class( TACBrComponent )
     function GetIMClass: String;  //IMS 28/09/2009
     function GetClicheClass: String;  //IMS 28/09/2009
     function GetUsuarioAtualClass: String;  //IMS 09/10/2009
+    function GetDataHoraSBClass: TDateTime; //IMS 20/10/2009
+    function GetSubModeloECFClass: String ; //IMS 20/10/2009
+    
     function GetPAFClass: String;
     function GetDadosReducaoZ: AnsiString;
     function GetDadosUltimaReducaoZ: AnsiString;
@@ -352,11 +355,14 @@ TACBrECF = class( TACBrComponent )
     
     { Retorna String com todos os valores no formato: Campo = Valor (1 por linha)}
     Property DataMovimento      : TDateTime  read GetDataMovimentoClass ;
+    Property DataHoraSB         : TDateTime  read GetDataHoraSBClass ; //IMS 20/10/2009
     Property CNPJ               : String     read GetCNPJClass ;
     Property IE                 : String     read GetIEClass ;
     Property IM                 : String     read GetIMClass ;  //IMS 28/09/2009
     Property Cliche             : String     read GetClicheClass ;  //IMS 28/09/2009
     Property UsuarioAtual       : String     read GetUsuarioAtualClass ;  //IMS 09/10/2009
+    Property SubModeloECF       : String     read GetSubModeloECFClass ; //IMS 20/10/2009
+
     Property PAF                : String     read GetPAFClass ;
     Property NumCRZ             : String     read GetNumCRZClass ;
     Property NumCRO             : String     read GetNumCROClass ;
@@ -1444,6 +1450,17 @@ function TACBrECF.GetUsuarioAtualClass: String;
 begin
   ComandoLOG := 'UsuarioAtual' ;
   Result := fsECF.UsuarioAtual ;
+end;
+//IMS 20/10/2009
+function TACBrECF.GetDataHoraSBClass: TDateTime;
+begin
+  ComandoLOG := 'DataHoraSB' ;
+  Result := fsECF.DataHoraSB ;
+end;
+function TACBrECF.GetSubModeloECFClass: String;
+begin
+  ComandoLOG := 'SubModeloECF' ;
+  Result := fsECF.SubModeloECF ;
 end;
 //IMS
 

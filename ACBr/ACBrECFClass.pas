@@ -443,7 +443,9 @@ TACBrECFClass = class
     function GetIM: String; virtual ;  //IMS 28/09/2009
     function GetCliche: String; virtual ;  //IMS 28/09/2009
     function GetUsuarioAtual: String; virtual ;  //IMS 09/10/2009
-   
+    function GetDataHoraSB: TDateTime; virtual ; //IMS 20/10/2009
+    function GetSubModeloECF: String ; virtual ; //IMS 20/10/2009
+
     function GetPAF: String; virtual ;
     function GetDataMovimento: TDateTime; virtual ;
     function GetGrandeTotal: Double; virtual ;
@@ -590,6 +592,9 @@ TACBrECFClass = class
     Property IM                 : String     read GetIM ;  //IMS 28/09/2009
     Property Cliche             : String     read GetCliche ;  //IMS 28/09/2009
     Property UsuarioAtual       : String     read GetUsuarioAtual ;  //IMS 09/10/2009
+    Property DataHoraSB         : TDateTime  read GetDataHoraSB ; //IMS 20/10/2009
+    Property SubModeloECF       : String     read GetSubModeloECF ; //IMS 20/10/2009
+    
     Property PAF                : String     read GetPAF ;
     Property NumCRZ             : String     read GetNumCRZ ;
     Property NumCRO             : String     read GetNumCRO ;
@@ -2003,6 +2008,15 @@ begin
 end;
 //IMS 09/10/2009
 function TACBrECFClass.GetUsuarioAtual: String;
+begin
+  Result := '' ;
+end;
+//IMS 20/10/2009
+function TACBrECFClass.GetDataHoraSB: TDateTime;
+begin
+  Result := now ;
+end;
+function TACBrECFClass.GetSubModeloECF: String;
 begin
   Result := '' ;
 end;

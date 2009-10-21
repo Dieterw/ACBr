@@ -171,6 +171,7 @@ TACBrECFSweda = class( TACBrECFClass )
  private
     fsNumVersao : String ;
     fsNumCRO    : String ;
+    fsSubModeloECF  : String ;
     fsNumECF    : String ;
     fsModeloSweda : AnsiChar ; { A - IF-7000III, B - IF-7000I,   C - IF-7000II,
                              D - IF-7000IE,  E - IF-7000IIE, F - IFS-9000,
@@ -190,7 +191,6 @@ TACBrECFSweda = class( TACBrECFClass )
        TimeOut : Integer = 2000 ) ;
     Procedure Purge(Id: AnsiString) ;
     procedure LeBufferSerial(Cmd : String; AStringList: TStringList);
-    Function DocumentosToStr(Documentos : TACBrECFTipoDocumentoSet) : String ;  //IMS 09/10/2009
 
  protected
     function GetDataHora: TDateTime; override ;
@@ -218,6 +218,8 @@ TACBrECFSweda = class( TACBrECFClass )
     function GetIM: String; override ;  //IMS 28/09/2009
     function GetCliche: String; override ;  //IMS 28/09/2009
     function GetUsuarioAtual: String; override ;  //IMS 09/10/2009
+    function GetDataHoraSB: TDateTime; override ; //IMS 20/10/2009    
+    function GetSubModeloECF: String; override ;  //IMS 20/10/2009
     function GetDataMovimento: TDateTime; override ;
     function GetGrandeTotal: Double; override ;
     function GetNumCRZ: String; override ;
@@ -352,6 +354,7 @@ begin
   fsNumVersao   := '' ;
   fsNumECF      := '' ;
   fsNumCRO      := '' ;
+  fsSubModeloECF  := '' ;
   fsModeloSweda := ' ' ;
   fsCMDVinculado:= '' ;
   fsEsperaMinima:= 0;
@@ -385,6 +388,7 @@ begin
   fsNumVersao   := '' ;
   fsNumECF      := '' ;
   fsNumCRO      := '' ;
+  fsSubModeloECF  := '' ;
   fsModeloSweda := ' ' ;
   fpModeloStr   := 'Sweda' ;
   fsVersaoSweda := swdNenhum ;
@@ -698,7 +702,7 @@ begin
         ShortDateFormat := OldShortDateFormat ;
      end ;
   end ;
-end;      
+end;
 
 function TACBrECFSweda.GetNumCupom: String;
  Var RetCmd : AnsiString ;
@@ -912,12 +916,13 @@ begin
        'G' : SubModelo := 'ST1000' ;
        'H' : SubModelo := 'ST100' ;
        'I' : SubModelo := 'ST200' ;
+       'J' : SubModelo := 'ST120' ;
      else
         SubModelo := '???' ;
      end ;
 
      fpModeloStr := Trim(fpModeloStr + ' ' +SubModelo) ;
-
+     fsSubModeloECF := SubModelo ;
      if VerString = '1.A' then
         VerString := '1.0' ;
 
@@ -1350,7 +1355,7 @@ begin
      else
         fsVinculado := fsVinculado + 1 ;
 
-  If fsVersaoSweda < swdB then
+  If (fsVersaoSweda < swdB) or (Length(Trim(Observacao)) = 0) then
      Observacao := ''
   else
      Observacao := '{' + copy(Observacao,1,80) ;
@@ -1414,6 +1419,10 @@ begin
 
      Cmd := Cmd + 'N' ;              {N = Sem cupom Adcional }
   end ;
+
+  { Pausa após os pagamentos para fechar o cupom, Versao 9000IIIE para de responder }
+  if (fsVersaoSweda < swdST) then
+     sleep(1000);
 
   Espera := IfThen( fsVersaoSweda >= swdST, 5,  20) ;
   AguardaImpressao := True ;
@@ -2471,12 +2480,6 @@ begin
   Result := (copy( RetCmd, 5,1) = '0') ;
 end;
 
-//IMS 09/10/2009
-Function TACBrECFSweda.DocumentosToStr(Documentos : TACBrECFTipoDocumentoSet) : String ;
-begin
-
-end ;
-
 procedure TACBrECFSweda.LeituraMFDSerial(COOInicial, COOFinal: Integer;
   Linhas: TStringList; Documentos : TACBrECFTipoDocumentoSet);
 
@@ -2709,7 +2712,6 @@ begin
   begin
      wretorno := EnviaComando('29'+ AnsiChar( chr(72+I) ));   // 72 = H em ASCII
      if (copy(wretorno,1,3) = '.+T') and (copy(wretorno,8,22) <> Space(22) ) then   //IMS 10/10/2009
-//      Flag := Copy(wretorno,8,22)
         if copy(wretorno,7,1) = 'H' then
            Result := '0001'
         else if copy(wretorno,7,1) = 'I' then
@@ -2723,6 +2725,53 @@ begin
 
      I := I + 1 ;
   end ;
+end;
+//IMS 20/10/2009
+function TACBrECFSweda.GetDataHoraSB: TDateTime;
+Var RetCmd : AnsiString ;
+    OldShortDateFormat : String ;
+    P : Integer ;
+begin
+  RetCmd := EnviaComando( '29H' ) ;
+  P      := pos('H',RetCmd) ;
+  Result := 0 ;
+  if P > 0 then
+     if fpMFD then
+     begin
+        OldShortDateFormat := ShortDateFormat ;
+        try
+           ShortDateFormat := 'dd/mm/yy' ;
+           result := StrToDate(copy(RetCmd,71,2)+ DateSeparator +
+                               copy(RetCmd,73,2)+ DateSeparator +
+                               copy(RetCmd,75,2)) ;
+           result := RecodeHour(  result,StrToIntDef(copy(RetCmd,77,2),0)) ;
+           result := RecodeMinute(result,StrToIntDef(copy(RetCmd,79,2),0)) ;
+           { Obs.: Sweda nao retorna os Segundos }
+        finally
+           ShortDateFormat := OldShortDateFormat
+        end
+     end
+  else
+     begin
+        OldShortDateFormat := ShortDateFormat ;
+        try
+           ShortDateFormat := 'dd/mm/yy' ;
+           result := StrToDate(copy(RetCmd,67,2)+ DateSeparator +
+                               copy(RetCmd,69,2)+ DateSeparator +
+                               copy(RetCmd,71,2)) ;
+           result := RecodeHour(  result,StrToIntDef(copy(RetCmd,73,2),0)) ;
+           result := RecodeMinute(result,StrToIntDef(copy(RetCmd,75,2),0)) ;
+           { Obs.: Sweda nao retorna os Segundos }
+        finally
+           ShortDateFormat := OldShortDateFormat
+        end
+     end
+end;
+
+
+function TACBrECFSweda.GetSubModeloECF: String; //Tem que aprimorar esta rotina, para identificar somente um tipo
+begin
+  Result := fsSubModeloECF ;
 end;
 //IMS
 

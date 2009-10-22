@@ -47,6 +47,13 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Alterações   22/10/09
+---------------
+[+] Adicionada propriedade MostrarStatus (padrão TRUE) nos componentes DANFE (RAVE arquivo e CB)
+    - Quando valor da propriedade for FALSE não será exibido a janela "Generating Page ..." do RAVE.
+      Útil (por exemplo) na criação do PDF para enviar no email e quando desejar mostrar uma janela personalizada enquanto gera o DANFE.
+
+
 Alterações   21/10/09
 ---------------
 [*] Arquivo instala.bat das DLLs da versão CAPICOM alterado para copiar DLLs para o local correto nas versões 64 bits do Windows

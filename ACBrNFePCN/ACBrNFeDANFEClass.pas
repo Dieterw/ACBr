@@ -82,6 +82,7 @@ type
     FImprimirHoraSaida_Hora : string;
     FImprimirTotalLiquido: boolean;
     FMostrarPreview : Boolean;
+    FMostrarStatus: Boolean;
     FTipoDANFE : TpcnTipoImpressao;
     FNumCopias : Integer;
     FExpandirLogoMarca:Boolean;
@@ -113,6 +114,7 @@ type
     property ImprimirHoraSaida: Boolean read FImprimirHoraSaida write FImprimirHoraSaida ;
     property ImprimirHoraSaida_Hora: string read FImprimirHoraSaida_Hora write FImprimirHoraSaida_Hora ;
     property MostrarPreview: Boolean read FMostrarPreview write FMostrarPreview ;
+    property MostrarStatus: Boolean read FMostrarStatus write FMostrarStatus ;
     property TipoDANFE: TpcnTipoImpressao read FTipoDANFE write FTipoDANFE ;
     property NumCopias: Integer read FNumCopias write FNumCopias ;
     property Fax  : String read FFax   write FFax ;
@@ -183,6 +185,7 @@ begin
   FImprimirHoraSaida_Hora := '';
   FImprimirTotalLiquido   := False;
   FMostrarPreview         := True;
+  FMostrarStatus          := True;
   FNumCopias := 1;
   FFax   := '' ;
   FSite  := '' ;

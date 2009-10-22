@@ -396,6 +396,8 @@ begin
   dmDanfe.RvSystem1.SystemFiler.StatusFormat:='Gerando página %p';
   dmDanfe.RvSystem1.SystemFiler.StreamMode:=smMemory;
   dmDanfe.RvSystem1.SystemOptions:=[soShowStatus,soAllowPrintFromPreview,soPreviewModal];
+  if not MostrarStatus then
+     dmDanfe.RvSystem1.SystemOptions:=dmDanfe.RvSystem1.SystemOptions - [soShowStatus];
   dmDanfe.RvSystem1.SystemPreview.FormState:=wsMaximized;
   dmDanfe.RvSystem1.SystemPreview.ZoomFactor:=100;
   dmDanfe.RvSystem1.SystemPrinter.Copies:=NumCopias;
@@ -443,6 +445,8 @@ begin
   dmDanfe.RvSystem1.DefaultDest := rdFile;
   dmDanfe.RvSystem1.DoNativeOutput:=false;
   dmDanfe.RvSystem1.RenderObject:= dmDanfe.RvRenderPDF1;
+  if not MostrarStatus then
+     dmDanfe.RvSystem1.SystemOptions:=dmDanfe.RvSystem1.SystemOptions - [soShowStatus];
   dmDanfe.RvSystem1.SystemSetups:=dmDanfe.RvSystem1.SystemSetups - [ssAllowSetup];
   dmDanfe.RvProject.Engine := dmDanfe.RvSystem1;
   dmDanfe.RvRenderPDF1.EmbedFonts:=False;

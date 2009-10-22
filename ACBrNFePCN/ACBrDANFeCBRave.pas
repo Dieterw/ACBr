@@ -97,6 +97,7 @@ type
      FEspessuraBorda:integer;
      FFormularioContinuo: boolean;
      FExpandirLogoMarca: boolean;
+     FMostrarStatus: Boolean;
   public
      FCurrentPage, FPageNum, FNFIndex:Integer;
      FChaveNFe, FNumeroNF, FSerie: String;
@@ -137,6 +138,7 @@ type
      property EspessuraBorda:integer read FEspessuraBorda write FEspessuraBorda;
      property FormularioContinuo:boolean read FFormularioContinuo write FFormularioContinuo;
      property ExpandirLogoMarca:boolean read FExpandirLogoMarca write FExpandirLogoMarca default false;
+     property MostrarStatus:boolean read FMostrarStatus write FMostrarStatus default true;
   end;
 
 procedure ImprimirDANFeRave(aACBrNFe:TACBrNFe;
@@ -149,6 +151,7 @@ procedure ImprimirDANFeRave(aACBrNFe:TACBrNFe;
                             aLogoMarca:TJPEGImage;
                             aOrientacaoPapel:TOrientation;
                             aOpcaoDeSaida:TTipoSaida=tsPreview;
+                            aMostrarStatus:boolean=true;
                             aNumeroDeCopias:Integer=1;
                             aNomeImpressora:string='';
                             aArquivoSaida:String='';
@@ -185,6 +188,7 @@ procedure ImprimirDANFeRave(aACBrNFe:TACBrNFe;
                             aLogoMarca:TJPEGImage;
                             aOrientacaoPapel:TOrientation;
                             aOpcaoDeSaida:TTipoSaida=tsPreview;
+                            aMostrarStatus:boolean=true;
                             aNumeroDeCopias:Integer=1;
                             aNomeImpressora:string='';
                             aArquivoSaida:String='';
@@ -271,6 +275,8 @@ begin
     DANFeRave.SystemFiler.StatusFormat:='Gerando página %p';
     DANFeRave.SystemFiler.StreamMode:=smTempFile;
     DANFeRave.SystemOptions:=[soShowStatus,soAllowPrintFromPreview,soPreviewModal];
+    if not aMostrarStatus then
+       DANFeRave.SystemOptions:=DANFeRave.SystemOptions - [soShowStatus];
     DANFeRave.SystemPreview.FormState:=wsMaximized;
     DANFeRave.SystemPreview.ZoomFactor:=100;
     DANFeRave.SystemPrinter.Copies:=aNumeroDeCopias;

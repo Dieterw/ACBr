@@ -788,9 +788,14 @@ TACBrECFClass = class
        Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; virtual ;
     Procedure LeituraMFDSerial( COOInicial, COOFinal : Integer;
        Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; virtual ;
-    Procedure LeituraMFDSerialDLL( DataInicial, DataFinal : TDateTime;
+
+    Procedure EspelhoMFD_DLL( DataInicial, DataFinal : TDateTime;
        NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ; virtual ;
-    Procedure LeituraMFDSerialDLL( COOInicial, COOFinal : Integer;
+    Procedure EspelhoMFD_DLL( COOInicial, COOFinal : Integer;
+       NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ; virtual ;
+    Procedure ArquivoMFD_DLL( DataInicial, DataFinal : TDateTime;
+       NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ; virtual ;
+    Procedure ArquivoMFD_DLL( COOInicial, COOFinal : Integer;
        NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ; virtual ;
 
     Procedure IdentificaOperador(Nome : String); virtual;
@@ -1744,17 +1749,29 @@ begin
   ErroAbstract('LeituraMFDSerial');
 end;
 
-procedure TACBrECFClass.LeituraMFDSerialDLL(DataInicial,
+procedure TACBrECFClass.EspelhoMFD_DLL(DataInicial,
   DataFinal: TDateTime; NomeArquivo: String;
   Documentos: TACBrECFTipoDocumentoSet);
 begin
-  ErroAbstract('LeituraMFDSerialDLL');
+  ErroAbstract('EspelhoMFD_DLL');
 end;
 
-procedure TACBrECFClass.LeituraMFDSerialDLL(COOInicial, COOFinal: Integer;
+procedure TACBrECFClass.EspelhoMFD_DLL(COOInicial, COOFinal: Integer;
   NomeArquivo: String; Documentos: TACBrECFTipoDocumentoSet);
 begin
-  ErroAbstract('LeituraMFDSerialDLL');
+  ErroAbstract('EspelhoMFD_DLL');
+end;
+
+procedure TACBrECFClass.ArquivoMFD_DLL(DataInicial, DataFinal: TDateTime;
+  NomeArquivo: String; Documentos: TACBrECFTipoDocumentoSet);
+begin
+  ErroAbstract('ArquivoMFD_DLL');
+end;
+
+procedure TACBrECFClass.ArquivoMFD_DLL(COOInicial, COOFinal: Integer;
+  NomeArquivo: String; Documentos: TACBrECFTipoDocumentoSet);
+begin
+  ErroAbstract('ArquivoMFD_DLL');
 end;
 
 

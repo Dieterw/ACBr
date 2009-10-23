@@ -1873,8 +1873,11 @@ object Form1: TForm1
           OnClick = PorDatadeMovimento1Click
         end
       end
+      object N39: TMenuItem
+        Caption = '-'
+      end
       object LeituraSerialMFD1: TMenuItem
-        Caption = 'Leitura MFD Serial DLL'
+        Caption = 'Espelho MFD DLL'
         object PorCOO3: TMenuItem
           Caption = 'Por COO'
           OnClick = PorCOO3Click
@@ -1882,6 +1885,17 @@ object Form1: TForm1
         object PorPeriodo2: TMenuItem
           Caption = 'Por Periodo'
           OnClick = PorPeriodo2Click
+        end
+      end
+      object ArquivoMFDDLL1: TMenuItem
+        Caption = 'Arquivo MFD DLL'
+        object PorCOO4: TMenuItem
+          Caption = 'Por COO'
+          OnClick = PorCOO4Click
+        end
+        object PorPeriodo3: TMenuItem
+          Caption = 'Por Periodo'
+          OnClick = PorPeriodo3Click
         end
       end
     end

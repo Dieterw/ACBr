@@ -336,9 +336,9 @@ TACBrECFBematech = class( TACBrECFClass )
 
     Procedure CortaPapel( const CorteParcial : Boolean = false) ; override ;
 
-    Procedure LeituraMFDSerialDLL( DataInicial, DataFinal : TDateTime;
+    Procedure EspelhoMFD_DLL( DataInicial, DataFinal : TDateTime;
        NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
-    Procedure LeituraMFDSerialDLL( COOInicial, COOFinal : Integer;
+    Procedure EspelhoMFD_DLL( COOInicial, COOFinal : Integer;
        NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
 
  end ;
@@ -2552,7 +2552,7 @@ begin
      'Bematech_FI_AbrePortaSerial()'));
 end ;
 
-procedure TACBrECFBematech.LeituraMFDSerialDLL(DataInicial,
+procedure TACBrECFBematech.EspelhoMFD_DLL(DataInicial,
   DataFinal: TDateTime; NomeArquivo: String;
   Documentos: TACBrECFTipoDocumentoSet);
 var
@@ -2628,7 +2628,7 @@ begin
  {$ENDIF}
 end;
 
-procedure TACBrECFBematech.LeituraMFDSerialDLL(COOInicial, COOFinal: Integer;
+procedure TACBrECFBematech.EspelhoMFD_DLL(COOInicial, COOFinal: Integer;
   NomeArquivo: String; Documentos: TACBrECFTipoDocumentoSet);
 var
   Resp : Integer ;

@@ -95,6 +95,20 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Versão 0.8.9b  23/10/09 (DSA)
+[*]    Método LeituraMFDSerialDLL renomeado para EspelhoMFD_DLL para melhor
+       compreensão no PAF-ECF
+[+]    Adicionado novos métodos para obter o Arquivo MFD (Ato Cotepe 17/04)
+    Procedure ArquivoMFD_DLL( DataInicial, DataFinal : TDateTime;
+       NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ;
+    Procedure ArquivoMFD_DLL( COOInicial, COOFinal : Integer;
+       NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ;
+
+-- ACBrECFEpson --
+[+]    Implementado ArquivoMFD_DLL por Periodo e COO usando carga dinâmica da DLL.
+       Nos testes realizados não foi possivel efetuar a Leitura por COO (Erro 1)
+
+
 Versão 0.8.9b  21/10/09
 -- ACBrECF --
 [+]    Adicionada a propriedade ACBrECF.DaraHoraSB : TDateTime   ( por Ivan Moreira )
@@ -118,14 +132,14 @@ Versão 0.8.9b  20/10/09 (DSA)
 -- ACBrECF --
 [+]    Implementados métodos para permitir o uso da DLL do fabricante na Leitura da MFD
 	   Implementação nas classes filhas *DEVE* usar carga dinâmica da DLL, para não criar
-	   dependência Estática da DLL do fabricante no componente. 
+	   dependência Estática da DLL do fabricante no componente.
 	   (Veja o exemplo de implementação na Classe ACBrECFEpson.pas )
 	   
     Procedure LeituraMFDSerialDLL( DataInicial, DataFinal : TDateTime;
        NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ;
     Procedure LeituraMFDSerialDLL( COOInicial, COOFinal : Integer;
        NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ;
-	   
+
 -- ACBrECFBematech --
 [-]    Corrigido calculo do intervalo tempo de Espera em LeituraMFDSerial por COO
 

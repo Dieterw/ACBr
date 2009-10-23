@@ -561,9 +561,14 @@ TACBrECF = class( TACBrComponent )
        NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ;
     Procedure LeituraMFDSerial( COOInicial, COOFinal : Integer;
        NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ;
-    Procedure LeituraMFDSerialDLL( DataInicial, DataFinal : TDateTime;
+
+    Procedure EspelhoMFD_DLL( DataInicial, DataFinal : TDateTime;
        NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ;
-    Procedure LeituraMFDSerialDLL( COOInicial, COOFinal : Integer;
+    Procedure EspelhoMFD_DLL( COOInicial, COOFinal : Integer;
+       NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ;
+    Procedure ArquivoMFD_DLL( DataInicial, DataFinal : TDateTime;
+       NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ;
+    Procedure ArquivoMFD_DLL( COOInicial, COOFinal : Integer;
        NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ;
 
     Procedure IdentificaOperador( Nome : String) ;
@@ -2575,26 +2580,45 @@ begin
   end ;
 end;
 
-procedure TACBrECF.LeituraMFDSerialDLL(DataInicial, DataFinal: TDateTime;
+procedure TACBrECF.EspelhoMFD_DLL(DataInicial, DataFinal: TDateTime;
   NomeArquivo: String; Documentos: TACBrECFTipoDocumentoSet);
 begin
   TestaSeE_MFD ;
 
-  ComandoLOG := 'LeituraMFDSerialDLL( '+DateToStr(DataInicial)+' , '+
+  ComandoLOG := 'EspelhoMFD_DLL( '+DateToStr(DataInicial)+' , '+
                     DateToStr(DataFinal)+' , '+NomeArquivo+' ) ';
-  fsECF.LeituraMFDSerialDLL( DataInicial, DataFinal, NomeArquivo, Documentos ) ;
+  fsECF.EspelhoMFD_DLL( DataInicial, DataFinal, NomeArquivo, Documentos ) ;
 end;
 
-procedure TACBrECF.LeituraMFDSerialDLL(COOInicial, COOFinal: Integer;
+procedure TACBrECF.EspelhoMFD_DLL(COOInicial, COOFinal: Integer;
   NomeArquivo: String; Documentos: TACBrECFTipoDocumentoSet);
 begin
   TestaSeE_MFD ;
 
-  ComandoLOG := 'LeituraMFDSerialDLL( '+IntToStr(COOInicial)+' , '+
+  ComandoLOG := 'EspelhoMFD_DLL( '+IntToStr(COOInicial)+' , '+
                     IntToStr(COOFinal)+' , '+NomeArquivo+' ) ';
-  fsECF.LeituraMFDSerialDLL( COOInicial, COOFinal, NomeArquivo, Documentos ) ;
+  fsECF.EspelhoMFD_DLL( COOInicial, COOFinal, NomeArquivo, Documentos ) ;
 end;
 
+procedure TACBrECF.ArquivoMFD_DLL(DataInicial, DataFinal: TDateTime;
+  NomeArquivo: String; Documentos: TACBrECFTipoDocumentoSet);
+begin
+  TestaSeE_MFD ;
+
+  ComandoLOG := 'ArquivoMFD_DLL( '+DateToStr(DataInicial)+' , '+
+                    DateToStr(DataFinal)+' , '+NomeArquivo+' ) ';
+  fsECF.ArquivoMFD_DLL( DataInicial, DataFinal, NomeArquivo, Documentos ) ;
+end;
+
+procedure TACBrECF.ArquivoMFD_DLL(COOInicial, COOFinal: Integer;
+  NomeArquivo: String; Documentos: TACBrECFTipoDocumentoSet);
+begin
+  TestaSeE_MFD ;
+
+  ComandoLOG := 'ArquivoMFD_DLL( '+IntToStr(COOInicial)+' , '+
+                    IntToStr(COOFinal)+' , '+NomeArquivo+' ) ';
+  fsECF.ArquivoMFD_DLL( COOInicial, COOFinal, NomeArquivo, Documentos ) ;
+end;
 
 procedure TACBrECF.ImprimeCheque(Banco: String; Valor: Double; Favorecido,
   Cidade: String; Data: TDateTime; Observacao: String);

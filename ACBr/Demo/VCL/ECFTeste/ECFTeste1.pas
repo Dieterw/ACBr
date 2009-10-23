@@ -317,6 +317,10 @@ type
     PorPeriodo2: TMenuItem;
     UsuarioAual1: TMenuItem;
     Modelo1: TMenuItem;
+    N39: TMenuItem;
+    ArquivoMFDDLL1: TMenuItem;
+    PorCOO4: TMenuItem;
+    PorPeriodo3: TMenuItem;
     procedure cbxModeloChange(Sender: TObject);
     procedure Sair1Click(Sender: TObject);
     procedure bAtivarClick(Sender: TObject);
@@ -497,6 +501,8 @@ type
     procedure PorPeriodo2Click(Sender: TObject);
     procedure UsuarioAual1Click(Sender: TObject);
     procedure Modelo1Click(Sender: TObject);
+    procedure PorCOO4Click(Sender: TObject);
+    procedure PorPeriodo3Click(Sender: TObject);
   private
     { Private declarations }
     Function Converte( cmd : String) : String;
@@ -3166,26 +3172,26 @@ Var
   nCOOIni, nCOOFim : Integer ;
 begin
   Arquivo := 'c:\temp\teste.txt' ;
-  if not InputQuery('Captura da MFD DLL',
+  if not InputQuery('Espelho da MFD DLL',
                     'Nome Arquivo:', Arquivo ) then
      exit ;
 
   cCOOIni := '0' ;
   cCOOFim := '0' ;
 
-  if not InputQuery('Captura da MFD DLL',
+  if not InputQuery('Espelho da MFD DLL',
                 'Entre com o COO Inicial:', cCOOIni ) then
      exit ;
   nCOOIni := StrToIntDef(cCOOIni,-1) ;
   if nCOOIni < 0 then exit ;
 
-  if not InputQuery('Captura da MFD DLL',
+  if not InputQuery('Espelho da MFD DLL',
                 'Entre com o COO Final:', cCOOFim ) then
      exit ;
   nCOOFim := StrToIntDef(cCOOFim,-1) ;
   if nCOOFim < 0 then exit ;
 
-  ACBrECF1.LeituraMFDSerialDLL(nCOOIni, nCOOFim, Arquivo);
+  ACBrECF1.EspelhoMFD_DLL(nCOOIni, nCOOFim, Arquivo);
   mResp.Lines.Add('---------------------------------');
 end;
 
@@ -3196,14 +3202,14 @@ Var
   dDatIni, dDatFim : TDateTime ;
 begin
   Arquivo := 'c:\temp\teste.txt' ;
-  if not InputQuery('Captura da MFD DLL',
+  if not InputQuery('Espelho da MFD DLL',
                     'Nome Arquivo:', Arquivo ) then
      exit ;
 
   cDatIni := '01/'+FormatDateTime('mm/yy',now) ;
   cDatFim := FormatDateTime('dd/mm/yy',now) ;
 
-  if not InputQuery('Captura da MFD DLL',
+  if not InputQuery('Espelho da MFD DLL',
                 'Entre com o a Data Inicial (DD/MM/AA):', cDatIni ) then
      exit ;
   try
@@ -3223,7 +3229,7 @@ begin
      exit
   end ;
 
-  ACBrECF1.LeituraMFDSerialDLL(dDatIni, dDatFim, Arquivo);
+  ACBrECF1.EspelhoMFD_DLL(dDatIni, dDatFim, Arquivo);
   mResp.Lines.Add('---------------------------------');
 
 end;
@@ -3238,6 +3244,75 @@ procedure TForm1.Modelo1Click(Sender: TObject);
 begin
   mResp.Lines.Add( 'Modelo: ('+ ACBrECF1.ModeloStr+')' );
   AtualizaMemos ;
+end;
+
+procedure TForm1.PorCOO4Click(Sender: TObject);
+Var
+  Arquivo: String ;
+  cCOOIni, cCOOFim : String ;
+  nCOOIni, nCOOFim : Integer ;
+begin
+  Arquivo := 'c:\temp\teste.txt' ;
+  if not InputQuery('Arquivo da MFD DLL',
+                    'Nome Arquivo:', Arquivo ) then
+     exit ;
+
+  cCOOIni := '0' ;
+  cCOOFim := '0' ;
+
+  if not InputQuery('Arquivo da MFD DLL',
+                'Entre com o COO Inicial:', cCOOIni ) then
+     exit ;
+  nCOOIni := StrToIntDef(cCOOIni,-1) ;
+  if nCOOIni < 0 then exit ;
+
+  if not InputQuery('Arquivo da MFD DLL',
+                'Entre com o COO Final:', cCOOFim ) then
+     exit ;
+  nCOOFim := StrToIntDef(cCOOFim,-1) ;
+  if nCOOFim < 0 then exit ;
+
+  ACBrECF1.ArquivoMFD_DLL(nCOOIni, nCOOFim, Arquivo);
+  mResp.Lines.Add('---------------------------------');
+end;
+
+procedure TForm1.PorPeriodo3Click(Sender: TObject);
+Var
+  Arquivo: String ;
+  cDatIni, cDatFim : String ;
+  dDatIni, dDatFim : TDateTime ;
+begin
+  Arquivo := 'c:\temp\teste.txt' ;
+  if not InputQuery('Arquivo da MFD DLL',
+                    'Nome Arquivo:', Arquivo ) then
+     exit ;
+
+  cDatIni := '01/'+FormatDateTime('mm/yy',now) ;
+  cDatFim := FormatDateTime('dd/mm/yy',now) ;
+
+  if not InputQuery('Arquivo da MFD DLL',
+                'Entre com o a Data Inicial (DD/MM/AA):', cDatIni ) then
+     exit ;
+  try
+     dDatIni := StrToDateTime( StringReplace(cDatIni,'/', DateSeparator,
+                                [rfReplaceAll] ) ) ;
+  except
+     exit ;
+  end ;
+
+  if not InputQuery('Arquivo da MFD',
+                'Entre com o a Data Final (DD/MM/AA):', cDatFim ) then
+     exit ;
+  try
+     dDatFim := StrToDateTime( StringReplace(cDatFim,'/', DateSeparator,
+                                [rfReplaceAll] ) ) ;
+  except
+     exit
+  end ;
+
+  ACBrECF1.ArquivoMFD_DLL(dDatIni, dDatFim, Arquivo);
+  mResp.Lines.Add('---------------------------------');
+
 end;
 
 END.

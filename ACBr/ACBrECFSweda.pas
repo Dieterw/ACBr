@@ -349,9 +349,9 @@ TACBrECFSweda = class( TACBrECFClass )
     Procedure ProgramaComprovanteNaoFiscal( var Descricao: String;
        Tipo : String = ''; Posicao : String = '') ; override ;
 
-    Procedure LeituraMFDSerialDLL( DataInicial, DataFinal : TDateTime;
+    Procedure EspelhoMFD_DLL( DataInicial, DataFinal : TDateTime;
        NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
-    Procedure LeituraMFDSerialDLL( COOInicial, COOFinal : Integer;
+    Procedure EspelhoMFD_DLL( COOInicial, COOFinal : Integer;
        NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
 
 
@@ -3288,7 +3288,7 @@ begin
         'ECF_AbrePortaSerial'));
 end ;
 
-procedure TACBrECFSweda.LeituraMFDSerialDLL(DataInicial,
+procedure TACBrECFSweda.EspelhoMFD_DLL(DataInicial,
   DataFinal: TDateTime; NomeArquivo: String;
   Documentos: TACBrECFTipoDocumentoSet);
 Var
@@ -3323,7 +3323,7 @@ begin
 end;
 
 
-procedure TACBrECFSweda.LeituraMFDSerialDLL(COOInicial,
+procedure TACBrECFSweda.EspelhoMFD_DLL(COOInicial,
   COOFinal: Integer; NomeArquivo: String;
   Documentos: TACBrECFTipoDocumentoSet);
 Var

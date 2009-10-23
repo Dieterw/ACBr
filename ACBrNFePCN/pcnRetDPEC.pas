@@ -111,7 +111,7 @@ begin
       (*AR06 *)FverAplic := Leitor.rCampo(tcStr, 'verAplic');
       (*AR07 *)FcStat := Leitor.rCampo(tcInt, 'cStat');
       (*AR08 *)FxMotivo := Leitor.rCampo(tcStr, 'xMotivo');
-      if cStat = 101 then
+      if cStat = 124 then
       begin
         (*AR09 *)FdhRegDPEC := Leitor.rCampo(tcDatHor, 'dhRegDPEC');
         (*AR10 *)nRegDPEC := Leitor.rCampo(tcStr, 'nRegDPEC');

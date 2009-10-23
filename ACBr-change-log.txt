@@ -108,6 +108,9 @@ Versão 0.8.9b  23/10/09 (DSA)
 [+]    Implementado ArquivoMFD_DLL por Periodo e COO usando carga dinâmica da DLL.
        Nos testes realizados não foi possivel efetuar a Leitura por COO (Erro 1)
 
+-- ACBrECFSweda --
+[+]    Implementado ArquivoMFD_DLL por Periodo e COO usando carga dinâmica da DLL.
+       (por Magno System)
 
 Versão 0.8.9b  21/10/09
 -- ACBrECF --

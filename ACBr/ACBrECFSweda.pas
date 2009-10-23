@@ -353,6 +353,10 @@ TACBrECFSweda = class( TACBrECFClass )
        NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
     Procedure EspelhoMFD_DLL( COOInicial, COOFinal : Integer;
        NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
+    Procedure ArquivoMFD_DLL( DataInicial, DataFinal : TDateTime;
+       NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
+    Procedure ArquivoMFD_DLL( COOInicial, COOFinal : Integer;
+       NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
 
 
  end ;
@@ -3357,6 +3361,75 @@ begin
                             'Arquivo: "'+NomeArquivo + '" não gerado' ))
 end;
 
+
+procedure TACBrECFSweda.ArquivoMFD_DLL(DataInicial,
+  DataFinal: TDateTime; NomeArquivo: String;
+  Documentos: TACBrECFTipoDocumentoSet);
+Var
+  Resp : Integer ;
+  DiaIni, DiaFim : String ;
+  OldAtivo : Boolean ;
+begin
+  // Por: Magno System
+  LoadDLLFunctions ;
+
+  OldAtivo := Ativo ;
+  try
+    Ativo := False ;
+
+    AbrePortaSerialDLL ;
+
+    DiaIni := FormatDateTime('DD/MM/YY',DataInicial) ;
+    DiaFim := FormatDateTime('DD/MM/YY',DataFinal) ;
+
+    Resp := xECF_ReproduzirMemoriaFiscalMFD('2', PChar(DiaIni), PChar(DiaFim), Pchar( NomeArquivo ), '');
+    if (Resp <> 1) then
+      raise Exception.Create( ACBrStr( 'Erro ao executar ECF_DownloadMFD.'+sLineBreak+
+                                       'Cod.: '+IntToStr(Resp) ))
+  finally
+    xECF_FechaPortaSerial ;
+    Ativo := OldAtivo ;
+  end ;
+
+  if not FileExists( NomeArquivo ) then
+     raise Exception.Create( ACBrStr( 'Erro na execução de ECF_DownloadMFD.'+sLineBreak+
+                            'Arquivo: "'+NomeArquivo+'" não gerado' ))
+end;
+
+
+procedure TACBrECFSweda.ArquivoMFD_DLL(COOInicial,
+  COOFinal: Integer; NomeArquivo: String;
+  Documentos: TACBrECFTipoDocumentoSet);
+Var
+  Resp : Integer ;
+  CooIni, CooFim : String ;
+  OldAtivo : Boolean ;
+begin
+  // Por: Magno System
+  LoadDLLFunctions ;
+
+  OldAtivo := Ativo ;
+  try
+    Ativo := False ;
+
+    AbrePortaSerialDLL ;
+
+    CooIni := IntToStrZero( COOInicial, 7 ) ;
+    CooFim := IntToStrZero( COOFinal, 7 ) ;
+
+    Resp := xECF_ReproduzirMemoriaFiscalMFD('2', PChar(CooIni), PChar(CooFim), Pchar( NomeArquivo), '');
+    if (Resp <> 1) then
+      raise Exception.Create( ACBrStr( 'Erro ao executar xECF_ReproduzirMemoriaFiscalMFD.'+sLineBreak+
+                                       'Cod.: '+IntToStr(Resp) ))
+  finally
+    xECF_FechaPortaSerial ;
+    Ativo := OldAtivo ;
+  end ;
+
+  if not FileExists( NomeArquivo ) then
+     raise Exception.Create( ACBrStr( 'Erro na execução de ECF_DownloadMFD.'+sLineBreak+
+                            'Arquivo: "'+NomeArquivo + '" não gerado' ))
+end;
 
 end.
 

@@ -1539,6 +1539,10 @@ object Form1: TForm1
           Caption = 'IE'
           OnClick = IE1Click
         end
+        object Modelo1: TMenuItem
+          Caption = 'Modelo'
+          OnClick = Modelo1Click
+        end
       end
       object N19: TMenuItem
         Caption = '-'

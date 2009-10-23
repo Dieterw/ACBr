@@ -124,6 +124,11 @@ TACBrECFFiscNET = class( TACBrECFClass )
     fsComandoVendeItem : String ;
     fsComandosImpressao : array[0..9] of AnsiString ;
 
+    xGera_AtoCotepe1704 : function (ComPortOrFileName: String;
+      Modelo: String; RegFileName: String; DataReducao: String): Integer; stdcall;
+
+    procedure LoadDLLFunctions;
+
     Function PreparaCmd( cmd : AnsiString ) : AnsiString ;
     Function AjustaLeitura( AString : AnsiString ) : AnsiString ;
     function DocumentosToStr(Documentos: TACBrECFTipoDocumentoSet): String;
@@ -235,6 +240,9 @@ TACBrECFFiscNET = class( TACBrECFClass )
     Procedure LeituraMFDSerial( COOInicial, COOFinal : Integer;
        Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
 
+    Procedure LeituraMFDSerialDLL( DataInicial, DataFinal : TDateTime;
+       NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
+
     Procedure ImprimeCheque(Banco : String; Valor : Double ; Favorecido,
        Cidade : String; Data : TDateTime ;Observacao : String = '') ; override ;
     Procedure CancelaImpressaoCheque ; override ;
@@ -265,9 +273,31 @@ TACBrECFFiscNET = class( TACBrECFClass )
 
  end ;
 
+//Constantes usada para DLL do Ato Cotepe 1704
+CONST
+  ERROS_DLL : Array[1..17] of String =
+    ( 'Erro ao executar comando EmiteLeituraX.',
+      'Erro ao executar comando EmiteLeituraMF.',
+      'Erro ao executar comando EmiteLeituraFitaDetalhe.',
+      'Comando Inexistente.',
+      'Erro ao obter dados de impressão.',
+      'Erro ao acessar o arquivo.',
+      'Erro ao executar comando.Data inválida.',
+      'Não existe redução executada na data informada.',
+      'Modelo não permitido.',
+      'Comando inválido.',
+      'Biblioteca não foi encontrada.',
+      'Sem Sinal de CTS.',
+      'Nome do arquivo inválido',
+      'Intervalo de data não permitido',
+      'Caminho de origem não permitido.',
+      'Caminho de destino não permitido.',
+      'Erro Desconhecido.' ) ;
+
+
 implementation
 Uses ACBrECF,
-     {$IFDEF COMPILER6_UP} DateUtils, StrUtils {$ELSE} ACBrD5, Windows{$ENDIF},
+     {$IFDEF COMPILER6_UP} DateUtils, StrUtils {$ELSE} ACBrD5, SysUtils, SysUtils, Windows{$ENDIF},
      SysUtils,  Math ;
 
 { -------------------------  TACBrECFFiscNETComando -------------------------- }
@@ -547,12 +577,13 @@ begin
      FiscNETComando.NomeComando := 'LeTexto' ;
      FiscNETComando.AddParamString('NomeTexto','Marca') ;
      EnviaComando ;
-     fpModeloStr := 'FiscNET '+ FiscNETResposta.Params.Values['ValorTexto'] ;
+     fpModeloStr := 'FiscNET: '+ FiscNETResposta.Params.Values['ValorTexto'] ;
 
-     // Ajuste de Colunas na ThermoPrinter, por Fabio Farias //
      FiscNETComando.NomeComando := 'LeTexto';
      FiscNETComando.AddParamString('NomeTexto','Modelo');
      EnviaComando;
+     fpModeloStr := fpModeloStr + ' - ' + FiscNETResposta.Params.Values['ValorTexto'] ;
+     // Ajuste de Colunas na ThermoPrinter, por Fabio Farias //
      if FiscNETResposta.Params.Values['ValorTexto']='TPF2001' then
         fpColunas := 40;
 
@@ -2190,6 +2221,78 @@ procedure TACBrECFFiscNET.ProgramaRelatorioGerencial(var Descricao: String;
 begin
   inherited;
 
+end;
+
+procedure TACBrECFFiscNET.LoadDLLFunctions;
+Var
+  LIB_FiscNet, Marca : String ;
+
+ procedure FiscNetFunctionDetect( LibName, FuncName: String; var LibPointer: Pointer ) ;
+ begin
+   if not Assigned( LibPointer )  then
+   begin
+     if not FunctionDetect( LibName, FuncName, LibPointer) then
+     begin
+        LibPointer := NIL ;
+        raise Exception.Create( ACBrStr( 'Erro ao carregar a função:'+FuncName+' de: '+LibName ) ) ;
+     end ;
+   end ;
+ end ;
+begin
+  FiscNETComando.NomeComando := 'LeTexto';
+  FiscNETComando.AddParamString('NomeTexto','Marca');
+  EnviaComando;
+  Marca := FiscNETResposta.Params.Values['ValorTexto'] ;
+  Marca := LowerCase(Trim(Marca)) ;
+
+  if pos(Marca, 'dataregis|termoprinter') > 0 then
+   begin
+     LIB_FiscNet := 'DLLG2_Gerador.dll' ;
+     FiscNetFunctionDetect(LIB_FiscNet, 'Gera_AtoCotepe1704',@xGera_AtoCotepe1704 );
+   end
+  else
+     raise Exception.Create( ACBrStr( 'Interface ACBrECF -> '+Marca+' ainda não Implementada') ) ;
+
+end;
+
+procedure TACBrECFFiscNET.LeituraMFDSerialDLL(DataInicial, DataFinal: TDateTime;
+  NomeArquivo: String; Documentos: TACBrECFTipoDocumentoSet);
+Var
+  iRet: Integer;
+  PortaSerial, Modelo, DataStr, Erro: String;
+  OldAtivo : Boolean ;
+begin
+  LoadDLLFunctions;
+
+  FiscNETComando.NomeComando := 'LeTexto';
+  FiscNETComando.AddParamString('NomeTexto','Modelo');
+  EnviaComando;
+  Modelo := FiscNETResposta.Params.Values['ValorTexto'] ;
+//Modelo := '3202DT' ;
+  PortaSerial := fpDevice.Porta ;
+
+  OldAtivo := Ativo ;
+  try
+     Ativo := False ;
+
+     DataStr := FormatDateTime('dd/mm/yyyy',DataInicial) ;
+
+     iRet := xGera_AtoCotepe1704( PChar(PortaSerial), PChar(Modelo),
+                                  PChar(NomeArquivo), PChar(DataStr) );
+
+     if (-iRet >= Low(ERROS_DLL)) and (-iRet <= High(ERROS_DLL)) then
+        Erro := ERROS_DLL[ -iRet ] ;
+
+     if iRet <> 0 then
+        raise Exception.Create( ACBrStr( 'Erro ao executar Gera_AtoCotepe1704.'+sLineBreak+
+                                         'Cod.: '+IntToStr(iRet) + ' - ' + Erro )) ;
+  finally
+    Ativo := OldAtivo ;
+  end ;
+
+  if not FileExists( NomeArquivo ) then
+     raise Exception.Create( ACBrStr( 'Erro na execução de Gera_AtoCotepe1704.'+sLineBreak+
+                            'Arquivo: "'+NomeArquivo + '" não gerado' ))
 end;
 
 end.

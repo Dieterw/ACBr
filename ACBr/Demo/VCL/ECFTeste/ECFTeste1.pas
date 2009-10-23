@@ -316,6 +316,7 @@ type
     PorCOO3: TMenuItem;
     PorPeriodo2: TMenuItem;
     UsuarioAual1: TMenuItem;
+    Modelo1: TMenuItem;
     procedure cbxModeloChange(Sender: TObject);
     procedure Sair1Click(Sender: TObject);
     procedure bAtivarClick(Sender: TObject);
@@ -495,6 +496,7 @@ type
     procedure PorCOO3Click(Sender: TObject);
     procedure PorPeriodo2Click(Sender: TObject);
     procedure UsuarioAual1Click(Sender: TObject);
+    procedure Modelo1Click(Sender: TObject);
   private
     { Private declarations }
     Function Converte( cmd : String) : String;
@@ -3229,6 +3231,12 @@ end;
 procedure TForm1.UsuarioAual1Click(Sender: TObject);
 begin
   mResp.Lines.Add( 'UsuarioAtual: ('+ ACBrECF1.UsuarioAtual+')' );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.Modelo1Click(Sender: TObject);
+begin
+  mResp.Lines.Add( 'Modelo: ('+ ACBrECF1.ModeloStr+')' );
   AtualizaMemos ;
 end;
 

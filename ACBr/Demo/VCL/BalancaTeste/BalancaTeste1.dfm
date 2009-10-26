@@ -195,13 +195,12 @@ object Form1: TForm1
       Height = 24
       Style = csDropDownList
       ItemHeight = 16
-      ItemIndex = 1
       TabOrder = 0
-      Text = 'Filizola'
       Items.Strings = (
         'Nenhuma'
         'Filizola'
-        'Toledo')
+        'Toledo'
+        'Urano')
     end
     object cmbPortaSerial: TComboBox
       Left = 16

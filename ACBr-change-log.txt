@@ -95,6 +95,10 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Versão 0.8.9b  26/10/09
+-- ACBrBAL --
+[+]    Adicionado novo Modelo "balUrano" (por: Ivan Carlos Martello)
+
 Versão 0.8.9b  23/10/09 (DSA)
 [*]    Método LeituraMFDSerialDLL renomeado para EspelhoMFD_DLL para melhor
        compreensão no PAF-ECF

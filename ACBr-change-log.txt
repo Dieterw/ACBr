@@ -95,6 +95,14 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Versão 0.8.9b  27/10/09
+-- ACBrECFNaoFiscal --
+[+]    Adicionada várias propriedades e métodos (Por Ivan Moreira)
+        NumGNF, NumGRG, NumCDC, NumCER, GrandeTotal, VendaBruta, UsuarioAtual,
+        Cliche, DataHoraSB, SubModeloECF, TotalSubstituicaoTributaria,
+        TotalNaoTributado, TotalIsencao
+[+]    Alteração do tamanho do NumSerie.
+
 Versão 0.8.9b  26/10/09
 -- ACBrBAL --
 [+]    Adicionado novo Modelo "balUrano" (por: Ivan Carlos Martello)

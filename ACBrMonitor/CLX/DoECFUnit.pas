@@ -56,6 +56,7 @@ Procedure DoECF( Cmd : TACBrCmd ) ;
 Var wDescricao : String ;
     Linhas     : TStringList ;
     Linha      : String ;
+    NomeArquivo : String ;
     FPG        : TACBrECFFormaPagamento ;
     ICMS       : TACBrECFAliquota ;
     CNF        : TACBrECFComprovanteNaoFiscal ;
@@ -162,6 +163,15 @@ begin
 
         else if Cmd.Metodo = 'cliche' then
            Cmd.Resposta := Cliche
+
+        else if Cmd.Metodo = 'usuarioatual' then
+           Cmd.Resposta := UsuarioAtual
+//IMS 20/10/2009
+        else if Cmd.Metodo = 'datahorasb' then
+           Cmd.Resposta := FormatDateTime('dd/mm/yy hh:nn:ss', DataHoraSB )
+
+        else if Cmd.Metodo = 'submodeloecf' then
+           Cmd.Resposta := SubModeloECF
 //IMS
         else if Cmd.Metodo = 'paf' then
            Cmd.Resposta := PAF
@@ -559,7 +569,7 @@ begin
 
         else if Cmd.Metodo = 'leituramemoriafiscal' then
            if pos(DateSeparator,Cmd.Params(0)) > 0 then
-              LeituraMemoriaFiscal( StringToDateTime(Cmd.Params(0)),{Dt.Inicial}
+              LeituraMemoriaFiscal( StringToDateTime(Cmd.Params(0)), {Dt.Inicial}
                                     StringToDateTime(Cmd.Params(1)), {Dt.Final}
                                     StrToBoolDef(Trim(Cmd.Params(2)),False) ) {Simplificada}
            else
@@ -644,6 +654,45 @@ begin
               end ;
             end ;
          end
+//IMS 22/10/2009
+        else if Cmd.Metodo = 'arquivomfd_dll' then
+         begin
+           if Cmd.Params(2) <> '' then
+              NomeArquivo := Cmd.Params(2)
+           else
+              NomeArquivo := 'ctp1704.txt' ;
+
+           if pos(DateSeparator,Cmd.Params(0)) > 0 then
+              ArquivoMFD_DLL(
+                  StringToDateTime(Cmd.Params(0)),          { Dt.Inicial }
+                  StringToDateTime(Cmd.Params(1)),            { Dt.Final }
+                  NomeArquivo )                        { Nome do Arquivo }
+           else
+              ArquivoMFD_DLL(
+                  StrToInt(Trim(Cmd.Params(0))),            { COOInicial }
+                  StrToInt(Trim(Cmd.Params(1))),              { COOFinal }
+                  NomeArquivo ) ;                       { Nome do Arquivo }
+         end
+
+        else if Cmd.Metodo = 'espelhomfd_dll' then
+         begin
+           if Cmd.Params(2) <> '' then
+              NomeArquivo := Cmd.Params(2)
+           else
+              NomeArquivo := 'espelho.txt' ;
+
+           if pos(DateSeparator,Cmd.Params(0)) > 0 then
+              EspelhoMFD_DLL(
+                      StringToDateTime(Cmd.Params(0)),            { Dt.Inicial }
+                      StringToDateTime(Cmd.Params(1)),              { Dt.Final }
+                      NomeArquivo )                          { Nome do Arquivo }
+           else
+              EspelhoMFD_DLL(
+                      StrToInt(Trim(Cmd.Params(0))),              { COOInicial }
+                      StrToInt(Trim(Cmd.Params(1))),                { COOFinal }
+                      NomeArquivo ) ;                        { Nome do Arquivo }
+         end
+//IMS 22/10/2009
         else if Cmd.Metodo = 'enviacomando' then
            if Cmd.Params(1) <> '' then
               EnviaComando(Cmd.Params(0),StrToInt(Trim(Cmd.Params(1))))

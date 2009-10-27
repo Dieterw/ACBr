@@ -43,6 +43,20 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.8.13b  27/10/09    (Por: Ivan Moreira)
+[+]    ECF.UsuarioAtual -> Retorna o Número do usuário (proprietário) atual
+[+]    ECF.DataHoraSB -> Retorna a DataHora de Gravação do SW básico
+[+]    ECF.SubModeloECF -> Retorna a Descrição do Modelo do ECF
+	   
+[+]    ECF.EspelhoMFD_DLL( dDataInicial, dDataFinal, cNomeArquivo )  ou
+       ECF.EspelhoMFD_DLL( cCOOInicial, cCOOFinal, cNomeArquivo )
+         Cria Arquivo informado em "cNomeArquivo" contendo o Espelho da MFD em 
+         um periodo de COO ou Data
+[+]    ECF.ArquivoMFD_DLL( dDataInicial, dDataFinal, cNomeArquivo )  ou
+       ECF.ArquivoMFD_DLL( cCOOInicial, cCOOFinal, cNomeArquivo )
+         Cria Arquivo informado em "cNomeArquivo" de acordo com o Ato Cotepe 1704 em
+         um periodo de COO ou Data
+
 Versão 0.8.12b  14/10/09    (Daniel Simões)
 [+]    LeituraMFDSerial. Adicionado novo parâmetro (opcional) "NomeArquivo : String"
 

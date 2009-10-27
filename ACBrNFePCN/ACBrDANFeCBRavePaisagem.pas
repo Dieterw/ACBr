@@ -1056,7 +1056,7 @@ begin
      aFontHeigth:=GetFontHeigh;
      while FDetIndex<Det.Count do
       begin
-        with Det.Items[i] do
+        with Det.Items[FDetIndex] do
          begin
           aDescProduto:=Trim(Prod.XProd);
 

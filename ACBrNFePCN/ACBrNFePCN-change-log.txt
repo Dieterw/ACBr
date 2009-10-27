@@ -47,12 +47,17 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+
+Alterações   27/10/09
+---------------
+[-] Corrigido impressão do DANFE PAISAGEM em RAVE CB. 
+    Quando tinha mais de um ítem, só reimprimia as informações do primeiro ítem impresso.
+
 Alterações   22/10/09
 ---------------
 [+] Adicionada propriedade MostrarStatus (padrão TRUE) nos componentes DANFE (RAVE arquivo e CB)
     - Quando valor da propriedade for FALSE não será exibido a janela "Generating Page ..." do RAVE.
       Útil (por exemplo) na criação do PDF para enviar no email e quando desejar mostrar uma janela personalizada enquanto gera o DANFE.
-
 
 Alterações   21/10/09
 ---------------

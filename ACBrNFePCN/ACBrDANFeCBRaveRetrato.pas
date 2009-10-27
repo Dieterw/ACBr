@@ -57,9 +57,10 @@ uses Graphics, Forms, Windows, SysUtils, Classes,
 const
       FontSizeGroup:Integer=7;
       FontSizeTitle:Integer=6;
-      FontSizeText:Integer=8;
+//      FontSizeText:Integer=8;
 
 var
+   FontSizeText:double=8;
    ColsWidth:array[1..17] of Double;
 
 procedure ImprimirRetrato(aRaveSystem:TDANFeRave);
@@ -95,20 +96,41 @@ begin
           GotoXY(0,PosY+GetFontHeigh);
           //NewLine;
           vEnd:='Recebemos de '+Emit.XNome+' os produtos constantes da Nota Fiscal indicada ao lado';
-          if Length(vEnd)>110 then
+          if FontNameUsed = 'Courier New' then
           begin
-             vEnd:='Recebemos de '+Emit.XNome;
-             PrintCenter(vEnd,PosX+(aWidthOutros/2));
-             NewLine;
-             vEnd:='os produtos constantes da Nota Fiscal indicada ao lado';
-             PrintCenter(vEnd,PosX+(aWidthOutros/2));
+             if Length(vEnd)>96 then
+             begin
+                vEnd:='Recebemos de '+Emit.XNome;
+                PrintCenter(vEnd,PosX+(aWidthOutros/2));
+                NewLine;
+                vEnd:='os produtos constantes da Nota Fiscal indicada ao lado';
+                PrintCenter(vEnd,PosX+(aWidthOutros/2));
+             end
+             else
+             begin
+                PrintCenter(vEnd,PosX+(aWidthOutros/2));
+                NewLine;
+                if ExibirResumoCanhoto then
+                   PrintCenter('Emissão: '+NotaUtil.FormatDate(DateToStr(Ide.DEmi))+'  Dest/Reme: '+Dest.XNome+'  Valor Total: '+NotaUtil.FormatFloat(Total.ICMSTot.VNF),PosX+(aWidthOutros/2));
+             end;
           end
           else
           begin
-             PrintCenter(vEnd,PosX+(aWidthOutros/2));
-             NewLine;
-             if ExibirResumoCanhoto then
-                PrintCenter('Emissão: '+NotaUtil.FormatDate(DateToStr(Ide.DEmi))+'  Dest/Reme: '+Dest.XNome+'  Valor Total: '+NotaUtil.FormatFloat(Total.ICMSTot.VNF),PosX+(aWidthOutros/2));
+             if Length(vEnd)>110 then
+             begin
+                vEnd:='Recebemos de '+Emit.XNome;
+                PrintCenter(vEnd,PosX+(aWidthOutros/2));
+                NewLine;
+                vEnd:='os produtos constantes da Nota Fiscal indicada ao lado';
+                PrintCenter(vEnd,PosX+(aWidthOutros/2));
+             end
+             else
+             begin
+                PrintCenter(vEnd,PosX+(aWidthOutros/2));
+                NewLine;
+                if ExibirResumoCanhoto then
+                   PrintCenter('Emissão: '+NotaUtil.FormatDate(DateToStr(Ide.DEmi))+'  Dest/Reme: '+Dest.XNome+'  Valor Total: '+NotaUtil.FormatFloat(Total.ICMSTot.VNF),PosX+(aWidthOutros/2));
+             end;
           end;
         end;
 
@@ -317,7 +339,10 @@ var aWidth, CenterX:Double;
 begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
-     aWidth:=36;
+     if FontNameUsed = 'Courier New' then
+        aWidth:=38
+     else
+        aWidth:=36;
      Result:=PosX+aWidth;
      Box([fsLeft],PosX,PosY,aWidth,30);
      CenterX:=PosX+(aWidth/2);
@@ -357,7 +382,10 @@ begin
      VarNumPage:='PAGE'+FormatFloat('000000',FCurrentPage);
      SetPIVar(VarNumPage,IntToStr(FPageNum)+'/'+IntToStr(FPageNum));
 
-     PrintCenter('SÉRIE '+IntToStr(Ide.Serie)+' - FOLHA '+PIVar(VarNumPage),CenterX);
+     if FontNameUsed = 'Courier New' then
+        PrintCenter('SÉRIE '+IntToStr(Ide.Serie)+'-FOLHA '+PIVar(VarNumPage),CenterX)
+     else
+        PrintCenter('SÉRIE '+IntToStr(Ide.Serie)+' - FOLHA '+PIVar(VarNumPage),CenterX);
      Bold:=False;
   end;
 end;
@@ -365,6 +393,7 @@ end;
 function ImprimirCodigoBarras(PosX, PosY: Double):Double;
 var PosYCodBarraContigencia, aWidth, CenterX:Double;
     w1,w2,w3,aTituloChave, aChaveAcesso, aProtocolo, aChaveContigencia:String;
+    wTemp_FontSizeText: double;
 begin
    with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
@@ -378,7 +407,14 @@ begin
          aTituloChave:=' '
         else
          aTituloChave:='CHAVE DE ACESSO';
+      if FontNameUsed = 'Courier New' then
+      begin
+         wtemp_FontSizeText:=FontSizeText;
+         FontSizeText:=6.3;
+      end;
       Box([fsLeft,fsTop],PosX,YPos,aWidth,aHeigthPadrao,aTituloChave,aChaveAcesso,taCenter,True);
+      if FontNameUsed = 'Courier New' then
+         FontSizeText:=wtemp_FontSizeText;
 
       if ACBrNFe.NotasFiscais.Items[FNFIndex].NFe.Ide.tpEmis in [teContingencia,teFSDA] then
          aChaveContigencia:=NotaUtil.GerarChaveContingencia(ACBrNFe.NotasFiscais.Items[FNFIndex].NFe)

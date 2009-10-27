@@ -52,6 +52,8 @@ Alterações   27/10/09
 ---------------
 [-] Corrigido impressão do DANFE PAISAGEM em RAVE CB. 
     Quando tinha mais de um ítem, só reimprimia as informações do primeiro ítem impresso.
+[-] Corrigido impressão do DANFE RETRATO em RAVE CB quando a fonte for COURIER NEW. 
+
 
 Alterações   22/10/09
 ---------------

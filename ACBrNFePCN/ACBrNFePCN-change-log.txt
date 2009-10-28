@@ -48,6 +48,10 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   28/10/09
+---------------
+[-] Corrigido geração das informações adicionais no xml, caso seja adicionado apenas uma linha de observação.
+
 Alterações   27/10/09
 ---------------
 [-] Corrigido impressão do DANFE PAISAGEM em RAVE CB. 

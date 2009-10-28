@@ -1383,9 +1383,9 @@ procedure TNFeW.GerarInfAdic;
 begin
   if (trim(nfe.InfAdic.infAdFisco) <> EmptyStr) or
     (trim(nfe.InfAdic.infCpl) <> EmptyStr) or
-    (nfe.InfAdic.obsCont.Count > 1) or
-    (nfe.InfAdic.obsFisco.Count > 1) or
-    (nfe.InfAdic.procRef.Count > 1) then
+    (nfe.InfAdic.obsCont.Count > 0) or
+    (nfe.InfAdic.obsFisco.Count > 0) or
+    (nfe.InfAdic.procRef.Count > 0) then
   begin
     Gerador.wGrupo('infAdic', 'Z01');
     Gerador.wCampo(tcStr, 'Z02', 'infAdFisco', 01, 0256, 0, nfe.InfAdic.infAdFisco, DSC_INFADFISCO);

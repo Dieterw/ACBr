@@ -2694,7 +2694,7 @@ begin
      exit
   end ;
 
-  ACBrECF1.LeituraMFDSerialDLL(dDatIni, dDatFim, Arquivo);
+  ACBrECF1.EspelhoMFD_DLL(dDatIni, dDatFim, Arquivo);
   mResp.Lines.Add('---------------------------------');
 
 end;
@@ -2725,7 +2725,7 @@ begin
   nCOOFim := StrToIntDef(cCOOFim,-1) ;
   if nCOOFim < 0 then exit ;
 
-  ACBrECF1.LeituraMFDSerialDLL(nCOOIni, nCOOFim, Arquivo);
+  ACBrECF1.EspelhoMFD_DLL(nCOOIni, nCOOFim, Arquivo);
   mResp.Lines.Add('---------------------------------');
 end;
 

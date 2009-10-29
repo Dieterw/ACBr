@@ -153,6 +153,7 @@ TACBrValidador = class( TACBrComponent )
 
     Function FormatarCPF( AString : AnsiString )    : AnsiString ;
     Function FormatarCNPJ( AString : AnsiString )   : AnsiString ;
+    Function FormatarIE( AString, UF : AnsiString ) : AnsiString ;
     Function FormatarCheque( AString : AnsiString ) : AnsiString ;
     Function FormatarPIS( AString : AnsiString )    : AnsiString ;
     Function FormatarCEP( AString: AnsiString )     : AnsiString ;
@@ -241,18 +242,35 @@ begin
 end;
 
 function TACBrValidador.Validar : Boolean;
+Var
+  NomeDocto : String ;
 begin
   Result    := true ;
   fsMsgErro := '' ;
   fsDocto   := LimpaDocto( fsDocumento ) ;
   fsDigitoCalculado := '' ;
-  
+
   if (fsDocto = '') then
   begin
      if fsPermiteVazio then
         exit
      else
-        fsMsgErro := 'Documento não pode ser vazio.' ;
+      begin
+        NomeDocto := 'Documento' ;
+
+        case fsTipoDocto of
+          docCPF           : NomeDocto := 'CPF'  ;
+          docCNPJ          : NomeDocto := 'CNPJ' ;
+          docUF            : NomeDocto := 'UF' ;
+          docInscEst       : NomeDocto := 'Inscrição Estadual' ;
+          docNumCheque     : NomeDocto := 'Número de Cheque' ;
+          docPIS           : NomeDocto := 'PIS' ;
+          docCEP           : NomeDocto := 'CEP' ;
+          docCartaoCredito : NomeDocto := 'Número de Cartão' ;
+        end;
+
+        fsMsgErro := NomeDocto + ' não pode ser vazio.' ;
+      end ;
   end ;
 
   if fsMsgErro = '' then
@@ -287,6 +305,7 @@ begin
   case fsTipoDocto of
     docCPF      : Result := FormatarCPF( fsDocumento )  ;
     docCNPJ     : Result := FormatarCNPJ( fsDocumento )  ;
+    docInscEst  : Result := FormatarIE( fsDocumento, fsComplemento ) ;
     docNumCheque: Result := FormatarCheque( fsDocumento )  ;
     docPIS      : Result := FormatarPIS( fsDocumento )  ;
     docCEP      : Result := FormatarCEP( fsDocumento )  ;
@@ -1138,6 +1157,70 @@ begin
   fsMultIni       := 2 ;
   fsMultFim       := 9 ;
   fsFormulaDigito := frModulo11 ;
+end;
+
+function TACBrValidador.FormatarIE(AString, UF: AnsiString): AnsiString;
+Var
+  Mascara : AnsiString ;
+  C : AnsiChar ;
+  I, J, LenDoc, LenMas : Integer;
+Begin
+  AString := LimpaDocto( AString ) ;
+  UF      := UpperCase( UF ) ;
+
+  LenDoc  := Length( AString ) ;
+  Mascara := StringOfChar('*', LenDoc) ;
+
+  IF UF = 'AC' Then Mascara := '**.***.***/***-**';
+  IF UF = 'AL' Then Mascara := '*********';
+  IF UF = 'AP' Then Mascara := '*********';
+  IF UF = 'AM' Then Mascara := '**.***.***-*';
+  IF UF = 'BA' Then Mascara := '******-**';
+  IF UF = 'CE' Then Mascara := '********-*';
+  IF UF = 'DF' Then Mascara := '***********-**';
+  IF UF = 'ES' Then Mascara := '*********';
+  IF UF = 'GO' Then Mascara := '**.***.***-*';
+  IF UF = 'MA' Then Mascara := '*********';
+  IF UF = 'MT' Then Mascara := '**********-*';
+  IF UF = 'MS' Then Mascara := '*********';
+  IF UF = 'MG' Then Mascara := '***.***.***/****';
+  IF UF = 'PA' Then Mascara := '**-******-*';
+  IF UF = 'PB' Then Mascara := '********-*';
+  IF UF = 'PR' Then Mascara := '********-**';
+  IF UF = 'PE' Then Mascara := '**.*.***.*******-*';
+  IF UF = 'PI' Then Mascara := '*********';
+  IF UF = 'RJ' Then Mascara := '**.***.**-*';
+  IF UF = 'RN' Then Mascara := '**.***.***-*';
+  IF UF = 'RS' Then Mascara := '***/*******';
+  IF UF = 'RO' Then Mascara := '***.*****-*';
+  IF UF = 'RR' Then Mascara := '********-*';
+  IF UF = 'SC' Then Mascara := '***.***.***';
+  IF UF = 'SP' Then Mascara := '***.***.***.***';
+  IF UF = 'SE' Then Mascara := '*********-*';
+  IF UF = 'TO' Then Mascara := '***********';
+
+  Result  := '';
+  LenMas  := Length( Mascara ) ;
+  J       := 0 ;
+
+  For I := 1 to LenMas do
+  begin
+     C := Mascara[I] ;
+
+     if C = '*' then
+     begin
+        Inc( J ) ;
+
+        if J > LenDoc then
+           C := '0'
+        else
+           C := AString[J] ;
+     end ;
+
+     Result := Result + C ;
+  End;
+
+  Result := Trim( Result );
 end;
 
 end.

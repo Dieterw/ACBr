@@ -149,7 +149,7 @@ object frValidador: TfrValidador
     Top = 128
     Width = 153
     Height = 17
-    Caption = 'Gerar Exceção'
+    Caption = 'Gerar Exce'#231#227'o'
     TabOrder = 7
     OnClick = cbExceptionClick
   end

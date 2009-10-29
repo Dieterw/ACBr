@@ -82,6 +82,7 @@ end;
 procedure TfrValidador.bFormatarClick(Sender: TObject);
 begin
   ACBrValidador1.Documento   := edDocto.Text ;
+  ACBrValidador1.Complemento := edComple.Text ;
 
   edDocto.Text := ACBrValidador1.Formatar ;
 end;

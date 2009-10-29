@@ -1872,7 +1872,10 @@ begin
      else
         StrPreco := FormatFloat('##,##0.000',ValorUnitario ) ;
 
-     Total := RoundTo( Qtd * ValorUnitario, -2) ;
+     if self.Arredonda then
+        Total := RoundTo( Qtd * ValorUnitario, -2)
+     else
+        Total := Round( Qtd * ValorUnitario * 100 ) / 100 ;
 
      { Inserindo na String da fsMascaraItem }
      Linha := fsMemoMascItens ;

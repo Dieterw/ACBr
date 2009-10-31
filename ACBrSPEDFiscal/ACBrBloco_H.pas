@@ -128,7 +128,7 @@ end;
 
 function TRegistroH010List.GetItem(Index: Integer): TRegistroH010;
 begin
-  Result := Items[Index];
+  Result := TRegistroH010(Inherited Items[Index]);
 end;
 
 function TRegistroH010List.New: TRegistroH010;

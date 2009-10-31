@@ -110,7 +110,7 @@ end;
 
 function TRegistro9900List.GetItem(Index: Integer): TRegistro9900;
 begin
-  Result := Items[Index];
+  Result := TRegistro9900(Inherited Items[Index]);
 end;
 
 function TRegistro9900List.New: TRegistro9900;

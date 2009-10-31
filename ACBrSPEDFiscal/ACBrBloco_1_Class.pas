@@ -144,7 +144,7 @@ begin
        ///
        Result := LFill('1001') +
                  LFill(IND_MOV, 1) +
-                 '|' +
+                 Delimitador +
                  #13#10;
        ///
        Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
@@ -217,7 +217,7 @@ begin
        ///
        Result := LFill('1990') +
                  LFill(QTD_LIN_1,0,0) +
-                 '|' +
+                 Delimitador +
                  #13#10;
      end;
   end;

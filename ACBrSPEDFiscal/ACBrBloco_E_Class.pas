@@ -174,7 +174,7 @@ begin
        ///
        Result := LFill('E001') +
                  LFill(IND_MOV, 1) +
-                 '|' +
+                 Delimitador +
                  #13#10;
        ///
        RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
@@ -191,7 +191,7 @@ begin
        Result := LFill('E100') +
                  LFill(DT_INI) +
                  LFill(DT_FIN) +
-                 '|' +
+                 Delimitador +
                  #13#10;
        ///
        RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
@@ -220,7 +220,7 @@ begin
                  LFill(VL_ICMS_RECOLHER,0) +
                  LFill(VL_SLD_CREDOR_TRANSPORTAR,0) +
                  LFill(DEB_ESP,0) +
-                 '|' +
+                 Delimitador +
                  #13#10;
        ///
        RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
@@ -313,7 +313,7 @@ begin
        ///
        Result := LFill('E990') +
                  LFill(QTD_LIN_E,0,0) +
-                 '|' +
+                 Delimitador +
                  #13#10;
      end;
   end;

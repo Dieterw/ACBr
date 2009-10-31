@@ -354,7 +354,7 @@ begin
        ///
        Result := LFill('C001') +
                  LFill(IND_MOV, 1) +
-                 '|' +
+                 Delimitador +
                  #13#10;
        ///
        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
@@ -637,7 +637,7 @@ begin
        ///
        Result := LFill('C990') +
                  LFill(QTD_LIN_C,0,0) +
-                 '|' +
+                 Delimitador +
                  #13#10;
      end;
   end;

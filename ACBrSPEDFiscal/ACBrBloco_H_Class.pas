@@ -100,7 +100,7 @@ begin
        ///
        Result := LFill('H001') +
                  LFill(IND_MOV, 1) +
-                 '|' +
+                 Delimitador +
                  #13#10;
        ///
        RegistroH990.QTD_LIN_H := RegistroH990.QTD_LIN_H + 1;
@@ -128,7 +128,7 @@ begin
        ///
        Result := LFill('H990') +
                  LFill(QTD_LIN_H,0,0) +
-                 '|' +
+                 Delimitador +
                  #13#10;
      end;
   end;

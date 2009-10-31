@@ -179,7 +179,7 @@ begin
                  LFill(SUFRAMA, 9) +
                  LFill(IND_PERFIL) +
                  LFill(IND_ATIV, 1) +
-                 '|' +
+                 Delimitador +
                  #13#10;
        ///
        Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
@@ -197,7 +197,7 @@ begin
        ///
        Result := LFill('0001') +
                  LFill(IND_MOV, 1) +
-                 '|' +
+                 Delimitador +
                  #13#10;
        ///
        Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
@@ -223,7 +223,7 @@ begin
                  LFill(FONE, 10) +
                  LFill(FAX, 10) +
                  LFill(EMAIL) +
-                 '|' +
+                 Delimitador +
                  #13#10;
        ///
        Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
@@ -243,7 +243,7 @@ begin
         Result := LFill('0015') +
                   LFill(UF_ST) +
                   LFill(IE_ST) +
-                  '|' +
+                  Delimitador +
                   #13#10;
         ///
         Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
@@ -276,7 +276,7 @@ begin
                  LFill(FAX, 10) +
                  LFill(EMAIL) +
                  LFill(COD_MUN, 7) +
-                 '|' +
+                 Delimitador +
                  #13#10;
        ///
        Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
@@ -316,7 +316,7 @@ begin
                                                LFill(NUM) +
                                                LFill(COMPL) +
                                                LFill(BAIRRO) +
-                                               '|' +
+                                               Delimitador +
                                                #13#10;
         end;
      end;
@@ -345,7 +345,7 @@ begin
                                                LFill(DT_ALT) +
                                                LFill(NR_CAMPO) +
                                                LFill(CONT_ANT) +
-                                               '|' +
+                                               Delimitador +
                                                #13#10;
         end;
      end;
@@ -372,7 +372,7 @@ begin
           strRegistro0190 := strRegistro0190 + LFill('0190') +
                                                LFill(UNID ) +
                                                LFill(DESCR) +
-                                               '|' +
+                                               Delimitador +
                                                #13#10;
         end;
         Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
@@ -426,7 +426,7 @@ begin
        ///
        Result := LFill('0990') +
                  LFill(QTD_LIN_0,0,0) +
-                 '|' +
+                 Delimitador +
                  #13#10;
      end;
   end;

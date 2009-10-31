@@ -97,7 +97,7 @@ begin
        ///
        Result := LFill('9001') +
                  LFill(IND_MOV, 1) +
-                 '|' +
+                 Delimitador +
                  #13#10;
        ///
        Registro9990.QTD_LIN_9 := Registro9990.QTD_LIN_9 + 1;
@@ -121,7 +121,7 @@ begin
            strRegistro9900 := strRegistro9900 + LFill('9900') +
                                                 LFill(REG_BLC) +
                                                 LFill(QTD_REG_BLC,0,0) +
-                                                '|' +
+                                                Delimitador +
                                                 #13#10;
         end;
      end;
@@ -139,7 +139,7 @@ begin
      begin
         Result := LFill('9990') +
                   LFill(QTD_LIN_9,0,0) +
-                  '|' +
+                  Delimitador +
                   #13#10;
      end;
   end;
@@ -153,7 +153,7 @@ begin
      begin
         Result := LFill('9999') +
                   LFill(QTD_LIN,0,0) +
-                  '|' +
+                  Delimitador +
                   #13#10;
      end;
   end;

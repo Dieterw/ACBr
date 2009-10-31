@@ -356,8 +356,29 @@ begin
 end;
 
 function TBloco_0.WriteRegistro0190: string;
+var
+intFor: integer;
+strRegistro0190: string;
 begin
+  strRegistro0190 := '';
 
+  if Assigned(Registro0190) then
+  begin
+     for intFor := 0 to Registro0190.Count - 1 do
+     begin
+        with Registro0190.Items[intFor] do
+        begin
+          ///
+          strRegistro0190 := strRegistro0190 + LFill('0190') +
+                                               LFill(UNID ) +
+                                               LFill(DESCR) +
+                                               '|' +
+                                               #13#10;
+        end;
+        Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
+     end;
+     Result := strRegistro0190;
+  end;
 end;
 
 function TBloco_0.WriteRegistro0200: string;

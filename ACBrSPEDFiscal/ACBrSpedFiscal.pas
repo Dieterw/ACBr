@@ -323,6 +323,7 @@ begin
     Write(txtFile, WriteRegistro0100);
     Write(txtFile, WriteRegistro0150);
     Write(txtFile, WriteRegistro0175);
+    if Bloco_0.Registro0190.Count > 0 then Write(txtFile, WriteRegistro0190);
     Write(txtFile, WriteRegistro0990);
     /// BLOCO C
     Write(txtFile, WriteRegistroC001);

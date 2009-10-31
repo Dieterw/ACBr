@@ -1,0 +1,51 @@
+package ACBr_SPEDFiscal;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'ACBr Automação Comercial Brasil Sped Fiscal (http://acbr.sourceforge.net/)'}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl;
+
+contains
+  ACBrBloco_0 in 'ACBrBloco_0.pas',
+  ACBrBloco_0_Class in 'ACBrBloco_0_Class.pas',
+  ACBrBloco_1 in 'ACBrBloco_1.pas',
+  ACBrBloco_1_Class in 'ACBrBloco_1_Class.pas',
+  ACBrBloco_9 in 'ACBrBloco_9.pas',
+  ACBrBloco_9_Class in 'ACBrBloco_9_Class.pas',
+  ACBrBloco_C in 'ACBrBloco_C.pas',
+  ACBrBloco_C_Class in 'ACBrBloco_C_Class.pas',
+  ACBrBloco_D in 'ACBrBloco_D.pas',
+  ACBrBloco_D_Class in 'ACBrBloco_D_Class.pas',
+  ACBrBloco_E in 'ACBrBloco_E.pas',
+  ACBrBloco_E_Class in 'ACBrBloco_E_Class.pas',
+  ACBrBloco_H in 'ACBrBloco_H.pas',
+  ACBrBloco_H_Class in 'ACBrBloco_H_Class.pas',
+  ACBrBlocos in 'ACBrBlocos.pas',
+  ACBrSped in 'ACBrSped.pas',
+  ACBrSpedFiscal in 'ACBrSpedFiscal.pas',
+  ACBrSpedUtils in 'ACBrSpedUtils.pas';
+
+end.

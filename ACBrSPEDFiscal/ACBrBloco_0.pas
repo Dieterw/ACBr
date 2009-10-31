@@ -450,7 +450,7 @@ end;
 
 function TRegistro0150List.GetItem(Index: Integer): TRegistro0150;
 begin
-  Result := inherited Items[Index];
+  Result := Items[Index];
 end;
 
 function TRegistro0150List.New: TRegistro0150;

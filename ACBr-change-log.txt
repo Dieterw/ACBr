@@ -99,7 +99,7 @@ Versão 0.8.9b  29/10/09 (DSA)
 --ACBrValidador --
 [+]    Adicionado método: FormatarIE( AString, UF : AnsiString ) : AnsiString ;
 [*]    Erro de Validação de Documento vazio, retorna mensagem especificando o
-        Nome doTipo do Documento
+       Nome do Tipo do Documento
 
 -- ACBrECF --
 [*]    Método VendeItem, quando associado ao desenho de uma "Bobina", considera

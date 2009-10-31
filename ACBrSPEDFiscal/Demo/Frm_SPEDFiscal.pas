@@ -1,9 +1,18 @@
 unit Frm_SPEDFiscal;
 
+{$IFDEF FPC}
+{$mode objfpc}{$H+}
+{$ENDIF}
+
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+{$IFNDEF FPC}
+  Windows, Messages,
+{$ELSE}
+  LResources,
+{$ENDIF}
+  SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ACBrSpedFiscal, ExtCtrls, ACBrSped;
 
 type
@@ -44,7 +53,9 @@ var
 
 implementation
 
+{$IFNDEF FPC}
 {$R *.dfm}
+{$ENDIF}
 
 procedure TFrmSPEDFiscal.ACBrSpedFiscal1Error(const MsnError: string);
 begin
@@ -247,5 +258,10 @@ begin
    end;
    btnB_H.Enabled := false;
 end;
+
+initialization
+{$IFDEF FPC}
+   {$I Frm_SPEDFiscal.lrs}
+{$ENDIF}
 
 end.

@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<CONFIG>
+  <Package Version="3">
+    <PathDelim Value="\"/>
+    <Name Value="ACBr_SPEDFiscal"/>
+    <CompilerOptions>
+      <Version Value="8"/>
+      <PathDelim Value="\"/>
+      <SearchPaths>
+        <IncludeFiles Value="..\ACBrComum\"/>
+        <OtherUnitFiles Value="..\ACBrComum\"/>
+        <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
+        <SrcPath Value="..\ACBrComum\"/>
+      </SearchPaths>
+      <Other>
+        <CompilerPath Value="$(CompPath)"/>
+      </Other>
+    </CompilerOptions>
+    <Version Release="1"/>
+    <Files Count="18">
+      <Item1>
+        <Filename Value="ACBrSpedUtils.pas"/>
+        <UnitName Value="ACBrSpedUtils"/>
+      </Item1>
+      <Item2>
+        <Filename Value="ACBrBloco_0.pas"/>
+        <UnitName Value="ACBrBloco_0"/>
+      </Item2>
+      <Item3>
+        <Filename Value="ACBrBloco_0_Class.pas"/>
+        <UnitName Value="ACBrBloco_0_Class"/>
+      </Item3>
+      <Item4>
+        <Filename Value="ACBrBloco_1.pas"/>
+        <UnitName Value="ACBrBloco_1"/>
+      </Item4>
+      <Item5>
+        <Filename Value="ACBrBloco_1_Class.pas"/>
+        <UnitName Value="ACBrBloco_1_Class"/>
+      </Item5>
+      <Item6>
+        <Filename Value="ACBrBloco_9.pas"/>
+        <UnitName Value="ACBrBloco_9"/>
+      </Item6>
+      <Item7>
+        <Filename Value="ACBrBloco_9_Class.pas"/>
+        <UnitName Value="ACBrBloco_9_Class"/>
+      </Item7>
+      <Item8>
+        <Filename Value="ACBrBloco_C.pas"/>
+        <UnitName Value="ACBrBloco_C"/>
+      </Item8>
+      <Item9>
+        <Filename Value="ACBrBloco_C_Class.pas"/>
+        <UnitName Value="ACBrBloco_C_Class"/>
+      </Item9>
+      <Item10>
+        <Filename Value="ACBrBloco_D.pas"/>
+        <UnitName Value="ACBrBloco_D"/>
+      </Item10>
+      <Item11>
+        <Filename Value="ACBrBloco_D_Class.pas"/>
+        <UnitName Value="ACBrBloco_D_Class"/>
+      </Item11>
+      <Item12>
+        <Filename Value="ACBrBloco_E.pas"/>
+        <UnitName Value="ACBrBloco_E"/>
+      </Item12>
+      <Item13>
+        <Filename Value="ACBrBloco_E_Class.pas"/>
+        <UnitName Value="ACBrBloco_E_Class"/>
+      </Item13>
+      <Item14>
+        <Filename Value="ACBrBloco_H.pas"/>
+        <UnitName Value="ACBrBloco_H"/>
+      </Item14>
+      <Item15>
+        <Filename Value="ACBrBloco_H_Class.pas"/>
+        <UnitName Value="ACBrBloco_H_Class"/>
+      </Item15>
+      <Item16>
+        <Filename Value="ACBrBlocos.pas"/>
+        <UnitName Value="ACBrBlocos"/>
+      </Item16>
+      <Item17>
+        <Filename Value="ACBrSped.pas"/>
+        <UnitName Value="ACBrSped"/>
+      </Item17>
+      <Item18>
+        <Filename Value="ACBrSpedFiscal.pas"/>
+        <HasRegisterProc Value="True"/>
+        <UnitName Value="ACBrSpedFiscal"/>
+      </Item18>
+    </Files>
+    <Type Value="RunAndDesignTime"/>
+    <RequiredPkgs Count="1">
+      <Item1>
+        <PackageName Value="FCL"/>
+        <MinVersion Major="1" Valid="True"/>
+      </Item1>
+    </RequiredPkgs>
+    <UsageOptions>
+      <UnitPath Value="$(PkgOutDir)\"/>
+    </UsageOptions>
+    <PublishOptions>
+      <Version Value="2"/>
+      <IgnoreBinaries Value="False"/>
+    </PublishOptions>
+  </Package>
+</CONFIG>

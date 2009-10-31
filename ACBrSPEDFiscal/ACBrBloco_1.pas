@@ -491,7 +491,7 @@ end;
 
 function TRegistro1100List.GetItem(Index: Integer): TRegistro1100;
 begin
-  Result := inherited Items[Index];
+  Result := Items[Index];
 end;
 
 function TRegistro1100List.New: TRegistro1100;
@@ -517,7 +517,7 @@ end;
 
 function TRegistro1105List.GetItem(Index: Integer): TRegistro1105;
 begin
-  Result := inherited Items[Index];
+  Result := Items[Index];
 end;
 
 function TRegistro1105List.New: TRegistro1105;
@@ -543,7 +543,7 @@ end;
 
 function TRegistro1110List.GetItem(Index: Integer): TRegistro1110;
 begin
-  Result := inherited Items[Index];
+  Result := Items[Index];
 end;
 
 function TRegistro1110List.New: TRegistro1110;
@@ -569,7 +569,7 @@ end;
 
 function TRegistro1200List.GetItem(Index: Integer): TRegistro1200;
 begin
-  Result := inherited Items[Index];
+  Result := Items[Index];
 end;
 
 function TRegistro1200List.New: TRegistro1200;
@@ -595,7 +595,7 @@ end;
 
 function TRegistro1210List.GetItem(Index: Integer): TRegistro1210;
 begin
-  Result := inherited Items[Index];
+  Result := Items[Index];
 end;
 
 function TRegistro1210List.New: TRegistro1210;
@@ -621,7 +621,7 @@ end;
 
 function TRegistro1300List.GetItem(Index: Integer): TRegistro1300;
 begin
-  Result := inherited Items[Index];
+  Result := Items[Index];
 end;
 
 function TRegistro1300List.New: TRegistro1300;
@@ -647,7 +647,7 @@ end;
 
 function TRegistro1310List.GetItem(Index: Integer): TRegistro1310;
 begin
-  Result := inherited Items[Index];
+  Result := Items[Index];
 end;
 
 function TRegistro1310List.New: TRegistro1310;
@@ -673,7 +673,7 @@ end;
 
 function TRegistro1320List.GetItem(Index: Integer): TRegistro1320;
 begin
-  Result := inherited Items[Index];
+  Result := Items[Index];
 end;
 
 function TRegistro1320List.New: TRegistro1320;
@@ -699,7 +699,7 @@ end;
 
 function TRegistro1400List.GetItem(Index: Integer): TRegistro1400;
 begin
-  Result := inherited Items[Index];
+  Result := Items[Index];
 end;
 
 function TRegistro1400List.New: TRegistro1400;
@@ -725,7 +725,7 @@ end;
 
 function TRegistro1500List.GetItem(Index: Integer): TRegistro1500;
 begin
-  Result := inherited Items[Index];
+  Result := Items[Index];
 end;
 
 function TRegistro1500List.New: TRegistro1500;
@@ -751,7 +751,7 @@ end;
 
 function TRegistro1510List.GetItem(Index: Integer): TRegistro1510;
 begin
-  Result := inherited Items[Index];
+  Result := Items[Index];
 end;
 
 function TRegistro1510List.New: TRegistro1510;

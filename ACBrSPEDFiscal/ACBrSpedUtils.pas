@@ -42,7 +42,7 @@ unit ACBrSpedUtils;
 
 interface
 
-uses Windows, Messages, SysUtils, Variants, Classes;
+uses SysUtils, Variants, Classes;
 
 // Funções de checagem de dados
 function funChecaUF(const UF: string): boolean;

@@ -47,6 +47,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.01a   31/10/09
+---------------
+[-] Modificado todas funções GetItem para compatibilidade com Lazarus de "Result := Inherited Items[Index]" para "Result := Items[Index]"
+
 Versão 0.01a   30/10/09
 ---------------
 [+] Início do Projeto

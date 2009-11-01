@@ -52,7 +52,7 @@ type
     FOnError: TErrorEvent;
     FDT_INI: TDateTime;    /// Data inicial das informações contidas no arquivo
     FDT_FIN: TDateTime;    /// Data final das informações contidas no arquivo
-    FDELIMITADOR: string;  /// Caracter delimitador de campos
+    FDelimitador: string;  /// Caracter delimitador de campos
 
     function GetOnError: TErrorEvent;  /// Método GetError
     procedure SetOnError(const Value: TErrorEvent); /// Método SetError
@@ -77,9 +77,7 @@ type
     ///
     property DT_INI: TDateTime read GetDT_INI write SetDT_INI;
     property DT_FIN: TDateTime read GetDT_FIN write SetDT_FIN;
-  published
-    property Delimitador: string read FDELIMITADOR write FDELIMITADOR;
-    ///
+    property Delimitador: string read FDelimitador write FDelimitador;
     property OnError: TErrorEvent read GetOnError write SetOnError;
   end;
 
@@ -100,7 +98,7 @@ end;
 constructor TACBrSPED.Create(AOwner: TComponent);
 begin
   inherited;
-  FDELIMITADOR := '|';
+  FDelimitador := '|';
 end;
 
 destructor TACBrSPED.Destroy;
@@ -116,7 +114,7 @@ begin
   else
      Result := Value + StringOfChar(Caracter, Size - Length(Value));
   //
-  Result := FDELIMITADOR + Result;
+  Result := FDelimitador + Result;
 end;
 
 function TACBrSPED.LFill(Value: string; Size: Integer = 0; Caracter: Char = '0'): string;
@@ -126,7 +124,7 @@ begin
   else
      Result := StringOfChar(Caracter, Size - length(Value)) + Value;
   //
-  Result := FDELIMITADOR + Result;
+  Result := FDelimitador + Result;
 end;
 
 function TACBrSPED.LFill(Value: Currency; Size: Integer; Decimal: Integer = 2; Caracter: Char = '0'): string;
@@ -149,7 +147,7 @@ end;
 function TACBrSPED.LFill(Value: TDateTime; Mask: string = 'ddmmyyyy'): string;
 begin
   Result := FormatDateTime(Mask, Value);
-  Result := FDELIMITADOR + Result;
+  Result := FDelimitador + Result;
 end;
 
 function TACBrSPED.GetDT_FIN: TDateTime;

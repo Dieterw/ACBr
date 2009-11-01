@@ -92,6 +92,8 @@ end;
 
 function TBloco_H.WriteRegistroH001: string;
 begin
+  Result := '';
+
   if Assigned(RegistroH001) then
   begin
      with RegistroH001 do
@@ -120,6 +122,8 @@ end;
 
 function TBloco_H.WriteRegistroH990: string;
 begin
+  Result := '';
+
   if Assigned(RegistroH990) then
   begin
      with RegistroH990 do

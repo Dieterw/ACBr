@@ -220,6 +220,8 @@ type
     property Bloco_H: TBloco_H read FBloco_H write FBloco_H;
   published
     property Path: string read FPath write FPath;
+    property Delimitador;
+    property OnError;
   end;
 
   procedure Register;
@@ -289,6 +291,16 @@ begin
   if (Trim(FileName) = '') or (Trim(fPath) = '') then
      raise Exception.Create('Caminho ou nome do arquivo não informado!');
 
+  /// Atribuir o evento do componente aos eventos dos Blocos, para que sejam
+  /// disparados.
+  FBloco_0.OnError := OnError;
+  FBloco_1.OnError := OnError;
+  FBloco_C.OnError := OnError;
+  FBloco_D.OnError := OnError;
+  FBloco_E.OnError := OnError;
+  FBloco_H.OnError := OnError;
+  FBloco_9.OnError := OnError;
+  ///
   Check(DT_INI > 0,        'CHECAGEM INICIAL: Informe a data inicial das informações contidas no arquivo!');
   Check(DT_FIN > 0,        'CHECAGEM INICIAL: Informe a data final das informações contidas no arquivo!');
   Check(DayOf(DT_INI) = 1, 'CHECAGEM INICIAL: A data inicial deve corresponder ao primeiro dia do mês informado!');
@@ -319,7 +331,7 @@ begin
     Write(txtFile, WriteRegistro0000);
     Write(txtFile, WriteRegistro0001);
     Write(txtFile, WriteRegistro0005);
-    Write(txtFile, WriteRegistro0015);
+    if Bloco_0.Registro0015.Count > 0 then Write(txtFile, WriteRegistro0015);
     Write(txtFile, WriteRegistro0100);
     Write(txtFile, WriteRegistro0150);
     Write(txtFile, WriteRegistro0175);
@@ -391,7 +403,7 @@ end;
 function TACBrSPEDFiscal.WriteRegistro0015: string;
 begin
    /// Verifica se tem informação no registro.
-   if (Length(Bloco_0.Registro0015.UF_ST) > 0) and (Length(Bloco_0.Registro0015.IE_ST) > 0) then
+   if Bloco_0.Registro0015.Count > 0 then
    begin
       with Bloco_9.Registro9900.New do
       begin

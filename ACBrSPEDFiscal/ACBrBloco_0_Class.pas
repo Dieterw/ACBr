@@ -45,13 +45,13 @@ interface
 uses SysUtils, Classes, DateUtils, ACBrSped, ACBrBloco_0;
 
 type
-  /// TBLOCO_0 -
+  /// TBLOCO_0 - Abertura, Identificação e Referências
   TBloco_0 = class(TACBrSPED)
   private
     FRegistro0000: TRegistro0000;      /// BLOCO 0 - Registro0000
     FRegistro0001: TRegistro0001;      /// BLOCO 0 - Registro0001
     FRegistro0005: TRegistro0005;      /// BLOCO 0 - Registro0005
-    FRegistro0015: TRegistro0015;      /// BLOCO 0 - Registro0015
+    FRegistro0015: TRegistro0015List;  /// BLOCO 0 - Lista de Registro0015
     FRegistro0100: TRegistro0100;      /// BLOCO 0 - Registro0100
     FRegistro0150: TRegistro0150List;  /// BLOCO 0 - Lista de Registro0150
     FRegistro0175: TRegistro0175List;  /// BLOCO 0 - Lista de Registro0175
@@ -86,11 +86,11 @@ type
     function WriteRegistro0460: string;
     function WriteRegistro0990: string;
 
-    property Registro0000: TRegistro0000 read FRegistro0000 write FRegistro0000;
-    property Registro0001: TRegistro0001 read FRegistro0001 write FRegistro0001;
-    property Registro0005: TRegistro0005 read FRegistro0005 write FRegistro0005;
-    property Registro0015: TRegistro0015 read FRegistro0015 write FRegistro0015;
-    property Registro0100: TRegistro0100 read FRegistro0100 write FRegistro0100;
+    property Registro0000: TRegistro0000     read FRegistro0000 write FRegistro0000;
+    property Registro0001: TRegistro0001     read FRegistro0001 write FRegistro0001;
+    property Registro0005: TRegistro0005     read FRegistro0005 write FRegistro0005;
+    property Registro0015: TRegistro0015List read FRegistro0015 write FRegistro0015;
+    property Registro0100: TRegistro0100     read FRegistro0100 write FRegistro0100;
     property Registro0150: TRegistro0150List read FRegistro0150 write FRegistro0150;
     property Registro0175: TRegistro0175List read FRegistro0175 write FRegistro0175;
     property Registro0190: TRegistro0190List read FRegistro0190 write FRegistro0190;
@@ -116,7 +116,7 @@ begin
   FRegistro0000 := TRegistro0000.Create;
   FRegistro0001 := TRegistro0001.Create;
   FRegistro0005 := TRegistro0005.Create;
-  FRegistro0015 := TRegistro0015.Create;
+  FRegistro0015 := TRegistro0015List.Create;
   FRegistro0100 := TRegistro0100.Create;
   FRegistro0150 := TRegistro0150List.Create;
   FRegistro0175 := TRegistro0175List.Create;
@@ -154,6 +154,8 @@ end;
 
 function TBloco_0.WriteRegistro0000: string;
 begin
+  Result := '';
+
   if Assigned(Registro0000) then
   begin
      with Registro0000 do
@@ -189,6 +191,8 @@ end;
 
 function TBloco_0.WriteRegistro0001: string;
 begin
+  Result := '';
+
   if Assigned(Registro0001) then
   begin
      with Registro0001 do
@@ -207,6 +211,8 @@ end;
 
 function TBloco_0.WriteRegistro0005: string;
 begin
+  Result := '';
+
   if Assigned(Registro0005) then
   begin
      with Registro0005 do
@@ -232,27 +238,37 @@ begin
 end;
 
 function TBloco_0.WriteRegistro0015: string;
+var
+intFor: integer;
+strRegistro0015: string;
 begin
+  strRegistro0015 := '';
+
   if Assigned(Registro0015) then
   begin
-     with Registro0015 do
+     for intFor := 0 to Registro0015.Count - 1 do
      begin
-        Check(funChecaUF(UF_ST),        '(0-0015) CONTRIBUINTE SUBSTITUTO: A UF "%s" digitada é inválido!', [UF_ST]);
-        Check(funChecaIE(IE_ST, UF_ST), '(0-0015) CONTRIBUINTE SUBSTITUTO: A Inscrição Estadual "%s" digitada é inválida!', [IE_ST]);
-        ///
-        Result := LFill('0015') +
-                  LFill(UF_ST) +
-                  LFill(IE_ST) +
-                  Delimitador +
-                  #13#10;
-        ///
+        with Registro0015.Items[intFor] do
+        begin
+           Check(funChecaUF(UF_ST),        '(0-0015) CONTRIBUINTE SUBSTITUTO: A UF "%s" digitada é inválido!', [UF_ST]);
+           Check(funChecaIE(IE_ST, UF_ST), '(0-0015) CONTRIBUINTE SUBSTITUTO: A Inscrição Estadual "%s" digitada é inválida!', [IE_ST]);
+           ///
+           strRegistro0015 :=  strRegistro0015 + LFill('0015') +
+                                                 LFill(UF_ST) +
+                                                 LFill(IE_ST) +
+                                                 Delimitador +
+                                                 #13#10;
+        end;
         Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
      end;
   end;
+  Result := strRegistro0015;
 end;
 
 function TBloco_0.WriteRegistro0100: string;
 begin
+  Result := '';
+
   if Assigned(Registro0100) then
   begin
      with Registro0100 do
@@ -260,7 +276,7 @@ begin
        Check(funChecaCNPJ(CNPJ),   '(0-0100) CONTADOR: %s, o CNPJ "%s" digitado é inválido!', [NOME, CNPJ]);
        Check(funChecaCPF(CPF),     '(0-0100) CONTADOR: %s, o CPF "%s" digitado é inválido!', [NOME, CPF]);
        Check(funChecaMUN(COD_MUN), '(0-0100) CONTADOR: %s, o código do município "%s" digitado é inválido!', [NOME, IntToStr(COD_MUN)]);
-       Check(funChecaCEP(CEP, Registro0000.UF), 'CONTADOR (0-0100): %s, o CEP "%s" digitada é inválido para a unidade de federação "%s"!', [NOME, CEP, Registro0000.UF]);
+       Check(funChecaCEP(CEP, Registro0000.UF), '(0-0100) CONTADOR: %s, o CEP "%s" digitada é inválido para a unidade de federação "%s"!', [NOME, CEP, Registro0000.UF]);
        ///
        Result := LFill('0100') +
                  LFill(NOME) +
@@ -319,11 +335,10 @@ begin
                                                Delimitador +
                                                #13#10;
         end;
+        Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
      end;
-     Result := strRegistro0150;
-     ///
-     Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
   end;
+  Result := strRegistro0150;
 end;
 
 function TBloco_0.WriteRegistro0175: string;
@@ -348,11 +363,10 @@ begin
                                                Delimitador +
                                                #13#10;
         end;
+        Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
      end;
-     Result := strRegistro0175;
-     ///
-     Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
   end;
+  Result := strRegistro0175;
 end;
 
 function TBloco_0.WriteRegistro0190: string;
@@ -377,8 +391,8 @@ begin
         end;
         Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
      end;
-     Result := strRegistro0190;
   end;
+  Result := strRegistro0190;
 end;
 
 function TBloco_0.WriteRegistro0200: string;
@@ -418,6 +432,8 @@ end;
 
 function TBloco_0.WriteRegistro0990: string;
 begin
+  Result := '';
+
   if Assigned(Registro0990) then
   begin
      with Registro0990 do

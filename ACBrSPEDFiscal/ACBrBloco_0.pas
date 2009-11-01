@@ -124,6 +124,18 @@ type
     property IE_ST: string read FIE_ST write FIE_ST;
   end;
 
+  /// Registro 0015 - Lista
+
+  TRegistro0015List = class(TList)
+  private
+    function GetItem(Index: Integer): TRegistro0015;
+    procedure SetItem(Index: Integer; const Value: TRegistro0015);
+  public
+    destructor Destroy; override;
+    function New: TRegistro0015;
+    property Items[Index: Integer]: TRegistro0015 read GetItem write SetItem;
+  end;
+
   /// Registro 0100 - DADOS DO CONTABILISTA
 
   TRegistro0100 = class(TPersistent)
@@ -437,6 +449,33 @@ type
   end;
 
 implementation
+
+
+{* TRegistro0015List *}
+
+destructor TRegistro0015List.Destroy;
+var
+intFor: integer;
+begin
+  for intFor := 0 to Count - 1 do Items[intFor].Free;
+  inherited;
+end;
+
+function TRegistro0015List.GetItem(Index: Integer): TRegistro0015;
+begin
+  Result := TRegistro0015(Inherited Items[Index]);
+end;
+
+function TRegistro0015List.New: TRegistro0015;
+begin
+  Result := TRegistro0015.Create;
+  Add(Result);
+end;
+
+procedure TRegistro0015List.SetItem(Index: Integer; const Value: TRegistro0015);
+begin
+  Put(Index, Value);
+end;
 
 (* TRegistro0150List *)
 

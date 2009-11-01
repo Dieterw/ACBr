@@ -166,6 +166,8 @@ end;
 
 function TBloco_E.WriteRegistroE001: string;
 begin
+  Result := '';
+
   if Assigned(RegistroE001) then
   begin
      with RegistroE001 do
@@ -184,6 +186,8 @@ end;
 
 function TBloco_E.WriteRegistroE100: string;
 begin
+  Result := '';
+
   if Assigned(RegistroE100) then
   begin
      with RegistroE100 do
@@ -201,6 +205,8 @@ end;
 
 function TBloco_E.WriteRegistroE110: string;
 begin
+  Result := '';
+
   if Assigned(RegistroE110) then
   begin
      with RegistroE110 do
@@ -305,6 +311,8 @@ end;
 
 function TBloco_E.WriteRegistroE990: string;
 begin
+  Result := '';
+
   if Assigned(RegistroE990) then
   begin
      with RegistroE990 do

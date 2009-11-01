@@ -47,8 +47,31 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.01a   01/11/09
+---------------
+[*] Na Unit (ACBrSped.pas) a propriedade "Delimitador" e o evento "OnError"
+    passaram para "public". E na Unit (ACBrSpedFiscal.pas) foi adicionada
+    em "published" as linhas abaixo:
+    property Delimitador;
+    property OnError;
+[-] Para que o evento "OnError" dos Blocos fossem disparados foi incluído no
+    método "SaveFileTXT" do componente (ACBrSpedFiscal.pas), as linhas abaixo:
+    FBloco_0.OnError := OnError;
+    FBloco_1.OnError := OnError;
+    FBloco_C.OnError := OnError;
+    FBloco_D.OnError := OnError;
+    FBloco_E.OnError := OnError;
+    FBloco_H.OnError := OnError;
+    FBloco_9.OnError := OnError;
+[-] Foi incluído nos métodos "WriteRegistro" a linha (Result := '').
+[-] Nos métodos "WriteRegistro" que tem "FOR" a linha 
+    "Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1", foi mudada para
+    Dentro do For, como observado pelo (Marcio Lopes).
+
 Versão 0.01a   31/10/09
 ---------------
+[*] O registro 0015 do Bloco 0, foi implementado para receber uma lista de 
+      registro, como observado pelo (Marcio Lopes).
 [-] Foi substituído em todos os métodos WriteRegistro, o caracter '|', pela
     propriedade "Delimitador"
 [-] Modificado todas funções GetItem para compatibilidade com Lazarus de

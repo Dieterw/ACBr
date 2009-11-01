@@ -89,6 +89,8 @@ end;
 
 function TBloco_9.WriteRegistro9001: string;
 begin
+  Result := '';
+
   if Assigned(Registro9001) then
   begin
      with Registro9001 do
@@ -125,14 +127,15 @@ begin
                                                 #13#10;
         end;
      end;
-     Result := strRegistro9900;
-     ///
      Registro9990.QTD_LIN_9 := Registro9990.QTD_LIN_9 + Registro9900.Count + 2;
   end;
+  Result := strRegistro9900;
 end;
 
 function TBloco_9.WriteRegistro9990: string;
 begin
+  Result := '';
+
   if Assigned(Registro9990) then
   begin
      with Registro9990 do

@@ -71,6 +71,8 @@ uses Classes, SysUtils, Contnrs, ACBrBase, ACBrConsts;
 
 type
   TVersaoValidador = (vv523,vv524);
+  TVersaoEan = (eanIndefinido, ean8, ean12, ean13, ean14);
+
 
   TRegistro10 = class
   private
@@ -861,14 +863,14 @@ type
 
   TRegistro88Ean = class
   private
-    FVersaoEan: Integer;
     FCodigoBarras: string;
     FUnidade: string;
     FDescricao: string;
     FCodigo: Integer;
+    FVersaoEan: TVersaoEan;
 
   public
-    property VersaoEan: Integer read FVersaoEan write FVersaoEan;
+    property VersaoEan: TVersaoEan read FVersaoEan write FVersaoEan;
     property Codigo: Integer read FCodigo write FCodigo;
     property Descricao: string read FDescricao write FDescricao;
     property Unidade: string read FUnidade write FUnidade;
@@ -876,6 +878,8 @@ type
   end;
 
   TRegistros88Ean = class(TObjectList)
+  private
+    function GetRegistroExiste(FCodigo: Integer): Boolean;
   protected
     procedure SetObject (Index: Integer; Item: TRegistro88Ean);
     function GetObject (Index: Integer): TRegistro88Ean;
@@ -1578,6 +1582,7 @@ end;
 procedure TACBrSintegra.GerarRegistros90;
 var
   wregistro: string;
+  wtotal88: Integer;
 begin
 wregistro:='90'+TBStrZero(TiraPontos(Registro10.CNPJ),14);
 wregistro:=wregistro+Padl(TiraPontos(Registro10.Inscricao),14);
@@ -1610,9 +1615,13 @@ if Registros85.Count>0 then
   wregistro:=wregistro+'85'+TBStrZero(IntToStr(Registros85.Count),8);
 if Registros86.Count>0 then
   wregistro:=wregistro+'86'+TBStrZero(IntToStr(Registros86.Count),8);
-if Registros88Ean.Count>0 then
-  wregistro:=wregistro+'88EAN'+TBStrZero(IntToStr(Registros88Ean.Count),8);
 
+//totalizador para registros 88
+wtotal88:=0;
+wtotal88:=wtotal88+Registros88Ean.Count;
+if wtotal88>0 then
+  wregistro:=wregistro+'88'+TBStrZero(IntToStr(wtotal88),8);
+  
 wregistro:=wregistro+Space(125-length(wregistro))+'2';
 WriteRecord(wregistro);
 
@@ -1622,7 +1631,8 @@ wregistro:=wregistro+'99'+TBStrZero(IntToStr(Registros50.Count+Registros51.Count
   Registros53.Count+Registros54.Count+Registros55.Count+
   (Registros60M.Count+Registros60A.Count+Registros60D.Count+Registros60I.Count+Registros60R.Count)+
   (Registros61.Count+Registros61R.Count)+
-   Registros70.Count+Registros71.Count+Registros74.Count+Registros75.Count+Registros85.Count+Registros86.Count+4),8);
+   Registros70.Count+Registros71.Count+Registros74.Count+Registros75.Count+
+   Registros85.Count+Registros86.Count+Registros88Ean.Count+4),8);
 
 wregistro:=wregistro+Space(125-length(wregistro))+'2';
 WriteRecord(wregistro);
@@ -1806,7 +1816,19 @@ begin
 for I := 0 to Registros88Ean.Count - 1 do
 begin
   wregistro:='88EAN';
-  wregistro:=wregistro+TBStrZero(IntToStr(Registros88Ean[i].VersaoEan),2);
+  if Registros88Ean[i].VersaoEan=eanIndefinido then
+  begin
+    wregistro:=wregistro+TBStrZero(IntToStr(Length(Registros88Ean[i].CodigoBarras)),2)
+  end
+  else
+  begin
+    case Registros88Ean[i].VersaoEan of
+      ean8: wregistro:=wregistro+'08';
+      ean12: wregistro:=wregistro+'12';
+      ean13: wregistro:=wregistro+'13';
+      ean14: wregistro:=wregistro+'14';
+    end;
+  end;
   wregistro:=wregistro+TBStrZero(IntToStr(Registros88Ean[i].Codigo),14);
   wregistro:=wregistro+Padl(Registros88Ean[i].Descricao,53);
   wregistro:=wregistro+Padl(Registros88Ean[i].Unidade,6);
@@ -2529,8 +2551,8 @@ end;
 
 function TRegistros88Ean.Add(Obj: TRegistro88Ean): Integer;
 begin
+if not GetRegistroExiste(Obj.Codigo) then
   Result := inherited Add(Obj);
-
 end;
 
 function TRegistros88Ean.GetObject(Index: Integer): TRegistro88Ean;
@@ -2540,7 +2562,21 @@ end;
 
 procedure TRegistros88Ean.Insert(Index: Integer; Obj: TRegistro88Ean);
 begin
+if not GetRegistroExiste(Obj.Codigo) then
   inherited Insert(Index, Obj);
+end;
+
+function TRegistros88Ean.GetRegistroExiste(FCodigo: Integer): Boolean;
+var
+  i: Integer;
+begin
+Result:=False;
+for i:=0 to Self.Count-1 do
+begin
+  Result:=(Self[i].Codigo=FCodigo);
+  if Result then
+    Break;
+end;
 end;
 
 procedure TRegistros88Ean.SetObject(Index: Integer; Item: TRegistro88Ean);

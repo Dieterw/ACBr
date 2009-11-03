@@ -48,9 +48,19 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   03/11/09
+---------------
+[-] Corrigido Tamanho da Fonte no DANFE em RAVE CB e RAVE Arquivo.
+    Segundo o ítem 7.7.9 (Conteúdo dos Demais Campos) no Manual no Integração 4.0, os campos devem ter valor mínimo de 10 e estava com o 
+    valor padrão de 8.
+    Para corrigir o problema foi incluída uma propriedade chamada TamanhoFonte_DemaisCampos com valor padrão de 10, quem quiser usar outro valor 
+    basta estipular nessa propriedade.
+
+
 Alterações   28/10/09
 ---------------
 [-] Corrigido geração das informações adicionais no xml, caso seja adicionado apenas uma linha de observação.
+
 
 Alterações   27/10/09
 ---------------

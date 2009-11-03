@@ -90,7 +90,7 @@ type
     FSite : String;
     FEmail: String;
     FImprimeDescPorc : Boolean;
- 	  FProtocoloNFe: string;
+ 	 FProtocoloNFe: string;
     FMargemInferior: Double;
     FMargemSuperior: Double;
     FMargemEsquerda: Double;
@@ -98,6 +98,7 @@ type
     FCasasDecimais: TCasasDecimais;
     FExibeResumoCanhoto: boolean;
     FFormularioContinuo: boolean;
+    FTamanhoFonte_DemaisCampos: Integer;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
   public
     constructor Create(AOwner: TComponent); override;
@@ -131,6 +132,7 @@ type
     property ExibirResumoCanhoto: Boolean read FExibeResumoCanhoto write FExibeResumoCanhoto ;
     property FormularioContinuo: Boolean read FFormularioContinuo write FFormularioContinuo ;
     property ExpandirLogoMarca: Boolean read FExpandirLogoMarca write FExpandirLogoMarca default false ;
+    property TamanhoFonte_DemaisCampos: Integer read FTamanhoFonte_DemaisCampos write FTamanhoFonte_DemaisCampos ;
   end;
 
 implementation
@@ -198,6 +200,7 @@ begin
   FMargemDireita  := 0.51;
   FExibeResumoCanhoto := false;
   FFormularioContinuo := false;
+  FTamanhoFonte_DemaisCampos := 10;
   FCasasDecimais := TCasasDecimais.Create(self);
   FCasasDecimais.Name:= 'CasasDecimais' ;
   {$IFDEF COMPILER6_UP}

@@ -59,9 +59,10 @@ const aWidthTituloBloco:Double=6;
       aDiferentWidth:Double=0.08;
       FontSizeGroup:Integer=5;
       FontSizeTitle:Integer=6;
-      FontSizeText:Integer=10;
+//      FontSizeText:Integer=10;
 
 var
+   FontSizeText:Double;
    ColsWidth:array[1..17] of Double; //colunas dados dos produtos
 
 
@@ -1192,11 +1193,15 @@ begin
   ColsWidth[16]:=8;
   ColsWidth[17]:=8;
 
+  FontSizeText:=10;
+  
   DANFeRave:=aRaveSystem;
 
   //ajusta tamanho da coluna codigo
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
   begin
+    FontSizeText:=TamanhoFonte_DemaisCampos;
+
     if TamanhoCampoCodigo <> 0 then
     begin
       wtemp:=ColsWidth[1]-TamanhoCampoCodigo;

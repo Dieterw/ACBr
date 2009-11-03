@@ -60,7 +60,7 @@ const
 //      FontSizeText:Integer=8;
 
 var
-   FontSizeText:double=8;
+   FontSizeText:double;
    ColsWidth:array[1..17] of Double;
 
 procedure ImprimirRetrato(aRaveSystem:TDANFeRave);
@@ -1150,11 +1150,15 @@ begin
   ColsWidth[16]:=8;
   ColsWidth[17]:=8;
 
+  FontSizeText:=10;
+
   DANFeRave:=aRaveSystem;
 
   //ajusta tamanho da coluna codigo
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
   begin
+    FontSizeText:=TamanhoFonte_DemaisCampos;
+
     if TamanhoCampoCodigo <> 0 then
     begin
       wtemp:=ColsWidth[1]-TamanhoCampoCodigo;

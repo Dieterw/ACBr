@@ -95,7 +95,25 @@ end;
 
 procedure TACBrNFeDANFERave.ExecutaReport;
 var
-   MyReport : TRaveReport;
+   i: integer;
+
+   wReport: TRaveReport;
+   wSection: TRaveSection;
+   wDataView: TRaveDataView;
+   wPage: array[1..2] of TRavePage;
+   wBarcode: TRaveCode128BarCode;
+   wBitmap: array[1..1] of TRaveBitmap;
+   wHLine: array[1..2] of TRaveHLine;
+   wVLine: array[1..4] of TRaveVLine;
+   wRectangle: array[1..7] of TRaveRectangle;
+   wSquare: array[1..1] of TRaveSquare;
+   wText: array[1..13] of TRaveText;
+   wDataText: array[1..21] of TRaveDataText;
+   wFloatField: array[1..2] of TRaveFloatField;
+   wDataMemo: array[1..1] of TRaveDataMemo;
+
+
+{   MyReport : TRaveReport;
    MyPage,MyPage2, MyPage3, MyPage4, MyPage5: TRavePage;
    MyBarcode: TRaveCode128BarCode;
    MyDataText01, MyDataText02: TRaveDataText;
@@ -105,7 +123,6 @@ var
    MyDataView: TRaveDataView;
    MyFloatField,MyFloatField2: TRaveFloatField;
 
-   i: integer;
    fcPage1,fcPage2,fcPage3: TRavePage;
    fcText: array[1..13] of TRaveText;
    fcDataText: array[1..20] of TRaveDataText;
@@ -117,7 +134,7 @@ var
    fcBitmap: array[1..2] of TRaveBitmap;
 
    qvPage1: TRavePage;
-   qvDataText1: TRaveDataText;
+   qvDataText1: TRaveDataText;}
 
    vMargemInferiorAtual, vMargemInferior, vHeightPadrao: double;
 begin
@@ -125,17 +142,104 @@ begin
       dmDanfe.RvProject.Open;
       with dmDanfe.RvProject.ProjMan do
       begin
+         //Tamanho Fonte Demais Campos
+         if (FTamanhoFonte_DemaisCampos <> 8) then //8=tamanho padrao que esta nos .RAV
+         begin
+            wPage[1] := FindRaveComponent('GlobalDANFE',nil) as TRavePage;
+            i:=22;
+            while i>0 do
+            begin
+               if (i in [9,10,11,12,17]) then
+               begin
+                  wDataText[i] := FindRaveComponent('DataText'+inttostr(i),wPage[1]) as TRaveDataText;
+                  if (wDataText[i] <> nil) then
+                     wDataText[i].Font.Height:=FTamanhoFonte_DemaisCampos;
+               end;
+               i:=i-1;
+            end;
+
+            wPage[1] := FindRaveComponent('GlobalDestinatario',nil) as TRavePage;
+            i:=22;
+            while i>0 do
+            begin
+               if (i in [14,15,16,1,2,3,4,5,6,7,9,17,10,13,18,20,21,11,12,19]) then
+               begin
+                  wDataText[i] := FindRaveComponent('DataText'+inttostr(i),wPage[1]) as TRaveDataText;
+                  if (wDataText[i] <> nil) then
+                     wDataText[i].Font.Height:=FTamanhoFonte_DemaisCampos;
+               end;
+               i:=i-1;
+            end;
+
+            wPage[1] := FindRaveComponent('GlobalFatura',nil) as TRavePage;
+            wDataText[15] := FindRaveComponent('Fatura_nFat',wPage[1]) as TRaveDataText;
+            wDataText[16] := FindRaveComponent('Fatura_vOrig',wPage[1]) as TRaveDataText;
+            wDataText[17] := FindRaveComponent('Fatura_vDesc',wPage[1]) as TRaveDataText;
+            wDataText[18] := FindRaveComponent('Fatura_vLiq',wPage[1]) as TRaveDataText;
+            i:=22;
+            while i>0 do
+            begin
+               if (i in [5,11,1,7,15,16,17,18]) then
+               begin
+                  if (i in [5,11,1,7]) then
+                     wDataText[i] := FindRaveComponent('DataText'+inttostr(i),wPage[1]) as TRaveDataText;
+                  if (wDataText[i] <> nil) then
+                     wDataText[i].Font.Height:=FTamanhoFonte_DemaisCampos;
+               end;
+               i:=i-1;
+            end;
+
+            wPage[1] := FindRaveComponent('GlobalCalculoImposto',nil) as TRavePage;
+            i:=22;
+            while i>0 do
+            begin
+               if (i in [14,8,9,15,16,5,4,6,3,2,1]) then
+               begin
+                  wDataText[i] := FindRaveComponent('DataText'+inttostr(i),wPage[1]) as TRaveDataText;
+                  if (wDataText[i] <> nil) then
+                     wDataText[i].Font.Height:=FTamanhoFonte_DemaisCampos;
+               end;
+               i:=i-1;
+            end;
+
+            wPage[1] := FindRaveComponent('GlobalTransportador',nil) as TRavePage;
+            i:=22;
+            while i>0 do
+            begin
+               if (i in [14,15,16,8,9,10,1,2,3,4,5,11,6,7,17,12]) then
+               begin
+                  wDataText[i] := FindRaveComponent('DataText'+inttostr(i),wPage[1]) as TRaveDataText;
+                  if (wDataText[i] <> nil) then
+                     wDataText[i].Font.Height:=FTamanhoFonte_DemaisCampos;
+               end;
+               i:=i-1;
+            end;
+
+            wPage[1] := FindRaveComponent('GlobalCalculoISSQN',nil) as TRavePage;
+            i:=22;
+            while i>0 do
+            begin
+               if (i in [14,8,15,16]) then
+               begin
+                  wDataText[i] := FindRaveComponent('DataText'+inttostr(i),wPage[1]) as TRaveDataText;
+                  if (wDataText[i] <> nil) then
+                     wDataText[i].Font.Height:=FTamanhoFonte_DemaisCampos;
+               end;
+               i:=i-1;
+            end;
+         end;
+
          //Expande LOGO
          if FExpandirLogoMarca then
          begin
-            fcPage3 := FindRaveComponent('GlobalDANFE',nil) as TRavePage;
-            fcBitmap[2] := FindRaveComponent('Bitmap1',fcPage3) as TRaveBitmap;
-            if (fcBitmap[2] <> nil) then
+            wPage[1] := FindRaveComponent('GlobalDANFE',nil) as TRavePage;
+            wBitmap[1] := FindRaveComponent('Bitmap1',wPage[1]) as TRaveBitmap;
+            if (wBitmap[1] <> nil) then
             begin
-               fcBitmap[2].BringToFront;
-               fcBitmap[2].Top:=0.060;
-               fcBitmap[2].Width:=3.190;
-               fcBitmap[2].Height:=1.110;
+               wBitmap[1].BringToFront;
+               wBitmap[1].Top:=0.060;
+               wBitmap[1].Width:=3.190;
+               wBitmap[1].Height:=1.110;
             end;
          end;
 
@@ -143,136 +247,134 @@ begin
          if FFormularioContinuo then
          begin
             //canhoto
-            fcPage1 := FindRaveComponent('GlobalRecibo',nil) as TRavePage;
-            fcDataText[1] := FindRaveComponent('DataText1',fcPage1) as TRaveDataText;
-            if (fcDataText[1] <> nil) then
-               fcDataText[1].Left:=30;
+            wPage[1] := FindRaveComponent('GlobalRecibo',nil) as TRavePage;
+            wDataText[1] := FindRaveComponent('DataText1',wPage[1]) as TRaveDataText;
+            if (wDataText[1] <> nil) then
+               wDataText[1].Left:=30;
             i:=3;
             while i>0 do
             begin
-               fcText[i] := FindRaveComponent('Text'+inttostr(i),fcPage1) as TRaveText;
-               if (fcText[i] <> nil) then
-                  fcText[i].Left:=30;
+               wText[i] := FindRaveComponent('Text'+inttostr(i),wPage[1]) as TRaveText;
+               if (wText[i] <> nil) then
+                  wText[i].Left:=30;
                i:=i-1;
             end;
-            fcRectangle[1] := FindRaveComponent('Rectangle1',fcPage1) as TRaveRectangle;
-            if (fcRectangle[1] <> nil) then
-               fcRectangle[1].Left:=30;
+            wRectangle[1] := FindRaveComponent('Rectangle1',wPage[1]) as TRaveRectangle;
+            if (wRectangle[1] <> nil) then
+               wRectangle[1].Left:=30;
             i:=2;
             while i>0 do
             begin
-               fcHLine[i] := FindRaveComponent('HLine'+inttostr(i),fcPage1) as TRaveHLine;
-               if (fcHLine[i] <> nil) then
-                  fcHline[i].Left:=30;
+               wHLine[i] := FindRaveComponent('HLine'+inttostr(i),wPage[1]) as TRaveHLine;
+               if (wHLine[i] <> nil) then
+                  wHline[i].Left:=30;
                i:=i-1;
             end;
             i:=2;
             while i>0 do
             begin
-               fcVLine[i] := FindRaveComponent('VLine'+inttostr(i),fcPage1) as TRaveVLine;
-               if (fcVLine[i] <> nil) then
-                  fcVline[i].Left:=30;
+               wVLine[i] := FindRaveComponent('VLine'+inttostr(i),wPage[1]) as TRaveVLine;
+               if (wVLine[i] <> nil) then
+                  wVline[i].Left:=30;
                i:=i-1;
             end;
             //cabecalho e dados do emitente
-            fcPage2 := FindRaveComponent('GlobalDANFE',nil) as TRavePage;
+            wPage[1] := FindRaveComponent('GlobalDANFE',nil) as TRavePage;
             i:=7;
             while i>0 do
             begin
-               fcRectangle[i] := FindRaveComponent('Rectangle'+inttostr(i),fcPage2) as TRaveRectangle;
-               if (fcRectangle[i] <> nil) then
-                  fcRectangle[i].Left:=30;
+               wRectangle[i] := FindRaveComponent('Rectangle'+inttostr(i),wPage[1]) as TRaveRectangle;
+               if (wRectangle[i] <> nil) then
+                  wRectangle[i].Left:=30;
                i:=i-1;
             end;
-            fcSquare[1] := FindRaveComponent('Square1',fcPage2) as TRaveSquare;
-            if (fcSquare[1] <> nil) then
-               fcSquare[1].Left:=30;
-            fcBitmap[1] := FindRaveComponent('Bitmap1',fcPage2) as TRaveBitmap;
-            if (fcBitmap[1] <> nil) then
-               fcBitmap[1].Left:=30;
+            wSquare[1] := FindRaveComponent('Square1',wPage[1]) as TRaveSquare;
+            if (wSquare[1] <> nil) then
+               wSquare[1].Left:=30;
+            wBitmap[1] := FindRaveComponent('Bitmap1',wPage[1]) as TRaveBitmap;
+            if (wBitmap[1] <> nil) then
+               wBitmap[1].Left:=30;
             i:=4;
             while i>0 do
             begin
-               fcVLine[i] := FindRaveComponent('VLine'+inttostr(i),fcPage2) as TRaveVLine;
-               if (fcVLine[i] <> nil) then
-                  fcVline[i].Left:=30;
+               wVLine[i] := FindRaveComponent('VLine'+inttostr(i),wPage[1]) as TRaveVLine;
+               if (wVLine[i] <> nil) then
+                  wVline[i].Left:=30;
                i:=i-1;
             end;
             i:=13;
             while i>0 do
             begin
-               fcText[i] := FindRaveComponent('Text'+inttostr(i),fcPage2) as TRaveText;
-               if (fcText[i] <> nil) then
-                  fcText[i].Left:=30;
+               wText[i] := FindRaveComponent('Text'+inttostr(i),wPage[1]) as TRaveText;
+               if (wText[i] <> nil) then
+                  wText[i].Left:=30;
                i:=i-1;
             end;
-            fcDataMemo[1] := FindRaveComponent('DataMemo1',fcPage2) as TRaveDataMemo;
-            if (fcDataMemo[1] <> nil) then
-               fcDataMemo[1].Left:=30;
+            wDataMemo[1] := FindRaveComponent('DataMemo1',wPage[1]) as TRaveDataMemo;
+            if (wDataMemo[1] <> nil) then
+               wDataMemo[1].Left:=30;
             i:=20;
             while i>0 do
             begin
                if (i in [2,3,4,8,10,12,14,15,16,18,20]) then
                begin
-                  fcDataText[i] := FindRaveComponent('DataText'+inttostr(i),fcPage2) as TRaveDataText;
-                  if (fcDataText[i] <> nil) then
-                     fcDataText[i].Left:=30;
+                  wDataText[i] := FindRaveComponent('DataText'+inttostr(i),wPage[1]) as TRaveDataText;
+                  if (wDataText[i] <> nil) then
+                     wDataText[i].Left:=30;
                end;
                i:=i-1;
             end;
          end;
 
          //contingencia
-         MyPage := FindRaveComponent('GlobalDANFE',nil) as TRavePage;
+         wPage[1] := FindRaveComponent('GlobalDANFE',nil) as TRavePage;
          if ((dmDanfe.NFe.Ide.tpEmis = teNormal) or
              (dmDanfe.NFe.Ide.tpEmis = teDPEC) or
              (dmDanfe.NFe.Ide.tpEmis = teSCAN)) then
          begin
             //não exibe código de barras adicional
-            MyBarcode := FindRaveComponent('BarCode_Contigencia',MyPage) as TRaveCode128BarCode;
-            if (MyBarcode <> nil) then
-               MyBarCode.Left := 30;
+            wBarcode := FindRaveComponent('BarCode_Contigencia',wPage[1]) as TRaveCode128BarCode;
+            if (wBarcode <> nil) then
+               wBarCode.Left := 30;
          end
          else if ((dmDanfe.NFe.Ide.tpEmis = teContingencia) or
                   (dmDanfe.NFe.Ide.tpEmis = teFSDA)) then
          begin
             //não exibe textos
-            MyDataText01:=FindRaveComponent('DataText_DANFE1',MyPage) as TRaveDataText;
-            MyDataText02:=FindRaveComponent('DataText_DANFE2',MyPage) as TRaveDataText;
-            if (MyDataText01 <> nil) then
-               MyDataText01.Left := 30;
-            if (MyDataText02 <> nil) then
-               MyDataText02.Left := 30;
+            wDataText[1]:=FindRaveComponent('DataText_DANFE1',wPage[1]) as TRaveDataText;
+            wDataText[2]:=FindRaveComponent('DataText_DANFE2',wPage[1]) as TRaveDataText;
+            if (wDataText[1] <> nil) then
+               wDataText[1].Left := 30;
+            if (wDataText[2] <> nil) then
+               wDataText[2].Left := 30;
          end;
 
          //quadro fatura
          if (length(dmDanfe.NFe.Cobr.Fat.nFat) <= 0) then
          begin
-            MyPage2 := FindRaveComponent('GlobalFatura',nil) as TRavePage;
-            MyText1 := FindRaveComponent('Fatura_nFat_C',MyPage2) as TRaveText;
-            MyDataText1 := FindRaveComponent('Fatura_nFat',MyPage2) as TRaveDataText;
-            MyText2 := FindRaveComponent('Fatura_vOrig_C',MyPage2) as TRaveText;
-            MyDataText2 := FindRaveComponent('Fatura_vOrig',MyPage2) as TRaveDataText;
-            MyText3 := FindRaveComponent('Fatura_vDesc_C',MyPage2) as TRaveText;
-            MyDataText3 := FindRaveComponent('Fatura_vDesc',MyPage2) as TRaveDataText;
-            MyText4 := FindRaveComponent('Fatura_vLiq_C',MyPage2) as TRaveText;
-            MyDataText4 := FindRaveComponent('Fatura_vLiq',MyPage2) as TRaveDataText;
-            if (MyText1 <> nil) then
-               MyText1.Left := 30;
-            if (MyText2 <> nil) then
-               MyText2.Left := 30;
-            if (MyText3 <> nil) then
-               MyText3.Left := 30;
-            if (MyText4 <> nil) then
-               MyText4.Left := 30;
-            if (MyDataText1 <> nil) then
-               MyDataText1.Left := 30;
-            if (MyDataText2 <> nil) then
-               MyDataText2.Left := 30;
-            if (MyDataText3 <> nil) then
-               MyDataText3.Left := 30;
-            if (MyDataText4 <> nil) then
-               MyDataText4.Left := 30;
+            wPage[1] := FindRaveComponent('GlobalFatura',nil) as TRavePage;
+            wText[1] := FindRaveComponent('Fatura_nFat_C',wPage[1]) as TRaveText;
+            wDataText[1] := FindRaveComponent('Fatura_nFat',wPage[1]) as TRaveDataText;
+            wText[2] := FindRaveComponent('Fatura_vOrig_C',wPage[1]) as TRaveText;
+            wDataText[2] := FindRaveComponent('Fatura_vOrig',wPage[1]) as TRaveDataText;
+            wText[3] := FindRaveComponent('Fatura_vDesc_C',wPage[1]) as TRaveText;
+            wDataText[3] := FindRaveComponent('Fatura_vDesc',wPage[1]) as TRaveDataText;
+            wText[4] := FindRaveComponent('Fatura_vLiq_C',wPage[1]) as TRaveText;
+            wDataText[4] := FindRaveComponent('Fatura_vLiq',wPage[1]) as TRaveDataText;
+            i:=4;
+            while i>0 do
+            begin
+               if (wText[i] <> nil) then
+                  wText[i].Left:=30;
+               i:=i-1;
+            end;
+            i:=4;
+            while i>0 do
+            begin
+               if (wDataText[i] <> nil) then
+                  wDataText[i].Left:=30;
+               i:=i-1;
+            end;
          end;
 
          //omitir campos quadro volume
@@ -280,65 +382,65 @@ begin
          begin
             if dmDanfe.NFe.Transp.Vol.Items[0].qVol=0 then
             begin
-               qvPage1 := FindRaveComponent('GlobalTransportador',nil) as TRavePage;
-               qvDataText1 := FindRaveComponent('DataText5',qvPage1) as TRaveDataText;
-               if (qvDataText1 <> nil) then
-                  qvDataText1.Left:=30;
+               wPage[1] := FindRaveComponent('GlobalTransportador',nil) as TRavePage;
+               wDataText[1] := FindRaveComponent('DataText5',wPage[1]) as TRaveDataText;
+               if (wDataText[1] <> nil) then
+                  wDataText[1].Left:=30;
             end;
          end;
 
          //Total2Liquido
          if FImprimirTotalLiquido then
          begin
-            MyPage5 := FindRaveComponent('GlobalDadosProdutos',nil) as TRavePage;
-            MyText5 := FindRaveComponent('Text_vTotal',MyPage5) as TRaveText;
-            if (MyText5 <> nil) then
-               MyText5.Text:='V.LÍQUIDO';
+            wPage[1] := FindRaveComponent('GlobalDadosProdutos',nil) as TRavePage;
+            wText[1]:= FindRaveComponent('Text_vTotal',wPage[1]) as TRaveText;
+            if (wText[1] <> nil) then
+               wText[1].Text:='V.LÍQUIDO';
          end;
 
          //Casas Decimais (qCom)
-         MyDataView := FindRaveComponent('CustomDadosProdutosCX',nil) as TRaveDataView;
-         MyFloatField := FindRaveComponent('CustomDadosProdutosCXQCom',MyDataView) as TRaveFloatField;
-         if (MyFloatField <> nil) then
+         wDataView := FindRaveComponent('CustomDadosProdutosCX',nil) as TRaveDataView;
+         wFloatField[1] := FindRaveComponent('CustomDadosProdutosCXQCom',wDataView) as TRaveFloatField;
+         if (wFloatField[1] <> nil) then
          begin
             if FCasasDecimais._QCom=0 then
-               MyFloatField.DisplayFormat:='#0'
+               wFloatField[1].DisplayFormat:='#0'
             else if FCasasDecimais._QCom=1 then
-               MyFloatField.DisplayFormat:='#,#0.0'
+               wFloatField[1].DisplayFormat:='#,#0.0'
             else if FCasasDecimais._QCom=2 then
-               MyFloatField.DisplayFormat:='#,##0.00'
+               wFloatField[1].DisplayFormat:='#,##0.00'
             else if FCasasDecimais._QCom=3 then
-               MyFloatField.DisplayFormat:='#,###0.000'
+               wFloatField[1].DisplayFormat:='#,###0.000'
             else if FCasasDecimais._QCom=4 then
-               MyFloatField.DisplayFormat:='#,####0.0000';
+               wFloatField[1].DisplayFormat:='#,####0.0000';
          end;
          //Casas Decimais (vUnCom)
-         MyFloatField2 := FindRaveComponent('CustomDadosProdutosCXVUnCom',MyDataView) as TRaveFloatField;
-         if (MyFloatField2 <> nil) then
+         wFloatField[2] := FindRaveComponent('CustomDadosProdutosCXVUnCom',wDataView) as TRaveFloatField;
+         if (wFloatField[2] <> nil) then
          begin
             if FCasasDecimais._vUnCom=0 then
-               MyFloatField2.DisplayFormat:='#0'
+               wFloatField[2].DisplayFormat:='#0'
             else if FCasasDecimais._vUnCom=1 then
-               MyFloatField2.DisplayFormat:='#,#0.0'
+               wFloatField[2].DisplayFormat:='#,#0.0'
             else if FCasasDecimais._vUnCom=2 then
-               MyFloatField2.DisplayFormat:='#,##0.00'
+               wFloatField[2].DisplayFormat:='#,##0.00'
             else if FCasasDecimais._vUnCom=3 then
-               MyFloatField2.DisplayFormat:='#,###0.000'
+               wFloatField[2].DisplayFormat:='#,###0.000'
             else if FCasasDecimais._vUnCom=4 then
-               MyFloatField2.DisplayFormat:='#,####0.0000';
+               wFloatField[2].DisplayFormat:='#,####0.0000';
          end;
 
          //Margem Inferior
-         MyReport := FindRaveComponent('DANFE1',nil) as TRaveReport;
-         MyPage3 := FindRaveComponent('Page1',MyReport) as TRavePage;
-         MyDataText5 := FindRaveComponent('DataText1',MyPage3) as TRaveDataText;
-         MyDataText6 := FindRaveComponent('DataText2',MyPage3) as TRaveDataText;
-         MyPage4 := FindRaveComponent('GlobalDadosAdicionais',nil) as TRavePage;
-         MySection := FindRaveComponent('Section_DadosAdicionais',MyPage4) as TRaveSection;
-         if (MyDataText5 <> nil) then
+         wReport := FindRaveComponent('DANFE1',nil) as TRaveReport;
+         wPage[1] := FindRaveComponent('Page1',wReport) as TRavePage;
+         wDataText[1] := FindRaveComponent('DataText1',wPage[1]) as TRaveDataText;
+         wDataText[2] := FindRaveComponent('DataText2',wPage[1]) as TRaveDataText;
+         wPage[2] := FindRaveComponent('GlobalDadosAdicionais',nil) as TRavePage;
+         wSection := FindRaveComponent('Section_DadosAdicionais',wPage[2]) as TRaveSection;
+         if (wDataText[1] <> nil) then
          begin
-            vMargemInferiorAtual:=(MyPage3.PageHeight-MyDataText5.Top);
-            vHeightPadrao:=MyDataText5.Height;
+            vMargemInferiorAtual:=(wPage[1].PageHeight-wDataText[1].Top);
+            vHeightPadrao:=wDataText[1].Height;
          end
          else
          begin
@@ -346,12 +448,12 @@ begin
             vHeightPadrao:=0;
          end;
          vMargemInferior := FMargemInferior/2.54;
-         if (MyDataText5 <> nil) then
-            MyDataText5.Top := MyDataText5.Top-vHeightPadrao-(vMargemInferior-vMargemInferiorAtual);
-         if (MyDataText6 <> nil) then
-            MyDataText6.Top := MyDataText6.Top-vHeightPadrao-(vMargemInferior-vMargemInferiorAtual);
-         if (MySection <> nil) then
-            MySection.Height := MySection.Height-vHeightPadrao-(vMargemInferior-vMargemInferiorAtual);
+         if (wDataText[1] <> nil) then
+            wDataText[1].Top := wDataText[1].Top-vHeightPadrao-(vMargemInferior-vMargemInferiorAtual);
+         if (wDataText[2] <> nil) then
+            wDataText[2].Top := wDataText[2].Top-vHeightPadrao-(vMargemInferior-vMargemInferiorAtual);
+         if (wSection <> nil) then
+            wSection.Height := wSection.Height-vHeightPadrao-(vMargemInferior-vMargemInferiorAtual);
       end;
    finally
       dmDanfe.RvProject.ExecuteReport('DANFE1');

@@ -2664,7 +2664,6 @@ Var
   Arquivo: String ;
   cDatIni, cDatFim : String ;
   dDatIni, dDatFim : TDateTime ;
-  I : Integer ;
 begin
   Arquivo := 'c:\temp\teste.txt' ;
   if not InputQuery('Captura da MFD DLL',
@@ -2703,7 +2702,7 @@ procedure TForm1.PorCOO2Click(Sender: TObject);
 Var
   Arquivo: String ;
   cCOOIni, cCOOFim : String ;
-  I, nCOOIni, nCOOFim : Integer ;
+  nCOOIni, nCOOFim : Integer ;
 begin
   Arquivo := 'c:\temp\teste.txt' ;
   if not InputQuery('Captura da MFD DLL',

@@ -172,6 +172,16 @@ TACBrECFFiscNET = class( TACBrECFClass )
     function GetTotalSubstituicaoTributaria: Double; override ;
     function GetTotalNaoTributado: Double; override ;
     function GetTotalIsencao: Double; override ;
+
+
+    function GetTotalAcrescimosISSQN: Double; override;
+    function GetTotalCancelamentosISSQN: Double; override;
+    function GetTotalDescontosISSQN: Double; override;
+    function GetTotalSubstituicaoTributariaISSQN: Double; override;
+    function GetTotalIsencaoISSQN: Double; override;
+    function GetTotalNaoTributadoISSQN: Double; override;
+
+
     function GetNumCOOInicial: String; override ;
     function GetNumUltimoItem: Integer; override ;
 
@@ -1957,11 +1967,11 @@ end;
 //IMS 09/10/2009
 function TACBrECFFiscNET.GetUsuarioAtual: String;
 begin
-  FiscNETComando.NomeComando := 'LeTexto' ;
-  FiscNETComando.AddParamString('NomeTexto','ContadorProprietarios') ;
+  FiscNETComando.NomeComando := 'LeInteiro' ;
+  FiscNETComando.AddParamString('NomeInteiro','ContadorProprietarios') ;
   EnviaComando ;
 
-  Result := FiscNETResposta.Params.Values['ValorTexto'] ;
+  Result := FiscNETResposta.Params.Values['ValorInteiro'] ;
 end;
 //IMS 20/10/2009
 function TACBrECFFiscNET.GetDataHoraSB: TDateTime;
@@ -2050,6 +2060,18 @@ begin
      RemoveString('.',FiscNETResposta.Params.Values['ValorMoeda']), 0) ;
 end;
 
+function TACBrECFFiscNET.GetTotalAcrescimosISSQN: Double;
+begin
+  FiscNETComando.NomeComando := 'LeMoeda' ;
+  FiscNETComando.AddParamString('NomeDadoMonetario','TotalDiaAcrescimosISSQN') ;
+  EnviaComando ;
+
+  Result := StringToFloatDef(
+     RemoveString('.',FiscNETResposta.Params.Values['ValorMoeda']), 0) ;
+end;
+
+
+
 function TACBrECFFiscNET.GetTotalCancelamentos: Double;
 // Autor: Nei José Van Lare Junior
 begin
@@ -2060,6 +2082,18 @@ begin
   Result := StringToFloatDef(
      RemoveString('.', FiscNETResposta.Params.Values['ValorMoeda'] ), 0) ;
 end;
+
+function TACBrECFFiscNET.GetTotalCancelamentosISSQN: Double;
+begin
+  FiscNETComando.NomeComando := 'LeMoeda' ;
+  FiscNETComando.AddParamString('NomeDadoMonetario','TotalDiaCancelamentosISSQN') ;
+  EnviaComando ;
+
+  Result := StringToFloatDef(
+     RemoveString('.', FiscNETResposta.Params.Values['ValorMoeda'] ), 0) ;
+end;
+
+
 
 function TACBrECFFiscNET.GetTotalDescontos: Double;
 // Autor: Nei José Van Lare Junior
@@ -2072,6 +2106,20 @@ begin
      RemoveString('.', FiscNETResposta.Params.Values['ValorMoeda'] ), 0) ;
 end;
 
+
+function TACBrECFFiscNET.GetTotalDescontosISSQN: Double;
+begin
+  FiscNETComando.NomeComando := 'LeMoeda' ;
+  FiscNETComando.AddParamString('NomeDadoMonetario','TotalDiaDescontosISSQN') ;
+  EnviaComando ;
+
+  Result := StringToFloatDef(
+     RemoveString('.', FiscNETResposta.Params.Values['ValorMoeda'] ), 0) ;
+end;
+
+
+
+
 function TACBrECFFiscNET.GetTotalSubstituicaoTributaria: Double;
 // Autor: Nei José Van Lare Junior
 begin
@@ -2082,6 +2130,17 @@ begin
   Result := StringToFloatDef(
      RemoveString('.', FiscNETResposta.Params.Values['ValorMoeda'] ), 0) ;
 end;
+
+function TACBrECFFiscNET.GetTotalSubstituicaoTributariaISSQN: Double;
+begin
+  FiscNETComando.NomeComando := 'LeMoeda' ;
+  FiscNETComando.AddParamString('NomeDadoMonetario','TotalDiaSubstituicaoTributariaISSQN') ;
+  EnviaComando ;
+
+  Result := StringToFloatDef(
+     RemoveString('.', FiscNETResposta.Params.Values['ValorMoeda'] ), 0) ;
+end;
+
 
 function TACBrECFFiscNET.GetTotalIsencao: Double;
 // Autor: Nei José Van Lare Junior
@@ -2094,6 +2153,17 @@ begin
      RemoveString('.', FiscNETResposta.Params.Values['ValorMoeda'] ), 0) ;
 end;
 
+function TACBrECFFiscNET.GetTotalIsencaoISSQN: Double;
+begin
+  FiscNETComando.NomeComando := 'LeMoeda' ;
+  FiscNETComando.AddParamString('NomeDadoMonetario','TotalDiaIsencaoISSQN') ;
+  EnviaComando ;
+
+  Result := StringToFloatDef(
+     RemoveString('.', FiscNETResposta.Params.Values['ValorMoeda'] ), 0) ;
+end;
+
+
 function TACBrECFFiscNET.GetTotalNaoTributado: Double;
 // Autor: Nei José Van Lare Junior
 begin
@@ -2104,6 +2174,19 @@ begin
   Result := StringToFloatDef(
      RemoveString('.', FiscNETResposta.Params.Values['ValorMoeda'] ), 0) ;
 end;
+
+function TACBrECFFiscNET.GetTotalNaoTributadoISSQN: Double;
+begin
+  FiscNETComando.NomeComando := 'LeMoeda' ;
+  FiscNETComando.AddParamString('NomeDadoMonetario','TotalDiaNaoTributadoISSQN') ;
+  EnviaComando ;
+
+  Result := StringToFloatDef(
+     RemoveString('.', FiscNETResposta.Params.Values['ValorMoeda'] ), 0) ;
+end;
+
+
+
 
 function TACBrECFFiscNET.GetVendaBruta: Double;
 begin

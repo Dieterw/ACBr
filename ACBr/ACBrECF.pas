@@ -303,6 +303,12 @@ TACBrECF = class( TACBrComponent )
     function GetTotalNaoTributadoClass: Double;
     function GetTotalIsencaoClass: Double;
     function GetTotalNaoFiscalClass: Double;
+    function GetTotalAcrescimosISSQNClass: Double;
+    function GetTotalCancelamentosISSQNClass: Double;
+    function GetTotalDescontosISSQNClass: Double;
+    function GetTotalIsencaoISSQNClass: Double;
+    function GetTotalNaoTributadoISSQNClass: Double;
+    function GetTotalSubstituicaoTributariaISSQNClass: Double;
     function GetNumUltimoItemClass: Integer;
     function GetConsumidorClass: TACBrECFConsumidor;
     function GetCodBarrasClass: TACBrECFCodBarras;
@@ -380,6 +386,14 @@ TACBrECF = class( TACBrComponent )
        read GetTotalSubstituicaoTributariaClass ;
     Property TotalNaoTributado  : Double     read GetTotalNaoTributadoClass ;
     Property TotalIsencao       : Double     read GetTotalIsencaoClass ;
+
+    Property TotalCancelamentosISSSQN         : Double read GetTotalCancelamentosISSQNClass;
+    Property TotalDescontosISSQN              : Double read GetTotalDescontosISSQNClass;
+    Property TotalAcrescimosISSQN             : Double read GetTotalAcrescimosISSQNClass;
+    Property TotalSubstituicaoTributariaISSQN : Double read GetTotalSubstituicaoTributariaISSQNClass;
+    Property TotalNaoTributadoISSQN           : Double read GetTotalNaoTributadoISSQNClass;
+    Property TotalIsencaoISSQN                : Double read GetTotalIsencaoISSQNClass;
+
     Property TotalNaoFiscal     : Double     read GetTotalNaoFiscalClass ;
     Property NumUltItem         : Integer    read GetNumUltimoItemClass ;
 
@@ -1541,6 +1555,42 @@ begin
   Result := RoundTo( fsECF.TotalNaoTributado, -2) ;
 end;
 
+function TACBrECF.GetTotalAcrescimosISSQNClass: Double;
+begin
+  ComandoLOG := 'TotalAcrescimosISSQN';
+  Result := RoundTo( fsECF.TotalAcrescimosISSQN, -2);
+end;
+
+function TACBrECF.GetTotalCancelamentosISSQNClass: Double;
+begin
+  ComandoLOG := 'TotalCancelamentosISSQN';
+  Result := RoundTo( fsECF.TotalCancelamentosISSQN, -2);
+end;
+
+function TACBrECF.GetTotalDescontosISSQNClass: Double;
+begin
+  ComandoLOG := 'TotalDescontosISSQN';
+  Result := RoundTo( fsECF.TotalDescontosISSQN, -2);
+end;
+
+function TACBrECF.GetTotalSubstituicaoTributariaISSQNClass: Double;
+begin
+  ComandoLOG := 'TotalSubstituicaoTributariaISSQN';
+  Result := RoundTo( fsECF.TotalSubstituicaoTributariaISSQN, -2);
+end;
+
+function TACBrECF.GetTotalIsencaoISSQNClass: Double;
+begin
+  ComandoLOG := 'TotalIsencaoISSQN';
+  Result := RoundTo( fsECF.TotalIsencaoISSQN, -2);
+end;
+
+function TACBrECF.GetTotalNaoTributadoISSQNClass: Double;
+begin
+  ComandoLOG := 'TotalNaoTributadoISSQN';
+  Result := RoundTo( fsECF.TotalNaoTributadoISSQN, -2);
+end;
+
 function TACBrECF.GetVendaBrutaClass: Double;
 begin
   ComandoLOG := 'VendaBruta' ;
@@ -1595,7 +1645,7 @@ begin
   end ;
 
   Result := Result + sLineBreak + '[Totalizadores]'+sLineBreak;
-  
+
   try
      Result := Result + 'VendaBruta = ' + FloatToStr(VendaBruta) + sLineBreak ;
   except
@@ -1622,6 +1672,21 @@ begin
   end ;
 
   try
+         Result := Result + 'TotalDescontosISSQN = ' + FloatToStr(TotalDescontosISSQN) + sLineBreak;
+  except
+  end;
+
+  try
+         Result := Result + 'TotalCancelamentosISSQN = ' + FloatToStr(TotalCancelamentosISSSQN) + sLineBreak;
+  except
+  end;
+
+  try
+         Result := Result + 'TotalAcrescimosISSQN = ' + FloatToStr(TotalAcrescimosISSQN) + sLineBreak;
+  except
+  end;
+
+  try
      Result := Result + 'TotalNaoFiscal = ' + FloatToStr(TotalNaoFiscal) + sLineBreak ;
   except
   end ;
@@ -1646,6 +1711,12 @@ begin
                FloatToStr(TotalNaoTributado) + sLineBreak ;
      Result := Result + 'TotalIsencao = ' +
                FloatToStr(TotalIsencao) + sLineBreak ;
+     Result := Result + 'TotalSubstituicaoTributariaISSQN = ' +
+               FloatToStr(TotalSubstituicaoTributariaISSQN) + sLineBreak;
+     Result := Result + 'TotalNaoTributadoISSQN = ' +
+               FloatToStr(TotalNaoTributadoISSQN) + sLineBreak;
+     Result := Result + 'TotalIsencaoISSQN = ' +
+               FloatToStr(TotalIsencaoISSQN) + sLineBreak;
   except
   end ;
 

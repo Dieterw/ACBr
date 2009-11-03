@@ -95,6 +95,31 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Versão 0.8.9b  03/11/09
+-- ACBrECF --
+[+]    Implementadas propriedades para Leitura de Totais por ISSQN
+       ( Por: Marciano Lizzoni )
+        Property TotalCancelamentosISSSQN         : Double ;
+        Property TotalDescontosISSQN              : Double ;
+        Property TotalAcrescimosISSQN             : Double ;
+        Property TotalSubstituicaoTributariaISSQN : Double ;
+        Property TotalNaoTributadoISSQN           : Double ;
+        Property TotalIsencaoISSQN                : Double ;
+
+-- ACBrECFFiscNet --
+[-]    Correção do método GetUsuarioAtual (por M.Ivan)
+[+]    Implementação dos métodos:         (por M.Ivan)
+         GetTotalCancelamentosISSSQN, GetTotalDescontosISSQN,
+         GetTotalAcrescimosISSQN, GetTotalSubstituicaoTributariaISSQN,
+         GetTotalNaoTributadoISSQN, GetTotalIsencaoISSQN
+
+-- ACBrECFDaruma --
+[+]    Implementação dos métodos:         (por M.Ivan)
+         GetTotalCancelamentosISSSQN, GetTotalDescontosISSQN,
+         GetTotalAcrescimosISSQN, GetTotalSubstituicaoTributariaISSQN,
+         GetTotalNaoTributadoISSQN, GetTotalIsencaoISSQN
+
+
 Versão 0.8.9b  29/10/09 (DSA)
 --ACBrValidador --
 [+]    Adicionado método: FormatarIE( AString, UF : AnsiString ) : AnsiString ;

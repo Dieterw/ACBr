@@ -463,6 +463,12 @@ TACBrECFClass = class
     function GetTotalNaoTributado: Double; virtual ;
     function GetTotalIsencao: Double; virtual ;
     function GetTotalNaoFiscal: Double; virtual ;
+    function GetTotalAcrescimosISSQN: Double; virtual ;
+    function GetTotalCancelamentosISSQN: Double; virtual ;
+    function GetTotalDescontosISSQN: Double; virtual ;
+    function GetTotalIsencaoISSQN: Double; virtual ;
+    function GetTotalNaoTributadoISSQN: Double; virtual ;
+    function GetTotalSubstituicaoTributariaISSQN: Double; virtual ;
     function GetNumCOOInicial: String; virtual ;
     function GetNumUltimoItem: Integer; virtual ;
 
@@ -612,6 +618,14 @@ TACBrECFClass = class
        read GetTotalSubstituicaoTributaria ;
     Property TotalNaoTributado  : Double     read GetTotalNaoTributado ;
     Property TotalIsencao       : Double     read GetTotalIsencao ;
+
+    Property TotalCancelamentosISSQN          : Double read GetTotalCancelamentosISSQN;
+    Property TotalDescontosISSQN              : Double read GetTotalDescontosISSQN;
+    Property TotalAcrescimosISSQN             : Double read GetTotalAcrescimosISSQN;
+    Property TotalSubstituicaoTributariaISSQN : Double read GetTotalSubstituicaoTributariaISSQN;
+    Property TotalNaoTributadoISSQN           : Double read GetTotalNaoTributadoISSQN;
+    Property TotalIsencaoISSQN                : Double read GetTotalIsencaoISSQN;
+
     Property NumUltItem         : Integer    read GetNumUltimoItem ;
     Property TotalNaoFiscal     : Double     read GetTotalNaoFiscal ;
 
@@ -2095,6 +2109,36 @@ begin
         Result := Result + ComprovantesNaoFiscais[I].Total ;
   except
   end ;
+end;
+
+function TACBrECFClass.GetTotalAcrescimosISSQN: Double;
+begin
+  Result := 0;
+end;
+
+function TACBrECFClass.GetTotalCancelamentosISSQN: Double;
+begin
+  Result := 0;
+end;
+
+function TACBrECFClass.GetTotalDescontosISSQN: Double;
+begin
+  Result := 0;
+end;
+
+function TACBrECFClass.GetTotalIsencaoISSQN: Double;
+begin
+  Result := 0;
+end;
+
+function TACBrECFClass.GetTotalNaoTributadoISSQN: Double;
+begin
+  Result := 0;
+end;
+
+function TACBrECFClass.GetTotalSubstituicaoTributariaISSQN: Double;
+begin
+  Result := 0;
 end;
 
 function TACBrECFClass.GetNumUltimoItem: Integer;

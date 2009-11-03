@@ -245,6 +245,14 @@ TACBrECFDaruma = class( TACBrECFClass )
     function GetTotalIsencao: Double; override ;
     function GetTotalNaoFiscal: Double; override ;
 
+    function GetTotalAcrescimosISSQN: Double; override;
+    function GetTotalCancelamentosISSQN: Double; override;
+    function GetTotalDescontosISSQN: Double; override;
+    function GetTotalSubstituicaoTributariaISSQN: Double; override;
+    function GetTotalIsencaoISSQN: Double; override;
+    function GetTotalNaoTributadoISSQN: Double; override;
+
+
     function GetNumCOOInicial: String; override ;
     function GetNumUltimoItem: Integer; override ;
 
@@ -3128,6 +3136,71 @@ begin
   Result := RoundTo( Result, -2);
 end;
 
+
+//ISS---------------------------------------
+function TACBrECFDaruma.GetTotalAcrescimosISSQN: Double;
+begin
+  Result := 0;
+
+  if fpMFD then
+    Result := (StrToFloatDef(RetornaInfoECF('015'),0)/100) ;
+
+  Result := RoundTo( Result, -2);
+end;
+
+function TACBrECFDaruma.GetTotalCancelamentosISSQN: Double;
+begin
+  Result := 0;
+
+  if fpMFD then
+    Result := (StrToFloatDef(RetornaInfoECF('016'),0)/100) ;
+
+  Result := RoundTo( Result, -2);
+end;
+
+function TACBrECFDaruma.GetTotalDescontosISSQN: Double;
+begin
+  if fpMFD then
+    Result := (StrToFloatDef(RetornaInfoECF('014'),0)/100) ;
+
+  Result := RoundTo( Result, -2);
+end;
+
+
+function TACBrECFDaruma.GetTotalSubstituicaoTributariaISSQN: Double;
+begin
+  Result := 0;
+
+  if fpMFD then
+    Result := (StrToFloatDef(Copy(RetornaInfoECF('003'), 286, 13),0)/100) ;
+
+  Result := RoundTo( Result, -2);
+end;
+
+function TACBrECFDaruma.GetTotalIsencaoISSQN: Double;
+begin
+  Result := 0;
+
+  if fpMFD then
+    Result := (StrToFloatDef(Copy(RetornaInfoECF('003'), 312, 13),0)/100) ;
+
+  Result := RoundTo( Result, -2);
+end;
+
+
+function TACBrECFDaruma.GetTotalNaoTributadoISSQN: Double;
+begin
+  Result := 0;
+
+  if fpMFD then
+    Result := (StrToFloatDef(Copy(RetornaInfoECF('003'), 338, 13),0)/100) ;
+
+  Result := RoundTo( Result, -2);
+end;
+
+
+//------------------------------------------
+
 function TACBrECFDaruma.GetTotalIsencao: Double;
 var
   RetCmd: AnsiString;
@@ -3337,8 +3410,6 @@ begin
 end;
 
 function TACBrECFDaruma.GetSubModeloECF: String;
-var
-   RetCmd: AnsiString;
 begin
    Result := Trim(RetornaInfoECF('81'))
 end;

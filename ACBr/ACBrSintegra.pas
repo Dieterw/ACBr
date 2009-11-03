@@ -59,7 +59,11 @@
 |* 08/09/2009: Ederson Selvati
 |   - Adicao do registro 55 GNRE
 |   - Adicao do registro 88EAN MG?
-******************************************************************************}
+|* 03/11/2009: Ederson Selvati
+|   - Adição dos registros 88SME e 88SMS
+|* 03/11/2009: Douglas Uesato
+	- Adição dos registros 88EC e 88SF 
+{******************************************************************************}
 
 {$I ACBr.inc}
 
@@ -119,6 +123,40 @@ type
     property Cep: string read FCep write FCep;
     property Responsavel: string read FResponsavel write FResponsavel;
     property Telefone: string read FTelefone write FTelefone;
+  end;
+
+  TRegistro88EC = class
+  private
+    FAlteraContabilista: integer;
+    FCRCContabilista: string;
+    FCPFContabilista: string;
+    FEmailContabilista: string;
+    FNomeContabilista: string;
+    FTelefoneContabilista: string;
+  public
+    property NomeContabilista: string read FNomeContabilista write FNomeContabilista;
+    property CPFContabilista: string read FCPFContabilista write FCPFContabilista;
+    property CRCContabilista: string read FCRCContabilista write FCRCContabilista;
+    property TelefoneContabilista: string read FTelefoneContabilista write FTelefoneContabilista;
+    property EmailContabilista: string read FEmailContabilista write FEmailContabilista;
+    property AlteraContabilista: integer read FAlteraContabilista write FAlteraContabilista;
+  end;
+
+  TRegistro88SF = class
+  private
+    FAlteraEmpresa: integer;
+    FCNPJEmpresa: string;
+    FEmailEmpresa: string;
+    FTelefoneEmpresa: string;
+    FNomeEmpresa: string;
+    FCPFTecnico: string;
+  public
+    property NomeEmpresa: string read FNomeEmpresa write FNomeEmpresa;
+    property CNPJEmpresa: string read FCNPJEmpresa write FCNPJEmpresa;
+    property CPFTecnico: string read FCPFTecnico write FCPFTecnico;
+    property TelefoneEmpresa: string read FTelefoneEmpresa write FTelefoneEmpresa;
+    property EmailEmpresa: string read FEmailEmpresa write FEmailEmpresa;
+    property AlteraEmpresa: integer read FAlteraEmpresa write FAlteraEmpresa;
   end;
 
   TRegistro54 = class
@@ -915,10 +953,14 @@ type
     FRegistros61R: TRegistros61R;
     FRegistros60I: TRegistros60I;
     FRegistros60R: TRegistros60R;
+    FRegistro88EC: TRegistro88EC;
+    FRegistro88SF: TRegistro88SF;
     FRegistros85: TRegistros85;
     FRegistros86: TRegistros86;
     FRegistros55: TRegistros55;
     FRegistros88Ean: TRegistros88Ean;
+    FInforma88SMS: Boolean;
+    FInforma88SME: Boolean;
 
     procedure GeraRegistro10;
     procedure GeraRegistro11;
@@ -945,11 +987,16 @@ type
     procedure GerarRegistros86;
     procedure GerarRegistros88Ean;
 
+    procedure GerarRegistro88SME;
+    procedure GerarRegistro88SMS;
+
     procedure GerarRegistros90;
     procedure WriteRecord(Rec: string);
     function GetRegistro60M(Emissao: TDateTime;NumSerie: string): TRegistro60M;
     procedure GerarConjuntoRegistros60;
     function GetVersao: string;
+    procedure GerarRegistro88EC;
+    procedure GerarRegistro88SF;
   public
     property Registro10: TRegistro10 read FRegistro10 write FRegistro10;
     property Registro11: TRegistro11 read FRegistro11 write FRegistro11;
@@ -974,6 +1021,8 @@ type
     property Registros85: TRegistros85 read FRegistros85 write FRegistros85;
     property Registros86: TRegistros86 read FRegistros86 write FRegistros86;
     property Registros88Ean: TRegistros88Ean read FRegistros88Ean write FRegistros88Ean;
+    property Registro88EC: TRegistro88EC read FRegistro88EC write FRegistro88EC;
+    property Registro88SF: TRegistro88SF read FRegistro88SF write FRegistro88SF;
     property Ativo: Boolean read FAtivo write FAtivo;
     procedure LimparRegistros;
     procedure GeraArquivo;
@@ -985,6 +1034,8 @@ type
     property VersaoValidador: TVersaoValidador read FVersaoValidador write
       FVersaoValidador;
     property Versao: string read GetVersao;
+    property Informa88SME: Boolean read FInforma88SME write FInforma88SME;
+    property Informa88SMS: Boolean read FInforma88SMS write FInforma88SMS;
   end;
 
   function Sort50(Item1: Pointer;Item2: Pointer): Integer;
@@ -1032,6 +1083,8 @@ FRegistros75:=TRegistros75.Create(True);
 FRegistros85:=TRegistros85.Create(True);
 FRegistros86:=TRegistros86.Create(True);
 FRegistros88Ean:=TRegistros88Ean.Create(True);
+FRegistro88EC:=TRegistro88EC.Create;
+FRegistro88SF:=TRegistro88SF.Create;
 FVersaoValidador:=vv524;
 Ativo:=True;
 end;
@@ -1060,6 +1113,8 @@ FRegistros75.Free;
 FRegistros85.Free;
 FRegistros86.Free;
 FRegistros88Ean.Free;
+FRegistro88EC.Free;
+FRegistro88SF.Free;
 Ativo:=False;
   inherited;
 end;
@@ -1100,6 +1155,18 @@ try
   GerarRegistros85;
   GerarRegistros86;
   GerarRegistros88Ean;
+
+  if Trim(Registro88EC.NomeContabilista) <> '' then 
+    GerarRegistro88EC;
+  if Trim(Registro88SF.NomeEmpresa) <> '' then
+    GerarRegistro88SF;
+
+  //registros 88SM
+  if FInforma88SME then
+    GerarRegistro88SME;
+
+  if FInforma88SMS then
+    GerarRegistro88SMS;
 
   GerarRegistros90;
 finally
@@ -1619,9 +1686,21 @@ if Registros86.Count>0 then
 //totalizador para registros 88
 wtotal88:=0;
 wtotal88:=wtotal88+Registros88Ean.Count;
+
+if Trim(Registro88EC.CRCContabilista) <> '' then
+  Inc(wtotal88);
+if Trim(Registro88SF.FCNPJEmpresa) <> '' then
+  Inc(wtotal88);
+
+if FInforma88SME then
+  inc(wtotal88);
+
+if FInforma88SMS then
+  inc(wtotal88);
+
 if wtotal88>0 then
   wregistro:=wregistro+'88'+TBStrZero(IntToStr(wtotal88),8);
-  
+
 wregistro:=wregistro+Space(125-length(wregistro))+'2';
 WriteRecord(wregistro);
 
@@ -1808,6 +1887,33 @@ begin
 end;
 end;
 
+
+procedure TACBrSintegra.GerarRegistro88EC;
+var
+  wregistro: string;
+begin
+wregistro:='88EC'+Padl(Copy(Registro88EC.NomeContabilista,1,39),39);
+wregistro:=wregistro+Padl(Trim(TiraPontos(Registro88EC.CPFContabilista)),11);
+wregistro:=wregistro+Padl(Copy(Registro88EC.CRCContabilista,1,10),10);
+wregistro:=wregistro+Padl(Copy(Registro88EC.TelefoneContabilista,1,11),11);
+wregistro:=wregistro+Padl(Copy(Registro88EC.EmailContabilista,1,50),50);
+wregistro:=wregistro+IntToStr(Registro88EC.AlteraContabilista);
+WriteRecord(wregistro);
+end;
+
+procedure TACBrSintegra.GerarRegistro88SF;
+var
+  wregistro: string;
+begin
+wregistro:='88SF'+Padl(Copy(Registro88SF.NomeEmpresa,1,35),35);
+wregistro:=wregistro+Padl(Trim(TiraPontos(Registro88SF.CNPJEmpresa)),14);
+wregistro:=wregistro+Padl(Trim(TiraPontos(Registro88SF.CPFTecnico)),11);
+wregistro:=wregistro+Padl(Copy(Registro88SF.TelefoneEmpresa,1,11),11);
+wregistro:=wregistro+Padl(Copy(Registro88SF.EmailEmpresa,1,50),50);
+wregistro:=wregistro+IntToStr(Registro88SF.AlteraEmpresa);
+WriteRecord(wregistro);
+end;
+
 procedure TACBrSintegra.GerarRegistros88Ean;
 var
   wregistro: string;
@@ -1836,6 +1942,18 @@ begin
   wregistro:=wregistro+Space(32);
   WriteRecord(wregistro);
 end;
+end;
+
+procedure TACBrSintegra.GerarRegistro88SME;
+begin
+writerecord('88SME'+TBStrZero(TiraPontos(Registro10.CNPJ),14)+
+  padL('Sem Movimento de Entradas',34)+Space(73));
+end;
+
+procedure TACBrSintegra.GerarRegistro88SMS;
+begin
+writerecord('88SMS'+TBStrZero(TiraPontos(Registro10.CNPJ),14)+
+  padL('Sem Movimento de Saídas',34)+Space(73));
 end;
 
 { TRegistros50 }

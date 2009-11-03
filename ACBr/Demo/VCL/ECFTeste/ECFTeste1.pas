@@ -321,6 +321,10 @@ type
     ArquivoMFDDLL1: TMenuItem;
     PorCOO4: TMenuItem;
     PorPeriodo3: TMenuItem;
+    N40: TMenuItem;
+    otalSubstituicaoTributariaISSQN1: TMenuItem;
+    otalNaoTributadoISSQN1: TMenuItem;
+    otalIsencao1: TMenuItem;
     procedure cbxModeloChange(Sender: TObject);
     procedure Sair1Click(Sender: TObject);
     procedure bAtivarClick(Sender: TObject);
@@ -503,6 +507,9 @@ type
     procedure Modelo1Click(Sender: TObject);
     procedure PorCOO4Click(Sender: TObject);
     procedure PorPeriodo3Click(Sender: TObject);
+    procedure otalSubstituicaoTributariaISSQN1Click(Sender: TObject);
+    procedure otalNaoTributadoISSQN1Click(Sender: TObject);
+    procedure otalIsencao1Click(Sender: TObject);
   private
     { Private declarations }
     Function Converte( cmd : String) : String;
@@ -2072,9 +2079,27 @@ begin
   AtualizaMemos ;
 end;
 
+procedure TForm1.otalIsencao1Click(Sender: TObject);
+begin
+  mResp.Lines.Add( 'TotalIsencaoISSQN: ('+ FloatToStr(ACBrECF1.TotalIsencaoISSQN)+')' );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.otalNaoTributadoISSQN1Click(Sender: TObject);
+begin
+  mResp.Lines.Add( 'TotalNaoTributadoISSQN: ('+ FloatToStr(ACBrECF1.TotalNaoTributadoISSQN)+')' );
+  AtualizaMemos ;
+end;
+
 procedure TForm1.otalNoFiscal1Click(Sender: TObject);
 begin
   mResp.Lines.Add( 'TotalNaoFiscal: ('+ FloatToStr(ACBrECF1.TotalNaoFiscal)+')' );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.otalSubstituicaoTributariaISSQN1Click(Sender: TObject);
+begin
+  mResp.Lines.Add( 'TotalSubstituicaoTributariaISSQN: ('+ FloatToStr(ACBrECF1.TotalSubstituicaoTributariaISSQN)+')' );
   AtualizaMemos ;
 end;
 

@@ -2015,18 +2015,25 @@ begin
   if copy(AliquotaICMS,1,2) = 'TT' then { Corrige Duplo T  }
      AliquotaICMS := copy(AliquotaICMS,2,5) ;
 
-  case AliquotaICMS[1] of
-    'I' : AliquotaStr := IfThen(fpMFD,'19', 'I ') ;
-    'N' : AliquotaStr := IfThen(fpMFD,'21', 'N ') ;
-    'F' : AliquotaStr := IfThen(fpMFD,'17', 'F ') ;
-    'T' :
-      begin
-         if StrIsAlpha(copy(AliquotaICMS,2,1)) then
-            AliquotaICMS := 'T'+copy(AliquotaICMS,1,2)       {Indice TA, TB, TC}
-         else
-            AliquotaICMS := 'T'+padR(copy(AliquotaICMS,2,2),2,'0') ; {Indice T01, T1, T02}
-      end ;
-  end;
+  if copy(AliquotaICMS,1,2) = 'SF' then
+     AliquotaStr := '23'
+  else if copy(AliquotaICMS,1,2) = 'SN' then
+     AliquotaStr := '27'
+  else if copy(AliquotaICMS,1,2) = 'SI' then
+     AliquotaStr := '25'
+  else
+     case AliquotaICMS[1] of
+       'I' : AliquotaStr := IfThen(fpMFD,'19', 'I ') ;
+       'N' : AliquotaStr := IfThen(fpMFD,'21', 'N ') ;
+       'F' : AliquotaStr := IfThen(fpMFD,'17', 'F ') ;
+       'T' :
+         begin
+            if StrIsAlpha(copy(AliquotaICMS,2,1)) then
+               AliquotaICMS := 'T'+copy(AliquotaICMS,1,2)       {Indice TA, TB, TC}
+            else
+               AliquotaICMS := 'T'+padR(copy(AliquotaICMS,2,2),2,'0') ; {Indice T01, T1, T02}
+         end ;
+     end;
 
   if AliquotaStr = '' then
      Result := inherited AchaICMSAliquota( AliquotaICMS )

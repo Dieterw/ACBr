@@ -1,7 +1,7 @@
 object frVendeItem: TfrVendeItem
-  Left = 400
-  Top = 215
-  Width = 383
+  Left = 304
+  Top = 154
+  Width = 395
   Height = 289
   HorzScrollBar.Range = 329
   VertScrollBar.Range = 225
@@ -18,12 +18,6 @@ object frVendeItem: TfrVendeItem
   Scaled = False
   PixelsPerInch = 96
   TextHeight = 13
-  object Bevel2: TBevel
-    Left = 184
-    Top = 107
-    Width = 185
-    Height = 108
-  end
   object Label1: TLabel
     Left = 30
     Top = 24
@@ -86,32 +80,59 @@ object frVendeItem: TfrVendeItem
     Caption = '&Unidade'
     FocusControl = edUN
   end
-  object Label8: TLabel
-    Left = 205
-    Top = 151
-    Width = 47
-    Height = 13
-    Caption = 'II = Isento'
-  end
-  object Label9: TLabel
-    Left = 205
-    Top = 167
-    Width = 100
-    Height = 13
-    Caption = 'NN = Nao Incidencia'
-  end
-  object Label10: TLabel
-    Left = 205
-    Top = 183
-    Width = 129
-    Height = 13
-    Caption = 'FF = Substitui'#231'ao Tribut'#225'ria'
-  end
   object Bevel1: TBevel
     Left = 8
     Top = 139
     Width = 169
     Height = 76
+  end
+  object Bevel2: TBevel
+    Left = 184
+    Top = 107
+    Width = 185
+    Height = 142
+  end
+  object Label8: TLabel
+    Left = 189
+    Top = 143
+    Width = 47
+    Height = 13
+    Caption = 'II = Isento'
+  end
+  object Label9: TLabel
+    Left = 189
+    Top = 159
+    Width = 100
+    Height = 13
+    Caption = 'NN = Nao Incidencia'
+  end
+  object Label10: TLabel
+    Left = 189
+    Top = 175
+    Width = 129
+    Height = 13
+    Caption = 'FF = Substitui'#231'ao Tribut'#225'ria'
+  end
+  object Label11: TLabel
+    Left = 189
+    Top = 191
+    Width = 87
+    Height = 13
+    Caption = 'SI = Isento ISSQN'
+  end
+  object Label12: TLabel
+    Left = 189
+    Top = 207
+    Width = 135
+    Height = 13
+    Caption = 'SN = Nao Incidencia ISSQN'
+  end
+  object Label13: TLabel
+    Left = 189
+    Top = 223
+    Width = 135
+    Height = 13
+    Caption = 'SF = Subst.Tribut'#225'ria ISSQN'
   end
   object edCodigo: TEdit
     Left = 72
@@ -171,7 +192,7 @@ object frVendeItem: TfrVendeItem
     Text = 'UN'
   end
   object Button1: TButton
-    Left = 79
+    Left = 15
     Top = 223
     Width = 75
     Height = 25
@@ -181,7 +202,7 @@ object frVendeItem: TfrVendeItem
     OnClick = Button1Click
   end
   object Button2: TButton
-    Left = 218
+    Left = 98
     Top = 223
     Width = 75
     Height = 25

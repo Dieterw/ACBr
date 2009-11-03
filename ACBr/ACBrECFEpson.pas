@@ -1783,11 +1783,18 @@ begin
   if pos(copy(AliquotaICMS,1,2), 'TT,SS') > 0 then { Corrige Duplo T ou S }
      AliquotaICMS := Trim(Copy(AliquotaICMS,2,5));
 
-  case AliquotaICMS[1] of
-     'F','I','N' : AliquotaStr := AliquotaICMS[1] ;
-     'T' : AliquotaICMS := 'TT'+copy(AliquotaICMS,2,2) ; {Indice}
-     'S' : AliquotaICMS := 'TS'+copy(AliquotaICMS,2,2) ; {Indice}
-  end ;
+  if copy(AliquotaICMS,1,2) = 'SF' then
+     AliquotaStr := 'FS'
+  else if copy(AliquotaICMS,1,2) = 'SN' then
+     AliquotaStr := 'NS'
+  else if copy(AliquotaICMS,1,2) = 'SI' then
+     AliquotaStr := 'IS'
+  else
+     case AliquotaICMS[1] of
+        'F','I','N' : AliquotaStr := AliquotaICMS[1] ;
+        'T' : AliquotaICMS := 'TT'+copy(AliquotaICMS,2,2) ; {Indice}
+        'S' : AliquotaICMS := 'TS'+copy(AliquotaICMS,2,2) ; {Indice}
+     end ;
 
   if AliquotaStr = '' then
      Result := inherited AchaICMSAliquota( AliquotaICMS )

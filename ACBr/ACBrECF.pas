@@ -1907,6 +1907,15 @@ begin
   { Retorna em "AliquotaECF" (por referencia) a String de aliquota que deve
     ser enviada para o ECF }
   AliquotaECF := AliquotaICMS ;
+
+  { convertendo IS1, IS2 = "SI";   FS1, FS2 = "SF";   NS1, NS2 = "SN" }  
+  if copy(AliquotaICMS,1,2) = 'FS' then
+     AliquotaECF := 'SF'
+  else if copy(AliquotaICMS,1,2) = 'NS' then
+     AliquotaECF := 'SN'
+  else if copy(AliquotaICMS,1,2) = 'IS' then
+     AliquotaECF := 'SI' ;
+
   Aliquota    := AchaICMSAliquota( AliquotaECF ) ;
 
   { Verificando se precisa Arredondar por Qtd }

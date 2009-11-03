@@ -97,6 +97,16 @@ Símbolo : Significado
 
 Versão 0.8.9b  03/11/09
 -- ACBrECF --
+[*]    VendeItem: Implementado tratamento para uso de aliquotas do ISSQN
+       SI = Isento ISSQN;
+       SN = Nao Incidencia ISSQN;
+       SF = Subst.Tributária ISSQN;
+
+       Os Valores abaixo, quando informados, serão convertidos:
+      { IS1, IS2 = "SI";   FS1, FS2 = "SF";   NS1, NS2 = "SN" }
+
+      Classes revisadas: Bematech, Daruma, Sweda, Epson, FiscNET
+
 [+]    Implementadas propriedades para Leitura de Totais por ISSQN
        ( Por: Marciano Lizzoni )
         Property TotalCancelamentosISSSQN         : Double ;

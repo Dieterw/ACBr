@@ -1333,17 +1333,24 @@ begin
   AliquotaStr := '' ;
   Result      := nil ;
 
-  case AliquotaICMS[1] of
-     'F' : AliquotaStr := '-2' ;
-     'I' : AliquotaStr := '-3' ;
-     'N' : AliquotaStr := '-4' ;
-     'T' :
-        try
-           AliquotaICMS := 'T'+IntToStr(StrToInt(copy(AliquotaICMS,2,2))) ; {Indice}
-        except
-            raise EACBrECFCMDInvalido.Create(ACBrStr('Aliquota Inválida: '+AliquotaICMS));
-        end ;
-  end ;
+  if copy(AliquotaICMS,1,2) = 'SF' then
+     AliquotaStr := '-11'
+  else if copy(AliquotaICMS,1,2) = 'SN' then
+     AliquotaStr := '-13'
+  else if copy(AliquotaICMS,1,2) = 'SI' then
+     AliquotaStr := '-12'
+  else
+     case AliquotaICMS[1] of
+        'F' : AliquotaStr := '-2' ;
+        'I' : AliquotaStr := '-3' ;
+        'N' : AliquotaStr := '-4' ;
+        'T' :
+           try
+              AliquotaICMS := 'T'+IntToStr(StrToInt(copy(AliquotaICMS,2,2))) ; {Indice}
+           except
+               raise EACBrECFCMDInvalido.Create(ACBrStr('Aliquota Inválida: '+AliquotaICMS));
+           end ;
+     end ;
 
   if AliquotaStr = '' then
      Result := inherited AchaICMSAliquota( AliquotaICMS )

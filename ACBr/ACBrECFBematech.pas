@@ -1329,10 +1329,11 @@ begin
 
   AliquotaICMS := UpperCase( Trim( AliquotaICMS ) ) ;
   case AliquotaICMS[1] of
-    'I' : AliquotaStr := 'II' ;
-    'N' : AliquotaStr := 'NN' ;
-    'F' : AliquotaStr := 'FF' ;
+    'I' : AliquotaStr  := 'II' ;
+    'N' : AliquotaStr  := 'NN' ;
+    'F' : AliquotaStr  := 'FF' ;
     'T' : AliquotaICMS := 'T'+padR(copy(AliquotaICMS,2,2),2,'0') ; {Indice}
+    'S' : AliquotaStr  := AliquotaICMS ;  { SN, SF, SI }
   end;
 
   if AliquotaStr = '' then

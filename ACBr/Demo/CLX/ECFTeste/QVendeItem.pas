@@ -33,6 +33,9 @@ type
     rbAcrescimo: TRadioButton;
     rbDesconto: TRadioButton;
     edDescAcres: TEdit;
+    Label6: TLabel;
+    Label11: TLabel;
+    Label12: TLabel;
     procedure edQtdKeyPress(Sender: TObject; var Key: Char);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);

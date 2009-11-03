@@ -1,7 +1,7 @@
 object frVendeItem: TfrVendeItem
   Left = 377
   Top = 255
-  Width = 373
+  Width = 406
   Height = 258
   VertScrollBar.Range = 251
   HorzScrollBar.Range = 369
@@ -22,12 +22,12 @@ object frVendeItem: TfrVendeItem
     Left = 184
     Top = 107
     Width = 185
-    Height = 110
+    Height = 142
   end
   object Label1: TLabel
-    Left = 30
+    Left = 29
     Top = 24
-    Width = 33
+    Width = 34
     Height = 13
     Alignment = taRightJustify
     Caption = '&C'#243'digo'
@@ -61,9 +61,9 @@ object frVendeItem: TfrVendeItem
     Text = 'TESTE DE PRODUTO'
   end
   object Label3: TLabel
-    Left = 43
+    Left = 42
     Top = 88
-    Width = 17
+    Width = 18
     Height = 13
     Alignment = taRightJustify
     Caption = '&Qtd'
@@ -125,7 +125,7 @@ object frVendeItem: TfrVendeItem
     Text = 'UN'
   end
   object Button1: TButton
-    Left = 79
+    Left = 15
     Top = 226
     Width = 75
     Height = 25
@@ -135,28 +135,28 @@ object frVendeItem: TfrVendeItem
     OnClick = Button1Click
   end
   object Label8: TLabel
-    Left = 205
-    Top = 151
+    Left = 189
+    Top = 143
     Width = 47
     Height = 13
     Caption = 'II = Isento'
   end
   object Label9: TLabel
-    Left = 205
-    Top = 167
+    Left = 189
+    Top = 159
     Width = 100
-    Height = 13
+    Height = 20
     Caption = 'NN = Nao Incidencia'
   end
   object Label10: TLabel
-    Left = 205
-    Top = 183
+    Left = 189
+    Top = 175
     Width = 129
     Height = 13
     Caption = 'FF = Substitui'#231'ao Tribut'#225'ria'
   end
   object Button2: TButton
-    Left = 218
+    Left = 98
     Top = 226
     Width = 75
     Height = 25
@@ -230,5 +230,26 @@ object frVendeItem: TfrVendeItem
       Text = '0'
       OnKeyPress = edQtdKeyPress
     end
+  end
+  object Label6: TLabel
+    Left = 189
+    Top = 191
+    Width = 87
+    Height = 13
+    Caption = 'SI = Isento ISSQN'
+  end
+  object Label11: TLabel
+    Left = 189
+    Top = 207
+    Width = 135
+    Height = 13
+    Caption = 'SN = Nao Incidencia ISSQN'
+  end
+  object Label12: TLabel
+    Left = 189
+    Top = 223
+    Width = 135
+    Height = 13
+    Caption = 'SF = Subst.Tribut'#225'ria ISSQN'
   end
 end

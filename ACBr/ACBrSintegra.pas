@@ -1709,9 +1709,8 @@ wregistro:=wregistro+Padl(TiraPontos(Registro10.Inscricao),14);
 wregistro:=wregistro+'99'+TBStrZero(IntToStr(Registros50.Count+Registros51.Count+
   Registros53.Count+Registros54.Count+Registros55.Count+
   (Registros60M.Count+Registros60A.Count+Registros60D.Count+Registros60I.Count+Registros60R.Count)+
-  (Registros61.Count+Registros61R.Count)+
-   Registros70.Count+Registros71.Count+Registros74.Count+Registros75.Count+
-   Registros85.Count+Registros86.Count+Registros88Ean.Count+4),8);
+  (Registros61.Count+Registros61R.Count)+Registros70.Count+Registros71.Count+
+  Registros74.Count+Registros75.Count+Registros85.Count+Registros86.Count+wtotal88+4),8);
 
 wregistro:=wregistro+Space(125-length(wregistro))+'2';
 WriteRecord(wregistro);

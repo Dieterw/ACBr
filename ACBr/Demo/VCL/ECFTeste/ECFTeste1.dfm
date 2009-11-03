@@ -1691,7 +1691,7 @@ object Form1: TForm1
           OnClick = otalNaoTributadoISSQN1Click
         end
         object otalIsencao1: TMenuItem
-          Caption = 'Total Isencao'
+          Caption = 'Total Isencao ISSQN'
           OnClick = otalIsencao1Click
         end
       end

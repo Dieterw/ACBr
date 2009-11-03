@@ -246,6 +246,14 @@ TACBrECFSweda = class( TACBrECFClass )
     function GetTotalSubstituicaoTributaria: Double; override ;
     function GetTotalNaoTributado: Double; override ;
     function GetTotalIsencao: Double; override ;
+
+    function GetTotalAcrescimosISSQN: Double; override;
+    function GetTotalCancelamentosISSQN: Double; override;
+    function GetTotalDescontosISSQN: Double; override;
+    function GetTotalSubstituicaoTributariaISSQN: Double; override;
+    function GetTotalIsencaoISSQN: Double; override;
+    function GetTotalNaoTributadoISSQN: Double; override;
+
     function GetNumCOOInicial: String; override ;
     function GetNumUltimoItem: Integer; override ;
 
@@ -2905,6 +2913,16 @@ begin
      Result := StrToFloatDef(copy(wretorno,12,12),0)/100;
 end;
 
+function TACBrECFSweda.GetTotalAcrescimosISSQN: Double;
+var
+  wretorno: AnsiString;
+begin
+  Result   := 0;
+  wretorno := EnviaComando('27'+'F');
+  if copy(wretorno,1,3) = '.+C' then
+     Result := StrToFloatDef(copy(wretorno,44,12),0)/100;
+end;
+
 function TACBrECFSweda.GetTotalCancelamentos: Double;
 // Autor: Ederson Selvati,
 var
@@ -2919,6 +2937,16 @@ begin
   end;
 end;
 
+function TACBrECFSweda.GetTotalCancelamentosISSQN: Double;
+var
+  wretorno: AnsiString;
+begin
+  Result   := 0;
+  wretorno := EnviaComando('27'+'2');
+  if copy(wretorno,1,3) = '.+C' then
+     Result := StrToFloatDef(copy(wretorno,28,12),0)/100;
+end;
+
 function TACBrECFSweda.GetTotalDescontos: Double;
 // Autor: Ederson Selvati,
 var
@@ -2928,6 +2956,16 @@ begin
   wretorno := EnviaComando('27'+'1');
   if copy(wretorno,1,3) = '.+C' then
      Result := StrToFloatDef(copy(wretorno,93,12),0)/100;
+end;
+
+function TACBrECFSweda.GetTotalDescontosISSQN: Double;
+var
+  wretorno: AnsiString;
+begin
+  Result   := 0;
+  wretorno := EnviaComando('27'+'2');
+  if copy(wretorno,1,3) = '.+C' then
+     Result := StrToFloatDef(copy(wretorno,44,12),0)/100;
 end;
 
 function TACBrECFSweda.GetTotalIsencao: Double;
@@ -2944,6 +2982,16 @@ begin
   end;
 end;
 
+function TACBrECFSweda.GetTotalIsencaoISSQN: Double;
+var
+  wretorno: AnsiString;
+begin
+  Result   := 0;
+  wretorno := EnviaComando('27'+'J');
+  if copy(wretorno,1,3) = '.+C' then
+     Result := StrToFloatDef(copy(wretorno,80,12),0)/100;
+end;
+
 function TACBrECFSweda.GetTotalNaoTributado: Double;
 // Autor: Ederson Selvati
 var
@@ -2958,6 +3006,16 @@ begin
 end;
 end;
 
+function TACBrECFSweda.GetTotalNaoTributadoISSQN: Double;
+var
+  wretorno: AnsiString;
+begin
+  Result   := 0;
+  wretorno := EnviaComando('27'+'J');
+  if copy(wretorno,1,3) = '.+C' then
+     Result := StrToFloatDef(copy(wretorno,44,12),0)/100;
+end;
+
 function TACBrECFSweda.GetTotalSubstituicaoTributaria: Double;
 // Autor: Ederson Selvati
 var
@@ -2970,6 +3028,16 @@ begin
      if StrToFloatDef(copy(wretorno,46,12),0)/100 > 0 then
         Result := StrToFloatDef(copy(wretorno,46,12),0) / 100;
   end;
+end;
+
+function TACBrECFSweda.GetTotalSubstituicaoTributariaISSQN: Double;
+var
+  wretorno: AnsiString;
+begin
+  Result   := 0;
+  wretorno := EnviaComando('27'+'J');
+  if copy(wretorno,1,3) = '.+C' then
+     Result := StrToFloatDef(copy(wretorno,8,12),0)/100;
 end;
 
 function TACBrECFSweda.GetVendaBruta: Double;

@@ -123,7 +123,6 @@ type
     TotalCancelamentos1: TMenuItem;
     TotalDescontos1: TMenuItem;
     TotalAcrescimos1: TMenuItem;
-    N21: TMenuItem;
     N22: TMenuItem;
     TotalSubstituicaoTributaria1: TMenuItem;
     TotalNaoTributado1: TMenuItem;
@@ -220,7 +219,6 @@ type
     seIntervaloAposComando: TSpinEdit;
     IE1: TMenuItem;
     N26: TMenuItem;
-    TotalNoFiscal1: TMenuItem;
     DadosUltimaReduoZ1: TMenuItem;
     DataMovimento1: TMenuItem;
     btSerial: TBitBtn;
@@ -252,6 +250,18 @@ type
     LeituraMFDSerialDLL1: TMenuItem;
     PorPeriodo2: TMenuItem;
     PorCOO2: TMenuItem;
+    ICMS1: TMenuItem;
+    N31: TMenuItem;
+    TotaisISSQN1: TMenuItem;
+    N33: TMenuItem;
+    TotalCancelamentos2: TMenuItem;
+    TotalDescontos2: TMenuItem;
+    TotalAcrescimos2: TMenuItem;
+    N21: TMenuItem;
+    TotalSubstituicaoTributaria2: TMenuItem;
+    TotalNaoTributado2: TMenuItem;
+    TotalIsencao2: TMenuItem;
+    TotalNoFiscal3: TMenuItem;
     procedure cbxModeloChange(Sender: TObject);
     procedure Sair1Click(Sender: TObject);
     procedure bAtivarClick(Sender: TObject);
@@ -407,6 +417,12 @@ type
     procedure Cliche1Click(Sender: TObject);
     procedure PorPeriodo2Click(Sender: TObject);
     procedure PorCOO2Click(Sender: TObject);
+    procedure TotalCancelamentos2Click(Sender: TObject);
+    procedure TotalDescontos2Click(Sender: TObject);
+    procedure TotalAcrescimos2Click(Sender: TObject);
+    procedure TotalSubstituicaoTributaria2Click(Sender: TObject);
+    procedure TotalNaoTributado2Click(Sender: TObject);
+    procedure TotalIsencao2Click(Sender: TObject);
   private
     { Private declarations }
     Function Converte( cmd : String) : String;
@@ -2726,6 +2742,42 @@ begin
 
   ACBrECF1.EspelhoMFD_DLL(nCOOIni, nCOOFim, Arquivo);
   mResp.Lines.Add('---------------------------------');
+end;
+
+procedure TForm1.TotalCancelamentos2Click(Sender: TObject);
+begin
+  mResp.Lines.Add( 'TotalCancelamentosISSSQN: ('+ FloatToStr(ACBrECF1.TotalCancelamentosISSSQN)+')' );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.TotalDescontos2Click(Sender: TObject);
+begin
+  mResp.Lines.Add( 'TotalDescontosISSQN: ('+ FloatToStr(ACBrECF1.TotalDescontosISSQN)+')' );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.TotalAcrescimos2Click(Sender: TObject);
+begin
+  mResp.Lines.Add( 'TotalAcrescimosISSQN: ('+ FloatToStr(ACBrECF1.TotalAcrescimosISSQN)+')' );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.TotalSubstituicaoTributaria2Click(Sender: TObject);
+begin
+  mResp.Lines.Add( 'TotalSubstituicaoTributariaISSQN: ('+ FloatToStr(ACBrECF1.TotalSubstituicaoTributariaISSQN)+')' );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.TotalNaoTributado2Click(Sender: TObject);
+begin
+  mResp.Lines.Add( 'TotalNaoTributadoISSQN: ('+ FloatToStr(ACBrECF1.TotalNaoTributadoISSQN)+')' );
+  AtualizaMemos ;
+end;
+
+procedure TForm1.TotalIsencao2Click(Sender: TObject);
+begin
+  mResp.Lines.Add( 'TotalIsencaoISSQN: ('+ FloatToStr(ACBrECF1.TotalIsencaoISSQN)+')' );
+  AtualizaMemos ;
 end;
 
 END.

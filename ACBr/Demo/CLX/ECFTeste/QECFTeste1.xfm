@@ -4865,39 +4865,75 @@ object Form1: TForm1
           Caption = 'Grande Total'
           OnClick = GrandeTotal1Click
         end
+        object N31: TMenuItem
+          Caption = '-'
+        end
+        object ICMS1: TMenuItem
+          Caption = 'Totais ICMS'
+          object TotalCancelamentos1: TMenuItem
+            Caption = 'Total Cancelamentos'
+            OnClick = TotalCancelamentos1Click
+          end
+          object TotalDescontos1: TMenuItem
+            Caption = 'Total Descontos'
+            OnClick = TotalDescontos1Click
+          end
+          object TotalAcrescimos1: TMenuItem
+            Caption = 'Total Acrescimos'
+            OnClick = TotalAcrescimos1Click
+          end
+          object N33: TMenuItem
+            Caption = '-'
+          end
+          object TotalSubstituicaoTributaria1: TMenuItem
+            Caption = 'Total Substituicao Tributaria'
+            OnClick = TotalSubstituicaoTributaria1Click
+          end
+          object TotalNaoTributado1: TMenuItem
+            Caption = 'Total Nao Tributado'
+            OnClick = TotalNaoTributado1Click
+          end
+          object TotalIsencao1: TMenuItem
+            Caption = 'Total Isencao'
+            OnClick = TotalIsencao1Click
+          end
+        end
+        object TotaisISSQN1: TMenuItem
+          Caption = 'Totais ISSQN'
+          object TotalCancelamentos2: TMenuItem
+            Caption = 'Total Cancelamentos'
+            OnClick = TotalCancelamentos2Click
+          end
+          object TotalDescontos2: TMenuItem
+            Caption = 'Total Descontos'
+            OnClick = TotalDescontos2Click
+          end
+          object TotalAcrescimos2: TMenuItem
+            Caption = 'Total Acrescimos'
+            OnClick = TotalAcrescimos2Click
+          end
+          object N21: TMenuItem
+            Caption = '-'
+          end
+          object TotalSubstituicaoTributaria2: TMenuItem
+            Caption = 'Total Substituicao Tributaria'
+            OnClick = TotalSubstituicaoTributaria2Click
+          end
+          object TotalNaoTributado2: TMenuItem
+            Caption = 'Total Nao Tributado'
+            OnClick = TotalNaoTributado2Click
+          end
+          object TotalIsencao2: TMenuItem
+            Caption = 'Total Isencao'
+            OnClick = TotalIsencao2Click
+          end
+        end
         object N22: TMenuItem
           Caption = '-'
         end
-        object TotalCancelamentos1: TMenuItem
-          Caption = 'Total Cancelamentos'
-          OnClick = TotalCancelamentos1Click
-        end
-        object TotalDescontos1: TMenuItem
-          Caption = 'Total Descontos'
-          OnClick = TotalDescontos1Click
-        end
-        object TotalAcrescimos1: TMenuItem
-          Caption = 'Total Acrescimos'
-          OnClick = TotalAcrescimos1Click
-        end
-        object TotalNoFiscal1: TMenuItem
+        object TotalNoFiscal3: TMenuItem
           Caption = 'Total N'#227'o Fiscal'
           OnClick = TotalNoFiscal1Click
-        end
-        object N21: TMenuItem
-          Caption = '-'
-        end
-        object TotalSubstituicaoTributaria1: TMenuItem
-          Caption = 'Total Substituicao Tributaria'
-          OnClick = TotalSubstituicaoTributaria1Click
-        end
-        object TotalNaoTributado1: TMenuItem
-          Caption = 'Total Nao Tributado'
-          OnClick = TotalNaoTributado1Click
-        end
-        object TotalIsencao1: TMenuItem
-          Caption = 'Total Isencao'
-          OnClick = TotalIsencao1Click
         end
       end
       object N4: TMenuItem

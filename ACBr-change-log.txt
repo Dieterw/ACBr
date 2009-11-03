@@ -129,6 +129,17 @@ Versão 0.8.9b  03/11/09
          GetTotalAcrescimosISSQN, GetTotalSubstituicaoTributariaISSQN,
          GetTotalNaoTributadoISSQN, GetTotalIsencaoISSQN
 
+-- ACBrECFSweda --
+[+]    Implementação dos métodos:         (por Isaque Pinheiro)
+         GetTotalCancelamentosISSSQN, GetTotalDescontosISSQN,
+         GetTotalAcrescimosISSQN, GetTotalSubstituicaoTributariaISSQN,
+         GetTotalNaoTributadoISSQN, GetTotalIsencaoISSQN
+
+-- ACBrECFEpson --
+[+]    Implementação dos métodos:         (por: DSA)
+         GetTotalCancelamentosISSSQN, GetTotalDescontosISSQN,
+         GetTotalAcrescimosISSQN, GetTotalSubstituicaoTributariaISSQN,
+         GetTotalNaoTributadoISSQN, GetTotalIsencaoISSQN
 
 Versão 0.8.9b  29/10/09 (DSA)
 --ACBrValidador --

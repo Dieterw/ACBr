@@ -208,6 +208,14 @@ TACBrECFEpson = class( TACBrECFClass )
     function GetTotalSubstituicaoTributaria: Double; override ;
     function GetTotalNaoTributado: Double; override ;
     function GetTotalIsencao: Double; override ;
+
+    function GetTotalAcrescimosISSQN: Double; override;
+    function GetTotalCancelamentosISSQN: Double; override;
+    function GetTotalDescontosISSQN: Double; override;
+    function GetTotalSubstituicaoTributariaISSQN: Double; override;
+    function GetTotalIsencaoISSQN: Double; override;
+    function GetTotalNaoTributadoISSQN: Double; override;
+
     function GetNumCOOInicial: String; override ;
     function GetNumUltimoItem: Integer; override ;
 
@@ -2326,42 +2334,36 @@ function TACBrECFEpson.GetTotalAcrescimos: Double;
 begin
   EpsonResposta.Resposta := Ret0906 ;
   Result := RoundTo( StrToFloatDef(EpsonResposta.Params[8],0) /100, -2) ;
-  Result := Result + RoundTo( StrToFloatDef(EpsonResposta.Params[9],0) /100, -2) ;
 end;
 
 function TACBrECFEpson.GetTotalCancelamentos: Double;
 begin
   EpsonResposta.Resposta := Ret0906 ;
   Result := RoundTo( StrToFloatDef(EpsonResposta.Params[2],0) /100, -2) ;
-  Result := Result + RoundTo( StrToFloatDef(EpsonResposta.Params[5],0) /100, -2) ;
 end;
 
 function TACBrECFEpson.GetTotalDescontos: Double;
 begin
   EpsonResposta.Resposta := Ret0906 ;
   Result := RoundTo( StrToFloatDef(EpsonResposta.Params[3],0) /100, -2) ;
-  Result := Result + RoundTo( StrToFloatDef(EpsonResposta.Params[6],0) /100, -2) ;
 end;
 
 function TACBrECFEpson.GetTotalSubstituicaoTributaria: Double;
 begin
   EpsonResposta.Resposta := Ret0906 ;
   Result := RoundTo( StrToFloatDef(EpsonResposta.Params[15],0) /100, -2) ;
-  Result := Result + RoundTo( StrToFloatDef(EpsonResposta.Params[18],0) /100, -2) ;
 end;
 
 function TACBrECFEpson.GetTotalIsencao: Double;
 begin
   EpsonResposta.Resposta := Ret0906 ;
-  Result := RoundTo( StrToFloatDef(EpsonResposta.Params[16],0) /100, -2) ;
-  Result := Result + RoundTo( StrToFloatDef(EpsonResposta.Params[19],0) /100, -2) ;
+  Result := RoundTo( StrToFloatDef(EpsonResposta.Params[19],0) /100, -2) ;
 end;
 
 function TACBrECFEpson.GetTotalNaoTributado: Double;
 begin
   EpsonResposta.Resposta := Ret0906 ;
   Result := RoundTo( StrToFloatDef(EpsonResposta.Params[17],0) /100, -2) ;
-  Result := Result + RoundTo( StrToFloatDef(EpsonResposta.Params[20],0) /100, -2) ;
 end;
 
 function TACBrECFEpson.GetVendaBruta: Double;
@@ -2977,6 +2979,42 @@ begin
   if docCNF in Documentos then Result := Result + 64 ;
   if docCNFCancelamento in Documentos then Result := Result + 128 ;
 
+end;
+
+function TACBrECFEpson.GetTotalAcrescimosISSQN: Double;
+begin
+  EpsonResposta.Resposta := Ret0906 ;
+  Result := Result + RoundTo( StrToFloatDef(EpsonResposta.Params[9],0) /100, -2) ;
+end;
+
+function TACBrECFEpson.GetTotalCancelamentosISSQN: Double;
+begin
+  EpsonResposta.Resposta := Ret0906 ;
+  Result := RoundTo( StrToFloatDef(EpsonResposta.Params[5],0) /100, -2) ;
+end;
+
+function TACBrECFEpson.GetTotalDescontosISSQN: Double;
+begin
+  EpsonResposta.Resposta := Ret0906 ;
+  Result := RoundTo( StrToFloatDef(EpsonResposta.Params[6],0) /100, -2) ;
+end;
+
+function TACBrECFEpson.GetTotalIsencaoISSQN: Double;
+begin
+  EpsonResposta.Resposta := Ret0906 ;
+  Result := RoundTo( StrToFloatDef(EpsonResposta.Params[19],0) /100, -2) ;
+end;
+
+function TACBrECFEpson.GetTotalNaoTributadoISSQN: Double;
+begin
+  EpsonResposta.Resposta := Ret0906 ;
+  Result := RoundTo( StrToFloatDef(EpsonResposta.Params[20],0) /100, -2) ;
+end;
+
+function TACBrECFEpson.GetTotalSubstituicaoTributariaISSQN: Double;
+begin
+  EpsonResposta.Resposta := Ret0906 ;
+  Result := RoundTo( StrToFloatDef(EpsonResposta.Params[18],0) /100, -2) ;
 end;
 
 end.

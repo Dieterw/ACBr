@@ -265,6 +265,7 @@ begin
      Exit ;
   end;
 
+  Total := 0 ;
   if Parametro(Comando,1) = '089' then
   begin
      //Bematech_FI_VendeItem

@@ -43,6 +43,14 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.8.14b  27/10/09    (Por: DSA)
+[+]    ECF.TotalCancelamentosISSQN
+[+]    ECF.TotalDescontosISSQN
+[+]    ECF.TotalAcrescimosISSQN
+[+]    ECF.TotalSubstituicaoTributariaISSQN
+[+]    ECF.TotalNaoTributadoISSQN
+[+]    ECF.TotalIsencaoISSQN                
+
 Versão 0.8.13b  27/10/09    (Por: Ivan Moreira)
 [+]    ECF.UsuarioAtual -> Retorna o Número do usuário (proprietário) atual
 [+]    ECF.DataHoraSB -> Retorna a DataHora de Gravação do SW básico

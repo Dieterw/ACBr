@@ -2752,7 +2752,7 @@ end;
 
 procedure TForm1.TotalCancelamentos2Click(Sender: TObject);
 begin
-  mResp.Lines.Add( 'TotalCancelamentosISSSQN: ('+ FloatToStr(ACBrECF1.TotalCancelamentosISSSQN)+')' );
+  mResp.Lines.Add( 'TotalCancelamentosISSQN: ('+ FloatToStr(ACBrECF1.TotalCancelamentosISSQN)+')' );
   AtualizaMemos ;
 end;
 

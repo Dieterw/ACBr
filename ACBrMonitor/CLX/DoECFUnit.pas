@@ -203,6 +203,24 @@ begin
         else if Cmd.Metodo = 'totalisencao' then
            Cmd.Resposta := FloatToStr( TotalIsencao )
 
+        else if Cmd.Metodo = 'totalcancelamentosissqn' then
+           Cmd.Resposta := FloatToStr( TotalCancelamentosISSQN )
+
+        else if Cmd.Metodo = 'totaldescontosissqn' then
+           Cmd.Resposta := FloatToStr( TotalDescontosISSQN )
+
+        else if Cmd.Metodo = 'totalacrescimosissqn' then
+           Cmd.Resposta := FloatToStr( TotalAcrescimosISSQN )
+
+        else if Cmd.Metodo = 'totalsubstituicaotributariaissqn' then
+           Cmd.Resposta := FloatToStr( TotalSubstituicaoTributariaISSQN )
+
+        else if Cmd.Metodo = 'totalnaotributadoissqn' then
+           Cmd.Resposta := FloatToStr( TotalNaoTributadoISSQN )
+
+        else if Cmd.Metodo = 'totalisencaoissqn' then
+           Cmd.Resposta := FloatToStr( TotalIsencaoISSQN )
+
         else if Cmd.Metodo = 'numultitem' then
            Cmd.Resposta := IntToStr( NumUltItem )
 

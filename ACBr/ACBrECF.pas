@@ -387,7 +387,7 @@ TACBrECF = class( TACBrComponent )
     Property TotalNaoTributado  : Double     read GetTotalNaoTributadoClass ;
     Property TotalIsencao       : Double     read GetTotalIsencaoClass ;
 
-    Property TotalCancelamentosISSSQN         : Double read GetTotalCancelamentosISSQNClass;
+    Property TotalCancelamentosISSQN          : Double read GetTotalCancelamentosISSQNClass;
     Property TotalDescontosISSQN              : Double read GetTotalDescontosISSQNClass;
     Property TotalAcrescimosISSQN             : Double read GetTotalAcrescimosISSQNClass;
     Property TotalSubstituicaoTributariaISSQN : Double read GetTotalSubstituicaoTributariaISSQNClass;
@@ -1677,7 +1677,7 @@ begin
   end;
 
   try
-         Result := Result + 'TotalCancelamentosISSQN = ' + FloatToStr(TotalCancelamentosISSSQN) + sLineBreak;
+         Result := Result + 'TotalCancelamentosISSQN = ' + FloatToStr(TotalCancelamentosISSQN) + sLineBreak;
   except
   end;
 

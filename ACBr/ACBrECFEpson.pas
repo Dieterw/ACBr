@@ -2984,7 +2984,7 @@ end;
 function TACBrECFEpson.GetTotalAcrescimosISSQN: Double;
 begin
   EpsonResposta.Resposta := Ret0906 ;
-  Result := Result + RoundTo( StrToFloatDef(EpsonResposta.Params[9],0) /100, -2) ;
+  Result := RoundTo( StrToFloatDef(EpsonResposta.Params[9],0) /100, -2) ;
 end;
 
 function TACBrECFEpson.GetTotalCancelamentosISSQN: Double;

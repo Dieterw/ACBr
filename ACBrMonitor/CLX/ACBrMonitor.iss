@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "ACBrMonitor"
-#define MyAppVerName "ACBrMonitor-0.8.11b"
+#define MyAppVerName "ACBrMonitor-0.8.14b"
 #define MyAppPublisher "Projeto ACBr"
 #define MyAppURL "http://acbr.sourceforge.net/wiki/index.php/Monitor"
 #define MyAppUrlName "ACBrMonitor.url"

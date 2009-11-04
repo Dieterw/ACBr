@@ -3343,10 +3343,12 @@ procedure TACBrECFSweda.LoadDLLFunctions ;
  end ;
 begin
    {$IFDEF MSWINDOWS}
-   if not fileexists(IncludeTrailingPathDelimiter(ExtractFilePath(Application.ExeName)) + 'Swmfd.dll') then
-      raise Exception.Create( ACBrStr( 'Não foi encontrada a dll auxiliar Swmfd.dll.' ) ) ;
+    if not fileexists(IncludeTrailingPathDelimiter(ExtractFilePath(
+      {$IFNDEF CONSOLE} Application.ExeName {$ELSE} ParamStr(0) {$ENDIF})) + 'Swmfd.dll') then
+       raise Exception.Create( ACBrStr( 'Não foi encontrada a dll auxiliar Swmfd.dll.' ) ) ;
    {$ENDIF}
-   DeleteFile(IncludeTrailingPathDelimiter(ExtractFilePath(Application.ExeName)) + 'SWC.INI');
+   DeleteFile(IncludeTrailingPathDelimiter(ExtractFilePath(
+      {$IFNDEF CONSOLE} Application.ExeName {$ELSE} ParamStr(0) {$ENDIF})) + 'SWC.INI');
    SwedaFunctionDetect('ECF_AbrePortaSerial', @xECF_AbrePortaSerial);
    SwedaFunctionDetect('ECF_DownloadMFD', @xECF_DownloadMFD);
    SwedaFunctionDetect('ECF_ReproduzirMemoriaFiscalMFD', @xECF_ReproduzirMemoriaFiscalMFD);

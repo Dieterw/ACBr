@@ -1159,8 +1159,10 @@ begin
   fsOnMsgErro                  := nil ;
   fsOnMsgAguarde               := nil ;
   fsOnMsgRetentar              := nil ;
-  fsUsandoBlockInput           := False ;
-
+  {$IFNDEF CONSOLE}
+   fsUsandoBlockInput          := False ;
+  {$ENDIF}
+  
   { Variaveis Protected fp___ acessiveis pelas Classes filhas }
   fpAtivo                 := false ;
   fpEstado                := estNaoInicializada ;

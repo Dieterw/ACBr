@@ -75,6 +75,7 @@ begin
      Exit ;
   end;
 
+  Total := 0 ;
   if (Parametro(Comando,1) = '1001') or (UpperCase(Parametro(Comando,1)) = 'DARUMA_FI_VENDEITEM') then
   begin
      // DARUMA_FI_VendeItem(Str_Codigo, Str_Descricao, Str_Aliquota, Str_Tipo_de_Quantidade, Str_Quantidade, Int_Casas_Decimais, Str_Valor_Unitario, Str_Tipo_de_Desconto, Str_Valor_do_Desconto)

@@ -3167,6 +3167,8 @@ end;
 
 function TACBrECFDaruma.GetTotalDescontosISSQN: Double;
 begin
+  Result := 0;
+
   if fpMFD then
     Result := (StrToFloatDef(RetornaInfoECF('014'),0)/100) ;
 

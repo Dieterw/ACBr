@@ -95,6 +95,12 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Versão 0.8.9b  04/11/09
+-- ACBrECFBematech --
+[+]    Implementado ArquivoMFD_DLL por Periodo usando carga dinâmica da DLL.
+       Não há função disponível na DLL para efetuar a Leitura por COO
+       (Por: lkohler e DSA)
+       
 Versão 0.8.9b  03/11/09
 -- ACBrECF --
 [*]    VendeItem: Implementado tratamento para uso de aliquotas do ISSQN

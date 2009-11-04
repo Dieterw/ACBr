@@ -91,18 +91,12 @@
   {$DEFINE INC_FPC_D5}
 {$ENDIF}
 
-{$DEFINE INC_FunctionDetect}
-{$IFDEF LINUX}
-   {$IFDEF FPC}
-      {$UNDEF INC_FunctionDetect}
-   {$ENDIF}
-{$ENDIF}
-
 unit ACBrUtil;
 
 interface
 Uses SysUtils, Math, Classes, 
     {$IFDEF COMPILER6_UP} StrUtils, DateUtils, {$ELSE} ACBrD5, FileCtrl, {$ENDIF}
+    {$IFDEF FPC} dynlibs, {$ENDIF}
     {$ifdef MSWINDOWS}
       Windows, ShellAPI
     {$else}
@@ -216,9 +210,7 @@ Procedure CopyFilesToDir( FileMask : String ; ToDirName : String;
 procedure RunCommand(Command: String; Params: String = ''; Wait : Boolean = false;
    WindowState : Word = 5);
 procedure OpenURL( const URL : String ) ;
-{$IFDEF INC_FunctionDetect}
 function FunctionDetect (LibName, FuncName: String; var LibPointer: Pointer): boolean;
-{$ENDIF}
 Procedure DesligarMaquina(Reboot: Boolean = False; Forcar: Boolean = False) ;
 Procedure WriteToTXT( const ArqTXT, AString : AnsiString; const AppendIfExists : Boolean = True);
 
@@ -1667,7 +1659,6 @@ begin
    until Tentativas > 1
 end;
 
-{$IFDEF INC_FunctionDetect}
 {-----------------------------------------------------------------------------
   Tenta carregar a Biblioteca (DLL) <LibName> e veirica se a função <FuncName>
   existe na DLL. Se existir, retorna ponteiro para a DLL em <LibPointer>
@@ -1675,36 +1666,27 @@ end;
   ( Função encontrada na Internet - Autor desconhecido )
  -----------------------------------------------------------------------------}
 function FunctionDetect (LibName, FuncName: String; var LibPointer: Pointer): boolean;
-var LibHandle: tHandle;
+Var
+  LibHandle: tHandle;
 begin
  Result := false;
  LibPointer := NIL;
+ {$IFDEF FPC}
+  LibHandle := dynlibs.LoadLibrary(LibName) ;
+ {$ELSE}
   if LoadLibrary(PChar(LibName)) = 0 then
      exit;                                 { não consegiu ler a DLL }
 
   LibHandle := GetModuleHandle(PChar(LibName));  { Pega o handle da DLL }
-  if LibHandle <> 0 then                    { Se 0 não pegou o Handle, falhou }
+ {$ENDIF}
+
+ if LibHandle <> 0 then                    { Se 0 não pegou o Handle, falhou }
   begin
      LibPointer := GetProcAddress(LibHandle, PChar(FuncName));{Procura a função}
      if LibPointer <> NIL then
         Result := true;
   end;
 end;
-{$ENDIF}
-
-(*  *** Exemplo de complo bloquear Mouse / Teclado com a FunctionDetect ***
-
-procedure TForm1.Button1Click(Sender: TObject);
-var xBlockInput : function (Block: BOOL): BOOL; stdcall;
-begin
- if FunctionDetect ('USER32.DLL', 'BlockInput', @xBlockInput) then
- begin
-  xBlockInput (True);  // Disable Keyboard & mouse
-   Sleep(10000);       // Wait for for 10 Secounds
-  xBlockInput (False); // Enable  Keyboard & mouse
- end;
-end;
-*)
 
 //funcoes para uso com o modulo ACBrSintegra ***********************************************
 

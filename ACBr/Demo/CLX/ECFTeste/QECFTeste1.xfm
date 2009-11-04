@@ -5080,6 +5080,10 @@ object Form1: TForm1
       object N23: TMenuItem
         Caption = '-'
       end
+      object LeituraXSerial1: TMenuItem
+        Caption = 'Leitura X Serial'
+        OnClick = LeituraXSerial1Click
+      end
       object LeituraMFD1: TMenuItem
         Caption = 'Leitura MFD Serial'
         object PorCOO1: TMenuItem
@@ -5091,8 +5095,11 @@ object Form1: TForm1
           OnClick = PorPeriodo1Click
         end
       end
+      object N32: TMenuItem
+        Caption = '-'
+      end
       object LeituraMFDSerialDLL1: TMenuItem
-        Caption = 'Leitura MFD Serial DLL'
+        Caption = 'Espelho MFD DLL'
         object PorCOO2: TMenuItem
           Caption = 'Por COO'
           OnClick = PorCOO2Click
@@ -5102,9 +5109,16 @@ object Form1: TForm1
           OnClick = PorPeriodo2Click
         end
       end
-      object LeituraXSerial1: TMenuItem
-        Caption = 'Leitura X Serial'
-        OnClick = LeituraXSerial1Click
+      object ArquivoMFDDLL1: TMenuItem
+        Caption = 'Arquivo MFD DLL'
+        object PorCOO3: TMenuItem
+          Caption = 'Por COO'
+          OnClick = PorCOO3Click
+        end
+        object PorPeriodo3: TMenuItem
+          Caption = 'Por Periodo'
+          OnClick = PorPeriodo3Click
+        end
       end
     end
     object Cupom1: TMenuItem

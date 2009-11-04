@@ -140,8 +140,8 @@ const ETX = #03 ;
  cLIB_Bema = 'linuxmfd';
 {$ELSE}
  cLIB_Bema = 'Bemafi32.dll';
+ cLIB_MFD  = 'BemaMFD2.dll';
 {$ENDIF}
-
 
 type
 
@@ -176,6 +176,17 @@ TACBrECFBematech = class( TACBrECFClass )
     xBematech_FI_FormatoDadosMFD : function ( ArquivoOrigem: String;
        ArquivoDestino: String; TipoFormato: String; TipoDownload: String;
        ParametroInicial: String; ParametroFinal: String; UsuarioECF: String ): Integer; StdCall;
+
+    xBemaGeraRegistrosTipoE : function ( cArqMFD: string; cArqTXT: string;
+                                         cDataInicial: string; cDataFinal: string;
+                                         cRazao: string; cEndereco: string;
+                                         cPAR1: string; cCMD: string; cPAR2:
+                                         string; cPAR3: string; cPAR4: string;
+                                         cPAR5: string; cPAR6: string; cPAR7:
+                                         string; cPAR8: string; cPAR9: string;
+                                         cPAR10: string; cPAR11: string;
+                                         cPAR12: string; cPAR13: string;
+                                         cPAR14: string ): Integer; StdCall;
 
     procedure LoadDLLFunctions;
     procedure AbrePortaSerialDLL(const Porta, Path : String ) ;
@@ -351,11 +362,18 @@ TACBrECFBematech = class( TACBrECFClass )
     Procedure EspelhoMFD_DLL( COOInicial, COOFinal : Integer;
        NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
 
+    Procedure ArquivoMFD_DLL( DataInicial, DataFinal : TDateTime;
+       NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
+
+    //As impressoras da Bematech não geram o TXT do AtoCotepe 17/04 por intervalo de COO
+
+
+
  end ;
 
 implementation
 Uses ACBrECF,
-     SysUtils, IniFiles, 
+     SysUtils, IniFiles,
    {$IFDEF COMPILER6_UP} DateUtils, StrUtils, {$ELSE} ACBrD5, Windows,{$ENDIF}
      Math , synaser;
 
@@ -1353,7 +1371,6 @@ begin
   else
      AliquotaICMS := AliquotaStr ;
 end;
-
 
 procedure TACBrECFBematech.CarregaFormasPagamento;  { funçao Lenta +- 3 sec. }
 Var StrRet : AnsiString ;
@@ -2579,14 +2596,15 @@ begin
 end;
 
 procedure TACBrECFBematech.LoadDLLFunctions;
- procedure BematechFunctionDetect( FuncName: String; var LibPointer: Pointer ) ;
+ procedure BematechFunctionDetect( FuncName: String; var LibPointer: Pointer;
+    LibName : String = cLIB_Bema ) ;
  begin
    if not Assigned( LibPointer )  then
    begin
-     if not FunctionDetect( cLIB_Bema, FuncName, LibPointer) then
+     if not FunctionDetect( LibName, FuncName, LibPointer) then
      begin
         LibPointer := NIL ;
-        raise Exception.Create( ACBrStr( 'Erro ao carregar a função:'+FuncName+' de: '+cLIB_Bema ) ) ;
+        raise Exception.Create( ACBrStr( 'Erro ao carregar a função:'+FuncName+' de: '+LibName ) ) ;
      end ;
    end ;
  end ;
@@ -2595,6 +2613,7 @@ begin
    BematechFunctionDetect('Bematech_FI_FechaPortaSerial',@xBematech_FI_FechaPortaSerial );
    BematechFunctionDetect('Bematech_FI_DownloadMFD',@xBematech_FI_DownloadMFD );
    BematechFunctionDetect('Bematech_FI_FormatoDadosMFD',@xBematech_FI_FormatoDadosMFD );
+   BematechFunctionDetect('BemaGeraRegistrosTipoE',@xBemaGeraRegistrosTipoE, cLIB_MFD );
 end;
 
 procedure TACBrECFBematech.AbrePortaSerialDLL(const Porta, Path : String ) ;
@@ -2647,20 +2666,28 @@ begin
   Prop   := IntToStr( StrToIntDef( UsuarioAtual, 1) ) ;
 
  {$IFDEF LINUX}
-  Cmd := fpDevice.Porta + ' ' + ArqTmp+'.mfd 1 ' + DiaIni + ' ' + DiaFim + ' ' + Prop;
-  RunCommand('./linuxmfd',Cmd,True) ;
+  OldAtivo := Ativo ;
+  try
+     Ativo := False;
 
-  if not FileExists( ArqTmp + '.mfd' ) then
-     raise Exception.Create( ACBrStr('Erro na execução do utilitário "linuxmfd" '+
-                                     'Arquivo: '+ArqTmp+'.mfd não foi criado' ) ) ;
+     Cmd := fpDevice.Porta + ' ' + ArqTmp+'.mfd 1 ' + DiaIni + ' ' + DiaFim + ' ' + Prop;
+     RunCommand('./linuxmfd',Cmd,True) ;
 
-  SysUtils.DeleteFile( NomeArquivo ) ;
-  Cmd := NomeArquivo + ' ' + ArqTmp + '.mfd 1 ' + DiaIni + ' ' + DiaFim + ' ' + Prop ;
-  RunCommand('./bemamfd2',Cmd,True) ;
+     if not FileExists( ArqTmp + '.mfd' ) then
+        raise Exception.Create( ACBrStr('Erro na execução do utilitário "linuxmfd" '+
+                                        'Arquivo: '+ArqTmp+'.mfd não foi criado' ) ) ;
 
-  if not FileExists( NomeArquivo ) then
-     raise Exception.Create( ACBrStr( 'Erro na execução do utilitário "bemamfd2".'+sLineBreak+
-                             'Arquivo: "'+NomeArquivo + '" não gerado' )) ;
+     SysUtils.DeleteFile( NomeArquivo ) ;
+     Cmd := NomeArquivo + ' ' + ArqTmp + '.mfd 1 ' + DiaIni + ' ' + DiaFim + ' ' + Prop ;
+     RunCommand('./bemamfd2',Cmd,True) ;
+
+     if not FileExists( NomeArquivo ) then
+        raise Exception.Create( ACBrStr( 'Erro na execução do utilitário "bemamfd2".'+sLineBreak+
+                                'Arquivo: "'+NomeArquivo + '" não gerado' )) ;
+  finally
+     DeleteFile( ArqTmp + '.mfd' ) ;
+     Ativo := OldAtivo ;
+  end;
  {$ELSE}
   LoadDLLFunctions;
 
@@ -2722,20 +2749,28 @@ begin
   Prop   := IntToStr( StrToIntDef( UsuarioAtual, 1) ) ;
 
  {$IFDEF LINUX}
-  Cmd := fpDevice.Porta + ' ' + ArqTmp+'.mfd 2 '+ CooIni + ' ' + CooFim + ' ' + Prop  ;
-  RunCommand('./linuxmfd',Cmd,True) ;
+  OldAtivo := Ativo ;
+  try
+     Ativo := False;
 
-  if not FileExists( ArqTmp + '.mfd' ) then
-     raise Exception.Create( ACBrStr('Erro na execução do utilitário "linuxmfd" '+
-                                     'Arquivo: '+ArqTmp+'.mfd não foi criado' ) ) ;
+     Cmd := fpDevice.Porta + ' ' + ArqTmp+'.mfd 2 '+ CooIni + ' ' + CooFim + ' ' + Prop  ;
+     RunCommand('./linuxmfd',Cmd,True) ;
 
-  SysUtils.DeleteFile( NomeArquivo ) ;
-  Cmd := NomeArquivo + ' ' + ArqTmp + '.mfd 2 ' + CooIni + ' ' + CooFim + ' ' + Prop ;
-  RunCommand('./bemamfd2',Cmd,True) ;
+     if not FileExists( ArqTmp + '.mfd' ) then
+        raise Exception.Create( ACBrStr('Erro na execução do utilitário "linuxmfd" '+
+                                        'Arquivo: '+ArqTmp+'.mfd não foi criado' ) ) ;
 
-  if not FileExists( NomeArquivo ) then
-     raise Exception.Create( ACBrStr( 'Erro na execução do utilitário "bemamfd2".'+sLineBreak+
-                             'Arquivo: "'+NomeArquivo + '" não gerado' )) ;
+     SysUtils.DeleteFile( NomeArquivo ) ;
+     Cmd := NomeArquivo + ' ' + ArqTmp + '.mfd 2 ' + CooIni + ' ' + CooFim + ' ' + Prop ;
+     RunCommand('./bemamfd2',Cmd,True) ;
+
+     if not FileExists( NomeArquivo ) then
+        raise Exception.Create( ACBrStr( 'Erro na execução do utilitário "bemamfd2".'+sLineBreak+
+                                'Arquivo: "'+NomeArquivo + '" não gerado' )) ;
+  finally
+     DeleteFile( ArqTmp + '.mfd' ) ;
+     Ativo := OldAtivo ;
+  end;
  {$ELSE}
   LoadDLLFunctions;
 
@@ -2780,6 +2815,112 @@ begin
   end;
  {$ENDIF}
 end;
+
+procedure TACBrECFBematech.ArquivoMFD_DLL(DataInicial, DataFinal: TDateTime;
+  NomeArquivo: String; Documentos: TACBrECFTipoDocumentoSet);
+Var
+  ClicheSL : TStringList ;
+  Resp : Integer ;
+  DiaIni, DiaFim, Prop, ArqTmp, cEndereco, cRazao : String ;
+  OldAtivo : Boolean ;
+  {$IFDEF LINUX} Cmd : String ; {$ENDIF}
+begin
+  ArqTmp := ExtractFilePath( NomeArquivo ) ;
+  DeleteFile( ArqTmp + '.mfd' ) ;
+
+  DiaIni := FormatDateTime('ddmmyy',DataInicial) ;
+  DiaFim := FormatDateTime('ddmmyy',DataFinal) ;
+  Prop   := IntToStr( StrToIntDef( UsuarioAtual, 1) ) ;
+
+  { Obtendo Dados do Usuário }
+  ClicheSL  := TStringList.Create ;
+  cRazao    := '' ;
+  cEndereco := '' ;
+  try
+     try
+        ClicheSL.Text := Cliche ;
+        cRazao        := ClicheSL[0] ;
+        cEndereco     := ClicheSL[1] ;
+     except
+     end ;
+  finally
+     ClicheSL.Free ;
+  end ;
+
+ {$IFDEF LINUX}
+  OldAtivo := Ativo ;
+  try
+     Ativo := False;
+
+     Cmd := fpDevice.Porta + ' ' + ArqTmp+'.mfd 1 ' + DiaIni + ' ' + DiaFim + ' ' + Prop;
+     RunCommand('./linuxmfd',Cmd,True) ;
+
+     if not FileExists( ArqTmp + '.mfd' ) then
+        raise Exception.Create( ACBrStr('Erro na execução do utilitário "linuxmfd" '+
+                                        'Arquivo: '+ArqTmp+'.mfd não foi criado' ) ) ;
+
+     SysUtils.DeleteFile( NomeArquivo ) ;
+     Cmd := NomeArquivo + ' ' + ArqTmp + '.mfd 1 ' + DiaIni + ' ' + DiaFim + ' ' + Prop ;
+     RunCommand('./bemamfd2',Cmd,True) ;
+
+     if not FileExists( NomeArquivo ) then
+        raise Exception.Create( ACBrStr( 'Erro na execução do utilitário "bemamfd2".'+sLineBreak+
+                                'Arquivo: "'+NomeArquivo + '" não gerado' )) ;
+  finally
+     DeleteFile( ArqTmp + '.mfd' ) ;
+     Ativo := OldAtivo ;
+  end;
+ {$ELSE}
+  LoadDLLFunctions;
+
+  OldAtivo := Ativo ;
+  try
+     Ativo := False;
+
+     AbrePortaSerialDLL( fpDevice.Porta, ExtractFilePath( NomeArquivo ) ) ;
+
+     Resp := xBematech_FI_DownloadMFD( PChar( ArqTmp + '.mfd'),   // Arquivo de Saida
+                                       '1',                       // 1 = Por Data
+                                       PChar( DiaIni ),
+                                       PChar( DiaFim ),
+                                       PChar( Prop ) ) ;          // Propietário Atual
+
+     if (Resp <> 1) then
+        raise Exception.Create( ACBrStr( 'Erro ao executar Bematech_FI_DownloadMFD.'+sLineBreak+
+                                         'Cod.: '+IntToStr(Resp) )) ;
+
+     if not FileExists( ArqTmp + '.mfd' ) then
+        raise Exception.Create( ACBrStr( 'Erro na execução de Bematech_FI_DownloadMFD.'+sLineBreak+
+                               'Arquivo: "'+ArqTmp + '.mfd" não gerado' )) ;
+
+     Resp := xBemaGeraRegistrosTipoE( PChar( ArqTmp + '.mfd'),
+                                      Pchar( NomeArquivo ),
+                                      PChar( DiaIni ),
+                                      PChar( DiaFim ),
+                                      Pchar( cRazao ),
+                                      Pchar( cEndereco ),
+                                      '','2', '', '', '', '', '', '', '', '',
+                                      '', '', '', '', '' );
+
+     if (Resp <> 1) then
+        raise Exception.Create( ACBrStr( 'Erro ao executar BemaGeraRegistrosTipoE.'+sLineBreak+
+                                         'Cod.: '+IntToStr(Resp) )) ;
+
+     if not FileExists( NomeArquivo ) then
+        raise Exception.Create( ACBrStr( 'Erro na execução de BemaGeraRegistrosTipoE.'+sLineBreak+
+                                'Arquivo: "'+NomeArquivo + '" não gerado' )) ;
+
+     if not FileExists( NomeArquivo ) then
+        raise Exception.Create( ACBrStr( 'Erro na execução de BemaGeraRegistrosTipoE.'+sLineBreak+
+                                'Arquivo: "'+NomeArquivo + '" não gerado' )) ;
+  finally
+     xBematech_FI_FechaPortaSerial();
+     DeleteFile( ArqTmp + '.mfd' ) ;
+     Ativo := OldAtivo ;
+  end;
+ {$ENDIF}
+end;
+
 
 end.
 

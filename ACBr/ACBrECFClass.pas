@@ -2303,10 +2303,11 @@ function TACBrECFClass.DoOnMsgRetentar( const Mensagem : String;
 {$ENDIF}
 begin
   Result := False ;
-  UsandoBlockInput := False ;
 
   {$IFNDEF CONSOLE}
     {$IFDEF MSWINDOWS}
+      UsandoBlockInput := False ;
+
       if fsUsandoBlockInput then
       begin
          UsandoBlockInput := True ;

@@ -48,6 +48,13 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   04/11/09
+---------------
+[-] Corrigido Impressão no DANFE com RAVE ARQUIVO (DANFE_Rave513.rav).
+    - Não estava imprimindo corretamente quando especificava uma MargemInferior maior que 0,8 no componente
+    - Em alguns casos ficava um loop infinito no "Generating Page..." 
+    Importante: Atualizem os arquivos .RAV no sistema
+
 Alterações   03/11/09
 ---------------
 [-] Corrigido Tamanho da Fonte no DANFE em RAVE CB e RAVE Arquivo.

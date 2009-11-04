@@ -55,8 +55,9 @@ unit ACBrNFeDANFERave;
 interface
 
 uses Forms, SysUtils, Classes,
-  RpDefine, RpDevice, RVClass, RVProj, RVCsBars, RVCsStd, RVCsData,
-  RvDirectDataView, RVDataField, RVCsDraw,
+  RpBase, RpCon, RpConDS, RpDefine, RpDevice, RpRave, RpSystem, RvClass,
+  RvCsData, RvCsDraw, RvCsStd, RvCsRpt, RvData, RvDefine, RvUtil, RVProj,
+  RvDirectDataView, RVCsBars, RVDataField,
   ACBrNFeDANFEClass, ACBrNFeDANFERaveDM, pcnNFe, pcnConversao;
 
 type
@@ -99,6 +100,7 @@ var
 
    wReport: TRaveReport;
    wSection: TRaveSection;
+   wBand: TRaveBand;
    wDataView: TRaveDataView;
    wPage: array[1..2] of TRavePage;
    wBarcode: TRaveCode128BarCode;
@@ -111,30 +113,6 @@ var
    wDataText: array[1..21] of TRaveDataText;
    wFloatField: array[1..2] of TRaveFloatField;
    wDataMemo: array[1..1] of TRaveDataMemo;
-
-
-{   MyReport : TRaveReport;
-   MyPage,MyPage2, MyPage3, MyPage4, MyPage5: TRavePage;
-   MyBarcode: TRaveCode128BarCode;
-   MyDataText01, MyDataText02: TRaveDataText;
-   MyDataText1,MyDataText2,MyDataText3,MyDataText4,MyDataText5,MyDataText6: TRaveDataText;
-   MyText1,MyText2,MyText3,MyText4, MyText5: TRaveText;
-   MySection: TRaveSection;
-   MyDataView: TRaveDataView;
-   MyFloatField,MyFloatField2: TRaveFloatField;
-
-   fcPage1,fcPage2,fcPage3: TRavePage;
-   fcText: array[1..13] of TRaveText;
-   fcDataText: array[1..20] of TRaveDataText;
-   fcDataMemo: array[1..1] of TRaveDataMemo;
-   fcHLine: array[1..2] of TRaveHLine;
-   fcVLine: array[1..4] of TRaveVLine;
-   fcRectangle: array[1..7] of TRaveRectangle;
-   fcSquare: array[1..1] of TRaveSquare;
-   fcBitmap: array[1..2] of TRaveBitmap;
-
-   qvPage1: TRavePage;
-   qvDataText1: TRaveDataText;}
 
    vMargemInferiorAtual, vMargemInferior, vHeightPadrao: double;
 begin
@@ -437,6 +415,8 @@ begin
          wDataText[2] := FindRaveComponent('DataText2',wPage[1]) as TRaveDataText;
          wPage[2] := FindRaveComponent('GlobalDadosAdicionais',nil) as TRavePage;
          wSection := FindRaveComponent('Section_DadosAdicionais',wPage[2]) as TRaveSection;
+         if (wSection = nil) then
+            wBand:=FindRaveComponent('Band_ISSQNDadosAdicionais',wPage[1]) as TRaveBand;
          if (wDataText[1] <> nil) then
          begin
             vMargemInferiorAtual:=(wPage[1].PageHeight-wDataText[1].Top);
@@ -453,7 +433,12 @@ begin
          if (wDataText[2] <> nil) then
             wDataText[2].Top := wDataText[2].Top-vHeightPadrao-(vMargemInferior-vMargemInferiorAtual);
          if (wSection <> nil) then
-            wSection.Height := wSection.Height-vHeightPadrao-(vMargemInferior-vMargemInferiorAtual);
+            wSection.Height := wSection.Height-vHeightPadrao-(vMargemInferior-vMargemInferiorAtual)
+         else
+         begin
+            if (wBand <> nil) then
+               wBand.Height := wBand.Height-(vMargemInferior-vMargemInferiorAtual);
+         end;
       end;
    finally
       dmDanfe.RvProject.ExecuteReport('DANFE1');

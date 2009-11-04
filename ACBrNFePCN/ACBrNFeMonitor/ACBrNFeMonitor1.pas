@@ -340,7 +340,7 @@ begin
                'informando o Método de Monitoramento, e a configuração '+
                'do certificado utilizado para assinar e efetuar a conexão segura com os WebServices.'+#13#10#13#10+
                'IMPORTANTE: Após configurar o '+
-               'Método de Monitoramento o ACBrMonitor'+
+               'Método de Monitoramento o ACBrNFeMonitor'+
                ' deve ser reiniciado.',mtInformation,[mbok],0) ;
     {$IFDEF ACBrNFeOpenSSL}
        gbxCertificado.Height := 109;
@@ -1031,7 +1031,7 @@ begin
   nif_Icon or nif_Tip;
   Shell_NotifyIcon (NIM_ADD, @nid);
 
-  Caption := 'ACBrMonitorNFe '+ Versao;
+  Caption := 'ACBrNFeMonitor '+ Versao;
   PageControl1.ActivePageIndex := 0 ;
 
   Application.OnException        := TrataErros ;

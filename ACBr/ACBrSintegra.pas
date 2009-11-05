@@ -1285,7 +1285,7 @@ var
   i: Integer;
 begin
 //Registro 50 requer ordenacao por data do documento
-Registros50.Sort(Sort50);
+//Registros50.Sort(Sort50); //removido temporariamente por questoes de erro de soma no validador
 for i:=0 to Registros50.Count-1 do
 begin
   with Registros50[i] do

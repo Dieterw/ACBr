@@ -411,7 +411,7 @@ begin
       if FontNameUsed = 'Courier New' then
          FontSizeText:=6.3
       else
-         FontSizeText:=8.5;
+         FontSizeText:=8;
       Box([fsLeft,fsTop],PosX,YPos,aWidth,aHeigthPadrao,aTituloChave,aChaveAcesso,taCenter,True);
       FontSizeText:=wtemp_FontSizeText;
 

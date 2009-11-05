@@ -407,14 +407,13 @@ begin
          aTituloChave:=' '
         else
          aTituloChave:='CHAVE DE ACESSO';
+      wtemp_FontSizeText:=FontSizeText;
       if FontNameUsed = 'Courier New' then
-      begin
-         wtemp_FontSizeText:=FontSizeText;
-         FontSizeText:=6.3;
-      end;
+         FontSizeText:=6.3
+      else
+         FontSizeText:=8;
       Box([fsLeft,fsTop],PosX,YPos,aWidth,aHeigthPadrao,aTituloChave,aChaveAcesso,taCenter,True);
-      if FontNameUsed = 'Courier New' then
-         FontSizeText:=wtemp_FontSizeText;
+      FontSizeText:=wtemp_FontSizeText;
 
       if ACBrNFe.NotasFiscais.Items[FNFIndex].NFe.Ide.tpEmis in [teContingencia,teFSDA] then
          aChaveContigencia:=NotaUtil.GerarChaveContingencia(ACBrNFe.NotasFiscais.Items[FNFIndex].NFe)

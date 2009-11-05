@@ -778,14 +778,14 @@ begin
      Box([fsLeft],XPos,YPos,27,aHeigthPadrao,'Frete Por Conta',NotaUtil.SeSenao(Transp.ModFrete=mfContaEmitente,'0-EMITENTE','1-DESTINATÁRIO'),taCenter);
      Box([fsLeft],XPos,YPos,19,aHeigthPadrao,'Código ANTT',Transp.VeicTransp.RNTC,taCenter);
      Box([fsLeft],XPos,YPos,22,aHeigthPadrao,'Placa do Veículo',Transp.VeicTransp.Placa,taCenter);
-     Box([fsLeft],XPos,YPos,6,aHeigthPadrao,'UF',Transp.VeicTransp.UF,taCenter);
+     Box([fsLeft],XPos,YPos,8,aHeigthPadrao,'UF',Transp.VeicTransp.UF,taCenter);
      if Length(Transp.Transporta.CNPJCPF) > 11 then
        Box([fsLeft],XPos,YPos,30,aHeigthPadrao,'CNPJ / CPF',NotaUtil.FormatarCNPJ(Transp.Transporta.CNPJCPF),taCenter,True)
      else
        Box([fsLeft],XPos,YPos,30,aHeigthPadrao,'CNPJ / CPF',NotaUtil.FormatarCPF(Transp.Transporta.CNPJCPF),taCenter,True);
      Box([fsTop],PosX,YPos,90,aHeigthPadrao,'Endereço',Transp.Transporta.XEnder);
      Box([fsTop,fsLeft],XPos,YPos,68,aHeigthPadrao,'Município',Transp.Transporta.XMun,taCenter);
-     Box([fsTop,fsLeft],XPos,YPos,6,aHeigthPadrao,'UF',Transp.Transporta.UF,taCenter);
+     Box([fsTop,fsLeft],XPos,YPos,8,aHeigthPadrao,'UF',Transp.Transporta.UF,taCenter);
      Box([fsTop,fsLeft],XPos,YPos,30,aHeigthPadrao,'Inscrição Estadual',Transp.Transporta.IE,taCenter,True);
 
      if Transp.Vol.Count > 0 then

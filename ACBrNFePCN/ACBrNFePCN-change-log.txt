@@ -47,6 +47,15 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Alterações   05/11/09
+---------------
+[-] Corrigido tamanho do campo CHAVE DE ACESSO no DANFE com RAVE CB (retrato). 
+    Estava cortando 3 digitos, agora o tamanho da fonte desse campo esta fixo
+[+] Incluídas as propriedades: CasasDecimais._Mask_qCom e CasasDecimais._Mask_vUnCom
+    nos componentes DANFE com RAVE CB e ARQUIVO.
+    - Se especificar uma mascara nessa propriedade, será desconsiderado o tamanho de casas decimais
+      estipulado da referida TAG. Se estiver em branco o componente considera a quantidade de casas
+      especificadas e montará a mascara padrão para a mesma (padrão).
 
 Alterações   04/11/09
 ---------------
@@ -63,18 +72,15 @@ Alterações   03/11/09
     Para corrigir o problema foi incluída uma propriedade chamada TamanhoFonte_DemaisCampos com valor padrão de 10, quem quiser usar outro valor 
     basta estipular nessa propriedade.
 
-
 Alterações   28/10/09
 ---------------
 [-] Corrigido geração das informações adicionais no xml, caso seja adicionado apenas uma linha de observação.
-
 
 Alterações   27/10/09
 ---------------
 [-] Corrigido impressão do DANFE PAISAGEM em RAVE CB. 
     Quando tinha mais de um ítem, só reimprimia as informações do primeiro ítem impresso.
 [-] Corrigido impressão do DANFE RETRATO em RAVE CB quando a fonte for COURIER NEW. 
-
 
 Alterações   22/10/09
 ---------------

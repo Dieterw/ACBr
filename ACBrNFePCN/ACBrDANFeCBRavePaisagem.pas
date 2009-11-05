@@ -1126,8 +1126,8 @@ begin
           PrintTab(OrigToStr(Imposto.ICMS.orig)+CSTICMSToStr(Imposto.ICMS.CST));
           PrintTab(Prod.CFOP);
           PrintTab(Prod.UCom);
-          PrintTab(NotaUtil.FormatFloat(Prod.QCom,NotaUtil.PreparaCasasDecimais(CasasDecimais_qCom)));
-          PrintTab(NotaUtil.FormatFloat(Prod.VUnCom,NotaUtil.PreparaCasasDecimais(CasasDecimais_vUnCom)));
+          PrintTab(NotaUtil.FormatFloat(Prod.QCom,NotaUtil.SeSenao(Mask_qCom='',NotaUtil.PreparaCasasDecimais(CasasDecimais_qCom),Mask_qCom)));
+          PrintTab(NotaUtil.FormatFloat(Prod.VUnCom,NotaUtil.SeSenao(Mask_vUnCom='',NotaUtil.PreparaCasasDecimais(CasasDecimais_vUnCom),Mask_vUnCom)));
 
           if ImprimirValorLiquido then
              PrintTab(NotaUtil.FormatFloat(Prod.VProd-Prod.VDesc))

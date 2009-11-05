@@ -381,31 +381,41 @@ begin
          wFloatField[1] := FindRaveComponent('CustomDadosProdutosCXQCom',wDataView) as TRaveFloatField;
          if (wFloatField[1] <> nil) then
          begin
-            if FCasasDecimais._QCom=0 then
-               wFloatField[1].DisplayFormat:='#0'
-            else if FCasasDecimais._QCom=1 then
-               wFloatField[1].DisplayFormat:='#,#0.0'
-            else if FCasasDecimais._QCom=2 then
-               wFloatField[1].DisplayFormat:='#,##0.00'
-            else if FCasasDecimais._QCom=3 then
-               wFloatField[1].DisplayFormat:='#,###0.000'
-            else if FCasasDecimais._QCom=4 then
-               wFloatField[1].DisplayFormat:='#,####0.0000';
+            if (NotaUtil.NaoEstaVazio(FCasasDecimais._Mask_qCom)) then
+               wFloatField[1].DisplayFormat:=FCasasDecimais._Mask_qCom
+            else
+            begin
+               if FCasasDecimais._QCom=0 then
+                  wFloatField[1].DisplayFormat:='#0'
+               else if FCasasDecimais._QCom=1 then
+                  wFloatField[1].DisplayFormat:='#,#0.0'
+               else if FCasasDecimais._QCom=2 then
+                  wFloatField[1].DisplayFormat:='#,##0.00'
+               else if FCasasDecimais._QCom=3 then
+                  wFloatField[1].DisplayFormat:='#,###0.000'
+               else if FCasasDecimais._QCom=4 then
+                  wFloatField[1].DisplayFormat:='#,####0.0000';
+            end;
          end;
          //Casas Decimais (vUnCom)
          wFloatField[2] := FindRaveComponent('CustomDadosProdutosCXVUnCom',wDataView) as TRaveFloatField;
          if (wFloatField[2] <> nil) then
          begin
-            if FCasasDecimais._vUnCom=0 then
-               wFloatField[2].DisplayFormat:='#0'
-            else if FCasasDecimais._vUnCom=1 then
-               wFloatField[2].DisplayFormat:='#,#0.0'
-            else if FCasasDecimais._vUnCom=2 then
-               wFloatField[2].DisplayFormat:='#,##0.00'
-            else if FCasasDecimais._vUnCom=3 then
-               wFloatField[2].DisplayFormat:='#,###0.000'
-            else if FCasasDecimais._vUnCom=4 then
-               wFloatField[2].DisplayFormat:='#,####0.0000';
+            if (NotaUtil.NaoEstaVazio(FCasasDecimais._Mask_vUnCom)) then
+               wFloatField[2].DisplayFormat:=FCasasDecimais._Mask_vUnCom
+            else
+            begin
+               if FCasasDecimais._vUnCom=0 then
+                  wFloatField[2].DisplayFormat:='#0'
+               else if FCasasDecimais._vUnCom=1 then
+                  wFloatField[2].DisplayFormat:='#,#0.0'
+               else if FCasasDecimais._vUnCom=2 then
+                  wFloatField[2].DisplayFormat:='#,##0.00'
+               else if FCasasDecimais._vUnCom=3 then
+                  wFloatField[2].DisplayFormat:='#,###0.000'
+               else if FCasasDecimais._vUnCom=4 then
+                  wFloatField[2].DisplayFormat:='#,####0.0000';
+            end;
          end;
 
          //Margem Inferior

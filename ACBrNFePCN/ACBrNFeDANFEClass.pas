@@ -55,6 +55,8 @@ type
   private
     FqCom: integer;
     FvUnCom: integer;
+    FMask_qCom:String;
+    FMask_vUnCom:String;
 
     procedure Set_qCom(AValue: integer);
     procedure Set_vUnCom(AValue: integer);
@@ -64,6 +66,8 @@ type
   published
     property _qCom: Integer read FQCom write Set_qCom;
     property _vUnCom: Integer read FvUnCom write Set_vUnCom;
+    property _Mask_qCom: String read FMask_qCom write FMask_qCom;
+    property _Mask_vUnCom: String read FMask_vUnCom write FMask_vUnCom;
   end;
 
   TACBrNFeDANFEClass = class( TComponent )

@@ -1001,31 +1001,28 @@ procedure TdmACBrNFeRave.CustomInformacoesAdicionaisCXNGetRow(
    var
       i: integer;
       wMemo: TMemo;
+      wForm: TForm;
    begin
-      wMemo:=TMemo.Create(self);
-
+      wForm:=TForm.Create(self);
+      wMemo:=TMemo.Create(wForm);
       try
          with wMemo do
          begin
-            Width := 462;
+            Parent:=wForm;
+            Width := 452;
             Height := 800;
-            //Font.Charset := ANSI_CHARSET;
             Font.Height := -8;
             Font.Name := 'Times New Roman';
             Font.Style := [];
             ParentFont := False;
             TabOrder := 0;
             Text:=wwObs;
+            Update;
          end;
-
-         Result:=0;
-         for I := 1 to length(wmemo.Text) do
-         begin
-            if wmemo.Text[i]=#13 then
-               Result:=Result+1;
-         end;
+         result:=wmemo.Lines.count;
       finally
-         wmemo.Free;
+         wMemo.Free;
+         wForm.free;
       end;
    end;
 var

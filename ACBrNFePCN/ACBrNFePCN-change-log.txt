@@ -50,6 +50,8 @@ Símbolo : Significado
 Alterações   09/11/09
 ---------------
 [-] Corrigido impressão do DANFE RETRATO em RAVE CB quando a fonte for COURIER NEW. 
+[-] Corrigido impressão das Informações Adicionais quando a mesma necessitar ser impressa em mais de uma página.
+    Somente para DANFE em RAVE ARQUIVO (Danfe_Rave513.rav).
 
 
 Alterações   05/11/09

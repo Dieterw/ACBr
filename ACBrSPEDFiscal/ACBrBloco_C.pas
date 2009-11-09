@@ -1318,7 +1318,7 @@ type
     fVL_DOC: currency;     /// Valor total do documento fiscal
     fVL_PIS: currency;     /// Valor do PIS
     fVL_COFINS: currency;  /// Valor da COFINS
-    fCPF_CNPJ: currency;   /// CPF ou CNPJ do adquirente
+    fCPF_CNPJ: string;     /// CPF ou CNPJ do adquirente
     fNOM_ADQ: string;      /// Nome do adquirente
   public
     property COD_MOD: string read fCOD_MOD write fCOD_MOD;
@@ -1328,7 +1328,7 @@ type
     property VL_DOC: currency read fVL_DOC write fVL_DOC;
     property VL_PIS: currency read fVL_PIS write fVL_PIS;
     property VL_COFINS: currency read fVL_COFINS write fVL_COFINS;
-    property CPF_CNPJ: currency read fCPF_CNPJ write fCPF_CNPJ;
+    property CPF_CNPJ: string read fCPF_CNPJ write fCPF_CNPJ;
     property NOM_ADQ: string read fNOM_ADQ write fNOM_ADQ;
   end;
 

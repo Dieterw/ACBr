@@ -49,6 +49,10 @@ Símbolo : Significado
 
 Versão 0.01a   01/11/09
 ---------------
+[-] Algumas correções feitas por (Agnaldo Prates)
+
+Versão 0.01a   01/11/09
+---------------
 [*] Na Unit (ACBrSped.pas) a propriedade "Delimitador" e o evento "OnError"
     passaram para "public". E na Unit (ACBrSpedFiscal.pas) foi adicionada
     em "published" as linhas abaixo:

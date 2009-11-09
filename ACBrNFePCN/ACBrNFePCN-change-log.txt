@@ -47,6 +47,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Alterações   09/11/09
+---------------
+[-] Corrigido impressão do DANFE RETRATO em RAVE CB quando a fonte for COURIER NEW. 
+
+
 Alterações   05/11/09
 ---------------
 [-] Corrigido tamanho do campo CHAVE DE ACESSO no DANFE com RAVE CB (retrato). 

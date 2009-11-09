@@ -230,7 +230,7 @@ begin
        if LogoMarca<>nil then
           LogoMarca.SaveToStream(stLogo);
        stLogo.Position:=0;
-       aWidth:=86;
+       aWidth:=85;
        Result:=PosX+aWidth;
        if (FormularioContinuo) then
           exit;
@@ -340,7 +340,7 @@ begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
      if FontNameUsed = 'Courier New' then
-        aWidth:=38
+        aWidth:=37
      else
         aWidth:=36;
      Result:=PosX+aWidth;
@@ -528,7 +528,7 @@ begin
      if (not FormularioContinuo) then
      begin
        Box([fsTop],PosX,YPos,82,aHeigthPadrao,'INSCRIÇÃO ESTADUAL',Emit.IE,taCenter);
-       Box([fsTop,fsLeft],XPos,YPos,82,aHeigthPadrao,'INSCRIÇÃO ESTADUAL DO SUBST. TRIBUTÁRIO',Emit.IEST,taCenter);
+       Box([fsTop,fsLeft],XPos,YPos,75,aHeigthPadrao,'INSCRIÇÃO ESTADUAL DO SUBST. TRIBUTÁRIO',Emit.IEST,taCenter);
        Box([fsTop,fsLeft],XPos,YPos,87,aHeigthPadrao,'C.N.P.J.',NotaUtil.FormatarCNPJ(Emit.CNPJCPF),taCenter,True);
      end
      else begin
@@ -556,11 +556,11 @@ begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
      TituloDoBloco(PosX,PosY,'DESTINATÁRIO / REMETENTE');
-     Box([],PosX,YPos,135,aHeigthPadrao,'Nome / Razão Social',Dest.XNome);
+     Box([],PosX,YPos,132,aHeigthPadrao,'Nome / Razão Social',Dest.XNome);
      if Length(Dest.CNPJCPF) > 11 then
-       Box([fsLeft],XPos,YPos,38,aHeigthPadrao,'CNPJ / CPF',NotaUtil.FormatarCNPJ(Dest.CNPJCPF),taCenter)
+       Box([fsLeft],XPos,YPos,41,aHeigthPadrao,'CNPJ / CPF',NotaUtil.FormatarCNPJ(Dest.CNPJCPF),taCenter)
      else
-       Box([fsLeft],XPos,YPos,38,aHeigthPadrao,'CNPJ / CPF',NotaUtil.FormatarCPF(Dest.CNPJCPF),taCenter);
+       Box([fsLeft],XPos,YPos,41,aHeigthPadrao,'CNPJ / CPF',NotaUtil.FormatarCPF(Dest.CNPJCPF),taCenter);
      Box([fsLeft],XPos,YPos,21,aHeigthPadrao,'Data de Emissão',NotaUtil.FormatDate(DateToStr(Ide.DEmi)),taCenter,True);
      with Dest.EnderDest do
       begin

@@ -49,6 +49,8 @@ Símbolo : Significado
 
 Versão 0.01a   11/11/09
 ---------------
+[+] implementação de métodos no Bloco D por (Franklin Haut)
+[-] Correção no nome de propriedades nos Blocos C, D e E por (Franklin Haut)
 [+] Implementação de todos os métodos que faltavam no Bloco 1 por (Agnaldo Prates)
 [+] Implementação de vários métodos nos Blocos 0, C e E  por (Agnaldo Prates)
 [-] Correção de tipos de proriedades dos Blocos 0, C e E por (Agnaldo Prates)

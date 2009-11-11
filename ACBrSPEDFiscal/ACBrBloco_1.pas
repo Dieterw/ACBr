@@ -135,7 +135,7 @@ type
     fNUM_DOC: string;       /// Número do documento fiscal recebido com fins específicos de exportação.
     fDT_DOC: TDateTime;        /// Data da emissão do documento fiscal recebido com fins específicos de exportação
     fCHV_NFE: string;       /// Chave da Nota Fiscal Eletrônica
-    fNR_: string;           /// Número do Memorando de Exportação
+    fNR_MEMO: string;           /// Número do Memorando de Exportação
     fQTD: Currency;           /// Quantidade do item efetivamente exportado.
     fUNID: string;          /// Unidade do item (Campo 02 do registro 0190)
   public
@@ -145,7 +145,7 @@ type
     property NUM_DOC: string read FNUM_DOC write FNUM_DOC;
     property DT_DOC: TDateTime read FDT_DOC write FDT_DOC;
     property CHV_NFE: string read FCHV_NFE write FCHV_NFE;
-    property NR_: string read FNR_ write FNR_;
+    property NR_MEMO: string read FNR_MEMO write FNR_MEMO;
     property QTD: Currency read FQTD write FQTD;
     property UNID: string read FUNID write FUNID;
   end;
@@ -598,6 +598,32 @@ type
     property Items[Index: Integer]: TRegistro1510 read GetItem write SetItem;
   end;
 
+  /// Registro 1600 - TOTAL DAS OPERAÇÕES COM CARTÃO DE CRÉDITO E/OU DÉBITO
+
+  TRegistro1600 = class(TPersistent)
+  private
+    fCOD_PART: string;         /// Número seqüencial do item no documento fiscal
+    fTOT_CREDITO: currency;    /// Valor do item
+    fTOT_DEBITO: currency;     /// Valor total do desconto
+  public
+    property COD_PART: string read FCOD_PART write FCOD_PART;
+    property TOT_CREDITO: currency read FTOT_CREDITO write FTOT_CREDITO;
+    property TOT_DEBITO: currency read FTOT_DEBITO write FTOT_DEBITO;
+  end;
+
+  /// Registro 1600 - Lista
+
+  TRegistro1600List = class(TList)
+  private
+    function GetItem(Index: Integer): TRegistro1600;
+    procedure SetItem(Index: Integer; const Value: TRegistro1600);
+  public
+    destructor Destroy; override;
+    function New: TRegistro1600;
+    property Items[Index: Integer]: TRegistro1600 read GetItem write SetItem;
+  end;
+
+
   /// Registro 1990 - ENCERRAMENTO DO BLOCO 1
 
   TRegistro1990 = class(TPersistent)
@@ -972,6 +998,32 @@ begin
 end;
 
 procedure TRegistro1370List.SetItem(Index: Integer; const Value: TRegistro1370);
+begin
+  Put(Index, Value);
+end;
+
+{ TRegistro1600List }
+
+destructor TRegistro1600List.Destroy;
+var
+intFor: integer;
+begin
+  for intFor := 0 to Count - 1 do Items[intFor].Free;
+  inherited;
+end;
+
+function TRegistro1600List.GetItem(Index: Integer): TRegistro1600;
+begin
+  Result := TRegistro1600(Inherited Items[Index]);
+end;
+
+function TRegistro1600List.New: TRegistro1600;
+begin
+  Result := TRegistro1600.Create;
+  Add(Result);
+end;
+
+procedure TRegistro1600List.SetItem(Index: Integer; const Value: TRegistro1600);
 begin
   Put(Index, Value);
 end;

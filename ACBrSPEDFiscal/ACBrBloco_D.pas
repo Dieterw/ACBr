@@ -57,7 +57,51 @@ type
 
   TRegistroD100 = class(TPersistent)
   private
+    fIND_OPER: string;         /// Indicador do tipo de operação: 0- Aquisição; 1- Prestação
+    fIND_EMIT: string;         /// Indicador do emitente do documento fiscal: 0- Emissão própria; 1- Terceiros
+    fCOD_PART: string;         /// Código do participante (campo 02 do Registro 0150):
+    fCOD_MOD: string;          /// Código do modelo do documento fiscal, conforme a Tabela 4.1.1
+    fCOD_SIT: string;          /// Código da situação do documento fiscal, conforme a Tabela 4.1.2
+    fSER: string;              /// Série do documento fiscal
+    fSUB: string;              /// Subsérie do documento fiscal
+    fNUM_DOC: string;          /// Número do documento fiscal
+    fCHV_CTE: string;          /// Chave da Conhecimento Eletrônico
+    fDT_DOC: TDateTime;        /// Data da emissão do documento fiscal
+    fDT_A_P: TDateTime;        /// Data da aquisição ou da prestaçãodo serviço
+    fTP_CT_e: string;          /// Tipo de conhecimento conforme definido no manual de integração do CT-e
+    fCHV_CTE_REF: string;      /// Chave do CT-e de referencia cujos valores foram complementados: 1 ou 2
+    fVL_DOC: currency;         /// Valor total do documento fiscal
+    fVL_DESC: currency;          /// Valor total do desconto
+    fIND_FRT: string;          /// Indicador do tipo do frete:
+    fVL_SERV: currency;        /// Valor do frete indicado no documento fiscal
+    fVL_BC_ICMS: currency;     /// Valor da base de cálculo do ICMS
+    fVL_ICMS: currency;        /// Valor do ICMS
+    fVL_NT: currency;          /// Valor não tributado
+    fCOD_INF: string;          /// Valor do ICMS retido por substituição tributária
+    fCOD_CTA: string;          /// Código da conta analitica contabil debitada/creditada
   public
+    property IND_OPER: string read FIND_OPER write FIND_OPER;
+    property IND_EMIT: string read FIND_EMIT write FIND_EMIT;
+    property COD_PART: string read FCOD_PART write FCOD_PART;
+    property COD_MOD: string read FCOD_MOD write FCOD_MOD;
+    property COD_SIT: string read FCOD_SIT write FCOD_SIT;
+    property SER: string read FSER write FSER;
+    property SUB: string read FSUB write FSUB;
+    property NUM_DOC: string read FNUM_DOC write FNUM_DOC;
+    property CHV_CTE: string read FCHV_CTE write FCHV_CTE;
+    property DT_DOC: TDateTime read FDT_DOC write FDT_DOC;
+    property DT_A_P: TDateTime read FDT_A_P write FDT_A_P;
+    property TP_CT_e: string read FTP_CT_e write FTP_CT_e;
+    property CHV_CTE_REF: string read FCHV_CTE_REF write FCHV_CTE_REF;
+    property VL_DOC: currency read FVL_DOC write FVL_DOC;
+    property VL_DESC: currency read FVL_DESC write FVL_DESC;
+    property IND_FRT: string read FIND_FRT write FIND_FRT;
+    property VL_SERV: currency read FVL_SERV write FVL_SERV;
+    property VL_BC_ICMS: currency read FVL_BC_ICMS write FVL_BC_ICMS;
+    property VL_ICMS: currency read FVL_ICMS write FVL_ICMS;
+    property VL_NT: currency read FVL_NT write FVL_NT;
+    property COD_INF: string read FCOD_INF write FCOD_INF;
+    property COD_CTA: string read FCOD_CTA write FCOD_CTA;
   end;
 
   /// Registro D100 - Lista
@@ -363,6 +407,45 @@ type
     property Items[Index: Integer]: TRegistroD161 read GetItem write SetItem;
   end;
 
+  /// Registro D162 - IDENTIFICAÇÃO DOS DOCUMENTOS FISCAIS (COD. 08, 8B, 09, 10, 11, 26, 27)
+
+  TRegistroD162 = class(TPersistent)
+  private
+    fCOD_MOD: string;       /// Código do documento fiscal
+    FSER: string;           /// Série do documento
+    FNUM_DOC: string;       /// Numero
+    FDT_DOC: TDateTime;     /// Data de emissão
+    FVL_DOC: currency;      /// Valor total do documento fiscal
+    FVL_MERC: currency;     /// Valor das mercadorias constantes no documento fiscal
+    FQTD_VOL: currency;     /// Quantidade de volumes transportados
+    FPESO_BRT: currency;    /// Peso bruto
+    FPESO_LIQ: currency;    /// Peso liquido
+  public
+    property COD_MOD: string read FCOD_MOD write FCOD_MOD;
+    property SER: string read FSER write FSER;
+    property NUM_DOC: string read FNUM_DOC write FNUM_DOC;
+    property DT_DOC: TDateTime read FDT_DOC write FDT_DOC;
+    property VL_DOC: currency read FVL_DOC write FVL_DOC;
+    property VL_MERC: currency read FVL_MERC write FVL_MERC;
+    property QTD_VOL: currency read FQTD_VOL write FQTD_VOL;
+    property PESO_BRT: currency read FPESO_BRT write FPESO_BRT;
+    property PESO_LIQ: currency read FPESO_LIQ write FPESO_LIQ;
+  end;
+
+  /// Registro D162 - Lista
+
+  TRegistroD162List = class(TList)
+  private
+    function GetItem(Index: Integer): TRegistroD162; /// GetItem
+    procedure SetItem(Index: Integer; const Value: TRegistroD162); /// SetItem
+  public
+    destructor Destroy; override;
+    function New: TRegistroD162;
+    property Items[Index: Integer]: TRegistroD162 read GetItem write SetItem;
+  end;
+
+
+
   /// Registro D170 - COMPLEMENTO DO CONHECIMENTO MULTIMODAL DE CARGAS (CÓDIGO 26)
 
   TRegistroD170 = class(TPersistent)
@@ -661,15 +744,11 @@ type
 
   TRegistroD360 = class(TPersistent)
   private
-    fCOD_TOT_PAR: string;        /// Código do totalizador, conforme Tabela 4.4.6
-    fVLR_ACUM_TOT: currency;     /// Valor acumulado no totalizador, relativo à respectiva Redução Z.
-    fNR_TOT: string;             /// Número do totalizador quando ocorrer mais de uma situação com a mesma carga tributária efetiva.
-    fDESCR_NR_TOT: string;       /// Descrição da situação tributária relativa ao totalizador parcial, quando houver mais de um com a mesma carga tributária efetiva.
+    fVL_PIS: currency;        /// Valor total do PIS
+    fVL_COFINS: currency;     /// Valor total do COFINS
   public
-    property COD_TOT_PAR: string read FCOD_TOT_PAR write FCOD_TOT_PAR;
-    property VLR_ACUM_TOT: currency read FVLR_ACUM_TOT write FVLR_ACUM_TOT;
-    property NR_TOT: string read FNR_TOT write FNR_TOT;
-    property DESCR_NR_TOT: string read FDESCR_NR_TOT write FDESCR_NR_TOT;
+    property VL_PIS: currency read FVL_PIS write FVL_PIS;
+    property VL_COFINS: currency read FVL_COFINS write FVL_COFINS;
   end;
 
   /// Registro D360 - Lista
@@ -682,6 +761,33 @@ type
     destructor Destroy; override;
     function New: TRegistroD360;
     property Items[Index: Integer]: TRegistroD360 read GetItem write SetItem;
+  end;
+
+  /// Registro D365 - REGISTRO DOS TOTALIZADORES PARCIAIS DE REDUÇÃO Z (CODIGOS 2E 13 14 15 16)
+
+  TRegistroD365 = class(TPersistent)
+  private
+    fCOD_TOT_PAR: string;        /// Código do totalizador, conforme Tabela 4.4.6
+    fVLR_ACUM_TOT: currency;     /// Valor acumulado no totalizador, relativo à respectiva Redução Z.
+    fNR_TOT: string;             /// Número do totalizador quando ocorrer mais de uma situação com a mesma carga tributária efetiva.
+    fDESCR_NR_TOT: string;       /// Descrição da situação tributária relativa ao totalizador parcial, quando houver mais de um com a mesma carga tributária efetiva.
+  public
+    property COD_TOT_PAR: string read FCOD_TOT_PAR write FCOD_TOT_PAR;
+    property VLR_ACUM_TOT: currency read FVLR_ACUM_TOT write FVLR_ACUM_TOT;
+    property NR_TOT: string read FNR_TOT write FNR_TOT;
+    property DESCR_NR_TOT: string read FDESCR_NR_TOT write FDESCR_NR_TOT;
+  end;
+
+  /// Registro D365 - Lista
+
+  TRegistroD365List = class(TList)
+  private
+    function GetItem(Index: Integer): TRegistroD365; /// GetItem
+    procedure SetItem(Index: Integer; const Value: TRegistroD365); /// SetItem
+  public
+    destructor Destroy; override;
+    function New: TRegistroD365;
+    property Items[Index: Integer]: TRegistroD365 read GetItem write SetItem;
   end;
 
   /// Registro D370 - COMPLEMENTO DOS DOCUMENTOS INFORMADOS (CÓDIGO 13, 14, 15, 16 E 2E)
@@ -1592,6 +1698,58 @@ begin
 end;
 
 procedure TRegistroD500List.SetItem(Index: Integer; const Value: TRegistroD500);
+begin
+  Put(Index, Value);
+end;
+
+{ TRegistroD162List }
+
+destructor TRegistroD162List.Destroy;
+var
+intFor: integer;
+begin
+  for intFor := 0 to Count - 1 do Items[intFor].Free;
+  inherited;
+end;
+
+function TRegistroD162List.GetItem(Index: Integer): TRegistroD162;
+begin
+  Result := TRegistroD162(Inherited Items[Index]);
+end;
+
+function TRegistroD162List.New: TRegistroD162;
+begin
+  Result := TRegistroD162.Create;
+  Add(Result);
+end;
+
+procedure TRegistroD162List.SetItem(Index: Integer; const Value: TRegistroD162);
+begin
+  Put(Index, Value);
+end;
+
+{ TRegistroD365List }
+
+destructor TRegistroD365List.Destroy;
+var
+intFor: integer;
+begin
+  for intFor := 0 to Count - 1 do Items[intFor].Free;
+  inherited;
+end;
+
+function TRegistroD365List.GetItem(Index: Integer): TRegistroD365;
+begin
+  Result := TRegistroD365(Inherited Items[Index]);
+end;
+
+function TRegistroD365List.New: TRegistroD365;
+begin
+  Result := TRegistroD365.Create;
+  Add(Result);
+end;
+
+procedure TRegistroD365List.SetItem(Index: Integer; const Value: TRegistroD365);
 begin
   Put(Index, Value);
 end;

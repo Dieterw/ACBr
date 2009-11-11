@@ -57,6 +57,7 @@ type
     FRegistroD150: TRegistroD150List;  /// BLOCO D - Lista de RegistroD150
     FRegistroD160: TRegistroD160List;  /// BLOCO D - Lista de RegistroD160
     FRegistroD161: TRegistroD161List;  /// BLOCO D - Lista de RegistroD161
+    FRegistroD162: TRegistroD162List;  /// BLOCO D - Lista de RegistroD162
     FRegistroD170: TRegistroD170List;  /// BLOCO D - Lista de RegistroD170
     FRegistroD180: TRegistroD180List;  /// BLOCO D - Lista de RegistroD180
     FRegistroD190: TRegistroD190List;  /// BLOCO D - Lista de RegistroD190
@@ -66,6 +67,7 @@ type
     FRegistroD350: TRegistroD350List;  /// BLOCO D - Lista de RegistroD350
     FRegistroD355: TRegistroD355List;  /// BLOCO D - Lista de RegistroD355
     FRegistroD360: TRegistroD360List;  /// BLOCO D - Lista de RegistroD360
+    FRegistroD365: TRegistroD365List;  /// BLOCO D - Lista de RegistroD360
     FRegistroD370: TRegistroD370List;  /// BLOCO D - Lista de RegistroD370
     FRegistroD390: TRegistroD390List;  /// BLOCO D - Lista de RegistroD390
     FRegistroD400: TRegistroD400List;  /// BLOCO D - Lista de RegistroD400
@@ -87,6 +89,7 @@ type
     function WriteRegistroD150: string;
     function WriteRegistroD160: string;
     function WriteRegistroD161: string;
+    function WriteRegistroD162: string;
     function WriteRegistroD170: string;
     function WriteRegistroD180: string;
     function WriteRegistroD190: string;
@@ -96,6 +99,7 @@ type
     function WriteRegistroD350: string;
     function WriteRegistroD355: string;
     function WriteRegistroD360: string;
+    function WriteRegistroD365: string;
     function WriteRegistroD370: string;
     function WriteRegistroD390: string;
     function WriteRegistroD400: string;
@@ -114,6 +118,7 @@ type
     property RegistroD150: TRegistroD150List read FRegistroD150 write FRegistroD150;
     property RegistroD160: TRegistroD160List read FRegistroD160 write FRegistroD160;
     property RegistroD161: TRegistroD161List read FRegistroD161 write FRegistroD161;
+    property RegistroD162: TRegistroD162List read FRegistroD162 write FRegistroD162;
     property RegistroD170: TRegistroD170List read FRegistroD170 write FRegistroD170;
     property RegistroD180: TRegistroD180List read FRegistroD180 write FRegistroD180;
     property RegistroD190: TRegistroD190List read FRegistroD190 write FRegistroD190;
@@ -123,6 +128,7 @@ type
     property RegistroD350: TRegistroD350List read FRegistroD350 write FRegistroD350;
     property RegistroD355: TRegistroD355List read FRegistroD355 write FRegistroD355;
     property RegistroD360: TRegistroD360List read FRegistroD360 write FRegistroD360;
+    property RegistroD365: TRegistroD365List read FRegistroD365 write FRegistroD365;
     property RegistroD370: TRegistroD370List read FRegistroD370 write FRegistroD370;
     property RegistroD390: TRegistroD390List read FRegistroD390 write FRegistroD390;
     property RegistroD400: TRegistroD400List read FRegistroD400 write FRegistroD400;
@@ -149,6 +155,7 @@ begin
   FRegistroD150 := TRegistroD150List.Create;
   FRegistroD160 := TRegistroD160List.Create;
   FRegistroD161 := TRegistroD161List.Create;
+  FRegistroD162 := TRegistroD162List.Create;
   FRegistroD170 := TRegistroD170List.Create;
   FRegistroD180 := TRegistroD180List.Create;
   FRegistroD190 := TRegistroD190List.Create;
@@ -158,6 +165,7 @@ begin
   FRegistroD350 := TRegistroD350List.Create;
   FRegistroD355 := TRegistroD355List.Create;
   FRegistroD360 := TRegistroD360List.Create;
+  FRegistroD365 := TRegistroD365List.Create;
   FRegistroD370 := TRegistroD370List.Create;
   FRegistroD390 := TRegistroD390List.Create;
   FRegistroD400 := TRegistroD400List.Create;
@@ -179,6 +187,7 @@ begin
   FRegistroD150.Free;
   FRegistroD160.Free;
   FRegistroD161.Free;
+  FRegistroD162.Free;
   FRegistroD170.Free;
   FRegistroD180.Free;
   FRegistroD190.Free;
@@ -188,6 +197,7 @@ begin
   FRegistroD350.Free;
   FRegistroD355.Free;
   FRegistroD360.Free;
+  FRegistroD365.Free;
   FRegistroD370.Free;
   FRegistroD390.Free;
   FRegistroD400.Free;
@@ -259,6 +269,11 @@ begin
 
 end;
 
+function TBloco_D.WriteRegistroD162: string;
+begin
+
+end;
+
 function TBloco_D.WriteRegistroD170: string;
 begin
 
@@ -300,6 +315,11 @@ begin
 end;
 
 function TBloco_D.WriteRegistroD360: string;
+begin
+
+end;
+
+function TBloco_D.WriteRegistroD365: string;
 begin
 
 end;

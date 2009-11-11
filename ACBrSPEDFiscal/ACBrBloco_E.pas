@@ -132,13 +132,13 @@ type
     fNUM_PROC: string;  /// Número do processo ao qual o ajuste está vinculado, se houver
     fIND_PROC: string;  /// Indicador da origem do processo: 0- Sefaz; 1- Justiça Federal; 2- Justiça Estadual; 9- Outros
     fPROC: string;      /// Descrição resumida do processo que embasou o lançamento
-    fCOD_OBS: string;   /// Código de referência à observação (campo 02 do Registro 0460)
+    fTXT_COMPL: string;   /// Código de referência à observação (campo 02 do Registro 0460)
   public
     property NUM_DA: string read fNUM_DA write fNUM_DA;
     property NUM_PROC: string read fNUM_PROC write fNUM_PROC;
     property IND_PROC: string read fIND_PROC write fIND_PROC;
     property PROC: string read fPROC write fPROC;
-    property COD_OBS: string read fCOD_OBS write fCOD_OBS;
+    property TXT_COMPL: string read fTXT_COMPL write fTXT_COMPL;
   end;
 
   /// Registro E112 - Lista
@@ -353,13 +353,13 @@ type
     fNUM_PROC: string;  /// Número do processo ao qual o ajuste está vinculado, se houver
     fIND_PROC: string;  /// Indicador da origem do processo: 0- Sefaz; 1- Justiça Federal; 2- Justiça Estadual; 9- Outros
     fPROC: string;      /// Descrição resumida do processo que embasou o lançamento
-    fCOD_OBS: string;   /// Código de referência à observação (campo 02 do Registro 0460)
+    fTXT_COMPL: string;   /// Código de referência à observação (campo 02 do Registro 0460)
   public
     property NUM_DA: string read fNUM_DA write fNUM_DA;
     property NUM_PROC: string read fNUM_PROC write fNUM_PROC;
     property IND_PROC: string read fIND_PROC write fIND_PROC;
     property PROC: string read fPROC write fPROC;
-    property COD_OBS: string read fCOD_OBS write fCOD_OBS;
+    property TXT_COMPL: string read fTXT_COMPL write fTXT_COMPL;
   end;
 
   /// Registro E230 - Lista

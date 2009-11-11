@@ -63,6 +63,7 @@ type
     FRegistro1400: TRegistro1400List;  /// BLOCO 1 - Lista de Registro1400
     FRegistro1500: TRegistro1500List;  /// BLOCO 1 - Lista de Registro1500
     FRegistro1510: TRegistro1510List;  /// BLOCO 1 - Lista de Registro1510
+    FRegistro1600: TRegistro1600List;  /// BLOCO 1 - Lista de Registro1600
     FRegistro1990: TRegistro1990;      /// BLOCO 1 - Registro1990
   public
     constructor Create(AOwner: TComponent); override; /// Create
@@ -83,6 +84,7 @@ type
     function WriteRegistro1400: string;
     function WriteRegistro1500: string;
     function WriteRegistro1510: string;
+    function WriteRegistro1600: string;
     function WriteRegistro1990: string;
 
     property Registro1001: TRegistro1001     read FRegistro1001 write FRegistro1001;
@@ -100,6 +102,7 @@ type
     property Registro1400: TRegistro1400List read FRegistro1400 write FRegistro1400;
     property Registro1500: TRegistro1500List read FRegistro1500 write FRegistro1500;
     property Registro1510: TRegistro1510List read FRegistro1510 write FRegistro1510;
+    property Registro1600: TRegistro1600List read FRegistro1600 write FRegistro1600;
     property Registro1990: TRegistro1990 read FRegistro1990 write FRegistro1990;
   end;
 
@@ -125,6 +128,7 @@ begin
   FRegistro1400 := TRegistro1400List.Create;
   FRegistro1500 := TRegistro1500List.Create;
   FRegistro1510 := TRegistro1510List.Create;
+  FRegistro1600 := TRegistro1600List.Create;
   FRegistro1990 := TRegistro1990.Create;
 end;
 
@@ -145,6 +149,7 @@ begin
   FRegistro1400.Free;
   FRegistro1500.Free;
   FRegistro1510.Free;
+  FRegistro1600.Free;
   FRegistro1990.Free;
   inherited;
 end;
@@ -515,6 +520,11 @@ begin
      end;
   end;
   Result := strRegistro1510;
+end;
+
+function TBloco_1.WriteRegistro1600: string;
+begin
+
 end;
 
 function TBloco_1.WriteRegistro1990: string;

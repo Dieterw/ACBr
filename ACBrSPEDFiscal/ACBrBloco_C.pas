@@ -72,8 +72,8 @@ type
     fVL_DESC: currency;        /// Valor total do desconto // Prates
     fVL_ABAT_NT: currency;     /// Abatimento não tributado e não comercial Ex. desconto ICMS nas remessas para ZFM: // Prates
     fVL_MERC: currency;        /// Valor das mercadorias constantes no documento fiscal
-    fND_FRT: string;           /// Indicador do tipo do frete:
-    fL_FRT: currency;          /// Valor do frete indicado no documento fiscal
+    fIND_FRT: string;           /// Indicador do tipo do frete:
+    fVL_FRT: currency;          /// Valor do frete indicado no documento fiscal
     fVL_SEG: currency;         /// Valor do seguro indicado no documento fiscal
     fVL_OUT_DA: currency;      /// Valor de outras despesas acessórias
     fVL_BC_ICMS: currency;     /// Valor da base de cálculo do ICMS
@@ -101,8 +101,8 @@ type
     property VL_DESC: currency read FVL_DESC write FVL_DESC; // prates
     property VL_ABAT_NT: currency read FVL_ABAT_NT write FVL_ABAT_NT; // Prates
     property VL_MERC: currency read FVL_MERC write FVL_MERC;
-    property ND_FRT: string read FND_FRT write FND_FRT;
-    property L_FRT: currency read FL_FRT write FL_FRT;
+    property IND_FRT: string read FIND_FRT write FIND_FRT;
+    property VL_FRT: currency read FVL_FRT write FVL_FRT;
     property VL_SEG: currency read FVL_SEG write FVL_SEG;
     property VL_OUT_DA: currency read FVL_OUT_DA write FVL_OUT_DA;
     property VL_BC_ICMS: currency read FVL_BC_ICMS write FVL_BC_ICMS;
@@ -132,10 +132,10 @@ type
 
   TRegistroC110 = class(TPersistent)
   private
-    fCOD_NF: string;       /// Código da informação complementar do documento fiscal (campo 02 do Registro 0450)
+    fCOD_INF: string;       /// Código da informação complementar do documento fiscal (campo 02 do Registro 0450)
     fTXT_COMPL: string;    /// Descrição complementar do código de referência.
   public
-    property COD_NF: string read FCOD_NF write FCOD_NF;
+    property COD_INF: string read FCOD_INF write FCOD_INF;
     property TXT_COMPL: string read FTXT_COMPL write FTXT_COMPL;
   end;
 

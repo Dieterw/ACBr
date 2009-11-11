@@ -393,8 +393,8 @@ begin
                                                LFill( VL_DESC,0,2  ) +
                                                LFill( VL_ABAT_NT,0,2  ) +
                                                LFill( VL_MERC,0,2  ) +
-                                               LFill( ND_FRT,1   ) +
-                                               LFill( L_FRT,0,2  ) +
+                                               LFill( IND_FRT,1   ) +
+                                               LFill( VL_FRT,0,2  ) +
                                                LFill( VL_SEG,0,2  ) +
                                                LFill( VL_OUT_DA,0,2  ) +
                                                LFill( VL_BC_ICMS,0,2  ) +
@@ -429,7 +429,7 @@ begin
         with RegistroC110.Items[intFor] do
         begin
           strRegistroC110 := strRegistroC110 + LFill('C110') +
-                                               LFill( COD_NF ) +
+                                               LFill( COD_INF ) +
                                                LFill( TXT_COMPL) +
                                                Delimitador +
                                                #13#10;

@@ -278,7 +278,7 @@ begin
                                                LFill( NUM_PROC ) +
                                                LFill( IND_PROC ) +
                                                LFill( PROC ) +
-                                               LFill( COD_OBS ) +
+                                               LFill( TXT_COMPL ) +
                                                Delimitador +
                                                #13#10;
         end;
@@ -484,7 +484,7 @@ begin
                                                LFill( NUM_PROC ) +
                                                LFill( IND_PROC ) +
                                                LFill( PROC ) +
-                                               LFill( COD_OBS ) +
+                                               LFill( TXT_COMPL ) +
                                                Delimitador +
                                                #13#10;
         end;

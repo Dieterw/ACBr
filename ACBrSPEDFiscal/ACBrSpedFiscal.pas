@@ -60,6 +60,7 @@ type
     FBloco_E: TBloco_E;
     FBloco_H: TBloco_H;
   protected
+    // Período 
     procedure SetDT_FIN(const Value: TDateTime); override;
     procedure SetDT_INI(const Value: TDateTime); override;
     /// BLOCO 0
@@ -327,27 +328,102 @@ begin
   try
     AssignFile(txtFile, fPath + Arquivo);
     Rewrite(txtFile);
+
     /// BLOCO 0
     Write(txtFile, WriteRegistro0000);
     Write(txtFile, WriteRegistro0001);
     Write(txtFile, WriteRegistro0005);
     if Bloco_0.Registro0015.Count > 0 then Write(txtFile, WriteRegistro0015);
     Write(txtFile, WriteRegistro0100);
-    Write(txtFile, WriteRegistro0150);
-    Write(txtFile, WriteRegistro0175);
+    if Bloco_0.Registro0150.Count > 0 then Write(txtFile, WriteRegistro0150);
+    if Bloco_0.Registro0175.Count > 0 then Write(txtFile, WriteRegistro0175);
     if Bloco_0.Registro0190.Count > 0 then Write(txtFile, WriteRegistro0190);
+    if Bloco_0.Registro0200.Count > 0 then Write(txtFile, WriteRegistro0200); // Prates
+    if Bloco_0.Registro0205.Count > 0 then Write(txtFile, WriteRegistro0205); // Prates
+    if Bloco_0.Registro0206.Count > 0 then Write(txtFile, WriteRegistro0206); // Prates
+    if Bloco_0.Registro0220.Count > 0 then Write(txtFile, WriteRegistro0220); // Prates
+    if Bloco_0.Registro0400.Count > 0 then Write(txtFile, WriteRegistro0400); // Prates
+    if Bloco_0.Registro0460.Count > 0 then Write(txtFile, WriteRegistro0460); // Prates
     Write(txtFile, WriteRegistro0990);
+
     /// BLOCO C
     Write(txtFile, WriteRegistroC001);
+    if Bloco_C.RegistroC100.Count > 0 then Write(txtFile, WriteRegistroC100); // Prates
+    if Bloco_C.RegistroC110.Count > 0 then Write(txtFile, WriteRegistroC110); // Prates
+    if Bloco_C.RegistroC111.Count > 0 then Write(txtFile, WriteRegistroC111); // Prates
+    if Bloco_C.RegistroC112.Count > 0 then Write(txtFile, WriteRegistroC112); // Prates
+    if Bloco_C.RegistroC113.Count > 0 then Write(txtFile, WriteRegistroC113); // Prates
+    if Bloco_C.RegistroC114.Count > 0 then Write(txtFile, WriteRegistroC114); // Prates
+    if Bloco_C.RegistroC115.Count > 0 then Write(txtFile, WriteRegistroC115); // Prates
+    if Bloco_C.RegistroC120.Count > 0 then Write(txtFile, WriteRegistroC120); // Prates
+    if Bloco_C.RegistroC130.Count > 0 then Write(txtFile, WriteRegistroC130); // Prates
+    if Bloco_C.RegistroC140.Count > 0 then Write(txtFile, WriteRegistroC140); // Prates
+    if Bloco_C.RegistroC141.Count > 0 then Write(txtFile, WriteRegistroC141); // Prates
+    if Bloco_C.RegistroC160.Count > 0 then Write(txtFile, WriteRegistroC160); // Prates
+    if Bloco_C.RegistroC165.Count > 0 then Write(txtFile, WriteRegistroC165); // Prates
+    if Bloco_C.RegistroC170.Count > 0 then Write(txtFile, WriteRegistroC170); // Prates
+    if Bloco_C.RegistroC171.Count > 0 then Write(txtFile, WriteRegistroC171); // Prates
+    if Bloco_C.RegistroC172.Count > 0 then Write(txtFile, WriteRegistroC172); // Prates
+    if Bloco_C.RegistroC173.Count > 0 then Write(txtFile, WriteRegistroC173); // Prates
+    if Bloco_C.RegistroC174.Count > 0 then Write(txtFile, WriteRegistroC174); // Prates
+    if Bloco_C.RegistroC175.Count > 0 then Write(txtFile, WriteRegistroC175); // Prates
+    if Bloco_C.RegistroC176.Count > 0 then Write(txtFile, WriteRegistroC176); // Prates
+    if Bloco_C.RegistroC177.Count > 0 then Write(txtFile, WriteRegistroC177); // Prates
+    if Bloco_C.RegistroC178.Count > 0 then Write(txtFile, WriteRegistroC178); // Prates
+    if Bloco_C.RegistroC179.Count > 0 then Write(txtFile, WriteRegistroC179); // Prates
+    if Bloco_C.RegistroC190.Count > 0 then Write(txtFile, WriteRegistroC190); // Prates
+    if Bloco_C.RegistroC195.Count > 0 then Write(txtFile, WriteRegistroC195); // Prates
+    if Bloco_C.RegistroC197.Count > 0 then Write(txtFile, WriteRegistroC197); // Prates
+    if Bloco_C.RegistroC300.Count > 0 then Write(txtFile, WriteRegistroC300); // Prates
+    if Bloco_C.RegistroC310.Count > 0 then Write(txtFile, WriteRegistroC310); // Prates
+    if Bloco_C.RegistroC320.Count > 0 then Write(txtFile, WriteRegistroC320); // Prates
+    if Bloco_C.RegistroC321.Count > 0 then Write(txtFile, WriteRegistroC321); // Prates
+    if Bloco_C.RegistroC350.Count > 0 then Write(txtFile, WriteRegistroC350); // Prates
+    if Bloco_C.RegistroC370.Count > 0 then Write(txtFile, WriteRegistroC370); // Prates
+    if Bloco_C.RegistroC390.Count > 0 then Write(txtFile, WriteRegistroC390); // Prates
+    if Bloco_C.RegistroC400.Count > 0 then Write(txtFile, WriteRegistroC400); // Prates
+    if Bloco_C.RegistroC405.Count > 0 then Write(txtFile, WriteRegistroC405); // Prates
+    if Bloco_C.RegistroC410.Count > 0 then Write(txtFile, WriteRegistroC410); // Prates
+    if Bloco_C.RegistroC420.Count > 0 then Write(txtFile, WriteRegistroC420); // Prates
+    if Bloco_C.RegistroC425.Count > 0 then Write(txtFile, WriteRegistroC425); // Prates
+    if Bloco_C.RegistroC460.Count > 0 then Write(txtFile, WriteRegistroC460); // Prates
+    if Bloco_C.RegistroC470.Count > 0 then Write(txtFile, WriteRegistroC470); // Prates
+    if Bloco_C.RegistroC490.Count > 0 then Write(txtFile, WriteRegistroC490); // Prates
+    if Bloco_C.RegistroC495.Count > 0 then Write(txtFile, WriteRegistroC495); // Prates
+    if Bloco_C.RegistroC500.Count > 0 then Write(txtFile, WriteRegistroC500); // Prates
+    if Bloco_C.RegistroC510.Count > 0 then Write(txtFile, WriteRegistroC510); // Prates
+    if Bloco_C.RegistroC590.Count > 0 then Write(txtFile, WriteRegistroC590); // Prates
+    if Bloco_C.RegistroC600.Count > 0 then Write(txtFile, WriteRegistroC600); // Prates
+    if Bloco_C.RegistroC601.Count > 0 then Write(txtFile, WriteRegistroC601); // Prates
+    if Bloco_C.RegistroC610.Count > 0 then Write(txtFile, WriteRegistroC610); // Prates
+    if Bloco_C.RegistroC620.Count > 0 then Write(txtFile, WriteRegistroC620); // Prates
+    if Bloco_C.RegistroC690.Count > 0 then Write(txtFile, WriteRegistroC690); // Prates
+    if Bloco_C.RegistroC700.Count > 0 then Write(txtFile, WriteRegistroC700); // Prates
+    if Bloco_C.RegistroC790.Count > 0 then Write(txtFile, WriteRegistroC790); // Prates
+    if Bloco_C.RegistroC791.Count > 0 then Write(txtFile, WriteRegistroC791); // Prates
     Write(txtFile, WriteRegistroC990);
-    /// BLOCO D
+
+   /// BLOCO D
     Write(txtFile, WriteRegistroD001);
     Write(txtFile, WriteRegistroD990);
+
     /// BLOCO E
     Write(txtFile, WriteRegistroE001);
     Write(txtFile, WriteRegistroE100);
     Write(txtFile, WriteRegistroE110);
+    if Bloco_E.RegistroE111.Count>0 then Write(txtFile, WriteRegistroE111); // Prates
+    if Bloco_E.RegistroE112.Count>0 then Write(txtFile, WriteRegistroE112); // Prates
+    if Bloco_E.RegistroE113.Count>0 then Write(txtFile, WriteRegistroE113); // Prates
+    if Bloco_E.RegistroE115.Count>0 then Write(txtFile, WriteRegistroE115); // Prates
+    if Bloco_E.RegistroE116.Count>0 then Write(txtFile, WriteRegistroE116); // Prates
+    if Bloco_E.RegistroE200.Count>0 then Write(txtFile, WriteRegistroE200); // Prates
+    if Bloco_E.RegistroE210.Count>0 then Write(txtFile, WriteRegistroE210); // Prates
+    if Bloco_E.RegistroE220.Count>0 then Write(txtFile, WriteRegistroE220); // Prates
+    if Bloco_E.RegistroE230.Count>0 then Write(txtFile, WriteRegistroE230); // Prates
+    if Bloco_E.RegistroE240.Count>0 then Write(txtFile, WriteRegistroE240); // Prates
+    if Bloco_E.RegistroE250.Count>0 then Write(txtFile, WriteRegistroE250); // Prates
     Write(txtFile, WriteRegistroE990);
+    
     /// BLOCO H
     Write(txtFile, WriteRegistroH001);
     Write(txtFile, WriteRegistroH990);
@@ -457,7 +533,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := '0190';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_0.Registro0190.Count;
    end;
    Result := Bloco_0.WriteRegistro0190;
 end;
@@ -1017,7 +1093,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C400';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC  := Bloco_C.RegistroC400.Count;
    end;
    Result := Bloco_C.WriteRegistroC400;
 end;
@@ -1027,7 +1103,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C405';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC  := Bloco_C.RegistroC405.Count;
    end;
    Result := Bloco_C.WriteRegistroC405;
 end;
@@ -1037,7 +1113,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C410';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC  := Bloco_C.RegistroC410.Count;
    end;
    Result := Bloco_C.WriteRegistroC410;
 end;
@@ -1047,7 +1123,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C420';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC  := Bloco_C.RegistroC420.Count;
    end;
    Result := Bloco_C.WriteRegistroC420;
 end;
@@ -1057,7 +1133,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C425';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC  := Bloco_C.RegistroC425.Count;
    end;
    Result := Bloco_C.WriteRegistroC425;
 end;
@@ -1067,7 +1143,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C460';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC  := Bloco_C.RegistroC460.Count;
    end;
    Result := Bloco_C.WriteRegistroC460;
 end;
@@ -1077,7 +1153,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C470';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC  := Bloco_C.RegistroC470.Count;
    end;
    Result := Bloco_C.WriteRegistroC470;
 end;
@@ -1087,7 +1163,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C490';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC  := Bloco_C.RegistroC490.Count;
    end;
    Result := Bloco_C.WriteRegistroC490;
 end;
@@ -1097,7 +1173,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C495';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC  := Bloco_C.RegistroC495.Count;
    end;
    Result := Bloco_C.WriteRegistroC495;
 end;

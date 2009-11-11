@@ -351,7 +351,45 @@ begin
   end;
 end;
 
+function HexToAscii(Texto: string): String;
+var i : integer;
+   function HexToInt(Hex: string): integer;
+   begin
+     Result := StrToInt('$' + Hex);
+   end;
+begin
+  result := '';
+  for i := 1 to Length(texto) do begin
+    if i mod 2 <> 0 then
+       result := result + chr(HexToInt(copy(texto,i,2)));
+  end;
+end;
+
 function ReverterFiltroTextoXML(aTexto: AnsiString): AnsiString;
+var p1,p2:Integer;
+    tmp,vHex,vStr:String;
+begin
+  aTexto := StringReplace(aTexto, '&amp;', '&', [rfReplaceAll]);
+  aTexto := StringReplace(aTexto, '&lt;', '<', [rfReplaceAll]);
+  aTexto := StringReplace(aTexto, '&gt;', '>', [rfReplaceAll]);
+  aTexto := StringReplace(aTexto, '&quot;', '"', [rfReplaceAll]);
+  aTexto := StringReplace(aTexto, '&#39;', #39, [rfReplaceAll]);
+  p1:=Pos('&#x',aTexto);
+  while p1>0 do begin
+    for p2:=p1 to Length(aTexto) do
+        if aTexto[p2]=';' then
+           break;
+    vHex:=Copy(aTexto,p1,p2-p1+1);
+    vStr:=StringReplace(vHex,'&#x','',[rfReplaceAll]);
+    vStr:=StringReplace(vStr,';','',[rfReplaceAll]);
+    vStr:=HexToAscii(vStr);
+    aTexto:=StringReplace(aTexto,vHex,vStr,[rfReplaceAll]);
+    p1:=Pos('&#x',aTexto);
+  end;
+  result := Trim(aTexto);
+end;
+
+{function ReverterFiltroTextoXML(aTexto: AnsiString): AnsiString;
 begin
   aTexto := StringReplace(aTexto, '&amp;', '&', [rfReplaceAll]);
   aTexto := StringReplace(aTexto, '&lt;', '<', [rfReplaceAll]);
@@ -359,7 +397,7 @@ begin
   aTexto := StringReplace(aTexto, '&quot;', '"', [rfReplaceAll]);
   aTexto := StringReplace(aTexto, '&#39;', #39, [rfReplaceAll]);
   result := Trim(aTexto);
-end;
+end;}
 
 function UFparaCodigo(const UF: string): integer;
 const

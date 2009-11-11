@@ -47,6 +47,13 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+
+Alterações   11/11/09
+---------------
+[*] Modificada funcao ReverterFiltroTextoXML (unit pcnAuxilizr.pas) para também ler caracteres HEXADECIMAIS. (Créditos João Paulo Leão)
+[*] Modificado validação do Código do País conforme relato #407 no MANTIS.
+
+
 Alterações   09/11/09
 ---------------
 [-] Corrigido impressão do DANFE RETRATO em RAVE CB quando a fonte for COURIER NEW. 

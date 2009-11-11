@@ -47,6 +47,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.01a   11/11/09
+---------------
+[+] Implementação de vários métodos nos Blocos 0, C e E  por (Agnaldo Prates)
+[-] Correção de tipos de proriedades dos Blocos 0, C e E por (Agnaldo Prates)
+
 Versão 0.01a   01/11/09
 ---------------
 [-] Algumas correções feitas por (Agnaldo Prates)

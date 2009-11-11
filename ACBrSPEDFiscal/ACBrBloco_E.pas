@@ -263,6 +263,16 @@ type
     property DT_FIN: TDateTime read fDT_FIN write fDT_FIN;
   end;
 
+  TRegistroE200List = class(TList)
+  private
+    function  GetItem(Index: Integer): TRegistroE200;              /// GetItem
+    procedure SetItem(Index: Integer; const Value: TRegistroE200); /// SetItem
+  public
+    destructor Destroy; override;
+    function New: TRegistroE200;
+    property Items[Index: Integer]: TRegistroE200 read GetItem write SetItem;
+  end;
+
   /// Registro E210 - APURAÇÃO DO ICMS - SUBSTITUIÇÃO TRIBUTÁRIA
 
   TRegistroE210 = class(TPersistent)
@@ -928,6 +938,32 @@ begin
 end;
 
 procedure TRegistroE530List.SetItem(Index: Integer; const Value: TRegistroE530);
+begin
+  Put(Index, Value);
+end;
+
+{ TRegistroE200List }
+
+destructor TRegistroE200List.Destroy;
+var
+intFor: integer;
+begin
+  for intFor := 0 to Count - 1 do Items[intFor].Free;
+  inherited;
+end;
+
+function TRegistroE200List.GetItem(Index: Integer): TRegistroE200;
+begin
+  Result := TRegistroE200(Inherited Items[Index]);
+end;
+
+function TRegistroE200List.New: TRegistroE200;
+begin
+  Result := TRegistroE200.Create;
+  Add(Result);
+end;
+
+procedure TRegistroE200List.SetItem(Index: Integer; const Value: TRegistroE200 );
 begin
   Put(Index, Value);
 end;

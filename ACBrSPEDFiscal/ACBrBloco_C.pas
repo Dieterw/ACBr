@@ -69,8 +69,8 @@ type
     fDT_E_S: TDateTime;        /// Data da entrada ou da saída
     fVL_DOC: currency;         /// Valor total do documento fiscal
     fIND_PGTO: string;         /// Indicador do tipo de pagamento:
-    fVL_DESC: string;          /// Valor total do desconto
-    fVL_ABAT_NT: string;       /// Abatimento não tributado e não comercial Ex. desconto ICMS nas remessas para ZFM:
+    fVL_DESC: currency;        /// Valor total do desconto // Prates
+    fVL_ABAT_NT: currency;     /// Abatimento não tributado e não comercial Ex. desconto ICMS nas remessas para ZFM: // Prates
     fVL_MERC: currency;        /// Valor das mercadorias constantes no documento fiscal
     fND_FRT: string;           /// Indicador do tipo do frete:
     fL_FRT: currency;          /// Valor do frete indicado no documento fiscal
@@ -98,8 +98,8 @@ type
     property DT_E_S: TDateTime read FDT_E_S write FDT_E_S;
     property VL_DOC: currency read FVL_DOC write FVL_DOC;
     property IND_PGTO: string read FIND_PGTO write FIND_PGTO;
-    property VL_DESC: string read FVL_DESC write FVL_DESC;
-    property VL_ABAT_NT: string read FVL_ABAT_NT write FVL_ABAT_NT;
+    property VL_DESC: currency read FVL_DESC write FVL_DESC; // prates
+    property VL_ABAT_NT: currency read FVL_ABAT_NT write FVL_ABAT_NT; // Prates
     property VL_MERC: currency read FVL_MERC write FVL_MERC;
     property ND_FRT: string read FND_FRT write FND_FRT;
     property L_FRT: currency read FL_FRT write FL_FRT;
@@ -182,7 +182,7 @@ type
     fUF: string;            /// Unidade federada beneficiária do recolhimento
     fNUM_DA: string;        /// Número do documento de arrecadação
     fCOD_AUT: string;       /// Código completo da autenticação bancária
-    fVL_DA: string;         /// Valor do total do documento de arrecadação (principal, atualização monetária, juros e multa)
+    fVL_DA: Currency;         /// Valor do total do documento de arrecadação (principal, atualização monetária, juros e multa) // Prates
     fDT_VCTO: TDateTime;    /// Data de vencimento do documento de arrecadação
     fDT_PGTO: TDateTime;    /// Data de pagamento do documento de arrecadação, ou data do vencimento, no caso de ICMS antecipado a recolher.
   public
@@ -190,7 +190,7 @@ type
     property UF: string read FUF write FUF;
     property NUM_DA: string read FNUM_DA write FNUM_DA;
     property COD_AUT: string read FCOD_AUT write FCOD_AUT;
-    property VL_DA: string read FVL_DA write FVL_DA;
+    property VL_DA: currency read FVL_DA write FVL_DA; // Prats
     property DT_VCTO: TDateTime read FDT_VCTO write FDT_VCTO;
     property DT_PGTO: TDateTime read FDT_PGTO write FDT_PGTO;
   end;
@@ -848,6 +848,7 @@ type
     fVL_ICMS_ST: currency;     /// Parcela correspondente ao valor creditado/debitado do ICMS da substituição tributária, referente à combinação de CST_ICMS, CFOP, e alíquota do ICMS.
     fVL_RED_BC: currency;      /// Valor não tributado em função da redução da base de cálculo do ICMS, referente à combinação de CST_ICMS, CFOP e alíquota do ICMS.
     fVL_IPI: currency;         /// Parcela correspondente ao "Valor do IPI" referente à combinação CST_ICMS, CFOP e alíquota do ICMS.
+    fCOD_OBS: String;          /// Código da observação do lançamento fiscal (campo 02 do Registro 0460
   public
     property CST_ICMS: string read FCST_ICMS write FCST_ICMS;
     property CFOP: string read FCFOP write FCFOP;
@@ -859,6 +860,8 @@ type
     property VL_ICMS_ST: currency read FVL_ICMS_ST write FVL_ICMS_ST;
     property VL_RED_BC: currency read FVL_RED_BC write FVL_RED_BC;
     property VL_IPI: currency read FVL_IPI write FVL_IPI;
+    property COD_OBS: string read FCOD_OBS write FCOD_OBS;
+
   end;
 
   /// Registro C190 - Lista
@@ -1491,6 +1494,8 @@ type
     fCOD_INF: string;         /// Código da informação complementar do documento fiscal (campo 02 do Registro 0450)
     fVL_PIS: currency;        /// Valor do PIS
     fVL_COFINS: currency;     /// Valor da COFINS
+    fTP_LIGACAO      :String; /// Código de tipo de Ligação [ 1 - Monofásico 2 - Bifásico 3 - Trifásico ]
+    fCOD_GRUPO_TENSAO:String; /// Código de grupo de tensão: Vide Manual Registro C500 Campo 27
   public
     property IND_OPER: string read fIND_OPER write fIND_OPER;
     property IND_EMIT: string read fIND_EMIT write fIND_EMIT;
@@ -1516,6 +1521,8 @@ type
     property COD_INF: string read fCOD_INF write fCOD_INF;
     property VL_PIS: currency read fVL_PIS write fVL_PIS;
     property VL_COFINS: currency read fVL_COFINS write fVL_COFINS;
+    property TP_LIGACAO:        string read fTP_LIGACAO       write fTP_LIGACAO;
+    property COD_GRUPO_TENSAO:  string read fCOD_GRUPO_TENSAO write fCOD_GRUPO_TENSAO;
   end;
 
   /// Registro C500 - Lista

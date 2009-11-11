@@ -46,11 +46,11 @@ uses SysUtils, Variants, Classes;
 
 // Funções de checagem de dados
 function funChecaUF(const UF: string): boolean;
-function funChecaMUN(const COD: SmallInt): Boolean;
+function funChecaMUN(const COD: Integer): Boolean;
 function funChecaCNPJ(const CNPJ: string): Boolean;
 function funChecaCPF(const CPF: string): Boolean;
 function funChecaIE(const IE, TIPO: string): Boolean;
-function funChecaCFOP(const CFOP: SmallInt): Boolean;
+function funChecaCFOP(const CFOP: Integer): Boolean;
 function funChecaCEP(const CEP, UF: string): Boolean;
 function funChecaCST(const CST: string): Boolean;
 function funChecaGENERO(const COD: string): Boolean;
@@ -750,7 +750,7 @@ begin
   end;
 end;
 
-function funChecaCFOP(const CFOP: SmallInt): Boolean;
+function funChecaCFOP(const CFOP: Integer): Boolean;
 const
   ListaCFOP: array[0..542] of string = (
             '1101', '1102', '1111', '1113', '1116', '1117', '1118', '1120',
@@ -836,7 +836,7 @@ begin
   Result := booFind;
 end;
 
-function funChecaMUN(const COD: SmallInt): Boolean;
+function funChecaMUN(const COD: Integer): Boolean;
 const
   ListaMUN: array[0..5565] of string = (
             '5300108', '1400050', '1400027', '1400100', '1400159', '1400175', '1400209', '1400233',

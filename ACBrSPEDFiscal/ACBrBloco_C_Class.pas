@@ -365,268 +365,1654 @@ begin
 end;
 
 function TBloco_C.WriteRegistroC100: string;
+var
+intFor: integer;
+strRegistroC100: string;
 begin
+  strRegistroC100 := '';
 
+  if Assigned( RegistroC100 ) then
+  begin
+     for intFor := 0 to RegistroC100.Count - 1 do
+     begin
+        with RegistroC100.Items[intFor] do
+        begin
+          strRegistroC100 := strRegistroC100 + LFill('C100') +
+                                               LFill( IND_OPER ) +
+                                               LFill( IND_EMIT ) +
+                                               LFill( COD_PART ) +
+                                               LFill( COD_MOD  ) +
+                                               LFill( COD_SIT  ) +
+                                               LFill( SER  ) +
+                                               LFill( NUM_DOC  ) +
+                                               LFill( CHV_NFE  ) +
+                                               LFill( DT_DOC  ) +
+                                               LFill( DT_E_S  ) +
+                                               LFill( VL_DOC,0,2  ) +
+                                               LFill( IND_PGTO  ) +
+                                               LFill( VL_DESC,0,2  ) +
+                                               LFill( VL_ABAT_NT,0,2  ) +
+                                               LFill( VL_MERC,0,2  ) +
+                                               LFill( ND_FRT,1   ) +
+                                               LFill( L_FRT,0,2  ) +
+                                               LFill( VL_SEG,0,2  ) +
+                                               LFill( VL_OUT_DA,0,2  ) +
+                                               LFill( VL_BC_ICMS,0,2  ) +
+                                               LFill( VL_ICMS,0,2  ) +
+                                               LFill( VL_BC_ICMS_ST,0,2  ) +
+                                               LFill( VL_ICMS_ST,0,2  ) +
+                                               LFill( VL_IPI,0,2  ) +
+                                               LFill( VL_PIS,0,2  ) +
+                                               LFill( VL_COFINS,0,2  ) +
+                                               LFill( VL_PIS_ST,0,2  ) +
+                                               LFill( VL_COFINS_ST,0,2  ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC100;
 end;
 
 function TBloco_C.WriteRegistroC110: string;
+var
+intFor: integer;
+strRegistroC110: string;
 begin
+  strRegistroC110 := '';
 
+  if Assigned( RegistroC110 ) then
+  begin
+     for intFor := 0 to RegistroC110.Count - 1 do
+     begin
+        with RegistroC110.Items[intFor] do
+        begin
+          strRegistroC110 := strRegistroC110 + LFill('C110') +
+                                               LFill( COD_NF ) +
+                                               LFill( TXT_COMPL) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC110;
 end;
 
 function TBloco_C.WriteRegistroC111: string;
+var
+intFor: integer;
+strRegistroC111: string;
 begin
+  strRegistroC111 := '';
 
+  if Assigned( RegistroC111 ) then
+  begin
+     for intFor := 0 to RegistroC111.Count - 1 do
+     begin
+        with RegistroC111.Items[intFor] do
+        begin
+          strRegistroC111 := strRegistroC111 + LFill('C111') +
+                                               LFill( NUM_PROC ) +
+                                               LFill( IND_PROC ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC111;
 end;
 
 function TBloco_C.WriteRegistroC112: string;
+var
+intFor: integer;
+strRegistroC112: string;
 begin
+  strRegistroC112 := '';
 
+  if Assigned( RegistroC112 ) then
+  begin
+     for intFor := 0 to RegistroC112.Count - 1 do
+     begin
+        with RegistroC112.Items[intFor] do
+        begin
+          strRegistroC112 := strRegistroC112 + LFill('C112') +
+                                               LFill( COD_DA ) +
+                                               LFill( UF ) +
+                                               LFill( NUM_DA ) +
+                                               LFill( COD_AUT ) +
+                                               LFill( VL_DA,0,2 ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC112;
 end;
 
 function TBloco_C.WriteRegistroC113: string;
+var
+intFor: integer;
+strRegistroC113: string;
 begin
+  strRegistroC113 := '';
 
+  if Assigned( RegistroC113 ) then
+  begin
+     for intFor := 0 to RegistroC113.Count - 1 do
+     begin
+        with RegistroC113.Items[intFor] do
+        begin
+          strRegistroC113 := strRegistroC113 + LFill('C113') +
+                                               LFill( IND_OPER ) +
+                                               LFill( IND_EMIT ) +
+                                               LFill( COD_PART ) +
+                                               LFill( COD_MOD ) +
+                                               LFill( SER ) +
+                                               LFill( SUB ) +
+                                               LFill( NUM_DOC ) +
+                                               LFill( DT_DOC ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC113;
 end;
 
 function TBloco_C.WriteRegistroC114: string;
+var
+intFor: integer;
+strRegistroC114: string;
 begin
+  strRegistroC114 := '';
 
+  if Assigned( RegistroC114 ) then
+  begin
+     for intFor := 0 to RegistroC114.Count - 1 do
+     begin
+        with RegistroC114.Items[intFor] do
+        begin
+          strRegistroC114 := strRegistroC114 + LFill('C114') +
+                                               LFill( COD_MOD ) +
+                                               LFill( ECF_FAB ) +
+                                               LFill( ECF_CX ) +
+                                               LFill( NUM_DOC ) +
+                                               LFill( DT_DOC ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC114;
 end;
 
 function TBloco_C.WriteRegistroC115: string;
+var
+intFor: integer;
+strRegistroC115: string;
 begin
+  strRegistroC115 := '';
 
+  if Assigned( RegistroC115 ) then
+  begin
+     for intFor := 0 to RegistroC115.Count - 1 do
+     begin
+        with RegistroC115.Items[intFor] do
+        begin
+          strRegistroC115 := strRegistroC115 + LFill('C115') +
+                                               LFill( IND_CARGA ) +
+                                               LFill( CNPJ_COL ) +
+                                               LFill( IE_COL ) +
+                                               LFill( CPF_COL ) +
+                                               LFill( COD_MUN_COL ) +
+                                               LFill( CNPJ_ENTG ) +
+                                               LFill( IE_ENTG ) +
+                                               LFill( CPF_ENTG ) +
+                                               LFill( COD_MUN_ENTG ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC115;
 end;
 
 function TBloco_C.WriteRegistroC120: string;
+var
+intFor: integer;
+strRegistroC120: string;
 begin
+  strRegistroC120 := '';
 
+  if Assigned( RegistroC120 ) then
+  begin
+     for intFor := 0 to RegistroC120.Count - 1 do
+     begin
+        with RegistroC120.Items[intFor] do
+        begin
+          strRegistroC120 := strRegistroC120 + LFill('C120') +
+                                               LFill( COD_DOC_IMP ) +
+                                               LFill( NUM_DOC__IMP ) +
+                                               LFill( PIS_IMP,0,2 ) +
+                                               LFill( COFINS_IMP,0,2 ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC120;
 end;
 
 function TBloco_C.WriteRegistroC130: string;
+var
+intFor: integer;
+strRegistroC130: string;
 begin
+  strRegistroC130 := '';
 
+  if Assigned( RegistroC130 ) then
+  begin
+     for intFor := 0 to RegistroC130.Count - 1 do
+     begin
+        with RegistroC130.Items[intFor] do
+        begin
+          strRegistroC130 := strRegistroC130 + LFill('C130') +
+                                               LFill( VL_SERV_NT,2,0 ) +
+                                               LFill( VL_BC_ISSQN,2,0 ) +
+                                               LFill( VL_ISSQN,2,0 ) +
+                                               LFill( VL_BC_IRRF,2,0 ) +
+                                               LFill( VL_IRRF,2,0 ) +
+                                               LFill( VL_BC_PREV,2,0 ) +
+                                               LFill( VL_PREV,2,0 ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC130;
 end;
 
 function TBloco_C.WriteRegistroC140: string;
+var
+intFor: integer;
+strRegistroC140: string;
 begin
+  strRegistroC140 := '';
 
+  if Assigned( RegistroC140 ) then
+  begin
+     for intFor := 0 to RegistroC140.Count - 1 do
+     begin
+        with RegistroC140.Items[intFor] do
+        begin
+          strRegistroC140 := strRegistroC140 + LFill('C140') +
+                                               LFill( IND_EMIT ) +
+                                               LFill( IND_TIT ) +
+                                               LFill( DESC_TIT ) +
+                                               LFill( NUM_TIT ) +
+                                               LFill( QTD_PARC,0,2 ) +
+                                               LFill( VL_TIT,0,2 ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC140;
 end;
 
 function TBloco_C.WriteRegistroC141: string;
+var
+intFor: integer;
+strRegistroC141: string;
 begin
+  strRegistroC141 := '';
 
+  if Assigned( RegistroC141 ) then
+  begin
+     for intFor := 0 to RegistroC141.Count - 1 do
+     begin
+        with RegistroC141.Items[intFor] do
+        begin
+          strRegistroC141 := strRegistroC141 + LFill('C141') +
+                                               LFill( NUM_PARC ) +
+                                               LFill( DT_VCTO ) +
+                                               LFill( VL_PARC,0,2 ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC141;
 end;
 
 function TBloco_C.WriteRegistroC160: string;
+var
+intFor: integer;
+strRegistroC160: string;
 begin
+  strRegistroC160 := '';
 
+  if Assigned( RegistroC160 ) then
+  begin
+     for intFor := 0 to RegistroC160.Count - 1 do
+     begin
+        with RegistroC160.Items[intFor] do
+        begin
+          strRegistroC160 := strRegistroC160 + LFill('C160') +
+                                               LFill( COD_PART ) +
+                                               LFill( VEIC_ID ) +
+                                               LFill( QTD_VOL,0,0 ) +
+                                               LFill( PESO_BRT,0,2 ) +
+                                               LFill( PESO_LIQ,0,2 ) +
+                                               LFill( UF_ID ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC160;
 end;
 
 function TBloco_C.WriteRegistroC165: string;
+var
+intFor: integer;
+strRegistroC165: string;
 begin
+  strRegistroC165 := '';
 
+  if Assigned( RegistroC165 ) then
+  begin
+     for intFor := 0 to RegistroC165.Count - 1 do
+     begin
+        with RegistroC165.Items[intFor] do
+        begin
+          strRegistroC165 := strRegistroC165 + LFill('C165') +
+                                               LFill( COD_PART ) +
+                                               LFill( VEIC_ID ) +
+                                               LFill( COD_AUT ) +
+                                               LFill( NR_PASSE ) +
+                                               LFill( HORA ) +
+                                               LFill( TEMPER ) +
+                                               LFill( QTD_VOL,0,0 ) +
+                                               LFill( PESO_BRT,0,2 ) +
+                                               LFill( PESO_LIQ,0,2 ) +
+                                               LFill( NOM_MOT ) +
+                                               LFill( CPF ) +
+                                               LFill( UF_ID ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC165;
 end;
 
 function TBloco_C.WriteRegistroC170: string;
+var
+intFor: integer;
+strRegistroC170: string;
 begin
+  strRegistroC170 := '';
 
+  if Assigned( RegistroC170 ) then
+  begin
+     for intFor := 0 to RegistroC170.Count - 1 do
+     begin
+        with RegistroC170.Items[intFor] do
+        begin
+          strRegistroC170 := strRegistroC170 + LFill('C170') +
+                                               LFill( NUM_ITEM ) +
+                                               LFill( COD_ITEM ) +
+                                               LFill( DESCR_COMPL ) +
+                                               LFill( QTD,6,0 ) +
+                                               LFill( UNID ) +
+                                               LFill( VL_ITEM,0,2 ) +
+                                               LFill( VL_DESC,0,2 ) +
+                                               LFill( IND_MOV,1 ) +
+                                               LFill( CST_ICMS,3 ) +
+                                               LFill( CFOP,4 ) +
+                                               LFill( COD_NAT ) +
+                                               LFill( VL_BC_ICMS,0,2 ) +
+                                               LFill( ALIQ_ICMS,0,2 ) +
+                                               LFill( VL_ICMS,0,2 ) +
+                                               LFill( VL_BC_ICMS_ST,0,2 ) +
+                                               LFill( ALIQ_ST,0,2 ) +
+                                               LFill( VL_ICMS_ST,0,2 ) +
+                                               LFill( IND_APUR ) +
+                                               LFill( CST_IPI ) +
+                                               LFill( COD_ENQ ) +
+                                               LFill( VL_BC_IPI,0,2 ) +
+                                               LFill( ALIQ_IPI,0,2 ) +
+                                               LFill( VL_IPI,0,2 ) +
+                                               LFill( CST_PIS ) +
+                                               LFill( VL_BC_PIS,0,2 ) +
+                                               LFill( ALIQ_PIS_PERC,0,2 ) +
+                                               LFill( QUANT_BC_PIS,0,2 ) +
+                                               LFill( ALIQ_PIS_R,0,2 ) +
+                                               LFill( VL_PIS,0,2 ) +
+                                               LFill( CST_COFINS ) +
+                                               LFill( VL_BC_COFINS,0,2 ) +
+                                               LFill( ALIQ_COFINS_PERC,0,2 ) +
+                                               LFill( QUANT_BC_COFINS,0,2 ) +
+                                               LFill( ALIQ_COFINS_R,0,2 ) +
+                                               LFill( VL_COFINS,0,2 ) +
+                                               LFill( COD_CTA ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC170;
 end;
 
 function TBloco_C.WriteRegistroC171: string;
+var
+intFor: integer;
+strRegistroC171: string;
 begin
+  strRegistroC171 := '';
 
+  if Assigned( RegistroC171 ) then
+  begin
+     for intFor := 0 to RegistroC171.Count - 1 do
+     begin
+        with RegistroC171.Items[intFor] do
+        begin
+          strRegistroC171 := strRegistroC171 + LFill('C171') +
+                                               LFill( NUM_TANQUE,3 ) +
+                                               LFill( QTDE,0,3 ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC171;
 end;
 
 function TBloco_C.WriteRegistroC172: string;
+var
+intFor: integer;
+strRegistroC172: string;
 begin
+  strRegistroC172 := '';
 
+  if Assigned( RegistroC172 ) then
+  begin
+     for intFor := 0 to RegistroC172.Count - 1 do
+     begin
+        with RegistroC172.Items[intFor] do
+        begin
+          strRegistroC172 := strRegistroC172 + LFill('C172') +
+                                               LFill( VL_BC_ISSQN,0,2 ) +
+                                               LFill( ALIQ_ISSQN,0,2 ) +
+                                               LFill( VL_ISSQN,0,2 ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC172;
 end;
 
 function TBloco_C.WriteRegistroC173: string;
+var
+intFor: integer;
+strRegistroC173: string;
 begin
+  strRegistroC173 := '';
 
+  if Assigned( RegistroC173 ) then
+  begin
+     for intFor := 0 to RegistroC173.Count - 1 do
+     begin
+        with RegistroC173.Items[intFor] do
+        begin
+          strRegistroC173 := strRegistroC173 + LFill('C173') +
+                                               LFill( LOTE_MED ) +
+                                               LFill( QTD_ITEM,0,3 ) +
+                                               LFill( DT_FAB ) +
+                                               LFill( DT_VAL ) +
+                                               LFill( IND_MED ) +
+                                               LFill( TP_PROD ) +
+                                               LFill( VL_TAB_MAX,0,2 ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC173;
 end;
 
 function TBloco_C.WriteRegistroC174: string;
+var
+intFor: integer;
+strRegistroC174: string;
 begin
+  strRegistroC174 := '';
 
+  if Assigned( RegistroC174 ) then
+  begin
+     for intFor := 0 to RegistroC174.Count - 1 do
+     begin
+        with RegistroC174.Items[intFor] do
+        begin
+          strRegistroC174 := strRegistroC174 + LFill('C174') +
+                                               LFill( IND_ARM ) +
+                                               LFill( NUM_ARM ) +
+                                               LFill( DESCR_COMPL ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC174;
 end;
 
 function TBloco_C.WriteRegistroC175: string;
+var
+intFor: integer;
+strRegistroC175: string;
 begin
+  strRegistroC175 := '';
 
+  if Assigned( RegistroC175 ) then
+  begin
+     for intFor := 0 to RegistroC175.Count - 1 do
+     begin
+        with RegistroC175.Items[intFor] do
+        begin
+          strRegistroC175 := strRegistroC175 + LFill('C175') +
+                                               LFill( IND_VEIC_OPER ) +
+                                               LFill( CNPJ ) +
+                                               LFill( UF ) +
+                                               LFill( CHASSI_VEIC ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC175;
 end;
 
 function TBloco_C.WriteRegistroC176: string;
+var
+intFor: integer;
+strRegistroC176: string;
 begin
+  strRegistroC176 := '';
 
+  if Assigned( RegistroC176 ) then
+  begin
+     for intFor := 0 to RegistroC176.Count - 1 do
+     begin
+        with RegistroC176.Items[intFor] do
+        begin
+          strRegistroC176 := strRegistroC176 + LFill('C176') +
+                                               LFill( COD_MOD_ULT_E ) +
+                                               LFill( NUM_DOC_ULT_E ) +
+                                               LFill( SER_ULT_E ) +
+                                               LFill( DT_ULT_E ) +
+                                               LFill( COD_PART_ULT_E ) +
+                                               LFill( QUANT_ULT_E,0,3 ) +
+                                               LFill( VL_UNIT_ULT_E,0,3 ) +
+                                               LFill( VL_UNIT_BC_ST,0,3 ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC176;
 end;
 
 function TBloco_C.WriteRegistroC177: string;
+var
+intFor: integer;
+strRegistroC177: string;
 begin
+  strRegistroC177 := '';
 
+  if Assigned( RegistroC177 ) then
+  begin
+     for intFor := 0 to RegistroC177.Count - 1 do
+     begin
+        with RegistroC177.Items[intFor] do
+        begin
+          strRegistroC177 := strRegistroC177 + LFill('C177') +
+                                               LFill( COD_SELO_IPI ) +
+                                               LFill( QT_SELO_IPI,0,0 ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC177;
 end;
 
 function TBloco_C.WriteRegistroC178: string;
+var
+intFor: integer;
+strRegistroC178: string;
 begin
+  strRegistroC178 := '';
 
+  if Assigned( RegistroC178 ) then
+  begin
+     for intFor := 0 to RegistroC178.Count - 1 do
+     begin
+        with RegistroC178.Items[intFor] do
+        begin
+          strRegistroC178 := strRegistroC178 + LFill('C178') +
+                                               LFill( CL_ENQ ) +
+                                               LFill( VL_UNID,0,2 ) +
+                                               LFill( QUANT_PAD,0,3 ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC178;
 end;
 
 function TBloco_C.WriteRegistroC179: string;
+var
+intFor: integer;
+strRegistroC179: string;
 begin
+  strRegistroC179 := '';
 
+  if Assigned( RegistroC179 ) then
+  begin
+     for intFor := 0 to RegistroC179.Count - 1 do
+     begin
+        with RegistroC179.Items[intFor] do
+        begin
+          strRegistroC179 := strRegistroC179 + LFill('C179') +
+                                               LFill( BC_ST_ORIG_DEST,0,2 ) +
+                                               LFill( ICMS_ST_REP,0,2 ) +
+                                               LFill( ICMS_ST_COMPL,0,2 ) +
+                                               LFill( BC_RET,0,2 ) +
+                                               LFill( ICMS_RET,0,2 ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC179;
 end;
 
 function TBloco_C.WriteRegistroC190: string;
+var
+intFor: integer;
+strRegistroC190: string;
 begin
+  strRegistroC190 := '';
 
+  if Assigned( RegistroC190 ) then
+  begin
+     for intFor := 0 to RegistroC190.Count - 1 do
+     begin
+        with RegistroC190.Items[intFor] do
+        begin
+          strRegistroC190 := strRegistroC190 + LFill('C190') +
+                                               LFill( CST_ICMS ) +
+                                               LFill( CFOP,4 ) +
+                                               LFill( ALIQ_ICMS,6,2 ) +
+                                               LFill( VL_OPR,0,2 ) +
+                                               LFill( VL_BC_ICMS,0,2 ) +
+                                               LFill( VL_ICMS,0,2 ) +
+                                               LFill( VL_BC_ICMS_ST,0,2 ) +
+                                               LFill( VL_ICMS_ST,0,2 ) +
+                                               LFill( VL_RED_BC,0,2 ) +
+                                               LFill( VL_IPI,0,2 ) +
+                                               LFill( COD_OBS,6 ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC190;
 end;
 
 function TBloco_C.WriteRegistroC195: string;
+var
+intFor: integer;
+strRegistroC195: string;
 begin
+  strRegistroC195 := '';
 
+  if Assigned( RegistroC195 ) then
+  begin
+     for intFor := 0 to RegistroC195.Count - 1 do
+     begin
+        with RegistroC195.Items[intFor] do
+        begin
+          strRegistroC195 := strRegistroC195 + LFill('C195') +
+                                               LFill( COD_OBS,6 ) +
+                                               LFill( TXT_COMPL ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC195;
 end;
 
 function TBloco_C.WriteRegistroC197: string;
+var
+intFor: integer;
+strRegistroC197: string;
 begin
+  strRegistroC197 := '';
 
+  if Assigned( RegistroC197 ) then
+  begin
+     for intFor := 0 to RegistroC197.Count - 1 do
+     begin
+        with RegistroC197.Items[intFor] do
+        begin
+          strRegistroC197 := strRegistroC197 + LFill('C197') +
+                                               LFill( COD_AJ ) +
+                                               LFill( DESCR_COMPL_AJ ) +
+                                               LFill( COD_ITEM ) +
+                                               LFill( VL_BC_ICMS,0,2 ) +
+                                               LFill( ALIQ_ICMS,6,2 ) +
+                                               LFill( VL_ICMS,0,2 ) +
+                                               LFill( VL_OUTROS,0,2 ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC197;
 end;
 
 function TBloco_C.WriteRegistroC300: string;
+var
+intFor: integer;
+strRegistroC300: string;
 begin
+  strRegistroC300 := '';
 
+  if Assigned( RegistroC300 ) then
+  begin
+     for intFor := 0 to RegistroC300.Count - 1 do
+     begin
+        with RegistroC300.Items[intFor] do
+        begin
+          strRegistroC300 := strRegistroC300 + LFill('C300') +
+                                               LFill( COD_MOD,2 ) +
+                                               LFill( SER ) +
+                                               LFill( SUB ) +
+                                               LFill( NUM_DOC_INI ) +
+                                               LFill( NUM_DOC_FIN ) +
+                                               LFill( DT_DOC ) +
+                                               LFill( VL_DOC,0,2 ) +
+                                               LFill( VL_PIS,0,2 ) +
+                                               LFill( VL_COFINS,0,2 ) +
+                                               LFill( COD_CTA ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC300;
 end;
 
 function TBloco_C.WriteRegistroC310: string;
+var
+intFor: integer;
+strRegistroC310: string;
 begin
+  strRegistroC310 := '';
 
+  if Assigned( RegistroC310 ) then
+  begin
+     for intFor := 0 to RegistroC310.Count - 1 do
+     begin
+        with RegistroC310.Items[intFor] do
+        begin
+          strRegistroC310 := strRegistroC310 + LFill('C310') +
+                                               LFill( NUM_DOC_CANC ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC310;
 end;
 
 function TBloco_C.WriteRegistroC320: string;
+var
+intFor: integer;
+strRegistroC320: string;
 begin
+  strRegistroC320 := '';
 
+  if Assigned( RegistroC320 ) then
+  begin
+     for intFor := 0 to RegistroC320.Count - 1 do
+     begin
+        with RegistroC320.Items[intFor] do
+        begin
+          strRegistroC320 := strRegistroC320 + LFill('C320') +
+                                               LFill( CST_ICMS,3 ) +
+                                               LFill( CFOP,4 ) +
+                                               LFill( ALIQ_ICMS,6,2 ) +
+                                               LFill( VL_OPR,0,2 ) +
+                                               LFill( VL_BC_ICMS,0,2 ) +
+                                               LFill( VL_ICMS,0,2 ) +
+                                               LFill( VL_RED_BC,0,2 ) +
+                                               LFill( COD_OBS,6 ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC320;
 end;
 
 function TBloco_C.WriteRegistroC321: string;
+var
+intFor: integer;
+strRegistroC321: string;
 begin
+  strRegistroC321 := '';
 
+  if Assigned( RegistroC321 ) then
+  begin
+     for intFor := 0 to RegistroC321.Count - 1 do
+     begin
+        with RegistroC321.Items[intFor] do
+        begin
+          strRegistroC321 := strRegistroC321 + LFill('C321') +
+                                               LFill( COD_ITEM ) +
+                                               LFill( QTD,0,3 ) +
+                                               LFill( VL_ITEM,0,2 ) +
+                                               LFill( VL_DESC,0,2 ) +
+                                               LFill( VL_BC_ICMS,0,2 ) +
+                                               LFill( VL_BC_ICMS,0,2 ) +
+                                               LFill( VL_ICMS,0,2 ) +
+                                               LFill( VL_PIS,0,2 ) +
+                                               LFill( VL_COFINS,0,2 ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC321;
 end;
 
 function TBloco_C.WriteRegistroC350: string;
+var
+intFor: integer;
+strRegistroC350: string;
 begin
+  strRegistroC350 := '';
 
+  if Assigned( RegistroC350 ) then
+  begin
+     for intFor := 0 to RegistroC350.Count - 1 do
+     begin
+        with RegistroC350.Items[intFor] do
+        begin
+          strRegistroC350 := strRegistroC350 + LFill('C350') +
+                                               LFill( SER,3 ) +
+                                               LFill( SUB_SER,3 ) +
+                                               LFill( NUM_DOC ) +
+                                               LFill( DT_DOC ) +
+                                               LFill( CNPJ_CPF ) +
+                                               LFill( VL_MERC,0,2 ) +
+                                               LFill( VL_DOC,0,2 ) +
+                                               LFill( VL_DESC,0,2 ) +
+                                               LFill( VL_PIS,0,2 ) +
+                                               LFill( VL_COFINS,0,2 ) +
+                                               LFill( COD_CTA ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC350;
 end;
 
 function TBloco_C.WriteRegistroC370: string;
+var
+intFor: integer;
+strRegistroC370: string;
 begin
+  strRegistroC370 := '';
 
+  if Assigned( RegistroC370 ) then
+  begin
+     for intFor := 0 to RegistroC370.Count - 1 do
+     begin
+        with RegistroC370.Items[intFor] do
+        begin
+          strRegistroC370 := strRegistroC370 + LFill('C370') +
+                                               LFill( NUM_ITEM,3 ) +
+                                               LFill( COD_ITEM ) +
+                                               LFill( QTD,0,3 ) +
+                                               LFill( UNID ) +
+                                               LFill( VL_ITEM,0,3 ) +
+                                               LFill( VL_DESC,0,3 ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC370;
 end;
 
 function TBloco_C.WriteRegistroC390: string;
+var
+intFor: integer;
+strRegistroC390: string;
 begin
+  strRegistroC390 := '';
 
+  if Assigned( RegistroC390 ) then
+  begin
+     for intFor := 0 to RegistroC390.Count - 1 do
+     begin
+        with RegistroC390.Items[intFor] do
+        begin
+          strRegistroC390 := strRegistroC390 + LFill('C390') +
+                                               LFill( CST_ICMS,3 ) +
+                                               LFill( CFOP,4 ) +
+                                               LFill( ALIQ_ICMS,0,2 ) +
+                                               LFill( VL_OPR,0,2 ) +
+                                               LFill( VL_BC_ICMS,0,2 ) +
+                                               LFill( VL_ICMS,0,2 ) +
+                                               LFill( VL_RED_BC,0,2 ) +
+                                               LFill( COD_OBS,6 ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC390;
 end;
 
 function TBloco_C.WriteRegistroC400: string;
+var
+intFor: integer;
+strRegistroC400: string;
 begin
+  strRegistroC400 := '';
 
+  if Assigned( RegistroC400 ) then
+  begin
+     for intFor := 0 to RegistroC400.Count - 1 do
+     begin
+        with RegistroC400.Items[intFor] do
+        begin
+          strRegistroC400 := strRegistroC400 + LFill('C400') +
+                                               LFill(COD_MOD ) +
+                                               LFill(ECF_MOD) +
+                                               LFill(ECF_FAB) +
+                                               LFill(ECF_CX ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC400;
 end;
 
 function TBloco_C.WriteRegistroC405: string;
+var
+intFor: integer;
+strRegistroC405: string;
 begin
+  strRegistroC405 := '';
 
+  if Assigned( RegistroC405 ) then
+  begin
+     for intFor := 0 to RegistroC405.Count - 1 do
+     begin
+        with RegistroC405.Items[intFor] do
+        begin
+          strRegistroC405 := strRegistroC405 + LFill('C405') +
+                                               LFill( DT_DOC ) +
+                                               LFill( CRO,3 ) +
+                                               LFill( CRZ,6 ) +
+                                               LFill( NUM_COO_FIN,6  ) +
+                                               LFill( GT_FIN,0,2  ) +
+                                               LFill( VL_BRT,0,2  ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC405;
 end;
 
 function TBloco_C.WriteRegistroC410: string;
+var
+intFor: integer;
+strRegistroC410: string;
 begin
+  strRegistroC410 := '';
 
+  if Assigned( RegistroC410 ) then
+  begin
+     for intFor := 0 to RegistroC410.Count - 1 do
+     begin
+        with RegistroC410.Items[intFor] do
+        begin
+          strRegistroC410 := strRegistroC410 + LFill('C410') +
+                                               LFill( VL_PIS,0,2 ) +
+                                               LFill( VL_COFINS,0,2) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC410;
 end;
 
 function TBloco_C.WriteRegistroC420: string;
+var
+intFor: integer;
+strRegistroC420: string;
 begin
+  strRegistroC420 := '';
 
+  if Assigned( RegistroC420 ) then
+  begin
+     for intFor := 0 to RegistroC420.Count - 1 do
+     begin
+        with RegistroC420.Items[intFor] do
+        begin
+          strRegistroC420 := strRegistroC420 + LFill('C420') +
+                                               LFill( COD_TOT_PAR,7 ) +
+                                               LFill( VLR_ACUM_TOT,0,2) +
+                                               LFill( NR_TOT,2) +
+                                               LFill( DESCR_NR_TOT ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC420;
 end;
 
 function TBloco_C.WriteRegistroC425: string;
+var
+intFor: integer;
+strRegistroC425: string;
 begin
+  strRegistroC425 := '';
 
+  if Assigned( RegistroC425 ) then
+  begin
+     for intFor := 0 to RegistroC425.Count - 1 do
+     begin
+        with RegistroC425.Items[intFor] do
+        begin
+          strRegistroC425 := strRegistroC425 + LFill('C425') +
+                                               LFill( COD_ITEM,6 ) +
+                                               LFill( QTD,0,3 ) +
+                                               LFill( UNID ) +
+                                               LFill( VL_ITEM,0,2 ) +
+                                               LFill( VL_PIS ,0,2 ) +
+                                               LFill( VL_COFINS ,0,2 ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC425;
 end;
 
 function TBloco_C.WriteRegistroC460: string;
+var
+intFor: integer;
+strRegistroC460: string;
 begin
+  strRegistroC460 := '';
 
+  if Assigned( RegistroC460 ) then
+  begin
+     for intFor := 0 to RegistroC460.Count - 1 do
+     begin
+        with RegistroC460.Items[intFor] do
+        begin
+          strRegistroC460 := strRegistroC460 + LFill('C460') +
+                                               LFill( COD_MOD ) +
+                                               LFill( COD_SIT ) +
+                                               LFill( NUM_DOC,8 ) +
+                                               LFill( DT_DOC ) +
+                                               LFill( VL_DOC,0,2 ) +
+                                               LFill( VL_PIS,0,2 ) +
+                                               LFill( VL_COFINS,0,2 ) +
+                                               LFill( CPF_CNPJ ) +
+                                               LFill( NOM_ADQ ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC460;
 end;
 
 function TBloco_C.WriteRegistroC470: string;
+var
+intFor: integer;
+strRegistroC470: string;
 begin
+  strRegistroC470 := '';
 
+  if Assigned( RegistroC470 ) then
+  begin
+     for intFor := 0 to RegistroC470.Count - 1 do
+     begin
+        with RegistroC470.Items[intFor] do
+        begin
+          strRegistroC470 := strRegistroC470 + LFill('C470') +
+                                               LFill( COD_ITEM,6 ) +
+                                               LFill( QTD,0,3 ) +
+                                               LFill( QTD_CANC,0,3 ) +
+                                               LFill( UNID,6 ) +
+                                               LFill( VL_ITEM,0,2 ) +
+                                               LFill( CST_ICMS,3 ) +
+                                               LFill( CFOP,4 ) +
+                                               LFill( ALIQ_ICMS,6,2 ) +
+                                               LFill( VL_PIS,0,2 ) +
+                                               LFill( VL_COFINS,0,2 ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC470;
 end;
 
 function TBloco_C.WriteRegistroC490: string;
+var
+intFor: integer;
+strRegistroC490: string;
 begin
+  strRegistroC490 := '';
 
+  if Assigned( RegistroC490 ) then
+  begin
+     for intFor := 0 to RegistroC490.Count - 1 do
+     begin
+        with RegistroC490.Items[intFor] do
+        begin
+          strRegistroC490 := strRegistroC490 + LFill('C490') +
+                                               LFill( CST_ICMS,3 ) +
+                                               LFill( CFOP,4 ) +
+                                               LFill( ALIQ_ICMS,6,2 ) +
+                                               LFill( VL_OPR,0,2 ) +
+                                               LFill( VL_BC_ICMS,0,2 ) +
+                                               LFill( VL_ICMS,0,2 ) +
+                                               LFill( COD_OBS ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC490;
 end;
 
 function TBloco_C.WriteRegistroC495: string;
+var
+intFor: integer;
+strRegistroC495: string;
 begin
+  strRegistroC495 := '';
 
+  if Assigned( RegistroC495 ) then
+  begin
+     for intFor := 0 to RegistroC495.Count - 1 do
+     begin
+        with RegistroC495.Items[intFor] do
+        begin
+          strRegistroC495 := strRegistroC495 + LFill('C495') +
+                                               LFill( ALIQ_ICMS,6,2 ) +
+                                               LFill( COD_ITEM,13 ) +
+                                               LFill( QTD,0,3 ) +
+                                               LFill( QTD_CANC,0,3 ) +
+                                               LFill( UNID ) +
+                                               LFill( VL_ITEM,0,2 ) +
+                                               LFill( VL_DESC,0,2 ) +
+                                               LFill( VL_CANC,0,2 ) +
+                                               LFill( VL_ACMO,0,2 ) +
+                                               LFill( VL_BC_ICMS,0,2 ) +
+                                               LFill( VL_ICMS,0,2 ) +
+                                               LFill( VL_ISEN,0,2 ) +
+                                               LFill( VL_NT,0,2 ) +
+                                               LFill( VL_ICMS_ST,0,2 ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC495;
 end;
 
 function TBloco_C.WriteRegistroC500: string;
+var
+intFor: integer;
+strRegistroC500: string;
 begin
+  strRegistroC500 := '';
 
+  if Assigned( RegistroC500 ) then
+  begin
+     for intFor := 0 to RegistroC500.Count - 1 do
+     begin
+        with RegistroC500.Items[intFor] do
+        begin
+          strRegistroC500 := strRegistroC500 + LFill('C500') +
+                                               LFill( IND_OPER,1 ) +
+                                               LFill( IND_EMIT,1 ) +
+                                               LFill( COD_PART ) +
+                                               LFill( COD_MOD,2 ) +
+                                               LFill( COD_SIT,2 ) +
+                                               LFill( SER,4 ) +
+                                               LFill( SUB,3 ) +
+                                               LFill( COD_CONS,2 ) +
+                                               LFill( NUM_DOC,9 ) +
+                                               LFill( DT_DOC ) +
+                                               LFill( DT_E_S ) +
+                                               LFill( VL_DOC,0,2 ) +
+                                               LFill( VL_DESC,0,2 ) +
+                                               LFill( VL_FORN,0,2 ) +
+                                               LFill( VL_SERV_NT,0,2 ) +
+                                               LFill( VL_TERC,0,2 ) +
+                                               LFill( VL_DA,0,2 ) +
+                                               LFill( VL_BC_ICMS,0,2 ) +
+                                               LFill( VL_ICMS,0,2 ) +
+                                               LFill( VL_BC_ICMS_ST,0,2 ) +
+                                               LFill( VL_ICMS_ST,0,2 ) +
+                                               LFill( COD_INF,6 ) +
+                                               LFill( VL_PIS,0,2 ) +
+                                               LFill( VL_COFINS,0,2 ) +
+                                               LFill( TP_LIGACAO ) +
+                                               LFill( COD_GRUPO_TENSAO ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC500;
 end;
 
 function TBloco_C.WriteRegistroC510: string;
+var
+intFor: integer;
+strRegistroC510: string;
 begin
+  strRegistroC510 := '';
 
+  if Assigned( RegistroC510 ) then
+  begin
+     for intFor := 0 to RegistroC510.Count - 1 do
+     begin
+        with RegistroC510.Items[intFor] do
+        begin
+          strRegistroC510 := strRegistroC510 + LFill('C510') +
+                                               LFill( NUM_ITEM,3 ) +
+                                               LFill( COD_ITEM ) +
+                                               LFill( COD_CLASS,4 ) +
+                                               LFill( QTD,0,3 ) +
+                                               LFill( UNID ) +
+                                               LFill( VL_ITEM,0,2 ) +
+                                               LFill( VL_DESC,0,2 ) +
+                                               LFill( CST_ICMS,3 ) +
+                                               LFill( CFOP,4 ) +
+                                               LFill( VL_BC_ICMS,0,2 ) +
+                                               LFill( ALIQ_ICMS,0,2 ) +
+                                               LFill( VL_ICMS,0,2 ) +
+                                               LFill( VL_BC_ICMS_ST,0,2 ) +
+                                               LFill( ALIQ_ST,0,2 ) +
+                                               LFill( VL_ICMS_ST,0,2 ) +
+                                               LFill( IND_REC,1 ) +
+                                               LFill( COD_PART  ) +
+                                               LFill( VL_PIS,0,2 ) +
+                                               LFill( VL_COFINS,0,2 ) +
+                                               LFill( COD_CTA ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC510;
 end;
 
 function TBloco_C.WriteRegistroC590: string;
+var
+intFor: integer;
+strRegistroC590: string;
 begin
+  strRegistroC590 := '';
 
+  if Assigned( RegistroC590 ) then
+  begin
+     for intFor := 0 to RegistroC590.Count - 1 do
+     begin
+        with RegistroC590.Items[intFor] do
+        begin
+          strRegistroC590 := strRegistroC590 + LFill('C590') +
+                                               LFill( CST_ICMS,3 ) +
+                                               LFill( CFOP,4 ) +
+                                               LFill( ALIQ_ICMS,6,2 ) +
+                                               LFill( VL_OPR,0,2 ) +
+                                               LFill( VL_BC_ICMS,0,2 ) +
+                                               LFill( VL_ICMS,0,2 ) +
+                                               LFill( VL_BC_ICMS_ST,0,2 ) +
+                                               LFill( VL_ICMS_ST,0,2 ) +
+                                               LFill( VL_RED_BC,0,2 ) +
+                                               LFill( COD_OBS  ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC590;
 end;
 
 function TBloco_C.WriteRegistroC600: string;
+var
+intFor: integer;
+strRegistroC600: string;
 begin
+  strRegistroC600 := '';
 
+  if Assigned( RegistroC600 ) then
+  begin
+     for intFor := 0 to RegistroC600.Count - 1 do
+     begin
+        with RegistroC600.Items[intFor] do
+        begin
+          strRegistroC600 := strRegistroC600 + LFill('C600') +
+                                               LFill( COD_MOD,2 ) +
+                                               LFill( COD_MUN ,7 ) +
+                                               LFill( SER,4 ) +
+                                               LFill( SUB,3 ) +
+                                               LFill( COD_CONS,2 ) +
+                                               LFill( QTD_CONS,0,2 ) +
+                                               LFill( QTD_CANC,0,2 ) +
+                                               LFill( DT_DOC ) +
+                                               LFill( VL_DOC,0,2 ) +
+                                               LFill( VL_DESC,0,2 ) +
+                                               LFill( CONS,0,2 ) +
+                                               LFill( VL_FORN,0,2 ) +
+                                               LFill( VL_SERV_NT,0,2 ) +
+                                               LFill( VL_TERC,0,2 ) +
+                                               LFill( VL_DA,0,2 ) +
+                                               LFill( VL_BC_ICMS,0,2 ) +
+                                               LFill( VL_ICMS,0,2 ) +
+                                               LFill( VL_BC_ICMS_ST,0,2 ) +
+                                               LFill( VL_ICMS_ST,0,2 ) +
+                                               LFill( VL_PIS,0,2 ) +
+                                               LFill( VL_COFINS,0,2 ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC600;
 end;
 
 function TBloco_C.WriteRegistroC601: string;
+var
+intFor: integer;
+strRegistroC601: string;
 begin
+  strRegistroC601 := '';
 
+  if Assigned( RegistroC601 ) then
+  begin
+     for intFor := 0 to RegistroC601.Count - 1 do
+     begin
+        with RegistroC601.Items[intFor] do
+        begin
+          strRegistroC601 := strRegistroC601 + LFill('C601') +
+                                               LFill( NUM_DOC_CANC ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC601;
 end;
 
 function TBloco_C.WriteRegistroC610: string;
+var
+intFor: integer;
+strRegistroC610: string;
 begin
+  strRegistroC610 := '';
 
+  if Assigned( RegistroC610 ) then
+  begin
+     for intFor := 0 to RegistroC610.Count - 1 do
+     begin
+        with RegistroC610.Items[intFor] do
+        begin
+          strRegistroC610 := strRegistroC610 + LFill('C610') +
+                                               LFill( COD_CLASS,4 ) +
+                                               LFill( COD_ITEM ) +
+                                               LFill( QTD,0,3 ) +
+                                               LFill( UNID ) +
+                                               LFill( VL_ITEM,0,2 ) +
+                                               LFill( VL_DESC,0,2 ) +
+                                               LFill( CST_ICMS,3 ) +
+                                               LFill( CFOP,4 ) +
+                                               LFill( ALIQ_ICMS,0,3 ) +
+                                               LFill( VL_BC_ICMS,0,2 ) +
+                                               LFill( VL_ICMS,0,2 ) +
+                                               LFill( VL_BC_ICMS_ST,0,2 ) +
+                                               LFill( VL_ICMS_ST,0,2 ) +
+                                               LFill( VL_PIS,0,2 ) +
+                                               LFill( VL_COFINS,0,2 ) +
+                                               LFill( COD_CTA ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC610;
 end;
 
 function TBloco_C.WriteRegistroC620: string;
+var
+intFor: integer;
+strRegistroC620: string;
 begin
+  strRegistroC620 := '';
 
+  if Assigned( RegistroC620 ) then
+  begin
+     for intFor := 0 to RegistroC620.Count - 1 do
+     begin
+        with RegistroC620.Items[intFor] do
+        begin
+          strRegistroC620 := strRegistroC620 + LFill('C620') +
+                                               LFill( VL_FCP,0,00 ) +
+                                               LFill( IND_F0 ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC620;
 end;
 
 function TBloco_C.WriteRegistroC690: string;
+var
+intFor: integer;
+strRegistroC690: string;
 begin
+  strRegistroC690 := '';
 
+  if Assigned( RegistroC690 ) then
+  begin
+     for intFor := 0 to RegistroC690.Count - 1 do
+     begin
+        with RegistroC690.Items[intFor] do
+        begin
+          strRegistroC690 := strRegistroC690 + LFill('C690') +
+                                               LFill( CST_ICMS,3 ) +
+                                               LFill( CFOP,4 ) +
+                                               LFill( ALIQ_ICMS,6,2 ) +
+                                               LFill( VL_OPR,0,2 ) +
+                                               LFill( VL_BC_ICMS,0,2 ) +
+                                               LFill( VL_ICMS,0,2 ) +
+                                               LFill( VL_RED_BC,0,2 ) +
+                                               LFill( VL_RED_BC,0,2 ) +
+                                               LFill( VL_BC_ICMS_ST,0,2 ) +
+                                               LFill( VL_ICMS_ST,0,2 ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC690;
 end;
 
 function TBloco_C.WriteRegistroC700: string;
+var
+intFor: integer;
+strRegistroC700: string;
 begin
+  strRegistroC700 := '';
 
+  if Assigned( RegistroC700 ) then
+  begin
+     for intFor := 0 to RegistroC700.Count - 1 do
+     begin
+        with RegistroC700.Items[intFor] do
+        begin
+          strRegistroC700 := strRegistroC700 + LFill('C700') +
+                                               LFill( COD_MOD,2 ) +
+                                               LFill( SER,4 ) +
+                                               LFill( NRO_ORD_INI,9 ) +
+                                               LFill( NRO_ORD_FIN,9 ) +
+                                               LFill( DT_DOC_INI ) +
+                                               LFill( DT_DOC_FIN ) +
+                                               LFill( NOM_MEST ) +
+                                               LFill( CHV_COD_DIG ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC700;
 end;
 
 function TBloco_C.WriteRegistroC790: string;
+var
+intFor: integer;
+strRegistroC790: string;
 begin
+  strRegistroC790 := '';
 
+  if Assigned( RegistroC790 ) then
+  begin
+     for intFor := 0 to RegistroC790.Count - 1 do
+     begin
+        with RegistroC790.Items[intFor] do
+        begin
+          strRegistroC790 := strRegistroC790 + LFill('C790') +
+                                               LFill( CST_ICMS,3 ) +
+                                               LFill( CFOP,4 ) +
+                                               LFill( ALIQ_ICMS,6,2 ) +
+                                               LFill( VL_OPR,0,2 ) +
+                                               LFill( VL_BC_ICMS,0,2 ) +
+                                               LFill( VL_ICMS,0,2 ) +
+                                               LFill( VL_BC_ICMS_ST,0,2 ) +
+                                               LFill( VL_ICMS_ST,0,2 ) +
+                                               LFill( VL_RED_BC,0,2 ) +
+                                               LFill( COD_OBS ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC790;
 end;
 
 function TBloco_C.WriteRegistroC791: string;
+var
+intFor: integer;
+strRegistroC791: string;
 begin
+  strRegistroC791 := '';
 
+  if Assigned( RegistroC791 ) then
+  begin
+     for intFor := 0 to RegistroC791.Count - 1 do
+     begin
+        with RegistroC791.Items[intFor] do
+        begin
+          strRegistroC791 := strRegistroC791 + LFill('C791') +
+                                               LFill( UF ) +
+                                               LFill( VL_BC_ICMS_ST,0,2 ) +
+                                               LFill( VL_ICMS_ST,0,2 ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     end;
+  end;
+  Result := strRegistroC791;
 end;
 
 function TBloco_C.WriteRegistroC990: string;

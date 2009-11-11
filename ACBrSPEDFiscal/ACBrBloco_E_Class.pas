@@ -56,7 +56,7 @@ type
     FRegistroE113: TRegistroE113List;  /// BLOCO E - Lista de RegistroE113
     FRegistroE115: TRegistroE115List;  /// BLOCO E - Lista de RegistroE115
     FRegistroE116: TRegistroE116List;  /// BLOCO E - Lista de RegistroE116
-    FRegistroE200: TRegistroE200;      /// BLOCO E - RegistroE200
+    FRegistroE200: TRegistroE200List;  /// BLOCO E - Lista de RegistroE200
     FRegistroE210: TRegistroE210List;  /// BLOCO E - Lista de RegistroE210
     FRegistroE220: TRegistroE220List;  /// BLOCO E - Lista de RegistroE220
     FRegistroE230: TRegistroE230List;  /// BLOCO E - Lista de RegistroE230
@@ -99,7 +99,7 @@ type
     property RegistroE113: TRegistroE113List read FRegistroE113 write FRegistroE113;
     property RegistroE115: TRegistroE115List read FRegistroE115 write FRegistroE115;
     property RegistroE116: TRegistroE116List read FRegistroE116 write FRegistroE116;
-    property RegistroE200: TRegistroE200 read FRegistroE200 write FRegistroE200;
+    property RegistroE200: TRegistroE200List read FRegistroE200 write FRegistroE200;
     property RegistroE210: TRegistroE210List read FRegistroE210 write FRegistroE210;
     property RegistroE220: TRegistroE220List read FRegistroE220 write FRegistroE220;
     property RegistroE230: TRegistroE230List read FRegistroE230 write FRegistroE230;
@@ -127,7 +127,7 @@ begin
   FRegistroE113 := TRegistroE113List.Create;
   FRegistroE115 := TRegistroE115List.Create;
   FRegistroE116 := TRegistroE116List.Create;
-  FRegistroE200 := TRegistroE200.Create;
+  FRegistroE200 := TRegistroE200List.Create;
   FRegistroE210 := TRegistroE210List.Create;
   FRegistroE220 := TRegistroE220List.Create;
   FRegistroE230 := TRegistroE230List.Create;
@@ -235,78 +235,439 @@ begin
 end;
 
 function TBloco_E.WriteRegistroE111: string;
+var
+intFor: integer;
+strRegistroE111: string;
 begin
+  strRegistroE111 := '';
 
+  if Assigned( RegistroE111 ) then
+  begin
+     for intFor := 0 to RegistroE111.Count - 1 do
+     begin
+        with RegistroE111.Items[intFor] do
+        begin
+          strRegistroE111 := strRegistroE111 + LFill('E111') +
+                                               LFill( COD_AJ_APUR ) +
+                                               LFill( DESCR_COMPL_AJ ) +
+                                               LFill( VL_AJ_APUR,0 ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
+     end;
+  end;
+  Result := strRegistroE111;
 end;
 
 function TBloco_E.WriteRegistroE112: string;
+var
+intFor: integer;
+strRegistroE112: string;
 begin
+  strRegistroE112 := '';
 
+  if Assigned( RegistroE112 ) then
+  begin
+     for intFor := 0 to RegistroE112.Count - 1 do
+     begin
+        with RegistroE112.Items[intFor] do
+        begin
+          strRegistroE112 := strRegistroE112 + LFill('E112') +
+                                               LFill( NUM_DA ) +
+                                               LFill( NUM_PROC ) +
+                                               LFill( IND_PROC ) +
+                                               LFill( PROC ) +
+                                               LFill( COD_OBS ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
+     end;
+  end;
+  Result := strRegistroE112;
 end;
 
 function TBloco_E.WriteRegistroE113: string;
+var
+intFor: integer;
+strRegistroE113: string;
 begin
+  strRegistroE113 := '';
 
+  if Assigned( RegistroE113 ) then
+  begin
+     for intFor := 0 to RegistroE113.Count - 1 do
+     begin
+        with RegistroE113.Items[intFor] do
+        begin
+          strRegistroE113 := strRegistroE113 + LFill('E113') +
+                                               LFill( COD_PART ) +
+                                               LFill( COD_MOD ) +
+                                               LFill( SER ) +
+                                               LFill( SUB ) +
+                                               LFill( NUM_DOC ) +
+                                               LFill( DT_DOC ) +
+                                               LFill( CHV_NFE ) +
+                                               LFill( COD_ITEM ) +
+                                               LFill( VL_AJ_ITEM,0 ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
+     end;
+  end;
+  Result := strRegistroE113;
 end;
 
 function TBloco_E.WriteRegistroE115: string;
+var
+intFor: integer;
+strRegistroE115: string;
 begin
+  strRegistroE115 := '';
 
+  if Assigned( RegistroE115 ) then
+  begin
+     for intFor := 0 to RegistroE115.Count - 1 do
+     begin
+        with RegistroE115.Items[intFor] do
+        begin
+          strRegistroE115 := strRegistroE115 + LFill('E115') +
+                                               LFill( COD_INF_ADIC ) +
+                                               LFill( VL_INF_ADIC,0 ) +
+                                               LFill( DESCR_COMPL_AJ ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
+     end;
+  end;
+  Result := strRegistroE115;
 end;
 
 function TBloco_E.WriteRegistroE116: string;
+var
+intFor: integer;
+strRegistroE116: string;
 begin
+  strRegistroE116 := '';
 
+  if Assigned( RegistroE116 ) then
+  begin
+     for intFor := 0 to RegistroE116.Count - 1 do
+     begin
+        with RegistroE116.Items[intFor] do
+        begin
+          strRegistroE116 := strRegistroE116 + LFill('E116') +
+                                               LFill( COD_OR ) +
+                                               LFill( VL_OR,0 ) +
+                                               LFill( DT_VCTO ) +
+                                               LFill( COD_REC ) +
+                                               LFill( NUM_PROC ) +
+                                               LFill( IND_PROC ) +
+                                               LFill( PROC ) +
+                                               LFill( TXT_COMPL ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
+     end;
+  end;
+  Result := strRegistroE116;
 end;
 
 function TBloco_E.WriteRegistroE200: string;
+var
+intFor: integer;
+strRegistroE200: string;
 begin
+  strRegistroE200 := '';
 
+  if Assigned( RegistroE200 ) then
+  begin
+     for intFor := 0 to RegistroE200.Count - 1 do
+     begin
+        with RegistroE200.Items[intFor] do
+        begin
+          strRegistroE200 := strRegistroE200 + LFill('E200') +
+                                               LFill( UF ) +
+                                               LFill( DT_INI ) +
+                                               LFill( DT_FIN ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
+     end;
+  end;
+  Result := strRegistroE200;
 end;
 
 function TBloco_E.WriteRegistroE210: string;
+var
+intFor: integer;
+strRegistroE210: string;
 begin
+  strRegistroE210 := '';
 
+  if Assigned( RegistroE210 ) then
+  begin
+     for intFor := 0 to RegistroE210.Count - 1 do
+     begin
+        with RegistroE210.Items[intFor] do
+        begin
+          strRegistroE210 := strRegistroE210 + LFill('E210') +
+                                               LFill( IND_MOV_ST ) +
+                                               LFill( VL_SLD_CRED_ANT_ST,0 ) +
+                                               LFill( VL_DEVOL_ST, 0 ) +
+                                               LFill( VL_RESSARC_ST, 0 ) +
+                                               LFill( VL_OUT_CRED_ST, 0 ) +
+                                               LFill( VL_AJ_CREDITOS_ST, 0 ) +
+                                               LFill( VL_RETENCAO_ST, 0 ) +
+                                               LFill( VL_OUT_DEB_ST, 0 ) +
+                                               LFill( VL_AJ_DEBITOS_ST, 0 ) +
+                                               LFill( VL_SLD_DEV_ANT_ST, 0 ) +
+                                               LFill( VL_DEDUCOES_ST, 0 ) +
+                                               LFill( VL_ICMS_RECOL_ST, 0 ) +
+                                               LFill( VL_SLD_CRED_ST_TRANSPORTAR, 0 ) +
+                                               LFill( DEB_ESP_ST, 0 ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
+     end;
+  end;
+  Result := strRegistroE210;
 end;
 
 function TBloco_E.WriteRegistroE220: string;
+var
+intFor: integer;
+strRegistroE220: string;
 begin
+  strRegistroE220 := '';
 
+  if Assigned( RegistroE220 ) then
+  begin
+     for intFor := 0 to RegistroE220.Count - 1 do
+     begin
+        with RegistroE220.Items[intFor] do
+        begin
+          strRegistroE220 := strRegistroE220 + LFill('E220') +
+                                               LFill( COD_AJ_APUR ) +
+                                               LFill( DESCR_COMPL_AJ ) +
+                                               LFill( VL_AJ_APUR,0 ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
+     end;
+  end;
+  Result := strRegistroE220;
 end;
 
 function TBloco_E.WriteRegistroE230: string;
+var
+intFor: integer;
+strRegistroE230: string;
 begin
+  strRegistroE230 := '';
 
+  if Assigned( RegistroE230 ) then
+  begin
+     for intFor := 0 to RegistroE230.Count - 1 do
+     begin
+        with RegistroE230.Items[intFor] do
+        begin
+          strRegistroE230 := strRegistroE230 + LFill('E230') +
+                                               LFill( NUM_DA ) +
+                                               LFill( NUM_PROC ) +
+                                               LFill( IND_PROC ) +
+                                               LFill( PROC ) +
+                                               LFill( COD_OBS ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
+     end;
+  end;
+  Result := strRegistroE230;
 end;
 
 function TBloco_E.WriteRegistroE240: string;
+var
+intFor: integer;
+strRegistroE240: string;
 begin
+  strRegistroE240 := '';
 
+  if Assigned( RegistroE240 ) then
+  begin
+     for intFor := 0 to RegistroE240.Count - 1 do
+     begin
+        with RegistroE240.Items[intFor] do
+        begin
+          strRegistroE240 := strRegistroE240 + LFill('E240') +
+                                               LFill( COD_PART ) +
+                                               LFill( COD_MOD ) +
+                                               LFill( SER ) +
+                                               LFill( SUB ) +
+                                               LFill( NUM_DOC ) +
+                                               LFill( DT_DOC ) +
+                                               LFill( CHV_NFE ) +
+                                               LFill( COD_ITEM ) +
+                                               LFill( VL_AJ_ITEM,0 ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
+     end;
+  end;
+  Result := strRegistroE240;
 end;
 
 function TBloco_E.WriteRegistroE250: string;
+var
+intFor: integer;
+strRegistroE250: string;
 begin
+  strRegistroE250 := '';
 
+  if Assigned( RegistroE250 ) then
+  begin
+     for intFor := 0 to RegistroE250.Count - 1 do
+     begin
+        with RegistroE250.Items[intFor] do
+        begin
+          strRegistroE250 := strRegistroE250 + LFill('E250') +
+                                               LFill( COD_OR ) +
+                                               LFill( VL_OR,0 ) +
+                                               LFill( DT_VCTO ) +
+                                               LFill( COD_REC ) +
+                                               LFill( NUM_PROC ) +
+                                               LFill( IND_PROC ) +
+                                               LFill( PROC ) +
+                                               LFill( TXT_COMPL ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
+     end;
+  end;
+  Result := strRegistroE250;
 end;
 
 function TBloco_E.WriteRegistroE500: string;
+var
+intFor: integer;
+strRegistroE500: string;
 begin
+  strRegistroE500 := '';
 
+  if Assigned( RegistroE500 ) then
+  begin
+     for intFor := 0 to RegistroE500.Count - 1 do
+     begin
+        with RegistroE500.Items[intFor] do
+        begin
+          strRegistroE500 := strRegistroE500 + LFill('E500') +
+                                               LFill( IND_APUR ) +
+                                               LFill( DT_INI ) +
+                                               LFill( DT_FIN ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
+     end;
+  end;
+  Result := strRegistroE500;
 end;
 
 function TBloco_E.WriteRegistroE510: string;
+var
+intFor: integer;
+strRegistroE510: string;
 begin
+  strRegistroE510 := '';
 
+  if Assigned( RegistroE510 ) then
+  begin
+     for intFor := 0 to RegistroE510.Count - 1 do
+     begin
+        with RegistroE510.Items[intFor] do
+        begin
+          strRegistroE510 := strRegistroE510 + LFill('E510') +
+                                               LFill( CFOP,4 ) +
+                                               LFill( CST_IPI,2 ) +
+                                               LFill( VL_CONT_IPI,0 ) +
+                                               LFill( VL_BC_IPI,0 ) +
+                                               LFill( VL_IPI,0 ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
+     end;
+  end;
+  Result := strRegistroE510;
 end;
 
 function TBloco_E.WriteRegistroE520: string;
+var
+intFor: integer;
+strRegistroE520: string;
 begin
+  strRegistroE520 := '';
 
+  if Assigned( RegistroE520 ) then
+  begin
+     for intFor := 0 to RegistroE520.Count - 1 do
+     begin
+        with RegistroE520.Items[intFor] do
+        begin
+          strRegistroE520 := strRegistroE520 + LFill('E520') +
+                                               LFill( VL_SD_ANT_IPI,0 ) +
+                                               LFill( VL_DEB_IPI,0 ) +
+                                               LFill( VL_CRED_IPI,0 ) +
+                                               LFill( VL_OD_IPI,0 ) +
+                                               LFill( VL_OC_IPI,0 ) +
+                                               LFill( VL_SC_IPI,0 ) +
+                                               LFill( VL_SD_IPI,0 ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
+     end;
+  end;
+  Result := strRegistroE520;
 end;
 
 function TBloco_E.WriteRegistroE530: string;
+var
+intFor: integer;
+strRegistroE530: string;
 begin
+  strRegistroE530 := '';
 
+  if Assigned( RegistroE530 ) then
+  begin
+     for intFor := 0 to RegistroE530.Count - 1 do
+     begin
+        with RegistroE530.Items[intFor] do
+        begin
+          strRegistroE530 := strRegistroE530 + LFill('E530') +
+                                               LFill( IND_AJ ) +
+                                               LFill( VL_AJ,0 ) +
+                                               LFill( COD_AJ ) +
+                                               LFill( IND_DOC ) +
+                                               LFill( NUM_DOC ) +
+                                               LFill( DESCR_AJ ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
+     end;
+  end;
+  Result := strRegistroE530;
 end;
 
 function TBloco_E.WriteRegistroE990: string;

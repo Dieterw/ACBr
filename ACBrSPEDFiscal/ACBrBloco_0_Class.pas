@@ -396,38 +396,188 @@ begin
 end;
 
 function TBloco_0.WriteRegistro0200: string;
+var
+intFor: integer;
+strRegistro0200: string;
 begin
+  strRegistro0200 := '';
 
+  if Assigned( Registro0200 ) then
+  begin
+     for intFor := 0 to Registro0200.Count - 1 do
+     begin
+        with Registro0200.Items[intFor] do
+        begin
+          strRegistro0200 := strRegistro0200 + LFill('0200') +
+                                               LFill( COD_ITEM ) +
+                                               LFill( DESCR_ITEM ) +
+                                               LFill( COD_BARRA ) +
+                                               LFill( COD_ANT_ITEM ) +
+                                               LFill( UNID_INV ) +
+                                               LFill( TIPO_ITEM ) +
+                                               LFill( COD_NCM ) +
+                                               LFill( EX_IPI ) +
+                                               LFill( COD_GEN ) +
+                                               LFill( COD_LST ) +
+                                               LFill( ALIQ_ICMS,0,2 ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
+     end;
+  end;
+  Result := strRegistro0200;
 end;
 
 function TBloco_0.WriteRegistro0205: string;
+var
+intFor: integer;
+strRegistro0205: string;
 begin
+  strRegistro0205 := '';
 
+  if Assigned( Registro0205 ) then
+  begin
+     for intFor := 0 to Registro0205.Count - 1 do
+     begin
+        with Registro0205.Items[intFor] do
+        begin
+          strRegistro0205 := strRegistro0205 + LFill('0205') +
+                                               LFill( DESCR_ANT_ITEM ) +
+                                               LFill( DT_INI ) +
+                                               LFill( DT_FIN ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
+     end;
+  end;
+  Result := strRegistro0205;
 end;
 
 function TBloco_0.WriteRegistro0206: string;
+var
+intFor: integer;
+strRegistro0206: string;
 begin
+  strRegistro0206 := '';
 
+  if Assigned( Registro0206 ) then
+  begin
+     for intFor := 0 to Registro0206.Count - 1 do
+     begin
+        with Registro0206.Items[intFor] do
+        begin
+          strRegistro0206 := strRegistro0206 + LFill('0206') +
+                                               LFill( COD_COMB ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
+     end;
+  end;
+  Result := strRegistro0206;
 end;
 
 function TBloco_0.WriteRegistro0220: string;
+var
+intFor: integer;
+strRegistro0220: string;
 begin
+  strRegistro0220 := '';
 
+  if Assigned( Registro0220 ) then
+  begin
+     for intFor := 0 to Registro0220.Count - 1 do
+     begin
+        with Registro0220.Items[intFor] do
+        begin
+          strRegistro0220 := strRegistro0220 + LFill('0220') +
+                                               LFill( UNID_CONV ) +
+                                               LFill( FAT_CONV ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
+     end;
+  end;
+  Result := strRegistro0220;
 end;
 
 function TBloco_0.WriteRegistro0400: string;
+var
+intFor: integer;
+strRegistro0400: string;
 begin
+  strRegistro0400 := '';
 
+  if Assigned(Registro0400) then
+  begin
+     for intFor := 0 to Registro0400.Count - 1 do
+     begin
+        with Registro0400.Items[intFor] do
+        begin
+          ///
+          strRegistro0400 := strRegistro0400 + LFill('0400') +
+                                               LFill( COD_NAT ) +
+                                               LFill( DESCR_NAT ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
+     end;
+  end;
+  Result := strRegistro0400;
 end;
 
 function TBloco_0.WriteRegistro0450: string;
+var
+intFor: integer;
+strRegistro0450: string;
 begin
+  strRegistro0450 := '';
 
+  if Assigned( Registro0450 ) then
+  begin
+     for intFor := 0 to Registro0450.Count - 1 do
+     begin
+        with Registro0450.Items[intFor] do
+        begin
+          strRegistro0450 := strRegistro0450 + LFill('0450') +
+                                               LFill( COD_INF ) +
+                                               LFill( TXT ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
+     end;
+  end;
+  Result := strRegistro0450;
 end;
 
 function TBloco_0.WriteRegistro0460: string;
+var
+intFor: integer;
+strRegistro0460: string;
 begin
+  strRegistro0460 := '';
 
+  if Assigned( Registro0460 ) then
+  begin
+     for intFor := 0 to Registro0460.Count - 1 do
+     begin
+        with Registro0460.Items[intFor] do
+        begin
+          strRegistro0460 := strRegistro0460 + LFill('0460') +
+                                               LFill( COD_OBS ) +
+                                               LFill( TXT ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
+     end;
+  end;
+  Result := strRegistro0460;
 end;
 
 function TBloco_0.WriteRegistro0990: string;

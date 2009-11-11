@@ -274,7 +274,7 @@ type
     fEX_IPI: string;         /// Código EX, conforme a TIPI:
     fCOD_GEN: string;        /// Código gênero item, tabela indicada item 4.2.1:
     fCOD_LST: string;        /// Código serviço Anexo I - Lei nº116/03:
-    fALIQ_ICMS: string;      /// Alíquota ICMS aplicável (operações internas):
+    fALIQ_ICMS: Currency;      /// Alíquota ICMS aplicável (operações internas):
   public
     property COD_ITEM: string read FCOD_ITEM write FCOD_ITEM;
     property DESCR_ITEM: string read FDESCR_ITEM write FDESCR_ITEM;
@@ -286,7 +286,7 @@ type
     property EX_IPI: string read FEX_IPI write FEX_IPI;
     property COD_GEN: string read FCOD_GEN write FCOD_GEN;
     property COD_LST: string read FCOD_LST write FCOD_LST;
-    property ALIQ_ICMS: string read FALIQ_ICMS write FALIQ_ICMS;
+    property ALIQ_ICMS: Currency read FALIQ_ICMS write FALIQ_ICMS;
   end;
 
   /// Registro 0200 - Lista

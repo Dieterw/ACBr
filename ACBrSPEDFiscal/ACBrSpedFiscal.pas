@@ -51,7 +51,8 @@ type
   /// ACBrSpedFiscal - Sitema Publico de Escrituração Digital Fiscal
   TACBrSPEDFiscal = class(TACBrSPED)
   private
-    FPath: string;       /// Path do arquivo a ser gerado
+    fArquivo:String ;      /// Nome do arquivo a ser gerado
+    FPath: string;         /// Path do arquivo a ser gerado
     FBloco_0: TBloco_0;
     FBloco_1: TBloco_1;
     FBloco_9: TBloco_9;
@@ -60,7 +61,7 @@ type
     FBloco_E: TBloco_E;
     FBloco_H: TBloco_H;
   protected
-    // Período 
+    // Periodo
     procedure SetDT_FIN(const Value: TDateTime); override;
     procedure SetDT_INI(const Value: TDateTime); override;
     /// BLOCO 0
@@ -90,6 +91,9 @@ type
     function WriteRegistro1300: string;
     function WriteRegistro1310: string;
     function WriteRegistro1320: string;
+    function WriteRegistro1350: string;
+    function WriteRegistro1360: string;
+    function WriteRegistro1370: string;
     function WriteRegistro1400: string;
     function WriteRegistro1500: string;
     function WriteRegistro1510: string;
@@ -210,6 +214,7 @@ type
   public
     constructor Create(AOwner: TComponent); override; /// Create
     destructor Destroy; override; /// Destroy
+
     function SaveFileTXT(Arquivo: string): Boolean; /// Método que escreve o arquivo texto no caminho passado como parâmetro
 
     property Bloco_0: TBloco_0 read FBloco_0 write FBloco_0;
@@ -220,7 +225,7 @@ type
     property Bloco_E: TBloco_E read FBloco_E write FBloco_E;
     property Bloco_H: TBloco_H read FBloco_H write FBloco_H;
   published
-    property Path: string read FPath write FPath;
+    property Path: string read fPath write fPath;
     property Delimitador;
     property OnError;
   end;
@@ -248,6 +253,8 @@ begin
   FBloco_E := TBloco_E.Create(Self);
   FBloco_H := TBloco_H.Create(Self);
   FBloco_9 := TBloco_9.Create(Self);
+
+  fPath    := ExtractFilePath( ParamStr(0) );
 end;
 
 destructor TACBrSPEDFiscal.Destroy;
@@ -423,12 +430,28 @@ begin
     if Bloco_E.RegistroE240.Count>0 then Write(txtFile, WriteRegistroE240); // Prates
     if Bloco_E.RegistroE250.Count>0 then Write(txtFile, WriteRegistroE250); // Prates
     Write(txtFile, WriteRegistroE990);
-    
+
     /// BLOCO H
     Write(txtFile, WriteRegistroH001);
     Write(txtFile, WriteRegistroH990);
     /// BLOCO 1
     Write(txtFile, WriteRegistro1001);
+
+    if Bloco_1.Registro1100.Count>0 then  Write(txtFile, WriteRegistro1100);
+    if Bloco_1.Registro1105.Count>0 then  Write(txtFile, WriteRegistro1105);
+    if Bloco_1.Registro1110.Count>0 then  Write(txtFile, WriteRegistro1110);
+    if Bloco_1.Registro1200.Count>0 then  Write(txtFile, WriteRegistro1200);
+    if Bloco_1.Registro1210.Count>0 then  Write(txtFile, WriteRegistro1210);
+    if Bloco_1.Registro1300.Count>0 then  Write(txtFile, WriteRegistro1300);
+    if Bloco_1.Registro1310.Count>0 then  Write(txtFile, WriteRegistro1310);
+    if Bloco_1.Registro1320.Count>0 then  Write(txtFile, WriteRegistro1320);
+    if Bloco_1.Registro1350.Count>0 then  Write(txtFile, WriteRegistro1350);
+    if Bloco_1.Registro1360.Count>0 then  Write(txtFile, WriteRegistro1360);
+    if Bloco_1.Registro1370.Count>0 then  Write(txtFile, WriteRegistro1370);
+
+    if Bloco_1.Registro1500.Count>0 then  Write(txtFile, WriteRegistro1500);
+    if Bloco_1.Registro1510.Count>0 then  Write(txtFile, WriteRegistro1510);
+
     Write(txtFile, WriteRegistro1990);
     /// BLOCO 9
     Write(txtFile, WriteRegistro9001);
@@ -706,6 +729,36 @@ begin
       QTD_REG_BLC := Bloco_1.Registro1320.Count;
    end;
    Result := Bloco_1.WriteRegistro1320;
+end;
+
+function TACBrSPEDFiscal.WriteRegistro1350: string;
+begin
+   with Bloco_9.Registro9900.New do
+   begin
+      REG_BLC      := '1350';
+      QTD_REG_BLC  := Bloco_1.Registro1350.Count;
+   end;
+   Result := Bloco_1.WriteRegistro1350;
+end;
+
+function TACBrSPEDFiscal.WriteRegistro1360: string;
+begin
+   with Bloco_9.Registro9900.New do
+   begin
+      REG_BLC := '1360';
+      QTD_REG_BLC := 1;
+   end;
+   Result := Bloco_1.WriteRegistro1360;
+end;
+
+function TACBrSPEDFiscal.WriteRegistro1370: string;
+begin
+   with Bloco_9.Registro9900.New do
+   begin
+      REG_BLC := '1370';
+      QTD_REG_BLC := 1;
+   end;
+   Result := Bloco_1.WriteRegistro1370;
 end;
 
 function TACBrSPEDFiscal.WriteRegistro1400: string;

@@ -59,25 +59,25 @@ type
   private
     fIND_DOC: string;       /// Informe o tipo de documento: 0 - Declaração de Exportação, 1 - Declaração Simplificada de Exportação.
     fNRO_DE: string;        /// Número da declaração
-    fDT_DE: string;         /// Data da declaração (DDMMAAAA)
+    fDT_DE: TDateTime;      /// Data da declaração (DDMMAAAA)
     fNAT_EXP: string;       /// Preencher com: 0 - Exportação Direta, 1 - Exportação Indireta
     fNRO_RE: string;        /// Nº do registro de Exportação
-    fDT_RE: string;         /// Data do Registro de Exportação (DDMMAAAA)
+    fDT_RE: TDateTime;      /// Data do Registro de Exportação (DDMMAAAA)
     fCHC_EMB: string;       /// Nº do conhecimento de embarque
-    fDT_CHC: string;        /// Data do conhecimento de embarque (DDMMAAAA)
-    fDT_AVB: string;        /// Data da averbação da Declaração de exportação (ddmmaaaa)
+    fDT_CHC: TDateTime;     /// Data do conhecimento de embarque (DDMMAAAA)
+    fDT_AVB: TDateTime;     /// Data da averbação da Declaração de exportação (ddmmaaaa)
     fTP_CHC: string;        /// Informação do tipo de conhecimento de transporte : 01 - AWB; 02 - MAWB; 03 - HAWB;04 - COMAT; 06 - R. EXPRESSAS; 07 - ETIQ. REXPRESSAS; 08 - HR. EXPRESSAS; 09 - AV7; 10 - BL; 11 - MBL; 12 - HBL; 13 - CRT; 14 - DSIC; 16 - COMAT BL; 17 - RWB; 18 - HRWB; 19 - TIF/DTA; 20 - CP2; 91 - NÂO IATA; 92 - MNAO IATA; 93 - HNAO IATA; 99 - OUTROS.
     fPAIS: string;          /// Código do país de destino da mercadoria (Preencher conforme tabela do SISCOMEX)
   public
     property IND_DOC: string read FIND_DOC write FIND_DOC;
     property NRO_DE: string read FNRO_DE write FNRO_DE;
-    property DT_DE: string read FDT_DE write FDT_DE;
+    property DT_DE: TDateTime read FDT_DE write FDT_DE;
     property NAT_EXP: string read FNAT_EXP write FNAT_EXP;
     property NRO_RE: string read FNRO_RE write FNRO_RE;
-    property DT_RE: string read FDT_RE write FDT_RE;
+    property DT_RE: TDateTime read FDT_RE write FDT_RE;
     property CHC_EMB: string read FCHC_EMB write FCHC_EMB;
-    property DT_CHC: string read FDT_CHC write FDT_CHC;
-    property DT_AVB: string read FDT_AVB write FDT_AVB;
+    property DT_CHC: TDateTime read FDT_CHC write FDT_CHC;
+    property DT_AVB: TDateTime read FDT_AVB write FDT_AVB;
     property TP_CHC: string read FTP_CHC write FTP_CHC;
     property PAIS: string read FPAIS write FPAIS;
   end;
@@ -102,14 +102,14 @@ type
     fSERIE: string;         /// Série da Nota Fiscal
     fNUM_DOC: string;       /// Número de Nota Fiscal de Exportação emitida pelo Exportador
     fCHV_NFE: string;       /// Chave da Nota Fiscal Eletrônica
-    fDT_DOC: string;        /// Data da emissão da NF de exportação
+    fDT_DOC: TDateTime;        /// Data da emissão da NF de exportação
     fCOD_ITEM: string;      /// Código do item (campo 02 do Registro 0200)
   public
     property COD_MOD: string read FCOD_MOD write FCOD_MOD;
     property SERIE: string read FSERIE write FSERIE;
     property NUM_DOC: string read FNUM_DOC write FNUM_DOC;
     property CHV_NFE: string read FCHV_NFE write FCHV_NFE;
-    property DT_DOC: string read FDT_DOC write FDT_DOC;
+    property DT_DOC: TDateTime read FDT_DOC write FDT_DOC;
     property COD_ITEM: string read FCOD_ITEM write FCOD_ITEM;
   end;
 
@@ -133,20 +133,20 @@ type
     fCOD_MOD: string;       /// Código do documento fiscal, conforme a Tabela 4.1.1
     fSER: string;           /// Série do documento fiscal recebido com fins específicos de exportação.
     fNUM_DOC: string;       /// Número do documento fiscal recebido com fins específicos de exportação.
-    fDT_DOC: string;        /// Data da emissão do documento fiscal recebido com fins específicos de exportação
+    fDT_DOC: TDateTime;        /// Data da emissão do documento fiscal recebido com fins específicos de exportação
     fCHV_NFE: string;       /// Chave da Nota Fiscal Eletrônica
     fNR_: string;           /// Número do Memorando de Exportação
-    fQTD: string;           /// Quantidade do item efetivamente exportado.
+    fQTD: Currency;           /// Quantidade do item efetivamente exportado.
     fUNID: string;          /// Unidade do item (Campo 02 do registro 0190)
   public
     property COD_PART: string read FCOD_PART write FCOD_PART;
     property COD_MOD: string read FCOD_MOD write FCOD_MOD;
     property SER: string read FSER write FSER;
     property NUM_DOC: string read FNUM_DOC write FNUM_DOC;
-    property DT_DOC: string read FDT_DOC write FDT_DOC;
+    property DT_DOC: TDateTime read FDT_DOC write FDT_DOC;
     property CHV_NFE: string read FCHV_NFE write FCHV_NFE;
     property NR_: string read FNR_ write FNR_;
-    property QTD: string read FQTD write FQTD;
+    property QTD: Currency read FQTD write FQTD;
     property UNID: string read FUNID write FUNID;
   end;
 
@@ -199,11 +199,11 @@ type
   private
     fTIPO_UTIL: string;        /// Tipo de utilização do crédito:
     fNR_DOC: string;           /// Número do documento utilizado na baixa de créditos
-    fVL_CRED_UTIL: string;     /// Total de crédito utilizado
+    fVL_CRED_UTIL: Currency;     /// Total de crédito utilizado
   public
     property TIPO_UTIL: string read FTIPO_UTIL write FTIPO_UTIL;
     property NR_DOC: string read FNR_DOC write FNR_DOC;
-    property VL_CRED_UTIL: string read FVL_CRED_UTIL write FVL_CRED_UTIL;
+    property VL_CRED_UTIL: Currency read FVL_CRED_UTIL write FVL_CRED_UTIL;
   end;
 
   /// Registro 1210 - Lista
@@ -222,31 +222,31 @@ type
 
   TRegistro1300 = class(TPersistent)
   private
-    fCOD_ITEM: string;            /// Código do Produto constante do registro 0200
-    fDT_FECH: string;             /// Data do fechamento da movimentação
-    fNR_INTERV: string;           /// Número da intervenção
-    fESTQ_ABERT: string;          /// Estoque no inicio do dia
-    fVOL_ENTR: string;            /// Volume Total das Entradas
-    fVOL_DISP: string;            /// Volume Disponível (05 + 06)
-    fVOL_SAIDAS: string;          /// Volume Total das Saídas (Somatório dos registros de Volume de Vendas)
-    fVAL_SAIDAS: string;          /// Valor das Vendas (08 x Preço na Bomba)
-    fESTQ_ESCR: string;           /// Estoque Escritural (07 - 08)
-    fVAL_AJ_PERDA: string;        /// Valor da Perda
-    fVAL_AJ_GANHO: string;        /// Valor do ganho
-    fESTQ_FECHA: string;          /// Estoque de Fechamento (Somatório dos registros da conciliação de estoques )
+    fCOD_ITEM: string;              /// Código do Produto constante do registro 0200
+    fDT_FECH: TDateTime;            /// Data do fechamento da movimentação
+    fNR_INTERV: string;             /// Número da intervenção
+    fESTQ_ABERT: Currency;          /// Estoque no inicio do dia
+    fVOL_ENTR: Currency;            /// Volume Total das Entradas
+    fVOL_DISP: Currency;            /// Volume Disponível (05 + 06)
+    fVOL_SAIDAS: Currency;          /// Volume Total das Saídas (Somatório dos registros de Volume de Vendas)
+    fVAL_SAIDAS: Currency;          /// Valor das Vendas (08 x Preço na Bomba)
+    fESTQ_ESCR: Currency;           /// Estoque Escritural (07 - 08)
+    fVAL_AJ_PERDA: Currency;        /// Valor da Perda
+    fVAL_AJ_GANHO: Currency;        /// Valor do ganho
+    fESTQ_FECHA: Currency;          /// Estoque de Fechamento (Somatório dos registros da conciliação de estoques )
   public
-    property COD_ITEM: string read FCOD_ITEM write FCOD_ITEM;
-    property DT_FECH: string read FDT_FECH write FDT_FECH;
-    property NR_INTERV: string read FNR_INTERV write FNR_INTERV;
-    property ESTQ_ABERT: string read FESTQ_ABERT write FESTQ_ABERT;
-    property VOL_ENTR: string read FVOL_ENTR write FVOL_ENTR;
-    property VOL_DISP: string read FVOL_DISP write FVOL_DISP;
-    property VOL_SAIDAS: string read FVOL_SAIDAS write FVOL_SAIDAS;
-    property VAL_SAIDAS: string read FVAL_SAIDAS write FVAL_SAIDAS;
-    property ESTQ_ESCR: string read FESTQ_ESCR write FESTQ_ESCR;
-    property VAL_AJ_PERDA: string read FVAL_AJ_PERDA write FVAL_AJ_PERDA;
-    property VAL_AJ_GANHO: string read FVAL_AJ_GANHO write FVAL_AJ_GANHO;
-    property ESTQ_FECHA: string read FESTQ_FECHA write FESTQ_FECHA;
+    property COD_ITEM: string       read FCOD_ITEM write FCOD_ITEM;
+    property DT_FECH: TDateTime     read FDT_FECH write FDT_FECH;
+    property NR_INTERV: String      read FNR_INTERV write FNR_INTERV;
+    property ESTQ_ABERT: Currency   read FESTQ_ABERT write FESTQ_ABERT;
+    property VOL_ENTR: Currency     read FVOL_ENTR write FVOL_ENTR;
+    property VOL_DISP: Currency     read FVOL_DISP write FVOL_DISP;
+    property VOL_SAIDAS: Currency   read FVOL_SAIDAS write FVOL_SAIDAS;
+    property VAL_SAIDAS: Currency   read FVAL_SAIDAS write FVAL_SAIDAS;
+    property ESTQ_ESCR: Currency    read FESTQ_ESCR write FESTQ_ESCR;
+    property VAL_AJ_PERDA: Currency read FVAL_AJ_PERDA write FVAL_AJ_PERDA;
+    property VAL_AJ_GANHO: Currency read FVAL_AJ_GANHO write FVAL_AJ_GANHO;
+    property ESTQ_FECHA: Currency   read FESTQ_FECHA write FESTQ_FECHA;
   end;
 
   /// Registro 1300 - Lista
@@ -265,19 +265,38 @@ type
 
   TRegistro1310 = class(TPersistent)
   private
-    fNUM_TANQUE: string;    /// Tanque onde foi armazenado o combustível
+    fNUM_TANQUE:   string;    /// Tanque onde foi armazenado o combustível
+    fESTQ_ABERT:   Currency;  /// Estoque no inicio do dia, em litros
+    fVOL_ENTR:     Currency;  /// Volume Recebido no dia (em litros)
+    fVOL_DISP:     Currency;  /// Volume Disponível (03 + 04), em litros
+    fVOL_SAIDAS:   Currency;  ///  Volume Total das Saídas, em litros
+    fESTQ_ESCR :   Currency;  /// Estoque Escritural(05 – 06), litros
+    fVAL_AJ_PERDA: Currency;  ///  Valor da Perda, em litros
+    fVAL_AJ_GANHO: Currency;  ///  Valor do ganho, em litros
+    {
     fBOMBA: string;         /// Bomba Ligada ao Tanque
-    fBICO: string;          /// Bico Ligado à Bomba
+    fBICO:  string;          /// Bico Ligado à Bomba
     fFECHA: string;         /// Valor aferido no fechamento
     fABERT: string;         /// Valor aferido na abertura
     fAFERI: string;         /// Aferições da Bomba
+    }
   public
+    property NUM_TANQUE  : string   read fNUM_TANQUE   write fNUM_TANQUE   ;
+    property ESTQ_ABERT  : Currency read fESTQ_ABERT   write fESTQ_ABERT   ;
+    property VOL_ENTR    : Currency read fVOL_ENTR     write fVOL_ENTR     ;
+    property VOL_DISP    : Currency read fVOL_DISP     write fVOL_DISP     ;
+    property VOL_SAIDAS  : Currency read fVOL_SAIDAS   write fVOL_SAIDAS    ;
+    property ESTQ_ESCR   : Currency read fESTQ_ESCR    write fESTQ_ESCR     ;
+    property VAL_AJ_PERDA: Currency read fVAL_AJ_PERDA write fVAL_AJ_PERDA  ;
+    property VAL_AJ_GANHO: Currency read fVAL_AJ_GANHO write fVAL_AJ_GANHO  ;
+    {
     property NUM_TANQUE: string read FNUM_TANQUE write FNUM_TANQUE;
     property BOMBA: string read FBOMBA write FBOMBA;
-    property BICO: string read FBICO write FBICO;
+    property BICO:  string read FBICO write FBICO;
     property FECHA: string read FFECHA write FFECHA;
     property ABERT: string read FABERT write FABERT;
     property AFERI: string read FAFERI write FAFERI;
+    }
   end;
 
   /// Registro 1310 - Lista
@@ -293,14 +312,51 @@ type
   end;
 
   /// Registro 1320 - CONCILIAÇÃO DE ESTOQUES.
-
+  /// REGISTRO 1320: VOLUME DE VENDAS
+  {
+02 NUM_BICO    Bico Ligado à Bomba N - - O
+03 NR_INTERV   Número da intervenção N - - OC
+04 MOT_INTERV  Motivo da Intervenção C 050 - OC
+05 NOM_INTERV  Nome do Interventor C 030 - OC
+06 CNPJ_INTERV CNPJ da empresa responsável pela intervenção N 014* - OC
+07 CPF_INTERV  CPF do técnico responsável pela intervenção N 011* - OC
+08 VAL_FECHA   Valor da leitura final do contador, no fechamento do bico. N - 03 O
+09 VAL_ABERT   Valor da leitura inicial do contador, na abertura do bico. N - 03 O
+10 VOL_AFERI   Aferições da Bomba, em litros N - 03 OC
+11 VOL_VENDAS  Vendas (08 – 09 - 10 ) do bico , em litros N - 03 O
+  }
   TRegistro1320 = class(TPersistent)
   private
-    fNUM_TANQUE: string;        /// Tanque onde foi armazenado o combustível
-    fFECH_FISICO: string;       /// Volume aferido no tanque
+     fNUM_BICO:String      ;
+     fNR_INTERV:String     ;
+     fMOT_INTERV:String    ;
+     fNOM_INTERV:String    ;
+     fCNPJ_INTERV:String   ;
+     fCPF_INTERV:String    ;
+     fVAL_FECHA:Currency   ;
+     fVAL_ABERT:Currency   ;
+     fVOL_AFERI:Currency   ;
+     fVOL_VENDAS:Currency  ;
+
+     {
+     fNUM_TANQUE: string;        /// Tanque onde foi armazenado o combustível
+     fFECH_FISICO: Currency;       /// Volume aferido no tanque
+     }
   public
-    property NUM_TANQUE: string read FNUM_TANQUE write FNUM_TANQUE;
-    property FECH_FISICO: string read FFECH_FISICO write FFECH_FISICO;
+    property NUM_BICO:String       read fNUM_BICO    write fNUM_BICO    ;
+    property NR_INTERV:String      read fNR_INTERV   write fNR_INTERV   ;
+    property MOT_INTERV:String     read fMOT_INTERV  write fMOT_INTERV  ;
+    property NOM_INTERV:String     read fNOM_INTERV  write fNOM_INTERV  ;
+    property CNPJ_INTERV:String    read fCNPJ_INTERV write fCNPJ_INTERV ;
+    property CPF_INTERV:String     read fCPF_INTERV  write fCPF_INTERV  ;
+    property VAL_FECHA:Currency    read fVAL_FECHA   write fVAL_FECHA   ;
+    property VAL_ABERT:Currency    read fVAL_ABERT   write fVAL_ABERT   ;
+    property VOL_AFERI:Currency    read fVOL_AFERI   write fVOL_AFERI   ;
+    property VOL_VENDAS:Currency   read fVOL_VENDAS  write fVOL_VENDAS  ;
+   {
+    property NUM_TANQUE:  string   read FNUM_TANQUE write FNUM_TANQUE;
+    property FECH_FISICO: Currency read FFECH_FISICO write FFECH_FISICO;
+   }
   end;
 
   /// Registro 1320 - Lista
@@ -315,17 +371,93 @@ type
     property Items[Index: Integer]: TRegistro1320 read GetItem write SetItem;
   end;
 
+
+  /// REGISTRO 1350: BOMBAS
+  TRegistro1350 = class(TPersistent)
+  private
+    fSERIE: string;        /// Número de Série da Bomba
+    fFABRICANTE: string;   /// Nome do Fabricante da Bomba
+    fMODELO: String;       /// Modelo da Bomba
+    fTIPO_MEDICAO:String;  /// Identificador de medição: [ 0 - analógico -  1 – digital ]
+  public
+    property SERIE:        String read fSERIE        write fSERIE       ;
+    property FABRICANTE:   String read fFABRICANTE   write fFABRICANTE  ;
+    property MODELO:       String read fMODELO       write fMODELO      ;
+    property TIPO_MEDICAO: String read fTIPO_MEDICAO write fTIPO_MEDICAO;
+  end;
+
+  /// Registro 1350 - Lista
+
+  TRegistro1350List = class(TList)
+  private
+    function  GetItem(Index: Integer): TRegistro1350;
+    procedure SetItem(Index: Integer; const Value: TRegistro1350);
+  public
+    destructor Destroy; override;
+    function New: TRegistro1350;
+    property Items[Index: Integer]: TRegistro1350 read GetItem write SetItem;
+  end;
+
+  /// REGISTRO 1360: LACRES DA BOMBA
+  TRegistro1360 = class(TPersistent)
+  private
+    fNUM_LACRE: string;         /// Número de Série da Bomba
+    fDT_APLICACAO: TDateTime;   /// Nome do Fabricante da Bomba
+  public
+    property NUM_LACRE:    String    read fNUM_LACRE     write fNUM_LACRE    ;
+    property DT_APLICACAO: TDateTime read fDT_APLICACAO  write fDT_APLICACAO ;
+  end;
+
+  /// Registro 1360 - Lista
+
+  TRegistro1360List = class(TList)
+  private
+    function  GetItem(Index: Integer): TRegistro1360;
+    procedure SetItem(Index: Integer; const Value: TRegistro1360);
+  public
+    destructor Destroy; override;
+    function New: TRegistro1360;
+    property Items[Index: Integer]: TRegistro1360 read GetItem write SetItem;
+  end;
+
+
+
+  /// REGISTRO 1370: BICOS DA BOMBA
+  TRegistro1370 = class(TPersistent)
+  private
+      fNUM_BICO:String;    /// Número seqüencial do bico ligado a bomba N 003 - O
+      fCOD_ITEM:String;    /// Código do Produto, constante do registro 0200 C 060 - O
+      fNUM_TANQUE:String;  /// Tanque que armazena o combustível.
+  public
+    property   NUM_BICO  :String read fNUM_BICO   write fNUM_BICO  ;    /// Número seqüencial do bico ligado a bomba
+    property   COD_ITEM  :String read fCOD_ITEM   write fCOD_ITEM  ;    /// Código do Produto, constante do registro
+    property   NUM_TANQUE:String read fNUM_TANQUE write fNUM_TANQUE;  /// Tanque que armazena o combustível.
+  end;
+
+  /// Registro 1370  - Lista
+
+  TRegistro1370List = class(TList)
+  private
+    function  GetItem(Index: Integer): TRegistro1370 ;
+    procedure SetItem(Index: Integer; const Value: TRegistro1370 );
+  public
+    destructor Destroy; override;
+    function New: TRegistro1370 ;
+    property Items[Index: Integer]: TRegistro1370  read GetItem write SetItem;
+  end;
+
+
   /// Registro 1400 - CINFORMAÇÃO SOBRE VALORES AGREGADOS.
 
   TRegistro1400 = class(TPersistent)
   private
     fCOD_ITEM: string;      /// Código do item (campo 02 do Registro 0200)
     fMUN: string;           /// Código do Município de origem
-    fVALOR: string;         /// Valor mensal correspondente ao município
+    fVALOR: Currency;      /// Valor mensal correspondente ao município
   public
     property COD_ITEM: string read FCOD_ITEM write FCOD_ITEM;
     property MUN: string read FMUN write FMUN;
-    property VALOR: string read FVALOR write FVALOR;
+    property VALOR: Currency read FVALOR write FVALOR;
   end;
 
   /// Registro 1400 - Lista
@@ -761,6 +893,85 @@ begin
 end;
 
 procedure TRegistro1510List.SetItem(Index: Integer; const Value: TRegistro1510);
+begin
+  Put(Index, Value);
+end;
+
+{ TRegistro1350List }
+
+destructor TRegistro1350List.Destroy;
+var
+intFor: integer;
+begin
+  for intFor := 0 to Count - 1 do Items[intFor].Free;
+  inherited;
+end;
+
+function TRegistro1350List.GetItem(Index: Integer): TRegistro1350;
+begin
+    Result := TRegistro1350(Inherited Items[Index]);
+end;
+
+function TRegistro1350List.New: TRegistro1350;
+begin
+  Result := TRegistro1350.Create;
+  Add(Result);
+end;
+
+procedure TRegistro1350List.SetItem(Index: Integer; const Value: TRegistro1350);
+begin
+  Put(Index, Value);
+end;
+
+{ TRegistro1360List }
+
+destructor TRegistro1360List.Destroy;
+var
+intFor: integer;
+begin
+  for intFor := 0 to Count - 1 do Items[intFor].Free;
+  inherited;
+end;
+
+function TRegistro1360List.GetItem(Index: Integer): TRegistro1360;
+begin
+    Result := TRegistro1360(Inherited Items[Index]);
+end;
+
+function TRegistro1360List.New: TRegistro1360;
+begin
+  Result := TRegistro1360.Create;
+  Add(Result);
+end;
+
+procedure TRegistro1360List.SetItem(Index: Integer; const Value: TRegistro1360);
+begin
+  Put(Index, Value);
+end;
+
+
+{ TRegistro1370List }
+
+destructor TRegistro1370List.Destroy;
+var
+intFor: integer;
+begin
+  for intFor := 0 to Count - 1 do Items[intFor].Free;
+  inherited;
+end;
+
+function TRegistro1370List.GetItem(Index: Integer): TRegistro1370;
+begin
+    Result := TRegistro1370(Inherited Items[Index]);
+end;
+
+function TRegistro1370List.New: TRegistro1370;
+begin
+  Result := TRegistro1370.Create;
+  Add(Result);
+end;
+
+procedure TRegistro1370List.SetItem(Index: Integer; const Value: TRegistro1370);
 begin
   Put(Index, Value);
 end;

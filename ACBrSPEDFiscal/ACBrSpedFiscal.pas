@@ -284,6 +284,7 @@ end;
 
 procedure TACBrSPEDFiscal.SetCurMascara(const Value: string);
 begin
+  inherited;
   FBloco_0.CurMascara := Value;
   FBloco_1.CurMascara := Value;
   FBloco_C.CurMascara := Value;

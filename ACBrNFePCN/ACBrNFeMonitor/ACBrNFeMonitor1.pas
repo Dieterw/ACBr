@@ -225,6 +225,7 @@ type
     Label36: TLabel;
     Label37: TLabel;
     Label38: TLabel;
+    cbxEmissaoPathNFe: TCheckBox;
     procedure DoACBrTimer(Sender: TObject);
     procedure edOnlyNumbers(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
@@ -264,6 +265,7 @@ type
     procedure sbPathInuClick(Sender: TObject);
     procedure sbPathDPECClick(Sender: TObject);
     procedure cbxAjustarAutClick(Sender: TObject);
+    procedure cbxPastaMensalClick(Sender: TObject);
   private
     { Private declarations }
     ACBrNFeMonitorINI : string;
@@ -366,6 +368,7 @@ begin
 
   try
      LerIni;
+     cbxEmissaoPathNFe.Enabled := cbxPastaMensal.Checked;
 
      Application.Minimize ;
   except
@@ -594,9 +597,19 @@ begin
      edtIntervalo.Text      := Ini.ReadString( 'WebService','Intervalo' ,'0') ;
 
      ACBrNFe1.Configuracoes.WebServices.AjustaAguardaConsultaRet := cbxAjustarAut.Checked;
-     ACBrNFe1.Configuracoes.WebServices.AguardarConsultaRet := NotaUtil.SeSenao(StrToInt(edtAguardar.Text)<1000,StrToInt(edtAguardar.Text)*1000,StrToInt(edtAguardar.Text));
-     ACBrNFe1.Configuracoes.WebServices.Tentativas          := StrToInt(edtTentativas.Text);
-     ACBrNFe1.Configuracoes.WebServices.IntervaloTentativas := NotaUtil.SeSenao(StrToInt(edtIntervalo.Text)<1000,StrToInt(edtIntervalo.Text)*1000,StrToInt(edtIntervalo.Text));
+     if NotaUtil.NaoEstaVazio(edtAguardar.Text)then
+        ACBrNFe1.Configuracoes.WebServices.AguardarConsultaRet := NotaUtil.SeSenao(StrToInt(edtAguardar.Text)<1000,StrToInt(edtAguardar.Text)*1000,StrToInt(edtAguardar.Text))
+     else
+        edtAguardar.Text := IntToStr(ACBrNFe1.Configuracoes.WebServices.AguardarConsultaRet);
+     if NotaUtil.NaoEstaVazio(edtTentativas.Text) then
+        ACBrNFe1.Configuracoes.WebServices.Tentativas          := StrToInt(edtTentativas.Text)
+     else
+        edtTentativas.Text := IntToStr(ACBrNFe1.Configuracoes.WebServices.Tentativas);
+     if NotaUtil.NaoEstaVazio(edtIntervalo.Text) then
+        ACBrNFe1.Configuracoes.WebServices.IntervaloTentativas := NotaUtil.SeSenao(StrToInt(edtIntervalo.Text)<1000,StrToInt(edtIntervalo.Text)*1000,StrToInt(edtIntervalo.Text))
+     else
+        edtIntervalo.Text := IntToStr(ACBrNFe1.Configuracoes.WebServices.IntervaloTentativas);
+
 
      cbUF.ItemIndex       := cbUF.Items.IndexOf(Ini.ReadString( 'WebService','UF','SP')) ;
      rgTipoAmb.ItemIndex  := Ini.ReadInteger( 'WebService','Ambiente'  ,0) ;
@@ -703,6 +716,7 @@ begin
      cbxSalvarArqs.Checked      := Ini.ReadBool(   'Arquivos','Salvar'     ,false);
      cbxPastaMensal.Checked     := Ini.ReadBool(   'Arquivos','PastaMensal',false);
      cbxAdicionaLiteral.Checked := Ini.ReadBool(   'Arquivos','AddLiteral' ,false);
+     cbxEmissaoPathNFe.Checked  := Ini.ReadBool(   'Arquivos','EmissaoPathNFe',false);     
      edtPathNFe.Text            := Ini.ReadString( 'Arquivos','PathNFe'    ,'') ;
      edtPathCan.Text            := Ini.ReadString( 'Arquivos','PathCan'    ,'') ;
      edtPathInu.Text            := Ini.ReadString( 'Arquivos','PathInu'    ,'') ;
@@ -711,6 +725,7 @@ begin
      ACBrNFe1.Configuracoes.Arquivos.Salvar           := cbxSalvarArqs.Checked;
      ACBrNFe1.Configuracoes.Arquivos.PastaMensal      := cbxPastaMensal.Checked;
      ACBrNFe1.Configuracoes.Arquivos.AdicionarLiteral := cbxAdicionaLiteral.Checked;
+     ACBrNFe1.Configuracoes.Arquivos.EmissaoPathNFe   := cbxEmissaoPathNFe.Checked;     
      ACBrNFe1.Configuracoes.Arquivos.PathNFe  := edtPathNFe.Text;
      ACBrNFe1.Configuracoes.Arquivos.PathCan  := edtPathCan.Text;
      ACBrNFe1.Configuracoes.Arquivos.PathInu  := edtPathInu.Text;
@@ -810,6 +825,7 @@ begin
      Ini.WriteBool(   'Arquivos','Salvar'     ,cbxSalvarArqs.Checked);
      Ini.WriteBool(   'Arquivos','PastaMensal',cbxPastaMensal.Checked);
      Ini.WriteBool(   'Arquivos','AddLiteral' ,cbxAdicionaLiteral.Checked);
+     Ini.WriteBool(   'Arquivos','EmissaoPathNFe',cbxEmissaoPathNFe.Checked);     
      Ini.WriteString( 'Arquivos','PathNFe'    ,edtPathNFe.Text) ;
      Ini.WriteString( 'Arquivos','PathCan'    ,edtPathCan.Text) ;
      Ini.WriteString( 'Arquivos','PathInu'    ,edtPathInu.Text) ;
@@ -1041,6 +1057,7 @@ begin
   Application.HintHidePause      := 5000 ;
 
   Timer1.Enabled := True ;
+
 end;
 
 procedure TfrmAcbrNfeMonitor.Restaurar1Click(Sender: TObject);
@@ -1482,6 +1499,11 @@ end;
 procedure TfrmAcbrNfeMonitor.cbxAjustarAutClick(Sender: TObject);
 begin
  edtAguardar.Enabled := not cbxAjustarAut.Checked;
+end;
+
+procedure TfrmAcbrNfeMonitor.cbxPastaMensalClick(Sender: TObject);
+begin
+ cbxEmissaoPathNFe.Enabled := cbxPastaMensal.Checked;
 end;
 
 end.

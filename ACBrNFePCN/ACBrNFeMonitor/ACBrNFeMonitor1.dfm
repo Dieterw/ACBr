@@ -4,7 +4,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
   Width = 545
   Height = 501
   ActiveControl = btMinimizar
-  Caption = 'ACBrNFe Monitor'
+  Caption = 'ACBrNFeMonitor'
   Color = clBtnFace
   Constraints.MinHeight = 485
   Constraints.MinWidth = 545
@@ -4120,7 +4120,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       Top = 0
       Width = 527
       Height = 256
-      ActivePage = WebService
+      ActivePage = Monitor
       Align = alBottom
       TabOrder = 0
       object Monitor: TTabSheet
@@ -5416,6 +5416,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           Height = 17
           Caption = 'Criar Pastas Mensalmente'
           TabOrder = 1
+          OnClick = cbxPastaMensalClick
         end
         object cbxAdicionaLiteral: TCheckBox
           Left = 8
@@ -5460,6 +5461,15 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           Height = 21
           Anchors = [akLeft, akTop, akRight]
           TabOrder = 7
+        end
+        object cbxEmissaoPathNFe: TCheckBox
+          Left = 272
+          Top = 8
+          Width = 233
+          Height = 17
+          Caption = 'Salvar NFe pelo campo Data de Emiss'#227'o'
+          Enabled = False
+          TabOrder = 8
         end
       end
     end
@@ -5511,7 +5521,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
     Configuracoes.Geral.PathSalvar = 'C:\Program Files\Borland\Delphi7\Bin\'
     Configuracoes.WebServices.UF = 'SP'
     Configuracoes.WebServices.AguardarConsultaRet = 0
-    Configuracoes.WebServices.IntervaloTentativas = 0
+    Configuracoes.WebServices.IntervaloTentativas = 1000
     Configuracoes.WebServices.AjustaAguardaConsultaRet = False
     Configuracoes.Arquivos.PathNFe = 'C:\Program Files\Borland\Delphi7\Bin\'
     Configuracoes.Arquivos.PathCan = 'C:\Program Files\Borland\Delphi7\Bin\'
@@ -5936,6 +5946,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
     PathPDF = 'C:\Program Files\Borland\Delphi7\Bin\'
     ImprimirHoraSaida = False
     MostrarPreview = True
+    MostrarStatus = True
     TipoDANFE = tiRetrato
     NumCopias = 1
     ImprimirDescPorc = False
@@ -5947,7 +5958,6 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
     CasasDecimais._qCom = 2
     CasasDecimais._vUnCom = 2
     ExibirResumoCanhoto = False
-    FormularioContinuo = False
     Left = 169
     Top = 25
   end
@@ -5956,6 +5966,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
     PathPDF = 'C:\Program Files\Borland\Delphi7\Bin\'
     ImprimirHoraSaida = False
     MostrarPreview = True
+    MostrarStatus = True
     TipoDANFE = tiRetrato
     NumCopias = 1
     ImprimirDescPorc = False
@@ -5967,7 +5978,6 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
     CasasDecimais._qCom = 2
     CasasDecimais._vUnCom = 2
     ExibirResumoCanhoto = False
-    FormularioContinuo = False
     TamanhoCampoCodigo = 0
     Fonte = ftTimes
     Left = 209

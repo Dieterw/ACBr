@@ -48,6 +48,14 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+
+Alterações   12/11/09
+---------------
+[+] Adicionada propriedade EmissaoPathNFe onde quando estiver True e se estiver configurado para salvar as NFe na propriedade PathNFe 
+    com criação de pasta mensal, a NFe será salva na pasta conforme a propriedade dEmi(Data de Emissão) e não mais pela data do PC.
+    Propriedade criada para resolver o caso #410 relatado no MANTIS. 
+
+
 Alterações   11/11/09
 ---------------
 [*] Modificada funcao ReverterFiltroTextoXML (unit pcnAuxilizr.pas) para também ler caracteres HEXADECIMAIS. (Créditos João Paulo Leão)

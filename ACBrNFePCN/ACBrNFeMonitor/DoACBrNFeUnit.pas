@@ -358,6 +358,22 @@ begin
                            'NProt='+ACBrNFe1.WebServices.Recibo.NFeRetorno.ProtNFe.Items[0].nProt+sLineBreak+
                            'MotivoNFe='+ACBrNFe1.WebServices.Recibo.NFeRetorno.ProtNFe.Items[0].xMotivo+sLineBreak;
 
+                           for I:= 0 to ACBrNFe1.WebServices.Recibo.NFeRetorno.ProtNFe.Count-1 do
+                            begin
+                              Cmd.Resposta := Cmd.Resposta+
+                                '[NFE'+Trim(IntToStr(StrToInt(copy(ACBrNFe1.WebServices.Recibo.NFeRetorno.ProtNFe.Items[i].chNFe,26,9))))+']'+sLineBreak+
+                                'Versao='+ACBrNFe1.WebServices.Recibo.NFeRetorno.ProtNFe.Items[i].verAplic+sLineBreak+
+                                'TpAmb='+TpAmbToStr(ACBrNFe1.WebServices.Recibo.NFeRetorno.ProtNFe.Items[i].tpAmb)+sLineBreak+
+                                'VerAplic='+ACBrNFe1.WebServices.Recibo.NFeRetorno.ProtNFe.Items[i].verAplic+sLineBreak+
+                                'CStat='+IntToStr(ACBrNFe1.WebServices.Recibo.NFeRetorno.ProtNFe.Items[i].cStat)+sLineBreak+
+                                'XMotivo='+ACBrNFe1.WebServices.Recibo.NFeRetorno.ProtNFe.Items[i].xMotivo+sLineBreak+
+                                'CUF='+IntToStr(ACBrNFe1.WebServices.Recibo.NFeRetorno.cUF)+sLineBreak+
+                                'ChNFe='+ACBrNFe1.WebServices.Recibo.NFeRetorno.ProtNFe.Items[i].chNFe+sLineBreak+
+                                'DhRecbto='+DateTimeToStr(ACBrNFe1.WebServices.Recibo.NFeRetorno.ProtNFe.Items[i].dhRecbto)+sLineBreak+
+                                'NProt='+ACBrNFe1.WebServices.Recibo.NFeRetorno.ProtNFe.Items[i].nProt+sLineBreak+
+                                'DigVal='+ACBrNFe1.WebServices.Recibo.NFeRetorno.ProtNFe.Items[i].digVal+sLineBreak;
+                            end;
+
            if ACBrNFe1.Configuracoes.Geral.Salvar then
             begin
               Cmd.Resposta :=  Cmd.Resposta+
@@ -869,8 +885,8 @@ begin
          Ide.modelo     := INIRec.ReadInteger( 'Identificacao','Modelo' ,55);
          Ide.serie      := INIRec.ReadInteger( 'Identificacao','Serie'  ,1);
          Ide.nNF        := INIRec.ReadInteger( 'Identificacao','Numero' ,0);
-         Ide.dEmi       := StrToDate(INIRec.ReadString( 'Identificacao','Emissao',''));
-         Ide.dSaiEnt    := StrToDate(INIRec.ReadString( 'Identificacao','Saida'  ,''));
+         Ide.dEmi       := NotaUtil.StringToDate(INIRec.ReadString( 'Identificacao','Emissao','0'));
+         Ide.dSaiEnt    := NotaUtil.StringToDate(INIRec.ReadString( 'Identificacao','Saida'  ,'0'));
          Ide.tpNF       := StrToTpNF(OK,INIRec.ReadString( 'Identificacao','Tipo','1'));
 
          I := 1 ;
@@ -934,10 +950,10 @@ begin
             Avulsa.fone    := INIRec.ReadString(  'Avulsa','fone','');
             Avulsa.UF      := INIRec.ReadString(  'Avulsa','UF','');
             Avulsa.nDAR    := INIRec.ReadString(  'Avulsa','nDAR','');
-            Avulsa.dEmi    := StrToDate(INIRec.ReadString(  'Avulsa','dEmi',''));
+            Avulsa.dEmi    := NotaUtil.StringToDate(INIRec.ReadString(  'Avulsa','dEmi','0'));
             Avulsa.vDAR    := StringToFloatDef(INIRec.ReadString(  'Avulsa','vDAR',''),0);
             Avulsa.repEmi  := INIRec.ReadString(  'Avulsa','repEmi','');
-            Avulsa.dPag    := StrToDate(INIRec.ReadString(  'Avulsa','dPag',''));
+            Avulsa.dPag    := NotaUtil.StringToDate(INIRec.ReadString(  'Avulsa','dPag','0'));
           end;
 
          Dest.CNPJCPF           := INIRec.ReadString(  'Destinatario','CNPJ'       ,'');
@@ -1036,10 +1052,10 @@ begin
                      with Prod.DI.Add do
                       begin
                         nDi         := sNumeroDI;
-                        dDi         := StrToDate(INIRec.ReadString(sSecao,'DataRegistroDI'  ,''));
+                        dDi         := NotaUtil.StringToDate(INIRec.ReadString(sSecao,'DataRegistroDI'  ,'0'));
                         xLocDesemb  := INIRec.ReadString(sSecao,'LocalDesembaraco','');
                         UFDesemb    := INIRec.ReadString(sSecao,'UFDesembaraco'   ,'');
-                        dDesemb     := StrToDate(INIRec.ReadString(sSecao,'DataDesembaraco',''));
+                        dDesemb     := NotaUtil.StringToDate(INIRec.ReadString(sSecao,'DataDesembaraco','0'));
                         cExportador := INIRec.ReadString(sSecao,'CodigoExportador','');;
 
                         K := 1 ;
@@ -1109,8 +1125,8 @@ begin
                   begin
                     nLote := sFim;
                     qLote := StringToFloatDef(INIRec.ReadString( sSecao,'qLote',''),0) ;
-                    dFab  := StrToDate(INIRec.ReadString( sSecao,'dFab','')) ;
-                    dVal  := StrToDate(INIRec.ReadString( sSecao,'dVal','')) ;
+                    dFab  := NotaUtil.StringToDate(INIRec.ReadString( sSecao,'dFab','0')) ;
+                    dVal  := NotaUtil.StringToDate(INIRec.ReadString( sSecao,'dVal','0')) ;
                     vPMC  := StringToFloatDef(INIRec.ReadString( sSecao,'vPMC',''),0) ;
                    end;
                   Inc(J)
@@ -1537,7 +1553,7 @@ begin
             with Cobr.Dup.Add do
              begin
                nDup  := sNumDup;
-               dVenc := StrToDate(INIRec.ReadString( sSecao,'DataVencimento',''));
+               dVenc := NotaUtil.StringToDate(INIRec.ReadString( sSecao,'DataVencimento','0'));
                vDup  := StringToFloatDef( INIRec.ReadString(sSecao,'Valor','') ,0) ;
              end;
             Inc(I);

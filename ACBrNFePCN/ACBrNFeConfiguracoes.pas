@@ -141,6 +141,7 @@ type
     FSalvar   : Boolean;
     FMensal   : Boolean;
     FLiteral  : Boolean;
+    FEmissaoPathNFe  : Boolean;
     FPathNFe  : String;
     FPathCan  : String;
     FPathInu  : String;
@@ -150,11 +151,12 @@ type
     function GetPathCan: String;
     function GetPathDPEC: String;
     function GetPathInu: String;
-    function GetPathNFe: String;
+    function GetPathNFe(Data : TDateTime = 0): String;
   published
     property Salvar     : Boolean read FSalvar  write FSalvar  default False ;
     property PastaMensal: Boolean read FMensal  write FMensal  default False ;
     property AdicionarLiteral: Boolean read FLiteral write FLiteral default False ;
+    property EmissaoPathNFe: Boolean read FEmissaoPathNFe write FEmissaoPathNFe default False ;
     property PathNFe : String read FPathNFe  write FPathNFe;
     property PathCan : String read FPathCan  write FPathCan;
     property PathInu : String read FPathInu  write FPathInu;
@@ -305,7 +307,7 @@ end;
 
 procedure TWebServicesConf.SetIntervaloTentativas(const Value: Cardinal);
 begin
-  if Value < 1000 then
+  if (Value > 0) and (Value < 1000) then
      FIntervaloTentativas := 1000
   else
      FIntervaloTentativas := Value;
@@ -513,7 +515,7 @@ begin
 end;
 
 
-function TArquivosConf.GetPathNFe: String;
+function TArquivosConf.GetPathNFe(Data : TDateTime = 0): String;
 var
   wDia, wMes, wAno : Word;
   Dir : String;
@@ -525,7 +527,9 @@ begin
 
   if FMensal then
    begin
-     DecodeDate(Now, wAno, wMes, wDia);
+     if Data = 0 then
+        Data := Now;
+     DecodeDate(Data, wAno, wMes, wDia);
      if Pos(IntToStr(wAno)+IntToStrZero(wMes,2),Dir) <= 0 then
         Dir := PathWithDelim(Dir)+IntToStr(wAno)+IntToStrZero(wMes,2);
    end;

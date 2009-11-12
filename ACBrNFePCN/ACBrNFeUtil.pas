@@ -139,6 +139,7 @@ type
     class function CortaD(const AString: string; const ATamanho: Integer): String;
     class function CortaE(const AString: string; const ATamanho: Integer): String;
     class function FormatDate(const AString: string): String;
+    class function StringToDate(const AString: string): TDateTime;
     class function TamanhoIgual(const AValue: String; const ATamanho: Integer): Boolean;overload;
     class procedure TamanhoIgual(const AValue: String; const ATamanho: Integer; AMensagem: String);overload;
     class function TamanhoIgual(const AValue: Integer; const ATamanho: Integer): Boolean;overload;
@@ -481,6 +482,14 @@ begin
   except
     Result := '';
   end;
+end;
+
+class function NotaUtil.StringToDate(const AString: string): TDateTime;
+begin
+  if (AString = '0') or (AString = '') then
+     Result := 0
+  else
+     Result := StrToDate(AString);
 end;
 
 class function NotaUtil.FormatFloat(AValue: Extended;

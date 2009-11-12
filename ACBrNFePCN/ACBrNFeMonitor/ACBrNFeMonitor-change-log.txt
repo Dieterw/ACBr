@@ -48,6 +48,14 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+12/11/09
+[+]	: Adicionada propriedade "Salvar NFe pelo campo Data de Emissão" na aba Diretórios onde quando estiver selecionadae se estiver configurado 
+          para salvar as NFe na propriedade PathNFe com criação de pasta mensal, a NFe será salva na pasta conforme a propriedade 
+          dEmi(Data de Emissão) e não mais pela data do PC.
+          Propriedade criada para resolver o caso #410 relatado no MANTIS. 
+[*]	: Alterado criação da NFe com base no arquivo INI para permitir Data de Saida/Entrada em branco. Caso #408 no MANTIS
+[-]	: Alterado retorno do comando NFe.ReciboNFe para que quando consultar um recibo de um lote com várias notas seja exibido o status 
+	  de cada nota, anteriormente o comando só mostrava o status da primeira nota.
 
 21/10/09
 [+]	: Adicionado propriedades 1-Ajustar Automaticamente prop. "Aguardar", 2-Aguardar, 3-Tentativas e 4-Intervalo na aba WebService

@@ -679,7 +679,7 @@ begin
   if (nfe.Det[i].Prod.comb.cProdANP > 0) or
     (trim(nfe.Det[i].Prod.comb.CODIF) <> '') or
     (nfe.Det[i].Prod.comb.qTemp > 0) or
-    (nfe.Det[i].Prod.comb.CIDE.qBCprod > 0) or
+    (nfe.Det[i].Prod.comb.CIDE.qBCProd > 0) or
     (nfe.Det[i].Prod.comb.CIDE.vAliqProd > 0) or
     (nfe.Det[i].Prod.comb.CIDE.vCIDE > 0) or
     (nfe.Det[i].Prod.comb.ICMS.vBCICMS > 0) or
@@ -707,12 +707,12 @@ end;
 
 procedure TNFeW.GerarDetProdCombCIDE(const i: integer);
 begin
-  if (nfe.Det[i].Prod.comb.CIDE.qBCprod > 0) or
+  if (nfe.Det[i].Prod.comb.CIDE.qBCProd > 0) or
     (nfe.Det[i].Prod.comb.CIDE.vAliqProd > 0) or
     (nfe.Det[i].Prod.comb.CIDE.vCIDE > 0) then
   begin
     Gerador.wGrupo('CIDE', 'L105');
-    Gerador.wCampo(tcDe4, 'L106', 'qBCprod  ', 01, 16, 1, nfe.Det[i].Prod.comb.CIDE.qBCprod, DSC_QBCPROD);
+    Gerador.wCampo(tcDe4, 'L106', 'qBCProd  ', 01, 16, 1, nfe.Det[i].Prod.comb.CIDE.qBCprod, DSC_QBCPROD);
     Gerador.wCampo(tcDe4, 'L107', 'vAliqProd', 01, 15, 1, nfe.Det[i].Prod.comb.CIDE.vAliqProd, DSC_VALIQPROD);
     Gerador.wCampo(tcDe2, 'L108', 'vCIDE    ', 01, 15, 1, nfe.Det[i].Prod.comb.CIDE.vCIDE, DSC_VCIDE);
     Gerador.wGrupo('/CIDE');

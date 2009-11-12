@@ -630,11 +630,11 @@ type
 
   TCIDE = class(TPersistent)
   private
-    FqBCprod: currency;
+    FqBCProd: currency;
     FvAliqProd: currency;
     FvCIDE: currency;
   published
-    property qBCprod: currency read FqBCprod write FqBCprod;
+    property qBCProd: currency read FqBCProd write FqBCProd;
     property vAliqProd: currency read FvAliqProd write FvAliqProd;
     property vCIDE: currency read FvCIDE write FvCIDE;
   end;

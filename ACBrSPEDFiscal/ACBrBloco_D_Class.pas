@@ -370,7 +370,7 @@ begin
        QTD_LIN_D := QTD_LIN_D + 1;
        ///
        Result := LFill('D990') +
-                 LFill(QTD_LIN_D,0,0) +
+                 LFill(QTD_LIN_D,0) +
                  Delimitador +
                  #13#10;
      end;

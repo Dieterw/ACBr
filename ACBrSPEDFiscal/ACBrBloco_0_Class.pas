@@ -591,7 +591,7 @@ begin
        QTD_LIN_0 := QTD_LIN_0 + 1;
        ///
        Result := LFill('0990') +
-                 LFill(QTD_LIN_0,0,0) +
+                 LFill(QTD_LIN_0,0) +
                  Delimitador +
                  #13#10;
      end;

@@ -50,9 +50,10 @@ type
   TACBrSPED = class(TComponent)
   private
     FOnError: TErrorEvent;
+    FDelimitador: string;  /// Caracter delimitador de campos
+    FCurMascara: string;      /// Mascara para valores tipo currency
     FDT_INI: TDateTime;    /// Data inicial das informações contidas no arquivo
     FDT_FIN: TDateTime;    /// Data final das informações contidas no arquivo
-    FDelimitador: string;  /// Caracter delimitador de campos
 
     function GetOnError: TErrorEvent;  /// Método GetError
     procedure SetOnError(const Value: TErrorEvent); /// Método SetError
@@ -60,8 +61,12 @@ type
   protected
     function GetDT_FIN: TDateTime; virtual;
     function GetDT_INI: TDateTime; virtual;
+    function GetDelimitador: string; virtual;
+    function GetCurMascara: string; virtual;
     procedure SetDT_FIN(const Value: TDateTime); virtual;
     procedure SetDT_INI(const Value: TDateTime); virtual;
+    procedure SetDelimitador(const Value: string); virtual;
+    procedure SetCurMascara(const Value: string); virtual;
   public
     constructor Create(AOwner: TComponent); override; /// Create
     destructor Destroy; override; /// Destroy
@@ -77,7 +82,8 @@ type
     ///
     property DT_INI: TDateTime read GetDT_INI write SetDT_INI;
     property DT_FIN: TDateTime read GetDT_FIN write SetDT_FIN;
-    property Delimitador: string read FDelimitador write FDelimitador;
+    property Delimitador: string read GetDelimitador write SetDelimitador;
+    property CurMascara: string read GetCurMascara write SetCurMascara;
     property OnError: TErrorEvent read GetOnError write SetOnError;
   end;
 
@@ -99,6 +105,7 @@ constructor TACBrSPED.Create(AOwner: TComponent);
 begin
   inherited;
   FDelimitador := '|';
+  FCurMascara  := '#0.00';
 end;
 
 destructor TACBrSPED.Destroy;
@@ -136,7 +143,10 @@ begin
   begin
      intP := intP * 10;
   end;
-  Result := LFill(Trunc(Value * intP), Size, Caracter);
+  if FCurMascara <> '' then
+     Result := FDelimitador + FormatCurr(FCurMascara, Value)
+  else
+     Result := LFill(Trunc(Value * intP), Size, Caracter);
 end;
 
 function TACBrSPED.LFill(Value: Integer; Size: Integer; Caracter: Char = '0'): string;
@@ -148,6 +158,16 @@ function TACBrSPED.LFill(Value: TDateTime; Mask: string = 'ddmmyyyy'): string;
 begin
   Result := FormatDateTime(Mask, Value);
   Result := FDelimitador + Result;
+end;
+
+function TACBrSPED.GetCurMascara: string;
+begin
+   Result := FCurMascara;
+end;
+
+function TACBrSPED.GetDelimitador: string;
+begin
+   Result := FDelimitador;
 end;
 
 function TACBrSPED.GetDT_FIN: TDateTime;
@@ -163,6 +183,16 @@ end;
 function TACBrSPED.GetOnError: TErrorEvent;
 begin
   Result := FOnError;
+end;
+
+procedure TACBrSPED.SetCurMascara(const Value: string);
+begin
+   FCurMascara := Value;
+end;
+
+procedure TACBrSPED.SetDelimitador(const Value: string);
+begin
+   FDelimitador := Value;
 end;
 
 procedure TACBrSPED.SetDT_FIN(const Value: TDateTime);

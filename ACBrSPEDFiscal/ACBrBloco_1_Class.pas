@@ -538,7 +538,7 @@ begin
        QTD_LIN_1 := QTD_LIN_1 + 1;
        ///
        Result := LFill('1990') +
-                 LFill(QTD_LIN_1,0,0) +
+                 LFill(QTD_LIN_1,0) +
                  Delimitador +
                  #13#10;
      end;

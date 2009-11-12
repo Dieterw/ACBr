@@ -64,6 +64,8 @@ type
     // Periodo
     procedure SetDT_FIN(const Value: TDateTime); override;
     procedure SetDT_INI(const Value: TDateTime); override;
+    procedure SetDelimitador(const Value: string); override;
+    procedure SetCurMascara(const Value: string); override;
     /// BLOCO 0
     function WriteRegistro0000: string;
     function WriteRegistro0001: string;
@@ -227,6 +229,7 @@ type
   published
     property Path: string read fPath write fPath;
     property Delimitador;
+    property CurMascara;
     property OnError;
   end;
 
@@ -277,6 +280,29 @@ begin
       FBloco_0.Registro0000.DT_INI := Value;
       FBloco_E.RegistroE100.DT_INI := Value;
    end;
+end;
+
+procedure TACBrSPEDFiscal.SetCurMascara(const Value: string);
+begin
+  FBloco_0.CurMascara := Value;
+  FBloco_1.CurMascara := Value;
+  FBloco_C.CurMascara := Value;
+  FBloco_D.CurMascara := Value;
+  FBloco_E.CurMascara := Value;
+  FBloco_H.CurMascara := Value;
+  FBloco_9.CurMascara := Value;
+end;
+
+procedure TACBrSPEDFiscal.SetDelimitador(const Value: string);
+begin
+  inherited;
+  FBloco_0.Delimitador := Value;
+  FBloco_1.Delimitador := Value;
+  FBloco_C.Delimitador := Value;
+  FBloco_D.Delimitador := Value;
+  FBloco_E.Delimitador := Value;
+  FBloco_H.Delimitador := Value;
+  FBloco_9.Delimitador := Value;
 end;
 
 procedure TACBrSPEDFiscal.SetDT_FIN(const Value: TDateTime);

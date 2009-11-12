@@ -2026,7 +2026,7 @@ begin
        QTD_LIN_C := QTD_LIN_C + 1;
        ///
        Result := LFill('C990') +
-                 LFill(QTD_LIN_C,0,0) +
+                 LFill(QTD_LIN_C,0) +
                  Delimitador +
                  #13#10;
      end;

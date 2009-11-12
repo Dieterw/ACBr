@@ -681,7 +681,7 @@ begin
        QTD_LIN_E := QTD_LIN_E + 1;
        ///
        Result := LFill('E990') +
-                 LFill(QTD_LIN_E,0,0) +
+                 LFill(QTD_LIN_E,0) +
                  Delimitador +
                  #13#10;
      end;

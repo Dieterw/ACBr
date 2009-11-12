@@ -131,7 +131,7 @@ begin
        QTD_LIN_H := QTD_LIN_H + 1;
        ///
        Result := LFill('H990') +
-                 LFill(QTD_LIN_H,0,0) +
+                 LFill(QTD_LIN_H,0) +
                  Delimitador +
                  #13#10;
      end;

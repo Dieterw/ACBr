@@ -47,9 +47,23 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.01a   12/11/09
+---------------
+[+] Nova propriedade "CurMascara", para formatar os valores tipo Currency
+[-] Alterada "function LFill(Value: Currency;" em ACBrSped.pas, para formatar 
+    o valor com a mascara que tiver na nova propriedade "CurMascara"
+[-] Adicionada em ACBrSpedFiscal.pas os métodos
+    procedure SetDelimitador(const Value: string); override;
+    procedure SetCurMascara(const Value: string); override;
+[-] No Bloco 9, foi alterado as propriedades do tipo Currency para Integer
+    para que essas proriedades não sejam formatadas como currency
+[-] Todos as Units Bloco_?_Class.pas foi alterada o método que totaliza a
+    quantidade de registros de LFill(QTD_LIN_?,0,0) para LFill(QTD_LIN_?,0),
+    porque tava formatando com a mascara
+
 Versão 0.01a   11/11/09
 ---------------
-[+] implementação de métodos no Bloco D por (Franklin Haut)
+[+] Implementação de métodos no Bloco D por (Franklin Haut)
 [-] Correção no nome de propriedades nos Blocos C, D e E por (Franklin Haut)
 [+] Implementação de todos os métodos que faltavam no Bloco 1 por (Agnaldo Prates)
 [+] Implementação de vários métodos nos Blocos 0, C e E  por (Agnaldo Prates)

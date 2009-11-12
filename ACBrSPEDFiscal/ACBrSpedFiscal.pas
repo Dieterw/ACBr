@@ -842,7 +842,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C100';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_C.RegistroC100.Count;
    end;
    Result := Bloco_C.WriteRegistroC100;
 end;
@@ -852,7 +852,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C110';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_C.RegistroC110.Count;
    end;
    Result := Bloco_C.WriteRegistroC110;
 end;
@@ -862,7 +862,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C111';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_C.RegistroC111.Count;
    end;
    Result := Bloco_C.WriteRegistroC111;
 end;
@@ -872,7 +872,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C112';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_C.RegistroC112.Count;
    end;
    Result := Bloco_C.WriteRegistroC112;
 end;
@@ -882,7 +882,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C113';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_C.RegistroC113.Count;
    end;
    Result := Bloco_C.WriteRegistroC113;
 end;
@@ -892,7 +892,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C114';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_C.RegistroC114.Count;
    end;
    Result := Bloco_C.WriteRegistroC114;
 end;
@@ -902,7 +902,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C115';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_C.RegistroC115.Count;
    end;
    Result := Bloco_C.WriteRegistroC115;
 end;
@@ -912,7 +912,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C120';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_C.RegistroC120.Count;
    end;
    Result := Bloco_C.WriteRegistroC120;
 end;
@@ -922,7 +922,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C130';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_C.RegistroC130.Count;
    end;
    Result := Bloco_C.WriteRegistroC130;
 end;
@@ -932,7 +932,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C140';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_C.RegistroC140.Count;
    end;
    Result := Bloco_C.WriteRegistroC140;
 end;
@@ -942,7 +942,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C141';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_C.RegistroC141.Count;
    end;
    Result := Bloco_C.WriteRegistroC141;
 end;
@@ -952,7 +952,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C160';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_C.RegistroC160.Count;
    end;
    Result := Bloco_C.WriteRegistroC160;
 end;
@@ -962,7 +962,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C165';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_C.RegistroC165.Count;
    end;
    Result := Bloco_C.WriteRegistroC165;
 end;
@@ -972,7 +972,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C170';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_C.RegistroC170.Count;
    end;
    Result := Bloco_C.WriteRegistroC170;
 end;
@@ -982,7 +982,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C171';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_C.RegistroC171.Count;
    end;
    Result := Bloco_C.WriteRegistroC171;
 end;
@@ -992,7 +992,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C172';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_C.RegistroC172.Count;
    end;
    Result := Bloco_C.WriteRegistroC172;
 end;
@@ -1002,7 +1002,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C173';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_C.RegistroC173.Count;
    end;
    Result := Bloco_C.WriteRegistroC173;
 end;
@@ -1012,7 +1012,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C174';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_C.RegistroC174.Count;
    end;
    Result := Bloco_C.WriteRegistroC174;
 end;
@@ -1022,7 +1022,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C175';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_C.RegistroC175.Count;
    end;
    Result := Bloco_C.WriteRegistroC175;
 end;
@@ -1032,7 +1032,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C176';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_C.RegistroC176.Count;
    end;
    Result := Bloco_C.WriteRegistroC176;
 end;
@@ -1041,7 +1041,7 @@ function TACBrSPEDFiscal.WriteRegistroC177: string;
 begin
    with Bloco_9.Registro9900.New do
    begin
-      REG_BLC := 'C177';
+      QTD_REG_BLC := Bloco_C.RegistroC177.Count;
       QTD_REG_BLC := 1;
    end;
    Result := Bloco_C.WriteRegistroC177;
@@ -1052,7 +1052,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C178';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_C.RegistroC178.Count;
    end;
    Result := Bloco_C.WriteRegistroC178;
 end;
@@ -1062,7 +1062,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C179';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_C.RegistroC179.Count;
    end;
    Result := Bloco_C.WriteRegistroC179;
 end;
@@ -1072,7 +1072,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C190';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_C.RegistroC190.Count;
    end;
    Result := Bloco_C.WriteRegistroC190;
 end;
@@ -1082,7 +1082,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C195';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_C.RegistroC195.Count;
    end;
    Result := Bloco_C.WriteRegistroC195;
 end;
@@ -1092,7 +1092,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C197';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_C.RegistroC197.Count;
    end;
    Result := Bloco_C.WriteRegistroC197;
 end;
@@ -1102,7 +1102,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C300';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_C.RegistroC300.Count;
    end;
    Result := Bloco_C.WriteRegistroC300;
 end;
@@ -1112,7 +1112,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C310';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_C.RegistroC310.Count;
    end;
    Result := Bloco_C.WriteRegistroC310;
 end;
@@ -1122,7 +1122,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C320';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_C.RegistroC320.Count;
    end;
    Result := Bloco_C.WriteRegistroC320;
 end;
@@ -1132,7 +1132,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C321';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_C.RegistroC321.Count;
    end;
    Result := Bloco_C.WriteRegistroC321;
 end;
@@ -1142,7 +1142,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C350';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_C.RegistroC350.Count;
    end;
    Result := Bloco_C.WriteRegistroC350;
 end;
@@ -1152,7 +1152,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C370';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_C.RegistroC370.Count;
    end;
    Result := Bloco_C.WriteRegistroC370;
 end;
@@ -1162,7 +1162,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'C390';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_C.RegistroC390.Count;
    end;
    Result := Bloco_C.WriteRegistroC390;
 end;

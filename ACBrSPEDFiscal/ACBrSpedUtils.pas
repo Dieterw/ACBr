@@ -59,6 +59,7 @@ function funChecaMODNF(const COD: string): Boolean;
 function funChecaSITDOCTO(const COD: string): Boolean;
 function funChecaCSTCOFINS(const CST: string): Boolean;
 function funChecaCSTPIS(const CST: string): Boolean;
+function funStrZero(Zeros: string; Quant: Integer): string;
 
 implementation
 
@@ -1548,6 +1549,14 @@ begin
   end;
 
   Result := booFind;
+end;
+
+function funStrZero(Zeros: string; Quant: Integer): string;
+begin
+  Result := Zeros;
+  Quant := Quant - Length(Result);
+  if Quant > 0 then
+     Result := StringOfChar('0', Quant) + Result;
 end;
 
 end.

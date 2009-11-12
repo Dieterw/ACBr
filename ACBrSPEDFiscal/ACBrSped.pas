@@ -89,6 +89,8 @@ type
 
 implementation
 
+uses ACBrSpedUtils;
+
 (* TACBrSPED *)
 
 procedure TACBrSPED.Check(Condicao: Boolean; const Msg: string);
@@ -143,6 +145,7 @@ begin
   begin
      intP := intP * 10;
   end;
+
   if FCurMascara <> '' then
      Result := FDelimitador + FormatCurr(FCurMascara, Value)
   else

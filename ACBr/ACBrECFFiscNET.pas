@@ -359,6 +359,8 @@ begin
 
   AString := StringReplace(AString,'\','\\',[rfReplaceAll]) ;
   AString := StringReplace(AString,'"','\"',[rfReplaceAll]) ;
+  { Restaurando caracteres de controle }
+  AString := StringReplace(AString,'\\x','\x',[rfReplaceAll]) ;
 
   Buf := BinaryStringToString(AString);
 

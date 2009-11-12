@@ -2558,8 +2558,40 @@ begin
 end;
 
 procedure TForm1.DadosUltimaReduoZ1Click(Sender: TObject);
+Var
+  AIni : TMemIniFile ;
+  AStringList : TStringList ;
+  Resp  : String ;
+  AVal  : Double ;
+  ADate : TDateTime ;
+  AStr  : String ;
 begin
-  mResp.Lines.Add( 'Dados da Ultima Redução Z' + sLineBreak + ACBrECF1.DadosUltimaReducaoZ );
+  Resp := ACBrECF1.DadosUltimaReducaoZ ;
+  mResp.Lines.Add( 'Dados da Ultima Redução Z' + sLineBreak + Resp );
+
+  AStringList := TStringList.Create ;
+  AIni := TMemIniFile.Create( 'DadosUltimaReducaoZ.ini' ) ;
+  try
+     AStringList.Text := Resp ;
+     AIni.SetStrings(AStringList);
+
+     // Lendo a Data do Movimento
+     ADate := AIni.ReadDateTime('ECF','DataMovimento', 0) ;
+     ShowMessage('Data do Movimento'+sLineBreak+DateToStr(ADate));
+
+     // Lendo o NumCOOInicial
+     AStr := AIni.ReadString('ECF','NumCOOInicial', '') ;
+     ShowMessage('COO Inicial'+AStr);
+
+     // Lendo a Venda Bruta:
+     AVal := AIni.ReadFloat('Totalizadores','VendaBruta', 0) ;
+     ShowMessage('Venda Bruta'+sLineBreak+FormatFloat('0.00',AVal));
+
+  finally
+     AIni.Free ;
+     AStringList.Free ;
+  end ;
+
   AtualizaMemos ;
 end;
 

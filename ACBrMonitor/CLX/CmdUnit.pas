@@ -41,22 +41,22 @@ type
 TACBrCmd = class
   private
     fsParams : TStringList ;
-    fsComando: String;
-    fsObjeto : String;
-    fsMetodo : String;
-    fsResposta: String;
-    procedure SetComando(const Value: String);
+    fsComando: AnsiString;
+    fsObjeto : AnsiString;
+    fsMetodo : AnsiString;
+    fsResposta: AnsiString;
+    procedure SetComando(const Value: AnsiString);
 
   public
     constructor Create;
     destructor Destroy; override ;
 
-    function Params( Index : Integer) : String ;
+    function Params( Index : Integer) : AnsiString ;
 
-    property Comando : String      read fsComando write SetComando ;
-    property Objeto  : String      read fsObjeto ;
-    property Metodo  : String      read fsMetodo ;
-    property Resposta: String      read fsResposta write fsResposta ;
+    property Comando : AnsiString read fsComando write SetComando ;
+    property Objeto  : AnsiString read fsObjeto ;
+    property Metodo  : AnsiString read fsMetodo ;
+    property Resposta: AnsiString read fsResposta write fsResposta ;
   end;
 
 implementation
@@ -75,7 +75,7 @@ begin
   inherited Destroy ;
 end;
 
-function TACBrCmd.Params(Index: Integer): String;
+function TACBrCmd.Params(Index: Integer): AnsiString;
 begin
   if Index > fsParams.Count-1 then
      Result := ''
@@ -83,9 +83,9 @@ begin
      Result := fsParams[Index] ;
 end;
 
-procedure TACBrCmd.SetComando(const Value: String);
+procedure TACBrCmd.SetComando(const Value: AnsiString);
 Var P,PaI,PaF,Pv : Integer ;
-    wComando, wParam, wProxChar : String ;
+    wComando, wParam, wProxChar : AnsiString ;
 begin
   fsMetodo   := '' ;
   fsObjeto   := '' ;

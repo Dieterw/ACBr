@@ -707,9 +707,10 @@ TACBrECFClass = class
        Qtd : Double ; ValorUnitario : Double; ValorDescontoAcrescimo : Double = 0;
        Unidade : String = ''; TipoDescontoAcrescimo : String = '%';
        DescontoAcrescimo : String = 'D' ) ; virtual ;
+    Procedure DescontoAcrescimoItemAnterior( ValorDescontoAcrescimo : Double = 0;
+       DescontoAcrescimo : String = 'D' ) ;  virtual ;
     Procedure SubtotalizaCupom( DescontoAcrescimo : Double = 0;
-       MensagemRodape : AnsiString = '' ) ;
-       virtual ;
+       MensagemRodape : AnsiString = '' ) ;  virtual ;
     procedure CancelaDescontoAcrescimoSubTotal(TipoAcrescimoDesconto: Char) ;
        Virtual ;{ A -> Acrescimo D -> Desconto } 
     Procedure EfetuaPagamento( CodFormaPagto : String; Valor : Double;
@@ -2249,6 +2250,12 @@ Procedure TACBrECFClass.VendeItem( Codigo, Descricao : String;
 begin
   ErroAbstract('VendeItem');
 end;
+
+Procedure TACBrECFClass.DescontoAcrescimoItemAnterior(
+   ValorDescontoAcrescimo : Double = 0; DescontoAcrescimo : String = 'D' ) ;
+begin
+  ErroAbstract('DescontoAcrescimoItemAnterior');
+end ;
 
 procedure TACBrECFClass.CancelaDescontoAcrescimoItem(NumItem: Integer);
 begin

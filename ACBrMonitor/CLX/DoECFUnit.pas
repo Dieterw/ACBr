@@ -46,20 +46,20 @@ Function PegaTotaisFormasPagamento : String ;
 Function PegaComprovantesNaoFiscais : String ;
 Function PegaTotaisComprovantesNaoFiscais : String ;
 Function PegaUnidadesMedida : String ;
-Procedure StringToMemo( AString : String; var Memo : TStringList );
+Procedure StringToMemo( AString : AnsiString; var Memo : TStringList );
 
 implementation
 uses ACBrECF, ACBrDevice, ACBrUtil, ACBrECFClass, StrUtils,
   {$IFNDEF CONSOLE}ACBrMonitor1 {$ELSE}ACBrMonitorConsoleDM {$ENDIF} ;
 
 Procedure DoECF( Cmd : TACBrCmd ) ;
-Var wDescricao : String ;
-    Linhas     : TStringList ;
-    Linha      : String ;
+Var wDescricao  : AnsiString ;
+    Linhas      : TStringList ;
+    Linha       : AnsiString ;
     NomeArquivo : String ;
-    FPG        : TACBrECFFormaPagamento ;
-    ICMS       : TACBrECFAliquota ;
-    CNF        : TACBrECFComprovanteNaoFiscal ;
+    FPG         : TACBrECFFormaPagamento ;
+    ICMS        : TACBrECFAliquota ;
+    CNF         : TACBrECFComprovanteNaoFiscal ;
 begin
   with {$IFNDEF CONSOLE}FrmACBrMonitor.ACBrECF1 {$ELSE}dm.ACBrECF1 {$ENDIF} do
   begin
@@ -541,7 +541,7 @@ begin
          begin
            Linha := StringReplace( Cmd.Params(0),'|',#10,[rfReplaceAll]) ;
            LinhaRelatorioGerencial( Linha )                    { Linha }
-         end 
+         end
 
         else if Cmd.Metodo = 'abrecupomvinculado' then
            if StringToFloatDef(Cmd.Params(3),-99) <> -99 then { Param 4 é valor ? }
@@ -878,7 +878,7 @@ begin
 end ;
 
 {------------------------------------------------------------------------------}
-Procedure StringToMemo( AString : String; var Memo : TStringList );
+Procedure StringToMemo( AString : AnsiString; var Memo : TStringList );
 begin
   AString   := StringReplace(AString,#13+#10,'|',[rfReplaceAll]) ;
   AString   := StringReplace(AString,#10,'|',[rfReplaceAll]) ;

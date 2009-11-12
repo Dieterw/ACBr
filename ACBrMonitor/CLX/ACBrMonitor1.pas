@@ -487,7 +487,7 @@ type
     Inicio  : Boolean ;
     ArqSaiTXT, ArqSaiTMP, ArqEntTXT, ArqLogTXT : String ;
     Cmd : TACBrCmd ;
-    NewLines : String ;
+    NewLines : AnsiString ;
     fsDisWorking: Boolean;
     fsRFDIni: String ;
     fsRFDLeuParams: Boolean ;
@@ -510,11 +510,11 @@ type
     procedure AjustaLinhasLog ;
 
     procedure LerSW ;
-    function LerChaveSWH: String;
+    function LerChaveSWH: AnsiString;
     procedure SalvarSW ;
 
     Procedure Processar ;
-    Procedure Resposta(Comando, Resposta : string);
+    Procedure Resposta(Comando, Resposta : Ansistring);
 
     Procedure AddLinesLog ;
 
@@ -779,7 +779,7 @@ end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.TcpServerExecute(AThread: TIdPeerThread);
-Var Cmd : String ;
+Var Cmd : AnsiString ;
 begin
   { Le o que foi enviado atravez da conexao TCP }
   Cmd := trim(AThread.Connection.ReadLn()) ;
@@ -1257,7 +1257,7 @@ end;
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.LerSW;
   Var INI : TIniFile ;
-      ArqSWH, Pass: String ;
+      ArqSWH, Pass: AnsiString ;
       JaExiste : Boolean ;
 begin
   ArqSWH   := ExtractFilePath(Application.ExeName)+'swh.ini' ;
@@ -1300,7 +1300,7 @@ begin
 end;
 
 {------------------------------------------------------------------------------}
-Function TFrmACBrMonitor.LerChaveSWH : String;
+Function TFrmACBrMonitor.LerChaveSWH : AnsiString;
   Var INI : TIniFile ;
       Pass: String ;
 begin
@@ -1447,7 +1447,7 @@ end;
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.SalvarSW;
   Var INI : TIniFile ;
-      Pass:String ;
+      Pass: AnsiString ;
 begin
   Ini := TIniFile.Create( ExtractFilePath(Application.ExeName)+'swh.ini' ) ;
   try
@@ -1498,7 +1498,7 @@ end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.ExibeConfig;
-Var Senha     : String ;
+Var Senha     : AnsiString ;
     SenhaOk   : Boolean ;
     HashSenha : Integer ;
 begin
@@ -1531,7 +1531,7 @@ end;
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.Processar;
 var
-  Linha : string;
+  Linha : AnsiString;
 begin
   if NewLines <> '' then
      mCmd.Lines.Add( NewLines ) ;
@@ -1585,7 +1585,7 @@ begin
 end;
 
 {------------------------------------------------------------------------------}
-Procedure TFrmACBrMonitor.Resposta(Comando, Resposta : string );
+Procedure TFrmACBrMonitor.Resposta(Comando, Resposta : AnsiString );
 begin
   if rbTCP.Checked then
   begin
@@ -1759,7 +1759,9 @@ end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.DoACBrTimer(Sender: TObject);
-var SL    : TStringList ;
+Var
+  MS : TMemoryStream ;
+  Linhas, S : AnsiString ;
 begin
   Timer1.Enabled := false;
 
@@ -1772,27 +1774,32 @@ begin
   try
      if FileExists( ArqEntTXT ) then  { Existe arquivo para ler ? }
      begin
-       { Lendo em StringList temporário para nao apagar comandos nao processados }
-       SL := TStringList.Create ;
-       try
-          TipoCMD := 'A' ;
-          if ( UpperCase(ExtractFileName( ArqEntTXT )) = 'BEMAFI32.CMD' ) then
-             TipoCMD := 'B'
-          else if ( UpperCase(ExtractFileName( ArqEntTXT )) = 'DARUMA.CMD' ) then
-             TipoCMD := 'D' ;
+        TipoCMD := 'A' ;
+        if ( UpperCase(ExtractFileName( ArqEntTXT )) = 'BEMAFI32.CMD' ) then
+           TipoCMD := 'B'
+        else if ( UpperCase(ExtractFileName( ArqEntTXT )) = 'DARUMA.CMD' ) then
+           TipoCMD := 'D' ;
 
-          SL.LoadFromFile( ArqEntTXT );
-          TryDeleteFile( ArqEntTXT, 1000 ) ; // Tenta apagar por até 1 segundo
+        { Lendo em MemoryStream temporário para nao apagar comandos nao processados }
+        MS := TMemoryStream.Create;
+        try
+           MS.LoadFromFile( ArqEntTXT );
+           MS.Position := 0 ;
+           SetLength(S,MS.Size);
+           MS.ReadBuffer(pchar(S)^,MS.Size);
+           Linhas := S ;
+        finally
+           MS.Free ;
+        end ;
 
-          if TipoCMD = 'B' then
-             SL.Text := TraduzBemafi( SL.Text )
-          else if TipoCMD = 'D' then
-             SL.Text := TraduzObserver( SL.Text ) ;
-             
-          mCmd.Lines.AddStrings( SL );
-       finally
-          SL.Free ;
-       end ;
+        TryDeleteFile( ArqEntTXT, 1000 ) ; // Tenta apagar por até 1 segundo
+
+        if TipoCMD = 'B' then
+           Linhas := TraduzBemafi( Linhas )
+        else if TipoCMD = 'D' then
+           Linhas := TraduzObserver( Linhas ) ;
+
+        mCmd.Lines.Add( Linhas );
      end;
 
      Processar ;
@@ -2298,7 +2305,7 @@ end;
 
 {------------------------------------------------------------------------------}
 procedure TFrmACBrMonitor.ACBrLCB1LeCodigo(Sender: TObject);
-Var Codigo : String ;
+Var Codigo : AnsiString ;
     {$IFDEF LINUX}
     fd, I : Integer ;
     C : Char ;
@@ -3132,7 +3139,7 @@ end;
 {------------------------------------------------------------------------------}
 
 procedure TFrmACBrMonitor.TCPServerTCConnect(AThread: TIdPeerThread);
- Var IP, Resp, Id : String ;
+ Var IP, Resp, Id : AnsiString ;
      Indice : Integer ;
 begin
   AThread.Connection.Write('#ok') ;
@@ -3243,7 +3250,7 @@ end ;
 procedure TFrmACBrMonitor.TimerTCTimer(Sender: TObject);
  Var I : Integer ;
      AConnection : TIdTCPServerConnection ;
-     Resp : String ;
+     Resp : AnsiString ;
      ATime : TDateTime ;
 begin
   // Verificando se o arquivo de Preços foi atualizado //

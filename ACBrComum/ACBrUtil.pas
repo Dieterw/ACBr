@@ -1082,10 +1082,11 @@ end;
 function BinaryStringToString(AString: AnsiString): AnsiString;
 var
    ASC : Integer;
-   I : Integer;
+   I, N : Integer;
 begin
   Result  := '' ;
-  For I := 1 to Length(AString) do
+  N := Length(AString) ;
+  For I := 1 to N do
   begin
      ASC := Ord(AString[I]) ;
      if (ASC < 32) or (ASC > 127) then

@@ -58,6 +58,7 @@ Agradecimentos:
 - Joao Victor Maia Fernandes     ECFQuattro
 - Sauli Bueno                    ECFYanco
 - Ivan Moreira                   ECFs
+- Isaque Pinheiro				 SPEDFiscal
 
 * Colaboradores:
 - Alexandre Rocha L.Marcondes    Administração
@@ -94,13 +95,35 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.8.9b  12/11/09
+-- ACBrECF --
+[+]    Adicionada a assinatura do método:
+       Procedure DescontoAcrescimoItemAnterior(
+         ValorDescontoAcrescimo : Double = 0; DescontoAcrescimo : String = 'D' ) ;
+       ( porém ainda não foi implementado em nenhuma Classe )
+[*]    Calculo do Total do Item Vendido apresentado na bobina, usa TruncFix ao
+       invez de Round(N,0) quando o ECF Truncar
+
+-- ACBrECFBematech --
+[+]    Implementado ArquivoMFD_DLL por COO usando carga dinâmica da DLL, e um
+       mecanismo para detectar a Data Inicial e Final equivalentes ao COO
+       Inicial e Final     (Por: lkohler)
+
+-- ACBrECFFiscNET --
+[-]    Corrigido problema quando informando parâmetros String com Cararteres de
+       controle suportados pelo ECF (Ex: /xB1)
+
+-- ACBrRFD --
+[*]    Calculo do Total do Item Vendido, usa TruncFix ao invez de Round(N,0)
+       quando o ECF Truncar
+
 
 Versão 0.8.9b  04/11/09
 -- ACBrECFBematech --
 [+]    Implementado ArquivoMFD_DLL por Periodo usando carga dinâmica da DLL.
        Não há função disponível na DLL para efetuar a Leitura por COO
        (Por: lkohler e DSA)
-       
+
 Versão 0.8.9b  03/11/09
 -- ACBrECF --
 [*]    VendeItem: Implementado tratamento para uso de aliquotas do ISSQN

@@ -795,7 +795,7 @@ begin
         if FlagArr = 'A' then
            TotItem := RoundTo(TotItem,-2)
         else
-           TotItem := Round( TotItem * 100 ) / 100 ;
+           TotItem := TruncFix( TotItem * 100 ) / 100 ;
 
         if Trim(Unidade) = '' then
            Un := 'UN'

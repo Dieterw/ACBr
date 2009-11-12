@@ -43,6 +43,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.8.15b  27/10/09    (Por: DSA)
+[*]    Fontes revistos para corrigir declaração de "String" para "AnsiString"
+       quando necessário
+[*]    Rotina de Leitura do TXT de entrada aprimorada para Ler todo o conteudo
+       do TXT, mesmo que o arquivo contenha caracteres de controle. 
+
 Versão 0.8.14b  27/10/09    (Por: DSA)
 [+]    ECF.TotalCancelamentosISSQN
 [+]    ECF.TotalDescontosISSQN

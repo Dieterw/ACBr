@@ -473,6 +473,8 @@ TACBrECF = class( TACBrComponent )
        Qtd : Double ; ValorUnitario : Double; ValorDescontoAcrescimo : Double = 0;
        Unidade : String = ''; TipoDescontoAcrescimo : String = '%';
        DescontoAcrescimo : String = 'D' ) ;
+    Procedure DescontoAcrescimoItemAnterior( ValorDescontoAcrescimo : Double = 0;
+       DescontoAcrescimo : String = 'D' ) ;
     Procedure SubtotalizaCupom( DescontoAcrescimo : Double = 0;
        MensagemRodape : AnsiString = '') ;
     Procedure EfetuaPagamento( CodFormaPagto : String; Valor : Double;
@@ -1895,7 +1897,7 @@ begin
 
   if ValorDescontoAcrescimo < 0 then
      raise EACBrECFCMDInvalido.Create( ACBrStr(cACBrECFVendeItemDescAcreException) );
-           
+
   AliquotaICMS := UpperCase( Trim(AliquotaICMS) ) ;
   if AliquotaICMS = '' then
      raise EACBrECFCMDInvalido.Create( ACBrStr(cACBrECFVendeItemAliqICMSException) );
@@ -1903,12 +1905,12 @@ begin
   DescontoAcrescimo := UpperCase(DescontoAcrescimo) ;
   if DescontoAcrescimo = '' then
      DescontoAcrescimo := 'D' ;
-     
+
   { Retorna em "AliquotaECF" (por referencia) a String de aliquota que deve
     ser enviada para o ECF }
   AliquotaECF := AliquotaICMS ;
 
-  { convertendo IS1, IS2 = "SI";   FS1, FS2 = "SF";   NS1, NS2 = "SN" }  
+  { convertendo IS1, IS2 = "SI";   FS1, FS2 = "SF";   NS1, NS2 = "SN" }
   if copy(AliquotaICMS,1,2) = 'FS' then
      AliquotaECF := 'SF'
   else if copy(AliquotaICMS,1,2) = 'NS' then
@@ -1955,7 +1957,7 @@ begin
      if self.Arredonda then
         Total := RoundTo( Qtd * ValorUnitario, -2)
      else
-        Total := Round( Qtd * ValorUnitario * 100 ) / 100 ;
+        Total := TruncFix( Qtd * ValorUnitario * 100 ) / 100 ;
 
      { Inserindo na String da fsMascaraItem }
      Linha := fsMemoMascItens ;
@@ -2040,6 +2042,43 @@ begin
   end ;
 
 end;
+
+procedure TACBrECF.DescontoAcrescimoItemAnterior( ValorDescontoAcrescimo: Double;
+  DescontoAcrescimo: String);
+{$IFNDEF CONSOLE}
+Var
+  StrDescAcre : String ;
+{$ENDIF}
+begin
+  if ValorDescontoAcrescimo < 0 then
+     raise EACBrECFCMDInvalido.Create( ACBrStr(cACBrECFVendeItemDescAcreException) );
+
+  DescontoAcrescimo := UpperCase(DescontoAcrescimo) ;
+  if DescontoAcrescimo = '' then
+     DescontoAcrescimo := 'D' ;
+
+  fsECF.DescontoAcrescimoItemAnterior(ValorDescontoAcrescimo, DescontoAcrescimo );
+
+  {$IFNDEF CONSOLE}
+   if MemoAssigned then
+   begin
+      fsMemoOperacao := 'descontoacrescimoitemanterior' ;
+
+      StrDescAcre := 'DESCONTO' ;
+      if DescontoAcrescimo <> 'D' then  // default, DescontoAcrescimo = 'D'
+         StrDescAcre := 'ACRESCIMO' ;
+
+      StrDescAcre := StrDescAcre + ' ' +
+                     FormatFloat('##,##0.00',ValorDescontoAcrescimo) ;
+
+      MemoAdicionaLinha( StrDescAcre ) ;
+   end ;
+  {$ENDIF}
+
+  { TODO: inserir Desconto no RFD }
+
+end;
+
 
 { Cancela o Acrescimo ou o Desconto do Item informado }
 procedure TACBrECF.CancelaDescontoAcrescimoItem(NumItem: Integer);

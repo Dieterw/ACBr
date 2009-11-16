@@ -194,9 +194,11 @@ TACBrECFSweda = class( TACBrECFClass )
     fsEmVinculado  : Boolean;
 
     xECF_AbrePortaSerial : Function: Integer; stdcall;
-    xECF_DownloadMFD : Function (Arquivo: Pchar; TipoDownload: Pchar; ParametroInicial: Pchar;
-                      ParametroFinal: Pchar; UsuarioECF: Pchar ): Integer; stdcall;
-    xECF_ReproduzirMemoriaFiscalMFD : Function (tipo: Pchar; fxai: Pchar; fxaf:  Pchar; asc: Pchar; bin: Pchar): Integer; stdcall;
+    xECF_DownloadMFD : Function (Arquivo: Pchar; TipoDownload: Pchar;
+      ParametroInicial: Pchar; ParametroFinal: Pchar; UsuarioECF: Pchar ):
+      Integer; stdcall;
+    xECF_ReproduzirMemoriaFiscalMFD : Function (tipo: Pchar; fxai: Pchar;
+      fxaf:  Pchar; asc: Pchar; bin: Pchar): Integer; stdcall;
     xECF_FechaPortaSerial : Function: Integer; stdcall;
 
     procedure LoadDLLFunctions;

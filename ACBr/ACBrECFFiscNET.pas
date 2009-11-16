@@ -124,8 +124,8 @@ TACBrECFFiscNET = class( TACBrECFClass )
     fsComandoVendeItem : String ;
     fsComandosImpressao : array[0..9] of AnsiString ;
 
-    xGera_AtoCotepe1704 : function (ComPortOrFileName: String;
-      Modelo: String; RegFileName: String; DataReducao: String): Integer; stdcall;
+    xGera_AtoCotepe1704 : function (ComPortOrFileName: AnsiString;
+      Modelo: AnsiString; RegFileName: AnsiString; DataReducao: AnsiString): Integer; stdcall;
 
     procedure LoadDLLFunctions;
 

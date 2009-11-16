@@ -58,7 +58,8 @@ Agradecimentos:
 - Joao Victor Maia Fernandes     ECFQuattro
 - Sauli Bueno                    ECFYanco
 - Ivan Moreira                   ECFs
-- Isaque Pinheiro				 SPEDFiscal
+- Isaque Pinheiro		 SPEDFiscal
+- Luiz Arlindo                   ECFs
 
 * Colaboradores:
 - Alexandre Rocha L.Marcondes    Administração
@@ -95,6 +96,17 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.8.9b  16/11/09
+-- ACBrECF --
+[*]    Revisão das chamadas dos métodos que usam a DLL, substituindo declarações
+       de "String" para "AnsiString" para compatibilizar com D2009 e Lazarus
+
+-- ACBrECFDaruma --
+[+]    Implementado EspelhoMFD_DLL e ArquivoMFD_DLL por COO e Data, usando carga
+       dinâmica da DLL    (Por: Luiz Arlindo e DSA)
+       (Testes sem sucesso... Estou em contato com o suporte da Daruma (DSA))
+
+
 Versão 0.8.9b  12/11/09
 -- ACBrECF --
 [+]    Adicionada a assinatura do método:
@@ -107,7 +119,7 @@ Versão 0.8.9b  12/11/09
 -- ACBrECFBematech --
 [+]    Implementado ArquivoMFD_DLL por COO usando carga dinâmica da DLL, e um
        mecanismo para detectar a Data Inicial e Final equivalentes ao COO
-       Inicial e Final     (Por: lkohler)
+       Inicial e Final     (Por: Luiz Arlindo)
 
 -- ACBrECFFiscNET --
 [-]    Corrigido problema quando informando parâmetros String com Cararteres de
@@ -122,7 +134,7 @@ Versão 0.8.9b  04/11/09
 -- ACBrECFBematech --
 [+]    Implementado ArquivoMFD_DLL por Periodo usando carga dinâmica da DLL.
        Não há função disponível na DLL para efetuar a Leitura por COO
-       (Por: lkohler e DSA)
+       (Por: Luiz Arlindo e DSA)
 
 Versão 0.8.9b  03/11/09
 -- ACBrECF --

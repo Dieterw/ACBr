@@ -172,26 +172,26 @@ TACBrECFBematech = class( TACBrECFClass )
 
     xBematech_FI_AbrePortaSerial:Function:Integer;StdCall;
     xBematech_FI_FechaPortaSerial:Function:Integer;StdCall;
-    xBematech_FI_DownloadMFD : function ( Arquivo: String; TipoDownload: String;
-       ParametroInicial: String; ParametroFinal: String; UsuarioECF: String ): Integer; StdCall;
-    xBematech_FI_FormatoDadosMFD : function ( ArquivoOrigem: String;
-       ArquivoDestino: String; TipoFormato: String; TipoDownload: String;
-       ParametroInicial: String; ParametroFinal: String; UsuarioECF: String ): Integer; StdCall;
-
-    xBemaGeraRegistrosTipoE : function ( cArqMFD: string; cArqTXT: string;
-                                         cDataInicial: string; cDataFinal: string;
-                                         cRazao: string; cEndereco: string;
-                                         cPAR1: string; cCMD: string; cPAR2:
-                                         string; cPAR3: string; cPAR4: string;
-                                         cPAR5: string; cPAR6: string; cPAR7:
-                                         string; cPAR8: string; cPAR9: string;
-                                         cPAR10: string; cPAR11: string;
-                                         cPAR12: string; cPAR13: string;
-                                         cPAR14: string ): Integer; StdCall;
-
-    xGeraTxtPorCOO : function (MfdFileName, TxtFileName : String; Usuario, COOInicial, COOFinal : integer): Integer; StdCall;
-    xBematech_FI_HabilitaDesabilitaRetornoEstendidoMFD : function (FlagRetorno : string): Integer; StdCall;
-   	xBematech_FI_RetornoImpressoraMFD : function ( Var ACK: Integer; Var ST1: Integer; Var ST2: Integer; Var ST3: Integer ): Integer; StdCall;
+    xBematech_FI_DownloadMFD : function ( Arquivo: AnsiString;
+       TipoDownload: AnsiString; ParametroInicial: AnsiString;
+       ParametroFinal: AnsiString; UsuarioECF: AnsiString ): Integer; StdCall;
+    xBematech_FI_FormatoDadosMFD : function ( ArquivoOrigem: AnsiString;
+       ArquivoDestino: AnsiString; TipoFormato: AnsiString;
+       TipoDownload: AnsiString; ParametroInicial: AnsiString;
+       ParametroFinal: AnsiString; UsuarioECF: AnsiString ): Integer; StdCall;
+    xBemaGeraRegistrosTipoE : function ( cArqMFD: AnsiString; cArqTXT: AnsiString;
+       cDataInicial: AnsiString; cDataFinal: AnsiString; cRazao: AnsiString;
+       cEndereco: AnsiString; cPAR1: AnsiString; cCMD: AnsiString;
+       cPAR2: AnsiString; cPAR3: AnsiString; cPAR4: AnsiString; cPAR5: AnsiString;
+       cPAR6: AnsiString; cPAR7: AnsiString; cPAR8: AnsiString; cPAR9: AnsiString;
+       cPAR10: AnsiString; cPAR11: AnsiString; cPAR12: AnsiString;
+       cPAR13: AnsiString; cPAR14: AnsiString ): Integer; StdCall;
+    xGeraTxtPorCOO : function (MfdFileName, TxtFileName : AnsiString;
+       Usuario, COOInicial, COOFinal : integer): Integer; StdCall;
+    xBematech_FI_HabilitaDesabilitaRetornoEstendidoMFD :
+       function (FlagRetorno : AnsiString): Integer; StdCall;
+   	xBematech_FI_RetornoImpressoraMFD : function ( Var ACK: Integer;
+       Var ST1: Integer; Var ST2: Integer; Var ST3: Integer ): Integer; StdCall;
 
     procedure LoadDLLFunctions;
     procedure AbrePortaSerialDLL(const Porta, Path : String ) ;
@@ -371,13 +371,6 @@ TACBrECFBematech = class( TACBrECFClass )
        NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
     Procedure ArquivoMFD_DLL( COOInicial, COOFinal : Integer;
        NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
-
-
-
-    //As impressoras da Bematech não geram o TXT do AtoCotepe 17/04 por intervalo de COO
-
-
-
  end ;
 
 implementation
@@ -2947,7 +2940,7 @@ begin
  {$ENDIF}
 end;
 
-// Por: Lkohler
+// Por: Luiz Arlindo
 procedure TACBrECFBematech.ArquivoMFD_DLL(COOInicial, COOFinal: Integer;
   NomeArquivo: String; Documentos: TACBrECFTipoDocumentoSet);
 Var
@@ -3060,19 +3053,22 @@ begin
      CloseFile( cArqTemp );
      CloseFile( cArqTempTXT );
 
-     // Cria um objeto do tipo TStringList.
-
+     // Cria um objeto do tipo TStringList para Ler o arquivo gerado
      Texto := TStringList.Create;
-     Texto.LoadFromFile( ArqTmp+'_ESP_TMP' + '.txt' );
+     try
+       Texto.LoadFromFile( ArqTmp+'_ESP_TMP' + '.txt' );
 
-     DiaIni := copy( Texto.Strings[ 6 ], 1, 10 );
-     DiaFim := copy( Texto.Strings[ Texto.Count - 2 ], 20, 10 );
+       DiaIni := copy( Texto.Strings[ 6 ], 1, 10 );
+       DiaFim := copy( Texto.Strings[ Texto.Count - 2 ], 20, 10 );
 
-     //Para modelos MP-2000 / MP-6000 TH FI, com a DLL BemaMFD;
-     if Pos(GetSubModeloECF,'MP-2000|MP-6000 TH FI') > 0  then
-        DiaIni := copy( Texto.Strings[ Texto.Count - 3 ], 29, 10 )
-     else
-        DiaFim := copy( Texto.Strings[ Texto.Count - 2 ], 20, 10 );
+       //Para modelos MP-2000 / MP-6000 TH FI, com a DLL BemaMFD;
+       if Pos(GetSubModeloECF,'MP-2000|MP-6000 TH FI') > 0  then
+          DiaIni := copy( Texto.Strings[ Texto.Count - 3 ], 29, 10 )
+       else
+          DiaFim := copy( Texto.Strings[ Texto.Count - 2 ], 20, 10 );
+     finally
+        Texto.Free ;
+     end ;
 
      // Função que executa a geração do arquivo no layout do Ato Cotepe 17/04
      // para o PAF-ECF, por intervalo de datas previamente capturadas.

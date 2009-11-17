@@ -87,7 +87,7 @@ begin
       // Abertura do Bloco 1
       with Bloco_0.Registro0001 do
       begin
-         IND_MOV := 0;
+         IND_MOV := '0';
       end;
       // Dados complementares da Empresa
       with Bloco_0.Registro0005 do
@@ -201,7 +201,7 @@ begin
    begin
      with Bloco_C.RegistroC001 do
      begin
-        IND_MOV := 0;
+        IND_MOV := '0';
      end;
      for INotas := 1 to 10 do
      begin
@@ -311,7 +311,7 @@ begin
       // Abertura do Bloco E
       with Bloco_E.RegistroE001 do
       begin
-         IND_MOV := 0;
+         IND_MOV := '0';
       end;
       with Bloco_E.RegistroE100 do
       begin

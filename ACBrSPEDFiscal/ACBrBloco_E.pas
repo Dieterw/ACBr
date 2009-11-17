@@ -103,12 +103,12 @@ type
 
   TRegistroE111 = class(TPersistent)
   private
-    fCOD_AJ_APUR: string;     /// Código do ajuste da apuração e dedução, conforme a Tabela indicada no item 5.1.1.
-    fDESCR_COMPL_AJ: string;  /// Descrição complementar do ajuste da apuração.
+    fCOD_AJ_APUR: AnsiString;     /// Código do ajuste da apuração e dedução, conforme a Tabela indicada no item 5.1.1.
+    fDESCR_COMPL_AJ: AnsiString;  /// Descrição complementar do ajuste da apuração.
     fVL_AJ_APUR: currency;    /// Valor do ajuste da apuração
   public
-    property COD_AJ_APUR: string read fCOD_AJ_APUR write fCOD_AJ_APUR;
-    property DESCR_COMPL_AJ: string read fDESCR_COMPL_AJ write fDESCR_COMPL_AJ;
+    property COD_AJ_APUR: AnsiString read fCOD_AJ_APUR write fCOD_AJ_APUR;
+    property DESCR_COMPL_AJ: AnsiString read fDESCR_COMPL_AJ write fDESCR_COMPL_AJ;
     property VL_AJ_APUR: currency read fVL_AJ_APUR write fVL_AJ_APUR;
   end;
 
@@ -128,17 +128,17 @@ type
 
   TRegistroE112 = class(TPersistent)
   private
-    fNUM_DA: string;    /// Número do documento de arrecadação estadual, se houver
-    fNUM_PROC: string;  /// Número do processo ao qual o ajuste está vinculado, se houver
-    fIND_PROC: string;  /// Indicador da origem do processo: 0- Sefaz; 1- Justiça Federal; 2- Justiça Estadual; 9- Outros
-    fPROC: string;      /// Descrição resumida do processo que embasou o lançamento
-    fTXT_COMPL: string;   /// Código de referência à observação (campo 02 do Registro 0460)
+    fNUM_DA: AnsiString;    /// Número do documento de arrecadação estadual, se houver
+    fNUM_PROC: AnsiString;  /// Número do processo ao qual o ajuste está vinculado, se houver
+    fIND_PROC: AnsiString;  /// Indicador da origem do processo: 0- Sefaz; 1- Justiça Federal; 2- Justiça Estadual; 9- Outros
+    fPROC: AnsiString;      /// Descrição resumida do processo que embasou o lançamento
+    fTXT_COMPL: AnsiString;   /// Código de referência à observação (campo 02 do Registro 0460)
   public
-    property NUM_DA: string read fNUM_DA write fNUM_DA;
-    property NUM_PROC: string read fNUM_PROC write fNUM_PROC;
-    property IND_PROC: string read fIND_PROC write fIND_PROC;
-    property PROC: string read fPROC write fPROC;
-    property TXT_COMPL: string read fTXT_COMPL write fTXT_COMPL;
+    property NUM_DA: AnsiString read fNUM_DA write fNUM_DA;
+    property NUM_PROC: AnsiString read fNUM_PROC write fNUM_PROC;
+    property IND_PROC: AnsiString read fIND_PROC write fIND_PROC;
+    property PROC: AnsiString read fPROC write fPROC;
+    property TXT_COMPL: AnsiString read fTXT_COMPL write fTXT_COMPL;
   end;
 
   /// Registro E112 - Lista
@@ -157,24 +157,24 @@ type
 
   TRegistroE113 = class(TPersistent)
   private
-    fCOD_PART: string;        /// Código do participante (campo 02 do Registro 0150): Do emitente do documento ou do remetente das mercadorias, no caso de entradas; Do adquirente, no caso de saídas
-    fCOD_MOD: string;         /// Código do modelo do documento fiscal, conforme a Tabela 4.1.1
-    fSER: string;             /// Série do documento fiscal
-    fSUB: string;             /// Subserie do documento fiscal
-    fNUM_DOC: string;         /// Número do documento fiscal
+    fCOD_PART: AnsiString;        /// Código do participante (campo 02 do Registro 0150): Do emitente do documento ou do remetente das mercadorias, no caso de entradas; Do adquirente, no caso de saídas
+    fCOD_MOD: AnsiString;         /// Código do modelo do documento fiscal, conforme a Tabela 4.1.1
+    fSER: AnsiString;             /// Série do documento fiscal
+    fSUB: AnsiString;             /// Subserie do documento fiscal
+    fNUM_DOC: AnsiString;         /// Número do documento fiscal
     fDT_DOC: TDateTime;       /// Data da emissão do documento fiscal
-    fCHV_NFE: string;         /// Chave da Nota Fiscal Eletrônica
-    fCOD_ITEM: string;        /// Código do item (campo 02 do Registro 0200)
+    fCHV_NFE: AnsiString;         /// Chave da Nota Fiscal Eletrônica
+    fCOD_ITEM: AnsiString;        /// Código do item (campo 02 do Registro 0200)
     fVL_AJ_ITEM: currency;    /// Valor do ajuste para a operação/item
   public
-    property COD_PART: string read fCOD_PART write fCOD_PART;
-    property COD_MOD: string read fCOD_MOD write fCOD_MOD;
-    property SER: string read fSER write fSER;
-    property SUB: string read fSUB write fSUB;
-    property NUM_DOC: string read fNUM_DOC write fNUM_DOC;
+    property COD_PART: AnsiString read fCOD_PART write fCOD_PART;
+    property COD_MOD: AnsiString read fCOD_MOD write fCOD_MOD;
+    property SER: AnsiString read fSER write fSER;
+    property SUB: AnsiString read fSUB write fSUB;
+    property NUM_DOC: AnsiString read fNUM_DOC write fNUM_DOC;
     property DT_DOC: TDateTime read fDT_DOC write fDT_DOC;
-    property CHV_NFE: string read fCHV_NFE write fCHV_NFE;
-    property COD_ITEM: string read fCOD_ITEM write fCOD_ITEM;
+    property CHV_NFE: AnsiString read fCHV_NFE write fCHV_NFE;
+    property COD_ITEM: AnsiString read fCOD_ITEM write fCOD_ITEM;
     property VL_AJ_ITEM: currency read fVL_AJ_ITEM write fVL_AJ_ITEM;
   end;
 
@@ -194,13 +194,13 @@ type
 
   TRegistroE115 = class(TPersistent)
   private
-    fCOD_INF_ADIC: string;    /// Código da informação adicional conforme tabela a ser definida pelas SEFAZ, conforme tabela definida no item 5.2.
+    fCOD_INF_ADIC: AnsiString;    /// Código da informação adicional conforme tabela a ser definida pelas SEFAZ, conforme tabela definida no item 5.2.
     fVL_INF_ADIC: currency;   /// Valor referente à informação adicional
-    fDESCR_COMPL_AJ: string;  /// Descrição complementar do ajuste
+    fDESCR_COMPL_AJ: AnsiString;  /// Descrição complementar do ajuste
   public
-    property COD_INF_ADIC: string read fCOD_INF_ADIC write fCOD_INF_ADIC;
+    property COD_INF_ADIC: AnsiString read fCOD_INF_ADIC write fCOD_INF_ADIC;
     property VL_INF_ADIC: currency read fVL_INF_ADIC write fVL_INF_ADIC;
-    property DESCR_COMPL_AJ: string read fDESCR_COMPL_AJ write fDESCR_COMPL_AJ;
+    property DESCR_COMPL_AJ: AnsiString read fDESCR_COMPL_AJ write fDESCR_COMPL_AJ;
   end;
 
   /// Registro E115 - Lista
@@ -219,23 +219,23 @@ type
 
   TRegistroE116 = class(TPersistent)
   private
-    fCOD_OR: string;       /// Código da obrigação a recolher, conforme a Tabela 5.4
+    fCOD_OR: AnsiString;       /// Código da obrigação a recolher, conforme a Tabela 5.4
     fVL_OR: currency;      /// Valor da obrigação a recolher
     fDT_VCTO: TDateTime;   /// Data de vencimento da obrigação
-    fCOD_REC: string;      /// Código de receita referente à obrigação, próprio da unidade da federação, conforme legislação estadual,
-    fNUM_PROC: string;     /// Número do processo ou auto de infração ao qual a obrigação está vinculada, se houver.
-    fIND_PROC: string;     /// Indicador da origem do processo: 0- Sefaz; 1- Justiça Federal; 2- Justiça Estadual; 9- Outros
-    fPROC: string;         /// Descrição resumida do processo que embasou o lançamento
-    fTXT_COMPL: string;    /// Descrição complementar das obrigações a recolher.
+    fCOD_REC: AnsiString;      /// Código de receita referente à obrigação, próprio da unidade da federação, conforme legislação estadual,
+    fNUM_PROC: AnsiString;     /// Número do processo ou auto de infração ao qual a obrigação está vinculada, se houver.
+    fIND_PROC: AnsiString;     /// Indicador da origem do processo: 0- Sefaz; 1- Justiça Federal; 2- Justiça Estadual; 9- Outros
+    fPROC: AnsiString;         /// Descrição resumida do processo que embasou o lançamento
+    fTXT_COMPL: AnsiString;    /// Descrição complementar das obrigações a recolher.
   public
-    property COD_OR: string read fCOD_OR write fCOD_OR;
+    property COD_OR: AnsiString read fCOD_OR write fCOD_OR;
     property VL_OR: currency read fVL_OR write fVL_OR;
     property DT_VCTO: TDateTime read fDT_VCTO write fDT_VCTO;
-    property COD_REC: string read fCOD_REC write fCOD_REC;
-    property NUM_PROC: string read fNUM_PROC write fNUM_PROC;
-    property IND_PROC: string read fIND_PROC write fIND_PROC;
-    property PROC: string read fPROC write fPROC;
-    property TXT_COMPL: string read fTXT_COMPL write fTXT_COMPL;
+    property COD_REC: AnsiString read fCOD_REC write fCOD_REC;
+    property NUM_PROC: AnsiString read fNUM_PROC write fNUM_PROC;
+    property IND_PROC: AnsiString read fIND_PROC write fIND_PROC;
+    property PROC: AnsiString read fPROC write fPROC;
+    property TXT_COMPL: AnsiString read fTXT_COMPL write fTXT_COMPL;
   end;
 
   /// Registro E116 - Lista
@@ -254,11 +254,11 @@ type
 
   TRegistroE200 = class(TPersistent)
   private
-    fUF: string;        /// Sigla da unidade da federação a que se refere a apuração do ICMS ST
+    fUF: AnsiString;        /// Sigla da unidade da federação a que se refere a apuração do ICMS ST
     fDT_INI: TDateTime; /// Data inicial a que a apuração se refere
     fDT_FIN: TDateTime; /// Data final a que a apuração se refere
   public
-    property UF: string read fUF write fUF;
+    property UF: AnsiString read fUF write fUF;
     property DT_INI: TDateTime read fDT_INI write fDT_INI;
     property DT_FIN: TDateTime read fDT_FIN write fDT_FIN;
   end;
@@ -277,7 +277,7 @@ type
 
   TRegistroE210 = class(TPersistent)
   private
-    fIND_MOV_ST: string;                     /// Indicador de movimento: 0 - Sem operações com ST 1 - Com operações de ST
+    fIND_MOV_ST: AnsiString;                     /// Indicador de movimento: 0 - Sem operações com ST 1 - Com operações de ST
     fVL_SLD_CRED_ANT_ST: currency;           /// Valor do "Saldo credor de período anterior - Substituição Tributária"
     fVL_DEVOL_ST: currency;                  /// Valor total do ICMS ST de devolução de mercadorias
     fVL_RESSARC_ST: currency;                /// Valor total do ICMS ST de ressarcimentos
@@ -292,7 +292,7 @@ type
     fVL_SLD_CRED_ST_TRANSPORTAR: currency;   /// Saldo credor de ST a transportar para o período seguinte [(03+04+05+06+07)- (08+09+10)].
     fDEB_ESP_ST: currency;                   /// Valores recolhidos ou a recolher, extra-apuração.
   public
-    property IND_MOV_ST: string read fIND_MOV_ST write fIND_MOV_ST;
+    property IND_MOV_ST: AnsiString read fIND_MOV_ST write fIND_MOV_ST;
     property VL_SLD_CRED_ANT_ST: currency read fVL_SLD_CRED_ANT_ST write fVL_SLD_CRED_ANT_ST;
     property VL_DEVOL_ST: currency read fVL_DEVOL_ST write fVL_DEVOL_ST;
     property VL_RESSARC_ST: currency read fVL_RESSARC_ST write fVL_RESSARC_ST;
@@ -324,12 +324,12 @@ type
 
   TRegistroE220 = class(TPersistent)
   private
-    fCOD_AJ_APUR: string;     /// Código do ajuste da apuração e dedução, conforme a Tabela indicada no item 5.1.1
-    fDESCR_COMPL_AJ: string;  /// Descrição complementar do ajuste da apuração
+    fCOD_AJ_APUR: AnsiString;     /// Código do ajuste da apuração e dedução, conforme a Tabela indicada no item 5.1.1
+    fDESCR_COMPL_AJ: AnsiString;  /// Descrição complementar do ajuste da apuração
     fVL_AJ_APUR: currency;    /// Valor do ajuste da apuração
   public
-    property COD_AJ_APUR: string read fCOD_AJ_APUR write fCOD_AJ_APUR;
-    property DESCR_COMPL_AJ: string read fDESCR_COMPL_AJ write fDESCR_COMPL_AJ;
+    property COD_AJ_APUR: AnsiString read fCOD_AJ_APUR write fCOD_AJ_APUR;
+    property DESCR_COMPL_AJ: AnsiString read fDESCR_COMPL_AJ write fDESCR_COMPL_AJ;
     property VL_AJ_APUR: currency read fVL_AJ_APUR write fVL_AJ_APUR;
   end;
 
@@ -349,17 +349,17 @@ type
 
   TRegistroE230 = class(TPersistent)
   private
-    fNUM_DA: string;    /// Número do documento de arrecadação estadual, se houver
-    fNUM_PROC: string;  /// Número do processo ao qual o ajuste está vinculado, se houver
-    fIND_PROC: string;  /// Indicador da origem do processo: 0- Sefaz; 1- Justiça Federal; 2- Justiça Estadual; 9- Outros
-    fPROC: string;      /// Descrição resumida do processo que embasou o lançamento
-    fTXT_COMPL: string;   /// Código de referência à observação (campo 02 do Registro 0460)
+    fNUM_DA: AnsiString;    /// Número do documento de arrecadação estadual, se houver
+    fNUM_PROC: AnsiString;  /// Número do processo ao qual o ajuste está vinculado, se houver
+    fIND_PROC: AnsiString;  /// Indicador da origem do processo: 0- Sefaz; 1- Justiça Federal; 2- Justiça Estadual; 9- Outros
+    fPROC: AnsiString;      /// Descrição resumida do processo que embasou o lançamento
+    fTXT_COMPL: AnsiString;   /// Código de referência à observação (campo 02 do Registro 0460)
   public
-    property NUM_DA: string read fNUM_DA write fNUM_DA;
-    property NUM_PROC: string read fNUM_PROC write fNUM_PROC;
-    property IND_PROC: string read fIND_PROC write fIND_PROC;
-    property PROC: string read fPROC write fPROC;
-    property TXT_COMPL: string read fTXT_COMPL write fTXT_COMPL;
+    property NUM_DA: AnsiString read fNUM_DA write fNUM_DA;
+    property NUM_PROC: AnsiString read fNUM_PROC write fNUM_PROC;
+    property IND_PROC: AnsiString read fIND_PROC write fIND_PROC;
+    property PROC: AnsiString read fPROC write fPROC;
+    property TXT_COMPL: AnsiString read fTXT_COMPL write fTXT_COMPL;
   end;
 
   /// Registro E230 - Lista
@@ -378,24 +378,24 @@ type
 
   TRegistroE240 = class(TPersistent)
   private
-    fCOD_PART: string;     /// Código do participante (campo 02 do Registro 0150): Do emitente do documento ou do remetente das mercadorias, no caso de entradas; Do adquirente, no caso de saídas
-    fCOD_MOD: string;      /// Código do modelo do documento fiscal, conforme a Tabela 4.1.1
-    fSER: string;          /// Série do documento fiscal
-    fSUB: string;          /// Subserie do documento fiscal
-    fNUM_DOC: string;      /// Número do documento fiscal
+    fCOD_PART: AnsiString;     /// Código do participante (campo 02 do Registro 0150): Do emitente do documento ou do remetente das mercadorias, no caso de entradas; Do adquirente, no caso de saídas
+    fCOD_MOD: AnsiString;      /// Código do modelo do documento fiscal, conforme a Tabela 4.1.1
+    fSER: AnsiString;          /// Série do documento fiscal
+    fSUB: AnsiString;          /// Subserie do documento fiscal
+    fNUM_DOC: AnsiString;      /// Número do documento fiscal
     fDT_DOC: TDateTime;    /// Data da emissão do documento fiscal
-    fCHV_NFE: string;      /// Chave da Nota Fiscal Eletrônica
-    fCOD_ITEM: string;     /// Código do item (campo 02 do Registro 0200)
+    fCHV_NFE: AnsiString;      /// Chave da Nota Fiscal Eletrônica
+    fCOD_ITEM: AnsiString;     /// Código do item (campo 02 do Registro 0200)
     fVL_AJ_ITEM: currency; /// Valor do ajuste para a operação/item
   public
-    property COD_PART: string read fCOD_PART write fCOD_PART;
-    property COD_MOD: string read fCOD_MOD write fCOD_MOD;
-    property SER: string read fSER write fSER;
-    property SUB: string read fSUB write fSUB;
-    property NUM_DOC: string read fNUM_DOC write fNUM_DOC;
+    property COD_PART: AnsiString read fCOD_PART write fCOD_PART;
+    property COD_MOD: AnsiString read fCOD_MOD write fCOD_MOD;
+    property SER: AnsiString read fSER write fSER;
+    property SUB: AnsiString read fSUB write fSUB;
+    property NUM_DOC: AnsiString read fNUM_DOC write fNUM_DOC;
     property DT_DOC: TDateTime read fDT_DOC write fDT_DOC;
-    property CHV_NFE: string read fCHV_NFE write fCHV_NFE;
-    property COD_ITEM: string read fCOD_ITEM write fCOD_ITEM;
+    property CHV_NFE: AnsiString read fCHV_NFE write fCHV_NFE;
+    property COD_ITEM: AnsiString read fCOD_ITEM write fCOD_ITEM;
     property VL_AJ_ITEM: currency read fVL_AJ_ITEM write fVL_AJ_ITEM;
   end;
 
@@ -415,23 +415,23 @@ type
 
   TRegistroE250 = class(TPersistent)
   private
-    fCOD_OR: string;       /// Código da obrigação a recolher, conforme a Tabela 5.4
+    fCOD_OR: AnsiString;       /// Código da obrigação a recolher, conforme a Tabela 5.4
     fVL_OR: currency;      /// Valor da obrigação ICMS ST a recolher
     fDT_VCTO: TDateTime;   /// Data de vencimento da obrigação
-    fCOD_REC: string;      /// Código de receita referente à obrigação, próprio da unidade da federação
-    fNUM_PROC: string;     /// Número do processo ou auto de infração ao qual a obrigação está vinculada, se houver
-    fIND_PROC: string;     /// Indicador da origem do processo: 0- Sefaz; 1- Justiça Federal; 2- Justiça Estadual; 9- Outros
-    fPROC: string;         /// Descrição resumida do processo que embasou o lançamento
-    fTXT_COMPL: string;    /// Descrição complementar das obrigações a recolher
+    fCOD_REC: AnsiString;      /// Código de receita referente à obrigação, próprio da unidade da federação
+    fNUM_PROC: AnsiString;     /// Número do processo ou auto de infração ao qual a obrigação está vinculada, se houver
+    fIND_PROC: AnsiString;     /// Indicador da origem do processo: 0- Sefaz; 1- Justiça Federal; 2- Justiça Estadual; 9- Outros
+    fPROC: AnsiString;         /// Descrição resumida do processo que embasou o lançamento
+    fTXT_COMPL: AnsiString;    /// Descrição complementar das obrigações a recolher
   public
-    property COD_OR: string read fCOD_OR write fCOD_OR;
+    property COD_OR: AnsiString read fCOD_OR write fCOD_OR;
     property VL_OR: currency read fVL_OR write fVL_OR;
     property DT_VCTO: TDateTime read fDT_VCTO write fDT_VCTO;
-    property COD_REC: string read fCOD_REC write fCOD_REC;
-    property NUM_PROC: string read fNUM_PROC write fNUM_PROC;
-    property IND_PROC: string read fIND_PROC write fIND_PROC;
-    property PROC: string read fPROC write fPROC;
-    property TXT_COMPL: string read fTXT_COMPL write fTXT_COMPL;
+    property COD_REC: AnsiString read fCOD_REC write fCOD_REC;
+    property NUM_PROC: AnsiString read fNUM_PROC write fNUM_PROC;
+    property IND_PROC: AnsiString read fIND_PROC write fIND_PROC;
+    property PROC: AnsiString read fPROC write fPROC;
+    property TXT_COMPL: AnsiString read fTXT_COMPL write fTXT_COMPL;
   end;
 
   /// Registro E250 - Lista
@@ -450,11 +450,11 @@ type
 
   TRegistroE500 = class(TPersistent)
   private
-    fIND_APUR: string;  /// Indicador de período de apuração do IPI: 0 - Mensal; 1 - Decendial
+    fIND_APUR: AnsiString;  /// Indicador de período de apuração do IPI: 0 - Mensal; 1 - Decendial
     fDT_INI: TDateTime; /// Data inicial a que a apuração se refere
     fDT_FIN: TDateTime; /// Data final a que a apuração se refere
   public
-    property IND_APUR: string read fIND_APUR write fIND_APUR;
+    property IND_APUR: AnsiString read fIND_APUR write fIND_APUR;
     property DT_INI: TDateTime read fDT_INI write fDT_INI;
     property DT_FIN: TDateTime read fDT_FIN write fDT_FIN;
   end;
@@ -475,14 +475,14 @@ type
 
   TRegistroE510 = class(TPersistent)
   private
-    fCFOP: string;            /// Código Fiscal de Operação e Prestação do agrupamento de itens
-    fCST_IPI: string;         /// Código da Situação Tributária referente ao IPI, conforme a Tabela indicada no item 4.3.2.
+    fCFOP: AnsiString;            /// Código Fiscal de Operação e Prestação do agrupamento de itens
+    fCST_IPI: AnsiString;         /// Código da Situação Tributária referente ao IPI, conforme a Tabela indicada no item 4.3.2.
     fVL_CONT_IPI: currency;   /// Parcela correspondente ao "Valor Contábil" referente ao CFOP e ao Código de Tributação do IPI
     fVL_BC_IPI: currency;     /// Parcela correspondente ao "Valor da base de cálculo do IPI" referente ao CFOP e ao Código de Tributação do IPI, para operações tributadas
     fVL_IPI: currency;        /// Parcela correspondente ao "Valor do IPI" referente ao CFOP e ao Código de Tributação do IPI, para operações tributadas
   public
-    property CFOP: string read fCFOP write fCFOP;
-    property CST_IPI: string read fCST_IPI write fCST_IPI;
+    property CFOP: AnsiString read fCFOP write fCFOP;
+    property CST_IPI: AnsiString read fCST_IPI write fCST_IPI;
     property VL_CONT_IPI: currency read fVL_CONT_IPI write fVL_CONT_IPI;
     property VL_BC_IPI: currency read fVL_BC_IPI write fVL_BC_IPI;
     property VL_IPI: currency read fVL_IPI write fVL_IPI;
@@ -537,19 +537,19 @@ type
 
   TRegistroE530 = class(TPersistent)
   private
-    fIND_AJ: string;    /// Indicador do tipo de ajuste: 0- Ajuste a débito; 1- Ajuste a crédito
+    fIND_AJ: AnsiString;    /// Indicador do tipo de ajuste: 0- Ajuste a débito; 1- Ajuste a crédito
     fVL_AJ: currency;   /// Valor do ajuste
-    fCOD_AJ: string;    /// Código do ajuste da apuração, conforme a Tabela indicada no item 4.5.4.
-    fIND_DOC: string;   /// Indicador da origem do documento vinculado ao ajuste: 0 - Processo Judicial; 1 - Processo Administrativo; 2 - PER/DCOMP; 9 - Outros.
-    fNUM_DOC: string;   /// Número do documento / processo / declaração ao qual o ajuste está vinculado, se houver
-    fDESCR_AJ: string;  /// Descrição resumida do ajuste.
+    fCOD_AJ: AnsiString;    /// Código do ajuste da apuração, conforme a Tabela indicada no item 4.5.4.
+    fIND_DOC: AnsiString;   /// Indicador da origem do documento vinculado ao ajuste: 0 - Processo Judicial; 1 - Processo Administrativo; 2 - PER/DCOMP; 9 - Outros.
+    fNUM_DOC: AnsiString;   /// Número do documento / processo / declaração ao qual o ajuste está vinculado, se houver
+    fDESCR_AJ: AnsiString;  /// Descrição resumida do ajuste.
   public
-    property IND_AJ: string read fIND_AJ write fIND_AJ;
+    property IND_AJ: AnsiString read fIND_AJ write fIND_AJ;
     property VL_AJ: currency read fVL_AJ write fVL_AJ;
-    property COD_AJ: string read fCOD_AJ write fCOD_AJ;
-    property IND_DOC: string read fIND_DOC write fIND_DOC;
-    property NUM_DOC: string read fNUM_DOC write fNUM_DOC;
-    property DESCR_AJ: string read fDESCR_AJ write fDESCR_AJ;
+    property COD_AJ: AnsiString read fCOD_AJ write fCOD_AJ;
+    property IND_DOC: AnsiString read fIND_DOC write fIND_DOC;
+    property NUM_DOC: AnsiString read fNUM_DOC write fNUM_DOC;
+    property DESCR_AJ: AnsiString read fDESCR_AJ write fDESCR_AJ;
   end;
 
   /// Registro E530 - Lista

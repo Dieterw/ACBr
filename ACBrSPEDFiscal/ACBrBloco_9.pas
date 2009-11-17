@@ -57,10 +57,10 @@ type
 
  TRegistro9900 = class(TPersistent)
  private
-   fREG_BLC: string;       /// Registro que será totalizado no próximo campo.
+   fREG_BLC: AnsiString;       /// Registro que será totalizado no próximo campo.
    fQTD_REG_BLC: Integer; /// Total de registros do tipo informado no campo anterior.
  public
-   property REG_BLC: string read fREG_BLC write fREG_BLC;
+   property REG_BLC: AnsiString read fREG_BLC write fREG_BLC;
    property QTD_REG_BLC: Integer read fQTD_REG_BLC write fQTD_REG_BLC;
  end;
 

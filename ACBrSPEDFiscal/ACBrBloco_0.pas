@@ -54,30 +54,30 @@ type
     fCOD_FIN: integer;     /// Código da finalidade do arquivo: 0 - Remessa do arquivo original / 1 - Remessa do arquivo substituto.
     fDT_INI: TDateTime;    /// Data inicial das informações contidas no arquivo
     fDT_FIN: TDateTime;    /// Data final das informações contidas no arquivo
-    fNOME: string;         /// Nome empresarial do contribuinte:
-    fCNPJ: string;         /// Número de inscrição do contribuinte:
-    fCPF: string;          /// Número de inscrição do contribuinte:
-    fUF: string;           /// Sigla da unidade da federação:
-    fIE: string;           /// Inscrição Estadual do contribuinte:
+    fNOME: AnsiString;         /// Nome empresarial do contribuinte:
+    fCNPJ: AnsiString;         /// Número de inscrição do contribuinte:
+    fCPF: AnsiString;          /// Número de inscrição do contribuinte:
+    fUF: AnsiString;           /// Sigla da unidade da federação:
+    fIE: AnsiString;           /// Inscrição Estadual do contribuinte:
     fCOD_MUN: integer;     /// Código do município do domicílio fiscal:
-    fIM: string;           /// Inscrição Municipal do contribuinte:
-    fSUFRAMA: string;      /// Número de inscrição do contribuinte:
-    fIND_PERFIL: string;   /// Perfil de apresentação do arquivo fiscal: A - Perfil A / B - Perfil B / C - Perfil C
+    fIM: AnsiString;           /// Inscrição Municipal do contribuinte:
+    fSUFRAMA: AnsiString;      /// Número de inscrição do contribuinte:
+    fIND_PERFIL: AnsiString;   /// Perfil de apresentação do arquivo fiscal: A - Perfil A / B - Perfil B / C - Perfil C
     fIND_ATIV: integer;    /// Indicador de tipo de atividade: 0 - Industrial ou equiparado a industrial; 1 - Outros.
   public
     property COD_VER: integer read FCOD_VER write FCOD_VER;
     property COD_FIN: integer read FCOD_FIN write FCOD_FIN;
     property DT_INI: TDateTime read FDT_INI write FDT_INI;
     property DT_FIN: TDateTime read FDT_FIN write FDT_FIN;
-    property NOME: string read FNOME write FNOME;
-    property CNPJ: string read FCNPJ write FCNPJ;
-    property CPF: string read FCPF write FCPF;
-    property UF: string read FUF write FUF;
-    property IE: string read FIE write FIE;
+    property NOME: AnsiString read FNOME write FNOME;
+    property CNPJ: AnsiString read FCNPJ write FCNPJ;
+    property CPF: AnsiString read FCPF write FCPF;
+    property UF: AnsiString read FUF write FUF;
+    property IE: AnsiString read FIE write FIE;
     property COD_MUN: integer read FCOD_MUN write FCOD_MUN;
-    property IM: string read FIM write FIM;
-    property SUFRAMA: string read FSUFRAMA write FSUFRAMA;
-    property IND_PERFIL: string read FIND_PERFIL write FIND_PERFIL;
+    property IM: AnsiString read FIM write FIM;
+    property SUFRAMA: AnsiString read FSUFRAMA write FSUFRAMA;
+    property IND_PERFIL: AnsiString read FIND_PERFIL write FIND_PERFIL;
     property IND_ATIV: integer read FIND_ATIV write FIND_ATIV;
   end;
 
@@ -92,36 +92,36 @@ type
 
   TRegistro0005 = class(TPersistent)
   private
-    fFANTASIA: string;     /// Nome de fantasia associado:
-    fCEP: string;          /// Código de Endereçamento Postal:
-    fENDERECO: string;     /// Logradouro e endereço do imóvel:
-    fNUM: string;          /// Número do imóvel:
-    fCOMPL: string;        /// Dados complementares do endereço:
-    fBAIRRO: string;       /// Bairro em que o imóvel está situado:
-    fFONE: string;         /// Número do telefone:
-    fFAX: string;          /// Número do fax:
-    fEMAIL: string;        /// Endereço do correio eletrônico:
+    fFANTASIA: AnsiString;     /// Nome de fantasia associado:
+    fCEP: AnsiString;          /// Código de Endereçamento Postal:
+    fENDERECO: AnsiString;     /// Logradouro e endereço do imóvel:
+    fNUM: AnsiString;          /// Número do imóvel:
+    fCOMPL: AnsiString;        /// Dados complementares do endereço:
+    fBAIRRO: AnsiString;       /// Bairro em que o imóvel está situado:
+    fFONE: AnsiString;         /// Número do telefone:
+    fFAX: AnsiString;          /// Número do fax:
+    fEMAIL: AnsiString;        /// Endereço do correio eletrônico:
   public
-    property FANTASIA: string read fFANTASIA write fFANTASIA;
-    property CEP: string read FCEP write FCEP;
-    property ENDERECO: string read FENDERECO write FENDERECO;
-    property NUM: string read FNUM write FNUM;
-    property COMPL: string read FCOMPL write FCOMPL;
-    property BAIRRO: string read FBAIRRO write FBAIRRO;
-    property FONE: string read FFONE write FFONE;
-    property FAX: string read FFAX write FFAX;
-    property EMAIL: string read FEMAIL write FEMAIL;
+    property FANTASIA: AnsiString read fFANTASIA write fFANTASIA;
+    property CEP: AnsiString read FCEP write FCEP;
+    property ENDERECO: AnsiString read FENDERECO write FENDERECO;
+    property NUM: AnsiString read FNUM write FNUM;
+    property COMPL: AnsiString read FCOMPL write FCOMPL;
+    property BAIRRO: AnsiString read FBAIRRO write FBAIRRO;
+    property FONE: AnsiString read FFONE write FFONE;
+    property FAX: AnsiString read FFAX write FFAX;
+    property EMAIL: AnsiString read FEMAIL write FEMAIL;
   end;
 
   /// Registro 0015 - DADOS DO CONTRIBUINTE SUBSTITUTO
 
   TRegistro0015 = class(TPersistent)
   private
-    fUF_ST: string;   /// Sigla da unidade da federação:
-    fIE_ST: string;   /// Inscrição Estadual:
+    fUF_ST: AnsiString;   /// Sigla da unidade da federação:
+    fIE_ST: AnsiString;   /// Inscrição Estadual:
   public
-    property UF_ST: string read FUF_ST write FUF_ST;
-    property IE_ST: string read FIE_ST write FIE_ST;
+    property UF_ST: AnsiString read FUF_ST write FUF_ST;
+    property IE_ST: AnsiString read FIE_ST write FIE_ST;
   end;
 
   /// Registro 0015 - Lista
@@ -140,32 +140,32 @@ type
 
   TRegistro0100 = class(TPersistent)
   private
-    fNOME: string;        /// Nome do contabilista/escritório:
-    fCPF: string;         /// Número de inscrição no CPF:
-    fCRC: string;         /// Número de inscrição no Conselho Regional:
-    fCNPJ: string;        /// CNPJ do escritório de contabilidade, se houver:
-    fCEP: string;         /// Código de Endereçamento Postal:
-    fENDERECO: string;    /// Logradouro e endereço do imóvel:
-    fNUM: string;         /// Número do imóvel:
-    fCOMPL: string;       /// Dados complementares do endereço:
-    fBAIRRO: string;      /// Bairro em que o imóvel está situado:
-    fFONE: string;        /// Número do telefone:
-    fFAX: string;         /// Número do fax:
-    fEMAIL: string;       /// Endereço do correio eletrônico:
+    fNOME: AnsiString;        /// Nome do contabilista/escritório:
+    fCPF: AnsiString;         /// Número de inscrição no CPF:
+    fCRC: AnsiString;         /// Número de inscrição no Conselho Regional:
+    fCNPJ: AnsiString;        /// CNPJ do escritório de contabilidade, se houver:
+    fCEP: AnsiString;         /// Código de Endereçamento Postal:
+    fENDERECO: AnsiString;    /// Logradouro e endereço do imóvel:
+    fNUM: AnsiString;         /// Número do imóvel:
+    fCOMPL: AnsiString;       /// Dados complementares do endereço:
+    fBAIRRO: AnsiString;      /// Bairro em que o imóvel está situado:
+    fFONE: AnsiString;        /// Número do telefone:
+    fFAX: AnsiString;         /// Número do fax:
+    fEMAIL: AnsiString;       /// Endereço do correio eletrônico:
     fCOD_MUN: integer;    /// Código do município, conforme tabela IBGE:
   public
-    property NOME: string read FNOME write FNOME;
-    property CPF: string read FCPF write FCPF;
-    property CRC: string read FCRC write FCRC;
-    property CNPJ: string read FCNPJ write FCNPJ;
-    property CEP: string read FCEP write FCEP;
-    property ENDERECO: string read FENDERECO write FENDERECO;
-    property NUM: string read FNUM write FNUM;
-    property COMPL: string read FCOMPL write FCOMPL;
-    property BAIRRO: string read FBAIRRO write FBAIRRO;
-    property FONE: string read FFONE write FFONE;
-    property FAX: string read FFAX write FFAX;
-    property EMAIL: string read FEMAIL write FEMAIL;
+    property NOME: AnsiString read FNOME write FNOME;
+    property CPF: AnsiString read FCPF write FCPF;
+    property CRC: AnsiString read FCRC write FCRC;
+    property CNPJ: AnsiString read FCNPJ write FCNPJ;
+    property CEP: AnsiString read FCEP write FCEP;
+    property ENDERECO: AnsiString read FENDERECO write FENDERECO;
+    property NUM: AnsiString read FNUM write FNUM;
+    property COMPL: AnsiString read FCOMPL write FCOMPL;
+    property BAIRRO: AnsiString read FBAIRRO write FBAIRRO;
+    property FONE: AnsiString read FFONE write FFONE;
+    property FAX: AnsiString read FFAX write FFAX;
+    property EMAIL: AnsiString read FEMAIL write FEMAIL;
     property COD_MUN: integer read FCOD_MUN write FCOD_MUN;
   end;
 
@@ -173,31 +173,31 @@ type
 
   TRegistro0150 = class(TPersistent)
   private
-    fCOD_PART: string;    /// Código de identificação do participante:
-    fNOME: string;        /// Nome pessoal ou empresarial:
-    fCOD_PAIS: string;    /// Código do país do participante:
-    fCNPJ: string;        /// CNPJ do participante:
-    fCPF: string;         /// CPF do participante na unidade da federação do destinatário:
-    fIE: string;          /// Inscrição Estadual do participante:
+    fCOD_PART: AnsiString;    /// Código de identificação do participante:
+    fNOME: AnsiString;        /// Nome pessoal ou empresarial:
+    fCOD_PAIS: AnsiString;    /// Código do país do participante:
+    fCNPJ: AnsiString;        /// CNPJ do participante:
+    fCPF: AnsiString;         /// CPF do participante na unidade da federação do destinatário:
+    fIE: AnsiString;          /// Inscrição Estadual do participante:
     fCOD_MUN: integer;    /// Código do município:
-    fSUFRAMA: string;     /// Número de inscrição na Suframa:
-    fENDERECO: string;    /// Logradouro e endereço do imóvel:
-    fNUM: string;         /// Número do imóvel:
-    fCOMPL: string;       /// Dados complementares do endereço:
-    fBAIRRO: string;      /// Bairro em que o imóvel está situado:
+    fSUFRAMA: AnsiString;     /// Número de inscrição na Suframa:
+    fENDERECO: AnsiString;    /// Logradouro e endereço do imóvel:
+    fNUM: AnsiString;         /// Número do imóvel:
+    fCOMPL: AnsiString;       /// Dados complementares do endereço:
+    fBAIRRO: AnsiString;      /// Bairro em que o imóvel está situado:
   public
-    property COD_PART: string read FCOD_PART write FCOD_PART;
-    property NOME: string read FNOME write FNOME;
-    property COD_PAIS: string read FCOD_PAIS write FCOD_PAIS;
-    property CNPJ: string read FCNPJ write FCNPJ;
-    property CPF: string read FCPF write FCPF;
-    property IE: string read FIE write FIE;
+    property COD_PART: AnsiString read FCOD_PART write FCOD_PART;
+    property NOME: AnsiString read FNOME write FNOME;
+    property COD_PAIS: AnsiString read FCOD_PAIS write FCOD_PAIS;
+    property CNPJ: AnsiString read FCNPJ write FCNPJ;
+    property CPF: AnsiString read FCPF write FCPF;
+    property IE: AnsiString read FIE write FIE;
     property COD_MUN: integer read FCOD_MUN write FCOD_MUN;
-    property SUFRAMA: string read FSUFRAMA write FSUFRAMA;
-    property ENDERECO: string read FENDERECO write FENDERECO;
-    property NUM: string read FNUM write FNUM;
-    property COMPL: string read FCOMPL write FCOMPL;
-    property BAIRRO: string read FBAIRRO write FBAIRRO;
+    property SUFRAMA: AnsiString read FSUFRAMA write FSUFRAMA;
+    property ENDERECO: AnsiString read FENDERECO write FENDERECO;
+    property NUM: AnsiString read FNUM write FNUM;
+    property COMPL: AnsiString read FCOMPL write FCOMPL;
+    property BAIRRO: AnsiString read FBAIRRO write FBAIRRO;
   end;
 
   /// Registro 0150 - Lista
@@ -217,12 +217,12 @@ type
   TRegistro0175 = class(TPersistent)
   private
     fDT_ALT: TDateTime;      /// Data de alteração do cadastro:
-    fNR_CAMPO: string;       /// Número do campo alterado (Somente campos 03 a 13):
-    fCONT_ANT: string;       /// Conteúdo anterior do campo:
+    fNR_CAMPO: AnsiString;       /// Número do campo alterado (Somente campos 03 a 13):
+    fCONT_ANT: AnsiString;       /// Conteúdo anterior do campo:
   public
     property DT_ALT: TDateTime read FDT_ALT write FDT_ALT;
-    property NR_CAMPO: string read FNR_CAMPO write FNR_CAMPO;
-    property CONT_ANT: string read FCONT_ANT write FCONT_ANT;
+    property NR_CAMPO: AnsiString read FNR_CAMPO write FNR_CAMPO;
+    property CONT_ANT: AnsiString read FCONT_ANT write FCONT_ANT;
   end;
 
   /// Registro 0175 - Lista
@@ -241,11 +241,11 @@ type
 
   TRegistro0190 = class(TPersistent)
   private
-    fUNID: string;        /// Código da unidade de medida:
-    fDESCR: string;       /// Descrição da unidade de medida:
+    fUNID: AnsiString;        /// Código da unidade de medida:
+    fDESCR: AnsiString;       /// Descrição da unidade de medida:
   public
-    property UNID: string read FUNID write FUNID;
-    property DESCR: string read FDESCR write FDESCR;
+    property UNID: AnsiString read FUNID write FUNID;
+    property DESCR: AnsiString read FDESCR write FDESCR;
   end;
 
   /// Registro 0190 - Lista
@@ -264,28 +264,28 @@ type
 
   TRegistro0200 = class(TPersistent)
   private
-    fCOD_ITEM: string;       /// Código do item:
-    fDESCR_ITEM: string;     /// Descrição do item:
-    fCOD_BARRA: string;      /// Código de barra do produto, se houver:
-    fCOD_ANT_ITEM: string;   /// Código anterior do item (ultima apresentado):
-    fUNID_INV: string;       /// Unidade de medida do estoque:
-    fTIPO_ITEM: string;      /// Tipo do item - Atividades Industriais, Comerciais e Serviços: 00 - Mercadoria para Revenda, 01 - Matéria-Prima,  02 - Embalagem, 03 - Produto em Processo, 04 - Produto Acabado, 05 - Subproduto, 06 - Produto Intermediário, 07 - Material de Uso e Consumo, 08 - Ativo Imobilizado, 09 - Serviços, 10 - Outros insumos, 99 - Outras
-    fCOD_NCM: string;        /// Código da Nomenclatura Comum do Mercosul:
-    fEX_IPI: string;         /// Código EX, conforme a TIPI:
-    fCOD_GEN: string;        /// Código gênero item, tabela indicada item 4.2.1:
-    fCOD_LST: string;        /// Código serviço Anexo I - Lei nº116/03:
+    fCOD_ITEM: AnsiString;       /// Código do item:
+    fDESCR_ITEM: AnsiString;     /// Descrição do item:
+    fCOD_BARRA: AnsiString;      /// Código de barra do produto, se houver:
+    fCOD_ANT_ITEM: AnsiString;   /// Código anterior do item (ultima apresentado):
+    fUNID_INV: AnsiString;       /// Unidade de medida do estoque:
+    fTIPO_ITEM: AnsiString;      /// Tipo do item - Atividades Industriais, Comerciais e Serviços: 00 - Mercadoria para Revenda, 01 - Matéria-Prima,  02 - Embalagem, 03 - Produto em Processo, 04 - Produto Acabado, 05 - Subproduto, 06 - Produto Intermediário, 07 - Material de Uso e Consumo, 08 - Ativo Imobilizado, 09 - Serviços, 10 - Outros insumos, 99 - Outras
+    fCOD_NCM: AnsiString;        /// Código da Nomenclatura Comum do Mercosul:
+    fEX_IPI: AnsiString;         /// Código EX, conforme a TIPI:
+    fCOD_GEN: AnsiString;        /// Código gênero item, tabela indicada item 4.2.1:
+    fCOD_LST: AnsiString;        /// Código serviço Anexo I - Lei nº116/03:
     fALIQ_ICMS: Currency;      /// Alíquota ICMS aplicável (operações internas):
   public
-    property COD_ITEM: string read FCOD_ITEM write FCOD_ITEM;
-    property DESCR_ITEM: string read FDESCR_ITEM write FDESCR_ITEM;
-    property COD_BARRA: string read FCOD_BARRA write FCOD_BARRA;
-    property COD_ANT_ITEM: string read FCOD_ANT_ITEM write FCOD_ANT_ITEM;
-    property UNID_INV: string read FUNID_INV write FUNID_INV;
-    property TIPO_ITEM: string read FTIPO_ITEM write FTIPO_ITEM;
-    property COD_NCM: string read FCOD_NCM write FCOD_NCM;
-    property EX_IPI: string read FEX_IPI write FEX_IPI;
-    property COD_GEN: string read FCOD_GEN write FCOD_GEN;
-    property COD_LST: string read FCOD_LST write FCOD_LST;
+    property COD_ITEM: AnsiString read FCOD_ITEM write FCOD_ITEM;
+    property DESCR_ITEM: AnsiString read FDESCR_ITEM write FDESCR_ITEM;
+    property COD_BARRA: AnsiString read FCOD_BARRA write FCOD_BARRA;
+    property COD_ANT_ITEM: AnsiString read FCOD_ANT_ITEM write FCOD_ANT_ITEM;
+    property UNID_INV: AnsiString read FUNID_INV write FUNID_INV;
+    property TIPO_ITEM: AnsiString read FTIPO_ITEM write FTIPO_ITEM;
+    property COD_NCM: AnsiString read FCOD_NCM write FCOD_NCM;
+    property EX_IPI: AnsiString read FEX_IPI write FEX_IPI;
+    property COD_GEN: AnsiString read FCOD_GEN write FCOD_GEN;
+    property COD_LST: AnsiString read FCOD_LST write FCOD_LST;
     property ALIQ_ICMS: Currency read FALIQ_ICMS write FALIQ_ICMS;
   end;
 
@@ -305,11 +305,11 @@ type
 
   TRegistro0205 = class(TPersistent)
   private
-    fDESCR_ANT_ITEM: string;    /// Descrição anterior do item:
+    fDESCR_ANT_ITEM: AnsiString;    /// Descrição anterior do item:
     fDT_INI: TDateTime;         /// Data inicial de utilização do código:
     fDT_FIN: TDateTime;         /// Data final de utilização do código:
   public
-    property DESCR_ANT_ITEM: string read FDESCR_ANT_ITEM write FDESCR_ANT_ITEM;
+    property DESCR_ANT_ITEM: AnsiString read FDESCR_ANT_ITEM write FDESCR_ANT_ITEM;
     property DT_INI: TDateTime read FDT_INI write FDT_INI;
     property DT_FIN: TDateTime read FDT_FIN write FDT_FIN;
   end;
@@ -330,9 +330,9 @@ type
 
   TRegistro0206 = class(TPersistent)
   private
-    fCOD_COMB: string;       /// Código do combustível, conforme tabela publicada pela ANP:
+    fCOD_COMB: AnsiString;       /// Código do combustível, conforme tabela publicada pela ANP:
   public
-    property COD_COMB: string read FCOD_COMB write FCOD_COMB;
+    property COD_COMB: AnsiString read FCOD_COMB write FCOD_COMB;
   end;
 
   /// Registro 0206 - Lista
@@ -351,11 +351,11 @@ type
 
   TRegistro0220 = class(TPersistent)
   private
-    fUNID_CONV: string;      /// Unidade comercial a ser convertida na unidade de estoque, referida em 0200:
-    fFAT_CONV: string;       /// Fator de conversão:
+    fUNID_CONV: AnsiString;      /// Unidade comercial a ser convertida na unidade de estoque, referida em 0200:
+    fFAT_CONV: AnsiString;       /// Fator de conversão:
   public
-    property UNID_CONV: string read FUNID_CONV write FUNID_CONV;
-    property FAT_CONV: string read FFAT_CONV write FFAT_CONV;
+    property UNID_CONV: AnsiString read FUNID_CONV write FUNID_CONV;
+    property FAT_CONV: AnsiString read FFAT_CONV write FFAT_CONV;
   end;
 
   /// Registro 0220 - Lista
@@ -374,11 +374,11 @@ type
 
   TRegistro0400 = class(TPersistent)
   private
-    fCOD_NAT: string;        /// Código da natureza:
-    fDESCR_NAT: string;      /// Descrição da natureza:
+    fCOD_NAT: AnsiString;        /// Código da natureza:
+    fDESCR_NAT: AnsiString;      /// Descrição da natureza:
   public
-    property COD_NAT: string read FCOD_NAT write FCOD_NAT;
-    property DESCR_NAT: string read FDESCR_NAT write FDESCR_NAT;
+    property COD_NAT: AnsiString read FCOD_NAT write FCOD_NAT;
+    property DESCR_NAT: AnsiString read FDESCR_NAT write FDESCR_NAT;
   end;
 
   /// Registro 0400 - Lista
@@ -397,11 +397,11 @@ type
 
   TRegistro0450 = class(TPersistent)
   private
-    fCOD_INF: string;     /// Código da informação complementar do documento fiscal:
-    fTXT: string;         /// Texto livre:
+    fCOD_INF: AnsiString;     /// Código da informação complementar do documento fiscal:
+    fTXT: AnsiString;         /// Texto livre:
   public
-    property COD_INF: string read FCOD_INF write FCOD_INF;
-    property TXT: string read FTXT write FTXT;
+    property COD_INF: AnsiString read FCOD_INF write FCOD_INF;
+    property TXT: AnsiString read FTXT write FTXT;
   end;
 
   /// Registro 0450 - Lista
@@ -420,11 +420,11 @@ type
 
   TRegistro0460 = class(TPersistent)
   private
-    fCOD_OBS: string;     /// Código da Observação do lançamento fiscal:
-    fTXT: string;         /// Descrição da observação vinculada ao lançamento fiscal:
+    fCOD_OBS: AnsiString;     /// Código da Observação do lançamento fiscal:
+    fTXT: AnsiString;         /// Descrição da observação vinculada ao lançamento fiscal:
   public
-    property COD_OBS: string read FCOD_OBS write FCOD_OBS;
-    property TXT: string read FTXT write FTXT;
+    property COD_OBS: AnsiString read FCOD_OBS write FCOD_OBS;
+    property TXT: AnsiString read FTXT write FTXT;
   end;
 
   /// Registro 0460 - Lista

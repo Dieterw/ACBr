@@ -47,14 +47,36 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.01a   17/11/09
+---------------
+[+] Adicionado ao demo o código de exemplo para gerar resgitros em hierarquia
+    do Bloco_C (por Jean Barreiros)
+[+] Criado nova propriedade "TrimString", onde se for TRUE, retorna a string
+    sem espaços em branco iniciais e finais. Usada nas Funções (LFill e RFill)
+[*] Susbstituído o tipo da propriedade "IND_MOV", de "Integer" para "AnsiString"
+    porque recebe o valor "0" e tava retornado vazio, por causa da propriedade
+    ZeroRetornaVazio
+[*] A propriedade "IND_MOV" agora será iniciada com valor padrão '1' 
+[*] Mudado o nome da propriedade "RetornoVazio" para "ZeroRetornaVazio", para 
+    melhor entendimento da funcionalidade dessa propriedade.
+[*] ACBrSPEDFiscal foi restruturado para gerar os registros por hierarquia de
+    Pai-Filho
+[*] Substituindo todas as declarações do tipo "String" para "AnsiString", 
+    para compatibilidade entre Lazarus, D2009, D2010 e superior
+
+Versão 0.01a   13/11/09
+---------------
+[+] Implementações do Bloco_D por (Agnaldo Prates)
+
 Versão 0.01a   12/11/09
 ---------------
 [+] Novas implementações feitas por (Agnaldo Prates)
 [+] Criada função StrZero em (ACBrSpedUtils.pas)
     Nota: Logo usaremos as funções do próprio ACBr.
 [+] Nova propriedade "CurMascara", para formatar os valores tipo Currency
-[-] Alterada "function LFill(Value: Currency;" em (ACBrSped.pas), para formatar 
-    o valor com a mascara que tiver na nova propriedade "CurMascara"
+[-] Alterada "function LFill(Value: Currency..." em (ACBrSped.pas), 
+    para formatar o valor com a mascara que tiver na nova propriedade 
+    "CurMascara"
 [-] Adicionada em (ACBrSpedFiscal.pas) os métodos
     procedure SetDelimitador(const Value: string); override;
     procedure SetCurMascara(const Value: string); override;

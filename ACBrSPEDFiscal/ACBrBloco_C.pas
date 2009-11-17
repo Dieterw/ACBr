@@ -53,27 +53,31 @@ type
   public
   end;
 
+  TRegistroC110List = class;
+  TRegistroC111List = class;
+  TRegistroC170List = class;
+
   /// Registro C100 - NOTA FISCAL (CÓDIGO 01), NOTA FISCAL AVULSA (CÓDIGO 1B), NOTA FISCAL DE PRODUTOR (CÓDIGO 04) E NFE (CÓDIGO 55)
 
   TRegistroC100 = class(TPersistent)
   private
-    fIND_OPER: string;         /// Indicador do tipo de operação: 0- Entrada; 1- Saída
-    fIND_EMIT: string;         /// Indicador do emitente do documento fiscal: 0- Emissão própria; 1- Terceiros
-    fCOD_PART: string;         /// Código do participante (campo 02 do Registro 0150):
-    fCOD_MOD: string;          /// Código do modelo do documento fiscal, conforme a Tabela 4.1.1
-    fCOD_SIT: string;          /// Código da situação do documento fiscal, conforme a Tabela 4.1.2
-    fSER: string;              /// Série do documento fiscal
-    fNUM_DOC: string;          /// Número do documento fiscal
-    fCHV_NFE: string;          /// Chave da Nota Fiscal Eletrônica
+    fIND_OPER: AnsiString;         /// Indicador do tipo de operação: 0- Entrada; 1- Saída
+    fIND_EMIT: AnsiString;         /// Indicador do emitente do documento fiscal: 0- Emissão própria; 1- Terceiros
+    fCOD_PART: AnsiString;         /// Código do participante (campo 02 do Registro 0150):
+    fCOD_MOD: AnsiString;          /// Código do modelo do documento fiscal, conforme a Tabela 4.1.1
+    fCOD_SIT: AnsiString;          /// Código da situação do documento fiscal, conforme a Tabela 4.1.2
+    fSER: AnsiString;              /// Série do documento fiscal
+    fNUM_DOC: AnsiString;          /// Número do documento fiscal
+    fCHV_NFE: AnsiString;          /// Chave da Nota Fiscal Eletrônica
     fDT_DOC: TDateTime;        /// Data da emissão do documento fiscal
     fDT_E_S: TDateTime;        /// Data da entrada ou da saída
     fVL_DOC: currency;         /// Valor total do documento fiscal
-    fIND_PGTO: string;         /// Indicador do tipo de pagamento:
+    fIND_PGTO: AnsiString;         /// Indicador do tipo de pagamento:
     fVL_DESC: currency;        /// Valor total do desconto // Prates
     fVL_ABAT_NT: currency;     /// Abatimento não tributado e não comercial Ex. desconto ICMS nas remessas para ZFM: // Prates
     fVL_MERC: currency;        /// Valor das mercadorias constantes no documento fiscal
-    fIND_FRT: string;           /// Indicador do tipo do frete:
-    fVL_FRT: currency;          /// Valor do frete indicado no documento fiscal
+    fIND_FRT: AnsiString;          /// Indicador do tipo do frete:
+    fVL_FRT: currency;         /// Valor do frete indicado no documento fiscal
     fVL_SEG: currency;         /// Valor do seguro indicado no documento fiscal
     fVL_OUT_DA: currency;      /// Valor de outras despesas acessórias
     fVL_BC_ICMS: currency;     /// Valor da base de cálculo do ICMS
@@ -85,23 +89,29 @@ type
     fVL_COFINS: currency;      /// Valor total da COFINS
     fVL_PIS_ST: currency;      /// Valor total do PIS retido por substituição tributária
     fVL_COFINS_ST: currency;   /// Valor total da COFINS retido por substituição tributária
+
+    FRegistroC110: TRegistroC110List;  /// BLOCO C - Lista de RegistroC110 (FILHO)
+    FRegistroC170: TRegistroC170List;  /// BLOCO C - Lista de RegistroC170 (FILHO)
   public
-    property IND_OPER: string read FIND_OPER write FIND_OPER;
-    property IND_EMIT: string read FIND_EMIT write FIND_EMIT;
-    property COD_PART: string read FCOD_PART write FCOD_PART;
-    property COD_MOD: string read FCOD_MOD write FCOD_MOD;
-    property COD_SIT: string read FCOD_SIT write FCOD_SIT;
-    property SER: string read FSER write FSER;
-    property NUM_DOC: string read FNUM_DOC write FNUM_DOC;
-    property CHV_NFE: string read FCHV_NFE write FCHV_NFE;
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
+    property IND_OPER: AnsiString read FIND_OPER write FIND_OPER;
+    property IND_EMIT: AnsiString read FIND_EMIT write FIND_EMIT;
+    property COD_PART: AnsiString read FCOD_PART write FCOD_PART;
+    property COD_MOD: AnsiString read FCOD_MOD write FCOD_MOD;
+    property COD_SIT: AnsiString read FCOD_SIT write FCOD_SIT;
+    property SER: AnsiString read FSER write FSER;
+    property NUM_DOC: AnsiString read FNUM_DOC write FNUM_DOC;
+    property CHV_NFE: AnsiString read FCHV_NFE write FCHV_NFE;
     property DT_DOC: TDateTime read FDT_DOC write FDT_DOC;
     property DT_E_S: TDateTime read FDT_E_S write FDT_E_S;
     property VL_DOC: currency read FVL_DOC write FVL_DOC;
-    property IND_PGTO: string read FIND_PGTO write FIND_PGTO;
+    property IND_PGTO: AnsiString read FIND_PGTO write FIND_PGTO;
     property VL_DESC: currency read FVL_DESC write FVL_DESC; // prates
     property VL_ABAT_NT: currency read FVL_ABAT_NT write FVL_ABAT_NT; // Prates
     property VL_MERC: currency read FVL_MERC write FVL_MERC;
-    property IND_FRT: string read FIND_FRT write FIND_FRT;
+    property IND_FRT: AnsiString read FIND_FRT write FIND_FRT;
     property VL_FRT: currency read FVL_FRT write FVL_FRT;
     property VL_SEG: currency read FVL_SEG write FVL_SEG;
     property VL_OUT_DA: currency read FVL_OUT_DA write FVL_OUT_DA;
@@ -114,6 +124,9 @@ type
     property VL_COFINS: currency read FVL_COFINS write FVL_COFINS;
     property VL_PIS_ST: currency read FVL_PIS_ST write FVL_PIS_ST;
     property VL_COFINS_ST: currency read FVL_COFINS_ST write FVL_COFINS_ST;
+    /// Registros FILHOS
+    property RegistroC110: TRegistroC110List read FRegistroC110 write FRegistroC110;
+    property RegistroC170: TRegistroC170List read FRegistroC170 write FRegistroC170;
   end;
 
   /// Registro C100 - Lista
@@ -132,11 +145,18 @@ type
 
   TRegistroC110 = class(TPersistent)
   private
-    fCOD_INF: string;       /// Código da informação complementar do documento fiscal (campo 02 do Registro 0450)
-    fTXT_COMPL: string;    /// Descrição complementar do código de referência.
+    fCOD_INF: AnsiString;       /// Código da informação complementar do documento fiscal (campo 02 do Registro 0450)
+    fTXT_COMPL: AnsiString;    /// Descrição complementar do código de referência.
+
+    FRegistroC111: TRegistroC111List;  /// BLOCO C - Lista de RegistroC111 (FILHO fo FILHO)
   public
-    property COD_INF: string read FCOD_INF write FCOD_INF;
-    property TXT_COMPL: string read FTXT_COMPL write FTXT_COMPL;
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
+    property COD_INF: AnsiString read FCOD_INF write FCOD_INF;
+    property TXT_COMPL: AnsiString read FTXT_COMPL write FTXT_COMPL;
+    /// Resgistro FILHO do FILHO
+    property RegistroC111: TRegistroC111List read FRegistroC111 write FRegistroC111;
   end;
 
   /// Registro C110 - Lista
@@ -155,11 +175,11 @@ type
 
   TRegistroC111 = class(TPersistent)
   private
-    fNUM_PROC: string;       /// Identificação do processo ou ato concessório
-    fIND_PROC: string;       /// Indicador da origem do processo:
+    fNUM_PROC: AnsiString;       /// Identificação do processo ou ato concessório
+    fIND_PROC: AnsiString;       /// Indicador da origem do processo:
   public
-    property NUM_PROC: string read FNUM_PROC write FNUM_PROC;
-    property IND_PROC: string read FIND_PROC write FIND_PROC;
+    property NUM_PROC: AnsiString read FNUM_PROC write FNUM_PROC;
+    property IND_PROC: AnsiString read FIND_PROC write FIND_PROC;
   end;
 
   /// Registro C111 - Lista
@@ -178,18 +198,18 @@ type
 
   TRegistroC112 = class(TPersistent)
   private
-    fCOD_DA: string;        /// Código do modelo do documento de arrecadação :
-    fUF: string;            /// Unidade federada beneficiária do recolhimento
-    fNUM_DA: string;        /// Número do documento de arrecadação
-    fCOD_AUT: string;       /// Código completo da autenticação bancária
+    fCOD_DA: AnsiString;        /// Código do modelo do documento de arrecadação :
+    fUF: AnsiString;            /// Unidade federada beneficiária do recolhimento
+    fNUM_DA: AnsiString;        /// Número do documento de arrecadação
+    fCOD_AUT: AnsiString;       /// Código completo da autenticação bancária
     fVL_DA: Currency;         /// Valor do total do documento de arrecadação (principal, atualização monetária, juros e multa) // Prates
     fDT_VCTO: TDateTime;    /// Data de vencimento do documento de arrecadação
     fDT_PGTO: TDateTime;    /// Data de pagamento do documento de arrecadação, ou data do vencimento, no caso de ICMS antecipado a recolher.
   public
-    property COD_DA: string read FCOD_DA write FCOD_DA;
-    property UF: string read FUF write FUF;
-    property NUM_DA: string read FNUM_DA write FNUM_DA;
-    property COD_AUT: string read FCOD_AUT write FCOD_AUT;
+    property COD_DA: AnsiString read FCOD_DA write FCOD_DA;
+    property UF: AnsiString read FUF write FUF;
+    property NUM_DA: AnsiString read FNUM_DA write FNUM_DA;
+    property COD_AUT: AnsiString read FCOD_AUT write FCOD_AUT;
     property VL_DA: currency read FVL_DA write FVL_DA; // Prats
     property DT_VCTO: TDateTime read FDT_VCTO write FDT_VCTO;
     property DT_PGTO: TDateTime read FDT_PGTO write FDT_PGTO;
@@ -211,22 +231,22 @@ type
 
   TRegistroC113 = class(TPersistent)
   private
-    fIND_OPER: string; /// Indicador do tipo de operação: 0 - Entrada/aquisição; 1- Saída/prestação
-    fIND_EMIT: string; /// Indicador do emitente do título: 0 - Emissão própria; 1- Terceiros
-    fCOD_PART: string; /// Código do participante emitente (campo 02 do Registro 0150)  do documento referenciado.
-    fCOD_MOD: string; /// Código do documento fiscal, conforme a Tabela 4.1.1
-    fSER: string; /// Série do documento fiscal
-    fSUB: string; /// Subsérie do documento fiscal
-    fNUM_DOC: string; /// Número do documento fiscal
+    fIND_OPER: AnsiString; /// Indicador do tipo de operação: 0 - Entrada/aquisição; 1- Saída/prestação
+    fIND_EMIT: AnsiString; /// Indicador do emitente do título: 0 - Emissão própria; 1- Terceiros
+    fCOD_PART: AnsiString; /// Código do participante emitente (campo 02 do Registro 0150)  do documento referenciado.
+    fCOD_MOD: AnsiString; /// Código do documento fiscal, conforme a Tabela 4.1.1
+    fSER: AnsiString; /// Série do documento fiscal
+    fSUB: AnsiString; /// Subsérie do documento fiscal
+    fNUM_DOC: AnsiString; /// Número do documento fiscal
     fDT_DOC: TDateTime; /// Data da emissão do documento fiscal.
   public
-    property IND_OPER: string read fIND_OPER write fIND_OPER;
-    property IND_EMIT: string read fIND_EMIT write fIND_EMIT;
-    property COD_PART: string read fCOD_PART write fCOD_PART;
-    property COD_MOD: string read fCOD_MOD write fCOD_MOD;
-    property SER: string read fSER write fSER;
-    property SUB: string read fSUB write fSUB;
-    property NUM_DOC: string read fNUM_DOC write fNUM_DOC;
+    property IND_OPER: AnsiString read fIND_OPER write fIND_OPER;
+    property IND_EMIT: AnsiString read fIND_EMIT write fIND_EMIT;
+    property COD_PART: AnsiString read fCOD_PART write fCOD_PART;
+    property COD_MOD: AnsiString read fCOD_MOD write fCOD_MOD;
+    property SER: AnsiString read fSER write fSER;
+    property SUB: AnsiString read fSUB write fSUB;
+    property NUM_DOC: AnsiString read fNUM_DOC write fNUM_DOC;
     property DT_DOC: TDateTime read fDT_DOC write fDT_DOC;
   end;
 
@@ -246,16 +266,16 @@ type
 
   TRegistroC114 = class(TPersistent)
   private
-    fCOD_MOD: string;        /// Código do modelo do documento fiscal, conforme a tabela indicada no item 4.1.1
-    fECF_FAB: string;        /// Número de série de fabricação do ECF
-    fECF_CX: string;         /// Número do caixa atribuído ao ECF
-    fNUM_DOC: string;        /// Número do documento fiscal
+    fCOD_MOD: AnsiString;        /// Código do modelo do documento fiscal, conforme a tabela indicada no item 4.1.1
+    fECF_FAB: AnsiString;        /// Número de série de fabricação do ECF
+    fECF_CX: AnsiString;         /// Número do caixa atribuído ao ECF
+    fNUM_DOC: AnsiString;        /// Número do documento fiscal
     fDT_DOC: TDateTime;      /// Data da emissão do documento fiscal
   public
-    property COD_MOD: string read FCOD_MOD write FCOD_MOD;
-    property ECF_FAB: string read FECF_FAB write FECF_FAB;
-    property ECF_CX: string read FECF_CX write FECF_CX;
-    property NUM_DOC: string read FNUM_DOC write FNUM_DOC;
+    property COD_MOD: AnsiString read FCOD_MOD write FCOD_MOD;
+    property ECF_FAB: AnsiString read FECF_FAB write FECF_FAB;
+    property ECF_CX: AnsiString read FECF_CX write FECF_CX;
+    property NUM_DOC: AnsiString read FNUM_DOC write FNUM_DOC;
     property DT_DOC: TDateTime read FDT_DOC write FDT_DOC;
   end;
 
@@ -275,25 +295,25 @@ type
 
   TRegistroC115 = class(TPersistent)
   private
-    fIND_CARGA: string;     /// Indicador do tipo de transporte da carga coletada: 0 - Rodoviário; 1 - Ferroviário; 2 - Rodo-Ferroviário; 3 - Aquaviário; 4 - Dutoviário; 5 - Aéreo; 9 - Outros.
-    fCNPJ_COL: string;      /// Número do CNPJ do contribuinte do local de coleta
-    fIE_COL: string;        /// Inscrição Estadual do contribuinte do local de coleta
-    fCPF_COL: string;       /// CPF do contribuinte do local de coleta das mercadorias.
-    fCOD_MUN_COL: string;   /// Código do Município do local de coleta
-    fCNPJ_ENTG: string;     /// Número do CNPJ do contribuinte do local de entrega
-    fIE_ENTG: string;       /// Inscrição Estadual do contribuinte do local de entrega
-    fCPF_ENTG: string;      /// Cpf do contribuinte do local de entrega
-    fCOD_MUN_ENTG: string;  /// Código do Município do local de entrega
+    fIND_CARGA: AnsiString;     /// Indicador do tipo de transporte da carga coletada: 0 - Rodoviário; 1 - Ferroviário; 2 - Rodo-Ferroviário; 3 - Aquaviário; 4 - Dutoviário; 5 - Aéreo; 9 - Outros.
+    fCNPJ_COL: AnsiString;      /// Número do CNPJ do contribuinte do local de coleta
+    fIE_COL: AnsiString;        /// Inscrição Estadual do contribuinte do local de coleta
+    fCPF_COL: AnsiString;       /// CPF do contribuinte do local de coleta das mercadorias.
+    fCOD_MUN_COL: AnsiString;   /// Código do Município do local de coleta
+    fCNPJ_ENTG: AnsiString;     /// Número do CNPJ do contribuinte do local de entrega
+    fIE_ENTG: AnsiString;       /// Inscrição Estadual do contribuinte do local de entrega
+    fCPF_ENTG: AnsiString;      /// Cpf do contribuinte do local de entrega
+    fCOD_MUN_ENTG: AnsiString;  /// Código do Município do local de entrega
   public
-    property IND_CARGA: string read FIND_CARGA write FIND_CARGA;
-    property CNPJ_COL: string read FCNPJ_COL write FCNPJ_COL;
-    property IE_COL: string read FIE_COL write FIE_COL;
-    property CPF_COL: string read FCPF_COL write FCPF_COL;
-    property COD_MUN_COL: string read FCOD_MUN_COL write FCOD_MUN_COL;
-    property CNPJ_ENTG: string read FCNPJ_ENTG write FCNPJ_ENTG;
-    property IE_ENTG: string read FIE_ENTG write FIE_ENTG;
-    property CPF_ENTG: string read FCPF_ENTG write FCPF_ENTG;
-    property COD_MUN_ENTG: string read FCOD_MUN_ENTG write FCOD_MUN_ENTG;
+    property IND_CARGA: AnsiString read FIND_CARGA write FIND_CARGA;
+    property CNPJ_COL: AnsiString read FCNPJ_COL write FCNPJ_COL;
+    property IE_COL: AnsiString read FIE_COL write FIE_COL;
+    property CPF_COL: AnsiString read FCPF_COL write FCPF_COL;
+    property COD_MUN_COL: AnsiString read FCOD_MUN_COL write FCOD_MUN_COL;
+    property CNPJ_ENTG: AnsiString read FCNPJ_ENTG write FCNPJ_ENTG;
+    property IE_ENTG: AnsiString read FIE_ENTG write FIE_ENTG;
+    property CPF_ENTG: AnsiString read FCPF_ENTG write FCPF_ENTG;
+    property COD_MUN_ENTG: AnsiString read FCOD_MUN_ENTG write FCOD_MUN_ENTG;
   end;
 
   /// Registro C115 - Lista
@@ -312,13 +332,13 @@ type
 
   TRegistroC120 = class(TPersistent)
   private
-    fCOD_DOC_IMP: string;      /// Documento de importação:
-    fNUM_DOC__IMP: string;     /// Número do documento de Importação.
+    fCOD_DOC_IMP: AnsiString;      /// Documento de importação:
+    fNUM_DOC__IMP: AnsiString;     /// Número do documento de Importação.
     fPIS_IMP: currency;        /// Valor pago de PIS na importação
     fCOFINS_IMP: currency;     /// Valor pago de COFINS na importação
   public
-    property COD_DOC_IMP: string read FCOD_DOC_IMP write FCOD_DOC_IMP;
-    property NUM_DOC__IMP: string read FNUM_DOC__IMP write FNUM_DOC__IMP;
+    property COD_DOC_IMP: AnsiString read FCOD_DOC_IMP write FCOD_DOC_IMP;
+    property NUM_DOC__IMP: AnsiString read FNUM_DOC__IMP write FNUM_DOC__IMP;
     property PIS_IMP: currency read FPIS_IMP write FPIS_IMP;
     property COFINS_IMP: currency read FCOFINS_IMP write FCOFINS_IMP;
   end;
@@ -372,17 +392,17 @@ type
 
   TRegistroC140 = class(TPersistent)
   private
-    fIND_EMIT: string;       /// Indicador do emitente do título: 0- Emissão própria; 1- Terceiros
-    fIND_TIT: string;        /// Indicador do tipo de título de crédito: 00- Duplicata; 01- Cheque; 02- Promissória; 03- Recibo; 99- Outros (descrever)
-    fDESC_TIT: string;       /// Descrição complementar do título de crédito
-    fNUM_TIT: string;        /// Número ou código identificador do título de crédito
+    fIND_EMIT: AnsiString;       /// Indicador do emitente do título: 0- Emissão própria; 1- Terceiros
+    fIND_TIT: AnsiString;        /// Indicador do tipo de título de crédito: 00- Duplicata; 01- Cheque; 02- Promissória; 03- Recibo; 99- Outros (descrever)
+    fDESC_TIT: AnsiString;       /// Descrição complementar do título de crédito
+    fNUM_TIT: AnsiString;        /// Número ou código identificador do título de crédito
     fQTD_PARC: currency;     /// Quantidade de parcelas a receber/pagar
     fVL_TIT: currency;       /// Valor original do título de crédito
   public
-    property IND_EMIT: string read FIND_EMIT write FIND_EMIT;
-    property IND_TIT: string read FIND_TIT write FIND_TIT;
-    property DESC_TIT: string read FDESC_TIT write FDESC_TIT;
-    property NUM_TIT: string read FNUM_TIT write FNUM_TIT;
+    property IND_EMIT: AnsiString read FIND_EMIT write FIND_EMIT;
+    property IND_TIT: AnsiString read FIND_TIT write FIND_TIT;
+    property DESC_TIT: AnsiString read FDESC_TIT write FDESC_TIT;
+    property NUM_TIT: AnsiString read FNUM_TIT write FNUM_TIT;
     property QTD_PARC: currency read FQTD_PARC write FQTD_PARC;
     property VL_TIT: currency read FVL_TIT write FVL_TIT;
   end;
@@ -403,11 +423,11 @@ type
 
   TRegistroC141 = class(TPersistent)
   private
-    fNUM_PARC: string;       /// Número da parcela a receber/pagar
+    fNUM_PARC: AnsiString;       /// Número da parcela a receber/pagar
     fDT_VCTO: TDateTime;     /// Data de vencimento da parcela
     fVL_PARC: currency;      /// Valor da parcela a receber/pagar
   public
-    property NUM_PARC: string read FNUM_PARC write FNUM_PARC;
+    property NUM_PARC: AnsiString read FNUM_PARC write FNUM_PARC;
     property DT_VCTO: TDateTime read FDT_VCTO write FDT_VCTO;
     property VL_PARC: currency read FVL_PARC write FVL_PARC;
   end;
@@ -428,19 +448,19 @@ type
 
   TRegistroC160 = class(TPersistent)
   private
-    fCOD_PART: string;      /// Código do participante (campo 02 do Registro 0150):
-    fVEIC_ID: string;       /// Placa de identificação do veículo
+    fCOD_PART: AnsiString;      /// Código do participante (campo 02 do Registro 0150):
+    fVEIC_ID: AnsiString;       /// Placa de identificação do veículo
     fQTD_VOL: currency;     /// Quantidade de volumes transportados
     fPESO_BRT: currency;    /// Peso bruto dos volumes transportados (em Kg)
     fPESO_LIQ: currency;    /// Peso líquido dos volumes transportados (em Kg)
-    fUF_ID: string;         /// Sigla da UF da placa do veículo
+    fUF_ID: AnsiString;         /// Sigla da UF da placa do veículo
   public
-    property COD_PART: string read FCOD_PART write FCOD_PART;
-    property VEIC_ID: string read FVEIC_ID write FVEIC_ID;
+    property COD_PART: AnsiString read FCOD_PART write FCOD_PART;
+    property VEIC_ID: AnsiString read FVEIC_ID write FVEIC_ID;
     property QTD_VOL: currency read FQTD_VOL write FQTD_VOL;
     property PESO_BRT: currency read FPESO_BRT write FPESO_BRT;
     property PESO_LIQ: currency read FPESO_LIQ write FPESO_LIQ;
-    property UF_ID: string read FUF_ID write FUF_ID;
+    property UF_ID: AnsiString read FUF_ID write FUF_ID;
   end;
 
   /// Registro C160 - Lista
@@ -459,31 +479,31 @@ type
 
   TRegistroC165 = class(TPersistent)
   private
-    fCOD_PART: string;      /// Código do participante (campo 02 do Registro 0150):
-    fVEIC_ID: string;       /// Placa de identificação do veículo
-    fCOD_AUT: string;       /// Código da autorização fornecido pela SEFAZ (combustíveis)
-    fNR_PASSE: string;      /// Número do Passe Fiscal
-    fHORA: string;          /// Hora da saída das mercadorias
-    fTEMPER: string;        /// Temperatura em graus Celsius utilizada para quantificação do volume de combustível
+    fCOD_PART: AnsiString;      /// Código do participante (campo 02 do Registro 0150):
+    fVEIC_ID: AnsiString;       /// Placa de identificação do veículo
+    fCOD_AUT: AnsiString;       /// Código da autorização fornecido pela SEFAZ (combustíveis)
+    fNR_PASSE: AnsiString;      /// Número do Passe Fiscal
+    fHORA: AnsiString;          /// Hora da saída das mercadorias
+    fTEMPER: AnsiString;        /// Temperatura em graus Celsius utilizada para quantificação do volume de combustível
     fQTD_VOL: currency;     /// Quantidade de volumes transportados
     fPESO_BRT: currency;    /// Peso bruto dos volumes transportados (em Kg)
     fPESO_LIQ: currency;    /// Peso líquido dos volumes transportados (em Kg)
-    fNOM_MOT: string;       /// Nome do motorista
-    fCPF: string;           /// CPF do motorista
-    fUF_ID: string;         /// Sigla da UF da placa do veículo
+    fNOM_MOT: AnsiString;       /// Nome do motorista
+    fCPF: AnsiString;           /// CPF do motorista
+    fUF_ID: AnsiString;         /// Sigla da UF da placa do veículo
   public
-    property COD_PART: string read FCOD_PART write FCOD_PART;
-    property VEIC_ID: string read FVEIC_ID write FVEIC_ID;
-    property COD_AUT: string read FCOD_AUT write FCOD_AUT;
-    property NR_PASSE: string read FNR_PASSE write FNR_PASSE;
-    property HORA: string read FHORA write FHORA;
-    property TEMPER: string read FTEMPER write FTEMPER;
+    property COD_PART: AnsiString read FCOD_PART write FCOD_PART;
+    property VEIC_ID: AnsiString read FVEIC_ID write FVEIC_ID;
+    property COD_AUT: AnsiString read FCOD_AUT write FCOD_AUT;
+    property NR_PASSE: AnsiString read FNR_PASSE write FNR_PASSE;
+    property HORA: AnsiString read FHORA write FHORA;
+    property TEMPER: AnsiString read FTEMPER write FTEMPER;
     property QTD_VOL: currency read FQTD_VOL write FQTD_VOL;
     property PESO_BRT: currency read FPESO_BRT write FPESO_BRT;
     property PESO_LIQ: currency read FPESO_LIQ write FPESO_LIQ;
-    property NOM_MOT: string read FNOM_MOT write FNOM_MOT;
-    property CPF: string read FCPF write FCPF;
-    property UF_ID: string read FUF_ID write FUF_ID;
+    property NOM_MOT: AnsiString read FNOM_MOT write FNOM_MOT;
+    property CPF: AnsiString read FCPF write FCPF;
+    property UF_ID: AnsiString read FUF_ID write FUF_ID;
   end;
 
   /// Registro C165 - Lista
@@ -502,79 +522,79 @@ type
 
   TRegistroC170 = class(TPersistent)
   private
-    fNUM_ITEM: string;            /// Número seqüencial do item no documento fiscal
-    fCOD_ITEM: string;            /// Código do item (campo 02 do Registro 0200)
-    fDESCR_COMPL: string;         /// Descrição complementar do item como adotado no documento fiscal
+    fNUM_ITEM: AnsiString;            /// Número seqüencial do item no documento fiscal
+    fCOD_ITEM: AnsiString;            /// Código do item (campo 02 do Registro 0200)
+    fDESCR_COMPL: AnsiString;         /// Descrição complementar do item como adotado no documento fiscal
     fQTD: currency;               /// Quantidade do item
-    fUNID: string;                /// Unidade do item(Campo 02 do registro 0190)
+    fUNID: AnsiString;                /// Unidade do item(Campo 02 do registro 0190)
     fVL_ITEM: currency;           /// Valor total do item
     fVL_DESC: currency;           /// Valor do desconto comercial
-    fIND_MOV: string;             /// Movimentação física do ITEM/PRODUTO: 0 - SIM; 1- NÃO
-    fCST_ICMS: string;            /// Código da Situação Tributária referente ao ICMS, conforme a Tabela indicada no item 4.3.1
-    fCFOP: string;                /// Código Fiscal de Operação e Prestação
-    fCOD_NAT: string;             /// Código da natureza da operação (campo 02 do Registro 0400)
+    fIND_MOV: AnsiString;             /// Movimentação física do ITEM/PRODUTO: 0 - SIM; 1- NÃO
+    fCST_ICMS: AnsiString;            /// Código da Situação Tributária referente ao ICMS, conforme a Tabela indicada no item 4.3.1
+    fCFOP: AnsiString;                /// Código Fiscal de Operação e Prestação
+    fCOD_NAT: AnsiString;             /// Código da natureza da operação (campo 02 do Registro 0400)
     fVL_BC_ICMS: currency;        /// Valor da base de cálculo do ICMS
     fALIQ_ICMS: currency;         /// Alíquota do ICMS
     fVL_ICMS: currency;           /// Valor do ICMS creditado/debitado
     fVL_BC_ICMS_ST: currency;     /// Valor da base de cálculo referente à substituição tributária
     fALIQ_ST: currency;           /// Alíquota do ICMS da substituição tributária na unidade da federação de destino
     fVL_ICMS_ST: currency;        /// Valor do ICMS referente à substituição tributária
-    fIND_APUR: string;            /// Indicador de período de apuração do IPI: 0 - Mensal; 1 - Decendial
-    fCST_IPI: string;             /// Código da Situação Tributária referente ao IPI, conforme a Tabela indicada no item 4.3.2.
-    fCOD_ENQ: string;             /// Código de enquadramento legal do IPI, conforme tabela indicada no item 4.5.3.
+    fIND_APUR: AnsiString;            /// Indicador de período de apuração do IPI: 0 - Mensal; 1 - Decendial
+    fCST_IPI: AnsiString;             /// Código da Situação Tributária referente ao IPI, conforme a Tabela indicada no item 4.3.2.
+    fCOD_ENQ: AnsiString;             /// Código de enquadramento legal do IPI, conforme tabela indicada no item 4.5.3.
     fVL_BC_IPI: currency;         /// Valor da base de cálculo do IPI
     fALIQ_IPI: currency;          /// Alíquota do IPI
     fVL_IPI: currency;            /// Valor do IPI creditado/debitado
-    fCST_PIS: string;             /// Código da Situação Tributária referente ao PIS.
+    fCST_PIS: AnsiString;             /// Código da Situação Tributária referente ao PIS.
     fVL_BC_PIS: currency;         /// Valor da base de cálculo do PIS
     fALIQ_PIS_PERC: currency;     /// Alíquota do PIS (em percentual)
     fQUANT_BC_PIS: currency;      /// Quantidade - Base de cálculo PIS
     fALIQ_PIS_R: currency;        /// Alíquota do PIS (em reais)
     fVL_PIS: currency;            /// Valor do PIS
-    fCST_COFINS: string;          /// Código da Situação Tributária referente ao COFINS.
+    fCST_COFINS: AnsiString;          /// Código da Situação Tributária referente ao COFINS.
     fVL_BC_COFINS: currency;      /// Valor da base de cálculo da COFINS
     fALIQ_COFINS_PERC: currency;  /// Alíquota do COFINS (em percentual)
     fQUANT_BC_COFINS: currency;   /// Quantidade - Base de cálculo COFINS
     fALIQ_COFINS_R: currency;     /// Alíquota da COFINS (em reais)
     fVL_COFINS: currency;         /// Valor da COFINS
-    fCOD_CTA: string;             /// Código da conta analítica contábil debitada/creditada
+    fCOD_CTA: AnsiString;             /// Código da conta analítica contábil debitada/creditada
   public
-    property NUM_ITEM: string read FNUM_ITEM write FNUM_ITEM;
-    property COD_ITEM: string read FCOD_ITEM write FCOD_ITEM;
-    property DESCR_COMPL: string read FDESCR_COMPL write FDESCR_COMPL;
+    property NUM_ITEM: AnsiString read FNUM_ITEM write FNUM_ITEM;
+    property COD_ITEM: AnsiString read FCOD_ITEM write FCOD_ITEM;
+    property DESCR_COMPL: AnsiString read FDESCR_COMPL write FDESCR_COMPL;
     property QTD: currency read FQTD write FQTD;
-    property UNID: string read FUNID write FUNID;
+    property UNID: AnsiString read FUNID write FUNID;
     property VL_ITEM: currency read FVL_ITEM write FVL_ITEM;
     property VL_DESC: currency read FVL_DESC write FVL_DESC;
-    property IND_MOV: string read FIND_MOV write FIND_MOV;
-    property CST_ICMS: string read FCST_ICMS write FCST_ICMS;
-    property CFOP: string read FCFOP write FCFOP;
-    property COD_NAT: string read FCOD_NAT write FCOD_NAT;
+    property IND_MOV: AnsiString read FIND_MOV write FIND_MOV;
+    property CST_ICMS: AnsiString read FCST_ICMS write FCST_ICMS;
+    property CFOP: AnsiString read FCFOP write FCFOP;
+    property COD_NAT: AnsiString read FCOD_NAT write FCOD_NAT;
     property VL_BC_ICMS: currency read FVL_BC_ICMS write FVL_BC_ICMS;
     property ALIQ_ICMS: currency read FALIQ_ICMS write FALIQ_ICMS;
     property VL_ICMS: currency read FVL_ICMS write FVL_ICMS;
     property VL_BC_ICMS_ST: currency read FVL_BC_ICMS_ST write FVL_BC_ICMS_ST;
     property ALIQ_ST: currency read FALIQ_ST write FALIQ_ST;
     property VL_ICMS_ST: currency read FVL_ICMS_ST write FVL_ICMS_ST;
-    property IND_APUR: string read FIND_APUR write FIND_APUR;
-    property CST_IPI: string read FCST_IPI write FCST_IPI;
-    property COD_ENQ: string read FCOD_ENQ write FCOD_ENQ;
+    property IND_APUR: AnsiString read FIND_APUR write FIND_APUR;
+    property CST_IPI: AnsiString read FCST_IPI write FCST_IPI;
+    property COD_ENQ: AnsiString read FCOD_ENQ write FCOD_ENQ;
     property VL_BC_IPI: currency read FVL_BC_IPI write FVL_BC_IPI;
     property ALIQ_IPI: currency read FALIQ_IPI write FALIQ_IPI;
     property VL_IPI: currency read FVL_IPI write FVL_IPI;
-    property CST_PIS: string read FCST_PIS write FCST_PIS;
+    property CST_PIS: AnsiString read FCST_PIS write FCST_PIS;
     property VL_BC_PIS: currency read FVL_BC_PIS write FVL_BC_PIS;
     property ALIQ_PIS_PERC: currency read FALIQ_PIS_PERC write FALIQ_PIS_PERC;
     property QUANT_BC_PIS: currency read FQUANT_BC_PIS write FQUANT_BC_PIS;
     property ALIQ_PIS_R: currency read FALIQ_PIS_R write FALIQ_PIS_R;
     property VL_PIS: currency read FVL_PIS write FVL_PIS;
-    property CST_COFINS: string read FCST_COFINS write FCST_COFINS;
+    property CST_COFINS: AnsiString read FCST_COFINS write FCST_COFINS;
     property VL_BC_COFINS: currency read FVL_BC_COFINS write FVL_BC_COFINS;
     property ALIQ_COFINS_PERC: currency read FALIQ_COFINS_PERC write FALIQ_COFINS_PERC;
     property QUANT_BC_COFINS: currency read FQUANT_BC_COFINS write FQUANT_BC_COFINS;
     property ALIQ_COFINS_R: currency read FALIQ_COFINS_R write FALIQ_COFINS_R;
     property VL_COFINS: currency read FVL_COFINS write FVL_COFINS;
-    property COD_CTA: string read FCOD_CTA write FCOD_CTA;
+    property COD_CTA: AnsiString read FCOD_CTA write FCOD_CTA;
   end;
 
   /// Registro C170 - Lista
@@ -593,10 +613,10 @@ type
 
   TRegistroC171 = class(TPersistent)
   private
-    fNUM_TANQUE: string;    /// Tanque onde foi armazenado o combustível
+    fNUM_TANQUE: AnsiString;    /// Tanque onde foi armazenado o combustível
     fQTDE: currency;        /// Quantidade ou volume armazenado
   public
-    property NUM_TANQUE: string read FNUM_TANQUE write FNUM_TANQUE;
+    property NUM_TANQUE: AnsiString read FNUM_TANQUE write FNUM_TANQUE;
     property QTDE: currency read FQTDE write FQTDE;
   end;
 
@@ -641,20 +661,20 @@ type
 
   TRegistroC173 = class(TPersistent)
   private
-    fLOTE_MED: string;      /// Número do lote de fabricação do medicamento
+    fLOTE_MED: AnsiString;      /// Número do lote de fabricação do medicamento
     fQTD_ITEM: currency;    /// Quantidade de item por lote
     fDT_FAB: TDateTime;     /// Data de fabricação do medicamento
     fDT_VAL: TDateTime;     /// Data de expiração da validade do medicamento
-    fIND_MED: string;       /// Indicador de tipo de referência da base de cálculo do ICMS (ST) do produto farmacêutico:
-    fTP_PROD: string;       /// Tipo de produto:
+    fIND_MED: AnsiString;       /// Indicador de tipo de referência da base de cálculo do ICMS (ST) do produto farmacêutico:
+    fTP_PROD: AnsiString;       /// Tipo de produto:
     fVL_TAB_MAX: currency;  /// Valor do preço tabelado ou valor do preço máximo
   public
-    property LOTE_MED: string read FLOTE_MED write FLOTE_MED;
+    property LOTE_MED: AnsiString read FLOTE_MED write FLOTE_MED;
     property QTD_ITEM: currency read FQTD_ITEM write FQTD_ITEM;
     property DT_FAB: TDateTime read FDT_FAB write FDT_FAB;
     property DT_VAL: TDateTime read FDT_VAL write FDT_VAL;
-    property IND_MED: string read FIND_MED write FIND_MED;
-    property TP_PROD: string read FTP_PROD write FTP_PROD;
+    property IND_MED: AnsiString read FIND_MED write FIND_MED;
+    property TP_PROD: AnsiString read FTP_PROD write FTP_PROD;
     property VL_TAB_MAX: currency read FVL_TAB_MAX write FVL_TAB_MAX;
   end;
 
@@ -674,13 +694,13 @@ type
 
   TRegistroC174 = class(TPersistent)
   private
-    fIND_ARM: string;       /// Indicador do tipo da arma de fogo: 0- Uso permitido; 1- Uso restrito
-    fNUM_ARM: string;       /// Numeração de série de fabricação da arma
-    fDESCR_COMPL: string;   /// Descrição da arma, compreendendo: número do cano, calibre, marca, capacidade de cartuchos, tipo de funcionamento, quantidade de canos, comprimento, tipo de alma, quantidade e sentido das raias e demais elementos que permitam sua perfeita identificação
+    fIND_ARM: AnsiString;       /// Indicador do tipo da arma de fogo: 0- Uso permitido; 1- Uso restrito
+    fNUM_ARM: AnsiString;       /// Numeração de série de fabricação da arma
+    fDESCR_COMPL: AnsiString;   /// Descrição da arma, compreendendo: número do cano, calibre, marca, capacidade de cartuchos, tipo de funcionamento, quantidade de canos, comprimento, tipo de alma, quantidade e sentido das raias e demais elementos que permitam sua perfeita identificação
   public
-    property IND_ARM: string read FIND_ARM write FIND_ARM;
-    property NUM_ARM: string read FNUM_ARM write FNUM_ARM;
-    property DESCR_COMPL: string read FDESCR_COMPL write FDESCR_COMPL;
+    property IND_ARM: AnsiString read FIND_ARM write FIND_ARM;
+    property NUM_ARM: AnsiString read FNUM_ARM write FNUM_ARM;
+    property DESCR_COMPL: AnsiString read FDESCR_COMPL write FDESCR_COMPL;
   end;
 
   /// Registro C174 - Lista
@@ -699,15 +719,15 @@ type
 
   TRegistroC175 = class(TPersistent)
   private
-    fIND_VEIC_OPER: string; /// Indicador do tipo de operação com veículo: 0- Venda para concessionária; 1- Faturamento direto; 2- Venda direta; 3- Venda da concessionária; 9- Outros
-    fCNPJ: string;          /// CNPJ da Concessionária
-    fUF: string;            /// Sigla da unidade da federação da Concessionária
-    fCHASSI_VEIC: string;   /// Chassi do veículo
+    fIND_VEIC_OPER: AnsiString; /// Indicador do tipo de operação com veículo: 0- Venda para concessionária; 1- Faturamento direto; 2- Venda direta; 3- Venda da concessionária; 9- Outros
+    fCNPJ: AnsiString;          /// CNPJ da Concessionária
+    fUF: AnsiString;            /// Sigla da unidade da federação da Concessionária
+    fCHASSI_VEIC: AnsiString;   /// Chassi do veículo
   public
-    property IND_VEIC_OPER: string read FIND_VEIC_OPER write FIND_VEIC_OPER;
-    property CNPJ: string read FCNPJ write FCNPJ;
-    property UF: string read FUF write FUF;
-    property CHASSI_VEIC: string read FCHASSI_VEIC write FCHASSI_VEIC;
+    property IND_VEIC_OPER: AnsiString read FIND_VEIC_OPER write FIND_VEIC_OPER;
+    property CNPJ: AnsiString read FCNPJ write FCNPJ;
+    property UF: AnsiString read FUF write FUF;
+    property CHASSI_VEIC: AnsiString read FCHASSI_VEIC write FCHASSI_VEIC;
   end;
 
   /// Registro C175 - Lista
@@ -726,20 +746,20 @@ type
 
   TRegistroC176 = class(TPersistent)
   private
-    fCOD_MOD_ULT_E: string;    /// Código do modelo do documento fiscal relativa a última entrada
-    fNUM_DOC_ULT_E: string;    /// Número do documento fiscal relativa a última entrada
-    fSER_ULT_E: string;        /// Série do documento fiscal relativa a última entrada
+    fCOD_MOD_ULT_E: AnsiString;    /// Código do modelo do documento fiscal relativa a última entrada
+    fNUM_DOC_ULT_E: AnsiString;    /// Número do documento fiscal relativa a última entrada
+    fSER_ULT_E: AnsiString;        /// Série do documento fiscal relativa a última entrada
     fDT_ULT_E: TDateTime;      /// Data relativa a última entrada da mercadoria
-    fCOD_PART_ULT_E: string;   /// Código do participante (do emitente do documento relativa a última entrada)
+    fCOD_PART_ULT_E: AnsiString;   /// Código do participante (do emitente do documento relativa a última entrada)
     fQUANT_ULT_E: currency;    /// Quantidade do item relativa a última entrada
     fVL_UNIT_ULT_E: currency;  /// Valor unitário da mercadoria constante na NF relativa a última entrada inclusive despesas acessórias.
     fVL_UNIT_BC_ST: currency;  /// Valor unitário da base de cálculo do imposto pago por substituição.
   public
-    property COD_MOD_ULT_E: string read FCOD_MOD_ULT_E write FCOD_MOD_ULT_E;
-    property NUM_DOC_ULT_E: string read FNUM_DOC_ULT_E write FNUM_DOC_ULT_E;
-    property SER_ULT_E: string read FSER_ULT_E write FSER_ULT_E;
+    property COD_MOD_ULT_E: AnsiString read FCOD_MOD_ULT_E write FCOD_MOD_ULT_E;
+    property NUM_DOC_ULT_E: AnsiString read FNUM_DOC_ULT_E write FNUM_DOC_ULT_E;
+    property SER_ULT_E: AnsiString read FSER_ULT_E write FSER_ULT_E;
     property DT_ULT_E: TDateTime read FDT_ULT_E write FDT_ULT_E;
-    property COD_PART_ULT_E: string read FCOD_PART_ULT_E write FCOD_PART_ULT_E;
+    property COD_PART_ULT_E: AnsiString read FCOD_PART_ULT_E write FCOD_PART_ULT_E;
     property QUANT_ULT_E: currency read FQUANT_ULT_E write FQUANT_ULT_E;
     property VL_UNIT_ULT_E: currency read FVL_UNIT_ULT_E write FVL_UNIT_ULT_E;
     property VL_UNIT_BC_ST: currency read FVL_UNIT_BC_ST write FVL_UNIT_BC_ST;
@@ -761,10 +781,10 @@ type
 
   TRegistroC177 = class(TPersistent)
   private
-    fCOD_SELO_IPI: string;  /// Código do selo de controle do IPI, conforme Tabela 4.5.2
+    fCOD_SELO_IPI: AnsiString;  /// Código do selo de controle do IPI, conforme Tabela 4.5.2
     fQT_SELO_IPI: currency; /// Quantidade de selo de controle do IPI aplicada
   public
-    property COD_SELO_IPI: string read FCOD_SELO_IPI write FCOD_SELO_IPI;
+    property COD_SELO_IPI: AnsiString read FCOD_SELO_IPI write FCOD_SELO_IPI;
     property QT_SELO_IPI: currency read FQT_SELO_IPI write FQT_SELO_IPI;
   end;
 
@@ -784,11 +804,11 @@ type
 
   TRegistroC178 = class(TPersistent)
   private
-    fCL_ENQ: string;        /// Código da classe de enquadramento do IPI, conforme Tabela 4.5.1.
+    fCL_ENQ: AnsiString;        /// Código da classe de enquadramento do IPI, conforme Tabela 4.5.1.
     fVL_UNID: currency;     /// Valor por unidade padrão de tributação
     fQUANT_PAD: currency;   /// Quantidade total de produtos na unidade padrão de tributação
   public
-    property CL_ENQ: string read FCL_ENQ write FCL_ENQ;
+    property CL_ENQ: AnsiString read FCL_ENQ write FCL_ENQ;
     property VL_UNID: currency read FVL_UNID write FVL_UNID;
     property QUANT_PAD: currency read FQUANT_PAD write FQUANT_PAD;
   end;
@@ -838,8 +858,8 @@ type
 
   TRegistroC190 = class(TPersistent)
   private
-    fCST_ICMS: string;         /// Código da Situação Tributária, conforme a Tabela indicada no item 4.3.1
-    fCFOP: string;             /// Código Fiscal de Operação e Prestação do agrupamento de itens
+    fCST_ICMS: AnsiString;         /// Código da Situação Tributária, conforme a Tabela indicada no item 4.3.1
+    fCFOP: AnsiString;             /// Código Fiscal de Operação e Prestação do agrupamento de itens
     fALIQ_ICMS: currency;      /// Alíquota do ICMS
     fVL_OPR: currency;         /// Valor da operação correspondente à combinação de CST_ICMS, CFOP, e alíquota do ICMS, incluídas as despesas acessórias (frete, seguros e outras despesas acessórias)  e IPI
     fVL_BC_ICMS: currency;     /// Parcela correspondente ao "Valor da base de cálculo do ICMS" referente à combinação de CST_ICMS, CFOP e alíquota do ICMS.
@@ -848,10 +868,10 @@ type
     fVL_ICMS_ST: currency;     /// Parcela correspondente ao valor creditado/debitado do ICMS da substituição tributária, referente à combinação de CST_ICMS, CFOP, e alíquota do ICMS.
     fVL_RED_BC: currency;      /// Valor não tributado em função da redução da base de cálculo do ICMS, referente à combinação de CST_ICMS, CFOP e alíquota do ICMS.
     fVL_IPI: currency;         /// Parcela correspondente ao "Valor do IPI" referente à combinação CST_ICMS, CFOP e alíquota do ICMS.
-    fCOD_OBS: String;          /// Código da observação do lançamento fiscal (campo 02 do Registro 0460
+    fCOD_OBS: AnsiString;          /// Código da observação do lançamento fiscal (campo 02 do Registro 0460
   public
-    property CST_ICMS: string read FCST_ICMS write FCST_ICMS;
-    property CFOP: string read FCFOP write FCFOP;
+    property CST_ICMS: AnsiString read FCST_ICMS write FCST_ICMS;
+    property CFOP: AnsiString read FCFOP write FCFOP;
     property ALIQ_ICMS: currency read FALIQ_ICMS write FALIQ_ICMS;
     property VL_OPR: currency read FVL_OPR write FVL_OPR;
     property VL_BC_ICMS: currency read FVL_BC_ICMS write FVL_BC_ICMS;
@@ -860,7 +880,7 @@ type
     property VL_ICMS_ST: currency read FVL_ICMS_ST write FVL_ICMS_ST;
     property VL_RED_BC: currency read FVL_RED_BC write FVL_RED_BC;
     property VL_IPI: currency read FVL_IPI write FVL_IPI;
-    property COD_OBS: string read FCOD_OBS write FCOD_OBS;
+    property COD_OBS: AnsiString read FCOD_OBS write FCOD_OBS;
 
   end;
 
@@ -880,11 +900,11 @@ type
 
   TRegistroC195 = class(TPersistent)
   private
-    fCOD_OBS: string;    /// Código da observação do lançamento fiscal (campo 02 do Registro 0460)
-    fTXT_COMPL: string;  /// Descrição complementar do código de observação.
+    fCOD_OBS: AnsiString;    /// Código da observação do lançamento fiscal (campo 02 do Registro 0460)
+    fTXT_COMPL: AnsiString;  /// Descrição complementar do código de observação.
   public
-    property COD_OBS: string read FCOD_OBS write FCOD_OBS;
-    property TXT_COMPL: string read FTXT_COMPL write FTXT_COMPL;
+    property COD_OBS: AnsiString read FCOD_OBS write FCOD_OBS;
+    property TXT_COMPL: AnsiString read FTXT_COMPL write FTXT_COMPL;
   end;
 
   /// Registro C195 - Lista
@@ -903,17 +923,17 @@ type
 
   TRegistroC197 = class(TPersistent)
   private
-    fCOD_AJ: string;           /// Código do ajustes/benefício/incentivo, conforme tabela indicada no item 5.3.
-    fDESCR_COMPL_AJ: string;   /// Descrição complementar do ajuste da apuração, nos casos em que o código da tabela for “9999”
-    fCOD_ITEM: string;         /// Código do item (campo 02 do Registro 0200)
+    fCOD_AJ: AnsiString;           /// Código do ajustes/benefício/incentivo, conforme tabela indicada no item 5.3.
+    fDESCR_COMPL_AJ: AnsiString;   /// Descrição complementar do ajuste da apuração, nos casos em que o código da tabela for “9999”
+    fCOD_ITEM: AnsiString;         /// Código do item (campo 02 do Registro 0200)
     fVL_BC_ICMS: currency;     /// Base de cálculo do ICMS ou do ICMS ST
     fALIQ_ICMS: currency;      /// Alíquota do ICMS
     fVL_ICMS: currency;        /// Valor do ICMS ou do ICMS ST
     fVL_OUTROS: currency;      /// Outros valores
   public
-    property COD_AJ: string read FCOD_AJ write FCOD_AJ;
-    property DESCR_COMPL_AJ: string read FDESCR_COMPL_AJ write FDESCR_COMPL_AJ;
-    property COD_ITEM: string read FCOD_ITEM write FCOD_ITEM;
+    property COD_AJ: AnsiString read FCOD_AJ write FCOD_AJ;
+    property DESCR_COMPL_AJ: AnsiString read FDESCR_COMPL_AJ write FDESCR_COMPL_AJ;
+    property COD_ITEM: AnsiString read FCOD_ITEM write FCOD_ITEM;
     property VL_BC_ICMS: currency read FVL_BC_ICMS write FVL_BC_ICMS;
     property ALIQ_ICMS: currency read FALIQ_ICMS write FALIQ_ICMS;
     property VL_ICMS: currency read FVL_ICMS write FVL_ICMS;
@@ -936,27 +956,27 @@ type
 
   TRegistroC300 = class(TPersistent)
   private
-    fCOD_MOD: string; /// Código do modelo do documento fiscal, conforme a Tabela 4.1.1
-    fSER: string; /// Série do documento fiscal
-    fSUB: string; /// Subsérie do documento fiscal
-    fNUM_DOC_INI: string; /// Número do documento fiscal inicial
-    fNUM_DOC_FIN: string; /// Número do documento fiscal final
+    fCOD_MOD: AnsiString; /// Código do modelo do documento fiscal, conforme a Tabela 4.1.1
+    fSER: AnsiString; /// Série do documento fiscal
+    fSUB: AnsiString; /// Subsérie do documento fiscal
+    fNUM_DOC_INI: AnsiString; /// Número do documento fiscal inicial
+    fNUM_DOC_FIN: AnsiString; /// Número do documento fiscal final
     fDT_DOC: TDateTime; /// Data da emissão dos documentos fiscais
     fVL_DOC: currency; /// Valor total dos documentos
     fVL_PIS: currency; /// Valor total do PIS
     fVL_COFINS: currency; /// Valor total da COFINS
-    fCOD_CTA: string; /// Código da conta analítica contábil debitada/creditada
+    fCOD_CTA: AnsiString; /// Código da conta analítica contábil debitada/creditada
   public
-    property COD_MOD: string read fCOD_MOD write fCOD_MOD;
-    property SER: string read fSER write fSER;
-    property SUB: string read fSUB write fSUB;
-    property NUM_DOC_INI: string read fNUM_DOC_INI write fNUM_DOC_INI;
-    property NUM_DOC_FIN: string read fNUM_DOC_FIN write fNUM_DOC_FIN;
+    property COD_MOD: AnsiString read fCOD_MOD write fCOD_MOD;
+    property SER: AnsiString read fSER write fSER;
+    property SUB: AnsiString read fSUB write fSUB;
+    property NUM_DOC_INI: AnsiString read fNUM_DOC_INI write fNUM_DOC_INI;
+    property NUM_DOC_FIN: AnsiString read fNUM_DOC_FIN write fNUM_DOC_FIN;
     property DT_DOC: TDateTime read fDT_DOC write fDT_DOC;
     property VL_DOC: currency read fVL_DOC write fVL_DOC;
     property VL_PIS: currency read fVL_PIS write fVL_PIS;
     property VL_COFINS: currency read fVL_COFINS write fVL_COFINS;
-    property COD_CTA: string read fCOD_CTA write fCOD_CTA;
+    property COD_CTA: AnsiString read fCOD_CTA write fCOD_CTA;
   end;
 
   /// Registro C300 - Lista
@@ -975,9 +995,9 @@ type
 
   TRegistroC310 = class(TPersistent)
   private
-    fNUM_DOC_CANC: string; /// Número do documento fiscal cancelado
+    fNUM_DOC_CANC: AnsiString; /// Número do documento fiscal cancelado
   public
-    property NUM_DOC_CANC: string read fNUM_DOC_CANC write fNUM_DOC_CANC;
+    property NUM_DOC_CANC: AnsiString read fNUM_DOC_CANC write fNUM_DOC_CANC;
   end;
 
   /// Registro C310 - Lista
@@ -996,23 +1016,23 @@ type
 
   TRegistroC320 = class(TPersistent)
   private
-    fCST_ICMS: string;     /// Código da Situação Tributária, conforme a Tabela indicada no item 4.3.1
-    fCFOP: string;         /// Código Fiscal de Operação e Prestação
+    fCST_ICMS: AnsiString;     /// Código da Situação Tributária, conforme a Tabela indicada no item 4.3.1
+    fCFOP: AnsiString;         /// Código Fiscal de Operação e Prestação
     fALIQ_ICMS: Currency;  /// Alíquota do ICMS
     fVL_OPR: currency;     /// Valor total acumulado das operações correspondentes à combinação de CST_ICMS, CFOP e alíquota do ICMS, incluídas as despesas acessórias e acréscimos.
     fVL_BC_ICMS: currency; /// Valor acumulado da base de cálculo do ICMS, referente à combinação de CST_ICMS, CFOP, e alíquota do ICMS.
     fVL_ICMS: currency;    /// Valor acumulado do ICMS, referente à combinação de CST_ICMS, CFOP e alíquota do ICMS.
     fVL_RED_BC: currency;  /// Valor não tributado em função da redução da base de cálculo do ICMS, referente à combinação de CST_ICMS, CFOP, e alíquota do ICMS.
-    fCOD_OBS: string;      /// Código da observação do lançamento fiscal (campo 02 do Registro 0460)
+    fCOD_OBS: AnsiString;      /// Código da observação do lançamento fiscal (campo 02 do Registro 0460)
   public
-    property CST_ICMS: string read fCST_ICMS write fCST_ICMS;
-    property CFOP: string read fCFOP write fCFOP;
+    property CST_ICMS: AnsiString read fCST_ICMS write fCST_ICMS;
+    property CFOP: AnsiString read fCFOP write fCFOP;
     property ALIQ_ICMS: Currency read fALIQ_ICMS write fALIQ_ICMS;
     property VL_OPR: currency read fVL_OPR write fVL_OPR;
     property VL_BC_ICMS: currency read fVL_BC_ICMS write fVL_BC_ICMS;
     property VL_ICMS: currency read fVL_ICMS write fVL_ICMS;
     property VL_RED_BC: currency read fVL_RED_BC write fVL_RED_BC;
-    property COD_OBS: string read fCOD_OBS write fCOD_OBS;
+    property COD_OBS: AnsiString read fCOD_OBS write fCOD_OBS;
   end;
 
   /// Registro C320 - Lista
@@ -1031,9 +1051,9 @@ type
 
   TRegistroC321 = class(TPersistent)
   private
-    fCOD_ITEM: string;         /// Código do item (campo 02 do Registro 0200)
+    fCOD_ITEM: AnsiString;         /// Código do item (campo 02 do Registro 0200)
     fQTD: currency;            /// Quantidade acumulada do item
-    fUNID: string;             /// Unidade do item (Campo 02 do registro 0190)
+    fUNID: AnsiString;             /// Unidade do item (Campo 02 do registro 0190)
     fVL_ITEM: currency;        /// Valor acumulado do item
     fVL_DESC: currency;        /// Valor do desconto acumulado
     fVL_BC_ICMS: currency;     /// Valor acumulado da base de cálculo do ICMS
@@ -1041,9 +1061,9 @@ type
     fVL_PIS: currency;         /// Valor acumulado do PIS
     fVL_COFINS: currency;      /// Valor acumulado da COFINS
   public
-    property COD_ITEM: string read FCOD_ITEM write FCOD_ITEM;
+    property COD_ITEM: AnsiString read FCOD_ITEM write FCOD_ITEM;
     property QTD: currency read FQTD write FQTD;
-    property UNID: string read FUNID write FUNID;
+    property UNID: AnsiString read FUNID write FUNID;
     property VL_ITEM: currency read FVL_ITEM write FVL_ITEM;
     property VL_DESC: currency read FVL_DESC write FVL_DESC;
     property VL_BC_ICMS: currency read FVL_BC_ICMS write FVL_BC_ICMS;
@@ -1068,29 +1088,29 @@ type
 
   TRegistroC350 = class(TPersistent)
   private
-    fSER: string;           /// Série do documento fiscal
-    fSUB_SER: string;       /// Subsérie do documento fiscal
-    fNUM_DOC: string;       /// Número do documento fiscal
+    fSER: AnsiString;           /// Série do documento fiscal
+    fSUB_SER: AnsiString;       /// Subsérie do documento fiscal
+    fNUM_DOC: AnsiString;       /// Número do documento fiscal
     fDT_DOC: TDateTime;     /// Data da emissão do documento fiscal
-    fCNPJ_CPF: string;      /// CNPJ ou CPF do destinatário
+    fCNPJ_CPF: AnsiString;      /// CNPJ ou CPF do destinatário
     fVL_MERC: currency;     /// Valor das mercadorias constantes no documento fiscal
     fVL_DOC: currency;      /// Valor total do documento fiscal
     fVL_DESC: currency;     /// Valor total do desconto
     fVL_PIS: currency;      /// Valor total do PIS
     fVL_COFINS: currency;   /// Valor total da COFINS
-    fCOD_CTA: string;       /// Código da conta analítica contábil debitada/creditada
+    fCOD_CTA: AnsiString;       /// Código da conta analítica contábil debitada/creditada
   public
-    property SER: string read FSER write FSER;
-    property SUB_SER: string read FSUB_SER write FSUB_SER;
-    property NUM_DOC: string read FNUM_DOC write FNUM_DOC;
+    property SER: AnsiString read FSER write FSER;
+    property SUB_SER: AnsiString read FSUB_SER write FSUB_SER;
+    property NUM_DOC: AnsiString read FNUM_DOC write FNUM_DOC;
     property DT_DOC: TDateTime read FDT_DOC write FDT_DOC;
-    property CNPJ_CPF: string read FCNPJ_CPF write FCNPJ_CPF;
+    property CNPJ_CPF: AnsiString read FCNPJ_CPF write FCNPJ_CPF;
     property VL_MERC: currency read FVL_MERC write FVL_MERC;
     property VL_DOC: currency read FVL_DOC write FVL_DOC;
     property VL_DESC: currency read FVL_DESC write FVL_DESC;
     property VL_PIS: currency read FVL_PIS write FVL_PIS;
     property VL_COFINS: currency read FVL_COFINS write FVL_COFINS;
-    property COD_CTA: string read FCOD_CTA write FCOD_CTA;
+    property COD_CTA: AnsiString read FCOD_CTA write FCOD_CTA;
   end;
 
   /// Registro C350 - Lista
@@ -1109,17 +1129,17 @@ type
 
   TRegistroC370 = class(TPersistent)
   private
-    fNUM_ITEM: string;      /// Número seqüencial do item no documento fiscal
-    fCOD_ITEM: string;      /// Código do Item (campo 02 do registro 0200)
+    fNUM_ITEM: AnsiString;      /// Número seqüencial do item no documento fiscal
+    fCOD_ITEM: AnsiString;      /// Código do Item (campo 02 do registro 0200)
     fQTD: currency;         /// Quantidade do item
-    fUNID: string;          /// Unidade do item (campo 02 do registro 0190)
+    fUNID: AnsiString;          /// Unidade do item (campo 02 do registro 0190)
     fVL_ITEM: currency;     /// Valor total do item
     fVL_DESC: currency;     /// Valor total do desconto no item
   public
-    property NUM_ITEM: string read FNUM_ITEM write FNUM_ITEM;
-    property COD_ITEM: string read FCOD_ITEM write FCOD_ITEM;
+    property NUM_ITEM: AnsiString read FNUM_ITEM write FNUM_ITEM;
+    property COD_ITEM: AnsiString read FCOD_ITEM write FCOD_ITEM;
     property QTD: currency read FQTD write FQTD;
-    property UNID: string read FUNID write FUNID;
+    property UNID: AnsiString read FUNID write FUNID;
     property VL_ITEM: currency read FVL_ITEM write FVL_ITEM;
     property VL_DESC: currency read FVL_DESC write FVL_DESC;
   end;
@@ -1140,23 +1160,23 @@ type
 
   TRegistroC390 = class(TPersistent)
   private
-    fCST_ICMS: string;         /// Código da Situação Tributária, conforme a Tabela indicada no item 4.3.1
-    fCFOP: string;             /// Código Fiscal de Operação e Prestação
+    fCST_ICMS: AnsiString;         /// Código da Situação Tributária, conforme a Tabela indicada no item 4.3.1
+    fCFOP: AnsiString;             /// Código Fiscal de Operação e Prestação
     fALIQ_ICMS: currency;      /// Alíquota do ICMS
     fVL_OPR: currency;         /// Valor total acumulado das operações correspondentes à combinação de CST_ICMS, CFOP e alíquota do ICMS, incluídas as despesas acessórias e acréscimos.
     fVL_BC_ICMS: currency;     /// Valor acumulado da base de cálculo do ICMS, referente à combinação de CST_ICMS, CFOP, e alíquota do ICMS.
     fVL_ICMS: currency;        /// Valor acumulado do ICMS, referente à combinação de CST_ICMS, CFOP e alíquota do ICMS.
     fVL_RED_BC: currency;      /// Valor não tributado em função da redução da base de cálculo do ICMS, referente à combinação de CST_ICMS, CFOP, e alíquota do ICMS.
-    fCOD_OBS: string;          /// Código da observação do lançamento fiscal (campo 02 do Registro 0460)
+    fCOD_OBS: AnsiString;          /// Código da observação do lançamento fiscal (campo 02 do Registro 0460)
   public
-    property CST_ICMS: string read FCST_ICMS write FCST_ICMS;
-    property CFOP: string read FCFOP write FCFOP;
+    property CST_ICMS: AnsiString read FCST_ICMS write FCST_ICMS;
+    property CFOP: AnsiString read FCFOP write FCFOP;
     property ALIQ_ICMS: currency read FALIQ_ICMS write FALIQ_ICMS;
     property VL_OPR: currency read FVL_OPR write FVL_OPR;
     property VL_BC_ICMS: currency read FVL_BC_ICMS write FVL_BC_ICMS;
     property VL_ICMS: currency read FVL_ICMS write FVL_ICMS;
     property VL_RED_BC: currency read FVL_RED_BC write FVL_RED_BC;
-    property COD_OBS: string read FCOD_OBS write FCOD_OBS;
+    property COD_OBS: AnsiString read FCOD_OBS write FCOD_OBS;
   end;
 
   /// Registro C390 - Lista
@@ -1175,15 +1195,15 @@ type
 
   TRegistroC400 = class(TPersistent)
   private
-    fCOD_MOD: string; /// Código do modelo do documento fiscal, conforme a Tabela 4.1.1
-    fECF_MOD: string; /// Modelo do equipamento
-    fECF_FAB: string; /// Número de série de fabricação do ECF
-    fECF_CX: string;  /// Número do caixa atribuído ao ECF
+    fCOD_MOD: AnsiString; /// Código do modelo do documento fiscal, conforme a Tabela 4.1.1
+    fECF_MOD: AnsiString; /// Modelo do equipamento
+    fECF_FAB: AnsiString; /// Número de série de fabricação do ECF
+    fECF_CX: AnsiString;  /// Número do caixa atribuído ao ECF
   public
-    property COD_MOD: string read fCOD_MOD write fCOD_MOD;
-    property ECF_MOD: string read fECF_MOD write fECF_MOD;
-    property ECF_FAB: string read fECF_FAB write fECF_FAB;
-    property ECF_CX: string read fECF_CX write fECF_CX;
+    property COD_MOD: AnsiString read fCOD_MOD write fCOD_MOD;
+    property ECF_MOD: AnsiString read fECF_MOD write fECF_MOD;
+    property ECF_FAB: AnsiString read fECF_FAB write fECF_FAB;
+    property ECF_CX: AnsiString read fECF_CX write fECF_CX;
   end;
 
   /// Registro C400 - Lista
@@ -1256,15 +1276,15 @@ type
 
   TRegistroC420 = class(TPersistent)
   private
-    fCOD_TOT_PAR: string;     /// Código do totalizador, conforme Tabela 4.4.6
+    fCOD_TOT_PAR: AnsiString;     /// Código do totalizador, conforme Tabela 4.4.6
     fVLR_ACUM_TOT: currency;  /// Valor acumulado no totalizador, relativo à respectiva Redução Z.
     fNR_TOT: integer;         /// Número do totalizador quando ocorrer mais de uma situação com a mesma carga tributária efetiva.
-    fDESCR_NR_TOT: string;    /// Descrição da situação tributária relativa ao totalizador parcial, quando houver mais de um com a mesma carga tributária efetiva.
+    fDESCR_NR_TOT: AnsiString;    /// Descrição da situação tributária relativa ao totalizador parcial, quando houver mais de um com a mesma carga tributária efetiva.
   public
-    property COD_TOT_PAR: string read fCOD_TOT_PAR write fCOD_TOT_PAR;
+    property COD_TOT_PAR: AnsiString read fCOD_TOT_PAR write fCOD_TOT_PAR;
     property VLR_ACUM_TOT: currency read fVLR_ACUM_TOT write fVLR_ACUM_TOT;
     property NR_TOT: integer read fNR_TOT write fNR_TOT;
-    property DESCR_NR_TOT: string read fDESCR_NR_TOT write fDESCR_NR_TOT;
+    property DESCR_NR_TOT: AnsiString read fDESCR_NR_TOT write fDESCR_NR_TOT;
   end;
 
   /// Registro C420 - Lista
@@ -1283,16 +1303,16 @@ type
 
   TRegistroC425 = class(TPersistent)
   private
-    fCOD_ITEM: string;           /// Código do item (campo 02 do Registro 0200):
+    fCOD_ITEM: AnsiString;           /// Código do item (campo 02 do Registro 0200):
     fQTD: currency;              /// Quantidade acumulada do item:
-    fUNID: string;               /// Unidade do item (Campo 02 do registro 0190)
+    fUNID: AnsiString;               /// Unidade do item (Campo 02 do registro 0190)
     fVL_ITEM: currency;          /// Valor acumulado do item:
     fVL_PIS: currency;           /// Valor do PIS
     fVL_COFINS: currency;        /// Valor da COFINS
   public
-    property COD_ITEM: string read FCOD_ITEM write FCOD_ITEM;
+    property COD_ITEM: AnsiString read FCOD_ITEM write FCOD_ITEM;
     property QTD: currency read FQTD write FQTD;
-    property UNID: string read FUNID write FUNID;
+    property UNID: AnsiString read FUNID write FUNID;
     property VL_ITEM: currency read FVL_ITEM write FVL_ITEM;
     property VL_PIS: currency read fVL_PIS write fVL_PIS;
     property VL_COFINS: currency read fVL_COFINS write fVL_COFINS;
@@ -1314,25 +1334,25 @@ type
 
   TRegistroC460 = class(TPersistent)
   private
-    fCOD_MOD: string;   /// Código do modelo do documento fiscal, conforme a Tabela 4.1.1
-    fCOD_SIT: string;   /// Código da situação do documento fiscal, conforme a Tabela 4.1.2
-    fNUM_DOC: string;   /// Número do documento fiscal (COO)
+    fCOD_MOD: AnsiString;   /// Código do modelo do documento fiscal, conforme a Tabela 4.1.1
+    fCOD_SIT: AnsiString;   /// Código da situação do documento fiscal, conforme a Tabela 4.1.2
+    fNUM_DOC: AnsiString;   /// Número do documento fiscal (COO)
     fDT_DOC: TDateTime;    /// Data da emissão do documento fiscal
     fVL_DOC: currency;     /// Valor total do documento fiscal
     fVL_PIS: currency;     /// Valor do PIS
     fVL_COFINS: currency;  /// Valor da COFINS
-    fCPF_CNPJ: string;     /// CPF ou CNPJ do adquirente
-    fNOM_ADQ: string;      /// Nome do adquirente
+    fCPF_CNPJ: AnsiString;     /// CPF ou CNPJ do adquirente
+    fNOM_ADQ: AnsiString;      /// Nome do adquirente
   public
-    property COD_MOD: string read fCOD_MOD write fCOD_MOD;
-    property COD_SIT: string read fCOD_SIT write fCOD_SIT;
-    property NUM_DOC: string read fNUM_DOC write fNUM_DOC;
+    property COD_MOD: AnsiString read fCOD_MOD write fCOD_MOD;
+    property COD_SIT: AnsiString read fCOD_SIT write fCOD_SIT;
+    property NUM_DOC: AnsiString read fNUM_DOC write fNUM_DOC;
     property DT_DOC: TDateTime read fDT_DOC write fDT_DOC;
     property VL_DOC: currency read fVL_DOC write fVL_DOC;
     property VL_PIS: currency read fVL_PIS write fVL_PIS;
     property VL_COFINS: currency read fVL_COFINS write fVL_COFINS;
-    property CPF_CNPJ: string read fCPF_CNPJ write fCPF_CNPJ;
-    property NOM_ADQ: string read fNOM_ADQ write fNOM_ADQ;
+    property CPF_CNPJ: AnsiString read fCPF_CNPJ write fCPF_CNPJ;
+    property NOM_ADQ: AnsiString read fNOM_ADQ write fNOM_ADQ;
   end;
 
   /// Registro C460 - Lista
@@ -1351,24 +1371,24 @@ type
 
   TRegistroC470 = class(TPersistent)
   private
-    fCOD_ITEM: string;           /// Código do item (campo 02 do Registro 0200):
+    fCOD_ITEM: AnsiString;           /// Código do item (campo 02 do Registro 0200):
     fQTD: currency;              /// Quantidade do item
     fQTD_CANC: currency;         /// Quantidade cancelada, no caso de cancelamento parcial de item
-    fUNID: string;               /// Unidade do item (Campo 02 do registro 0190)
+    fUNID: AnsiString;               /// Unidade do item (Campo 02 do registro 0190)
     fVL_ITEM: currency;          /// Valor do item:
-    fCST_ICMS: string;           /// Código da Situação Tributária, conforme a Tabela indicada no item 4.3.1.
-    fCFOP: string;               /// Código Fiscal de Operação e Prestação
+    fCST_ICMS: AnsiString;           /// Código da Situação Tributária, conforme a Tabela indicada no item 4.3.1.
+    fCFOP: AnsiString;               /// Código Fiscal de Operação e Prestação
     fALIQ_ICMS: Currency;        /// Alíquota do ICMS - Carga tributária efetiva em percentual
     fVL_PIS: currency;           /// Valor do PIS
     fVL_COFINS: currency;        /// Valor da COFINS
   public
-    property COD_ITEM: string read FCOD_ITEM write FCOD_ITEM;
+    property COD_ITEM: AnsiString read FCOD_ITEM write FCOD_ITEM;
     property QTD: currency read FQTD write FQTD;
     property QTD_CANC: currency read FQTD_CANC write FQTD_CANC;
-    property UNID: string read FUNID write FUNID;
+    property UNID: AnsiString read FUNID write FUNID;
     property VL_ITEM: currency read FVL_ITEM write FVL_ITEM;
-    property CST_ICMS: string read fCST_ICMS write fCST_ICMS;
-    property CFOP: string read fCFOP write fCFOP;
+    property CST_ICMS: AnsiString read fCST_ICMS write fCST_ICMS;
+    property CFOP: AnsiString read fCFOP write fCFOP;
     property ALIQ_ICMS: Currency read fALIQ_ICMS write fALIQ_ICMS;
     property VL_PIS: currency read fVL_PIS write fVL_PIS;
     property VL_COFINS: currency read fVL_COFINS write fVL_COFINS;
@@ -1390,21 +1410,21 @@ type
 
   TRegistroC490 = class(TPersistent)
   private
-    fCST_ICMS: string;         /// Código da Situação Tributária, conforme a Tabela indicada no item 4.3.1
-    fCFOP: string;             /// Código Fiscal de Operação e Prestação
+    fCST_ICMS: AnsiString;         /// Código da Situação Tributária, conforme a Tabela indicada no item 4.3.1
+    fCFOP: AnsiString;             /// Código Fiscal de Operação e Prestação
     fALIQ_ICMS: currency;      /// Alíquota do ICMS
     fVL_OPR: currency;         /// Valor da operação correspondente à combinação de CST_ICMS, CFOP, e alíquota do ICMS, incluídas as despesas acessórias e acréscimos
     fVL_BC_ICMS: currency;     /// Valor acumulado da base de cálculo do ICMS, referente à combinação de CST_ICMS, CFOP, e alíquota do ICMS.
     fVL_ICMS: currency;        /// Valor acumulado do ICMS, referente à combinação de CST_ICMS, CFOP e alíquota do ICMS.
-    fCOD_OBS: string;          /// Código da observação do lançamento fiscal (campo 02 do Registro 0460)
+    fCOD_OBS: AnsiString;          /// Código da observação do lançamento fiscal (campo 02 do Registro 0460)
   public
-    property CST_ICMS: string read FCST_ICMS write FCST_ICMS;
-    property CFOP: string read FCFOP write FCFOP;
+    property CST_ICMS: AnsiString read FCST_ICMS write FCST_ICMS;
+    property CFOP: AnsiString read FCFOP write FCFOP;
     property ALIQ_ICMS: currency read FALIQ_ICMS write FALIQ_ICMS;
     property VL_OPR: currency read FVL_OPR write FVL_OPR;
     property VL_BC_ICMS: currency read FVL_BC_ICMS write FVL_BC_ICMS;
     property VL_ICMS: currency read FVL_ICMS write FVL_ICMS;
-    property COD_OBS: string read FCOD_OBS write FCOD_OBS;
+    property COD_OBS: AnsiString read FCOD_OBS write FCOD_OBS;
   end;
 
   /// Registro C490 - Lista
@@ -1424,10 +1444,10 @@ type
   TRegistroC495 = class(TPersistent)
   private
     fALIQ_ICMS: currency;      /// Alíquota do ICMS
-    fCOD_ITEM: string;         /// Código do item (campo 02 do Registro 0200)
+    fCOD_ITEM: AnsiString;         /// Código do item (campo 02 do Registro 0200)
     fQTD: currency;            /// Quantidade acumulada do item
     fQTD_CANC: currency;       /// Quantidade cancelada acumulada, no caso de cancelamento parcial de item
-    fUNID: string;             /// Unidade do item (Campo 02 do registro 0190)
+    fUNID: AnsiString;             /// Unidade do item (Campo 02 do registro 0190)
     fVL_ITEM: currency;        /// Valor acumulado do item
     fVL_DESC: currency;        /// Valor acumulado dos descontos
     fVL_CANC: currency;        /// Valor acumulado dos cancelamentos
@@ -1439,10 +1459,10 @@ type
     fVL_ICMS_ST: currency;     /// Valor das saídas de mercadorias adquiridas com substituição tributária do ICMS
   public
     property ALIQ_ICMS: currency read FALIQ_ICMS write FALIQ_ICMS;
-    property COD_ITEM: string read FCOD_ITEM write FCOD_ITEM;
+    property COD_ITEM: AnsiString read FCOD_ITEM write FCOD_ITEM;
     property QTD: currency read FQTD write FQTD;
     property QTD_CANC: currency read FQTD_CANC write FQTD_CANC;
-    property UNID: string read FUNID write FUNID;
+    property UNID: AnsiString read FUNID write FUNID;
     property VL_ITEM: currency read FVL_ITEM write FVL_ITEM;
     property VL_DESC: currency read FVL_DESC write FVL_DESC;
     property VL_CANC: currency read FVL_CANC write FVL_CANC;
@@ -1470,15 +1490,15 @@ type
 
   TRegistroC500 = class(TPersistent)
   private
-    fIND_OPER: string;     /// Indicador do tipo de operação: 0 - Entrada; 1- Saída
-    fIND_EMIT: string;     /// Indicador do emitente do documento fiscal: 0- Emissão própria; 1- Terceiros
-    fCOD_PART: string;     /// Código do participante (campo 02 do Registro 0150): - do adquirente, no caso das saídas; - do fornecedor no caso de entradas
-    fCOD_MOD: string;      /// Código do modelo do documento fiscal, conforme a Tabela 4.1.1
-    fCOD_SIT: string;      /// Código da situação do documento fiscal, conforme a Tabela 4.1.2
-    fSER: string;          /// Série do documento fiscal
-    fSUB: string;          /// Subsérie do documento fiscal
-    fCOD_CONS: string;     /// Código de classe de consumo de energia elétrica, conforme a Tabela 4.4.5 ou Código da classe de consumo de gás canalizado conforme Tabela 4.4.3.
-    fNUM_DOC: string;      /// Número do documento fiscal
+    fIND_OPER: AnsiString;     /// Indicador do tipo de operação: 0 - Entrada; 1- Saída
+    fIND_EMIT: AnsiString;     /// Indicador do emitente do documento fiscal: 0- Emissão própria; 1- Terceiros
+    fCOD_PART: AnsiString;     /// Código do participante (campo 02 do Registro 0150): - do adquirente, no caso das saídas; - do fornecedor no caso de entradas
+    fCOD_MOD: AnsiString;      /// Código do modelo do documento fiscal, conforme a Tabela 4.1.1
+    fCOD_SIT: AnsiString;      /// Código da situação do documento fiscal, conforme a Tabela 4.1.2
+    fSER: AnsiString;          /// Série do documento fiscal
+    fSUB: AnsiString;          /// Subsérie do documento fiscal
+    fCOD_CONS: AnsiString;     /// Código de classe de consumo de energia elétrica, conforme a Tabela 4.4.5 ou Código da classe de consumo de gás canalizado conforme Tabela 4.4.3.
+    fNUM_DOC: AnsiString;      /// Número do documento fiscal
     fDT_DOC: TDateTime;    /// Data da emissão do documento fiscal
     fDT_E_S: TDateTime;    /// Data da entrada ou da saída
     fVL_DOC: currency;     /// Valor total do documento fiscal
@@ -1491,21 +1511,21 @@ type
     fVL_ICMS: currency;    /// Valor acumulado do ICMS
     fVL_BC_ICMS_ST: currency;    /// Valor acumulado da base de cálculo do ICMS substituição tributária
     fVL_ICMS_ST: currency;    /// Valor acumulado do ICMS retido por substituição tributária
-    fCOD_INF: string;         /// Código da informação complementar do documento fiscal (campo 02 do Registro 0450)
+    fCOD_INF: AnsiString;         /// Código da informação complementar do documento fiscal (campo 02 do Registro 0450)
     fVL_PIS: currency;        /// Valor do PIS
     fVL_COFINS: currency;     /// Valor da COFINS
-    fTP_LIGACAO      :String; /// Código de tipo de Ligação [ 1 - Monofásico 2 - Bifásico 3 - Trifásico ]
-    fCOD_GRUPO_TENSAO:String; /// Código de grupo de tensão: Vide Manual Registro C500 Campo 27
+    fTP_LIGACAO      :AnsiString; /// Código de tipo de Ligação [ 1 - Monofásico 2 - Bifásico 3 - Trifásico ]
+    fCOD_GRUPO_TENSAO:AnsiString; /// Código de grupo de tensão: Vide Manual Registro C500 Campo 27
   public
-    property IND_OPER: string read fIND_OPER write fIND_OPER;
-    property IND_EMIT: string read fIND_EMIT write fIND_EMIT;
-    property COD_PART: string read fCOD_PART write fCOD_PART;
-    property COD_MOD: string read fCOD_MOD write fCOD_MOD;
-    property COD_SIT: string read fCOD_SIT write fCOD_SIT;
-    property SER: string read fSER write fSER;
-    property SUB: string read fSUB write fSUB;
-    property COD_CONS: string read fCOD_CONS write fCOD_CONS;
-    property NUM_DOC: string read fNUM_DOC write fNUM_DOC;
+    property IND_OPER: AnsiString read fIND_OPER write fIND_OPER;
+    property IND_EMIT: AnsiString read fIND_EMIT write fIND_EMIT;
+    property COD_PART: AnsiString read fCOD_PART write fCOD_PART;
+    property COD_MOD: AnsiString read fCOD_MOD write fCOD_MOD;
+    property COD_SIT: AnsiString read fCOD_SIT write fCOD_SIT;
+    property SER: AnsiString read fSER write fSER;
+    property SUB: AnsiString read fSUB write fSUB;
+    property COD_CONS: AnsiString read fCOD_CONS write fCOD_CONS;
+    property NUM_DOC: AnsiString read fNUM_DOC write fNUM_DOC;
     property DT_DOC: TDateTime read fDT_DOC write fDT_DOC;
     property DT_E_S: TDateTime read fDT_E_S write fDT_E_S;
     property VL_DOC: currency read fVL_DOC write fVL_DOC;
@@ -1518,11 +1538,11 @@ type
     property VL_ICMS: currency read fVL_ICMS write fVL_ICMS;
     property VL_BC_ICMS_ST: currency read fVL_BC_ICMS_ST write fVL_BC_ICMS_ST;
     property VL_ICMS_ST: currency read fVL_ICMS_ST write fVL_ICMS_ST;
-    property COD_INF: string read fCOD_INF write fCOD_INF;
+    property COD_INF: AnsiString read fCOD_INF write fCOD_INF;
     property VL_PIS: currency read fVL_PIS write fVL_PIS;
     property VL_COFINS: currency read fVL_COFINS write fVL_COFINS;
-    property TP_LIGACAO:        string read fTP_LIGACAO       write fTP_LIGACAO;
-    property COD_GRUPO_TENSAO:  string read fCOD_GRUPO_TENSAO write fCOD_GRUPO_TENSAO;
+    property TP_LIGACAO:        AnsiString read fTP_LIGACAO       write fTP_LIGACAO;
+    property COD_GRUPO_TENSAO:  AnsiString read fCOD_GRUPO_TENSAO write fCOD_GRUPO_TENSAO;
   end;
 
   /// Registro C500 - Lista
@@ -1541,47 +1561,47 @@ type
 
   TRegistroC510 = class(TPersistent)
   private
-    fNUM_ITEM: string;     /// Número seqüencial do item no documento fiscal
-    fCOD_ITEM: string;     /// Código do item (campo 02 do Registro 0200)
-    fCOD_CLASS: string;    /// Código de classificação do item de energia elétrica, conforme a Tabela 4.4.1
+    fNUM_ITEM: AnsiString;     /// Número seqüencial do item no documento fiscal
+    fCOD_ITEM: AnsiString;     /// Código do item (campo 02 do Registro 0200)
+    fCOD_CLASS: AnsiString;    /// Código de classificação do item de energia elétrica, conforme a Tabela 4.4.1
     fQTD: Currency;        /// Quantidade do item
-    fUNID: string;         /// Unidade do item (Campo 02 do registro 0190)
+    fUNID: AnsiString;         /// Unidade do item (Campo 02 do registro 0190)
     fVL_ITEM: currency;    /// Valor do item
     fVL_DESC: currency;    /// Valor total do desconto
-    fCST_ICMS: string;     /// Código da Situação Tributária, conforme a Tabela indicada no item 4.3.1
-    fCFOP: string;         /// Código Fiscal de Operação e Prestação
+    fCST_ICMS: AnsiString;     /// Código da Situação Tributária, conforme a Tabela indicada no item 4.3.1
+    fCFOP: AnsiString;         /// Código Fiscal de Operação e Prestação
     fVL_BC_ICMS: currency;       /// Valor da base de cálculo do ICMS
     fALIQ_ICMS: Currency;        /// Alíquota do ICMS
     fVL_ICMS: currency;          /// Valor do ICMS creditado/debitado
     fVL_BC_ICMS_ST: currency;    /// Valor da base de cálculo referente à substituição tributária
     fALIQ_ST: Currency;          /// Alíquota do ICMS da substituição tributária na unidade da federação de destino
     fVL_ICMS_ST: currency;       /// Valor do ICMS referente à substituição tributária
-    fIND_REC: string;            /// Indicador do tipo de receita: 0- Receita própria; 1- Receita de terceiros
-    fCOD_PART: string;           /// Código do participante receptor da receita, terceiro da operação (campo 02 do Registro 0150)
+    fIND_REC: AnsiString;            /// Indicador do tipo de receita: 0- Receita própria; 1- Receita de terceiros
+    fCOD_PART: AnsiString;           /// Código do participante receptor da receita, terceiro da operação (campo 02 do Registro 0150)
     fVL_PIS: currency;           /// Valor do PIS
     fVL_COFINS: currency;        /// Valor da COFINS
-    fCOD_CTA: string;            /// Código da conta analítica contábil debitada/creditada
+    fCOD_CTA: AnsiString;            /// Código da conta analítica contábil debitada/creditada
   public
-    property NUM_ITEM: string read fNUM_ITEM write fNUM_ITEM;
-    property COD_ITEM: string read fCOD_ITEM write fCOD_ITEM;
-    property COD_CLASS: string read fCOD_CLASS write fCOD_CLASS;
+    property NUM_ITEM: AnsiString read fNUM_ITEM write fNUM_ITEM;
+    property COD_ITEM: AnsiString read fCOD_ITEM write fCOD_ITEM;
+    property COD_CLASS: AnsiString read fCOD_CLASS write fCOD_CLASS;
     property QTD: Currency read fQTD write fQTD;
-    property UNID: string read fUNID write fUNID;
+    property UNID: AnsiString read fUNID write fUNID;
     property VL_ITEM: currency read fVL_ITEM write fVL_ITEM;
     property VL_DESC: currency read fVL_DESC write fVL_DESC;
-    property CST_ICMS: string read fCST_ICMS write fCST_ICMS;
-    property CFOP: string read fCFOP write fCFOP;
+    property CST_ICMS: AnsiString read fCST_ICMS write fCST_ICMS;
+    property CFOP: AnsiString read fCFOP write fCFOP;
     property VL_BC_ICMS: currency read fVL_BC_ICMS write fVL_BC_ICMS;
     property ALIQ_ICMS: Currency read fALIQ_ICMS write fALIQ_ICMS;
     property VL_ICMS: currency read fVL_ICMS write fVL_ICMS;
     property VL_BC_ICMS_ST: currency read fVL_BC_ICMS_ST write fVL_BC_ICMS_ST;
     property ALIQ_ST: Currency read fALIQ_ST write fALIQ_ST;
     property VL_ICMS_ST: currency read fVL_ICMS_ST write fVL_ICMS_ST;
-    property IND_REC: string read fIND_REC write fIND_REC;
-    property COD_PART: string read fCOD_PART write fCOD_PART;
+    property IND_REC: AnsiString read fIND_REC write fIND_REC;
+    property COD_PART: AnsiString read fCOD_PART write fCOD_PART;
     property VL_PIS: currency read fVL_PIS write fVL_PIS;
     property VL_COFINS: currency read fVL_COFINS write fVL_COFINS;
-    property COD_CTA: string read fCOD_CTA write fCOD_CTA;
+    property COD_CTA: AnsiString read fCOD_CTA write fCOD_CTA;
   end;
 
   /// Registro C510 - Lista
@@ -1600,8 +1620,8 @@ type
 
   TRegistroC590 = class(TPersistent)
   private
-    fCST_ICMS: string;        /// Código da Situação Tributária, conforme a Tabela indicada no item 4.3.1.
-    fCFOP: string;            /// Código Fiscal de Operação e Prestação do agrupamento de itens
+    fCST_ICMS: AnsiString;        /// Código da Situação Tributária, conforme a Tabela indicada no item 4.3.1.
+    fCFOP: AnsiString;            /// Código Fiscal de Operação e Prestação do agrupamento de itens
     fALIQ_ICMS: Currency;     /// Alíquota do ICMS
     fVL_OPR: currency;        /// Valor da operação correspondente à combinação de CST_ICMS, CFOP, e alíquota do ICMS.
     fVL_BC_ICMS: currency;    /// Parcela correspondente ao "Valor da base de cálculo do ICMS" referente à combinação de CST_ICMS, CFOP e alíquota do ICMS.
@@ -1609,10 +1629,10 @@ type
     fVL_BC_ICMS_ST: currency; /// Parcela correspondente ao "Valor da base de cálculo do ICMS" da substituição tributária referente à combinação de CST_ICMS, CFOP e alíquota do ICMS.
     fVL_ICMS_ST: currency;    /// Parcela correspondente ao valor creditado/debitado do ICMS da substituição tributária, referente à combinação de CST_ICMS,  CFOP, e alíquota do ICMS.
     fVL_RED_BC: currency;     /// Valor não tributado em função da redução da base de cálculo do ICMS, referente à combinação de CST_ICMS, CFOP e alíquota do ICMS.
-    fCOD_OBS: string;         /// Código da observação do lançamento fiscal (campo 02 do Registro 0460)
+    fCOD_OBS: AnsiString;         /// Código da observação do lançamento fiscal (campo 02 do Registro 0460)
   public
-    property CST_ICMS: string read fCST_ICMS write fCST_ICMS;
-    property CFOP: string read fCFOP write fCFOP;
+    property CST_ICMS: AnsiString read fCST_ICMS write fCST_ICMS;
+    property CFOP: AnsiString read fCFOP write fCFOP;
     property ALIQ_ICMS: Currency read fALIQ_ICMS write fALIQ_ICMS;
     property VL_OPR: currency read fVL_OPR write fVL_OPR;
     property VL_BC_ICMS: currency read fVL_BC_ICMS write fVL_BC_ICMS;
@@ -1620,7 +1640,7 @@ type
     property VL_BC_ICMS_ST: currency read fVL_BC_ICMS_ST write fVL_BC_ICMS_ST;
     property VL_ICMS_ST: currency read fVL_ICMS_ST write fVL_ICMS_ST;
     property VL_RED_BC: currency read fVL_RED_BC write fVL_RED_BC;
-    property COD_OBS: string read fCOD_OBS write fCOD_OBS;
+    property COD_OBS: AnsiString read fCOD_OBS write fCOD_OBS;
   end;
 
   /// Registro C590 - Lista
@@ -1639,11 +1659,11 @@ type
 
   TRegistroC600 = class(TPersistent)
   private
-    fCOD_MOD: string;      /// Código do modelo do documento fiscal, conforme a Tabela 4.1.1
-    fCOD_MUN: string;      /// Código do município dos pontos de consumo, conforme a tabela IBGE
-    fSER: string;          /// Série do documento fiscal
-    fSUB: string;          /// Subsérie do documento fiscal
-    fCOD_CONS: string;     /// Código de classe de consumo de energia elétrica, conforme a Tabela 4.4.5, ou Código de Consumo de Fornecimento D’água - Tabela 4.4.2 ou Código da classe de consumo de gás canalizado   conforme Tabela 4.4.3.
+    fCOD_MOD: AnsiString;      /// Código do modelo do documento fiscal, conforme a Tabela 4.1.1
+    fCOD_MUN: AnsiString;      /// Código do município dos pontos de consumo, conforme a tabela IBGE
+    fSER: AnsiString;          /// Série do documento fiscal
+    fSUB: AnsiString;          /// Subsérie do documento fiscal
+    fCOD_CONS: AnsiString;     /// Código de classe de consumo de energia elétrica, conforme a Tabela 4.4.5, ou Código de Consumo de Fornecimento D’água - Tabela 4.4.2 ou Código da classe de consumo de gás canalizado   conforme Tabela 4.4.3.
     fQTD_CONS: Currency;   /// Quantidade de documentos consolidados neste registro
     fQTD_CANC: Currency;   /// Quantidade de documentos cancelados
     fDT_DOC: TDateTime;    /// Data dos documentos consolidados
@@ -1661,11 +1681,11 @@ type
     fVL_PIS: currency;           /// Valor acumulado do PIS
     fVL_COFINS: currency;        /// Valor acumulado COFINS
   public
-    property COD_MOD: string read fCOD_MOD write fCOD_MOD;
-    property COD_MUN: string read fCOD_MUN write fCOD_MUN;
-    property SER: string read fSER write fSER;
-    property SUB: string read fSUB write fSUB;
-    property COD_CONS: string read fCOD_CONS write fCOD_CONS;
+    property COD_MOD: AnsiString read fCOD_MOD write fCOD_MOD;
+    property COD_MUN: AnsiString read fCOD_MUN write fCOD_MUN;
+    property SER: AnsiString read fSER write fSER;
+    property SUB: AnsiString read fSUB write fSUB;
+    property COD_CONS: AnsiString read fCOD_CONS write fCOD_CONS;
     property QTD_CONS: Currency read fQTD_CONS write fQTD_CONS;
     property QTD_CANC: Currency read fQTD_CANC write fQTD_CANC;
     property DT_DOC: TDateTime read fDT_DOC write fDT_DOC;
@@ -1700,9 +1720,9 @@ type
 
   TRegistroC601 = class(TPersistent)
   private
-    fNUM_DOC_CANC: string;        /// Número do documento fiscal cancelado
+    fNUM_DOC_CANC: AnsiString;        /// Número do documento fiscal cancelado
   public
-    property NUM_DOC_CANC: string read FNUM_DOC_CANC write FNUM_DOC_CANC;
+    property NUM_DOC_CANC: AnsiString read FNUM_DOC_CANC write FNUM_DOC_CANC;
   end;
 
   /// Registro C601 - Lista
@@ -1721,14 +1741,14 @@ type
 
   TRegistroC610 = class(TPersistent)
   private
-    fCOD_CLASS: string;           /// Código de classificação do item de energia elétrica, conforme Tabela 4.4.1
-    fCOD_ITEM: string;            /// Código do item (campo 02 do Registro 0200)
+    fCOD_CLASS: AnsiString;           /// Código de classificação do item de energia elétrica, conforme Tabela 4.4.1
+    fCOD_ITEM: AnsiString;            /// Código do item (campo 02 do Registro 0200)
     fQTD: currency;               /// Quantidade acumulada do item
-    fUNID: string;                /// Unidade do item (Campo 02 do registro 0190)
+    fUNID: AnsiString;                /// Unidade do item (Campo 02 do registro 0190)
     fVL_ITEM: currency;           /// Valor acumulado do item
     fVL_DESC: currency;           /// Valor acumulado dos descontos
-    fCST_ICMS: string;            /// Código da Situação Tributária, conforme a Tabela indicada no item 4.3.1
-    fCFOP: string;                /// Código Fiscal de Operação e Prestação conforme tabela indicada no item 4.2.2
+    fCST_ICMS: AnsiString;            /// Código da Situação Tributária, conforme a Tabela indicada no item 4.3.1
+    fCFOP: AnsiString;                /// Código Fiscal de Operação e Prestação conforme tabela indicada no item 4.2.2
     fALIQ_ICMS: currency;         /// Alíquota do ICMS
     fVL_BC_ICMS: currency;        /// Valor acumulado da base de cálculo do ICMS
     fVL_ICMS: currency;           /// Valor acumulado do ICMS debitado
@@ -1736,16 +1756,16 @@ type
     fVL_ICMS_ST: currency;        /// Valor do ICMS retido por substituição tributária
     fVL_PIS: currency;            /// Valor do PIS
     fVL_COFINS: currency;         /// Valor da COFINS
-    fCOD_CTA: string;             /// Código da conta analítica contábil debitada/creditada
+    fCOD_CTA: AnsiString;             /// Código da conta analítica contábil debitada/creditada
   public
-    property COD_CLASS: string read FCOD_CLASS write FCOD_CLASS;
-    property COD_ITEM: string read FCOD_ITEM write FCOD_ITEM;
+    property COD_CLASS: AnsiString read FCOD_CLASS write FCOD_CLASS;
+    property COD_ITEM: AnsiString read FCOD_ITEM write FCOD_ITEM;
     property QTD: currency read FQTD write FQTD;
-    property UNID: string read FUNID write FUNID;
+    property UNID: AnsiString read FUNID write FUNID;
     property VL_ITEM: currency read FVL_ITEM write FVL_ITEM;
     property VL_DESC: currency read FVL_DESC write FVL_DESC;
-    property CST_ICMS: string read FCST_ICMS write FCST_ICMS;
-    property CFOP: string read FCFOP write FCFOP;
+    property CST_ICMS: AnsiString read FCST_ICMS write FCST_ICMS;
+    property CFOP: AnsiString read FCFOP write FCFOP;
     property ALIQ_ICMS: currency read FALIQ_ICMS write FALIQ_ICMS;
     property VL_BC_ICMS: currency read FVL_BC_ICMS write FVL_BC_ICMS;
     property VL_ICMS: currency read FVL_ICMS write FVL_ICMS;
@@ -1753,7 +1773,7 @@ type
     property VL_ICMS_ST: currency read FVL_ICMS_ST write FVL_ICMS_ST;
     property VL_PIS: currency read FVL_PIS write FVL_PIS;
     property VL_COFINS: currency read FVL_COFINS write FVL_COFINS;
-    property COD_CTA: string read FCOD_CTA write FCOD_CTA;
+    property COD_CTA: AnsiString read FCOD_CTA write FCOD_CTA;
   end;
 
   /// Registro C610 - Lista
@@ -1773,10 +1793,10 @@ type
   TRegistroC620 = class(TPersistent)
   private
     fVL_FCP: currency;      /// Valor do ICMS resultante da alíquota adicional dos itens incluídos no Fundo de Combate à Pobreza
-    fIND_F0: string;        /// Indicador de nota fiscal recebida/destinada de/a participante do Programa Fome Zero: 0- Não; 1- Sim
+    fIND_F0: AnsiString;        /// Indicador de nota fiscal recebida/destinada de/a participante do Programa Fome Zero: 0- Não; 1- Sim
   public
     property VL_FCP: currency read FVL_FCP write FVL_FCP;
-    property IND_F0: string read FIND_F0 write FIND_F0;
+    property IND_F0: AnsiString read FIND_F0 write FIND_F0;
   end;
 
   /// Registro C620 - Lista
@@ -1795,8 +1815,8 @@ type
 
   TRegistroC690 = class(TPersistent)
   private
-    fCST_ICMS: string;            /// Código da Situação Tributária, conforme a tabela indicada no item 4.3.1
-    fCFOP: string;                /// Código Fiscal de Operação e Prestação, conforme a tabela indicada no item 4.2.2
+    fCST_ICMS: AnsiString;            /// Código da Situação Tributária, conforme a tabela indicada no item 4.3.1
+    fCFOP: AnsiString;                /// Código Fiscal de Operação e Prestação, conforme a tabela indicada no item 4.2.2
     fALIQ_ICMS: currency;         /// Alíquota do ICMS
     fVL_OPR: currency;            /// Valor da operação correspondente à combinação de CST_ICMS, CFOP, e alíquota do ICMS.
     fVL_BC_ICMS: currency;        /// Parcela correspondente ao "Valor da base de cálculo do ICMS" referente à combinação CST_ICMS, CFOP e alíquota do ICMS
@@ -1804,10 +1824,10 @@ type
     fVL_RED_BC: currency;         /// Valor não tributado em função da redução da base de cálculo do ICMS, referente à combinação de CST_ICMS, CFOP e alíquota do ICMS.
     fVL_BC_ICMS_ST: currency;     /// Valor da base de cálculo do ICMS substituição tributária
     fVL_ICMS_ST: currency;        /// Valor do ICMS retido por substituição tributária
-    fCOD_OBS: string;             /// Código da observação do lançamento fiscal (campo 02 do Registro 0460)
+    fCOD_OBS: AnsiString;             /// Código da observação do lançamento fiscal (campo 02 do Registro 0460)
   public
-    property CST_ICMS: string read FCST_ICMS write FCST_ICMS;
-    property CFOP: string read FCFOP write FCFOP;
+    property CST_ICMS: AnsiString read FCST_ICMS write FCST_ICMS;
+    property CFOP: AnsiString read FCFOP write FCFOP;
     property ALIQ_ICMS: currency read FALIQ_ICMS write FALIQ_ICMS;
     property VL_OPR: currency read FVL_OPR write FVL_OPR;
     property VL_BC_ICMS: currency read FVL_BC_ICMS write FVL_BC_ICMS;
@@ -1815,7 +1835,7 @@ type
     property VL_RED_BC: currency read FVL_RED_BC write FVL_RED_BC;
     property VL_BC_ICMS_ST: currency read FVL_BC_ICMS_ST write FVL_BC_ICMS_ST;
     property VL_ICMS_ST: currency read FVL_ICMS_ST write FVL_ICMS_ST;
-    property COD_OBS: string read FCOD_OBS write FCOD_OBS;
+    property COD_OBS: AnsiString read FCOD_OBS write FCOD_OBS;
   end;
 
   /// Registro C690 - Lista
@@ -1834,23 +1854,23 @@ type
 
   TRegistroC700 = class(TPersistent)
   private
-    fCOD_MOD: string;      /// Código do modelo d documento fiscal, conforme a Tabela 4.1.1
-    fSER: string;          /// Série do documento fiscal
+    fCOD_MOD: AnsiString;      /// Código do modelo d documento fiscal, conforme a Tabela 4.1.1
+    fSER: AnsiString;          /// Série do documento fiscal
     fNRO_ORD_INI: integer; /// Número de ordem inicial
     fNRO_ORD_FIN: integer; /// Número de ordem final
     fDT_DOC_INI: TDateTime;   /// Data de emissão inicial dos documentos
     fDT_DOC_FIN: TDateTime;   /// Data de emissão final dos documentos
-    fNOM_MEST: string;        /// Nome do arquivo Mestre de Documento Fiscal
-    fCHV_COD_DIG: string;     /// Chave de codificação digital do arquivo Mestre de Documento Fiscal
+    fNOM_MEST: AnsiString;        /// Nome do arquivo Mestre de Documento Fiscal
+    fCHV_COD_DIG: AnsiString;     /// Chave de codificação digital do arquivo Mestre de Documento Fiscal
   public
-    property COD_MOD: string read fCOD_MOD write fCOD_MOD;
-    property SER: string read fSER write fSER;
+    property COD_MOD: AnsiString read fCOD_MOD write fCOD_MOD;
+    property SER: AnsiString read fSER write fSER;
     property NRO_ORD_INI: integer read fNRO_ORD_INI write fNRO_ORD_INI;
     property NRO_ORD_FIN: integer read fNRO_ORD_FIN write fNRO_ORD_FIN;
     property DT_DOC_INI: TDateTime read fDT_DOC_INI write fDT_DOC_INI;
     property DT_DOC_FIN: TDateTime read fDT_DOC_FIN write fDT_DOC_FIN;
-    property NOM_MEST: string read fNOM_MEST write fNOM_MEST;
-    property CHV_COD_DIG: string read fCHV_COD_DIG write fCHV_COD_DIG;
+    property NOM_MEST: AnsiString read fNOM_MEST write fNOM_MEST;
+    property CHV_COD_DIG: AnsiString read fCHV_COD_DIG write fCHV_COD_DIG;
   end;
 
   /// Registro C700 - Lista
@@ -1869,8 +1889,8 @@ type
 
   TRegistroC790 = class(TPersistent)
   private
-    fCST_ICMS: string;            /// Código da Situação Tributária, conforme a tabela indicada no item 4.3.1
-    fCFOP: string;                /// Código Fiscal de Operação e Prestação, conforme a tabela indicada no item 4.2.2
+    fCST_ICMS: AnsiString;            /// Código da Situação Tributária, conforme a tabela indicada no item 4.3.1
+    fCFOP: AnsiString;                /// Código Fiscal de Operação e Prestação, conforme a tabela indicada no item 4.2.2
     fALIQ_ICMS: currency;         /// Alíquota do ICMS
     fVL_OPR: currency;            /// Valor da operação correspondente à combinação de CST_ICMS, CFOP, e alíquota do ICMS.
     fVL_BC_ICMS: currency;        /// Parcela correspondente ao "Valor da base de cálculo do ICMS" referente à combinação CST_ICMS, CFOP, e alíquota do ICMS
@@ -1878,10 +1898,10 @@ type
     fVL_BC_ICMS_ST: currency;     /// Valor da base de cálculo do ICMS substituição tributária
     fVL_ICMS_ST: currency;        /// Valor do ICMS retido por substituição tributária
     fVL_RED_BC: currency;         /// Valor não tributado em função da redução da base de cálculo do ICMS, referente à combinação de CST_ICMS, CFOP e alíquota do ICMS.
-    fCOD_OBS: string;             /// Código da observação do lançamento fiscal (campo 02 do Registro 0460)
+    fCOD_OBS: AnsiString;             /// Código da observação do lançamento fiscal (campo 02 do Registro 0460)
   public
-    property CST_ICMS: string read FCST_ICMS write FCST_ICMS;
-    property CFOP: string read FCFOP write FCFOP;
+    property CST_ICMS: AnsiString read FCST_ICMS write FCST_ICMS;
+    property CFOP: AnsiString read FCFOP write FCFOP;
     property ALIQ_ICMS: currency read FALIQ_ICMS write FALIQ_ICMS;
     property VL_OPR: currency read FVL_OPR write FVL_OPR;
     property VL_BC_ICMS: currency read FVL_BC_ICMS write FVL_BC_ICMS;
@@ -1889,7 +1909,7 @@ type
     property VL_BC_ICMS_ST: currency read FVL_BC_ICMS_ST write FVL_BC_ICMS_ST;
     property VL_ICMS_ST: currency read FVL_ICMS_ST write FVL_ICMS_ST;
     property VL_RED_BC: currency read FVL_RED_BC write FVL_RED_BC;
-    property COD_OBS: string read FCOD_OBS write FCOD_OBS;
+    property COD_OBS: AnsiString read FCOD_OBS write FCOD_OBS;
   end;
 
   /// Registro C790 - Lista
@@ -1908,11 +1928,11 @@ type
 
   TRegistroC791 = class(TPersistent)
   private
-    fUF: string;                  /// Sigla da unidade da federação a que se refere a retenção ST
+    fUF: AnsiString;                  /// Sigla da unidade da federação a que se refere a retenção ST
     fVL_BC_ICMS_ST: currency;     /// Valor da base de cálculo do ICMS substituição tributária
     fVL_ICMS_ST: currency;        /// Valor do ICMS retido por substituição tributária
   public
-    property UF: string read FUF write FUF;
+    property UF: AnsiString read FUF write FUF;
     property VL_BC_ICMS_ST: currency read FVL_BC_ICMS_ST write FVL_BC_ICMS_ST;
     property VL_ICMS_ST: currency read FVL_ICMS_ST write FVL_ICMS_ST;
   end;
@@ -1939,8 +1959,6 @@ type
   end;
 
 implementation
-
-{ TRegistro1001 }
 
 { TRegistroC100List }
 
@@ -3318,6 +3336,34 @@ end;
 procedure TRegistroC791List.SetItem(Index: Integer; const Value: TRegistroC791);
 begin
   Put(Index, Value);
+end;
+
+{ TRegistroC100 }
+
+constructor TRegistroC100.Create;
+begin
+  FRegistroC110 := TRegistroC110List.Create;  /// BLOCO C - Lista de RegistroC110 (FILHO)
+  FRegistroC170 := TRegistroC170List.Create;  /// BLOCO C - Lista de RegistroC170 (FILHO)
+end;
+
+destructor TRegistroC100.Destroy;
+begin
+  FRegistroC110.Free;
+  FRegistroC170.Free;
+  inherited;
+end;
+
+{ TRegistroC110 }
+
+constructor TRegistroC110.Create;
+begin
+  FRegistroC111 := TRegistroC111List.Create;  /// BLOCO C - Lista de RegistroC111 (FILHO fo FILHO)
+end;
+
+destructor TRegistroC110.Destroy;
+begin
+  FRegistroC111.Free;
+  inherited;
 end;
 
 end.

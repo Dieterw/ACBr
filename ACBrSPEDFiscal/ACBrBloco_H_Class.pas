@@ -56,10 +56,10 @@ type
     constructor Create(AOwner: TComponent); override; /// Create
     destructor Destroy; override; /// Destroy
 
-    function WriteRegistroH001: string;
-    function WriteRegistroH005: string;
-    function WriteRegistroH010: string;
-    function WriteRegistroH990: string;
+    function WriteRegistroH001: AnsiString;
+    function WriteRegistroH005: AnsiString;
+    function WriteRegistroH010: AnsiString;
+    function WriteRegistroH990: AnsiString;
 
     property RegistroH001: TRegistroH001 read FRegistroH001 write FRegistroH001;
     property RegistroH005: TRegistroH005 read FRegistroH005 write FRegistroH005;
@@ -90,7 +90,7 @@ begin
   inherited;
 end;
 
-function TBloco_H.WriteRegistroH001: string;
+function TBloco_H.WriteRegistroH001: AnsiString;
 begin
   Result := '';
 
@@ -98,10 +98,10 @@ begin
   begin
      with RegistroH001 do
      begin
-       Check(((IND_MOV = 0) or (IND_MOV = 1)), 'BLOCO H - REGISTROH001: Na abertura do bloco, deve ser informado o número 0 ou 1!');
+       Check(((IND_MOV = '0') or (IND_MOV = '1')), 'BLOCO H - REGISTROH001: Na abertura do bloco, deve ser informado o número 0 ou 1!');
        ///
        Result := LFill('H001') +
-                 LFill(IND_MOV, 1) +
+                 LFill(IND_MOV) +
                  Delimitador +
                  #13#10;
        ///
@@ -110,17 +110,17 @@ begin
   end;
 end;
 
-function TBloco_H.WriteRegistroH005: string;
+function TBloco_H.WriteRegistroH005: AnsiString;
 begin
 
 end;
 
-function TBloco_H.WriteRegistroH010: string;
+function TBloco_H.WriteRegistroH010: AnsiString;
 begin
 
 end;
 
-function TBloco_H.WriteRegistroH990: string;
+function TBloco_H.WriteRegistroH990: AnsiString;
 begin
   Result := '';
 

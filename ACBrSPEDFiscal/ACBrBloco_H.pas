@@ -68,27 +68,27 @@ type
 
   TRegistroH010 = class(TPersistent)
   private
-    fCOD_ITEM: string;     /// Código do item (campo 02 do Registro 0200)
-    fUNID: string;         /// Unidade do item
+    fCOD_ITEM: AnsiString;     /// Código do item (campo 02 do Registro 0200)
+    fUNID: AnsiString;         /// Unidade do item
     fQTD: currency;        /// Quantidade do item
     fVL_UNIT: currency;    /// Valor unitário do item
     fVL_ITEM: currency;    /// Valor do item
-    fIND_PROP: string;     /// Indicador de propriedade/posse do item: 0- Item de propriedade do informante e em seu poder, 1- Item de propriedade do informante em posse de terceiros, 2- Item de propriedade de terceiros em posse do informante
-    fCOD_PART: string;     /// Código do participante (campo 02 do Registro 0150): proprietário/possuidor que não seja o informante do arquivo
-    fTXT_COMPL: string;    /// Descrição complementar
-    fCOD_OBS: string;      /// Código de referência à observação (campo 02 do Registro 0460)
-    fCOD_CTA: string;      /// Código da conta analítica contábil debitada/creditada
+    fIND_PROP: AnsiString;     /// Indicador de propriedade/posse do item: 0- Item de propriedade do informante e em seu poder, 1- Item de propriedade do informante em posse de terceiros, 2- Item de propriedade de terceiros em posse do informante
+    fCOD_PART: AnsiString;     /// Código do participante (campo 02 do Registro 0150): proprietário/possuidor que não seja o informante do arquivo
+    fTXT_COMPL: AnsiString;    /// Descrição complementar
+    fCOD_OBS: AnsiString;      /// Código de referência à observação (campo 02 do Registro 0460)
+    fCOD_CTA: AnsiString;      /// Código da conta analítica contábil debitada/creditada
   public
-    property COD_ITEM: string read FCOD_ITEM write FCOD_ITEM;
-    property UNID: string read FUNID write FUNID;
+    property COD_ITEM: AnsiString read FCOD_ITEM write FCOD_ITEM;
+    property UNID: AnsiString read FUNID write FUNID;
     property QTD: currency read FQTD write FQTD;
     property VL_UNIT: currency read FVL_UNIT write FVL_UNIT;
     property VL_ITEM: currency read FVL_ITEM write FVL_ITEM;
-    property IND_PROP: string read FIND_PROP write FIND_PROP;
-    property COD_PART: string read FCOD_PART write FCOD_PART;
-    property TXT_COMPL: string read FTXT_COMPL write FTXT_COMPL;
-    property COD_OBS: string read FCOD_OBS write FCOD_OBS;
-    property COD_CTA: string read FCOD_CTA write FCOD_CTA;
+    property IND_PROP: AnsiString read FIND_PROP write FIND_PROP;
+    property COD_PART: AnsiString read FCOD_PART write FCOD_PART;
+    property TXT_COMPL: AnsiString read FTXT_COMPL write FTXT_COMPL;
+    property COD_OBS: AnsiString read FCOD_OBS write FCOD_OBS;
+    property COD_CTA: AnsiString read FCOD_CTA write FCOD_CTA;
   end;
 
   /// Registro H010 - Lista

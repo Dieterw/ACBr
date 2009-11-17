@@ -45,25 +45,25 @@ interface
 uses SysUtils, Variants, Classes;
 
 // Funções de checagem de dados
-function funChecaUF(const UF: string): boolean;
+function funChecaUF(const UF: AnsiString): boolean;
 function funChecaMUN(const COD: Integer): Boolean;
-function funChecaCNPJ(const CNPJ: string): Boolean;
-function funChecaCPF(const CPF: string): Boolean;
-function funChecaIE(const IE, TIPO: string): Boolean;
+function funChecaCNPJ(const CNPJ: AnsiString): Boolean;
+function funChecaCPF(const CPF: AnsiString): Boolean;
+function funChecaIE(const IE, TIPO: AnsiString): Boolean;
 function funChecaCFOP(const CFOP: Integer): Boolean;
-function funChecaCEP(const CEP, UF: string): Boolean;
-function funChecaCST(const CST: string): Boolean;
-function funChecaGENERO(const COD: string): Boolean;
-function funChecaPAISIBGE(const COD: string): Boolean;
-function funChecaMODNF(const COD: string): Boolean;
-function funChecaSITDOCTO(const COD: string): Boolean;
-function funChecaCSTCOFINS(const CST: string): Boolean;
-function funChecaCSTPIS(const CST: string): Boolean;
-function funStrZero(Zeros: string; Quant: Integer): string;
+function funChecaCEP(const CEP, UF: AnsiString): Boolean;
+function funChecaCST(const CST: AnsiString): Boolean;
+function funChecaGENERO(const COD: AnsiString): Boolean;
+function funChecaPAISIBGE(const COD: AnsiString): Boolean;
+function funChecaMODNF(const COD: AnsiString): Boolean;
+function funChecaSITDOCTO(const COD: AnsiString): Boolean;
+function funChecaCSTCOFINS(const CST: AnsiString): Boolean;
+function funChecaCSTPIS(const CST: AnsiString): Boolean;
+function funStrZero(Zeros: AnsiString; Quant: Integer): AnsiString;
 
 implementation
 
-function funChecaUF(const UF: string): boolean;
+function funChecaUF(const UF: AnsiString): boolean;
 const
    cUF = 'SPMGRJRSSCPRESDFMTMSGOTOBASEALPBPEMARNCEPIPAAMAPFNACRRRO';
 var
@@ -78,9 +78,9 @@ begin
    end;
 end;
 
-function funChecaMODNF(const COD: string): Boolean;
+function funChecaMODNF(const COD: AnsiString): Boolean;
 const
-  ListaMOD: array[0..31] of string = (
+  ListaMOD: array[0..31] of AnsiString = (
             '01', '1B', '02', '2D', '2E', '04', '06', '07',
             '08', '8B', '09', '10', '11', '13', '14', '15',
             '17', '16', '18', '20', '21', '22', '23', '24',
@@ -100,9 +100,9 @@ begin
   Result := booFind;
 end;
 
-function funChecaCST(const CST: string): Boolean;
+function funChecaCST(const CST: AnsiString): Boolean;
 const
-  ListaCST: array[0..32] of string = (
+  ListaCST: array[0..32] of AnsiString = (
     '000', '010', '020', '030', '040', '041', '050', '051',
     '060', '070', '090', '100', '110', '120', '130', '140',
     '141', '150', '151', '160', '170', '190', '200', '210',
@@ -123,9 +123,9 @@ begin
   Result := booFind;
 end;
 
-function funChecaCSTCOFINS(const CST: string): Boolean;
+function funChecaCSTCOFINS(const CST: AnsiString): Boolean;
 const
-  ListaCST: array[0..9] of string = (
+  ListaCST: array[0..9] of AnsiString = (
             '01', '02', '03', '04', '05', '06', '07', '08',
             '09', '99');
 var
@@ -143,9 +143,9 @@ begin
   Result := booFind;
 end;
 
-function funChecaCSTPIS(const CST: string): Boolean;
+function funChecaCSTPIS(const CST: AnsiString): Boolean;
 const
-  ListaCST: array[0..9] of string = (
+  ListaCST: array[0..9] of AnsiString = (
             '01', '02', '03', '04', '05', '06', '07', '08',
             '09', '99');
 var
@@ -163,9 +163,9 @@ begin
   Result := booFind;
 end;
 
-function funChecaCSTIPI(CST: string): Boolean;
+function funChecaCSTIPI(CST: AnsiString): Boolean;
 const
-  ListaCST: array[0..13] of string = (
+  ListaCST: array[0..13] of AnsiString = (
             '00', '01', '02', '03', '04', '05', '49', '50',
             '51', '52', '53', '54', '55', '99');
 var
@@ -183,9 +183,9 @@ begin
   Result := booFind;
 end;
 
-function funChecaSITDOCTO(const COD: string): Boolean;
+function funChecaSITDOCTO(const COD: AnsiString): Boolean;
 const
-  ListaSITDOCTO: array[0..8] of string = (
+  ListaSITDOCTO: array[0..8] of AnsiString = (
             '00', '01', '02', '03', '04', '05', '06', '07', '08');
 var
 intFor: integer;
@@ -202,9 +202,9 @@ begin
   Result := booFind;
 end;
 
-function funChecaGENERO(const COD: string): Boolean;
+function funChecaGENERO(const COD: AnsiString): Boolean;
 const
-  ListaGENERO: array[0..99] of string = (
+  ListaGENERO: array[0..99] of AnsiString = (
             '00', '01', '02', '03', '04', '05', '06', '07',
             '08', '09', '10', '11', '12', '13', '14', '15',
             '16', '17', '18', '19', '20', '21', '22', '23',
@@ -234,7 +234,7 @@ begin
 end;
 
 { Verifica se o CEP e valido }
-function funChecaCEP(const CEP, UF: string): Boolean;
+function funChecaCEP(const CEP, UF: AnsiString): Boolean;
 var
 cCEP1: Integer;
 begin
@@ -309,13 +309,13 @@ begin
     Result := True;
 end;
 
-function funChecaCNPJ(const CNPJ: string): Boolean;
+function funChecaCNPJ(const CNPJ: AnsiString): Boolean;
 var
-wCGCCalc: string;
+wCGCCalc: AnsiString;
 wSomaCGC: Integer;
 wSx1: Shortint;
 wCGCDigt: Integer;
-strCNPJ: string;
+strCNPJ: AnsiString;
 begin
 //   Result := funChecaIE(CNPJ, 'CNPJ');
 
@@ -370,13 +370,13 @@ begin
    end;
 end;
 
-function funChecaCPF(const CPF: string): Boolean;
+function funChecaCPF(const CPF: AnsiString): Boolean;
 var
-wCPFCalc: string;
+wCPFCalc: AnsiString;
 wSomaCPF: Integer;
 wSx1: Shortint;
 wCPFDigt: Integer;
-strCPF: string;
+strCPF: AnsiString;
 begin
 //   Result := funChecaIE(CPF, 'CPF');
 
@@ -425,9 +425,9 @@ begin
    end;
 end;
 
-function funChecaPAISIBGE(const COD: string): Boolean;
+function funChecaPAISIBGE(const COD: AnsiString): Boolean;
 const
-  ListaCST: array[0..240] of string = (
+  ListaCST: array[0..240] of AnsiString = (
             '132', '175', '230', '310', '370', '400', '418', '434',
             '477', '531', '590', '639', '647', '655', '698', '728',
             '736', '779', '809', '817', '833', '850', '876', '884',
@@ -475,31 +475,31 @@ begin
 end;
 
 { Valida a inscrição estadual }
-function funChecaIE(const IE, TIPO: string): Boolean;
+function funChecaIE(const IE, TIPO: AnsiString): Boolean;
 var
 Contador: ShortInt;
 Casos: ShortInt;
 Digitos: ShortInt;
-Tabela_1: string;
-Tabela_2: string;
-Tabela_3: string;
-Base_1: string;
-Base_2: string;
-Base_3: string;
+Tabela_1: AnsiString;
+Tabela_2: AnsiString;
+Tabela_3: AnsiString;
+Base_1: AnsiString;
+Base_2: AnsiString;
+Base_3: AnsiString;
 Valor_1: ShortInt;
 Soma_1: Integer;
 Soma_2: Integer;
 Erro_1: ShortInt;
 Erro_2: ShortInt;
 Erro_3: ShortInt;
-Posicao_1: string;
-Posicao_2: string;
-Tabela: string;
-Rotina: string;
+Posicao_1: AnsiString;
+Posicao_2: AnsiString;
+Tabela: AnsiString;
+Rotina: AnsiString;
 Modulo: ShortInt;
-Peso: string;
+Peso: AnsiString;
 Digito: ShortInt;
-Resultado: string;
+Resultado: AnsiString;
 Retorno: Boolean;
 begin
   { Isento ja e aceito }
@@ -753,7 +753,7 @@ end;
 
 function funChecaCFOP(const CFOP: Integer): Boolean;
 const
-  ListaCFOP: array[0..542] of string = (
+  ListaCFOP: array[0..542] of AnsiString = (
             '1101', '1102', '1111', '1113', '1116', '1117', '1118', '1120',
             '1121', '1122', '1124', '1125', '1126', '1151', '1152', '1153',
             '1154', '1201', '1202', '1203', '1204', '1205', '1206', '1207',
@@ -839,7 +839,7 @@ end;
 
 function funChecaMUN(const COD: Integer): Boolean;
 const
-  ListaMUN: array[0..5565] of string = (
+  ListaMUN: array[0..5565] of AnsiString = (
             '5300108', '1400050', '1400027', '1400100', '1400159', '1400175', '1400209', '1400233',
             '1400282', '1400308', '1400407', '1400456', '1400472', '1400506', '1400605', '1400704',
             '1600105', '1600204', '1600212', '1600238', '1600253', '1600279', '1600303', '1600402',
@@ -1551,7 +1551,7 @@ begin
   Result := booFind;
 end;
 
-function funStrZero(Zeros: string; Quant: Integer): string;
+function funStrZero(Zeros: AnsiString; Quant: Integer): AnsiString;
 begin
   Result := Zeros;
   Quant := Quant - Length(Result);

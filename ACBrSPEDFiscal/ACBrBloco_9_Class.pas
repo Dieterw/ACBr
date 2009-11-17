@@ -56,10 +56,10 @@ type
     constructor Create(AOwner: TComponent); override; /// Create
     destructor Destroy; override; /// Destroy
 
-    function WriteRegistro9001: string;
-    function WriteRegistro9900: string;
-    function WriteRegistro9990: string;
-    function WriteRegistro9999: string;
+    function WriteRegistro9001: AnsiString;
+    function WriteRegistro9900: AnsiString;
+    function WriteRegistro9990: AnsiString;
+    function WriteRegistro9999: AnsiString;
 
     property Registro9001: TRegistro9001 read FRegistro9001 write FRegistro9001;
     property Registro9900: TRegistro9900List read FRegistro9900 write FRegistro9900;
@@ -87,7 +87,7 @@ begin
   inherited;
 end;
 
-function TBloco_9.WriteRegistro9001: string;
+function TBloco_9.WriteRegistro9001: AnsiString;
 begin
   Result := '';
 
@@ -95,10 +95,10 @@ begin
   begin
      with Registro9001 do
      begin
-       Check(((IND_MOV = 0) or (IND_MOV = 1)), 'BLOCO 9 - REGISTRO9001: Na abertura do bloco, deve ser informado o número 0 ou 1!');
+       Check(((IND_MOV = '0') or (IND_MOV = '1')), 'BLOCO 9 - REGISTRO9001: Na abertura do bloco, deve ser informado o número 0 ou 1!');
        ///
        Result := LFill('9001') +
-                 LFill(IND_MOV, 1) +
+                 LFill(IND_MOV) +
                  Delimitador +
                  #13#10;
        ///
@@ -107,10 +107,10 @@ begin
   end;
 end;
 
-function TBloco_9.WriteRegistro9900: string;
+function TBloco_9.WriteRegistro9900: AnsiString;
 var
 intFor: integer;
-strRegistro9900: string;
+strRegistro9900: AnsiString;
 begin
   strRegistro9900 := '';
 
@@ -132,7 +132,7 @@ begin
   Result := strRegistro9900;
 end;
 
-function TBloco_9.WriteRegistro9990: string;
+function TBloco_9.WriteRegistro9990: AnsiString;
 begin
   Result := '';
 
@@ -148,7 +148,7 @@ begin
   end;
 end;
 
-function TBloco_9.WriteRegistro9999: string;
+function TBloco_9.WriteRegistro9999: AnsiString;
 begin
   if Assigned(Registro9999) then
   begin

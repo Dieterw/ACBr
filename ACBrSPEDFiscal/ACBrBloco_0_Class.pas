@@ -69,22 +69,22 @@ type
     constructor Create(AOwner: TComponent); override; /// Create
     destructor Destroy; override; /// Destroy
 
-    function WriteRegistro0000: string;
-    function WriteRegistro0001: string;
-    function WriteRegistro0005: string;
-    function WriteRegistro0015: string;
-    function WriteRegistro0100: string;
-    function WriteRegistro0150: string;
-    function WriteRegistro0175: string;
-    function WriteRegistro0190: string;
-    function WriteRegistro0200: string;
-    function WriteRegistro0205: string;
-    function WriteRegistro0206: string;
-    function WriteRegistro0220: string;
-    function WriteRegistro0400: string;
-    function WriteRegistro0450: string;
-    function WriteRegistro0460: string;
-    function WriteRegistro0990: string;
+    function WriteRegistro0000: AnsiString;
+    function WriteRegistro0001: AnsiString;
+    function WriteRegistro0005: AnsiString;
+    function WriteRegistro0015: AnsiString;
+    function WriteRegistro0100: AnsiString;
+    function WriteRegistro0150: AnsiString;
+    function WriteRegistro0175: AnsiString;
+    function WriteRegistro0190: AnsiString;
+    function WriteRegistro0200: AnsiString;
+    function WriteRegistro0205: AnsiString;
+    function WriteRegistro0206: AnsiString;
+    function WriteRegistro0220: AnsiString;
+    function WriteRegistro0400: AnsiString;
+    function WriteRegistro0450: AnsiString;
+    function WriteRegistro0460: AnsiString;
+    function WriteRegistro0990: AnsiString;
 
     property Registro0000: TRegistro0000     read FRegistro0000 write FRegistro0000;
     property Registro0001: TRegistro0001     read FRegistro0001 write FRegistro0001;
@@ -152,7 +152,7 @@ begin
   inherited;
 end;
 
-function TBloco_0.WriteRegistro0000: string;
+function TBloco_0.WriteRegistro0000: AnsiString;
 begin
   Result := '';
 
@@ -189,7 +189,7 @@ begin
   end;
 end;
 
-function TBloco_0.WriteRegistro0001: string;
+function TBloco_0.WriteRegistro0001: AnsiString;
 begin
   Result := '';
 
@@ -197,10 +197,10 @@ begin
   begin
      with Registro0001 do
      begin
-       Check(((IND_MOV = 0) or (IND_MOV = 1)), '(0-0001) ABERTURA DO BLOCO: Na abertura do bloco, deve ser informado o número 0 ou 1!');
+       Check(((IND_MOV = '0') or (IND_MOV = '1')), '(0-0001) ABERTURA DO BLOCO: Na abertura do bloco, deve ser informado o número 0 ou 1!');
        ///
        Result := LFill('0001') +
-                 LFill(IND_MOV, 1) +
+                 LFill(IND_MOV) +
                  Delimitador +
                  #13#10;
        ///
@@ -209,7 +209,7 @@ begin
   end;
 end;
 
-function TBloco_0.WriteRegistro0005: string;
+function TBloco_0.WriteRegistro0005: AnsiString;
 begin
   Result := '';
 
@@ -237,10 +237,10 @@ begin
   end;
 end;
 
-function TBloco_0.WriteRegistro0015: string;
+function TBloco_0.WriteRegistro0015: AnsiString;
 var
 intFor: integer;
-strRegistro0015: string;
+strRegistro0015: AnsiString;
 begin
   strRegistro0015 := '';
 
@@ -265,7 +265,7 @@ begin
   Result := strRegistro0015;
 end;
 
-function TBloco_0.WriteRegistro0100: string;
+function TBloco_0.WriteRegistro0100: AnsiString;
 begin
   Result := '';
 
@@ -300,10 +300,10 @@ begin
   end;
 end;
 
-function TBloco_0.WriteRegistro0150: string;
+function TBloco_0.WriteRegistro0150: AnsiString;
 var
 intFor: integer;
-strRegistro0150: string;
+strRegistro0150: AnsiString;
 begin
   strRegistro0150 := '';
 
@@ -341,10 +341,10 @@ begin
   Result := strRegistro0150;
 end;
 
-function TBloco_0.WriteRegistro0175: string;
+function TBloco_0.WriteRegistro0175: AnsiString;
 var
 intFor: integer;
-strRegistro0175: string;
+strRegistro0175: AnsiString;
 begin
   strRegistro0175 := '';
 
@@ -369,10 +369,10 @@ begin
   Result := strRegistro0175;
 end;
 
-function TBloco_0.WriteRegistro0190: string;
+function TBloco_0.WriteRegistro0190: AnsiString;
 var
 intFor: integer;
-strRegistro0190: string;
+strRegistro0190: AnsiString;
 begin
   strRegistro0190 := '';
 
@@ -395,10 +395,10 @@ begin
   Result := strRegistro0190;
 end;
 
-function TBloco_0.WriteRegistro0200: string;
+function TBloco_0.WriteRegistro0200: AnsiString;
 var
 intFor: integer;
-strRegistro0200: string;
+strRegistro0200: AnsiString;
 begin
   strRegistro0200 := '';
 
@@ -429,10 +429,10 @@ begin
   Result := strRegistro0200;
 end;
 
-function TBloco_0.WriteRegistro0205: string;
+function TBloco_0.WriteRegistro0205: AnsiString;
 var
 intFor: integer;
-strRegistro0205: string;
+strRegistro0205: AnsiString;
 begin
   strRegistro0205 := '';
 
@@ -455,10 +455,10 @@ begin
   Result := strRegistro0205;
 end;
 
-function TBloco_0.WriteRegistro0206: string;
+function TBloco_0.WriteRegistro0206: AnsiString;
 var
 intFor: integer;
-strRegistro0206: string;
+strRegistro0206: AnsiString;
 begin
   strRegistro0206 := '';
 
@@ -479,10 +479,10 @@ begin
   Result := strRegistro0206;
 end;
 
-function TBloco_0.WriteRegistro0220: string;
+function TBloco_0.WriteRegistro0220: AnsiString;
 var
 intFor: integer;
-strRegistro0220: string;
+strRegistro0220: AnsiString;
 begin
   strRegistro0220 := '';
 
@@ -504,10 +504,10 @@ begin
   Result := strRegistro0220;
 end;
 
-function TBloco_0.WriteRegistro0400: string;
+function TBloco_0.WriteRegistro0400: AnsiString;
 var
 intFor: integer;
-strRegistro0400: string;
+strRegistro0400: AnsiString;
 begin
   strRegistro0400 := '';
 
@@ -530,10 +530,10 @@ begin
   Result := strRegistro0400;
 end;
 
-function TBloco_0.WriteRegistro0450: string;
+function TBloco_0.WriteRegistro0450: AnsiString;
 var
 intFor: integer;
-strRegistro0450: string;
+strRegistro0450: AnsiString;
 begin
   strRegistro0450 := '';
 
@@ -555,10 +555,10 @@ begin
   Result := strRegistro0450;
 end;
 
-function TBloco_0.WriteRegistro0460: string;
+function TBloco_0.WriteRegistro0460: AnsiString;
 var
 intFor: integer;
-strRegistro0460: string;
+strRegistro0460: AnsiString;
 begin
   strRegistro0460 := '';
 
@@ -580,7 +580,7 @@ begin
   Result := strRegistro0460;
 end;
 
-function TBloco_0.WriteRegistro0990: string;
+function TBloco_0.WriteRegistro0990: AnsiString;
 begin
   Result := '';
 

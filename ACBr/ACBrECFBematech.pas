@@ -193,8 +193,11 @@ TACBrECFBematech = class( TACBrECFClass )
    	xBematech_FI_RetornoImpressoraMFD : function ( Var ACK: Integer;
        Var ST1: Integer; Var ST2: Integer; Var ST3: Integer ): Integer; StdCall;
 
+    {$IFDEF MSWINDOWS}
     procedure LoadDLLFunctions;
     procedure AbrePortaSerialDLL(const Porta, Path : String ) ;
+    {$ENDIF}
+
     procedure GetTotalizadoresParciais;
 
     Function PreparaCmd( cmd : AnsiString ) : AnsiString ;
@@ -2597,6 +2600,7 @@ begin
      Result := Resp ;
 end;
 
+{$IFDEF MSWINDOWS}
 procedure TACBrECFBematech.LoadDLLFunctions;
  procedure BematechFunctionDetect( FuncName: String; var LibPointer: Pointer;
     LibName : String = cLIB_Bema ) ;
@@ -2631,8 +2635,6 @@ begin
      BematechFunctionDetect('BemaGeraRegistrosTipoE',@xBemaGeraRegistrosTipoE, cLIB_MFD2 );
      BematechFunctionDetect('BemaGeraTxtPorCOO',@xGeraTxtPorCOO, cLIB_MFD2 );
    end;
-
-
 end;
 
 procedure TACBrECFBematech.AbrePortaSerialDLL(const Porta, Path : String ) ;
@@ -2667,6 +2669,8 @@ begin
      raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao abrir a Porta com:'+sLineBreak+
      'Bematech_FI_AbrePortaSerial()'));
 end ;
+
+{$ENDIF}
 
 procedure TACBrECFBematech.EspelhoMFD_DLL(DataInicial,
   DataFinal: TDateTime; NomeArquivo: String;

@@ -1,9 +1,9 @@
 object FrmSPEDFiscal: TFrmSPEDFiscal
   Left = 335
   Top = 156
-  Width = 657
-  Height = 478
   Caption = 'ACBrSpedFiscal - Demo'
+  ClientHeight = 440
+  ClientWidth = 625
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -30,7 +30,7 @@ object FrmSPEDFiscal: TFrmSPEDFiscal
   end
   object Label3: TLabel
     Left = 8
-    Top = 208
+    Top = 209
     Width = 75
     Height = 13
     Caption = 'Arquivo Gerado'
@@ -38,7 +38,7 @@ object FrmSPEDFiscal: TFrmSPEDFiscal
   object Label4: TLabel
     Left = 0
     Top = 0
-    Width = 641
+    Width = 625
     Height = 16
     Align = alTop
     Alignment = taCenter
@@ -49,6 +49,7 @@ object FrmSPEDFiscal: TFrmSPEDFiscal
     Font.Name = 'Tahoma'
     Font.Style = [fsBold]
     ParentFont = False
+    ExplicitWidth = 428
   end
   object btnB_0: TButton
     Left = 7
@@ -154,9 +155,13 @@ object FrmSPEDFiscal: TFrmSPEDFiscal
     OnClick = btnErrorClick
   end
   object ACBrSPEDFiscal1: TACBrSPEDFiscal
-    Delimitador = '|'
     Path = '.\'
-    Left = 256
-    Top = 278
+    Delimitador = '|'
+    CurMascara = '#0.00'
+    ZeroRetornaVazio = True
+    TrimString = True
+    OnError = ACBrSPEDFiscal1Error
+    Left = 272
+    Top = 272
   end
 end

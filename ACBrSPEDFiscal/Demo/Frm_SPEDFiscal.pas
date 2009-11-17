@@ -40,7 +40,7 @@ type
     procedure btnB_DClick(Sender: TObject);
     procedure btnB_EClick(Sender: TObject);
     procedure btnB_HClick(Sender: TObject);
-    procedure ACBrSpedFiscal1Error(const MsnError: string);
+    procedure ACBrSpedFiscal1Error(const MsnError: AnsiString);
     procedure btnErrorClick(Sender: TObject);
   private
     { Private declarations }
@@ -57,7 +57,7 @@ implementation
 {$R *.dfm}
 {$ENDIF}
 
-procedure TFrmSPEDFiscal.ACBrSpedFiscal1Error(const MsnError: string);
+procedure TFrmSPEDFiscal.ACBrSpedFiscal1Error(const MsnError: AnsiString);
 begin
    edtError.Lines.Add(MsnError);
 end;
@@ -183,20 +183,110 @@ procedure TFrmSPEDFiscal.btnB_1Click(Sender: TObject);
 begin
    // Alimenta o componente com informações para gerar todos os registros do
    // Bloco 1.
-   with ACBrSpedFiscal1.Bloco_1.Registro1001 do
-   begin
-      IND_MOV := 1;
-   end;
+//   with ACBrSpedFiscal1.Bloco_1.Registro1001 do
+//   begin
+//      IND_MOV := 1;
+//   end;
    btnB_1.Enabled := false;
 end;
 
 procedure TFrmSPEDFiscal.btnB_CClick(Sender: TObject);
+var
+INotas: Integer;
+IItens: Integer;
 begin
    // Alimenta o componente com informações para gerar todos os registros do
    // Bloco C.
-   with ACBrSpedFiscal1.Bloco_C.RegistroC001 do
+   with ACBrSpedFiscal1 do
    begin
-      IND_MOV := 1;
+     with Bloco_C.RegistroC001 do
+     begin
+        IND_MOV := 0;
+     end;
+     for INotas := 1 to 10 do
+     begin
+       with Bloco_C.RegistroC100 do
+       begin
+         New;
+         with Items[INotas-1] do
+         begin
+           COD_PART      := '001';
+           IND_EMIT      := '';
+           IND_OPER      := '';
+           COD_MOD       := '';
+           COD_SIT       := '';
+           SER           := '';
+           NUM_DOC       := FormatFloat('NF000000',INotas);
+           CHV_NFE       := '';
+           DT_DOC        := Date();
+           DT_E_S        := Date();
+           VL_DOC        := 0;
+           IND_PGTO      := '';
+           VL_DESC       := 0;
+           VL_ABAT_NT    := 0;
+           VL_MERC       := 0;
+           IND_FRT       := '';
+           VL_SEG        := 0;
+           VL_OUT_DA     := 0;
+           VL_BC_ICMS    := 0;
+           VL_ICMS       := 0;
+           VL_BC_ICMS_ST := 0;
+           VL_ICMS_ST    := 0;
+           VL_IPI        := 0;
+           VL_PIS        := 0;
+           VL_COFINS     := 0;
+           VL_PIS_ST     := 0;
+           VL_COFINS_ST  := 0;
+           //c170
+           for IItens := 1 to 10 do
+           begin
+             with RegistroC170 do
+             begin
+                New;
+                with Items[IItens-1] do//Inicio Adicionar os Itens:
+                begin
+                  NUM_ITEM    := FormatFloat('000', IItens);
+                  COD_ITEM    := FormatFloat('000000',StrToInt(NUM_ITEM));
+                  DESCR_COMPL := FormatFloat('NF000000',INotas)+' -> ITEM '+COD_ITEM;
+                  QTD         := 1;
+                  UNID        := 'UN';
+                  VL_ITEM     := 0;
+                  VL_DESC     := 0;
+                  IND_MOV     := 'X';
+                  CST_ICMS    := '001';
+                  CFOP        := '1252';
+                  COD_NAT     := '64';
+                  VL_BC_ICMS  := 0;
+                  ALIQ_ICMS   := 0;
+                  VL_ICMS     := 0;
+                  VL_BC_ICMS_ST := 0;
+                  ALIQ_ST       := 0;
+                  VL_ICMS_ST    := 0;
+                  IND_APUR      := 'Y';
+                  CST_IPI       := '003';
+                  COD_ENQ       := '';
+                  VL_BC_IPI     := 0;
+                  ALIQ_IPI      := 0;
+                  VL_IPI        := 0;
+                  CST_PIS       := '000';
+                  VL_BC_PIS     := 0;
+                  ALIQ_PIS_PERC := 0;
+                  QUANT_BC_PIS  := 0;
+                  ALIQ_PIS_R    := 0;
+                  VL_PIS        := 0;
+                  CST_COFINS    := '000';
+                  VL_BC_COFINS  := 0;
+                  ALIQ_COFINS_PERC := 0;
+                  QUANT_BC_COFINS  := 0;
+                  ALIQ_COFINS_R    := 0;
+                  VL_COFINS        := 0;
+                  COD_CTA          := '000';
+                end;//Fim dos Itens;
+             end;
+           end;
+         end;
+       end;
+     end;
    end;
    btnB_C.Enabled := false;
 end;
@@ -205,10 +295,10 @@ procedure TFrmSPEDFiscal.btnB_DClick(Sender: TObject);
 begin
    // Alimenta o componente com informações para gerar todos os registros do
    // Bloco D.
-   with ACBrSpedFiscal1.Bloco_D.RegistroD001 do
-   begin
-      IND_MOV := 1;
-   end;
+//   with ACBrSpedFiscal1.Bloco_D.RegistroD001 do
+//   begin
+//      IND_MOV := 1;
+//   end;
    btnB_D.Enabled := false;
 end;
 
@@ -252,10 +342,10 @@ procedure TFrmSPEDFiscal.btnB_HClick(Sender: TObject);
 begin
    // Alimenta o componente com informações para gerar todos os registros do
    // Bloco H.
-   with ACBrSpedFiscal1.Bloco_H.RegistroH001 do
-   begin
-      IND_MOV := 1;
-   end;
+//   with ACBrSpedFiscal1.Bloco_H.RegistroH001 do
+//   begin
+//      IND_MOV := 1;
+//   end;
    btnB_H.Enabled := false;
 end;
 

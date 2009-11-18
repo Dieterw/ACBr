@@ -201,6 +201,7 @@ begin
         if NotaUtil.EstaVazio(CaminhoArquivo) then
            CaminhoArquivo := PathWithDelim(TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).Configuracoes.Geral.PathSalvar)+copy(NFe.infNFe.ID, (length(NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml';
         LocNFeW.Gerador.SalvarArquivo(CaminhoArquivo);
+        NomeArq := CaminhoArquivo;
      finally
         LocNFeW.Free;
      end;
@@ -442,26 +443,37 @@ begin
        raise Exception.Create('Falha na validação dos dados da nota '+
                                IntToStr(Self.Items[i].NFe.Ide.nNF)+sLineBreak+Self.Items[i].Alertas+FMsg);
   end;
-end;
+end;                                               
 
 function TNotasFiscais.LoadFromFile(CaminhoArquivo: string): boolean;
 var
  LocNFeR : TNFeR;
+ ArquivoXML: TStringList;
+ XML : AnsiString;
 begin
  try
+    ArquivoXML := TStringList.Create;
+    ArquivoXML.LoadFromFile(CaminhoArquivo);
     Result := True;
-    LocNFeR := TNFeR.Create(Self.Add.NFe);
-    try
-       LocNFeR.Leitor.CarregarArquivo(CaminhoArquivo);
-       LocNFeR.LerXml;
-       Items[Self.Count-1].XML := LocNFeR.Leitor.Arquivo;
-       Items[Self.Count-1].NomeArq := CaminhoArquivo;       
-       GerarNFe;
-    finally
-       LocNFeR.Free;
-    end;
+    while pos('</NFe>',ArquivoXML.Text) > 0 do
+     begin
+       XML := copy(ArquivoXML.Text,1,pos('</NFe>',ArquivoXML.Text)+5);
+       LocNFeR := TNFeR.Create(Self.Add.NFe);
+       try
+          LocNFeR.Leitor.Arquivo := XML;
+          LocNFeR.LerXml;
+          Items[Self.Count-1].XML := LocNFeR.Leitor.Arquivo;
+          Items[Self.Count-1].NomeArq := CaminhoArquivo;
+          GerarNFe;
+       finally
+          LocNFeR.Free;
+       end;
+       ArquivoXML.Text := copy(ArquivoXML.Text,pos('</NFe>',ArquivoXML.Text)+6,length(ArquivoXML.Text));
+     end;
+    ArquivoXML.Free;
  except
     Result := False;
+    raise;
  end;
 end;
 
@@ -497,9 +509,9 @@ begin
         if NotaUtil.EstaVazio(PathArquivo) then
            PathArquivo := TACBrNFe( FACBrNFe ).Configuracoes.Geral.PathSalvar
         else
-           PathArquivo := ExtractFilePath(PathArquivo);   
+           PathArquivo := ExtractFilePath(PathArquivo);
         CaminhoArquivo := PathWithDelim(PathArquivo)+StringReplace(TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NFe.infNFe.ID, 'NFe', '', [rfIgnoreCase])+'-NFe.xml';
-        TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].SaveToFile(CaminhoArquivo)
+        TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].SaveToFile(CaminhoArquivo);
      end;
  except
     Result := False;

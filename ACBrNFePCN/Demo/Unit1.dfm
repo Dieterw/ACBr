@@ -1,8 +1,8 @@
 object Form1: TForm1
-  Left = 334
-  Top = 161
-  Width = 694
-  Height = 540
+  Left = 265
+  Top = 119
+  Width = 879
+  Height = 592
   Caption = 'ACBrNFe'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -18,7 +18,7 @@ object Form1: TForm1
     Left = 0
     Top = 0
     Width = 297
-    Height = 504
+    Height = 556
     Align = alLeft
     TabOrder = 0
     object GroupBox1: TGroupBox
@@ -33,7 +33,7 @@ object Form1: TForm1
         Top = 15
         Width = 277
         Height = 384
-        ActivePage = TabSheet2
+        ActivePage = TabSheet7
         Align = alClient
         TabOrder = 0
         object TabSheet1: TTabSheet
@@ -731,15 +731,15 @@ object Form1: TForm1
   object Panel2: TPanel
     Left = 297
     Top = 0
-    Width = 381
-    Height = 504
+    Width = 566
+    Height = 556
     Align = alClient
     TabOrder = 1
     object Panel3: TPanel
       Left = 1
       Top = 1
-      Width = 379
-      Height = 216
+      Width = 564
+      Height = 192
       Align = alTop
       TabOrder = 0
       object btnImprimir: TButton
@@ -851,8 +851,8 @@ object Form1: TForm1
         OnClick = btnConsultarReciboClick
       end
       object btnEnvDPEC: TButton
-        Left = 9
-        Top = 186
+        Left = 377
+        Top = 6
         Width = 177
         Height = 25
         Caption = 'Enviar DPEC'
@@ -860,21 +860,30 @@ object Form1: TForm1
         OnClick = btnEnvDPECClick
       end
       object btnConsultarDPEC: TButton
-        Left = 192
-        Top = 186
+        Left = 377
+        Top = 36
         Width = 177
         Height = 25
         Caption = 'Consultar DPEC'
         TabOrder = 13
         OnClick = btnConsultarDPECClick
       end
+      object btnImportarXML: TButton
+        Left = 377
+        Top = 66
+        Width = 177
+        Height = 25
+        Caption = 'Importar XML'
+        TabOrder = 14
+        OnClick = btnImportarXMLClick
+      end
     end
     object PageControl2: TPageControl
       Left = 1
-      Top = 217
-      Width = 379
-      Height = 286
-      ActivePage = TabSheet8
+      Top = 193
+      Width = 564
+      Height = 362
+      ActivePage = TabSheet6
       Align = alClient
       TabOrder = 1
       object TabSheet5: TTabSheet
@@ -882,8 +891,8 @@ object Form1: TForm1
         object MemoResp: TMemo
           Left = 0
           Top = 0
-          Width = 362
-          Height = 222
+          Width = 556
+          Height = 334
           Align = alClient
           TabOrder = 0
         end
@@ -894,12 +903,12 @@ object Form1: TForm1
         object WBResposta: TWebBrowser
           Left = 0
           Top = 0
-          Width = 371
-          Height = 258
+          Width = 556
+          Height = 334
           Align = alClient
           TabOrder = 0
           ControlData = {
-            4C00000058260000AA1A00000000000000000000000000000000000000000000
+            4C00000077390000852200000000000000000000000000000000000000000000
             000000004C000000000000000000000001000000E0D057007335CF11AE690800
             2B2E126208000000000000004C0000000114020000000000C000000000000046
             8000000000000000000000000000000000000000000000000000000000000000
@@ -912,10 +921,23 @@ object Form1: TForm1
         object memoLog: TMemo
           Left = 0
           Top = 0
-          Width = 371
-          Height = 258
+          Width = 556
+          Height = 334
           Align = alClient
           ScrollBars = ssVertical
+          TabOrder = 0
+        end
+      end
+      object TabSheet9: TTabSheet
+        Caption = 'NFe'
+        ImageIndex = 3
+        object trvwNFe: TTreeView
+          Left = 0
+          Top = 0
+          Width = 556
+          Height = 334
+          Align = alClient
+          Indent = 19
           TabOrder = 0
         end
       end
@@ -927,18 +949,19 @@ object Form1: TForm1
       'Arquivos NFE (*-nfe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|To' +
       'dos os Arquivos (*.*)|*.*'
     Title = 'Selecione a NFe'
-    Left = 288
-    Top = 224
+    Left = 672
+    Top = 152
   end
   object ACBrNFe1: TACBrNFe
     Configuracoes.Geral.PathSalvar = 'C:\Program Files\Borland\Delphi7\Bin\'
     Configuracoes.WebServices.UF = 'SP'
     Configuracoes.WebServices.AguardarConsultaRet = 15000
-    Configuracoes.WebServices.IntervaloTentativas = 0
+    Configuracoes.WebServices.IntervaloTentativas = 1000
     Configuracoes.WebServices.AjustaAguardaConsultaRet = True
     Configuracoes.Arquivos.Salvar = True
     Configuracoes.Arquivos.PastaMensal = True
     Configuracoes.Arquivos.AdicionarLiteral = True
+    Configuracoes.Arquivos.EmissaoPathNFe = True
     Configuracoes.Arquivos.PathNFe = 'D:\delphi\ACBr\trunk\ACBrNFePCN\ACBrNFeMonitor\Arqs'
     Configuracoes.Arquivos.PathCan = 'D:\delphi\ACBr\trunk\ACBrNFePCN\ACBrNFeMonitor\Arqs'
     Configuracoes.Arquivos.PathInu = 'D:\delphi\ACBr\trunk\ACBrNFePCN\ACBrNFeMonitor\Arqs'
@@ -946,14 +969,15 @@ object Form1: TForm1
     OnStatusChange = ACBrNFe1StatusChange
     DANFE = ACBrNFeDANFERave1
     OnGerarLog = ACBrNFe1GerarLog
-    Left = 323
-    Top = 225
+    Left = 707
+    Top = 153
   end
   object ACBrNFeDANFERave1: TACBrNFeDANFERave
     ACBrNFe = ACBrNFe1
     PathPDF = 'C:\Program Files\Borland\Delphi7\Bin\'
     ImprimirHoraSaida = False
     MostrarPreview = True
+    MostrarStatus = True
     TipoDANFE = tiRetrato
     NumCopias = 1
     ImprimirDescPorc = True
@@ -965,9 +989,10 @@ object Form1: TForm1
     CasasDecimais._qCom = 2
     CasasDecimais._vUnCom = 2
     ExibirResumoCanhoto = False
-    FormularioContinuo = False
-    RavFile = 'D:\delphi\ACBr\trunk\ACBrNFePCN\Demo\Report\DANFE_Rave513.rav'
-    Left = 355
-    Top = 228
+    RavFile = 
+      'D:\delphi\ACBr\trunk\ACBrNFePCN\Demo\Report\NotaFiscalEletronica' +
+      '.rav'
+    Left = 742
+    Top = 153
   end
 end

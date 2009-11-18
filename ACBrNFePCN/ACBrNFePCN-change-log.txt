@@ -48,6 +48,11 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   18/11/09
+---------------
+[*] Alterado função LoadFromFile para mostrar erros na leitura de XMLs inválidos e adicionado recurso de ler vários XMLs no mesmo arquivo
+[+] Adicionado ao Demo do componente o botão "Importar XML" para servir de exemplo para quem deseja usar o componente para importar XMLs 
+    de NFes recebidas de fornecedores
 
 Alterações   12/11/09
 ---------------

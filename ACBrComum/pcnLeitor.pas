@@ -47,7 +47,7 @@ unit pcnLeitor;
 
 interface uses
 
-  SysUtils, Classes,
+  SysUtils, Classes, 
 {$IFNDEF VER130}
   Variants,
 {$ENDIF}
@@ -174,29 +174,34 @@ begin
     fim := pos('</' + Tag + '>', FGrupo) - inicio;
     ConteudoTag := trim(copy(FGrupo, inicio, fim));
   end;
-  if Tipo = tcStr then
-    result := ReverterFiltroTextoXML(ConteudoTag)
-  else if Tipo = tcDat then
-   begin
-      if length(ConteudoTag)>0 then
-         result := EncodeDate(StrToInt(copy(ConteudoTag, 01, 4)), StrToInt(copy(ConteudoTag, 06, 2)), StrToInt(copy(ConteudoTag, 09, 2)))
-      else
-         result:=0;
-   end
-  else if Tipo = tcDatHor then
-   begin
-      if length(ConteudoTag)>0 then
-         result := EncodeDate(StrToInt(copy(ConteudoTag, 01, 4)), StrToInt(copy(ConteudoTag, 06, 2)), StrToInt(copy(ConteudoTag, 09, 2))) +
-                   EncodeTime(StrToInt(copy(ConteudoTag, 12, 2)), StrToInt(copy(ConteudoTag, 15, 2)), StrToInt(copy(ConteudoTag, 18, 2)), 0)
-      else
-         result:=0;
-   end
-  else if (Tipo = tcDe2) or (Tipo = tcDe3) or (Tipo = tcDe4) then
-    result := StrToFloat(StringReplace('0' + ConteudoTag, '.', DecimalSeparator, []))
-  else if Tipo = tcEsp then
-    result := ConteudoTag
-  else if Tipo = tcInt then
-    result := StrToInt('0' + Trim(SomenteNumeros(ConteudoTag)));
+  try
+     if Tipo = tcStr then
+       result := ReverterFiltroTextoXML(ConteudoTag)
+     else if Tipo = tcDat then
+      begin
+         if length(ConteudoTag)>0 then
+            result := EncodeDate(StrToInt(copy(ConteudoTag, 01, 4)), StrToInt(copy(ConteudoTag, 06, 2)), StrToInt(copy(ConteudoTag, 09, 2)))
+         else
+            result:=0;
+      end
+     else if Tipo = tcDatHor then
+      begin
+         if length(ConteudoTag)>0 then
+            result := EncodeDate(StrToInt(copy(ConteudoTag, 01, 4)), StrToInt(copy(ConteudoTag, 06, 2)), StrToInt(copy(ConteudoTag, 09, 2))) +
+                     EncodeTime(StrToInt(copy(ConteudoTag, 12, 2)), StrToInt(copy(ConteudoTag, 15, 2)), StrToInt(copy(ConteudoTag, 18, 2)), 0)
+         else
+            result:=0;
+      end
+     else if (Tipo = tcDe2) or (Tipo = tcDe3) or (Tipo = tcDe4) then
+       result := StrToFloat(StringReplace('0' + ConteudoTag, '.', DecimalSeparator, []))
+     else if Tipo = tcEsp then
+       result := ConteudoTag
+     else if Tipo = tcInt then
+       result := StrToInt('0' + Trim(SomenteNumeros(ConteudoTag)));
+  except
+     raise Exception.Create('Tag <' + Tag + '> com conteúdo inválido. '+ConteudoTag);
+  end;
+
 end;
 
 function TLeitor.rAtributo(Atributo: string): variant;

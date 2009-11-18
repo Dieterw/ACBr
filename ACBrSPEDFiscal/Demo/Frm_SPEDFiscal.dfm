@@ -157,11 +157,10 @@ object FrmSPEDFiscal: TFrmSPEDFiscal
   object ACBrSPEDFiscal1: TACBrSPEDFiscal
     Path = '.\'
     Delimitador = '|'
-    CurMascara = '#0.00'
-    ZeroRetornaVazio = True
     TrimString = True
+    CurMascara = '#0.00'
     OnError = ACBrSPEDFiscal1Error
     Left = 272
-    Top = 272
+    Top = 274
   end
 end

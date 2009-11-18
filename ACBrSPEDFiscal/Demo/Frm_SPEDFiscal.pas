@@ -87,7 +87,7 @@ begin
       // Abertura do Bloco 1
       with Bloco_0.Registro0001 do
       begin
-         IND_MOV := '0';
+         IND_MOV := 0;
       end;
       // Dados complementares da Empresa
       with Bloco_0.Registro0005 do
@@ -201,7 +201,7 @@ begin
    begin
      with Bloco_C.RegistroC001 do
      begin
-        IND_MOV := '0';
+        IND_MOV := 0;
      end;
      for INotas := 1 to 10 do
      begin
@@ -284,6 +284,28 @@ begin
                 end;//Fim dos Itens;
              end;
            end;
+           //c190
+           for IItens := 1 to 10 do
+           begin
+             with RegistroC190 do
+             begin
+               new;
+               With Items[IItens-1] do//Inicio Adicionar os Itens:
+               begin
+                 CST_ICMS    := '001';
+                 CFOP        := '1252';
+                 ALIQ_ICMS   := 0;
+                 VL_OPR      := 0;
+                 VL_BC_ICMS  := 0;
+                 VL_ICMS     := 0;
+                 VL_BC_ICMS_ST := 0;
+                 VL_ICMS_ST    := 0;
+                 VL_RED_BC     := 0;
+                 VL_IPI        := 0;
+                 COD_OBS       := '000';
+               end;//Fim dos Itens;
+             end;
+           end;
          end;
        end;
      end;
@@ -311,7 +333,7 @@ begin
       // Abertura do Bloco E
       with Bloco_E.RegistroE001 do
       begin
-         IND_MOV := '0';
+         IND_MOV := 0;
       end;
       with Bloco_E.RegistroE100 do
       begin

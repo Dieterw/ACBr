@@ -217,10 +217,10 @@ begin
   begin
      with RegistroD001 do
      begin
-       Check(((IND_MOV = '0') or (IND_MOV = '1')), 'BLOCO D - REGISTROD001: Na abertura do bloco, deve ser informado o número 0 ou 1!');
+       Check(((IND_MOV = 0) or (IND_MOV = 1)), 'BLOCO D - REGISTROD001: Na abertura do bloco, deve ser informado o número 0 ou 1!');
        ///
        Result := LFill('D001') +
-                 LFill(IND_MOV) +
+                 LFill(IND_MOV, 0) +
                  Delimitador +
                  #13#10;
        ///

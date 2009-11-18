@@ -50,10 +50,10 @@ type
 
   TOpenBlocos = class(TPersistent)
   private
-    FIND_MOV: AnsiString; /// Indicador de movimento: 0- Bloco com dados informados, 1- Bloco sem dados informados.
+    FIND_MOV: Integer; /// Indicador de movimento: 0- Bloco com dados informados, 1- Bloco sem dados informados.
   public
     constructor Create; virtual; /// Create
-    property IND_MOV: AnsiString read FIND_MOV write FIND_MOV; /// Propriedade que armazena o indicador de movimento
+    property IND_MOV: Integer read FIND_MOV write FIND_MOV; /// Propriedade que armazena o indicador de movimento
   end;
 
 implementation
@@ -62,7 +62,7 @@ implementation
 
 constructor TOpenBlocos.Create;
 begin
-   FIND_MOV := '1';
+   FIND_MOV := 1;
 end;
 
 end.

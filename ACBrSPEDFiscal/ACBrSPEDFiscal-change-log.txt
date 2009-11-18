@@ -49,6 +49,14 @@ Símbolo : Significado
 
 Versão 0.01a   17/11/09
 ---------------
+[+] Implementado a hierarquia de Pai-Filho do RegistroC190 (por Jean Barreiros)
+[-] Retirada as propriedades "ZeroRetornaVazio"
+[*] Susbstituído o tipo da propriedade "IND_MOV", novamente para "AnsiString"
+[*] Criado o parametro "Nulo" nas funções LFill com os parametros tipo
+    Integer, Currency e TDateTime.
+
+Versão 0.01a   17/11/09
+---------------
 [+] Adicionado ao demo o código de exemplo para gerar resgitros em hierarquia
     do Bloco_C (por Jean Barreiros)
 [+] Criado nova propriedade "TrimString", onde se for TRUE, retorna a string

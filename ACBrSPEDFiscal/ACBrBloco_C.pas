@@ -56,6 +56,7 @@ type
   TRegistroC110List = class;
   TRegistroC111List = class;
   TRegistroC170List = class;
+  TRegistroC190List = class;
 
   /// Registro C100 - NOTA FISCAL (CÓDIGO 01), NOTA FISCAL AVULSA (CÓDIGO 1B), NOTA FISCAL DE PRODUTOR (CÓDIGO 04) E NFE (CÓDIGO 55)
 
@@ -92,6 +93,7 @@ type
 
     FRegistroC110: TRegistroC110List;  /// BLOCO C - Lista de RegistroC110 (FILHO)
     FRegistroC170: TRegistroC170List;  /// BLOCO C - Lista de RegistroC170 (FILHO)
+    FRegistroC190: TRegistroC190List;  /// BLOCO C - Lista de RegistroC190 (FILHO) {Jean Barreiros 17Nov2009}
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -127,6 +129,7 @@ type
     /// Registros FILHOS
     property RegistroC110: TRegistroC110List read FRegistroC110 write FRegistroC110;
     property RegistroC170: TRegistroC170List read FRegistroC170 write FRegistroC170;
+    property RegistroC190: TRegistroC190List read FRegistroC190 write FRegistroC190;  {Jean Barreiros 17Nov2009}
   end;
 
   /// Registro C100 - Lista
@@ -3344,12 +3347,14 @@ constructor TRegistroC100.Create;
 begin
   FRegistroC110 := TRegistroC110List.Create;  /// BLOCO C - Lista de RegistroC110 (FILHO)
   FRegistroC170 := TRegistroC170List.Create;  /// BLOCO C - Lista de RegistroC170 (FILHO)
+  FRegistroC190 := TRegistroC190List.Create;  /// BLOCO C - Lista de RegistroC190 (FILHO) {Jean Barreiros 19Nov2009}
 end;
 
 destructor TRegistroC100.Destroy;
 begin
   FRegistroC110.Free;
   FRegistroC170.Free;
+  FRegistroC190.Free;
   inherited;
 end;
 

@@ -65,9 +65,8 @@ type
     procedure SetDT_FIN(const Value: TDateTime); override;
     procedure SetDT_INI(const Value: TDateTime); override;
     procedure SetDelimitador(const Value: AnsiString); override;
-    procedure SetCurMascara(const Value: AnsiString); override;
-    procedure SetZeroRetornaVazio(const Value: boolean); override;
     procedure SetTrimString(const Value: boolean); override;
+    procedure SetCurMascara(const Value: AnsiString); override;
     /// BLOCO 0
     function WriteRegistro0000: AnsiString;
     function WriteRegistro0001: AnsiString;
@@ -105,8 +104,6 @@ type
     /// BLOCO C
     function WriteRegistroC001: AnsiString;
     function WriteRegistroC100: AnsiString;
-//    function WriteRegistroC110: AnsiString;
-//    function WriteRegistroC111: AnsiString;
     function WriteRegistroC112: AnsiString;
     function WriteRegistroC113: AnsiString;
     function WriteRegistroC114: AnsiString;
@@ -117,7 +114,6 @@ type
     function WriteRegistroC141: AnsiString;
     function WriteRegistroC160: AnsiString;
     function WriteRegistroC165: AnsiString;
-//    function WriteRegistroC170: AnsiString;
     function WriteRegistroC171: AnsiString;
     function WriteRegistroC172: AnsiString;
     function WriteRegistroC173: AnsiString;
@@ -127,7 +123,6 @@ type
     function WriteRegistroC177: AnsiString;
     function WriteRegistroC178: AnsiString;
     function WriteRegistroC179: AnsiString;
-    function WriteRegistroC190: AnsiString;
     function WriteRegistroC195: AnsiString;
     function WriteRegistroC197: AnsiString;
     function WriteRegistroC300: AnsiString;
@@ -234,9 +229,8 @@ type
   published
     property Path: AnsiString read FPath write FPath;
     property Delimitador;
-    property CurMascara;
-    property ZeroRetornaVazio;
     property TrimString;
+    property CurMascara;
     property OnError;
   end;
 
@@ -287,18 +281,6 @@ begin
       FBloco_0.Registro0000.DT_INI := Value;
       FBloco_E.RegistroE100.DT_INI := Value;
    end;
-end;
-
-procedure TACBrSPEDFiscal.SetZeroRetornaVazio(const Value: boolean);
-begin
-  inherited;
-  FBloco_0.ZeroRetornaVazio := Value;
-  FBloco_1.ZeroRetornaVazio := Value;
-  FBloco_C.ZeroRetornaVazio := Value;
-  FBloco_D.ZeroRetornaVazio := Value;
-  FBloco_E.ZeroRetornaVazio := Value;
-  FBloco_H.ZeroRetornaVazio := Value;
-  FBloco_9.ZeroRetornaVazio := Value;
 end;
 
 procedure TACBrSPEDFiscal.SetTrimString(const Value: boolean);
@@ -414,8 +396,6 @@ begin
     /// BLOCO C
     Write(txtFile, WriteRegistroC001);
     if Bloco_C.RegistroC100.Count > 0 then Write(txtFile, WriteRegistroC100); // Prates
-//    if Bloco_C.RegistroC110.Count > 0 then Write(txtFile, WriteRegistroC110); // Prates
-//    if Bloco_C.RegistroC111.Count > 0 then Write(txtFile, WriteRegistroC111); // Prates
     if Bloco_C.RegistroC112.Count > 0 then Write(txtFile, WriteRegistroC112); // Prates
     if Bloco_C.RegistroC113.Count > 0 then Write(txtFile, WriteRegistroC113); // Prates
     if Bloco_C.RegistroC114.Count > 0 then Write(txtFile, WriteRegistroC114); // Prates
@@ -426,7 +406,6 @@ begin
     if Bloco_C.RegistroC141.Count > 0 then Write(txtFile, WriteRegistroC141); // Prates
     if Bloco_C.RegistroC160.Count > 0 then Write(txtFile, WriteRegistroC160); // Prates
     if Bloco_C.RegistroC165.Count > 0 then Write(txtFile, WriteRegistroC165); // Prates
-//    if Bloco_C.RegistroC170.Count > 0 then Write(txtFile, WriteRegistroC170); // Prates
     if Bloco_C.RegistroC171.Count > 0 then Write(txtFile, WriteRegistroC171); // Prates
     if Bloco_C.RegistroC172.Count > 0 then Write(txtFile, WriteRegistroC172); // Prates
     if Bloco_C.RegistroC173.Count > 0 then Write(txtFile, WriteRegistroC173); // Prates
@@ -436,7 +415,6 @@ begin
     if Bloco_C.RegistroC177.Count > 0 then Write(txtFile, WriteRegistroC177); // Prates
     if Bloco_C.RegistroC178.Count > 0 then Write(txtFile, WriteRegistroC178); // Prates
     if Bloco_C.RegistroC179.Count > 0 then Write(txtFile, WriteRegistroC179); // Prates
-    if Bloco_C.RegistroC190.Count > 0 then Write(txtFile, WriteRegistroC190); // Prates
     if Bloco_C.RegistroC195.Count > 0 then Write(txtFile, WriteRegistroC195); // Prates
     if Bloco_C.RegistroC197.Count > 0 then Write(txtFile, WriteRegistroC197); // Prates
     if Bloco_C.RegistroC300.Count > 0 then Write(txtFile, WriteRegistroC300); // Prates
@@ -909,28 +887,13 @@ begin
          REG_BLC := 'C170';
          QTD_REG_BLC := Bloco_C.RegistroC170Count;
       end;
+      with New do
+      begin
+         REG_BLC := 'C190';
+         QTD_REG_BLC := Bloco_C.RegistroC190Count;
+      end;
    end;
 end;
-
-//function TACBrSPEDFiscal.WriteRegistroC110: AnsiString;
-//begin
-//   with Bloco_9.Registro9900.New do
-//   begin
-//      REG_BLC := 'C110';
-//      QTD_REG_BLC := Bloco_C.RegistroC110.Count;
-//   end;
-//   Result := Bloco_C.WriteRegistroC110;
-//end;
-
-//function TACBrSPEDFiscal.WriteRegistroC111: AnsiString;
-//begin
-//   with Bloco_9.Registro9900.New do
-//   begin
-//      REG_BLC := 'C111';
-//      QTD_REG_BLC := Bloco_C.RegistroC111.Count;
-//   end;
-//   Result := Bloco_C.WriteRegistroC111;
-//end;
 
 function TACBrSPEDFiscal.WriteRegistroC112: AnsiString;
 begin
@@ -1032,16 +995,6 @@ begin
    Result := Bloco_C.WriteRegistroC165;
 end;
 
-//function TACBrSPEDFiscal.WriteRegistroC170: AnsiString;
-//begin
-//   with Bloco_9.Registro9900.New do
-//   begin
-//      REG_BLC := 'C170';
-//      QTD_REG_BLC := Bloco_C.RegistroC170.Count;
-//   end;
-//   Result := Bloco_C.WriteRegistroC170;
-//end;
-
 function TACBrSPEDFiscal.WriteRegistroC171: AnsiString;
 begin
    with Bloco_9.Registro9900.New do
@@ -1130,16 +1083,6 @@ begin
       QTD_REG_BLC := Bloco_C.RegistroC179.Count;
    end;
    Result := Bloco_C.WriteRegistroC179;
-end;
-
-function TACBrSPEDFiscal.WriteRegistroC190: AnsiString;
-begin
-   with Bloco_9.Registro9900.New do
-   begin
-      REG_BLC := 'C190';
-      QTD_REG_BLC := Bloco_C.RegistroC190.Count;
-   end;
-   Result := Bloco_C.WriteRegistroC190;
 end;
 
 function TACBrSPEDFiscal.WriteRegistroC195: AnsiString;

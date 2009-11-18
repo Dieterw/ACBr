@@ -51,11 +51,10 @@ type
   private
     FOnError: TErrorEvent;
     FDelimitador: AnsiString;     /// Caracter delimitador de campos
+    FTrimString: boolean;         /// Retorna a string sem espaços em branco iniciais e finais
     FCurMascara: AnsiString;      /// Mascara para valores tipo currency
     FDT_INI: TDateTime;           /// Data inicial das informações contidas no arquivo
     FDT_FIN: TDateTime;           /// Data final das informações contidas no arquivo
-    FZeroRetornaVazio: boolean;   /// Retorno vazio, caso seja passado valor zerado, para as funções LFill - Currency e Integer
-    FTrimString: boolean;         /// Retorna a string sem espaços em branco iniciais e finais
 
     function GetOnError: TErrorEvent; /// Método do evento OnError
     procedure SetOnError(const Value: TErrorEvent); /// Método SetError
@@ -64,24 +63,22 @@ type
     function GetDT_FIN: TDateTime; virtual;
     function GetDT_INI: TDateTime; virtual;
     function GetDelimitador: AnsiString; virtual;
-    function GetCurMascara: AnsiString; virtual;
-    function GetZeroRetornaVazio: boolean; virtual;
     function GetTrimString: boolean; virtual;
+    function GetCurMascara: AnsiString; virtual;
     procedure SetDT_FIN(const Value: TDateTime); virtual;
     procedure SetDT_INI(const Value: TDateTime); virtual;
     procedure SetDelimitador(const Value: AnsiString); virtual;
-    procedure SetCurMascara(const Value: AnsiString); virtual;
-    procedure SetZeroRetornaVazio(const Value: boolean); virtual;
     procedure SetTrimString(const Value: boolean); virtual;
+    procedure SetCurMascara(const Value: AnsiString); virtual;
   public
     constructor Create(AOwner: TComponent); override; /// Create
     destructor Destroy; override; /// Destroy
 
     function RFill(Value: AnsiString; Size: Integer = 0; Caracter: Char = ' '): AnsiString; overload;
     function LFill(Value: AnsiString; Size: Integer = 0; Caracter: Char = '0'): AnsiString; overload;
-    function LFill(Value: Currency; Size: Integer; Decimal: Integer = 2; Caracter: Char = '0'): AnsiString; overload;
-    function LFill(Value: Integer; Size: Integer; Caracter: Char = '0'): AnsiString; overload;
-    function LFill(Value: TDateTime; Mask: AnsiString = 'ddmmyyyy'): AnsiString; overload;
+    function LFill(Value: Currency; Size: Integer; Decimal: Integer = 2; Nulo: Boolean = false; Caracter: Char = '0'): AnsiString; overload;
+    function LFill(Value: Integer; Size: Integer; Nulo: Boolean = false; Caracter: Char = '0'): AnsiString; overload;
+    function LFill(Value: TDateTime; Mask: AnsiString = 'ddmmyyyy'; Nulo: Boolean = false): AnsiString; overload;
     ///
     procedure Check(Condicao: Boolean; const Msg: AnsiString); overload;
     procedure Check(Condicao: Boolean; Msg: AnsiString; Fmt: array of const); overload;
@@ -89,9 +86,8 @@ type
     property DT_INI: TDateTime read GetDT_INI write SetDT_INI;
     property DT_FIN: TDateTime read GetDT_FIN write SetDT_FIN;
     property Delimitador: AnsiString read GetDelimitador write SetDelimitador;
-    property CurMascara: AnsiString read GetCurMascara write SetCurMascara;
-    property ZeroRetornaVazio: boolean read GetZeroRetornaVazio write SetZeroRetornaVazio;
     property TrimString: boolean read GetTrimString write SetTrimString;
+    property CurMascara: AnsiString read GetCurMascara write SetCurMascara;
 
     property OnError: TErrorEvent read GetOnError write SetOnError;
   end;
@@ -116,9 +112,8 @@ constructor TACBrSPED.Create(AOwner: TComponent);
 begin
   inherited;
   FDelimitador := '|';
-  FCurMascara  := '#0.00';
   FTrimString  := true;
-  FZeroRetornaVazio := true;
+  FCurMascara  := '#0.00';
 end;
 
 destructor TACBrSPED.Destroy;
@@ -156,13 +151,12 @@ begin
   if FTrimString then Result := Trim(Result);
 end;
 
-function TACBrSPED.LFill(Value: Currency; Size: Integer; Decimal: Integer = 2; Caracter: Char = '0'): AnsiString;
+function TACBrSPED.LFill(Value: Currency; Size: Integer; Decimal: Integer = 2; Nulo: Boolean = false; Caracter: Char = '0'): AnsiString;
 var
 intFor, intP: Integer;
 begin
-  /// Se a propriedade ZeroRetornaVazio for verdadeira e Value = 0, será
-  /// retornado '|'
-  if (FZeroRetornaVazio) and (Value = 0) then
+  /// Se o parametro Nulo = true e Value = 0, será retornado '|'
+  if (Nulo) and (Value = 0) then
   begin
      Result := FDelimitador;
      Exit;
@@ -172,20 +166,18 @@ begin
   begin
      intP := intP * 10;
   end;
-
   /// Se a propriedade CurMascara <> '' Value será formatado com a mascara
   /// existente nessa propriedade.
   if FCurMascara <> '' then
      Result := FDelimitador + FormatCurr(FCurMascara, Value)
   else
-     Result := LFill(Trunc(Value * intP), Size, Caracter);
+     Result := LFill(Trunc(Value * intP), Size, Nulo, Caracter);
 end;
 
-function TACBrSPED.LFill(Value: Integer; Size: Integer; Caracter: Char = '0'): AnsiString;
+function TACBrSPED.LFill(Value: Integer; Size: Integer; Nulo: Boolean = false; Caracter: Char = '0'): AnsiString;
 begin
-  /// Se a propriedade ZeroRetornaVazio for verdadeira e Value = 0, será
-  /// retornado '|'
-  if (FZeroRetornaVazio) and (Value = 0) then
+  /// Se o parametro Nulo = true e Value = 0, será retornado '|'
+  if (Nulo) and (Value = 0) then
   begin
      Result := FDelimitador;
      Exit;
@@ -193,11 +185,10 @@ begin
   Result := LFill(IntToStr(Value), Size, Caracter);
 end;
 
-function TACBrSPED.LFill(Value: TDateTime; Mask: AnsiString = 'ddmmyyyy'): AnsiString;
+function TACBrSPED.LFill(Value: TDateTime; Mask: AnsiString = 'ddmmyyyy'; Nulo: Boolean = false): AnsiString;
 begin
-  /// Se a propriedade ZeroRetornaVazio for verdadeira e Value = 0, será
-  /// retornado '|'
-  if (FZeroRetornaVazio) and (Value = 0) then
+  /// Se o parametro Nulo = true e Value = 0, será retornado '|'
+  if (Nulo) and (Value = 0) then
   begin
      Result := FDelimitador;
      Exit;
@@ -230,11 +221,6 @@ begin
   Result := FOnError;
 end;
 
-function TACBrSPED.GetZeroRetornaVazio: boolean;
-begin
-   Result := FZeroRetornaVazio;
-end;
-
 function TACBrSPED.GetTrimString: boolean;
 begin
   Result := FTrimString;
@@ -263,11 +249,6 @@ end;
 procedure TACBrSPED.SetOnError(const Value: TErrorEvent);
 begin
   FOnError := Value;
-end;
-
-procedure TACBrSPED.SetZeroRetornaVazio(const Value: boolean);
-begin
-  FZeroRetornaVazio := Value;
 end;
 
 procedure TACBrSPED.SetTrimString(const Value: boolean);

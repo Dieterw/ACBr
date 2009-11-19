@@ -9,7 +9,7 @@
       <SearchPaths>
         <IncludeFiles Value="..\ACBrComum\"/>
         <OtherUnitFiles Value="..\ACBrComum\"/>
-        <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
+        <UnitOutputDirectory Value="..\ACBr\lib\$(TargetCPU)-$(TargetOS)"/>
         <SrcPath Value="..\ACBrComum\"/>
       </SearchPaths>
       <Other>

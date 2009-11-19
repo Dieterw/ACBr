@@ -195,7 +195,7 @@ begin
         XMLinfProt.LoadFromFile(FPathRetConsSitNFe);
         xProtNFe :=
           (**)'<protNFe versao="1.10">' +
-        (******)'<infProt'>+// + RetornarConteudoEntre(XMLinfProt.text, '<infProt', '<tpAmb>') +
+        (******)'<infProt>'+// + RetornarConteudoEntre(XMLinfProt.text, '<infProt', '<tpAmb>') +
         (*********)PreencherTAG('tpAmb', XMLinfProt.text) +
         (*********)PreencherTAG('verAplic', XMLinfProt.text) +
         (*********)PreencherTAG('chNFe', XMLinfProt.text) +

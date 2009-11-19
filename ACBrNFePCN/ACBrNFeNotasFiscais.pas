@@ -457,7 +457,16 @@ begin
     Result := True;
     while pos('</NFe>',ArquivoXML.Text) > 0 do
      begin
-       XML := copy(ArquivoXML.Text,1,pos('</NFe>',ArquivoXML.Text)+5);
+       if pos('</nfeProc>',ArquivoXML.Text) > 0  then
+        begin
+          XML := copy(ArquivoXML.Text,1,pos('</nfeProc>',ArquivoXML.Text)+5);
+          ArquivoXML.Text := Trim(copy(ArquivoXML.Text,pos('</nfeProc>',ArquivoXML.Text)+10,length(ArquivoXML.Text)));
+        end
+       else
+        begin
+          XML := copy(ArquivoXML.Text,1,pos('</NFe>',ArquivoXML.Text)+5);
+          ArquivoXML.Text := Trim(copy(ArquivoXML.Text,pos('</NFe>',ArquivoXML.Text)+6,length(ArquivoXML.Text)));
+        end;
        LocNFeR := TNFeR.Create(Self.Add.NFe);
        try
           LocNFeR.Leitor.Arquivo := XML;
@@ -468,7 +477,6 @@ begin
        finally
           LocNFeR.Free;
        end;
-       ArquivoXML.Text := copy(ArquivoXML.Text,pos('</NFe>',ArquivoXML.Text)+6,length(ArquivoXML.Text));
      end;
     ArquivoXML.Free;
  except

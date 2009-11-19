@@ -195,7 +195,7 @@ begin
         XMLinfProt.LoadFromFile(FPathRetConsSitNFe);
         xProtNFe :=
           (**)'<protNFe versao="1.10">' +
-        (******)'<infProt' + RetornarConteudoEntre(XMLinfProt.text, '<infProt', '<tpAmb>') +
+        (******)'<infProt'>+// + RetornarConteudoEntre(XMLinfProt.text, '<infProt', '<tpAmb>') +
         (*********)PreencherTAG('tpAmb', XMLinfProt.text) +
         (*********)PreencherTAG('verAplic', XMLinfProt.text) +
         (*********)PreencherTAG('chNFe', XMLinfProt.text) +
@@ -217,7 +217,7 @@ begin
         (*********)'<tpAmb>'+TpAmbToStr(FtpAmb)+'</tpAmb>'+
         (*********)'<verAplic>'+FverAplic+'</verAplic>'+
         (*********)'<chNFe>'+FchNFe+'</chNFe>'+
-        (*********)'<dhRecbto>'+DateTimeToStr(FdhRecbto)+'</dhRecbto>'+
+        (*********)'<dhRecbto>'+FormatDateTime('yyyy-mm-dd"T"hh:nn:ss',FdhRecbto)+'</dhRecbto>'+
         (*********)'<nProt>'+FnProt+'</nProt>'+
         (*********)'<digVal>'+FdigVal+'</digVal>'+
         (*********)'<cStat>'+IntToStr(FcStat)+'</cStat>'+

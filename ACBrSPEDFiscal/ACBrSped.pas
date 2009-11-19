@@ -128,13 +128,13 @@ begin
      Result := Copy(Value, 1, Size)
   else
      Result := Value + StringOfChar(Caracter, Size - Length(Value));
-  //
-  Result := FDelimitador + Result;
 
   /// Se a propriedade TrimString = true, Result retorna sem espaços em branco
   /// iniciais e finais.
   if FTrimString then
-     Result := Trim(Result);
+     Result := FDelimitador + Trim(Result)
+  else
+     Result := FDelimitador + Result;
 end;
 
 function TACBrSPED.LFill(Value: AnsiString; Size: Integer = 0; Caracter: Char = '0'): AnsiString;
@@ -143,12 +143,13 @@ begin
      Result := Copy(Value, 1, Size)
   else
      Result := StringOfChar(Caracter, Size - length(Value)) + Value;
-  //
-  Result := FDelimitador + Result;
 
   /// Se a propriedade TrimString = true, Result retorna sem espaços em branco
   /// iniciais e finais.
-  if FTrimString then Result := Trim(Result);
+  if FTrimString then
+     Result := FDelimitador + Trim(Result)
+  else
+     Result := FDelimitador + Result;
 end;
 
 function TACBrSPED.LFill(Value: Currency; Size: Integer; Decimal: Integer = 2; Nulo: Boolean = false; Caracter: Char = '0'): AnsiString;

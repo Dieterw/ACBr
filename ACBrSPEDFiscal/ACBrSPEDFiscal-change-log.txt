@@ -50,6 +50,8 @@ Símbolo : Significado
 Versão 0.01a   19/11/09
 ---------------
 [-] Limpeza de código após, modificações para geração de arquivos em hierarquia
+[-] Corrigido BUG, do qual não estava executando a função Trim do delphi 
+    corretamente, quando a propriedade TrimString = True
 
 Versão 0.01a   18/11/09
 ---------------

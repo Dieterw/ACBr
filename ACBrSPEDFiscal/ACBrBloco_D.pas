@@ -151,10 +151,7 @@ type
     property Items[Index: Integer]: TRegistroD110 read GetItem write SetItem;
   end;
 
-  /// Registro D120 - RESUMO DOS BILHETES DE PASSAGEM RODOVIÁRIO (CÓDIGO 13), DE PASSAGEM AQUAVIÁRIO (CÓDIGO 14), DE PASSAGEM E NOTA DE BAGAGEM (CÓDIGO 15) E DE PASSAGEM FERROVIÁRIO (CÓDIGO 16)
-
-
-  /// REGISTRO D120: COMPLEMENTO DA NOTA FISCAL DE SERVIÇOS DE TRANSPORTE (CÓDIGO 07)
+  /// Registro D120 - COMPLEMENTO DA NOTA FISCAL DE SERVIÇOS DE TRANSPORTE (CÓDIGO 07)
 
   TRegistroD120 = class(TPersistent)
   private
@@ -162,39 +159,11 @@ type
      fCOD_MUN_DEST:AnsiString; // Código do município de destino, conforme a tabela IBGE
      fVEIC_ID     :AnsiString; // Placa de identificação do veículo
      fUF_ID       :AnsiString;  // Sigla da UF da placa do veículo
-    {
-    fCOD_MOD: AnsiString;          /// Código do modelo do documento fiscal:
-    fSER: AnsiString;              /// Série do documento fiscal:
-    fSUB: AnsiString;              /// Subs érie do documento fiscal:
-    fNUM_DOC_INI: AnsiString;      /// Número do primeiro documento fiscal emitido:
-    fNUM_DOC_FIN: AnsiString;      /// Número do último documento fiscal emitido:
-    fQTD_CANC: currency;       /// Quantidade de documentos cancelados:
-    fDT_DOC: currency;         /// Data da emissão dos documentos fiscais:
-    fVL_DOC: currency;         /// Valor total acumulado:
-    fVL_DESC: currency;        /// Valor total dos descontos:
-    fVL_SERV: currency;        /// Valor total da presta ção de serviço:
-    fVL_BC_ICMS: currency;     /// Valor total da base de cálculo do ICMS:
-    fVL_ICMS: currency;        /// Valor total do ICMS:
-    }
   public
     property COD_MUN_ORIG :AnsiString read fCOD_MUN_ORIG write fCOD_MUN_ORIG;
     property COD_MUN_DEST :AnsiString read fCOD_MUN_DEST write fCOD_MUN_DEST;
     property VEIC_ID      :AnsiString read fVEIC_ID      write fVEIC_ID     ;
     property UF_ID        :AnsiString read fUF_ID        write fUF_ID       ;
-   {
-    property COD_MOD: AnsiString read FCOD_MOD write FCOD_MOD;
-    property SER: AnsiString read FSER write FSER;
-    property SUB: AnsiString read FSUB write FSUB;
-    property NUM_DOC_INI: AnsiString read FNUM_DOC_INI write FNUM_DOC_INI;
-    property NUM_DOC_FIN: AnsiString read FNUM_DOC_FIN write FNUM_DOC_FIN;
-    property QTD_CANC: currency read FQTD_CANC write FQTD_CANC;
-    property DT_DOC: currency read FDT_DOC write FDT_DOC;
-    property VL_DOC: currency read FVL_DOC write FVL_DOC;
-    property VL_DESC: currency read FVL_DESC write FVL_DESC;
-    property VL_SERV: currency read FVL_SERV write FVL_SERV;
-    property VL_BC_ICMS: currency read FVL_BC_ICMS write FVL_BC_ICMS;
-    property VL_ICMS: currency read FVL_ICMS write FVL_ICMS;
-    }
   end;
 
   /// Registro D120 - Lista
@@ -349,25 +318,6 @@ type
     fCNPJ_CPF_DEST  : AnsiString; /// CNPJ ou CPF do destinatário das mercadorias que constam na nota fiscal.
     fIE_DEST        : AnsiString; /// Inscrição Estadual do destinatário das mercadorias que constam na nota fiscal.
     fCOD_MUN_DEST   : AnsiString; /// Código do Município de destino, conforme tabela IBGE
-
-  {
-    fCNPJ_CPF_REM: AnsiString;       /// CNPJ ou CPF do remetente das mercadorias que constam na nota fiscal.
-    fUF_REM: AnsiString;             /// Sigla da unidade da federação do remetente das mercadorias que constam na nota fiscal.
-    fIE_REM: AnsiString;             /// Inscrição Estadual do remetente das mercadorias que constam na nota fiscal
-    fCNPJ_CPF_DEST: AnsiString;      /// CNPJ ou CPF do destinatário das mercadorias que constam na nota fiscal.
-    fUF_DEST: AnsiString;            /// Sigla da unidade da federação do .destinatário das mercadorias que constam na nota fiscal.
-    fIE_DEST: AnsiString;            /// Inscrição Estadual do destinatário das mercadorias que constam na nota fiscal
-    fCOD_MOD: AnsiString;            /// Código do modelo do documento fiscal, conforme a Tabela 4.1.1
-    fSER: AnsiString;                /// Série do documento fiscal
-    fNUM_DOC: AnsiString;            /// Número do documento fiscal
-    fDT_DOC: TDateTime;          /// Data da emissão do documento fiscal
-    fCHV_NFE: AnsiString;            /// Chave da Nota Fiscal Eletrônica
-    fVL_DOC: currency;           /// Valor total do documento fiscal
-    fVL_MERC: currency;          /// Valor das mercadorias constantes no documento fiscal
-    fQTD_VOL: currency;          /// Quantidade de volumes transportados
-    fPESO_BRT: currency;         /// Peso bruto dos volumes transportados (em Kg)
-    fPESO_LIQ: currency;         /// Peso líquido dos volumes transportados (em Kg)
-    }
   public
     property DESPACHO     : AnsiString read fDESPACHO       write fDESPACHO     ;
     property CNPJ_CPF_REM : AnsiString read fCNPJ_CPF_REM   write fCNPJ_CPF_REM ;
@@ -376,26 +326,6 @@ type
     property CNPJ_CPF_DEST: AnsiString read fCNPJ_CPF_DEST  write fCNPJ_CPF_DEST;
     property IE_DEST      : AnsiString read fIE_DEST        write fIE_DEST      ;
     property COD_MUN_DEST : AnsiString read fCOD_MUN_DEST   write fCOD_MUN_DEST ;
-
-
-    {
-    property CNPJ_CPF_REM: AnsiString read FCNPJ_CPF_REM write FCNPJ_CPF_REM;
-    property UF_REM: AnsiString read FUF_REM write FUF_REM;
-    property IE_REM: AnsiString read FIE_REM write FIE_REM;
-    property CNPJ_CPF_DEST: AnsiString read FCNPJ_CPF_DEST write FCNPJ_CPF_DEST;
-    property UF_DEST: AnsiString read FUF_DEST write FUF_DEST;
-    property IE_DEST: AnsiString read FIE_DEST write FIE_DEST;
-    property COD_MOD: AnsiString read FCOD_MOD write FCOD_MOD;
-    property SER: AnsiString read FSER write FSER;
-    property NUM_DOC: AnsiString read FNUM_DOC write FNUM_DOC;
-    property DT_DOC: TDateTime read FDT_DOC write FDT_DOC;
-    property CHV_NFE: AnsiString read FCHV_NFE write FCHV_NFE;
-    property VL_DOC: currency read FVL_DOC write FVL_DOC;
-    property VL_MERC: currency read FVL_MERC write FVL_MERC;
-    property QTD_VOL: currency read FQTD_VOL write FQTD_VOL;
-    property PESO_BRT: currency read FPESO_BRT write FPESO_BRT;
-    property PESO_LIQ: currency read FPESO_LIQ write FPESO_LIQ;
-    }
   end;
 
   /// Registro D160 - Lista
@@ -479,8 +409,6 @@ type
     function New: TRegistroD162;
     property Items[Index: Integer]: TRegistroD162 read GetItem write SetItem;
   end;
-
-
 
   /// Registro D170 - COMPLEMENTO DO CONHECIMENTO MULTIMODAL DE CARGAS (CÓDIGO 26)
 

@@ -233,8 +233,6 @@ begin
   inherited Create(AOwner);
   FRegistroC001 := TRegistroC001.Create;
   FRegistroC100 := TRegistroC100List.Create;
-//  FRegistroC110 := TRegistroC110List.Create;
-//  FRegistroC111 := TRegistroC111List.Create;
   FRegistroC112 := TRegistroC112List.Create;
   FRegistroC113 := TRegistroC113List.Create;
   FRegistroC114 := TRegistroC114List.Create;
@@ -245,7 +243,6 @@ begin
   FRegistroC141 := TRegistroC141List.Create;
   FRegistroC160 := TRegistroC160List.Create;
   FRegistroC165 := TRegistroC165List.Create;
-//  FRegistroC170 := TRegistroC170List.Create;
   FRegistroC171 := TRegistroC171List.Create;
   FRegistroC172 := TRegistroC172List.Create;
   FRegistroC173 := TRegistroC173List.Create;
@@ -255,7 +252,6 @@ begin
   FRegistroC177 := TRegistroC177List.Create;
   FRegistroC178 := TRegistroC178List.Create;
   FRegistroC179 := TRegistroC179List.Create;
-  //FRegistroC190 := TRegistroC190List.Create; {Jean Barreiros 17Nov2009}
   FRegistroC195 := TRegistroC195List.Create;
   FRegistroC197 := TRegistroC197List.Create;
   FRegistroC300 := TRegistroC300List.Create;
@@ -290,14 +286,13 @@ begin
   FRegistroC110Count := 0;
   FRegistroC111Count := 0;
   FRegistroC170Count := 0;
+  FRegistroC190Count := 0;  {Jean Barreiros 18Nov2009}
 end;
 
 destructor TBloco_C.Destroy;
 begin
   FRegistroC001.Free;
   FRegistroC100.Free;
-//  FRegistroC110.Free;
-//  FRegistroC111.Free;
   FRegistroC112.Free;
   FRegistroC113.Free;
   FRegistroC114.Free;
@@ -308,7 +303,6 @@ begin
   FRegistroC141.Free;
   FRegistroC160.Free;
   FRegistroC165.Free;
-//  FRegistroC170.Free;
   FRegistroC171.Free;
   FRegistroC172.Free;
   FRegistroC173.Free;
@@ -318,7 +312,6 @@ begin
   FRegistroC177.Free;
   FRegistroC178.Free;
   FRegistroC179.Free;
-//  FRegistroC190.Free; {Jean Barreiros 17Nov2009}
   FRegistroC195.Free;
   FRegistroC197.Free;
   FRegistroC300.Free;

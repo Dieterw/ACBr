@@ -55,6 +55,7 @@ type
 
   TRegistroC110List = class;
   TRegistroC111List = class;
+  TRegistroC141List = class;
   TRegistroC170List = class;
   TRegistroC190List = class;
 
@@ -62,22 +63,22 @@ type
 
   TRegistroC100 = class(TPersistent)
   private
-    fIND_OPER: AnsiString;         /// Indicador do tipo de operação: 0- Entrada; 1- Saída
-    fIND_EMIT: AnsiString;         /// Indicador do emitente do documento fiscal: 0- Emissão própria; 1- Terceiros
-    fCOD_PART: AnsiString;         /// Código do participante (campo 02 do Registro 0150):
-    fCOD_MOD: AnsiString;          /// Código do modelo do documento fiscal, conforme a Tabela 4.1.1
-    fCOD_SIT: AnsiString;          /// Código da situação do documento fiscal, conforme a Tabela 4.1.2
-    fSER: AnsiString;              /// Série do documento fiscal
-    fNUM_DOC: AnsiString;          /// Número do documento fiscal
-    fCHV_NFE: AnsiString;          /// Chave da Nota Fiscal Eletrônica
+    fIND_OPER: AnsiString;     /// Indicador do tipo de operação: 0- Entrada; 1- Saída
+    fIND_EMIT: AnsiString;     /// Indicador do emitente do documento fiscal: 0- Emissão própria; 1- Terceiros
+    fCOD_PART: AnsiString;     /// Código do participante (campo 02 do Registro 0150):
+    fCOD_MOD: AnsiString;      /// Código do modelo do documento fiscal, conforme a Tabela 4.1.1
+    fCOD_SIT: AnsiString;      /// Código da situação do documento fiscal, conforme a Tabela 4.1.2
+    fSER: AnsiString;          /// Série do documento fiscal
+    fNUM_DOC: AnsiString;      /// Número do documento fiscal
+    fCHV_NFE: AnsiString;      /// Chave da Nota Fiscal Eletrônica
     fDT_DOC: TDateTime;        /// Data da emissão do documento fiscal
     fDT_E_S: TDateTime;        /// Data da entrada ou da saída
     fVL_DOC: currency;         /// Valor total do documento fiscal
-    fIND_PGTO: AnsiString;         /// Indicador do tipo de pagamento:
+    fIND_PGTO: AnsiString;     /// Indicador do tipo de pagamento:
     fVL_DESC: currency;        /// Valor total do desconto // Prates
     fVL_ABAT_NT: currency;     /// Abatimento não tributado e não comercial Ex. desconto ICMS nas remessas para ZFM: // Prates
     fVL_MERC: currency;        /// Valor das mercadorias constantes no documento fiscal
-    fIND_FRT: AnsiString;          /// Indicador do tipo do frete:
+    fIND_FRT: AnsiString;      /// Indicador do tipo do frete:
     fVL_FRT: currency;         /// Valor do frete indicado no documento fiscal
     fVL_SEG: currency;         /// Valor do seguro indicado no documento fiscal
     fVL_OUT_DA: currency;      /// Valor de outras despesas acessórias
@@ -1962,6 +1963,8 @@ type
   end;
 
 implementation
+
+{ TRegistroC100 }
 
 { TRegistroC100List }
 

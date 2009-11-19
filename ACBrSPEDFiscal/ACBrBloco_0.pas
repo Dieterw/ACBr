@@ -50,20 +50,20 @@ type
 
   TRegistro0000 = class(TPersistent)
   private
-    fCOD_VER: integer;     /// Código da versão do leiaute: 100; 101
-    fCOD_FIN: integer;     /// Código da finalidade do arquivo: 0 - Remessa do arquivo original / 1 - Remessa do arquivo substituto.
-    fDT_INI: TDateTime;    /// Data inicial das informações contidas no arquivo
-    fDT_FIN: TDateTime;    /// Data final das informações contidas no arquivo
+    fCOD_VER: integer;         /// Código da versão do leiaute: 100; 101
+    fCOD_FIN: integer;         /// Código da finalidade do arquivo: 0 - Remessa do arquivo original / 1 - Remessa do arquivo substituto.
+    fDT_INI: TDateTime;        /// Data inicial das informações contidas no arquivo
+    fDT_FIN: TDateTime;        /// Data final das informações contidas no arquivo
     fNOME: AnsiString;         /// Nome empresarial do contribuinte:
     fCNPJ: AnsiString;         /// Número de inscrição do contribuinte:
     fCPF: AnsiString;          /// Número de inscrição do contribuinte:
     fUF: AnsiString;           /// Sigla da unidade da federação:
     fIE: AnsiString;           /// Inscrição Estadual do contribuinte:
-    fCOD_MUN: integer;     /// Código do município do domicílio fiscal:
+    fCOD_MUN: integer;         /// Código do município do domicílio fiscal:
     fIM: AnsiString;           /// Inscrição Municipal do contribuinte:
     fSUFRAMA: AnsiString;      /// Número de inscrição do contribuinte:
     fIND_PERFIL: AnsiString;   /// Perfil de apresentação do arquivo fiscal: A - Perfil A / B - Perfil B / C - Perfil C
-    fIND_ATIV: integer;    /// Indicador de tipo de atividade: 0 - Industrial ou equiparado a industrial; 1 - Outros.
+    fIND_ATIV: integer;        /// Indicador de tipo de atividade: 0 - Industrial ou equiparado a industrial; 1 - Outros.
   public
     property COD_VER: integer read FCOD_VER write FCOD_VER;
     property COD_FIN: integer read FCOD_FIN write FCOD_FIN;
@@ -152,7 +152,7 @@ type
     fFONE: AnsiString;        /// Número do telefone:
     fFAX: AnsiString;         /// Número do fax:
     fEMAIL: AnsiString;       /// Endereço do correio eletrônico:
-    fCOD_MUN: integer;    /// Código do município, conforme tabela IBGE:
+    fCOD_MUN: integer;        /// Código do município, conforme tabela IBGE:
   public
     property NOME: AnsiString read FNOME write FNOME;
     property CPF: AnsiString read FCPF write FCPF;
@@ -179,7 +179,7 @@ type
     fCNPJ: AnsiString;        /// CNPJ do participante:
     fCPF: AnsiString;         /// CPF do participante na unidade da federação do destinatário:
     fIE: AnsiString;          /// Inscrição Estadual do participante:
-    fCOD_MUN: integer;    /// Código do município:
+    fCOD_MUN: integer;        /// Código do município:
     fSUFRAMA: AnsiString;     /// Número de inscrição na Suframa:
     fENDERECO: AnsiString;    /// Logradouro e endereço do imóvel:
     fNUM: AnsiString;         /// Número do imóvel:
@@ -306,8 +306,8 @@ type
   TRegistro0205 = class(TPersistent)
   private
     fDESCR_ANT_ITEM: AnsiString;    /// Descrição anterior do item:
-    fDT_INI: TDateTime;         /// Data inicial de utilização do código:
-    fDT_FIN: TDateTime;         /// Data final de utilização do código:
+    fDT_INI: TDateTime;             /// Data inicial de utilização do código:
+    fDT_FIN: TDateTime;             /// Data final de utilização do código:
   public
     property DESCR_ANT_ITEM: AnsiString read FDESCR_ANT_ITEM write FDESCR_ANT_ITEM;
     property DT_INI: TDateTime read FDT_INI write FDT_INI;
@@ -477,7 +477,7 @@ begin
   Put(Index, Value);
 end;
 
-(* TRegistro0150List *)
+{ TRegistro0150List }
 
 destructor TRegistro0150List.Destroy;
 var
@@ -503,7 +503,7 @@ begin
   Put(Index, Value);
 end;
 
-(* TRegistro0175List *)
+{ TRegistro0175List }
 
 destructor TRegistro0175List.Destroy;
 var
@@ -529,7 +529,7 @@ begin
   Put(Index, Value);
 end;
 
-(* TRegistro0190List *)
+{ TRegistro0190List }
 
 destructor TRegistro0190List.Destroy;
 var
@@ -555,7 +555,7 @@ begin
   Put(Index, Value);
 end;
 
-(* TRegistro0200List *)
+{ TRegistro0200List }
 
 destructor TRegistro0200List.Destroy;
 var
@@ -581,7 +581,7 @@ begin
   Put(Index, Value);
 end;
 
-(* TRegistro0205List *)
+{ TRegistro0205List }
 
 destructor TRegistro0205List.Destroy;
 var
@@ -607,7 +607,7 @@ begin
   Put(Index, Value);
 end;
 
-(* TRegistro0206List *)
+{ TRegistro0206List }
 
 destructor TRegistro0206List.Destroy;
 var
@@ -633,7 +633,7 @@ begin
   Put(Index, Value);
 end;
 
-(* TRegistro0220List *)
+{ TRegistro0220List }
 
 destructor TRegistro0220List.Destroy;
 var
@@ -659,7 +659,7 @@ begin
   Put(Index, Value);
 end;
 
-(* TRegistro0400List *)
+{ TRegistro0400List }
 
 destructor TRegistro0400List.Destroy;
 var
@@ -685,7 +685,7 @@ begin
   Put(Index, Value);
 end;
 
-(* TRegistro0450List *)
+{ TRegistro0450List }
 
 destructor TRegistro0450List.Destroy;
 var
@@ -711,7 +711,7 @@ begin
   Put(Index, Value);
 end;
 
-(* TRegistro0460List *)
+{ TRegistro0460List }
 
 destructor TRegistro0460List.Destroy;
 var

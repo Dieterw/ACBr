@@ -47,13 +47,17 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.01a   19/11/09
+---------------
+[-] Limpeza de código após, modificações para geração de arquivos em hierarquia
+
 Versão 0.01a   18/11/09
 ---------------
 [-] Cercado no método "WriteRegistroC190" o campo "COD_OBS" por não passar na
     validação do PVA.
 [+] Implementado a hierarquia de Pai-Filho do RegistroC190 (por Jean Barreiros)
 [-] Retirada as propriedades "ZeroRetornaVazio"
-[*] Susbstituído o tipo da propriedade "IND_MOV", novamente para "AnsiString"
+[*] Susbstituído o tipo da propriedade "IND_MOV", novamente para "Integer"
 [*] Criado o parametro "Nulo" nas funções LFill com os parametros tipo
     Integer, Currency e TDateTime.
 

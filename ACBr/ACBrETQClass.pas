@@ -60,6 +60,8 @@ type
   declara a Classe. NAO DEVE SER INSTANCIADA. Usada apenas como base para
   as demais Classes de BALANCA como por exemplo a classe TACBrETQPpla }
 
+{ TACBrETQClass }
+
 TACBrETQClass = class
   private
     FTemperatura: Integer;
@@ -73,6 +75,7 @@ TACBrETQClass = class
     fpModeloStr: String;
     fpListaCmd: TStringList;
     fpCmd: AnsiString;
+    fpLimparMemoria : Boolean;
   public
     property Ativo  : Boolean read fpAtivo write SetAtivo;
     property ModeloStr: String read fpModeloStr;
@@ -80,12 +83,13 @@ TACBrETQClass = class
     property Cmd: AnsiString read fpCmd write fpCmd;
     property Temperatura: Integer read FTemperatura write SetTemperatura;
     property Avanco: Integer read FAvanco write SetAvanco;
+    property LimparMemoria: Boolean read fpLimparMemoria write fpLimparMemoria ;
 
     constructor Create(AOwner: TComponent);
-    destructor Destroy  ; override ;
+    destructor Destroy  ; override;
 
-    procedure Ativar ; virtual ;
-    procedure Desativar ; virtual ;
+    procedure Ativar ; virtual;
+    procedure Desativar ; virtual;
 
     procedure ImprimirTexto(Orientacao: TACBrETQOrientacao; Fonte: Integer;
       MultiplicadorH, MultiplicadorV: Char; Vertical, Horizontal: Integer;
@@ -100,8 +104,7 @@ TACBrETQClass = class
        NomeImagem: String); virtual;
     procedure CarregarImagem(MonoBMP : TBitmap; NomeImagem: String;
        Flipped : Boolean = True ); virtual;
-    procedure Imprimir(Copias: Integer = 1; AvancoEtq: Integer = 0;
-       LimparMemoria: Boolean = True); virtual;
+    procedure Imprimir(Copias: Integer = 1; AvancoEtq: Integer = 0); virtual;
 end;
 
 implementation
@@ -126,6 +129,7 @@ begin
   fpAtivo     := false ;
   fpModeloStr := 'Não Definida' ;
   fpListaCmd:= TStringList.Create;
+  fpLimparMemoria := True ;
   
   FAvanco      := 0;
   FTemperatura := 10 ;
@@ -180,6 +184,12 @@ begin
   raise Exception.Create(ACBrStr('Função ImprimirCaixa não implementada em: ') + ModeloStr);
 end;
 
+procedure TACBrETQClass.ImprimirImagem(MultiplicadorImagem, Linha,
+   Coluna : Integer; NomeImagem : String);
+begin
+  raise Exception.Create(ACBrStr('Função ImprimirImagem não implementada em: ') + ModeloStr);
+end;
+
 procedure TACBrETQClass.ImprimirLinha(Vertical, Horizontal, Largura,
   Altura: Integer);
 begin
@@ -203,7 +213,7 @@ begin
   FAvanco := Value;
 end;
 
-procedure TACBrETQClass.Imprimir(Copias, AvancoEtq: Integer; LimparMemoria: Boolean);
+procedure TACBrETQClass.Imprimir(Copias, AvancoEtq: Integer);
 begin
   raise Exception.Create(ACBrStr('Função Imprimir não implementada em: ') + ModeloStr);
 end;
@@ -211,12 +221,6 @@ end;
 procedure TACBrETQClass.CarregarImagem(MonoBMP : TBitmap; NomeImagem: String; Flipped : Boolean);
 begin
   raise Exception.Create(ACBrStr('Função CarregarImagem não implementada em: ') + ModeloStr);
-end;
-
-procedure TACBrETQClass.ImprimirImagem(MultiplicadorImagem, Linha,
-  Coluna: Integer; NomeImagem: String);
-begin
-  raise Exception.Create(ACBrStr('Função ImprimirImagem não implementada em: ') + ModeloStr);
 end;
 
 end.

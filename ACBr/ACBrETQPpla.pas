@@ -69,7 +69,7 @@ type
       EspessuraVertical, EspessuraHorizontal: Integer); override;
     procedure ImprimirImagem(MultiplicadorImagem, Linha, Coluna: Integer; NomeImagem: String); override;
     procedure CarregarImagem(MonoBMP : TBitmap; NomeImagem: String; Flipped : Boolean); override;
-    procedure Imprimir(Copias: Integer = 1; AvancoEtq: Integer = 0; LimparMemoria: Boolean = True); override;
+    procedure Imprimir(Copias: Integer = 1; AvancoEtq: Integer = 0); override;
 
   end ;
 
@@ -88,8 +88,7 @@ begin
   Temperatura := 10;
 end;
 
-procedure TACBrETQPpla.Imprimir(Copias: Integer = 1; AvancoEtq: Integer = 0;
-   LimparMemoria: Boolean = True);
+procedure TACBrETQPpla.Imprimir(Copias: Integer = 1; AvancoEtq: Integer = 0);
 var
    Temp, NCop : String;
 begin
@@ -124,7 +123,7 @@ begin
 
   ListaCmd.Add(Cmd);
 
-  fpDevice.EnviaString(ListaCmd.GetText);
+  fpDevice.EnviaString(ListaCmd.Text);
   ListaCmd.Clear;
 end;
 

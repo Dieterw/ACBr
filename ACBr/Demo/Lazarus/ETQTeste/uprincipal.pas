@@ -17,6 +17,7 @@ type
     Button1 : TButton;
     Button2 : TButton;
     cbModelo: TComboBox;
+    ckMemoria : TCheckBox;
     Edit1 : TEdit;
     Image1 : TImage;
     Label1: TLabel;
@@ -51,6 +52,7 @@ begin
   begin
      Modelo := TACBrETQModelo(cbModelo.ItemIndex);
      Porta := cbPorta.Text;
+     LimparMemoria := ckMemoria.Checked;
      Ativar;
 
      ImprimirTexto(orNormal, 2, '2', '2', 190, 5, 'BISCOITO MARILAN RECH 335G');
@@ -71,6 +73,7 @@ begin
      Modelo := TACBrETQModelo(cbModelo.ItemIndex);
      Porta := cbPorta.Text;
      Avanco := StrToInt(eAvanco.Text);
+     LimparMemoria := ckMemoria.Checked;
      Ativar;
 
      ImprimirTexto(orNormal, 2, '1', '2', 0180, 0015, 'BISCOITO REC 335G');
@@ -97,6 +100,7 @@ begin
      Modelo := TACBrETQModelo(cbModelo.ItemIndex);
      Porta := cbPorta.Text;
      Avanco := StrToInt(eAvanco.Text);
+     LimparMemoria := ckMemoria.Checked;
      Ativar;
 
      ImprimirImagem(1,10,10,Edit1.Text);
@@ -111,18 +115,19 @@ begin
   if OpenPictureDialog1.Execute then
   begin
      Image1.Picture.LoadFromFile(OpenPictureDialog1.FileName);
-
-     with ACBrETQ do
-     begin
-        Modelo := TACBrETQModelo(cbModelo.ItemIndex);
-        Porta := cbPorta.Text;
-        Ativar;
-
-        CarregarImagem(Image1.Picture.Bitmap, Edit1.Text, True);
-
-        Desativar;
-     end ;
   end ;
+
+   with ACBrETQ do
+   begin
+      Modelo := TACBrETQModelo(cbModelo.ItemIndex);
+      Porta := cbPorta.Text;
+      Ativar;
+
+      CarregarImagem(Image1.Picture.Bitmap, Edit1.Text, True);
+
+      Desativar;
+   end ;
+
 end;
 
 initialization

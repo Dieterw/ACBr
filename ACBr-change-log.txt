@@ -101,6 +101,9 @@ Versão 0.8.9b  23/11/09
 [+]    Implementado método:        (Por DSA)
        CarregarImagem( MonoBMP : TBitmap; NomeImagem: String; Flipped : Boolean = True);
 
+[+]    Adicionada Propriedade "LimparMemoria: Boolean". 
+       Se For "True" (default), Limpa a memoria RAM a cada chamada do método "Imprimir"
+
 [+]    Implementado método:        (Por Anderson Rogerio Bejatto)
        ImprimirImagem(MultiplicadorImagem, Linha, Coluna: Integer; NomeImagem: String);
 

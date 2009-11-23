@@ -62,6 +62,9 @@ type
 TACBrETQModelo = (etqNenhum, etqPpla, etqPplb);
 
 { Componente ACBrETQ }
+
+{ TACBrETQ }
+
 TACBrETQ = class( TACBrComponent )
   private
     fsDevice  : TACBrDevice ;   { SubComponente ACBrDevice }
@@ -70,6 +73,8 @@ TACBrETQ = class( TACBrComponent )
     fsModelo : TACBrETQModelo;
     fsETQ    : TACBrETQClass ;
 
+    function GetLimparMemoria : Boolean;
+    procedure SetLimparMemoria(const AValue : Boolean);
     procedure SetModelo(const Value: TACBrETQModelo);
     procedure SetPorta(const Value: String);
     procedure SetAtivo(const Value: Boolean);
@@ -88,7 +93,7 @@ TACBrETQ = class( TACBrComponent )
     property ModeloStr : String read GetModeloStrClass;
 
     constructor Create(AOwner: TComponent); override;
-    Destructor Destroy  ; override ;
+    Destructor Destroy  ; override;
 
     procedure Ativar ;
     procedure Desativar ;
@@ -105,8 +110,7 @@ TACBrETQ = class( TACBrComponent )
     procedure ImprimirImagem(MultiplicadorImagem, Linha, Coluna: Integer; NomeImagem: String);
     procedure CarregarImagem(MonoBMP : TBitmap; NomeImagem: String;
        Flipped : Boolean = True);
-    procedure Imprimir(Copias: Integer = 1; AvancoEtq: Integer = 0;
-       LimparMemoria: Boolean = True);
+    procedure Imprimir(Copias: Integer = 1; AvancoEtq: Integer = 0);
 
   published
     property Modelo : TACBrETQModelo read fsModelo write SetModelo
@@ -116,6 +120,9 @@ TACBrETQ = class( TACBrComponent )
       default 10 ;
     property Avanco: Integer read GetAvanco write SetAvanco
       default 0 ;
+    property LimparMemoria: Boolean read GetLimparMemoria write SetLimparMemoria
+      default True ;
+
     { Instancia do Componente ACBrDevice, será passada para fsETQ.create }
     property Device : TACBrDevice read fsDevice ;
   end ;
@@ -227,6 +234,16 @@ begin
   fsDevice.Porta := Value ;
 end;
 
+function TACBrETQ.GetLimparMemoria : Boolean;
+begin
+   Result := fsETQ.LimparMemoria;
+end;
+
+procedure TACBrETQ.SetLimparMemoria(const AValue : Boolean);
+begin
+   fsETQ.LimparMemoria := AValue;
+end;
+
 procedure TACBrETQ.ImprimirBarras(Orientacao: TACBrETQOrientacao; TipoBarras,
   LarguraBarraLarga, LarguraBarraFina: Char; Vertical, Horizontal: Integer;
   Texto: String; AlturaCodBarras: Integer);
@@ -273,12 +290,12 @@ begin
                        Texto, SubFonte);
 end;
 
-procedure TACBrETQ.Imprimir(Copias, AvancoEtq: Integer; LimparMemoria: Boolean);
+procedure TACBrETQ.Imprimir(Copias, AvancoEtq: Integer);
 begin
   if not Ativo then
      Ativar ;
 
-  fsETQ.Imprimir(Copias, AvancoEtq, LimparMemoria);
+  fsETQ.Imprimir(Copias, AvancoEtq);
 end;
 
 procedure TACBrETQ.SetTemperatura(const Value: Integer);

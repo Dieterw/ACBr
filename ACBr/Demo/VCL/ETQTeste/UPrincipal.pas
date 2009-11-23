@@ -25,6 +25,7 @@ type
     Button2: TButton;
     Button1: TButton;
     OpenPictureDialog1: TOpenPictureDialog;
+    ckMemoria: TCheckBox;
     procedure bEtqSimplesClick(Sender: TObject);
     procedure bEtqCarreirasClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -54,6 +55,7 @@ begin
   begin
      Modelo := TACBrETQModelo(cbModelo.ItemIndex);
      Porta := cbPorta.Text;
+     LimparMemoria := ckMemoria.Checked ;
      Ativar;
 
      ImprimirTexto(orNormal, 2, '2', '2', 190, 5, 'BISCOITO MARILAN RECH 335G');
@@ -74,6 +76,7 @@ begin
      Modelo := TACBrETQModelo(cbModelo.ItemIndex);
      Porta := cbPorta.Text;
      Avanco := StrToInt(eAvanco.Text);
+     LimparMemoria := ckMemoria.Checked ;
      Ativar;
 
      ImprimirTexto(orNormal, 2, '1', '2', 0180, 0015, 'BISCOITO REC 335G');
@@ -93,25 +96,6 @@ begin
   end;
 end;
 
-procedure TFPrincipal.Button2Click(Sender: TObject);
-begin
-  if OpenPictureDialog1.Execute then
-  begin
-     Image1.Picture.LoadFromFile(OpenPictureDialog1.FileName);
-
-     with ACBrETQ do
-     begin
-        Modelo := TACBrETQModelo(cbModelo.ItemIndex);
-        Porta := cbPorta.Text;
-        Ativar;
-
-        CarregarImagem(Image1.Picture.Bitmap, Edit1.Text, True);
-
-        Desativar;
-     end ;
-  end ;
-end;
-
 procedure TFPrincipal.Button1Click(Sender: TObject);
 begin
   with ACBrETQ do
@@ -119,11 +103,32 @@ begin
      Modelo := TACBrETQModelo(cbModelo.ItemIndex);
      Porta := cbPorta.Text;
      Avanco := StrToInt(eAvanco.Text);
+     LimparMemoria := ckMemoria.Checked ;
      Ativar;
 
      ImprimirImagem(1,10,10,Edit1.Text);
 
      Imprimir(StrToInt(eCopias.Text), StrToInt(eAvanco.Text));
+     Desativar;
+  end ;
+end;
+
+procedure TFPrincipal.Button2Click(Sender: TObject);
+begin
+  if OpenPictureDialog1.Execute then
+  begin
+     Image1.Picture.LoadFromFile(OpenPictureDialog1.FileName);
+  end ;
+
+  with ACBrETQ do
+  begin
+     Modelo := TACBrETQModelo(cbModelo.ItemIndex);
+     Porta := cbPorta.Text;
+     LimparMemoria := ckMemoria.Checked ;
+     Ativar;
+
+     CarregarImagem(Image1.Picture.Bitmap, Edit1.Text, True);
+
      Desativar;
   end ;
 end;

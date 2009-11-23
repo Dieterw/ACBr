@@ -270,14 +270,12 @@ object FPrincipal: TFPrincipal
     Left = 127
     Top = 27
   end
-  object OpenPictureDialog1: TOpenPictureDialog
-    DefaultExt = 'bmp'
+  object OpenDialog1: TOpenDialog
     Filter = 'BMP MonoCrom'#225'tico|*.bmp'
     FilterIndex = 0
-    Options = [ofEnableSizing, ofHideReadOnly, ofPreview, ofAutoPreview]
     Height = 0
     Width = 0
-    Left = 296
+    Left = 344
     Top = 8
   end
 end

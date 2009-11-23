@@ -2,10 +2,12 @@
 <CONFIG>
   <ProjectOptions>
     <PathDelim Value="\"/>
-    <Version Value="6"/>
+    <Version Value="7"/>
     <General>
+      <Flags>
+        <LRSInOutputDirectory Value="False"/>
+      </Flags>
       <MainUnit Value="0"/>
-      <IconPath Value="./"/>
       <TargetFileExt Value=".exe"/>
       <ActiveEditorIndexAtStart Value="0"/>
     </General>
@@ -47,13 +49,12 @@
       </Unit0>
       <Unit1>
         <Filename Value="uprincipal.pas"/>
-        <ComponentName Value="FPrincipal"/>
         <IsPartOfProject Value="True"/>
+        <ComponentName Value="FPrincipal"/>
         <ResourceBaseClass Value="Form"/>
-        <ResourceFilename Value="uprincipal.lrs"/>
         <UnitName Value="UPrincipal"/>
-        <CursorPos X="38" Y="9"/>
-        <TopLine Value="1"/>
+        <CursorPos X="35" Y="99"/>
+        <TopLine Value="90"/>
         <EditorIndex Value="0"/>
         <UsageCount Value="20"/>
         <Loaded Value="True"/>
@@ -66,11 +67,27 @@
         <SyntaxHighlighter Value="LFM"/>
       </Unit2>
     </Units>
-    <JumpHistory Count="1" HistoryIndex="0">
+    <JumpHistory Count="5" HistoryIndex="4">
       <Position1>
         <Filename Value="uprincipal.pas"/>
-        <Caret Line="9" Column="39" TopLine="1"/>
+        <Caret Line="9" Column="57" TopLine="1"/>
       </Position1>
+      <Position2>
+        <Filename Value="uprincipal.pas"/>
+        <Caret Line="114" Column="59" TopLine="91"/>
+      </Position2>
+      <Position3>
+        <Filename Value="uprincipal.pas"/>
+        <Caret Line="90" Column="33" TopLine="81"/>
+      </Position3>
+      <Position4>
+        <Filename Value="uprincipal.pas"/>
+        <Caret Line="83" Column="48" TopLine="69"/>
+      </Position4>
+      <Position5>
+        <Filename Value="uprincipal.pas"/>
+        <Caret Line="65" Column="1" TopLine="42"/>
+      </Position5>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

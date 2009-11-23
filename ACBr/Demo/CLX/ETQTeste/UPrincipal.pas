@@ -3,7 +3,7 @@ unit UPrincipal;
 interface
 
 uses QForms, SysUtils, ACBrDevice, ACBrETQ, QStdCtrls, Classes, QControls,
-  ACBrBase, QGraphics, QExtCtrls, QDialogs, JvQOpenPictureDlg ;
+  ACBrBase, QGraphics, QExtCtrls, QDialogs ;
 
 
 type
@@ -24,7 +24,7 @@ type
     Edit1: TEdit;
     Label5: TLabel;
     Button2: TButton;
-    OpenPictureDialog1: TOpenPictureDialog;
+    OpenDialog1: TOpenDialog;
     procedure bEtqSimplesClick(Sender: TObject);
     procedure bEtqCarreirasClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
@@ -105,9 +105,9 @@ end;
 
 procedure TFPrincipal.Button2Click(Sender: TObject);
 begin
-  if OpenPictureDialog1.Execute then
+  if OpenDialog1.Execute then
   begin
-     Image1.Picture.LoadFromFile(OpenPictureDialog1.FileName);
+     Image1.Picture.LoadFromFile(OpenDialog1.FileName);
 
      with ACBrETQ do
      begin

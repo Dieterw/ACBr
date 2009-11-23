@@ -98,7 +98,7 @@ TACBrETQClass = class
       EspessuraVertical, EspessuraHorizontal: Integer); virtual;
     procedure ImprimirImagem(MultiplicadorImagem, Linha, Coluna: Integer;
        NomeImagem: String); virtual;
-    procedure CarregarImagem(ImagemBMP : TBitmap; NomeImagem: String;
+    procedure CarregarImagem(MonoBMP : TBitmap; NomeImagem: String;
        Flipped : Boolean = True ); virtual;
     procedure Imprimir(Copias: Integer = 1; AvancoEtq: Integer = 0;
        LimparMemoria: Boolean = True); virtual;
@@ -208,7 +208,7 @@ begin
   raise Exception.Create(ACBrStr('Função Imprimir não implementada em: ') + ModeloStr);
 end;
 
-procedure TACBrETQClass.CarregarImagem(ImagemBMP : TBitmap; NomeImagem: String; Flipped : Boolean);
+procedure TACBrETQClass.CarregarImagem(MonoBMP : TBitmap; NomeImagem: String; Flipped : Boolean);
 begin
   raise Exception.Create(ACBrStr('Função CarregarImagem não implementada em: ') + ModeloStr);
 end;

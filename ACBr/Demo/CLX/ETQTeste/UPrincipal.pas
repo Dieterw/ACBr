@@ -3,7 +3,7 @@ unit UPrincipal;
 interface
 
 uses QForms, SysUtils, ACBrDevice, ACBrETQ, QStdCtrls, Classes, QControls,
-  ACBrBase, QGraphics, QExtCtrls ;
+  ACBrBase, QGraphics, QExtCtrls, QDialogs, JvQOpenPictureDlg ;
 
 
 type
@@ -21,9 +21,14 @@ type
     bEtqCarreiras: TButton;
     Image1: TImage;
     Button1: TButton;
+    Edit1: TEdit;
+    Label5: TLabel;
+    Button2: TButton;
+    OpenPictureDialog1: TOpenPictureDialog;
     procedure bEtqSimplesClick(Sender: TObject);
     procedure bEtqCarreirasClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -77,7 +82,7 @@ begin
      ImprimirTexto(orNormal, 2, '1', '1', 0140, 0620, 'CHOC BRANCO');
      ImprimirBarras(orNormal, 'F', '2', '2', 0020, 0620, '7896003701685', 070);
 
-     Imprimir(StrToInt(eCopias.Text));
+     Imprimir(StrToInt(eCopias.Text), StrToInt(eAvanco.Text));
      Desativar;
   end;
 end;
@@ -91,8 +96,29 @@ begin
      Avanco := StrToInt(eAvanco.Text);
      Ativar;
 
-     CarregarImagem(Image1.Picture.Bitmap, 'ACBR', True);
-     ImprimirImagem(1,10,10,'ACBR');
+     ImprimirImagem(1,10,10,Edit1.Text);
+
+     Imprimir(StrToInt(eCopias.Text), StrToInt(eAvanco.Text));
+     Desativar;
+  end ;
+end;
+
+procedure TFPrincipal.Button2Click(Sender: TObject);
+begin
+  if OpenPictureDialog1.Execute then
+  begin
+     Image1.Picture.LoadFromFile(OpenPictureDialog1.FileName);
+
+     with ACBrETQ do
+     begin
+        Modelo := TACBrETQModelo(cbModelo.ItemIndex);
+        Porta := cbPorta.Text;
+        Ativar;
+
+        CarregarImagem(Image1.Picture.Bitmap, Edit1.Text, True);
+
+        Desativar;
+     end ;
   end ;
 end;
 

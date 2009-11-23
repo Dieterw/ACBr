@@ -103,7 +103,7 @@ TACBrETQ = class( TACBrComponent )
     procedure ImprimirCaixa(Vertical, Horizontal, Largura, Altura,
       EspessuraVertical, EspessuraHorizontal: Integer);
     procedure ImprimirImagem(MultiplicadorImagem, Linha, Coluna: Integer; NomeImagem: String);
-    procedure CarregarImagem(ImagemBMP : TBitmap; NomeImagem: String;
+    procedure CarregarImagem(MonoBMP : TBitmap; NomeImagem: String;
        Flipped : Boolean = True);
     procedure Imprimir(Copias: Integer = 1; AvancoEtq: Integer = 0;
        LimparMemoria: Boolean = True);
@@ -310,13 +310,13 @@ begin
   fsETQ.ImprimirImagem(MultiplicadorImagem, Linha, Coluna, NomeImagem);
 end;
 
-procedure TACBrETQ.CarregarImagem(ImagemBMP : TBitmap; NomeImagem: String;
+procedure TACBrETQ.CarregarImagem(MonoBMP : TBitmap; NomeImagem: String;
    Flipped : Boolean);
 begin
   if not Ativo then
     Ativar;
 
-  fsETQ.CarregarImagem( ImagemBMP, NomeImagem, Flipped );
+  fsETQ.CarregarImagem( MonoBMP, NomeImagem, Flipped );
 end;
 
 end.

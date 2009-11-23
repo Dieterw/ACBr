@@ -2,8 +2,8 @@ object FPrincipal: TFPrincipal
   Left = 323
   Top = 236
   Width = 541
-  Height = 163
-  VertScrollBar.Range = 153
+  Height = 190
+  VertScrollBar.Range = 185
   HorzScrollBar.Range = 530
   ActiveControl = cbModelo
   BorderIcons = [biSystemMenu, biMinimize]
@@ -24,7 +24,6 @@ object FPrincipal: TFPrincipal
     Top = 8
     Width = 250
     Height = 109
-    AutoSize = True
     Picture.Data = {
       07544269746D6170E20D0000424DDE0D0000000000003E00000028000000FA00
       00006D0000000100010000000000A00D0000120B0000120B0000020000000200
@@ -234,17 +233,51 @@ object FPrincipal: TFPrincipal
     OnClick = bEtqCarreirasClick
   end
   object Button1: TButton
-    Left = 360
-    Top = 128
+    Left = 408
+    Top = 160
     Width = 121
     Height = 25
     Caption = 'Imprimir Imagem'
     TabOrder = 10
     OnClick = Button1Click
   end
+  object Edit1: TEdit
+    Left = 280
+    Top = 152
+    Width = 121
+    Height = 21
+    TabOrder = 11
+    Text = 'ACBR'
+  end
+  object Label5: TLabel
+    Left = 280
+    Top = 136
+    Width = 68
+    Height = 13
+    Caption = 'Nome Imagem'
+  end
+  object Button2: TButton
+    Left = 408
+    Top = 128
+    Width = 121
+    Height = 25
+    Caption = 'Carregar Imagem'
+    TabOrder = 13
+    OnClick = Button2Click
+  end
   object ACBrETQ: TACBrETQ
     Porta = 'LPT1'
     Left = 127
     Top = 27
+  end
+  object OpenPictureDialog1: TOpenPictureDialog
+    DefaultExt = 'bmp'
+    Filter = 'BMP MonoCrom'#225'tico|*.bmp'
+    FilterIndex = 0
+    Options = [ofEnableSizing, ofHideReadOnly, ofPreview, ofAutoPreview]
+    Height = 0
+    Width = 0
+    Left = 296
+    Top = 8
   end
 end

@@ -68,7 +68,7 @@ type
     procedure ImprimirCaixa(Vertical, Horizontal, Largura, Altura,
       EspessuraVertical, EspessuraHorizontal: Integer); override;
     procedure ImprimirImagem(MultiplicadorImagem, Linha, Coluna: Integer; NomeImagem: String); override;
-    procedure CarregarImagem(ImagemBMP : TBitmap; NomeImagem: String; Flipped : Boolean); override;
+    procedure CarregarImagem(MonoBMP : TBitmap; NomeImagem: String; Flipped : Boolean); override;
     procedure Imprimir(Copias: Integer = 1; AvancoEtq: Integer = 0; LimparMemoria: Boolean = True); override;
 
   end ;
@@ -294,7 +294,7 @@ begin
 end;
 
 //Carrega a imagem na memória RAM da impressora de etiquetas
-procedure TACBrETQPpla.CarregarImagem(ImagemBMP : TBitmap; NomeImagem: String;
+procedure TACBrETQPpla.CarregarImagem(MonoBMP : TBitmap; NomeImagem: String;
   Flipped : Boolean);
 Var
   TipoImagem : Char ;
@@ -314,7 +314,7 @@ begin
   { Lendo em MemoryStream temporário para nao apagar comandos nao processados }
   MS := TMemoryStream.Create;
   try
-     ImagemBMP.SaveToStream(MS);
+     MonoBMP.SaveToStream(MS);
      MS.Position := 0 ;
      SetLength(S,MS.Size);
      MS.ReadBuffer(pchar(S)^,MS.Size);

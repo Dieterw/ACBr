@@ -52,7 +52,7 @@ interface
 uses ACBrBase, ACBrDevice, ACBrETQClass,  {Units da ACBr}
      SysUtils
      {$IFNDEF CONSOLE}
-       {$IFDEF VisualCLX}, QExtCtrls {$ELSE}, ExtCtrls {$ENDIF}
+       {$IFDEF VisualCLX}, QExtCtrls, QGraphics {$ELSE}, ExtCtrls, Graphics {$ENDIF}
      {$ENDIF}
      {$IFDEF COMPILER6_UP}, Types {$ELSE}, Windows {$ENDIF}
      ,Contnrs, Classes;
@@ -102,7 +102,11 @@ TACBrETQ = class( TACBrComponent )
     procedure ImprimirLinha(Vertical, Horizontal, Largura, Altura: Integer);
     procedure ImprimirCaixa(Vertical, Horizontal, Largura, Altura,
       EspessuraVertical, EspessuraHorizontal: Integer);
-    procedure Imprimir(Copias: Integer = 1; AvancoEtq: Integer = 0);
+    procedure ImprimirImagem(MultiplicadorImagem, Linha, Coluna: Integer; NomeImagem: String);
+    procedure CarregarImagem(ImagemBMP : TBitmap; NomeImagem: String;
+       Flipped : Boolean = True);
+    procedure Imprimir(Copias: Integer = 1; AvancoEtq: Integer = 0;
+       LimparMemoria: Boolean = True);
 
   published
     property Modelo : TACBrETQModelo read fsModelo write SetModelo
@@ -269,12 +273,12 @@ begin
                        Texto, SubFonte);
 end;
 
-procedure TACBrETQ.Imprimir(Copias, AvancoEtq: Integer);
+procedure TACBrETQ.Imprimir(Copias, AvancoEtq: Integer; LimparMemoria: Boolean);
 begin
   if not Ativo then
      Ativar ;
 
-  fsETQ.Imprimir(Copias, AvancoEtq);
+  fsETQ.Imprimir(Copias, AvancoEtq, LimparMemoria);
 end;
 
 procedure TACBrETQ.SetTemperatura(const Value: Integer);
@@ -295,6 +299,24 @@ end;
 procedure TACBrETQ.SetAvanco(const Value: Integer);
 begin
   fsETQ.Avanco := Value;
+end;
+
+procedure TACBrETQ.ImprimirImagem(MultiplicadorImagem, Linha,
+  Coluna: Integer; NomeImagem: String);
+begin
+  if not Ativo then
+    Ativar;
+
+  fsETQ.ImprimirImagem(MultiplicadorImagem, Linha, Coluna, NomeImagem);
+end;
+
+procedure TACBrETQ.CarregarImagem(ImagemBMP : TBitmap; NomeImagem: String;
+   Flipped : Boolean);
+begin
+  if not Ativo then
+    Ativar;
+
+  fsETQ.CarregarImagem( ImagemBMP, NomeImagem, Flipped );
 end;
 
 end.

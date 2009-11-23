@@ -46,8 +46,9 @@
 unit ACBrETQPpla;
 
 interface
-uses ACBrETQClass, ACBrUtil, ACBrDevice, 
-     Classes;
+uses ACBrETQClass, ACBrUtil, ACBrDevice
+     {$IFDEF VisualCLX}, QGraphics {$ELSE}, Graphics {$ENDIF}
+     ,Classes ;
 
 const
    STX : String = chr(002);
@@ -66,7 +67,9 @@ type
     procedure ImprimirLinha(Vertical, Horizontal, Largura, Altura: Integer); override;
     procedure ImprimirCaixa(Vertical, Horizontal, Largura, Altura,
       EspessuraVertical, EspessuraHorizontal: Integer); override;
-    procedure Imprimir(Copias: Integer = 1; AvancoEtq: Integer = 0); override;
+    procedure ImprimirImagem(MultiplicadorImagem, Linha, Coluna: Integer; NomeImagem: String); override;
+    procedure CarregarImagem(ImagemBMP : TBitmap; NomeImagem: String; Flipped : Boolean); override;
+    procedure Imprimir(Copias: Integer = 1; AvancoEtq: Integer = 0; LimparMemoria: Boolean = True); override;
 
   end ;
 
@@ -85,7 +88,8 @@ begin
   Temperatura := 10;
 end;
 
-procedure TACBrETQPpla.Imprimir(Copias, AvancoEtq: Integer);
+procedure TACBrETQPpla.Imprimir(Copias: Integer = 1; AvancoEtq: Integer = 0;
+   LimparMemoria: Boolean = True);
 var
    Temp, NCop : String;
 begin
@@ -113,7 +117,10 @@ begin
 
   AvancoEtq := AvancoEtq + 220;
 
-  Cmd := 'E' + CRLF + STX + 'f' + IntToStr(AvancoEtq) + CRLF + STX + 'Q';
+  Cmd := 'E' + CRLF + STX + 'f' + IntToStr(AvancoEtq) + CRLF ;
+
+  if LimparMemoria then
+    Cmd := Cmd + STX + 'Q' ;
 
   ListaCmd.Add(Cmd);
 
@@ -260,5 +267,70 @@ begin
 
   ListaCmd.Add(Cmd);
 end;
+
+
+procedure TACBrETQPpla.ImprimirImagem(MultiplicadorImagem, Linha,
+  Coluna: Integer; NomeImagem: String);
+var
+  Mul, Lin, Col: String;
+begin
+  if (MultiplicadorImagem < 0) or (MultiplicadorImagem > 99) then
+    Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 99 para MultiplicadorImagem'));
+  Mul := padR(IntToStr(MultiplicadorImagem), 2, '0');
+
+  if (Linha < 0) or (Linha > 9999) then
+    Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 9999 para Linha'));
+  Lin := padR(IntToStr(Linha), 4, '0');
+
+  if (Coluna < 0) or (Coluna > 9999) then
+    Raise Exception.Create(ACBrStr('Informe um valor entre 0 e 9999 para Coluna'));
+  Col := padR(IntToStr(Coluna), 4, '0');
+
+  NomeImagem := OnlyAlphaNum(UpperCase(LeftStr(Trim(NomeImagem),16))) ;
+
+  Cmd := '1Y' + Mul + '000' + Lin + Col + NomeImagem;
+
+  ListaCmd.Add(Cmd);
+end;
+
+//Carrega a imagem na memória RAM da impressora de etiquetas
+procedure TACBrETQPpla.CarregarImagem(ImagemBMP : TBitmap; NomeImagem: String;
+  Flipped : Boolean);
+Var
+  TipoImagem : Char ;
+  MS : TMemoryStream;
+  S  : AnsiString ;
+begin
+  if Flipped then
+     TipoImagem := 'B'
+  else
+     TipoImagem := 'b' ;
+
+  NomeImagem := OnlyAlphaNum(UpperCase(LeftStr(Trim(NomeImagem),16))) ;
+
+  Cmd := STX + 'IA' + TipoImagem + NomeImagem + CRLF ;
+  S   := '' ;
+
+  { Lendo em MemoryStream temporário para nao apagar comandos nao processados }
+  MS := TMemoryStream.Create;
+  try
+     ImagemBMP.SaveToStream(MS);
+     MS.Position := 0 ;
+     SetLength(S,MS.Size);
+     MS.ReadBuffer(pchar(S)^,MS.Size);
+  finally
+     MS.Free ;
+  end ;
+
+  if Length(S) = 0 then
+     raise Exception.Create(ACBrStr('Erro ao ler a Imagem'));
+
+  Cmd := Cmd + S ;
+
+  fpDevice.EnviaString( Cmd );
+
+  ListaCmd.Clear ;
+end;
+
 
 end.

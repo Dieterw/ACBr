@@ -46,9 +46,10 @@
 unit ACBrETQClass;
 
 interface
-uses ACBrDevice, 
-     Classes,
-     {$IFDEF COMPILER6_UP} Types {$ELSE} Windows {$ENDIF} ;
+uses ACBrDevice,
+     Classes
+     {$IFDEF VisualCLX}, QGraphics {$ELSE}, Graphics {$ENDIF}
+     {$IFDEF COMPILER6_UP}, Types {$ELSE}, Windows {$ENDIF} ;
 
 const
    CRLF = #13 + #10;
@@ -71,12 +72,12 @@ TACBrETQClass = class
     fpAtivo   : Boolean ;
     fpModeloStr: String;
     fpListaCmd: TStringList;
-    fpCmd: String;
+    fpCmd: AnsiString;
   public
     property Ativo  : Boolean read fpAtivo write SetAtivo;
     property ModeloStr: String read fpModeloStr;
     property ListaCmd: TStringList read fpListaCmd write fpListaCmd;
-    property Cmd: String read fpCmd write fpCmd;
+    property Cmd: AnsiString read fpCmd write fpCmd;
     property Temperatura: Integer read FTemperatura write SetTemperatura;
     property Avanco: Integer read FAvanco write SetAvanco;
 
@@ -95,7 +96,12 @@ TACBrETQClass = class
     procedure ImprimirLinha(Vertical, Horizontal, Largura, Altura: Integer); virtual;
     procedure ImprimirCaixa(Vertical, Horizontal, Largura, Altura,
       EspessuraVertical, EspessuraHorizontal: Integer); virtual;
-    procedure Imprimir(Copias: Integer = 1; AvancoEtq: Integer = 0); virtual;
+    procedure ImprimirImagem(MultiplicadorImagem, Linha, Coluna: Integer;
+       NomeImagem: String); virtual;
+    procedure CarregarImagem(ImagemBMP : TBitmap; NomeImagem: String;
+       Flipped : Boolean = True ); virtual;
+    procedure Imprimir(Copias: Integer = 1; AvancoEtq: Integer = 0;
+       LimparMemoria: Boolean = True); virtual;
 end;
 
 implementation
@@ -197,9 +203,20 @@ begin
   FAvanco := Value;
 end;
 
-procedure TACBrETQClass.Imprimir(Copias, AvancoEtq: Integer);
+procedure TACBrETQClass.Imprimir(Copias, AvancoEtq: Integer; LimparMemoria: Boolean);
 begin
   raise Exception.Create(ACBrStr('Função Imprimir não implementada em: ') + ModeloStr);
+end;
+
+procedure TACBrETQClass.CarregarImagem(ImagemBMP : TBitmap; NomeImagem: String; Flipped : Boolean);
+begin
+  raise Exception.Create(ACBrStr('Função CarregarImagem não implementada em: ') + ModeloStr);
+end;
+
+procedure TACBrETQClass.ImprimirImagem(MultiplicadorImagem, Linha,
+  Coluna: Integer; NomeImagem: String);
+begin
+  raise Exception.Create(ACBrStr('Função ImprimirImagem não implementada em: ') + ModeloStr);
 end;
 
 end.

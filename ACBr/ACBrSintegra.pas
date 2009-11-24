@@ -1222,9 +1222,13 @@ begin
   Registros60M.Sort(Sort60M);
   for i:=0 to Registros60M.Count-1 do
   begin
-    Registros60M[i].Regs60A.Sort(Sort60A);
-    Registros60M[i].Regs60D.Sort(Sort60D);
-    Registros60M[i].Regs60I.Sort(Sort60I);
+    //removido pois sintegra tem ordem propria e nao consegui sortear os
+    //objetos na lista de objetos com mais de um campo
+
+    //    Registros60M[i].Regs60A.Sort(Sort60A);
+    //    Registros60M[i].Regs60D.Sort(Sort60D);
+    //    Registros60M[i].Regs60I.Sort(Sort60I);
+
     GerarRegistros60M(Registros60M[i]);
     GerarRegistros60A(Registros60M[i].Regs60A);
     GerarRegistros60D(Registros60M[i].Regs60D);
@@ -1237,11 +1241,11 @@ begin
   Registros60M.Sort(Sort60M);
   for i:=0 to Registros60M.Count-1 do
     GerarRegistros60M(Registros60M[i]);
-  Registros60A.Sort(Sort60A);
+//  Registros60A.Sort(Sort60A);
   GerarRegistros60A(Registros60A);
-  Registros60D.Sort(Sort60D);
+//  Registros60D.Sort(Sort60D);
   GerarRegistros60D(Registros60D);
-  Registros60I.Sort(Sort60I);
+//  Registros60I.Sort(Sort60I);
   GerarRegistros60I(Registros60I);
 end;
 end;
@@ -1539,7 +1543,7 @@ var
   i: Integer;
   wregistro: string;
 begin
-Registros74.Sort(Sort74);
+//Registros74.Sort(Sort74);
 for i:=0 to Registros74.Count - 1 do
 begin
   with Registros74[i] do

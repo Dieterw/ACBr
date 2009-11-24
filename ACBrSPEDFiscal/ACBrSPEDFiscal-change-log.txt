@@ -47,6 +47,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.01a   24/11/09
+---------------
+[+] Implementados os métodos que faltavam do Bloco_1 e Bloco_H 
+    por (Agnaldo Prates)
+
 Versão 0.01a   19/11/09
 ---------------
 [-] Limpeza de código após, modificações para geração de arquivos em hierarquia

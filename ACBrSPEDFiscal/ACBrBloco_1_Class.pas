@@ -209,23 +209,119 @@ begin
 end;
 
 function TBloco_1.WriteRegistro1105: AnsiString;
+var
+intFor: integer;
+strRegistro1105: string;
 begin
+  strRegistro1105 := '';
 
+  if Assigned( Registro1105 ) then
+  begin
+     for intFor := 0 to Registro1105.Count - 1 do
+     begin
+        with Registro1105.Items[intFor] do
+        begin
+          strRegistro1105 := strRegistro1105 + LFill('1105') +
+                                               LFill( COD_MOD ) +
+                                               LFill( SERIE ) +
+                                               LFill( NUM_DOC ) +
+                                               LFill( CHV_NFE ) +
+                                               LFill( DT_DOC ) +
+                                               LFill( COD_ITEM ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
+     end;
+  end;
+  Result := strRegistro1105;
 end;
 
 function TBloco_1.WriteRegistro1110: AnsiString;
+var
+intFor: integer;
+strRegistro1110: string;
 begin
+  strRegistro1110 := '';
 
+  if Assigned( Registro1110 ) then
+  begin
+     for intFor := 0 to Registro1110.Count - 1 do
+     begin
+        with Registro1110.Items[intFor] do
+        begin
+          strRegistro1110 := strRegistro1110 + LFill('1110') +
+                                               LFill( COD_PART ) +
+                                               LFill( COD_MOD ) +
+                                               LFill( SER ) +
+                                               LFill( NUM_DOC ) +
+                                               LFill( DT_DOC ) +
+                                               LFill( CHV_NFE ) +
+                                               LFill( NR_MEMO ) +
+                                               LFill( QTD,0 ) +
+                                               LFill( UNID ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
+     end;
+  end;
+  Result := strRegistro1110;
 end;
 
 function TBloco_1.WriteRegistro1200: AnsiString;
+var
+intFor: integer;
+strRegistro1200: string;
 begin
+  strRegistro1200 := '';
 
+  if Assigned( Registro1200 ) then
+  begin
+     for intFor := 0 to Registro1200.Count - 1 do
+     begin
+        with Registro1200.Items[intFor] do
+        begin
+          strRegistro1200 := strRegistro1200 + LFill('1200') +
+                                               LFill( COD_AJ_APUR ) +
+                                               LFill( SLD_CRED,0 ) +
+                                               LFill( CRED_APR,0 ) +
+                                               LFill( CRED_RECEB,0 ) +
+                                               LFill( CRED_UTIL,0 ) +
+                                               LFill( SLD_CRED_FIM,0 ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
+     end;
+  end;
+  Result := strRegistro1200;
 end;
 
 function TBloco_1.WriteRegistro1210: AnsiString;
+var
+intFor: integer;
+strRegistro1210: string;
 begin
+  strRegistro1210 := '';
 
+  if Assigned( Registro1210 ) then
+  begin
+     for intFor := 0 to Registro1210.Count - 1 do
+     begin
+        with Registro1210.Items[intFor] do
+        begin
+          strRegistro1210 := strRegistro1210 + LFill('1210') +
+                                               LFill( TIPO_UTIL ) +
+                                               LFill( NR_DOC ) +
+                                               LFill( VL_CRED_UTIL ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
+     end;
+  end;
+  Result := strRegistro1210;
 end;
 
 function TBloco_1.WriteRegistro1300: AnsiString;
@@ -523,8 +619,29 @@ begin
 end;
 
 function TBloco_1.WriteRegistro1600: AnsiString;
+var
+intFor: integer;
+strRegistro1600: string;
 begin
+  strRegistro1600 := '';
 
+  if Assigned( Registro1600 ) then
+  begin
+     for intFor := 0 to Registro1600.Count - 1 do
+     begin
+        with Registro1600.Items[intFor] do
+        begin
+          strRegistro1600 := strRegistro1600 + LFill('1600') +
+                                               LFill( COD_PART ) +
+                                               LFill( TOT_CREDITO ) +
+                                               LFill( TOT_DEBITO ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
+     end;
+  end;
+  Result := strRegistro1600;
 end;
 
 function TBloco_1.WriteRegistro1990: AnsiString;

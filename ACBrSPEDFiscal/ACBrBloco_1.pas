@@ -166,19 +166,19 @@ type
 
   TRegistro1200 = class(TPersistent)
   private
-    fCOD_AJ_APUR: AnsiString;         /// Código de ajuste, conforme informado na Tabela indicada no item 5.1.1.
-    fSLD_CRED: AnsiString;            /// Saldo de créditos fiscais de períodos anteriores
-    fCRED_APR: AnsiString;            /// Total de crédito apropriado no mês
-    fCRED_RECEB: AnsiString;          /// Total de créditos recebidos por transferência
-    fCRED_UTIL: AnsiString;           /// Total de créditos utilizados no período
-    fSLD_CRED_FIM: AnsiString;        /// Saldo de crédito fiscal acumulado a transportar para o período seguinte
+    fCOD_AJ_APUR : AnsiString;      /// Código de ajuste, conforme informado na Tabela indicada no item 5.1.1.
+    fSLD_CRED    : Currency;        /// Saldo de créditos fiscais de períodos anteriores
+    fCRED_APR    : Currency;        /// Total de crédito apropriado no mês
+    fCRED_RECEB  : Currency;        /// Total de créditos recebidos por transferência
+    fCRED_UTIL   : Currency;        /// Total de créditos utilizados no período
+    fSLD_CRED_FIM: Currency;        /// Saldo de crédito fiscal acumulado a transportar para o período seguinte
   public
-    property COD_AJ_APUR: AnsiString read FCOD_AJ_APUR write FCOD_AJ_APUR;
-    property SLD_CRED: AnsiString read FSLD_CRED write FSLD_CRED;
-    property CRED_APR: AnsiString read FCRED_APR write FCRED_APR;
-    property CRED_RECEB: AnsiString read FCRED_RECEB write FCRED_RECEB;
-    property CRED_UTIL: AnsiString read FCRED_UTIL write FCRED_UTIL;
-    property SLD_CRED_FIM: AnsiString read FSLD_CRED_FIM write FSLD_CRED_FIM;
+    property COD_AJ_APUR : AnsiString read FCOD_AJ_APUR  write FCOD_AJ_APUR;
+    property SLD_CRED    : Currency   read FSLD_CRED     write FSLD_CRED;
+    property CRED_APR    : Currency   read FCRED_APR     write FCRED_APR;
+    property CRED_RECEB  : Currency   read FCRED_RECEB   write FCRED_RECEB;
+    property CRED_UTIL   : Currency   read FCRED_UTIL    write FCRED_UTIL;
+    property SLD_CRED_FIM: Currency   read FSLD_CRED_FIM write FSLD_CRED_FIM;
   end;
 
   /// Registro 1200 - Lista

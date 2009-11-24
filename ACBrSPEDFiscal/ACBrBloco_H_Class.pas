@@ -112,12 +112,53 @@ end;
 
 function TBloco_H.WriteRegistroH005: AnsiString;
 begin
+  Result := '';
+
+  if Assigned(RegistroH005) then
+  begin
+     with RegistroH005 do
+     begin
+       Result := LFill('H005') +
+                 LFill( DT_INV ) +
+                 LFill( VL_INV, 0) +
+                 Delimitador +
+                 #13#10;
+       RegistroH990.QTD_LIN_H := RegistroH990.QTD_LIN_H + 1;
+     end;
+  end;
 
 end;
 
 function TBloco_H.WriteRegistroH010: AnsiString;
+var
+intFor: integer;
+strRegistroH010: string;
 begin
+  strRegistroH010 := '';
 
+  if Assigned( RegistroH010 ) then
+  begin
+     for intFor := 0 to RegistroH010.Count - 1 do
+     begin
+        with RegistroH010.Items[intFor] do
+        begin
+          strRegistroH010 := strRegistroH010 + LFill('H010') +
+                                               LFill( COD_ITEM ) +
+                                               LFill( UNID ) +
+                                               LFill( QTD,0 ) +
+                                               LFill( VL_UNIT,0 ) +
+                                               LFill( IND_PROP ) +
+                                               LFill( COD_PART ) +
+                                               LFill( TXT_COMPL ) +
+                                               LFill( COD_OBS ) +
+                                               LFill( COD_CTA ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroH990.QTD_LIN_H := RegistroH990.QTD_LIN_H + 1;
+     end;
+  end;
+  Result := strRegistroH010;
 end;
 
 function TBloco_H.WriteRegistroH990: AnsiString;

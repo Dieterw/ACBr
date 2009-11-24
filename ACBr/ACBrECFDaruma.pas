@@ -3557,7 +3557,7 @@ begin
   begin
     for A := 0 to fpFormasPagamentos.Count-1 do
     begin
-      RetCmd := EnviaComando( FS + 'R' + #201 + '009'+ IntToStrZero(A+1,2) + CR);
+      RetCmd := EnviaComando( FS + 'R' + #201 + '009'+ IntToStrZero(A+1,2) );
       RetCmd := Copy(RetCmd, 6, Length(RetCmd));
 
       fpFormasPagamentos[A].Total := RoundTo( StrToFloatDef(Copy(RetCmd,1,13),0)
@@ -3593,7 +3593,7 @@ begin
     // Autor: Andre Bohn
     for A := 0 to fpComprovantesNaoFiscais.Count -1 do
     begin
-      RetCmd := EnviaComando( FS + 'R' + #201 + '010'+ IntToStrZero(A+1,2) + CR);
+      RetCmd := EnviaComando( FS + 'R' + #201 + '010'+ IntToStrZero(A+1,2) );
       RetCmd := Copy(RetCmd, 6, Length(RetCmd));
 
       fpComprovantesNaoFiscais[A].Total   := RoundTo( StrToFloatDef(Copy(RetCmd,1,13),0)
@@ -3603,7 +3603,7 @@ begin
     // Autor: Maicon da Silva e Gustava Montagoli
     for A := 0 to fpComprovantesNaoFiscais.Count -1 do
     begin
-      RetCmd := EnviaComando( FS + 'R' + #201 + '011'+ IntToStrZero(A+1,2) + CR);
+      RetCmd := EnviaComando( FS + 'R' + #201 + '011'+ IntToStrZero(A+1,2) );
       RetCmd := Copy(RetCmd, 6, Length(RetCmd));
 
       fpComprovantesNaoFiscais[A].Contador   := StrToIntDef(Copy(RetCmd,1,4),0);

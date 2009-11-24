@@ -96,6 +96,13 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.8.9b  24/11/09
+-- ACBrECFDaruma --
+[-]    Corrigida sintaxe dos comandos LerTotaisFormaPagamento e
+       LerTotaisComprovanteNaoFiscal. Removido [CR] no final do comando.
+       Que causavam Erro Estendido: (24) "Erro no verificador da comunicação"
+       no modelo FS700             (Por DSA)
+
 Versão 0.8.9b  23/11/09
 -- ACBrETQ --
 [+]    Implementado método:        (Por DSA)

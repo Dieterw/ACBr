@@ -96,6 +96,18 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.8.9b  26/11/09
+-- ACBrValidador --
+[*]    Formatação de Inscrição Estadual modificada para inserir zeros a esquerda
+       quando Documento estiver incompleto. (Por: Maico)
+       http://acbr.sourceforge.net/mantis/view.php?id=421
+
+-- ACBrUtil --
+[+]    Adicionada:
+       Procedure FindFiles( const FileMask : String; AStringList : TStrings;
+                            IncludePath : Boolean = True ) ;
+
+       
 Versão 0.8.9b  24/11/09
 -- ACBrECFDaruma --
 [-]    Corrigida sintaxe dos comandos LerTotaisFormaPagamento e

@@ -1199,25 +1199,25 @@ Begin
   IF UF = 'SE' Then Mascara := '*********-*';
   IF UF = 'TO' Then Mascara := '***********';
 
-  Result  := '';
-  LenMas  := Length( Mascara ) ;
-  J       := 0 ;
+  Result := '';
+  LenMas := Length( Mascara ) ;
+  J := LenMas ;
 
-  For I := 1 to LenMas do
+  For I := LenMas downto 1 do
   begin
      C := Mascara[I] ;
 
      if C = '*' then
      begin
-        Inc( J ) ;
-
-        if J > LenDoc then
+        if J <= ( LenMas - LenDoc ) then
            C := '0'
         else
-           C := AString[J] ;
-     end ;
+           C := AString[( J - ( LenMas - LenDoc ) )] ;
 
-     Result := Result + C ;
+        Dec( J ) ;
+     end;
+
+     Result := C + Result;
   End;
 
   Result := Trim( Result );

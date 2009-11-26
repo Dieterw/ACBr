@@ -47,6 +47,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+
+Versão 0.01a   24/11/09
+---------------
+[*] Implementados checagem de NFs Canceladas no Bloco C método WriteRegistroC100
+    por (Jean Barreiros e Marcos Fernando)
+
 Versão 0.01a   24/11/09
 ---------------
 [+] Implementados os métodos que faltavam do Bloco_1 e Bloco_H 

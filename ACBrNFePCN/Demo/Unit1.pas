@@ -4,7 +4,7 @@ unit Unit1;
 
 interface
 
-uses IniFiles,
+uses IniFiles, ShellAPI,
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, Buttons, ComCtrls, OleCtrls, SHDocVw,
   ACBrNFe, pcnConversao, ACBrNFeDANFEClass, ACBrNFeDANFERave, ACBrUtil;
@@ -121,6 +121,10 @@ type
     btnImportarXML: TButton;
     TabSheet9: TTabSheet;
     trvwNFe: TTreeView;
+    lblColaborador: TLabel;
+    lblPatrocinador: TLabel;
+    lblDoar1: TLabel;
+    lblDoar2: TLabel;
     procedure sbtnCaminhoCertClick(Sender: TObject);
     procedure sbtnLogoMarcaClick(Sender: TObject);
     procedure sbtnPathSalvarClick(Sender: TObject);
@@ -144,11 +148,18 @@ type
     procedure btnConsultarDPECClick(Sender: TObject);
     procedure ACBrNFe1GerarLog(const Mensagem: String);
     procedure btnImportarXMLClick(Sender: TObject);
+    procedure lblMouseEnter(Sender: TObject);
+    procedure lblMouseLeave(Sender: TObject);
+    procedure lblColaboradorClick(Sender: TObject);
+    procedure lblPatrocinadorClick(Sender: TObject);
+    procedure lblDoar1Click(Sender: TObject);
+    
   private
     { Private declarations }
     procedure GravarConfiguracao ;
     procedure LerConfiguracao ;
     procedure LoadXML(MyMemo: TMemo; MyWebBrowser: TWebBrowser);
+
   public
     { Public declarations }
   end;
@@ -2048,5 +2059,30 @@ begin
 end;
 
 
+
+procedure TForm1.lblMouseEnter(Sender: TObject);
+begin
+ TLabel(Sender).Font.Style := [fsBold,fsUnderline];
+end;
+
+procedure TForm1.lblMouseLeave(Sender: TObject);
+begin
+ TLabel(Sender).Font.Style := [fsBold];
+end;
+
+procedure TForm1.lblColaboradorClick(Sender: TObject);
+begin
+  ShellExecute(0, Nil, 'http://acbr.sourceforge.net/drupal/?q=node/5', Nil, Nil, SW_NORMAL);
+end;
+
+procedure TForm1.lblPatrocinadorClick(Sender: TObject);
+begin
+  ShellExecute(0, Nil, 'http://acbr.sourceforge.net/drupal/?q=node/35', Nil, Nil, SW_NORMAL);
+end;
+
+procedure TForm1.lblDoar1Click(Sender: TObject);
+begin
+  ShellExecute(0, Nil, 'http://acbr.sourceforge.net/drupal/?q=node/14', Nil, Nil, SW_NORMAL);
+end;
 
 end.

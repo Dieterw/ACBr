@@ -5032,7 +5032,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
             end
             object rgTipoFonte: TRadioGroup
               Left = 298
-              Top = 112
+              Top = 129
               Width = 212
               Height = 33
               Caption = 'Tipo de Fonte(Rave CB)'
@@ -5041,6 +5041,14 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
                 'Times'
                 'Courier')
               TabOrder = 13
+            end
+            object cbxMostraStatus: TCheckBox
+              Left = 298
+              Top = 110
+              Width = 200
+              Height = 17
+              Caption = 'Mostrar Status'
+              TabOrder = 14
             end
           end
           object TabSheet2: TTabSheet

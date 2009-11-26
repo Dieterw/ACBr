@@ -21,20 +21,89 @@ object Form1: TForm1
     Height = 556
     Align = alLeft
     TabOrder = 0
+    object lblColaborador: TLabel
+      Left = 18
+      Top = 446
+      Width = 261
+      Height = 13
+      Cursor = crHandPoint
+      Caption = 'Veja a lista de Colaboradores do Projeto ACBr'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clNavy
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+      OnClick = lblColaboradorClick
+      OnMouseEnter = lblMouseEnter
+      OnMouseLeave = lblMouseLeave
+    end
+    object lblPatrocinador: TLabel
+      Left = 16
+      Top = 470
+      Width = 265
+      Height = 13
+      Cursor = crHandPoint
+      Caption = 'Veja a lista de Patrocinadores do Projeto ACBr'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clGreen
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+      OnClick = lblPatrocinadorClick
+      OnMouseEnter = lblMouseEnter
+      OnMouseLeave = lblMouseLeave
+    end
+    object lblDoar1: TLabel
+      Left = 21
+      Top = 494
+      Width = 255
+      Height = 13
+      Cursor = crHandPoint
+      Caption = 'Para se tornar Patrocinador do Projeto ACBr,'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clRed
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+      OnClick = lblDoar1Click
+      OnMouseEnter = lblMouseEnter
+      OnMouseLeave = lblMouseLeave
+    end
+    object lblDoar2: TLabel
+      Left = 117
+      Top = 510
+      Width = 63
+      Height = 13
+      Cursor = crHandPoint
+      Caption = 'clique aqui'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clRed
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+      OnClick = lblDoar1Click
+      OnMouseEnter = lblMouseEnter
+      OnMouseLeave = lblMouseLeave
+    end
     object GroupBox1: TGroupBox
       Left = 8
       Top = 8
       Width = 281
-      Height = 401
+      Height = 377
       Caption = 'Configura'#231#245'es'
       TabOrder = 0
       object PageControl1: TPageControl
         Left = 2
         Top = 15
         Width = 277
-        Height = 384
-        ActivePage = TabSheet7
+        Height = 360
+        ActivePage = TabSheet4
         Align = alClient
+        MultiLine = True
         TabOrder = 0
         object TabSheet1: TTabSheet
           Caption = 'Certificado'
@@ -706,7 +775,7 @@ object Form1: TForm1
     end
     object btnSalvarConfig: TBitBtn
       Left = 70
-      Top = 416
+      Top = 392
       Width = 153
       Height = 25
       Caption = 'Salvar Configura'#231#245'es'

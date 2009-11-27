@@ -112,6 +112,7 @@ type
   public
     constructor Create(AOwner: TComponent); override; /// Create
     destructor Destroy; override; /// Destroy
+    procedure LimpaRegistros;
 
     function WriteRegistroC001: AnsiString;
     function WriteRegistroC100: AnsiString;
@@ -287,6 +288,8 @@ begin
   FRegistroC111Count := 0;
   FRegistroC170Count := 0;
   FRegistroC190Count := 0;  {Jean Barreiros 18Nov2009}
+
+  FRegistroC990.QTD_LIN_C := 0;
 end;
 
 destructor TBloco_C.Destroy;
@@ -345,6 +348,61 @@ begin
   inherited;
 end;
 
+procedure TBloco_C.LimpaRegistros;
+begin
+  FRegistroC100.Clear; /// Falta testar se ao limpar o pai, limpa tb os filhos
+  FRegistroC112.Clear;
+  FRegistroC113.Clear;
+  FRegistroC114.Clear;
+  FRegistroC115.Clear;
+  FRegistroC120.Clear;
+  FRegistroC130.Clear;
+  FRegistroC140.Clear;
+  FRegistroC141.Clear;
+  FRegistroC160.Clear;
+  FRegistroC165.Clear;
+  FRegistroC171.Clear;
+  FRegistroC172.Clear;
+  FRegistroC173.Clear;
+  FRegistroC174.Clear;
+  FRegistroC175.Clear;
+  FRegistroC176.Clear;
+  FRegistroC177.Clear;
+  FRegistroC178.Clear;
+  FRegistroC179.Clear;
+  FRegistroC195.Clear;
+  FRegistroC197.Clear;
+  FRegistroC300.Clear;
+  FRegistroC310.Clear;
+  FRegistroC320.Clear;
+  FRegistroC321.Clear;
+  FRegistroC350.Clear;
+  FRegistroC370.Clear;
+  FRegistroC390.Clear;
+  FRegistroC400.Clear;
+  FRegistroC405.Clear;
+  FRegistroC410.Clear;
+  FRegistroC420.Clear;
+  FRegistroC425.Clear;
+  FRegistroC460.Clear;
+  FRegistroC470.Clear;
+  FRegistroC490.Clear;
+  FRegistroC495.Clear;
+  FRegistroC500.Clear;
+  FRegistroC510.Clear;
+  FRegistroC590.Clear;
+  FRegistroC600.Clear;
+  FRegistroC601.Clear;
+  FRegistroC610.Clear;
+  FRegistroC620.Clear;
+  FRegistroC690.Clear;
+  FRegistroC700.Clear;
+  FRegistroC790.Clear;
+  FRegistroC791.Clear;
+
+  FRegistroC990.QTD_LIN_C := 0;
+end;
+
 function TBloco_C.WriteRegistroC001: AnsiString;
 begin
   Result := '';
@@ -369,8 +427,7 @@ function TBloco_C.WriteRegistroC100: AnsiString;
 var
  intFor: integer;
  strRegistroC100: AnsiString;
- {Variaveis auxiliares para o tratamento das notas canceladas, denegadas ou inutilizada - Jean Barreiros 25Nov2009 }
- booNFCancelada: Boolean;
+ booNFCancelada: Boolean; /// Variavél p/ tratamento de NFs canceladas, denegadas ou inutilizada - Jean Barreiros 25Nov2009
 begin
   strRegistroC100 := '';
 
@@ -380,13 +437,12 @@ begin
      begin
         with RegistroC100.Items[intFor] do
         begin
-          {Tratamento das notas cancelado 02/03 ou denegada 04 ou inutilizada 05 - Jean Barreiros 25Nov2009 }
+          /// Tratamento NFs canceladas 02/03, denegada 04 ou inutilizada 05 - Jean Barreiros 25Nov2009
           if (COD_SIT = '02') or (COD_SIT = '03') or (COD_SIT = '04') or (COD_SIT = '05') then
             booNFCancelada := true
           else
             booNFCancelada := false;
 
-          {Fim do Tratamento das Notas canceladas, denegadas ou inutilizada*********************************}
           strRegistroC100 := strRegistroC100 + LFill('C100') +
                                                LFill( IND_OPER ) +
                                                LFill( IND_EMIT ) +

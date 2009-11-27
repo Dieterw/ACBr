@@ -79,6 +79,7 @@ type
   public
     constructor Create(AOwner: TComponent); override; /// Create
     destructor Destroy; override; /// Destroy
+    procedure LimpaRegistros;
 
     function WriteRegistroD001: AnsiString;
     function WriteRegistroD100: AnsiString;
@@ -174,6 +175,8 @@ begin
   FRegistroD420 := TRegistroD420List.Create;
   FRegistroD500 := TRegistroD500List.Create;
   FRegistroD990 := TRegistroD990.Create;
+
+  FRegistroD990.QTD_LIN_D := 0;
 end;
 
 destructor TBloco_D.Destroy;
@@ -207,6 +210,38 @@ begin
   FRegistroD500.Free;
   FRegistroD990.Free;
   inherited;
+end;
+
+procedure TBloco_D.LimpaRegistros;
+begin
+  FRegistroD100.Clear;
+  FRegistroD110.Clear;
+  FRegistroD120.Clear;
+  FRegistroD130.Clear;
+  FRegistroD140.Clear;
+  FRegistroD150.Clear;
+  FRegistroD160.Clear;
+  FRegistroD161.Clear;
+  FRegistroD162.Clear;
+  FRegistroD170.Clear;
+  FRegistroD180.Clear;
+  FRegistroD190.Clear;
+  FRegistroD300.Clear;
+  FRegistroD301.Clear;
+  FRegistroD310.Clear;
+  FRegistroD350.Clear;
+  FRegistroD355.Clear;
+  FRegistroD360.Clear;
+  FRegistroD365.Clear;
+  FRegistroD370.Clear;
+  FRegistroD390.Clear;
+  FRegistroD400.Clear;
+  FRegistroD410.Clear;
+  FRegistroD411.Clear;
+  FRegistroD420.Clear;
+  FRegistroD500.Clear;
+
+  FRegistroD990.QTD_LIN_D := 0;
 end;
 
 function TBloco_D.WriteRegistroD001: AnsiString;

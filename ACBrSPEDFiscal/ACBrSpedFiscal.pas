@@ -60,6 +60,8 @@ type
     FBloco_D: TBloco_D;
     FBloco_E: TBloco_E;
     FBloco_H: TBloco_H;
+
+    procedure LimpaRegistros;
   protected
     // Periodo
     procedure SetDT_FIN(const Value: TDateTime); override;
@@ -273,6 +275,17 @@ begin
   inherited;
 end;
 
+procedure TACBrSPEDFiscal.LimpaRegistros;
+begin
+  FBloco_0.LimpaRegistros;
+  FBloco_1.LimpaRegistros;
+  FBloco_C.LimpaRegistros;
+  FBloco_D.LimpaRegistros;
+  FBloco_E.LimpaRegistros;
+  FBloco_H.LimpaRegistros;
+  FBloco_9.LimpaRegistros;
+end;
+
 procedure TACBrSPEDFiscal.SetDT_INI(const Value: TDateTime);
 begin
   inherited;
@@ -348,6 +361,8 @@ begin
   FBloco_E.OnError := OnError;
   FBloco_H.OnError := OnError;
   FBloco_9.OnError := OnError;
+  /// Limpa de todos os Blocos as listas de todos os registros.
+  LimpaRegistros;
   ///
   Check(DT_INI > 0,        'CHECAGEM INICIAL: Informe a data inicial das informações contidas no arquivo!');
   Check(DT_FIN > 0,        'CHECAGEM INICIAL: Informe a data final das informações contidas no arquivo!');

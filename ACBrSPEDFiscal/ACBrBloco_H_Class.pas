@@ -55,6 +55,7 @@ type
   public
     constructor Create(AOwner: TComponent); override; /// Create
     destructor Destroy; override; /// Destroy
+    procedure LimpaRegistros;
 
     function WriteRegistroH001: AnsiString;
     function WriteRegistroH005: AnsiString;
@@ -78,6 +79,7 @@ begin
   FRegistroH005 := TRegistroH005.Create;
   FRegistroH010 := TRegistroH010List.Create;
   FRegistroH990 := TRegistroH990.Create;
+
   FRegistroH990.QTD_LIN_H := 0;
 end;
 
@@ -88,6 +90,13 @@ begin
   FRegistroH010.Free;
   FRegistroH990.Free;
   inherited;
+end;
+
+procedure TBloco_H.LimpaRegistros;
+begin
+  FRegistroH010.Clear;
+
+  FRegistroH990.QTD_LIN_H := 0;
 end;
 
 function TBloco_H.WriteRegistroH001: AnsiString;

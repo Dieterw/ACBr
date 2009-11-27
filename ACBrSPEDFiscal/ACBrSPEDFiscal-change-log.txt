@@ -47,8 +47,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.01a   27/11/09
+---------------
+[+] Implementados a procedure "LimpaRegistros", para limpar os registros das
+    listas antes de gerar o TXT por (Isaque Pinheiro)
 
-Versão 0.01a   24/11/09
+Versão 0.01a   25/11/09
 ---------------
 [*] Implementados checagem de NFs Canceladas no Bloco C método WriteRegistroC100
     por (Jean Barreiros e Marcos Fernando)

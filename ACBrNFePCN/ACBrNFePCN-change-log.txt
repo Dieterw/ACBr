@@ -47,6 +47,9 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Alterações   27/11/09
+---------------
+[*] Adicionado parâmetro SalvaTXT na função SaveToFile, onde quando estiver True irá salvar o arquivo da NFe no padrão do emissor gratuíto de SP
 
 Alterações   18/11/09
 ---------------

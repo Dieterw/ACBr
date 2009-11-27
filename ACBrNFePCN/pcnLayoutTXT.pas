@@ -67,7 +67,7 @@ begin
 
   if versao = '1.10' then
   begin
-    LoadLayout('<B01>       NOTAFISCAL|1');
+    LoadLayout('<B01>       NOTA FISCAL|1');
     LoadLayout('<B01>     A|1.10|^id^'); //ok
     LoadLayout('<B01>     B|cUF¨|cNF¨|NatOp¨|indPag¨|mod¨|serie¨|nNF¨|dEmi¨|dSaiEnt¨|tpNF¨|cMunFG¨|TpImp¨|TpEmis¨|CDV¨|TpAmb¨|FinNFe¨|ProcEmi¨|VerProc¨'); //ok
     LoadLayout('<B12a>  B13|refNFe¨'); //ok

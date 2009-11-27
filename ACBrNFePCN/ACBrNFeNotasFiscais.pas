@@ -75,7 +75,7 @@ type
     destructor Destroy; override;
     procedure Imprimir;
     procedure ImprimirPDF;
-    function SaveToFile(CaminhoArquivo: string = ''): boolean;
+    function SaveToFile(CaminhoArquivo: string = ''; SalvaTXT : Boolean = False): boolean;
     function SaveToStream(Stream: TStringStream): boolean;
     procedure EnviarEmail(const sSmtpHost,
                                 sSmtpPort,
@@ -119,7 +119,7 @@ type
     function GetNamePath: string; override ;
     function LoadFromFile(CaminhoArquivo: string): boolean;
     function LoadFromStream(Stream: TStringStream): boolean;
-    function SaveToFile(PathArquivo: string = ''): boolean;
+    function SaveToFile(PathArquivo: string = ''; SalvaTXT : Boolean = False): boolean;
 
     property ACBrNFe : TComponent read FACBrNFe ;
   end;
@@ -188,7 +188,7 @@ begin
   TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.ImprimirDANFEPDF(NFe);
 end;
 
-function NotaFiscal.SaveToFile(CaminhoArquivo: string = ''): boolean;
+function NotaFiscal.SaveToFile(CaminhoArquivo: string = ''; SalvaTXT : Boolean = False): boolean;
 var
   LocNFeW : TNFeW;
 begin
@@ -197,10 +197,13 @@ begin
      LocNFeW := TNFeW.Create(NFe);
      try
         LocNFeW.schema := TsPL005c;
+        LocNFeW.Opcoes.GerarTXTSimultaneamente := SalvaTXT;
         LocNFeW.GerarXml;
         if NotaUtil.EstaVazio(CaminhoArquivo) then
            CaminhoArquivo := PathWithDelim(TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).Configuracoes.Geral.PathSalvar)+copy(NFe.infNFe.ID, (length(NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml';
         LocNFeW.Gerador.SalvarArquivo(CaminhoArquivo);
+        if SalvaTXT then
+           LocNFeW.Gerador.SalvarArquivo(ChangeFileExt(CaminhoArquivo,'.txt'),fgTXT);
         NomeArq := CaminhoArquivo;
      finally
         LocNFeW.Free;
@@ -505,7 +508,7 @@ begin
   end;
 end;
 
-function TNotasFiscais.SaveToFile(PathArquivo: string = ''): boolean;
+function TNotasFiscais.SaveToFile(PathArquivo: string = ''; SalvaTXT : Boolean = False): boolean;
 var
  i : integer;
  CaminhoArquivo : String;
@@ -519,7 +522,7 @@ begin
         else
            PathArquivo := ExtractFilePath(PathArquivo);
         CaminhoArquivo := PathWithDelim(PathArquivo)+StringReplace(TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].NFe.infNFe.ID, 'NFe', '', [rfIgnoreCase])+'-NFe.xml';
-        TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].SaveToFile(CaminhoArquivo);
+        TACBrNFe( FACBrNFe ).NotasFiscais.Items[i].SaveToFile(CaminhoArquivo, SalvaTXT);
      end;
  except
     Result := False;

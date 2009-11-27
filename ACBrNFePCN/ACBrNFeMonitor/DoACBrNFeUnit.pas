@@ -710,7 +710,7 @@ begin
               raise Exception.Create('Forma de Emissão Inválida.');
          end
 
-        else if Cmd.Metodo = 'lernfe' then //1-Normal 2-Contingencia 3-SCAN 4-DPEC 5-FSDA
+        else if Cmd.Metodo = 'lernfe' then
          begin
            try
               Cmd.Resposta := GerarNFeIni( Cmd.Params(0)  )
@@ -720,6 +720,18 @@ begin
                   raise Exception.Create('Erro ao gerar INI da NFe.'+sLineBreak+E.Message);
                 end;
            end;
+         end
+
+        else if Cmd.Metodo = 'nfetotxt' then  //1-Arquivo XML, 2-NomeArqTXT
+         begin
+           ACBrNFe1.NotasFiscais.Clear;
+           if FileExists(Cmd.Params(0)) then
+              ACBrNFe1.NotasFiscais.LoadFromFile(Cmd.Params(0))
+           else
+              raise Exception.Create('Arquivo '+Cmd.Params(0)+' não encontrado.');
+
+           ACBrNFe1.NotasFiscais.Items[0].SaveToFile(Cmd.Params(1),True);
+           Cmd.Resposta := ChangeFileExt(ACBrNFe1.NotasFiscais.Items[0].NomeArq,'.txt');
          end
 
         else if Cmd.Metodo = 'savetofile' then

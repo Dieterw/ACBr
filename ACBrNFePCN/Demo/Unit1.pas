@@ -1012,6 +1012,8 @@ if not(InputQuery('WebServices Enviar', 'Numero da Nota', vAux)) then
     Total.ICMSTot.vNF   := 25680;
     Total.ICMSTot.vProd := 25680;
     Total.retTrib.vRetPrev := 100;
+
+    InfAdic.infCpl := 'Seu Texto Aqui. Use ; (ponto e vírgula) para quebra de Linha.'
   end;
 
   ACBrNFe1.NotasFiscais.Items[0].SaveToFile;

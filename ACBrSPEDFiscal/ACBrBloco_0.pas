@@ -603,8 +603,7 @@ begin
   Result := TRegistro0200(Inherited Items[Index]);
 end;
 
-function TRegistro0200List.LocalizaRegistro(
-  pCOD_ITEM: AnsiString): boolean;
+function TRegistro0200List.LocalizaRegistro(pCOD_ITEM: AnsiString): boolean;
 var
 intFor: integer;
 begin
@@ -724,7 +723,8 @@ begin
 end;
 
 function TRegistro0400List.LocalizaRegistro(pCOD_NAT: AnsiString): boolean;
-var intFor: integer;
+var
+intFor: integer;
 begin
    Result := false;
    for intFor := 0 to Self.Count - 1 do

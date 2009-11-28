@@ -361,8 +361,6 @@ begin
   FBloco_E.OnError := OnError;
   FBloco_H.OnError := OnError;
   FBloco_9.OnError := OnError;
-  /// Limpa de todos os Blocos as listas de todos os registros.
-  LimpaRegistros;
   ///
   Check(DT_INI > 0,        'CHECAGEM INICIAL: Informe a data inicial das informações contidas no arquivo!');
   Check(DT_FIN > 0,        'CHECAGEM INICIAL: Informe a data final das informações contidas no arquivo!');
@@ -537,6 +535,8 @@ begin
     Write(txtFile, WriteRegistro9999);
     ///
     CloseFile(txtFile);
+    /// Limpa de todos os Blocos as listas de todos os registros.
+    LimpaRegistros;
   except
     on E: Exception do
     begin

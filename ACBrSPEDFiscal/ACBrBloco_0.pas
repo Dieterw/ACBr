@@ -258,6 +258,7 @@ type
   public
     destructor Destroy; override;
     function New: TRegistro0190;
+    function LocalizaRegistro(pUNID: AnsiString): boolean;
     property Items[Index: Integer]: TRegistro0190 read GetItem write SetItem;
   end;
 
@@ -299,6 +300,7 @@ type
   public
     destructor Destroy; override;
     function New: TRegistro0200;
+    function LocalizaRegistro(pCOD_ITEM: AnsiString): boolean;
     property Items[Index: Integer]: TRegistro0200 read GetItem write SetItem;
   end;
 
@@ -391,6 +393,7 @@ type
   public
     destructor Destroy; override;
     function New: TRegistro0400;
+    function LocalizaRegistro(pCOD_NAT: AnsiString): boolean;
     property Items[Index: Integer]: TRegistro0400 read GetItem write SetItem;
   end;
 
@@ -559,6 +562,21 @@ begin
   Result := TRegistro0190(Inherited Items[Index]);
 end;
 
+function TRegistro0190List.LocalizaRegistro(pUNID: AnsiString): boolean;
+var
+intFor: integer;
+begin
+   Result := false;
+   for intFor := 0 to Self.Count - 1 do
+   begin
+      if Self.Items[intFor].UNID = pUNID then
+      begin
+         Result := true;
+         Break;
+      end;
+   end;
+end;
+
 function TRegistro0190List.New: TRegistro0190;
 begin
   Result := TRegistro0190.Create;
@@ -583,6 +601,22 @@ end;
 function TRegistro0200List.GetItem(Index: Integer): TRegistro0200;
 begin
   Result := TRegistro0200(Inherited Items[Index]);
+end;
+
+function TRegistro0200List.LocalizaRegistro(
+  pCOD_ITEM: AnsiString): boolean;
+var
+intFor: integer;
+begin
+   Result := false;
+   for intFor := 0 to Self.Count - 1 do
+   begin
+      if Self.Items[intFor].COD_ITEM = pCOD_ITEM then
+      begin
+         Result := true;
+         Break;
+      end;
+   end;
 end;
 
 function TRegistro0200List.New: TRegistro0200;
@@ -687,6 +721,20 @@ end;
 function TRegistro0400List.GetItem(Index: Integer): TRegistro0400;
 begin
   Result := TRegistro0400(Inherited Items[Index]);
+end;
+
+function TRegistro0400List.LocalizaRegistro(pCOD_NAT: AnsiString): boolean;
+var intFor: integer;
+begin
+   Result := false;
+   for intFor := 0 to Self.Count - 1 do
+   begin
+      if Self.Items[intFor].COD_NAT = pCOD_NAT then
+      begin
+         Result := true;
+         Break;
+      end;
+   end;
 end;
 
 function TRegistro0400List.New: TRegistro0400;

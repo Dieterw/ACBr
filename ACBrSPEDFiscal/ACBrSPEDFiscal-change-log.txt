@@ -53,7 +53,13 @@ Versão 0.01a   28/11/09
 [+] Adicionada:
     function LocalizaRegistro(pCOD_PART: AnsiString): boolean;
     Bloco 0 - Registro0150
-    Como chamar a função : Bloco_0.Registro0150.LocalizaRegistro()
+[+] Adicionada por (Márcio Lopes)
+    function LocalizaRegistro(pUNID: AnsiString): boolean; 
+    Bloco 0 - Registro0190
+    function LocalizaRegistro(pCOD_ITEM: AnsiString): boolean;
+    Bloco 0 - Registro0200
+    function LocalizaRegistro(pCOD_NAT: AnsiString): boolean;
+    Bloco 0 - Registro0400
 
 Versão 0.01a   27/11/09
 ---------------

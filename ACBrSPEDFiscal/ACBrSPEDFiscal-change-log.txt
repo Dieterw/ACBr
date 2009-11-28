@@ -47,6 +47,14 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+
+Versão 0.01a   28/11/09
+---------------
+[+] Adicionada:
+    function LocalizaRegistro(pCOD_PART: AnsiString): boolean;
+    Bloco 0 - Registro0150
+    Como chamar a função : Bloco_0.Registro0150.LocalizaRegistro()
+
 Versão 0.01a   27/11/09
 ---------------
 [+] Implementados a procedure "LimpaRegistros", para limpar os registros das

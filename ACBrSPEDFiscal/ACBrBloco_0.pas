@@ -209,6 +209,7 @@ type
   public
     destructor Destroy; override;
     function New: TRegistro0150;
+    function LocalizaRegistro(pCOD_PART: AnsiString): boolean;
     property Items[Index: Integer]: TRegistro0150 read GetItem write SetItem;
   end;
 
@@ -450,7 +451,6 @@ type
 
 implementation
 
-
 {* TRegistro0015List *}
 
 destructor TRegistro0015List.Destroy;
@@ -490,6 +490,21 @@ end;
 function TRegistro0150List.GetItem(Index: Integer): TRegistro0150;
 begin
   Result := TRegistro0150(Inherited Items[Index]);
+end;
+
+function TRegistro0150List.LocalizaRegistro(pCOD_PART: AnsiString): boolean;
+var
+intFor: integer;
+begin
+   Result := false;
+   for intFor := 0 to Self.Count - 1 do
+   begin
+      if Self.Items[intFor].COD_PART = pCOD_PART then
+      begin
+         Result := true;
+         Break;
+      end;
+   end;
 end;
 
 function TRegistro0150List.New: TRegistro0150;

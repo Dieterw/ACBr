@@ -273,13 +273,6 @@ type
     fESTQ_ESCR :   Currency;  /// Estoque Escritural(05 – 06), litros
     fVAL_AJ_PERDA: Currency;  ///  Valor da Perda, em litros
     fVAL_AJ_GANHO: Currency;  ///  Valor do ganho, em litros
-    {
-    fBOMBA: AnsiString;         /// Bomba Ligada ao Tanque
-    fBICO:  AnsiString;          /// Bico Ligado à Bomba
-    fFECHA: AnsiString;         /// Valor aferido no fechamento
-    fABERT: AnsiString;         /// Valor aferido na abertura
-    fAFERI: AnsiString;         /// Aferições da Bomba
-    }
   public
     property NUM_TANQUE  : AnsiString   read fNUM_TANQUE   write fNUM_TANQUE   ;
     property ESTQ_ABERT  : Currency read fESTQ_ABERT   write fESTQ_ABERT   ;
@@ -289,14 +282,6 @@ type
     property ESTQ_ESCR   : Currency read fESTQ_ESCR    write fESTQ_ESCR     ;
     property VAL_AJ_PERDA: Currency read fVAL_AJ_PERDA write fVAL_AJ_PERDA  ;
     property VAL_AJ_GANHO: Currency read fVAL_AJ_GANHO write fVAL_AJ_GANHO  ;
-    {
-    property NUM_TANQUE: AnsiString read FNUM_TANQUE write FNUM_TANQUE;
-    property BOMBA: AnsiString read FBOMBA write FBOMBA;
-    property BICO:  AnsiString read FBICO write FBICO;
-    property FECHA: AnsiString read FFECHA write FFECHA;
-    property ABERT: AnsiString read FABERT write FABERT;
-    property AFERI: AnsiString read FAFERI write FAFERI;
-    }
   end;
 
   /// Registro 1310 - Lista
@@ -311,37 +296,20 @@ type
     property Items[Index: Integer]: TRegistro1310 read GetItem write SetItem;
   end;
 
-  /// Registro 1320 - CONCILIAÇÃO DE ESTOQUES.
-  /// REGISTRO 1320: VOLUME DE VENDAS
-  {
-02 NUM_BICO    Bico Ligado à Bomba N - - O
-03 NR_INTERV   Número da intervenção N - - OC
-04 MOT_INTERV  Motivo da Intervenção C 050 - OC
-05 NOM_INTERV  Nome do Interventor C 030 - OC
-06 CNPJ_INTERV CNPJ da empresa responsável pela intervenção N 014* - OC
-07 CPF_INTERV  CPF do técnico responsável pela intervenção N 011* - OC
-08 VAL_FECHA   Valor da leitura final do contador, no fechamento do bico. N - 03 O
-09 VAL_ABERT   Valor da leitura inicial do contador, na abertura do bico. N - 03 O
-10 VOL_AFERI   Aferições da Bomba, em litros N - 03 OC
-11 VOL_VENDAS  Vendas (08 – 09 - 10 ) do bico , em litros N - 03 O
-  }
+  /// Registro 1320 - VOLUME DE VENDAS
+
   TRegistro1320 = class(TPersistent)
   private
-     fNUM_BICO:AnsiString      ;
-     fNR_INTERV:AnsiString     ;
-     fMOT_INTERV:AnsiString    ;
-     fNOM_INTERV:AnsiString    ;
-     fCNPJ_INTERV:AnsiString   ;
-     fCPF_INTERV:AnsiString    ;
-     fVAL_FECHA:Currency   ;
-     fVAL_ABERT:Currency   ;
-     fVOL_AFERI:Currency   ;
-     fVOL_VENDAS:Currency  ;
-
-     {
-     fNUM_TANQUE: AnsiString;        /// Tanque onde foi armazenado o combustível
-     fFECH_FISICO: Currency;       /// Volume aferido no tanque
-     }
+     fNUM_BICO:AnsiString;       /// Bico Ligado à Bomba
+     fNR_INTERV:AnsiString;      /// Número da intervenção
+     fMOT_INTERV:AnsiString;     /// Motivo da Intervenção
+     fNOM_INTERV:AnsiString;     /// Nome do Interventor
+     fCNPJ_INTERV:AnsiString;    /// CNPJ da empresa responsável pela intervenção
+     fCPF_INTERV:AnsiString;     /// CPF do técnico responsável pela intervenção
+     fVAL_FECHA:Currency;        /// Valor da leitura final do contador, no fechamento do bico
+     fVAL_ABERT:Currency;        /// Valor da leitura inicial do contador, na abertura do bico
+     fVOL_AFERI:Currency;        /// Aferições da Bomba, em litros
+     fVOL_VENDAS:Currency;       /// Vendas (08 – 09 - 10 ) do bico, em litros
   public
     property NUM_BICO:AnsiString       read fNUM_BICO    write fNUM_BICO    ;
     property NR_INTERV:AnsiString      read fNR_INTERV   write fNR_INTERV   ;
@@ -353,10 +321,6 @@ type
     property VAL_ABERT:Currency    read fVAL_ABERT   write fVAL_ABERT   ;
     property VOL_AFERI:Currency    read fVOL_AFERI   write fVOL_AFERI   ;
     property VOL_VENDAS:Currency   read fVOL_VENDAS  write fVOL_VENDAS  ;
-   {
-    property NUM_TANQUE:  AnsiString   read FNUM_TANQUE write FNUM_TANQUE;
-    property FECH_FISICO: Currency read FFECH_FISICO write FFECH_FISICO;
-   }
   end;
 
   /// Registro 1320 - Lista
@@ -372,7 +336,8 @@ type
   end;
 
 
-  /// REGISTRO 1350: BOMBAS
+  /// Registro 1350 - BOMBAS
+
   TRegistro1350 = class(TPersistent)
   private
     fSERIE: AnsiString;        /// Número de Série da Bomba
@@ -398,7 +363,7 @@ type
     property Items[Index: Integer]: TRegistro1350 read GetItem write SetItem;
   end;
 
-  /// REGISTRO 1360: LACRES DA BOMBA
+  /// Registro 1360: LACRES DA BOMBA
   TRegistro1360 = class(TPersistent)
   private
     fNUM_LACRE: AnsiString;         /// Número de Série da Bomba
@@ -420,9 +385,8 @@ type
     property Items[Index: Integer]: TRegistro1360 read GetItem write SetItem;
   end;
 
+  /// Registro 1370 - BICOS DA BOMBA
 
-
-  /// REGISTRO 1370: BICOS DA BOMBA
   TRegistro1370 = class(TPersistent)
   private
       fNUM_BICO:AnsiString;    /// Número seqüencial do bico ligado a bomba N 003 - O
@@ -623,7 +587,6 @@ type
     property Items[Index: Integer]: TRegistro1600 read GetItem write SetItem;
   end;
 
-
   /// Registro 1990 - ENCERRAMENTO DO BLOCO 1
 
   TRegistro1990 = class(TPersistent)
@@ -634,8 +597,6 @@ type
   end;
 
 implementation
-
-{ TRegistro1001 }
 
 { TRegistro1100List }
 

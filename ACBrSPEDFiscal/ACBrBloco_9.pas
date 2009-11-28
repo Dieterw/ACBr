@@ -96,8 +96,6 @@ type
 
 implementation
 
-{ TRegistro9001 }
-
 { TRegistro9900List }
 
 destructor TRegistro9900List.Destroy;

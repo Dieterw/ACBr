@@ -47,6 +47,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.01a   30/11/09
+---------------
+[-] Mudado tipo da propriedade "QTD_PARC" do Bloco_C, RegistroC140, para 
+    "Integer", conforme descrito no AC 09/08.
 
 Versão 0.01a   28/11/09
 ---------------

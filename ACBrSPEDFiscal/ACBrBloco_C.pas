@@ -400,14 +400,14 @@ type
     fIND_TIT: AnsiString;        /// Indicador do tipo de título de crédito: 00- Duplicata; 01- Cheque; 02- Promissória; 03- Recibo; 99- Outros (descrever)
     fDESC_TIT: AnsiString;       /// Descrição complementar do título de crédito
     fNUM_TIT: AnsiString;        /// Número ou código identificador do título de crédito
-    fQTD_PARC: currency;     /// Quantidade de parcelas a receber/pagar
+    fQTD_PARC: Integer;     /// Quantidade de parcelas a receber/pagar
     fVL_TIT: currency;       /// Valor original do título de crédito
   public
     property IND_EMIT: AnsiString read FIND_EMIT write FIND_EMIT;
     property IND_TIT: AnsiString read FIND_TIT write FIND_TIT;
     property DESC_TIT: AnsiString read FDESC_TIT write FDESC_TIT;
     property NUM_TIT: AnsiString read FNUM_TIT write FNUM_TIT;
-    property QTD_PARC: currency read FQTD_PARC write FQTD_PARC;
+    property QTD_PARC: Integer read FQTD_PARC write FQTD_PARC;
     property VL_TIT: currency read FVL_TIT write FVL_TIT;
   end;
 

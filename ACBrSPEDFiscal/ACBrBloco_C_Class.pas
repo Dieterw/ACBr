@@ -739,7 +739,7 @@ begin
                                                LFill( IND_TIT ) +
                                                LFill( DESC_TIT ) +
                                                LFill( NUM_TIT ) +
-                                               LFill( QTD_PARC,0,2 ) +
+                                               LFill( QTD_PARC,2 ) +
                                                LFill( VL_TIT,0,2 ) +
                                                Delimitador +
                                                #13#10;

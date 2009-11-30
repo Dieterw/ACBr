@@ -1,0 +1,45 @@
+package ACBr_SPEDContabil;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'ACBr Automação Comercial Brasil Sped Contabil (http://acbr.sourceforge.net/)'}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl;
+
+contains
+  ACBrBloco_0 in 'ACBrBloco_0.pas',
+  ACBrBloco_0_Class in 'ACBrBloco_0_Class.pas',
+  ACBrBloco_I in 'ACBrBloco_I.pas',
+  ACBrBloco_I_Class in 'ACBrBloco_I_Class.pas',
+  ACBrBloco_J in 'ACBrBloco_J.pas',
+  ACBrBloco_J_Class in 'ACBrBloco_J_Class.pas',
+  ACBrBloco_9 in 'ACBrBloco_9.pas',
+  ACBrBloco_9_Class in 'ACBrBloco_9_Class.pas',
+  ACBrSpedContabil in 'ACBrSpedContabil.pas',
+  ACBrSped in '..\ACBrSPEDFiscal\ACBrSped.pas',
+  ACBrSpedUtils in '..\ACBrSPEDFiscal\ACBrSpedUtils.pas',
+  ACBrBlocos in 'ACBrBlocos.pas';
+
+end.

@@ -425,9 +425,9 @@ end;
 
 function TBloco_C.WriteRegistroC100: AnsiString;
 var
- intFor: integer;
- strRegistroC100: AnsiString;
- booNFCancelada: Boolean; /// Variavél p/ tratamento de NFs canceladas, denegadas ou inutilizada - Jean Barreiros 25Nov2009
+intFor: integer;
+strRegistroC100: AnsiString;
+booNFCancelada: Boolean; /// Variavél p/ tratamento de NFs canceladas, denegadas ou inutilizada - Jean Barreiros 25Nov2009
 begin
   strRegistroC100 := '';
 
@@ -456,22 +456,22 @@ begin
                                                LFill( DT_E_S, 'ddmmyyyy', booNFCancelada ) +
                                                LFill( VL_DOC , 0 , 2 , booNFCancelada ) +
                                                LFill( IND_PGTO  ) +
-                                               LFill( VL_DESC,0,2 , booNFCancelada ) +
-                                               LFill( VL_ABAT_NT,0,2 , booNFCancelada ) +
-                                               LFill( VL_MERC,0,2 , booNFCancelada ) +
+                                               LFill( VL_DESC,0,2, booNFCancelada ) +
+                                               LFill( VL_ABAT_NT,0,2, booNFCancelada ) +
+                                               LFill( VL_MERC,0,2, booNFCancelada ) +
                                                LFill( IND_FRT,1 ) +
-                                               LFill( VL_FRT,0,2 , booNFCancelada ) +
-                                               LFill( VL_SEG,0,2 , booNFCancelada ) +
-                                               LFill( VL_OUT_DA,0,2 , booNFCancelada ) +
-                                               LFill( VL_BC_ICMS,0,2 , booNFCancelada ) +
-                                               LFill( VL_ICMS,0,2 , booNFCancelada ) +
-                                               LFill( VL_BC_ICMS_ST,0,2 , booNFCancelada ) +
-                                               LFill( VL_ICMS_ST,0,2 , booNFCancelada ) +
-                                               LFill( VL_IPI,0,2 , booNFCancelada ) +
-                                               LFill( VL_PIS,0,2 , booNFCancelada ) +
-                                               LFill( VL_COFINS,0,2 , booNFCancelada ) +
-                                               LFill( VL_PIS_ST,0,2 , booNFCancelada ) +
-                                               LFill( VL_COFINS_ST,0,2 , booNFCancelada ) +
+                                               LFill( VL_FRT,0,2, booNFCancelada ) +
+                                               LFill( VL_SEG,0,2, booNFCancelada ) +
+                                               LFill( VL_OUT_DA,0,2, booNFCancelada ) +
+                                               LFill( VL_BC_ICMS,0,2, booNFCancelada ) +
+                                               LFill( VL_ICMS,0,2, booNFCancelada ) +
+                                               LFill( VL_BC_ICMS_ST,0,2, booNFCancelada ) +
+                                               LFill( VL_ICMS_ST,0,2, booNFCancelada ) +
+                                               LFill( VL_IPI,0,2, booNFCancelada ) +
+                                               LFill( VL_PIS,0,2, booNFCancelada ) +
+                                               LFill( VL_COFINS,0,2, booNFCancelada ) +
+                                               LFill( VL_PIS_ST,0,2, booNFCancelada ) +
+                                               LFill( VL_COFINS_ST,0,2, booNFCancelada ) +
                                                Delimitador +
                                                #13#10;
         end;

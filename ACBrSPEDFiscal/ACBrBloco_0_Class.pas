@@ -180,11 +180,15 @@ begin
   begin
      with Registro0000 do
      begin
-       Check(funChecaCNPJ(CNPJ),   '(0-0000) ENTIDADE: O CNPJ "%s" digitado é inválido!', [CNPJ]);
-       Check(funChecaCPF(CPF),     '(0-0000) ENTIDADE: O CPF "%s" digitado é inválido!', [CPF]);
-       Check(funChecaUF(UF),       '(0-0000) ENTIDADE: A UF "%s" digitada é inválido!', [UF]);
-       Check(funChecaIE(IE, UF),   '(0-0000) ENTIDADE: A Inscrição Estadual "%s" digitada é inválida!', [IE]);
+       Check(funChecaVersaoEFD(COD_VER), '(0-0000) ENTIDADE: O código da versão "%s" do leiaute é inválido', [IntToStr(COD_VER)]);
+       Check(((COD_FIN = 0) or (COD_FIN = 1)), '(0-0000) ENTIDADE: O código da finalidade do arquivo, deve ser informado o número 0 ou 1!');
+       Check(funChecaCNPJ(CNPJ), '(0-0000) ENTIDADE: O CNPJ "%s" digitado é inválido!', [CNPJ]);
+       Check(funChecaCPF(CPF), '(0-0000) ENTIDADE: O CPF "%s" digitado é inválido!', [CPF]);
+       Check(funChecaUF(UF), '(0-0000) ENTIDADE: A UF "%s" digitada é inválido!', [UF]);
+       Check(funChecaIE(IE, UF), '(0-0000) ENTIDADE: A inscrição estadual "%s" digitada é inválida!', [IE]);
        Check(funChecaMUN(COD_MUN), '(0-0000) ENTIDADE: O código do município "%s" digitado é inválido!', [IntToStr(COD_MUN)]);
+       Check(((IND_PERFIL = 'A') or (IND_PERFIL = 'B') or (IND_PERFIL = 'C')), '(0-0000) ENTIDADE: O  perfil "%s" de apresentação do arquivo fiscal, deve ser informado a letra A, B ou C!', [IND_PERFIL]);
+       Check(((IND_ATIV = 0) or (IND_ATIV = 1)), '(0-0000) ENTIDADE: O indicador "%s" de tipo de atividade, deve ser informado o número 0 ou 1!', [IntToStr(IND_ATIV)]);
        ///
        Result := LFill('0000') +
                  LFill(COD_VER, 3) +
@@ -293,10 +297,11 @@ begin
   begin
      with Registro0100 do
      begin
-       Check(funChecaCNPJ(CNPJ),   '(0-0100) CONTADOR: %s, o CNPJ "%s" digitado é inválido!', [NOME, CNPJ]);
        Check(funChecaCPF(CPF),     '(0-0100) CONTADOR: %s, o CPF "%s" digitado é inválido!', [NOME, CPF]);
+       Check(funChecaCNPJ(CNPJ),   '(0-0100) CONTADOR: %s, o CNPJ "%s" digitado é inválido!', [NOME, CNPJ]);
+//       Check(funChecaCEP(CEP, Registro0000.UF), '(0-0100) CONTADOR: %s, o CEP "%s" digitada é inválido para a unidade de federação "%s"!', [NOME, CEP, Registro0000.UF]);
        Check(funChecaMUN(COD_MUN), '(0-0100) CONTADOR: %s, o código do município "%s" digitado é inválido!', [NOME, IntToStr(COD_MUN)]);
-       Check(funChecaCEP(CEP, Registro0000.UF), '(0-0100) CONTADOR: %s, o CEP "%s" digitada é inválido para a unidade de federação "%s"!', [NOME, CEP, Registro0000.UF]);
+       Check(NOME <> '', '(0-0100) CONTADOR: O nome do contabilista/escritório é obrigatório!');
        ///
        Result := LFill('0100') +
                  LFill(NOME) +
@@ -334,10 +339,13 @@ begin
         with Registro0150.Items[intFor] do
         begin
           Check(funChecaPAISIBGE(COD_PAIS), '(0-0150) %s-%s, o código do país "%s" digitado é inválido!', [COD_PART, NOME, COD_PAIS]);
-          Check(funChecaCNPJ(CNPJ),         '(0-0150) %s-%s, o CNPJ "%s" digitado é inválido!', [COD_PART, NOME, CNPJ]);
-          Check(funChecaCPF(CPF),           '(0-0150) %s-%s, o CPF "%s" digitado é inválido!', [COD_PART, NOME, CPF]);
+          if Length(CNPJ) > 0 then
+             Check(funChecaCNPJ(CNPJ), '(0-0150) %s-%s, o CNPJ "%s" digitado é inválido!', [COD_PART, NOME, CNPJ]);
+          if Length(CPF)  > 0 then
+             Check(funChecaCPF(CPF), '(0-0150) %s-%s, o CPF "%s" digitado é inválido!', [COD_PART, NOME, CPF]);
 //          Check(funChecaIE(IE, UF),         '(0-0150) %s-%s, a Inscrição Estadual "%s" digitada é inválida!', [COD_PART, NOME, IE]);
           Check(funChecaMUN(COD_MUN),       '(0-0150) %s-%s, o código do município "%s" digitado é inválido!', [COD_PART, NOME, IntToStr(COD_MUN)]);
+          Check(NOME <> '',                 '(0-0150) O nome do participante é obrigatório!');
           ///
           strRegistro0150 := strRegistro0150 + LFill('0150') +
                                                LFill(COD_PART) +
@@ -428,6 +436,9 @@ begin
      begin
         with Registro0200.Items[intFor] do
         begin
+          Check(funChecaGENERO(COD_GEN), '(0-0200) O código do gênero "%s" digitado é inválido!', [COD_GEN]);
+          Check(Pos(TIPO_ITEM, '00,01,02,03,04,05,06,07,08,09,10,99') > 0, '(0-0200) O código do tipo do item – Atividades Industriais, Comerciais e Serviços "%s" digitado é inválido!', [TIPO_ITEM]);
+          ///
           strRegistro0200 := strRegistro0200 + LFill('0200') +
                                                LFill( COD_ITEM ) +
                                                LFill( DESCR_ITEM ) +

@@ -59,6 +59,7 @@ function funChecaMODNF(const COD: AnsiString): Boolean;
 function funChecaSITDOCTO(const COD: AnsiString): Boolean;
 function funChecaCSTCOFINS(const CST: AnsiString): Boolean;
 function funChecaCSTPIS(const CST: AnsiString): Boolean;
+function funChecaVersaoEFD(const Versao: Integer): Boolean;
 function funStrZero(Zeros: AnsiString; Quant: Integer): AnsiString;
 
 implementation
@@ -1549,6 +1550,11 @@ begin
   end;
 
   Result := booFind;
+end;
+
+function funChecaVersaoEFD(const Versao: Integer): Boolean;
+begin
+   Result := Pos(IntToStr(Versao), '001, 002, 003') > 0;
 end;
 
 function funStrZero(Zeros: AnsiString; Quant: Integer): AnsiString;

@@ -112,8 +112,8 @@ type
     function WriteRegistroC115: AnsiString;
     function WriteRegistroC120: AnsiString;
     function WriteRegistroC130: AnsiString;
-    function WriteRegistroC140: AnsiString;
-    function WriteRegistroC141: AnsiString;
+//    function WriteRegistroC140: AnsiString;  {Márcio Lopes 30Nov2009}
+//    function WriteRegistroC141: AnsiString;  {Márcio Lopes 30Nov2009}
     function WriteRegistroC160: AnsiString;
     function WriteRegistroC165: AnsiString;
     function WriteRegistroC171: AnsiString;
@@ -415,8 +415,8 @@ begin
     if Bloco_C.RegistroC115.Count > 0 then Write(txtFile, WriteRegistroC115); // Prates
     if Bloco_C.RegistroC120.Count > 0 then Write(txtFile, WriteRegistroC120); // Prates
     if Bloco_C.RegistroC130.Count > 0 then Write(txtFile, WriteRegistroC130); // Prates
-    if Bloco_C.RegistroC140.Count > 0 then Write(txtFile, WriteRegistroC140); // Prates
-    if Bloco_C.RegistroC141.Count > 0 then Write(txtFile, WriteRegistroC141); // Prates
+//    if Bloco_C.RegistroC140.Count > 0 then Write(txtFile, WriteRegistroC140); // Prates {Márcio Lopes 30Nov2009}
+//    if Bloco_C.RegistroC141.Count > 0 then Write(txtFile, WriteRegistroC141); // Prates {Márcio Lopes 30Nov2009}
     if Bloco_C.RegistroC160.Count > 0 then Write(txtFile, WriteRegistroC160); // Prates
     if Bloco_C.RegistroC165.Count > 0 then Write(txtFile, WriteRegistroC165); // Prates
     if Bloco_C.RegistroC171.Count > 0 then Write(txtFile, WriteRegistroC171); // Prates
@@ -899,6 +899,16 @@ begin
       end;
       with New do
       begin
+         REG_BLC := 'C140';
+         QTD_REG_BLC := Bloco_C.RegistroC140Count;   {Márcio Lopes 30Nov2009}
+      end;
+      with New do
+      begin
+         REG_BLC := 'C141';
+         QTD_REG_BLC := Bloco_C.RegistroC141Count;  {Márcio Lopes 30Nov2009}
+      end;
+      with New do
+      begin
          REG_BLC := 'C170';
          QTD_REG_BLC := Bloco_C.RegistroC170Count;
       end;
@@ -970,7 +980,8 @@ begin
    Result := Bloco_C.WriteRegistroC130;
 end;
 
-function TACBrSPEDFiscal.WriteRegistroC140: AnsiString;
+ {Márcio Lopes 30Nov2009}
+{function TACBrSPEDFiscal.WriteRegistroC140: AnsiString;
 begin
    with Bloco_9.Registro9900.New do
    begin
@@ -989,6 +1000,7 @@ begin
    end;
    Result := Bloco_C.WriteRegistroC141;
 end;
+}
 
 function TACBrSPEDFiscal.WriteRegistroC160: AnsiString;
 begin

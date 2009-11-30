@@ -49,6 +49,7 @@ Símbolo : Significado
 
 Versão 0.01a   30/11/09
 ---------------
+[+] Implementado hierarquia dos registros C140 e C141 por (Márcio Lopes)
 [-] Mudado tipo da propriedade "QTD_PARC" do Bloco_C, RegistroC140, para 
     "Integer", conforme descrito no AC 09/08.
 

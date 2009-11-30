@@ -55,7 +55,8 @@ type
 
   TRegistroC110List = class;
   TRegistroC111List = class;
-  TRegistroC141List = class;
+  TRegistroC140List = class; {Márcio Lopes 30Nov2009}
+  TRegistroC141List = class; {Márcio Lopes 30Nov2009}
   TRegistroC170List = class;
   TRegistroC190List = class;
 
@@ -93,6 +94,7 @@ type
     fVL_COFINS_ST: currency;   /// Valor total da COFINS retido por substituição tributária
 
     FRegistroC110: TRegistroC110List;  /// BLOCO C - Lista de RegistroC110 (FILHO)
+    FRegistroC140: TRegistroC140List;  /// BLOCO C - Lista de RegistroC140 (FILHO) {Márcio Lopes 30Nov2009}
     FRegistroC170: TRegistroC170List;  /// BLOCO C - Lista de RegistroC170 (FILHO)
     FRegistroC190: TRegistroC190List;  /// BLOCO C - Lista de RegistroC190 (FILHO) {Jean Barreiros 17Nov2009}
   public
@@ -129,6 +131,7 @@ type
     property VL_COFINS_ST: currency read FVL_COFINS_ST write FVL_COFINS_ST;
     /// Registros FILHOS
     property RegistroC110: TRegistroC110List read FRegistroC110 write FRegistroC110;
+    property RegistroC140: TRegistroC140List read FRegistroC140 write FRegistroC140; {Márcio Lopes 30Nov2009}
     property RegistroC170: TRegistroC170List read FRegistroC170 write FRegistroC170;
     property RegistroC190: TRegistroC190List read FRegistroC190 write FRegistroC190;  {Jean Barreiros 17Nov2009}
   end;
@@ -402,13 +405,18 @@ type
     fNUM_TIT: AnsiString;        /// Número ou código identificador do título de crédito
     fQTD_PARC: Integer;     /// Quantidade de parcelas a receber/pagar
     fVL_TIT: currency;       /// Valor original do título de crédito
+    FRegistroC141: TRegistroC141List;  /// BLOCO C - Lista de RegistroC141 (FILHO fo FILHO)
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property IND_EMIT: AnsiString read FIND_EMIT write FIND_EMIT;
     property IND_TIT: AnsiString read FIND_TIT write FIND_TIT;
     property DESC_TIT: AnsiString read FDESC_TIT write FDESC_TIT;
     property NUM_TIT: AnsiString read FNUM_TIT write FNUM_TIT;
     property QTD_PARC: Integer read FQTD_PARC write FQTD_PARC;
     property VL_TIT: currency read FVL_TIT write FVL_TIT;
+    property RegistroC141: TRegistroC141List read FRegistroC141 write FRegistroC141; {Márcio Lopes 30Nov2009}
   end;
 
   /// Registro C140 - Lista
@@ -3349,6 +3357,7 @@ end;
 constructor TRegistroC100.Create;
 begin
   FRegistroC110 := TRegistroC110List.Create;  /// BLOCO C - Lista de RegistroC110 (FILHO)
+  FRegistroC140 := TRegistroC140List.Create;  /// BLOCO C - Lista de RegistroC140 (FILHO)
   FRegistroC170 := TRegistroC170List.Create;  /// BLOCO C - Lista de RegistroC170 (FILHO)
   FRegistroC190 := TRegistroC190List.Create;  /// BLOCO C - Lista de RegistroC190 (FILHO) {Jean Barreiros 19Nov2009}
 end;
@@ -3356,6 +3365,7 @@ end;
 destructor TRegistroC100.Destroy;
 begin
   FRegistroC110.Free;
+  FRegistroC140.Free;
   FRegistroC170.Free;
   FRegistroC190.Free;
   inherited;
@@ -3371,6 +3381,19 @@ end;
 destructor TRegistroC110.Destroy;
 begin
   FRegistroC111.Free;
+  inherited;
+end;
+
+{ TRegistroC140 }
+
+constructor TRegistroC140.Create;
+begin
+  FRegistroC141 := TRegistroC141List.Create; // BLOCO C - Lista de Registro (FILHO do FILHO)
+end;
+
+destructor TRegistroC140.Destroy;
+begin
+  FRegistroC141.Free;
   inherited;
 end;
 

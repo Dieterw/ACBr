@@ -52,6 +52,9 @@ type
     FRegistroH005: TRegistroH005;      /// BLOCO H - RegistroH005
     FRegistroH010: TRegistroH010List;  /// BLOCO H - Lista de RegistroH010
     FRegistroH990: TRegistroH990;      /// BLOCO H - RegistroH990
+
+    procedure CriaRegistros;
+    procedure LiberaRegistros;
   public
     constructor Create(AOwner: TComponent); override; /// Create
     destructor Destroy; override; /// Destroy
@@ -75,6 +78,17 @@ implementation
 constructor TBloco_H.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
+  CriaRegistros;
+end;
+
+destructor TBloco_H.Destroy;
+begin
+  LiberaRegistros;
+  inherited;
+end;
+
+procedure TBloco_H.CriaRegistros;
+begin
   FRegistroH001 := TRegistroH001.Create;
   FRegistroH005 := TRegistroH005.Create;
   FRegistroH010 := TRegistroH010List.Create;
@@ -83,20 +97,20 @@ begin
   FRegistroH990.QTD_LIN_H := 0;
 end;
 
-destructor TBloco_H.Destroy;
+procedure TBloco_H.LiberaRegistros;
 begin
   FRegistroH001.Free;
   FRegistroH005.Free;
   FRegistroH010.Free;
   FRegistroH990.Free;
-  inherited;
 end;
 
 procedure TBloco_H.LimpaRegistros;
 begin
-  FRegistroH010.Clear;
-
-  FRegistroH990.QTD_LIN_H := 0;
+  /// Limpa os Registros
+  LiberaRegistros;
+  /// Recriar os Registros Limpos
+  CriaRegistros;
 end;
 
 function TBloco_H.WriteRegistroH001: AnsiString;

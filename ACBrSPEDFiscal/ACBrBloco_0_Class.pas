@@ -64,7 +64,9 @@ type
     FRegistro0450: TRegistro0450List;  /// BLOCO 0 - Lista de Registro0450
     FRegistro0460: TRegistro0460List;  /// BLOCO 0 - Lista de Registro0460
     FRegistro0990: TRegistro0990;      /// BLOCO 0 - Registro0990
-  protected
+
+    procedure CriaRegistros;
+    procedure LiberaRegistros;
   public
     constructor Create(AOwner: TComponent); override; /// Create
     destructor Destroy; override; /// Destroy
@@ -114,6 +116,17 @@ uses ACBrSpedUtils;
 constructor TBloco_0.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
+  CriaRegistros;
+end;
+
+destructor TBloco_0.Destroy;
+begin
+  LiberaRegistros;
+  inherited;
+end;
+
+procedure TBloco_0.CriaRegistros;
+begin
   FRegistro0000 := TRegistro0000.Create;
   FRegistro0001 := TRegistro0001.Create;
   FRegistro0005 := TRegistro0005.Create;
@@ -134,7 +147,7 @@ begin
   FRegistro0990.QTD_LIN_0 := 0;
 end;
 
-destructor TBloco_0.Destroy;
+procedure TBloco_0.LiberaRegistros;
 begin
   FRegistro0000.Free;
   FRegistro0001.Free;
@@ -152,24 +165,14 @@ begin
   FRegistro0450.Free;
   FRegistro0460.Free;
   FRegistro0990.Free;
-  inherited;
 end;
 
 procedure TBloco_0.LimpaRegistros;
 begin
-  FRegistro0015.Clear;
-  FRegistro0150.Clear;
-  FRegistro0175.Clear;
-  FRegistro0190.Clear;
-  FRegistro0200.Clear;
-  FRegistro0205.Clear;
-  FRegistro0206.Clear;
-  FRegistro0220.Clear;
-  FRegistro0400.Clear;
-  FRegistro0450.Clear;
-  FRegistro0460.Clear;
-
-  FRegistro0990.QTD_LIN_0 := 0;
+  /// Limpa os Registros
+  LiberaRegistros;
+  /// Recriar os Registros Limpos
+  CriaRegistros;
 end;
 
 function TBloco_0.WriteRegistro0000: AnsiString;

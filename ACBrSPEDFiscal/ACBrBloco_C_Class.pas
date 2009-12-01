@@ -111,6 +111,9 @@ type
     function WriteRegistroC141(RegC140: TRegistroC140): AnsiString;
     function WriteRegistroC170(RegC100: TRegistroC100): AnsiString;
     function WriteRegistroC190(RegC100: TRegistroC100): AnsiString;  {Jean Barreiros 17Nov2009}
+
+    procedure CriaRegistros;
+    procedure LiberaRegistros;
   public
     constructor Create(AOwner: TComponent); override; /// Create
     destructor Destroy; override; /// Destroy
@@ -232,6 +235,17 @@ implementation
 constructor TBloco_C.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
+  CriaRegistros;
+end;
+
+destructor TBloco_C.Destroy;
+begin
+  LiberaRegistros;
+  inherited;
+end;
+
+procedure TBloco_C.CriaRegistros;
+begin
   FRegistroC001 := TRegistroC001.Create;
   FRegistroC100 := TRegistroC100List.Create;
   FRegistroC112 := TRegistroC112List.Create;
@@ -292,7 +306,7 @@ begin
   FRegistroC990.QTD_LIN_C := 0;
 end;
 
-destructor TBloco_C.Destroy;
+procedure TBloco_C.LiberaRegistros;
 begin
   FRegistroC001.Free;
   FRegistroC100.Free;
@@ -343,60 +357,14 @@ begin
   FRegistroC790.Free;
   FRegistroC791.Free;
   FRegistroC990.Free;
-  inherited;
 end;
 
 procedure TBloco_C.LimpaRegistros;
 begin
-  FRegistroC100.Clear; /// Falta testar se ao limpar o pai, limpa tb os filhos
-  FRegistroC112.Clear;
-  FRegistroC113.Clear;
-  FRegistroC114.Clear;
-  FRegistroC115.Clear;
-  FRegistroC120.Clear;
-  FRegistroC130.Clear;
-  FRegistroC160.Clear;
-  FRegistroC165.Clear;
-  FRegistroC171.Clear;
-  FRegistroC172.Clear;
-  FRegistroC173.Clear;
-  FRegistroC174.Clear;
-  FRegistroC175.Clear;
-  FRegistroC176.Clear;
-  FRegistroC177.Clear;
-  FRegistroC178.Clear;
-  FRegistroC179.Clear;
-  FRegistroC195.Clear;
-  FRegistroC197.Clear;
-  FRegistroC300.Clear;
-  FRegistroC310.Clear;
-  FRegistroC320.Clear;
-  FRegistroC321.Clear;
-  FRegistroC350.Clear;
-  FRegistroC370.Clear;
-  FRegistroC390.Clear;
-  FRegistroC400.Clear;
-  FRegistroC405.Clear;
-  FRegistroC410.Clear;
-  FRegistroC420.Clear;
-  FRegistroC425.Clear;
-  FRegistroC460.Clear;
-  FRegistroC470.Clear;
-  FRegistroC490.Clear;
-  FRegistroC495.Clear;
-  FRegistroC500.Clear;
-  FRegistroC510.Clear;
-  FRegistroC590.Clear;
-  FRegistroC600.Clear;
-  FRegistroC601.Clear;
-  FRegistroC610.Clear;
-  FRegistroC620.Clear;
-  FRegistroC690.Clear;
-  FRegistroC700.Clear;
-  FRegistroC790.Clear;
-  FRegistroC791.Clear;
-
-  FRegistroC990.QTD_LIN_C := 0;
+  /// Limpa os Registros
+  LiberaRegistros;
+  /// Recriar os Registros Limpos
+  CriaRegistros;
 end;
 
 function TBloco_C.WriteRegistroC001: AnsiString;

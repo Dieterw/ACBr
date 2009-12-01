@@ -47,6 +47,19 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.01a   01/12/09
+---------------
+[+] Adicionada:
+    procedure CriaRegistros;
+    procedure LiberaRegistros;
+    As procedures foram adiconadas em todos os Blocos para atender um vazamento
+    de memória ao finalizar o Demo. 
+    Motivo: 
+    Ao limpar os registros filhos com o método "Clear", e ao finalizar o Demo
+    os registros filhos não estavm sendo liberados da memória pelo método "Free".
+    Essas implementações corrigiram também um BUG, do qual os totais dos registros
+    filhos não estavam sendo zerados após a geração do TXT.
+
 Versão 0.01a   30/11/09
 ---------------
 [+] Implementado hierarquia dos registros C140 e C141 por (Márcio Lopes)

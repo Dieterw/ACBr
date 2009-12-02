@@ -178,7 +178,7 @@ TACBrValidador = class( TACBrComponent )
 end ;
 
 implementation
-{$IFDEF COMPILER6_UP} uses Variants ; {$ENDIF} 
+{$IFDEF COMPILER6_UP} uses Variants , Math, StrUtils; {$ENDIF}
 
 { TACBrValidador }
 
@@ -891,9 +891,12 @@ begin
       end
      else
       begin
-        Tamanho := 10 ;
+{        Tamanho := 10 ;
         vDigitos := VarArrayOf(
-          [ 'DVX',c0_9,c0_9,c0_9,c0_9,c0_9,c0_9,c0_9,c0_9,'0-4','','','',''] ) ;
+          [ 'DVX',c0_9,c0_9,c0_9,c0_9,c0_9,c0_9,c0_9,c0_9,'0-4','','','',''] ) ; }
+        Tamanho := 9 ;
+        vDigitos := VarArrayOf(
+          [ 'DVX',c0_9,c0_9,c0_9,c0_9,c0_9,c0_9,c0_9,c0_9,'','','','',''] )
       end;
   end ;
 
@@ -1197,7 +1200,7 @@ Begin
   IF UF = 'SC' Then Mascara := '***.***.***';
   IF UF = 'SP' Then Mascara := '***.***.***.***';
   IF UF = 'SE' Then Mascara := '*********-*';
-  IF UF = 'TO' Then Mascara := '***********';
+  IF UF = 'TO' Then Mascara := IfThen((LenDoc=11),'***********','**.***.***-*');
 
   Result := '';
   LenMas := Length( Mascara ) ;

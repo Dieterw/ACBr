@@ -694,8 +694,8 @@ if not(InputQuery('WebServices Enviar', 'Numero da Nota', vAux)) then
   end;}
 
   ACBrNFe1.Enviar(0);
-  ShowMessage(ACBrNFe1.WebServices.Retorno.Protocolo);
-  ShowMessage(ACBrNFe1.WebServices.Retorno.Recibo);
+  ShowMessage(ACBrNFe1.WebServices.Retorno.NFeRetorno.ProtNFe.Items[0].nProt);
+  ShowMessage(ACBrNFe1.WebServices.Retorno.NFeRetorno.nRec);
 
   MemoResp.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.Retorno.RetWS);
   LoadXML(MemoResp, WBResposta);

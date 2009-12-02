@@ -311,15 +311,15 @@ begin
 end;
 
 function funChecaCNPJ(const CNPJ: AnsiString): Boolean;
-var
-wCGCCalc: AnsiString;
-wSomaCGC: Integer;
-wSx1: Shortint;
-wCGCDigt: Integer;
-strCNPJ: AnsiString;
+//var
+//wCGCCalc: AnsiString;
+//wSomaCGC: Integer;
+//wSx1: Shortint;
+//wCGCDigt: Integer;
+//strCNPJ: AnsiString;
 begin
-//   Result := funChecaIE(CNPJ, 'CNPJ');
-
+   Result := funChecaIE(CNPJ, 'CNPJ');
+(*
    strCNPJ := CNPJ;
    if (strCNPJ <> '  .   .   /    -  ') and (strCNPJ <> '') then
    begin
@@ -369,18 +369,19 @@ begin
          end;
       end;
    end;
+*)
 end;
 
 function funChecaCPF(const CPF: AnsiString): Boolean;
-var
-wCPFCalc: AnsiString;
-wSomaCPF: Integer;
-wSx1: Shortint;
-wCPFDigt: Integer;
-strCPF: AnsiString;
+//var
+//wCPFCalc: AnsiString;
+//wSomaCPF: Integer;
+//wSx1: Shortint;
+//wCPFDigt: Integer;
+//strCPF: AnsiString;
 begin
-//   Result := funChecaIE(CPF, 'CPF');
-
+   Result := funChecaIE(CPF, 'CPF');
+(*
    strCPF := CPF;
    if (strCPF <> '   .   .   -  ') and (strCPF <> '') then
    begin
@@ -424,6 +425,7 @@ begin
          end;
       end;
    end;
+*)
 end;
 
 function funChecaPAISIBGE(const COD: AnsiString): Boolean;

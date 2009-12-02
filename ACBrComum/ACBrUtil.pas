@@ -181,10 +181,10 @@ function StrIsNumber(const S: AnsiString): Boolean;
 function CharIsAlpha(const C: AnsiChar): Boolean;
 function CharIsAlphaNum(const C: AnsiChar): Boolean;
 function CharIsNum(const C: AnsiChar): Boolean;
-function OnlyNumber(const Value: AnsiString): String;
-function OnlyAlpha(const Value: AnsiString): String;
-function OnlyAlphaNum(const Value: AnsiString): String;
-function StrIsIP(const Value: string): Boolean;
+function OnlyNumber(const AValue: AnsiString): String;
+function OnlyAlpha(const AValue: AnsiString): String;
+function OnlyAlphaNum(const AValue: AnsiString): String;
+function StrIsIP(const AValue: string): Boolean;
 
 function TiraAcentos( const AString : AnsiString ) : AnsiString ;
 function TiraAcento( const AChar : AnsiChar ) : AnsiChar ;
@@ -888,41 +888,50 @@ end ;
 {-----------------------------------------------------------------------------
   Retorna uma String apenas com os char Numericos contidos em <Value>
  ---------------------------------------------------------------------------- }
-function OnlyNumber(const Value: AnsiString): String;
-Var I : Integer ;
+function OnlyNumber(const AValue: AnsiString): String;
+Var
+  I : Integer ;
+  LenValue : Integer;
 begin
-  Result := '' ;
-  For I := 1 to Length( Value ) do
+  Result   := '' ;
+  LenValue := Length( AValue ) ;
+  For I := 1 to LenValue  do
   begin
-     if CharIsNum( Value[I] ) then
-        Result := Result + Value[I] ;
+     if CharIsNum( AValue[I] ) then
+        Result := Result + AValue[I] ;
   end;
 end ;
 
 {-----------------------------------------------------------------------------
   Retorna uma String apenas com os char Alpha contidos em <Value>
  ---------------------------------------------------------------------------- }
-function OnlyAlpha(const Value: AnsiString): String;
-Var I : Integer ;
+function OnlyAlpha(const AValue: AnsiString): String;
+Var
+  I : Integer ;
+  LenValue : Integer;
 begin
   Result := '' ;
-  For I := 1 to Length( Value ) do
+  LenValue := Length( AValue ) ;
+  For I := 1 to LenValue do
   begin
-     if CharIsAlpha( Value[I] ) then
-        Result := Result + Value[I] ;
+     if CharIsAlpha( AValue[I] ) then
+        Result := Result + AValue[I] ;
   end;
 end ;
 {-----------------------------------------------------------------------------
   Retorna uma String apenas com os char Alpha-Numericos contidos em <Value>
  ---------------------------------------------------------------------------- }
-function OnlyAlphaNum(const Value: AnsiString): String;
-Var I : Integer ;
+function OnlyAlphaNum(const AValue: AnsiString): String;
+Var
+  I : Integer ;
+  LenValue : Integer;
 begin
   Result := '' ;
-  For I := 1 to Length( Value ) do
+  LenValue := Length( AValue ) ;
+  For I := 1 to LenValue do
   begin
-     if CharIsAlphaNum( Value[I] ) then
-        Result := Result + Value[I] ;
+     if CharIsAlphaNum( AValue[I] ) then
+        Result := Result + AValue[I] ;
   end;
 end ;
 
@@ -930,31 +939,31 @@ end ;
  ** Baseada em "IsIp" de synautil.pas - Synapse http://www.ararat.cz/synapse/ **
   Retorna <True> se <Value> é um IP Valido
  ---------------------------------------------------------------------------- }
-function StrIsIP(const Value: string): Boolean;
+function StrIsIP(const AValue: string): Boolean;
 var
   TempIP : string;
-  function ByteIsOk(const Value: string): Boolean;
+  function ByteIsOk(const AValue: string): Boolean;
   var
     x: integer;
   begin
-    x := StrToIntDef(Value, -1);
+    x := StrToIntDef(AValue, -1);
     Result := (x >= 0) and (x < 256);
     // X may be in correct range, but value still may not be correct value!
     // i.e. "$80"
     if Result then
-       Result := StrIsNumber( Value ) ;
+       Result := StrIsNumber( AValue ) ;
   end;
 
-  function Fetch(var Value: string; const Delimiter: string): string;
+  function Fetch(var AValue: string; const Delimiter: string): string;
   var
     p : Integer ;
   begin
-    p := pos(Delimiter,Value) ;
-    Result := copy(Value, 1, p-1);
-    Value  := copy(Value, p+1, Length(Value)); 
+    p := pos(Delimiter,AValue) ;
+    Result := copy(AValue, 1, p-1);
+    AValue := copy(AValue, p+1, Length(AValue));
   end;
 begin
-  TempIP := Value;
+  TempIP := AValue;
   Result := False;
   if not ByteIsOk(Fetch(TempIP, '.')) then
     Exit;

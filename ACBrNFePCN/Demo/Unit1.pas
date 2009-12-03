@@ -401,6 +401,7 @@ begin
     ACBrNFe1.NotasFiscais.Clear;
     ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
     ACBrNFe1.Consultar;
+    ShowMessage(ACBrNFe1.WebServices.Consulta.Protocolo);
     MemoResp.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.Consulta.RetWS);
     LoadXML(MemoResp, WBResposta);
   end;

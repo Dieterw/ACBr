@@ -1279,10 +1279,15 @@ begin
     if trim(nfe.Transp.Transporta.CNPJCPF) <> '' then
        Gerador.wCampoCNPJCPF('X04', 'X05', nfe.Transp.Transporta.CNPJCPF, CODIGO_BRASIL);
     Gerador.wCampo(tcStr, 'X06', 'xNome   ', 01, 60, 0, nfe.Transp.Transporta.xNome, DSC_XNOME);
-    Gerador.wCampo(tcStr, 'X07', 'IE      ', 02, 14, 0, SomenteNumeros(nfe.Transp.Transporta.IE), DSC_IE);
-    if (FOpcoes.ValidarInscricoes) and (nfe.Transp.Transporta.IE <> '') then
-      if not ValidarIE(nfe.Transp.Transporta.IE, nfe.Transp.Transporta.UF) then
-        Gerador.wAlerta('X07', 'IE', DSC_IE, ERR_MSG_INVALIDO);
+    if trim(nfe.Transp.Transporta.IE) = 'ISENTO' then
+       Gerador.wCampo(tcStr, 'X07', 'IE      ', 02, 14, 0, nfe.Transp.Transporta.IE, DSC_IE)
+    else
+     begin
+       Gerador.wCampo(tcStr, 'X07', 'IE      ', 02, 14, 0, SomenteNumeros(nfe.Transp.Transporta.IE), DSC_IE);
+       if (FOpcoes.ValidarInscricoes) and (nfe.Transp.Transporta.IE <> '') then
+         if not ValidarIE(nfe.Transp.Transporta.IE, nfe.Transp.Transporta.UF) then
+           Gerador.wAlerta('X07', 'IE', DSC_IE, ERR_MSG_INVALIDO);
+     end;
     Gerador.wCampo(tcStr, 'X08', 'xEnder  ', 01, 60, 0, nfe.Transp.Transporta.xEnder, DSC_XENDER);
     Gerador.wCampo(tcStr, 'X09', 'xMun    ', 01, 60, 0, nfe.Transp.Transporta.xMun, DSC_XMUN);
     if trim(nfe.Transp.Transporta.UF) <> '' then

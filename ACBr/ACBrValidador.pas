@@ -1199,7 +1199,7 @@ Begin
   IF UF = 'RR' Then Mascara := '********-*';
   IF UF = 'SC' Then Mascara := '***.***.***';
   IF UF = 'SP' Then Mascara := '***.***.***.***';
-  IF UF = 'SE' Then Mascara := '*********-*';
+  IF UF = 'SE' Then Mascara := '**.***.***-*';
   IF UF = 'TO' Then Mascara := IfThen((LenDoc=11),'***********','**.***.***-*');
 
   Result := '';

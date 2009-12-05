@@ -53,7 +53,7 @@ type
   public
   end;
 
-  TRegistroD590List = class;{Jean Barreiros 04Dez2009}
+  TRegistroD590List = class; {Jean Barreiros 04Dez2009}
 
   /// Registro D100 - NOTA FISCAL DE SERVIÇO DE TRANSPORTE (CÓDIGO 07) E CONHECIMENTOS DE TRANSPORTE RODOVIÁRIO DE CARGAS (CÓDIGO 08), AQUAVIÁRIO DE CARGAS (CÓDIGO 09), AÉREO (CÓDIGO 10), FERROVIÁRIO DE CARGAS (CÓDIGO 11) E MULTIMODAL DE CARGAS (CÓDIGO 26) E NOTA FISCAL DE TRANSPORTE FERROVIÁRIO DE CARGA (CÓDIGO 27)
 
@@ -1038,7 +1038,7 @@ type
     property Items[Index: Integer]: TRegistroD500 read GetItem write SetItem;
   end;
 
-    /// Registro D590
+  /// Registro D590
 
   TRegistroD590 = class(TPersistent)
   private
@@ -1052,7 +1052,6 @@ type
     fVL_ICMS_ST: currency;    /// Parcela correspondente ao valor creditado/debitado do ICMS da substituição tributária, referente à combinação de CST_ICMS,  CFOP, e alíquota do ICMS.
     fVL_RED_BC: currency;     /// Valor não tributado em função da redução da base de cálculo do ICMS, referente à combinação de CST_ICMS, CFOP e alíquota do ICMS.
     fCOD_OBS: AnsiString;         /// Código da observação do lançamento fiscal (campo 02 do Registro 0460)
-
   public
     property CST_ICMS: AnsiString read fCST_ICMS write fCST_ICMS;
     property CFOP: AnsiString read fCFOP write fCFOP;
@@ -1075,7 +1074,6 @@ type
     function New: TRegistroD590;
     property Items[Index: Integer]: TRegistroD590 read GetItem write SetItem;
   end;
-
 
   /// Registro D990 - ENCERRAMENTO DO BLOCO D
 

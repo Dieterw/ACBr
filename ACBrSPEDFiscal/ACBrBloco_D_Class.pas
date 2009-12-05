@@ -77,6 +77,10 @@ type
     FRegistroD500: TRegistroD500List;  /// BLOCO D - Lista de RegistroD500
     FRegistroD990: TRegistroD990;      /// BLOCO D - RegistroD990
 
+    FRegistroD590Count: Integer;
+    FRegistroD590: TRegistroD590List; {Jean Barreiros 04Dez2009}
+    function WriteRegistroD590(RegD500: TRegistroD500): AnsiString; {Jean Barreiros 04Dez2009}
+
     procedure CriaRegistros;
     procedure LiberaRegistros;
   public
@@ -140,7 +144,10 @@ type
     property RegistroD411: TRegistroD411List read FRegistroD411 write FRegistroD411;
     property RegistroD420: TRegistroD420List read FRegistroD420 write FRegistroD420;
     property RegistroD500: TRegistroD500List read FRegistroD500 write FRegistroD500;
+    property RegistroD590: TRegistroD590List read FRegistroD590 write FRegistroD590;
     property RegistroD990: TRegistroD990 read FRegistroD990 write FRegistroD990;
+
+    property RegistroD590Count: Integer read FRegistroD590Count write FRegistroD590Count; {Jean Barreiros 17Nov2009}
   end;
 
 implementation
@@ -188,7 +195,10 @@ begin
   FRegistroD411 := TRegistroD411List.Create;
   FRegistroD420 := TRegistroD420List.Create;
   FRegistroD500 := TRegistroD500List.Create;
+  FRegistroD590 := TRegistroD590List.Create;
   FRegistroD990 := TRegistroD990.Create;
+
+  FRegistroD590Count := 0; {Jean Barreiros 04Dez2009}
 
   FRegistroD990.QTD_LIN_D := 0;
 end;
@@ -1085,10 +1095,49 @@ begin
                                                Delimitador +
                                                #13#10;
         end;
+        /// Registros FILHOS
+        strRegistroD500 := strRegistroD500 +
+                           WriteRegistroD590( RegistroD500.Items[intFor] );
+
         RegistroD990.QTD_LIN_D := RegistroD990.QTD_LIN_D + 1;
      end;
   end;
   Result := strRegistroD500;
+end;
+
+function TBloco_D.WriteRegistroD590(RegD500: TRegistroD500): AnsiString;
+var
+intFor: integer;
+strRegistroD590: AnsiString;
+begin
+  strRegistroD590 := '';
+
+  if Assigned( RegD500.RegistroD590 ) then
+  begin
+     for intFor := 0 to RegD500.RegistroD590.Count - 1 do
+     begin
+        with RegD500.RegistroD590.Items[intFor] do
+        begin
+          strRegistroD590 := strRegistroD590 + LFill('D590') +
+                                               LFill( CST_ICMS,3 ) +
+                                               LFill( CFOP,4 ) +
+                                               LFill( ALIQ_ICMS,6,2 ) +
+                                               LFill( VL_OPR,0,2 ) +
+                                               LFill( VL_BC_ICMS,0,2 ) +
+                                               LFill( VL_ICMS,0,2 ) +
+                                               LFill( VL_BC_ICMS_ST,0,2 ) +
+                                               LFill( VL_ICMS_ST,0,2 ) +
+                                               LFill( VL_RED_BC,0,2 ) +
+                                               LFill( COD_OBS  ) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroD990.QTD_LIN_D := RegistroD990.QTD_LIN_D + 1;
+     end;
+     /// Variavél para armazenar a quantidade de registro do tipo.
+     FRegistroD590Count := FRegistroD590Count + RegD500.RegistroD590.Count;
+  end;
+  Result := strRegistroD590;
 end;
 
 function TBloco_D.WriteRegistroD990: AnsiString;

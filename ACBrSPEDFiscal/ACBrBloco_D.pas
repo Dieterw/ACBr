@@ -53,6 +53,8 @@ type
   public
   end;
 
+  TRegistroD590List = class;{Jean Barreiros 04Dez2009}
+
   /// Registro D100 - NOTA FISCAL DE SERVIÇO DE TRANSPORTE (CÓDIGO 07) E CONHECIMENTOS DE TRANSPORTE RODOVIÁRIO DE CARGAS (CÓDIGO 08), AQUAVIÁRIO DE CARGAS (CÓDIGO 09), AÉREO (CÓDIGO 10), FERROVIÁRIO DE CARGAS (CÓDIGO 11) E MULTIMODAL DE CARGAS (CÓDIGO 26) E NOTA FISCAL DE TRANSPORTE FERROVIÁRIO DE CARGA (CÓDIGO 27)
 
   TRegistroD100 = class(TPersistent)
@@ -992,7 +994,12 @@ type
     fVL_PIS: currency;        /// Valor do PIS
     fVL_COFINS: currency;     /// Valor da COFINS
     fCOD_CTA: AnsiString;         /// Código da conta analítica contábil debitada/creditada
+
+    FRegistroD590: TRegistroD590List;  /// BLOCO D - Lista de RegistroD590 (FILHO) {Jean Barreiros 04Dez2009}
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property IND_OPER: AnsiString read FIND_OPER write FIND_OPER;
     property IND_EMIT: AnsiString read FIND_EMIT write FIND_EMIT;
     property COD_PART: AnsiString read FCOD_PART write FCOD_PART;
@@ -1015,6 +1022,8 @@ type
     property VL_PIS: currency read FVL_PIS write FVL_PIS;
     property VL_COFINS: currency read FVL_COFINS write FVL_COFINS;
     property COD_CTA: AnsiString read FCOD_CTA write FCOD_CTA;
+
+    property RegistroD590: TRegistroD590List read FRegistroD590 write FRegistroD590;  {Jean Barreiros 04Dez2009}
   end;
 
   /// Registro D500 - Lista
@@ -1029,6 +1038,45 @@ type
     property Items[Index: Integer]: TRegistroD500 read GetItem write SetItem;
   end;
 
+    /// Registro D590
+
+  TRegistroD590 = class(TPersistent)
+  private
+    fCST_ICMS: AnsiString;        /// Código da Situação Tributária, conforme a Tabela indicada no item 4.3.1.
+    fCFOP: AnsiString;            /// Código Fiscal de Operação e Prestação do agrupamento de itens
+    fALIQ_ICMS: Currency;     /// Alíquota do ICMS
+    fVL_OPR: currency;        /// Valor da operação correspondente à combinação de CST_ICMS, CFOP, e alíquota do ICMS.
+    fVL_BC_ICMS: currency;    /// Parcela correspondente ao "Valor da base de cálculo do ICMS" referente à combinação de CST_ICMS, CFOP e alíquota do ICMS.
+    fVL_ICMS: currency;       /// Parcela correspondente ao "Valor do ICMS" referente à combinação de CST_ICMS, CFOP e alíquota do ICMS.
+    fVL_BC_ICMS_ST: currency; /// Parcela correspondente ao "Valor da base de cálculo do ICMS" da substituição tributária referente à combinação de CST_ICMS, CFOP e alíquota do ICMS.
+    fVL_ICMS_ST: currency;    /// Parcela correspondente ao valor creditado/debitado do ICMS da substituição tributária, referente à combinação de CST_ICMS,  CFOP, e alíquota do ICMS.
+    fVL_RED_BC: currency;     /// Valor não tributado em função da redução da base de cálculo do ICMS, referente à combinação de CST_ICMS, CFOP e alíquota do ICMS.
+    fCOD_OBS: AnsiString;         /// Código da observação do lançamento fiscal (campo 02 do Registro 0460)
+
+  public
+    property CST_ICMS: AnsiString read fCST_ICMS write fCST_ICMS;
+    property CFOP: AnsiString read fCFOP write fCFOP;
+    property ALIQ_ICMS: Currency read fALIQ_ICMS write fALIQ_ICMS;
+    property VL_OPR: currency read fVL_OPR write fVL_OPR;
+    property VL_BC_ICMS: currency read fVL_BC_ICMS write fVL_BC_ICMS;
+    property VL_ICMS: currency read fVL_ICMS write fVL_ICMS;
+    property VL_BC_ICMS_ST: currency read fVL_BC_ICMS_ST write fVL_BC_ICMS_ST;
+    property VL_ICMS_ST: currency read fVL_ICMS_ST write fVL_ICMS_ST;
+    property VL_RED_BC: currency read fVL_RED_BC write fVL_RED_BC;
+    property COD_OBS: AnsiString read fCOD_OBS write fCOD_OBS;
+  end;
+
+  TRegistroD590List = class(TList)
+  private
+    function GetItem(Index: Integer): TRegistroD590; /// GetItem
+    procedure SetItem(Index: Integer; const Value: TRegistroD590); /// SetItem
+  public
+    destructor Destroy; override;
+    function New: TRegistroD590;
+    property Items[Index: Integer]: TRegistroD590 read GetItem write SetItem;
+  end;
+
+
   /// Registro D990 - ENCERRAMENTO DO BLOCO D
 
   TRegistroD990 = class(TPersistent)
@@ -1039,8 +1087,6 @@ type
   end;
 
 implementation
-
-{ TRegistroD001 }
 
 { TRegistroD100List }
 
@@ -1077,6 +1123,32 @@ begin
   for intFor := 0 to Count - 1 do Items[intFor].Free;
   inherited;
 end;
+
+destructor TRegistroD590List.Destroy;
+var
+intFor: integer;
+begin
+  for intFor := 0 to Count - 1 do Items[intFor].Free;
+  inherited;
+end;
+
+function TRegistroD590List.GetItem(Index: Integer): TRegistroD590;
+begin
+  Result := TRegistroD590(Inherited Items[Index]);
+end;
+
+function TRegistroD590List.New: TRegistroD590;
+begin
+  Result := TRegistroD590.Create;
+  Add(Result);
+end;
+
+procedure TRegistroD590List.SetItem(Index: Integer; const Value: TRegistroD590);
+begin
+  Put(Index, Value);
+end;
+
+
 
 function TRegistroD110List.GetItem(Index: Integer): TRegistroD110;
 begin
@@ -1246,6 +1318,32 @@ begin
 end;
 
 procedure TRegistroD161List.SetItem(Index: Integer; const Value: TRegistroD161);
+begin
+  Put(Index, Value);
+end;
+
+{ TRegistroD162List }
+
+destructor TRegistroD162List.Destroy;
+var
+intFor: integer;
+begin
+  for intFor := 0 to Count - 1 do Items[intFor].Free;
+  inherited;
+end;
+
+function TRegistroD162List.GetItem(Index: Integer): TRegistroD162;
+begin
+  Result := TRegistroD162(Inherited Items[Index]);
+end;
+
+function TRegistroD162List.New: TRegistroD162;
+begin
+  Result := TRegistroD162.Create;
+  Add(Result);
+end;
+
+procedure TRegistroD162List.SetItem(Index: Integer; const Value: TRegistroD162);
 begin
   Put(Index, Value);
 end;
@@ -1484,6 +1582,32 @@ begin
   Put(Index, Value);
 end;
 
+{ TRegistroD365List }
+
+destructor TRegistroD365List.Destroy;
+var
+intFor: integer;
+begin
+  for intFor := 0 to Count - 1 do Items[intFor].Free;
+  inherited;
+end;
+
+function TRegistroD365List.GetItem(Index: Integer): TRegistroD365;
+begin
+  Result := TRegistroD365(Inherited Items[Index]);
+end;
+
+function TRegistroD365List.New: TRegistroD365;
+begin
+  Result := TRegistroD365.Create;
+  Add(Result);
+end;
+
+procedure TRegistroD365List.SetItem(Index: Integer; const Value: TRegistroD365);
+begin
+  Put(Index, Value);
+end;
+
 { TRegistroD370List }
 
 destructor TRegistroD370List.Destroy;
@@ -1666,56 +1790,17 @@ begin
   Put(Index, Value);
 end;
 
-{ TRegistroD162List }
+{ TRegistroD500 }
 
-destructor TRegistroD162List.Destroy;
-var
-intFor: integer;
+constructor TRegistroD500.Create;
 begin
-  for intFor := 0 to Count - 1 do Items[intFor].Free;
+  FRegistroD590 := TRegistroD590List.Create;  /// BLOCO D - Lista de RegistroD590 (FILHO) {Jean Barreiros 04Dez2009}
+end;
+
+destructor TRegistroD500.Destroy;
+begin
+  FRegistroD590.Free;
   inherited;
-end;
-
-function TRegistroD162List.GetItem(Index: Integer): TRegistroD162;
-begin
-  Result := TRegistroD162(Inherited Items[Index]);
-end;
-
-function TRegistroD162List.New: TRegistroD162;
-begin
-  Result := TRegistroD162.Create;
-  Add(Result);
-end;
-
-procedure TRegistroD162List.SetItem(Index: Integer; const Value: TRegistroD162);
-begin
-  Put(Index, Value);
-end;
-
-{ TRegistroD365List }
-
-destructor TRegistroD365List.Destroy;
-var
-intFor: integer;
-begin
-  for intFor := 0 to Count - 1 do Items[intFor].Free;
-  inherited;
-end;
-
-function TRegistroD365List.GetItem(Index: Integer): TRegistroD365;
-begin
-  Result := TRegistroD365(Inherited Items[Index]);
-end;
-
-function TRegistroD365List.New: TRegistroD365;
-begin
-  Result := TRegistroD365.Create;
-  Add(Result);
-end;
-
-procedure TRegistroD365List.SetItem(Index: Integer; const Value: TRegistroD365);
-begin
-  Put(Index, Value);
 end;
 
 end.

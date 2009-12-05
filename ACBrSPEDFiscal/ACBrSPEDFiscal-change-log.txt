@@ -47,6 +47,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.01a   04/12/09
+---------------
+[+] Implementado hierarquia do registro D590 por (Marcos e Jean)
+
 Versão 0.01a   01/12/09
 ---------------
 [+] Adicionada:

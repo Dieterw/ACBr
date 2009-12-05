@@ -144,7 +144,6 @@ type
     property RegistroD411: TRegistroD411List read FRegistroD411 write FRegistroD411;
     property RegistroD420: TRegistroD420List read FRegistroD420 write FRegistroD420;
     property RegistroD500: TRegistroD500List read FRegistroD500 write FRegistroD500;
-    property RegistroD590: TRegistroD590List read FRegistroD590 write FRegistroD590;
     property RegistroD990: TRegistroD990 read FRegistroD990 write FRegistroD990;
 
     property RegistroD590Count: Integer read FRegistroD590Count write FRegistroD590Count; {Jean Barreiros 17Nov2009}

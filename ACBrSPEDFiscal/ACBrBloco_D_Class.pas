@@ -75,7 +75,6 @@ type
     FRegistroD411: TRegistroD411List;  /// BLOCO D - Lista de RegistroD411
     FRegistroD420: TRegistroD420List;  /// BLOCO D - Lista de RegistroD420
     FRegistroD500: TRegistroD500List;  /// BLOCO D - Lista de RegistroD500
-    FRegistroD590: TRegistroD590List;  /// BLOCO D - Lista de RegistroD590
     FRegistroD990: TRegistroD990;      /// BLOCO D - RegistroD990
 
     FRegistroD590Count: Integer;
@@ -195,7 +194,6 @@ begin
   FRegistroD411 := TRegistroD411List.Create;
   FRegistroD420 := TRegistroD420List.Create;
   FRegistroD500 := TRegistroD500List.Create;
-  FRegistroD590 := TRegistroD590List.Create;
   FRegistroD990 := TRegistroD990.Create;
 
   FRegistroD590Count := 0; {Jean Barreiros 04Dez2009}

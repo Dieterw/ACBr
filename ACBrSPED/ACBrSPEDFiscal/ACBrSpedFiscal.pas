@@ -402,6 +402,7 @@ begin
     if Bloco_0.Registro0206.Count > 0 then Write(txtFile, WriteRegistro0206); // Prates
     if Bloco_0.Registro0220.Count > 0 then Write(txtFile, WriteRegistro0220); // Prates
     if Bloco_0.Registro0400.Count > 0 then Write(txtFile, WriteRegistro0400); // Prates
+    if Bloco_0.Registro0450.Count > 0 then Write(txtFile, WriteRegistro0450);
     if Bloco_0.Registro0460.Count > 0 then Write(txtFile, WriteRegistro0460); // Prates
     Write(txtFile, WriteRegistro0990);
 

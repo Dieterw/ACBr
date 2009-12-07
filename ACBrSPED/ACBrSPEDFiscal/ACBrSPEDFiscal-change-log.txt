@@ -47,6 +47,13 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.01a   07/12/09
+---------------
+[*] Implementado RegistroH005List, para criar uma lista do RegistroH005
+[+] Adicionado na função SaveFileTXT as chamada:
+    if Bloco_H.RegistroH005.Count > 0 then Write(txtFile, WriteRegistroH005);
+    if Bloco_H.RegistroH010.Count > 0 then Write(txtFile, WriteRegistroH010);
+
 Versão 0.01a   04/12/09
 ---------------
 [+] Implementado hierarquia do registro D590 por (Marcos e Jean)

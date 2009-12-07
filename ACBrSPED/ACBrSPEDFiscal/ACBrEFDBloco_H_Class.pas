@@ -49,7 +49,7 @@ type
   TBloco_H = class(TACBrSPED)
   private
     FRegistroH001: TRegistroH001;      /// BLOCO H - RegistroH001
-    FRegistroH005: TRegistroH005;      /// BLOCO H - RegistroH005
+    FRegistroH005: TRegistroH005List;  /// BLOCO H - RegistroH005
     FRegistroH010: TRegistroH010List;  /// BLOCO H - Lista de RegistroH010
     FRegistroH990: TRegistroH990;      /// BLOCO H - RegistroH990
 
@@ -66,7 +66,7 @@ type
     function WriteRegistroH990: AnsiString;
 
     property RegistroH001: TRegistroH001 read FRegistroH001 write FRegistroH001;
-    property RegistroH005: TRegistroH005 read FRegistroH005 write FRegistroH005;
+    property RegistroH005: TRegistroH005List read FRegistroH005 write FRegistroH005;
     property RegistroH010: TRegistroH010List read FRegistroH010 write FRegistroH010;
     property RegistroH990: TRegistroH990 read FRegistroH990 write FRegistroH990;
   end;
@@ -90,7 +90,7 @@ end;
 procedure TBloco_H.CriaRegistros;
 begin
   FRegistroH001 := TRegistroH001.Create;
-  FRegistroH005 := TRegistroH005.Create;
+  FRegistroH005 := TRegistroH005List.Create;
   FRegistroH010 := TRegistroH010List.Create;
   FRegistroH990 := TRegistroH990.Create;
 
@@ -134,22 +134,28 @@ begin
 end;
 
 function TBloco_H.WriteRegistroH005: AnsiString;
+var
+intFor: integer;
+strRegistroH005: string;
 begin
-  Result := '';
+  strRegistroH005 := '';
 
-  if Assigned(RegistroH005) then
+  if Assigned( RegistroH005 ) then
   begin
-     with RegistroH005 do
+     for intFor := 0 to RegistroH005.Count - 1 do
      begin
-       Result := LFill('H005') +
-                 LFill( DT_INV ) +
-                 LFill( VL_INV, 0) +
-                 Delimitador +
-                 #13#10;
-       RegistroH990.QTD_LIN_H := RegistroH990.QTD_LIN_H + 1;
+        with RegistroH005.Items[intFor] do
+        begin
+          strRegistroH005 := strRegistroH005 + LFill('H005') +
+                                               LFill( DT_INV ) +
+                                               LFill( VL_INV, 0) +
+                                               Delimitador +
+                                               #13#10;
+        end;
+        RegistroH990.QTD_LIN_H := RegistroH990.QTD_LIN_H + 1;
      end;
   end;
-
+  Result := strRegistroH005;
 end;
 
 function TBloco_H.WriteRegistroH010: AnsiString;

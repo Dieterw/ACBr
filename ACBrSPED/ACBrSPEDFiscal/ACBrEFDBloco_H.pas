@@ -64,6 +64,18 @@ type
     property VL_INV: currency read FVL_INV write FVL_INV;
   end;
 
+  /// Registro H005 - Lista
+
+  TRegistroH005List = class(TList)
+  private
+    function GetItem(Index: Integer): TRegistroH005; /// GetItem
+    procedure SetItem(Index: Integer; const Value: TRegistroH005); /// SetItem
+  public
+    destructor Destroy; override;
+    function New: TRegistroH005;
+    property Items[Index: Integer]: TRegistroH005 read GetItem write SetItem;
+  end;
+
   /// Registro H010 - INVENTÁRIO
 
   TRegistroH010 = class(TPersistent)
@@ -136,6 +148,32 @@ begin
 end;
 
 procedure TRegistroH010List.SetItem(Index: Integer; const Value: TRegistroH010);
+begin
+  Put(Index, Value);
+end;
+
+{ TRegistroH005List }
+
+destructor TRegistroH005List.Destroy;
+var
+intFor: integer;
+begin
+  for intFor := 0 to Count - 1 do Items[intFor].Free;
+  inherited;
+end;
+
+function TRegistroH005List.GetItem(Index: Integer): TRegistroH005;
+begin
+  Result := TRegistroH005(Inherited Items[Index]);
+end;
+
+function TRegistroH005List.New: TRegistroH005;
+begin
+  Result := TRegistroH005.Create;
+  Add(Result);
+end;
+
+procedure TRegistroH005List.SetItem(Index: Integer; const Value: TRegistroH005);
 begin
   Put(Index, Value);
 end;

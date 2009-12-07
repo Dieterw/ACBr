@@ -507,6 +507,8 @@ begin
 
     /// BLOCO H
     Write(txtFile, WriteRegistroH001);
+    if Bloco_H.RegistroH005.Count > 0 then Write(txtFile, WriteRegistroH005);
+    if Bloco_H.RegistroH010.Count > 0 then Write(txtFile, WriteRegistroH010);
     Write(txtFile, WriteRegistroH990);
 
     /// BLOCO 1
@@ -1892,7 +1894,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'H005';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_H.RegistroH005.Count;
    end;
    Result := Bloco_H.WriteRegistroH005;
 end;
@@ -1902,7 +1904,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'H010';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_H.RegistroH010.Count;
    end;
    Result := Bloco_H.WriteRegistroH010;
 end;

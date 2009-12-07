@@ -76,6 +76,7 @@ type
     function WriteRegistro0990: AnsiString;
     /// BLOCO I
     function WriteRegistroI001: AnsiString;
+    function WriteRegistroI010: AnsiString;
     function WriteRegistroI990: AnsiString;
     /// BLOCO J
     function WriteRegistroJ001: AnsiString;
@@ -247,10 +248,17 @@ begin
 
     /// BLOCO I
     Write(txtFile, WriteRegistroI001);
+    Write(txtFile, WriteRegistroI010);
     Write(txtFile, WriteRegistroI990);
 
    /// BLOCO J
     Write(txtFile, WriteRegistroJ001);
+    if Bloco_J.RegistroJ005.Count > 0 then Write(txtFile, WriteRegistroJ005);
+    if Bloco_J.RegistroJ100.Count > 0 then Write(txtFile, WriteRegistroJ100);
+    if Bloco_J.RegistroJ150.Count > 0 then Write(txtFile, WriteRegistroJ150);
+    if Bloco_J.RegistroJ800.Count > 0 then Write(txtFile, WriteRegistroJ800);
+    Write(txtFile, WriteRegistroJ900);
+    if Bloco_J.RegistroJ930.Count > 0 then Write(txtFile, WriteRegistroJ930);
     Write(txtFile, WriteRegistroJ990);
 
     /// BLOCO 9
@@ -349,6 +357,16 @@ begin
       QTD_REG_BLC := 1;
    end;
    Result := Bloco_I.WriteRegistroI001;
+end;
+
+function TACBrSPEDContabil.WriteRegistroI010: AnsiString;
+begin
+   with Bloco_9.Registro9900.New do
+   begin
+      REG_BLC := 'I010';
+      QTD_REG_BLC := 1;
+   end;
+   Result := Bloco_I.WriteRegistroI010;
 end;
 
 function TACBrSPEDContabil.WriteRegistroI990: AnsiString;

@@ -128,8 +128,23 @@ begin
   begin
      with Registro0000 do
      begin
+       Check(funChecaCNPJ(CNPJ), '(0-0000) ENTIDADE: O CNPJ "%s" digitado é inválido!', [CNPJ]);
+       Check(funChecaUF(UF), '(0-0000) ENTIDADE: A UF "%s" digitada é inválido!', [UF]);
+       Check(funChecaIE(IE, UF), '(0-0000) ENTIDADE: A inscrição estadual "%s" digitada é inválida!', [IE]);
+       Check(funChecaMUN(StrToInt(COD_MUN)), '(0-0000) ENTIDADE: O código do município "%s" digitado é inválido!', [COD_MUN]);
+       Check(((IND_SIT_ESP >= '0') and (IND_SIT_ESP <= '4')), '(0-0000) ENTIDADE: O indicador "%s" de situação especial, deve ser informado o número 0 ou 1 ou 2 ou 3 ou 4!', [IND_SIT_ESP]);
        ///
        Result := LFill('0000') +
+                 LFill('LECD') +
+                 LFill(DT_INI) +
+                 LFill(DT_FIN) +
+                 LFill(NOME) +
+                 LFill(CNPJ) +
+                 LFill(UF) +
+                 LFill(IE) +
+                 LFill(COD_MUN, 7) +
+                 LFill(IM) +
+                 LFill(IND_SIT_ESP, 1) +
                  Delimitador +
                  #13#10;
        ///
@@ -146,8 +161,10 @@ begin
   begin
      with Registro0001 do
      begin
+       Check(((IND_DAD = 0) or (IND_DAD = 1)), '(0-0001) ABERTURA DO BLOCO: Na abertura do bloco, deve ser informado o número 0 ou 1!');
        ///
        Result := LFill('0001') +
+                 LFill(IND_DAD, 0) +
                  Delimitador +
                  #13#10;
        ///
@@ -171,6 +188,8 @@ begin
         begin
            ///
            strRegistro0007 :=  strRegistro0007 + LFill('0007') +
+                                                 LFill(COD_ENT_REF) +
+                                                 LFill(COD_INSCR) +
                                                  Delimitador +
                                                  #13#10;
         end;
@@ -193,8 +212,20 @@ begin
      begin
         with Registro0020.Items[intFor] do
         begin
+           Check(((IND_DEC = 0) or (IND_DEC = 1)), '(0-0020) ENTIDADE: O Indicador de descentralização, deve ser informado o número 0 ou 1!');
+           Check(funChecaCNPJ(CNPJ), '(0-0020) ENTIDADE: O CNPJ "%s" digitado é inválido!', [CNPJ]);
+           Check(funChecaUF(UF), '(0-0020) ENTIDADE: A UF "%s" digitada é inválido!', [UF]);
+           Check(funChecaIE(IE, UF), '(0-0020) ENTIDADE: A inscrição estadual "%s" digitada é inválida!', [IE]);
+           Check(funChecaMUN(StrToInt(COD_MUN)), '(0-0020) ENTIDADE: O código do município "%s" digitado é inválido!', [COD_MUN]);
            ///
            strRegistro0020 :=  strRegistro0020 + LFill('0020') +
+                                                 LFill(IND_DEC) +
+                                                 LFill(CNPJ) +
+                                                 LFill(UF) +
+                                                 LFill(IE) +
+                                                 LFill(COD_MUN) +
+                                                 LFill(IM) +
+                                                 LFill(NIRE) +
                                                  Delimitador +
                                                  #13#10;
         end;
@@ -217,8 +248,28 @@ begin
      begin
         with Registro0150.Items[intFor] do
         begin
+           Check(funChecaPAISIBGE(COD_PAIS), '(0-0150) %s-%s, o código do país "%s" digitado é inválido!', [COD_PART, NOME, COD_PAIS]);
+           if Length(CNPJ) > 0 then
+              Check(funChecaCNPJ(CNPJ), '(0-0150) %s-%s, o CNPJ "%s" digitado é inválido!', [COD_PART, NOME, CNPJ]);
+           if Length(CPF)  > 0 then
+              Check(funChecaCPF(CPF), '(0-0150) %s-%s, o CPF "%s" digitado é inválido!', [COD_PART, NOME, CPF]);
+//           Check(funChecaIE(IE, UF),         '(0-0150) %s-%s, a Inscrição Estadual "%s" digitada é inválida!', [COD_PART, NOME, IE]);
+           Check(funChecaMUN(COD_MUN),       '(0-0150) %s-%s, o código do município "%s" digitado é inválido!', [COD_PART, NOME, IntToStr(COD_MUN)]);
+           Check(NOME <> '',                 '(0-0150) O nome do participante é obrigatório!');
            ///
            strRegistro0150 :=  strRegistro0150 + LFill('0150') +
+                                                 LFill(COD_PART) +
+                                                 LFill(NOME) +
+                                                 LFill(COD_PAIS) +
+                                                 LFill(CNPJ) +
+                                                 LFill(CPF) +
+                                                 LFill(NIT) +
+                                                 LFill(UF) +
+                                                 LFill(IE) +
+                                                 LFill(IE_ST) +
+                                                 LFill(COD_MUN, 7) +
+                                                 LFill(IM) +
+                                                 LFill(SUFRAMA) +
                                                  Delimitador +
                                                  #13#10;
         end;
@@ -241,8 +292,12 @@ begin
      begin
         with Registro0180.Items[intFor] do
         begin
+           Check(((COD_REL >= '01') and (COD_REL <= '11')), '(0-0180) ENTIDADE: O código "%s" de relacionamento, deve ser informado o número na faixa de 01 até 11!', [COD_REL]);
            ///
            strRegistro0180 :=  strRegistro0180 + LFill('0180') +
+                                                 LFill(COD_REL) +
+                                                 LFill(DT_INI_REL) +
+                                                 LFill(DT_FIN_REL) +
                                                  Delimitador +
                                                  #13#10;
         end;

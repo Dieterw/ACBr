@@ -101,8 +101,10 @@ begin
   begin
      with RegistroI001 do
      begin
+       Check(((IND_DAD = 0) or (IND_DAD = 1)), 'BLOCO I - REGISTROI001: Na abertura do bloco, deve ser informado o número 0 ou 1!');
        ///
        Result := LFill('I001') +
+                 LFill(IND_DAD, 0) +
                  Delimitador +
                  #13#10;
        ///
@@ -119,8 +121,11 @@ begin
   begin
      with RegistroI010 do
      begin
+       Check(((IND_ESC = 'G') or (IND_ESC = 'R') or (IND_ESC = 'A') or (IND_ESC = 'B') or (IND_ESC = 'Z')), 'BLOCO I - REGISTROI010: No Indicador da forma de escrituração contábil, deve ser informado: G ou R ou A ou B ou Z!');
        ///
        Result := LFill('I010') +
+                 LFill(IND_ESC) +
+                 LFill(COD_VER_LC) +
                  Delimitador +
                  #13#10;
        ///

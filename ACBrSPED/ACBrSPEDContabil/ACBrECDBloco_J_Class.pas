@@ -131,8 +131,10 @@ begin
   begin
      with RegistroJ001 do
      begin
+       Check(((IND_DAD = 0) or (IND_DAD = 1)), 'BLOCO J - REGISTROJ001: Na abertura do bloco, deve ser informado o número 0 ou 1!');
        ///
        Result := LFill('J001') +
+                 LFill(IND_DAD, 0) +
                  Delimitador +
                  #13#10;
        ///
@@ -154,8 +156,13 @@ begin
      begin
         with RegistroJ005.Items[intFor] do
         begin
+           Check(((ID_DEM = 1) or (ID_DEM = 2)), 'BLOCO J - REGISTROJ005: Na Identificação das demonstrações, deve ser informado o número 1 ou 2!');
            ///
            strRegistroJ005 :=  strRegistroJ005 + LFill('J005') +
+                                                 LFill(DT_INI) +
+                                                 LFill(DT_FIN) +
+                                                 LFill(ID_DEM, 0) +
+                                                 LFill(CAB_DEM) +
                                                  Delimitador +
                                                  #13#10;
         end;
@@ -178,8 +185,16 @@ begin
      begin
         with RegistroJ100.Items[intFor] do
         begin
+           Check(((IND_GRP_BAL = '1') or (IND_GRP_BAL = '2')), 'BLOCO J - REGISTROJ100: No Indicador de grupo do balanço, deve ser informado o número 1 ou 2!');
+           Check(((IND_DC_BAL = 'D') or (IND_DC_BAL = 'C')), 'BLOCO J - REGISTROJ100: No Indicador da situação do saldo, deve ser informado: D ou C!');
            ///
            strRegistroJ100 :=  strRegistroJ100 + LFill('J100') +
+                                                 LFill(COD_AGL) +
+                                                 LFill(NIVEL_AGL) +
+                                                 LFill(IND_GRP_BAL, 0) +
+                                                 LFill(DESCR_COD_AGL) +
+                                                 LFill(VL_CTA) +
+                                                 LFill(IND_DC_BAL) +
                                                  Delimitador +
                                                  #13#10;
         end;
@@ -202,8 +217,14 @@ begin
      begin
         with RegistroJ150.Items[intFor] do
         begin
+           Check(((IND_VL = 'D') or (IND_VL = 'R') or (IND_VL = 'P') or (IND_VL = 'N')), 'BLOCO J - REGISTROJ150: No Indicador da situação do valor, deve ser informado: D ou R ou P ou N!');
            ///
            strRegistroJ150 :=  strRegistroJ150 + LFill('J150') +
+                                                 LFill(COD_AGL) +
+                                                 LFill(NIVEL_AGL) +
+                                                 LFill(DESCR_COD_AGL) +
+                                                 LFill(VL_CTA) +
+                                                 LFill(IND_VL) +
                                                  Delimitador +
                                                  #13#10;
         end;
@@ -228,6 +249,8 @@ begin
         begin
            ///
            strRegistroJ800 :=  strRegistroJ800 + LFill('J800') +
+                                                 LFill(ARQ_RTF) +
+                                                 LFill('J800FIM') +
                                                  Delimitador +
                                                  #13#10;
         end;
@@ -247,6 +270,13 @@ begin
      begin
        ///
        Result := LFill('J900') +
+                 LFill('TERMO DE ENCERRAMENTO') +
+                 LFill(NUM_ORD) +
+                 LFill(NAT_LIVRO) +
+                 LFill(NOME) +
+                 LFill(QTD_LIN) +
+                 LFill(DT_INI_ESCR) +
+                 LFill(DT_FIN_ESCR) +
                  Delimitador +
                  #13#10;
        ///
@@ -270,6 +300,11 @@ begin
         begin
            ///
            strRegistroJ930 :=  strRegistroJ930 + LFill('J930') +
+                                                 LFill(IDENT_NOM) +
+                                                 LFill(IDENT_CPF) +
+                                                 LFill(IDENT_QUALIF) +
+                                                 LFill(COD_ASSIN) +
+                                                 LFill(IND_CRC) +
                                                  Delimitador +
                                                  #13#10;
         end;

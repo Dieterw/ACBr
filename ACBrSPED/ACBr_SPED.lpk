@@ -7,17 +7,17 @@
       <Version Value="8"/>
       <PathDelim Value="\"/>
       <SearchPaths>
-        <IncludeFiles Value="..\ACBrComum\"/>
+        <IncludeFiles Value="..\ACBrComum\;ACBrSPEDFiscal\;ACBrSPEDContabil\"/>
         <OtherUnitFiles Value="..\ACBrComum\;ACBrSPEDFiscal\;ACBrSPEDContabil\"/>
         <UnitOutputDirectory Value="..\ACBr\lib\$(TargetCPU)-$(TargetOS)"/>
-        <SrcPath Value="..\ACBrComum\"/>
+        <SrcPath Value="..\ACBrComum\;ACBrSPEDFiscal\;ACBrSPEDContabil\"/>
       </SearchPaths>
       <Other>
         <CompilerPath Value="$(CompPath)"/>
       </Other>
     </CompilerOptions>
     <Version Release="1"/>
-    <Files Count="29">
+    <Files Count="28">
       <Item1>
         <Filename Value="ACBrSped.pas"/>
         <UnitName Value="ACBrSped"/>
@@ -27,115 +27,111 @@
         <UnitName Value="ACBrSpedUtils"/>
       </Item2>
       <Item3>
-        <Filename Value="ACBrSPEDFiscal\ACBr_SPEDFiscal.pas"/>
-        <UnitName Value="ACBr_SPEDFiscal"/>
-      </Item3>
-      <Item4>
         <Filename Value="ACBrSPEDFiscal\ACBrEFDBloco_0.pas"/>
         <UnitName Value="ACBrEFDBloco_0"/>
-      </Item4>
-      <Item5>
+      </Item3>
+      <Item4>
         <Filename Value="ACBrSPEDFiscal\ACBrEFDBloco_0_Class.pas"/>
         <UnitName Value="ACBrEFDBloco_0_Class"/>
-      </Item5>
-      <Item6>
+      </Item4>
+      <Item5>
         <Filename Value="ACBrSPEDFiscal\ACBrEFDBloco_1.pas"/>
         <UnitName Value="ACBrEFDBloco_1"/>
-      </Item6>
-      <Item7>
+      </Item5>
+      <Item6>
         <Filename Value="ACBrSPEDFiscal\ACBrEFDBloco_1_Class.pas"/>
         <UnitName Value="ACBrEFDBloco_1_Class"/>
-      </Item7>
-      <Item8>
+      </Item6>
+      <Item7>
         <Filename Value="ACBrSPEDFiscal\ACBrEFDBloco_9.pas"/>
         <UnitName Value="ACBrEFDBloco_9"/>
-      </Item8>
-      <Item9>
+      </Item7>
+      <Item8>
         <Filename Value="ACBrSPEDFiscal\ACBrEFDBloco_9_Class.pas"/>
         <UnitName Value="ACBrEFDBloco_9_Class"/>
-      </Item9>
-      <Item10>
+      </Item8>
+      <Item9>
         <Filename Value="ACBrSPEDFiscal\ACBrEFDBloco_C.pas"/>
         <UnitName Value="ACBrEFDBloco_C"/>
-      </Item10>
-      <Item11>
+      </Item9>
+      <Item10>
         <Filename Value="ACBrSPEDFiscal\ACBrEFDBloco_C_Class.pas"/>
         <UnitName Value="ACBrEFDBloco_C_Class"/>
-      </Item11>
-      <Item12>
+      </Item10>
+      <Item11>
         <Filename Value="ACBrSPEDFiscal\ACBrEFDBloco_D.pas"/>
         <UnitName Value="ACBrEFDBloco_D"/>
-      </Item12>
-      <Item13>
+      </Item11>
+      <Item12>
         <Filename Value="ACBrSPEDFiscal\ACBrEFDBloco_D_Class.pas"/>
         <UnitName Value="ACBrEFDBloco_D_Class"/>
-      </Item13>
-      <Item14>
+      </Item12>
+      <Item13>
         <Filename Value="ACBrSPEDFiscal\ACBrEFDBloco_E.pas"/>
         <UnitName Value="ACBrEFDBloco_E"/>
-      </Item14>
-      <Item15>
+      </Item13>
+      <Item14>
         <Filename Value="ACBrSPEDFiscal\ACBrEFDBloco_E_Class.pas"/>
         <UnitName Value="ACBrEFDBloco_E_Class"/>
-      </Item15>
-      <Item16>
+      </Item14>
+      <Item15>
         <Filename Value="ACBrSPEDFiscal\ACBrEFDBloco_H.pas"/>
         <UnitName Value="ACBrEFDBloco_H"/>
-      </Item16>
-      <Item17>
+      </Item15>
+      <Item16>
         <Filename Value="ACBrSPEDFiscal\ACBrEFDBloco_H_Class.pas"/>
         <UnitName Value="ACBrEFDBloco_H_Class"/>
-      </Item17>
-      <Item18>
+      </Item16>
+      <Item17>
         <Filename Value="ACBrSPEDFiscal\ACBrEFDBlocos.pas"/>
         <UnitName Value="ACBrEFDBlocos"/>
-      </Item18>
-      <Item19>
+      </Item17>
+      <Item18>
         <Filename Value="ACBrSPEDFiscal\ACBrSpedFiscal.pas"/>
         <HasRegisterProc Value="True"/>
         <UnitName Value="ACBrSpedFiscal"/>
-      </Item19>
-      <Item20>
+      </Item18>
+      <Item19>
         <Filename Value="ACBrSPEDContabil\ACBrECDBloco_0.pas"/>
         <UnitName Value="ACBrECDBloco_0"/>
-      </Item20>
-      <Item21>
+      </Item19>
+      <Item20>
         <Filename Value="ACBrSPEDContabil\ACBrECDBloco_0_Class.pas"/>
         <UnitName Value="ACBrECDBloco_0_Class"/>
-      </Item21>
-      <Item22>
+      </Item20>
+      <Item21>
         <Filename Value="ACBrSPEDContabil\ACBrECDBloco_9.pas"/>
         <UnitName Value="ACBrECDBloco_9"/>
-      </Item22>
-      <Item23>
+      </Item21>
+      <Item22>
         <Filename Value="ACBrSPEDContabil\ACBrECDBloco_9_Class.pas"/>
         <UnitName Value="ACBrECDBloco_9_Class"/>
-      </Item23>
-      <Item24>
+      </Item22>
+      <Item23>
         <Filename Value="ACBrSPEDContabil\ACBrECDBloco_I.pas"/>
         <UnitName Value="ACBrECDBloco_I"/>
-      </Item24>
-      <Item25>
+      </Item23>
+      <Item24>
         <Filename Value="ACBrSPEDContabil\ACBrECDBloco_I_Class.pas"/>
         <UnitName Value="ACBrECDBloco_I_Class"/>
-      </Item25>
-      <Item26>
+      </Item24>
+      <Item25>
         <Filename Value="ACBrSPEDContabil\ACBrECDBloco_J.pas"/>
         <UnitName Value="ACBrECDBloco_J"/>
-      </Item26>
-      <Item27>
+      </Item25>
+      <Item26>
         <Filename Value="ACBrSPEDContabil\ACBrECDBloco_J_Class.pas"/>
         <UnitName Value="ACBrECDBloco_J_Class"/>
-      </Item27>
-      <Item28>
+      </Item26>
+      <Item27>
         <Filename Value="ACBrSPEDContabil\ACBrECDBlocos.pas"/>
         <UnitName Value="ACBrECDBlocos"/>
-      </Item28>
-      <Item29>
+      </Item27>
+      <Item28>
         <Filename Value="ACBrSPEDContabil\ACBrSpedContabil.pas"/>
         <HasRegisterProc Value="True"/>
         <UnitName Value="ACBrSpedContabil"/>
-      </Item29>
+      </Item28>
     </Files>
     <Type Value="RunAndDesignTime"/>
     <RequiredPkgs Count="1">

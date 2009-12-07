@@ -176,6 +176,7 @@ begin
                                                LFill( UNID ) +
                                                LFill( QTD,0 ) +
                                                LFill( VL_UNIT,0 ) +
+                                               LFill( VL_ITEM,0 ) +
                                                LFill( IND_PROP ) +
                                                LFill( COD_PART ) +
                                                LFill( TXT_COMPL ) +

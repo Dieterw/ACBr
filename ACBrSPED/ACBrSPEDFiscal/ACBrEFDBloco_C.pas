@@ -59,6 +59,7 @@ type
   TRegistroC141List = class; {Márcio Lopes 30Nov2009}
   TRegistroC170List = class;
   TRegistroC190List = class;
+  TRegistroC470List = class;
 
   /// Registro C100 - NOTA FISCAL (CÓDIGO 01), NOTA FISCAL AVULSA (CÓDIGO 1B), NOTA FISCAL DE PRODUTOR (CÓDIGO 04) E NFE (CÓDIGO 55)
 
@@ -1357,7 +1358,12 @@ type
     fVL_COFINS: currency;  /// Valor da COFINS
     fCPF_CNPJ: AnsiString;     /// CPF ou CNPJ do adquirente
     fNOM_ADQ: AnsiString;      /// Nome do adquirente
+
+    FRegistroC470: TRegistroC470List;  /// BLOCO C - Lista de RegistroC110 (FILHO)
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property COD_MOD: AnsiString read fCOD_MOD write fCOD_MOD;
     property COD_SIT: AnsiString read fCOD_SIT write fCOD_SIT;
     property NUM_DOC: AnsiString read fNUM_DOC write fNUM_DOC;
@@ -1367,6 +1373,8 @@ type
     property VL_COFINS: currency read fVL_COFINS write fVL_COFINS;
     property CPF_CNPJ: AnsiString read fCPF_CNPJ write fCPF_CNPJ;
     property NOM_ADQ: AnsiString read fNOM_ADQ write fNOM_ADQ;
+    /// Registros FILHOS
+    property RegistroC470: TRegistroC470List read FRegistroC470 write FRegistroC470;
   end;
 
   /// Registro C460 - Lista
@@ -3396,6 +3404,19 @@ end;
 destructor TRegistroC140.Destroy;
 begin
   FRegistroC141.Free;
+  inherited;
+end;
+
+{ TRegistroC460 }
+
+constructor TRegistroC460.Create;
+begin
+  FRegistroC470 := TRegistroC470List.Create; // BLOCO C - Lista de Registro (FILHO do FILHO)
+end;
+
+destructor TRegistroC460.Destroy;
+begin
+  FRegistroC470.Free;
   inherited;
 end;
 

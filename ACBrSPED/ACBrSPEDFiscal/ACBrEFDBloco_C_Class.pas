@@ -1586,7 +1586,7 @@ begin
         end;
         /// Registros FILHOS
         strRegistroC460 := strRegistroC460 +
-                           WriteRegistroC470( RegistroC460.Items[intFor] ) +
+                           WriteRegistroC470( RegistroC460.Items[intFor] );
 
         RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
      end;

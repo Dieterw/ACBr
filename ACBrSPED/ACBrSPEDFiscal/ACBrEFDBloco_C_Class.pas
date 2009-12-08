@@ -1520,7 +1520,7 @@ begin
           strRegistroC420 := strRegistroC420 + LFill('C420') +
                                                LFill( COD_TOT_PAR,7 ) +
                                                LFill( VLR_ACUM_TOT,0,2) +
-                                               LFill( NR_TOT,2) +
+                                               LFill( NR_TOT, 2, true) +
                                                LFill( DESCR_NR_TOT ) +
                                                Delimitador +
                                                #13#10;

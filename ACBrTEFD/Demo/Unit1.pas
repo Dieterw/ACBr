@@ -1,0 +1,818 @@
+unit Unit1;
+
+{$IFDEF FPC}
+ {$mode objfpc}{$H+}
+{$ENDIF}
+
+interface
+
+uses
+  Classes, SysUtils,
+  {$IFDEF FPC}
+    LResources, FileUtil,
+  {$ENDIF}
+  Forms, Controls, Graphics, Dialogs,
+  StdCtrls, ExtCtrls, Buttons, ComCtrls, ACBrECF, ACBrDevice, ACBrTEFD,
+  ACBrTEFDClass, ACBrBase, ACBrUtil ;
+
+type
+
+  { TForm1 }
+
+  TForm1 = class(TForm)
+     ACBrECF1 : TACBrECF;
+     ACBrTEFD1 : TACBrTEFD;
+     bADM : TButton;
+     bAtivar : TButton;
+     bFPG : TButton;
+     bAtivarGP : TButton;
+     bATV : TButton;
+     bAbreVendeSubTotaliza : TButton;
+     bCNC : TButton;
+     bCNF : TButton;
+     bCRT : TButton;
+     bCHQ : TButton;
+     bFechar : TButton;
+     bFechaRelatorio : TButton;
+     bInicializar : TButton;
+     bLeituraX : TButton;
+     bNCN : TButton;
+     bPagamento : TButton;
+     bReducaoZ : TButton;
+     btSerial : TSpeedButton;
+     bVendeItem : TButton;
+     bSubTotaliza : TButton;
+     bCancelar : TButton;
+     bAbreCupom : TButton;
+     bEstado : TButton;
+     cbxGP : TComboBox;
+     cbxGP1 : TComboBox;
+     cbxModelo : TComboBox;
+     cbxPorta : TComboBox;
+     ckAutoAtivar : TCheckBox;
+     ckAutoEfetuarPagamento : TCheckBox;
+     ckAutoFinalizarCupom : TCheckBox;
+     ckHIPERTEF : TCheckBox;
+     ckMultiplosCartoes : TCheckBox;
+     ckMultiplosCartoes1 : TCheckBox;
+     ckTEFDIAL : TCheckBox;
+     ckTEFDISC : TCheckBox;
+     edFPGCartao : TEdit;
+     edFPGCheque : TEdit;
+     edValorECF : TEdit;
+     edValorTEF : TEdit;
+     gbComandosTEF : TGroupBox;
+     gbConfigECF : TGroupBox;
+     gbConfigTEF : TGroupBox;
+     gbCupomECF : TGroupBox;
+     GroupBox1 : TGroupBox;
+     Label1 : TLabel;
+     Label2 : TLabel;
+     Label3 : TLabel;
+     Label4 : TLabel;
+     Label5 : TLabel;
+     Label6 : TLabel;
+     Label7 : TLabel;
+     lECFName : TLabel;
+     Memo1 : TMemo;
+     PageControl1 : TPageControl;
+     Panel1 : TPanel;
+     Panel2 : TPanel;
+     pMensagem : TPanel;
+     sECF : TShape;
+     sHiperTEF : TShape;
+     StatusBar1 : TStatusBar;
+     sTEFDial : TShape;
+     sTEFDisc : TShape;
+     tsConfig : TTabSheet;
+     tsOperacao : TTabSheet;
+     procedure ACBrTEFD1AguardaResp(Arquivo : String;
+        SegundosTimeOut : Integer; var Interromper : Boolean);
+     procedure ACBrTEFD1AntesFinalizarRequisicao(Req : TACBrTEFDReq);
+     procedure ACBrTEFD1ComandaECF(Operacao : TACBrTEFDOperacaoECF;
+        Resp : TACBrTEFDResp; var RetornoECF : Integer );
+     procedure ACBrTEFD1ComandaECFPagamento(IndiceECF : String; Valor : Double;
+        var RetornoECF : Integer);
+     procedure ACBrTEFD1ExibeMsg(Operacao : TACBrTEFDOperacaoMensagem;
+        Mensagem : String; var AModalResult : TModalResult);
+     procedure ACBrTEFD1InfoECF(Operacao : TACBrTEFDInfoECF;
+        var RetornoECF : String );
+     procedure ACBrTEFD1MudaEstadoReq(EstadoReq : TACBrTEFDReqEstado);
+     procedure ACBrTEFD1MudaEstadoResp(EstadoResp : TACBrTEFDRespEstado);
+     procedure TrataErros(Sender : TObject; E : Exception);
+     procedure bAbreVendeSubTotalizaClick(Sender : TObject);
+     procedure bCHQClick(Sender : TObject);
+     procedure bCNCClick(Sender : TObject);
+     procedure bCNFClick(Sender : TObject);
+     procedure bCRTClick(Sender : TObject);
+     procedure bEstadoClick(Sender : TObject);
+     procedure bFecharClick(Sender : TObject);
+     procedure bFPGClick(Sender : TObject);
+     procedure bNCNClick(Sender : TObject);
+     procedure bPagamentoClick(Sender : TObject);
+     procedure bSubTotalizaClick(Sender : TObject);
+     procedure bVendeItemClick(Sender : TObject);
+     procedure bAbreCupomClick(Sender : TObject);
+     procedure bADMClick(Sender : TObject);
+     procedure bAtivarGPClick(Sender : TObject);
+     procedure bATVClick(Sender : TObject);
+     procedure bInicializarClick(Sender : TObject);
+     procedure bAtivarClick(Sender : TObject);
+     procedure btSerialClick(Sender : TObject);
+     procedure bReducaoZClick(Sender : TObject);
+     procedure bLeituraXClick(Sender : TObject);
+     procedure bFechaRelatorioClick(Sender : TObject);
+     procedure bCancelarClick(Sender : TObject);
+     procedure cbxModeloChange(Sender : TObject);
+     procedure cbxPortaChange(Sender : TObject);
+     procedure ckAutoEfetuarPagamentoChange(Sender : TObject);
+     procedure ckAutoFinalizarCupomChange(Sender : TObject);
+     procedure ckMultiplosCartoesChange(Sender : TObject);
+     procedure ckAutoAtivarChange(Sender : TObject);
+     procedure ckHIPERTEFChange(Sender : TObject);
+     procedure ckTEFDISCChange(Sender : TObject);
+     procedure FormCloseQuery(Sender : TObject; var CanClose : boolean);
+     procedure FormCreate(Sender : TObject);
+     procedure ckTEFDIALChange(Sender : TObject);
+     procedure FormKeyDown(Sender : TObject; var Key : Word; Shift : TShiftState
+        );
+     procedure Memo1Change(Sender : TObject);
+  private
+     fKeyPressed : Boolean ;
+
+     procedure AvaliaTEFs;
+     procedure MostraSaldoRestante;
+     procedure VerificaECFAtivo;
+    { private declarations }
+  public
+    { public declarations }
+  end; 
+
+var
+  Form1 : TForm1; 
+
+implementation
+
+Uses typinfo, dateutils, strutils, ConfiguraSerial, Unit2, Unit3;
+
+{$IFNDEF FPC}
+ {$R *.dfm}
+{$ENDIF}
+
+{ TForm1 }
+
+procedure TForm1.FormCreate(Sender : TObject);
+var
+   I : TACBrTEFDTipo;
+begin
+  fKeyPressed := False ;
+  Application.OnException := {$IFDEF FPC}@{$ENDIF}TrataErros;
+
+  cbxGP.Items.Clear ;
+  For I := Low(TACBrTEFDTipo) to High(TACBrTEFDTipo) do
+     cbxGP.Items.Add( GetEnumName(TypeInfo(TACBrTEFDTipo), integer(I) ) ) ;
+  cbxGP.Items[0] := 'Todos' ;
+  cbxGP.ItemIndex := 0 ;
+
+  cbxGP1.Items.Assign(cbxGP.Items);
+  cbxGP1.ItemIndex := 0 ;
+
+  PageControl1.ActivePageIndex := 0 ;
+  Memo1.Lines.Clear;
+
+  pMensagem.Visible := False ;
+  pMensagem.Align   := alClient ;
+end;
+
+procedure TForm1.ckTEFDIALChange(Sender : TObject);
+begin
+   ACBrTEFD1.TEFDial.Habilitado := ckTEFDIAL.Checked;
+end;
+
+procedure TForm1.FormKeyDown(Sender : TObject; var Key : Word;
+   Shift : TShiftState);
+begin
+  fKeyPressed := True ;
+end;
+
+procedure TForm1.Memo1Change(Sender : TObject);
+begin
+  StatusBar1.Panels[0].Text := GetEnumName(TypeInfo(TACBrTEFDTipo), integer(ACBrTEFD1.GPAtual) ) ;
+  StatusBar1.Panels[2].Text := '' ;
+  ckMultiplosCartoes.Checked  := ACBrTEFD1.MultiplosCartoes;
+  ckMultiplosCartoes1.Checked := ACBrTEFD1.MultiplosCartoes;
+
+  cbxGP.ItemIndex  := Integer( ACBrTEFD1.GPAtual ) ;
+  cbxGP1.ItemIndex := cbxGP.ItemIndex ;
+end;
+
+procedure TForm1.AvaliaTEFs;
+begin
+   if ACBrTEFD1.TEFDial.Inicializado then
+      sTEFDial.Brush.Color := clLime
+   else
+      sTEFDial.Brush.Color := clRed ;
+
+   if ACBrTEFD1.TEFDisc.Inicializado then
+      sTEFDisc.Brush.Color := clLime
+   else
+      sTEFDisc.Brush.Color := clRed ;
+
+   if ACBrTEFD1.TEFHiper.Inicializado then
+      sHiperTEF.Brush.Color := clLime
+   else
+      sHiperTEF.Brush.Color := clRed ;
+end;
+
+procedure TForm1.MostraSaldoRestante;
+begin
+   Memo1.Lines.Add( 'Saldo Restante: '+FormatFloat('0.00',ACBrECF1.Subtotal-ACBrECF1.TotalPago)) ;
+end;
+
+procedure TForm1.VerificaECFAtivo;
+begin
+   if not ACBrECF1.Ativo then
+      Memo1.Lines.Add( ACBrStr( 'ATENÇÃO !! O ECF AINDA NÃO FOI ATIVADO' ) );
+end;
+
+procedure TForm1.bInicializarClick(Sender : TObject);
+begin
+  Memo1.Lines.Add('Inicializando: ' + cbxGP.Text );
+  ACBrTEFD1.Inicializar( TACBrTEFDTipo( cbxGP.ItemIndex ) );
+  Memo1.Lines.Add('ACBrTEFD.Inicializar Executado' );
+
+  AvaliaTEFs;
+end;
+
+procedure TForm1.bAtivarGPClick(Sender : TObject);
+begin
+  Memo1.Lines.Add('Ativando GP: ' + cbxGP.Text );
+  ACBrTEFD1.AtivarGP( TACBrTEFDTipo( cbxGP.ItemIndex ) );
+  Memo1.Lines.Add('ACBrTEFD.AtivarGP Executado' );
+
+  AvaliaTEFs;
+end;
+
+procedure TForm1.bAtivarClick(Sender : TObject);
+begin
+  if bAtivar.Caption = 'Ativar' then
+   begin
+     try
+        ACBrECF1.Porta := cbxPorta.Text ;
+
+        if cbxModelo.ItemIndex = 0 then
+           if not ACBrECF1.AcharECF(true,False) then
+           begin
+              MessageDlg('Nenhum ECF encontrado.',mtInformation,[mbOk],0) ;
+              exit ;
+           end ;
+
+        ACBrECF1.Ativar ;
+
+        Memo1.Lines.Add( 'Ativar ECF' );
+     finally
+        cbxModelo.ItemIndex := Integer(ACBrECF1.Modelo) ;
+        cbxPorta.Text       := ACBrECF1.Porta ;
+        lECFName.Caption    := GetEnumName(TypeInfo(TACBrECFModelo), cbxModelo.ItemIndex ) ;
+        if ACBrECF1.Ativo then
+         begin
+           sECF.Brush.Color := clLime ;
+           bAtivar.Caption := 'Desativar' ;
+         end
+        else
+           sECF.Brush.Color := clRed;
+
+        btSerial.Enabled   := not ACBrECF1.Ativo ;
+        gbCupomECF.Enabled := ACBrECF1.Ativo ;
+     end ;
+   end
+  else
+   begin
+     ACBrECF1.Desativar ;
+     bAtivar.Caption := 'Ativar' ;
+     Memo1.Lines.Add( 'Desativar ECF' );
+     sECF.Brush.Color   := clRed;
+     gbCupomECF.Enabled := False ;
+     btSerial.Enabled   := True ;
+   end;
+end;
+
+procedure TForm1.btSerialClick(Sender : TObject);
+Var
+  frConfiguraSerial : TfrConfiguraSerial ;
+begin
+  frConfiguraSerial := TfrConfiguraSerial.Create(self);
+
+  try
+    frConfiguraSerial.Device.Porta        := ACBrECF1.Device.Porta ;
+    frConfiguraSerial.cmbPortaSerial.Text := cbxPorta.Text ;
+    frConfiguraSerial.Device.ParamsString := ACBrECF1.Device.ParamsString ;
+
+    if frConfiguraSerial.ShowModal = mrOk then
+    begin
+       cbxPorta.Text                := frConfiguraSerial.Device.Porta ;
+       ACBrECF1.Device.ParamsString := frConfiguraSerial.Device.ParamsString ;
+    end ;
+  finally
+     FreeAndNil( frConfiguraSerial ) ;
+  end ;
+end;
+
+procedure TForm1.bReducaoZClick(Sender : TObject);
+begin
+  if ACBrECF1.Estado <> estRequerZ then
+  begin
+     if MessageDlg( ACBrStr( 'A Redução Z pode Bloquear o seu ECF até a 12:00pm'+#10+#10+
+                  'Continua assim mesmo ?'),mtWarning,mbYesNoCancel,0) <> mrYes then
+        exit ;
+
+     if MessageDlg( ACBrStr('Você tem certeza ?'),mtWarning,mbYesNoCancel,0) <> mrYes then
+        exit ;
+  end ;
+
+   ACBrECF1.ReducaoZ ;
+   Memo1.Lines.Add('ACBrECF.ReducaoZ');
+end;
+
+procedure TForm1.bLeituraXClick(Sender : TObject);
+begin
+   ACBrECF1.LeituraX;
+   Memo1.Lines.Add('ACBrECF.LeituraX');
+end;
+
+procedure TForm1.bFechaRelatorioClick(Sender : TObject);
+begin
+   ACBrECF1.FechaRelatorio;
+   Memo1.Lines.Add('ACBrECF.FechaRelatorio');
+end;
+
+procedure TForm1.bAbreCupomClick(Sender : TObject);
+begin
+  ACBrECF1.AbreCupom;
+  Memo1.Lines.Add('ACBrECF.AbreCupom');
+end;
+
+procedure TForm1.bVendeItemClick(Sender : TObject);
+Var
+  Valor : Double ;
+begin
+  Valor := StrToFloat(edValorECF.Text);
+
+  try
+    bVendeItem.Enabled := False ;
+    ACBrECF1.VendeItem('12345','PRODUTO TESTE','NN',1,Valor);
+    Memo1.Lines.Add('ACBrECF.VendeItem');
+  finally
+    bVendeItem.Enabled := True ;
+  end;
+end;
+
+procedure TForm1.bSubTotalizaClick(Sender : TObject);
+begin
+  ACBrECF1.SubtotalizaCupom ;
+  Memo1.Lines.Add('ACBrECF.SubtotalizaCupom');
+  MostraSaldoRestante;
+end;
+
+procedure TForm1.bPagamentoClick(Sender : TObject);
+Var
+  CodFormaPagamento, ValorStr : String;
+begin
+  CodFormaPagamento := '01' ;
+  ValorStr          := '0' ;
+
+  if not InputQuery('Abertura de Cupom Vinculado',
+                    'Digite o Cod.Forma Pagamento utilizada no cupom anterior',
+                    CodFormaPagamento ) then
+     exit ;
+
+  if not InputQuery('Abertura de Cupom Vinculado',
+                    ACBrStr('Digite o Valor a vincular no cupom anterior'+sLineBreak+
+                    '(Não é necessário em alguns modelos)'),
+                    ValorStr ) then
+     exit ;
+
+  if StrToFloatDef(ValorStr,0) = 0 then
+     exit ;
+
+  ACBrECF1.EfetuaPagamento( CodFormaPagamento, StrToFloat(ValorStr) );
+  Memo1.Lines.Add('ACBrECF.EfetuaPagamento');
+  MostraSaldoRestante;
+end;
+
+procedure TForm1.bFecharClick(Sender : TObject);
+begin
+   ACBrECF1.FechaCupom('Projeto ACBr|http://acbr.sf.net');
+   Memo1.Lines.Add('ACBrECF.FechaCupom');
+end;
+
+procedure TForm1.bFPGClick(Sender : TObject);
+Var
+  A : Integer ;
+begin
+  ACBrECF1.CarregaFormasPagamento ;
+
+  for A := 0 to ACBrECF1.FormasPagamento.Count -1 do
+  begin
+     if ACBrECF1.FormasPagamento[A].Descricao <> '' then
+        Memo1.Lines.Add( 'Forma Pagto: '+ACBrECF1.FormasPagamento[A].Indice+' -> '+
+           ACBrECF1.FormasPagamento[A].Descricao+'  Permite Vinculado: '+
+           IfThen( ACBrECF1.FormasPagamento[A].PermiteVinculado,'S','N'));
+  end ;
+  Memo1.Lines.Add('---------------------------------');
+end;
+
+procedure TForm1.bNCNClick(Sender : TObject);
+Var
+  AForm : TForm3 ;
+begin
+  VerificaECFAtivo;
+
+  AForm := TForm3.Create(self);
+
+  try
+    AForm.IsNCN := True ;
+    if AForm.ShowModal = mrOK then
+    begin
+      Memo1.Lines.Add( ACBrStr('Inicio de NCN - Rede: '+
+                       AForm.cbxRede.Text+' NSU: '+AForm.edNSU.Text+
+                       ' Finalização: '+AForm.edFinalizacao.Text+
+                       ' Valor: '+AForm.edValor.Text ) );
+      ACBrTEFD1.NCN( AForm.cbxRede.Text,
+                     AForm.edNSU.Text,
+                     AForm.edFinalizacao.Text,
+                     StrToFloat( AForm.edValor.Text ) );
+      Memo1.Lines.Add('NCN executado com sucesso');
+    end;
+  finally
+    AForm.Free ;
+  end;
+end;
+
+procedure TForm1.bCancelarClick(Sender : TObject);
+begin
+   ACBrECF1.CancelaCupom;
+   Memo1.Lines.Add('ACBrECF.CancelaCupom');
+   ACBrTEFD1.CancelaTransacoesPendentes;
+   Memo1.Lines.Add('ACBrTEFD1.CancelaTransacoesPendentes');
+end;
+
+procedure TForm1.cbxModeloChange(Sender : TObject);
+begin
+  try
+     ACBrECF1.Modelo := TACBrECFModelo( cbxModelo.ItemIndex ) ;
+  except
+     cbxModelo.ItemIndex := Integer( ACBrECF1.Modelo ) ;
+     raise ;
+  end ;
+end;
+
+procedure TForm1.cbxPortaChange(Sender : TObject);
+begin
+  try
+    ACBrECF1.Porta := cbxPorta.Text ;
+  finally
+     cbxPorta.Text := ACBrECF1.Porta ;
+  end ;
+end;
+
+procedure TForm1.ckAutoEfetuarPagamentoChange(Sender : TObject);
+begin
+  ACBrTEFD1.AutoEfetuarPagamento := ckAutoEfetuarPagamento.Checked;
+end;
+
+procedure TForm1.ckAutoFinalizarCupomChange(Sender : TObject);
+begin
+  ACBrTEFD1.AutoFinalizarCupom := ckAutoFinalizarCupom.Checked;
+end;
+
+procedure TForm1.ckMultiplosCartoesChange(Sender : TObject);
+begin
+  try
+    ACBrTEFD1.MultiplosCartoes := TCheckBox(Sender).Checked ;
+  finally
+    ckMultiplosCartoes.Checked := ACBrTEFD1.MultiplosCartoes ;
+  end;
+end;
+
+procedure TForm1.ckAutoAtivarChange(Sender : TObject);
+begin
+   ACBrTEFD1.AutoAtivarGP := ckAutoAtivar.Checked;
+end;
+
+procedure TForm1.ckHIPERTEFChange(Sender : TObject);
+begin
+  ACBrTEFD1.TEFHiper.Habilitado := ckHIPERTEF.Checked;
+end;
+
+procedure TForm1.ckTEFDISCChange(Sender : TObject);
+begin
+  ACBrTEFD1.TEFDisc.Habilitado := ckTEFDISC.Checked;
+end;
+
+procedure TForm1.FormCloseQuery(Sender : TObject; var CanClose : boolean);
+begin
+   CanClose := self.Enabled ;
+end;
+
+procedure TForm1.bATVClick(Sender : TObject);
+begin
+  Memo1.Lines.Add('Inicio de ATV');
+  ACBrTEFD1.ATV( TACBrTEFDTipo( cbxGP1.ItemIndex ) );
+  Memo1.Lines.Add('ATV executado com sucesso');
+end;
+
+procedure TForm1.bADMClick(Sender : TObject);
+begin
+  VerificaECFAtivo;
+
+  Memo1.Lines.Add('Inicio de ADM');
+  ACBrTEFD1.ADM( TACBrTEFDTipo( cbxGP1.ItemIndex ) );
+  Memo1.Lines.Add('ADM executado com sucesso');
+end;
+
+procedure TForm1.ACBrTEFD1ExibeMsg(Operacao : TACBrTEFDOperacaoMensagem;
+   Mensagem : String; var AModalResult : TModalResult);
+var
+   Fim : TDateTime;
+   OldMensagem : String;
+   OldVisible, OldEnabled : Boolean;
+begin
+  case Operacao of
+
+    opmOK :
+       AModalResult := MessageDlg( Mensagem, mtInformation, [mbOK], 0);
+
+    opmYesNo :
+       AModalResult := MessageDlg( Mensagem, mtConfirmation, [mbYes,mbNo], 0);
+
+    opmExibirMsg :
+       begin
+         self.Enabled      := False ;
+         pMensagem.Caption := Mensagem;
+         pMensagem.Visible := True ;
+       end;
+
+    opmRemoverMsg :
+       begin
+         pMensagem.Caption := '' ;
+         pMensagem.Visible := False ;
+         self.Enabled      := True ;
+       end;
+
+    opmDestaqueVia :
+       begin
+         OldEnabled  := self.Enabled ;
+         OldMensagem := pMensagem.Caption ;
+         OldVisible  := pMensagem.Visible ;
+         try
+            self.Enabled      := False ;    // Desabilita o Form Atual, para bloquear a Interface
+            pMensagem.Caption := Mensagem;
+            pMensagem.Visible := True ;
+
+            { Aguardando 5 segundos, ou qq Tecla }
+            fKeyPressed := False ;
+            Fim := IncSecond( now, 6)  ;
+            repeat
+               sleep(200) ;
+               pMensagem.Caption := Mensagem + ' ' + IntToStr(SecondsBetween(Fim,now));
+               Application.ProcessMessages;
+            until (now > Fim) or fKeyPressed ;
+
+         finally
+            pMensagem.Caption := OldMensagem ;
+            pMensagem.Visible := OldVisible ;
+            self.Enabled      := OldEnabled ;
+         end;
+       end;
+  end;
+
+end;
+
+procedure TForm1.ACBrTEFD1InfoECF(Operacao : TACBrTEFDInfoECF;
+   var RetornoECF : String );
+begin
+   case Operacao of
+     ineSubTotal :
+        RetornoECF := FloatToStr( ACBrECF1.Subtotal-ACBrECF1.TotalPago ) ;
+
+     ineEstadoECF :
+       begin
+         Case ACBrECF1.Estado of
+           estLivre     : RetornoECF := 'L' ;
+           estVenda     : RetornoECF := 'V' ;
+           estPagamento : RetornoECF := 'P' ;
+         else
+           RetornoECF := 'O' ;
+         end;
+       end;
+   end;
+end;
+
+procedure TForm1.ACBrTEFD1MudaEstadoReq(EstadoReq : TACBrTEFDReqEstado);
+begin
+   StatusBar1.Panels[1].Text := GetEnumName(TypeInfo(TACBrTEFDReqEstado), Integer(EstadoReq) ) ;
+end;
+
+procedure TForm1.ACBrTEFD1MudaEstadoResp(EstadoResp : TACBrTEFDRespEstado);
+begin
+  StatusBar1.Panels[1].Text := GetEnumName(TypeInfo(TACBrTEFDRespEstado), Integer(EstadoResp) ) ;
+end;
+
+procedure TForm1.TrataErros(Sender : TObject; E : Exception);
+begin
+  Memo1.Lines.Add( E.Message );
+  StatusBar1.Panels[1].Text := 'Exception' ;
+  StatusBar1.Panels[2].Text := StringReplace( E.Message, sLineBreak, ' ', [rfReplaceAll] ) ;
+end;
+
+procedure TForm1.bAbreVendeSubTotalizaClick(Sender : TObject);
+Var
+  Valor : Double ;
+begin
+  Valor := StrToFloat(edValorECF.Text);
+
+  try
+    self.Enabled := False ;
+    ACBrECF1.AbreCupom;
+    Memo1.Lines.Add('ACBrECF.AbreCupom');
+
+    ACBrECF1.VendeItem('12345','PRODUTO TESTE','NN',1,Valor);
+    Memo1.Lines.Add('ACBrECF.VendeItem');
+
+    ACBrECF1.SubtotalizaCupom ;
+    Memo1.Lines.Add('ACBrECF.SubtotalizaCupom');
+    MostraSaldoRestante;
+  finally
+    self.Enabled := True ;
+  end;
+end;
+
+procedure TForm1.bCHQClick(Sender : TObject);
+begin
+  ACBrTEFD1.CHQ( StrToFloat(edValorTEF.Text) ,edFPGCheque.Text, ACBrECF1.NumCOO);
+  MostraSaldoRestante;
+end;
+
+procedure TForm1.bCNCClick(Sender : TObject);
+Var
+  AForm : TForm2 ;
+  DT    : TDateTime ;
+begin
+  VerificaECFAtivo;
+
+  AForm := TForm2.Create(self);
+
+  try
+    if AForm.ShowModal = mrOK then
+    begin
+      DT := AForm.deData.Date +
+            EncodeTime( StrToInt(copy(AForm.meHora.Text,1,2)),
+                        StrToInt(copy(AForm.meHora.Text,4,2)),
+                        StrToInt(copy(AForm.meHora.Text,7,2)), 0) ;
+
+      Memo1.Lines.Add( ACBrStr( 'Inicio de CNC - Rede: '+
+                       AForm.cbxRede.Text+' NSU: '+AForm.edNSU.Text+
+                       ' DataHora: '+DateTimeToStr(DT)+
+                       ' Valor: '+AForm.edValor.Text ) );
+      ACBrTEFD1.CNC( AForm.cbxRede.Text,
+                     AForm.edNSU.Text,
+                     DT,
+                     StrToFloat( AForm.edValor.Text ) );
+      Memo1.Lines.Add('CNC executado com sucesso');
+
+    end;
+  finally
+    AForm.Free ;
+  end;
+end;
+
+procedure TForm1.bCNFClick(Sender : TObject);
+Var
+  AForm : TForm3 ;
+begin
+  VerificaECFAtivo;
+
+  AForm := TForm3.Create(self);
+
+  try
+    AForm.IsNCN := False ;
+    if AForm.ShowModal = mrOK then
+    begin
+      Memo1.Lines.Add( ACBrStr( 'Inicio de CNF - Rede: '+
+                       AForm.cbxRede.Text+' NSU: '+AForm.edNSU.Text+
+                       ' Finalização: '+AForm.edFinalizacao.Text) );
+      ACBrTEFD1.CNF( AForm.cbxRede.Text,
+                     AForm.edNSU.Text,
+                     AForm.edFinalizacao.Text);
+      Memo1.Lines.Add('CNF executado com sucesso');
+    end;
+  finally
+    AForm.Free ;
+  end;
+end;
+
+procedure TForm1.bCRTClick(Sender : TObject);
+begin
+   ACBrTEFD1.CRT( StrToFloat(edValorTEF.Text) ,edFPGCartao.Text, ACBrECF1.NumCOO);
+   MostraSaldoRestante;
+end;
+
+procedure TForm1.bEstadoClick(Sender : TObject);
+begin
+   Memo1.Lines.Add('Estado: '+GetEnumName(TypeInfo(TACBrECFEstado), Integer(ACBrECF1.Estado) )) ;
+end;
+
+procedure TForm1.ACBrTEFD1AguardaResp(Arquivo : String;
+   SegundosTimeOut : Integer; var Interromper : Boolean);
+begin
+   StatusBar1.Panels[2].Text := 'Aguardando: '+Arquivo+' '+IntToStr(SegundosTimeOut) ;
+   Application.ProcessMessages;
+end;
+
+procedure TForm1.ACBrTEFD1AntesFinalizarRequisicao(Req : TACBrTEFDReq);
+begin
+   if Req.Header = 'CRT' then
+      Req.GravaInformacao(777,777,'TESTE REDECARD');
+   Memo1.Lines.Add('Enviando: '+Req.Header+' ID: '+IntToStr( Req.ID ) );
+end;
+
+procedure TForm1.ACBrTEFD1ComandaECF(Operacao : TACBrTEFDOperacaoECF;
+   Resp : TACBrTEFDResp; var RetornoECF : Integer );
+begin
+  try
+    case Operacao of
+      opeAbreGerencial :
+        ACBrECF1.AbreRelatorioGerencial ;
+
+      opeAbreVinculado :
+        { Se "Resp.DocumentoVinculado" for Vazio, Tente: "ACBrECF.NumCOO" }
+        ACBrECF1.AbreCupomVinculado( Resp.DocumentoVinculado,
+                                     Resp.IndiceFPG_ECF, Resp.ValorTotal );
+
+      opeCancelaCupom :
+        begin
+          Memo1.Lines.Add('Cancelando o Cupom');
+          ACBrECF1.CancelaCupom;
+        end;
+
+      opeFechaCupom :
+         ACBrECF1.FechaCupom('Projeto ACBr|http://acbr.sf.net');
+
+      opeSubTotalizaCupom :
+         ACBrECF1.SubtotalizaCupom( 0, 'Projeto ACBr|http://acbr.sf.net' );
+
+      opeImprimeGerencial :
+        begin
+           Memo1.Lines.AddStrings( Resp.ImagemComprovante );
+           { *** Lembre-se de configurar ***
+             ACBrECF1.MaxLinhasBuffer   := 3; // Os homologadores permitem no mÃ¡ximo
+                                              // ImpressÃ£o de 3 em 3 linhas
+             ACBrECF1.LinhasEntreCupons := 7; // (ajuste conforme o seu ECF)
+
+             Para Acessar o numero da Via atual, sendo Impressa use:
+             Resp.ViaAtual }
+           ACBrECF1.LinhaRelatorioGerencial( Resp.ImagemComprovante.Text ) ;
+        end;
+
+      opeFechaGerencial, opeFechaVinculado :
+        ACBrECF1.FechaRelatorio ;
+
+      opePulaLinhas :
+        ACBrECF1.PulaLinhas( ACBrECF1.LinhasEntreCupons );
+
+      opeImprimeVinculado :
+        begin
+          Memo1.Lines.AddStrings( Resp.ImagemComprovante );
+          if Resp.ViaAtual = 1 then
+             ACBrECF1.LinhaCupomVinculado( Resp.ImagemComprovante.Text )
+          else
+             { NOTA: ACBrECF nÃ£o possui comando para imprimir a 2a via do CCD }
+             ACBrECF1.LinhaCupomVinculado( Resp.ImagemComprovante.Text ) ;
+        end;
+    end;
+
+    RetornoECF := 1 ;
+  except
+    RetornoECF := 0 ;
+  end;
+end;
+
+procedure TForm1.ACBrTEFD1ComandaECFPagamento(IndiceECF : String;
+   Valor : Double; var RetornoECF : Integer);
+begin
+  try
+     ACBrECF1.EfetuaPagamento(IndiceECF, Valor);
+     RetornoECF := 1 ;
+  except
+     RetornoECF := 0 ;
+  end;
+end;
+
+initialization
+{$IFDEF FPC}
+ {$I unit1.lrs}
+{$ENDIF}
+  
+end.
+

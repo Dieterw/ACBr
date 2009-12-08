@@ -99,7 +99,6 @@ type
     property IND_PROP: AnsiString read FIND_PROP write FIND_PROP;
     property COD_PART: AnsiString read FCOD_PART write FCOD_PART;
     property TXT_COMPL: AnsiString read FTXT_COMPL write FTXT_COMPL;
-    property COD_OBS: AnsiString read FCOD_OBS write FCOD_OBS;
     property COD_CTA: AnsiString read FCOD_CTA write FCOD_CTA;
   end;
 

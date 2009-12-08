@@ -180,7 +180,6 @@ begin
                                                LFill( IND_PROP ) +
                                                LFill( COD_PART ) +
                                                LFill( TXT_COMPL ) +
-                                               LFill( COD_OBS ) +
                                                LFill( COD_CTA ) +
                                                Delimitador +
                                                #13#10;

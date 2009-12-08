@@ -47,6 +47,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.01a   08/12/09
+---------------
+[-] Correção no método do WriteRegistroH010 por (SOFTCOM INFORMATICA)
+[-] Correção no método do WriteRegistroC321 por (Diego Verdan)
+[-] Correção no método do WriteRegistroC460 por (Agnaldo Partes)
+
 Versão 0.01a   07/12/09
 ---------------
 [*] Implementado RegistroH005List, para criar uma lista do RegistroH005

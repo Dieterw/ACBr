@@ -1313,9 +1313,9 @@ begin
           strRegistroC321 := strRegistroC321 + LFill('C321') +
                                                LFill( COD_ITEM ) +
                                                LFill( QTD,0,3 ) +
+                                               LFill( UNID ) +
                                                LFill( VL_ITEM,0,2 ) +
                                                LFill( VL_DESC,0,2 ) +
-                                               LFill( VL_BC_ICMS,0,2 ) +
                                                LFill( VL_BC_ICMS,0,2 ) +
                                                LFill( VL_ICMS,0,2 ) +
                                                LFill( VL_PIS,0,2 ) +
@@ -1576,7 +1576,7 @@ begin
           strRegistroC460 := strRegistroC460 + LFill('C460') +
                                                LFill( COD_MOD ) +
                                                LFill( COD_SIT ) +
-                                               LFill( NUM_DOC,8 ) +
+                                               LFill( NUM_DOC,6 ) +
                                                LFill( DT_DOC ) +
                                                LFill( VL_DOC,0,2 ) +
                                                LFill( VL_PIS,0,2 ) +

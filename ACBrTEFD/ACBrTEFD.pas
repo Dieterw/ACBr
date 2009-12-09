@@ -441,6 +441,7 @@ begin
     gpTefDial  : fTefClass := fTefDial ;
     gpTefDisc  : fTefClass := fTefDisc ;
     gpHiperTef : fTefClass := fTefHiper ;
+    gpCliSiTef : fTefClass := fTefCliSiTef;
 //  gpGoodCard : fTefClass := fTefGood ;
 //  gpFoxWin   : fTefClass := fTefFW ;
   end;

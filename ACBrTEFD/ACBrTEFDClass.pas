@@ -533,7 +533,7 @@ type
      procedure DesInicializar ; virtual;
 
      procedure AtivarGP ; virtual;
-     procedure VerificaAtivo ;
+     procedure VerificaAtivo ; virtual;
 
      procedure IniciarRequisicao( AHeader : String; AID : Integer = 0 ); virtual;
      procedure FinalizarRequisicao ; virtual;

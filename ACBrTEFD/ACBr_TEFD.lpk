@@ -17,7 +17,7 @@
       </Other>
     </CompilerOptions>
     <Version Release="1"/>
-    <Files Count="2">
+    <Files Count="6">
       <Item1>
         <Filename Value="ACBrTEFDClass.pas"/>
         <UnitName Value="ACBrTEFDClass"/>
@@ -27,6 +27,22 @@
         <HasRegisterProc Value="True"/>
         <UnitName Value="ACBrTEFD"/>
       </Item2>
+      <Item3>
+        <Filename Value="ACBrTEFDHiper.pas"/>
+        <UnitName Value="ACBrTEFDHiper"/>
+      </Item3>
+      <Item4>
+        <Filename Value="ACBrTEFDCliSiTef.pas"/>
+        <UnitName Value="ACBrTEFDCliSiTef"/>
+      </Item4>
+      <Item5>
+        <Filename Value="ACBrTEFDDial.pas"/>
+        <UnitName Value="ACBrTEFDDial"/>
+      </Item5>
+      <Item6>
+        <Filename Value="ACBrTEFDDisc.pas"/>
+        <UnitName Value="ACBrTEFDDisc"/>
+      </Item6>
     </Files>
     <Type Value="RunAndDesignTime"/>
     <RequiredPkgs Count="2">

@@ -1608,10 +1608,10 @@ begin
         with RegC460.RegistroC470.Items[intFor] do
         begin
           strRegistroC470 := strRegistroC470 + LFill('C470') +
-                                               LFill( COD_ITEM,6 ) +
+                                               LFill( COD_ITEM ) +
                                                LFill( QTD,0,3 ) +
                                                LFill( QTD_CANC,0,3 ) +
-                                               LFill( UNID,6 ) +
+                                               LFill( UNID ) +
                                                LFill( VL_ITEM,0,2 ) +
                                                LFill( CST_ICMS,3 ) +
                                                LFill( CFOP,4 ) +
@@ -1674,7 +1674,7 @@ begin
         begin
           strRegistroC495 := strRegistroC495 + LFill('C495') +
                                                LFill( ALIQ_ICMS,6,2 ) +
-                                               LFill( COD_ITEM,13 ) +
+                                               LFill( COD_ITEM ) +
                                                LFill( QTD,0,3 ) +
                                                LFill( QTD_CANC,0,3 ) +
                                                LFill( UNID ) +

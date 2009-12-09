@@ -99,21 +99,22 @@ object Form2: TForm2
     TabOrder = 3
     Text = '  :  :  '
   end
-  object deData: TDateTimePicker
-    Left = 16
-    Top = 91
-    Width = 105
-    Height = 21
-    Date = 40155.792538946760000000
-    Time = 40155.792538946760000000
-    TabOrder = 4
-  end
   object edValor: TEdit
     Left = 199
     Top = 91
     Width = 97
     Height = 21
-    TabOrder = 5
+    TabOrder = 4
     Text = '0,00'
+  end
+  object edData: TMaskEdit
+    Left = 16
+    Top = 90
+    Width = 87
+    Height = 21
+    EditMask = '00/00/0000;1;_'
+    MaxLength = 10
+    TabOrder = 5
+    Text = '  /  /    '
   end
 end

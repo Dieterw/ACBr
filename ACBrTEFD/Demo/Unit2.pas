@@ -9,12 +9,11 @@ interface
 uses
   Classes, SysUtils,
   {$IFDEF FPC}
-    LResources, FileUtil, EditBtn, MaskEdit,
+    LResources, MaskEdit,
   {$ELSE}
     Mask,
   {$ENDIF}
-  Forms, Controls, Graphics, Dialogs, StdCtrls, Spin,
-  ComCtrls  ;
+  Forms, Controls, Graphics, ComCtrls, StdCtrls  ;
 
 type
 
@@ -30,12 +29,8 @@ type
      Label3 : TLabel;
      Label4 : TLabel;
      meHora : TMaskEdit;
-     {$IFDEF FPC}
-       deData: TDateEdit;
-     {$ELSE}
-       deData: TDateTimePicker;
-     {$ENDIF}
-    Label5: TLabel;
+     Label5: TLabel;
+     edData : TMaskEdit;
      procedure FormCreate(Sender : TObject);
   private
     { private declarations }
@@ -56,7 +51,7 @@ implementation
 
 procedure TForm2.FormCreate(Sender : TObject);
 begin
-   deData.Date := now ;
+   edData.Text := FormatDateTime('DD/MM/YYYY',now) ;
 end;
 
 initialization

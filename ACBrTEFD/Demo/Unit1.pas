@@ -201,27 +201,30 @@ begin
   StatusBar1.Panels[2].Text := '' ;
   ckMultiplosCartoes.Checked  := ACBrTEFD1.MultiplosCartoes;
   ckMultiplosCartoes1.Checked := ACBrTEFD1.MultiplosCartoes;
-
-  cbxGP.ItemIndex  := Integer( ACBrTEFD1.GPAtual ) ;
-  cbxGP1.ItemIndex := cbxGP.ItemIndex ;
 end;
 
 procedure TForm1.AvaliaTEFs;
 begin
-   if ACBrTEFD1.TEFDial.Inicializado then
-      sTEFDial.Brush.Color := clLime
-   else
-      sTEFDial.Brush.Color := clRed ;
+  if ACBrTEFD1.TEFDial.Inicializado then
+     sTEFDial.Brush.Color := clLime
+  else
+     sTEFDial.Brush.Color := clRed ;
+  ckTEFDIAL.Checked := ACBrTEFD1.TEFDial.Habilitado;
 
-   if ACBrTEFD1.TEFDisc.Inicializado then
-      sTEFDisc.Brush.Color := clLime
-   else
-      sTEFDisc.Brush.Color := clRed ;
+  if ACBrTEFD1.TEFDisc.Inicializado then
+     sTEFDisc.Brush.Color := clLime
+  else
+     sTEFDisc.Brush.Color := clRed ;
+  ckTEFDISC.Checked := ACBrTEFD1.TEFDisc.Habilitado;
 
-   if ACBrTEFD1.TEFHiper.Inicializado then
-      sHiperTEF.Brush.Color := clLime
-   else
-      sHiperTEF.Brush.Color := clRed ;
+  if ACBrTEFD1.TEFHiper.Inicializado then
+     sHiperTEF.Brush.Color := clLime
+  else
+     sHiperTEF.Brush.Color := clRed ;
+  ckHIPERTEF.Checked := ACBrTEFD1.TEFHiper.Habilitado;
+
+  cbxGP.ItemIndex  := Integer( ACBrTEFD1.GPAtual ) ;
+  cbxGP1.ItemIndex := cbxGP.ItemIndex ;
 end;
 
 procedure TForm1.MostraSaldoRestante;
@@ -666,10 +669,12 @@ begin
   try
     if AForm.ShowModal = mrOK then
     begin
-      DT := AForm.deData.Date +
-            EncodeTime( StrToInt(copy(AForm.meHora.Text,1,2)),
-                        StrToInt(copy(AForm.meHora.Text,4,2)),
-                        StrToInt(copy(AForm.meHora.Text,7,2)), 0) ;
+      DT := EncodeDateTime( StrToInt(copy(AForm.edData.Text,7,4)),
+                            StrToInt(copy(AForm.meHora.Text,4,2)),
+                            StrToInt(copy(AForm.meHora.Text,1,2)),
+                            StrToInt(copy(AForm.meHora.Text,1,2)),
+                            StrToInt(copy(AForm.meHora.Text,4,2)),
+                            StrToInt(copy(AForm.meHora.Text,7,2)), 0) ;
 
       Memo1.Lines.Add( ACBrStr( 'Inicio de CNC - Rede: '+
                        AForm.cbxRede.Text+' NSU: '+AForm.edNSU.Text+

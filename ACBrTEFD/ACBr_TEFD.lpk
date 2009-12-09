@@ -17,20 +17,16 @@
       </Other>
     </CompilerOptions>
     <Version Release="1"/>
-    <Files Count="3">
+    <Files Count="2">
       <Item1>
         <Filename Value="ACBrTEFDClass.pas"/>
         <UnitName Value="ACBrTEFDClass"/>
       </Item1>
       <Item2>
-        <Filename Value="ACBrTEFDDial.pas"/>
-        <UnitName Value="ACBrTEFDDial"/>
-      </Item2>
-      <Item3>
         <Filename Value="ACBrTEFD.pas"/>
         <HasRegisterProc Value="True"/>
         <UnitName Value="ACBrTEFD"/>
-      </Item3>
+      </Item2>
     </Files>
     <Type Value="RunAndDesignTime"/>
     <RequiredPkgs Count="2">

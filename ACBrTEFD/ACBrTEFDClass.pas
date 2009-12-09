@@ -55,6 +55,7 @@ uses
   {$ENDIF} ;
 
 const
+   CACBrTEFD_Versao      = '0.1' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -63,7 +64,8 @@ type
 
   { Tipos de TEF Existente. Cado novo Tipo de Tef precisa de uma NOVA Classe,
     filha de  TACBrTEFDClass }
-  TACBrTEFDTipo = (gpNenhum, gpTefDial, gpTefDisc, gpHiperTef {, gpGoodCard, gpFoxWin} ) ;
+  TACBrTEFDTipo = ( gpNenhum, gpTefDial, gpTefDisc, gpHiperTef, gpCliSiTef
+                    {, gpGoodCard, gpFoxWin} ) ;
 
   TACBrTEFDReqEstado = ( reqNenhum,             // Nennhuma Requisição em andamento
                          reqIniciando,          // Iniciando uma nova Requisicao

@@ -276,7 +276,7 @@ object Form1: TForm1
             Width = 133
             Height = 21
             Style = csDropDownList
-            ItemHeight = 13
+            ItemHeight = 0
             TabOrder = 0
           end
           object bAtivarGP: TButton

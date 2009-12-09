@@ -46,10 +46,11 @@ interface
 
 uses
   Classes, SysUtils, ACBrTEFDClass,
-  ACBrTEFDDial, ACBrTEFDDisc, ACBrTEFDHiper {, ACBrTEFDGoodCard, ACBrTEFDFoxWin}
+  ACBrTEFDDial, ACBrTEFDDisc, ACBrTEFDHiper, ACBrTEFDCliSiTef
+  {, ACBrTEFDGoodCard, ACBrTEFDFoxWin}
   {$IFNDEF CONSOLE}
-    {$IFDEF MSWINDOWS},
-      Windows, Messages
+    {$IFDEF MSWINDOWS}
+      ,Windows, Messages
     {$ENDIF}
     {$IFDEF VisualCLX}
       ,QForms, QControls
@@ -84,6 +85,7 @@ type
      fGPAtual      : TACBrTEFDTipo;
      fTefClass     : TACBrTEFDClass ;
      fTefDial      : TACBrTEFDDial ;
+     fTefCliSiTef  : TACBrTEFDCliSiTef;
      fTefDisc      : TACBrTEFDDisc ;
      fTefHiper     : TACBrTEFDHiper ;
 //   fTefGood      : TACBrTEFDGoodCard ;
@@ -91,6 +93,7 @@ type
      fEsperaSTS    : Integer;
      fTEFList      : TACBrTEFDClassList ;
      fpRespostasPendentes : TACBrTEFDRespostasPendentes;
+     function GetAbout : String;
      function GetArqReq : String;
      function getArqResp : String;
      function GetArqSTS : String;
@@ -172,6 +175,7 @@ type
 
    published
 
+     property About : String read GetAbout stored False ;
      property MultiplosCartoes : Boolean read fMultiplosCartoes
        write SetMultiplosCartoes default False ;
      property AutoAtivarGP : Boolean read fAutoAtivarGP write fAutoAtivarGP
@@ -188,11 +192,12 @@ type
         default CACBrTEFD_EsperaSleep ;
      property PathBackup : String read GetPathBackup write SetPathBackup ;
 
-     property TEFDial   : TACBrTEFDDial     read fTefDial ;
-     property TEFDisc   : TACBrTEFDDisc     read fTefDisc ;
-     property TEFHiper  : TACBrTEFDHiper    read fTefHiper ;
-//   property TEFGood   : TACBrTEFDGoodCard read fTefGood ;
-//   property TEFFoxWin : TACBrTEFDFoxWin   read fTefFW ;
+     property TEFDial    : TACBrTEFDDial     read fTefDial ;
+     property TEFDisc    : TACBrTEFDDisc     read fTefDisc ;
+     property TEFHiper   : TACBrTEFDHiper    read fTefHiper ;
+     property TEFCliSiTef: TACBrTEFDCliSiTef read fTefCliSiTef ;
+//   property TEFGood    : TACBrTEFDGoodCard read fTefGood ;
+//   property TEFFoxWin  : TACBrTEFDFoxWin   read fTefFW ;
 
      property OnAguardaResp : TACBrTEFDAguardaRespEvent read fOnAguardaResp
         write fOnAguardaResp ;
@@ -354,6 +359,13 @@ begin
    fTefHiper.SetSubComponent(True);   // Ajustando como SubComponente para aparecer no ObjectInspector
   {$ENDIF}
 
+  { Criando Classe TEF_DIAL }
+  fTefCliSiTef := TACBrTEFDCliSiTef.Create(self);
+  fTEFList.Add(fTefCliSiTef);     // Adicionando "fTefCliSiTef" na Lista Objetos de Classes de TEF
+  {$IFDEF COMPILER6_UP}
+   fTefCliSiTef.SetSubComponent(True);   // Ajustando como SubComponente para aparecer no ObjectInspector
+  {$ENDIF}
+
 (*
 { Criando Classe GOOD CARD }
   fTefGood := TACBrTEFDGoodCard.Create(self);
@@ -415,6 +427,7 @@ begin
    begin
      GPAtual := GP ;
      fTefClass.Inicializar;
+     fTefClass.Habilitado := True ;
    end;
 end;
 
@@ -1041,6 +1054,11 @@ end;
 function TACBrTEFD.GetArqReq : String;
 begin
    Result := fTefClass.ArqReq ;
+end;
+
+function TACBrTEFD.GetAbout : String;
+begin
+   Result := 'ACBrTEFD Ver: '+CACBrTEFD_Versao;
 end;
 
 function TACBrTEFD.getArqResp : String;

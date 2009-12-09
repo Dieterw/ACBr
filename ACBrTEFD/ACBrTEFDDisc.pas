@@ -58,7 +58,7 @@ const
 type
    { TACBrTEFDDisc }
 
-   TACBrTEFDDisc = class( TACBrTEFDClass )
+   TACBrTEFDDisc = class( TACBrTEFDClassTXT )
    private
    public
      constructor Create( AOwner : TComponent ) ; override ;

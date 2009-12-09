@@ -58,7 +58,7 @@ const
 type
    { TACBrTEFDHiper }
 
-   TACBrTEFDHiper = class( TACBrTEFDClass )
+   TACBrTEFDHiper = class( TACBrTEFDClassTXT )
    private
    public
      constructor Create( AOwner : TComponent ) ; override ;

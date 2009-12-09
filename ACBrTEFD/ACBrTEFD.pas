@@ -236,6 +236,8 @@ end;
 
 procedure ApagaEVerifica( const Arquivo : String ) ;
 begin
+  if Arquivo = '' then exit ;
+
   SysUtils.DeleteFile( Arquivo );
   if FileExists( Arquivo ) then
      raise EACBrTEFDArquivo.Create( ACBrStr( 'Erro ao apagar o arquivo:' + sLineBreak + Arquivo ) );
@@ -998,7 +1000,8 @@ var
 begin
   { Ajustando o mesmo valor nas Classes de TEF }
   For I := 0 to fTEFList.Count-1 do
-    fTEFList[I].AutoAtivarGP := AValue;
+    if fTEFList[I] is TACBrTEFDClassTXT then
+       TACBrTEFDClassTXT( fTEFList[I] ).AutoAtivarGP := AValue;
 
   fAutoAtivarGP := AValue;
 end;
@@ -1053,7 +1056,10 @@ end;
 
 function TACBrTEFD.GetArqReq : String;
 begin
-   Result := fTefClass.ArqReq ;
+  if fTefClass is TACBrTEFDClassTXT then
+     Result := TACBrTEFDClassTXT(fTefClass).ArqReq
+  else
+     Result := '' ;
 end;
 
 function TACBrTEFD.GetAbout : String;
@@ -1063,22 +1069,34 @@ end;
 
 function TACBrTEFD.getArqResp : String;
 begin
-   Result := fTefClass.ArqResp ;
+  if fTefClass is TACBrTEFDClassTXT then
+     Result := TACBrTEFDClassTXT(fTefClass).ArqResp
+  else
+     Result := '' ;
 end;
 
 function TACBrTEFD.GetArqSTS : String;
 begin
-   Result := fTefClass.ArqSTS ;
+  if fTefClass is TACBrTEFDClassTXT then
+     Result := TACBrTEFDClassTXT(fTefClass).ArqSTS
+  else
+     Result := '' ;
 end;
 
 function TACBrTEFD.GetArqTmp : String;
 begin
-   Result := fTefClass.ArqTemp ;
+  if fTefClass is TACBrTEFDClassTXT then
+     Result := TACBrTEFDClassTXT(fTefClass).ArqTemp
+  else
+     Result := '' ;
 end;
 
 function TACBrTEFD.GetGPExeName : String;
 begin
-   Result := fTefClass.GPExeName ;
+  if fTefClass is TACBrTEFDClassTXT then
+     Result := TACBrTEFDClassTXT(fTefClass).GPExeName
+  else
+     Result := '' ;
 end;
 
 function TACBrTEFD.GetReq : TACBrTEFDReq;

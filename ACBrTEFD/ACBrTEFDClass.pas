@@ -503,6 +503,18 @@ type
      procedure ImprimeRelatorio ; virtual;
 
      Procedure VerificaTransacaoPagamento(Valor : Double; var SaldoAPagar : Double); virtual;
+
+   protected
+     property AutoAtivarGP : Boolean read fAutoAtivarGP write fAutoAtivarGP
+       default True ;
+     property ArqLOG : String read fArqLOG write fArqLOG ;
+
+     property ArqTemp  : String read fArqTmp    write SetArqTmp ;
+     property ArqReq   : String read fArqReq    write SetArqReq ;
+     property ArqSTS   : String read fArqSTS    write SetArqSTS  ;
+     property ArqResp  : String read fArqResp   write SetArqResp ;
+     property GPExeName: String read fGPExeName write SetGPExeName ;
+
    public
      constructor Create( AOwner : TComponent ) ; override;
      destructor Destroy ; override;
@@ -552,26 +564,15 @@ type
         DocumentoVinculado : String = ''); overload; virtual; 
      procedure CNC ; overload; virtual;
      procedure CNC(Rede, NSU : String; DataHoraTransacao : TDateTime;
-        Valor : Double); overload; virtual; 
+        Valor : Double); overload; virtual;
 
    published
-     property AutoAtivarGP : Boolean read fAutoAtivarGP write fAutoAtivarGP
-       default True ;
-     property ArqLOG : String read fArqLOG write fArqLOG ;
      Property Habilitado: Boolean read fHabilitado write fHabilitado
        default False ;
-
-     property ArqTemp  : String read fArqTmp    write SetArqTmp ;
-     property ArqReq   : String read fArqReq    write SetArqReq ;
-     property ArqSTS   : String read fArqSTS    write SetArqSTS  ;
-     property ArqResp  : String read fArqResp   write SetArqResp ;
-     property GPExeName: String read fGPExeName write SetGPExeName ;
-
      property NumVias   : Integer read fNumVias   write fNumVias
         default CACBrTEFD_NumVias ;
      property EsperaSTS : Integer read fEsperaSTS write fEsperaSTS
         default CACBrTEFD_EsperaSTS ;
-
    end;
 
    { Lista de Objetos do tipo TACBrTEFDClass }
@@ -588,6 +589,18 @@ type
        property Objects [Index: Integer]: TACBrTEFDClass
          read GetObject write SetObject; default;
      end;
+
+   TACBrTEFDClassTXT = class( TACBrTEFDClass )
+   published
+     property AutoAtivarGP ;
+     property ArqLOG ;
+
+     property ArqTemp  ;
+     property ArqReq   ;
+     property ArqSTS   ;
+     property ArqResp  ;
+     property GPExeName;
+   end;
 
 
 implementation

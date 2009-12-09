@@ -589,7 +589,9 @@ Var
    Passo, D : AnsiChar ;
 
 begin
-
+  if UpperCase( Trim(fsDocto) ) = 'ISENTO' then
+     exit ;
+     
   if fsComplemento = '' then
   begin
      fsMsgErro := 'Informe a UF no campo Complemento' ;
@@ -1168,6 +1170,10 @@ Var
   C : AnsiChar ;
   I, J, LenDoc, LenMas : Integer;
 Begin
+  Result := AString ;
+  if UpperCase( Trim(AString) ) = 'ISENTO' then
+     exit ;
+
   AString := LimpaDocto( AString ) ;
   UF      := UpperCase( UF ) ;
 
@@ -1195,7 +1201,7 @@ Begin
   IF UF = 'RJ' Then Mascara := '**.***.**-*';
   IF UF = 'RN' Then Mascara := '**.***.***-*';
   IF UF = 'RS' Then Mascara := '***/*******';
-  IF UF = 'RO' Then Mascara := '***.*****-*';
+  IF UF = 'RO' Then Mascara := '*************-*'; // Antiga = '***.*****-*';
   IF UF = 'RR' Then Mascara := '********-*';
   IF UF = 'SC' Then Mascara := '***.***.***';
   IF UF = 'SP' Then Mascara := '***.***.***.***';

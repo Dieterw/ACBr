@@ -55,7 +55,7 @@ object Form1: TForm1
     Top = 0
     Width = 694
     Height = 176
-    ActivePage = tsOperacao
+    ActivePage = tsConfig
     Align = alTop
     TabOrder = 2
     object tsConfig: TTabSheet
@@ -70,7 +70,7 @@ object Form1: TForm1
         TabOrder = 0
         object Label2: TLabel
           Left = 10
-          Top = 1
+          Top = 17
           Width = 38
           Height = 13
           Caption = 'Modelo:'
@@ -79,7 +79,7 @@ object Form1: TForm1
         end
         object Label4: TLabel
           Left = 10
-          Top = 44
+          Top = 60
           Width = 25
           Height = 13
           Caption = 'Porta'
@@ -269,6 +269,7 @@ object Form1: TForm1
             Checked = True
             State = cbChecked
             TabOrder = 3
+            OnClick = ckAutoAtivarChange
           end
           object cbxGP: TComboBox
             Left = 5
@@ -276,7 +277,7 @@ object Form1: TForm1
             Width = 133
             Height = 21
             Style = csDropDownList
-            ItemHeight = 0
+            ItemHeight = 13
             TabOrder = 0
           end
           object bAtivarGP: TButton
@@ -295,6 +296,7 @@ object Form1: TForm1
             Height = 19
             Caption = 'Multiplos Cart'#245'es'
             TabOrder = 4
+            OnClick = ckMultiplosCartoesChange
           end
           object ckAutoFinalizarCupom: TCheckBox
             Left = 153
@@ -305,6 +307,7 @@ object Form1: TForm1
             Checked = True
             State = cbChecked
             TabOrder = 6
+            OnClick = ckAutoFinalizarCupomChange
           end
           object ckAutoEfetuarPagamento: TCheckBox
             Left = 153
@@ -313,6 +316,7 @@ object Form1: TForm1
             Height = 19
             Caption = 'AutoEfetuarPagamento'
             TabOrder = 5
+            OnClick = ckAutoEfetuarPagamentoChange
           end
         end
       end
@@ -553,6 +557,7 @@ object Form1: TForm1
           Height = 19
           Caption = 'Multiplos Cart'#245'es'
           TabOrder = 8
+          OnClick = ckMultiplosCartoesChange
         end
         object cbxGP1: TComboBox
           Left = 14
@@ -646,6 +651,7 @@ object Form1: TForm1
       ParentFont = False
       State = cbChecked
       TabOrder = 0
+      OnClick = ckTEFDIALChange
     end
     object ckTEFDISC: TCheckBox
       Left = 272
@@ -660,6 +666,7 @@ object Form1: TForm1
       Font.Style = [fsBold]
       ParentFont = False
       TabOrder = 1
+      OnClick = ckTEFDISCChange
     end
     object ckHIPERTEF: TCheckBox
       Left = 384
@@ -674,6 +681,7 @@ object Form1: TForm1
       Font.Style = [fsBold]
       ParentFont = False
       TabOrder = 2
+      OnClick = ckHIPERTEFChange
     end
   end
   object ACBrECF1: TACBrECF

@@ -14,7 +14,6 @@ object Form1: TForm1
   OldCreateOrder = True
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
-  OnKeyDown = FormKeyDown
   DesignSize = (
     694
     452)
@@ -565,7 +564,7 @@ object Form1: TForm1
           Width = 101
           Height = 21
           Style = csDropDownList
-          ItemHeight = 13
+          ItemHeight = 0
           TabOrder = 9
         end
       end
@@ -706,6 +705,16 @@ object Form1: TForm1
       TabOrder = 3
       OnClick = ckCliSiTefChange
     end
+    object bCancelarResp: TButton
+      Left = 602
+      Top = 2
+      Width = 88
+      Height = 22
+      Caption = 'CancelarResp'
+      TabOrder = 4
+      Visible = False
+      OnClick = bCancelarRespClick
+    end
   end
   object ACBrECF1: TACBrECF
     Modelo = ecfBematech
@@ -769,8 +778,8 @@ object Form1: TForm1
   object ACBrTEFD1: TACBrTEFD
     EsperaSTS = 7
     EsperaSleep = 500
-    TEFDial.ArqLOG = 'TEF_DIAL.log'
     TEFDial.Habilitado = True
+    TEFDial.ArqLOG = 'TEF_DIAL.log'
     TEFDial.ArqTemp = 'C:\TEF_DIAL\req\intpos.tmp'
     TEFDial.ArqReq = 'C:\TEF_DIAL\req\intpos.001'
     TEFDial.ArqSTS = 'C:\TEF_DIAL\resp\intpos.sts'

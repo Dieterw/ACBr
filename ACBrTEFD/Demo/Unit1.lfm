@@ -9,7 +9,6 @@ object Form1: TForm1
   KeyPreview = True
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
-  OnKeyDown = FormKeyDown
   LCLVersion = '0.9.29'
   object Memo1: TMemo
     Left = 0
@@ -701,6 +700,16 @@ object Form1: TForm1
       OnChange = ckCliSiTefChange
       TabOrder = 3
     end
+    object bCancelarResp: TButton
+      Left = 602
+      Height = 22
+      Top = 2
+      Width = 88
+      Caption = 'CancelarResp'
+      OnClick = bCancelarRespClick
+      TabOrder = 4
+      Visible = False
+    end
   end
   object ACBrECF1: TACBrECF
     Modelo = ecfBematech
@@ -769,6 +778,8 @@ object Form1: TForm1
     TEFCliSiTef.EnderecoIP = 'localhost'
     TEFCliSiTef.CodigoLoja = '00000000'
     TEFCliSiTef.NumeroTerminal = 'SE000001'
+    TEFCliSiTef.OnExibeMenu = CliSiTefExibeMenu
+    TEFCliSiTef.OnObtemCampo = CliSiTefObtemCampo
     OnAguardaResp = ACBrTEFD1AguardaResp
     OnExibeMsg = ACBrTEFD1ExibeMsg
     OnComandaECF = ACBrTEFD1ComandaECF

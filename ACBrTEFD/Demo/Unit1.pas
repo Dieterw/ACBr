@@ -13,7 +13,7 @@ uses
   {$ENDIF}
   Forms, Controls, Graphics, Dialogs,
   StdCtrls, ExtCtrls, Buttons, ComCtrls, ACBrECF, ACBrDevice, ACBrTEFD,
-  ACBrTEFDClass, ACBrBase, ACBrUtil ;
+  ACBrTEFDClass, ACBrBase, ACBrUtil , ACBrTEFDCliSiTef;
 
 type
 
@@ -40,6 +40,7 @@ type
      bPagamento : TButton;
      bReducaoZ : TButton;
      btSerial : TSpeedButton;
+     bCancelarResp : TButton;
      bVendeItem : TButton;
      bSubTotaliza : TButton;
      bCancelar : TButton;
@@ -101,7 +102,12 @@ type
         var RetornoECF : String );
      procedure ACBrTEFD1MudaEstadoReq(EstadoReq : TACBrTEFDReqEstado);
      procedure ACBrTEFD1MudaEstadoResp(EstadoResp : TACBrTEFDRespEstado);
+     procedure bCancelarRespClick(Sender : TObject);
      procedure ckCliSiTefChange(Sender : TObject);
+     procedure CliSiTefExibeMenu(Titulo : String; Opcoes : TStringList;
+        var ItemSlecionado : Integer);
+     procedure CliSiTefObtemCampo(Titulo : String; TamanhoMinimo,
+        TamanhoMaximo : Integer; var Resposta : String);
      procedure TrataErros(Sender : TObject; E : Exception);
      procedure bAbreVendeSubTotalizaClick(Sender : TObject);
      procedure bCHQClick(Sender : TObject);
@@ -137,11 +143,9 @@ type
      procedure FormCloseQuery(Sender : TObject; var CanClose : boolean);
      procedure FormCreate(Sender : TObject);
      procedure ckTEFDIALChange(Sender : TObject);
-     procedure FormKeyDown(Sender : TObject; var Key : Word; Shift : TShiftState
-        );
      procedure Memo1Change(Sender : TObject);
   private
-     fKeyPressed : Boolean ;
+     fCancelado : Boolean ;
 
      procedure AvaliaTEFs;
      procedure MostraSaldoRestante;
@@ -156,7 +160,7 @@ var
 
 implementation
 
-Uses typinfo, dateutils, strutils, ConfiguraSerial, Unit2, Unit3;
+Uses typinfo, dateutils, strutils, ConfiguraSerial, Unit2, Unit3, Unit4, Unit5;
 
 {$IFNDEF FPC}
  {$R *.dfm}
@@ -168,7 +172,7 @@ procedure TForm1.FormCreate(Sender : TObject);
 var
    I : TACBrTEFDTipo;
 begin
-  fKeyPressed := False ;
+  fCancelado := False ;
   Application.OnException := {$IFDEF FPC}@{$ENDIF}TrataErros;
 
   cbxGP.Items.Clear ;
@@ -190,12 +194,6 @@ end;
 procedure TForm1.ckTEFDIALChange(Sender : TObject);
 begin
    ACBrTEFD1.TEFDial.Habilitado := ckTEFDIAL.Checked;
-end;
-
-procedure TForm1.FormKeyDown(Sender : TObject; var Key : Word;
-   Shift : TShiftState);
-begin
-  fKeyPressed := True ;
 end;
 
 procedure TForm1.Memo1Change(Sender : TObject);
@@ -600,14 +598,13 @@ begin
             pMensagem.Caption := Mensagem;
             pMensagem.Visible := True ;
 
-            { Aguardando 5 segundos, ou qq Tecla }
-            fKeyPressed := False ;
+            { Aguardando 5 segundos }
             Fim := IncSecond( now, 6)  ;
             repeat
                sleep(200) ;
                pMensagem.Caption := Mensagem + ' ' + IntToStr(SecondsBetween(Fim,now));
                Application.ProcessMessages;
-            until (now > Fim) or fKeyPressed ;
+            until (now > Fim) ;
 
          finally
             pMensagem.Caption := OldMensagem ;
@@ -642,16 +639,54 @@ end;
 procedure TForm1.ACBrTEFD1MudaEstadoReq(EstadoReq : TACBrTEFDReqEstado);
 begin
    StatusBar1.Panels[1].Text := GetEnumName(TypeInfo(TACBrTEFDReqEstado), Integer(EstadoReq) ) ;
+   fCancelado := False ;
 end;
 
 procedure TForm1.ACBrTEFD1MudaEstadoResp(EstadoResp : TACBrTEFDRespEstado);
 begin
   StatusBar1.Panels[1].Text := GetEnumName(TypeInfo(TACBrTEFDRespEstado), Integer(EstadoResp) ) ;
+  bCancelarResp.Visible     := (EstadoResp = respAgardandoResposta) ;
+end;
+
+procedure TForm1.bCancelarRespClick(Sender : TObject);
+begin
+   fCancelado := True ;
 end;
 
 procedure TForm1.ckCliSiTefChange(Sender : TObject);
 begin
   ACBrTEFD1.TEFCliSiTef.Habilitado := ckCliSiTef.Checked;
+end;
+
+procedure TForm1.CliSiTefExibeMenu(Titulo : String; Opcoes : TStringList;
+   var ItemSlecionado : Integer);
+Var
+  AForm : TForm4 ;
+begin
+  AForm := TForm4.Create(self);
+  try
+    AForm.Panel1.Caption := Titulo;
+    AForm.ListBox1.Items.AddStrings(Opcoes);
+    if AForm.ShowModal = mrOK then
+      ItemSlecionado := AForm.ListBox1.ItemIndex;
+  finally
+    AForm.Free;
+  end;
+end;
+
+procedure TForm1.CliSiTefObtemCampo(Titulo : String; TamanhoMinimo,
+   TamanhoMaximo : Integer; var Resposta : String);
+Var
+  AForm : TForm5 ;
+begin
+  AForm := TForm5.Create(self);
+  try
+    AForm.Panel1.Caption := Titulo;
+    if AForm.ShowModal = mrOK then
+       Resposta := AForm.Edit1.Text;
+  finally
+    AForm.Free;
+  end;
 end;
 
 procedure TForm1.TrataErros(Sender : TObject; E : Exception);
@@ -765,6 +800,9 @@ procedure TForm1.ACBrTEFD1AguardaResp(Arquivo : String;
 begin
    StatusBar1.Panels[2].Text := 'Aguardando: '+Arquivo+' '+IntToStr(SegundosTimeOut) ;
    Application.ProcessMessages;
+
+   if fCancelado then
+      Interromper := True ;
 end;
 
 procedure TForm1.ACBrTEFD1AntesFinalizarRequisicao(Req : TACBrTEFDReq);

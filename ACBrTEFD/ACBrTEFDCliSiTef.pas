@@ -55,7 +55,7 @@ uses
 
 Const
 {$IFDEF LINUX}
-  CLIB_CliSiTefLib = 'clisitef32i.so' ;
+  CLIB_CliSiTefLib = 'libclisitef32.so' ;
 {$ELSE}
   CLIB_CliSiTefLib = 'CliSiTef32I.dll' ;
 {$ENDIF}
@@ -108,6 +108,7 @@ type
                 pBuffer: PChar;
                 TamMaxBuffer: Integer;
                 ContinuaNavegacao: Integer ): integer; stdcall;
+     procedure AvaliaErro(Sts : Integer);
      procedure LoadDLLFunctions;
    protected
      procedure FinalizarRequisicao ; override;
@@ -120,7 +121,7 @@ type
 
      procedure AtivarGP ; override;
 
-     procedure ATV ; virtual;
+     procedure ATV ; override;
 
 
    published
@@ -198,8 +199,8 @@ begin
                                          PChar(fNumeroTerminal),
                                          0,
                                          PChar(ParamAdic) );
+  Erro := '' ;
   Case Sts of
-    0 : Erro := '' ;
     1 :	Erro := 'Endereço IP inválido ou não resolvido' ;
     2 : Erro := 'Código da loja inválido' ;
     3 : Erro := 'Código de terminal invalido' ;
@@ -210,7 +211,7 @@ begin
   end;
 
   if Erro <> '' then
-     raise Exception.Create( ACBrStr( Erro ) ) ;
+     raise EACBrTEFDErro.Create( ACBrStr( Erro ) ) ;
 
   inherited Inicializar;
 end;
@@ -221,14 +222,40 @@ begin
 end;
 
 
+procedure TACBrTEFDCliSiTef.AvaliaErro( Sts : Integer );
+var
+   Erro : String;
+begin
+   Erro := '' ;
+   Case Sts of
+         0 : Erro := 'negada pelo autorizador' ;
+        -1 : Erro := 'módulo não inicializado' ;
+        -2 : Erro := 'operação cancelada pelo operador' ;
+        -3 : Erro := 'fornecida uma modalidade inválida' ;
+        -4 : Erro := 'falta de memória para rodar a função' ;
+        -5 : Erro := 'sem comunicação com o SiTef' ;
+        -6 : Erro := 'operação cancelada pelo usuário' ;
+   else
+      if Sts < 0 then
+         Erro := 'erros detectados internamente pela rotina ('+IntToStr(Sts)+')' ;
+   end;
+
+   if Erro <> '' then
+      raise EACBrTEFDErro.Create( ACBrStr( Erro ) ) ;
+end ;
+
 procedure TACBrTEFDCliSiTef.ATV;
 Var
   Sts : Integer ;
   Erro : String;
 begin
    Sts := xIniciaFuncaoSiTefInterativo( 111,  // 111 -	Teste de comunicação com o SiTef
-                                 nil, nil, nil, nil, PChar( fOperador ), nil) ;
+                                 '', '', '', '', PChar( fOperador ), '') ;
 
+   if Sts = 10000 then
+      FinalizarRequisicao
+   else if Sts <> 0 then
+      AvaliaErro( Sts );
 end;
 
 procedure TACBrTEFDCliSiTef.LoadDLLFunctions ;
@@ -252,10 +279,12 @@ end ;
 
 procedure TACBrTEFDCliSiTef.FinalizarRequisicao;
 var
-  Sts, ProximoComando, TipoCampo, Continua : Integer;
+  Sts, ProximoComando, TipoCampo, Continua, ItemSelecionado: Integer;
   TamanhoMinimo, TamanhoMaximo : SmallInt ;
   Buffer: array [0..20000] of char;
   Erro, Mensagem, Resposta, CaptionMenu : String;
+  ItensMenu   : TStringList ;
+  Interromper : Boolean ;
 begin
    Sts            := 0;
    ProximoComando := 0;
@@ -318,15 +347,26 @@ begin
                      Continua := -1 ;
                 end ;
 
-(*            21
-              Deve apresentar um menu de opções e permitir que o usuário selecione uma delas.
-              Na chamada o parâmetro Buffer contém as opções no formato
-              1:texto;2:texto;...i:Texto;...
-              A rotina da aplicação deve apresentar as opções da forma que ela desejar
-              (não sendo necessário incluir os índices 1,2, ...)
-              e após a seleção feita pelo usuário, retornar em Buffer o índice i
-              escolhido pelo operador (em ASCII)
-*)
+              21 :
+                begin
+                  ItensMenu := TStringList.Create;
+                  try
+                     ItemSelecionado := -1 ;
+                     ItensMenu.Text  := StringReplace( Mensagem, ';',
+                                                      sLineBreak, [rfReplaceAll] ) ;
+
+                     OnExibeMenu( CaptionMenu, ItensMenu, ItemSelecionado ) ;
+
+                     if (ItemSelecionado >= 0) and (ItemSelecionado < ItensMenu.Count) then
+                        Resposta := copy( ItensMenu[ItemSelecionado], 1,
+                                          pos(':',ItensMenu[ItemSelecionado])-1 )
+                     else
+                        Continua := -1 ;
+                  finally
+                     ItensMenu.Free ;
+                  end ;
+                end;
+
               22 :
                 begin
                   if Mensagem = '' then
@@ -334,25 +374,20 @@ begin
                   DoExibeMsg( opmOK, Mensagem );
                 end ;
 
-(*            23 Este comando indica que a rotina está perguntando para a aplicação
-                 se ele deseja interromper o  processo de coleta de dados ou não.
-                 Esse código ocorre quando a CliSiTef está acessando algum periférico
-                 e permite que a automação interrompa esse acesso (por exemplo:
-                 aguardando a passagem de um cartão pela leitora ou a digitação de
-                 senha pelo cliente)
+              23 :
+                begin
+                  Interromper := False ;
+                  OnAguardaResp( '', 0, Interromper ) ;
+                  if Interromper then
+                     Continua := -1 ;
+                end;
 
-              30 Deve ser lido um campo cujo tamanho está entre TamMinimo e TamMaximo.
-                O campo lido deve ser devolvido em Buffer
-
-            30:
-              begin
-                FrmColeta.EdtColeta.MaxLength:= TamanhoMaximo;
-                FrmColeta.ShowModal;
-                StrPCopy (Buffer, CampoColeta);
-                Resultado:= 0;
-              end;
-*)
-
+              30 :
+                begin
+                  OnObtemCampo( Mensagem, TamanhoMinimo, TamanhoMaximo, Resposta ) ;
+                  if Resposta = '-1' then
+                     Continua := -1 ;
+                end;
            end;
          end;
 
@@ -362,28 +397,8 @@ begin
       until Sts <> 10000;
    end ;
 
-//   EdtResultado.Text:= format ('%d', [Sts]);
-
 //   FinalizaTransacaoSiTefInterativo (1,'12345','20011022','091800');
-
-
-   Case Sts of
-         0 : Erro := 'negada pelo autorizador' ;
-        -1 : Erro := 'módulo não inicializado' ;
-        -2 : Erro := 'operação cancelada pelo operador' ;
-        -3 : Erro := 'fornecida uma modalidade inválida' ;
-        -4 : Erro := 'falta de memória para rodar a função' ;
-        -5 : Erro := 'sem comunicação com o SiTef' ;
-        -6 : Erro := 'operação cancelada pelo usuário' ;
-   else
-      if Sts < 0 then
-         Erro := 'erros detectados internamente pela rotina ('+IntToStr(Sts)+')' ;
-   end;
-
-   if Erro <> '' then
-      raise Exception.Create( ACBrStr( Erro ) ) ;
 end;
-
 
 end.
 

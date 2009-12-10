@@ -627,7 +627,13 @@ begin
                     if Resp.TextoEspecialOperador <> '' then
                     begin
                        RemoverMsg := True ;
-                       DoExibeMsg( opmExibirMsg, Resp.TextoEspecialOperador ) ;
+                       DoExibeMsg( opmExibirMsgOperador, Resp.TextoEspecialOperador ) ;
+                    end;
+
+                    if Resp.TextoEspecialCliente <> '' then
+                    begin
+                       RemoverMsg := True ;
+                       DoExibeMsg( opmExibirMsgCliente, Resp.TextoEspecialCliente ) ;
                     end;
 
                     ComandaECF( opeAbreGerencial ) ;
@@ -660,7 +666,8 @@ begin
                           Application.ProcessMessages;
                        end;
 
-                       DoExibeMsg( opmRemoverMsg, '' ) ;
+                       DoExibeMsg( opmRemoverMsgOperador, '' ) ;
+                       DoExibeMsg( opmRemoverMsgCliente, '' ) ;
                        RemoverMsg := False ;
                     end;
                  end ;
@@ -683,7 +690,13 @@ begin
                        if Resp.TextoEspecialOperador <> '' then
                        begin
                           RemoverMsg := True ;
-                          DoExibeMsg( opmExibirMsg, Resp.TextoEspecialOperador ) ;
+                          DoExibeMsg( opmExibirMsgOperador, Resp.TextoEspecialOperador ) ;
+                       end;
+
+                       if Resp.TextoEspecialCliente <> '' then
+                       begin
+                          RemoverMsg := True ;
+                          DoExibeMsg( opmExibirMsgCliente, Resp.TextoEspecialCliente ) ;
                        end;
 
                        if Ordem <> RespostasPendentes[J].OrdemPagamento then
@@ -721,7 +734,8 @@ begin
                              Application.ProcessMessages;
                           end;
 
-                          DoExibeMsg( opmRemoverMsg, '' ) ;
+                          DoExibeMsg( opmRemoverMsgOperador, '' ) ;
+                          DoExibeMsg( opmRemoverMsgCliente, '' ) ;
                           RemoverMsg := False ;
                        end;
                     end ;
@@ -735,8 +749,10 @@ begin
            finally
               { Removendo a mensagem do Operador }
               if RemoverMsg then
-                 DoExibeMsg( opmRemoverMsg, '' ) ;
-
+              begin
+                 DoExibeMsg( opmRemoverMsgOperador, '' ) ;
+                 DoExibeMsg( opmRemoverMsgCliente, '' ) ;
+              end;
 
               BloqueiaMouseTeclado( False );
               LimpaBufferTeclado;

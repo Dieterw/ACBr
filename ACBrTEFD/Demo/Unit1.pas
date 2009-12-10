@@ -86,6 +86,8 @@ type
      sTEFDisc : TShape;
      tsConfig : TTabSheet;
      tsOperacao : TTabSheet;
+    sCliSiTef: TShape;
+    ckCliSiTef: TCheckBox;
      procedure ACBrTEFD1AguardaResp(Arquivo : String;
         SegundosTimeOut : Integer; var Interromper : Boolean);
      procedure ACBrTEFD1AntesFinalizarRequisicao(Req : TACBrTEFDReq);
@@ -99,6 +101,7 @@ type
         var RetornoECF : String );
      procedure ACBrTEFD1MudaEstadoReq(EstadoReq : TACBrTEFDReqEstado);
      procedure ACBrTEFD1MudaEstadoResp(EstadoResp : TACBrTEFDRespEstado);
+     procedure ckCliSiTefChange(Sender : TObject);
      procedure TrataErros(Sender : TObject; E : Exception);
      procedure bAbreVendeSubTotalizaClick(Sender : TObject);
      procedure bCHQClick(Sender : TObject);
@@ -222,6 +225,12 @@ begin
   else
      sHiperTEF.Brush.Color := clRed ;
   ckHIPERTEF.Checked := ACBrTEFD1.TEFHiper.Habilitado;
+
+  if ACBrTEFD1.TEFCliSiTef.Inicializado then
+     sCliSiTef.Brush.Color := clLime
+  else
+     sCliSiTef.Brush.Color := clRed ;
+  ckCliSiTef.Checked := ACBrTEFD1.TEFCliSiTef.Habilitado;
 
   cbxGP.ItemIndex  := Integer( ACBrTEFD1.GPAtual ) ;
   cbxGP1.ItemIndex := cbxGP.ItemIndex ;
@@ -549,14 +558,32 @@ begin
     opmYesNo :
        AModalResult := MessageDlg( Mensagem, mtConfirmation, [mbYes,mbNo], 0);
 
-    opmExibirMsg :
+    opmExibirMsgOperador :
        begin
          self.Enabled      := False ;
-         pMensagem.Caption := Mensagem;
+         if pMensagem.Caption <> '' then
+            pMensagem.Caption := pMensagem.Caption + sLineBreak + 'Operador: ';
+         pMensagem.Caption := pMensagem.Caption + Mensagem ;
          pMensagem.Visible := True ;
        end;
 
-    opmRemoverMsg :
+    opmExibirMsgCliente : // TODO: Fazer um Panel seprado para MSG de Clientes
+       begin
+         self.Enabled      := False ;
+         if pMensagem.Caption <> '' then
+            pMensagem.Caption := pMensagem.Caption + sLineBreak + 'Cliente: ' ;
+         pMensagem.Caption := pMensagem.Caption + Mensagem ;
+         pMensagem.Visible := True ;
+       end;
+
+    opmRemoverMsgOperador :
+       begin
+         pMensagem.Caption := '' ;
+         pMensagem.Visible := False ;
+         self.Enabled      := True ;
+       end;
+
+    opmRemoverMsgCliente : // TODO: Fazer um Panel seprado para MSG de Clientes
        begin
          pMensagem.Caption := '' ;
          pMensagem.Visible := False ;
@@ -620,6 +647,11 @@ end;
 procedure TForm1.ACBrTEFD1MudaEstadoResp(EstadoResp : TACBrTEFDRespEstado);
 begin
   StatusBar1.Panels[1].Text := GetEnumName(TypeInfo(TACBrTEFDRespEstado), Integer(EstadoResp) ) ;
+end;
+
+procedure TForm1.ckCliSiTefChange(Sender : TObject);
+begin
+  ACBrTEFD1.TEFCliSiTef.Habilitado := ckCliSiTef.Checked;
 end;
 
 procedure TForm1.TrataErros(Sender : TObject; E : Exception);

@@ -636,6 +636,14 @@ object Form1: TForm1
       Brush.Color = clRed
       Shape = stCircle
     end
+    object sCliSiTef: TShape
+      Left = 488
+      Top = 6
+      Width = 17
+      Height = 16
+      Brush.Color = clRed
+      Shape = stCircle
+    end
     object ckTEFDIAL: TCheckBox
       Left = 160
       Top = 5
@@ -682,6 +690,21 @@ object Form1: TForm1
       ParentFont = False
       TabOrder = 2
       OnClick = ckHIPERTEFChange
+    end
+    object ckCliSiTef: TCheckBox
+      Left = 520
+      Top = 5
+      Width = 60
+      Height = 19
+      Caption = 'CliSiTef'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 3
+      OnClick = ckCliSiTefChange
     end
   end
   object ACBrECF1: TACBrECF

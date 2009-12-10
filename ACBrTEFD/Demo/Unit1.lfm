@@ -25,9 +25,9 @@ object Form1: TForm1
     TabOrder = 0
   end
   object pMensagem: TPanel
-    Left = 177
+    Left = 184
     Height = 100
-    Top = 240
+    Top = 248
     Width = 318
     Anchors = []
     BevelInner = bvLowered
@@ -44,9 +44,9 @@ object Form1: TForm1
     Height = 176
     Top = 0
     Width = 694
-    ActivePage = tsConfig
+    ActivePage = tsOperacao
     Align = alTop
-    TabIndex = 0
+    TabIndex = 1
     TabOrder = 2
     object tsConfig: TTabSheet
       Caption = 'Configuração'
@@ -643,14 +643,10 @@ object Form1: TForm1
       Left = 160
       Height = 19
       Top = 5
-      Width = 71
+      Width = 69
       Caption = 'TEF_DIAL'
       Checked = True
-      Color = clBtnShadow
-      Font.Style = [fsBold]
       OnChange = ckTEFDIALChange
-      ParentColor = False
-      ParentFont = False
       State = cbChecked
       TabOrder = 0
     end
@@ -666,13 +662,9 @@ object Form1: TForm1
       Left = 272
       Height = 19
       Top = 5
-      Width = 71
+      Width = 69
       Caption = 'TEF_DISC'
-      Color = clBtnShadow
-      Font.Style = [fsBold]
       OnChange = ckTEFDISCChange
-      ParentColor = False
-      ParentFont = False
       TabOrder = 1
     end
     object sHiperTEF: TShape
@@ -686,15 +678,28 @@ object Form1: TForm1
     object ckHIPERTEF: TCheckBox
       Left = 376
       Height = 19
-      Top = 5
-      Width = 78
+      Top = 6
+      Width = 76
       Caption = 'HIPER_TEF'
-      Color = clBtnShadow
-      Font.Style = [fsBold]
       OnChange = ckHIPERTEFChange
-      ParentColor = False
-      ParentFont = False
       TabOrder = 2
+    end
+    object sCliSiTef: TShape
+      Left = 472
+      Height = 16
+      Top = 6
+      Width = 17
+      Brush.Color = clRed
+      Shape = stCircle
+    end
+    object ckCliSiTef: TCheckBox
+      Left = 504
+      Height = 19
+      Top = 5
+      Width = 60
+      Caption = 'CliSiTef'
+      OnChange = ckCliSiTefChange
+      TabOrder = 3
     end
   end
   object ACBrECF1: TACBrECF

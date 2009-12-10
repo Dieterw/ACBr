@@ -89,7 +89,9 @@ type
   TACBrTEFDAguardaRespEvent = procedure( Arquivo: String;
      SegundosTimeOut : Integer; var Interromper : Boolean) of object ;
 
-  TACBrTEFDOperacaoMensagem = ( opmOK, opmYesNo, opmExibirMsg, opmRemoverMsg,
+  TACBrTEFDOperacaoMensagem = ( opmOK, opmYesNo,
+                                opmExibirMsgOperador, opmRemoverMsgOperador,
+                                opmExibirMsgCliente, opmRemoverMsgCliente,
                                 opmDestaqueVia ) ;
 
   TACBrTEFDReq = class ;
@@ -494,6 +496,13 @@ type
      fpTipo : TACBrTEFDTipo;
      fpIDSeq: Integer ;
 
+     procedure IniciarRequisicao( AHeader : String; AID : Integer = 0 ); virtual;
+     procedure FinalizarRequisicao ; virtual;
+     Function VerificaRespostaRequisicao : Boolean ; virtual;
+     Procedure LeRespostaRequisicao ; virtual;
+     procedure ProcessaResposta ; virtual;
+     procedure FinalizarResposta( ApagarArqResp : Boolean ) ; virtual;
+
      procedure BackupResposta( AdicionaEmRespostasPendentes : Boolean ) ; virtual;
      procedure ProcessaRespostaPagamento(const SaldoAPagar : Double;
         const IndiceFPG_ECF : String; const Valor : Double);
@@ -515,6 +524,7 @@ type
      property ArqResp  : String read fArqResp   write SetArqResp ;
      property GPExeName: String read fGPExeName write SetGPExeName ;
 
+
    public
      constructor Create( AOwner : TComponent ) ; override;
      destructor Destroy ; override;
@@ -534,13 +544,6 @@ type
 
      procedure AtivarGP ; virtual;
      procedure VerificaAtivo ; virtual;
-
-     procedure IniciarRequisicao( AHeader : String; AID : Integer = 0 ); virtual;
-     procedure FinalizarRequisicao ; virtual;
-     Function VerificaRespostaRequisicao : Boolean ; virtual;
-     Procedure LeRespostaRequisicao ; virtual;
-     procedure ProcessaResposta ; virtual;
-     procedure FinalizarResposta( ApagarArqResp : Boolean ) ; virtual;
 
      procedure CancelaTransacoesPendentesClass; virtual;
 
@@ -1873,7 +1876,13 @@ begin
                  if Resp.TextoEspecialOperador <> '' then
                  begin
                     RemoverMsg := True ;
-                    DoExibeMsg( opmExibirMsg, Resp.TextoEspecialOperador ) ;
+                    DoExibeMsg( opmExibirMsgOperador, Resp.TextoEspecialOperador ) ;
+                 end;
+
+                 if Resp.TextoEspecialCliente <> '' then
+                 begin
+                    RemoverMsg := True ;
+                    DoExibeMsg( opmExibirMsgCliente, Resp.TextoEspecialCliente ) ;
                  end;
 
                  ComandaECF( opeAbreGerencial ) ;
@@ -1911,7 +1920,8 @@ begin
                        end;
                     end;
 
-                    DoExibeMsg( opmRemoverMsg, '' ) ;
+                    DoExibeMsg( opmRemoverMsgOperador, '' ) ;
+                    DoExibeMsg( opmRemoverMsgCliente, '' ) ;
                  end;
 
                  BloqueiaMouseTeclado( False );

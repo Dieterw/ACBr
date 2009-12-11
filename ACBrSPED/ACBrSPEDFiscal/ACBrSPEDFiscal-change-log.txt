@@ -49,6 +49,10 @@ Símbolo : Significado
 
 Versão 0.01a   08/12/09
 ---------------
+[*] Implementado hierarquia do registro C370 por (Rodrigo Felipe)
+
+Versão 0.01a   08/12/09
+---------------
 [*] Implementado hierarquia do registro C470 por (Isaque Pinheiro)
 [-] Correção no método do WriteRegistroH010 por (SOFTCOM INFORMATICA)
 [-] Correção no método do WriteRegistroC321 por (Diego Verdan)

@@ -59,6 +59,7 @@ type
   TRegistroC141List = class; {Márcio Lopes 30Nov2009}
   TRegistroC170List = class;
   TRegistroC190List = class;
+  TRegistroC370List = class;
   TRegistroC470List = class;
 
   /// Registro C100 - NOTA FISCAL (CÓDIGO 01), NOTA FISCAL AVULSA (CÓDIGO 1B), NOTA FISCAL DE PRODUTOR (CÓDIGO 04) E NFE (CÓDIGO 55)
@@ -1114,7 +1115,12 @@ type
     fVL_PIS: currency;      /// Valor total do PIS
     fVL_COFINS: currency;   /// Valor total da COFINS
     fCOD_CTA: AnsiString;       /// Código da conta analítica contábil debitada/creditada
+
+    FRegistroC370: TRegistroC370List;  /// BLOCO C - Lista de RegistroC370 (FILHO)
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property SER: AnsiString read FSER write FSER;
     property SUB_SER: AnsiString read FSUB_SER write FSUB_SER;
     property NUM_DOC: AnsiString read FNUM_DOC write FNUM_DOC;
@@ -1126,6 +1132,8 @@ type
     property VL_PIS: currency read FVL_PIS write FVL_PIS;
     property VL_COFINS: currency read FVL_COFINS write FVL_COFINS;
     property COD_CTA: AnsiString read FCOD_CTA write FCOD_CTA;
+
+    property RegistroC370: TRegistroC370List read FRegistroC370 write FRegistroC370;
   end;
 
   /// Registro C350 - Lista
@@ -3417,6 +3425,19 @@ end;
 destructor TRegistroC460.Destroy;
 begin
   FRegistroC470.Free;
+  inherited;
+end;
+
+{ TRegistroC350 }
+
+constructor TRegistroC350.Create;
+begin
+  FRegistroC370 := TRegistroC370List.Create;  /// BLOCO C - Lista de RegistroC370 (FILHO)
+end;
+
+destructor TRegistroC350.Destroy;
+begin
+  FRegistroC370.Free;
   inherited;
 end;
 

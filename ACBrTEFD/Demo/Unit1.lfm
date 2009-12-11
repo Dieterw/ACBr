@@ -757,7 +757,6 @@ object Form1: TForm1
   end
   object ACBrTEFD1: TACBrTEFD
     EsperaSTS = 7
-    EsperaSleep = 500
     TEFDial.Habilitado = True
     TEFDial.ArqLOG = 'TEF_DIAL.log'
     TEFDial.ArqTemp = 'C:\TEF_DIAL\req\intpos.tmp'

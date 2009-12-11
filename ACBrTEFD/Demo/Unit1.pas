@@ -200,8 +200,6 @@ procedure TForm1.Memo1Change(Sender : TObject);
 begin
   StatusBar1.Panels[0].Text := GetEnumName(TypeInfo(TACBrTEFDTipo), integer(ACBrTEFD1.GPAtual) ) ;
   StatusBar1.Panels[2].Text := '' ;
-  ckMultiplosCartoes.Checked  := ACBrTEFD1.MultiplosCartoes;
-  ckMultiplosCartoes1.Checked := ACBrTEFD1.MultiplosCartoes;
 end;
 
 procedure TForm1.AvaliaTEFs;

@@ -550,7 +550,6 @@ begin
   end;
 
   RespostasPendentes.Clear;
-  MultiplosCartoes := False ;
 end;
 
 procedure TACBrTEFD.ConfirmaTransacoesPendentes;
@@ -582,7 +581,6 @@ begin
   end ;
 
   RespostasPendentes.Clear;
-  MultiplosCartoes := False ;
 end;
 
 procedure TACBrTEFD.ImprimirTransacoesPendentes;
@@ -783,7 +781,6 @@ begin
   end;
 
   RespostasPendentes.Clear;
-  MultiplosCartoes := False ;
 end;
 
 Function TACBrTEFD.DoExibeMsg( Operacao : TACBrTEFDOperacaoMensagem;

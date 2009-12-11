@@ -1312,7 +1312,7 @@ begin
   fArqResp      := '' ;
   fArqSTS       := '' ;
   fpTipo        := gpNenhum ;
-  fpIDSeq       := 0 ;
+  fpIDSeq       := SecondOfTheDay(now) ;
 
   fEsperaSTS := CACBrTEFD_EsperaSTS ;
   fNumVias   := CACBrTEFD_NumVias ;
@@ -1596,7 +1596,7 @@ begin
   if AID > 0 then
      fpIDSeq := AID
   else
-     fpIDSeq := fpIDSeq + 1 ;
+     fpIDSeq := SecondOfTheDay(now) ;
 
   Req.Header := AHeader;
   Req.ID     := fpIDSeq;
@@ -1615,45 +1615,47 @@ begin
      EstadoReq := reqCriandoArquivo;
 
      if Assigned( OnAntesFinalizarRequisicao ) then
-        OnAntesFinalizarRequisicao( Req );
+        OnAntesFinalizarRequisicao( Self.Req );
+  end ;
 
-     GravaLog( Name +' FinalizarRequisicao: '+Req.Header+', Fechando arquivo: '+ArqTemp);
-     Req.Conteudo.GravaInformacao(999,999,'0');
-     Req.Conteudo.GravarArquivo( ArqTemp );
-     {$IFDEF MSWINDOWS}
-      FlushToDisk( ExtractFileDrive( ArqTemp ) );
-     {$ENDIF}
+  GravaLog( Name +' FinalizarRequisicao: '+Req.Header+', Fechando arquivo: '+ArqTemp);
+  Req.Conteudo.GravaInformacao(999,999,'0');
+  Req.Conteudo.GravarArquivo( ArqTemp );
+  {$IFDEF MSWINDOWS}
+//   FlushToDisk( ExtractFileDrive( ArqTemp ) );
+  {$ENDIF}
 
-     GravaLog( Name +' FinalizarRequisicao: '+Req.Header+', Renomeando: '+ArqTemp+' para: '+ArqReq);
-     if not RenameFile( ArqTemp, ArqReq ) then
-        raise EACBrTEFDArquivo.Create( ACBrStr( 'Erro ao Renomear:' + sLineBreak +
-                                   ArqTemp + 'para:' + sLineBreak + ArqReq ) ) ;
+  GravaLog( Name +' FinalizarRequisicao: '+Req.Header+', Renomeando: '+ArqTemp+' para: '+ArqReq);
+  if not RenameFile( ArqTemp, ArqReq ) then
+     raise EACBrTEFDArquivo.Create( ACBrStr( 'Erro ao Renomear:' + sLineBreak +
+                                ArqTemp + 'para:' + sLineBreak + ArqReq ) ) ;
 
-     EstadoReq := reqAgardandoResposta;
+  TACBrTEFD(Owner).EstadoReq := reqAgardandoResposta;
 
-     TempoInicioEspera := now ;
-     TempoFimEspera    := IncSecond(TempoInicioEspera, EsperaSTS );
-     Interromper       := False ;
-     repeat
-        Sleep( EsperaSleep );  // Necessário Para não sobrecarregar a CPU //
+  TempoInicioEspera := now ;
+  TempoFimEspera    := IncSecond(TempoInicioEspera, EsperaSTS );
+  Interromper       := False ;
+  repeat
+     Sleep( TACBrTEFD(Owner).EsperaSleep );  // Necessário Para não sobrecarregar a CPU //
 
-        GravaLog( Name +' FinalizarRequisicao: '+Req.Header+', Aguardando: '+ArqSTS );
+     GravaLog( Name +' FinalizarRequisicao: '+Req.Header+', Aguardando: '+ArqSTS );
+     with TACBrTEFD(Owner) do
+     begin
         if Assigned( OnAguardaResp ) then
            OnAguardaResp( ArqSTS, SecondsBetween(TempoFimEspera, Now), Interromper ) ;
+     end;
+  until FileExists( ArqSTS ) or ( now > TempoFimEspera ) or Interromper;
 
-     until FileExists( ArqSTS ) or ( now > TempoFimEspera ) or Interromper;
+  if not FileExists( ArqSTS ) then
+     raise EACBrTEFDGPNaoResponde.Create( ACBrStr( 'O gerenciador padrão '+Self.Name+' não está ativo!' )) ;
 
-     if not FileExists( ArqSTS ) then
-        raise EACBrTEFDGPNaoResponde.Create( ACBrStr( 'O gerenciador padrão '+Self.Name+' não está ativo!' )) ;
-
-     EstadoReq := reqConferindoResposta;
-  end;
+  TACBrTEFD(Owner).EstadoReq := reqConferindoResposta;
 
   GravaLog( Name +' FinalizarRequisicao: '+Req.Header+', Verificando conteudo de: '+ArqSTS );
   Resp.LeArquivo( ArqSTS );
 
+  DeleteFile( ArqTemp );
   DeleteFile( ArqSTS );
-  DeleteFile( ArqReq );  // Apaga a Requisicao (caso o G.P. nao tenha apagado)
 
   if not VerificaRespostaRequisicao then
   begin
@@ -1684,22 +1686,23 @@ begin
   VerificaIniciouRequisicao;
   Resp.Clear;
 
-  with TACBrTEFD(Owner) do
-  begin
-     EstadoResp  := respAgardandoResposta;
-     Interromper := False ;
-     OK          := False ;
-
+  TACBrTEFD(Owner).EstadoResp  := respAgardandoResposta;
+  Interromper := False ;
+  OK          := False ;
+  try
      while not (OK or Interromper) do
      begin
         TempoInicioEspera := now ;
         repeat
-           Sleep( EsperaSleep );  // Necessário Para não sobrecarregar a CPU //
+           Sleep( TACBrTEFD(Owner).EsperaSleep );  // Necessário Para não sobrecarregar a CPU //
 
            GravaLog( Name +' LeRespostaRequisicao: '+Req.Header+', Aguardando: '+ArqResp );
-           if Assigned( OnAguardaResp ) then
-              OnAguardaResp( ArqResp, SecondsBetween(TempoInicioEspera, Now),
-                             Interromper ) ;
+           with TACBrTEFD(Owner) do
+           begin
+              if Assigned( OnAguardaResp ) then
+                 OnAguardaResp( ArqResp, SecondsBetween(TempoInicioEspera, Now),
+                                Interromper ) ;
+           end ;
         until FileExists( ArqResp ) or Interromper ;
 
         GravaLog( Name +' LeRespostaRequisicao: '+Req.Header+', Verificando conteudo de: '+ArqResp );
@@ -1714,10 +1717,11 @@ begin
            DeleteFile( ArqResp );
         end ;
      end ;
-
-     Resp.TipoGP := Tipo;
-     EstadoResp  := respNenhum;
-  end;
+  finally
+    Resp.TipoGP := Tipo;
+    TACBrTEFD(Owner).EstadoResp := respNenhum;
+    DeleteFile( ArqReq );  // Apaga a Requisicao (caso o G.P. nao tenha apagado)
+  end ;
 end;
 
 procedure TACBrTEFDClass.ProcessaResposta ;

@@ -47,6 +47,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 	
+Versão 0.01a   11/12/09
+---------------
+[+] Implementações nos Blocos I por (Italo J Jr)
+
 Versão 0.01a   07/12/09
 ---------------
 [+] Implementações nos Blocos 0, I e J por (Italo J Jr)

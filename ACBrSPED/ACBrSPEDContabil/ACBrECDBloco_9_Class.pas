@@ -105,10 +105,10 @@ begin
   begin
      with Registro9001 do
      begin
-       Check(((IND_DAD = 0) or (IND_DAD = 1)), 'BLOCO 9 - REGISTRO9001: Na abertura do bloco, deve ser informado o número 0 ou 1!');
+       Check(((IND_DAD = 0) or (IND_DAD = 1)), '(9-9001) Na abertura do bloco, deve ser informado o número 0 ou 1!');
        ///
        Result := LFill('9001') +
-                 LFill(IND_DAD, 0) +
+                 LFill(IND_DAD, 1) +
                  Delimitador +
                  #13#10;
        ///
@@ -132,7 +132,7 @@ begin
         begin
            strRegistro9900 := strRegistro9900 + LFill('9900') +
                                                 LFill(REG_BLC) +
-                                                LFill(QTD_REG_BLC,0) +
+                                                LFill(QTD_REG_BLC, 0) +
                                                 Delimitador +
                                                 #13#10;
         end;
@@ -151,7 +151,7 @@ begin
      with Registro9990 do
      begin
         Result := LFill('9990') +
-                  LFill(QTD_LIN_9,0) +
+                  LFill(QTD_LIN_9, 0) +
                   Delimitador +
                   #13#10;
      end;
@@ -165,7 +165,7 @@ begin
      with Registro9999 do
      begin
         Result := LFill('9999') +
-                  LFill(QTD_LIN,0) +
+                  LFill(QTD_LIN, 0) +
                   Delimitador +
                   #13#10;
      end;

@@ -146,7 +146,7 @@ type
 
   TRegistroJ800 = class(TPersistent)
   private
-    fARQ_RTF: AnsiString;  /// Seqüência de bytes que representem um único arquivo no formato RTF (Rich Text Format).   public
+    fARQ_RTF: AnsiString;  /// Seqüência de bytes que representem um único arquivo no formato RTF (Rich Text Format).
   public
     property ARQ_RTF: AnsiString read fARQ_RTF write fARQ_RTF;
   end;

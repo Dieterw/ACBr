@@ -96,7 +96,7 @@ type
 
   TRegistroI015 = class(TPersistent)
   private
-    fCOD_CTA_RES: AnsiString;    /// Código da(s) conta(s) analítica(s) do Livro Diário com Escrituração Resumida (R) que recebe os lançamentos globais.   public
+    fCOD_CTA_RES: AnsiString;    /// Código da(s) conta(s) analítica(s) do Livro Diário com Escrituração Resumida (R) que recebe os lançamentos globais.
   public
     property COD_CTA_RES: AnsiString read fCOD_CTA_RES write fCOD_CTA_RES;
   end;
@@ -324,7 +324,7 @@ type
 
   TRegistroI151 = class(TPersistent)
   private
-    fASSIM_DIG: AnsiString; /// Transcrição da assinatura digital utilizada no arquivo contendo o conjunto de fichas de lançamento   public
+    fASSIM_DIG: AnsiString; /// Transcrição da assinatura digital utilizada no arquivo contendo o conjunto de fichas de lançamento
   public
     property ASSIM_DIG: AnsiString read fASSIM_DIG write fASSIM_DIG;
   end;

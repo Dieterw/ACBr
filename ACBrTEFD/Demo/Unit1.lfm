@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 354
+  Left = 360
   Height = 452
-  Top = 105
+  Top = 108
   Width = 694
   Caption = 'TEFDDemo'
   ClientHeight = 452
@@ -23,29 +23,14 @@ object Form1: TForm1
     ScrollBars = ssAutoBoth
     TabOrder = 0
   end
-  object pMensagem: TPanel
-    Left = 184
-    Height = 100
-    Top = 248
-    Width = 318
-    Anchors = []
-    BevelInner = bvLowered
-    BevelWidth = 2
-    BorderStyle = bsSingle
-    Caption = 'Mensagem TEF'
-    Font.Height = -24
-    ParentFont = False
-    TabOrder = 1
-    Visible = False
-  end
   object PageControl1: TPageControl
     Left = 0
     Height = 176
     Top = 0
     Width = 694
-    ActivePage = tsOperacao
+    ActivePage = tsConfig
     Align = alTop
-    TabIndex = 1
+    TabIndex = 0
     TabOrder = 2
     object tsConfig: TTabSheet
       Caption = 'Configuração'
@@ -322,6 +307,42 @@ object Form1: TForm1
             Caption = 'AutoEfetuarPagamento'
             OnChange = ckAutoEfetuarPagamentoChange
             TabOrder = 5
+          end
+          object edEsperaSleep: TEdit
+            Left = 301
+            Height = 23
+            Top = 15
+            Width = 56
+            Alignment = taCenter
+            OnChange = edEsperaSleepChange
+            TabOrder = 7
+            Text = '250'
+          end
+          object Label8: TLabel
+            Left = 301
+            Height = 16
+            Top = -1
+            Width = 63
+            Caption = 'EsperaSleep'
+            ParentColor = False
+          end
+          object Label9: TLabel
+            Left = 301
+            Height = 16
+            Top = 55
+            Width = 54
+            Caption = 'EsperaSTS'
+            ParentColor = False
+          end
+          object edEsperaSTS: TEdit
+            Left = 301
+            Height = 23
+            Top = 71
+            Width = 56
+            Alignment = taCenter
+            OnChange = edEsperaSTSChange
+            TabOrder = 8
+            Text = '7'
           end
         end
       end
@@ -711,6 +732,65 @@ object Form1: TForm1
       Visible = False
     end
   end
+  object pMensagem: TPanel
+    Left = 152
+    Height = 136
+    Top = 240
+    Width = 440
+    Anchors = []
+    BevelInner = bvLowered
+    BevelWidth = 2
+    BorderStyle = bsSingle
+    ClientHeight = 132
+    ClientWidth = 436
+    Font.Height = -24
+    ParentFont = False
+    TabOrder = 1
+    Visible = False
+    OnResize = pMensagemResize
+    object pMensagemOperador: TPanel
+      Left = 4
+      Height = 62
+      Top = 4
+      Width = 428
+      Align = alClient
+      ClientHeight = 62
+      ClientWidth = 428
+      TabOrder = 0
+      Visible = False
+      object Label10: TLabel
+        Left = 0
+        Height = 14
+        Top = 0
+        Width = 110
+        Caption = 'Mensagem Operador'
+        Font.Height = -11
+        ParentColor = False
+        ParentFont = False
+      end
+    end
+    object pMensagemCliente: TPanel
+      Left = 4
+      Height = 62
+      Top = 66
+      Width = 428
+      Align = alBottom
+      ClientHeight = 62
+      ClientWidth = 428
+      TabOrder = 1
+      Visible = False
+      object Label11: TLabel
+        Left = 0
+        Height = 14
+        Top = 0
+        Width = 96
+        Caption = 'Mensagem Cliente'
+        Font.Height = -11
+        ParentColor = False
+        ParentFont = False
+      end
+    end
+  end
   object ACBrECF1: TACBrECF
     Modelo = ecfBematech
     Porta = 'COM1'
@@ -757,8 +837,8 @@ object Form1: TForm1
   end
   object ACBrTEFD1: TACBrTEFD
     EsperaSTS = 7
-    TEFDial.Habilitado = True
     TEFDial.ArqLOG = 'TEF_DIAL.log'
+    TEFDial.Habilitado = True
     TEFDial.ArqTemp = 'C:\TEF_DIAL\req\intpos.tmp'
     TEFDial.ArqReq = 'C:\TEF_DIAL\req\intpos.001'
     TEFDial.ArqSTS = 'C:\TEF_DIAL\resp\intpos.sts'
@@ -774,6 +854,7 @@ object Form1: TForm1
     TEFHiper.ArqSTS = 'C:\HiperTEF\resp\IntPos.sts'
     TEFHiper.ArqResp = 'C:\HiperTEF\resp\IntPos.001'
     TEFHiper.GPExeName = 'C:\HiperTEF\HiperTEF.exe'
+    TEFCliSiTef.ArqLOG = 'CliSiTef.log'
     TEFCliSiTef.EnderecoIP = 'localhost'
     TEFCliSiTef.CodigoLoja = '00000000'
     TEFCliSiTef.NumeroTerminal = 'SE000001'
@@ -783,6 +864,7 @@ object Form1: TForm1
     OnExibeMsg = ACBrTEFD1ExibeMsg
     OnComandaECF = ACBrTEFD1ComandaECF
     OnComandaECFPagamento = ACBrTEFD1ComandaECFPagamento
+    OnComandaECFAbreVinculado = ACBrTEFD1ComandaECFAbreVinculado
     OnInfoECF = ACBrTEFD1InfoECF
     OnAntesFinalizarRequisicao = ACBrTEFD1AntesFinalizarRequisicao
     OnMudaEstadoReq = ACBrTEFD1MudaEstadoReq

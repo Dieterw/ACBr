@@ -120,9 +120,10 @@ type
      procedure Inicializar ; override;
 
      procedure AtivarGP ; override;
+     procedure VerificaAtivo ; override;
 
      procedure ATV ; override;
-
+     procedure ADM ; override;
 
    published
      property EnderecoIP     : String read fEnderecoIP     write fEnderecoIP ;
@@ -221,6 +222,11 @@ begin
    raise Exception.Create( ACBrStr( 'CliSiTef não pode ser ativado localmente' )) ;
 end;
 
+procedure TACBrTEFDCliSiTef.VerificaAtivo;
+begin
+   {Nada a Fazer}
+end;
+
 
 procedure TACBrTEFDCliSiTef.AvaliaErro( Sts : Integer );
 var
@@ -247,10 +253,37 @@ end ;
 procedure TACBrTEFDCliSiTef.ATV;
 Var
   Sts : Integer ;
-  Erro : String;
+  DataStr, HoraStr : String;
 begin
+   DataStr := FormatDateTime('YYYYMMDD',Now);
+   HoraStr := FormatDateTime('HHNNSS',Now);
+   GravaLog( 'IniciaFuncaoSiTefInterativo. Modalidade = 111') ;
+
    Sts := xIniciaFuncaoSiTefInterativo( 111,  // 111 -	Teste de comunicação com o SiTef
-                                 '', '', '', '', PChar( fOperador ), '') ;
+                                 '', '',
+                                 PChar(DataStr), PChar(HoraStr),
+                                 PChar( fOperador ), '') ;
+
+   if Sts = 10000 then
+      FinalizarRequisicao
+   else if Sts <> 0 then
+      AvaliaErro( Sts );
+end;
+
+procedure TACBrTEFDCliSiTef.ADM;
+Var
+  Sts : Integer ;
+  DataStr, HoraStr : String;
+begin
+   DataStr := FormatDateTime('YYYYMMDD',Now);
+   HoraStr := FormatDateTime('HHNNSS',Now);
+
+   GravaLog( 'IniciaFuncaoSiTefInterativo. Modalidade = 110') ;
+
+   Sts := xIniciaFuncaoSiTefInterativo( 110,  // 110 - Abre o leque das transações Gerenciais
+                                 '', '',
+                                 PChar(DataStr), PChar(HoraStr),
+                                 PChar( fOperador ), '') ;
 
    if Sts = 10000 then
       FinalizarRequisicao
@@ -307,6 +340,10 @@ begin
 
          Mensagem := Trim( Buffer ) ;
          Resposta := '' ;
+
+         GravaLog( 'ProximoComando: '+IntToStr(ProximoComando)+
+                   ' TipoCampo: '+IntToStr(TipoCampo)+
+                   ' Buffer: '+Mensagem ) ;
 
          if Sts = 10000 then
          begin
@@ -396,6 +433,9 @@ begin
 
       until Sts <> 10000;
    end ;
+
+   if Sts <> 0 then
+      AvaliaErro( Sts );
 
 //   FinalizaTransacaoSiTefInterativo (1,'12345','20011022','091800');
 end;

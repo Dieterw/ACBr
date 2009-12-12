@@ -2,24 +2,27 @@ object Form5: TForm5
   Left = 352
   Height = 167
   Top = 153
-  Width = 394
-  Caption = 'Form5'
+  Width = 489
+  Caption = 'OnObtemCampo'
   ClientHeight = 167
-  ClientWidth = 394
+  ClientWidth = 489
   Font.Height = -19
+  Position = poOwnerFormCenter
   LCLVersion = '0.9.29'
   object Edit1: TEdit
     Left = 32
     Height = 33
     Top = 72
-    Width = 328
+    Width = 423
+    Anchors = [akTop, akLeft, akRight]
     TabOrder = 0
   end
   object BitBtn1: TBitBtn
-    Left = 80
+    Left = 108
     Height = 35
     Top = 119
     Width = 70
+    Anchors = [akTop]
     AutoSize = True
     Caption = '&OK'
     Default = True
@@ -28,10 +31,11 @@ object Form5: TForm5
     TabOrder = 1
   end
   object BitBtn2: TBitBtn
-    Left = 215
+    Left = 279
     Height = 35
     Top = 119
     Width = 102
+    Anchors = [akTop]
     AutoSize = True
     Cancel = True
     Caption = 'Cancel'
@@ -43,7 +47,7 @@ object Form5: TForm5
     Left = 0
     Height = 50
     Top = 0
-    Width = 394
+    Width = 489
     Align = alTop
     Caption = 'Panel1'
     TabOrder = 3

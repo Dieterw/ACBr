@@ -76,6 +76,7 @@ type
      fOnAguardaResp : TACBrTEFDAguardaRespEvent;
      fOnAntesFinalizarRequisicao : TACBrTEFDAntesFinalizarReq;
      fOnComandaECF : TACBrTEFDComandaECF;
+     fOnComandaECFAbreVinculado : TACBrTEFDComandaECFAbreVinculado;
      fOnComandaECFPagamento : TACBrTEFDComandaECFPagamento;
      fOnExibeMsg : TACBrTEFDExibeMsg;
      fOnInfoECF : TACBrTEFDObterInfoECF;
@@ -119,6 +120,7 @@ type
         Mensagem : String ) : TModalResult;
      function ComandaECF(Operacao : TACBrTEFDOperacaoECF) : Integer;
      function ComandaECFPagamento(Indice : String; Valor : Double) : Integer;
+     function ComandaECFAbreVinculado(COO, Indice : String; Valor : Double) : Integer;
      procedure FechaGerencial( ShowException : Boolean = False );
      procedure FinalizaCupom;
 
@@ -127,6 +129,7 @@ type
      destructor Destroy ; override;
 
      Procedure Inicializar( GP : TACBrTEFDTipo = gpNenhum ) ;
+     Procedure DesInicializar( GP : TACBrTEFDTipo = gpNenhum ) ;
      function Inicializado( GP : TACBrTEFDTipo = gpNenhum ) : Boolean ;
 
      property GPAtual : TACBrTEFDTipo read fGPAtual write SetGPAtual ;
@@ -207,6 +210,8 @@ type
         write fOnComandaECF ;
      property OnComandaECFPagamento  : TACBrTEFDComandaECFPagamento
         read fOnComandaECFPagamento write fOnComandaECFPagamento ;
+     property OnComandaECFAbreVinculado : TACBrTEFDComandaECFAbreVinculado
+        read fOnComandaECFAbreVinculado write fOnComandaECFAbreVinculado ;
      property OnInfoECF : TACBrTEFDObterInfoECF read fOnInfoECF write fOnInfoECF ;
      property OnAntesFinalizarRequisicao : TACBrTEFDAntesFinalizarReq
         read fOnAntesFinalizarRequisicao write fOnAntesFinalizarRequisicao ;
@@ -330,6 +335,7 @@ begin
   fOnAguardaResp              := nil ;
   fOnComandaECF               := nil ;
   fOnComandaECFPagamento      := nil ;
+  fOnComandaECFAbreVinculado  := nil ;
   fOnInfoECF                  := nil ;
   fOnExibeMsg                 := nil ;
   fOnMudaEstadoReq            := nil ;
@@ -408,6 +414,9 @@ begin
   if not Assigned( OnComandaECFPagamento )  then
      raise Exception.Create( ACBrStr('Evento "OnComandaECFPagamento" não programado' ) ) ;
 
+  if not Assigned( OnComandaECFAbreVinculado )  then
+     raise Exception.Create( ACBrStr('Evento "OnComandaECFAbreVinculado" não programado' ) ) ;
+
   if not Assigned( OnInfoECF )  then
      raise Exception.Create( ACBrStr('Evento "OnInfoECF" não programado' ) ) ;
 
@@ -422,14 +431,33 @@ begin
      For I := 0 to fTEFList.Count-1 do
      begin
        if fTEFList[I].Habilitado then
-          fTEFList[I].Inicializar;
+          fTEFList[I].Inicializado := True ;
      end;
    end
   else
    begin
      GPAtual := GP ;
-     fTefClass.Inicializar;
-     fTefClass.Habilitado := True ;
+     fTefClass.Inicializado := True;
+     fTefClass.Habilitado   := True ;
+   end;
+end;
+
+procedure TACBrTEFD.DesInicializar(GP : TACBrTEFDTipo);
+var
+   I : Integer;
+begin
+  if GP = gpNenhum then
+   begin
+     For I := 0 to fTEFList.Count-1 do
+     begin
+       if fTEFList[I].Habilitado then
+          fTEFList[I].Inicializado := False ;
+     end;
+   end
+  else
+   begin
+     GPAtual := GP ;
+     fTefClass.Inicializado := False;
    end;
 end;
 
@@ -700,7 +728,9 @@ begin
                        if Ordem <> RespostasPendentes[J].OrdemPagamento then
                         begin
                           Ordem := RespostasPendentes[J].OrdemPagamento ;
-                          ComandaECF( opeAbreVinculado ) ;
+                          ComandaECFAbreVinculado( Resp.DocumentoVinculado,
+                                                   GrupoVinc[K].IndiceFPG_ECF,
+                                                   GrupoVinc[K].Total ) ;
                         end
                        else
                           ComandaECF( opePulaLinhas ) ;
@@ -821,6 +851,21 @@ begin
         raise EACBrTEFDECF.Create( ACBrStr( 'Erro ao executar "OnComandaECFPagamento"' ) )
      else
         raise EACBrTEFDECF.Create( ACBrStr( '"OnComandaECFPagamento" não tratada' ) ) ;
+  end;
+end;
+
+function TACBrTEFD.ComandaECFAbreVinculado(COO, Indice : String; Valor : Double
+   ) : Integer;
+begin
+  Result := -1 ;  // -1 = Não tratado
+  OnComandaECFAbreVinculado( COO, Indice, Valor, Result ) ;
+
+  if Result < 1 then
+  begin
+     if Result = 0 then
+        raise EACBrTEFDECF.Create( ACBrStr( 'Erro ao executar "OnComandaECFAbreVinculado"' ) )
+     else
+        raise EACBrTEFDECF.Create( ACBrStr( '"OnComandaECFAbreVinculado" não tratado' ) ) ;
   end;
 end;
 

@@ -106,13 +106,15 @@ type
 
   TACBrTEFDOperacaoECF = ( opeAbreGerencial, opeImprimeGerencial, opeFechaGerencial,
                            opePulaLinhas, opeSubTotalizaCupom, opeFechaCupom,
-                           opeAbreVinculado, opeImprimeVinculado, opeFechaVinculado,
-                           opeCancelaCupom ) ;
+                           opeImprimeVinculado, opeFechaVinculado, opeCancelaCupom ) ;
 
   TACBrTEFDComandaECF = procedure( Operacao : TACBrTEFDOperacaoECF; Resp : TACBrTEFDResp;
      var RetornoECF : Integer ) of object ; { -1 - Não tratado, 0 - Erro na Execucao, 1 - Sucesso }
 
   TACBrTEFDComandaECFPagamento = procedure( IndiceECF : String; Valor : Double;
+     var RetornoECF : Integer ) of object ; { -1 - Não tratado, 0 - Erro na Execucao, 1 - Sucesso }
+
+  TACBrTEFDComandaECFAbreVinculado = procedure( COO, IndiceECF : String; Valor : Double;
      var RetornoECF : Integer ) of object ; { -1 - Não tratado, 0 - Erro na Execucao, 1 - Sucesso }
 
   TACBrTEFDInfoECF = ( ineSubTotal,  // Valor do Saldo restante "A Pagar" do Cupom
@@ -516,7 +518,6 @@ type
    protected
      property AutoAtivarGP : Boolean read fAutoAtivarGP write fAutoAtivarGP
        default True ;
-     property ArqLOG : String read fArqLOG write fArqLOG ;
 
      property ArqTemp  : String read fArqTmp    write SetArqTmp ;
      property ArqReq   : String read fArqReq    write SetArqReq ;
@@ -570,6 +571,8 @@ type
         Valor : Double); overload; virtual;
 
    published
+     property ArqLOG : String read fArqLOG write fArqLOG ;
+
      Property Habilitado: Boolean read fHabilitado write fHabilitado
        default False ;
      property NumVias   : Integer read fNumVias   write fNumVias
@@ -596,7 +599,6 @@ type
    TACBrTEFDClassTXT = class( TACBrTEFDClass )
    published
      property AutoAtivarGP ;
-     property ArqLOG ;
 
      property ArqTemp  ;
      property ArqReq   ;
@@ -1591,6 +1593,7 @@ begin
 
   ApagaEVerifica( ArqTemp );  // Apagando Arquivo Temporario anterior //
   ApagaEVerifica( ArqReq  );  // Apagando Arquivo de Requisicao anterior //
+  ApagaEVerifica( ArqResp );  // Apagando Arquivo de Resposta anterior //
   ApagaEVerifica( ArqSTS  );  // Apagando Arquivo de Status anterior //
 
   if AID > 0 then
@@ -1771,18 +1774,14 @@ begin
      ArqMask := TACBrTEFD(Owner).PathBackup + PathDelim + 'ACBr_' + Self.Name + '_*.tef' ;
      FindFiles( ArqMask, ArquivosVerficar, True );
 
-     { Adicionando Arquivo de Resposta deste GP (se ainda não foi apagado) }
-     if FileExists( ArqResp ) then
-        ArquivosVerficar.Add( ArqResp );
-
-     { Vamos processar primeiro os CNCs e ADMs }
+     { Vamos processar primeiro os CNCs e ADMs, e as Não Confirmadas }
      I    := ArquivosVerficar.Count-1 ;
      Topo := 0 ;
      while I > Topo do
      begin
         Resp.LeArquivo( ArquivosVerficar[ I ] );
 
-        if pos(Resp.Header, 'CNC,ADM') > 0 then
+        if (pos(Resp.Header, 'CNC,ADM') > 0) or (not Resp.CNFEnviado) then
          begin
            ArquivosVerficar.Move(I,Topo);
            Topo := Topo + 1;
@@ -1791,9 +1790,19 @@ begin
            I := I - 1 ;
      end;
 
+     { Adicionando Arquivo de Resposta deste GP (se ainda não foi apagado) }
+     if FileExists( ArqResp ) then
+        ArquivosVerficar.Add( ArqResp );
+
      { Enviando NCN ou CNC para todos os arquivos encontrados }
      while ArquivosVerficar.Count > 0 do
      begin
+        if not FileExists( ArquivosVerficar[ 0 ] ) then
+        begin
+           ArquivosVerficar.Delete( 0 );
+           Continue;
+        end;
+
         Resp.LeArquivo( ArquivosVerficar[ 0 ] );
 
         {  Verificando se essa Resposta já foi cancela em outro arquivo }
@@ -1919,7 +1928,7 @@ begin
                     begin
                        while SecondsBetween(now,TempoInicio) < 5 do
                        begin
-                          Sleep(EsperaSTS) ;
+                          Sleep(EsperaSleep) ;
                           Application.ProcessMessages;
                        end;
                     end;
@@ -2020,7 +2029,7 @@ begin
        if UltimaTransacao and (RespostasPendentes.Count > 0 ) then
        begin
           if DoExibeMsg( opmYesNo, 'Gostaria de continuar a transação com outra(s)' +
-                                   'forma(s) de pagamento' ) <> mrYes then
+                                   'forma(s) de pagamento ?' ) <> mrYes then
           begin
              ComandaECF( opeCancelaCupom );
              CancelaTransacoesPendentes;

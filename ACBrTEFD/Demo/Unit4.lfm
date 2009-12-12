@@ -2,17 +2,18 @@ object Form4: TForm4
   Left = 503
   Height = 281
   Top = 167
-  Width = 333
-  Caption = 'Form4'
+  Width = 523
+  Caption = 'OnExibeMenu'
   ClientHeight = 281
-  ClientWidth = 333
+  ClientWidth = 523
   Font.Height = -19
+  Position = poOwnerFormCenter
   LCLVersion = '0.9.29'
   object ListBox1: TListBox
     Left = 0
     Height = 181
     Top = 50
-    Width = 333
+    Width = 523
     Align = alClient
     Font.Height = -19
     Font.Style = [fsBold]
@@ -24,7 +25,7 @@ object Form4: TForm4
     Left = 0
     Height = 50
     Top = 0
-    Width = 333
+    Width = 523
     Align = alTop
     Caption = 'Panel1'
     TabOrder = 1
@@ -33,16 +34,17 @@ object Form4: TForm4
     Left = 0
     Height = 50
     Top = 231
-    Width = 333
+    Width = 523
     Align = alBottom
     ClientHeight = 50
-    ClientWidth = 333
+    ClientWidth = 523
     TabOrder = 2
     object BitBtn1: TBitBtn
-      Left = 58
+      Left = 111
       Height = 35
       Top = 9
       Width = 70
+      Anchors = [akTop]
       AutoSize = True
       Caption = '&OK'
       Default = True
@@ -51,10 +53,11 @@ object Form4: TForm4
       TabOrder = 0
     end
     object BitBtn2: TBitBtn
-      Left = 185
+      Left = 320
       Height = 35
       Top = 9
       Width = 102
+      Anchors = [akTop]
       AutoSize = True
       Cancel = True
       Caption = 'Cancel'

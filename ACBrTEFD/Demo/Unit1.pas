@@ -58,8 +58,10 @@ type
      ckMultiplosCartoes1 : TCheckBox;
      ckTEFDIAL : TCheckBox;
      ckTEFDISC : TCheckBox;
+     edEsperaSTS : TEdit;
      edFPGCartao : TEdit;
      edFPGCheque : TEdit;
+     edEsperaSleep : TEdit;
      edValorECF : TEdit;
      edValorTEF : TEdit;
      gbComandosTEF : TGroupBox;
@@ -68,17 +70,23 @@ type
      gbCupomECF : TGroupBox;
      GroupBox1 : TGroupBox;
      Label1 : TLabel;
+     Label10 : TLabel;
+     Label11 : TLabel;
      Label2 : TLabel;
      Label3 : TLabel;
      Label4 : TLabel;
      Label5 : TLabel;
      Label6 : TLabel;
      Label7 : TLabel;
+     Label8 : TLabel;
+     Label9 : TLabel;
      lECFName : TLabel;
      Memo1 : TMemo;
      PageControl1 : TPageControl;
      Panel1 : TPanel;
      Panel2 : TPanel;
+     pMensagemOperador : TPanel;
+     pMensagemCliente : TPanel;
      pMensagem : TPanel;
      sECF : TShape;
      sHiperTEF : TShape;
@@ -94,6 +102,8 @@ type
      procedure ACBrTEFD1AntesFinalizarRequisicao(Req : TACBrTEFDReq);
      procedure ACBrTEFD1ComandaECF(Operacao : TACBrTEFDOperacaoECF;
         Resp : TACBrTEFDResp; var RetornoECF : Integer );
+     procedure ACBrTEFD1ComandaECFAbreVinculado(COO, IndiceECF : String;
+        Valor : Double; var RetornoECF : Integer);
      procedure ACBrTEFD1ComandaECFPagamento(IndiceECF : String; Valor : Double;
         var RetornoECF : Integer);
      procedure ACBrTEFD1ExibeMsg(Operacao : TACBrTEFDOperacaoMensagem;
@@ -108,6 +118,9 @@ type
         var ItemSlecionado : Integer);
      procedure CliSiTefObtemCampo(Titulo : String; TamanhoMinimo,
         TamanhoMaximo : Integer; var Resposta : String);
+     procedure edEsperaSleepChange(Sender : TObject);
+     procedure edEsperaSTSChange(Sender : TObject);
+     procedure pMensagemResize(Sender : TObject);
      procedure TrataErros(Sender : TObject; E : Exception);
      procedure bAbreVendeSubTotalizaClick(Sender : TObject);
      procedure bCHQClick(Sender : TObject);
@@ -233,8 +246,14 @@ begin
 end;
 
 procedure TForm1.MostraSaldoRestante;
+Var
+  Saldo : Double ;
 begin
-   Memo1.Lines.Add( 'Saldo Restante: '+FormatFloat('0.00',ACBrECF1.Subtotal-ACBrECF1.TotalPago)) ;
+  Saldo := ACBrECF1.Subtotal - ACBrECF1.TotalPago ;
+  if not ACBrTEFD1.AutoEfetuarPagamento then
+     Saldo := Saldo - ACBrTEFD1.RespostasPendentes.TotalPago;
+
+  Memo1.Lines.Add( 'Saldo Restante: '+FormatFloat('0.00',Saldo)) ;
 end;
 
 procedure TForm1.VerificaECFAtivo;
@@ -245,9 +264,19 @@ end;
 
 procedure TForm1.bInicializarClick(Sender : TObject);
 begin
-  Memo1.Lines.Add('Inicializando: ' + cbxGP.Text );
-  ACBrTEFD1.Inicializar( TACBrTEFDTipo( cbxGP.ItemIndex ) );
-  Memo1.Lines.Add('ACBrTEFD.Inicializar Executado' );
+  if bInicializar.Caption = 'Inicializar' then
+   begin
+     Memo1.Lines.Add('Inicializando: ' + cbxGP.Text );
+     ACBrTEFD1.Inicializar( TACBrTEFDTipo( cbxGP.ItemIndex ) );
+     Memo1.Lines.Add('ACBrTEFD.Inicializar Executado' );
+     bInicializar.Caption := 'DesInicializar' ;
+   end
+  else
+   begin
+     ACBrTEFD1.DesInicializar( TACBrTEFDTipo( cbxGP.ItemIndex ) );
+     Memo1.Lines.Add('ACBrTEFD.DesInicializar Executado' );
+     bInicializar.Caption := 'Inicializar' ;
+   end;
 
   AvaliaTEFs;
 end;
@@ -557,61 +586,61 @@ begin
     opmExibirMsgOperador :
        begin
          self.Enabled      := False ;
-         if pMensagem.Caption <> '' then
-            pMensagem.Caption := pMensagem.Caption + sLineBreak + 'Operador: ';
-         pMensagem.Caption := pMensagem.Caption + Mensagem ;
+         pMensagemOperador.Caption := Mensagem ;
          pMensagem.Visible := True ;
+         pMensagemOperador.Visible := True ;
        end;
 
     opmExibirMsgCliente : // TODO: Fazer um Panel seprado para MSG de Clientes
        begin
+
          self.Enabled      := False ;
-         if pMensagem.Caption <> '' then
-            pMensagem.Caption := pMensagem.Caption + sLineBreak + 'Cliente: ' ;
-         pMensagem.Caption := pMensagem.Caption + Mensagem ;
+         pMensagemCliente.Caption := Mensagem ;
          pMensagem.Visible := True ;
+         pMensagemCliente.Visible := True ;
        end;
 
     opmRemoverMsgOperador :
        begin
-         pMensagem.Caption := '' ;
-         pMensagem.Visible := False ;
-         self.Enabled      := True ;
+         pMensagemOperador.Caption := '' ;
+         pMensagemOperador.Visible := False ;
+         self.Enabled := True ;
        end;
 
     opmRemoverMsgCliente : // TODO: Fazer um Panel seprado para MSG de Clientes
        begin
-         pMensagem.Caption := '' ;
-         pMensagem.Visible := False ;
-         self.Enabled      := True ;
+         pMensagemCliente.Caption := '' ;
+         pMensagemCliente.Visible := False ;
+         self.Enabled := True ;
        end;
 
     opmDestaqueVia :
        begin
          OldEnabled  := self.Enabled ;
-         OldMensagem := pMensagem.Caption ;
-         OldVisible  := pMensagem.Visible ;
+         OldMensagem := pMensagemOperador.Caption ;
+         OldVisible  := pMensagemOperador.Visible ;
          try
             self.Enabled      := False ;    // Desabilita o Form Atual, para bloquear a Interface
-            pMensagem.Caption := Mensagem;
-            pMensagem.Visible := True ;
+            pMensagemOperador.Caption := Mensagem;
+            pMensagemOperador.Visible := True ;
 
             { Aguardando 5 segundos }
             Fim := IncSecond( now, 6)  ;
             repeat
                sleep(200) ;
-               pMensagem.Caption := Mensagem + ' ' + IntToStr(SecondsBetween(Fim,now));
+               pMensagemOperador.Caption := Mensagem + ' ' + IntToStr(SecondsBetween(Fim,now));
                Application.ProcessMessages;
             until (now > Fim) ;
 
          finally
-            pMensagem.Caption := OldMensagem ;
-            pMensagem.Visible := OldVisible ;
-            self.Enabled      := OldEnabled ;
+            pMensagemOperador.Caption := OldMensagem ;
+            pMensagemOperador.Visible := OldVisible ;
+            self.Enabled := OldEnabled ;
          end;
        end;
   end;
 
+  pMensagem.Visible := pMensagemOperador.Visible or pMensagemCliente.Visible;
 end;
 
 procedure TForm1.ACBrTEFD1InfoECF(Operacao : TACBrTEFDInfoECF;
@@ -687,6 +716,21 @@ begin
   end;
 end;
 
+procedure TForm1.edEsperaSleepChange(Sender : TObject);
+begin
+   ACBrTEFD1.EsperaSleep := StrToInt(edEsperaSleep.Text);
+end;
+
+procedure TForm1.edEsperaSTSChange(Sender : TObject);
+begin
+   ACBrTEFD1.EsperaSTS := StrToInt(edEsperaSTS.Text);
+end;
+
+procedure TForm1.pMensagemResize(Sender : TObject);
+begin
+   pMensagemOperador.Height := Trunc( pMensagem.Height / 2 ) ;
+end;
+
 procedure TForm1.TrataErros(Sender : TObject; E : Exception);
 begin
   Memo1.Lines.Add( E.Message );
@@ -735,8 +779,8 @@ begin
     if AForm.ShowModal = mrOK then
     begin
       DT := EncodeDateTime( StrToInt(copy(AForm.edData.Text,7,4)),
-                            StrToInt(copy(AForm.meHora.Text,4,2)),
-                            StrToInt(copy(AForm.meHora.Text,1,2)),
+                            StrToInt(copy(AForm.edData.Text,4,2)),
+                            StrToInt(copy(AForm.edData.Text,1,2)),
                             StrToInt(copy(AForm.meHora.Text,1,2)),
                             StrToInt(copy(AForm.meHora.Text,4,2)),
                             StrToInt(copy(AForm.meHora.Text,7,2)), 0) ;
@@ -818,11 +862,6 @@ begin
       opeAbreGerencial :
         ACBrECF1.AbreRelatorioGerencial ;
 
-      opeAbreVinculado :
-        { Se "Resp.DocumentoVinculado" for Vazio, Tente: "ACBrECF.NumCOO" }
-        ACBrECF1.AbreCupomVinculado( Resp.DocumentoVinculado,
-                                     Resp.IndiceFPG_ECF, Resp.ValorTotal );
-
       opeCancelaCupom :
         begin
           Memo1.Lines.Add('Cancelando o Cupom');
@@ -852,7 +891,10 @@ begin
         ACBrECF1.FechaRelatorio ;
 
       opePulaLinhas :
-        ACBrECF1.PulaLinhas( ACBrECF1.LinhasEntreCupons );
+        begin
+          ACBrECF1.PulaLinhas( ACBrECF1.LinhasEntreCupons );
+          ACBrECF1.CortaPapel( True );
+        end;
 
       opeImprimeVinculado :
         begin
@@ -868,6 +910,17 @@ begin
     RetornoECF := 1 ;
   except
     RetornoECF := 0 ;
+  end;
+end;
+
+procedure TForm1.ACBrTEFD1ComandaECFAbreVinculado(COO, IndiceECF : String;
+   Valor : Double; var RetornoECF : Integer);
+begin
+  try
+     ACBrECF1.AbreCupomVinculado( COO, IndiceECF, Valor );
+     RetornoECF := 1 ;
+  except
+     RetornoECF := 0 ;
   end;
 end;
 

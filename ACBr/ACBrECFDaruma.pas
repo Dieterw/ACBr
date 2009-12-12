@@ -1498,7 +1498,7 @@ begin
                       LeftStr(Consumidor.Endereco,79) + FF ;
 
      EnviaComando(FS + 'F' + #200 + StrConsumidor ) ;
-     Consumidor.Enviado := ( StrConsumidor <> '' ) ;
+     Consumidor.Enviado := True ;
    end
   else
      EnviaComando(ESC + #200, 8) ;
@@ -2596,7 +2596,7 @@ procedure TACBrECFDaruma.AbreCupomVinculado(COO, CodFormaPagto,
   CodComprovanteNaoFiscal: String; Valor: Double);
 Var FPG : TACBrECFFormaPagamento ;
     CNF : TACBrECFComprovanteNaoFiscal ;
-    StrValor : String ;
+    StrValor, StrConsumidor : String ;
 begin
   COO      := Poem_Zeros( trim(COO) ,6) ;
   StrValor := IntToStrZero( Round(Valor * 100) ,12) ;
@@ -2606,13 +2606,16 @@ begin
   if fpMFD then
   begin
     if StrIsAlpha( Trim(CodFormaPagto) ) then
-    begin
-      CodFormaPagto := RightStr(Trim(CodFormaPagto),1) ;
       CodFormaPagto := IntToStrZero(Ord(CodFormaPagto[1]) - 64,2) ;
-    end ;
+
+    StrConsumidor := LeftStr(Consumidor.Documento,20) + FF +
+                     LeftStr(Consumidor.Nome,30)      + FF +
+                     LeftStr(Consumidor.Endereco,79)  + FF ;
 
     EnviaComando(FS + 'F' + #212 + CodFormaPagto + '01' + COO + StrValor +
-                   FF+FF+FF, 4) ;
+                   StrConsumidor ) ;
+
+    Consumidor.Enviado := True ;
     fsTipoRel := 'V'
   end
   else if fsNumVersao = '2000' then

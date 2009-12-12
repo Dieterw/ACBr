@@ -30,31 +30,12 @@ object Form1: TForm1
     TabOrder = 0
     OnChange = Memo1Change
   end
-  object pMensagem: TPanel
-    Left = 177
-    Top = 240
-    Width = 318
-    Height = 100
-    Anchors = []
-    BevelInner = bvLowered
-    BevelWidth = 2
-    BorderStyle = bsSingle
-    Caption = 'Mensagem TEF'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -24
-    Font.Name = 'MS Sans Serif'
-    Font.Style = []
-    ParentFont = False
-    TabOrder = 1
-    Visible = False
-  end
   object PageControl1: TPageControl
     Left = 0
     Top = 0
     Width = 694
     Height = 176
-    ActivePage = tsConfig
+    ActivePage = tsOperacao
     Align = alTop
     TabOrder = 2
     object tsConfig: TTabSheet
@@ -250,6 +231,24 @@ object Form1: TForm1
             Color = clBtnFace
             ParentColor = False
           end
+          object Label8: TLabel
+            Left = 301
+            Top = 23
+            Width = 60
+            Height = 13
+            Caption = 'EsperaSleep'
+            Color = clBtnFace
+            ParentColor = False
+          end
+          object Label9: TLabel
+            Left = 301
+            Top = 79
+            Width = 54
+            Height = 13
+            Caption = 'EsperaSTS'
+            Color = clBtnFace
+            ParentColor = False
+          end
           object bInicializar: TButton
             Left = 37
             Top = 71
@@ -316,6 +315,24 @@ object Form1: TForm1
             Caption = 'AutoEfetuarPagamento'
             TabOrder = 5
             OnClick = ckAutoEfetuarPagamentoChange
+          end
+          object edEsperaSleep: TEdit
+            Left = 301
+            Top = 39
+            Width = 56
+            Height = 21
+            TabOrder = 7
+            Text = '250'
+            OnChange = edEsperaSleepChange
+          end
+          object edEsperaSTS: TEdit
+            Left = 301
+            Top = 95
+            Width = 56
+            Height = 21
+            TabOrder = 8
+            Text = '7'
+            OnChange = edEsperaSTSChange
           end
         end
       end
@@ -564,7 +581,7 @@ object Form1: TForm1
           Width = 101
           Height = 21
           Style = csDropDownList
-          ItemHeight = 0
+          ItemHeight = 13
           TabOrder = 9
         end
       end
@@ -593,7 +610,7 @@ object Form1: TForm1
     Height = 27
     Align = alBottom
     BevelInner = bvLowered
-    TabOrder = 4
+    TabOrder = 3
     object sECF: TShape
       Left = 8
       Top = 6
@@ -716,6 +733,73 @@ object Form1: TForm1
       OnClick = bCancelarRespClick
     end
   end
+  object pMensagem: TPanel
+    Left = 136
+    Top = 232
+    Width = 440
+    Height = 136
+    Anchors = []
+    BevelInner = bvLowered
+    BevelWidth = 2
+    BorderStyle = bsSingle
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -24
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 1
+    Visible = False
+    OnResize = pMensagemResize
+    object pMensagemOperador: TPanel
+      Left = 4
+      Top = 4
+      Width = 428
+      Height = 62
+      Align = alClient
+      TabOrder = 0
+      Visible = False
+      object Label10: TLabel
+        Left = 0
+        Top = 0
+        Width = 99
+        Height = 13
+        Caption = 'Mensagem Operador'
+        Color = clBtnFace
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentColor = False
+        ParentFont = False
+      end
+    end
+    object pMensagemCliente: TPanel
+      Left = 4
+      Top = 66
+      Width = 428
+      Height = 62
+      Align = alBottom
+      TabOrder = 1
+      Visible = False
+      object Label11: TLabel
+        Left = 0
+        Top = 0
+        Width = 87
+        Height = 13
+        Caption = 'Mensagem Cliente'
+        Color = clBtnFace
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentColor = False
+        ParentFont = False
+      end
+    end
+  end
   object ACBrECF1: TACBrECF
     Modelo = ecfBematech
     Porta = 'COM1'
@@ -727,12 +811,12 @@ object Form1: TForm1
     MsgRelatorio = 'Imprimindo %s  %d'#170' Via '
     MsgPausaRelatorio = 'Destaque a %d'#170' via, <ENTER> proxima, %d seg.'
     MaxLinhasBuffer = 3
-    FormMsgFonte.Charset = DEFAULT_CHARSET
     FormMsgFonte.Color = clBlack
     FormMsgFonte.Height = 11
     FormMsgFonte.Name = 'MS Shell Dlg'
     FormMsgFonte.Pitch = fpVariable
     FormMsgFonte.Style = []
+    FormMsgFonte.Weight = 40
     FormMsgColor = clHighlight
     MemoParams.Strings = (
       '[Cabecalho]'
@@ -778,8 +862,8 @@ object Form1: TForm1
   object ACBrTEFD1: TACBrTEFD
     EsperaSTS = 7
     EsperaSleep = 500
-    TEFDial.Habilitado = True
     TEFDial.ArqLOG = 'TEF_DIAL.log'
+    TEFDial.Habilitado = True
     TEFDial.ArqTemp = 'C:\TEF_DIAL\req\intpos.tmp'
     TEFDial.ArqReq = 'C:\TEF_DIAL\req\intpos.001'
     TEFDial.ArqSTS = 'C:\TEF_DIAL\resp\intpos.sts'
@@ -799,6 +883,7 @@ object Form1: TForm1
     OnExibeMsg = ACBrTEFD1ExibeMsg
     OnComandaECF = ACBrTEFD1ComandaECF
     OnComandaECFPagamento = ACBrTEFD1ComandaECFPagamento
+    OnComandaECFAbreVinculado = ACBrTEFD1ComandaECFAbreVinculado
     OnInfoECF = ACBrTEFD1InfoECF
     OnAntesFinalizarRequisicao = ACBrTEFD1AntesFinalizarRequisicao
     OnMudaEstadoReq = ACBrTEFD1MudaEstadoReq

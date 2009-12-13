@@ -46,7 +46,11 @@ Símbolo : Significado
 [+]     : Novo recurso
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
-	
+
+
+Versão 0.02a   13/12/09
+[+] Adicionada propriedade "About" para melhor controle de Versao (DSA)
+
 Versão 0.01a   11/12/09
 ---------------
 [+] Implementações nos Blocos I por (Italo J Jr)

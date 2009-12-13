@@ -47,6 +47,9 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.02a   13/12/09
+[+] Adicionada propriedade "About" para melhor controle de Versao (DSA)
+
 Versão 0.01a   13/12/09
 ---------------
 [*] Implementado hierarquia do registro C390, C405, C410, C420, C460 e C490 

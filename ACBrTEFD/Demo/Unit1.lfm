@@ -34,16 +34,16 @@ object Form1: TForm1
     TabOrder = 2
     object tsConfig: TTabSheet
       Caption = 'Configuração'
-      ClientHeight = 148
-      ClientWidth = 686
+      ClientHeight = 180
+      ClientWidth = 717
       object gbConfigECF: TGroupBox
         Left = 0
-        Height = 148
+        Height = 180
         Top = 0
         Width = 308
         Align = alLeft
         Caption = 'ECF'
-        ClientHeight = 130
+        ClientHeight = 162
         ClientWidth = 304
         TabOrder = 0
         object Label2: TLabel
@@ -216,22 +216,22 @@ object Form1: TForm1
       end
       object Panel2: TPanel
         Left = 308
-        Height = 148
+        Height = 180
         Top = 0
-        Width = 378
+        Width = 409
         Align = alClient
-        ClientHeight = 148
-        ClientWidth = 378
+        ClientHeight = 180
+        ClientWidth = 409
         TabOrder = 1
         object gbConfigTEF: TGroupBox
           Left = 1
-          Height = 146
+          Height = 178
           Top = 1
-          Width = 376
+          Width = 407
           Align = alClient
           Caption = 'TEF'
-          ClientHeight = 128
-          ClientWidth = 372
+          ClientHeight = 160
+          ClientWidth = 403
           TabOrder = 0
           object bInicializar: TButton
             Left = 37

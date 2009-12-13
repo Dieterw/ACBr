@@ -47,6 +47,9 @@ uses
   ACBrECDBloco_0_Class, ACBrECDBloco_9_Class, ACBrECDBloco_I_Class,
   ACBrECDBloco_J_Class;
 
+const
+   CACBrSpedContabil_Versao = '0.02a' ;
+
 type
   /// ACBrSpedContabil - Sitema Publico de Escrituração Digital Contabil
   TACBrSPEDContabil = class(TACBrSPED)
@@ -59,6 +62,8 @@ type
     FBloco_J: TBloco_J;
 
     procedure LimpaRegistros;
+    function GetAbout: String;
+    procedure SetAbout(const Value: String);
   protected
     // Periodo
     procedure SetDT_FIN(const Value: TDateTime); override;
@@ -116,6 +121,7 @@ type
     property Bloco_I: TBloco_I read FBloco_I write FBloco_I;
     property Bloco_J: TBloco_J read FBloco_J write FBloco_J;
   published
+    property About : String read GetAbout write SetAbout stored False ;
     property Path: AnsiString read FPath write FPath;
     property Delimitador;
     property TrimString;
@@ -127,7 +133,9 @@ type
 
 implementation
 
-{$R ACBr_SPEDContabil.dcr}
+{$IFNDEF FPC}
+ {$R ACBr_SPEDContabil.dcr}
+{$ENDIF}
 
 procedure Register;
 begin
@@ -650,6 +658,16 @@ begin
                                                                   Bloco_J.RegistroJ990.QTD_LIN_J +
                                                                   Bloco_9.Registro9990.QTD_LIN_9;
    Result := Bloco_9.WriteRegistro9999;
+end;
+
+function TACBrSPEDContabil.GetAbout: String;
+begin
+   Result := 'ACBrSpedContabil Ver: '+CACBrSpedContabil_Versao;
+end;
+
+procedure TACBrSPEDContabil.SetAbout(const Value: String);
+begin
+ {}
 end;
 
 end.

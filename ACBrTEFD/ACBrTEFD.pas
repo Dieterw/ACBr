@@ -48,6 +48,9 @@ uses
   Classes, SysUtils, ACBrTEFDClass,
   ACBrTEFDDial, ACBrTEFDDisc, ACBrTEFDHiper, ACBrTEFDCliSiTef
   {, ACBrTEFDGoodCard, ACBrTEFDFoxWin}
+  {$IFDEF FPC}
+    ,LResources
+  {$ENDIF}
   {$IFNDEF CONSOLE}
     {$IFDEF MSWINDOWS}
       ,Windows, Messages
@@ -114,6 +117,7 @@ type
      procedure SetNumVias(const AValue : Integer);
      procedure SetPathBackup(const AValue : String);
      procedure SetGPAtual(const AValue : TACBrTEFDTipo);
+    procedure SetAbout(const Value: String);
    public
      Function EstadoECF : AnsiChar ;
      function DoExibeMsg( Operacao : TACBrTEFDOperacaoMensagem;
@@ -178,7 +182,7 @@ type
 
    published
 
-     property About : String read GetAbout stored False ;
+     property About : String read GetAbout write SetAbout stored False ;
      property MultiplosCartoes : Boolean read fMultiplosCartoes
        write SetMultiplosCartoes default False ;
      property AutoAtivarGP : Boolean read fAutoAtivarGP write fAutoAtivarGP
@@ -232,6 +236,10 @@ procedure LimpaBufferTeclado ;
 implementation
 
 Uses ACBrUtil, dateutils, TypInfo, StrUtils;
+
+{$IFNDEF FPC}
+   {$R ACBrTEFD.dcr}
+{$ENDIF}
 
 procedure Register;
 begin
@@ -1131,6 +1139,11 @@ begin
    Result := 'ACBrTEFD Ver: '+CACBrTEFD_Versao;
 end;
 
+procedure TACBrTEFD.SetAbout(const Value: String);
+begin
+  {}
+end;
+
 function TACBrTEFD.getArqResp : String;
 begin
   if fTefClass is TACBrTEFDClassTXT then
@@ -1185,6 +1198,11 @@ begin
   if RightStr(fPathBackup,1) = PathDelim then   { Remove ultimo PathDelim }
      fPathBackup := copy( fPathBackup,1,Length(fPathBackup)-1 ) ;
 end;
+
+{$ifdef FPC}
+initialization
+   {$I ACBrTEFD.lrs}
+{$endif}
 
 end.
 

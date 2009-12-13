@@ -48,6 +48,9 @@ uses
   ACBrEFDBloco_C_Class, ACBrEFDBloco_D_Class, ACBrEFDBloco_E_Class,
   ACBrEFDBloco_H_Class;
 
+const
+   CACBrSpedFiscal_Versao = '0.02a' ;
+
 type
   /// ACBrSpedFiscal - Sitema Publico de Escrituração Digital Fiscal
   TACBrSPEDFiscal = class(TACBrSPED)
@@ -63,6 +66,8 @@ type
     FBloco_H: TBloco_H;
 
     procedure LimpaRegistros;
+    function GetAbout: String;
+    procedure SetAbout(const Value: String);
   protected
     // Periodo
     procedure SetDT_FIN(const Value: TDateTime); override;
@@ -219,6 +224,7 @@ type
     property Bloco_E: TBloco_E read FBloco_E write FBloco_E;
     property Bloco_H: TBloco_H read FBloco_H write FBloco_H;
   published
+    property About : String read GetAbout write SetAbout stored False ;
     property Path: AnsiString read FPath write FPath;
     property Delimitador;
     property TrimString;
@@ -230,7 +236,9 @@ type
 
 implementation
 
-{$R ACBr_SPEDFiscal.dcr}
+{$IFNDEF FPC}
+ {$R ACBr_SPEDFiscal.dcr}
+{$ENDIF}
 
 procedure Register;
 begin
@@ -1910,6 +1918,16 @@ begin
                                                                   Bloco_H.RegistroH990.QTD_LIN_H +
                                                                   Bloco_9.Registro9990.QTD_LIN_9;
    Result := Bloco_9.WriteRegistro9999;
+end;
+
+function TACBrSPEDFiscal.GetAbout: String;
+begin
+   Result := 'ACBrSpedFiscal Ver: '+CACBrSpedFiscal_Versao;
+end;
+
+procedure TACBrSPEDFiscal.SetAbout(const Value: String);
+begin
+ {}
 end;
 
 end.

@@ -47,6 +47,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.2a   13/12/09
+[-] Correção de Bug em ImprimirComprovantesPendentes
+[+] Icone para o Componente em Lazarus e Delphi
+[+] Melhoria do Demo para Demostrar e Testar todos os métodos
+
 Versão 0.01a   08/12/09
 ---------------
 [+] Início do Projeto

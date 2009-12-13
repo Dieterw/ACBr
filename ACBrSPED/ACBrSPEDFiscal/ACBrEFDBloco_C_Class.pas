@@ -74,15 +74,7 @@ type
     FRegistroC320: TRegistroC320List;  /// BLOCO C - Lista de RegistroC320
     FRegistroC321: TRegistroC321List;  /// BLOCO C - Lista de RegistroC321
     FRegistroC350: TRegistroC350List;  /// BLOCO C - Lista de RegistroC350
-//    FRegistroC370: TRegistroC370List;  /// BLOCO C - Lista de RegistroC370
-    FRegistroC390: TRegistroC390List;  /// BLOCO C - Lista de RegistroC390
     FRegistroC400: TRegistroC400List;  /// BLOCO C - Lista de RegistroC400
-    FRegistroC405: TRegistroC405List;  /// BLOCO C - Lista de RegistroC405
-    FRegistroC410: TRegistroC410List;  /// BLOCO C - Lista de RegistroC410
-    FRegistroC420: TRegistroC420List;  /// BLOCO C - Lista de RegistroC420
-    FRegistroC425: TRegistroC425List;  /// BLOCO C - Lista de RegistroC425
-    FRegistroC460: TRegistroC460List;  /// BLOCO C - Lista de RegistroC460
-    FRegistroC490: TRegistroC490List;  /// BLOCO C - Lista de RegistroC490
     FRegistroC495: TRegistroC495List;  /// BLOCO C - Lista de RegistroC495
     FRegistroC500: TRegistroC500List;  /// BLOCO C - Lista de RegistroC500
     FRegistroC510: TRegistroC510List;  /// BLOCO C - Lista de RegistroC510
@@ -104,7 +96,14 @@ type
     FRegistroC170Count: Integer;
     FRegistroC190Count: Integer;
     FRegistroC370Count: Integer;
+    FRegistroC390Count: Integer;
+    FRegistroC405Count: Integer;
+    FRegistroC410Count: Integer;
+    FRegistroC420Count: Integer;
+    FRegistroC425Count: Integer;
+    FRegistroC460Count: Integer;
     FRegistroC470Count: Integer;
+    FRegistroC490Count: Integer;
 
     function WriteRegistroC110(RegC100: TRegistroC100): AnsiString;
     function WriteRegistroC111(RegC110: TRegistroC110): AnsiString;
@@ -113,6 +112,13 @@ type
     function WriteRegistroC170(RegC100: TRegistroC100): AnsiString;
     function WriteRegistroC190(RegC100: TRegistroC100): AnsiString;  {Jean Barreiros 17Nov2009}
     function WriteRegistroC370(RegC350: TRegistroC350): AnsiString;
+    function WriteRegistroC390(RegC350: TRegistroC350): AnsiString;
+    function WriteRegistroC405(RegC400: TRegistroC400): AnsiString;
+    function WriteRegistroC410(RegC405: TRegistroC405): AnsiString;
+    function WriteRegistroC420(RegC405: TRegistroC405): AnsiString;
+    function WriteRegistroC460(RegC405: TRegistroC405): AnsiString;
+    function WriteRegistroC490(RegC405: TRegistroC405): AnsiString;
+    function WriteRegistroC425(RegC420: TRegistroC420): AnsiString;
     function WriteRegistroC470(RegC460: TRegistroC460): AnsiString;
 
     procedure CriaRegistros;
@@ -148,14 +154,7 @@ type
     function WriteRegistroC320: AnsiString;
     function WriteRegistroC321: AnsiString;
     function WriteRegistroC350: AnsiString;
-    function WriteRegistroC390: AnsiString;
     function WriteRegistroC400: AnsiString;
-    function WriteRegistroC405: AnsiString;
-    function WriteRegistroC410: AnsiString;
-    function WriteRegistroC420: AnsiString;
-    function WriteRegistroC425: AnsiString;
-    function WriteRegistroC460: AnsiString;
-    function WriteRegistroC490: AnsiString;
     function WriteRegistroC495: AnsiString;
     function WriteRegistroC500: AnsiString;
     function WriteRegistroC510: AnsiString;
@@ -197,14 +196,8 @@ type
     property RegistroC321: TRegistroC321List read FRegistroC321 write FRegistroC321;
     property RegistroC350: TRegistroC350List read FRegistroC350 write FRegistroC350;
 //    property RegistroC370: TRegistroC370List read FRegistroC370 write FRegistroC370;
-    property RegistroC390: TRegistroC390List read FRegistroC390 write FRegistroC390;
+//    property RegistroC390: TRegistroC390List read FRegistroC390 write FRegistroC390;
     property RegistroC400: TRegistroC400List read FRegistroC400 write FRegistroC400;
-    property RegistroC405: TRegistroC405List read FRegistroC405 write FRegistroC405;
-    property RegistroC410: TRegistroC410List read FRegistroC410 write FRegistroC410;
-    property RegistroC420: TRegistroC420List read FRegistroC420 write FRegistroC420;
-    property RegistroC425: TRegistroC425List read FRegistroC425 write FRegistroC425;
-    property RegistroC460: TRegistroC460List read FRegistroC460 write FRegistroC460;
-    property RegistroC490: TRegistroC490List read FRegistroC490 write FRegistroC490;
     property RegistroC495: TRegistroC495List read FRegistroC495 write FRegistroC495;
     property RegistroC500: TRegistroC500List read FRegistroC500 write FRegistroC500;
     property RegistroC510: TRegistroC510List read FRegistroC510 write FRegistroC510;
@@ -226,7 +219,14 @@ type
     property RegistroC170Count: Integer read FRegistroC170Count write FRegistroC170Count;
     property RegistroC190Count: Integer read FRegistroC190Count write FRegistroC190Count; {Jean Barreiros 17Nov2009}
     property RegistroC370Count: Integer read FRegistroC370Count write FRegistroC370Count;
+    property RegistroC390Count: Integer read FRegistroC390Count write FRegistroC390Count;
+    property RegistroC405Count: Integer read FRegistroC405Count write FRegistroC405Count;
+    property RegistroC410Count: Integer read FRegistroC410Count write FRegistroC410Count;
+    property RegistroC420Count: Integer read FRegistroC420Count write FRegistroC420Count;
+    property RegistroC425Count: Integer read FRegistroC425Count write FRegistroC425Count;
+    property RegistroC460Count: Integer read FRegistroC460Count write FRegistroC460Count;
     property RegistroC470Count: Integer read FRegistroC470Count write FRegistroC470Count;
+    property RegistroC490Count: Integer read FRegistroC490Count write FRegistroC490Count;
   end;
 
 implementation
@@ -274,14 +274,8 @@ begin
   FRegistroC321 := TRegistroC321List.Create;
   FRegistroC350 := TRegistroC350List.Create;
 //  FRegistroC370 := TRegistroC370List.Create;
-  FRegistroC390 := TRegistroC390List.Create;
+//  FRegistroC390 := TRegistroC390List.Create;
   FRegistroC400 := TRegistroC400List.Create;
-  FRegistroC405 := TRegistroC405List.Create;
-  FRegistroC410 := TRegistroC410List.Create;
-  FRegistroC420 := TRegistroC420List.Create;
-  FRegistroC425 := TRegistroC425List.Create;
-  FRegistroC460 := TRegistroC460List.Create;
-  FRegistroC490 := TRegistroC490List.Create;
   FRegistroC495 := TRegistroC495List.Create;
   FRegistroC500 := TRegistroC500List.Create;
   FRegistroC510 := TRegistroC510List.Create;
@@ -303,6 +297,11 @@ begin
   FRegistroC170Count := 0;
   FRegistroC190Count := 0;  {Jean Barreiros 18Nov2009}
   FRegistroC370Count := 0;
+  FRegistroC405Count := 0;
+  FRegistroC410Count := 0;
+  FRegistroC420Count := 0;
+  FRegistroC425Count := 0;
+  FRegistroC460Count := 0;
   FRegistroC470Count := 0;
 
   FRegistroC990.QTD_LIN_C := 0;
@@ -337,14 +336,8 @@ begin
   FRegistroC321.Free;
   FRegistroC350.Free;
 //  FRegistroC370.Free;
-  FRegistroC390.Free;
+//  FRegistroC390.Free;
   FRegistroC400.Free;
-  FRegistroC405.Free;
-  FRegistroC410.Free;
-  FRegistroC420.Free;
-  FRegistroC425.Free;
-  FRegistroC460.Free;
-  FRegistroC490.Free;
   FRegistroC495.Free;
   FRegistroC500.Free;
   FRegistroC510.Free;
@@ -1361,7 +1354,8 @@ begin
 
         /// Registros FILHOS
         strRegistroC350 := strRegistroC350 +
-                           WriteRegistroC370( RegistroC350.Items[intFor] );
+                           WriteRegistroC370( RegistroC350.Items[intFor] ) +
+                           WriteRegistroC390( RegistroC350.Items[intFor] );
 
         RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
      end;
@@ -1400,18 +1394,18 @@ begin
   Result := strRegistroC370;
 end;
 
-function TBloco_C.WriteRegistroC390: AnsiString;
+function TBloco_C.WriteRegistroC390(RegC350: TRegistroC350): AnsiString;
 var
-intFor: integer;
-strRegistroC390: AnsiString;
+  intFor: integer;
+  strRegistroC390: AnsiString;
 begin
   strRegistroC390 := '';
 
-  if Assigned( RegistroC390 ) then
+  if Assigned( RegC350.RegistroC390 ) then
   begin
-     for intFor := 0 to RegistroC390.Count - 1 do
+     for intFor := 0 to RegC350.RegistroC390.Count - 1 do
      begin
-        with RegistroC390.Items[intFor] do
+        with RegC350.RegistroC390.Items[intFor] do
         begin
           strRegistroC390 := strRegistroC390 + LFill('C390') +
                                                LFill( CST_ICMS,3 ) +
@@ -1421,12 +1415,14 @@ begin
                                                LFill( VL_BC_ICMS,0,2 ) +
                                                LFill( VL_ICMS,0,2 ) +
                                                LFill( VL_RED_BC,0,2 ) +
-                                               LFill( COD_OBS,6 ) +
+                                               LFill( COD_OBS ) +
                                                Delimitador +
                                                #13#10;
         end;
         RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
      end;
+     /// Variavél para armazenar a quantidade de registro do tipo.
+     FRegistroC390Count := FRegistroC390Count + RegC350.RegistroC390.Count;
   end;
   Result := strRegistroC390;
 end;
@@ -1452,24 +1448,28 @@ begin
                                                Delimitador +
                                                #13#10;
         end;
+        /// Registros FILHOS
+        strRegistroC400 := strRegistroC400 +
+                           WriteRegistroC405( RegistroC400.Items[intFor] );
+
         RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
      end;
   end;
   Result := strRegistroC400;
 end;
 
-function TBloco_C.WriteRegistroC405: AnsiString;
+function TBloco_C.WriteRegistroC405(RegC400: TRegistroC400): AnsiString;
 var
 intFor: integer;
 strRegistroC405: AnsiString;
 begin
   strRegistroC405 := '';
 
-  if Assigned( RegistroC405 ) then
+  if Assigned( RegC400.RegistroC405 ) then
   begin
-     for intFor := 0 to RegistroC405.Count - 1 do
+     for intFor := 0 to RegC400.RegistroC405.Count - 1 do
      begin
-        with RegistroC405.Items[intFor] do
+        with RegC400.RegistroC405.Items[intFor] do
         begin
           strRegistroC405 := strRegistroC405 + LFill('C405') +
                                                LFill( DT_DOC ) +
@@ -1481,24 +1481,32 @@ begin
                                                Delimitador +
                                                #13#10;
         end;
+        strRegistroC405 := strRegistroC405 +
+                           WriteRegistroC410( RegC400.RegistroC405.Items[intFor] ) +
+                           WriteRegistroC420( RegC400.RegistroC405.Items[intFor] ) +
+                           WriteRegistroC460( RegC400.RegistroC405.Items[intFor] ) +
+                           WriteRegistroC490( RegC400.RegistroC405.Items[intFor] );
+
         RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
      end;
+     /// Variavél para armazenar a quantidade de registro do tipo.
+     FRegistroC405Count := FRegistroC405Count + RegC400.RegistroC405.Count;
   end;
   Result := strRegistroC405;
 end;
 
-function TBloco_C.WriteRegistroC410: AnsiString;
+function TBloco_C.WriteRegistroC410(RegC405: TRegistroC405): AnsiString;
 var
 intFor: integer;
 strRegistroC410: AnsiString;
 begin
   strRegistroC410 := '';
 
-  if Assigned( RegistroC410 ) then
+  if Assigned( RegC405.RegistroC410 ) then
   begin
-     for intFor := 0 to RegistroC410.Count - 1 do
+     for intFor := 0 to RegC405.RegistroC410.Count - 1 do
      begin
-        with RegistroC410.Items[intFor] do
+        with RegC405.RegistroC410.Items[intFor] do
         begin
           strRegistroC410 := strRegistroC410 + LFill('C410') +
                                                LFill( VL_PIS,0,2 ) +
@@ -1508,49 +1516,57 @@ begin
         end;
         RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
      end;
+     /// Variavél para armazenar a quantidade de registro do tipo.
+     FRegistroC410Count := FRegistroC410Count + RegC405.RegistroC410.Count;
   end;
   Result := strRegistroC410;
 end;
 
-function TBloco_C.WriteRegistroC420: AnsiString;
+function TBloco_C.WriteRegistroC420(RegC405: TRegistroC405): AnsiString;
 var
 intFor: integer;
 strRegistroC420: AnsiString;
 begin
   strRegistroC420 := '';
 
-  if Assigned( RegistroC420 ) then
+  if Assigned( RegC405.RegistroC420 ) then
   begin
-     for intFor := 0 to RegistroC420.Count - 1 do
+     for intFor := 0 to RegC405.RegistroC420.Count - 1 do
      begin
-        with RegistroC420.Items[intFor] do
+        with RegC405.RegistroC420.Items[intFor] do
         begin
           strRegistroC420 := strRegistroC420 + LFill('C420') +
-                                               LFill( COD_TOT_PAR,7 ) +
+                                               LFill( COD_TOT_PAR ) +
                                                LFill( VLR_ACUM_TOT,0,2) +
                                                LFill( NR_TOT, 2, true) +
                                                LFill( DESCR_NR_TOT ) +
                                                Delimitador +
                                                #13#10;
         end;
+        /// Registros FILHOS
+        strRegistroC420 := strRegistroC420 +
+                           WriteRegistroC425( RegC405.RegistroC420.Items[intFor] );
+
         RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
      end;
+     /// Variavél para armazenar a quantidade de registro do tipo.
+     FRegistroC420Count := FRegistroC420Count + RegC405.RegistroC420.Count;
   end;
   Result := strRegistroC420;
 end;
 
-function TBloco_C.WriteRegistroC425: AnsiString;
+function TBloco_C.WriteRegistroC425(RegC420: TRegistroC420): AnsiString;
 var
 intFor: integer;
 strRegistroC425: AnsiString;
 begin
   strRegistroC425 := '';
 
-  if Assigned( RegistroC425 ) then
+  if Assigned( RegC420.RegistroC425 ) then
   begin
-     for intFor := 0 to RegistroC425.Count - 1 do
+     for intFor := 0 to RegC420.RegistroC425.Count - 1 do
      begin
-        with RegistroC425.Items[intFor] do
+        with RegC420.RegistroC425.Items[intFor] do
         begin
           strRegistroC425 := strRegistroC425 + LFill('C425') +
                                                LFill( COD_ITEM,6 ) +
@@ -1564,22 +1580,24 @@ begin
         end;
         RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
      end;
+     /// Variavél para armazenar a quantidade de registro do tipo.
+     FRegistroC425Count := FRegistroC425Count + RegC420.RegistroC425.Count;
   end;
   Result := strRegistroC425;
 end;
 
-function TBloco_C.WriteRegistroC460: AnsiString;
+function TBloco_C.WriteRegistroC460(RegC405: TRegistroC405): AnsiString;
 var
 intFor: integer;
 strRegistroC460: AnsiString;
 begin
   strRegistroC460 := '';
 
-  if Assigned( RegistroC460 ) then
+  if Assigned( RegC405.RegistroC460 ) then
   begin
-     for intFor := 0 to RegistroC460.Count - 1 do
+     for intFor := 0 to RegC405.RegistroC460.Count - 1 do
      begin
-        with RegistroC460.Items[intFor] do
+        with RegC405.RegistroC460.Items[intFor] do
         begin
           strRegistroC460 := strRegistroC460 + LFill('C460') +
                                                LFill( COD_MOD ) +
@@ -1596,10 +1614,12 @@ begin
         end;
         /// Registros FILHOS
         strRegistroC460 := strRegistroC460 +
-                           WriteRegistroC470( RegistroC460.Items[intFor] );
+                           WriteRegistroC470( RegC405.RegistroC460.Items[intFor] );
 
         RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
      end;
+     /// Variavél para armazenar a quantidade de registro do tipo.
+     FRegistroC460Count := FRegistroC460Count + RegC405.RegistroC460.Count;
   end;
   Result := strRegistroC460;
 end;
@@ -1639,18 +1659,18 @@ begin
   Result := strRegistroC470;
 end;
 
-function TBloco_C.WriteRegistroC490: AnsiString;
+function TBloco_C.WriteRegistroC490(RegC405: TRegistroC405): AnsiString;
 var
 intFor: integer;
 strRegistroC490: AnsiString;
 begin
   strRegistroC490 := '';
 
-  if Assigned( RegistroC490 ) then
+  if Assigned( RegC405.RegistroC490 ) then
   begin
-     for intFor := 0 to RegistroC490.Count - 1 do
+     for intFor := 0 to RegC405.RegistroC490.Count - 1 do
      begin
-        with RegistroC490.Items[intFor] do
+        with RegC405.RegistroC490.Items[intFor] do
         begin
           strRegistroC490 := strRegistroC490 + LFill('C490') +
                                                LFill( CST_ICMS,3 ) +
@@ -1665,6 +1685,8 @@ begin
         end;
         RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
      end;
+     /// Variavél para armazenar a quantidade de registro do tipo.
+     FRegistroC490Count := FRegistroC490Count + RegC405.RegistroC490.Count;
   end;
   Result := strRegistroC490;
 end;

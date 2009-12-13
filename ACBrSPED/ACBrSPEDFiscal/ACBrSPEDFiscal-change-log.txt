@@ -47,6 +47,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.01a   13/12/09
+---------------
+[*] Implementado hierarquia do registro C390, C405, C410, C420, C460 e C490 
+    por (Cezinha)
+[-] Correção na escrita dos registros C390 e C420.
+
 Versão 0.01a   08/12/09
 ---------------
 [*] Implementado hierarquia do registro C370 por (Rodrigo Felipe)

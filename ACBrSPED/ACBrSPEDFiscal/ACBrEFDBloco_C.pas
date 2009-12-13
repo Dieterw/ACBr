@@ -60,6 +60,13 @@ type
   TRegistroC170List = class;
   TRegistroC190List = class;
   TRegistroC370List = class;
+  TRegistroC390List = class;
+  TRegistroC405List = class;
+  TRegistroC410List = class;
+  TRegistroC420List = class;
+  TRegistroC425List = class;
+  TRegistroC460List = class;
+  TRegistroC490List = class;
   TRegistroC470List = class;
 
   /// Registro C100 - NOTA FISCAL (CÓDIGO 01), NOTA FISCAL AVULSA (CÓDIGO 1B), NOTA FISCAL DE PRODUTOR (CÓDIGO 04) E NFE (CÓDIGO 55)
@@ -1117,6 +1124,7 @@ type
     fCOD_CTA: AnsiString;       /// Código da conta analítica contábil debitada/creditada
 
     FRegistroC370: TRegistroC370List;  /// BLOCO C - Lista de RegistroC370 (FILHO)
+    FRegistroC390: TRegistroC390List;  /// BLOCO C - Lista de RegistroC390 (FILHO)
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -1134,6 +1142,7 @@ type
     property COD_CTA: AnsiString read FCOD_CTA write FCOD_CTA;
 
     property RegistroC370: TRegistroC370List read FRegistroC370 write FRegistroC370;
+    property RegistroC390: TRegistroC390List read FRegistroC390 write FRegistroC390;
   end;
 
   /// Registro C350 - Lista
@@ -1222,11 +1231,18 @@ type
     fECF_MOD: AnsiString; /// Modelo do equipamento
     fECF_FAB: AnsiString; /// Número de série de fabricação do ECF
     fECF_CX: AnsiString;  /// Número do caixa atribuído ao ECF
+
+    FRegistroC405: TRegistroC405List;  /// BLOCO C - Lista de RegistroC405 (FILHO)
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property COD_MOD: AnsiString read fCOD_MOD write fCOD_MOD;
     property ECF_MOD: AnsiString read fECF_MOD write fECF_MOD;
     property ECF_FAB: AnsiString read fECF_FAB write fECF_FAB;
     property ECF_CX: AnsiString read fECF_CX write fECF_CX;
+    /// Registros FILHOS
+    property RegistroC405: TRegistroC405List read FRegistroC405 write FRegistroC405;
   end;
 
   /// Registro C400 - Lista
@@ -1251,13 +1267,26 @@ type
     fNUM_COO_FIN: integer;    /// Número do Contador de Ordem de Operação do último documento emitido no dia. (Número do COO na Redução Z)
     fGT_FIN: currency;        /// Valor do Grande Total final
     fVL_BRT: currency;        /// Valor da venda bruta
+
+    FRegistroC410: TRegistroC410List;  /// BLOCO C - Lista de RegistroC410 (FILHO)
+    FRegistroC420: TRegistroC420List;  /// BLOCO C - Lista de RegistroC420 (FILHO)
+    FRegistroC460: TRegistroC460List;  /// BLOCO C - Lista de RegistroC460 (FILHO)
+    FRegistroC490: TRegistroC490List;  /// BLOCO C - Lista de RegistroC490 (FILHO)
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property DT_DOC: TDateTime read fDT_DOC write fDT_DOC;
     property CRO: integer read fCRO write fCRO;
     property CRZ: integer read fCRZ write fCRZ;
     property NUM_COO_FIN: integer read fNUM_COO_FIN write fNUM_COO_FIN;
     property GT_FIN: currency read fGT_FIN write fGT_FIN;
     property VL_BRT: currency read fVL_BRT write fVL_BRT;
+
+    property RegistroC410: TRegistroC410List read FRegistroC410 write FRegistroC410;
+    property RegistroC420: TRegistroC420List read FRegistroC420 write FRegistroC420;
+    property RegistroC460: TRegistroC460List read FRegistroC460 write FRegistroC460;
+    property RegistroC490: TRegistroC490List read FRegistroC490 write FRegistroC490;
   end;
 
   /// Registro C405 - Lista
@@ -1303,11 +1332,18 @@ type
     fVLR_ACUM_TOT: currency;  /// Valor acumulado no totalizador, relativo à respectiva Redução Z.
     fNR_TOT: integer;         /// Número do totalizador quando ocorrer mais de uma situação com a mesma carga tributária efetiva.
     fDESCR_NR_TOT: AnsiString;    /// Descrição da situação tributária relativa ao totalizador parcial, quando houver mais de um com a mesma carga tributária efetiva.
+
+    FRegistroC425: TRegistroC425List;  /// BLOCO C - Lista de RegistroC425 (FILHO)
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property COD_TOT_PAR: AnsiString read fCOD_TOT_PAR write fCOD_TOT_PAR;
     property VLR_ACUM_TOT: currency read fVLR_ACUM_TOT write fVLR_ACUM_TOT;
     property NR_TOT: integer read fNR_TOT write fNR_TOT;
     property DESCR_NR_TOT: AnsiString read fDESCR_NR_TOT write fDESCR_NR_TOT;
+    /// Registros FILHOS
+    property RegistroC425: TRegistroC425List read FRegistroC425 write FRegistroC425;
   end;
 
   /// Registro C420 - Lista
@@ -3433,11 +3469,56 @@ end;
 constructor TRegistroC350.Create;
 begin
   FRegistroC370 := TRegistroC370List.Create;  /// BLOCO C - Lista de RegistroC370 (FILHO)
+  FRegistroC390 := TRegistroC390List.Create;  /// BLOCO C - Lista de RegistroC370 (FILHO)
 end;
 
 destructor TRegistroC350.Destroy;
 begin
   FRegistroC370.Free;
+  FRegistroC390.Free;  
+  inherited;
+end;
+
+constructor TRegistroC420.Create;
+begin
+  FRegistroC425 := TRegistroC425List.Create;
+end;
+
+destructor TRegistroC420.Destroy;
+begin
+  FRegistroC425.Free;
+  inherited;
+end;
+
+{ TRegistroC400 }
+
+constructor TRegistroC400.Create;
+begin
+  FRegistroC405 := TRegistroC405List.Create;
+end;
+
+destructor TRegistroC400.Destroy;
+begin
+  FRegistroC405.Free;
+  inherited;
+end;
+
+{ TRegistroC405 }
+
+constructor TRegistroC405.Create;
+begin
+  FRegistroC410 := TRegistroC410List.Create;
+  FRegistroC420 := TRegistroC420List.Create;
+  FRegistroC460 := TRegistroC460List.Create;
+  FRegistroC490 := TRegistroC490List.Create;
+end;
+
+destructor TRegistroC405.Destroy;
+begin
+  FRegistroC410.Free;
+  FRegistroC420.Free;
+  FRegistroC460.Free;
+  FRegistroC490.Free;
   inherited;
 end;
 

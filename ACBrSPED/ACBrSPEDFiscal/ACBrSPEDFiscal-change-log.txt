@@ -49,10 +49,12 @@ Símbolo : Significado
 
 Versão 0.02a   13/12/09
 [+] Adicionada propriedade "About" para melhor controle de Versao (DSA)
+[*] Implementado hierarquia dos registros C120, C130, C160, C165, C171, C172, 
+    C173, C174, C175, C176, C177, C178, C179 e C195 por (Isaque Pinheiro)
 
 Versão 0.01a   13/12/09
 ---------------
-[*] Implementado hierarquia do registro C390, C405, C410, C420, C460 e C490 
+[*] Implementado hierarquia dos registros C390, C405, C410, C420, C460 e C490 
     por (Cezinha)
 [-] Correção na escrita dos registros C390 e C420.
 

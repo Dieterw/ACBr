@@ -112,24 +112,6 @@ type
     /// BLOCO C
     function WriteRegistroC001: AnsiString;
     function WriteRegistroC100: AnsiString;
-    function WriteRegistroC112: AnsiString;
-    function WriteRegistroC113: AnsiString;
-    function WriteRegistroC114: AnsiString;
-    function WriteRegistroC115: AnsiString;
-    function WriteRegistroC120: AnsiString;
-    function WriteRegistroC130: AnsiString;
-    function WriteRegistroC160: AnsiString;
-    function WriteRegistroC165: AnsiString;
-    function WriteRegistroC171: AnsiString;
-    function WriteRegistroC172: AnsiString;
-    function WriteRegistroC173: AnsiString;
-    function WriteRegistroC174: AnsiString;
-    function WriteRegistroC175: AnsiString;
-    function WriteRegistroC176: AnsiString;
-    function WriteRegistroC177: AnsiString;
-    function WriteRegistroC178: AnsiString;
-    function WriteRegistroC179: AnsiString;
-    function WriteRegistroC195: AnsiString;
     function WriteRegistroC197: AnsiString;
     function WriteRegistroC300: AnsiString;
     function WriteRegistroC310: AnsiString;
@@ -408,24 +390,6 @@ begin
     /// BLOCO C
     Write(txtFile, WriteRegistroC001);
     if Bloco_C.RegistroC100.Count > 0 then Write(txtFile, WriteRegistroC100); // Prates
-    if Bloco_C.RegistroC112.Count > 0 then Write(txtFile, WriteRegistroC112); // Prates
-    if Bloco_C.RegistroC113.Count > 0 then Write(txtFile, WriteRegistroC113); // Prates
-    if Bloco_C.RegistroC114.Count > 0 then Write(txtFile, WriteRegistroC114); // Prates
-    if Bloco_C.RegistroC115.Count > 0 then Write(txtFile, WriteRegistroC115); // Prates
-    if Bloco_C.RegistroC120.Count > 0 then Write(txtFile, WriteRegistroC120); // Prates
-    if Bloco_C.RegistroC130.Count > 0 then Write(txtFile, WriteRegistroC130); // Prates
-    if Bloco_C.RegistroC160.Count > 0 then Write(txtFile, WriteRegistroC160); // Prates
-    if Bloco_C.RegistroC165.Count > 0 then Write(txtFile, WriteRegistroC165); // Prates
-    if Bloco_C.RegistroC171.Count > 0 then Write(txtFile, WriteRegistroC171); // Prates
-    if Bloco_C.RegistroC172.Count > 0 then Write(txtFile, WriteRegistroC172); // Prates
-    if Bloco_C.RegistroC173.Count > 0 then Write(txtFile, WriteRegistroC173); // Prates
-    if Bloco_C.RegistroC174.Count > 0 then Write(txtFile, WriteRegistroC174); // Prates
-    if Bloco_C.RegistroC175.Count > 0 then Write(txtFile, WriteRegistroC175); // Prates
-    if Bloco_C.RegistroC176.Count > 0 then Write(txtFile, WriteRegistroC176); // Prates
-    if Bloco_C.RegistroC177.Count > 0 then Write(txtFile, WriteRegistroC177); // Prates
-    if Bloco_C.RegistroC178.Count > 0 then Write(txtFile, WriteRegistroC178); // Prates
-    if Bloco_C.RegistroC179.Count > 0 then Write(txtFile, WriteRegistroC179); // Prates
-    if Bloco_C.RegistroC195.Count > 0 then Write(txtFile, WriteRegistroC195); // Prates
     if Bloco_C.RegistroC197.Count > 0 then Write(txtFile, WriteRegistroC197); // Prates
     if Bloco_C.RegistroC300.Count > 0 then Write(txtFile, WriteRegistroC300); // Prates
     if Bloco_C.RegistroC310.Count > 0 then Write(txtFile, WriteRegistroC310); // Prates
@@ -890,6 +854,36 @@ begin
       end;
       with New do
       begin
+         REG_BLC := 'C112';
+         QTD_REG_BLC := Bloco_C.RegistroC112Count;
+      end;
+      with New do
+      begin
+         REG_BLC := 'C113';
+         QTD_REG_BLC := Bloco_C.RegistroC113Count;
+      end;
+      with New do
+      begin
+         REG_BLC := 'C114';
+         QTD_REG_BLC := Bloco_C.RegistroC114Count;
+      end;
+      with New do
+      begin
+         REG_BLC := 'C115';
+         QTD_REG_BLC := Bloco_C.RegistroC115Count;
+      end;
+      with New do
+      begin
+         REG_BLC := 'C120';
+         QTD_REG_BLC := Bloco_C.RegistroC120Count;
+      end;
+      with New do
+      begin
+         REG_BLC := 'C130';
+         QTD_REG_BLC := Bloco_C.RegistroC130Count;
+      end;
+      with New do
+      begin
          REG_BLC := 'C140';
          QTD_REG_BLC := Bloco_C.RegistroC140Count;   {Márcio Lopes 30Nov2009}
       end;
@@ -900,195 +894,75 @@ begin
       end;
       with New do
       begin
+         REG_BLC := 'C160';
+         QTD_REG_BLC := Bloco_C.RegistroC160Count;
+      end;
+      with New do
+      begin
+         REG_BLC := 'C165';
+         QTD_REG_BLC := Bloco_C.RegistroC165Count;
+      end;
+      with New do
+      begin
          REG_BLC := 'C170';
          QTD_REG_BLC := Bloco_C.RegistroC170Count;
+      end;
+      with New do
+      begin
+         REG_BLC := 'C171';
+         QTD_REG_BLC := Bloco_C.RegistroC171Count;
+      end;
+      with New do
+      begin
+         REG_BLC := 'C172';
+         QTD_REG_BLC := Bloco_C.RegistroC172Count;
+      end;
+      with New do
+      begin
+         REG_BLC := 'C173';
+         QTD_REG_BLC := Bloco_C.RegistroC173Count;
+      end;
+      with New do
+      begin
+         REG_BLC := 'C174';
+         QTD_REG_BLC := Bloco_C.RegistroC174Count;
+      end;
+      with New do
+      begin
+         REG_BLC := 'C175';
+         QTD_REG_BLC := Bloco_C.RegistroC175Count;
+      end;
+      with New do
+      begin
+         REG_BLC := 'C176';
+         QTD_REG_BLC := Bloco_C.RegistroC176Count;
+      end;
+      with New do
+      begin
+         REG_BLC := 'C177';
+         QTD_REG_BLC := Bloco_C.RegistroC177Count;
+      end;
+      with New do
+      begin
+         REG_BLC := 'C178';
+         QTD_REG_BLC := Bloco_C.RegistroC178Count;
+      end;
+      with New do
+      begin
+         REG_BLC := 'C179';
+         QTD_REG_BLC := Bloco_C.RegistroC179Count;
       end;
       with New do
       begin
          REG_BLC := 'C190';
          QTD_REG_BLC := Bloco_C.RegistroC190Count;
       end;
+      with New do
+      begin
+         REG_BLC := 'C195';
+         QTD_REG_BLC := Bloco_C.RegistroC195Count;
+      end;
    end;
-end;
-
-function TACBrSPEDFiscal.WriteRegistroC112: AnsiString;
-begin
-   with Bloco_9.Registro9900.New do
-   begin
-      REG_BLC := 'C112';
-      QTD_REG_BLC := Bloco_C.RegistroC112.Count;
-   end;
-   Result := Bloco_C.WriteRegistroC112;
-end;
-
-function TACBrSPEDFiscal.WriteRegistroC113: AnsiString;
-begin
-   with Bloco_9.Registro9900.New do
-   begin
-      REG_BLC := 'C113';
-      QTD_REG_BLC := Bloco_C.RegistroC113.Count;
-   end;
-   Result := Bloco_C.WriteRegistroC113;
-end;
-
-function TACBrSPEDFiscal.WriteRegistroC114: AnsiString;
-begin
-   with Bloco_9.Registro9900.New do
-   begin
-      REG_BLC := 'C114';
-      QTD_REG_BLC := Bloco_C.RegistroC114.Count;
-   end;
-   Result := Bloco_C.WriteRegistroC114;
-end;
-
-function TACBrSPEDFiscal.WriteRegistroC115: AnsiString;
-begin
-   with Bloco_9.Registro9900.New do
-   begin
-      REG_BLC := 'C115';
-      QTD_REG_BLC := Bloco_C.RegistroC115.Count;
-   end;
-   Result := Bloco_C.WriteRegistroC115;
-end;
-
-function TACBrSPEDFiscal.WriteRegistroC120: AnsiString;
-begin
-   with Bloco_9.Registro9900.New do
-   begin
-      REG_BLC := 'C120';
-      QTD_REG_BLC := Bloco_C.RegistroC120.Count;
-   end;
-   Result := Bloco_C.WriteRegistroC120;
-end;
-
-function TACBrSPEDFiscal.WriteRegistroC130: AnsiString;
-begin
-   with Bloco_9.Registro9900.New do
-   begin
-      REG_BLC := 'C130';
-      QTD_REG_BLC := Bloco_C.RegistroC130.Count;
-   end;
-   Result := Bloco_C.WriteRegistroC130;
-end;
-
-function TACBrSPEDFiscal.WriteRegistroC160: AnsiString;
-begin
-   with Bloco_9.Registro9900.New do
-   begin
-      REG_BLC := 'C160';
-      QTD_REG_BLC := Bloco_C.RegistroC160.Count;
-   end;
-   Result := Bloco_C.WriteRegistroC160;
-end;
-
-function TACBrSPEDFiscal.WriteRegistroC165: AnsiString;
-begin
-   with Bloco_9.Registro9900.New do
-   begin
-      REG_BLC := 'C165';
-      QTD_REG_BLC := Bloco_C.RegistroC165.Count;
-   end;
-   Result := Bloco_C.WriteRegistroC165;
-end;
-
-function TACBrSPEDFiscal.WriteRegistroC171: AnsiString;
-begin
-   with Bloco_9.Registro9900.New do
-   begin
-      REG_BLC := 'C171';
-      QTD_REG_BLC := Bloco_C.RegistroC171.Count;
-   end;
-   Result := Bloco_C.WriteRegistroC171;
-end;
-
-function TACBrSPEDFiscal.WriteRegistroC172: AnsiString;
-begin
-   with Bloco_9.Registro9900.New do
-   begin
-      REG_BLC := 'C172';
-      QTD_REG_BLC := Bloco_C.RegistroC172.Count;
-   end;
-   Result := Bloco_C.WriteRegistroC172;
-end;
-
-function TACBrSPEDFiscal.WriteRegistroC173: AnsiString;
-begin
-   with Bloco_9.Registro9900.New do
-   begin
-      REG_BLC := 'C173';
-      QTD_REG_BLC := Bloco_C.RegistroC173.Count;
-   end;
-   Result := Bloco_C.WriteRegistroC173;
-end;
-
-function TACBrSPEDFiscal.WriteRegistroC174: AnsiString;
-begin
-   with Bloco_9.Registro9900.New do
-   begin
-      REG_BLC := 'C174';
-      QTD_REG_BLC := Bloco_C.RegistroC174.Count;
-   end;
-   Result := Bloco_C.WriteRegistroC174;
-end;
-
-function TACBrSPEDFiscal.WriteRegistroC175: AnsiString;
-begin
-   with Bloco_9.Registro9900.New do
-   begin
-      REG_BLC := 'C175';
-      QTD_REG_BLC := Bloco_C.RegistroC175.Count;
-   end;
-   Result := Bloco_C.WriteRegistroC175;
-end;
-
-function TACBrSPEDFiscal.WriteRegistroC176: AnsiString;
-begin
-   with Bloco_9.Registro9900.New do
-   begin
-      REG_BLC := 'C176';
-      QTD_REG_BLC := Bloco_C.RegistroC176.Count;
-   end;
-   Result := Bloco_C.WriteRegistroC176;
-end;
-
-function TACBrSPEDFiscal.WriteRegistroC177: AnsiString;
-begin
-   with Bloco_9.Registro9900.New do
-   begin
-      QTD_REG_BLC := Bloco_C.RegistroC177.Count;
-      QTD_REG_BLC := 1;
-   end;
-   Result := Bloco_C.WriteRegistroC177;
-end;
-
-function TACBrSPEDFiscal.WriteRegistroC178: AnsiString;
-begin
-   with Bloco_9.Registro9900.New do
-   begin
-      REG_BLC := 'C178';
-      QTD_REG_BLC := Bloco_C.RegistroC178.Count;
-   end;
-   Result := Bloco_C.WriteRegistroC178;
-end;
-
-function TACBrSPEDFiscal.WriteRegistroC179: AnsiString;
-begin
-   with Bloco_9.Registro9900.New do
-   begin
-      REG_BLC := 'C179';
-      QTD_REG_BLC := Bloco_C.RegistroC179.Count;
-   end;
-   Result := Bloco_C.WriteRegistroC179;
-end;
-
-function TACBrSPEDFiscal.WriteRegistroC195: AnsiString;
-begin
-   with Bloco_9.Registro9900.New do
-   begin
-      REG_BLC := 'C195';
-      QTD_REG_BLC := Bloco_C.RegistroC195.Count;
-   end;
-   Result := Bloco_C.WriteRegistroC195;
 end;
 
 function TACBrSPEDFiscal.WriteRegistroC197: AnsiString;

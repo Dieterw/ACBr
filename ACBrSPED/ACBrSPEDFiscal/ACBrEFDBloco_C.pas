@@ -55,10 +55,28 @@ type
 
   TRegistroC110List = class;
   TRegistroC111List = class;
+  TRegistroC112List = class;
+  TRegistroC113List = class;
+  TRegistroC114List = class;
+  TRegistroC115List = class;
+  TRegistroC120List = class;
+  TRegistroC130List = class;
   TRegistroC140List = class; {Márcio Lopes 30Nov2009}
   TRegistroC141List = class; {Márcio Lopes 30Nov2009}
+  TRegistroC160List = class;
+  TRegistroC165List = class;
   TRegistroC170List = class;
+  TRegistroC171List = class;
+  TRegistroC172List = class;
+  TRegistroC173List = class;
+  TRegistroC174List = class;
+  TRegistroC175List = class;
+  TRegistroC176List = class;
+  TRegistroC177List = class;
+  TRegistroC178List = class;
+  TRegistroC179List = class;
   TRegistroC190List = class;
+  TRegistroC195List = class;
   TRegistroC370List = class;
   TRegistroC390List = class;
   TRegistroC405List = class;
@@ -103,9 +121,14 @@ type
     fVL_COFINS_ST: currency;   /// Valor total da COFINS retido por substituição tributária
 
     FRegistroC110: TRegistroC110List;  /// BLOCO C - Lista de RegistroC110 (FILHO)
+    FRegistroC120: TRegistroC120List;  /// BLOCO C - Lista de RegistroC110 (FILHO)
+    FRegistroC130: TRegistroC130List;  /// BLOCO C - Lista de RegistroC110 (FILHO)
     FRegistroC140: TRegistroC140List;  /// BLOCO C - Lista de RegistroC140 (FILHO) {Márcio Lopes 30Nov2009}
+    FRegistroC160: TRegistroC160List;  /// BLOCO C - Lista de RegistroC110 (FILHO)
+    FRegistroC165: TRegistroC165List;  /// BLOCO C - Lista de RegistroC110 (FILHO)
     FRegistroC170: TRegistroC170List;  /// BLOCO C - Lista de RegistroC170 (FILHO)
     FRegistroC190: TRegistroC190List;  /// BLOCO C - Lista de RegistroC190 (FILHO) {Jean Barreiros 17Nov2009}
+    FRegistroC195: TRegistroC195List;  /// BLOCO C - Lista de RegistroC110 (FILHO)
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -140,9 +163,14 @@ type
     property VL_COFINS_ST: currency read FVL_COFINS_ST write FVL_COFINS_ST;
     /// Registros FILHOS
     property RegistroC110: TRegistroC110List read FRegistroC110 write FRegistroC110;
+    property RegistroC120: TRegistroC120List read FRegistroC120 write FRegistroC120;
+    property RegistroC130: TRegistroC130List read FRegistroC130 write FRegistroC130;
     property RegistroC140: TRegistroC140List read FRegistroC140 write FRegistroC140; {Márcio Lopes 30Nov2009}
+    property RegistroC160: TRegistroC160List read FRegistroC160 write FRegistroC160;
+    property RegistroC165: TRegistroC165List read FRegistroC165 write FRegistroC165;
     property RegistroC170: TRegistroC170List read FRegistroC170 write FRegistroC170;
     property RegistroC190: TRegistroC190List read FRegistroC190 write FRegistroC190;  {Jean Barreiros 17Nov2009}
+    property RegistroC195: TRegistroC195List read FRegistroC195 write FRegistroC195;
   end;
 
   /// Registro C100 - Lista
@@ -165,6 +193,10 @@ type
     fTXT_COMPL: AnsiString;    /// Descrição complementar do código de referência.
 
     FRegistroC111: TRegistroC111List;  /// BLOCO C - Lista de RegistroC111 (FILHO fo FILHO)
+    FRegistroC112: TRegistroC112List;  /// BLOCO C - Lista de RegistroC111 (FILHO fo FILHO)
+    FRegistroC113: TRegistroC113List;  /// BLOCO C - Lista de RegistroC111 (FILHO fo FILHO)
+    FRegistroC114: TRegistroC114List;  /// BLOCO C - Lista de RegistroC111 (FILHO fo FILHO)
+    FRegistroC115: TRegistroC115List;  /// BLOCO C - Lista de RegistroC111 (FILHO fo FILHO)
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -173,6 +205,10 @@ type
     property TXT_COMPL: AnsiString read FTXT_COMPL write FTXT_COMPL;
     /// Resgistro FILHO do FILHO
     property RegistroC111: TRegistroC111List read FRegistroC111 write FRegistroC111;
+    property RegistroC112: TRegistroC112List read FRegistroC112 write FRegistroC112;
+    property RegistroC113: TRegistroC113List read FRegistroC113 write FRegistroC113;
+    property RegistroC114: TRegistroC114List read FRegistroC114 write FRegistroC114;
+    property RegistroC115: TRegistroC115List read FRegistroC115 write FRegistroC115;
   end;
 
   /// Registro C110 - Lista
@@ -581,7 +617,20 @@ type
     fALIQ_COFINS_R: currency;     /// Alíquota da COFINS (em reais)
     fVL_COFINS: currency;         /// Valor da COFINS
     fCOD_CTA: AnsiString;             /// Código da conta analítica contábil debitada/creditada
+
+    FRegistroC171: TRegistroC171List;  /// BLOCO C - Lista de RegistroC141 (FILHO fo FILHO)
+    FRegistroC172: TRegistroC172List;  /// BLOCO C - Lista de RegistroC141 (FILHO fo FILHO)
+    FRegistroC173: TRegistroC173List;  /// BLOCO C - Lista de RegistroC141 (FILHO fo FILHO)
+    FRegistroC174: TRegistroC174List;  /// BLOCO C - Lista de RegistroC141 (FILHO fo FILHO)
+    FRegistroC175: TRegistroC175List;  /// BLOCO C - Lista de RegistroC141 (FILHO fo FILHO)
+    FRegistroC176: TRegistroC176List;  /// BLOCO C - Lista de RegistroC141 (FILHO fo FILHO)
+    FRegistroC177: TRegistroC177List;  /// BLOCO C - Lista de RegistroC141 (FILHO fo FILHO)
+    FRegistroC178: TRegistroC178List;  /// BLOCO C - Lista de RegistroC141 (FILHO fo FILHO)
+    FRegistroC179: TRegistroC179List;  /// BLOCO C - Lista de RegistroC141 (FILHO fo FILHO)
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property NUM_ITEM: AnsiString read FNUM_ITEM write FNUM_ITEM;
     property COD_ITEM: AnsiString read FCOD_ITEM write FCOD_ITEM;
     property DESCR_COMPL: AnsiString read FDESCR_COMPL write FDESCR_COMPL;
@@ -618,6 +667,16 @@ type
     property ALIQ_COFINS_R: currency read FALIQ_COFINS_R write FALIQ_COFINS_R;
     property VL_COFINS: currency read FVL_COFINS write FVL_COFINS;
     property COD_CTA: AnsiString read FCOD_CTA write FCOD_CTA;
+    /// Registros FILHOS
+    property RegistroC171: TRegistroC171List read FRegistroC171 write FRegistroC171;
+    property RegistroC172: TRegistroC172List read FRegistroC172 write FRegistroC172;
+    property RegistroC173: TRegistroC173List read FRegistroC173 write FRegistroC173;
+    property RegistroC174: TRegistroC174List read FRegistroC174 write FRegistroC174;
+    property RegistroC175: TRegistroC175List read FRegistroC175 write FRegistroC175;
+    property RegistroC176: TRegistroC176List read FRegistroC176 write FRegistroC176;
+    property RegistroC177: TRegistroC177List read FRegistroC177 write FRegistroC177;
+    property RegistroC178: TRegistroC178List read FRegistroC178 write FRegistroC178;
+    property RegistroC179: TRegistroC179List read FRegistroC179 write FRegistroC179;
   end;
 
   /// Registro C170 - Lista
@@ -3411,17 +3470,27 @@ end;
 constructor TRegistroC100.Create;
 begin
   FRegistroC110 := TRegistroC110List.Create;  /// BLOCO C - Lista de RegistroC110 (FILHO)
+  FRegistroC120 := TRegistroC120List.Create;  /// BLOCO C - Lista de RegistroC110 (FILHO)
+  FRegistroC130 := TRegistroC130List.Create;  /// BLOCO C - Lista de RegistroC110 (FILHO)
   FRegistroC140 := TRegistroC140List.Create;  /// BLOCO C - Lista de RegistroC140 (FILHO)
+  FRegistroC160 := TRegistroC160List.Create;  /// BLOCO C - Lista de RegistroC110 (FILHO)
+  FRegistroC165 := TRegistroC165List.Create;  /// BLOCO C - Lista de RegistroC110 (FILHO)
   FRegistroC170 := TRegistroC170List.Create;  /// BLOCO C - Lista de RegistroC170 (FILHO)
   FRegistroC190 := TRegistroC190List.Create;  /// BLOCO C - Lista de RegistroC190 (FILHO) {Jean Barreiros 19Nov2009}
+  FRegistroC195 := TRegistroC195List.Create;  /// BLOCO C - Lista de RegistroC110 (FILHO)
 end;
 
 destructor TRegistroC100.Destroy;
 begin
   FRegistroC110.Free;
+  FRegistroC120.Free;
+  FRegistroC130.Free;
   FRegistroC140.Free;
+  FRegistroC160.Free;
+  FRegistroC165.Free;
   FRegistroC170.Free;
   FRegistroC190.Free;
+  FRegistroC195.Free;
   inherited;
 end;
 
@@ -3430,11 +3499,19 @@ end;
 constructor TRegistroC110.Create;
 begin
   FRegistroC111 := TRegistroC111List.Create;  /// BLOCO C - Lista de RegistroC111 (FILHO fo FILHO)
+  FRegistroC112 := TRegistroC112List.Create;  /// BLOCO C - Lista de RegistroC111 (FILHO fo FILHO)
+  FRegistroC113 := TRegistroC113List.Create;  /// BLOCO C - Lista de RegistroC111 (FILHO fo FILHO)
+  FRegistroC114 := TRegistroC114List.Create;  /// BLOCO C - Lista de RegistroC111 (FILHO fo FILHO)
+  FRegistroC115 := TRegistroC115List.Create;  /// BLOCO C - Lista de RegistroC111 (FILHO fo FILHO)
 end;
 
 destructor TRegistroC110.Destroy;
 begin
   FRegistroC111.Free;
+  FRegistroC112.Free;
+  FRegistroC113.Free;
+  FRegistroC114.Free;
+  FRegistroC115.Free;
   inherited;
 end;
 
@@ -3519,6 +3596,35 @@ begin
   FRegistroC420.Free;
   FRegistroC460.Free;
   FRegistroC490.Free;
+  inherited;
+end;
+
+{ TRegistroC170 }
+
+constructor TRegistroC170.Create;
+begin
+  FRegistroC171 := TRegistroC171List.Create;
+  FRegistroC172 := TRegistroC172List.Create;
+  FRegistroC173 := TRegistroC173List.Create;
+  FRegistroC174 := TRegistroC174List.Create;
+  FRegistroC175 := TRegistroC175List.Create;
+  FRegistroC176 := TRegistroC176List.Create;
+  FRegistroC177 := TRegistroC177List.Create;
+  FRegistroC178 := TRegistroC178List.Create;
+  FRegistroC179 := TRegistroC179List.Create;
+end;
+
+destructor TRegistroC170.Destroy;
+begin
+  FRegistroC171.Free;
+  FRegistroC172.Free;
+  FRegistroC173.Free;
+  FRegistroC174.Free;
+  FRegistroC175.Free;
+  FRegistroC176.Free;
+  FRegistroC177.Free;
+  FRegistroC178.Free;
+  FRegistroC179.Free;
   inherited;
 end;
 

@@ -122,7 +122,6 @@ type
      function ComandaECFPagamento(Indice : String; Valor : Double) : Integer;
      function ComandaECFAbreVinculado(COO, Indice : String; Valor : Double) : Integer;
      procedure FechaGerencial( ShowException : Boolean = False );
-     procedure FinalizaCupom;
 
    public
      constructor Create( AOwner : TComponent ) ; override;
@@ -169,8 +168,9 @@ type
      procedure NCN(const Rede, NSU, Finalizacao : String;
         const Valor : Double = 0; const DocumentoVinculado : String = '');
 
-     procedure CancelaTransacoesPendentes;
-     procedure ConfirmaTransacoesPendentes;
+     procedure FinalizarCupom;
+     procedure CancelarTransacoesPendentes;
+     procedure ConfirmarTransacoesPendentes;
      procedure ImprimirTransacoesPendentes;
 
      procedure AgruparRespostasPendentes(
@@ -566,7 +566,7 @@ begin
   fTefClass.NCN( Rede, NSU, Finalizacao, Valor, DocumentoVinculado);
 end;
 
-procedure TACBrTEFD.CancelaTransacoesPendentes;
+procedure TACBrTEFD.CancelarTransacoesPendentes;
 Var
   I : Integer;
 begin
@@ -574,13 +574,13 @@ begin
   For I := 0 to fTEFList.Count-1 do
   begin
     if fTEFList[I].Habilitado then
-       fTEFList[I].CancelaTransacoesPendentesClass;
+       fTEFList[I].CancelarTransacoesPendentesClass;
   end;
 
   RespostasPendentes.Clear;
 end;
 
-procedure TACBrTEFD.ConfirmaTransacoesPendentes;
+procedure TACBrTEFD.ConfirmarTransacoesPendentes;
 var
    I : Integer;
 begin
@@ -622,7 +622,7 @@ begin
      exit ;
 
   if EstadoECF <> 'L' then
-     FinalizaCupom;
+     FinalizarCupom;
 
   if EstadoECF <> 'L' then
      raise EACBrTEFDECF.Create( ACBrStr('ECF não está LIVRE') ) ;
@@ -630,6 +630,7 @@ begin
   ImpressaoOk := False ;
   Gerencial   := False ;
 
+  GrupoVinc := nil ;
   AgruparRespostasPendentes( GrupoVinc );
 
   try
@@ -805,9 +806,9 @@ begin
      end;
   finally
      if not ImpressaoOk then
-        CancelaTransacoesPendentes
+        CancelarTransacoesPendentes
      else
-        ConfirmaTransacoesPendentes ;
+        ConfirmarTransacoesPendentes ;
   end;
 
   RespostasPendentes.Clear;
@@ -881,7 +882,7 @@ begin
 end;
 
 
-procedure TACBrTEFD.FinalizaCupom;
+procedure TACBrTEFD.FinalizarCupom;
 Var
   I, J, Ordem : Integer;
   Est  : AnsiChar;
@@ -893,20 +894,24 @@ begin
   try
      while not ImpressaoOk do
      begin
-        BloqueiaMouseTeclado( True );
-
         try
+           BloqueiaMouseTeclado( True );
+
            try
               Est := EstadoECF;
               while Est <> 'L' do
               begin
                  Case Est of
+                   'O' : raise Exception.Create(
+                               ACBrStr('ECF deve estar em Venda ou Pagamento'));
+
                    'V' : ComandaECF( opeSubTotalizaCupom );
 
                    'P' :
                      begin
                        if not AutoEfetuarPagamento then
                        begin
+                          GrupoFPG := nil ;
                           AgruparRespostasPendentes( GrupoFPG );
                           Ordem := 0 ;
 
@@ -958,7 +963,7 @@ begin
      end;
   finally
     if not ImpressaoOk then
-       CancelaTransacoesPendentes;
+       CancelarTransacoesPendentes;
   end;
 end;
 

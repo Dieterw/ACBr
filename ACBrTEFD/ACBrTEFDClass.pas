@@ -189,7 +189,8 @@ type
      property Count    : Integer read GetCount ;
      property Linha [Index: Integer]: TACBrTEFDLinha read GetLinha ;
 
-     procedure GravarArquivo( const NomeArquivo : String ) ;
+     procedure GravarArquivo( const NomeArquivo : String;
+        DoFlushToDisk : Boolean = False ) ;
      procedure LeArquivo( const NomeArquivo : String ) ;
 
      procedure GravaInformacao( const Identificacao : Integer;
@@ -507,13 +508,14 @@ type
 
      procedure BackupResposta( AdicionaEmRespostasPendentes : Boolean ) ; virtual;
      procedure ProcessaRespostaPagamento(const SaldoAPagar : Double;
-        const IndiceFPG_ECF : String; const Valor : Double);
+        const IndiceFPG_ECF : String; const Valor : Double); virtual;
 
      procedure VerificaIniciouRequisicao;
 
      procedure ImprimeRelatorio ; virtual;
 
-     Procedure VerificaTransacaoPagamento(Valor : Double; var SaldoAPagar : Double); virtual;
+     Procedure VerificaTransacaoPagamento(Valor : Double;
+        var SaldoAPagar : Double); virtual;
 
    protected
      property AutoAtivarGP : Boolean read fAutoAtivarGP write fAutoAtivarGP
@@ -546,7 +548,7 @@ type
      procedure AtivarGP ; virtual;
      procedure VerificaAtivo ; virtual;
 
-     procedure CancelaTransacoesPendentesClass; virtual;
+     procedure CancelarTransacoesPendentesClass; virtual;
 
      procedure ATV ; virtual;
      procedure ADM ; virtual;
@@ -784,9 +786,13 @@ begin
   fStringList.Clear;
 end;
 
-procedure TACBrTEFDArquivo.GravarArquivo(const NomeArquivo : String);
+procedure TACBrTEFDArquivo.GravarArquivo(const NomeArquivo : String;
+   DoFlushToDisk : Boolean = False );
 begin
   fStringList.SaveToFile(NomeArquivo);
+
+  if DoFlushToDisk then
+     FlushToDisk( ExtractFileDrive( NomeArquivo ) );
 end;
 
 procedure TACBrTEFDArquivo.LeArquivo(const NomeArquivo : String);
@@ -1361,7 +1367,7 @@ begin
   fInicializado := True ;
   GravaLog( Name +' Inicializado' );
 
-  CancelaTransacoesPendentesClass ;
+  CancelarTransacoesPendentesClass ;
 
   VerificaAtivo;
 end;
@@ -1623,10 +1629,7 @@ begin
 
   GravaLog( Name +' FinalizarRequisicao: '+Req.Header+', Fechando arquivo: '+ArqTemp);
   Req.Conteudo.GravaInformacao(999,999,'0');
-  Req.Conteudo.GravarArquivo( ArqTemp );
-  {$IFDEF MSWINDOWS}
-//   FlushToDisk( ExtractFileDrive( ArqTemp ) );
-  {$ENDIF}
+  Req.Conteudo.GravarArquivo( ArqTemp, True ); { True = DoFlushToDisk }
 
   GravaLog( Name +' FinalizarRequisicao: '+Req.Header+', Renomeando: '+ArqTemp+' para: '+ArqReq);
   if not RenameFile( ArqTemp, ArqReq ) then
@@ -1754,7 +1757,7 @@ begin
    Resp.Clear;
 end;
 
-procedure TACBrTEFDClass.CancelaTransacoesPendentesClass;
+procedure TACBrTEFDClass.CancelarTransacoesPendentesClass;
 Var
   ArquivosVerficar    : TStringList ;
   RespostaCancela     : TACBrTEFDResp ;
@@ -1994,7 +1997,7 @@ begin
         Inc( I ) ;
      until not FileExists( ArqBak );
 
-     Resp.Conteudo.GravarArquivo( ArqBak );
+     Resp.Conteudo.GravarArquivo( ArqBak, True );   { True = DoFlushToDisk }
      Resp.ArqBackup := ArqBak ;
 
      if AdicionaEmRespostasPendentes then
@@ -2020,26 +2023,26 @@ begin
 
   with TACBrTEFD(Owner) do
   begin
-     if not Resp.TransacaoAprovada then
+     if not Self.Resp.TransacaoAprovada then
      begin
        ProcessaResposta;            { Exibe a Mensagem ao Operador }
        FinalizarResposta( True ) ;  { True = Apaga Arquivo de Resposta }
 
                                { Ja tem RespostasPendentes }
-       if UltimaTransacao and (RespostasPendentes.Count > 0 ) then
+       if UltimaTransacao and ( RespostasPendentes.Count > 0 ) then
        begin
           if DoExibeMsg( opmYesNo, 'Gostaria de continuar a transação com outra(s)' +
                                    'forma(s) de pagamento ?' ) <> mrYes then
           begin
              ComandaECF( opeCancelaCupom );
-             CancelaTransacoesPendentes;
+             CancelarTransacoesPendentes;
           end;
        end;
 
        exit ;
      end ;
 
-     Resp.IndiceFPG_ECF := IndiceFPG_ECF;
+     Self.Resp.IndiceFPG_ECF := IndiceFPG_ECF;
 
      if AutoEfetuarPagamento then
      begin
@@ -2050,7 +2053,7 @@ begin
            begin
               try
                  ComandaECFPagamento( IndiceFPG_ECF, Valor );
-                 Resp.OrdemPagamento := RespostasPendentes.Count + 1 ;
+                 Self.Resp.OrdemPagamento := RespostasPendentes.Count + 1 ;
                  ImpressaoOk := True ;
               except
                  on EACBrTEFDECF do ImpressaoOk := False ;
@@ -2070,7 +2073,7 @@ begin
            end;
         finally
            if not ImpressaoOk then
-              CancelaTransacoesPendentes;
+              CancelarTransacoesPendentes;
         end;
      end;
 
@@ -2091,10 +2094,10 @@ begin
        with RespostasPendentes[RespostasPendentes.Count - 1 ] do
        begin
           CNFEnviado := True ;
-          Conteudo.GravarArquivo( ArqBackup );
+          Conteudo.GravarArquivo( ArqBackup, True ) ;   { True = DoFlushToDisk }
        end;
 
-       FinalizarResposta( True );    { True = Apaga Arquivo de Resposta }
+       FinalizarResposta( True );      { True = Apaga Arquivo de Resposta }
       end
      else
       begin
@@ -2102,7 +2105,7 @@ begin
 
         if AutoFinalizarCupom then
         begin
-           FinalizaCupom;
+           FinalizarCupom;
            ImprimirTransacoesPendentes;
         end;
       end ;

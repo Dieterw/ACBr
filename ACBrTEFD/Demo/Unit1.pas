@@ -22,8 +22,13 @@ type
   TForm1 = class(TForm)
      ACBrECF1 : TACBrECF;
      ACBrTEFD1 : TACBrTEFD;
+     bAbreVendeSubTotaliza1 : TButton;
+     bAbreVendeSubTotaliza2 : TButton;
+     bAbreVendeSubTotaliza3 : TButton;
+     bAbreVendeSubTotaliza4 : TButton;
      bADM : TButton;
      bAtivar : TButton;
+     bFechaRelatorio : TButton;
      bFPG : TButton;
      bAtivarGP : TButton;
      bATV : TButton;
@@ -33,7 +38,6 @@ type
      bCRT : TButton;
      bCHQ : TButton;
      bFechar : TButton;
-     bFechaRelatorio : TButton;
      bInicializar : TButton;
      bLeituraX : TButton;
      bNCN : TButton;
@@ -68,7 +72,6 @@ type
      gbConfigECF : TGroupBox;
      gbConfigTEF : TGroupBox;
      gbCupomECF : TGroupBox;
-     GroupBox1 : TGroupBox;
      Label1 : TLabel;
      Label10 : TLabel;
      Label11 : TLabel;
@@ -112,6 +115,10 @@ type
         var RetornoECF : String );
      procedure ACBrTEFD1MudaEstadoReq(EstadoReq : TACBrTEFDReqEstado);
      procedure ACBrTEFD1MudaEstadoResp(EstadoResp : TACBrTEFDRespEstado);
+     procedure bAbreVendeSubTotaliza1Click(Sender : TObject);
+     procedure bAbreVendeSubTotaliza2Click(Sender : TObject);
+     procedure bAbreVendeSubTotaliza3Click(Sender : TObject);
+     procedure bAbreVendeSubTotaliza4Click(Sender : TObject);
      procedure bCancelarRespClick(Sender : TObject);
      procedure ckCliSiTefChange(Sender : TObject);
      procedure CliSiTefExibeMenu(Titulo : String; Opcoes : TStringList;
@@ -490,7 +497,7 @@ procedure TForm1.bCancelarClick(Sender : TObject);
 begin
    ACBrECF1.CancelaCupom;
    Memo1.Lines.Add('ACBrECF.CancelaCupom');
-   ACBrTEFD1.CancelaTransacoesPendentes;
+   ACBrTEFD1.CancelarTransacoesPendentes;
    Memo1.Lines.Add('ACBrTEFD1.CancelaTransacoesPendentes');
 end;
 
@@ -673,6 +680,26 @@ procedure TForm1.ACBrTEFD1MudaEstadoResp(EstadoResp : TACBrTEFDRespEstado);
 begin
   StatusBar1.Panels[1].Text := GetEnumName(TypeInfo(TACBrTEFDRespEstado), Integer(EstadoResp) ) ;
   bCancelarResp.Visible     := (EstadoResp = respAgardandoResposta) ;
+end;
+
+procedure TForm1.bAbreVendeSubTotaliza1Click(Sender : TObject);
+begin
+   ACBrTEFD1.CancelarTransacoesPendentes;
+end;
+
+procedure TForm1.bAbreVendeSubTotaliza2Click(Sender : TObject);
+begin
+   ACBrTEFD1.ConfirmarTransacoesPendentes;
+end;
+
+procedure TForm1.bAbreVendeSubTotaliza3Click(Sender : TObject);
+begin
+   ACBrTEFD1.ImprimirTransacoesPendentes;
+end;
+
+procedure TForm1.bAbreVendeSubTotaliza4Click(Sender : TObject);
+begin
+   ACBrTEFD1.FinalizarCupom;
 end;
 
 procedure TForm1.bCancelarRespClick(Sender : TObject);

@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 354
-  Top = 105
-  Width = 710
+  Left = 350
+  Top = 106
+  Width = 741
   Height = 488
   Caption = 'TEFDDemo'
   Color = clBtnFace
@@ -15,15 +15,15 @@ object Form1: TForm1
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   DesignSize = (
-    694
+    725
     452)
   PixelsPerInch = 96
   TextHeight = 13
   object Memo1: TMemo
     Left = 0
-    Top = 176
-    Width = 694
-    Height = 226
+    Top = 208
+    Width = 725
+    Height = 194
     Align = alClient
     Lines.Strings = (
       'Memo1')
@@ -33,8 +33,8 @@ object Form1: TForm1
   object PageControl1: TPageControl
     Left = 0
     Top = 0
-    Width = 694
-    Height = 176
+    Width = 725
+    Height = 208
     ActivePage = tsOperacao
     Align = alTop
     TabOrder = 2
@@ -44,13 +44,13 @@ object Form1: TForm1
         Left = 0
         Top = 0
         Width = 308
-        Height = 148
+        Height = 180
         Align = alLeft
         Caption = 'ECF'
         TabOrder = 0
         object Label2: TLabel
           Left = 10
-          Top = 17
+          Top = 25
           Width = 38
           Height = 13
           Caption = 'Modelo:'
@@ -59,7 +59,7 @@ object Form1: TForm1
         end
         object Label4: TLabel
           Left = 10
-          Top = 60
+          Top = 68
           Width = 25
           Height = 13
           Caption = 'Porta'
@@ -68,7 +68,7 @@ object Form1: TForm1
         end
         object btSerial: TSpeedButton
           Left = 146
-          Top = 75
+          Top = 83
           Width = 25
           Height = 24
           Hint = 'Serial'
@@ -103,7 +103,7 @@ object Form1: TForm1
         end
         object Label6: TLabel
           Left = 186
-          Top = 17
+          Top = 25
           Width = 86
           Height = 13
           Caption = 'Indice "CARTAO"'
@@ -112,7 +112,7 @@ object Form1: TForm1
         end
         object Label7: TLabel
           Left = 186
-          Top = 60
+          Top = 68
           Width = 87
           Height = 13
           Caption = 'Indice "CHEQUE"'
@@ -121,7 +121,7 @@ object Form1: TForm1
         end
         object cbxModelo: TComboBox
           Left = 10
-          Top = 33
+          Top = 41
           Width = 161
           Height = 21
           Style = csDropDownList
@@ -146,7 +146,7 @@ object Form1: TForm1
         end
         object cbxPorta: TComboBox
           Left = 10
-          Top = 76
+          Top = 84
           Width = 131
           Height = 21
           ItemHeight = 13
@@ -174,7 +174,7 @@ object Form1: TForm1
         end
         object bAtivar: TButton
           Left = 58
-          Top = 112
+          Top = 120
           Width = 73
           Height = 25
           Caption = 'Ativar'
@@ -183,7 +183,7 @@ object Form1: TForm1
         end
         object edFPGCartao: TEdit
           Left = 210
-          Top = 33
+          Top = 41
           Width = 43
           Height = 21
           TabOrder = 3
@@ -191,7 +191,7 @@ object Form1: TForm1
         end
         object edFPGCheque: TEdit
           Left = 210
-          Top = 76
+          Top = 84
           Width = 43
           Height = 21
           TabOrder = 4
@@ -199,7 +199,7 @@ object Form1: TForm1
         end
         object bFPG: TButton
           Left = 194
-          Top = 112
+          Top = 120
           Width = 73
           Height = 25
           Caption = 'FPG'
@@ -210,21 +210,21 @@ object Form1: TForm1
       object Panel2: TPanel
         Left = 308
         Top = 0
-        Width = 378
-        Height = 148
+        Width = 409
+        Height = 180
         Align = alClient
         TabOrder = 1
         object gbConfigTEF: TGroupBox
           Left = 1
           Top = 1
-          Width = 376
-          Height = 146
+          Width = 407
+          Height = 178
           Align = alClient
           Caption = 'TEF'
           TabOrder = 0
           object Label1: TLabel
-            Left = 26
-            Top = 0
+            Left = 34
+            Top = 24
             Width = 83
             Height = 13
             Caption = 'Selecionar o G.P.'
@@ -232,7 +232,7 @@ object Form1: TForm1
             ParentColor = False
           end
           object Label8: TLabel
-            Left = 301
+            Left = 309
             Top = 23
             Width = 60
             Height = 13
@@ -241,7 +241,7 @@ object Form1: TForm1
             ParentColor = False
           end
           object Label9: TLabel
-            Left = 301
+            Left = 309
             Top = 79
             Width = 54
             Height = 13
@@ -250,8 +250,8 @@ object Form1: TForm1
             ParentColor = False
           end
           object bInicializar: TButton
-            Left = 37
-            Top = 71
+            Left = 45
+            Top = 79
             Width = 75
             Height = 25
             Caption = 'Inicializar'
@@ -259,8 +259,8 @@ object Form1: TForm1
             OnClick = bInicializarClick
           end
           object ckAutoAtivar: TCheckBox
-            Left = 153
-            Top = 26
+            Left = 161
+            Top = 34
             Width = 104
             Height = 19
             Caption = 'Auto Ativar G.P.'
@@ -270,8 +270,8 @@ object Form1: TForm1
             OnClick = ckAutoAtivarChange
           end
           object cbxGP: TComboBox
-            Left = 5
-            Top = 36
+            Left = 13
+            Top = 44
             Width = 133
             Height = 21
             Style = csDropDownList
@@ -279,8 +279,8 @@ object Form1: TForm1
             TabOrder = 0
           end
           object bAtivarGP: TButton
-            Left = 37
-            Top = 103
+            Left = 45
+            Top = 111
             Width = 75
             Height = 25
             Caption = 'Ativar GP'
@@ -288,8 +288,8 @@ object Form1: TForm1
             OnClick = bAtivarGPClick
           end
           object ckMultiplosCartoes: TCheckBox
-            Left = 153
-            Top = 54
+            Left = 161
+            Top = 62
             Width = 113
             Height = 19
             Caption = 'Multiplos Cart'#245'es'
@@ -297,8 +297,8 @@ object Form1: TForm1
             OnClick = ckMultiplosCartoesChange
           end
           object ckAutoFinalizarCupom: TCheckBox
-            Left = 153
-            Top = 105
+            Left = 161
+            Top = 113
             Width = 129
             Height = 19
             Caption = 'AutoFinalizarCupom'
@@ -308,8 +308,8 @@ object Form1: TForm1
             OnClick = ckAutoFinalizarCupomChange
           end
           object ckAutoEfetuarPagamento: TCheckBox
-            Left = 153
-            Top = 80
+            Left = 161
+            Top = 88
             Width = 144
             Height = 19
             Caption = 'AutoEfetuarPagamento'
@@ -317,7 +317,7 @@ object Form1: TForm1
             OnClick = ckAutoEfetuarPagamentoChange
           end
           object edEsperaSleep: TEdit
-            Left = 301
+            Left = 309
             Top = 39
             Width = 56
             Height = 21
@@ -326,7 +326,7 @@ object Form1: TForm1
             OnChange = edEsperaSleepChange
           end
           object edEsperaSTS: TEdit
-            Left = 301
+            Left = 309
             Top = 95
             Width = 56
             Height = 21
@@ -342,15 +342,15 @@ object Form1: TForm1
       object gbCupomECF: TGroupBox
         Left = 0
         Top = 0
-        Width = 396
-        Height = 148
+        Width = 292
+        Height = 180
         Align = alLeft
         Caption = 'ECF'
         Enabled = False
         TabOrder = 0
         object Label5: TLabel
           Left = 258
-          Top = 96
+          Top = 53
           Width = 24
           Height = 13
           Alignment = taRightJustify
@@ -364,7 +364,7 @@ object Form1: TForm1
           Width = 93
           Height = 25
           Caption = 'Cancelar'
-          TabOrder = 5
+          TabOrder = 8
           OnClick = bCancelarClick
         end
         object bAbreCupom: TButton
@@ -373,7 +373,7 @@ object Form1: TForm1
           Width = 93
           Height = 25
           Caption = 'Abrir'
-          TabOrder = 0
+          TabOrder = 3
           OnClick = bAbreCupomClick
         end
         object bVendeItem: TButton
@@ -382,7 +382,7 @@ object Form1: TForm1
           Width = 93
           Height = 25
           Caption = 'Vende Item'
-          TabOrder = 1
+          TabOrder = 4
           OnClick = bVendeItemClick
         end
         object bSubTotaliza: TButton
@@ -391,7 +391,7 @@ object Form1: TForm1
           Width = 93
           Height = 25
           Caption = 'SubTotalizar'
-          TabOrder = 2
+          TabOrder = 5
           OnClick = bSubTotalizaClick
         end
         object bFechar: TButton
@@ -400,7 +400,7 @@ object Form1: TForm1
           Width = 93
           Height = 25
           Caption = 'Fechar'
-          TabOrder = 4
+          TabOrder = 7
           OnClick = bFecharClick
         end
         object bPagamento: TButton
@@ -409,61 +409,25 @@ object Form1: TForm1
           Width = 93
           Height = 25
           Caption = 'Pagamento'
-          TabOrder = 3
+          TabOrder = 6
           OnClick = bPagamentoClick
         end
         object bAbreVendeSubTotaliza: TButton
           Left = 6
-          Top = 111
+          Top = 110
           Width = 195
           Height = 27
           Caption = 'AbreVendeSubtotaliza'
-          TabOrder = 6
+          TabOrder = 2
           OnClick = bAbreVendeSubTotalizaClick
-        end
-        object GroupBox1: TGroupBox
-          Left = 292
-          Top = 15
-          Width = 102
-          Height = 131
-          Align = alRight
-          Caption = 'Relat'#243'rios'
-          TabOrder = 7
-          object bFechaRelatorio: TButton
-            Left = 8
-            Top = 92
-            Width = 82
-            Height = 27
-            Caption = 'Fechar'
-            TabOrder = 0
-            OnClick = bFechaRelatorioClick
-          end
-          object bLeituraX: TButton
-            Left = 8
-            Top = 56
-            Width = 82
-            Height = 27
-            Caption = 'Leitura X'
-            TabOrder = 1
-            OnClick = bLeituraXClick
-          end
-          object bReducaoZ: TButton
-            Left = 8
-            Top = 22
-            Width = 82
-            Height = 27
-            Caption = 'Redu'#231#227'o Z'
-            TabOrder = 2
-            OnClick = bReducaoZClick
-          end
         end
         object edValorECF: TEdit
           Left = 210
-          Top = 112
+          Top = 69
           Width = 72
           Height = 25
           AutoSize = False
-          TabOrder = 8
+          TabOrder = 1
           Text = '1,00'
         end
         object bEstado: TButton
@@ -472,21 +436,48 @@ object Form1: TForm1
           Width = 72
           Height = 25
           Caption = 'Estado'
-          TabOrder = 9
+          TabOrder = 0
           OnClick = bEstadoClick
+        end
+        object bReducaoZ: TButton
+          Left = 210
+          Top = 144
+          Width = 72
+          Height = 27
+          Caption = 'Redu'#231#227'o Z'
+          TabOrder = 11
+          OnClick = bReducaoZClick
+        end
+        object bLeituraX: TButton
+          Left = 210
+          Top = 110
+          Width = 72
+          Height = 27
+          Caption = 'Leitura X'
+          TabOrder = 10
+          OnClick = bLeituraXClick
+        end
+        object bFechaRelatorio: TButton
+          Left = 6
+          Top = 144
+          Width = 195
+          Height = 27
+          Caption = 'Fechar Gerencial/Vinculado'
+          TabOrder = 9
+          OnClick = bFechaRelatorioClick
         end
       end
       object gbComandosTEF: TGroupBox
-        Left = 396
+        Left = 292
         Top = 0
-        Width = 290
-        Height = 148
+        Width = 425
+        Height = 180
         Align = alClient
         Caption = 'TEF'
         TabOrder = 1
         object Label3: TLabel
-          Left = 178
-          Top = 96
+          Left = 10
+          Top = 124
           Width = 24
           Height = 13
           Alignment = taRightJustify
@@ -495,45 +486,45 @@ object Form1: TForm1
           ParentColor = False
         end
         object bADM: TButton
-          Left = 126
-          Top = 24
-          Width = 75
+          Left = 6
+          Top = 48
+          Width = 68
           Height = 25
           Caption = 'ADM'
-          TabOrder = 1
+          TabOrder = 2
           OnClick = bADMClick
         end
         object bATV: TButton
-          Left = 27
-          Top = 56
-          Width = 75
+          Left = 153
+          Top = 16
+          Width = 68
           Height = 25
           Caption = 'ATV'
-          TabOrder = 0
+          TabOrder = 1
           OnClick = bATVClick
         end
         object bCNC: TButton
-          Left = 126
-          Top = 56
-          Width = 75
+          Left = 153
+          Top = 95
+          Width = 68
           Height = 25
           Caption = 'CNC'
-          TabOrder = 2
+          TabOrder = 7
           OnClick = bCNCClick
         end
         object bCNF: TButton
-          Left = 206
-          Top = 24
-          Width = 75
+          Left = 79
+          Top = 48
+          Width = 68
           Height = 25
           Caption = 'CNF'
           TabOrder = 3
           OnClick = bCNFClick
         end
         object bNCN: TButton
-          Left = 206
-          Top = 56
-          Width = 75
+          Left = 153
+          Top = 48
+          Width = 68
           Height = 25
           Caption = 'NCN'
           TabOrder = 4
@@ -541,48 +532,84 @@ object Form1: TForm1
         end
         object bCRT: TButton
           Left = 6
-          Top = 116
-          Width = 75
+          Top = 95
+          Width = 68
           Height = 25
           Caption = 'CRT'
           TabOrder = 5
           OnClick = bCRTClick
         end
         object bCHQ: TButton
-          Left = 89
-          Top = 116
-          Width = 75
+          Left = 79
+          Top = 95
+          Width = 68
           Height = 25
           Caption = 'CHQ'
           TabOrder = 6
           OnClick = bCHQClick
         end
         object edValorTEF: TEdit
-          Left = 174
-          Top = 116
-          Width = 104
+          Left = 6
+          Top = 144
+          Width = 72
           Height = 25
           AutoSize = False
-          TabOrder = 7
+          TabOrder = 8
           Text = '1,00'
         end
         object ckMultiplosCartoes1: TCheckBox
-          Left = 30
-          Top = 93
+          Left = 102
+          Top = 144
           Width = 113
           Height = 19
           Caption = 'Multiplos Cart'#245'es'
-          TabOrder = 8
+          TabOrder = 9
           OnClick = ckMultiplosCartoesChange
         end
         object cbxGP1: TComboBox
-          Left = 14
-          Top = 25
-          Width = 101
+          Left = 6
+          Top = 18
+          Width = 142
           Height = 21
           Style = csDropDownList
           ItemHeight = 13
-          TabOrder = 9
+          TabOrder = 0
+        end
+        object bAbreVendeSubTotaliza1: TButton
+          Left = 230
+          Top = 16
+          Width = 187
+          Height = 27
+          Caption = 'CancelarTransacoesPendentes'
+          TabOrder = 10
+          OnClick = bAbreVendeSubTotaliza1Click
+        end
+        object bAbreVendeSubTotaliza2: TButton
+          Left = 230
+          Top = 58
+          Width = 187
+          Height = 27
+          Caption = 'ConfirmarTransacoesPendentes'
+          TabOrder = 11
+          OnClick = bAbreVendeSubTotaliza2Click
+        end
+        object bAbreVendeSubTotaliza3: TButton
+          Left = 230
+          Top = 100
+          Width = 187
+          Height = 27
+          Caption = 'ImprimirTransacoesPendentes'
+          TabOrder = 12
+          OnClick = bAbreVendeSubTotaliza3Click
+        end
+        object bAbreVendeSubTotaliza4: TButton
+          Left = 230
+          Top = 142
+          Width = 187
+          Height = 27
+          Caption = 'FinalizarCupom'
+          TabOrder = 13
+          OnClick = bAbreVendeSubTotaliza4Click
         end
       end
     end
@@ -590,7 +617,7 @@ object Form1: TForm1
   object StatusBar1: TStatusBar
     Left = 0
     Top = 429
-    Width = 694
+    Width = 725
     Height = 23
     Panels = <
       item
@@ -606,11 +633,11 @@ object Form1: TForm1
   object Panel1: TPanel
     Left = 0
     Top = 402
-    Width = 694
+    Width = 725
     Height = 27
     Align = alBottom
     BevelInner = bvLowered
-    TabOrder = 3
+    TabOrder = 4
     object sECF: TShape
       Left = 8
       Top = 6
@@ -645,7 +672,7 @@ object Form1: TForm1
       Shape = stCircle
     end
     object sHiperTEF: TShape
-      Left = 360
+      Left = 352
       Top = 6
       Width = 17
       Height = 16
@@ -653,7 +680,7 @@ object Form1: TForm1
       Shape = stCircle
     end
     object sCliSiTef: TShape
-      Left = 488
+      Left = 472
       Top = 6
       Width = 17
       Height = 16
@@ -663,16 +690,10 @@ object Form1: TForm1
     object ckTEFDIAL: TCheckBox
       Left = 160
       Top = 5
-      Width = 87
+      Width = 69
       Height = 19
       Caption = 'TEF_DIAL'
       Checked = True
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = [fsBold]
-      ParentFont = False
       State = cbChecked
       TabOrder = 0
       OnClick = ckTEFDIALChange
@@ -680,53 +701,35 @@ object Form1: TForm1
     object ckTEFDISC: TCheckBox
       Left = 272
       Top = 5
-      Width = 86
+      Width = 69
       Height = 19
       Caption = 'TEF_DISC'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = [fsBold]
-      ParentFont = False
       TabOrder = 1
       OnClick = ckTEFDISCChange
     end
     object ckHIPERTEF: TCheckBox
-      Left = 384
-      Top = 5
-      Width = 97
+      Left = 376
+      Top = 6
+      Width = 76
       Height = 19
       Caption = 'HIPER_TEF'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = [fsBold]
-      ParentFont = False
       TabOrder = 2
       OnClick = ckHIPERTEFChange
     end
     object ckCliSiTef: TCheckBox
-      Left = 520
+      Left = 504
       Top = 5
       Width = 60
       Height = 19
       Caption = 'CliSiTef'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = [fsBold]
-      ParentFont = False
       TabOrder = 3
       OnClick = ckCliSiTefChange
     end
     object bCancelarResp: TButton
-      Left = 602
-      Top = 2
+      Left = 634
+      Top = 3
       Width = 88
-      Height = 22
+      Height = 23
       Caption = 'CancelarResp'
       TabOrder = 4
       Visible = False
@@ -734,8 +737,8 @@ object Form1: TForm1
     end
   end
   object pMensagem: TPanel
-    Left = 136
-    Top = 232
+    Left = 169
+    Top = 240
     Width = 440
     Height = 136
     Anchors = []
@@ -861,7 +864,6 @@ object Form1: TForm1
   end
   object ACBrTEFD1: TACBrTEFD
     EsperaSTS = 7
-    EsperaSleep = 500
     TEFDial.ArqLOG = 'TEF_DIAL.log'
     TEFDial.Habilitado = True
     TEFDial.ArqTemp = 'C:\TEF_DIAL\req\intpos.tmp'
@@ -879,6 +881,12 @@ object Form1: TForm1
     TEFHiper.ArqSTS = 'C:\HiperTEF\resp\IntPos.sts'
     TEFHiper.ArqResp = 'C:\HiperTEF\resp\IntPos.001'
     TEFHiper.GPExeName = 'C:\HiperTEF\HiperTEF.exe'
+    TEFCliSiTef.ArqLOG = 'CliSiTef.log'
+    TEFCliSiTef.EnderecoIP = 'localhost'
+    TEFCliSiTef.CodigoLoja = '00000000'
+    TEFCliSiTef.NumeroTerminal = 'SE000001'
+    TEFCliSiTef.OnExibeMenu = CliSiTefExibeMenu
+    TEFCliSiTef.OnObtemCampo = CliSiTefObtemCampo
     OnAguardaResp = ACBrTEFD1AguardaResp
     OnExibeMsg = ACBrTEFD1ExibeMsg
     OnComandaECF = ACBrTEFD1ComandaECF

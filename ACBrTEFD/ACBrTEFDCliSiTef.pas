@@ -111,7 +111,7 @@ type
      procedure AvaliaErro(Sts : Integer);
      procedure LoadDLLFunctions;
    protected
-     procedure FinalizarRequisicao ; override;
+     Function ContinuarRequisicao : Integer ;
 
    public
      constructor Create( AOwner : TComponent ) ; override;
@@ -265,8 +265,9 @@ begin
                                  PChar( fOperador ), '') ;
 
    if Sts = 10000 then
-      FinalizarRequisicao
-   else if Sts <> 0 then
+      Sts := ContinuarRequisicao ;
+
+   if Sts <> 0 then
       AvaliaErro( Sts );
 end;
 
@@ -286,8 +287,9 @@ begin
                                  PChar( fOperador ), '') ;
 
    if Sts = 10000 then
-      FinalizarRequisicao
-   else if Sts <> 0 then
+      Sts := ContinuarRequisicao;
+
+   if (Sts <> 0) then
       AvaliaErro( Sts );
 end;
 
@@ -310,16 +312,16 @@ begin
    CliSiTefFunctionDetect('FinalizaTransacaoSiTefInterativo', @xFinalizaTransacaoSiTefInterativo);
 end ;
 
-procedure TACBrTEFDCliSiTef.FinalizarRequisicao;
+Function TACBrTEFDCliSiTef.ContinuarRequisicao : Integer;
 var
-  Sts, ProximoComando, TipoCampo, Continua, ItemSelecionado: Integer;
+  ProximoComando, TipoCampo, Continua, ItemSelecionado: Integer;
   TamanhoMinimo, TamanhoMaximo : SmallInt ;
   Buffer: array [0..20000] of char;
   Erro, Mensagem, Resposta, CaptionMenu : String;
   ItensMenu   : TStringList ;
   Interromper : Boolean ;
 begin
-   Sts            := 0;
+   Result         := 0;
    ProximoComando := 0;
    TipoCampo      := 0;
    TamanhoMinimo  := 0;
@@ -332,112 +334,113 @@ begin
 
    with TACBrTEFD(Owner) do
    begin
-      repeat
-         Sts:= xContinuaFuncaoSiTefInterativo( ProximoComando, TipoCampo,
-                                               TamanhoMinimo, TamanhoMaximo,
-                                               Buffer, sizeof(Buffer),
-                                               Continua );
+      try
+         repeat
+            Result := xContinuaFuncaoSiTefInterativo( ProximoComando, TipoCampo,
+                                                  TamanhoMinimo, TamanhoMaximo,
+                                                  Buffer, sizeof(Buffer),
+                                                  Continua );
 
-         Mensagem := Trim( Buffer ) ;
-         Resposta := '' ;
+            Mensagem := Trim( Buffer ) ;
+            Resposta := '' ;
 
-         GravaLog( 'ProximoComando: '+IntToStr(ProximoComando)+
-                   ' TipoCampo: '+IntToStr(TipoCampo)+
-                   ' Buffer: '+Mensagem ) ;
+            GravaLog( 'Sts: '+IntToStr(Result)+
+                      ' ProximoComando: '+IntToStr(ProximoComando)+
+                      ' TipoCampo: '+IntToStr(TipoCampo)+
+                      ' Buffer: '+Mensagem ) ;
 
-         if Sts = 10000 then
-         begin
-           case ProximoComando of
-              0: ;// TODO: Está devolvendo um valor para, se desejado, ser armazenado pela automação;
+            if Result = 10000 then
+            begin
+              case ProximoComando of
+                 0: ;// TODO: Está devolvendo um valor para, se desejado, ser armazenado pela automação;
 
-              1 : DoExibeMsg( opmExibirMsgOperador, Mensagem ) ;
+                 1 : DoExibeMsg( opmExibirMsgOperador, Mensagem ) ;
 
-              2 : DoExibeMsg( opmExibirMsgCliente, Mensagem ) ;
+                 2 : DoExibeMsg( opmExibirMsgCliente, Mensagem ) ;
 
-              3 :
-                begin
-                  DoExibeMsg( opmExibirMsgOperador, Mensagem ) ;
-                  DoExibeMsg( opmExibirMsgCliente, Mensagem ) ;
-                end ;
+                 3 :
+                   begin
+                     DoExibeMsg( opmExibirMsgOperador, Mensagem ) ;
+                     DoExibeMsg( opmExibirMsgCliente, Mensagem ) ;
+                   end ;
 
-              4 : CaptionMenu := Mensagem ;
+                 4 : CaptionMenu := Mensagem ;
 
-              11 : DoExibeMsg( opmRemoverMsgOperador, '' ) ;
+                 11 : DoExibeMsg( opmRemoverMsgOperador, '' ) ;
 
-              12 : DoExibeMsg( opmRemoverMsgCliente, '' ) ;
+                 12 : DoExibeMsg( opmRemoverMsgCliente, '' ) ;
 
-              13 :
-                begin
-                  DoExibeMsg( opmRemoverMsgOperador, '' ) ;
-                  DoExibeMsg( opmRemoverMsgCliente, '' ) ;
-                end ;
+                 13 :
+                   begin
+                     DoExibeMsg( opmRemoverMsgOperador, '' ) ;
+                     DoExibeMsg( opmRemoverMsgCliente, '' ) ;
+                   end ;
 
-              14 : CaptionMenu := '' ;
-                {Deve limpar o texto utilizado como cabeçalho na apresentação do menu}
+                 14 : CaptionMenu := '' ;
+                   {Deve limpar o texto utilizado como cabeçalho na apresentação do menu}
 
-              20 :
-                begin
-                  if Mensagem = '' then
-                     Mensagem := 'CONFIRMA ?';
-                  Resposta := ifThen( (DoExibeMsg( opmYesNo, Mensagem ) = mrYes), '0', '1' ) ;
-                  if Resposta = '1' then
-                     Continua := -1 ;
-                end ;
-
-              21 :
-                begin
-                  ItensMenu := TStringList.Create;
-                  try
-                     ItemSelecionado := -1 ;
-                     ItensMenu.Text  := StringReplace( Mensagem, ';',
-                                                      sLineBreak, [rfReplaceAll] ) ;
-
-                     OnExibeMenu( CaptionMenu, ItensMenu, ItemSelecionado ) ;
-
-                     if (ItemSelecionado >= 0) and (ItemSelecionado < ItensMenu.Count) then
-                        Resposta := copy( ItensMenu[ItemSelecionado], 1,
-                                          pos(':',ItensMenu[ItemSelecionado])-1 )
-                     else
+                 20 :
+                   begin
+                     if Mensagem = '' then
+                        Mensagem := 'CONFIRMA ?';
+                     Resposta := ifThen( (DoExibeMsg( opmYesNo, Mensagem ) = mrYes), '0', '1' ) ;
+                     if Resposta = '1' then
                         Continua := -1 ;
-                  finally
-                     ItensMenu.Free ;
-                  end ;
-                end;
+                   end ;
 
-              22 :
-                begin
-                  if Mensagem = '' then
-                     Mensagem := 'PRESSIONE <ENTER>';
-                  DoExibeMsg( opmOK, Mensagem );
-                end ;
+                 21 :
+                   begin
+                     ItensMenu := TStringList.Create;
+                     try
+                        ItemSelecionado := -1 ;
+                        ItensMenu.Text  := StringReplace( Mensagem, ';',
+                                                         sLineBreak, [rfReplaceAll] ) ;
 
-              23 :
-                begin
-                  Interromper := False ;
-                  OnAguardaResp( '', 0, Interromper ) ;
-                  if Interromper then
-                     Continua := -1 ;
-                end;
+                        OnExibeMenu( CaptionMenu, ItensMenu, ItemSelecionado ) ;
 
-              30 :
-                begin
-                  OnObtemCampo( Mensagem, TamanhoMinimo, TamanhoMaximo, Resposta ) ;
-                  if Resposta = '-1' then
-                     Continua := -1 ;
-                end;
-           end;
-         end;
+                        if (ItemSelecionado >= 0) and (ItemSelecionado < ItensMenu.Count) then
+                           Resposta := copy( ItensMenu[ItemSelecionado], 1,
+                                             pos(':',ItensMenu[ItemSelecionado])-1 )
+                        else
+                           Continua := -1 ;
+                     finally
+                        ItensMenu.Free ;
+                     end ;
+                   end;
 
-         if Resposta <> '' then
-            StrPCopy(Buffer, Resposta);
+                 22 :
+                   begin
+                     if Mensagem = '' then
+                        Mensagem := 'PRESSIONE <ENTER>';
+                     DoExibeMsg( opmOK, Mensagem );
+                   end ;
 
-      until Sts <> 10000;
+                 23 :
+                   begin
+                     Interromper := False ;
+                     OnAguardaResp( '', 0, Interromper ) ;
+                     if Interromper then
+                        Continua := -1 ;
+                   end;
+
+                 30 :
+                   begin
+                     OnObtemCampo( Mensagem, TamanhoMinimo, TamanhoMaximo, Resposta ) ;
+                     if Resposta = '-1' then
+                        Continua := -1 ;
+                   end;
+              end;
+            end;
+
+            if Resposta <> '' then
+               StrPCopy(Buffer, Resposta);
+
+         until Result <> 10000;
+      finally
+        DoExibeMsg( opmRemoverMsgOperador, '' ) ;
+        DoExibeMsg( opmRemoverMsgCliente, '' ) ;
+      end;
    end ;
-
-   if Sts <> 0 then
-      AvaliaErro( Sts );
-
-//   FinalizaTransacaoSiTefInterativo (1,'12345','20011022','091800');
 end;
 
 end.

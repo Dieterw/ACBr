@@ -94,6 +94,7 @@ type
     FRegistroC178Count: Integer;
     FRegistroC179Count: Integer;
     FRegistroC190Count: Integer;
+    FRegistroC195Count: Integer;
     FRegistroC370Count: Integer;
     FRegistroC390Count: Integer;
     FRegistroC405Count: Integer;
@@ -103,7 +104,6 @@ type
     FRegistroC460Count: Integer;
     FRegistroC470Count: Integer;
     FRegistroC490Count: Integer;
-    FRegistroC195Count: Integer;
 
     function WriteRegistroC110(RegC100: TRegistroC100): AnsiString;
     function WriteRegistroC111(RegC110: TRegistroC110): AnsiString;

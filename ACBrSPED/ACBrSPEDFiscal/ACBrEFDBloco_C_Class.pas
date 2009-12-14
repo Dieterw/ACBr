@@ -42,12 +42,14 @@ unit ACBrEFDBloco_C_Class;
 
 interface
 
-uses SysUtils, Classes, DateUtils, ACBrSped, ACBrEFDBloco_C;
+uses SysUtils, Classes, DateUtils, ACBrSped, ACBrEFDBloco_C,
+     ACBrEFDBloco_0_Class;
 
 type
   /// TBLOCO_C -
   TBloco_C = class(TACBrSPED)
   private
+    FBloco_0: TBloco_0;
     FRegistroC001: TRegistroC001;      /// BLOCO C - RegistroC001
     FRegistroC100: TRegistroC100List;  /// BLOCO C - Lista de RegistroC100
     FRegistroC197: TRegistroC197List;  /// BLOCO C - Lista de RegistroC197
@@ -169,6 +171,7 @@ type
     function WriteRegistroC791: AnsiString;
     function WriteRegistroC990: AnsiString;
 
+    property Bloco_0: TBloco_0 read FBloco_0 write FBloco_0;
     property RegistroC001: TRegistroC001 read FRegistroC001 write FRegistroC001;
     property RegistroC100: TRegistroC100List read FRegistroC100 write FRegistroC100;
     property RegistroC197: TRegistroC197List read FRegistroC197 write FRegistroC197;
@@ -228,6 +231,8 @@ type
   end;
 
 implementation
+
+uses ACBrSpedUtils;
 
 { TBloco_C }
 
@@ -1602,8 +1607,10 @@ begin
      begin
         with RegC420.RegistroC425.Items[intFor] do
         begin
+          Check(FBloco_0.Registro0200.LocalizaRegistro(COD_ITEM), '(C-C425) ITENS: O código do item "%s" não existe no registro 0200!', [COD_ITEM]);
+
           strRegistroC425 := strRegistroC425 + LFill('C425') +
-                                               LFill( COD_ITEM,6 ) +
+                                               LFill( COD_ITEM ) +
                                                LFill( QTD,0,3 ) +
                                                LFill( UNID ) +
                                                LFill( VL_ITEM,0,2 ) +

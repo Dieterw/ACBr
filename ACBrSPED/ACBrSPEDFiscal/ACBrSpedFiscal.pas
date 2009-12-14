@@ -240,6 +240,11 @@ begin
   FBloco_H := TBloco_H.Create(Self);
   FBloco_9 := TBloco_9.Create(Self);
 
+  /// Objeto passado por referência para que possamos usa-lo para fazer pesquisa
+  /// em seus registros.
+  /// Ex: Do Bloco_C registro C425, pesquisar o Bloco_0 registro 0200.
+  FBloco_C.Bloco_0 := FBloco_0;
+
   FPath    := ExtractFilePath( ParamStr(0) );
 end;
 

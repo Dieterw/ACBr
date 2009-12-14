@@ -655,6 +655,7 @@ function ImprimirFaturas(PosX, PosY: Double): Double;
 var i:Integer;
     aHeight, XX,YY,YY2:Double;
     q, f:integer;
+    wtemp_FontSizeText: double;
 begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
@@ -698,6 +699,10 @@ begin
      XX:=PosX;
      if not (Cobr.Dup.Count=0) then
      begin
+        wtemp_FontSizeText:=FontSizeText;
+        if FontNameUsed = 'Courier New' then
+           FontSizeText:=8;
+
         ClearAllTabs;
         for i:=1 to 3 do
          begin
@@ -740,6 +745,9 @@ begin
         Box([],PosX,YY,67,aHeight);
         Box([fsLeft],XPos,YY,67,aHeight);
         Box([fsLeft],XPos,YY,67,aHeight,'','',taLeftJustify,True);
+
+        if FontNameUsed = 'Courier New' then
+           FontSizeText:=wtemp_FontSizeText;
      end;
      Result:=YPos;
   end;

@@ -47,6 +47,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Alterações   14/12/09
+---------------
+[-] Fixado tamanho da fonte Courier New no Quadro Fatura/Duplicatas para o DANFE com RAVE CB. Estava cortando a data de vencimento.
+
 Alterações   27/11/09
 ---------------
 [*] Adicionado parâmetro SalvaTXT na função SaveToFile, onde quando estiver True irá salvar o arquivo da NFe no padrão do emissor gratuíto de SP

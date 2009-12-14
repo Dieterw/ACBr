@@ -672,6 +672,7 @@ var i:Integer;
     aHeight, XX,YY,YY2: Double;
     q, f:integer;
     logica: boolean;
+    wtemp_FontSizeText: double;
 begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
@@ -717,6 +718,10 @@ begin
      XX:=PosX;
      if not (Cobr.Dup.Count=0) then
      begin
+        wtemp_FontSizeText:=FontSizeText;
+        if FontNameUsed = 'Courier New' then
+           FontSizeText:=8;
+
         ClearAllTabs;
         for i:=1 to 4 do
          begin
@@ -761,6 +766,9 @@ begin
         Box([fsTop,fsLeft],XPos,YY,63,aHeight);
         Box([fsTop,fsLeft],XPos,YY,63,aHeight);
         Box([fsTop,fsLeft],XPos,YY,62,aHeight,'','',taLeftJustify,True);
+
+        if FontNameUsed = 'Courier New' then
+           FontSizeText:=wtemp_FontSizeText;
      end;
 
      Result:=YPos;

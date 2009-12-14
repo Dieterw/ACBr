@@ -316,7 +316,7 @@ Function TACBrTEFDCliSiTef.ContinuarRequisicao : Integer;
 var
   ProximoComando, TipoCampo, Continua, ItemSelecionado: Integer;
   TamanhoMinimo, TamanhoMaximo : SmallInt ;
-  Buffer: array [0..20000] of AnsiChar;
+  Buffer: array [0..20000] of char;
   Erro, Mensagem, Resposta, CaptionMenu : String;
   ItensMenu   : TStringList ;
   Interromper : Boolean ;

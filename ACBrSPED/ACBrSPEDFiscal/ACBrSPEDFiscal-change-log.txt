@@ -47,7 +47,7 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
-Versão 0.02a   13/12/09
+Versão 0.03a   14/12/09
 [+] Adicionado recurso para que um Bloco_X possa pesquisar registros no Bloco_Y
     o exemplo está no Bloco_C por (Isaque Pinheiro)
 

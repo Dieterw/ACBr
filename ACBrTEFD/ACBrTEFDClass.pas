@@ -55,7 +55,7 @@ uses
   {$ENDIF} ;
 
 const
-   CACBrTEFD_Versao      = '0.2' ;
+   CACBrTEFD_Versao      = '0.3a' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -118,7 +118,11 @@ type
      var RetornoECF : Integer ) of object ; { -1 - Não tratado, 0 - Erro na Execucao, 1 - Sucesso }
 
   TACBrTEFDInfoECF = ( ineSubTotal,  // Valor do Saldo restante "A Pagar" do Cupom
-                       ineEstadoECF  // Estado do ECF "L" Livre, "V" Em Venda de Itens, "P" Em Pagamento, "O" Outro
+                       ineEstadoECF  // Estado do ECF "L" Livre, "V" Em Venda de Itens,
+                                     //               "P" Em Pagamento,
+                                     //               "C" CDC ou Vinculado
+                                     //               "G" Relatório Gerencial
+                                     //               "O" Outro
                      ) ;
 
   TACBrTEFDObterInfoECF = procedure( Operacao : TACBrTEFDInfoECF;
@@ -1861,6 +1865,7 @@ Var
   I : Integer;
   TempoInicio : TDateTime ;
   ImpressaoOk, RemoverMsg : Boolean ;
+  Est : Char ;
 begin
   VerificaIniciouRequisicao;
 
@@ -1882,11 +1887,19 @@ begin
 
            try
               try
-                 if EstadoECF <> 'L' then
-                    raise EACBrTEFDECF.Create( ACBrStr('ECF não está LIVRE') ) ;
+                 Est := EstadoECF;
 
-                 { Fecha, se ficou algum aberto por Desligamento }
-                 FechaGerencial( False );  // Não Gera Exception se não conseguir
+                 if Est <> 'L' then
+                 begin
+                    { Fecha Vinculado ou Gerencial, se ficou algum aberto por Desligamento }
+                    case Est of
+                      'C'      : ComandaECF( opeFechaVinculado );
+                      'G', 'R' : ComandaECF( opeFechaGerencial );
+                    end;
+
+                    if EstadoECF <> 'L' then
+                       raise EACBrTEFDECF.Create( ACBrStr('ECF não está LIVRE') ) ;
+                 end;
 
                  TempoInicio := now ;
                  if Resp.TextoEspecialOperador <> '' then
@@ -1919,7 +1932,7 @@ begin
                     Inc( I ) ;
                  end;
 
-                 FechaGerencial( True );  // Gera Exception se não conseguir
+                 ComandaECF( opeFechaGerencial );
                  ImpressaoOk := True ;
 
               finally
@@ -1954,10 +1967,7 @@ begin
            begin
              if DoExibeMsg( opmYesNo, 'Impressora não responde'+sLineBreak+
                                       'Tentar novamente ?') <> mrYes then
-             begin
-                FechaGerencial( False );  // Não Gera Exception se não conseguir
                 break ;
-             end;
            end;
         end;
      end ;

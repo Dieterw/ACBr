@@ -125,7 +125,6 @@ type
      function ComandaECF(Operacao : TACBrTEFDOperacaoECF) : Integer;
      function ComandaECFPagamento(Indice : String; Valor : Double) : Integer;
      function ComandaECFAbreVinculado(COO, Indice : String; Valor : Double) : Integer;
-     procedure FechaGerencial( ShowException : Boolean = False );
 
    public
      constructor Create( AOwner : TComponent ) ; override;
@@ -309,16 +308,23 @@ begin
      xBlockInput( Bloqueia ) ;
 end;
 
-procedure LimpaBufferTeclado;
-Var
-   Msg: TMsg;
-begin
-  try
-     // Remove todas as Teclas do Buffer do Teclado //
-     while PeekMessage(Msg, 0, WM_KEYFIRST, WM_KEYLAST, PM_REMOVE or PM_NOYIELD) do;
-  except
-  end ;
-end;
+{$IFDEF MSWINDOWS}
+ procedure LimpaBufferTeclado;
+ Var
+    Msg: TMsg;
+ begin
+   try
+      // Remove todas as Teclas do Buffer do Teclado //
+      while PeekMessage(Msg, 0, WM_KEYFIRST, WM_KEYLAST, PM_REMOVE or PM_NOYIELD) do;
+   except
+   end ;
+ end;
+{$ELSE}
+ procedure LimpaBufferTeclado;
+ begin
+   {}
+ end ;
+{$ENDIF}
 
 
 
@@ -498,9 +504,15 @@ begin
   end;
   Result := upcase( padL(Retorno,1)[1] );
 
-  if not (Result in ['L','V','P','O']) then
-     raise EACBrTEFDECF.Create( ACBrStr( 'Retorno de "OnInfoEcf( ineEstadoECF, Retorno )" deve ser:'+sLineBreak+
-                                     '"L" = Livre, "V" = Em Venda de Itens, "P" - Em Pagamento, "O" - Outro' ) );
+  if not (Result in ['L','V','P','C','G','R','O']) then
+     raise EACBrTEFDECF.Create(
+        ACBrStr( 'Retorno de "OnInfoEcf( ineEstadoECF, Retorno )" deve ser:'+sLineBreak+
+                 '"L" = Livre'+sLineBreak+
+                 '"V" = Venda de Itens'+sLineBreak+
+                 '"P" - Pagamento (ou SubTotal efetuado)'+sLineBreak+
+                 '"C" ou "R" - CDC ou Cupom Vinculado'+sLineBreak+
+                 '"G" ou "R" - Relatório Gerencial'+sLineBreak+
+                 '"O" - Outro' ) );
 end;
 
 procedure TACBrTEFD.AtivarGP(GP : TACBrTEFDTipo);
@@ -625,15 +637,24 @@ var
    GrupoVinc : TACBrTEFDArrayGrupoRespostasPendentes ;
    ImpressaoOk, Gerencial, RemoverMsg : Boolean ;
    TempoInicio : Double;
+   Est : Char ;
 begin
   if RespostasPendentes.Count <= 0 then
      exit ;
 
-  if EstadoECF <> 'L' then
-     FinalizarCupom;
+  Est := EstadoECF;
 
-  if EstadoECF <> 'L' then
-     raise EACBrTEFDECF.Create( ACBrStr('ECF não está LIVRE') ) ;
+  if Est <> 'L' then
+  begin
+     case Est of
+       'V', 'P' : FinalizarCupom;
+       'R', 'G' : ComandaECF( opeFechaGerencial );
+       'C'      : ComandaECF( opeFechaVinculado );
+     end;
+
+     if EstadoECF <> 'L' then
+        raise EACBrTEFDECF.Create( ACBrStr('ECF não está LIVRE') ) ;
+  end;
 
   ImpressaoOk := False ;
   Gerencial   := False ;
@@ -650,8 +671,19 @@ begin
            try
               if Gerencial then    //// Impressão em Gerencial ////
                begin
-                 { Fecha, se ficou algum aberto por Desligamento }
-                 FechaGerencial( False );  // Não Gera Exception se não conseguir
+                 Est := EstadoECF;
+
+                 if Est <> 'L' then
+                 begin
+                    { Fecha Vinculado ou Gerencial, se ficou algum aberto por Desligamento }
+                    case Est of
+                      'C'      : ComandaECF( opeFechaVinculado );
+                      'G', 'R' : ComandaECF( opeFechaGerencial );
+                    end;
+
+                    if EstadoECF <> 'L' then
+                       raise EACBrTEFDECF.Create( ACBrStr('ECF não está LIVRE') ) ;
+                 end;
 
                  For J := 0 to RespostasPendentes.Count-1 do
                  begin
@@ -689,7 +721,7 @@ begin
                        Inc( I ) ;
                     end;
 
-                    FechaGerencial( True );  // Gera Exception se não conseguir
+                    ComandaECF( opeFechaGerencial );
 
                     { Removendo a mensagem do Operador }
                     if RemoverMsg then
@@ -778,7 +810,6 @@ begin
                     end ;
 
                     ComandaECF( opeFechaVinculado ) ;
-
                  end;
                end;
 
@@ -804,10 +835,7 @@ begin
         begin
           if DoExibeMsg( opmYesNo, 'Impressora não responde'+sLineBreak+
                                    'Tentar novamente ?') <> mrYes then
-          begin
-             FechaGerencial( False );  // Não Gera Exception se não conseguir
              break ;
-          end;
         end;
 
         Gerencial := True ;
@@ -878,18 +906,6 @@ begin
   end;
 end;
 
-
-procedure TACBrTEFD.FechaGerencial( ShowException : Boolean = False );
-begin
-  try
-     ComandaECF( opeFechaGerencial ) ;
-  except
-     if ShowException then
-        raise ;
-  end;
-end;
-
-
 procedure TACBrTEFD.FinalizarCupom;
 Var
   I, J, Ordem : Integer;
@@ -910,9 +926,6 @@ begin
               while Est <> 'L' do
               begin
                  Case Est of
-                   'O' : raise Exception.Create(
-                               ACBrStr('ECF deve estar em Venda ou Pagamento'));
-
                    'V' : ComandaECF( opeSubTotalizaCupom );
 
                    'P' :
@@ -941,6 +954,9 @@ begin
 
                        ComandaECF( opeFechaCupom );
                      end ;
+                 otherwise
+                   raise Exception.Create(
+                      ACBrStr('ECF deve estar em Venda ou Pagamento'));
                  end;
 
                  Est := EstadoECF;

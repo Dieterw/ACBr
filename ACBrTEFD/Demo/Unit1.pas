@@ -632,7 +632,7 @@ begin
             pMensagemOperador.Visible := True ;
 
             { Aguardando 5 segundos }
-            Fim := IncSecond( now, 6)  ;
+            Fim := IncSecond( now, 3)  ;
             repeat
                sleep(200) ;
                pMensagemOperador.Caption := Mensagem + ' ' + IntToStr(SecondsBetween(Fim,now));
@@ -663,6 +663,7 @@ begin
            estLivre     : RetornoECF := 'L' ;
            estVenda     : RetornoECF := 'V' ;
            estPagamento : RetornoECF := 'P' ;
+           estRelatorio : RetornoECF := 'R' ;
          else
            RetornoECF := 'O' ;
          end;

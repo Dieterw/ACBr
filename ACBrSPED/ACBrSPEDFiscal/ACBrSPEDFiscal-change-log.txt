@@ -48,6 +48,10 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 Versão 0.02a   13/12/09
+[+] Adicionado recurso para que um Bloco_X possa pesquisar registros no Bloco_Y
+    o exemplo está no Bloco_C por (Isaque Pinheiro)
+
+Versão 0.02a   13/12/09
 [+] Adicionada propriedade "About" para melhor controle de Versao (DSA)
 [*] Implementado hierarquia dos registros C120, C130, C160, C165, C171, C172, 
     C173, C174, C175, C176, C177, C178, C179 e C195 por (Isaque Pinheiro)

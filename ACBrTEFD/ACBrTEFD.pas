@@ -637,7 +637,7 @@ var
    GrupoVinc : TACBrTEFDArrayGrupoRespostasPendentes ;
    ImpressaoOk, Gerencial, RemoverMsg : Boolean ;
    TempoInicio : Double;
-   Est : Char ;
+   Est : AnsiChar ;
 begin
   if RespostasPendentes.Count <= 0 then
      exit ;

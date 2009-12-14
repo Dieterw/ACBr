@@ -1865,7 +1865,8 @@ Var
   I : Integer;
   TempoInicio : TDateTime ;
   ImpressaoOk, RemoverMsg : Boolean ;
-  Est : Char ;
+  Est : AnsiChar ;
+  ArqBackup : String ;
 begin
   VerificaIniciouRequisicao;
 
@@ -1974,7 +1975,8 @@ begin
 
   finally
     { Enviando CNF ou NCN e apagando Arquivo de Backup }
-    while FileExists( Resp.ArqBackup ) do
+    ArqBackup := Resp.ArqBackup ;
+    while FileExists( ArqBackup ) do
     begin
        try
           if ImpressaoOk then
@@ -1982,7 +1984,7 @@ begin
           else
              self.NCN ;
 
-          DeleteFile( Resp.ArqBackup ) ;
+          DeleteFile( ArqBackup ) ;
 
        except
        end;

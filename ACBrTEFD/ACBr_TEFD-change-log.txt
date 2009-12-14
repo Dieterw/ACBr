@@ -50,6 +50,7 @@ Símbolo : Significado
 Versão 0.3a   13/12/09
 [-] Corregido Bug em Re-Impressão de Vinculado / Gerencial após desligamento do
     ECF
+[-] Corregido Bug que não apagava Arquivo de Backup após Impressão de Gerencial
 
 Versão 0.2a   13/12/09
 [-] Correção de Bug em ImprimirComprovantesPendentes

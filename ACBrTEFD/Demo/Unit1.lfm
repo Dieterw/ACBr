@@ -259,6 +259,7 @@ object Form1: TForm1
             Top = 20
             Width = 133
             ItemHeight = 15
+            OnChange = cbxGPChange
             Style = csDropDownList
             TabOrder = 0
           end
@@ -591,6 +592,7 @@ object Form1: TForm1
           Top = 2
           Width = 142
           ItemHeight = 15
+          OnChange = cbxGPChange
           Style = csDropDownList
           TabOrder = 0
         end

@@ -120,6 +120,7 @@ type
      procedure bAbreVendeSubTotaliza3Click(Sender : TObject);
      procedure bAbreVendeSubTotaliza4Click(Sender : TObject);
      procedure bCancelarRespClick(Sender : TObject);
+     procedure cbxGPChange(Sender : TObject);
      procedure ckCliSiTefChange(Sender : TObject);
      procedure CliSiTefExibeMenu(Titulo : String; Opcoes : TStringList;
         var ItemSlecionado : Integer);
@@ -706,6 +707,17 @@ end;
 procedure TForm1.bCancelarRespClick(Sender : TObject);
 begin
    fCancelado := True ;
+end;
+
+procedure TForm1.cbxGPChange(Sender : TObject);
+begin
+  if not (Sender is TComboBox) then exit ;
+
+  try
+    ACBrTEFD1.GPAtual := TACBrTEFDTipo(  TComboBox(Sender).ItemIndex ) ;
+  finally
+    AvaliaTEFs;
+  end;
 end;
 
 procedure TForm1.ckCliSiTefChange(Sender : TObject);

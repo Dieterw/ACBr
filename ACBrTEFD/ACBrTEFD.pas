@@ -954,7 +954,7 @@ begin
 
                        ComandaECF( opeFechaCupom );
                      end ;
-                 otherwise
+                 else
                    raise Exception.Create(
                       ACBrStr('ECF deve estar em Venda ou Pagamento'));
                  end;

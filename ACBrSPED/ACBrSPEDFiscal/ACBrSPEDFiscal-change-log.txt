@@ -48,7 +48,7 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 Versão 0.03a   15/12/09
-[*] Implementado hierarquia dos registros 0175, 0205, 0206, 0220, 0450 e H010 
+[*] Implementado hierarquia dos registros 0175, 0205, 0206, 0220 e H010 
     por (Isaque Pinheiro)
 
 Versão 0.03a   14/12/09

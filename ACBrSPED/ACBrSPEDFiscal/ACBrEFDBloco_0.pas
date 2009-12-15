@@ -88,6 +88,8 @@ type
   public
   end;
 
+  TRegistro0175List = class;
+
   /// Registro 0005 - DADOS COMPLEMENTARES DA ENTIDADE
 
   TRegistro0005 = class(TPersistent)
@@ -185,7 +187,12 @@ type
     fNUM: AnsiString;         /// Número do imóvel:
     fCOMPL: AnsiString;       /// Dados complementares do endereço:
     fBAIRRO: AnsiString;      /// Bairro em que o imóvel está situado:
+
+    FRegistro0175: TRegistro0175List;  /// BLOCO C - Lista de Registro0175 (FILHO)
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property COD_PART: AnsiString read FCOD_PART write FCOD_PART;
     property NOME: AnsiString read FNOME write FNOME;
     property COD_PAIS: AnsiString read FCOD_PAIS write FCOD_PAIS;
@@ -198,6 +205,8 @@ type
     property NUM: AnsiString read FNUM write FNUM;
     property COMPL: AnsiString read FCOMPL write FCOMPL;
     property BAIRRO: AnsiString read FBAIRRO write FBAIRRO;
+    /// Registros FILHOS
+    property Registro0175: TRegistro0175List read FRegistro0175 write FRegistro0175;
   end;
 
   /// Registro 0150 - Lista
@@ -798,6 +807,19 @@ end;
 procedure TRegistro0460List.SetItem(Index: Integer; const Value: TRegistro0460);
 begin
   Put(Index, Value);
+end;
+
+{ TRegistro0150 }
+
+constructor TRegistro0150.Create;
+begin
+  FRegistro0175 := TRegistro0175List.Create;
+end;
+
+destructor TRegistro0150.Destroy;
+begin
+  FRegistro0175.Free;
+  inherited;
 end;
 
 end.

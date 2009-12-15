@@ -53,15 +53,24 @@ type
   public
   end;
 
+  TRegistroH010List = class;
+
   /// Registro H005 - TOTAIS DO INVENTÁRIO
 
   TRegistroH005 = class(TPersistent)
   private
     fDT_INV: TDateTime;    /// Data do inventário:
     fVL_INV: currency;     /// Valor total do estoque:
+
+    FRegistroH010: TRegistroH010List;  /// BLOCO C - Lista de RegistroH010 (FILHO)
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property DT_INV: TDateTime read FDT_INV write FDT_INV;
     property VL_INV: currency read FVL_INV write FVL_INV;
+    /// Registros FILHOS
+    property RegistroH010: TRegistroH010List read FRegistroH010 write FRegistroH010;
   end;
 
   /// Registro H005 - Lista
@@ -175,6 +184,19 @@ end;
 procedure TRegistroH005List.SetItem(Index: Integer; const Value: TRegistroH005);
 begin
   Put(Index, Value);
+end;
+
+{ TRegistroH005 }
+
+constructor TRegistroH005.Create;
+begin
+  FRegistroH010 := TRegistroH010List.Create;
+end;
+
+destructor TRegistroH005.Destroy;
+begin
+  FRegistroH010.Free;
+  inherited;
 end;
 
 end.

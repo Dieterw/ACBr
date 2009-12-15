@@ -54,7 +54,6 @@ type
     FRegistro0015: TRegistro0015List;  /// BLOCO 0 - Lista de Registro0015
     FRegistro0100: TRegistro0100;      /// BLOCO 0 - Registro0100
     FRegistro0150: TRegistro0150List;  /// BLOCO 0 - Lista de Registro0150
-    FRegistro0175: TRegistro0175List;  /// BLOCO 0 - Lista de Registro0175
     FRegistro0190: TRegistro0190List;  /// BLOCO 0 - Lista de Registro0190
     FRegistro0200: TRegistro0200List;  /// BLOCO 0 - Lista de Registro0200
     FRegistro0205: TRegistro0205List;  /// BLOCO 0 - Lista de Registro0205
@@ -64,6 +63,10 @@ type
     FRegistro0450: TRegistro0450List;  /// BLOCO 0 - Lista de Registro0450
     FRegistro0460: TRegistro0460List;  /// BLOCO 0 - Lista de Registro0460
     FRegistro0990: TRegistro0990;      /// BLOCO 0 - Registro0990
+
+    FRegistro0175Count: Integer;
+
+    function WriteRegistro0175(Reg0150: TRegistro0150): AnsiString;
 
     procedure CriaRegistros;
     procedure LiberaRegistros;
@@ -78,7 +81,6 @@ type
     function WriteRegistro0015: AnsiString;
     function WriteRegistro0100: AnsiString;
     function WriteRegistro0150: AnsiString;
-    function WriteRegistro0175: AnsiString;
     function WriteRegistro0190: AnsiString;
     function WriteRegistro0200: AnsiString;
     function WriteRegistro0205: AnsiString;
@@ -95,7 +97,6 @@ type
     property Registro0015: TRegistro0015List read FRegistro0015 write FRegistro0015;
     property Registro0100: TRegistro0100     read FRegistro0100 write FRegistro0100;
     property Registro0150: TRegistro0150List read FRegistro0150 write FRegistro0150;
-    property Registro0175: TRegistro0175List read FRegistro0175 write FRegistro0175;
     property Registro0190: TRegistro0190List read FRegistro0190 write FRegistro0190;
     property Registro0200: TRegistro0200List read FRegistro0200 write FRegistro0200;
     property Registro0205: TRegistro0205List read FRegistro0205 write FRegistro0205;
@@ -105,6 +106,8 @@ type
     property Registro0450: TRegistro0450List read FRegistro0450 write FRegistro0450;
     property Registro0460: TRegistro0460List read FRegistro0460 write FRegistro0460;
     property Registro0990: TRegistro0990 read FRegistro0990 write FRegistro0990;
+
+    property Registro0175Count: Integer read FRegistro0175Count write FRegistro0175Count;
   end;
 
 implementation
@@ -133,7 +136,7 @@ begin
   FRegistro0015 := TRegistro0015List.Create;
   FRegistro0100 := TRegistro0100.Create;
   FRegistro0150 := TRegistro0150List.Create;
-  FRegistro0175 := TRegistro0175List.Create;
+//  FRegistro0175 := TRegistro0175List.Create;
   FRegistro0190 := TRegistro0190List.Create;
   FRegistro0200 := TRegistro0200List.Create;
   FRegistro0205 := TRegistro0205List.Create;
@@ -143,6 +146,8 @@ begin
   FRegistro0450 := TRegistro0450List.Create;
   FRegistro0460 := TRegistro0460List.Create;
   FRegistro0990 := TRegistro0990.Create;
+
+  FRegistro0175Count := 0;
 
   FRegistro0990.QTD_LIN_0 := 0;
 end;
@@ -155,7 +160,7 @@ begin
   FRegistro0015.Free;
   FRegistro0100.Free;
   FRegistro0150.Free;
-  FRegistro0175.Free;
+//  FRegistro0175.Free;
   FRegistro0190.Free;
   FRegistro0200.Free;
   FRegistro0205.Free;
@@ -366,24 +371,28 @@ begin
                                                Delimitador +
                                                #13#10;
         end;
+        /// Registros FILHOS
+        strRegistro0150 := strRegistro0150 +
+                           WriteRegistro0175( Registro0150.Items[intFor] );
+
         Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
      end;
   end;
   Result := strRegistro0150;
 end;
 
-function TBloco_0.WriteRegistro0175: AnsiString;
+function TBloco_0.WriteRegistro0175(Reg0150: TRegistro0150): AnsiString;
 var
 intFor: integer;
 strRegistro0175: AnsiString;
 begin
   strRegistro0175 := '';
 
-  if Assigned(Registro0175) then
+  if Assigned(Reg0150.Registro0175) then
   begin
-     for intFor := 0 to Registro0175.Count - 1 do
+     for intFor := 0 to Reg0150.Registro0175.Count - 1 do
      begin
-        with Registro0175.Items[intFor] do
+        with Reg0150.Registro0175.Items[intFor] do
         begin
           Check(((DT_ALT >= DT_INI) and (DT_ALT <= DT_FIN)),  '(0-0175) ALTERAÇÃO NO CADASTRO DE CLIENTES/FORNECEDORES: A data da alteração deve estar no intervalo de: s% a s%!', [DateToStr(DT_INI), DateToStr(DT_FIN)]);
           ///
@@ -396,6 +405,8 @@ begin
         end;
         Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
      end;
+     /// Variavél para armazenar a quantidade de registro do tipo.
+     FRegistro0175Count := FRegistro0175Count + Reg0150.Registro0175.Count;
   end;
   Result := strRegistro0175;
 end;

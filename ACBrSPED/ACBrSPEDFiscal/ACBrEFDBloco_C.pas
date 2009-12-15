@@ -121,14 +121,14 @@ type
     fVL_COFINS_ST: currency;   /// Valor total da COFINS retido por substituição tributária
 
     FRegistroC110: TRegistroC110List;  /// BLOCO C - Lista de RegistroC110 (FILHO)
-    FRegistroC120: TRegistroC120List;  /// BLOCO C - Lista de RegistroC110 (FILHO)
-    FRegistroC130: TRegistroC130List;  /// BLOCO C - Lista de RegistroC110 (FILHO)
+    FRegistroC120: TRegistroC120List;  /// BLOCO C - Lista de RegistroC120 (FILHO)
+    FRegistroC130: TRegistroC130List;  /// BLOCO C - Lista de RegistroC130 (FILHO)
     FRegistroC140: TRegistroC140List;  /// BLOCO C - Lista de RegistroC140 (FILHO) {Márcio Lopes 30Nov2009}
-    FRegistroC160: TRegistroC160List;  /// BLOCO C - Lista de RegistroC110 (FILHO)
-    FRegistroC165: TRegistroC165List;  /// BLOCO C - Lista de RegistroC110 (FILHO)
+    FRegistroC160: TRegistroC160List;  /// BLOCO C - Lista de RegistroC160 (FILHO)
+    FRegistroC165: TRegistroC165List;  /// BLOCO C - Lista de RegistroC165 (FILHO)
     FRegistroC170: TRegistroC170List;  /// BLOCO C - Lista de RegistroC170 (FILHO)
     FRegistroC190: TRegistroC190List;  /// BLOCO C - Lista de RegistroC190 (FILHO) {Jean Barreiros 17Nov2009}
-    FRegistroC195: TRegistroC195List;  /// BLOCO C - Lista de RegistroC110 (FILHO)
+    FRegistroC195: TRegistroC195List;  /// BLOCO C - Lista de RegistroC195 (FILHO)
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy

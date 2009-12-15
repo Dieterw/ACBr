@@ -92,6 +92,7 @@ type
   TRegistro0205List = class;
   TRegistro0206List = class;
   TRegistro0220List = class;
+  TRegistro0450List = class;
 
   /// Registro 0005 - DADOS COMPLEMENTARES DA ENTIDADE
 
@@ -402,9 +403,16 @@ type
   private
     fCOD_NAT: AnsiString;        /// Código da natureza:
     fDESCR_NAT: AnsiString;      /// Descrição da natureza:
+
+    FRegistro0450: TRegistro0450List;  /// BLOCO C - Lista de Registro0450 (FILHO)
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property COD_NAT: AnsiString read FCOD_NAT write FCOD_NAT;
     property DESCR_NAT: AnsiString read FDESCR_NAT write FDESCR_NAT;
+    /// Registros FILHOS
+    property Registro0450: TRegistro0450List read FRegistro0450 write FRegistro0450;
   end;
 
   /// Registro 0400 - Lista
@@ -850,6 +858,19 @@ begin
   FRegistro0205.Free;
   FRegistro0206.Free;
   FRegistro0220.Free;
+  inherited;
+end;
+
+{ TRegistro0400 }
+
+constructor TRegistro0400.Create;
+begin
+   FRegistro0450 := TRegistro0450List.Create;
+end;
+
+destructor TRegistro0400.Destroy;
+begin
+  FRegistro0450.Free;
   inherited;
 end;
 

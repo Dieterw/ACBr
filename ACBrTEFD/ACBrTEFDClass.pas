@@ -70,12 +70,12 @@ type
   TACBrTEFDReqEstado = ( reqNenhum,             // Nennhuma Requisição em andamento
                          reqIniciando,          // Iniciando uma nova Requisicao
                          reqCriandoArquivo,     // Arquivo Temporário de requisição está sendo criado
-                         reqAgardandoResposta,  // Requisição Escrita, Aguardando Resposta
+                         reqAguardandoResposta,  // Requisição Escrita, Aguardando Resposta
                          reqConferindoResposta, // Verifica se o STS é válido
                          reqFinalizada ) ;
 
   TACBrTEFDRespEstado = ( respNenhum,              // Nennhuma Resposta em andamento
-                          respAgardandoResposta,   // Requisição Escrita, Aguardando Resposta
+                          respAguardandoResposta,   // Requisição Escrita, Aguardando Resposta
                           respProcessando,         // Processando a Resposta
                           respConcluida ) ;
 
@@ -691,7 +691,7 @@ begin
   if AValue = 0 then
      fInformacao := ''
   else
-     fInformacao := IntToStr( Trunc( AValue * 100 ) ) ;
+     fInformacao := IntToStr(Trunc(SimpleRoundTo( AValue * 100 ,0)));
 end;
 
 procedure TACBrTEFDLinhaInformacao.SetAsInteger(const AValue : Integer);
@@ -1640,7 +1640,7 @@ begin
      raise EACBrTEFDArquivo.Create( ACBrStr( 'Erro ao Renomear:' + sLineBreak +
                                 ArqTemp + 'para:' + sLineBreak + ArqReq ) ) ;
 
-  TACBrTEFD(Owner).EstadoReq := reqAgardandoResposta;
+  TACBrTEFD(Owner).EstadoReq := reqAguardandoResposta;
 
   TempoInicioEspera := now ;
   TempoFimEspera    := IncSecond(TempoInicioEspera, EsperaSTS );
@@ -1696,7 +1696,7 @@ begin
   VerificaIniciouRequisicao;
   Resp.Clear;
 
-  TACBrTEFD(Owner).EstadoResp  := respAgardandoResposta;
+  TACBrTEFD(Owner).EstadoResp  := respAguardandoResposta;
   Interromper := False ;
   OK          := False ;
   try

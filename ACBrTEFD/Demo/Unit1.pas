@@ -681,7 +681,7 @@ end;
 procedure TForm1.ACBrTEFD1MudaEstadoResp(EstadoResp : TACBrTEFDRespEstado);
 begin
   StatusBar1.Panels[1].Text := GetEnumName(TypeInfo(TACBrTEFDRespEstado), Integer(EstadoResp) ) ;
-  bCancelarResp.Visible     := (EstadoResp = respAgardandoResposta) ;
+  bCancelarResp.Visible     := (EstadoResp = respAguardandoResposta) ;
 end;
 
 procedure TForm1.bAbreVendeSubTotaliza1Click(Sender : TObject);

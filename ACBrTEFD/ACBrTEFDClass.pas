@@ -55,7 +55,7 @@ uses
   {$ENDIF} ;
 
 const
-   CACBrTEFD_Versao      = '0.3a' ;
+   CACBrTEFD_Versao      = '0.4a' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -108,6 +108,8 @@ type
                            opePulaLinhas, opeSubTotalizaCupom, opeFechaCupom,
                            opeImprimeVinculado, opeFechaVinculado, opeCancelaCupom ) ;
 
+  TACBrTEFDBloqueiaMouseTeclado = procedure( Bloqueia : Boolean ) of object ;
+
   TACBrTEFDComandaECF = procedure( Operacao : TACBrTEFDOperacaoECF; Resp : TACBrTEFDResp;
      var RetornoECF : Integer ) of object ; { -1 - Não tratado, 0 - Erro na Execucao, 1 - Sucesso }
 
@@ -131,7 +133,7 @@ type
 
   TACBrTEFDLinhaInformacao = class
   private
-    fInformacao : String;
+    fInformacao : AnsiString;
 
     function GetAsDate : TDateTime;
     function GetAsFloat : Double;
@@ -144,12 +146,12 @@ type
     procedure SetAsTime(const AValue : TDateTime);
     procedure SetAsTimeStamp(const AValue : TDateTime);
   public
-    property AsString   : String    read fInformacao    write fInformacao ;
-    property AsDate     : TDateTime read GetAsDate      write SetAsDate ;
-    property AsTime     : TDateTime read GetAsTime      write SetAsTime ;
-    property AsTimeStamp: TDateTime read GetAsTimeStamp write SetAsTimeStamp ;
-    property AsInteger  : Integer   read GetAsInteger   write SetAsInteger ;
-    property AsFloat    : Double    read GetAsFloat     write SetAsFloat ;
+    property AsString   : AnsiString read fInformacao    write fInformacao ;
+    property AsDate     : TDateTime  read GetAsDate      write SetAsDate ;
+    property AsTime     : TDateTime  read GetAsTime      write SetAsTime ;
+    property AsTimeStamp: TDateTime  read GetAsTimeStamp write SetAsTimeStamp ;
+    property AsInteger  : Integer    read GetAsInteger   write SetAsInteger ;
+    property AsFloat    : Double     read GetAsFloat     write SetAsFloat ;
   end ;
 
    { TACBrTEFDLinha }
@@ -158,15 +160,16 @@ type
    private
      fIdentificacao : SmallInt;
      fInformacao : TACBrTEFDLinhaInformacao;
-     fLinha : String;
+     fLinha : AnsiString;
      fSequencia : SmallInt;
-     function GetLinha : String;
-     procedure SetLinha(const AValue : String);
+   protected
+     function GetLinha : AnsiString; virtual;
+     procedure SetLinha(const AValue : AnsiString); virtual;
    public
      constructor Create ;
      destructor Destroy ; override;
 
-     property Linha : String read GetLinha write SetLinha ;
+     property Linha : AnsiString read GetLinha write SetLinha ;
 
      property Identificacao : SmallInt read fIdentificacao write fIdentificacao  ;
      property Sequencia     : SmallInt read fSequencia     write fSequencia ;
@@ -198,7 +201,7 @@ type
      procedure LeArquivo( const NomeArquivo : String ) ;
 
      procedure GravaInformacao( const Identificacao : Integer;
-        const Sequencia : Integer; const Informacao : String ) ; overload;
+        const Sequencia : Integer; const Informacao : AnsiString ) ; overload;
      procedure GravaInformacao( const Identificacao : Integer;
         const Sequencia : Integer; const Informacao : TACBrTEFDLinhaInformacao ) ; overload;
      function LeInformacao( const Identificacao : Integer;
@@ -736,7 +739,7 @@ begin
   inherited Destroy;
 end;
 
-function TACBrTEFDLinha.GetLinha : String;
+function TACBrTEFDLinha.GetLinha : AnsiString;
 begin
    if fLinha <> '' then
       Result := fLinha
@@ -745,7 +748,7 @@ begin
                 ' = '+Informacao.AsString ;
 end;
 
-procedure TACBrTEFDLinha.SetLinha(const AValue : String);
+procedure TACBrTEFDLinha.SetLinha(const AValue : AnsiString);
 begin
    if fLinha = AValue then exit;
 
@@ -809,7 +812,7 @@ begin
 end;
 
 procedure TACBrTEFDArquivo.GravaInformacao(const Identificacao : Integer;
-   const Sequencia : Integer; const Informacao : String);
+   const Sequencia : Integer; const Informacao : AnsiString);
 Var
   I : Integer ;
   ALinha : TACBrTEFDLinha ;
@@ -1151,7 +1154,7 @@ var
    Linha : TACBrTEFDLinha ;
    I     : Integer;
    Parc  : TACBrTEFDRespParcela;
-   LinStr: String ;
+   LinStr: AnsiString ;
 begin
    fDataHoraTransacaoComprovante := 0 ;
    fImagemComprovante.Clear;
@@ -1218,7 +1221,7 @@ begin
             3 : fOrdemPagamento := Linha.Informacao.AsInteger ;
           end;
         end;
-       999 : fTrailer                    := Linha.Informacao.AsString ;
+       999 : fTrailer           := Linha.Informacao.AsString ;
      end;
    end ;
 
@@ -1553,7 +1556,7 @@ end;
 procedure TACBrTEFDClass.NCN(Rede, NSU, Finalizacao : String;
   Valor : Double = 0; DocumentoVinculado : String = '');
 Var
-  MsgStr  : String ;
+  MsgStr : String ;
 begin
   VerificaAtivo;         { VisaNET exige um ATV antes de cada transação }
 
@@ -1585,7 +1588,7 @@ begin
 
   RunCommand( GPExeName );
   Sleep(2000);
-  FocoJanela ;
+  TACBrTEFD(Owner).RestauraFocoAplicacao;
 end;
 
 procedure TACBrTEFDClass.IniciarRequisicao( AHeader : String;
@@ -1955,7 +1958,7 @@ begin
                  end;
 
                  BloqueiaMouseTeclado( False );
-                 LimpaBufferTeclado;
+                 LimpaTeclado;
               end;
 
            except

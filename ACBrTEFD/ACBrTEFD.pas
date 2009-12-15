@@ -74,17 +74,21 @@ type
      fEsperaSleep : Integer;
      fEstadoReq : TACBrTEFDReqEstado;
      fEstadoResp : TACBrTEFDRespEstado;
+     ffOnLimpaTeclado : TNotifyEvent;
      fMultiplosCartoes : Boolean;
      fNumVias : Integer;
      fOnAguardaResp : TACBrTEFDAguardaRespEvent;
      fOnAntesFinalizarRequisicao : TACBrTEFDAntesFinalizarReq;
+     fOnBloqueiaMouseTeclado : TACBrTEFDBloqueiaMouseTeclado;
      fOnComandaECF : TACBrTEFDComandaECF;
      fOnComandaECFAbreVinculado : TACBrTEFDComandaECFAbreVinculado;
      fOnComandaECFPagamento : TACBrTEFDComandaECFPagamento;
      fOnExibeMsg : TACBrTEFDExibeMsg;
      fOnInfoECF : TACBrTEFDObterInfoECF;
+     fOnLimpaTeclado : TNotifyEvent;
      fOnMudaEstadoReq : TACBrTEFDMudaEstadoReq;
      fOnMudaEstadoResp : TACBrTEFDMudaEstadoResp;
+     fOnRestauraFocoAplicacao : TNotifyEvent;
      fPathBackup   : String;
      fGPAtual      : TACBrTEFDTipo;
      fTefClass     : TACBrTEFDClass ;
@@ -117,7 +121,8 @@ type
      procedure SetNumVias(const AValue : Integer);
      procedure SetPathBackup(const AValue : String);
      procedure SetGPAtual(const AValue : TACBrTEFDTipo);
-    procedure SetAbout(const Value: String);
+     procedure SetAbout(const Value: String);{%h-}
+
    public
      Function EstadoECF : AnsiChar ;
      function DoExibeMsg( Operacao : TACBrTEFDOperacaoMensagem;
@@ -125,6 +130,10 @@ type
      function ComandaECF(Operacao : TACBrTEFDOperacaoECF) : Integer;
      function ComandaECFPagamento(Indice : String; Valor : Double) : Integer;
      function ComandaECFAbreVinculado(COO, Indice : String; Valor : Double) : Integer;
+
+     procedure BloqueiaMouseTeclado(Bloqueia : Boolean);
+     procedure LimpaTeclado;
+     procedure RestauraFocoAplicacao ;
 
    public
      constructor Create( AOwner : TComponent ) ; override;
@@ -209,6 +218,12 @@ type
         write fOnAguardaResp ;
      property OnExibeMsg    : TACBrTEFDExibeMsg read fOnExibeMsg
         write fOnExibeMsg ;
+     property OnBloqueiaMouseTeclado : TACBrTEFDBloqueiaMouseTeclado
+        read fOnBloqueiaMouseTeclado write fOnBloqueiaMouseTeclado ;
+     property OnRestauraFocoAplicacao : TNotifyEvent
+        read fOnRestauraFocoAplicacao write fOnRestauraFocoAplicacao ;
+     property OnLimpaTeclado : TNotifyEvent read fOnLimpaTeclado
+        write ffOnLimpaTeclado ;
      property OnComandaECF  : TACBrTEFDComandaECF read fOnComandaECF
         write fOnComandaECF ;
      property OnComandaECFPagamento  : TACBrTEFDComandaECFPagamento
@@ -228,9 +243,6 @@ procedure Register;
 
 procedure ApagaEVerifica( const Arquivo : String ) ;
 function FlushToDisk(sDriveLetter: string): boolean;
-procedure FocoJanela( NomeJanela : String = '' ) ;
-procedure BloqueiaMouseTeclado( Bloqueia : Boolean ) ;
-procedure LimpaBufferTeclado ;
 
 implementation
 
@@ -289,45 +301,6 @@ end;
  end ;
 {$ENDIF}
 
-procedure FocoJanela(NomeJanela : String);
-begin
-  Application.BringToFront ;
-
-(*
-  {$IFDEF VisualCLX}
-   QWidget_setActiveWindow( Screen.ActiveForm.Handle );
-  {$ELSE}
-   SetForeGroundWindow( Screen.ActiveForm.Handle );
-  {$ENDIF}
-*)
-end;
-
-procedure BloqueiaMouseTeclado(Bloqueia : Boolean );
-begin
-  if Assigned( xBlockInput ) then
-     xBlockInput( Bloqueia ) ;
-end;
-
-{$IFDEF MSWINDOWS}
- procedure LimpaBufferTeclado;
- Var
-    Msg: TMsg;
- begin
-   try
-      // Remove todas as Teclas do Buffer do Teclado //
-      while PeekMessage(Msg, 0, WM_KEYFIRST, WM_KEYLAST, PM_REMOVE or PM_NOYIELD) do;
-   except
-   end ;
- end;
-{$ELSE}
- procedure LimpaBufferTeclado;
- begin
-   {}
- end ;
-{$ENDIF}
-
-
-
 { TACBrTEFDClass }
 
 constructor TACBrTEFD.Create(AOwner : TComponent);
@@ -354,6 +327,9 @@ begin
   fOnExibeMsg                 := nil ;
   fOnMudaEstadoReq            := nil ;
   fOnMudaEstadoResp           := nil ;
+  fOnBloqueiaMouseTeclado     := nil ;
+  fOnLimpaTeclado             := nil ;
+  fOnRestauraFocoAplicacao    := nil ;
 
   { Lista de Objetos com todas as Classes de TEF }
   fTEFList := TACBrTEFDClassList.create(True);
@@ -823,7 +799,7 @@ begin
               end;
 
               BloqueiaMouseTeclado( False );
-              LimpaBufferTeclado;
+              LimpaTeclado;
            end;
         except
            on EACBrTEFDECF do ImpressaoOk := False ;
@@ -853,7 +829,7 @@ end;
 Function TACBrTEFD.DoExibeMsg( Operacao : TACBrTEFDOperacaoMensagem;
    Mensagem : String) : TModalResult ;
 begin
-  FocoJanela ;
+  RestauraFocoAplicacao ;
 
   Result := mrNone ;
   OnExibeMsg( Operacao, ACBrStr( Mensagem ), Result );
@@ -966,7 +942,7 @@ begin
 
            finally
               BloqueiaMouseTeclado( False );
-              LimpaBufferTeclado;
+              LimpaTeclado;
            end;
 
         except
@@ -1214,6 +1190,52 @@ begin
   if RightStr(fPathBackup,1) = PathDelim then   { Remove ultimo PathDelim }
      fPathBackup := copy( fPathBackup,1,Length(fPathBackup)-1 ) ;
 end;
+
+procedure TACBrTEFD.BloqueiaMouseTeclado( Bloqueia : Boolean );
+begin
+  if Assigned( fOnBloqueiaMouseTeclado ) then
+     OnBloqueiaMouseTeclado( Bloqueia )
+  else
+     if Assigned( xBlockInput ) then
+        xBlockInput( Bloqueia ) ;
+end;
+
+ procedure TACBrTEFD.LimpaTeclado;
+{$IFDEF MSWINDOWS}
+  Var
+     Msg: TMsg;
+{$ENDIF}
+ begin
+   if Assigned( fOnLimpaTeclado ) then
+      OnLimpaTeclado( self )
+   {$IFDEF MSWINDOWS}
+    else
+      try
+         // Remove todas as Teclas do Buffer do Teclado //
+         while PeekMessage(Msg, 0, WM_KEYFIRST, WM_KEYLAST, PM_REMOVE or PM_NOYIELD) do;{%h-}
+      except
+      end
+   {$ENDIF} ;
+ end;
+
+ procedure TACBrTEFD.RestauraFocoAplicacao ;
+ begin
+   if Assigned( fOnRestauraFocoAplicacao ) then
+      OnRestauraFocoAplicacao( Self )
+   else
+    begin
+      Application.BringToFront ;
+
+      (*
+      {$IFDEF VisualCLX}
+       QWidget_setActiveWindow( Screen.ActiveForm.Handle );
+      {$ELSE}
+       SetForeGroundWindow( Screen.ActiveForm.Handle );
+      {$ENDIF}
+      *)
+    end;
+ end;
+
 
 {$ifdef FPC}
 initialization

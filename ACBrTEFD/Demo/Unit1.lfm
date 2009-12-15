@@ -498,7 +498,7 @@ object Form1: TForm1
         object bADM: TButton
           Left = 6
           Height = 25
-          Top = 32
+          Top = 40
           Width = 68
           Caption = 'ADM'
           OnClick = bADMClick
@@ -525,7 +525,7 @@ object Form1: TForm1
         object bCNF: TButton
           Left = 79
           Height = 25
-          Top = 32
+          Top = 40
           Width = 68
           Caption = 'CNF'
           OnClick = bCNFClick
@@ -534,7 +534,7 @@ object Form1: TForm1
         object bNCN: TButton
           Left = 153
           Height = 25
-          Top = 32
+          Top = 40
           Width = 68
           Caption = 'NCN'
           OnClick = bNCNClick

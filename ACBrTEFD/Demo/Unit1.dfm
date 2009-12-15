@@ -275,7 +275,7 @@ object Form1: TForm1
             Width = 133
             Height = 21
             Style = csDropDownList
-            ItemHeight = 13
+            ItemHeight = 0
             TabOrder = 0
           end
           object bAtivarGP: TButton
@@ -487,7 +487,7 @@ object Form1: TForm1
         end
         object bADM: TButton
           Left = 6
-          Top = 48
+          Top = 56
           Width = 68
           Height = 25
           Caption = 'ADM'
@@ -514,7 +514,7 @@ object Form1: TForm1
         end
         object bCNF: TButton
           Left = 79
-          Top = 48
+          Top = 56
           Width = 68
           Height = 25
           Caption = 'CNF'
@@ -523,7 +523,7 @@ object Form1: TForm1
         end
         object bNCN: TButton
           Left = 153
-          Top = 48
+          Top = 56
           Width = 68
           Height = 25
           Caption = 'NCN'

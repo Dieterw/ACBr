@@ -45,7 +45,7 @@ unit ACBrTEFDCliSiTef;
 interface
 
 uses
-  Classes, SysUtils, ACBrTEFDClass
+  Classes, SysUtils, ACBrTEFDClass, contnrs
   {$IFDEF VisualCLX}
      ,QControls
   {$ELSE}
@@ -61,6 +61,50 @@ Const
 {$ENDIF}
 
 type
+  { TACBrTEFDLinha }
+
+  { TACBrTEFDCliSiTefLinha }
+
+  TACBrTEFDCliSiTefLinha = class( TACBrTEFDLinha )
+  private
+  protected
+    property Sequencia ;
+  public
+    property Identificacao ;
+    property Informacao ;
+  end ;
+
+
+  { TACBrTEFDRespParcelas }
+  { Lista de Objetos do tipo TACBrTEFParcela }
+
+  { TACBrTEFDCliSiTefResp }
+
+  TACBrTEFDCliSiTefResp = class(TObjectList)
+    protected
+      procedure SetObject (Index: Integer; Item: TACBrTEFDCliSiTefLinha);
+      function GetObject (Index: Integer): TACBrTEFDCliSiTefLinha;
+
+      function AchaLinha(const Identificacao : Integer) : Integer;
+
+    public
+      function Add (Obj: TACBrTEFDCliSiTefLinha): Integer;
+      procedure Insert (Index: Integer; Obj: TACBrTEFDCliSiTefLinha);
+      property Objects [Index: Integer]: TACBrTEFDCliSiTefLinha
+         read GetObject write SetObject; default;
+
+      procedure GravaInformacao( const Identificacao : Integer;
+         const Informacao : AnsiString ) ; overload;
+      procedure GravaInformacao( const Identificacao : Integer;
+         const Informacao : TACBrTEFDLinhaInformacao ) ; overload;
+      function LeInformacao( const Identificacao : Integer)
+         : TACBrTEFDLinhaInformacao ;
+
+      function LeLinha( const Identificacao : Integer) : TACBrTEFDCliSiTefLinha ;
+      Procedure LeStrings( AStringList : TStringList ) ;
+    end;
+
+
   TACBrTEFDCliSiTefExibeMenu = procedure( Titulo : String; Opcoes : TStringList;
     var ItemSlecionado : Integer ) of object ;
 
@@ -78,6 +122,9 @@ type
       fOnObtemCampo : TACBrTEFDCliSiTefObtemCampo;
       fOperador : String;
       fParametrosAdicionais : TStringList;
+      fProximaFuncao : Integer;
+      fRespCliSiTef : TACBrTEFDCliSiTefResp;
+      fRestricoes : String;
      xConfiguraIntSiTefInterativoEx : function (
                 pEnderecoIP: PChar;
                 pCodigoLoja: PChar;
@@ -111,9 +158,15 @@ type
      procedure AvaliaErro(Sts : Integer);
      procedure LoadDLLFunctions;
    protected
+     Function IniciarRequisicao( Funcao : Integer; Valor : Double = 0;
+        Documento : AnsiString = '') : Integer ; overload;
      Function ContinuarRequisicao : Integer ;
 
    public
+     property ProximaFuncao : Integer read fProximaFuncao write fProximaFuncao ;
+
+     property RespCliSiTef : TACBrTEFDCliSiTefResp read fRespCliSiTef ;
+
      constructor Create( AOwner : TComponent ) ; override;
      destructor Destroy ; override;
 
@@ -131,6 +184,7 @@ type
      property NumeroTerminal : String read fNumeroTerminal write fNumeroTerminal ;
      property Operador       : String read fOperador       write fOperador ;
      property ParametrosAdicionais : TStringList read fParametrosAdicionais ;
+     property Restricoes : String read fRestricoes write fRestricoes ;
 
      property OnExibeMenu : TACBrTEFDCliSiTefExibeMenu read fOnExibeMenu
         write fOnExibeMenu ;
@@ -141,6 +195,113 @@ type
 implementation
 
 Uses ACBrUtil, dateutils, StrUtils, ACBrTEFD;
+
+
+{ TACBrTEFDCliSiTefResp }
+
+procedure TACBrTEFDCliSiTefResp.SetObject(Index : Integer;
+   Item : TACBrTEFDCliSiTefLinha);
+begin
+  inherited SetItem (Index, Item) ;
+end;
+
+function TACBrTEFDCliSiTefResp.GetObject(Index : Integer ) : TACBrTEFDCliSiTefLinha;
+begin
+   Result := inherited GetItem(Index) as TACBrTEFDCliSiTefLinha ;
+end;
+
+function TACBrTEFDCliSiTefResp.AchaLinha(const Identificacao : Integer ) : Integer;
+Var
+  I : Integer;
+begin
+  Result := -1 ;
+  I      := 0 ;
+  while (Result < 0) and (I < self.Count) do
+  begin
+     if TACBrTEFDCliSiTefLinha(Items[I]).Identificacao = Identificacao then
+        Result := I;
+     Inc( I ) ;
+  end;
+end;
+
+function TACBrTEFDCliSiTefResp.Add(Obj : TACBrTEFDCliSiTefLinha) : Integer;
+begin
+   Result := inherited Add(Obj) ;
+end;
+
+procedure TACBrTEFDCliSiTefResp.Insert(Index : Integer;
+   Obj : TACBrTEFDCliSiTefLinha);
+begin
+   inherited Insert(Index, Obj);
+end;
+
+procedure TACBrTEFDCliSiTefResp.GravaInformacao(const Identificacao : Integer;
+   const Informacao : AnsiString);
+Var
+  I : Integer ;
+  ALinha : TACBrTEFDCliSiTefLinha ;
+begin
+  if Informacao = '' then exit ;
+
+  I := AchaLinha( Identificacao ) ;
+
+  if I < 0 then
+   begin
+     ALinha := TACBrTEFDCliSiTefLinha.Create;
+     ALinha.Identificacao       := Identificacao ;
+     ALinha.Informacao.AsString := Informacao ;
+
+     self.Add( ALinha )
+   end
+  else
+     TACBrTEFDCliSiTefLinha(Items[I]).Informacao.AsString := Informacao ;
+end;
+
+procedure TACBrTEFDCliSiTefResp.GravaInformacao(const Identificacao : Integer;
+   const Informacao : TACBrTEFDLinhaInformacao);
+begin
+  GravaInformacao( Identificacao, Informacao.AsString );
+end;
+
+function TACBrTEFDCliSiTefResp.LeInformacao(const Identificacao : Integer
+   ) : TACBrTEFDLinhaInformacao;
+begin
+  Result := LeLinha(Identificacao).Informacao ;
+end;
+
+function TACBrTEFDCliSiTefResp.LeLinha(const Identificacao : Integer
+   ) : TACBrTEFDCliSiTefLinha;
+Var
+  I : Integer ;
+begin
+  I := AchaLinha(Identificacao) ;
+
+  if I > -1 then
+     Result := TACBrTEFDCliSiTefLinha(Items[I])
+  else
+   begin
+     GravaInformacao( Identificacao, '' );
+     Result := TACBrTEFDCliSiTefLinha( Items[Count-1] );
+   end;
+end;
+
+procedure TACBrTEFDCliSiTefResp.LeStrings(AStringList : TStringList);
+Var
+  I : Integer ;
+  AStr : String ;
+begin
+  AStringList.Clear;
+
+  For I := 0 to Count-1 do
+  begin
+     AStr := TACBrTEFDCliSiTefLinha( Items[I] ).Linha ;
+     AStr := StringReplace( AStr, '-000', '', [rfReplaceAll] );
+     AStringList.Add( AStr );
+  end ;
+
+  AStringList.Sort;
+end;
+
 
 { TACBrTEFDClass }
 
@@ -160,8 +321,11 @@ begin
   fCodigoLoja     := '' ;
   fNumeroTerminal := '' ;
   fOperador       := '' ;
+  fRestricoes     := '' ;
+  fProximaFuncao  := -1 ;
 
   fParametrosAdicionais := TStringList.Create;
+  fRespCliSiTef         := TACBrTEFDCliSiTefResp.create(True);
 
   xConfiguraIntSiTefInterativoEx    := nil ;
   xIniciaFuncaoSiTefInterativo      := nil ;
@@ -172,6 +336,7 @@ end;
 destructor TACBrTEFDCliSiTef.Destroy;
 begin
    fParametrosAdicionais.Free ;
+   fRespCliSiTef.Free;
 
    inherited Destroy;
 end;
@@ -251,46 +416,23 @@ begin
 end ;
 
 procedure TACBrTEFDCliSiTef.ATV;
-Var
-  Sts : Integer ;
-  DataStr, HoraStr : String;
+var
+   Sts : Integer;
 begin
-   DataStr := FormatDateTime('YYYYMMDD',Now);
-   HoraStr := FormatDateTime('HHNNSS',Now);
-   GravaLog( 'IniciaFuncaoSiTefInterativo. Modalidade = 111') ;
-
-   Sts := xIniciaFuncaoSiTefInterativo( 111,  // 111 -	Teste de comunicação com o SiTef
-                                 '', '',
-                                 PChar(DataStr), PChar(HoraStr),
-                                 PChar( fOperador ), '') ;
-
-   if Sts = 10000 then
-      Sts := ContinuarRequisicao ;
+   Sts := IniciarRequisicao( 111 ) ;  // 111 - Teste de comunicação com o SiTef
 
    if Sts <> 0 then
       AvaliaErro( Sts );
 end;
 
 procedure TACBrTEFDCliSiTef.ADM;
-Var
-  Sts : Integer ;
-  DataStr, HoraStr : String;
+var
+   Sts : Integer;
 begin
-   DataStr := FormatDateTime('YYYYMMDD',Now);
-   HoraStr := FormatDateTime('HHNNSS',Now);
+  Sts := IniciarRequisicao( 110 ) ; // 110 - Abre o leque das transações Gerenciais
 
-   GravaLog( 'IniciaFuncaoSiTefInterativo. Modalidade = 110') ;
-
-   Sts := xIniciaFuncaoSiTefInterativo( 110,  // 110 - Abre o leque das transações Gerenciais
-                                 '', '',
-                                 PChar(DataStr), PChar(HoraStr),
-                                 PChar( fOperador ), '') ;
-
-   if Sts = 10000 then
-      Sts := ContinuarRequisicao;
-
-   if (Sts <> 0) then
-      AvaliaErro( Sts );
+  if Sts <> 0 then
+     AvaliaErro( Sts );
 end;
 
 procedure TACBrTEFDCliSiTef.LoadDLLFunctions ;
@@ -312,12 +454,44 @@ begin
    CliSiTefFunctionDetect('FinalizaTransacaoSiTefInterativo', @xFinalizaTransacaoSiTefInterativo);
 end ;
 
+Function TACBrTEFDCliSiTef.IniciarRequisicao( Funcao : Integer;
+   Valor : Double = 0 ; Documento : AnsiString = '') : Integer ;
+Var
+  ValorStr, DataStr, HoraStr : String;
+begin
+   Result   := 0 ;
+   DataStr  := FormatDateTime('YYYYMMDD',Now);
+   HoraStr  := FormatDateTime('HHNNSS',Now);
+   ValorStr := StringReplace( FormatFloat( '0.00', Valor ),
+                              DecimalSeparator, ',', [rfReplaceAll]) ;
+
+   GravaLog( 'IniciaFuncaoSiTefInterativo. Modalidade: '  +IntToStr(Funcao)+
+                                           ' Valor: '     +ValorStr+
+                                           ' Documento: ' +Documento+
+                                           ' Data: '      +DataStr+
+                                           ' Hora: '      +HoraStr+
+                                           ' Operador: '  +fOperador+
+                                           ' Restricoes: '+fRestricoes ) ;
+
+   RespCliSiTef.Clear;
+
+   Result := xIniciaFuncaoSiTefInterativo( Funcao,
+                                           PChar( ValorStr ),
+                                           PChar( Documento ),
+                                           PChar( DataStr ), PChar( HoraStr ),
+                                           PChar( fOperador ),
+                                           PChar( fRestricoes) ) ;
+
+   if Result = 10000 then
+      Result := ContinuarRequisicao ;
+end;
+
 Function TACBrTEFDCliSiTef.ContinuarRequisicao : Integer;
 var
   ProximoComando, TipoCampo, Continua, ItemSelecionado: Integer;
   TamanhoMinimo, TamanhoMaximo : SmallInt ;
   Buffer: array [0..20000] of char;
-  Erro, Mensagem, Resposta, CaptionMenu : String;
+  Mensagem, MensagemOperador, MensagemCliente, Resposta, CaptionMenu : String;
   ItensMenu   : TStringList ;
   Interromper : Boolean ;
 begin
@@ -328,18 +502,20 @@ begin
    TamanhoMaximo  := 0;
    Continua       := 0;
 
-   Erro        := '' ;
-   Mensagem    := '' ;
-   CaptionMenu := '' ;
+   Mensagem         := '' ;
+   MensagemOperador := '' ;
+   MensagemCliente  := '' ;
+   CaptionMenu      := '' ;
 
    with TACBrTEFD(Owner) do
    begin
       try
          repeat
-            Result := xContinuaFuncaoSiTefInterativo( ProximoComando, TipoCampo,
-                                                  TamanhoMinimo, TamanhoMaximo,
-                                                  Buffer, sizeof(Buffer),
-                                                  Continua );
+            Result := xContinuaFuncaoSiTefInterativo( ProximoComando,
+                                                      TipoCampo,
+                                                      TamanhoMinimo, TamanhoMaximo,
+                                                      Buffer, sizeof(Buffer),
+                                                      Continua );
 
             Mensagem := Trim( Buffer ) ;
             Resposta := '' ;
@@ -352,23 +528,41 @@ begin
             if Result = 10000 then
             begin
               case ProximoComando of
-                 0: ;// TODO: Está devolvendo um valor para, se desejado, ser armazenado pela automação;
+                 0 : RespCliSiTef.GravaInformacao( TipoCampo, Mensagem) ;
 
-                 1 : DoExibeMsg( opmExibirMsgOperador, Mensagem ) ;
+                 1 :
+                   begin
+                     MensagemOperador := Mensagem;
+                     DoExibeMsg( opmExibirMsgOperador, MensagemOperador ) ;
+                   end ;
 
-                 2 : DoExibeMsg( opmExibirMsgCliente, Mensagem ) ;
+                 2 :
+                   begin
+                     MensagemCliente := Mensagem;
+                     DoExibeMsg( opmExibirMsgCliente, MensagemCliente ) ;
+                   end;
 
                  3 :
                    begin
-                     DoExibeMsg( opmExibirMsgOperador, Mensagem ) ;
-                     DoExibeMsg( opmExibirMsgCliente, Mensagem ) ;
+                     MensagemOperador := Mensagem;
+                     MensagemCliente  := Mensagem;
+                     DoExibeMsg( opmExibirMsgOperador, MensagemOperador ) ;
+                     DoExibeMsg( opmExibirMsgCliente, MensagemCliente ) ;
                    end ;
 
                  4 : CaptionMenu := Mensagem ;
 
-                 11 : DoExibeMsg( opmRemoverMsgOperador, '' ) ;
+                 11 :
+                   begin
+                     MensagemOperador := '' ;
+                     DoExibeMsg( opmRemoverMsgOperador, '' ) ;
+                   end;
 
-                 12 : DoExibeMsg( opmRemoverMsgCliente, '' ) ;
+                 12 :
+                   begin
+                     MensagemCliente := '' ;
+                     DoExibeMsg( opmRemoverMsgCliente, '' ) ;
+                   end;
 
                  13 :
                    begin
@@ -383,6 +577,7 @@ begin
                    begin
                      if Mensagem = '' then
                         Mensagem := 'CONFIRMA ?';
+
                      Resposta := ifThen( (DoExibeMsg( opmYesNo, Mensagem ) = mrYes), '0', '1' ) ;
                      if Resposta = '1' then
                         Continua := -1 ;
@@ -412,6 +607,7 @@ begin
                    begin
                      if Mensagem = '' then
                         Mensagem := 'PRESSIONE <ENTER>';
+
                      DoExibeMsg( opmOK, Mensagem );
                    end ;
 
@@ -437,8 +633,8 @@ begin
 
          until Result <> 10000;
       finally
-        DoExibeMsg( opmRemoverMsgOperador, '' ) ;
-        DoExibeMsg( opmRemoverMsgCliente, '' ) ;
+        DoExibeMsg( opmRemoverMsgOperador, MensagemOperador ) ;
+        DoExibeMsg( opmRemoverMsgCliente, MensagemCliente ) ;
       end;
    end ;
 end;

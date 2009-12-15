@@ -221,6 +221,7 @@ procedure TForm1.Memo1Change(Sender : TObject);
 begin
   StatusBar1.Panels[0].Text := GetEnumName(TypeInfo(TACBrTEFDTipo), integer(ACBrTEFD1.GPAtual) ) ;
   StatusBar1.Panels[2].Text := '' ;
+  pMensagem.Visible := False ;
 end;
 
 procedure TForm1.AvaliaTEFs;
@@ -581,7 +582,7 @@ procedure TForm1.ACBrTEFD1ExibeMsg(Operacao : TACBrTEFDOperacaoMensagem;
 var
    Fim : TDateTime;
    OldMensagem : String;
-   OldVisible, OldEnabled : Boolean;
+   OldEnabled  : Boolean;
 begin
   case Operacao of
 
@@ -593,32 +594,25 @@ begin
 
     opmExibirMsgOperador :
        begin
-         self.Enabled      := False ;
+         self.Enabled := False ;
          pMensagemOperador.Caption := Mensagem ;
-         pMensagem.Visible := True ;
-         pMensagemOperador.Visible := True ;
        end;
 
-    opmExibirMsgCliente : // TODO: Fazer um Panel seprado para MSG de Clientes
+    opmExibirMsgCliente :
        begin
-
-         self.Enabled      := False ;
+         self.Enabled := False ;
          pMensagemCliente.Caption := Mensagem ;
-         pMensagem.Visible := True ;
-         pMensagemCliente.Visible := True ;
        end;
 
     opmRemoverMsgOperador :
        begin
-         pMensagemOperador.Caption := '' ;
-         pMensagemOperador.Visible := False ;
+         pMensagemOperador.Caption := Mensagem ;
          self.Enabled := True ;
        end;
 
-    opmRemoverMsgCliente : // TODO: Fazer um Panel seprado para MSG de Clientes
+    opmRemoverMsgCliente :
        begin
-         pMensagemCliente.Caption := '' ;
-         pMensagemCliente.Visible := False ;
+         pMensagemCliente.Caption := Mensagem ;
          self.Enabled := True ;
        end;
 
@@ -626,7 +620,6 @@ begin
        begin
          OldEnabled  := self.Enabled ;
          OldMensagem := pMensagemOperador.Caption ;
-         OldVisible  := pMensagemOperador.Visible ;
          try
             self.Enabled      := False ;    // Desabilita o Form Atual, para bloquear a Interface
             pMensagemOperador.Caption := Mensagem;
@@ -642,11 +635,13 @@ begin
 
          finally
             pMensagemOperador.Caption := OldMensagem ;
-            pMensagemOperador.Visible := OldVisible ;
             self.Enabled := OldEnabled ;
          end;
        end;
   end;
+
+  pMensagemOperador.Visible := (pMensagemOperador.Caption <> '') ;
+  pMensagemCliente.Visible  := (pMensagemCliente.Caption <> '') ;
 
   pMensagem.Visible := pMensagemOperador.Visible or pMensagemCliente.Visible;
 end;

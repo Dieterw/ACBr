@@ -47,10 +47,20 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.4a   15/12/09
+[-] Corrigido Bug em TACBrTEFDLinhaInformacao.SetAsFloat, que estava Truncando a
+    última casa decimal, em algumas situações (André Moraes)
+[+] Adicionado os Eventos:
+    OnBloqueiaMouseTeclado, OnRestauraFocoAplicacao e OnLimpaTeclado.
+    Se NAO forem programados, o ACBrTEFD executará código interno, para obter
+    a funcionalidade... caso contrário apenas o código do Evento será executado.
+[*] Ajuste de algumas Propriedades Internas de String para AnsiString (D2009)
+
+
 Versão 0.3a   13/12/09
-[-] Corregido Bug em Re-Impressão de Vinculado / Gerencial após desligamento do
+[-] Corrigido Bug em Re-Impressão de Vinculado / Gerencial após desligamento do
     ECF
-[-] Corregido Bug que não apagava Arquivo de Backup após Impressão de Gerencial
+[-] Corrigido Bug que não apagava Arquivo de Backup após Impressão de Gerencial
 
 Versão 0.2a   13/12/09
 [-] Correção de Bug em ImprimirComprovantesPendentes

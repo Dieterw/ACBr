@@ -56,17 +56,20 @@ type
     FRegistro0150: TRegistro0150List;  /// BLOCO 0 - Lista de Registro0150
     FRegistro0190: TRegistro0190List;  /// BLOCO 0 - Lista de Registro0190
     FRegistro0200: TRegistro0200List;  /// BLOCO 0 - Lista de Registro0200
-    FRegistro0205: TRegistro0205List;  /// BLOCO 0 - Lista de Registro0205
-    FRegistro0206: TRegistro0206List;  /// BLOCO 0 - Lista de Registro0206
-    FRegistro0220: TRegistro0220List;  /// BLOCO 0 - Lista de Registro0220
     FRegistro0400: TRegistro0400List;  /// BLOCO 0 - Lista de Registro0400
     FRegistro0450: TRegistro0450List;  /// BLOCO 0 - Lista de Registro0450
     FRegistro0460: TRegistro0460List;  /// BLOCO 0 - Lista de Registro0460
     FRegistro0990: TRegistro0990;      /// BLOCO 0 - Registro0990
 
     FRegistro0175Count: Integer;
+    FRegistro0205Count: Integer;
+    FRegistro0206Count: Integer;
+    FRegistro0220Count: Integer;
 
     function WriteRegistro0175(Reg0150: TRegistro0150): AnsiString;
+    function WriteRegistro0205(Reg0200: TRegistro0200): AnsiString;
+    function WriteRegistro0206(Reg0200: TRegistro0200): AnsiString;
+    function WriteRegistro0220(Reg0200: TRegistro0200): AnsiString;
 
     procedure CriaRegistros;
     procedure LiberaRegistros;
@@ -83,9 +86,6 @@ type
     function WriteRegistro0150: AnsiString;
     function WriteRegistro0190: AnsiString;
     function WriteRegistro0200: AnsiString;
-    function WriteRegistro0205: AnsiString;
-    function WriteRegistro0206: AnsiString;
-    function WriteRegistro0220: AnsiString;
     function WriteRegistro0400: AnsiString;
     function WriteRegistro0450: AnsiString;
     function WriteRegistro0460: AnsiString;
@@ -99,15 +99,15 @@ type
     property Registro0150: TRegistro0150List read FRegistro0150 write FRegistro0150;
     property Registro0190: TRegistro0190List read FRegistro0190 write FRegistro0190;
     property Registro0200: TRegistro0200List read FRegistro0200 write FRegistro0200;
-    property Registro0205: TRegistro0205List read FRegistro0205 write FRegistro0205;
-    property Registro0206: TRegistro0206List read FRegistro0206 write FRegistro0206;
-    property Registro0220: TRegistro0220List read FRegistro0220 write FRegistro0220;
     property Registro0400: TRegistro0400List read FRegistro0400 write FRegistro0400;
     property Registro0450: TRegistro0450List read FRegistro0450 write FRegistro0450;
     property Registro0460: TRegistro0460List read FRegistro0460 write FRegistro0460;
     property Registro0990: TRegistro0990 read FRegistro0990 write FRegistro0990;
 
     property Registro0175Count: Integer read FRegistro0175Count write FRegistro0175Count;
+    property Registro0205Count: Integer read FRegistro0205Count write FRegistro0205Count;
+    property Registro0206Count: Integer read FRegistro0206Count write FRegistro0206Count;
+    property Registro0220Count: Integer read FRegistro0220Count write FRegistro0220Count;
   end;
 
 implementation
@@ -136,18 +136,17 @@ begin
   FRegistro0015 := TRegistro0015List.Create;
   FRegistro0100 := TRegistro0100.Create;
   FRegistro0150 := TRegistro0150List.Create;
-//  FRegistro0175 := TRegistro0175List.Create;
   FRegistro0190 := TRegistro0190List.Create;
   FRegistro0200 := TRegistro0200List.Create;
-  FRegistro0205 := TRegistro0205List.Create;
-  FRegistro0206 := TRegistro0206List.Create;
-  FRegistro0220 := TRegistro0220List.Create;
   FRegistro0400 := TRegistro0400List.Create;
   FRegistro0450 := TRegistro0450List.Create;
   FRegistro0460 := TRegistro0460List.Create;
   FRegistro0990 := TRegistro0990.Create;
 
   FRegistro0175Count := 0;
+  FRegistro0205Count := 0;
+  FRegistro0206Count := 0;
+  FRegistro0220Count := 0;
 
   FRegistro0990.QTD_LIN_0 := 0;
 end;
@@ -160,12 +159,8 @@ begin
   FRegistro0015.Free;
   FRegistro0100.Free;
   FRegistro0150.Free;
-//  FRegistro0175.Free;
   FRegistro0190.Free;
   FRegistro0200.Free;
-  FRegistro0205.Free;
-  FRegistro0206.Free;
-  FRegistro0220.Free;
   FRegistro0400.Free;
   FRegistro0450.Free;
   FRegistro0460.Free;
@@ -468,24 +463,30 @@ begin
                                                Delimitador +
                                                #13#10;
         end;
+        /// Registros FILHOS
+        strRegistro0200 := strRegistro0200 +
+                           WriteRegistro0205( Registro0200.Items[intFor] ) +
+                           WriteRegistro0206( Registro0200.Items[intFor] ) +
+                           WriteRegistro0220( Registro0200.Items[intFor] );
+
         Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
      end;
   end;
   Result := strRegistro0200;
 end;
 
-function TBloco_0.WriteRegistro0205: AnsiString;
+function TBloco_0.WriteRegistro0205(Reg0200: TRegistro0200): AnsiString;
 var
 intFor: integer;
 strRegistro0205: AnsiString;
 begin
   strRegistro0205 := '';
 
-  if Assigned( Registro0205 ) then
+  if Assigned( Reg0200.Registro0205 ) then
   begin
-     for intFor := 0 to Registro0205.Count - 1 do
+     for intFor := 0 to Reg0200.Registro0205.Count - 1 do
      begin
-        with Registro0205.Items[intFor] do
+        with Reg0200.Registro0205.Items[intFor] do
         begin
           strRegistro0205 := strRegistro0205 + LFill('0205') +
                                                LFill( DESCR_ANT_ITEM ) +
@@ -496,22 +497,24 @@ begin
         end;
         Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
      end;
+     /// Variavél para armazenar a quantidade de registro do tipo.
+     FRegistro0205Count := FRegistro0205Count + Reg0200.Registro0205.Count;
   end;
   Result := strRegistro0205;
 end;
 
-function TBloco_0.WriteRegistro0206: AnsiString;
+function TBloco_0.WriteRegistro0206(Reg0200: TRegistro0200): AnsiString;
 var
 intFor: integer;
 strRegistro0206: AnsiString;
 begin
   strRegistro0206 := '';
 
-  if Assigned( Registro0206 ) then
+  if Assigned( Reg0200.Registro0206 ) then
   begin
-     for intFor := 0 to Registro0206.Count - 1 do
+     for intFor := 0 to Reg0200.Registro0206.Count - 1 do
      begin
-        with Registro0206.Items[intFor] do
+        with Reg0200.Registro0206.Items[intFor] do
         begin
           strRegistro0206 := strRegistro0206 + LFill('0206') +
                                                LFill( COD_COMB ) +
@@ -520,22 +523,24 @@ begin
         end;
         Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
      end;
+     /// Variavél para armazenar a quantidade de registro do tipo.
+     FRegistro0206Count := FRegistro0206Count + Reg0200.Registro0206.Count;
   end;
   Result := strRegistro0206;
 end;
 
-function TBloco_0.WriteRegistro0220: AnsiString;
+function TBloco_0.WriteRegistro0220(Reg0200: TRegistro0200): AnsiString;
 var
 intFor: integer;
 strRegistro0220: AnsiString;
 begin
   strRegistro0220 := '';
 
-  if Assigned( Registro0220 ) then
+  if Assigned( Reg0200.Registro0220 ) then
   begin
-     for intFor := 0 to Registro0220.Count - 1 do
+     for intFor := 0 to Reg0200.Registro0220.Count - 1 do
      begin
-        with Registro0220.Items[intFor] do
+        with Reg0200.Registro0220.Items[intFor] do
         begin
           strRegistro0220 := strRegistro0220 + LFill('0220') +
                                                LFill( UNID_CONV ) +
@@ -545,6 +550,8 @@ begin
         end;
         Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
      end;
+     /// Variavél para armazenar a quantidade de registro do tipo.
+     FRegistro0220Count := FRegistro0220Count + Reg0200.Registro0220.Count;
   end;
   Result := strRegistro0220;
 end;

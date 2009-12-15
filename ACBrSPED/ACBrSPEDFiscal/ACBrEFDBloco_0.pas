@@ -89,6 +89,9 @@ type
   end;
 
   TRegistro0175List = class;
+  TRegistro0205List = class;
+  TRegistro0206List = class;
+  TRegistro0220List = class;
 
   /// Registro 0005 - DADOS COMPLEMENTARES DA ENTIDADE
 
@@ -286,7 +289,14 @@ type
     fCOD_GEN: AnsiString;        /// Código gênero item, tabela indicada item 4.2.1:
     fCOD_LST: AnsiString;        /// Código serviço Anexo I - Lei nº116/03:
     fALIQ_ICMS: Currency;      /// Alíquota ICMS aplicável (operações internas):
+
+    FRegistro0205: TRegistro0205List;  /// BLOCO C - Lista de Registro0205 (FILHO)
+    FRegistro0206: TRegistro0206List;  /// BLOCO C - Lista de Registro0206 (FILHO)
+    FRegistro0220: TRegistro0220List;  /// BLOCO C - Lista de Registro0220 (FILHO)
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property COD_ITEM: AnsiString read FCOD_ITEM write FCOD_ITEM;
     property DESCR_ITEM: AnsiString read FDESCR_ITEM write FDESCR_ITEM;
     property COD_BARRA: AnsiString read FCOD_BARRA write FCOD_BARRA;
@@ -298,6 +308,10 @@ type
     property COD_GEN: AnsiString read FCOD_GEN write FCOD_GEN;
     property COD_LST: AnsiString read FCOD_LST write FCOD_LST;
     property ALIQ_ICMS: Currency read FALIQ_ICMS write FALIQ_ICMS;
+    /// Registros FILHOS
+    property Registro0205: TRegistro0205List read FRegistro0205 write FRegistro0205;
+    property Registro0206: TRegistro0206List read FRegistro0206 write FRegistro0206;
+    property Registro0220: TRegistro0220List read FRegistro0220 write FRegistro0220;
   end;
 
   /// Registro 0200 - Lista
@@ -819,6 +833,23 @@ end;
 destructor TRegistro0150.Destroy;
 begin
   FRegistro0175.Free;
+  inherited;
+end;
+
+{ TRegistro0200 }
+
+constructor TRegistro0200.Create;
+begin
+   FRegistro0205 := TRegistro0205List.Create;
+   FRegistro0206 := TRegistro0206List.Create;
+   FRegistro0220 := TRegistro0220List.Create;
+end;
+
+destructor TRegistro0200.Destroy;
+begin
+  FRegistro0205.Free;
+  FRegistro0206.Free;
+  FRegistro0220.Free;
   inherited;
 end;
 

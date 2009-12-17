@@ -55,7 +55,7 @@ uses
   {$ENDIF} ;
 
 const
-   CACBrTEFD_Versao      = '0.4a' ;
+   CACBrTEFD_Versao      = '0.5a' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -104,11 +104,14 @@ type
   TACBrTEFDExibeMsg = procedure( Operacao : TACBrTEFDOperacaoMensagem;
      Mensagem : String; var AModalResult : TModalResult ) of object ;
 
-  TACBrTEFDOperacaoECF = ( opeAbreGerencial, opeImprimeGerencial, opeFechaGerencial,
+  TACBrTEFDOperacaoECF = ( opeAbreGerencial, opeFechaGerencial,
                            opePulaLinhas, opeSubTotalizaCupom, opeFechaCupom,
-                           opeImprimeVinculado, opeFechaVinculado, opeCancelaCupom ) ;
+                           opeFechaVinculado, opeCancelaCupom ) ;
 
-  TACBrTEFDBloqueiaMouseTeclado = procedure( Bloqueia : Boolean ) of object ;
+  TACBrTEFDBloqueiaMouseTeclado = procedure( Bloqueia : Boolean;
+     var Tratado : Boolean ) of object ;
+
+  TACBrTEFDExecutaAcao = procedure( var Tratado : Boolean ) of object ;
 
   TACBrTEFDComandaECF = procedure( Operacao : TACBrTEFDOperacaoECF; Resp : TACBrTEFDResp;
      var RetornoECF : Integer ) of object ; { -1 - Não tratado, 0 - Erro na Execucao, 1 - Sucesso }
@@ -117,6 +120,12 @@ type
      var RetornoECF : Integer ) of object ; { -1 - Não tratado, 0 - Erro na Execucao, 1 - Sucesso }
 
   TACBrTEFDComandaECFAbreVinculado = procedure( COO, IndiceECF : String; Valor : Double;
+     var RetornoECF : Integer ) of object ; { -1 - Não tratado, 0 - Erro na Execucao, 1 - Sucesso }
+
+  TACBrTEFDTipoRelatorio = ( trGerencial, trVinculado ) ;
+
+  TACBrTEFDComandaECFImprimeVia = procedure( TipoRelatorio : TACBrTEFDTipoRelatorio;
+     Via : Integer; ImagemComprovante : TStringList;
      var RetornoECF : Integer ) of object ; { -1 - Não tratado, 0 - Erro na Execucao, 1 - Sucesso }
 
   TACBrTEFDInfoECF = ( ineSubTotal,  // Valor do Saldo restante "A Pagar" do Cupom
@@ -369,7 +378,6 @@ type
      fTipoTransacao : Integer;
      fTrailer : String;
      fValorTotal : Double;
-     fViaAtual : Integer;
      fDocumentoVinculado : String;
      fTipoParcelamento : Integer;
      fParcelas : TACBrTEFDRespParcelas ;
@@ -443,7 +451,6 @@ type
      property ArqBackup      : String  read fArqBackup       write SetArqBackup ;
      property TipoGP : TACBrTEFDTipo   read fTipoGP          write fTipoGP ;
 
-     property ViaAtual       : Integer read fViaAtual        write fViaAtual ;
      property IndiceFPG_ECF  : String  read fIndiceFPG_ECF   write SetIndiceFPG_ECF ;
      property CNFEnviado     : Boolean read fCNFEnviado      write SetCNFEnviado ;
      property OrdemPagamento : Integer read fOrdemPagamento  write SetOrdemPagamento ;
@@ -508,20 +515,20 @@ type
 
      procedure IniciarRequisicao( AHeader : String; AID : Integer = 0 ); virtual;
      procedure FinalizarRequisicao ; virtual;
-     Function VerificaRespostaRequisicao : Boolean ; virtual;
-     Procedure LeRespostaRequisicao ; virtual;
-     procedure ProcessaResposta ; virtual;
+     Function VerificarRespostaRequisicao : Boolean ; virtual;
+     Procedure LerRespostaRequisicao ; virtual;
+     procedure ProcessarResposta ; virtual;
      procedure FinalizarResposta( ApagarArqResp : Boolean ) ; virtual;
 
-     procedure BackupResposta( AdicionaEmRespostasPendentes : Boolean ) ; virtual;
-     procedure ProcessaRespostaPagamento(const SaldoAPagar : Double;
+     procedure CopiarResposta( AdicionaEmRespostasPendentes : Boolean ) ; virtual;
+     procedure ProcessarRespostaPagamento(const SaldoAPagar : Double;
         const IndiceFPG_ECF : String; const Valor : Double); virtual;
 
-     procedure VerificaIniciouRequisicao;
+     procedure VerificarIniciouRequisicao;
 
-     procedure ImprimeRelatorio ; virtual;
+     procedure ImprimirRelatorio ; virtual;
 
-     Procedure VerificaTransacaoPagamento(Valor : Double;
+     Procedure VerificarTransacaoPagamento(Valor : Double;
         var SaldoAPagar : Double); virtual;
 
    protected
@@ -1063,8 +1070,8 @@ constructor TACBrTEFDResp.Create ;
 begin
   inherited Create ;
 
-  fConteudo          := TACBrTEFDArquivo.Create;
-  fParcelas          := TACBrTEFDRespParcelas.create(True) ;
+  fConteudo := TACBrTEFDArquivo.Create;
+  fParcelas := TACBrTEFDRespParcelas.create(True) ;
   fImagemComprovante := TStringList.Create;
 
   Clear ;
@@ -1133,7 +1140,6 @@ begin
    fDocumentoVinculado           := '' ;
    fTipoParcelamento             := 0 ;
 
-   fViaAtual       := 0 ;
    fCNFEnviado     := False ;
    fIndiceFPG_ECF  := '' ;
    fOrdemPagamento := 0 ;
@@ -1419,8 +1425,8 @@ begin
   { Não há campos extras a adcionar na Requisicao ADM }
   FinalizarRequisicao;
 
-  LeRespostaRequisicao;
-  ProcessaResposta ;          { Faz a Impressão e / ou exibe Mensagem ao Operador }
+  LerRespostaRequisicao;
+  ProcessarResposta ;          { Faz a Impressão e / ou exibe Mensagem ao Operador }
   FinalizarResposta( True ) ; { True = Apaga Arquivo de Resposta }
 end;
 
@@ -1430,7 +1436,7 @@ var
    SaldoAPagar : Double;
 begin
   SaldoAPagar := 0 ;
-  VerificaTransacaoPagamento( Valor, SaldoAPagar );
+  VerificarTransacaoPagamento( Valor, SaldoAPagar );
 
   IniciarRequisicao('CRT');
   Req.DocumentoVinculado  := DocumentoVinculado;
@@ -1438,7 +1444,7 @@ begin
   Req.Moeda               := Moeda;
   FinalizarRequisicao;
 
-  ProcessaRespostaPagamento( SaldoAPagar, IndiceFPG_ECF, Valor);
+  ProcessarRespostaPagamento( SaldoAPagar, IndiceFPG_ECF, Valor);
 end;
 
 procedure TACBrTEFDClass.CHQ( Valor : Double; IndiceFPG_ECF : String;
@@ -1452,7 +1458,7 @@ var
    SaldoAPagar : Double;
 begin
   SaldoAPagar := 0 ;
-  VerificaTransacaoPagamento( Valor, SaldoAPagar );
+  VerificarTransacaoPagamento( Valor, SaldoAPagar );
 
   IniciarRequisicao('CHQ');
   Req.DocumentoVinculado := DocumentoVinculado;
@@ -1470,7 +1476,7 @@ begin
   Req.ChequeDC           := ChequeDC;
   FinalizarRequisicao;
 
-  ProcessaRespostaPagamento( SaldoAPagar, IndiceFPG_ECF, Valor);
+  ProcessarRespostaPagamento( SaldoAPagar, IndiceFPG_ECF, Valor);
 end;
 
 procedure TACBrTEFDClass.CNC;
@@ -1503,8 +1509,8 @@ begin
      Req.ChequeDC                     := OldResp.ChequeDC;
      FinalizarRequisicao;
 
-     LeRespostaRequisicao;
-     ProcessaResposta;           { Faz a Impressão e / ou exibe Mensagem ao Operador }
+     LerRespostaRequisicao;
+     ProcessarResposta;           { Faz a Impressão e / ou exibe Mensagem ao Operador }
      FinalizarResposta( True ) ; { True = Apaga Arquivo de Resposta }
   finally
      OldResp.Free;
@@ -1523,8 +1529,8 @@ begin
   Req.DataHoraTransacaoComprovante := DataHoraTransacao;
   FinalizarRequisicao;
 
-  LeRespostaRequisicao;
-  ProcessaResposta;           { Faz a Impressão e / ou exibe Mensagem ao Operador }
+  LerRespostaRequisicao;
+  ProcessarResposta;           { Faz a Impressão e / ou exibe Mensagem ao Operador }
   FinalizarResposta( True ) ; { True = Apaga Arquivo de Resposta }
 end;
 
@@ -1588,7 +1594,7 @@ begin
 
   RunCommand( GPExeName );
   Sleep(2000);
-  TACBrTEFD(Owner).RestauraFocoAplicacao;
+  TACBrTEFD(Owner).RestaurarFocoAplicacao;
 end;
 
 procedure TACBrTEFDClass.IniciarRequisicao( AHeader : String;
@@ -1624,7 +1630,7 @@ Var
   TempoInicioEspera, TempoFimEspera : TDateTime ;
   Interromper : Boolean ;
 begin
-  VerificaIniciouRequisicao;
+  VerificarIniciouRequisicao;
 
   with TACBrTEFD(Owner) do
   begin
@@ -1670,7 +1676,7 @@ begin
   DeleteFile( ArqTemp );
   DeleteFile( ArqSTS );
 
-  if not VerificaRespostaRequisicao then
+  if not VerificarRespostaRequisicao then
   begin
     DeleteFile( ArqResp );
 
@@ -1683,20 +1689,20 @@ begin
   TACBrTEFD(Owner).EstadoReq := reqFinalizada;
 end;
 
-Function TACBrTEFDClass.VerificaRespostaRequisicao : Boolean ;
+Function TACBrTEFDClass.VerificarRespostaRequisicao : Boolean ;
 begin
   Result := (Resp.Header = Req.Header) and
             (Resp.ID     = Req.ID)     and
              Resp.TrailerOk ;
 end;
 
-procedure TACBrTEFDClass.LeRespostaRequisicao;
+procedure TACBrTEFDClass.LerRespostaRequisicao;
 var
    TempoInicioEspera : Double;
    Interromper, OK   : Boolean;
 
 begin
-  VerificaIniciouRequisicao;
+  VerificarIniciouRequisicao;
   Resp.Clear;
 
   TACBrTEFD(Owner).EstadoResp  := respAguardandoResposta;
@@ -1720,7 +1726,7 @@ begin
 
         GravaLog( Name +' LeRespostaRequisicao: '+Req.Header+', Verificando conteudo de: '+ArqResp );
         Resp.LeArquivo( ArqResp );
-        Ok := VerificaRespostaRequisicao ;
+        Ok := VerificarRespostaRequisicao ;
 
         if not Ok then
         begin
@@ -1737,16 +1743,16 @@ begin
   end ;
 end;
 
-procedure TACBrTEFDClass.ProcessaResposta ;
+procedure TACBrTEFDClass.ProcessarResposta ;
 begin
-  VerificaIniciouRequisicao;
+  VerificarIniciouRequisicao;
 
   with TACBrTEFD(Owner) do
   begin
      EstadoResp := respProcessando;
 
      if Resp.QtdLinhasComprovante > 0 then
-        ImprimeRelatorio
+        ImprimirRelatorio
      else
         if Resp.TextoEspecialOperador <> '' then
            DoExibeMsg( opmOK, Resp.TextoEspecialOperador )
@@ -1863,7 +1869,7 @@ begin
   end;
 end;
 
-procedure TACBrTEFDClass.ImprimeRelatorio;
+procedure TACBrTEFDClass.ImprimirRelatorio;
 Var
   I : Integer;
   TempoInicio : TDateTime ;
@@ -1871,24 +1877,24 @@ Var
   Est : AnsiChar ;
   ArqBackup : String ;
 begin
-  VerificaIniciouRequisicao;
+  VerificarIniciouRequisicao;
 
   if Resp.QtdLinhasComprovante < 1 then
      exit ;
 
-  BackupResposta( False );
+  CopiarResposta( False );
 
   ImpressaoOk := False ;
   RemoverMsg  := False ;
   TempoInicio := now ;
 
-  try
-     with TACBrTEFD( Owner ) do
-     begin
+  with TACBrTEFD( Owner ) do
+  begin
+     try
+        BloquearMouseTeclado( True );
+
         while not ImpressaoOk do
         begin
-           BloqueiaMouseTeclado( True );
-
            try
               try
                  Est := EstadoECF;
@@ -1897,8 +1903,8 @@ begin
                  begin
                     { Fecha Vinculado ou Gerencial, se ficou algum aberto por Desligamento }
                     case Est of
-                      'C'      : ComandaECF( opeFechaVinculado );
-                      'G', 'R' : ComandaECF( opeFechaGerencial );
+                      'C'      : ComandarECF( opeFechaVinculado );
+                      'G', 'R' : ComandarECF( opeFechaGerencial );
                     end;
 
                     if EstadoECF <> 'L' then
@@ -1918,25 +1924,23 @@ begin
                     DoExibeMsg( opmExibirMsgCliente, Resp.TextoEspecialCliente ) ;
                  end;
 
-                 ComandaECF( opeAbreGerencial ) ;
+                 ComandarECF( opeAbreGerencial ) ;
 
                  I := 1 ;
                  while I <= NumVias do
                  begin
-                    Resp.ViaAtual := I ;
+                    ECFImprimeVia( trGerencial, I, Resp.ImagemComprovante );
 
-                    ComandaECF( opeImprimeGerencial ) ;
-
-                    if Resp.ViaAtual < NumVias  then
+                    if I < NumVias  then
                     begin
-                       ComandaECF( opePulaLinhas ) ;
-                       DoExibeMsg( opmDestaqueVia, 'Destaque a '+IntToStr(Resp.ViaAtual)+'ª Via') ;
+                       ComandarECF( opePulaLinhas ) ;
+                       DoExibeMsg( opmDestaqueVia, 'Destaque a '+IntToStr(I)+'ª Via') ;
                     end;
 
                     Inc( I ) ;
                  end;
 
-                 ComandaECF( opeFechaGerencial );
+                 ComandarECF( opeFechaGerencial );
                  ImpressaoOk := True ;
 
               finally
@@ -1956,9 +1960,6 @@ begin
                     DoExibeMsg( opmRemoverMsgOperador, '' ) ;
                     DoExibeMsg( opmRemoverMsgCliente, '' ) ;
                  end;
-
-                 BloqueiaMouseTeclado( False );
-                 LimpaTeclado;
               end;
 
            except
@@ -1974,34 +1975,35 @@ begin
                 break ;
            end;
         end;
+     finally
+       { Enviando CNF ou NCN e apagando Arquivo de Backup }
+       ArqBackup := Resp.ArqBackup ;
+       while FileExists( ArqBackup ) do
+       begin
+          try
+             if ImpressaoOk then
+                self.CNF
+             else
+                self.NCN ;
+
+             DeleteFile( ArqBackup ) ;
+
+          except
+          end;
+       end ;
+
+       BloquearMouseTeclado( False );
      end ;
-
-  finally
-    { Enviando CNF ou NCN e apagando Arquivo de Backup }
-    ArqBackup := Resp.ArqBackup ;
-    while FileExists( ArqBackup ) do
-    begin
-       try
-          if ImpressaoOk then
-             self.CNF
-          else
-             self.NCN ;
-
-          DeleteFile( ArqBackup ) ;
-
-       except
-       end;
-    end ;
   end;
 end;
 
-procedure TACBrTEFDClass.BackupResposta( AdicionaEmRespostasPendentes : Boolean );
+procedure TACBrTEFDClass.CopiarResposta( AdicionaEmRespostasPendentes : Boolean );
 Var
    ArqBak : String;
    I : Integer ;
    RespPendente : TACBrTEFDResp;
 begin
-  VerificaIniciouRequisicao;
+  VerificarIniciouRequisicao;
 
   with TACBrTEFD(Owner) do
   begin
@@ -2026,7 +2028,7 @@ begin
   end;
 end;
 
-procedure TACBrTEFDClass.ProcessaRespostaPagamento( const SaldoAPagar : Double;
+procedure TACBrTEFDClass.ProcessarRespostaPagamento( const SaldoAPagar : Double;
    const IndiceFPG_ECF : String; const Valor : Double);
 var
   UltimaTransacao : Boolean ;
@@ -2034,13 +2036,13 @@ var
 begin
   UltimaTransacao := (Valor >= SaldoAPagar);
 
-  LeRespostaRequisicao;
+  LerRespostaRequisicao;
 
   with TACBrTEFD(Owner) do
   begin
      if not Self.Resp.TransacaoAprovada then
      begin
-       ProcessaResposta;            { Exibe a Mensagem ao Operador }
+       ProcessarResposta;           { Exibe a Mensagem ao Operador }
        FinalizarResposta( True ) ;  { True = Apaga Arquivo de Resposta }
 
                                { Ja tem RespostasPendentes }
@@ -2049,7 +2051,7 @@ begin
           if DoExibeMsg( opmYesNo, 'Gostaria de continuar a transação com outra(s)' +
                                    'forma(s) de pagamento ?' ) <> mrYes then
           begin
-             ComandaECF( opeCancelaCupom );
+             ComandarECF( opeCancelaCupom );
              CancelarTransacoesPendentes;
           end;
        end;
@@ -2067,7 +2069,7 @@ begin
            while not ImpressaoOk do
            begin
               try
-                 ComandaECFPagamento( IndiceFPG_ECF, Valor );
+                 ECFPagamento( IndiceFPG_ECF, Valor );
                  Self.Resp.OrdemPagamento := RespostasPendentes.Count + 1 ;
                  ImpressaoOk := True ;
               except
@@ -2081,7 +2083,7 @@ begin
                  if DoExibeMsg( opmYesNo, 'Impressora não responde'+sLineBreak+
                                           'Tentar novamente ?') <> mrYes then
                  begin
-                    try ComandaECF(opeCancelaCupom); except {Exceção Muda} end ;
+                    try ComandarECF(opeCancelaCupom); except {Exceção Muda} end ;
                     break ;
                  end;
               end;
@@ -2097,7 +2099,7 @@ begin
        899 - 002 : IndiceFPG_ECF : String
        899 - 003 : OrdemPagamento : Integer
      }
-     BackupResposta( True );     { True = Adiciona Resp em RespostasPendentes }
+     CopiarResposta( True );     { True = Adiciona Resp em RespostasPendentes }
 
      RespostasPendentes.SaldoAPagar := SaldoAPagar;
 
@@ -2127,13 +2129,13 @@ begin
   end;
 end;
 
-procedure TACBrTEFDClass.VerificaIniciouRequisicao;
+procedure TACBrTEFDClass.VerificarIniciouRequisicao;
 begin
    if Req.Header = '' then
       raise EACBrTEFDErro.Create( ACBrStr( 'Nenhuma Requisição Iniciada' ) ) ;
 end;
 
-Procedure TACBrTEFDClass.VerificaTransacaoPagamento(Valor : Double;
+Procedure TACBrTEFDClass.VerificarTransacaoPagamento(Valor : Double;
   var SaldoAPagar : Double);
 var
    SubTotal : String;

@@ -4025,10 +4025,10 @@ begin
      raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
      'Daruma_Registry_AlterarRegistry( "ECF", "BuscaPorta", "0" ) ') );
 
-  Resp := xDaruma_Registry_AlterarRegistry( 'ECF', 'ControlePorta', '0' );
+  Resp := xDaruma_Registry_AlterarRegistry( 'ECF', 'ControlePorta', '2' );
   if Resp <> 1 then
      raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
-     'Daruma_Registry_AlterarRegistry( "ECF", "ControlePorta", "0" ) ') );
+     'Daruma_Registry_AlterarRegistry( "ECF", "ControlePorta", "2" ) ') );
 
   Resp := xDaruma_Registry_AlterarRegistry( 'ECF', 'Velocidade', PChar( Velocidade ) );
   if Resp <> 1 then

@@ -47,6 +47,22 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.5a   17/12/09
+[*] OnBloqueiaMouseTeclado, OnRestauraFocoAplicacao e OnLimpaTeclado,
+    modificados para permitir informar se devem ou não executar o código do
+    ACBrTEFD  (adicionado Parametro "Tratado : Boolean")
+[*] Impressão de Vinculado e Gerencial modificadas para manter o Bloqueio de
+    Mouse e Teclado mesmo na fase de envio do CNF ou NCN
+[+] Adicionado o evento:
+    OnComandaECFImprimeVia( TipoRelatorio : TACBrTEFDTipoRelatorio;
+       Via : Integer; ImagemComprovante : TStringList;
+       var RetornoECF : Integer ) ; { -1 - Não tratado, 0 - Erro na Execucao, 1 - Sucesso }
+    Substituindo as Operaçoes de OnComandaECF() opeImprimirGerencial e
+    opeImprimirVinculado
+[*] Nomes de procuderes de uso interno renomeadas, para melhor padronização
+[*] Removido ACBrTEFD.Resp.ViaAtual (não é mais necessário)
+[*] Avanço no desenvolvimento da Classe CliSiTef (ATV e ADM estão funcionais)
+
 Versão 0.4a   15/12/09
 [-] Corrigido Bug em TACBrTEFDLinhaInformacao.SetAsFloat, que estava Truncando a
     última casa decimal, em algumas situações (André Moraes)

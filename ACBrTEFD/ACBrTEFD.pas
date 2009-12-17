@@ -74,7 +74,6 @@ type
      fEsperaSleep : Integer;
      fEstadoReq : TACBrTEFDReqEstado;
      fEstadoResp : TACBrTEFDRespEstado;
-     ffOnLimpaTeclado : TNotifyEvent;
      fMultiplosCartoes : Boolean;
      fNumVias : Integer;
      fOnAguardaResp : TACBrTEFDAguardaRespEvent;
@@ -82,15 +81,17 @@ type
      fOnBloqueiaMouseTeclado : TACBrTEFDBloqueiaMouseTeclado;
      fOnComandaECF : TACBrTEFDComandaECF;
      fOnComandaECFAbreVinculado : TACBrTEFDComandaECFAbreVinculado;
+     fOnComandaECFImprimeVia : TACBrTEFDComandaECFImprimeVia;
      fOnComandaECFPagamento : TACBrTEFDComandaECFPagamento;
      fOnExibeMsg : TACBrTEFDExibeMsg;
      fOnInfoECF : TACBrTEFDObterInfoECF;
-     fOnLimpaTeclado : TNotifyEvent;
+     fOnLimpaTeclado : TACBrTEFDExecutaAcao;
      fOnMudaEstadoReq : TACBrTEFDMudaEstadoReq;
      fOnMudaEstadoResp : TACBrTEFDMudaEstadoResp;
-     fOnRestauraFocoAplicacao : TNotifyEvent;
+     fOnRestauraFocoAplicacao : TACBrTEFDExecutaAcao;
      fPathBackup   : String;
      fGPAtual      : TACBrTEFDTipo;
+     fTecladoBloqueado : Boolean;
      fTefClass     : TACBrTEFDClass ;
      fTefDial      : TACBrTEFDDial ;
      fTefCliSiTef  : TACBrTEFDCliSiTef;
@@ -127,13 +128,15 @@ type
      Function EstadoECF : AnsiChar ;
      function DoExibeMsg( Operacao : TACBrTEFDOperacaoMensagem;
         Mensagem : String ) : TModalResult;
-     function ComandaECF(Operacao : TACBrTEFDOperacaoECF) : Integer;
-     function ComandaECFPagamento(Indice : String; Valor : Double) : Integer;
-     function ComandaECFAbreVinculado(COO, Indice : String; Valor : Double) : Integer;
+     function ComandarECF(Operacao : TACBrTEFDOperacaoECF) : Integer;
+     function ECFPagamento(Indice : String; Valor : Double) : Integer;
+     function ECFAbreVinculado(COO, Indice : String; Valor : Double) : Integer;
+     function ECFImprimeVia( TipoRelatorio : TACBrTEFDTipoRelatorio;
+        Via : Integer; ImagemComprovante : TStringList) : Integer;
 
-     procedure BloqueiaMouseTeclado(Bloqueia : Boolean);
-     procedure LimpaTeclado;
-     procedure RestauraFocoAplicacao ;
+     procedure BloquearMouseTeclado(Bloqueia : Boolean);
+     procedure LimparTeclado;
+     procedure RestaurarFocoAplicacao ;
 
    public
      constructor Create( AOwner : TComponent ) ; override;
@@ -144,6 +147,7 @@ type
      function Inicializado( GP : TACBrTEFDTipo = gpNenhum ) : Boolean ;
 
      property GPAtual : TACBrTEFDTipo read fGPAtual write SetGPAtual ;
+     property TecladoBloqueado : Boolean read fTecladoBloqueado ;
 
      property TEF  : TACBrTEFDClass read fTefClass ;
      property Req  : TACBrTEFDReq   read GetReq  ;
@@ -220,16 +224,18 @@ type
         write fOnExibeMsg ;
      property OnBloqueiaMouseTeclado : TACBrTEFDBloqueiaMouseTeclado
         read fOnBloqueiaMouseTeclado write fOnBloqueiaMouseTeclado ;
-     property OnRestauraFocoAplicacao : TNotifyEvent
+     property OnRestauraFocoAplicacao : TACBrTEFDExecutaAcao
         read fOnRestauraFocoAplicacao write fOnRestauraFocoAplicacao ;
-     property OnLimpaTeclado : TNotifyEvent read fOnLimpaTeclado
-        write ffOnLimpaTeclado ;
+     property OnLimpaTeclado : TACBrTEFDExecutaAcao read fOnLimpaTeclado
+        write fOnLimpaTeclado ;
      property OnComandaECF  : TACBrTEFDComandaECF read fOnComandaECF
         write fOnComandaECF ;
      property OnComandaECFPagamento  : TACBrTEFDComandaECFPagamento
         read fOnComandaECFPagamento write fOnComandaECFPagamento ;
      property OnComandaECFAbreVinculado : TACBrTEFDComandaECFAbreVinculado
         read fOnComandaECFAbreVinculado write fOnComandaECFAbreVinculado ;
+     property OnComandaECFImprimeVia : TACBrTEFDComandaECFImprimeVia
+        read fOnComandaECFImprimeVia write fOnComandaECFImprimeVia ;
      property OnInfoECF : TACBrTEFDObterInfoECF read fOnInfoECF write fOnInfoECF ;
      property OnAntesFinalizarRequisicao : TACBrTEFDAntesFinalizarReq
         read fOnAntesFinalizarRequisicao write fOnAntesFinalizarRequisicao ;
@@ -316,6 +322,7 @@ begin
   fNumVias              := CACBrTEFD_NumVias ;
   fEsperaSTS            := CACBrTEFD_EsperaSTS ;
   fEsperaSleep          := CACBrTEFD_EsperaSleep ;
+  fTecladoBloqueado     := False ;
 
   fOnAguardaResp              := nil ;
   fOnAntesFinalizarRequisicao := nil ;
@@ -323,6 +330,7 @@ begin
   fOnComandaECF               := nil ;
   fOnComandaECFPagamento      := nil ;
   fOnComandaECFAbreVinculado  := nil ;
+  fOnComandaECFImprimeVia     := nil ;
   fOnInfoECF                  := nil ;
   fOnExibeMsg                 := nil ;
   fOnMudaEstadoReq            := nil ;
@@ -406,6 +414,9 @@ begin
 
   if not Assigned( OnComandaECFAbreVinculado )  then
      raise Exception.Create( ACBrStr('Evento "OnComandaECFAbreVinculado" não programado' ) ) ;
+
+  if not Assigned( OnComandaECFImprimeVia )  then
+     raise Exception.Create( ACBrStr('Evento "OnComandaECFImprimeVia" não programado' ) ) ;
 
   if not Assigned( OnInfoECF )  then
      raise Exception.Create( ACBrStr('Evento "OnInfoECF" não programado' ) ) ;
@@ -624,8 +635,8 @@ begin
   begin
      case Est of
        'V', 'P' : FinalizarCupom;
-       'R', 'G' : ComandaECF( opeFechaGerencial );
-       'C'      : ComandaECF( opeFechaVinculado );
+       'R', 'G' : ComandarECF( opeFechaGerencial );
+       'C'      : ComandarECF( opeFechaVinculado );
      end;
 
      if EstadoECF <> 'L' then
@@ -639,10 +650,10 @@ begin
   AgruparRespostasPendentes( GrupoVinc );
 
   try
+     BloquearMouseTeclado( True );
+
      while not ImpressaoOk do
      begin
-        BloqueiaMouseTeclado( True );
-
         try
            try
               if Gerencial then    //// Impressão em Gerencial ////
@@ -653,8 +664,8 @@ begin
                  begin
                     { Fecha Vinculado ou Gerencial, se ficou algum aberto por Desligamento }
                     case Est of
-                      'C'      : ComandaECF( opeFechaVinculado );
-                      'G', 'R' : ComandaECF( opeFechaGerencial );
+                      'C'      : ComandarECF( opeFechaVinculado );
+                      'G', 'R' : ComandarECF( opeFechaGerencial );
                     end;
 
                     if EstadoECF <> 'L' then
@@ -679,25 +690,23 @@ begin
                        DoExibeMsg( opmExibirMsgCliente, Resp.TextoEspecialCliente ) ;
                     end;
 
-                    ComandaECF( opeAbreGerencial ) ;
+                    ComandarECF( opeAbreGerencial ) ;
 
                     I := 1 ;
                     while I <= NumVias do
                     begin
-                       Resp.ViaAtual := I ;
+                       ECFImprimeVia( trGerencial, I, Resp.ImagemComprovante  );
 
-                       ComandaECF( opeImprimeGerencial ) ;
-
-                       if Resp.ViaAtual < NumVias  then
+                       if I < NumVias  then
                        begin
-                          ComandaECF( opePulaLinhas ) ;
-                          DoExibeMsg( opmDestaqueVia, 'Destaque a '+IntToStr(Resp.ViaAtual)+'ª Via') ;
+                          ComandarECF( opePulaLinhas ) ;
+                          DoExibeMsg( opmDestaqueVia, 'Destaque a '+IntToStr(I)+'ª Via') ;
                        end;
 
                        Inc( I ) ;
                     end;
 
-                    ComandaECF( opeFechaGerencial );
+                    ComandarECF( opeFechaGerencial );
 
                     { Removendo a mensagem do Operador }
                     if RemoverMsg then
@@ -745,25 +754,23 @@ begin
                        if Ordem <> RespostasPendentes[J].OrdemPagamento then
                         begin
                           Ordem := RespostasPendentes[J].OrdemPagamento ;
-                          ComandaECFAbreVinculado( Resp.DocumentoVinculado,
-                                                   GrupoVinc[K].IndiceFPG_ECF,
-                                                   GrupoVinc[K].Total ) ;
+                          ECFAbreVinculado( Resp.DocumentoVinculado,
+                                            GrupoVinc[K].IndiceFPG_ECF,
+                                            GrupoVinc[K].Total ) ;
                         end
                        else
-                          ComandaECF( opePulaLinhas ) ;
+                          ComandarECF( opePulaLinhas ) ;
 
                        I := 1 ;
                        while I <= NumVias do
                        begin
-                          Resp.ViaAtual := I ;
+                          ECFImprimeVia( trVinculado, I, Resp.ImagemComprovante  );
 
-                          ComandaECF( opeImprimeVinculado ) ;
-
-                          if Resp.ViaAtual < NumVias  then
+                          if I < NumVias  then
                           begin
 
-                             ComandaECF( opePulaLinhas ) ;
-                             DoExibeMsg( opmDestaqueVia, 'Destaque a '+IntToStr(Resp.ViaAtual)+'ª Via') ;
+                             ComandarECF( opePulaLinhas ) ;
+                             DoExibeMsg( opmDestaqueVia, 'Destaque a '+IntToStr(I)+'ª Via') ;
                           end;
 
                           Inc( I ) ;
@@ -785,7 +792,7 @@ begin
                        end;
                     end ;
 
-                    ComandaECF( opeFechaVinculado ) ;
+                    ComandarECF( opeFechaVinculado ) ;
                  end;
                end;
 
@@ -797,9 +804,6 @@ begin
                  DoExibeMsg( opmRemoverMsgOperador, '' ) ;
                  DoExibeMsg( opmRemoverMsgCliente, '' ) ;
               end;
-
-              BloqueiaMouseTeclado( False );
-              LimpaTeclado;
            end;
         except
            on EACBrTEFDECF do ImpressaoOk := False ;
@@ -821,6 +825,8 @@ begin
         CancelarTransacoesPendentes
      else
         ConfirmarTransacoesPendentes ;
+
+     BloquearMouseTeclado( False );
   end;
 
   RespostasPendentes.Clear;
@@ -828,14 +834,24 @@ end;
 
 Function TACBrTEFD.DoExibeMsg( Operacao : TACBrTEFDOperacaoMensagem;
    Mensagem : String) : TModalResult ;
+var
+   OldTecladoBloqueado : Boolean;
 begin
-  RestauraFocoAplicacao ;
+  RestaurarFocoAplicacao ;
+
+  OldTecladoBloqueado := TecladoBloqueado;
+
+  if OldTecladoBloqueado and ( Operacao in [opmOK, opmYesNo] ) then
+     BloquearMouseTeclado( False ) ;
 
   Result := mrNone ;
   OnExibeMsg( Operacao, ACBrStr( Mensagem ), Result );
+
+  if OldTecladoBloqueado and ( Operacao in [opmOK, opmYesNo] ) then
+     BloquearMouseTeclado( True ) ;
 end;
 
-Function TACBrTEFD.ComandaECF( Operacao : TACBrTEFDOperacaoECF ) : Integer ;
+Function TACBrTEFD.ComandarECF( Operacao : TACBrTEFDOperacaoECF ) : Integer ;
 var
    OpName : String;
 begin
@@ -853,7 +869,7 @@ begin
   end;
 end;
 
-Function TACBrTEFD.ComandaECFPagamento( Indice: String; Valor: Double ) : Integer ;
+Function TACBrTEFD.ECFPagamento( Indice: String; Valor: Double ) : Integer ;
 begin
   Result := -1 ;  // -1 = Não tratado
   OnComandaECFPagamento( Indice, Valor, Result ) ;
@@ -867,7 +883,7 @@ begin
   end;
 end;
 
-function TACBrTEFD.ComandaECFAbreVinculado(COO, Indice : String; Valor : Double
+function TACBrTEFD.ECFAbreVinculado(COO, Indice : String; Valor : Double
    ) : Integer;
 begin
   Result := -1 ;  // -1 = Não tratado
@@ -879,6 +895,21 @@ begin
         raise EACBrTEFDECF.Create( ACBrStr( 'Erro ao executar "OnComandaECFAbreVinculado"' ) )
      else
         raise EACBrTEFDECF.Create( ACBrStr( '"OnComandaECFAbreVinculado" não tratado' ) ) ;
+  end;
+end;
+
+function TACBrTEFD.ECFImprimeVia( TipoRelatorio : TACBrTEFDTipoRelatorio;
+   Via : Integer; ImagemComprovante : TStringList) : Integer;
+begin
+  Result := -1 ;  // -1 = Não tratado
+  OnComandaECFImprimeVia( TipoRelatorio, Via, ImagemComprovante, Result ) ;
+
+  if Result < 1 then
+  begin
+     if Result = 0 then
+        raise EACBrTEFDECF.Create( ACBrStr( 'Erro ao executar "OnComandaECFImprimeVia"' ) )
+     else
+        raise EACBrTEFDECF.Create( ACBrStr( '"OnComandaECFImprimeVia" não tratado' ) ) ;
   end;
 end;
 
@@ -895,14 +926,14 @@ begin
      while not ImpressaoOk do
      begin
         try
-           BloqueiaMouseTeclado( True );
+           BloquearMouseTeclado( True );
 
            try
               Est := EstadoECF;
               while Est <> 'L' do
               begin
                  Case Est of
-                   'V' : ComandaECF( opeSubTotalizaCupom );
+                   'V' : ComandarECF( opeSubTotalizaCupom );
 
                    'P' :
                      begin
@@ -917,7 +948,7 @@ begin
                              if GrupoFPG[I].OrdemPagamento = 0 then
                               begin
                                 Inc( Ordem ) ;
-                                ComandaECFPagamento( GrupoFPG[I].IndiceFPG_ECF, GrupoFPG[I].Total );
+                                ECFPagamento( GrupoFPG[I].IndiceFPG_ECF, GrupoFPG[I].Total );
 
                                 For J := 0 to RespostasPendentes.Count-1 do
                                    if RespostasPendentes[J].IndiceFPG_ECF = GrupoFPG[I].IndiceFPG_ECF then
@@ -928,7 +959,7 @@ begin
                           end;
                        end;
 
-                       ComandaECF( opeFechaCupom );
+                       ComandarECF( opeFechaCupom );
                      end ;
                  else
                    raise Exception.Create(
@@ -941,8 +972,7 @@ begin
               ImpressaoOk := True ;
 
            finally
-              BloqueiaMouseTeclado( False );
-              LimpaTeclado;
+              BloquearMouseTeclado( False );
            end;
 
         except
@@ -956,7 +986,7 @@ begin
           if DoExibeMsg( opmYesNo, 'Impressora não responde'+sLineBreak+
                                    'Tentar novamente ?') <> mrYes then
           begin
-             try ComandaECF(opeCancelaCupom); except {Exceção Muda} end ;
+             try ComandarECF(opeCancelaCupom); except {Exceção Muda} end ;
              break ;
           end;
         end;
@@ -1191,39 +1221,58 @@ begin
      fPathBackup := copy( fPathBackup,1,Length(fPathBackup)-1 ) ;
 end;
 
-procedure TACBrTEFD.BloqueiaMouseTeclado( Bloqueia : Boolean );
+procedure TACBrTEFD.BloquearMouseTeclado( Bloqueia : Boolean );
+var
+   Tratado : Boolean;
 begin
+  Tratado := False ;
+  fTecladoBloqueado := Bloqueia ;
+
   if Assigned( fOnBloqueiaMouseTeclado ) then
-     OnBloqueiaMouseTeclado( Bloqueia )
-  else
+     fOnBloqueiaMouseTeclado( Bloqueia, Tratado ) ;
+
+  if not Bloqueia then
+     LimparTeclado;
+
+  if not Tratado then
      if Assigned( xBlockInput ) then
         xBlockInput( Bloqueia ) ;
 end;
 
- procedure TACBrTEFD.LimpaTeclado;
+ procedure TACBrTEFD.LimparTeclado;
+ Var
+   Tratado : Boolean ;
 {$IFDEF MSWINDOWS}
-  Var
      Msg: TMsg;
 {$ENDIF}
  begin
+   Tratado := False ;
+
    if Assigned( fOnLimpaTeclado ) then
-      OnLimpaTeclado( self )
+      fOnLimpaTeclado( Tratado ) ;
+
    {$IFDEF MSWINDOWS}
-    else
+    if not Tratado then
+    begin
       try
          // Remove todas as Teclas do Buffer do Teclado //
          while PeekMessage(Msg, 0, WM_KEYFIRST, WM_KEYLAST, PM_REMOVE or PM_NOYIELD) do;{%h-}
       except
       end
+    end;
    {$ENDIF} ;
  end;
 
- procedure TACBrTEFD.RestauraFocoAplicacao ;
+ procedure TACBrTEFD.RestaurarFocoAplicacao ;
+ var
+    Tratado : Boolean;
  begin
+   Tratado := False ;
    if Assigned( fOnRestauraFocoAplicacao ) then
-      OnRestauraFocoAplicacao( Self )
-   else
-    begin
+      fOnRestauraFocoAplicacao( Tratado ) ;
+
+   if not Tratado then
+   begin
       Application.BringToFront ;
 
       (*
@@ -1233,7 +1282,7 @@ end;
        SetForeGroundWindow( Screen.ActiveForm.Handle );
       {$ENDIF}
       *)
-    end;
+   end;
  end;
 
 

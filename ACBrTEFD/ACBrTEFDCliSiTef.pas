@@ -94,7 +94,7 @@ type
          read GetObject write SetObject; default;
 
       procedure GravaInformacao( const Identificacao : Integer;
-         const Informacao : AnsiString ) ; overload;
+         const AInformacao : AnsiString ) ; overload;
       procedure GravaInformacao( const Identificacao : Integer;
          const Informacao : TACBrTEFDLinhaInformacao ) ; overload;
       function LeInformacao( const Identificacao : Integer)
@@ -108,10 +108,14 @@ type
   TACBrTEFDCliSiTefExibeMenu = procedure( Titulo : String; Opcoes : TStringList;
     var ItemSlecionado : Integer ) of object ;
 
-  TACBrTEFDCliSiTefObtemCampo = procedure( Titulo : String;
-    TamanhoMinimo, TamanhoMaximo : Integer ; var Resposta : String ) of object ;
+  TACBrTEFDCliSiTefTipoCampo = (tcString, tcDouble, tcCMC7, tcBarCode) ;
 
-   { TACBrTEFDCliSiTef }
+  TACBrTEFDCliSiTefObtemCampo = procedure( Titulo : String;
+    TamanhoMinimo, TamanhoMaximo : Integer ;
+    TipoCampo : TACBrTEFDCliSiTefTipoCampo; var Resposta : String;
+    var Digitado : Boolean ) of object ;
+
+  { TACBrTEFDCliSiTef }
 
    TACBrTEFDCliSiTef = class( TACBrTEFDClass )
    private
@@ -120,9 +124,13 @@ type
       fNumeroTerminal : String;
       fOnExibeMenu : TACBrTEFDCliSiTefExibeMenu;
       fOnObtemCampo : TACBrTEFDCliSiTefObtemCampo;
+      fOperacaoADM : Integer;
+      fOperacaoATV : Integer;
+      fOperacaoCHQ : Integer;
+      fOperacaoCNC : Integer;
+      fOperacaoCRT : Integer;
       fOperador : String;
       fParametrosAdicionais : TStringList;
-      fProximaFuncao : Integer;
       fRespCliSiTef : TACBrTEFDCliSiTefResp;
       fRestricoes : String;
      xConfiguraIntSiTefInterativoEx : function (
@@ -158,13 +166,11 @@ type
      procedure AvaliaErro(Sts : Integer);
      procedure LoadDLLFunctions;
    protected
-     Function IniciarRequisicao( Funcao : Integer; Valor : Double = 0;
-        Documento : AnsiString = '') : Integer ; overload;
-     Function ContinuarRequisicao : Integer ;
+     Function FazerRequisicao( Funcao : Integer; Valor : Double = 0;
+        Documento : AnsiString = '') : Integer ;
+     Function ContinuarRequisicao( ImprimirComprovantes : Boolean ) : Integer ;
 
    public
-     property ProximaFuncao : Integer read fProximaFuncao write fProximaFuncao ;
-
      property RespCliSiTef : TACBrTEFDCliSiTefResp read fRespCliSiTef ;
 
      constructor Create( AOwner : TComponent ) ; override;
@@ -185,6 +191,14 @@ type
      property Operador       : String read fOperador       write fOperador ;
      property ParametrosAdicionais : TStringList read fParametrosAdicionais ;
      property Restricoes : String read fRestricoes write fRestricoes ;
+     property OperacaoATV : Integer read fOperacaoATV write fOperacaoATV
+        default 111 ;
+     property OperacaoADM : Integer read fOperacaoADM write fOperacaoADM
+        default 110 ;
+     property OperacaoCRT : Integer read fOperacaoCRT write fOperacaoCRT
+        default 0 ;
+     property OperacaoCHQ : Integer read fOperacaoCHQ write fOperacaoCHQ ;
+     property OperacaoCNC : Integer read fOperacaoCNC write fOperacaoCNC ;
 
      property OnExibeMenu : TACBrTEFDCliSiTefExibeMenu read fOnExibeMenu
         write fOnExibeMenu ;
@@ -194,7 +208,7 @@ type
 
 implementation
 
-Uses ACBrUtil, dateutils, StrUtils, ACBrTEFD;
+Uses ACBrUtil, dateutils, StrUtils, ACBrTEFD, Dialogs;
 
 
 { TACBrTEFDCliSiTefResp }
@@ -236,12 +250,12 @@ begin
 end;
 
 procedure TACBrTEFDCliSiTefResp.GravaInformacao(const Identificacao : Integer;
-   const Informacao : AnsiString);
+   const AInformacao : AnsiString);
 Var
   I : Integer ;
   ALinha : TACBrTEFDCliSiTefLinha ;
 begin
-  if Informacao = '' then exit ;
+//if AInformacao = '' then exit ;
 
   I := AchaLinha( Identificacao ) ;
 
@@ -249,12 +263,20 @@ begin
    begin
      ALinha := TACBrTEFDCliSiTefLinha.Create;
      ALinha.Identificacao       := Identificacao ;
-     ALinha.Informacao.AsString := Informacao ;
+     ALinha.Informacao.AsString := AInformacao ;
 
      self.Add( ALinha )
    end
   else
-     TACBrTEFDCliSiTefLinha(Items[I]).Informacao.AsString := Informacao ;
+   begin
+     with TACBrTEFDCliSiTefLinha(Items[I]) do
+     begin
+       if Informacao.AsString = '' then
+          Informacao.AsString := AInformacao
+       else
+          Informacao.AsString := Informacao.AsString + sLineBreak + AInformacao;
+     end;
+   end;
 end;
 
 procedure TACBrTEFDCliSiTefResp.GravaInformacao(const Identificacao : Integer;
@@ -322,7 +344,11 @@ begin
   fNumeroTerminal := '' ;
   fOperador       := '' ;
   fRestricoes     := '' ;
-  fProximaFuncao  := -1 ;
+  fOperacaoATV    := 111 ;  // 111 - Teste de comunicação com o SiTef
+  fOperacaoADM    := 110 ;  // 110 - Abre o leque das transações Gerenciais
+  fOperacaoCHQ    := -1 ;
+  fOperacaoCNC    := -1 ;
+  fOperacaoCRT    := 0 ;
 
   fParametrosAdicionais := TStringList.Create;
   fRespCliSiTef         := TACBrTEFDCliSiTefResp.create(True);
@@ -331,6 +357,9 @@ begin
   xIniciaFuncaoSiTefInterativo      := nil ;
   xContinuaFuncaoSiTefInterativo    := nil ;
   xFinalizaTransacaoSiTefInterativo := nil ;
+
+  fOnExibeMenu  := nil ;
+  fOnObtemCampo := nil ;
 end;
 
 destructor TACBrTEFDCliSiTef.Destroy;
@@ -419,7 +448,10 @@ procedure TACBrTEFDCliSiTef.ATV;
 var
    Sts : Integer;
 begin
-   Sts := IniciarRequisicao( 111 ) ;  // 111 - Teste de comunicação com o SiTef
+   Sts := FazerRequisicao( fOperacaoATV ) ;
+
+   if Sts = 10000 then
+      Sts := ContinuarRequisicao( True ) ;  { True = Imprimir Comprovantes agora }
 
    if Sts <> 0 then
       AvaliaErro( Sts );
@@ -429,7 +461,10 @@ procedure TACBrTEFDCliSiTef.ADM;
 var
    Sts : Integer;
 begin
-  Sts := IniciarRequisicao( 110 ) ; // 110 - Abre o leque das transações Gerenciais
+  Sts := FazerRequisicao( fOperacaoADM ) ;
+
+  if Sts = 10000 then
+     Sts := ContinuarRequisicao( True ) ;  { True = Imprimir Comprovantes agora }
 
   if Sts <> 0 then
      AvaliaErro( Sts );
@@ -454,11 +489,13 @@ begin
    CliSiTefFunctionDetect('FinalizaTransacaoSiTefInterativo', @xFinalizaTransacaoSiTefInterativo);
 end ;
 
-Function TACBrTEFDCliSiTef.IniciarRequisicao( Funcao : Integer;
+Function TACBrTEFDCliSiTef.FazerRequisicao( Funcao : Integer;
    Valor : Double = 0 ; Documento : AnsiString = '') : Integer ;
 Var
   ValorStr, DataStr, HoraStr : String;
 begin
+   RespCliSiTef.Clear;
+
    Result   := 0 ;
    DataStr  := FormatDateTime('YYYYMMDD',Now);
    HoraStr  := FormatDateTime('HHNNSS',Now);
@@ -473,27 +510,24 @@ begin
                                            ' Operador: '  +fOperador+
                                            ' Restricoes: '+fRestricoes ) ;
 
-   RespCliSiTef.Clear;
-
    Result := xIniciaFuncaoSiTefInterativo( Funcao,
                                            PChar( ValorStr ),
                                            PChar( Documento ),
                                            PChar( DataStr ), PChar( HoraStr ),
                                            PChar( fOperador ),
                                            PChar( fRestricoes) ) ;
-
-   if Result = 10000 then
-      Result := ContinuarRequisicao ;
 end;
 
-Function TACBrTEFDCliSiTef.ContinuarRequisicao : Integer;
+Function TACBrTEFDCliSiTef.ContinuarRequisicao( ImprimirComprovantes : Boolean )
+  : Integer;
 var
   ProximoComando, TipoCampo, Continua, ItemSelecionado: Integer;
   TamanhoMinimo, TamanhoMaximo : SmallInt ;
   Buffer: array [0..20000] of char;
   Mensagem, MensagemOperador, MensagemCliente, Resposta, CaptionMenu : String;
-  ItensMenu   : TStringList ;
-  Interromper : Boolean ;
+  SL : TStringList ;
+  Interromper, Digitado, GerencialAberto, ImpressaoOk : Boolean ;
+  Est : AnsiChar;
 begin
    Result         := 0;
    ProximoComando := 0;
@@ -506,6 +540,7 @@ begin
    MensagemOperador := '' ;
    MensagemCliente  := '' ;
    CaptionMenu      := '' ;
+   GerencialAberto  := False ;
 
    with TACBrTEFD(Owner) do
    begin
@@ -520,15 +555,68 @@ begin
             Mensagem := Trim( Buffer ) ;
             Resposta := '' ;
 
-            GravaLog( 'Sts: '+IntToStr(Result)+
-                      ' ProximoComando: '+IntToStr(ProximoComando)+
-                      ' TipoCampo: '+IntToStr(TipoCampo)+
-                      ' Buffer: '+Mensagem ) ;
 
             if Result = 10000 then
             begin
+              GravaLog( 'STS: '+IntToStr(Result)+
+                        ' ProximoComando: '+IntToStr(ProximoComando)+
+                        ' TipoCampo: '+IntToStr(TipoCampo)+
+                        ' Buffer: '+Mensagem ) ;
+
               case ProximoComando of
-                 0 : RespCliSiTef.GravaInformacao( TipoCampo, Mensagem) ;
+                 0 :
+                   begin
+                     RespCliSiTef.GravaInformacao( TipoCampo, Mensagem ) ;
+
+                     { Impressão de Gerencial, deve ser Sob demanda }
+                     if ImprimirComprovantes and (TipoCampo in [121,122]) then
+                     begin
+                       SL := TStringList.Create;
+                       SL.Text := StringReplace( Mensagem, #10, sLineBreak, [rfReplaceAll] ) ;
+                       ImpressaoOk := False ;
+                       try
+                         BloquearMouseTeclado( True );
+
+                          while not ImpressaoOk do
+                          begin
+                            try
+                              if not GerencialAberto then
+                              begin
+                                 ComandarECF( opeAbreGerencial ) ;
+                                 GerencialAberto := True ;
+                              end;
+
+                              ECFImprimeVia( trGerencial, TipoCampo-120, SL );
+
+                              ImpressaoOk := True ;
+                            except
+                              on EACBrTEFDECF do ImpressaoOk := False ;
+                              else
+                                 raise ;
+                            end;
+
+                            if not ImpressaoOk then
+                            begin
+                              if DoExibeMsg( opmYesNo, 'Impressora não responde'+sLineBreak+
+                                                       'Tentar novamente ?') <> mrYes then
+                                break ;
+
+                              try
+                                ComandarECF( opeFechaGerencial );
+                              except
+                              end ;
+
+                              GerencialAberto := False ;
+                            end;
+                          end ;
+                       finally
+                          if not ImpressaoOk then
+                             Continua := -1 ;
+
+                          SL.Free;
+                       end;
+                     end ;
+                   end;
 
                  1 :
                    begin
@@ -585,21 +673,23 @@ begin
 
                  21 :
                    begin
-                     ItensMenu := TStringList.Create;
+                     SL := TStringList.Create;
                      try
                         ItemSelecionado := -1 ;
-                        ItensMenu.Text  := StringReplace( Mensagem, ';',
+                        SL.Text := StringReplace( Mensagem, ';',
                                                          sLineBreak, [rfReplaceAll] ) ;
+                        if TecladoBloqueado then
+                           BloquearMouseTeclado(False);
 
-                        OnExibeMenu( CaptionMenu, ItensMenu, ItemSelecionado ) ;
+                        OnExibeMenu( CaptionMenu, SL, ItemSelecionado ) ;
 
-                        if (ItemSelecionado >= 0) and (ItemSelecionado < ItensMenu.Count) then
-                           Resposta := copy( ItensMenu[ItemSelecionado], 1,
-                                             pos(':',ItensMenu[ItemSelecionado])-1 )
+                        if (ItemSelecionado >= 0) and (ItemSelecionado < SL.Count) then
+                           Resposta := copy( SL[ItemSelecionado], 1,
+                                             pos(':',SL[ItemSelecionado])-1 )
                         else
                            Continua := -1 ;
                      finally
-                        ItensMenu.Free ;
+                        SL.Free ;
                      end ;
                    end;
 
@@ -621,20 +711,74 @@ begin
 
                  30 :
                    begin
-                     OnObtemCampo( Mensagem, TamanhoMinimo, TamanhoMaximo, Resposta ) ;
-                     if Resposta = '-1' then
+                     if TecladoBloqueado then
+                        BloquearMouseTeclado(False);
+
+                     Digitado := True ;
+                     OnObtemCampo( Mensagem, TamanhoMinimo, TamanhoMaximo,
+                                   tcString, Resposta, Digitado ) ;
+                     if Resposta = '' then
                         Continua := -1 ;
                    end;
+
+                 31 :
+                   begin
+                     if TecladoBloqueado then
+                        BloquearMouseTeclado(False);
+
+                     Digitado := True ;
+                     OnObtemCampo( Mensagem, TamanhoMinimo, TamanhoMaximo,
+                                   tcCMC7, Resposta, Digitado ) ;
+                     if Resposta = '' then
+                        Continua := -1
+                     else
+                        Resposta := IfThen(Digitado,'0:','1:') + Resposta;
+                   end;
+
+                 34 :
+                   begin
+                     if TecladoBloqueado then
+                        BloquearMouseTeclado(False);
+
+                     Digitado := True ;
+                     OnObtemCampo( Mensagem, TamanhoMinimo, TamanhoMaximo,
+                                   tcDouble, Resposta, Digitado ) ;
+                     if StrToFloatDef(Resposta,-1) = -1 then
+                        Continua := -1 ;
+                   end;
+
+                 35 :
+                   begin
+                     if TecladoBloqueado then
+                        BloquearMouseTeclado(False);
+
+                     Digitado := True ;
+                     OnObtemCampo( Mensagem, TamanhoMinimo, TamanhoMaximo,
+                                   tcBarCode, Resposta, Digitado ) ;
+                     if Resposta = '' then
+                        Continua := -1
+                     else
+                        Resposta := IfThen(Digitado,'0:','1:') + Resposta;
+                   end;
+
               end;
-            end;
+            end
+            else
+               GravaLog( 'Finalizando com STS = '+IntToStr(Result) ) ;
+
+
+            GravaLog( 'Continua: '+IntToStr(Continua)+' Buffer: '+Resposta ) ;
 
             if Resposta <> '' then
                StrPCopy(Buffer, Resposta);
 
          until Result <> 10000;
       finally
-        DoExibeMsg( opmRemoverMsgOperador, MensagemOperador ) ;
-        DoExibeMsg( opmRemoverMsgCliente, MensagemCliente ) ;
+        if GerencialAberto then
+           ComandarECF( opeFechaGerencial );
+
+        if TecladoBloqueado then
+           BloquearMouseTeclado( False );
       end;
    end ;
 end;

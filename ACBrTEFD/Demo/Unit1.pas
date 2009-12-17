@@ -103,10 +103,15 @@ type
      procedure ACBrTEFD1AguardaResp(Arquivo : String;
         SegundosTimeOut : Integer; var Interromper : Boolean);
      procedure ACBrTEFD1AntesFinalizarRequisicao(Req : TACBrTEFDReq);
+     procedure ACBrTEFD1BloqueiaMouseTeclado(Bloqueia : Boolean;
+        var Tratado : Boolean);
      procedure ACBrTEFD1ComandaECF(Operacao : TACBrTEFDOperacaoECF;
         Resp : TACBrTEFDResp; var RetornoECF : Integer );
      procedure ACBrTEFD1ComandaECFAbreVinculado(COO, IndiceECF : String;
         Valor : Double; var RetornoECF : Integer);
+     procedure ACBrTEFD1ComandaECFImprimeVia(
+        TipoRelatorio : TACBrTEFDTipoRelatorio; Via : Integer;
+        ImagemComprovante : TStringList; var RetornoECF : Integer);
      procedure ACBrTEFD1ComandaECFPagamento(IndiceECF : String; Valor : Double;
         var RetornoECF : Integer);
      procedure ACBrTEFD1ExibeMsg(Operacao : TACBrTEFDOperacaoMensagem;
@@ -115,6 +120,7 @@ type
         var RetornoECF : String );
      procedure ACBrTEFD1MudaEstadoReq(EstadoReq : TACBrTEFDReqEstado);
      procedure ACBrTEFD1MudaEstadoResp(EstadoResp : TACBrTEFDRespEstado);
+     procedure ACBrTEFD1RestauraFocoAplicacao(var Tratado : Boolean);
      procedure bAbreVendeSubTotaliza1Click(Sender : TObject);
      procedure bAbreVendeSubTotaliza2Click(Sender : TObject);
      procedure bAbreVendeSubTotaliza3Click(Sender : TObject);
@@ -124,8 +130,10 @@ type
      procedure ckCliSiTefChange(Sender : TObject);
      procedure CliSiTefExibeMenu(Titulo : String; Opcoes : TStringList;
         var ItemSlecionado : Integer);
-     procedure CliSiTefObtemCampo(Titulo : String; TamanhoMinimo,
-        TamanhoMaximo : Integer; var Resposta : String);
+     procedure CliSiTefObtemCampo( Titulo : String;
+       TamanhoMinimo, TamanhoMaximo : Integer ;
+       TipoCampo : TACBrTEFDCliSiTefTipoCampo; var Resposta : String;
+       var Digitado : Boolean  );
      procedure edEsperaSleepChange(Sender : TObject);
      procedure edEsperaSTSChange(Sender : TObject);
      procedure pMensagemResize(Sender : TObject);
@@ -221,7 +229,6 @@ procedure TForm1.Memo1Change(Sender : TObject);
 begin
   StatusBar1.Panels[0].Text := GetEnumName(TypeInfo(TACBrTEFDTipo), integer(ACBrTEFD1.GPAtual) ) ;
   StatusBar1.Panels[2].Text := '' ;
-  pMensagem.Visible := False ;
 end;
 
 procedure TForm1.AvaliaTEFs;
@@ -376,14 +383,24 @@ begin
         exit ;
   end ;
 
-   ACBrECF1.ReducaoZ ;
-   Memo1.Lines.Add('ACBrECF.ReducaoZ');
+   self.Enabled := False ;
+   try
+      ACBrECF1.ReducaoZ ;
+      Memo1.Lines.Add('ACBrECF.ReducaoZ');
+   finally
+     self.Enabled := True ;
+   end;
 end;
 
 procedure TForm1.bLeituraXClick(Sender : TObject);
 begin
-   ACBrECF1.LeituraX;
-   Memo1.Lines.Add('ACBrECF.LeituraX');
+  self.Enabled := False ;
+  try
+    ACBrECF1.LeituraX;
+    Memo1.Lines.Add('ACBrECF.LeituraX');
+  finally
+    self.Enabled := True ;
+  end;
 end;
 
 procedure TForm1.bFechaRelatorioClick(Sender : TObject);
@@ -582,7 +599,6 @@ procedure TForm1.ACBrTEFD1ExibeMsg(Operacao : TACBrTEFDOperacaoMensagem;
 var
    Fim : TDateTime;
    OldMensagem : String;
-   OldEnabled  : Boolean;
 begin
   case Operacao of
 
@@ -592,40 +608,21 @@ begin
     opmYesNo :
        AModalResult := MessageDlg( Mensagem, mtConfirmation, [mbYes,mbNo], 0);
 
-    opmExibirMsgOperador :
-       begin
-         self.Enabled := False ;
+    opmExibirMsgOperador, opmRemoverMsgOperador :
          pMensagemOperador.Caption := Mensagem ;
-       end;
 
-    opmExibirMsgCliente :
-       begin
-         self.Enabled := False ;
+    opmExibirMsgCliente, opmRemoverMsgCliente :
          pMensagemCliente.Caption := Mensagem ;
-       end;
-
-    opmRemoverMsgOperador :
-       begin
-         pMensagemOperador.Caption := Mensagem ;
-         self.Enabled := True ;
-       end;
-
-    opmRemoverMsgCliente :
-       begin
-         pMensagemCliente.Caption := Mensagem ;
-         self.Enabled := True ;
-       end;
 
     opmDestaqueVia :
        begin
-         OldEnabled  := self.Enabled ;
          OldMensagem := pMensagemOperador.Caption ;
          try
-            self.Enabled      := False ;    // Desabilita o Form Atual, para bloquear a Interface
-            pMensagemOperador.Caption := Mensagem;
+            pMensagemOperador.Caption := Mensagem ;
             pMensagemOperador.Visible := True ;
+            pMensagem.Visible         := True ;
 
-            { Aguardando 5 segundos }
+            { Aguardando 3 segundos }
             Fim := IncSecond( now, 3)  ;
             repeat
                sleep(200) ;
@@ -635,7 +632,6 @@ begin
 
          finally
             pMensagemOperador.Caption := OldMensagem ;
-            self.Enabled := OldEnabled ;
          end;
        end;
   end;
@@ -677,6 +673,13 @@ procedure TForm1.ACBrTEFD1MudaEstadoResp(EstadoResp : TACBrTEFDRespEstado);
 begin
   StatusBar1.Panels[1].Text := GetEnumName(TypeInfo(TACBrTEFDRespEstado), Integer(EstadoResp) ) ;
   bCancelarResp.Visible     := (EstadoResp = respAguardandoResposta) ;
+end;
+
+procedure TForm1.ACBrTEFD1RestauraFocoAplicacao(var Tratado : Boolean);
+begin
+  Application.BringToFront;
+
+  Tratado := False ;  { Deixa executar o cÛdigo de Foco do ACBrTEFD }
 end;
 
 procedure TForm1.bAbreVendeSubTotaliza1Click(Sender : TObject);
@@ -736,8 +739,10 @@ begin
   end;
 end;
 
-procedure TForm1.CliSiTefObtemCampo(Titulo : String; TamanhoMinimo,
-   TamanhoMaximo : Integer; var Resposta : String);
+procedure TForm1.CliSiTefObtemCampo( Titulo : String;
+  TamanhoMinimo, TamanhoMaximo : Integer ;
+  TipoCampo : TACBrTEFDCliSiTefTipoCampo; var Resposta : String;
+    var Digitado : Boolean  );
 Var
   AForm : TForm5 ;
 begin
@@ -889,38 +894,33 @@ begin
    Memo1.Lines.Add('Enviando: '+Req.Header+' ID: '+IntToStr( Req.ID ) );
 end;
 
+procedure TForm1.ACBrTEFD1BloqueiaMouseTeclado(Bloqueia : Boolean;
+   var Tratado : Boolean);
+begin
+  self.Enabled := not Bloqueia ;
+  Memo1.Lines.Add('BloqueiaMouseTeclado = '+IfThen(Bloqueia,'SIM', 'NAO'));
+
+  Tratado := False ;  { Deixa executar o cÛdigo de Bloqueio do ACBrTEFD }
+end;
+
 procedure TForm1.ACBrTEFD1ComandaECF(Operacao : TACBrTEFDOperacaoECF;
    Resp : TACBrTEFDResp; var RetornoECF : Integer );
 begin
+  Memo1.Lines.Add('ComandaECF: '+GetEnumName( TypeInfo(TACBrTEFDOperacaoECF),
+                                              integer(Operacao) ));
   try
     case Operacao of
       opeAbreGerencial :
-        ACBrECF1.AbreRelatorioGerencial ;
+          ACBrECF1.AbreRelatorioGerencial ;
 
       opeCancelaCupom :
-        begin
-          Memo1.Lines.Add('Cancelando o Cupom');
           ACBrECF1.CancelaCupom;
-        end;
 
       opeFechaCupom :
          ACBrECF1.FechaCupom('Projeto ACBr|http://acbr.sf.net');
 
       opeSubTotalizaCupom :
          ACBrECF1.SubtotalizaCupom( 0, 'Projeto ACBr|http://acbr.sf.net' );
-
-      opeImprimeGerencial :
-        begin
-           Memo1.Lines.AddStrings( Resp.ImagemComprovante );
-           { *** Lembre-se de configurar ***
-             ACBrECF1.MaxLinhasBuffer   := 3; // Os homologadores permitem no m√°ximo
-                                              // Impress√£o de 3 em 3 linhas
-             ACBrECF1.LinhasEntreCupons := 7; // (ajuste conforme o seu ECF)
-
-             Para Acessar o numero da Via atual, sendo Impressa use:
-             Resp.ViaAtual }
-           ACBrECF1.LinhaRelatorioGerencial( Resp.ImagemComprovante.Text ) ;
-        end;
 
       opeFechaGerencial, opeFechaVinculado :
         ACBrECF1.FechaRelatorio ;
@@ -929,16 +929,6 @@ begin
         begin
           ACBrECF1.PulaLinhas( ACBrECF1.LinhasEntreCupons );
           ACBrECF1.CortaPapel( True );
-        end;
-
-      opeImprimeVinculado :
-        begin
-          Memo1.Lines.AddStrings( Resp.ImagemComprovante );
-          if Resp.ViaAtual = 1 then
-             ACBrECF1.LinhaCupomVinculado( Resp.ImagemComprovante.Text )
-          else
-             { NOTA: ACBrECF n√£o possui comando para imprimir a 2a via do CCD }
-             ACBrECF1.LinhaCupomVinculado( Resp.ImagemComprovante.Text ) ;
         end;
     end;
 
@@ -952,7 +942,40 @@ procedure TForm1.ACBrTEFD1ComandaECFAbreVinculado(COO, IndiceECF : String;
    Valor : Double; var RetornoECF : Integer);
 begin
   try
+     Memo1.Lines.Add( 'ACBrTEFD1ComandaECFAbreVinculado, COO:'+COO+
+        ' IndiceECF: '+IndiceECF+' Valor: '+FormatFloat('0.00',Valor) ) ;
      ACBrECF1.AbreCupomVinculado( COO, IndiceECF, Valor );
+     RetornoECF := 1 ;
+  except
+     RetornoECF := 0 ;
+  end;
+end;
+
+procedure TForm1.ACBrTEFD1ComandaECFImprimeVia(
+   TipoRelatorio : TACBrTEFDTipoRelatorio; Via : Integer;
+   ImagemComprovante : TStringList; var RetornoECF : Integer);
+begin
+  Memo1.Lines.Add( 'ACBrTEFD1ComandaECFImprimeVia, Tipo: '+
+     IfThen(TipoRelatorio = trGerencial, 'trGerencial','trVinculado') +
+     ' Via: '+IntToStr(Via) );
+  Memo1.Lines.AddStrings( ImagemComprovante );
+
+  { *** Se estiver usando ACBrECF... Lembre-se de configurar ***
+    ACBrECF1.MaxLinhasBuffer   := 3; // Os homologadores permitem no m·ximo
+                                     // Impressao de 3 em 3 linhas
+    ACBrECF1.LinhasEntreCupons := 7; // (ajuste conforme o seu ECF)
+
+    NOTA: ACBrECF nao possui comando para imprimir a 2a via do CCD }
+
+  try
+     case TipoRelatorio of
+       trGerencial :
+         ACBrECF1.LinhaRelatorioGerencial( ImagemComprovante.Text ) ;
+
+       trVinculado :
+         ACBrECF1.LinhaCupomVinculado( ImagemComprovante.Text )
+     end;
+
      RetornoECF := 1 ;
   except
      RetornoECF := 0 ;
@@ -963,6 +986,8 @@ procedure TForm1.ACBrTEFD1ComandaECFPagamento(IndiceECF : String;
    Valor : Double; var RetornoECF : Integer);
 begin
   try
+     Memo1.Lines.Add( 'ACBrTEFD1ComandaECFPagamento, IndiceECF: '+IndiceECF+
+        ' Valor: '+FormatFloat('0.00',Valor) );
      ACBrECF1.EfetuaPagamento(IndiceECF, Valor);
      RetornoECF := 1 ;
   except
@@ -976,4 +1001,5 @@ initialization
 {$ENDIF}
   
 end.
+
 

@@ -1,7 +1,7 @@
 {******************************************************************************}
 { Projeto: Componente ACBrNFe                                                  }
 {  Biblioteca multiplataforma de componentes Delphi para emissão de Nota Fiscal}
-{ eletrônica - NFe - http://www.nfe.fazenda.gov.br                          }
+{ eletrônica - NFe - http://www.nfe.fazenda.gov.br                             }
 {                                                                              }
 { Direitos Autorais Reservados (c) 2008 Wemerson Souto                         }
 {                                       Daniel Simoes de Almeida               }
@@ -35,54 +35,167 @@
 {******************************************************************************}
 
 {******************************************************************************
-|* Historico
-|*
-|* 16/12/2008: Wemerson Souto
-|*  - Doação do componente para o Projeto ACBr
-|* 20/08/2009: Caique Rodrigues
-|*  - Doação units para geração do Danfe via QuickReport
+| Historico
+|
+| 15/12/2009: Emerson Crema
+|  - Removida a rotina Detalhes e desenvolvida a Itens.
+|  - Implementado ClientDataSet.
+|  - Correcao no totalizador de paginas.        
+| 11/12/2009: Emerson Crema
+|  - Ajuste no posicionamento das linhas e alinhamento de campos numéricos
+|  - Alteracao da legenda 1-Saida, 2-Entrada, para 0-Entrada, 1- Saida.
+|  - Alteracao da legenda 1-Emitente, 2-Destinatario, para
+|    0-Emitente, 1-Destinatario.
+|  - Incluida a mensagem para modo "homologação":
+|    "Este documento não tem validade jurídica"
+|    obs: precisa do componente QrAngLbl.
+|  - Habilitada a banda qrsISSQN desde q FNFE.Total.ISSQNtot.vISS > 0.
+|  - Preenchimento dos labels: qrlTotalServicos, qrlBaseISSQN, qrlValorISSQN.
+|  - Implementada ajuste na lista de itens para + d 1 pagina.
+|  - Implementado campo "Protocolo de autorizacao".
+|  - Colocada a banda de "Identificacao do recebedor" no topo.
+|
+| 20/08/2009: Caique Rodrigues
+|  - Doação units para geração do Danfe via QuickReport
+| 16/12/2008: Wemerson Souto
+|  - Doação do componente para o Projeto ACBr
+|
 ******************************************************************************}
+
 {$I ACBr.inc}
+
 unit ACBrNFeDANFeQRRetrato;
 
 interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, QuickRpt, QRCtrls,  XMLIntf, XMLDoc,
-  JPEG, ACBrNFeDANFeQR, ACBrNFeQRCodeBar, pcnConversao;
+  Dialogs, ExtCtrls, QuickRpt, QRCtrls,  XMLIntf, XMLDoc, MidasLib,
+  JPEG, ACBrNFeDANFeQR, ACBrNFeQRCodeBar, pcnConversao, DB,
+  DBClient;
 
 type
 
   TfqrDANFeQRRetrato = class(TfqrDANFeQR)
-    rbDadosAdicionais: TQRBand;
+    cdsItens: TClientDataSet;
+    cdsItensCODIGO: TStringField;
+    cdsItensDESCRICAO: TStringField;
+    cdsItensNCM: TStringField;
+    cdsItensCFOP: TStringField;
+    cdsItensUNIDADE: TStringField;
+    cdsItensQTDE: TStringField;
+    cdsItensVALOR: TStringField;
+    cdsItensTOTAL: TStringField;
+    cdsItensCST: TStringField;
+    cdsItensBICMS: TStringField;
+    cdsItensALIQICMS: TStringField;
+    cdsItensVALORICMS: TStringField;
+    cdsItensALIQIPI: TStringField;
+    cdsItensVALORIPI: TStringField;
+    qrbRecibo: TQRBand;
+    qrbDadosDanfe: TQRChildBand;
+    qrbEmitenteDestinatario: TQRChildBand;
+    qrbHeaderItens: TQRBand;
+    qrbItens: TQRBand;
+    qrbISSQN: TQRBand;
+    qrbDadosAdicionais: TQRChildBand;
+    qrbSistema: TQRChildBand;
+    qrsDivProd1: TQRShape;
+    qrsDivProd2: TQRShape;
+    qrsDivProd3: TQRShape;
+    qrsDivProd4: TQRShape;
+    qrsDivProd5: TQRShape;
+    qrsDivProd6: TQRShape;
+    qrsDivProd7: TQRShape;
+    qrsDivProd8: TQRShape;
+    qrsDivProd10: TQRShape;
+    qrsDivProd11: TQRShape;
+    qrsDivProd12: TQRShape;
+    qrsDivProd13: TQRShape;
+    qrsDivProd9: TQRShape;
+    qrmProdutoCodigo: TQRDBText;
+    qrmProdutoDescricao: TQRDBText;
+    qrmProdutoNCM: TQRDBText;
+    qrmProdutoCST: TQRDBText;
+    qrmProdutoCFOP: TQRDBText;
+    qrmProdutoUnidade: TQRDBText;
+    qrmProdutoQTDE: TQRDBText;
+    qrmProdutoValor: TQRDBText;
+    qrmProdutoTotal: TQRDBText;
+    qrmProdutoBCICMS: TQRDBText;
+    qrmProdutoVALORICMS: TQRDBText;
+    qrmProdutoALIQICMS: TQRDBText;
+    qrmProdutoVALORIPI: TQRDBText;
+    qrmProdutoALIQIPI: TQRDBText;
     QRShape1: TQRShape;
-    QRShape2: TQRShape;
-    QRShape3: TQRShape;
+    QRLabel10: TQRLabel;
     qrsPicoteHeader: TQRShape;
+    QRShape3: TQRShape;
+    QRShape2: TQRShape;
+    QRShape101: TQRShape;
+    qrlRecebemosDe1: TQRLabel;
+    qrlNumNF0: TQRLabel;
+    qrlSERIE0: TQRLabel;
+    QRLabel14: TQRLabel;
+    QRLabel13: TQRLabel;
+    QRLabel12: TQRLabel;
+    QRLabel11: TQRLabel;
     QRShape5: TQRShape;
     QRShape6: TQRShape;
     QRShape7: TQRShape;
+    QRLabel17: TQRLabel;
     QRShape8: TQRShape;
     QRShape9: TQRShape;
-    QRShape10: TQRShape;
     QRShape11: TQRShape;
+    QRLabel28: TQRLabel;
+    QRLabel29: TQRLabel;
+    QRLabel30: TQRLabel;
+    QRLabel31: TQRLabel;
+    QRLabel32: TQRLabel;
+    qrlNatOperacao: TQRLabel;
+    qrlInscricaoEstadual: TQRLabel;
+    qrlInscrEstSubst: TQRLabel;
+    qrlCNPJ: TQRLabel;
+    qrlFone: TQRLabel;
+    qrmEmitente: TQRMemo;
+    qrmEndereco: TQRMemo;
+    qriLogo: TQRImage;
+    qriBarCode: TQRImage;
+    QRShape4: TQRShape;
+    QRLabel2: TQRLabel;
+    qrlChave: TQRLabel;
+    QRLabel9: TQRLabel;
+    QRLabel16: TQRLabel;
+    qrlProtocolo: TQRLabel;
+    qrlSERIE1: TQRLabel;
+    QRLabel22: TQRLabel;
+    QRLabel18: TQRLabel;
+    QRLabel19: TQRLabel;
+    QRLabel20: TQRLabel;
+    qrlNumNF1: TQRLabel;
+    QRLabel24: TQRLabel;
+    qrlPageNumber: TQRLabel;
+    QRLabel26: TQRLabel;
+    QRLabel27: TQRLabel;
+    QRShape102: TQRShape;
+    qrlEntradaSaida: TQRLabel;
     QRLabel1: TQRLabel;
+    qrlblFatura: TQRLabel;
+    QRLabel5: TQRLabel;
+    QRLabel4: TQRLabel;
+    QRShape12: TQRShape;
     QRShape15: TQRShape;
     QRShape16: TQRShape;
     QRShape17: TQRShape;
     QRShape18: TQRShape;
     QRShape19: TQRShape;
     QRShape20: TQRShape;
-    QRShape12: TQRShape;
     QRShape13: TQRShape;
     QRShape14: TQRShape;
     QRShape21: TQRShape;
     QRShape22: TQRShape;
     QRShape23: TQRShape;
     qrshpFatura: TQRShape;
-    qrlblFatura: TQRLabel;
-    QRLabel4: TQRLabel;
     QRShape25: TQRShape;
     QRShape26: TQRShape;
     QRShape27: TQRShape;
@@ -95,7 +208,6 @@ type
     QRShape34: TQRShape;
     QRShape35: TQRShape;
     QRShape36: TQRShape;
-    QRLabel5: TQRLabel;
     QRShape37: TQRShape;
     QRShape38: TQRShape;
     QRShape39: TQRShape;
@@ -109,42 +221,6 @@ type
     QRShape49: TQRShape;
     QRShape50: TQRShape;
     QRShape51: TQRShape;
-    QRShape52: TQRShape;
-    QRLabel3: TQRLabel;
-    QRLabel6: TQRLabel;
-    QRShape53: TQRShape;
-    QRShape54: TQRShape;
-    QRShape55: TQRShape;
-    QRShape56: TQRShape;
-    QRLabel7: TQRLabel;
-    QRShape57: TQRShape;
-    qrlRecebemosDe1: TQRLabel;
-    QRShape101: TQRShape;
-    QRLabel10: TQRLabel;
-    QRLabel11: TQRLabel;
-    QRLabel12: TQRLabel;
-    QRLabel13: TQRLabel;
-    QRLabel14: TQRLabel;
-    qrlSERIE0: TQRLabel;
-    qrlNumNF0: TQRLabel;
-    QRLabel17: TQRLabel;
-    QRLabel18: TQRLabel;
-    QRLabel19: TQRLabel;
-    QRLabel20: TQRLabel;
-    qrlNumNF1: TQRLabel;
-    QRLabel22: TQRLabel;
-    qrlSERIE1: TQRLabel;
-    QRLabel24: TQRLabel;
-    qrlPageNumber: TQRLabel;
-    QRLabel26: TQRLabel;
-    QRLabel27: TQRLabel;
-    QRShape102: TQRShape;
-    QRLabel28: TQRLabel;
-    QRLabel29: TQRLabel;
-    QRLabel30: TQRLabel;
-    QRLabel31: TQRLabel;
-    QRLabel32: TQRLabel;
-    QRLabel33: TQRLabel;
     QRLabel34: TQRLabel;
     QRLabel35: TQRLabel;
     QRLabel36: TQRLabel;
@@ -190,18 +266,13 @@ type
     qrlFatData1: TQRLabel;
     qrlFatData2: TQRLabel;
     qrlFatData3: TQRLabel;
-    qrlFatValor3: TQRLabel;
-    qrlFatValor2: TQRLabel;
     qrlFatValor1: TQRLabel;
-    qrlFatNum2: TQRLabel;
+    qrlFatValor2: TQRLabel;
+    qrlFatValor3: TQRLabel;
     qrlFatNum1: TQRLabel;
+    qrlFatNum2: TQRLabel;
     qrlFatNum3: TQRLabel;
-    QRLabel100: TQRLabel;
     QRShape106: TQRShape;
-    QRLabel137: TQRLabel;
-    QRLabel138: TQRLabel;
-    QRLabel139: TQRLabel;
-    QRLabel140: TQRLabel;
     QRShape107: TQRShape;
     QRShape108: TQRShape;
     QRShape109: TQRShape;
@@ -241,83 +312,6 @@ type
     qrlFatValor15: TQRLabel;
     qrlFatValor14: TQRLabel;
     qrlFatValor13: TQRLabel;
-    qrmDadosAdicionais: TQRMemo;
-    QRLabel141: TQRLabel;
-    qrsRectProdutos: TQRShape;
-    qrsDivProd1: TQRShape;
-    qrsDivProd2: TQRShape;
-    qrsDivProd3: TQRShape;
-    qrsDivProd4: TQRShape;
-    qrsDivProd5: TQRShape;
-    qrsDivProd6: TQRShape;
-    qrsDivProd7: TQRShape;
-    qrsDivProd8: TQRShape;
-    qrsDivProd9: TQRShape;
-    qrsDivProd10: TQRShape;
-    qrsDivProd11: TQRShape;
-    qrsDivProd12: TQRShape;
-    qrsDivProd13: TQRShape;
-    QRLabel142: TQRLabel;
-    QRLabel143: TQRLabel;
-    QRLabel144: TQRLabel;
-    QRLabel145: TQRLabel;
-    QRLabel146: TQRLabel;
-    QRLabel147: TQRLabel;
-    QRLabel148: TQRLabel;
-    QRLabel149: TQRLabel;
-    QRLabel150: TQRLabel;
-    QRLabel152: TQRLabel;
-    QRLabel153: TQRLabel;
-    QRLabel154: TQRLabel;
-    QRLabel155: TQRLabel;
-    QRLabel156: TQRLabel;
-    QRLabel157: TQRLabel;
-    qrsLineHeaderProdutos: TQRShape;
-    qrmProdutoCodigo: TQRMemo;
-    qrmProdutoDescricao: TQRMemo;
-    qrmProdutoNCM: TQRMemo;
-    qrmProdutoCST: TQRMemo;
-    qrmProdutoCFOP: TQRMemo;
-    qrmProdutoUnidade: TQRMemo;
-    qrmProdutoQTDE: TQRMemo;
-    qrmProdutoValor: TQRMemo;
-    qrmProdutoTotal: TQRMemo;
-    qrmProdutoBCICMS: TQRMemo;
-    qrmProdutoVALORICMS: TQRMemo;
-    qrmProdutoVALORIPI: TQRMemo;
-    qrmProdutoALIQICMS: TQRMemo;
-    qrmProdutoALIQIPI: TQRMemo;
-    QRLabel151: TQRLabel;
-    qrbReciboHeader: TQRBand;
-    ChildBand2: TQRChildBand;
-    qrbDadosNFe: TQRChildBand;
-    qrbManchaPicote: TQRChildBand;
-    QRLabel8: TQRLabel;
-    qrsPicoteManchaHeader: TQRShape;
-    rbDetail: TQRBand;
-    rbDadosXXXXX: TQRChildBand;
-    qrbReciboHeader2: TQRChildBand;
-    QRShape4: TQRShape;
-    QRLabel74: TQRLabel;
-    qrsPicoteHeader2: TQRShape;
-    QRShape59: TQRShape;
-    QRShape60: TQRShape;
-    QRShape61: TQRShape;
-    qrlRecebemosDe2: TQRLabel;
-    qrlNumNF2: TQRLabel;
-    qrlSerie2: TQRLabel;
-    QRLabel78: TQRLabel;
-    QRLabel79: TQRLabel;
-    QRLabel80: TQRLabel;
-    QRLabel81: TQRLabel;
-    qrbManchaPicote2: TQRChildBand;
-    qrsPicoteManchaHeader2: TQRShape;
-    QRLabel82: TQRLabel;
-    qrlNatOperacao: TQRLabel;
-    qrlInscricaoEstadual: TQRLabel;
-    qrlInscrEstSubst: TQRLabel;
-    qrlCNPJ: TQRLabel;
-    qrlChave: TQRLabel;
     qrlDestNome: TQRLabel;
     qrlDestCNPJ: TQRLabel;
     qrlDestEndereco: TQRLabel;
@@ -356,656 +350,509 @@ type
     qrlTransNumeracao: TQRLabel;
     qrlTransPesoBruto: TQRLabel;
     qrlTransPesoLiq: TQRLabel;
-    QRLabel194: TQRLabel;
-    QRLabel195: TQRLabel;
-    QRLabel196: TQRLabel;
-    QRLabel197: TQRLabel;
-    qrlFone: TQRLabel;
-    qrmEmitente: TQRMemo;
-    qrmEndereco: TQRMemo;
-    qrsISSQN: TQRSubDetail;
-    qrlEntradaSaida: TQRLabel;
     qrlHoraSaida: TQRLabel;
+    qrsRectProdutos: TQRShape;
+    QRLabel141: TQRLabel;
+    QRLabel142: TQRLabel;
     QRLabel15: TQRLabel;
-    qriLogo: TQRImage;
+    QRLabel143: TQRLabel;
+    QRLabel144: TQRLabel;
+    QRLabel145: TQRLabel;
+    QRLabel146: TQRLabel;
+    QRLabel147: TQRLabel;
+    QRLabel148: TQRLabel;
+    QRLabel149: TQRLabel;
+    QRLabel150: TQRLabel;
+    QRLabel151: TQRLabel;
+    QRLabel152: TQRLabel;
+    QRLabel153: TQRLabel;
+    QRLabel156: TQRLabel;
+    QRLabel154: TQRLabel;
+    QRLabel157: TQRLabel;
+    QRShape10: TQRShape;
+    QRShape24: TQRShape;
+    QRShape40: TQRShape;
+    QRShape41: TQRShape;
+    QRShape57: TQRShape;
+    QRShape58: TQRShape;
+    QRShape59: TQRShape;
+    QRShape60: TQRShape;
+    QRShape61: TQRShape;
+    QRShape62: TQRShape;
+    QRShape63: TQRShape;
+    QRShape64: TQRShape;
+    QRShape65: TQRShape;
+    QRLabel3: TQRLabel;
+    QRShape52: TQRShape;
+    QRShape53: TQRShape;
+    QRShape54: TQRShape;
+    QRShape55: TQRShape;
+    QRLabel137: TQRLabel;
+    QRLabel138: TQRLabel;
+    QRLabel139: TQRLabel;
+    QRLabel140: TQRLabel;
+    qrlInscMunicipal: TQRLabel;
+    qrlTotalServicos: TQRLabel;
+    qrlBaseISSQN: TQRLabel;
+    qrlValorISSQN: TQRLabel;
+    QRShape56: TQRShape;
+    QRLabel100: TQRLabel;
+    QRLabel7: TQRLabel;
+    qrmDadosAdicionais: TQRMemo;
+    rbDadosAdicionais: TQRShape;
     qrlblSistema: TQRLabel;
-    qriBarCode: TQRImage;
-    procedure QRNFeNeedData(Sender: TObject; var MoreData: Boolean);
-    procedure QRNFeBeforePrint(Sender: TCustomQuickRep; var PrintReport: Boolean);
-    procedure qrbDadosNFeBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
-    procedure qrbReciboHeaderBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
-    procedure qrbManchaPicoteBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
-    procedure rbDetailBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
-    procedure rbDadosAdicionaisBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
-    procedure qrbManchaPicote2BeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
-    procedure qrbReciboHeader2BeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
-    procedure qrsISSQNBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
-    procedure QRNFeAfterPreview(Sender: TObject);
-    procedure ChildBand2BeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
+    QRShape66: TQRShape;
+    qrsFimItens: TQRShape;
+    QRShape67: TQRShape;
+    qrlMsgTeste: TQRLabel;
+    procedure QRNFeBeforePrint(Sender: TCustomQuickRep;
+      var PrintReport: Boolean);
+    procedure qrbReciboBeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure qrbEmitenteDestinatarioBeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure qrbISSQNBeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure qrbDadosAdicionaisBeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure qrbDadosDanfeBeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure qrbItensBeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure qrbSistemaBeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
   private
     { Private declarations }
-    FRecebemoDe : string ;
-    DetItem : integer ;
     FTotalPages : integer ;
-    procedure InitDados ;
-    procedure Header ;
-    procedure Emitente ;
-    procedure Destinatario ;
-    procedure Imposto ;
-    procedure Transporte ;
-    procedure Observacoes ;
-    procedure Detalhes ;
-    procedure BeginUpdateProdutos ;
-    procedure EndupdateProdutos ;
-    procedure AddFatura ;
-    procedure ValorFiscal ;
+    procedure Itens ;
   public
     { Public declarations }
+    procedure ProtocoloNFE( const sProtocolo : String ) ;
   end;
 
 
 implementation
 
-uses StrUtils, ACBrNFeUtil  ;
+uses StrUtils, ACBrNFeUtil, pcnNFe, pcnSignature, DateUtils;
 
 {$R *.dfm}
 
 const
-   _NUM_ITEMS_PAGE1 = 28 ;
-   _NUM_ITEMS_OTHERPAGES = 150 ;
+   _NUM_ITEMS_PAGE1      = 18 ;
+   _NUM_ITEMS_OTHERPAGES = 50 ;
 
-procedure TfqrDANFeQRRetrato.InitDados ;
+var
+   FProtocoloNFE : String ;
+   nItemControle : Integer ;
+
+
+procedure TfqrDANFeQRRetrato.Itens;
+var
+   nItem : Integer ;
+   sCST, sBCICMS, sALIQICMS, sVALORICMS, sALIQIPI, sVALORIPI : String ;
 begin
-  qriBarCode.BringToFront ;
 
-  FTotalPages := 1 ;
+   if QRNFe.PageNumber > 0 then
+      exit ;
 
-  if ( FNFe.Det.Count > _NUM_ITEMS_PAGE1 ) then
-    begin
-       FTotalPages := ( FNFe.Det.Count - _NUM_ITEMS_PAGE1 ) div _NUM_ITEMS_OTHERPAGES ;
-       if ( ( FNFe.Det.Count - _NUM_ITEMS_PAGE1 ) mod _NUM_ITEMS_OTHERPAGES ) <> 0 then
-          inc ( FTotalPages )
-    end ;
+   cdsItens.CreateDataSet ;
+   cdsItens.Open ;
 
-  if ( FLogo <> '' ) and FileExists ( FLogo ) then
-     qriLogo.Picture.LoadFromFile( FLogo );
+   for nItem := 0 to ( FNFe.Det.Count - 1 ) do
+   begin
 
-  Header ;
-  Emitente ;
-  Destinatario ;
-  Imposto ;
-  Transporte ;
-  AddFatura ;
-  Observacoes;
+      with FNFe.Det.Items[ nItem ] do
+      begin
 
-  ValorFiscal;
+         with Prod do
+         begin
+
+            with Imposto.ICMS do
+            begin
+
+               sCST       := OrigToStr( orig ) + CSTICMSToStr( CST ) ;
+
+               sBCICMS    := '0.00' ;
+               sALIQICMS  := '0.00' ;
+               sVALORICMS := '0.00' ;
+
+               sALIQIPI   := '0.00' ;
+               sVALORIPI  := '0.00' ;
+
+               if (CST = cst00) then
+               begin
+                  sBCICMS    := NotaUtil.FormatFloat( VBC   ) ;
+                  sALIQICMS  := NotaUtil.FormatFloat( PICMS ) ;
+                  sVALORICMS := NotaUtil.FormatFloat( VICMS ) ;
+               end
+               else if (CST = cst10) then
+               begin
+                  sBCICMS    := NotaUtil.FormatFloat( VBC   ) ;
+                  sALIQICMS  := NotaUtil.FormatFloat( PICMS ) ;
+                  sVALORICMS := NotaUtil.FormatFloat( VICMS ) ;
+               end
+               else if (CST = cst20) then
+               begin
+                  sBCICMS    := NotaUtil.FormatFloat( VBC   ) ;
+                  sALIQICMS  := NotaUtil.FormatFloat( PICMS ) ;
+                  sVALORICMS := NotaUtil.FormatFloat( VICMS ) ;
+               end
+               else if (CST = cst30) then
+               begin
+                  sBCICMS    := NotaUtil.FormatFloat( VBCST   ) ;
+                  sALIQICMS  := NotaUtil.FormatFloat( PICMSST ) ;
+                  sVALORICMS := NotaUtil.FormatFloat( VICMSST ) ;
+               end
+               else if (CST = cst40) or (CST = cst41) or (CST = cst50) then
+               begin
+                  // Campos vazios
+               end
+               else if (CST = cst51) then
+               begin
+                  sBCICMS    := NotaUtil.FormatFloat( VBC   ) ;
+                  sALIQICMS  := NotaUtil.FormatFloat( PICMS ) ;
+                  sVALORICMS := NotaUtil.FormatFloat( VICMS ) ;
+               end
+               else if (CST = cst60) then
+               begin
+                  sBCICMS    := NotaUtil.FormatFloat( VBCST ) ;
+                  sVALORICMS := NotaUtil.FormatFloat( VICMSST ) ;
+               end
+               else if (CST = cst70) then
+               begin
+                  sBCICMS    := NotaUtil.FormatFloat( VBC   ) ;
+                  sALIQICMS  := NotaUtil.FormatFloat( PICMS ) ;
+                  sVALORICMS := NotaUtil.FormatFloat( VICMS ) ;
+               end
+               else if (CST = cst90) then
+               begin
+                  sBCICMS    := NotaUtil.FormatFloat( VBC   ) ;
+                  sALIQICMS  := NotaUtil.FormatFloat( PICMS ) ;
+                  sVALORICMS := NotaUtil.FormatFloat( VICMS ) ;
+               end;
+            end;
+
+            with Imposto.IPI do
+            begin
+               if (CST = ipi00) or (CST = ipi49) or
+                  (CST = ipi50) or (CST = ipi99) then
+               begin
+                  sALIQIPI  := NotaUtil.FormatFloat( PIPI ) ;
+                  sVALORIPI := NotaUtil.FormatFloat( VIPI ) ;
+               end
+            end;
+
+            cdsItens.Append ;
+            cdsItens.FieldByName( 'CODIGO'    ).AsString := CProd ;
+            cdsItens.FieldByName( 'DESCRICAO' ).AsString := XProd ;
+            cdsItens.FieldByName( 'NCM'       ).AsString := NCM ;
+            cdsItens.FieldByName( 'CFOP'      ).AsString := CFOP ;
+            cdsItens.FieldByName( 'UNIDADE'   ).AsString := UCom ;
+            cdsItens.FieldByName( 'QTDE'      ).AsString := NotaUtil.FormatFloat( QCom ) ;
+            cdsItens.FieldByName( 'VALOR'     ).AsString := NotaUtil.FormatFloat( VUnCom ) ;
+            cdsItens.FieldByName( 'TOTAL'     ).AsString := NotaUtil.FormatFloat( VProd ) ;
+            cdsItens.FieldByName( 'CST'       ).AsString := sCST ;
+            cdsItens.FieldByName( 'BICMS'     ).AsString := sBCICMS ;
+            cdsItens.FieldByName( 'ALIQICMS'  ).AsString := sALIQICMS ;
+            cdsItens.FieldByName( 'VALORICMS' ).AsString := sVALORICMS ;
+            cdsItens.FieldByName( 'ALIQIPI'   ).AsString := sALIQIPI ;
+            cdsItens.FieldByName( 'VALORIPI'  ).AsString := sVALORIPI ;
+            cdsItens.Post ;
+
+         end;
+         
+      end ;
+
+   end ;
+
+   cdsItens.First ;
 
 end;
 
-procedure TfqrDANFeQRRetrato.QRNFeNeedData(Sender: TObject;
-  var MoreData: Boolean);
+procedure TfqrDANFeQRRetrato.ProtocoloNFE( const sProtocolo : String ) ;
 begin
-  MoreData := ( QRNFe.PageNumber = 0 ) or ( DetItem < (FNFe.Det.Count - 1) ) ;
-  if ( MoreData ) then
-     Detalhes ;
-end;
+   FProtocoloNFE := sProtocolo ;
+end ;
 
 procedure TfqrDANFeQRRetrato.QRNFeBeforePrint(Sender: TCustomQuickRep;
   var PrintReport: Boolean);
-begin
-  DetItem := 0 ;
-  InitDados ;
-end;
-
-procedure TfqrDANFeQRRetrato.qrbReciboHeaderBeforePrint(Sender: TQRCustomBand;
-  var PrintBand: Boolean);
-begin
-  PrintBand := QRNFe.PageNumber = 1 ;
-  PrintBand := False;
-end;
-
-procedure TfqrDANFeQRRetrato.qrbManchaPicoteBeforePrint(Sender: TQRCustomBand;
-  var PrintBand: Boolean);
-begin
-  qrbManchaPicote.Height := qrbReciboHeader.Height ;
-  qrsPicoteManchaHeader.Top := qrsPicoteHeader.Top ;
-  PrintBand := QRNFe.PageNumber <> 1 ;
-  PrintBand := False ;
-end;
-
-procedure TfqrDANFeQRRetrato.qrbDadosNFeBeforePrint(Sender: TQRCustomBand;
-  var PrintBand: Boolean);
-begin
-  PrintBand := QRNFe.PageNumber = 1 ;
-end;
-
-procedure TfqrDANFeQRRetrato.rbDetailBeforePrint(Sender: TQRCustomBand;  var PrintBand: Boolean);
 var
-   h : integer ;
+  nRestItens : Integer ;
 begin
+  inherited;
+   Itens ;
+   nItemControle := 0 ;
+   FTotalPages   := 1 ;
+   if ( FNFe.Det.Count > _NUM_ITEMS_PAGE1 ) then
+   begin
+      nRestItens := FNFe.Det.Count - _NUM_ITEMS_PAGE1 ;
+      if nRestItens <= _NUM_ITEMS_OTHERPAGES then
+         Inc( FTotalPages )
+      else
+      begin
+         Inc( FTotalPages, nRestItens div _NUM_ITEMS_OTHERPAGES ) ;
+         if ( nRestItens mod _NUM_ITEMS_OTHERPAGES ) > 0 then
+            Inc( FTotalPages )
+      end ;
+   end ;
+end;
 
-   if QRNFe.PageNumber = 0 then
-      h := Canvas.TextHeight( 'XÇÚ' ) * ( _NUM_ITEMS_PAGE1 -1 )
-//      h := QRNFe.Printer.Canvas.TextHeight( 'XÇÚ' ) * ( _NUM_ITEMS_PAGE1 -1 )
+procedure TfqrDANFeQRRetrato.qrbReciboBeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+  inherited;
+   PrintBand := QRNFe.PageNumber = 1 ;
+   qrlNumNF0.Caption := FormatFloat( '000,000,000', FNFe.Ide.nNF ) ;
+   qrlSERIE0.Caption := IntToStr( FNFe.Ide.serie ) ;
+   qrlRecebemosDe1.Caption      := StringReplace(qrlRecebemosDe1.Caption,'%s',FNFe.Emit.xNome,[rfReplaceAll]);
+end;
+
+procedure TfqrDANFeQRRetrato.qrbEmitenteDestinatarioBeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+var
+   x : integer ;
+begin
+  inherited;
+   PrintBand := QRNFe.PageNumber = 1 ;
+
+   // Destinatario
+
+   with FNFe.Dest do
+   begin
+      if Trim( CNPJCPF ) = ''                then qrlDestCNPJ.Caption := ''
+      else if Length( Trim( CNPJCPF ) ) > 11 then qrlDestCNPJ.Caption := NotaUtil.FormatarCNPJ( CNPJCPF )
+      else                                        qrlDestCNPJ.Caption := NotaUtil.FormatarCPF( CNPJCPF ) ;
+
+      qrlDestIE.Caption   := IE ;
+      qrlDestNome.Caption := XNome ;
+      with EnderDest do
+      begin
+         qrlDestEndereco.Caption := XLgr + IfThen ( Nro = '0', '', ', ' + Nro ) ;
+         qrlDestBairro.Caption   := XBairro ;
+         qrlDestCidade.Caption   := XMun ;
+         qrlDestUF.Caption       := UF ;
+         qrlDestCEP.Caption      := NotaUtil.FormatarCEP( FormatFloat( '00000000', CEP ) ) ;
+         qrlDestFONE.Caption     := NotaUtil.FormatarFone( Fone ) ;
+      end;
+   end;
+
+   // Emissao, saida
+
+   qrlEmissao.Caption   := NotaUtil.FormatDate(DateToStr(FNFe.Ide.dEmi)) ;
+   qrlSaida.Caption     := IfThen( FNFe.Ide.DSaiEnt <> 0, NotaUtil.FormatDate(DateToStr(FNFe.Ide.dSaiEnt))) ;
+   qrlHoraSaida.Caption := '' ; // nao tem campo  ;
+
+   // Faturas
+
+   // Zera
+   for x := 1 to 15 do
+   begin
+      TQRLabel( FindComponent( 'qrlFatNum'   + intToStr( x ) ) ).Caption := '' ;
+      TQRLabel( FindComponent( 'qrlFatData'  + intToStr( x ) ) ).Caption := '' ;
+      TQRLabel( FindComponent( 'qrlFatValor' + intToStr( x ) ) ).Caption := '' ;
+   end ;
+   // Adiciona
+   for x := 0 to FNFe.Cobr.Dup.Count - 1 do with FNFe.Cobr.Dup[ x ] do
+   begin
+      TQRLabel( FindComponent( 'qrlFatNum'   + intToStr ( x + 1 ) ) ).Caption := NDup ;
+      TQRLabel( FindComponent( 'qrlFatData'  + intToStr ( x + 1 ) ) ).Caption := NotaUtil.FormatDate( DateToStr(DVenc) ) ;
+      TQRLabel( FindComponent( 'qrlFatValor' + intToStr ( x + 1 ) ) ).Caption := NotaUtil.FormatFloat(VDup) ;
+   end;
+
+   // Impostos
+
+   with FNFe.Total.ICMSTot do
+   begin
+      qrlBaseICMS.Caption      := NotaUtil.FormatFloat( VBC ) ;
+      qrlValorICMS.Caption     := NotaUtil.FormatFloat( VICMS ) ;
+      qrlBaseICMST.Caption     := NotaUtil.FormatFloat( VBCST ) ;
+      qrlValorICMST.Caption    := NotaUtil.FormatFloat( VST ) ;
+      qrlTotalProdutos.Caption := NotaUtil.FormatFloat( VProd ) ;
+      qrlValorFrete.Caption    := NotaUtil.FormatFloat( VFrete ) ;
+      qrlValorSeguro.Caption   := NotaUtil.FormatFloat( VSeg ) ;
+      qrlDescontos.Caption     := NotaUtil.FormatFloat( VDesc ) ;
+      qrlAcessorias.Caption    := NotaUtil.FormatFloat( VOutro ) ;
+      qrlValorIPI.Caption      := NotaUtil.FormatFloat( VIPI ) ;
+      qrlTotalNF.Caption       := NotaUtil.FormatFloat( VNF ) ;
+   end;
+
+   // Transporte
+
+   with FNFe.Transp do
+   begin
+      qrlTransModFrete.Caption   := modFreteToStr( ModFrete ) ;
+      qrlTransCodigoANTT.Caption := '' ;
+      qrlTransPlaca.Caption      := '' ;
+      qrlTransUFPlaca.Caption    := '' ;
+
+      with Transporta do
+      begin
+         if Trim( CNPJCPF ) = ''                then qrlTransCNPJ.Caption := '' 
+         else if Length( Trim( CNPJCPF ) ) > 11 then qrlTransCNPJ.Caption := NotaUtil.FormatarCNPJ( CNPJCPF )
+         else                                        qrlTransCNPJ.Caption := NotaUtil.FormatarCPF( CNPJCPF ) ;
+
+         qrlTransNome.Caption     := XNome ;
+         qrlTransIE.Caption       := IE ;
+         qrlTransEndereco.Caption := XEnder ;
+         qrlTransCidade.Caption   := XMun ;
+         qrlTransUF.Caption       := UF ;
+      end;
+   end;
+
+   with FNFe.Transp.VeicTransp do
+   begin
+      qrlTransPlaca.Caption   :=  Placa ;
+      qrlTransUFPlaca.Caption :=  UF;
+      //.Caption :=  RNTC;
+   end;
+
+   if FNFe.Transp.Vol.Count > 0 then with FNFe.Transp.Vol[0] do
+   begin
+      qrlTransQTDE.Caption      := IntToStr(QVol) ;
+      qrlTransEspecie.Caption   := Esp   ;
+      qrlTransMarca.Caption     := Marca ;
+      qrlTransNumeracao.Caption := NVol  ;
+      qrlTransPesoLiq.Caption   := NotaUtil.FormatFloat( PesoL, '#,0.00##' ) ;
+      qrlTransPesoBruto.Caption := NotaUtil.FormatFloat( PesoB, '#,0.00##' ) ;
+   end
    else
-      h := Canvas.TextHeight( 'XÇÚ' ) * ( _NUM_ITEMS_OTHERPAGES -1 ) ;
-//      h := QRNFe.Printer.Canvas.TextHeight( 'XÇÚ' ) * ( _NUM_ITEMS_OTHERPAGES -1 ) ;
+   begin
+      qrlTransQTDE.Caption      := '' ;
+      qrlTransEspecie.Caption   := '' ;
+      qrlTransMarca.Caption     := '' ;
+      qrlTransNumeracao.Caption := '' ;
+      qrlTransPesoLiq.Caption   := '' ;
+      qrlTransPesoBruto.Caption := '' ;
+   end;
 
-//   h := h + (qrsLineHeaderProdutos.Top + 5) ;
-   h := h + qrsLineHeaderProdutos.Top ;
-//   rbDetail.Height := h ;
+   // Mensagem para modo Homologacao.
 
-
-   qrsRectProdutos.Height := h - 1 ;
-   qrsDivProd1.Height := h - 1 ;
-   qrsDivProd2.Height := h - 1 ;
-   qrsDivProd3.Height := h - 1 ;
-   qrsDivProd4.Height := h - 1 ;
-   qrsDivProd5.Height := h - 1 ;
-   qrsDivProd6.Height := h - 1 ;
-   qrsDivProd7.Height := h - 1 ;
-   qrsDivProd8.Height := h - 1 ;
-   qrsDivProd9.Height := h - 1 ;
-   qrsDivProd10.Height := h - 1 ;
-   qrsDivProd11.Height := h - 1 ;
-   qrsDivProd12.Height := h - 1 ;
-   qrsDivProd13.Height := h - 1 ;
-
-    h := h - qrmProdutoCodigo.Top ;
-    qrmProdutoCodigo.Height    :=  h;
-    qrmProdutoDescricao.Height :=  h;
-    qrmProdutoNCM.Height :=        h;
-    qrmProdutoCST.Height :=        h;
-    qrmProdutoCFOP.Height :=       h;
-    qrmProdutoUnidade.Height :=    h;
-    qrmProdutoQTDE.Height :=       h;
-    qrmProdutoValor.Height :=      h;
-    qrmProdutoTotal.Height :=      h;
-    qrmProdutoBCICMS.Height :=     h;
-    qrmProdutoVALORICMS.Height :=  h;
-    qrmProdutoVALORIPI.Height :=   h;
-    qrmProdutoALIQICMS.Height :=   h;
-    qrmProdutoALIQIPI.Height :=    h;
-
+   with qrlMsgTeste do
+   begin
+      Enabled := FNFe.Ide.TpAmb = taHomologacao ;
+   end ;
+   
 end;
 
-procedure TfqrDANFeQRRetrato.rbDadosAdicionaisBeforePrint(Sender: TQRCustomBand;
+procedure TfqrDANFeQRRetrato.qrbISSQNBeforePrint(Sender: TQRCustomBand;
   var PrintBand: Boolean);
 begin
-//  PrintBand := False ;
-//  QRBand2.Top := rbDetail.Top + rbDetail.Height ;
-//  PrintBand := QRNFe.PageNumber = 1 ;
-  PrintBand := QRNFe.PageNumber = 1 ;
-//  rbDadosAdicionais.Top := QRBand2.Top + QRBand2.Height ;
-//  rbDadosAdicionais.Top := 841 ;
+  inherited;
+   PrintBand := QRNFe.PageNumber = 1 ;
+   if not PrintBand then
+      qrbISSQN.Height := 0
+   else
+   begin
+      if FNFE.Total.ISSQNtot.vISS > 0 then
+      begin
+         qrlInscMunicipal.Caption := '' ;
+         qrlTotalServicos.Caption := NotaUtil.FormatFloat( FNFE.Total.ISSQNtot.vServ ) ;
+         qrlBaseISSQN.Caption     := NotaUtil.FormatFloat( FNFE.Total.ISSQNtot.vBC ) ;
+         qrlValorISSQN.Caption    := NotaUtil.FormatFloat( FNFE.Total.ISSQNtot.vISS ) ;
+      end
+      else
+      begin
+         qrlInscMunicipal.Caption := '' ;      
+         qrlTotalServicos.Caption := '' ;
+         qrlBaseISSQN.Caption     := '' ;
+         qrlValorISSQN.Caption    := '' ;
+      end ;
+   end ;
 end;
 
-procedure TfqrDANFeQRRetrato.qrbManchaPicote2BeforePrint(Sender: TQRCustomBand;
+procedure TfqrDANFeQRRetrato.qrbDadosAdicionaisBeforePrint(Sender: TQRCustomBand;
   var PrintBand: Boolean);
-begin
-  qrbManchaPicote2.Height    := qrbReciboHeader2.Height ;
-  qrsPicoteManchaHeader2.Top := qrsPicoteHeader2.Top ;
-  PrintBand := QRNFe.PageNumber <> 1 ;
-end;
-
-procedure TfqrDANFeQRRetrato.qrbReciboHeader2BeforePrint(Sender: TQRCustomBand;
-  var PrintBand: Boolean);
-begin
-  PrintBand := QRNFe.PageNumber = 1 ;
-end;
-
-procedure TfqrDANFeQRRetrato.BeginUpdateProdutos;
-begin
-
-    qrmProdutoCodigo.Height := 0;
-    qrmProdutoDescricao.Height := 0;
-    qrmProdutoNCM.Height := 0;
-    qrmProdutoCST.Height := 0;
-    qrmProdutoCFOP.Height := 0;
-    qrmProdutoUnidade.Height := 0;
-    qrmProdutoQTDE.Height := 0;
-    qrmProdutoValor.Height := 0;
-    qrmProdutoTotal.Height := 0;
-    qrmProdutoBCICMS.Height := 0;
-    qrmProdutoVALORICMS.Height := 0;
-    qrmProdutoVALORIPI.Height := 0;
-    qrmProdutoALIQICMS.Height := 0;
-    qrmProdutoALIQIPI.Height := 0;
-
-    qrmProdutoCodigo.Lines.BeginUpdate ;
-    qrmProdutoDescricao.Lines.BeginUpdate ;
-    qrmProdutoNCM.Lines.BeginUpdate ;
-    qrmProdutoCST.Lines.BeginUpdate ;
-    qrmProdutoCFOP.Lines.BeginUpdate ;
-    qrmProdutoUnidade.Lines.BeginUpdate ;
-    qrmProdutoQTDE.Lines.BeginUpdate ;
-    qrmProdutoValor.Lines.BeginUpdate ;
-    qrmProdutoTotal.Lines.BeginUpdate ;
-    qrmProdutoBCICMS.Lines.BeginUpdate ;
-    qrmProdutoVALORICMS.Lines.BeginUpdate ;
-    qrmProdutoVALORIPI.Lines.BeginUpdate ;
-    qrmProdutoALIQICMS.Lines.BeginUpdate ;
-    qrmProdutoALIQIPI.Lines.BeginUpdate ;
-
-    qrmProdutoCodigo.Lines.Clear ;
-    qrmProdutoDescricao.Lines.Clear ;
-    qrmProdutoNCM.Lines.Clear ;
-    qrmProdutoCST.Lines.Clear ;
-    qrmProdutoCFOP.Lines.Clear ;
-    qrmProdutoUnidade.Lines.Clear ;
-    qrmProdutoQTDE.Lines.Clear ;
-    qrmProdutoValor.Lines.Clear ;
-    qrmProdutoTotal.Lines.Clear ;
-    qrmProdutoBCICMS.Lines.Clear ;
-    qrmProdutoVALORICMS.Lines.Clear ;
-    qrmProdutoVALORIPI.Lines.Clear ;
-    qrmProdutoALIQICMS.Lines.Clear ;
-    qrmProdutoALIQIPI.Lines.Clear ;
-
-end;
-
-procedure TfqrDANFeQRRetrato.EndupdateProdutos;
-begin
-    qrmProdutoCodigo.Lines.EndUpdate ;
-    qrmProdutoDescricao.Lines.EndUpdate ;
-    qrmProdutoNCM.Lines.EndUpdate ;
-    qrmProdutoCST.Lines.EndUpdate ;
-    qrmProdutoCFOP.Lines.EndUpdate ;
-    qrmProdutoUnidade.Lines.EndUpdate ;
-    qrmProdutoQTDE.Lines.EndUpdate ;
-    qrmProdutoValor.Lines.EndUpdate ;
-    qrmProdutoTotal.Lines.EndUpdate ;
-    qrmProdutoBCICMS.Lines.EndUpdate ;
-    qrmProdutoVALORICMS.Lines.EndUpdate ;
-    qrmProdutoVALORIPI.Lines.EndUpdate ;
-    qrmProdutoALIQICMS.Lines.EndUpdate ;
-    qrmProdutoALIQIPI.Lines.EndUpdate ;
-end;
-
-procedure TfqrDANFeQRRetrato.Observacoes;
 var
-  i: Integer;
+   i: Integer;
 begin
-  with FNFe.InfAdic do
-  begin
+  inherited;
+   PrintBand := QRNFe.PageNumber = 1 ;
+   if not PrintBand then
+      qrbDadosAdicionais.Height := 0
+   else with FNFe.InfAdic do
+   begin
       qrmDadosAdicionais.Lines.BeginUpdate ;
       qrmDadosAdicionais.Lines.Clear ;
-      for i:=0  to ObsCont.Count-1 do
-        with ObsCont.Items[i] do
-           qrmDadosAdicionais.Lines.Add(
-                StringReplace  ( XCampo, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] )+': '+
-                StringReplace  ( XTexto, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
-
-      qrmDadosAdicionais.Lines.Add(StringReplace  ( InfCpl, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) ) ;
+      for i := 0 to ObsCont.Count-1 do with ObsCont.Items[i] do
+         qrmDadosAdicionais.Lines.Add( StringReplace( XCampo, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] )+': '+
+                                       StringReplace( XTexto, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
+      qrmDadosAdicionais.Lines.Add(StringReplace( InfCpl, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) ) ;
       qrmDadosAdicionais.Lines.EndUpdate ;
-  end;
-end;
-
-
-procedure TfqrDANFeQRRetrato.AddFatura;
-var
-  x : integer ;
-begin
-     //zera
-     for x := 1 to 15 do
-      begin
-        TQRLabel ( FindComponent ( 'qrlFatNum'   + intToStr ( x ) ) ).Caption := '' ;
-        TQRLabel ( FindComponent ( 'qrlFatData'  + intToStr ( x ) ) ).Caption := '' ;
-        TQRLabel ( FindComponent ( 'qrlFatValor' + intToStr ( x ) ) ).Caption := '' ;
-      end ;
-     //adiciona
-     for x := 0 to FNFe.Cobr.Dup.Count - 1 do
-        with FNFe.Cobr.Dup[ x ] do
-         begin
-           TQRLabel ( FindComponent ( 'qrlFatNum'   + intToStr ( x + 1 ) ) ).Caption := NDup ;
-           TQRLabel ( FindComponent ( 'qrlFatData'  + intToStr ( x + 1 ) ) ).Caption := NotaUtil.FormatDate( DateToStr(DVenc) ) ;
-           TQRLabel ( FindComponent ( 'qrlFatValor' + intToStr ( x + 1 ) ) ).Caption := NotaUtil.FormatFloat(VDup) ;
-         end;
-end;
-
-procedure TfqrDANFeQRRetrato.Header;
-begin
-  with FNFe.InfNFe, FNFe.Ide do
-  begin
-
-     qrlChave.Caption := NotaUtil.FormatarChaveAcesso ( Copy ( FNFe.InfNFe.Id, 4, 44 ) ) ;
-
-     SetBarCodeImage ( Copy ( FNFe.InfNFe.Id, 4, 44 ), qriBarCode ) ;
-
-     qrlNumNF0.Caption := FormatFloat ( '000,000,000', nNF ) ;
-     qrlNumNF1.Caption := FormatFloat ( '000,000,000', nNF ) ;
-     qrlNumNF2.Caption := FormatFloat ( '000,000,000', nNF ) ;
-
-
-     qrlSERIE0.Caption :=  IntToStr(Serie) ;
-     qrlSERIE1.Caption :=  IntToStr(Serie) ;
-     qrlSERIE2.Caption :=  IntToStr(Serie) ;
-
-     qrlNatOperacao.Caption :=  NatOp;
-     if tpNF = tnEntrada  then // = entrada
-        qrlEntradaSaida.Caption := '2'
-     else
-        qrlEntradaSaida.Caption := '1' ;
-
-    qrlEmissao.Caption   := NotaUtil.FormatDate(DateToStr(dEmi)) ;
-    qrlSaida.Caption     := IfThen( DSaiEnt <> 0, NotaUtil.FormatDate(DateToStr(dSaiEnt))) ;
-    qrlHoraSaida.Caption := '' ; // nao tem campo  ;
-
-  end;
-
-end;
-
-procedure TfqrDANFeQRRetrato.Emitente;
-begin
-  //emit
-
-  with FNFe.Emit do
-  begin
-    if FRecebemoDe = '' then
-       FRecebemoDe := qrlRecebemosDe1.Caption ;
-
-    qrlRecebemosDe1.Caption := Format ( FRecebemoDe, [ XNome ] ) ;
-    qrlRecebemosDe2.Caption := qrlRecebemosDe1.Caption ;
-
-    qrlCNPJ.Caption := NotaUtil.FormatarCNPJ( CNPJCPF  ) ;
-    qrlInscrEstSubst.caption := IEST ;
-    qrlInscricaoEstadual.Caption := IE ;
-    qrmEmitente.Lines.Text   := XNome ;
-    //.Caption := XFant ;
-    with EnderEmit do
-    begin
-      qrmEndereco.Lines.Clear ;
-      qrmEndereco.Lines.add ( XLgr + IfThen ( Nro = '0', '', ', ' + Nro ) + ' ' + XCpl + ' ' + XBairro ) ;
-     // .Caption := CMun ;
-     qrmEndereco.Lines.add ( NotaUtil.FormatarCEP( IntToStr(CEP) ) + ' - ' + XMun + ' - ' + UF ) ;
-     if Trim(FUrl) <> '' then
-       qrmEndereco.Lines.add ( FUrl ) ;
-     // .Caption := CPais ;
-     // .Caption := XPais ;
-     qrlFone.Caption := NotaUtil.FormatarFone( Fone ) ;
-    end;
-
-  end;
-end;
-
-procedure TfqrDANFeQRRetrato.Destinatario;
-begin
-  // destinatario
-  with FNFe.Dest do
-  begin
-    if Trim ( CNPJCPF ) <>  '' then
-      qrlDestCNPJ.Caption  := NotaUtil.FormatarCNPJ( CNPJCPF )
-    else
-      qrlDestCNPJ.Caption  := NotaUtil.FormatarCPF( CNPJCPF ) ;
-
-    qrlDestIE.Caption   := IE ;
-    qrlDestNome.Caption := XNome ;
-    with EnderDest do
-    begin
-      qrlDestEndereco.Caption := XLgr + IfThen ( Nro = '0', '', ', ' + Nro ) ;
-      //.Caption := XCpl ;
-      qrlDestBairro.Caption := XBairro ;
-      //.Caption := CMun ;
-      qrlDestCidade.Caption := XMun ;
-      qrlDestUF.Caption := UF ;
-      qrlDestCEP.Caption := NotaUtil.FormatarCEP( IntToStr(CEP) ) ;
-      //.Caption := CPais ;
-      //.Caption := XPais ;
-      qrlDestFONE.Caption := NotaUtil.FormatarFone( Fone ) ;
-    end;
-  end;
-end;
-
-procedure TfqrDANFeQRRetrato.Imposto;
-begin
-  with FNFe.Total.ICMSTot do
-  begin
-    qrlBaseICMS.Caption      := NotaUtil.FormatFloat( VBC ) ;
-    qrlValorICMS.Caption     := NotaUtil.FormatFloat( VICMS ) ;
-    qrlBaseICMST.Caption     := NotaUtil.FormatFloat( VBCST ) ;
-    qrlValorICMST.Caption    := NotaUtil.FormatFloat( VST ) ;
-    qrlTotalProdutos.Caption := NotaUtil.FormatFloat( VProd ) ;
-    qrlValorFrete.Caption    := NotaUtil.FormatFloat( VFrete ) ;
-    qrlValorSeguro.Caption   := NotaUtil.FormatFloat( VSeg ) ;
-    qrlDescontos.Caption     := NotaUtil.FormatFloat( VDesc ) ;
-    qrlAcessorias.Caption    := NotaUtil.FormatFloat( VOutro ) ;
-//    .Caption               := NotaUtil.FormatFloat( VII ) ;
-    qrlValorIPI.Caption      := NotaUtil.FormatFloat( VIPI ) ;
-//    .Caption               := NotaUtil.FormatFloat( VPIS ) ;
-//    .Caption               := NotaUtil.FormatFloat( VCOFINS ) ;
-    qrlTotalNF.Caption       := NotaUtil.FormatFloat( VNF ) ;
-  end;
-end;
-
-procedure TfqrDANFeQRRetrato.Transporte;
-begin
-  with FNFe.Transp do
-  begin
-    qrlTransModFrete.Caption := modFreteToStr( ModFrete ) ;
-
-    qrlTransCodigoANTT.Caption := '' ;
-    qrlTransPlaca.Caption := '' ;
-    qrlTransUFPlaca.Caption := '' ;
-
-    with Transporta do
-    begin
-      if Trim ( CNPJCPF ) <> '' then
-        qrlTransCNPJ.Caption := CNPJCPF 
-      else
-        qrlTransCNPJ.Caption := '' ;
-
-    qrlTransNome.Caption     := XNome ;
-    qrlTransIE.Caption       := IE ;
-    qrlTransEndereco.Caption := XEnder ;
-    qrlTransCidade.Caption   := XMun ;
-    qrlTransUF.Caption       := UF ;
-    end;
-  end;
-
-  with FNFe.Transp.VeicTransp do
-  begin
-    qrlTransPlaca.Caption   :=  Placa ;
-    qrlTransUFPlaca.Caption :=  UF;
-    //.Caption :=  RNTC;
-  end;
-
-  if FNFe.Transp.Vol.Count > 0 then
-   begin
-     with FNFe.Transp.Vol[0] do
-      begin
-        qrlTransQTDE.Caption       :=  IntToStr(QVol) ;
-        qrlTransEspecie.Caption    :=  Esp   ;
-        qrlTransMarca.Caption      :=  Marca ;
-        qrlTransNumeracao.Caption  :=  NVol  ;
-        qrlTransPesoLiq.Caption    :=  NotaUtil.FormatFloat( PesoL, '#,0.00##' ) ;
-        qrlTransPesoBruto.Caption  :=  NotaUtil.FormatFloat( PesoB, '#,0.00##' ) ;
-      end;
-   end
-  else
-   begin
-     qrlTransQTDE.Caption       :=  '' ;
-     qrlTransEspecie.Caption    :=  '' ;
-     qrlTransMarca.Caption      :=  '' ;
-     qrlTransNumeracao.Caption  :=  '' ;
-     qrlTransPesoLiq.Caption    :=  '' ;
-     qrlTransPesoBruto.Caption  :=  '' ;
    end;
 end;
 
-procedure TfqrDANFeQRRetrato.qrsISSQNBeforePrint(Sender: TQRCustomBand;
+procedure TfqrDANFeQRRetrato.qrbDadosDanfeBeforePrint(Sender: TQRCustomBand;
   var PrintBand: Boolean);
 begin
-  PrintBand := False ;
-end;
+  inherited;
 
-procedure TfqrDANFeQRRetrato.ValorFiscal;
-begin
- FSemValorFiscal  := FNFe.Ide.TpAmb = taHomologacao ;
+   qrlPageNumber.Caption := format ( '%2.2d', [ QRNFe.PageNumber ] )
+                    + '/' + format ( '%2.2d', [ FTotalPages ] ) ;
 
-{ qrlSemValorFiscal0.Enabled :=  FSemValorFiscal ; //qrlSemValorFiscalPrint ;
- qrlSemValorFiscal1.Enabled :=  FSemValorFiscal ; //qrlSemValorFiscalPrint ;
- qrlSemValorFiscal2.Enabled :=  FSemValorFiscal ; //qrlSemValorFiscalPrint ;
- qrlSemValorFiscal3.Enabled :=  FSemValorFiscal ; //qrlSemValorFiscalPrint ;
- qrlSemValorFiscal4.Enabled :=  FSemValorFiscal ; //qrlSemValorFiscalPrint ;
- qrlSemValorFiscal5.Enabled :=  FSemValorFiscal ; //qrlSemValorFiscalPrint ;
- qrlSemValorFiscal6.Enabled :=  FSemValorFiscal ; //qrlSemValorFiscalPrint ;
+   if QRNFe.PageNumber = 1 then
+   begin
+      // Emitente
 
- qrlSemValorFiscal0.OnPrint :=  qrlSemValorFiscalPrint ; //qrlSemValorFiscalPrint ;
- qrlSemValorFiscal1.OnPrint :=  qrlSemValorFiscalPrint ; //qrlSemValorFiscalPrint ;
- qrlSemValorFiscal2.OnPrint :=  qrlSemValorFiscalPrint ; //qrlSemValorFiscalPrint ;
- qrlSemValorFiscal3.OnPrint :=  qrlSemValorFiscalPrint ; //qrlSemValorFiscalPrint ;
- qrlSemValorFiscal4.OnPrint :=  qrlSemValorFiscalPrint ; //qrlSemValorFiscalPrint ;
- qrlSemValorFiscal5.OnPrint :=  qrlSemValorFiscalPrint ; //qrlSemValorFiscalPrint ;
- qrlSemValorFiscal6.OnPrint :=  qrlSemValorFiscalPrint ; //qrlSemValorFiscalPrint ;
- }
-end;
-
-procedure TfqrDANFeQRRetrato.QRNFeAfterPreview(Sender: TObject);
-begin
-   AfterPreview := True ;
-end;
-
-procedure TfqrDANFeQRRetrato.ChildBand2BeforePrint(Sender: TQRCustomBand;
-  var PrintBand: Boolean);
-begin
-
-  qrlPageNumber.Caption := format ( '%2.2d', [ QRNFe.PageNumber ] )
-                   + '/' + format ( '%2.2d', [ FTotalPages ] ) ;
-  qriBarCode.BringToFront ;
-
-//  if AfterPreview and not ChangedPos then
-//     begin
-//        qrBarCode.Left := qrBarCode.Left - 175 ;
-//        ChangedPos := True ;
-//     end ;
-end;
-
-procedure TfqrDANFeQRRetrato.Detalhes;
-var
-  x : integer ;
-begin
-
-  BeginUpdateProdutos ;
-
-  for x := DetItem to FNFe.Det.Count - 1 do
-    with FNFe.Det.Items[ x ] do
+      with FNFe.Emit do
       begin
+         qrlCNPJ.Caption              := NotaUtil.FormatarCNPJ( CNPJCPF  ) ;
+         qrlInscrEstSubst.caption     := IEST ;
+         qrlInscricaoEstadual.Caption := IE ;
+         qrmEmitente.Lines.Text       := XNome ;
+         with EnderEmit do
+         begin
+            qrmEndereco.Lines.Clear ;
+            qrmEndereco.Lines.add ( XLgr + IfThen ( Nro = '0', '', ', ' + Nro ) + ' ' + XCpl + ' ' + XBairro ) ;
+            qrmEndereco.Lines.add ( NotaUtil.FormatarCEP( IntToStr(CEP) ) + ' - ' + XMun + ' - ' + UF ) ;
+            if Trim(FUrl) <> '' then
+               qrmEndereco.Lines.add ( FUrl ) ;
+            qrlFone.Caption := NotaUtil.FormatarFone( Fone ) ;
+         end;
+      end ;
 
-        with Prod do
-        begin
-          qrmProdutoCodigo.Lines.add    (  CProd  ) ;
-          qrmProdutoDescricao.Lines.add (  XProd  ) ;
-          qrmProdutoNCM.Lines.add       (  NCM    ) ;
-          qrmProdutoCFOP.Lines.add      (  CFOP   ) ;
-          qrmProdutoUnidade.Lines.add   (  UCom   ) ;
-          qrmProdutoQTDE.Lines.add      (  NotaUtil.FormatFloat( QCom   ) ) ;
-          qrmProdutoValor.Lines.add     (  NotaUtil.FormatFloat( VUnCom ) ) ;
-          qrmProdutoTotal.Lines.add     (  NotaUtil.FormatFloat( VProd  ) ) ;
+      // Danfe
 
+      SetBarCodeImage( Copy ( FNFe.InfNFe.Id, 4, 44 ), qriBarCode ) ;
 
-          with Imposto.ICMS do
-          begin
-            if CST = cst00 then
-              begin
-                qrmProdutoCST.lines.Add       ( OrigToStr(orig) + CSTICMSToStr(CST) ) ;
-                qrmProdutoBCICMS.Lines.add    ( NotaUtil.FormatFloat( VBC ) ) ;
-                qrmProdutoALIQICMS.Lines.add  ( NotaUtil.FormatFloat( PICMS ) ) ;
-                qrmProdutoVALORICMS.Lines.add ( NotaUtil.FormatFloat( VICMS ) ) ;
-              end
-            else if CST = cst10 then
-              begin
-                qrmProdutoCST.lines.Add ( OrigToStr(orig) + CSTICMSToStr(CST) );
-                qrmProdutoBCICMS.Lines.add    ( NotaUtil.FormatFloat( VBC ) ) ;
-                qrmProdutoALIQICMS.Lines.add  ( NotaUtil.FormatFloat( PICMS ) ) ;
-                qrmProdutoVALORICMS.Lines.add ( NotaUtil.FormatFloat( VICMS ) ) ;
-              end
-            else if CST = cst20 then
-              begin
-                qrmProdutoCST.lines.Add ( OrigToStr(orig) + CSTICMSToStr(CST) );
-                qrmProdutoBCICMS.Lines.add    ( NotaUtil.FormatFloat( VBC ) ) ;
-                qrmProdutoALIQICMS.Lines.add  ( NotaUtil.FormatFloat( PICMS ) ) ;
-                qrmProdutoVALORICMS.Lines.add ( NotaUtil.FormatFloat( VICMS ) ) ;
-              end
-            else if CST = cst30 then
-              begin
-                qrmProdutoCST.lines.Add ( OrigToStr(orig) + CSTICMSToStr(CST) );
-                qrmProdutoBCICMS.Lines.add    ( NotaUtil.FormatFloat( VBCST ) ) ;
-                qrmProdutoALIQICMS.Lines.add  ( NotaUtil.FormatFloat( PICMSST ) ) ;
-                qrmProdutoVALORICMS.Lines.add ( NotaUtil.FormatFloat( VICMSST ) ) ;
-              end
-            else if (CST = cst40) or (CST = cst41) or (CST = cst50) then
-              begin
-                qrmProdutoCST.lines.Add ( OrigToStr(orig) + CSTICMSToStr(CST) );
-                qrmProdutoBCICMS.Lines.add    ( '0.00' );
-                qrmProdutoALIQICMS.Lines.add  ( '0.00' );
-                qrmProdutoVALORICMS.Lines.add ( '0.00' );
-              end
-            else if (CST = cst51) then
-              begin
-                qrmProdutoCST.lines.Add ( OrigToStr(orig) + CSTICMSToStr(CST) );
-                qrmProdutoBCICMS.Lines.add    ( NotaUtil.FormatFloat( VBC ) ) ;
-                qrmProdutoALIQICMS.Lines.add  ( NotaUtil.FormatFloat( PICMS ) ) ;
-                qrmProdutoVALORICMS.Lines.add ( NotaUtil.FormatFloat( VICMS ) ) ;
-              end
-            else if (CST = cst60) then
-              begin
-                qrmProdutoCST.lines.Add ( OrigToStr(orig) + CSTICMSToStr(CST) );
-                qrmProdutoBCICMS.Lines.add    ( NotaUtil.FormatFloat( VBCST ) ) ;
-                qrmProdutoALIQICMS.Lines.add  ( '0.00' );
-                qrmProdutoVALORICMS.Lines.add ( NotaUtil.FormatFloat( VICMSST ) ) ;
-              end
-            else if (CST = cst70) then
-              begin
-                qrmProdutoCST.lines.Add ( OrigToStr(orig) + CSTICMSToStr(CST) );
-                qrmProdutoBCICMS.Lines.add    ( NotaUtil.FormatFloat( VBC ) ) ;
-                qrmProdutoALIQICMS.Lines.add  ( NotaUtil.FormatFloat( PICMS ) ) ;
-                qrmProdutoVALORICMS.Lines.add ( NotaUtil.FormatFloat( VICMS ) ) ;
-              end
-            else if (CST = cst90) then
-              begin
-                qrmProdutoCST.lines.Add ( OrigToStr(orig) + CSTICMSToStr(CST) );
-                qrmProdutoBCICMS.Lines.add    ( NotaUtil.FormatFloat( VBC ) ) ;
-                qrmProdutoALIQICMS.Lines.add  ( NotaUtil.FormatFloat( PICMS ) ) ;
-                qrmProdutoVALORICMS.Lines.add ( NotaUtil.FormatFloat( VICMS ) ) ;
-              end;
-          end;
+      qrlEntradaSaida.Caption := tpNFToStr( FNFe.Ide.tpNF ) ;
+      qrlNumNF1.Caption       := FormatFloat( '000,000,000', FNFe.Ide.nNF ) ;
+      qrlSERIE1.Caption       := IntToStr( FNFe.Ide.serie ) ;
+      qrlChave.Caption        := NotaUtil.FormatarChaveAcesso( Copy ( FNFe.InfNFe.Id, 4, 44 ) ) ;
+      qrlNatOperacao.Caption  := FNFe.Ide.natOp ;
+      if FProtocoloNFE <> '' then
+         qrlProtocolo.Caption    := FProtocoloNFE
+      else
+         qrlProtocolo.Caption    := FNFe.procNFe.nProt + NotaUtil.SeSenao(FNFe.procNFe.dhRecbto<>0,DateTimeToStr(FNFe.procNFe.dhRecbto),'') ;
 
-          with Imposto.IPI do
-          begin
-            if (CST = ipi00) or (CST = ipi49) or
-               (CST = ipi50) or (CST = ipi99) then
-              begin
-                  qrmProdutoALIQIPI.Lines.add  ( NotaUtil.FormatFloat( PIPI ) ) ;
-                  qrmProdutoVALORIPI.Lines.add  ( NotaUtil.FormatFloat( VIPI ) ) ;
-              end
-            else if (CST = ipi01) or (CST = ipi02) or (CST = ipi03) or
-                    (CST = ipi04) or (CST = ipi51) or (CST = ipi52) or
-                    (CST = ipi53) or (CST = ipi54) or (CST = ipi55) then
-              begin
-                  qrmProdutoALIQIPI.Lines.add  ( '0.00' ) ;
-                  qrmProdutoVALORIPI.Lines.add  ( '0.00' ) ;
-              end
-          end;
-        end;
+   end ;
 
-//        DetItem := x ;
-        Inc( DetItem );
-
-        if QRNFe.PageNumber = 0 then
-           begin
-             if DetItem = ( _NUM_ITEMS_PAGE1 -1 )  then // Tirar o -15 é só teste
-                break ;
-           end
-        else if DetItem = ( _NUM_ITEMS_OTHERPAGES -1 ) then
-              break ;
-      end;
-
-  EndUpdateProdutos ;
 end;
 
+procedure TfqrDANFeQRRetrato.qrbItensBeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+  inherited;
+  Inc( nItemControle ) ;
+  if QRNFe.PageNumber = 1 then
+     if QRNFe.RecordCount < _NUM_ITEMS_PAGE1 then
+        qrsFimItens.Enabled := ( nItemControle = QRNFe.RecordCount   )
+     else
+        qrsFimItens.Enabled := ( nItemControle = _NUM_ITEMS_PAGE1    )
+  else
+  begin
+     qrsFimItens.Enabled := ( nItemControle = _NUM_ITEMS_OTHERPAGES  ) or
+                            ( QRNFe.RecordNumber = QRNFe.RecordCount ) or
+                            ( cdsItens.Eof                           ) ;
+  end ;
+  if qrsFimItens.Enabled then
+     nItemControle := 0;
+end;
+
+procedure TfqrDANFeQRRetrato.qrbSistemaBeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+  inherited;
+   PrintBand := False ;    
+end;
 
 end.
-
-
-
-

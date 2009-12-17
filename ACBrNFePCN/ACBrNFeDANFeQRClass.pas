@@ -36,7 +36,8 @@
 
 {******************************************************************************
 |* Historico
-|*
+|* 11/12/2009: Emerson Crema
+|*  - Implementado fqrDANFeQRRetrato.ProtocoloNFE( sProt ).
 |* 16/12/2008: Wemerson Souto
 |*  - Doação do componente para o Projeto ACBr
 |* 20/08/2009: Caique Rodrigues
@@ -79,9 +80,11 @@ procedure TACBrNFeDANFEQR.ImprimirDANFE(NFE : TNFe = nil);
 var
   i : Integer;
   fqrDANFeQRRetrato : TfqrDANFeQRRetrato;
+  sProt : String ;
 begin
   fqrDANFeQRRetrato := TfqrDANFeQRRetrato.Create(Self);
-
+  sProt := TACBrNFe(ACBrNFe).DANFE.ProtocoloNFe ;
+  fqrDANFeQRRetrato.ProtocoloNFE( sProt ) ;
   if NFE = nil then
    begin
      for i:= 0 to TACBrNFe(ACBrNFe).NotasFiscais.Count-1 do
@@ -96,7 +99,7 @@ end;
 
 procedure TACBrNFeDANFEQR.ImprimirDANFEPDF(NFE : TNFe = nil);
 var
- NomeArq : String;
+   NomeArq : String;
 begin
 end;
 

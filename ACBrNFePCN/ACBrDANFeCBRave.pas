@@ -445,6 +445,8 @@ begin
 end;
 
 procedure TDANFeRave.RavePrint(Sender: TObject);
+var i:Integer;
+    VarNumPage:String;
 begin
   with BaseReport  do begin
     FNFIndex:=0;
@@ -460,6 +462,11 @@ begin
          ImprimirPaisagem(Self)
         else
          ImprimirRetrato(Self);
+
+      for i:=FPageNum downto 1 do begin
+          VarNumPage:='PAGE'+FormatFloat('000000',FCurrentPage-(FPageNum-i));
+          SetPIVar(VarNumPage,IntToStr(i)+'/'+IntToStr(FPageNum));
+      end;
 
       Inc(FNFIndex);
     end;

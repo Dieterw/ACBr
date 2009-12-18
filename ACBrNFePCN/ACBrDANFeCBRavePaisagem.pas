@@ -362,12 +362,7 @@ begin
      PrintCenter('N.º '+FNumeroNF,CenterX);
      NewLine;
 
-     for i:=FPageNum-1 downto 1 do begin
-         VarNumPage:='PAGE'+FormatFloat('000000',FCurrentPage-(FPageNum-i));
-         SetPIVar(VarNumPage,IntToStr(i)+'/'+IntToStr(FPageNum));
-     end;
      VarNumPage:='PAGE'+FormatFloat('000000',FCurrentPage);
-     SetPIVar(VarNumPage,IntToStr(FPageNum)+'/'+IntToStr(FPageNum));
 
      PrintCenter('SÉRIE '+IntToStr(Ide.Serie)+' - FOLHA '+PIVar(VarNumPage),CenterX);
      Bold:=False;

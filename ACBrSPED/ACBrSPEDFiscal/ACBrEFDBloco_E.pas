@@ -53,6 +53,8 @@ type
   public
   end;
 
+  TRegistroE210List = class; {Márcio Lopes 18Dez2009}
+
   /// Registro E100 - PERÍODO DA APURAÇÃO DO ICMS
 
   TRegistroE100 = class(TPersistent)
@@ -257,10 +259,16 @@ type
     fUF: AnsiString;        /// Sigla da unidade da federação a que se refere a apuração do ICMS ST
     fDT_INI: TDateTime; /// Data inicial a que a apuração se refere
     fDT_FIN: TDateTime; /// Data final a que a apuração se refere
+    fRegistroE210:TRegistroE210List;
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property UF: AnsiString read fUF write fUF;
     property DT_INI: TDateTime read fDT_INI write fDT_INI;
     property DT_FIN: TDateTime read fDT_FIN write fDT_FIN;
+    // Registro FILHO
+    property RegistroE210:TRegistroE210List read fRegistroE210 write fRegistroE210;
   end;
 
   TRegistroE200List = class(TList)
@@ -966,6 +974,19 @@ end;
 procedure TRegistroE200List.SetItem(Index: Integer; const Value: TRegistroE200 );
 begin
   Put(Index, Value);
+end;
+
+{ TRegistroE200 }
+
+constructor TRegistroE200.Create;
+begin
+   FRegistroE210 := TRegistroE210List.Create;   /// BLOCO E - Lista de RegistroE210 (FILHO)
+end;
+
+destructor TRegistroE200.Destroy;
+begin
+  FRegistroE210.Free;
+  inherited;
 end;
 
 end.

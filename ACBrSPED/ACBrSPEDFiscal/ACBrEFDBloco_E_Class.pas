@@ -57,7 +57,6 @@ type
     FRegistroE115: TRegistroE115List;  /// BLOCO E - Lista de RegistroE115
     FRegistroE116: TRegistroE116List;  /// BLOCO E - Lista de RegistroE116
     FRegistroE200: TRegistroE200List;  /// BLOCO E - Lista de RegistroE200
-    FRegistroE210: TRegistroE210List;  /// BLOCO E - Lista de RegistroE210
     FRegistroE220: TRegistroE220List;  /// BLOCO E - Lista de RegistroE220
     FRegistroE230: TRegistroE230List;  /// BLOCO E - Lista de RegistroE230
     FRegistroE240: TRegistroE240List;  /// BLOCO E - Lista de RegistroE240
@@ -67,6 +66,10 @@ type
     FRegistroE520: TRegistroE520List;  /// BLOCO E - Lista de RegistroE520
     FRegistroE530: TRegistroE530List;  /// BLOCO E - Lista de RegistroE530
     FRegistroE990: TRegistroE990;      /// BLOCO E - RegistroE990
+
+    FRegistroE210Count: Integer;
+
+    function WriteRegistroE210(RegE200: TRegistroE200): AnsiString;
 
     procedure CriaRegistros;
     procedure LiberaRegistros;
@@ -84,7 +87,6 @@ type
     function WriteRegistroE115: AnsiString;
     function WriteRegistroE116: AnsiString;
     function WriteRegistroE200: AnsiString;
-    function WriteRegistroE210: AnsiString;
     function WriteRegistroE220: AnsiString;
     function WriteRegistroE230: AnsiString;
     function WriteRegistroE240: AnsiString;
@@ -104,7 +106,6 @@ type
     property RegistroE115: TRegistroE115List read FRegistroE115 write FRegistroE115;
     property RegistroE116: TRegistroE116List read FRegistroE116 write FRegistroE116;
     property RegistroE200: TRegistroE200List read FRegistroE200 write FRegistroE200;
-    property RegistroE210: TRegistroE210List read FRegistroE210 write FRegistroE210;
     property RegistroE220: TRegistroE220List read FRegistroE220 write FRegistroE220;
     property RegistroE230: TRegistroE230List read FRegistroE230 write FRegistroE230;
     property RegistroE240: TRegistroE240List read FRegistroE240 write FRegistroE240;
@@ -114,6 +115,9 @@ type
     property RegistroE520: TRegistroE520List read FRegistroE520 write FRegistroE520;
     property RegistroE530: TRegistroE530List read FRegistroE530 write FRegistroE530;
     property RegistroE990: TRegistroE990 read FRegistroE990 write FRegistroE990;
+
+    property RegistroE210Count: Integer read FRegistroE210Count write FRegistroE210Count;
+
   end;
 
 implementation
@@ -143,7 +147,6 @@ begin
   FRegistroE115 := TRegistroE115List.Create;
   FRegistroE116 := TRegistroE116List.Create;
   FRegistroE200 := TRegistroE200List.Create;
-  FRegistroE210 := TRegistroE210List.Create;
   FRegistroE220 := TRegistroE220List.Create;
   FRegistroE230 := TRegistroE230List.Create;
   FRegistroE240 := TRegistroE240List.Create;
@@ -153,6 +156,8 @@ begin
   FRegistroE520 := TRegistroE520List.Create;
   FRegistroE530 := TRegistroE530List.Create;
   FRegistroE990 := TRegistroE990.Create;
+
+  FRegistroE210Count := 0; // Por Márcio Lopes 18Dez2009
 
   FRegistroE990.QTD_LIN_E := 0;
 end;
@@ -168,7 +173,6 @@ begin
   FRegistroE115.Free;
   FRegistroE116.Free;
   FRegistroE200.Free;
-  FRegistroE210.Free;
   FRegistroE220.Free;
   FRegistroE230.Free;
   FRegistroE240.Free;
@@ -421,24 +425,28 @@ begin
                                                Delimitador +
                                                #13#10;
         end;
+        /// Registros FILHOS
+        strRegistroE200 := strRegistroE200 +
+                           WriteRegistroE210( RegistroE200.Items[intFor] );
+
         RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
      end;
   end;
   Result := strRegistroE200;
 end;
 
-function TBloco_E.WriteRegistroE210: AnsiString;
+function TBloco_E.WriteRegistroE210(RegE200: TRegistroE200): AnsiString;
 var
 intFor: integer;
 strRegistroE210: AnsiString;
 begin
   strRegistroE210 := '';
 
-  if Assigned( RegistroE210 ) then
+  if Assigned( RegE200.RegistroE210 ) then
   begin
-     for intFor := 0 to RegistroE210.Count - 1 do
+     for intFor := 0 to RegE200.RegistroE210.Count - 1 do
      begin
-        with RegistroE210.Items[intFor] do
+        with RegE200.RegistroE210.Items[intFor] do
         begin
           strRegistroE210 := strRegistroE210 + LFill('E210') +
                                                LFill( IND_MOV_ST ) +
@@ -460,6 +468,8 @@ begin
         end;
         RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
      end;
+     /// Variavél para armazenar a quantidade de registro do tipo.
+     FRegistroE210Count := FRegistroE210Count + RegE200.RegistroE210.Count;
   end;
   Result := strRegistroE210;
 end;

@@ -1644,10 +1644,10 @@ begin
                                                LFill( COD_MOD ) +
                                                LFill( COD_SIT ) +
                                                LFill( NUM_DOC,6 ) +
-                                               LFill( DT_DOC ) +
-                                               LFill( VL_DOC,0,2 ) +
-                                               LFill( VL_PIS,0,2 ) +
-                                               LFill( VL_COFINS,0,2 ) +
+                                               LFill( DT_DOC, 'ddmmyyyy', True ) +
+                                               LFill( VL_DOC,0,2, true ) +
+                                               LFill( VL_PIS,0,2, true ) +
+                                               LFill( VL_COFINS,0,2, true ) +
                                                LFill( CPF_CNPJ ) +
                                                LFill( NOM_ADQ ) +
                                                Delimitador +

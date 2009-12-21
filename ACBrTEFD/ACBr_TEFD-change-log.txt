@@ -47,6 +47,13 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.6a   20/12/09
+[*] Obteto Interno RespostasPendentes modificado para suportar CliSiTef
+[*] Rotinas ImprimirTransacoesPendentes, CancelarTransacoesPendentes e
+    ConfirmarTransacoesPendentes modificadas para suportar o novo modelo do
+    objeto RespostasPendentes
+[+] Classe ACBrTEFDCliSiTef. Adicionado métodos CRT, CHQ, CNF, NCN, CNC
+
 Versão 0.5a   17/12/09
 [*] OnBloqueiaMouseTeclado, OnRestauraFocoAplicacao e OnLimpaTeclado,
     modificados para permitir informar se devem ou não executar o código do

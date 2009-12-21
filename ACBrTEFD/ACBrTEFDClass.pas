@@ -55,7 +55,7 @@ uses
   {$ENDIF} ;
 
 const
-   CACBrTEFD_Versao      = '0.5a' ;
+   CACBrTEFD_Versao      = '0.6a' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -456,6 +456,49 @@ type
      property OrdemPagamento : Integer read fOrdemPagamento  write SetOrdemPagamento ;
    end;
 
+   { TACBrTEFDRespostaPendente }
+
+   TACBrTEFDRespostaPendente = class(TObjectList)
+   private
+      fArqBackup : String;
+      fCNFEnviado : Boolean;
+      fDocumentoVinculado : String;
+      fFinalizacao : String;
+      fImagemComprovante1aVia : TStringList;
+      fImagemComprovante2aVia : TStringList;
+      fIndiceFPG_ECF : String;
+      fNSU : String;
+      fOrdemPagamento : Integer;
+      fRede : String;
+      fTextoEspecialCliente : String;
+      fTextoEspecialOperador : String;
+      fTipoGP : TACBrTEFDTipo;
+      fValorTotal : Double;
+   public
+     constructor Create ;
+     destructor Destroy ; override;
+
+     property Rede               : String  read fRede ;
+     property NSU                : String  read fNSU ;
+     property Finalizacao        : String  read fFinalizacao ;
+     property DocumentoVinculado : String  read fDocumentoVinculado
+        write fDocumentoVinculado ;
+     property ValorTotal         : Double  read fValorTotal write fValorTotal;
+
+     property TextoEspecialOperador : String read fTextoEspecialOperador ;
+     property TextoEspecialCliente  : String read fTextoEspecialCliente ;
+
+     property ImagemComprovante1aVia : TStringList read fImagemComprovante1aVia ;
+     property ImagemComprovante2aVia : TStringList read fImagemComprovante2aVia ;
+
+     property ArqBackup      : String        read fArqBackup      write fArqBackup;
+     property IndiceFPG_ECF  : String        read fIndiceFPG_ECF  write fIndiceFPG_ECF;
+     property OrdemPagamento : Integer       read fOrdemPagamento write fOrdemPagamento;
+     property TipoGP         : TACBrTEFDTipo read fTipoGP         write fTipoGP;
+     property CNFEnviado     : Boolean       read fCNFEnviado     write fCNFEnviado ;
+
+     procedure Assign( AResp : TACBrTEFDResp ) ;
+   end ;
 
    { TACBrTEFDRespostasPendentes }
 
@@ -464,24 +507,24 @@ type
       fSaldoAPagar : Double;
       function GetSaldoRestante : Double;
       function GetTotalPago : Double;
-     protected
-       procedure SetObject (Index: Integer; Item: TACBrTEFDResp);
-       function GetObject (Index: Integer): TACBrTEFDResp;
-     public
-       function Add (Obj: TACBrTEFDResp): Integer;
-       procedure Insert (Index: Integer; Obj: TACBrTEFDResp);
-       property Objects [Index: Integer]: TACBrTEFDResp
-         read GetObject write SetObject; default;
-       property SaldoAPagar   : Double read fSaldoAPagar write fSaldoAPagar ;
-       property TotalPago     : Double read GetTotalPago ;
-       property SaldoRestante : Double read GetSaldoRestante ;
-     end;
+   protected
+      procedure SetObject (Index: Integer; Item: TACBrTEFDRespostaPendente);
+      function GetObject (Index: Integer): TACBrTEFDRespostaPendente;
+   public
+      function Add (Obj: TACBrTEFDRespostaPendente): Integer;
+      procedure Insert (Index: Integer; Obj: TACBrTEFDRespostaPendente);
+      property Objects [Index: Integer]: TACBrTEFDRespostaPendente
+        read GetObject write SetObject; default;
+      property SaldoAPagar   : Double read fSaldoAPagar write fSaldoAPagar ;
+      property TotalPago     : Double read GetTotalPago ;
+      property SaldoRestante : Double read GetSaldoRestante ;
+   end;
 
-     TACBrTEFDArrayGrupoRespostasPendentes = array of record
-        IndiceFPG_ECF  : String ;
-        OrdemPagamento : Integer ;
-        Total  : Double ;
-     end ;
+   TACBrTEFDArrayGrupoRespostasPendentes = array of record
+      IndiceFPG_ECF  : String ;
+      OrdemPagamento : Integer ;
+      Total  : Double ;
+   end ;
 
    { TACBrTEFDClass }
 
@@ -498,7 +541,6 @@ type
      fEsperaSTS : Integer;
      fGPExeName : String;
      fHabilitado : Boolean;
-     fNumVias : Integer;
 
      procedure SetArqReq(const AValue : String);
      procedure SetArqResp(const AValue : String);
@@ -512,19 +554,24 @@ type
      fpResp : TACBrTEFDResp ;
      fpTipo : TACBrTEFDTipo;
      fpIDSeq: Integer ;
+     fpNumVias : Integer;
+
+     procedure SetNumVias(const AValue : Integer); virtual;
 
      procedure IniciarRequisicao( AHeader : String; AID : Integer = 0 ); virtual;
      procedure FinalizarRequisicao ; virtual;
      Function VerificarRespostaRequisicao : Boolean ; virtual;
      Procedure LerRespostaRequisicao ; virtual;
-     procedure ProcessarResposta ; virtual;
      procedure FinalizarResposta( ApagarArqResp : Boolean ) ; virtual;
 
-     procedure CopiarResposta( AdicionaEmRespostasPendentes : Boolean ) ; virtual;
+     Function CopiarResposta( AdicionaEmRespostasPendentes : Boolean )
+        : String ; virtual;
+
+     procedure ProcessarResposta ; virtual;
      procedure ProcessarRespostaPagamento(const SaldoAPagar : Double;
         const IndiceFPG_ECF : String; const Valor : Double); virtual;
 
-     procedure VerificarIniciouRequisicao;
+     procedure VerificarIniciouRequisicao; virtual;
 
      procedure ImprimirRelatorio ; virtual;
 
@@ -535,18 +582,22 @@ type
      property AutoAtivarGP : Boolean read fAutoAtivarGP write fAutoAtivarGP
        default True ;
 
+     property EsperaSTS : Integer read fEsperaSTS write fEsperaSTS
+        default CACBrTEFD_EsperaSTS ;
+
      property ArqTemp  : String read fArqTmp    write SetArqTmp ;
      property ArqReq   : String read fArqReq    write SetArqReq ;
      property ArqSTS   : String read fArqSTS    write SetArqSTS  ;
      property ArqResp  : String read fArqResp   write SetArqResp ;
      property GPExeName: String read fGPExeName write SetGPExeName ;
-
-
    public
      constructor Create( AOwner : TComponent ) ; override;
      destructor Destroy ; override;
 
      property Tipo : TACBrTEFDTipo read fpTipo ;
+
+     property NumVias : Integer read fpNumVias write SetNumVias
+        default CACBrTEFD_NumVias ;
 
      property Req  : TACBrTEFDReq  read fpReq  ;
      property Resp : TACBrTEFDResp read fpResp ;
@@ -591,10 +642,6 @@ type
 
      Property Habilitado: Boolean read fHabilitado write fHabilitado
        default False ;
-     property NumVias   : Integer read fNumVias   write fNumVias
-        default CACBrTEFD_NumVias ;
-     property EsperaSTS : Integer read fEsperaSTS write fEsperaSTS
-        default CACBrTEFD_EsperaSTS ;
    end;
 
    { Lista de Objetos do tipo TACBrTEFDClass }
@@ -615,6 +662,9 @@ type
    TACBrTEFDClassTXT = class( TACBrTEFDClass )
    published
      property AutoAtivarGP ;
+
+     property NumVias;
+     property EsperaSTS;
 
      property ArqTemp  ;
      property ArqReq   ;
@@ -1316,6 +1366,55 @@ begin
    inherited Insert(Index, Obj);
 end;
 
+{ TACBrTEFDRespostaPendente }
+
+constructor TACBrTEFDRespostaPendente.Create;
+begin
+   inherited create ;
+
+   fImagemComprovante1aVia := TStringList.Create;
+   fImagemComprovante2aVia := TStringList.Create;
+
+   fDocumentoVinculado    := '';
+   fFinalizacao           := '';
+   fIndiceFPG_ECF         := '';
+   fNSU                   := '';
+   fOrdemPagamento        := 0 ;
+   fRede                  := '';
+   fTextoEspecialCliente  := '';
+   fTextoEspecialOperador := '';
+   fTipoGP                := gpNenhum ;
+   fValorTotal            := 0 ;
+   fArqBackup             := '' ;
+   fCNFEnviado            := False ;
+end;
+
+destructor TACBrTEFDRespostaPendente.Destroy;
+begin
+   fImagemComprovante1aVia.Free ;
+   fImagemComprovante2aVia.Free ;
+
+   inherited Destroy;
+end;
+
+procedure TACBrTEFDRespostaPendente.Assign(AResp : TACBrTEFDResp);
+begin
+  fDocumentoVinculado    := AResp.DocumentoVinculado;
+  fFinalizacao           := AResp.Finalizacao;
+  fIndiceFPG_ECF         := AResp.IndiceFPG_ECF;
+  fNSU                   := AResp.NSU;
+  fOrdemPagamento        := AResp.OrdemPagamento;
+  fRede                  := AResp.Rede;
+  fTextoEspecialCliente  := AResp.TextoEspecialCliente;
+  fTextoEspecialOperador := AResp.TextoEspecialOperador;
+  fTipoGP                := AResp.TipoGP;
+  fValorTotal            := AResp.ValorTotal;
+  fArqBackup             := AResp.ArqBackup ;
+  fCNFEnviado            := AResp.CNFEnviado;
+
+  fImagemComprovante1aVia.AddStrings( AResp.ImagemComprovante );
+  fImagemComprovante2aVia.AddStrings( AResp.ImagemComprovante );
+end;
 
 { TACBrTEFDClass }
 
@@ -1334,9 +1433,9 @@ begin
   fArqSTS       := '' ;
   fpTipo        := gpNenhum ;
   fpIDSeq       := SecondOfTheDay(now) ;
+  fpNumVias     := CACBrTEFD_NumVias ;
 
   fEsperaSTS := CACBrTEFD_EsperaSTS ;
-  fNumVias   := CACBrTEFD_NumVias ;
 
   fpReq  := TACBrTEFDReq.Create;
   fpResp := TACBrTEFDResp.Create;
@@ -1927,11 +2026,11 @@ begin
                  ComandarECF( opeAbreGerencial ) ;
 
                  I := 1 ;
-                 while I <= NumVias do
+                 while I <= self.NumVias do
                  begin
                     ECFImprimeVia( trGerencial, I, Resp.ImagemComprovante );
 
-                    if I < NumVias  then
+                    if I < self.NumVias  then
                     begin
                        ComandarECF( opePulaLinhas ) ;
                        DoExibeMsg( opmDestaqueVia, 'Destaque a '+IntToStr(I)+'ª Via') ;
@@ -1997,30 +2096,31 @@ begin
   end;
 end;
 
-procedure TACBrTEFDClass.CopiarResposta( AdicionaEmRespostasPendentes : Boolean );
+Function TACBrTEFDClass.CopiarResposta( AdicionaEmRespostasPendentes : Boolean )
+   : String;
 Var
-   ArqBak : String;
    I : Integer ;
-   RespPendente : TACBrTEFDResp;
+   RespPendente : TACBrTEFDRespostaPendente;
 begin
+  Result := '' ;
   VerificarIniciouRequisicao;
 
   with TACBrTEFD(Owner) do
   begin
      I := 1 ;
      repeat
-        ArqBak := PathBackup + PathDelim + 'ACBr_' +
+        Result := PathBackup + PathDelim + 'ACBr_' +
                   Self.Name + '_' + IntToStrZero(I,3) + '.tef' ;
         Inc( I ) ;
-     until not FileExists( ArqBak );
+     until not FileExists( Result );
 
-     Resp.Conteudo.GravarArquivo( ArqBak, True );   { True = DoFlushToDisk }
-     Resp.ArqBackup := ArqBak ;
+     Resp.Conteudo.GravarArquivo( Result, True );   { True = DoFlushToDisk }
+     Resp.ArqBackup := Result ;
 
      if AdicionaEmRespostasPendentes then
      begin
         { Cria cópia do Objeto Resp, e salva no ObjectList "RespostasPendentes" }
-        RespPendente := TACBrTEFDResp.Create ;
+        RespPendente := TACBrTEFDRespostaPendente.Create ;
         RespPendente.Assign( Resp );
 
         RespostasPendentes.Add( RespPendente );
@@ -2033,6 +2133,7 @@ procedure TACBrTEFDClass.ProcessarRespostaPagamento( const SaldoAPagar : Double;
 var
   UltimaTransacao : Boolean ;
   ImpressaoOk : Boolean;
+  ArqBack : String ;
 begin
   UltimaTransacao := (Valor >= SaldoAPagar);
 
@@ -2045,7 +2146,7 @@ begin
        ProcessarResposta;           { Exibe a Mensagem ao Operador }
        FinalizarResposta( True ) ;  { True = Apaga Arquivo de Resposta }
 
-                               { Ja tem RespostasPendentes }
+                               { Ja tem RespostasPendentes ? }
        if UltimaTransacao and ( RespostasPendentes.Count > 0 ) then
        begin
           if DoExibeMsg( opmYesNo, 'Gostaria de continuar a transação com outra(s)' +
@@ -2060,6 +2161,13 @@ begin
      end ;
 
      Self.Resp.IndiceFPG_ECF := IndiceFPG_ECF;
+
+     { Cria Arquivo de Backup, contendo inclusive informacoess internas como :
+       899 - 001 : CNFEnviado (S, N)
+       899 - 002 : IndiceFPG_ECF : String
+       899 - 003 : OrdemPagamento : Integer
+     }
+     ArqBack := CopiarResposta( True );     { True = Adiciona Resp em RespostasPendentes }
 
      if AutoEfetuarPagamento then
      begin
@@ -2094,27 +2202,21 @@ begin
         end;
      end;
 
-     { Cria Arquivo de Backup, contendo inclusive informacoess internas como :
-       899 - 001 : CNFEnviado (S, N)
-       899 - 002 : IndiceFPG_ECF : String
-       899 - 003 : OrdemPagamento : Integer
-     }
-     CopiarResposta( True );     { True = Adiciona Resp em RespostasPendentes }
-
      RespostasPendentes.SaldoAPagar := SaldoAPagar;
 
      if RespostasPendentes.SaldoRestante > 0 then  { Se Multiplos Cartoes, deve enviar um CNF }
       begin
-       self.CNF;
+        self.CNF;
 
-       { Atualizando Arquivo de Backup com a Informacao de que o CNF já foi enviado }
-       with RespostasPendentes[RespostasPendentes.Count - 1 ] do
-       begin
-          CNFEnviado := True ;
-          Conteudo.GravarArquivo( ArqBackup, True ) ;   { True = DoFlushToDisk }
-       end;
+        { Atualizando Arquivo de Backup com a Informacao de que o CNF já foi enviado }
+        if ArqBack <> '' then
+        begin
+           Resp.LeArquivo( ArqBack );
+           Resp.CNFEnviado := True ;
+           Resp.Conteudo.GravarArquivo( ArqBack, True ) ;   { True = DoFlushToDisk }
+        end;
 
-       FinalizarResposta( True );      { True = Apaga Arquivo de Resposta }
+        FinalizarResposta( True );     { True = Apaga Arquivo de Resposta }
       end
      else
       begin
@@ -2200,6 +2302,11 @@ begin
   fGPExeName := Trim( AValue ) ;
 end;
 
+procedure TACBrTEFDClass.SetNumVias(const AValue : Integer);
+begin
+   fpNumVias := AValue;
+end;
+
 procedure TACBrTEFDClass.GravaLog(AString : AnsiString);
 begin
   if fArqLOG = '' then
@@ -2248,30 +2355,30 @@ var
 begin
   Result := 0 ;
   For I := 0 to Count-1 do
-    Result := Result + TACBrTEFDResp(Items[I]).ValorTotal;
+    Result := Result + TACBrTEFDRespostaPendente(Items[I]).ValorTotal;
 
   Result := RoundTo( Result, -2);
 end;
 
 procedure TACBrTEFDRespostasPendentes.SetObject(Index : Integer;
-   Item : TACBrTEFDResp);
+   Item : TACBrTEFDRespostaPendente);
 begin
   inherited SetItem (Index, Item) ;
 end;
 
 function TACBrTEFDRespostasPendentes.GetObject(Index : Integer
-   ) : TACBrTEFDResp;
+   ) : TACBrTEFDRespostaPendente;
 begin
-   Result := inherited GetItem(Index) as TACBrTEFDResp ;
+   Result := inherited GetItem(Index) as TACBrTEFDRespostaPendente ;
 end;
 
-function TACBrTEFDRespostasPendentes.Add(Obj : TACBrTEFDResp) : Integer;
+function TACBrTEFDRespostasPendentes.Add(Obj : TACBrTEFDRespostaPendente) : Integer;
 begin
    Result := inherited Add(Obj) ;
 end;
 
 procedure TACBrTEFDRespostasPendentes.Insert(Index : Integer;
-   Obj : TACBrTEFDResp);
+   Obj : TACBrTEFDRespostaPendente);
 begin
   inherited Insert(Index, Obj);
 end;

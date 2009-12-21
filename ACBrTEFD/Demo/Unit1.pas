@@ -131,9 +131,9 @@ type
      procedure CliSiTefExibeMenu(Titulo : String; Opcoes : TStringList;
         var ItemSlecionado : Integer);
      procedure CliSiTefObtemCampo( Titulo : String;
-       TamanhoMinimo, TamanhoMaximo : Integer ;
-       TipoCampo : TACBrTEFDCliSiTefTipoCampo; var Resposta : String;
-       var Digitado : Boolean  );
+        TamanhoMinimo, TamanhoMaximo : Integer ;
+        TipoCampo : Integer; Operacao : TACBrTEFDCliSiTefOperacaoCampo;
+        var Resposta : String; var Digitado : Boolean );
      procedure edEsperaSleepChange(Sender : TObject);
      procedure edEsperaSTSChange(Sender : TObject);
      procedure pMensagemResize(Sender : TObject);
@@ -228,6 +228,7 @@ end;
 procedure TForm1.Memo1Change(Sender : TObject);
 begin
   StatusBar1.Panels[0].Text := GetEnumName(TypeInfo(TACBrTEFDTipo), integer(ACBrTEFD1.GPAtual) ) ;
+  StatusBar1.Panels[1].Text := '' ;
   StatusBar1.Panels[2].Text := '' ;
 end;
 
@@ -600,6 +601,9 @@ var
    Fim : TDateTime;
    OldMensagem : String;
 begin
+  StatusBar1.Panels[1].Text := '' ;
+  StatusBar1.Panels[2].Text := '' ;
+
   case Operacao of
 
     opmOK :
@@ -640,6 +644,7 @@ begin
   pMensagemCliente.Visible  := (pMensagemCliente.Caption <> '') ;
 
   pMensagem.Visible := pMensagemOperador.Visible or pMensagemCliente.Visible;
+  Application.ProcessMessages;
 end;
 
 procedure TForm1.ACBrTEFD1InfoECF(Operacao : TACBrTEFDInfoECF;
@@ -740,9 +745,9 @@ begin
 end;
 
 procedure TForm1.CliSiTefObtemCampo( Titulo : String;
-  TamanhoMinimo, TamanhoMaximo : Integer ;
-  TipoCampo : TACBrTEFDCliSiTefTipoCampo; var Resposta : String;
-    var Digitado : Boolean  );
+    TamanhoMinimo, TamanhoMaximo : Integer ;
+    TipoCampo : Integer; Operacao : TACBrTEFDCliSiTefOperacaoCampo;
+    var Resposta : String; var Digitado : Boolean );
 Var
   AForm : TForm5 ;
 begin
@@ -768,7 +773,7 @@ end;
 
 procedure TForm1.pMensagemResize(Sender : TObject);
 begin
-   pMensagemOperador.Height := Trunc( pMensagem.Height / 2 ) ;
+   pMensagemCliente.Height := Trunc( pMensagem.Height / 2 ) ;
 end;
 
 procedure TForm1.TrataErros(Sender : TObject; E : Exception);
@@ -776,6 +781,7 @@ begin
   Memo1.Lines.Add( E.Message );
   StatusBar1.Panels[1].Text := 'Exception' ;
   StatusBar1.Panels[2].Text := StringReplace( E.Message, sLineBreak, ' ', [rfReplaceAll] ) ;
+  pMensagem.Visible := False ;
 end;
 
 procedure TForm1.bAbreVendeSubTotalizaClick(Sender : TObject);

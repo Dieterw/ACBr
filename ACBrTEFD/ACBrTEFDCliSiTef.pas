@@ -54,10 +54,12 @@ uses
 
 
 Const
+   CACBrTEFD_CliSiTef_Backup = 'ACBr_CliSiTef_Backup.tef' ;
+
 {$IFDEF LINUX}
-  CLIB_CliSiTefLib = 'libclisitef32.so' ;
+  CACBrTEFD_CliSiTef_Lib = 'libclisitef32.so' ;
 {$ELSE}
-  CLIB_CliSiTefLib = 'CliSiTef32I.dll' ;
+  CACBrTEFD_CliSiTef_Lib = 'CliSiTef32I.dll' ;
 {$ENDIF}
 
 type
@@ -73,10 +75,6 @@ type
     property Identificacao ;
     property Informacao ;
   end ;
-
-
-  { TACBrTEFDRespParcelas }
-  { Lista de Objetos do tipo TACBrTEFParcela }
 
   { TACBrTEFDCliSiTefResp }
 
@@ -108,12 +106,12 @@ type
   TACBrTEFDCliSiTefExibeMenu = procedure( Titulo : String; Opcoes : TStringList;
     var ItemSlecionado : Integer ) of object ;
 
-  TACBrTEFDCliSiTefTipoCampo = (tcString, tcDouble, tcCMC7, tcBarCode) ;
+  TACBrTEFDCliSiTefOperacaoCampo = (tcString, tcDouble, tcCMC7, tcBarCode) ;
 
   TACBrTEFDCliSiTefObtemCampo = procedure( Titulo : String;
     TamanhoMinimo, TamanhoMaximo : Integer ;
-    TipoCampo : TACBrTEFDCliSiTefTipoCampo; var Resposta : String;
-    var Digitado : Boolean ) of object ;
+    TipoCampo : Integer; Operacao : TACBrTEFDCliSiTefOperacaoCampo;
+    var Resposta : String; var Digitado : Boolean ) of object ;
 
   { TACBrTEFDCliSiTef }
 
@@ -133,6 +131,8 @@ type
       fParametrosAdicionais : TStringList;
       fRespCliSiTef : TACBrTEFDCliSiTefResp;
       fRestricoes : String;
+      fDocumentosProcessados : String ;
+
      xConfiguraIntSiTefInterativoEx : function (
                 pEnderecoIP: PChar;
                 pCodigoLoja: PChar;
@@ -163,11 +163,20 @@ type
                 pBuffer: PChar;
                 TamMaxBuffer: Integer;
                 ContinuaNavegacao: Integer ): integer; stdcall;
+
      procedure AvaliaErro(Sts : Integer);
+     procedure FinalizaTransacao( Confirma : Boolean;
+        DocumentoVinculado : String);
      procedure LoadDLLFunctions;
    protected
+     procedure SetNumVias(const AValue : Integer); override;
+
+     procedure VerificarIniciouRequisicao; override;
+     procedure ProcessarRespostaPagamento(const SaldoAPagar : Double;
+        const IndiceFPG : String; const Valor : Double);
+
      Function FazerRequisicao( Funcao : Integer; Valor : Double = 0;
-        Documento : AnsiString = '') : Integer ;
+        Documento : AnsiString = ''; ListaRestricoes : AnsiString = '') : Integer ;
      Function ContinuarRequisicao( ImprimirComprovantes : Boolean ) : Integer ;
 
    public
@@ -181,8 +190,25 @@ type
      procedure AtivarGP ; override;
      procedure VerificaAtivo ; override;
 
+     procedure CancelarTransacoesPendentesClass; override;
+
      procedure ATV ; override;
      procedure ADM ; override;
+     procedure CRT( Valor : Double; IndiceFPG_ECF : String;
+        DocumentoVinculado : String = ''; Moeda : Integer = 0 ); override;
+     procedure CHQ( Valor : Double; IndiceFPG_ECF : String;
+        DocumentoVinculado : String = ''; CMC7 : String = '';
+        TipoPessoa : AnsiChar = 'F'; DocumentoPessoa : String = '';
+        DataCheque : TDateTime = 0; Banco   : String = '';
+        Agencia    : String = ''; AgenciaDC : String = '';
+        Conta      : String = ''; ContaDC   : String = '';
+        Cheque     : String = ''; ChequeDC  : String = ''); override;
+     procedure NCN(Rede, NSU, Finalizacao : String;
+        Valor : Double = 0; DocumentoVinculado : String = ''); override;
+     procedure CNF(Rede, NSU, Finalizacao : String;
+        DocumentoVinculado : String = ''); override;
+     procedure CNC(Rede, NSU : String; DataHoraTransacao : TDateTime;
+        Valor : Double); overload; override;
 
    published
      property EnderecoIP     : String read fEnderecoIP     write fEnderecoIP ;
@@ -197,8 +223,10 @@ type
         default 110 ;
      property OperacaoCRT : Integer read fOperacaoCRT write fOperacaoCRT
         default 0 ;
-     property OperacaoCHQ : Integer read fOperacaoCHQ write fOperacaoCHQ ;
-     property OperacaoCNC : Integer read fOperacaoCNC write fOperacaoCNC ;
+     property OperacaoCHQ : Integer read fOperacaoCHQ write fOperacaoCHQ
+        default 1 ;
+     property OperacaoCNC : Integer read fOperacaoCNC write fOperacaoCNC
+        default 200 ;
 
      property OnExibeMenu : TACBrTEFDCliSiTefExibeMenu read fOnExibeMenu
         write fOnExibeMenu ;
@@ -270,8 +298,8 @@ begin
   else
    begin
      with TACBrTEFDCliSiTefLinha(Items[I]) do
-     begin
-       if Informacao.AsString = '' then
+     begin                              { 141 e 142 são Parcelas, e pode enviar várias }
+       if (Informacao.AsString = '') or ( not (Identificacao in [141,142]) ) then
           Informacao.AsString := AInformacao
        else
           Informacao.AsString := Informacao.AsString + sLineBreak + AInformacao;
@@ -346,9 +374,14 @@ begin
   fRestricoes     := '' ;
   fOperacaoATV    := 111 ;  // 111 - Teste de comunicação com o SiTef
   fOperacaoADM    := 110 ;  // 110 - Abre o leque das transações Gerenciais
-  fOperacaoCHQ    := -1 ;
-  fOperacaoCNC    := -1 ;
-  fOperacaoCRT    := 0 ;
+  fOperacaoCRT    := 0 ;    // A CliSiTef permite que o operador escolha a forma
+                            // de pagamento através de menus
+  fOperacaoCHQ    := 1 ;    // Cheque
+  fOperacaoCNC    := 200 ;  // 200 Cancelamento Normal: Inicia a coleta dos dados
+                            // no ponto necessário para fazer o cancelamento de uma
+                            // transação de débito ou crédito, sem ser necessário
+                            // passar antes pelo menu de transações administrativas
+  fDocumentosProcessados := '' ;
 
   fParametrosAdicionais := TStringList.Create;
   fRespCliSiTef         := TACBrTEFDCliSiTefResp.create(True);
@@ -368,6 +401,31 @@ begin
    fRespCliSiTef.Free;
 
    inherited Destroy;
+end;
+
+procedure TACBrTEFDCliSiTef.LoadDLLFunctions ;
+ procedure CliSiTefFunctionDetect( FuncName: String; var LibPointer: Pointer ) ;
+ begin
+   if not Assigned( LibPointer )  then
+   begin
+     if not FunctionDetect( CACBrTEFD_CliSiTef_Lib, FuncName, LibPointer) then
+     begin
+        LibPointer := NIL ;
+        raise Exception.Create( ACBrStr( 'Erro ao carregar a função:'+FuncName+
+                                         ' de: '+CACBrTEFD_CliSiTef_Lib ) ) ;
+     end ;
+   end ;
+ end ;
+begin
+   CliSiTefFunctionDetect('ConfiguraIntSiTefInterativoEx', @xConfiguraIntSiTefInterativoEx);
+   CliSiTefFunctionDetect('IniciaFuncaoSiTefInterativo', @xIniciaFuncaoSiTefInterativo);
+   CliSiTefFunctionDetect('ContinuaFuncaoSiTefInterativo', @xContinuaFuncaoSiTefInterativo);
+   CliSiTefFunctionDetect('FinalizaTransacaoSiTefInterativo', @xFinalizaTransacaoSiTefInterativo);
+end ;
+
+procedure TACBrTEFDCliSiTef.SetNumVias(const AValue : Integer);
+begin
+   fpNumVias := 2;
 end;
 
 procedure TACBrTEFDCliSiTef.Inicializar;
@@ -421,40 +479,43 @@ begin
    {Nada a Fazer}
 end;
 
-
-procedure TACBrTEFDCliSiTef.AvaliaErro( Sts : Integer );
-var
-   Erro : String;
+procedure TACBrTEFDCliSiTef.CancelarTransacoesPendentesClass;
+Var
+  ArqBack, Documento : String ;
+  SL : TStringList ;
 begin
-   Erro := '' ;
-   Case Sts of
-         0 : Erro := 'negada pelo autorizador' ;
-        -1 : Erro := 'módulo não inicializado' ;
-        -2 : Erro := 'operação cancelada pelo operador' ;
-        -3 : Erro := 'fornecida uma modalidade inválida' ;
-        -4 : Erro := 'falta de memória para rodar a função' ;
-        -5 : Erro := 'sem comunicação com o SiTef' ;
-        -6 : Erro := 'operação cancelada pelo usuário' ;
-   else
-      if Sts < 0 then
-         Erro := 'erros detectados internamente pela rotina ('+IntToStr(Sts)+')' ;
-   end;
+  ArqBack := TACBrTEFD(Owner).PathBackup + PathDelim + CACBrTEFD_CliSiTef_Backup ;
 
-   if Erro <> '' then
-      raise EACBrTEFDErro.Create( ACBrStr( Erro ) ) ;
-end ;
+  if not FileExists( ArqBack ) then
+     exit ;
+
+  SL := TStringList.Create;
+  try
+    SL.LoadFromFile( ArqBack );
+
+    if SL.Count > 0 then
+    begin
+       Documento := Trim( SL[0] ) ;
+       NCN('','','',0, Documento );
+    end;
+
+    DeleteFile( ArqBack );
+  finally
+    SL.Free ;
+  end;
+end;
 
 procedure TACBrTEFDCliSiTef.ATV;
 var
    Sts : Integer;
 begin
-   Sts := FazerRequisicao( fOperacaoATV ) ;
+  Sts := FazerRequisicao( fOperacaoATV ) ;
 
-   if Sts = 10000 then
-      Sts := ContinuarRequisicao( True ) ;  { True = Imprimir Comprovantes agora }
+  if Sts = 10000 then
+     Sts := ContinuarRequisicao( True ) ;  { True = Imprimir Comprovantes agora }
 
-   if Sts <> 0 then
-      AvaliaErro( Sts );
+  if Sts <> 0 then
+     AvaliaErro( Sts );
 end;
 
 procedure TACBrTEFDCliSiTef.ADM;
@@ -470,52 +531,132 @@ begin
      AvaliaErro( Sts );
 end;
 
-procedure TACBrTEFDCliSiTef.LoadDLLFunctions ;
- procedure CliSiTefFunctionDetect( FuncName: String; var LibPointer: Pointer ) ;
- begin
-   if not Assigned( LibPointer )  then
-   begin
-     if not FunctionDetect( CLIB_CliSiTefLib, FuncName, LibPointer) then
-     begin
-        LibPointer := NIL ;
-        raise Exception.Create( ACBrStr( 'Erro ao carregar a função:'+FuncName+' de: '+CLIB_CliSiTefLib ) ) ;
-     end ;
-   end ;
- end ;
+procedure TACBrTEFDCliSiTef.CRT( Valor : Double; IndiceFPG_ECF : String;
+   DocumentoVinculado : String = ''; Moeda : Integer = 0 );
+var
+  Sts : Integer;
+  SaldoAPagar : Double;
+  Restr : String ;
 begin
-   CliSiTefFunctionDetect('ConfiguraIntSiTefInterativoEx', @xConfiguraIntSiTefInterativoEx);
-   CliSiTefFunctionDetect('IniciaFuncaoSiTefInterativo', @xIniciaFuncaoSiTefInterativo);
-   CliSiTefFunctionDetect('ContinuaFuncaoSiTefInterativo', @xContinuaFuncaoSiTefInterativo);
-   CliSiTefFunctionDetect('FinalizaTransacaoSiTefInterativo', @xFinalizaTransacaoSiTefInterativo);
-end ;
+  SaldoAPagar := 0 ;
+  VerificarTransacaoPagamento( Valor, SaldoAPagar );
+
+  Restr := fRestricoes;
+  if Restr = '' then
+     Restr := '[10]' ;     // 10 - Cheques
+
+  Sts := FazerRequisicao( fOperacaoCRT, Valor, DocumentoVinculado, Restr ) ;
+
+  if Sts = 10000 then
+     Sts := ContinuarRequisicao( False ) ;  { False = NAO Imprimir Comprovantes agora }
+
+  if Sts <> 0 then
+     AvaliaErro( Sts );
+
+  ProcessarRespostaPagamento( SaldoAPagar, IndiceFPG_ECF, Valor );
+end;
+
+procedure TACBrTEFDCliSiTef.CHQ(Valor : Double; IndiceFPG_ECF : String;
+   DocumentoVinculado : String; CMC7 : String; TipoPessoa : AnsiChar;
+   DocumentoPessoa : String; DataCheque : TDateTime; Banco : String;
+   Agencia : String; AgenciaDC : String; Conta : String; ContaDC : String;
+   Cheque : String; ChequeDC : String);
+var
+  Sts : Integer;
+  SaldoAPagar : Double;
+  Restr : String ;
+begin
+  SaldoAPagar := 0 ;
+  VerificarTransacaoPagamento( Valor, SaldoAPagar );
+
+  Restr := fRestricoes;
+  if Restr = '' then
+     Restr := '[15;25]' ;  // 15 - Cartão Credito; 25 - Cartao Debito
+
+  Sts := FazerRequisicao( fOperacaoCHQ, Valor, DocumentoVinculado, Restr ) ;
+
+  if Sts = 10000 then
+     Sts := ContinuarRequisicao( False ) ;  { False = NAO Imprimir Comprovantes agora }
+
+  if Sts <> 0 then
+     AvaliaErro( Sts );
+
+  ProcessarRespostaPagamento( SaldoAPagar, IndiceFPG_ECF, Valor );
+end;
+
+procedure TACBrTEFDCliSiTef.CNF(Rede, NSU, Finalizacao : String;
+   DocumentoVinculado : String);
+Var
+   DataStr, HoraStr : String;
+begin
+  // CliSiTEF não usa Rede, NSU e Finalizacao
+
+  FinalizaTransacao( True, DocumentoVinculado );
+end;
+
+procedure TACBrTEFDCliSiTef.CNC(Rede, NSU : String;
+   DataHoraTransacao : TDateTime; Valor : Double);
+var
+   Sts : Integer;
+begin
+  Sts := FazerRequisicao( fOperacaoCNC ) ;
+
+  if Sts = 10000 then
+     Sts := ContinuarRequisicao( True ) ;  { True = Imprimir Comprovantes agora }
+
+  if Sts <> 0 then
+     AvaliaErro( Sts );
+end;
+
+procedure TACBrTEFDCliSiTef.NCN(Rede, NSU, Finalizacao : String;
+   Valor : Double; DocumentoVinculado : String);
+begin
+  // CliSiTEF não usa Rede, NSU, Finalizacao e Valor
+
+  FinalizaTransacao( False, DocumentoVinculado );
+end;
 
 Function TACBrTEFDCliSiTef.FazerRequisicao( Funcao : Integer;
-   Valor : Double = 0 ; Documento : AnsiString = '') : Integer ;
+   Valor : Double = 0 ; Documento : AnsiString = '';
+   ListaRestricoes : AnsiString = '') : Integer ;
 Var
   ValorStr, DataStr, HoraStr : String;
 begin
+   Resp.Clear;
    RespCliSiTef.Clear;
+   Req.Clear;
+
+   Req.DocumentoVinculado := Documento;
+   Req.ValorTotal         := Valor;
+   Req.DataHoraTransacaoComprovante := Now ;
 
    Result   := 0 ;
-   DataStr  := FormatDateTime('YYYYMMDD',Now);
-   HoraStr  := FormatDateTime('HHNNSS',Now);
+   DataStr  := FormatDateTime('YYYYMMDD', Req.DataHoraTransacaoComprovante );
+   HoraStr  := FormatDateTime('HHNNSS', Req.DataHoraTransacaoComprovante );
    ValorStr := StringReplace( FormatFloat( '0.00', Valor ),
                               DecimalSeparator, ',', [rfReplaceAll]) ;
+   fDocumentosProcessados := '' ;
 
-   GravaLog( 'IniciaFuncaoSiTefInterativo. Modalidade: '  +IntToStr(Funcao)+
+   GravaLog( '*** IniciaFuncaoSiTefInterativo. Modalidade: '  +IntToStr(Funcao)+
                                            ' Valor: '     +ValorStr+
                                            ' Documento: ' +Documento+
                                            ' Data: '      +DataStr+
                                            ' Hora: '      +HoraStr+
                                            ' Operador: '  +fOperador+
-                                           ' Restricoes: '+fRestricoes ) ;
+                                           ' Restricoes: '+ListaRestricoes ) ;
 
    Result := xIniciaFuncaoSiTefInterativo( Funcao,
                                            PChar( ValorStr ),
                                            PChar( Documento ),
                                            PChar( DataStr ), PChar( HoraStr ),
                                            PChar( fOperador ),
-                                           PChar( fRestricoes) ) ;
+                                           PChar( ListaRestricoes ) ) ;
+end;
+
+procedure TACBrTEFDCliSiTef.VerificarIniciouRequisicao;
+begin
+   if Req.DocumentoVinculado = '' then
+      raise EACBrTEFDErro.Create( ACBrStr( 'Nenhuma Requisição Iniciada' ) ) ;
 end;
 
 Function TACBrTEFDCliSiTef.ContinuarRequisicao( ImprimirComprovantes : Boolean )
@@ -546,6 +687,8 @@ begin
    begin
       try
          repeat
+            GravaLog( 'ContinuaFuncaoSiTefInterativo, Chamando: Contina = '+IntToStr(Continua)+' Buffer = '+Resposta ) ;
+
             Result := xContinuaFuncaoSiTefInterativo( ProximoComando,
                                                       TipoCampo,
                                                       TamanhoMinimo, TamanhoMaximo,
@@ -558,10 +701,10 @@ begin
 
             if Result = 10000 then
             begin
-              GravaLog( 'STS: '+IntToStr(Result)+
-                        ' ProximoComando: '+IntToStr(ProximoComando)+
-                        ' TipoCampo: '+IntToStr(TipoCampo)+
-                        ' Buffer: '+Mensagem ) ;
+              GravaLog( 'ContinuaFuncaoSiTefInterativo, Retornos: STS = '+IntToStr(Result)+
+                        ' ProximoComando = '+IntToStr(ProximoComando)+
+                        ' TipoCampo = '+IntToStr(TipoCampo)+
+                        ' Buffer = '+Mensagem ) ;
 
               case ProximoComando of
                  0 :
@@ -716,7 +859,7 @@ begin
 
                      Digitado := True ;
                      OnObtemCampo( Mensagem, TamanhoMinimo, TamanhoMaximo,
-                                   tcString, Resposta, Digitado ) ;
+                                   TipoCampo, tcString, Resposta, Digitado ) ;
                      if Resposta = '' then
                         Continua := -1 ;
                    end;
@@ -728,7 +871,7 @@ begin
 
                      Digitado := True ;
                      OnObtemCampo( Mensagem, TamanhoMinimo, TamanhoMaximo,
-                                   tcCMC7, Resposta, Digitado ) ;
+                                   TipoCampo, tcCMC7, Resposta, Digitado ) ;
                      if Resposta = '' then
                         Continua := -1
                      else
@@ -742,7 +885,7 @@ begin
 
                      Digitado := True ;
                      OnObtemCampo( Mensagem, TamanhoMinimo, TamanhoMaximo,
-                                   tcDouble, Resposta, Digitado ) ;
+                                   TipoCampo, tcDouble, Resposta, Digitado ) ;
                      if StrToFloatDef(Resposta,-1) = -1 then
                         Continua := -1 ;
                    end;
@@ -754,7 +897,7 @@ begin
 
                      Digitado := True ;
                      OnObtemCampo( Mensagem, TamanhoMinimo, TamanhoMaximo,
-                                   tcBarCode, Resposta, Digitado ) ;
+                                   TipoCampo, tcBarCode, Resposta, Digitado ) ;
                      if Resposta = '' then
                         Continua := -1
                      else
@@ -764,10 +907,7 @@ begin
               end;
             end
             else
-               GravaLog( 'Finalizando com STS = '+IntToStr(Result) ) ;
-
-
-            GravaLog( 'Continua: '+IntToStr(Continua)+' Buffer: '+Resposta ) ;
+               GravaLog( '*** ContinuaFuncaoSiTefInterativo, Finalizando: STS = '+IntToStr(Result) ) ;
 
             if Resposta <> '' then
                StrPCopy(Buffer, Resposta);
@@ -781,6 +921,137 @@ begin
            BloquearMouseTeclado( False );
       end;
    end ;
+end;
+
+procedure TACBrTEFDCliSiTef.FinalizaTransacao( Confirma : Boolean;
+   DocumentoVinculado : String);
+Var
+   DataStr, HoraStr : String;
+begin
+  if pos(DocumentoVinculado, fDocumentosProcessados) > 0 then
+     exit ;
+
+  fDocumentosProcessados := fDocumentosProcessados + DocumentoVinculado + '|' ;
+
+  DataStr := FormatDateTime('YYYYMMDD',Now);
+  HoraStr := FormatDateTime('HHNNSS',Now);
+
+  GravaLog( '*** FinalizaTransacaoSiTefInterativo. Confirma: '+IfThen(Confirma,'SIM','NAO')+
+                                          ' Documento: ' +DocumentoVinculado+
+                                          ' Data: '      +DataStr+
+                                          ' Hora: '      +HoraStr ) ;
+
+  xFinalizaTransacaoSiTefInterativo( IfThen(Confirma,1,0),
+                                     PChar( DocumentoVinculado ),
+                                     PChar( DataStr ),
+                                     PChar( HoraStr) ) ;
+end;
+
+procedure TACBrTEFDCliSiTef.AvaliaErro( Sts : Integer );
+var
+   Erro : String;
+begin
+   Erro := '' ;
+   Case Sts of
+         0 : Erro := 'negada pelo autorizador' ;
+        -1 : Erro := 'módulo não inicializado' ;
+        -2 : Erro := 'operação cancelada pelo operador' ;
+        -3 : Erro := 'fornecida uma modalidade inválida' ;
+        -4 : Erro := 'falta de memória para rodar a função' ;
+        -5 : Erro := 'sem comunicação com o SiTef' ;
+        -6 : Erro := 'operação cancelada pelo usuário' ;
+   else
+      if Sts < 0 then
+         Erro := 'erros detectados internamente pela rotina ('+IntToStr(Sts)+')' ;
+   end;
+
+   if Erro <> '' then
+      raise EACBrTEFDErro.Create( ACBrStr( Erro ) ) ;
+end ;
+
+procedure TACBrTEFDCliSiTef.ProcessarRespostaPagamento( const SaldoAPagar : Double;
+   const IndiceFPG : String; const Valor : Double);
+var
+  UltimaTransacao : Boolean ;
+  ImpressaoOk : Boolean;
+  RespostaPendente : TACBrTEFDRespostaPendente ;
+  Imagem : String;
+begin
+  VerificarIniciouRequisicao;
+
+  UltimaTransacao := (Valor >= SaldoAPagar);
+
+  with TACBrTEFD(Owner) do
+  begin
+     RespostaPendente := TACBrTEFDRespostaPendente.Create;
+     with RespostaPendente do
+     begin
+        TipoGP             := self.Tipo;
+        DocumentoVinculado := Req.DocumentoVinculado;
+        ValorTotal         := Valor ;
+        IndiceFPG_ECF      := IndiceFPG;
+        ArqBackup          := PathBackup + PathDelim + CACBrTEFD_CliSiTef_Backup ;
+        Imagem := RespCliSiTef.LeInformacao(121).AsString;
+        if Imagem <> '' then
+           ImagemComprovante1aVia.Text := StringReplace( Imagem, #10, sLineBreak, [rfReplaceAll] );
+
+        Imagem := RespCliSiTef.LeInformacao(122).AsString;
+        if Imagem <> '' then
+           ImagemComprovante2aVia.Text := StringReplace( Imagem, #10, sLineBreak, [rfReplaceAll] );
+     end;
+     RespostasPendentes.Add( RespostaPendente );
+
+     { Gravando Documento na Lista de Documentos Pendentes }
+     if not FileExists( RespostaPendente.ArqBackup ) then
+     begin
+        WriteToTXT( RespostaPendente.ArqBackup, Req.DocumentoVinculado );
+        FlushToDisk( ExtractFileDrive( RespostaPendente.ArqBackup ) );
+     end;
+
+     if AutoEfetuarPagamento then
+     begin
+        ImpressaoOk := False ;
+
+        try
+           while not ImpressaoOk do
+           begin
+              try
+                 ECFPagamento( IndiceFPG, Valor );
+                 RespostaPendente.OrdemPagamento := RespostasPendentes.Count + 1 ;
+                 ImpressaoOk := True ;
+              except
+                 on EACBrTEFDECF do ImpressaoOk := False ;
+                 else
+                    raise ;
+              end;
+
+              if not ImpressaoOk then
+              begin
+                 if DoExibeMsg( opmYesNo, 'Impressora não responde'+sLineBreak+
+                                          'Tentar novamente ?') <> mrYes then
+                 begin
+                    try ComandarECF(opeCancelaCupom); except {Exceção Muda} end ;
+                    break ;
+                 end;
+              end;
+           end;
+        finally
+           if not ImpressaoOk then
+              CancelarTransacoesPendentes;
+        end;
+     end;
+
+     RespostasPendentes.SaldoAPagar := SaldoAPagar;
+
+     if RespostasPendentes.SaldoRestante <= 0 then
+     begin
+        if AutoFinalizarCupom then
+        begin
+           FinalizarCupom;
+           ImprimirTransacoesPendentes;
+        end;
+     end ;
+  end;
 end;
 
 end.

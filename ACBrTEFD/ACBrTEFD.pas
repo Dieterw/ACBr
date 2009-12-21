@@ -104,7 +104,7 @@ type
      fpRespostasPendentes : TACBrTEFDRespostasPendentes;
      function GetAbout : String;
      function GetArqReq : String;
-     function getArqResp : String;
+     function GetArqResp : String;
      function GetArqSTS : String;
      function GetArqTmp : String;
      function GetGPExeName : String;
@@ -158,7 +158,7 @@ type
      property ArqTemp  : String read GetArqTmp ;
      property ArqReq   : String read GetArqReq ;
      property ArqSTS   : String read GetArqSTS ;
-     property ArqResp  : String read getArqResp ;
+     property ArqResp  : String read GetArqResp ;
      property GPExeName: String read GetGPExeName ;
 
      property EstadoReq  : TACBrTEFDReqEstado  read fEstadoReq  write SetEstadoReq ;
@@ -595,21 +595,21 @@ begin
   while I < RespostasPendentes.Count do
   begin
     try
-       GPAtual := RespostasPendentes[I].TipoGP;
+      with RespostasPendentes[I] do
+      begin
+        GPAtual := TipoGP;   // Seleciona a Classe do GP
 
-       if not RespostasPendentes[I].CNFEnviado then
-       begin
-          fTefClass.Resp.Assign( RespostasPendentes[I] );
-          fTefClass.CNF;
-          RespostasPendentes[I].CNFEnviado := True ;
-       end;
+        if not CNFEnviado then
+        begin
+          CNF( Rede, NSU, Finalizacao, DocumentoVinculado );
+          CNFEnviado := True ;
+        end;
 
-       if FileExists( ArqResp ) then
-          ApagaEVerifica( ArqResp );
+        ApagaEVerifica( ArqResp );
+        ApagaEVerifica( ArqBackup );
 
-       ApagaEVerifica( RespostasPendentes[I].ArqBackup );
-
-       Inc( I ) ;
+        Inc( I ) ;
+      end;
     except
       { Exceção Muda... Fica em Loop até conseguir confirmar e apagar Backup }
     end;
@@ -620,7 +620,7 @@ end;
 
 procedure TACBrTEFD.ImprimirTransacoesPendentes;
 var
-   I, J, K, Ordem : Integer;
+   I, J, K, NVias, Ordem : Integer;
    GrupoVinc : TACBrTEFDArrayGrupoRespostasPendentes ;
    ImpressaoOk, Gerencial, RemoverMsg : Boolean ;
    TempoInicio : Double;
@@ -674,107 +674,47 @@ begin
 
                  For J := 0 to RespostasPendentes.Count-1 do
                  begin
-                    GPAtual := RespostasPendentes[J].TipoGP;
-                    fTefClass.Resp.Assign( RespostasPendentes[J] );
-
-                    TempoInicio := now ;
-                    if Resp.TextoEspecialOperador <> '' then
+                    with RespostasPendentes[J] do
                     begin
-                       RemoverMsg := True ;
-                       DoExibeMsg( opmExibirMsgOperador, Resp.TextoEspecialOperador ) ;
-                    end;
-
-                    if Resp.TextoEspecialCliente <> '' then
-                    begin
-                       RemoverMsg := True ;
-                       DoExibeMsg( opmExibirMsgCliente, Resp.TextoEspecialCliente ) ;
-                    end;
-
-                    ComandarECF( opeAbreGerencial ) ;
-
-                    I := 1 ;
-                    while I <= NumVias do
-                    begin
-                       ECFImprimeVia( trGerencial, I, Resp.ImagemComprovante  );
-
-                       if I < NumVias  then
-                       begin
-                          ComandarECF( opePulaLinhas ) ;
-                          DoExibeMsg( opmDestaqueVia, 'Destaque a '+IntToStr(I)+'ª Via') ;
-                       end;
-
-                       Inc( I ) ;
-                    end;
-
-                    ComandarECF( opeFechaGerencial );
-
-                    { Removendo a mensagem do Operador }
-                    if RemoverMsg then
-                    begin
-                       { Verifica se Mensagem Ficou pelo menos por 5 segundos }
-                       while SecondsBetween(now,TempoInicio) < 5 do
-                       begin
-                          Sleep(EsperaSTS) ;
-                          Application.ProcessMessages;
-                       end;
-
-                       DoExibeMsg( opmRemoverMsgOperador, '' ) ;
-                       DoExibeMsg( opmRemoverMsgCliente, '' ) ;
-                       RemoverMsg := False ;
-                    end;
-                 end ;
-               end
-              else                 //// Impressão em Vinculado ////
-               begin
-                 Ordem := 0 ;
-
-                 For K := 0 to Length( GrupoVinc )-1 do
-                 begin
-                    For J := 0 to RespostasPendentes.Count-1 do
-                    begin
-                       if GrupoVinc[K].OrdemPagamento <> RespostasPendentes[J].OrdemPagamento then
-                          continue ;
-
-                       GPAtual := RespostasPendentes[J].TipoGP;
-                       fTefClass.Resp.Assign( RespostasPendentes[J] );
+                       GPAtual := TipoGP;  // Seleciona a Classe do GP
 
                        TempoInicio := now ;
-                       if Resp.TextoEspecialOperador <> '' then
+                       if TextoEspecialCliente <> '' then
                        begin
                           RemoverMsg := True ;
-                          DoExibeMsg( opmExibirMsgOperador, Resp.TextoEspecialOperador ) ;
+                          DoExibeMsg( opmExibirMsgOperador, TextoEspecialOperador ) ;
                        end;
 
-                       if Resp.TextoEspecialCliente <> '' then
+                       if TextoEspecialCliente <> '' then
                        begin
                           RemoverMsg := True ;
-                          DoExibeMsg( opmExibirMsgCliente, Resp.TextoEspecialCliente ) ;
+                          DoExibeMsg( opmExibirMsgCliente, TextoEspecialCliente ) ;
                        end;
 
-                       if Ordem <> RespostasPendentes[J].OrdemPagamento then
-                        begin
-                          Ordem := RespostasPendentes[J].OrdemPagamento ;
-                          ECFAbreVinculado( Resp.DocumentoVinculado,
-                                            GrupoVinc[K].IndiceFPG_ECF,
-                                            GrupoVinc[K].Total ) ;
-                        end
-                       else
-                          ComandarECF( opePulaLinhas ) ;
+                       ComandarECF( opeAbreGerencial ) ;
+
+                       NVias := fTefClass.NumVias ;
+                       if ImagemComprovante2aVia.Text = '' then
+                          NVias := 1 ;
 
                        I := 1 ;
-                       while I <= NumVias do
+                       while I <= NVias do  // TODO: O correto seria a Resposta Pendente saber o numero de Vias
                        begin
-                          ECFImprimeVia( trVinculado, I, Resp.ImagemComprovante  );
+                          if I = 1 then
+                             ECFImprimeVia( trGerencial, I, ImagemComprovante1aVia  )
+                          else
+                             ECFImprimeVia( trGerencial, I, ImagemComprovante2aVia  ) ;
 
-                          if I < NumVias  then
+                          if I < NVias  then
                           begin
-
                              ComandarECF( opePulaLinhas ) ;
                              DoExibeMsg( opmDestaqueVia, 'Destaque a '+IntToStr(I)+'ª Via') ;
                           end;
 
                           Inc( I ) ;
                        end;
+
+                       ComandarECF( opeFechaGerencial );
 
                        { Removendo a mensagem do Operador }
                        if RemoverMsg then
@@ -789,6 +729,83 @@ begin
                           DoExibeMsg( opmRemoverMsgOperador, '' ) ;
                           DoExibeMsg( opmRemoverMsgCliente, '' ) ;
                           RemoverMsg := False ;
+                       end;
+                    end;
+                 end ;
+               end
+              else                 //// Impressão em Vinculado ////
+               begin
+                 Ordem := 0 ;
+
+                 For K := 0 to Length( GrupoVinc )-1 do
+                 begin
+                    For J := 0 to RespostasPendentes.Count-1 do
+                    begin
+                       with RespostasPendentes[J] do
+                       begin
+                          if GrupoVinc[K].OrdemPagamento <> OrdemPagamento then
+                             continue ;
+
+                          GPAtual := TipoGP;    // Seleciona a Classe do GP
+
+                          TempoInicio := now ;
+                          if TextoEspecialOperador <> '' then
+                          begin
+                             RemoverMsg := True ;
+                             DoExibeMsg( opmExibirMsgOperador, TextoEspecialOperador ) ;
+                          end;
+
+                          if TextoEspecialCliente <> '' then
+                          begin
+                             RemoverMsg := True ;
+                             DoExibeMsg( opmExibirMsgCliente, TextoEspecialCliente ) ;
+                          end;
+
+                          if Ordem <> OrdemPagamento then
+                           begin
+                             Ordem := OrdemPagamento ;
+                             ECFAbreVinculado( DocumentoVinculado,
+                                               GrupoVinc[K].IndiceFPG_ECF,
+                                               GrupoVinc[K].Total ) ;
+                           end
+                          else
+                             ComandarECF( opePulaLinhas ) ;
+
+                          NVias := fTefClass.NumVias ;
+                          if ImagemComprovante2aVia.Text = '' then
+                             NVias := 1 ;
+
+                          I := 1 ;
+                          while I <= NVias do
+                          begin
+                             if I = 1 then
+                                ECFImprimeVia( trVinculado, I, ImagemComprovante1aVia )
+                             else
+                                ECFImprimeVia( trVinculado, I, ImagemComprovante2aVia ) ;
+
+                             if I < NVias  then
+                             begin
+                                ComandarECF( opePulaLinhas ) ;
+                                DoExibeMsg( opmDestaqueVia, 'Destaque a '+IntToStr(I)+'ª Via') ;
+                             end;
+
+                             Inc( I ) ;
+                          end;
+
+                          { Removendo a mensagem do Operador }
+                          if RemoverMsg then
+                          begin
+                             { Verifica se Mensagem Ficou pelo menos por 5 segundos }
+                             while SecondsBetween(now,TempoInicio) < 5 do
+                             begin
+                                Sleep(EsperaSTS) ;
+                                Application.ProcessMessages;
+                             end;
+
+                             DoExibeMsg( opmRemoverMsgOperador, '' ) ;
+                             DoExibeMsg( opmRemoverMsgCliente, '' ) ;
+                             RemoverMsg := False ;
+                          end;
                        end;
                     end ;
 
@@ -1051,8 +1068,14 @@ begin
   { Ajustando o mesmo valor nas Classes de TEF, caso elas usem o valor default }
   For I := 0 to fTEFList.Count-1 do
   begin
-    if fTEFList[I].EsperaSTS = fEsperaSTS then
-       fTEFList[I].EsperaSTS := AValue;
+    if fTEFList[I] is TACBrTEFDClassTXT then
+    begin
+       with TACBrTEFDClassTXT( fTEFList[I] ) do
+       begin
+          if EsperaSTS = fEsperaSTS then
+             EsperaSTS := AValue;
+       end;
+    end;
   end;
 
   fEsperaSTS := AValue;
@@ -1130,8 +1153,14 @@ var
 begin
   For I := 0 to fTEFList.Count-1 do
   begin
-    if fTEFList[I].NumVias = fNumVias then
-       fTEFList[I].NumVias := AValue;
+    if fTEFList[I] is TACBrTEFDClassTXT then
+    begin
+       with TACBrTEFDClassTXT( fTEFList[I] ) do
+       begin
+          if NumVias = fNumVias then
+             NumVias := AValue;
+       end;
+    end;
   end;
 
   fNumVias := AValue;

@@ -86,6 +86,9 @@ type
   TRegistroC460List = class;
   TRegistroC490List = class;
   TRegistroC470List = class;
+  TRegistroC510List = class; {Márcio Lopes 30Nov2009}
+  TRegistroC590List = class; {Márcio Lopes 30Nov2009}
+
 
   /// Registro C100 - NOTA FISCAL (CÓDIGO 01), NOTA FISCAL AVULSA (CÓDIGO 1B), NOTA FISCAL DE PRODUTOR (CÓDIGO 04) E NFE (CÓDIGO 55)
 
@@ -1641,7 +1644,14 @@ type
     fVL_COFINS: currency;     /// Valor da COFINS
     fTP_LIGACAO      :AnsiString; /// Código de tipo de Ligação [ 1 - Monofásico 2 - Bifásico 3 - Trifásico ]
     fCOD_GRUPO_TENSAO:AnsiString; /// Código de grupo de tensão: Vide Manual Registro C500 Campo 27
+
+    FRegistroC510: TRegistroC510List;  /// BLOCO C - Lista de RegistroC510 (FILHO) {Márcio Lopes 20Dez2009} 
+    FRegistroC590: TRegistroC590List;  /// BLOCO C - Lista de RegistroC590 (FILHO) {Márcio Lopes 20Dez2009}
+
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property IND_OPER: AnsiString read fIND_OPER write fIND_OPER;
     property IND_EMIT: AnsiString read fIND_EMIT write fIND_EMIT;
     property COD_PART: AnsiString read fCOD_PART write fCOD_PART;
@@ -1668,6 +1678,11 @@ type
     property VL_COFINS: currency read fVL_COFINS write fVL_COFINS;
     property TP_LIGACAO:        AnsiString read fTP_LIGACAO       write fTP_LIGACAO;
     property COD_GRUPO_TENSAO:  AnsiString read fCOD_GRUPO_TENSAO write fCOD_GRUPO_TENSAO;
+
+    /// Registros FILHOS
+    property RegistroC510: TRegistroC510List read FRegistroC510 write FRegistroC510;
+    property RegistroC590: TRegistroC590List read FRegistroC590 write FRegistroC590;
+
   end;
 
   /// Registro C500 - Lista
@@ -3625,6 +3640,21 @@ begin
   FRegistroC177.Free;
   FRegistroC178.Free;
   FRegistroC179.Free;
+  inherited;
+end;
+
+{ TRegistroC500 }
+
+constructor TRegistroC500.Create;
+begin
+  FRegistroC510 := TRegistroC510List.Create;  /// BLOCO C - Lista de RegistroC510 (FILHO)
+  FRegistroC590 := TRegistroC590List.Create;  /// BLOCO C - Lista de RegistroC590 (FILHO)
+end;
+
+destructor TRegistroC500.Destroy;
+begin
+  FRegistroC510.Free;
+  FRegistroC590.Free;
   inherited;
 end;
 

@@ -53,6 +53,7 @@ type
   public
   end;
 
+  TRegistroD190List = class; {Márcio Lopes 21Dez2009}
   TRegistroD590List = class; {Jean Barreiros 04Dez2009}
 
   /// Registro D100 - NOTA FISCAL DE SERVIÇO DE TRANSPORTE (CÓDIGO 07) E CONHECIMENTOS DE TRANSPORTE RODOVIÁRIO DE CARGAS (CÓDIGO 08), AQUAVIÁRIO DE CARGAS (CÓDIGO 09), AÉREO (CÓDIGO 10), FERROVIÁRIO DE CARGAS (CÓDIGO 11) E MULTIMODAL DE CARGAS (CÓDIGO 26) E NOTA FISCAL DE TRANSPORTE FERROVIÁRIO DE CARGA (CÓDIGO 27)
@@ -81,7 +82,12 @@ type
     fVL_NT: currency;          /// Valor não tributado
     fCOD_INF: AnsiString;          /// Valor do ICMS retido por substituição tributária
     fCOD_CTA: AnsiString;          /// Código da conta analitica contabil debitada/creditada
+
+    FRegistroD190: TRegistroD190List;  /// BLOCO D - Lista de RegistroD190 (FILHO) {Márcio Lopes 21Dez2009}
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property IND_OPER: AnsiString read FIND_OPER write FIND_OPER;
     property IND_EMIT: AnsiString read FIND_EMIT write FIND_EMIT;
     property COD_PART: AnsiString read FCOD_PART write FCOD_PART;
@@ -104,6 +110,8 @@ type
     property VL_NT: currency read FVL_NT write FVL_NT;
     property COD_INF: AnsiString read FCOD_INF write FCOD_INF;
     property COD_CTA: AnsiString read FCOD_CTA write FCOD_CTA;
+
+    property RegistroD190: TRegistroD190List read FRegistroD190 write FRegistroD190;  {Márcio Lopes 04Dez2009}
   end;
 
   /// Registro D100 - Lista
@@ -1798,6 +1806,19 @@ end;
 destructor TRegistroD500.Destroy;
 begin
   FRegistroD590.Free;
+  inherited;
+end;
+
+{ TRegistroD100 }
+
+constructor TRegistroD100.Create;
+begin
+  FRegistroD190 := TRegistroD190List.Create;  /// BLOCO D - Lista de RegistroD190 (FILHO) {Márcio Lopes 21Dez2009}
+end;
+
+destructor TRegistroD100.Destroy;
+begin
+  FRegistroD190.Free;
   inherited;
 end;
 

@@ -60,7 +60,6 @@ type
     FRegistroD162: TRegistroD162List;  /// BLOCO D - Lista de RegistroD162
     FRegistroD170: TRegistroD170List;  /// BLOCO D - Lista de RegistroD170
     FRegistroD180: TRegistroD180List;  /// BLOCO D - Lista de RegistroD180
-    FRegistroD190: TRegistroD190List;  /// BLOCO D - Lista de RegistroD190
     FRegistroD300: TRegistroD300List;  /// BLOCO D - Lista de RegistroD300
     FRegistroD301: TRegistroD301List;  /// BLOCO D - Lista de RegistroD301
     FRegistroD310: TRegistroD310List;  /// BLOCO D - Lista de RegistroD310
@@ -77,8 +76,10 @@ type
     FRegistroD500: TRegistroD500List;  /// BLOCO D - Lista de RegistroD500
     FRegistroD990: TRegistroD990;      /// BLOCO D - RegistroD990
 
+    FRegistroD190Count: Integer;
     FRegistroD590Count: Integer;
 
+    function WriteRegistroD190(RegD100: TRegistroD100): AnsiString; {Márcio Lopes 21Dez2009}
     function WriteRegistroD590(RegD500: TRegistroD500): AnsiString; {Jean Barreiros 04Dez2009}
 
     procedure CriaRegistros;
@@ -100,7 +101,6 @@ type
     function WriteRegistroD162: AnsiString;
     function WriteRegistroD170: AnsiString;
     function WriteRegistroD180: AnsiString;
-    function WriteRegistroD190: AnsiString;
     function WriteRegistroD300: AnsiString;
     function WriteRegistroD301: AnsiString;
     function WriteRegistroD310: AnsiString;
@@ -129,7 +129,6 @@ type
     property RegistroD162: TRegistroD162List read FRegistroD162 write FRegistroD162;
     property RegistroD170: TRegistroD170List read FRegistroD170 write FRegistroD170;
     property RegistroD180: TRegistroD180List read FRegistroD180 write FRegistroD180;
-    property RegistroD190: TRegistroD190List read FRegistroD190 write FRegistroD190;
     property RegistroD300: TRegistroD300List read FRegistroD300 write FRegistroD300;
     property RegistroD301: TRegistroD301List read FRegistroD301 write FRegistroD301;
     property RegistroD310: TRegistroD310List read FRegistroD310 write FRegistroD310;
@@ -146,6 +145,7 @@ type
     property RegistroD500: TRegistroD500List read FRegistroD500 write FRegistroD500;
     property RegistroD990: TRegistroD990 read FRegistroD990 write FRegistroD990;
 
+    property RegistroD190Count: Integer read FRegistroD190Count write FRegistroD190Count; {Márcio Lopes 21DezN2009}
     property RegistroD590Count: Integer read FRegistroD590Count write FRegistroD590Count; {Jean Barreiros 17Nov2009}
   end;
 
@@ -179,7 +179,6 @@ begin
   FRegistroD162 := TRegistroD162List.Create;
   FRegistroD170 := TRegistroD170List.Create;
   FRegistroD180 := TRegistroD180List.Create;
-  FRegistroD190 := TRegistroD190List.Create;
   FRegistroD300 := TRegistroD300List.Create;
   FRegistroD301 := TRegistroD301List.Create;
   FRegistroD310 := TRegistroD310List.Create;
@@ -196,6 +195,7 @@ begin
   FRegistroD500 := TRegistroD500List.Create;
   FRegistroD990 := TRegistroD990.Create;
 
+  FRegistroD190Count := 0; {Márcio Lopes 21Dez2009}
   FRegistroD590Count := 0; {Jean Barreiros 04Dez2009}
 
   FRegistroD990.QTD_LIN_D := 0;
@@ -215,7 +215,6 @@ begin
   FRegistroD162.Free;
   FRegistroD170.Free;
   FRegistroD180.Free;
-  FRegistroD190.Free;
   FRegistroD300.Free;
   FRegistroD301.Free;
   FRegistroD310.Free;
@@ -289,17 +288,21 @@ begin
                                                LFill( TP_CT_e ) +
                                                LFill( CHV_CTE_REF ) +
                                                LFill( VL_DOC,0,2 ) +
-                                               LFill( IND_FRT ) +
                                                LFill( VL_DESC,0,2 ) +
                                                LFill( IND_FRT ) +
                                                LFill( VL_SERV,0,2 ) +
                                                LFill( VL_BC_ICMS,0,2 ) +
+                                               LFill( VL_ICMS,0,2 ) +                                               
                                                LFill( VL_NT,0,2 ) +
                                                LFill( COD_INF ) +
                                                LFill( COD_CTA ) +
                                                Delimitador +
                                                #13#10;
         end;
+        /// Registros FILHOS
+        strRegistroD100 := strRegistroD100 +
+                           WriteRegistroD190( RegistroD100.Items[intFor] );
+
        RegistroD990.QTD_LIN_D := RegistroD990.QTD_LIN_D + 1;
      end;
   end;
@@ -636,18 +639,18 @@ begin
   Result := strRegistroD180;
 end;
 
-function TBloco_D.WriteRegistroD190: AnsiString;
+function TBloco_D.WriteRegistroD190(RegD100:TRegistroD100): AnsiString;
 var
 intFor: integer;
 strRegistroD190: AnsiString;
 begin
   strRegistroD190 := '';
 
-  if Assigned( RegistroD190 ) then
+  if Assigned( RegD100.RegistroD190 ) then
   begin
-     for intFor := 0 to RegistroD190.Count - 1 do
+     for intFor := 0 to RegD100.RegistroD190.Count - 1 do
      begin
-        with RegistroD190.Items[intFor] do
+        with RegD100.RegistroD190.Items[intFor] do
         begin
           strRegistroD190 := strRegistroD190 + LFill('D190') +
                                                LFill( CST_ICMS ) +
@@ -663,6 +666,8 @@ begin
         end;
         RegistroD990.QTD_LIN_D := RegistroD990.QTD_LIN_D + 1;
      end;
+     /// Variavél para armazenar a quantidade de registro do tipo.
+     FRegistroD190Count := FRegistroD190Count + RegD100.RegistroD190.Count;
   end;
   Result := strRegistroD190;
 end;

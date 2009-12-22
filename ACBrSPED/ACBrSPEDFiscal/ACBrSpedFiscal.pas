@@ -140,7 +140,6 @@ type
     function WriteRegistroD165: AnsiString;
     function WriteRegistroD170: AnsiString;
     function WriteRegistroD180: AnsiString;
-    function WriteRegistroD190: AnsiString;
     function WriteRegistroD300: AnsiString;
     function WriteRegistroD301: AnsiString;
     function WriteRegistroD310: AnsiString;
@@ -416,7 +415,6 @@ begin
     if Bloco_D.RegistroD170.Count > 0 then Write(txtFile, WriteRegistroD170); // Prates
     if Bloco_D.RegistroD180.Count > 0 then Write(txtFile, WriteRegistroD180); // Prates
     if Bloco_D.RegistroD180.Count > 0 then Write(txtFile, WriteRegistroD180); // Prates
-    if Bloco_D.RegistroD190.Count > 0 then Write(txtFile, WriteRegistroD190); // Prates
     if Bloco_D.RegistroD300.Count > 0 then Write(txtFile, WriteRegistroD300); // Prates
     if Bloco_D.RegistroD301.Count > 0 then Write(txtFile, WriteRegistroD301); // Prates
     if Bloco_D.RegistroD310.Count > 0 then Write(txtFile, WriteRegistroD310); // Prates
@@ -1192,12 +1190,21 @@ end;
 
 function TACBrSPEDFiscal.WriteRegistroD100: AnsiString;
 begin
-   with Bloco_9.Registro9900.New do
-   begin
-      REG_BLC := 'D100';
-      QTD_REG_BLC  := Bloco_D.RegistroD100.Count;
-   end;
    Result := Bloco_D.WriteRegistroD100;
+
+   with Bloco_9.Registro9900 do
+   begin
+      with New do
+      begin
+         REG_BLC := 'D100';
+         QTD_REG_BLC := Bloco_D.RegistroD100.Count;
+      end;
+      with New do
+      begin
+         REG_BLC := 'D190';
+         QTD_REG_BLC := Bloco_D.RegistroD190Count;
+      end;
+   end;
 end;
 
 function TACBrSPEDFiscal.WriteRegistroD110: AnsiString;
@@ -1310,16 +1317,6 @@ begin
       QTD_REG_BLC  := Bloco_D.RegistroD180.Count;
    end;
    Result := Bloco_D.WriteRegistroD180;
-end;
-
-function TACBrSPEDFiscal.WriteRegistroD190: AnsiString;
-begin
-   with Bloco_9.Registro9900.New do
-   begin
-      REG_BLC := 'D190';
-      QTD_REG_BLC  := Bloco_D.RegistroD190.Count;
-   end;
-   Result := Bloco_D.WriteRegistroD190;
 end;
 
 function TACBrSPEDFiscal.WriteRegistroD300: AnsiString;

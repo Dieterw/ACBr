@@ -754,6 +754,9 @@ begin
   AForm := TForm5.Create(self);
   try
     AForm.Panel1.Caption := Titulo;
+    AForm.Operacao       := Operacao;
+    AForm.TipoCampo      := TipoCampo;
+
     if AForm.ShowModal = mrOK then
        Resposta := AForm.Edit1.Text;
   finally

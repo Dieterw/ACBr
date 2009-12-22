@@ -55,7 +55,7 @@ uses
   {$ENDIF} ;
 
 const
-   CACBrTEFD_Versao      = '0.6a' ;
+   CACBrTEFD_Versao      = '0.7a' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -96,10 +96,14 @@ type
 
   TACBrTEFDReq = class ;
   TACBrTEFDResp = class ;
+  TACBrTEFDRespostasPendentes = class ;
 
   TACBrTEFDAntesFinalizarReq = procedure( Req : TACBrTEFDReq ) of object ;
   TACBrTEFDMudaEstadoReq     = procedure( EstadoReq  : TACBrTEFDReqEstado  ) of object ;
   TACBrTEFDMudaEstadoResp    = procedure( EstadoResp : TACBrTEFDRespEstado ) of object ;
+
+  TACBrTEFDDepoisConfirmarTransacoes = procedure( RespostasPendentes :
+     TACBrTEFDRespostasPendentes ) of object ;
 
   TACBrTEFDExibeMsg = procedure( Operacao : TACBrTEFDOperacaoMensagem;
      Mensagem : String; var AModalResult : TModalResult ) of object ;
@@ -149,16 +153,19 @@ type
     function GetAsInteger : Integer;
     function GetAsTime : TDateTime;
     function GetAsTimeStamp : TDateTime;
+    function GetAsTimeStampSQL : TDateTime;
     procedure SetAsDate(const AValue : TDateTime);
     procedure SetAsFloat(const AValue : Double);
     procedure SetAsInteger(const AValue : Integer);
     procedure SetAsTime(const AValue : TDateTime);
     procedure SetAsTimeStamp(const AValue : TDateTime);
+    procedure SetAsTimeStampSQL(const AValue : TDateTime);
   public
     property AsString   : AnsiString read fInformacao    write fInformacao ;
     property AsDate     : TDateTime  read GetAsDate      write SetAsDate ;
     property AsTime     : TDateTime  read GetAsTime      write SetAsTime ;
     property AsTimeStamp: TDateTime  read GetAsTimeStamp write SetAsTimeStamp ;
+    property AsTimeStampSQL: TDateTime  read GetAsTimeStampSQL write SetAsTimeStampSQL ;
     property AsInteger  : Integer    read GetAsInteger   write SetAsInteger ;
     property AsFloat    : Double     read GetAsFloat     write SetAsFloat ;
   end ;
@@ -336,169 +343,138 @@ type
    { TACBrTEFDResp }
 
    TACBrTEFDResp = class
-   private
-     fAgencia : String;
-     fAgenciaDC : String;
-     fAutenticacao : String;
-     fArqBackup : String;
-     fBanco : String;
-     fCheque : String;
-     fChequeDC : String;
-     fCMC7 : String;
-     fCNFEnviado : Boolean;
-     fCodigoAutorizacaoTransacao : Integer;
-     fConta : String;
-     fContaDC : String;
-     fConteudo : TACBrTEFDArquivo;
-     fDataCheque : TDateTime;
-     fDataHoraTransacaoCancelada : TDateTime;
-     fDataHoraTransacaoComprovante : TDateTime;
-     fDataHoraTransacaoHost : TDateTime;
-     fDataHoraTransacaoLocal : TDateTime;
-     fDataPreDatado : TDateTime;
-     fDocumentoPessoa : String;
-     fFinalizacao : String;
-     fHeader : String;
-     fID : Integer;
-     fIndiceFPG_ECF : String;
-     fMoeda : Integer;
-     fNomeAdministradora : String;
-     fNSU : String;
-     fNSUTransacaoCancelada : String;
-     fNumeroLoteTransacao : Integer;
-     fOrdemPagamento : Integer;
-     fQtdLinhasComprovante : Integer;
-     fQtdParcelas : Integer;
-     fRede : String;
-     fStatusTransacao : String;
-     fTextoEspecialCliente : String;
-     fTextoEspecialOperador : String;
-     fTipoGP : TACBrTEFDTipo;
-     fTipoPessoa : AnsiChar;
-     fTipoTransacao : Integer;
-     fTrailer : String;
-     fValorTotal : Double;
-     fDocumentoVinculado : String;
-     fTipoParcelamento : Integer;
-     fParcelas : TACBrTEFDRespParcelas ;
-     fImagemComprovante : TStringList ;
+   protected
+     fpAgencia : String;
+     fpAgenciaDC : String;
+     fpAutenticacao : String;
+     fpArqBackup : String;
+     fpBanco : String;
+     fpCheque : String;
+     fpChequeDC : String;
+     fpCMC7 : String;
+     fpCNFEnviado : Boolean;
+     fpCodigoAutorizacaoTransacao : Integer;
+     fpConta : String;
+     fpContaDC : String;
+     fpConteudo : TACBrTEFDArquivo;
+     fpDataCheque : TDateTime;
+     fpDataHoraTransacaoCancelada : TDateTime;
+     fpDataHoraTransacaoComprovante : TDateTime;
+     fpDataHoraTransacaoHost : TDateTime;
+     fpDataHoraTransacaoLocal : TDateTime;
+     fpDataPreDatado : TDateTime;
+     fpDocumentoPessoa : String;
+     fpFinalizacao : String;
+     fpHeader : String;
+     fpID : Integer;
+     fpIndiceFPG_ECF : String;
+     fpMoeda : Integer;
+     fpNomeAdministradora : String;
+     fpNSU : String;
+     fpNSUTransacaoCancelada : String;
+     fpNumeroLoteTransacao : Integer;
+     fpOrdemPagamento : Integer;
+     fpQtdLinhasComprovante : Integer;
+     fpQtdParcelas : Integer;
+     fpRede : String;
+     fpStatusTransacao : String;
+     fpTextoEspecialCliente : String;
+     fpTextoEspecialOperador : String;
+     fpTipoGP : TACBrTEFDTipo;
+     fpTipoPessoa : AnsiChar;
+     fpTipoTransacao : Integer;
+     fpTrailer : String;
+     fpValorTotal : Double;
+     fpDocumentoVinculado : String;
+     fpTipoParcelamento : Integer;
+     fpParcelas : TACBrTEFDRespParcelas ;
+     fpImagemComprovante1aVia : TStringList ;
+     fpImagemComprovante2aVia : TStringList ;
 
-     procedure ConteudoToProperty;
-
-     function GetTrailerOK : Boolean;
-     function GetTransacaoAprovada : Boolean;
      procedure SetCNFEnviado(const AValue : Boolean);
      procedure SetIndiceFPG_ECF(const AValue : String);
      procedure SetArqBackup(const AValue : String);
      procedure SetOrdemPagamento(const AValue : Integer);
+   protected
+     function GetTransacaoAprovada : Boolean; virtual; abstract;
 
    public
      constructor Create ;
      destructor Destroy ; override;
 
      procedure Assign( Source : TACBrTEFDResp ) ;
+     procedure ConteudoToProperty; virtual;
 
      procedure Clear ;
      procedure LeArquivo( const NomeArquivo : String ) ;
      Function LeInformacao( const Identificacao : Integer;
         const Sequencia : Integer = 0 ) : TACBrTEFDLinhaInformacao ;
 
-     property Conteudo : TACBrTEFDArquivo read fConteudo ;
+     property Conteudo : TACBrTEFDArquivo read fpConteudo ;
 
-     property Header                      : String    read fHeader ;
-     property ID                          : Integer   read fID ;
-     property DocumentoVinculado          : String    read fDocumentoVinculado ;
-     property ValorTotal                  : Double    read fValorTotal ;
-     property Moeda                       : Integer   read fMoeda ;
-     property CMC7                        : String    read fCMC7 ;
-     property TipoPessoa                  : AnsiChar  read fTipoPessoa ;
-     property DocumentoPessoa             : String    read fDocumentoPessoa ;
-     property DataCheque                  : TDateTime read fDataCheque ;
-     property Rede                        : String    read fRede ;
-     property NSU                         : String    read fNSU ;
-     property Finalizacao                 : String    read fFinalizacao ;
-     property StatusTransacao             : String    read fStatusTransacao ;
+     property Header                      : String    read fpHeader ;
+     property ID                          : Integer   read fpID ;
+     property DocumentoVinculado          : String    read fpDocumentoVinculado ;
+     property ValorTotal                  : Double    read fpValorTotal ;
+     property Moeda                       : Integer   read fpMoeda ;
+     property CMC7                        : String    read fpCMC7 ;
+     property TipoPessoa                  : AnsiChar  read fpTipoPessoa ;
+     property DocumentoPessoa             : String    read fpDocumentoPessoa ;
+     property DataCheque                  : TDateTime read fpDataCheque ;
+     property Rede                        : String    read fpRede ;
+     property NSU                         : String    read fpNSU ;
+     property Finalizacao                 : String    read fpFinalizacao ;
+     property StatusTransacao             : String    read fpStatusTransacao ;
      property TransacaoAprovada           : Boolean   read GetTransacaoAprovada ;
-     property TipoTransacao               : Integer   read fTipoTransacao ;
-     property CodigoAutorizacaoTransacao  : Integer   read fCodigoAutorizacaoTransacao ;
-     property NumeroLoteTransacao         : Integer   read fNumeroLoteTransacao ;
-     property DataHoraTransacaoHost       : TDateTime read fDataHoraTransacaoHost ;
-     property DataHoraTransacaoLocal      : TDateTime read fDataHoraTransacaoLocal ;
-     property TipoParcelamento            : Integer   read fTipoParcelamento ;
-     property QtdParcelas                 : Integer   read fQtdParcelas ;
-     property DataPreDatado               : TDateTime read fDataPreDatado ;
-     property NSUTransacaoCancelada       : String    read fNSUTransacaoCancelada ;
-     property DataHoraTransacaoCancelada  : TDateTime read fDataHoraTransacaoCancelada ;
-     property QtdLinhasComprovante        : Integer   read fQtdLinhasComprovante ;
-     property TextoEspecialOperador       : String    read fTextoEspecialOperador ;
-     property TextoEspecialCliente        : String    read fTextoEspecialCliente ;
-     property Autenticacao                : String    read fAutenticacao ;
-     property Banco                       : String    read fBanco ;
-     property Agencia                     : String    read fAgencia ;
-     property AgenciaDC                   : String    read fAgenciaDC ;
-     property Conta                       : String    read fConta ;
-     property ContaDC                     : String    read fContaDC ;
-     property Cheque                      : String    read fCheque ;
-     property ChequeDC                    : String    read fChequeDC ;
-     property NomeAdministradora          : String    read fNomeAdministradora ;
-     property DataHoraTransacaoComprovante: TDateTime read fDataHoraTransacaoComprovante ;
-     property Trailer   : String  read fTrailer ;
-     property TrailerOk : Boolean read GetTrailerOK ;
+     property TipoTransacao               : Integer   read fpTipoTransacao ;
+     property CodigoAutorizacaoTransacao  : Integer   read fpCodigoAutorizacaoTransacao ;
+     property NumeroLoteTransacao         : Integer   read fpNumeroLoteTransacao ;
+     property DataHoraTransacaoHost       : TDateTime read fpDataHoraTransacaoHost ;
+     property DataHoraTransacaoLocal      : TDateTime read fpDataHoraTransacaoLocal ;
+     property TipoParcelamento            : Integer   read fpTipoParcelamento ;
+     property QtdParcelas                 : Integer   read fpQtdParcelas ;
+     property DataPreDatado               : TDateTime read fpDataPreDatado ;
+     property NSUTransacaoCancelada       : String    read fpNSUTransacaoCancelada ;
+     property DataHoraTransacaoCancelada  : TDateTime read fpDataHoraTransacaoCancelada ;
+     property QtdLinhasComprovante        : Integer   read fpQtdLinhasComprovante ;
+     property TextoEspecialOperador       : String    read fpTextoEspecialOperador ;
+     property TextoEspecialCliente        : String    read fpTextoEspecialCliente ;
+     property Autenticacao                : String    read fpAutenticacao ;
+     property Banco                       : String    read fpBanco ;
+     property Agencia                     : String    read fpAgencia ;
+     property AgenciaDC                   : String    read fpAgenciaDC ;
+     property Conta                       : String    read fpConta ;
+     property ContaDC                     : String    read fpContaDC ;
+     property Cheque                      : String    read fpCheque ;
+     property ChequeDC                    : String    read fpChequeDC ;
+     property NomeAdministradora          : String    read fpNomeAdministradora ;
+     property DataHoraTransacaoComprovante: TDateTime read fpDataHoraTransacaoComprovante ;
+     property Trailer                     : String    read fpTrailer ;
 
-     property Parcelas          : TACBrTEFDRespParcelas read fParcelas ;
-     property ImagemComprovante : TStringList           read fImagemComprovante ;
+     property Parcelas : TACBrTEFDRespParcelas read fpParcelas ;
 
-     property ArqBackup      : String  read fArqBackup       write SetArqBackup ;
-     property TipoGP : TACBrTEFDTipo   read fTipoGP          write fTipoGP ;
+     property ImagemComprovante1aVia : TStringList read fpImagemComprovante1aVia ;
+     property ImagemComprovante2aVia : TStringList read fpImagemComprovante2aVia ;
 
-     property IndiceFPG_ECF  : String  read fIndiceFPG_ECF   write SetIndiceFPG_ECF ;
-     property CNFEnviado     : Boolean read fCNFEnviado      write SetCNFEnviado ;
-     property OrdemPagamento : Integer read fOrdemPagamento  write SetOrdemPagamento ;
+     property ArqBackup      : String  read fpArqBackup       write SetArqBackup ;
+     property TipoGP : TACBrTEFDTipo   read fpTipoGP          write fpTipoGP ;
+
+     property IndiceFPG_ECF  : String  read fpIndiceFPG_ECF   write SetIndiceFPG_ECF ;
+     property CNFEnviado     : Boolean read fpCNFEnviado      write SetCNFEnviado ;
+     property OrdemPagamento : Integer read fpOrdemPagamento  write SetOrdemPagamento ;
    end;
 
-   { TACBrTEFDRespostaPendente }
+   { TACBrTEFDRespTXT }
 
-   TACBrTEFDRespostaPendente = class(TObjectList)
+   TACBrTEFDRespTXT = class( TACBrTEFDResp )
    private
-      fArqBackup : String;
-      fCNFEnviado : Boolean;
-      fDocumentoVinculado : String;
-      fFinalizacao : String;
-      fImagemComprovante1aVia : TStringList;
-      fImagemComprovante2aVia : TStringList;
-      fIndiceFPG_ECF : String;
-      fNSU : String;
-      fOrdemPagamento : Integer;
-      fRede : String;
-      fTextoEspecialCliente : String;
-      fTextoEspecialOperador : String;
-      fTipoGP : TACBrTEFDTipo;
-      fValorTotal : Double;
+     function GetTrailerOK : Boolean;
+   protected
+     function GetTransacaoAprovada : Boolean; override;
    public
-     constructor Create ;
-     destructor Destroy ; override;
-
-     property Rede               : String  read fRede ;
-     property NSU                : String  read fNSU ;
-     property Finalizacao        : String  read fFinalizacao ;
-     property DocumentoVinculado : String  read fDocumentoVinculado
-        write fDocumentoVinculado ;
-     property ValorTotal         : Double  read fValorTotal write fValorTotal;
-
-     property TextoEspecialOperador : String read fTextoEspecialOperador ;
-     property TextoEspecialCliente  : String read fTextoEspecialCliente ;
-
-     property ImagemComprovante1aVia : TStringList read fImagemComprovante1aVia ;
-     property ImagemComprovante2aVia : TStringList read fImagemComprovante2aVia ;
-
-     property ArqBackup      : String        read fArqBackup      write fArqBackup;
-     property IndiceFPG_ECF  : String        read fIndiceFPG_ECF  write fIndiceFPG_ECF;
-     property OrdemPagamento : Integer       read fOrdemPagamento write fOrdemPagamento;
-     property TipoGP         : TACBrTEFDTipo read fTipoGP         write fTipoGP;
-     property CNFEnviado     : Boolean       read fCNFEnviado     write fCNFEnviado ;
-
-     procedure Assign( AResp : TACBrTEFDResp ) ;
-   end ;
+     procedure ConteudoToProperty; override;
+     property TrailerOk : Boolean read GetTrailerOK ;
+   end;
 
    { TACBrTEFDRespostasPendentes }
 
@@ -508,12 +484,12 @@ type
       function GetSaldoRestante : Double;
       function GetTotalPago : Double;
    protected
-      procedure SetObject (Index: Integer; Item: TACBrTEFDRespostaPendente);
-      function GetObject (Index: Integer): TACBrTEFDRespostaPendente;
+      procedure SetObject (Index: Integer; Item: TACBrTEFDResp);
+      function GetObject (Index: Integer): TACBrTEFDResp;
    public
-      function Add (Obj: TACBrTEFDRespostaPendente): Integer;
-      procedure Insert (Index: Integer; Obj: TACBrTEFDRespostaPendente);
-      property Objects [Index: Integer]: TACBrTEFDRespostaPendente
+      function Add (Obj: TACBrTEFDResp): Integer;
+      procedure Insert (Index: Integer; Obj: TACBrTEFDResp);
+      property Objects [Index: Integer]: TACBrTEFDResp
         read GetObject write SetObject; default;
       property SaldoAPagar   : Double read fSaldoAPagar write fSaldoAPagar ;
       property TotalPago     : Double read GetTotalPago ;
@@ -564,8 +540,7 @@ type
      Procedure LerRespostaRequisicao ; virtual;
      procedure FinalizarResposta( ApagarArqResp : Boolean ) ; virtual;
 
-     Function CopiarResposta( AdicionaEmRespostasPendentes : Boolean )
-        : String ; virtual;
+     Function CopiarResposta : String ; virtual;
 
      procedure ProcessarResposta ; virtual;
      procedure ProcessarRespostaPagamento(const SaldoAPagar : Double;
@@ -659,8 +634,12 @@ type
          read GetObject write SetObject; default;
      end;
 
+   { TACBrTEFDClassTXT }
+
    TACBrTEFDClassTXT = class( TACBrTEFDClass )
    published
+     constructor Create( AOwner : TComponent ) ; override;
+
      property AutoAtivarGP ;
 
      property NumVias;
@@ -676,7 +655,7 @@ type
 
 implementation
 
-Uses ACBrUtil, ACBrTEFD, dateutils, StrUtils, Math;
+Uses ACBrUtil, ACBrTEFD, dateutils, StrUtils, Math, ACBrTEFDCliSiTef;
 
 { TACBrTEFDLinhaInformacao }
 
@@ -738,6 +717,24 @@ begin
   end;
 end;
 
+function TACBrTEFDLinhaInformacao.GetAsTimeStampSQL : TDateTime;
+var
+   DateTimeStr : String;
+begin
+  DateTimeStr := OnlyNumber(Trim(fInformacao)) ;
+
+  try
+     Result := EncodeDateTime( StrToInt(copy(DateTimeStr,1,4)),
+                               StrToInt(copy(DateTimeStr,5,2)),
+                               StrToInt(copy(DateTimeStr,7,2)),
+                               StrToInt(copy(DateTimeStr,9,2)),
+                               StrToInt(copy(DateTimeStr,11,2)),
+                               StrToInt(copy(DateTimeStr,13,2)), 0) ;
+  except
+     Result := 0 ;
+  end;
+end;
+
 procedure TACBrTEFDLinhaInformacao.SetAsDate(const AValue : TDateTime);
 begin
   if AValue = 0 then
@@ -776,6 +773,14 @@ begin
      fInformacao := ''
   else
      fInformacao := FormatDateTime('DDMMHHNNSS',AValue)
+end;
+
+procedure TACBrTEFDLinhaInformacao.SetAsTimeStampSQL(const AValue : TDateTime);
+begin
+  if AValue = 0 then
+     fInformacao := ''
+  else
+     fInformacao := FormatDateTime('YYYYMMDDHHNNSS',AValue)
 end;
 
 
@@ -883,12 +888,12 @@ begin
      ALinha.Informacao.AsString := Informacao ;
 
      I := AchaLinha(Identificacao, Sequencia) ;
-     if I < 0 then
-        fStringList.Add(ALinha.Linha)
-     else
-        fStringList[I] := ALinha.Linha ;
+     if I > 0 then
+        fStringList.Delete(I);  // Remove o Antigo
+
+     fStringList.Add( ALinha.Linha ) ;
   finally
-    ALinha.Free ;
+     ALinha.Free ;
   end;
 end;
 
@@ -1120,18 +1125,22 @@ constructor TACBrTEFDResp.Create ;
 begin
   inherited Create ;
 
-  fConteudo := TACBrTEFDArquivo.Create;
-  fParcelas := TACBrTEFDRespParcelas.create(True) ;
-  fImagemComprovante := TStringList.Create;
+  fpConteudo := TACBrTEFDArquivo.Create;
+  fpParcelas := TACBrTEFDRespParcelas.create(True) ;
+
+  fpImagemComprovante1aVia := TStringList.Create;
+  fpImagemComprovante2aVia := TStringList.Create;
 
   Clear ;
 end;
 
 destructor TACBrTEFDResp.Destroy;
 begin
-  fConteudo.Free;
-  fParcelas.Free ;
-  fImagemComprovante.Free ;
+  fpConteudo.Free;
+  fpParcelas.Free ;
+
+  fpImagemComprovante1aVia.Free ;
+  fpImagemComprovante2aVia.Free ;
 
   inherited ;
 end;
@@ -1146,55 +1155,61 @@ begin
   TipoGP    := Source.TipoGP;    { TipoGP não é salva em Conteudo (memory only) }
 end;
 
+procedure TACBrTEFDResp.ConteudoToProperty;
+begin
+   {}
+end;
+
 procedure TACBrTEFDResp.Clear;
 begin
-   fConteudo.Clear;
-   fParcelas.Clear;
-   fImagemComprovante.Clear;
+   fpConteudo.Clear;
+   fpParcelas.Clear;
+   fpImagemComprovante1aVia.Clear;
+   fpImagemComprovante2aVia.Clear;
 
-   fHeader                       := '' ;
-   fID                           := 0 ;
-   fAgencia                      := '' ;
-   fAgenciaDC                    := '';
-   fAutenticacao                 := '';
-   fBanco                        := '' ;
-   fCheque                       := '' ;
-   fChequeDC                     := '' ;
-   fCMC7                         := '' ;
-   fCodigoAutorizacaoTransacao   := 0 ;
-   fConta                        := '' ;
-   fContaDC                      := '' ;
-   fDataCheque                   := 0 ;
-   fDataHoraTransacaoCancelada   := 0 ;
-   fDataHoraTransacaoComprovante := 0 ;
-   fDataHoraTransacaoHost        := 0 ;
-   fDataHoraTransacaoLocal       := 0 ;
-   fDataPreDatado                := 0 ;
-   fDocumentoPessoa              := '' ;
-   fFinalizacao                  := '' ;
-   fMoeda                        := 0 ;
-   fNomeAdministradora           := '' ;
-   fNSU                          := '' ;
-   fNSUTransacaoCancelada        := '' ;
-   fNumeroLoteTransacao          := 0 ;
-   fQtdLinhasComprovante         := 0 ;
-   fQtdParcelas                  := 0 ;
-   fRede                         := '' ;
-   fStatusTransacao              := '' ;
-   fTextoEspecialCliente         := '' ;
-   fTextoEspecialOperador        := '' ;
-   fTipoPessoa                   := ' ';
-   fTipoTransacao                := 0 ;
-   fTrailer                      := '' ;
-   fValorTotal                   := 0 ;
-   fDocumentoVinculado           := '' ;
-   fTipoParcelamento             := 0 ;
+   fpHeader                       := '' ;
+   fpID                           := 0 ;
+   fpAgencia                      := '' ;
+   fpAgenciaDC                    := '';
+   fpAutenticacao                 := '';
+   fpBanco                        := '' ;
+   fpCheque                       := '' ;
+   fpChequeDC                     := '' ;
+   fpCMC7                         := '' ;
+   fpCodigoAutorizacaoTransacao   := 0 ;
+   fpConta                        := '' ;
+   fpContaDC                      := '' ;
+   fpDataCheque                   := 0 ;
+   fpDataHoraTransacaoCancelada   := 0 ;
+   fpDataHoraTransacaoComprovante := 0 ;
+   fpDataHoraTransacaoHost        := 0 ;
+   fpDataHoraTransacaoLocal       := 0 ;
+   fpDataPreDatado                := 0 ;
+   fpDocumentoPessoa              := '' ;
+   fpFinalizacao                  := '' ;
+   fpMoeda                        := 0 ;
+   fpNomeAdministradora           := '' ;
+   fpNSU                          := '' ;
+   fpNSUTransacaoCancelada        := '' ;
+   fpNumeroLoteTransacao          := 0 ;
+   fpQtdLinhasComprovante         := 0 ;
+   fpQtdParcelas                  := 0 ;
+   fpRede                         := '' ;
+   fpStatusTransacao              := '' ;
+   fpTextoEspecialCliente         := '' ;
+   fpTextoEspecialOperador        := '' ;
+   fpTipoPessoa                   := ' ';
+   fpTipoTransacao                := 0 ;
+   fpTrailer                      := '' ;
+   fpValorTotal                   := 0 ;
+   fpDocumentoVinculado           := '' ;
+   fpTipoParcelamento             := 0 ;
 
-   fCNFEnviado     := False ;
-   fIndiceFPG_ECF  := '' ;
-   fOrdemPagamento := 0 ;
+   fpCNFEnviado     := False ;
+   fpIndiceFPG_ECF  := '' ;
+   fpOrdemPagamento := 0 ;
 
-   fArqBackup := '' ;
+   fpArqBackup := '' ;
 end;
 
 procedure TACBrTEFDResp.LeArquivo(const NomeArquivo : String);
@@ -1205,49 +1220,81 @@ begin
   ConteudoToProperty;
 end;
 
-procedure TACBrTEFDResp.ConteudoToProperty;
+procedure TACBrTEFDResp.SetCNFEnviado(const AValue : Boolean);
+begin
+  fpConteudo.GravaInformacao(899,1,IfThen(AValue,'S','N'));
+  fpCNFEnviado := AValue;
+end;
+
+procedure TACBrTEFDResp.SetIndiceFPG_ECF(const AValue : String);
+begin
+  fpConteudo.GravaInformacao(899,2,AValue);
+  fpIndiceFPG_ECF := AValue;
+end;
+
+procedure TACBrTEFDResp.SetArqBackup(const AValue : String);
+begin
+  fpArqBackup := Trim( AValue );
+end;
+
+procedure TACBrTEFDResp.SetOrdemPagamento(const AValue : Integer);
+begin
+  fpConteudo.GravaInformacao(899,3,IntToStr(AValue));
+  fpOrdemPagamento := AValue;
+end;
+
+function TACBrTEFDResp.LeInformacao(const Identificacao : Integer;
+   const Sequencia : Integer) : TACBrTEFDLinhaInformacao;
+begin
+   Result := Conteudo.LeInformacao(Identificacao,Sequencia);
+end;
+
+{ TACBrTEFDRespTXT }
+
+procedure TACBrTEFDRespTXT.ConteudoToProperty;
 var
    Linha : TACBrTEFDLinha ;
    I     : Integer;
    Parc  : TACBrTEFDRespParcela;
    LinStr: AnsiString ;
 begin
-   fDataHoraTransacaoComprovante := 0 ;
-   fImagemComprovante.Clear;
+   fpDataHoraTransacaoComprovante := 0 ;
+   fpImagemComprovante1aVia.Clear;
+   fpImagemComprovante2aVia.Clear;
 
    for I := 0 to Conteudo.Count - 1 do
    begin
      Linha := Conteudo.Linha[I];
 
      case Linha.Identificacao of
-       0   : fHeader                     := Linha.Informacao.AsString;
-       1   : fID                         := Linha.Informacao.AsInteger;
-       2   : fDocumentoVinculado         := Linha.Informacao.AsString;
-       3   : fValorTotal                 := Linha.Informacao.AsFloat;
-       4   : fMoeda                      := Linha.Informacao.AsInteger;
-       5   : fCMC7                       := Linha.Informacao.AsString;
-       6   : fTipoPessoa                 := padL(Linha.Informacao.AsString, 1 )[ 1 ];
-       7   : fDocumentoPessoa            := Linha.Informacao.AsString;
-       8   : fDataCheque                 := Linha.Informacao.AsDate;
-       9   : fStatusTransacao            := Linha.Informacao.AsString;
-       10  : fRede                       := Linha.Informacao.AsString;
-       11  : fTipoTransacao              := Linha.Informacao.AsInteger;
-       12  : fNSU                        := Linha.Informacao.AsString;
-       13  : fCodigoAutorizacaoTransacao := Linha.Informacao.AsInteger;
-       14  : fNumeroLoteTransacao        := Linha.Informacao.AsInteger;
-       15  : fDataHoraTransacaoHost      := Linha.Informacao.AsTimeStamp;
-       16  : fDataHoraTransacaoLocal     := Linha.Informacao.AsTimeStamp;
-       17  : fTipoParcelamento           := Linha.Informacao.AsInteger;
-       18  : fQtdParcelas                := Linha.Informacao.AsInteger;
-       22  : fDataHoraTransacaoComprovante := fDataHoraTransacaoComprovante +
-                                              Linha.Informacao.AsDate;
-       23  : fDataHoraTransacaoComprovante := fDataHoraTransacaoComprovante +
+       0   : fpHeader                     := Linha.Informacao.AsString;
+       1   : fpID                         := Linha.Informacao.AsInteger;
+       2   : fpDocumentoVinculado         := Linha.Informacao.AsString;
+       3   : fpValorTotal                 := Linha.Informacao.AsFloat;
+       4   : fpMoeda                      := Linha.Informacao.AsInteger;
+       5   : fpCMC7                       := Linha.Informacao.AsString;
+       6   : fpTipoPessoa                 := padL(Linha.Informacao.AsString, 1 )[ 1 ];
+       7   : fpDocumentoPessoa            := Linha.Informacao.AsString;
+       8   : fpDataCheque                 := Linha.Informacao.AsDate;
+       9   : fpStatusTransacao            := Linha.Informacao.AsString;
+       10  : fpRede                       := Linha.Informacao.AsString;
+       11  : fpTipoTransacao              := Linha.Informacao.AsInteger;
+       12  : fpNSU                        := Linha.Informacao.AsString;
+       13  : fpCodigoAutorizacaoTransacao := Linha.Informacao.AsInteger;
+       14  : fpNumeroLoteTransacao        := Linha.Informacao.AsInteger;
+       15  : fpDataHoraTransacaoHost      := Linha.Informacao.AsTimeStamp;
+       16  : fpDataHoraTransacaoLocal     := Linha.Informacao.AsTimeStamp;
+       17  : fpTipoParcelamento           := Linha.Informacao.AsInteger;
+       18  : fpQtdParcelas                := Linha.Informacao.AsInteger;
+       22  : fpDataHoraTransacaoComprovante := fpDataHoraTransacaoComprovante +
+                                               Linha.Informacao.AsDate;
+       23  : fpDataHoraTransacaoComprovante := fpDataHoraTransacaoComprovante +
                                               Linha.Informacao.AsTime;
-       24  : fDataPreDatado              := Linha.Informacao.AsDate;
-       25  : fNSUTransacaoCancelada      := Linha.Informacao.AsString;
-       26  : fDataHoraTransacaoCancelada := Linha.Informacao.AsTimeStamp;
-       27  : fFinalizacao                := Linha.Informacao.AsString;
-       28  : fQtdLinhasComprovante       := Linha.Informacao.AsInteger;
+       24  : fpDataPreDatado              := Linha.Informacao.AsDate;
+       25  : fpNSUTransacaoCancelada      := Linha.Informacao.AsString;
+       26  : fpDataHoraTransacaoCancelada := Linha.Informacao.AsTimeStamp;
+       27  : fpFinalizacao                := Linha.Informacao.AsString;
+       28  : fpQtdLinhasComprovante       := Linha.Informacao.AsInteger;
        29  :
          begin
            LinStr := Linha.Informacao.AsString ;
@@ -1256,82 +1303,57 @@ begin
            if RightStr(LinStr,1) = '"' then
               Delete(LinStr,Length(LinStr),1);
 
-           fImagemComprovante.Add( LinStr );
+           fpImagemComprovante1aVia.Add( LinStr );
          end ;
-       30  : fTextoEspecialOperador      := Linha.Informacao.AsString;
-       31  : fTextoEspecialCliente       := Linha.Informacao.AsString;
-       32  : fAutenticacao               := Linha.Informacao.AsString;
-       33  : fBanco                      := Linha.Informacao.AsString;
-       34  : fAgencia                    := Linha.Informacao.AsString;
-       35  : fAgenciaDC                  := Linha.Informacao.AsString;
-       36  : fConta                      := Linha.Informacao.AsString;
-       37  : fContaDC                    := Linha.Informacao.AsString;
-       38  : fCheque                     := Linha.Informacao.AsString;
-       39  : fChequeDC                   := Linha.Informacao.AsString;
-       40  : fNomeAdministradora         := Linha.Informacao.AsString;
+       30  : fpTextoEspecialOperador      := Linha.Informacao.AsString;
+       31  : fpTextoEspecialCliente       := Linha.Informacao.AsString;
+       32  : fpAutenticacao               := Linha.Informacao.AsString;
+       33  : fpBanco                      := Linha.Informacao.AsString;
+       34  : fpAgencia                    := Linha.Informacao.AsString;
+       35  : fpAgenciaDC                  := Linha.Informacao.AsString;
+       36  : fpConta                      := Linha.Informacao.AsString;
+       37  : fpContaDC                    := Linha.Informacao.AsString;
+       38  : fpCheque                     := Linha.Informacao.AsString;
+       39  : fpChequeDC                   := Linha.Informacao.AsString;
+       40  : fpNomeAdministradora         := Linha.Informacao.AsString;
        899 :  // Tipos de Uso Interno do ACBrTEFD
         begin
           case Linha.Sequencia of
-            1 : fCNFEnviado     := (UpperCase( Linha.Informacao.AsString ) = 'S' );
-            2 : fIndiceFPG_ECF  := Linha.Informacao.AsString ;
-            3 : fOrdemPagamento := Linha.Informacao.AsInteger ;
+            1 : fpCNFEnviado     := (UpperCase( Linha.Informacao.AsString ) = 'S' );
+            2 : fpIndiceFPG_ECF  := Linha.Informacao.AsString ;
+            3 : fpOrdemPagamento := Linha.Informacao.AsInteger ;
           end;
         end;
-       999 : fTrailer           := Linha.Informacao.AsString ;
+       999 : fpTrailer           := Linha.Informacao.AsString ;
      end;
    end ;
 
-   fParcelas.Clear;
-   for I := 1 to fQtdParcelas do
+   // TEF Discado, 1 a 2 via são iguais //
+   fpImagemComprovante2aVia.AddStrings( fpImagemComprovante1aVia );
+
+   fpParcelas.Clear;
+   for I := 1 to fpQtdParcelas do
    begin
       Parc := TACBrTEFDRespParcela.create;
       Parc.Vencimento := LeInformacao( 19 , I).AsDate ;
       Parc.Valor      := LeInformacao( 20 , I).AsFloat ;
       Parc.NSUParcela := LeInformacao( 21 , I).AsString ;
 
-      fParcelas.Add(Parc);
+      fpParcelas.Add(Parc);
    end;
 end;
 
-function TACBrTEFDResp.GetTrailerOK : Boolean;
+function TACBrTEFDRespTXT.GetTransacaoAprovada : Boolean;
 begin
-  Result :=  (fTrailer <> '') ;
+   Result := (StrToIntDef(Trim(fpStatusTransacao),-1) = 0) or
+             (UpperCase(Trim(fpStatusTransacao)) = 'P1') ;  // Consulta de Cheque
 end;
 
-function TACBrTEFDResp.GetTransacaoAprovada : Boolean;
+function TACBrTEFDRespTXT.GetTrailerOK : Boolean;
 begin
-   Result := (StrToIntDef(Trim(fStatusTransacao),-1) = 0) or
-             (UpperCase(Trim(fStatusTransacao)) = 'P1') ;  // Consulta de Cheque
+  Result :=  (fpTrailer <> '') ;
 end;
 
-procedure TACBrTEFDResp.SetCNFEnviado(const AValue : Boolean);
-begin
-  fConteudo.GravaInformacao(899,1,IfThen(AValue,'S','N'));
-  fCNFEnviado := AValue;
-end;
-
-procedure TACBrTEFDResp.SetIndiceFPG_ECF(const AValue : String);
-begin
-  fConteudo.GravaInformacao(899,2,AValue);
-  fIndiceFPG_ECF := AValue;
-end;
-
-procedure TACBrTEFDResp.SetArqBackup(const AValue : String);
-begin
-  fArqBackup := Trim( AValue );
-end;
-
-procedure TACBrTEFDResp.SetOrdemPagamento(const AValue : Integer);
-begin
-  fConteudo.GravaInformacao(899,3,IntToStr(AValue));
-  fOrdemPagamento := AValue;
-end;
-
-function TACBrTEFDResp.LeInformacao(const Identificacao : Integer;
-   const Sequencia : Integer) : TACBrTEFDLinhaInformacao;
-begin
-   Result := Conteudo.LeInformacao(Identificacao,Sequencia);
-end;
 
 { TACBrTEFDRespParcela }
 
@@ -1366,54 +1388,17 @@ begin
    inherited Insert(Index, Obj);
 end;
 
-{ TACBrTEFDRespostaPendente }
+{ TACBrTEFDClassTXT }
 
-constructor TACBrTEFDRespostaPendente.Create;
+constructor TACBrTEFDClassTXT.Create(AOwner : TComponent);
 begin
-   inherited create ;
+   inherited Create(AOwner);
 
-   fImagemComprovante1aVia := TStringList.Create;
-   fImagemComprovante2aVia := TStringList.Create;
+   if Assigned( fpResp ) then
+      fpResp.Free ;
 
-   fDocumentoVinculado    := '';
-   fFinalizacao           := '';
-   fIndiceFPG_ECF         := '';
-   fNSU                   := '';
-   fOrdemPagamento        := 0 ;
-   fRede                  := '';
-   fTextoEspecialCliente  := '';
-   fTextoEspecialOperador := '';
-   fTipoGP                := gpNenhum ;
-   fValorTotal            := 0 ;
-   fArqBackup             := '' ;
-   fCNFEnviado            := False ;
-end;
-
-destructor TACBrTEFDRespostaPendente.Destroy;
-begin
-   fImagemComprovante1aVia.Free ;
-   fImagemComprovante2aVia.Free ;
-
-   inherited Destroy;
-end;
-
-procedure TACBrTEFDRespostaPendente.Assign(AResp : TACBrTEFDResp);
-begin
-  fDocumentoVinculado    := AResp.DocumentoVinculado;
-  fFinalizacao           := AResp.Finalizacao;
-  fIndiceFPG_ECF         := AResp.IndiceFPG_ECF;
-  fNSU                   := AResp.NSU;
-  fOrdemPagamento        := AResp.OrdemPagamento;
-  fRede                  := AResp.Rede;
-  fTextoEspecialCliente  := AResp.TextoEspecialCliente;
-  fTextoEspecialOperador := AResp.TextoEspecialOperador;
-  fTipoGP                := AResp.TipoGP;
-  fValorTotal            := AResp.ValorTotal;
-  fArqBackup             := AResp.ArqBackup ;
-  fCNFEnviado            := AResp.CNFEnviado;
-
-  fImagemComprovante1aVia.AddStrings( AResp.ImagemComprovante );
-  fImagemComprovante2aVia.AddStrings( AResp.ImagemComprovante );
+   fpResp := TACBrTEFDRespTXT.Create;
+   fpResp.TipoGP := Tipo;
 end;
 
 { TACBrTEFDClass }
@@ -1437,9 +1422,8 @@ begin
 
   fEsperaSTS := CACBrTEFD_EsperaSTS ;
 
-  fpReq  := TACBrTEFDReq.Create;
   fpResp := TACBrTEFDResp.Create;
-  fpResp.TipoGP := Tipo;
+  fpReq  := TACBrTEFDReq.Create;
 
   TACBrTEFD(Owner).EstadoReq  := reqNenhum;
   TACBrTEFD(Owner).EstadoResp := respNenhum;
@@ -1580,9 +1564,9 @@ end;
 
 procedure TACBrTEFDClass.CNC;
 Var
-  OldResp : TACBrTEFDResp ;
+  OldResp : TACBrTEFDRespTXT ;
 begin
-  OldResp := TACBrTEFDResp.Create;
+  OldResp := TACBrTEFDRespTXT.Create;
   try
      OldResp.Assign(Resp);      { Salvando dados da Resposta Atual }
 
@@ -1790,9 +1774,10 @@ end;
 
 Function TACBrTEFDClass.VerificarRespostaRequisicao : Boolean ;
 begin
-  Result := (Resp.Header = Req.Header) and
-            (Resp.ID     = Req.ID)     and
-             Resp.TrailerOk ;
+  Result := True ;
+  if Resp is TACBrTEFDRespTXT then
+    with TACBrTEFDRespTXT( Resp ) do
+      Result := (Header = Req.Header) and (ID = Req.ID) and TrailerOk ;
 end;
 
 procedure TACBrTEFDClass.LerRespostaRequisicao;
@@ -1925,20 +1910,34 @@ begin
         I := 0 ;
         while (not JaCancelado) and (I < RespostasCanceladas.Count) do
         begin
-           with TACBrTEFDResp( RespostasCanceladas[I] ) do
-           begin
-              JaCancelado := (Resp.Rede        = Rede)        and
-                             (Resp.NSU         = NSU)         and
-                             (Resp.Finalizacao = Finalizacao) and
-                             (Resp.ValorTotal  = ValorTotal) ;
-           end;
+           if RespostasCanceladas[I] is TACBrTEFDRespTXT then
+            begin
+              with TACBrTEFDRespTXT( RespostasCanceladas[I] ) do
+              begin
+                 JaCancelado := (Resp.Rede        = Rede)        and
+                                (Resp.NSU         = NSU)         and
+                                (Resp.Finalizacao = Finalizacao) and
+                                (Resp.ValorTotal  = ValorTotal) ;
+              end;
+            end
+           else if RespostasCanceladas[I] is TACBrTEFDRespCliSiTef then
+            begin
+              with TACBrTEFDRespCliSiTef( RespostasCanceladas[I] ) do
+              begin
+                 JaCancelado := (Resp.DocumentoVinculado = DocumentoVinculado) ;
+              end;
+            end;
+
            Inc( I ) ;
         end;
 
         if not JaCancelado then
          begin
            { Ciando cópia da Resposta Atual }
-           RespostaCancela := TACBrTEFDResp.Create;
+           if Tipo = gpCliSiTef then
+              RespostaCancela := TACBrTEFDRespCliSiTef.Create
+           else
+              RespostaCancela := TACBrTEFDRespTXT.Create;
            RespostaCancela.Assign( Resp );
 
            { Enviando NCN ou CNC }
@@ -1981,7 +1980,7 @@ begin
   if Resp.QtdLinhasComprovante < 1 then
      exit ;
 
-  CopiarResposta( False );
+  CopiarResposta ;
 
   ImpressaoOk := False ;
   RemoverMsg  := False ;
@@ -2011,16 +2010,16 @@ begin
                  end;
 
                  TempoInicio := now ;
-                 if Resp.TextoEspecialOperador <> '' then
+                 if Self.Resp.TextoEspecialOperador <> '' then
                  begin
                     RemoverMsg := True ;
-                    DoExibeMsg( opmExibirMsgOperador, Resp.TextoEspecialOperador ) ;
+                    DoExibeMsg( opmExibirMsgOperador, Self.Resp.TextoEspecialOperador ) ;
                  end;
 
-                 if Resp.TextoEspecialCliente <> '' then
+                 if Self.Resp.TextoEspecialCliente <> '' then
                  begin
                     RemoverMsg := True ;
-                    DoExibeMsg( opmExibirMsgCliente, Resp.TextoEspecialCliente ) ;
+                    DoExibeMsg( opmExibirMsgCliente, Self.Resp.TextoEspecialCliente ) ;
                  end;
 
                  ComandarECF( opeAbreGerencial ) ;
@@ -2028,7 +2027,10 @@ begin
                  I := 1 ;
                  while I <= self.NumVias do
                  begin
-                    ECFImprimeVia( trGerencial, I, Resp.ImagemComprovante );
+                   if I = 1 then
+                      ECFImprimeVia( trGerencial, I, Self.Resp.ImagemComprovante1aVia  )
+                   else
+                      ECFImprimeVia( trGerencial, I, Self.Resp.ImagemComprovante2aVia  ) ;
 
                     if I < self.NumVias  then
                     begin
@@ -2096,14 +2098,12 @@ begin
   end;
 end;
 
-Function TACBrTEFDClass.CopiarResposta( AdicionaEmRespostasPendentes : Boolean )
-   : String;
+Function TACBrTEFDClass.CopiarResposta : String;
 Var
    I : Integer ;
-   RespPendente : TACBrTEFDRespostaPendente;
 begin
   Result := '' ;
-  VerificarIniciouRequisicao;
+//VerificarIniciouRequisicao;
 
   with TACBrTEFD(Owner) do
   begin
@@ -2116,15 +2116,6 @@ begin
 
      Resp.Conteudo.GravarArquivo( Result, True );   { True = DoFlushToDisk }
      Resp.ArqBackup := Result ;
-
-     if AdicionaEmRespostasPendentes then
-     begin
-        { Cria cópia do Objeto Resp, e salva no ObjectList "RespostasPendentes" }
-        RespPendente := TACBrTEFDRespostaPendente.Create ;
-        RespPendente.Assign( Resp );
-
-        RespostasPendentes.Add( RespPendente );
-     end;
   end;
 end;
 
@@ -2134,6 +2125,7 @@ var
   UltimaTransacao : Boolean ;
   ImpressaoOk : Boolean;
   ArqBack : String ;
+  RespostaPendente : TACBrTEFDRespTXT;
 begin
   UltimaTransacao := (Valor >= SaldoAPagar);
 
@@ -2167,7 +2159,12 @@ begin
        899 - 002 : IndiceFPG_ECF : String
        899 - 003 : OrdemPagamento : Integer
      }
-     ArqBack := CopiarResposta( True );     { True = Adiciona Resp em RespostasPendentes }
+     ArqBack := CopiarResposta ;
+
+     { Cria cópia do Objeto Resp, e salva no ObjectList "RespostasPendentes" }
+     RespostaPendente := TACBrTEFDRespTXT.Create ;
+     RespostaPendente.Assign( Resp );
+     RespostasPendentes.Add( RespostaPendente );
 
      if AutoEfetuarPagamento then
      begin
@@ -2178,7 +2175,7 @@ begin
            begin
               try
                  ECFPagamento( IndiceFPG_ECF, Valor );
-                 Self.Resp.OrdemPagamento := RespostasPendentes.Count + 1 ;
+                 RespostaPendente.OrdemPagamento := RespostasPendentes.Count + 1 ;
                  ImpressaoOk := True ;
               except
                  on EACBrTEFDECF do ImpressaoOk := False ;
@@ -2355,34 +2352,30 @@ var
 begin
   Result := 0 ;
   For I := 0 to Count-1 do
-    Result := Result + TACBrTEFDRespostaPendente(Items[I]).ValorTotal;
+    Result := Result + TACBrTEFDResp(Items[I]).ValorTotal;
 
   Result := RoundTo( Result, -2);
 end;
 
-procedure TACBrTEFDRespostasPendentes.SetObject(Index : Integer;
-   Item : TACBrTEFDRespostaPendente);
+procedure TACBrTEFDRespostasPendentes.SetObject(Index : Integer; Item : TACBrTEFDResp);
 begin
   inherited SetItem (Index, Item) ;
 end;
 
-function TACBrTEFDRespostasPendentes.GetObject(Index : Integer
-   ) : TACBrTEFDRespostaPendente;
+function TACBrTEFDRespostasPendentes.GetObject(Index : Integer ) : TACBrTEFDResp;
 begin
-   Result := inherited GetItem(Index) as TACBrTEFDRespostaPendente ;
+   Result := inherited GetItem(Index) as TACBrTEFDResp ;
 end;
 
-function TACBrTEFDRespostasPendentes.Add(Obj : TACBrTEFDRespostaPendente) : Integer;
+function TACBrTEFDRespostasPendentes.Add(Obj : TACBrTEFDResp) : Integer;
 begin
    Result := inherited Add(Obj) ;
 end;
 
-procedure TACBrTEFDRespostasPendentes.Insert(Index : Integer;
-   Obj : TACBrTEFDRespostaPendente);
+procedure TACBrTEFDRespostasPendentes.Insert(Index : Integer; Obj : TACBrTEFDResp);
 begin
   inherited Insert(Index, Obj);
 end;
 
 end.
-
 

@@ -47,6 +47,14 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.7a   22/12/09
+[*] Obteto Interno RespostasPendentes modificado novamente, para ser uma Lista
+    de Respostas de objetos "Resp", que possuem propriedades e métodos para
+    acessar os campos respondidos pelo G.P.
+[+] Adicionado o evento "OnDepoisConfirmarTransacoes", que é disparado após
+    a execução com sucesso de ConfirmarTransacoes
+    (Útil para ler os dados das Respostas do TEF, com o intuito de grava-las no BD)
+
 Versão 0.6a   20/12/09
 [*] Obteto Interno RespostasPendentes modificado para suportar CliSiTef
 [*] Rotinas ImprimirTransacoesPendentes, CancelarTransacoesPendentes e

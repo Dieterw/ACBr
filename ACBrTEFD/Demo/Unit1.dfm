@@ -275,7 +275,7 @@ object Form1: TForm1
             Width = 133
             Height = 21
             Style = csDropDownList
-            ItemHeight = 13
+            ItemHeight = 0
             TabOrder = 0
           end
           object bAtivarGP: TButton
@@ -885,8 +885,6 @@ object Form1: TForm1
     TEFCliSiTef.EnderecoIP = 'localhost'
     TEFCliSiTef.CodigoLoja = '00000000'
     TEFCliSiTef.NumeroTerminal = 'SE000001'
-    TEFCliSiTef.OperacaoCHQ = -1
-    TEFCliSiTef.OperacaoCNC = -1
     TEFCliSiTef.OnExibeMenu = CliSiTefExibeMenu
     TEFCliSiTef.OnObtemCampo = CliSiTefObtemCampo
     OnAguardaResp = ACBrTEFD1AguardaResp

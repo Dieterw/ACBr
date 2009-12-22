@@ -83,6 +83,7 @@ type
      fOnComandaECFAbreVinculado : TACBrTEFDComandaECFAbreVinculado;
      fOnComandaECFImprimeVia : TACBrTEFDComandaECFImprimeVia;
      fOnComandaECFPagamento : TACBrTEFDComandaECFPagamento;
+     fOnDepoisConfirmarTransacoes : TACBrTEFDDepoisConfirmarTransacoes;
      fOnExibeMsg : TACBrTEFDExibeMsg;
      fOnInfoECF : TACBrTEFDObterInfoECF;
      fOnLimpaTeclado : TACBrTEFDExecutaAcao;
@@ -239,6 +240,8 @@ type
      property OnInfoECF : TACBrTEFDObterInfoECF read fOnInfoECF write fOnInfoECF ;
      property OnAntesFinalizarRequisicao : TACBrTEFDAntesFinalizarReq
         read fOnAntesFinalizarRequisicao write fOnAntesFinalizarRequisicao ;
+     property OnDepoisConfirmarTransacoes : TACBrTEFDDepoisConfirmarTransacoes
+        read fOnDepoisConfirmarTransacoes write fOnDepoisConfirmarTransacoes ;
      property OnMudaEstadoReq  : TACBrTEFDMudaEstadoReq read fOnMudaEstadoReq
         write fOnMudaEstadoReq ;
      property OnMudaEstadoResp : TACBrTEFDMudaEstadoResp read fOnMudaEstadoResp
@@ -326,6 +329,7 @@ begin
 
   fOnAguardaResp              := nil ;
   fOnAntesFinalizarRequisicao := nil ;
+  fOnDepoisConfirmarTransacoes:= nil ;
   fOnAguardaResp              := nil ;
   fOnComandaECF               := nil ;
   fOnComandaECFPagamento      := nil ;
@@ -606,7 +610,7 @@ begin
         end;
 
         ApagaEVerifica( ArqResp );
-        ApagaEVerifica( ArqBackup );
+        ApagaEVerifica( RespostasPendentes[I].ArqBackup );
 
         Inc( I ) ;
       end;
@@ -614,6 +618,9 @@ begin
       { Exceção Muda... Fica em Loop até conseguir confirmar e apagar Backup }
     end;
   end ;
+
+  if Assigned( fOnDepoisConfirmarTransacoes ) then
+     fOnDepoisConfirmarTransacoes( RespostasPendentes );
 
   RespostasPendentes.Clear;
 end;
@@ -698,7 +705,7 @@ begin
                           NVias := 1 ;
 
                        I := 1 ;
-                       while I <= NVias do  // TODO: O correto seria a Resposta Pendente saber o numero de Vias
+                       while I <= NVias do
                        begin
                           if I = 1 then
                              ECFImprimeVia( trGerencial, I, ImagemComprovante1aVia  )

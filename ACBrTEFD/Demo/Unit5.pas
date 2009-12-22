@@ -11,7 +11,8 @@ uses
   {$IFDEF FPC}
     LResources, FileUtil, 
   {$ENDIF}
-   Forms, Controls, Graphics, Dialogs, StdCtrls, Buttons, ExtCtrls;
+   Forms, Controls, Graphics, Dialogs, StdCtrls, Buttons, ExtCtrls,
+  ACBrTEFDCliSiTef;
 
 type
 
@@ -30,6 +31,8 @@ type
     { private declarations }
   public
     { public declarations }
+    TipoCampo : Integer;
+    Operacao  : TACBrTEFDCliSiTefOperacaoCampo;
   end; 
 
 var

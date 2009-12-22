@@ -63,45 +63,16 @@ Const
 {$ENDIF}
 
 type
-  { TACBrTEFDLinha }
+  { TACBrTEFDRespCliSiTef }
 
-  { TACBrTEFDCliSiTefLinha }
-
-  TACBrTEFDCliSiTefLinha = class( TACBrTEFDLinha )
-  private
+  TACBrTEFDRespCliSiTef = class( TACBrTEFDResp )
   protected
-    property Sequencia ;
+    function GetTransacaoAprovada : Boolean; override;
   public
-    property Identificacao ;
-    property Informacao ;
-  end ;
-
-  { TACBrTEFDCliSiTefResp }
-
-  TACBrTEFDCliSiTefResp = class(TObjectList)
-    protected
-      procedure SetObject (Index: Integer; Item: TACBrTEFDCliSiTefLinha);
-      function GetObject (Index: Integer): TACBrTEFDCliSiTefLinha;
-
-      function AchaLinha(const Identificacao : Integer) : Integer;
-
-    public
-      function Add (Obj: TACBrTEFDCliSiTefLinha): Integer;
-      procedure Insert (Index: Integer; Obj: TACBrTEFDCliSiTefLinha);
-      property Objects [Index: Integer]: TACBrTEFDCliSiTefLinha
-         read GetObject write SetObject; default;
-
-      procedure GravaInformacao( const Identificacao : Integer;
-         const AInformacao : AnsiString ) ; overload;
-      procedure GravaInformacao( const Identificacao : Integer;
-         const Informacao : TACBrTEFDLinhaInformacao ) ; overload;
-      function LeInformacao( const Identificacao : Integer)
-         : TACBrTEFDLinhaInformacao ;
-
-      function LeLinha( const Identificacao : Integer) : TACBrTEFDCliSiTefLinha ;
-      Procedure LeStrings( AStringList : TStringList ) ;
-    end;
-
+    procedure ConteudoToProperty; override;
+    procedure GravaInformacao( const Identificacao : Integer;
+      const Informacao : AnsiString );
+  end;
 
   TACBrTEFDCliSiTefExibeMenu = procedure( Titulo : String; Opcoes : TStringList;
     var ItemSlecionado : Integer ) of object ;
@@ -129,7 +100,6 @@ type
       fOperacaoCRT : Integer;
       fOperador : String;
       fParametrosAdicionais : TStringList;
-      fRespCliSiTef : TACBrTEFDCliSiTefResp;
       fRestricoes : String;
       fDocumentosProcessados : String ;
 
@@ -171,17 +141,15 @@ type
    protected
      procedure SetNumVias(const AValue : Integer); override;
 
-     procedure VerificarIniciouRequisicao; override;
+     Function FazerRequisicao( Funcao : Integer; AHeader : String = '';
+        Valor : Double = 0; Documento : AnsiString = '';
+        ListaRestricoes : AnsiString = '') : Integer ;
+     Function ContinuarRequisicao( ImprimirComprovantes : Boolean ) : Integer ;
+
      procedure ProcessarRespostaPagamento(const SaldoAPagar : Double;
         const IndiceFPG : String; const Valor : Double);
 
-     Function FazerRequisicao( Funcao : Integer; Valor : Double = 0;
-        Documento : AnsiString = ''; ListaRestricoes : AnsiString = '') : Integer ;
-     Function ContinuarRequisicao( ImprimirComprovantes : Boolean ) : Integer ;
-
    public
-     property RespCliSiTef : TACBrTEFDCliSiTefResp read fRespCliSiTef ;
-
      constructor Create( AOwner : TComponent ) ; override;
      destructor Destroy ; override;
 
@@ -189,8 +157,6 @@ type
 
      procedure AtivarGP ; override;
      procedure VerificaAtivo ; override;
-
-     procedure CancelarTransacoesPendentesClass; override;
 
      procedure ATV ; override;
      procedure ADM ; override;
@@ -236,120 +202,90 @@ type
 
 implementation
 
-Uses ACBrUtil, dateutils, StrUtils, ACBrTEFD, Dialogs;
+Uses ACBrUtil, dateutils, StrUtils, ACBrTEFD, Dialogs, Math;
 
+{ TACBrTEFDRespCliSiTef }
 
-{ TACBrTEFDCliSiTefResp }
-
-procedure TACBrTEFDCliSiTefResp.SetObject(Index : Integer;
-   Item : TACBrTEFDCliSiTefLinha);
+function TACBrTEFDRespCliSiTef.GetTransacaoAprovada : Boolean;
 begin
-  inherited SetItem (Index, Item) ;
+   Result := True ;
 end;
 
-function TACBrTEFDCliSiTefResp.GetObject(Index : Integer ) : TACBrTEFDCliSiTefLinha;
+procedure TACBrTEFDRespCliSiTef.ConteudoToProperty;
+var
+   Linha : TACBrTEFDLinha ;
+   I     : Integer;
+   Parc  : TACBrTEFDRespParcela;
+   LinStr: AnsiString ;
 begin
-   Result := inherited GetItem(Index) as TACBrTEFDCliSiTefLinha ;
-end;
+// Conteudo.Conteudo.SaveToFile('c:\temp\conteudo.txt') ;
 
-function TACBrTEFDCliSiTefResp.AchaLinha(const Identificacao : Integer ) : Integer;
-Var
-  I : Integer;
-begin
-  Result := -1 ;
-  I      := 0 ;
-  while (Result < 0) and (I < self.Count) do
-  begin
-     if TACBrTEFDCliSiTefLinha(Items[I]).Identificacao = Identificacao then
-        Result := I;
-     Inc( I ) ;
-  end;
-end;
+   fpDataHoraTransacaoComprovante := 0 ;
+   fpImagemComprovante1aVia.Clear;
+   fpImagemComprovante2aVia.Clear;
 
-function TACBrTEFDCliSiTefResp.Add(Obj : TACBrTEFDCliSiTefLinha) : Integer;
-begin
-   Result := inherited Add(Obj) ;
-end;
-
-procedure TACBrTEFDCliSiTefResp.Insert(Index : Integer;
-   Obj : TACBrTEFDCliSiTefLinha);
-begin
-   inherited Insert(Index, Obj);
-end;
-
-procedure TACBrTEFDCliSiTefResp.GravaInformacao(const Identificacao : Integer;
-   const AInformacao : AnsiString);
-Var
-  I : Integer ;
-  ALinha : TACBrTEFDCliSiTefLinha ;
-begin
-//if AInformacao = '' then exit ;
-
-  I := AchaLinha( Identificacao ) ;
-
-  if I < 0 then
+   for I := 0 to Conteudo.Count - 1 do
    begin
-     ALinha := TACBrTEFDCliSiTefLinha.Create;
-     ALinha.Identificacao       := Identificacao ;
-     ALinha.Informacao.AsString := AInformacao ;
+     Linha := Conteudo.Linha[I];
 
-     self.Add( ALinha )
-   end
-  else
-   begin
-     with TACBrTEFDCliSiTefLinha(Items[I]) do
-     begin                              { 141 e 142 são Parcelas, e pode enviar várias }
-       if (Informacao.AsString = '') or ( not (Identificacao in [141,142]) ) then
-          Informacao.AsString := AInformacao
-       else
-          Informacao.AsString := Informacao.AsString + sLineBreak + AInformacao;
+     LinStr := StringToBinaryString( Linha.Informacao.AsString );
+
+     case Linha.Identificacao of
+       // TODO: Mapear mais propriedades do CliSiTef //
+       105 :
+         begin
+           fpDataHoraTransacaoComprovante  := Linha.Informacao.AsTimeStampSQL;
+           fpDataHoraTransacaoHost         := fpDataHoraTransacaoComprovante ;
+         end;
+       121 : fpImagemComprovante1aVia.Text := StringReplace( LinStr, #10, sLineBreak, [rfReplaceAll] );
+       122 : fpImagemComprovante2aVia.Text := StringReplace( LinStr, #10, sLineBreak, [rfReplaceAll] );
+       133 : fpCodigoAutorizacaoTransacao  := Linha.Informacao.AsInteger;
+       134 : fpNSU                         := LinStr;
+       501 : fpTipoPessoa                  := IfThen(Linha.Informacao.AsInteger = 0,'J','F')[1];
+       502 : fpDocumentoPessoa             := LinStr ;
+       505 : fpQtdParcelas                 := Linha.Informacao.AsInteger ;
+       899 :  // Tipos de Uso Interno do ACBrTEFD
+        begin
+          case Linha.Sequencia of
+              1 : fpCNFEnviado         := (UpperCase( Linha.Informacao.AsString ) = 'S' );
+              2 : fpIndiceFPG_ECF      := Linha.Informacao.AsString ;
+              3 : fpOrdemPagamento     := Linha.Informacao.AsInteger ;
+            100 : fpHeader             := LinStr;
+            101 : fpID                 := Linha.Informacao.AsInteger;
+            102 : fpDocumentoVinculado := LinStr;
+            103 : fpValorTotal         := Linha.Informacao.AsFloat;
+          end;
+        end;
      end;
-   end;
-end;
+   end ;
 
-procedure TACBrTEFDCliSiTefResp.GravaInformacao(const Identificacao : Integer;
-   const Informacao : TACBrTEFDLinhaInformacao);
-begin
-  GravaInformacao( Identificacao, Informacao.AsString );
-end;
-
-function TACBrTEFDCliSiTefResp.LeInformacao(const Identificacao : Integer
-   ) : TACBrTEFDLinhaInformacao;
-begin
-  Result := LeLinha(Identificacao).Informacao ;
-end;
-
-function TACBrTEFDCliSiTefResp.LeLinha(const Identificacao : Integer
-   ) : TACBrTEFDCliSiTefLinha;
-Var
-  I : Integer ;
-begin
-  I := AchaLinha(Identificacao) ;
-
-  if I > -1 then
-     Result := TACBrTEFDCliSiTefLinha(Items[I])
-  else
+   fpParcelas.Clear;
+   for I := 1 to fpQtdParcelas do
    begin
-     GravaInformacao( Identificacao, '' );
-     Result := TACBrTEFDCliSiTefLinha( Items[Count-1] );
+      Parc := TACBrTEFDRespParcela.create;
+      Parc.Vencimento := LeInformacao( 141, I).AsDate ;
+      Parc.Valor      := LeInformacao( 142, I).AsFloat ;
+
+      fpParcelas.Add(Parc);
    end;
 end;
 
-procedure TACBrTEFDCliSiTefResp.LeStrings(AStringList : TStringList);
+procedure TACBrTEFDRespCliSiTef.GravaInformacao(const Identificacao : Integer;
+   const Informacao : AnsiString);
 Var
-  I : Integer ;
-  AStr : String ;
+  Sequencia : Integer ;
 begin
-  AStringList.Clear;
+  Sequencia := 0 ;
 
-  For I := 0 to Count-1 do
+  if (Identificacao in [141,142]) then  // 141 - Data Parcela, 142 - Valor Parcela
   begin
-     AStr := TACBrTEFDCliSiTefLinha( Items[I] ).Linha ;
-     AStr := StringReplace( AStr, '-000', '', [rfReplaceAll] );
-     AStringList.Add( AStr );
-  end ;
+    Sequencia := 1 ;
+    while LeInformacao(Identificacao, Sequencia).AsString <> '' do
+       Inc( Sequencia ) ;
+  end;
 
-  AStringList.Sort;
+  fpConteudo.GravaInformacao( Identificacao, Sequencia,
+                              BinaryStringToString(Informacao) ); // Converte #10 para "\x0A"
 end;
 
 
@@ -384,7 +320,6 @@ begin
   fDocumentosProcessados := '' ;
 
   fParametrosAdicionais := TStringList.Create;
-  fRespCliSiTef         := TACBrTEFDCliSiTefResp.create(True);
 
   xConfiguraIntSiTefInterativoEx    := nil ;
   xIniciaFuncaoSiTefInterativo      := nil ;
@@ -393,12 +328,17 @@ begin
 
   fOnExibeMenu  := nil ;
   fOnObtemCampo := nil ;
+
+  if Assigned( fpResp ) then
+     fpResp.Free ;
+
+  fpResp := TACBrTEFDRespCliSiTef.Create;
+  fpResp.TipoGP := Tipo;
 end;
 
 destructor TACBrTEFDCliSiTef.Destroy;
 begin
    fParametrosAdicionais.Free ;
-   fRespCliSiTef.Free;
 
    inherited Destroy;
 end;
@@ -479,37 +419,11 @@ begin
    {Nada a Fazer}
 end;
 
-procedure TACBrTEFDCliSiTef.CancelarTransacoesPendentesClass;
-Var
-  ArqBack, Documento : String ;
-  SL : TStringList ;
-begin
-  ArqBack := TACBrTEFD(Owner).PathBackup + PathDelim + CACBrTEFD_CliSiTef_Backup ;
-
-  if not FileExists( ArqBack ) then
-     exit ;
-
-  SL := TStringList.Create;
-  try
-    SL.LoadFromFile( ArqBack );
-
-    if SL.Count > 0 then
-    begin
-       Documento := Trim( SL[0] ) ;
-       NCN('','','',0, Documento );
-    end;
-
-    DeleteFile( ArqBack );
-  finally
-    SL.Free ;
-  end;
-end;
-
 procedure TACBrTEFDCliSiTef.ATV;
 var
    Sts : Integer;
 begin
-  Sts := FazerRequisicao( fOperacaoATV ) ;
+  Sts := FazerRequisicao( fOperacaoATV, 'ATV' ) ;
 
   if Sts = 10000 then
      Sts := ContinuarRequisicao( True ) ;  { True = Imprimir Comprovantes agora }
@@ -522,7 +436,7 @@ procedure TACBrTEFDCliSiTef.ADM;
 var
    Sts : Integer;
 begin
-  Sts := FazerRequisicao( fOperacaoADM ) ;
+  Sts := FazerRequisicao( fOperacaoADM, 'ADM' ) ;
 
   if Sts = 10000 then
      Sts := ContinuarRequisicao( True ) ;  { True = Imprimir Comprovantes agora }
@@ -545,7 +459,7 @@ begin
   if Restr = '' then
      Restr := '[10]' ;     // 10 - Cheques
 
-  Sts := FazerRequisicao( fOperacaoCRT, Valor, DocumentoVinculado, Restr ) ;
+  Sts := FazerRequisicao( fOperacaoCRT, 'CRT', Valor, DocumentoVinculado, Restr ) ;
 
   if Sts = 10000 then
      Sts := ContinuarRequisicao( False ) ;  { False = NAO Imprimir Comprovantes agora }
@@ -573,7 +487,7 @@ begin
   if Restr = '' then
      Restr := '[15;25]' ;  // 15 - Cartão Credito; 25 - Cartao Debito
 
-  Sts := FazerRequisicao( fOperacaoCHQ, Valor, DocumentoVinculado, Restr ) ;
+  Sts := FazerRequisicao( fOperacaoCHQ, 'CHQ', Valor, DocumentoVinculado, Restr ) ;
 
   if Sts = 10000 then
      Sts := ContinuarRequisicao( False ) ;  { False = NAO Imprimir Comprovantes agora }
@@ -599,7 +513,7 @@ procedure TACBrTEFDCliSiTef.CNC(Rede, NSU : String;
 var
    Sts : Integer;
 begin
-  Sts := FazerRequisicao( fOperacaoCNC ) ;
+  Sts := FazerRequisicao( fOperacaoCNC, 'CNC' ) ;
 
   if Sts = 10000 then
      Sts := ContinuarRequisicao( True ) ;  { True = Imprimir Comprovantes agora }
@@ -617,33 +531,27 @@ begin
 end;
 
 Function TACBrTEFDCliSiTef.FazerRequisicao( Funcao : Integer;
-   Valor : Double = 0 ; Documento : AnsiString = '';
+   AHeader : String = ''; Valor : Double = 0; Documento : AnsiString = '';
    ListaRestricoes : AnsiString = '') : Integer ;
 Var
   ValorStr, DataStr, HoraStr : String;
+  ANow : TDateTime ;
 begin
-   Resp.Clear;
-   RespCliSiTef.Clear;
-   Req.Clear;
-
-   Req.DocumentoVinculado := Documento;
-   Req.ValorTotal         := Valor;
-   Req.DataHoraTransacaoComprovante := Now ;
-
    Result   := 0 ;
-   DataStr  := FormatDateTime('YYYYMMDD', Req.DataHoraTransacaoComprovante );
-   HoraStr  := FormatDateTime('HHNNSS', Req.DataHoraTransacaoComprovante );
+   ANow     := Now ;
+   DataStr  := FormatDateTime('YYYYMMDD', ANow );
+   HoraStr  := FormatDateTime('HHNNSS', ANow );
    ValorStr := StringReplace( FormatFloat( '0.00', Valor ),
                               DecimalSeparator, ',', [rfReplaceAll]) ;
    fDocumentosProcessados := '' ;
 
-   GravaLog( '*** IniciaFuncaoSiTefInterativo. Modalidade: '  +IntToStr(Funcao)+
-                                           ' Valor: '     +ValorStr+
-                                           ' Documento: ' +Documento+
-                                           ' Data: '      +DataStr+
-                                           ' Hora: '      +HoraStr+
-                                           ' Operador: '  +fOperador+
-                                           ' Restricoes: '+ListaRestricoes ) ;
+   GravaLog( '*** IniciaFuncaoSiTefInterativo. Modalidade: '+IntToStr(Funcao)+
+                                             ' Valor: '     +ValorStr+
+                                             ' Documento: ' +Documento+
+                                             ' Data: '      +DataStr+
+                                             ' Hora: '      +HoraStr+
+                                             ' Operador: '  +fOperador+
+                                             ' Restricoes: '+ListaRestricoes ) ;
 
    Result := xIniciaFuncaoSiTefInterativo( Funcao,
                                            PChar( ValorStr ),
@@ -651,12 +559,20 @@ begin
                                            PChar( DataStr ), PChar( HoraStr ),
                                            PChar( fOperador ),
                                            PChar( ListaRestricoes ) ) ;
-end;
 
-procedure TACBrTEFDCliSiTef.VerificarIniciouRequisicao;
-begin
-   if Req.DocumentoVinculado = '' then
-      raise EACBrTEFDErro.Create( ACBrStr( 'Nenhuma Requisição Iniciada' ) ) ;
+   { Adiciona Campos já conhecidos em Resp, para processa-los em
+     métodos que manipulam "RespostasPendentes" (usa códigos do G.P.)  }
+   Resp.Clear;
+
+   with TACBrTEFDRespCliSiTef( Resp ) do
+   begin
+     Conteudo.GravaInformacao(899,100, AHeader ) ;
+     Conteudo.GravaInformacao(899,101, IntToStr( SecondOfTheDay( ANow ) ) ) ;
+     Conteudo.GravaInformacao(899,102, Documento ) ;
+     Conteudo.GravaInformacao(899,103, IntToStr(Trunc(SimpleRoundTo( Valor * 100 ,0))) );
+
+     Resp.TipoGP := fpTipo;
+   end;
 end;
 
 Function TACBrTEFDCliSiTef.ContinuarRequisicao( ImprimirComprovantes : Boolean )
@@ -670,13 +586,12 @@ var
   Interromper, Digitado, GerencialAberto, ImpressaoOk : Boolean ;
   Est : AnsiChar;
 begin
-   Result         := 0;
-   ProximoComando := 0;
-   TipoCampo      := 0;
-   TamanhoMinimo  := 0;
-   TamanhoMaximo  := 0;
-   Continua       := 0;
-
+   Result           := 0;
+   ProximoComando   := 0;
+   TipoCampo        := 0;
+   TamanhoMinimo    := 0;
+   TamanhoMaximo    := 0;
+   Continua         := 0;
    Mensagem         := '' ;
    MensagemOperador := '' ;
    MensagemCliente  := '' ;
@@ -687,7 +602,8 @@ begin
    begin
       try
          repeat
-            GravaLog( 'ContinuaFuncaoSiTefInterativo, Chamando: Contina = '+IntToStr(Continua)+' Buffer = '+Resposta ) ;
+            GravaLog( 'ContinuaFuncaoSiTefInterativo, Chamando: Contina = '+
+                      IntToStr(Continua)+' Buffer = '+Resposta ) ;
 
             Result := xContinuaFuncaoSiTefInterativo( ProximoComando,
                                                       TipoCampo,
@@ -709,7 +625,7 @@ begin
               case ProximoComando of
                  0 :
                    begin
-                     RespCliSiTef.GravaInformacao( TipoCampo, Mensagem ) ;
+                     TACBrTEFDRespCliSiTef( Self.Resp ).GravaInformacao( TipoCampo, Mensagem ) ;
 
                      { Impressão de Gerencial, deve ser Sob demanda }
                      if ImprimirComprovantes and (TipoCampo in [121,122]) then
@@ -919,6 +835,9 @@ begin
 
         if TecladoBloqueado then
            BloquearMouseTeclado( False );
+
+        { Transafere valore de "Conteudo" para as propriedades }
+        TACBrTEFDRespCliSiTef( Self.Resp ).ConteudoToProperty ;
       end;
    end ;
 end;
@@ -974,39 +893,22 @@ procedure TACBrTEFDCliSiTef.ProcessarRespostaPagamento( const SaldoAPagar : Doub
 var
   UltimaTransacao : Boolean ;
   ImpressaoOk : Boolean;
-  RespostaPendente : TACBrTEFDRespostaPendente ;
+  RespostaPendente : TACBrTEFDResp ;
   Imagem : String;
 begin
-  VerificarIniciouRequisicao;
-
   UltimaTransacao := (Valor >= SaldoAPagar);
 
   with TACBrTEFD(Owner) do
   begin
-     RespostaPendente := TACBrTEFDRespostaPendente.Create;
-     with RespostaPendente do
-     begin
-        TipoGP             := self.Tipo;
-        DocumentoVinculado := Req.DocumentoVinculado;
-        ValorTotal         := Valor ;
-        IndiceFPG_ECF      := IndiceFPG;
-        ArqBackup          := PathBackup + PathDelim + CACBrTEFD_CliSiTef_Backup ;
-        Imagem := RespCliSiTef.LeInformacao(121).AsString;
-        if Imagem <> '' then
-           ImagemComprovante1aVia.Text := StringReplace( Imagem, #10, sLineBreak, [rfReplaceAll] );
+     Self.Resp.IndiceFPG_ECF := IndiceFPG;
 
-        Imagem := RespCliSiTef.LeInformacao(122).AsString;
-        if Imagem <> '' then
-           ImagemComprovante2aVia.Text := StringReplace( Imagem, #10, sLineBreak, [rfReplaceAll] );
-     end;
+     { Cria Arquivo de Backup, contendo Todas as Respostas }
+     CopiarResposta ;
+
+     { Cria cópia do Objeto Resp, e salva no ObjectList "RespostasPendentes" }
+     RespostaPendente := TACBrTEFDRespCliSiTef.Create ;
+     RespostaPendente.Assign( Resp );
      RespostasPendentes.Add( RespostaPendente );
-
-     { Gravando Documento na Lista de Documentos Pendentes }
-     if not FileExists( RespostaPendente.ArqBackup ) then
-     begin
-        WriteToTXT( RespostaPendente.ArqBackup, Req.DocumentoVinculado );
-        FlushToDisk( ExtractFileDrive( RespostaPendente.ArqBackup ) );
-     end;
 
      if AutoEfetuarPagamento then
      begin
@@ -1055,5 +957,4 @@ begin
 end;
 
 end.
-
 

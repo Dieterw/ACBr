@@ -6,9 +6,8 @@
     <General>
       <MainUnit Value="0"/>
       <TargetFileExt Value=".exe"/>
-      <Icon Value="0"/>
       <UseXPManifest Value="True"/>
-      <ActiveEditorIndexAtStart Value="1"/>
+      <ActiveEditorIndexAtStart Value="0"/>
     </General>
     <VersionInfo>
       <ProjectVersion Value=""/>
@@ -27,7 +26,7 @@
     </RunParams>
     <RequiredPackages Count="2">
       <Item1>
-        <PackageName Value="ACBr_SPEDFiscal"/>
+        <PackageName Value="ACBr_SPED"/>
       </Item1>
       <Item2>
         <PackageName Value="LCL"/>
@@ -47,9 +46,7 @@
         <UnitName Value="Unit1"/>
         <CursorPos X="42" Y="8"/>
         <TopLine Value="5"/>
-        <EditorIndex Value="0"/>
         <UsageCount Value="20"/>
-        <Loaded Value="True"/>
       </Unit1>
       <Unit2>
         <Filename Value="Frm_SPEDFiscal.pas"/>
@@ -60,7 +57,7 @@
         <UnitName Value="Frm_SPEDFiscal"/>
         <CursorPos X="31" Y="7"/>
         <TopLine Value="2"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="0"/>
         <UsageCount Value="20"/>
         <Loaded Value="True"/>
       </Unit2>
@@ -83,12 +80,10 @@
         <UnitName Value="ACBrBloco_9"/>
         <CursorPos X="50" Y="113"/>
         <TopLine Value="102"/>
-        <EditorIndex Value="2"/>
         <UsageCount Value="10"/>
-        <Loaded Value="True"/>
       </Unit5>
     </Units>
-    <JumpHistory Count="9" HistoryIndex="8">
+    <JumpHistory Count="5" HistoryIndex="4">
       <Position1>
         <Filename Value="Frm_SPEDFiscal.pas"/>
         <Caret Line="55" Column="1" TopLine="51"/>
@@ -109,22 +104,6 @@
         <Filename Value="Frm_SPEDFiscal.pas"/>
         <Caret Line="7" Column="31" TopLine="2"/>
       </Position5>
-      <Position6>
-        <Filename Value="..\ACBrBloco_9.pas"/>
-        <Caret Line="110" Column="27" TopLine="101"/>
-      </Position6>
-      <Position7>
-        <Filename Value="..\ACBrBloco_9.pas"/>
-        <Caret Line="113" Column="13" TopLine="101"/>
-      </Position7>
-      <Position8>
-        <Filename Value="..\ACBrBloco_9.pas"/>
-        <Caret Line="114" Column="34" TopLine="102"/>
-      </Position8>
-      <Position9>
-        <Filename Value="..\ACBrBloco_9.pas"/>
-        <Caret Line="113" Column="13" TopLine="101"/>
-      </Position9>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

@@ -7,7 +7,7 @@ uses
   cthreads,
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, Frm_SPEDFiscal, ACBr_SPEDFiscal, LResources;
+  Forms, Frm_SPEDFiscal, ACBr_SPED, LResources;
 
 {$IFDEF WINDOWS}{$R SPEDFiscal.rc}{$ENDIF}
 

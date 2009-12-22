@@ -55,7 +55,7 @@ uses
   {$ENDIF} ;
 
 const
-   CACBrTEFD_Versao      = '0.7a' ;
+   CACBrTEFD_Versao      = '0.8a' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -1701,7 +1701,7 @@ begin
   if AID > 0 then
      fpIDSeq := AID
   else
-     fpIDSeq := SecondOfTheDay(now) ;
+     fpIDSeq := fpIDSeq + 1 ;
 
   Req.Header := AHeader;
   Req.ID     := fpIDSeq;
@@ -2206,12 +2206,9 @@ begin
         self.CNF;
 
         { Atualizando Arquivo de Backup com a Informacao de que o CNF já foi enviado }
+        RespostaPendente.CNFEnviado := True ;
         if ArqBack <> '' then
-        begin
-           Resp.LeArquivo( ArqBack );
-           Resp.CNFEnviado := True ;
-           Resp.Conteudo.GravarArquivo( ArqBack, True ) ;   { True = DoFlushToDisk }
-        end;
+           RespostaPendente.Conteudo.GravarArquivo( ArqBack, True ) ;   { True = DoFlushToDisk }
 
         FinalizarResposta( True );     { True = Apaga Arquivo de Resposta }
       end

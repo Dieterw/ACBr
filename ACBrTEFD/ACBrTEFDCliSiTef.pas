@@ -566,8 +566,9 @@ begin
 
    with TACBrTEFDRespCliSiTef( Resp ) do
    begin
+     fpIDSeq := fpIDSeq + 1 ;
      Conteudo.GravaInformacao(899,100, AHeader ) ;
-     Conteudo.GravaInformacao(899,101, IntToStr( SecondOfTheDay( ANow ) ) ) ;
+     Conteudo.GravaInformacao(899,101, IntToStr(fpIDSeq) ) ;
      Conteudo.GravaInformacao(899,102, Documento ) ;
      Conteudo.GravaInformacao(899,103, IntToStr(Trunc(SimpleRoundTo( Valor * 100 ,0))) );
 

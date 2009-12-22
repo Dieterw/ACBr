@@ -8,7 +8,7 @@
       <TargetFileExt Value=".exe"/>
       <Icon Value="0"/>
       <UseXPManifest Value="True"/>
-      <ActiveEditorIndexAtStart Value="0"/>
+      <ActiveEditorIndexAtStart Value="2"/>
     </General>
     <VersionInfo>
       <ProjectVersion Value=""/>
@@ -43,7 +43,7 @@
         <Filename Value="TEFDDemo.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="TEFDDemo"/>
-        <CursorPos X="28" Y="19"/>
+        <CursorPos X="57" Y="13"/>
         <TopLine Value="1"/>
         <UsageCount Value="206"/>
       </Unit0>
@@ -53,8 +53,8 @@
         <ComponentName Value="Form1"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Unit1"/>
-        <CursorPos X="1" Y="764"/>
-        <TopLine Value="753"/>
+        <CursorPos X="27" Y="644"/>
+        <TopLine Value="620"/>
         <EditorIndex Value="0"/>
         <UsageCount Value="206"/>
         <Loaded Value="True"/>
@@ -205,26 +205,33 @@
       <Unit20>
         <Filename Value="..\ACBrTEFDClass.pas"/>
         <UnitName Value="ACBrTEFDClass"/>
-        <CursorPos X="1" Y="2381"/>
-        <TopLine Value="2351"/>
-        <UsageCount Value="92"/>
+        <CursorPos X="32" Y="58"/>
+        <TopLine Value="37"/>
+        <EditorIndex Value="2"/>
+        <UsageCount Value="93"/>
+        <Loaded Value="True"/>
       </Unit20>
       <Unit21>
         <Filename Value="..\ACBrTEFD.pas"/>
         <UnitName Value="ACBrTEFD"/>
-        <CursorPos X="1" Y="1331"/>
-        <TopLine Value="1292"/>
-        <UsageCount Value="92"/>
-        <Bookmarks Count="1">
+        <CursorPos X="1" Y="626"/>
+        <TopLine Value="614"/>
+        <EditorIndex Value="1"/>
+        <UsageCount Value="93"/>
+        <Bookmarks Count="2">
           <Item0 X="25" Y="599" ID="1"/>
+          <Item1 X="3" Y="708" ID="2"/>
         </Bookmarks>
+        <Loaded Value="True"/>
       </Unit21>
       <Unit22>
         <Filename Value="..\ACBrTEFDCliSiTef.pas"/>
         <UnitName Value="ACBrTEFDCliSiTef"/>
-        <CursorPos X="1" Y="960"/>
-        <TopLine Value="927"/>
-        <UsageCount Value="92"/>
+        <CursorPos X="57" Y="571"/>
+        <TopLine Value="562"/>
+        <EditorIndex Value="3"/>
+        <UsageCount Value="93"/>
+        <Loaded Value="True"/>
       </Unit22>
       <Unit23>
         <Filename Value="..\..\ACBrComum\ACBrUtil.pas"/>
@@ -248,7 +255,7 @@
         <UnitName Value="Unit4"/>
         <CursorPos X="84" Y="10"/>
         <TopLine Value="1"/>
-        <UsageCount Value="145"/>
+        <UsageCount Value="148"/>
       </Unit25>
       <Unit26>
         <Filename Value="Unit5.pas"/>
@@ -258,7 +265,7 @@
         <UnitName Value="Unit5"/>
         <CursorPos X="5" Y="35"/>
         <TopLine Value="24"/>
-        <UsageCount Value="144"/>
+        <UsageCount Value="147"/>
       </Unit26>
       <Unit27>
         <Filename Value="C:\CD_TEF\SiTEF\Exemplo_delphi\Unit01.pas"/>
@@ -315,9 +322,11 @@
       </Unit34>
       <Unit35>
         <Filename Value="..\ACBr_TEFD-change-log.txt"/>
-        <CursorPos X="51" Y="55"/>
+        <CursorPos X="31" Y="54"/>
         <TopLine Value="42"/>
+        <EditorIndex Value="4"/>
         <UsageCount Value="55"/>
+        <Loaded Value="True"/>
         <SyntaxHighlighter Value="None"/>
       </Unit35>
       <Unit36>
@@ -362,7 +371,128 @@
         <UsageCount Value="19"/>
       </Unit41>
     </Units>
-    <JumpHistory Count="0" HistoryIndex="-1"/>
+    <JumpHistory Count="30" HistoryIndex="29">
+      <Position1>
+        <Filename Value="..\ACBrTEFD.pas"/>
+        <Caret Line="612" Column="1" TopLine="600"/>
+      </Position1>
+      <Position2>
+        <Filename Value="..\ACBrTEFD.pas"/>
+        <Caret Line="1205" Column="1" TopLine="1193"/>
+      </Position2>
+      <Position3>
+        <Filename Value="..\ACBrTEFD.pas"/>
+        <Caret Line="1206" Column="1" TopLine="1194"/>
+      </Position3>
+      <Position4>
+        <Filename Value="..\ACBrTEFD.pas"/>
+        <Caret Line="1209" Column="1" TopLine="1197"/>
+      </Position4>
+      <Position5>
+        <Filename Value="..\ACBrTEFD.pas"/>
+        <Caret Line="271" Column="1" TopLine="259"/>
+      </Position5>
+      <Position6>
+        <Filename Value="..\ACBrTEFD.pas"/>
+        <Caret Line="272" Column="1" TopLine="260"/>
+      </Position6>
+      <Position7>
+        <Filename Value="..\ACBrTEFD.pas"/>
+        <Caret Line="274" Column="1" TopLine="262"/>
+      </Position7>
+      <Position8>
+        <Filename Value="..\ACBrTEFD.pas"/>
+        <Caret Line="275" Column="1" TopLine="263"/>
+      </Position8>
+      <Position9>
+        <Filename Value="..\ACBrTEFD.pas"/>
+        <Caret Line="277" Column="1" TopLine="265"/>
+      </Position9>
+      <Position10>
+        <Filename Value="..\ACBrTEFD.pas"/>
+        <Caret Line="613" Column="1" TopLine="601"/>
+      </Position10>
+      <Position11>
+        <Filename Value="..\ACBrTEFDClass.pas"/>
+        <Caret Line="2364" Column="1" TopLine="2352"/>
+      </Position11>
+      <Position12>
+        <Filename Value="..\ACBrTEFDClass.pas"/>
+        <Caret Line="2365" Column="1" TopLine="2353"/>
+      </Position12>
+      <Position13>
+        <Filename Value="..\ACBrTEFD.pas"/>
+        <Caret Line="271" Column="1" TopLine="259"/>
+      </Position13>
+      <Position14>
+        <Filename Value="..\ACBrTEFD.pas"/>
+        <Caret Line="272" Column="1" TopLine="260"/>
+      </Position14>
+      <Position15>
+        <Filename Value="..\ACBrTEFD.pas"/>
+        <Caret Line="274" Column="1" TopLine="262"/>
+      </Position15>
+      <Position16>
+        <Filename Value="..\ACBrTEFD.pas"/>
+        <Caret Line="275" Column="1" TopLine="263"/>
+      </Position16>
+      <Position17>
+        <Filename Value="..\ACBrTEFD.pas"/>
+        <Caret Line="277" Column="1" TopLine="265"/>
+      </Position17>
+      <Position18>
+        <Filename Value="..\ACBrTEFD.pas"/>
+        <Caret Line="615" Column="1" TopLine="603"/>
+      </Position18>
+      <Position19>
+        <Filename Value="..\ACBrTEFD.pas"/>
+        <Caret Line="601" Column="1" TopLine="589"/>
+      </Position19>
+      <Position20>
+        <Filename Value="..\ACBrTEFD.pas"/>
+        <Caret Line="602" Column="1" TopLine="590"/>
+      </Position20>
+      <Position21>
+        <Filename Value="..\ACBrTEFD.pas"/>
+        <Caret Line="604" Column="1" TopLine="592"/>
+      </Position21>
+      <Position22>
+        <Filename Value="..\ACBrTEFD.pas"/>
+        <Caret Line="606" Column="1" TopLine="594"/>
+      </Position22>
+      <Position23>
+        <Filename Value="..\ACBrTEFD.pas"/>
+        <Caret Line="608" Column="1" TopLine="596"/>
+      </Position23>
+      <Position24>
+        <Filename Value="..\ACBrTEFD.pas"/>
+        <Caret Line="609" Column="1" TopLine="597"/>
+      </Position24>
+      <Position25>
+        <Filename Value="..\ACBrTEFD.pas"/>
+        <Caret Line="612" Column="1" TopLine="600"/>
+      </Position25>
+      <Position26>
+        <Filename Value="..\ACBrTEFD.pas"/>
+        <Caret Line="613" Column="1" TopLine="601"/>
+      </Position26>
+      <Position27>
+        <Filename Value="..\ACBrTEFD.pas"/>
+        <Caret Line="615" Column="1" TopLine="603"/>
+      </Position27>
+      <Position28>
+        <Filename Value="..\ACBrTEFD.pas"/>
+        <Caret Line="622" Column="1" TopLine="610"/>
+      </Position28>
+      <Position29>
+        <Filename Value="..\ACBrTEFD.pas"/>
+        <Caret Line="625" Column="1" TopLine="613"/>
+      </Position29>
+      <Position30>
+        <Filename Value="..\ACBrTEFDClass.pas"/>
+        <Caret Line="2365" Column="1" TopLine="2353"/>
+      </Position30>
+    </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
     <Version Value="8"/>
@@ -386,19 +516,11 @@
     </Other>
   </CompilerOptions>
   <Debugging>
-    <BreakPoints Count="3">
+    <BreakPoints Count="1">
       <Item1>
         <Source Value="..\ACBrTEFD.pas"/>
-        <Line Value="639"/>
+        <Line Value="598"/>
       </Item1>
-      <Item2>
-        <Source Value="..\ACBrTEFD.pas"/>
-        <Line Value="585"/>
-      </Item2>
-      <Item3>
-        <Source Value="..\ACBrTEFDClass.pas"/>
-        <Line Value="1218"/>
-      </Item3>
     </BreakPoints>
     <Exceptions Count="17">
       <Item1>

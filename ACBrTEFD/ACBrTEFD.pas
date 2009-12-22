@@ -712,7 +712,7 @@ begin
                           else
                              ECFImprimeVia( trGerencial, I, ImagemComprovante2aVia  ) ;
 
-                          if I < NVias  then
+                          if (I < NVias) or (J < RespostasPendentes.Count-1) then
                           begin
                              ComandarECF( opePulaLinhas ) ;
                              DoExibeMsg( opmDestaqueVia, 'Destaque a '+IntToStr(I)+'ª Via') ;
@@ -769,14 +769,12 @@ begin
                           end;
 
                           if Ordem <> OrdemPagamento then
-                           begin
+                          begin
                              Ordem := OrdemPagamento ;
                              ECFAbreVinculado( DocumentoVinculado,
                                                GrupoVinc[K].IndiceFPG_ECF,
                                                GrupoVinc[K].Total ) ;
-                           end
-                          else
-                             ComandarECF( opePulaLinhas ) ;
+                          end ;
 
                           NVias := fTefClass.NumVias ;
                           if ImagemComprovante2aVia.Text = '' then
@@ -790,7 +788,7 @@ begin
                              else
                                 ECFImprimeVia( trVinculado, I, ImagemComprovante2aVia ) ;
 
-                             if I < NVias  then
+                             if (I < NVias) or (J < RespostasPendentes.Count-1) then
                              begin
                                 ComandarECF( opePulaLinhas ) ;
                                 DoExibeMsg( opmDestaqueVia, 'Destaque a '+IntToStr(I)+'ª Via') ;

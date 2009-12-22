@@ -47,6 +47,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.8a   22/12/09
+[-] Corrigido bug introduzido na versão 0.7a, em relação ao envio de CNF
+    antecipado, para transações com Multiplos Cartões
+[-] Corrigida Mensagem de Pausa entre vias quando imprimindo a última Via
+    em trasações de Multiplos Cartões
+
 Versão 0.7a   22/12/09
 [*] Obteto Interno RespostasPendentes modificado novamente, para ser uma Lista
     de Respostas de objetos "Resp", que possuem propriedades e métodos para

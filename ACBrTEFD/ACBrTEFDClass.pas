@@ -55,7 +55,7 @@ uses
   {$ENDIF} ;
 
 const
-   CACBrTEFD_Versao      = '0.8a' ;
+   CACBrTEFD_Versao      = '0.9a' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -676,8 +676,13 @@ begin
 end;
 
 function TACBrTEFDLinhaInformacao.GetAsFloat : Double;
+Var
+  Info : String ;
 begin
-  Result := StrToIntDef(fInformacao,0) / 100 ;
+  Info := StringReplace( fInformacao, ',','',[rfReplaceAll] );
+  Info := StringReplace( Info       , '.','',[rfReplaceAll] );
+
+  Result := StrToIntDef( Info ,0) / 100 ;
 end;
 
 function TACBrTEFDLinhaInformacao.GetAsInteger : Integer;
@@ -2252,6 +2257,9 @@ Procedure TACBrTEFDClass.VerificarTransacaoPagamento(Valor : Double;
 var
    SubTotal : String;
 begin
+  if (Valor <= 0) then
+     raise Exception.Create( ACBrStr( 'Valor inválido' ) );
+
    { Lendo o SubTotal do ECF }
    with TACBrTEFD(Owner) do
    begin

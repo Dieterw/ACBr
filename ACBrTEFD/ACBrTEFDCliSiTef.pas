@@ -220,7 +220,7 @@ var
 begin
 // Conteudo.Conteudo.SaveToFile('c:\temp\conteudo.txt') ;
 
-   fpDataHoraTransacaoComprovante := 0 ;
+   fpValorTotal := 0 ;
    fpImagemComprovante1aVia.Clear;
    fpImagemComprovante2aVia.Clear;
 
@@ -239,8 +239,10 @@ begin
          end;
        121 : fpImagemComprovante1aVia.Text := StringReplace( LinStr, #10, sLineBreak, [rfReplaceAll] );
        122 : fpImagemComprovante2aVia.Text := StringReplace( LinStr, #10, sLineBreak, [rfReplaceAll] );
+       130 : fpValorTotal                  := fpValorTotal + Linha.Informacao.AsFloat ;
        133 : fpCodigoAutorizacaoTransacao  := Linha.Informacao.AsInteger;
        134 : fpNSU                         := LinStr;
+       156 : fpRede                        := LinStr;
        501 : fpTipoPessoa                  := IfThen(Linha.Informacao.AsInteger = 0,'J','F')[1];
        502 : fpDocumentoPessoa             := LinStr ;
        505 : fpQtdParcelas                 := Linha.Informacao.AsInteger ;
@@ -253,7 +255,7 @@ begin
             100 : fpHeader             := LinStr;
             101 : fpID                 := Linha.Informacao.AsInteger;
             102 : fpDocumentoVinculado := LinStr;
-            103 : fpValorTotal         := Linha.Informacao.AsFloat;
+            103 : fpValorTotal         := fpValorTotal + Linha.Informacao.AsFloat;
           end;
         end;
      end;
@@ -465,9 +467,9 @@ begin
      Sts := ContinuarRequisicao( False ) ;  { False = NAO Imprimir Comprovantes agora }
 
   if Sts <> 0 then
-     AvaliaErro( Sts );
-
-  ProcessarRespostaPagamento( SaldoAPagar, IndiceFPG_ECF, Valor );
+     AvaliaErro( Sts )
+  else
+     ProcessarRespostaPagamento( SaldoAPagar, IndiceFPG_ECF, Valor );
 end;
 
 procedure TACBrTEFDCliSiTef.CHQ(Valor : Double; IndiceFPG_ECF : String;
@@ -493,9 +495,9 @@ begin
      Sts := ContinuarRequisicao( False ) ;  { False = NAO Imprimir Comprovantes agora }
 
   if Sts <> 0 then
-     AvaliaErro( Sts );
-
-  ProcessarRespostaPagamento( SaldoAPagar, IndiceFPG_ECF, Valor );
+     AvaliaErro( Sts )
+  else
+     ProcessarRespostaPagamento( SaldoAPagar, IndiceFPG_ECF, Valor );
 end;
 
 procedure TACBrTEFDCliSiTef.CNF(Rede, NSU, Finalizacao : String;
@@ -879,20 +881,21 @@ var
 begin
    Erro := '' ;
    Case Sts of
-         0 : Erro := 'negada pelo autorizador' ;
-        -1 : Erro := 'módulo não inicializado' ;
-        -2 : Erro := 'operação cancelada pelo operador' ;
-        -3 : Erro := 'fornecida uma modalidade inválida' ;
-        -4 : Erro := 'falta de memória para rodar a função' ;
-        -5 : Erro := 'sem comunicação com o SiTef' ;
-        -6 : Erro := 'operação cancelada pelo usuário' ;
+        -1 : Erro := 'Módulo não inicializado' ;
+        -2 : Erro := 'Operação cancelada pelo operador' ;
+        -3 : Erro := 'Fornecida uma modalidade inválida' ;
+        -4 : Erro := 'Falta de memória para rodar a função' ;
+        -5 : Erro := 'Sem comunicação com o SiTef' ;
+        -6 : Erro := 'Operação cancelada pelo usuário' ;
    else
       if Sts < 0 then
-         Erro := 'erros detectados internamente pela rotina ('+IntToStr(Sts)+')' ;
+         Erro := 'Erros detectados internamente pela rotina ('+IntToStr(Sts)+')'
+      else
+         Erro := 'Negada pelo autorizador ('+IntToStr(Sts)+')' ;
    end;
 
    if Erro <> '' then
-      raise EACBrTEFDErro.Create( ACBrStr( Erro ) ) ;
+      TACBrTEFD(Owner).DoExibeMsg( opmOK, Erro );
 end ;
 
 procedure TACBrTEFDCliSiTef.ProcessarRespostaPagamento( const SaldoAPagar : Double;

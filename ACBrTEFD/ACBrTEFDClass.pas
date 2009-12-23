@@ -531,6 +531,7 @@ type
      fpTipo : TACBrTEFDTipo;
      fpIDSeq: Integer ;
      fpNumVias : Integer;
+     fpAguardandoResposta : Boolean ;
 
      procedure SetNumVias(const AValue : Integer); virtual;
 
@@ -1420,6 +1421,8 @@ begin
   fpIDSeq       := SecondOfTheDay(now) ;
   fpNumVias     := CACBrTEFD_NumVias ;
 
+  fpAguardandoResposta := False ;
+
   fEsperaSTS := CACBrTEFD_EsperaSTS ;
 
   fpResp := TACBrTEFDResp.Create;
@@ -1683,6 +1686,9 @@ end;
 procedure TACBrTEFDClass.IniciarRequisicao( AHeader : String;
    AID : Integer = 0);
 begin
+  if fpAguardandoResposta then
+     raise Exception.Create( ACBrStr( 'Requisição anterior não concluida' ) ) ;
+
   { Verificanso se a Classe de TEF está Inicializado }
   VerificaInicializado ;
 
@@ -1737,16 +1743,21 @@ begin
   TempoInicioEspera := now ;
   TempoFimEspera    := IncSecond(TempoInicioEspera, EsperaSTS );
   Interromper       := False ;
-  repeat
-     Sleep( TACBrTEFD(Owner).EsperaSleep );  // Necessário Para não sobrecarregar a CPU //
+  fpAguardandoResposta := True ;
+  try
+     repeat
+        Sleep( TACBrTEFD(Owner).EsperaSleep );  // Necessário Para não sobrecarregar a CPU //
 
-     GravaLog( Name +' FinalizarRequisicao: '+Req.Header+', Aguardando: '+ArqSTS );
-     with TACBrTEFD(Owner) do
-     begin
-        if Assigned( OnAguardaResp ) then
-           OnAguardaResp( ArqSTS, SecondsBetween(TempoFimEspera, Now), Interromper ) ;
-     end;
-  until FileExists( ArqSTS ) or ( now > TempoFimEspera ) or Interromper;
+        GravaLog( Name +' FinalizarRequisicao: '+Req.Header+', Aguardando: '+ArqSTS );
+        with TACBrTEFD(Owner) do
+        begin
+           if Assigned( OnAguardaResp ) then
+              OnAguardaResp( ArqSTS, SecondsBetween(TempoFimEspera, Now), Interromper ) ;
+        end;
+     until FileExists( ArqSTS ) or ( now > TempoFimEspera ) or Interromper;
+  finally
+     fpAguardandoResposta := False ;
+  end;
 
   if not FileExists( ArqSTS ) then
      raise EACBrTEFDGPNaoResponde.Create( ACBrStr( 'O gerenciador padrão '+Self.Name+' não está ativo!' )) ;
@@ -1796,17 +1807,22 @@ begin
      while not (OK or Interromper) do
      begin
         TempoInicioEspera := now ;
-        repeat
-           Sleep( TACBrTEFD(Owner).EsperaSleep );  // Necessário Para não sobrecarregar a CPU //
+        fpAguardandoResposta := True ;
+        try
+           repeat
+              Sleep( TACBrTEFD(Owner).EsperaSleep );  // Necessário Para não sobrecarregar a CPU //
 
-           GravaLog( Name +' LeRespostaRequisicao: '+Req.Header+', Aguardando: '+ArqResp );
-           with TACBrTEFD(Owner) do
-           begin
-              if Assigned( OnAguardaResp ) then
-                 OnAguardaResp( ArqResp, SecondsBetween(TempoInicioEspera, Now),
-                                Interromper ) ;
-           end ;
-        until FileExists( ArqResp ) or Interromper ;
+              GravaLog( Name +' LeRespostaRequisicao: '+Req.Header+', Aguardando: '+ArqResp );
+              with TACBrTEFD(Owner) do
+              begin
+                 if Assigned( OnAguardaResp ) then
+                    OnAguardaResp( ArqResp, SecondsBetween(TempoInicioEspera, Now),
+                                   Interromper ) ;
+              end ;
+           until FileExists( ArqResp ) or Interromper ;
+        finally
+           fpAguardandoResposta := False ;
+        end;
 
         GravaLog( Name +' LeRespostaRequisicao: '+Req.Header+', Verificando conteudo de: '+ArqResp );
         Resp.LeArquivo( ArqResp );

@@ -754,6 +754,8 @@ begin
   AForm := TForm5.Create(self);
   try
     AForm.Panel1.Caption := Titulo;
+    AForm.TamanhoMaximo  := TamanhoMaximo;
+    AForm.TamanhoMinimo  := TamanhoMinimo;
     AForm.Operacao       := Operacao;
     AForm.TipoCampo      := TipoCampo;
 

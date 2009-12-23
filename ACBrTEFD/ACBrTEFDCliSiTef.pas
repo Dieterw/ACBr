@@ -537,6 +537,9 @@ Var
   ValorStr, DataStr, HoraStr : String;
   ANow : TDateTime ;
 begin
+   if fpAguardandoResposta then
+      raise Exception.Create( ACBrStr( 'Requisição anterior não concluida' ) ) ;
+
    Result   := 0 ;
    ANow     := Now ;
    DataStr  := FormatDateTime('YYYYMMDD', ANow );
@@ -598,6 +601,7 @@ begin
    MensagemCliente  := '' ;
    CaptionMenu      := '' ;
    GerencialAberto  := False ;
+   fpAguardandoResposta := True ;
 
    with TACBrTEFD(Owner) do
    begin
@@ -837,8 +841,10 @@ begin
         if TecladoBloqueado then
            BloquearMouseTeclado( False );
 
-        { Transafere valore de "Conteudo" para as propriedades }
+        { Transfere valore de "Conteudo" para as propriedades }
         TACBrTEFDRespCliSiTef( Self.Resp ).ConteudoToProperty ;
+
+        fpAguardandoResposta := False ;
       end;
    end ;
 end;

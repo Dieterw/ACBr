@@ -2119,8 +2119,16 @@ end;
 
 procedure TACBrECFBematech.GetTotalizadoresParciais;
 begin
-    BytesResp := 436 ;
-    fsTotalizadoresParciais := EnviaComando( #87, 5 ) ;
+    if (fpMFD) or (fs25MFD) then
+    begin
+      BytesResp := 436 ;
+      fsTotalizadoresParciais := EnviaComando( #87, 5 )
+    end
+    else
+    begin
+      BytesResp := 219 ;
+      fsTotalizadoresParciais := EnviaComando( #27, 15 )
+    end;
 end;
 
 function TACBrECFBematech.GetTotalNaoTributado: Double;

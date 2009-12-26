@@ -1665,13 +1665,17 @@ begin
 
   FinalizarRequisicao;
 
-  MsgStr := 'Última Transação TEF foi cancelada'+sLineBreak+sLineBreak ;
+  MsgStr := '' ;
   if Rede <> '' then
      MsgStr := MsgStr + 'Rede: '+Rede + sLineBreak;
   if NSU <> '' then
      MsgStr := MsgStr + 'NSU: '+NSU + sLineBreak;
   if Valor <> 0 then
      MsgStr := MsgStr + 'Valor: '+FormatFloat('0.00',Valor);
+
+  MsgStr := 'Última Transação TEF foi cancelada' +
+            IfThen(MsgStr <> '' , sLineBreak+sLineBreak, '' ) +
+            MsgStr ;
 
   TACBrTEFD(Owner).DoExibeMsg( opmOK, MsgStr ) ;
 end;

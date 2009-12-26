@@ -1682,7 +1682,7 @@ begin
      AddParamInteger('ReducaoFinal',ReducaoFinal) ;
      AddParamInteger('ReducaoInicial',ReducaoInicial) ;
   end ;
-  FiscNETComando.TimeOut := 5 + (ReducaoFinal - ReducaoInicial) ;
+  FiscNETComando.TimeOut := 30 + (ReducaoFinal - ReducaoInicial) ;
   EnviaComando ;
 end;
 
@@ -1698,7 +1698,7 @@ begin
      AddParamBool('LeituraSimplificada',Simplificada);
      AddParamString('Operador',Operador) ;
   end ;
-  FiscNETComando.TimeOut := 5 + DaysBetween(DataInicial,DataFinal) ;
+  FiscNETComando.TimeOut := 30 + DaysBetween(DataInicial,DataFinal) ;
   EnviaComando ;
 end;
 
@@ -1716,7 +1716,7 @@ begin
      AddParamInteger('ReducaoFinal',ReducaoFinal) ;
      AddParamInteger('ReducaoInicial',ReducaoInicial) ;
   end ;
-  FiscNETComando.TimeOut := 5 + (ReducaoFinal - ReducaoInicial) ;
+  FiscNETComando.TimeOut := 30 + (ReducaoFinal - ReducaoInicial) ;
   EnviaComando ;
   Sleep(500);
 
@@ -1748,7 +1748,7 @@ begin
      AddParamBool('LeituraSimplificada',Simplificada);
      AddParamString('Operador',Operador) ;
   end ;
-  FiscNETComando.TimeOut := 5 + DaysBetween(DataInicial,DataFinal) ;
+  FiscNETComando.TimeOut := 30 + DaysBetween(DataInicial,DataFinal) ;
   EnviaComando ;
   Sleep(500);
 

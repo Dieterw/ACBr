@@ -123,6 +123,7 @@ TACBrECFFiscNET = class( TACBrECFClass )
     fsFiscNETResposta: TACBrECFFiscNETResposta;
     fsComandoVendeItem : String ;
     fsComandosImpressao : array[0..9] of AnsiString ;
+    fsEmPagamento : Boolean ;
 
     xGera_AtoCotepe1704 : function (ComPortOrFileName: AnsiString;
       Modelo: AnsiString; RegFileName: AnsiString; DataReducao: AnsiString): Integer; stdcall;
@@ -536,6 +537,8 @@ begin
   fsNumLoja   := '' ;
   fsArredonda := -1 ;
   fsComandoVendeItem := '' ;
+  fsEmPagamento := false ;
+  
   fpModeloStr := 'FiscNET' ;
   fpColunas   := 57 ;
   fpMFD       := True ;
@@ -874,6 +877,12 @@ begin
     if (not fpAtivo) then
       exit ;
 
+    if fsEmPagamento then
+    begin
+       fpEstado := estPagamento ;
+       exit ;
+    end ;
+
     fpEstado := estDesconhecido ;
 
     FiscNETComando.NomeComando := 'LeInteiro' ;
@@ -1039,6 +1048,7 @@ begin
      FiscNETComando.AddParamString('EnderecoConsumidor',LeftStr(Consumidor.Endereco,80)) ;
   EnviaComando ;
   Consumidor.Enviado := True ;
+  fsEmPagamento := false ;
 end;
 
 procedure TACBrECFFiscNET.CancelaCupom;
@@ -1086,7 +1096,9 @@ begin
 
   if Erro <> '' then
      raise Exception.create(Erro);
-     
+
+  fsEmPagamento := false ;
+    
   FechaRelatorio ;   { Fecha relatorio se ficou algum aberto (só por garantia)}
 end;
 
@@ -1146,11 +1158,14 @@ begin
   if Obs <> '' then
      FiscNETComando.AddParamString('TextoPromocional',Obs) ;
   EnviaComando ;
+
+  fsEmPagamento := false ;
 end;
 
 procedure TACBrECFFiscNET.SubtotalizaCupom(DescontoAcrescimo: Double;
        MensagemRodape : AnsiString);
 begin
+  fsEmPagamento := True ;
   if DescontoAcrescimo = 0 then
      exit ;
   FiscNETComando.NomeComando := 'AcresceSubtotal' ;
@@ -1219,6 +1234,8 @@ begin
      FiscNETComando.AddParamBool('Cancelar',False);
      EnviaComando ;
   end;
+
+  fsEmPagamento := false ;
 end;
 
 procedure TACBrECFFiscNET.CarregaAliquotas;

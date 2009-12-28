@@ -406,6 +406,7 @@ end;
 procedure TACBrTEFD.Inicializar(GP : TACBrTEFDTipo);
 Var
   I : Integer;
+  Erros : String ;
 begin
   if not Assigned( OnExibeMsg ) then
      raise Exception.Create( ACBrStr('Evento "OnExibeMsg" não programado' ) ) ;
@@ -433,17 +434,37 @@ begin
 
   if GP = gpNenhum then
    begin
+     Erros := '' ;
+
      For I := 0 to fTEFList.Count-1 do
      begin
        if fTEFList[I].Habilitado then
-          fTEFList[I].Inicializado := True ;
+       begin
+         try
+           fTEFList[I].Inicializado := True ;
+         except
+           On E : Exception do
+           begin
+             fTEFList[I].Inicializado := False ;
+             Erros := Erros + E.Message + sLineBreak ;
+           end;
+         end;
+       end;
      end;
+
+     if Erros <> '' then
+        raise Exception.Create( ACBrStr( Erros ) ) ;
    end
   else
    begin
      GPAtual := GP ;
-     fTefClass.Inicializado := True;
-     fTefClass.Habilitado   := True ;
+     try
+       fTefClass.Inicializado := True;
+       fTefClass.Habilitado   := True;
+     except
+       fTefClass.Inicializado := False;
+       raise ;
+     end;
    end;
 end;
 

@@ -53,6 +53,11 @@ type
   public
   end;
 
+  TRegistro1310List = class;
+  TRegistro1320List = class;  
+  TRegistro1360List = class;
+  TRegistro1370List = class;
+
   /// Registro 1100 - REGISTRO DE INFORMAÇÕES SOBRE EXPORTAÇÃO
 
   TRegistro1100 = class(TPersistent)
@@ -234,7 +239,12 @@ type
     fVAL_AJ_PERDA: Currency;        /// Valor da Perda
     fVAL_AJ_GANHO: Currency;        /// Valor do ganho
     fESTQ_FECHA: Currency;          /// Estoque de Fechamento (Somatório dos registros da conciliação de estoques )
+
+    FRegistro1310: TRegistro1310List;  /// BLOCO 1 - Lista de Registro1310 (FILHO)
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+    
     property COD_ITEM: AnsiString       read FCOD_ITEM write FCOD_ITEM;
     property DT_FECH: TDateTime     read FDT_FECH write FDT_FECH;
     property NR_INTERV: AnsiString      read FNR_INTERV write FNR_INTERV;
@@ -247,6 +257,8 @@ type
     property VAL_AJ_PERDA: Currency read FVAL_AJ_PERDA write FVAL_AJ_PERDA;
     property VAL_AJ_GANHO: Currency read FVAL_AJ_GANHO write FVAL_AJ_GANHO;
     property ESTQ_FECHA: Currency   read FESTQ_FECHA write FESTQ_FECHA;
+
+    property Registro1310: TRegistro1310List read FRegistro1310 write FRegistro1310;
   end;
 
   /// Registro 1300 - Lista
@@ -273,7 +285,12 @@ type
     fESTQ_ESCR :   Currency;  /// Estoque Escritural(05 – 06), litros
     fVAL_AJ_PERDA: Currency;  ///  Valor da Perda, em litros
     fVAL_AJ_GANHO: Currency;  ///  Valor do ganho, em litros
+
+    FRegistro1320: TRegistro1320List;  /// BLOCO 1 - Lista de Registro1320 (FILHO)
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property NUM_TANQUE  : AnsiString   read fNUM_TANQUE   write fNUM_TANQUE   ;
     property ESTQ_ABERT  : Currency read fESTQ_ABERT   write fESTQ_ABERT   ;
     property VOL_ENTR    : Currency read fVOL_ENTR     write fVOL_ENTR     ;
@@ -282,6 +299,8 @@ type
     property ESTQ_ESCR   : Currency read fESTQ_ESCR    write fESTQ_ESCR     ;
     property VAL_AJ_PERDA: Currency read fVAL_AJ_PERDA write fVAL_AJ_PERDA  ;
     property VAL_AJ_GANHO: Currency read fVAL_AJ_GANHO write fVAL_AJ_GANHO  ;
+
+    property Registro1320: TRegistro1320List read FRegistro1320 write FRegistro1320;
   end;
 
   /// Registro 1310 - Lista
@@ -344,11 +363,20 @@ type
     fFABRICANTE: AnsiString;   /// Nome do Fabricante da Bomba
     fMODELO: AnsiString;       /// Modelo da Bomba
     fTIPO_MEDICAO:AnsiString;  /// Identificador de medição: [ 0 - analógico -  1 – digital ]
+
+    FRegistro1360: TRegistro1360List;  /// BLOCO 1 - Lista de Registro1360 (FILHO)
+    FRegistro1370: TRegistro1370List;  /// BLOCO 1 - Lista de Registro1360 (FILHO)
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property SERIE:        AnsiString read fSERIE        write fSERIE       ;
     property FABRICANTE:   AnsiString read fFABRICANTE   write fFABRICANTE  ;
     property MODELO:       AnsiString read fMODELO       write fMODELO      ;
     property TIPO_MEDICAO: AnsiString read fTIPO_MEDICAO write fTIPO_MEDICAO;
+
+    property Registro1360: TRegistro1360List read FRegistro1360 write FRegistro1360;
+    property Registro1370: TRegistro1370List read FRegistro1370 write FRegistro1370;
   end;
 
   /// Registro 1350 - Lista
@@ -728,6 +756,19 @@ begin
   Put(Index, Value);
 end;
 
+{ TRegistro1300 }
+
+constructor TRegistro1300.Create;
+begin
+  FRegistro1310 := TRegistro1310List.Create;  /// BLOCO 1 - Lista de Registro1310 (FILHO)
+end;
+
+destructor TRegistro1300.Destroy;
+begin
+  FRegistro1310.Free;
+  inherited;
+end;
+
 { TRegistro1300List }
 
 destructor TRegistro1300List.Destroy;
@@ -752,6 +793,19 @@ end;
 procedure TRegistro1300List.SetItem(Index: Integer; const Value: TRegistro1300);
 begin
   Put(Index, Value);
+end;
+
+{ TRegistro1310 }
+
+constructor TRegistro1310.Create;
+begin
+  FRegistro1320 := TRegistro1320List.Create;  /// BLOCO 1 - Lista de Registro1320 (FILHO)
+end;
+
+destructor TRegistro1310.Destroy;
+begin
+  FRegistro1320.Free;
+  inherited;
 end;
 
 { TRegistro1310List }
@@ -987,6 +1041,21 @@ end;
 procedure TRegistro1600List.SetItem(Index: Integer; const Value: TRegistro1600);
 begin
   Put(Index, Value);
+end;
+
+{ TRegistro1350 }
+
+constructor TRegistro1350.Create;
+begin
+  FRegistro1360 := TRegistro1360List.Create;  /// BLOCO 1 - Lista de Registro1360 (FILHO)
+  FRegistro1370 := TRegistro1370List.Create;  /// BLOCO 1 - Lista de Registro1370 (FILHO)
+end;
+
+destructor TRegistro1350.Destroy;
+begin
+  FRegistro1360.Free;
+  FRegistro1370.Free;
+  inherited;
 end;
 
 end.

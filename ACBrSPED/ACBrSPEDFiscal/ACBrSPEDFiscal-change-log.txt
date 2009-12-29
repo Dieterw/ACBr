@@ -47,6 +47,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.04a   29/12/09
+[*] Implementado hierarquia dos registro 1360 e 1370 por ( Isaque Pinheiro )
+
+Versão 0.04a   28/12/09
+[*] Implementado hierarquia dos registro 1310 e 1320 por ( Daniel (Totall) )
+
 Versão 0.03a   21/12/09
 [*] Implementado hierarquia do registro E210 por (Márcio Lopes)
 [*] Implementado hierarquia dos registros C510 e C590 por (Márcio Lopes)

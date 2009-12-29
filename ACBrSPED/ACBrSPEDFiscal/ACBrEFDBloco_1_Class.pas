@@ -55,16 +55,22 @@ type
     FRegistro1200: TRegistro1200List;  /// BLOCO 1 - Lista de Registro1200
     FRegistro1210: TRegistro1210List;  /// BLOCO 1 - Lista de Registro1210
     FRegistro1300: TRegistro1300List;  /// BLOCO 1 - Lista de Registro1300
-    FRegistro1310: TRegistro1310List;  /// BLOCO 1 - Lista de Registro1310
-    FRegistro1320: TRegistro1320List;  /// BLOCO 1 - Lista de Registro1320
     FRegistro1350: TRegistro1350List;  /// BLOCO 1 - Lista de Registro1350
-    FRegistro1360: TRegistro1360List;  /// BLOCO 1 - Lista de Registro1360
-    FRegistro1370: TRegistro1370List;  /// BLOCO 1 - Lista de Registro1370
     FRegistro1400: TRegistro1400List;  /// BLOCO 1 - Lista de Registro1400
     FRegistro1500: TRegistro1500List;  /// BLOCO 1 - Lista de Registro1500
     FRegistro1510: TRegistro1510List;  /// BLOCO 1 - Lista de Registro1510
     FRegistro1600: TRegistro1600List;  /// BLOCO 1 - Lista de Registro1600
     FRegistro1990: TRegistro1990;      /// BLOCO 1 - Registro1990
+
+    FRegistro1310Count: Integer;
+    FRegistro1320Count: Integer;
+    FRegistro1360Count: Integer;
+    FRegistro1370Count: Integer;
+
+    function WriteRegistro1310(Reg1300: TRegistro1300): AnsiString;
+    function WriteRegistro1320(Reg1310: TRegistro1310): AnsiString;
+    function WriteRegistro1360(Reg1350: TRegistro1350): AnsiString;
+    function WriteRegistro1370(Reg1350: TRegistro1350): AnsiString;
 
     procedure CriaRegistros;
     procedure LiberaRegistros;
@@ -80,11 +86,7 @@ type
     function WriteRegistro1200: AnsiString;
     function WriteRegistro1210: AnsiString;
     function WriteRegistro1300: AnsiString;
-    function WriteRegistro1310: AnsiString;
-    function WriteRegistro1320: AnsiString;
     function WriteRegistro1350: AnsiString;
-    function WriteRegistro1360: AnsiString;
-    function WriteRegistro1370: AnsiString;
     function WriteRegistro1400: AnsiString;
     function WriteRegistro1500: AnsiString;
     function WriteRegistro1510: AnsiString;
@@ -98,16 +100,17 @@ type
     property Registro1200: TRegistro1200List read FRegistro1200 write FRegistro1200;
     property Registro1210: TRegistro1210List read FRegistro1210 write FRegistro1210;
     property Registro1300: TRegistro1300List read FRegistro1300 write FRegistro1300;
-    property Registro1310: TRegistro1310List read FRegistro1310 write FRegistro1310;
-    property Registro1320: TRegistro1320List read FRegistro1320 write FRegistro1320;
     property Registro1350: TRegistro1350List read FRegistro1350 write FRegistro1350;
-    property Registro1360: TRegistro1360List read FRegistro1360 write FRegistro1360;
-    property Registro1370: TRegistro1370List read FRegistro1370 write FRegistro1370;
     property Registro1400: TRegistro1400List read FRegistro1400 write FRegistro1400;
     property Registro1500: TRegistro1500List read FRegistro1500 write FRegistro1500;
     property Registro1510: TRegistro1510List read FRegistro1510 write FRegistro1510;
     property Registro1600: TRegistro1600List read FRegistro1600 write FRegistro1600;
     property Registro1990: TRegistro1990 read FRegistro1990 write FRegistro1990;
+
+    property Registro1310Count: Integer read FRegistro1310Count write FRegistro1310Count;
+    property Registro1320Count: Integer read FRegistro1320Count write FRegistro1320Count;
+    property Registro1360Count: Integer read FRegistro1360Count write FRegistro1360Count;
+    property Registro1370Count: Integer read FRegistro1370Count write FRegistro1370Count;
   end;
 
 implementation
@@ -135,16 +138,17 @@ begin
   FRegistro1200 := TRegistro1200List.Create;
   FRegistro1210 := TRegistro1210List.Create;
   FRegistro1300 := TRegistro1300List.Create;
-  FRegistro1310 := TRegistro1310List.Create;
-  FRegistro1320 := TRegistro1320List.Create;
   FRegistro1350 := TRegistro1350List.Create;
-  FRegistro1360 := TRegistro1360List.Create;
-  FRegistro1370 := TRegistro1370List.Create;
   FRegistro1400 := TRegistro1400List.Create;
   FRegistro1500 := TRegistro1500List.Create;
   FRegistro1510 := TRegistro1510List.Create;
   FRegistro1600 := TRegistro1600List.Create;
   FRegistro1990 := TRegistro1990.Create;
+
+  FRegistro1310Count := 0;
+  FRegistro1320Count := 0;
+  FRegistro1360Count := 0;
+  FRegistro1370Count := 0;
 
   FRegistro1990.QTD_LIN_1 := 0;
 end;
@@ -158,11 +162,7 @@ begin
   FRegistro1200.Free;
   FRegistro1210.Free;
   FRegistro1300.Free;
-  FRegistro1310.Free;
-  FRegistro1320.Free;
   FRegistro1350.Free;
-  FRegistro1360.Free;
-  FRegistro1370.Free;
   FRegistro1400.Free;
   FRegistro1500.Free;
   FRegistro1510.Free;
@@ -377,24 +377,28 @@ begin
                                                Delimitador +
                                                #13#10;
         end;
+        /// Registro FILHOS
+        strRegistro1300 := strRegistro1300 +
+                           WriteRegistro1310( Registro1300.Items[intFor] );
+
         Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
      end;
   end;
   Result := strRegistro1300;
 end;
 
-function TBloco_1.WriteRegistro1310: AnsiString;
+function TBloco_1.WriteRegistro1310(Reg1300: TRegistro1300) : AnsiString;
 var
 intFor: integer;
 strRegistro1310: AnsiString;
 begin
   strRegistro1310 := '';
 
-  if Assigned( Registro1310 ) then
+  if Assigned( Reg1300.Registro1310 ) then
   begin
-     for intFor := 0 to Registro1310.Count - 1 do
+     for intFor := 0 to Reg1300.Registro1310.Count - 1 do
      begin
-        with Registro1310.Items[intFor] do
+        with Reg1300.Registro1310.Items[intFor] do
         begin
           strRegistro1310 := strRegistro1310 + LFill('1310') +
                                                LFill( NUM_TANQUE ) +
@@ -408,24 +412,30 @@ begin
                                                Delimitador +
                                                #13#10;
         end;
+        /// Registro FILHOS do FILHO
+        strRegistro1310 := strRegistro1310 +
+                           WriteRegistro1320( Reg1300.Registro1310.Items[intFor] );
+
         Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
      end;
+     /// Variavél para armazenar a quantidade de registro do tipo.
+     FRegistro1310Count := FRegistro1310Count + Reg1300.Registro1310.Count;
   end;
   Result := strRegistro1310;
 end;
 
-function TBloco_1.WriteRegistro1320: AnsiString;
+function TBloco_1.WriteRegistro1320(Reg1310: TRegistro1310): AnsiString;
 var
 intFor: integer;
 strRegistro1320: AnsiString;
 begin
   strRegistro1320 := '';
 
-  if Assigned( Registro1320 ) then
+  if Assigned( Reg1310.Registro1320 ) then
   begin
-     for intFor := 0 to Registro1320.Count - 1 do
+     for intFor := 0 to Reg1310.Registro1320.Count - 1 do
      begin
-        with Registro1320.Items[intFor] do
+        with Reg1310.Registro1320.Items[intFor] do
         begin
           strRegistro1320 := strRegistro1320 + LFill('1320') +
                                                LFill( NUM_BICO ) +
@@ -444,6 +454,8 @@ begin
         end;
         Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
      end;
+     /// Variavél para armazenar a quantidade de registro do tipo.
+     FRegistro1320Count := FRegistro1320Count + Reg1310.Registro1320.Count;
   end;
   Result := strRegistro1320;
 end;
@@ -469,24 +481,29 @@ begin
                                                Delimitador +
                                                #13#10;
         end;
+        /// Registro FILHOS do FILHO
+        strRegistro1350 := strRegistro1350 +
+                           WriteRegistro1360( Registro1350.Items[intFor] ) +
+                           WriteRegistro1370( Registro1350.Items[intFor] );
+
         Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
      end;
   end;
   Result := strRegistro1350;
 end;
 
-function TBloco_1.WriteRegistro1360: AnsiString;
+function TBloco_1.WriteRegistro1360(Reg1350: TRegistro1350): AnsiString;
 var
 intFor: integer;
 strRegistro1360: AnsiString;
 begin
   strRegistro1360 := '';
 
-  if Assigned( Registro1360 ) then
+  if Assigned( Reg1350.Registro1360 ) then
   begin
-     for intFor := 0 to Registro1360.Count - 1 do
+     for intFor := 0 to Reg1350.Registro1360.Count - 1 do
      begin
-        with Registro1360.Items[intFor] do
+        with Reg1350.Registro1360.Items[intFor] do
         begin
           strRegistro1360 := strRegistro1360 + LFill('1360') +
                                                LFill( NUM_LACRE ) +
@@ -496,22 +513,24 @@ begin
         end;
         Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
      end;
+     /// Variavél para armazenar a quantidade de registro do tipo.
+     FRegistro1360Count := FRegistro1360Count + Reg1350.Registro1360.Count;
   end;
   Result := strRegistro1360;
 end;
 
-function TBloco_1.WriteRegistro1370: AnsiString;
+function TBloco_1.WriteRegistro1370(Reg1350: TRegistro1350): AnsiString;
 var
 intFor: integer;
 strRegistro1370: AnsiString;
 begin
   strRegistro1370 := '';
 
-  if Assigned( Registro1370 ) then
+  if Assigned( Reg1350.Registro1370 ) then
   begin
-     for intFor := 0 to Registro1370.Count - 1 do
+     for intFor := 0 to Reg1350.Registro1370.Count - 1 do
      begin
-        with Registro1370.Items[intFor] do
+        with Reg1350.Registro1370.Items[intFor] do
         begin
           strRegistro1370 := strRegistro1370 + LFill('1370') +
                                                LFill( NUM_BICO ) +
@@ -522,6 +541,8 @@ begin
         end;
         Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
      end;
+     /// Variavél para armazenar a quantidade de registro do tipo.
+     FRegistro1370Count := FRegistro1370Count + Reg1350.Registro1370.Count;
   end;
   Result := strRegistro1370;
 end;

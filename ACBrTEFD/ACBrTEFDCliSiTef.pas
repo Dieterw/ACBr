@@ -243,7 +243,7 @@ begin
        133 : fpCodigoAutorizacaoTransacao  := Linha.Informacao.AsInteger;
        134 : fpNSU                         := LinStr;
        156 : fpRede                        := LinStr;
-       501 : fpTipoPessoa                  := IfThen(Linha.Informacao.AsInteger = 0,'J','F')[1];
+       501 : fpTipoPessoa                  := AnsiChar(IfThen(Linha.Informacao.AsInteger = 0,'J','F')[1]);
        502 : fpDocumentoPessoa             := LinStr ;
        505 : fpQtdParcelas                 := Linha.Informacao.AsInteger ;
        899 :  // Tipos de Uso Interno do ACBrTEFD

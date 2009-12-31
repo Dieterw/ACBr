@@ -2856,7 +2856,7 @@ Var
   OldAtivo : Boolean ;
   {$IFDEF LINUX} Cmd : String ; {$ENDIF}
 begin
-  ArqTmp := ExtractFilePath( NomeArquivo ) ;
+  ArqTmp := ExtractFilePath( NomeArquivo ) +'ACBr';
   DeleteFile( ArqTmp + '.mfd' ) ;
 
   DiaIni := FormatDateTime('ddmmyy',DataInicial) ;
@@ -2967,7 +2967,7 @@ Var
 
   {$IFDEF LINUX} Cmd : String ; {$ENDIF}
 begin
-  ArqTmp := ExtractFilePath( NomeArquivo ) + 'Acbr';
+  ArqTmp := ExtractFilePath( NomeArquivo ) + 'ACBr';
   DeleteFile( ArqTmp + '.mfd' ) ;
 
   Prop   := IntToStr( StrToIntDef( UsuarioAtual, 1) ) ;

@@ -47,6 +47,9 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.05a   11/01/09
+[-] Correções propriedades dos registros 1300 e 1310.
+
 Versão 0.04a   29/12/09
 [*] Implementado hierarquia dos registro 1360 e 1370 por ( Isaque Pinheiro )
 

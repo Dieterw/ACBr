@@ -49,7 +49,7 @@ uses
   ACBrEFDBloco_H_Class;
 
 const
-   CACBrSpedFiscal_Versao = '0.02a' ;
+   CACBrSpedFiscal_Versao = '0.05a' ;
 
 type
   /// ACBrSpedFiscal - Sitema Publico de Escrituração Digital Fiscal

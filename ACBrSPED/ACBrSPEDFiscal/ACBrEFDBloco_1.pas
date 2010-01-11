@@ -229,12 +229,10 @@ type
   private
     fCOD_ITEM: AnsiString;              /// Código do Produto constante do registro 0200
     fDT_FECH: TDateTime;            /// Data do fechamento da movimentação
-    fNR_INTERV: AnsiString;             /// Número da intervenção
     fESTQ_ABERT: Currency;          /// Estoque no inicio do dia
     fVOL_ENTR: Currency;            /// Volume Total das Entradas
     fVOL_DISP: Currency;            /// Volume Disponível (05 + 06)
     fVOL_SAIDAS: Currency;          /// Volume Total das Saídas (Somatório dos registros de Volume de Vendas)
-    fVAL_SAIDAS: Currency;          /// Valor das Vendas (08 x Preço na Bomba)
     fESTQ_ESCR: Currency;           /// Estoque Escritural (07 - 08)
     fVAL_AJ_PERDA: Currency;        /// Valor da Perda
     fVAL_AJ_GANHO: Currency;        /// Valor do ganho
@@ -247,12 +245,10 @@ type
     
     property COD_ITEM: AnsiString       read FCOD_ITEM write FCOD_ITEM;
     property DT_FECH: TDateTime     read FDT_FECH write FDT_FECH;
-    property NR_INTERV: AnsiString      read FNR_INTERV write FNR_INTERV;
     property ESTQ_ABERT: Currency   read FESTQ_ABERT write FESTQ_ABERT;
     property VOL_ENTR: Currency     read FVOL_ENTR write FVOL_ENTR;
     property VOL_DISP: Currency     read FVOL_DISP write FVOL_DISP;
     property VOL_SAIDAS: Currency   read FVOL_SAIDAS write FVOL_SAIDAS;
-    property VAL_SAIDAS: Currency   read FVAL_SAIDAS write FVAL_SAIDAS;
     property ESTQ_ESCR: Currency    read FESTQ_ESCR write FESTQ_ESCR;
     property VAL_AJ_PERDA: Currency read FVAL_AJ_PERDA write FVAL_AJ_PERDA;
     property VAL_AJ_GANHO: Currency read FVAL_AJ_GANHO write FVAL_AJ_GANHO;
@@ -277,28 +273,30 @@ type
 
   TRegistro1310 = class(TPersistent)
   private
-    fNUM_TANQUE:   AnsiString;    /// Tanque onde foi armazenado o combustível
-    fESTQ_ABERT:   Currency;  /// Estoque no inicio do dia, em litros
-    fVOL_ENTR:     Currency;  /// Volume Recebido no dia (em litros)
-    fVOL_DISP:     Currency;  /// Volume Disponível (03 + 04), em litros
-    fVOL_SAIDAS:   Currency;  ///  Volume Total das Saídas, em litros
-    fESTQ_ESCR :   Currency;  /// Estoque Escritural(05 – 06), litros
-    fVAL_AJ_PERDA: Currency;  ///  Valor da Perda, em litros
-    fVAL_AJ_GANHO: Currency;  ///  Valor do ganho, em litros
+    fNUM_TANQUE:   AnsiString; /// Tanque onde foi armazenado o combustível
+    fESTQ_ABERT:   Currency;   /// Estoque no inicio do dia, em litros
+    fVOL_ENTR:     Currency;   /// Volume Recebido no dia (em litros)
+    fVOL_DISP:     Currency;   /// Volume Disponível (03 + 04), em litros
+    fVOL_SAIDAS:   Currency;   /// Volume Total das Saídas, em litros
+    fESTQ_ESCR :   Currency;   /// Estoque Escritural(05 – 06), litros
+    fVAL_AJ_PERDA: Currency;   /// Valor da Perda, em litros
+    fVAL_AJ_GANHO: Currency;   /// Valor do ganho, em litros
+    fFECH_FISICO:  Currency;   /// Volume aferido no tanque, em litros. Estoque de fechamento físico do tanque
 
     FRegistro1320: TRegistro1320List;  /// BLOCO 1 - Lista de Registro1320 (FILHO)
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
 
-    property NUM_TANQUE  : AnsiString   read fNUM_TANQUE   write fNUM_TANQUE   ;
-    property ESTQ_ABERT  : Currency read fESTQ_ABERT   write fESTQ_ABERT   ;
-    property VOL_ENTR    : Currency read fVOL_ENTR     write fVOL_ENTR     ;
-    property VOL_DISP    : Currency read fVOL_DISP     write fVOL_DISP     ;
-    property VOL_SAIDAS  : Currency read fVOL_SAIDAS   write fVOL_SAIDAS    ;
-    property ESTQ_ESCR   : Currency read fESTQ_ESCR    write fESTQ_ESCR     ;
-    property VAL_AJ_PERDA: Currency read fVAL_AJ_PERDA write fVAL_AJ_PERDA  ;
-    property VAL_AJ_GANHO: Currency read fVAL_AJ_GANHO write fVAL_AJ_GANHO  ;
+    property NUM_TANQUE  : AnsiString   read fNUM_TANQUE   write fNUM_TANQUE;
+    property ESTQ_ABERT  : Currency read fESTQ_ABERT   write fESTQ_ABERT;
+    property VOL_ENTR    : Currency read fVOL_ENTR     write fVOL_ENTR;
+    property VOL_DISP    : Currency read fVOL_DISP     write fVOL_DISP;
+    property VOL_SAIDAS  : Currency read fVOL_SAIDAS   write fVOL_SAIDAS;
+    property ESTQ_ESCR   : Currency read fESTQ_ESCR    write fESTQ_ESCR;
+    property VAL_AJ_PERDA: Currency read fVAL_AJ_PERDA write fVAL_AJ_PERDA;
+    property VAL_AJ_GANHO: Currency read fVAL_AJ_GANHO write fVAL_AJ_GANHO;
+    property FECH_FISICO : Currency read fFECH_FISICO write fFECH_FISICO;
 
     property Registro1320: TRegistro1320List read FRegistro1320 write FRegistro1320;
   end;

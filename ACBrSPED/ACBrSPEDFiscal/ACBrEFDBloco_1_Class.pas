@@ -364,12 +364,10 @@ begin
           strRegistro1300 := strRegistro1300 + LFill('1300') +
                                                LFill( COD_ITEM ) +
                                                LFill( DT_FECH ) +
-                                               LFill( NR_INTERV ) +
                                                LFill( ESTQ_ABERT,0,3 ) +
                                                LFill( VOL_ENTR,0,3 ) +
                                                LFill( VOL_DISP,0,3 ) +
                                                LFill( VOL_SAIDAS,0,3 ) +
-                                               LFill( VAL_SAIDAS,0,3 ) +
                                                LFill( ESTQ_ESCR,0,3 ) +
                                                LFill( VAL_AJ_PERDA,0,3 ) +
                                                LFill( VAL_AJ_GANHO,0,3 ) +
@@ -409,6 +407,7 @@ begin
                                                LFill( ESTQ_ESCR,0,3 ) +
                                                LFill( VAL_AJ_PERDA,0,3 ) +
                                                LFill( VAL_AJ_GANHO,0,3 ) +
+                                               LFill( FECH_FISICO,0,3 ) +
                                                Delimitador +
                                                #13#10;
         end;

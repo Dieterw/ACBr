@@ -377,10 +377,7 @@ begin
 
      VarNumPage:='PAGE'+FormatFloat('000000',FCurrentPage);
 
-     if FontNameUsed = 'Courier New' then
-        PrintCenter('SÉRIE '+IntToStr(Ide.Serie)+'-FOLHA '+PIVar(VarNumPage),CenterX)
-     else
-        PrintCenter('SÉRIE '+IntToStr(Ide.Serie)+' - FOLHA '+PIVar(VarNumPage),CenterX);
+     PrintCenter('SÉRIE '+IntToStr(Ide.Serie)+'-FOLHA '+PIVar(VarNumPage),CenterX);
      Bold:=False;
   end;
 end;
@@ -546,10 +543,15 @@ end;
 
 function ImprimirRemetenteDestinatario(PosX,
   PosY: Double): Double;
-var vEnd:String;
+var vEnd:String; vEntSai: string;
 begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
+      if ide.tpNF=tnEntrada then
+         vEntSai:='Entrada'
+      else
+         vEntSai:='Saida';
+
      TituloDoBloco(PosX,PosY,'DESTINATÁRIO / REMETENTE');
      Box([],PosX,YPos,132,aHeigthPadrao,'Nome / Razão Social',Dest.XNome);
      if Length(Dest.CNPJCPF) > 11 then
@@ -567,7 +569,7 @@ begin
        Box([fsTop],PosX,YPos,93,aHeigthPadrao,'Endereço',vEnd);
        Box([fsTop,fsLeft],XPos,YPos,50,aHeigthPadrao,'Bairro',XBairro);
        Box([fsTop,fsLeft],XPos,YPos,30,aHeigthPadrao,'CEP',NotaUtil.FormatarCEP(NotaUtil.Poem_Zeros(CEP,8)),taCenter);
-       Box([fsTop,fsLeft],XPos,YPos,21,aHeigthPadrao,'Data da Saída',NotaUtil.FormatDate(DateToStr(Ide.DSaiEnt)),taCenter,True);
+       Box([fsTop,fsLeft],XPos,YPos,21,aHeigthPadrao,'Data de '+vEntSai,NotaUtil.FormatDate(DateToStr(Ide.DSaiEnt)),taCenter,True);
        Box([fsTop],PosX,YPos,85,aHeigthPadrao,'Município',XMun);
        Box([fsTop,fsLeft],XPos,YPos,40,aHeigthPadrao,'Fone / Fax',NotaUtil.FormatarFone(Fone),taCenter);
        Box([fsTop,fsLeft],XPos,YPos,10,aHeigthPadrao,'Estado',UF,taCenter);
@@ -575,12 +577,12 @@ begin
        if ImprimirHoraSaida then
        begin
           if NotaUtil.EstaVazio(ImprimirHoraSaida_Hora) then
-             Box([fsTop,fsLeft],XPos,YPos,21,aHeigthPadrao,'Hora da Saída',TimeToStr(now),taCenter,True)
+             Box([fsTop,fsLeft],XPos,YPos,21,aHeigthPadrao,'Hora de '+vEntSai,TimeToStr(now),taCenter,True)
           else
-             Box([fsTop,fsLeft],XPos,YPos,21,aHeigthPadrao,'Hora da Saída',ImprimirHoraSaida_Hora,taCenter,True)
+             Box([fsTop,fsLeft],XPos,YPos,21,aHeigthPadrao,'Hora de '+vEntSai,ImprimirHoraSaida_Hora,taCenter,True)
        end
        else
-          Box([fsTop,fsLeft],XPos,YPos,21,aHeigthPadrao,'Hora da Saída','',taCenter,True);
+          Box([fsTop,fsLeft],XPos,YPos,21,aHeigthPadrao,'Hora de '+vEntSai,'',taCenter,True);
      end;
      Result:=YPos;
   end;

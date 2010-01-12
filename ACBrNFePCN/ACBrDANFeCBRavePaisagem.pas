@@ -543,10 +543,15 @@ end;
 
 function ImprimirRemetenteDestinatario(PosX,
   PosY: Double): Double;
-var vEnd:String;
+var vEnd:String; vEntSai: string;
 begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
+      if ide.tpNF=tnEntrada then
+         vEntSai:='Entrada'
+      else
+         vEntSai:='Saida';
+
      PosX:=PosX+aWidthTituloBloco;
      if FormularioContinuo then
         Box([],PosX,PosY,192,aWidthTituloBloco,'Nome / Razão Social',Dest.XNome)
@@ -580,7 +585,7 @@ begin
        Box([fsTop],PosX,YPos,136,aWidthTituloBloco,'Endereço',vEnd);
        Box([fsTop,fsLeft],XPos,YPos,56,aWidthTituloBloco,'Bairro',XBairro);
        Box([fsTop,fsLeft],XPos,YPos,38,aWidthTituloBloco,'CEP',NotaUtil.FormatarCEP(NotaUtil.Poem_Zeros(CEP,8)),taCenter);
-       Box([fsTop,fsLeft],XPos,YPos,21,aWidthTituloBloco,'Data da Saída',NotaUtil.FormatDate(DateToStr(Ide.DSaiEnt)),taCenter,True);
+       Box([fsTop,fsLeft],XPos,YPos,21,aWidthTituloBloco,'Data de '+vEntSai,NotaUtil.FormatDate(DateToStr(Ide.DSaiEnt)),taCenter,True);
        Box([fsTop],PosX,YPos,136,aWidthTituloBloco,'Município',XMun);
        Box([fsTop,fsLeft],XPos,YPos,43,aWidthTituloBloco,'Fone / Fax',NotaUtil.FormatarFone(FONE),taCenter);
        Box([fsTop,fsLeft],XPos,YPos,13,aWidthTituloBloco,'Estado',UF,taCenter);
@@ -588,12 +593,12 @@ begin
        if ImprimirHoraSaida then
        begin
           if NotaUtil.EstaVazio(ImprimirHoraSaida_Hora) then
-             Box([fsTop,fsLeft],XPos,YPos,21,aWidthTituloBloco,'Hora da Saída',TimeToStr(now),taCenter,True)
+             Box([fsTop,fsLeft],XPos,YPos,21,aWidthTituloBloco,'Hora de '+vEntSai,TimeToStr(now),taCenter,True)
           else
-             Box([fsTop,fsLeft],XPos,YPos,21,aWidthTituloBloco,'Hora da Saída',ImprimirHoraSaida_Hora,taCenter,True)
+             Box([fsTop,fsLeft],XPos,YPos,21,aWidthTituloBloco,'Hora de '+vEntSai,ImprimirHoraSaida_Hora,taCenter,True)
        end
        else
-          Box([fsTop,fsLeft],XPos,YPos,21,aWidthTituloBloco,'Hora da Saída','',taCenter,True);
+          Box([fsTop,fsLeft],XPos,YPos,21,aWidthTituloBloco,'Hora de '+vEntSai,'',taCenter,True);
       end;
      Result:=YPos;
      TituloDoBloco([],PosY,PosX,YPos,'DESTINATÁRIO /','REMETENTE');

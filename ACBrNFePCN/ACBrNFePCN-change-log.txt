@@ -47,6 +47,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+
+Alterações   12/01/10
+---------------
+[-] Corrigido impressão (DANFE RAVE CB) de sÉRIE e FOLHA quando for SCAN (caso 449 MANTIS)
+[-] Corrigido impressão (DANFE RAVE CB) de dizeres ENTRADA/SAIDA de acordo com o que for a NFe. (caso 457 MANTIS)
+
 Alterações   18/12/09
 ---------------
 [-] Corrigido impressão de numeração de páginas no DANFE Rave CB. (créditos: João Paulo Leão)

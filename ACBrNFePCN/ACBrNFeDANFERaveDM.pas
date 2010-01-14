@@ -736,6 +736,7 @@ begin
   Connection.WriteField('Contigencia_ID', dtString, 36, '', '');
   Connection.WriteField('Contigencia_Descricao', dtString, 60, '', '');
   Connection.WriteField('Contigencia_Valor', dtString, 60, '', '');
+  Connection.WriteField('LinhasPorPagina', dtInteger,0,'','');
 end;
 
 procedure TdmACBrNFeRave.CustomParametrosCXNOpen(
@@ -828,6 +829,9 @@ begin
             Connection.WriteStrData('', FDANFEClassOwner.ProtocoloNFe);
       end;
    end;
+
+   //linhas por página
+   Connection.WriteIntData('', FDANFEClassOwner.ProdutosPorPagina);
 end;
 
 procedure TdmACBrNFeRave.CustomIdentificacaoCXNGetCols(

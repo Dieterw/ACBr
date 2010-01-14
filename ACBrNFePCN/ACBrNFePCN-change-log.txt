@@ -48,6 +48,16 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   14/01/10
+---------------
+[+] Incluido Propriedade ProdutosPorPagina nos componentes do DANFE. (caso 458 MANTIS)
+    Se propriedade estiver com o valor 0 (zero), o DANFE será impresso normalmente como agora. 
+    Se especificar um valor, será impresso a quantidade máxima de produtos por página.
+    NOTA 1: Essa propriedade NÃO FUNCIONARÁ com o arquivo NotaFiscalEletronica.RAV, funcionará somente com o DANFE_Rave513.rav ou
+            DANFE com RAVE CB
+    NOTA 2: Essa propriedade ainda nao esta funcional no DANFE com RAVE CB
+    NOTA 3: NÃO ESQUEÇA DE ATUALIZAR O ARQUIVO DANFE_RAVE513.RAV NO SEU SISTEMA 
+
 Alterações   12/01/10
 ---------------
 [-] Corrigido impressão (DANFE RAVE CB) de sÉRIE e FOLHA quando for SCAN (caso 449 MANTIS)

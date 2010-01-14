@@ -1,7 +1,7 @@
 object dmACBrNFeRave: TdmACBrNFeRave
   OldCreateOrder = False
-  Left = 200
-  Top = 116
+  Left = 190
+  Top = 113
   Height = 444
   Width = 627
   object CustomDestinatarioCXN: TRvCustomConnection

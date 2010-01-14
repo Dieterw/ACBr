@@ -103,6 +103,7 @@ type
     FExibeResumoCanhoto: boolean;
     FFormularioContinuo: boolean;
     FTamanhoFonte_DemaisCampos: Integer;
+    FProdutosPorPagina: integer;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
   public
     constructor Create(AOwner: TComponent); override;
@@ -137,6 +138,7 @@ type
     property FormularioContinuo: Boolean read FFormularioContinuo write FFormularioContinuo ;
     property ExpandirLogoMarca: Boolean read FExpandirLogoMarca write FExpandirLogoMarca default false ;
     property TamanhoFonte_DemaisCampos: Integer read FTamanhoFonte_DemaisCampos write FTamanhoFonte_DemaisCampos ;
+    property ProdutosPorPagina: Integer read FProdutosPorPagina write FProdutosPorPagina ;
   end;
 
 implementation
@@ -205,6 +207,7 @@ begin
   FExibeResumoCanhoto := false;
   FFormularioContinuo := false;
   FTamanhoFonte_DemaisCampos := 10;
+  FProdutosPorPagina := 0;
   FCasasDecimais := TCasasDecimais.Create(self);
   FCasasDecimais.Name:= 'CasasDecimais' ;
   {$IFDEF COMPILER6_UP}

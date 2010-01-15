@@ -865,7 +865,10 @@ begin
      end;
   finally
      if not ImpressaoOk then
-        CancelarTransacoesPendentes
+      begin
+        try ComandarECF( opeCancelaCupom ); except {Exceção Muda} end ;
+        CancelarTransacoesPendentes;
+      end
      else
         ConfirmarTransacoesPendentes ;
 

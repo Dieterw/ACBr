@@ -169,6 +169,8 @@ type
     class function GerarChaveContingencia(FNFe:TNFe): String;
     class function FormatarChaveContigencia(AValue: String): String;
     class function PreparaCasasDecimais(AValue: Integer): String;
+    class function CollateBr(Str: String): String;
+    class function UpperCase2(Str: String): String;
 
   published
 
@@ -1771,13 +1773,93 @@ end;
 class function NotaUtil.PreparaCasasDecimais(AValue: Integer): String;
 var
    i: integer;
-
 begin
    Result:='0';
    if AValue > 0 then
       Result:=Result+'.';
    for I := 0 to AValue-1 do
       Result:=Result+'0';
+end;
+
+class function NotaUtil.CollateBr(Str: String): String;
+var
+   i, wTamanho: integer;
+   wChar, wResultado: Char;
+begin
+   result:='';
+   wtamanho:=Length(Str);
+   i:=1;
+   while (i <= wtamanho) do
+   begin
+      wChar:=Str[i];
+      case wChar of
+         'á', 'â', 'ã', 'à', 'ä', 'å',
+         'Á', 'Â', 'Ã', 'À', 'Ä', 'Å': wResultado := 'A';
+         'é', 'ê', 'è', 'ë',
+         'É', 'Ê', 'È', 'Ë': wResultado := 'E';
+         'í', 'î', 'ì', 'ï',
+         'Í', 'Î', 'Ì', 'Ï': wResultado := 'I';
+         'ó', 'ô', 'õ', 'ò', 'ö',
+         'Ó', 'Ô', 'Õ', 'Ò', 'Ö': wResultado := 'O';
+         'ú', 'û', 'ù', 'ü',
+         'Ú', 'Û', 'Ù', 'Ü': wResultado := 'U';
+         'ç', 'Ç': wResultado := 'C';
+         'ñ', 'Ñ': wResultado := 'N';
+         'ý', 'ÿ', 'Ý', 'Y': wResultado := 'Y';
+      else
+         wResultado:=wChar;
+      end;
+      i:=i+1;
+      Result:=Result+wResultado;
+   end;
+   Result:=UpperCase(Result);
+end;
+
+class function NotaUtil.UpperCase2(Str: String): String;
+var
+   i, wTamanho: integer;
+   wChar, wResultado: Char;
+begin
+   result:='';
+   wtamanho:=Length(Str);
+   i:=1;
+   while (i <= wtamanho) do
+   begin
+      wChar:=Str[i];
+      case wChar of
+         'á','Á': wResultado := 'Á';
+         'ã','Ã': wResultado := 'Ã';
+         'à','À': wResultado := 'À';
+         'â','Â': wResultado := 'Â';
+         'ä','Ä': wResultado := 'Ä';
+         'å','Å': wResultado := 'Å';
+         'é','É': wResultado := 'É';
+         'è','È': wResultado := 'È';
+         'ê','Ê': wResultado := 'Ê';
+         'ë','Ë': wResultado := 'Ë';
+         'í','Í': wResultado := 'Í';
+         'ì','Ì': wResultado := 'Ì';
+         'î','Î': wResultado := 'Î';
+         'ï','Ï': wResultado := 'Ï';
+         'ó','Ó': wResultado := 'Ó';
+         'õ','Õ': wResultado := 'Õ';
+         'ò','Ò': wResultado := 'Ò';
+         'ô','Ô': wResultado := 'Ô';
+         'ö','Ö': wResultado := 'Ö';
+         'ú','Ú': wResultado := 'Ú';
+         'ù','Ù': wResultado := 'Ù';
+         'û','Û': wResultado := 'Û';
+         'ü','Ü': wResultado := 'Ü';
+         'ç', 'Ç': wResultado := 'Ç';
+         'ñ', 'Ñ': wResultado := 'Ñ';
+         'ý', 'ÿ', 'Ý', 'Y': wResultado := 'Y';
+      else
+         wResultado:=wChar;
+      end;
+      i:=i+1;
+      Result:=Result+wResultado;
+   end;
+   Result:=UpperCase(Result);
 end;
 
 end.

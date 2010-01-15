@@ -379,8 +379,7 @@ begin
        SetFontTitle;
        GotoXY(XX,YY);
        NewLine;
-       PrintXY(XX+1,YPos-0.4,UpperCase(aTitle));
-//       PrintXY(XX+1,YPos-0.4,aTitle);
+       PrintXY(XX+1,YPos-0.4,NotaUtil.UpperCase2(aTitle)); //deixa maiusculo
        NewLine;
        SetFontText;
        GotoXY(XPos,YPos+0.4);

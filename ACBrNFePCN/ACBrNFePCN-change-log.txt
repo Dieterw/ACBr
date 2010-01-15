@@ -48,6 +48,13 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+
+Alterações   15/01/10
+---------------
+[*] Criado funcao UpperCase2 (NFeUtil) para transformar em caixa alta caracteres acentuados.
+    Com isso o caso 460 do mantis pode ser solucionado.
+
+
 Alterações   14/01/10
 ---------------
 [+] Incluido Propriedade ProdutosPorPagina nos componentes do DANFE. (caso 458 MANTIS)

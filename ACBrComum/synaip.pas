@@ -56,7 +56,7 @@ unit synaip;
 interface
 
 uses
-  SysUtils, synautil;
+  SysUtils, SynaUtil;
 
 type
 {:binary form of IPv6 adress (for string conversion routines)}

@@ -70,7 +70,7 @@ uses
 {$IFDEF CIL}
   System.IO,
 {$ENDIF}
-  SysUtils, Classes, synafpc;
+  SysUtils, Classes, SynaFpc;
 
 {$IFDEF VER100}
 type

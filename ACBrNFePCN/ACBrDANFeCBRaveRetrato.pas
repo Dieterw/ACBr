@@ -774,13 +774,18 @@ end;
 
 function ImprimirTransportadorVolumes(PosX,
   PosY: Double): Double;
+var
+   wTemp_FontSizeText: double;
 begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
      TituloDoBloco(PosX,PosY,'TRANSPORTADOR / VOLUMES TRANSPORTADOS');
 
      Box([],PosX,YPos,90,aHeigthPadrao,'Nome / Razão Social',Transp.Transporta.XNome);
+     wTemp_FontSizeText:=FontSizeText;
+     FontSizeText:=8;
      Box([fsLeft],XPos,YPos,27,aHeigthPadrao,'Frete Por Conta',NotaUtil.SeSenao(Transp.ModFrete=mfContaEmitente,'0-EMITENTE','1-DESTINATÁRIO'),taCenter);
+     FontSizeText:=wTemp_FontSizeText;
      Box([fsLeft],XPos,YPos,19,aHeigthPadrao,'Código ANTT',Transp.VeicTransp.RNTC,taCenter);
      Box([fsLeft],XPos,YPos,22,aHeigthPadrao,'Placa do Veículo',Transp.VeicTransp.Placa,taCenter);
      Box([fsLeft],XPos,YPos,8,aHeigthPadrao,'UF',Transp.VeicTransp.UF,taCenter);

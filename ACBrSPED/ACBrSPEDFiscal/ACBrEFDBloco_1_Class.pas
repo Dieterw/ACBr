@@ -677,8 +677,8 @@ begin
         begin
           strRegistro1600 := strRegistro1600 + LFill('1600') +
                                                LFill( COD_PART ) +
-                                               LFill( TOT_CREDITO ) +
-                                               LFill( TOT_DEBITO ) +
+                                               LFill( TOT_CREDITO, 0, 2, True ) +
+                                               LFill( TOT_DEBITO, 0, 2, True ) +
                                                Delimitador +
                                                #13#10;
         end;

@@ -303,6 +303,7 @@ begin
   FRegistroC425Count := 0;
   FRegistroC460Count := 0;
   FRegistroC470Count := 0;
+  FRegistroC490Count := 0;  {Fernando Krause 18Jan2010}
   FRegistroC510Count := 0;
   FRegistroC590Count := 0;
 
@@ -1786,8 +1787,8 @@ begin
                                                LFill( COD_PART ) +
                                                LFill( COD_MOD,2 ) +
                                                LFill( COD_SIT,2 ) +
-                                               LFill( SER,4 ) +
-                                               LFill( SUB,3 ) +
+                                               LFill( SER ) +
+                                               LFill( SUB ) +
                                                LFill( COD_CONS,2 ) +
                                                LFill( NUM_DOC,9 ) +
                                                LFill( DT_DOC ) +

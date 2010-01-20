@@ -8,96 +8,95 @@
   resources were bound to the produced executable.
 */
 
-#define QConsts_SPaste 65264
-#define QConsts_SClear 65265
-#define QConsts_SSelectAll 65266
-#define QConsts_SLoadingEllipsis 65267
-#define QConsts_SNoAppInLib 65268
-#define QConsts_SDuplicateApp 65269
-#define HelpIntfs_hNoTableOfContents 65270
-#define HelpIntfs_hNothingFound 65271
-#define HelpIntfs_hNoContext 65272
-#define HelpIntfs_hNoTopics 65273
-#define QConsts_SOverwriteCaption 65280
-#define QConsts_SOverwriteText 65281
-#define QConsts_SFileMustExist 65282
-#define QConsts_SPathMustExist 65283
-#define QConsts_SDriveNotFound 65284
-#define QConsts_SUnknownImageFormat 65285
-#define QConsts_SInvalidHandle 65286
-#define QConsts_SUnableToWrite 65287
-#define QConsts_sPageIndexError 65288
-#define QConsts_sListRadioItemBadParent 65289
-#define QConsts_sOwnerNotCustomHeaderSections 65290
-#define QConsts_SUndo 65291
-#define QConsts_SRedo 65292
-#define QConsts_SLine 65293
-#define QConsts_SCut 65294
-#define QConsts_SCopy 65295
-#define QConsts_SDefaultFilter 65296
-#define QConsts_SVolume 65297
-#define QConsts_SFreeSpace 65298
-#define QConsts_SMegs 65299
-#define QConsts_SDirectory 65300
-#define QConsts_SFile 65301
-#define QConsts_SDuplicateMenus 65302
-#define QConsts_SNoPreview 65303
-#define QConsts_SImageIndexError 65304
-#define QConsts_SInvalidImageDimensions 65305
-#define QConsts_SInvalidImageDimension 65306
-#define QConsts_SInvalidRangeError 65307
-#define QConsts_SInvalidMimeSourceStream 65308
-#define QConsts_SMimeNotSupportedForIcon 65309
-#define QConsts_SOpen 65310
-#define QConsts_SSave 65311
-#define QConsts_SCannotCreateDirName 65312
-#define QConsts_SAccessDeniedTo 65313
-#define QConsts_SCannotReadDirectory 65314
-#define QConsts_SDirectoryNotEmpty 65315
-#define QConsts_SNewFolder 65316
-#define QConsts_SFileNameNotFound 65317
-#define QConsts_SAlreadyExists 65318
-#define QConsts_SConfirmDeleteTitle 65319
-#define QConsts_SConfirmDeleteMany 65320
-#define QConsts_SConfirmDeleteOne 65321
-#define QConsts_SContinueDelete 65322
-#define QConsts_SName 65323
-#define QConsts_SSize 65324
-#define QConsts_SType 65325
-#define QConsts_SDate 65326
-#define QConsts_SAttributes 65327
-#define QConsts_SVPixmaps 65328
-#define QConsts_SVPNGs 65329
-#define QConsts_SDrawings 65330
-#define QConsts_SVJpegs 65331
-#define QConsts_SMsgDlgWarning 65332
-#define QConsts_SMsgDlgError 65333
-#define QConsts_SMsgDlgInformation 65334
-#define QConsts_SMsgDlgConfirm 65335
-#define QConsts_SMsgDlgYes 65336
-#define QConsts_SMsgDlgNo 65337
-#define QConsts_SMsgDlgOK 65338
-#define QConsts_SMsgDlgCancel 65339
-#define QConsts_SMsgDlgAbort 65340
-#define QConsts_SMsgDlgRetry 65341
-#define QConsts_SMsgDlgIgnore 65342
-#define QConsts_SUnnamed 65343
-#define QConsts_SNotAnMDIForm 65344
-#define QConsts_SMDIChildNotVisible 65345
-#define QConsts_SControlParentSetToSelf 65346
-#define QConsts_SOKButton 65347
-#define QConsts_SCancelButton 65348
-#define QConsts_SYesButton 65349
-#define QConsts_SNoButton 65350
-#define QConsts_SHelpButton 65351
-#define QConsts_SCloseButton 65352
-#define QConsts_SIgnoreButton 65353
-#define QConsts_SRetryButton 65354
-#define QConsts_SAbortButton 65355
-#define QConsts_SAllButton 65356
-#define QConsts_SCannotDragForm 65357
-#define QConsts_SVIcons 65358
-#define QConsts_SVBitmaps 65359
+#define QConsts_SClear 65264
+#define QConsts_SSelectAll 65265
+#define QConsts_SLoadingEllipsis 65266
+#define QConsts_SNoAppInLib 65267
+#define QConsts_SDuplicateApp 65268
+#define HelpIntfs_hNoTableOfContents 65269
+#define HelpIntfs_hNothingFound 65270
+#define HelpIntfs_hNoContext 65271
+#define HelpIntfs_hNoTopics 65272
+#define QConsts_SOverwriteText 65280
+#define QConsts_SFileMustExist 65281
+#define QConsts_SPathMustExist 65282
+#define QConsts_SDriveNotFound 65283
+#define QConsts_SUnknownImageFormat 65284
+#define QConsts_SInvalidHandle 65285
+#define QConsts_SUnableToWrite 65286
+#define QConsts_sPageIndexError 65287
+#define QConsts_sListRadioItemBadParent 65288
+#define QConsts_sOwnerNotCustomHeaderSections 65289
+#define QConsts_SUndo 65290
+#define QConsts_SRedo 65291
+#define QConsts_SLine 65292
+#define QConsts_SCut 65293
+#define QConsts_SCopy 65294
+#define QConsts_SPaste 65295
+#define QConsts_SVolume 65296
+#define QConsts_SFreeSpace 65297
+#define QConsts_SMegs 65298
+#define QConsts_SDirectory 65299
+#define QConsts_SFile 65300
+#define QConsts_SDuplicateMenus 65301
+#define QConsts_SNoPreview 65302
+#define QConsts_SImageIndexError 65303
+#define QConsts_SInvalidImageDimensions 65304
+#define QConsts_SInvalidImageDimension 65305
+#define QConsts_SInvalidRangeError 65306
+#define QConsts_SInvalidMimeSourceStream 65307
+#define QConsts_SMimeNotSupportedForIcon 65308
+#define QConsts_SOpen 65309
+#define QConsts_SSave 65310
+#define QConsts_SOverwriteCaption 65311
+#define QConsts_SAccessDeniedTo 65312
+#define QConsts_SCannotReadDirectory 65313
+#define QConsts_SDirectoryNotEmpty 65314
+#define QConsts_SNewFolder 65315
+#define QConsts_SFileNameNotFound 65316
+#define QConsts_SAlreadyExists 65317
+#define QConsts_SConfirmDeleteTitle 65318
+#define QConsts_SConfirmDeleteMany 65319
+#define QConsts_SConfirmDeleteOne 65320
+#define QConsts_SContinueDelete 65321
+#define QConsts_SName 65322
+#define QConsts_SSize 65323
+#define QConsts_SType 65324
+#define QConsts_SDate 65325
+#define QConsts_SAttributes 65326
+#define QConsts_SDefaultFilter 65327
+#define QConsts_SVPNGs 65328
+#define QConsts_SDrawings 65329
+#define QConsts_SVJpegs 65330
+#define QConsts_SMsgDlgWarning 65331
+#define QConsts_SMsgDlgError 65332
+#define QConsts_SMsgDlgInformation 65333
+#define QConsts_SMsgDlgConfirm 65334
+#define QConsts_SMsgDlgYes 65335
+#define QConsts_SMsgDlgNo 65336
+#define QConsts_SMsgDlgOK 65337
+#define QConsts_SMsgDlgCancel 65338
+#define QConsts_SMsgDlgAbort 65339
+#define QConsts_SMsgDlgRetry 65340
+#define QConsts_SMsgDlgIgnore 65341
+#define QConsts_SUnnamed 65342
+#define QConsts_SCannotCreateDirName 65343
+#define QConsts_SMDIChildNotVisible 65344
+#define QConsts_SControlParentSetToSelf 65345
+#define QConsts_SOKButton 65346
+#define QConsts_SCancelButton 65347
+#define QConsts_SYesButton 65348
+#define QConsts_SNoButton 65349
+#define QConsts_SHelpButton 65350
+#define QConsts_SCloseButton 65351
+#define QConsts_SIgnoreButton 65352
+#define QConsts_SRetryButton 65353
+#define QConsts_SAbortButton 65354
+#define QConsts_SAllButton 65355
+#define QConsts_SCannotDragForm 65356
+#define QConsts_SVIcons 65357
+#define QConsts_SVBitmaps 65358
+#define QConsts_SVPixmaps 65359
 #define QConsts_SInvalidCanvasState 65360
 #define QConsts_SInvalidImageSize 65361
 #define QConsts_SInvalidColorDepth 65362
@@ -105,15 +104,15 @@
 #define QConsts_SParentRequired 65364
 #define QConsts_SVisibleChanged 65365
 #define QConsts_SCannotShowModal 65366
-#define QConsts_SScrollBarRange 65367
-#define QConsts_SPropertyOutOfRange 65368
-#define QConsts_SMenuIndexError 65369
-#define QConsts_SMenuReinserted 65370
-#define QConsts_SNoMenuRecursion 65371
-#define QConsts_SMenuNotFound 65372
-#define QConsts_SMenuSetFormError 65373
-#define QConsts_SGroupIndexTooLow 65374
-#define QConsts_SNoMDIForm 65375
+#define QConsts_SPropertyOutOfRange 65367
+#define QConsts_SMenuIndexError 65368
+#define QConsts_SMenuReinserted 65369
+#define QConsts_SNoMenuRecursion 65370
+#define QConsts_SMenuNotFound 65371
+#define QConsts_SMenuSetFormError 65372
+#define QConsts_SGroupIndexTooLow 65373
+#define QConsts_SNoMDIForm 65374
+#define QConsts_SNotAnMDIForm 65375
 #define QConsts_SmkcSpace 65376
 #define QConsts_SmkcPgUp 65377
 #define QConsts_SmkcPgDn 65378
@@ -276,7 +275,6 @@
 #define SysConst_SInvalidInput 65535
 STRINGTABLE
 BEGIN
-	QConsts_SPaste,	"Colar"
 	QConsts_SClear,	"Limpar"
 	QConsts_SSelectAll,	"Selecionar Todos"
 	QConsts_SLoadingEllipsis,	"Carregando..."
@@ -286,7 +284,6 @@ BEGIN
 	HelpIntfs_hNothingFound,	"No help found for %s"
 	HelpIntfs_hNoContext,	"No context-sensitive help installed"
 	HelpIntfs_hNoTopics,	"No topic-based help system installed"
-	QConsts_SOverwriteCaption,	"Gravar %s como"
 	QConsts_SOverwriteText,	"\"%s\" já existe.\r\nDeseja substitu-lo ?"
 	QConsts_SFileMustExist,	"\"%s\"\r\nArquivo não existe.\r\nPor favor verique se o nome está correto."
 	QConsts_SPathMustExist,	"\"%s\"\r\nCaminho não encontrado.\r\nPor favor verique se o caminho está correto."
@@ -302,7 +299,7 @@ BEGIN
 	QConsts_SLine,	"-"
 	QConsts_SCut,	"Cortar"
 	QConsts_SCopy,	"Copiar"
-	QConsts_SDefaultFilter,	"Todos Arquivos (*.*)|*.*|"
+	QConsts_SPaste,	"Colar"
 	QConsts_SVolume,	"Volume"
 	QConsts_SFreeSpace,	"Espaço Livre"
 	QConsts_SMegs,	"%d MB"
@@ -318,7 +315,7 @@ BEGIN
 	QConsts_SMimeNotSupportedForIcon,	"Mime format not supported for TIcon"
 	QConsts_SOpen,	"Abrir"
 	QConsts_SSave,	"Gravar"
-	QConsts_SCannotCreateDirName,	"Não foi possível criar o diretório \"%s\"."
+	QConsts_SOverwriteCaption,	"Gravar %s como"
 	QConsts_SAccessDeniedTo,	"Acesso não permitido para \"%s\""
 	QConsts_SCannotReadDirectory,	"Não foi possível ler o diretório:\r\n\"%s\""
 	QConsts_SDirectoryNotEmpty,	"Diretório \"%s\" não é vazio."
@@ -334,7 +331,7 @@ BEGIN
 	QConsts_SType,	"Tipo"
 	QConsts_SDate,	"Data Modificado"
 	QConsts_SAttributes,	"Atributos"
-	QConsts_SVPixmaps,	"Pixmaps"
+	QConsts_SDefaultFilter,	"Todos Arquivos (*.*)|*.*|"
 	QConsts_SVPNGs,	"PNGs"
 	QConsts_SDrawings,	"Drawings"
 	QConsts_SVJpegs,	"Jpegs"
@@ -350,7 +347,7 @@ BEGIN
 	QConsts_SMsgDlgRetry,	"&ReTentar"
 	QConsts_SMsgDlgIgnore,	"&Ignorar"
 	QConsts_SUnnamed,	"Sem Nome"
-	QConsts_SNotAnMDIForm,	"Invalid MDIParent for class %s"
+	QConsts_SCannotCreateDirName,	"Não foi possível criar o diretório \"%s\"."
 	QConsts_SMDIChildNotVisible,	"Cannot hide an MDI Child Form"
 	QConsts_SControlParentSetToSelf,	"A control cannot have itself as its parent"
 	QConsts_SOKButton,	"OK"
@@ -366,6 +363,7 @@ BEGIN
 	QConsts_SCannotDragForm,	"Cannot drag a form"
 	QConsts_SVIcons,	"Icons"
 	QConsts_SVBitmaps,	"Bitmaps"
+	QConsts_SVPixmaps,	"Pixmaps"
 	QConsts_SInvalidCanvasState,	"Invalid canvas state request"
 	QConsts_SInvalidImageSize,	"Invalid image size"
 	QConsts_SInvalidColorDepth,	"Color depth must be 1, 8 or 32 bpp"
@@ -373,7 +371,6 @@ BEGIN
 	QConsts_SParentRequired,	"Control '%s' has no parent widget"
 	QConsts_SVisibleChanged,	"Cannot change Visible in OnShow or OnHide"
 	QConsts_SCannotShowModal,	"Cannot make a visible window modal"
-	QConsts_SScrollBarRange,	"Scrollbar property out of range"
 	QConsts_SPropertyOutOfRange,	"%s property out of range"
 	QConsts_SMenuIndexError,	"Menu index out of range"
 	QConsts_SMenuReinserted,	"Menu inserted twice"
@@ -382,6 +379,7 @@ BEGIN
 	QConsts_SMenuSetFormError,	"TMenu.SetForm: argument must be TCustomForm"
 	QConsts_SGroupIndexTooLow,	"GroupIndex cannot be less than a previous menu item's GroupIndex"
 	QConsts_SNoMDIForm,	"Cannot create form. No MDI forms are currently active"
+	QConsts_SNotAnMDIForm,	"Invalid MDIParent for class %s"
 	QConsts_SmkcSpace,	"Space"
 	QConsts_SmkcPgUp,	"PgUp"
 	QConsts_SmkcPgDn,	"PgDn"

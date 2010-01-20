@@ -2933,7 +2933,7 @@ begin
                                       '','2', '', '', '', '', '', '', '', '',
                                       '', '', '', '', '' );
 
-     if (Resp <> 1) then
+     if (Resp < 0) or (Resp > 1) then
         raise Exception.Create( ACBrStr( 'Erro ao executar BemaGeraRegistrosTipoE.'+sLineBreak+
                                          'Cod.: '+IntToStr(Resp) )) ;
 
@@ -3095,7 +3095,7 @@ begin
                                       Pchar( cEndereco ),
                                       '','2','','','','','','','','','','','','','' );
 
-     if (Resp <> 1) then
+     if (Resp < 0) or (Resp > 1) then
         raise Exception.Create( ACBrStr( 'Erro ao executar BemaGeraRegistrosTipoE.'+sLineBreak+
                                          'Cod.: '+IntToStr(Resp) )) ;
 

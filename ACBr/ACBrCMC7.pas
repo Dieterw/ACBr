@@ -210,6 +210,7 @@ begin
   CodBanco := StrToIntDef(Banco,0);
   case CodBanco of
      1: Result := 2;    /// 001 - Banco do Brasil
+    33: Result := 4;    /// 033 - Santander / Banespa
     41: Result := 0;    /// 041 - Banrisul Obs: Este banco utiliza todo o campo para o número da conta
    104: Result := 0;    /// 104 - CEF. Utiliza apenas 7, mas os 3 primeiros são necessários para calcular o dv
 // 237: Result := 3;    /// 237 - Bradesco

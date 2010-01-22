@@ -48,6 +48,13 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   22/01/10
+---------------
+[+] Propriedade ProdutosPorPagina nos componentes do DANFE RAVE CB (caso 458 MANTIS), agora esta funcional
+    Se propriedade estiver com o valor 0 (zero), o DANFE será impresso normalmente como agora. 
+    Se especificar um valor, será impresso a quantidade máxima de produtos por página.
+    (Créditos: João Paulo Leão)
+
 Alterações   19/01/10
 ---------------
 [-] Fixado tamanho de fonte no RAVE CB RETRATO para o campo FRETE POR CONTA.

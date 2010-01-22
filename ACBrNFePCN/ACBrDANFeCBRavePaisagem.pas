@@ -1055,7 +1055,7 @@ begin
 end;
 
 procedure ImprimirItens(PosX:Double);
-var QtdeMin,i,j:Integer;
+var qPrinted, QtdeMin,i,j:Integer;
     aDescProduto, vEnd:String;
     Memo:TMemoBuf;
     aFontHeigth:Double;
@@ -1063,8 +1063,10 @@ begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
      aFontHeigth:=GetFontHeigh;
-     while FDetIndex<Det.Count do
+     qPrinted:=0;
+     while (FDetIndex<Det.Count) and ((LinhasPorPagina=0) or (qPrinted<LinhasPorPagina)) do
       begin
+        Inc(qPrinted);
         with Det.Items[FDetIndex] do
          begin
           aDescProduto:=Trim(Prod.XProd);

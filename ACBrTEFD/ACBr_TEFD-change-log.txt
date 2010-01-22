@@ -47,6 +47,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 1.0b   22/01/10
+[+] Adicionada a propriedade ACBrTEFD.AguardandoResposta : Boolean (readonly)
+    Se retornar True, está aguardando arquivo do G.P. (intpos.sts ou intpos.001)
+[*] Evento OnAguardaResp é chamado quando arquivo for finalmente recebido.
+    (Nesse caso, o parâmetro "SegundosTimeOut" será igual a -1)
+
 Versão 0.9a   23/12/09
 [*] Adicionada verificação de Valor 0 ou negativo antes do inicio de CRT e CHQ
 [-] CliSiTef: Corrigido Bug processamento de Débito com Saque

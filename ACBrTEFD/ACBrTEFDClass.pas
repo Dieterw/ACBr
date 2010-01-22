@@ -55,7 +55,7 @@ uses
   {$ENDIF} ;
 
 const
-   CACBrTEFD_Versao      = '0.9a' ;
+   CACBrTEFD_Versao      = '1.0b' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -577,6 +577,8 @@ type
 
      property Req  : TACBrTEFDReq  read fpReq  ;
      property Resp : TACBrTEFDResp read fpResp ;
+
+     property AguardandoResposta : Boolean read fpAguardandoResposta ;
 
      procedure GravaLog(AString: AnsiString);
 
@@ -1766,6 +1768,11 @@ begin
      until FileExists( ArqSTS ) or ( now > TempoFimEspera ) or Interromper;
   finally
      fpAguardandoResposta := False ;
+     with TACBrTEFD(Owner) do
+     begin
+        if Assigned( OnAguardaResp ) then
+           OnAguardaResp( ArqSTS, -1, Interromper ) ;
+     end;
   end;
 
   if not FileExists( ArqSTS ) then
@@ -1831,6 +1838,11 @@ begin
            until FileExists( ArqResp ) or Interromper ;
         finally
            fpAguardandoResposta := False ;
+           with TACBrTEFD(Owner) do
+           begin
+              if Assigned( OnAguardaResp ) then
+                 OnAguardaResp( ArqResp, -1, Interromper ) ;
+           end ;
         end;
 
         GravaLog( Name +' LeRespostaRequisicao: '+Req.Header+', Verificando conteudo de: '+ArqResp );

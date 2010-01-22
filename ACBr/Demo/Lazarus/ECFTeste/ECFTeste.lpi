@@ -50,8 +50,8 @@
       </Unit0>
       <Unit1>
         <Filename Value="ecfteste1.pas"/>
-        <ComponentName Value="Form1"/>
         <IsPartOfProject Value="True"/>
+        <ComponentName Value="Form1"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ECFTeste1"/>
         <CursorPos X="1" Y="1724"/>
@@ -70,8 +70,8 @@
       </Unit2>
       <Unit3>
         <Filename Value="configuraserial.pas"/>
-        <ComponentName Value="frConfiguraSerial"/>
         <IsPartOfProject Value="True"/>
+        <ComponentName Value="frConfiguraSerial"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ConfiguraSerial"/>
         <CursorPos X="32" Y="25"/>
@@ -87,8 +87,8 @@
       </Unit4>
       <Unit5>
         <Filename Value="efetuapagamento.pas"/>
-        <ComponentName Value="frPagamento"/>
         <IsPartOfProject Value="True"/>
+        <ComponentName Value="frPagamento"/>
         <UnitName Value="EfetuaPagamento"/>
         <CursorPos X="11" Y="8"/>
         <TopLine Value="1"/>
@@ -103,8 +103,8 @@
       </Unit6>
       <Unit7>
         <Filename Value="relatorio.pas"/>
-        <ComponentName Value="frRelatorio"/>
         <IsPartOfProject Value="True"/>
+        <ComponentName Value="frRelatorio"/>
         <UnitName Value="Relatorio"/>
         <CursorPos X="25" Y="31"/>
         <TopLine Value="8"/>
@@ -119,8 +119,8 @@
       </Unit8>
       <Unit9>
         <Filename Value="sobre.pas"/>
-        <ComponentName Value="frmSobre"/>
         <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmSobre"/>
         <UnitName Value="Sobre"/>
         <CursorPos X="1" Y="121"/>
         <TopLine Value="100"/>
@@ -135,8 +135,8 @@
       </Unit10>
       <Unit11>
         <Filename Value="vendeitem.pas"/>
-        <ComponentName Value="frVendeItem"/>
         <IsPartOfProject Value="True"/>
+        <ComponentName Value="frVendeItem"/>
         <UnitName Value="VendeItem"/>
         <CursorPos X="30" Y="15"/>
         <TopLine Value="8"/>
@@ -248,21 +248,21 @@
         <UsageCount Value="17"/>
       </Unit26>
       <Unit27>
-        <Filename Value="C:\lazarus\environmentoptions.xml"/>
+        <Filename Value="..\..\..\..\..\..\..\..\lazarus\environmentoptions.xml"/>
         <CursorPos X="10" Y="17"/>
         <TopLine Value="1"/>
         <UsageCount Value="9"/>
         <SyntaxHighlighter Value="XML"/>
       </Unit27>
       <Unit28>
-        <Filename Value="C:\lazarus\tools\install\win\environmentoptions-win32.xml"/>
+        <Filename Value="..\..\..\..\..\..\..\..\lazarus\tools\install\win\environmentoptions-win32.xml"/>
         <CursorPos X="67" Y="10"/>
         <TopLine Value="1"/>
         <UsageCount Value="9"/>
         <SyntaxHighlighter Value="XML"/>
       </Unit28>
       <Unit29>
-        <Filename Value="C:\lazarus\debugger\debugoptionsfrm.pas"/>
+        <Filename Value="..\..\..\..\..\..\..\..\lazarus\debugger\debugoptionsfrm.pas"/>
         <ComponentName Value="DebuggerOptionsForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
@@ -272,7 +272,7 @@
         <UsageCount Value="9"/>
       </Unit29>
       <Unit30>
-        <Filename Value="C:\lazarus\ide\environmentopts.pp"/>
+        <Filename Value="..\..\..\..\..\..\..\..\lazarus\ide\environmentopts.pp"/>
         <ComponentName Value="EnvironmentOptionsDialog"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
@@ -291,7 +291,7 @@
         <Loaded Value="True"/>
       </Unit31>
       <Unit32>
-        <Filename Value="C:\lazarus\fpc\2.2.2\source\rtl\win32\system.pp"/>
+        <Filename Value="..\..\..\..\..\..\..\..\lazarus\fpc\2.2.2\source\rtl\win32\system.pp"/>
         <UnitName Value="System"/>
         <CursorPos X="35" Y="33"/>
         <TopLine Value="14"/>
@@ -547,7 +547,7 @@
         <UsageCount Value="10"/>
       </Unit67>
       <Unit68>
-        <Filename Value="C:\lazarus\components\turbopower_ipro\iphtml.pas"/>
+        <Filename Value="..\..\..\..\..\..\..\..\lazarus\components\turbopower_ipro\iphtml.pas"/>
         <UnitName Value="IpHtml"/>
         <CursorPos X="14" Y="2867"/>
         <TopLine Value="2848"/>

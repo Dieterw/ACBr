@@ -104,6 +104,7 @@ type
      fTEFList      : TACBrTEFDClassList ;
      fpRespostasPendentes : TACBrTEFDRespostasPendentes;
      function GetAbout : String;
+     function GetAguardandoResposta: Boolean;
      function GetArqReq : String;
      function GetArqResp : String;
      function GetArqSTS : String;
@@ -149,6 +150,7 @@ type
 
      property GPAtual : TACBrTEFDTipo read fGPAtual write SetGPAtual ;
      property TecladoBloqueado : Boolean read fTecladoBloqueado ;
+     property AguardandoResposta : Boolean read GetAguardandoResposta ;
 
      property TEF  : TACBrTEFDClass read fTefClass ;
      property Req  : TACBrTEFDReq   read GetReq  ;
@@ -1217,6 +1219,11 @@ end;
 function TACBrTEFD.GetAbout : String;
 begin
    Result := 'ACBrTEFD Ver: '+CACBrTEFD_Versao;
+end;
+
+function TACBrTEFD.GetAguardandoResposta: Boolean;
+begin
+  Result := fTefClass.AguardandoResposta ;
 end;
 
 procedure TACBrTEFD.SetAbout(const Value: String);

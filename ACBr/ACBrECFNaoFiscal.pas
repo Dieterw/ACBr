@@ -2251,11 +2251,12 @@ begin
 end;
 
 procedure TACBrECFNaoFiscal.AddBufferRelatorio;
-Var Total : Double ;
+Var Total,Brutadia: Double;
     A : Integer ;
     T : String ;
 begin
   Total := 0 ;
+  BrutaDia:=0;
   For A := 0 to 2 do
      with TACBrECFNaoFiscalAliquota( fsAliquotas[A] ) do
         Total := RoundTo(Total + TotalDia,-2) ;
@@ -2274,8 +2275,11 @@ begin
      Add( padC(' Totalizadores ',Colunas,'-') ) ;
      Add( padS('Totalizador Geral:|'+FormatFloat('###,###,##0.00',
         fsGrandeTotal ),Colunas,'|') ) ;
+      For A := 0 To fsAliquotas.Count - 1 Do
+       BrutaDia := RoundTo(BrutaDia + TACBrECFNaoFiscalAliquota(fsAliquotas[A]).TotalDia, -2);
      Add( padS('Venda Bruta Diaria:|'+FormatFloat('###,###,##0.00',
-        fsGrandeTotal ),Colunas,'|') ) ;
+        BrutaDia), Colunas, '|'));
+
      Add( padC('Total Vendido por Aliquota',Colunas,'-') ) ;
      Add( padS('Substituicao Tributaria (FF)|'+FormatFloat('###,###,##0.00',
         TACBrECFNaoFiscalAliquota(fsAliquotas[0]).TotalDia ),Colunas,'|') ) ;

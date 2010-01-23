@@ -1985,28 +1985,64 @@ begin
      Result  := RetornaInfoECF( '11' ) ;
 end;
 
-//IMS 20/10/2009
 function TACBrECFBematech.GetDataHoraSB: TDateTime;
+// Por: Cristian Custodio
 {Segundo a Bematech esta informação tem que se colhida a partir da
 Leitura da Memória Fiscal, só para não retornar erro coloquei esta
 informação abaixo, temos que criar uma rotina que leia a LMF serial
 para retornar os valores corretos}
 Var RetCmd : AnsiString ;
     OldShortDateFormat : String ;
+    Linhas : TStringList;
+    i,x,nLinha, CRZ :Integer;
 begin
-  RetCmd := '010195000000' ;
-  OldShortDateFormat := ShortDateFormat ;
+  nLinha := -1;
+  Result := 0 ;
+  Linhas := TStringList.Create;
+
   try
-     ShortDateFormat := 'dd/mm/yy' ;
-     result := StrToDate(copy(RetCmd, 1,2) + DateSeparator +
-                         copy(RetCmd, 3,2) + DateSeparator +
-                         copy(RetCmd, 5,2)) ;
+    CRZ := StrToIntDef(NumCRZ, 0) ;
+    LeituraMemoriaFiscalSerial(CRZ, CRZ, Linhas);
+
+    for i := 0 to Linhas.Count-1 do
+    begin
+      if pos('SOFTWARE B', Linhas[i]) > 0 then
+      begin
+        for x := i+1 to Linhas.Count-1 do
+        begin
+          if StrToIntDef(StringReplace(Copy(Linhas[x], 1, 8), '.', '', [rfReplaceAll]), 0) = 0 then
+          begin
+             nLinha := x-1;
+             break;
+          end;
+        end;
+        Break;
+      end;
+    end;
+
+    if nLinha >= 0 then
+    begin
+      // 01.00.01                    25/06/2009 21:07:40
+      RetCmd := Linhas[nLinha] ;
+      x := pos('/', RetCmd ) ;
+
+      OldShortDateFormat := ShortDateFormat ;
+      try
+        ShortDateFormat := 'dd/mm/yyyy' ;
+        Result := StrToDate( StringReplace( copy(RetCmd, x-2, 10 ),
+                                         '/', DateSeparator, [rfReplaceAll] ) ) ;
+
+        x := pos(':', RetCmd ) ;
+        Result := RecodeHour(  result,StrToInt(copy(RetCmd, x-2,2))) ;
+        Result := RecodeMinute(result,StrToInt(copy(RetCmd, x+1,2))) ;
+        Result := RecodeSecond(result,StrToInt(copy(RetCmd, x+4,2))) ;
+      finally
+        ShortDateFormat := OldShortDateFormat ;
+      end ;
+    end
   finally
-     ShortDateFormat := OldShortDateFormat ;
+    Linhas.Free ;
   end ;
-  result := RecodeHour(  result,StrToInt(copy(RetCmd, 7,2))) ;
-  result := RecodeMinute(result,StrToInt(copy(RetCmd, 9,2))) ;
-  result := RecodeSecond(result,StrToInt(copy(RetCmd,11,2))) ;
 end;
 
 function TACBrECFBematech.GetSubModeloECF: String;
@@ -3039,7 +3075,7 @@ begin
                              COOInicial,
                              COOFinal);
 
-     if (Resp <> 1) then
+     if (Resp < 0) or (Resp > 1) then
         raise Exception.Create( ACBrStr( 'Erro ao executar GeraTxtPorCOO.'+sLineBreak+
                                          'Cod.: '+IntToStr(Resp) )) ;
 
@@ -3070,7 +3106,8 @@ begin
      try
        Texto.LoadFromFile( ArqTmp+'_ESP_TMP' + '.txt' );
 
-       DiaIni := copy( Texto.Strings[ 6 ], 1, 10 );
+//     DiaIni := copy( Texto.Strings[ 6 ], 1, 10 );
+       DiaIni := copy( Texto.Strings[ 7 ], 1, 10 );
        DiaFim := copy( Texto.Strings[ Texto.Count - 2 ], 20, 10 );
 
        //Para modelos MP-2000 / MP-6000 TH FI, com a DLL BemaMFD;

@@ -266,6 +266,7 @@ type
     ArquivoMFDDLL1: TMenuItem;
     PorCOO3: TMenuItem;
     PorPeriodo3: TMenuItem;
+    DataHoraSwBsico1: TMenuItem;
     procedure cbxModeloChange(Sender: TObject);
     procedure Sair1Click(Sender: TObject);
     procedure bAtivarClick(Sender: TObject);
@@ -429,6 +430,7 @@ type
     procedure TotalIsencao2Click(Sender: TObject);
     procedure PorPeriodo3Click(Sender: TObject);
     procedure PorCOO3Click(Sender: TObject);
+    procedure DataHoraSwBsico1Click(Sender: TObject);
   private
     { Private declarations }
     Function Converte( cmd : String) : String;
@@ -2897,6 +2899,13 @@ begin
 
   ACBrECF1.ArquivoMFD_DLL(nCOOIni, nCOOFim, Arquivo);
   mResp.Lines.Add('---------------------------------');
+end;
+
+procedure TForm1.DataHoraSwBsico1Click(Sender: TObject);
+begin
+  mResp.Lines.Add( 'Data Hora Sw.Básico: ('+ FormatDateTime('dd/mm/yy hh:nn:ss',
+                   ACBrECF1.DataHoraSB) +')' );
+  AtualizaMemos ;
 end;
 
 END.

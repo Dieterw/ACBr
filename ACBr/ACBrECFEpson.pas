@@ -2838,8 +2838,8 @@ begin
 
     AbrePortaSerialDLL ;
 
-    CooIni := IntToStrZero( COOInicial, 6 ) ;
-    CooFim := IntToStrZero( COOFinal, 6 ) ;
+    CooIni := IntToStr( COOInicial ) ;
+    CooFim := IntToStr( COOFinal ) ;
 
     Resp := xEPSON_Obter_Dados_MF_MFD(  PChar(COOIni), PChar(CooFim),
                                         2,                // Faixa em COO
@@ -2891,7 +2891,7 @@ begin
     Resp := xEPSON_Obter_Dados_MF_MFD(  PChar(DiaIni), PChar(DiaFim),
                                         0,                // Faixa em Datas
                                         DocumentosToNum(Documentos),
-                                        2,                // Ato Cotepe - MFD
+                                        3,                // Ato Cotepe - MFD
                                         0,                // Nao Gera Sintegra
                                         PChar( ArqTmp ) );
     if (Resp <> 0) then
@@ -2932,8 +2932,8 @@ begin
 
     AbrePortaSerialDLL ;
 
-    CooIni := IntToStrZero( COOInicial, 6 ) ;
-    CooFim := IntToStrZero( COOFinal, 6 ) ;
+    CooIni := IntToStr( COOInicial ) ;
+    CooFim := IntToStr( COOFinal ) ;
 
     Resp := xEPSON_Obter_Dados_MF_MFD(  PChar(COOIni), PChar(CooFim),
                                         2,                // Faixa em COO

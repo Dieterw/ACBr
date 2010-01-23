@@ -4771,6 +4771,10 @@ object Form1: TForm1
           Caption = 'Cliche'
           OnClick = Cliche1Click
         end
+        object DataHoraSwBsico1: TMenuItem
+          Caption = 'Data Hora Sw.B'#225'sico'
+          OnClick = DataHoraSwBsico1Click
+        end
       end
       object N19: TMenuItem
         Caption = '-'

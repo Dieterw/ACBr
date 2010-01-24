@@ -42,54 +42,54 @@ unit ACBrSped;
 
 interface
 
-uses SysUtils, Classes, DateUtils;
+uses SysUtils, Classes, DateUtils, ACBrUtilTXT;
 
 type
-  TErrorEvent = procedure(const MsnError: AnsiString) of object;
+//  TErrorEvent = procedure(const MsnError: AnsiString) of object;
 
-  TACBrSPED = class(TComponent)
+  TACBrSPED = class(TACBrTXT)
   private
-    FOnError: TErrorEvent;
-    FDelimitador: AnsiString;     /// Caracter delimitador de campos
-    FTrimString: boolean;         /// Retorna a string sem espaços em branco iniciais e finais
-    FCurMascara: AnsiString;      /// Mascara para valores tipo currency
+//    FOnError: TErrorEvent;
+//    FDelimitador: AnsiString;     /// Caracter delimitador de campos
+//    FTrimString: boolean;         /// Retorna a string sem espaços em branco iniciais e finais
+//    FCurMascara: AnsiString;      /// Mascara para valores tipo currency
     FDT_INI: TDateTime;           /// Data inicial das informações contidas no arquivo
     FDT_FIN: TDateTime;           /// Data final das informações contidas no arquivo
 
-    function GetOnError: TErrorEvent; /// Método do evento OnError
-    procedure SetOnError(const Value: TErrorEvent); /// Método SetError
-    procedure AssignError(MsnError: AnsiString);
+//    function GetOnError: TErrorEvent; /// Método do evento OnError
+//    procedure SetOnError(const Value: TErrorEvent); /// Método SetError
+//    procedure AssignError(MsnError: AnsiString);
   protected
     function GetDT_FIN: TDateTime; virtual;
     function GetDT_INI: TDateTime; virtual;
-    function GetDelimitador: AnsiString; virtual;
-    function GetTrimString: boolean; virtual;
-    function GetCurMascara: AnsiString; virtual;
+//    function GetDelimitador: AnsiString; virtual;
+//    function GetTrimString: boolean; virtual;
+//    function GetCurMascara: AnsiString; virtual;
     procedure SetDT_FIN(const Value: TDateTime); virtual;
     procedure SetDT_INI(const Value: TDateTime); virtual;
-    procedure SetDelimitador(const Value: AnsiString); virtual;
-    procedure SetTrimString(const Value: boolean); virtual;
-    procedure SetCurMascara(const Value: AnsiString); virtual;
+//    procedure SetDelimitador(const Value: AnsiString); virtual;
+//    procedure SetTrimString(const Value: boolean); virtual;
+//    procedure SetCurMascara(const Value: AnsiString); virtual;
   public
     constructor Create(AOwner: TComponent); override; /// Create
     destructor Destroy; override; /// Destroy
 
-    function RFill(Value: AnsiString; Size: Integer = 0; Caracter: Char = ' '): AnsiString; overload;
-    function LFill(Value: AnsiString; Size: Integer = 0; Caracter: Char = '0'): AnsiString; overload;
-    function LFill(Value: Currency; Size: Integer; Decimal: Integer = 2; Nulo: Boolean = false; Caracter: Char = '0'): AnsiString; overload;
-    function LFill(Value: Integer; Size: Integer; Nulo: Boolean = false; Caracter: Char = '0'): AnsiString; overload;
-    function LFill(Value: TDateTime; Mask: AnsiString = 'ddmmyyyy'; Nulo: Boolean = false): AnsiString; overload;
+//    function RFill(Value: AnsiString; Size: Integer = 0; Caracter: Char = ' '): AnsiString; overload;
+//    function LFill(Value: AnsiString; Size: Integer = 0; Caracter: Char = '0'): AnsiString; overload;
+//    function LFill(Value: Currency; Size: Integer; Decimal: Integer = 2; Nulo: Boolean = false; Caracter: Char = '0'): AnsiString; overload;
+//    function LFill(Value: Integer; Size: Integer; Nulo: Boolean = false; Caracter: Char = '0'): AnsiString; overload;
+//    function LFill(Value: TDateTime; Mask: AnsiString = 'ddmmyyyy'; Nulo: Boolean = false): AnsiString; overload;
     ///
-    procedure Check(Condicao: Boolean; const Msg: AnsiString); overload;
-    procedure Check(Condicao: Boolean; Msg: AnsiString; Fmt: array of const); overload;
+//    procedure Check(Condicao: Boolean; const Msg: AnsiString); overload;
+//    procedure Check(Condicao: Boolean; Msg: AnsiString; Fmt: array of const); overload;
     ///
     property DT_INI: TDateTime read GetDT_INI write SetDT_INI;
     property DT_FIN: TDateTime read GetDT_FIN write SetDT_FIN;
-    property Delimitador: AnsiString read GetDelimitador write SetDelimitador;
-    property TrimString: boolean read GetTrimString write SetTrimString;
-    property CurMascara: AnsiString read GetCurMascara write SetCurMascara;
+//    property Delimitador: AnsiString read GetDelimitador write SetDelimitador;
+//    property TrimString: boolean read GetTrimString write SetTrimString;
+//    property CurMascara: AnsiString read GetCurMascara write SetCurMascara;
 
-    property OnError: TErrorEvent read GetOnError write SetOnError;
+//    property OnError: TErrorEvent read GetOnError write SetOnError;
   end;
 
 implementation
@@ -97,7 +97,7 @@ implementation
 uses ACBrSpedUtils;
 
 (* TACBrSPED *)
-
+{
 procedure TACBrSPED.Check(Condicao: Boolean; const Msg: AnsiString);
 begin
   if not Condicao then AssignError(Msg);
@@ -107,13 +107,13 @@ procedure TACBrSPED.Check(Condicao: Boolean; Msg: AnsiString; Fmt: array of cons
 begin
   Check(Condicao, Format(Msg, Fmt));
 end;
-
+}
 constructor TACBrSPED.Create(AOwner: TComponent);
 begin
   inherited;
-  FDelimitador := '|';
-  FTrimString  := true;
-  FCurMascara  := '#0.00';
+//  FDelimitador := '|';
+//  FTrimString  := true;
+//  FCurMascara  := '#0.00';
 end;
 
 destructor TACBrSPED.Destroy;
@@ -121,7 +121,7 @@ begin
 
   inherited;
 end;
-
+{
 function TACBrSPED.RFill(Value: AnsiString; Size: Integer = 0; Caracter: Char = ' '): AnsiString;
 begin
   if (Size > 0) and (Length(Value) > Size) then
@@ -206,7 +206,7 @@ function TACBrSPED.GetDelimitador: AnsiString;
 begin
    Result := FDelimitador;
 end;
-
+}
 function TACBrSPED.GetDT_FIN: TDateTime;
 begin
    Result := FDT_FIN;
@@ -216,7 +216,7 @@ function TACBrSPED.GetDT_INI: TDateTime;
 begin
    Result := FDT_INI;
 end;
-
+{
 function TACBrSPED.GetOnError: TErrorEvent;
 begin
   Result := FOnError;
@@ -236,7 +236,7 @@ procedure TACBrSPED.SetDelimitador(const Value: AnsiString);
 begin
    FDelimitador := Value;
 end;
-
+}
 procedure TACBrSPED.SetDT_FIN(const Value: TDateTime);
 begin
   FDT_FIN := Value;
@@ -246,7 +246,7 @@ procedure TACBrSPED.SetDT_INI(const Value: TDateTime);
 begin
   FDT_INI := Value;
 end;
-
+{
 procedure TACBrSPED.SetOnError(const Value: TErrorEvent);
 begin
   FOnError := Value;
@@ -261,5 +261,5 @@ procedure TACBrSPED.AssignError(MsnError: AnsiString);
 begin
   if Assigned(FOnError) then FOnError(MsnError);
 end;
-
+}
 end.

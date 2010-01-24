@@ -48,7 +48,7 @@ uses
   ACBrECDBloco_J_Class;
 
 const
-   CACBrSpedContabil_Versao = '0.02a' ;
+   CACBrSpedContabil_Versao = '0.03a' ;
 
 type
   /// ACBrSpedContabil - Sitema Publico de Escrituração Digital Contabil

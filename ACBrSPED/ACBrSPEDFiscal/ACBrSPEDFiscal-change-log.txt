@@ -47,6 +47,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.06a   23/01/09
+[*] Foi criado uma nova unit (ACBrUtilTXT.pas) na pasta ACBrComum, com o conteúdo
+    que está comentado na unit ACBrSped.pas
+
 Versão 0.05a   11/01/09
 [-] Correções propriedades dos registros 1300 e 1310.
 

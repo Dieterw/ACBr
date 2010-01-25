@@ -131,7 +131,7 @@ type
 implementation
 
 {$IFNDEF FPC}
- {$R ACBr_PAF.dcr}
+ {$R ACBrPAF.dcr}
 {$ENDIF}
 
 procedure Register;

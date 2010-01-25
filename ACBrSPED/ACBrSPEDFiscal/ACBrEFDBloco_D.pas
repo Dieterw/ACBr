@@ -1002,6 +1002,7 @@ type
     fVL_PIS: currency;        /// Valor do PIS
     fVL_COFINS: currency;     /// Valor da COFINS
     fCOD_CTA: AnsiString;         /// Código da conta analítica contábil debitada/creditada
+    fTP_ASSINANTE: AnsiString;    /// Código do Tipo de Assinante: 1 - Comercial/Industrial, 2 - Poder Público, 3 - Residencial/Pessoa física, 4 - Público, 5 - Semi-Público, 6 - Outros
 
     FRegistroD590: TRegistroD590List;  /// BLOCO D - Lista de RegistroD590 (FILHO) {Jean Barreiros 04Dez2009}
   public
@@ -1030,6 +1031,7 @@ type
     property VL_PIS: currency read FVL_PIS write FVL_PIS;
     property VL_COFINS: currency read FVL_COFINS write FVL_COFINS;
     property COD_CTA: AnsiString read FCOD_CTA write FCOD_CTA;
+    property TP_ASSINANTE: AnsiString read FTP_ASSINANTE write FTP_ASSINANTE;
 
     property RegistroD590: TRegistroD590List read FRegistroD590 write FRegistroD590;  {Jean Barreiros 04Dez2009}
   end;

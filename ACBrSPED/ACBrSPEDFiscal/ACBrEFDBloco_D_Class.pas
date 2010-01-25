@@ -1095,6 +1095,7 @@ begin
                                                LFill( VL_PIS,0,2 ) +
                                                LFill( VL_COFINS,0,2 ) +
                                                LFill( COD_CTA ) +
+                                               LFill( TP_ASSINANTE ) +
                                                Delimitador +
                                                #13#10;
         end;

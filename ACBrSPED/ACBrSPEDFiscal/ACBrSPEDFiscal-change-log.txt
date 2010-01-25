@@ -47,11 +47,15 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
-Versão 0.06a   23/01/09
+Versão 0.06a   25/01/10
+[+] Implementação feita no RegistroD500, conforme Guia Prático EFD 2.0.0 por
+    (Fernando_Totall)
+
+Versão 0.06a   23/01/10
 [*] Foi criado uma nova unit (ACBrUtilTXT.pas) na pasta ACBrComum, com o conteúdo
     que está comentado na unit ACBrSped.pas
 
-Versão 0.05a   11/01/09
+Versão 0.05a   11/01/10
 [-] Correções propriedades dos registros 1300 e 1310.
 
 Versão 0.04a   29/12/09

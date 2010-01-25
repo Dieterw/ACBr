@@ -490,6 +490,8 @@ type
     fCOD_INF: AnsiString;          /// Código da informação complementar do documento fiscal (campo 02 do Registro 0450)
     fVL_PIS: currency;         /// Valor do PIS
     fVL_COFINS: currency;      /// Valor da COFINS
+    fTP_LIGACAO:AnsiString;   /// Código de tipo de Ligação [ 1 - Monofásico 2 - Bifásico 3 - Trifásico ]
+    fCOD_GRUPO_TENSAO:AnsiString; /// Código de grupo de tensão: Vide Manual Registro C500 Campo 27
   public
     property IND_OPER: AnsiString read FIND_OPER write FIND_OPER;
     property IND_EMIT: AnsiString read FIND_EMIT write FIND_EMIT;
@@ -515,6 +517,8 @@ type
     property COD_INF: AnsiString read FCOD_INF write FCOD_INF;
     property VL_PIS: currency read FVL_PIS write FVL_PIS;
     property VL_COFINS: currency read FVL_COFINS write FVL_COFINS;
+    property TP_LIGACAO:        AnsiString read fTP_LIGACAO       write fTP_LIGACAO;
+    property COD_GRUPO_TENSAO:  AnsiString read fCOD_GRUPO_TENSAO write fCOD_GRUPO_TENSAO;
   end;
 
   /// Registro 1500 - Lista

@@ -1642,10 +1642,10 @@ type
     fCOD_INF: AnsiString;         /// Código da informação complementar do documento fiscal (campo 02 do Registro 0450)
     fVL_PIS: currency;        /// Valor do PIS
     fVL_COFINS: currency;     /// Valor da COFINS
-    fTP_LIGACAO      :AnsiString; /// Código de tipo de Ligação [ 1 - Monofásico 2 - Bifásico 3 - Trifásico ]
+    fTP_LIGACAO:AnsiString;   /// Código de tipo de Ligação [ 1 - Monofásico 2 - Bifásico 3 - Trifásico ]
     fCOD_GRUPO_TENSAO:AnsiString; /// Código de grupo de tensão: Vide Manual Registro C500 Campo 27
 
-    FRegistroC510: TRegistroC510List;  /// BLOCO C - Lista de RegistroC510 (FILHO) {Márcio Lopes 20Dez2009} 
+    FRegistroC510: TRegistroC510List;  /// BLOCO C - Lista de RegistroC510 (FILHO) {Márcio Lopes 20Dez2009}
     FRegistroC590: TRegistroC590List;  /// BLOCO C - Lista de RegistroC590 (FILHO) {Márcio Lopes 20Dez2009}
 
   public

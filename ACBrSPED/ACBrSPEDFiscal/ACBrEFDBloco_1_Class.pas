@@ -610,6 +610,8 @@ begin
                                                LFill( COD_INF ) +
                                                LFill( VL_PIS,0,2 ) +
                                                LFill( VL_COFINS,0,2 ) +
+                                               LFill( TP_LIGACAO ) +
+                                               LFill( COD_GRUPO_TENSAO ) +
                                                Delimitador +
                                                #13#10;
         end;

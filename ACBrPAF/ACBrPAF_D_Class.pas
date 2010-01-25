@@ -137,6 +137,7 @@ begin
                                            LFill(DT_DAV, 'yyyymmdd') +
                                            RFill(TIT_DAV, 30) +
                                            LFill(VLT_DAV, 8, 0) +
+                                           RFill(CCF, 6) +
                                            #13#10;
         end;
         ///

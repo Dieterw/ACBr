@@ -47,6 +47,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.01a   25/01/10
+---------------
+[+] Implementado no RegistroD2 a propriedade "CCF" conforme AC 
+    http://www.fazenda.gov.br/confaz/confaz/atos/atos_cotepe/2009/ac036_09.htm
+
 Versão 0.01a   23/01/10
 ---------------
 [+] Início do Projeto

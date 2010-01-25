@@ -288,7 +288,7 @@ end;
    bResult: boolean;
  begin
    bResult := False;
-   S := PAnsiChar('\\.\' + sDriveLetter[1] + ':');
+   S := '\\.\' + sDriveLetter[1] + ':';
 
    //NOTE: this may only work for the SYSTEM user
    hDrive    := CreateFile(PChar(S), GENERIC_READ or

@@ -1,5 +1,5 @@
 {==============================================================================|
-| Project : Ararat Synapse                                       | 009.008.000 |
+| Project : Ararat Synapse                                       | 009.008.002 |
 |==============================================================================|
 | Content: Library base                                                        |
 |==============================================================================|
@@ -81,6 +81,13 @@ Core with implementation basic socket classes.
 {$Q-}
 {$H+}
 {$M+}
+
+//old Delphi does not have MSWINDOWS define.
+{$IFDEF WIN32}
+  {$IFNDEF MSWINDOWS}
+    {$DEFINE MSWINDOWS}
+  {$ENDIF}
+{$ENDIF}
 
 unit blcksock;
 
@@ -683,9 +690,12 @@ type
     {:Return value of protocol type for socket creation.}
     function GetSocketProtocol: integer; Virtual;
 
-    {:WSA structure with information about socket provider. On linux is this
-     structure simulated!}
+    {:WSA structure with information about socket provider. On non-windows 
+     platforms this structure is simulated!}
     property WSAData: TWSADATA read GetWsaData;
+
+    {:FDset structure prepared for usage with this socket.}
+    property FDset: TFDSet read FFDset;
 
     {:Structure describing local socket side.}
     property LocalSin: TVarSin read FLocalSin write FLocalSin;
@@ -936,10 +946,6 @@ type
     constructor CreateWithSSL(SSLPlugin: TSSLClass);
     destructor Destroy; override;
 
-    {:Return descriptive string for @link(LastError). On case of error
-     in SSL/TLS subsystem, it returns right error description.}
-    function GetErrorDescEx: string; override;
-
     {:See @link(TBlockSocket.CloseSocket)}
     procedure CloseSocket; override;
 
@@ -1030,6 +1036,10 @@ type
     {:@True if is used HTTP tunnel mode.}
     property HTTPTunnel: Boolean read FHTTPTunnel;
   published
+    {:Return descriptive string for @link(LastError). On case of error
+     in SSL/TLS subsystem, it returns right error description.}
+    function GetErrorDescEx: string; override;
+
     {:Specify IP address of HTTP proxy. Assingning non-empty value to this
      property enable HTTP-tunnel mode. This mode is for tunnelling any outgoing
      TCP connection through HTTP proxy server. (If policy on HTTP proxy server
@@ -1546,7 +1556,7 @@ var
   li: TLinger;
   x: integer;
   buf: TMemory;
-{$IFNDEF WIN32}
+{$IFNDEF MSWINDOWS}
   timeval: TTimeval;
 {$ENDIF}
 begin
@@ -1596,7 +1606,7 @@ begin
         synsock.SetSockOpt(FSocket, integer(SOL_SOCKET), integer(SO_RCVTIMEO),
           buf, SizeOf(Value.Value));
         {$ELSE}
-          {$IFDEF WIN32}
+          {$IFDEF MSWINDOWS}
         buf := @Value.Value;
         synsock.SetSockOpt(FSocket, integer(SOL_SOCKET), integer(SO_RCVTIMEO),
           buf, SizeOf(Value.Value));
@@ -1613,7 +1623,7 @@ begin
         {$IFDEF CIL}
         buf := System.BitConverter.GetBytes(value.Value);
         {$ELSE}
-          {$IFDEF WIN32}
+          {$IFDEF MSWINDOWS}
         buf := @Value.Value;
         synsock.SetSockOpt(FSocket, integer(SOL_SOCKET), integer(SO_SNDTIMEO),
           buf, SizeOf(Value.Value));
@@ -2243,7 +2253,7 @@ begin
   end
   else
   begin
-    {$IFDEF WIN32}
+    {$IFDEF MSWINDOWS}
     //not drain CPU on large downloads...
     Sleep(0);
     {$ENDIF}

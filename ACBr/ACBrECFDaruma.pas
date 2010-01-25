@@ -3420,7 +3420,7 @@ begin
   try
     if fpMFD then
     begin
-      RetCmd  :=  RetornaInfoECF('85') ;
+      RetCmd  :=  RetornaInfoECF('085') ;
 
       ShortDateFormat := 'dd/mm/yyyy' ;
       result := StrToDate(copy(RetCmd,1,2)+ DateSeparator +
@@ -4029,6 +4029,11 @@ begin
   if Resp <> 1 then
      raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
      'Daruma_Registry_AlterarRegistry( "ECF", "ControlePorta", "2" ) ') );
+
+  Resp := xDaruma_Registry_AlterarRegistry('ECF', 'ThreadNoStartup', '0');
+  if Resp <> 1 then
+     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
+     'Daruma_Registry_AlterarRegistry( "ECF", "ThreadNoStartup", "0" ) ') );
 
   Resp := xDaruma_Registry_AlterarRegistry( 'ECF', 'Velocidade', PChar( Velocidade ) );
   if Resp <> 1 then

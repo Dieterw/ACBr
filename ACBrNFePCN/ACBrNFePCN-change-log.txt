@@ -47,6 +47,9 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Alterações   22/01/10
+---------------
+[+] Incluido pacote de Danfe em Fortes Reports (Creditos: Peterson de Cerqueira Matos)
 
 Alterações   22/01/10
 ---------------

@@ -1300,8 +1300,12 @@ begin
      LimparTeclado;
 
   if not Tratado then
+  begin
+   {$IFDEF MSWINDOWS}
      if Assigned( xBlockInput ) then
         xBlockInput( Bloqueia ) ;
+   {$ENDIF}
+  end;
 end;
 
  procedure TACBrTEFD.LimparTeclado;
@@ -1360,4 +1364,4 @@ initialization
 {$endif}
 
 end.
-
+

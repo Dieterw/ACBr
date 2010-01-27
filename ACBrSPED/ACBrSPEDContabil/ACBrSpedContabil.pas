@@ -93,7 +93,7 @@ type
     function WriteRegistroI100: AnsiString;
     function WriteRegistroI150: AnsiString;
     function WriteRegistroI151: AnsiString;
-    function WriteRegistroI155: AnsiString;
+    function WriteRegistroI200: AnsiString;
 
     function WriteRegistroI990: AnsiString;
     /// BLOCO J
@@ -281,7 +281,7 @@ begin
     if Bloco_I.RegistroI100.Count > 0 then Write(txtFile, WriteRegistroI100);
     if Bloco_I.RegistroI150.Count > 0 then Write(txtFile, WriteRegistroI150);
     if Bloco_I.RegistroI151.Count > 0 then Write(txtFile, WriteRegistroI151);
-    if Bloco_I.RegistroI155.Count > 0 then Write(txtFile, WriteRegistroI155);
+    if Bloco_I.RegistroI200.Count > 0 then Write(txtFile, WriteRegistroI200);
 
     Write(txtFile, WriteRegistroI990);
 
@@ -495,12 +495,18 @@ end;
 
 function TACBrSPEDContabil.WriteRegistroI150: AnsiString;
 begin
+   Result := Bloco_I.WriteRegistroI150;
+
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'I150';
       QTD_REG_BLC := 1;
    end;
-   Result := Bloco_I.WriteRegistroI150;
+   with Bloco_9.Registro9900.New do
+   begin
+      REG_BLC := 'I155';
+      QTD_REG_BLC := Bloco_I.RegistroI155Count;
+   end;
 end;
 
 function TACBrSPEDContabil.WriteRegistroI151: AnsiString;
@@ -513,14 +519,20 @@ begin
    Result := Bloco_I.WriteRegistroI151;
 end;
 
-function TACBrSPEDContabil.WriteRegistroI155: AnsiString;
+function TACBrSPEDContabil.WriteRegistroI200: AnsiString;
 begin
+   Result := Bloco_I.WriteRegistroI200;
+
    with Bloco_9.Registro9900.New do
    begin
-      REG_BLC := 'I155';
+      REG_BLC := 'I200';
       QTD_REG_BLC := 1;
    end;
-   Result := Bloco_I.WriteRegistroI155;
+   with Bloco_9.Registro9900.New do
+   begin
+      REG_BLC := 'I250';
+      QTD_REG_BLC := Bloco_I.RegistroI250Count;
+   end;
 end;
 
 function TACBrSPEDContabil.WriteRegistroI990: AnsiString;

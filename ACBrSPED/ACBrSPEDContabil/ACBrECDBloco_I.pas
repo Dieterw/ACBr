@@ -53,6 +53,9 @@ type
   public
   end;
 
+  TRegistroI155List = class;
+  TRegistroI250List = class;
+
   /// Registro I010 - IDENTIFICAÇÃO DA ESCRITURAÇÃO CONTÁBIL
 
   TRegistroI010 = class(TPersistent)
@@ -302,9 +305,16 @@ type
   private
     fDT_INI: TDateTime; /// Data de início do período.
     fDT_FIN: TDateTime; /// Data de fim do período.
+
+    FRegistroI155: TRegistroI155List;  /// BLOCO I - Lista de RegistroI155 (FILHO)
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property DT_INI: TDateTime read fDT_INI write fDT_INI;
     property DT_FIN: TDateTime read fDT_FIN write fDT_FIN;
+    /// Registros FILHOS
+    property RegistroI155: TRegistroI155List read FRegistroI155 write FRegistroI155;
   end;
 
   /// Registro I150 - Lista
@@ -374,6 +384,73 @@ type
     destructor Destroy; override;
     function New: TRegistroI155;
     property Items[Index: Integer]: TRegistroI155 read GetItem write SetItem;
+  end;
+
+
+  // Registro I200 - Lançamentos Contábeis
+
+  TRegistroI200 = class(TPersistent)
+  private
+    fNUM_LCTO: AnsiString;        // Número de identificação do lançamento
+    fDT_LCTO: AnsiString;         // Data do lançamento
+    fVL_LCTO: Currency;           // Valor do Lançamento
+    fIND_LCTO: AnsiString;        // Indicador do tipo do lançamento
+
+    fRegistroI250: TRegistroI250List; /// BLOCO I - Lista de RegistroI250 (FILHO)
+  public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
+    property NUM_LCTO: AnsiString read fNUM_LCTO write fNUM_LCTO;
+    property DT_LCTO: AnsiString read fDT_LCTO write fDT_LCTO;
+    property VL_LCTO: Currency read fVL_LCTO write fVL_LCTO;
+    property IND_LCTO: AnsiString read fIND_LCTO write fIND_LCTO;
+    property RegistroI250: TRegistroI250List read fRegistroI250 write fRegistroI250;
+  end;
+
+  TRegistroI200List = class(TList)
+  private
+    function GetItem(Index: Integer): TRegistroI200;
+    procedure SetItem(Index: Integer; Value: TRegistroI200);
+  public
+    destructor Destroy; override;
+    function New: TRegistroI200;
+    property Items[Index: Integer]: TRegistroI200 read GetItem write SetItem;
+  end;
+
+  // Registro I250 - Partidas do Lançamentos
+
+  TRegistroI250 = class(TPersistent)
+  private
+    fCOD_CTA: AnsiString;
+    fCOD_CCUS: AnsiString;
+    fVL_DC: Currency;
+    fIND_DC: AnsiString;
+    fNUM_ARQ: AnsiString;
+    fCOD_HIST_PAD: AnsiString;
+    fHIST: AnsiString;
+    fCOD_PART: AnsiString;
+  public
+    property COD_CTA: AnsiString read fCOD_CTA write fCOD_CTA;
+    property COD_CCUS: AnsiString read fCOD_CCUS write fCOD_CCUS;
+    property VL_DC: Currency read fVL_DC write fVL_DC;
+    property IND_DC: AnsiString read fIND_DC write fIND_DC;
+    property NUM_ARQ: AnsiString  read fNUM_ARQ write fNUM_ARQ;
+    property COD_HIST_PAD: AnsiString  read fCOD_HIST_PAD write fCOD_HIST_PAD;
+    property HIST: AnsiString read fHIST write fHIST;
+    property COD_PART: AnsiString read fCOD_PART write fCOD_PART;
+  end;
+
+  // Registro I250 - lista
+
+  TRegistroI250List = class(TList)
+  private
+    function GetItem(Index: Integer): TRegistroI250;
+    procedure SetItem(Index: Integer; Value: TRegistroI250);
+  public
+    destructor Destroy; override;
+    function New: TRegistroI250;
+    property Items[Index: Integer]: TRegistroI250 read GetItem write SetItem;
   end;
 
   /// Registro I990 - ENCERRAMENTO DO BLOCO I
@@ -587,6 +664,17 @@ begin
   Put(Index, Value);
 end;
 
+constructor TRegistroI150.Create;
+begin
+   FRegistroI155 := TRegistroI155List.Create;
+end;
+
+destructor TRegistroI150.Destroy;
+begin
+  FRegistroI155.Free;
+  inherited;
+end;
+
 { TRegistroI150List }
 
 destructor TRegistroI150List.Destroy;
@@ -660,6 +748,69 @@ end;
 procedure TRegistroI155List.SetItem(Index: Integer; const Value: TRegistroI155);
 begin
   Put(Index, Value);
+end;
+
+// TRegistroI200
+
+constructor TRegistroI200.Create;
+begin
+  FRegistroI250 := TRegistroI250List.create;
+end;
+
+destructor TRegistroI200.Destroy;
+begin
+  FRegistroI250.Free;
+  inherited;
+end;
+
+// TRegistroI200List
+
+destructor TRegistroI200List.Destroy;
+var
+intFor: integer;
+begin
+  for intFor := 0 to Count - 1 do Items[intFor].Free;
+end;
+
+function TRegistroI200List.GetItem(Index: Integer): TRegistroI200;
+begin
+  Result := TRegistroI200(Inherited Items[Index]);
+end;
+
+function TRegistroI200List.New: TRegistroI200;
+begin
+  Result := TRegistroI200.Create;
+  Add(Result);
+end;
+
+procedure TRegistroI200List.SetItem(Index: Integer; Value: TRegistroI200);
+begin
+  Put(Index, Value);
+end;
+
+// TRegistroI250List
+
+destructor TRegistroI250List.Destroy;
+var
+  intFor: Integer;
+begin
+  for intFor := 0 to Count - 1 do Items[intFor].Free;
+end;
+
+function TRegistroI250List.GetItem(index: Integer): TRegistroI250;
+begin
+  Result := TRegistroI250( inherited Items[Index]);
+end;
+
+function TRegistroI250List.New: TRegistroI250;
+begin
+   Result := TRegistroI250.Create;
+   Add(Result);
+end;
+
+procedure TRegistroI250List.SetItem(Index: Integer; Value: TRegistroI250);
+begin
+   Put(Index, Value);
 end;
 
 end.

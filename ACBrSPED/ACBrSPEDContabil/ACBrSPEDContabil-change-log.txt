@@ -47,7 +47,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
-Versão 0.03a   23/01/09
+
+Versão 0.03a   27/01/10
+[*] Implementado geração do registro I200 e a hierarquia dos regsitros I155 
+    e I250 por (Mauricio)
+
+Versão 0.03a   23/01/10
 [*] Foi criado uma nova unit (ACBrUtilTXT.pas) na pasta ACBrComum, com o conteúdo
     que está comentado na unit ACBrSped.pas
 

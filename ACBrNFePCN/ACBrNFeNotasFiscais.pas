@@ -442,7 +442,8 @@ begin
    begin
      if pos('<Signature',Self.Items[i].XML) = 0 then
         Assinar;
-     if not(NotaUtil.Valida(('<NFe xmlns' + RetornarConteudoEntre(Self.Items[i].XML, '<NFe xmlns', '</NFe>')+ '</NFe>'), FMsg)) then
+     if not(NotaUtil.Valida(('<NFe xmlns' + RetornarConteudoEntre(Self.Items[i].XML, '<NFe xmlns', '</NFe>')+ '</NFe>'), FMsg,Self.FConfiguracoes.Geral.PathSchemas)) then
+     //if not(NotaUtil.Valida(('<NFe xmlns' + RetornarConteudoEntre(Self.Items[i].XML, '<NFe xmlns', '</NFe>')+ '</NFe>'), FMsg)) then
        raise Exception.Create('Falha na validação dos dados da nota '+
                                IntToStr(Self.Items[i].NFe.Ide.nNF)+sLineBreak+Self.Items[i].Alertas+FMsg);
   end;

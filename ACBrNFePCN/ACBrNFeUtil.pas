@@ -154,7 +154,7 @@ type
     class function FormatarNumeroDocumentoFiscal(AValue : String ): String;
     class function FormatarChaveAcesso(AValue : String ): String;
     class function GetURL(Const AUF, AAmbiente, FormaEmissao: Integer; ALayOut: TLayOut): WideString;
-    class function Valida(Const AXML: AnsiString; var AMsg: AnsiString): Boolean;
+    class function Valida(Const AXML: AnsiString; var AMsg: AnsiString; const APathSchemas: string = ''): Boolean;
 {$IFDEF ACBrNFeOpenSSL}
     class function Assinar(const AXML, ArqPFX, PFXSenha: AnsiString; out AXMLAssinado, FMensagem: AnsiString): Boolean;
 {$ELSE}
@@ -1052,7 +1052,7 @@ end;
 
 {$IFDEF ACBrNFeOpenSSL}
 function ValidaLibXML(const AXML: AnsiString;
-  var AMsg: AnsiString): Boolean;
+  var AMsg: AnsiString; const APathSchemas: string = ''): Boolean;
 var
  doc, schema_doc : xmlDocPtr;
  parser_ctxt : xmlSchemaParserCtxtPtr;
@@ -1080,18 +1080,45 @@ begin
       end;
    end;
 
- if not DirectoryExists(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas') then
+// if not DirectoryExists(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas') then
+//    raise Exception.Create('Diretório de Schemas não encontrado'+sLineBreak+
+//                           PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas');
+ if not DirectoryExists(NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas',PathWithDelim(APathSchemas))) then
     raise Exception.Create('Diretório de Schemas não encontrado'+sLineBreak+
-                           PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas');
+                           NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas',PathWithDelim(APathSchemas)));
 
  if Tipo = 1 then
-    schema_filename := pchar(ExtractFileDir(application.ExeName)+'\Schemas\nfe_v1.10.xsd')
+    //schema_filename := pchar(ExtractFileDir(application.ExeName)+'\Schemas\nfe_v1.10.xsd')
+ begin
+    if NotaUtil.EstaVazio(APathSchemas) then
+       schema_filename := pchar(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\nfe_v1.10.xsd')
+    else
+       schema_filename := pchar(PathWithDelim(APathSchemas)+'nfe_v1.10.xsd');
+ end
  else if Tipo = 2 then
-    schema_filename := pchar(ExtractFileDir(application.ExeName)+'\Schemas\cancNFe_v1.07.xsd')
+    //schema_filename := pchar(ExtractFileDir(application.ExeName)+'\Schemas\cancNFe_v1.07.xsd')
+ begin
+    if NotaUtil.EstaVazio(APathSchemas) then
+       schema_filename := pchar(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\cancNFe_v1.07.xsd')
+    else
+       schema_filename := pchar(PathWithDelim(APathSchemas)+'cancNFe_v1.07.xsd');
+ end
  else if Tipo = 3 then
-    schema_filename := pchar(ExtractFileDir(application.ExeName)+'\Schemas\inutNFe_v1.07.xsd')
+    //schema_filename := pchar(ExtractFileDir(application.ExeName)+'\Schemas\inutNFe_v1.07.xsd')
+ begin
+    if NotaUtil.EstaVazio(APathSchemas) then
+       schema_filename := pchar(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\inutNFe_v1.07.xsd')
+    else
+       schema_filename := pchar(PathWithDelim(APathSchemas)+'inutNFe_v1.07.xsd');
+ end
  else if Tipo = 4 then
-    schema_filename := pchar(ExtractFileDir(application.ExeName)+'\Schemas\envDPEC_v1.01.xsd');    
+    //schema_filename := pchar(ExtractFileDir(application.ExeName)+'\Schemas\envDPEC_v1.01.xsd');
+ begin
+    if NotaUtil.EstaVazio(APathSchemas) then
+       schema_filename := pchar(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\envDPEC_v1.01.xsd')
+    else
+       schema_filename := pchar(PathWithDelim(APathSchemas)+'envDPEC_v1.01.xsd');
+ end;
 
  doc         := nil;
  schema_doc  := nil;
@@ -1164,7 +1191,7 @@ begin
     Result := True;
 end;
 {$ELSE}
-function ValidaMSXML(XML: AnsiString; out Msg: AnsiString): Boolean;
+function ValidaMSXML(XML: AnsiString; out Msg: AnsiString; const APathSchemas: string = ''): Boolean;
 var
   DOMDocument: IXMLDOMDocument2;
   ParseError: IXMLDOMParseError;
@@ -1184,7 +1211,7 @@ begin
         if I > 0 then
            Tipo := 3
         else
-           Tipo := 4;   
+           Tipo := 4;
       end;
    end;
 
@@ -1196,18 +1223,24 @@ begin
 
   Schema := CoXMLSchemaCache50.Create;
 
-  if not DirectoryExists(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas') then
-     raise Exception.Create('Diretório de Schemas não encontrado'+sLineBreak+
-                            PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas');
-
+// if not DirectoryExists(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas') then
+//    raise Exception.Create('Diretório de Schemas não encontrado'+sLineBreak+
+//                            PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas');
+ if not DirectoryExists(NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas',PathWithDelim(APathSchemas))) then
+    raise Exception.Create('Diretório de Schemas não encontrado'+sLineBreak+
+                           NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas',PathWithDelim(APathSchemas)));
   if Tipo = 1 then
-     Schema.add( 'http://www.portalfiscal.inf.br/nfe', ExtractFileDir(application.ExeName)+'\Schemas\nfe_v1.10.xsd')
+     //Schema.add( 'http://www.portalfiscal.inf.br/nfe', ExtractFileDir(application.ExeName)+'\Schemas\nfe_v1.10.xsd')
+     Schema.add( 'http://www.portalfiscal.inf.br/nfe', NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',PathWithDelim(APathSchemas))+'nfe_v1.10.xsd')
   else if Tipo = 2 then
-     Schema.add( 'http://www.portalfiscal.inf.br/nfe', ExtractFileDir(application.ExeName)+'\Schemas\cancNFe_v1.07.xsd')
+     //Schema.add( 'http://www.portalfiscal.inf.br/nfe', ExtractFileDir(application.ExeName)+'\Schemas\cancNFe_v1.07.xsd')
+     Schema.add( 'http://www.portalfiscal.inf.br/nfe', NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',PathWithDelim(APathSchemas))+'cancNFe_v1.07.xsd')
   else if Tipo = 3 then
-     Schema.add( 'http://www.portalfiscal.inf.br/nfe', ExtractFileDir(application.ExeName)+'\Schemas\inutNFe_v1.07.xsd')
+     //Schema.add( 'http://www.portalfiscal.inf.br/nfe', ExtractFileDir(application.ExeName)+'\Schemas\inutNFe_v1.07.xsd')
+     Schema.add( 'http://www.portalfiscal.inf.br/nfe', NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',PathWithDelim(APathSchemas))+'inutNFe_v1.07.xsd')
   else if Tipo = 4 then
-     Schema.add( 'http://www.portalfiscal.inf.br/nfe', ExtractFileDir(application.ExeName)+'\Schemas\envDPEC_v1.01.xsd');
+     //Schema.add( 'http://www.portalfiscal.inf.br/nfe', ExtractFileDir(application.ExeName)+'\Schemas\envDPEC_v1.01.xsd');
+     Schema.add( 'http://www.portalfiscal.inf.br/nfe', NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',PathWithDelim(APathSchemas))+'envDPEC_v1.01.xsd');
 
   DOMDocument.schemas := Schema;
   ParseError := DOMDocument.validate;
@@ -1221,12 +1254,12 @@ end;
 {$ENDIF}
 
 class function NotaUtil.Valida(const AXML: AnsiString;
-  var AMsg: AnsiString): Boolean;
+  var AMsg: AnsiString; const APathSchemas: string = ''): Boolean;
 begin
 {$IFDEF ACBrNFeOpenSSL}
-  Result := ValidaLibXML(AXML,AMsg);
+  Result := ValidaLibXML(AXML,AMsg,APathSchemas);
 {$ELSE}
-  Result := ValidaMSXML(AXML,AMsg);
+  Result := ValidaMSXML(AXML,AMsg,APathSchemas);
 {$ENDIF}
 end;
 

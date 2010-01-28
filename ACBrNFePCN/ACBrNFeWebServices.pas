@@ -517,7 +517,8 @@ begin
      end;
 {$ENDIF}
 
-  if not(NotaUtil.Valida(FDadosMsg, FMsg)) then
+  if not(NotaUtil.Valida(FDadosMsg, FMsg, TACBrNFe( FACBrNFe ).Configuracoes.Geral.PathSchemas)) then
+  //if not(NotaUtil.Valida(FDadosMsg, FMsg)) then
      begin
        if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
           TACBrNFe( FACBrNFe ).OnGerarLog('Falha na validação dos dados do cancelamento '+LineBreak+FMsg);

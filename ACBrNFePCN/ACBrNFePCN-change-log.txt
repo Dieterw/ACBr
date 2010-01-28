@@ -47,6 +47,13 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Alterações   28/01/10
+---------------
+[+] Incluido Propriedade PathSchemas (ACBrNFe.Configuracoes.Geral.PathSchemas)
+    Se não informar nenhum caminho, o componente procura a pasta no diretorio do executavel (como esta atualmente)
+    Se informar um caminho, o componente irá procurar os Schemas neste caminho.
+    Util para quem quiser centralizar os arquivos de Schemas em um servidor por exemplo.
+
 Alterações   22/01/10
 ---------------
 [+] Incluido pacote de Danfe em Fortes Reports (Creditos: Peterson de Cerqueira Matos)

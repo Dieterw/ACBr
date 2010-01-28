@@ -123,6 +123,7 @@ type
     FFormaEmissaoCodigo: Integer;
     FSalvar: Boolean;
     FPathSalvar: String;
+    FPathSchemas: String;
     procedure SetFormaEmissao(AValue: TpcnTipoEmissao);
     function GetPathSalvar: String;
   public
@@ -134,6 +135,7 @@ type
     property FormaEmissaoCodigo: Integer read FFormaEmissaoCodigo;
     property Salvar: Boolean read FSalvar write FSalvar default False ;
     property PathSalvar: String read GetPathSalvar write FPathSalvar;
+    property PathSchemas: String read FPathSchemas write FPathSchemas;
   end;
 
   TArquivosConf = class(TComponent)
@@ -233,6 +235,7 @@ begin
   FFormaEmissaoCodigo := StrToInt(TpEmisToStr(FFormaEmissao));
   FSalvar             := False;
   FPathSalvar         := '' ;
+  FPathSchemas        := '' ;
 end;
 
 function TGeralConf.GetPathSalvar: String;

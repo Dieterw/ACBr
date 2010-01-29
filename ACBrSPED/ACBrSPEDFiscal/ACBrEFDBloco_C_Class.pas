@@ -1375,8 +1375,8 @@ begin
         with RegistroC350.Items[intFor] do
         begin
           strRegistroC350 := strRegistroC350 + LFill('C350') +
-                                               LFill( SER,3 ) +
-                                               LFill( SUB_SER,3 ) +
+                                               LFill( SER ) +
+                                               LFill( SUB_SER ) +
                                                LFill( NUM_DOC ) +
                                                LFill( DT_DOC ) +
                                                LFill( CNPJ_CPF ) +

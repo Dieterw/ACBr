@@ -57,7 +57,7 @@ Const
    CACBrTEFD_CliSiTef_Backup = 'ACBr_CliSiTef_Backup.tef' ;
 
 {$IFDEF LINUX}
-  CACBrTEFD_CliSiTef_Lib = 'libclisitef32.so' ;
+  CACBrTEFD_CliSiTef_Lib = 'libclisitef.so' ;
 {$ELSE}
   CACBrTEFD_CliSiTef_Lib = 'CliSiTef32I.dll' ;
 {$ENDIF}
@@ -108,7 +108,7 @@ type
                 pCodigoLoja: PChar;
                 pNumeroTerminal: PChar;
                 ConfiguraResultado: smallint;
-                pParametrosAdicionais: PChar): integer; stdcall;
+                pParametrosAdicionais: PChar): integer; cdecl;
 
      xIniciaFuncaoSiTefInterativo : function (
                 Modalidade: integer;
@@ -117,13 +117,13 @@ type
                 pDataFiscal: PChar;
                 pHorario: PChar;
                 pOperador: PChar;
-                pRestricoes: PChar ): integer; stdcall;
+                pRestricoes: PChar ): integer; cdecl;
 
      xFinalizaTransacaoSiTefInterativo : procedure (
                  smallint: Word;
                  pNumeroCuponFiscal: PChar;
                  pDataFiscal: PChar;
-                 pHorario: PChar ); stdcall;
+                 pHorario: PChar ); cdecl;
 
      xContinuaFuncaoSiTefInterativo : function (
                 var ProximoComando: Integer;
@@ -132,7 +132,7 @@ type
                 var TamanhoMaximo: smallint;
                 pBuffer: PChar;
                 TamMaxBuffer: Integer;
-                ContinuaNavegacao: Integer ): integer; stdcall;
+                ContinuaNavegacao: Integer ): integer; cdecl;
 
      procedure AvaliaErro(Sts : Integer);
      procedure FinalizaTransacao( Confirma : Boolean;
@@ -967,4 +967,4 @@ begin
 end;
 
 end.
-
+

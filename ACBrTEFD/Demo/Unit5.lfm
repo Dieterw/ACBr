@@ -3,6 +3,7 @@ object Form5: TForm5
   Height = 172
   Top = 153
   Width = 579
+  ActiveControl = Panel1
   Caption = 'OnObtemCampo'
   ClientHeight = 172
   ClientWidth = 579
@@ -14,7 +15,7 @@ object Form5: TForm5
   LCLVersion = '0.9.29'
   object Edit1: TEdit
     Left = 32
-    Height = 33
+    Height = 31
     Top = 72
     Width = 513
     Anchors = [akTop, akLeft, akRight]
@@ -22,10 +23,10 @@ object Form5: TForm5
     TabOrder = 0
   end
   object BitBtn1: TBitBtn
-    Left = 134
-    Height = 35
+    Left = 139
+    Height = 33
     Top = 119
-    Width = 70
+    Width = 60
     Anchors = [akTop]
     AutoSize = True
     Caption = '&OK'
@@ -35,10 +36,10 @@ object Form5: TForm5
     TabOrder = 1
   end
   object BitBtn2: TBitBtn
-    Left = 340
-    Height = 35
+    Left = 342
+    Height = 33
     Top = 119
-    Width = 102
+    Width = 99
     Anchors = [akTop]
     AutoSize = True
     Cancel = True
@@ -56,4 +57,4 @@ object Form5: TForm5
     Caption = 'Panel1'
     TabOrder = 3
   end
-end
+end

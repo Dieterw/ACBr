@@ -3,6 +3,7 @@ program TEFDDemo;
 {$mode objfpc}{$H+}
 
 uses
+  {$DEFINE UseCThreads}
   {$IFDEF UNIX}{$IFDEF UseCThreads}
   cthreads,
   {$ENDIF}{$ENDIF}
@@ -18,4 +19,4 @@ begin
   Application.CreateForm(TForm1, Form1);
   Application.Run;
 end.
-
+

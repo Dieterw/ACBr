@@ -88,8 +88,8 @@ end;
 
 initialization
 {$IFDEF FPC}
- {$I unit5.lrs}
+ {$I Unit5.lrs}
 {$ENDIF}
   
 end.
-
+

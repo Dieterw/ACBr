@@ -650,6 +650,9 @@ end;
 procedure TForm1.ACBrTEFD1InfoECF(Operacao : TACBrTEFDInfoECF;
    var RetornoECF : String );
 begin
+   if not ACBrECF1.Ativo then
+      ACBrECF1.Ativar;
+
    case Operacao of
      ineSubTotal :
         RetornoECF := FloatToStr( ACBrECF1.Subtotal-ACBrECF1.TotalPago ) ;
@@ -1008,9 +1011,9 @@ end;
 
 initialization
 {$IFDEF FPC}
- {$I unit1.lrs}
+ {$I Unit1.lrs}
 {$ENDIF}
   
 end.
 
-
+

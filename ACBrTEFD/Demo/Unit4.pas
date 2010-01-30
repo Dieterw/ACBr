@@ -40,8 +40,8 @@ implementation
 
 initialization
 {$IFDEF FPC}
- {$I unit4.lrs}
+ {$I Unit4.lrs}
 {$ENDIF}
 
 end.
-
+

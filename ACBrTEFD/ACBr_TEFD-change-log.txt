@@ -47,6 +47,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 1.1b   28/01/10
+[-] ACBrTEFDCliSiTef revisada para carregar corretamente "libclisitef.so" no
+    Linux
+
 Versão 1.0b   22/01/10
 [+] Adicionada a propriedade ACBrTEFD.AguardandoResposta : Boolean (readonly)
     Se retornar True, está aguardando arquivo do G.P. (intpos.sts ou intpos.001)
@@ -128,4 +132,4 @@ Versão 0.01a   08/12/09
 
 
 
-
+

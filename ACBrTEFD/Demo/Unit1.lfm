@@ -3,6 +3,7 @@ object Form1: TForm1
   Height = 452
   Top = 102
   Width = 725
+  ActiveControl = PageControl1
   Caption = 'TEFDDemo'
   ClientHeight = 452
   ClientWidth = 725
@@ -12,7 +13,7 @@ object Form1: TForm1
   LCLVersion = '0.9.29'
   object Memo1: TMemo
     Left = 0
-    Height = 194
+    Height = 196
     Top = 208
     Width = 725
     Align = alClient
@@ -34,11 +35,11 @@ object Form1: TForm1
     TabOrder = 2
     object tsConfig: TTabSheet
       Caption = 'Configuração'
-      ClientHeight = 180
-      ClientWidth = 717
+      ClientHeight = 181
+      ClientWidth = 723
       object gbConfigECF: TGroupBox
         Left = 0
-        Height = 180
+        Height = 181
         Top = 0
         Width = 308
         Align = alLeft
@@ -48,18 +49,18 @@ object Form1: TForm1
         TabOrder = 0
         object Label2: TLabel
           Left = 10
-          Height = 16
+          Height = 18
           Top = 1
-          Width = 45
+          Width = 54
           Caption = 'Modelo:'
           ParentColor = False
         end
         object cbxModelo: TComboBox
           Left = 10
-          Height = 23
+          Height = 29
           Top = 17
           Width = 161
-          ItemHeight = 15
+          ItemHeight = 0
           ItemIndex = 0
           Items.Strings = (
             'Procurar'
@@ -82,18 +83,18 @@ object Form1: TForm1
         end
         object Label4: TLabel
           Left = 10
-          Height = 16
+          Height = 18
           Top = 44
-          Width = 29
+          Width = 38
           Caption = 'Porta'
           ParentColor = False
         end
         object cbxPorta: TComboBox
           Left = 10
-          Height = 23
+          Height = 27
           Top = 60
           Width = 131
-          ItemHeight = 15
+          ItemHeight = 0
           ItemIndex = 0
           Items.Strings = (
             'Procurar'
@@ -124,7 +125,7 @@ object Form1: TForm1
           Left = 146
           Height = 24
           Hint = 'Serial'
-          Top = 59
+          Top = 61
           Width = 25
           BorderSpacing.Left = 8
           Color = clBtnFace
@@ -171,15 +172,15 @@ object Form1: TForm1
         end
         object Label6: TLabel
           Left = 186
-          Height = 16
+          Height = 18
           Top = 1
-          Width = 93
+          Width = 110
           Caption = 'Indice "CARTAO"'
           ParentColor = False
         end
         object edFPGCartao: TEdit
           Left = 210
-          Height = 23
+          Height = 25
           Top = 17
           Width = 43
           Alignment = taCenter
@@ -188,15 +189,15 @@ object Form1: TForm1
         end
         object Label7: TLabel
           Left = 186
-          Height = 16
+          Height = 18
           Top = 44
-          Width = 92
+          Width = 113
           Caption = 'Indice "CHEQUE"'
           ParentColor = False
         end
         object edFPGCheque: TEdit
           Left = 210
-          Height = 23
+          Height = 25
           Top = 60
           Width = 43
           Alignment = taCenter
@@ -216,22 +217,22 @@ object Form1: TForm1
       end
       object Panel2: TPanel
         Left = 308
-        Height = 180
+        Height = 181
         Top = 0
-        Width = 409
+        Width = 415
         Align = alClient
-        ClientHeight = 180
-        ClientWidth = 409
+        ClientHeight = 181
+        ClientWidth = 415
         TabOrder = 1
         object gbConfigTEF: TGroupBox
           Left = 1
-          Height = 178
+          Height = 179
           Top = 1
-          Width = 407
+          Width = 413
           Align = alClient
           Caption = 'TEF'
           ClientHeight = 160
-          ClientWidth = 403
+          ClientWidth = 409
           TabOrder = 0
           object bInicializar: TButton
             Left = 37
@@ -244,9 +245,9 @@ object Form1: TForm1
           end
           object ckAutoAtivar: TCheckBox
             Left = 153
-            Height = 19
+            Height = 21
             Top = 10
-            Width = 104
+            Width = 128
             Caption = 'Auto Ativar G.P.'
             Checked = True
             OnChange = ckAutoAtivarChange
@@ -255,19 +256,19 @@ object Form1: TForm1
           end
           object cbxGP: TComboBox
             Left = 5
-            Height = 23
+            Height = 29
             Top = 20
             Width = 133
-            ItemHeight = 15
+            ItemHeight = 0
             OnChange = cbxGPChange
             Style = csDropDownList
             TabOrder = 0
           end
           object Label1: TLabel
             Left = 26
-            Height = 16
+            Height = 18
             Top = 0
-            Width = 89
+            Width = 111
             Caption = 'Selecionar o G.P.'
             ParentColor = False
           end
@@ -282,18 +283,18 @@ object Form1: TForm1
           end
           object ckMultiplosCartoes: TCheckBox
             Left = 153
-            Height = 19
+            Height = 21
             Top = 38
-            Width = 113
+            Width = 140
             Caption = 'Multiplos Cartões'
             OnChange = ckMultiplosCartoesChange
             TabOrder = 4
           end
           object ckAutoFinalizarCupom: TCheckBox
             Left = 153
-            Height = 19
+            Height = 21
             Top = 89
-            Width = 129
+            Width = 155
             Caption = 'AutoFinalizarCupom'
             Checked = True
             OnChange = ckAutoFinalizarCupomChange
@@ -302,16 +303,16 @@ object Form1: TForm1
           end
           object ckAutoEfetuarPagamento: TCheckBox
             Left = 153
-            Height = 19
+            Height = 21
             Top = 64
-            Width = 144
+            Width = 183
             Caption = 'AutoEfetuarPagamento'
             OnChange = ckAutoEfetuarPagamentoChange
             TabOrder = 5
           end
           object edEsperaSleep: TEdit
             Left = 301
-            Height = 23
+            Height = 25
             Top = 15
             Width = 56
             Alignment = taCenter
@@ -321,23 +322,23 @@ object Form1: TForm1
           end
           object Label8: TLabel
             Left = 301
-            Height = 16
+            Height = 18
             Top = -1
-            Width = 63
+            Width = 84
             Caption = 'EsperaSleep'
             ParentColor = False
           end
           object Label9: TLabel
             Left = 301
-            Height = 16
+            Height = 18
             Top = 55
-            Width = 54
+            Width = 71
             Caption = 'EsperaSTS'
             ParentColor = False
           end
           object edEsperaSTS: TEdit
             Left = 301
-            Height = 23
+            Height = 25
             Top = 71
             Width = 56
             Alignment = taCenter
@@ -350,11 +351,11 @@ object Form1: TForm1
     end
     object tsOperacao: TTabSheet
       Caption = 'Operação'
-      ClientHeight = 180
-      ClientWidth = 717
+      ClientHeight = 181
+      ClientWidth = 723
       object gbCupomECF: TGroupBox
         Left = 0
-        Height = 180
+        Height = 181
         Top = 0
         Width = 292
         Align = alLeft
@@ -487,13 +488,13 @@ object Form1: TForm1
       end
       object gbComandosTEF: TGroupBox
         Left = 292
-        Height = 180
+        Height = 181
         Top = 0
-        Width = 425
+        Width = 431
         Align = alClient
         Caption = 'TEF'
         ClientHeight = 162
-        ClientWidth = 421
+        ClientWidth = 427
         TabOrder = 1
         object bADM: TButton
           Left = 6
@@ -591,7 +592,7 @@ object Form1: TForm1
           Height = 23
           Top = 2
           Width = 142
-          ItemHeight = 15
+          ItemHeight = 0
           OnChange = cbxGPChange
           Style = csDropDownList
           TabOrder = 0
@@ -637,8 +638,8 @@ object Form1: TForm1
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Height = 23
-    Top = 429
+    Height = 21
+    Top = 431
     Width = 725
     Panels = <    
       item
@@ -655,7 +656,7 @@ object Form1: TForm1
   object Panel1: TPanel
     Left = 0
     Height = 27
-    Top = 402
+    Top = 404
     Width = 725
     Align = alBottom
     BevelInner = bvLowered
@@ -672,9 +673,9 @@ object Form1: TForm1
     end
     object lECFName: TLabel
       Left = 40
-      Height = 16
+      Height = 18
       Top = 6
-      Width = 56
+      Width = 71
       Caption = 'lECFName'
       ParentColor = False
     end
@@ -688,9 +689,9 @@ object Form1: TForm1
     end
     object ckTEFDIAL: TCheckBox
       Left = 160
-      Height = 19
+      Height = 21
       Top = 5
-      Width = 69
+      Width = 80
       Caption = 'TEF_DIAL'
       Checked = True
       OnChange = ckTEFDIALChange
@@ -707,9 +708,9 @@ object Form1: TForm1
     end
     object ckTEFDISC: TCheckBox
       Left = 272
-      Height = 19
+      Height = 21
       Top = 5
-      Width = 69
+      Width = 81
       Caption = 'TEF_DISC'
       OnChange = ckTEFDISCChange
       TabOrder = 1
@@ -724,9 +725,9 @@ object Form1: TForm1
     end
     object ckHIPERTEF: TCheckBox
       Left = 376
-      Height = 19
+      Height = 21
       Top = 6
-      Width = 76
+      Width = 89
       Caption = 'HIPER_TEF'
       OnChange = ckHIPERTEFChange
       TabOrder = 2
@@ -741,9 +742,9 @@ object Form1: TForm1
     end
     object ckCliSiTef: TCheckBox
       Left = 504
-      Height = 19
+      Height = 21
       Top = 5
-      Width = 60
+      Width = 70
       Caption = 'CliSiTef'
       OnChange = ckCliSiTefChange
       TabOrder = 3
@@ -790,7 +791,7 @@ object Form1: TForm1
         Left = 0
         Height = 14
         Top = 0
-        Width = 110
+        Width = 112
         Caption = 'Mensagem Operador'
         Font.Height = -11
         ParentColor = False
@@ -811,7 +812,7 @@ object Form1: TForm1
         Left = 0
         Height = 14
         Top = 0
-        Width = 96
+        Width = 99
         Caption = 'Mensagem Cliente'
         Font.Height = -11
         ParentColor = False
@@ -883,7 +884,7 @@ object Form1: TForm1
     TEFHiper.ArqResp = 'C:\HiperTEF\resp\IntPos.001'
     TEFHiper.GPExeName = 'C:\HiperTEF\HiperTEF.exe'
     TEFCliSiTef.ArqLOG = 'CliSiTef.log'
-    TEFCliSiTef.EnderecoIP = 'localhost'
+    TEFCliSiTef.EnderecoIP = '192.168.1.3'
     TEFCliSiTef.CodigoLoja = '00000000'
     TEFCliSiTef.NumeroTerminal = 'SE000001'
     TEFCliSiTef.OnExibeMenu = CliSiTefExibeMenu
@@ -903,4 +904,4 @@ object Form1: TForm1
     left = 96
     top = 296
   end
-end
+end

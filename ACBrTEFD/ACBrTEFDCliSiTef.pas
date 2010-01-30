@@ -108,7 +108,8 @@ type
                 pCodigoLoja: PChar;
                 pNumeroTerminal: PChar;
                 ConfiguraResultado: smallint;
-                pParametrosAdicionais: PChar): integer; cdecl;
+                pParametrosAdicionais: PChar): integer;
+               {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
 
      xIniciaFuncaoSiTefInterativo : function (
                 Modalidade: integer;
@@ -117,13 +118,17 @@ type
                 pDataFiscal: PChar;
                 pHorario: PChar;
                 pOperador: PChar;
-                pRestricoes: PChar ): integer; cdecl;
+                pRestricoes: PChar ): integer;
+                {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
+
 
      xFinalizaTransacaoSiTefInterativo : procedure (
                  smallint: Word;
                  pNumeroCuponFiscal: PChar;
                  pDataFiscal: PChar;
-                 pHorario: PChar ); cdecl;
+                 pHorario: PChar );
+                 {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
+
 
      xContinuaFuncaoSiTefInterativo : function (
                 var ProximoComando: Integer;
@@ -132,7 +137,8 @@ type
                 var TamanhoMaximo: smallint;
                 pBuffer: PChar;
                 TamMaxBuffer: Integer;
-                ContinuaNavegacao: Integer ): integer; cdecl;
+                ContinuaNavegacao: Integer ): integer;
+                {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
 
      procedure AvaliaErro(Sts : Integer);
      procedure FinalizaTransacao( Confirma : Boolean;
@@ -967,4 +973,4 @@ begin
 end;
 
 end.
-
+

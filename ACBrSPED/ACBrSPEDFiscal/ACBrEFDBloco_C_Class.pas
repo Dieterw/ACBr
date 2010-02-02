@@ -1172,7 +1172,7 @@ begin
                                                LFill( VL_ICMS_ST,0,2 ) +
                                                LFill( VL_RED_BC,0,2 ) +
                                                LFill( VL_IPI,0,2 ) +
-//                                               LFill( COD_OBS,6 ) +
+                                               LFill( COD_OBS ) +
                                                Delimitador +
                                                #13#10;
         end;

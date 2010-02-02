@@ -114,32 +114,32 @@ end;
 
 function TACBrTXT.RFill(Value: AnsiString; Size: Integer = 0; Caracter: Char = ' '): AnsiString;
 begin
+  /// Se a propriedade TrimString = true, Result retorna sem espaços em branco
+  /// iniciais e finais.
+  if FTrimString then
+     Result := Trim(Result);
+
   if (Size > 0) and (Length(Value) > Size) then
      Result := Copy(Value, 1, Size)
   else
      Result := Value + StringOfChar(Caracter, Size - Length(Value));
 
-  /// Se a propriedade TrimString = true, Result retorna sem espaços em branco
-  /// iniciais e finais.
-  if FTrimString then
-     Result := FDelimitador + Trim(Result)
-  else
-     Result := FDelimitador + Result;
+  Result := FDelimitador + Result;
 end;
 
 function TACBrTXT.LFill(Value: AnsiString; Size: Integer = 0; Caracter: Char = '0'): AnsiString;
 begin
+  /// Se a propriedade TrimString = true, Result retorna sem espaços em branco
+  /// iniciais e finais.
+  if FTrimString then
+     Result := Trim(Result);
+
   if (Size > 0) and (Length(Value) > Size) then
      Result := Copy(Value, 1, Size)
   else
      Result := StringOfChar(Caracter, Size - length(Value)) + Value;
 
-  /// Se a propriedade TrimString = true, Result retorna sem espaços em branco
-  /// iniciais e finais.
-  if FTrimString then
-     Result := FDelimitador + Trim(Result)
-  else
-     Result := FDelimitador + Result;
+  Result := FDelimitador + Result;
 end;
 
 function TACBrTXT.LFill(Value: Currency; Size: Integer; Decimal: Integer = 2; Nulo: Boolean = false; Caracter: Char = '0'): AnsiString;

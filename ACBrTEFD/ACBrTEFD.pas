@@ -46,7 +46,7 @@ interface
 
 uses
   Classes, SysUtils, ACBrTEFDClass,
-  ACBrTEFDDial, ACBrTEFDDisc, ACBrTEFDHiper, ACBrTEFDCliSiTef
+  ACBrTEFDDial, ACBrTEFDDisc, ACBrTEFDHiper, ACBrTEFDCliSiTef, ACBrTEFDGpu
   {, ACBrTEFDGoodCard, ACBrTEFDFoxWin}
   {$IFDEF FPC}
     ,LResources
@@ -95,6 +95,7 @@ type
      fTecladoBloqueado : Boolean;
      fTefClass     : TACBrTEFDClass ;
      fTefDial      : TACBrTEFDDial ;
+     fTefGPU       : TACBrTEFDGpu ;
      fTefCliSiTef  : TACBrTEFDCliSiTef;
      fTefDisc      : TACBrTEFDDisc ;
      fTefHiper     : TACBrTEFDHiper ;
@@ -220,6 +221,7 @@ type
      property TEFDisc    : TACBrTEFDDisc     read fTefDisc ;
      property TEFHiper   : TACBrTEFDHiper    read fTefHiper ;
      property TEFCliSiTef: TACBrTEFDCliSiTef read fTefCliSiTef ;
+     property TEFGPU     : TACBrTEFDGpu      read fTefGPU ;
 //   property TEFGood    : TACBrTEFDGoodCard read fTefGood ;
 //   property TEFFoxWin  : TACBrTEFDFoxWin   read fTefFW ;
 
@@ -380,6 +382,13 @@ begin
    fTefCliSiTef.SetSubComponent(True);   // Ajustando como SubComponente para aparecer no ObjectInspector
   {$ENDIF}
 
+  { Criando Classe TEF_GPU }
+  fTefGPU := TACBrTEFDGpu.Create(self);
+  fTEFList.Add(fTefGPU);     // Adicionando "fTefGPU" na Lista Objetos de Classes de TEF
+  {$IFDEF COMPILER6_UP}
+   fTefGPU.SetSubComponent(True);   // Ajustando como SubComponente para aparecer no ObjectInspector
+  {$ENDIF}
+
 (*
 { Criando Classe GOOD CARD }
   fTefGood := TACBrTEFDGoodCard.Create(self);
@@ -500,6 +509,7 @@ begin
     gpTefDisc  : fTefClass := fTefDisc ;
     gpHiperTef : fTefClass := fTefHiper ;
     gpCliSiTef : fTefClass := fTefCliSiTef;
+    gpTefGpu   : fTefClass := fTefGPU;
 //  gpGoodCard : fTefClass := fTefGood ;
 //  gpFoxWin   : fTefClass := fTefFW ;
   end;

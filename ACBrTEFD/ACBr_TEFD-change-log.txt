@@ -57,6 +57,9 @@ Versão 1.2b   03/02/10
 [*] Melhorado tratamento de Limpeza de RespostasPendentes (nao limpava no caso
     de Exceptions)
 [*] Melhorado tratamento de FinalizarResposta (nao rodava no caso de Exceptions)
+[+] Adicionada nova Classe de G.P. (TEF GPU - Expansiva)  por: Evandro Mira
+[-] Corrigido bug de Arredondamento em "VerificarTransacaoPagamento"
+    por: Rodrigo Baltazar
 
 Versão 1.1b   28/01/10
 [-] ACBrTEFDCliSiTef revisada para carregar corretamente "libclisitef.so" no

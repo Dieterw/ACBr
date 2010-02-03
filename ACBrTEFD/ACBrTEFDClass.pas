@@ -64,8 +64,8 @@ type
 
   { Tipos de TEF Existente. Cado novo Tipo de Tef precisa de uma NOVA Classe,
     filha de  TACBrTEFDClass }
-  TACBrTEFDTipo = ( gpNenhum, gpTefDial, gpTefDisc, gpHiperTef, gpCliSiTef
-                    {, gpGoodCard, gpFoxWin} ) ;
+  TACBrTEFDTipo = ( gpNenhum, gpTefDial, gpTefDisc, gpHiperTef, gpCliSiTef,
+                    gpTefGpu {, gpGoodCard, gpFoxWin} ) ;
 
   TACBrTEFDReqEstado = ( reqNenhum,             // Nennhuma Requisição em andamento
                          reqIniciando,          // Iniciando uma nova Requisicao
@@ -2341,6 +2341,7 @@ begin
      end;
 
      SaldoAPagar := StringToFloatDef( SubTotal, -2);
+     SaldoAPagar := SimpleRoundTo( SaldoAPagar, -2);    // por Rodrigo Baltazar
 
      if SaldoAPagar = -2 then
         raise Exception.Create( ACBrStr( 'Erro na conversão do Valor Retornado em:'+

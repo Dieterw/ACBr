@@ -441,6 +441,10 @@ begin
     if Bloco_E.RegistroE230.Count > 0 then Write(txtFile, WriteRegistroE230); // Prates
     if Bloco_E.RegistroE240.Count > 0 then Write(txtFile, WriteRegistroE240); // Prates
     if Bloco_E.RegistroE250.Count > 0 then Write(txtFile, WriteRegistroE250); // Prates
+    if Bloco_E.RegistroE500.Count > 0 then Write(txtFile, WriteRegistroE500); // Dante
+    if Bloco_E.RegistroE510.Count > 0 then Write(txtFile, WriteRegistroE510); // Dante
+    if Bloco_E.RegistroE520.Count > 0 then Write(txtFile, WriteRegistroE520); // Dante
+    if Bloco_E.RegistroE530.Count > 0 then Write(txtFile, WriteRegistroE530); // Dante
     Write(txtFile, WriteRegistroE990);
 
     /// BLOCO H

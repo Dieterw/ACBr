@@ -501,9 +501,9 @@ begin
            continue ;
 
         try
-           { espera ACK chegar na Porta por 1,5s }
+           { espera ACK chegar na Porta por 4s }
            try
-              fsACK := fpDevice.Serial.RecvByte( 1500 ) ;
+              fsACK := fpDevice.Serial.RecvByte( 4000 ) ;
            except
            end ;
 

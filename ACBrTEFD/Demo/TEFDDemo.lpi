@@ -11,7 +11,7 @@
       <TargetFileExt Value=".exe"/>
       <UseXPManifest Value="True"/>
       <Icon Value="0"/>
-      <ActiveEditorIndexAtStart Value="7"/>
+      <ActiveEditorIndexAtStart Value="5"/>
     </General>
     <VersionInfo>
       <ProjectVersion Value=""/>
@@ -58,7 +58,6 @@
         <ComponentName Value="Form1"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Unit1"/>
-        <ComponentState Value="1"/>
         <CursorPos X="7" Y="9"/>
         <TopLine Value="1"/>
         <EditorIndex Value="0"/>
@@ -213,7 +212,7 @@
         <UnitName Value="ACBrTEFDClass"/>
         <CursorPos X="32" Y="58"/>
         <TopLine Value="54"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="3"/>
         <UsageCount Value="101"/>
         <Loaded Value="True"/>
       </Unit20>
@@ -222,7 +221,7 @@
         <UnitName Value="ACBrTEFD"/>
         <CursorPos X="17" Y="333"/>
         <TopLine Value="311"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="2"/>
         <UsageCount Value="101"/>
         <Bookmarks Count="1">
           <Item0 X="3" Y="708" ID="2"/>
@@ -232,9 +231,9 @@
       <Unit22>
         <Filename Value="..\ACBrTEFDCliSiTef.pas"/>
         <UnitName Value="ACBrTEFDCliSiTef"/>
-        <CursorPos X="39" Y="143"/>
-        <TopLine Value="139"/>
-        <EditorIndex Value="5"/>
+        <CursorPos X="49" Y="130"/>
+        <TopLine Value="114"/>
+        <EditorIndex Value="4"/>
         <UsageCount Value="101"/>
         <Loaded Value="True"/>
       </Unit22>
@@ -242,10 +241,8 @@
         <Filename Value="..\..\ACBrComum\ACBrUtil.pas"/>
         <UnitName Value="ACBrUtil"/>
         <CursorPos X="13" Y="106"/>
-        <TopLine Value="97"/>
-        <EditorIndex Value="7"/>
+        <TopLine Value="1"/>
         <UsageCount Value="30"/>
-        <Loaded Value="True"/>
       </Unit23>
       <Unit24>
         <Filename Value="..\..\ACBrMonitor\CLX\ACBrMonitor1.pas"/>
@@ -262,7 +259,7 @@
         <UnitName Value="Unit4"/>
         <CursorPos X="7" Y="43"/>
         <TopLine Value="9"/>
-        <UsageCount Value="169"/>
+        <UsageCount Value="171"/>
       </Unit25>
       <Unit26>
         <Filename Value="Unit5.pas"/>
@@ -272,7 +269,7 @@
         <UnitName Value="Unit5"/>
         <CursorPos X="7" Y="91"/>
         <TopLine Value="77"/>
-        <UsageCount Value="168"/>
+        <UsageCount Value="170"/>
       </Unit26>
       <Unit27>
         <Filename Value="..\..\..\..\..\..\CD_TEF\SiTEF\Exemplo_delphi\Unit01.pas"/>
@@ -329,10 +326,10 @@
       </Unit34>
       <Unit35>
         <Filename Value="..\ACBr_TEFD-change-log.txt"/>
-        <CursorPos X="76" Y="45"/>
-        <TopLine Value="42"/>
-        <EditorIndex Value="6"/>
-        <UsageCount Value="63"/>
+        <CursorPos X="20" Y="50"/>
+        <TopLine Value="44"/>
+        <EditorIndex Value="5"/>
+        <UsageCount Value="64"/>
         <Loaded Value="True"/>
         <SyntaxHighlighter Value="None"/>
       </Unit35>
@@ -404,21 +401,21 @@
         <SyntaxHighlighter Value="Delphi"/>
       </Unit44>
       <Unit45>
-        <Filename Value="..\..\..\..\..\..\..\usr\share\fpcsrc\rtl\unix\dl.pp"/>
+        <Filename Value="..\..\..\..\..\..\usr\share\fpcsrc\rtl\unix\dl.pp"/>
         <UnitName Value="dl"/>
         <CursorPos X="10" Y="57"/>
         <TopLine Value="48"/>
         <UsageCount Value="12"/>
       </Unit45>
       <Unit46>
-        <Filename Value="..\..\..\..\..\..\..\usr\share\fpcsrc\rtl\inc\dynlibs.pas"/>
+        <Filename Value="..\..\..\..\..\..\usr\share\fpcsrc\rtl\inc\dynlibs.pas"/>
         <UnitName Value="dynlibs"/>
         <CursorPos X="3" Y="82"/>
         <TopLine Value="79"/>
         <UsageCount Value="11"/>
       </Unit46>
       <Unit47>
-        <Filename Value="..\..\..\..\..\..\..\usr\share\fpcsrc\rtl\unix\dynlibs.inc"/>
+        <Filename Value="..\..\..\..\..\..\usr\share\fpcsrc\rtl\unix\dynlibs.inc"/>
         <CursorPos X="3" Y="40"/>
         <TopLine Value="37"/>
         <UsageCount Value="11"/>
@@ -435,9 +432,7 @@
         <UnitName Value="ssl_openssl_lib"/>
         <CursorPos X="63" Y="841"/>
         <TopLine Value="828"/>
-        <EditorIndex Value="2"/>
         <UsageCount Value="10"/>
-        <Loaded Value="True"/>
       </Unit49>
       <Unit50>
         <Filename Value="..\..\ACBrComum\sswin32.pas"/>
@@ -447,127 +442,71 @@
         <UsageCount Value="10"/>
       </Unit50>
     </Units>
-    <JumpHistory Count="30" HistoryIndex="29">
+    <JumpHistory Count="16" HistoryIndex="15">
       <Position1>
-        <Filename Value="..\..\ACBrComum\ssl_openssl_lib.pas"/>
-        <Caret Line="513" Column="69" TopLine="504"/>
+        <Filename Value="..\ACBrTEFDCliSiTef.pas"/>
+        <Caret Line="106" Column="27" TopLine="98"/>
       </Position1>
       <Position2>
-        <Filename Value="..\..\ACBrComum\ssl_openssl_lib.pas"/>
-        <Caret Line="617" Column="23" TopLine="608"/>
+        <Filename Value="..\ACBrTEFDCliSiTef.pas"/>
+        <Caret Line="326" Column="33" TopLine="317"/>
       </Position2>
       <Position3>
-        <Filename Value="..\..\ACBrComum\ssl_openssl_lib.pas"/>
-        <Caret Line="618" Column="89" TopLine="608"/>
+        <Filename Value="..\ACBrTEFDCliSiTef.pas"/>
+        <Caret Line="362" Column="91" TopLine="353"/>
       </Position3>
       <Position4>
-        <Filename Value="..\..\ACBrComum\ssl_openssl_lib.pas"/>
-        <Caret Line="729" Column="67" TopLine="720"/>
+        <Filename Value="..\ACBrTEFDCliSiTef.pas"/>
+        <Caret Line="376" Column="31" TopLine="369"/>
       </Position4>
       <Position5>
-        <Filename Value="..\..\ACBrComum\ssl_openssl_lib.pas"/>
-        <Caret Line="751" Column="87" TopLine="742"/>
+        <Filename Value="..\ACBrTEFDCliSiTef.pas"/>
+        <Caret Line="411" Column="29" TopLine="403"/>
       </Position5>
       <Position6>
-        <Filename Value="..\..\ACBrComum\ssl_openssl_lib.pas"/>
-        <Caret Line="837" Column="70" TopLine="828"/>
+        <Filename Value="..\ACBrTEFDCliSiTef.pas"/>
+        <Caret Line="412" Column="1" TopLine="403"/>
       </Position6>
       <Position7>
-        <Filename Value="..\..\ACBrComum\ssl_openssl_lib.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="..\ACBrTEFDClass.pas"/>
+        <Caret Line="1460" Column="1" TopLine="1451"/>
       </Position7>
       <Position8>
-        <Filename Value="..\..\ACBrComum\ssl_openssl_lib.pas"/>
-        <Caret Line="132" Column="7" TopLine="123"/>
+        <Filename Value="..\ACBrTEFDCliSiTef.pas"/>
+        <Caret Line="392" Column="28" TopLine="382"/>
       </Position8>
       <Position9>
-        <Filename Value="..\..\ACBrComum\ssl_openssl_lib.pas"/>
-        <Caret Line="210" Column="15" TopLine="201"/>
+        <Filename Value="..\ACBrTEFDCliSiTef.pas"/>
+        <Caret Line="111" Column="63" TopLine="97"/>
       </Position9>
       <Position10>
-        <Filename Value="..\..\ACBrComum\ssl_openssl_lib.pas"/>
-        <Caret Line="286" Column="34" TopLine="277"/>
+        <Filename Value="..\ACBrTEFDCliSiTef.pas"/>
+        <Caret Line="413" Column="41" TopLine="403"/>
       </Position10>
       <Position11>
-        <Filename Value="..\..\ACBrComum\ssl_openssl_lib.pas"/>
-        <Caret Line="513" Column="69" TopLine="504"/>
+        <Filename Value="..\ACBrTEFDCliSiTef.pas"/>
+        <Caret Line="111" Column="62" TopLine="102"/>
       </Position11>
       <Position12>
-        <Filename Value="..\..\ACBrComum\ssl_openssl_lib.pas"/>
-        <Caret Line="617" Column="23" TopLine="608"/>
+        <Filename Value="..\ACBrTEFDCliSiTef.pas"/>
+        <Caret Line="150" Column="50" TopLine="118"/>
       </Position12>
       <Position13>
-        <Filename Value="..\..\ACBrComum\ssl_openssl_lib.pas"/>
-        <Caret Line="618" Column="89" TopLine="608"/>
+        <Filename Value="..\ACBrTEFDCliSiTef.pas"/>
+        <Caret Line="406" Column="60" TopLine="396"/>
       </Position13>
       <Position14>
-        <Filename Value="..\..\ACBrComum\ssl_openssl_lib.pas"/>
-        <Caret Line="729" Column="67" TopLine="720"/>
+        <Filename Value="..\ACBrTEFDCliSiTef.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
       </Position14>
       <Position15>
         <Filename Value="..\ACBrTEFDCliSiTef.pas"/>
-        <Caret Line="106" Column="27" TopLine="98"/>
+        <Caret Line="111" Column="57" TopLine="95"/>
       </Position15>
       <Position16>
         <Filename Value="..\ACBrTEFDCliSiTef.pas"/>
-        <Caret Line="326" Column="33" TopLine="317"/>
+        <Caret Line="120" Column="48" TopLine="95"/>
       </Position16>
-      <Position17>
-        <Filename Value="..\ACBrTEFDCliSiTef.pas"/>
-        <Caret Line="362" Column="91" TopLine="353"/>
-      </Position17>
-      <Position18>
-        <Filename Value="..\ACBrTEFDCliSiTef.pas"/>
-        <Caret Line="376" Column="31" TopLine="369"/>
-      </Position18>
-      <Position19>
-        <Filename Value="..\ACBrTEFDCliSiTef.pas"/>
-        <Caret Line="411" Column="29" TopLine="403"/>
-      </Position19>
-      <Position20>
-        <Filename Value="..\ACBrTEFDCliSiTef.pas"/>
-        <Caret Line="412" Column="1" TopLine="403"/>
-      </Position20>
-      <Position21>
-        <Filename Value="..\ACBrTEFDClass.pas"/>
-        <Caret Line="1460" Column="1" TopLine="1451"/>
-      </Position21>
-      <Position22>
-        <Filename Value="..\..\ACBrComum\ssl_openssl_lib.pas"/>
-        <Caret Line="1520" Column="22" TopLine="1509"/>
-      </Position22>
-      <Position23>
-        <Filename Value="..\..\ACBrComum\ssl_openssl_lib.pas"/>
-        <Caret Line="935" Column="29" TopLine="926"/>
-      </Position23>
-      <Position24>
-        <Filename Value="..\ACBrTEFDCliSiTef.pas"/>
-        <Caret Line="392" Column="28" TopLine="382"/>
-      </Position24>
-      <Position25>
-        <Filename Value="..\ACBrTEFDCliSiTef.pas"/>
-        <Caret Line="111" Column="63" TopLine="97"/>
-      </Position25>
-      <Position26>
-        <Filename Value="..\ACBrTEFDCliSiTef.pas"/>
-        <Caret Line="413" Column="41" TopLine="403"/>
-      </Position26>
-      <Position27>
-        <Filename Value="..\ACBrTEFDCliSiTef.pas"/>
-        <Caret Line="111" Column="62" TopLine="102"/>
-      </Position27>
-      <Position28>
-        <Filename Value="..\..\ACBrComum\ACBrUtil.pas"/>
-        <Caret Line="1709" Column="57" TopLine="1704"/>
-      </Position28>
-      <Position29>
-        <Filename Value="..\..\ACBrComum\ACBrUtil.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
-      </Position29>
-      <Position30>
-        <Filename Value="..\..\ACBrComum\ACBrUtil.pas"/>
-        <Caret Line="52" Column="65" TopLine="43"/>
-      </Position30>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

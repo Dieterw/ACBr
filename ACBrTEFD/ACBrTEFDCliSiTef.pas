@@ -164,23 +164,23 @@ type
      procedure AtivarGP ; override;
      procedure VerificaAtivo ; override;
 
-     procedure ATV ; override;
-     procedure ADM ; override;
-     procedure CRT( Valor : Double; IndiceFPG_ECF : String;
-        DocumentoVinculado : String = ''; Moeda : Integer = 0 ); override;
-     procedure CHQ( Valor : Double; IndiceFPG_ECF : String;
+     Procedure ATV ; override;
+     Function ADM : Boolean ; override;
+     Function CRT( Valor : Double; IndiceFPG_ECF : String;
+        DocumentoVinculado : String = ''; Moeda : Integer = 0 ) : Boolean; override;
+     Function CHQ( Valor : Double; IndiceFPG_ECF : String;
         DocumentoVinculado : String = ''; CMC7 : String = '';
         TipoPessoa : AnsiChar = 'F'; DocumentoPessoa : String = '';
         DataCheque : TDateTime = 0; Banco   : String = '';
         Agencia    : String = ''; AgenciaDC : String = '';
         Conta      : String = ''; ContaDC   : String = '';
-        Cheque     : String = ''; ChequeDC  : String = ''); override;
-     procedure NCN(Rede, NSU, Finalizacao : String;
+        Cheque     : String = ''; ChequeDC  : String = '') : Boolean; override;
+     Procedure NCN(Rede, NSU, Finalizacao : String;
         Valor : Double = 0; DocumentoVinculado : String = ''); override;
-     procedure CNF(Rede, NSU, Finalizacao : String;
+     Procedure CNF(Rede, NSU, Finalizacao : String;
         DocumentoVinculado : String = ''); override;
-     procedure CNC(Rede, NSU : String; DataHoraTransacao : TDateTime;
-        Valor : Double); overload; override;
+     Function CNC(Rede, NSU : String; DataHoraTransacao : TDateTime;
+        Valor : Double) : Boolean; overload; override;
 
    published
      property EnderecoIP     : String read fEnderecoIP     write fEnderecoIP ;
@@ -427,7 +427,7 @@ begin
    {Nada a Fazer}
 end;
 
-procedure TACBrTEFDCliSiTef.ATV;
+Procedure TACBrTEFDCliSiTef.ATV ;
 var
    Sts : Integer;
 begin
@@ -436,11 +436,11 @@ begin
   if Sts = 10000 then
      Sts := ContinuarRequisicao( True ) ;  { True = Imprimir Comprovantes agora }
 
-  if Sts <> 0 then
+  if ( Sts <> 0 ) then
      AvaliaErro( Sts );
 end;
 
-procedure TACBrTEFDCliSiTef.ADM;
+Function TACBrTEFDCliSiTef.ADM : Boolean;
 var
    Sts : Integer;
 begin
@@ -449,12 +449,14 @@ begin
   if Sts = 10000 then
      Sts := ContinuarRequisicao( True ) ;  { True = Imprimir Comprovantes agora }
 
-  if Sts <> 0 then
+  Result := ( Sts = 0 ) ;
+
+  if not Result then
      AvaliaErro( Sts );
 end;
 
-procedure TACBrTEFDCliSiTef.CRT( Valor : Double; IndiceFPG_ECF : String;
-   DocumentoVinculado : String = ''; Moeda : Integer = 0 );
+Function TACBrTEFDCliSiTef.CRT( Valor : Double; IndiceFPG_ECF : String;
+   DocumentoVinculado : String = ''; Moeda : Integer = 0 ) : Boolean;
 var
   Sts : Integer;
   SaldoAPagar : Double;
@@ -472,17 +474,19 @@ begin
   if Sts = 10000 then
      Sts := ContinuarRequisicao( False ) ;  { False = NAO Imprimir Comprovantes agora }
 
-  if Sts <> 0 then
+  Result := ( Sts = 0 ) ;
+
+  if not Result then
      AvaliaErro( Sts )
   else
      ProcessarRespostaPagamento( SaldoAPagar, IndiceFPG_ECF, Valor );
 end;
 
-procedure TACBrTEFDCliSiTef.CHQ(Valor : Double; IndiceFPG_ECF : String;
+Function TACBrTEFDCliSiTef.CHQ(Valor : Double; IndiceFPG_ECF : String;
    DocumentoVinculado : String; CMC7 : String; TipoPessoa : AnsiChar;
    DocumentoPessoa : String; DataCheque : TDateTime; Banco : String;
    Agencia : String; AgenciaDC : String; Conta : String; ContaDC : String;
-   Cheque : String; ChequeDC : String);
+   Cheque : String; ChequeDC : String) : Boolean;
 var
   Sts : Integer;
   SaldoAPagar : Double;
@@ -500,14 +504,16 @@ begin
   if Sts = 10000 then
      Sts := ContinuarRequisicao( False ) ;  { False = NAO Imprimir Comprovantes agora }
 
-  if Sts <> 0 then
+  Result := ( Sts = 0 ) ;
+
+  if not Result then
      AvaliaErro( Sts )
   else
      ProcessarRespostaPagamento( SaldoAPagar, IndiceFPG_ECF, Valor );
 end;
 
-procedure TACBrTEFDCliSiTef.CNF(Rede, NSU, Finalizacao : String;
-   DocumentoVinculado : String);
+Procedure TACBrTEFDCliSiTef.CNF(Rede, NSU, Finalizacao : String;
+   DocumentoVinculado : String) ;
 Var
    DataStr, HoraStr : String;
 begin
@@ -516,8 +522,8 @@ begin
   FinalizaTransacao( True, DocumentoVinculado );
 end;
 
-procedure TACBrTEFDCliSiTef.CNC(Rede, NSU : String;
-   DataHoraTransacao : TDateTime; Valor : Double);
+Function TACBrTEFDCliSiTef.CNC(Rede, NSU : String;
+   DataHoraTransacao : TDateTime; Valor : Double) : Boolean;
 var
    Sts : Integer;
 begin
@@ -526,12 +532,14 @@ begin
   if Sts = 10000 then
      Sts := ContinuarRequisicao( True ) ;  { True = Imprimir Comprovantes agora }
 
-  if Sts <> 0 then
+  Result := ( Sts = 0 ) ;
+
+  if not Result then
      AvaliaErro( Sts );
 end;
 
-procedure TACBrTEFDCliSiTef.NCN(Rede, NSU, Finalizacao : String;
-   Valor : Double; DocumentoVinculado : String);
+Procedure TACBrTEFDCliSiTef.NCN(Rede, NSU, Finalizacao : String;
+   Valor : Double; DocumentoVinculado : String) ;
 begin
   // CliSiTEF não usa Rede, NSU, Finalizacao e Valor
 

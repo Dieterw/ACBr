@@ -47,6 +47,17 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 1.2b   03/02/10
+[*] Metodos ADM, CRT, CHQ, CNC modificados para Retornar o status da Transação
+    Ou seja, True = Aprovada (ou efetuada), False = Negada (ou cancelada)
+[-] Corrigido Bug em "CancelarTransacoesPendentes", que não verificava a
+    Resposta da Transação CNC antes de apagar o arquivo de Backup
+[*] Transacoes Administrativas com Impressao de Relatório agora também geram
+    chamada ao evento "OnDepoisConfirmarTransacoes"
+[*] Melhorado tratamento de Limpeza de RespostasPendentes (nao limpava no caso
+    de Exceptions)
+[*] Melhorado tratamento de FinalizarResposta (nao rodava no caso de Exceptions)
+
 Versão 1.1b   28/01/10
 [-] ACBrTEFDCliSiTef revisada para carregar corretamente "libclisitef.so" no
     Linux
@@ -132,4 +143,4 @@ Versão 0.01a   08/12/09
 
 
 
-
+

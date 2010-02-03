@@ -55,7 +55,7 @@ uses
   {$ENDIF} ;
 
 const
-   CACBrTEFD_Versao      = '1.1b' ;
+   CACBrTEFD_Versao      = '1.2b' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -396,7 +396,7 @@ type
      procedure SetArqBackup(const AValue : String);
      procedure SetOrdemPagamento(const AValue : Integer);
    protected
-     function GetTransacaoAprovada : Boolean; virtual; abstract;
+     function GetTransacaoAprovada : Boolean; virtual;
 
    public
      constructor Create ;
@@ -593,28 +593,27 @@ type
 
      procedure CancelarTransacoesPendentesClass; virtual;
 
-     procedure ATV ; virtual;
-     procedure ADM ; virtual;
-     procedure CRT( Valor : Double; IndiceFPG_ECF : String;
-        DocumentoVinculado : String = ''; Moeda : Integer = 0 ); virtual;
-     procedure CHQ( Valor : Double; IndiceFPG_ECF : String;
+     Procedure ATV ; virtual;
+     Function ADM : Boolean; virtual;
+     Function CRT( Valor : Double; IndiceFPG_ECF : String;
+        DocumentoVinculado : String = ''; Moeda : Integer = 0 ) : Boolean; virtual;
+     Function CHQ( Valor : Double; IndiceFPG_ECF : String;
         DocumentoVinculado : String = ''; CMC7 : String = '';
         TipoPessoa : AnsiChar = 'F'; DocumentoPessoa : String = '';
         DataCheque : TDateTime = 0; Banco   : String = '';
         Agencia    : String = ''; AgenciaDC : String = '';
         Conta      : String = ''; ContaDC   : String = '';
-        Cheque     : String = ''; ChequeDC  : String = ''); virtual;
-     procedure NCN; overload; virtual;
-     procedure NCN(Rede, NSU, Finalizacao : String;
-        Valor : Double = 0; DocumentoVinculado : String = '');
+        Cheque     : String = ''; ChequeDC  : String = '') : Boolean; virtual;
+     Procedure NCN ; overload; virtual;
+     Procedure NCN(Rede, NSU, Finalizacao : String;
+        Valor : Double = 0; DocumentoVinculado : String = '') ;
         overload; virtual; 
-     procedure CNF ; overload; virtual;
-     procedure CNF(Rede, NSU, Finalizacao : String;
-        DocumentoVinculado : String = ''); overload; virtual; 
-     procedure CNC ; overload; virtual;
-     procedure CNC(Rede, NSU : String; DataHoraTransacao : TDateTime;
-        Valor : Double); overload; virtual;
-
+     Procedure CNF ; overload; virtual;
+     Procedure CNF(Rede, NSU, Finalizacao : String;
+        DocumentoVinculado : String = ''); overload; virtual;
+     Function CNC : Boolean ; overload; virtual;
+     Function CNC(Rede, NSU : String; DataHoraTransacao : TDateTime;
+        Valor : Double) : Boolean; overload; virtual;
    published
      property ArqLOG : String read fArqLOG write fArqLOG ;
 
@@ -1251,6 +1250,11 @@ begin
   fpOrdemPagamento := AValue;
 end;
 
+function TACBrTEFDResp.GetTransacaoAprovada: Boolean;
+begin
+   Result := True ;   { Abstrata }
+end;
+
 function TACBrTEFDResp.LeInformacao(const Identificacao : Integer;
    const Sequencia : Integer) : TACBrTEFDLinhaInformacao;
 begin
@@ -1504,14 +1508,15 @@ begin
   end;
 end;
 
-procedure TACBrTEFDClass.ATV;
+Procedure TACBrTEFDClass.ATV ;
 begin
   IniciarRequisicao('ATV');
   FinalizarRequisicao;
 end;
 
-procedure TACBrTEFDClass.ADM;
+Function TACBrTEFDClass.ADM : Boolean;
 begin
+  Result := False ;
   VerificaAtivo;              { VisaNET exige um ATV antes de cada transação }
 
   IniciarRequisicao('ADM');
@@ -1519,15 +1524,20 @@ begin
   FinalizarRequisicao;
 
   LerRespostaRequisicao;
-  ProcessarResposta ;          { Faz a Impressão e / ou exibe Mensagem ao Operador }
-  FinalizarResposta( True ) ; { True = Apaga Arquivo de Resposta }
+  Result := Resp.TransacaoAprovada ;
+  try
+     ProcessarResposta ;         { Faz a Impressão e / ou exibe Mensagem ao Operador }
+  finally
+     FinalizarResposta( True ) ; { True = Apaga Arquivo de Resposta }
+  end;
 end;
 
-procedure TACBrTEFDClass.CRT( Valor : Double; IndiceFPG_ECF : String;
-   DocumentoVinculado: String = ''; Moeda : Integer = 0 );
+Function TACBrTEFDClass.CRT( Valor : Double; IndiceFPG_ECF : String;
+   DocumentoVinculado: String = ''; Moeda : Integer = 0 ) : Boolean;
 var
    SaldoAPagar : Double;
 begin
+  Result      := False ;
   SaldoAPagar := 0 ;
   VerificarTransacaoPagamento( Valor, SaldoAPagar );
 
@@ -1538,18 +1548,20 @@ begin
   FinalizarRequisicao;
 
   ProcessarRespostaPagamento( SaldoAPagar, IndiceFPG_ECF, Valor);
+  Result := Resp.TransacaoAprovada;
 end;
 
-procedure TACBrTEFDClass.CHQ( Valor : Double; IndiceFPG_ECF : String;
+Function TACBrTEFDClass.CHQ( Valor : Double; IndiceFPG_ECF : String;
    DocumentoVinculado : String = ''; CMC7 : String = '';
    TipoPessoa : AnsiChar = 'F'; DocumentoPessoa : String = '';
    DataCheque : TDateTime = 0; Banco   : String = '';
    Agencia    : String = ''; AgenciaDC : String = '';
    Conta      : String = ''; ContaDC   : String = '';
-   Cheque     : String = ''; ChequeDC  : String = '');
+   Cheque     : String = ''; ChequeDC  : String = '') : Boolean;
 var
    SaldoAPagar : Double;
 begin
+  Result      := False ;
   SaldoAPagar := 0 ;
   VerificarTransacaoPagamento( Valor, SaldoAPagar );
 
@@ -1570,12 +1582,14 @@ begin
   FinalizarRequisicao;
 
   ProcessarRespostaPagamento( SaldoAPagar, IndiceFPG_ECF, Valor);
+  Result := Resp.TransacaoAprovada;
 end;
 
-procedure TACBrTEFDClass.CNC;
+Function TACBrTEFDClass.CNC : Boolean ;
 Var
   OldResp : TACBrTEFDRespTXT ;
 begin
+  Result  := False ;
   OldResp := TACBrTEFDRespTXT.Create;
   try
      OldResp.Assign(Resp);      { Salvando dados da Resposta Atual }
@@ -1603,16 +1617,22 @@ begin
      FinalizarRequisicao;
 
      LerRespostaRequisicao;
-     ProcessarResposta;           { Faz a Impressão e / ou exibe Mensagem ao Operador }
-     FinalizarResposta( True ) ; { True = Apaga Arquivo de Resposta }
+     Result := Resp.TransacaoAprovada;
+
+     try
+        ProcessarResposta ;         { Faz a Impressão e / ou exibe Mensagem ao Operador }
+     finally
+        FinalizarResposta( True ) ; { True = Apaga Arquivo de Resposta }
+     end;
   finally
      OldResp.Free;
   end;
 end;
 
-procedure TACBrTEFDClass.CNC( Rede, NSU : String; DataHoraTransacao :
-   TDateTime; Valor : Double);
+Function TACBrTEFDClass.CNC( Rede, NSU : String; DataHoraTransacao :
+   TDateTime; Valor : Double) : Boolean;
 begin
+  Result := False ;
   VerificaAtivo;             { VisaNET exige um ATV antes de cada transação }
 
   IniciarRequisicao('CNC');
@@ -1623,17 +1643,21 @@ begin
   FinalizarRequisicao;
 
   LerRespostaRequisicao;
-  ProcessarResposta;           { Faz a Impressão e / ou exibe Mensagem ao Operador }
-  FinalizarResposta( True ) ; { True = Apaga Arquivo de Resposta }
+  Result := Resp.TransacaoAprovada;
+  try
+     ProcessarResposta ;         { Faz a Impressão e / ou exibe Mensagem ao Operador }
+  finally
+     FinalizarResposta( True ) ; { True = Apaga Arquivo de Resposta }
+  end;
 end;
 
-procedure TACBrTEFDClass.CNF;
+Procedure TACBrTEFDClass.CNF ;
 begin
   CNF( Resp.Rede, Resp.NSU, Resp.Finalizacao, Resp.DocumentoVinculado ) ;
 end;
 
-procedure TACBrTEFDClass.CNF( Rede, NSU, Finalizacao : String;
-  DocumentoVinculado : String = '');
+Procedure TACBrTEFDClass.CNF( Rede, NSU, Finalizacao : String;
+  DocumentoVinculado : String = '') ;
 begin
   VerificaAtivo;         { VisaNET exige um ATV antes de cada transação }
 
@@ -1865,6 +1889,8 @@ begin
 end;
 
 procedure TACBrTEFDClass.ProcessarResposta ;
+var
+   RespostaPendente: TACBrTEFDRespTXT;
 begin
   VerificarIniciouRequisicao;
 
@@ -1872,8 +1898,23 @@ begin
   begin
      EstadoResp := respProcessando;
 
+     //GravaLog( Resp.Conteudo.Conteudo.Text );
      if Resp.QtdLinhasComprovante > 0 then
-        ImprimirRelatorio
+      begin
+         { Cria cópia do Objeto Resp, e salva no ObjectList "RespostasPendentes" }
+         RespostaPendente := TACBrTEFDRespTXT.Create ;
+         try
+            RespostaPendente.Assign( Resp );
+            RespostasPendentes.Add( RespostaPendente );
+
+            ImprimirRelatorio ;
+
+            if Assigned( OnDepoisConfirmarTransacoes ) then
+               OnDepoisConfirmarTransacoes( RespostasPendentes );
+         finally
+            RespostasPendentes.Clear;
+         end;
+      end
      else
         if Resp.TextoEspecialOperador <> '' then
            DoExibeMsg( opmOK, Resp.TextoEspecialOperador )
@@ -1980,7 +2021,10 @@ begin
            { Enviando NCN ou CNC }
            try
               if Resp.CNFEnviado then
-                 CNC
+               begin
+                 if not CNC then
+                    raise EACBrTEFDErro.Create('recusada') ;
+               end
               else
                  NCN;
 
@@ -2036,10 +2080,11 @@ begin
 
                  if Est <> 'L' then
                  begin
-                    { Fecha Vinculado ou Gerencial, se ficou algum aberto por Desligamento }
+                    { Fecha Vinculado ou Gerencial ou Cupom, se ficou algum aberto por Desligamento }
                     case Est of
                       'C'      : ComandarECF( opeFechaVinculado );
                       'G', 'R' : ComandarECF( opeFechaGerencial );
+                      'V', 'P' : ComandarECF( opeCancelaCupom );
                     end;
 
                     if EstadoECF <> 'L' then
@@ -2132,6 +2177,9 @@ begin
 
        BloquearMouseTeclado( False );
      end ;
+
+     if not ImpressaoOk then
+        raise EACBrTEFDECF.Create( ACBrStr('Impressão de Relatório Falhou' ) ) ;
   end;
 end;
 
@@ -2273,8 +2321,8 @@ Procedure TACBrTEFDClass.VerificarTransacaoPagamento(Valor : Double;
 var
    SubTotal : String;
 begin
-  if (Valor <= 0) then
-     raise Exception.Create( ACBrStr( 'Valor inválido' ) );
+   if (Valor <= 0) then
+      raise Exception.Create( ACBrStr( 'Valor inválido' ) );
 
    { Lendo o SubTotal do ECF }
    with TACBrTEFD(Owner) do
@@ -2415,4 +2463,4 @@ begin
 end;
 
 end.
-
+

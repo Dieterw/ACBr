@@ -170,18 +170,20 @@ type
      procedure AtivarGP(GP : TACBrTEFDTipo);
 
      procedure ATV( GP : TACBrTEFDTipo = gpNenhum ) ;
-     procedure ADM( GP : TACBrTEFDTipo = gpNenhum ) ;
-     procedure CRT( const Valor : Double; const IndiceFPG_ECF : String;
-        const DocumentoVinculado : String = ''; const Moeda : Integer = 0 );
-     procedure CHQ( const Valor : Double; const IndiceFPG_ECF : String;
+     Function ADM( GP : TACBrTEFDTipo = gpNenhum ) : Boolean ;
+     Function CRT( const Valor : Double; const IndiceFPG_ECF : String;
+        const DocumentoVinculado : String = ''; const Moeda : Integer = 0 )
+        : Boolean ;
+     Function CHQ( const Valor : Double; const IndiceFPG_ECF : String;
         const DocumentoVinculado : String = ''; const CMC7 : String = '';
         const TipoPessoa : AnsiChar = 'F'; const DocumentoPessoa : String = '';
         const DataCheque : TDateTime = 0; const Banco   : String = '';
         const Agencia    : String = ''; const AgenciaDC : String = '';
         const Conta      : String = ''; const ContaDC   : String = '';
-        const Cheque     : String = ''; const ChequeDC  : String = '');
-     procedure CNC(const Rede, NSU : String; const DataHoraTransacao :
-        TDateTime; const Valor : Double);
+        const Cheque     : String = ''; const ChequeDC  : String = '')
+        : Boolean ;
+     Function CNC(const Rede, NSU : String; const DataHoraTransacao :
+        TDateTime; const Valor : Double) : Boolean ;
      procedure CNF(const Rede, NSU, Finalizacao : String;
         const DocumentoVinculado : String = '');
      procedure NCN(const Rede, NSU, Finalizacao : String;
@@ -556,36 +558,37 @@ begin
   fTefClass.ATV;
 end;
 
-procedure TACBrTEFD.ADM( GP : TACBrTEFDTipo = gpNenhum );
+Function TACBrTEFD.ADM( GP : TACBrTEFDTipo = gpNenhum ) : Boolean ;
 begin
   if GP <> gpNenhum then
      GPAtual := GP ;
 
-  fTefClass.ADM;
+  Result := fTefClass.ADM;
 end;
 
-procedure TACBrTEFD.CRT(const Valor : Double; const IndiceFPG_ECF : String;
-   const DocumentoVinculado : String; const Moeda : Integer);
+Function TACBrTEFD.CRT(const Valor : Double; const IndiceFPG_ECF : String;
+   const DocumentoVinculado : String; const Moeda : Integer) : Boolean ;
 begin
-   fTefClass.CRT( Valor, IndiceFPG_ECF, DocumentoVinculado, Moeda );
+   Result := fTefClass.CRT( Valor, IndiceFPG_ECF, DocumentoVinculado, Moeda );
 end;
 
-procedure TACBrTEFD.CHQ(const Valor : Double; const IndiceFPG_ECF : String;
+Function TACBrTEFD.CHQ(const Valor : Double; const IndiceFPG_ECF : String;
    const DocumentoVinculado : String; const CMC7 : String;
    const TipoPessoa : AnsiChar; const DocumentoPessoa : String;
    const DataCheque : TDateTime; const Banco : String; const Agencia : String;
    const AgenciaDC : String; const Conta : String; const ContaDC : String;
-   const Cheque : String; const ChequeDC : String);
+   const Cheque : String; const ChequeDC : String) : Boolean;
 begin
-   fTefClass.CHQ( Valor, IndiceFPG_ECF, DocumentoVinculado, CMC7, TipoPessoa,
-                  DocumentoPessoa, DataCheque, Banco, Agencia, AgenciaDC,
-                  Conta, ContaDC, Cheque, ChequeDC);
+   Result := fTefClass.CHQ( Valor, IndiceFPG_ECF, DocumentoVinculado, CMC7,
+                            TipoPessoa,  DocumentoPessoa, DataCheque,
+                            Banco, Agencia, AgenciaDC,
+                            Conta, ContaDC, Cheque, ChequeDC);
 end;
 
-procedure TACBrTEFD.CNC(const Rede, NSU : String;
-   const DataHoraTransacao : TDateTime; const Valor : Double);
+Function TACBrTEFD.CNC(const Rede, NSU : String;
+   const DataHoraTransacao : TDateTime; const Valor : Double) : Boolean;
 begin
-  fTefClass.CNC( Rede, NSU, DataHoraTransacao, Valor);
+  Result := fTefClass.CNC( Rede, NSU, DataHoraTransacao, Valor);
 end;
 
 procedure TACBrTEFD.CNF(const Rede, NSU, Finalizacao : String;
@@ -605,13 +608,15 @@ Var
   I : Integer;
 begin
   { Ajustando o mesmo valor nas Classes de TEF, caso elas usem o valor default }
-  For I := 0 to fTEFList.Count-1 do
-  begin
-    if fTEFList[I].Habilitado then
-       fTEFList[I].CancelarTransacoesPendentesClass;
+  try
+     For I := 0 to fTEFList.Count-1 do
+     begin
+       if fTEFList[I].Habilitado then
+          fTEFList[I].CancelarTransacoesPendentesClass;
+     end;
+  finally
+     RespostasPendentes.Clear;
   end;
-
-  RespostasPendentes.Clear;
 end;
 
 procedure TACBrTEFD.ConfirmarTransacoesPendentes;
@@ -642,10 +647,12 @@ begin
     end;
   end ;
 
-  if Assigned( fOnDepoisConfirmarTransacoes ) then
-     fOnDepoisConfirmarTransacoes( RespostasPendentes );
-
-  RespostasPendentes.Clear;
+  try
+     if Assigned( fOnDepoisConfirmarTransacoes ) then
+        fOnDepoisConfirmarTransacoes( RespostasPendentes );
+  finally
+     RespostasPendentes.Clear;
+  end;
 end;
 
 procedure TACBrTEFD.ImprimirTransacoesPendentes;
@@ -1364,4 +1371,4 @@ initialization
 {$endif}
 
 end.
-
+

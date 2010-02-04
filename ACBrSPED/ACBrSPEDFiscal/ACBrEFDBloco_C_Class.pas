@@ -1781,35 +1781,35 @@ begin
      begin
         with RegistroC500.Items[intFor] do
         begin
-          strRegistroC500 := strRegistroC500 + LFill('C500') +
-                                               LFill( IND_OPER,1 ) +
-                                               LFill( IND_EMIT,1 ) +
-                                               LFill( COD_PART ) +
-                                               LFill( COD_MOD,2 ) +
-                                               LFill( COD_SIT,2 ) +
-                                               LFill( SER ) +
-                                               LFill( SUB ) +
-                                               LFill( COD_CONS,2 ) +
-                                               LFill( NUM_DOC,9 ) +
-                                               LFill( DT_DOC ) +
-                                               LFill( DT_E_S ) +
-                                               LFill( VL_DOC,0,2 ) +
-                                               LFill( VL_DESC,0,2 ) +
-                                               LFill( VL_FORN,0,2 ) +
-                                               LFill( VL_SERV_NT,0,2 ) +
-                                               LFill( VL_TERC,0,2 ) +
-                                               LFill( VL_DA,0,2 ) +
-                                               LFill( VL_BC_ICMS,0,2 ) +
-                                               LFill( VL_ICMS,0,2 ) +
-                                               LFill( VL_BC_ICMS_ST,0,2 ) +
-                                               LFill( VL_ICMS_ST,0,2 ) +
-                                               LFill( COD_INF,6 ) +
-                                               LFill( VL_PIS,0,2 ) +
-                                               LFill( VL_COFINS,0,2 ) +
-                                               LFill( TP_LIGACAO ) +
-                                               LFill( COD_GRUPO_TENSAO ) +
-                                               Delimitador +
-                                               #13#10;
+           strRegistroC500 := strRegistroC500 + LFill('C500') +
+                                                LFill( IND_OPER,1 ) +
+                                                LFill( IND_EMIT,1 ) +
+                                                LFill( COD_PART ) +
+                                                LFill( COD_MOD,2 ) +
+                                                LFill( COD_SIT,2 ) +
+                                                LFill( SER ) +
+                                                LFill( SUB ) +
+                                                LFill( COD_CONS ) +
+                                                LFill( NUM_DOC,9 ) +
+                                                LFill( DT_DOC ) +
+                                                LFill( DT_E_S ) +
+                                                LFill( VL_DOC,0,2 ) +
+                                                LFill( VL_DESC,0,2 ) +
+                                                LFill( VL_FORN,0,2 ) +
+                                                LFill( VL_SERV_NT,0,2 ) +
+                                                LFill( VL_TERC,0,2 ) +
+                                                LFill( VL_DA,0,2 ) +
+                                                LFill( VL_BC_ICMS,0,2 ) +
+                                                LFill( VL_ICMS,0,2 ) +
+                                                LFill( VL_BC_ICMS_ST,0,2 ) +
+                                                LFill( VL_ICMS_ST,0,2 ) +
+                                                LFill( COD_INF ) +
+                                                LFill( VL_PIS,0,2 ) +
+                                                LFill( VL_COFINS,0,2 ) +
+                                                LFill( TP_LIGACAO ) +
+                                                LFill( COD_GRUPO_TENSAO ) +
+                                                Delimitador +
+                                                #13#10;
         end;
         /// Registro FILHOS do FILHO
         strRegistroC500 := strRegistroC500 +

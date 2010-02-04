@@ -152,8 +152,8 @@ type
         ListaRestricoes : AnsiString = '') : Integer ;
      Function ContinuarRequisicao( ImprimirComprovantes : Boolean ) : Integer ;
 
-     procedure ProcessarRespostaPagamento(const SaldoAPagar : Double;
-        const IndiceFPG : String; const Valor : Double);
+     procedure ProcessarRespostaPagamento( const IndiceFPG : String;
+        const Valor : Double);
 
    public
      constructor Create( AOwner : TComponent ) ; override;
@@ -459,11 +459,9 @@ Function TACBrTEFDCliSiTef.CRT( Valor : Double; IndiceFPG_ECF : String;
    DocumentoVinculado : String = ''; Moeda : Integer = 0 ) : Boolean;
 var
   Sts : Integer;
-  SaldoAPagar : Double;
   Restr : String ;
 begin
-  SaldoAPagar := 0 ;
-  VerificarTransacaoPagamento( Valor, SaldoAPagar );
+  VerificarTransacaoPagamento( Valor );
 
   Restr := fRestricoes;
   if Restr = '' then
@@ -479,7 +477,7 @@ begin
   if not Result then
      AvaliaErro( Sts )
   else
-     ProcessarRespostaPagamento( SaldoAPagar, IndiceFPG_ECF, Valor );
+     ProcessarRespostaPagamento( IndiceFPG_ECF, Valor );
 end;
 
 Function TACBrTEFDCliSiTef.CHQ(Valor : Double; IndiceFPG_ECF : String;
@@ -489,11 +487,9 @@ Function TACBrTEFDCliSiTef.CHQ(Valor : Double; IndiceFPG_ECF : String;
    Cheque : String; ChequeDC : String) : Boolean;
 var
   Sts : Integer;
-  SaldoAPagar : Double;
   Restr : String ;
 begin
-  SaldoAPagar := 0 ;
-  VerificarTransacaoPagamento( Valor, SaldoAPagar );
+  VerificarTransacaoPagamento( Valor );
 
   Restr := fRestricoes;
   if Restr = '' then
@@ -509,7 +505,7 @@ begin
   if not Result then
      AvaliaErro( Sts )
   else
-     ProcessarRespostaPagamento( SaldoAPagar, IndiceFPG_ECF, Valor );
+     ProcessarRespostaPagamento( IndiceFPG_ECF, Valor );
 end;
 
 Procedure TACBrTEFDCliSiTef.CNF(Rede, NSU, Finalizacao : String;
@@ -912,16 +908,13 @@ begin
       TACBrTEFD(Owner).DoExibeMsg( opmOK, Erro );
 end ;
 
-procedure TACBrTEFDCliSiTef.ProcessarRespostaPagamento( const SaldoAPagar : Double;
-   const IndiceFPG : String; const Valor : Double);
+procedure TACBrTEFDCliSiTef.ProcessarRespostaPagamento( const IndiceFPG : String;
+   const Valor : Double);
 var
-  UltimaTransacao : Boolean ;
   ImpressaoOk : Boolean;
   RespostaPendente : TACBrTEFDResp ;
   Imagem : String;
 begin
-  UltimaTransacao := (Valor >= SaldoAPagar);
-
   with TACBrTEFD(Owner) do
   begin
      Self.Resp.IndiceFPG_ECF := IndiceFPG;
@@ -966,8 +959,6 @@ begin
               CancelarTransacoesPendentes;
         end;
      end;
-
-     RespostasPendentes.SaldoAPagar := SaldoAPagar;
 
      if RespostasPendentes.SaldoRestante <= 0 then
      begin

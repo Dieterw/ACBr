@@ -47,6 +47,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 1.3b   03/02/10
+[-] Corrigido Bug na verificação de transação Aprovada (retorno) em CRT e CHQ
+[-] Corrigido Bug na verificação de Saldo Restante a Pagar em transaçoes com
+    Multiplos Cartoes
+
 Versão 1.2b   03/02/10
 [*] Metodos ADM, CRT, CHQ, CNC modificados para Retornar o status da Transação
     Ou seja, True = Aprovada (ou efetuada), False = Negada (ou cancelada)

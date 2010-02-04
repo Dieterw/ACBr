@@ -11,7 +11,7 @@
       <TargetFileExt Value=".exe"/>
       <UseXPManifest Value="True"/>
       <Icon Value="0"/>
-      <ActiveEditorIndexAtStart Value="1"/>
+      <ActiveEditorIndexAtStart Value="2"/>
     </General>
     <VersionInfo>
       <ProjectVersion Value=""/>
@@ -56,7 +56,7 @@
         <ComponentName Value="Form1"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Unit1"/>
-        <CursorPos X="1" Y="287"/>
+        <CursorPos X="42" Y="297"/>
         <TopLine Value="272"/>
         <EditorIndex Value="0"/>
         <UsageCount Value="206"/>
@@ -198,8 +198,8 @@
       <Unit19>
         <Filename Value="..\ACBrTEFDClass.pas"/>
         <UnitName Value="ACBrTEFDClass"/>
-        <CursorPos X="30" Y="69"/>
-        <TopLine Value="52"/>
+        <CursorPos X="35" Y="2341"/>
+        <TopLine Value="2335"/>
         <EditorIndex Value="2"/>
         <UsageCount Value="101"/>
         <Loaded Value="True"/>
@@ -207,7 +207,7 @@
       <Unit20>
         <Filename Value="..\ACBrTEFD.pas"/>
         <UnitName Value="ACBrTEFD"/>
-        <CursorPos X="38" Y="512"/>
+        <CursorPos X="58" Y="511"/>
         <TopLine Value="493"/>
         <EditorIndex Value="1"/>
         <UsageCount Value="101"/>
@@ -219,11 +219,9 @@
       <Unit21>
         <Filename Value="..\ACBrTEFDCliSiTef.pas"/>
         <UnitName Value="ACBrTEFDCliSiTef"/>
-        <CursorPos X="49" Y="130"/>
+        <CursorPos X="62" Y="115"/>
         <TopLine Value="114"/>
-        <EditorIndex Value="4"/>
         <UsageCount Value="101"/>
-        <Loaded Value="True"/>
       </Unit21>
       <Unit22>
         <Filename Value="..\..\ACBrComum\ACBrUtil.pas"/>
@@ -247,7 +245,7 @@
         <UnitName Value="Unit4"/>
         <CursorPos X="7" Y="43"/>
         <TopLine Value="9"/>
-        <UsageCount Value="180"/>
+        <UsageCount Value="183"/>
       </Unit24>
       <Unit25>
         <Filename Value="Unit5.pas"/>
@@ -257,7 +255,7 @@
         <UnitName Value="Unit5"/>
         <CursorPos X="7" Y="91"/>
         <TopLine Value="77"/>
-        <UsageCount Value="179"/>
+        <UsageCount Value="182"/>
       </Unit25>
       <Unit26>
         <Filename Value="..\..\..\..\..\..\CD_TEF\SiTEF\Exemplo_delphi\Unit01.pas"/>
@@ -289,11 +287,9 @@
       </Unit29>
       <Unit30>
         <Filename Value="..\ACBr_TEFD-change-log.txt"/>
-        <CursorPos X="57" Y="49"/>
+        <CursorPos X="88" Y="54"/>
         <TopLine Value="44"/>
-        <EditorIndex Value="5"/>
-        <UsageCount Value="69"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="70"/>
         <SyntaxHighlighter Value="None"/>
       </Unit30>
       <Unit31>
@@ -414,14 +410,12 @@
       <Unit47>
         <Filename Value="..\ACBrTEFDGpu.pas"/>
         <UnitName Value="ACBrTEFDGpu"/>
-        <CursorPos X="45" Y="72"/>
-        <TopLine Value="57"/>
-        <EditorIndex Value="3"/>
-        <UsageCount Value="11"/>
-        <Loaded Value="True"/>
+        <CursorPos X="16" Y="37"/>
+        <TopLine Value="27"/>
+        <UsageCount Value="12"/>
       </Unit47>
     </Units>
-    <JumpHistory Count="25" HistoryIndex="24">
+    <JumpHistory Count="29" HistoryIndex="28">
       <Position1>
         <Filename Value="..\ACBrTEFDClass.pas"/>
         <Caret Line="1" Column="1" TopLine="1"/>
@@ -522,6 +516,22 @@
         <Filename Value="..\ACBrTEFD.pas"/>
         <Caret Line="408" Column="23" TopLine="390"/>
       </Position25>
+      <Position26>
+        <Filename Value="..\ACBrTEFD.pas"/>
+        <Caret Line="511" Column="58" TopLine="493"/>
+      </Position26>
+      <Position27>
+        <Filename Value="..\ACBrTEFDClass.pas"/>
+        <Caret Line="57" Column="27" TopLine="52"/>
+      </Position27>
+      <Position28>
+        <Filename Value="..\ACBrTEFDClass.pas"/>
+        <Caret Line="752" Column="39" TopLine="743"/>
+      </Position28>
+      <Position29>
+        <Filename Value="..\ACBrTEFDClass.pas"/>
+        <Caret Line="758" Column="49" TopLine="743"/>
+      </Position29>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
@@ -546,12 +556,6 @@
     </Other>
   </CompilerOptions>
   <Debugging>
-    <BreakPoints Count="1">
-      <Item1>
-        <Source Value="Unit1.pas"/>
-        <Line Value="287"/>
-      </Item1>
-    </BreakPoints>
     <Exceptions Count="17">
       <Item1>
         <Name Value="EAbort"/>

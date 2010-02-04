@@ -55,7 +55,7 @@ uses
   {$ENDIF} ;
 
 const
-   CACBrTEFD_Versao      = '1.2b' ;
+   CACBrTEFD_Versao      = '1.3b' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -544,15 +544,14 @@ type
      Function CopiarResposta : String ; virtual;
 
      procedure ProcessarResposta ; virtual;
-     procedure ProcessarRespostaPagamento(const SaldoAPagar : Double;
-        const IndiceFPG_ECF : String; const Valor : Double); virtual;
+     Function ProcessarRespostaPagamento( const IndiceFPG_ECF : String;
+        const Valor : Double) : Boolean; virtual;
 
      procedure VerificarIniciouRequisicao; virtual;
 
      procedure ImprimirRelatorio ; virtual;
 
-     Procedure VerificarTransacaoPagamento(Valor : Double;
-        var SaldoAPagar : Double); virtual;
+     Procedure VerificarTransacaoPagamento(Valor : Double); virtual;
 
    protected
      property AutoAtivarGP : Boolean read fAutoAtivarGP write fAutoAtivarGP
@@ -1534,12 +1533,9 @@ end;
 
 Function TACBrTEFDClass.CRT( Valor : Double; IndiceFPG_ECF : String;
    DocumentoVinculado: String = ''; Moeda : Integer = 0 ) : Boolean;
-var
-   SaldoAPagar : Double;
 begin
   Result      := False ;
-  SaldoAPagar := 0 ;
-  VerificarTransacaoPagamento( Valor, SaldoAPagar );
+  VerificarTransacaoPagamento( Valor );
 
   IniciarRequisicao('CRT');
   Req.DocumentoVinculado  := DocumentoVinculado;
@@ -1547,8 +1543,7 @@ begin
   Req.Moeda               := Moeda;
   FinalizarRequisicao;
 
-  ProcessarRespostaPagamento( SaldoAPagar, IndiceFPG_ECF, Valor);
-  Result := Resp.TransacaoAprovada;
+  Result := ProcessarRespostaPagamento( IndiceFPG_ECF, Valor);
 end;
 
 Function TACBrTEFDClass.CHQ( Valor : Double; IndiceFPG_ECF : String;
@@ -1558,12 +1553,9 @@ Function TACBrTEFDClass.CHQ( Valor : Double; IndiceFPG_ECF : String;
    Agencia    : String = ''; AgenciaDC : String = '';
    Conta      : String = ''; ContaDC   : String = '';
    Cheque     : String = ''; ChequeDC  : String = '') : Boolean;
-var
-   SaldoAPagar : Double;
 begin
   Result      := False ;
-  SaldoAPagar := 0 ;
-  VerificarTransacaoPagamento( Valor, SaldoAPagar );
+  VerificarTransacaoPagamento( Valor );
 
   IniciarRequisicao('CHQ');
   Req.DocumentoVinculado := DocumentoVinculado;
@@ -1581,8 +1573,7 @@ begin
   Req.ChequeDC           := ChequeDC;
   FinalizarRequisicao;
 
-  ProcessarRespostaPagamento( SaldoAPagar, IndiceFPG_ECF, Valor);
-  Result := Resp.TransacaoAprovada;
+  Result := ProcessarRespostaPagamento( IndiceFPG_ECF, Valor);
 end;
 
 Function TACBrTEFDClass.CNC : Boolean ;
@@ -2204,20 +2195,24 @@ begin
   end;
 end;
 
-procedure TACBrTEFDClass.ProcessarRespostaPagamento( const SaldoAPagar : Double;
-   const IndiceFPG_ECF : String; const Valor : Double);
+Function TACBrTEFDClass.ProcessarRespostaPagamento( const IndiceFPG_ECF : String;
+   const Valor : Double) : Boolean ;
 var
   UltimaTransacao : Boolean ;
   ImpressaoOk : Boolean;
   ArqBack : String ;
   RespostaPendente : TACBrTEFDRespTXT;
 begin
-  UltimaTransacao := (Valor >= SaldoAPagar);
+  Result := False ;
 
   LerRespostaRequisicao;
 
+  Result := Resp.TransacaoAprovada ;
+
   with TACBrTEFD(Owner) do
   begin
+     UltimaTransacao := (Valor >= RespostasPendentes.SaldoRestante );
+
      if not Self.Resp.TransacaoAprovada then
      begin
        ProcessarResposta;           { Exibe a Mensagem ao Operador }
@@ -2284,8 +2279,6 @@ begin
         end;
      end;
 
-     RespostasPendentes.SaldoAPagar := SaldoAPagar;
-
      if RespostasPendentes.SaldoRestante > 0 then  { Se Multiplos Cartoes, deve enviar um CNF }
       begin
         self.CNF;
@@ -2316,10 +2309,10 @@ begin
       raise EACBrTEFDErro.Create( ACBrStr( 'Nenhuma Requisição Iniciada' ) ) ;
 end;
 
-Procedure TACBrTEFDClass.VerificarTransacaoPagamento(Valor : Double;
-  var SaldoAPagar : Double);
+Procedure TACBrTEFDClass.VerificarTransacaoPagamento(Valor : Double );
 var
    SubTotal : String;
+   SaldoAPagar : Double ;
 begin
    if (Valor <= 0) then
       raise Exception.Create( ACBrStr( 'Valor inválido' ) );
@@ -2347,7 +2340,9 @@ begin
         raise Exception.Create( ACBrStr( 'Erro na conversão do Valor Retornado em:'+
                                          'OnInfoECF( ineSubTotal, SaldoAPagar )' ) );
 
-     if (Valor > SaldoAPagar) then
+     RespostasPendentes.SaldoAPagar :=  SaldoAPagar ;
+
+     if (Valor > RespostasPendentes.SaldoRestante ) then
         raise Exception.Create( ACBrStr( 'Operação TEF deve ser igual ao '+
                                          'Saldo a Pagar' ) );
 

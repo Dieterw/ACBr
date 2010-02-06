@@ -47,6 +47,17 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+
+Alterações   06/02/10
+---------------
+[*] Melhorias diversas no DANFE com  FORTES REPORTS (Créditos: Peterson de Cerqueira Matos)
+    - Alteração da quantidade de casas decimais dos campos 'QUANTIDADE' e
+      'VALOR UNITÁRIO' para 4 casas, conforme consta no 'MANUAL DE INTEGRAÇÃO DO CONTRIBUINTE'
+    - Correção na distribuição dos caracteres entre os 'DADOS ADICIONAIS' e a 'CONTINUAÇÃO DOS DADOS ADICIONAIS'
+    - Inclusão dos campos 'USUÁRIO' e 'SISTEMA' no rodapé do DANFE (só folha 1)
+    - Inclusão dos campos 'SITE', 'EMAIL' e 'FAX' no quadro do emitente
+    - Inclusão do 'RESUMO' da NF-e no canhoto
+
 Alterações   28/01/10
 ---------------
 [+] Incluido Propriedade PathSchemas (ACBrNFe.Configuracoes.Geral.PathSchemas)

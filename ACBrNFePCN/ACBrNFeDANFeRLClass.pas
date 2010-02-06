@@ -41,6 +41,13 @@
 |*  - Doação do componente para o Projeto ACBr
 |* 20/08/2009: Caique Rodrigues
 |*  - Doação units para geração do Danfe via QuickReport
+|* 20/11/2009: Peterson de Cerqueira Matos
+|*             E-mail: peterson161@yahoo.com - Tel: (11) 7197-1474 / 8059-4055
+|*  - Componente e Units do QuickReport clonados
+|*    e transformados em FORTES REPORT
+|* 27/01/2010: Peterson de Cerqueira Matos
+|*  - Acréscimo da propriedade "LarguraCodProd", que definirá a largura da
+|*    "Código do Produto" no DANFE
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeRLClass;
@@ -54,6 +61,7 @@ type
   TACBrNFeDANFeRL = class( TACBrNFeDANFEClass )
    private
      FMarcadagua: string;
+     FLarguraCodProd: Integer;
    public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -61,6 +69,7 @@ type
     procedure ImprimirDANFEPDF(NFE : TNFe = nil); override ;
   published
     property MarcadAgua : String read FMarcadagua write FMarcadagua ;
+    property LarguraCodProd: Integer read FLarguraCodProd write FLarguraCodProd;
   end;
 
 implementation
@@ -70,6 +79,7 @@ uses ACBrNFe, ACBrNFeUtil, ACBrUtil, StrUtils, Dialogs;
 constructor TACBrNFeDANFeRL.Create(AOwner: TComponent);
 begin
   inherited create( AOwner );
+  FLarguraCodProd := 52;
 end;
 
 destructor TACBrNFeDANFeRL.Destroy;
@@ -82,22 +92,42 @@ procedure TACBrNFeDANFeRL.ImprimirDANFE(NFE : TNFe = nil);
 var
   i : Integer;
   frlDANFeRLRetrato : TfrlDANFeRLRetrato;
-  sLogo: String;
-  sMarcaDagua: String;
+  sLogo, sMarcaDagua: String;
+  iLarguraCodProd: Integer;
+  sEmail: String;
+  bResumoCanhoto: Boolean;
+  sFax: String;
+  iNumCopias: Integer;
+  sSsitema: String;
+  sSite: String;
+  sUsuario: String;
+
 begin
   frlDANFeRLRetrato := TfrlDANFeRLRetrato.Create(Self);
   sLogo := TACBrNFe(ACBrNFe).DANFE.Logo;
   sMarcaDagua := MarcaDagua;
+  iLarguraCodProd := LarguraCodProd;
+  sEmail := Email;
+  bResumoCanhoto := ExibirResumoCanhoto;
+  sFax := Fax;
+  iNumCopias := NumCopias;
+  sSsitema := Sistema;
+  sSite := Site;
+  sUsuario := Usuario;
 
   if NFE = nil then
    begin
      for i:= 0 to TACBrNFe(ACBrNFe).NotasFiscais.Count-1 do
       begin
-        frlDANFeRLRetrato.Imprimir(TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe, sLogo, sMarcaDagua);
+        frlDANFeRLRetrato.Imprimir(TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe,
+        sLogo, sMarcaDagua, iLarguraCodProd, sEmail, bResumoCanhoto, sFax,
+        iNumCopias, sSsitema, sSite, sUsuario);
       end;
    end
   else
-     frlDANFeRLRetrato.Imprimir(NFe, sLogo, sMarcaDagua);
+    frlDANFeRLRetrato.Imprimir(NFE, sLogo, sMarcaDagua, iLarguraCodProd,
+    sEmail, bResumoCanhoto, sFax, iNumCopias, sSsitema, sSite, sUsuario);
+
   frlDANFeRLRetrato.Free;
 end;
 
@@ -106,17 +136,35 @@ var
   i : Integer;
   frlDANFeRLRetrato : TfrlDANFeRLRetrato;
   sLogo, sMarcaDagua, sFile: String;
+  iLarguraCodProd: Integer;
+  sEmail: String;
+  bResumoCanhoto: Boolean;
+  sFax: String;
+  iNumCopias: Integer;
+  sSsitema: String;
+  sSite: String;
+  sUsuario: String;
 begin
   frlDANFeRLRetrato := TfrlDANFeRLRetrato.Create(Self);
   sLogo := TACBrNFe(ACBrNFe).DANFE.Logo;
   sMarcaDagua := MarcaDagua;
+  iLarguraCodProd := LarguraCodProd;
+  sEmail := Email;
+  bResumoCanhoto := ExibirResumoCanhoto;
+  sFax := Fax;
+  iNumCopias := NumCopias;
+  sSsitema := Sistema;
+  sSite := Site;
+  sUsuario := Usuario;
 
   if NFE = nil then
    begin
      for i:= 0 to TACBrNFe(ACBrNFe).NotasFiscais.Count-1 do
       begin
         sFile := TACBrNFe(ACBrNFe).DANFE.PathPDF + Copy(TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe.infNFe.ID, 4, 44) + '-nfe.pdf';
-        frlDANFeRLRetrato.SavePDF(TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe, sLogo, sMarcaDagua, sFile);
+        frlDANFeRLRetrato.SavePDF(TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe,
+        sLogo, sMarcaDagua, iLarguraCodProd, sEmail, bResumoCanhoto, sFax,
+        iNumCopias, sSsitema, sSite, sUsuario, sFile);
       end;
    end;
 

@@ -42,9 +42,23 @@
 |* 20/08/2009: Caique Rodrigues
 |*  - Doação units para geração do Danfe via QuickReport
 |* 20/11/2009: Peterson de Cerqueira Matos
-               E-mail: peterson161@yahoo.com - Tel: (11) 7197-1474 / 8059-4055
+|*             E-mail: peterson161@yahoo.com - Tel: (11) 7197-1474 / 8059-4055
 |*  - Componente e Units do QuickReport clonados
 |*    e transformados em FORTES REPORT
+|* 27/01/2010: Peterson de Cerqueira Matos
+|*  - Inclusão de comandos na procedure "InitDados" para ajuste da largura da
+|*    coluna "Código do Produto" que foi definida no componente "ACBrNFeDANFeRL"
+|*  - Em casos de DANFE's com mais de uma página, a partir da segunda o canhoto
+|*    nao é mais exibido
+|* 05/02/2010: Peterson de Cerqueira Matos
+|*  - Alteração da quantidade de casas decimais dos campos 'QUANTIDADE' e
+|*    'VALOR UNITÁRIO' para 4 casas, conforme consta no 'MANUAL DE INTEGRAÇÃO
+|*    DO CONTRIBUINTE'
+|*  - Correção na distribuição dos caracteres entre os 'DADOS ADICIONAIS' e a
+|*    'CONTINUAÇÃO DOS DADOS ADICIONAIS'
+|*  - Inclusão dos campos 'USUÁRIO' e 'SISTEMA' no rodapé do DANFE (só folha 1)
+|*  - Inclusão dos campos 'SITE', 'EMAIL' e 'FAX' no quadro do emitente
+|*  - Inclusão do 'RESUMO' da NF-e no canhoto
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeRLRetrato;
@@ -63,11 +77,11 @@ type
     rlbReciboHeader: TRLBand;
     rlCanhoto: TRLDraw;
     RLDraw2: TRLDraw;
-    RLDraw1: TRLDraw;
-    RLDraw3: TRLDraw;
+    rliCanhoto1: TRLDraw;
+    rliCanhoto2: TRLDraw;
     rllRecebemosDe: TRLLabel;
-    RLLabel1: TRLLabel;
-    RLLabel2: TRLLabel;
+    rllDataRecebimento: TRLLabel;
+    rllIdentificacao: TRLLabel;
     RLDraw4: TRLDraw;
     RLLabel3: TRLLabel;
     RLLabel4: TRLLabel;
@@ -127,9 +141,6 @@ type
     RLLabel31: TRLLabel;
     RLLabel77: TRLLabel;
     RLLabel78: TRLLabel;
-    RLLabel79: TRLLabel;
-    RLLabel80: TRLLabel;
-    RLLabel81: TRLLabel;
     RLLabel82: TRLLabel;
     RLLabel83: TRLLabel;
     RLLabel84: TRLLabel;
@@ -462,13 +473,19 @@ type
     LinhaObsItemDireita: TRLDraw;
     RLDraw70: TRLDraw;
     RLDraw71: TRLDraw;
+    rlmDescricaoProduto: TRLMemo;
+    rlmCodProd: TRLMemo;
+    rllResumo: TRLLabel;
+    rllUsuario: TRLLabel;
+    rllSistema: TRLLabel;
+    rlmSiteEmail: TRLMemo;
     procedure RLNFeBeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure RLNFeAfterPrint(Sender: TObject);
     procedure rlbEmitenteBeforePrint(Sender: TObject;
       var PrintIt: Boolean);
-    procedure rlbReciboHeaderBeforePrint(Sender: TObject;
-      var PrintIt: Boolean);
     procedure rlbItensAfterPrint(Sender: TObject);
+    procedure rlbDadosAdicionaisBeforePrint(Sender: TObject;
+      var PrintIt: Boolean);
   private
     FRecebemoDe : string;
     procedure InitDados;
@@ -492,7 +509,7 @@ implementation
 
 uses StrUtils, ACBrNFeUtil ,pcnNFe;
 
-var iLimiteCaracteres: Integer = 760;
+var iLimiteCaracteres: Integer = 775;
 iLimiteLinhas: Integer = 10;
 iLinhasUtilizadas: Integer = 0;
 iLimiteCaracteresLinha: Integer = 79;
@@ -518,18 +535,66 @@ procedure TfrlDANFeRLRetrato.rlbEmitenteBeforePrint(Sender: TObject;
   var PrintIt: Boolean);
 begin
   rlbCodigoBarras.BringToFront;
+  if RLNFe.PageNumber > 1 then
+    begin
+      rlbISSQN.Visible := False;
+      rlbDadosAdicionais.Visible := False;
+      if iQuantItens > q then
+        begin
+          rlbCabecalhoItens.Visible := True;
+          lblDadosDoProduto.Caption := 'CONTINUAÇÃO DOS ' + lblDadosDoProduto.Caption;
+          rliMarcaDagua1.Top := 300;
+        end
+      else
+        rlbCabecalhoItens.Visible := False;
+    end;
 end;
 
 procedure TfrlDANFeRLRetrato.InitDados;
-var h: Integer;
+var h, iAlturaCanhoto: Integer;
 begin
   if (FLogo <> '') and FileExists (FLogo) then
      rliLogo.Picture.LoadFromFile(FLogo);
 
   if (FMarcaDagua <> '') and FileExists (FMarcaDagua) then
     begin
-     rliMarcaDagua1.Picture.LoadFromFile(FMarcaDagua);
+      rliMarcaDagua1.Picture.LoadFromFile(FMarcaDagua);
     end;
+
+  if FResumoCanhoto = True then
+    begin
+      rllResumo.Caption := 'EMISSÃO: ' + FormatDateTime('DD/MM/YYYY', FNFe.Ide.dEmi) + '  -  ' +
+                           'DEST. / REM.: ' + FNFe.Dest.xNome + '  -  ' +
+                           'VALOR TOTAL: R$ ' + NotaUtil.FormatFloat(FNFe.Total.ICMSTot.vNF, '###,###,###,##0.00');
+      rllResumo.Visible := True;
+      iAlturaCanhoto := 25;
+    end
+  else
+    begin
+      rllResumo.Visible := False;
+      iAlturaCanhoto := 17;
+    end;
+  rliCanhoto1.Top := iAlturaCanhoto;
+  rliCanhoto2.Top := iAlturaCanhoto;
+  rliCanhoto2.Height := 57 - iAlturaCanhoto;
+  rllDataRecebimento.Top := iAlturaCanhoto + 3;
+  rllIdentificacao.Top := iAlturaCanhoto + 3;
+
+  if FSsitema <> '' then
+    begin
+      rllSistema.Caption := 'DESENVOLVIDO POR ' + FSsitema;
+      rllSistema.Visible := True;
+    end
+  else
+    rllSistema.Visible := False;
+
+  if FUsuario <> '' then
+    begin
+      rllUsuario.Caption := 'DATA / HORA DA IMPRESSÃO: ' + DateTimeToStr(Now) + ' - ' + FUsuario;
+      rllUsuario.Visible := True;
+    end
+  else
+    rllUsuario.Visible := False;
 
   if FNFe.Ide.tpAmb = taHomologacao then
     begin
@@ -587,6 +652,55 @@ begin
           rllDadosVariaveis3.Visible := False;
         end;
     end;
+
+  // Ajusta a largura da coluna "Código do Produto"
+  txtCodigo.Width := FLarguraCodProd;
+  rlmCodProd.Width := FLarguraCodProd;
+  rlsDivProd1.Left := FLarguraCodProd + 2;
+  LinhaDescricao.Left :=  FLarguraCodProd + 2;
+  rlmDescricaoProduto.Left := rlsDivProd1.Left + 2;
+  rlmDescricaoProduto.Width := (rlsDivProd2.Left - rlsDivProd1.Left) - 3;
+  rlmDescricao.Left := LinhaDescricao.Left + 2;
+  rlmDescricao.Width := (LinhaNCM.Left - LinhaDescricao.Left) - 24;
+  rlmDescricaoProduto.Lines.BeginUpdate;
+  rlmDescricaoProduto.Lines.Clear;
+  rlmCodProd.Lines.BeginUpdate;
+  rlmCodProd.Lines.Clear;
+
+  if rlmCodProd.Width > 90 then
+    begin
+      rlmCodProd.Top := 18;
+      rlmCodProd.Height := 7;
+    end
+  else
+    begin
+      rlmCodProd.Top := 14;
+      rlmCodProd.Height := 14;
+    end;
+
+  if rlmCodProd.Width > 113 then
+    rlmCodProd.Lines.Add('CÓDIGO DO PRODUTO / SERVIÇO')
+  else
+    rlmCodProd.Lines.Add('CÓDIGO DO PROD. / SERV.');
+
+  if rlmDescricaoProduto.Width > 128 then
+    begin
+      rlmDescricaoProduto.Top := 18;
+      rlmDescricaoProduto.Height := 7;
+    end
+  else
+    begin
+      rlmDescricaoProduto.Top := 14;
+      rlmDescricaoProduto.Height := 14;
+    end;
+
+  if rlmDescricaoProduto.Width > 72 then
+    rlmDescricaoProduto.Lines.Add('DESCRIÇÃO DO PRODUTO / SERVIÇO')
+  else
+    rlmDescricaoProduto.Lines.Add('DESCR. PROD. / SERV.');
+
+  rlmCodProd.Lines.EndUpdate;
+  rlmDescricaoProduto.Lines.EndUpdate;
 
   EnderecoRetirada;
   EnderecoEntrega;
@@ -705,12 +819,34 @@ begin
         rlmEndereco.Lines.add (XLgr + IfThen (Nro = '0', '', ', ' + Nro) + ' - ' + XBairro);
 
       rlmEndereco.Lines.add ('CEP: ' + NotaUtil.FormatarCEP(IntToStr(CEP)) + ' - ' + XMun + ' - ' + UF);
-      if Trim(FUrl) <> '' then
-       rlmEndereco.Lines.add (FUrl);
 
-      rllFone.Caption := 'TEL/FAX: ' + NotaUtil.FormatarFone(Fone);
+      if FFax <> '' then
+        rllFone.Caption := 'TEL: ' + NotaUtil.FormatarFone(Fone) + ' - FAX: ' + NotaUtil.FormatarFone(FFax)
+      else
+        rllFone.Caption := 'TEL: ' + NotaUtil.FormatarFone(Fone);
     end;
   end;
+
+  if (FSite <> '') or (FEmail <> '') then
+    begin
+      rlmSiteEmail.Lines.BeginUpdate;
+      rlmSiteEmail.Lines.Clear;
+      if FSite <> '' then
+        rlmSiteEmail.Lines.Add(FSite);
+      if FEmail <> '' then
+        rlmSiteEmail.Lines.Add(FEmail);
+      rlmSiteEmail.Lines.EndUpdate;
+      rlmSiteEmail.Visible := True;
+      rlmEndereco.Top := 48;
+      rllFone.Top := 80;
+      rllSistema.Top := 92;
+    end
+  else
+    begin
+      rlmSiteEmail.Visible := False;
+      rlmEndereco.Top := 58;
+      rllFone.Top := 96;
+    end;
 end;
 
 procedure TfrlDANFeRLRetrato.Destinatario;
@@ -865,9 +1001,9 @@ end;
 procedure TfrlDANFeRLRetrato.DadosAdicionais;
 var sInfCompl, sInfAdFisco, sRetirada, sEntrega, sProtocolo : WideString;
 begin
-  iLimiteCaracteres := 760;
+  iLimiteCaracteres := 775;
   iLinhasUtilizadas := 0;
-  
+
   rlmDadosAdicionaisAuxiliar.Lines.BeginUpdate;
   rlmDadosAdicionaisAuxiliar.Lines.Clear;
 
@@ -912,23 +1048,27 @@ begin
 
   if FNFe.InfAdic.infAdFisco > '' then
     begin
-      sInfAdFisco := FNFe.InfAdic.infAdFisco;
-      rlmDadosAdicionaisAuxiliar.Lines.Add(sInfAdFisco);
-    end;
+      if FNFe.InfAdic.infCpl > '' then
+        sInfAdFisco := FNFe.InfAdic.infAdFisco + ' - '
+      else
+        sInfAdFisco := FNFe.InfAdic.infAdFisco;
+    end
+  else
+    sInfAdFisco := '';
 
   if FNFe.InfAdic.infCpl > '' then
-    begin
-      sInfCompl := FNFe.InfAdic.infCpl;
-      rlmDadosAdicionaisAuxiliar.Lines.Add(sInfCompl);
-    end;
+    sInfCompl := FNFe.InfAdic.infCpl
+  else
+    sInfCompl := '';
 
+  rlmDadosAdicionaisAuxiliar.Lines.Add(sInfAdFisco + sInfCompl);
   rlmDadosAdicionaisAuxiliar.Lines.EndUpdate;
 end;
 
 procedure TfrlDANFeRLRetrato.Observacoes;
 begin
   sTexto := rlmDadosAdicionaisAuxiliar.Lines.Text;
-  iCaracteres := Length(sTexto) - 2;  // refere-se aos caracteres de quebra de linha
+  iCaracteres := Length(sTexto) - 2;  // O '-2' refere-se aos caracteres de quebra de linha
   iLimiteCaracteres := iLimiteCaracteres - (iLinhasUtilizadas * iLimiteCaracteresLinha);
   rlmDadosAdicionais.Lines.Add(Copy(sTexto, 1, iLimiteCaracteres));
 
@@ -946,6 +1086,7 @@ procedure TfrlDANFeRLRetrato.Itens;
 var nItem : Integer ;
 sCST, sBCICMS, sALIQICMS, sVALORICMS, sALIQIPI, sVALORIPI : String ;
 begin
+  cdsItens.Close;
   cdsItens.CreateDataSet ;
   cdsItens.Open ;
 
@@ -1033,9 +1174,9 @@ begin
               cdsItens.FieldByName('NCM').AsString := NCM ;
               cdsItens.FieldByName('CFOP').AsString := CFOP ;
               cdsItens.FieldByName('UNIDADE').AsString := UCom ;
-              cdsItens.FieldByName('QTDE').AsString := NotaUtil.FormatFloat( QCom ) ;
-              cdsItens.FieldByName('VALOR').AsString := NotaUtil.FormatFloat( VUnCom ) ;
-              cdsItens.FieldByName('TOTAL').AsString := NotaUtil.FormatFloat( VProd ) ;
+              cdsItens.FieldByName('QTDE').AsString := FormatFloat('###,###,###,##0.0000', QCom);
+              cdsItens.FieldByName('VALOR').AsString := FormatFloat('###,###,###,##0.0000', VUnCom);
+              cdsItens.FieldByName('TOTAL').AsString := FormatFloat('###,###,###,##0.00', VProd) ;
               cdsItens.FieldByName('CST').AsString := sCST ;
               cdsItens.FieldByName('BICMS').AsString := sBCICMS ;
               cdsItens.FieldByName('ALIQICMS').AsString := sALIQICMS ;
@@ -1101,24 +1242,6 @@ begin
     end;
 end;
 
-procedure TfrlDANFeRLRetrato.rlbReciboHeaderBeforePrint(Sender: TObject;
-  var PrintIt: Boolean);
-begin
-  if RLNFe.PageNumber > 1 then
-    begin
-      rlbISSQN.Visible := False;
-      rlbDadosAdicionais.Visible := False;
-      if iQuantItens > q then
-        begin
-          rlbCabecalhoItens.Visible := True;
-          lblDadosDoProduto.Caption := 'CONTINUAÇÃO DOS ' + lblDadosDoProduto.Caption;
-          rliMarcaDagua1.Top := 300;
-        end
-      else
-        rlbCabecalhoItens.Visible := False;
-    end;
-end;
-
 procedure TfrlDANFeRLRetrato.rlbItensAfterPrint(Sender: TObject);
 var h: Integer;
 begin
@@ -1143,6 +1266,13 @@ begin
     end
   else
     rlbObsItem.Visible := False;
+end;
+
+procedure TfrlDANFeRLRetrato.rlbDadosAdicionaisBeforePrint(Sender: TObject;
+  var PrintIt: Boolean);
+begin
+  if RLNFe.Pages.PageCount > 1 then
+    rlbReciboHeader.Visible := False;
 end;
 
 end.

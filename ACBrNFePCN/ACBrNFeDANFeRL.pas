@@ -41,6 +41,17 @@
 |*  - Doação do componente para o Projeto ACBr
 |* 20/08/2009: Caique Rodrigues
 |*  - Doação units para geração do Danfe via QuickReport
+|* 20/11/2009: Peterson de Cerqueira Matos
+|*             E-mail: peterson161@yahoo.com - Tel: (11) 7197-1474 / 8059-4055
+|*  - Componente e Units do QuickReport clonados
+|*    e transformados em FORTES REPORT
+|* 27/01/2010: Peterson de Cerqueira Matos
+|*  - Acréscimo dos parâmetros "ALarguraCodProd" nas Class procedures
+|*    "Imprimir" e "SavePDF"
+|* 05/02/2010: Peterson de Cerqueira Matos
+|*  - Acréscimo dos parâmetros "FEmail", "FResumoCanhoto", "FFax", "FNumCopias",
+|*    "FSsitema", "FSite", "FUsuario" nas Class procedures
+|*    "Imprimir" e "SavePDF"
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeRL;
@@ -59,57 +70,105 @@ type
   protected
     FACBrNFe: TACBrNFe;
     FNFe: TNFe;
-    FUrl: String;
     FLogo: String;
     FMarcaDagua: String;
+    FLarguraCodProd: Integer;
+    FEmail: String;
+    FResumoCanhoto: Boolean;
+    FFax: String;
+    FNumCopias: Integer;
+    FSsitema: String;
+    FSite: String;
+    FUsuario: String;
     AfterPreview : boolean ;
     ChangedPos : boolean ;
     FSemValorFiscal : boolean ;
     procedure qrlSemValorFiscalPrint(sender: TObject; var Value: String);
   public
     { Public declarations }
-    class procedure Imprimir(ANFe: TNFe; ALogo: String = ''; AMarcaDagua: String = ''; AUrl: String = '' ; APreview : Boolean = True );
-    class procedure SavePDF(ANFe: TNFe;  ALogo: String = ''; AMarcaDagua: String = ''; AFile: String = '');
+    class procedure Imprimir(ANFe: TNFe; ALogo: String = '';
+                    AMarcaDagua: String = ''; ALarguraCodProd: Integer = 52;
+                    AEmail: String = ''; AResumoCanhoto: Boolean = False;
+                    AFax: String = ''; ANumCopias: Integer = 1;
+                    ASistema: String = ''; ASite: String = '';
+                    AUsuario: String = '' ; APreview : Boolean = True);
 
+    class procedure SavePDF(ANFe: TNFe; ALogo: String = '';
+                    AMarcaDagua: String = ''; ALarguraCodProd: Integer = 52;
+                    AEmail: String = ''; AResumoCanhoto: Boolean = False;
+                    AFax: String = ''; ANumCopias: Integer = 1;
+                    ASistema: String = ''; ASite: String = '';
+                    AUsuario: String = ''; AFile: String = '';
+                    APreview : Boolean = True);
   end;
 
 implementation
 
 uses MaskUtils;
+var iCopias: Integer;
 
 {$R *.dfm}
 
-class procedure TfrlDANFeRL.Imprimir(ANFe: TNFe;  ALogo: String = ''; AMarcaDagua: String = ''; AUrl: String = '' ; APreview : Boolean = True );
+class procedure TfrlDANFeRL.Imprimir(ANFe: TNFe; ALogo: String = '';
+                    AMarcaDagua: String = ''; ALarguraCodProd: Integer = 52;
+                    AEmail: String = ''; AResumoCanhoto: Boolean = False;
+                    AFax: String = ''; ANumCopias: Integer = 1;
+                    ASistema: String = ''; ASite: String = '';
+                    AUsuario: String = '' ; APreview : Boolean = True);
 begin
   with Create ( nil ) do
-     try
-        FNFe  := ANFe;
-        FUrl  := AUrl;
-        FLogo := ALogo;
-        FMarcaDagua := AMarcaDagua;
-        if APreview then
-          RLNFe.Preview
-        else
-           begin
+    try
+      FNFe := ANFe;
+      FLogo := ALogo;
+      FMarcaDagua := AMarcaDagua;
+      FLarguraCodProd := ALarguraCodProd;
+      FEmail := AEmail;
+      FResumoCanhoto := AResumoCanhoto;
+      FFax := AFax;
+      FNumCopias := ANumCopias;
+      FSsitema := ASistema;
+      FSite := ASite;
+      FUsuario := AUsuario;
+      for iCopias := 1 to FNumCopias do
+        begin
+          if APreview then
+            RLNFe.Preview
+          else
+            begin
               AfterPreview := True ;
               RLNFe.Print ;
-           end ;
-     finally
-        Free ;
-     end ;
+            end;
+        end;
+    finally
+      Free ;
+    end ;
 end;
 
-class procedure TfrlDANFeRL.SavePDF(ANFe: TNFe;  ALogo: String = ''; AMarcaDagua: String = ''; AFile: String = '');
+class procedure TfrlDANFeRL.SavePDF(ANFe: TNFe; ALogo: String = '';
+                    AMarcaDagua: String = ''; ALarguraCodProd: Integer = 52;
+                    AEmail: String = ''; AResumoCanhoto: Boolean = False;
+                    AFax: String = ''; ANumCopias: Integer = 1;
+                    ASistema: String = ''; ASite: String = '';
+                    AUsuario: String = '' ; AFile: String = '';
+                    APreview : Boolean = True);
 begin
   with Create ( nil ) do
-     try
-        FNFe  := ANFe;
-        FLogo := ALogo;
-        FMarcaDagua := AMarcaDagua;
-        RLNFe.SaveToFile(AFile);
-     finally
-        Free ;
-     end ;
+    try
+      FNFe := ANFe;
+      FLogo := ALogo;
+      FMarcaDagua := AMarcaDagua;
+      FLarguraCodProd := ALarguraCodProd;
+      FEmail := AEmail;
+      FResumoCanhoto := AResumoCanhoto;
+      FFax := AFax;
+      FNumCopias := ANumCopias;
+      FSsitema := ASistema;
+      FSite := ASite;
+      FUsuario := AUsuario;
+      RLNFe.SaveToFile(AFile);
+    finally
+      Free ;
+    end ;
 end;
 
 procedure TfrlDANFeRL.qrlSemValorFiscalPrint(sender: TObject;

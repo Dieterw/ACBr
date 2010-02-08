@@ -219,6 +219,23 @@ begin
                wBitmap[1].Width:=3.190;
                wBitmap[1].Height:=1.110;
             end;
+
+            i:=20;
+            while i>0 do
+            begin
+               if (i in [2,4,8,15,16,18,20]) then
+               begin
+                  wDataText[i] := FindRaveComponent('DataText'+inttostr(i),wPage[1]) as TRaveDataText;
+                  if (wDataText[i] <> nil) then
+                     wDataText[i].Left:=30;
+               end;
+               i:=i-1;
+            end;
+
+            wDataMemo[1] := FindRaveComponent('DataMemo1',wPage[1]) as TRaveDataMemo;
+            if (wDataMemo[1] <> nil) then
+               wDataMemo[1].Left:=30;
+
          end;
 
          //Formulario Continuo
@@ -471,7 +488,7 @@ begin
      RPDefine.DataID := IntToStr(Application.Handle);  // Evita msg de erro;...
   {$ENDIF}
 
-  dmDanfe.RvProject.ProjectFile := FRaveFile ; //ExtractFileDir(application.ExeName)+'\Report\NotaFiscalEletronica.rav';
+  dmDanfe.RvProject.ProjectFile := FRaveFile;  //ExtractFileDir(application.ExeName)+'\Report\NotaFiscalEletronica.rav';
 
   dmDanfe.RvSystem1.DoNativeOutput := True;
   if MostrarPreview then

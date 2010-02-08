@@ -52,6 +52,8 @@ Alterações   08/02/10
 ---------------
 [-] Correção da impressão no DANFE com  FORTES REPORTS, para o canhoto ser impresso apenas 
     na primeira página. (Créditos: Peterson de Cerqueira Matos)
+[-] Correção da impressão no DANFE com  RAVE ARQUIVO. Quando a propriedade ExpandirLogoMarca estava 
+    como true, estava imprimindo "sujeira" dos dados do emitente
 
 
 Alterações   06/02/10

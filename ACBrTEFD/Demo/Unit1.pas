@@ -200,9 +200,16 @@ Uses typinfo, dateutils, strutils, ConfiguraSerial, Unit2, Unit3, Unit4, Unit5;
 procedure TForm1.FormCreate(Sender : TObject);
 var
    I : TACBrTEFDTipo;
+   J : TACBrECFModelo;
 begin
   fCancelado := False ;
   Application.OnException := {$IFDEF FPC}@{$ENDIF}TrataErros;
+
+  cbxModelo.Items.Clear ;
+  For J := Low(TACBrECFModelo) to High(TACBrECFModelo) do
+     cbxModelo.Items.Add( GetEnumName(TypeInfo(TACBrECFModelo), integer(J) ) ) ;
+  cbxModelo.Items[0] := 'Procurar' ;
+  cbxModelo.ItemIndex := 0 ;
 
   cbxGP.Items.Clear ;
   For I := Low(TACBrTEFDTipo) to High(TACBrTEFDTipo) do
@@ -1016,4 +1023,4 @@ initialization
   
 end.
 
-
+

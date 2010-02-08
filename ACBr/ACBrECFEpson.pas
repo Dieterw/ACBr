@@ -149,6 +149,7 @@ TACBrECFEpson = class( TACBrECFClass )
     fsLeituraCMC7  : Boolean;
     fsVerificaChecksum: Boolean;
     fsPAF1, fsPAF2 : String ;
+    fsEmPagamento : Boolean ;
 
     xEPSON_Serial_Abrir_Porta : function (dwVelocidade:Integer; wPorta:Integer):Integer; StdCall;
     xEPSON_Serial_Fechar_Porta : function : Integer; StdCall;
@@ -894,6 +895,7 @@ begin
   fsImprimeCheque := False ;
   fsLeituraCMC7   := False ;
   fsVerificaChecksum := True ;
+  fsEmPagamento := false ;
 
   xEPSON_Obter_Dados_MF_MFD := NIL ;
   xEPSON_Serial_Abrir_Porta := NIL ;
@@ -1325,6 +1327,12 @@ begin
       if (not fpAtivo) then
          exit ;
 
+      if fsEmPagamento then
+      begin
+         fpEstado := estPagamento ;
+         exit ;
+      end ;
+
       fpEstado := estDesconhecido ;
 
       EpsonComando.Comando := '0810' ;
@@ -1524,6 +1532,7 @@ begin
 
   fsRet0906 := '' ;
   fsRet0907 := '' ;
+  fsEmPagamento := false ;
 end;
 
 procedure TACBrECFEpson.CancelaCupom;
@@ -1582,6 +1591,7 @@ begin
 
   fsRet0906 := '' ;
   fsRet0907 := '' ;
+  fsEmPagamento := false ;
 end;
 
 procedure TACBrECFEpson.CancelaItemVendido(NumItem: Integer);
@@ -1663,11 +1673,13 @@ begin
 
   fsRet0906 := '' ;
   fsRet0907 := '' ;
+  fsEmPagamento := false ;
 end;
 
 procedure TACBrECFEpson.SubtotalizaCupom(DescontoAcrescimo: Double;
        MensagemRodape : AnsiString);
 begin
+  fsEmPagamento := True ;
   if DescontoAcrescimo = 0 then
      exit ;
 
@@ -1725,6 +1737,7 @@ begin
 
   fsRet0906 := '' ;
   fsRet0907 := '' ;
+  fsEmPagamento := false ;
 end;
 
 procedure TACBrECFEpson.CarregaAliquotas;

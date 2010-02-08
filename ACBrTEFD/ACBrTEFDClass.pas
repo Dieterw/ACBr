@@ -55,7 +55,7 @@ uses
   {$ENDIF} ;
 
 const
-   CACBrTEFD_Versao      = '1.3b' ;
+   CACBrTEFD_Versao      = '1.4b' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -104,6 +104,9 @@ type
 
   TACBrTEFDDepoisConfirmarTransacoes = procedure( RespostasPendentes :
      TACBrTEFDRespostasPendentes ) of object ;
+
+  TACBrTEFDAntesCancelarTransacao = procedure( RespostaPendente :
+     TACBrTEFDResp ) of object ;
 
   TACBrTEFDExibeMsg = procedure( Operacao : TACBrTEFDOperacaoMensagem;
      Mensagem : String; var AModalResult : TModalResult ) of object ;
@@ -841,7 +844,7 @@ end;
 
 constructor TACBrTEFDArquivo.Create;
 begin
-  inherited ;
+  inherited Create;
 
   fLinha := TACBrTEFDLinha.Create;
   fStringList := TStringList.Create;
@@ -969,8 +972,8 @@ constructor TACBrTEFDReq.Create ;
 begin
   inherited Create;
 
-  fConteudo      := TACBrTEFDArquivo.Create;
-  fInformacao    := TACBrTEFDLinhaInformacao.Create;
+  fConteudo   := TACBrTEFDArquivo.Create;
+  fInformacao := TACBrTEFDLinhaInformacao.Create;
 
   Clear;
 end;
@@ -2011,10 +2014,16 @@ begin
 
            { Enviando NCN ou CNC }
            try
+              with TACBrTEFD(Owner) do
+              begin
+                 if Assigned( OnAntesCancelarTransacao ) then
+                    OnAntesCancelarTransacao( RespostaCancela ) ;
+              end;
+
               if Resp.CNFEnviado then
                begin
                  if not CNC then
-                    raise EACBrTEFDErro.Create('recusada') ;
+                    raise EACBrTEFDErro.Create('CNC nao efetuado') ;
                end
               else
                  NCN;

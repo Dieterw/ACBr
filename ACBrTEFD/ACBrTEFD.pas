@@ -77,6 +77,7 @@ type
      fMultiplosCartoes : Boolean;
      fNumVias : Integer;
      fOnAguardaResp : TACBrTEFDAguardaRespEvent;
+     fOnAntesCancelarTransacao: TACBrTEFDAntesCancelarTransacao;
      fOnAntesFinalizarRequisicao : TACBrTEFDAntesFinalizarReq;
      fOnBloqueiaMouseTeclado : TACBrTEFDBloqueiaMouseTeclado;
      fOnComandaECF : TACBrTEFDComandaECF;
@@ -248,6 +249,8 @@ type
         read fOnAntesFinalizarRequisicao write fOnAntesFinalizarRequisicao ;
      property OnDepoisConfirmarTransacoes : TACBrTEFDDepoisConfirmarTransacoes
         read fOnDepoisConfirmarTransacoes write fOnDepoisConfirmarTransacoes ;
+     property OnAntesCancelarTransacao : TACBrTEFDAntesCancelarTransacao
+        read fOnAntesCancelarTransacao write fOnAntesCancelarTransacao ;
      property OnMudaEstadoReq  : TACBrTEFDMudaEstadoReq read fOnMudaEstadoReq
         write fOnMudaEstadoReq ;
      property OnMudaEstadoResp : TACBrTEFDMudaEstadoResp read fOnMudaEstadoResp

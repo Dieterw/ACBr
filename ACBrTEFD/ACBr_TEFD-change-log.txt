@@ -47,6 +47,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 1.4b   08/02/10
+[+] Adicionado evento "OnAntesCancelarTransacao", que permite rodar algum código
+    na aplicação antes do Cancelamento de Transações TEF
+
 Versão 1.3b   03/02/10
 [-] Corrigido Bug na verificação de transação Aprovada (retorno) em CRT e CHQ
 [-] Corrigido Bug na verificação de Saldo Restante a Pagar em transaçoes com

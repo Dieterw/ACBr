@@ -96,6 +96,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.8.9b  08/02/10
+-- ACBrECFEpson --
+[*]    Modificada detecção de estado do ECF Epson. Após o envio do comando de
+       SubtotalizaCupom, sem Desconto ou Acrescimo, o estado ainda permanecia em
+       estVenda pois esse ECF não efetua a subtotalização com valor 0.
+
 Versão 0.8.9b  26/11/09
 -- ACBrValidador --
 [*]    Formatação de Inscrição Estadual modificada para inserir zeros a esquerda

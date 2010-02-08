@@ -48,6 +48,12 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   08/02/10
+---------------
+[-] Correção da impressão no DANFE com  FORTES REPORTS, para o canhoto ser impresso apenas 
+    na primeira página. (Créditos: Peterson de Cerqueira Matos)
+
+
 Alterações   06/02/10
 ---------------
 [*] Melhorias diversas no DANFE com  FORTES REPORTS (Créditos: Peterson de Cerqueira Matos)

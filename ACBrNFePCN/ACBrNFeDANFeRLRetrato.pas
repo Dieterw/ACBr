@@ -839,7 +839,7 @@ begin
       rlmSiteEmail.Visible := True;
       rlmEndereco.Top := 48;
       rllFone.Top := 80;
-      rllSistema.Top := 92;
+      rlmSiteEmail.Top := 92;
     end
   else
     begin
@@ -1271,7 +1271,6 @@ end;
 procedure TfrlDANFeRLRetrato.rlbDadosAdicionaisBeforePrint(Sender: TObject;
   var PrintIt: Boolean);
 begin
-  if RLNFe.Pages.PageCount > 1 then
     rlbReciboHeader.Visible := False;
 end;
 

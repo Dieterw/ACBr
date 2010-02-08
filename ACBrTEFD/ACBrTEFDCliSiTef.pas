@@ -619,6 +619,9 @@ begin
    begin
       try
          repeat
+            if not TecladoBloqueado then
+               BloquearMouseTeclado( True );
+
             GravaLog( 'ContinuaFuncaoSiTefInterativo, Chamando: Contina = '+
                       IntToStr(Continua)+' Buffer = '+Resposta ) ;
 
@@ -651,8 +654,6 @@ begin
                        SL.Text := StringReplace( Mensagem, #10, sLineBreak, [rfReplaceAll] ) ;
                        ImpressaoOk := False ;
                        try
-                         BloquearMouseTeclado( True );
-
                           while not ImpressaoOk do
                           begin
                             try
@@ -895,7 +896,7 @@ begin
         -2 : Erro := 'Operação cancelada pelo operador' ;
         -3 : Erro := 'Fornecida uma modalidade inválida' ;
         -4 : Erro := 'Falta de memória para rodar a função' ;
-        -5 : Erro := 'Sem comunicação com o SiTef' ;
+        -5 : Erro := '' ; // 'Sem comunicação com o SiTef' ; // Comentado pois SiTEF já envia a msg de Erro
         -6 : Erro := 'Operação cancelada pelo usuário' ;
    else
       if Sts < 0 then

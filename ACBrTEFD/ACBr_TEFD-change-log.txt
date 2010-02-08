@@ -50,6 +50,11 @@ Símbolo : Significado
 Versão 1.4b   08/02/10
 [+] Adicionado evento "OnAntesCancelarTransacao", que permite rodar algum código
     na aplicação antes do Cancelamento de Transações TEF
+[*] ACBrTEFDCliSiTEF agora bloqueia o Teclado durante todo o Loop de conversação
+    com a DLL, liberando-o quando precisar perguntar algo ao operador.
+[-] Suprimida a mensagem de Retorno de Erro: -5 = 'Sem comunicação com o SiTef',
+    pois a própria DLL comanda essa Mensagem antes de encerrar, o que causava a
+    exibição por 2 vezes.
 
 Versão 1.3b   03/02/10
 [-] Corrigido Bug na verificação de transação Aprovada (retorno) em CRT e CHQ

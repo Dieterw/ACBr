@@ -1313,6 +1313,8 @@ begin
   Tratado := False ;
   fTecladoBloqueado := Bloqueia ;
 
+  fTefClass.GravaLog( 'BloquearMouseTeclado: '+ IfThen( Bloqueia, 'SIM', 'NAO'));
+
   if Assigned( fOnBloqueiaMouseTeclado ) then
      fOnBloqueiaMouseTeclado( Bloqueia, Tratado ) ;
 

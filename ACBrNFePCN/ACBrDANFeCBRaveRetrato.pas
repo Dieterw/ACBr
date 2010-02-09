@@ -519,12 +519,12 @@ begin
      Box([fsTop],PosX,PosY,WidthNaturezaOperacao,aHeigthPadrao,wTemp,ide.natOp,taLeftJustify,True,False,False);
      if (not FormularioContinuo) then
      begin
-       Box([fsTop],PosX,YPos,82,aHeigthPadrao,'INSCRIÇÃO ESTADUAL',Emit.IE,taCenter);
-       Box([fsTop,fsLeft],XPos,YPos,75,aHeigthPadrao,'INSCRIÇÃO ESTADUAL DO SUBST. TRIBUTÁRIO',Emit.IEST,taCenter);
-       Box([fsTop,fsLeft],XPos,YPos,87,aHeigthPadrao,'C.N.P.J.',NotaUtil.FormatarCNPJ(Emit.CNPJCPF),taCenter,True);
+       Box([fsTop],PosX,YPos,82,aHeigthPadrao,'INSCRIÇÃO ESTADUAL',Emit.IE,taLeftJustify);
+       Box([fsTop,fsLeft],XPos,YPos,75,aHeigthPadrao,'INSCRIÇÃO ESTADUAL DO SUBST. TRIBUTÁRIO',Emit.IEST,taLeftJustify);
+       Box([fsTop,fsLeft],XPos,YPos,87,aHeigthPadrao,'C.N.P.J.',NotaUtil.FormatarCNPJ(Emit.CNPJCPF),taLeftJustify,True);
      end
      else begin
-       Box([fsTop,fsLeft],XPos,YPos,87,aHeigthPadrao,' ','',taCenter,True);
+       Box([fsTop,fsLeft],XPos,YPos,87,aHeigthPadrao,' ','',taLeftJustify,True);
      end;
      Result:=YPos;
   end;

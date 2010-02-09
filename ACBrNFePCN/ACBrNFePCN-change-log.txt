@@ -48,6 +48,10 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   09/02/10
+---------------
+[*] Alteração do alinhamento (para esquerda) dos campos Inscr. Estadual e CNPJ no DANFE em RAVE CB.
+
 Alterações   08/02/10
 ---------------
 [-] Correção da impressão no DANFE com  FORTES REPORTS, para o canhoto ser impresso apenas 

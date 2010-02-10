@@ -59,6 +59,11 @@
 |*  - Inclusão dos campos 'USUÁRIO' e 'SISTEMA' no rodapé do DANFE (só folha 1)
 |*  - Inclusão dos campos 'SITE', 'EMAIL' e 'FAX' no quadro do emitente
 |*  - Inclusão do 'RESUMO' da NF-e no canhoto
+|* 10/02/2010: Peterson de Cerqueira Matos
+|*  - Inserção da função 'BuscaDireita', que auxiliará a correção da
+|*    exibição dos 'DADOS ADICIONAIS' para evitar que a última palavra do
+|*    quadro fique pela metade devido à limitação da quantidade de caracteres
+|*  - Correção da formatação de CPF, no caso de NF-e emtida para pesso física
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeRLRetrato;
@@ -501,6 +506,7 @@ type
     procedure Itens;
     procedure ISSQN;
     procedure AddFatura;
+    function BuscaDireita(Busca, Text: String): Integer;
   public
 
   end;
@@ -509,14 +515,30 @@ implementation
 
 uses StrUtils, ACBrNFeUtil ,pcnNFe;
 
-var iLimiteCaracteres: Integer = 775;
-iLimiteLinhas: Integer = 10;
+var iLimiteLinhas: Integer = 10;
 iLinhasUtilizadas: Integer = 0;
 iLimiteCaracteresLinha: Integer = 79;
+iLimiteCaracteres: Integer = 790;
 q, iQuantItens, iCaracteres: Integer;
 sTexto: WideString;
 
 {$R *.dfm}
+
+function TfrlDANFeRLRetrato.BuscaDireita(Busca, Text: String): Integer;
+{Pesquisa um caractere à direita da string, retornando sua posição}
+var n, retorno: integer;
+begin
+  retorno := 0;
+    for n := length(Text) downto 1 do
+      begin
+        if Copy(Text, n, 1) = Busca then
+          begin
+            retorno := n;
+            break;
+         end;
+      end;
+  Result := retorno;
+end;
 
 procedure TfrlDANFeRLRetrato.RLNFeBeforePrint(Sender: TObject;
   var PrintIt: Boolean);
@@ -718,7 +740,7 @@ begin
     begin
       rlbContinuacaoInformacoesComplementares.Visible := True;
       h := (rlmContinuacaoDadosAdicionais.Top - LinhaDCSuperior.Top) +
-            rlmContinuacaoDadosAdicionais.Height + 10;
+            rlmContinuacaoDadosAdicionais.Height;
       LinhaDCInferior.Top := h;
       h := (h - LinhaDCSuperior.Top) + 1;
       LinhaDCEsquerda.Height := h;
@@ -801,79 +823,93 @@ procedure TfrlDANFeRLRetrato.Emitente;
 begin
   //emit
   with FNFe.Emit do
-  begin
-    if FRecebemoDe = '' then
-       FRecebemoDe := rllRecebemosDe.Caption;
-
-    rllRecebemosDe.Caption := Format (FRecebemoDe, [ XNome ]);
-    rllCNPJ.Caption := NotaUtil.FormatarCNPJ(CNPJCPF );
-    rllInscrEstSubst.caption := IEST;
-    rllInscricaoEstadual.Caption := IE;
-    rlmEmitente.Lines.Text   := XNome;
-    with EnderEmit do
     begin
-      rlmEndereco.Lines.Clear;
-      if xCpl > '' then
-        rlmEndereco.Lines.add (XLgr + IfThen (Nro = '0', '', ', ' + Nro) + ' - ' + XCpl + ' - ' + XBairro)
-      else
-        rlmEndereco.Lines.add (XLgr + IfThen (Nro = '0', '', ', ' + Nro) + ' - ' + XBairro);
+      if FRecebemoDe = '' then
+        FRecebemoDe := rllRecebemosDe.Caption;
 
-      rlmEndereco.Lines.add ('CEP: ' + NotaUtil.FormatarCEP(IntToStr(CEP)) + ' - ' + XMun + ' - ' + UF);
+      rllRecebemosDe.Caption := Format (FRecebemoDe, [ XNome ]);
+      rllCNPJ.Caption := NotaUtil.FormatarCNPJ(CNPJCPF );
+      rllInscrEstSubst.caption := IEST;
+      rllInscricaoEstadual.Caption := IE;
+      rlmEmitente.Lines.Text   := XNome;
+      with EnderEmit do
+        begin
+          rlmEndereco.Lines.Clear;
+          if xCpl > '' then
+            rlmEndereco.Lines.add (XLgr + IfThen (Nro = '0', '', ', ' + Nro) +
+                                                ' - ' + XCpl + ' - ' + XBairro)
+          else
+            rlmEndereco.Lines.add (XLgr + IfThen (Nro = '0', '', ', ' + Nro) +
+                                                              ' - ' + XBairro);
 
-      if FFax <> '' then
-        rllFone.Caption := 'TEL: ' + NotaUtil.FormatarFone(Fone) + ' - FAX: ' + NotaUtil.FormatarFone(FFax)
-      else
-        rllFone.Caption := 'TEL: ' + NotaUtil.FormatarFone(Fone);
+          rlmEndereco.Lines.add ('CEP: ' + NotaUtil.FormatarCEP(IntToStr(CEP)) +
+                                                    ' - ' + XMun + ' - ' + UF);
+
+        if FFax <> '' then
+          begin
+            rllFone.Caption := 'TEL: ' + NotaUtil.FormatarFone(Fone) +
+                                      ' - FAX: ' + NotaUtil.FormatarFone(FFax);
+            rllFone.Font.Size := 7;
+          end
+        else
+          begin
+            rllFone.Caption := 'TEL: ' + NotaUtil.FormatarFone(Fone);
+            rllFone.Font.Size := 8;
+          end;
+      end;
     end;
-  end;
 
-  if (FSite <> '') or (FEmail <> '') then
-    begin
-      rlmSiteEmail.Lines.BeginUpdate;
-      rlmSiteEmail.Lines.Clear;
-      if FSite <> '' then
-        rlmSiteEmail.Lines.Add(FSite);
-      if FEmail <> '' then
-        rlmSiteEmail.Lines.Add(FEmail);
-      rlmSiteEmail.Lines.EndUpdate;
-      rlmSiteEmail.Visible := True;
-      rlmEndereco.Top := 48;
-      rllFone.Top := 80;
-      rlmSiteEmail.Top := 92;
-    end
-  else
-    begin
-      rlmSiteEmail.Visible := False;
-      rlmEndereco.Top := 58;
-      rllFone.Top := 96;
-    end;
+    if (FSite <> '') or (FEmail <> '') then
+      begin
+        rlmSiteEmail.Lines.BeginUpdate;
+        rlmSiteEmail.Lines.Clear;
+        if FSite <> '' then
+          rlmSiteEmail.Lines.Add(FSite);
+        if FEmail <> '' then
+          rlmSiteEmail.Lines.Add(FEmail);
+        rlmSiteEmail.Lines.EndUpdate;
+        rlmSiteEmail.Visible := True;
+        rlmEndereco.Top := 48;
+        rllFone.Top := 80;
+        rlmSiteEmail.Top := 92;
+      end
+    else
+      begin
+        rlmSiteEmail.Visible := False;
+        rlmEndereco.Top := 58;
+        rllFone.Top := 96;
+      end;
 end;
 
 procedure TfrlDANFeRLRetrato.Destinatario;
 begin
   // destinatario
   with FNFe.Dest do
-  begin
-    if Trim (CNPJCPF) <>  '' then
-      rllDestCNPJ.Caption  := NotaUtil.FormatarCNPJ(CNPJCPF)
-    else
-      rllDestCNPJ.Caption  := NotaUtil.FormatarCPF(CNPJCPF);
-
-    rllDestIE.Caption   := IE;
-    rllDestNome.Caption := XNome;
-    with EnderDest do
     begin
-      if xCpl > '' then
-        rllDestEndereco.Caption := XLgr + IfThen (Nro = '0', '', ', ' + Nro) + ' - ' + xCpl
+      if Length(CNPJCPF) = 14 then
+        rllDestCNPJ.Caption := NotaUtil.FormatarCNPJ(CNPJCPF)
       else
-        rllDestEndereco.Caption := XLgr + IfThen (Nro = '0', '', ', ' + Nro);
-      rllDestBairro.Caption := XBairro;
-      rllDestCidade.Caption := XMun;
-      rllDestUF.Caption := UF;
-      rllDestCEP.Caption := NotaUtil.FormatarCEP(IntToStr(CEP));
-      rllDestFONE.Caption := NotaUtil.FormatarFone(Fone);
+        if Length(CNPJCPF) = 11 then
+          rllDestCNPJ.Caption := NotaUtil.FormatarCPF(CNPJCPF)
+        else
+          rllDestCNPJ.Caption := CNPJCPF;
+
+      rllDestIE.Caption   := IE;
+      rllDestNome.Caption := XNome;
+      with EnderDest do
+        begin
+          if xCpl > '' then
+            rllDestEndereco.Caption := XLgr + IfThen (Nro = '0', '', ', ' + Nro)
+                                                                  + ' - ' + xCpl
+          else
+            rllDestEndereco.Caption := XLgr + IfThen (Nro = '0', '', ', ' + Nro);
+          rllDestBairro.Caption := XBairro;
+          rllDestCidade.Caption := XMun;
+          rllDestUF.Caption := UF;
+          rllDestCEP.Caption := NotaUtil.FormatarCEP(IntToStr(CEP));
+          rllDestFONE.Caption := NotaUtil.FormatarFone(Fone);
+        end;
     end;
-  end;
 end;
 
 procedure TfrlDANFeRLRetrato.EnderecoEntrega;
@@ -1001,7 +1037,6 @@ end;
 procedure TfrlDANFeRLRetrato.DadosAdicionais;
 var sInfCompl, sInfAdFisco, sRetirada, sEntrega, sProtocolo : WideString;
 begin
-  iLimiteCaracteres := 775;
   iLinhasUtilizadas := 0;
 
   rlmDadosAdicionaisAuxiliar.Lines.BeginUpdate;
@@ -1066,17 +1101,26 @@ begin
 end;
 
 procedure TfrlDANFeRLRetrato.Observacoes;
+var sTextoProvisorio: String;
+iUltimoEspaco: Integer;
 begin
+  iLimiteCaracteres := 775;
   sTexto := rlmDadosAdicionaisAuxiliar.Lines.Text;
   iCaracteres := Length(sTexto) - 2;  // O '-2' refere-se aos caracteres de quebra de linha
   iLimiteCaracteres := iLimiteCaracteres - (iLinhasUtilizadas * iLimiteCaracteresLinha);
+  sTextoProvisorio := Copy(sTexto, 1, iLimiteCaracteres);
+  iUltimoEspaco := BuscaDireita(' ', sTextoProvisorio);
+
+  if iCaracteres > iLimiteCaracteres then
+    iLimiteCaracteres := (iUltimoEspaco - 1);
+
   rlmDadosAdicionais.Lines.Add(Copy(sTexto, 1, iLimiteCaracteres));
 
   if iCaracteres > iLimiteCaracteres then
     begin
       rlmContinuacaoDadosAdicionais.Lines.BeginUpdate;
       rlmContinuacaoDadosAdicionais.Lines.Add(Copy(sTexto,
-                  (iLimiteCaracteres + 1), (iCaracteres - iLimiteCaracteres)));
+                  (iUltimoEspaco + 1), (iCaracteres - iLimiteCaracteres)));
       rlmContinuacaoDadosAdicionais.Lines.EndUpdate;
     end;
   rlmDadosAdicionais.Lines.EndUpdate;

@@ -55,7 +55,7 @@ uses
   {$ENDIF} ;
 
 const
-   CACBrTEFD_Versao      = '1.4b' ;
+   CACBrTEFD_Versao      = '1.5b' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -2017,7 +2017,11 @@ begin
               with TACBrTEFD(Owner) do
               begin
                  if Assigned( OnAntesCancelarTransacao ) then
+                 try
                     OnAntesCancelarTransacao( RespostaCancela ) ;
+                 except
+                    { Nao deixa exceptions em OnAntesCancelarTransacao interromper }
+                 end;
               end;
 
               if Resp.CNFEnviado then

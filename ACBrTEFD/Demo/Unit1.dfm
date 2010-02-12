@@ -16,14 +16,14 @@ object Form1: TForm1
   OnCreate = FormCreate
   DesignSize = (
     725
-    452)
+    450)
   PixelsPerInch = 96
   TextHeight = 13
   object Memo1: TMemo
     Left = 0
     Top = 208
     Width = 725
-    Height = 194
+    Height = 192
     Align = alClient
     Lines.Strings = (
       'Memo1')
@@ -35,7 +35,7 @@ object Form1: TForm1
     Top = 0
     Width = 725
     Height = 208
-    ActivePage = tsOperacao
+    ActivePage = tsConfig
     Align = alTop
     TabOrder = 2
     object tsConfig: TTabSheet
@@ -275,7 +275,7 @@ object Form1: TForm1
             Width = 133
             Height = 21
             Style = csDropDownList
-            ItemHeight = 0
+            ItemHeight = 13
             TabOrder = 0
           end
           object bAtivarGP: TButton
@@ -616,7 +616,7 @@ object Form1: TForm1
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 429
+    Top = 427
     Width = 725
     Height = 23
     Panels = <
@@ -632,7 +632,7 @@ object Form1: TForm1
   end
   object Panel1: TPanel
     Left = 0
-    Top = 402
+    Top = 400
     Width = 725
     Height = 27
     Align = alBottom

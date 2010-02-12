@@ -96,6 +96,23 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.8.9b  12/02/10
+-- ACBrECF --
+[-]    Modificado HTML em MemoTitulo para exibir corretamente centralizado
+       titulo do documento
+
+-- ACBrECFDaruma --
+[*]    AbrePortaSerialDLL modificada, chave ControlePorta passa a gravar valor 0
+       - Adicionada a gravação da chave ECF, Path
+
+-- ACBrECFEpson --
+[-]    Corrigido bug em GetTotalIsencao. por: José Nilton Pace
+[-]    Corrigida ordem da detecção de Estado quando usando o Flag de Pagamento
+
+-- ACBrECFFiscNET --
+[-]    Corrigida ordem da detecção de Estado quando usando o Flag de Pagamento
+
+
 Versão 0.8.9b  08/02/10
 -- ACBrECFEpson --
 [*]    Modificada detecção de estado do ECF Epson. Após o envio do comando de

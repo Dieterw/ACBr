@@ -769,7 +769,9 @@ begin
     AForm.Operacao       := Operacao;
     AForm.TipoCampo      := TipoCampo;
 
-    if AForm.ShowModal = mrOK then
+    Digitado := (AForm.ShowModal = mrOK) ;
+
+    if Digitado then
        Resposta := AForm.Edit1.Text;
   finally
     AForm.Free;

@@ -47,6 +47,20 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 1.5b   08/02/10
+[*] Chamada a OnAntesCancelarTransacao envolvida em Try Except para evitar Loop
+    infinito no caso de exception dentro de OnAntesCancelarTransacao
+
+-- ACBrTEFDCliSiTEF --
+[*]  Modificada a ordem da gravação do Log de Debug dentro de ContinuarRequisicao
+[*]  Adicionada chamada de Pulo de Linhas e pausa entre vias na impressão de
+     Relatórios Gerenciais com 2 vias
+[-]  Corrigido tratamento na chamada do Evento "OnObtemCampo". Onde resposta
+     vazia era tratada como Cancelamento da Transação
+[+]  No caso de Finalização de Transação, sem confirmação (NCN), será disparada
+     mensagem: "Transação não efetuada. Favor reter o Cupom" conforme orientação
+     do Roteiro de Testes
+
 Versão 1.4b   08/02/10
 [+] Adicionado evento "OnAntesCancelarTransacao", que permite rodar algum código
     na aplicação antes do Cancelamento de Transações TEF

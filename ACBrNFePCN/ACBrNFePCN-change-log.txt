@@ -58,6 +58,8 @@ Alterações   12/02/10
       OBS: O texto não será impresso se estiver em Producao e em Contingencia FS ou FS-DA.
 [-] DANFE em RAVE ARQUIVO
     - Corrigido problema de geração do PDF quando existia mais de uma nota carregada no componente.(Caso 00473 do MANTIS)
+[-] Corrigida declaraçao de Units em libxml2.pas, libxmlsec.pas e libxslt.pas
+    para permitir a correta compilação no FreePascal no Linux
 
 Alterações   10/02/10
 ---------------

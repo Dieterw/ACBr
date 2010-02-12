@@ -340,7 +340,8 @@ begin
 end;
 
 function TACBrECFFiscNETComando.GetComando: AnsiString;
-Var I : Integer ;
+var
+  I: Integer;
 begin
   Result := '{'+IntToStr(fsCont)+';'+fsNomeComando+';' ;
 
@@ -370,7 +371,8 @@ end;
 
 procedure TACBrECFFiscNETComando.AddParamDouble(ParamName: String;
   ADouble: Double);
- Var AFloatStr : String ;
+var
+  AFloatStr: string;
 begin
   ADouble   := RoundTo(ADouble,-4) ; // FiscNet aceita no máximo 4 casas decimais
   AFloatStr := FloatToStr(ADouble) ;
@@ -387,16 +389,21 @@ end;
 
 procedure TACBrECFFiscNETComando.AddParamBool(ParamName: String;
   ABool: Boolean);
-Var CharBool : Char ;
+var
+  CharBool: Char;
 begin
-  if ABool then CharBool := 't' else CharBool := 'f' ;
+  if ABool then
+    CharBool := 't'
+  else
+    CharBool := 'f';
 
   fsParams.Add(ParamName + '=' + CharBool )
 end;
 
 Procedure TACBrECFFiscNETComando.AddParamDateTime(ParamName : String;
   ADateTime: TDateTime;Tipo : Char = 'D'  ) ;
-Var Texto : String ;
+var
+  Texto: string;
 begin
   if Tipo in ['T','H'] then
      Texto := FormatDateTime('hh:nn:ss',ADateTime)
@@ -426,10 +433,11 @@ begin
 end;
 
 procedure TACBrECFFiscNETResposta.SetResposta(const Value: AnsiString);
-Var Buf : AnsiString ;
-    P,I : Integer ;
-    Param : AnsiString ;
-    CharAposIgual : AnsiChar ;
+var
+  Buf: AnsiString;
+  P,I : Integer ;
+  Param : AnsiString ;
+  CharAposIgual : AnsiChar ;
 begin
   fsParams.Clear ;
   fsCont       := 0 ;
@@ -610,8 +618,9 @@ end;
 
 
 Function TACBrECFFiscNET.EnviaComando_ECF( cmd : AnsiString = '' ) : AnsiString ;
-Var ErroMsg : String ;
-    OldTimeOut : Integer ;
+var
+  ErroMsg: string;
+  OldTimeOut : Integer ;
 begin
   if cmd <> '' then
      cmd := PreparaCmd(cmd) ;  // Ajusta e move para FiscNETcomando
@@ -672,7 +681,8 @@ begin
 end;
 
 function TACBrECFFiscNET.PreparaCmd(cmd: AnsiString): AnsiString;
-Var P : Integer ;
+var
+  P: Integer;
 begin
   P := pos(';',cmd) ;
   if P = 0 then
@@ -688,8 +698,9 @@ begin
 end;
 
 function TACBrECFFiscNET.GetDataHora: TDateTime;
-Var RetCmd : AnsiString ;
-    OldShortDateFormat : String ;
+var
+  RetCmd: AnsiString;
+  OldShortDateFormat : String ;
 begin
   FiscNETComando.NomeComando := 'LeData' ;
   FiscNETComando.AddParamString('NomeData','Data');
@@ -869,19 +880,14 @@ end;
    estLivre           - Livre para vender
 }
 function TACBrECFFiscNET.GetEstado: TACBrECFEstado;
-Var Est, Ind : Integer ;
+var
+  Est, Ind: Integer;
 begin
   Result := fpEstado ;  // Suprimir Warning
   try
     fpEstado := estNaoInicializada ;
     if (not fpAtivo) then
       exit ;
-
-    if fsEmPagamento then
-    begin
-       fpEstado := estPagamento ;
-       exit ;
-    end ;
 
     fpEstado := estDesconhecido ;
 
@@ -898,6 +904,9 @@ begin
       32,64  : fpEstado := estRelatorio ;
       128    : fpEstado := estNaoFiscal ;
     end ;
+
+    if fsEmPagamento and (fpEstado = estVenda) then
+       fpEstado := estPagamento ;
 
     if fpEstado in [estDesconhecido, estLivre] then
     begin
@@ -1052,8 +1061,9 @@ begin
 end;
 
 procedure TACBrECFFiscNET.CancelaCupom;
-  Var Erro : String ;
-      CCD  : Integer ;
+var
+  Erro : string;
+  CCD  : Integer ;
 begin
   try
      FiscNETComando.NomeComando := 'CancelaCupom' ;
@@ -1120,7 +1130,8 @@ begin
 end;
 
 procedure TACBrECFFiscNET.FechaCupom(Observacao: AnsiString; IndiceBMP : Integer);
-Var Obs : AnsiString ;
+var
+  Obs: AnsiString;
 begin
   Obs := Observacao ;
   if not Consumidor.Enviado then
@@ -1178,7 +1189,8 @@ Procedure TACBrECFFiscNET.VendeItem( Codigo, Descricao : String;
   AliquotaECF : String; Qtd : Double ; ValorUnitario : Double;
   ValorDescontoAcrescimo : Double; Unidade : String;
   TipoDescontoAcrescimo : String; DescontoAcrescimo : String) ;
- Var CodAliq : Integer ;
+var
+  CodAliq: Integer;
 begin
   Unidade := padL(Unidade,2) ;
 
@@ -1290,7 +1302,8 @@ begin
 end;
 
 procedure TACBrECFFiscNET.LerTotaisAliquota;
-Var A : Integer ;
+var
+  A: Integer;
 begin
   if not Assigned( fpAliquotas ) then
      CarregaAliquotas ;
@@ -1310,8 +1323,9 @@ end;
 
 procedure TACBrECFFiscNET.ProgramaAliquota(Aliquota: Double; Tipo: Char;
    Posicao : String);
-Var AliqECF  : TACBrECFAliquota ;
-    Descr    : String ;
+var
+  AliqECF : TACBrECFAliquota;
+  Descr   : String ;
 begin
   Tipo := UpCase(Tipo) ;
   if not (Tipo in ['T','S']) then
@@ -1347,7 +1361,8 @@ end;
 
 function TACBrECFFiscNET.AchaICMSAliquota( var AliquotaICMS: String):
    TACBrECFAliquota;
-  Var AliquotaStr : String ;
+var
+  AliquotaStr: string;
 begin
   AliquotaStr := '' ;
   Result      := nil ;
@@ -1380,7 +1395,8 @@ end;
 
 procedure TACBrECFFiscNET.CarregaFormasPagamento;
   Function SubCarregaFormasPagamento(Indice : Integer) : Boolean ;
-    var FPagto : TACBrECFFormaPagamento ;
+  var
+    FPagto: TACBrECFFormaPagamento;
   begin
      Result := True ;
      FiscNETComando.NomeComando := 'LeMeioPagamento' ;
@@ -1404,8 +1420,9 @@ procedure TACBrECFFiscNET.CarregaFormasPagamento;
      end;
   end ;
 
-Var A    : Integer;
-    Erro : Boolean ;
+var
+  A    : Integer;
+  Erro : Boolean ;
 begin
   inherited CarregaFormasPagamento ;   { Cria fpFormasPagamentos }
 
@@ -1427,7 +1444,8 @@ begin
 end;
 
 procedure TACBrECFFiscNET.LerTotaisFormaPagamento;
-Var A : Integer ;
+var
+  A: Integer;
 begin
   if not Assigned( fpFormasPagamentos ) then
      CarregaFormasPagamento ;
@@ -1449,7 +1467,8 @@ end;
 
 procedure TACBrECFFiscNET.ProgramaFormaPagamento( var Descricao: String;
   PermiteVinculado : Boolean; Posicao : String) ;
-var  FPagto: TACBrECFFormaPagamento ;
+var
+  FPagto: TACBrECFFormaPagamento;
 begin
   with FiscNETComando do
   begin
@@ -1474,9 +1493,10 @@ begin
 end;
 
 procedure TACBrECFFiscNET.CarregaComprovantesNaoFiscais;
-Var A    : Integer ;
-    CNF  : TACBrECFComprovanteNaoFiscal ;
-    Erro : Boolean ;
+var
+  A    : Integer;
+  CNF  : TACBrECFComprovanteNaoFiscal ;
+  Erro : Boolean ;
 begin
   inherited CarregaComprovantesNaoFiscais ;
 
@@ -1513,7 +1533,8 @@ begin
 end;
 
 procedure TACBrECFFiscNET.LerTotaisComprovanteNaoFiscal;
-Var A : Integer ;
+var
+  A: Integer;
 begin
   if not Assigned( fpComprovantesNaoFiscais ) then
      CarregaComprovantesNaoFiscais ;
@@ -1539,7 +1560,8 @@ end;
 
 procedure TACBrECFFiscNET.ProgramaComprovanteNaoFiscal(var Descricao : String;
    Tipo: String; Posicao : String);
-Var CNF : TACBrECFComprovanteNaoFiscal ;
+var
+  CNF: TACBrECFComprovanteNaoFiscal;
 begin
   with FiscNETComando do
   begin
@@ -1589,9 +1611,10 @@ begin
 end;
 
 procedure TACBrECFFiscNET.LinhaRelatorioGerencial(Linha: AnsiString; IndiceBMP: Integer);
-Var P, Espera : Integer ;
-    Buffer : AnsiString ;
-    MaxChars : Integer ;
+var
+  P, Espera: Integer;
+  Buffer   : AnsiString ;
+  MaxChars : Integer ;
 begin
   Linha    := AjustaLinhas( Linha, Colunas );  { Formata as Linhas de acordo com "Coluna" }
   MaxChars := 492 ;  { FiscNet aceita no máximo 492 caract. por comando }
@@ -1625,7 +1648,8 @@ end;
 
 procedure TACBrECFFiscNET.AbreCupomVinculado(COO, CodFormaPagto,
    CodComprovanteNaoFiscal :  String; Valor : Double ) ;
-Var FPG : TACBrECFFormaPagamento ;
+var
+  FPG: TACBrECFFormaPagamento;
 begin
   FPG := AchaFPGIndice( CodFormaPagto ) ;
 
@@ -1672,7 +1696,8 @@ begin
 end;
 
 procedure TACBrECFFiscNET.CortaPapel(const CorteParcial: Boolean);
- Var TipoCorte : Integer ;
+var
+  TipoCorte: Integer;
 begin
 // Autor: Nei José Van Lare Junior
 
@@ -2019,10 +2044,11 @@ end;
 
 function TACBrECFFiscNET.GetDataMovimento: TDateTime;
 // Autor: Nei José Van Lare Junior
-Var RetCmd : AnsiString ;
-    OldShortDateFormat : String ;
-    bDiaAberto, bDiaFechado: boolean;
-    sParam: String;
+var
+  RetCmd: AnsiString;
+  OldShortDateFormat : String ;
+  bDiaAberto, bDiaFechado: boolean;
+  sParam: String;
 begin
    FiscNETComando.TimeOut := 15;
    FiscNETComando.NomeComando := 'LeIndicador' ;

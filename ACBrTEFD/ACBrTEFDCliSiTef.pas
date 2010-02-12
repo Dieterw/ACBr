@@ -634,14 +634,16 @@ begin
             Mensagem := Trim( Buffer ) ;
             Resposta := '' ;
 
+            GravaLog( 'ContinuaFuncaoSiTefInterativo, Retornos: STS = '+IntToStr(Result)+
+                      ' ProximoComando = '+IntToStr(ProximoComando)+
+                      ' TipoCampo = '+IntToStr(TipoCampo)+
+                      ' Buffer = '+Mensagem +
+                      ' Tam.Min = '+IntToStr(TamanhoMinimo) +
+                      ' Tam.Max = '+IntToStr(TamanhoMaximo)) ;
+
 
             if Result = 10000 then
             begin
-              GravaLog( 'ContinuaFuncaoSiTefInterativo, Retornos: STS = '+IntToStr(Result)+
-                        ' ProximoComando = '+IntToStr(ProximoComando)+
-                        ' TipoCampo = '+IntToStr(TipoCampo)+
-                        ' Buffer = '+Mensagem ) ;
-
               case ProximoComando of
                  0 :
                    begin
@@ -658,10 +660,16 @@ begin
                           begin
                             try
                               if not GerencialAberto then
-                              begin
+                               begin
                                  ComandarECF( opeAbreGerencial ) ;
                                  GerencialAberto := True ;
-                              end;
+                               end
+                              else
+                               if TipoCampo = 122 then
+                               begin
+                                 ComandarECF( opePulaLinhas ) ;
+                                 DoExibeMsg( opmDestaqueVia, 'Destaque a 1ª Via') ;
+                               end;
 
                               ECFImprimeVia( trGerencial, TipoCampo-120, SL );
 
@@ -794,7 +802,7 @@ begin
                      Digitado := True ;
                      OnObtemCampo( Mensagem, TamanhoMinimo, TamanhoMaximo,
                                    TipoCampo, tcString, Resposta, Digitado ) ;
-                     if Resposta = '' then
+                     if not Digitado then
                         Continua := -1 ;
                    end;
 
@@ -843,8 +851,7 @@ begin
             else
                GravaLog( '*** ContinuaFuncaoSiTefInterativo, Finalizando: STS = '+IntToStr(Result) ) ;
 
-            if Resposta <> '' then
-               StrPCopy(Buffer, Resposta);
+            StrPCopy(Buffer, Resposta);
 
          until Result <> 10000;
       finally
@@ -884,6 +891,10 @@ begin
                                      PChar( DocumentoVinculado ),
                                      PChar( DataStr ),
                                      PChar( HoraStr) ) ;
+
+  if not Confirma then
+     TACBrTEFD(Owner).DoExibeMsg( opmOK, 'Transação não efetuada.'+sLineBreak+
+                                         'Favor reter o Cupom' );
 end;
 
 procedure TACBrTEFDCliSiTef.AvaliaErro( Sts : Integer );
@@ -907,6 +918,7 @@ begin
 
    if Erro <> '' then
       TACBrTEFD(Owner).DoExibeMsg( opmOK, Erro );
+
 end ;
 
 procedure TACBrTEFDCliSiTef.ProcessarRespostaPagamento( const IndiceFPG : String;

@@ -3385,8 +3385,8 @@ end;
 
  procedure TACBrECF.MemoTitulo(ATitulo: String) ;
  begin
-   MemoAdicionaLinha( '<center><h' +IntToStr(fsMemoHTMLTitleSise)+'>'+
-                      ATitulo+'</h'+IntToStr(fsMemoHTMLTitleSise)+'></center>' ) ;
+   MemoAdicionaLinha( '<h' +IntToStr(fsMemoHTMLTitleSise)+'><center>'+
+                      ATitulo+'</center></h'+IntToStr(fsMemoHTMLTitleSise)+'>' ) ;
  end;
 
  function TACBrECF.MemoAssigned: Boolean;

@@ -44,6 +44,8 @@
 |* - Adicionados métodos: CortaPapel, IdentificaConsumidor, Suprimento
 |* 14/06/2009: Daniel Simões de Almeida
 |* - Adicionada propriedades: CDC, GNF, GRG. Por: José Nilton Pace
+|* 10/02/2010: José Nilton Pace
+|* - Corrigido bug em GetTotalIsencao
 ******************************************************************************}
 
 {$I ACBr.inc}
@@ -1327,12 +1329,6 @@ begin
       if (not fpAtivo) then
          exit ;
 
-      if fsEmPagamento then
-      begin
-         fpEstado := estPagamento ;
-         exit ;
-      end ;
-
       fpEstado := estDesconhecido ;
 
       EpsonComando.Comando := '0810' ;
@@ -1348,7 +1344,7 @@ begin
          EpsonComando.Comando := '0A0A' ;
          EnviaComando ;
 
-         if (EpsonResposta.Params[10] >= '2') then
+         if fsEmPagamento or (EpsonResposta.Params[10] >= '2') then
             fpEstado := estPagamento
          else
             fpEstado := estVenda
@@ -2370,7 +2366,7 @@ end;
 function TACBrECFEpson.GetTotalIsencao: Double;
 begin
   EpsonResposta.Resposta := Ret0906 ;
-  Result := RoundTo( StrToFloatDef(EpsonResposta.Params[19],0) /100, -2) ;
+  Result := RoundTo( StrToFloatDef(EpsonResposta.Params[16],0) /100, -2) ;
 end;
 
 function TACBrECFEpson.GetTotalNaoTributado: Double;

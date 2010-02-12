@@ -4025,10 +4025,10 @@ begin
      raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
      'Daruma_Registry_AlterarRegistry( "ECF", "BuscaPorta", "0" ) ') );
 
-  Resp := xDaruma_Registry_AlterarRegistry( 'ECF', 'ControlePorta', '2' );
+  Resp := xDaruma_Registry_AlterarRegistry( 'ECF', 'ControlePorta', '0' );
   if Resp <> 1 then
      raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
-     'Daruma_Registry_AlterarRegistry( "ECF", "ControlePorta", "2" ) ') );
+     'Daruma_Registry_AlterarRegistry( "ECF", "ControlePorta", "0" ) ') );
 
   Resp := xDaruma_Registry_AlterarRegistry('ECF', 'ThreadNoStartup', '0');
   if Resp <> 1 then
@@ -4049,6 +4049,11 @@ begin
   if Resp <> 1 then
      raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
      'Daruma_Registry_AlterarRegistry( "AtoCotepe", "Path", "'+Path+'" ) ') );
+
+  Resp := xDaruma_Registry_AlterarRegistry( 'ECF', 'Path', PChar( Path ) );
+  if Resp <> 1 then
+     raise Exception.Create( ACBrStr('Erro: '+IntToStr(Resp)+' ao chamar:'+sLineBreak+
+     'Daruma_Registry_AlterarRegistry( "ECF", "Path", "'+Path+'" ) ') );
 
   Resp := xDaruma_FI_AbrePortaSerial();
   if Resp <> 1 then

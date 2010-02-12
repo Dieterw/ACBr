@@ -87,7 +87,7 @@ type
   TpcnCondicaoVeiculo = (cvAcabado, cvInacabado, cvSemiAcabado);
   TpcnTipoArma = (taUsoPermitido, taUsoRestrito);
   TpcnOrigemMercadoria = (oeNacional, oeEstrangeiraImportacaoDireta, oeEstrangeiraAdquiridaBrasil);
-  TpcnCSTIcms = (cst00, cst10, cst20, cst30, cst40, cst41, cst50, cst51, cst60, cst70, cst80, cst81, cst90); //80 e 81 apenas para CTe
+  TpcnCSTIcms = (cst00, cst10, cst20, cst30, cst40, cst41, cst45, cst50, cst51, cst60, cst70, cst80, cst81, cst90); //80 e 81 apenas para CTe
   TpcnDeterminacaoBaseIcms = (dbiMargemValorAgregado, dbiPauta, dbiPrecoTabelado, dbiValorOperacao);
   TpcnDeterminacaoBaseIcmsST = (dbisPrecoTabelado, dbisListaNegativa, dbisListaPositiva, dbisListaNeutra, dbisMargemValorAgregado, dbisPauta);
   TpcnCstIpi = (ipi00, ipi49, ipi50, ipi99, ipi01, ipi02, ipi03, ipi04, ipi05, ipi51, ipi52, ipi53, ipi54, ipi55);
@@ -105,6 +105,7 @@ type
   TpcteRspSeg = (rsRemetente, rsExpedidor, rsRecebedor, rsDestinatario, rsEmitenteCTe, rsTomadorServico);
   TpcteLocacao = (ltNao, ltsim);
   TpcteProp = (tpTACAgregado, tpTACIndependente, tpOutros);
+  TpcteMask = (msk4x2, msk7x2, msk9x2, msk10x2, msk13x2, msk15x2, msk6x3, mskAliq);
   UnidMed = (uM3,uKG, uTON, uUNIDADE, uLITROS);
 
 const
@@ -126,14 +127,14 @@ const
   NFeEnvDPEC      = '1.01';
   NFeConsDPEC     = '1.01';  
 
-  CTecabMsg       = '1.02';
-  CTeconsStatServ = '1.01';
-  CTeenvCte       = '1.02';
-  CTeconsSitCTe   = '1.02';
-  CTecancCTe      = '1.01';
-  CTeinutCTe      = '1.01';
-  CTenviCTe       = '1.02';
-  CTeconsReciCTe  = '1.02';
+  CTecabMsg       = '1.02';//1.02
+  CTeconsStatServ = '1.03';//1.01
+  CTeenvCte       = '1.03';//1.02
+  CTeconsSitCTe   = '1.03';//1.02
+  CTecancCTe      = '1.03';//1.01
+  CTeinutCTe      = '1.03';//1.01
+  CTenviCTe       = '1.03';//1.02
+  CTeconsReciCTe  = '1.03';//1.02
 
   LineBreak = #13#10;
 
@@ -173,6 +174,8 @@ function StrToOrig(var ok: boolean; const s: string): TpcnOrigemMercadoria;
 function CSTICMSToStr(const t: TpcnCSTIcms): string;
 function StrToCSTICMS(var ok: boolean; const s: string): TpcnCSTIcms;
 function CSTICMSToStrTagPos(const t: TpcnCSTIcms): string;
+function CSTICMSToStrTagPosText(const t: TpcnCSTIcms): string;
+
 function modBCToStr(const t: TpcnDeterminacaoBaseIcms): string;
 function StrTomodBC(var ok: boolean; const s: string): TpcnDeterminacaoBaseIcms;
 function modBCSTToStr(const t: TpcnDeterminacaoBaseIcmsST): string;
@@ -188,18 +191,25 @@ function StrTomodFrete(var ok: boolean; const s: string): TpcnModalidadeFrete;
 function indProcToStr(const t: TpcnIndicadorProcesso): string;
 function StrToindProc(var ok: boolean; const s: string): TpcnIndicadorProcesso;
 function tpforPagToStr(const t: TpcteFormaPagamento): string;
+function tpforPagToStrText(const t: TpcteFormaPagamento): string;
 function StrTotpforPag(var ok: boolean; const s: string): TpcteFormaPagamento;
 function tpCTePagToStr(const t: TpcteTipoCTe): string;
+function tpCTToStr(const t: TpcteTipoCTe): string;
+function tpCTToStrText(const t: TpcteTipoCTe): string;
 function StrTotpCTe(var ok: boolean; const s: string): TpcteTipoCTe;
 function TpModalToStr(const t: TpcteModal): string;
+function TpModalToStrText(const t: TpcteModal): string;
 function StrToTpModal(var ok: boolean; const s: string): TpcteModal;
 function TpServPagToStr(const t: TpcteTipoServico): string;
+function TpServToStrText(const t: TpcteTipoServico): string;
 function StrToTpServ(var ok: boolean; const s: string): TpcteTipoServico;
 function TpRetiraPagToStr(const t: TpcteRetira): string;
 function StrToTpRetira(var ok: boolean; const s: string): TpcteRetira;
 function TpTomadorPagToStr(const t: TpcteTomador): string;
 function TpTomadorToStr(const t: TpcteTomador): String;
+function TpTomadorToStrText(const t: TpcteTomador): String;
 function TpRspSeguroToStr(const t: TpcteRspSeg): String;
+function TpRspSeguroToStrText(const t: TpcteRspSeg): String;
 function TpLotacaoToStr(const t: TpcteLocacao): string;
 function TpPropToStr(const t: TpcteProp): String;
 function UnidMedToStr(const t: UnidMed): string;
@@ -208,6 +218,8 @@ function StrToTpRspSeguro(var ok: boolean; const s: String ): TpcteRspSeg;
 function StrToTpLotacao(var ok: boolean; const s: String ): TpcteLocacao;
 function StrToTpProp(var ok: boolean; const s: String ): TpcteProp;
 function StrToUnidMed(var ok: boolean; const s: String ): UnidMed;
+function TpMaskToStrText(const t: TpcteMask): string;
+function StrToTpMask(var ok: boolean; const s: string): TpcteMask;
 
 
 implementation
@@ -290,6 +302,16 @@ begin
   result := EnumeradoToStr(t, ['0', '1'], [tnEntrada, tnSaida]);
 end;
 
+function tpCTToStr(const t: TpcteTipoCTe): string;
+begin
+  result := EnumeradoToStr(t, ['0', '1', '2', '3'], [tcNormal, tcComplemento, tcAnulacao, tcSubstituto]);
+end;
+
+function tpCTToStrText(const t: TpcteTipoCTe): string;
+begin
+  result := EnumeradoToStr(t, ['NORMAL', 'COMPLEMENTO', 'ANULAÇÃO', 'SUBSTITUTO'], [tcNormal, tcComplemento, tcAnulacao, tcSubstituto]);
+end;
+
 function StrToTpNF(var ok: boolean; const s: string): TpcnTipoNFe;
 begin
   result := StrToEnumerado(ok, s, ['0', '1'], [tnEntrada, tnSaida]);
@@ -300,6 +322,18 @@ end;
 function TpImpToStr(const t: TpcnTipoImpressao): string;
 begin
   result := EnumeradoToStr(t, ['1', '2'], [tiRetrato, tiPaisagem]);
+end;
+
+function TpMaskToStrText(const t: TpcteMask): string;
+begin
+  result := EnumeradoToStr(t, ['#,##0.00', '#,###,##0.00', '###,###,##0.00', '#,###,###,##0.00', '#,###,###,###,##0.00', '###,###,###,###,##0.00', '###,##0.000', '#00%'],
+    [msk4x2, msk7x2, msk9x2, msk10x2, msk13x2, msk15x2, msk6x3, mskAliq]);
+end;
+
+function StrToTpMask(var ok: boolean; const s: string): TpcteMask;
+begin
+  result := StrToEnumerado(ok, s, ['#,##0.00', '#,###,##0.00', '#,###,###,##0.00', '#,###,###,###,##0.00', '###,###,###,###,##0.00', '###,##0.000', '#00%'],
+    [msk4x2, msk7x2, msk10x2, msk13x2, msk15x2, msk6x3, mskAliq]);
 end;
 
 function StrToTpImp(var ok: boolean; const s: string): TpcnTipoImpressao;
@@ -452,6 +486,22 @@ begin
     [cst00, cst10, cst20, cst30, cst40, cst41, cst50, cst51, cst60, cst70, cst90]);
 end;
 
+function CSTICMSToStrTagPosText(const t: TpcnCSTIcms): string;
+begin
+  result := EnumeradoToStr(t, ['PRESTAÇÃO SUJEITO À TRIBUTAÇÃO NORMAL ICMS',
+    '10',
+    'PRESTAÇÃO SUJEITO À TRIBUTAÇÃO COM BC REDUZIDA DO ICMS',
+    '30',
+    'ICMS ISENTO, NÃO TRIBUTADO OU DEFERIDO',
+    'ICMS ISENTO, NÃO TRIBUTADO OU DEFERIDO',
+    'ICMS ISENTO, NÃO TRIBUTADO OU DEFERIDO',
+    '50', '51', '70',
+    'RESPONSABILIDADE DO RECOLHIMENTO DO ICMS ATRIBUÍDO AO TOMADOR OU 3° POR ST',
+    'ICMS DEVICO À OUTRA UF',
+    'ICMS OUTROS'],
+    [cst00, cst10, cst20, cst30, cst40, cst41, cst45, cst50, cst51, cst60, cst70, cst80, cst81, cst90]);
+end;
+
 // N13 - Modalidade de determinação da BC do ICMS ******************************
 
 function modBCToStr(const t: TpcnDeterminacaoBaseIcms): string;
@@ -561,6 +611,11 @@ begin
   result := EnumeradoToStr(t, ['0','1', '2'], [fpPago, fpAPagar, fpOutros]);
 end;
 
+function tpforPagToStrText(const t: TpcteFormaPagamento): string;
+begin
+  result := EnumeradoToStr(t, ['A VISTA','A PRAZO', 'OUTROS'], [fpPago, fpAPagar, fpOutros]);
+end;
+
 function StrTotpforPag(var ok: boolean; const s: string): TpcteFormaPagamento;
 begin
   result := StrToEnumerado(ok, s, ['0', '1', '2'], [fpPago, fpAPagar, fpOutros]);
@@ -581,6 +636,11 @@ begin
   result := EnumeradoToStr(t, ['01','02', '03', '04', '05'], [mdRodoviario, mdAereo, mdAquaviario, mdFerroviario, mdDutoviario]);
 end;
 
+function TpModalToStrText(const t: TpcteModal): string;
+begin
+  result := EnumeradoToStr(t, ['RODOVIÁRIO','AÉREO', 'AQUAVIÁRIO', 'FERROVIÁRIO', 'DUTOVIÁRIO'], [mdRodoviario, mdAereo, mdAquaviario, mdFerroviario, mdDutoviario]);
+end;
+
 function StrToTpModal(var ok: boolean; const s: string): TpcteModal;
 begin
   result := StrToEnumerado(ok, s, ['01', '02', '03', '04', '05'], [mdRodoviario, mdAereo, mdAquaviario, mdFerroviario, mdDutoviario]);
@@ -589,6 +649,11 @@ end;
 function TpServPagToStr(const t: TpcteTipoServico): string;
 begin
   result := EnumeradoToStr(t, ['0','1', '2', '3'], [tsNormal, tsSubcontratacao, tsRedespacho, tsIntermediario]);
+end;
+
+function TpServToStrText(const t: TpcteTipoServico): string;
+begin
+  result := EnumeradoToStr(t, ['NORMAL','SUBCONTRATAÇÃO', 'REDESPACHO', 'REDESP. INTERMEDIÁRIO'], [tsNormal, tsSubcontratacao, tsRedespacho, tsIntermediario]);
 end;
 
 function StrToTpServ(var ok: boolean; const s: string): TpcteTipoServico;
@@ -616,9 +681,21 @@ begin
   result := EnumeradoToStr(t, ['0', '1', '2', '3', '4'], [tmRemetente, tmExpedidor, tmRecebedor, tmDestinatario, tmOutros]);
 end;
 
+function TpTomadorToStrText(const t: TpcteTomador): String;
+begin
+  result := EnumeradoToStr(t, ['REMETENTE', 'EXPEDIDOR', 'RECEBEDOR', 'DESTINATARIO', 'OUTROS'],
+    [tmRemetente, tmExpedidor, tmRecebedor, tmDestinatario, tmOutros]);
+end;
+
 function TpRspSeguroToStr(const t: TpcteRspSeg): String;
 begin
   result := EnumeradoToStr(t, ['0', '1', '2', '3', '4', '5'], [rsRemetente, rsExpedidor, rsRecebedor, rsDestinatario, rsEmitenteCTe, rsTomadorServico]);
+end;
+
+function TpRspSeguroToStrText(const t: TpcteRspSeg): String;
+begin
+  result := EnumeradoToStr(t, ['REMETENTE', 'EXPEDIDOR', 'RECEBEDOR', 'DESTINATARIO', 'EMITENTE', 'TOMADOR SERVICO'],
+    [rsRemetente, rsExpedidor, rsRecebedor, rsDestinatario, rsEmitenteCTe, rsTomadorServico]);
 end;
 
 function TpLotacaoToStr(const t: TpcteLocacao): string;

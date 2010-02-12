@@ -136,7 +136,8 @@ const
 
   V1_00 = 'versao="1.00"';
   V1_01 = 'versao="1.01"';
-  V1_02 = 'versao="1.02"';  
+  V1_02 = 'versao="1.02"';
+  V1_03 = 'versao="1.03"';
   V1_07 = 'versao="1.07"';
   V1_10 = 'versao="1.10"';
 

@@ -367,7 +367,7 @@ end;
 
 function ReverterFiltroTextoXML(aTexto: AnsiString): AnsiString;
 var p1,p2:Integer;
-    tmp,vHex,vStr:String;
+    vHex,vStr:String;
 begin
   aTexto := StringReplace(aTexto, '&amp;', '&', [rfReplaceAll]);
   aTexto := StringReplace(aTexto, '&lt;', '<', [rfReplaceAll]);

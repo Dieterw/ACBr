@@ -56,6 +56,8 @@ Alterações   12/02/10
     - Modificação para imprimir no corpo da nota o texto "NFe sem Autorização de Uso da SEFAZ", 
       quando estiver em Ambiente PRODUÇÃO e não tiver Protocolo de autorizacao de uso.
       OBS: O texto não será impresso se estiver em Producao e em Contingencia FS ou FS-DA.
+[-] DANFE em RAVE ARQUIVO
+    - Corrigido problema de geração do PDF quando existia mais de uma nota carregada no componente.(Caso 00473 do MANTIS)
 
 Alterações   10/02/10
 ---------------

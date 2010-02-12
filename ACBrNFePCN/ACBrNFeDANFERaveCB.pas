@@ -153,7 +153,11 @@ begin
          LogoMarcaEmpresa.LoadFromFile(Logo);
        end;
 
-      NomeArq := StringReplace(TACBrNFe(ACBrNFe).NotasFiscais.Items[0].NFe.infNFe.ID,'NFe', '', [rfIgnoreCase]);
+      if NFE = nil then
+         NomeArq := StringReplace(TACBrNFe(ACBrNFe).NotasFiscais.Items[0].NFe.infNFe.ID,'NFe', '', [rfIgnoreCase])
+      else
+         NomeArq := StringReplace(NFE.infNFe.ID,'NFe', '', [rfIgnoreCase]);
+
       NomeArq := PathWithDelim(Self.PathPDF)+NomeArq+'.pdf';
 
       ImprimirDANFeRave(TACBrNFe(ACBrNFe),
@@ -189,7 +193,8 @@ begin
                        ImprimirTotalLiquido,
                        ImprimirDetalhamentoEspecifico,
                        FormularioContinuo,
-                       ExpandirLogoMarca);
+                       ExpandirLogoMarca,
+                       NFE);
     finally
       LogoMarcaEmpresa.Free;
     end;

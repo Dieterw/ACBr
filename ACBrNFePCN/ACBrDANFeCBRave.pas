@@ -103,7 +103,7 @@ type
      FExpandirLogoMarca: boolean;
      FMostrarStatus: Boolean;
   public
-     FCurrentPage, FPageNum, FNFIndex:Integer;
+     FCurrentPage, FPageNum, FNFIndex, FNumNFe:Integer;
      FChaveNFe, FNumeroNF, FSerie: String;
      FEspelho:Boolean;
      FMemoInfCpl:TMemoBuf;
@@ -182,7 +182,8 @@ procedure ImprimirDANFeRave(aACBrNFe:TACBrNFe;
                             aImprimirValorLiquido:boolean=false;
                             aImprimirDetalhamentoEspecifico:boolean=true;
                             aFormularioContinuo:boolean=false;
-                            aExpadirLogoMarca:boolean=false);
+                            aExpadirLogoMarca:boolean=false;
+                            NFE : TNFe = nil);
 
 var DANFeRave:TDANFeRave;
 
@@ -223,14 +224,27 @@ procedure ImprimirDANFeRave(aACBrNFe:TACBrNFe;
                             aImprimirValorLiquido:boolean=false;
                             aImprimirDetalhamentoEspecifico:boolean=true;
                             aFormularioContinuo:boolean=false;
-                            aExpadirLogoMarca:boolean=false);
+                            aExpadirLogoMarca:boolean=false;
+                            NFE : TNFe = nil);
 var DANFeRave:TDANFeRave;
     rvPDF:TRvRenderPDF;
     rvTXT:TRvRenderText;
     rvHTML:TRvRenderHTML;
     rvRTF:TRvRenderRTF;
+    i : Integer;
 begin
   DANFeRave:=TDANFeRave.Create(nil);
+  DANFeRave.ACBrNFe := aACBrNFe;
+  DANFeRave.FNumNFe := -1;
+
+  if NFE <> nil then
+   begin
+     for i:=0 to TACBrNFe(aACBrNFe).NotasFiscais.count-1 do
+      begin
+         if TACBrNFe(aACBrNFe).NotasFiscais.Items[i].NFe.infNFe.ID = NFE.infNFe.ID then
+            DANFeRave.FNumNFe := i;
+      end;
+   end;
 
   if TACBrNFeDANFERaveCB(aACBrNFe.DANFE).Fonte = ftCourier then
      DANFeRave.FontNameUsed := 'Courier New'
@@ -251,7 +265,6 @@ begin
     rvPDF.MetafileDPI:=300;
     rvPDF.UseCompression:=False;
     rvPDF.Active:=True;
-    DANFeRave.ACBrNFe:=aACBrNFe;
     DANFeRave.EmailDoEmitente:=aEmail;
     DANFeRave.SiteDoEmitente:=aSite;
     DANFeRave.FaxDoEmitente:=aFax;
@@ -455,25 +468,31 @@ begin
   with BaseReport  do begin
     FNFIndex:=0;
     FCurrentPage:=0;
-    while FNFIndex<FACBrNFe.NotasFiscais.Count do begin
-      FPageNum:=0;
-      FMemoInfCpl.Text:='';
+    if FNumNFe > -1 then
+       FNFIndex := FNumNFe;
+    while FNFIndex<FACBrNFe.NotasFiscais.Count do
+     begin
+       FPageNum:=0;
+       FMemoInfCpl.Text:='';
 
-      if FNFIndex>0 then
-         NewPage;
+       if FNFIndex>0 then
+          NewPage;
 
-      if Orientation=poLandScape then
-         ImprimirPaisagem(Self)
-        else
-         ImprimirRetrato(Self);
+       if Orientation=poLandScape then
+          ImprimirPaisagem(Self)
+       else
+          ImprimirRetrato(Self);
 
-      for i:=FPageNum downto 1 do begin
+       for i:=FPageNum downto 1 do
+        begin
           VarNumPage:='PAGE'+FormatFloat('000000',FCurrentPage-(FPageNum-i));
           SetPIVar(VarNumPage,IntToStr(i)+'/'+IntToStr(FPageNum));
-      end;
+        end;
+       if FNumNFe > -1 then
+          FNFIndex := FACBrNFe.NotasFiscais.Count;
 
-      Inc(FNFIndex);
-    end;
+       Inc(FNFIndex);
+     end;
   end;
 end;
 
@@ -498,3 +517,4 @@ begin
 end;
 
 end.
+

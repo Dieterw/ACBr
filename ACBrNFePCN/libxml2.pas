@@ -4412,10 +4412,11 @@ var
 
 implementation
 uses
-{$IFDEF WIN32}
-  Windows,
-  {$IFDEF FPC}
-     DynLibs,
+{$IFDEF FPC}
+   DynLibs,
+{$ELSE}
+  {$IFDEF WIN32}
+    Windows,
   {$ENDIF}
 {$ENDIF}
   SysUtils;
@@ -4541,4 +4542,4 @@ initialization
     FreeLibrary(libHandle);
   end;
 
-end.
+end.

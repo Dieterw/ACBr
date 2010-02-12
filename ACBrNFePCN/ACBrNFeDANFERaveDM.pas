@@ -817,7 +817,12 @@ begin
       Connection.WriteStrData('', '');
       Connection.WriteStrData('', 'PROTOCOLO DE AUTORIZAÇÃO DE USO');
       if notautil.EstaVazio(FDANFEClassOwner.ProtocoloNFe) then
-         Connection.WriteStrData('', FNFe.procNFe.nProt+' '+NotaUtil.SeSenao(FNFe.procNFe.dhRecbto<>0,DateTimeToStr(FNFe.procNFe.dhRecbto),''))
+       begin
+         if not (FNFe.Ide.tpEmis in [teContingencia, teFSDA]) and NotaUtil.EstaVazio(FNFe.procNFe.nProt) then
+            Connection.WriteStrData('', 'NFe sem Autorização de Uso da SEFAZ')
+         else
+            Connection.WriteStrData('', FNFe.procNFe.nProt+' '+NotaUtil.SeSenao(FNFe.procNFe.dhRecbto<>0,DateTimeToStr(FNFe.procNFe.dhRecbto),''));
+       end
       else
          Connection.WriteStrData('', FDANFEClassOwner.ProtocoloNFe);
    end

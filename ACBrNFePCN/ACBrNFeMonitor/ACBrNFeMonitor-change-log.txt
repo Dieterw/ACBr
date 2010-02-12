@@ -62,6 +62,8 @@ Símbolo : Significado
 [-]	: Fixado tamanho de fonte no RAVE CB RETRATO para o campo FRETE POR CONTA.
 [+]	: Adicionado na aba Monitor o groupbox "Log de Mensagens do Componente ACBrNFePCN", onde caso esteja selecionado irá gravar as mensagens
           enviadas e recebidas diretamente pelo componente aos WebServices.
+[+]	: Modificação para imprimir no corpo da nota o texto "NFe sem Autorização de Uso da SEFAZ", quando estiver em Ambiente PRODUÇÃO e não 
+	  tiver Protocolo de autorizacao de uso.
 
 27/11/09
 [+]	: Adicionado comando NFE.NFetoTXT(cArqXML,[cNomeArqTXT]). Este comando irá converter um arquivo XML em um arquivo TXT no formato aceito pelo

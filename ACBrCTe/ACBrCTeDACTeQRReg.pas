@@ -1,7 +1,7 @@
 {******************************************************************************}
-{ Projeto: Componente ACBrCTe                                                  }
+{ Projeto: Componente ACBrNFe                                                  }
 {  Biblioteca multiplataforma de componentes Delphi para emissão de Nota Fiscal}
-{ eletrônica - CTe - http://www.CTe.fazenda.gov.br                          }
+{ eletrônica - NFe - http://www.nfe.fazenda.gov.br                          }
 {                                                                              }
 { Direitos Autorais Reservados (c) 2008 Wemerson Souto                         }
 {                                       Daniel Simoes de Almeida               }
@@ -39,17 +39,18 @@
 |*
 |* 16/12/2008: Wemerson Souto
 |*  - Doação do componente para o Projeto ACBr
-|* 09/03/2009: Dulcemar P.Zilli
-|*  - Incluido IPI e II
+|* 20/08/2009: Caique Rodrigues
+|*  - Doação units para geração do DANFe via QuickReport
 ******************************************************************************}
 {$I ACBr.inc}
 
-unit ACBrCTeReg;
+unit ACBrCTeDACTeQRReg;
 
 interface
 
 uses
-  SysUtils, Classes, ACBrCTe, pcnConversao,
+  SysUtils, Classes, ACBrCTeDACTeQRClass, 
+  {$IFDEF VisualCLX} QDialogs {$ELSE} Dialogs{$ENDIF},
   {$IFDEF FPC}
      LResources, LazarusPackageIntf, PropEdits, componenteditors
   {$ELSE}
@@ -61,89 +62,18 @@ uses
     {$ENDIF}
   {$ENDIF} ;
 
-
-type
-  { Editor de Proriedades de Componente para mostrar o AboutACBr }
-  TACBrAboutDialogProperty = class(TPropertyEditor)
-  public
-    procedure Edit; override;
-    function GetAttributes: TPropertyAttributes; override;
-    function GetValue: string; override;
-  end;
-
-  THRWEBSERVICEUFProperty = class( TStringProperty )
-  public
-    function GetAttributes: TPropertyAttributes; override;
-    procedure GetValues( Proc : TGetStrProc) ; override;
-  end;
-
 procedure Register;
 
 implementation
 
-uses ACBrCTeConfiguracoes;
-
-{$IFNDEF FPC}
-   {$R ACBrCTe.dcr}
-{$ENDIF}
-
 procedure Register;
 begin
-  RegisterComponents('ACBr', [TACBrCTe]);
-
-  RegisterPropertyEditor(TypeInfo(TACBrCTeAboutInfo), nil, 'AboutACBrCTe',
-     TACBrAboutDialogProperty);
-
-  RegisterPropertyEditor(TypeInfo(TCertificadosConf), TConfiguracoes, 'Certificados',
-    TClassProperty);
-
-  RegisterPropertyEditor(TypeInfo(TConfiguracoes), TACBrCTe, 'Configuracoes',
-    TClassProperty);
-
-  RegisterPropertyEditor(TypeInfo(TWebServicesConf), TConfiguracoes, 'WebServices',
-    TClassProperty);
-
-  RegisterPropertyEditor(TypeInfo(String), TWebServicesConf, 'UF',
-     THRWEBSERVICEUFProperty);
-
-  RegisterPropertyEditor(TypeInfo(TGeralConf), TConfiguracoes, 'Geral',
-    TClassProperty);
+  RegisterComponents('ACBr', [TACBrCTeDACTeQR]);
 end;
 
-{ TACBrAboutDialogProperty }
-procedure TACBrAboutDialogProperty.Edit;
-begin
-  ACBrAboutDialog ;
-end;
-
-function TACBrAboutDialogProperty.GetAttributes: TPropertyAttributes;
-begin
-  Result := [paDialog, paReadOnly];
-end;
-
-function TACBrAboutDialogProperty.GetValue: string;
-begin
-  Result := 'Versão: ' + ACBRCTe_VERSAO ;
-end;
-
-{ THRWEBSERVICEUFProperty }
-
-function THRWEBSERVICEUFProperty.GetAttributes: TPropertyAttributes;
-begin
-  Result := [paValueList, paAutoUpdate];
-end;
-
-procedure THRWEBSERVICEUFProperty.GetValues(Proc: TGetStrProc);
-var
- i : integer;
-begin
-  inherited;
-  for i:= 0 to High(NFeUF) do
-    Proc(NFeUF[i]);
-end;
+initialization
 
 {$IFDEF FPC}
-initialization
 //   {$i acbrCTepcn_lcl.lrs}
 {$ENDIF}
 

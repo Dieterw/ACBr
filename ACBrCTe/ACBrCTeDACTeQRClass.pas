@@ -1,7 +1,7 @@
 {******************************************************************************}
-{ Projeto: Componente ACBrCTe                                                  }
+{ Projeto: Componente ACBrNFe                                                  }
 {  Biblioteca multiplataforma de componentes Delphi para emissão de Nota Fiscal}
-{ eletrônica - CTe - http://www.CTe.fazenda.gov.br                          }
+{ eletrônica - NFe - http://www.nfe.fazenda.gov.br                          }
 {                                                                              }
 { Direitos Autorais Reservados (c) 2008 Wemerson Souto                         }
 {                                       Daniel Simoes de Almeida               }
@@ -36,115 +36,74 @@
 
 {******************************************************************************
 |* Historico
-|*
+|* 11/12/2009: Emerson Crema
+|*  - Implementado fqrDACTeQRRetrato.ProtocoloNFE( sProt ).
 |* 16/12/2008: Wemerson Souto
 |*  - Doação do componente para o Projeto ACBr
-|* 09/03/2009: Dulcemar P.Zilli
-|*  - Incluido IPI e II
+|* 20/08/2009: Caique Rodrigues
+|*  - Doação units para geração do DANFe via QuickReport
 ******************************************************************************}
+
 {$I ACBr.inc}
 
-unit ACBrCTeReg;
+unit ACBrCTeDACTeQRClass;
 
 interface
 
-uses
-  SysUtils, Classes, ACBrCTe, pcnConversao,
-  {$IFDEF FPC}
-     LResources, LazarusPackageIntf, PropEdits, componenteditors
-  {$ELSE}
-    {$IFNDEF COMPILER6_UP}
-       DsgnIntf
-    {$ELSE}
-       DesignIntf,
-       DesignEditors
-    {$ENDIF}
-  {$ENDIF} ;
-
+uses Forms, SysUtils, Classes,
+  ACBrCTeDACTeClass, ACBrCTeDACTeQRRetrato, pcteCTe, pcnConversao;
 
 type
-  { Editor de Proriedades de Componente para mostrar o AboutACBr }
-  TACBrAboutDialogProperty = class(TPropertyEditor)
+  TACBrCTeDACTeQR = class(TACBrCTeDACTeClass)
+  private
   public
-    procedure Edit; override;
-    function GetAttributes: TPropertyAttributes; override;
-    function GetValue: string; override;
+    constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
+    procedure ImprimirDACTe(CTe: TCTe = nil); override;
+    procedure ImprimirDACTePDF(CTe: TCTe = nil); override;
   end;
-
-  THRWEBSERVICEUFProperty = class( TStringProperty )
-  public
-    function GetAttributes: TPropertyAttributes; override;
-    procedure GetValues( Proc : TGetStrProc) ; override;
-  end;
-
-procedure Register;
 
 implementation
 
-uses ACBrCTeConfiguracoes;
+uses ACBrCTe, StrUtils, Dialogs;
 
-{$IFNDEF FPC}
-   {$R ACBrCTe.dcr}
-{$ENDIF}
-
-procedure Register;
+constructor TACBrCTeDACTeQR.Create(AOwner: TComponent);
 begin
-  RegisterComponents('ACBr', [TACBrCTe]);
-
-  RegisterPropertyEditor(TypeInfo(TACBrCTeAboutInfo), nil, 'AboutACBrCTe',
-     TACBrAboutDialogProperty);
-
-  RegisterPropertyEditor(TypeInfo(TCertificadosConf), TConfiguracoes, 'Certificados',
-    TClassProperty);
-
-  RegisterPropertyEditor(TypeInfo(TConfiguracoes), TACBrCTe, 'Configuracoes',
-    TClassProperty);
-
-  RegisterPropertyEditor(TypeInfo(TWebServicesConf), TConfiguracoes, 'WebServices',
-    TClassProperty);
-
-  RegisterPropertyEditor(TypeInfo(String), TWebServicesConf, 'UF',
-     THRWEBSERVICEUFProperty);
-
-  RegisterPropertyEditor(TypeInfo(TGeralConf), TConfiguracoes, 'Geral',
-    TClassProperty);
+  inherited create(AOwner);
 end;
 
-{ TACBrAboutDialogProperty }
-procedure TACBrAboutDialogProperty.Edit;
+destructor TACBrCTeDACTeQR.Destroy;
 begin
-  ACBrAboutDialog ;
+  inherited Destroy;
 end;
 
-function TACBrAboutDialogProperty.GetAttributes: TPropertyAttributes;
-begin
-  Result := [paDialog, paReadOnly];
-end;
-
-function TACBrAboutDialogProperty.GetValue: string;
-begin
-  Result := 'Versão: ' + ACBRCTe_VERSAO ;
-end;
-
-{ THRWEBSERVICEUFProperty }
-
-function THRWEBSERVICEUFProperty.GetAttributes: TPropertyAttributes;
-begin
-  Result := [paValueList, paAutoUpdate];
-end;
-
-procedure THRWEBSERVICEUFProperty.GetValues(Proc: TGetStrProc);
+procedure TACBrCTeDACTeQR.ImprimirDACTe(CTe: TCTe = nil);
 var
- i : integer;
+  i                 : Integer;
+  frmDACTeQRRetrato : TfrmDACTeQRRetrato;
+  sProt             : string;
 begin
-  inherited;
-  for i:= 0 to High(NFeUF) do
-    Proc(NFeUF[i]);
+  frmDACTeQRRetrato := TfrmDACTeQRRetrato.Create(Self);
+  sProt := TACBrCTe(ACBrCTe).DACTe.ProtocoloCTe;
+  frmDACTeQRRetrato.ProtocoloCTe(sProt);
+
+  if CTe = nil then
+  begin
+    for i := 0 to TACBrCTe(ACBrCTe).Conhecimentos.Count - 1 do
+      frmDACTeQRRetrato.Imprimir(TACBrCTe(ACBrCTe).Conhecimentos.Items[i].CTe);
+  end
+  else
+    frmDACTeQRRetrato.Imprimir(CTe);
+
+  frmDACTeQRRetrato.Free;
 end;
 
-{$IFDEF FPC}
-initialization
-//   {$i acbrCTepcn_lcl.lrs}
-{$ENDIF}
+procedure TACBrCTeDACTeQR.ImprimirDACTePDF(CTe: TCTe = nil);
+var
+  NomeArq: string;
+begin
+  MessageDlg('Metodo não implementado!', mtWarning, [mbOk], 0);
+end;
 
 end.
+

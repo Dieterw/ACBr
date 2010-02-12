@@ -54,7 +54,7 @@ interface uses
 {$IFNDEF VER130}
   Variants,
 {$ENDIF}
-  pcnConversao, pcnSignature;
+  pcnConversao, pcteProcCTe, pcnSignature;
 
 type
   TCTe = class;
@@ -81,7 +81,7 @@ type
   TDest = class;
   TEnderDest = class;
   TvPrest = class;
-  Tcomp = class;
+  TCompCollection = class;
   TImp = class;
   TICMS = class;
   TCST00 = class;
@@ -96,6 +96,7 @@ type
   TInfQCollection = class;
   TInfQCollectionItem = class;
   TRodo = class;
+  TMoto = class;
   TEmiOCC = class;
   TLacresCollection = class;
   TLacresCollectionItem = class;
@@ -122,7 +123,7 @@ type
     FRodo       : TRodo;
     FinfCteComp : TinfCteComp;
     FInfCteAnuEnt : TInfCteAnuEnt;
-
+    FProcCTe: TProcCTe;
     FSignature: TSignature;
     procedure SetInfSeg(Value: TInfSegCollection);
   public
@@ -145,7 +146,7 @@ type
     property Rodo: TRodo read FRodo write FRodo;
     property InfCteAnuEnt: TInfCteAnuEnt read FInfCteAnuEnt write FInfCteAnuEnt;
     property infCteComp: TinfCteComp read FinfCteComp write FinfCteComp;
-
+    property procCTe: TProcCTe read FProcCTe write FProcCTe;
     property signature: Tsignature read Fsignature write Fsignature;
   end;
 
@@ -243,6 +244,7 @@ type
     FxNome: String;
     FxFant: String;
     FEnderToma: TEnderToma;
+    Ffone: String;
   public
     constructor Create(AOwner: TCTe);
     destructor Destroy; override;
@@ -252,6 +254,7 @@ type
     property IE: String read FIE write FIE;
     property xNome: String read FxNome write FxNome;
     property xFant: String read FxFant write FxFant;
+    property fone : String read Ffone write Ffone;
     property EnderToma: TEnderToma read FEnderToma write FEnderToma;
   end;
 
@@ -618,23 +621,37 @@ type
   private
     FvTPrest : Currency;
     FvRec    : Currency;
-    Fcomp    : TComp;
+    Fcomp    : TCompCollection;
+    procedure SetCompItem(const Value: TCompCollection);
   public
     constructor Create(AOwner: TCTe);
     destructor Destroy; override;
   published
     property vTPrest : Currency read FvTPrest write FvTPrest;
     property vRec : Currency read FvRec write FvRec;
-    property comp: TComp read Fcomp write Fcomp;
+    property comp: TCompCollection read Fcomp write SetCompItem;
   end;
 
-  TComp = class(TPersistent)
+  TCompCollectionItem = class(TCollectionItem)
   private
-    FxNome : String;
-    FvComp : Currency;
+    FvComp: Currency;
+    FxNome: string;
+  public
+    constructor Create; reintroduce;
+    destructor Destroy; override;
   published
     property xNome: string read FxNome write FxNome;
     property vComp: Currency read FvComp write FvComp;
+  end;
+
+  TCompCollection = class(TCollection)
+  private
+    function GetItem(Index: Integer): TCompCollectionItem;
+    procedure SetItem(Index: Integer; Value: TCompCollectionItem);
+  public
+    constructor Create(AOwner: TCte);
+    function Add: TCompCollectionItem;
+    property Items[Index: Integer]: TCompCollectionItem read GetItem write SetItem; default;
   end;
 
   TImp = class(TPersistent)
@@ -827,6 +844,7 @@ type
     FEmiOCC : TEmiOCC;
     FLacres : TLacresCollection;
     FProp   : Tprop;
+    fmoto: TMoto;
     procedure SetLacres(const Value: TLacresCollection);
   public
     constructor Create(AOwner: TCTe);
@@ -838,7 +856,18 @@ type
     property EmiOCC: TEmiOCC read FEmiOCC write FEmiOCC;
     property Lacres: TLacresCollection read FLacres write SetLacres;
     property Prop: Tprop read FProp write FProp;
+    property moto: TMoto read fmoto write fmoto;
   end;
+
+  TMoto = class(TPersistent)
+  private
+    fxNome: string;
+    fCPF: string;
+  public
+    property xNome: string read fxNome write fxNome;
+    property CPF: string read fCPF write fCPF;
+  end;
+
 
   TEmiOCC = class(TPersistent)
   private
@@ -1185,13 +1214,18 @@ end;
 constructor TvPrest.Create(AOwner: TCTe);
 begin
   inherited Create;
-  FComp := TComp.Create;
+  FComp := TCompCollection.Create(AOwner);
 end;
 
 destructor TvPrest.Destroy;
 begin
   FComp.Free;
   inherited;
+end;
+
+procedure TvPrest.SetCompItem(const Value: TCompCollection);
+begin
+  Fcomp.Assign(Value);
 end;
 
 { TImp }
@@ -1249,8 +1283,7 @@ begin
   Result := TInfSegCollectionItem(inherited GetItem(Index));
 end;
 
-procedure TInfSegCollection.SetItem(Index: Integer;
-  Value: TInfSegCollectionItem);
+procedure TInfSegCollection.SetItem(Index: Integer; Value: TInfSegCollectionItem);
 begin
   inherited SetItem(Index, Value);
 end;
@@ -1413,6 +1446,42 @@ end;
 
 procedure TInfQCollection.SetItem(Index: Integer;
   Value: TInfQCollectionItem);
+begin
+  inherited SetItem(Index, Value);
+end;
+
+{ TCompCollectionItem }
+
+constructor TCompCollectionItem.Create;
+begin
+
+end;
+
+destructor TCompCollectionItem.Destroy;
+begin
+
+  inherited;
+end;
+
+{ TCompCollection }
+
+function TCompCollection.Add: TCompCollectionItem;
+begin
+  Result := TCompCollectionItem(inherited Add);
+  Result.create;
+end;
+
+constructor TCompCollection.Create(AOwner: TCte);
+begin
+  inherited Create(TCompCollectionItem);
+end;
+
+function TCompCollection.GetItem(Index: Integer): TCompCollectionItem;
+begin
+  Result := TCompCollectionItem(inherited GetItem(Index));
+end;
+
+procedure TCompCollection.SetItem(Index: Integer; Value: TCompCollectionItem);
 begin
   inherited SetItem(Index, Value);
 end;

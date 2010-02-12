@@ -82,7 +82,7 @@ type
     function LerXml: boolean;
   published
     property Leitor: TLeitor read FLeitor write FLeitor;
-    property tpAmb: TpcnTipoAmbiente read FtpAmb write FtpAmb;
+    property tpAmb: TpcnTipoAmbiente read FtpAmb write FtpAmb default taHomologacao;
     property verAplic: string read FverAplic write FverAplic;
     property cStat: integer read FcStat write FcStat;
     property xMotivo: string read FxMotivo write FxMotivo;

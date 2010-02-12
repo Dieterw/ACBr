@@ -61,6 +61,12 @@ type
     FPathRetConsSitCTe: string;
     FnProt: string;
     FchCTe: string;
+    FcStat: integer;
+    FverAplic: string;
+    FxMotivo: string;
+    FdigVal: string;
+    FdhRecbto: TDateTime;
+    FtpAmb: TpcnTipoAmbiente;
   public
     constructor Create;
     destructor Destroy; override;
@@ -72,6 +78,14 @@ type
     property PathCTe: string read FPathCTe write FPathCTe;
     property PathRetConsReciCTe: string read FPathRetConsReciCTe write FPathRetConsReciCTe;
     property PathRetConsSitCTe: string read FPathRetConsSitCTe write FPathRetConsSitCTe;
+    property tpAmb: TpcnTipoAmbiente read FtpAmb write FtpAmb;
+    property verAplic: string read FverAplic write FverAplic;
+    property chCTe: string read FchCTe write FchCTe;
+    property dhRecbto: TDateTime read FdhRecbto write FdhRecbto;
+    property nProt: string read FnProt write FnProt;
+    property digVal: string read FdigVal write FdigVal;
+    property cStat: integer read FcStat write FcStat;
+    property xMotivo: string read FxMotivo write FxMotivo;
   end;
 
 implementation

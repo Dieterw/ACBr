@@ -1,7 +1,7 @@
 {******************************************************************************}
-{ Projeto: Componente ACBrCTe                                                  }
+{ Projeto: Componente ACBrNFe                                                  }
 {  Biblioteca multiplataforma de componentes Delphi para emissão de Nota Fiscal}
-{ eletrônica - CTe - http://www.CTe.fazenda.gov.br                          }
+{ eletrônica - NFe - http://www.nfe.fazenda.gov.br                          }
 {                                                                              }
 { Direitos Autorais Reservados (c) 2008 Wemerson Souto                         }
 {                                       Daniel Simoes de Almeida               }
@@ -39,112 +39,117 @@
 |*
 |* 16/12/2008: Wemerson Souto
 |*  - Doação do componente para o Projeto ACBr
-|* 09/03/2009: Dulcemar P.Zilli
-|*  - Incluido IPI e II
+|* 20/08/2009: Caique Rodrigues
+|*  - Doação units para geração do DANFe via QuickReport
 ******************************************************************************}
 {$I ACBr.inc}
-
-unit ACBrCTeReg;
+unit ACBrCTeDACTeQR;
 
 interface
 
 uses
-  SysUtils, Classes, ACBrCTe, pcnConversao,
-  {$IFDEF FPC}
-     LResources, LazarusPackageIntf, PropEdits, componenteditors
-  {$ELSE}
-    {$IFNDEF COMPILER6_UP}
-       DsgnIntf
-    {$ELSE}
-       DesignIntf,
-       DesignEditors
-    {$ENDIF}
-  {$ENDIF} ;
-
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ExtCtrls, QuickRpt,
+  QRCtrls, ACBrCTeQRCodeBar, pcteCTe;
 
 type
-  { Editor de Proriedades de Componente para mostrar o AboutACBr }
-  TACBrAboutDialogProperty = class(TPropertyEditor)
-  public
-    procedure Edit; override;
-    function GetAttributes: TPropertyAttributes; override;
-    function GetValue: string; override;
-  end;
+  TfrmDACTeQR = class(TForm)
+    QRCTe: TQuickRep;
+  private
 
-  THRWEBSERVICEUFProperty = class( TStringProperty )
+  protected
+    //BarCode : TBarCode128c ;
+    FCTe: TCTe;
+    FLogo: string;
+    FUrl: string;
+    AfterPreview: boolean;
+    ChangedPos: boolean;
+    FSemValorFiscal: boolean;
+    procedure qrlSemValorFiscalPrint(sender: TObject; var Value: string);
+    procedure SetBarCodeImage(ACode: string; QRImage: TQRImage);
   public
-    function GetAttributes: TPropertyAttributes; override;
-    procedure GetValues( Proc : TGetStrProc) ; override;
-  end;
+    class procedure Imprimir(ACTe: TCTe; ALogo: string = ''; AUrl: string = ''; APreview: Boolean = True);
+    class procedure SavePDF(AFile: string; ACTe: TCTe; ALogo, AUrl: string);
 
-procedure Register;
+  end;
 
 implementation
 
-uses ACBrCTeConfiguracoes;
+uses MaskUtils;
 
-{$IFNDEF FPC}
-   {$R ACBrCTe.dcr}
-{$ENDIF}
+{$R *.dfm}
 
-procedure Register;
+class procedure TfrmDACTeQR.Imprimir(ACTe: TCTe; ALogo: string = ''; AUrl: string = ''; APreview: Boolean = True);
 begin
-  RegisterComponents('ACBr', [TACBrCTe]);
+  with Create(nil) do
+  try
+    FCTe := ACTe;
+    FLogo := ALogo;
+    FUrl := AUrl;
 
-  RegisterPropertyEditor(TypeInfo(TACBrCTeAboutInfo), nil, 'AboutACBrCTe',
-     TACBrAboutDialogProperty);
-
-  RegisterPropertyEditor(TypeInfo(TCertificadosConf), TConfiguracoes, 'Certificados',
-    TClassProperty);
-
-  RegisterPropertyEditor(TypeInfo(TConfiguracoes), TACBrCTe, 'Configuracoes',
-    TClassProperty);
-
-  RegisterPropertyEditor(TypeInfo(TWebServicesConf), TConfiguracoes, 'WebServices',
-    TClassProperty);
-
-  RegisterPropertyEditor(TypeInfo(String), TWebServicesConf, 'UF',
-     THRWEBSERVICEUFProperty);
-
-  RegisterPropertyEditor(TypeInfo(TGeralConf), TConfiguracoes, 'Geral',
-    TClassProperty);
+    if APreview then
+      QRCTe.Preview
+    else
+    begin
+      AfterPreview := True;
+      QRCTe.Print;
+    end;
+  finally
+    Free;
+  end;
 end;
 
-{ TACBrAboutDialogProperty }
-procedure TACBrAboutDialogProperty.Edit;
-begin
-  ACBrAboutDialog ;
-end;
-
-function TACBrAboutDialogProperty.GetAttributes: TPropertyAttributes;
-begin
-  Result := [paDialog, paReadOnly];
-end;
-
-function TACBrAboutDialogProperty.GetValue: string;
-begin
-  Result := 'Versão: ' + ACBRCTe_VERSAO ;
-end;
-
-{ THRWEBSERVICEUFProperty }
-
-function THRWEBSERVICEUFProperty.GetAttributes: TPropertyAttributes;
-begin
-  Result := [paValueList, paAutoUpdate];
-end;
-
-procedure THRWEBSERVICEUFProperty.GetValues(Proc: TGetStrProc);
+class procedure TfrmDACTeQR.SavePDF(AFile: string; ACTe: TCTe; ALogo, AUrl: string);
 var
- i : integer;
+  i                 : Integer;
+  //  qf : TQRPDFDocumentFilter ;
+begin
+  {  with Create ( nil ) do
+       try
+          FCTe  := ACTe;
+          FLogo := ALogo;
+          FUrl  := AUrl;
+
+          For i := 0 to ComponentCount -1 do
+            begin
+              if (Components[i] is TQRShape) and (TQRShape(Components[i]).Shape = qrsRoundRect) then
+                begin
+                  TQRShape(Components[i]).Shape := qrsRectangle;
+                  TQRShape(Components[i]).Pen.Width := 1;
+                end;
+            end;
+
+          AfterPreview := True ;
+          QRCTe.Prepare;
+
+          qf := TQRPDFDocumentFilter.Create(AFile) ;
+          qf.CompressionOn := False;
+          qf.SetDocumentInfo( 'TurboCode CTe/CTe Integrator', 'www.turbocode.com.br', 'CTe', 'DACTe'  );
+          QRCTe.QRPrinter.ExportToFilter( qf );
+          qf.Free ;
+       finally
+          Free ;
+       end ;}
+end;
+
+procedure TfrmDACTeQR.qrlSemValorFiscalPrint(sender: TObject;  var Value: string);
 begin
   inherited;
-  for i:= 0 to High(NFeUF) do
-    Proc(NFeUF[i]);
+
+  if FSemValorFiscal then
+    Value := '';
 end;
 
-{$IFDEF FPC}
-initialization
-//   {$i acbrCTepcn_lcl.lrs}
-{$ENDIF}
+procedure TfrmDACTeQR.SetBarCodeImage(ACode: string; QRImage: TQRImage);
+var
+  b                 : TBarCode128c;
+begin
+  b := TBarCode128c.Create;
+  //      Width  := QRImage.Width ;
+  b.Code := ACode;
+  b.PaintCodeToCanvas(ACode, QRImage.Canvas, QRImage.ClientRect);
+  b.free;
+end;
 
 end.
+

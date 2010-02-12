@@ -227,6 +227,16 @@ type
     Label38: TLabel;
     cbxEmissaoPathNFe: TCheckBox;
     cbxMostraStatus: TCheckBox;
+    cbxExpandirLogo: TCheckBox;
+    Label39: TLabel;
+    edtProdPag: TEdit;
+    gbLogComp: TGroupBox;
+    Label40: TLabel;
+    Label41: TLabel;
+    SpeedButton1: TSpeedButton;
+    edLogComp: TEdit;
+    sedLogLinhasComp: TSpinEdit;
+    cbLogComp: TCheckBox;
     procedure DoACBrTimer(Sender: TObject);
     procedure edOnlyNumbers(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
@@ -267,14 +277,14 @@ type
     procedure sbPathDPECClick(Sender: TObject);
     procedure cbxAjustarAutClick(Sender: TObject);
     procedure cbxPastaMensalClick(Sender: TObject);
+    procedure ACBrNFe1GerarLog(const Mensagem: String);
   private
     { Private declarations }
     ACBrNFeMonitorINI : string;
     Inicio  : Boolean ;
-    ArqSaiTXT, ArqSaiTMP, ArqEntTXT, ArqLogTXT, ArqEntOrig, ArqSaiOrig : String ;
+    ArqSaiTXT, ArqSaiTMP, ArqEntTXT, ArqLogTXT, ArqLogCompTXT, ArqEntOrig, ArqSaiOrig : String ;
     NewLines : String ;
     fsHashSenha:Integer;
-    fsLinesLog : AnsiString ;
     Cmd : TACBrNFeCmd ;
 
     procedure ExibeResp( Resposta : AnsiString );
@@ -284,8 +294,6 @@ type
     procedure AjustaLinhasLog ;
 
     procedure Resposta(Comando, Resposta : string);
-
-    procedure AddLinesLog ;
 
     procedure TrataErros(Sender: TObject; E: Exception);
 
@@ -423,6 +431,10 @@ begin
      if cbLog.Checked then
         mResp.Lines.Add('Log de comandos será gravado em: '+ArqLogTXT) ;
 
+     if cbLogComp.Checked then
+        mResp.Lines.Add('Log de mensagens do componente será gravado em: '+ArqLogCompTXT) ;
+
+
   except
      on E : Exception do
         Erro := Erro + sLineBreak + E.Message ;
@@ -480,12 +492,11 @@ procedure TfrmAcbrNfeMonitor.AjustaLinhasLog;
      end ;
   end ;
 begin
-  if (sedLogLinhas.Value <= 0) then
-     exit ;
-
-  // Ajustado LOG do ACBrNFeMonitor //
-  if (cbLog.Checked) then
+  if (sedLogLinhas.Value > 0) and (cbLog.Checked) then
      AjustaLogFile( ArqLogTXT, sedLogLinhas.Value );
+
+  if (sedLogLinhasComp.Value > 0) and (cbLogComp.Checked) then
+     AjustaLogFile( ArqLogCompTXT, sedLogLinhasComp.Value );
 
 end;
 
@@ -570,12 +581,19 @@ begin
                            ( edLogArq.Text <> '' ) ;
      sedLogLinhas.Value   := Ini.ReadInteger('ACBrNFeMonitor','Linhas_Log',0);
 
+     edLogComp.Text        := Ini.ReadString('ACBrNFeMonitor','Arquivo_Log_Comp','LOG_COMP.TXT');
+     cbLogComp.Checked        := Ini.ReadBool('ACBrNFeMonitor','Gravar_Log_Comp',false) and
+                           ( edLogComp.Text <> '' ) ;
+     sedLogLinhasComp.Value   := Ini.ReadInteger('ACBrNFeMonitor','Linhas_Log_Comp',0);
+
+
      ArqEntTXT := AcertaPath( edEntTXT.Text ) ;
      ArqEntOrig := ArqEntTXT;
      ArqSaiTXT := AcertaPath( edSaiTXT.Text ) ;
      ArqSaiOrig := ArqSaiTXT;     
      ArqSaiTMP := ChangeFileExt( ArqSaiTXT, '.tmp' ) ;
      ArqLogTXT := AcertaPath( edLogArq.Text ) ;
+     ArqLogCompTXT := AcertaPath( edLogComp.Text ) ;     
 
      TcpServer.DefaultPort    := StrToIntDef( edPortaTCP.Text, 3436 ) ;
      TcpServer.MaxConnections := sedConexoesTCP.Value ;
@@ -657,6 +675,7 @@ begin
      cbxMostrarPreview.Checked := Ini.ReadBool(   'DANFE','MostrarPreview',False) ;
      cbxHoraSaida.Checked      := Ini.ReadBool(   'DANFE','ImprimirHora',False) ;
      edtNumCopia.Text          := Ini.ReadString( 'DANFE','Copias','1') ;
+     edtProdPag.Text           := Ini.ReadString( 'DANFE','ProdutosPagina','0') ;
      edtMargemInf.Text         := Ini.ReadString( 'DANFE','Margem','0,8') ;
      edtMargemSup.Text         := Ini.ReadString( 'DANFE','MargemSup','0,8') ;
      edtMargemDir.Text         := Ini.ReadString( 'DANFE','MargemDir','0,51') ;
@@ -668,6 +687,7 @@ begin
      cbxImpValLiq.Checked      := Ini.ReadBool(   'DANFE','ImprimirValLiq',False) ;
      cbxFormCont.Checked       := Ini.ReadBool(   'DANFE','PreImpresso',False) ;
      cbxMostraStatus.Checked   := Ini.ReadBool(   'DANFE','MostrarStatus',True) ;
+     cbxExpandirLogo.Checked   := Ini.ReadBool(   'DANFE','ExpandirLogo',False) ;
      rgTipoFonte.ItemIndex     := Ini.ReadInteger( 'DANFE','Fonte'   ,0) ;
 
      if rgModeloDanfe.ItemIndex = 0 then
@@ -688,6 +708,7 @@ begin
         ACBrNFe1.DANFE.ImprimirHoraSaida := cbxHoraSaida.Checked;
         ACBrNFe1.DANFE.Impressora := cbxImpressora.Text;
         ACBrNFe1.DANFE.NumCopias  := StrToIntDef(edtNumCopia.Text, 1);
+        ACBrNFe1.DANFE.ProdutosPorPagina := StrToIntDef(edtProdPag.Text, 0);
         ACBrNFe1.DANFE.MargemInferior  := StrToFloatDef(edtMargemInf.Text,0.8);
         ACBrNFe1.DANFE.MargemSuperior  := StrToFloatDef(edtMargemSup.Text,0.8);
         ACBrNFe1.DANFE.MargemDireita   := StrToFloatDef(edtMargemDir.Text,0.51);
@@ -699,6 +720,7 @@ begin
         ACBrNFe1.DANFE.ImprimirTotalLiquido := cbxImpValLiq.Checked;
         ACBrNFe1.DANFE.FormularioContinuo   := cbxFormCont.Checked;
         ACBrNFe1.DANFE.MostrarStatus        := cbxMostraStatus.Checked;
+        ACBrNFe1.DANFE.ExpandirLogoMarca    := cbxExpandirLogo.Checked;
         if ACBrNFe1.DANFE = ACBrNFeDANFERave1 then
            ACBrNFeDANFERave1.RavFile := PathWithDelim(ExtractFilePath(Application.ExeName))+'Report\DANFE_Rave513.rav'
         else
@@ -768,6 +790,10 @@ begin
      Ini.WriteString('ACBrNFeMonitor','Arquivo_Log',edLogArq.Text);
      Ini.WriteInteger('ACBrNFeMonitor','Linhas_Log',sedLogLinhas.Value);
 
+     Ini.WriteBool('ACBrNFeMonitor','Gravar_Log_Comp',cbLogComp.Checked);
+     Ini.WriteString('ACBrNFeMonitor','Arquivo_Log_Comp',edLogComp.Text);
+     Ini.WriteInteger('ACBrNFeMonitor','Linhas_Log_Comp',sedLogLinhasComp.Value);
+
      Ini.WriteString( 'Certificado','Caminho' ,edtCaminho.Text) ;
      {$IFDEF ACBrNFeOpenSSL}
      GravaINICrypt(INI,'Certificado','Senha', edtSenha.Text, _C) ;
@@ -812,7 +838,8 @@ begin
      Ini.WriteBool(   'DANFE','ImpDescPorc'   ,cbxImpDescPorc.Checked);
      Ini.WriteBool(   'DANFE','MostrarPreview',cbxMostrarPreview.Checked);
      Ini.WriteBool(   'DANFE','ImprimirHora'  ,cbxHoraSaida.Checked);
-     Ini.WriteString( 'DANFE','Copias'   ,edtNumCopia.Text) ;
+     Ini.WriteString( 'DANFE','Copias'        ,edtNumCopia.Text) ;
+     Ini.WriteString( 'DANFE','ProdutosPagina',edtProdPag.Text) ;
      Ini.WriteString( 'DANFE','Margem'   ,edtMargemInf.Text) ;
      Ini.WriteString( 'DANFE','MargemSup',edtMargemSup.Text) ;
      Ini.WriteString( 'DANFE','MargemDir',edtMargemDir.Text) ;
@@ -824,12 +851,13 @@ begin
      Ini.WriteBool(   'DANFE','ImprimirValLiq',cbxImpValLiq.Checked) ;
      Ini.WriteBool(   'DANFE','PreImpresso'   ,cbxFormCont.Checked) ;
      Ini.WriteBool(   'DANFE','MostrarStatus' ,cbxMostraStatus.Checked) ;
+     Ini.WriteBool(   'DANFE','ExpandirLogo'  ,cbxExpandirLogo.Checked) ;
      Ini.WriteInteger('DANFE','Fonte'         ,rgTipoFonte.ItemIndex) ;
 
      Ini.WriteBool(   'Arquivos','Salvar'     ,cbxSalvarArqs.Checked);
      Ini.WriteBool(   'Arquivos','PastaMensal',cbxPastaMensal.Checked);
      Ini.WriteBool(   'Arquivos','AddLiteral' ,cbxAdicionaLiteral.Checked);
-     Ini.WriteBool(   'Arquivos','EmissaoPathNFe',cbxEmissaoPathNFe.Checked);     
+     Ini.WriteBool(   'Arquivos','EmissaoPathNFe',cbxEmissaoPathNFe.Checked);
      Ini.WriteString( 'Arquivos','PathNFe'    ,edtPathNFe.Text) ;
      Ini.WriteString( 'Arquivos','PathCan'    ,edtPathCan.Text) ;
      Ini.WriteString( 'Arquivos','PathInu'    ,edtPathInu.Text) ;
@@ -930,18 +958,6 @@ begin
   end ;
 end;
 
-procedure TfrmAcbrNfeMonitor.AddLinesLog ;
-begin
-  if fsLinesLog <> '' then
-  begin
-     mResp.Lines.Add( fsLinesLog );
-     if cbLog.Checked then
-        WriteToTXT(ArqLogTXT, fsLinesLog );
-     fsLinesLog := '' ;
-  end ;
-end ;
-
-
 procedure TfrmAcbrNfeMonitor.TrataErros(Sender: TObject; E: Exception);
 begin
   mResp.Lines.Add( E.Message );
@@ -1036,6 +1052,7 @@ begin
   ArqSaiTMP := '' ;
   ArqEntTXT := '' ;
   ArqLogTXT := '' ;
+  ArqLogCompTXT := '';
   Conexao   := nil ;
   NewLines  := '' ;
 
@@ -1508,6 +1525,12 @@ end;
 procedure TfrmAcbrNfeMonitor.cbxPastaMensalClick(Sender: TObject);
 begin
  cbxEmissaoPathNFe.Enabled := cbxPastaMensal.Checked;
+end;
+
+procedure TfrmAcbrNfeMonitor.ACBrNFe1GerarLog(const Mensagem: String);
+begin
+  if cbLogComp.Checked then
+     WriteToTXT(ArqLogCompTXT, Mensagem + sLineBreak );
 end;
 
 end.

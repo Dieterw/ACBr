@@ -113,7 +113,7 @@ Alterações   15/01/10
 Alterações   14/01/10
 ---------------
 [+] Incluido Propriedade ProdutosPorPagina nos componentes do DANFE. (caso 458 MANTIS)
-    Se propriedade estiver com o valor 0 (zero), o DANFE será impresso normalmente como agora. 
+    Se propriedade estiver com o valor 0 (zero), o DANFE será impresso normalmente como agora.
     Se especificar um valor, será impresso a quantidade máxima de produtos por página.
     NOTA 1: Essa propriedade NÃO FUNCIONARÁ com o arquivo NotaFiscalEletronica.RAV, funcionará somente com o DANFE_Rave513.rav ou
             DANFE com RAVE CB
@@ -122,7 +122,7 @@ Alterações   14/01/10
 
 Alterações   12/01/10
 ---------------
-[-] Corrigido impressão (DANFE RAVE CB) de sÉRIE e FOLHA quando for SCAN (caso 449 MANTIS)
+[-] Corrigido impressão (DANFE RAVE CB) de SÉRIE e FOLHA quando for SCAN (caso 449 MANTIS)
 [-] Corrigido impressão (DANFE RAVE CB) de dizeres ENTRADA/SAIDA de acordo com o que for a NFe. (caso 457 MANTIS)
 
 Alterações   18/12/09

@@ -1,8 +1,8 @@
 object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
   Left = 590
-  Top = 183
+  Top = 176
   Width = 545
-  Height = 501
+  Height = 538
   ActiveControl = btMinimizar
   Caption = 'ACBrNFeMonitor'
   Color = clBtnFace
@@ -27,7 +27,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
     Left = 0
     Top = 0
     Width = 529
-    Height = 149
+    Height = 186
     Align = alClient
     TabOrder = 0
     object Splitter1: TSplitter
@@ -84,7 +84,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       Left = 1
       Top = 92
       Width = 527
-      Height = 56
+      Height = 93
       Align = alClient
       TabOrder = 1
       object pTodResp: TPanel
@@ -100,7 +100,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
         Left = 1
         Top = 18
         Width = 525
-        Height = 37
+        Height = 74
         Align = alClient
         Lines.Strings = (
           '')
@@ -114,7 +114,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
   end
   object pBotoes: TPanel
     Left = 0
-    Top = 406
+    Top = 443
     Width = 529
     Height = 40
     Align = alBottom
@@ -4096,7 +4096,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 446
+    Top = 483
     Width = 529
     Height = 19
     Panels = <
@@ -4109,7 +4109,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
   end
   object pConfig: TPanel
     Left = 0
-    Top = 149
+    Top = 186
     Width = 529
     Height = 257
     Align = alBottom
@@ -4120,7 +4120,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       Top = 0
       Width = 527
       Height = 256
-      ActivePage = Monitor
+      ActivePage = Diretorios
       Align = alBottom
       TabOrder = 0
       object Monitor: TTabSheet
@@ -4129,7 +4129,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           Left = 8
           Top = 12
           Width = 188
-          Height = 74
+          Height = 68
           TabOrder = 0
           object Label12: TLabel
             Left = 8
@@ -4140,7 +4140,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           end
           object Label13: TLabel
             Left = 8
-            Top = 50
+            Top = 46
             Width = 110
             Height = 13
             Caption = 'Conex'#245'es Simult'#226'neas:'
@@ -4156,7 +4156,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           end
           object sedConexoesTCP: TSpinEdit
             Left = 122
-            Top = 43
+            Top = 39
             Width = 58
             Height = 22
             MaxValue = 0
@@ -4169,7 +4169,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           Left = 208
           Top = 12
           Width = 306
-          Height = 74
+          Height = 68
           TabOrder = 1
           object Label14: TLabel
             Left = 16
@@ -4180,14 +4180,14 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           end
           object Label15: TLabel
             Left = 24
-            Top = 50
+            Top = 46
             Width = 32
             Height = 13
             Caption = 'Sa'#237'da:'
           end
           object Label16: TLabel
             Left = 252
-            Top = 20
+            Top = 23
             Width = 41
             Height = 13
             Caption = 'Intervalo'
@@ -4202,7 +4202,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           end
           object edSaiTXT: TEdit
             Left = 59
-            Top = 43
+            Top = 39
             Width = 181
             Height = 21
             TabOrder = 1
@@ -4210,7 +4210,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           end
           object sedIntervalo: TSpinEdit
             Left = 250
-            Top = 36
+            Top = 39
             Width = 49
             Height = 22
             MaxValue = 0
@@ -4221,7 +4221,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
         end
         object gbSenha: TGroupBox
           Left = 8
-          Top = 128
+          Top = 105
           Width = 188
           Height = 46
           TabOrder = 2
@@ -4243,9 +4243,9 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
         end
         object gbLog: TGroupBox
           Left = 208
-          Top = 100
+          Top = 83
           Width = 306
-          Height = 74
+          Height = 68
           TabOrder = 3
           object Label18: TLabel
             Left = 26
@@ -4256,7 +4256,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           end
           object Label19: TLabel
             Left = 8
-            Top = 50
+            Top = 46
             Width = 57
             Height = 13
             Caption = 'Max.Linhas:'
@@ -4290,7 +4290,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           end
           object sedLogLinhas: TSpinEdit
             Left = 72
-            Top = 43
+            Top = 39
             Width = 65
             Height = 22
             MaxValue = 0
@@ -4310,7 +4310,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
         end
         object cbSenha: TCheckBox
           Left = 24
-          Top = 124
+          Top = 101
           Width = 137
           Height = 17
           Caption = 'Proteger Configura'#231'oes'
@@ -4328,11 +4328,78 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
         end
         object cbLog: TCheckBox
           Left = 224
-          Top = 96
-          Width = 121
+          Top = 79
+          Width = 217
           Height = 17
-          Caption = 'Log de Comandos'
+          Caption = 'Log de Comandos Enviado e Recebidos'
           TabOrder = 7
+          OnClick = cbLogClick
+        end
+        object gbLogComp: TGroupBox
+          Left = 207
+          Top = 155
+          Width = 306
+          Height = 68
+          TabOrder = 8
+          object Label40: TLabel
+            Left = 26
+            Top = 21
+            Width = 39
+            Height = 13
+            Caption = 'Arquivo:'
+          end
+          object Label41: TLabel
+            Left = 8
+            Top = 50
+            Width = 57
+            Height = 13
+            Caption = 'Max.Linhas:'
+          end
+          object SpeedButton1: TSpeedButton
+            Left = 275
+            Top = 11
+            Width = 23
+            Height = 24
+            Glyph.Data = {
+              76010000424D7601000000000000760000002800000020000000100000000100
+              04000000000000010000130B0000130B00001000000000000000000000000000
+              800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+              FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF0033333333B333
+              333B33FF33337F3333F73BB3777BB7777BB3377FFFF77FFFF77333B000000000
+              0B3333777777777777333330FFFFFFFF07333337F33333337F333330FFFFFFFF
+              07333337F3FF3FFF7F333330F00F000F07333337F77377737F333330FFFFFFFF
+              07333FF7F3FFFF3F7FFFBBB0F0000F0F0BB37777F7777373777F3BB0FFFFFFFF
+              0BBB3777F3FF3FFF77773330F00F000003333337F773777773333330FFFF0FF0
+              33333337F3FF7F37F3333330F08F0F0B33333337F7737F77FF333330FFFF003B
+              B3333337FFFF77377FF333B000000333BB33337777777F3377FF3BB3333BB333
+              3BB33773333773333773B333333B3333333B7333333733333337}
+            NumGlyphs = 2
+          end
+          object edLogComp: TEdit
+            Left = 72
+            Top = 13
+            Width = 202
+            Height = 21
+            TabOrder = 0
+          end
+          object sedLogLinhasComp: TSpinEdit
+            Left = 72
+            Top = 43
+            Width = 65
+            Height = 22
+            MaxValue = 0
+            MinValue = 0
+            TabOrder = 1
+            Value = 0
+          end
+        end
+        object cbLogComp: TCheckBox
+          Left = 224
+          Top = 151
+          Width = 265
+          Height = 17
+          Caption = 'Log de Mensagens do Componente ACBrNFePCN'
+          TabOrder = 9
           OnClick = cbLogClick
         end
       end
@@ -4825,7 +4892,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
           object TabSheet1: TTabSheet
             Caption = 'Danfe'
             object Label5: TLabel
-              Left = 8
+              Left = 6
               Top = 40
               Width = 88
               Height = 13
@@ -4837,6 +4904,13 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
               Width = 60
               Height = 13
               Caption = 'N'#250'm. C'#243'pias'
+            end
+            object Label39: TLabel
+              Left = 7
+              Top = 132
+              Width = 96
+              Height = 13
+              Caption = 'Produtos por P'#225'gina'
             end
             object rgTipoDanfe: TRadioGroup
               Left = 148
@@ -4852,9 +4926,9 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
               TabOrder = 1
             end
             object cbxImpressora: TComboBox
-              Left = 8
+              Left = 6
               Top = 56
-              Width = 209
+              Width = 211
               Height = 21
               ItemHeight = 13
               TabOrder = 2
@@ -4865,7 +4939,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
               Width = 200
               Height = 17
               Caption = 'Imprimir Desconto em Porcentagem'
-              TabOrder = 7
+              TabOrder = 8
             end
             object cbxMostrarPreview: TCheckBox
               Left = 298
@@ -4873,7 +4947,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
               Width = 200
               Height = 17
               Caption = 'Mostrar Preview antes da impress'#227'o'
-              TabOrder = 8
+              TabOrder = 9
             end
             object edtNumCopia: TEdit
               Left = 223
@@ -4885,9 +4959,9 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
               OnKeyPress = edtNumCopiaKeyPress
             end
             object gbxMargem: TGroupBox
-              Left = 8
+              Left = 6
               Top = 77
-              Width = 281
+              Width = 283
               Height = 54
               Caption = 'Margens'
               TabOrder = 4
@@ -4957,33 +5031,11 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
               end
             end
             object rgCasasDecimaisQtd: TRadioGroup
-              Left = 8
-              Top = 132
-              Width = 281
-              Height = 32
-              Caption = 'Casas Decimais Quantidade'
-              Columns = 3
-              ItemIndex = 0
-              Items.Strings = (
-                '2'
-                '3'
-                '4')
-              TabOrder = 5
-            end
-            object cbxHoraSaida: TCheckBox
-              Left = 298
-              Top = 38
-              Width = 200
-              Height = 17
-              Caption = 'Imprimir Hora de Sa'#237'da '
-              TabOrder = 9
-            end
-            object rgCasasDecimaisValor: TRadioGroup
-              Left = 8
+              Left = 6
               Top = 168
-              Width = 281
+              Width = 140
               Height = 32
-              Caption = 'Casas Decimais Valor Unit'#225'rio'
+              Caption = 'Decimais Quantidade'
               Columns = 3
               ItemIndex = 0
               Items.Strings = (
@@ -4992,10 +5044,32 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
                 '4')
               TabOrder = 6
             end
+            object cbxHoraSaida: TCheckBox
+              Left = 298
+              Top = 38
+              Width = 200
+              Height = 17
+              Caption = 'Imprimir Hora de Sa'#237'da '
+              TabOrder = 10
+            end
+            object rgCasasDecimaisValor: TRadioGroup
+              Left = 149
+              Top = 168
+              Width = 140
+              Height = 32
+              Caption = 'Decimais Valor Unit'#225'rio'
+              Columns = 3
+              ItemIndex = 0
+              Items.Strings = (
+                '2'
+                '3'
+                '4')
+              TabOrder = 7
+            end
             object rgModeloDanfe: TRadioGroup
-              Left = 8
+              Left = 6
               Top = 4
-              Width = 136
+              Width = 138
               Height = 33
               Caption = 'Modelo'
               Columns = 2
@@ -5012,7 +5086,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
               Width = 200
               Height = 17
               Caption = 'Exibir Resumo no Canhoto'
-              TabOrder = 10
+              TabOrder = 11
             end
             object cbxImpValLiq: TCheckBox
               Left = 298
@@ -5020,7 +5094,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
               Width = 200
               Height = 17
               Caption = 'Imprimir Valor L'#237'quido do Produto'
-              TabOrder = 11
+              TabOrder = 12
             end
             object cbxFormCont: TCheckBox
               Left = 298
@@ -5028,19 +5102,19 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
               Width = 200
               Height = 17
               Caption = 'Formulario Pr'#233'-Impresso'
-              TabOrder = 12
+              TabOrder = 13
             end
             object rgTipoFonte: TRadioGroup
               Left = 298
-              Top = 129
+              Top = 145
               Width = 212
-              Height = 33
+              Height = 32
               Caption = 'Tipo de Fonte(Rave CB)'
               Columns = 2
               Items.Strings = (
                 'Times'
                 'Courier')
-              TabOrder = 13
+              TabOrder = 16
             end
             object cbxMostraStatus: TCheckBox
               Left = 298
@@ -5049,6 +5123,23 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
               Height = 17
               Caption = 'Mostrar Status'
               TabOrder = 14
+            end
+            object cbxExpandirLogo: TCheckBox
+              Left = 298
+              Top = 128
+              Width = 200
+              Height = 17
+              Caption = 'Expandir Logo '
+              TabOrder = 15
+            end
+            object edtProdPag: TEdit
+              Left = 7
+              Top = 148
+              Width = 98
+              Height = 21
+              TabOrder = 5
+              Text = '1'
+              OnKeyPress = edtNumCopiaKeyPress
             end
           end
           object TabSheet2: TTabSheet
@@ -5536,6 +5627,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
     Configuracoes.Arquivos.PathInu = 'C:\Program Files\Borland\Delphi7\Bin\'
     Configuracoes.Arquivos.PathDPEC = 'C:\Program Files\Borland\Delphi7\Bin\'
     DANFE = ACBrNFeDANFERaveCB1
+    OnGerarLog = ACBrNFe1GerarLog
     Left = 136
     Top = 24
   end
@@ -5966,6 +6058,8 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
     CasasDecimais._qCom = 2
     CasasDecimais._vUnCom = 2
     ExibirResumoCanhoto = False
+    FormularioContinuo = False
+    TamanhoFonte_DemaisCampos = 10
     Left = 169
     Top = 25
   end
@@ -5986,8 +6080,12 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
     CasasDecimais._qCom = 2
     CasasDecimais._vUnCom = 2
     ExibirResumoCanhoto = False
+    FormularioContinuo = False
+    TamanhoFonte_DemaisCampos = 10
     TamanhoCampoCodigo = 0
     Fonte = ftTimes
+    EspessuraBorda = 2
+    ImprimirDetalhamentoEspecifico = True
     Left = 209
     Top = 25
   end

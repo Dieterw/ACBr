@@ -517,7 +517,7 @@ begin
   dmDanfe.RvSystem1.SystemPrinter.Copies:=NumCopias;
   dmDanfe.RvSystem1.SystemPrinter.LinesPerInch:=8;
   dmDanfe.RvSystem1.SystemPrinter.StatusFormat:='Imprimindo página %p';
-  dmDanfe.RvSystem1.SystemPrinter.Title:='NFe - Impressão do DANFE';
+  dmDanfe.RvSystem1.SystemPrinter.Title:= 'NFe - Impressão do DANFE';
   dmDanfe.RvSystem1.SystemPrinter.Units:=unMM;
   dmDanfe.RvSystem1.SystemPrinter.UnitsFactor:=25.4;
 
@@ -529,6 +529,7 @@ begin
      for i:= 0 to TACBrNFe(ACBrNFe).NotasFiscais.Count-1 do
       begin
         dmDanfe.NFe := TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe;
+        dmDanfe.RvSystem1.SystemPrinter.Title:=   TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe.infNFe.ID;
         ExecutaReport;
       end;
    end

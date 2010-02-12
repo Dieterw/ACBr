@@ -324,7 +324,6 @@ end;
 
 function ImprimirTituloDANFe(PosX, PosY: Double):Double;
 var aWidth, CenterX:Double;
-    i:Integer;
     VarNumPage:String;
 begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
@@ -671,7 +670,6 @@ function ImprimirFaturas(PosX, PosY: Double): Double;
 var i:Integer;
     aHeight, XX,YY,YY2: Double;
     q, f:integer;
-    logica: boolean;
     wtemp_FontSizeText: double;
 begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
@@ -703,8 +701,6 @@ begin
       end;
 
      PosX:=PosX+aWidthTituloBloco;
-     YY:=PosY;
-     XX:=PosX;
      YY2:=0;
      if not (NotaUtil.EstaVazio(Cobr.Fat.nFat)) then
      begin
@@ -871,7 +867,7 @@ begin
 end;
 
 function ImprimirDadosAdicionais(PosX,PosY,aHeigth: Double): Double;
-var qLin,i:integer;
+var qLin : integer;
     wInfCpl, YFim:Double;
 begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
@@ -1055,7 +1051,7 @@ begin
 end;
 
 procedure ImprimirItens(PosX:Double);
-var qPrinted, QtdeMin,i,j:Integer;
+var qPrinted, QtdeMin,j:Integer;
     aDescProduto, vEnd:String;
     Memo:TMemoBuf;
     aFontHeigth:Double;

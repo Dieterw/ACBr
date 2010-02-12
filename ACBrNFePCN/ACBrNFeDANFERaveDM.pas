@@ -1003,7 +1003,6 @@ procedure TdmACBrNFeRave.CustomInformacoesAdicionaisCXNGetRow(
   Connection: TRvCustomConnection);
    function TotalOBS(wwObs: string): integer;
    var
-      i: integer;
       wMemo: TMemo;
       wForm: TForm;
    begin
@@ -1041,6 +1040,7 @@ var
   wObs:string;
   wLinhasObs: integer;
 begin
+  wLinhasObs := 0;
   with FNFe.InfAdic do
   begin
     TmpStr:='';

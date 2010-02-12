@@ -334,7 +334,6 @@ end;
 
 function ImprimirTituloDANFe(PosX, PosY: Double):Double;
 var aWidth, CenterX:Double;
-    i:Integer;
     VarNumPage:String;
 begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
@@ -681,8 +680,6 @@ begin
       end;
 
      TituloDoBloco(PosX,PosY,'FATURA/DUPLICATAS');
-     YY:=YPos;
-     XX:=PosX;
      YY2:=0;
      if not (NotaUtil.EstaVazio(Cobr.Fat.nFat)) then
      begin
@@ -832,7 +829,7 @@ end;
 
 function ImprimirDadosAdicionais(PosX,PosY,aHeigth: Double): Double;
 var wInfCpl, YFim:Double;
-    qLin, i: integer;
+    qLin : integer;
 begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin

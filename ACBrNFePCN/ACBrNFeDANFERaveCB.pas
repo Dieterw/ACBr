@@ -94,7 +94,6 @@ end;
 
 procedure TACBrNFeDANFERaveCB.ImprimirDANFE(NFE : TNFe = nil);
 var
- i : Integer;
  LogoMarcaEmpresa:TJPEGImage;
 begin
     try
@@ -144,7 +143,6 @@ end;
 
 procedure TACBrNFeDANFERaveCB.ImprimirDANFEPDF(NFE : TNFe = nil);
 var
- i : Integer;
  LogoMarcaEmpresa:TJPEGImage;
  NomeArq : String;
 begin

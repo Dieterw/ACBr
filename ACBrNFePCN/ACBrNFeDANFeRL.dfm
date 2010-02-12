@@ -3,6 +3,7 @@ object frlDANFeRL: TfrlDANFeRL
   Top = 113
   Width = 810
   Height = 634
+  VertScrollBar.Position = 540
   Caption = 'fqrDANFeLR'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -16,7 +17,7 @@ object frlDANFeRL: TfrlDANFeRL
   TextHeight = 13
   object RLNFe: TRLReport
     Left = 0
-    Top = 0
+    Top = -540
     Width = 794
     Height = 1123
     Font.Charset = DEFAULT_CHARSET
@@ -24,7 +25,10 @@ object frlDANFeRL: TfrlDANFeRL
     Font.Height = -13
     Font.Name = 'Arial'
     Font.Style = []
+    PreviewOptions.FormStyle = fsStayOnTop
     PreviewOptions.ShowModal = True
+    PreviewOptions.Caption = 'DANFe'
+    PreviewOptions.Defaults = pdIgnoreDefaults
     ShowProgress = False
   end
 end

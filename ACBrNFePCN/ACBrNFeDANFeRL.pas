@@ -52,6 +52,8 @@
 |*  - Acréscimo dos parâmetros "FEmail", "FResumoCanhoto", "FFax", "FNumCopias",
 |*    "FSsitema", "FSite", "FUsuario" nas Class procedures
 |*    "Imprimir" e "SavePDF"
+|* 11/02/2010: Peterson de Cerqueira Matos
+|*  - Correção na exibição do 'Preview' para modo 'MODAL'
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeRL;

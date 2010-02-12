@@ -48,10 +48,14 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
-Alterações   11/02/10
+Alterações   12/02/10
 ---------------
 [-] DANFE em FORTES REPORTS (Peterson de Cerqueira Matos)
     Correção na exibição do 'Preview' para modo 'MODAL' 
+[*] DANFE em RAVE ARQUIVO
+    - Modificação para imrimir no corpo da nota o texto "NFe sem Autorização de Uso da SEFAZ", 
+      quando estiver em Ambiente PRODUÇÃO e não tiver Protocolo de autorizacao de uso.
+      OBS: O texto não será impresso se estiver em Producao e em Contingencia FS ou FS-DA.
 
 Alterações   10/02/10
 ---------------

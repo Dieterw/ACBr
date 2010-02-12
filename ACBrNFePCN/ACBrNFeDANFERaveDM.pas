@@ -758,8 +758,21 @@ begin
      vResumo:='';
   Connection.WriteStrData('', vResumo);
 
-  with FNFe.Ide do
-    Connection.WriteStrData('', NotaUtil.SeSenao(TpAmb = taHomologacao,'Nota Fiscal sem valor Fiscal', ''));
+  if (FNFe.Ide.TpAmb = taHomologacao) then
+     Connection.WriteStrData('', 'NFe sem Valor Fiscal - HOMOLOGAÇÃO')
+  else
+  begin
+     if not (FNFe.Ide.tpEmis in [teContingencia, teFSDA]) then
+     begin
+        if ((NotaUtil.EstaVazio(FDANFEClassOwner.ProtocoloNFe)) and
+            (NotaUtil.EstaVazio(FNFe.procNFe.nProt))) then
+         Connection.WriteStrData('', 'NFe sem Autorização de Uso da SEFAZ')
+       else
+         Connection.WriteStrData('', '');
+     end
+     else
+        Connection.WriteStrData('', '');
+  end;
 
   vStream := TMemoryStream.Create;
   try

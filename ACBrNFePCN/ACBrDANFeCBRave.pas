@@ -475,7 +475,7 @@ begin
        FPageNum:=0;
        FMemoInfCpl.Text:='';
 
-       if FNFIndex>0 then
+       if (FNFIndex>0) and (FNumNFe=-1) then
           NewPage;
 
        if Orientation=poLandScape then

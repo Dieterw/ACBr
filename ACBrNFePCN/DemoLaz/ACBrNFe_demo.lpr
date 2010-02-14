@@ -7,8 +7,8 @@ uses
   cthreads,
   {$ENDIF}{$ENDIF}
   LResources, Interfaces, // this includes the LCL widgetset
-  Forms, ACBr_LCL, TurboPowerIPro, Unit1, ACBrNFePCN_LCL
-  { you can add units after this };
+  Forms, ACBr_LCL, TurboPowerIPro, Unit1, ufrmStatus,
+  acbrnfepcn_lcl;
 
 {$IFDEF WINDOWS}{$R ACBrNFe_demo.rc}{$ENDIF}
 

@@ -6,9 +6,9 @@
     <General>
       <MainUnit Value="0"/>
       <TargetFileExt Value=".exe"/>
-      <Icon Value="0"/>
       <UseXPManifest Value="True"/>
-      <ActiveEditorIndexAtStart Value="1"/>
+      <Icon Value="0"/>
+      <ActiveEditorIndexAtStart Value="0"/>
     </General>
     <VersionInfo>
       <ProjectVersion Value=""/>
@@ -25,46 +25,42 @@
         <LaunchingApplication PathPlusParams="/usr/X11R6/bin/xterm -T 'Lazarus Run Output' -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
       </local>
     </RunParams>
-    <RequiredPackages Count="5">
+    <RequiredPackages Count="4">
       <Item1>
         <PackageName Value="ACBrNFePCN_LCL"/>
       </Item1>
       <Item2>
-        <PackageName Value="SynEdit"/>
-        <MinVersion Major="1" Valid="True"/>
-      </Item2>
-      <Item3>
         <PackageName Value="ACBr_LCL"/>
         <MinVersion Minor="8" Release="8" Valid="True"/>
-      </Item3>
-      <Item4>
+      </Item2>
+      <Item3>
         <PackageName Value="TurboPowerIPro"/>
         <MinVersion Major="1" Valid="True"/>
-      </Item4>
-      <Item5>
+      </Item3>
+      <Item4>
         <PackageName Value="LCL"/>
-      </Item5>
+      </Item4>
     </RequiredPackages>
-    <Units Count="30">
+    <Units Count="35">
       <Unit0>
         <Filename Value="ACBrNFe_demo.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="ACBrNFe_demo"/>
         <CursorPos X="9" Y="9"/>
         <TopLine Value="1"/>
-        <UsageCount Value="30"/>
+        <UsageCount Value="32"/>
       </Unit0>
       <Unit1>
         <Filename Value="Unit1.pas"/>
+        <IsPartOfProject Value="True"/>
         <ComponentName Value="Form1"/>
         <HasResources Value="True"/>
-        <IsPartOfProject Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Unit1"/>
-        <CursorPos X="1" Y="246"/>
-        <TopLine Value="233"/>
+        <CursorPos X="47" Y="2075"/>
+        <TopLine Value="2063"/>
         <EditorIndex Value="0"/>
-        <UsageCount Value="30"/>
+        <UsageCount Value="32"/>
         <Loaded Value="True"/>
       </Unit1>
       <Unit2>
@@ -82,8 +78,8 @@
       <Unit4>
         <Filename Value="..\ACBrNFe.pas"/>
         <UnitName Value="ACBrNFe"/>
-        <CursorPos X="1" Y="1"/>
-        <TopLine Value="1"/>
+        <CursorPos X="42" Y="15"/>
+        <TopLine Value="55"/>
         <UsageCount Value="10"/>
       </Unit4>
       <Unit5>
@@ -94,21 +90,21 @@
         <UsageCount Value="11"/>
       </Unit5>
       <Unit6>
-        <Filename Value="..\..\..\trunk\ACBr\ACBrBase.pas"/>
+        <Filename Value="..\..\ACBr\ACBrBase.pas"/>
         <UnitName Value="ACBrBase"/>
         <CursorPos X="39" Y="42"/>
         <TopLine Value="38"/>
         <UsageCount Value="10"/>
       </Unit6>
       <Unit7>
-        <Filename Value="..\..\..\trunk\ACBr\ACBrDevice.pas"/>
+        <Filename Value="..\..\ACBr\ACBrDevice.pas"/>
         <UnitName Value="ACBrDevice"/>
         <CursorPos X="32" Y="224"/>
         <TopLine Value="211"/>
         <UsageCount Value="10"/>
       </Unit7>
       <Unit8>
-        <Filename Value="..\..\..\trunk\ACBr\ACBrECF.pas"/>
+        <Filename Value="..\..\ACBr\ACBrECF.pas"/>
         <UnitName Value="ACBrECF"/>
         <CursorPos X="31" Y="636"/>
         <TopLine Value="622"/>
@@ -129,13 +125,13 @@
       </Unit10>
       <Unit11>
         <Filename Value="Unit1.lfm"/>
-        <CursorPos X="1" Y="1"/>
+        <CursorPos X="36" Y="15"/>
         <TopLine Value="1"/>
         <UsageCount Value="10"/>
         <SyntaxHighlighter Value="LFM"/>
       </Unit11>
       <Unit12>
-        <Filename Value="..\..\..\trunk\ACBr\ACBrReg.pas"/>
+        <Filename Value="..\..\ACBr\ACBrReg.pas"/>
         <UnitName Value="ACBrReg"/>
         <CursorPos X="1" Y="151"/>
         <TopLine Value="144"/>
@@ -144,8 +140,8 @@
       <Unit13>
         <Filename Value="..\ACBrNFeReg.pas"/>
         <UnitName Value="ACBrNFeReg"/>
-        <CursorPos X="19" Y="158"/>
-        <TopLine Value="133"/>
+        <CursorPos X="34" Y="148"/>
+        <TopLine Value="148"/>
         <UsageCount Value="10"/>
       </Unit13>
       <Unit14>
@@ -180,9 +176,7 @@
         <UnitName Value="ACBrNFeNotasFiscais"/>
         <CursorPos X="17" Y="133"/>
         <TopLine Value="127"/>
-        <EditorIndex Value="1"/>
         <UsageCount Value="11"/>
-        <Loaded Value="True"/>
       </Unit18>
       <Unit19>
         <Filename Value="..\ACBrNFeUtil.pas"/>
@@ -262,12 +256,168 @@
         <TopLine Value="37"/>
         <UsageCount Value="12"/>
       </Unit29>
+      <Unit30>
+        <Filename Value="ufrmStatus.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmStatus"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ufrmStatus"/>
+        <CursorPos X="3" Y="9"/>
+        <TopLine Value="1"/>
+        <EditorIndex Value="1"/>
+        <UsageCount Value="22"/>
+        <Loaded Value="True"/>
+      </Unit30>
+      <Unit31>
+        <Filename Value="ufrmStatus.lfm"/>
+        <CursorPos X="1" Y="1"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="10"/>
+        <SyntaxHighlighter Value="LFM"/>
+      </Unit31>
+      <Unit32>
+        <Filename Value="..\ACBrNFeDANFeRLRetrato.pas"/>
+        <UnitName Value="ACBrNFeDANFeRLRetrato"/>
+        <CursorPos X="38" Y="379"/>
+        <TopLine Value="369"/>
+        <UsageCount Value="10"/>
+      </Unit32>
+      <Unit33>
+        <Filename Value="C:\lazarus\components\fortes4lazarus\trunk\rlreport.pas"/>
+        <UnitName Value="RLReport"/>
+        <CursorPos X="1" Y="1"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="10"/>
+      </Unit33>
+      <Unit34>
+        <Filename Value="ufrmStatus.lrs"/>
+        <CursorPos X="17" Y="1"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="10"/>
+      </Unit34>
     </Units>
-    <JumpHistory Count="1" HistoryIndex="0">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="Unit1.pas"/>
-        <Caret Line="246" Column="1" TopLine="233"/>
+        <Caret Line="162" Column="39" TopLine="140"/>
       </Position1>
+      <Position2>
+        <Filename Value="Unit1.pas"/>
+        <Caret Line="180" Column="1" TopLine="163"/>
+      </Position2>
+      <Position3>
+        <Filename Value="Unit1.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
+      </Position3>
+      <Position4>
+        <Filename Value="Unit1.pas"/>
+        <Caret Line="2095" Column="5" TopLine="2065"/>
+      </Position4>
+      <Position5>
+        <Filename Value="Unit1.pas"/>
+        <Caret Line="7" Column="82" TopLine="1"/>
+      </Position5>
+      <Position6>
+        <Filename Value="Unit1.pas"/>
+        <Caret Line="246" Column="35" TopLine="242"/>
+      </Position6>
+      <Position7>
+        <Filename Value="Unit1.pas"/>
+        <Caret Line="3" Column="1" TopLine="1"/>
+      </Position7>
+      <Position8>
+        <Filename Value="Unit1.pas"/>
+        <Caret Line="333" Column="67" TopLine="318"/>
+      </Position8>
+      <Position9>
+        <Filename Value="Unit1.pas"/>
+        <Caret Line="335" Column="3" TopLine="321"/>
+      </Position9>
+      <Position10>
+        <Filename Value="Unit1.pas"/>
+        <Caret Line="365" Column="18" TopLine="357"/>
+      </Position10>
+      <Position11>
+        <Filename Value="Unit1.pas"/>
+        <Caret Line="413" Column="20" TopLine="408"/>
+      </Position11>
+      <Position12>
+        <Filename Value="Unit1.pas"/>
+        <Caret Line="470" Column="13" TopLine="457"/>
+      </Position12>
+      <Position13>
+        <Filename Value="Unit1.pas"/>
+        <Caret Line="710" Column="70" TopLine="697"/>
+      </Position13>
+      <Position14>
+        <Filename Value="Unit1.pas"/>
+        <Caret Line="838" Column="13" TopLine="825"/>
+      </Position14>
+      <Position15>
+        <Filename Value="Unit1.pas"/>
+        <Caret Line="1029" Column="22" TopLine="1016"/>
+      </Position15>
+      <Position16>
+        <Filename Value="Unit1.pas"/>
+        <Caret Line="1033" Column="88" TopLine="1018"/>
+      </Position16>
+      <Position17>
+        <Filename Value="Unit1.pas"/>
+        <Caret Line="1067" Column="13" TopLine="1055"/>
+      </Position17>
+      <Position18>
+        <Filename Value="Unit1.pas"/>
+        <Caret Line="1102" Column="13" TopLine="1089"/>
+      </Position18>
+      <Position19>
+        <Filename Value="Unit1.pas"/>
+        <Caret Line="1115" Column="13" TopLine="1102"/>
+      </Position19>
+      <Position20>
+        <Filename Value="Unit1.pas"/>
+        <Caret Line="1362" Column="13" TopLine="1349"/>
+      </Position20>
+      <Position21>
+        <Filename Value="Unit1.pas"/>
+        <Caret Line="2073" Column="47" TopLine="2065"/>
+      </Position21>
+      <Position22>
+        <Filename Value="Unit1.pas"/>
+        <Caret Line="2072" Column="47" TopLine="2064"/>
+      </Position22>
+      <Position23>
+        <Filename Value="Unit1.pas"/>
+        <Caret Line="2071" Column="47" TopLine="2063"/>
+      </Position23>
+      <Position24>
+        <Filename Value="Unit1.pas"/>
+        <Caret Line="2072" Column="47" TopLine="2063"/>
+      </Position24>
+      <Position25>
+        <Filename Value="Unit1.pas"/>
+        <Caret Line="2073" Column="47" TopLine="2063"/>
+      </Position25>
+      <Position26>
+        <Filename Value="Unit1.pas"/>
+        <Caret Line="2074" Column="47" TopLine="2063"/>
+      </Position26>
+      <Position27>
+        <Filename Value="Unit1.pas"/>
+        <Caret Line="2073" Column="47" TopLine="2063"/>
+      </Position27>
+      <Position28>
+        <Filename Value="Unit1.pas"/>
+        <Caret Line="2074" Column="47" TopLine="2063"/>
+      </Position28>
+      <Position29>
+        <Filename Value="Unit1.pas"/>
+        <Caret Line="2075" Column="47" TopLine="2063"/>
+      </Position29>
+      <Position30>
+        <Filename Value="Unit1.pas"/>
+        <Caret Line="2074" Column="47" TopLine="2063"/>
+      </Position30>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

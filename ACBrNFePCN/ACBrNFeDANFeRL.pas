@@ -52,8 +52,8 @@
 |*  - Acréscimo dos parâmetros "FEmail", "FResumoCanhoto", "FFax", "FNumCopias",
 |*    "FSsitema", "FSite", "FUsuario" nas Class procedures
 |*    "Imprimir" e "SavePDF"
-|* 11/02/2010: Peterson de Cerqueira Matos
-|*  - Correção na exibição do 'Preview' para modo 'MODAL'
+|* 13/02/2010: Peterson de Cerqueira Matos
+|*  - Correção na exibição do 'Preview' para modo 'PREVIEWMODAL'
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeRL;
@@ -134,7 +134,7 @@ begin
       for iCopias := 1 to FNumCopias do
         begin
           if APreview then
-            RLNFe.Preview
+            RLNFe.PreviewModal
           else
             begin
               AfterPreview := True ;

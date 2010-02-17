@@ -3,11 +3,13 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
   Top = 107
   Width = 825
   Height = 653
+  VertScrollBar.Position = 0
   Caption = 'frlDANFeRLRetrato'
   OldCreateOrder = True
   PixelsPerInch = 96
   TextHeight = 13
   inherited RLNFe: TRLReport
+    Top = 0
     Background.Arrange = baDistributed
     Background.Height = 96
     Background.Width = 175
@@ -21,7 +23,6 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
     Margins.RightMargin = 8.000000000000000000
     Margins.BottomMargin = 9.000000000000000000
     PreviewOptions.FormStyle = fsStayOnTop
-    PreviewOptions.Caption = 'DANFe'
     PrintDialog = False
     Title = 'Danfe Retrato'
     AfterPrint = RLNFeAfterPrint
@@ -1913,7 +1914,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Left = 68
         Top = 25
         Width = 49
-        Height = 10
+        Height = 12
         Caption = 'XX/XX/XXXX'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -1926,7 +1927,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Left = 68
         Top = 38
         Width = 49
-        Height = 10
+        Height = 12
         Caption = 'XX/XX/XXXX'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -1939,7 +1940,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Left = 68
         Top = 51
         Width = 49
-        Height = 10
+        Height = 12
         Caption = 'XX/XX/XXXX'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -2039,7 +2040,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Left = 257
         Top = 25
         Width = 49
-        Height = 10
+        Height = 12
         Caption = 'XX/XX/XXXX'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -2052,7 +2053,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Left = 257
         Top = 38
         Width = 49
-        Height = 10
+        Height = 12
         Caption = 'XX/XX/XXXX'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -2065,7 +2066,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Left = 257
         Top = 51
         Width = 49
-        Height = 10
+        Height = 12
         Caption = 'XX/XX/XXXX'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -2165,7 +2166,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Left = 446
         Top = 25
         Width = 49
-        Height = 10
+        Height = 12
         Caption = 'XX/XX/XXXX'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -2178,7 +2179,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Left = 446
         Top = 38
         Width = 49
-        Height = 10
+        Height = 12
         Caption = 'XX/XX/XXXX'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -2191,7 +2192,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Left = 446
         Top = 51
         Width = 49
-        Height = 10
+        Height = 12
         Caption = 'XX/XX/XXXX'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -2291,7 +2292,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Left = 635
         Top = 25
         Width = 49
-        Height = 10
+        Height = 12
         Caption = 'XX/XX/XXXX'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -2304,7 +2305,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Left = 635
         Top = 38
         Width = 49
-        Height = 10
+        Height = 12
         Caption = 'XX/XX/XXXX'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -2317,7 +2318,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Left = 635
         Top = 51
         Width = 49
-        Height = 10
+        Height = 12
         Caption = 'XX/XX/XXXX'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -4709,13 +4710,13 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       object rlmObsItem: TRLMemo
         Left = 1
         Top = 1
-        Width = 704
-        Height = 10
+        Width = 664
+        Height = 8
         Borders.Style = bsClear
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -8
-        Font.Name = 'Arial'
+        Font.Name = 'Courier New'
         Font.Style = []
         ParentFont = False
       end
@@ -4746,13 +4747,13 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
     DisplayName = 'Documento PDF'
     ShowProgress = False
     Left = 531
-    Top = 44
+    Top = 42
   end
   object cdsItens: TClientDataSet
     Aggregates = <>
     Params = <>
     Left = 560
-    Top = 44
+    Top = 42
     object cdsItensCODIGO: TStringField
       FieldName = 'CODIGO'
       Size = 60
@@ -4813,6 +4814,6 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
   object DataSource1: TDataSource
     DataSet = cdsItens
     Left = 587
-    Top = 43
+    Top = 41
   end
 end

@@ -48,6 +48,11 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   17/02/10
+---------------
+[-] Correções no Preview e Fonte no DANFE em FORTES REPORTS (Peterson de Cerqueira Matos)
+    
+
 Alterações   12/02/10
 ---------------
 [-] DANFE em FORTES REPORTS (Peterson de Cerqueira Matos)

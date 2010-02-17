@@ -64,6 +64,8 @@
 |*    exibição dos 'DADOS ADICIONAIS' para evitar que a última palavra do
 |*    quadro fique pela metade devido à limitação da quantidade de caracteres
 |*  - Correção da formatação de CPF, no caso de NF-e emtida para pesso física
+|* 13/02/2010: Peterson de Cerqueira Matos
+|*  - Alteração da fonte do memo 'rlmObsItem' de ARIAL para COURIER NEW
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeRLRetrato;

@@ -25,10 +25,8 @@ object frlDANFeRL: TfrlDANFeRL
     Font.Height = -13
     Font.Name = 'Arial'
     Font.Style = []
-    PreviewOptions.FormStyle = fsStayOnTop
     PreviewOptions.ShowModal = True
     PreviewOptions.Caption = 'DANFe'
-    PreviewOptions.Defaults = pdIgnoreDefaults
     ShowProgress = False
   end
 end

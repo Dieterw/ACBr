@@ -104,6 +104,9 @@ Versão 0.8.9b  16/02/10
        "SUPRIMENTO" como "FUNDO DE TROCO" que já é pré-programado na Epson.
        Por: WagnerPV
 
+-- ACBrECFBematech --
+[-]    Corrigido Bug no método "CortaPapel" (não funcionava)
+
 Versão 0.8.9b  12/02/10
 -- ACBrECF --
 [-]    Modificado HTML em MemoTitulo para exibir corretamente centralizado

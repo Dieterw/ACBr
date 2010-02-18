@@ -388,6 +388,7 @@ Var
   Sts : Integer ;
   ParamAdic : String ;
   Erro : String;
+  Est  : AnsiChar;
 begin
   if Inicializado then exit ;
 
@@ -423,7 +424,10 @@ begin
 
   fpInicializado := True ;
 
-  ConfirmarEReimprimirTransacoesPendentes ;
+  Est := TACBrTEFD(Owner).EstadoECF;
+
+  if not (Est in ['V','P']) then
+     ConfirmarEReimprimirTransacoesPendentes ;
 end;
 
 procedure TACBrTEFDCliSiTef.AtivarGP;
@@ -442,7 +446,7 @@ Var
   I, Sts           : Integer;
   ArqMask          : String;
 begin
-  ArquivosVerficar    := TStringList.Create;
+  ArquivosVerficar := TStringList.Create;
 
   try
      ArquivosVerficar.Clear;

@@ -2537,22 +2537,18 @@ begin
      if Estado = estRelatorio then
      begin
         try
-           BytesResp := 1 ;
-           // 74 Flag de ativação do corte do próximo documento //
-           RetCmd := EnviaComando( #35+#74 ) ;
-        except
-           RetCmd := '1' ;
-        end ;
-
-        if RetCmd = '0' then
-         begin
            if CorteParcial then
               LinhaRelatorioGerencial( #27 + #109 )
            else
               LinhaRelatorioGerencial( #27 + #119 );
-         end
-        else
-           inherited CortaPapel ;
+
+           Sleep( 100 ) ;
+        except
+           if TestBit( fsST1, 2) then    // comando inexistente ?
+              inherited CortaPapel
+           else
+              raise ;
+        end ;
      end ;
    end ;
 end;

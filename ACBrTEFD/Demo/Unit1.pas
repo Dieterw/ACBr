@@ -953,6 +953,7 @@ begin
         begin
           ACBrECF1.PulaLinhas( ACBrECF1.LinhasEntreCupons );
           ACBrECF1.CortaPapel( True );
+          Sleep(200);
         end;
     end;
 

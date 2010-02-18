@@ -1,5 +1,5 @@
 object Form1: TForm1
-  Left = 350
+  Left = 355
   Top = 106
   Width = 741
   Height = 488
@@ -572,7 +572,7 @@ object Form1: TForm1
           Width = 142
           Height = 21
           Style = csDropDownList
-          ItemHeight = 13
+          ItemHeight = 0
           TabOrder = 0
         end
         object bAbreVendeSubTotaliza1: TButton
@@ -762,6 +762,7 @@ object Form1: TForm1
       Align = alClient
       TabOrder = 0
       Visible = False
+      OnClick = pMensagemOperadorClick
       object Label10: TLabel
         Left = 0
         Top = 0
@@ -786,6 +787,7 @@ object Form1: TForm1
       Align = alBottom
       TabOrder = 1
       Visible = False
+      OnClick = pMensagemOperadorClick
       object Label11: TLabel
         Left = 0
         Top = 0
@@ -807,19 +809,22 @@ object Form1: TForm1
     Modelo = ecfBematech
     Porta = 'COM1'
     ReTentar = False
+    TimeOut = 6
     IntervaloAposComando = 0
     MsgAguarde = 'Aguardando a resposta da Impressora: %d segundos'
     MsgTrabalhando = 'Impressora est'#225' trabalhando'
+    ExibeMensagem = False
+    TempoInicioMsg = 6
     BloqueiaMouseTeclado = False
     MsgRelatorio = 'Imprimindo %s  %d'#170' Via '
     MsgPausaRelatorio = 'Destaque a %d'#170' via, <ENTER> proxima, %d seg.'
     MaxLinhasBuffer = 3
+    FormMsgFonte.Charset = DEFAULT_CHARSET
     FormMsgFonte.Color = clBlack
     FormMsgFonte.Height = 11
     FormMsgFonte.Name = 'MS Shell Dlg'
     FormMsgFonte.Pitch = fpVariable
     FormMsgFonte.Style = []
-    FormMsgFonte.Weight = 40
     FormMsgColor = clHighlight
     MemoParams.Strings = (
       '[Cabecalho]'
@@ -887,6 +892,11 @@ object Form1: TForm1
     TEFCliSiTef.NumeroTerminal = 'SE000001'
     TEFCliSiTef.OnExibeMenu = CliSiTefExibeMenu
     TEFCliSiTef.OnObtemCampo = CliSiTefObtemCampo
+    TEFGPU.ArqTemp = 'C:\TEF_GPU\req\intpos.tmp'
+    TEFGPU.ArqReq = 'C:\TEF_GPU\req\intpos.001'
+    TEFGPU.ArqSTS = 'C:\TEF_GPU\resp\intpos.sts'
+    TEFGPU.ArqResp = 'C:\TEF_GPU\resp\intpos.001'
+    TEFGPU.GPExeName = 'C:\TEF_GPU\GPU.exe'
     OnAguardaResp = ACBrTEFD1AguardaResp
     OnExibeMsg = ACBrTEFD1ExibeMsg
     OnBloqueiaMouseTeclado = ACBrTEFD1BloqueiaMouseTeclado

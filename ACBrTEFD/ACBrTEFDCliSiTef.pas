@@ -98,6 +98,7 @@ type
       fOperacaoCHQ : Integer;
       fOperacaoCNC : Integer;
       fOperacaoCRT : Integer;
+      fOperacaoReImpressao: Integer;
       fOperador : String;
       fParametrosAdicionais : TStringList;
       fRestricoes : String;
@@ -164,6 +165,8 @@ type
      procedure AtivarGP ; override;
      procedure VerificaAtivo ; override;
 
+     procedure ConfirmarEReimprimirTransacoesPendentes ;
+
      Procedure ATV ; override;
      Function ADM : Boolean ; override;
      Function CRT( Valor : Double; IndiceFPG_ECF : String;
@@ -199,6 +202,8 @@ type
         default 1 ;
      property OperacaoCNC : Integer read fOperacaoCNC write fOperacaoCNC
         default 200 ;
+     property OperacaoReImpressao : Integer read fOperacaoReImpressao
+        write fOperacaoReImpressao default 112 ;
 
      property OnExibeMenu : TACBrTEFDCliSiTefExibeMenu read fOnExibeMenu
         write fOnExibeMenu ;
@@ -316,15 +321,17 @@ begin
   fNumeroTerminal := '' ;
   fOperador       := '' ;
   fRestricoes     := '' ;
-  fOperacaoATV    := 111 ;  // 111 - Teste de comunicação com o SiTef
-  fOperacaoADM    := 110 ;  // 110 - Abre o leque das transações Gerenciais
-  fOperacaoCRT    := 0 ;    // A CliSiTef permite que o operador escolha a forma
-                            // de pagamento através de menus
-  fOperacaoCHQ    := 1 ;    // Cheque
-  fOperacaoCNC    := 200 ;  // 200 Cancelamento Normal: Inicia a coleta dos dados
-                            // no ponto necessário para fazer o cancelamento de uma
-                            // transação de débito ou crédito, sem ser necessário
-                            // passar antes pelo menu de transações administrativas
+
+  fOperacaoATV         := 111 ; // 111 - Teste de comunicação com o SiTef
+  fOperacaoReImpressao := 112 ; // 112 - Menu Re-impressão
+  fOperacaoADM         := 110 ; // 110 - Abre o leque das transações Gerenciais
+  fOperacaoCRT         := 0 ;   // A CliSiTef permite que o operador escolha a forma
+                                // de pagamento através de menus
+  fOperacaoCHQ         := 1 ;   // Cheque
+  fOperacaoCNC         := 200 ; // 200 Cancelamento Normal: Inicia a coleta dos dados
+                                // no ponto necessário para fazer o cancelamento de uma
+                                // transação de débito ou crédito, sem ser necessário
+                                // passar antes pelo menu de transações administrativas
   fDocumentosProcessados := '' ;
 
   fParametrosAdicionais := TStringList.Create;
@@ -414,7 +421,9 @@ begin
   if Erro <> '' then
      raise EACBrTEFDErro.Create( ACBrStr( Erro ) ) ;
 
-  inherited Inicializar;
+  fpInicializado := True ;
+
+  ConfirmarEReimprimirTransacoesPendentes ;
 end;
 
 procedure TACBrTEFDCliSiTef.AtivarGP;
@@ -425,6 +434,61 @@ end;
 procedure TACBrTEFDCliSiTef.VerificaAtivo;
 begin
    {Nada a Fazer}
+end;
+
+procedure TACBrTEFDCliSiTef.ConfirmarEReimprimirTransacoesPendentes;
+Var
+  ArquivosVerficar : TStringList ;
+  I, Sts           : Integer;
+  ArqMask          : String;
+begin
+  ArquivosVerficar    := TStringList.Create;
+
+  try
+     ArquivosVerficar.Clear;
+
+     { Achando Arquivos de Backup deste GP }
+     ArqMask := TACBrTEFD(Owner).PathBackup + PathDelim + 'ACBr_' + Self.Name + '_*.tef' ;
+     FindFiles( ArqMask, ArquivosVerficar, True );
+
+     { Enviando NCN ou CNC para todos os arquivos encontrados }
+     while ArquivosVerficar.Count > 0 do
+     begin
+        if not FileExists( ArquivosVerficar[ 0 ] ) then
+        begin
+           ArquivosVerficar.Delete( 0 );
+           Continue;
+        end;
+
+        Resp.LeArquivo( ArquivosVerficar[ 0 ] );
+
+        try
+           if pos(Resp.DocumentoVinculado, fDocumentosProcessados) = 0 then
+           begin
+              CNF;
+
+              if TACBrTEFD(Owner).DoExibeMsg( opmYesNo,
+                                      'Transação TEF efetuada.'+sLineBreak+
+                                      'Re-Imprimir Ultimo Cupom ?' ) = mrYes then
+              begin
+                 Sts := FazerRequisicao( fOperacaoReImpressao, 'ADM' ) ;
+
+                 if Sts = 10000 then
+                    Sts := ContinuarRequisicao( True ) ;  { True = Imprimir Comprovantes agora }
+
+                 if not ( Sts = 0 ) then
+                    AvaliaErro( Sts );
+              end;
+           end;
+
+           DeleteFile( ArquivosVerficar[ 0 ] );
+           ArquivosVerficar.Delete( 0 );
+        except
+        end;
+     end;
+  finally
+     ArquivosVerficar.Free;
+  end;
 end;
 
 Procedure TACBrTEFDCliSiTef.ATV ;
@@ -582,6 +646,9 @@ begin
    with TACBrTEFDRespCliSiTef( Resp ) do
    begin
      fpIDSeq := fpIDSeq + 1 ;
+     if Documento = '' then
+        Documento := IntToStr(fpIDSeq) ;
+
      Conteudo.GravaInformacao(899,100, AHeader ) ;
      Conteudo.GravaInformacao(899,101, IntToStr(fpIDSeq) ) ;
      Conteudo.GravaInformacao(899,102, Documento ) ;
@@ -594,12 +661,13 @@ end;
 Function TACBrTEFDCliSiTef.ContinuarRequisicao( ImprimirComprovantes : Boolean )
   : Integer;
 var
-  ProximoComando, TipoCampo, Continua, ItemSelecionado: Integer;
+  ProximoComando, TipoCampo, Continua, ItemSelecionado, I: Integer;
   TamanhoMinimo, TamanhoMaximo : SmallInt ;
   Buffer: array [0..20000] of char;
-  Mensagem, MensagemOperador, MensagemCliente, Resposta, CaptionMenu : String;
+  Mensagem, MensagemOperador, MensagemCliente, Resposta, CaptionMenu,
+     ArqBackUp : String;
   SL : TStringList ;
-  Interromper, Digitado, GerencialAberto, ImpressaoOk : Boolean ;
+  Interromper, Digitado, GerencialAberto, ImpressaoOk, HouveImpressao : Boolean ;
   Est : AnsiChar;
 begin
    Result           := 0;
@@ -614,6 +682,9 @@ begin
    CaptionMenu      := '' ;
    GerencialAberto  := False ;
    fpAguardandoResposta := True ;
+   ImpressaoOk      := True ;
+   HouveImpressao   := False ;
+   ArqBackUp        := '' ;
 
    with TACBrTEFD(Owner) do
    begin
@@ -652,28 +723,63 @@ begin
                      { Impressão de Gerencial, deve ser Sob demanda }
                      if ImprimirComprovantes and (TipoCampo in [121,122]) then
                      begin
+                       if not HouveImpressao then
+                       begin
+                          HouveImpressao := True ;
+                          ArqBackUp      := CopiarResposta;
+                       end;
+
                        SL := TStringList.Create;
-                       SL.Text := StringReplace( Mensagem, #10, sLineBreak, [rfReplaceAll] ) ;
                        ImpressaoOk := False ;
+                       I := TipoCampo ;
                        try
                           while not ImpressaoOk do
                           begin
                             try
-                              if not GerencialAberto then
-                               begin
-                                 ComandarECF( opeAbreGerencial ) ;
-                                 GerencialAberto := True ;
-                               end
-                              else
-                               if TipoCampo = 122 then
-                               begin
-                                 ComandarECF( opePulaLinhas ) ;
-                                 DoExibeMsg( opmDestaqueVia, 'Destaque a 1ª Via') ;
-                               end;
+                              while I <= TipoCampo do
+                              begin
+                                 Est := EstadoECF;
 
-                              ECFImprimeVia( trGerencial, TipoCampo-120, SL );
+                                 if ( (I = 121) and ( Est <> 'L' ) ) or
+                                    ( (I = 122) and (not (Est in ['G','R'])) ) then
+                                 begin
+                                   { Fecha Vinculado ou Gerencial ou Cupom, se ficou algum aberto por Desligamento }
+                                   case Est of
+                                     'C'      : ComandarECF( opeFechaVinculado );
+                                     'G', 'R' : ComandarECF( opeFechaGerencial );
+                                     'V', 'P' : ComandarECF( opeCancelaCupom );
+                                   end;
 
-                              ImpressaoOk := True ;
+                                   GerencialAberto := False ;
+
+                                   if EstadoECF <> 'L' then
+                                     raise EACBrTEFDECF.Create( ACBrStr('ECF não está LIVRE') ) ;
+                                 end;
+
+                                 Mensagem := StringToBinaryString(
+                                                Self.Resp.LeInformacao(I).AsString ) ;
+                                 SL.Text  := StringReplace( Mensagem, #10, sLineBreak, [rfReplaceAll] ) ;
+
+                                 if not GerencialAberto then
+                                  begin
+                                    ComandarECF( opeAbreGerencial ) ;
+                                    GerencialAberto := True ;
+                                  end
+                                 else
+                                  begin
+                                    ComandarECF( opePulaLinhas ) ;
+                                    DoExibeMsg( opmDestaqueVia, 'Destaque a 1ª Via') ;
+                                  end;
+
+                                 ECFImprimeVia( trGerencial, I-120, SL );
+
+                                 ImpressaoOk := True ;
+
+                                 Inc( I ) ;
+                              end;
+
+                              if (TipoCampo = 122) and GerencialAberto then
+                                 ComandarECF( opeFechaGerencial );
                             except
                               on EACBrTEFDECF do ImpressaoOk := False ;
                               else
@@ -686,12 +792,7 @@ begin
                                                        'Tentar novamente ?') <> mrYes then
                                 break ;
 
-                              try
-                                ComandarECF( opeFechaGerencial );
-                              except
-                              end ;
-
-                              GerencialAberto := False ;
+                              I := 121 ;
                             end;
                           end ;
                        finally
@@ -856,7 +957,17 @@ begin
          until Result <> 10000;
       finally
         if GerencialAberto then
+        try
            ComandarECF( opeFechaGerencial );
+        except
+           ImpressaoOk := False ;
+        end;
+
+        if (ArqBackUp <> '') and FileExists( ArqBackUp ) then
+           SysUtils.DeleteFile( ArqBackUp );
+
+        if HouveImpressao then
+           FinalizaTransacao( ImpressaoOk, Resp.DocumentoVinculado );
 
         if TecladoBloqueado then
            BloquearMouseTeclado( False );

@@ -1,7 +1,7 @@
 object Form2: TForm2
-  Left = 464
+  Left = 470
   Height = 174
-  Top = 194
+  Top = 202
   Width = 318
   ActiveControl = cbxRede
   BorderIcons = [biSystemMenu]
@@ -13,18 +13,18 @@ object Form2: TForm2
   LCLVersion = '0.9.29'
   object Label1: TLabel
     Left = 17
-    Height = 18
+    Height = 16
     Top = 15
-    Width = 40
+    Width = 28
     Caption = 'REDE'
     ParentColor = False
   end
   object cbxRede: TComboBox
     Left = 16
-    Height = 27
+    Height = 23
     Top = 36
     Width = 104
-    ItemHeight = 0
+    ItemHeight = 15
     Items.Strings = (
       'REDECARD'
       'VISANET'
@@ -34,24 +34,24 @@ object Form2: TForm2
   end
   object Label2: TLabel
     Left = 133
-    Height = 18
+    Height = 16
     Top = 15
-    Width = 28
+    Width = 24
     Caption = 'NSU'
     ParentColor = False
   end
   object edNSU: TEdit
     Left = 133
-    Height = 25
+    Height = 23
     Top = 36
     Width = 163
     TabOrder = 1
   end
   object Label3: TLabel
     Left = 17
-    Height = 18
+    Height = 16
     Top = 72
-    Width = 105
+    Width = 82
     Caption = 'Data Transação'
     ParentColor = False
   end
@@ -66,7 +66,7 @@ object Form2: TForm2
   end
   object meHora: TMaskEdit
     Left = 128
-    Height = 25
+    Height = 23
     Top = 93
     Width = 60
     CharCase = ecNormal
@@ -78,15 +78,15 @@ object Form2: TForm2
   end
   object Label4: TLabel
     Left = 133
-    Height = 18
+    Height = 16
     Top = 72
-    Width = 32
+    Width = 27
     Caption = 'Hora'
     ParentColor = False
   end
   object edValor: TEdit
     Left = 206
-    Height = 25
+    Height = 23
     Top = 93
     Width = 90
     TabOrder = 4
@@ -94,14 +94,14 @@ object Form2: TForm2
   end
   object edData: TMaskEdit
     Left = 17
-    Height = 25
+    Height = 23
     Top = 93
     Width = 87
     CharCase = ecNormal
     MaxLength = 10
     TabOrder = 5
     EditMask = '00/00/0000;1;_'
-    Text = '  -  -    '
+    Text = '  /  /    '
     SpaceChar = '_'
   end
-end
+end

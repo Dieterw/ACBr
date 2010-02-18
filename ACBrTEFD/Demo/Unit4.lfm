@@ -1,7 +1,7 @@
 object Form4: TForm4
-  Left = 503
+  Left = 524
   Height = 281
-  Top = 167
+  Top = 184
   Width = 523
   ActiveControl = Panel1
   Caption = 'OnExibeMenu'
@@ -21,7 +21,6 @@ object Form4: TForm4
     ItemHeight = 0
     ParentFont = False
     TabOrder = 0
-    TopIndex = -1
   end
   object Panel1: TPanel
     Left = 0
@@ -42,10 +41,10 @@ object Form4: TForm4
     ClientWidth = 523
     TabOrder = 2
     object BitBtn1: TBitBtn
-      Left = 116
-      Height = 33
+      Left = 111
+      Height = 35
       Top = 9
-      Width = 60
+      Width = 70
       Anchors = [akTop]
       AutoSize = True
       Caption = '&OK'
@@ -55,10 +54,10 @@ object Form4: TForm4
       TabOrder = 0
     end
     object BitBtn2: TBitBtn
-      Left = 322
-      Height = 33
+      Left = 320
+      Height = 35
       Top = 9
-      Width = 99
+      Width = 102
       Anchors = [akTop]
       AutoSize = True
       Cancel = True
@@ -68,4 +67,4 @@ object Form4: TForm4
       TabOrder = 1
     end
   end
-end
+end

@@ -130,6 +130,7 @@ type
 
    public
      Function EstadoECF : AnsiChar ;
+     function SubTotalECF: Double;
      function DoExibeMsg( Operacao : TACBrTEFDOperacaoMensagem;
         Mensagem : String ) : TModalResult;
      function ComandarECF(Operacao : TACBrTEFDOperacaoECF) : Integer;
@@ -264,7 +265,7 @@ function FlushToDisk(sDriveLetter: string): boolean;
 
 implementation
 
-Uses ACBrUtil, dateutils, TypInfo, StrUtils;
+Uses ACBrUtil, dateutils, TypInfo, StrUtils, Math;
 
 {$IFNDEF FPC}
    {$R ACBrTEFD.dcr}
@@ -542,6 +543,27 @@ begin
                  '"C" ou "R" - CDC ou Cupom Vinculado'+sLineBreak+
                  '"G" ou "R" - Relatório Gerencial'+sLineBreak+
                  '"O" - Outro' ) );
+end;
+
+function TACBrTEFD.SubTotalECF : Double;
+var
+   SaldoAPagar : Double ;
+   SubTotal    : String ;
+begin
+   try
+      OnInfoECF( ineSubTotal, SubTotal ) ;
+   except
+      on E : Exception do
+         raise EACBrTEFDECF.Create(E.Message);
+   end;
+
+   SaldoAPagar := StringToFloatDef( SubTotal, -2);
+   SaldoAPagar := SimpleRoundTo( SaldoAPagar, -2);     // por Rodrigo Baltazar
+
+   if SaldoAPagar = -2 then
+      raise Exception.Create( ACBrStr( 'Erro na conversão do Valor Retornado '+
+                                       'em: OnInfoECF( ineSubTotal, SaldoAPagar )' ) );
+   Result := SaldoAPagar;
 end;
 
 procedure TACBrTEFD.AtivarGP(GP : TACBrTEFDTipo);
@@ -905,7 +927,8 @@ Function TACBrTEFD.DoExibeMsg( Operacao : TACBrTEFDOperacaoMensagem;
 var
    OldTecladoBloqueado : Boolean;
 begin
-  RestaurarFocoAplicacao ;
+  if (Operacao in [opmOK, opmYesNo, opmDestaqueVia]) then
+     RestaurarFocoAplicacao ;
 
   OldTecladoBloqueado := TecladoBloqueado;
 
@@ -987,6 +1010,7 @@ Var
   Est  : AnsiChar;
   ImpressaoOk : Boolean ;
   GrupoFPG    : TACBrTEFDArrayGrupoRespostasPendentes ;
+  TotalAPagarECF, TotalAPagarTEF : Double ;
 begin
   ImpressaoOk := False ;
 
@@ -1011,12 +1035,24 @@ begin
                           AgruparRespostasPendentes( GrupoFPG );
                           Ordem := 0 ;
 
+                          TotalAPagarECF := SubTotalECF;
+
                           For I := 0 to Length( GrupoFPG )-1 do
                           begin
+                             // TESTAR melhor AQUI //
+                             TotalAPagarTEF := 0 ;
+                             // Calculando o Total a Pagar de TEF //
+                             For J := I to Length( GrupoFPG )-1 do
+                                TotalAPagarTEF := TotalAPagarTEF + GrupoFPG[J].Total ;
+
                              if GrupoFPG[I].OrdemPagamento = 0 then
                               begin
                                 Inc( Ordem ) ;
-                                ECFPagamento( GrupoFPG[I].IndiceFPG_ECF, GrupoFPG[I].Total );
+                                { Total a pagar de TEF é superior ao Total a pagar no ECF ?
+                                  Se SIM, então provavelmente está se recuperando de uma
+                                  queda de energia. Verifique quanto realmente falta Pagar... }
+                                if TotalAPagarTEF <= TotalAPagarECF then
+                                   ECFPagamento( GrupoFPG[I].IndiceFPG_ECF, GrupoFPG[I].Total );
 
                                 For J := 0 to RespostasPendentes.Count-1 do
                                    if RespostasPendentes[J].IndiceFPG_ECF = GrupoFPG[I].IndiceFPG_ECF then

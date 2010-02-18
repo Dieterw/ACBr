@@ -55,7 +55,7 @@ uses
   {$ENDIF} ;
 
 const
-   CACBrTEFD_Versao      = '1.5b' ;
+   CACBrTEFD_Versao      = '1.6b' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -70,12 +70,12 @@ type
   TACBrTEFDReqEstado = ( reqNenhum,             // Nennhuma Requisição em andamento
                          reqIniciando,          // Iniciando uma nova Requisicao
                          reqCriandoArquivo,     // Arquivo Temporário de requisição está sendo criado
-                         reqAguardandoResposta,  // Requisição Escrita, Aguardando Resposta
+                         reqAguardandoResposta, // Requisição Escrita, Aguardando Resposta
                          reqConferindoResposta, // Verifica se o STS é válido
                          reqFinalizada ) ;
 
   TACBrTEFDRespEstado = ( respNenhum,              // Nennhuma Resposta em andamento
-                          respAguardandoResposta,   // Requisição Escrita, Aguardando Resposta
+                          respAguardandoResposta,  // Requisição Escrita, Aguardando Resposta
                           respProcessando,         // Processando a Resposta
                           respConcluida ) ;
 
@@ -509,7 +509,6 @@ type
 
    TACBrTEFDClass = class( TComponent )
    private
-     fInicializado : Boolean;
      fArqLOG : String;
      fArqReq : String;
      fArqTmp : String;
@@ -529,6 +528,7 @@ type
      procedure SetGPExeName(const AValue : String);
 
    protected
+     fpInicializado : Boolean;
      fpReq  : TACBrTEFDReq ;
      fpResp : TACBrTEFDResp ;
      fpTipo : TACBrTEFDTipo;
@@ -584,7 +584,7 @@ type
 
      procedure GravaLog(AString: AnsiString);
 
-     property Inicializado : Boolean read fInicializado write SetInicializado ;
+     property Inicializado : Boolean read fpInicializado write SetInicializado ;
      procedure VerificaInicializado ;
 
      procedure Inicializar ; virtual;
@@ -1455,7 +1455,7 @@ end;
 
 procedure TACBrTEFDClass.VerificaInicializado;
 begin
-  if not fInicializado then
+  if not fpInicializado then
      raise EACBrTEFDGPNaoInicializado.Create(
         ACBrStr('Gerenciador Padrão: '+Name+' não foi inicializado')) ;
 end;
@@ -1476,7 +1476,7 @@ begin
   ApagaEVerifica( ArqReq );   // Apagando Arquivo de Requisicao anterior //
   ApagaEVerifica( ArqSTS );   // Apagando Arquivo de Status anterior //
 
-  fInicializado := True ;
+  fpInicializado := True ;
   GravaLog( Name +' Inicializado' );
 
   CancelarTransacoesPendentesClass ;
@@ -1486,7 +1486,7 @@ end;
 
 procedure TACBrTEFDClass.DesInicializar;
 begin
-  fInicializado := False ;
+  fpInicializado := False ;
   GravaLog( Name +' DesInicializado' );
 end;
 
@@ -2324,7 +2324,6 @@ end;
 
 Procedure TACBrTEFDClass.VerificarTransacaoPagamento(Valor : Double );
 var
-   SubTotal : String;
    SaldoAPagar : Double ;
 begin
    if (Valor <= 0) then
@@ -2336,24 +2335,8 @@ begin
      if not (EstadoECF in ['V','P']) then
         raise Exception.Create( ACBrStr('ECF deve estar em Venda ou Pagamento'));
 
-     SubTotal    := '' ;
-     SaldoAPagar := 0 ;
-
-     try
-        OnInfoECF( ineSubTotal, SubTotal ) ;
-     except
-        On E : Exception do
-           raise EACBrTEFDECF.Create(E.Message);
-     end;
-
-     SaldoAPagar := StringToFloatDef( SubTotal, -2);
-     SaldoAPagar := SimpleRoundTo( SaldoAPagar, -2);    // por Rodrigo Baltazar
-
-     if SaldoAPagar = -2 then
-        raise Exception.Create( ACBrStr( 'Erro na conversão do Valor Retornado em:'+
-                                         'OnInfoECF( ineSubTotal, SaldoAPagar )' ) );
-
-     RespostasPendentes.SaldoAPagar :=  SaldoAPagar ;
+     SaldoAPagar := SubTotalECF ;
+     RespostasPendentes.SaldoAPagar := SaldoAPagar ;
 
      if (Valor > RespostasPendentes.SaldoRestante ) then
         raise Exception.Create( ACBrStr( 'Operação TEF deve ser igual ao '+

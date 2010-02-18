@@ -96,6 +96,14 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.8.9b  16/02/10
+-- ACBrECFEpson --
+[+]    Implementado métodos, CarregaRelatoriosGerenciais e
+        ProgramaRelatorioGerencial    Por: WagnerPV
+[*]    Sobrecarga no método AchaCNFDescricao para considerar a busca por
+       "SUPRIMENTO" como "FUNDO DE TROCO" que já é pré-programado na Epson.
+       Por: WagnerPV
+
 Versão 0.8.9b  12/02/10
 -- ACBrECF --
 [-]    Modificado HTML em MemoTitulo para exibir corretamente centralizado

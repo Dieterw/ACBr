@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 358
+  Left = 371
   Height = 452
-  Top = 102
+  Top = 104
   Width = 725
   ActiveControl = PageControl1
   Caption = 'TEFDDemo'
@@ -29,9 +29,9 @@ object Form1: TForm1
     Height = 208
     Top = 0
     Width = 725
-    ActivePage = tsConfig
+    ActivePage = tsOperacao
     Align = alTop
-    TabIndex = 0
+    TabIndex = 1
     TabOrder = 2
     object tsConfig: TTabSheet
       Caption = 'Configuração'
@@ -787,6 +787,7 @@ object Form1: TForm1
       ClientWidth = 428
       TabOrder = 0
       Visible = False
+      OnClick = pMensagemOperadorClick
       object Label10: TLabel
         Left = 0
         Height = 14
@@ -808,6 +809,7 @@ object Form1: TForm1
       ClientWidth = 428
       TabOrder = 1
       Visible = False
+      OnClick = pMensagemOperadorClick
       object Label11: TLabel
         Left = 0
         Height = 14
@@ -824,9 +826,12 @@ object Form1: TForm1
     Modelo = ecfBematech
     Porta = 'COM1'
     ReTentar = False
+    TimeOut = 6
     IntervaloAposComando = 0
     MsgAguarde = 'Aguardando a resposta da Impressora: %d segundos'
     MsgTrabalhando = 'Impressora está trabalhando'
+    ExibeMensagem = False
+    TempoInicioMsg = 6
     BloqueiaMouseTeclado = False
     MsgRelatorio = 'Imprimindo %s  %dª Via '
     MsgPausaRelatorio = 'Destaque a %dª via, <ENTER> proxima, %d seg.'
@@ -884,7 +889,7 @@ object Form1: TForm1
     TEFHiper.ArqResp = 'C:\HiperTEF\resp\IntPos.001'
     TEFHiper.GPExeName = 'C:\HiperTEF\HiperTEF.exe'
     TEFCliSiTef.ArqLOG = 'CliSiTef.log'
-    TEFCliSiTef.EnderecoIP = '192.168.1.3'
+    TEFCliSiTef.EnderecoIP = 'localhost'
     TEFCliSiTef.CodigoLoja = '00000000'
     TEFCliSiTef.NumeroTerminal = 'SE000001'
     TEFCliSiTef.OnExibeMenu = CliSiTefExibeMenu

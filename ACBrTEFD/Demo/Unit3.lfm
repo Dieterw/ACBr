@@ -1,7 +1,7 @@
 object Form3: TForm3
-  Left = 464
+  Left = 475
   Height = 174
-  Top = 194
+  Top = 204
   Width = 318
   ActiveControl = cbxRede
   BorderIcons = [biSystemMenu]
@@ -12,18 +12,18 @@ object Form3: TForm3
   LCLVersion = '0.9.29'
   object Label1: TLabel
     Left = 17
-    Height = 18
+    Height = 16
     Top = 15
-    Width = 40
+    Width = 28
     Caption = 'REDE'
     ParentColor = False
   end
   object cbxRede: TComboBox
     Left = 16
-    Height = 27
+    Height = 23
     Top = 36
     Width = 104
-    ItemHeight = 0
+    ItemHeight = 15
     Items.Strings = (
       'REDECARD'
       'VISANET'
@@ -33,15 +33,15 @@ object Form3: TForm3
   end
   object Label2: TLabel
     Left = 133
-    Height = 18
+    Height = 16
     Top = 15
-    Width = 28
+    Width = 24
     Caption = 'NSU'
     ParentColor = False
   end
   object edNSU: TEdit
     Left = 133
-    Height = 25
+    Height = 23
     Top = 36
     Width = 163
     TabOrder = 1
@@ -57,33 +57,33 @@ object Form3: TForm3
   end
   object Label3: TLabel
     Left = 17
-    Height = 18
+    Height = 16
     Top = 72
-    Width = 73
+    Width = 59
     Caption = 'Finalização'
     ParentColor = False
   end
   object edFinalizacao: TEdit
     Left = 17
-    Height = 25
+    Height = 23
     Top = 93
     Width = 163
     TabOrder = 2
   end
   object Label4: TLabel
     Left = 206
-    Height = 18
+    Height = 16
     Top = 72
-    Width = 33
+    Width = 28
     Caption = 'Valor'
     ParentColor = False
   end
   object edValor: TEdit
     Left = 206
-    Height = 25
+    Height = 23
     Top = 93
     Width = 90
     TabOrder = 4
     Text = '0,00'
   end
-end
+end

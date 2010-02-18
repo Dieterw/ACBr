@@ -328,6 +328,11 @@ TACBrECFEpson = class( TACBrECFClass )
     Procedure CortaPapel( const CorteParcial : Boolean = false) ; override ;
     procedure Suprimento( const Valor: Double; Obs : AnsiString;
        DescricaoCNF: String; DescricaoFPG: String) ; override ;
+    procedure CarregaRelatoriosGerenciais; override;
+    procedure ProgramaRelatorioGerencial(var Descricao: string;
+       Posicao: string=''); override;
+    function AchaCNFDescricao( Descricao: String;
+       BuscaExata : Boolean ): TACBrECFComprovanteNaoFiscal; override;
 
  end ;
 
@@ -3024,6 +3029,71 @@ function TACBrECFEpson.GetTotalSubstituicaoTributariaISSQN: Double;
 begin
   EpsonResposta.Resposta := Ret0906 ;
   Result := RoundTo( StrToFloatDef(EpsonResposta.Params[18],0) /100, -2) ;
+end;
+
+procedure TACBrECFEpson.CarregaRelatoriosGerenciais;   // Por: WagnerPV
+var
+  i, QtdeRG: integer ;
+  RG: TACBrECFRelatorioGerencial;
+begin
+  inherited CarregaRelatoriosGerenciais ;   {Inicializa fpRelatoriosGerenciais}
+  try
+     //Consulta a qtde de RG cadastrados
+     EpsonComando.Comando  :='0901';
+     EpsonComando.Extensao :='0002';
+     EnviaComando;
+
+     QtdeRG := StrToIntDef(EpsonResposta.Params[0],0);
+
+     //Consultas informações de cada relatorio individualmente e
+     //adiciona em fpRelatoriosGerenciais;
+     for i := 1 to QtdeRG do
+     begin
+        EpsonComando.Comando  :='0902';
+        EpsonComando.Extensao :='0002';
+        EpsonComando.AddParam(IntToStrZero(i,2));
+        EnviaComando;
+
+        RG := TACBrECFRelatorioGerencial.Create;
+        RG.Indice    := IntToStrZero(i,2);
+        RG.Descricao := EpsonResposta.Params[0];
+        RG.Contador  := StrToIntDef(EpsonResposta.Params[1],0);
+        fpRelatoriosGerenciais.Add(RG);
+     end;
+  except
+     //para que as rotinas Acha* tentem carregar novamente
+     FreeAndNil(fpRelatoriosGerenciais);
+     raise;
+  end;
+end;
+
+procedure TACBrECFEpson.ProgramaRelatorioGerencial( var Descricao: String; Posicao: String);
+// Por: WagnerPV
+const
+   MaxRG = 30; //Falta saber qual a qtde máxima de RGs na EPSON
+begin
+  CarregaRelatoriosGerenciais;
+  Descricao := Copy(Trim(Descricao),1,15);
+
+  if AchaRGDescricao(Descricao, True)<>nil then
+     raise Exception.Create(ACBrStr('Relatório Gerencial ('+Descricao+') já existe.')) ;
+
+  EpsonComando.Comando  := '0570';
+  EpsonComando.Extensao := '0000';
+  EpsonComando.AddParam(PadL(Descricao,15));
+  EnviaComando;
+  
+  CarregaRelatoriosGerenciais;
+end;
+
+
+function TACBrECFEpson.AchaCNFDescricao( Descricao: String;
+       BuscaExata : Boolean ): TACBrECFComprovanteNaoFiscal;   // Por: WagnerPV
+begin
+  if UpperCase(Trim(Descricao)) = 'SUPRIMENTO' then
+     Descricao := 'FUNDO DE TROCO' ;
+
+  Result := inherited AchaCNFDescricao( Descricao, BuscaExata );
 end;
 
 end.

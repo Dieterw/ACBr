@@ -136,6 +136,7 @@ type
         var Resposta : String; var Digitado : Boolean );
      procedure edEsperaSleepChange(Sender : TObject);
      procedure edEsperaSTSChange(Sender : TObject);
+     procedure pMensagemOperadorClick(Sender: TObject);
      procedure pMensagemResize(Sender : TObject);
      procedure TrataErros(Sender : TObject; E : Exception);
      procedure bAbreVendeSubTotalizaClick(Sender : TObject);
@@ -452,15 +453,10 @@ begin
   CodFormaPagamento := '01' ;
   ValorStr          := '0' ;
 
-  if not InputQuery('Abertura de Cupom Vinculado',
-                    'Digite o Cod.Forma Pagamento utilizada no cupom anterior',
-                    CodFormaPagamento ) then
+  if not InputQuery('Pagamento','Digite o Cod.Forma Pagamento',CodFormaPagamento ) then
      exit ;
 
-  if not InputQuery('Abertura de Cupom Vinculado',
-                    ACBrStr('Digite o Valor a vincular no cupom anterior'+sLineBreak+
-                    '(Não é necessário em alguns modelos)'),
-                    ValorStr ) then
+  if not InputQuery('Pagamento','Digite o Valor a Pagar',ValorStr ) then
      exit ;
 
   if StrToFloatDef(ValorStr,0) = 0 then
@@ -786,6 +782,11 @@ end;
 procedure TForm1.edEsperaSTSChange(Sender : TObject);
 begin
    ACBrTEFD1.EsperaSTS := StrToInt(edEsperaSTS.Text);
+end;
+
+procedure TForm1.pMensagemOperadorClick(Sender: TObject);
+begin
+   pMensagem.Visible:= False ;
 end;
 
 procedure TForm1.pMensagemResize(Sender : TObject);

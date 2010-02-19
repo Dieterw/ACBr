@@ -54,9 +54,10 @@ type
   end;
 
   TRegistro1310List = class;
-  TRegistro1320List = class;  
+  TRegistro1320List = class;
   TRegistro1360List = class;
   TRegistro1370List = class;
+  TRegistro1710List = class;
 
   /// Registro 1100 - REGISTRO DE INFORMAÇÕES SOBRE EXPORTAÇÃO
 
@@ -237,7 +238,7 @@ type
     fVAL_AJ_PERDA: Currency;        /// Valor da Perda
     fVAL_AJ_GANHO: Currency;        /// Valor do ganho
     fESTQ_FECHA: Currency;          /// Estoque de Fechamento (Somatório dos registros da conciliação de estoques )
-
+    fFECH_FISICO:  Currency;   /// Volume aferido no tanque, em litros. Estoque de fechamento físico do tanque
     FRegistro1310: TRegistro1310List;  /// BLOCO 1 - Lista de Registro1310 (FILHO)
   public
     constructor Create; virtual; /// Create
@@ -253,6 +254,7 @@ type
     property VAL_AJ_PERDA: Currency read FVAL_AJ_PERDA write FVAL_AJ_PERDA;
     property VAL_AJ_GANHO: Currency read FVAL_AJ_GANHO write FVAL_AJ_GANHO;
     property ESTQ_FECHA: Currency   read FESTQ_FECHA write FESTQ_FECHA;
+    property FECH_FISICO : Currency read fFECH_FISICO  write fFECH_FISICO;
 
     property Registro1310: TRegistro1310List read FRegistro1310 write FRegistro1310;
   end;
@@ -296,7 +298,7 @@ type
     property ESTQ_ESCR   : Currency read fESTQ_ESCR    write fESTQ_ESCR;
     property VAL_AJ_PERDA: Currency read fVAL_AJ_PERDA write fVAL_AJ_PERDA;
     property VAL_AJ_GANHO: Currency read fVAL_AJ_GANHO write fVAL_AJ_GANHO;
-    property FECH_FISICO : Currency read fFECH_FISICO write fFECH_FISICO;
+    property FECH_FISICO : Currency read fFECH_FISICO  write fFECH_FISICO;
 
     property Registro1320: TRegistro1320List read FRegistro1320 write FRegistro1320;
   end;
@@ -616,6 +618,108 @@ type
     function New: TRegistro1600;
     property Items[Index: Integer]: TRegistro1600 read GetItem write SetItem;
   end;
+
+  /// Registro 1700 - DOCUMENTOS FISCAIS UTILIZADOS
+
+  TRegistro1700 = class(TPersistent)
+  private
+    fCOD_DISP: AnsiString;    /// Codigo Dispositivo autorizado
+    fCOD_MOD: AnsiString;     /// Codigo Modelo Documento Fiscal
+    fSER: AnsiString;         /// Serie Documento Fiscal
+    fSUB: AnsiString;         /// SubSerie Documento Fiscal
+    fNUM_DOC_INI: Currency;     /// Numero Documento Fiscal Inicial
+    fNUM_DOC_FIN: Currency;     /// Numero Documento Fiscal Final
+    fNUM_AUT: Currency;         /// Numero da Autorizacao
+
+    FRegistro1710: TRegistro1710List;  /// BLOCO 1- Lista de Registro1710 (FILHO fo FILHO)
+  public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
+    property COD_DISP: AnsiString read fCOD_DISP write fCOD_DISP;
+    property COD_MOD: AnsiString read fCOD_MOD write fCOD_MOD;
+    property SER: AnsiString read fSER write fSER;
+    property SUB: AnsiString read fSUB write fSUB;
+    property NUM_DOC_INI: Currency read fNUM_DOC_INI write fNUM_DOC_INI;
+    property NUM_DOC_FIN: Currency read fNUM_DOC_FIN write fNUM_DOC_FIN;
+    property NUM_AUT: Currency read fNUM_AUT write fNUM_AUT;
+
+    property Registro1710: TRegistro1710List read FRegistro1710 write FRegistro1710;
+  end;
+
+  /// Registro 1700 - Lista
+
+  TRegistro1700List = class(TList)
+  private
+    function GetItem(Index: Integer): TRegistro1700;
+    procedure SetItem(Index: Integer; const Value: TRegistro1700);
+  public
+    destructor Destroy; override;
+    function New: TRegistro1700;
+    property Items[Index: Integer]: TRegistro1700 read GetItem write SetItem;
+  end;
+
+
+  /// Registro 1710 - DOCUMENTOS FISCAIS CANCELADOS/INUTILIZADOS
+
+  TRegistro1710 = class(TPersistent)
+  private
+    fNUM_DOC_INI: Currency;     /// Numero Documento Fiscal Inicial
+    fNUM_DOC_FIN: Currency;     /// Numero Documento Fiscal Final
+  public
+    property NUM_DOC_INI: Currency read fNUM_DOC_INI write fNUM_DOC_INI;
+    property NUM_DOC_FIN: Currency read fNUM_DOC_FIN write fNUM_DOC_FIN;
+  end;
+
+  /// Registro 1710 - Lista
+
+  TRegistro1710List = class(TList)
+  private
+    function GetItem(Index: Integer): TRegistro1710;
+    procedure SetItem(Index: Integer; const Value: TRegistro1710);
+  public
+    destructor Destroy; override;
+    function New: TRegistro1710;
+    property Items[Index: Integer]: TRegistro1710 read GetItem write SetItem;
+  end;
+
+  /// Registro 1800 - DEMONSTRATIVO CREDITO ICMS SOBRE TRANSPORTE AEREO
+
+  TRegistro1800 = class(TPersistent)
+  private
+    fVL_CARGA: Currency;        /// Valor Prestacoes Cargas Tributado
+    fVL_PASS: Currency;         /// Valor Prestacoes Cargas Nao Tributado
+    fVL_FAT: Currency;          /// Valor total do faturamento
+    fIND_RAT: Currency;         /// Indice para rateio
+    fVL_ICMS_ANT: Currency;     /// Valor Total Creditos ICMS
+    fVL_BC_ICMS: Currency;      /// Valor Base Calculo ICMS
+    fVL_ICMS_APUR: Currency;    /// Valor ICMS apurado no calculo
+    fVL_BC_ICMS_APUR: Currency; /// Valor base ICMS apurada
+    fVL_DIF: Currency;          /// Valor diferenca a estorno de credito na apuracao
+  public
+    property VL_CARGA:Currency read fVL_CARGA write fVL_CARGA ;
+    property VL_PASS:Currency read fVL_PASS write fVL_PASS ;
+    property VL_FAT:Currency read fVL_FAT write fVL_FAT ;
+    property IND_RAT:Currency read fIND_RAT write fIND_RAT ;
+    property VL_ICMS_ANT:Currency read fVL_ICMS_ANT write fVL_ICMS_ANT ;
+    property VL_BC_ICMS:Currency read fVL_BC_ICMS write fVL_BC_ICMS ;
+    property VL_ICMS_APUR:Currency read fVL_ICMS_APUR write fVL_ICMS_APUR ;
+    property VL_BC_ICMS_APUR:Currency read fVL_BC_ICMS_APUR write fVL_BC_ICMS_APUR ;
+    property VL_DIF:Currency read fVL_DIF write fVL_DIF ;
+  end;
+
+ /// Registro 1800 - Lista
+
+ TRegistro1800List = class(TList)
+  private
+    function GetItem(Index: Integer): TRegistro1800;
+    procedure SetItem(Index: Integer; const Value: TRegistro1800);
+  public
+    destructor Destroy; override;
+    function New: TRegistro1800;
+    property Items[Index: Integer]: TRegistro1800 read GetItem write SetItem;
+  end;
+
 
   /// Registro 1990 - ENCERRAMENTO DO BLOCO 1
 
@@ -1059,5 +1163,97 @@ begin
   FRegistro1370.Free;
   inherited;
 end;
+
+{ TRegistro1700 }
+
+constructor TRegistro1700.Create;
+begin
+  FRegistro1710 := TRegistro1710List.Create;  /// BLOCO 1 - Lista de Registro1710 (FILHO)
+end;
+
+destructor TRegistro1700.Destroy;
+begin
+  FRegistro1710.Free;
+  inherited;
+end;
+
+{ TRegistro1700List }
+
+destructor TRegistro1700List.Destroy;
+var
+intFor: integer;
+begin
+  for intFor := 0 to Count - 1 do Items[intFor].Free;
+  inherited;
+end;
+
+function TRegistro1700List.GetItem(Index: Integer): TRegistro1700;
+begin
+  Result := TRegistro1700(Inherited Items[Index]);
+end;
+
+function TRegistro1700List.New: TRegistro1700;
+begin
+  Result := TRegistro1700.Create;
+  Add(Result);
+end;
+
+procedure TRegistro1700List.SetItem(Index: Integer; const Value: TRegistro1700);
+begin
+  Put(Index, Value);
+end;
+
+{ TRegistro1710 }
+
+destructor TRegistro1710List.Destroy;
+var
+intFor: integer;
+begin
+  for intFor := 0 to Count - 1 do Items[intFor].Free;
+  inherited;
+end;
+
+function TRegistro1710List.GetItem(Index: Integer): TRegistro1710;
+begin
+  Result := TRegistro1710(Inherited Items[Index]);
+end;
+
+function TRegistro1710List.New: TRegistro1710;
+begin
+  Result := TRegistro1710.Create;
+  Add(Result);
+end;
+
+procedure TRegistro1710List.SetItem(Index: Integer; const Value: TRegistro1710);
+begin
+  Put(Index, Value);
+end;
+
+{ TRegistro1800List }
+
+destructor TRegistro1800List.Destroy;
+var
+intFor: integer;
+begin
+  for intFor := 0 to Count - 1 do Items[intFor].Free;
+  inherited;
+end;
+
+function TRegistro1800List.GetItem(Index: Integer): TRegistro1800;
+begin
+  Result := TRegistro1800(Inherited Items[Index]);
+end;
+
+function TRegistro1800List.New: TRegistro1800;
+begin
+  Result := TRegistro1800.Create;
+  Add(Result);
+end;
+
+procedure TRegistro1800List.SetItem(Index: Integer; const Value: TRegistro1800);
+begin
+  Put(Index, Value);
+end;
+
 
 end.

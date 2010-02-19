@@ -46,10 +46,10 @@ uses
   SysUtils, Classes, DateUtils, ACBrSped,
   ACBrEFDBloco_0_Class, ACBrEFDBloco_1_Class, ACBrEFDBloco_9_Class,
   ACBrEFDBloco_C_Class, ACBrEFDBloco_D_Class, ACBrEFDBloco_E_Class,
-  ACBrEFDBloco_H_Class;
+  ACBrEFDBloco_G_Class, ACBrEFDBloco_H_Class;
 
 const
-   CACBrSpedFiscal_Versao = '0.06a' ;
+   CACBrSpedFiscal_Versao = '0.07a' ;
 
 type
   /// ACBrSpedFiscal - Sitema Publico de Escrituração Digital Fiscal
@@ -63,6 +63,7 @@ type
     FBloco_C: TBloco_C;
     FBloco_D: TBloco_D;
     FBloco_E: TBloco_E;
+    FBloco_G: TBloco_G;
     FBloco_H: TBloco_H;
 
     procedure LimpaRegistros;
@@ -100,6 +101,9 @@ type
     function WriteRegistro1400: AnsiString;
     function WriteRegistro1500: AnsiString;
     function WriteRegistro1510: AnsiString;
+    function WriteRegistro1600: AnsiString;
+    function WriteRegistro1700: AnsiString;
+    function WriteRegistro1800: AnsiString;
     function WriteRegistro1990: AnsiString;
     /// BLOCO C
     function WriteRegistroC001: AnsiString;
@@ -170,6 +174,10 @@ type
     function WriteRegistroE520: AnsiString;
     function WriteRegistroE530: AnsiString;
     function WriteRegistroE990: AnsiString;
+    /// BLOCO G
+    function WriteRegistroG001: AnsiString;
+    function WriteRegistroG110: AnsiString;
+    function WriteRegistroG990: AnsiString;
     /// BLOCO H
     function WriteRegistroH001: AnsiString;
     function WriteRegistroH005: AnsiString;
@@ -191,6 +199,7 @@ type
     property Bloco_C: TBloco_C read FBloco_C write FBloco_C;
     property Bloco_D: TBloco_D read FBloco_D write FBloco_D;
     property Bloco_E: TBloco_E read FBloco_E write FBloco_E;
+    property Bloco_G: TBloco_G read FBloco_G write FBloco_G;
     property Bloco_H: TBloco_H read FBloco_H write FBloco_H;
   published
     property About : String read GetAbout write SetAbout stored False ;
@@ -224,6 +233,7 @@ begin
   FBloco_C := TBloco_C.Create(Self);
   FBloco_D := TBloco_D.Create(Self);
   FBloco_E := TBloco_E.Create(Self);
+  FBloco_G := TBloco_G.Create(Self);
   FBloco_H := TBloco_H.Create(Self);
   FBloco_9 := TBloco_9.Create(Self);
 
@@ -231,6 +241,7 @@ begin
   /// em seus registros.
   /// Ex: Do Bloco_C registro C425, pesquisar o Bloco_0 registro 0200.
   FBloco_C.Bloco_0 := FBloco_0;
+  FBloco_G.Bloco_0 := FBloco_0;
 
   FPath    := ExtractFilePath( ParamStr(0) );
 end;
@@ -242,6 +253,7 @@ begin
   FBloco_C.Free;
   FBloco_D.Free;
   FBloco_E.Free;
+  FBloco_G.Free;
   FBloco_H.Free;
   FBloco_9.Free;
   inherited;
@@ -254,6 +266,7 @@ begin
   FBloco_C.LimpaRegistros;
   FBloco_D.LimpaRegistros;
   FBloco_E.LimpaRegistros;
+  FBloco_G.LimpaRegistros;
   FBloco_H.LimpaRegistros;
   FBloco_9.LimpaRegistros;
 end;
@@ -276,6 +289,7 @@ begin
   FBloco_C.TrimString := Value;
   FBloco_D.TrimString := Value;
   FBloco_E.TrimString := Value;
+  FBloco_G.TrimString := Value;
   FBloco_H.TrimString := Value;
   FBloco_9.TrimString := Value;
 end;
@@ -288,6 +302,7 @@ begin
   FBloco_C.CurMascara := Value;
   FBloco_D.CurMascara := Value;
   FBloco_E.CurMascara := Value;
+  FBloco_G.CurMascara := Value;
   FBloco_H.CurMascara := Value;
   FBloco_9.CurMascara := Value;
 end;
@@ -300,6 +315,7 @@ begin
   FBloco_C.Delimitador := Value;
   FBloco_D.Delimitador := Value;
   FBloco_E.Delimitador := Value;
+  FBloco_G.Delimitador := Value;
   FBloco_H.Delimitador := Value;
   FBloco_9.Delimitador := Value;
 end;
@@ -331,6 +347,7 @@ begin
   FBloco_C.OnError := OnError;
   FBloco_D.OnError := OnError;
   FBloco_E.OnError := OnError;
+  FBloco_G.OnError := OnError;
   FBloco_H.OnError := OnError;
   FBloco_9.OnError := OnError;
   ///
@@ -347,6 +364,7 @@ begin
   Bloco_C.RegistroC990.QTD_LIN_C := 0;
   Bloco_D.RegistroD990.QTD_LIN_D := 0;
   Bloco_E.RegistroE990.QTD_LIN_E := 0;
+  Bloco_G.RegistroG990.QTD_LIN_G := 0;
   Bloco_H.RegistroH990.QTD_LIN_H := 0;
   Bloco_9.Registro9990.QTD_LIN_9 := 0;
   Bloco_9.Registro9999.QTD_LIN   := 0;
@@ -446,6 +464,11 @@ begin
     if Bloco_E.RegistroE520.Count > 0 then Write(txtFile, WriteRegistroE520); // Dante
     if Bloco_E.RegistroE530.Count > 0 then Write(txtFile, WriteRegistroE530); // Dante
     Write(txtFile, WriteRegistroE990);
+
+    /// BLOCO G
+    Write(txtFile, WriteRegistroG001);
+    if Bloco_G.RegistroG110.Count > 0 then Write(txtFile, WriteRegistroG110);
+    Write(txtFile, WriteRegistroG990);
 
     /// BLOCO H
     Write(txtFile, WriteRegistroH001);
@@ -755,6 +778,41 @@ begin
       QTD_REG_BLC := Bloco_1.Registro1510.Count;
    end;
    Result := Bloco_1.WriteRegistro1510;
+end;
+
+function TACBrSPEDFiscal.WriteRegistro1600: AnsiString;
+begin
+   with Bloco_9.Registro9900.New do
+   begin
+      REG_BLC := '1600';
+      QTD_REG_BLC := Bloco_1.Registro1600.Count;
+   end;
+   Result := Bloco_1.WriteRegistro1600;
+end;
+
+function TACBrSPEDFiscal.WriteRegistro1700: AnsiString;
+begin
+   Result := Bloco_1.WriteRegistro1700;
+   with Bloco_9.Registro9900.New do
+   begin
+      REG_BLC := '1700';
+      QTD_REG_BLC := Bloco_1.Registro1700.Count;
+   end;
+   with Bloco_9.Registro9900.New do
+   begin
+      REG_BLC := '1710';
+      QTD_REG_BLC := Bloco_1.Registro1710Count;
+   end;
+end;
+
+function TACBrSPEDFiscal.WriteRegistro1800: AnsiString;
+begin
+   with Bloco_9.Registro9900.New do
+   begin
+      REG_BLC := '1800';
+      QTD_REG_BLC := Bloco_1.Registro1800.Count;
+   end;
+   Result := Bloco_1.WriteRegistro1800;
 end;
 
 function TACBrSPEDFiscal.WriteRegistro1990: AnsiString;
@@ -1639,6 +1697,55 @@ begin
       QTD_REG_BLC := 1;
    end;
    Result := Bloco_E.WriteRegistroE990;
+end;
+
+function TACBrSPEDFiscal.WriteRegistroG001: AnsiString;
+begin
+   with Bloco_9.Registro9900.New do
+   begin
+      REG_BLC := 'G001';
+      QTD_REG_BLC := 1;
+   end;
+   Result := Bloco_G.WriteRegistroG001;
+end;
+
+function TACBrSPEDFiscal.WriteRegistroG110: AnsiString;
+begin
+   Result := Bloco_G.WriteRegistroG110;
+
+   with Bloco_9.Registro9900 do
+   begin
+      with New do
+      begin
+         REG_BLC := 'G110';
+         QTD_REG_BLC := Bloco_G.RegistroG110.Count;
+      end;
+      with New do
+      begin
+         REG_BLC := 'G125';
+         QTD_REG_BLC := Bloco_G.RegistroG125Count;
+      end;
+      with New do
+      begin
+         REG_BLC := 'G130';
+         QTD_REG_BLC := Bloco_G.RegistroG130Count;
+      end;
+      with New do
+      begin
+         REG_BLC := 'G140';
+         QTD_REG_BLC := Bloco_G.RegistroG140Count;
+      end;
+   end;
+end;
+
+function TACBrSPEDFiscal.WriteRegistroG990: AnsiString;
+begin
+   with Bloco_9.Registro9900.New do
+   begin
+      REG_BLC := 'G990';
+      QTD_REG_BLC := 1;
+   end;
+   Result := Bloco_G.WriteRegistroG990;
 end;
 
 function TACBrSPEDFiscal.WriteRegistroH001: AnsiString;

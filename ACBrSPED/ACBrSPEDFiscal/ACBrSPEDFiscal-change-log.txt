@@ -47,6 +47,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.07a   12/02/10
+[*] Implementado do Bloco 1 por (Ricardo JS)
+[+] Implemantado todo o código do Bloco G que faltava por (Ricardo JS)
+
 Versão 0.06a   25/01/10
 [+] Implementação feita no Registro1500, conforme Guia Prático EFD 2.0.0 por
     (Isaque Pinheiro)

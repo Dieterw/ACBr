@@ -49,14 +49,18 @@ Símbolo : Significado
 
 
 Versão 0.03a   27/01/10
+---------------
 [*] Implementado geração do registro I200 e a hierarquia dos regsitros I155 
     e I250 por (Mauricio)
+[-] Correções de totalizações no Bloco I por (Mauricio)
 
 Versão 0.03a   23/01/10
+---------------
 [*] Foi criado uma nova unit (ACBrUtilTXT.pas) na pasta ACBrComum, com o conteúdo
     que está comentado na unit ACBrSped.pas
 
 Versão 0.02a   13/12/09
+---------------
 [+] Adicionada propriedade "About" para melhor controle de Versao (DSA)
 
 Versão 0.01a   11/12/09

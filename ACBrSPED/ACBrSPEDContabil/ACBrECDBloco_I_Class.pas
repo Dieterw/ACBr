@@ -555,6 +555,7 @@ begin
         end;
        RegistroI990.QTD_LIN_I := RegistroI990.QTD_LIN_I + 1;
      end;
+     FRegistroI155Count := FRegistroI155Count + RegI150.RegistroI155.Count;
   end;
   Result := strRegistroI155;
 end;
@@ -619,6 +620,7 @@ begin
         end;
        RegistroI990.QTD_LIN_I := RegistroI990.QTD_LIN_I + 1;
      end;
+     FRegistroI250Count := FRegistroI250Count + RegI200.RegistroI250.Count;
   end;
   Result := strRegistroI250;
 end;

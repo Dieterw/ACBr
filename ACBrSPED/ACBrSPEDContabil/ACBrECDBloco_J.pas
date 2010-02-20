@@ -170,14 +170,14 @@ type
     fNUM_ORD: AnsiString;        /// Número de ordem do instrumento de escrituração.
     fNAT_LIVRO: AnsiString;      /// Natureza do livro; finalidade a que se destinou o instrumento.
     fNOME: AnsiString;           /// Nome empresarial.
-    fQTD_LIN: Currency;          /// Quantidade total de linhas do arquivo digital.
+    fQTD_LIN: Integer;           /// Quantidade total de linhas do arquivo digital.
     fDT_INI_ESCR: TDateTime;     /// Data de inicio da escrituração.
     fDT_FIN_ESCR: TDateTime;     /// Data de término da escrituração.
   public
     property NUM_ORD: AnsiString read fNUM_ORD write fNUM_ORD;
     property NAT_LIVRO: AnsiString read fNAT_LIVRO write fNAT_LIVRO;
     property NOME: AnsiString read fNOME write fNOME;
-    property QTD_LIN: Currency read fQTD_LIN write fQTD_LIN;
+    property QTD_LIN: Integer read fQTD_LIN write fQTD_LIN;
     property DT_INI_ESCR: TDateTime read fDT_INI_ESCR write fDT_INI_ESCR;
     property DT_FIN_ESCR: TDateTime read fDT_FIN_ESCR write fDT_FIN_ESCR;
   end;

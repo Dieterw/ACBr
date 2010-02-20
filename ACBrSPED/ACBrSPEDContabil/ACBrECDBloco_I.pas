@@ -151,7 +151,7 @@ type
   private
     fNUM_ORD: AnsiString;     /// Número de ordem do instrumento de escrituração.
     fNAT_LIVR: AnsiString;    /// Natureza do livro; finalidade a que se destina o instrumento.
-    fQTD_LIN: Currency;       /// Quantidade total de linhas do arquivo digital.
+    fQTD_LIN: Integer;        /// Quantidade total de linhas do arquivo digital.
     fNOME: AnsiString;        /// Nome empresarial.
     fNIRE: AnsiString;        /// Número de Identificação do Registro de Empresas da Junta Comercial.
     fCNPJ: AnsiString;        /// Número de inscrição no CNPJ .
@@ -161,7 +161,7 @@ type
   public
     property NUM_ORD: AnsiString read fNUM_ORD write fNUM_ORD;
     property NAT_LIVR: AnsiString read fNAT_LIVR write fNAT_LIVR;
-    property QTD_LIN: Currency read fQTD_LIN write fQTD_LIN;
+    property QTD_LIN: Integer read fQTD_LIN write fQTD_LIN;
     property NOME: AnsiString read fNOME write fNOME;
     property NIRE: AnsiString read fNIRE write fNIRE;
     property CNPJ: AnsiString read fCNPJ write fCNPJ;

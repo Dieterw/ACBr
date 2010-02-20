@@ -448,7 +448,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'I050';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_I.RegistroI050.Count;
    end;
    Result := Bloco_I.WriteRegistroI050;
 end;
@@ -458,7 +458,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'I051';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_I.RegistroI051.Count;
    end;
    Result := Bloco_I.WriteRegistroI051;
 end;
@@ -468,7 +468,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'I052';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_I.RegistroI052.Count;
    end;
    Result := Bloco_I.WriteRegistroI052;
 end;
@@ -478,7 +478,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'I075';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_I.RegistroI075.Count;
    end;
    Result := Bloco_I.WriteRegistroI075;
 end;
@@ -488,7 +488,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'I100';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_I.RegistroI100.Count;
    end;
    Result := Bloco_I.WriteRegistroI100;
 end;
@@ -500,7 +500,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'I150';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_I.RegistroI150.Count;
    end;
    with Bloco_9.Registro9900.New do
    begin
@@ -526,7 +526,7 @@ begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'I200';
-      QTD_REG_BLC := 1;
+      QTD_REG_BLC := Bloco_I.RegistroI200.Count;
    end;
    with Bloco_9.Registro9900.New do
    begin

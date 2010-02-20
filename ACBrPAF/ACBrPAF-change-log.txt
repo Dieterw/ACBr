@@ -47,6 +47,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.01b   20/02/10
+---------------
+[-] Correções ao gerar os registros D, P e R, na homologação por (emsoft)
+
 Versão 0.01a   25/01/10
 ---------------
 [+] Implementado no RegistroD2 a propriedade "CCF" conforme AC 

@@ -130,9 +130,9 @@ begin
                                            RFill(COD_MERC_SERV, 14) +
                                            RFill(DESC_MERC_SERV, 50) +
                                            RFill(UN_MED, 6) +
-                                           RFill(IAT, 6) +
-                                           RFill(IPPT, 6) +
-                                           RFill(ST, 6) +
+                                           RFill(IAT, 1) +
+                                           RFill(IPPT, 1) +
+                                           RFill(ST, 1) +
                                            LFill(ALIQ, 4) +
                                            LFill(VL_UNIT, 12, 2) +
                                            #13#10;

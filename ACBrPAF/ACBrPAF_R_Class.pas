@@ -133,6 +133,7 @@ begin
                   LFill(IM_SH, 14) +
                   RFill(NOME_SH, 40) +
                   RFill(VER_PAF, 10) +
+                  RFill(NOME_PAF, 40) +  // emsoft
                   RFill(COD_MD5, 32) +
                   LFill(DT_INI, 'yyyymmdd') +
                   LFill(DT_FIN, 'yyyymmdd') +
@@ -274,8 +275,8 @@ begin
                                              RFill(COD_TOT_PARC, 7) +
                                              RFill(IND_CANC, 1) +
                                              LFill(QTDE_CANC, 7, 2) +
-                                             LFill(VL_CANC, 3, 2) +
-                                             LFill(VL_CANC_ACRES, 3, 2) +
+                                             LFill(VL_CANC, 13, 2) +
+                                             LFill(VL_CANC_ACRES, 13, 2) +
                                              RFill(IAT, 1) +
                                              RFill(IPPT, 1) +
                                              LFill(QTDE_DECIMAL, 1) +

@@ -123,11 +123,10 @@ begin
      begin
         with RegistroT2.Items[intFor] do
         begin
-          Check(funChecaCNPJ(RegistroT1.CNPJ), '(T2) ESTOQUE: O CNPJ "%s" digitado é inválido!', [RegistroT1.CNPJ]);
-          ///
           strRegistroT2 := strRegistroT2 + LFill('T2') +
                                            LFill(RegistroT1.CNPJ, 14) +
                                            LFill(DT_MOV, 'yyyymmdd') +
+                                           RFill(TP_DOCTO, 10) +
                                            RFill(SERIE, 2) +
                                            LFill(NUM_BILH_I, 6) +
                                            LFill(NUM_BILH_F, 6) +
@@ -155,12 +154,9 @@ begin
    begin
       with RegistroT9 do
       begin
-        Check(funChecaCNPJ(RegistroT1.CNPJ),            '(T9) TOTALIZAÇÃO: O CNPJ "%s" digitado é inválido!', [RegistroT1.CNPJ]);
-        Check(funChecaIE(RegistroT1.IE, RegistroT1.UF), '(T9) TOTALIZAÇÃO: A Inscrição Estadual "%s" digitada é inválida!', [RegistroT1.IE]);
-        ///
         Result := LFill('T9') +
-                  LFill(RegistroT1.CNPJ) +
-                  LFill(RegistroT1.IE) +
+                  LFill(RegistroT1.CNPJ, 14) +
+                  RFill(RegistroT1.IE, 14) +
                   LFill(TOT_REG, 6, 0) +
                   #13#10;
       end;

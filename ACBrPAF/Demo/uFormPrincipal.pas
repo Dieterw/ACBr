@@ -107,7 +107,7 @@ begin
      // os relatorios PAF estes parâmetros não são necessários
      ACBrPAF.CurMascara :='';
      ACBrPAF.Delimitador:='';
-     ACBrPAF.AssDigital:=GerarDados('S',256); // esta linha deverá ser retirada do arquivo e colocar o seu EAD q só pode ser calculada após a geração do arquivo.
+     ACBrPAF.AssDigital:=GerarDados('S',256); // Gere aqui a sua chave EAD
 
      edtCNPJ.Text:=GerarDados('I',14);
      edtIE.Text:=GerarDados('I',14);

@@ -24,8 +24,6 @@ object Form6: TForm6
     Align = alTop
     Caption = 'Identifica'#231#227'o do Estabelecimento Usu'#225'rio do PAF-ECF'
     TabOrder = 0
-    ExplicitLeft = 40
-    ExplicitTop = 56
     object Label1: TLabel
       Left = 16
       Top = 24
@@ -110,7 +108,6 @@ object Form6: TForm6
     Align = alBottom
     Caption = 'Log de erros'
     TabOrder = 1
-    ExplicitTop = 232
     object logErros: TMemo
       Left = 2
       Top = 15
@@ -119,7 +116,6 @@ object Form6: TForm6
       Align = alClient
       ScrollBars = ssVertical
       TabOrder = 0
-      ExplicitHeight = 88
     end
   end
   object btnD: TButton

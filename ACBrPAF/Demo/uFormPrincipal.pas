@@ -107,6 +107,8 @@ begin
      // os relatorios PAF estes parâmetros não são necessários
      ACBrPAF.CurMascara :='';
      ACBrPAF.Delimitador:='';
+     ACBrPAF.AssDigital:=GerarDados('S',256); // esta linha deverá ser retirada do arquivo e colocar o seu EAD q só pode ser calculada após a geração do arquivo.
+
      edtCNPJ.Text:=GerarDados('I',14);
      edtIE.Text:=GerarDados('I',14);
      edtIM.Text:=GerarDados('I',14);
@@ -180,7 +182,7 @@ begin
        D2.VLT_DAV     :=GerarDados('I',2);
        D2.CCF         :=''; // não está no layout do ato/cotepe
      end;
-     ACBrPAF.AssDigital:=GerarDados('S',256); // esta linha deverá ser retirada do arquivo e colocar o seu EAD q só pode ser calculada após a geração do arquivo.
+//     ACBrPAF.AssDigital:=GerarDados('S',256); // esta linha deverá ser retirada do arquivo e colocar o seu EAD q só pode ser calculada após a geração do arquivo.
      ACBrPAF.SaveFileTXT_D('PAF_D.txt');
 end;
 
@@ -205,7 +207,7 @@ begin
        E2.QTDE_EST :=GerarDados('I',3);
        E2.DT_EST   :=Date;
      end;
-     ACBrPAF.AssDigital:=GerarDados('S',256); // esta linha deverá ser retirada do arquivo e colocar o seu EAD q só pode ser calculada após a geração do arquivo.
+//     ACBrPAF.AssDigital:=GerarDados('S',256); // esta linha deverá ser retirada do arquivo e colocar o seu EAD q só pode ser calculada após a geração do arquivo.
      ACBrPAF.SaveFileTXT_E('PAF_E.txt');
 end;
 
@@ -230,7 +232,7 @@ begin
        P2.ALIQ          :=0;
        P2.VL_UNIT       :=GerarDados('I',2);
      end;
-     ACBrPAF.AssDigital:=GerarDados('S',256); // esta linha deverá ser retirada do arquivo e colocar o seu EAD q só pode ser calculada após a geração do arquivo.
+//     ACBrPAF.AssDigital:=GerarDados('S',256); // esta linha deverá ser retirada do arquivo e colocar o seu EAD q só pode ser calculada após a geração do arquivo.
      ACBrPAF.SaveFileTXT_P('PAF_P.txt');
 end;
 
@@ -388,7 +390,7 @@ begin
        end;
      end;
 
-     ACBrPAF.AssDigital:=GerarDados('S',256); // esta linha deverá ser retirada do arquivo e colocar o seu EAD q só pode ser calculada após a geração do arquivo.
+//     ACBrPAF.AssDigital:=GerarDados('S',256); // esta linha deverá ser retirada do arquivo e colocar o seu EAD q só pode ser calculada após a geração do arquivo.
      ACBrPAF.SaveFileTXT_R('PAF_R.txt');
 end;
 
@@ -419,7 +421,7 @@ begin
        T2.VL_ISENTAS :=GerarDados('I',3);
        T2.VL_OUTRAS  :=GerarDados('I',3);
      end;
-     ACBrPAF.AssDigital:=GerarDados('S',256); // esta linha deverá ser retirada do arquivo e colocar o seu EAD q só pode ser calculada após a geração do arquivo.
+//     ACBrPAF.AssDigital:=GerarDados('S',256); // esta linha deverá ser retirada do arquivo e colocar o seu EAD q só pode ser calculada após a geração do arquivo.
      ACBrPAF.SaveFileTXT_T('PAF_T.txt');
 end;
 

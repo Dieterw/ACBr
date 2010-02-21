@@ -94,7 +94,6 @@ const
      MARCA_ECF    = 'ACBr';
      MODELO_ECF   = 'PAF';
 
-
 var
   Form6: TForm6;
 
@@ -238,65 +237,66 @@ end;
 
 procedure TForm6.btnRClick(Sender: TObject);
 var
-     R2: TRegistroR02;
-     R3: TRegistroR03;
-     R4: TRegistroR04;
-     R5: TRegistroR05;
-     R6: TRegistroR06;
-     R7: TRegistroR07;
      i,j: integer;
 begin
      // registro R1
-     ACBrPAF.PAF_R.RegistroR01.NUM_FAB    :=NUM_FAB;
-     ACBrPAF.PAF_R.RegistroR01.MF_ADICONAL:=MF_ADICIONAL;
-     ACBrPAF.PAF_R.RegistroR01.TIPO_ECF   :=TIPO_ECF;
-     ACBrPAF.PAF_R.RegistroR01.MARCA_ECF  :=MARCA_ECF;
-     ACBrPAF.PAF_R.RegistroR01.MODELO_ECF :=MODELO_ECF;
-     ACBrPAF.PAF_R.RegistroR01.VERSAO_SB  :='010101';
-     ACBrPAF.PAF_R.RegistroR01.DT_INST_SB :=date;
-     ACBrPAF.PAF_R.RegistroR01.HR_INST_SB :=time;
-     ACBrPAF.PAF_R.RegistroR01.NUM_SEQ_ECF:=1;
-     ACBrPAF.PAF_R.RegistroR01.CNPJ       :=edtCNPJ.Text;
-     ACBrPAF.PAF_R.RegistroR01.IE         :=edtIE.Text;
-     ACBrPAF.PAF_R.RegistroR01.CNPJ_SH    :=edtCNPJ.Text;
-     ACBrPAF.PAF_R.RegistroR01.IE_SH      :=edtIE.Text;
-     ACBrPAF.PAF_R.RegistroR01.IM_SH      :=edtIM.Text;
-     ACBrPAF.PAF_R.RegistroR01.NOME_SH    :=edtRAZAO.Text;
-     ACBrPAF.PAF_R.RegistroR01.NOME_PAF   :='PAFECF';
-     ACBrPAF.PAF_R.RegistroR01.VER_PAF    :='0100';
-     ACBrPAF.PAF_R.RegistroR01.COD_MD5    :=GerarDados('S',32);
-     ACBrPAF.PAF_R.RegistroR01.DT_INI     :=Date;
-     ACBrPAF.PAF_R.RegistroR01.DT_FIN     :=date;
-     ACBrPAF.PAF_R.RegistroR01.ER_PAF_ECF :='0104';
+     with ACBrPAF.PAF_R.RegistroR01 do
+     begin
+        NUM_FAB    :=NUM_FAB;
+        MF_ADICONAL:=MF_ADICIONAL;
+        TIPO_ECF   :=TIPO_ECF;
+        MARCA_ECF  :=MARCA_ECF;
+        MODELO_ECF :=MODELO_ECF;
+        VERSAO_SB  :='010101';
+        DT_INST_SB :=date;
+        HR_INST_SB :=time;
+        NUM_SEQ_ECF:=1;
+        CNPJ       :=edtCNPJ.Text;
+        IE         :=edtIE.Text;
+        CNPJ_SH    :=edtCNPJ.Text;
+        IE_SH      :=edtIE.Text;
+        IM_SH      :=edtIM.Text;
+        NOME_SH    :=edtRAZAO.Text;
+        NOME_PAF   :='PAFECF';
+        VER_PAF    :='0100';
+        COD_MD5    :=GerarDados('S',32);
+        DT_INI     :=Date;
+        DT_FIN     :=date;
+        ER_PAF_ECF :='0104';
+     end;
      // registro R02 e R03
      ACBrPAF.PAF_R.RegistroR02.Clear;
      ACBrPAF.PAF_R.RegistroR03.Clear;
      for I := 1 to 10 do
      begin
-       R2:=ACBrPAF.PAF_R.RegistroR02.New;
-       R2.NUM_FAB     :=NUM_FAB;
-       R2.MF_ADICIONAL:=MF_ADICIONAL;
-       R2.MODELO_ECF  :=MODELO_ECF;
-       R2.NUM_USU     :=1;
-       R2.CRZ         :=GerarDados('I',3);
-       R2.COO         :=GerarDados('I',3);
-       R2.CRO         :=GerarDados('I',3);
-       R2.DT_MOV      :=DATE;
-       R2.DT_EMI      :=DATE;
-       R2.HR_EMI      :=TIME;
-       R2.VL_VBD      :=GerarDados('I',3);
-       R2.PAR_ECF     :='';
-       // registro R03 - colocado dentro do for do R02 porque o R03 são os detalhes do R02
-       for J := 1 to 5 do
+       with ACBrPAF.PAF_R.RegistroR02.New do
        begin
-         R3:=ACBrPAF.PAF_R.RegistroR03.New;
-         R3.NUM_FAB     :=R2.NUM_FAB;
-         R3.MF_ADICIONAL:=R2.MF_ADICIONAL;
-         R3.MODELO_ECF  :=R2.MODELO_ECF;
-         R3.NUM_USU     :=R2.NUM_USU;
-         R3.CRZ         :=R2.CRZ;
-         R3.TOT_PARCIAL :=GerarDados('S',2);
-         R3.VL_ACUM     :=GerarDados('I',2);
+          NUM_FAB     :=NUM_FAB;
+          MF_ADICIONAL:=MF_ADICIONAL;
+          MODELO_ECF  :=MODELO_ECF;
+          NUM_USU     :=1;
+          CRZ         :=GerarDados('I',3);
+          COO         :=GerarDados('I',3);
+          CRO         :=GerarDados('I',3);
+          DT_MOV      :=DATE;
+          DT_EMI      :=DATE;
+          HR_EMI      :=TIME;
+          VL_VBD      :=GerarDados('I',3);
+          PAR_ECF     :='';
+          // registro R03 - colocado dentro do for do R02 porque o R03 são os detalhes do R02
+          for J := 1 to 5 do
+          begin
+            with ACBrPAF.PAF_R.RegistroR03.New do
+            begin
+               NUM_FAB     :=NUM_FAB;        // RegistroR02
+               MF_ADICIONAL:=MF_ADICIONAL;   // RegistroR02
+               MODELO_ECF  :=MODELO_ECF;     // RegistroR02
+               NUM_USU     :=NUM_USU;        // RegistroR02
+               CRZ         :=CRZ;            // RegistroR02
+               TOT_PARCIAL :=GerarDados('S',2);
+               VL_ACUM     :=GerarDados('I',2);
+            end;
+          end;
        end;
      end;
      // Registro R04 e R05
@@ -304,53 +304,57 @@ begin
      ACBrPAF.PAF_R.RegistroR05.Clear;
      for I := 1 to 10 do
      begin
-       R4:=ACBrPAF.PAF_R.RegistroR04.New;
-       R4.NUM_FAB     :=NUM_FAB;
-       R4.MF_ADICIONAL:=MF_ADICIONAL;
-       R4.MODELO_ECF  :=MODELO_ECF;
-       R4.NUM_USU     :=1;
-       R4.NUM_CONT    :=GerarDados('I',3);
-       R4.COO         :=GerarDados('I',3);
-       R4.DT_INI      :=date;
-       R4.SUB_DOCTO   :=GerarDados('I',2);
-       R4.SUB_DESCTO  :=GerarDados('I',2);
-       R4.TP_DESCTO   :='V';
-       R4.SUB_ACRES   :=0;
-       R4.TP_ACRES    :='V';
-       R4.VL_TOT      :=GerarDados('I',2);
-       R4.CANC        :='N';
-       R4.VL_CA       :=0;
-       R4.ORDEM_DA    :='D';
-       R4.NOME_CLI    :=GerarDados('S',50);
-       R4.CNPJ_CPF    :=GerarDados('I',12);
-       // Registro R05
-       for J := 1 to RandomRange(1,4) do
+       with ACBrPAF.PAF_R.RegistroR04.New do
        begin
-         R5:=ACBrPAF.PAF_R.RegistroR05.New;
-         R5.NUM_FAB      :=R4.NUM_FAB;
-         R5.MF_ADICIONAL :=R4.MF_ADICIONAL;
-         R5.MODELO_ECF   :=R4.MODELO_ECF;
-         R5.NUM_USU      :=R4.NUM_USU;
-         R5.COO          :=R4.COO;
-         R5.NUM_CONT     :=R4.NUM_CONT;
-         R5.NUM_ITEM     :=J;
-         R5.COD_ITEM     :=GerarDados('I',14);
-         R5.DESC_ITEM    :=GerarDados('S',50);
-         R5.QTDE_ITEM    :=RandomRange(1,4);
-         R5.UN_MED       :=GerarDados('S',2);
-         R5.VL_UNIT      :=GerarDados('I',2);
-         R5.DESCTO_ITEM  :=0;
-         R5.ACRES_ITEM   :=0;
-         R5.VL_TOT_ITEM  :=GerarDados('I',2);
-         R5.COD_TOT_PARC :='FF';
-         R5.IND_CANC     :='N';
-         R5.QTDE_CANC    :=0;
-         R5.VL_CANC      :=0;
-         R5.VL_CANC_ACRES:=0;
-         R5.IAT          :='A';
-         R5.IPPT         :='T';
-         R5.QTDE_DECIMAL :=2;
-         R5.VL_DECIMAL   :=2;
+          NUM_FAB     :=NUM_FAB;
+          MF_ADICIONAL:=MF_ADICIONAL;
+          MODELO_ECF  :=MODELO_ECF;
+          NUM_USU     :=1;
+          NUM_CONT    :=GerarDados('I',3);
+          COO         :=GerarDados('I',3);
+          DT_INI      :=date;
+          SUB_DOCTO   :=GerarDados('I',2);
+          SUB_DESCTO  :=GerarDados('I',2);
+          TP_DESCTO   :='V';
+          SUB_ACRES   :=0;
+          TP_ACRES    :='V';
+          VL_TOT      :=GerarDados('I',2);
+          CANC        :='N';
+          VL_CA       :=0;
+          ORDEM_DA    :='D';
+          NOME_CLI    :=GerarDados('S',50);
+          CNPJ_CPF    :=GerarDados('I',12);
+          // Registro R05
+          for J := 1 to RandomRange(1,4) do
+          begin
+            with ACBrPAF.PAF_R.RegistroR05.New do
+            begin
+               NUM_FAB      :=NUM_FAB;      // RegistroR04
+               MF_ADICIONAL :=MF_ADICIONAL; // RegistroR04
+               MODELO_ECF   :=MODELO_ECF;   // RegistroR04
+               NUM_USU      :=NUM_USU;      // RegistroR04
+               COO          :=COO;          // RegistroR04
+               NUM_CONT     :=NUM_CONT;     // RegistroR04
+               NUM_ITEM     :=J;
+               COD_ITEM     :=GerarDados('I',14);
+               DESC_ITEM    :=GerarDados('S',50);
+               QTDE_ITEM    :=RandomRange(1,4);
+               UN_MED       :=GerarDados('S',2);
+               VL_UNIT      :=GerarDados('I',2);
+               DESCTO_ITEM  :=0;
+               ACRES_ITEM   :=0;
+               VL_TOT_ITEM  :=GerarDados('I',2);
+               COD_TOT_PARC :='FF';
+               IND_CANC     :='N';
+               QTDE_CANC    :=0;
+               VL_CANC      :=0;
+               VL_CANC_ACRES:=0;
+               IAT          :='A';
+               IPPT         :='T';
+               QTDE_DECIMAL :=2;
+               VL_DECIMAL   :=2;
+            end;
+          end;
        end;
      end;
      // Registro R06 e R07
@@ -358,35 +362,39 @@ begin
      ACBrPAF.PAF_R.RegistroR07.Clear;
      for I := 1 to 10 do
      begin
-       R6:=ACBrPAF.PAF_R.RegistroR06.New;
-       R6.NUM_FAB     :=NUM_FAB;
-       R6.MF_ADICIONAL:=MF_ADICIONAL;
-       R6.MODELO_ECF  :=MODELO_ECF;
-       R6.NUM_USU     :=1;
-       R6.NUM_CONT    :=GerarDados('I',3);
-       R6.COO         :=GerarDados('I',3);
-       R6.GNF         :=GerarDados('I',3);
-       R6.GRG         :=GerarDados('I',3);
-       R6.CDC         :=GerarDados('I',3);
-       R6.DENOM       :=GerarDados('S',2);
-       R6.DT_FIN      :=date;
-       R6.HR_FIN      :=date;
-       // Registro R07
-       for J := 1 to 3 do
+       with ACBrPAF.PAF_R.RegistroR06.New do
        begin
-         R7:=ACBrPAF.PAF_R.RegistroR07.New;
-         R7.NUM_FAB     :=R6.NUM_FAB;
-         R7.MF_ADICIONAL:=R6.MF_ADICIONAL;
-         R7.MODELO_ECF  :=R6.MODELO_ECF;
-         R7.NUM_USU     :=R6.NUM_USU;
-         R7.NUM_CONT    :=R6.NUM_CONT;
-         R7.COO         :=R6.COO;
-         R7.CCF         :=GerarDados('I',3);
-         R7.GNF         :=R6.GNF;
-         R7.MP          :=GerarDados('S',7);
-         R7.VL_PAGTO    :=GerarDados('I',2);
-         R7.IND_EST     :='N';
-         R7.VL_EST      :=0;
+          NUM_FAB     :=NUM_FAB;
+          MF_ADICIONAL:=MF_ADICIONAL;
+          MODELO_ECF  :=MODELO_ECF;
+          NUM_USU     :=1;
+          NUM_CONT    :=GerarDados('I',3);
+          COO         :=GerarDados('I',3);
+          GNF         :=GerarDados('I',3);
+          GRG         :=GerarDados('I',3);
+          CDC         :=GerarDados('I',3);
+          DENOM       :=GerarDados('S',2);
+          DT_FIN      :=date;
+          HR_FIN      :=date;
+          // Registro R07
+          for J := 1 to 3 do
+          begin
+            with ACBrPAF.PAF_R.RegistroR07.New do
+            begin
+               NUM_FAB     :=NUM_FAB;            // RegistroR06
+               MF_ADICIONAL:=MF_ADICIONAL;       // RegistroR06
+               MODELO_ECF  :=MODELO_ECF;         // RegistroR06
+               NUM_USU     :=NUM_USU;            // RegistroR06
+               NUM_CONT    :=NUM_CONT;           // RegistroR06
+               COO         :=COO;                // RegistroR06
+               CCF         :=GerarDados('I',3);
+               GNF         :=GNF;                // RegistroR06
+               MP          :=GerarDados('S',7);
+               VL_PAGTO    :=GerarDados('I',2);
+               IND_EST     :='N';
+               VL_EST      :=0;
+            end;
+          end;
        end;
      end;
 
@@ -396,7 +404,6 @@ end;
 
 procedure TForm6.btnTClick(Sender: TObject);
 var
-     T2: TRegistroT2;
      i: integer;
 begin
      // registro T1
@@ -405,21 +412,23 @@ begin
      ACBrPAF.PAF_T.RegistroT2.Clear;
      for I := 1 to 15 do
      begin
-       T2:=ACBrPAF.PAF_T.RegistroT2.New;
-       T2.DT_MOV     :=date;
-       T2.TP_DOCTO   :=''; // não faz parte do ato/cotepe
-       T2.SERIE      :=GerarDados('S',2);
-       T2.NUM_BILH_I :=GerarDados('I',2);
-       T2.NUM_BILH_F :=GerarDados('I',3);
-       T2.NUM_ECF    :='001';
-       T2.CRZ        :=GerarDados('I',3);
-       T2.CFOP       :='5102';
-       T2.VL_CONT    :=GerarDados('I',3);
-       T2.VL_BASECALC:=GerarDados('I',3);
-       T2.ALIQ       :=GerarDados('I',1);
-       T2.VL_IMPOSTO :=GerarDados('I',3);
-       T2.VL_ISENTAS :=GerarDados('I',3);
-       T2.VL_OUTRAS  :=GerarDados('I',3);
+       with ACBrPAF.PAF_T.RegistroT2.New do
+       begin
+          DT_MOV     :=date;
+          TP_DOCTO   :=''; // não faz parte do ato/cotepe
+          SERIE      :=GerarDados('S',2);
+          NUM_BILH_I :=GerarDados('I',2);
+          NUM_BILH_F :=GerarDados('I',3);
+          NUM_ECF    :='001';
+          CRZ        :=GerarDados('I',3);
+          CFOP       :='5102';
+          VL_CONT    :=GerarDados('I',3);
+          VL_BASECALC:=GerarDados('I',3);
+          ALIQ       :=GerarDados('I',1);
+          VL_IMPOSTO :=GerarDados('I',3);
+          VL_ISENTAS :=GerarDados('I',3);
+          VL_OUTRAS  :=GerarDados('I',3);
+       end;
      end;
 //     ACBrPAF.AssDigital:=GerarDados('S',256); // esta linha deverá ser retirada do arquivo e colocar o seu EAD q só pode ser calculada após a geração do arquivo.
      ACBrPAF.SaveFileTXT_T('PAF_T.txt');

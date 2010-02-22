@@ -49,6 +49,10 @@ Símbolo : Significado
 
 Versão 0.02b   22/02/10
 ---------------
+[*] Melhorado o recurso de assinatura dos arquivos "R" com openssl 
+    por (wagnerra)
+[+] Adicionado o evento "OnCalcEAD" para quem não queira assinar os arquivos
+    com openssl.
 [+] Foi implementado hierarquia PAI-FLIHO nos registros R03, R05 e R07, sendo
     o R03 Filho do R02, R05 Filho do R04 e R07 Filho do R06.
 [*] Foi modificado o Demo, para demostrar como usar as novas implementações 

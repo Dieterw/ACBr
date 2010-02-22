@@ -44,7 +44,7 @@ interface
 
 uses
    SysUtils, Classes, DateUtils,
-   ACBrUtilTXT,
+   ACBrUtilTXT, ACBrUtil, Forms,
    ACBrPAF_D, ACBrPAF_D_Class,
    ACBrPAF_E, ACBrPAF_E_Class,
    ACBrPAF_P, ACBrPAF_P_Class,
@@ -54,21 +54,57 @@ uses
 const
    CACBrPAF_Versao = '0.02a' ;
 
+   { Usa utilitário de linha de comando, "openssl.exe", para calcular a
+       assinatura digital...       http://www.openssl.org/
+       Binários para windows:      http://www.openssl.org/related/binaries.html
+     NOTA: openssl.exe e suas DLLs (libssl32.dll, ssleay32.dll) precisam
+           estar no PATH da máquina ou no mesmo diretório do programa
+     Como usar o openssl.exe   ->   http://www.madboa.com/geek/openssl/
+
+     - Para gerar a sua chave Privada usando o "openssl.exe" digite:
+          openssl genrsa -out mykey.pem 1024
+       ( o arquivo "mykey.pem" conterá a sua chave )
+
+     - Para gerar Publica baseado em uma chave Privada, digite:
+          openssl rsa -in mykey.pem -pubout -out pubkey.pem
+       ( assume que a sua chave privada está em "mykey.pem", gera chave pública
+         no arquivo "pubkey.pem" )                                             }
+
+   { Chave padrão... por motivos de segurança, GERE A SUA PROPRIA CHAVE e
+     informe-a em: "OnGetKeyRSA" }
+   cRFDRSAKey = '-----BEGIN RSA PRIVATE KEY-----' + sLineBreak +
+                'MIICXQIBAAKBgQCtpPqcoOX4rwgdoKi6zJwPX9PA2iX2KxgvyxjE+daI5ZmYxcg0'+ sLineBreak +
+                'NScjX59nXRaLmtltVRfsRc1n4+mLSXiWMh3jIbw+TWn+GXKQhS2GitpLVhO3A6Ns'+ sLineBreak +
+                'vO1+RuP77s+uGYhqVvbD0Pziq+I2r4oktsjTbpnC7Mof3BjJdIUFsTHKYwIDAQAB'+ sLineBreak +
+                'AoGAXXqwU7umsi8ADnsb+pwF85zh8TM/NnvSpIAQkJHzNXVtL7ph4gEvVbK3rLyH'+ sLineBreak +
+                'U5aEMICbxV16i9A9PPfLjAfk4CuPpZlTibgfBRIG3MXirum0tjcyzbPyiDrk0qwM'+ sLineBreak +
+                'e83MyRkrnGlss6cRT3mZk67txEamqTVmDwz/Sfo1fVlCQAkCQQDW3N/EKyT+8tPW'+ sLineBreak +
+                '1EuPXafRONMel4xB1RiBmHYJP1bo/sDebLpocL6oiVlUX/k/zPRo1wMvlXJxPyiz'+ sLineBreak +
+                'mnf37cZ9AkEAzuPcDvGxwawr7EPGmPQ0f7aWv87tS/rt9L3nKiz8HfrT6WT0R1Bh'+ sLineBreak +
+                'I7lLGq4VFWE29I6hQ2lPNGX9IGFjiflKXwJBALgsO+J62QtwOgU7lEkfjmnYu57N'+ sLineBreak +
+                'aHxFnOv5M7RZhrXRKKF/sYk0mzj8AoZAffYiSJ5VL3XqNF6+NLU/AvaR6kECQQCV'+ sLineBreak +
+                'nY6sd/kWmA4DhFgAkMnOehq2h0xwH/0pepPLmlCQ1a2eIVXOpMA692rq1m2E0pLN'+ sLineBreak +
+                'dMAGYgfXWtIdMpCrXM59AkB5npcELeGBv1K8B41fmrlA6rEq4aqmfwAFRKcQTj8a'+ sLineBreak +
+                'n09FVtccLVPJ42AM1/QXK6a8DGCtB9R+j5j3UO/iL0+3'+ sLineBreak +
+                '-----END RSA PRIVATE KEY-----' ;
+
 type
+  TACBrPAFCalcEAD = procedure(Arquivo: AnsiString) of object ;
+  TACBrPAFGetKeyRSA = procedure(var PrivateKey_RSA: String) of object ;
+
   /// DECLARANDO O COMPONENTE - PAF-ECF:
   TACBrPAF = class(TACBrTXT)
   private
-    FArquivo:AnsiString ;      /// Nome do arquivo a ser gerado
     FPath: AnsiString;         /// Path do arquivo a ser gerado
-    FAssDigital: AnsiString;   /// Assinatura do Hash
-    FChavePublica: AnsiString; /// Chave publica para gerar EAD
-    FChavePrivada: AnsiString; /// Chave privada para gerar EAD
 
     FPAF_D: TPAF_D;
     FPAF_E: TPAF_E;
     FPAF_P: TPAF_P;
     FPAF_R: TPAF_R;
     FPAF_T: TPAF_T;
+
+    FOnPAFCalcEAD: TACBrPAFCalcEAD;
+    FOnPAFGetKeyRSA: TACBrPAFGetKeyRSA;
 
     procedure LimpaRegistros;
     function GetAbout: String;
@@ -99,7 +135,7 @@ type
     function WriteRegistroT2: AnsiString;
     function WriteRegistroT9: AnsiString;
     /// EAD
-    function WriteRegistroEAD: AnsiString;
+    procedure WriteRegistroEAD(Arquivo: AnsiString);
   public
     constructor Create(AOwner: TComponent); override; /// Create
     destructor Destroy; override; /// Destroy
@@ -115,10 +151,6 @@ type
     property PAF_P: TPAF_P read FPAF_P write FPAF_P;
     property PAF_R: TPAF_R read FPAF_R write FPAF_R;
     property PAF_T: TPAF_T read FPAF_T write FPAF_T;
-
-    property ChavePublica: AnsiString read FChavePublica write FChavePublica;
-    property ChavePrivada: AnsiString read FChavePrivada write FChavePrivada;
-    property AssDigital: AnsiString read FAssDigital write FAssDigital;
   published
     property About : String read GetAbout write SetAbout stored False ;
     property Path: AnsiString read FPath write FPath;
@@ -126,6 +158,8 @@ type
     property TrimString;
     property CurMascara;
     property OnError;
+    property OnPAFCalcEAD: TACBrPAFCalcEAD read FOnPAFCalcEAD write FOnPAFCalcEAD;
+    property OnPAFGetKeyRSA: TACBrPAFGetKeyRSA read FOnPAFGetKeyRSA write FOnPAFGetKeyRSA;
   end;
 
   procedure Register;
@@ -287,12 +321,6 @@ begin
    Result := FPAF_T.WriteRegistroT9;
 end;
 
-function TACBrPAF.WriteRegistroEAD: AnsiString;
-begin
-   Result := LFill('EAD') +
-             LFill(FAssDigital);
-end;
-
 function TACBrPAF.SaveFileTXT_D(Arquivo: AnsiString): Boolean;
 var
 txtFile: TextFile;
@@ -313,10 +341,14 @@ begin
     Write(txtFile, WriteRegistroD1);
     if FPAF_D.RegistroD2.Count > 0 then Write(txtFile, WriteRegistroD2);
     Write(txtFile, WriteRegistroD9);
-    /// Assinatura EAD
-    Write(txtFile, WriteRegistroEAD);
     ///
     CloseFile(txtFile);
+    /// Assinatura EAD
+    if Assigned( FOnPAFCalcEAD ) then
+       FOnPAFCalcEAD(Arquivo) /// Se usuário usa outro método para assinar o arquivo
+    else
+       WriteRegistroEAD(Arquivo);
+
     /// Limpa de todos os Blocos as listas de todos os registros.
     LimpaRegistros;
   except
@@ -348,10 +380,14 @@ begin
     Write(txtFile, WriteRegistroE1);
     if FPAF_E.RegistroE2.Count > 0 then Write(txtFile, WriteRegistroE2);
     Write(txtFile, WriteRegistroE9);
-    /// Assinatura EAD
-    Write(txtFile, WriteRegistroEAD);
     ///
     CloseFile(txtFile);
+    /// Assinatura EAD
+    if Assigned( FOnPAFCalcEAD ) then
+       FOnPAFCalcEAD(Arquivo) /// Se usuário usa outro método para assinar o arquivo
+    else
+       WriteRegistroEAD(Arquivo);
+
     /// Limpa de todos os Blocos as listas de todos os registros.
     LimpaRegistros;
   except
@@ -383,10 +419,14 @@ begin
     Write(txtFile, WriteRegistroP1);
     if FPAF_P.RegistroP2.Count > 0 then Write(txtFile, WriteRegistroP2);
     Write(txtFile, WriteRegistroP9);
-    /// Assinatura EAD
-    Write(txtFile, WriteRegistroEAD);
     ///
     CloseFile(txtFile);
+    /// Assinatura EAD
+    if Assigned( FOnPAFCalcEAD ) then
+       FOnPAFCalcEAD(Arquivo) /// Se usuário usa outro método para assinar o arquivo
+    else
+       WriteRegistroEAD(Arquivo);
+
     /// Limpa de todos os Blocos as listas de todos os registros.
     LimpaRegistros;
   except
@@ -419,10 +459,14 @@ begin
     if FPAF_R.RegistroR02.Count > 0 then Write(txtFile, WriteRegistroR02);
     if FPAF_R.RegistroR04.Count > 0 then Write(txtFile, WriteRegistroR04);
     if FPAF_R.RegistroR06.Count > 0 then Write(txtFile, WriteRegistroR06);
-    /// Assinatura EAD
-    Write(txtFile, WriteRegistroEAD);
     ///
     CloseFile(txtFile);
+    /// Assinatura EAD
+    if Assigned( FOnPAFCalcEAD ) then
+       FOnPAFCalcEAD(Arquivo) /// Se usuário usa outro método para assinar o arquivo
+    else
+       WriteRegistroEAD(Arquivo);
+
     /// Limpa de todos os Blocos as listas de todos os registros.
     LimpaRegistros;
   except
@@ -454,10 +498,14 @@ begin
     Write(txtFile, WriteRegistroT1);
     if FPAF_T.RegistroT2.Count > 0 then Write(txtFile, WriteRegistroT2);
     Write(txtFile, WriteRegistroT9);
-    /// Assinatura EAD
-    Write(txtFile, WriteRegistroEAD);
     ///
     CloseFile(txtFile);
+    /// Assinatura EAD
+    if Assigned( FOnPAFCalcEAD ) then
+       FOnPAFCalcEAD(Arquivo) /// Se usuário usa outro método para assinar o arquivo
+    else
+       WriteRegistroEAD(Arquivo);
+
     /// Limpa de todos os Blocos as listas de todos os registros.
     LimpaRegistros;
   except
@@ -467,6 +515,79 @@ begin
       raise Exception.Create(E.Message);
     end;
   end;
+end;
+
+procedure TACBrPAF.WriteRegistroEAD(Arquivo: AnsiString);
+var
+  Arq : textfile;
+  EAD, cmd, ChaveRSA: String ;
+  SL, SEC : TStringList;
+  F:TextFile;
+  I:Integer;
+  S,Dir,Linha:String;
+begin
+  { Gerando registro EAD }
+  EAD := '' ;
+  SL  := TStringList.Create ;
+  Dir := GetCurrentDir ;
+  try
+     { Gravando a chave no arquivo id_rsa para usa-la com o "openssl" }
+     ChaveRSA := '' ;
+     if Assigned( FOnPAFGetKeyRSA ) then
+        FOnPAFGetKeyRSA( ChaveRSA ) ;   { Se usuário tem Chave própria, use-a }
+
+     if ChaveRSA = '' then
+        ChaveRSA := cRFDRSAKey;
+
+     { Gravando a chave RSA temporariamente no DirLog }
+     SL.Clear ;
+     SL.Text := ChaveRSA;
+     SL.SaveToFile( 'id.rsa' );
+
+     { Executando o "openssl.exe" }
+     cmd := 'dgst -md5 -sign id.rsa -out ead.txt -hex '+ Arquivo ;
+     {$IFDEF CONSOLE}
+       WriteLn('Executando: openssl '+cmd) ;
+     {$ENDIF}
+     RunCommand('openssl', cmd, True, 0);
+
+     {$IFDEF CONSOLE}
+       WriteLn('Aguardando ead.txt') ;
+     {$ENDIF}
+     I := 0 ;
+     while (not FileExists('ead.txt')) and (I < 30) do
+     begin
+        sleep(100) ;
+        {$IFNDEF CONSOLE}
+          Application.ProcessMessages ;
+        {$ELSE}
+          Write('.') ;
+        {$ENDIF}
+        Inc( I ) ;
+     end ;
+
+     { Lendo a resposta }
+     try
+        SL.Clear ;
+        SL.LoadFromFile('ead.txt');
+        EAD := SL.Text ;
+        EAD := UpperCase( Trim( copy(EAD, pos('=',EAD)+1, Length(EAD) ))) ;
+     except
+        raise Exception.Create( ACBrStr('Erro ao calcular registro EAD usando o "openssl"' )) ;
+     end ;
+  finally
+     SL.Free ;
+
+     SysUtils.DeleteFile( 'id.rsa' ) ;  // Removendo a chave privada do disco ;
+     SysUtils.DeleteFile( 'ead.txt' ) ;
+
+     ChDir( Dir );  { Voltando para o diretório anterior }
+     {$IFDEF CONSOLE}
+       writeln( 'Diretorio atual: ',GetCurrentDir ) ;
+     {$ENDIF}
+  end;
+  Linha := 'EAD' + EAD ;
+  WriteToTXT( Arquivo, Linha, True );
 end;
 
 end.

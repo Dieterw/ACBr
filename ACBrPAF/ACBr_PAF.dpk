@@ -27,7 +27,8 @@ package ACBr_PAF;
 
 requires
   rtl,
-  ACBr_SPED;
+  ACBr_SPED,
+  vcl;
 
 contains
   ACBrPAF in 'ACBrPAF.pas',
@@ -44,3 +45,4 @@ contains
   ACBrPAF_T_Class in 'ACBrPAF_T_Class.pas';
 
 end.
+

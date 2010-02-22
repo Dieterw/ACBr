@@ -60,7 +60,9 @@ type
   private
     FArquivo:AnsiString ;      /// Nome do arquivo a ser gerado
     FPath: AnsiString;         /// Path do arquivo a ser gerado
-    FAssDigital: AnsiString;  /// Assinatura do Hash
+    FAssDigital: AnsiString;   /// Assinatura do Hash
+    FChavePublica: AnsiString; /// Chave publica para gerar EAD
+    FChavePrivada: AnsiString; /// Chave privada para gerar EAD
 
     FPAF_D: TPAF_D;
     FPAF_E: TPAF_E;
@@ -113,6 +115,9 @@ type
     property PAF_P: TPAF_P read FPAF_P write FPAF_P;
     property PAF_R: TPAF_R read FPAF_R write FPAF_R;
     property PAF_T: TPAF_T read FPAF_T write FPAF_T;
+
+    property ChavePublica: AnsiString read FChavePublica write FChavePublica;
+    property ChavePrivada: AnsiString read FChavePrivada write FChavePrivada;
     property AssDigital: AnsiString read FAssDigital write FAssDigital;
   published
     property About : String read GetAbout write SetAbout stored False ;

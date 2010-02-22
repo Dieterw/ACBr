@@ -50,7 +50,9 @@ Símbolo : Significado
 Versão 0.02b   22/02/10
 ---------------
 [*] Melhorado o recurso de assinatura dos arquivos "R" com openssl 
-    por (wagnerra)
+    por (wagnerra) 
+    Nota: Para que o Demo assine os arquivos, é preciso ter o openssl.exe e suas
+          DLLs no memo diretório do EXE.
 [+] Adicionado o evento "OnCalcEAD" para quem não queira assinar os arquivos
     com openssl.
 [+] Foi implementado hierarquia PAI-FLIHO nos registros R03, R05 e R07, sendo

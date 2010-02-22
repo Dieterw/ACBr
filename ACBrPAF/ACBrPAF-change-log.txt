@@ -47,6 +47,13 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.02b   22/02/10
+---------------
+[+] Foi implementado hierarquia PAI-FLIHO nos registros R03, R05 e R07, sendo
+    o R03 Filho do R02, R05 Filho do R04 e R07 Filho do R06.
+[*] Foi modificado o Demo, para demostrar como usar as novas implementações 
+    PAI-FILHO.
+
 Versão 0.01b   21/02/10
 ---------------
 [+] Agora temos o Demo, desenvolvido por (emsoft)

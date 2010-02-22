@@ -46,12 +46,16 @@ uses
   SysUtils, Classes, DateUtils, ACBrPAFRegistros;
 
 type
+  TRegistroR03List = class;
+  TRegistroR05List = class;
+  TRegistroR07List = class;
+
   /// REGISTRO TIPO R01 - IDENTIFICAÇÃO DO ECF, DO USUÁRIO, DO PAF-ECF E DA EMPRESA DESENVOLVEDORA E DADOS DO ARQUIVO
 
   TRegistroR01 = class(TPersistent)
   private
      fNUM_FAB: string;        /// Número de fabricação do ECF
-     fMF_ADICONAL: string;    /// Letra indicativa de MF adicional
+     fMF_ADICIONAL: string;    /// Letra indicativa de MF adicional
      fTIPO_ECF: string;       /// Tipo de ECF
      fMARCA_ECF: string;      /// Marca do ECF
      fMODELO_ECF: string;     /// Modelo do ECF
@@ -73,7 +77,7 @@ type
      fER_PAF_ECF: string;     /// Versão da Especificação de Requisitos do PAF-ECF
   public
      property NUM_FAB: string read FNUM_FAB write FNUM_FAB;
-     property MF_ADICONAL: string read FMF_ADICONAL write FMF_ADICONAL;
+     property MF_ADICIONAL: string read fMF_ADICIONAL write fMF_ADICIONAL;
      property TIPO_ECF: string read FTIPO_ECF write FTIPO_ECF;
      property MARCA_ECF: string read FMARCA_ECF write FMARCA_ECF;
      property MODELO_ECF: string read FMODELO_ECF write FMODELO_ECF;
@@ -99,31 +103,32 @@ type
 
   TRegistroR02 = class(TPersistent)
   private
-     fNUM_FAB: string;        /// Nº de fabricação do ECF
-     fMF_ADICIONAL: string;   /// Letra indicativa de MF adicional
-     fMODELO_ECF: string;     /// Modelo do ECF
-     fNUM_USU: integer;       /// Nº de ordem do usuário do ECF relativo à respectiva Redução Z
-     fCRZ: integer;           /// Nº do Contador de Redução Z relativo à respectiva redução
-     fCOO: integer;           /// Nº do Contador de Ordem de Operação relativo à respectiva Redução Z
-     fCRO: integer;           /// Nº do Contador de Reinício de Operação relativo à respectiva Redução Z
-     fDT_MOV: TDateTime;      /// Data das operações relativas à respectiva Redução Z
-     fDT_EMI: TDateTime;      /// Data de emissão da Redução Z
-     fHR_EMI: TDateTime;      /// Hora de emissão da Redução Z
-     fVL_VBD: currency;       /// Valor acumulado neste totalizador relativo à respectiva Redução Z, com duas casas decimais.
-     fPAR_ECF: string;        /// Parâmetro do ECF para incidência de desconto sobre itens sujeitos ao ISSQN conforme item 7.2.1.4
+    fNUM_USU: integer;       /// Nº de ordem do usuário do ECF relativo à respectiva Redução Z
+    fCRZ: integer;           /// Nº do Contador de Redução Z relativo à respectiva redução
+    fCOO: integer;           /// Nº do Contador de Ordem de Operação relativo à respectiva Redução Z
+    fCRO: integer;           /// Nº do Contador de Reinício de Operação relativo à respectiva Redução Z
+    fDT_MOV: TDateTime;      /// Data das operações relativas à respectiva Redução Z
+    fDT_EMI: TDateTime;      /// Data de emissão da Redução Z
+    fHR_EMI: TDateTime;      /// Hora de emissão da Redução Z
+    fVL_VBD: currency;       /// Valor acumulado neste totalizador relativo à respectiva Redução Z, com duas casas decimais.
+    fPAR_ECF: string;        /// Parâmetro do ECF para incidência de desconto sobre itens sujeitos ao ISSQN conforme item 7.2.1.4
+
+    fRegistroR03: TRegistroR03List; /// Registro FILHO
   public
-     property NUM_FAB: string read FNUM_FAB write FNUM_FAB;
-     property MF_ADICIONAL: string read FMF_ADICIONAL write FMF_ADICIONAL;
-     property MODELO_ECF: string read FMODELO_ECF write FMODELO_ECF;
-     property NUM_USU: integer read FNUM_USU write FNUM_USU;
-     property CRZ: integer read FCRZ write FCRZ;
-     property COO: integer read FCOO write FCOO;
-     property CRO: integer read FCRO write FCRO;
-     property DT_MOV: TDateTime read FDT_MOV write FDT_MOV;
-     property DT_EMI: TDateTime read FDT_EMI write FDT_EMI;
-     property HR_EMI: TDateTime read FHR_EMI write FHR_EMI;
-     property VL_VBD: currency read FVL_VBD write FVL_VBD;
-     property PAR_ECF: string read FPAR_ECF write FPAR_ECF;
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
+    property NUM_USU: integer read FNUM_USU write FNUM_USU;
+    property CRZ: integer read FCRZ write FCRZ;
+    property COO: integer read FCOO write FCOO;
+    property CRO: integer read FCRO write FCRO;
+    property DT_MOV: TDateTime read FDT_MOV write FDT_MOV;
+    property DT_EMI: TDateTime read FDT_EMI write FDT_EMI;
+    property HR_EMI: TDateTime read FHR_EMI write FHR_EMI;
+    property VL_VBD: currency read FVL_VBD write FVL_VBD;
+    property PAR_ECF: string read FPAR_ECF write FPAR_ECF;
+
+    property RegistroR03: TRegistroR03List read FRegistroR03 write FRegistroR03;
   end;
 
   /// REGISTRO R02 - Lista
@@ -142,19 +147,9 @@ type
 
   TRegistroR03 = class(TPersistent)
   private
-     fNUM_FAB: string;           /// Nº de fabricação do ECF
-     fMF_ADICIONAL: string;      /// Letra indicativa de MF adicional
-     fMODELO_ECF: string;        /// Modelo do ECF
-     fNUM_USU: integer;          /// Nº de ordem do usuário do ECF
-     fCRZ: integer;              /// Nº do Contador de Redução Z relativo à respectiva redução
      fTOT_PARCIAL: string;       /// Código do totalizador conforme tabela abaixo
      fVL_ACUM: currency;         /// Valor acumulado no totalizador, relativo à respectiva Redução Z, com duas casas decimais
   public
-     property NUM_FAB: string read FNUM_FAB write FNUM_FAB;
-     property MF_ADICIONAL: string read FMF_ADICIONAL write FMF_ADICIONAL;
-     property MODELO_ECF: string read FMODELO_ECF write FMODELO_ECF;
-     property NUM_USU: integer read FNUM_USU write FNUM_USU;
-     property CRZ: integer read FCRZ write FCRZ;
      property TOT_PARCIAL: string read FTOT_PARCIAL write FTOT_PARCIAL;
      property VL_ACUM: currency read FVL_ACUM write FVL_ACUM;
   end;
@@ -175,43 +170,44 @@ type
 
   TRegistroR04 = class(TPersistent)
   private
-     fNUM_FAB: string;           /// Nº de fabricação do ECF
-     fMF_ADICIONAL: string;      /// Letra indicativa de MF adicional
-     fMODELO_ECF: string;        /// Modelo do ECF
-     fNUM_USU: integer;          /// Nº de ordem do usuário do ECF
-     fNUM_CONT: integer;         /// Nº do contador do respectivo documento emitido
-     fCOO: integer;              /// Nº do COO relativo ao respectivo documento
-     fDT_INI: TDateTime;         /// Data de início da emissão do documento impressa no cabeçalho do documento
-     fSUB_DOCTO: currency;       /// Valor total do documento, com  duas casas decimais.
-     fSUB_DESCTO: currency;      /// Valor do desconto ou Percentual aplicado sobre o valor do subtotal do documento, com duas casas decimais.
-     fTP_DESCTO: string;         /// Informar “V” para valor monetário ou “P” para percentual
-     fSUB_ACRES: currency;       /// Valor do acréscimo ou Percentual aplicado sobre o valor do subtotal do documento, com duas casas decimais
-     fTP_ACRES: string;          /// Informar “V”  para valor monetário ou “P” para percentual
-     fVL_TOT: currency;          /// Valor total do Cupom Fiscal após desconto/acréscimo, com duas casas decimais.
-     fCANC: string;              /// Informar "S" ou "N", conforme tenha ocorrido ou não, o cancelamento do documento.
-     fVL_CA: currency;           /// Valor do cancelamento de acréscimo no subtotal
-     fORDEM_DA: string;          /// Indicador de ordem de aplicação de desconto/acréscimo em Subtotal. ‘D’ ou ‘A’ caso tenha ocorrido primeiro desconto ou acréscimo, respectivamente
-     fNOME_CLI: string;          /// Nome do Cliente
-     fCNPJ_CPF: string;          /// CPF ou CNPJ do adquirente
+    fNUM_USU: integer;          /// Nº de ordem do usuário do ECF
+    fNUM_CONT: integer;         /// Nº do contador do respectivo documento emitido
+    fCOO: integer;              /// Nº do COO relativo ao respectivo documento
+    fDT_INI: TDateTime;         /// Data de início da emissão do documento impressa no cabeçalho do documento
+    fSUB_DOCTO: currency;       /// Valor total do documento, com  duas casas decimais.
+    fSUB_DESCTO: currency;      /// Valor do desconto ou Percentual aplicado sobre o valor do subtotal do documento, com duas casas decimais.
+    fTP_DESCTO: string;         /// Informar “V” para valor monetário ou “P” para percentual
+    fSUB_ACRES: currency;       /// Valor do acréscimo ou Percentual aplicado sobre o valor do subtotal do documento, com duas casas decimais
+    fTP_ACRES: string;          /// Informar “V”  para valor monetário ou “P” para percentual
+    fVL_TOT: currency;          /// Valor total do Cupom Fiscal após desconto/acréscimo, com duas casas decimais.
+    fCANC: string;              /// Informar "S" ou "N", conforme tenha ocorrido ou não, o cancelamento do documento.
+    fVL_CA: currency;           /// Valor do cancelamento de acréscimo no subtotal
+    fORDEM_DA: string;          /// Indicador de ordem de aplicação de desconto/acréscimo em Subtotal. ‘D’ ou ‘A’ caso tenha ocorrido primeiro desconto ou acréscimo, respectivamente
+    fNOME_CLI: string;          /// Nome do Cliente
+    fCNPJ_CPF: string;          /// CPF ou CNPJ do adquirente
+
+    fRegistroR05: TRegistroR05List; /// Registro FILHO
   public
-     property NUM_FAB: string read FNUM_FAB write FNUM_FAB;
-     property MF_ADICIONAL: string read FMF_ADICIONAL write FMF_ADICIONAL;
-     property MODELO_ECF: string read FMODELO_ECF write FMODELO_ECF;
-     property NUM_USU: integer read FNUM_USU write FNUM_USU;
-     property NUM_CONT: integer read FNUM_CONT write FNUM_CONT;
-     property COO: integer read FCOO write FCOO;
-     property DT_INI: TDateTime read FDT_INI write FDT_INI;
-     property SUB_DOCTO: currency read FSUB_DOCTO write FSUB_DOCTO;
-     property SUB_DESCTO: currency read FSUB_DESCTO write FSUB_DESCTO;
-     property TP_DESCTO: string read FTP_DESCTO write FTP_DESCTO;
-     property SUB_ACRES: currency read FSUB_ACRES write FSUB_ACRES;
-     property TP_ACRES: string read FTP_ACRES write FTP_ACRES;
-     property VL_TOT: currency read FVL_TOT write FVL_TOT;
-     property CANC: string read FCANC write FCANC;
-     property VL_CA: currency read FVL_CA write FVL_CA;
-     property ORDEM_DA: string read FORDEM_DA write FORDEM_DA;
-     property NOME_CLI: string read FNOME_CLI write FNOME_CLI;
-     property CNPJ_CPF: string read FCNPJ_CPF write FCNPJ_CPF;
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
+    property NUM_USU: integer read FNUM_USU write FNUM_USU;
+    property NUM_CONT: integer read FNUM_CONT write FNUM_CONT;
+    property COO: integer read FCOO write FCOO;
+    property DT_INI: TDateTime read FDT_INI write FDT_INI;
+    property SUB_DOCTO: currency read FSUB_DOCTO write FSUB_DOCTO;
+    property SUB_DESCTO: currency read FSUB_DESCTO write FSUB_DESCTO;
+    property TP_DESCTO: string read FTP_DESCTO write FTP_DESCTO;
+    property SUB_ACRES: currency read FSUB_ACRES write FSUB_ACRES;
+    property TP_ACRES: string read FTP_ACRES write FTP_ACRES;
+    property VL_TOT: currency read FVL_TOT write FVL_TOT;
+    property CANC: string read FCANC write FCANC;
+    property VL_CA: currency read FVL_CA write FVL_CA;
+    property ORDEM_DA: string read FORDEM_DA write FORDEM_DA;
+    property NOME_CLI: string read FNOME_CLI write FNOME_CLI;
+    property CNPJ_CPF: string read FCNPJ_CPF write FCNPJ_CPF;
+
+    property RegistroR05: TRegistroR05List read FRegistroR05 write FRegistroR05;
   end;
 
   /// REGISTRO R04 - Lista
@@ -230,12 +226,6 @@ type
 
   TRegistroR05 = class(TPersistent)
   private
-     fNUM_FAB: string;           /// Nº de fabricação do ECF
-     fMF_ADICIONAL: string;      /// Letra indicativa de MF adicional
-     fMODELO_ECF: string;        /// Modelo do ECF
-     fNUM_USU: integer;          /// Nº de ordem do usuário do ECF
-     fCOO: integer;              /// Nº do COO relativo ao respectivo documento
-     fNUM_CONT: integer;         /// Número do contador do respectivo documento emitido
      fNUM_ITEM: integer;         /// Número do item registrado no documento
      fCOD_ITEM: string;          /// Código do produto ou serviço registrado no documento
      fDESC_ITEM: string;         /// Descrição do produto ou serviço constante no Cupom Fiscal
@@ -255,12 +245,6 @@ type
      fQTDE_DECIMAL: integer;     /// Parâmetro de número de casas decimais da quantidade
      fVL_DECIMAL: integer;       /// Parâmetro de número de casas decimais de valor unitário
   public
-     property NUM_FAB: string read FNUM_FAB write FNUM_FAB;
-     property MF_ADICIONAL: string read FMF_ADICIONAL write FMF_ADICIONAL;
-     property MODELO_ECF: string read FMODELO_ECF write FMODELO_ECF;
-     property NUM_USU: integer read FNUM_USU write FNUM_USU;
-     property COO: integer read FCOO write FCOO;
-     property NUM_CONT: integer read FNUM_CONT write FNUM_CONT;
      property NUM_ITEM: integer read FNUM_ITEM write FNUM_ITEM;
      property COD_ITEM: string read FCOD_ITEM write FCOD_ITEM;
      property DESC_ITEM: string read FDESC_ITEM write FDESC_ITEM;
@@ -297,31 +281,32 @@ type
 
   TRegistroR06 = class(TPersistent)
   private
-     fNUM_FAB: string;           /// Nº de fabricação do ECF
-     fMF_ADICIONAL: string;      /// Letra indicativa de MF adicional
-     fMODELO_ECF: string;        /// Modelo do ECF
-     fNUM_USU: integer;          /// Nº de ordem do usuário do ECF
-     fNUM_CONT: integer;         /// Nº do contador do respectivo documento emitido
-     fCOO: integer;              /// Nº do COO relativo ao respectivo documento
-     fGNF: integer;              /// Número do GNF relativo ao respectivo documento, quando houver
-     fGRG: integer;              /// Número do GRG relativo ao respectivo documento (vide item 7.6.1.2)
-     fCDC: integer;              /// Número do CDC relativo ao respectivo documento (vide item 7.6.1.3)
-     fDENOM: string;             /// Símbolo  referente à denominação do documento fiscal, conforme tabela abaixo
-     fDT_FIN: TDateTime;         /// Data final de emissão (impressa no rodapé do documento)
-     fHR_FIN: TDateTime;         /// Hora final de emissão (impressa no rodapé do documento)
+    fNUM_USU: integer;          /// Nº de ordem do usuário do ECF
+    fNUM_CONT: integer;         /// Nº do contador do respectivo documento emitido
+    fCOO: integer;              /// Nº do COO relativo ao respectivo documento
+    fGNF: integer;              /// Número do GNF relativo ao respectivo documento, quando houver
+    fGRG: integer;              /// Número do GRG relativo ao respectivo documento (vide item 7.6.1.2)
+    fCDC: integer;              /// Número do CDC relativo ao respectivo documento (vide item 7.6.1.3)
+    fDENOM: string;             /// Símbolo  referente à denominação do documento fiscal, conforme tabela abaixo
+    fDT_FIN: TDateTime;         /// Data final de emissão (impressa no rodapé do documento)
+    fHR_FIN: TDateTime;         /// Hora final de emissão (impressa no rodapé do documento)
+
+    fRegistroR07: TRegistroR07List; /// Registro FILHO
   public
-     property NUM_FAB: string read FNUM_FAB write FNUM_FAB;
-     property MF_ADICIONAL: string read FMF_ADICIONAL write FMF_ADICIONAL;
-     property MODELO_ECF: string read FMODELO_ECF write FMODELO_ECF;
-     property NUM_USU: integer read FNUM_USU write FNUM_USU;
-     property NUM_CONT: integer read FNUM_CONT write FNUM_CONT;
-     property COO: integer read FCOO write FCOO;
-     property GNF: integer read FGNF write FGNF;
-     property GRG: integer read FGRG write FGRG;
-     property CDC: integer read FCDC write FCDC;
-     property DENOM: string read FDENOM write FDENOM;
-     property DT_FIN: TDateTime read FDT_FIN write FDT_FIN;
-     property HR_FIN: TDateTime read FHR_FIN write FHR_FIN;
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
+    property NUM_USU: integer read FNUM_USU write FNUM_USU;
+    property NUM_CONT: integer read FNUM_CONT write FNUM_CONT;
+    property COO: integer read FCOO write FCOO;
+    property GNF: integer read FGNF write FGNF;
+    property GRG: integer read FGRG write FGRG;
+    property CDC: integer read FCDC write FCDC;
+    property DENOM: string read FDENOM write FDENOM;
+    property DT_FIN: TDateTime read FDT_FIN write FDT_FIN;
+    property HR_FIN: TDateTime read FHR_FIN write FHR_FIN;
+
+    property RegistroR07: TRegistroR07List read FRegistroR07 write FRegistroR07;
   end;
 
   /// REGISTRO R06 - Lista
@@ -340,27 +325,13 @@ type
 
   TRegistroR07 = class(TPersistent)
   private
-     fNUM_FAB: string;           /// Nº de fabricação do ECF
-     fMF_ADICIONAL: string;      /// Letra indicativa de MF adicional
-     fMODELO_ECF: string;        /// Modelo do ECF
-     fNUM_USU: integer;          /// Nº de ordem do usuário do ECF
-     fNUM_CONT: integer;         /// Nº do contador do respectivo documento emitido
-     fCOO: integer;              /// Nº do COO relativo ao respectivo documento
      fCCF: integer;              /// Número do Contador de Cupom Fiscal relativo ao respectivo Cupom Fiscal emitido
-     fGNF: integer;              /// Número do Contador Geral Não Fiscal relativo ao respectivo Comprovante Não Fiscal emitido
      fMP: string;                /// Descrição do totalizador parcial de meio de pagamento
      fVL_PAGTO: currency;        /// Valor do pagamento efetuado, com duas casas decimais
      fIND_EST: string;           /// Informar "S" ou "N", conforme tenha ocorrido ou não, o estorno do pagamento, ou “P” para estorno parcial do pagamento
      fVL_EST: currency;          /// Valor do estorno efetuado, com duas casas decimais
   public
-     property NUM_FAB: string read FNUM_FAB write FNUM_FAB;
-     property MF_ADICIONAL: string read FMF_ADICIONAL write FMF_ADICIONAL;
-     property MODELO_ECF: string read FMODELO_ECF write FMODELO_ECF;
-     property NUM_USU: integer read FNUM_USU write FNUM_USU;
-     property NUM_CONT: integer read FNUM_CONT write FNUM_CONT;
-     property COO: integer read FCOO write FCOO;
      property CCF: integer read FCCF write FCCF;
-     property GNF: integer read FGNF write FGNF;
      property MP: string read FMP write FMP;
      property VL_PAGTO: currency read FVL_PAGTO write FVL_PAGTO;
      property IND_EST: string read FIND_EST write FIND_EST;
@@ -535,6 +506,45 @@ end;
 procedure TRegistroR07List.SetItem(Index: Integer; const Value: TRegistroR07);
 begin
   Put(Index, Value);
+end;
+
+{ TRegistroR02 }
+
+constructor TRegistroR02.Create;
+begin
+  FRegistroR03 := TRegistroR03List.Create;
+end;
+
+destructor TRegistroR02.Destroy;
+begin
+  FRegistroR03.Free;
+  inherited;
+end;
+
+{ TRegistroR04 }
+
+constructor TRegistroR04.Create;
+begin
+  FRegistroR05 := TRegistroR05List.Create;
+end;
+
+destructor TRegistroR04.Destroy;
+begin
+  FRegistroR05.Free;
+  inherited;
+end;
+
+{ TRegistroR06 }
+
+constructor TRegistroR06.Create;
+begin
+  FRegistroR07 := TRegistroR07List.Create;
+end;
+
+destructor TRegistroR06.Destroy;
+begin
+  FRegistroR07.Free;
+  inherited;
 end;
 
 end.

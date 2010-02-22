@@ -52,7 +52,7 @@ uses
    ACBrPAF_T, ACBrPAF_T_Class;
 
 const
-   CACBrPAF_Versao = '0.01a' ;
+   CACBrPAF_Versao = '0.02a' ;
 
 type
   /// DECLARANDO O COMPONENTE - PAF-ECF:
@@ -90,11 +90,8 @@ type
     /// REGISTROS R
     function WriteRegistroR01: AnsiString;
     function WriteRegistroR02: AnsiString;
-    function WriteRegistroR03: AnsiString;
     function WriteRegistroR04: AnsiString;
-    function WriteRegistroR05: AnsiString;
     function WriteRegistroR06: AnsiString;
-    function WriteRegistroR07: AnsiString;
     /// REGISTROS T
     function WriteRegistroT1: AnsiString;
     function WriteRegistroT2: AnsiString;
@@ -167,7 +164,7 @@ end;
 
 procedure TACBrPAF.LimpaRegistros;
 begin
-
+  FPAF_R.LimpaRegistros;
 end;
 
 procedure TACBrPAF.SetAbout(const Value: String);
@@ -235,12 +232,6 @@ begin
    Result := FPAF_E.WriteRegistroE9;
 end;
 
-function TACBrPAF.WriteRegistroEAD: AnsiString;
-begin
-   Result := LFill('EAD') +
-             LFill(FAssDigital);
-end;
-
 function TACBrPAF.WriteRegistroP1: AnsiString;
 begin
    Result := FPAF_P.WriteRegistroP1;
@@ -266,29 +257,14 @@ begin
    Result := FPAF_R.WriteRegistroR02;
 end;
 
-function TACBrPAF.WriteRegistroR03: AnsiString;
-begin
-   Result := FPAF_R.WriteRegistroR03;
-end;
-
 function TACBrPAF.WriteRegistroR04: AnsiString;
 begin
    Result := FPAF_R.WriteRegistroR04;
 end;
 
-function TACBrPAF.WriteRegistroR05: AnsiString;
-begin
-   Result := FPAF_R.WriteRegistroR05;
-end;
-
 function TACBrPAF.WriteRegistroR06: AnsiString;
 begin
    Result := FPAF_R.WriteRegistroR06;
-end;
-
-function TACBrPAF.WriteRegistroR07: AnsiString;
-begin
-   Result := FPAF_R.WriteRegistroR07;
 end;
 
 function TACBrPAF.WriteRegistroT1: AnsiString;
@@ -304,6 +280,12 @@ end;
 function TACBrPAF.WriteRegistroT9: AnsiString;
 begin
    Result := FPAF_T.WriteRegistroT9;
+end;
+
+function TACBrPAF.WriteRegistroEAD: AnsiString;
+begin
+   Result := LFill('EAD') +
+             LFill(FAssDigital);
 end;
 
 function TACBrPAF.SaveFileTXT_D(Arquivo: AnsiString): Boolean;
@@ -430,11 +412,8 @@ begin
     ///
     Write(txtFile, WriteRegistroR01);
     if FPAF_R.RegistroR02.Count > 0 then Write(txtFile, WriteRegistroR02);
-    if FPAF_R.RegistroR03.Count > 0 then Write(txtFile, WriteRegistroR03);
     if FPAF_R.RegistroR04.Count > 0 then Write(txtFile, WriteRegistroR04);
-    if FPAF_R.RegistroR05.Count > 0 then Write(txtFile, WriteRegistroR05);
     if FPAF_R.RegistroR06.Count > 0 then Write(txtFile, WriteRegistroR06);
-    if FPAF_R.RegistroR07.Count > 0 then Write(txtFile, WriteRegistroR07);
     /// Assinatura EAD
     Write(txtFile, WriteRegistroEAD);
     ///

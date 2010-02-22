@@ -56,6 +56,8 @@ contains
   ACBrECDBloco_J in 'ACBrSPEDContabil\ACBrECDBloco_J.pas',
   ACBrECDBloco_J_Class in 'ACBrSPEDContabil\ACBrECDBloco_J_Class.pas',
   ACBrECDBlocos in 'ACBrSPEDContabil\ACBrECDBlocos.pas',
-  ACBrSpedContabil in 'ACBrSPEDContabil\ACBrSpedContabil.pas';
+  ACBrSpedContabil in 'ACBrSPEDContabil\ACBrSpedContabil.pas',
+  ACBrEFDBloco_G in 'ACBrSPEDFiscal\ACBrEFDBloco_G.pas',
+  ACBrEFDBloco_G_Class in 'ACBrSPEDFiscal\ACBrEFDBloco_G_Class.pas';
 
 end.

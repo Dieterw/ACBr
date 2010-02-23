@@ -47,6 +47,23 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 1.7b   23/02/10
+[-] Corrigido Bug Introduzido na versao 1.6b, que impedia o funcionamento
+    da função CRT com Saque, removendo a conferência adicional de desligamentos
+    do ECF na fase de Pagamentos
+[-] Corrigido Bug no objeto "TACBrTEFDLinha" que em algumas situações
+    (muito raras) retornava o valor incorreto.
+[*] Valor informado em CRT ou CHQ é ajustado com RoundTo( Val, -2 ) para evitar
+    resultados inesperados na comparação de valores Double
+
+-- ACBrTEFDCliSiTEF --
+[-] Método "Inicializar" modificao para confirmar Transacoes Pendentes e
+    solicitar a re-Impressão, conforme roteiro de homologação, apenas se o Cupom
+    já estiver encerrado (na fase de Impressao dos Comprovantes); caso
+    contrário (Cupom ainda aberto) é executado "CancelarTransacoesPendentes"
+[-] Corrigida rotina de Impressao de Transaçãoes Administrativas, para funcionar
+    corretamente mesmo quando a informado apenas 1a ou 2a via do comprovante
+
 Versão 1.6b   18/02/10
 [*] Refactoring, criando função "SubTotalECF" para retornar o Total a Pagar
     restante no ECF

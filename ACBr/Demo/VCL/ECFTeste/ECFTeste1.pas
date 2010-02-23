@@ -325,6 +325,7 @@ type
     otalSubstituicaoTributariaISSQN1: TMenuItem;
     otalNaoTributadoISSQN1: TMenuItem;
     otalIsencao1: TMenuItem;
+    NumGNF1: TMenuItem;
     procedure cbxModeloChange(Sender: TObject);
     procedure Sair1Click(Sender: TObject);
     procedure bAtivarClick(Sender: TObject);
@@ -510,6 +511,7 @@ type
     procedure otalSubstituicaoTributariaISSQN1Click(Sender: TObject);
     procedure otalNaoTributadoISSQN1Click(Sender: TObject);
     procedure otalIsencao1Click(Sender: TObject);
+    procedure NumGNF1Click(Sender: TObject);
   private
     { Private declarations }
     Function Converte( cmd : String) : String;
@@ -3370,6 +3372,12 @@ begin
   ACBrECF1.ArquivoMFD_DLL(dDatIni, dDatFim, Arquivo);
   mResp.Lines.Add('---------------------------------');
 
+end;
+
+procedure TForm1.NumGNF1Click(Sender: TObject);
+begin
+  mResp.Lines.Add( 'Num.GNF: ('+ ACBrECF1.NumGNF +')' );
+  AtualizaMemos ;
 end;
 
 END.

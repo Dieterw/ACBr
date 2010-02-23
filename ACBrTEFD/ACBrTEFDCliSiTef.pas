@@ -423,11 +423,14 @@ begin
      raise EACBrTEFDErro.Create( ACBrStr( Erro ) ) ;
 
   fpInicializado := True ;
+  GravaLog( Name +' Inicializado CliSiTEF' );
 
   Est := TACBrTEFD(Owner).EstadoECF;
 
-  if not (Est in ['V','P']) then
-     ConfirmarEReimprimirTransacoesPendentes ;
+  if (Est in ['V','P']) then                    // Cupom Ficou aberto ?? //
+     CancelarTransacoesPendentesClass           // SIM, Cancele tudo... //
+  else
+     ConfirmarEReimprimirTransacoesPendentes ;  // NAO, Cupom Fechado, basta re-imprimir //
 end;
 
 procedure TACBrTEFDCliSiTef.AtivarGP;
@@ -671,7 +674,8 @@ var
   Mensagem, MensagemOperador, MensagemCliente, Resposta, CaptionMenu,
      ArqBackUp : String;
   SL : TStringList ;
-  Interromper, Digitado, GerencialAberto, ImpressaoOk, HouveImpressao : Boolean ;
+  Interromper, Digitado, GerencialAberto, FechaGerencialAberto, ImpressaoOk,
+     HouveImpressao : Boolean ;
   Est : AnsiChar;
 begin
    Result           := 0;
@@ -688,6 +692,7 @@ begin
    fpAguardandoResposta := True ;
    ImpressaoOk      := True ;
    HouveImpressao   := False ;
+   FechaGerencialAberto := True ;
    ArqBackUp        := '' ;
 
    with TACBrTEFD(Owner) do
@@ -742,11 +747,10 @@ begin
                             try
                               while I <= TipoCampo do
                               begin
-                                 Est := EstadoECF;
-
-                                 if ( (I = 121) and ( Est <> 'L' ) ) or
-                                    ( (I = 122) and (not (Est in ['G','R'])) ) then
+                                 if FechaGerencialAberto then
                                  begin
+                                   Est := EstadoECF;
+
                                    { Fecha Vinculado ou Gerencial ou Cupom, se ficou algum aberto por Desligamento }
                                    case Est of
                                      'C'      : ComandarECF( opeFechaVinculado );
@@ -754,30 +758,34 @@ begin
                                      'V', 'P' : ComandarECF( opeCancelaCupom );
                                    end;
 
-                                   GerencialAberto := False ;
+                                   GerencialAberto      := False ;
+                                   FechaGerencialAberto := False ;
 
                                    if EstadoECF <> 'L' then
                                      raise EACBrTEFDECF.Create( ACBrStr('ECF não está LIVRE') ) ;
                                  end;
 
-                                 Mensagem := StringToBinaryString(
-                                                Self.Resp.LeInformacao(I).AsString ) ;
-                                 SL.Text  := StringReplace( Mensagem, #10, sLineBreak, [rfReplaceAll] ) ;
+                                 Mensagem := Self.Resp.LeInformacao(I).AsString ;
+                                 Mensagem := StringToBinaryString( Mensagem ) ;
+                                 if Mensagem <> '' then
+                                 begin
+                                    SL.Text  := StringReplace( Mensagem, #10, sLineBreak, [rfReplaceAll] ) ;
 
-                                 if not GerencialAberto then
-                                  begin
-                                    ComandarECF( opeAbreGerencial ) ;
-                                    GerencialAberto := True ;
-                                  end
-                                 else
-                                  begin
-                                    ComandarECF( opePulaLinhas ) ;
-                                    DoExibeMsg( opmDestaqueVia, 'Destaque a 1ª Via') ;
-                                  end;
+                                    if not GerencialAberto then
+                                     begin
+                                       ComandarECF( opeAbreGerencial ) ;
+                                       GerencialAberto := True ;
+                                     end
+                                    else
+                                     begin
+                                       ComandarECF( opePulaLinhas ) ;
+                                       DoExibeMsg( opmDestaqueVia, 'Destaque a 1ª Via') ;
+                                     end;
 
-                                 ECFImprimeVia( trGerencial, I-120, SL );
+                                    ECFImprimeVia( trGerencial, I-120, SL );
 
-                                 ImpressaoOk := True ;
+                                    ImpressaoOk := True ;
+                                 end;
 
                                  Inc( I ) ;
                               end;
@@ -797,6 +805,7 @@ begin
                                 break ;
 
                               I := 121 ;
+                              FechaGerencialAberto := True ;
                             end;
                           end ;
                        finally

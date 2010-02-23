@@ -1610,6 +1610,10 @@ object Form1: TForm1
           Caption = 'Num COO Inicial'
           OnClick = NumCOOInicial1Click
         end
+        object NumGNF1: TMenuItem
+          Caption = 'Num GNF'
+          OnClick = NumGNF1Click
+        end
         object N26: TMenuItem
           Caption = '-'
         end

@@ -102,6 +102,7 @@ type
     ckCliSiTef: TCheckBox;
      procedure ACBrTEFD1AguardaResp(Arquivo : String;
         SegundosTimeOut : Integer; var Interromper : Boolean);
+     procedure ACBrTEFD1AntesCancelarTransacao(RespostaPendente: TACBrTEFDResp);
      procedure ACBrTEFD1AntesFinalizarRequisicao(Req : TACBrTEFDReq);
      procedure ACBrTEFD1BloqueiaMouseTeclado(Bloqueia : Boolean;
         var Tratado : Boolean);
@@ -909,6 +910,25 @@ begin
 
    if fCancelado then
       Interromper := True ;
+end;
+
+procedure TForm1.ACBrTEFD1AntesCancelarTransacao(RespostaPendente: TACBrTEFDResp
+   );
+var
+   Est: TACBrECFEstado;
+begin
+   Est := ACBrECF1.Estado;
+
+   case Est of
+      estVenda, estPagamento :
+        ACBrECF1.CancelaCupom;
+
+      estRelatorio :
+          ACBrECF1.FechaRelatorio;
+   else
+      if not ( Est in [estLivre, estDesconhecido, estNaoInicializada] ) then
+         ACBrECF1.CorrigeEstadoErro( False ) ;
+   end;
 end;
 
 procedure TForm1.ACBrTEFD1AntesFinalizarRequisicao(Req : TACBrTEFDReq);

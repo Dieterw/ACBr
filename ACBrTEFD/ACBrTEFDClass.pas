@@ -55,7 +55,7 @@ uses
   {$ENDIF} ;
 
 const
-   CACBrTEFD_Versao      = '1.6b' ;
+   CACBrTEFD_Versao      = '1.7b' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -154,17 +154,19 @@ type
     function GetAsDate : TDateTime;
     function GetAsFloat : Double;
     function GetAsInteger : Integer;
+    function GetAsString: AnsiString;
     function GetAsTime : TDateTime;
     function GetAsTimeStamp : TDateTime;
     function GetAsTimeStampSQL : TDateTime;
     procedure SetAsDate(const AValue : TDateTime);
     procedure SetAsFloat(const AValue : Double);
     procedure SetAsInteger(const AValue : Integer);
+    procedure SetAsString(const AValue: AnsiString);
     procedure SetAsTime(const AValue : TDateTime);
     procedure SetAsTimeStamp(const AValue : TDateTime);
     procedure SetAsTimeStampSQL(const AValue : TDateTime);
   public
-    property AsString   : AnsiString read fInformacao    write fInformacao ;
+    property AsString   : AnsiString read GetAsString    write SetAsString ;
     property AsDate     : TDateTime  read GetAsDate      write SetAsDate ;
     property AsTime     : TDateTime  read GetAsTime      write SetAsTime ;
     property AsTimeStamp: TDateTime  read GetAsTimeStamp write SetAsTimeStamp ;
@@ -178,7 +180,7 @@ type
    TACBrTEFDLinha = class
    private
      fIdentificacao : SmallInt;
-     fInformacao : TACBrTEFDLinhaInformacao;
+     fACBrTEFDLinhaInformacao : TACBrTEFDLinhaInformacao;
      fLinha : AnsiString;
      fSequencia : SmallInt;
    protected
@@ -190,21 +192,23 @@ type
 
      property Linha : AnsiString read GetLinha write SetLinha ;
 
-     property Identificacao : SmallInt read fIdentificacao write fIdentificacao  ;
-     property Sequencia     : SmallInt read fSequencia     write fSequencia ;
-     property Informacao    : TACBrTEFDLinhaInformacao read fInformacao ;
+     property Identificacao : SmallInt read fIdentificacao  ;
+     property Sequencia     : SmallInt read fSequencia      ;
+     property Informacao    : TACBrTEFDLinhaInformacao read fACBrTEFDLinhaInformacao ;
    end ;
 
    { TACBrTEFDArquivo }
 
    TACBrTEFDArquivo = class
    private
-      fStringList : TStringList ;
-      fLinha      : TACBrTEFDLinha ;
+      fStringList    : TStringList ;
+      fACBrTEFDLinha : TACBrTEFDLinha ;
       function AchaLinha(const Identificacao : Integer;
          const Sequencia : Integer = 0 ) : Integer;
       function GetCount : Integer;
       function GetLinha(Index : Integer) : TACBrTEFDLinha;
+      function NomeCampo(const Identificacao: Integer; const Sequencia: Integer
+         ): String;
    public
      constructor Create ;
      destructor Destroy ; override;
@@ -693,6 +697,11 @@ begin
   Result := StrToIntDef(fInformacao,0);
 end;
 
+function TACBrTEFDLinhaInformacao.GetAsString: AnsiString;
+begin
+   Result := fInformacao;
+end;
+
 function TACBrTEFDLinhaInformacao.GetAsTime : TDateTime;
 var
    TimeStr : String;
@@ -768,6 +777,11 @@ begin
      fInformacao := IntToStr( AValue );
 end;
 
+procedure TACBrTEFDLinhaInformacao.SetAsString(const AValue: AnsiString);
+begin
+   fInformacao := AValue;
+end;
+
 procedure TACBrTEFDLinhaInformacao.SetAsTime(const AValue : TDateTime);
 begin
   if AValue = 0 then
@@ -799,13 +813,13 @@ constructor TACBrTEFDLinha.Create;
 begin
   inherited ;
 
-  fInformacao := TACBrTEFDLinhaInformacao.Create;
+  fACBrTEFDLinhaInformacao := TACBrTEFDLinhaInformacao.Create;
 end;
 
 destructor TACBrTEFDLinha.Destroy;
 begin
-  if Assigned( fInformacao ) then
-     fInformacao.Free ;
+  if Assigned( fACBrTEFDLinhaInformacao ) then
+     fACBrTEFDLinhaInformacao.Free ;
 
   inherited Destroy;
 end;
@@ -846,15 +860,15 @@ constructor TACBrTEFDArquivo.Create;
 begin
   inherited Create;
 
-  fLinha := TACBrTEFDLinha.Create;
-  fStringList := TStringList.Create;
+  fACBrTEFDLinha := TACBrTEFDLinha.Create;
+  fStringList    := TStringList.Create;
   fStringList.Sorted := True ;
 end;
 
 destructor TACBrTEFDArquivo.Destroy;
 begin
   fStringList.Free ;
-  fLinha.Free ;
+  fACBrTEFDLinha.Free ;
 
   Inherited ;
 end;
@@ -886,24 +900,14 @@ procedure TACBrTEFDArquivo.GravaInformacao(const Identificacao : Integer;
    const Sequencia : Integer; const Informacao : AnsiString);
 Var
   I : Integer ;
-  ALinha : TACBrTEFDLinha ;
 begin
   if Informacao = '' then exit ;
 
-  ALinha := TACBrTEFDLinha.Create;
-  try
-     ALinha.Identificacao       := Identificacao ;
-     ALinha.Sequencia           := Sequencia ;
-     ALinha.Informacao.AsString := Informacao ;
+  I := AchaLinha(Identificacao, Sequencia) ;
+  if I > 0 then
+     fStringList.Delete(I);  // Remove o Antigo
 
-     I := AchaLinha(Identificacao, Sequencia) ;
-     if I > 0 then
-        fStringList.Delete(I);  // Remove o Antigo
-
-     fStringList.Add( ALinha.Linha ) ;
-  finally
-     ALinha.Free ;
-  end;
+  fStringList.Add( NomeCampo(Identificacao,Sequencia) + ' = '+ Informacao ) ;
 end;
 
 procedure TACBrTEFDArquivo.GravaInformacao( const Identificacao : Integer;
@@ -915,16 +919,16 @@ end;
 function TACBrTEFDArquivo.AchaLinha(const Identificacao : Integer;
   const Sequencia : Integer = 0 ) : Integer;
 Var
-  NomeCampo : String;
+  Campo : String;
   I : Integer;
 begin
-  NomeCampo := IntToStrZero(Identificacao,3)+'-'+IntToStrZero(Sequencia,3);
+  Campo := NomeCampo(Identificacao, Sequencia);
 
   Result := -1 ;
   I      := 0 ;
   while (Result < 0) and (I < fStringList.Count) do
   begin
-     if copy(fStringList[I],1,Length(NomeCampo)) = NomeCampo then
+     if copy(fStringList[I],1,Length(Campo)) = Campo then
         Result := I;
      Inc( I ) ;
   end;
@@ -937,8 +941,14 @@ end;
 
 function TACBrTEFDArquivo.GetLinha(Index : Integer) : TACBrTEFDLinha;
 begin
-  fLinha.Linha := Conteudo[Index];
-  Result := fLinha;
+  fACBrTEFDLinha.Linha := Conteudo[Index];
+  Result := fACBrTEFDLinha;
+end;
+
+function TACBrTEFDArquivo.NomeCampo(const Identificacao: Integer;
+  const Sequencia: Integer): String;
+begin
+   Result := IntToStrZero(Identificacao, 3)+'-'+IntToStrZero(Sequencia, 3);
 end;
 
 function TACBrTEFDArquivo.LeLinha(const Identificacao : Integer;
@@ -949,15 +959,11 @@ begin
   I := AchaLinha(Identificacao, Sequencia) ;
 
   if I > -1 then
-     fLinha.Linha := fStringList[I]
+     fACBrTEFDLinha.Linha := fStringList[I]
   else
-   begin
-     fLinha.Identificacao := Identificacao;
-     fLinha.Sequencia     := Sequencia;
-     fLinha.Informacao.AsString := '' ;
-   end;
+     fACBrTEFDLinha.Linha := NomeCampo(Identificacao,Sequencia) + ' =  '  ;
 
-  Result := fLinha;
+  Result := fACBrTEFDLinha;
 end;
 
 function TACBrTEFDArquivo.LeInformacao(const Identificacao : Integer;
@@ -2318,37 +2324,39 @@ end;
 
 procedure TACBrTEFDClass.VerificarIniciouRequisicao;
 begin
-   if Req.Header = '' then
-      raise EACBrTEFDErro.Create( ACBrStr( 'Nenhuma Requisição Iniciada' ) ) ;
+  if Req.Header = '' then
+     raise EACBrTEFDErro.Create( ACBrStr( 'Nenhuma Requisição Iniciada' ) ) ;
 end;
 
 Procedure TACBrTEFDClass.VerificarTransacaoPagamento(Valor : Double );
 var
-   SaldoAPagar : Double ;
+  SaldoAPagar : Double ;
 begin
-   if (Valor <= 0) then
-      raise Exception.Create( ACBrStr( 'Valor inválido' ) );
+  Valor := RoundTo( Valor, -2);
 
-   { Lendo o SubTotal do ECF }
-   with TACBrTEFD(Owner) do
-   begin
-     if not (EstadoECF in ['V','P']) then
-        raise Exception.Create( ACBrStr('ECF deve estar em Venda ou Pagamento'));
+  if (Valor <= 0) then
+     raise Exception.Create( ACBrStr( 'Valor inválido' ) );
 
-     SaldoAPagar := SubTotalECF ;
-     RespostasPendentes.SaldoAPagar := SaldoAPagar ;
+  { Lendo o SubTotal do ECF }
+  with TACBrTEFD(Owner) do
+  begin
+    if not (EstadoECF in ['V','P']) then
+       raise Exception.Create( ACBrStr('ECF deve estar em Venda ou Pagamento'));
 
-     if (Valor > RespostasPendentes.SaldoRestante ) then
-        raise Exception.Create( ACBrStr( 'Operação TEF deve ser igual ao '+
-                                         'Saldo a Pagar' ) );
+    SaldoAPagar := SubTotalECF ;
+    RespostasPendentes.SaldoAPagar := SaldoAPagar ;
 
-     if (not MultiplosCartoes) and (Valor < SaldoAPagar) then
-        raise Exception.Create(
-               ACBrStr( 'Multiplos Cartões não habilitado.' + sLineBreak +
-                        'Valor da Operação TEF deve ser igual ao Saldo a Pagar' ) );
-   end;
+    if (Valor > RespostasPendentes.SaldoRestante ) then
+       raise Exception.Create( ACBrStr( 'Operação TEF deve ser igual ao '+
+                                        'Saldo a Pagar' ) );
 
-   VerificaAtivo;              { VisaNET exige um ATV antes de cada transação }
+    if (not MultiplosCartoes) and (Valor < SaldoAPagar) then
+       raise Exception.Create(
+              ACBrStr( 'Multiplos Cartões não habilitado.' + sLineBreak +
+                       'Valor da Operação TEF deve ser igual ao Saldo a Pagar' ) );
+  end;
+
+  VerificaAtivo;              { VisaNET exige um ATV antes de cada transação }
 end;
 
 procedure TACBrTEFDClass.SetArqReq(const AValue : String);

@@ -1010,7 +1010,6 @@ Var
   Est  : AnsiChar;
   ImpressaoOk : Boolean ;
   GrupoFPG    : TACBrTEFDArrayGrupoRespostasPendentes ;
-  TotalAPagarECF, TotalAPagarTEF : Double ;
 begin
   ImpressaoOk := False ;
 
@@ -1035,24 +1034,12 @@ begin
                           AgruparRespostasPendentes( GrupoFPG );
                           Ordem := 0 ;
 
-                          TotalAPagarECF := SubTotalECF;
-
                           For I := 0 to Length( GrupoFPG )-1 do
                           begin
-                             // TESTAR melhor AQUI //
-                             TotalAPagarTEF := 0 ;
-                             // Calculando o Total a Pagar de TEF //
-                             For J := I to Length( GrupoFPG )-1 do
-                                TotalAPagarTEF := TotalAPagarTEF + GrupoFPG[J].Total ;
-
                              if GrupoFPG[I].OrdemPagamento = 0 then
                               begin
                                 Inc( Ordem ) ;
-                                { Total a pagar de TEF é superior ao Total a pagar no ECF ?
-                                  Se SIM, então provavelmente está se recuperando de uma
-                                  queda de energia. Verifique quanto realmente falta Pagar... }
-                                if TotalAPagarTEF <= TotalAPagarECF then
-                                   ECFPagamento( GrupoFPG[I].IndiceFPG_ECF, GrupoFPG[I].Total );
+                                ECFPagamento( GrupoFPG[I].IndiceFPG_ECF, GrupoFPG[I].Total );
 
                                 For J := 0 to RespostasPendentes.Count-1 do
                                    if RespostasPendentes[J].IndiceFPG_ECF = GrupoFPG[I].IndiceFPG_ECF then

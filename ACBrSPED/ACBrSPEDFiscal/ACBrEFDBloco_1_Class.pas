@@ -462,7 +462,6 @@ begin
                                                LFill( VAL_FECHA,0,3 ) +
                                                LFill( VAL_ABERT,0,3 ) +
                                                LFill( VOL_AFERI,0,3 ) +
-                                               LFill( VOL_AFERI,0,3 ) +
                                                LFill( VOL_VENDAS,0,3 ) +
                                                Delimitador +
                                                #13#10;

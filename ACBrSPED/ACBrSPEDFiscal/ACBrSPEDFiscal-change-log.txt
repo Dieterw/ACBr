@@ -47,6 +47,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.07a   24/02/10
+[*] Comentei a rotina que gera o BLOCO G, pois segundo o Art. 3o do AC 38/09
+    ele só deverá ser gerado apartir de 1 de julho de 2010.
+
 Versão 0.07a   12/02/10
 [*] Implementado do Bloco 1 por (Ricardo JS)
 [+] Implemantado todo o código do Bloco G que faltava por (Ricardo JS)

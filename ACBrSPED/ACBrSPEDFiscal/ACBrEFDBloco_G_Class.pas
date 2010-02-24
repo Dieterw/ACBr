@@ -218,10 +218,13 @@ begin
                                                Delimitador +
                                                #13#10;
         end;
+        /// Registro FILHOS do FILHO
         strRegistroG125 := strRegistroG125 +
                            WriteRegistroG130( RegG110.RegistroG125.Items[intFor]);
+
         RegistroG990.QTD_LIN_G := RegistroG990.QTD_LIN_G + 1;
      end;
+     /// Variavél para armazenar a quantidade de registro do tipo.
      FRegistroG125Count := FRegistroG125Count + RegG110.RegistroG125.Count;
   end;
   Result := strRegistroG125;

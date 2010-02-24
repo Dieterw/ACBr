@@ -465,10 +465,19 @@ begin
     if Bloco_E.RegistroE530.Count > 0 then Write(txtFile, WriteRegistroE530); // Dante
     Write(txtFile, WriteRegistroE990);
 
+    /// CÓDIGO ABAIXO COMENTADO ATÉ QUE ENTRE EM VIGOR O ARTIGO 3o DO AC 38/09.
+    /// QUE DIZ:
+    ///
+    /// Este ato entra em vigor na data de sua publicação, produzindo efeitos
+    /// para as escriturações referentes aos períodos a partir de 1º de janeiro de 2010,
+    /// --> exceto quanto ao BLOCO G e registros pertinentes ao Livro de
+    /// Controle de Crédito de ICMS do Ativo Permanente cujos efeitos serão
+    /// a partir de 1º de julho de 2010 <--.
+
     /// BLOCO G
-    Write(txtFile, WriteRegistroG001);
-    if Bloco_G.RegistroG110.Count > 0 then Write(txtFile, WriteRegistroG110);
-    Write(txtFile, WriteRegistroG990);
+//    Write(txtFile, WriteRegistroG001);
+//    if Bloco_G.RegistroG110.Count > 0 then Write(txtFile, WriteRegistroG110);
+//    Write(txtFile, WriteRegistroG990);
 
     /// BLOCO H
     Write(txtFile, WriteRegistroH001);

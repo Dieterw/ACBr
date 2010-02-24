@@ -51,7 +51,7 @@ uses Classes, SysUtils,
   {$IFDEF ACBrNFeOpenSSL}
     HTTPSend,
   {$ELSE}
-     SoapHTTPClient, SOAPHTTPTrans, WinInet, ACBrCAPICOM_TLB,
+     SoapHTTPClient, SOAPHTTPTrans, JwaWinCrypt, WinInet, ACBrCAPICOM_TLB,
   {$ENDIF}
   pcnNFe, pcnNFeW,
   pcnRetConsReciNFe, pcnRetConsCad, pcnAuxiliar, pcnConversao, pcnRetDPEC,
@@ -471,7 +471,7 @@ begin
   CertContext :=  Cert as ICertContext;
   CertContext.Get_CertContext(Integer(PCertContext));
 
-  if not InternetSetOption(Data, INTERNET_OPTION_CLIENT_CERT_CONTEXT, PCertContext,sizeof(CertContext)*5) then
+  if not InternetSetOption(Data, INTERNET_OPTION_CLIENT_CERT_CONTEXT, PCertContext, Sizeof(CERT_CONTEXT)) then
    begin
      if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
         TACBrNFe( FACBrNFe ).OnGerarLog('ERRO: Erro OnBeforePost: ' + IntToStr(GetLastError));

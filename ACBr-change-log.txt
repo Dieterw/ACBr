@@ -97,6 +97,11 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Versão 0.8.9b  25/02/10
+-- ACBrECF --
+[*]    Aplicada otimização no Fechamento de Cupom quando o ACBrECF está associado
+       a geraçao de Bobina gráfica. (Por: Lampada)
+       
 Versão 0.8.9b  24/02/10
 -- ACBrECFBematech --
 [-]    Corrigido Bug no método "CarregaAliquotas", que não carregava todas

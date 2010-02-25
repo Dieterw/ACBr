@@ -149,6 +149,7 @@ TACBrECF = class( TACBrComponent )
     fsModelo : TACBrECFModelo;
     fsMensagemRodape : String ;
     fsRegistrouRFDCNF : Boolean ;
+    fsSubTotalPagto :Double; //lampada
     {$IFNDEF CONSOLE}
       fsFormMsgColor : TColor ;
       fsFormMsgFont  : TFont ;
@@ -707,7 +708,8 @@ begin
   inherited create( AOwner );
 
   { Inicializando as Variaveis Internas }
-  fsAtivo := false ;
+  fsSubTotalPagto   := 0;//lampada
+  fsAtivo           := false ;
   fsProcurandoECF   := false ;
   fsProcurandoPorta := false ;
   fsMensagemRodape  := '' ;
@@ -923,6 +925,13 @@ begin
   ComandoLOG := DateToStr(now)+ ' Ativar' ;
   fsECF.Ativar ;
   fsAtivo := true ;
+
+  //Se o ecf foi desligado durante o cupom, continua do ultimo
+  if (Estado in [estVenda, estPagamento]) then
+  begin
+     fsMemoItens     := NumUltItem;
+     fsSubTotalPagto := Subtotal;
+  end;
 
   {$IFNDEF CONSOLE}
    if MemoAssigned then
@@ -3380,7 +3389,8 @@ end;
  begin
    MemoLeParams ;
    MemoAdicionaLinha( fsMemoCabecalho ) ;
-   fsMemoItens := 0 ;  { Zera contador de Itens }
+   fsMemoItens     := 0 ;  { Zera contador de Itens }
+   fsSubTotalPagto := 0;   {Zera o total pago verificador da bobina} //lampada 
  end;
 
  procedure TACBrECF.MemoTitulo(ATitulo: String) ;
@@ -3395,12 +3405,14 @@ end;
  end;
 
  procedure TACBrECF.MemoSubtotaliza(DescontoAcrescimo: Double );
-   Var SubTot : Double ;
-       S      : String ;
+ Var
+    S : String ;
  begin
-   fsMemoOperacao := 'subtotalizanaofiscal' ;
-   SubTot := Subtotal ;
+   fsMemoOperacao  := 'subtotalizanaofiscal' ;
+   fsSubTotalPagto := Subtotal;
 
+   {Para que na condição de pagamento, não precise ficar pegando toda hora}
+   {o subtotal, evitando ficar mandando para a impressora }
    if DescontoAcrescimo <> 0 then
    begin
       if DescontoAcrescimo < 0 then
@@ -3410,7 +3422,8 @@ end;
 
       MemoAdicionaLinha( '<table width=100%><tr>'+
                          '<td align=left><b>SUBTOTAL   R$</b></td>'+
-                         '<td align=right>'+FormatFloat('#,###,##0.00',SubTot - DescontoAcrescimo)+'</td>'+
+                         '<td align=right>'+FormatFloat('#,###,##0.00',
+                         fsSubTotalPagto - DescontoAcrescimo)+'</td>'+
                          '</tr></table>' ) ;
       MemoAdicionaLinha( '<table width=100%><tr>'+
                          '<td align=left><b>'+S+'  R$</b></td>'+
@@ -3420,7 +3433,7 @@ end;
 
    MemoTitulo( '<table width=100%><tr>'+
                '<td align=left>TOTAL  R$</td>'+
-               '<td align=right>'+FormatFloat('#,###,##0.00',SubTot)+'</td>'+
+               '<td align=right>'+FormatFloat('#,###,##0.00',fsSubTotalPagto)+'</td>'+
                '</tr></table>' ) ;
 
    fsMemoItens := 0 ;  { Zera para acumular o numero de Pagamentos }
@@ -3428,7 +3441,8 @@ end;
 
  procedure TACBrECF.MemoEfetuaPagamento(Descricao: String; Valor: Double;
     Observacao: String) ;
-   Var TotPago, SubTot, Troco : Double ;
+ Var
+    TotPago,  Troco : Double ;
  begin
     fsMemoOperacao := 'efetuapagamento' ;
     Inc( fsMemoItens ) ;
@@ -3442,9 +3456,9 @@ end;
     MemoAdicionaLinha( Observacao );
 
     TotPago := TotalPago ;  { Le valores do ECF }
-    SubTot  := Subtotal ;
+//  fsTotalPago := fsTotalPago + Valor;
 
-    if TotPago >= SubTot then   { Ultrapassou o Valor do Cupom }
+    if TotPago >= fsSubTotalPagto then   { Ultrapassou o Valor do Cupom }
     begin
        if fsMemoItens > 1 then
           MemoAdicionaLinha( '<table width=100%><tr>'+
@@ -3452,9 +3466,9 @@ end;
                              '<td align=right>'+FormatFloat('#,###,##0.00',TotPago)+'</td>'+
                              '</tr></table>' ) ;
 
-      if TotPago > SubTotal then  { Tem TROCO ? }
+      if TotPago > fsSubTotalPagto then  { Tem TROCO ? }
       begin
-         Troco  := RoundTo(TotPago - SubTot,-2) ;
+         Troco  := RoundTo(TotPago - fsSubTotalPagto,-2) ;
          MemoTitulo( '<table width=100%><tr>'+
                      '<td align=left>TROCO  R$</td>'+
                      '<td align=right>'+FormatFloat('#,###,##0.00',Troco)+'</td>'+

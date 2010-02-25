@@ -345,9 +345,9 @@ begin
     CloseFile(txtFile);
     /// Assinatura EAD
     if Assigned( FOnPAFCalcEAD ) then
-       FOnPAFCalcEAD(Arquivo) /// Se usuário usa outro método para assinar o arquivo
+       FOnPAFCalcEAD(fPath + Arquivo) /// Se usuário usa outro método para assinar o arquivo
     else
-       WriteRegistroEAD(Arquivo);
+       WriteRegistroEAD(fPath + Arquivo);
 
     /// Limpa de todos os Blocos as listas de todos os registros.
     LimpaRegistros;
@@ -384,9 +384,9 @@ begin
     CloseFile(txtFile);
     /// Assinatura EAD
     if Assigned( FOnPAFCalcEAD ) then
-       FOnPAFCalcEAD(Arquivo) /// Se usuário usa outro método para assinar o arquivo
+       FOnPAFCalcEAD(fPath + Arquivo) /// Se usuário usa outro método para assinar o arquivo
     else
-       WriteRegistroEAD(Arquivo);
+       WriteRegistroEAD(fPath + Arquivo);
 
     /// Limpa de todos os Blocos as listas de todos os registros.
     LimpaRegistros;
@@ -423,9 +423,9 @@ begin
     CloseFile(txtFile);
     /// Assinatura EAD
     if Assigned( FOnPAFCalcEAD ) then
-       FOnPAFCalcEAD(Arquivo) /// Se usuário usa outro método para assinar o arquivo
+       FOnPAFCalcEAD(fPath + Arquivo) /// Se usuário usa outro método para assinar o arquivo
     else
-       WriteRegistroEAD(Arquivo);
+       WriteRegistroEAD(fPath + Arquivo);
 
     /// Limpa de todos os Blocos as listas de todos os registros.
     LimpaRegistros;
@@ -463,9 +463,9 @@ begin
     CloseFile(txtFile);
     /// Assinatura EAD
     if Assigned( FOnPAFCalcEAD ) then
-       FOnPAFCalcEAD(Arquivo) /// Se usuário usa outro método para assinar o arquivo
+       FOnPAFCalcEAD(fPath + Arquivo) /// Se usuário usa outro método para assinar o arquivo
     else
-       WriteRegistroEAD(Arquivo);
+       WriteRegistroEAD(fPath + Arquivo);
 
     /// Limpa de todos os Blocos as listas de todos os registros.
     LimpaRegistros;
@@ -502,9 +502,9 @@ begin
     CloseFile(txtFile);
     /// Assinatura EAD
     if Assigned( FOnPAFCalcEAD ) then
-       FOnPAFCalcEAD(Arquivo) /// Se usuário usa outro método para assinar o arquivo
+       FOnPAFCalcEAD(fPath + Arquivo) /// Se usuário usa outro método para assinar o arquivo
     else
-       WriteRegistroEAD(Arquivo);
+       WriteRegistroEAD(fPath + Arquivo);
 
     /// Limpa de todos os Blocos as listas de todos os registros.
     LimpaRegistros;

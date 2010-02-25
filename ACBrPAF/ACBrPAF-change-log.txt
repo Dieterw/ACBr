@@ -47,6 +47,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.02b   25/02/10
+---------------
+[-] No evento OnPAFCalcEAD e no método WriteRegistroEAD, o parametro passado 
+    tava sendo só o arquivo e tem que ser passado "Path + Arquivo". 
+
 Versão 0.02b   22/02/10
 ---------------
 [*] Melhorado o recurso de assinatura dos arquivos "R" com openssl 

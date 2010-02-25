@@ -909,6 +909,7 @@ object Form1: TForm1
     OnComandaECFImprimeVia = ACBrTEFD1ComandaECFImprimeVia
     OnInfoECF = ACBrTEFD1InfoECF
     OnAntesFinalizarRequisicao = ACBrTEFD1AntesFinalizarRequisicao
+    OnDepoisConfirmarTransacoes = ACBrTEFD1DepoisConfirmarTransacoes
     OnAntesCancelarTransacao = ACBrTEFD1AntesCancelarTransacao
     OnMudaEstadoReq = ACBrTEFD1MudaEstadoReq
     OnMudaEstadoResp = ACBrTEFD1MudaEstadoResp

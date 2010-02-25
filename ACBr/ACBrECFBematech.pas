@@ -1279,10 +1279,11 @@ end;
 
 procedure TACBrECFBematech.CarregaAliquotas;
 Var StrRet : AnsiString ;
-    Cont : Integer ;
+    Cont, qtdAliq : Integer ;
     Aliquota : TACBrECFAliquota ;
     ValAliq : Double ;
     ByteISS1,ByteISS2 : Byte ;
+    bErroLeituraQtd: Boolean;
 begin
   BytesResp := 2 ;
   StrRet    := EnviaComando( #35 + #29 ) ;
@@ -1291,15 +1292,25 @@ begin
 
   BytesResp := 33 ;
   StrRet := EnviaComando( #26 ) ;
+
+  try
+    qtdAliq := StrToInt( Copy( BcdToAsc( copy( StrRet, 1, 1) ), 1, 2 ) );
+    bErroLeituraQtd := false;
+  except
+    qtdAliq := 16;
+    bErroLeituraQtd := true;
+  end;
+
   StrRet := BcdToAsc( copy( StrRet,2, Length(StrRet)) ) ;  { 1o Byte nao é BCD }
+
 
   inherited CarregaAliquotas ;   { Cria fpAliquotas }
 
-  for Cont := 1 to 16 do
+  for Cont := 1 to qtdAliq do
   begin
     ValAliq  := RoundTo( StrToIntDef(copy(StrRet,((Cont-1)*4)+1,4),0)/100,-2);
 
-    if ValAliq > 0 then
+    if Not(bErroLeituraQtd) or (ValAliq > 0) then // Se a quantidade de alíquotas foi lida com sucesso então ler todas incluindo com valor zero no final
     begin
        Aliquota := TACBrECFAliquota.create ;
 

@@ -96,6 +96,14 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+
+Versão 0.8.9b  24/02/10
+-- ACBrECFBematech --
+[-]    Corrigido Bug no método "CarregaAliquotas", que não carregava todas
+       aliquotas se houvesse alguma cadastrada com o valor 0.
+       Por:  cristian.custodio
+
+
 Versão 0.8.9b  16/02/10
 -- ACBrECFEpson --
 [+]    Implementado métodos, CarregaRelatoriosGerenciais e

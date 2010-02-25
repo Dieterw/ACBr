@@ -115,6 +115,8 @@ type
         ImagemComprovante : TStringList; var RetornoECF : Integer);
      procedure ACBrTEFD1ComandaECFPagamento(IndiceECF : String; Valor : Double;
         var RetornoECF : Integer);
+     procedure ACBrTEFD1DepoisConfirmarTransacoes(
+        RespostasPendentes: TACBrTEFDRespostasPendentes);
      procedure ACBrTEFD1ExibeMsg(Operacao : TACBrTEFDOperacaoMensagem;
         Mensagem : String; var AModalResult : TModalResult);
      procedure ACBrTEFD1InfoECF(Operacao : TACBrTEFDInfoECF;
@@ -1037,6 +1039,25 @@ begin
      RetornoECF := 1 ;
   except
      RetornoECF := 0 ;
+  end;
+end;
+
+procedure TForm1.ACBrTEFD1DepoisConfirmarTransacoes(
+   RespostasPendentes: TACBrTEFDRespostasPendentes);
+var
+  I : Integer;
+begin
+  for I := 0 to RespostasPendentes.Count-1  do
+  begin
+     with RespostasPendentes[I] do
+     begin
+        Memo1.Lines.Add('Confirmado: '+Header+' ID: '+IntToStr( ID ) );
+
+        Memo1.Lines.Add( 'Rede: '  + Rede +
+                         ' NSU: '  + NSU  +
+                         ' Valor: '+ FormatFloat('###,###,##0.00',ValorTotal)) ;
+        Memo1.Lines.Add('Campo 11: ' + Conteudo.LeInformacao(11,0).AsString );
+     end;
   end;
 end;
 

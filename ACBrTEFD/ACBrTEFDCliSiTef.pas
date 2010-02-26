@@ -257,6 +257,21 @@ begin
        501 : fpTipoPessoa                  := AnsiChar(IfThen(Linha.Informacao.AsInteger = 0,'J','F')[1]);
        502 : fpDocumentoPessoa             := LinStr ;
        505 : fpQtdParcelas                 := Linha.Informacao.AsInteger ;
+       //incluido por Evandro
+       627 : fpAgencia                     := LinStr;
+       628 : fpAgenciaDC                   := LinStr;
+       120 : fpAutenticacao                := LinStr;
+       626 : fpBanco                       := LinStr;
+       613 :
+        begin
+          fpCheque                         := copy(LinStr, 21, 6);
+          fpCMC7                           := LinStr;
+        end;
+       629 : fpConta                       := LinStr;
+       630 : fpContaDC                     := LinStr;
+       527 : fpDataPreDatado               := Linha.Informacao.AsDate ;
+       //
+
        899 :  // Tipos de Uso Interno do ACBrTEFD
         begin
           case Linha.Sequencia of

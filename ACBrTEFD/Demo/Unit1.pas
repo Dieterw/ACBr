@@ -1056,7 +1056,7 @@ begin
         Memo1.Lines.Add( 'Rede: '  + Rede +
                          ' NSU: '  + NSU  +
                          ' Valor: '+ FormatFloat('###,###,##0.00',ValorTotal)) ;
-        Memo1.Lines.Add('Campo 11: ' + Conteudo.LeInformacao(11,0).AsString );
+        Memo1.Lines.Add('Campo 11: ' + LeInformacao(11,0).AsString );
      end;
   end;
 end;

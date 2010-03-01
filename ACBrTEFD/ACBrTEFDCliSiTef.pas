@@ -101,6 +101,7 @@ type
       fOperacaoReImpressao: Integer;
       fOperador : String;
       fParametrosAdicionais : TStringList;
+      fRespostas: TStringList;
       fRestricoes : String;
       fDocumentosProcessados : String ;
 
@@ -142,7 +143,7 @@ type
                 {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
 
      procedure AvaliaErro(Sts : Integer);
-     procedure FinalizaTransacao( Confirma : Boolean;
+     procedure FinalizarTransacao( Confirma : Boolean;
         DocumentoVinculado : String);
      procedure LoadDLLFunctions;
    protected
@@ -157,6 +158,8 @@ type
         const Valor : Double);
 
    public
+     property Respostas : TStringList read fRespostas ;
+
      constructor Create( AOwner : TComponent ) ; override;
      destructor Destroy ; override;
 
@@ -177,7 +180,8 @@ type
         DataCheque : TDateTime = 0; Banco   : String = '';
         Agencia    : String = ''; AgenciaDC : String = '';
         Conta      : String = ''; ContaDC   : String = '';
-        Cheque     : String = ''; ChequeDC  : String = '') : Boolean; override;
+        Cheque     : String = ''; ChequeDC  : String = '';
+        Compensacao: String = '' ) : Boolean ; override;
      Procedure NCN(Rede, NSU, Finalizacao : String;
         Valor : Double = 0; DocumentoVinculado : String = ''); override;
      Procedure CNF(Rede, NSU, Finalizacao : String;
@@ -350,6 +354,7 @@ begin
   fDocumentosProcessados := '' ;
 
   fParametrosAdicionais := TStringList.Create;
+  fRespostas            := TStringList.Create;
 
   xConfiguraIntSiTefInterativoEx    := nil ;
   xIniciaFuncaoSiTefInterativo      := nil ;
@@ -369,6 +374,7 @@ end;
 destructor TACBrTEFDCliSiTef.Destroy;
 begin
    fParametrosAdicionais.Free ;
+   fRespostas.Free ;
 
    inherited Destroy;
 end;
@@ -570,12 +576,28 @@ Function TACBrTEFDCliSiTef.CHQ(Valor : Double; IndiceFPG_ECF : String;
    DocumentoVinculado : String; CMC7 : String; TipoPessoa : AnsiChar;
    DocumentoPessoa : String; DataCheque : TDateTime; Banco : String;
    Agencia : String; AgenciaDC : String; Conta : String; ContaDC : String;
-   Cheque : String; ChequeDC : String) : Boolean;
+   Cheque : String; ChequeDC : String; Compensacao: String) : Boolean ;
 var
   Sts : Integer;
   Restr : String ;
 begin
   VerificarTransacaoPagamento( Valor );
+
+  Respostas.Values['501'] := ifthen(TipoPessoa = 'J','1','0');
+
+  if DocumentoPessoa <> '' then
+     Respostas.Values['502'] := OnlyNumber(DocumentoPessoa);
+
+  if DataCheque <> 0  then
+     Respostas.Values['506'] := FormatDateTime('DDMMYYYY',DataCheque) ;
+
+  if CMC7 <> '' then
+     Respostas.Values['517'] := '1:'+CMC7
+  else
+     Respostas.Values['517'] := '0:'+PadR(Compensacao,3,'0')+padR(Banco,3,'0')+
+                                 padR(Agencia,4,'0')+padR(AgenciaDC,1,'0')+
+                                 padL(Conta,10)+padR(ContaDC,1,'0')+
+                                 padR(Cheque,6,'0')+padR(ChequeDC,1,'0') ;
 
   Restr := fRestricoes;
   if Restr = '' then
@@ -601,7 +623,7 @@ Var
 begin
   // CliSiTEF não usa Rede, NSU e Finalizacao
 
-  FinalizaTransacao( True, DocumentoVinculado );
+  FinalizarTransacao( True, DocumentoVinculado );
 end;
 
 Function TACBrTEFDCliSiTef.CNC(Rede, NSU : String;
@@ -625,7 +647,7 @@ Procedure TACBrTEFDCliSiTef.NCN(Rede, NSU, Finalizacao : String;
 begin
   // CliSiTEF não usa Rede, NSU, Finalizacao e Valor
 
-  FinalizaTransacao( False, DocumentoVinculado );
+  FinalizarTransacao( False, DocumentoVinculado );
 end;
 
 Function TACBrTEFDCliSiTef.FazerRequisicao( Funcao : Integer;
@@ -736,9 +758,11 @@ begin
                       ' Tam.Min = '+IntToStr(TamanhoMinimo) +
                       ' Tam.Max = '+IntToStr(TamanhoMaximo)) ;
 
-
             if Result = 10000 then
             begin
+              if TipoCampo > 0 then
+                 Resposta := fRespostas.Values[IntToStr(TipoCampo)];
+
               case ProximoComando of
                  0 :
                    begin
@@ -943,10 +967,8 @@ begin
                      Digitado := True ;
                      OnObtemCampo( Mensagem, TamanhoMinimo, TamanhoMaximo,
                                    TipoCampo, tcCMC7, Resposta, Digitado ) ;
-                     if Resposta = '' then
-                        Continua := -1
-                     else
-                        Resposta := IfThen(Digitado,'0:','1:') + Resposta;
+                     if not Digitado then
+                        Continua := -1 ;
                    end;
 
                  34 :
@@ -957,7 +979,7 @@ begin
                      Digitado := True ;
                      OnObtemCampo( Mensagem, TamanhoMinimo, TamanhoMaximo,
                                    TipoCampo, tcDouble, Resposta, Digitado ) ;
-                     if StrToFloatDef(Resposta,-1) = -1 then
+                     if (not Digitado) or (StrToFloatDef(Resposta,-1) = -1) then
                         Continua := -1 ;
                    end;
 
@@ -969,10 +991,8 @@ begin
                      Digitado := True ;
                      OnObtemCampo( Mensagem, TamanhoMinimo, TamanhoMaximo,
                                    TipoCampo, tcBarCode, Resposta, Digitado ) ;
-                     if Resposta = '' then
-                        Continua := -1
-                     else
-                        Resposta := IfThen(Digitado,'0:','1:') + Resposta;
+                     if not Digitado then
+                        Continua := -1 ;
                    end;
 
               end;
@@ -995,7 +1015,7 @@ begin
            SysUtils.DeleteFile( ArqBackUp );
 
         if HouveImpressao then
-           FinalizaTransacao( ImpressaoOk, Resp.DocumentoVinculado );
+           FinalizarTransacao( ImpressaoOk, Resp.DocumentoVinculado );
 
         if TecladoBloqueado then
            BloquearMouseTeclado( False );
@@ -1008,11 +1028,13 @@ begin
    end ;
 end;
 
-procedure TACBrTEFDCliSiTef.FinalizaTransacao( Confirma : Boolean;
+procedure TACBrTEFDCliSiTef.FinalizarTransacao( Confirma : Boolean;
    DocumentoVinculado : String);
 Var
    DataStr, HoraStr : String;
 begin
+  fRespostas.Clear;
+
   if pos(DocumentoVinculado, fDocumentosProcessados) > 0 then
      exit ;
 

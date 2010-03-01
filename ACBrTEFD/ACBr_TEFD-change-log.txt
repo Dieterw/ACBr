@@ -47,6 +47,22 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 1.8b   01/03/10
+[+] Adicionado o parâmetro "Compensacao: String" no método CHQ (para
+    compatibilizar com SiTEF, não tem utilidade no TEF Discado)
+
+-- ACBrTEFDCliSiTEF --
+[+] Adicionada Propriedade publica "Respostas : TStringList", que pode conter
+    uma lista de Respostas de campos a serem perguntados pelo SiTEF. Nesse caso,
+    ao chamar o evendo "OnObtemCampo", já é exibida a Resposta coom o valor
+    pré-definido... Exemplo:
+      ACBrTEFD.TEFCliSiTef.Respostas.Values['502'] := '12345678910'
+      Quando o SiTEF perguntar o Valor do campo 502 o conteudo já será exibido.
+[+] Método CHQ faz uso de lista de Respostas para transmitir dados informados nos
+     parâmetros do método, e evitar re-digitação de dados
+[-] Corrigido o tratamento do parâmetro de referencia "Digitado" enviado para
+    "OnObtemCampo" quando o Comando do SiTEF era 31, 34 e 35
+
 Versão 1.7b   23/02/10
 [-] Corrigido Bug Introduzido na versao 1.6b, que impedia o funcionamento
     da função CRT com Saque, removendo a conferência adicional de desligamentos

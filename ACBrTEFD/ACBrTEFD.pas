@@ -183,8 +183,8 @@ type
         const DataCheque : TDateTime = 0; const Banco   : String = '';
         const Agencia    : String = ''; const AgenciaDC : String = '';
         const Conta      : String = ''; const ContaDC   : String = '';
-        const Cheque     : String = ''; const ChequeDC  : String = '')
-        : Boolean ;
+        const Cheque     : String = ''; const ChequeDC  : String = '';
+        const Compensacao: String = '' ) : Boolean ;
      Function CNC(const Rede, NSU : String; const DataHoraTransacao :
         TDateTime; const Valor : Double) : Boolean ;
      procedure CNF(const Rede, NSU, Finalizacao : String;
@@ -612,12 +612,13 @@ Function TACBrTEFD.CHQ(const Valor : Double; const IndiceFPG_ECF : String;
    const TipoPessoa : AnsiChar; const DocumentoPessoa : String;
    const DataCheque : TDateTime; const Banco : String; const Agencia : String;
    const AgenciaDC : String; const Conta : String; const ContaDC : String;
-   const Cheque : String; const ChequeDC : String) : Boolean;
+   const Cheque : String; const ChequeDC : String;
+   const Compensacao: String = '' ) : Boolean ;
 begin
    Result := fTefClass.CHQ( Valor, IndiceFPG_ECF, DocumentoVinculado, CMC7,
                             TipoPessoa,  DocumentoPessoa, DataCheque,
                             Banco, Agencia, AgenciaDC,
-                            Conta, ContaDC, Cheque, ChequeDC);
+                            Conta, ContaDC, Cheque, ChequeDC, Compensacao);
 end;
 
 Function TACBrTEFD.CNC(const Rede, NSU : String;

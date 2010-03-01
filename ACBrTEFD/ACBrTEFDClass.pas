@@ -55,7 +55,7 @@ uses
   {$ENDIF} ;
 
 const
-   CACBrTEFD_Versao      = '1.7b' ;
+   CACBrTEFD_Versao      = '1.8b' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -609,7 +609,8 @@ type
         DataCheque : TDateTime = 0; Banco   : String = '';
         Agencia    : String = ''; AgenciaDC : String = '';
         Conta      : String = ''; ContaDC   : String = '';
-        Cheque     : String = ''; ChequeDC  : String = '') : Boolean; virtual;
+        Cheque     : String = ''; ChequeDC  : String = '';
+        Compensacao: String = '' ) : Boolean ; virtual;
      Procedure NCN ; overload; virtual;
      Procedure NCN(Rede, NSU, Finalizacao : String;
         Valor : Double = 0; DocumentoVinculado : String = '') ;
@@ -1561,8 +1562,11 @@ Function TACBrTEFDClass.CHQ( Valor : Double; IndiceFPG_ECF : String;
    DataCheque : TDateTime = 0; Banco   : String = '';
    Agencia    : String = ''; AgenciaDC : String = '';
    Conta      : String = ''; ContaDC   : String = '';
-   Cheque     : String = ''; ChequeDC  : String = '') : Boolean;
+   Cheque     : String = ''; ChequeDC  : String = '';
+   Compensacao: String = '' ) : Boolean ;
 begin
+  // Compensacao não é utilizado em TEF discado //
+
   Result      := False ;
   VerificarTransacaoPagamento( Valor );
 

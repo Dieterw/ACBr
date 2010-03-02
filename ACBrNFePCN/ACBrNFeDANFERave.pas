@@ -54,7 +54,7 @@ unit ACBrNFeDANFERave;
 
 interface
 
-uses Forms, SysUtils, Classes,
+uses Forms, SysUtils, Classes, Graphics,
   RpBase, RpCon, RpConDS, RpDefine, RpDevice, RpRave, RpSystem, RvClass,
   RvCsData, RvCsDraw, RvCsStd, RvCsRpt, RvData, RvDefine, RvUtil, RVProj,
   RvDirectDataView, RVCsBars, RVDataField,
@@ -148,7 +148,15 @@ begin
                end;
                i:=i-1;
             end;
-
+// inserida mudança de cor para mensagem de NFe Cancelada
+            wDataText[8] := FindRaveComponent('DataText8',wPage[1]) as TRaveDataText;
+            if (wDataText[8] <> nil) then
+               if (wDataText[8].DataField = 'Mensagem0') and
+                  (dmDanfe.NFe.procNFe.cStat = 101) then
+                  wDataText[8].Font.Color := clRed
+               else
+                  wDataText[8].Font.Color := clSilver;
+//
             wPage[1] := FindRaveComponent('GlobalFatura',nil) as TRavePage;
             wDataText[15] := FindRaveComponent('Fatura_nFat',wPage[1]) as TRaveDataText;
             wDataText[16] := FindRaveComponent('Fatura_vOrig',wPage[1]) as TRaveDataText;

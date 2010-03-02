@@ -172,7 +172,18 @@ begin
         GotoXY(FFirstX+5,YY);
         FontRotation:=45;
         Print('AMBIENTE DE HOMOLOGAÇÃO - SEM VALOR FISCAL');
+      end
+     else if procNFe.cStat = 101 then
+      begin //NFe Cancelada
+        SetFont(FontNameUsed,25);
+        FontColor:=clRed;
+        Bold:=True;
+        Underline:=True;
+        GotoXY(FFirstX+80,YY-80);
+        FontRotation:=45;
+        Print('NFe Cancelada');
       end;
+
      SetFont(FontNameUsed,22);
      FontColor:=clSilver;
      Bold:=True;

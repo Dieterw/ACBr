@@ -48,11 +48,15 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   02/03/10
+---------------
+[*] Impressão da informação "NFe CANCELADA" (DANFEs em RAVE) quando o cancelamento for homologado pela SEFAZ em ambiente de PRODUÇÃO
+    (Créditos: Cicero A. Billo)
+
 Alterações   17/02/10
 ---------------
 [-] Correções no Preview e Fonte no DANFE em FORTES REPORTS (Peterson de Cerqueira Matos)
     
-
 Alterações   12/02/10
 ---------------
 [-] DANFE em FORTES REPORTS (Peterson de Cerqueira Matos)

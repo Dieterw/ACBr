@@ -768,7 +768,12 @@ begin
             (NotaUtil.EstaVazio(FNFe.procNFe.nProt))) then
          Connection.WriteStrData('', 'NFe sem Autorização de Uso da SEFAZ')
        else
-         Connection.WriteStrData('', '');
+         if (not ((NotaUtil.EstaVazio(FDANFEClassOwner.ProtocoloNFe)) and
+                  (NotaUtil.EstaVazio(FNFe.procNFe.nProt)))) and
+            (FNFe.procNFe.cStat = 101) then
+            Connection.WriteStrData('', 'NFe Cancelada')
+         else
+            Connection.WriteStrData('', '');
      end
      else
         Connection.WriteStrData('', '');

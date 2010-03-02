@@ -187,6 +187,7 @@ type
     fCNPJ_CPF: string;          /// CPF ou CNPJ do adquirente
 
     fRegistroR05: TRegistroR05List; /// Registro FILHO
+    fRegistroR07: TRegistroR07List; /// Registro FILHO
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -208,6 +209,7 @@ type
     property CNPJ_CPF: string read FCNPJ_CPF write FCNPJ_CPF;
 
     property RegistroR05: TRegistroR05List read FRegistroR05 write FRegistroR05;
+    property RegistroR07: TRegistroR07List read FRegistroR07 write FRegistroR07;
   end;
 
   /// REGISTRO R04 - Lista
@@ -325,17 +327,19 @@ type
 
   TRegistroR07 = class(TPersistent)
   private
-     fCCF: integer;              /// Número do Contador de Cupom Fiscal relativo ao respectivo Cupom Fiscal emitido
-     fMP: string;                /// Descrição do totalizador parcial de meio de pagamento
-     fVL_PAGTO: currency;        /// Valor do pagamento efetuado, com duas casas decimais
-     fIND_EST: string;           /// Informar "S" ou "N", conforme tenha ocorrido ou não, o estorno do pagamento, ou “P” para estorno parcial do pagamento
-     fVL_EST: currency;          /// Valor do estorno efetuado, com duas casas decimais
+    fCCF: integer;              /// Número do Contador de Cupom Fiscal relativo ao respectivo Cupom Fiscal emitido
+    fGNF: integer;              /// Número do GNF relativo ao respectivo documento, quando houver
+    fMP: string;                /// Descrição do totalizador parcial de meio de pagamento
+    fVL_PAGTO: currency;        /// Valor do pagamento efetuado, com duas casas decimais
+    fIND_EST: string;           /// Informar "S" ou "N", conforme tenha ocorrido ou não, o estorno do pagamento, ou “P” para estorno parcial do pagamento
+    fVL_EST: currency;          /// Valor do estorno efetuado, com duas casas decimais
   public
-     property CCF: integer read FCCF write FCCF;
-     property MP: string read FMP write FMP;
-     property VL_PAGTO: currency read FVL_PAGTO write FVL_PAGTO;
-     property IND_EST: string read FIND_EST write FIND_EST;
-     property VL_EST: currency read FVL_EST write FVL_EST;
+    property CCF: integer read FCCF write FCCF;
+    property GNF: integer read FGNF write FGNF;
+    property MP: string read FMP write FMP;
+    property VL_PAGTO: currency read FVL_PAGTO write FVL_PAGTO;
+    property IND_EST: string read FIND_EST write FIND_EST;
+    property VL_EST: currency read FVL_EST write FVL_EST;
   end;
 
   /// REGISTRO R07 - Lista
@@ -526,11 +530,13 @@ end;
 constructor TRegistroR04.Create;
 begin
   FRegistroR05 := TRegistroR05List.Create;
+  FRegistroR07 := TRegistroR07List.Create;
 end;
 
 destructor TRegistroR04.Destroy;
 begin
   FRegistroR05.Free;
+  FRegistroR07.Free;
   inherited;
 end;
 

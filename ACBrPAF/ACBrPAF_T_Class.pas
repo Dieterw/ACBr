@@ -48,9 +48,9 @@ type
   /// TPAF_T -
   TPAF_T = class(TACBrTXT)
   private
-    FRegistroT1: TRegistroT1;       /// RegistroT1
-    FRegistroT2: TRegistroT2List;   /// Lista de RegistroT2
-    FRegistroT9: TRegistroT9;       /// RegistroT9
+    FRegistroT1: TRegistroT1;       /// FRegistroT1
+    FRegistroT2: TRegistroT2List;   /// Lista de FRegistroT2
+    FRegistroT9: TRegistroT9;       /// FRegistroT9
   protected
   public
     constructor Create(AOwner: TComponent); /// Create
@@ -91,9 +91,9 @@ end;
 
 function TPAF_T.WriteRegistroT1: string;
 begin
-   if Assigned(RegistroT1) then
+   if Assigned(FRegistroT1) then
    begin
-      with RegistroT1 do
+      with FRegistroT1 do
       begin
         Check(funChecaCNPJ(CNPJ), '(T1) ESTABELECIMENTO: O CNPJ "%s" digitado é inválido!', [CNPJ]);
         Check(funChecaIE(IE, UF), '(T1) ESTABELECIMENTO: A Inscrição Estadual "%s" digitada é inválida!', [IE]);
@@ -106,7 +106,7 @@ begin
                   #13#10;
       end;
       ///
-      RegistroT9.TOT_REG := RegistroT9.TOT_REG + 1;
+      FRegistroT9.TOT_REG := FRegistroT9.TOT_REG + 1;
    end;
 end;
 
@@ -117,14 +117,14 @@ strRegistroT2: string;
 begin
   strRegistroT2 := '';
 
-  if Assigned(RegistroT2) then
+  if Assigned(FRegistroT2) then
   begin
-     for intFor := 0 to RegistroT2.Count - 1 do
+     for intFor := 0 to FRegistroT2.Count - 1 do
      begin
-        with RegistroT2.Items[intFor] do
+        with FRegistroT2.Items[intFor] do
         begin
           strRegistroT2 := strRegistroT2 + LFill('T2') +
-                                           LFill(RegistroT1.CNPJ, 14) +
+                                           LFill(FRegistroT1.CNPJ, 14) +
                                            LFill(DT_MOV, 'yyyymmdd') +
                                            RFill(TP_DOCTO, 10) +
                                            RFill(SERIE, 2) +
@@ -142,7 +142,7 @@ begin
                                            #13#10;
         end;
         ///
-        RegistroT9.TOT_REG := RegistroT9.TOT_REG + 1;
+        FRegistroT9.TOT_REG := FRegistroT9.TOT_REG + 1;
      end;
      Result := strRegistroT2;
   end;
@@ -150,13 +150,13 @@ end;
 
 function TPAF_T.WriteRegistroT9: string;
 begin
-   if Assigned(RegistroT9) then
+   if Assigned(FRegistroT9) then
    begin
-      with RegistroT9 do
+      with FRegistroT9 do
       begin
         Result := LFill('T9') +
-                  LFill(RegistroT1.CNPJ, 14) +
-                  RFill(RegistroT1.IE, 14) +
+                  LFill(FRegistroT1.CNPJ, 14) +
+                  RFill(FRegistroT1.IE, 14) +
                   LFill(TOT_REG, 6, 0) +
                   #13#10;
       end;

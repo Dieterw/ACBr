@@ -47,6 +47,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.02b   02/03/10
+---------------
+[*] Foi implementado o Registro R07 como filho do R04 também, pois na Lei do
+    AC 06/08 diz que o R07 deve ser gerado tanto para o registro R04 quanto para
+    o R06.
+
 Versão 0.02b   25/02/10
 ---------------
 [-] No evento OnPAFCalcEAD e no método WriteRegistroEAD, o parametro passado 

@@ -48,9 +48,9 @@ type
   /// TPAF_E -
   TPAF_E = class(TACBrTXT)
   private
-    FRegistroE1: TRegistroE1;       /// RegistroE1
-    FRegistroE2: TRegistroE2List;   /// Lista de RegistroE2
-    FRegistroE9: TRegistroE9;       /// RegistroE9
+    FRegistroE1: TRegistroE1;       /// FRegistroE1
+    FRegistroE2: TRegistroE2List;   /// Lista de FRegistroE2
+    FRegistroE9: TRegistroE9;       /// FRegistroE9
   protected
   public
     constructor Create(AOwner: TComponent); /// Create
@@ -91,9 +91,9 @@ end;
 
 function TPAF_E.WriteRegistroE1: string;
 begin
-   if Assigned(RegistroE1) then
+   if Assigned(FRegistroE1) then
    begin
-      with RegistroE1 do
+      with FRegistroE1 do
       begin
         Check(funChecaCNPJ(CNPJ), '(E1) ESTABELECIMENTO: O CNPJ "%s" digitado é inválido!', [CNPJ]);
         Check(funChecaIE(IE, UF), '(E1) ESTABELECIMENTO: A Inscrição Estadual "%s" digitada é inválida!', [IE]);
@@ -106,7 +106,7 @@ begin
                   #13#10;
       end;
       ///
-      RegistroE9.TOT_REG := RegistroE9.TOT_REG + 1;
+      FRegistroE9.TOT_REG := FRegistroE9.TOT_REG + 1;
    end;
 end;
 
@@ -117,16 +117,16 @@ strRegistroE2: string;
 begin
   strRegistroE2 := '';
 
-  if Assigned(RegistroE2) then
+  if Assigned(FRegistroE2) then
   begin
-     for intFor := 0 to RegistroE2.Count - 1 do
+     for intFor := 0 to FRegistroE2.Count - 1 do
      begin
-        with RegistroE2.Items[intFor] do
+        with FRegistroE2.Items[intFor] do
         begin
-          Check(funChecaCNPJ(RegistroE1.CNPJ), '(E2) ESTOQUE: O CNPJ "%s" digitado é inválido!', [RegistroE1.CNPJ]);
+          Check(funChecaCNPJ(FRegistroE1.CNPJ), '(E2) ESTOQUE: O CNPJ "%s" digitado é inválido!', [FRegistroE1.CNPJ]);
           ///
           strRegistroE2 := strRegistroE2 + LFill('E2') +
-                                           LFill(RegistroE1.CNPJ, 14) +
+                                           LFill(FRegistroE1.CNPJ, 14) +
                                            RFill(COD_MERC, 14) +
                                            RFill(DESC_MERC, 50) +
                                            RFill(UN_MED, 6) +
@@ -135,7 +135,7 @@ begin
                                            #13#10;
         end;
         ///
-        RegistroE9.TOT_REG := RegistroE9.TOT_REG + 1;
+        FRegistroE9.TOT_REG := FRegistroE9.TOT_REG + 1;
      end;
      Result := strRegistroE2;
   end;
@@ -143,16 +143,16 @@ end;
 
 function TPAF_E.WriteRegistroE9: string;
 begin
-   if Assigned(RegistroE9) then
+   if Assigned(FRegistroE9) then
    begin
-      with RegistroE9 do
+      with FRegistroE9 do
       begin
-        Check(funChecaCNPJ(RegistroE1.CNPJ),            '(E9) TOTALIZAÇÃO: O CNPJ "%s" digitado é inválido!', [RegistroE1.CNPJ]);
-        Check(funChecaIE(RegistroE1.IE, RegistroE1.UF), '(E9) TOTALIZAÇÃO: A Inscrição Estadual "%s" digitada é inválida!', [RegistroE1.IE]);
+        Check(funChecaCNPJ(FRegistroE1.CNPJ),            '(E9) TOTALIZAÇÃO: O CNPJ "%s" digitado é inválido!', [FRegistroE1.CNPJ]);
+        Check(funChecaIE(FRegistroE1.IE, FRegistroE1.UF), '(E9) TOTALIZAÇÃO: A Inscrição Estadual "%s" digitada é inválida!', [FRegistroE1.IE]);
         ///
         Result := LFill('E9') +
-                  LFill(RegistroE1.CNPJ, 14) +
-                  LFill(RegistroE1.IE, 14) +
+                  LFill(FRegistroE1.CNPJ, 14) +
+                  LFill(FRegistroE1.IE, 14) +
                   LFill(TOT_REG, 6, 0) +
                   #13#10;
       end;

@@ -59,7 +59,8 @@ type
 
     function WriteRegistroR03(RegR02: TRegistroR02): AnsiString;
     function WriteRegistroR05(RegR04: TRegistroR04): AnsiString;
-    function WriteRegistroR07(RegR06: TRegistroR06): AnsiString;
+    function WriteRegistroR07_4(RegR04: TRegistroR04): AnsiString;
+    function WriteRegistroR07_6(RegR06: TRegistroR06): AnsiString;
 
     procedure CriaRegistros;
     procedure LiberaRegistros;
@@ -269,7 +270,8 @@ begin
         end;
         /// Registro FILHOS
         strRegistroR04 := strRegistroR04 +
-                          WriteRegistroR05( FRegistroR04.Items[intFor] );
+                          WriteRegistroR05  ( FRegistroR04.Items[intFor] ) +
+                          WriteRegistroR07_4( FRegistroR04.Items[intFor] );
      end;
   end;
   Result := strRegistroR04;
@@ -351,13 +353,47 @@ begin
         end;
         /// Registro FILHOS
         strRegistroR06 := strRegistroR06 +
-                          WriteRegistroR07( FRegistroR06.Items[intFor] );
+                          WriteRegistroR07_6( FRegistroR06.Items[intFor] );
      end;
   end;
   Result := strRegistroR06;
 end;
 
-function TPAF_R.WriteRegistroR07(RegR06: TRegistroR06): AnsiString;
+function TPAF_R.WriteRegistroR07_4(RegR04: TRegistroR04): AnsiString;
+var
+intFor: integer;
+strRegistroR07: string;
+begin
+  strRegistroR07 := '';
+
+  if Assigned(RegR04.RegistroR07) then
+  begin
+     for intFor := 0 to RegR04.RegistroR07.Count - 1 do
+     begin
+        with RegR04.RegistroR07.Items[intFor] do
+        begin
+          strRegistroR07 := strRegistroR07 + LFill('R07') +
+                                             RFill(FRegistroR01.NUM_FAB, 20) +
+                                             RFill(FRegistroR01.MF_ADICIONAL, 1) +
+                                             RFill(FRegistroR01.MODELO_ECF, 20) +
+                                             LFill(RegR04.NUM_USU, 2) +
+                                             LFill(RegR04.COO, 6) +
+                                             LFill(CCF, 6) +
+                                             LFill(GNF, 6) +
+                                             RFill(MP, 15) +
+                                             LFill(VL_PAGTO, 13, 2) +
+                                             RFill(IND_EST, 1) +
+                                             LFill(VL_EST, 13, 2) +
+                                             #13#10;
+        end;
+     end;
+     /// Variavél para armazenar a quantidade de registro do tipo.
+     FRegistroR07Count := FRegistroR07Count + RegR04.RegistroR07.Count;
+  end;
+  Result := strRegistroR07;
+end;
+
+function TPAF_R.WriteRegistroR07_6(RegR06: TRegistroR06): AnsiString;
 var
 intFor: integer;
 strRegistroR07: string;
@@ -377,7 +413,7 @@ begin
                                              LFill(RegR06.NUM_USU, 2) +
                                              LFill(RegR06.COO, 6) +
                                              LFill(CCF, 6) +
-                                             LFill(RegR06.GNF, 6) +
+                                             LFill(GNF, 6) +
                                              RFill(MP, 15) +
                                              LFill(VL_PAGTO, 13, 2) +
                                              RFill(IND_EST, 1) +

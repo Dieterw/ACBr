@@ -614,7 +614,7 @@ begin
      TituloDoBloco(PosX,PosY,'LOCAL DE RETIRADA');
      with Retirada do
      begin
-       Box([],XPos,YPos,30,aHeigthPadrao,'CNPJ',NotaUtil.FormatarCNPJ(CNPJ),taCenter);
+       Box([],XPos,YPos,32,aHeigthPadrao,'CNPJ',NotaUtil.FormatarCNPJ(CNPJ),taCenter);
        vEnd:=XLgr;
        if (Trim(Nro)>'') and (Nro<>'SN') and (Pos(Nro,vEnd)=0) then
           vEnd:=vEnd+' '+Nro;
@@ -644,7 +644,7 @@ begin
      TituloDoBloco(PosX,PosY,'LOCAL DE ENTREGA');
      with Entrega do
      begin
-       Box([],XPos,YPos,30,aHeigthPadrao,'CNPJ',NotaUtil.FormatarCNPJ(CNPJ),taCenter);
+       Box([],XPos,YPos,32,aHeigthPadrao,'CNPJ',NotaUtil.FormatarCNPJ(CNPJ),taCenter);
        vEnd:=XLgr;
        if (Trim(Nro)>'') and (Nro<>'SN') and (Pos(Nro,vEnd)=0) then
           vEnd:=vEnd+' '+Nro;

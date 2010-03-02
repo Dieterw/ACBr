@@ -52,6 +52,7 @@ Alterações   02/03/10
 ---------------
 [*] Impressão da informação "NFe CANCELADA" (DANFEs em RAVE) quando o cancelamento for homologado pela SEFAZ em ambiente de PRODUÇÃO
     (Créditos: Cicero A. Billo)
+[-] Correção da impressão do CNPJ (estava cortando) nos quadros LOCAL DE RETIRADA e ENTREGA no DANFE em RAVE CB Retrato.
 
 Alterações   17/02/10
 ---------------

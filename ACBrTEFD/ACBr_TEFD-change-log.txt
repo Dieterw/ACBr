@@ -47,6 +47,20 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 1.9b   03/03/10
+[-] Corrigida declaração de TACBrTEFD.CHQ, que causava erro de compilação no
+    Delphi (bug introduzido na versão 1.8)
+[+] Adicionada a propriedade "ExibirMsgAutenticacao: Boolean = True"
+    Quando True será exibida a mensagem: "Favor anotar no verso do Cheque: XXXX"
+    onde XXXX é a Mensagem de autenticação de Cheques retorna pelo G.P.
+    (Campo 032-000 em Discado e 120 no SiTEF)
+[*] Método "ImprimirTransacoesPendentes" modificado para suportar Respostas sem
+    Impressão de nenhum Comprovante (geralmente isso ocorre em consultas CHQ)
+[*] Método "ImprimirTransacoesPendentes" modificado para exibir a Mensagem de
+    Autenticação após a Impressão (ou não) do Comprovantes, de acordo com a nova
+    propriedade "ExibirMsgAutenticacao"
+
+
 Versão 1.8b   01/03/10
 [+] Adicionado o parâmetro "Compensacao: String" no método CHQ (para
     compatibilizar com SiTEF, não tem utilidade no TEF Discado)
@@ -58,7 +72,7 @@ Versão 1.8b   01/03/10
     pré-definido... Exemplo:
       ACBrTEFD.TEFCliSiTef.Respostas.Values['502'] := '12345678910'
       Quando o SiTEF perguntar o Valor do campo 502 o conteudo já será exibido.
-[+] Método CHQ faz uso de lista de Respostas para transmitir dados informados nos
+[*] Método CHQ faz uso de lista de Respostas para transmitir dados informados nos
      parâmetros do método, e evitar re-digitação de dados
 [-] Corrigido o tratamento do parâmetro de referencia "Digitado" enviado para
     "OnObtemCampo" quando o Comando do SiTEF era 31, 34 e 35

@@ -74,6 +74,7 @@ type
      fEsperaSleep : Integer;
      fEstadoReq : TACBrTEFDReqEstado;
      fEstadoResp : TACBrTEFDRespEstado;
+     fExibirMsgAutenticacao: Boolean;
      fMultiplosCartoes : Boolean;
      fNumVias : Integer;
      fOnAguardaResp : TACBrTEFDAguardaRespEvent;
@@ -207,6 +208,8 @@ type
        write SetMultiplosCartoes default False ;
      property AutoAtivarGP : Boolean read fAutoAtivarGP write fAutoAtivarGP
        default True ;
+     property ExibirMsgAutenticacao : Boolean read fExibirMsgAutenticacao
+       write fExibirMsgAutenticacao default True ;
      property AutoEfetuarPagamento : Boolean read fAutoEfetuarPagamento
        write SetAutoEfetuarPagamento default False ;
      property AutoFinalizarCupom : Boolean read fAutoFinalizarCupom
@@ -329,6 +332,7 @@ begin
   fPathBackup           := '' ;
   fAutoAtivarGP         := True ;
   fAutoEfetuarPagamento := False ;
+  fExibirMsgAutenticacao:= True ;
   fAutoFinalizarCupom   := True ;
   fMultiplosCartoes     := False ;
   fGPAtual              := gpNenhum ;
@@ -607,13 +611,14 @@ begin
    Result := fTefClass.CRT( Valor, IndiceFPG_ECF, DocumentoVinculado, Moeda );
 end;
 
-Function TACBrTEFD.CHQ(const Valor : Double; const IndiceFPG_ECF : String;
-   const DocumentoVinculado : String; const CMC7 : String;
-   const TipoPessoa : AnsiChar; const DocumentoPessoa : String;
-   const DataCheque : TDateTime; const Banco : String; const Agencia : String;
-   const AgenciaDC : String; const Conta : String; const ContaDC : String;
-   const Cheque : String; const ChequeDC : String;
-   const Compensacao: String = '' ) : Boolean ;
+Function TACBrTEFD.CHQ( const Valor : Double; const IndiceFPG_ECF : String;
+        const DocumentoVinculado : String = ''; const CMC7 : String = '';
+        const TipoPessoa : AnsiChar = 'F'; const DocumentoPessoa : String = '';
+        const DataCheque : TDateTime = 0; const Banco   : String = '';
+        const Agencia    : String = ''; const AgenciaDC : String = '';
+        const Conta      : String = ''; const ContaDC   : String = '';
+        const Cheque     : String = ''; const ChequeDC  : String = '';
+        const Compensacao: String = '' ) : Boolean ;
 begin
    Result := fTefClass.CHQ( Valor, IndiceFPG_ECF, DocumentoVinculado, CMC7,
                             TipoPessoa,  DocumentoPessoa, DataCheque,
@@ -764,11 +769,14 @@ begin
                           DoExibeMsg( opmExibirMsgCliente, TextoEspecialCliente ) ;
                        end;
 
-                       ComandarECF( opeAbreGerencial ) ;
-
                        NVias := fTefClass.NumVias ;
-                       if ImagemComprovante2aVia.Text = '' then
+                       if ImagemComprovante2aVia.Text = '' then   // Tem 2a via ?
                           NVias := 1 ;
+                       if ImagemComprovante1aVia.Text = '' then   // Tem alguma via ?
+                          NVias := 0 ;
+
+                       if NVias > 0 then
+                          ComandarECF( opeAbreGerencial ) ;
 
                        I := 1 ;
                        while I <= NVias do
@@ -787,7 +795,8 @@ begin
                           Inc( I ) ;
                        end;
 
-                       ComandarECF( opeFechaGerencial );
+                       if NVias > 0 then
+                          ComandarECF( opeFechaGerencial );
 
                        { Removendo a mensagem do Operador }
                        if RemoverMsg then
@@ -803,6 +812,10 @@ begin
                           DoExibeMsg( opmRemoverMsgCliente, '' ) ;
                           RemoverMsg := False ;
                        end;
+
+                       if ExibirMsgAutenticacao and (Autenticacao <> '') then
+                          DoExibeMsg( opmOK, 'Favor anotar no verso do Cheque:'+sLineBreak+
+                                             Autenticacao ) ;
                     end;
                  end ;
                end
@@ -834,17 +847,19 @@ begin
                              DoExibeMsg( opmExibirMsgCliente, TextoEspecialCliente ) ;
                           end;
 
-                          if Ordem <> OrdemPagamento then
+                          NVias := fTefClass.NumVias ;
+                          if ImagemComprovante2aVia.Text = '' then   // Tem 2a via ?
+                             NVias := 1 ;
+                          if ImagemComprovante1aVia.Text = '' then   // Tem alguma via ?
+                             NVias := 0 ;
+
+                          if (NVias > 0) and (Ordem <> OrdemPagamento) then
                           begin
                              Ordem := OrdemPagamento ;
                              ECFAbreVinculado( DocumentoVinculado,
                                                GrupoVinc[K].IndiceFPG_ECF,
                                                GrupoVinc[K].Total ) ;
                           end ;
-
-                          NVias := fTefClass.NumVias ;
-                          if ImagemComprovante2aVia.Text = '' then
-                             NVias := 1 ;
 
                           I := 1 ;
                           while I <= NVias do
@@ -877,10 +892,29 @@ begin
                              DoExibeMsg( opmRemoverMsgCliente, '' ) ;
                              RemoverMsg := False ;
                           end;
+
+                          if ExibirMsgAutenticacao and
+                             (J < RespostasPendentes.Count-1) and // Nao é o ultimo ? (se for a última é preferivel fechar o comprovante antes)
+                             (Autenticacao <> '') then            // Tem autenticação ?
+                          begin
+                             DoExibeMsg( opmOK, 'Favor anotar no verso do Cheque:'+sLineBreak+
+                                                Autenticacao ) ;
+                          end;
                        end;
                     end ;
 
-                    ComandarECF( opeFechaVinculado ) ;
+                    if Ordem > 0 then
+                       ComandarECF( opeFechaVinculado ) ;
+
+                    if ExibirMsgAutenticacao and (RespostasPendentes.Count > 0) then
+                    with RespostasPendentes[RespostasPendentes.Count-1] do
+                    begin
+                       if (Autenticacao <> '') then            // Tem autenticação ?
+                       begin
+                          DoExibeMsg( opmOK, 'Favor anotar no verso do Cheque:'+sLineBreak+
+                                             Autenticacao ) ;
+                       end;
+                    end ;
                  end;
                end;
 

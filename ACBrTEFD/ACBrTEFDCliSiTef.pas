@@ -580,13 +580,19 @@ Function TACBrTEFDCliSiTef.CHQ(Valor : Double; IndiceFPG_ECF : String;
 var
   Sts : Integer;
   Restr : String ;
+
+  Function FormataCampo( Campo : String; Tamanho : Integer ) : String ;
+  begin
+    Result := padR( OnlyNumber( Trim( Campo ) ), Tamanho, '0') ;
+  end ;
+
 begin
   VerificarTransacaoPagamento( Valor );
 
   Respostas.Values['501'] := ifthen(TipoPessoa = 'J','1','0');
 
   if DocumentoPessoa <> '' then
-     Respostas.Values['502'] := OnlyNumber(DocumentoPessoa);
+     Respostas.Values['502'] := OnlyNumber(Trim(DocumentoPessoa));
 
   if DataCheque <> 0  then
      Respostas.Values['506'] := FormatDateTime('DDMMYYYY',DataCheque) ;
@@ -594,10 +600,14 @@ begin
   if CMC7 <> '' then
      Respostas.Values['517'] := '1:'+CMC7
   else
-     Respostas.Values['517'] := '0:'+PadR(Compensacao,3,'0')+padR(Banco,3,'0')+
-                                 padR(Agencia,4,'0')+padR(AgenciaDC,1,'0')+
-                                 padL(Conta,10)+padR(ContaDC,1,'0')+
-                                 padR(Cheque,6,'0')+padR(ChequeDC,1,'0') ;
+     Respostas.Values['517'] := '0:'+FormataCampo(Compensacao,3)+
+                                     FormataCampo(Banco,3)+
+                                     FormataCampo(Agencia,4)+
+                                     FormataCampo(AgenciaDC,1)+
+                                     FormataCampo(Conta,10)+
+                                     FormataCampo(ContaDC,1)+
+                                     FormataCampo(Cheque,6)+
+                                     FormataCampo(ChequeDC,1) ;
 
   Restr := fRestricoes;
   if Restr = '' then
@@ -768,92 +778,95 @@ begin
                    begin
                      TACBrTEFDRespCliSiTef( Self.Resp ).GravaInformacao( TipoCampo, Mensagem ) ;
 
-                     { Impressão de Gerencial, deve ser Sob demanda }
-                     if ImprimirComprovantes and (TipoCampo in [121,122]) then
-                     begin
-                       if not HouveImpressao then
-                       begin
-                          HouveImpressao := True ;
-                          ArqBackUp      := CopiarResposta;
-                       end;
-
-                       SL := TStringList.Create;
-                       ImpressaoOk := False ;
-                       I := TipoCampo ;
-                       try
-                          while not ImpressaoOk do
+                     case TipoCampo of
+                        121, 122 :
+                          if ImprimirComprovantes then
                           begin
-                            try
-                              while I <= TipoCampo do
-                              begin
-                                 if FechaGerencialAberto then
-                                 begin
-                                   Est := EstadoECF;
+                             { Impressão de Gerencial, deve ser Sob demanda }
+                             if not HouveImpressao then
+                             begin
+                                HouveImpressao := True ;
+                                ArqBackUp      := CopiarResposta;
+                             end;
 
-                                   { Fecha Vinculado ou Gerencial ou Cupom, se ficou algum aberto por Desligamento }
-                                   case Est of
-                                     'C'      : ComandarECF( opeFechaVinculado );
-                                     'G', 'R' : ComandarECF( opeFechaGerencial );
-                                     'V', 'P' : ComandarECF( opeCancelaCupom );
-                                   end;
+                             SL := TStringList.Create;
+                             ImpressaoOk := False ;
+                             I := TipoCampo ;
+                             try
+                                while not ImpressaoOk do
+                                begin
+                                  try
+                                    while I <= TipoCampo do
+                                    begin
+                                       if FechaGerencialAberto then
+                                       begin
+                                         Est := EstadoECF;
 
-                                   GerencialAberto      := False ;
-                                   FechaGerencialAberto := False ;
+                                         { Fecha Vinculado ou Gerencial ou Cupom, se ficou algum aberto por Desligamento }
+                                         case Est of
+                                           'C'      : ComandarECF( opeFechaVinculado );
+                                           'G', 'R' : ComandarECF( opeFechaGerencial );
+                                           'V', 'P' : ComandarECF( opeCancelaCupom );
+                                         end;
 
-                                   if EstadoECF <> 'L' then
-                                     raise EACBrTEFDECF.Create( ACBrStr('ECF não está LIVRE') ) ;
-                                 end;
+                                         GerencialAberto      := False ;
+                                         FechaGerencialAberto := False ;
 
-                                 Mensagem := Self.Resp.LeInformacao(I).AsString ;
-                                 Mensagem := StringToBinaryString( Mensagem ) ;
-                                 if Mensagem <> '' then
-                                 begin
-                                    SL.Text  := StringReplace( Mensagem, #10, sLineBreak, [rfReplaceAll] ) ;
+                                         if EstadoECF <> 'L' then
+                                           raise EACBrTEFDECF.Create( ACBrStr('ECF não está LIVRE') ) ;
+                                       end;
 
-                                    if not GerencialAberto then
-                                     begin
-                                       ComandarECF( opeAbreGerencial ) ;
-                                       GerencialAberto := True ;
-                                     end
+                                       Mensagem := Self.Resp.LeInformacao(I).AsString ;
+                                       Mensagem := StringToBinaryString( Mensagem ) ;
+                                       if Mensagem <> '' then
+                                       begin
+                                          SL.Text  := StringReplace( Mensagem, #10, sLineBreak, [rfReplaceAll] ) ;
+
+                                          if not GerencialAberto then
+                                           begin
+                                             ComandarECF( opeAbreGerencial ) ;
+                                             GerencialAberto := True ;
+                                           end
+                                          else
+                                           begin
+                                             ComandarECF( opePulaLinhas ) ;
+                                             DoExibeMsg( opmDestaqueVia, 'Destaque a 1ª Via') ;
+                                           end;
+
+                                          ECFImprimeVia( trGerencial, I-120, SL );
+
+                                          ImpressaoOk := True ;
+                                       end;
+
+                                       Inc( I ) ;
+                                    end;
+
+                                    if (TipoCampo = 122) and GerencialAberto then
+                                       ComandarECF( opeFechaGerencial );
+                                  except
+                                    on EACBrTEFDECF do ImpressaoOk := False ;
                                     else
-                                     begin
-                                       ComandarECF( opePulaLinhas ) ;
-                                       DoExibeMsg( opmDestaqueVia, 'Destaque a 1ª Via') ;
-                                     end;
+                                       raise ;
+                                  end;
 
-                                    ECFImprimeVia( trGerencial, I-120, SL );
+                                  if not ImpressaoOk then
+                                  begin
+                                    if DoExibeMsg( opmYesNo, 'Impressora não responde'+sLineBreak+
+                                                             'Tentar novamente ?') <> mrYes then
+                                      break ;
 
-                                    ImpressaoOk := True ;
-                                 end;
+                                    I := 121 ;
+                                    FechaGerencialAberto := True ;
+                                  end;
+                                end ;
+                             finally
+                                if not ImpressaoOk then
+                                   Continua := -1 ;
 
-                                 Inc( I ) ;
-                              end;
-
-                              if (TipoCampo = 122) and GerencialAberto then
-                                 ComandarECF( opeFechaGerencial );
-                            except
-                              on EACBrTEFDECF do ImpressaoOk := False ;
-                              else
-                                 raise ;
-                            end;
-
-                            if not ImpressaoOk then
-                            begin
-                              if DoExibeMsg( opmYesNo, 'Impressora não responde'+sLineBreak+
-                                                       'Tentar novamente ?') <> mrYes then
-                                break ;
-
-                              I := 121 ;
-                              FechaGerencialAberto := True ;
-                            end;
+                                SL.Free;
+                             end;
                           end ;
-                       finally
-                          if not ImpressaoOk then
-                             Continua := -1 ;
-
-                          SL.Free;
-                       end;
-                     end ;
+                     end;
                    end;
 
                  1 :

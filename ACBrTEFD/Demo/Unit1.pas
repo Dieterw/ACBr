@@ -136,7 +136,7 @@ type
      procedure CliSiTefObtemCampo( Titulo : String;
         TamanhoMinimo, TamanhoMaximo : Integer ;
         TipoCampo : Integer; Operacao : TACBrTEFDCliSiTefOperacaoCampo;
-        var Resposta : String; var Digitado : Boolean );
+        var Resposta : AnsiString; var Digitado : Boolean );
      procedure edEsperaSleepChange(Sender : TObject);
      procedure edEsperaSTSChange(Sender : TObject);
      procedure pMensagemOperadorClick(Sender: TObject);
@@ -756,7 +756,7 @@ end;
 procedure TForm1.CliSiTefObtemCampo( Titulo : String;
     TamanhoMinimo, TamanhoMaximo : Integer ;
     TipoCampo : Integer; Operacao : TACBrTEFDCliSiTefOperacaoCampo;
-    var Resposta : String; var Digitado : Boolean );
+    var Resposta : AnsiString; var Digitado : Boolean );
 Var
   AForm : TForm5 ;
 begin

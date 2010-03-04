@@ -82,7 +82,7 @@ type
   TACBrTEFDCliSiTefObtemCampo = procedure( Titulo : String;
     TamanhoMinimo, TamanhoMaximo : Integer ;
     TipoCampo : Integer; Operacao : TACBrTEFDCliSiTefOperacaoCampo;
-    var Resposta : String; var Digitado : Boolean ) of object ;
+    var Resposta : AnsiString; var Digitado : Boolean ) of object ;
 
   { TACBrTEFDCliSiTef }
 

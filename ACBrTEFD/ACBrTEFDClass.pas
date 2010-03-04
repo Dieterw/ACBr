@@ -55,7 +55,7 @@ uses
   {$ENDIF} ;
 
 const
-   CACBrTEFD_Versao      = '1.9b' ;
+   CACBrTEFD_Versao      = '1.10b' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -1784,16 +1784,20 @@ begin
   Interromper       := False ;
   fpAguardandoResposta := True ;
   try
+     GravaLog( Name +' FinalizarRequisicao: '+Req.Header+', Aguardando: '+ArqSTS );
+
      repeat
         Sleep( TACBrTEFD(Owner).EsperaSleep );  // Necessário Para não sobrecarregar a CPU //
 
-        GravaLog( Name +' FinalizarRequisicao: '+Req.Header+', Aguardando: '+ArqSTS );
         with TACBrTEFD(Owner) do
         begin
            if Assigned( OnAguardaResp ) then
               OnAguardaResp( ArqSTS, SecondsBetween(TempoFimEspera, Now), Interromper ) ;
         end;
      until FileExists( ArqSTS ) or ( now > TempoFimEspera ) or Interromper;
+
+     GravaLog( Name +' FinalizarRequisicao: '+Req.Header+', Fim da Espera de: '+
+               ArqSTS+' '+ifthen(FileExists( ArqSTS ),'Recebido','Não recebido') );
   finally
      fpAguardandoResposta := False ;
      with TACBrTEFD(Owner) do
@@ -1853,10 +1857,11 @@ begin
         TempoInicioEspera := now ;
         fpAguardandoResposta := True ;
         try
+           GravaLog( Name +' LeRespostaRequisicao: '+Req.Header+', Aguardando: '+ArqResp );
+
            repeat
               Sleep( TACBrTEFD(Owner).EsperaSleep );  // Necessário Para não sobrecarregar a CPU //
 
-              GravaLog( Name +' LeRespostaRequisicao: '+Req.Header+', Aguardando: '+ArqResp );
               with TACBrTEFD(Owner) do
               begin
                  if Assigned( OnAguardaResp ) then
@@ -1864,6 +1869,9 @@ begin
                                    Interromper ) ;
               end ;
            until FileExists( ArqResp ) or Interromper ;
+
+           GravaLog( Name +' LeRespostaRequisicao: '+Req.Header+', Fim da Espera de: '+
+                     ArqResp+' '+ifthen(FileExists( ArqResp ),'Recebido','Não recebido') );
         finally
            fpAguardandoResposta := False ;
            with TACBrTEFD(Owner) do
@@ -1884,6 +1892,10 @@ begin
            Resp.Clear;
            DeleteFile( ArqResp );
         end ;
+
+        // Debug, ATIVE o Log abaixo para gravar no Log uma copia do Arq.Recebido //
+        // GravaLog( Resp.Conteudo.Conteudo.Text );
+
      end ;
   finally
     Resp.TipoGP := Tipo;
@@ -1902,7 +1914,6 @@ begin
   begin
      EstadoResp := respProcessando;
 
-     //GravaLog( Resp.Conteudo.Conteudo.Text );
      if Resp.QtdLinhasComprovante > 0 then
       begin
          { Cria cópia do Objeto Resp, e salva no ObjectList "RespostasPendentes" }

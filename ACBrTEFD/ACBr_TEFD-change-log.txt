@@ -47,6 +47,15 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 1.10b   04/03/10
+[*] Gravaçao de Arquivo de LOG em TEF discado ajustada para melhor uso.
+
+-- ACBrTEFDCliSiTEF --
+[*] Método CNC faz uso de lista de Respostas para transmitir dados informados nos
+     parâmetros do método, e evitar re-digitação de dados
+[*] Compatibilização com D2010 (por: Lampada)
+
+
 Versão 1.9b   03/03/10
 [-] Corrigida declaração de TACBrTEFD.CHQ, que causava erro de compilação no
     Delphi (bug introduzido na versão 1.8)

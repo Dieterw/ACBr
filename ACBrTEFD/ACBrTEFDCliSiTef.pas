@@ -88,9 +88,9 @@ type
 
    TACBrTEFDCliSiTef = class( TACBrTEFDClass )
    private
-      fCodigoLoja : String;
-      fEnderecoIP : String;
-      fNumeroTerminal : String;
+      fCodigoLoja : AnsiString;
+      fEnderecoIP : AnsiString;
+      fNumeroTerminal : AnsiString;
       fOnExibeMenu : TACBrTEFDCliSiTefExibeMenu;
       fOnObtemCampo : TACBrTEFDCliSiTefObtemCampo;
       fOperacaoADM : Integer;
@@ -99,36 +99,36 @@ type
       fOperacaoCNC : Integer;
       fOperacaoCRT : Integer;
       fOperacaoReImpressao: Integer;
-      fOperador : String;
+      fOperador : AnsiString;
       fParametrosAdicionais : TStringList;
       fRespostas: TStringList;
-      fRestricoes : String;
-      fDocumentosProcessados : String ;
+      fRestricoes : AnsiString;
+      fDocumentosProcessados : AnsiString ;
 
      xConfiguraIntSiTefInterativoEx : function (
-                pEnderecoIP: PChar;
-                pCodigoLoja: PChar;
-                pNumeroTerminal: PChar;
+                pEnderecoIP: PAnsiChar;
+                pCodigoLoja: PAnsiChar;
+                pNumeroTerminal: PAnsiChar;
                 ConfiguraResultado: smallint;
-                pParametrosAdicionais: PChar): integer;
+                pParametrosAdicionais: PAnsiChar): integer;
                {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
 
      xIniciaFuncaoSiTefInterativo : function (
                 Modalidade: integer;
-                pValor: PChar;
-                pNumeroCuponFiscal: PChar;
-                pDataFiscal: PChar;
-                pHorario: PChar;
-                pOperador: PChar;
-                pRestricoes: PChar ): integer;
+                pValor: PAnsiChar;
+                pNumeroCuponFiscal: PAnsiChar;
+                pDataFiscal: PAnsiChar;
+                pHorario: PAnsiChar;
+                pOperador: PAnsiChar;
+                pRestricoes: PAnsiChar ): integer;
                 {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
 
 
      xFinalizaTransacaoSiTefInterativo : procedure (
                  smallint: Word;
-                 pNumeroCuponFiscal: PChar;
-                 pDataFiscal: PChar;
-                 pHorario: PChar );
+                 pNumeroCuponFiscal: PAnsiChar;
+                 pDataFiscal: PAnsiChar;
+                 pHorario: PAnsiChar );
                  {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
 
 
@@ -137,24 +137,24 @@ type
                 var TipoCampo: Integer;
                 var TamanhoMinimo: smallint;
                 var TamanhoMaximo: smallint;
-                pBuffer: PChar;
+                pBuffer: PAnsiChar;
                 TamMaxBuffer: Integer;
                 ContinuaNavegacao: Integer ): integer;
                 {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
 
      procedure AvaliaErro(Sts : Integer);
      procedure FinalizarTransacao( Confirma : Boolean;
-        DocumentoVinculado : String);
+        DocumentoVinculado : AnsiString);
      procedure LoadDLLFunctions;
    protected
      procedure SetNumVias(const AValue : Integer); override;
 
-     Function FazerRequisicao( Funcao : Integer; AHeader : String = '';
+     Function FazerRequisicao( Funcao : Integer; AHeader : AnsiString = '';
         Valor : Double = 0; Documento : AnsiString = '';
         ListaRestricoes : AnsiString = '') : Integer ;
      Function ContinuarRequisicao( ImprimirComprovantes : Boolean ) : Integer ;
 
-     procedure ProcessarRespostaPagamento( const IndiceFPG : String;
+     procedure ProcessarRespostaPagamento( const IndiceFPG : AnsiString;
         const Valor : Double);
 
    public
@@ -190,12 +190,12 @@ type
         Valor : Double) : Boolean; overload; override;
 
    published
-     property EnderecoIP     : String read fEnderecoIP     write fEnderecoIP ;
-     property CodigoLoja     : String read fCodigoLoja     write fCodigoLoja ;
-     property NumeroTerminal : String read fNumeroTerminal write fNumeroTerminal ;
-     property Operador       : String read fOperador       write fOperador ;
+     property EnderecoIP     : AnsiString read fEnderecoIP     write fEnderecoIP ;
+     property CodigoLoja     : AnsiString read fCodigoLoja     write fCodigoLoja ;
+     property NumeroTerminal : AnsiString read fNumeroTerminal write fNumeroTerminal ;
+     property Operador       : AnsiString read fOperador       write fOperador ;
      property ParametrosAdicionais : TStringList read fParametrosAdicionais ;
-     property Restricoes : String read fRestricoes write fRestricoes ;
+     property Restricoes : AnsiString read fRestricoes write fRestricoes ;
      property OperacaoATV : Integer read fOperacaoATV write fOperacaoATV
         default 111 ;
      property OperacaoADM : Integer read fOperacaoADM write fOperacaoADM
@@ -380,7 +380,7 @@ begin
 end;
 
 procedure TACBrTEFDCliSiTef.LoadDLLFunctions ;
- procedure CliSiTefFunctionDetect( FuncName: String; var LibPointer: Pointer ) ;
+ procedure CliSiTefFunctionDetect( FuncName: AnsiString; var LibPointer: Pointer ) ;
  begin
    if not Assigned( LibPointer )  then
    begin
@@ -407,7 +407,7 @@ end;
 procedure TACBrTEFDCliSiTef.Inicializar;
 Var
   Sts : Integer ;
-  ParamAdic : String ;
+  ParamAdic : AnsiString ;
   Erro : String;
   Est  : AnsiChar;
 begin
@@ -424,11 +424,11 @@ begin
   ParamAdic := StringReplace( ParametrosAdicionais.Text, sLineBreak, ';',
                               [rfReplaceAll] ) ;
 
-  Sts := xConfiguraIntSiTefInterativoEx( PChar(fEnderecoIP),
-                                         PChar(fCodigoLoja),
-                                         PChar(fNumeroTerminal),
+  Sts := xConfiguraIntSiTefInterativoEx( PAnsiChar(fEnderecoIP),
+                                         PAnsiChar(fCodigoLoja),
+                                         PAnsiChar(fNumeroTerminal),
                                          0,
-                                         PChar(ParamAdic) );
+                                         PAnsiChar(ParamAdic) );
   Erro := '' ;
   Case Sts of
     1 :	Erro := 'Endereço IP inválido ou não resolvido' ;
@@ -468,7 +468,7 @@ procedure TACBrTEFDCliSiTef.ConfirmarEReimprimirTransacoesPendentes;
 Var
   ArquivosVerficar : TStringList ;
   I, Sts           : Integer;
-  ArqMask          : String;
+  ArqMask          : AnsiString;
 begin
   ArquivosVerficar := TStringList.Create;
 
@@ -551,7 +551,7 @@ Function TACBrTEFDCliSiTef.CRT( Valor : Double; IndiceFPG_ECF : String;
    DocumentoVinculado : String = ''; Moeda : Integer = 0 ) : Boolean;
 var
   Sts : Integer;
-  Restr : String ;
+  Restr : AnsiString ;
 begin
   VerificarTransacaoPagamento( Valor );
 
@@ -579,9 +579,9 @@ Function TACBrTEFDCliSiTef.CHQ(Valor : Double; IndiceFPG_ECF : String;
    Cheque : String; ChequeDC : String; Compensacao: String) : Boolean ;
 var
   Sts : Integer;
-  Restr : String ;
+  Restr : AnsiString ;
 
-  Function FormataCampo( Campo : String; Tamanho : Integer ) : String ;
+  Function FormataCampo( Campo : AnsiString; Tamanho : Integer ) : AnsiString ;
   begin
     Result := padR( OnlyNumber( Trim( Campo ) ), Tamanho, '0') ;
   end ;
@@ -628,8 +628,6 @@ end;
 
 Procedure TACBrTEFDCliSiTef.CNF(Rede, NSU, Finalizacao : String;
    DocumentoVinculado : String) ;
-Var
-   DataStr, HoraStr : String;
 begin
   // CliSiTEF não usa Rede, NSU e Finalizacao
 
@@ -641,6 +639,11 @@ Function TACBrTEFDCliSiTef.CNC(Rede, NSU : String;
 var
    Sts : Integer;
 begin
+  Respostas.Values['146'] := FormatFloat('0.00',Valor);
+  Respostas.Values['147'] := FormatFloat('0.00',Valor);
+  Respostas.Values['515'] := FormatDateTime('DDMMYYYY',DataHoraTransacao) ;
+  Respostas.Values['516'] := NSU ;
+
   Sts := FazerRequisicao( fOperacaoCNC, 'CNC' ) ;
 
   if Sts = 10000 then
@@ -661,10 +664,10 @@ begin
 end;
 
 Function TACBrTEFDCliSiTef.FazerRequisicao( Funcao : Integer;
-   AHeader : String = ''; Valor : Double = 0; Documento : AnsiString = '';
+   AHeader : AnsiString = ''; Valor : Double = 0; Documento : AnsiString = '';
    ListaRestricoes : AnsiString = '') : Integer ;
 Var
-  ValorStr, DataStr, HoraStr : String;
+  ValorStr, DataStr, HoraStr : AnsiString;
   ANow : TDateTime ;
 begin
    if fpAguardandoResposta then
@@ -687,11 +690,12 @@ begin
                                              ' Restricoes: '+ListaRestricoes ) ;
 
    Result := xIniciaFuncaoSiTefInterativo( Funcao,
-                                           PChar( ValorStr ),
-                                           PChar( Documento ),
-                                           PChar( DataStr ), PChar( HoraStr ),
-                                           PChar( fOperador ),
-                                           PChar( ListaRestricoes ) ) ;
+                                           PAnsiChar( ValorStr ),
+                                           PAnsiChar( Documento ),
+                                           PAnsiChar( DataStr ),
+                                           PAnsiChar( HoraStr ),
+                                           PAnsiChar( fOperador ),
+                                           PAnsiChar( ListaRestricoes ) ) ;
 
    { Adiciona Campos já conhecidos em Resp, para processa-los em
      métodos que manipulam "RespostasPendentes" (usa códigos do G.P.)  }
@@ -717,9 +721,9 @@ Function TACBrTEFDCliSiTef.ContinuarRequisicao( ImprimirComprovantes : Boolean )
 var
   ProximoComando, TipoCampo, Continua, ItemSelecionado, I: Integer;
   TamanhoMinimo, TamanhoMaximo : SmallInt ;
-  Buffer: array [0..20000] of char;
-  Mensagem, MensagemOperador, MensagemCliente, Resposta, CaptionMenu,
-     ArqBackUp : String;
+  Buffer: array [0..20000] of AnsiChar;
+  Mensagem, MensagemOperador, MensagemCliente, CaptionMenu : String ;
+  Resposta, ArqBackUp : AnsiString;
   SL : TStringList ;
   Interromper, Digitado, GerencialAberto, FechaGerencialAberto, ImpressaoOk,
      HouveImpressao : Boolean ;
@@ -1042,9 +1046,9 @@ begin
 end;
 
 procedure TACBrTEFDCliSiTef.FinalizarTransacao( Confirma : Boolean;
-   DocumentoVinculado : String);
+   DocumentoVinculado : AnsiString);
 Var
-   DataStr, HoraStr : String;
+   DataStr, HoraStr : AnsiString;
 begin
   fRespostas.Clear;
 
@@ -1062,9 +1066,9 @@ begin
                                           ' Hora: '      +HoraStr ) ;
 
   xFinalizaTransacaoSiTefInterativo( IfThen(Confirma,1,0),
-                                     PChar( DocumentoVinculado ),
-                                     PChar( DataStr ),
-                                     PChar( HoraStr) ) ;
+                                     PAnsiChar( DocumentoVinculado ),
+                                     PAnsiChar( DataStr ),
+                                     PAnsiChar( HoraStr ) ) ;
 
   if not Confirma then
      TACBrTEFD(Owner).DoExibeMsg( opmOK, 'Transação não efetuada.'+sLineBreak+
@@ -1095,12 +1099,11 @@ begin
 
 end ;
 
-procedure TACBrTEFDCliSiTef.ProcessarRespostaPagamento( const IndiceFPG : String;
+procedure TACBrTEFDCliSiTef.ProcessarRespostaPagamento( const IndiceFPG : AnsiString;
    const Valor : Double);
 var
   ImpressaoOk : Boolean;
   RespostaPendente : TACBrTEFDResp ;
-  Imagem : String;
 begin
   with TACBrTEFD(Owner) do
   begin

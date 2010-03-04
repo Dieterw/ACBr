@@ -13,7 +13,7 @@ uses
   LResources,
 {$ENDIF}
   SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ACBrSpedFiscal, ExtCtrls, ACBrSped;
+  Dialogs, StdCtrls, ACBrSpedFiscal, ExtCtrls, ACBrSped, ACBrUtilTXT;
 
 type
   TFrmSPEDFiscal = class(TForm)
@@ -361,13 +361,41 @@ begin
 end;
 
 procedure TFrmSPEDFiscal.btnB_HClick(Sender: TObject);
+var
+IInvent: integer;
 begin
    // Alimenta o componente com informações para gerar todos os registros do
    // Bloco H.
-//   with ACBrSpedFiscal1.Bloco_H.RegistroH001 do
-//   begin
-//      IND_MOV := 1;
-//   end;
+   with ACBrSpedFiscal1.Bloco_H.RegistroH001 do
+   begin
+      IND_MOV := 1;
+   end;
+   with ACBrSpedFiscal1.Bloco_H.RegistroH005 do
+   begin
+      with New do
+      begin
+         DT_INV := Date;
+         VL_INV := 1000;
+         for IInvent := 1 to 10 do
+         begin
+            with RegistroH010 do
+            begin
+               with New do
+               begin
+                  COD_ITEM := FormatFloat('00000000000000', IInvent);
+                  UNID := 'UN';
+                  QTD  := 1;
+                  VL_UNIT := 100;
+                  VL_ITEM := 100;
+                  IND_PROP := '1';
+                  COD_PART := '';
+                  TXT_COMPL := '';
+                  COD_CTA := '';
+               end;
+            end;
+         end;
+      end;
+   end;
    btnB_H.Enabled := false;
 end;
 

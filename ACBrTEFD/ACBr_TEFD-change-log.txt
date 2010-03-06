@@ -47,6 +47,18 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 1.11b   06/03/10
+[*] Gravaçao de Arquivo de LOG em TEF discado ajustada para melhor uso.
+[*] TACBrTEFD.FinalizarCupom - Adicionada verificação do Saldo Restante a pagar
+    antes de Efetuar o Pagamento no ECF, para o caso de Queda de Energia na fase
+    de Pagamentos.
+
+-- ACBrTEFDCliSiTEF --
+[-] Corrigido Bug na Inicialização. Se ECF estivesse desativado não terminava a
+    Inicialização.
+[*] Programa Demo ajustado para aproveitamento de Respostas Antecipadas no SiTEF
+
+
 Versão 1.10b   04/03/10
 [*] Gravaçao de Arquivo de LOG em TEF discado ajustada para melhor uso.
 

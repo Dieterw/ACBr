@@ -27,6 +27,7 @@ type
      ListBox1 : TListBox;
      Panel1 : TPanel;
      Panel2 : TPanel;
+     procedure FormShow(Sender: TObject);
   private
     { private declarations }
   public
@@ -38,10 +39,19 @@ var
 
 implementation
 
+{ TForm4 }
+
+procedure TForm4.FormShow(Sender: TObject);
+begin
+   ListBox1.SetFocus;
+   if ListBox1.Items.Count > 0 then
+      ListBox1.ItemIndex := 0 ;
+end;
+
 initialization
 {$IFDEF FPC}
  {$I Unit4.lrs}
 {$ENDIF}
 
 end.
-
+

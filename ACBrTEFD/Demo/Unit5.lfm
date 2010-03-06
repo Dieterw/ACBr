@@ -18,6 +18,7 @@ object Form5: TForm5
     Height = 33
     Top = 72
     Width = 513
+    Alignment = taCenter
     Anchors = [akTop, akLeft, akRight]
     OnKeyPress = Edit1KeyPress
     TabOrder = 0

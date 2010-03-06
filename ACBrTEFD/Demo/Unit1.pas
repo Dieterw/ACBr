@@ -767,6 +767,7 @@ begin
     AForm.TamanhoMinimo  := TamanhoMinimo;
     AForm.Operacao       := Operacao;
     AForm.TipoCampo      := TipoCampo;
+    AForm.Edit1.Text     := Resposta; { Para usar Valores Previamente informados }
 
     Digitado := (AForm.ShowModal = mrOK) ;
 

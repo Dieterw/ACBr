@@ -664,6 +664,8 @@ procedure TACBrTEFD.ConfirmarTransacoesPendentes;
 var
    I : Integer;
 begin
+  fTefClass.GravaLog( 'ConfirmarTransacoesPendentes' ) ;
+
   I := 0 ;
   while I < RespostasPendentes.Count do
   begin
@@ -706,6 +708,8 @@ var
 begin
   if RespostasPendentes.Count <= 0 then
      exit ;
+
+  fTefClass.GravaLog( 'ImprimirTransacoesPendentes' ) ;
 
   Est := EstadoECF;
 
@@ -962,6 +966,10 @@ Function TACBrTEFD.DoExibeMsg( Operacao : TACBrTEFDOperacaoMensagem;
 var
    OldTecladoBloqueado : Boolean;
 begin
+  fTefClass.GravaLog( fTefClass.Name +' DoExibeMsg: Oper: '+
+    GetEnumName(TypeInfo(TACBrTEFDOperacaoMensagem), Integer(Operacao) )+
+    ' Mensagem: '+Mensagem ) ;
+
   if (Operacao in [opmOK, opmYesNo, opmDestaqueVia]) then
      RestaurarFocoAplicacao ;
 
@@ -981,6 +989,9 @@ Function TACBrTEFD.ComandarECF( Operacao : TACBrTEFDOperacaoECF ) : Integer ;
 var
    OpName : String;
 begin
+  fTefClass.GravaLog( fTefClass.Name +' ComandarECF: Oper: '+
+    GetEnumName( TypeInfo(TACBrTEFDOperacaoECF), Integer(Operacao) ) ) ;
+
   Result := -1 ;  // -1 = Não tratado
   OnComandaECF( Operacao, fTefClass.Resp, Result ) ;
 
@@ -997,6 +1008,9 @@ end;
 
 Function TACBrTEFD.ECFPagamento( Indice: String; Valor: Double ) : Integer ;
 begin
+  fTefClass.GravaLog( fTefClass.Name +' ECFPagamento: Indice: '+
+    Indice + ' Valor: '+FormatFloat('0.00',Valor) ) ;
+
   Result := -1 ;  // -1 = Não tratado
   OnComandaECFPagamento( Indice, Valor, Result ) ;
 
@@ -1012,6 +1026,9 @@ end;
 function TACBrTEFD.ECFAbreVinculado(COO, Indice : String; Valor : Double
    ) : Integer;
 begin
+  fTefClass.GravaLog( fTefClass.Name +' ECFAbreVinculado: COO: '+COO+' Indice: '+
+    Indice + ' Valor: '+FormatFloat('0.00',Valor) ) ;
+
   Result := -1 ;  // -1 = Não tratado
   OnComandaECFAbreVinculado( COO, Indice, Valor, Result ) ;
 
@@ -1027,6 +1044,10 @@ end;
 function TACBrTEFD.ECFImprimeVia( TipoRelatorio : TACBrTEFDTipoRelatorio;
    Via : Integer; ImagemComprovante : TStringList) : Integer;
 begin
+  fTefClass.GravaLog( fTefClass.Name +' ECFImprimeVia: '+
+    GetEnumName( TypeInfo(TACBrTEFDTipoRelatorio), Integer(TipoRelatorio) ) +
+    ' Via: '+IntToStr(Via) ) ;
+
   Result := -1 ;  // -1 = Não tratado
   OnComandaECFImprimeVia( TipoRelatorio, Via, ImagemComprovante, Result ) ;
 
@@ -1047,6 +1068,7 @@ Var
   GrupoFPG    : TACBrTEFDArrayGrupoRespostasPendentes ;
 begin
   ImpressaoOk := False ;
+  fTefClass.GravaLog( 'FinalizarCupom ') ;
 
   try
      while not ImpressaoOk do
@@ -1074,7 +1096,9 @@ begin
                              if GrupoFPG[I].OrdemPagamento = 0 then
                               begin
                                 Inc( Ordem ) ;
-                                ECFPagamento( GrupoFPG[I].IndiceFPG_ECF, GrupoFPG[I].Total );
+
+                                if SubTotalECF > 0 then
+                                   ECFPagamento( GrupoFPG[I].IndiceFPG_ECF, GrupoFPG[I].Total );
 
                                 For J := 0 to RespostasPendentes.Count-1 do
                                    if RespostasPendentes[J].IndiceFPG_ECF = GrupoFPG[I].IndiceFPG_ECF then

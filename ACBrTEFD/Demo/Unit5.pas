@@ -84,6 +84,7 @@ procedure TForm5.FormShow(Sender : TObject);
 begin
    if Operacao = tcDouble then
       Edit1.Text := '0,00' ;
+   Edit1.SetFocus;
 end;
 
 initialization
@@ -92,4 +93,4 @@ initialization
 {$ENDIF}
   
 end.
-
+

@@ -446,9 +446,13 @@ begin
   fpInicializado := True ;
   GravaLog( Name +' Inicializado CliSiTEF' );
 
-  Est := TACBrTEFD(Owner).EstadoECF;
+  try
+     Est := TACBrTEFD(Owner).EstadoECF;
+  except
+     Est := 'O' ;
+  end ;
 
-  if (Est in ['V','P']) then                    // Cupom Ficou aberto ?? //
+  if (Est in ['V','P','O']) then                    // Cupom Ficou aberto ?? //
      CancelarTransacoesPendentesClass           // SIM, Cancele tudo... //
   else
      ConfirmarEReimprimirTransacoesPendentes ;  // NAO, Cupom Fechado, basta re-imprimir //

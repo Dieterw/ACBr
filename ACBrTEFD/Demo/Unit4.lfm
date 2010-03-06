@@ -8,6 +8,7 @@ object Form4: TForm4
   ClientHeight = 281
   ClientWidth = 523
   Font.Height = -19
+  OnShow = FormShow
   Position = poOwnerFormCenter
   LCLVersion = '0.9.29'
   object ListBox1: TListBox

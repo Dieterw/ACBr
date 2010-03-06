@@ -55,7 +55,7 @@ uses
   {$ENDIF} ;
 
 const
-   CACBrTEFD_Versao      = '1.10b' ;
+   CACBrTEFD_Versao      = '1.11b' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -1912,6 +1912,8 @@ begin
 
   with TACBrTEFD(Owner) do
   begin
+     GravaLog( Name +' ProcessarResposta: '+Req.Header );
+
      EstadoResp := respProcessando;
 
      if Resp.QtdLinhasComprovante > 0 then
@@ -1940,6 +1942,8 @@ procedure TACBrTEFDClass.FinalizarResposta( ApagarArqResp : Boolean );
 begin
    TACBrTEFD(Owner).EstadoResp := respConcluida;
 
+   GravaLog( Name +' FinalizarResposta: '+Req.Header );
+
    if ApagarArqResp then
       ApagaEVerifica( ArqResp );
 
@@ -1958,6 +1962,8 @@ Var
 begin
   ArquivosVerficar    := TStringList.Create;
   RespostasCanceladas := TObjectList.create(True);
+
+  GravaLog( Name +' CancelarTransacoesPendentesClass ');
 
   try
      ArquivosVerficar.Clear;
@@ -2085,6 +2091,8 @@ begin
 
   if Resp.QtdLinhasComprovante < 1 then
      exit ;
+
+  GravaLog( Name +' ImprimirRelatorio: '+Req.Header );
 
   CopiarResposta ;
 
@@ -2224,6 +2232,9 @@ begin
         Inc( I ) ;
      until not FileExists( Result );
 
+     GravaLog( Name + ' CopiarResposta: '+Resp.Header+' - '+IntToStr(Resp.ID)+
+                      ' Arq: '+Result);
+
      Resp.Conteudo.GravarArquivo( Result, True );   { True = DoFlushToDisk }
      Resp.ArqBackup := Result ;
   end;
@@ -2240,6 +2251,9 @@ begin
   Result := False ;
 
   LerRespostaRequisicao;
+
+  GravaLog( Name +' ProcessarRespostaPagamento: '+Resp.Header+' - '+IntToStr(Resp.ID)+
+            ' Indice: '+IndiceFPG_ECF+' Valor:'+FormatFloat('0.00',Valor) );
 
   Result := Resp.TransacaoAprovada ;
 

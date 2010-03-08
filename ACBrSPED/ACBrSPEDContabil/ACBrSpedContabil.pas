@@ -444,6 +444,11 @@ begin
       REG_BLC := 'I030';
       QTD_REG_BLC := 1;
    end;
+   // Total de linhas do arquivo
+   Bloco_I.RegistroI030.QTD_LIN := Bloco_0.Registro0990.QTD_LIN_0 +
+                                   Bloco_I.RegistroI990.QTD_LIN_I +
+                                   Bloco_J.RegistroJ990.QTD_LIN_J +
+                                   Bloco_9.Registro9990.QTD_LIN_9;
    Result := Bloco_I.WriteRegistroI030;
 end;
 
@@ -508,7 +513,6 @@ begin
       QTD_REG_BLC := Bloco_I.RegistroI155Count;
    end;
 end;
-
 
 function TACBrSPEDContabil.WriteRegistroI200: AnsiString;
 begin
@@ -595,7 +599,6 @@ begin
    end;
 end;
 
-
 function TACBrSPEDContabil.WriteRegistroI990: AnsiString;
 begin
    with Bloco_9.Registro9900.New do
@@ -663,6 +666,11 @@ begin
       REG_BLC := 'J900';
       QTD_REG_BLC := 1;
    end;
+   // Total de linhas do arquivo
+   Bloco_J.RegistroJ900.QTD_LIN := Bloco_0.Registro0990.QTD_LIN_0 +
+                                   Bloco_I.RegistroI990.QTD_LIN_I +
+                                   Bloco_J.RegistroJ990.QTD_LIN_J +
+                                   Bloco_9.Registro9990.QTD_LIN_9;
    Result := Bloco_J.WriteRegistroJ900;
 end;
 

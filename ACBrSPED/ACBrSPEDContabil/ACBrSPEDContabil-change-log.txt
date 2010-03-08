@@ -47,6 +47,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.03a   27/01/10
+---------------
+[+] Implementado todos os registros dos blocos que faltavam, e testado no validador
+    por (Claudinei)
 
 Versão 0.03a   27/01/10
 ---------------

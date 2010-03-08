@@ -53,8 +53,14 @@ type
   public
   end;
 
+  TRegistroI051List = class;
+  TRegistroI052List = class;
+  TRegistroI151List = class;
   TRegistroI155List = class;
   TRegistroI250List = class;
+  TRegistroI310List = class;
+  TRegistroI355List = class;
+  TRegistroI555List = class;
 
   /// Registro I010 - IDENTIFICAÇÃO DA ESCRITURAÇÃO CONTÁBIL
 
@@ -181,7 +187,13 @@ type
     fCOD_CTA: AnsiString;     /// Código da conta analítica/grupo de contas.
     fCOD_CTA_SUP: AnsiString; /// Código da conta sintética /grupo de contas de nível imediatamente superior.
     fCTA: AnsiString;         /// Nome da conta analítica/grupo de contas.
+
+    FRegistroI051: TRegistroI051List;  /// BLOCO I - Lista de RegistroI051 (FILHO)
+    FRegistroI052: TRegistroI052List;  /// BLOCO I - Lista de RegistroI052 (FILHO)
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property DT_ALT: TDateTime read fDT_ALT write fDT_ALT;
     property COD_NAT: AnsiString read fCOD_NAT write fCOD_NAT;
     property IND_CTA: AnsiString read fIND_CTA write fIND_CTA;
@@ -189,6 +201,10 @@ type
     property COD_CTA: AnsiString read fCOD_CTA write fCOD_CTA;
     property COD_CTA_SUP: AnsiString read fCOD_CTA_SUP write fCOD_CTA_SUP;
     property CTA: AnsiString read fCTA write fCTA;
+
+    /// Registros FILHOS
+    property RegistroI051: TRegistroI051List read FRegistroI051 write FRegistroI051;
+    property RegistroI052: TRegistroI052List read FRegistroI052 write FRegistroI052;
   end;
 
   /// Registro I050 - Lista
@@ -306,6 +322,7 @@ type
     fDT_INI: TDateTime; /// Data de início do período.
     fDT_FIN: TDateTime; /// Data de fim do período.
 
+    FRegistroI151: TRegistroI151List;  /// BLOCO I - Lista de RegistroI151 (FILHO)
     FRegistroI155: TRegistroI155List;  /// BLOCO I - Lista de RegistroI155 (FILHO)
   public
     constructor Create; virtual; /// Create
@@ -314,6 +331,7 @@ type
     property DT_INI: TDateTime read fDT_INI write fDT_INI;
     property DT_FIN: TDateTime read fDT_FIN write fDT_FIN;
     /// Registros FILHOS
+    property RegistroI151: TRegistroI151List read FRegistroI151 write FRegistroI151;
     property RegistroI155: TRegistroI155List read FRegistroI155 write FRegistroI155;
   end;
 
@@ -386,7 +404,6 @@ type
     property Items[Index: Integer]: TRegistroI155 read GetItem write SetItem;
   end;
 
-
   // Registro I200 - Lançamentos Contábeis
 
   TRegistroI200 = class(TPersistent)
@@ -451,6 +468,217 @@ type
     destructor Destroy; override;
     function New: TRegistroI250;
     property Items[Index: Integer]: TRegistroI250 read GetItem write SetItem;
+  end;
+
+  /// Registro I300 - BALANCETES DIÁRIOS – IDENTIFICAÇÃO DA DATA
+
+  TRegistroI300 = class(TPersistent)
+  private
+    fDT_BCTE: TDateTime; /// Data do Balancete.
+
+    FRegistroI310: TRegistroI310List;  /// BLOCO I - Lista de RegistroI310 (FILHO)
+  public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
+    property DT_BCTE: TDateTime read fDT_BCTE write fDT_BCTE;
+    /// Registros FILHOS
+    property RegistroI310: TRegistroI310List read FRegistroI310 write FRegistroI310;
+  end;
+
+  /// Registro I300 - Lista
+
+  TRegistroI300List = class(TList)
+  private
+    function GetItem(Index: Integer): TRegistroI300;
+    procedure SetItem(Index: Integer; const Value: TRegistroI300);
+  public
+    destructor Destroy; override;
+    function New: TRegistroI300;
+    property Items[Index: Integer]: TRegistroI300 read GetItem write SetItem;
+  end;
+
+  /// Registro I310 - DETALHE DO BALANCETE DIÁRIO
+
+  TRegistroI310 = class(TPersistent)
+  private
+    fCOD_CTA: AnsiString;     /// Código da conta analítica debitada/creditada.
+    fCOD_CCUS: AnsiString;    /// Código do centro de custos.
+    fVAL_DEBD: Currency;    /// Total dos débitos do dia.
+    fVAL_CRED: Currency;    /// Total dos créditos do dia.
+  public
+    property COD_CTA: AnsiString read fCOD_CTA write fCOD_CTA;
+    property COD_CCUS: AnsiString read fCOD_CCUS write fCOD_CCUS;
+    property VAL_DEBD: Currency read fVAL_DEBD write fVAL_DEBD;
+    property VAL_CRED: Currency read fVAL_CRED write fVAL_CRED;
+  end;
+
+  /// Registro I310 - Lista
+
+  TRegistroI310List = class(TList)
+  private
+    function GetItem(Index: Integer): TRegistroI310;
+    procedure SetItem(Index: Integer; const Value: TRegistroI310);
+  public
+    destructor Destroy; override;
+    function New: TRegistroI310;
+    property Items[Index: Integer]: TRegistroI310 read GetItem write SetItem;
+  end;
+
+  /// Registro I350 - SALDO DAS CONTAS DE RESULTADO ANTES DO ENCERRAMENTO – IDENTIFICAÇÃO DA DATA
+
+  TRegistroI350 = class(TPersistent)
+  private
+    fDT_RES: TDateTime; /// Data da apuração do resultado.
+
+    FRegistroI355: TRegistroI355List;  /// BLOCO I - Lista de RegistroI355 (FILHO)
+  public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
+    property DT_RES: TDateTime read fDT_RES write fDT_RES;
+    /// Registros FILHOS
+    property RegistroI355: TRegistroI355List read FRegistroI355 write FRegistroI355;
+  end;
+
+  /// Registro I350 - Lista
+
+  TRegistroI350List = class(TList)
+  private
+    function GetItem(Index: Integer): TRegistroI350;
+    procedure SetItem(Index: Integer; const Value: TRegistroI350);
+  public
+    destructor Destroy; override;
+    function New: TRegistroI350;
+    property Items[Index: Integer]: TRegistroI350 read GetItem write SetItem;
+  end;
+
+  /// Registro I355 - DETALHE DOS SALDOS DAS CONTAS DE RESULTADO ANTES DO ENCERRAMENTO
+
+  TRegistroI355 = class(TPersistent)
+  private
+    fCOD_CTA: AnsiString;     /// Código da conta analítica de resultado.
+    fCOD_CCUS: AnsiString;    /// Código do centro de custos.
+    fVL_CTA: Currency;    /// Valor do saldo final antes do lançamento de encerramento.
+    fIND_DC: AnsiString;  /// Indicador da situação do saldo final: D - Devedor; C - Credor.
+
+  public
+    property COD_CTA: AnsiString read fCOD_CTA write fCOD_CTA;
+    property COD_CCUS: AnsiString read fCOD_CCUS write fCOD_CCUS;
+    property VL_CTA: Currency read fVL_CTA write fVL_CTA;
+    property IND_DC: AnsiString read fIND_DC write fIND_DC;
+  end;
+
+  /// Registro I355 - Lista
+
+  TRegistroI355List = class(TList)
+  private
+    function GetItem(Index: Integer): TRegistroI355;
+    procedure SetItem(Index: Integer; const Value: TRegistroI355);
+  public
+    destructor Destroy; override;
+    function New: TRegistroI355;
+    property Items[Index: Integer]: TRegistroI355 read GetItem write SetItem;
+  end;
+
+  /// Registro I500 - PARÂMETROS DE IMPRESSÃO E VISUALIZAÇÃO DO LIVRO RAZÃO AUXILIAR COM LEIAUTE PARAMETRIZÁVEL
+
+  TRegistroI500 = class(TPersistent)
+  private
+    fTAM_FONTE: Integer;        /// Tamanho da fonte.
+  public
+    property TAM_FONTE: Integer read fTAM_FONTE write fTAM_FONTE;
+  end;
+
+  /// Registro I500 - Lista
+
+  TRegistroI500List = class(TList)
+  private
+    function GetItem(Index: Integer): TRegistroI500;
+    procedure SetItem(Index: Integer; const Value: TRegistroI500);
+  public
+    destructor Destroy; override;
+    function New: TRegistroI500;
+    property Items[Index: Integer]: TRegistroI500 read GetItem write SetItem;
+  end;
+
+  /// Registro I510 - DEFINIÇÃO DE CAMPOS DO LIVRO RAZÃO AUXILIAR COM LEIAUTE PARAMETRIZÁVEL
+
+  TRegistroI510 = class(TPersistent)
+  private
+    fNM_CAMPO: AnsiString;      ///Nome do campo, sem espaços em branco ou caractere especial.
+    fDESC_CAMPO: AnsiString;    ///Descrição do campo que será utilizado na visualização do Livro Auxiliar.
+    fTIPO_CAMPO: AnsiString;    ///Tipo do campo: "N" - numérico; "C" - caractere.
+    fTAM_CAMPO: Integer;        ///Tamanho do campo.
+    fDEC_CAMPO: Integer;         ///Quantidade de casas decimais para campos tipo "N".
+    fCOL_CAMPO: Integer;        ///Largura da coluna no relatório (em quantidade de caracteres).
+  public
+    property NM_CAMPO: AnsiString read fNM_CAMPO write fNM_CAMPO;
+    property DESC_CAMPO: AnsiString read fDESC_CAMPO write fDESC_CAMPO;
+    property TIPO_CAMPO: AnsiString read fTIPO_CAMPO write fTIPO_CAMPO;
+    property TAM_CAMPO: Integer read fTAM_CAMPO write fTAM_CAMPO;
+    property DEC_CAMPO: Integer read fDEC_CAMPO write fDEC_CAMPO;
+    property COL_CAMPO: Integer read fCOL_CAMPO write fCOL_CAMPO;
+  end;
+
+  /// Registro I510 - Lista
+
+  TRegistroI510List = class(TList)
+  private
+    function GetItem(Index: Integer): TRegistroI510;
+    procedure SetItem(Index: Integer; const Value: TRegistroI510);
+  public
+    destructor Destroy; override;
+    function New: TRegistroI510;
+    property Items[Index: Integer]: TRegistroI510 read GetItem write SetItem;
+  end;
+
+  // Registro I550 - DETALHES DO LIVRO RAZÃO AUXILIAR COM LEIAUTE PARAMETRIZÁVEL
+
+  TRegistroI550 = class(TPersistent)
+  private
+    fRZ_CONT: AnsiString;        // Conteúdo dos campos mencionados no Registro I510.
+
+    fRegistroI555: TRegistroI555List; /// BLOCO I - Lista de RegistroI555 (FILHO)
+  public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
+    property RZ_CONT: AnsiString read fRZ_CONT write fRZ_CONT;
+
+    property RegistroI555: TRegistroI555List read fRegistroI555 write fRegistroI555;
+  end;
+
+  TRegistroI550List = class(TList)
+  private
+    function GetItem(Index: Integer): TRegistroI550;
+    procedure SetItem(Index: Integer; Value: TRegistroI550);
+  public
+    destructor Destroy; override;
+    function New: TRegistroI550;
+    property Items[Index: Integer]: TRegistroI550 read GetItem write SetItem;
+  end;
+
+
+   // Registro I555 - TOTAIS NO LIVRO RAZÃO AUXILIAR COM LEIAUTE PARAMETRIZÁVEL
+
+  TRegistroI555 = class(TPersistent)
+  private
+    fRZ_CONT_TOT: AnsiString;
+  public
+    property RZ_CONT_TOT: AnsiString read fRZ_CONT_TOT write fRZ_CONT_TOT;
+  end;
+
+  // Registro I555 - lista
+
+  TRegistroI555List = class(TList)
+  private
+    function GetItem(Index: Integer): TRegistroI555;
+    procedure SetItem(Index: Integer; Value: TRegistroI555);
+  public
+    destructor Destroy; override;
+    function New: TRegistroI555;
+    property Items[Index: Integer]: TRegistroI555 read GetItem write SetItem;
   end;
 
   /// Registro I990 - ENCERRAMENTO DO BLOCO I
@@ -537,6 +765,19 @@ end;
 procedure TRegistroI020List.SetItem(Index: Integer; const Value: TRegistroI020);
 begin
   Put(Index, Value);
+end;
+
+constructor TRegistroI050.Create;
+begin
+   FRegistroI051 := TRegistroI051List.Create;
+   FRegistroI052 := TRegistroI052List.Create;
+end;
+
+destructor TRegistroI050.Destroy;
+begin
+  FRegistroI051.Free;
+  FRegistroI052.Free;
+  inherited;
 end;
 
 { TRegistroI050List }
@@ -666,11 +907,13 @@ end;
 
 constructor TRegistroI150.Create;
 begin
+   FRegistroI151 := TRegistroI151List.Create;
    FRegistroI155 := TRegistroI155List.Create;
 end;
 
 destructor TRegistroI150.Destroy;
 begin
+  FRegistroI151.Free;
   FRegistroI155.Free;
   inherited;
 end;
@@ -809,6 +1052,242 @@ begin
 end;
 
 procedure TRegistroI250List.SetItem(Index: Integer; Value: TRegistroI250);
+begin
+   Put(Index, Value);
+end;
+
+
+constructor TRegistroI300.Create;
+begin
+   FRegistroI310 := TRegistroI310List.Create;
+end;
+
+destructor TRegistroI300.Destroy;
+begin
+  FRegistroI310.Free;
+  inherited;
+end;
+
+{ TRegistroI300List }
+
+destructor TRegistroI300List.Destroy;
+var
+intFor: integer;
+begin
+  for intFor := 0 to Count - 1 do Items[intFor].Free;
+end;
+
+function TRegistroI300List.GetItem(Index: Integer): TRegistroI300;
+begin
+  Result := TRegistroI300(Inherited Items[Index]);
+end;
+
+function TRegistroI300List.New: TRegistroI300;
+begin
+  Result := TRegistroI300.Create;
+  Add(Result);
+end;
+
+procedure TRegistroI300List.SetItem(Index: Integer; const Value: TRegistroI300);
+begin
+  Put(Index, Value);
+end;
+
+{ TRegistroI310List }
+
+destructor TRegistroI310List.Destroy;
+var
+intFor: integer;
+begin
+  for intFor := 0 to Count - 1 do Items[intFor].Free;
+end;
+
+function TRegistroI310List.GetItem(Index: Integer): TRegistroI310;
+begin
+  Result := TRegistroI310(Inherited Items[Index]);
+end;
+
+function TRegistroI310List.New: TRegistroI310;
+begin
+  Result := TRegistroI310.Create;
+  Add(Result);
+end;
+
+procedure TRegistroI310List.SetItem(Index: Integer; const Value: TRegistroI310);
+begin
+  Put(Index, Value);
+end;
+
+constructor TRegistroI350.Create;
+begin
+   FRegistroI355 := TRegistroI355List.Create;
+end;
+
+destructor TRegistroI350.Destroy;
+begin
+  FRegistroI355.Free;
+  inherited;
+end;
+
+{ TRegistroI350List }
+
+destructor TRegistroI350List.Destroy;
+var
+intFor: integer;
+begin
+  for intFor := 0 to Count - 1 do Items[intFor].Free;
+end;
+
+function TRegistroI350List.GetItem(Index: Integer): TRegistroI350;
+begin
+  Result := TRegistroI350(Inherited Items[Index]);
+end;
+
+function TRegistroI350List.New: TRegistroI350;
+begin
+  Result := TRegistroI350.Create;
+  Add(Result);
+end;
+
+procedure TRegistroI350List.SetItem(Index: Integer; const Value: TRegistroI350);
+begin
+  Put(Index, Value);
+end;
+
+{ TRegistroI355List }
+
+destructor TRegistroI355List.Destroy;
+var
+intFor: integer;
+begin
+  for intFor := 0 to Count - 1 do Items[intFor].Free;
+end;
+
+function TRegistroI355List.GetItem(Index: Integer): TRegistroI355;
+begin
+  Result := TRegistroI355(Inherited Items[Index]);
+end;
+
+function TRegistroI355List.New: TRegistroI355;
+begin
+  Result := TRegistroI355.Create;
+  Add(Result);
+end;
+
+procedure TRegistroI355List.SetItem(Index: Integer; const Value: TRegistroI355);
+begin
+  Put(Index, Value);
+end;
+
+{ TRegistroI500List }
+
+destructor TRegistroI500List.Destroy;
+var
+intFor: integer;
+begin
+  for intFor := 0 to Count - 1 do Items[intFor].Free;
+end;
+
+function TRegistroI500List.GetItem(Index: Integer): TRegistroI500;
+begin
+  Result := TRegistroI500(Inherited Items[Index]);
+end;
+
+function TRegistroI500List.New: TRegistroI500;
+begin
+  Result := TRegistroI500.Create;
+  Add(Result);
+end;
+
+procedure TRegistroI500List.SetItem(Index: Integer; const Value: TRegistroI500);
+begin
+  Put(Index, Value);
+end;
+
+{ TRegistroI510List }
+
+destructor TRegistroI510List.Destroy;
+var
+intFor: integer;
+begin
+  for intFor := 0 to Count - 1 do Items[intFor].Free;
+end;
+
+function TRegistroI510List.GetItem(Index: Integer): TRegistroI510;
+begin
+  Result := TRegistroI510(Inherited Items[Index]);
+end;
+
+function TRegistroI510List.New: TRegistroI510;
+begin
+  Result := TRegistroI510.Create;
+  Add(Result);
+end;
+
+procedure TRegistroI510List.SetItem(Index: Integer; const Value: TRegistroI510);
+begin
+  Put(Index, Value);
+end;
+
+// TRegistroI550
+
+constructor TRegistroI550.Create;
+begin
+  FRegistroI555 := TRegistroI555List.create;
+end;
+
+destructor TRegistroI550.Destroy;
+begin
+  FRegistroI555.Free;
+  inherited;
+end;
+
+// TRegistroI550List
+
+destructor TRegistroI550List.Destroy;
+var
+intFor: integer;
+begin
+  for intFor := 0 to Count - 1 do Items[intFor].Free;
+end;
+
+function TRegistroI550List.GetItem(Index: Integer): TRegistroI550;
+begin
+  Result := TRegistroI550(Inherited Items[Index]);
+end;
+
+function TRegistroI550List.New: TRegistroI550;
+begin
+  Result := TRegistroI550.Create;
+  Add(Result);
+end;
+
+procedure TRegistroI550List.SetItem(Index: Integer; Value: TRegistroI550);
+begin
+  Put(Index, Value);
+end;
+
+// TRegistroI555List
+
+destructor TRegistroI555List.Destroy;
+var
+  intFor: Integer;
+begin
+  for intFor := 0 to Count - 1 do Items[intFor].Free;
+end;
+
+function TRegistroI555List.GetItem(index: Integer): TRegistroI555;
+begin
+  Result := TRegistroI555( inherited Items[Index]);
+end;
+
+function TRegistroI555List.New: TRegistroI555;
+begin
+   Result := TRegistroI555.Create;
+   Add(Result);
+end;
+
+procedure TRegistroI555List.SetItem(Index: Integer; Value: TRegistroI555);
 begin
    Put(Index, Value);
 end;

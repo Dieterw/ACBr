@@ -64,7 +64,7 @@ type
     FRegistroI500: TRegistroI500List;  /// BLOCO I - Lista de RegistroI500
     FRegistroI510: TRegistroI510List;  /// BLOCO I - Lista de RegistroI510
     FRegistroI550: TRegistroI550List;
-    FRegistroI990: TRegistroI990;      /// BLOCO I - RegistroI990
+    FRegistroI990: TRegistroI990;      /// BLOCO I - FRegistroI990
 
     FRegistroI051Count: Integer;
     FRegistroI052Count: Integer;
@@ -216,9 +216,9 @@ function TBLOCO_I.WriteRegistroI001: AnsiString;
 begin
   Result := '';
 
-  if Assigned(RegistroI001) then
+  if Assigned(FRegistroI001) then
   begin
-     with RegistroI001 do
+     with FRegistroI001 do
      begin
        Check(((IND_DAD = 0) or (IND_DAD = 1)), '(I-I001) Na abertura do bloco, deve ser informado o número 0 ou 1!');
        ///
@@ -227,7 +227,7 @@ begin
                  Delimitador +
                  #13#10;
        ///
-       RegistroI990.QTD_LIN_I := RegistroI990.QTD_LIN_I + 1;
+       FRegistroI990.QTD_LIN_I := FRegistroI990.QTD_LIN_I + 1;
      end;
   end;
 end;
@@ -236,9 +236,9 @@ function TBLOCO_I.WriteRegistroI010: AnsiString;
 begin
   Result := '';
 
-  if Assigned(RegistroI010) then
+  if Assigned(FRegistroI010) then
   begin
-     with RegistroI010 do
+     with FRegistroI010 do
      begin
        /// Checagem das informações que formarão o registro
        Check(((IND_ESC = 'G') or (IND_ESC = 'R') or (IND_ESC = 'A') or (IND_ESC = 'B') or (IND_ESC = 'Z')), '(I-I010) No Indicador da forma de escrituração contábil, deve ser informado: G ou R ou A ou B ou Z!');
@@ -249,7 +249,7 @@ begin
                  Delimitador +
                  #13#10;
        ///
-       RegistroI990.QTD_LIN_I := RegistroI990.QTD_LIN_I + 1;
+       FRegistroI990.QTD_LIN_I := FRegistroI990.QTD_LIN_I + 1;
      end;
   end;
 end;
@@ -261,11 +261,11 @@ strRegistroI012: AnsiString;
 begin
   strRegistroI012 := '';
 
-  if Assigned(RegistroI012) then
+  if Assigned(FRegistroI012) then
   begin
-     for intFor := 0 to RegistroI012.Count - 1 do
+     for intFor := 0 to FRegistroI012.Count - 1 do
      begin
-        with RegistroI012.Items[intFor] do
+        with FRegistroI012.Items[intFor] do
         begin
            /// Checagem das informações que formarão o registro
            Check(((TIPO = '0') or (TIPO = '1')), '(I-I012) No Tipo de Escrituração do livro, deve ser informado: 0 ou 1!');
@@ -278,7 +278,7 @@ begin
                                                  Delimitador +
                                                  #13#10;
         end;
-       RegistroI990.QTD_LIN_I := RegistroI990.QTD_LIN_I + 1;
+       FRegistroI990.QTD_LIN_I := FRegistroI990.QTD_LIN_I + 1;
      end;
   end;
   Result := strRegistroI012;
@@ -291,11 +291,11 @@ strRegistroI015: AnsiString;
 begin
   strRegistroI015 := '';
 
-  if Assigned(RegistroI015) then
+  if Assigned(FRegistroI015) then
   begin
-     for intFor := 0 to RegistroI015.Count - 1 do
+     for intFor := 0 to FRegistroI015.Count - 1 do
      begin
-        with RegistroI015.Items[intFor] do
+        with FRegistroI015.Items[intFor] do
         begin
            ///
            strRegistroI015 :=  strRegistroI015 + LFill('I015') +
@@ -303,7 +303,7 @@ begin
                                                  Delimitador +
                                                  #13#10;
         end;
-       RegistroI990.QTD_LIN_I := RegistroI990.QTD_LIN_I + 1;
+       FRegistroI990.QTD_LIN_I := FRegistroI990.QTD_LIN_I + 1;
      end;
   end;
   Result := strRegistroI015;
@@ -316,11 +316,11 @@ strRegistroI020: AnsiString;
 begin
   strRegistroI020 := '';
 
-  if Assigned(RegistroI020) then
+  if Assigned(FRegistroI020) then
   begin
-     for intFor := 0 to RegistroI020.Count - 1 do
+     for intFor := 0 to FRegistroI020.Count - 1 do
      begin
-        with RegistroI020.Items[intFor] do
+        with FRegistroI020.Items[intFor] do
         begin
            /// Checagem das informações que formarão o registro
            Check(CAMPO <> '', '(I-I020) O nome do campo adicional é obrigatório!');
@@ -335,7 +335,7 @@ begin
                                                  Delimitador +
                                                  #13#10;
         end;
-       RegistroI990.QTD_LIN_I := RegistroI990.QTD_LIN_I + 1;
+       FRegistroI990.QTD_LIN_I := FRegistroI990.QTD_LIN_I + 1;
      end;
   end;
   Result := strRegistroI020;
@@ -345,9 +345,9 @@ function TBLOCO_I.WriteRegistroI030: AnsiString;
 begin
   Result := '';
 
-  if Assigned(RegistroI030) then
+  if Assigned(FRegistroI030) then
   begin
-     with RegistroI030 do
+     with FRegistroI030 do
      begin
        ///
        Result := LFill('I030') +
@@ -364,7 +364,7 @@ begin
                  Delimitador +
                  #13#10;
        ///
-       RegistroI990.QTD_LIN_I := RegistroI990.QTD_LIN_I + 1;
+       FRegistroI990.QTD_LIN_I := FRegistroI990.QTD_LIN_I + 1;
      end;
   end;
 end;
@@ -376,11 +376,11 @@ strRegistroI050: AnsiString;
 begin
   strRegistroI050 := '';
 
-  if Assigned(RegistroI050) then
+  if Assigned(FRegistroI050) then
   begin
-     for intFor := 0 to RegistroI050.Count - 1 do
+     for intFor := 0 to FRegistroI050.Count - 1 do
      begin
-        with RegistroI050.Items[intFor] do
+        with FRegistroI050.Items[intFor] do
         begin
            ///
            strRegistroI050 :=  strRegistroI050 + LFill('I050') +
@@ -394,12 +394,12 @@ begin
                                                  Delimitador +
                                                  #13#10;
         end;
-
+        // Registros Filhos
         strRegistroI050 := strRegistroI050 +
-                           WriteRegistroI051(RegistroI050.Items[intFor] ) +
-                           WriteRegistroI052(RegistroI050.Items[intFor] );
+                           WriteRegistroI051(FRegistroI050.Items[intFor] ) +
+                           WriteRegistroI052(FRegistroI050.Items[intFor] );
 
-       RegistroI990.QTD_LIN_I := RegistroI990.QTD_LIN_I + 1;
+       FRegistroI990.QTD_LIN_I := FRegistroI990.QTD_LIN_I + 1;
      end;
   end;
   Result := strRegistroI050;
@@ -426,7 +426,7 @@ begin
                                                  Delimitador +
                                                  #13#10;
         end;
-       RegistroI990.QTD_LIN_I := RegistroI990.QTD_LIN_I + 1;
+       FRegistroI990.QTD_LIN_I := FRegistroI990.QTD_LIN_I + 1;
      end;
      FRegistroI051Count := FRegistroI051Count + RegI050.RegistroI051.Count;
   end;
@@ -453,7 +453,7 @@ begin
                                                  Delimitador +
                                                  #13#10;
         end;
-       RegistroI990.QTD_LIN_I := RegistroI990.QTD_LIN_I + 1;
+       FRegistroI990.QTD_LIN_I := FRegistroI990.QTD_LIN_I + 1;
      end;
      FRegistroI052Count := FRegistroI052Count + RegI050.RegistroI052.Count;
   end;
@@ -480,7 +480,7 @@ begin
                                                  Delimitador +
                                                  #13#10;
         end;
-       RegistroI990.QTD_LIN_I := RegistroI990.QTD_LIN_I + 1;
+       FRegistroI990.QTD_LIN_I := FRegistroI990.QTD_LIN_I + 1;
      end;
   end;
   Result := strRegistroI075;
@@ -507,7 +507,7 @@ begin
                                                  Delimitador +
                                                  #13#10;
         end;
-       RegistroI990.QTD_LIN_I := RegistroI990.QTD_LIN_I + 1;
+       FRegistroI990.QTD_LIN_I := FRegistroI990.QTD_LIN_I + 1;
      end;
   end;
   Result := strRegistroI100;
@@ -538,7 +538,7 @@ begin
                            WriteRegistroI151(RegistroI150.Items[intFor] ) +
                            WriteRegistroI155(RegistroI150.Items[intFor] );
 
-       RegistroI990.QTD_LIN_I := RegistroI990.QTD_LIN_I + 1;
+       FRegistroI990.QTD_LIN_I := FRegistroI990.QTD_LIN_I + 1;
      end;
   end;
   Result := strRegistroI150;
@@ -563,7 +563,7 @@ begin
                                                  Delimitador +
                                                  #13#10;
         end;
-       RegistroI990.QTD_LIN_I := RegistroI990.QTD_LIN_I + 1;
+       FRegistroI990.QTD_LIN_I := FRegistroI990.QTD_LIN_I + 1;
      end;
      FRegistroI151Count := FRegistroI151Count + RegI150.RegistroI151.Count;
   end;
@@ -598,7 +598,7 @@ begin
                                                  Delimitador +
                                                  #13#10;
         end;
-       RegistroI990.QTD_LIN_I := RegistroI990.QTD_LIN_I + 1;
+       FRegistroI990.QTD_LIN_I := FRegistroI990.QTD_LIN_I + 1;
      end;
      FRegistroI155Count := FRegistroI155Count + RegI150.RegistroI155.Count;
   end;
@@ -612,11 +612,11 @@ strRegistroI200: AnsiString;
 begin
   strRegistroI200 := '';
 
-  if Assigned(RegistroI200) then
+  if Assigned(FRegistroI200) then
   begin
-     for intFor := 0 to RegistroI200.Count - 1 do
+     for intFor := 0 to FRegistroI200.Count - 1 do
      begin
-        with RegistroI200.Items[intFor] do
+        with FRegistroI200.Items[intFor] do
         begin
            ///
            strRegistroI200 :=  strRegistroI200 + LFill('I200') +
@@ -629,9 +629,9 @@ begin
         end;
         // Registro Filho
         strRegistroI200 := strRegistroI200 +
-                           WriteRegistroI250(RegistroI200.Items[intFor] );
+                           WriteRegistroI250(FRegistroI200.Items[intFor] );
 
-       RegistroI990.QTD_LIN_I := RegistroI990.QTD_LIN_I + 1;
+       FRegistroI990.QTD_LIN_I := FRegistroI990.QTD_LIN_I + 1;
      end;
   end;
   Result := strRegistroI200;
@@ -665,7 +665,7 @@ begin
                                                  Delimitador +
                                                  #13#10;
         end;
-       RegistroI990.QTD_LIN_I := RegistroI990.QTD_LIN_I + 1;
+       FRegistroI990.QTD_LIN_I := FRegistroI990.QTD_LIN_I + 1;
      end;
      FRegistroI250Count := FRegistroI250Count + RegI200.RegistroI250.Count;
   end;
@@ -680,11 +680,11 @@ strRegistroI300: AnsiString;
 begin
   strRegistroI300 := '';
 
-  if Assigned(RegistroI300) then
+  if Assigned(FRegistroI300) then
   begin
-     for intFor := 0 to RegistroI300.Count - 1 do
+     for intFor := 0 to FRegistroI300.Count - 1 do
      begin
-        with RegistroI300.Items[intFor] do
+        with FRegistroI300.Items[intFor] do
         begin
            ///
            strRegistroI300 :=  strRegistroI300 + LFill('I300') +
@@ -694,9 +694,9 @@ begin
         end;
         // Registro Filho
         strRegistroI300 := strRegistroI300 +
-                           WriteRegistroI310(RegistroI300.Items[intFor] );
+                           WriteRegistroI310(FRegistroI300.Items[intFor] );
 
-       RegistroI990.QTD_LIN_I := RegistroI990.QTD_LIN_I + 1;
+       FRegistroI990.QTD_LIN_I := FRegistroI990.QTD_LIN_I + 1;
      end;
   end;
   Result := strRegistroI300;
@@ -724,7 +724,7 @@ begin
                                                  Delimitador +
                                                  #13#10;
         end;
-       RegistroI990.QTD_LIN_I := RegistroI990.QTD_LIN_I + 1;
+       FRegistroI990.QTD_LIN_I := FRegistroI990.QTD_LIN_I + 1;
      end;
      FRegistroI310Count := FRegistroI310Count + RegI300.RegistroI310.Count;
   end;
@@ -738,11 +738,11 @@ strRegistroI350: AnsiString;
 begin
   strRegistroI350 := '';
 
-  if Assigned(RegistroI350) then
+  if Assigned(FRegistroI350) then
   begin
-     for intFor := 0 to RegistroI350.Count - 1 do
+     for intFor := 0 to FRegistroI350.Count - 1 do
      begin
-        with RegistroI350.Items[intFor] do
+        with FRegistroI350.Items[intFor] do
         begin
            ///
            strRegistroI350 :=  strRegistroI350 + LFill('I350') +
@@ -752,9 +752,9 @@ begin
         end;
         // Registro Filho
         strRegistroI350 := strRegistroI350 +
-                           WriteRegistroI355(RegistroI350.Items[intFor] );
+                           WriteRegistroI355(FRegistroI350.Items[intFor] );
 
-       RegistroI990.QTD_LIN_I := RegistroI990.QTD_LIN_I + 1;
+       FRegistroI990.QTD_LIN_I := FRegistroI990.QTD_LIN_I + 1;
      end;
   end;
   Result := strRegistroI350;
@@ -785,7 +785,7 @@ begin
                                                  Delimitador +
                                                  #13#10;
         end;
-       RegistroI990.QTD_LIN_I := RegistroI990.QTD_LIN_I + 1;
+       FRegistroI990.QTD_LIN_I := FRegistroI990.QTD_LIN_I + 1;
      end;
      FRegistroI355Count := FRegistroI355Count + RegI350.RegistroI355.Count;
   end;
@@ -799,11 +799,11 @@ strRegistroI500: AnsiString;
 begin
   strRegistroI500 := '';
 
-  if Assigned(RegistroI500) then
+  if Assigned(FRegistroI500) then
   begin
-     for intFor := 0 to RegistroI500.Count - 1 do
+     for intFor := 0 to FRegistroI500.Count - 1 do
      begin
-        with RegistroI500.Items[intFor] do
+        with FRegistroI500.Items[intFor] do
         begin
            ///
            strRegistroI500 := strRegistroI500 + LFill('I500') +
@@ -811,7 +811,7 @@ begin
                                                 Delimitador +
                                                 #13#10;
         end;
-       RegistroI990.QTD_LIN_I := RegistroI990.QTD_LIN_I + 1;
+       FRegistroI990.QTD_LIN_I := FRegistroI990.QTD_LIN_I + 1;
      end;
   end;
   Result := strRegistroI500;
@@ -825,11 +825,11 @@ strRegistroI510: AnsiString;
 begin
   strRegistroI510 := '';
 
-  if Assigned(RegistroI510) then
+  if Assigned(FRegistroI510) then
   begin
-     for intFor := 0 to RegistroI510.Count - 1 do
+     for intFor := 0 to FRegistroI510.Count - 1 do
      begin
-        with RegistroI510.Items[intFor] do
+        with FRegistroI510.Items[intFor] do
         begin
            ///
            strRegistroI510 :=  strRegistroI510 + LFill('I510') +
@@ -842,7 +842,7 @@ begin
                                                  Delimitador +
                                                  #13#10;
         end;
-       RegistroI990.QTD_LIN_I := RegistroI990.QTD_LIN_I + 1;
+       FRegistroI990.QTD_LIN_I := FRegistroI990.QTD_LIN_I + 1;
      end;
   end;
   Result := strRegistroI510;
@@ -855,11 +855,11 @@ strRegistroI550: AnsiString;
 begin
   strRegistroI550 := '';
 
-  if Assigned(RegistroI550) then
+  if Assigned(FRegistroI550) then
   begin
-     for intFor := 0 to RegistroI550.Count - 1 do
+     for intFor := 0 to FRegistroI550.Count - 1 do
      begin
-        with RegistroI550.Items[intFor] do
+        with FRegistroI550.Items[intFor] do
         begin
            ///
            strRegistroI550 :=  strRegistroI550 + LFill('I550') +
@@ -869,9 +869,9 @@ begin
         end;
         // Registro Filho
         strRegistroI550 := strRegistroI550 +
-                           WriteRegistroI555(RegistroI550.Items[intFor] );
+                           WriteRegistroI555(FRegistroI550.Items[intFor] );
 
-       RegistroI990.QTD_LIN_I := RegistroI990.QTD_LIN_I + 1;
+       FRegistroI990.QTD_LIN_I := FRegistroI990.QTD_LIN_I + 1;
      end;
   end;
   Result := strRegistroI550;
@@ -896,21 +896,20 @@ begin
                                                  Delimitador +
                                                  #13#10;
         end;
-       RegistroI990.QTD_LIN_I := RegistroI990.QTD_LIN_I + 1;
+       FRegistroI990.QTD_LIN_I := FRegistroI990.QTD_LIN_I + 1;
      end;
      FRegistroI555Count := FRegistroI555Count + RegI550.RegistroI555.Count;
   end;
   Result := strRegistroI555;
 end;
 
-
 function TBLOCO_I.WriteRegistroI990: AnsiString;
 begin
   Result := '';
 
-  if Assigned(RegistroI990) then
+  if Assigned(FRegistroI990) then
   begin
-     with RegistroI990 do
+     with FRegistroI990 do
      begin
        QTD_LIN_I := QTD_LIN_I + 1;
        ///

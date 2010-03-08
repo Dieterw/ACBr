@@ -55,7 +55,7 @@ type
     FRegistroJ800: TRegistroJ800List;  /// BLOCO J - Lista de RegistroJ800
     FRegistroJ900: TRegistroJ900;      /// BLOCO J - RegistroJ900
     FRegistroJ930: TRegistroJ930List;  /// BLOCO J - Lista de RegistroJ930
-    FRegistroJ990: TRegistroJ990;      /// BLOCO J - RegistroJ990
+    FRegistroJ990: TRegistroJ990;      /// BLOCO J - FRegistroJ990
   public
     constructor Create(AOwner: TComponent); override; /// Create
     destructor Destroy; override; /// Destroy
@@ -70,14 +70,14 @@ type
     function WriteRegistroJ930: AnsiString;
     function WriteRegistroJ990: AnsiString;
 
-    property RegistroJ001: TRegistroJ001 read fRegistroJ001 write fRegistroJ001;
+    property RegistroJ001: TRegistroJ001     read fRegistroJ001 write fRegistroJ001;
     property RegistroJ005: TRegistroJ005List read fRegistroJ005 write fRegistroJ005;
     property RegistroJ100: TRegistroJ100List read fRegistroJ100 write fRegistroJ100;
     property RegistroJ150: TRegistroJ150List read fRegistroJ150 write fRegistroJ150;
     property RegistroJ800: TRegistroJ800List read fRegistroJ800 write fRegistroJ800;
-    property RegistroJ900: TRegistroJ900 read fRegistroJ900 write fRegistroJ900;
+    property RegistroJ900: TRegistroJ900     read fRegistroJ900 write fRegistroJ900;
     property RegistroJ930: TRegistroJ930List read fRegistroJ930 write fRegistroJ930;
-    property RegistroJ990: TRegistroJ990 read fRegistroJ990 write fRegistroJ990;
+    property RegistroJ990: TRegistroJ990     read fRegistroJ990 write fRegistroJ990;
   end;
 
 implementation
@@ -127,9 +127,9 @@ function TBloco_J.WriteRegistroJ001: AnsiString;
 begin
   Result := '';
 
-  if Assigned(RegistroJ001) then
+  if Assigned(FRegistroJ001) then
   begin
-     with RegistroJ001 do
+     with FRegistroJ001 do
      begin
        Check(((IND_DAD = 0) or (IND_DAD = 1)), '(J-J001) Na abertura do bloco, deve ser informado o número 0 ou 1!');
        ///
@@ -138,7 +138,7 @@ begin
                  Delimitador +
                  #13#10;
        ///
-       RegistroJ990.QTD_LIN_J := RegistroJ990.QTD_LIN_J + 1;
+       FRegistroJ990.QTD_LIN_J := FRegistroJ990.QTD_LIN_J + 1;
      end;
   end;
 end;
@@ -150,11 +150,11 @@ strRegistroJ005: AnsiString;
 begin
   strRegistroJ005 := '';
 
-  if Assigned(RegistroJ005) then
+  if Assigned(FRegistroJ005) then
   begin
-     for intFor := 0 to RegistroJ005.Count - 1 do
+     for intFor := 0 to FRegistroJ005.Count - 1 do
      begin
-        with RegistroJ005.Items[intFor] do
+        with FRegistroJ005.Items[intFor] do
         begin
            Check(((ID_DEM = 1) or (ID_DEM = 2)), '(J-J005) Na Identificação das demonstrações, deve ser informado o número 1 ou 2!');
            ///
@@ -166,7 +166,7 @@ begin
                                                  Delimitador +
                                                  #13#10;
         end;
-        RegistroJ990.QTD_LIN_J := RegistroJ990.QTD_LIN_J + 1;
+        FRegistroJ990.QTD_LIN_J := FRegistroJ990.QTD_LIN_J + 1;
      end;
   end;
   Result := strRegistroJ005;
@@ -179,11 +179,11 @@ strRegistroJ100: AnsiString;
 begin
   strRegistroJ100 := '';
 
-  if Assigned(RegistroJ100) then
+  if Assigned(FRegistroJ100) then
   begin
-     for intFor := 0 to RegistroJ100.Count - 1 do
+     for intFor := 0 to FRegistroJ100.Count - 1 do
      begin
-        with RegistroJ100.Items[intFor] do
+        with FRegistroJ100.Items[intFor] do
         begin
            Check(((IND_GRP_BAL = '1') or (IND_GRP_BAL = '2')), '(J-J100) No Indicador de grupo do balanço, deve ser informado o número 1 ou 2!');
            Check(((IND_DC_BAL = 'D') or (IND_DC_BAL = 'C')), '(J-J100) No Indicador da situação do saldo, deve ser informado: D ou C!');
@@ -198,7 +198,7 @@ begin
                                                  Delimitador +
                                                  #13#10;
         end;
-        RegistroJ990.QTD_LIN_J := RegistroJ990.QTD_LIN_J + 1;
+        FRegistroJ990.QTD_LIN_J := FRegistroJ990.QTD_LIN_J + 1;
      end;
   end;
   Result := strRegistroJ100;
@@ -211,11 +211,11 @@ strRegistroJ150: AnsiString;
 begin
   strRegistroJ150 := '';
 
-  if Assigned(RegistroJ150) then
+  if Assigned(FRegistroJ150) then
   begin
-     for intFor := 0 to RegistroJ150.Count - 1 do
+     for intFor := 0 to FRegistroJ150.Count - 1 do
      begin
-        with RegistroJ150.Items[intFor] do
+        with FRegistroJ150.Items[intFor] do
         begin
            Check(((IND_VL = 'D') or (IND_VL = 'R') or (IND_VL = 'P') or (IND_VL = 'N')), '(J-J150) No Indicador da situação do valor, deve ser informado: D ou R ou P ou N!');
            ///
@@ -228,7 +228,7 @@ begin
                                                  Delimitador +
                                                  #13#10;
         end;
-        RegistroJ990.QTD_LIN_J := RegistroJ990.QTD_LIN_J + 1;
+        FRegistroJ990.QTD_LIN_J := FRegistroJ990.QTD_LIN_J + 1;
      end;
   end;
   Result := strRegistroJ150;
@@ -241,11 +241,11 @@ strRegistroJ800: AnsiString;
 begin
   strRegistroJ800 := '';
 
-  if Assigned(RegistroJ800) then
+  if Assigned(FRegistroJ800) then
   begin
-     for intFor := 0 to RegistroJ800.Count - 1 do
+     for intFor := 0 to FRegistroJ800.Count - 1 do
      begin
-        with RegistroJ800.Items[intFor] do
+        with FRegistroJ800.Items[intFor] do
         begin
            ///
            strRegistroJ800 :=  strRegistroJ800 + LFill('J800') +
@@ -254,7 +254,7 @@ begin
                                                  Delimitador +
                                                  #13#10;
         end;
-        RegistroJ990.QTD_LIN_J := RegistroJ990.QTD_LIN_J + 1;
+        FRegistroJ990.QTD_LIN_J := FRegistroJ990.QTD_LIN_J + 1;
      end;
   end;
   Result := strRegistroJ800;
@@ -264,9 +264,9 @@ function TBloco_J.WriteRegistroJ900: AnsiString;
 begin
   Result := '';
 
-  if Assigned(RegistroJ900) then
+  if Assigned(FRegistroJ900) then
   begin
-     with RegistroJ900 do
+     with FRegistroJ900 do
      begin
        ///
        Result := LFill('J900') +
@@ -280,7 +280,7 @@ begin
                  Delimitador +
                  #13#10;
        ///
-       RegistroJ990.QTD_LIN_J := RegistroJ990.QTD_LIN_J + 1;
+       FRegistroJ990.QTD_LIN_J := FRegistroJ990.QTD_LIN_J + 1;
      end;
   end;
 end;
@@ -292,11 +292,11 @@ strRegistroJ930: AnsiString;
 begin
   strRegistroJ930 := '';
 
-  if Assigned(RegistroJ930) then
+  if Assigned(FRegistroJ930) then
   begin
-     for intFor := 0 to RegistroJ930.Count - 1 do
+     for intFor := 0 to FRegistroJ930.Count - 1 do
      begin
-        with RegistroJ930.Items[intFor] do
+        with FRegistroJ930.Items[intFor] do
         begin
            ///
            strRegistroJ930 :=  strRegistroJ930 + LFill('J930') +
@@ -308,7 +308,7 @@ begin
                                                  Delimitador +
                                                  #13#10;
         end;
-        RegistroJ990.QTD_LIN_J := RegistroJ990.QTD_LIN_J + 1;
+        FRegistroJ990.QTD_LIN_J := FRegistroJ990.QTD_LIN_J + 1;
      end;
   end;
   Result := strRegistroJ930;
@@ -318,9 +318,9 @@ function TBloco_J.WriteRegistroJ990: AnsiString;
 begin
   Result := '';
 
-  if Assigned(RegistroJ990) then
+  if Assigned(FRegistroJ990) then
   begin
-     with RegistroJ990 do
+     with FRegistroJ990 do
      begin
        QTD_LIN_J := QTD_LIN_J + 1;
        ///

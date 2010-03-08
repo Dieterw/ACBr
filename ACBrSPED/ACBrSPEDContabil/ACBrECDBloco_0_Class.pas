@@ -54,7 +54,7 @@ type
     FRegistro0020: TRegistro0020List;  /// BLOCO 0 - Lista de Registro0020
     FRegistro0150: TRegistro0150List;  /// BLOCO 0 - Lista de Registro0150
     FRegistro0180: TRegistro0180List;  /// BLOCO 0 - Lista de Registro0180
-    FRegistro0990: TRegistro0990;      /// BLOCO 0 - Registro0990
+    FRegistro0990: TRegistro0990;      /// BLOCO 0 - FRegistro0990
   protected
   public
     constructor Create(AOwner: TComponent); override; /// Create
@@ -75,7 +75,7 @@ type
     property Registro0020: TRegistro0020List read FRegistro0020 write FRegistro0020;
     property Registro0150: TRegistro0150List read FRegistro0150 write FRegistro0150;
     property Registro0180: TRegistro0180List read FRegistro0180 write FRegistro0180;
-    property Registro0990: TRegistro0990 read FRegistro0990 write FRegistro0990;
+    property Registro0990: TRegistro0990     read FRegistro0990 write FRegistro0990;
   end;
 
 implementation
@@ -124,9 +124,9 @@ function TBloco_0.WriteRegistro0000: AnsiString;
 begin
   Result := '';
 
-  if Assigned(Registro0000) then
+  if Assigned(FRegistro0000) then
   begin
-     with Registro0000 do
+     with FRegistro0000 do
      begin
        Check(NOME <> '', '(0-0000) O nome empresarial é obrigatório!');
        Check(funChecaCNPJ(CNPJ), '(0-0000) O CNPJ "%s" digitado é inválido!', [CNPJ]);
@@ -149,7 +149,7 @@ begin
                  Delimitador +
                  #13#10;
        ///
-       Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
+       FRegistro0990.QTD_LIN_0 := FRegistro0990.QTD_LIN_0 + 1;
      end;
   end;
 end;
@@ -158,9 +158,9 @@ function TBloco_0.WriteRegistro0001: AnsiString;
 begin
   Result := '';
 
-  if Assigned(Registro0001) then
+  if Assigned(FRegistro0001) then
   begin
-     with Registro0001 do
+     with FRegistro0001 do
      begin
        Check(((IND_DAD = 0) or (IND_DAD = 1)), '(0-0001) ABERTURA DO BLOCO: Na abertura do bloco, deve ser informado o número 0 ou 1!');
        ///
@@ -169,7 +169,7 @@ begin
                  Delimitador +
                  #13#10;
        ///
-       Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
+       FRegistro0990.QTD_LIN_0 := FRegistro0990.QTD_LIN_0 + 1;
      end;
   end;
 end;
@@ -181,11 +181,11 @@ strRegistro0007: AnsiString;
 begin
   strRegistro0007 := '';
 
-  if Assigned(Registro0007) then
+  if Assigned(FRegistro0007) then
   begin
-     for intFor := 0 to Registro0007.Count - 1 do
+     for intFor := 0 to FRegistro0007.Count - 1 do
      begin
-        with Registro0007.Items[intFor] do
+        with FRegistro0007.Items[intFor] do
         begin
            ///
            strRegistro0007 :=  strRegistro0007 + LFill('0007') +
@@ -194,7 +194,7 @@ begin
                                                  Delimitador +
                                                  #13#10;
         end;
-        Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
+        FRegistro0990.QTD_LIN_0 := FRegistro0990.QTD_LIN_0 + 1;
      end;
   end;
   Result := strRegistro0007;
@@ -207,11 +207,11 @@ strRegistro0020: AnsiString;
 begin
   strRegistro0020 := '';
 
-  if Assigned(Registro0020) then
+  if Assigned(FRegistro0020) then
   begin
-     for intFor := 0 to Registro0020.Count - 1 do
+     for intFor := 0 to FRegistro0020.Count - 1 do
      begin
-        with Registro0020.Items[intFor] do
+        with FRegistro0020.Items[intFor] do
         begin
            Check(((IND_DEC = 0) or (IND_DEC = 1)), '(0-0020) O Indicador de descentralização, deve ser informado o número 0 ou 1!');
            Check(funChecaCNPJ(CNPJ), '(0-0020) O CNPJ "%s" digitado é inválido!', [CNPJ]);
@@ -230,7 +230,7 @@ begin
                                                  Delimitador +
                                                  #13#10;
         end;
-        Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
+        FRegistro0990.QTD_LIN_0 := FRegistro0990.QTD_LIN_0 + 1;
      end;
   end;
   Result := strRegistro0020;
@@ -243,11 +243,11 @@ strRegistro0150: AnsiString;
 begin
   strRegistro0150 := '';
 
-  if Assigned(Registro0150) then
+  if Assigned(FRegistro0150) then
   begin
-     for intFor := 0 to Registro0150.Count - 1 do
+     for intFor := 0 to FRegistro0150.Count - 1 do
      begin
-        with Registro0150.Items[intFor] do
+        with FRegistro0150.Items[intFor] do
         begin
            Check(NOME <> '', '(0-0150) O nome do participante é obrigatório!');
            Check(funChecaPAISIBGE(COD_PAIS), '(0-0150) %s-%s, o código do país "%s" digitado é inválido!', [COD_PART, NOME, COD_PAIS]);
@@ -275,7 +275,7 @@ begin
                                                  Delimitador +
                                                  #13#10;
         end;
-        Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
+        FRegistro0990.QTD_LIN_0 := FRegistro0990.QTD_LIN_0 + 1;
      end;
   end;
   Result := strRegistro0150;
@@ -288,11 +288,11 @@ strRegistro0180: AnsiString;
 begin
   strRegistro0180 := '';
 
-  if Assigned(Registro0180) then
+  if Assigned(FRegistro0180) then
   begin
-     for intFor := 0 to Registro0180.Count - 1 do
+     for intFor := 0 to FRegistro0180.Count - 1 do
      begin
-        with Registro0180.Items[intFor] do
+        with FRegistro0180.Items[intFor] do
         begin
            Check(((COD_REL >= '01') and (COD_REL <= '11')), '(0-0180) O código "%s" de relacionamento, deve ser informado o número na faixa de 01 até 11!', [COD_REL]);
            Check(DT_INI_REL > 0, '(0-0180) A data do inicio relacionamento é inválida!');
@@ -304,7 +304,7 @@ begin
                                                  Delimitador +
                                                  #13#10;
         end;
-        Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
+        FRegistro0990.QTD_LIN_0 := FRegistro0990.QTD_LIN_0 + 1;
      end;
   end;
   Result := strRegistro0180;
@@ -314,9 +314,9 @@ function TBloco_0.WriteRegistro0990: AnsiString;
 begin
   Result := '';
 
-  if Assigned(Registro0990) then
+  if Assigned(FRegistro0990) then
   begin
-     with Registro0990 do
+     with FRegistro0990 do
      begin
        QTD_LIN_0 := QTD_LIN_0 + 1;
        ///

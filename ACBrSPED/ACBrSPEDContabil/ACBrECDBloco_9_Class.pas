@@ -50,7 +50,7 @@ type
   private
     FRegistro9001: TRegistro9001;      /// BLOCO 9 - Registro9001
     FRegistro9900: TRegistro9900List;  /// BLOCO 9 - Lista de Registro9900
-    FRegistro9990: TRegistro9990;      /// BLOCO 9 - Registro9990
+    FRegistro9990: TRegistro9990;      /// BLOCO 9 - FRegistro9990
     FRegistro9999: TRegistro9999;      /// BLOCO 9 - Registro9999
   public
     constructor Create(AOwner: TComponent); override; /// Create
@@ -62,10 +62,10 @@ type
     function WriteRegistro9990: AnsiString;
     function WriteRegistro9999: AnsiString;
 
-    property Registro9001: TRegistro9001 read FRegistro9001 write FRegistro9001;
+    property Registro9001: TRegistro9001     read FRegistro9001 write FRegistro9001;
     property Registro9900: TRegistro9900List read FRegistro9900 write FRegistro9900;
-    property Registro9990: TRegistro9990 read FRegistro9990 write FRegistro9990;
-    property Registro9999: TRegistro9999 read FRegistro9999 write FRegistro9999;
+    property Registro9990: TRegistro9990     read FRegistro9990 write FRegistro9990;
+    property Registro9999: TRegistro9999     read FRegistro9999 write FRegistro9999;
   end;
 
 implementation
@@ -101,9 +101,9 @@ function TBloco_9.WriteRegistro9001: AnsiString;
 begin
   Result := '';
 
-  if Assigned(Registro9001) then
+  if Assigned(FRegistro9001) then
   begin
-     with Registro9001 do
+     with FRegistro9001 do
      begin
        Check(((IND_DAD = 0) or (IND_DAD = 1)), '(9-9001) Na abertura do bloco, deve ser informado o número 0 ou 1!');
        ///
@@ -112,7 +112,7 @@ begin
                  Delimitador +
                  #13#10;
        ///
-       Registro9990.QTD_LIN_9 := Registro9990.QTD_LIN_9 + 1;
+       FRegistro9990.QTD_LIN_9 := FRegistro9990.QTD_LIN_9 + 1;
      end;
   end;
 end;
@@ -124,11 +124,11 @@ strRegistro9900: AnsiString;
 begin
   strRegistro9900 := '';
 
-  if Assigned(Registro9900) then
+  if Assigned(FRegistro9900) then
   begin
-     for intFor := 0 to Registro9900.Count - 1 do
+     for intFor := 0 to FRegistro9900.Count - 1 do
      begin
-        with Registro9900.Items[intFor] do
+        with FRegistro9900.Items[intFor] do
         begin
            strRegistro9900 := strRegistro9900 + LFill('9900') +
                                                 LFill(REG_BLC) +
@@ -137,7 +137,7 @@ begin
                                                 #13#10;
         end;
      end;
-     Registro9990.QTD_LIN_9 := Registro9990.QTD_LIN_9 + Registro9900.Count + 2;
+     FRegistro9990.QTD_LIN_9 := FRegistro9990.QTD_LIN_9 + FRegistro9900.Count + 2;
   end;
   Result := strRegistro9900;
 end;
@@ -146,9 +146,9 @@ function TBloco_9.WriteRegistro9990: AnsiString;
 begin
   Result := '';
 
-  if Assigned(Registro9990) then
+  if Assigned(FRegistro9990) then
   begin
-     with Registro9990 do
+     with FRegistro9990 do
      begin
         Result := LFill('9990') +
                   LFill(QTD_LIN_9, 0) +
@@ -162,7 +162,7 @@ function TBloco_9.WriteRegistro9999: AnsiString;
 begin
   if Assigned(Registro9999) then
   begin
-     with Registro9999 do
+     with FRegistro9999 do
      begin
         Result := LFill('9999') +
                   LFill(QTD_LIN, 0) +

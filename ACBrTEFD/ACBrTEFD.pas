@@ -85,7 +85,8 @@ type
      fOnComandaECFAbreVinculado : TACBrTEFDComandaECFAbreVinculado;
      fOnComandaECFImprimeVia : TACBrTEFDComandaECFImprimeVia;
      fOnComandaECFPagamento : TACBrTEFDComandaECFPagamento;
-     fOnDepoisConfirmarTransacoes : TACBrTEFDDepoisConfirmarTransacoes;
+     fOnDepoisCancelarTransacoes : TACBrTEFDProcessarTransacoesPendentes ;
+     fOnDepoisConfirmarTransacoes : TACBrTEFDProcessarTransacoesPendentes;
      fOnExibeMsg : TACBrTEFDExibeMsg;
      fOnInfoECF : TACBrTEFDObterInfoECF;
      fOnLimpaTeclado : TACBrTEFDExecutaAcao;
@@ -251,10 +252,12 @@ type
      property OnInfoECF : TACBrTEFDObterInfoECF read fOnInfoECF write fOnInfoECF ;
      property OnAntesFinalizarRequisicao : TACBrTEFDAntesFinalizarReq
         read fOnAntesFinalizarRequisicao write fOnAntesFinalizarRequisicao ;
-     property OnDepoisConfirmarTransacoes : TACBrTEFDDepoisConfirmarTransacoes
+     property OnDepoisConfirmarTransacoes : TACBrTEFDProcessarTransacoesPendentes
         read fOnDepoisConfirmarTransacoes write fOnDepoisConfirmarTransacoes ;
      property OnAntesCancelarTransacao : TACBrTEFDAntesCancelarTransacao
         read fOnAntesCancelarTransacao write fOnAntesCancelarTransacao ;
+     property OnDepoisCancelarTransacoes : TACBrTEFDProcessarTransacoesPendentes
+        read fOnDepoisCancelarTransacoes write fOnDepoisCancelarTransacoes ;
      property OnMudaEstadoReq  : TACBrTEFDMudaEstadoReq read fOnMudaEstadoReq
         write fOnMudaEstadoReq ;
      property OnMudaEstadoResp : TACBrTEFDMudaEstadoResp read fOnMudaEstadoResp
@@ -344,6 +347,7 @@ begin
   fOnAguardaResp              := nil ;
   fOnAntesFinalizarRequisicao := nil ;
   fOnDepoisConfirmarTransacoes:= nil ;
+  fOnDepoisCancelarTransacoes := nil ;
   fOnAguardaResp              := nil ;
   fOnComandaECF               := nil ;
   fOnComandaECFPagamento      := nil ;
@@ -656,7 +660,12 @@ begin
           fTEFList[I].CancelarTransacoesPendentesClass;
      end;
   finally
-     RespostasPendentes.Clear;
+     try
+        if Assigned( fOnDepoisCancelarTransacoes ) then
+           fOnDepoisCancelarTransacoes( RespostasPendentes );
+     finally
+        RespostasPendentes.Clear;
+     end;
   end;
 end;
 

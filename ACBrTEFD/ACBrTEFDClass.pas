@@ -102,7 +102,7 @@ type
   TACBrTEFDMudaEstadoReq     = procedure( EstadoReq  : TACBrTEFDReqEstado  ) of object ;
   TACBrTEFDMudaEstadoResp    = procedure( EstadoResp : TACBrTEFDRespEstado ) of object ;
 
-  TACBrTEFDDepoisConfirmarTransacoes = procedure( RespostasPendentes :
+  TACBrTEFDProcessarTransacoesPendentes = procedure( RespostasPendentes :
      TACBrTEFDRespostasPendentes ) of object ;
 
   TACBrTEFDAntesCancelarTransacao = procedure( RespostaPendente :

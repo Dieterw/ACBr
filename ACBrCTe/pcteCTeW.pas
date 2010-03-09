@@ -177,7 +177,7 @@ begin
   chave := '';
   if not GerarChave(Chave, CTe.ide.cUF, CTe.ide.cCT, StrToInt(CTe.ide.modelo), CTe.ide.serie,
     CTe.ide.nCT, CTe.ide.dhEmi, CTe.Emit.CNPJ) then
-    Gerador.wAlerta('A01', 'infCTe', DSC_CHAVE, ERR_MSG_GERAR_CHAVE);
+    Gerador.wAlerta('A01', 'infCte', DSC_CHAVE, ERR_MSG_GERAR_CHAVE);
   chave := StringReplace(chave,'NFe','CTe',[rfReplaceAll]);
   CTe.infCTe.ID := chave;
   CTe.ide.cDV := RetornarDigito(CTe.infCTe.ID);
@@ -185,8 +185,8 @@ begin
   Gerador.LayoutArquivoTXT.Clear;
   Gerador.ArquivoFormatoXML := '';
   Gerador.ArquivoFormatoTXT := '';
-  Gerador.wGrupo(ENCODING_UTF8, '', False);
 
+  Gerador.wGrupo(ENCODING_UTF8, '', False);
   Gerador.wGrupo('CTe ' + NAME_SPACE_CTE);
   Gerador.wGrupo('infCte ' + V1_03 + ' Id="' + CTe.infCTe.ID + '"');
   (**)GerarInfCTe;
@@ -268,7 +268,7 @@ begin
   Gerador.wCampo(tcStr, 'B25', 'xMunFim   ', 01, 60, 1, CTe.ide.xMunFim, DSC_XMUN);
   Gerador.wCampo(tcStr, 'B26', 'UFFim  ', 02, 02, 1, CTe.ide.UFFim, DSC_UF);
   Gerador.wCampo(tcStr, 'B27', 'retira', 01, 01, 1, TpRetiraPagToStr(CTe.Ide.retira), DSC_RETIRA);
-  Gerador.wCampo(tcStr, 'B27a', 'xdetretira', 01, 160, 0, CTe.Ide.xdetretira, DSC_DRET);
+  Gerador.wCampo(tcStr, 'B27a', 'xDetRetira', 01, 160, 0, CTe.Ide.xdetretira, DSC_DRET);
 
   (**)GerarToma03;
   (**)GerarToma4;

@@ -47,6 +47,10 @@
 |*  - Criado Validação do XML da CTe baseado em código passado por Daniel Simões
 |* 07/08/2009 : Wiliam Zacarias da Silva Rosa
 |*  - Adicionado URL do estado de MT
+|* 08/03/2010 : Bruno - Rhythmus Informatica
+|* - Function GetURL:
+|*  Incluida instrução 33: Result := CTeUtil.GetURLRS(AAmbiente, ALayOut); //RJ
+|*  RJ usa os WebServices do RS
 ******************************************************************************}
 {$I ACBr.inc}
 
@@ -220,6 +224,7 @@ begin
     1:
       begin
         case AUF of
+          33: Result := CTeUtil.GetURLRS(AAmbiente, ALayOut);                   //RJ  
           43: Result := CTeUtil.GetURLRS(AAmbiente, ALayOut);                   //RS
           35: Result := CTeUtil.GetURLSP(AAmbiente, ALayOut);                   //SP
           51: Result := CTeUtil.GetURLMT(AAmbiente, ALayOut);                   //MT
@@ -237,8 +242,8 @@ begin
     LayCTeConsultaCT: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.rs.gov.br/ws/cteconsulta/cteconsulta.asmx', 'https://homologacao.cte.sefaz.rs.gov.br/ws/cteconsulta/cteconsulta.asmx');
     LayCTeCancelamento: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.rs.gov.br/ws/ctecancelamento/ctecancelamento.asmx', 'https://homologacao.cte.sefaz.rs.gov.br/ws/ctecancelamento/ctecancelamento.asmx');
     LayCTeInutilizacao: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.rs.gov.br/ws/cteinutilizacao/cteinutilizacao.asmx', 'https://homologacao.cte.sefaz.rs.gov.br/ws/cteinutilizacao/cteinutilizacao.asmx');
-    LayCTeRecepcao: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.rs.gov.br/ws/cterecepcao/cterecepcao.asmx', 'https://homologacao.cte.sefaz.rs.gov.br/ws/cterecepcao/cterecepcao.asmx');
-    LayCTeRetRecepcao: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.rs.gov.br/ws/cteretrecepcao/cteretrecepcao.asmx', 'https://homologacao.cte.sefaz.rs.gov.br/ws/cteretrecepcao/cteretrecepcao.asmx');
+    LayCTeRecepcao: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.rs.gov.br/ws/cterecepcao/cterecepcao.asmx', 'https://homologacao.cte.sefaz.rs.gov.br/ws/cterecepcao/CteRecepcao.asmx');
+    LayCTeRetRecepcao: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://cte.sefaz.rs.gov.br/ws/cteretrecepcao/cteretrecepcao.asmx', 'https://homologacao.cte.sefaz.rs.gov.br/ws/cteretrecepcao/CteRetRecepcao.asmx');
   end;
 end;
 
@@ -811,7 +816,7 @@ begin
 
   Schema := CoXMLSchemaCache50.Create;
   if Tipo = 1 then
-    Schema.add('http://www.portalfiscal.inf.br/cte', ExtractFileDir(application.ExeName) + '\Schemas\cte_v1.02.xsd')
+    Schema.add('http://www.portalfiscal.inf.br/cte', ExtractFileDir(application.ExeName) + '\Schemas\cte_v1.03.xsd')//2.xsd')
   else if Tipo = 2 then
     Schema.add('http://www.portalfiscal.inf.br/cte', ExtractFileDir(application.ExeName) + '\Schemas\cancCte_v1.01.xsd')
   else if Tipo = 3 then

@@ -44,6 +44,8 @@
 |*  - Doação do componente para o Projeto ACBr
 |* 10/08/2009 : Wiliam Zacarias da Silva Rosa
 |*  - Criadas classes e procedimentos para acesso aos webservices
+|* 08/03/2010 : Bruno - Rhythmus Informatica
+|* Corrigida função DoCTeRecepcao
 ******************************************************************************}
 {$I ACBr.inc}
 
@@ -520,15 +522,11 @@ begin
   for i := 0 to TCTeRecepcao(Self).FCTes.Count-1 do
     vCtes := vCtes + TCTeRecepcao(Self).FCTes.Items[I].XML;
 
-//  vCtes := vCtes + TCTeRecepcao(Self).FCTes.Items[0].XML;
+  vCtes := StringReplace( vCtes, '<?xml version="1.0" encoding="UTF-8" ?>', '', [rfReplaceAll] );
+  vCtes := StringReplace( vCtes, '<?xml version="1.0" encoding="UTF-8"?>' , '', [rfReplaceAll] );
+
   FDadosMsg := '<enviCTe xmlns="http://www.portalfiscal.inf.br/cte" versao="'+CTenviCTe+'">'+
                '<idLote>'+IntToStr(TCTeRecepcao(Self).Lote)+'</idLote>'+vCtes+'</enviCTe>';
-
-
-
-//  FDadosMsg := '<?xml version="1.0" encoding="UTF-8" standalone="no"?>'+
-//               '<enviCTe xmlns="http://www.portalfiscal.inf.br/cte" versao="'+CTenviCTe+'">'+
-//               '<idLote>'+IntToStr(TCTeRecepcao(Self).Lote)+'</idLote>'+vCtes+'</enviCTe>';
 end;
 
 function TWebServicesBase.Executar: Boolean;
@@ -1279,7 +1277,7 @@ end;
 function TCTeRecepcao.Executar: Boolean;
 var
   CTeRetorno: TretEnvCTe;
-  Texto : String;
+  Texto : WideString;
   Acao  : TStringList ;
   Stream: TMemoryStream;
   StrStream: TStringStream;
@@ -1321,7 +1319,7 @@ begin
   {$ENDIF}
 
   try
-    TACBrCTe( FACBrCTe ).SetStatus( stCTeStatusServico );
+    TACBrCTe( FACBrCTe ).SetStatus( stCTeRecepcao );
     if FConfiguracoes.Geral.Salvar then
       FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+'-env-lot.xml', FDadosMsg);
 
@@ -1339,7 +1337,6 @@ begin
          StrStream := TStringStream.Create('');
          StrStream.CopyFrom(Stream, 0);
          FRetWS := CTeUtil.SeparaDados( NotaUtil.ParseText(StrStream.DataString, True),'cteRecepcaoLoteResult');
-
          StrStream.Free;
       {$ENDIF}
       CTeRetorno := TretEnvCTe.Create;

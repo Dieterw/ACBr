@@ -764,12 +764,12 @@ begin
         begin
            if Copy(Strings[intLine], 2, 4) = 'I030' then
            begin
-              Strings[intLine] := StringReplace(Strings[intLine], '[*******]',  LFill(Bloco_9.Registro9999.QTD_LIN, 9, false), []);
+              Strings[intLine] := StringReplace(Strings[intLine], '|[*******]',  LFill(Bloco_9.Registro9999.QTD_LIN, 9, false), []);
            end
            else
            if Copy(Strings[intLine], 2, 4) = 'J900' then
            begin
-              Strings[intLine] := StringReplace(Strings[intLine], '[*******]',  LFill(Bloco_9.Registro9999.QTD_LIN, 9, false), []);
+              Strings[intLine] := StringReplace(Strings[intLine], '|[*******]',  LFill(Bloco_9.Registro9999.QTD_LIN, 9, false), []);
               Break;
            end;
         end;

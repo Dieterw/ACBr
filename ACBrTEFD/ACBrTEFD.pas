@@ -834,7 +834,7 @@ begin
                end
               else                 //// Impressão em Vinculado ////
                begin
-                 Ordem := 0 ;
+                 Ordem := -1 ;
 
                  For K := 0 to Length( GrupoVinc )-1 do
                  begin
@@ -916,7 +916,7 @@ begin
                        end;
                     end ;
 
-                    if Ordem > 0 then
+                    if Ordem > -1 then
                        ComandarECF( opeFechaVinculado ) ;
 
                     if ExibirMsgAutenticacao and (RespostasPendentes.Count > 0) then

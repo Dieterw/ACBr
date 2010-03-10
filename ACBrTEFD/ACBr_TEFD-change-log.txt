@@ -47,6 +47,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 1.12b   09/03/10
+[-] Ajuste em "ImprimirTransacoesPendentes", para funcionar corretamente com
+    AutoEfetuarPagamento e AutoFinalizarCupom desativados
+[+] Adicionado o evento "OnDepoisCancelarTransacoes", que recebe como parâmetro
+    as Respostas que já foram canceladas
+
 Versão 1.11b   06/03/10
 [*] Gravaçao de Arquivo de LOG em TEF discado ajustada para melhor uso.
 [*] TACBrTEFD.FinalizarCupom - Adicionada verificação do Saldo Restante a pagar

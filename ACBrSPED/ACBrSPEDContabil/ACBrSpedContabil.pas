@@ -64,6 +64,7 @@ type
     procedure LimpaRegistros;
     function GetAbout: String;
     procedure SetAbout(const Value: String);
+    procedure TotalizaTermos(Arquivo: AnsiString);
   protected
     // Periodo
     procedure SetDT_FIN(const Value: TDateTime); override;
@@ -306,6 +307,9 @@ begin
     Write(txtFile, WriteRegistro9999);
     ///
     CloseFile(txtFile);
+    /// Atualiza os totais de registros nos termos de abertura e fechamento
+    /// I030 e J900
+    TotalizaTermos(Arquivo);
     /// Limpa de todos os Blocos as listas de todos os registros.
     LimpaRegistros;
   except
@@ -666,11 +670,6 @@ begin
       REG_BLC := 'J900';
       QTD_REG_BLC := 1;
    end;
-   // Total de linhas do arquivo
-   Bloco_J.RegistroJ900.QTD_LIN := Bloco_0.Registro0990.QTD_LIN_0 +
-                                   Bloco_I.RegistroI990.QTD_LIN_I +
-                                   Bloco_J.RegistroJ990.QTD_LIN_J +
-                                   Bloco_9.Registro9990.QTD_LIN_9;
    Result := Bloco_J.WriteRegistroJ900;
 end;
 
@@ -749,6 +748,36 @@ end;
 procedure TACBrSPEDContabil.SetAbout(const Value: String);
 begin
  {}
+end;
+
+procedure TACBrSPEDContabil.TotalizaTermos(Arquivo: AnsiString);
+var
+objFile: TStringList;
+intLine: Integer;
+begin
+   try
+     objFile := TStringList.Create;
+     with objFile do
+     begin
+        LoadFromFile(fPath + Arquivo);
+        for intLine := 0 to Count -1 do
+        begin
+           if Copy(Strings[intLine], 2, 4) = 'I030' then
+           begin
+              Strings[intLine] := StringReplace(Strings[intLine], '[*******]',  LFill(Bloco_9.Registro9999.QTD_LIN, 9, false), []);
+           end
+           else
+           if Copy(Strings[intLine], 2, 4) = 'J900' then
+           begin
+              Strings[intLine] := StringReplace(Strings[intLine], '[*******]',  LFill(Bloco_9.Registro9999.QTD_LIN, 9, false), []);
+              Break;
+           end;
+        end;
+     end;
+   finally
+     objFile.SaveToFile(fPath + Arquivo);
+     objFile.Free;
+   end;
 end;
 
 end.

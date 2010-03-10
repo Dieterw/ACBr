@@ -354,7 +354,8 @@ begin
                  LFill('TERMO DE ABERTURA') +
                  LFill(NUM_ORD) +
                  RFill(NAT_LIVR, 80) +
-                 LFill(QTD_LIN, 9, false) +
+//                 LFill(QTD_LIN, 9, false) +
+                 LFill('[*******]') +
                  LFill(NOME) +
                  LFill(NIRE, 11) +
                  LFill(CNPJ) +

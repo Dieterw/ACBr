@@ -274,7 +274,8 @@ begin
                  LFill(NUM_ORD) +
                  RFill(NAT_LIVRO, 80) +
                  LFill(NOME) +
-                 LFill(QTD_LIN, 9, false) +
+//                 LFill(QTD_LIN, 9, false) +
+                 LFill('[*******]') +
                  LFill(DT_INI_ESCR) +
                  LFill(DT_FIN_ESCR) +
                  Delimitador +

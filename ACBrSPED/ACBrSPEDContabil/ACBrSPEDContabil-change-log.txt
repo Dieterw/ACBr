@@ -47,7 +47,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
-Versão 0.03a   27/01/10
+Versão 0.04a   10/01/10
+---------------
+[-] Corrigido bug na rotina de totalização dos termos de abertura e fechamento,
+    Registros I030 e J900.
+
+Versão 0.04a   08/03/10
 ---------------
 [+] Implementado todos os registros dos blocos que faltavam, e testado no validador
     por (Claudinei)

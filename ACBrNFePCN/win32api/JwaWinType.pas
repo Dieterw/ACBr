@@ -1838,7 +1838,11 @@ begin
       if ModuleHandle = 0 then
         raise EJwaLoadLibraryError.CreateFmt(RsELibraryNotFound, [ModuleName]);
     end;
-    P := Pointer(GetProcAddress(ModuleHandle, PChar(ProcName)));
+    {$IFDEF UNICODE}
+     P := Pointer(GetProcAddress(ModuleHandle, PAnsiChar(ProcName)));
+    {$ELSE}
+     P := Pointer(GetProcAddress(ModuleHandle, PChar(ProcName)));
+    {$ENDIF} 
     if not Assigned(P) then
       raise EJwaGetProcAddressError.CreateFmt(RsEFunctionNotFound, [ModuleName, ProcName]);
   end;

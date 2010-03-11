@@ -674,8 +674,13 @@ function gai_strerrorA(ecode: Integer): PChar;
 var
   dwMsgLen: DWORD;
 begin
+{$IFDEF UNICODE}
+  dwMsgLen := FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM or FORMAT_MESSAGE_IGNORE_INSERTS or FORMAT_MESSAGE_MAX_WIDTH_MASK,
+    nil, ecode, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), PAnsiChar(@gai_strerror_buffA[0]), GAI_STRERROR_BUFFER_SIZE, nil);
+{$ELSE}
   dwMsgLen := FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM or FORMAT_MESSAGE_IGNORE_INSERTS or FORMAT_MESSAGE_MAX_WIDTH_MASK,
     nil, ecode, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), PChar(@gai_strerror_buffA[0]), GAI_STRERROR_BUFFER_SIZE, nil);
+{$ENDIF}    
   if dwMsgLen = 0 then
     Result := nil
   else

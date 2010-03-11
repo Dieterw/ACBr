@@ -52,7 +52,7 @@ uses
    ACBrPAF_T, ACBrPAF_T_Class;
 
 const
-   CACBrPAF_Versao = '0.02a' ;
+   CACBrPAF_Versao = '0.02b' ;
 
    { Usa utilitário de linha de comando, "openssl.exe", para calcular a
        assinatura digital...       http://www.openssl.org/
@@ -109,6 +109,7 @@ type
     procedure LimpaRegistros;
     function GetAbout: String;
     procedure SetAbout(const Value: String);
+    procedure ReordenarRegistroR(Arquivo: AnsiString);
   protected
     procedure SetDelimitador(const Value: AnsiString); override;
     procedure SetTrimString(const Value: boolean); override;
@@ -461,6 +462,8 @@ begin
     if FPAF_R.RegistroR06.Count > 0 then Write(txtFile, WriteRegistroR06);
     ///
     CloseFile(txtFile);
+    /// Coloca os registros R em ordem crescente
+    ReordenarRegistroR(Arquivo);
     /// Assinatura EAD
     if Assigned( FOnPAFCalcEAD ) then
        FOnPAFCalcEAD(fPath + Arquivo) /// Se usuário usa outro método para assinar o arquivo
@@ -588,6 +591,25 @@ begin
   end;
   Linha := 'EAD' + EAD ;
   WriteToTXT( Arquivo, Linha, True );
+end;
+
+procedure TACBrPAF.ReordenarRegistroR(Arquivo: AnsiString);
+var
+objFile: TStringList;
+intLine: Integer;
+begin
+   try
+     objFile := TStringList.Create;
+     with objFile do
+     begin
+        LoadFromFile(fPath + Arquivo);
+        // Ordenar.
+        Sort;
+     end;
+   finally
+     objFile.SaveToFile(fPath + Arquivo);
+     objFile.Free;
+   end;
 end;
 
 end.

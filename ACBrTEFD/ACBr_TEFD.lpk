@@ -16,7 +16,7 @@
         <CompilerPath Value="$(CompPath)"/>
       </Other>
     </CompilerOptions>
-    <Version Major="1" Minor="12"/>
+    <Version Major="1" Minor="13"/>
     <Files Count="6">
       <Item1>
         <Filename Value="ACBrTEFDClass.pas"/>

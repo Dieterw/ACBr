@@ -572,7 +572,7 @@ object Form1: TForm1
           Width = 142
           Height = 21
           Style = csDropDownList
-          ItemHeight = 0
+          ItemHeight = 13
           TabOrder = 0
         end
         object bAbreVendeSubTotaliza1: TButton
@@ -890,8 +890,8 @@ object Form1: TForm1
     TEFCliSiTef.EnderecoIP = 'localhost'
     TEFCliSiTef.CodigoLoja = '00000000'
     TEFCliSiTef.NumeroTerminal = 'SE000001'
-    TEFCliSiTef.OnExibeMenu = CliSiTefExibeMenu
-    TEFCliSiTef.OnObtemCampo = CliSiTefObtemCampo
+    TEFCliSiTef.OnExibeMenu = ACBrTEFD1CliSiTefExibeMenu
+    TEFCliSiTef.OnObtemCampo = ACBrTEFD1CliSiTefObtemCampo
     TEFGPU.ArqTemp = 'C:\TEF_GPU\req\intpos.tmp'
     TEFGPU.ArqReq = 'C:\TEF_GPU\req\intpos.001'
     TEFGPU.ArqSTS = 'C:\TEF_GPU\resp\intpos.sts'
@@ -907,6 +907,8 @@ object Form1: TForm1
     OnComandaECFImprimeVia = ACBrTEFD1ComandaECFImprimeVia
     OnInfoECF = ACBrTEFD1InfoECF
     OnAntesFinalizarRequisicao = ACBrTEFD1AntesFinalizarRequisicao
+    OnDepoisConfirmarTransacoes = ACBrTEFD1DepoisConfirmarTransacoes
+    OnAntesCancelarTransacao = ACBrTEFD1AntesCancelarTransacao
     OnMudaEstadoReq = ACBrTEFD1MudaEstadoReq
     OnMudaEstadoResp = ACBrTEFD1MudaEstadoResp
     Left = 96

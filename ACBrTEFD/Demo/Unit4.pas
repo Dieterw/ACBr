@@ -8,15 +8,14 @@ interface
 
 uses
   Classes, SysUtils,
-  {$IFDEF FPC}
-    LResources, FileUtil, 
-  {$ENDIF}
   Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls, Buttons;
 
 type
 
 {$IFNDEF FPC}
  {$R *.dfm}
+{$ELSE}
+ {$R *.lfm}
 {$ENDIF}
 
   { TForm4 }
@@ -24,6 +23,7 @@ type
   TForm4 = class(TForm)
      BitBtn1 : TBitBtn;
      BitBtn2 : TBitBtn;
+     BitBtn3: TBitBtn;
      ListBox1 : TListBox;
      Panel1 : TPanel;
      Panel2 : TPanel;
@@ -47,11 +47,6 @@ begin
    if ListBox1.Items.Count > 0 then
       ListBox1.ItemIndex := 0 ;
 end;
-
-initialization
-{$IFDEF FPC}
- {$I Unit4.lrs}
-{$ENDIF}
 
 end.
 

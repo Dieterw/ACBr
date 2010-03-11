@@ -8,9 +8,6 @@ interface
 
 uses
   Classes, SysUtils, 
-  {$IFDEF FPC}
-    LResources, FileUtil, 
-  {$ENDIF}
    Forms, Controls, Graphics, Dialogs, StdCtrls, Buttons, ExtCtrls,
   ACBrTEFDCliSiTef;
 
@@ -18,6 +15,8 @@ type
 
 {$IFNDEF FPC}
  {$R *.dfm}
+{$ELSE}
+ {$R *.lfm}
 {$ENDIF}
 
 { TForm5 }
@@ -25,6 +24,7 @@ type
   TForm5 = class(TForm)
      BitBtn1 : TBitBtn;
      BitBtn2 : TBitBtn;
+     BitBtn3: TBitBtn;
      Edit1 : TEdit;
      Panel1 : TPanel;
      procedure Edit1KeyPress(Sender : TObject; var Key : char);
@@ -69,7 +69,7 @@ end;
 
 procedure TForm5.FormCloseQuery(Sender : TObject; var CanClose : boolean);
 begin
-   if TamanhoMinimo > 0 then
+   if (ModalResult = mrOK) and (TamanhoMinimo > 0) then
    begin
       if Length( Edit1.Text ) < TamanhoMinimo then
       begin
@@ -87,10 +87,5 @@ begin
    Edit1.SetFocus;
 end;
 
-initialization
-{$IFDEF FPC}
- {$I Unit5.lrs}
-{$ENDIF}
-  
 end.
 

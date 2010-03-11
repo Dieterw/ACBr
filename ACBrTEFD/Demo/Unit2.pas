@@ -9,7 +9,7 @@ interface
 uses
   Classes, SysUtils,
   {$IFDEF FPC}
-    LResources, MaskEdit,
+    MaskEdit,
   {$ELSE}
     Mask,
   {$ENDIF}
@@ -45,7 +45,10 @@ implementation
 
 {$IFNDEF FPC}
  {$R *.dfm}
+{$ELSE}
+ {$R *.lfm}
 {$ENDIF}
+
 
 { TForm2 }
 
@@ -54,10 +57,5 @@ begin
    edData.Text := FormatDateTime('DD/MM/YYYY',now) ;
 end;
 
-initialization
-{$IFDEF FPC}
- {$I Unit2.lrs}
-{$ENDIF}
-
 end.
-
+

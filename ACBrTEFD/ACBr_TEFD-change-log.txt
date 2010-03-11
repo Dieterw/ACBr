@@ -47,6 +47,15 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 1.13b   10/03/10
+-- ACBrTEFDCliSiTEF --
+[*] Método "OnExibeMenu" modificado para permitir retornar ao Menu anterior
+    atraves da variavel boleana "VoltarMenu" informada por referencia.
+[*] Método "OnObtemCampo" modificado para permitir retornar ao Menu anterior
+    atraves da variavel boleana "VoltarMenu" informada por referencia.
+[*] Demos em Lazarus e Delphi ajustados para permitir o uso de "VoltarMenu"
+    (Créditos: Fernando Gutierres Damaceno)
+
 Versão 1.12b   09/03/10
 [-] Ajuste em "ImprimirTransacoesPendentes", para funcionar corretamente com
     AutoEfetuarPagamento e AutoFinalizarCupom desativados
@@ -71,7 +80,7 @@ Versão 1.10b   04/03/10
 -- ACBrTEFDCliSiTEF --
 [*] Método CNC faz uso de lista de Respostas para transmitir dados informados nos
      parâmetros do método, e evitar re-digitação de dados
-[*] Compatibilização com D2010 (por: Lampada)
+[*] Compatibilização com D2010 (por: Fernando Gutierres Damaceno)
 
 
 Versão 1.9b   03/03/10

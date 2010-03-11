@@ -2,7 +2,7 @@ object Form4: TForm4
   Left = 511
   Top = 168
   Width = 525
-  Height = 317
+  Height = 399
   Caption = 'OnExibeMenu'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -18,7 +18,7 @@ object Form4: TForm4
     Left = 0
     Top = 50
     Width = 509
-    Height = 181
+    Height = 261
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -40,7 +40,7 @@ object Form4: TForm4
   end
   object Panel2: TPanel
     Left = 0
-    Top = 231
+    Top = 311
     Width = 509
     Height = 50
     Align = alBottom
@@ -49,7 +49,7 @@ object Form4: TForm4
       509
       50)
     object BitBtn1: TBitBtn
-      Left = 107
+      Left = 78
       Top = 9
       Width = 70
       Height = 35
@@ -59,13 +59,22 @@ object Form4: TForm4
       Kind = bkOK
     end
     object BitBtn2: TBitBtn
-      Left = 310
+      Left = 187
+      Top = 9
+      Width = 102
+      Height = 35
+      Anchors = [akTop]
+      TabOrder = 2
+      Kind = bkCancel
+    end
+    object BitBtn3: TBitBtn
+      Left = 329
       Top = 9
       Width = 102
       Height = 35
       Anchors = [akTop]
       TabOrder = 1
-      Kind = bkCancel
+      Kind = bkRetry
     end
   end
 end

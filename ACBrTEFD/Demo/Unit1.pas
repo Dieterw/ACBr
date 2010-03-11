@@ -8,12 +8,9 @@ interface
 
 uses
   Classes, SysUtils,
-  {$IFDEF FPC}
-    LResources, FileUtil,
-  {$ENDIF}
   Forms, Controls, Graphics, Dialogs,
   StdCtrls, ExtCtrls, Buttons, ComCtrls, ACBrECF, ACBrDevice, ACBrTEFD,
-  ACBrTEFDClass, ACBrBase, ACBrUtil , ACBrTEFDCliSiTef;
+  ACBrTEFDClass, ACBrUtil , ACBrTEFDCliSiTef, ACBrBase;
 
 type
 
@@ -102,12 +99,12 @@ type
     ckCliSiTef: TCheckBox;
      procedure ACBrTEFD1AguardaResp(Arquivo : String;
         SegundosTimeOut : Integer; var Interromper : Boolean);
-     procedure ACBrTEFD1AntesCancelarTransacao(RespostaPendente: TACBrTEFDResp);
+     procedure ACBrTEFD1AntesCancelarTransacao(RespostaPendente: TACBrTEFDResp);{%h-}
      procedure ACBrTEFD1AntesFinalizarRequisicao(Req : TACBrTEFDReq);
      procedure ACBrTEFD1BloqueiaMouseTeclado(Bloqueia : Boolean;
         var Tratado : Boolean);
      procedure ACBrTEFD1ComandaECF(Operacao : TACBrTEFDOperacaoECF;
-        Resp : TACBrTEFDResp; var RetornoECF : Integer );
+        Resp : TACBrTEFDResp; var RetornoECF : Integer );{%h-}
      procedure ACBrTEFD1ComandaECFAbreVinculado(COO, IndiceECF : String;
         Valor : Double; var RetornoECF : Integer);
      procedure ACBrTEFD1ComandaECFImprimeVia(
@@ -131,12 +128,6 @@ type
      procedure bCancelarRespClick(Sender : TObject);
      procedure cbxGPChange(Sender : TObject);
      procedure ckCliSiTefChange(Sender : TObject);
-     procedure CliSiTefExibeMenu(Titulo : String; Opcoes : TStringList;
-        var ItemSlecionado : Integer);
-     procedure CliSiTefObtemCampo( Titulo : String;
-        TamanhoMinimo, TamanhoMaximo : Integer ;
-        TipoCampo : Integer; Operacao : TACBrTEFDCliSiTefOperacaoCampo;
-        var Resposta : AnsiString; var Digitado : Boolean );
      procedure edEsperaSleepChange(Sender : TObject);
      procedure edEsperaSTSChange(Sender : TObject);
      procedure pMensagemOperadorClick(Sender: TObject);
@@ -177,6 +168,13 @@ type
      procedure FormCreate(Sender : TObject);
      procedure ckTEFDIALChange(Sender : TObject);
      procedure Memo1Change(Sender : TObject);
+    procedure ACBrTEFD1CliSiTefObtemCampo(Titulo: String; TamanhoMinimo,
+      TamanhoMaximo, TipoCampo: Integer;
+      Operacao: TACBrTEFDCliSiTefOperacaoCampo; var Resposta: String;
+      var Digitado, VoltarMenu: Boolean);
+    procedure ACBrTEFD1CliSiTefExibeMenu(Titulo: String;
+      Opcoes: TStringList; var ItemSelecionado: Integer;
+      var VoltarMenu: Boolean);
   private
      fCancelado : Boolean ;
 
@@ -197,6 +195,8 @@ Uses typinfo, dateutils, strutils, ConfiguraSerial, Unit2, Unit3, Unit4, Unit5;
 
 {$IFNDEF FPC}
  {$R *.dfm}
+{$ELSE}
+ {$R *.lfm}
 {$ENDIF}
 
 { TForm1 }
@@ -737,47 +737,6 @@ begin
   ACBrTEFD1.TEFCliSiTef.Habilitado := ckCliSiTef.Checked;
 end;
 
-procedure TForm1.CliSiTefExibeMenu(Titulo : String; Opcoes : TStringList;
-   var ItemSlecionado : Integer);
-Var
-  AForm : TForm4 ;
-begin
-  AForm := TForm4.Create(self);
-  try
-    AForm.Panel1.Caption := Titulo;
-    AForm.ListBox1.Items.AddStrings(Opcoes);
-    if AForm.ShowModal = mrOK then
-      ItemSlecionado := AForm.ListBox1.ItemIndex;
-  finally
-    AForm.Free;
-  end;
-end;
-
-procedure TForm1.CliSiTefObtemCampo( Titulo : String;
-    TamanhoMinimo, TamanhoMaximo : Integer ;
-    TipoCampo : Integer; Operacao : TACBrTEFDCliSiTefOperacaoCampo;
-    var Resposta : AnsiString; var Digitado : Boolean );
-Var
-  AForm : TForm5 ;
-begin
-  AForm := TForm5.Create(self);
-  try
-    AForm.Panel1.Caption := Titulo;
-    AForm.TamanhoMaximo  := TamanhoMaximo;
-    AForm.TamanhoMinimo  := TamanhoMinimo;
-    AForm.Operacao       := Operacao;
-    AForm.TipoCampo      := TipoCampo;
-    AForm.Edit1.Text     := Resposta; { Para usar Valores Previamente informados }
-
-    Digitado := (AForm.ShowModal = mrOK) ;
-
-    if Digitado then
-       Resposta := AForm.Edit1.Text;
-  finally
-    AForm.Free;
-  end;
-end;
-
 procedure TForm1.edEsperaSleepChange(Sender : TObject);
 begin
    ACBrTEFD1.EsperaSleep := StrToInt(edEsperaSleep.Text);
@@ -1062,11 +1021,57 @@ begin
   end;
 end;
 
-initialization
-{$IFDEF FPC}
- {$I Unit1.lrs}
-{$ENDIF}
-  
-end.
+procedure TForm1.ACBrTEFD1CliSiTefObtemCampo(Titulo: String; TamanhoMinimo,
+  TamanhoMaximo, TipoCampo: Integer;
+  Operacao: TACBrTEFDCliSiTefOperacaoCampo; var Resposta: String;
+  var Digitado, VoltarMenu: Boolean);
+Var
+  AForm : TForm5 ;
+  MR    : TModalResult ;
+begin
+  AForm := TForm5.Create(self);
+  try
+    AForm.Panel1.Caption := Titulo;
+    AForm.TamanhoMaximo  := TamanhoMaximo;
+    AForm.TamanhoMinimo  := TamanhoMinimo;
+    AForm.Operacao       := Operacao;
+    AForm.TipoCampo      := TipoCampo;
+    AForm.Edit1.Text     := Resposta; { Para usar Valores Previamente informados }
 
+    MR := AForm.ShowModal ;
+
+    Digitado   := (MR = mrOK) ;
+    VoltarMenu := (MR = mrRetry) ;
+
+    if Digitado then
+       Resposta := AForm.Edit1.Text;
+  finally
+    AForm.Free;
+  end;
+end;
+
+procedure TForm1.ACBrTEFD1CliSiTefExibeMenu(Titulo: String;
+  Opcoes: TStringList; var ItemSelecionado: Integer;
+  var VoltarMenu: Boolean);
+Var
+  AForm : TForm4 ;
+  MR    : TModalResult ;
+begin
+  AForm := TForm4.Create(self);
+  try
+    AForm.Panel1.Caption := Titulo;
+    AForm.ListBox1.Items.AddStrings(Opcoes);
+
+    MR := AForm.ShowModal ;
+
+    VoltarMenu := (MR = mrRetry) ;
+
+    if (MR = mrOK) then
+      ItemSelecionado := AForm.ListBox1.ItemIndex;
+  finally
+    AForm.Free;
+  end;
+end;
+
+end.
 

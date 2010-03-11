@@ -75,14 +75,15 @@ type
   end;
 
   TACBrTEFDCliSiTefExibeMenu = procedure( Titulo : String; Opcoes : TStringList;
-    var ItemSlecionado : Integer ) of object ;
+    var ItemSelecionado : Integer; var VoltarMenu : Boolean ) of object ;
 
   TACBrTEFDCliSiTefOperacaoCampo = (tcString, tcDouble, tcCMC7, tcBarCode) ;
 
   TACBrTEFDCliSiTefObtemCampo = procedure( Titulo : String;
     TamanhoMinimo, TamanhoMaximo : Integer ;
     TipoCampo : Integer; Operacao : TACBrTEFDCliSiTefOperacaoCampo;
-    var Resposta : AnsiString; var Digitado : Boolean ) of object ;
+    var Resposta : AnsiString; var Digitado : Boolean; var VoltarMenu : Boolean )
+    of object ;
 
   { TACBrTEFDCliSiTef }
 
@@ -730,7 +731,7 @@ var
   Resposta, ArqBackUp : AnsiString;
   SL : TStringList ;
   Interromper, Digitado, GerencialAberto, FechaGerencialAberto, ImpressaoOk,
-     HouveImpressao : Boolean ;
+     HouveImpressao, Voltar : Boolean ;
   Est : AnsiChar;
 begin
    Result           := 0;
@@ -744,11 +745,12 @@ begin
    MensagemCliente  := '' ;
    CaptionMenu      := '' ;
    GerencialAberto  := False ;
-   fpAguardandoResposta := True ;
    ImpressaoOk      := True ;
    HouveImpressao   := False ;
-   FechaGerencialAberto := True ;
    ArqBackUp        := '' ;
+
+   fpAguardandoResposta := True ;
+   FechaGerencialAberto := True ;
 
    with TACBrTEFD(Owner) do
    begin
@@ -765,9 +767,11 @@ begin
                                                       TamanhoMinimo, TamanhoMaximo,
                                                       Buffer, sizeof(Buffer),
                                                       Continua );
-
+            Continua := 0;
             Mensagem := Trim( Buffer ) ;
             Resposta := '' ;
+            Voltar   := False;
+            Digitado := True ;
 
             GravaLog( 'ContinuaFuncaoSiTefInterativo, Retornos: STS = '+IntToStr(Result)+
                       ' ProximoComando = '+IntToStr(ProximoComando)+
@@ -926,8 +930,7 @@ begin
                         Mensagem := 'CONFIRMA ?';
 
                      Resposta := ifThen( (DoExibeMsg( opmYesNo, Mensagem ) = mrYes), '0', '1' ) ;
-                     if Resposta = '1' then
-                        Continua := -1 ;
+                     Digitado := ( Resposta <> '1') ;
                    end ;
 
                  21 :
@@ -940,13 +943,17 @@ begin
                         if TecladoBloqueado then
                            BloquearMouseTeclado(False);
 
-                        OnExibeMenu( CaptionMenu, SL, ItemSelecionado ) ;
+                        OnExibeMenu( CaptionMenu, SL, ItemSelecionado, Voltar ) ;
 
-                        if (ItemSelecionado >= 0) and (ItemSelecionado < SL.Count) then
-                           Resposta := copy( SL[ItemSelecionado], 1,
+                        if (not Voltar) then
+                        begin
+                           if (ItemSelecionado >= 0) and
+                              (ItemSelecionado < SL.Count) then
+                              Resposta := copy( SL[ItemSelecionado], 1,
                                              pos(':',SL[ItemSelecionado])-1 )
-                        else
-                           Continua := -1 ;
+                           else
+                              Digitado := False ;
+                        end;
                      finally
                         SL.Free ;
                      end ;
@@ -973,11 +980,8 @@ begin
                      if TecladoBloqueado then
                         BloquearMouseTeclado(False);
 
-                     Digitado := True ;
                      OnObtemCampo( Mensagem, TamanhoMinimo, TamanhoMaximo,
-                                   TipoCampo, tcString, Resposta, Digitado ) ;
-                     if not Digitado then
-                        Continua := -1 ;
+                                   TipoCampo, tcString, Resposta, Digitado, Voltar) ;
                    end;
 
                  31 :
@@ -985,11 +989,8 @@ begin
                      if TecladoBloqueado then
                         BloquearMouseTeclado(False);
 
-                     Digitado := True ;
                      OnObtemCampo( Mensagem, TamanhoMinimo, TamanhoMaximo,
-                                   TipoCampo, tcCMC7, Resposta, Digitado ) ;
-                     if not Digitado then
-                        Continua := -1 ;
+                                   TipoCampo, tcCMC7, Resposta, Digitado, Voltar ) ;
                    end;
 
                  34 :
@@ -997,11 +998,11 @@ begin
                      if TecladoBloqueado then
                         BloquearMouseTeclado(False);
 
-                     Digitado := True ;
                      OnObtemCampo( Mensagem, TamanhoMinimo, TamanhoMaximo,
-                                   TipoCampo, tcDouble, Resposta, Digitado ) ;
-                     if (not Digitado) or (StrToFloatDef(Resposta,-1) = -1) then
-                        Continua := -1 ;
+                                   TipoCampo, tcDouble, Resposta, Digitado, Voltar ) ;
+
+                     if (not Voltar) and (StrToFloatDef(Resposta,-1) = -1) then
+                        Digitado := False;
                    end;
 
                  35 :
@@ -1009,17 +1010,19 @@ begin
                      if TecladoBloqueado then
                         BloquearMouseTeclado(False);
 
-                     Digitado := True ;
                      OnObtemCampo( Mensagem, TamanhoMinimo, TamanhoMaximo,
-                                   TipoCampo, tcBarCode, Resposta, Digitado ) ;
-                     if not Digitado then
-                        Continua := -1 ;
+                                   TipoCampo, tcBarCode, Resposta, Digitado, Voltar ) ;
                    end;
 
               end;
             end
             else
                GravaLog( '*** ContinuaFuncaoSiTefInterativo, Finalizando: STS = '+IntToStr(Result) ) ;
+
+            if Voltar then
+               Continua := 1     { Volta para o menu anterior }
+            else if not Digitado then
+               Continua := -1 ;  { Cancela operacao }
 
             StrPCopy(Buffer, Resposta);
 

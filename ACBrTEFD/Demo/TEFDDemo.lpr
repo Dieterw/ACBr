@@ -8,10 +8,11 @@ uses
   cthreads,
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, Unit1, ConfiguraSerial, LResources, ACBr_LCL, ACBr_TEFD, Unit2, Unit3, Unit4, Unit5;
+  Forms, Unit1, ConfiguraSerial, ACBr_LCL, ACBr_TEFD, Unit2, Unit3, Unit4, Unit5;
+
+{$R TEFDDemo.res}
 
 begin
-   {$I TEFDDemo.lrs}
   Application.Initialize;
   Application.CreateForm(TForm1, Form1);
   Application.Run;

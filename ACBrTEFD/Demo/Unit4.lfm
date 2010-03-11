@@ -1,11 +1,11 @@
 object Form4: TForm4
-  Left = 524
-  Height = 281
-  Top = 184
+  Left = 573
+  Height = 361
+  Top = 222
   Width = 523
   ActiveControl = Panel1
   Caption = 'OnExibeMenu'
-  ClientHeight = 281
+  ClientHeight = 361
   ClientWidth = 523
   Font.Height = -19
   OnShow = FormShow
@@ -13,7 +13,7 @@ object Form4: TForm4
   LCLVersion = '0.9.29'
   object ListBox1: TListBox
     Left = 0
-    Height = 181
+    Height = 261
     Top = 50
     Width = 523
     Align = alClient
@@ -35,27 +35,26 @@ object Form4: TForm4
   object Panel2: TPanel
     Left = 0
     Height = 50
-    Top = 231
+    Top = 311
     Width = 523
     Align = alBottom
     ClientHeight = 50
     ClientWidth = 523
     TabOrder = 2
     object BitBtn1: TBitBtn
-      Left = 111
+      Left = 85
       Height = 35
       Top = 9
       Width = 70
       Anchors = [akTop]
       AutoSize = True
       Caption = '&OK'
-      Default = True
       Kind = bkOK
       ModalResult = 1
       TabOrder = 0
     end
     object BitBtn2: TBitBtn
-      Left = 320
+      Left = 197
       Height = 35
       Top = 9
       Width = 102
@@ -66,6 +65,18 @@ object Form4: TForm4
       Kind = bkCancel
       ModalResult = 2
       TabOrder = 1
+    end
+    object BitBtn3: TBitBtn
+      Left = 345
+      Height = 35
+      Top = 9
+      Width = 88
+      Anchors = [akTop]
+      AutoSize = True
+      Caption = '&Retry'
+      Kind = bkRetry
+      ModalResult = 4
+      TabOrder = 2
     end
   end
 end

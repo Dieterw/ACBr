@@ -8,10 +8,7 @@ interface
 
 uses
   Classes, SysUtils,
-  {$IFDEF FPC}
-    LResources, FileUtil,
-  {$ENDIF}
-  Forms, Controls, Graphics, Dialogs, StdCtrls,  Spin ;
+  Forms, Controls, Graphics, Dialogs, StdCtrls ;
 
 type
 
@@ -43,6 +40,8 @@ implementation
 
 {$IFNDEF FPC}
  {$R *.dfm}
+{$ELSE}
+ {$R *.lfm}
 {$ENDIF}
 
 { TForm3 }
@@ -61,10 +60,5 @@ begin
    Button1.Caption := Caption;
 end;
 
-initialization
-{$IFDEF FPC}
- {$I Unit3.lrs}
-{$ENDIF}
-
 end.
-
+

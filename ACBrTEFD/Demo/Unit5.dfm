@@ -14,7 +14,7 @@ object Form5: TForm5
   Position = poOwnerFormCenter
   DesignSize = (
     509
-    167)
+    165)
   PixelsPerInch = 96
   TextHeight = 24
   object Edit1: TEdit
@@ -26,7 +26,7 @@ object Form5: TForm5
     TabOrder = 0
   end
   object BitBtn1: TBitBtn
-    Left = 117
+    Left = 84
     Top = 119
     Width = 70
     Height = 35
@@ -36,13 +36,22 @@ object Form5: TForm5
     Kind = bkOK
   end
   object BitBtn2: TBitBtn
-    Left = 288
+    Left = 187
+    Top = 119
+    Width = 102
+    Height = 35
+    Anchors = [akTop]
+    TabOrder = 4
+    Kind = bkCancel
+  end
+  object BitBtn3: TBitBtn
+    Left = 323
     Top = 119
     Width = 102
     Height = 35
     Anchors = [akTop]
     TabOrder = 2
-    Kind = bkCancel
+    Kind = bkRetry
   end
   object Panel1: TPanel
     Left = 0

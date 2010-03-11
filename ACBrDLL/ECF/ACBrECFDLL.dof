@@ -101,7 +101,7 @@ DebugSourceDirs=
 UsePackages=0
 [Parameters]
 RunParams=
-HostApplication=C:\delphi\ACBr\source\Dll\Demo\ECFDemoDLL.exe
+HostApplication=D:\delphi\ACBr\trunk\ACBrDLL\ECF\DemoCLX\ECFDemoDLLCLX.exe
 Launcher=
 UseLauncher=0
 DebugCWD=

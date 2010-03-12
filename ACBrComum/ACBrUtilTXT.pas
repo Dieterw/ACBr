@@ -179,7 +179,7 @@ end;
 function TACBrTXT.LFill(Value: TDateTime; Mask: AnsiString = 'ddmmyyyy'; Nulo: Boolean = false): AnsiString;
 begin
   /// Se o parametro Nulo = true e YearOf(Value) = 1899, será retornado '|'
-  if (Nulo) and (YearOf(Value) = 1899) then
+  if (Nulo) or (YearOf(Value) = 1899) then
   begin
      Result := FDelimitador;
      Exit;

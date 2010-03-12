@@ -1001,8 +1001,11 @@ begin
                      OnObtemCampo( Mensagem, TamanhoMinimo, TamanhoMaximo,
                                    TipoCampo, tcDouble, Resposta, Digitado, Voltar ) ;
 
-                     if (not Voltar) and (StrToFloatDef(Resposta,-1) = -1) then
-                        Digitado := False;
+                     // Garantindo que a Resposta é Float //
+                     Resposta := FormatFloat('0.00', StringToFloatDef(Resposta, 0));
+                     // Garantindo que o Seprador de Decimal é a Virgula //
+                     if DecimalSeparator <> ',' then
+                        Resposta := StringReplace( Resposta, DecimalSeparator, ',', [] );
                    end;
 
                  35 :

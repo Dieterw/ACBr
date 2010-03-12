@@ -250,7 +250,7 @@ end;
 function TBloco_1.WriteRegistro1105: AnsiString;
 var
 intFor: integer;
-strRegistro1105: string;
+strRegistro1105: AnsiString;
 begin
   strRegistro1105 := '';
 
@@ -279,7 +279,7 @@ end;
 function TBloco_1.WriteRegistro1110: AnsiString;
 var
 intFor: integer;
-strRegistro1110: string;
+strRegistro1110: AnsiString;
 begin
   strRegistro1110 := '';
 
@@ -311,7 +311,7 @@ end;
 function TBloco_1.WriteRegistro1200: AnsiString;
 var
 intFor: integer;
-strRegistro1200: string;
+strRegistro1200: AnsiString;
 begin
   strRegistro1200 := '';
 
@@ -340,7 +340,7 @@ end;
 function TBloco_1.WriteRegistro1210: AnsiString;
 var
 intFor: integer;
-strRegistro1210: string;
+strRegistro1210: AnsiString;
 begin
   strRegistro1210 := '';
 
@@ -682,7 +682,7 @@ end;
 function TBloco_1.WriteRegistro1600: AnsiString;
 var
 intFor: integer;
-strRegistro1600: string;
+strRegistro1600: AnsiString;
 begin
   strRegistro1600 := '';
 
@@ -708,7 +708,7 @@ end;
 function TBloco_1.WriteRegistro1700: AnsiString;
 var
 intFor: integer;
-strRegistro1700: string;
+strRegistro1700: AnsiString;
 begin
   strRegistro1700 := '';
 
@@ -767,7 +767,7 @@ end;
 function TBloco_1.WriteRegistro1800: AnsiString;
 var
 intFor: integer;
-strRegistro1800: string;
+strRegistro1800: AnsiString;
 begin
   strRegistro1800 := '';
 

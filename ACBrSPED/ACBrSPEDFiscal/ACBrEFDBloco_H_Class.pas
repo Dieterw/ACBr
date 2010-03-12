@@ -139,7 +139,7 @@ end;
 function TBloco_H.WriteRegistroH005: AnsiString;
 var
 intFor: integer;
-strRegistroH005: string;
+strRegistroH005: AnsiString;
 begin
   strRegistroH005 := '';
 
@@ -168,7 +168,7 @@ end;
 function TBloco_H.WriteRegistroH010(RegH005: TRegistroH005): AnsiString;
 var
 intFor: integer;
-strRegistroH010: string;
+strRegistroH010: AnsiString;
 begin
   strRegistroH010 := '';
 

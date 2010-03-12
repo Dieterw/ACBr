@@ -228,23 +228,23 @@ type
 
   TRegistro1300 = class(TPersistent)
   private
-    fCOD_ITEM: AnsiString;              /// Código do Produto constante do registro 0200
-    fDT_FECH: TDateTime;            /// Data do fechamento da movimentação
-    fESTQ_ABERT: Currency;          /// Estoque no inicio do dia
-    fVOL_ENTR: Currency;            /// Volume Total das Entradas
-    fVOL_DISP: Currency;            /// Volume Disponível (05 + 06)
-    fVOL_SAIDAS: Currency;          /// Volume Total das Saídas (Somatório dos registros de Volume de Vendas)
-    fESTQ_ESCR: Currency;           /// Estoque Escritural (07 - 08)
-    fVAL_AJ_PERDA: Currency;        /// Valor da Perda
-    fVAL_AJ_GANHO: Currency;        /// Valor do ganho
-    fESTQ_FECHA: Currency;          /// Estoque de Fechamento (Somatório dos registros da conciliação de estoques )
-    fFECH_FISICO:  Currency;   /// Volume aferido no tanque, em litros. Estoque de fechamento físico do tanque
+    fCOD_ITEM: AnsiString;             /// Código do Produto constante do registro 0200
+    fDT_FECH: TDateTime;               /// Data do fechamento da movimentação
+    fESTQ_ABERT: Currency;             /// Estoque no inicio do dia
+    fVOL_ENTR: Currency;               /// Volume Total das Entradas
+    fVOL_DISP: Currency;               /// Volume Disponível (05 + 06)
+    fVOL_SAIDAS: Currency;             /// Volume Total das Saídas (Somatório dos registros de Volume de Vendas)
+    fESTQ_ESCR: Currency;              /// Estoque Escritural (07 - 08)
+    fVAL_AJ_PERDA: Currency;           /// Valor da Perda
+    fVAL_AJ_GANHO: Currency;           /// Valor do ganho
+    fESTQ_FECHA: Currency;             /// Estoque de Fechamento (Somatório dos registros da conciliação de estoques )
+    fFECH_FISICO:  Currency;           /// Volume aferido no tanque, em litros. Estoque de fechamento físico do tanque
     FRegistro1310: TRegistro1310List;  /// BLOCO 1 - Lista de Registro1310 (FILHO)
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
     
-    property COD_ITEM: AnsiString       read FCOD_ITEM write FCOD_ITEM;
+    property COD_ITEM: AnsiString   read FCOD_ITEM write FCOD_ITEM;
     property DT_FECH: TDateTime     read FDT_FECH write FDT_FECH;
     property ESTQ_ABERT: Currency   read FESTQ_ABERT write FESTQ_ABERT;
     property VOL_ENTR: Currency     read FVOL_ENTR write FVOL_ENTR;

@@ -1538,13 +1538,13 @@ type
 
   TRegistroC490 = class(TPersistent)
   private
-    fCST_ICMS: AnsiString;         /// Código da Situação Tributária, conforme a Tabela indicada no item 4.3.1
-    fCFOP: AnsiString;             /// Código Fiscal de Operação e Prestação
+    fCST_ICMS: AnsiString;     /// Código da Situação Tributária, conforme a Tabela indicada no item 4.3.1
+    fCFOP: AnsiString;         /// Código Fiscal de Operação e Prestação
     fALIQ_ICMS: currency;      /// Alíquota do ICMS
     fVL_OPR: currency;         /// Valor da operação correspondente à combinação de CST_ICMS, CFOP, e alíquota do ICMS, incluídas as despesas acessórias e acréscimos
     fVL_BC_ICMS: currency;     /// Valor acumulado da base de cálculo do ICMS, referente à combinação de CST_ICMS, CFOP, e alíquota do ICMS.
     fVL_ICMS: currency;        /// Valor acumulado do ICMS, referente à combinação de CST_ICMS, CFOP e alíquota do ICMS.
-    fCOD_OBS: AnsiString;          /// Código da observação do lançamento fiscal (campo 02 do Registro 0460)
+    fCOD_OBS: AnsiString;      /// Código da observação do lançamento fiscal (campo 02 do Registro 0460)
   public
     property CST_ICMS: AnsiString read FCST_ICMS write FCST_ICMS;
     property CFOP: AnsiString read FCFOP write FCFOP;

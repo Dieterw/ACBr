@@ -1838,6 +1838,7 @@ begin
                                                                   Bloco_C.RegistroC990.QTD_LIN_C +
                                                                   Bloco_D.RegistroD990.QTD_LIN_D +
                                                                   Bloco_E.RegistroE990.QTD_LIN_E +
+//                                                                  Bloco_G.RegistroG990.QTD_LIN_G +
                                                                   Bloco_H.RegistroH990.QTD_LIN_H +
                                                                   Bloco_9.Registro9990.QTD_LIN_9;
    Result := Bloco_9.WriteRegistro9999;

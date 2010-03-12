@@ -55,7 +55,7 @@ uses
   {$ENDIF} ;
 
 const
-   CACBrTEFD_Versao      = '1.12b' ;
+   CACBrTEFD_Versao      = '1.14b' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -1848,6 +1848,15 @@ begin
   VerificarIniciouRequisicao;
   Resp.Clear;
 
+  if pos(Req.Header,'CNF|ATV') = 0 then      // Se nao for ATV ou CNF...
+  begin
+     with TACBrTEFD(Owner) do
+     begin
+        if TecladoBloqueado then             // Teclado está bloqueado ?
+           BloquearMouseTeclado( False );    // Desbloqueia o Teclado para o G.P. funcionar
+     end;
+  end;
+
   TACBrTEFD(Owner).EstadoResp  := respAguardandoResposta;
   Interromper := False ;
   OK          := False ;
@@ -1857,7 +1866,7 @@ begin
         TempoInicioEspera := now ;
         fpAguardandoResposta := True ;
         try
-           GravaLog( Name +' LeRespostaRequisicao: '+Req.Header+', Aguardando: '+ArqResp );
+           GravaLog( Name +' LerRespostaRequisicao: '+Req.Header+', Aguardando: '+ArqResp );
 
            repeat
               Sleep( TACBrTEFD(Owner).EsperaSleep );  // Necessário Para não sobrecarregar a CPU //
@@ -1870,7 +1879,7 @@ begin
               end ;
            until FileExists( ArqResp ) or Interromper ;
 
-           GravaLog( Name +' LeRespostaRequisicao: '+Req.Header+', Fim da Espera de: '+
+           GravaLog( Name +' LerRespostaRequisicao: '+Req.Header+', Fim da Espera de: '+
                      ArqResp+' '+ifthen(FileExists( ArqResp ),'Recebido','Não recebido') );
         finally
            fpAguardandoResposta := False ;
@@ -1881,13 +1890,13 @@ begin
            end ;
         end;
 
-        GravaLog( Name +' LeRespostaRequisicao: '+Req.Header+', Verificando conteudo de: '+ArqResp );
+        GravaLog( Name +' LerRespostaRequisicao: '+Req.Header+', Verificando conteudo de: '+ArqResp );
         Resp.LeArquivo( ArqResp );
         Ok := VerificarRespostaRequisicao ;
 
         if not Ok then
         begin
-           GravaLog( Name +' LeRespostaRequisicao: '+Req.Header+', Arquivo inválido desprezado: "'+ArqResp+'"'+sLineBreak +
+           GravaLog( Name +' LerRespostaRequisicao: '+Req.Header+', Arquivo inválido desprezado: "'+ArqResp+'"'+sLineBreak +
                      Resp.Conteudo.Conteudo.Text );
            Resp.Clear;
            DeleteFile( ArqResp );

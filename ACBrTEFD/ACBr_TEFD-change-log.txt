@@ -47,6 +47,13 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 1.14b   12/03/10
+[-] Verificação de Teclado Bloqueado antes de processar comandos diferentes de
+    CNF e ATV.  (Em algumas situações o CNC era enviado com o Teclado Bloqueado)
+-- ACBrTEFDCliSiTEF --
+[-] Correçao do Tratamento do Comando 34, para aceitar Valores vazios e
+    considera-los '0,00'. Adicionada verificação do Separador Decimal (,)
+
 Versão 1.13b   10/03/10
 -- ACBrTEFDCliSiTEF --
 [*] Método "OnExibeMenu" modificado para permitir retornar ao Menu anterior

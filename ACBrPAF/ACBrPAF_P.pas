@@ -105,7 +105,7 @@ end;
 
 function TRegistroP2List.GetItem(Index: Integer): TRegistroP2;
 begin
-  Result := inherited Items[Index];
+  Result := TRegistroP2(inherited Items[Index]);
 end;
 
 function TRegistroP2List.New: TRegistroP2;

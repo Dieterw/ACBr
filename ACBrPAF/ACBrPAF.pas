@@ -52,7 +52,7 @@ uses
    ACBrPAF_T, ACBrPAF_T_Class;
 
 const
-   CACBrPAF_Versao = '0.02b' ;
+   CACBrPAF_Versao = '0.03b' ;
 
    { Usa utilitário de linha de comando, "openssl.exe", para calcular a
        assinatura digital...       http://www.openssl.org/

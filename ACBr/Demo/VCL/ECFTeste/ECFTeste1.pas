@@ -326,6 +326,11 @@ type
     otalNaoTributadoISSQN1: TMenuItem;
     otalIsencao1: TMenuItem;
     NumGNF1: TMenuItem;
+    Button1: TButton;
+    TabSheet9: TTabSheet;
+    Button2: TButton;
+    mRZ: TMemo;
+    Label37: TLabel;
     procedure cbxModeloChange(Sender: TObject);
     procedure Sair1Click(Sender: TObject);
     procedure bAtivarClick(Sender: TObject);
@@ -512,6 +517,8 @@ type
     procedure otalNaoTributadoISSQN1Click(Sender: TObject);
     procedure otalIsencao1Click(Sender: TObject);
     procedure NumGNF1Click(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
   private
     { Private declarations }
     Function Converte( cmd : String) : String;
@@ -2621,6 +2628,116 @@ begin
   finally
      FreeAndNil( frConfiguraSerial ) ;
   end ;
+end;
+
+procedure TForm1.Button1Click(Sender: TObject);
+begin
+  ACBrECF1.AbreRelatorioGerencial;
+  ACBRECF1.LinhaRelatorioGerencial('LINHA NORMAL 1');
+  ACBRECF1.LinhaRelatorioGerencial(#14+'EXPANDIDO 1 LINHA');
+  ACBRECF1.LinhaRelatorioGerencial('LINHA NORMAL 1');
+  ACBRECF1.LinhaRelatorioGerencial(#15+'ON/OFF MODO CONDENSADO'+#18);
+  ACBRECF1.LinhaRelatorioGerencial(#27+'W1'+'ON/OFF MODO EXPANDIDO'+#27+'W0');
+  ACBRECF1.FechaRelatorio;
+end;
+
+procedure TForm1.Button2Click(Sender: TObject);
+var
+I: integer;
+begin
+  ACBrECF1.DadosReducaoZ;
+
+  mRZ.Clear;
+  with ACBrECF1.ReducaoZClass do
+  begin
+     mRZ.Lines.Add( 'Data Impressora    : ' + DateToStr( DataDaImpressora ) );
+     mRZ.Lines.Add( 'Numero Série       : ' + NumeroDeSerie );
+     mRZ.Lines.Add( 'Numero ECF         : ' + NumeroDoECF );
+     mRZ.Lines.Add( 'Numero Loja        : ' + NumeroDaLoja );
+     mRZ.Lines.Add( 'Numero COO Inicial : ' + NumeroCOOInicial );
+
+     mRZ.Lines.Add( '{ REDUÇÃO Z }');
+     mRZ.Lines.Add( 'Data Movimento  : ' +DateToStr( DataDoMovimento ) );
+     mRZ.Lines.Add( '' );
+     mRZ.Lines.Add( '{ CONTADORES }');
+     mRZ.Lines.Add( 'COO  : ' + IntToStr(COO) );
+     mRZ.Lines.Add( 'GNF  : ' + IntToStr(GNF) );
+     mRZ.Lines.Add( 'CRO  : ' + IntToStr(CRO) );
+     mRZ.Lines.Add( 'CRZ  : ' + IntToStr(CRZ) );
+     mRZ.Lines.Add( 'CCF  : ' + IntToStr(CCF) );
+     mRZ.Lines.Add( 'CFD  : ' + IntToStr(CFD) );
+     mRZ.Lines.Add( 'CDC  : ' + IntToStr(CDC) );
+     mRZ.Lines.Add( 'GRG  : ' + IntToStr(GRG) );
+     mRZ.Lines.Add( 'GNFC : ' + IntToStr(GNFC) );
+     mRZ.Lines.Add( 'CFC  : ' + IntToStr(CFC) );
+     mRZ.Lines.Add( '' );
+
+     mRZ.Lines.Add( '{ TOTALIZADORES }' );
+     mRZ.Lines.Add( 'Grande Total      : ' + FormatFloat('###,##0.00', ValorGrandeTotal) );
+     mRZ.Lines.Add( 'VendaBruta        : ' + FormatFloat('###,##0.00', ValorVendaBruta) );
+     mRZ.Lines.Add( 'CancelamentoICMS  : ' + FormatFloat('###,##0.00', CancelamentoICMS) );
+     mRZ.Lines.Add( 'DescontoICMS      : ' + FormatFloat('###,##0.00', DescontoICMS) );
+     mRZ.Lines.Add( 'TotalISSQN        : ' + FormatFloat('###,##0.00', TotalISSQN) );
+     mRZ.Lines.Add( 'CancelamentoISSQN : ' + FormatFloat('###,##0.00', CancelamentoISSQN) );
+     mRZ.Lines.Add( 'DescontoISSQN     : ' + FormatFloat('###,##0.00', DescontoISSQN) );
+     mRZ.Lines.Add( 'VendaLiquida      : ' + FormatFloat('###,##0.00', VendaLiquida) );
+     mRZ.Lines.Add( 'AcrescimoICMS     : ' + FormatFloat('###,##0.00', AcrescimoICMS) );
+     mRZ.Lines.Add( 'AcrescimoISSQN    : ' + FormatFloat('###,##0.00', AcrescimoISSQN) );
+     mRZ.Lines.Add( '' );
+
+     mRZ.Lines.Add( '{ ICMS }' );
+     for I := 0 to ICMS.Count -1 do
+     begin
+         mRZ.Lines.Add( 'Indice    : ' + ICMS[I].Indice );
+         mRZ.Lines.Add( 'Tipo      : ' + ICMS[I].Tipo );
+         mRZ.Lines.Add( 'Aliquota  : ' + FormatFloat('0.00', ICMS[I].Aliquota) );
+         mRZ.Lines.Add( 'Total     : ' + FormatFloat('###,##0.00', ICMS[I].Total) );
+     end;
+     mRZ.Lines.Add( 'SubstituicaoTributariaICMS: ' + FormatFloat('###,##0.00', SubstituicaoTributariaICMS) );
+     mRZ.Lines.Add( 'IsentoICMS                : ' + FormatFloat('###,##0.00', IsentoICMS) );
+     mRZ.Lines.Add( 'NaoTributadoICMS          : ' + FormatFloat('###,##0.00', NaoTributadoICMS) );
+     mRZ.Lines.Add( '' );
+
+     mRZ.Lines.Add( '{ ISSQN }' );
+     for I := 0 to ISSQN.Count -1 do
+     begin
+         mRZ.Lines.Add( 'Indice    : ' + ISSQN[I].Indice );
+         mRZ.Lines.Add( 'Tipo      : ' + ISSQN[I].Tipo );
+         mRZ.Lines.Add( 'Aliquota  : ' + FormatFloat('0.00', ISSQN[I].Aliquota) );
+         mRZ.Lines.Add( 'Total     : ' + FormatFloat('###,##0.00', ISSQN[I].Total) );
+     end;
+     mRZ.Lines.Add( 'SubstituicaoTributariaISSQN: ' + FormatFloat('###,##0.00', SubstituicaoTributariaISSQN) );
+     mRZ.Lines.Add( 'IsentoISSQN                : ' + FormatFloat('###,##0.00', IsentoISSQN) );
+     mRZ.Lines.Add( 'NaoTributadoISSQN          : ' + FormatFloat('###,##0.00', NaoTributadoISSQN) );
+     mRZ.Lines.Add( '' );
+
+     mRZ.Lines.Add( '{ TOTALIZADORES NÃO FISCAIS }' );
+     for I := 0 to TotalizadoresNaoFiscais.Count -1 do
+     begin
+         mRZ.Lines.Add( 'Indice     : ' + TotalizadoresNaoFiscais[I].Indice );
+         mRZ.Lines.Add( 'Descrição  : ' + TotalizadoresNaoFiscais[I].Descricao );
+         mRZ.Lines.Add( 'Forma Pagto: ' + TotalizadoresNaoFiscais[I].FormaPagamento );
+         mRZ.Lines.Add( 'Total      : ' + FormatFloat('###,##0.00', TotalizadoresNaoFiscais[I].Total) );
+     end;
+     mRZ.Lines.Add( 'TotalOperacaoNaoFiscal : ' + FormatFloat('###,##0.00', TotalOperacaoNaoFiscal) );
+     mRZ.Lines.Add( '' );
+
+     mRZ.Lines.Add( '{ RELATÓRIO GERENCIAL }' );
+     for I := 0 to RelatorioGerencial.Count -1 do
+     begin
+         mRZ.Lines.Add( 'Indice     : ' + RelatorioGerencial[I].Indice );
+         mRZ.Lines.Add( 'Descrição  : ' + RelatorioGerencial[I].Descricao );
+     end;
+     mRZ.Lines.Add( '' );
+
+     mRZ.Lines.Add( '{ MEIOS DE PAGAMENTO }' );
+     for I := 0 to MeiosDePagamento.Count -1 do
+     begin
+         mRZ.Lines.Add( 'Indice     : ' + MeiosDePagamento[I].Indice );
+         mRZ.Lines.Add( 'Descrição  : ' + MeiosDePagamento[I].Descricao );
+         mRZ.Lines.Add( 'Total      : ' + FormatFloat('###,##0.00', MeiosDePagamento[I].Total) );
+     end;
+  end;
 end;
 
 procedure TForm1.TestedeVinculado1Click(Sender: TObject);

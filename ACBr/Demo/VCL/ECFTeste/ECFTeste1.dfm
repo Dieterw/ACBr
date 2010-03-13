@@ -5,7 +5,6 @@ object Form1: TForm1
   Height = 422
   VertScrollBar.Range = 59
   ActiveControl = PageControl1
-  AutoScroll = False
   Caption = 'Teste de Impressora Fiscal'
   Color = clBtnFace
   Constraints.MinHeight = 400
@@ -41,7 +40,7 @@ object Form1: TForm1
     Top = 0
     Width = 536
     Height = 305
-    ActivePage = TabSheet4
+    ActivePage = TabSheet9
     Align = alClient
     TabOrder = 1
     object TabSheet4: TTabSheet
@@ -124,7 +123,6 @@ object Form1: TForm1
         Width = 105
         Height = 21
         Style = csDropDownList
-        ItemHeight = 13
         TabOrder = 0
         OnChange = cbxModeloChange
         Items.Strings = (
@@ -146,7 +144,6 @@ object Form1: TForm1
         Top = 25
         Width = 105
         Height = 21
-        ItemHeight = 13
         TabOrder = 1
         Text = 'Procurar'
         OnChange = cbxPortaChange
@@ -272,9 +269,7 @@ object Form1: TForm1
         Cancel = True
         Caption = 'Serial'
         Default = True
-        ModalResult = 1
-        TabOrder = 11
-        OnClick = btSerialClick
+        DoubleBuffered = True
         Glyph.Data = {
           36030000424D3603000000000000360000002800000010000000100000000100
           1800000000000003000000000000000000000000000000000000FFFFFFFFFFFF
@@ -302,6 +297,10 @@ object Form1: TForm1
           FFFFFFFFFFFFFFFFFFFFFFFF5050004A4A4A3232323232323232323232325032
           00FFFFFF6B8FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
           FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+        ModalResult = 1
+        ParentDoubleBuffered = False
+        TabOrder = 11
+        OnClick = btSerialClick
       end
       object chDescricaoGrande: TCheckBox
         Left = 195
@@ -374,6 +373,7 @@ object Form1: TForm1
         TabOrder = 1
         WantReturns = False
         WordWrap = False
+        ExplicitTop = 73
       end
       object mEnviado: TMemo
         Left = 0
@@ -926,7 +926,9 @@ object Form1: TForm1
         Cancel = True
         Caption = 'Enviar Linha Gerencial'
         Default = True
+        DoubleBuffered = True
         ModalResult = 1
+        ParentDoubleBuffered = False
         TabOrder = 6
         OnClick = BitBtn6Click
       end
@@ -939,7 +941,9 @@ object Form1: TForm1
         Cancel = True
         Caption = 'Fechar Cupom'
         Default = True
+        DoubleBuffered = True
         ModalResult = 1
+        ParentDoubleBuffered = False
         TabOrder = 7
         OnClick = BitBtn7Click
       end
@@ -972,7 +976,6 @@ object Form1: TForm1
         Width = 101
         Height = 21
         Style = csDropDownList
-        ItemHeight = 13
         ItemIndex = 0
         TabOrder = 0
         Text = 'tefNenhum'
@@ -1007,6 +1010,8 @@ object Form1: TForm1
         Width = 100
         Height = 25
         Caption = 'Ativar ACBrTEF'
+        DoubleBuffered = True
+        ParentDoubleBuffered = False
         TabOrder = 2
         OnClick = BtnAtivarTEFClick
       end
@@ -1016,6 +1021,8 @@ object Form1: TForm1
         Width = 100
         Height = 25
         Caption = 'Verifica GP Ativo ?'
+        DoubleBuffered = True
+        ParentDoubleBuffered = False
         TabOrder = 3
         OnClick = BtnVerificaGPAtivoClick
       end
@@ -1025,6 +1032,8 @@ object Form1: TForm1
         Width = 100
         Height = 25
         Caption = 'Chamar ADM'
+        DoubleBuffered = True
+        ParentDoubleBuffered = False
         TabOrder = 4
         OnClick = BtnChamaADMClick
       end
@@ -1086,6 +1095,8 @@ object Form1: TForm1
           Width = 137
           Height = 25
           Caption = '1-Efetua Venda Completa'
+          DoubleBuffered = True
+          ParentDoubleBuffered = False
           TabOrder = 2
           OnClick = BtnEfetuaVendaItensTEFClick
         end
@@ -1095,6 +1106,8 @@ object Form1: TForm1
           Width = 113
           Height = 25
           Caption = '2-Fecha a Venda TEF'
+          DoubleBuffered = True
+          ParentDoubleBuffered = False
           TabOrder = 3
           OnClick = BtnFechaVendaTEFCompletaClick
         end
@@ -1147,6 +1160,8 @@ object Form1: TForm1
           Width = 137
           Height = 25
           Caption = '2-Efetua Pagamento TEF'
+          DoubleBuffered = True
+          ParentDoubleBuffered = False
           TabOrder = 0
           OnClick = BtnEfetuaPagtoTEFMultClick
         end
@@ -1165,6 +1180,8 @@ object Form1: TForm1
           Width = 137
           Height = 25
           Caption = '1-Efetua Venda Completa'
+          DoubleBuffered = True
+          ParentDoubleBuffered = False
           TabOrder = 2
           OnClick = BtnEfetuaVendaItensTEFMultClick
         end
@@ -1201,8 +1218,54 @@ object Form1: TForm1
         Width = 100
         Height = 25
         Caption = 'Cancela Ultimo TEF'
+        DoubleBuffered = True
+        ParentDoubleBuffered = False
         TabOrder = 7
         OnClick = BtnCancelaCupomTEFClick
+      end
+    end
+    object TabSheet9: TTabSheet
+      Caption = 'Dados RZ'
+      ImageIndex = 6
+      ExplicitLeft = 3
+      ExplicitTop = 23
+      object Label37: TLabel
+        Left = 0
+        Top = 0
+        Width = 528
+        Height = 17
+        Align = alTop
+        AutoSize = False
+        Caption = 'Resposta'
+        Layout = tlBottom
+        ExplicitTop = -1
+      end
+      object Button2: TButton
+        Left = 3
+        Top = 245
+        Width = 108
+        Height = 25
+        Caption = 'Ler Dados RZ'
+        TabOrder = 0
+        OnClick = Button2Click
+      end
+      object mRZ: TMemo
+        Left = 0
+        Top = 17
+        Width = 528
+        Height = 222
+        Align = alTop
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = 13
+        Font.Name = 'Courier'
+        Font.Pitch = fpVariable
+        Font.Style = []
+        ParentFont = False
+        ScrollBars = ssBoth
+        TabOrder = 1
+        WantReturns = False
+        WordWrap = False
       end
     end
   end
@@ -1436,9 +1499,7 @@ object Form1: TForm1
       Cancel = True
       Caption = 'Ativar'
       Default = True
-      ModalResult = 1
-      TabOrder = 0
-      OnClick = bAtivarClick
+      DoubleBuffered = True
       Glyph.Data = {
         36030000424D3603000000000000360000002800000010000000100000000100
         18000000000000030000120B0000120B00000000000000000000FFFFFFFFFFFF
@@ -1466,6 +1527,19 @@ object Form1: TForm1
         21218C3131943131943131943131943131943131943131943131943131943131
         94292994181884FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+      ModalResult = 1
+      ParentDoubleBuffered = False
+      TabOrder = 0
+      OnClick = bAtivarClick
+    end
+    object Button1: TButton
+      Left = 285
+      Top = 6
+      Width = 101
+      Height = 25
+      Caption = 'Fontes do ECF'
+      TabOrder = 1
+      OnClick = Button1Click
     end
   end
   object MainMenu1: TMainMenu
@@ -2201,7 +2275,7 @@ object Form1: TForm1
         'ode>Hora</code></td><td align=right>COO: <b><code>NumCupom</code' +
         '></b></td></tr></table>'
       'LIN005=<hr>'
-      ' '
+      ''
       '[Cabecalho_Item]'
       'LIN000=ITEM   CODIGO     DESCRICAO'
       'LIN001=QTD         x UNITARIO       Aliq     VALOR (R$)'
@@ -2209,7 +2283,7 @@ object Form1: TForm1
       
         'MascaraItem=III CCCCCCCCCCCCC DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDQQQQ' +
         'QQQQ UU x VVVVVVVVVVVVV AAAAAA TTTTTTTTTTTTT'
-      ' '
+      ''
       '[Rodape]'
       'LIN000=<hr>'
       
@@ -2218,12 +2292,12 @@ object Form1: TForm1
         '/code></b></td></tr></table>'
       'LIN002=<center>Obrigado Volte Sempre</center>'
       'LIN003=<hr>'
-      ' '
+      ''
       '[Formato]'
       'Colunas=48'
       'HTML=1'
-      'HTML_Title_Size=2'
-      'HTML_Font=<font size="5" face="Fixed">')
+      'HTML_Title_Size=4'
+      'HTML_Font=<font size="5" face="Lucida Console">')
     OnBobinaAdicionaLinhas = ACBrECF1BobinaAdicionaLinhas
     ArqLOG = 'acbrlog.txt'
     Left = 128

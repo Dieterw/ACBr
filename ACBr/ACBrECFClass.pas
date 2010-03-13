@@ -281,6 +281,99 @@ TACBrECFComprovantesNaoFiscais = class(TObjectList)
       read GetObject write SetObject; default;
   end;
 
+{ Dados da atual ou última redução Z }
+TACBrECFDadosRZ = class
+  private
+    FCOO: integer;
+    FCFD: integer;
+    FCancelamentoISSQN: double;
+    FGNFC: integer;
+    FCRO: integer;
+    FValorVendaBruta: double;
+    FTotalizadoresNaoFiscais: TACBrECFComprovantesNaoFiscais;
+    FICMS: TACBrECFAliquotas;
+    FAcrescimoICMS: double;
+    FDescontoICMS: double;
+    FNaoTributadoICMS: double;
+    FRelatorioGerencial: TACBrECFRelatoriosGerenciais;
+    FCRZ: integer;
+    FISSQN: TACBrECFAliquotas;
+    FGRG: integer;
+    FValorGrandeTotal: double;
+    FAcrescimoISSQN: double;
+    FNaoTributadoISSQN: double;
+    FIsentoICMS: double;
+    FSubstituicaoTributariaICMS: double;
+    FDataDaImpressora: TDateTime;
+    FTotalOperacaoNaoFiscal: double;
+    FDescontoISSQN: double;
+    FCancelamentoICMS: double;
+    FGNF: integer;
+    FIsentoISSQN: double;
+    FSubstituicaoTributariaISSQN: double;
+    FVendaLiquida: double;
+    FCFC: integer;
+    FCCF: integer;
+    FTotalISSQN: double;
+    FCDC: integer;
+    FDataDoMovimento: TDateTime;
+    FMeiosDePagamento: TACBrECFFormasPagamento;
+    FNumeroCOOInicial: AnsiString;
+    FNumeroDoECF: AnsiString;
+    FNumeroDeSerie: AnsiString;
+    FNumeroDaLoja: AnsiString;
+  public
+    constructor Create;
+    destructor Destroy;
+    //
+    property DataDaImpressora: TDateTime read FDataDaImpressora write FDataDaImpressora;
+    property NumeroDeSerie: AnsiString read FNumeroDeSerie write FNumeroDeSerie;
+    property NumeroDoECF: AnsiString read FNumeroDoECF write FNumeroDoECF;
+    property NumeroDaLoja: AnsiString read FNumeroDaLoja write FNumeroDaLoja;
+    property NumeroCOOInicial: AnsiString read FNumeroCOOInicial write FNumeroCOOInicial;
+    // REDUÇÃO Z
+    property DataDoMovimento: TDateTime read FDataDoMovimento write FDataDoMovimento;
+    // CONTADORES
+    property COO: integer read FCOO write FCOO;
+    property GNF: integer read FGNF write FGNF;
+    property CRO: integer read FCRO write FCRO;
+    property CRZ: integer read FCRZ write FCRZ;
+    property CCF: integer read FCCF write FCCF;
+    property CFD: integer read FCFD write FCFD;
+    property CDC: integer read FCDC write FCDC;
+    property GRG: integer read FGRG write FGRG;
+    property GNFC: integer read FGNFC write FGNFC;
+    property CFC: integer read FCFC write FCFC;
+    // TOTALIZADORES
+    property ValorGrandeTotal: double read FValorGrandeTotal write FValorGrandeTotal;
+    property ValorVendaBruta: double read FValorVendaBruta write FValorVendaBruta;
+    property CancelamentoICMS: double read FCancelamentoICMS write FCancelamentoICMS;
+    property DescontoICMS: double read FDescontoICMS write FDescontoICMS;
+    property TotalISSQN: double read FTotalISSQN write FTotalISSQN;
+    property CancelamentoISSQN: double read FCancelamentoISSQN write FCancelamentoISSQN;
+    property DescontoISSQN: double read FDescontoISSQN write FDescontoISSQN;
+    property VendaLiquida: double read FVendaLiquida write FVendaLiquida;
+    property AcrescimoICMS: double read FAcrescimoICMS write FAcrescimoICMS;
+    property AcrescimoISSQN: double read FAcrescimoISSQN write FAcrescimoISSQN;
+    // ICMS
+    property ICMS: TACBrECFAliquotas read FICMS write FICMS;
+    property SubstituicaoTributariaICMS: double read FSubstituicaoTributariaICMS write FSubstituicaoTributariaICMS;
+    property IsentoICMS: double read FIsentoICMS write FIsentoICMS;
+    property NaoTributadoICMS: double read FNaoTributadoICMS write FNaoTributadoICMS;
+    // ISSQN
+    property ISSQN: TACBrECFAliquotas read FISSQN write FISSQN;
+    property SubstituicaoTributariaISSQN: double read FSubstituicaoTributariaISSQN write FSubstituicaoTributariaISSQN;
+    property IsentoISSQN: double read FIsentoISSQN write FIsentoISSQN;
+    property NaoTributadoISSQN: double read FNaoTributadoISSQN write FNaoTributadoISSQN;
+    // TOTALIZADORES NÃO FISCAIS
+    property TotalizadoresNaoFiscais: TACBrECFComprovantesNaoFiscais read FTotalizadoresNaoFiscais write FTotalizadoresNaoFiscais;
+    property TotalOperacaoNaoFiscal: double read FTotalOperacaoNaoFiscal write FTotalOperacaoNaoFiscal;
+    // RELATÓRIO GERENCIAL
+    property RelatorioGerencial: TACBrECFRelatoriosGerenciais read FRelatorioGerencial write FRelatorioGerencial;
+    // MEIOS DE PAGAMENTO
+    property MeiosDePagamento: TACBrECFFormasPagamento read FMeiosDePagamento write FMeiosDePagamento;
+  end;
+
 { Evento para o usuário exibir os erros encontrados pela classe TACBrECFClass.
   Se o evento OnMsgErro NAO for programado a Classe TACBrECFClass exibirá as
   Msg de erro através de Exceçoes. Se o evento OnMsgErro for programado a Classe
@@ -3481,6 +3574,26 @@ end;
    {$ENDIF}
   {$ENDIF}
 {$ENDIF}
+
+{ TACBrECFDadosRZ }
+
+constructor TACBrECFDadosRZ.Create;
+begin
+   FTotalizadoresNaoFiscais := TACBrECFComprovantesNaoFiscais.Create;
+   FRelatorioGerencial      := TACBrECFRelatoriosGerenciais.Create;
+   FMeiosDePagamento        := TACBrECFFormasPagamento.Create;
+   FICMS                    := TACBrECFAliquotas.Create;
+   FISSQN                   := TACBrECFAliquotas.Create;
+end;
+
+destructor TACBrECFDadosRZ.Destroy;
+begin
+   FTotalizadoresNaoFiscais.Free;
+   FRelatorioGerencial.Free;
+   FMeiosDePagamento.Free;
+   FICMS.Free;
+   FISSQN.Free;
+end;
 
 end.
 

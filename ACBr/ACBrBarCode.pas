@@ -187,11 +187,13 @@ end;
 
 procedure TACBrBarCode.BarcodeChange(Sender: TObject);
 begin
-	Paint;
+  Paint;
 end;
 
 procedure TACBrBarCode.Paint;
 begin
+  if [csLoading,csDestroying]*ComponentState<>[] then exit;
+
   fsBarCode.OnChange := nil ;
   try
      if not Transparent then

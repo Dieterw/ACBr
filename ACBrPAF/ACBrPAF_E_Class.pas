@@ -105,8 +105,6 @@ begin
                   RFill(RAZAOSOCIAL, 50) +
                   #13#10;
       end;
-      ///
-      FRegistroE9.TOT_REG := FRegistroE9.TOT_REG + 1;
    end;
 end;
 

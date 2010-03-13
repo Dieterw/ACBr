@@ -49,6 +49,15 @@ Símbolo : Significado
 
 Versão 0.03b   12/03/10
 ---------------
+[-] Corrigido a totalização de registros nos arquivos D, E, P e T estava sendo
+    somado ao totalizador geral de cada registro o tipo "1", e no AC pede para
+    somar somente o tipo "2". 
+
+Todos os registros tipo "9" devem totalizar somente os registros tipo "2"
+    e o ACBrPAF estava somando os tipo "1" na totalização geral
+
+Versão 0.03b   12/03/10
+---------------
 [+] Compatibilizado com Lazarus/FPC, novo Package para Lazarus criado (Por: DSA)
 
 Versão 0.02b   11/03/10

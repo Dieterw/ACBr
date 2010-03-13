@@ -58,7 +58,7 @@ Agradecimentos:
 - Joao Victor Maia Fernandes     ECFQuattro
 - Sauli Bueno                    ECFYanco
 - Ivan Moreira                   ECFs
-- Isaque Pinheiro		 SPEDFiscal
+- Isaque Pinheiro		 TACBrSPEDFiscal, TACBrSPEDContabil, TACBrPAF
 - Luiz Arlindo                   ECFs
 
 * Colaboradores:

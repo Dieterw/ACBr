@@ -1621,16 +1621,18 @@ begin
 end;
 
 function TACBrECF.GetDadosReducaoZ: AnsiString;
-  Var I : Integer ;
+Var
+  I : Integer ;
+  Aliq : TACBrECFAliquota ;
+  FPG  : TACBrECFFormaPagamento ;
+  CNF  : TACBrECFComprovanteNaoFiscal ;
+  RG   : TACBrECFRelatorioGerencial ;
 begin
-  try
-    LerTotaisAliquota;
-  except
-  end;
-
   { Alimanta a class com os dados atuais do ACF }
   with fsReducaoZClass do
   begin
+     Zera ;
+     
      DataDaImpressora  := Self.DataHora;
 
      { REDUÇÃO Z }
@@ -1664,17 +1666,24 @@ begin
      AcrescimoICMS     := Self.TotalAcrescimos;
      AcrescimoISSQN    := Self.TotalAcrescimosISSQN;
 
-     { ICMS }
-     ICMS.Clear;
-     ISSQN.Clear;
-     for I := 0 to Self.Aliquotas.Count -1 do
-     begin
-        if Self.Aliquotas[I].Tipo = 'T' then
-           ICMS.Add(Self.Aliquotas[I])
-        else
-        if Self.Aliquotas[I].Tipo = 'S' then
-           ISSQN.Add(Self.Aliquotas[I]);
+     { Copiando objetos de ICMS e ISS}
+     try
+        CarregaAliquotas;
+        LerTotaisAliquota;
+
+        for I := 0 to Self.Aliquotas.Count - 1 do
+        begin
+           Aliq := TACBrECFAliquota.Create ;
+           Aliq.Assign( Self.Aliquotas[I] );
+
+           if Self.Aliquotas[I].Tipo = 'S' then
+              ISSQN.Add( Aliq )
+           else
+              ICMS.Add( Aliq )
+        end;
+     except
      end;
+
      SubstituicaoTributariaICMS  := Self.TotalSubstituicaoTributaria;
      IsentoICMS                  := Self.TotalIsencao;
      NaoTributadoICMS            := Self.TotalNaoTributado;
@@ -1685,15 +1694,53 @@ begin
      NaoTributadoISSQN           := Self.TotalNaoTributadoISSQN;
 
      { TOTALIZADORES NÃO FISCAIS }
-     TotalizadoresNaoFiscais     := Self.ComprovantesNaoFiscais;
+     try
+        CarregaComprovantesNaoFiscais ;
+        LerTotaisComprovanteNaoFiscal ;
+
+        For I := 0 to Self.ComprovantesNaoFiscais.Count-1 do
+        begin
+           CNF := TACBrECFComprovanteNaoFiscal.Create ;
+
+           CNF.Assign( Self.ComprovantesNaoFiscais[I] );
+           TotalizadoresNaoFiscais.Add( CNF ) ;
+        end ;
+     except
+     end ;
+
      TotalOperacaoNaoFiscal      := Self.TotalNaoFiscal;
 
      { RELATÓRIO GERENCIAL }
-     RelatorioGerencial          := Self.RelatoriosGerenciais;
+     try
+        CarregaRelatoriosGerenciais ;
+
+        For I := 0 to Self.RelatoriosGerenciais.Count-1 do
+        begin
+           RG := TACBrECFRelatorioGerencial.Create ;
+
+           RG.Assign( Self.RelatoriosGerenciais[I] );
+           RelatorioGerencial.Add( RG ) ;
+        end ;
+     except
+     end ;
 
      { MEIOS DE PAGAMENTO }
-     MeiosDePagamento            := Self.FormasPagamento;
+     try
+        CarregaFormasPagamento ;
+        LerTotaisFormaPagamento ;
+
+        For I := 0 to Self.FormasPagamento.Count-1 do
+        begin
+           FPG := TACBrECFFormaPagamento.Create ;
+
+           FPG.Assign( Self.FormasPagamento[I] );
+           MeiosDePagamento.Add( FPG ) ;
+        end ;
+     except
+     end ;
   end;
+
+  // Montando o INI com as informações //
 
   Result := '[ECF]'+sLineBreak ;
   try

@@ -97,9 +97,12 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Versão 0.9.0a  14/03/10
+[-]    Correção de vazamento de memoria em TACBrECFDadosRZ  (por: DSA)
+
 Versão 0.9.0a  13/03/10
 -- ACBrECF --
-[+]    Criada uma nova class "TACBrECFDadosRZ" para armazenar todas as informações 
+[+]    Criada uma nova class "TACBrECFDadosRZ" para armazenar todas as informações
        da Redução Z, centralizando os dados e melhorando a captura do dados, que
        hoje esta sendo feita através de TXT. A Class esta sendo alimentada no 
        método "GetDadosReducaoZ", para demonstrar como armazenar os dados nela.

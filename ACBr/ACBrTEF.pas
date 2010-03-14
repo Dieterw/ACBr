@@ -566,7 +566,7 @@ begin
    If Not Ativo then
       raise Exception.Create(ACBrStr(RS_INACTIVETEF));
 
-   fsTEF.NCN;
+   Result := fsTEF.NCN;
 end;
 
 procedure TACBrTEF.Notification(AComponent: TComponent;

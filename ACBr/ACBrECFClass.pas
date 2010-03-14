@@ -102,6 +102,8 @@ TACBrECFAliquota = class
     procedure SetTipo(const Value: Char);
  public
     constructor create ;
+    procedure Assign( AAliquota : TACBrECFAliquota ) ;
+
     property Sequencia : Byte   read fsSequencia write fsSequencia ;
     property Indice    : String read fsIndice    write fsIndice ;
     property Aliquota  : Double read fsAliquota  write fsAliquota ;
@@ -130,6 +132,8 @@ TACBrECFFormaPagamento = class
     fsTotal: Double;
  public
     constructor create ;
+    procedure Assign( AFormaPagamento : TACBrECFFormaPagamento ) ;
+    
     property Indice    : String read fsIndice    write fsIndice ;
     property Descricao : String read fsDescricao write fsDescricao ;
     property PermiteVinculado : Boolean read fsPermiteVinculado
@@ -180,6 +184,8 @@ TACBrECFRelatorioGerencial = class
     fsContador: Integer;
  public
     constructor create ;
+    procedure Assign( ARelatorioGerencial : TACBrECFRelatorioGerencial ) ;
+    
     property Indice    : String read fsIndice    write fsIndice ;
     property Descricao : String read fsDescricao write fsDescricao ;
     property Contador : Integer read fsContador write fsContador;
@@ -208,6 +214,8 @@ TACBrECFComprovanteNaoFiscal = class
     fsContador: Integer;
  public
     constructor create ;
+    procedure Assign( AComprovanteNaoFiscal : TACBrECFComprovanteNaoFiscal ) ;
+    
     property Indice    : String read fsIndice    write fsIndice ;
     property Descricao : String read fsDescricao write fsDescricao ;
     property PermiteVinculado : Boolean read fsPermiteVinculado
@@ -324,7 +332,8 @@ TACBrECFDadosRZ = class
     FNumeroDaLoja: AnsiString;
   public
     constructor Create;
-    destructor Destroy;
+    destructor Destroy; override ;
+    procedure Zera;
     //
     property DataDaImpressora: TDateTime read FDataDaImpressora write FDataDaImpressora;
     property NumeroDeSerie: AnsiString read FNumeroDeSerie write FNumeroDeSerie;
@@ -356,22 +365,22 @@ TACBrECFDadosRZ = class
     property AcrescimoICMS: double read FAcrescimoICMS write FAcrescimoICMS;
     property AcrescimoISSQN: double read FAcrescimoISSQN write FAcrescimoISSQN;
     // ICMS
-    property ICMS: TACBrECFAliquotas read FICMS write FICMS;
+    property ICMS: TACBrECFAliquotas read FICMS;
     property SubstituicaoTributariaICMS: double read FSubstituicaoTributariaICMS write FSubstituicaoTributariaICMS;
     property IsentoICMS: double read FIsentoICMS write FIsentoICMS;
     property NaoTributadoICMS: double read FNaoTributadoICMS write FNaoTributadoICMS;
     // ISSQN
-    property ISSQN: TACBrECFAliquotas read FISSQN write FISSQN;
+    property ISSQN: TACBrECFAliquotas read FISSQN;
     property SubstituicaoTributariaISSQN: double read FSubstituicaoTributariaISSQN write FSubstituicaoTributariaISSQN;
     property IsentoISSQN: double read FIsentoISSQN write FIsentoISSQN;
     property NaoTributadoISSQN: double read FNaoTributadoISSQN write FNaoTributadoISSQN;
     // TOTALIZADORES NÃO FISCAIS
-    property TotalizadoresNaoFiscais: TACBrECFComprovantesNaoFiscais read FTotalizadoresNaoFiscais write FTotalizadoresNaoFiscais;
+    property TotalizadoresNaoFiscais: TACBrECFComprovantesNaoFiscais read FTotalizadoresNaoFiscais ;
     property TotalOperacaoNaoFiscal: double read FTotalOperacaoNaoFiscal write FTotalOperacaoNaoFiscal;
     // RELATÓRIO GERENCIAL
-    property RelatorioGerencial: TACBrECFRelatoriosGerenciais read FRelatorioGerencial write FRelatorioGerencial;
+    property RelatorioGerencial: TACBrECFRelatoriosGerenciais read FRelatorioGerencial;
     // MEIOS DE PAGAMENTO
-    property MeiosDePagamento: TACBrECFFormasPagamento read FMeiosDePagamento write FMeiosDePagamento;
+    property MeiosDePagamento: TACBrECFFormasPagamento read FMeiosDePagamento;
   end;
 
 { Evento para o usuário exibir os erros encontrados pela classe TACBrECFClass.
@@ -985,11 +994,20 @@ end;
 { TACBrECFAliquota }
 constructor TACBrECFAliquota.create;
 begin
-  fsSequencia:= 0 ;
-  fsIndice   := ''  ;
-  fsAliquota := 0   ;
-  fsTipo     := 'T' ;
-  fsTotal    := 0 ;
+  fsSequencia := 0 ;
+  fsIndice    := ''  ;
+  fsAliquota  := 0   ;
+  fsTipo      := 'T' ;
+  fsTotal     := 0 ;
+end;
+
+procedure TACBrECFAliquota.Assign(AAliquota: TACBrECFAliquota);
+begin
+  fsSequencia := AAliquota.Sequencia ;
+  fsIndice    := AAliquota.Indice ;
+  fsAliquota  := AAliquota.Aliquota ;
+  fsTipo      := AAliquota.Tipo ;
+  fsTotal     := AAliquota.Total ;
 end;
 
 procedure TACBrECFAliquota.SetTipo(const Value: Char);
@@ -1035,6 +1053,15 @@ begin
   fsDescricao        := '' ;
   fsPermiteVinculado := true ;
   fsTotal            := 0 ;
+end;
+
+procedure TACBrECFFormaPagamento.Assign(
+  AFormaPagamento: TACBrECFFormaPagamento);
+begin
+  fsIndice           := AFormaPagamento.Indice ;
+  fsDescricao        := AFormaPagamento.Descricao ;
+  fsPermiteVinculado := AFormaPagamento.PermiteVinculado ;
+  fsTotal            := AFormaPagamento.Total ;
 end;
 
 function TACBrECFFormasPagamento.Add(Obj: TACBrECFFormaPagamento): Integer;
@@ -1108,9 +1135,17 @@ end;
 
 constructor TACBrECFRelatorioGerencial.create;
 begin
-  fsIndice           := '' ;
-  fsDescricao        := '' ;
-  fsContador         := 0 ;
+  fsIndice    := '' ;
+  fsDescricao := '' ;
+  fsContador  := 0 ;
+end;
+
+procedure TACBrECFRelatorioGerencial.Assign(
+  ARelatorioGerencial: TACBrECFRelatorioGerencial);
+begin
+  fsIndice    := ARelatorioGerencial.Indice ;
+  fsDescricao := ARelatorioGerencial.Descricao ;
+  fsContador  := ARelatorioGerencial.Contador ;
 end;
 
 function TACBrECFRelatoriosGerenciais.Add(
@@ -1149,6 +1184,17 @@ begin
   fsFormaPagamento   := '' ;
   fsTotal            := 0 ;
   fsContador         := 0 ;
+end;
+
+procedure TACBrECFComprovanteNaoFiscal.Assign(
+  AComprovanteNaoFiscal: TACBrECFComprovanteNaoFiscal);
+begin
+  fsIndice           := AComprovanteNaoFiscal.Indice ;
+  fsDescricao        := AComprovanteNaoFiscal.Descricao ;
+  fsPermiteVinculado := AComprovanteNaoFiscal.PermiteVinculado ;
+  fsFormaPagamento   := AComprovanteNaoFiscal.FormaPagamento ;
+  fsTotal            := AComprovanteNaoFiscal.Total ;
+  fsContador         := AComprovanteNaoFiscal.Contador ;
 end;
 
 function TACBrECFComprovantesNaoFiscais.Add(
@@ -3584,7 +3630,52 @@ begin
    FMeiosDePagamento        := TACBrECFFormasPagamento.Create;
    FICMS                    := TACBrECFAliquotas.Create;
    FISSQN                   := TACBrECFAliquotas.Create;
+   
+   Zera ;
 end;
+
+procedure TACBrECFDadosRZ.Zera;
+begin
+   FTotalizadoresNaoFiscais.Clear ;
+   FRelatorioGerencial.Clear ;
+   FMeiosDePagamento.Clear ;
+   FICMS.Clear ;
+   FISSQN.Clear ;
+
+   FCOO                         := 0 ;
+   FCFD                         := 0 ;
+   FCancelamentoISSQN           := 0 ;
+   FGNFC                        := 0 ;
+   FCRO                         := 0 ;
+   FValorVendaBruta             := 0 ;
+   FAcrescimoICMS               := 0 ;
+   FDescontoICMS                := 0 ;
+   FNaoTributadoICMS            := 0 ;
+   FCRZ                         := 0 ;
+   FGRG                         := 0 ;
+   FValorGrandeTotal            := 0 ;
+   FAcrescimoISSQN              := 0 ;
+   FNaoTributadoISSQN           := 0 ;
+   FIsentoICMS                  := 0 ;
+   FSubstituicaoTributariaICMS  := 0 ;
+   FDataDaImpressora            := 0 ;
+   FTotalOperacaoNaoFiscal      := 0 ;
+   FDescontoISSQN               := 0 ;
+   FCancelamentoICMS            := 0 ;
+   FGNF                         := 0 ;
+   FIsentoISSQN                 := 0 ;
+   FSubstituicaoTributariaISSQN := 0 ;
+   FVendaLiquida                := 0 ;
+   FCFC                         := 0 ;
+   FCCF                         := 0 ;
+   FTotalISSQN                  := 0 ;
+   FCDC                         := 0 ;
+   FDataDoMovimento             := 0 ;
+   FNumeroCOOInicial            := '' ;
+   FNumeroDoECF                 := '' ;
+   FNumeroDeSerie               := '' ;
+   FNumeroDaLoja                := '' ;
+end ;
 
 destructor TACBrECFDadosRZ.Destroy;
 begin
@@ -3593,6 +3684,8 @@ begin
    FMeiosDePagamento.Free;
    FICMS.Free;
    FISSQN.Free;
+
+   inherited Destroy ;
 end;
 
 end.

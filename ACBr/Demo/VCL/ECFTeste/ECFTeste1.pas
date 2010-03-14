@@ -326,11 +326,11 @@ type
     otalNaoTributadoISSQN1: TMenuItem;
     otalIsencao1: TMenuItem;
     NumGNF1: TMenuItem;
-    Button1: TButton;
     TabSheet9: TTabSheet;
     Button2: TButton;
     mRZ: TMemo;
     Label37: TLabel;
+    Button1: TButton;
     procedure cbxModeloChange(Sender: TObject);
     procedure Sair1Click(Sender: TObject);
     procedure bAtivarClick(Sender: TObject);
@@ -2643,7 +2643,7 @@ end;
 
 procedure TForm1.Button2Click(Sender: TObject);
 var
-I: integer;
+  I: integer;
 begin
   ACBrECF1.DadosReducaoZ;
 

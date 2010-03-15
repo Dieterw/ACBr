@@ -36,6 +36,8 @@
 |*
 |* 10/04/2009: Isaque Pinheiro
 |*  - Criação e distribuição da Primeira Versao
+|* 15/03/2010: Alessandro Yamasaki
+|*  - Adicionado o REGISTRO 0500: PLANO DE CONTAS CONTÁBEIS
 *******************************************************************************}
 
 unit ACBrEFDBloco_0_Class;
@@ -59,6 +61,8 @@ type
     FRegistro0400: TRegistro0400List;  /// BLOCO 0 - Lista de Registro0400
     FRegistro0450: TRegistro0450List;  /// BLOCO 0 - Lista de Registro0450
     FRegistro0460: TRegistro0460List;  /// BLOCO 0 - Lista de Registro0460
+    FRegistro0500: TRegistro0500List;  /// BLOCO 0 - Lista de Registro0500
+    FRegistro0600: TRegistro0600List;  /// BLOCO 0 - Lista de Registro0600
     FRegistro0990: TRegistro0990;      /// BLOCO 0 - Registro0990
 
     FRegistro0175Count: Integer;
@@ -89,6 +93,8 @@ type
     function WriteRegistro0400: AnsiString;
     function WriteRegistro0450: AnsiString;
     function WriteRegistro0460: AnsiString;
+    function WriteRegistro0500: AnsiString;
+    function WriteRegistro0600: AnsiString;
     function WriteRegistro0990: AnsiString;
 
     property Registro0000: TRegistro0000     read FRegistro0000 write FRegistro0000;
@@ -102,6 +108,8 @@ type
     property Registro0400: TRegistro0400List read FRegistro0400 write FRegistro0400;
     property Registro0450: TRegistro0450List read FRegistro0450 write FRegistro0450;
     property Registro0460: TRegistro0460List read FRegistro0460 write FRegistro0460;
+    property Registro0500: TRegistro0500List read FRegistro0500 write FRegistro0500;
+    property Registro0600: TRegistro0600List read FRegistro0600 write FRegistro0600;
     property Registro0990: TRegistro0990 read FRegistro0990 write FRegistro0990;
 
     property Registro0175Count: Integer read FRegistro0175Count write FRegistro0175Count;
@@ -141,6 +149,8 @@ begin
   FRegistro0400 := TRegistro0400List.Create;
   FRegistro0450 := TRegistro0450List.Create;
   FRegistro0460 := TRegistro0460List.Create;
+  FRegistro0500 := TRegistro0500List.Create;
+  FRegistro0600 := TRegistro0600List.Create;
   FRegistro0990 := TRegistro0990.Create;
 
   FRegistro0175Count := 0;
@@ -164,6 +174,8 @@ begin
   FRegistro0400.Free;
   FRegistro0450.Free;
   FRegistro0460.Free;
+  FRegistro0500.Free;
+  FRegistro0600.Free;
   FRegistro0990.Free;
 end;
 
@@ -630,6 +642,64 @@ begin
      end;
   end;
   Result := strRegistro0460;
+end;
+
+function TBloco_0.WriteRegistro0500: AnsiString;
+var
+intFor: integer;
+strRegistro0500: AnsiString;
+begin
+  strRegistro0500 := '';
+
+  if Assigned( Registro0500 ) then
+  begin
+     for intFor := 0 to Registro0500.Count - 1 do
+     begin
+        with Registro0500.Items[intFor] do
+        begin
+           Check(Pos(COD_NAT_CC, '01,02,03,04,05,09,10,99') > 0, '(0-0500) O código da natureza da conta/grupo de contas "%s" digitado é inválido!', [COD_NAT_CC]);
+           Check(((IND_CTA = 'S') or (IND_CTA = 'A')), '(0-0500) O indicador "%s" do tipo de conta, deve ser informado  S ou A!', [IND_CTA]);
+
+           strRegistro0500 := strRegistro0500 + LFill('0500') +
+                                                LFill( DT_ALT ) +
+                                                LFill( COD_NAT_CC, 2) +
+                                                LFill( IND_CTA, 1) +
+                                                LFill( NIVEL ) +
+                                                LFill( COD_CTA ) +
+                                                LFill( NOME_CTA ) +
+                                                Delimitador +
+                                                #13#10;
+        end;
+        Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
+     end;
+  end;
+  Result := strRegistro0500;
+end;
+
+function TBloco_0.WriteRegistro0600: AnsiString;
+var
+intFor: integer;
+strRegistro0600: AnsiString;
+begin
+  strRegistro0600 := '';
+
+  if Assigned( Registro0600 ) then
+  begin
+     for intFor := 0 to Registro0600.Count - 1 do
+     begin
+        with Registro0600.Items[intFor] do
+        begin
+           strRegistro0600 := strRegistro0600 + LFill('0600') +
+                                                LFill( DT_ALT ) +
+                                                LFill( COD_CCUS ) +
+                                                LFill( CCUS ) +
+                                                Delimitador +
+                                                #13#10;
+        end;
+        Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
+     end;
+  end;
+  Result := strRegistro0600;
 end;
 
 function TBloco_0.WriteRegistro0990: AnsiString;

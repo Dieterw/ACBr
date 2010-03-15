@@ -36,6 +36,8 @@
 |*
 |* 10/04/2009: Isaque Pinheiro
 |*  - Criação e distribuição da Primeira Versao
+|* 15/03/2010: Alessandro Yamasaki
+|*  - Adicionado o REGISTRO 0500: PLANO DE CONTAS CONTÁBEIS
 *******************************************************************************}
 
 unit ACBrSpedFiscal;
@@ -88,6 +90,8 @@ type
     function WriteRegistro0400: AnsiString;
     function WriteRegistro0450: AnsiString;
     function WriteRegistro0460: AnsiString;
+    function WriteRegistro0500: AnsiString;
+    function WriteRegistro0600: AnsiString;
     function WriteRegistro0990: AnsiString;
     /// BLOCO 1
     function WriteRegistro1001: AnsiString;
@@ -391,6 +395,8 @@ begin
     if Bloco_0.Registro0400.Count > 0 then Write(txtFile, WriteRegistro0400); // Prates
     if Bloco_0.Registro0450.Count > 0 then Write(txtFile, WriteRegistro0450);
     if Bloco_0.Registro0460.Count > 0 then Write(txtFile, WriteRegistro0460); // Prates
+    if Bloco_0.Registro0500.Count > 0 then Write(txtFile, WriteRegistro0500);
+    if Bloco_0.Registro0600.Count > 0 then Write(txtFile, WriteRegistro0600);
     Write(txtFile, WriteRegistro0990);
 
     /// BLOCO C
@@ -645,6 +651,26 @@ begin
       QTD_REG_BLC := Bloco_0.Registro0460.Count;
    end;
    Result := Bloco_0.WriteRegistro0460;
+end;
+
+function TACBrSPEDFiscal.WriteRegistro0500: AnsiString;
+begin
+   with Bloco_9.Registro9900.New do
+   begin
+      REG_BLC := '0500';
+      QTD_REG_BLC := Bloco_0.Registro0500.Count;
+   end;
+   Result := Bloco_0.WriteRegistro0500;
+end;
+
+function TACBrSPEDFiscal.WriteRegistro0600: AnsiString;
+begin
+   with Bloco_9.Registro9900.New do
+   begin
+      REG_BLC := '0600';
+      QTD_REG_BLC := Bloco_0.Registro0600.Count;
+   end;
+   Result := Bloco_0.WriteRegistro0600;
 end;
 
 function TACBrSPEDFiscal.WriteRegistro0990: AnsiString;

@@ -36,6 +36,8 @@
 |*
 |* 10/04/2009: Isaque Pinheiro
 |*  - Criação e distribuição da Primeira Versao
+|* 15/03/2010: Alessandro Yamasaki
+|*  - Adicionado o REGISTRO 0500: PLANO DE CONTAS CONTÁBEIS
 *******************************************************************************}
 
 unit ACBrEFDBloco_0;
@@ -466,6 +468,58 @@ type
     property Items[Index: Integer]: TRegistro0460 read GetItem write SetItem;
   end;
 
+  /// Registro 0500 - TABELA DE PLANO DE CONTAS CONTÁBEIS
+  TRegistro0500 = class(TPersistent)
+  private
+    fDT_ALT     : TDateTime;        // Data da inclusão/alteração
+    fCOD_NAT_CC : AnsiString;       // Código da natureza da conta/grupo de contas
+    fIND_CTA    : AnsiString;       // Indicador do tipo de conta:  S - Sintética ou A - Analítica
+    fNIVEL      : AnsiString;       // Nível da conta analítica/grupo de contas
+    fCOD_CTA    : AnsiString;       // Código da conta analítica/grupo de conta
+    fNOME_CTA   : AnsiString;       // Nome da conta analítica/grupo de contas
+  public
+    property DT_ALT: TDateTime read FDT_ALT write FDT_ALT;
+    property COD_NAT_CC: AnsiString read FCOD_NAT_CC write FCOD_NAT_CC;
+    property IND_CTA: AnsiString read FIND_CTA write FIND_CTA;
+    property NIVEL: AnsiString read FNIVEL write FNIVEL;
+    property COD_CTA: AnsiString read FCOD_CTA write FCOD_CTA;
+    property NOME_CTA: AnsiString read FNOME_CTA write FNOME_CTA;
+  end;
+
+  /// Registro 0500 - Lista
+  TRegistro0500List = class(TList)
+  private
+    function GetItem(Index: Integer): TRegistro0500;
+    procedure SetItem(Index: Integer; const Value: TRegistro0500);
+  public
+    destructor Destroy; override;
+    function New: TRegistro0500;
+    property Items[Index: Integer]: TRegistro0500 read GetItem write SetItem;
+  end;
+
+  /// Registro 0600 - CENTRO DE CUSTOS
+  TRegistro0600 = class(TPersistent)
+  private
+    fDT_ALT     : TDateTime;        // Data da inclusão/alteração
+    fCOD_CCUS   : AnsiString;       // Código do centro de custos.
+    fCCUS       : AnsiString;       // Nome do centro de custos.
+  public
+    property DT_ALT: TDateTime read FDT_ALT write FDT_ALT;
+    property COD_CCUS: AnsiString read FCOD_CCUS write FCOD_CCUS;
+    property CCUS: AnsiString read FCCUS write FCCUS;
+  end;
+
+  /// Registro 0600 - Lista
+  TRegistro0600List = class(TList)
+  private
+    function GetItem(Index: Integer): TRegistro0600;
+    procedure SetItem(Index: Integer; const Value: TRegistro0600);
+  public
+    destructor Destroy; override;
+    function New: TRegistro0600;
+    property Items[Index: Integer]: TRegistro0600 read GetItem write SetItem;
+  end;
+
   /// Registro 0990 - ENCERRAMENTO DO BLOCO 0
 
   TRegistro0990 = class(TPersistent)
@@ -851,6 +905,58 @@ begin
   FRegistro0206.Free;
   FRegistro0220.Free;
   inherited;
+end;
+
+{ TRegistro0500List }
+
+destructor TRegistro0500List.Destroy;
+var
+  intFor: integer;
+begin
+  for intFor := 0 to Count - 1 do Items[intFor].Free;
+  inherited;
+end;
+
+function TRegistro0500List.GetItem(Index: Integer): TRegistro0500;
+begin
+  Result := TRegistro0500(inherited Items[Index]);
+end;
+
+function TRegistro0500List.New: TRegistro0500;
+begin
+  Result := TRegistro0500.Create;
+  Add(Result);
+end;
+
+procedure TRegistro0500List.SetItem(Index: Integer; const Value: TRegistro0500);
+begin
+  Put(Index, Value);
+end;
+
+{ TRegistro0600List }
+
+destructor TRegistro0600List.Destroy;
+var
+  intFor: integer;
+begin
+  for intFor := 0 to Count - 1 do Items[intFor].Free;
+  inherited;
+end;
+
+function TRegistro0600List.GetItem(Index: Integer): TRegistro0600;
+begin
+  Result := TRegistro0600(inherited Items[Index]);
+end;
+
+function TRegistro0600List.New: TRegistro0600;
+begin
+  Result := TRegistro0600.Create;
+  Add(Result);
+end;
+
+procedure TRegistro0600List.SetItem(Index: Integer; const Value: TRegistro0600);
+begin
+  Put(Index, Value);
 end;
 
 end.

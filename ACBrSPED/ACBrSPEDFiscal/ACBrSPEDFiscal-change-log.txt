@@ -47,6 +47,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.07a   15/03/10
+[*] Implementado o registro Registro0500 "TABELA DE PLANO DE CONTAS CONTÁBEIS"
+    do Bloco 0 por (Alessandro Yamasaki)
+[*] Implementado o registro Registro0600 "CENTRO DE CUSTOS" do Bloco 0 
+    por (Isaque Pinheiro)
+
 Versão 0.07a   24/02/10
 [*] Comentei a rotina que gera o BLOCO G, pois segundo o Art. 3o do AC 38/09
     ele só deverá ser gerado apartir de 1 de julho de 2010.

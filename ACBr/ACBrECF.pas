@@ -167,7 +167,7 @@ TACBrECF = class( TACBrComponent )
 
     fsECF : TACBrECFClass ;  { Classe com instancia do ECF de fsModelo }
     fsRFD : TACBrRFD ;
-    fsReducaoZClass: TACBrECFDadosRZ; {Class com instacia para guadar dados da RZ.}
+    fsDadosReducaoZClass: TACBrECFDadosRZ; {Class com instacia para guadar dados da RZ.}
 
     fsGavetaSinalInvertido: Boolean;
     fsIdentificarOperador : Boolean;
@@ -360,7 +360,7 @@ TACBrECF = class( TACBrComponent )
     { Dados da Reducao Z - Registro 60M }
     Property DadosReducaoZ : AnsiString  read GetDadosReducaoZ ;
     Property DadosUltimaReducaoZ : AnsiString  read GetDadosUltimaReducaoZ ;
-    Property ReducaoZClass: TACBrECFDadosRZ read fsReducaoZClass;
+    Property DadosReducaoZClass: TACBrECFDadosRZ read fsDadosReducaoZClass;
     
     { Retorna String com todos os valores no formato: Campo = Valor (1 por linha)}
     Property DataMovimento      : TDateTime  read GetDataMovimentoClass ;
@@ -781,8 +781,8 @@ begin
   { Instanciando fsECF com modelo Generico (ECFClass) }
   fsECF := TACBrECFClass.create( self ) ;
 
-  { Instanciando fsReducaoZClass para armazenar dados da redução Z}
-  fsReducaoZClass := TACBrECFDadosRZ.Create;
+  { Instanciando fsDadosReducaoZClass para armazenar dados da redução Z}
+  fsDadosReducaoZClass := TACBrECFDadosRZ.Create;
 end;
 
 destructor TACBrECF.Destroy;
@@ -792,7 +792,7 @@ begin
      FreeAndNil( fsECF ) ;
 
   FreeAndNil( fsDevice ) ;
-  FreeAndNil( fsReducaoZClass ) ;
+  FreeAndNil( fsDadosReducaoZClass ) ;
 
   {$IFNDEF CONSOLE}
     fsFormMsgFont.Free ;
@@ -1629,7 +1629,7 @@ Var
   RG   : TACBrECFRelatorioGerencial ;
 begin
   { Alimanta a class com os dados atuais do ACF }
-  with fsReducaoZClass do
+  with fsDadosReducaoZClass do
   begin
      Zera ;
      
@@ -1745,92 +1745,92 @@ begin
   Result := '[ECF]'+sLineBreak ;
   try
      Result := Result + 'DataMovimento = ' +
-               FormatDateTime('dd/mm/yy', fsReducaoZClass.DataDoMovimento) + sLineBreak ;
+               FormatDateTime('dd/mm/yy', fsDadosReducaoZClass.DataDoMovimento) + sLineBreak ;
   except
   end ;
 
   try
-     Result := Result + 'NumSerie = ' + fsReducaoZClass.NumeroDeSerie + sLineBreak ;
+     Result := Result + 'NumSerie = ' + fsDadosReducaoZClass.NumeroDeSerie + sLineBreak ;
   except
   end ;
 
   try
-     Result := Result + 'NumECF = ' + fsReducaoZClass.NumeroDoECF + sLineBreak ;
-     Result := Result + 'NumLoja = ' + fsReducaoZClass.NumeroDaLoja + sLineBreak ;
+     Result := Result + 'NumECF = ' + fsDadosReducaoZClass.NumeroDoECF + sLineBreak ;
+     Result := Result + 'NumLoja = ' + fsDadosReducaoZClass.NumeroDaLoja + sLineBreak ;
   except
   end ;
 
   try
-     Result := Result + 'NumCOOInicial = ' + fsReducaoZClass.NumeroCOOInicial + sLineBreak ;
+     Result := Result + 'NumCOOInicial = ' + fsDadosReducaoZClass.NumeroCOOInicial + sLineBreak ;
   except
   end ;
 
   try
-     Result := Result + 'NumCOO = ' + FormatFloat('000000', fsReducaoZClass.COO) + sLineBreak ;
+     Result := Result + 'NumCOO = ' + FormatFloat('000000', fsDadosReducaoZClass.COO) + sLineBreak ;
   except
   end ;
 
   try
-     Result := Result + 'NumCRZ = ' + FormatFloat('000000', fsReducaoZClass.CRZ) + sLineBreak ;
+     Result := Result + 'NumCRZ = ' + FormatFloat('000000', fsDadosReducaoZClass.CRZ) + sLineBreak ;
   except
   end ;
 
   try
-     Result := Result + 'NumCRO = ' + FormatFloat('000000', fsReducaoZClass.CRO) + sLineBreak ;
+     Result := Result + 'NumCRO = ' + FormatFloat('000000', fsDadosReducaoZClass.CRO) + sLineBreak ;
   except
   end ;
 
   Result := Result + sLineBreak + '[Totalizadores]'+sLineBreak;
 
   try
-     Result := Result + 'VendaBruta = ' + FloatToStr(fsReducaoZClass.ValorVendaBruta) + sLineBreak ;
+     Result := Result + 'VendaBruta = ' + FloatToStr(fsDadosReducaoZClass.ValorVendaBruta) + sLineBreak ;
   except
   end ;
 
   try
-     Result := Result + 'GrandeTotal = ' + FloatToStr(fsReducaoZClass.ValorGrandeTotal) + sLineBreak ;
+     Result := Result + 'GrandeTotal = ' + FloatToStr(fsDadosReducaoZClass.ValorGrandeTotal) + sLineBreak ;
   except
   end ;
 
   try
-     Result := Result + 'TotalDescontos = ' + FloatToStr(fsReducaoZClass.DescontoICMS) + sLineBreak ;
+     Result := Result + 'TotalDescontos = ' + FloatToStr(fsDadosReducaoZClass.DescontoICMS) + sLineBreak ;
   except
   end ;
 
   try
-     Result := Result + 'TotalCancelamentos = ' + FloatToStr(fsReducaoZClass.CancelamentoICMS) + sLineBreak ;
+     Result := Result + 'TotalCancelamentos = ' + FloatToStr(fsDadosReducaoZClass.CancelamentoICMS) + sLineBreak ;
   except
   end ;
 
   try
-     Result := Result + 'TotalAcrescimos = ' + FloatToStr(fsReducaoZClass.AcrescimoICMS) + sLineBreak ;
+     Result := Result + 'TotalAcrescimos = ' + FloatToStr(fsDadosReducaoZClass.AcrescimoICMS) + sLineBreak ;
   except
   end ;
 
   try
-         Result := Result + 'TotalDescontosISSQN = ' + FloatToStr(fsReducaoZClass.DescontoISSQN) + sLineBreak;
+         Result := Result + 'TotalDescontosISSQN = ' + FloatToStr(fsDadosReducaoZClass.DescontoISSQN) + sLineBreak;
   except
   end;
 
   try
-         Result := Result + 'TotalCancelamentosISSQN = ' + FloatToStr(fsReducaoZClass.CancelamentoISSQN) + sLineBreak;
+         Result := Result + 'TotalCancelamentosISSQN = ' + FloatToStr(fsDadosReducaoZClass.CancelamentoISSQN) + sLineBreak;
   except
   end;
 
   try
-         Result := Result + 'TotalAcrescimosISSQN = ' + FloatToStr(fsReducaoZClass.AcrescimoISSQN) + sLineBreak;
+         Result := Result + 'TotalAcrescimosISSQN = ' + FloatToStr(fsDadosReducaoZClass.AcrescimoISSQN) + sLineBreak;
   except
   end;
 
   try
-     Result := Result + 'TotalNaoFiscal = ' + FloatToStr(fsReducaoZClass.TotalOperacaoNaoFiscal) + sLineBreak ;
+     Result := Result + 'TotalNaoFiscal = ' + FloatToStr(fsDadosReducaoZClass.TotalOperacaoNaoFiscal) + sLineBreak ;
   except
   end ;
 
   try
      Result := Result + sLineBreak + '[Aliquotas]'+sLineBreak ;
 
-     with fsReducaoZClass do
+     with fsDadosReducaoZClass do
      begin
         For I := 0 to ICMS.Count-1 do
            Result := Result + padL(ICMS[I].Indice,2) +
@@ -1838,7 +1838,7 @@ begin
                               IntToStrZero(Round(ICMS[I].Aliquota*100),4) + ' = '+
                               FloatToStr(ICMS[I].Total) + sLineBreak ;
      end;
-     with fsReducaoZClass do
+     with fsDadosReducaoZClass do
      begin
         For I := 0 to ISSQN.Count-1 do
            Result := Result + padL(ISSQN[I].Indice,2) +
@@ -1852,17 +1852,17 @@ begin
   try
      Result := Result + sLineBreak + '[OutrasICMS]'+sLineBreak ;
      Result := Result + 'TotalSubstituicaoTributaria = ' +
-               FloatToStr(fsReducaoZClass.SubstituicaoTributariaICMS) + sLineBreak ;
+               FloatToStr(fsDadosReducaoZClass.SubstituicaoTributariaICMS) + sLineBreak ;
      Result := Result + 'TotalNaoTributado = ' +
-               FloatToStr(fsReducaoZClass.NaoTributadoICMS) + sLineBreak ;
+               FloatToStr(fsDadosReducaoZClass.NaoTributadoICMS) + sLineBreak ;
      Result := Result + 'TotalIsencao = ' +
-               FloatToStr(fsReducaoZClass.IsentoICMS) + sLineBreak ;
+               FloatToStr(fsDadosReducaoZClass.IsentoICMS) + sLineBreak ;
      Result := Result + 'TotalSubstituicaoTributariaISSQN = ' +
-               FloatToStr(fsReducaoZClass.SubstituicaoTributariaISSQN) + sLineBreak;
+               FloatToStr(fsDadosReducaoZClass.SubstituicaoTributariaISSQN) + sLineBreak;
      Result := Result + 'TotalNaoTributadoISSQN = ' +
-               FloatToStr(fsReducaoZClass.NaoTributadoISSQN) + sLineBreak;
+               FloatToStr(fsDadosReducaoZClass.NaoTributadoISSQN) + sLineBreak;
      Result := Result + 'TotalIsencaoISSQN = ' +
-               FloatToStr(fsReducaoZClass.IsentoISSQN) + sLineBreak;
+               FloatToStr(fsDadosReducaoZClass.IsentoISSQN) + sLineBreak;
   except
   end ;
 
@@ -1871,7 +1871,7 @@ begin
 
      Result := Result + sLineBreak + '[NaoFiscais]'+sLineBreak ;
 
-     with fsReducaoZClass do
+     with fsDadosReducaoZClass do
      begin
         For I := 0 to TotalizadoresNaoFiscais.Count-1 do
            Result := Result + padL(TotalizadoresNaoFiscais[I].Indice,2) + '_' +

@@ -197,7 +197,6 @@ begin
      for I := 1 to 15 do
      begin
        E2:=ACBrPAF.PAF_E.RegistroE2.New;
-       E2.NUM_FAB  :=NUM_FAB;
        E2.COD_MERC :=GerarDados('I',14);
        E2.DESC_MERC:=GerarDados('S',50);
        E2.UN_MED   :=GerarDados('S',2);

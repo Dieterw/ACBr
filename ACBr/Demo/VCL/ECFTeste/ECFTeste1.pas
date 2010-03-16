@@ -2648,7 +2648,7 @@ begin
   ACBrECF1.DadosReducaoZ;
 
   mRZ.Clear;
-  with ACBrECF1.ReducaoZClass do
+  with ACBrECF1.DadosReducaoZClass do
   begin
      mRZ.Lines.Add( 'Data Impressora    : ' + DateToStr( DataDaImpressora ) );
      mRZ.Lines.Add( 'Numero Série       : ' + NumeroDeSerie );

@@ -96,7 +96,7 @@ type
   TACBrPAF = class(TACBrTXT)
   private
     FPath: AnsiString;         /// Path do arquivo a ser gerado
-
+    ///
     FPAF_D: TPAF_D;
     FPAF_E: TPAF_E;
     FPAF_P: TPAF_P;

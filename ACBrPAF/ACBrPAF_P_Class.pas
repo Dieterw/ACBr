@@ -152,8 +152,8 @@ begin
         Check(funChecaIE(FRegistroP1.IE, FRegistroP1.UF), '(P9) TOTALIZAÇÃO: A Inscrição Estadual "%s" digitada é inválida!', [FRegistroP1.IE]);
         ///
         Result := LFill('P9') +
-                  LFill(FRegistroP1.CNPJ) +
-                  LFill(FRegistroP1.IE) +
+                  LFill(FRegistroP1.CNPJ, 14) +
+                  LFill(FRegistroP1.IE, 14) +
                   LFill(TOT_REG, 6, 0) +
                   #13#10;
       end;

@@ -96,6 +96,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.9.0a  16/03/10
+[*]    Propriedade renomeada de "ReducaoZClass" para "DadosReducaoZClass" 
+       para ficar compativel com os nomes das outras propriedades "DadosReducaoZ"
+       e "DadosUltimaReducaoZ". (por : Isaque Pinheiro)
 
 Versão 0.9.0a  14/03/10
 [-]    Correção de vazamento de memoria em TACBrECFDadosRZ  (por: DSA)

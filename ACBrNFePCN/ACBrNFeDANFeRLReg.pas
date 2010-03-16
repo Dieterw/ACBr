@@ -41,8 +41,9 @@
 |*  - Doação do componente para o Projeto ACBr
 |* 20/08/2009: Caique Rodrigues
 |*  - Doação units para geração do Danfe via QuickReport
+|* 15/03/2010: Felipe Feltes
+|*  - Adequação na seção 'USES' para ser utilizado em CLX
 ******************************************************************************}
-{$I ACBr.inc}
 {$I ACBr.inc}
 
 unit ACBrNFeDANFeRLReg;

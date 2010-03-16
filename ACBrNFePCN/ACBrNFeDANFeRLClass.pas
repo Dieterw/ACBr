@@ -48,14 +48,21 @@
 |* 27/01/2010: Peterson de Cerqueira Matos
 |*  - Acréscimo da propriedade "LarguraCodProd", que definirá a largura da
 |*    "Código do Produto" no DANFE
+|* 15/03/2010: Felipe Feltes
+|*  - Adequação na seção 'USES' para ser utilizado em CLX
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeRLClass;
 
 interface
 
-uses Forms, SysUtils, Classes,
-  ACBrNFeDANFEClass, ACBrNFeDANFeRLRetrato, pcnNFe, pcnConversao;
+uses SysUtils, Classes,  
+  {$IFDEF CLX}
+  QForms, QDialogs, 
+  {$ELSE}
+  Forms, Dialogs, 
+  {$ENDIF}
+  ACBrNFeDANFEClass, ACBrNFeDANFeRLRetrato, pcnNFe, pcnConversao, StrUtils;
 
 type
   TACBrNFeDANFeRL = class( TACBrNFeDANFEClass )
@@ -74,7 +81,7 @@ type
 
 implementation
 
-uses ACBrNFe, ACBrNFeUtil, ACBrUtil, StrUtils, Dialogs;
+uses ACBrNFe, ACBrNFeUtil, ACBrUtil; 
 
 constructor TACBrNFeDANFeRL.Create(AOwner: TComponent);
 begin

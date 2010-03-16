@@ -66,6 +66,8 @@
 |*  - Correção da formatação de CPF, no caso de NF-e emtida para pesso física
 |* 13/02/2010: Peterson de Cerqueira Matos
 |*  - Alteração da fonte do memo 'rlmObsItem' de ARIAL para COURIER NEW
+|* 15/03/2010: Felipe Feltes
+|*  - Adequação na seção 'USES' para ser utilizado em CLX
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeRLRetrato;
@@ -73,10 +75,14 @@ unit ACBrNFeDANFeRLRetrato;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, RLReport, XMLIntf, XMLDoc,
-  ACBrNFeDANFeRL, pcnConversao, RLBarcode, RLFilters, RLPDFFilter, StdCtrls,
-  jpeg, DB, DBClient;
+  SysUtils, Variants, Classes, 
+  {$IFDEF CLX}
+  QGraphics, QControls, QForms, QDialogs, QExtCtrls, Qt, QStdCtrls,
+  {$ELSE}
+  Windows, Messages, Graphics, Controls, Forms, Dialogs, ExtCtrls, MaskUtils, StdCtrls,
+  {$ENDIF}
+  RLReport, RLFilters, RLPDFFilter, XMLIntf, XMLDoc,
+  ACBrNFeDANFeRL, pcnConversao, RLBarcode, jpeg, DB, DBClient, StrUtils;
 
 type
 
@@ -515,7 +521,7 @@ type
 
 implementation
 
-uses StrUtils, ACBrNFeUtil ,pcnNFe;
+uses ACBrNFeUtil, pcnNFe;
 
 var iLimiteLinhas: Integer = 10;
 iLinhasUtilizadas: Integer = 0;

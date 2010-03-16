@@ -53,6 +53,8 @@ Alterações   16/03/10
 [-] DANFE em RAVE Arquivo (DANFE_Rave513.rav) não estava imprimindo mais de um volume (caso 516 do MANTIS)
     Será necessário substituir o arquivo DANFE_Rave513.rav no sistema.
 [*] Incluído correção do CASO 516 DO MANTIS, para o DANFE em Rave CB.
+[*] DANFE em FORTES REPORTS 
+    Adequação na seção 'USES' para ser utilizado em CLX (Créditos: Felipe Feltes)
 
 Alterações   02/03/10
 ---------------

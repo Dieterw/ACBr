@@ -54,6 +54,8 @@
 |*    "Imprimir" e "SavePDF"
 |* 13/02/2010: Peterson de Cerqueira Matos
 |*  - Correção na exibição do 'Preview' para modo 'PREVIEWMODAL'
+|* 15/03/2010: Felipe Feltes
+|*  - Adequação na seção 'USES' para ser utilizado em CLX
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeRL;
@@ -61,8 +63,13 @@ unit ACBrNFeDANFeRL;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, RLReport, pcnNFe, ACBrNFe, RLFilters;
+  SysUtils, Variants, Classes, 
+  {$IFDEF CLX}
+  QGraphics, QControls, QForms, QDialogs, QExtCtrls, Qt, 
+  {$ELSE}
+  Windows, Messages, Graphics, Controls, Forms, Dialogs, ExtCtrls,
+  {$ENDIF}
+  RLReport, pcnNFe, ACBrNFe, RLFilters, MaskUtils;
 type
   TfrlDANFeRL = class(TForm)
     RLNFe: TRLReport;
@@ -106,7 +113,6 @@ type
 
 implementation
 
-uses MaskUtils;
 var iCopias: Integer;
 
 {$R *.dfm}

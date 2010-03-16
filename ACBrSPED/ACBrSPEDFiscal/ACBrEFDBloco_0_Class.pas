@@ -401,7 +401,7 @@ begin
      begin
         with Reg0150.Registro0175.Items[intFor] do
         begin
-          Check(((DT_ALT >= DT_INI) and (DT_ALT <= DT_FIN)),  '(0-0175) ALTERAÇÃO NO CADASTRO DE CLIENTES/FORNECEDORES: A data da alteração deve estar no intervalo de: s% a s%!', [DateToStr(DT_INI), DateToStr(DT_FIN)]);
+          Check(((DT_ALT >= DT_INI) and (DT_ALT <= DT_FIN)),  '(0-0175) ALTERAÇÃO NO CADASTRO DE CLIENTES/FORNECEDORES: A data da alteração deve estar no intervalo de: %s a %s!', [DateToStr(DT_INI), DateToStr(DT_FIN)]);
           ///
           strRegistro0175 := strRegistro0175 + LFill('0175') +
                                                LFill(DT_ALT) +
@@ -457,7 +457,9 @@ begin
      begin
         with Registro0200.Items[intFor] do
         begin
-          Check(funChecaGENERO(COD_GEN), '(0-0200) O código do gênero "%s" digitado é inválido!', [COD_GEN]);
+          if Length(COD_GEN) > 0 then
+             Check(funChecaGENERO(COD_GEN), '(0-0200) O código do gênero "%s" digitado é inválido!', [COD_GEN]);
+          ///
           Check(Pos(TIPO_ITEM, '00,01,02,03,04,05,06,07,08,09,10,99') > 0, '(0-0200) O código do tipo do item – Atividades Industriais, Comerciais e Serviços "%s" digitado é inválido!', [TIPO_ITEM]);
           ///
           strRegistro0200 := strRegistro0200 + LFill('0200') +

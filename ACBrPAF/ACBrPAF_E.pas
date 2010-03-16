@@ -55,14 +55,12 @@ type
 
   TRegistroE2 = class(TPersistent)
   private
-    fNUM_FAB: string;      /// Nº de fabricação do ECF
     fCOD_MERC: string;     /// Código da mercadoria ou produto cadastrado na tabela a que se refere o requisito XI
     fDESC_MERC: string;    /// Descrição da mercadoria ou produto cadastrada na tabela a que se refere o requisito XI
     fUN_MED: string;       /// Unidade de medida cadastrada na tabela a que se refere o requisito XI
     fQTDE_EST: currency;   /// Quantidade da mercadoria ou produto constante no estoque, com duas casas decimais.
     fDT_EST: TDateTime;    /// Data de emissão do DAV
   public
-    property NUM_FAB: string read FNUM_FAB write FNUM_FAB;
     property COD_MERC: string read FCOD_MERC write FCOD_MERC;
     property DESC_MERC: string read FDESC_MERC write FDESC_MERC;
     property UN_MED: string read FUN_MED write FUN_MED;

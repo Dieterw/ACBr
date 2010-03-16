@@ -145,7 +145,7 @@ begin
    begin
       with FRegistroE9 do
       begin
-        Check(funChecaCNPJ(FRegistroE1.CNPJ),            '(E9) TOTALIZAÇÃO: O CNPJ "%s" digitado é inválido!', [FRegistroE1.CNPJ]);
+        Check(funChecaCNPJ(FRegistroE1.CNPJ),             '(E9) TOTALIZAÇÃO: O CNPJ "%s" digitado é inválido!', [FRegistroE1.CNPJ]);
         Check(funChecaIE(FRegistroE1.IE, FRegistroE1.UF), '(E9) TOTALIZAÇÃO: A Inscrição Estadual "%s" digitada é inválida!', [FRegistroE1.IE]);
         ///
         Result := LFill('E9') +

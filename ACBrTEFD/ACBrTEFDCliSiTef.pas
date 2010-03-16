@@ -143,6 +143,9 @@ type
                 ContinuaNavegacao: Integer ): integer;
                 {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;
 
+     xEscreveMensagemPermanentePinPad: function(Mensagem:PAnsiChar):Integer;
+     {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;           
+
      procedure AvaliaErro(Sts : Integer);
      procedure FinalizarTransacao( Confirma : Boolean;
         DocumentoVinculado : AnsiString);
@@ -189,7 +192,7 @@ type
         DocumentoVinculado : String = ''); override;
      Function CNC(Rede, NSU : String; DataHoraTransacao : TDateTime;
         Valor : Double) : Boolean; overload; override;
-
+     function DefineMensagemPermanentePinPad(Mensagem:AnsiString):Integer;
    published
      property EnderecoIP     : AnsiString read fEnderecoIP     write fEnderecoIP ;
      property CodigoLoja     : AnsiString read fCodigoLoja     write fCodigoLoja ;
@@ -361,6 +364,7 @@ begin
   xIniciaFuncaoSiTefInterativo      := nil ;
   xContinuaFuncaoSiTefInterativo    := nil ;
   xFinalizaTransacaoSiTefInterativo := nil ;
+  xEscreveMensagemPermanentePinPad  := nil; 
 
   fOnExibeMenu  := nil ;
   fOnObtemCampo := nil ;
@@ -370,6 +374,14 @@ begin
 
   fpResp := TACBrTEFDRespCliSiTef.Create;
   fpResp.TipoGP := Tipo;
+end;
+
+function TACBrTEFDCliSiTef.DefineMensagemPermanentePinPad(Mensagem:AnsiString):Integer;
+begin
+   if Assigned(xEscreveMensagemPermanentePinPad) then  
+      Result := xEscreveMensagemPermanentePinPad(PAnsiChar(Mensagem))
+   else
+      raise Exception.Create( ACBrStr('CliSiTEF não inicializado' ) ) ;   
 end;
 
 destructor TACBrTEFDCliSiTef.Destroy;
@@ -398,6 +410,7 @@ begin
    CliSiTefFunctionDetect('IniciaFuncaoSiTefInterativo', @xIniciaFuncaoSiTefInterativo);
    CliSiTefFunctionDetect('ContinuaFuncaoSiTefInterativo', @xContinuaFuncaoSiTefInterativo);
    CliSiTefFunctionDetect('FinalizaTransacaoSiTefInterativo', @xFinalizaTransacaoSiTefInterativo);
+   CliSiTefFunctionDetect('EscreveMensagemPermanentePinPad',@xEscreveMensagemPermanentePinPad);
 end ;
 
 procedure TACBrTEFDCliSiTef.SetNumVias(const AValue : Integer);

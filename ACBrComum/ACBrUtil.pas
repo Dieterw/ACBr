@@ -359,17 +359,21 @@ end ;
       Portanto se HexStr = "CO80", Result = "+Ç"
  ---------------------------------------------------------------------------- }
 Function HexToAscii(const HexStr: AnsiString) : AnsiString ;
- Var  B : Byte ;
-      Cmd : AnsiString ;
+Var
+  B   : Byte ;
+  Cmd : AnsiString ;
+  I, L: Integer ;
 begin
   Result := '' ;
   Cmd    := Trim(HexStr) ;
-  while Cmd <> '' do
-  begin
-     B   := StrToIntDef('$'+copy(Cmd,1,2),32) ;
-     Cmd := Trim(copy(Cmd,3,Length(Cmd))) ;
+  I      := 1 ;
+  L      := Length( HexStr ) ;
 
+  while I < L do
+  begin
+     B := StrToIntDef('$'+copy(Cmd,I,2),32) ;
      Result := Result + AnsiChar( chr(B) ) ;
+     Inc( I, 2) ;
   end ;
 end ;
 

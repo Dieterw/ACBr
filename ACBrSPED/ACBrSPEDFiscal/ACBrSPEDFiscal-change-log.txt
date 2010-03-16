@@ -47,6 +47,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.07a   16/03/10
+[-] Corrigido BUG, quando a função LFill era chamada com o parametro NULL = True
+    para os tipos data data, mesmo tendo uma data, retornava vazio.
+
 Versão 0.07a   15/03/10
 [*] Implementado o registro Registro0500 "TABELA DE PLANO DE CONTAS CONTÁBEIS"
     do Bloco 0 por (Alessandro Yamasaki)

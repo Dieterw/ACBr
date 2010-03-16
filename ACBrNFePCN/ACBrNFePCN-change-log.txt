@@ -48,6 +48,11 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   16/03/10
+---------------
+[-] DANFE em RAVE Arquivo (DANFE_Rave513.rav) não estava imprimindo mais de um volume (caso 516 do MANTIS)
+    Será necessário substituir o arquivo DANFE_Rave513.rav no sistema.
+
 Alterações   02/03/10
 ---------------
 [*] Impressão da informação "NFe CANCELADA" (DANFEs em RAVE) quando o cancelamento for homologado pela SEFAZ em ambiente de PRODUÇÃO

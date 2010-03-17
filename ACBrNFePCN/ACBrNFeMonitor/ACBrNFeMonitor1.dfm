@@ -4120,7 +4120,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       Top = 0
       Width = 527
       Height = 256
-      ActivePage = Diretorios
+      ActivePage = DANFE
       Align = alBottom
       TabOrder = 0
       object Monitor: TTabSheet
@@ -6060,6 +6060,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
     ExibirResumoCanhoto = False
     FormularioContinuo = False
     TamanhoFonte_DemaisCampos = 10
+    ProdutosPorPagina = 0
     Left = 169
     Top = 25
   end
@@ -6082,6 +6083,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
     ExibirResumoCanhoto = False
     FormularioContinuo = False
     TamanhoFonte_DemaisCampos = 10
+    ProdutosPorPagina = 0
     TamanhoCampoCodigo = 0
     Fonte = ftTimes
     EspessuraBorda = 2

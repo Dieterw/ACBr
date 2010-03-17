@@ -87,7 +87,8 @@ type
                                 sMensagem : TStrings;
                                 SSL : Boolean;
                                 EnviaPDF: Boolean = true;
-                                sCC: TStrings = nil);
+                                sCC: TStrings = nil;
+                                Anexos:TStrings=nil);
     property NFe: TNFe  read FNFe write FNFe;
     property XML: AnsiString  read GetNFeXML write FXML;
     property Confirmada: Boolean  read FConfirmada write FConfirmada;
@@ -233,71 +234,80 @@ begin
 end;
 
 procedure NotaFiscal.EnviarEmail(const sSmtpHost,
-                                       sSmtpPort,
-                                       sSmtpUser,
-                                       sSmtpPasswd,
-                                       sFrom,
-                                       sTo,
-                                       sAssunto: String;
-                                       sMensagem : TStrings;
-                                       SSL : Boolean;
-                                       EnviaPDF: Boolean = true;
-                                       sCC: TStrings=nil);
+                                      sSmtpPort,
+                                      sSmtpUser,
+                                      sSmtpPasswd,
+                                      sFrom,
+                                      sTo,
+                                      sAssunto: String;
+                                      sMensagem : TStrings;
+                                      SSL : Boolean;
+                                      EnviaPDF: Boolean = true;
+                                      sCC: TStrings=nil;
+                                      Anexos:TStrings=nil);
 var
-  ThreadSMTP : TSendMailThread;
-  m:TMimemess;
-  p: TMimepart;
-  StreamNFe : TStringStream;
-  NomeArq : String;
+ ThreadSMTP : TSendMailThread;
+ m:TMimemess;
+ p: TMimepart;
+ StreamNFe : TStringStream;
+ NomeArq : String;
+ i: Integer;
 begin
-  m:=TMimemess.create;
-  ThreadSMTP := TSendMailThread.Create ;  // Não Libera, pois usa FreeOnTerminate := True ;
-  StreamNFe  := TStringStream.Create('');
-  try
-     p := m.AddPartMultipart('mixed', nil);
-     if sMensagem <> nil then
-        m.AddPartText(sMensagem, p);
-     SaveToStream(StreamNFe) ;
-     m.AddPartBinary(StreamNFe,copy(NFe.infNFe.ID, (length(NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml', p);
-     if (EnviaPDF) then
-     begin
-        if TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE <> nil then
-        begin
-           TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.ImprimirDANFEPDF(NFe);
-           NomeArq :=  StringReplace(NFe.infNFe.ID,'NFe', '', [rfIgnoreCase]);
-           NomeArq := PathWithDelim(TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.PathPDF)+NomeArq+'.pdf';
-           m.AddPartBinaryFromFile(NomeArq, p);
-        end;
-     end;
-     m.header.tolist.add(sTo);
-     m.header.From := sFrom;
-     m.header.subject:=sAssunto;
-     m.EncodeMessage;
+ m:=TMimemess.create;
+ ThreadSMTP := TSendMailThread.Create ;  // Não Libera, pois usa FreeOnTerminate := True ;
+ StreamNFe  := TStringStream.Create('');
+ try
+    p := m.AddPartMultipart('mixed', nil);
+    if sMensagem <> nil then
+       m.AddPartText(sMensagem, p);
+    SaveToStream(StreamNFe) ;
+    m.AddPartBinary(StreamNFe,copy(NFe.infNFe.ID, (length(NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml', p);
+    if (EnviaPDF) then
+    begin
+       if TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE <> nil then
+       begin
+          TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.ImprimirDANFEPDF(NFe);
+          NomeArq :=  StringReplace(NFe.infNFe.ID,'NFe', '', [rfIgnoreCase]);
+          NomeArq := PathWithDelim(TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.PathPDF)+NomeArq+'.pdf';
+          m.AddPartBinaryFromFile(NomeArq, p);
+       end;
+    end;
 
-     ThreadSMTP.sFrom := sFrom;
-     ThreadSMTP.sTo   := sTo;
-     if sCC <> nil then
-        ThreadSMTP.sCC.AddStrings(sCC);
-     ThreadSMTP.slmsg_Lines.AddStrings(m.Lines);
+    if assigned(Anexos) then
+      for i := 0 to Anexos.Count - 1 do
+      begin
+        m.AddPartBinaryFromFile(Anexos[i], p);
+      end;
 
-     ThreadSMTP.smtp.UserName := sSmtpUser;
-     ThreadSMTP.smtp.Password := sSmtpPasswd;
+    m.header.tolist.add(sTo);
+    m.header.From := sFrom;
+    m.header.subject:=sAssunto;
+    m.EncodeMessage;
 
-     ThreadSMTP.smtp.TargetHost := sSmtpHost;
-     if not NotaUtil.EstaVazio( sSmtpPort ) then     // Usa default
-        ThreadSMTP.smtp.TargetPort := sSmtpPort;
+    ThreadSMTP.sFrom := sFrom;
+    ThreadSMTP.sTo   := sTo;
+    if sCC <> nil then
+       ThreadSMTP.sCC.AddStrings(sCC);
+    ThreadSMTP.slmsg_Lines.AddStrings(m.Lines);
 
-     ThreadSMTP.smtp.FullSSL := SSL;
-     ThreadSMTP.smtp.AutoTLS := SSL;
-     TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).SetStatus( stNFeEmail );
+    ThreadSMTP.smtp.UserName := sSmtpUser;
+    ThreadSMTP.smtp.Password := sSmtpPasswd;
 
-     ThreadSMTP.Resume; // inicia a thread
+    ThreadSMTP.smtp.TargetHost := sSmtpHost;
+    if not NotaUtil.EstaVazio( sSmtpPort ) then     // Usa default
+       ThreadSMTP.smtp.TargetPort := sSmtpPort;
 
-     TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).SetStatus( stIdle );
-  finally
-     m.free;
-     StreamNFe.Free ;
-  end;
+    ThreadSMTP.smtp.FullSSL := SSL;
+    ThreadSMTP.smtp.AutoTLS := SSL;
+    TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).SetStatus( stNFeEmail );
+
+    ThreadSMTP.Resume; // inicia a thread
+
+    TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).SetStatus( stIdle );
+ finally
+    m.free;
+    StreamNFe.Free ;
+ end;
 end;
 
 function NotaFiscal.GetNFeXML: AnsiString;
@@ -484,8 +494,8 @@ begin
      end;
     ArquivoXML.Free;
  except
-    Result := False;
     raise;
+    Result := False;    
  end;
 end;
 

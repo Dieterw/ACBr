@@ -47,6 +47,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Alterações   17/03/10
+---------------
+[+] Adicionada propriedade Anexos na Funcão EnviarEmail para permitir o envio de uma lista de arquivos junto ao email com o 
+    XML e PDF da NFe(Carlos H. Cantu)
 
 Alterações   16/03/10
 ---------------

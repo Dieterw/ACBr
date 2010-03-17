@@ -58,7 +58,7 @@ Uses IniFiles, StrUtils, DateUtils,
   pcnConsSitNFe, pcnRetConsSitNFe,
   pcnInutNFe, pcnRetInutNFe,
   pcnRetEnvNFe, pcnConsReciNFe,
-  pcnNFeRTXT, ACBrNFeNotasFiscais, pcnRetConsCad, StdCtrls;
+  pcnNFeRTXT, ACBrNFeNotasFiscais, pcnRetConsCad, StdCtrls, pcnProcNFe;
 
 Procedure DoACBrNFe( Cmd : TACBrNFeCmd ) ;
 var
@@ -158,7 +158,7 @@ begin
                               'ChNFe='+ACBrNFe1.WebServices.Consulta.NFeChave+sLineBreak+
                               'DhRecbto='+DateTimeToStr(ACBrNFe1.WebServices.Consulta.DhRecbto)+sLineBreak+
                               'NProt='+ACBrNFe1.WebServices.Consulta.Protocolo+sLineBreak+
-                              'DigVal='+ACBrNFe1.WebServices.Consulta.DigVal+sLineBreak;
+                              'DigVal='+ACBrNFe1.WebServices.Consulta.digVal+sLineBreak;
 
            except
               raise Exception.Create(ACBrNFe1.WebServices.Consulta.Msg);
@@ -219,7 +219,7 @@ begin
            if NotaUtil.NaoEstaVazio(Cmd.Params(2)) then
               ACBrNFe1.DANFE.NumCopias := StrToInt(Cmd.Params(2))
            else
-              ACBrNFe1.DANFE.NumCopias := StrToInt(edtNumCopia.Text);
+              ACBrNFe1.DANFE.NumCopias := StrToIntDef(edtNumCopia.Text,1);
 
            ACBrNFe1.NotasFiscais.Imprimir;
            Cmd.Resposta := 'Danfe Impresso com sucesso';
@@ -900,6 +900,7 @@ begin
          Ide.dEmi       := NotaUtil.StringToDate(INIRec.ReadString( 'Identificacao','Emissao','0'));
          Ide.dSaiEnt    := NotaUtil.StringToDate(INIRec.ReadString( 'Identificacao','Saida'  ,'0'));
          Ide.tpNF       := StrToTpNF(OK,INIRec.ReadString( 'Identificacao','Tipo','1'));
+         Ide.tpEmis     := StrToTpEmis(OK,INIRec.ReadString( 'Identificacao','tpemis',IntToStr(ACBrNFe1.Configuracoes.Geral.FormaEmissaoCodigo)));
 
          I := 1 ;
          while true do

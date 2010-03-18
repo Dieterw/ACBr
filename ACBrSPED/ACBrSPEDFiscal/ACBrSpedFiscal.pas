@@ -51,7 +51,7 @@ uses
   ACBrEFDBloco_G_Class, ACBrEFDBloco_H_Class;
 
 const
-   CACBrSpedFiscal_Versao = '0.07a' ;
+   CACBrSpedFiscal_Versao = '0.07b' ;
 
 type
   /// ACBrSpedFiscal - Sitema Publico de Escrituração Digital Fiscal
@@ -75,6 +75,7 @@ type
     // Periodo
     procedure SetDT_FIN(const Value: TDateTime); override;
     procedure SetDT_INI(const Value: TDateTime); override;
+
     procedure SetDelimitador(const Value: AnsiString); override;
     procedure SetTrimString(const Value: boolean); override;
     procedure SetCurMascara(const Value: AnsiString); override;

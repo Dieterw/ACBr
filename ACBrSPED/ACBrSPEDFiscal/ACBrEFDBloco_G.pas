@@ -69,7 +69,7 @@ type
     fSOM_PARC: Currency;        /// Somatorio das Parcelas ICMS Passivel de Apropriacao Modelo D
     fVL_TRIB_EXP: Currency;     /// Valor do somatorio das saidas tributadas e saidas para exportacao
     fVL_TOTAL: Currency;        /// Valor Total das Saidas
-    fPER_SAI_TRIB: Currency;    /// Participacao percentual do valor do somatorio das saidas tributadas e para exportacao
+    fPER_SAI_TRIB: Double;      /// Participacao percentual do valor do somatorio das saidas tributadas e para exportacao
     fICMS_APROP: Currency;      /// Parcela de ICMS a ser apropriada no Registro de Apuracao do ICMS
 
     FRegistroG125: TRegistroG125List;  /// BLOCO G - Lista de RegistroG110 (FILHO fo FILHO)
@@ -85,7 +85,7 @@ type
     property SOM_PARC: Currency read fSOM_PARC write fSOM_PARC;
     property VL_TRIB_EXP: Currency read fVL_TRIB_EXP write fVL_TRIB_EXP;
     property VL_TOTAL: Currency read fVL_TOTAL write fVL_TOTAL;
-    property PER_SAI_TRIB: Currency read fPER_SAI_TRIB write fPER_SAI_TRIB;
+    property PER_SAI_TRIB: Double read fPER_SAI_TRIB write fPER_SAI_TRIB;
     property ICMS_APROP: Currency read fICMS_APROP write fICMS_APROP;
 
     property RegistroG125: TRegistroG125List read FRegistroG125 write FRegistroG125;

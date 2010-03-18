@@ -177,7 +177,7 @@ begin
                                                  LFill( SOM_PARC, 0, 2 ) +
                                                  LFill( VL_TRIB_EXP, 0, 2 ) +
                                                  LFill( VL_TOTAL, 0, 2 ) +
-                                                 LFill( PER_SAI_TRIB, 0, 2 ) +
+                                                 DFill( PER_SAI_TRIB, 4 ) +
                                                  LFill( ICMS_APROP, 0, 2 ) +
                                                  Delimitador +
                                                  #13#10;

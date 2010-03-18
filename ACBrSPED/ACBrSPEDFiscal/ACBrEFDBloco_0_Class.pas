@@ -558,7 +558,7 @@ begin
         begin
           strRegistro0220 := strRegistro0220 + LFill('0220') +
                                                LFill( UNID_CONV ) +
-                                               LFill( FAT_CONV ) +
+                                               DFill( FAT_CONV, 6 ) +
                                                Delimitador +
                                                #13#10;
         end;

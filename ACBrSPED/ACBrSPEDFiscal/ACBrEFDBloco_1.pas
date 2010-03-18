@@ -142,7 +142,7 @@ type
     fDT_DOC: TDateTime;        /// Data da emissão do documento fiscal recebido com fins específicos de exportação
     fCHV_NFE: AnsiString;       /// Chave da Nota Fiscal Eletrônica
     fNR_MEMO: AnsiString;           /// Número do Memorando de Exportação
-    fQTD: Currency;           /// Quantidade do item efetivamente exportado.
+    fQTD: Double;           /// Quantidade do item efetivamente exportado.
     fUNID: AnsiString;          /// Unidade do item (Campo 02 do registro 0190)
   public
     property COD_PART: AnsiString read FCOD_PART write FCOD_PART;
@@ -152,7 +152,7 @@ type
     property DT_DOC: TDateTime read FDT_DOC write FDT_DOC;
     property CHV_NFE: AnsiString read FCHV_NFE write FCHV_NFE;
     property NR_MEMO: AnsiString read FNR_MEMO write FNR_MEMO;
-    property QTD: Currency read FQTD write FQTD;
+    property QTD: Double read FQTD write FQTD;
     property UNID: AnsiString read FUNID write FUNID;
   end;
 
@@ -230,31 +230,32 @@ type
   private
     fCOD_ITEM: AnsiString;             /// Código do Produto constante do registro 0200
     fDT_FECH: TDateTime;               /// Data do fechamento da movimentação
-    fESTQ_ABERT: Currency;             /// Estoque no inicio do dia
-    fVOL_ENTR: Currency;               /// Volume Total das Entradas
-    fVOL_DISP: Currency;               /// Volume Disponível (05 + 06)
-    fVOL_SAIDAS: Currency;             /// Volume Total das Saídas (Somatório dos registros de Volume de Vendas)
-    fESTQ_ESCR: Currency;              /// Estoque Escritural (07 - 08)
-    fVAL_AJ_PERDA: Currency;           /// Valor da Perda
-    fVAL_AJ_GANHO: Currency;           /// Valor do ganho
-    fESTQ_FECHA: Currency;             /// Estoque de Fechamento (Somatório dos registros da conciliação de estoques )
-    fFECH_FISICO:  Currency;           /// Volume aferido no tanque, em litros. Estoque de fechamento físico do tanque
+    fESTQ_ABERT: Double;               /// Estoque no inicio do dia
+    fVOL_ENTR: Double;                 /// Volume Total das Entradas
+    fVOL_DISP: Double;                 /// Volume Disponível (05 + 06)
+    fVOL_SAIDAS: Double;               /// Volume Total das Saídas (Somatório dos registros de Volume de Vendas)
+    fESTQ_ESCR: Double;                /// Estoque Escritural (07 - 08)
+    fVAL_AJ_PERDA: Double;             /// Valor da Perda
+    fVAL_AJ_GANHO: Double;             /// Valor do ganho
+    fESTQ_FECHA: Double;               /// Estoque de Fechamento (Somatório dos registros da conciliação de estoques )
+    fFECH_FISICO:  Double;             /// Volume aferido no tanque, em litros. Estoque de fechamento físico do tanque
+
     FRegistro1310: TRegistro1310List;  /// BLOCO 1 - Lista de Registro1310 (FILHO)
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
-    
-    property COD_ITEM: AnsiString   read FCOD_ITEM write FCOD_ITEM;
-    property DT_FECH: TDateTime     read FDT_FECH write FDT_FECH;
-    property ESTQ_ABERT: Currency   read FESTQ_ABERT write FESTQ_ABERT;
-    property VOL_ENTR: Currency     read FVOL_ENTR write FVOL_ENTR;
-    property VOL_DISP: Currency     read FVOL_DISP write FVOL_DISP;
-    property VOL_SAIDAS: Currency   read FVOL_SAIDAS write FVOL_SAIDAS;
-    property ESTQ_ESCR: Currency    read FESTQ_ESCR write FESTQ_ESCR;
-    property VAL_AJ_PERDA: Currency read FVAL_AJ_PERDA write FVAL_AJ_PERDA;
-    property VAL_AJ_GANHO: Currency read FVAL_AJ_GANHO write FVAL_AJ_GANHO;
-    property ESTQ_FECHA: Currency   read FESTQ_FECHA write FESTQ_FECHA;
-    property FECH_FISICO : Currency read fFECH_FISICO  write fFECH_FISICO;
+
+    property COD_ITEM: AnsiString   read FCOD_ITEM     write FCOD_ITEM;
+    property DT_FECH: TDateTime     read FDT_FECH      write FDT_FECH;
+    property ESTQ_ABERT: Double     read FESTQ_ABERT   write FESTQ_ABERT;
+    property VOL_ENTR: Double       read FVOL_ENTR     write FVOL_ENTR;
+    property VOL_DISP: Double       read FVOL_DISP     write FVOL_DISP;
+    property VOL_SAIDAS: Double     read FVOL_SAIDAS   write FVOL_SAIDAS;
+    property ESTQ_ESCR: Double      read FESTQ_ESCR    write FESTQ_ESCR;
+    property VAL_AJ_PERDA: Double   read FVAL_AJ_PERDA write FVAL_AJ_PERDA;
+    property VAL_AJ_GANHO: Double   read FVAL_AJ_GANHO write FVAL_AJ_GANHO;
+    property ESTQ_FECHA: Double     read FESTQ_FECHA   write FESTQ_FECHA;
+    property FECH_FISICO : Double   read fFECH_FISICO  write fFECH_FISICO;
 
     property Registro1310: TRegistro1310List read FRegistro1310 write FRegistro1310;
   end;
@@ -276,14 +277,14 @@ type
   TRegistro1310 = class(TPersistent)
   private
     fNUM_TANQUE:   AnsiString; /// Tanque onde foi armazenado o combustível
-    fESTQ_ABERT:   Currency;   /// Estoque no inicio do dia, em litros
-    fVOL_ENTR:     Currency;   /// Volume Recebido no dia (em litros)
-    fVOL_DISP:     Currency;   /// Volume Disponível (03 + 04), em litros
-    fVOL_SAIDAS:   Currency;   /// Volume Total das Saídas, em litros
-    fESTQ_ESCR :   Currency;   /// Estoque Escritural(05 – 06), litros
-    fVAL_AJ_PERDA: Currency;   /// Valor da Perda, em litros
-    fVAL_AJ_GANHO: Currency;   /// Valor do ganho, em litros
-    fFECH_FISICO:  Currency;   /// Volume aferido no tanque, em litros. Estoque de fechamento físico do tanque
+    fESTQ_ABERT:   Double;     /// Estoque no inicio do dia, em litros
+    fVOL_ENTR:     Double;     /// Volume Recebido no dia (em litros)
+    fVOL_DISP:     Double;     /// Volume Disponível (03 + 04), em litros
+    fVOL_SAIDAS:   Double;     /// Volume Total das Saídas, em litros
+    fESTQ_ESCR :   Double;     /// Estoque Escritural(05 – 06), litros
+    fVAL_AJ_PERDA: Double;     /// Valor da Perda, em litros
+    fVAL_AJ_GANHO: Double;     /// Valor do ganho, em litros
+    fFECH_FISICO:  Double;     /// Volume aferido no tanque, em litros. Estoque de fechamento físico do tanque
 
     FRegistro1320: TRegistro1320List;  /// BLOCO 1 - Lista de Registro1320 (FILHO)
   public
@@ -291,14 +292,14 @@ type
     destructor Destroy; override; /// Destroy
 
     property NUM_TANQUE  : AnsiString   read fNUM_TANQUE   write fNUM_TANQUE;
-    property ESTQ_ABERT  : Currency read fESTQ_ABERT   write fESTQ_ABERT;
-    property VOL_ENTR    : Currency read fVOL_ENTR     write fVOL_ENTR;
-    property VOL_DISP    : Currency read fVOL_DISP     write fVOL_DISP;
-    property VOL_SAIDAS  : Currency read fVOL_SAIDAS   write fVOL_SAIDAS;
-    property ESTQ_ESCR   : Currency read fESTQ_ESCR    write fESTQ_ESCR;
-    property VAL_AJ_PERDA: Currency read fVAL_AJ_PERDA write fVAL_AJ_PERDA;
-    property VAL_AJ_GANHO: Currency read fVAL_AJ_GANHO write fVAL_AJ_GANHO;
-    property FECH_FISICO : Currency read fFECH_FISICO  write fFECH_FISICO;
+    property ESTQ_ABERT  : Double       read fESTQ_ABERT   write fESTQ_ABERT;
+    property VOL_ENTR    : Double       read fVOL_ENTR     write fVOL_ENTR;
+    property VOL_DISP    : Double       read fVOL_DISP     write fVOL_DISP;
+    property VOL_SAIDAS  : Double       read fVOL_SAIDAS   write fVOL_SAIDAS;
+    property ESTQ_ESCR   : Double       read fESTQ_ESCR    write fESTQ_ESCR;
+    property VAL_AJ_PERDA: Double       read fVAL_AJ_PERDA write fVAL_AJ_PERDA;
+    property VAL_AJ_GANHO: Double       read fVAL_AJ_GANHO write fVAL_AJ_GANHO;
+    property FECH_FISICO : Double       read fFECH_FISICO  write fFECH_FISICO;
 
     property Registro1320: TRegistro1320List read FRegistro1320 write FRegistro1320;
   end;
@@ -319,16 +320,16 @@ type
 
   TRegistro1320 = class(TPersistent)
   private
-     fNUM_BICO:AnsiString;       /// Bico Ligado à Bomba
-     fNR_INTERV:AnsiString;      /// Número da intervenção
-     fMOT_INTERV:AnsiString;     /// Motivo da Intervenção
-     fNOM_INTERV:AnsiString;     /// Nome do Interventor
-     fCNPJ_INTERV:AnsiString;    /// CNPJ da empresa responsável pela intervenção
-     fCPF_INTERV:AnsiString;     /// CPF do técnico responsável pela intervenção
-     fVAL_FECHA:Currency;        /// Valor da leitura final do contador, no fechamento do bico
-     fVAL_ABERT:Currency;        /// Valor da leitura inicial do contador, na abertura do bico
-     fVOL_AFERI:Currency;        /// Aferições da Bomba, em litros
-     fVOL_VENDAS:Currency;       /// Vendas (08 – 09 - 10 ) do bico, em litros
+     fNUM_BICO   : AnsiString;       /// Bico Ligado à Bomba
+     fNR_INTERV  : AnsiString;       /// Número da intervenção
+     fMOT_INTERV : AnsiString;       /// Motivo da Intervenção
+     fNOM_INTERV : AnsiString;       /// Nome do Interventor
+     fCNPJ_INTERV: AnsiString;       /// CNPJ da empresa responsável pela intervenção
+     fCPF_INTERV : AnsiString;       /// CPF do técnico responsável pela intervenção
+     fVAL_FECHA  : Double;           /// Valor da leitura final do contador, no fechamento do bico
+     fVAL_ABERT  : Double;           /// Valor da leitura inicial do contador, na abertura do bico
+     fVOL_AFERI  : Double;           /// Aferições da Bomba, em litros
+     fVOL_VENDAS : Double;           /// Vendas (08 – 09 - 10 ) do bico, em litros
   public
     property NUM_BICO:AnsiString       read fNUM_BICO    write fNUM_BICO    ;
     property NR_INTERV:AnsiString      read fNR_INTERV   write fNR_INTERV   ;
@@ -336,10 +337,10 @@ type
     property NOM_INTERV:AnsiString     read fNOM_INTERV  write fNOM_INTERV  ;
     property CNPJ_INTERV:AnsiString    read fCNPJ_INTERV write fCNPJ_INTERV ;
     property CPF_INTERV:AnsiString     read fCPF_INTERV  write fCPF_INTERV  ;
-    property VAL_FECHA:Currency    read fVAL_FECHA   write fVAL_FECHA   ;
-    property VAL_ABERT:Currency    read fVAL_ABERT   write fVAL_ABERT   ;
-    property VOL_AFERI:Currency    read fVOL_AFERI   write fVOL_AFERI   ;
-    property VOL_VENDAS:Currency   read fVOL_VENDAS  write fVOL_VENDAS  ;
+    property VAL_FECHA:Double          read fVAL_FECHA   write fVAL_FECHA   ;
+    property VAL_ABERT:Double          read fVAL_ABERT   write fVAL_ABERT   ;
+    property VOL_AFERI:Double          read fVOL_AFERI   write fVOL_AFERI   ;
+    property VOL_VENDAS:Double         read fVOL_VENDAS  write fVOL_VENDAS  ;
   end;
 
   /// Registro 1320 - Lista
@@ -542,28 +543,28 @@ type
     fNUM_ITEM: AnsiString;         /// Número seqüencial do item no documento fiscal
     fCOD_ITEM: AnsiString;         /// Código do item (campo 02 do Registro 0200)
     fCOD_CLASS: AnsiString;        /// Código de classificação do item de energia elétrica, conforme a Tabela 4.4.1
-    fQTD: currency;            /// Quantidade do item
+    fQTD: Double;                  /// Quantidade do item
     fUNID: AnsiString;             /// Unidade do item (Campo 02 do registro 0190)
-    fVL_ITEM: currency;        /// Valor do item
-    fVL_DESC: currency;        /// Valor total do desconto
+    fVL_ITEM: currency;            /// Valor do item
+    fVL_DESC: currency;            /// Valor total do desconto
     fCST_ICMS: AnsiString;         /// Código da Situação Tributária, conforme a Tabela indicada no item 4.3.1
     fCFOP: AnsiString;             /// Código Fiscal de Operação e Prestação
-    fVL_BC_ICMS: currency;     /// Valor da base de cálculo do ICMS
-    fALIQ_ICMS: currency;      /// Alíquota do ICMS
-    fVL_ICMS: currency;        /// Valor do ICMS creditado/debitado
-    fVL_BC_ICMS_ST: currency;  /// Valor da base de cálculo referente à substituição tributária
-    fALIQ_ST: currency;        /// Alíquota do ICMS da substituição tributária na unidade da federação de destino
-    fVL_ICMS_ST: currency;     /// Valor do ICMS referente à substituição tributária
+    fVL_BC_ICMS: currency;         /// Valor da base de cálculo do ICMS
+    fALIQ_ICMS: currency;          /// Alíquota do ICMS
+    fVL_ICMS: currency;            /// Valor do ICMS creditado/debitado
+    fVL_BC_ICMS_ST: currency;      /// Valor da base de cálculo referente à substituição tributária
+    fALIQ_ST: currency;            /// Alíquota do ICMS da substituição tributária na unidade da federação de destino
+    fVL_ICMS_ST: currency;         /// Valor do ICMS referente à substituição tributária
     fIND_REC: AnsiString;          /// Indicador do tipo de receita:
     fCOD_PART: AnsiString;         /// Código do participante receptor da receita, terceiro da operação (campo 02 do Registro 0150)
-    fVL_PIS: currency;         /// Valor do PIS
-    fVL_COFINS: currency;      /// Valor da COFINS
+    fVL_PIS: currency;             /// Valor do PIS
+    fVL_COFINS: currency;          /// Valor da COFINS
     fCOD_CTA: AnsiString;          /// Código da conta analítica contábil debitada/creditada
   public
     property NUM_ITEM: AnsiString read FNUM_ITEM write FNUM_ITEM;
     property COD_ITEM: AnsiString read FCOD_ITEM write FCOD_ITEM;
     property COD_CLASS: AnsiString read FCOD_CLASS write FCOD_CLASS;
-    property QTD: currency read FQTD write FQTD;
+    property QTD: Double read FQTD write FQTD;
     property UNID: AnsiString read FUNID write FUNID;
     property VL_ITEM: currency read FVL_ITEM write FVL_ITEM;
     property VL_DESC: currency read FVL_DESC write FVL_DESC;

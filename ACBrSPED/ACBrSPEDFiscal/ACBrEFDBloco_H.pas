@@ -91,8 +91,8 @@ type
   private
     fCOD_ITEM: AnsiString;     /// Código do item (campo 02 do Registro 0200)
     fUNID: AnsiString;         /// Unidade do item
-    fQTD: currency;            /// Quantidade do item
-    fVL_UNIT: currency;        /// Valor unitário do item
+    fQTD: Double;            /// Quantidade do item
+    fVL_UNIT: Double;        /// Valor unitário do item
     fVL_ITEM: currency;        /// Valor do item
     fIND_PROP: AnsiString;     /// Indicador de propriedade/posse do item: 0- Item de propriedade do informante e em seu poder, 1- Item de propriedade do informante em posse de terceiros, 2- Item de propriedade de terceiros em posse do informante
     fCOD_PART: AnsiString;     /// Código do participante (campo 02 do Registro 0150): proprietário/possuidor que não seja o informante do arquivo
@@ -101,8 +101,8 @@ type
   public
     property COD_ITEM: AnsiString read FCOD_ITEM write FCOD_ITEM;
     property UNID: AnsiString read FUNID write FUNID;
-    property QTD: currency read FQTD write FQTD;
-    property VL_UNIT: currency read FVL_UNIT write FVL_UNIT;
+    property QTD: Double read FQTD write FQTD;
+    property VL_UNIT: Double read FVL_UNIT write FVL_UNIT;
     property VL_ITEM: currency read FVL_ITEM write FVL_ITEM;
     property IND_PROP: AnsiString read FIND_PROP write FIND_PROP;
     property COD_PART: AnsiString read FCOD_PART write FCOD_PART;

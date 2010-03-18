@@ -297,7 +297,7 @@ begin
                                                LFill( DT_DOC ) +
                                                LFill( CHV_NFE ) +
                                                LFill( NR_MEMO ) +
-                                               LFill( QTD,0 ) +
+                                               DFill( QTD,3 ) +
                                                LFill( UNID ) +
                                                Delimitador +
                                                #13#10;
@@ -379,15 +379,15 @@ begin
           strRegistro1300 := strRegistro1300 + LFill('1300') +
                                                LFill( COD_ITEM ) +
                                                LFill( DT_FECH ) +
-                                               LFill( ESTQ_ABERT,0,3 ) +
-                                               LFill( VOL_ENTR,0,3 ) +
-                                               LFill( VOL_DISP,0,3 ) +
-                                               LFill( VOL_SAIDAS,0,3 ) +
-                                               LFill( ESTQ_ESCR,0,3 ) +
-                                               LFill( VAL_AJ_PERDA,0,3 ) +
-                                               LFill( VAL_AJ_GANHO,0,3 ) +
-                                               LFill( ESTQ_FECHA,0,3 ) +
-                                               LFill( FECH_FISICO,0,3 ) +
+                                               DFill( ESTQ_ABERT,3 ) +
+                                               DFill( VOL_ENTR,3 ) +
+                                               DFill( VOL_DISP,3 ) +
+                                               DFill( VOL_SAIDAS,3 ) +
+                                               DFill( ESTQ_ESCR,3 ) +
+                                               DFill( VAL_AJ_PERDA,3 ) +
+                                               DFill( VAL_AJ_GANHO,3 ) +
+                                               DFill( ESTQ_FECHA,3 ) +
+                                               DFill( FECH_FISICO,3 ) +
                                                Delimitador +
                                                #13#10;
         end;
@@ -416,14 +416,14 @@ begin
         begin
           strRegistro1310 := strRegistro1310 + LFill('1310') +
                                                LFill( NUM_TANQUE ) +
-                                               LFill( ESTQ_ABERT,0,3 ) +
-                                               LFill( VOL_ENTR,0,3 ) +
-                                               LFill( VOL_DISP,0,3 ) +
-                                               LFill( VOL_SAIDAS,0,3 ) +
-                                               LFill( ESTQ_ESCR,0,3 ) +
-                                               LFill( VAL_AJ_PERDA,0,3 ) +
-                                               LFill( VAL_AJ_GANHO,0,3 ) +
-                                               LFill( FECH_FISICO,0,3 ) +
+                                               DFill( ESTQ_ABERT,3 ) +
+                                               DFill( VOL_ENTR,3 ) +
+                                               DFill( VOL_DISP,3 ) +
+                                               DFill( VOL_SAIDAS,3 ) +
+                                               DFill( ESTQ_ESCR,3 ) +
+                                               DFill( VAL_AJ_PERDA,3 ) +
+                                               DFill( VAL_AJ_GANHO,3 ) +
+                                               DFill( FECH_FISICO,3 ) +
                                                Delimitador +
                                                #13#10;
         end;
@@ -459,10 +459,10 @@ begin
                                                LFill( NOM_INTERV ) +
                                                LFill( CNPJ_INTERV ) +
                                                LFill( CPF_INTERV ) +
-                                               LFill( VAL_FECHA,0,3 ) +
-                                               LFill( VAL_ABERT,0,3 ) +
-                                               LFill( VOL_AFERI,0,3 ) +
-                                               LFill( VOL_VENDAS,0,3 ) +
+                                               DFill( VAL_FECHA,3 ) +
+                                               DFill( VAL_ABERT,3 ) +
+                                               DFill( VOL_AFERI,3 ) +
+                                               DFill( VOL_VENDAS,3 ) +
                                                Delimitador +
                                                #13#10;
         end;
@@ -653,7 +653,7 @@ begin
                                                LFill( NUM_ITEM ) +
                                                LFill( COD_ITEM ) +
                                                LFill( COD_CLASS ) +
-                                               LFill( QTD,0,3 ) +
+                                               DFill( QTD,3 ) +
                                                LFill( UNID ) +
                                                LFill( VL_ITEM,0,2 ) +
                                                LFill( VL_DESC,0,2 ) +

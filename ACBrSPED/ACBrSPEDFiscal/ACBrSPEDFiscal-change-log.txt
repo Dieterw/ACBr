@@ -47,6 +47,15 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.07b   17/03/10
+[-] Criado nova função "DFill" em ACBrUtilTXT, para atender a formatação de 
+    informações com várias casas deciamais. 
+    Todas as propriedades que precisa de mais de duas casas decimais foi 
+    substituido seu tipo de Currency para Double, e todos passaram a chamar
+    a função "DFill".
+    As variaveis do Create da class base TACBrTXT, foram comentadas, porque o 
+    esta substituindo as informações definidas em design.(solução temporária)
+
 Versão 0.07a   16/03/10
 [-] Corrigido BUG, quando a função LFill era chamada com o parametro NULL = True
     para os tipos data data, mesmo tendo uma data, retornava vazio.

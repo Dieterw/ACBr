@@ -379,11 +379,11 @@ type
 
   TRegistro0220 = class(TPersistent)
   private
-    fUNID_CONV: AnsiString;      /// Unidade comercial a ser convertida na unidade de estoque, referida em 0200:
-    fFAT_CONV: AnsiString;       /// Fator de conversão:
+    fUNID_CONV: AnsiString;  /// Unidade comercial a ser convertida na unidade de estoque, referida em 0200:
+    fFAT_CONV: Double;       /// Fator de conversão:
   public
     property UNID_CONV: AnsiString read FUNID_CONV write FUNID_CONV;
-    property FAT_CONV: AnsiString read FFAT_CONV write FFAT_CONV;
+    property FAT_CONV: Double read FFAT_CONV write FFAT_CONV;
   end;
 
   /// Registro 0220 - Lista

@@ -830,7 +830,7 @@ begin
                                                LFill( NUM_ITEM ) +
                                                LFill( COD_ITEM ) +
                                                LFill( DESCR_COMPL ) +
-                                               LFill( QTD,6,0 ) +
+                                               DFill( QTD, 5 ) +
                                                LFill( UNID ) +
                                                LFill( VL_ITEM,0,2 ) +
                                                LFill( VL_DESC,0,2 ) +
@@ -853,14 +853,14 @@ begin
                                                LFill( CST_PIS ) +
                                                LFill( VL_BC_PIS,0,2 ) +
                                                LFill( ALIQ_PIS_PERC,0,2 ) +
-                                               LFill( QUANT_BC_PIS,0,2 ) +
-                                               LFill( ALIQ_PIS_R,0,2 ) +
+                                               DFill( QUANT_BC_PIS,3 ) +
+                                               DFill( ALIQ_PIS_R,4 ) +
                                                LFill( VL_PIS,0,2 ) +
                                                LFill( CST_COFINS ) +
                                                LFill( VL_BC_COFINS,0,2 ) +
                                                LFill( ALIQ_COFINS_PERC,0,2 ) +
-                                               LFill( QUANT_BC_COFINS,0,2 ) +
-                                               LFill( ALIQ_COFINS_R,0,2 ) +
+                                               DFill( QUANT_BC_COFINS,3 ) +
+                                               DFill( ALIQ_COFINS_R,4 ) +
                                                LFill( VL_COFINS,0,2 ) +
                                                LFill( COD_CTA ) +
                                                Delimitador +
@@ -901,7 +901,7 @@ begin
         begin
           strRegistroC171 := strRegistroC171 + LFill('C171') +
                                                LFill( NUM_TANQUE,3 ) +
-                                               LFill( QTDE,0,3 ) +
+                                               DFill( QTDE, 3 ) +
                                                Delimitador +
                                                #13#10;
         end;
@@ -956,7 +956,7 @@ begin
         begin
           strRegistroC173 := strRegistroC173 + LFill('C173') +
                                                LFill( LOTE_MED ) +
-                                               LFill( QTD_ITEM,0,3 ) +
+                                               DFill( QTD_ITEM, 3 ) +
                                                LFill( DT_FAB ) +
                                                LFill( DT_VAL ) +
                                                LFill( IND_MED ) +
@@ -1049,9 +1049,9 @@ begin
                                                LFill( SER_ULT_E ) +
                                                LFill( DT_ULT_E ) +
                                                LFill( COD_PART_ULT_E ) +
-                                               LFill( QUANT_ULT_E,0,3 ) +
-                                               LFill( VL_UNIT_ULT_E,0,3 ) +
-                                               LFill( VL_UNIT_BC_ST,0,3 ) +
+                                               DFill( QUANT_ULT_E,3 ) +
+                                               DFill( VL_UNIT_ULT_E,3 ) +
+                                               DFill( VL_UNIT_BC_ST,3 ) +
                                                Delimitador +
                                                #13#10;
         end;
@@ -1106,7 +1106,7 @@ begin
           strRegistroC178 := strRegistroC178 + LFill('C178') +
                                                LFill( CL_ENQ ) +
                                                LFill( VL_UNID,0,2 ) +
-                                               LFill( QUANT_PAD,0,3 ) +
+                                               DFill( QUANT_PAD, 3 ) +
                                                Delimitador +
                                                #13#10;
         end;
@@ -1344,7 +1344,7 @@ begin
         begin
           strRegistroC321 := strRegistroC321 + LFill('C321') +
                                                LFill( COD_ITEM ) +
-                                               LFill( QTD,0,3 ) +
+                                               DFill( QTD, 3 ) +
                                                LFill( UNID ) +
                                                LFill( VL_ITEM,0,2 ) +
                                                LFill( VL_DESC,0,2 ) +
@@ -1417,7 +1417,7 @@ begin
           strRegistroC370 := strRegistroC370 + LFill('C370') +
                                                LFill( NUM_ITEM,3 ) +
                                                LFill( COD_ITEM ) +
-                                               LFill( QTD,0,3 ) +
+                                               DFill( QTD, 3 ) +
                                                LFill( UNID ) +
                                                LFill( VL_ITEM,0,3 ) +
                                                LFill( VL_DESC,0,3 ) +
@@ -1610,7 +1610,7 @@ begin
 
           strRegistroC425 := strRegistroC425 + LFill('C425') +
                                                LFill( COD_ITEM ) +
-                                               LFill( QTD,0,3 ) +
+                                               DFill( QTD,3 ) +
                                                LFill( UNID ) +
                                                LFill( VL_ITEM,0,2 ) +
                                                LFill( VL_PIS ,0,2 ) +
@@ -1679,8 +1679,8 @@ begin
         begin
           strRegistroC470 := strRegistroC470 + LFill('C470') +
                                                LFill( COD_ITEM ) +
-                                               LFill( QTD,0,3 ) +
-                                               LFill( QTD_CANC,0,3 ) +
+                                               DFill( QTD,3 ) +
+                                               DFill( QTD_CANC,3 ) +
                                                LFill( UNID ) +
                                                LFill( VL_ITEM,0,2 ) +
                                                LFill( CST_ICMS,3 ) +
@@ -1747,8 +1747,8 @@ begin
           strRegistroC495 := strRegistroC495 + LFill('C495') +
                                                LFill( ALIQ_ICMS,6,2 ) +
                                                LFill( COD_ITEM ) +
-                                               LFill( QTD,0,3 ) +
-                                               LFill( QTD_CANC,0,3 ) +
+                                               DFill( QTD,3 ) +
+                                               DFill( QTD_CANC,3 ) +
                                                LFill( UNID ) +
                                                LFill( VL_ITEM,0,2 ) +
                                                LFill( VL_DESC,0,2 ) +
@@ -1839,7 +1839,7 @@ begin
                                                LFill( NUM_ITEM,3 ) +
                                                LFill( COD_ITEM ) +
                                                LFill( COD_CLASS,4 ) +
-                                               LFill( QTD,0,3 ) +
+                                               DFill( QTD,3 ) +
                                                LFill( UNID ) +
                                                LFill( VL_ITEM,0,2 ) +
                                                LFill( VL_DESC,0,2 ) +
@@ -1986,7 +1986,7 @@ begin
           strRegistroC610 := strRegistroC610 + LFill('C610') +
                                                LFill( COD_CLASS,4 ) +
                                                LFill( COD_ITEM ) +
-                                               LFill( QTD,0,3 ) +
+                                               LFill( QTD,3 ) +
                                                LFill( UNID ) +
                                                LFill( VL_ITEM,0,2 ) +
                                                LFill( VL_DESC,0,2 ) +

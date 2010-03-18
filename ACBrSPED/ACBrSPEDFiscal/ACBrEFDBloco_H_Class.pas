@@ -181,8 +181,8 @@ begin
           strRegistroH010 := strRegistroH010 + LFill('H010') +
                                                LFill( COD_ITEM ) +
                                                LFill( UNID ) +
-                                               LFill( QTD,0 ) +
-                                               LFill( VL_UNIT,0 ) +
+                                               DFill( QTD,3 ) +
+                                               DFill( VL_UNIT,6 ) +
                                                LFill( VL_ITEM,0 ) +
                                                LFill( IND_PROP ) +
                                                LFill( COD_PART ) +

@@ -2214,6 +2214,7 @@ end;
 { TNFeEnvDPEC }
 function TNFeEnvDPEC.Executar: Boolean;
 var
+  RetOriginal:String;
   Texto : String;
   Acao  : TStringList ;
   Stream: TMemoryStream;
@@ -2274,7 +2275,8 @@ begin
 
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(HTTP.Document, 0);
-       FRetWS := NotaUtil.SeparaDados( NotaUtil.ParseText(StrStream.DataString, True),'sceRecepcaoDPECResult',True);
+       RetOriginal:=NotaUtil.ParseText(StrStream.DataString, True);
+       FRetWS := NotaUtil.SeparaDados(RetOriginal,'sceRecepcaoDPECResult',True);
        StrStream.Free;
     {$ELSE}
        ReqResp.Execute(Acao.Text, Stream);
@@ -2313,6 +2315,9 @@ begin
     FNFeChave  := RetDPEC.chNFE;
 
     FMsg      := RetDPEC.XMotivo;
+
+    if FMsg = '' then
+       FMsg:=RetOriginal;
 
     Result := (RetDPEC.cStat = 124);
     RetDPEC.Free;

@@ -47,6 +47,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+
+Alterações   18/03/10
+---------------
+[*] Alteração no  metodo de envio da DPEC para se a mensagem de erro for em branco ele retornar a mensagem original completa. (João P. Leão)
+
 Alterações   17/03/10
 ---------------
 [+] Adicionada propriedade Anexos na Funcão EnviarEmail para permitir o envio de uma lista de arquivos junto ao email com o 

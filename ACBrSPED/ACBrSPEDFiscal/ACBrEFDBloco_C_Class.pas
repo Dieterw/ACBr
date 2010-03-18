@@ -378,10 +378,14 @@ begin
         begin
           /// Tratamento NFs canceladas 02/03, denegada 04 ou inutilizada 05 - Jean Barreiros 25Nov2009
           if (COD_SIT = '02') or (COD_SIT = '03') or (COD_SIT = '04') or (COD_SIT = '05') then
+          begin
+            DT_DOC := 0;
+            DT_E_S := 0;
             booNFCancelada := true
+          end
           else
             booNFCancelada := false;
-
+          //
           strRegistroC100 := strRegistroC100 + LFill('C100') +
                                                LFill( IND_OPER ) +
                                                LFill( IND_EMIT ) +
@@ -391,8 +395,8 @@ begin
                                                LFill( SER  ) +
                                                LFill( NUM_DOC  ) +
                                                LFill( CHV_NFE  ) +
-                                               LFill( DT_DOC, 'ddmmyyyy', booNFCancelada ) +
-                                               LFill( DT_E_S, 'ddmmyyyy', booNFCancelada ) +
+                                               LFill( DT_DOC, 'ddmmyyyy' ) +
+                                               LFill( DT_E_S, 'ddmmyyyy' ) +
                                                LFill( VL_DOC , 0 , 2 , booNFCancelada ) +
                                                LFill( IND_PGTO  ) +
                                                LFill( VL_DESC,0,2, booNFCancelada ) +
@@ -1643,7 +1647,7 @@ begin
                                                LFill( COD_MOD ) +
                                                LFill( COD_SIT ) +
                                                LFill( NUM_DOC,6 ) +
-                                               LFill( DT_DOC, 'ddmmyyyy', True ) +
+                                               LFill( DT_DOC, 'ddmmyyyy' ) +
                                                LFill( VL_DOC,0,2, true ) +
                                                LFill( VL_PIS,0,2, true ) +
                                                LFill( VL_COFINS,0,2, true ) +

@@ -360,7 +360,7 @@ begin
                  LFill(NIRE, 11) +
                  LFill(CNPJ) +
                  LFill(DT_ARQ) +
-                 LFill(DT_ARQ_CONV, 'ddmmyyyy', True) +
+                 LFill(DT_ARQ_CONV, 'ddmmyyyy' ) +
                  LFill(DESC_MUN) +
                  Delimitador +
                  #13#10;

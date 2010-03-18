@@ -300,7 +300,7 @@ begin
            strRegistro0180 :=  strRegistro0180 + LFill('0180') +
                                                  LFill(COD_REL, 2) +
                                                  LFill(DT_INI_REL) +
-                                                 LFill(DT_FIN_REL, 'ddmmyyyy', True) +
+                                                 LFill(DT_FIN_REL, 'ddmmyyyy' ) +
                                                  Delimitador +
                                                  #13#10;
         end;

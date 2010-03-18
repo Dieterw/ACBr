@@ -583,13 +583,13 @@ begin
     if TIPO = 'PB'   then Tabela_1 := '1.09.0.E.11.01. .  .  .     16NNNNNNX.14.00';
     if TIPO = 'PR'   then Tabela_1 := '1.10.0.E.11.09.E.11.08.    NNNNNNNNXY.13.14';
     if TIPO = 'PE'   then Tabela_1 := '1.14.1.E.11.07. .  .  .18ANNNNNNNNNNX.14.00';
-    if TIPO = 'PE'   then Tabela_2 := '2.09.0.E.11.07.E.11.02.     NNNNNNNYX.14.13';
+    if TIPO = 'PE'   then Tabela_2 := '2.09.1.E.11.01.E.11.01.     NNNNNNNYX.14.14';
     if TIPO = 'PI'   then Tabela_1 := '1.09.0.E.11.01. .  .  .     19NNNNNNX.14.00';
     if TIPO = 'RJ'   then Tabela_1 := '1.08.0.E.11.08. .  .  .      GNNNNNNX.14.00';
     if TIPO = 'RN'   then Tabela_1 := '1.09.0.0.11.01. .  .  .     20HNNNNNX.14.00';
     if TIPO = 'RS'   then Tabela_1 := '1.10.0.E.11.01. .  .  .    INNNNNNNNX.14.00';
     if TIPO = 'RO'   then Tabela_1 := '1.09.1.E.11.04. .  .  .     ANNNNNNNX.14.00';
-    if TIPO = 'RO'   then Tabela_2 := '2.14.0.E.11.01. .  .  .NNNNNNNNNNNNNX.14.00';
+    if TIPO = 'RO'   then Tabela_2 := '2.14.1.E.11.01. .  .  .NNNNNNNNNNNNNX.14.00';
     if TIPO = 'RR'   then Tabela_1 := '1.09.0.D.09.05. .  .  .     24NNNNNNX.14.00';
     if TIPO = 'SC'   then Tabela_1 := '1.09.0.E.11.01. .  .  .     NNNNNNNNX.14.00';
     if TIPO = 'SP'   then Tabela_1 := '1.12.0.D.11.12.D.11.13.  NNNNNNNNXNNY.11.14';

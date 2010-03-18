@@ -42,7 +42,7 @@ unit ACBrUtilTXT;
 
 interface
 
-uses SysUtils, Classes, DateUtils;
+uses SysUtils, Classes, DateUtils, Math;
 
 type
   TErrorEvent = procedure(const MsnError: AnsiString) of object;
@@ -70,7 +70,14 @@ type
 
     function RFill(Value: AnsiString; Size: Integer = 0; Caracter: Char = ' '): AnsiString; overload;
     function LFill(Value: AnsiString; Size: Integer = 0; Caracter: Char = '0'): AnsiString; overload;
-    function LFill(Value: Currency; Size: Integer; Decimal: Integer = 2; Nulo: Boolean = false; Caracter: Char = '0'): AnsiString; overload;
+    function DFill(Value: Double;
+                   Decimal: Integer = 2;
+                   Nulo: Boolean = false): AnsiString;
+    function LFill(Value: Currency;
+                   Size: Integer;
+                   Decimal: Integer = 2;
+                   Nulo: Boolean = false;
+                   Caracter: Char = '0'): AnsiString; overload;
     function LFill(Value: Integer; Size: Integer; Nulo: Boolean = false; Caracter: Char = '0'): AnsiString; overload;
     function LFill(Value: TDateTime; Mask: AnsiString = 'ddmmyyyy'; Nulo: Boolean = false): AnsiString; overload;
     ///
@@ -101,9 +108,9 @@ end;
 constructor TACBrTXT.Create(AOwner: TComponent);
 begin
   inherited;
-  FDelimitador := '|';
-  FTrimString  := true;
-  FCurMascara  := '#0.00';
+//  FDelimitador := '|';
+//  FTrimString  := true;
+//  FCurMascara  := '#0.00';
 end;
 
 destructor TACBrTXT.Destroy;
@@ -142,7 +149,11 @@ begin
   Result := FDelimitador + Result;
 end;
 
-function TACBrTXT.LFill(Value: Currency; Size: Integer; Decimal: Integer = 2; Nulo: Boolean = false; Caracter: Char = '0'): AnsiString;
+function TACBrTXT.LFill(Value: Currency;
+                        Size: Integer;
+                        Decimal: Integer = 2;
+                        Nulo: Boolean = false;
+                        Caracter: Char = '0'): AnsiString;
 var
 intFor, intP: Integer;
 begin
@@ -157,12 +168,25 @@ begin
   begin
      intP := intP * 10;
   end;
-  /// Se a propriedade CurMascara <> '' Value será formatado com a mascara
-  /// existente nessa propriedade.
   if FCurMascara <> '' then
      Result := FDelimitador + FormatCurr(FCurMascara, Value)
   else
      Result := LFill(Trunc(Value * intP), Size, Nulo, Caracter);
+end;
+
+function TACBrTXT.DFill(Value: Double;
+                        Decimal: Integer = 2;
+                        Nulo: Boolean = false): AnsiString;
+var
+intFor: Integer;
+begin
+  /// Se o parametro Nulo = true e Value = 0, será retornado '|'
+  if (Nulo) and (Value = 0) then
+  begin
+     Result := FDelimitador;
+     Exit;
+  end;
+  Result := FDelimitador + CurrToStr(RoundTo(Value, -1 * Decimal));
 end;
 
 function TACBrTXT.LFill(Value: Integer; Size: Integer; Nulo: Boolean = false; Caracter: Char = '0'): AnsiString;

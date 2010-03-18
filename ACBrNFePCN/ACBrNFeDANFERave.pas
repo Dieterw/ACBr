@@ -99,6 +99,7 @@ var
    i: integer;
 
    wReport: TRaveReport;
+   wRegion: array [1..2] of TRaveRegion;
    wSection: TRaveSection;
    wBand: TRaveBand;
    wDataView: TRaveDataView;
@@ -115,6 +116,7 @@ var
    wDataMemo: array[1..1] of TRaveDataMemo;
 
    vMargemInferiorAtual, vMargemInferior, vHeightPadrao: double;
+   vMargemSuperiorAtual, vMargemSuperior: double;
 begin
    try
       dmDanfe.RvProject.Open;
@@ -474,6 +476,37 @@ begin
             if (wBand <> nil) then
                wBand.Height := wBand.Height-(vMargemInferior-vMargemInferiorAtual);
          end;
+
+         //Margem Superior -- já esta funcional -- basta descomentar
+         {wReport := FindRaveComponent('DANFE1',nil) as TRaveReport;
+         wPage[1] := FindRaveComponent('Page1',wReport) as TRavePage;
+         wPage[2] := FindRaveComponent('Page2',wReport) as TRavePage;
+         wRegion[1] := FindRaveComponent('Region1',wPage[1]) as TRaveRegion;
+         wRegion[2] := FindRaveComponent('Region1',wPage[2]) as TRaveRegion;
+         if (wRegion[1] <> nil) then
+            vMargemSuperiorAtual:=wRegion[1].Top
+         else
+            vMargemSuperiorAtual:=0.406/2.54;
+         vMargemSuperior:=FMargemSuperior/2.54;
+         vMargemSuperior:=vMargemSuperiorAtual-vMargemSuperior;
+         i:=1;
+         while (i <= 2) do
+         begin
+            if (wRegion[i] <> nil) then
+            begin
+               if (vMargemSuperior < 0) then
+               begin
+                  wRegion[i].Top:=wRegion[i].Top+(vMargemSuperior*(-1));
+                  wRegion[i].Height:=wRegion[i].Height-(vMargemSuperior*(-1));
+               end
+               else if (vMargemSuperior > 0) then
+               begin
+                  wRegion[i].Top:=wRegion[i].Top-(vMargemSuperior);
+                  wRegion[i].Height:=wRegion[i].Height+(vMargemSuperior);
+               end;
+            end;
+            i:=i+1;
+         end;}
       end;
    finally
       dmDanfe.RvProject.ExecuteReport('DANFE1');

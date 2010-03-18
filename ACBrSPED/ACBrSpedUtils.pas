@@ -596,6 +596,7 @@ begin
     if TIPO = 'SP'   then Tabela_2 := '2.12.0.D.11.12. .  .  .  NNNNNNNNXNNN.11.00';
     if TIPO = 'SE'   then Tabela_1 := '1.09.0.E.11.01. .  .  .     NNNNNNNNX.14.00';
     if TIPO = 'TO'   then Tabela_1 := '1.11.0.E.11.06. .  .  .   29JKNNNNNNX.14.00';
+    if TIPO = 'TO'   then Tabela_2 := '2.09.0.E.11.01. .  .  .     NNNNNNNNX.14.00';
     if TIPO = 'CNPJ' then Tabela_1 := '1.14.0.E.11.21.E.11.22.NNNNNNNNNNNNXY.13.14';
     if TIPO = 'CPF'  then Tabela_1 := '1.11.0.E.11.31.E.11.32.   NNNNNNNNNXY.13.14';
 

@@ -56,6 +56,8 @@ Versão 0.07b   17/03/10
     As variaveis do Create da class base TACBrTXT, foram comentadas, porque o 
     esta substituindo as informações definidas em design.(solução temporária)
 
+    Note : Recompile seu pacote ACBrSPED.
+
 Versão 0.07a   16/03/10
 [-] Corrigido BUG, quando a função LFill era chamada com o parametro NULL = True
     para os tipos data data, mesmo tendo uma data, retornava vazio.

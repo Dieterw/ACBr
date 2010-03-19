@@ -79,7 +79,7 @@ type
                    Nulo: Boolean = false;
                    Caracter: Char = '0'): AnsiString; overload;
     function LFill(Value: Integer; Size: Integer; Nulo: Boolean = false; Caracter: Char = '0'): AnsiString; overload;
-    function LFill(Value: TDateTime; Mask: AnsiString = 'ddmmyyyy'; Nulo: Boolean = false): AnsiString; overload;
+    function LFill(Value: TDateTime; Mask: AnsiString = 'ddmmyyyy'): AnsiString; overload;
     ///
     procedure Check(Condicao: Boolean; const Msg: AnsiString); overload;
     procedure Check(Condicao: Boolean; Msg: AnsiString; Fmt: array of const); overload;
@@ -200,10 +200,10 @@ begin
   Result := LFill(IntToStr(Value), Size, Caracter);
 end;
 
-function TACBrTXT.LFill(Value: TDateTime; Mask: AnsiString = 'ddmmyyyy'; Nulo: Boolean = false): AnsiString;
+function TACBrTXT.LFill(Value: TDateTime; Mask: AnsiString = 'ddmmyyyy'): AnsiString;
 begin
-  /// Se o parametro Nulo = true e Value = 0, será retornado '|'
-  if (Nulo) and (Value = 0) then
+  /// Se o parametro Value = 0, será retornado '|'
+  if (Value = 0) then
   begin
      Result := FDelimitador;
      Exit;

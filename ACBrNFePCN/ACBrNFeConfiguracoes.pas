@@ -46,16 +46,20 @@ unit ACBrNFeConfiguracoes;
 
 interface
 
-uses {$IFNDEF ACBrNFeOpenSSL} ACBrCAPICOM_TLB, {$ENDIF}
+uses {$IFNDEF ACBrNFeOpenSSL} ACBrCAPICOM_TLB, JwaWinCrypt, JwaWinType, ACBrMSXML2_TLB,  {$ENDIF}
   Classes, Sysutils, pcnConversao;
+
+{$IFNDEF ACBrNFeOpenSSL}
+  const CAPICOM_STORE_NAME = 'My'; //My CA Root AddressBook
+{$ENDIF}
 
 type
 
   TCertificadosConf = class(TComponent)
   private
+    FSenhaCert: AnsiString;
     {$IFDEF ACBrNFeOpenSSL}
        FCertificado: AnsiString;
-       FSenhaCert: AnsiString;
     {$ELSE}
        FNumeroSerie: AnsiString;
        FDataVenc: TDateTime;
@@ -71,11 +75,11 @@ type
   published
     {$IFDEF ACBrNFeOpenSSL}
        property Certificado: AnsiString read FCertificado write FCertificado;
-       property Senha: AnsiString read FSenhaCert write FSenhaCert;
     {$ELSE}
        property NumeroSerie: AnsiString read GetNumeroSerie write SetNumeroSerie;
-       property DataVenc: TDateTime read GetDataVenc; 
+       property DataVenc: TDateTime read GetDataVenc;
     {$ENDIF}
+       property Senha: AnsiString read FSenhaCert write FSenhaCert;    
   end;
 
   TWebServicesConf = Class(TComponent)
@@ -337,7 +341,7 @@ begin
 
   if Codigo < 0 then
      raise Exception.Create('UF inválida');
-     
+
   FUF       := AValue;
   FUFCodigo := Codigo;
 end;
@@ -351,13 +355,20 @@ var
   Certs        : ICertificates2;
   Cert         : ICertificate2;
   i            : Integer;
+
+  xmldoc  : IXMLDOMDocument3;
+  xmldsig : IXMLDigitalSignature;
+  dsigKey   : IXMLDSigKey;
+  SigKey    : IXMLDSigKeyEx;
+  PrivateKey : IPrivateKey;
+  hCryptProvider : HCRYPTPROV;
 begin
   if NotaUtil.EstaVazio( FNumeroSerie ) then
     raise Exception.Create('Número de Série do Certificado Digital não especificado !');
 
   Result := nil;
   Store := CoStore.Create;
-  Store.Open(CAPICOM_CURRENT_USER_STORE, 'My', CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED);
+  Store.Open(CAPICOM_CURRENT_USER_STORE, CAPICOM_STORE_NAME, CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED);
 
   Certs := Store.Certificates as ICertificates2;
   for i:= 1 to Certs.Count do
@@ -365,8 +376,37 @@ begin
     Cert := IInterface(Certs.Item[i]) as ICertificate2;
     if Cert.SerialNumber = FNumeroSerie then
     begin
+      if NotaUtil.EstaVazio(NumCertCarregado) then
+         NumCertCarregado := Cert.SerialNumber;
+      if FSenhaCert <> '' then
+       begin
+         PrivateKey := Cert.PrivateKey;
+
+         xmldoc := CoDOMDocument50.Create;
+         xmldsig := CoMXDigitalSignature50.Create;
+         xmldsig.signature := xmldoc.selectSingleNode('.//ds:Signature');
+         xmldsig.store := CertStoreMem;
+
+         dsigKey := xmldsig.createKeyFromCSP(PrivateKey.ProviderType, PrivateKey.ProviderName, PrivateKey.ContainerName, 0);
+         if (dsigKey = nil) then
+            raise Exception.Create('Erro ao criar a chave do CSP.');
+
+         SigKey := dsigKey as IXMLDSigKeyEx;
+         SigKey.getCSPHandle( hCryptProvider );
+
+         try
+           CryptSetProvParam( hCryptProvider , PP_SIGNATURE_PIN, LPBYTE(FSenhaCert), 0 )
+         finally
+           CryptReleaseContext(hCryptProvider, 0);
+         end;
+
+         SigKey    := nil;
+         dsigKey   := nil;
+         xmldsig   := nil;
+      end;
+      
       Result := Cert;
-      FDataVenc := Cert.ValidToDate;      
+      FDataVenc := Cert.ValidToDate;
       break;
     end;
   end;
@@ -394,7 +434,7 @@ var
   Cert         : ICertificate2;
 begin
   Store := CoStore.Create;
-  Store.Open(CAPICOM_CURRENT_USER_STORE, 'My', CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED);
+  Store.Open(CAPICOM_CURRENT_USER_STORE, CAPICOM_STORE_NAME, CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED);
 
   Certs := Store.Certificates as ICertificates2;
   Certs2 := Certs.Select('Certificado(s) Digital(is) disponível(is)', 'Selecione o Certificado Digital para uso no aplicativo', false);

@@ -51,7 +51,7 @@ unit ACBrNFeUtil;
 
 interface
 
-uses {$IFNDEF ACBrNFeOpenSSL}ACBrCAPICOM_TLB, ACBrMSXML2_TLB, {$ENDIF}
+uses {$IFNDEF ACBrNFeOpenSSL}ACBrCAPICOM_TLB, ACBrMSXML2_TLB, JwaWinCrypt, {$ENDIF}
   Classes, Forms,
   {$IFDEF FPC}
      LResources, Controls, Graphics, Dialogs,
@@ -1506,7 +1506,7 @@ begin
    if (xmldsig.signature = nil) then
       raise Exception.Create('É preciso carregar o template antes de assinar.');
 
-   if NumCertCarregado <> Certificado.SerialNumber then
+  if NumCertCarregado <> Certificado.SerialNumber then
       CertStoreMem := nil;
 
    if  CertStoreMem = nil then
@@ -1533,6 +1533,7 @@ begin
    xmldsig.store := CertStoreMem;
 
    dsigKey := xmldsig.createKeyFromCSP(PrivateKey.ProviderType, PrivateKey.ProviderName, PrivateKey.ContainerName, 0);
+
    if (dsigKey = nil) then
       raise Exception.Create('Erro ao criar a chave do CSP.');
 

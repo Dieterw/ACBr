@@ -51,7 +51,7 @@ uses Classes, SysUtils,
   {$IFDEF ACBrNFeOpenSSL}
     HTTPSend,
   {$ELSE}
-     SoapHTTPClient, SOAPHTTPTrans, JwaWinCrypt, WinInet, ACBrCAPICOM_TLB,
+     SoapHTTPClient, SOAPHTTPTrans, JwaWinCrypt, JwaWinType, WinInet, ACBrCAPICOM_TLB, ACBrMSXML2_TLB,
   {$ENDIF}
   pcnNFe, pcnNFeW,
   pcnRetConsReciNFe, pcnRetConsCad, pcnAuxiliar, pcnConversao, pcnRetDPEC,

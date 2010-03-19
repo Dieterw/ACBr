@@ -7,7 +7,7 @@ interface
 uses IniFiles, ShellAPI,
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, Buttons, ComCtrls, OleCtrls, SHDocVw,
-  ACBrNFe, pcnConversao, ACBrNFeDANFEClass, ACBrNFeDANFERave, ACBrUtil;
+  ACBrNFe, pcnConversao, ACBrNFeDANFEClass, ACBrNFeDANFERave, ACBrUtil ;
 
 type
   TForm1 = class(TForm)
@@ -245,11 +245,11 @@ begin
 
   Ini := TIniFile.Create( IniFile );
   try
+      edtSenha.Text    := Ini.ReadString( 'Certificado','Senha'   ,'') ;
+      ACBrNFe1.Configuracoes.Certificados.Senha        := edtSenha.Text;      
       {$IFDEF ACBrNFeOpenSSL}
          edtCaminho.Text  := Ini.ReadString( 'Certificado','Caminho' ,'') ;
-         edtSenha.Text    := Ini.ReadString( 'Certificado','Senha'   ,'') ;
          ACBrNFe1.Configuracoes.Certificados.Certificado  := edtCaminho.Text;
-         ACBrNFe1.Configuracoes.Certificados.Senha        := edtSenha.Text;
          edtNumSerie.Visible := False;
          Label25.Visible := False;
          sbtnGetCert.Visible := False;
@@ -257,14 +257,9 @@ begin
          edtNumSerie.Text := Ini.ReadString( 'Certificado','NumSerie','') ;
          ACBrNFe1.Configuracoes.Certificados.NumeroSerie := edtNumSerie.Text;
          edtNumSerie.Text := ACBrNFe1.Configuracoes.Certificados.NumeroSerie;
-         Label1.Caption := 'Informe o número de série do certificado'#13+
-                           'Disponível no Internet Explorer no menu'#13+
-                           'Ferramentas - Opções da Internet - Conteúdo '#13+
-                           'Certificados - Exibir - Detalhes - '#13+
-                           'Número do certificado';
-         Label2.Visible := False;
+         Label1.Caption := 'Informe o número de série do certificado disponível'#13+
+                           'no Internet Explorer ';
          edtCaminho.Visible := False;
-         edtSenha.Visible   := False;
          sbtnCaminhoCert.Visible := False;
       {$ENDIF}
 
@@ -466,17 +461,18 @@ end;
 
 procedure TForm1.btnCriarEnviarClick(Sender: TObject);
 var
- vAux : String;
+ vAux, vNumLote : String;
 begin
-if not(InputQuery('WebServices Enviar', 'Numero da Nota', vAux)) then
+  if not(InputQuery('WebServices Enviar', 'Numero da Nota', vAux)) then
+    exit;
+
+  if not(InputQuery('WebServices Enviar', 'Numero do Lote', vNumLote)) then
     exit;
 
   ACBrNFe1.NotasFiscais.Clear;
 
   with ACBrNFe1.NotasFiscais.Add.NFe do
   begin
-    infNFe.ID := vAux;
-
     Ide.natOp     := 'VENDA PRODUCAO DO ESTAB.';
     Ide.nNF       := StrToInt(vAux);
     Ide.cNF       := StrToInt(vAux);
@@ -493,6 +489,7 @@ if not(InputQuery('WebServices Enviar', 'Numero da Nota', vAux)) then
 
     Emit.CNPJCPF           := edtEmitCNPJ.Text;
     Emit.IE                := edtEmitIE.Text;
+
     Emit.xNome             := edtEmitRazao.Text;
     Emit.xFant             := edtEmitFantasia.Text;
     Emit.EnderEmit.fone    := edtEmitFone.Text;
@@ -526,16 +523,17 @@ if not(InputQuery('WebServices Enviar', 'Numero da Nota', vAux)) then
     begin
       infAdProd     := 'Teste de informacao adicional;Teste de Segunda Linha';
       Prod.nItem    := 1;
-      Prod.CFOP     := '5101';
+      Prod.CFOP     := '5411';
       Prod.cProd    := '67';
-      Prod.xProd    := 'ALHO 400 G';
-      Prod.qCom     := 100;
+      Prod.xProd    := 'TESTE DE PRODUTO COM DESCONTO';
+      Prod.qCom     := 1;
       Prod.uCom     := 'KG';
-      Prod.vProd    := 100;
-      Prod.vUnCom   := 10;
-      Prod.qTrib    := 100;
+      Prod.vProd    := 1.37;
+      Prod.vUnCom   := 1.45;
+      Prod.vDesc    := 0.08;
+      Prod.qTrib    := 1;
       Prod.uTrib    := 'KG';
-      Prod.vUnTrib  := 10;
+      Prod.vUnTrib  := 1.37;
       with Imposto do
       begin
         with ICMS do
@@ -543,14 +541,14 @@ if not(InputQuery('WebServices Enviar', 'Numero da Nota', vAux)) then
           CST := cst00;
           ICMS.modBC  := dbiPrecoTabelado;
           ICMS.pICMS  := 18;
-          ICMS.vICMS  := 180;
-          ICMS.vBC    := 1000;
+          ICMS.vICMS  := 0.25;
+          ICMS.vBC    := 1.37;
         end;
         IPI.CST := ipi01;
       end;
     end;
 
-    with Det.Add do
+{    with Det.Add do
     begin
       Prod.nItem    := 2;
       Prod.CFOP     := '5101';
@@ -576,12 +574,13 @@ if not(InputQuery('WebServices Enviar', 'Numero da Nota', vAux)) then
         end;
         IPI.CST := ipi01;
       end;
-    end;
+    end;}
 
-    Total.ICMSTot.vBC   := 1000;
-    Total.ICMSTot.vICMS := 180;
-    Total.ICMSTot.vNF   := 1000;
-    Total.ICMSTot.vProd := 1000;
+
+    Total.ICMSTot.vBC   := 1.37;
+    Total.ICMSTot.vICMS := 0.25;
+    Total.ICMSTot.vProd := 1.37;
+    Total.ICMSTot.vNF   := 1.37;
   end;
 
 {  with ACBrNFe1.NotasFiscais.Add.NFe do
@@ -694,7 +693,10 @@ if not(InputQuery('WebServices Enviar', 'Numero da Nota', vAux)) then
     Total.ICMSTot.vProd := 1000;
   end;}
 
-  ACBrNFe1.Enviar(0);
+  ACBrNFe1.Enviar(StrToInt(vNumLote));
+
+
+
   ShowMessage(ACBrNFe1.WebServices.Retorno.NFeRetorno.ProtNFe.Items[0].nProt);
   ShowMessage(ACBrNFe1.WebServices.Retorno.NFeRetorno.nRec);
 
@@ -839,12 +841,11 @@ begin
 if not(InputQuery('WebServices Enviar', 'Numero da Nota', vAux)) then
     exit;
 
+  ACBrNFe1.Configuracoes.Geral.FormaEmissao := teSCAN;  
   ACBrNFe1.NotasFiscais.Clear;
 
   with ACBrNFe1.NotasFiscais.Add.NFe do
   begin
-    infNFe.ID := vAux;
-
     Ide.natOp     := 'VENDA PRODUCAO DO ESTAB.';
     Ide.nNF       := StrToInt(vAux);
     Ide.cNF       := StrToInt(vAux);
@@ -857,6 +858,7 @@ if not(InputQuery('WebServices Enviar', 'Numero da Nota', vAux)) then
     Ide.verProc   := '1.0.0.0';
     Ide.cUF       := 35;
     Ide.cMunFG    := 3554003;
+    Ide.tpEmis    := teSCAN;
 
     Emit.CNPJCPF           := edtEmitCNPJ.Text;
     Emit.IE                := edtEmitIE.Text;
@@ -1053,12 +1055,17 @@ begin
   OpenDialog1.DefaultExt := '*-nfe.XML';
   OpenDialog1.Filter := 'Arquivos NFE (*-nfe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|Todos os Arquivos (*.*)|*.*';
   OpenDialog1.InitialDir := ACBrNFe1.Configuracoes.Geral.PathSalvar;
+  ACBrNFe1.NotasFiscais.Clear;
   if OpenDialog1.Execute then
-  begin
-    ACBrNFe1.NotasFiscais.Clear;
     ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
-    ACBrNFe1.NotasFiscais.ImprimirPDF;
-  end;
+  if OpenDialog1.Execute then
+    ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
+  if OpenDialog1.Execute then
+    ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
+  if OpenDialog1.Execute then
+    ACBrNFe1.NotasFiscais.LoadFromFile(OpenDialog1.FileName);
+
+  ACBrNFe1.NotasFiscais.ImprimirPDF;
 end;
 
 procedure TForm1.btnEnviarEmailClick(Sender: TObject);
@@ -1340,6 +1347,7 @@ if not(InputQuery('WebServices DPEC', 'Numero da Nota', vAux)) then
     Total.ICMSTot.vProd := 1000;
   end;}
 
+  ACBrNFe1.NotasFiscais.SaveToFile();
   ACBrNFe1.WebServices.EnviarDPEC.Executar;
 
   //protocolo de envio ao DPEC e impressão do DANFE
@@ -1399,8 +1407,18 @@ begin
     begin
     with ACBrNFe1.NotasFiscais.Items[n].NFe do
      begin
+
        Nota := trvwNFe.Items.Add(nil,infNFe.ID);
        trvwNFe.Items.AddChild(Nota,'ID= ' +infNFe.ID);
+       Node := trvwNFe.Items.AddChild(Nota,'procNFe');
+       trvwNFe.Items.AddChild(Node,'tpAmb= '     +TpAmbToStr(procNFe.tpAmb));
+       trvwNFe.Items.AddChild(Node,'verAplic= '  +procNFe.verAplic);
+       trvwNFe.Items.AddChild(Node,'chNFe= '     +procNFe.chNFe);
+       trvwNFe.Items.AddChild(Node,'dhRecbto= '  +DateTimeToStr(procNFe.dhRecbto));
+       trvwNFe.Items.AddChild(Node,'nProt= '     +procNFe.nProt);
+       trvwNFe.Items.AddChild(Node,'digVal= '    +procNFe.digVal);
+       trvwNFe.Items.AddChild(Node,'cStat= '     +IntToStr(procNFe.cStat));
+       trvwNFe.Items.AddChild(Node,'xMotivo= '   +procNFe.xMotivo);
 
        Node := trvwNFe.Items.AddChild(Nota,'Ide');
        trvwNFe.Items.AddChild(Node,'cNF= '     +IntToStr(Ide.cNF));

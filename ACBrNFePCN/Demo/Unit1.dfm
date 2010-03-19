@@ -101,7 +101,7 @@ object Form1: TForm1
         Top = 15
         Width = 277
         Height = 360
-        ActivePage = TabSheet4
+        ActivePage = TabSheet1
         Align = alClient
         MultiLine = True
         TabOrder = 0
@@ -1022,6 +1022,7 @@ object Form1: TForm1
     Top = 152
   end
   object ACBrNFe1: TACBrNFe
+    Configuracoes.Geral.FormaEmissao = teContingencia
     Configuracoes.Geral.PathSalvar = 'C:\Program Files\Borland\Delphi7\Bin\'
     Configuracoes.WebServices.UF = 'SP'
     Configuracoes.WebServices.AguardarConsultaRet = 15000
@@ -1036,13 +1037,11 @@ object Form1: TForm1
     Configuracoes.Arquivos.PathInu = 'D:\delphi\ACBr\trunk\ACBrNFePCN\ACBrNFeMonitor\Arqs'
     Configuracoes.Arquivos.PathDPEC = 'D:\delphi\ACBr\trunk\ACBrNFePCN\ACBrNFeMonitor\Arqs'
     OnStatusChange = ACBrNFe1StatusChange
-    DANFE = ACBrNFeDANFERave1
     OnGerarLog = ACBrNFe1GerarLog
     Left = 707
     Top = 153
   end
   object ACBrNFeDANFERave1: TACBrNFeDANFERave
-    ACBrNFe = ACBrNFe1
     PathPDF = 'C:\Program Files\Borland\Delphi7\Bin\'
     ImprimirHoraSaida = False
     MostrarPreview = True
@@ -1058,6 +1057,9 @@ object Form1: TForm1
     CasasDecimais._qCom = 2
     CasasDecimais._vUnCom = 2
     ExibirResumoCanhoto = False
+    FormularioContinuo = False
+    TamanhoFonte_DemaisCampos = 10
+    ProdutosPorPagina = 0
     RavFile = 
       'D:\delphi\ACBr\trunk\ACBrNFePCN\Demo\Report\NotaFiscalEletronica' +
       '.rav'

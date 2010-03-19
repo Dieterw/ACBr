@@ -354,15 +354,8 @@ begin
                'Método de Monitoramento o ACBrNFeMonitor'+
                ' deve ser reiniciado.',mtInformation,[mbok],0) ;
     {$IFDEF ACBrNFeOpenSSL}
-       gbxCertificado.Height := 109;
-       rgFormaEmissao.Top := 105;
        lblCaminho.Caption := 'Arquivo PFX';
-       edtSenha.Visible := True;
-       lblSenha.Visible := True;
     {$ELSE}
-       edtSenha.Visible := False;
-       lblSenha.Visible := False;
-       gbxCertificado.Height := 69;
        lblCaminho.Caption := 'Número de Série';
     {$ENDIF}
     btConfig.Click ;
@@ -636,24 +629,17 @@ begin
      ACBrNFe1.Configuracoes.WebServices.Ambiente   := StrToTpAmb(Ok,IntToStr(rgTipoAmb.ItemIndex+1));
 
      {$IFDEF ACBrNFeOpenSSL}
-     gbxCertificado.Height := 109;
-     rgFormaEmissao.Top := 105;
      lblCaminho.Caption := 'Arquivo PFX';
-     edtSenha.Visible := True;
-     lblSenha.Visible := True;
      edtCaminho.Text  := Ini.ReadString( 'Certificado','Caminho' ,'') ;
-     edtSenha.Text    := LeINICrypt(INI,'Certificado','Senha', _C) ;
      ACBrNFe1.Configuracoes.Certificados.Certificado  := edtCaminho.Text;
-     ACBrNFe1.Configuracoes.Certificados.Senha        := edtSenha.Text;
      {$ELSE}
-     edtSenha.Visible := False;
-     lblSenha.Visible := False;
-     gbxCertificado.Height := 69;
      lblCaminho.Caption := 'Número de Série';
      edtCaminho.Text  := Ini.ReadString( 'Certificado','Caminho' ,'') ;
      ACBrNFe1.Configuracoes.Certificados.NumeroSerie := edtCaminho.Text;
      edtCaminho.Text := ACBrNFe1.Configuracoes.Certificados.NumeroSerie;
      {$ENDIF}
+     edtSenha.Text    := LeINICrypt(INI,'Certificado','Senha', _C) ;
+     ACBrNFe1.Configuracoes.Certificados.Senha        := edtSenha.Text;
 
      edtProxyHost.Text  := Ini.ReadString( 'Proxy','Host'   ,'') ;
      edtProxyPorta.Text := Ini.ReadString( 'Proxy','Porta'  ,'') ;
@@ -795,9 +781,7 @@ begin
      Ini.WriteInteger('ACBrNFeMonitor','Linhas_Log_Comp',sedLogLinhasComp.Value);
 
      Ini.WriteString( 'Certificado','Caminho' ,edtCaminho.Text) ;
-     {$IFDEF ACBrNFeOpenSSL}
      GravaINICrypt(INI,'Certificado','Senha', edtSenha.Text, _C) ;
-     {$ENDIF}
 
      Ini.WriteInteger('Geral','DANFE'       ,rgTipoDanfe.ItemIndex) ;
      Ini.WriteInteger('Geral','FormaEmissao',rgFormaEmissao.ItemIndex) ;

@@ -487,6 +487,17 @@ begin
     Ide.cUF       := 35;
     Ide.cMunFG    := 3554003;
 
+    {Notas Referenciadas
+    with Ide.NFref.Add do
+     begin
+       refNFe := ChaveNFeOriginal;
+
+       ou
+
+       RefNF.cUF := 35;
+       RefNF.AAMM := '0310';
+     end       }
+
     Emit.CNPJCPF           := edtEmitCNPJ.Text;
     Emit.IE                := edtEmitIE.Text;
 

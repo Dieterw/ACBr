@@ -379,6 +379,13 @@ begin
     begin
       if NotaUtil.EstaVazio(NumCertCarregado) then
          NumCertCarregado := Cert.SerialNumber;
+      if  CertStoreMem = nil then
+       begin
+         CertStoreMem := CoStore.Create;
+         CertStoreMem.Open(CAPICOM_MEMORY_STORE, 'Memoria', CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED);
+         CertStoreMem.Add(Cert);
+       end;    
+
       if FSenhaCert <> '' then
        begin
          PrivateKey := Cert.PrivateKey;
@@ -407,7 +414,8 @@ begin
          SigKey.getCSPHandle( hCryptProvider );
 
          try
-           CryptSetProvParam( hCryptProvider , PP_SIGNATURE_PIN, LPBYTE(FSenhaCert), 0 )
+           if not CryptSetProvParam( hCryptProvider , PP_SIGNATURE_PIN, LPBYTE(FSenhaCert), 0 ) then
+              raise Exception.Create(IntToStr(GetLastError));
          finally
            CryptReleaseContext(hCryptProvider, 0);
          end;

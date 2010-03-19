@@ -41,6 +41,11 @@
 |*  - Doação do componente para o Projeto ACBr
 |* 20/08/2009: Caique Rodrigues
 |*  - Doação units para geração do Danfe via QuickReport
+|* 18/03/2010: André R. Langner
+|*  - Acréscimo dos parâmetros "FEmail", "FResumoCanhoto", "FFax", "FNumCopias",
+|*    "FSistema", "FSite", "FUsuario", "FImprimeHoraSaida", "FHoraSaida",
+|*    nas Class procedures "Imprimir" e "SavePDF"
+|*  - Habilitada a funcionalidade da procedure "SavePDF";
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeQR;
@@ -49,8 +54,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, QuickRpt, 
-  QRCtrls, ACBrNFeQRCodeBar, pcnNFe ;
+  Dialogs, ExtCtrls, QuickRpt, QRCtrls,
+  ACBrNFeQRCodeBar, pcnNFe, ACBrNFe, ACBrNFeUtil, pcnConversao{, QRPDFFilt {Descomentar para usar PDF};
 
 type
   TfqrDANFeQR = class(TForm)
@@ -59,35 +64,107 @@ type
     { Private declarations }
   protected
     //BarCode : TBarCode128c ;
-    FNFe: TNFe;
-    FLogo: String;
-    FUrl: String;
-    AfterPreview : boolean ;
-    ChangedPos : boolean ;
-    FSemValorFiscal : boolean ;
+    FACBrNFe            : TACBrNFe;
+    FNFe                : TNFe;
+    FLogo               : String;
+    FEmail              : String;
+    FImprimeHoraSaida   : Boolean;
+    FHoraSaida          : String;
+    FResumoCanhoto      : Boolean;
+    FFax                : String;
+    FNumCopias          : Integer;
+    FSistema            : String;
+    FSite               : String;
+    FUsuario            : String;
+    AfterPreview        : Boolean ;
+    ChangedPos          : Boolean ;
+    FSemValorFiscal     : Boolean ;
+    FMargemSuperior     : double;
+    FMargemInferior     : double;
+    FMargemEsquerda     : double;
+    FMargemDireita      : double;
+
     procedure qrlSemValorFiscalPrint(sender: TObject; var Value: String);
     procedure SetBarCodeImage ( ACode : String ; QRImage : TQRImage ) ;
   public
     { Public declarations }
-    class procedure Imprimir(ANFe: TNFe; ALogo: String = ''; AUrl: String = '' ; APreview : Boolean = True );
-    class procedure SavePDF(AFile: String; ANFe: TNFe; ALogo, AUrl: String);
+    class procedure Imprimir(ANFe                : TNFe;
+                             ALogo               : String    = '';
+                             AEmail              : String    = '';
+                             AImprimeHoraSaida   : Boolean   = False;
+                             AHoraSaida          : String    = '';
+                             AResumoCanhoto      : Boolean   = False;
+                             AFax                : String    = '';
+                             ANumCopias          : Integer   = 1;
+                             ASistema            : String    = '';
+                             ASite               : String    = '';
+                             AUsuario            : String    = '' ;
+                             APreview            : Boolean   = True;
+                             AMargemSuperior     : Double    = 0.8;
+                             AMargemInferior     : Double    = 0.8;
+                             AMargemEsquerda     : Double    = 0.6;
+                             AMargemDireita      : Double    = 0.51);
+
+    class procedure SavePDF(AFile: String;
+                            ANFe                : TNFe;
+                            ALogo               : String    = '';
+                            AEmail              : String    = '';
+                            AImprimeHoraSaida   : Boolean   = False;
+                            AHoraSaida          : String    = '';
+                            AResumoCanhoto      : Boolean   = False;
+                            AFax                : String    = '';
+                            ANumCopias          : Integer   = 1;
+                            ASistema            : String    = '';
+                            ASite               : String    = '';
+                            AUsuario            : String    = '';
+                            AMargemSuperior     : Double    = 0.8;
+                            AMargemInferior     : Double    = 0.8;
+                            AMargemEsquerda     : Double    = 0.6;
+                            AMargemDireita      : Double    = 0.51);
 
   end;
 
 
 implementation
 
-uses MaskUtils;
+uses MaskUtils ;
 
 {$R *.dfm}
 
-class procedure TfqrDANFeQR.Imprimir(ANFe: TNFe; ALogo: String = ''; AUrl: String = '' ; APreview : Boolean = True );
+class procedure TfqrDANFeQR.Imprimir(ANFe               : TNFe;
+                                    ALogo               : String    = '';
+                                    AEmail              : String    = '';
+                                    AImprimeHoraSaida   : Boolean   = False;
+                                    AHoraSaida          : String    = '';
+                                    AResumoCanhoto      : Boolean   = False;
+                                    AFax                : String    = '';
+                                    ANumCopias          : Integer   = 1;
+                                    ASistema            : String    = '';
+                                    ASite               : String    = '';
+                                    AUsuario            : String    = '' ;
+                                    APreview            : Boolean   = True;
+                                    AMargemSuperior     : Double    = 0.8;
+                                    AMargemInferior     : Double    = 0.8;
+                                    AMargemEsquerda     : Double    = 0.6;
+                                    AMargemDireita      : Double    = 0.51);
 begin
   with Create ( nil ) do
      try
-        FNFe  := ANFe;
-        FLogo := ALogo;
-        FUrl  := AUrl;
+        FNFe                := ANFe;
+        FLogo               := ALogo;
+        FEmail              := AEmail;
+        FImprimeHoraSaida   := AImprimeHoraSaida;
+        FHoraSaida          := AHoraSaida;
+        FResumoCanhoto      := AResumoCanhoto;
+        FFax                := AFax;
+        FNumCopias          := ANumCopias;
+        FSistema            := ASistema;
+        FSite               := ASite;
+        FUsuario            := AUsuario;
+        FMargemSuperior     := AMargemSuperior;
+        FMargemInferior     := AMargemInferior;
+        FMargemEsquerda     := AMargemEsquerda;
+        FMargemDireita      := AMargemDireita;
 
         if APreview then
            QRNFe.Preview
@@ -101,16 +178,44 @@ begin
      end ;
 end;
 
-class procedure TfqrDANFeQR.SavePDF(AFile: String; ANFe: TNFe; ALogo, AUrl: String);
+class procedure TfqrDANFeQR.SavePDF(AFile               : String;
+                                    ANFe                : TNFe;
+                                    ALogo               : String    = '';
+                                    AEmail              : String    = '';
+                                    AImprimeHoraSaida   : Boolean   = False;
+                                    AHoraSaida          : String    = '';
+                                    AResumoCanhoto      : Boolean   = False;
+                                    AFax                : String    = '';
+                                    ANumCopias          : Integer   = 1;
+                                    ASistema            : String    = '';
+                                    ASite               : String    = '';
+                                    AUsuario            : String    = '';
+                                    AMargemSuperior     : Double    = 0.8;
+                                    AMargemInferior     : Double    = 0.8;
+                                    AMargemEsquerda     : Double    = 0.6;
+                                    AMargemDireita      : Double    = 0.51);
 Var
   i: Integer;
-//  qf : TQRPDFDocumentFilter ;
+  {qf : TQRPDFDocumentFilter ;{Descomentar para usar PDF}
 begin
-{  with Create ( nil ) do
+  {Descomentar para usar PDF}
+  {with Create ( nil ) do
      try
-        FNFe  := ANFe;
-        FLogo := ALogo;
-        FUrl  := AUrl;
+        FNFe                := ANFe;
+        FLogo               := ALogo;
+        FEmail              := AEmail;
+        FImprimeHoraSaida   := AImprimeHoraSaida;
+        FHoraSaida          := AHoraSaida;
+        FResumoCanhoto      := AResumoCanhoto;
+        FFax                := AFax;
+        FNumCopias          := ANumCopias;
+        FSistema            := ASistema;
+        FSite               := ASite;
+        FUsuario            := AUsuario;
+        FMargemSuperior     := AMargemSuperior;
+        FMargemInferior     := AMargemInferior;
+        FMargemEsquerda     := AMargemEsquerda;
+        FMargemDireita      := AMargemDireita;
 
         For i := 0 to ComponentCount -1 do
           begin
@@ -120,17 +225,14 @@ begin
                 TQRShape(Components[i]).Pen.Width := 1;
               end;
           end;
-
         AfterPreview := True ;
         QRNFe.Prepare;
-
         qf := TQRPDFDocumentFilter.Create(AFile) ;
         qf.CompressionOn := False;
-        qf.SetDocumentInfo( 'TurboCode NFe/CTe Integrator', 'www.turbocode.com.br', 'NFe', 'DANFe'  );
         QRNFe.QRPrinter.ExportToFilter( qf );
-        qf.Free ;
+        qf.Free;
      finally
-        Free ;
+        Free;
      end ;}
 end;
 
@@ -151,7 +253,6 @@ begin
    b.Code := ACode ;
    b.PaintCodeToCanvas( ACode, QRImage.Canvas, QRImage.ClientRect );
    b.free ;
-
 end;
 
 end.

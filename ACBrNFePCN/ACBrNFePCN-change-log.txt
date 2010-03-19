@@ -48,6 +48,28 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   19/03/10
+---------------
+[*] Disponibilizado correções para adequção do Danfe com Quick Reports. O mesmo esta funcional de acordo com o Manual 3.0
+    (Créditos: André Langner e Marcos Nielsen)
+    Modificações realizadas:
+    - Alterações no layout do danfe
+    - Fonte modificada para Courier-New
+    - Impressao da logotipo setado na propriedade "LOGO"
+    - Impressao das propriedades "FAX", "SITE", "EMAIL" 
+    - Impressao da data e hora da impressão no rodapé da pagina
+    - Caso a propriedade "SISTEMA" for setada, imprime 'Desenvolvido por "SISTEMA"' no rodapé da pagina
+    - Caso a propriedade "USUARIO" for setada, imprime 'USUÁRIO: "USUARIO"' no rodapé da pagina
+    - Impressao de informacoes adicionais do item em DESCRIÇÃO DO PRODUTO / SERVIÇOS
+    - Impressao de Informações Complementares de interesse do Contribuinte e Informações Adicionais de Interesse do Fisco em DADOS ADOCIONAIS
+    - Impressao de Local de Retirada e Local de Entrega em DADOS ADICIONAIS
+    - Impressao da hora atual caso a propriedade "IMPRIMIRHORASAIDA" esteja setada como 'True'
+    - Impressao de hora de saida personalizada caso a propriedade "IMPRIMIRHORASAIDA" esteja setada como 'True' e a propriedade "IMPRIMIRHORASAIDA_HORA" for preenchida
+    - Imprime Danfe em PDF (precisa descomentar o código.. somente para versões recentes do QuickReport)
+    - Imprime mais de uma folha
+    - Imprime código de barras adicional quando emissão em Formulário de Segurança
+    - Propriedades de configurações de Margens estão funcionais
+
 Alterações   18/03/10
 ---------------
 [*] Alteração no  metodo de envio da DPEC para se a mensagem de erro for em branco ele retornar a mensagem original completa. (João P. Leão)

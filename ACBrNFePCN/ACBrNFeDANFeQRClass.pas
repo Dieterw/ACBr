@@ -49,7 +49,7 @@ unit ACBrNFeDANFeQRClass;
 interface
 
 uses Forms, SysUtils, Classes,
-  ACBrNFeDANFEClass, ACBrNFeDANFeQRRetrato, pcnNFe, pcnConversao;
+     ACBrNFeDANFEClass, pcnNFe, pcnConversao;
 
 type
   TACBrNFeDANFEQR = class( TACBrNFeDANFEClass )
@@ -63,7 +63,7 @@ type
 
 implementation
 
-uses ACBrNFe, ACBrNFeUtil, ACBrUtil, StrUtils, Dialogs;
+uses ACBrNFe, ACBrNFeUtil, ACBrUtil, StrUtils, Dialogs, ACBrNFeDANFeQRRetrato;
 
 constructor TACBrNFeDANFEQR.Create(AOwner: TComponent);
 begin
@@ -80,27 +80,115 @@ procedure TACBrNFeDANFEQR.ImprimirDANFE(NFE : TNFe = nil);
 var
   i : Integer;
   fqrDANFeQRRetrato : TfqrDANFeQRRetrato;
-  sProt : String ;
+  sProt     : String ;
 begin
   fqrDANFeQRRetrato := TfqrDANFeQRRetrato.Create(Self);
+
   sProt := TACBrNFe(ACBrNFe).DANFE.ProtocoloNFe ;
   fqrDANFeQRRetrato.ProtocoloNFE( sProt ) ;
+
   if NFE = nil then
    begin
      for i:= 0 to TACBrNFe(ACBrNFe).NotasFiscais.Count-1 do
       begin
-        fqrDANFeQRRetrato.Imprimir(TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe);
+        fqrDANFeQRRetrato.Imprimir(   TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe
+                                    , Logo
+                                    , Email
+                                    , ImprimirHoraSaida
+                                    , ImprimirHoraSaida_Hora
+                                    , false
+                                    , Fax
+                                    , NumCopias
+                                    , Sistema
+                                    , Site
+                                    , Usuario
+                                    , MostrarPreview
+                                    , MargemSuperior
+                                    , MargemInferior
+                                    , MargemEsquerda
+                                    , MargemDireita);
       end;
    end
   else
-     fqrDANFeQRRetrato.Imprimir(NFe);
+     fqrDANFeQRRetrato.Imprimir(  NFe
+                                , Logo
+                                , Email
+                                , ImprimirHoraSaida
+                                , ImprimirHoraSaida_Hora
+                                , False
+                                , Fax
+                                , NumCopias
+                                , Sistema
+                                , Site
+                                , Usuario
+                                , MostrarPreview
+                                , MargemSuperior
+                                , MargemInferior
+                                , MargemEsquerda
+                                , MargemDireita);
   fqrDANFeQRRetrato.Free;
 end;
 
 procedure TACBrNFeDANFEQR.ImprimirDANFEPDF(NFE : TNFe = nil);
 var
-   NomeArq : String;
+    NomeArq : String;
+    i : Integer;
+    fqrDANFeQRRetrato : TfqrDANFeQRRetrato;
+    sProt     : String ;
 begin
+    fqrDANFeQRRetrato := TfqrDANFeQRRetrato.Create(Self);
+
+    sProt := TACBrNFe(ACBrNFe).DANFE.ProtocoloNFe ;
+    fqrDANFeQRRetrato.ProtocoloNFE( sProt ) ;
+      if NFE = nil then
+   begin
+     for i:= 0 to TACBrNFe(ACBrNFe).NotasFiscais.Count-1 do
+      begin
+        NomeArq := StringReplace(TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe.infNFe.ID,'NFe', '', [rfIgnoreCase]);
+        NomeArq := PathWithDelim(Self.PathPDF)+NomeArq+'.pdf';
+
+        fqrDANFeQRRetrato.SavePDF(  NomeArq
+                                    ,TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe
+                                    , Logo
+                                    , Email
+                                    , ImprimirHoraSaida
+                                    , ImprimirHoraSaida_Hora
+                                    , false
+                                    , Fax
+                                    , NumCopias
+                                    , Sistema
+                                    , Site
+                                    , Usuario
+                                    , MargemSuperior
+                                    , MargemInferior
+                                    , MargemEsquerda
+                                    , MargemDireita);
+      end;
+   end
+  else
+  begin
+     NomeArq := StringReplace(NFe.infNFe.ID,'NFe', '', [rfIgnoreCase]);
+     NomeArq := PathWithDelim(Self.PathPDF)+NomeArq+'.pdf';
+     fqrDANFeQRRetrato.SavePDF( NomeArq
+                                , NFe
+                                , Logo
+                                , Email
+                                , ImprimirHoraSaida
+                                , ImprimirHoraSaida_Hora
+                                , False
+                                , Fax
+                                , NumCopias
+                                , Sistema
+                                , Site
+                                , Usuario
+                                , MargemSuperior
+                                , MargemInferior
+                                , MargemEsquerda
+                                , MargemDireita);
+  end;
+
+  fqrDANFeQRRetrato.Free;
+
 end;
 
 

@@ -37,10 +37,24 @@
 {******************************************************************************
 | Historico
 |
+| 18/03/2010: André R. Langner
+|  - Alterada fonte de Arial para Courier New.
+|  - Ajuste na disposição de campos no DANFe.
+|  - Impressao dos campos Fax, Email, Site referentes ao emitente.
+|  - Adicionado campos qrlDataHoraImpressao, qrlSistema.
+|  - Impressao de Data/Hora da impressao, Usuario, Sistema no rodapé do DANFe.
+|  - Impressao de informacoes adicionais do item logo a baixo a sua descricao
+|    em qrmProdutoDescricao.
+|  - Impressao da Hora de Saida em qrlHoraSaida.
+|  - Impressao de codigo de barras e chave em caso de impressao de formulário
+|    de segurança
+|  - Impressao de Local de Retirada e Local de Entrega em Informacoes Complementares.
+|
 | 15/12/2009: Emerson Crema
 |  - Removida a rotina Detalhes e desenvolvida a Itens.
 |  - Implementado ClientDataSet.
-|  - Correcao no totalizador de paginas.        
+|  - Correcao no totalizador de paginas.
+|
 | 11/12/2009: Emerson Crema
 |  - Ajuste no posicionamento das linhas e alinhamento de campos numéricos
 |  - Alteracao da legenda 1-Saida, 2-Entrada, para 0-Entrada, 1- Saida.
@@ -57,6 +71,7 @@
 |
 | 20/08/2009: Caique Rodrigues
 |  - Doação units para geração do Danfe via QuickReport
+|
 | 16/12/2008: Wemerson Souto
 |  - Doação do componente para o Projeto ACBr
 |
@@ -72,7 +87,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, QuickRpt, QRCtrls,  XMLIntf, XMLDoc, MidasLib,
   JPEG, ACBrNFeDANFeQR, ACBrNFeQRCodeBar, pcnConversao, DB,
-  DBClient;
+  DBClient, ACBrNFeDANFEClass, ACBrNFeDANFeQRClass{, QRPDFFilt {Descomentar para usar PDF};
 
 type
 
@@ -96,40 +111,10 @@ type
     qrbDadosDanfe: TQRChildBand;
     qrbEmitenteDestinatario: TQRChildBand;
     qrbHeaderItens: TQRBand;
-    qrbItens: TQRBand;
     qrbISSQN: TQRBand;
     qrbDadosAdicionais: TQRChildBand;
-    qrbSistema: TQRChildBand;
-    qrsDivProd1: TQRShape;
-    qrsDivProd2: TQRShape;
-    qrsDivProd3: TQRShape;
-    qrsDivProd4: TQRShape;
-    qrsDivProd5: TQRShape;
-    qrsDivProd6: TQRShape;
-    qrsDivProd7: TQRShape;
-    qrsDivProd8: TQRShape;
-    qrsDivProd10: TQRShape;
-    qrsDivProd11: TQRShape;
-    qrsDivProd12: TQRShape;
-    qrsDivProd13: TQRShape;
-    qrsDivProd9: TQRShape;
-    qrmProdutoCodigo: TQRDBText;
-    qrmProdutoDescricao: TQRDBText;
-    qrmProdutoNCM: TQRDBText;
-    qrmProdutoCST: TQRDBText;
-    qrmProdutoCFOP: TQRDBText;
-    qrmProdutoUnidade: TQRDBText;
-    qrmProdutoQTDE: TQRDBText;
-    qrmProdutoValor: TQRDBText;
-    qrmProdutoTotal: TQRDBText;
-    qrmProdutoBCICMS: TQRDBText;
-    qrmProdutoVALORICMS: TQRDBText;
-    qrmProdutoALIQICMS: TQRDBText;
-    qrmProdutoVALORIPI: TQRDBText;
-    qrmProdutoALIQIPI: TQRDBText;
     QRShape1: TQRShape;
     QRLabel10: TQRLabel;
-    qrsPicoteHeader: TQRShape;
     QRShape3: TQRShape;
     QRShape2: TQRShape;
     QRShape101: TQRShape;
@@ -147,7 +132,6 @@ type
     QRShape8: TQRShape;
     QRShape9: TQRShape;
     QRShape11: TQRShape;
-    QRLabel28: TQRLabel;
     QRLabel29: TQRLabel;
     QRLabel30: TQRLabel;
     QRLabel31: TQRLabel;
@@ -161,11 +145,10 @@ type
     qrmEndereco: TQRMemo;
     qriLogo: TQRImage;
     qriBarCode: TQRImage;
-    QRShape4: TQRShape;
     QRLabel2: TQRLabel;
     qrlChave: TQRLabel;
     QRLabel9: TQRLabel;
-    QRLabel16: TQRLabel;
+    qrlDescricao: TQRLabel;
     qrlProtocolo: TQRLabel;
     qrlSERIE1: TQRLabel;
     QRLabel22: TQRLabel;
@@ -354,7 +337,6 @@ type
     qrsRectProdutos: TQRShape;
     QRLabel141: TQRLabel;
     QRLabel142: TQRLabel;
-    QRLabel15: TQRLabel;
     QRLabel143: TQRLabel;
     QRLabel144: TQRLabel;
     QRLabel145: TQRLabel;
@@ -400,11 +382,49 @@ type
     QRLabel7: TQRLabel;
     qrmDadosAdicionais: TQRMemo;
     rbDadosAdicionais: TQRShape;
-    qrlblSistema: TQRLabel;
-    QRShape66: TQRShape;
-    qrsFimItens: TQRShape;
     QRShape67: TQRShape;
     qrlMsgTeste: TQRLabel;
+    QRLabel6: TQRLabel;
+    qrbItens: TQRBand;
+    qrmProdutoCodigo: TQRDBText;
+    qrmProdutoDescricao: TQRDBText;
+    qrmProdutoNCM: TQRDBText;
+    qrmProdutoCST: TQRDBText;
+    qrmProdutoCFOP: TQRDBText;
+    qrmProdutoUnidade: TQRDBText;
+    qrmProdutoQTDE: TQRDBText;
+    qrmProdutoValor: TQRDBText;
+    qrmProdutoTotal: TQRDBText;
+    qrmProdutoBCICMS: TQRDBText;
+    qrmProdutoVALORICMS: TQRDBText;
+    qrmProdutoALIQICMS: TQRDBText;
+    qrmProdutoVALORIPI: TQRDBText;
+    qrmProdutoALIQIPI: TQRDBText;
+    QRShape4: TQRShape;
+    QRShape66: TQRShape;
+    qriBarCodeContingencia: TQRImage;
+    qrbItensLine: TQRChildBand;
+    QRShape68: TQRShape;
+    QRShape69: TQRShape;
+    qrlDataHoraImpressao: TQRLabel;
+    qrlSistema: TQRLabel;
+    qrs2: TQRShape;
+    cdsItensXPROD: TStringField;
+    cdsItensINFADIPROD: TStringField;
+    qrs1: TQRShape;
+    qrs3: TQRShape;
+    qrs4: TQRShape;
+    qrs5: TQRShape;
+    qrs6: TQRShape;
+    qrs7: TQRShape;
+    qrs8: TQRShape;
+    qrs9: TQRShape;
+    qrs10: TQRShape;
+    qrs11: TQRShape;
+    qrs12: TQRShape;
+    qrs13: TQRShape;
+    qrs14: TQRShape;
+    qrs15: TQRShape;
     procedure QRNFeBeforePrint(Sender: TCustomQuickRep;
       var PrintReport: Boolean);
     procedure qrbReciboBeforePrint(Sender: TQRCustomBand;
@@ -419,8 +439,7 @@ type
       var PrintBand: Boolean);
     procedure qrbItensBeforePrint(Sender: TQRCustomBand;
       var PrintBand: Boolean);
-    procedure qrbSistemaBeforePrint(Sender: TQRCustomBand;
-      var PrintBand: Boolean);
+    procedure cdsItensAfterScroll(DataSet: TDataSet);
   private
     { Private declarations }
     FTotalPages : integer ;
@@ -433,7 +452,7 @@ type
 
 implementation
 
-uses StrUtils, ACBrNFeUtil, pcnNFe, pcnSignature, DateUtils;
+uses StrUtils, ACBrNFeUtil, pcnNFe, pcnSignature, DateUtils, ACBrNFe, ACBrUtil;
 
 {$R *.dfm}
 
@@ -445,11 +464,93 @@ var
    FProtocoloNFE : String ;
    nItemControle : Integer ;
 
+procedure TfqrDANFeQRRetrato.cdsItensAfterScroll(DataSet: TDataSet);
+var
+    intTamanhoDescricao,
+    intTamanhoLinha,
+    intDivisao,
+    intResto   :Integer;
+begin
+  inherited;
+    intTamanhoDescricao:= Length(cdsItens.FieldByName( 'DESCRICAO' ).AsString);
+//    intTamanhoDescricao:= qrmProdutoDescricao.Lines.Count;
+    intDivisao := intTamanhoDescricao DIV 35;
+    intResto   := intTamanhoDescricao MOD 35;
+
+    if intResto > 0 then
+    begin
+        intTamanhoLinha:= (11 * (intDivisao + 1));
+    end else
+    begin
+        intTamanhoLinha:= (11 * intDivisao);
+    end;                            
+
+
+    if (intTamanhoDescricao <= 35) AND (cdsItens.FieldByName('INFADIPROD').AsString = '') then
+    begin
+        intTamanhoLinha := 12;
+    end;
+    if (intTamanhoDescricao <= 35) AND (cdsItens.FieldByName('INFADIPROD').AsString <> '') then
+    begin
+        intTamanhoLinha := 22;
+    end;
+
+    qrs1.Height:= intTamanhoLinha;
+    qrs2.Height:= intTamanhoLinha;
+    qrs3.Height:= intTamanhoLinha;
+    qrs4.Height:= intTamanhoLinha;
+    qrs5.Height:= intTamanhoLinha;
+    qrs6.Height:= intTamanhoLinha;
+    qrs7.Height:= intTamanhoLinha;
+    qrs8.Height:= intTamanhoLinha;
+    qrs9.Height:= intTamanhoLinha;
+    qrs10.Height:= intTamanhoLinha;
+    qrs11.Height:= intTamanhoLinha;
+    qrs12.Height:= intTamanhoLinha;
+    qrs13.Height:= intTamanhoLinha;
+    qrs14.Height:= intTamanhoLinha;
+    qrs15.Height:= intTamanhoLinha;
+
+    if intTamanhoDescricao = 0 then
+    begin
+        qrs1.Visible:= False;
+        qrs2.Visible:= False;
+        qrs3.Visible:= False;
+        qrs4.Visible:= False;
+        qrs5.Visible:= False;
+        qrs6.Visible:= False;
+        qrs7.Visible:= False;
+        qrs8.Visible:= False;
+        qrs9.Visible:= False;
+        qrs10.Visible:= False;
+        qrs11.Visible:= False;
+        qrs12.Visible:= False;
+        qrs13.Visible:= False;
+        qrs14.Visible:= False;
+        qrs15.Visible:= False;
+    end ;
+    
+    qrs1.Repaint ;
+    qrs2.Repaint ;
+    qrs3.Repaint ;
+    qrs4.Repaint ;
+    qrs5.Repaint ;
+    qrs6.Repaint ;
+    qrs7.Repaint ;
+    qrs8.Repaint ;
+    qrs9.Repaint ;
+    qrs10.Repaint ;
+    qrs11.Repaint ;
+    qrs12.Repaint ;
+    qrs13.Repaint ;
+    qrs14.Repaint ;
+    qrs15.Repaint ;
+end;
 
 procedure TfqrDANFeQRRetrato.Itens;
 var
    nItem : Integer ;
-   sCST, sBCICMS, sALIQICMS, sVALORICMS, sALIQIPI, sVALORIPI : String ;
+   sCST, sBCICMS, sALIQICMS, sVALORICMS, sALIQIPI, sVALORIPI, sDESCRICAOPRODUTO : String ;
 begin
 
    if QRNFe.PageNumber > 0 then
@@ -542,9 +643,17 @@ begin
                end
             end;
 
+            if infAdProd <> '' then
+            begin
+                sDESCRICAOPRODUTO:= xProd + #13 + infAdProd;
+            end else
+            begin
+                sDESCRICAOPRODUTO:= xProd;
+            end;
+
             cdsItens.Append ;
-            cdsItens.FieldByName( 'CODIGO'    ).AsString := CProd ;
-            cdsItens.FieldByName( 'DESCRICAO' ).AsString := XProd ;
+            cdsItens.FieldByName( 'CODIGO'    ).AsString := cProd ;
+            cdsItens.FieldByName( 'DESCRICAO' ).AsString := sDESCRICAOPRODUTO ;
             cdsItens.FieldByName( 'NCM'       ).AsString := NCM ;
             cdsItens.FieldByName( 'CFOP'      ).AsString := CFOP ;
             cdsItens.FieldByName( 'UNIDADE'   ).AsString := UCom ;
@@ -557,6 +666,9 @@ begin
             cdsItens.FieldByName( 'VALORICMS' ).AsString := sVALORICMS ;
             cdsItens.FieldByName( 'ALIQIPI'   ).AsString := sALIQIPI ;
             cdsItens.FieldByName( 'VALORIPI'  ).AsString := sVALORIPI ;
+
+            cdsItens.FieldByName( 'XPROD'     ).AsString := xProd ;
+            cdsItens.FieldByName( 'INFADIPROD').AsString := infAdProd ;
             cdsItens.Post ;
 
          end;
@@ -595,6 +707,11 @@ begin
             Inc( FTotalPages )
       end ;
    end ;
+
+   QRNFe.Page.TopMargin    := FMargemSuperior * 100;
+   QRNFe.Page.BottomMargin := FMargemInferior * 100;
+   QRNFe.Page.LeftMargin   := FMargemEsquerda * 100;
+   QRNFe.Page.RightMargin  := FMargemDireita  * 100;
 end;
 
 procedure TfqrDANFeQRRetrato.qrbReciboBeforePrint(Sender: TQRCustomBand;
@@ -640,8 +757,21 @@ begin
 
    qrlEmissao.Caption   := NotaUtil.FormatDate(DateToStr(FNFe.Ide.dEmi)) ;
    qrlSaida.Caption     := IfThen( FNFe.Ide.DSaiEnt <> 0, NotaUtil.FormatDate(DateToStr(FNFe.Ide.dSaiEnt))) ;
-   qrlHoraSaida.Caption := '' ; // nao tem campo  ;
 
+    if FImprimeHoraSaida then
+    begin
+        if FHoraSaida = '' then
+        begin
+            qrlHoraSaida.Caption := FormatDateTime('hh:nn:ss',Now);
+        end else
+        begin
+            qrlHoraSaida.Caption := FHoraSaida;
+        end;
+    end else
+    begin
+        qrlHoraSaida.Caption := '';
+    end;
+    
    // Faturas
 
    // Zera
@@ -658,6 +788,11 @@ begin
       TQRLabel( FindComponent( 'qrlFatData'  + intToStr ( x + 1 ) ) ).Caption := NotaUtil.FormatDate( DateToStr(DVenc) ) ;
       TQRLabel( FindComponent( 'qrlFatValor' + intToStr ( x + 1 ) ) ).Caption := NotaUtil.FormatFloat(VDup) ;
    end;
+
+//    if qrlFatNum1.Caption = '' then
+//    begin
+//        qrlFatNum2.Caption := '   PAGAMENTO À VISTA'
+//    end;
 
    // Impostos
 
@@ -727,11 +862,45 @@ begin
 
    // Mensagem para modo Homologacao.
 
-   with qrlMsgTeste do
-   begin
-      Enabled := FNFe.Ide.TpAmb = taHomologacao ;
-   end ;
-   
+    if FNFe.Ide.tpAmb = taHomologacao then
+    begin
+        qrlMsgTeste.Caption := 'AMBIENTE DE HOMOLOGAÇÃO - SEM VALOR FISCAL';
+        qrlMsgTeste.Enabled := True;
+        qrlMsgTeste.Visible := True;
+    end else
+    begin
+        if FNFe.procNFe.cStat > 0 then
+        begin
+            if FNFe.procNFe.cStat = 101 then
+            begin
+               qrlMsgTeste.Caption  := 'NF-e CANCELADA';
+               qrlMsgTeste.Visible  := True;
+               qrlMsgTeste.Enabled := True;
+            end;
+
+            if FNFe.procNFe.cStat = 102 then
+            begin
+               qrlMsgTeste.Caption  := 'NF-e DENEGADA';
+               qrlMsgTeste.Visible  := True;
+               qrlMsgTeste.Enabled := True;
+            end;
+
+            if not FNFe.procNFe.cStat in [101, 102, 100] then
+            begin
+                qrlMsgTeste.Caption:=  FNFe.procNFe.xMotivo;
+                qrlMsgTeste.Visible := True;
+                qrlMsgTeste.Enabled := True;
+            end;
+        end else
+        begin
+            qrlMsgTeste.Caption  := 'NF-E NÃO ENVIADA PARA SEFAZ';
+            qrlMsgTeste.Visible  := True;
+            qrlMsgTeste.Enabled  := True;
+        end;
+    end;
+
+    qrlMsgTeste.Repaint;
+      
 end;
 
 procedure TfqrDANFeQRRetrato.qrbISSQNBeforePrint(Sender: TQRCustomBand;
@@ -766,23 +935,94 @@ var
    i: Integer;
 begin
   inherited;
-   PrintBand := QRNFe.PageNumber = 1 ;
-   if not PrintBand then
-      qrbDadosAdicionais.Height := 0
-   else with FNFe.InfAdic do
-   begin
-      qrmDadosAdicionais.Lines.BeginUpdate ;
-      qrmDadosAdicionais.Lines.Clear ;
-      for i := 0 to ObsCont.Count-1 do with ObsCont.Items[i] do
-         qrmDadosAdicionais.Lines.Add( StringReplace( XCampo, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] )+': '+
-                                       StringReplace( XTexto, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
-      qrmDadosAdicionais.Lines.Add(StringReplace( InfCpl, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) ) ;
+    PrintBand := QRNFe.PageNumber = 1 ;
+    if not PrintBand then
+        qrbDadosAdicionais.Height := 0
+    else
+    with FNFe.InfAdic do
+    begin
+        qrmDadosAdicionais.Lines.BeginUpdate ;
+        qrmDadosAdicionais.Lines.Clear ;
+        for i := 0 to ObsCont.Count-1 do with ObsCont.Items[i] do
+        begin
+            qrmDadosAdicionais.Lines.Add( StringReplace( XCampo, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] )+': '+
+                                           StringReplace( XTexto, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) );
+        end;
+        //**********************************************************************
+        // informacoes complementares emitente
+        if infCpl <> '' then
+        begin
+            qrmDadosAdicionais.Lines.Add(StringReplace( InfCpl, '&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ) ) ;
+        end;
+        //**********************************************************************
+        // informacoes complementares interesse ao fisco
+        if infAdFisco <> '' then
+        begin
+                qrmDadosAdicionais.Lines.Add(StringReplace( 'INFORMAÇÕES ADICIONAIS DE INTERESSE DO FISCO: ' +
+                                                            infAdFisco,'&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ));
+        end;
+        //**********************************************************************
+        // local de retirada
+        with FNFe.Retirada do
+        begin
+            if xLgr <> '' then
+            begin
+                qrmDadosAdicionais.Lines.Add(   'LOCAL DE RETIRADA: '                                                          +
+                                                StringReplace( xLgr, '&lt;BR&gt;',      #13#10, [rfReplaceAll,rfIgnoreCase] )  + ', ' +
+                                                StringReplace( nro, '&lt;BR&gt;',       #13#10, [rfReplaceAll,rfIgnoreCase] )  + '/' +
+                                                StringReplace( xCpl, '&lt;BR&gt;',      #13#10, [rfReplaceAll,rfIgnoreCase] )  + ' ' +
+                                                StringReplace( xBairro, '&lt;BR&gt;',   #13#10, [rfReplaceAll,rfIgnoreCase] )  + ' - ' +
+                                                StringReplace( xMun, '&lt;BR&gt;',      #13#10, [rfReplaceAll,rfIgnoreCase] )  + ' ' +
+                                                StringReplace( UF, '&lt;BR&gt;',        #13#10, [rfReplaceAll,rfIgnoreCase] )) ;
+            end;
+        end;
+        //**********************************************************************
+        // local de retirada
+        with FNFe.Entrega do
+        begin
+            if xLgr <> '' then
+            begin
+                qrmDadosAdicionais.Lines.Add(   'LOCAL DE ENTREGA: '                                                          +
+                                                StringReplace( xLgr, '&lt;BR&gt;',      #13#10, [rfReplaceAll,rfIgnoreCase] )  + ', ' +
+                                                StringReplace( nro, '&lt;BR&gt;',       #13#10, [rfReplaceAll,rfIgnoreCase] )  + '/' +
+                                                StringReplace( xCpl, '&lt;BR&gt;',      #13#10, [rfReplaceAll,rfIgnoreCase] )  + ' ' +
+                                                StringReplace( xBairro, '&lt;BR&gt;',   #13#10, [rfReplaceAll,rfIgnoreCase] )  + ' - ' +
+                                                StringReplace( xMun, '&lt;BR&gt;',      #13#10, [rfReplaceAll,rfIgnoreCase] )  + ' ' +
+                                                StringReplace( UF, '&lt;BR&gt;',        #13#10, [rfReplaceAll,rfIgnoreCase] )) ;
+            end;
+        end;
+        
+        if FNFe.Ide.tpEmis in [teContingencia, teFSDA] then
+            qrmDadosAdicionais.Lines.Add('DANFE em Contingência - Impresso em decorrência de problemas técnicos.');
+        if FNFe.Ide.tpEmis = teDPEC then
+            qrmDadosAdicionais.Lines.Add('DANFE em Contingência - DPEC regularmente recebida pela Receita Federal do Brasil');
+        //**********************************************************************
       qrmDadosAdicionais.Lines.EndUpdate ;
-   end;
+
+        // imprime data e hora da impressao
+        QrlDataHoraImpressao.Caption:= 'DATA E HORA DA IMPRESSÃO: ' + FormatDateTime('d/m/yyyy hh:nn',Now);
+
+        // imprime usuario
+        if FUsuario <> '' then
+        begin
+            QrlDataHoraImpressao.Caption:= QrlDataHoraImpressao.Caption + '   USUÁRIO: ' + FUsuario;
+        end;
+
+        // imprime sistema
+        if FSistema <> '' then
+        begin
+            qrlSistema.Caption:= 'Desenvolvido por ' + FSistema;
+        end else
+        begin
+            qrlSistema.Caption:= '';
+        end;
+    end;
 end;
 
 procedure TfqrDANFeQRRetrato.qrbDadosDanfeBeforePrint(Sender: TQRCustomBand;
   var PrintBand: Boolean);
+var
+    strChaveContingencia: string;
 begin
   inherited;
 
@@ -804,55 +1044,116 @@ begin
             qrmEndereco.Lines.Clear ;
             qrmEndereco.Lines.add ( XLgr + IfThen ( Nro = '0', '', ', ' + Nro ) + ' ' + XCpl + ' ' + XBairro ) ;
             qrmEndereco.Lines.add ( NotaUtil.FormatarCEP( IntToStr(CEP) ) + ' - ' + XMun + ' - ' + UF ) ;
-            if Trim(FUrl) <> '' then
-               qrmEndereco.Lines.add ( FUrl ) ;
-            qrlFone.Caption := NotaUtil.FormatarFone( Fone ) ;
+            if Trim(FSite) <> '' then
+            begin
+               qrmEndereco.Lines.Add (FSite);
+            end;
+
+            if Trim(FEmail) <> '' then
+            begin
+               qrmEndereco.Lines.Add (FEmail);
+            end;
+
+            // telefone
+
+            qrlFone.Caption:= '';
+
+            if (fone <> '') and (FFax = '') then
+            begin
+                 qrlFone.Caption := 'FONE: ' + NotaUtil.FormatarFone( Fone );
+            end;
+
+            if (FFax <> '') and (fone = '') then
+            begin
+                qrlFone.Caption:= 'FAX: ' + FFax;
+            end;
+
+            if (FFax <> '') and (fone <> '') then
+            begin
+                qrlFone.Caption:= 'FONE: ' + NotaUtil.FormatarFone( Fone ) + #13 +'FAX: ' + FFax;
+            end;
+
          end;
+
+         if (FLogo <> '') and FilesExists(FLogo) then
+         begin
+             qriLogo.Picture.LoadFromFile(FLogo);
+         end;
+
       end ;
-
       // Danfe
-
-      SetBarCodeImage( Copy ( FNFe.InfNFe.Id, 4, 44 ), qriBarCode ) ;
 
       qrlEntradaSaida.Caption := tpNFToStr( FNFe.Ide.tpNF ) ;
       qrlNumNF1.Caption       := FormatFloat( '000,000,000', FNFe.Ide.nNF ) ;
       qrlSERIE1.Caption       := IntToStr( FNFe.Ide.serie ) ;
       qrlChave.Caption        := NotaUtil.FormatarChaveAcesso( Copy ( FNFe.InfNFe.Id, 4, 44 ) ) ;
       qrlNatOperacao.Caption  := FNFe.Ide.natOp ;
-      if FProtocoloNFE <> '' then
-         qrlProtocolo.Caption    := FProtocoloNFE
-      else
-         qrlProtocolo.Caption    := FNFe.procNFe.nProt + NotaUtil.SeSenao(FNFe.procNFe.dhRecbto<>0,DateTimeToStr(FNFe.procNFe.dhRecbto),'') ;
+       SetBarCodeImage( Copy ( FNFe.InfNFe.Id, 4, 44 ), qriBarCode ) ;
 
-   end ;
+        // Normal **************************************************************
+        if FNFe.Ide.tpEmis in [teNormal, teSCAN] then
+        begin
+            if FNFe.procNFe.cStat = 100 then
+            begin
+                qrlDescricao.Caption:= 'PROTOCOLO DE AUTORIZAÇÃO DE USO';
+            end;
 
+            if FNFe.procNFe.cStat = 101 then
+            begin
+                qrlDescricao.Caption:= 'PROTOCOLO DE HOMOLOGAÇÃO DE CANCELAMENTO';
+            end;
+
+            if FNFe.procNFe.cStat = 102 then
+            begin
+                qrlDescricao.Caption:= 'PROTOCOLO DE DENEGAÇÃO DE USO';
+            end;
+
+            if FProtocoloNFE <> '' then
+                qrlProtocolo.Caption        := FProtocoloNFE
+            else
+                qrlProtocolo.Caption        :=  FNFe.procNFe.nProt + ' ' +
+                                                NotaUtil.SeSenao(FNFe.procNFe.dhRecbto <> 0, DateTimeToStr(FNFe.procNFe.dhRecbto),'') ;
+            qriBarCodeContingencia.Visible  := False;
+        end;
+        // Contingencia ********************************************************
+        if FNFe.Ide.tpEmis in [teContingencia, teFSDA] then
+        begin
+            strChaveContingencia:= NotaUtil.GerarChaveContingencia(FNFe);
+            SetBarCodeImage(strChaveContingencia,qriBarCodeContingencia);
+            qriBarCodeContingencia.Visible  := True;
+            qrlDescricao.Caption            := 'DADOS DA NF-E';
+            qrlProtocolo.Caption            := NotaUtil.FormatarChaveContigencia(strChaveContingencia);
+        end;
+        // DPEC ****************************************************************
+        if FNFe.Ide.tpEmis = teDPEC then
+        begin
+            qrlDescricao.Caption := 'NÚMERO DE REGISTRO DPEC';
+            qrlProtocolo.Caption := FProtocoloNFE;
+            //qrlProtocolo.Caption := FNFe.procNFe.nProt + ' '  +
+            //                        NotaUtil.SeSenao(FNFe.procNFe.dhRecbto <> 0, DateTimeToStr(FNFe.procNFe.dhRecbto),'') ;
+        end;
+    //************************************************************************
+    end ;
 end;
 
 procedure TfqrDANFeQRRetrato.qrbItensBeforePrint(Sender: TQRCustomBand;
   var PrintBand: Boolean);
 begin
   inherited;
-  Inc( nItemControle ) ;
-  if QRNFe.PageNumber = 1 then
-     if QRNFe.RecordCount < _NUM_ITEMS_PAGE1 then
-        qrsFimItens.Enabled := ( nItemControle = QRNFe.RecordCount   )
-     else
-        qrsFimItens.Enabled := ( nItemControle = _NUM_ITEMS_PAGE1    )
-  else
-  begin
-     qrsFimItens.Enabled := ( nItemControle = _NUM_ITEMS_OTHERPAGES  ) or
-                            ( QRNFe.RecordNumber = QRNFe.RecordCount ) or
-                            ( cdsItens.Eof                           ) ;
-  end ;
-  if qrsFimItens.Enabled then
-     nItemControle := 0;
-end;
-
-procedure TfqrDANFeQRRetrato.qrbSistemaBeforePrint(Sender: TQRCustomBand;
-  var PrintBand: Boolean);
-begin
-  inherited;
-   PrintBand := False ;    
+//  Inc( nItemControle ) ;
+//  if QRNFe.PageNumber = 1 then
+//     if QRNFe.RecordCount < _NUM_ITEMS_PAGE1 then
+//        qrsFimItens.Enabled := ( nItemControle = QRNFe.RecordCount   )
+//     else
+//        qrsFimItens.Enabled := ( nItemControle = _NUM_ITEMS_PAGE1    )
+//  else
+//  begin
+//     qrsFimItens.Enabled := ( nItemControle = _NUM_ITEMS_OTHERPAGES  ) or
+//                            ( QRNFe.RecordNumber = QRNFe.RecordCount ) or
+//                            ( cdsItens.Eof                           ) ;
+//  end ;
+//  if qrsFimItens.Enabled then
+//     nItemControle := 0;
 end;
 
 end.

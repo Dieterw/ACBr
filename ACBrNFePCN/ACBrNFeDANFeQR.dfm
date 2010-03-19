@@ -1,9 +1,8 @@
 object fqrDANFeQR: TfqrDANFeQR
-  Left = 244
-  Top = 65
-  Width = 978
-  Height = 738
-  VertScrollBar.Position = 399
+  Left = 94
+  Top = 88
+  Width = 880
+  Height = 742
   Caption = 'fqrDANFeQR'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -17,7 +16,7 @@ object fqrDANFeQR: TfqrDANFeQR
   TextHeight = 13
   object QRNFe: TQuickRep
     Left = 0
-    Top = -399
+    Top = 0
     Width = 794
     Height = 1123
     Frame.Color = clBlack
@@ -56,6 +55,7 @@ object fqrDANFeQR: TfqrDANFeQR
     PrinterSettings.LastPage = 0
     PrinterSettings.OutputBin = Auto
     PrintIfEmpty = True
+    ShowProgress = False
     SnapToGrid = True
     Units = MM
     Zoom = 100

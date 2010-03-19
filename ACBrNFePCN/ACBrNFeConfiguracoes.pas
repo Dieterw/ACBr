@@ -362,6 +362,7 @@ var
   SigKey    : IXMLDSigKeyEx;
   PrivateKey : IPrivateKey;
   hCryptProvider : HCRYPTPROV;
+  XML : String;
 begin
   if NotaUtil.EstaVazio( FNumeroSerie ) then
     raise Exception.Create('Número de Série do Certificado Digital não especificado !');
@@ -382,7 +383,18 @@ begin
        begin
          PrivateKey := Cert.PrivateKey;
 
+         XML := XML + '<Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />';
+         XML := XML + '<Reference URI="#">';
+         XML := XML + '<Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />';
+         XML := XML + '<DigestValue></DigestValue></Reference></SignedInfo><SignatureValue></SignatureValue><KeyInfo></KeyInfo></Signature>';
+
          xmldoc := CoDOMDocument50.Create;
+         xmldoc.async              := False;
+         xmldoc.validateOnParse    := False;
+         xmldoc.preserveWhiteSpace := True;
+         xmldoc.loadXML(XML);
+         xmldoc.setProperty('SelectionNamespaces', DSIGNS);
+
          xmldsig := CoMXDigitalSignature50.Create;
          xmldsig.signature := xmldoc.selectSingleNode('.//ds:Signature');
          xmldsig.store := CertStoreMem;
@@ -403,8 +415,9 @@ begin
          SigKey    := nil;
          dsigKey   := nil;
          xmldsig   := nil;
+         xmldoc    := nil;
       end;
-      
+
       Result := Cert;
       FDataVenc := Cert.ValidToDate;
       break;

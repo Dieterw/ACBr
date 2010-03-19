@@ -47,6 +47,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.03b   19/03/10
+---------------
+[-] Corrigido BUG que ao tentar assinar digitalmente o arquivo, que não mostrava
+    a mensagem correta relatada por (EMBarbosa)
+    Removido a propriedade "NUM_CONT", que não estava sendo utilizada.
+
 Versão 0.03b   12/03/10
 ---------------
 [-] Corrigido a totalização de registros nos arquivos D, E, P e T estava sendo

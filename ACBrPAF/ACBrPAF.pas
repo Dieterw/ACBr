@@ -355,7 +355,6 @@ begin
   except
     on E: Exception do
     begin
-      CloseFile(txtFile);
       raise Exception.Create(E.Message);
     end;
   end;

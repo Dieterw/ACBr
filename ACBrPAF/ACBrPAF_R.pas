@@ -284,7 +284,6 @@ type
   TRegistroR06 = class(TPersistent)
   private
     fNUM_USU: integer;          /// Nº de ordem do usuário do ECF
-    fNUM_CONT: integer;         /// Nº do contador do respectivo documento emitido
     fCOO: integer;              /// Nº do COO relativo ao respectivo documento
     fGNF: integer;              /// Número do GNF relativo ao respectivo documento, quando houver
     fGRG: integer;              /// Número do GRG relativo ao respectivo documento (vide item 7.6.1.2)
@@ -299,7 +298,6 @@ type
     destructor Destroy; override; /// Destroy
 
     property NUM_USU: integer read FNUM_USU write FNUM_USU;
-    property NUM_CONT: integer read FNUM_CONT write FNUM_CONT;
     property COO: integer read FCOO write FCOO;
     property GNF: integer read FGNF write FGNF;
     property GRG: integer read FGRG write FGRG;

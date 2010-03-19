@@ -339,7 +339,6 @@ begin
        with ACBrPAF.PAF_R.RegistroR06.New do
        begin
           NUM_USU     :=1;
-          NUM_CONT    :=GerarDados('I',3);
           COO         :=GerarDados('I',3);
           GNF         :=GerarDados('I',3);
           GRG         :=GerarDados('I',3);

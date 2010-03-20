@@ -118,10 +118,10 @@ Function BcdToAsc( const StrBCD : AnsiString) : AnsiString ;
 Function AscToBcd( const ANumStr: AnsiString ; const TamanhoBCD : Byte) : AnsiString ;
 
 Function HexToAscii(const HexStr : AnsiString) : AnsiString ;
-Function AsciiToHex(const AString: AnsiString): AnsiString;
+Function AsciiToHex(const ABinaryString: AnsiString): String;
 
-function BinaryStringToString(AString: AnsiString): AnsiString;
-function StringToBinaryString(AString: AnsiString): AnsiString;
+function BinaryStringToString(const AString: AnsiString): AnsiString;
+function StringToBinaryString(const AString: AnsiString): AnsiString;
 
 function padL(const AString : AnsiString; const nLen : Integer;
    const Caracter : AnsiChar = ' ') : AnsiString;
@@ -383,12 +383,13 @@ end ;
       igual a "1100000010000000" em binário
       Portanto se AString = "+Ç", Result = "C080"
  ---------------------------------------------------------------------------- }
-function AsciiToHex(const AString: AnsiString): AnsiString;
- Var I: Integer;
+function AsciiToHex(const ABinaryString: AnsiString): String;
+ Var I, L: Integer;
 begin
   Result := '' ;
-  for I := 1 to Length(AString) do
-     Result := Result + IntToHex(Ord(AString[I]), 2);
+  L := Length(ABinaryString) ;
+  for I := 1 to L do
+     Result := Result + IntToHex(Ord(ABinaryString[I]), 2);
 end;
 
 
@@ -1094,7 +1095,7 @@ end;
  ASCII 127), de <AString> por sua representação em HEXA. (\xNN)
  Use StringToBinaryString para Converter para o valor original.
  ---------------------------------------------------------------------------- }
-function BinaryStringToString(AString: AnsiString): AnsiString;
+function BinaryStringToString(const AString: AnsiString): AnsiString;
 var
    ASC : Integer;
    I, N : Integer;
@@ -1116,7 +1117,7 @@ end ;
  é o valor em Hexa)).
  Retornana o Estado original, AString de BinaryStringToString.
  ---------------------------------------------------------------------------- }
-function StringToBinaryString(AString: AnsiString): AnsiString;
+function StringToBinaryString(const AString: AnsiString): AnsiString;
 var
    P : LongInt;
    Hex : String;

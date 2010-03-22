@@ -50,6 +50,7 @@ Símbolo : Significado
 Versão 0.07b   22/03/10
 -- ACBrSPEDFiscal --
 [*] Implementado hierarquia no RegistroE250 (por Isaque Pinheiro)
+[*] Implementado hierarquia no RegistroE520 e E530 (por Isaque Pinheiro)
 
 Versão 0.07b   18/03/10
 -- ACBrSPEDFiscal e ACBrSPEDContabil --

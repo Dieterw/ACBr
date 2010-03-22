@@ -150,15 +150,18 @@ begin
                end;
                i:=i-1;
             end;
-// inserida mudança de cor para mensagem de NFe Cancelada
+            // mudança de cor para mensagem de NFe Cancelada (somente em producao)
             wDataText[8] := FindRaveComponent('DataText8',wPage[1]) as TRaveDataText;
             if (wDataText[8] <> nil) then
+            begin
                if (wDataText[8].DataField = 'Mensagem0') and
-                  (dmDanfe.NFe.procNFe.cStat = 101) then
+                  (dmDanfe.NFe.procNFe.cStat = 101) and
+                  (dmDanfe.NFe.procNFe.tpAmb = taProducao) then
                   wDataText[8].Font.Color := clRed
                else
                   wDataText[8].Font.Color := clSilver;
-//
+            end;
+
             wPage[1] := FindRaveComponent('GlobalFatura',nil) as TRavePage;
             wDataText[15] := FindRaveComponent('Fatura_nFat',wPage[1]) as TRaveDataText;
             wDataText[16] := FindRaveComponent('Fatura_vOrig',wPage[1]) as TRaveDataText;

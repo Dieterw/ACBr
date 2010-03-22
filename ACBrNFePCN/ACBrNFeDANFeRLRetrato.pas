@@ -63,11 +63,15 @@
 |*  - Inserção da função 'BuscaDireita', que auxiliará a correção da
 |*    exibição dos 'DADOS ADICIONAIS' para evitar que a última palavra do
 |*    quadro fique pela metade devido à limitação da quantidade de caracteres
-|*  - Correção da formatação de CPF, no caso de NF-e emtida para pesso física
+|*  - Correção da formatação de CPF, no caso de NF-e emitida para pessoa física
 |* 13/02/2010: Peterson de Cerqueira Matos
 |*  - Alteração da fonte do memo 'rlmObsItem' de ARIAL para COURIER NEW
 |* 15/03/2010: Felipe Feltes
 |*  - Adequação na seção 'USES' para ser utilizado em CLX
+|* 19/03/2010: Peterson de Cerqueira Matos
+|*  - Tratamento das propriedades "FormularioContinuo", "ExpandirLogoMarca" e
+|*    "MostrarPreview" de "ACBrNFeDANFeClass"
+|*  - Tratamento da propriedade "PosCanhoto" de "ACBrNFeDANFeRLClass"
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeRLRetrato;
@@ -85,43 +89,28 @@ uses
   ACBrNFeDANFeRL, pcnConversao, RLBarcode, jpeg, DB, DBClient, StrUtils;
 
 type
-
   TfrlDANFeRLRetrato = class(TfrlDANFeRL)
-    rlbReciboHeader: TRLBand;
-    rlCanhoto: TRLDraw;
-    RLDraw2: TRLDraw;
-    rliCanhoto1: TRLDraw;
-    rliCanhoto2: TRLDraw;
-    rllRecebemosDe: TRLLabel;
-    rllDataRecebimento: TRLLabel;
-    rllIdentificacao: TRLLabel;
-    RLDraw4: TRLDraw;
-    RLLabel3: TRLLabel;
-    RLLabel4: TRLLabel;
-    rllNumNF0: TRLLabel;
-    RLLabel6: TRLLabel;
-    rllSERIE0: TRLLabel;
     rlbEmitente: TRLBand;
-    RLDraw5: TRLDraw;
+    rliEmitente: TRLDraw;
     RLDraw6: TRLDraw;
-    RLDraw7: TRLDraw;
+    rliChave: TRLDraw;
     RLDraw8: TRLDraw;
     RLDraw9: TRLDraw;
     RLDraw10: TRLDraw;
     RLDraw11: TRLDraw;
-    RLLabel7: TRLLabel;
-    RLLabel8: TRLLabel;
-    RLLabel9: TRLLabel;
-    RLLabel10: TRLLabel;
-    RLLabel11: TRLLabel;
-    RLDraw12: TRLDraw;
+    rllDANFE: TRLLabel;
+    rllDocumento1: TRLLabel;
+    rllDocumento2: TRLLabel;
+    rllTipoEntrada: TRLLabel;
+    rllTipoSaida: TRLLabel;
+    rliTipoEntrada: TRLDraw;
     rllEntradaSaida: TRLLabel;
     RLLabel12: TRLLabel;
     rllNumNF1: TRLLabel;
     RLLabel14: TRLLabel;
     rllSERIE1: TRLLabel;
-    RLDraw13: TRLDraw;
-    RLDraw14: TRLDraw;
+    rliChave2: TRLDraw;
+    rliChave3: TRLDraw;
     rlbCodigoBarras: TRLBarcode;
     rlbCabecalhoItens: TRLBand;
     rlbDadosAdicionais: TRLBand;
@@ -144,7 +133,7 @@ type
     rlsDivProd12: TRLDraw;
     rlsDivProd13: TRLDraw;
     RLDraw54: TRLDraw;
-    RLLabel5: TRLLabel;
+    rllChaveAcesso: TRLLabel;
     rllDadosVariaveis1a: TRLLabel;
     rllDadosVariaveis1b: TRLLabel;
     rllDadosVariaveis3_Descricao: TRLLabel;
@@ -182,7 +171,7 @@ type
     rllCNPJ: TRLLabel;
     rlmDadosAdicionais: TRLMemo;
     rllChave: TRLLabel;
-    RLLabel13: TRLLabel;
+    rllEmitente: TRLLabel;
     rlbCodigoBarrasFS: TRLBarcode;
     rllXmotivo: TRLLabel;
     rllDadosVariaveis1c: TRLLabel;
@@ -488,12 +477,26 @@ type
     RLDraw71: TRLDraw;
     rlmDescricaoProduto: TRLMemo;
     rlmCodProd: TRLMemo;
+    rlmSiteEmail: TRLMemo;
+    rlbReciboHeader: TRLBand;
+    rlCanhoto: TRLDraw;
+    rliCanhoto1: TRLDraw;
+    rliCanhoto2: TRLDraw;
+    rllRecebemosDe: TRLLabel;
+    rllDataRecebimento: TRLLabel;
+    rllIdentificacao: TRLLabel;
+    rliCanhoto3: TRLDraw;
+    rllNFe: TRLLabel;
+    RLLabel4: TRLLabel;
+    rllNumNF0: TRLLabel;
+    RLLabel6: TRLLabel;
+    rllSERIE0: TRLLabel;
     rllResumo: TRLLabel;
+    rlbDivisaoRecibo: TRLBand;
+    rliDivisao: TRLDraw;
     rllUsuario: TRLLabel;
     rllSistema: TRLLabel;
-    rlmSiteEmail: TRLMemo;
     procedure RLNFeBeforePrint(Sender: TObject; var PrintIt: Boolean);
-    procedure RLNFeAfterPrint(Sender: TObject);
     procedure rlbEmitenteBeforePrint(Sender: TObject;
       var PrintIt: Boolean);
     procedure rlbItensAfterPrint(Sender: TObject);
@@ -551,14 +554,78 @@ end;
 procedure TfrlDANFeRLRetrato.RLNFeBeforePrint(Sender: TObject;
   var PrintIt: Boolean);
 begin
+  case FPosCanhoto of
+    pcCabecalho:
+      begin
+        rlbReciboHeader.BandType := btHeader;
+        rlbDivisaoRecibo.BandType := btHeader;
+        rlbReciboHeader.Top := 19;
+        rlbDivisaoRecibo.Top := 76;
+        rlbReciboHeader.Height := 57;
+        rlbDadosAdicionais.Height := 184;
+      end;
+    pcRodape:
+      begin
+        rlbReciboHeader.Height := 80;
+        rlbReciboHeader.BandType := btFooter;
+        rlbDivisaoRecibo.BandType := btFooter;
+        rlbReciboHeader.Top := 1042;
+        rlbDivisaoRecibo.Top := 1025;
+        rlbDadosAdicionais.Height := 166;
+      end;
+  end;
+
+  if FFormularioContinuo = True then
+    begin
+      rllRecebemosDe.Visible := False;
+      rllResumo.Visible := False;
+      rllDataRecebimento.Visible := False;
+      rllIdentificacao.Visible := False;
+      rllNFe.Visible := False;
+      rlCanhoto.Visible := False;
+      rliCanhoto1.Visible := False;
+      rliCanhoto2.Visible := False;
+      rliCanhoto3.Visible := False;
+      rliDivisao.Visible := False;
+      rliTipoEntrada.Visible := False;
+      rllDANFE.Visible := False;
+      rllDocumento1.Visible := False;
+      rllDocumento2.Visible := False;
+      rllTipoEntrada.Visible := False;
+      rllTipoSaida.Visible := False;
+      rllEmitente.Visible := False;
+      rliLogo.Visible := False;
+      rlmEmitente.Visible := False;
+      rlmEndereco.Visible := False;
+      rllFone.Visible := False;
+      rlmSiteEmail.Visible := False;
+      rliEmitente.Visible := False;
+      rllChaveAcesso.Visible := False;
+      rliChave.Visible := False;
+      rliChave2.Visible := False;
+      rliChave3.Visible := False;
+    end;
+
+  if FExpandirLogoMarca = True then
+    begin
+      rlmEmitente.Visible := False;
+      rlmEndereco.Visible := False;
+      rllFone.Visible := False;
+      rlmSiteEmail.Visible := False;
+      with rliLogo do
+        begin
+          Height := 101;
+          Width := 286;
+          Top := 14;
+          Left := 2;
+          Scaled := False;
+          Stretch := True;
+        end;
+    end;
+
   q := 0;
   InitDados;
   RLNFe.Title := Copy (FNFe.InfNFe.Id, 4, 44);
-end;
-
-procedure TfrlDANFeRLRetrato.RLNFeAfterPrint(Sender: TObject);
-begin
-  AfterPreview := True;
 end;
 
 procedure TfrlDANFeRLRetrato.rlbEmitenteBeforePrint(Sender: TObject;
@@ -569,6 +636,8 @@ begin
     begin
       rlbISSQN.Visible := False;
       rlbDadosAdicionais.Visible := False;
+      rlbReciboHeader.Visible := False;
+      rlbDivisaoRecibo.Visible := False;
       if iQuantItens > q then
         begin
           rlbCabecalhoItens.Visible := True;
@@ -577,6 +646,7 @@ begin
         end
       else
         rlbCabecalhoItens.Visible := False;
+
     end;
 end;
 
@@ -1323,7 +1393,11 @@ end;
 procedure TfrlDANFeRLRetrato.rlbDadosAdicionaisBeforePrint(Sender: TObject;
   var PrintIt: Boolean);
 begin
-    rlbReciboHeader.Visible := False;
+  if FPosCanhoto = pcCabecalho then
+    begin
+      rlbReciboHeader.Visible := False;
+      rlbDivisaoRecibo.Visible := False;
+    end;
 end;
 
 end.

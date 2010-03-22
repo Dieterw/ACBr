@@ -50,43 +50,51 @@
 |*    "Código do Produto" no DANFE
 |* 15/03/2010: Felipe Feltes
 |*  - Adequação na seção 'USES' para ser utilizado em CLX
+|* 19/03/2010: Peterson de Cerqueira Matos
+|*  - Tratamento das propriedades "FormularioContinuo", "ExpandirLogoMarca" e
+|*    "MostrarPreview" de "ACBrNFeDANFeClass"
+|*  - Acréscimo da propriedade "PosCanhoto", que permite ao usuário escolher
+|*    entre "pcCabecalho" e "pcRodape"
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeRLClass;
 
 interface
 
-uses SysUtils, Classes,  
+uses SysUtils, Classes,
   {$IFDEF CLX}
-  QForms, QDialogs, 
+  QForms, QDialogs,
   {$ELSE}
-  Forms, Dialogs, 
+  Forms, Dialogs,
   {$ENDIF}
-  ACBrNFeDANFEClass, ACBrNFeDANFeRLRetrato, pcnNFe, pcnConversao, StrUtils;
+  ACBrNFeDANFEClass, ACBrNFeDANFeRL, ACBrNFeDANFeRLRetrato, pcnNFe,
+  pcnConversao, StrUtils;
 
 type
   TACBrNFeDANFeRL = class( TACBrNFeDANFEClass )
-   private
-     FMarcadagua: string;
-     FLarguraCodProd: Integer;
-   public
+  private
+    FMarcadagua: string;
+    FLarguraCodProd: Integer;
+    FPosCanhoto: TPosCanhoto;
+  public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure ImprimirDANFE(NFE : TNFe = nil); override ;
     procedure ImprimirDANFEPDF(NFE : TNFe = nil); override ;
+    procedure SetPosCanhoto(Value: TPosCanhoto); virtual;
   published
     property MarcadAgua : String read FMarcadagua write FMarcadagua ;
     property LarguraCodProd: Integer read FLarguraCodProd write FLarguraCodProd;
+    property PosCanhoto: TPosCanhoto read FPosCanhoto write SetPosCanhoto default pcCabecalho;
   end;
 
 implementation
 
-uses ACBrNFe, ACBrNFeUtil, ACBrUtil; 
+uses ACBrNFe, ACBrNFeUtil, ACBrUtil;
 
 constructor TACBrNFeDANFeRL.Create(AOwner: TComponent);
 begin
   inherited create( AOwner );
-  FLarguraCodProd := 52;
 end;
 
 destructor TACBrNFeDANFeRL.Destroy;
@@ -108,6 +116,10 @@ var
   sSsitema: String;
   sSite: String;
   sUsuario: String;
+  sPosCanhoto: TPosCanhoto;
+  bFormularioContinuo: Boolean;
+  bExpandirLogoMarca: Boolean;
+  bMostrarPreview: Boolean;
 
 begin
   frlDANFeRLRetrato := TfrlDANFeRLRetrato.Create(Self);
@@ -121,6 +133,10 @@ begin
   sSsitema := Sistema;
   sSite := Site;
   sUsuario := Usuario;
+  sPosCanhoto := PosCanhoto;
+  bFormularioContinuo := FormularioContinuo;
+  bExpandirLogoMarca := ExpandirLogoMarca;
+  bMostrarPreview := MostrarPreview;
 
   if NFE = nil then
    begin
@@ -128,12 +144,14 @@ begin
       begin
         frlDANFeRLRetrato.Imprimir(TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe,
         sLogo, sMarcaDagua, iLarguraCodProd, sEmail, bResumoCanhoto, sFax,
-        iNumCopias, sSsitema, sSite, sUsuario);
+        iNumCopias, sSsitema, sSite, sUsuario, sPosCanhoto,
+        bFormularioContinuo, bExpandirLogoMarca, bMostrarPreview);
       end;
    end
   else
     frlDANFeRLRetrato.Imprimir(NFE, sLogo, sMarcaDagua, iLarguraCodProd,
-    sEmail, bResumoCanhoto, sFax, iNumCopias, sSsitema, sSite, sUsuario);
+    sEmail, bResumoCanhoto, sFax, iNumCopias, sSsitema, sSite, sUsuario,
+    sPosCanhoto, bFormularioContinuo, bExpandirLogoMarca, bMostrarPreview);
 
   frlDANFeRLRetrato.Free;
 end;
@@ -151,6 +169,10 @@ var
   sSsitema: String;
   sSite: String;
   sUsuario: String;
+  sPosCanhoto: TPosCanhoto;
+  bFormularioContinuo: Boolean;
+  bExpandirLogoMarca: Boolean;
+
 begin
   frlDANFeRLRetrato := TfrlDANFeRLRetrato.Create(Self);
   sLogo := TACBrNFe(ACBrNFe).DANFE.Logo;
@@ -163,6 +185,9 @@ begin
   sSsitema := Sistema;
   sSite := Site;
   sUsuario := Usuario;
+  sPosCanhoto := PosCanhoto;
+  bFormularioContinuo := FormularioContinuo;
+  bExpandirLogoMarca := ExpandirLogoMarca;
 
   if NFE = nil then
    begin
@@ -171,11 +196,17 @@ begin
         sFile := TACBrNFe(ACBrNFe).DANFE.PathPDF + Copy(TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe.infNFe.ID, 4, 44) + '-nfe.pdf';
         frlDANFeRLRetrato.SavePDF(TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe,
         sLogo, sMarcaDagua, iLarguraCodProd, sEmail, bResumoCanhoto, sFax,
-        iNumCopias, sSsitema, sSite, sUsuario, sFile);
+        iNumCopias, sSsitema, sSite, sUsuario, sFile, sPosCanhoto,
+        bFormularioContinuo, bExpandirLogoMarca);
       end;
    end;
 
   frlDANFeRLRetrato.Free;
+end;
+
+procedure TACBrNFeDANFeRL.SetPosCanhoto(Value: TPosCanhoto);
+begin
+  FPosCanhoto := Value;
 end;
 
 end.

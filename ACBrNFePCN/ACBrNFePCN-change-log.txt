@@ -48,6 +48,14 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   22/03/10
+---------------
+[+] Melhorias DANFE em Fortes Reports (Peterson de Cerqueira Matos)
+    - Tratamento das propriedades "FormularioContinuo", "ExpandirLogoMarca" e
+      "MostrarPreview" de "ACBrNFeDANFeClass"
+    - Acréscimo da propriedade "PosCanhoto", que permite ao usuário escolher
+      entre "pcCabecalho" e "pcRodape"
+
 Alterações   19/03/10
 ---------------
 [*] Disponibilizado correções para adequção do Danfe com Quick Reports. O mesmo esta funcional de acordo com o Manual 3.0

@@ -49,13 +49,19 @@
 |*  - Acréscimo dos parâmetros "ALarguraCodProd" nas Class procedures
 |*    "Imprimir" e "SavePDF"
 |* 05/02/2010: Peterson de Cerqueira Matos
-|*  - Acréscimo dos parâmetros "FEmail", "FResumoCanhoto", "FFax", "FNumCopias",
-|*    "FSsitema", "FSite", "FUsuario" nas Class procedures
+|*  - Acréscimo dos parâmetros "AEmail", "AResumoCanhoto", "AFax", "ANumCopias",
+|*    "ASsitema", "ASite", "AUsuario" nas Class procedures
 |*    "Imprimir" e "SavePDF"
 |* 13/02/2010: Peterson de Cerqueira Matos
 |*  - Correção na exibição do 'Preview' para modo 'PREVIEWMODAL'
 |* 15/03/2010: Felipe Feltes
 |*  - Adequação na seção 'USES' para ser utilizado em CLX
+|* 19/03/2010: Peterson de Cerqueira Matos
+|*  - Tratamento das propriedades "FormularioContinuo", "ExpandirLogoMarca" e
+|*    "MostrarPreview" de "ACBrNFeDANFeClass"
+|*  - Acréscimo dos parâmetros "APosCanhoto", "AFormularioContinuo",
+|*    "AExpandirLogoMarca" e "AMostrarPreview" nas Class procedures
+|*    "Imprimir" e "SavePDF" (esta última sem o "AMostrarPreview")
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeRL;
@@ -63,13 +69,17 @@ unit ACBrNFeDANFeRL;
 interface
 
 uses
-  SysUtils, Variants, Classes, 
+  SysUtils, Variants, Classes,
   {$IFDEF CLX}
-  QGraphics, QControls, QForms, QDialogs, QExtCtrls, Qt, 
+  QGraphics, QControls, QForms, QDialogs, QExtCtrls, Qt,
   {$ELSE}
   Windows, Messages, Graphics, Controls, Forms, Dialogs, ExtCtrls,
   {$ENDIF}
   RLReport, pcnNFe, ACBrNFe, RLFilters, MaskUtils;
+
+type
+  TPosCanhoto = (pcCabecalho, pcRodape);
+
 type
   TfrlDANFeRL = class(TForm)
     RLNFe: TRLReport;
@@ -89,10 +99,11 @@ type
     FSsitema: String;
     FSite: String;
     FUsuario: String;
-    AfterPreview : boolean ;
-    ChangedPos : boolean ;
-    FSemValorFiscal : boolean ;
-    procedure qrlSemValorFiscalPrint(sender: TObject; var Value: String);
+    FPosCanhoto: TPosCanhoto;
+    FFormularioContinuo: Boolean;
+    FExpandirLogoMarca: Boolean;
+    FMostrarPreview: Boolean;
+
   public
     { Public declarations }
     class procedure Imprimir(ANFe: TNFe; ALogo: String = '';
@@ -100,7 +111,11 @@ type
                     AEmail: String = ''; AResumoCanhoto: Boolean = False;
                     AFax: String = ''; ANumCopias: Integer = 1;
                     ASistema: String = ''; ASite: String = '';
-                    AUsuario: String = '' ; APreview : Boolean = True);
+                    AUsuario: String = '';
+                    APosCanhoto: TPosCanhoto = pcCabecalho;
+                    AFormularioContinuo: Boolean = False;
+                    AExpandirLogoMarca: Boolean = False;
+                    AMostrarPreview: Boolean = True);
 
     class procedure SavePDF(ANFe: TNFe; ALogo: String = '';
                     AMarcaDagua: String = ''; ALarguraCodProd: Integer = 52;
@@ -108,7 +123,9 @@ type
                     AFax: String = ''; ANumCopias: Integer = 1;
                     ASistema: String = ''; ASite: String = '';
                     AUsuario: String = ''; AFile: String = '';
-                    APreview : Boolean = True);
+                    APosCanhoto: TPosCanhoto = pcCabecalho;
+                    AFormularioContinuo: Boolean = False;
+                    AExpandirLogoMarca: Boolean = False);
   end;
 
 implementation
@@ -122,7 +139,11 @@ class procedure TfrlDANFeRL.Imprimir(ANFe: TNFe; ALogo: String = '';
                     AEmail: String = ''; AResumoCanhoto: Boolean = False;
                     AFax: String = ''; ANumCopias: Integer = 1;
                     ASistema: String = ''; ASite: String = '';
-                    AUsuario: String = '' ; APreview : Boolean = True);
+                    AUsuario: String = '';
+                    APosCanhoto: TPosCanhoto = pcCabecalho;
+                    AFormularioContinuo: Boolean = False;
+                    AExpandirLogoMarca: Boolean = False;
+                    AMostrarPreview: Boolean = True);
 begin
   with Create ( nil ) do
     try
@@ -137,16 +158,17 @@ begin
       FSsitema := ASistema;
       FSite := ASite;
       FUsuario := AUsuario;
+      FPosCanhoto := APosCanhoto;
+      FFormularioContinuo := AFormularioContinuo;
+      FExpandirLogoMarca := AExpandirLogoMarca;
+      FMostrarPreview := AMostrarPreview;
+
       for iCopias := 1 to FNumCopias do
-        begin
-          if APreview then
-            RLNFe.PreviewModal
-          else
-            begin
-              AfterPreview := True ;
-              RLNFe.Print ;
-            end;
-        end;
+        if FMostrarPreview = True then
+          RLNFe.PreviewModal
+        else
+          RLNFe.Print;
+
     finally
       Free ;
     end ;
@@ -158,7 +180,9 @@ class procedure TfrlDANFeRL.SavePDF(ANFe: TNFe; ALogo: String = '';
                     AFax: String = ''; ANumCopias: Integer = 1;
                     ASistema: String = ''; ASite: String = '';
                     AUsuario: String = '' ; AFile: String = '';
-                    APreview : Boolean = True);
+                    APosCanhoto: TPosCanhoto = pcCabecalho;
+                    AFormularioContinuo: Boolean = False;
+                    AExpandirLogoMarca: Boolean = False);
 begin
   with Create ( nil ) do
     try
@@ -173,18 +197,13 @@ begin
       FSsitema := ASistema;
       FSite := ASite;
       FUsuario := AUsuario;
+      FPosCanhoto := APosCanhoto;
+      FFormularioContinuo := AFormularioContinuo;
+      FExpandirLogoMarca := AExpandirLogoMarca;
       RLNFe.SaveToFile(AFile);
     finally
       Free ;
     end ;
-end;
-
-procedure TfrlDANFeRL.qrlSemValorFiscalPrint(sender: TObject;
-  var Value: String);
-begin
-  inherited;
-  if FSemValorFiscal then
-     Value := '' ;
 end;
 
 end.

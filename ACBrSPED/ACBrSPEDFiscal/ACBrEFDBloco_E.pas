@@ -54,6 +54,7 @@ type
   end;
 
   TRegistroE210List = class; {Márcio Lopes 18Dez2009}
+  TRegistroE250List = class;
 
   /// Registro E100 - PERÍODO DA APURAÇÃO DO ICMS
 
@@ -259,7 +260,8 @@ type
     fUF: AnsiString;        /// Sigla da unidade da federação a que se refere a apuração do ICMS ST
     fDT_INI: TDateTime; /// Data inicial a que a apuração se refere
     fDT_FIN: TDateTime; /// Data final a que a apuração se refere
-    fRegistroE210:TRegistroE210List;
+
+    fRegistroE210: TRegistroE210List;
   public
     constructor Create; virtual; /// Create
     destructor Destroy; override; /// Destroy
@@ -285,7 +287,7 @@ type
 
   TRegistroE210 = class(TPersistent)
   private
-    fIND_MOV_ST: AnsiString;                     /// Indicador de movimento: 0 - Sem operações com ST 1 - Com operações de ST
+    fIND_MOV_ST: AnsiString;                 /// Indicador de movimento: 0 - Sem operações com ST 1 - Com operações de ST
     fVL_SLD_CRED_ANT_ST: currency;           /// Valor do "Saldo credor de período anterior - Substituição Tributária"
     fVL_DEVOL_ST: currency;                  /// Valor total do ICMS ST de devolução de mercadorias
     fVL_RESSARC_ST: currency;                /// Valor total do ICMS ST de ressarcimentos
@@ -299,7 +301,12 @@ type
     fVL_ICMS_RECOL_ST: currency;             /// Imposto a recolher ST (11-12)
     fVL_SLD_CRED_ST_TRANSPORTAR: currency;   /// Saldo credor de ST a transportar para o período seguinte [(03+04+05+06+07)- (08+09+10)].
     fDEB_ESP_ST: currency;                   /// Valores recolhidos ou a recolher, extra-apuração.
+
+    fRegistroE250: TRegistroE250List;
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property IND_MOV_ST: AnsiString read fIND_MOV_ST write fIND_MOV_ST;
     property VL_SLD_CRED_ANT_ST: currency read fVL_SLD_CRED_ANT_ST write fVL_SLD_CRED_ANT_ST;
     property VL_DEVOL_ST: currency read fVL_DEVOL_ST write fVL_DEVOL_ST;
@@ -314,6 +321,8 @@ type
     property VL_ICMS_RECOL_ST: currency read fVL_ICMS_RECOL_ST write fVL_ICMS_RECOL_ST;
     property VL_SLD_CRED_ST_TRANSPORTAR: currency read fVL_SLD_CRED_ST_TRANSPORTAR write fVL_SLD_CRED_ST_TRANSPORTAR;
     property DEB_ESP_ST: currency read fDEB_ESP_ST write fDEB_ESP_ST;
+    // Registro FILHO
+    property RegistroE250:TRegistroE250List read fRegistroE250 write fRegistroE250;
   end;
 
   /// Registro E210 - Lista
@@ -986,6 +995,19 @@ end;
 destructor TRegistroE200.Destroy;
 begin
   FRegistroE210.Free;
+  inherited;
+end;
+
+{ TRegistroE210 }
+
+constructor TRegistroE210.Create;
+begin
+   FRegistroE250 := TRegistroE250List.Create;   /// BLOCO E - Lista de RegistroE250 (FILHO)
+end;
+
+destructor TRegistroE210.Destroy;
+begin
+  FRegistroE250.Free;
   inherited;
 end;
 

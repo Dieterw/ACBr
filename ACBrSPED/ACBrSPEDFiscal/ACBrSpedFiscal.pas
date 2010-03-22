@@ -173,7 +173,6 @@ type
     function WriteRegistroE220: AnsiString;
     function WriteRegistroE230: AnsiString;
     function WriteRegistroE240: AnsiString;
-    function WriteRegistroE250: AnsiString;
     function WriteRegistroE500: AnsiString;
     function WriteRegistroE510: AnsiString;
     function WriteRegistroE520: AnsiString;
@@ -465,7 +464,6 @@ begin
     if Bloco_E.RegistroE220.Count > 0 then Write(txtFile, WriteRegistroE220); // Prates
     if Bloco_E.RegistroE230.Count > 0 then Write(txtFile, WriteRegistroE230); // Prates
     if Bloco_E.RegistroE240.Count > 0 then Write(txtFile, WriteRegistroE240); // Prates
-    if Bloco_E.RegistroE250.Count > 0 then Write(txtFile, WriteRegistroE250); // Prates
     if Bloco_E.RegistroE500.Count > 0 then Write(txtFile, WriteRegistroE500); // Dante
     if Bloco_E.RegistroE510.Count > 0 then Write(txtFile, WriteRegistroE510); // Dante
     if Bloco_E.RegistroE520.Count > 0 then Write(txtFile, WriteRegistroE520); // Dante
@@ -1642,7 +1640,11 @@ begin
       REG_BLC := 'E210';
       QTD_REG_BLC := Bloco_E.RegistroE210Count;
    end;
-
+   with Bloco_9.Registro9900.New do
+   begin
+      REG_BLC := 'E250';
+      QTD_REG_BLC := Bloco_E.RegistroE250Count;
+   end;
 end;
 
 function TACBrSPEDFiscal.WriteRegistroE220: AnsiString;
@@ -1673,16 +1675,6 @@ begin
       QTD_REG_BLC := Bloco_E.RegistroE240.Count;
    end;
    Result := Bloco_E.WriteRegistroE240;
-end;
-
-function TACBrSPEDFiscal.WriteRegistroE250: AnsiString;
-begin
-   with Bloco_9.Registro9900.New do
-   begin
-      REG_BLC := 'E250';
-      QTD_REG_BLC := Bloco_E.RegistroE250.Count;
-   end;
-   Result := Bloco_E.WriteRegistroE250;
 end;
 
 function TACBrSPEDFiscal.WriteRegistroE500: AnsiString;

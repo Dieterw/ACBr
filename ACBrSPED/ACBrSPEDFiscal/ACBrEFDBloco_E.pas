@@ -55,6 +55,8 @@ type
 
   TRegistroE210List = class; {Márcio Lopes 18Dez2009}
   TRegistroE250List = class;
+  TRegistroE520List = class;
+  TRegistroE530List = class;
 
   /// Registro E100 - PERÍODO DA APURAÇÃO DO ICMS
 
@@ -322,7 +324,7 @@ type
     property VL_SLD_CRED_ST_TRANSPORTAR: currency read fVL_SLD_CRED_ST_TRANSPORTAR write fVL_SLD_CRED_ST_TRANSPORTAR;
     property DEB_ESP_ST: currency read fDEB_ESP_ST write fDEB_ESP_ST;
     // Registro FILHO
-    property RegistroE250:TRegistroE250List read fRegistroE250 write fRegistroE250;
+    property RegistroE250: TRegistroE250List read fRegistroE250 write fRegistroE250;
   end;
 
   /// Registro E210 - Lista
@@ -497,12 +499,21 @@ type
     fVL_CONT_IPI: currency;   /// Parcela correspondente ao "Valor Contábil" referente ao CFOP e ao Código de Tributação do IPI
     fVL_BC_IPI: currency;     /// Parcela correspondente ao "Valor da base de cálculo do IPI" referente ao CFOP e ao Código de Tributação do IPI, para operações tributadas
     fVL_IPI: currency;        /// Parcela correspondente ao "Valor do IPI" referente ao CFOP e ao Código de Tributação do IPI, para operações tributadas
+
+    fRegistroE520: TRegistroE520List;
+    fRegistroE530: TRegistroE530List;
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
+
     property CFOP: AnsiString read fCFOP write fCFOP;
     property CST_IPI: AnsiString read fCST_IPI write fCST_IPI;
     property VL_CONT_IPI: currency read fVL_CONT_IPI write fVL_CONT_IPI;
     property VL_BC_IPI: currency read fVL_BC_IPI write fVL_BC_IPI;
     property VL_IPI: currency read fVL_IPI write fVL_IPI;
+    // Registro FILHO
+    property RegistroE520: TRegistroE520List read fRegistroE520 write fRegistroE520;
+    property RegistroE530: TRegistroE530List read fRegistroE530 write fRegistroE530;
   end;
 
   /// Registro E510 - Lista
@@ -1008,6 +1019,21 @@ end;
 destructor TRegistroE210.Destroy;
 begin
   FRegistroE250.Free;
+  inherited;
+end;
+
+{ TRegistroE510 }
+
+constructor TRegistroE510.Create;
+begin
+   FRegistroE520 := TRegistroE520List.Create;   /// BLOCO E - Lista de RegistroE520 (FILHO)
+   FRegistroE530 := TRegistroE530List.Create;   /// BLOCO E - Lista de RegistroE530 (FILHO)
+end;
+
+destructor TRegistroE510.Destroy;
+begin
+  FRegistroE520.Free;
+  FRegistroE530.Free;
   inherited;
 end;
 

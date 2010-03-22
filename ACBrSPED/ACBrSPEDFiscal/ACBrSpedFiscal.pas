@@ -175,8 +175,6 @@ type
     function WriteRegistroE240: AnsiString;
     function WriteRegistroE500: AnsiString;
     function WriteRegistroE510: AnsiString;
-    function WriteRegistroE520: AnsiString;
-    function WriteRegistroE530: AnsiString;
     function WriteRegistroE990: AnsiString;
     /// BLOCO G
     function WriteRegistroG001: AnsiString;
@@ -466,8 +464,6 @@ begin
     if Bloco_E.RegistroE240.Count > 0 then Write(txtFile, WriteRegistroE240); // Prates
     if Bloco_E.RegistroE500.Count > 0 then Write(txtFile, WriteRegistroE500); // Dante
     if Bloco_E.RegistroE510.Count > 0 then Write(txtFile, WriteRegistroE510); // Dante
-    if Bloco_E.RegistroE520.Count > 0 then Write(txtFile, WriteRegistroE520); // Dante
-    if Bloco_E.RegistroE530.Count > 0 then Write(txtFile, WriteRegistroE530); // Dante
     Write(txtFile, WriteRegistroE990);
 
     /// CÓDIGO ABAIXO COMENTADO ATÉ QUE ENTRE EM VIGOR O ARTIGO 3o DO AC 38/09.
@@ -1689,32 +1685,23 @@ end;
 
 function TACBrSPEDFiscal.WriteRegistroE510: AnsiString;
 begin
+   Result := Bloco_E.WriteRegistroE510;
+
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'E510';
       QTD_REG_BLC := Bloco_E.RegistroE510.Count;
    end;
-   Result := Bloco_E.WriteRegistroE510;
-end;
-
-function TACBrSPEDFiscal.WriteRegistroE520: AnsiString;
-begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'E520';
-      QTD_REG_BLC := Bloco_E.RegistroE520.Count;
+      QTD_REG_BLC := Bloco_E.RegistroE520Count;
    end;
-   Result := Bloco_E.WriteRegistroE520;
-end;
-
-function TACBrSPEDFiscal.WriteRegistroE530: AnsiString;
-begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'E530';
-      QTD_REG_BLC := Bloco_E.RegistroE530.Count;
+      QTD_REG_BLC := Bloco_E.RegistroE530Count;
    end;
-   Result := Bloco_E.WriteRegistroE530;
 end;
 
 function TACBrSPEDFiscal.WriteRegistroE990: AnsiString;

@@ -68,9 +68,13 @@ type
 
     FRegistroE210Count: Integer;
     FRegistroE250Count: Integer;
+    FRegistroE520Count: Integer;
+    FRegistroE530Count: Integer;
 
     function WriteRegistroE210(RegE200: TRegistroE200): AnsiString;
     function WriteRegistroE250(RegE210: TRegistroE210): AnsiString;
+    function WriteRegistroE520(RegE510: TRegistroE510): AnsiString;
+    function WriteRegistroE530(RegE510: TRegistroE510): AnsiString;
 
     procedure CriaRegistros;
     procedure LiberaRegistros;
@@ -93,8 +97,6 @@ type
     function WriteRegistroE240: AnsiString;
     function WriteRegistroE500: AnsiString;
     function WriteRegistroE510: AnsiString;
-    function WriteRegistroE520: AnsiString;
-    function WriteRegistroE530: AnsiString;
     function WriteRegistroE990: AnsiString;
 
     property RegistroE001: TRegistroE001 read FRegistroE001 write FRegistroE001;
@@ -111,12 +113,12 @@ type
     property RegistroE240: TRegistroE240List read FRegistroE240 write FRegistroE240;
     property RegistroE500: TRegistroE500List read FRegistroE500 write FRegistroE500;
     property RegistroE510: TRegistroE510List read FRegistroE510 write FRegistroE510;
-    property RegistroE520: TRegistroE520List read FRegistroE520 write FRegistroE520;
-    property RegistroE530: TRegistroE530List read FRegistroE530 write FRegistroE530;
     property RegistroE990: TRegistroE990 read FRegistroE990 write FRegistroE990;
 
     property RegistroE210Count: Integer read FRegistroE210Count write FRegistroE210Count;
     property RegistroE250Count: Integer read FRegistroE250Count write FRegistroE250Count;
+    property RegistroE520Count: Integer read FRegistroE520Count write FRegistroE520Count;
+    property RegistroE530Count: Integer read FRegistroE530Count write FRegistroE530Count;
   end;
 
 implementation
@@ -151,12 +153,12 @@ begin
   FRegistroE240 := TRegistroE240List.Create;
   FRegistroE500 := TRegistroE500List.Create;
   FRegistroE510 := TRegistroE510List.Create;
-  FRegistroE520 := TRegistroE520List.Create;
-  FRegistroE530 := TRegistroE530List.Create;
   FRegistroE990 := TRegistroE990.Create;
 
   FRegistroE210Count := 0; // Por Márcio Lopes 18Dez2009
   FRegistroE250Count := 0;
+  FRegistroE520Count := 0;
+  FRegistroE530Count := 0;
 
   FRegistroE990.QTD_LIN_E := 0;
 end;
@@ -177,8 +179,6 @@ begin
   FRegistroE240.Free;
   FRegistroE500.Free;
   FRegistroE510.Free;
-  FRegistroE520.Free;
-  FRegistroE530.Free;
   FRegistroE990.Free;
 end;
 
@@ -643,24 +643,29 @@ begin
                                                Delimitador +
                                                #13#10;
         end;
+        /// Registros FILHOS
+        strRegistroE510 := strRegistroE510 +
+                           WriteRegistroE520( RegistroE510.Items[intFor] ) +
+                           WriteRegistroE530( RegistroE510.Items[intFor] );
+
         RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
      end;
   end;
   Result := strRegistroE510;
 end;
 
-function TBloco_E.WriteRegistroE520: AnsiString;
+function TBloco_E.WriteRegistroE520(RegE510: TRegistroE510): AnsiString;
 var
 intFor: integer;
 strRegistroE520: AnsiString;
 begin
   strRegistroE520 := '';
 
-  if Assigned( RegistroE520 ) then
+  if Assigned( RegE510.RegistroE520 ) then
   begin
-     for intFor := 0 to RegistroE520.Count - 1 do
+     for intFor := 0 to RegE510.RegistroE520.Count - 1 do
      begin
-        with RegistroE520.Items[intFor] do
+        with RegE510.RegistroE520.Items[intFor] do
         begin
           strRegistroE520 := strRegistroE520 + LFill('E520') +
                                                LFill( VL_SD_ANT_IPI,0 ) +
@@ -675,22 +680,24 @@ begin
         end;
         RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
      end;
+     /// Variavél para armazenar a quantidade de registro do tipo.
+     FRegistroE520Count := FRegistroE520Count + RegE510.RegistroE520.Count;
   end;
   Result := strRegistroE520;
 end;
 
-function TBloco_E.WriteRegistroE530: AnsiString;
+function TBloco_E.WriteRegistroE530(RegE510: TRegistroE510): AnsiString;
 var
 intFor: integer;
 strRegistroE530: AnsiString;
 begin
   strRegistroE530 := '';
 
-  if Assigned( RegistroE530 ) then
+  if Assigned( RegE510.RegistroE530 ) then
   begin
-     for intFor := 0 to RegistroE530.Count - 1 do
+     for intFor := 0 to RegE510.RegistroE530.Count - 1 do
      begin
-        with RegistroE530.Items[intFor] do
+        with RegE510.RegistroE530.Items[intFor] do
         begin
           strRegistroE530 := strRegistroE530 + LFill('E530') +
                                                LFill( IND_AJ ) +
@@ -704,6 +711,8 @@ begin
         end;
         RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
      end;
+     /// Variavél para armazenar a quantidade de registro do tipo.
+     FRegistroE530Count := FRegistroE530Count + RegE510.RegistroE530.Count;
   end;
   Result := strRegistroE530;
 end;

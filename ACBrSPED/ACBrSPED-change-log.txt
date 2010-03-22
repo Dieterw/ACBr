@@ -47,6 +47,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.07b   22/03/10
+-- ACBrSPEDFiscal --
+[*] Implementado hierarquia no RegistroE250 (por Isaque Pinheiro)
+
 Versão 0.07b   18/03/10
 -- ACBrSPEDFiscal e ACBrSPEDContabil --
 [-] Correção de validação da Inscrição Estadual de "TO".

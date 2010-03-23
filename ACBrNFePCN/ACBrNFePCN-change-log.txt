@@ -48,6 +48,13 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   23/03/10
+---------------
+[+] Melhorias DANFE em Fortes Reports (Peterson de Cerqueira Matos)   
+    - Tratamento das margens Superior, Inferior, Esquerda e Direita
+    - Acréscimo da propriedade "FonteDANFE", que permite ao usuário escolher
+      entre "fdArial", "fdTimesNewRoman" e "fdCourierNew"
+
 Alterações   22/03/10
 ---------------
 [+] Melhorias DANFE em Fortes Reports (Peterson de Cerqueira Matos)

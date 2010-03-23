@@ -1,7 +1,8 @@
 inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
-  Top = 108
+  Left = 204
+  Top = 106
   Width = 820
-  Height = 722
+  Height = 712
   VertScrollBar.Position = 0
   Caption = 'frlDANFeRLRetrato'
   OldCreateOrder = True
@@ -13,14 +14,10 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
     Background.Height = 96
     Background.Width = 175
     DataSource = DataSource1
-    InsideMargins.LeftMargin = -3.000000000000000000
-    InsideMargins.TopMargin = -4.000000000000000000
-    InsideMargins.RightMargin = -3.000000000000000000
-    InsideMargins.BottomMargin = -10.000000000000000000
-    Margins.LeftMargin = 8.000000000000000000
-    Margins.TopMargin = 9.000000000000000000
-    Margins.RightMargin = 8.000000000000000000
-    Margins.BottomMargin = 9.000000000000000000
+    Margins.LeftMargin = 7.000000000000000000
+    Margins.TopMargin = 7.000000000000000000
+    Margins.RightMargin = 7.000000000000000000
+    Margins.BottomMargin = 7.000000000000000000
     PreviewOptions.FormStyle = fsStayOnTop
     PrintDialog = False
     Title = 'Danfe Retrato'
@@ -35,16 +32,17 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       Scaled = True
     end
     object rlbContinuacaoInformacoesComplementares: TRLBand
-      Left = 19
-      Top = 829
-      Width = 756
+      Left = 26
+      Top = 736
+      Width = 742
       Height = 41
       AutoSize = True
       BandType = btSummary
       object rlmContinuacaoDadosAdicionais: TRLMemo
+        Tag = 20
         Left = 8
         Top = 24
-        Width = 657
+        Width = 641
         Height = 12
         Borders.Style = bsClear
         Font.Charset = DEFAULT_CHARSET
@@ -55,6 +53,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel16: TRLLabel
+        Tag = 10
         Left = 3
         Top = 13
         Width = 195
@@ -71,7 +70,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       object LinhaDCSuperior: TRLDraw
         Left = 0
         Top = 10
-        Width = 756
+        Width = 740
         Height = 1
         DrawKind = dkLine
         HoldStyle = hsRelatively
@@ -79,7 +78,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       object LinhaDCInferior: TRLDraw
         Left = 0
         Top = 40
-        Width = 756
+        Width = 740
         Height = 1
         DrawKind = dkLine
         HoldStyle = hsRelatively
@@ -94,7 +93,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsRelatively
       end
       object LinhaDCDireita: TRLDraw
-        Left = 755
+        Left = 739
         Top = 10
         Width = 1
         Height = 31
@@ -104,9 +103,9 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       end
     end
     object rlbCabecalhoItens: TRLBand
-      Left = 19
-      Top = 765
-      Width = 756
+      Left = 26
+      Top = 672
+      Width = 742
       Height = 31
       AutoSize = True
       Background.Arrange = baDistributed
@@ -117,13 +116,13 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       object rlsRectProdutos: TRLDraw
         Left = 0
         Top = 12
-        Width = 756
+        Width = 740
         Height = 19
       end
       object RLLabel26: TRLLabel
         Left = 1
         Top = 13
-        Width = 753
+        Width = 738
         Height = 16
         AutoSize = False
         Caption = '  '
@@ -132,6 +131,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Transparent = False
       end
       object lblDadosDoProduto: TRLLabel
+        Tag = 30
         Left = 0
         Top = 0
         Width = 132
@@ -147,7 +147,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLDraw54: TRLDraw
-        Left = 702
+        Left = 686
         Top = 21
         Width = 54
         Height = 1
@@ -164,7 +164,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsRelatively
       end
       object rlsDivProd2: TRLDraw
-        Left = 279
+        Left = 263
         Top = 12
         Width = 1
         Height = 19
@@ -173,7 +173,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsRelatively
       end
       object rlsDivProd3: TRLDraw
-        Left = 320
+        Left = 304
         Top = 12
         Width = 1
         Height = 19
@@ -182,7 +182,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsRelatively
       end
       object rlsDivProd4: TRLDraw
-        Left = 338
+        Left = 322
         Top = 12
         Width = 1
         Height = 19
@@ -191,7 +191,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsRelatively
       end
       object rlsDivProd5: TRLDraw
-        Left = 362
+        Left = 346
         Top = 12
         Width = 1
         Height = 19
@@ -200,7 +200,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsRelatively
       end
       object rlsDivProd6: TRLDraw
-        Left = 384
+        Left = 368
         Top = 12
         Width = 1
         Height = 19
@@ -209,7 +209,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsRelatively
       end
       object rlsDivProd7: TRLDraw
-        Left = 440
+        Left = 424
         Top = 12
         Width = 1
         Height = 19
@@ -218,7 +218,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsRelatively
       end
       object rlsDivProd8: TRLDraw
-        Left = 497
+        Left = 481
         Top = 12
         Width = 1
         Height = 19
@@ -227,7 +227,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsRelatively
       end
       object rlsDivProd9: TRLDraw
-        Left = 560
+        Left = 544
         Top = 12
         Width = 1
         Height = 19
@@ -236,7 +236,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsRelatively
       end
       object rlsDivProd10: TRLDraw
-        Left = 621
+        Left = 605
         Top = 12
         Width = 1
         Height = 19
@@ -245,7 +245,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsRelatively
       end
       object rlsDivProd11: TRLDraw
-        Left = 662
+        Left = 646
         Top = 12
         Width = 1
         Height = 19
@@ -254,7 +254,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsRelatively
       end
       object rlsDivProd12: TRLDraw
-        Left = 702
+        Left = 686
         Top = 12
         Width = 1
         Height = 19
@@ -263,7 +263,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsRelatively
       end
       object rlsDivProd13: TRLDraw
-        Left = 729
+        Left = 713
         Top = 21
         Width = 1
         Height = 9
@@ -272,7 +272,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsRelatively
       end
       object RLLabel82: TRLLabel
-        Left = 280
+        Tag = 10
+        Left = 264
         Top = 18
         Width = 40
         Height = 7
@@ -288,7 +289,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel83: TRLLabel
-        Left = 321
+        Tag = 10
+        Left = 305
         Top = 18
         Width = 16
         Height = 7
@@ -304,7 +306,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel84: TRLLabel
-        Left = 339
+        Tag = 10
+        Left = 323
         Top = 18
         Width = 22
         Height = 7
@@ -320,7 +323,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel85: TRLLabel
-        Left = 363
+        Tag = 10
+        Left = 347
         Top = 18
         Width = 22
         Height = 7
@@ -336,7 +340,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel91: TRLLabel
-        Left = 385
+        Tag = 10
+        Left = 369
         Top = 18
         Width = 54
         Height = 7
@@ -352,7 +357,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel87: TRLLabel
-        Left = 442
+        Tag = 10
+        Left = 426
         Top = 14
         Width = 54
         Height = 7
@@ -368,7 +374,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel88: TRLLabel
-        Left = 442
+        Tag = 10
+        Left = 426
         Top = 21
         Width = 54
         Height = 7
@@ -384,7 +391,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel86: TRLLabel
-        Left = 499
+        Tag = 10
+        Left = 483
         Top = 18
         Width = 60
         Height = 7
@@ -400,7 +408,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel89: TRLLabel
-        Left = 562
+        Tag = 10
+        Left = 546
         Top = 14
         Width = 58
         Height = 7
@@ -416,7 +425,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel90: TRLLabel
-        Left = 562
+        Tag = 10
+        Left = 546
         Top = 21
         Width = 58
         Height = 7
@@ -432,7 +442,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel92: TRLLabel
-        Left = 623
+        Tag = 10
+        Left = 607
         Top = 14
         Width = 38
         Height = 7
@@ -448,7 +459,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel93: TRLLabel
-        Left = 623
+        Tag = 10
+        Left = 607
         Top = 21
         Width = 38
         Height = 7
@@ -464,7 +476,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel94: TRLLabel
-        Left = 664
+        Tag = 10
+        Left = 648
         Top = 14
         Width = 38
         Height = 7
@@ -480,7 +493,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel95: TRLLabel
-        Left = 664
+        Tag = 10
+        Left = 648
         Top = 21
         Width = 38
         Height = 7
@@ -496,7 +510,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel96: TRLLabel
-        Left = 705
+        Tag = 10
+        Left = 689
         Top = 13
         Width = 48
         Height = 7
@@ -512,7 +527,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel97: TRLLabel
-        Left = 703
+        Left = 687
         Top = 22
         Width = 26
         Height = 7
@@ -528,7 +543,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel98: TRLLabel
-        Left = 732
+        Left = 716
         Top = 22
         Width = 20
         Height = 7
@@ -544,9 +559,10 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rlmDescricaoProduto: TRLMemo
+        Tag = 10
         Left = 56
         Top = 18
-        Width = 222
+        Width = 178
         Height = 7
         Alignment = taCenter
         AutoSize = False
@@ -560,7 +576,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rlmCodProd: TRLMemo
-        Left = 1
+        Tag = 10
+        Left = 2
         Top = 14
         Width = 52
         Height = 14
@@ -577,9 +594,9 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       end
     end
     object rlbEmitente: TRLBand
-      Left = 19
-      Top = 92
-      Width = 756
+      Left = 26
+      Top = 99
+      Width = 742
       Height = 182
       AutoExpand = False
       BandType = btHeader
@@ -587,13 +604,13 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       object rliEmitente: TRLDraw
         Left = 0
         Top = 0
-        Width = 289
+        Width = 273
         Height = 117
       end
       object rlmSiteEmail: TRLMemo
         Left = 80
         Top = 92
-        Width = 202
+        Width = 188
         Height = 22
         Alignment = taCenter
         AutoSize = False
@@ -607,11 +624,11 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       object RLDraw6: TRLDraw
         Left = 0
         Top = 116
-        Width = 756
+        Width = 740
         Height = 61
       end
       object rliChave: TRLDraw
-        Left = 445
+        Left = 429
         Top = 0
         Width = 311
         Height = 117
@@ -619,13 +636,13 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       object RLDraw8: TRLDraw
         Left = 0
         Top = 146
-        Width = 756
+        Width = 740
         Height = 1
         DrawKind = dkLine
         HoldStyle = hsHorizontally
       end
       object RLDraw9: TRLDraw
-        Left = 445
+        Left = 429
         Top = 116
         Width = 1
         Height = 31
@@ -634,7 +651,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsVertically
       end
       object RLDraw10: TRLDraw
-        Left = 252
+        Left = 246
         Top = 146
         Width = 1
         Height = 31
@@ -643,7 +660,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsVertically
       end
       object RLDraw11: TRLDraw
-        Left = 504
+        Left = 492
         Top = 146
         Width = 1
         Height = 31
@@ -652,7 +669,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsVertically
       end
       object rllDANFE: TRLLabel
-        Left = 292
+        Left = 276
         Top = 0
         Width = 150
         Height = 23
@@ -667,7 +684,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllDocumento1: TRLLabel
-        Left = 292
+        Left = 276
         Top = 23
         Width = 150
         Height = 16
@@ -682,7 +699,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllDocumento2: TRLLabel
-        Left = 292
+        Left = 276
         Top = 35
         Width = 150
         Height = 16
@@ -697,7 +714,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllTipoEntrada: TRLLabel
-        Left = 308
+        Left = 292
         Top = 51
         Width = 68
         Height = 14
@@ -710,7 +727,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllTipoSaida: TRLLabel
-        Left = 308
+        Left = 292
         Top = 63
         Width = 51
         Height = 14
@@ -723,13 +740,13 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rliTipoEntrada: TRLDraw
-        Left = 394
+        Left = 378
         Top = 51
         Width = 25
         Height = 25
       end
       object rllEntradaSaida: TRLLabel
-        Left = 397
+        Left = 381
         Top = 54
         Width = 20
         Height = 20
@@ -742,48 +759,29 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Font.Style = [fsBold]
         ParentFont = False
       end
-      object RLLabel12: TRLLabel
-        Left = 292
-        Top = 81
-        Width = 18
-        Height = 16
-        Caption = 'N'#186
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -13
-        Font.Name = 'Arial'
-        Font.Style = [fsBold]
-        ParentFont = False
-      end
       object rllNumNF1: TRLLabel
-        Left = 310
+        Left = 280
         Top = 81
-        Width = 75
+        Width = 93
         Height = 16
-        Caption = '000.000.000'
+        Caption = 'N'#186' 000.000.000'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -13
         Font.Name = 'Arial'
         Font.Style = [fsBold]
         ParentFont = False
-      end
-      object RLLabel14: TRLLabel
-        Left = 330
-        Top = 98
-        Width = 43
-        Height = 16
-        Caption = 'S'#201'RIE'
       end
       object rllSERIE1: TRLLabel
-        Left = 378
+        Left = 318
         Top = 98
-        Width = 25
+        Width = 68
         Height = 16
-        Caption = '000'
+        Alignment = taCenter
+        Caption = 'S'#201'RIE 000'
       end
       object rliChave2: TRLDraw
-        Left = 445
+        Left = 429
         Top = 48
         Width = 311
         Height = 1
@@ -791,7 +789,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsHorizontally
       end
       object rliChave3: TRLDraw
-        Left = 445
+        Left = 429
         Top = 78
         Width = 311
         Height = 1
@@ -799,7 +797,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsHorizontally
       end
       object rlbCodigoBarras: TRLBarcode
-        Left = 536
+        Left = 520
         Top = 5
         Width = 132
         Height = 40
@@ -809,7 +807,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Margins.RightMargin = 1.000000000000000000
       end
       object rllChaveAcesso: TRLLabel
-        Left = 448
+        Tag = 10
+        Left = 432
         Top = 51
         Width = 71
         Height = 7
@@ -823,7 +822,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllDadosVariaveis1a: TRLLabel
-        Left = 452
+        Left = 436
         Top = 80
         Width = 300
         Height = 13
@@ -839,7 +838,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllDadosVariaveis1b: TRLLabel
-        Left = 452
+        Left = 436
         Top = 91
         Width = 300
         Height = 13
@@ -855,7 +854,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllDadosVariaveis3_Descricao: TRLLabel
-        Left = 448
+        Tag = 10
+        Left = 432
         Top = 119
         Width = 140
         Height = 7
@@ -869,6 +869,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel28: TRLLabel
+        Tag = 10
         Left = 3
         Top = 119
         Width = 95
@@ -884,6 +885,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel29: TRLLabel
+        Tag = 10
         Left = 3
         Top = 149
         Width = 82
@@ -899,7 +901,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel30: TRLLabel
-        Left = 255
+        Tag = 10
+        Left = 249
         Top = 149
         Width = 144
         Height = 7
@@ -913,7 +916,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel31: TRLLabel
-        Left = 507
+        Tag = 10
+        Left = 495
         Top = 149
         Width = 21
         Height = 7
@@ -929,7 +933,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       object rlmEmitente: TRLMemo
         Left = 80
         Top = 18
-        Width = 202
+        Width = 188
         Height = 31
         Alignment = taCenter
         AutoSize = False
@@ -943,7 +947,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       object rlmEndereco: TRLMemo
         Left = 80
         Top = 48
-        Width = 202
+        Width = 188
         Height = 33
         Alignment = taCenter
         AutoSize = False
@@ -957,7 +961,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       object rllFone: TRLLabel
         Left = 80
         Top = 80
-        Width = 202
+        Width = 188
         Height = 12
         Alignment = taCenter
         AutoSize = False
@@ -979,7 +983,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       object rllNatOperacao: TRLLabel
         Left = 7
         Top = 129
-        Width = 434
+        Width = 410
         Height = 14
         AutoSize = False
         Font.Charset = DEFAULT_CHARSET
@@ -990,7 +994,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllDadosVariaveis3: TRLLabel
-        Left = 452
+        Left = 436
         Top = 129
         Width = 300
         Height = 14
@@ -1005,7 +1009,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       object rllInscricaoEstadual: TRLLabel
         Left = 7
         Top = 159
-        Width = 242
+        Width = 234
         Height = 14
         AutoSize = False
         Font.Charset = DEFAULT_CHARSET
@@ -1016,9 +1020,9 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllInscrEstSubst: TRLLabel
-        Left = 259
+        Left = 253
         Top = 159
-        Width = 240
+        Width = 236
         Height = 14
         AutoSize = False
         Font.Charset = DEFAULT_CHARSET
@@ -1029,9 +1033,9 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllCNPJ: TRLLabel
-        Left = 511
+        Left = 499
         Top = 159
-        Width = 240
+        Width = 236
         Height = 14
         AutoSize = False
         Font.Charset = DEFAULT_CHARSET
@@ -1042,7 +1046,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllChave: TRLLabel
-        Left = 452
+        Left = 436
         Top = 61
         Width = 298
         Height = 14
@@ -1055,6 +1059,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllEmitente: TRLLabel
+        Tag = 10
         Left = 3
         Top = 3
         Width = 108
@@ -1069,7 +1074,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllXmotivo: TRLLabel
-        Left = 551
+        Left = 535
         Top = 14
         Width = 100
         Height = 22
@@ -1082,7 +1087,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllDadosVariaveis1c: TRLLabel
-        Left = 452
+        Left = 436
         Top = 103
         Width = 300
         Height = 13
@@ -1098,7 +1103,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rlbCodigoBarrasFS: TRLBarcode
-        Left = 528
+        Left = 512
         Top = 81
         Width = 144
         Height = 33
@@ -1108,7 +1113,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Margins.RightMargin = 1.000000000000000000
       end
       object rllPageNumber: TRLSystemInfo
-        Left = 384
+        Left = 368
         Top = 81
         Width = 41
         Height = 16
@@ -1118,7 +1123,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Text = 'FL. '
       end
       object rllLastPage: TRLSystemInfo
-        Left = 420
+        Left = 404
         Top = 81
         Width = 24
         Height = 16
@@ -1128,20 +1133,22 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       end
     end
     object rlbDadosAdicionais: TRLBand
-      Left = 19
-      Top = 928
-      Width = 756
-      Height = 184
+      Left = 26
+      Top = 835
+      Width = 742
+      Height = 169
+      AlignToBottom = True
       AutoExpand = False
       BandType = btFooter
       BeforePrint = rlbDadosAdicionaisBeforePrint
       object RLDraw50: TRLDraw
         Left = 0
         Top = 20
-        Width = 756
+        Width = 740
         Height = 136
       end
       object RLLabel23: TRLLabel
+        Tag = 30
         Left = 0
         Top = 8
         Width = 77
@@ -1166,6 +1173,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsRelatively
       end
       object RLLabel77: TRLLabel
+        Tag = 10
         Left = 3
         Top = 23
         Width = 124
@@ -1181,6 +1189,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel78: TRLLabel
+        Tag = 10
         Left = 471
         Top = 23
         Width = 82
@@ -1195,6 +1204,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rlmDadosAdicionais: TRLMemo
+        Tag = 20
         Left = 8
         Top = 34
         Width = 402
@@ -1209,8 +1219,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllHomologacao: TRLLabel
-        Left = 302
-        Top = 81
+        Left = 295
+        Top = 73
         Width = 152
         Height = 22
         Align = faCenter
@@ -1223,6 +1233,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllUsuario: TRLLabel
+        Tag = 10
         Left = 0
         Top = 158
         Width = 212
@@ -1236,7 +1247,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllSistema: TRLLabel
-        Left = 578
+        Tag = 10
+        Left = 562
         Top = 158
         Width = 176
         Height = 7
@@ -1251,18 +1263,19 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       end
     end
     object rlbDestinatario: TRLBand
-      Left = 19
-      Top = 274
-      Width = 756
+      Left = 26
+      Top = 281
+      Width = 742
       Height = 108
       BandType = btTitle
       object RLDraw15: TRLDraw
         Left = 0
         Top = 12
-        Width = 756
+        Width = 740
         Height = 91
       end
       object RLLabel18: TRLLabel
+        Tag = 30
         Left = 0
         Top = 1
         Width = 116
@@ -1278,6 +1291,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel32: TRLLabel
+        Tag = 10
         Left = 3
         Top = 15
         Width = 80
@@ -1295,7 +1309,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       object rllDestNome: TRLLabel
         Left = 7
         Top = 25
-        Width = 522
+        Width = 510
         Height = 14
         AutoSize = False
         Font.Charset = DEFAULT_CHARSET
@@ -1306,6 +1320,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel35: TRLLabel
+        Tag = 10
         Left = 3
         Top = 45
         Width = 42
@@ -1323,7 +1338,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       object rllDestEndereco: TRLLabel
         Left = 7
         Top = 55
-        Width = 414
+        Width = 400
         Height = 14
         AutoSize = False
         Font.Charset = DEFAULT_CHARSET
@@ -1334,6 +1349,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel39: TRLLabel
+        Tag = 10
         Left = 3
         Top = 75
         Width = 38
@@ -1362,6 +1378,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel40: TRLLabel
+        Tag = 10
         Left = 319
         Top = 75
         Width = 41
@@ -1389,7 +1406,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel36: TRLLabel
-        Left = 429
+        Tag = 10
+        Left = 413
         Top = 45
         Width = 69
         Height = 7
@@ -1403,7 +1421,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllDestBairro: TRLLabel
-        Left = 433
+        Left = 417
         Top = 55
         Width = 152
         Height = 14
@@ -1416,6 +1434,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel41: TRLLabel
+        Tag = 10
         Left = 476
         Top = 75
         Width = 11
@@ -1432,7 +1451,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       object rllDestUF: TRLLabel
         Left = 480
         Top = 85
-        Width = 54
+        Width = 38
         Height = 14
         AutoSize = False
         Font.Charset = DEFAULT_CHARSET
@@ -1443,7 +1462,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel33: TRLLabel
-        Left = 541
+        Tag = 10
+        Left = 525
         Top = 15
         Width = 41
         Height = 7
@@ -1457,7 +1477,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllDestCNPJ: TRLLabel
-        Left = 545
+        Left = 529
         Top = 25
         Width = 112
         Height = 14
@@ -1470,7 +1490,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel37: TRLLabel
-        Left = 593
+        Tag = 10
+        Left = 577
         Top = 45
         Width = 17
         Height = 7
@@ -1484,7 +1505,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllDestCEP: TRLLabel
-        Left = 597
+        Left = 581
         Top = 55
         Width = 60
         Height = 14
@@ -1497,7 +1518,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel42: TRLLabel
-        Left = 541
+        Tag = 10
+        Left = 525
         Top = 75
         Width = 82
         Height = 7
@@ -1511,7 +1533,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllDestIE: TRLLabel
-        Left = 545
+        Left = 529
         Top = 85
         Width = 112
         Height = 14
@@ -1524,7 +1546,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel34: TRLLabel
-        Left = 666
+        Tag = 10
+        Left = 650
         Top = 15
         Width = 68
         Height = 7
@@ -1538,7 +1561,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllEmissao: TRLLabel
-        Left = 670
+        Left = 654
         Top = 25
         Width = 80
         Height = 14
@@ -1551,7 +1574,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel38: TRLLabel
-        Left = 666
+        Tag = 10
+        Left = 650
         Top = 45
         Width = 87
         Height = 7
@@ -1565,7 +1589,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllSaida: TRLLabel
-        Left = 670
+        Left = 654
         Top = 55
         Width = 80
         Height = 14
@@ -1578,7 +1602,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel43: TRLLabel
-        Left = 666
+        Tag = 10
+        Left = 650
         Top = 75
         Width = 58
         Height = 7
@@ -1592,7 +1617,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllHoraSaida: TRLLabel
-        Left = 670
+        Left = 654
         Top = 85
         Width = 80
         Height = 14
@@ -1607,7 +1632,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       object RLDraw16: TRLDraw
         Left = 0
         Top = 42
-        Width = 756
+        Width = 740
         Height = 1
         DrawKind = dkLine
         Holder = RLDraw15
@@ -1616,7 +1641,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       object RLDraw17: TRLDraw
         Left = 0
         Top = 72
-        Width = 756
+        Width = 740
         Height = 1
         DrawKind = dkLine
         Holder = RLDraw15
@@ -1641,7 +1666,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsRelatively
       end
       object RLDraw20: TRLDraw
-        Left = 426
+        Left = 410
         Top = 42
         Width = 1
         Height = 31
@@ -1650,7 +1675,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsRelatively
       end
       object RLDraw19: TRLDraw
-        Left = 538
+        Left = 522
         Top = 12
         Width = 1
         Height = 31
@@ -1659,7 +1684,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsRelatively
       end
       object RLDraw24: TRLDraw
-        Left = 538
+        Left = 522
         Top = 72
         Width = 1
         Height = 31
@@ -1668,7 +1693,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsRelatively
       end
       object RLDraw21: TRLDraw
-        Left = 590
+        Left = 574
         Top = 42
         Width = 1
         Height = 31
@@ -1677,7 +1702,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsRelatively
       end
       object RLDraw18: TRLDraw
-        Left = 663
+        Left = 647
         Top = 12
         Width = 1
         Height = 90
@@ -1687,18 +1712,19 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       end
     end
     object rlbFatura: TRLBand
-      Left = 19
-      Top = 482
-      Width = 756
+      Left = 26
+      Top = 389
+      Width = 742
       Height = 68
       BandType = btTitle
       object RLDraw25: TRLDraw
         Left = 0
         Top = 12
-        Width = 756
+        Width = 740
         Height = 51
       end
       object RLLabel19: TRLLabel
+        Tag = 30
         Left = 0
         Top = 1
         Width = 34
@@ -1715,7 +1741,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       object rllFatNum1: TRLLabel
         Left = 4
         Top = 25
-        Width = 65
+        Width = 60
         Height = 10
         AutoSize = False
         Caption = '01'
@@ -1729,7 +1755,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       object rllFatNum2: TRLLabel
         Left = 4
         Top = 38
-        Width = 65
+        Width = 60
         Height = 10
         AutoSize = False
         Caption = '02'
@@ -1743,7 +1769,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       object rllFatNum3: TRLLabel
         Left = 4
         Top = 51
-        Width = 65
+        Width = 60
         Height = 10
         AutoSize = False
         Caption = '03'
@@ -1755,10 +1781,10 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatData1: TRLLabel
-        Left = 68
+        Left = 66
         Top = 25
         Width = 49
-        Height = 10
+        Height = 12
         Caption = 'XX/XX/XXXX'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -1768,10 +1794,10 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatData2: TRLLabel
-        Left = 68
+        Left = 66
         Top = 38
         Width = 49
-        Height = 10
+        Height = 12
         Caption = 'XX/XX/XXXX'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -1781,10 +1807,10 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatData3: TRLLabel
-        Left = 68
+        Left = 66
         Top = 51
         Width = 49
-        Height = 10
+        Height = 12
         Caption = 'XX/XX/XXXX'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -1794,7 +1820,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatValor1: TRLLabel
-        Left = 120
+        Left = 117
         Top = 25
         Width = 66
         Height = 10
@@ -1809,7 +1835,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatValor2: TRLLabel
-        Left = 120
+        Left = 117
         Top = 38
         Width = 66
         Height = 10
@@ -1824,7 +1850,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatValor3: TRLLabel
-        Left = 120
+        Left = 117
         Top = 51
         Width = 66
         Height = 10
@@ -1839,9 +1865,9 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatNum4: TRLLabel
-        Left = 193
+        Left = 189
         Top = 25
-        Width = 65
+        Width = 60
         Height = 10
         AutoSize = False
         Caption = '04'
@@ -1853,9 +1879,9 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatNum5: TRLLabel
-        Left = 193
+        Left = 189
         Top = 38
-        Width = 65
+        Width = 60
         Height = 10
         AutoSize = False
         Caption = '05'
@@ -1867,9 +1893,9 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatNum6: TRLLabel
-        Left = 193
+        Left = 189
         Top = 51
-        Width = 65
+        Width = 60
         Height = 10
         AutoSize = False
         Caption = '06'
@@ -1881,10 +1907,10 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatData4: TRLLabel
-        Left = 257
+        Left = 251
         Top = 25
         Width = 49
-        Height = 10
+        Height = 12
         Caption = 'XX/XX/XXXX'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -1894,10 +1920,10 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatData5: TRLLabel
-        Left = 257
+        Left = 251
         Top = 38
         Width = 49
-        Height = 10
+        Height = 12
         Caption = 'XX/XX/XXXX'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -1907,10 +1933,10 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatData6: TRLLabel
-        Left = 257
+        Left = 251
         Top = 51
         Width = 49
-        Height = 10
+        Height = 12
         Caption = 'XX/XX/XXXX'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -1920,7 +1946,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatValor4: TRLLabel
-        Left = 309
+        Left = 302
         Top = 25
         Width = 66
         Height = 10
@@ -1935,7 +1961,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatValor5: TRLLabel
-        Left = 309
+        Left = 302
         Top = 38
         Width = 66
         Height = 10
@@ -1950,7 +1976,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatValor6: TRLLabel
-        Left = 309
+        Left = 302
         Top = 51
         Width = 66
         Height = 10
@@ -1965,9 +1991,9 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatNum7: TRLLabel
-        Left = 382
+        Left = 374
         Top = 25
-        Width = 65
+        Width = 60
         Height = 10
         AutoSize = False
         Caption = '07'
@@ -1979,9 +2005,9 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatNum8: TRLLabel
-        Left = 382
+        Left = 374
         Top = 38
-        Width = 65
+        Width = 60
         Height = 10
         AutoSize = False
         Caption = '08'
@@ -1993,9 +2019,9 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatNum9: TRLLabel
-        Left = 382
+        Left = 374
         Top = 51
-        Width = 65
+        Width = 60
         Height = 10
         AutoSize = False
         Caption = '09'
@@ -2007,10 +2033,10 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatData7: TRLLabel
-        Left = 446
+        Left = 436
         Top = 25
         Width = 49
-        Height = 10
+        Height = 12
         Caption = 'XX/XX/XXXX'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -2020,10 +2046,10 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatData8: TRLLabel
-        Left = 446
+        Left = 436
         Top = 38
         Width = 49
-        Height = 10
+        Height = 12
         Caption = 'XX/XX/XXXX'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -2033,10 +2059,10 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatData9: TRLLabel
-        Left = 446
+        Left = 436
         Top = 51
         Width = 49
-        Height = 10
+        Height = 12
         Caption = 'XX/XX/XXXX'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -2046,7 +2072,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatValor7: TRLLabel
-        Left = 498
+        Left = 487
         Top = 25
         Width = 66
         Height = 10
@@ -2061,7 +2087,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatValor8: TRLLabel
-        Left = 498
+        Left = 487
         Top = 38
         Width = 66
         Height = 10
@@ -2076,7 +2102,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatValor9: TRLLabel
-        Left = 498
+        Left = 487
         Top = 51
         Width = 66
         Height = 10
@@ -2091,9 +2117,9 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatNum10: TRLLabel
-        Left = 571
+        Left = 559
         Top = 25
-        Width = 65
+        Width = 60
         Height = 10
         AutoSize = False
         Caption = '10'
@@ -2105,9 +2131,9 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatNum11: TRLLabel
-        Left = 571
+        Left = 559
         Top = 38
-        Width = 65
+        Width = 60
         Height = 10
         AutoSize = False
         Caption = '11'
@@ -2119,9 +2145,9 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatNum12: TRLLabel
-        Left = 571
+        Left = 559
         Top = 51
-        Width = 65
+        Width = 60
         Height = 10
         AutoSize = False
         Caption = '12'
@@ -2133,10 +2159,10 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatData10: TRLLabel
-        Left = 635
+        Left = 621
         Top = 25
         Width = 49
-        Height = 10
+        Height = 12
         Caption = 'XX/XX/XXXX'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -2146,10 +2172,10 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatData11: TRLLabel
-        Left = 635
+        Left = 621
         Top = 38
         Width = 49
-        Height = 10
+        Height = 12
         Caption = 'XX/XX/XXXX'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -2159,10 +2185,10 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatData12: TRLLabel
-        Left = 635
+        Left = 621
         Top = 51
         Width = 49
-        Height = 10
+        Height = 12
         Caption = 'XX/XX/XXXX'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -2172,7 +2198,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatValor10: TRLLabel
-        Left = 687
+        Left = 671
         Top = 25
         Width = 66
         Height = 10
@@ -2187,7 +2213,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatValor11: TRLLabel
-        Left = 687
+        Left = 671
         Top = 38
         Width = 66
         Height = 10
@@ -2202,7 +2228,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatValor12: TRLLabel
-        Left = 687
+        Left = 671
         Top = 51
         Width = 66
         Height = 10
@@ -2217,7 +2243,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLDraw26: TRLDraw
-        Left = 189
+        Left = 185
         Top = 12
         Width = 1
         Height = 51
@@ -2226,7 +2252,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsVertically
       end
       object RLDraw27: TRLDraw
-        Left = 378
+        Left = 370
         Top = 12
         Width = 1
         Height = 51
@@ -2235,7 +2261,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsVertically
       end
       object RLDraw28: TRLDraw
-        Left = 567
+        Left = 555
         Top = 12
         Width = 1
         Height = 51
@@ -2246,7 +2272,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       object rllTipoVenda: TRLLabel
         Left = 8
         Top = 36
-        Width = 176
+        Width = 172
         Height = 14
         Alignment = taCenter
         AutoSize = False
@@ -2258,10 +2284,12 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllCabFatura1: TRLLabel
-        Left = 20
+        Tag = 10
+        Left = 18
         Top = 14
         Width = 32
         Height = 7
+        Alignment = taCenter
         Caption = 'N'#218'MERO'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -2271,10 +2299,12 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllCabFatura2: TRLLabel
-        Left = 80
+        Tag = 10
+        Left = 78
         Top = 14
         Width = 24
         Height = 7
+        Alignment = taCenter
         Caption = 'VENC.'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -2284,127 +2314,12 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllCabFatura3: TRLLabel
-        Left = 142
+        Tag = 10
+        Left = 137
         Top = 14
         Width = 26
         Height = 7
-        Caption = 'VALOR'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -7
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
-      object rllCabFatura4: TRLLabel
-        Left = 209
-        Top = 14
-        Width = 32
-        Height = 7
-        Caption = 'N'#218'MERO'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -7
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
-      object rllCabFatura5: TRLLabel
-        Left = 273
-        Top = 14
-        Width = 24
-        Height = 7
-        Caption = 'VENC.'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -7
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
-      object rllCabFatura6: TRLLabel
-        Left = 331
-        Top = 14
-        Width = 26
-        Height = 7
-        Caption = 'VALOR'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -7
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
-      object rllCabFatura7: TRLLabel
-        Left = 398
-        Top = 14
-        Width = 32
-        Height = 7
-        Caption = 'N'#218'MERO'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -7
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
-      object rllCabFatura8: TRLLabel
-        Left = 458
-        Top = 14
-        Width = 24
-        Height = 7
-        Caption = 'VENC.'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -7
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
-      object rllCabFatura9: TRLLabel
-        Left = 520
-        Top = 14
-        Width = 26
-        Height = 7
-        Caption = 'VALOR'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -7
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
-      object rllCabFatura10: TRLLabel
-        Left = 587
-        Top = 14
-        Width = 32
-        Height = 7
-        Caption = 'N'#218'MERO'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -7
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
-      object rllCabFatura11: TRLLabel
-        Left = 647
-        Top = 14
-        Width = 24
-        Height = 7
-        Caption = 'VENC.'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -7
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
-      object rllCabFatura12: TRLLabel
-        Left = 709
-        Top = 14
-        Width = 26
-        Height = 7
+        Alignment = taCenter
         Caption = 'VALOR'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -2416,26 +2331,161 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       object RLDraw69: TRLDraw
         Left = 0
         Top = 23
-        Width = 756
+        Width = 740
         Height = 1
         DrawKind = dkLine
         HoldStyle = hsRelatively
       end
+      object RLLabel1: TRLLabel
+        Tag = 10
+        Left = 202
+        Top = 14
+        Width = 32
+        Height = 7
+        Alignment = taCenter
+        Caption = 'N'#218'MERO'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -7
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object RLLabel2: TRLLabel
+        Tag = 10
+        Left = 262
+        Top = 14
+        Width = 24
+        Height = 7
+        Alignment = taCenter
+        Caption = 'VENC.'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -7
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object RLLabel3: TRLLabel
+        Tag = 10
+        Left = 321
+        Top = 14
+        Width = 26
+        Height = 7
+        Alignment = taCenter
+        Caption = 'VALOR'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -7
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object RLLabel4: TRLLabel
+        Tag = 10
+        Left = 386
+        Top = 14
+        Width = 32
+        Height = 7
+        Alignment = taCenter
+        Caption = 'N'#218'MERO'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -7
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object RLLabel5: TRLLabel
+        Tag = 10
+        Left = 446
+        Top = 14
+        Width = 24
+        Height = 7
+        Alignment = taCenter
+        Caption = 'VENC.'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -7
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object RLLabel6: TRLLabel
+        Tag = 10
+        Left = 505
+        Top = 14
+        Width = 26
+        Height = 7
+        Alignment = taCenter
+        Caption = 'VALOR'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -7
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object RLLabel7: TRLLabel
+        Tag = 10
+        Left = 570
+        Top = 14
+        Width = 32
+        Height = 7
+        Alignment = taCenter
+        Caption = 'N'#218'MERO'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -7
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object RLLabel8: TRLLabel
+        Tag = 10
+        Left = 630
+        Top = 14
+        Width = 24
+        Height = 7
+        Alignment = taCenter
+        Caption = 'VENC.'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -7
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object RLLabel9: TRLLabel
+        Tag = 10
+        Left = 689
+        Top = 14
+        Width = 26
+        Height = 7
+        Alignment = taCenter
+        Caption = 'VALOR'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -7
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
     end
     object rlbImposto: TRLBand
-      Left = 19
-      Top = 550
-      Width = 756
+      Left = 26
+      Top = 457
+      Width = 742
       Height = 79
       BandType = btTitle
       object RLDraw29: TRLDraw
         Left = 0
         Top = 12
-        Width = 756
+        Width = 740
         Height = 61
       end
       object RLLabel25: TRLLabel
-        Left = 590
+        Left = 574
         Top = 43
         Width = 164
         Height = 28
@@ -2446,6 +2496,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Transparent = False
       end
       object RLLabel20: TRLLabel
+        Tag = 30
         Left = 0
         Top = 1
         Width = 94
@@ -2461,6 +2512,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel44: TRLLabel
+        Tag = 10
         Left = 3
         Top = 15
         Width = 100
@@ -2490,6 +2542,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel49: TRLLabel
+        Tag = 10
         Left = 3
         Top = 45
         Width = 64
@@ -2519,6 +2572,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel45: TRLLabel
+        Tag = 10
         Left = 149
         Top = 15
         Width = 57
@@ -2548,6 +2602,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel50: TRLLabel
+        Tag = 10
         Left = 109
         Top = 45
         Width = 70
@@ -2577,6 +2632,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel51: TRLLabel
+        Tag = 10
         Left = 218
         Top = 45
         Width = 42
@@ -2606,6 +2662,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel46: TRLLabel
+        Tag = 10
         Left = 287
         Top = 15
         Width = 120
@@ -2634,6 +2691,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel52: TRLLabel
+        Tag = 10
         Left = 325
         Top = 45
         Width = 90
@@ -2662,6 +2720,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel47: TRLLabel
+        Tag = 10
         Left = 431
         Top = 15
         Width = 113
@@ -2678,7 +2737,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       object rllValorICMST: TRLLabel
         Left = 435
         Top = 25
-        Width = 148
+        Width = 134
         Height = 14
         Alignment = taRightJustify
         AutoSize = False
@@ -2690,6 +2749,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel53: TRLLabel
+        Tag = 10
         Left = 431
         Top = 45
         Width = 49
@@ -2706,7 +2766,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       object rllValorIPI: TRLLabel
         Left = 433
         Top = 55
-        Width = 150
+        Width = 136
         Height = 14
         Alignment = taRightJustify
         AutoSize = False
@@ -2718,7 +2778,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel48: TRLLabel
-        Left = 592
+        Tag = 10
+        Left = 576
         Top = 15
         Width = 111
         Height = 7
@@ -2732,7 +2793,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllTotalProdutos: TRLLabel
-        Left = 596
+        Left = 580
         Top = 25
         Width = 154
         Height = 14
@@ -2748,7 +2809,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       object RLDraw30: TRLDraw
         Left = 0
         Top = 42
-        Width = 756
+        Width = 740
         Height = 1
         DrawKind = dkLine
         Holder = RLDraw29
@@ -2812,7 +2873,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsRelatively
       end
       object RLDraw37: TRLDraw
-        Left = 589
+        Left = 573
         Top = 12
         Width = 1
         Height = 61
@@ -2821,7 +2882,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsRelatively
       end
       object RLLabel54: TRLLabel
-        Left = 592
+        Tag = 10
+        Left = 576
         Top = 45
         Width = 86
         Height = 7
@@ -2835,7 +2897,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllTotalNF: TRLLabel
-        Left = 596
+        Left = 580
         Top = 55
         Width = 154
         Height = 14
@@ -2850,19 +2912,20 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       end
     end
     object rlbTransportadora: TRLBand
-      Left = 19
-      Top = 629
-      Width = 756
+      Left = 26
+      Top = 536
+      Width = 742
       Height = 110
       BandType = btTitle
       object RLDraw40: TRLDraw
         Left = 0
         Top = 12
-        Width = 756
+        Width = 740
         Height = 91
         HoldStyle = hsRelatively
       end
       object RLLabel21: TRLLabel
+        Tag = 30
         Left = 0
         Top = 1
         Width = 192
@@ -2878,6 +2941,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel55: TRLLabel
+        Tag = 10
         Left = 3
         Top = 15
         Width = 54
@@ -2895,7 +2959,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       object rllTransNome: TRLLabel
         Left = 7
         Top = 25
-        Width = 322
+        Width = 306
         Height = 14
         AutoSize = False
         Font.Charset = DEFAULT_CHARSET
@@ -2906,6 +2970,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel63: TRLLabel
+        Tag = 10
         Left = 3
         Top = 45
         Width = 42
@@ -2934,6 +2999,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel67: TRLLabel
+        Tag = 10
         Left = 3
         Top = 75
         Width = 49
@@ -2963,6 +3029,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel68: TRLLabel
+        Tag = 10
         Left = 94
         Top = 75
         Width = 34
@@ -2991,6 +3058,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel69: TRLLabel
+        Tag = 10
         Left = 229
         Top = 75
         Width = 27
@@ -3018,7 +3086,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel56: TRLLabel
-        Left = 335
+        Tag = 10
+        Left = 319
         Top = 15
         Width = 70
         Height = 7
@@ -3032,7 +3101,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel57: TRLLabel
-        Left = 339
+        Tag = 10
+        Left = 323
         Top = 24
         Width = 49
         Height = 7
@@ -3046,7 +3116,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel58: TRLLabel
-        Left = 339
+        Tag = 10
+        Left = 323
         Top = 32
         Width = 66
         Height = 7
@@ -3060,6 +3131,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel64: TRLLabel
+        Tag = 10
         Left = 383
         Top = 45
         Width = 38
@@ -3076,7 +3148,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       object rllTransCidade: TRLLabel
         Left = 387
         Top = 55
-        Width = 206
+        Width = 190
         Height = 14
         AutoSize = False
         Font.Charset = DEFAULT_CHARSET
@@ -3087,6 +3159,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel70: TRLLabel
+        Tag = 10
         Left = 359
         Top = 75
         Width = 47
@@ -3103,7 +3176,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       object rllTransNumeracao: TRLLabel
         Left = 363
         Top = 85
-        Width = 136
+        Width = 118
         Height = 14
         AutoSize = False
         Font.Charset = DEFAULT_CHARSET
@@ -3114,7 +3187,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLDraw55: TRLDraw
-        Left = 415
+        Left = 399
         Top = 17
         Width = 22
         Height = 22
@@ -3126,7 +3199,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsRelatively
       end
       object RLLabel59: TRLLabel
-        Left = 443
+        Tag = 10
+        Left = 427
         Top = 15
         Width = 51
         Height = 7
@@ -3140,7 +3214,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllTransCodigoANTT: TRLLabel
-        Left = 447
+        Left = 431
         Top = 25
         Width = 66
         Height = 14
@@ -3153,7 +3227,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel60: TRLLabel
-        Left = 520
+        Tag = 10
+        Left = 504
         Top = 15
         Width = 71
         Height = 7
@@ -3167,7 +3242,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllTransPlaca: TRLLabel
-        Left = 524
+        Left = 508
         Top = 25
         Width = 66
         Height = 14
@@ -3180,7 +3255,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel71: TRLLabel
-        Left = 506
+        Tag = 10
+        Left = 490
         Top = 75
         Width = 49
         Height = 7
@@ -3194,7 +3270,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllTransPesoBruto: TRLLabel
-        Left = 511
+        Left = 495
         Top = 85
         Width = 114
         Height = 14
@@ -3208,7 +3284,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel61: TRLLabel
-        Left = 600
+        Tag = 10
+        Left = 584
         Top = 15
         Width = 11
         Height = 7
@@ -3222,7 +3299,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllTransUFPlaca: TRLLabel
-        Left = 604
+        Left = 588
         Top = 25
         Width = 21
         Height = 14
@@ -3235,7 +3312,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel65: TRLLabel
-        Left = 600
+        Tag = 10
+        Left = 584
         Top = 45
         Width = 11
         Height = 7
@@ -3249,7 +3327,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllTransUF: TRLLabel
-        Left = 604
+        Left = 588
         Top = 55
         Width = 21
         Height = 14
@@ -3262,7 +3340,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel62: TRLLabel
-        Left = 634
+        Tag = 10
+        Left = 618
         Top = 15
         Width = 41
         Height = 7
@@ -3276,7 +3355,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllTransCNPJ: TRLLabel
-        Left = 637
+        Left = 621
         Top = 25
         Width = 116
         Height = 14
@@ -3289,7 +3368,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel66: TRLLabel
-        Left = 634
+        Tag = 10
+        Left = 618
         Top = 45
         Width = 82
         Height = 7
@@ -3303,7 +3383,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllTransIE: TRLLabel
-        Left = 637
+        Left = 621
         Top = 55
         Width = 116
         Height = 14
@@ -3318,7 +3398,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       object RLDraw38: TRLDraw
         Left = 0
         Top = 42
-        Width = 756
+        Width = 740
         Height = 1
         DrawKind = dkLine
         Holder = RLDraw40
@@ -3327,7 +3407,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       object RLDraw39: TRLDraw
         Left = 0
         Top = 72
-        Width = 756
+        Width = 740
         Height = 1
         DrawKind = dkLine
         Holder = RLDraw40
@@ -3353,7 +3433,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsRelatively
       end
       object RLDraw41: TRLDraw
-        Left = 332
+        Left = 316
         Top = 12
         Width = 1
         Height = 31
@@ -3362,7 +3442,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsRelatively
       end
       object RLDraw44: TRLDraw
-        Left = 503
+        Left = 487
         Top = 72
         Width = 1
         Height = 31
@@ -3371,7 +3451,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsRelatively
       end
       object RLDraw47: TRLDraw
-        Left = 440
+        Left = 424
         Top = 12
         Width = 1
         Height = 31
@@ -3380,7 +3460,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsRelatively
       end
       object RLDraw48: TRLDraw
-        Left = 517
+        Left = 501
         Top = 12
         Width = 1
         Height = 31
@@ -3389,7 +3469,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsRelatively
       end
       object RLDraw49: TRLDraw
-        Left = 597
+        Left = 581
         Top = 12
         Width = 1
         Height = 61
@@ -3398,7 +3478,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsRelatively
       end
       object RLDraw42: TRLDraw
-        Left = 630
+        Left = 614
         Top = 12
         Width = 1
         Height = 91
@@ -3407,7 +3487,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsRelatively
       end
       object rllTransModFrete: TRLLabel
-        Left = 417
+        Left = 401
         Top = 22
         Width = 18
         Height = 14
@@ -3421,7 +3501,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel72: TRLLabel
-        Left = 634
+        Tag = 10
+        Left = 618
         Top = 75
         Width = 52
         Height = 7
@@ -3435,7 +3516,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllTransPesoLiq: TRLLabel
-        Left = 636
+        Left = 620
         Top = 85
         Width = 114
         Height = 14
@@ -3467,484 +3548,19 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsRelatively
       end
     end
-    object rlbEnderecoEntrega: TRLBand
-      Left = 19
-      Top = 432
-      Width = 756
-      Height = 50
-      BandType = btTitle
-      object RLDraw43: TRLDraw
-        Left = 0
-        Top = 12
-        Width = 756
-        Height = 61
-      end
-      object RLLabel15: TRLLabel
-        Left = 0
-        Top = 1
-        Width = 82
-        Height = 10
-        Caption = 'LOCAL DE ENTREGA'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -8
-        Font.Name = 'Arial'
-        Font.Style = [fsBold]
-        HoldStyle = hsRelatively
-        ParentFont = False
-      end
-      object RLDraw53: TRLDraw
-        Left = 0
-        Top = 42
-        Width = 756
-        Height = 1
-        DrawKind = dkLine
-        HoldStyle = hsRelatively
-      end
-      object RLLabel17: TRLLabel
-        Left = 139
-        Top = 15
-        Width = 42
-        Height = 7
-        Caption = 'ENDERE'#199'O'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -7
-        Font.Name = 'Arial'
-        Font.Style = []
-        HoldStyle = hsRelatively
-        ParentFont = False
-      end
-      object rllEntregaEndereco: TRLLabel
-        Left = 143
-        Top = 25
-        Width = 602
-        Height = 14
-        AutoSize = False
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -11
-        Font.Name = 'Arial'
-        Font.Style = [fsBold]
-        ParentFont = False
-      end
-      object RLLabel99: TRLLabel
-        Left = 292
-        Top = 45
-        Width = 38
-        Height = 7
-        Caption = 'MUNIC'#205'PIO'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -7
-        Font.Name = 'Arial'
-        Font.Style = []
-        HoldStyle = hsRelatively
-        ParentFont = False
-      end
-      object rllEntregaMunicipio: TRLLabel
-        Left = 296
-        Top = 55
-        Width = 284
-        Height = 14
-        AutoSize = False
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -11
-        Font.Name = 'Arial'
-        Font.Style = [fsBold]
-        ParentFont = False
-      end
-      object RLLabel103: TRLLabel
-        Left = 3
-        Top = 45
-        Width = 69
-        Height = 7
-        Caption = 'BAIRRO / DISTRITO'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -7
-        Font.Name = 'Arial'
-        Font.Style = []
-        HoldStyle = hsRelatively
-        ParentFont = False
-      end
-      object rllEntregaBairro: TRLLabel
-        Left = 7
-        Top = 55
-        Width = 272
-        Height = 14
-        AutoSize = False
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -11
-        Font.Name = 'Arial'
-        Font.Style = [fsBold]
-        ParentFont = False
-      end
-      object RLLabel105: TRLLabel
-        Left = 589
-        Top = 45
-        Width = 11
-        Height = 7
-        Caption = 'UF'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -7
-        Font.Name = 'Arial'
-        Font.Style = []
-        HoldStyle = hsRelatively
-        ParentFont = False
-      end
-      object rllEntregaUF: TRLLabel
-        Left = 593
-        Top = 55
-        Width = 54
-        Height = 14
-        AutoSize = False
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -11
-        Font.Name = 'Arial'
-        Font.Style = [fsBold]
-        ParentFont = False
-      end
-      object rllEntregaCEP: TRLLabel
-        Left = 661
-        Top = 55
-        Width = 84
-        Height = 14
-        AutoSize = False
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -11
-        Font.Name = 'Arial'
-        Font.Style = [fsBold]
-        ParentFont = False
-      end
-      object RLLabel111: TRLLabel
-        Left = 3
-        Top = 15
-        Width = 41
-        Height = 7
-        Caption = 'CNPJ / CPF'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -7
-        Font.Name = 'Arial'
-        Font.Style = []
-        HoldStyle = hsRelatively
-        ParentFont = False
-      end
-      object rllEntregaCNPJ: TRLLabel
-        Left = 7
-        Top = 25
-        Width = 122
-        Height = 14
-        AutoSize = False
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -11
-        Font.Name = 'Arial'
-        Font.Style = [fsBold]
-        ParentFont = False
-      end
-      object RLDraw60: TRLDraw
-        Left = 289
-        Top = 42
-        Width = 1
-        Height = 31
-        Angle = 90.000000000000000000
-        DrawKind = dkLine
-        HoldStyle = hsRelatively
-      end
-      object RLDraw61: TRLDraw
-        Left = 586
-        Top = 42
-        Width = 1
-        Height = 31
-        Angle = 90.000000000000000000
-        DrawKind = dkLine
-        HoldStyle = hsRelatively
-      end
-      object RLDraw63: TRLDraw
-        Left = 654
-        Top = 42
-        Width = 1
-        Height = 31
-        Angle = 90.000000000000000000
-        DrawKind = dkLine
-        HoldStyle = hsRelatively
-      end
-      object RLDraw65: TRLDraw
-        Left = 136
-        Top = 12
-        Width = 1
-        Height = 31
-        Angle = 90.000000000000000000
-        DrawKind = dkLine
-        HoldStyle = hsRelatively
-      end
-      object RLLabel109: TRLLabel
-        Left = 657
-        Top = 45
-        Width = 17
-        Height = 7
-        Caption = 'CEP'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -7
-        Font.Name = 'Arial'
-        Font.Style = []
-        HoldStyle = hsRelatively
-        ParentFont = False
-      end
-    end
-    object rlbEnderecoRetirada: TRLBand
-      Left = 19
-      Top = 382
-      Width = 756
-      Height = 50
-      BandType = btTitle
-      object RLDraw59: TRLDraw
-        Left = 0
-        Top = 12
-        Width = 756
-        Height = 61
-      end
-      object RLLabel27: TRLLabel
-        Left = 0
-        Top = 1
-        Width = 84
-        Height = 10
-        Caption = 'LOCAL DE RETIRADA'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -8
-        Font.Name = 'Arial'
-        Font.Style = [fsBold]
-        HoldStyle = hsRelatively
-        ParentFont = False
-      end
-      object RLDraw62: TRLDraw
-        Left = 0
-        Top = 42
-        Width = 756
-        Height = 1
-        DrawKind = dkLine
-        HoldStyle = hsRelatively
-      end
-      object RLLabel100: TRLLabel
-        Left = 139
-        Top = 15
-        Width = 42
-        Height = 7
-        Caption = 'ENDERE'#199'O'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -7
-        Font.Name = 'Arial'
-        Font.Style = []
-        HoldStyle = hsRelatively
-        ParentFont = False
-      end
-      object rllRetiradaEndereco: TRLLabel
-        Left = 143
-        Top = 25
-        Width = 602
-        Height = 14
-        AutoSize = False
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -11
-        Font.Name = 'Arial'
-        Font.Style = [fsBold]
-        ParentFont = False
-      end
-      object RLLabel102: TRLLabel
-        Left = 292
-        Top = 45
-        Width = 38
-        Height = 7
-        Caption = 'MUNIC'#205'PIO'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -7
-        Font.Name = 'Arial'
-        Font.Style = []
-        HoldStyle = hsRelatively
-        ParentFont = False
-      end
-      object rllRetiradaMunicipio: TRLLabel
-        Left = 296
-        Top = 55
-        Width = 284
-        Height = 14
-        AutoSize = False
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -11
-        Font.Name = 'Arial'
-        Font.Style = [fsBold]
-        ParentFont = False
-      end
-      object RLLabel106: TRLLabel
-        Left = 3
-        Top = 45
-        Width = 69
-        Height = 7
-        Caption = 'BAIRRO / DISTRITO'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -7
-        Font.Name = 'Arial'
-        Font.Style = []
-        HoldStyle = hsRelatively
-        ParentFont = False
-      end
-      object rllRetiradaBairro: TRLLabel
-        Left = 7
-        Top = 55
-        Width = 272
-        Height = 14
-        AutoSize = False
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -11
-        Font.Name = 'Arial'
-        Font.Style = [fsBold]
-        ParentFont = False
-      end
-      object RLLabel108: TRLLabel
-        Left = 589
-        Top = 45
-        Width = 11
-        Height = 7
-        Caption = 'UF'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -7
-        Font.Name = 'Arial'
-        Font.Style = []
-        HoldStyle = hsRelatively
-        ParentFont = False
-      end
-      object rllRetiradaUF: TRLLabel
-        Left = 593
-        Top = 55
-        Width = 54
-        Height = 14
-        AutoSize = False
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -11
-        Font.Name = 'Arial'
-        Font.Style = [fsBold]
-        ParentFont = False
-      end
-      object rllRetiradaCEP: TRLLabel
-        Left = 661
-        Top = 55
-        Width = 84
-        Height = 14
-        AutoSize = False
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -11
-        Font.Name = 'Arial'
-        Font.Style = [fsBold]
-        ParentFont = False
-      end
-      object RLLabel113: TRLLabel
-        Left = 3
-        Top = 15
-        Width = 41
-        Height = 7
-        Caption = 'CNPJ / CPF'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -7
-        Font.Name = 'Arial'
-        Font.Style = []
-        HoldStyle = hsRelatively
-        ParentFont = False
-      end
-      object rllRetiradaCNPJ: TRLLabel
-        Left = 7
-        Top = 25
-        Width = 122
-        Height = 14
-        AutoSize = False
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -11
-        Font.Name = 'Arial'
-        Font.Style = [fsBold]
-        ParentFont = False
-      end
-      object RLDraw64: TRLDraw
-        Left = 289
-        Top = 42
-        Width = 1
-        Height = 31
-        Angle = 90.000000000000000000
-        DrawKind = dkLine
-        HoldStyle = hsRelatively
-      end
-      object RLDraw66: TRLDraw
-        Left = 586
-        Top = 42
-        Width = 1
-        Height = 31
-        Angle = 90.000000000000000000
-        DrawKind = dkLine
-        HoldStyle = hsRelatively
-      end
-      object RLDraw67: TRLDraw
-        Left = 654
-        Top = 42
-        Width = 1
-        Height = 31
-        Angle = 90.000000000000000000
-        DrawKind = dkLine
-        HoldStyle = hsRelatively
-      end
-      object RLDraw68: TRLDraw
-        Left = 136
-        Top = 12
-        Width = 1
-        Height = 31
-        Angle = 90.000000000000000000
-        DrawKind = dkLine
-        HoldStyle = hsRelatively
-      end
-      object RLLabel115: TRLLabel
-        Left = 657
-        Top = 45
-        Width = 17
-        Height = 7
-        Caption = 'CEP'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -7
-        Font.Name = 'Arial'
-        Font.Style = []
-        HoldStyle = hsRelatively
-        ParentFont = False
-      end
-    end
     object rlbItens: TRLBand
-      Left = 19
-      Top = 796
-      Width = 756
+      Left = 26
+      Top = 703
+      Width = 742
       Height = 13
       Background.Height = 487
       Background.Width = 865
       AfterPrint = rlbItensAfterPrint
       object txtCodigo: TRLDBText
-        Left = 1
+        Tag = 40
+        Left = 2
         Top = 1
-        Width = 52
+        Width = 51
         Height = 11
         AutoSize = False
         DataField = 'CODIGO'
@@ -3957,7 +3573,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object txtNCM: TRLDBText
-        Left = 280
+        Left = 264
         Top = 1
         Width = 39
         Height = 11
@@ -3972,7 +3588,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object txtCST: TRLDBText
-        Left = 321
+        Left = 305
         Top = 1
         Width = 16
         Height = 11
@@ -3987,7 +3603,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object txtCFOP: TRLDBText
-        Left = 340
+        Left = 324
         Top = 1
         Width = 21
         Height = 11
@@ -4002,7 +3618,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object txtUnidade: TRLDBText
-        Left = 364
+        Tag = 40
+        Left = 348
         Top = 1
         Width = 19
         Height = 11
@@ -4017,7 +3634,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object txtQuantidade: TRLDBText
-        Left = 386
+        Tag = 40
+        Left = 370
         Top = 1
         Width = 53
         Height = 11
@@ -4033,7 +3651,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object txtValorUnitario: TRLDBText
-        Left = 442
+        Tag = 40
+        Left = 426
         Top = 1
         Width = 54
         Height = 11
@@ -4049,7 +3668,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object txtValorTotal: TRLDBText
-        Left = 499
+        Tag = 40
+        Left = 483
         Top = 1
         Width = 60
         Height = 11
@@ -4064,40 +3684,9 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Font.Style = []
         ParentFont = False
       end
-      object txtBaseICMS: TRLDBText
-        Left = 562
-        Top = 1
-        Width = 58
-        Height = 11
-        Alignment = taRightJustify
-        AutoSize = False
-        DataField = 'BICMS'
-        DataSource = DataSource1
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -8
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
-      object txtValorICMS: TRLDBText
-        Left = 623
-        Top = 1
-        Width = 38
-        Height = 11
-        Alignment = taRightJustify
-        AutoSize = False
-        DataField = 'VALORICMS'
-        DataSource = DataSource1
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -8
-        Font.Name = 'Arial'
-        Font.Style = []
-        ParentFont = False
-      end
       object txtValorIPI: TRLDBText
-        Left = 664
+        Tag = 40
+        Left = 648
         Top = 1
         Width = 37
         Height = 11
@@ -4113,7 +3702,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object txtAliqICMS: TRLDBText
-        Left = 704
+        Tag = 40
+        Left = 688
         Top = 1
         Width = 24
         Height = 11
@@ -4129,7 +3719,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object txtAliqIPI: TRLDBText
-        Left = 731
+        Tag = 40
+        Left = 715
         Top = 1
         Width = 23
         Height = 11
@@ -4145,130 +3736,130 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object LinhaCST: TRLDraw
-        Left = 320
+        Left = 304
         Top = 0
         Width = 1
-        Height = 12
+        Height = 13
         Align = faHeight
         Angle = 90.000000000000000000
         DrawKind = dkLine
         HoldStyle = hsRelatively
       end
       object LinhaCFOP: TRLDraw
-        Left = 338
+        Left = 322
         Top = 0
         Width = 1
-        Height = 12
+        Height = 13
         Align = faHeight
         Angle = 90.000000000000000000
         DrawKind = dkLine
         HoldStyle = hsRelatively
       end
       object LinhaUnidade: TRLDraw
-        Left = 362
+        Left = 346
         Top = 0
         Width = 1
-        Height = 12
+        Height = 13
         Align = faHeight
         Angle = 90.000000000000000000
         DrawKind = dkLine
         HoldStyle = hsRelatively
       end
       object LinhaQuantidade: TRLDraw
-        Left = 384
+        Left = 368
         Top = 0
         Width = 1
-        Height = 12
+        Height = 13
         Align = faHeight
         Angle = 90.000000000000000000
         DrawKind = dkLine
         HoldStyle = hsRelatively
       end
       object LinhaValorUnitario: TRLDraw
-        Left = 440
+        Left = 424
         Top = 0
         Width = 1
-        Height = 12
+        Height = 13
         Align = faHeight
         Angle = 90.000000000000000000
         DrawKind = dkLine
         HoldStyle = hsRelatively
       end
       object LinhaValorTotal: TRLDraw
-        Left = 497
+        Left = 481
         Top = 0
         Width = 1
-        Height = 12
+        Height = 13
         Align = faHeight
         Angle = 90.000000000000000000
         DrawKind = dkLine
         HoldStyle = hsRelatively
       end
       object LinhaBaseICMS: TRLDraw
-        Left = 560
+        Left = 544
         Top = 0
         Width = 1
-        Height = 12
+        Height = 13
         Align = faHeight
         Angle = 90.000000000000000000
         DrawKind = dkLine
         HoldStyle = hsRelatively
       end
       object LinhaValorICMS: TRLDraw
-        Left = 621
+        Left = 605
         Top = 0
         Width = 1
-        Height = 12
+        Height = 13
         Align = faHeight
         Angle = 90.000000000000000000
         DrawKind = dkLine
         HoldStyle = hsRelatively
       end
       object LinhaValorIPI: TRLDraw
-        Left = 662
+        Left = 646
         Top = 0
         Width = 1
-        Height = 12
+        Height = 13
         Align = faHeight
         Angle = 90.000000000000000000
         DrawKind = dkLine
         HoldStyle = hsRelatively
       end
       object LinhaAliqICMS: TRLDraw
-        Left = 702
+        Left = 686
         Top = 0
         Width = 1
-        Height = 12
+        Height = 13
         Align = faHeight
         Angle = 90.000000000000000000
         DrawKind = dkLine
         HoldStyle = hsRelatively
       end
       object LinhaAliqIPI: TRLDraw
-        Left = 729
+        Left = 713
         Top = 0
         Width = 1
-        Height = 12
+        Height = 13
         Align = faHeight
         Angle = 90.000000000000000000
         DrawKind = dkLine
         HoldStyle = hsRelatively
       end
       object LinhaFinal: TRLDraw
-        Left = 755
+        Left = 739
         Top = 0
         Width = 1
-        Height = 12
+        Height = 13
         Align = faHeight
         Angle = 90.000000000000000000
         DrawKind = dkLine
         HoldStyle = hsRelatively
       end
       object LinhaNCM: TRLDraw
-        Left = 279
+        Left = 263
         Top = 0
         Width = 1
-        Height = 12
+        Height = 13
         Align = faHeight
         Angle = 90.000000000000000000
         DrawKind = dkLine
@@ -4278,7 +3869,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Left = 54
         Top = 0
         Width = 1
-        Height = 12
+        Height = 13
         Align = faHeight
         Angle = 90.000000000000000000
         DrawKind = dkLine
@@ -4288,16 +3879,17 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Left = 0
         Top = 0
         Width = 1
-        Height = 12
+        Height = 13
         Align = faHeight
         Angle = 90.000000000000000000
         DrawKind = dkLine
         HoldStyle = hsRelatively
       end
       object rlmDescricao: TRLDBMemo
+        Tag = 40
         Left = 56
         Top = 1
-        Width = 201
+        Width = 185
         Height = 10
         DataField = 'DESCRICAO'
         DataSource = DataSource1
@@ -4317,26 +3909,61 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       object LinhaFimItens: TRLDraw
         Left = 0
         Top = 12
-        Width = 756
+        Width = 740
         Height = 1
-        Align = faBottom
+        Align = faBottomOnly
         DrawKind = dkLine
         HoldStyle = hsRelatively
       end
+      object txtBaseICMS: TRLDBText
+        Tag = 40
+        Left = 546
+        Top = 1
+        Width = 58
+        Height = 11
+        Alignment = taRightJustify
+        AutoSize = False
+        DataField = 'BICMS'
+        DataSource = DataSource1
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
+      object txtValorICMS: TRLDBText
+        Tag = 40
+        Left = 607
+        Top = 1
+        Width = 38
+        Height = 11
+        Alignment = taRightJustify
+        AutoSize = False
+        DataField = 'VALORICMS'
+        DataSource = DataSource1
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
     end
     object rlbISSQN: TRLBand
-      Left = 19
-      Top = 870
-      Width = 756
+      Left = 26
+      Top = 777
+      Width = 742
       Height = 58
       BandType = btFooter
       object RLDraw52: TRLDraw
         Left = 0
         Top = 20
-        Width = 756
+        Width = 740
         Height = 31
       end
       object RLLabel24: TRLLabel
+        Tag = 30
         Left = 0
         Top = 8
         Width = 82
@@ -4352,6 +3979,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel73: TRLLabel
+        Tag = 10
         Left = 3
         Top = 23
         Width = 81
@@ -4367,7 +3995,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel74: TRLLabel
-        Left = 192
+        Tag = 10
+        Left = 188
         Top = 23
         Width = 108
         Height = 7
@@ -4381,7 +4010,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel75: TRLLabel
-        Left = 381
+        Tag = 10
+        Left = 373
         Top = 23
         Width = 105
         Height = 7
@@ -4395,7 +4025,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLLabel76: TRLLabel
-        Left = 570
+        Tag = 10
+        Left = 558
         Top = 23
         Width = 62
         Height = 7
@@ -4409,7 +4040,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object RLDraw56: TRLDraw
-        Left = 189
+        Left = 185
         Top = 20
         Width = 1
         Height = 30
@@ -4418,7 +4049,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsRelatively
       end
       object RLDraw57: TRLDraw
-        Left = 378
+        Left = 370
         Top = 20
         Width = 1
         Height = 30
@@ -4427,7 +4058,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsRelatively
       end
       object RLDraw58: TRLDraw
-        Left = 567
+        Left = 555
         Top = 20
         Width = 1
         Height = 30
@@ -4436,9 +4067,9 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsRelatively
       end
       object rllISSQNValorServicos: TRLLabel
-        Left = 244
+        Left = 196
         Top = 33
-        Width = 130
+        Width = 170
         Height = 14
         Alignment = taRightJustify
         AutoSize = False
@@ -4450,9 +4081,9 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllISSQNBaseCalculo: TRLLabel
-        Left = 434
+        Left = 380
         Top = 33
-        Width = 130
+        Width = 170
         Height = 14
         Alignment = taRightJustify
         AutoSize = False
@@ -4464,9 +4095,9 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllISSQNValorISSQN: TRLLabel
-        Left = 620
+        Left = 564
         Top = 33
-        Width = 130
+        Width = 170
         Height = 14
         Alignment = taRightJustify
         AutoSize = False
@@ -4480,7 +4111,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       object rllISSQNInscricao: TRLLabel
         Left = 7
         Top = 33
-        Width = 178
+        Width = 170
         Height = 14
         AutoSize = False
         Font.Charset = DEFAULT_CHARSET
@@ -4492,13 +4123,13 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       end
     end
     object rlbAvisoContingencia: TRLBand
-      Left = 19
-      Top = 739
-      Width = 756
+      Left = 26
+      Top = 646
+      Width = 742
       Height = 26
       BandType = btColumnHeader
       object rllAvisoContingencia: TRLLabel
-        Left = 296
+        Left = 289
         Top = 3
         Width = 164
         Height = 19
@@ -4515,29 +4146,15 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Transparent = False
       end
     end
-    object rlmDadosAdicionaisAuxiliar: TRLMemo
-      Left = 128
-      Top = 56
-      Width = 457
-      Height = 12
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clBlack
-      Font.Height = -9
-      Font.Name = 'Courier New'
-      Font.Style = []
-      IntegralHeight = True
-      ParentFont = False
-      Visible = False
-    end
     object rlbObsItem: TRLBand
-      Left = 19
-      Top = 809
-      Width = 756
+      Left = 26
+      Top = 716
+      Width = 742
       Height = 20
       object LinhaFimObsItem: TRLDraw
         Left = 0
         Top = 14
-        Width = 756
+        Width = 740
         Height = 1
         DrawKind = dkLine
         HoldStyle = hsRelatively
@@ -4545,13 +4162,14 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       object LinhaInicioItem: TRLDraw
         Left = 0
         Top = 19
-        Width = 756
+        Width = 740
         Height = 1
-        Align = faBottom
+        Align = faBottomOnly
         DrawKind = dkLine
         HoldStyle = hsRelatively
       end
       object rlmObsItem: TRLMemo
+        Tag = 20
         Left = 1
         Top = 1
         Width = 664
@@ -4574,7 +4192,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         HoldStyle = hsRelatively
       end
       object LinhaObsItemDireita: TRLDraw
-        Left = 755
+        Left = 739
         Top = 0
         Width = 1
         Height = 14
@@ -4584,15 +4202,16 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       end
     end
     object rlbReciboHeader: TRLBand
-      Left = 19
-      Top = 19
-      Width = 756
+      Left = 26
+      Top = 26
+      Width = 742
       Height = 57
+      AutoSize = True
       BandType = btHeader
       object rlCanhoto: TRLDraw
         Left = 0
         Top = 0
-        Width = 756
+        Width = 740
         Height = 57
       end
       object rliCanhoto1: TRLDraw
@@ -4628,6 +4247,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllDataRecebimento: TRLLabel
+        Tag = 10
         Left = 3
         Top = 28
         Width = 88
@@ -4641,6 +4261,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllIdentificacao: TRLLabel
+        Tag = 10
         Left = 105
         Top = 28
         Width = 172
@@ -4665,51 +4286,33 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       object rllNFe: TRLLabel
         Left = 608
         Top = 2
-        Width = 140
+        Width = 128
         Height = 16
         Alignment = taCenter
         AutoSize = False
         Caption = 'NF-e'
       end
-      object RLLabel4: TRLLabel
-        Left = 633
-        Top = 20
-        Width = 18
-        Height = 16
-        Caption = 'N'#186
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -13
-        Font.Name = 'Arial'
-        Font.Style = [fsBold]
-        ParentFont = False
-      end
       object rllNumNF0: TRLLabel
-        Left = 654
+        Left = 625
         Top = 20
-        Width = 75
+        Width = 94
         Height = 16
-        Caption = '000.000.000'
+        Alignment = taCenter
+        Caption = 'N'#186' 000.000.000'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -13
         Font.Name = 'Arial'
         Font.Style = [fsBold]
         ParentFont = False
-      end
-      object RLLabel6: TRLLabel
-        Left = 644
-        Top = 37
-        Width = 43
-        Height = 16
-        Caption = 'S'#201'RIE'
       end
       object rllSERIE0: TRLLabel
-        Left = 692
+        Left = 638
         Top = 37
-        Width = 25
+        Width = 68
         Height = 16
-        Caption = '000'
+        Alignment = taCenter
+        Caption = 'S'#201'RIE 000'
       end
       object rllResumo: TRLLabel
         Left = 60
@@ -4729,20 +4332,34 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       end
     end
     object rlbDivisaoRecibo: TRLBand
-      Left = 19
-      Top = 76
-      Width = 756
+      Left = 26
+      Top = 83
+      Width = 742
       Height = 16
       BandType = btHeader
       object rliDivisao: TRLDraw
         Left = 0
         Top = 5
-        Width = 764
+        Width = 741
         Height = 8
         DrawKind = dkLine
         HoldStyle = hsHorizontally
         Pen.Style = psDot
       end
+    end
+    object rlmDadosAdicionaisAuxiliar: TRLMemo
+      Left = 136
+      Top = 64
+      Width = 457
+      Height = 12
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -9
+      Font.Name = 'Courier New'
+      Font.Style = []
+      IntegralHeight = True
+      ParentFont = False
+      Visible = False
     end
   end
   object RLPDFFilter1: TRLPDFFilter
@@ -4751,14 +4368,14 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
     FontEncoding = feNoEncoding
     DisplayName = 'Documento PDF'
     ShowProgress = False
-    Left = 539
-    Top = 40
+    Left = 531
+    Top = 51
   end
   object cdsItens: TClientDataSet
     Aggregates = <>
     Params = <>
-    Left = 568
-    Top = 40
+    Left = 560
+    Top = 51
     object cdsItensCODIGO: TStringField
       FieldName = 'CODIGO'
       Size = 60
@@ -4819,6 +4436,6 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
   object DataSource1: TDataSource
     DataSet = cdsItens
     Left = 595
-    Top = 39
+    Top = 50
   end
 end

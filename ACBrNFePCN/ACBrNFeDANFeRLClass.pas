@@ -55,6 +55,10 @@
 |*    "MostrarPreview" de "ACBrNFeDANFeClass"
 |*  - Acréscimo da propriedade "PosCanhoto", que permite ao usuário escolher
 |*    entre "pcCabecalho" e "pcRodape"
+|* 22/03/2010: Peterson de Cerqueira Matos
+|*  - Tratamento das margens em "ACBrNFeDANFeClass"
+|*  - Acréscimo da propriedade "FonteDANFE", que permite ao usuário escolher
+|*    entre "fdArial", "fdTimesNewRoman" e "fdCourierNew"
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeRLClass;
@@ -76,25 +80,38 @@ type
     FMarcadagua: string;
     FLarguraCodProd: Integer;
     FPosCanhoto: TPosCanhoto;
+    FFonteDANFE: TFonteDANFE;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure ImprimirDANFE(NFE : TNFe = nil); override ;
     procedure ImprimirDANFEPDF(NFE : TNFe = nil); override ;
     procedure SetPosCanhoto(Value: TPosCanhoto); virtual;
+    procedure SetFonteDANFE(Value: TFonteDANFE); virtual;
   published
     property MarcadAgua : String read FMarcadagua write FMarcadagua ;
     property LarguraCodProd: Integer read FLarguraCodProd write FLarguraCodProd;
-    property PosCanhoto: TPosCanhoto read FPosCanhoto write SetPosCanhoto default pcCabecalho;
+    property PosCanhoto: TPosCanhoto read FPosCanhoto write SetPosCanhoto
+                                                          default pcCabecalho;
+    property FonteDANFE: TFonteDANFE read FFonteDANFE write SetFonteDANFE
+                                                      default fdTimesNewRoman;
   end;
 
 implementation
 
 uses ACBrNFe, ACBrNFeUtil, ACBrUtil;
 
+var
+  i : Integer;
+  frlDANFeRLRetrato : TfrlDANFeRLRetrato;
+
 constructor TACBrNFeDANFeRL.Create(AOwner: TComponent);
 begin
   inherited create( AOwner );
+  FMargemSuperior := 0.70;
+  FMargemInferior := 0.70;
+  FMargemEsquerda := 0.70;
+  FMargemDireita := 0.70;
 end;
 
 destructor TACBrNFeDANFeRL.Destroy;
@@ -104,100 +121,47 @@ end;
 
 
 procedure TACBrNFeDANFeRL.ImprimirDANFE(NFE : TNFe = nil);
-var
-  i : Integer;
-  frlDANFeRLRetrato : TfrlDANFeRLRetrato;
-  sLogo, sMarcaDagua: String;
-  iLarguraCodProd: Integer;
-  sEmail: String;
-  bResumoCanhoto: Boolean;
-  sFax: String;
-  iNumCopias: Integer;
-  sSsitema: String;
-  sSite: String;
-  sUsuario: String;
-  sPosCanhoto: TPosCanhoto;
-  bFormularioContinuo: Boolean;
-  bExpandirLogoMarca: Boolean;
-  bMostrarPreview: Boolean;
-
 begin
   frlDANFeRLRetrato := TfrlDANFeRLRetrato.Create(Self);
-  sLogo := TACBrNFe(ACBrNFe).DANFE.Logo;
-  sMarcaDagua := MarcaDagua;
-  iLarguraCodProd := LarguraCodProd;
-  sEmail := Email;
-  bResumoCanhoto := ExibirResumoCanhoto;
-  sFax := Fax;
-  iNumCopias := NumCopias;
-  sSsitema := Sistema;
-  sSite := Site;
-  sUsuario := Usuario;
-  sPosCanhoto := PosCanhoto;
-  bFormularioContinuo := FormularioContinuo;
-  bExpandirLogoMarca := ExpandirLogoMarca;
-  bMostrarPreview := MostrarPreview;
 
   if NFE = nil then
    begin
      for i:= 0 to TACBrNFe(ACBrNFe).NotasFiscais.Count-1 do
       begin
         frlDANFeRLRetrato.Imprimir(TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe,
-        sLogo, sMarcaDagua, iLarguraCodProd, sEmail, bResumoCanhoto, sFax,
-        iNumCopias, sSsitema, sSite, sUsuario, sPosCanhoto,
-        bFormularioContinuo, bExpandirLogoMarca, bMostrarPreview);
+        TACBrNFe(ACBrNFe).DANFE.Logo, MarcaDagua, LarguraCodProd, Email,
+        ExibirResumoCanhoto, Fax, NumCopias, Sistema, Site, Usuario, PosCanhoto,
+        FormularioContinuo, ExpandirLogoMarca, MostrarPreview, FonteDANFE,
+        MargemSuperior, MargemInferior, MargemEsquerda, MargemDireita);
       end;
    end
   else
-    frlDANFeRLRetrato.Imprimir(NFE, sLogo, sMarcaDagua, iLarguraCodProd,
-    sEmail, bResumoCanhoto, sFax, iNumCopias, sSsitema, sSite, sUsuario,
-    sPosCanhoto, bFormularioContinuo, bExpandirLogoMarca, bMostrarPreview);
+    frlDANFeRLRetrato.Imprimir(TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe,
+    TACBrNFe(ACBrNFe).DANFE.Logo, MarcaDagua, LarguraCodProd, Email,
+    ExibirResumoCanhoto, Fax, NumCopias, Sistema, Site, Usuario, PosCanhoto,
+    FormularioContinuo, ExpandirLogoMarca, MostrarPreview, FonteDANFE,
+    MargemSuperior, MargemInferior, MargemEsquerda, MargemDireita);
 
   frlDANFeRLRetrato.Free;
 end;
 
 procedure TACBrNFeDANFeRL.ImprimirDANFEPDF(NFE : TNFe = nil);
-var
-  i : Integer;
-  frlDANFeRLRetrato : TfrlDANFeRLRetrato;
-  sLogo, sMarcaDagua, sFile: String;
-  iLarguraCodProd: Integer;
-  sEmail: String;
-  bResumoCanhoto: Boolean;
-  sFax: String;
-  iNumCopias: Integer;
-  sSsitema: String;
-  sSite: String;
-  sUsuario: String;
-  sPosCanhoto: TPosCanhoto;
-  bFormularioContinuo: Boolean;
-  bExpandirLogoMarca: Boolean;
-
+var sFile: String;
 begin
   frlDANFeRLRetrato := TfrlDANFeRLRetrato.Create(Self);
-  sLogo := TACBrNFe(ACBrNFe).DANFE.Logo;
-  sMarcaDagua := MarcaDagua;
-  iLarguraCodProd := LarguraCodProd;
-  sEmail := Email;
-  bResumoCanhoto := ExibirResumoCanhoto;
-  sFax := Fax;
-  iNumCopias := NumCopias;
-  sSsitema := Sistema;
-  sSite := Site;
-  sUsuario := Usuario;
-  sPosCanhoto := PosCanhoto;
-  bFormularioContinuo := FormularioContinuo;
-  bExpandirLogoMarca := ExpandirLogoMarca;
 
   if NFE = nil then
    begin
      for i:= 0 to TACBrNFe(ACBrNFe).NotasFiscais.Count-1 do
       begin
-        sFile := TACBrNFe(ACBrNFe).DANFE.PathPDF + Copy(TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe.infNFe.ID, 4, 44) + '-nfe.pdf';
+        sFile := TACBrNFe(ACBrNFe).DANFE.PathPDF +
+                 Copy(TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe.infNFe.ID,
+                 4, 44) + '-nfe.pdf';
         frlDANFeRLRetrato.SavePDF(TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe,
-        sLogo, sMarcaDagua, iLarguraCodProd, sEmail, bResumoCanhoto, sFax,
-        iNumCopias, sSsitema, sSite, sUsuario, sFile, sPosCanhoto,
-        bFormularioContinuo, bExpandirLogoMarca);
+        TACBrNFe(ACBrNFe).DANFE.Logo, MarcaDagua, LarguraCodProd, Email,
+        ExibirResumoCanhoto, Fax, NumCopias, Sistema, Site, Usuario, sFile,
+        PosCanhoto, FormularioContinuo, ExpandirLogoMarca, FonteDANFE,
+        MargemSuperior, MargemInferior, MargemEsquerda, MargemDireita);
       end;
    end;
 
@@ -207,6 +171,11 @@ end;
 procedure TACBrNFeDANFeRL.SetPosCanhoto(Value: TPosCanhoto);
 begin
   FPosCanhoto := Value;
+end;
+
+procedure TACBrNFeDANFeRL.SetFonteDANFE(Value: TFonteDANFE);
+begin
+  FFonteDANFE := Value;
 end;
 
 end.

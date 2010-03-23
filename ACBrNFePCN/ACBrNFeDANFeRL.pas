@@ -49,6 +49,8 @@
 |*  - Acréscimo dos parâmetros "ALarguraCodProd" nas Class procedures
 |*    "Imprimir" e "SavePDF"
 |* 05/02/2010: Peterson de Cerqueira Matos
+|*  - Tratamento das propriedades "Email", "ResumoCanhoto", "Fax", "NumCopias",
+|*    "Ssitema", "Site", "Usuario" em "ACBrNFeDANFeClass"
 |*  - Acréscimo dos parâmetros "AEmail", "AResumoCanhoto", "AFax", "ANumCopias",
 |*    "ASsitema", "ASite", "AUsuario" nas Class procedures
 |*    "Imprimir" e "SavePDF"
@@ -62,6 +64,10 @@
 |*  - Acréscimo dos parâmetros "APosCanhoto", "AFormularioContinuo",
 |*    "AExpandirLogoMarca" e "AMostrarPreview" nas Class procedures
 |*    "Imprimir" e "SavePDF" (esta última sem o "AMostrarPreview")
+|* 22/03/2010: Peterson de Cerqueira Matos
+|*  - Tratamento das margens em "ACBrNFeDANFeClass"
+|*  - Acréscimo dos parâmetros "AMargemSuperior, AMargemInferior,
+|*    AMargemEsqurda, AMargemDireita" e "AFonteDANFE"
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeRL;
@@ -79,6 +85,7 @@ uses
 
 type
   TPosCanhoto = (pcCabecalho, pcRodape);
+  TFonteDANFE = (fdTimesNewRoman, fdCourierNew, fdArial);
 
 type
   TfrlDANFeRL = class(TForm)
@@ -103,6 +110,11 @@ type
     FFormularioContinuo: Boolean;
     FExpandirLogoMarca: Boolean;
     FMostrarPreview: Boolean;
+    FFonteDANFE: TFonteDANFE;
+    FMargemSuperior: Double;
+    FMargemInferior: Double;
+    FMargemEsquerda: Double;
+    FMargemDireita: Double;
 
   public
     { Public declarations }
@@ -115,7 +127,12 @@ type
                     APosCanhoto: TPosCanhoto = pcCabecalho;
                     AFormularioContinuo: Boolean = False;
                     AExpandirLogoMarca: Boolean = False;
-                    AMostrarPreview: Boolean = True);
+                    AMostrarPreview: Boolean = True;
+                    AFonteDANFE: TFonteDANFE = fdTimesNewRoman;
+                    AMargemSuperior: Double = 0.7;
+                    AMargemInferior: Double = 0.7;
+                    AMargemEsquerda: Double = 0.7;
+                    AMargemDireita: Double = 0.7);
 
     class procedure SavePDF(ANFe: TNFe; ALogo: String = '';
                     AMarcaDagua: String = ''; ALarguraCodProd: Integer = 52;
@@ -125,7 +142,13 @@ type
                     AUsuario: String = ''; AFile: String = '';
                     APosCanhoto: TPosCanhoto = pcCabecalho;
                     AFormularioContinuo: Boolean = False;
-                    AExpandirLogoMarca: Boolean = False);
+                    AExpandirLogoMarca: Boolean = False;
+                    AFonteDANFE: TFonteDANFE = fdTimesNewRoman;
+                    AMargemSuperior: Double = 0.7;
+                    AMargemInferior: Double = 0.7;
+                    AMargemEsquerda: Double = 0.7;
+                    AMargemDireita: Double = 0.7);
+
   end;
 
 implementation
@@ -143,7 +166,13 @@ class procedure TfrlDANFeRL.Imprimir(ANFe: TNFe; ALogo: String = '';
                     APosCanhoto: TPosCanhoto = pcCabecalho;
                     AFormularioContinuo: Boolean = False;
                     AExpandirLogoMarca: Boolean = False;
-                    AMostrarPreview: Boolean = True);
+                    AMostrarPreview: Boolean = True;
+                    AFonteDANFE: TFonteDANFE = fdTimesNewRoman;
+                    AMargemSuperior: Double = 0.7;
+                    AMargemInferior: Double = 0.7;
+                    AMargemEsquerda: Double = 0.7;
+                    AMargemDireita: Double = 0.7);
+
 begin
   with Create ( nil ) do
     try
@@ -162,6 +191,11 @@ begin
       FFormularioContinuo := AFormularioContinuo;
       FExpandirLogoMarca := AExpandirLogoMarca;
       FMostrarPreview := AMostrarPreview;
+      FFonteDANFE := AFonteDANFE;
+      FMargemSuperior := AMargemSuperior;
+      FMargemInferior := AMargemInferior;
+      FMargemEsquerda := AMargemEsquerda;
+      FMargemDireita := AMargemDireita;
 
       for iCopias := 1 to FNumCopias do
         if FMostrarPreview = True then
@@ -182,7 +216,13 @@ class procedure TfrlDANFeRL.SavePDF(ANFe: TNFe; ALogo: String = '';
                     AUsuario: String = '' ; AFile: String = '';
                     APosCanhoto: TPosCanhoto = pcCabecalho;
                     AFormularioContinuo: Boolean = False;
-                    AExpandirLogoMarca: Boolean = False);
+                    AExpandirLogoMarca: Boolean = False;
+                    AFonteDANFE: TFonteDANFE = fdTimesNewRoman;
+                    AMargemSuperior: Double = 0.7;
+                    AMargemInferior: Double = 0.7;
+                    AMargemEsquerda: Double = 0.7;
+                    AMargemDireita: Double = 0.7);
+
 begin
   with Create ( nil ) do
     try
@@ -200,6 +240,11 @@ begin
       FPosCanhoto := APosCanhoto;
       FFormularioContinuo := AFormularioContinuo;
       FExpandirLogoMarca := AExpandirLogoMarca;
+      FFonteDANFE := AFonteDANFE;
+      FMargemSuperior := AMargemSuperior;
+      FMargemInferior := AMargemInferior;
+      FMargemEsquerda := AMargemEsquerda;
+      FMargemDireita := AMargemDireita;
       RLNFe.SaveToFile(AFile);
     finally
       Free ;

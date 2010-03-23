@@ -95,6 +95,25 @@ begin
 end;
 
 procedure TACBrNFeDANFERave.ExecutaReport;
+   function wDisplayFormat(Casas: integer):string;
+   var
+      i: integer;
+      wzeros: string;
+   begin
+      if Casas=0 then
+         Result:='#0'
+      else
+      begin
+         Result:='#,';
+         wzeros:='0.';
+         for I := 1 to Casas do
+         begin
+            Result:=Result+'#';
+            wZeros:=wZeros+'0';
+         end;
+         Result:=Result+wZeros;
+      end;
+   end;
 var
    i: integer;
 
@@ -414,18 +433,7 @@ begin
             if (NotaUtil.NaoEstaVazio(FCasasDecimais._Mask_qCom)) then
                wFloatField[1].DisplayFormat:=FCasasDecimais._Mask_qCom
             else
-            begin
-               if FCasasDecimais._QCom=0 then
-                  wFloatField[1].DisplayFormat:='#0'
-               else if FCasasDecimais._QCom=1 then
-                  wFloatField[1].DisplayFormat:='#,#0.0'
-               else if FCasasDecimais._QCom=2 then
-                  wFloatField[1].DisplayFormat:='#,##0.00'
-               else if FCasasDecimais._QCom=3 then
-                  wFloatField[1].DisplayFormat:='#,###0.000'
-               else if FCasasDecimais._QCom=4 then
-                  wFloatField[1].DisplayFormat:='#,####0.0000';
-            end;
+               wFloatField[1].DisplayFormat:=wDisplayFormat(FCasasDecimais._QCom);
          end;
          //Casas Decimais (vUnCom)
          wFloatField[2] := FindRaveComponent('CustomDadosProdutosCXVUnCom',wDataView) as TRaveFloatField;
@@ -434,18 +442,7 @@ begin
             if (NotaUtil.NaoEstaVazio(FCasasDecimais._Mask_vUnCom)) then
                wFloatField[2].DisplayFormat:=FCasasDecimais._Mask_vUnCom
             else
-            begin
-               if FCasasDecimais._vUnCom=0 then
-                  wFloatField[2].DisplayFormat:='#0'
-               else if FCasasDecimais._vUnCom=1 then
-                  wFloatField[2].DisplayFormat:='#,#0.0'
-               else if FCasasDecimais._vUnCom=2 then
-                  wFloatField[2].DisplayFormat:='#,##0.00'
-               else if FCasasDecimais._vUnCom=3 then
-                  wFloatField[2].DisplayFormat:='#,###0.000'
-               else if FCasasDecimais._vUnCom=4 then
-                  wFloatField[2].DisplayFormat:='#,####0.0000';
-            end;
+               wFloatField[2].DisplayFormat:=wDisplayFormat(FCasasDecimais._vUnCom);
          end;
 
          //Margem Inferior
@@ -479,37 +476,6 @@ begin
             if (wBand <> nil) then
                wBand.Height := wBand.Height-(vMargemInferior-vMargemInferiorAtual);
          end;
-
-         //Margem Superior -- já esta funcional -- basta descomentar
-         {wReport := FindRaveComponent('DANFE1',nil) as TRaveReport;
-         wPage[1] := FindRaveComponent('Page1',wReport) as TRavePage;
-         wPage[2] := FindRaveComponent('Page2',wReport) as TRavePage;
-         wRegion[1] := FindRaveComponent('Region1',wPage[1]) as TRaveRegion;
-         wRegion[2] := FindRaveComponent('Region1',wPage[2]) as TRaveRegion;
-         if (wRegion[1] <> nil) then
-            vMargemSuperiorAtual:=wRegion[1].Top
-         else
-            vMargemSuperiorAtual:=0.406/2.54;
-         vMargemSuperior:=FMargemSuperior/2.54;
-         vMargemSuperior:=vMargemSuperiorAtual-vMargemSuperior;
-         i:=1;
-         while (i <= 2) do
-         begin
-            if (wRegion[i] <> nil) then
-            begin
-               if (vMargemSuperior < 0) then
-               begin
-                  wRegion[i].Top:=wRegion[i].Top+(vMargemSuperior*(-1));
-                  wRegion[i].Height:=wRegion[i].Height-(vMargemSuperior*(-1));
-               end
-               else if (vMargemSuperior > 0) then
-               begin
-                  wRegion[i].Top:=wRegion[i].Top-(vMargemSuperior);
-                  wRegion[i].Height:=wRegion[i].Height+(vMargemSuperior);
-               end;
-            end;
-            i:=i+1;
-         end;}
       end;
    finally
       dmDanfe.RvProject.ExecuteReport('DANFE1');

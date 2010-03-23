@@ -1092,13 +1092,17 @@ begin
     TmpStr:='';
 
     //Contingencia
-    if ((FNFe.Ide.tpEmis=teContingencia) or
-        (FNFe.Ide.tpEmis=teFSDA)) then
-       wcontingencia:='DANFE EM CONTINGÊNCIA, IMPRESSO EM DECORRÊNCIA DE PROBLEMAS TÉCNICOS'
-    else if (FNFe.Ide.tpEmis=teDPEC) then
-       wcontingencia:='DANFE IMPRESSO EM CONTINGÊNCIA - DPEC REGULARMENTE RECEBIDA PELA RECEITA FEDERAL DO BRASIL'
+    if (FNFe.Ide.tpEmis=teNORMAL) then
+      wcontingencia:=''
     else
-       wcontingencia:='';
+    begin
+       if ((FNFe.Ide.tpEmis=teContingencia) or
+           (FNFe.Ide.tpEmis=teFSDA) or
+           (FNFe.Ide.tpEmis=teSCAN)) then
+          wcontingencia:='DANFE EM CONTINGÊNCIA, IMPRESSO EM DECORRÊNCIA DE PROBLEMAS TÉCNICOS'
+       else if (FNFe.Ide.tpEmis=teDPEC) then
+          wcontingencia:='DANFE IMPRESSO EM CONTINGÊNCIA - DPEC REGULARMENTE RECEBIDA PELA RECEITA FEDERAL DO BRASIL';
+    end;
     if length(wobs)>0 then
       wobs:=wobs+';';
     wObs:=wObs+wContingencia;

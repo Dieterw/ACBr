@@ -54,6 +54,9 @@ Alterações   23/03/10
     - Tratamento das margens Superior, Inferior, Esquerda e Direita
     - Acréscimo da propriedade "FonteDANFE", que permite ao usuário escolher
       entre "fdArial", "fdTimesNewRoman" e "fdCourierNew"
+[*] DANFE em RAVE (Arquivo e CB)
+    - Incluído impressão do texto: "DANFE em Contingência - impresso em decorrência de problemas técnicos" quando for SCAN
+    - Melhorado procedimentos internos para exibição das casas decimais
 
 Alterações   22/03/10
 ---------------

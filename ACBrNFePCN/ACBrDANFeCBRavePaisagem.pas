@@ -186,7 +186,8 @@ begin
                   PrintCenter('recebida pela Receita Federal do Brasil',CenterX);
                 end;
         teFSDA,
-        teContingencia:
+        teContingencia,
+        teSCAN:
                 begin
                   PrintCenter('DANFE em Contingência - impresso em',CenterX);
                   NewLine;

@@ -127,6 +127,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       Top = 1
       Width = 527
       Height = 38
+      Cursor = crHandPoint
       Align = alClient
       Picture.Data = {
         07544269746D617036E00100424D36E001000000000036000000280000000004
@@ -3972,6 +3973,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
         C1C1C2C1C1C2C1C1C2C1C1C2C1C1C2C1C1C2C1C1C2C1C1C2C1C1C2C1C1C2C1C1
         C2C1C1C2C1C1C2C1C1C2C1C1C2C1C1C2C1C1C2C1C1C2C1C1C2C1C1C2C1C1C2C1
         C1C2}
+      OnClick = Image1Click
     end
     object btCancelar: TBitBtn
       Left = 312
@@ -4120,7 +4122,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       Top = 0
       Width = 527
       Height = 256
-      ActivePage = Certificado
+      ActivePage = Monitor
       Align = alBottom
       TabOrder = 0
       object Monitor: TTabSheet

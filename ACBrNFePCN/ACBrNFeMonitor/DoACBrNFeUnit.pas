@@ -217,7 +217,7 @@ begin
               ACBrNFe1.DANFE.Impressora := cbxImpressora.Text;
 
            if NotaUtil.NaoEstaVazio(Cmd.Params(2)) then
-              ACBrNFe1.DANFE.NumCopias := StrToInt(Cmd.Params(2))
+              ACBrNFe1.DANFE.NumCopias := StrToIntDef(Cmd.Params(2),1)
            else
               ACBrNFe1.DANFE.NumCopias := StrToIntDef(edtNumCopia.Text,1);
 
@@ -278,7 +278,7 @@ begin
            if not(ACBrNFe1.WebServices.StatusServico.Executar) then
             raise Exception.Create(ACBrNFe1.WebServices.StatusServico.Msg);
 
-           ACBrNFe1.WebServices.Enviar.Lote := StrToInt(Cmd.Params(1));
+           ACBrNFe1.WebServices.Enviar.Lote := StrToIntDef(Cmd.Params(1),1);
            ACBrNFe1.WebServices.Enviar.Executar;
 
            Cmd.Resposta :=  ACBrNFe1.WebServices.Enviar.Msg+sLineBreak+
@@ -556,9 +556,9 @@ begin
                   raise Exception.Create(ACBrNFe1.WebServices.StatusServico.Msg);
 
                  if (Cmd.Metodo = 'criarenviarnfe') or (Cmd.Metodo = 'criarenviarnfesefaz') then
-                    ACBrNFe1.WebServices.Enviar.Lote := StrToInt(Cmd.Params(1))
+                    ACBrNFe1.WebServices.Enviar.Lote := StrToIntDef(Cmd.Params(1),1)
                  else
-                    ACBrNFe1.WebServices.Enviar.Lote := StrToInt(Cmd.Params(0));
+                    ACBrNFe1.WebServices.Enviar.Lote := StrToIntDef(Cmd.Params(0),1);
                  ACBrNFe1.WebServices.Enviar.Executar ;
 
                  Cmd.Resposta :=  ACBrNFe1.WebServices.Enviar.Msg+sLineBreak+

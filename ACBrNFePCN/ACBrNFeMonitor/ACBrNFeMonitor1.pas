@@ -44,7 +44,7 @@ uses IniFiles, CmdUnitNFe, FileCtrl, Printers,
   SHDocVw, ACBrNFeUtil, ACBrNFeDANFERaveCB;
 
 const
-   BufferMemoResposta = 1000 ;              { Maximo de Linhas no MemoResposta }
+   BufferMemoResposta = 10000 ;              { Maximo de Linhas no MemoResposta }
    _C = 'tYk*5W@' ;
    wm_IconMessage = wm_User;
 
@@ -278,6 +278,7 @@ type
     procedure cbxAjustarAutClick(Sender: TObject);
     procedure cbxPastaMensalClick(Sender: TObject);
     procedure ACBrNFe1GerarLog(const Mensagem: String);
+    procedure Image1Click(Sender: TObject);
   private
     { Private declarations }
     ACBrNFeMonitorINI : string;
@@ -1515,6 +1516,11 @@ procedure TfrmAcbrNfeMonitor.ACBrNFe1GerarLog(const Mensagem: String);
 begin
   if cbLogComp.Checked then
      WriteToTXT(ArqLogCompTXT, Mensagem + sLineBreak );
+end;
+
+procedure TfrmAcbrNfeMonitor.Image1Click(Sender: TObject);
+begin
+ OpenURL('http://acbr.sf.net');
 end;
 
 end.

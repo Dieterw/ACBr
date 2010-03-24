@@ -1,0 +1,19 @@
+xHarbour Compiler build 1.2.1 (SimpLex) (Rev. 6476)
+Copyright 1999-2009, http://www.xharbour.org http://www.harbour-project.org/
+Compiling 'TEST_NFe.prg'...
+TEST_NFe.prg(44) Error E0001  Statement not allowed outside of procedure or function
+TEST_NFe.prg(45) Error E0001  Statement not allowed outside of procedure or function
+TEST_NFe.prg(46) Error E0001  Statement not allowed outside of procedure or function
+TEST_NFe.prg(47) Error E0001  Statement not allowed outside of procedure or function
+TEST_NFe.prg(83) Error E0001  Statement not allowed outside of procedure or function
+TEST_NFe.prg(84) Error E0001  Statement not allowed outside of procedure or function
+TEST_NFe.prg(85) Error E0001  Statement not allowed outside of procedure or function
+TEST_NFe.prg(86) Error E0001  Statement not allowed outside of procedure or function
+TEST_NFe.prg(88) Error E0001  Statement not allowed outside of procedure or function
+TEST_NFe.prg(89) Error E0001  Statement not allowed outside of procedure or function
+TEST_NFe.prg(90) Error E0001  Statement not allowed outside of procedure or function
+TEST_NFe.prg(91) Error E0001  Statement not allowed outside of procedure or function
+100TEST_NFe.prg(135) Error E0001  Statement not allowed outside of procedure or function
+13 errors
+
+No code generated

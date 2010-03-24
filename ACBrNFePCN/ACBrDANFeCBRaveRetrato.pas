@@ -602,6 +602,7 @@ end;
 function ImprimirLocalRetirada(PosX,
   PosY: Double): Double;
 var vEnd:String;
+    wtemp_FontSizeText: double;
 begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
@@ -615,7 +616,12 @@ begin
      TituloDoBloco(PosX,PosY,'LOCAL DE RETIRADA');
      with Retirada do
      begin
-       Box([],XPos,YPos,32,aHeigthPadrao,'CNPJ',NotaUtil.FormatarCNPJ(CNPJ),taCenter);
+       wtemp_FontSizeText:=FontSizeText;
+       if FontNameUsed = 'Courier New' then
+          FontSizeText:=8;
+       Box([],XPos,YPos,34,aHeigthPadrao,'CNPJ',NotaUtil.FormatarCNPJ(CNPJ),taCenter);
+       FontSizeText:=wtemp_FontSizeText;
+
        vEnd:=XLgr;
        if (Trim(Nro)>'') and (Nro<>'SN') and (Pos(Nro,vEnd)=0) then
           vEnd:=vEnd+' '+Nro;
@@ -632,6 +638,7 @@ end;
 function ImprimirLocalEntrega(PosX,
   PosY: Double): Double;
 var vEnd:String;
+    wtemp_FontSizeText: double;
 begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
@@ -645,7 +652,12 @@ begin
      TituloDoBloco(PosX,PosY,'LOCAL DE ENTREGA');
      with Entrega do
      begin
-       Box([],XPos,YPos,32,aHeigthPadrao,'CNPJ',NotaUtil.FormatarCNPJ(CNPJ),taCenter);
+       wtemp_FontSizeText:=FontSizeText;
+       if FontNameUsed = 'Courier New' then
+          FontSizeText:=8;
+       Box([],XPos,YPos,34,aHeigthPadrao,'CNPJ',NotaUtil.FormatarCNPJ(CNPJ),taCenter);
+       FontSizeText:=wtemp_FontSizeText;
+
        vEnd:=XLgr;
        if (Trim(Nro)>'') and (Nro<>'SN') and (Pos(Nro,vEnd)=0) then
           vEnd:=vEnd+' '+Nro;
@@ -799,10 +811,16 @@ begin
      Box([fsLeft],XPos,YPos,19,aHeigthPadrao,'Código ANTT',Transp.VeicTransp.RNTC,taCenter);
      Box([fsLeft],XPos,YPos,22,aHeigthPadrao,'Placa do Veículo',Transp.VeicTransp.Placa,taCenter);
      Box([fsLeft],XPos,YPos,8,aHeigthPadrao,'UF',Transp.VeicTransp.UF,taCenter);
+
+     wtemp_FontSizeText:=FontSizeText;
+     if FontNameUsed = 'Courier New' then
+        FontSizeText:=8;
      if Length(Transp.Transporta.CNPJCPF) > 11 then
        Box([fsLeft],XPos,YPos,30,aHeigthPadrao,'CNPJ / CPF',NotaUtil.FormatarCNPJ(Transp.Transporta.CNPJCPF),taCenter,True)
      else
        Box([fsLeft],XPos,YPos,30,aHeigthPadrao,'CNPJ / CPF',NotaUtil.FormatarCPF(Transp.Transporta.CNPJCPF),taCenter,True);
+     FontSizeText:=wtemp_FontSizeText;
+
      Box([fsTop],PosX,YPos,90,aHeigthPadrao,'Endereço',Transp.Transporta.XEnder);
      Box([fsTop,fsLeft],XPos,YPos,68,aHeigthPadrao,'Município',Transp.Transporta.XMun,taCenter);
      Box([fsTop,fsLeft],XPos,YPos,8,aHeigthPadrao,'UF',Transp.Transporta.UF,taCenter);

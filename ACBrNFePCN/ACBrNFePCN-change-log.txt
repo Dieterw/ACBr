@@ -53,6 +53,8 @@ Alterações   24/03/10
 [-] DANFE em RAVE CB
     - Corrigido Informações das duplicatas que estavam sendo impressas em cima da linha do quadro
     - Corrigido impressão do CNPJ da transportadora e local de retirada e entrega quando a fonte for Courier
+[+] DANFE em RAVE Arquivo
+    - Adicionado propriedade EspessuraBorda
 
 Alterações   23/03/10
 ---------------

@@ -65,6 +65,7 @@ type
    private
     FdmDanfe : TdmACBrNFeRave;
     FRaveFile: String;
+    FEspessuraBorda: Integer;
     procedure ExecutaReport;
    public
     constructor Create(AOwner: TComponent); override;
@@ -74,6 +75,7 @@ type
   published
     property RavFile : String read FRaveFile write FRaveFile ;
     property dmDanfe : TdmACBrNFeRave read FdmDanfe write FdmDanfe;
+    property EspessuraBorda : Integer read FEspessuraBorda write FEspessuraBorda ;
   end;
 
 implementation
@@ -85,6 +87,7 @@ begin
   inherited create( AOwner );
   FdmDanfe := TdmACBrNFeRave.Create(Self);
   FRaveFile := '' ;
+  FEspessuraBorda := 1;
 end;
 
 destructor TACBrNFeDANFERave.Destroy;
@@ -115,7 +118,7 @@ procedure TACBrNFeDANFERave.ExecutaReport;
       end;
    end;
 var
-   i: integer;
+   i,j: integer;
 
    wReport: TRaveReport;
    wRegion: array [1..2] of TRaveRegion;
@@ -125,8 +128,8 @@ var
    wPage: array[1..2] of TRavePage;
    wBarcode: TRaveCode128BarCode;
    wBitmap: array[1..1] of TRaveBitmap;
-   wHLine: array[1..2] of TRaveHLine;
-   wVLine: array[1..4] of TRaveVLine;
+   wHLine: array[1..32] of TRaveHLine;
+   wVLine: array[1..32] of TRaveVLine;
    wRectangle: array[1..7] of TRaveRectangle;
    wSquare: array[1..1] of TRaveSquare;
    wText: array[1..13] of TRaveText;
@@ -443,6 +446,186 @@ begin
                wFloatField[2].DisplayFormat:=FCasasDecimais._Mask_vUnCom
             else
                wFloatField[2].DisplayFormat:=wDisplayFormat(FCasasDecimais._vUnCom);
+         end;
+
+         //Bordas
+         if (FEspessuraBorda <> 1) then
+         begin
+            wPage[1] := FindRaveComponent('GlobalRecibo',nil) as TRavePage;
+            i:=2;
+            while i>0 do
+            begin
+               if (i in [1,2]) then
+               begin
+                  wRectangle[i] := FindRaveComponent('Rectangle'+inttostr(i),wPage[1]) as TRaveRectangle;
+                  wHLine[i] := FindRaveComponent('HLine'+inttostr(i),wPage[1]) as TRaveHLine;
+                  wVLine[i] := FindRaveComponent('VLine'+inttostr(i),wPage[1]) as TRaveVLine;
+                  if (wRectangle[i] <> nil) then
+                     wRectangle[i].BorderWidth:=FEspessuraBorda;
+                  if (wHLine[i] <> nil) then
+                     wHLine[i].LineWidth:=FEspessuraBorda;
+                  if (wVLine[i] <> nil) then
+                     wVLine[i].LineWidth:=FEspessuraBorda;
+               end;
+               i:=i-1;
+            end;
+
+            wPage[1] := FindRaveComponent('GlobalDANFE',nil) as TRavePage;
+            i:=7;
+            while i>0 do
+            begin
+               if (i in [1,2,3,4,5,6,7]) then
+               begin
+                  wRectangle[i] := FindRaveComponent('Rectangle'+inttostr(i),wPage[1]) as TRaveRectangle;
+                  wSquare[i] := FindRaveComponent('Square'+inttostr(i),wPage[1]) as TRaveSquare;
+                  wVLine[i] := FindRaveComponent('VLine'+inttostr(i),wPage[1]) as TRaveVLine;
+                  if (wRectangle[i] <> nil) then
+                     wRectangle[i].BorderWidth:=FEspessuraBorda;
+                  if (wSquare[i] <> nil) then
+                     wSquare[i].BorderWidth:=FEspessuraBorda;
+                  if (wVLine[i] <> nil) then
+                     wVLine[i].LineWidth:=FEspessuraBorda;
+               end;
+               i:=i-1;
+            end;
+
+            wPage[1] := FindRaveComponent('GlobalDestinatario',nil) as TRavePage;
+            i:=15;
+            while i>0 do
+            begin
+               if (i in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]) then
+               begin
+                  wRectangle[i] := FindRaveComponent('Rectangle'+inttostr(i),wPage[1]) as TRaveRectangle;
+                  wVLine[i] := FindRaveComponent('VLine'+inttostr(i),wPage[1]) as TRaveVLine;
+                  if (wRectangle[i] <> nil) then
+                     wRectangle[i].BorderWidth:=FEspessuraBorda;
+                  if (wVLine[i] <> nil) then
+                     wVLine[i].LineWidth:=FEspessuraBorda;
+               end;
+               i:=i-1;
+            end;
+
+            wPage[1] := FindRaveComponent('GlobalFatura',nil) as TRavePage;
+            i:=2;
+            while i>0 do
+            begin
+               wRectangle[1] := FindRaveComponent('Rectangle_Fatura'+inttostr(i),wPage[1]) as TRaveRectangle;
+               if (wRectangle[1] <> nil) then
+                  wRectangle[1].BorderWidth:=FEspessuraBorda;
+               if (i in [1,2]) then
+               begin
+                  wRectangle[i] := FindRaveComponent('Rectangle'+inttostr(i),wPage[1]) as TRaveRectangle;
+                  wVLine[i] := FindRaveComponent('VLine'+inttostr(i),wPage[1]) as TRaveVLine;
+                  if (wRectangle[i] <> nil) then
+                     wRectangle[i].BorderWidth:=FEspessuraBorda;
+                  if (wVLine[i] <> nil) then
+                     wVLine[i].LineWidth:=FEspessuraBorda;
+               end;
+               i:=i-1;
+            end;
+
+            wPage[1] := FindRaveComponent('GlobalCalculoImposto',nil) as TRavePage;
+            i:=9;
+            while i>0 do
+            begin
+               if (i in [1,2,3,4,5,6,7,8,9]) then
+               begin
+                  wRectangle[i] := FindRaveComponent('Rectangle'+inttostr(i),wPage[1]) as TRaveRectangle;
+                  wVLine[i] := FindRaveComponent('VLine'+inttostr(i),wPage[1]) as TRaveVLine;
+                  if (wRectangle[i] <> nil) then
+                     wRectangle[i].BorderWidth:=FEspessuraBorda;
+                  if (wVLine[i] <> nil) then
+                     wVLine[i].LineWidth:=FEspessuraBorda;
+               end;
+               i:=i-1;
+            end;
+
+            wPage[1] := FindRaveComponent('GlobalTransportador',nil) as TRavePage;
+            i:=18;
+            while i>0 do
+            begin
+               if (i in [1,2,3,4,5,6,7,8,14,15,16,17,18]) then
+               begin
+                  wRectangle[i] := FindRaveComponent('Rectangle'+inttostr(i),wPage[1]) as TRaveRectangle;
+                  wVLine[i] := FindRaveComponent('VLine'+inttostr(i),wPage[1]) as TRaveVLine;
+                  if (wRectangle[i] <> nil) then
+                     wRectangle[i].BorderWidth:=FEspessuraBorda;
+                  if (wVLine[i] <> nil) then
+                     wVLine[i].LineWidth:=FEspessuraBorda;
+               end;
+               i:=i-1;
+            end;
+
+            wPage[1] := FindRaveComponent('GlobalDadosProdutos',nil) as TRavePage;
+            i:=29;
+            while i>0 do
+            begin
+               if (i in [1,2,3,4,5,6,7,8,9,10,11,12,13,29]) then
+               begin
+                  wRectangle[i] := FindRaveComponent('Rectangle'+inttostr(i),wPage[1]) as TRaveRectangle;
+                  wVLine[i] := FindRaveComponent('VLine'+inttostr(i),wPage[1]) as TRaveVLine;
+                  if (wRectangle[i] <> nil) then
+                     wRectangle[i].BorderWidth:=FEspessuraBorda;
+                  if (wVLine[i] <> nil) then
+                     wVLine[i].LineWidth:=FEspessuraBorda;
+               end;
+               i:=i-1;
+            end;
+
+            wPage[1] := FindRaveComponent('GlobalCalculoISSQN',nil) as TRavePage;
+            i:=6;
+            while i>0 do
+            begin
+               if (i in [3,4,6]) then
+               begin
+                  wRectangle[i] := FindRaveComponent('Rectangle'+inttostr(i),wPage[1]) as TRaveRectangle;
+                  wVLine[i] := FindRaveComponent('VLine'+inttostr(i),wPage[1]) as TRaveVLine;
+                  if (wRectangle[i] <> nil) then
+                     wRectangle[i].BorderWidth:=FEspessuraBorda;
+                  if (wVLine[i] <> nil) then
+                     wVLine[i].LineWidth:=FEspessuraBorda;
+               end;
+               i:=i-1;
+            end;
+
+            wPage[1] := FindRaveComponent('GlobalDadosAdicionais',nil) as TRavePage;
+            i:=6;
+            while i>0 do
+            begin
+               if (i in [4,6]) then
+               begin
+                  wRectangle[i] := FindRaveComponent('Rectangle'+inttostr(i),wPage[1]) as TRaveRectangle;
+                  wVLine[i] := FindRaveComponent('VLine'+inttostr(i),wPage[1]) as TRaveVLine;
+                  if (wRectangle[i] <> nil) then
+                     wRectangle[i].BorderWidth:=FEspessuraBorda;
+                  if (wVLine[i] <> nil) then
+                     wVLine[i].LineWidth:=FEspessuraBorda;
+               end;
+               i:=i-1;
+            end;
+
+            wReport := FindRaveComponent('DANFE1',nil) as TRaveReport;
+            wPage[1] := FindRaveComponent('Page1',wReport) as TRavePage;
+            wPage[2] := FindRaveComponent('Page2',wReport) as TRavePage;
+            j:=2;
+            while j>0 do
+            begin
+               if wPage[j] <> nil then
+               begin
+                  i:=32;
+                  while i>0 do
+                  begin
+                     wVLine[i] := FindRaveComponent('VLine'+inttostr(i),wPage[j]) as TRaveVLine;
+                     wHLine[i] := FindRaveComponent('HLine'+inttostr(i),wPage[j]) as TRaveHLine;
+                     if (wVLine[i] <> nil) then
+                        wVLine[i].LineWidth:=FEspessuraBorda;
+                     if (wHLine[i] <> nil) then
+                        wHLine[i].LineWidth:=FEspessuraBorda;
+                     i:=i-1;
+                  end;
+               end;
+               j:=j-1;
+            end;
          end;
 
          //Margem Inferior

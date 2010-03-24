@@ -746,7 +746,7 @@ begin
            end;
          end;
 
-        aHeight:=YPos-PosY-GetFontHeigh-YY2;
+        aHeight:=YPos-PosY-GetFontHeigh-YY2 + 1;
 
         Box([],PosX,YY,67,aHeight);
         Box([fsLeft],XPos,YY,67,aHeight);

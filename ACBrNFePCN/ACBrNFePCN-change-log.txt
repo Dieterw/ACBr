@@ -48,6 +48,11 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   26/03/10
+---------------
+[-] DANFE com QUICK REPORT
+    - Corrigido quebra de linha nas informações complementares quando o caracter for ; (ponto e vírgula)
+
 Alterações   24/03/10
 ---------------
 [-] DANFE em RAVE CB

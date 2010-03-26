@@ -958,8 +958,8 @@ begin
         // informacoes complementares interesse ao fisco
         if infAdFisco <> '' then
         begin
-                qrmDadosAdicionais.Lines.Add(StringReplace( 'INFORMAÇÕES ADICIONAIS DE INTERESSE DO FISCO: ' +
-                                                            infAdFisco,'&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ));
+            qrmDadosAdicionais.Lines.Add(StringReplace( 'INFORMAÇÕES ADICIONAIS DE INTERESSE DO FISCO: ' +
+                                                       infAdFisco,'&lt;BR&gt;', #13#10, [rfReplaceAll,rfIgnoreCase] ));
         end;
         //**********************************************************************
         // local de retirada
@@ -991,12 +991,13 @@ begin
                                                 StringReplace( UF, '&lt;BR&gt;',        #13#10, [rfReplaceAll,rfIgnoreCase] )) ;
             end;
         end;
-        
+
         if FNFe.Ide.tpEmis in [teContingencia, teFSDA] then
             qrmDadosAdicionais.Lines.Add('DANFE em Contingência - Impresso em decorrência de problemas técnicos.');
         if FNFe.Ide.tpEmis = teDPEC then
             qrmDadosAdicionais.Lines.Add('DANFE em Contingência - DPEC regularmente recebida pela Receita Federal do Brasil');
         //**********************************************************************
+      qrmDadosAdicionais.Lines.Text:=StringReplace(qrmDadosAdicionais.Lines.Text,';',#13,[rfReplaceAll]);        
       qrmDadosAdicionais.Lines.EndUpdate ;
 
         // imprime data e hora da impressao

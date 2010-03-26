@@ -52,6 +52,9 @@ Alterações   26/03/10
 ---------------
 [-] DANFE com QUICK REPORT
     - Corrigido quebra de linha nas informações complementares quando o caracter for ; (ponto e vírgula)
+[-] DANFE com RAVE CB
+    - Corrigido impressão de vários volumes. Só estava imprimindo o primeiro.
+
 
 Alterações   24/03/10
 ---------------

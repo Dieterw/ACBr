@@ -1202,7 +1202,7 @@ begin
         with RegC100.RegistroC195.Items[intFor] do
         begin
           strRegistroC195 := strRegistroC195 + LFill('C195') +
-                                               LFill( COD_OBS,6 ) +
+                                               LFill( COD_OBS ) +
                                                LFill( TXT_COMPL ) +
                                                Delimitador +
                                                #13#10;
@@ -1323,7 +1323,7 @@ begin
                                                LFill( VL_BC_ICMS,0,2 ) +
                                                LFill( VL_ICMS,0,2 ) +
                                                LFill( VL_RED_BC,0,2 ) +
-                                               LFill( COD_OBS,6 ) +
+                                               LFill( COD_OBS ) +
                                                Delimitador +
                                                #13#10;
         end;

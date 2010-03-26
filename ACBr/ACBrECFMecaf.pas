@@ -85,6 +85,8 @@
 |*  - Cancelamento de cupons sem itens retornava Erro 51. Corrigido vendendo um
 |*    Item de 0.01 centavos antes de cancelar   (Reportado por Licério Neto)
 |*  - Metodo CarregaAliquotas alterado para incluir prefixo 'T' no indice
+|* 25/03/2010:  José Nilton Pace
+|*  - Implementado método GETNUMCCF
 ******************************************************************************}
 {$I ACBr.inc}
 
@@ -120,6 +122,7 @@ TACBrECFMecaf = class( TACBrECFClass )
  protected
     function GetDataHora: TDateTime; override ;
     function GetNumCupom: String; override ;
+    function GetNumCCF: String; override ;
     function GetNumECF: String; override ;
     function GetNumCRO: String; override ;
     function GetNumCRZ: String; override ;
@@ -426,6 +429,15 @@ begin
   Result := '' ;
   if LeftStr(RetCmd, 1) = '+' then
      Result := IntToStrZero( StrToIntDef( copy(RetCmd,6,6), 0), 6) ;
+end;
+
+function TACBrECFMecaf.GetNumCCF: String;
+Var RetCmd : AnsiString ;
+begin
+  RetCmd := EnviaComando( '34M82' ) ;
+  Result := '' ;
+  if LeftStr(RetCmd,1) = '+' then
+     Result := copy(RetCmd,6,6) ;
 end;
 
 function TACBrECFMecaf.GetNumCRO: String;

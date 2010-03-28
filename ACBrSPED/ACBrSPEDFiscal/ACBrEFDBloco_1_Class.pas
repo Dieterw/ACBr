@@ -386,7 +386,6 @@ begin
                                                DFill( ESTQ_ESCR,3 ) +
                                                DFill( VAL_AJ_PERDA,3 ) +
                                                DFill( VAL_AJ_GANHO,3 ) +
-                                               DFill( ESTQ_FECHA,3 ) +
                                                DFill( FECH_FISICO,3 ) +
                                                Delimitador +
                                                #13#10;

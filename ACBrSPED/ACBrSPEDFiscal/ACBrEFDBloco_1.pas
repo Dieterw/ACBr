@@ -237,7 +237,6 @@ type
     fESTQ_ESCR: Double;                /// Estoque Escritural (07 - 08)
     fVAL_AJ_PERDA: Double;             /// Valor da Perda
     fVAL_AJ_GANHO: Double;             /// Valor do ganho
-    fESTQ_FECHA: Double;               /// Estoque de Fechamento (Somatório dos registros da conciliação de estoques )
     fFECH_FISICO:  Double;             /// Volume aferido no tanque, em litros. Estoque de fechamento físico do tanque
 
     FRegistro1310: TRegistro1310List;  /// BLOCO 1 - Lista de Registro1310 (FILHO)
@@ -254,7 +253,6 @@ type
     property ESTQ_ESCR: Double      read FESTQ_ESCR    write FESTQ_ESCR;
     property VAL_AJ_PERDA: Double   read FVAL_AJ_PERDA write FVAL_AJ_PERDA;
     property VAL_AJ_GANHO: Double   read FVAL_AJ_GANHO write FVAL_AJ_GANHO;
-    property ESTQ_FECHA: Double     read FESTQ_FECHA   write FESTQ_FECHA;
     property FECH_FISICO : Double   read fFECH_FISICO  write fFECH_FISICO;
 
     property Registro1310: TRegistro1310List read FRegistro1310 write FRegistro1310;

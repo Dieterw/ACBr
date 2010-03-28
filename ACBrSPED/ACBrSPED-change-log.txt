@@ -47,6 +47,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.07b   28/03/10
+-- ACBrSPEDFiscal --
+[-] Removido campo não existente no AC "ESTQ_FECHA" do Registro1300 
+    (por José Moacir)
+
 Versão 0.07b   22/03/10
 -- ACBrSPEDFiscal --
 [*] Implementado hierarquia no RegistroE250 (por Isaque Pinheiro)

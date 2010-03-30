@@ -678,6 +678,7 @@ begin
                 edtSenha.Text   := ACBrNFe1.Configuracoes.Certificados.Senha;
              {$ELSE}
                 ACBrNFe1.Configuracoes.Certificados.NumeroSerie := Cmd.Params(0);
+                ACBrNFe1.Configuracoes.Certificados.Senha       := Cmd.Params(1);                
                 edtCaminho.Text := ACBrNFe1.Configuracoes.Certificados.NumeroSerie;
              {$ENDIF}
                 frmAcbrNfeMonitor.SalvarIni;
@@ -773,6 +774,15 @@ begin
 
            if not FileExists( Cmd.Params(0) ) then
               raise Exception.Create('Arquivo '+Cmd.Params(0)+' não encontrado')
+         end
+
+        else if Cmd.Metodo = 'CertificadoDataVencimento' then
+         begin
+           {$IFDEF ACBrNFeOpenSSL}
+              Cmd.Resposta := 'Função disponível apenas na versão CAPICOM'
+           {$ELSE}
+              Cmd.Resposta := DateToStr(ACBrNFe1.Configuracoes.Certificados.DataVenc);
+           {$ENDIF}
          end
 
         else if Cmd.Metodo = 'LerIni' then // Recarrega configurações do arquivo INI

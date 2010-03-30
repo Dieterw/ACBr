@@ -48,6 +48,28 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+30/03/10
+[*]	: Corrigido problema que era causado quando números de cópias estava vazio. Agora, caso esteja vazio será assumido como default 1.
+[-] 	: DANFE com RAVE CB 
+ 	  - Corrigido impressão de vários volumes. Só estava imprimindo o primeiro.
+	  - Corrigido Informações das duplicatas que estavam sendo impressas em cima da linha do quadro
+    	  - Corrigido impressão do CNPJ da transportadora e local de retirada e entrega quando a fonte for Courier
+[*] 	: DANFE em RAVE (Arquivo e CB)
+    	  - Incluído impressão do texto: "DANFE em Contingência - impresso em decorrência de problemas técnicos" quando for SCAN
+    	  - Melhorado procedimentos internos para exibição das casas decimais
+[*] 	: Impressão da informação "NFe CANCELADA" (DANFEs em RAVE) quando o cancelamento for homologado pela SEFAZ em ambiente de PRODUÇÃO(Créditos: Cicero A. Billo)
+[-] 	: Correção da impressão do CNPJ (estava cortando) nos quadros LOCAL DE RETIRADA e ENTREGA no DANFE em RAVE CB Retrato.
+[*] 	: DANFE em RAVE ARQUIVO
+	  - Modificação para imprimir no corpo da nota o texto "NFe sem Autorização de Uso da SEFAZ", 
+	    quando estiver em Ambiente PRODUÇÃO e não tiver Protocolo de autorizacao de uso.
+	    OBS: O texto não será impresso se estiver em Producao e em Contingencia FS ou FS-DA.
+[-] 	: DANFE em RAVE ARQUIVO
+    	  - Corrigido problema de geração do PDF quando existia mais de uma nota carregada no componente.(Caso 00473 do MANTIS)
+[-]	: Corrigido problema de impressão de Notas com muitos itens. ACBrNFeMonitor demorava para devolver a resposta.
+[+]	: Adicionado propriedade Espessura Borda na aba DANFe.
+[+]	: Adicionado campo Senha na versão CAPICOM, deve ser usada apenas para certificado A3 do modelo eToken
+[+]	: Adicionado comando NFe.CertificadoDataVencimento que retornará a data de vencimento do certificado configurado no ACBrNFeMonitor(funciona apenas na versão CAPICOM)
+
 11/02/10
 [+]	: Adicionado checkbox "Expandir Logo" na aba DANFE onde quando estiver selecionada o logo configurado no ACBrNFeMonitor será expandido
           para toda a área do cabeçalho referente aos dados do emitente. Útil para quem quer personalizar os dados impressos no quadro de dados

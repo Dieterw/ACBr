@@ -237,6 +237,8 @@ type
     edLogComp: TEdit;
     sedLogLinhasComp: TSpinEdit;
     cbLogComp: TCheckBox;
+    edtEspBorda: TEdit;
+    Label42: TLabel;
     procedure DoACBrTimer(Sender: TObject);
     procedure edOnlyNumbers(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
@@ -663,6 +665,7 @@ begin
      cbxHoraSaida.Checked      := Ini.ReadBool(   'DANFE','ImprimirHora',False) ;
      edtNumCopia.Text          := Ini.ReadString( 'DANFE','Copias','1') ;
      edtProdPag.Text           := Ini.ReadString( 'DANFE','ProdutosPagina','0') ;
+     edtEspBorda.Text          := Ini.ReadString( 'DANFE','EspessuraBorda','1') ;
      edtMargemInf.Text         := Ini.ReadString( 'DANFE','Margem','0,8') ;
      edtMargemSup.Text         := Ini.ReadString( 'DANFE','MargemSup','0,8') ;
      edtMargemDir.Text         := Ini.ReadString( 'DANFE','MargemDir','0,51') ;
@@ -708,10 +711,17 @@ begin
         ACBrNFe1.DANFE.FormularioContinuo   := cbxFormCont.Checked;
         ACBrNFe1.DANFE.MostrarStatus        := cbxMostraStatus.Checked;
         ACBrNFe1.DANFE.ExpandirLogoMarca    := cbxExpandirLogo.Checked;
+
         if ACBrNFe1.DANFE = ACBrNFeDANFERave1 then
-           ACBrNFeDANFERave1.RavFile := PathWithDelim(ExtractFilePath(Application.ExeName))+'Report\DANFE_Rave513.rav'
+         begin
+           ACBrNFeDANFERave1.EspessuraBorda := StrToIntDef(edtEspBorda.Text, 1);
+           ACBrNFeDANFERave1.RavFile := PathWithDelim(ExtractFilePath(Application.ExeName))+'Report\DANFE_Rave513.rav';
+         end
         else
+         begin
+           ACBrNFeDANFERaveCB1.EspessuraBorda := StrToIntDef(edtEspBorda.Text, 1);
            ACBrNFeDANFERaveCB1.Fonte  := NotaUtil.SeSenao(rgTipoFonte.ItemIndex=0,ftTimes,ftCourier);
+         end;
       end;
 
      edtSmtpHost.Text      := Ini.ReadString( 'Email','Host'   ,'') ;
@@ -825,6 +835,7 @@ begin
      Ini.WriteBool(   'DANFE','ImprimirHora'  ,cbxHoraSaida.Checked);
      Ini.WriteString( 'DANFE','Copias'        ,edtNumCopia.Text) ;
      Ini.WriteString( 'DANFE','ProdutosPagina',edtProdPag.Text) ;
+     Ini.WriteString( 'DANFE','EspessuraBorda',edtEspBorda.Text) ;
      Ini.WriteString( 'DANFE','Margem'   ,edtMargemInf.Text) ;
      Ini.WriteString( 'DANFE','MargemSup',edtMargemSup.Text) ;
      Ini.WriteString( 'DANFE','MargemDir',edtMargemDir.Text) ;
@@ -1053,7 +1064,7 @@ begin
   nif_Icon or nif_Tip;
   Shell_NotifyIcon (NIM_ADD, @nid);
 
-  Caption := 'ACBrNFeMonitor '+ Versao;
+  Caption := 'ACBrNFeMonitor '+ Versao + {$IFDEF ACBrNFeOpenSSL}' - OpenSSL'{$ELSE}' - CAPICOM'{$ENDIF};
   PageControl1.ActivePageIndex := 0 ;
 
   Application.OnException        := TrataErros ;

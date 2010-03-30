@@ -4122,7 +4122,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
       Top = 0
       Width = 527
       Height = 256
-      ActivePage = Monitor
+      ActivePage = DANFE
       Align = alBottom
       TabOrder = 0
       object Monitor: TTabSheet
@@ -4914,6 +4914,13 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
               Height = 13
               Caption = 'Produtos por P'#225'gina'
             end
+            object Label42: TLabel
+              Left = 110
+              Top = 132
+              Width = 80
+              Height = 13
+              Caption = 'Espessura Borda'
+            end
             object rgTipoDanfe: TRadioGroup
               Left = 148
               Top = 4
@@ -5140,6 +5147,15 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
               Width = 98
               Height = 21
               TabOrder = 5
+              Text = '1'
+              OnKeyPress = edtNumCopiaKeyPress
+            end
+            object edtEspBorda: TEdit
+              Left = 110
+              Top = 148
+              Width = 83
+              Height = 21
+              TabOrder = 17
               Text = '1'
               OnKeyPress = edtNumCopiaKeyPress
             end
@@ -6063,6 +6079,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
     FormularioContinuo = False
     TamanhoFonte_DemaisCampos = 10
     ProdutosPorPagina = 0
+    EspessuraBorda = 1
     Left = 169
     Top = 25
   end
@@ -6088,7 +6105,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
     ProdutosPorPagina = 0
     TamanhoCampoCodigo = 0
     Fonte = ftTimes
-    EspessuraBorda = 2
+    EspessuraBorda = 1
     ImprimirDetalhamentoEspecifico = True
     Left = 209
     Top = 25

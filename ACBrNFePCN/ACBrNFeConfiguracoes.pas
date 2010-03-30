@@ -414,8 +414,7 @@ begin
          SigKey.getCSPHandle( hCryptProvider );
 
          try
-           if not CryptSetProvParam( hCryptProvider , PP_SIGNATURE_PIN, LPBYTE(FSenhaCert), 0 ) then
-              raise Exception.Create(IntToStr(GetLastError));
+           CryptSetProvParam( hCryptProvider , PP_SIGNATURE_PIN, LPBYTE(FSenhaCert), 0 );
          finally
            CryptReleaseContext(hCryptProvider, 0);
          end;

@@ -816,8 +816,10 @@ begin
      Connection.WriteStrData('', 'V.DESC.');
 
    if ((FNFe.Ide.tpEmis=teNormal) or
-       (FNFe.Ide.tpEmis=teSCAN)) then
-   begin
+       (FNFe.Ide.tpEmis=teSCAN)) or
+       ((FNFe.Ide.tpEmis=teDPEC) and  notautil.NaoEstaVazio(FNFe.procNFe.nProt))
+        then
+    begin
       Connection.WriteStrData('', 'CHAVE DE ACESSO');
       Connection.WriteStrData('', '');
       Connection.WriteStrData('', 'PROTOCOLO DE AUTORIZAÇÃO DE USO');
@@ -830,28 +832,33 @@ begin
        end
       else
          Connection.WriteStrData('', FDANFEClassOwner.ProtocoloNFe);
-   end
+    end
    else
-   begin
+    begin
       vChave_Contingencia:=NotaUtil.GerarChaveContingencia(FNFe);
       Connection.WriteStrData('', 'CHAVE DE ACESSO');
       Connection.WriteStrData('', vChave_Contingencia);
       if ((FNFe.Ide.tpEmis=teContingencia) or
           (FNFe.Ide.tpEmis=teFSDA)) then
-      begin
+       begin
          Connection.WriteStrData('', 'DADOS DA NF-E');
          Connection.WriteStrData('', NotaUtil.FormatarChaveContigencia(vChave_Contingencia));
-      end
+       end
       else if (FNFe.Ide.tpEmis=teDPEC) then
-      begin
+       begin
          Connection.WriteStrData('', 'NÚMERO DE REGISTRO DPEC');
          //precisa testar
-         if notautil.EstaVazio(FDANFEClassOwner.ProtocoloNFe) then
-            raise Exception.Create('Protocolo de Registro no DPEC não informado.')
+         if notautil.EstaVazio(FDANFEClassOwner.ProtocoloNFe) and notautil.EstaVazio(FNFe.procNFe.nProt) then
+            Connection.WriteStrData('', 'Protocolo de Registro no DPEC não informado.')
          else
-            Connection.WriteStrData('', FDANFEClassOwner.ProtocoloNFe);
-      end;
-   end;
+          begin
+            if notautil.EstaVazio(FDANFEClassOwner.ProtocoloNFe) then
+               Connection.WriteStrData('', FNFe.procNFe.nProt+' '+NotaUtil.SeSenao(FNFe.procNFe.dhRecbto<>0,DateTimeToStr(FNFe.procNFe.dhRecbto),''))
+            else
+               Connection.WriteStrData('', FDANFEClassOwner.ProtocoloNFe);
+          end
+       end;
+    end;
 
    //linhas por página
    Connection.WriteIntData('', FDANFEClassOwner.ProdutosPorPagina);

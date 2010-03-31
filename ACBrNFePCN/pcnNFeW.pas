@@ -48,7 +48,7 @@ unit pcnNFeW;
 interface uses
 
   SysUtils, Classes,
-  pcnAuxiliar, pcnConversao, pcnGerador, pcnNfe, pcnLayoutTXT, ACBrNFeUtil;
+  pcnAuxiliar, pcnConversao, pcnGerador, pcnNfe, pcnLayoutTXT, ACBrNFeUtil, ACBrUtil;
 
 type
 
@@ -355,7 +355,7 @@ begin
   Gerador.wCampo(tcStr, 'C04', 'xFant  ', 01, 60, 0, nfe.Emit.xFant, DSC_XFANT);
   (**)GerarEmitEnderEmit;
   Gerador.IDNivel := 'C01';
-  Gerador.wCampo(tcStr, 'C17', 'IE     ', 00, 14, 1, SomenteNumeros(nfe.Emit.IE), DSC_IE);
+  Gerador.wCampo(tcStr, 'C17', 'IE     ', 00, 14, 1, OnlyAlphaNum(nfe.Emit.IE), DSC_IE);
   if (FOpcoes.ValidarInscricoes) and (nfe.Ide.procEmi <> peAvulsaFisco) then
   begin
     if Length(nfe.Emit.IE) = 0 then
@@ -432,10 +432,7 @@ begin
   (**)GerarDestEnderDest(UF);
   Gerador.IDNivel := 'E01';
   // Inscrição Estadual
-  if nfe.Dest.IE = 'ISENTO' then
-     Gerador.wCampo(tcStr, 'E17', 'IE ', 00, 14, 1, nfe.Dest.IE, DSC_IE)
-  else
-     Gerador.wCampo(tcStr, 'E17', 'IE     ', 00, 14, 1, SomenteNumeros(nfe.Dest.IE), DSC_IE);
+  Gerador.wCampo(tcStr, 'E17', 'IE     ', 00, 14, 1, OnlyAlphaNum(nfe.Dest.IE), DSC_IE);
 //  if (length(nfe.Dest.CNPJCPF) = 11) and (SomenteNumeros(nfe.Dest.IE) <> '') then
 //    Gerador.wAlerta('E17', 'IE', DSC_IE, ERR_MSG_INVALIDO); // Para MG produtor rural possui CPF e IE
   if (FOpcoes.ValidarInscricoes) and (nfe.Dest.IE <> '') and (nfe.Dest.IE <> 'ISENTO') then
@@ -1283,7 +1280,7 @@ begin
        Gerador.wCampo(tcStr, 'X07', 'IE      ', 02, 14, 0, nfe.Transp.Transporta.IE, DSC_IE)
     else
      begin
-       Gerador.wCampo(tcStr, 'X07', 'IE      ', 02, 14, 0, SomenteNumeros(nfe.Transp.Transporta.IE), DSC_IE);
+       Gerador.wCampo(tcStr, 'X07', 'IE      ', 02, 14, 0, OnlyAlphaNum(nfe.Transp.Transporta.IE), DSC_IE);
        if (FOpcoes.ValidarInscricoes) and (nfe.Transp.Transporta.IE <> '') then
          if not ValidarIE(nfe.Transp.Transporta.IE, nfe.Transp.Transporta.UF) then
            Gerador.wAlerta('X07', 'IE', DSC_IE, ERR_MSG_INVALIDO);

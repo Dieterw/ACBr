@@ -776,7 +776,7 @@ begin
               raise Exception.Create('Arquivo '+Cmd.Params(0)+' não encontrado')
          end
 
-        else if Cmd.Metodo = 'CertificadoDataVencimento' then
+        else if Cmd.Metodo = 'certificadodatavencimento' then
          begin
            {$IFDEF ACBrNFeOpenSSL}
               Cmd.Resposta := 'Função disponível apenas na versão CAPICOM'

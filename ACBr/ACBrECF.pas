@@ -1643,14 +1643,14 @@ begin
      NumeroCOOInicial  := Self.NumCOOInicial;
 
      { CONTADORES }
-     COO               := StrToInt(Self.NumCOO);
-     GNF               := StrToInt(Self.NumGNF);
-     CRO               := StrToInt(Self.NumCRO);
-     CRZ               := StrToInt(Self.NumCRZ);
-     CCF               := StrToInt(Self.NumCCF);
+     COO               := StrToIntDef(Self.NumCOO,0);
+     GNF               := StrToIntDef(Self.NumGNF,0);
+     CRO               := StrToIntDef(Self.NumCRO,0);
+     CRZ               := StrToIntDef(Self.NumCRZ,0);
+     CCF               := StrToIntDef(Self.NumCCF,0);
      CFD               := 0; // Falta implementar
-     CDC               := StrToInt(Self.NumCDC);
-     GRG               := StrToInt(Self.NumGRG);
+     CDC               := StrToIntDef(Self.NumCDC,0);
+     GRG               := StrToIntDef(Self.NumGRG,0);
      GNFC              := 0; // Falta implementar
      CFC               := 0; // Falta implementar
 

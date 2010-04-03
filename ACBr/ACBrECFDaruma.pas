@@ -184,6 +184,7 @@ TACBrECFDaruma = class( TACBrECFClass )
  private
     fsNumVersao   : String ;
     fsNumECF      : String ;
+    fsUsuarioAtual: String ;
     fsNumCupom    : String ; //COO
     fsArredonda   : Char ;
     fsTotalAPagar : Double ;
@@ -428,6 +429,7 @@ begin
   fsEmPagamento := false ;
   fsNumVersao   := '' ;
   fsNumECF      := '' ;
+  fsUsuarioAtual:= '' ;
   fsRet244      := '' ;
   fsNumCRO      := '' ;
   fsnumcupom    := '' ;
@@ -485,6 +487,7 @@ begin
 
   fsNumVersao := '' ;
   fsNumECF    := '' ;
+  fsUsuarioAtual:= '' ;
   fsRet244    := '' ;
   fsNumCRO    := '' ;
   fsArredonda := ' ';
@@ -3394,21 +3397,35 @@ end;
 function TACBrECFDaruma.GetUsuarioAtual: String;
 var
    RetCmd: AnsiString;
+   intFor: integer;
 begin
   Result := '';
 
   if fpMFD then
-    Result := Trim(RetornaInfoECF('094'))
+    fsUsuarioAtual := Trim(RetornaInfoECF('094'))
   else if fsNumVersao = '2000' then
   begin
     //Falta Implementar
   end
   else if StrToInt(fsNumVersao) >= 345 then
   begin
-    RetCmd := EnviaComando( ESC + #251 );
-    if LeftStr(RetCmd, 1) = ':' then
-      Result := copy(RetCmd, 02, 02);
+    if Length(fsUsuarioAtual) = 0 then
+    begin
+      for intFor := 1 to 50 do
+      begin
+        RetCmd := EnviaComando( ESC + #251 + FormatFloat('00', intFor) );
+        if LeftStr(RetCmd, 1) = ':' then
+        begin
+          if copy(RetCmd, 02, 02) = '??' then
+          begin
+            fsUsuarioAtual := FormatFloat('00', intFor -1);
+            Break;
+          end;
+        end;
+      end;
+    end;
   end;
+  Result := fsUsuarioAtual;
 end;
 
 //IMS 20/10/2009

@@ -2244,6 +2244,20 @@ begin
         SL.Add('EA6=PRINTER 2002 II ECF-IF') ;
         SL.Add('EL1=ECF IF 400 2E') ;
         SL.Add('EL2=ECF IF 500 1E') ;
+        //===================================//
+        SL.Add('EL3=ECF IF 400 1E-EP') ;
+        SL.Add('EL4=ECF-IF 600-2E-OL') ;
+        SL.Add('EL5=ECF-MR 10000-S') ;
+        SL.Add('EL6=ECF-MR 10000-S1') ;
+        SL.Add('EL7=ECF-MR 12000-S') ;
+        SL.Add('EL8=ECF-MR 800-S') ;
+        SL.Add('EL9=ECF-MR 800S2') ;
+        SL.Add('ELA=ELGIN FIT') ;
+        SL.Add('ELB=FX7') ;
+        SL.Add('ELC=IF 6000TH') ;
+        SL.Add('ELD=X5') ;
+        //===================================//
+
         SL.Add('GE1=ECF-IF GP-2000') ;
         SL.Add('IB1=4679 3BM') ;
         SL.Add('IB2=4679 3BS') ;
@@ -2319,6 +2333,16 @@ begin
         SL.Add('SW7=IF S-9000II') ;
         SL.Add('SW8=IF S-9000IIE') ;
         SL.Add('SW9=IF S-9000IIIE') ;
+
+        //===================================//
+        SL.Add('SWA=ST100');
+        SL.Add('SWB=ST1000');
+        SL.Add('SWC=ST200');
+        SL.Add('SWD=ST120');
+        SL.Add('SWE=ST2000');
+        SL.Add('SWF=ST2500');
+        //===================================//
+
         SL.Add('TR1=TRENDS 1.0 E') ;
         SL.Add('UG1=UN-FI') ;
         SL.Add('UG2=UN-FI 2E') ;

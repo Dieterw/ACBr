@@ -198,10 +198,12 @@ TACBrECFBematech = class( TACBrECFClass )
     procedure AbrePortaSerialDLL(const Porta, Path : String ) ;
     {$ENDIF}
 
-    procedure GetTotalizadoresParciais;
+    function GetTotalizadoresParciais : String ;
 
     Function PreparaCmd( cmd : AnsiString ) : AnsiString ;
  protected
+    property TotalizadoresParciais : String read GetTotalizadoresParciais ;
+
     function GetDataHora: TDateTime; override ;
     function GetNumCupom: String; override ;
     function GetNumECF: String; override ;
@@ -1206,7 +1208,44 @@ begin
   Descricao := trim(Descricao) ;
   Unidade   := padL(Unidade,2) ;
 
-  if fs25MFD or
+  if fs25MFD and (Pos(Trim(GetSubModeloECF), 'MP-7000 TH FI') > 0) then
+   begin
+     BytesResp   := 0 ;
+     Codigo      := padL(Codigo,14) ;
+     QtdStr      := IntToStrZero( Round( Qtd * 1000), 7) ;
+     ValorStr    := IntToStrZero( Round( ValorUnitario * 1000), 8) ;
+
+     if DescontoAcrescimo = 'D' then
+      begin
+       AcrescimoStr := StringOfChar('0',8) + #0;
+
+       if TipoDescontoAcrescimo='%' then
+          DescontoStr := IntToStrZero( Round( RoundTo(ValorUnitario*Qtd,-2) *
+                                       ValorDescontoAcrescimo), 8 ) + #0
+       else
+          DescontoStr := IntToStrZero(Round(ValorDescontoAcrescimo*100), 8) + #0;
+
+      end
+     else
+      begin
+       DescontoStr := StringOfChar('0',8) + #0 ;
+
+       if TipoDescontoAcrescimo='%' then
+          AcrescimoStr := IntToStrZero( Round( RoundTo(ValorUnitario*Qtd,-2) *
+                                       ValorDescontoAcrescimo), 8 ) + #0
+       else
+          AcrescimoStr := IntToStrZero(Round(ValorDescontoAcrescimo*100),8) + #0;
+
+      end;
+
+     Descricao := Descricao + #0 ;
+
+     EnviaComando(#62 + #73 +
+                        Codigo + AliquotaECF + Unidade + QtdStr + ValorStr +
+                        DescontoStr + AcrescimoStr + Descricao);
+
+   end
+  else if fs25MFD or
      ((DescontoAcrescimo <> 'D') and (ValorDescontoAcrescimo > 0)) then   // Tem acrescimo ?
    begin
      BytesResp   := 0 ;
@@ -1337,14 +1376,10 @@ begin
   if not Assigned( fpAliquotas ) then
      CarregaAliquotas ;
 
-//  GetTotalIsencao ;
-
-  GetTotalizadoresParciais;
-
   For A := 0 to fpAliquotas.Count-1 do
   begin
      fpAliquotas[A].Total := RoundTo( StrToFloatDef( BcdToAsc(
-                      copy(fsTotalizadoresParciais,(A*7)+1,7)),0) / 100, -2) ;
+                      copy(TotalizadoresParciais,(A*7)+1,7)),0) / 100, -2) ;
   end ;
 end;
 
@@ -1609,15 +1644,26 @@ begin
     Cont := Cont + 1 ;
   end ;
 
+  RetCmd := '' ;
+  if fs25MFD then
+  begin
+     BytesResp := 60 ;
+     RetCmd    := EnviaComando( #35 + #47 ) ;
+  end ;
+
  { Adicionando SA-Sangria e SU-Suprimento que sempre estarão presentes na Bematech}
   CNF := TACBrECFComprovanteNaoFiscal.create ;
   CNF.Indice    := 'SA' ;
   CNF.Descricao := 'Sangria' ;
+  CNF.Total     := StrToFloatDef( BcdToAsc( copy(TotalizadoresParciais,ifThen(fs25MFD,393,197),7) ),0) / 100 ;
+  CNF.Contador  := StrToIntDef( BcdToAsc( copy(RetCmd,57,2) ),0) ;
   fpComprovantesNaoFiscais.Insert(0, CNF ) ;
 
   CNF := TACBrECFComprovanteNaoFiscal.create ;
   CNF.Indice    := 'SU' ;
   CNF.Descricao := 'Suprimento' ;
+  CNF.Total     := StrToFloatDef( BcdToAsc( copy(TotalizadoresParciais,ifThen(fs25MFD,400,204),7) ),0) / 100 ;
+  CNF.Contador  := StrToIntDef( BcdToAsc( copy(RetCmd,59,2) ),0) ;
   fpComprovantesNaoFiscais.Insert(1, CNF ) ;
 end;
 
@@ -2108,10 +2154,7 @@ end;
 
 function TACBrECFBematech.GetTotalAcrescimosISSQN: Double;
 begin
-  if fsTotalizadoresParciais = '' then
-     GetTotalizadoresParciais;
-
-  Result := StrToFloatDef( BcdToAsc( copy(fsTotalizadoresParciais,183,7) ),0) / 100 ;
+  Result := StrToFloatDef( BcdToAsc( copy(TotalizadoresParciais,183,7) ),0) / 100 ;
 end;
 
 function TACBrECFBematech.GetTotalCancelamentos: Double;
@@ -2122,10 +2165,7 @@ end;
 
 function TACBrECFBematech.GetTotalCancelamentosISSQN: Double;
 begin
-  if fsTotalizadoresParciais = '' then
-     GetTotalizadoresParciais;
-
-  Result := StrToFloatDef( BcdToAsc( copy(fsTotalizadoresParciais,190,7) ),0) / 100 ;
+  Result := StrToFloatDef( BcdToAsc( copy(TotalizadoresParciais,190,7) ),0) / 100 ;
 end;
 
 function TACBrECFBematech.GetTotalDescontos: Double;
@@ -2136,36 +2176,23 @@ end;
 
 function TACBrECFBematech.GetTotalDescontosISSQN: Double;
 begin
-  if fsTotalizadoresParciais = '' then
-     GetTotalizadoresParciais;
-
-  Result := StrToFloatDef( BcdToAsc( copy(fsTotalizadoresParciais,176,7) ),0) / 100 ;
+  Result := StrToFloatDef( BcdToAsc( copy(TotalizadoresParciais,176,7) ),0) / 100 ;
 end;
 
 function TACBrECFBematech.GetTotalIsencao: Double;
 begin
-//  if fsTotalizadoresParciais = '' then
-//  begin
-//    BytesResp := 219 ;
-//    fsTotalizadoresParciais := EnviaComando( #27, 5 ) ;
-//  end ;
-
-  if fsTotalizadoresParciais = '' then
-     GetTotalizadoresParciais;
-
-  Result := StrToFloatDef( BcdToAsc( copy(fsTotalizadoresParciais,113,7) ),0) / 100 ;
+  Result := StrToFloatDef( BcdToAsc( copy(TotalizadoresParciais,113,7) ),0) / 100 ;
 end;
 
 function TACBrECFBematech.GetTotalIsencaoISSQN: Double;
 begin
-  if fsTotalizadoresParciais = '' then
-     GetTotalizadoresParciais;
-
-  Result := StrToFloatDef( BcdToAsc( copy(fsTotalizadoresParciais,134,7) ),0) / 100 ;
+  Result := StrToFloatDef( BcdToAsc( copy(TotalizadoresParciais,134,7) ),0) / 100 ;
 end;
 
-procedure TACBrECFBematech.GetTotalizadoresParciais;
+Function TACBrECFBematech.GetTotalizadoresParciais : String  ;
 begin
+  if fsTotalizadoresParciais = '' then
+  begin
     if (fpMFD) or (fs25MFD) then
     begin
       BytesResp := 436 ;
@@ -2176,42 +2203,29 @@ begin
       BytesResp := 219 ;
       fsTotalizadoresParciais := EnviaComando( #27, 15 )
     end;
+  end;
+
+  Result := fsTotalizadoresParciais ;
 end;
 
 function TACBrECFBematech.GetTotalNaoTributado: Double;
 begin
-//  GetTotalIsencao ;
-
-  if fsTotalizadoresParciais = '' then
-     GetTotalizadoresParciais;
-
-  Result := StrToFloatDef( BcdToAsc( copy(fsTotalizadoresParciais,120,7) ),0) / 100 ;
+  Result := StrToFloatDef( BcdToAsc( copy(TotalizadoresParciais,120,7) ),0) / 100 ;
 end;
 
 function TACBrECFBematech.GetTotalNaoTributadoISSQN: Double;
 begin
-  if fsTotalizadoresParciais = '' then
-     GetTotalizadoresParciais;
-
-  Result := StrToFloatDef( BcdToAsc( copy(fsTotalizadoresParciais,141,7) ),0) / 100 ;
+  Result := StrToFloatDef( BcdToAsc( copy(TotalizadoresParciais,141,7) ),0) / 100 ;
 end;
 
 function TACBrECFBematech.GetTotalSubstituicaoTributaria: Double;
 begin
-//  GetTotalIsencao ;
-
-  if fsTotalizadoresParciais = '' then
-     GetTotalizadoresParciais;
-
-  Result := StrToFloatDef( BcdToAsc( copy(fsTotalizadoresParciais,127,7) ),0) / 100 ;
+  Result := StrToFloatDef( BcdToAsc( copy(TotalizadoresParciais,127,7) ),0) / 100 ;
 end;
 
 function TACBrECFBematech.GetTotalSubstituicaoTributariaISSQN: Double;
 begin
-  if fsTotalizadoresParciais = '' then
-     GetTotalizadoresParciais;
-
-  Result := StrToFloatDef( BcdToAsc( copy(fsTotalizadoresParciais,148,7) ),0) / 100 ;
+  Result := StrToFloatDef( BcdToAsc( copy(TotalizadoresParciais,148,7) ),0) / 100 ;
 end;
 
 function TACBrECFBematech.GetNumUltimoItem: Integer;
@@ -2263,6 +2277,7 @@ procedure TACBrECFBematech.NaoFiscalCompleto(CodCNF: String; Valor: Double;
   CodFormaPagto: String; Obs: AnsiString; IndiceBMP : Integer);
   Var FPG : TACBrECFFormaPagamento ;
 begin
+  fsTotalizadoresParciais := '' ;
   if fs25MFD then
      inherited NaoFiscalCompleto(CodCNF, Valor, CodFormaPagto, Obs)
      
@@ -2294,6 +2309,7 @@ begin
   { Linhas acrescentadas por Marciano Lizzoni }
   fsNFValor  := 0;
   fsNFCodCNF := '';
+  fsTotalizadoresParciais := '' ;
 end;
 
 procedure TACBrECFBematech.RegistraItemNaoFiscal(CodCNF: String;
@@ -2319,6 +2335,8 @@ begin
      fsNFCodCNF := CodCNF ;
      fsNFValor  := Valor ;
    end ;
+
+  fsTotalizadoresParciais := '' ;
 end;
 
 procedure TACBrECFBematech.EfetuaPagamentoNaoFiscal(CodFormaPagto: String;
@@ -2329,6 +2347,7 @@ begin
      EfetuaPagamento(CodFormaPagto, Valor, Observacao, ImprimeVinculado)
   else
      fsNFCodFPG := CodFormaPagto ;
+  fsTotalizadoresParciais := '' ;
 end;
 
 procedure TACBrECFBematech.SubtotalizaNaoFiscal(DescontoAcrescimo: Double;
@@ -2352,6 +2371,7 @@ begin
   BytesResp  := 0 ;
   EnviaComando( #79 + A_D +
                 IntToStrZero( Round( DescontoAcrescimo * 100),14) );
+  fsTotalizadoresParciais := '' ;
 end;
 
 procedure TACBrECFBematech.FechaNaoFiscal(Observacao: AnsiString; IndiceBMP : Integer);
@@ -2361,6 +2381,7 @@ begin
   else
      if (fsNFCodFPG <> '') and (fsNFCodCNF <> '') and (fsNFValor > 0) then
         NaoFiscalCompleto(fsNFCodCNF, fsNFValor, fsNFCodFPG, Observacao );
+  fsTotalizadoresParciais := '' ;
 end;
 
 procedure TACBrECFBematech.CancelaNaoFiscal;
@@ -2539,7 +2560,6 @@ RRGGGGGGGGGGGGGGGGGGCCCCCCCCCCCCCCDDDDDDDDDDDDDDT001T002T003T004T005T006T007T008
 end;
 
 procedure TACBrECFBematech.CortaPapel(const CorteParcial: Boolean);
- Var RetCmd : AnsiString ;
 begin
   if not fpMFD then
      inherited CortaPapel

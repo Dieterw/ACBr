@@ -43,6 +43,10 @@
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
+{$IFDEF FPC}
+  {$MODE DELPHI}
+{$ENDIF}
+
 unit pcnAuxiliar;
 
 interface uses

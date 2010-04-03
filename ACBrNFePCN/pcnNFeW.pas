@@ -185,7 +185,7 @@ end;
 
 function TNFeW.GerarXml: boolean;
 var
-  chave: string;
+  chave: ansistring;
   Gerar: boolean;
   xProtNFe : String;
 begin

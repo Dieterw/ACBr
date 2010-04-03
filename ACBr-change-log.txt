@@ -96,12 +96,19 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.8.9b  03/04/10
+-- ACBrECFDaruma --
+[-]    Corrigido Bug no método "UsuarioAtual", não carregava o numero do usuário 
+       atual no modelo FS345. (Por Isaque Pinheiro)
+
 Versão 0.9.0a  16/03/10
+-- ACBrECF --
 [*]    Propriedade renomeada de "ReducaoZClass" para "DadosReducaoZClass" 
        para ficar compativel com os nomes das outras propriedades "DadosReducaoZ"
        e "DadosUltimaReducaoZ". (por : Isaque Pinheiro)
 
 Versão 0.9.0a  14/03/10
+-- ACBrECF --
 [-]    Correção de vazamento de memoria em TACBrECFDadosRZ  (por: DSA)
 
 Versão 0.9.0a  13/03/10

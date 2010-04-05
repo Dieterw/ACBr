@@ -167,10 +167,13 @@ begin
         FMargemDireita      := AMargemDireita;
 
         if APreview then
-           QRNFe.Preview
-        else
+        begin
+            QRNFe.Prepare;
+            QRNFe.Preview;
+        end else
            begin
               AfterPreview := True ;
+              QRNFe.Prepare;
               QRNFe.Print ;
            end ;
      finally
@@ -196,10 +199,10 @@ class procedure TfqrDANFeQR.SavePDF(AFile               : String;
                                     AMargemDireita      : Double    = 0.51);
 Var
   i: Integer;
-  {qf : TQRPDFDocumentFilter ;{Descomentar para usar PDF}
+  qf : TQRPDFDocumentFilter ;
 begin
   {Descomentar para usar PDF}
-  {with Create ( nil ) do
+{  with Create ( nil ) do
      try
         FNFe                := ANFe;
         FLogo               := ALogo;

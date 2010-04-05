@@ -197,9 +197,9 @@ class procedure TfqrDANFeQR.SavePDF(AFile               : String;
                                     AMargemInferior     : Double    = 0.8;
                                     AMargemEsquerda     : Double    = 0.6;
                                     AMargemDireita      : Double    = 0.51);
-Var
+{Var
   i: Integer;
-  qf : TQRPDFDocumentFilter ;
+  qf : TQRPDFDocumentFilter ;}
 begin
   {Descomentar para usar PDF}
 {  with Create ( nil ) do

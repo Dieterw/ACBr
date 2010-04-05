@@ -1,0 +1,63 @@
+package ACBr_SPED;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'ACBr Automação Comercial Brasil Sped Fiscal e Contabil (http://acbr.sourceforge.net/)'}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl;
+
+contains
+  ACBrEFDBloco_0 in 'ACBrSPEDFiscal\ACBrEFDBloco_0.pas',
+  ACBrEFDBloco_0_Class in 'ACBrSPEDFiscal\ACBrEFDBloco_0_Class.pas',
+  ACBrEFDBloco_1 in 'ACBrSPEDFiscal\ACBrEFDBloco_1.pas',
+  ACBrEFDBloco_1_Class in 'ACBrSPEDFiscal\ACBrEFDBloco_1_Class.pas',
+  ACBrEFDBloco_9 in 'ACBrSPEDFiscal\ACBrEFDBloco_9.pas',
+  ACBrEFDBloco_9_Class in 'ACBrSPEDFiscal\ACBrEFDBloco_9_Class.pas',
+  ACBrEFDBloco_C in 'ACBrSPEDFiscal\ACBrEFDBloco_C.pas',
+  ACBrEFDBloco_C_Class in 'ACBrSPEDFiscal\ACBrEFDBloco_C_Class.pas',
+  ACBrEFDBloco_D in 'ACBrSPEDFiscal\ACBrEFDBloco_D.pas',
+  ACBrEFDBloco_D_Class in 'ACBrSPEDFiscal\ACBrEFDBloco_D_Class.pas',
+  ACBrEFDBloco_E in 'ACBrSPEDFiscal\ACBrEFDBloco_E.pas',
+  ACBrEFDBloco_E_Class in 'ACBrSPEDFiscal\ACBrEFDBloco_E_Class.pas',
+  ACBrEFDBloco_H in 'ACBrSPEDFiscal\ACBrEFDBloco_H.pas',
+  ACBrEFDBloco_H_Class in 'ACBrSPEDFiscal\ACBrEFDBloco_H_Class.pas',
+  ACBrEFDBlocos in 'ACBrSPEDFiscal\ACBrEFDBlocos.pas',
+  ACBrSpedFiscal in 'ACBrSPEDFiscal\ACBrSpedFiscal.pas',
+  ACBrSped in 'ACBrSped.pas',
+  ACBrSpedUtils in 'ACBrSpedUtils.pas',
+  ACBrECDBloco_0 in 'ACBrSPEDContabil\ACBrECDBloco_0.pas',
+  ACBrECDBloco_0_Class in 'ACBrSPEDContabil\ACBrECDBloco_0_Class.pas',
+  ACBrECDBloco_9 in 'ACBrSPEDContabil\ACBrECDBloco_9.pas',
+  ACBrECDBloco_9_Class in 'ACBrSPEDContabil\ACBrECDBloco_9_Class.pas',
+  ACBrECDBloco_I in 'ACBrSPEDContabil\ACBrECDBloco_I.pas',
+  ACBrECDBloco_I_Class in 'ACBrSPEDContabil\ACBrECDBloco_I_Class.pas',
+  ACBrECDBloco_J in 'ACBrSPEDContabil\ACBrECDBloco_J.pas',
+  ACBrECDBloco_J_Class in 'ACBrSPEDContabil\ACBrECDBloco_J_Class.pas',
+  ACBrECDBlocos in 'ACBrSPEDContabil\ACBrECDBlocos.pas',
+  ACBrSpedContabil in 'ACBrSPEDContabil\ACBrSpedContabil.pas',
+  ACBrEFDBloco_G in 'ACBrSPEDFiscal\ACBrEFDBloco_G.pas',
+  ACBrEFDBloco_G_Class in 'ACBrSPEDFiscal\ACBrEFDBloco_G_Class.pas';
+
+end.

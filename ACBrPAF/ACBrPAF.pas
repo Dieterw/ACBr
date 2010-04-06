@@ -576,7 +576,7 @@ begin
      SL.SaveToFile( 'id.rsa' );
 
      { Executando o "openssl.exe" }
-     cmd := 'dgst -md5 -sign id.rsa -out ead.txt -hex '+ Arquivo ;
+     cmd := 'dgst -md5 -sign id.rsa -out ead.txt -hex "'+ Arquivo+'"' ;
      {$IFDEF CONSOLE}
        WriteLn('Executando: openssl '+cmd) ;
      {$ENDIF}

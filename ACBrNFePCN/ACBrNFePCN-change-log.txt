@@ -48,6 +48,16 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   06/04/10
+---------------
+[-] DANFE com RAVE CB Retrato
+    - Corrigido impressão de NCM com fonte Courier.
+
+Alterações   05/04/10
+---------------
+[-] DANFE com QUICK REPORT
+    - Corrigido impressão após o preview (Créditos: André Langner)
+
 Alterações   26/03/10
 ---------------
 [-] DANFE com QUICK REPORT

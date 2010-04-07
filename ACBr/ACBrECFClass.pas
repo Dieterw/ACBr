@@ -935,7 +935,6 @@ TACBrECFClass = class
 
     { priedade que acessa as informações do codbarras }
     property CodBarras : TACBrECFCodBarras read fpCodBarras ;
-
 end ;
 
 function AjustaLinhas(Texto: AnsiString; Colunas: Integer ;
@@ -1328,7 +1327,7 @@ begin
   fpConsumidor  :=  TACBrECFConsumidor.create ;
 
   fpCodBarras   :=  TACBrECFCodBarras.create;
-  
+
   {$IFNDEF CONSOLE}
     fsFormMsg                   := nil ;
     fsFormMsgProcedureAExecutar := nil ;
@@ -1644,7 +1643,8 @@ begin
            end ;
 
         {$IFNDEF CONSOLE}
-          Application.ProcessMessages ;
+          if fpDevice.ProcessMessages then
+	          Application.ProcessMessages;
         {$ENDIF}
      until Fim ;
   finally
@@ -3308,7 +3308,8 @@ begin
              FormMsgPinta( Texto );
           end ;
 
-          Application.ProcessMessages ;
+          if fpDevice.ProcessMessages then
+	          Application.ProcessMessages;
        {$ELSE}
           sleep(100) ;
        {$ENDIF}
@@ -3593,7 +3594,8 @@ end;
           TextRect(fsFormMsg.ClientRect,X,Y, Texto ) ;
          {$ENDIF}
        end ;
-       Application.ProcessMessages ;
+       if fpDevice.ProcessMessages then
+	       Application.ProcessMessages;
     end ;
   end;
 

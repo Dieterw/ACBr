@@ -132,6 +132,7 @@ TACBrDevice = class( TComponent )
     fsHandShake: TACBrHandShake;
     fsSendBytesCount: Integer;
     fsSendBytesInterval: Integer;
+    fProcessMessages: Boolean;
 
     procedure ConfiguraSerial ;
     {$IFDEF ThreadEnviaLPT}
@@ -201,6 +202,11 @@ TACBrDevice = class( TComponent )
                          default false ;
      property HardFlow : Boolean read fsHardFlow write SetHardFlow
                          default false ;
+
+     { propriedade que ativa/desativa o processamento de mensagens do windows }
+     property ProcessMessages : Boolean read fProcessMessages
+        write fProcessMessages default True ;
+
      property OnStatus : THookSerialStatus read GetOnStatus write SetOnStatus ;
 end ;
 
@@ -238,6 +244,8 @@ begin
 
   fsSendBytesCount    := 0 ;
   fsSendBytesInterval := 0 ;
+
+  fProcessMessages := True ;
 
   SetDefaultValues ;
 end;
@@ -544,7 +552,8 @@ begin
      if not result then
      begin
         {$IFNDEF CONSOLE}
-          Application.ProcessMessages ;  { para redesenhar a tela do programa }
+          if fProcessMessages then
+             Application.ProcessMessages ;  { para redesenhar a tela do programa }
         {$ENDIF}
         sleep(10) ;
      end ;
@@ -757,7 +766,8 @@ begin
         end ;
 
         {$IFNDEF CONSOLE}
-          Application.ProcessMessages ;
+          if fProcessMessages then
+             Application.ProcessMessages ;
         {$ENDIF}
         IsTimeOut := (now > TempoFinal) ; {Verifica se estourou o tempo TIMEOUT}
         if IsTimeOut then

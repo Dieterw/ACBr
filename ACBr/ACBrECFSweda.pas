@@ -2363,7 +2363,8 @@ fazer Pausa entre as vias a Mensagem enviada ao usuário também foi modificada *)
         Linha := Linha + 1 ;
 
         {$IFNDEF CONSOLE}
-          Application.ProcessMessages ;
+          if fpDevice.ProcessMessages then
+             Application.ProcessMessages ;
         {$ENDIF}
      end ;
 
@@ -2417,7 +2418,8 @@ fazer Pausa entre as vias a Mensagem enviada ao usuário também foi modificada *)
            Linha := Linha + 1 ;
 
            {$IFNDEF CONSOLE}
-             Application.ProcessMessages ;
+             if fpDevice.ProcessMessages then
+                Application.ProcessMessages ;
            {$ENDIF}
         end ;
 

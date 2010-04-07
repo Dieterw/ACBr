@@ -173,7 +173,8 @@ begin
         aaAguardar  :
            while now < fpProximaAbertura do begin
               {$IFNDEF CONSOLE}
-                Application.ProcessMessages ;
+               if fpDevice.ProcessMessages then
+                  Application.ProcessMessages ;
               {$ENDIF}
               Sleep( 50 );
            end ;

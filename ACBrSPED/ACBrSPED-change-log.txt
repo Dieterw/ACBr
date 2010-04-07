@@ -47,6 +47,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.07b   07/04/10
+-- ACBrSPEDFiscal --
+[-] Corrigido o Bug onde se usava LFill( Integer(tipo) ) para 
+    LFill( Integer(tipo), 0 ), em todos blocos pois estava considerando uma data
+    (por Isaque Pinheiro)
+
 Versão 0.07b   22/03/10
 -- ACBrSPEDFiscal --
 [*] Implementado hierarquia no RegistroE250 (por Isaque Pinheiro)

@@ -377,10 +377,10 @@ begin
            ceCOutros:        strTP_CHC := '99';
           end;
           strRegistro1100 := strRegistro1100 + LFill('1100') +
-                                               LFill( Integer(IND_DOC) ) +
+                                               LFill( Integer(IND_DOC), 0 ) +
                                                LFill( NRO_DE ) +
                                                LFill( DT_DE ) +
-                                               LFill( Integer(NAT_EXP) ) +
+                                               LFill( Integer(NAT_EXP), 0 ) +
                                                LFill( NRO_RE ) +
                                                LFill( DT_RE ) +
                                                LFill( CHC_EMB ) +
@@ -660,7 +660,7 @@ begin
                                                LFill( SERIE ) +
                                                LFill( FABRICANTE ) +
                                                LFill( MODELO ) +
-                                               LFill( Integer(TIPO_MEDICAO) ) +
+                                               LFill( Integer(TIPO_MEDICAO), 0 ) +
                                                Delimitador +
                                                #13#10;
         end;
@@ -889,7 +889,7 @@ begin
                                                LFill( VL_BC_ICMS_ST,0,2 ) +
                                                LFill( ALIQ_ST,0,2 ) +
                                                LFill( VL_ICMS_ST,0,2 ) +
-                                               LFill( Integer(IND_REC) ) +
+                                               LFill( Integer(IND_REC), 0 ) +
                                                LFill( COD_PART ) +
                                                LFill( VL_PIS,0,2 ) +
                                                LFill( VL_COFINS,0,2 ) +

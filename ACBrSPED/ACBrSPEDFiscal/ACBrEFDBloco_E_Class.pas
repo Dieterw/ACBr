@@ -631,7 +631,7 @@ begin
         with RegE200.RegistroE210.Items[intFor] do
         begin
           strRegistroE210 := strRegistroE210 + LFill('E210') +
-                                               LFill( Integer(IND_MOV_ST) ) +
+                                               LFill( Integer(IND_MOV_ST), 0 ) +
                                                LFill( VL_SLD_CRED_ANT_ST,0 ) +
                                                LFill( VL_DEVOL_ST, 0 ) +
                                                LFill( VL_RESSARC_ST, 0 ) +
@@ -821,7 +821,7 @@ begin
         with RegE001.RegistroE500.Items[intFor] do
         begin
           strRegistroE500 := strRegistroE500 + LFill('E500') +
-                                               LFill( Integer(IND_APUR) ) +
+                                               LFill( Integer(IND_APUR), 0 ) +
                                                LFill( DT_INI ) +
                                                LFill( DT_FIN ) +
                                                Delimitador +
@@ -944,7 +944,7 @@ begin
            odOutros:           intIND_DOC := 9;
           end;
           strRegistroE530 := strRegistroE530 + LFill('E530') +
-                                               LFill( Integer(IND_AJ) ) +
+                                               LFill( Integer(IND_AJ), 0 ) +
                                                LFill( VL_AJ,0 ) +
                                                LFill( COD_AJ ) +
                                                LFill( intIND_DOC ) +

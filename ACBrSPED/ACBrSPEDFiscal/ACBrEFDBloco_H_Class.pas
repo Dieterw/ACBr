@@ -207,7 +207,7 @@ begin
                                                LFill( QTD, 0, 3 ) +
                                                LFill( VL_UNIT, 0, 6 ) +
                                                LFill( VL_ITEM, 0, 2 ) +
-                                               LFill( Integer(IND_PROP) ) +
+                                               LFill( Integer(IND_PROP), 0 ) +
                                                LFill( COD_PART ) +
                                                LFill( TXT_COMPL ) +
                                                LFill( COD_CTA ) +

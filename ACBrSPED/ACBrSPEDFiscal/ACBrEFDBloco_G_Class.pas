@@ -299,7 +299,7 @@ begin
         with RegG125.RegistroG130.Items[intFor] do
         begin
           strRegistroG130 := strRegistroG130 + LFill('E111') +
-                                               LFill( Integer(IND_EMIT) ) +
+                                               LFill( Integer(IND_EMIT), 0 ) +
                                                LFill( COD_PART ) +
                                                LFill( COD_MOD ) +
                                                LFill( SERIE ) +

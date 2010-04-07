@@ -581,8 +581,8 @@ begin
            sdRegimeEspecNEsp:       strCOD_SIT := '08';
           end;
           strRegistroD100 := strRegistroD100 + LFill('D100') +
-                                               LFill( Integer(IND_OPER) ) +
-                                               LFill( Integer(IND_EMIT) ) +
+                                               LFill( Integer(IND_OPER), 0 ) +
+                                               LFill( Integer(IND_EMIT), 0 ) +
                                                LFill( COD_PART ) +
                                                LFill( COD_MOD ) +
                                                LFill( strCOD_SIT ) +
@@ -755,8 +755,8 @@ begin
                                                LFill( COD_MUN_ORIG ) +
                                                LFill( COD_MUN_DEST ) +
                                                LFill( IND_VEIC ) +
-                                               LFill( Integer(VEIC_ID) ) +
-                                               LFill( Integer(IND_NAV) ) +
+                                               LFill( Integer(VEIC_ID), 0 ) +
+                                               LFill( Integer(IND_NAV), 0 ) +
                                                LFill( VIAGEM ) +
                                                LFill( VL_FRT_LIQ,0,2 ) +
                                                LFill( VL_DESP_PORT,0,2 ) +
@@ -948,7 +948,7 @@ begin
                                                LFill( COD_MUN_ORIG ) +
                                                LFill( COD_MUN_DEST ) +
                                                LFill( OTM ) +
-                                               LFill( Integer(IND_NAT_FRT) ) +
+                                               LFill( Integer(IND_NAT_FRT), 0 ) +
                                                LFill( VL_LIQ_FRT,0,2 ) +
                                                LFill( VL_GRIS,0,2 ) +
                                                LFill( VL_PDG,0,2 ) +
@@ -982,7 +982,7 @@ begin
         begin
           strRegistroD180 := strRegistroD180 + LFill('D180') +
                                                LFill( NUM_SEQ ) +
-                                               LFill( Integer(IND_EMIT) ) +
+                                               LFill( Integer(IND_EMIT), 0 ) +
                                                LFill( CNPJ_EMIT ) +
                                                LFill( UF_EMIT ) +
                                                LFill( IE_EMIT ) +
@@ -1529,8 +1529,8 @@ begin
            assOutros:              intTP_ASSINANTE := 6;
           end;
           strRegistroD500 := strRegistroD500 + LFill('D500') +
-                                               LFill( Integer(IND_OPER) ) +
-                                               LFill( Integer(IND_EMIT) ) +
+                                               LFill( Integer(IND_OPER), 0 ) +
+                                               LFill( Integer(IND_EMIT), 0 ) +
                                                LFill( COD_PART ) +
                                                LFill( COD_MOD ) +
                                                LFill( strCOD_SIT ) +

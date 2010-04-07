@@ -867,8 +867,8 @@ begin
            tpSemPagamento: intIND_PGTO := 9;
           end;
           strRegistroC100 := strRegistroC100 + LFill('C100') +
-                                               LFill( Integer(IND_OPER) ) +
-                                               LFill( Integer(IND_EMIT) ) +
+                                               LFill( Integer(IND_OPER), 0 ) +
+                                               LFill( Integer(IND_EMIT), 0 ) +
                                                LFill( COD_PART ) +
                                                LFill( COD_MOD  ) +
                                                LFill( strCOD_SIT  ) +
@@ -1002,7 +1002,7 @@ begin
         with RegC110.RegistroC112.Items[intFor] do
         begin
           strRegistroC112 := strRegistroC112 + LFill('C112') +
-                                               LFill( Integer(COD_DA) ) +
+                                               LFill( Integer(COD_DA), 0 ) +
                                                LFill( UF ) +
                                                LFill( NUM_DA ) +
                                                LFill( COD_AUT ) +
@@ -1032,8 +1032,8 @@ begin
         with RegC110.RegistroC113.Items[intFor] do
         begin
           strRegistroC113 := strRegistroC113 + LFill('C113') +
-                                               LFill( Integer(IND_OPER) ) +
-                                               LFill( Integer(IND_EMIT) ) +
+                                               LFill( Integer(IND_OPER), 0 ) +
+                                               LFill( Integer(IND_EMIT), 0 ) +
                                                LFill( COD_PART ) +
                                                LFill( COD_MOD ) +
                                                LFill( SER ) +
@@ -1139,7 +1139,7 @@ begin
         with RegC100.RegistroC120.Items[intFor] do
         begin
           strRegistroC120 := strRegistroC120 + LFill('C120') +
-                                               LFill( Integer(COD_DOC_IMP) ) +
+                                               LFill( Integer(COD_DOC_IMP), 0 ) +
                                                LFill( NUM_DOC__IMP ) +
                                                LFill( PIS_IMP,0,2 ) +
                                                LFill( COFINS_IMP,0,2 ) +
@@ -1208,7 +1208,7 @@ begin
            tcOutros:      strIND_TIT := '99';
           end;
           strRegistroC140 := strRegistroC140 + LFill('C140') +
-                                               LFill( Integer(IND_EMIT) ) +
+                                               LFill( Integer(IND_EMIT), 0 ) +
                                                LFill( strIND_TIT  ) +
                                                LFill( DESC_TIT ) +
                                                LFill( NUM_TIT ) +
@@ -1387,7 +1387,7 @@ begin
                                                LFill( UNID ) +
                                                LFill( VL_ITEM,0,2 ) +
                                                LFill( VL_DESC,0,2 ) +
-                                               LFill( Integer(IND_MOV) ) +
+                                               LFill( Integer(IND_MOV), 0 ) +
                                                LFill( CST_ICMS,3 ) +
                                                LFill( CFOP,4 ) +
                                                LFill( COD_NAT ) +
@@ -1397,7 +1397,7 @@ begin
                                                LFill( VL_BC_ICMS_ST,0,2 ) +
                                                LFill( ALIQ_ST,0,2 ) +
                                                LFill( VL_ICMS_ST,0,2 ) +
-                                               LFill( Integer(IND_APUR) ) +
+                                               LFill( Integer(IND_APUR), 0 ) +
                                                LFill( strCST_IPI ) +
                                                LFill( COD_ENQ ) +
                                                LFill( VL_BC_IPI,0,2 ) +
@@ -1512,7 +1512,7 @@ begin
                                                DFill( QTD_ITEM, 3 ) +
                                                LFill( DT_FAB ) +
                                                LFill( DT_VAL ) +
-                                               LFill( Integer(IND_MED) ) +
+                                               LFill( Integer(IND_MED), 0 ) +
                                                LFill( Integer(TP_PROD), 0 ) +
                                                LFill( VL_TAB_MAX,0,2 ) +
                                                Delimitador +
@@ -1540,7 +1540,7 @@ begin
         with RegC170.RegistroC174.Items[intFor] do
         begin
           strRegistroC174 := strRegistroC174 + LFill('C174') +
-                                               LFill( Integer(IND_ARM) ) +
+                                               LFill( Integer(IND_ARM), 0 ) +
                                                LFill( NUM_ARM ) +
                                                LFill( DESCR_COMPL ) +
                                                Delimitador +
@@ -2429,8 +2429,8 @@ begin
             tlTrifasico:  intTP_LIGACAO := 3;
            end;
            strRegistroC500 := strRegistroC500 + LFill('C500') +
-                                                LFill( Integer(IND_OPER) ) +
-                                                LFill( Integer(IND_EMIT) ) +
+                                                LFill( Integer(IND_OPER), 0 ) +
+                                                LFill( Integer(IND_EMIT), 0 ) +
                                                 LFill( COD_PART ) +
                                                 LFill( COD_MOD,2 ) +
                                                 LFill( strCOD_SIT ) +
@@ -2500,7 +2500,7 @@ begin
                                                LFill( VL_BC_ICMS_ST,0,2 ) +
                                                LFill( ALIQ_ST,0,2 ) +
                                                LFill( VL_ICMS_ST,0,2 ) +
-                                               LFill( Integer(IND_REC) ) +
+                                               LFill( Integer(IND_REC), 0 ) +
                                                LFill( COD_PART  ) +
                                                LFill( VL_PIS,0,2 ) +
                                                LFill( VL_COFINS,0,2 ) +

@@ -448,6 +448,15 @@ begin
                wFloatField[2].DisplayFormat:=wDisplayFormat(FCasasDecimais._vUnCom);
          end;
 
+         //NÃO imprime o LOGO se o mesmo não for especificado
+         if NotaUtil.EstaVazio(FLogo) then
+         begin
+            wPage[1] := FindRaveComponent('GlobalDANFE',nil) as TRavePage;
+            wBitmap[1] := FindRaveComponent('Bitmap1',wPage[1]) as TRaveBitmap;
+            if (wBitmap[1] <> nil) then
+               wBitmap[1].Left:=30;
+         end;
+
          //Bordas
          if (FEspessuraBorda <> 1) then
          begin

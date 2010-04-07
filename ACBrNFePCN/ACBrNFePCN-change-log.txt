@@ -48,6 +48,13 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   07/04/10
+---------------
+[-] DANFE com RAVE CB Retrato
+    - Corrigido impressão de NCM com fonte Courier (o problema ainda existia).    
+[-] DANFE com RAVE Arquivo
+    - Quando não especificar a logomarca não será mais impresso o X no lugar do Logo no DaNFe
+
 Alterações   06/04/10
 ---------------
 [-] DANFE com RAVE CB Retrato

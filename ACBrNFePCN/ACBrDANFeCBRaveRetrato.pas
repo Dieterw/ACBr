@@ -1048,7 +1048,6 @@ var qPrinted,QtdeMin,j:Integer;
     aDescProduto, vEnd:String;
     Memo:TMemoBuf;
     aFontHeigth:Double;
-    wTempFont: double;
 begin
   with DANFeRave, DANFeRave.ACBrNFe.NotasFiscais.Items[DANFeRave.FNFIndex].NFe, DANFeRave.BaseReport do
    begin
@@ -1123,12 +1122,7 @@ begin
           vEnd:=Prod.NCM;
           if Trim(Prod.EXTIPI)>'' then
              vEnd:=vEnd+'/'+Prod.EXTIPI;
-          wTempFont:=FontSizeText;
-          if FontNameUsed = 'Courier New' then
-             FontSizeText:=8;
           PrintTab(vEnd);
-          if FontNameUsed = 'Courier New' then
-             FontSizeText:=wTempFont;
 
           PrintTab(OrigToStr(Imposto.ICMS.orig)+CSTICMSToStr(Imposto.ICMS.CST));
           PrintTab(Prod.CFOP);
@@ -1183,8 +1177,8 @@ var wtemp: double;
 begin
   //tamanho padrao das colunas
   ColsWidth[1]:=15;
-  ColsWidth[2]:=56;
-  ColsWidth[3]:=10;
+  ColsWidth[2]:=54;
+  ColsWidth[3]:=12;
   ColsWidth[4]:=6;
   ColsWidth[5]:=7;
   ColsWidth[6]:=7;

@@ -374,19 +374,13 @@ type
 
   TOpenBlocos = class
   private
-    FIND_MOV: TACBrIndicadorMovimento; /// Indicador de movimento: 0- Bloco com dados informados, 1- Bloco sem dados informados.
+    FIND_MOV: TACBrIndicadorMovimento;    /// Indicador de movimento: 0- Bloco com dados informados, 1- Bloco sem dados informados.
   public
-    constructor Create;
     property IND_MOV: TACBrIndicadorMovimento read FIND_MOV write FIND_MOV;
   end;
 
 implementation
 
 { TOpenBlocos }
-
-constructor TOpenBlocos.Create;
-begin
-   FIND_MOV := imSemDados;
-end;
 
 end.

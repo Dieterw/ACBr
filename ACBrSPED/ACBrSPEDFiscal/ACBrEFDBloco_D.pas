@@ -2037,6 +2037,8 @@ begin
   FRegistroD500 := TRegistroD500List.Create;
   FRegistroD600 := TRegistroD600List.Create;
   FRegistroD695 := TRegistroD695List.Create;
+  //
+  IND_MOV := imSemDados;
 end;
 
 destructor TRegistroD001.Destroy;

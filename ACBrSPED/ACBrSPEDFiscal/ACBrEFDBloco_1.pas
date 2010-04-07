@@ -1165,6 +1165,8 @@ begin
    FRegistro1600 := TRegistro1600List.Create;
    FRegistro1700 := TRegistro1700List.Create;
    FRegistro1800 := TRegistro1800List.Create;
+   //
+   IND_MOV := imSemDados;
 end;
 
 destructor TRegistro1001.Destroy;

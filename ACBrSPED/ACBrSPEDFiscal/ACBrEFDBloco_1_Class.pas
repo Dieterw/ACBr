@@ -317,7 +317,7 @@ begin
      begin
        strRegistro1001 := strRegistro1001 +
                           LFill( '1001' ) +
-                          LFill( Integer(IND_MOV) ) +
+                          LFill( Integer(IND_MOV), 0 ) +
                           Delimitador +
                           #13#10;
        ///

@@ -192,8 +192,10 @@ end;
 
 constructor TRegistroH001.Create;
 begin
-  FRegistroH005 := TRegistroH005List.Create;
-  FRegistroH010 := TRegistroH010List.Create;
+   FRegistroH005 := TRegistroH005List.Create;
+   FRegistroH010 := TRegistroH010List.Create;
+   //
+   IND_MOV := imSemDados;
 end;
 
 destructor TRegistroH001.Destroy;

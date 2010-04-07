@@ -1048,9 +1048,11 @@ end;
 
 constructor TRegistroE001.Create;
 begin
-  FRegistroE100 := TRegistroE100.Create;
-  FRegistroE200 := TRegistroE200List.Create;
-  FRegistroE500 := TRegistroE500List.Create;
+   FRegistroE100 := TRegistroE100.Create;
+   FRegistroE200 := TRegistroE200List.Create;
+   FRegistroE500 := TRegistroE500List.Create;
+   //
+   IND_MOV := imSemDados;
 end;
 
 destructor TRegistroE001.Destroy;

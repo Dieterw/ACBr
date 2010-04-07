@@ -3225,14 +3225,16 @@ end;
 
 constructor TRegistroC001.Create;
 begin
-  FRegistroC100 := TRegistroC100List.Create;
-  FRegistroC300 := TRegistroC300List.Create;
-  FRegistroC350 := TRegistroC350List.Create;
-  FRegistroC400 := TRegistroC400List.Create;
-  FRegistroC495 := TRegistroC495List.Create;
-  FRegistroC500 := TRegistroC500List.Create;
-  FRegistroC600 := TRegistroC600List.Create;
-  FRegistroC700 := TRegistroC700List.Create;
+   FRegistroC100 := TRegistroC100List.Create;
+   FRegistroC300 := TRegistroC300List.Create;
+   FRegistroC350 := TRegistroC350List.Create;
+   FRegistroC400 := TRegistroC400List.Create;
+   FRegistroC495 := TRegistroC495List.Create;
+   FRegistroC500 := TRegistroC500List.Create;
+   FRegistroC600 := TRegistroC600List.Create;
+   FRegistroC700 := TRegistroC700List.Create;
+   //
+   IND_MOV := imSemDados;
 end;
 
 destructor TRegistroC001.Destroy;

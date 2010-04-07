@@ -341,6 +341,8 @@ end;
 constructor TRegistroG001.Create;
 begin
    FRegistroG110 := TRegistroG110List.Create;
+   //
+   IND_MOV := imSemDados;
 end;
 
 destructor TRegistroG001.Destroy;

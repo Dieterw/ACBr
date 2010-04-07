@@ -47,6 +47,27 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 1.15b   07/04/10
+(modificações efetuadas por Fernando Gutierres Damaceno )
+
+- Adicionada propriedades em TACBrTEFDResp:
+     property Instituicao    : String read fpInstituicao;
+     property ModalidadePagto :String read fpModalidadePagto;
+     property ModalidadePagtoDescrita:String read fpModalidadePagtoDescrita;
+     property ModalidadeExtenso:String read fpModalidadePagtoExtenso;
+     property CodigoRedeAutorizada:String read fpCodigoRedeAutorizada;
+
+--- ACBrTEFDCliSi---
+- Adicionado tratamento para preenchimento das propriedades novas do resp em
+  ConteudoToProperty;
+- Modificação da procedure "ConfirmarEReimprimirTransacoesPendentes" para
+  atender o roteiro, que diz apenas para confirmar transacao e mostrar mensagem:
+  "Transação TEF efetuada, por favor re-imprimir ultimo cupom"
+- Modificação da pergunta "Impressora não responde Tentar novamente?"
+  para "Impressora não responde. Deseja Imprimir novamente?"
+  Detalhe, essa pergunta deve ser feita mesmo que durante a impressão do cupom
+  fiscal como no roteiro de teste Seq.47.
+
 Versão 1.14b   12/03/10
 [-] Verificação de Teclado Bloqueado antes de processar comandos diferentes de
     CNF e ATV.  (Em algumas situações o CNC era enviado com o Teclado Bloqueado)

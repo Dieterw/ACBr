@@ -55,7 +55,7 @@ uses
   {$ENDIF} ;
 
 const
-   CACBrTEFD_Versao      = '1.14b' ;
+   CACBrTEFD_Versao      = '1.15b' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -397,13 +397,21 @@ type
      fpParcelas : TACBrTEFDRespParcelas ;
      fpImagemComprovante1aVia : TStringList ;
      fpImagemComprovante2aVia : TStringList ;
+     fpDataVencimento: TDateTime;
+     fpInstituicao: String;
+     fpModalidadePagto: String;
+     fpModalidadePagtoDescrita: String;
+     fpModalidadePagtoExtenso: String;
+     fpCodigoRedeAutorizada: String;
 
      procedure SetCNFEnviado(const AValue : Boolean);
      procedure SetIndiceFPG_ECF(const AValue : String);
      procedure SetArqBackup(const AValue : String);
      procedure SetOrdemPagamento(const AValue : Integer);
+   private
    protected
      function GetTransacaoAprovada : Boolean; virtual;
+   published
 
    public
      constructor Create ;
@@ -469,6 +477,12 @@ type
      property IndiceFPG_ECF  : String  read fpIndiceFPG_ECF   write SetIndiceFPG_ECF ;
      property CNFEnviado     : Boolean read fpCNFEnviado      write SetCNFEnviado ;
      property OrdemPagamento : Integer read fpOrdemPagamento  write SetOrdemPagamento ;
+     property DataVencimento : TDateTime read fpDataVencimento;
+     property Instituicao    : String read fpInstituicao;
+     property ModalidadePagto :String read fpModalidadePagto;
+     property ModalidadePagtoDescrita:String read fpModalidadePagtoDescrita;
+     property ModalidadeExtenso:String read fpModalidadePagtoExtenso;
+     property CodigoRedeAutorizada:String read fpCodigoRedeAutorizada;
    end;
 
    { TACBrTEFDRespTXT }

@@ -146,6 +146,11 @@ type
      xEscreveMensagemPermanentePinPad: function(Mensagem:PAnsiChar):Integer;
      {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;           
 
+     xObtemQuantidadeTransacoesPendentes: function(
+        DataFiscal:AnsiString;
+        NumeroCupon:AnsiString):Integer;
+     {$IFDEF LINUX} cdecl {$ELSE} stdcall {$ENDIF} ;        
+        
      procedure AvaliaErro(Sts : Integer);
      procedure FinalizarTransacao( Confirma : Boolean;
         DocumentoVinculado : AnsiString);
@@ -192,7 +197,9 @@ type
         DocumentoVinculado : String = ''); override;
      Function CNC(Rede, NSU : String; DataHoraTransacao : TDateTime;
         Valor : Double) : Boolean; overload; override;
-     function DefineMensagemPermanentePinPad(Mensagem:AnsiString):Integer;
+     Function DefineMensagemPermanentePinPad(Mensagem:AnsiString):Integer;
+     Function ObtemQuantidadeTransacoesPendentes(Data:TDate;
+        CupomFiscal:AnsiString):Integer;
    published
      property EnderecoIP     : AnsiString read fEnderecoIP     write fEnderecoIP ;
      property CodigoLoja     : AnsiString read fCodigoLoja     write fCodigoLoja ;
@@ -251,6 +258,9 @@ begin
 
      case Linha.Identificacao of
        // TODO: Mapear mais propriedades do CliSiTef //
+       100 :fpModalidadePagto              := LinStr;
+       101 :fpModalidadePagtoExtenso       := LinStr;
+       102 :fpModalidadePagtoDescrita      := LinStr;
        105 :
          begin
            fpDataHoraTransacaoComprovante  := Linha.Informacao.AsTimeStampSQL;
@@ -259,12 +269,15 @@ begin
        121 : fpImagemComprovante1aVia.Text := StringReplace( LinStr, #10, sLineBreak, [rfReplaceAll] );
        122 : fpImagemComprovante2aVia.Text := StringReplace( LinStr, #10, sLineBreak, [rfReplaceAll] );
        130 : fpValorTotal                  := fpValorTotal + Linha.Informacao.AsFloat ;
+       131 : fpInstituicao                 := LinStr;
        133 : fpCodigoAutorizacaoTransacao  := Linha.Informacao.AsInteger;
        134 : fpNSU                         := LinStr;
        156 : fpRede                        := LinStr;
        501 : fpTipoPessoa                  := AnsiChar(IfThen(Linha.Informacao.AsInteger = 0,'J','F')[1]);
        502 : fpDocumentoPessoa             := LinStr ;
        505 : fpQtdParcelas                 := Linha.Informacao.AsInteger ;
+       506 : fpDataPreDatado               := Linha.Informacao.AsDate;
+       
        //incluido por Evandro
        627 : fpAgencia                     := LinStr;
        628 : fpAgenciaDC                   := LinStr;
@@ -277,7 +290,7 @@ begin
         end;
        629 : fpConta                       := LinStr;
        630 : fpContaDC                     := LinStr;
-       527 : fpDataPreDatado               := Linha.Informacao.AsDate ;
+       527 : fpDataVencimento              := Linha.Informacao.AsDate ; {Data Vencimento}
        //
 
        899 :  // Tipos de Uso Interno do ACBrTEFD
@@ -365,6 +378,7 @@ begin
   xContinuaFuncaoSiTefInterativo    := nil ;
   xFinalizaTransacaoSiTefInterativo := nil ;
   xEscreveMensagemPermanentePinPad  := nil; 
+  xObtemQuantidadeTransacoesPendentes := nil;
 
   fOnExibeMenu  := nil ;
   fOnObtemCampo := nil ;
@@ -411,6 +425,7 @@ begin
    CliSiTefFunctionDetect('ContinuaFuncaoSiTefInterativo', @xContinuaFuncaoSiTefInterativo);
    CliSiTefFunctionDetect('FinalizaTransacaoSiTefInterativo', @xFinalizaTransacaoSiTefInterativo);
    CliSiTefFunctionDetect('EscreveMensagemPermanentePinPad',@xEscreveMensagemPermanentePinPad);
+   CliSiTefFunctionDetect('ObtemQuantidadeTransacoesPendentes',@xObtemQuantidadeTransacoesPendentes);
 end ;
 
 procedure TACBrTEFDCliSiTef.SetNumVias(const AValue : Integer);
@@ -466,7 +481,7 @@ begin
      Est := 'O' ;
   end ;
 
-  if (Est in ['V','P','O']) then                    // Cupom Ficou aberto ?? //
+  if (Est in ['V','P','O']) then                // Cupom Ficou aberto ?? //
      CancelarTransacoesPendentesClass           // SIM, Cancele tudo... //
   else
      ConfirmarEReimprimirTransacoesPendentes ;  // NAO, Cupom Fechado, basta re-imprimir //
@@ -511,20 +526,21 @@ begin
         try
            if pos(Resp.DocumentoVinculado, fDocumentosProcessados) = 0 then
            begin
-              CNF;
-
-              if TACBrTEFD(Owner).DoExibeMsg( opmYesNo,
+              CNF;{Confirma}
+              {Modificado - Fernando 19-03-2010, atender roteiro }
+              TACBrTEFD(Owner).DoExibeMsg( opmOK,
                                       'Transação TEF efetuada.'+sLineBreak+
-                                      'Re-Imprimir Ultimo Cupom ?' ) = mrYes then
-              begin
-                 Sts := FazerRequisicao( fOperacaoReImpressao, 'ADM' ) ;
+                                      'Favor Re-Imprimir Ultimo Cupom ' ) 
 
-                 if Sts = 10000 then
-                    Sts := ContinuarRequisicao( True ) ;  { True = Imprimir Comprovantes agora }
-
-                 if not ( Sts = 0 ) then
-                    AvaliaErro( Sts );
-              end;
+//              begin
+//                 Sts := FazerRequisicao( fOperacaoReImpressao, 'ADM' ) ;
+//
+//                 if Sts = 10000 then
+//                    Sts := ContinuarRequisicao( True ) ;  { True = Imprimir Comprovantes agora }
+//
+//                 if not ( Sts = 0 ) then
+//                    AvaliaErro( Sts );
+//              end;
            end;
 
            DeleteFile( ArquivosVerficar[ 0 ] );
@@ -679,6 +695,18 @@ begin
   // CliSiTEF não usa Rede, NSU, Finalizacao e Valor
 
   FinalizarTransacao( False, DocumentoVinculado );
+end;
+
+function TACBrTEFDCliSiTef.ObtemQuantidadeTransacoesPendentes(Data:TDate;
+  CupomFiscal: AnsiString): Integer;
+var
+  sDate:AnsiString;
+begin
+   sDate:= FormatDateTime('yyyymmdd',Data);
+   if Assigned(xObtemQuantidadeTransacoesPendentes) then  
+      Result := xObtemQuantidadeTransacoesPendentes(sDate,CupomFiscal)
+   else
+      raise Exception.Create( ACBrStr('CliSiTEF não inicializado' ) ) ;   
 end;
 
 Function TACBrTEFDCliSiTef.FazerRequisicao( Funcao : Integer;
@@ -867,7 +895,10 @@ begin
                                     end;
 
                                     if (TipoCampo = 122) and GerencialAberto then
+                                    begin
                                        ComandarECF( opeFechaGerencial );
+                                       GerencialAberto := False;
+                                    end;
                                   except
                                     on EACBrTEFDECF do ImpressaoOk := False ;
                                     else
@@ -877,7 +908,7 @@ begin
                                   if not ImpressaoOk then
                                   begin
                                     if DoExibeMsg( opmYesNo, 'Impressora não responde'+sLineBreak+
-                                                             'Tentar novamente ?') <> mrYes then
+                                                             'Deseja imprimir novamente ?') <> mrYes then
                                       break ;
 
                                     I := 121 ;
@@ -943,7 +974,7 @@ begin
                         Mensagem := 'CONFIRMA ?';
 
                      Resposta := ifThen( (DoExibeMsg( opmYesNo, Mensagem ) = mrYes), '0', '1' ) ;
-                     Digitado := ( Resposta <> '1') ;
+                     {Digitado := ( Resposta <> '1') ;}
                    end ;
 
                  21 :
@@ -1160,7 +1191,7 @@ begin
               if not ImpressaoOk then
               begin
                  if DoExibeMsg( opmYesNo, 'Impressora não responde'+sLineBreak+
-                                          'Tentar novamente ?') <> mrYes then
+                                          'Deseja imprimir novamente ?') <> mrYes then
                  begin
                     try ComandarECF(opeCancelaCupom); except {Exceção Muda} end ;
                     break ;

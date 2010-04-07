@@ -1123,7 +1123,13 @@ begin
            begin
              aDescProduto:=aDescProduto+#13+StringReplace(infAdProd,';',#13,[rfReplaceAll]);
              Inc(QtdeMin);
+             for j:=0 to Length(infAdProd) do
+                if infAdProd[j]=';' then
+                   Inc(QtdeMin);
            end;
+
+          if Prod.cProd='5173' then
+             QtdeMin:=QtdeMin;
 
           //Testa se a quantidade de linhas a ser impressa
           //ultrapassará o final do quadro dos itens,

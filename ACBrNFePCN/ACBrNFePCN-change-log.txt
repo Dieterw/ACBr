@@ -50,8 +50,9 @@ Símbolo : Significado
 
 Alterações   07/04/10
 ---------------
-[-] DANFE com RAVE CB Retrato
-    - Corrigido impressão de NCM com fonte Courier (o problema ainda existia).    
+[-] DANFE em RAVE CB
+    - Corrigido impressão de Produtos que estava sobrepondo os Dados Adicionais (caso 547 do Mantis) (créditos João Paulo S. Leão)
+    - Corrigido impressão de NCM com fonte Courier (o problema ainda existia).
 [-] DANFE com RAVE Arquivo
     - Quando não especificar a logomarca não será mais impresso o X no lugar do Logo no DaNFe
 

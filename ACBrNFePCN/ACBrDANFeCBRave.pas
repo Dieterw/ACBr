@@ -437,6 +437,7 @@ begin
     if Trim(FImpressora)<>'' then
        SelectPrinter(FImpressora);
     SelectPaper('A4');
+    SetPaperSize(DMPAPER_A4,0,0);
     Orientation:=SystemPrinter.Orientation;
     FFirstX:=SystemPrinter.MarginLeft;
     FLastX:=BaseReport.PageWidth-SystemPrinter.MarginRight;

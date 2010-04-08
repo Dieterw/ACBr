@@ -547,8 +547,8 @@ end;
 function TBloco_E.WriteRegistroE116(RegE110: TRegistroE110): String;
 var
 intFor: integer;
-intIND_PROC: integer;
-strRegistroE116: String;
+strIND_PROC: string;
+strRegistroE116: string;
 begin
   strRegistroE116 := '';
 
@@ -559,11 +559,12 @@ begin
         with RegE110.RegistroE116.Items[intFor] do
         begin
           case IND_PROC of
-           opSefaz:           intIND_PROC := 0;
-           opJusticaFederal:  intIND_PROC := 1;
-           opJusticaEstadual: intIND_PROC := 2;
-           opSecexRFB:        intIND_PROC := 3;
-           opOutros:          intIND_PROC := 9;
+           opSefaz:           strIND_PROC := '0';
+           opJusticaFederal:  strIND_PROC := '1';
+           opJusticaEstadual: strIND_PROC := '2';
+           opSecexRFB:        strIND_PROC := '3';
+           opOutros:          strIND_PROC := '9';
+           opNenhum:          strIND_PROC := '';
           end;
           strRegistroE116 := strRegistroE116 + LFill('E116') +
                                                LFill( COD_OR ) +
@@ -571,7 +572,7 @@ begin
                                                LFill( DT_VCTO ) +
                                                LFill( COD_REC ) +
                                                LFill( NUM_PROC ) +
-                                               LFill( intIND_PROC, 0 ) +
+                                               LFill( strIND_PROC ) +
                                                LFill( PROC ) +
                                                LFill( TXT_COMPL ) +
                                                Delimitador +
@@ -769,8 +770,8 @@ end;
 function TBloco_E.WriteRegistroE250(RegE210: TRegistroE210): String;
 var
 intFor: integer;
-intIND_PROC: integer;
-strRegistroE250: String;
+strIND_PROC: string;
+strRegistroE250: string;
 begin
   strRegistroE250 := '';
 
@@ -781,11 +782,12 @@ begin
         with RegE210.RegistroE250.Items[intFor] do
         begin
           case IND_PROC of
-           opSefaz:           intIND_PROC := 0;
-           opJusticaFederal:  intIND_PROC := 1;
-           opJusticaEstadual: intIND_PROC := 2;
-           opSecexRFB:        intIND_PROC := 3;
-           opOutros:          intIND_PROC := 9;
+           opSefaz:           strIND_PROC := '0';
+           opJusticaFederal:  strIND_PROC := '1';
+           opJusticaEstadual: strIND_PROC := '2';
+           opSecexRFB:        strIND_PROC := '3';
+           opOutros:          strIND_PROC := '9';
+           opNenhum:          strIND_PROC := '';
           end;
           strRegistroE250 := strRegistroE250 + LFill('E250') +
                                                LFill( COD_OR ) +
@@ -793,7 +795,7 @@ begin
                                                LFill( DT_VCTO ) +
                                                LFill( COD_REC ) +
                                                LFill( NUM_PROC ) +
-                                               LFill( intIND_PROC, 0 ) +
+                                               LFill( strIND_PROC ) +
                                                LFill( PROC ) +
                                                LFill( TXT_COMPL ) +
                                                Delimitador +

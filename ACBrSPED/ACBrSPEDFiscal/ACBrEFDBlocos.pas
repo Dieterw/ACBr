@@ -116,7 +116,8 @@ type
                          opJusticaFederal,   // 1 - Justiça Federal
                          opJusticaEstadual,  // 2 - Justiça Estadual
                          opSecexRFB,         // 3 - Secex/RFB
-                         opOutros            // 9 - Outros
+                         opOutros,           // 9 - Outros
+                         opNenhum           // Preencher vazio
                          );
   ///
   TACBrDoctoArrecada = (daEstadualArrecadacao,  // 0 - Documento Estadual de Arrecadação

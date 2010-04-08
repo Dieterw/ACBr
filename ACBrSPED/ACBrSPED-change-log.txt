@@ -47,6 +47,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.07b   08/04/10
+-- ACBrSPEDFiscal --
+[-] Corrigido o Bug onde os campos IND_PGTO e IND_FRT do RegistroC100, estavam 
+    preenchendo '0', nos casos das notas com códigos 02, 03, 04 ou 05, e deveriam
+    se vazios. (por Isaque Pinheiro) e reportado (por francinaldoac)
+
 Versão 0.07b   07/04/10
 -- ACBrSPEDFiscal --
 [-] Corrigido o Bug onde se usava LFill( Integer(tipo) ) para 

@@ -111,7 +111,12 @@ begin
                 PrintCenter(vEnd,PosX+(aWidthOutros/2));
                 NewLine;
                 if ExibirResumoCanhoto then
-                   PrintCenter('Emissão: '+NotaUtil.FormatDate(DateToStr(Ide.DEmi))+'  Dest/Reme: '+Dest.XNome+'  Valor Total: '+NotaUtil.FormatFloat(Total.ICMSTot.VNF),PosX+(aWidthOutros/2));
+                begin
+                   if NotaUtil.EstaVazio(ExibirResumoCanhoto_Texto) then
+                      PrintCenter('Emissão: '+NotaUtil.FormatDate(DateToStr(Ide.DEmi))+'  Dest/Reme: '+Dest.XNome+'  Valor Total: '+NotaUtil.FormatFloat(Total.ICMSTot.VNF),PosX+(aWidthOutros/2))
+                   else
+                      PrintCenter(ExibirResumoCanhoto_Texto,PosX+(aWidthOutros/2));
+                end;
              end;
           end
           else

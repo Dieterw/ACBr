@@ -101,6 +101,7 @@ type
     FMargemDireita: Double;
     FCasasDecimais: TCasasDecimais;
     FExibeResumoCanhoto: boolean;
+    FExibeResumoCanhoto_Texto: string;
     FFormularioContinuo: boolean;
     FTamanhoFonte_DemaisCampos: Integer;
     FProdutosPorPagina: integer;
@@ -135,6 +136,7 @@ type
     property MargemDireita: Double read FMargemDireita write FMargemDireita ;
     property CasasDecimais: TCasasDecimais read FCasasDecimais ;
     property ExibirResumoCanhoto: Boolean read FExibeResumoCanhoto write FExibeResumoCanhoto ;
+    property ExibirResumoCanhoto_Texto: String read FExibeResumoCanhoto_Texto write FExibeResumoCanhoto_Texto ;
     property FormularioContinuo: Boolean read FFormularioContinuo write FFormularioContinuo ;
     property ExpandirLogoMarca: Boolean read FExpandirLogoMarca write FExpandirLogoMarca default false ;
     property TamanhoFonte_DemaisCampos: Integer read FTamanhoFonte_DemaisCampos write FTamanhoFonte_DemaisCampos ;
@@ -205,6 +207,7 @@ begin
   FMargemEsquerda := 0.6;
   FMargemDireita  := 0.51;
   FExibeResumoCanhoto := false;
+  FExibeResumoCanhoto_Texto := '';
   FFormularioContinuo := false;
   FTamanhoFonte_DemaisCampos := 10;
   FProdutosPorPagina := 0;

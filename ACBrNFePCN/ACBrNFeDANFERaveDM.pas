@@ -752,10 +752,14 @@ var
   vChave_Contingencia: string;
   vResumo: string;
 begin
+  vResumo:='';
   if DANFEClassOwner.ExibirResumoCanhoto then
-     vResumo:='Emissão: '+NotaUtil.FormatDate(DateToStr(FNFe.Ide.DEmi))+'  Dest/Reme: '+FNFe.Dest.XNome+'  Valor Total: '+NotaUtil.FormatFloat(FNFe.Total.ICMSTot.VNF)
-  else
-     vResumo:='';
+  begin
+     if NotaUtil.EstaVazio(DANFEClassOwner.ExibirResumoCanhoto_Texto) then
+        vResumo:='Emissão: '+NotaUtil.FormatDate(DateToStr(FNFe.Ide.DEmi))+'  Dest/Reme: '+FNFe.Dest.XNome+'  Valor Total: '+NotaUtil.FormatFloat(FNFe.Total.ICMSTot.VNF)
+     else
+        vResumo:=DANFEClassOwner.ExibirResumoCanhoto_Texto;
+  end;
   Connection.WriteStrData('', vResumo);
 
   if (FNFe.Ide.TpAmb = taHomologacao) then

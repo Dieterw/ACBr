@@ -132,7 +132,12 @@ begin
              Print(vEnd);
              GotoXY(PosX+FontHeight+FontHeight+0.5,FLastY-2);
              if ExibirResumoCanhoto then
-                Print('Emissão: '+NotaUtil.FormatDate(DateToStr(Ide.DEmi))+'  Dest/Rem: '+Dest.XNome+'  Valor Total: '+NotaUtil.FormatFloat(Total.ICMSTot.VNF));
+             begin
+                if NotaUtil.EstaVazio(ExibirResumoCanhoto_Texto) then
+                   Print('Emissão: '+NotaUtil.FormatDate(DateToStr(Ide.DEmi))+'  Dest/Rem: '+Dest.XNome+'  Valor Total: '+NotaUtil.FormatFloat(Total.ICMSTot.VNF))
+                else
+                   Print(ExibirResumoCanhoto_Texto);
+             end;
           end;
           Bold:=False;
           GotoXY(PosX+aWidthReceb+LineHeight,PosY+aHeigthNumSerie+aHeigthIdent-1);

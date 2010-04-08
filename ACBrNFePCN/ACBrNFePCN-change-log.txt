@@ -48,6 +48,13 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   08/04/10
+---------------
+[+] DANFE em RAVE Arquivo e CB
+    - Incluído propriedade ExibirResumoCanhoto_Texto
+      Se a propriedade ExibirResumoCanhoto estiver TRUE será impresso no canhoto o conteúdo da propriedade ExibirResumoCanhoto_Texto,
+      se não tiver nenhum conteúdo nessa propriedade, será impresso o Resumo padrão do componente.       
+
 Alterações   07/04/10
 ---------------
 [-] DANFE em RAVE CB

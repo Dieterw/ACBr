@@ -2351,7 +2351,8 @@ begin
         end;
      end;
 
-     if RespostasPendentes.SaldoRestante > 0 then  { Se Multiplos Cartoes, deve enviar um CNF }
+     { Se é Multiplos Cartoes, e ainda Resta SALDO deve enviar um CNF }
+     if MultiplosCartoes and (RespostasPendentes.SaldoRestante > 0) then
       begin
         self.CNF;
 

@@ -596,7 +596,7 @@ begin
                                                LFill( CHV_CTE_REF ) +
                                                LFill( VL_DOC,0,2 ) +
                                                LFill( VL_DESC,0,2 ) +
-                                               LFill( intIND_FRT ) +
+                                               LFill( intIND_FRT, 0 ) +
                                                LFill( VL_SERV,0,2 ) +
                                                LFill( VL_BC_ICMS,0,2 ) +
                                                LFill( VL_ICMS,0,2 ) +
@@ -714,7 +714,7 @@ begin
           strRegistroD130 := strRegistroD130 + LFill('D130') +
                                                LFill( COD_PART_CONSG ) +
                                                LFill( COD_PART_RED ) +
-                                               LFill( intIND_FRT_RED ) +
+                                               LFill( intIND_FRT_RED, 0 ) +
                                                LFill( COD_MUN_ORIG ) +
                                                LFill( COD_MUN_DEST ) +
                                                LFill( VEIC_ID ) +
@@ -800,7 +800,7 @@ begin
                                                LFill( COD_MUN_DEST ) +
                                                LFill( VEIC_ID ) +
                                                LFill( VIAGEM ) +
-                                               LFill( intIND_TFA ) +
+                                               LFill( intIND_TFA, 0 ) +
                                                LFill( VL_PESO_TX,0,2 ) +
                                                LFill( VL_TX_TERR,0,2 ) +
                                                LFill( VL_TX_RED,0,2 ) +
@@ -878,7 +878,7 @@ begin
            ttOutros:          intIND_CARGA := 9;
           end;
           strRegistroD161 := strRegistroD161 + LFill('D161') +
-                                               LFill( intIND_CARGA ) +
+                                               LFill( intIND_CARGA, 0 ) +
                                                LFill( CNPJ_COL ) +
                                                LFill( IE_COL ) +
                                                LFill( COD_MUN_COL ) +
@@ -1551,7 +1551,7 @@ begin
                                                LFill( VL_PIS,0,2 ) +
                                                LFill( VL_COFINS,0,2 ) +
                                                LFill( COD_CTA ) +
-                                               LFill( intTP_ASSINANTE ) +
+                                               LFill( intTP_ASSINANTE, 0 ) +
                                                Delimitador +
                                                #13#10;
         end;
@@ -1593,7 +1593,7 @@ begin
            recTerceiroOutras:        intIND_REC := 9;
           end;
           strRegistroD510 := strRegistroD510 + LFill('D510') +
-                                               LFill( intIND_REC ) +
+                                               LFill( intIND_REC, 0 ) +
                                                Delimitador +
                                                #13#10;
         end;
@@ -1628,7 +1628,7 @@ begin
            spOutros:           intIND_SERV := 9;
           end;
           strRegistroD530 := strRegistroD530 + LFill( 'D530' ) +
-                                               LFill( intIND_SERV ) +
+                                               LFill( intIND_SERV, 0 ) +
                                                Delimitador +
                                                #13#10;
         end;

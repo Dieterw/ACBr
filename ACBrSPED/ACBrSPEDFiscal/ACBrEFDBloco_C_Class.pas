@@ -878,11 +878,11 @@ begin
                                                LFill( DT_DOC, 'ddmmyyyy' ) +
                                                LFill( DT_E_S, 'ddmmyyyy' ) +
                                                LFill( VL_DOC , 0 , 2 , booNFCancelada ) +
-                                               LFill( intIND_PGTO ) +
+                                               LFill( intIND_PGTO, 0 ) +
                                                LFill( VL_DESC,0,2, booNFCancelada ) +
                                                LFill( VL_ABAT_NT,0,2, booNFCancelada ) +
                                                LFill( VL_MERC,0,2, booNFCancelada ) +
-                                               LFill( intIND_FRT ) +
+                                               LFill( intIND_FRT, 0 ) +
                                                LFill( VL_FRT,0,2, booNFCancelada ) +
                                                LFill( VL_SEG,0,2, booNFCancelada ) +
                                                LFill( VL_OUT_DA,0,2, booNFCancelada ) +
@@ -976,7 +976,7 @@ begin
           end;
           strRegistroC111 := strRegistroC111 + LFill('C111') +
                                                LFill( NUM_PROC ) +
-                                               LFill( intIND_PROC ) +
+                                               LFill( intIND_PROC, 0 ) +
                                                Delimitador +
                                                #13#10;
         end;
@@ -1105,7 +1105,7 @@ begin
            ttOutros:          intIND_CARGA := 9;
           end;
           strRegistroC115 := strRegistroC115 + LFill('C115') +
-                                               LFill( intIND_CARGA ) +
+                                               LFill( intIND_CARGA, 0 ) +
                                                LFill( CNPJ_COL ) +
                                                LFill( IE_COL ) +
                                                LFill( CPF_COL ) +
@@ -1576,7 +1576,7 @@ begin
            tovVendaOutros:    intIND_VEIC_OPER := 9;
           end;
           strRegistroC175 := strRegistroC175 + LFill('C175') +
-                                               LFill( intIND_VEIC_OPER ) +
+                                               LFill( intIND_VEIC_OPER, 0 ) +
                                                LFill( CNPJ ) +
                                                LFill( UF ) +
                                                LFill( CHASSI_VEIC ) +
@@ -2453,7 +2453,7 @@ begin
                                                 LFill( COD_INF ) +
                                                 LFill( VL_PIS,0,2 ) +
                                                 LFill( VL_COFINS,0,2 ) +
-                                                LFill( intTP_LIGACAO ) +
+                                                LFill( intTP_LIGACAO, 0 ) +
                                                 LFill( strCOD_GRUPO_TENSAO ) +
                                                 Delimitador +
                                                 #13#10;

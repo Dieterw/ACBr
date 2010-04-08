@@ -468,7 +468,7 @@ begin
           strRegistroE112 := strRegistroE112 + LFill('E112') +
                                                LFill( NUM_DA ) +
                                                LFill( NUM_PROC ) +
-                                               LFill( intIND_PROC ) +
+                                               LFill( intIND_PROC, 0 ) +
                                                LFill( PROC ) +
                                                LFill( TXT_COMPL ) +
                                                Delimitador +
@@ -571,7 +571,7 @@ begin
                                                LFill( DT_VCTO ) +
                                                LFill( COD_REC ) +
                                                LFill( NUM_PROC ) +
-                                               LFill( intIND_PROC ) +
+                                               LFill( intIND_PROC, 0 ) +
                                                LFill( PROC ) +
                                                LFill( TXT_COMPL ) +
                                                Delimitador +
@@ -718,7 +718,7 @@ begin
           strRegistroE230 := strRegistroE230 + LFill('E230') +
                                                LFill( NUM_DA ) +
                                                LFill( NUM_PROC ) +
-                                               LFill( intIND_PROC ) +
+                                               LFill( intIND_PROC, 0 ) +
                                                LFill( PROC ) +
                                                LFill( TXT_COMPL ) +
                                                Delimitador +
@@ -793,7 +793,7 @@ begin
                                                LFill( DT_VCTO ) +
                                                LFill( COD_REC ) +
                                                LFill( NUM_PROC ) +
-                                               LFill( intIND_PROC ) +
+                                               LFill( intIND_PROC, 0 ) +
                                                LFill( PROC ) +
                                                LFill( TXT_COMPL ) +
                                                Delimitador +
@@ -947,7 +947,7 @@ begin
                                                LFill( Integer(IND_AJ), 0 ) +
                                                LFill( VL_AJ,0 ) +
                                                LFill( COD_AJ ) +
-                                               LFill( intIND_DOC ) +
+                                               LFill( intIND_DOC, 0 ) +
                                                LFill( NUM_DOC ) +
                                                LFill( DESCR_AJ ) +
                                                Delimitador +

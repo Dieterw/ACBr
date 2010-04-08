@@ -844,7 +844,7 @@ begin
                                                LFill( COD_INF ) +
                                                LFill( VL_PIS,0,2 ) +
                                                LFill( VL_COFINS,0,2 ) +
-                                               LFill( intTP_LIGACAO ) +
+                                               LFill( intTP_LIGACAO, 0 ) +
                                                LFill( strCOD_GRUPO_TENSAO ) +
                                                Delimitador +
                                                #13#10;

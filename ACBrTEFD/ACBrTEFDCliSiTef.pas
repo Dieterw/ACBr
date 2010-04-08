@@ -163,8 +163,8 @@ type
         ListaRestricoes : AnsiString = '') : Integer ;
      Function ContinuarRequisicao( ImprimirComprovantes : Boolean ) : Integer ;
 
-     procedure ProcessarRespostaPagamento( const IndiceFPG : AnsiString;
-        const Valor : Double);
+     Function ProcessarRespostaPagamento( const IndiceFPG_ECF : String;
+        const Valor : Double) : Boolean; override;
 
    public
      property Respostas : TStringList read fRespostas ;
@@ -500,7 +500,7 @@ end;
 procedure TACBrTEFDCliSiTef.ConfirmarEReimprimirTransacoesPendentes;
 Var
   ArquivosVerficar : TStringList ;
-  I, Sts           : Integer;
+//I, Sts           : Integer;
   ArqMask          : AnsiString;
 begin
   ArquivosVerficar := TStringList.Create;
@@ -526,21 +526,27 @@ begin
         try
            if pos(Resp.DocumentoVinculado, fDocumentosProcessados) = 0 then
            begin
-              CNF;{Confirma}
-              {Modificado - Fernando 19-03-2010, atender roteiro }
+              CNF;   {Confirma}
+              
+              {Modificado - Fernando 19-03-2010, para atender roteiro }
               TACBrTEFD(Owner).DoExibeMsg( opmOK,
                                       'Transação TEF efetuada.'+sLineBreak+
-                                      'Favor Re-Imprimir Ultimo Cupom ' ) 
+                                      'Favor Re-Imprimir Ultimo Cupom ' ) ;
 
-//              begin
-//                 Sts := FazerRequisicao( fOperacaoReImpressao, 'ADM' ) ;
-//
-//                 if Sts = 10000 then
-//                    Sts := ContinuarRequisicao( True ) ;  { True = Imprimir Comprovantes agora }
-//
-//                 if not ( Sts = 0 ) then
-//                    AvaliaErro( Sts );
-//              end;
+(*
+              if TACBrTEFD(Owner).DoExibeMsg( opmYesNo,
+                                      'Transação TEF efetuada.'+sLineBreak+
+                                      'Favor Re-Imprimir Ultimo Cupom ' ) = mrYes then
+              begin
+                 Sts := FazerRequisicao( fOperacaoReImpressao, 'ADM' ) ;
+
+                 if Sts = 10000 then
+                    Sts := ContinuarRequisicao( True ) ;  { True = Imprimir Comprovantes agora }
+
+                 if not ( Sts = 0 ) then
+                    AvaliaErro( Sts );
+              end;
+*)
            end;
 
            DeleteFile( ArquivosVerficar[ 0 ] );
@@ -1153,15 +1159,17 @@ begin
 
 end ;
 
-procedure TACBrTEFDCliSiTef.ProcessarRespostaPagamento( const IndiceFPG : AnsiString;
-   const Valor : Double);
+Function TACBrTEFDCliSiTef.ProcessarRespostaPagamento(
+   const IndiceFPG_ECF : String; const Valor : Double) : Boolean; 
 var
   ImpressaoOk : Boolean;
   RespostaPendente : TACBrTEFDResp ;
 begin
+  Result := True ;
+
   with TACBrTEFD(Owner) do
   begin
-     Self.Resp.IndiceFPG_ECF := IndiceFPG;
+     Self.Resp.IndiceFPG_ECF := IndiceFPG_ECF;
 
      { Cria Arquivo de Backup, contendo Todas as Respostas }
      CopiarResposta ;
@@ -1179,7 +1187,8 @@ begin
            while not ImpressaoOk do
            begin
               try
-                 ECFPagamento( IndiceFPG, Valor );
+                 ECFPagamento( IndiceFPG_ECF, Valor );
+                 RespostasPendentes.SaldoAPagar  := RoundTo( RespostasPendentes.SaldoAPagar - Valor, -2 ) ;
                  RespostaPendente.OrdemPagamento := RespostasPendentes.Count + 1 ;
                  ImpressaoOk := True ;
               except

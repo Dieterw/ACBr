@@ -47,6 +47,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 1.16b   08/04/10
+- Corrigido Bug na Verificação de SaldoRestante quando a propriedade
+  AutoEfetuarPagamento := True  (reportado por:  Dassayev Barbosa)
+
 Versão 1.15b   07/04/10
 (modificações efetuadas por Fernando Gutierres Damaceno )
 

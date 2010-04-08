@@ -55,7 +55,7 @@ uses
   {$ENDIF} ;
 
 const
-   CACBrTEFD_Versao      = '1.15b' ;
+   CACBrTEFD_Versao      = '1.16b' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -2326,6 +2326,7 @@ begin
            begin
               try
                  ECFPagamento( IndiceFPG_ECF, Valor );
+                 RespostasPendentes.SaldoAPagar  := RoundTo( RespostasPendentes.SaldoAPagar - Valor, -2 ) ;
                  RespostaPendente.OrdemPagamento := RespostasPendentes.Count + 1 ;
                  ImpressaoOk := True ;
               except
@@ -2479,8 +2480,18 @@ end;
 { TACBrTEFDRespostasPendentes }
 
 function TACBrTEFDRespostasPendentes.GetSaldoRestante : Double;
+var
+   I : Integer;
+   TotalPagoENaoImpresso : Double ;
 begin
-   Result := RoundTo( SaldoAPagar - TotalPago, -2) ;
+  TotalPagoENaoImpresso := 0 ;
+  For I := 0 to Count-1 do
+     if TACBrTEFDResp(Items[I]).OrdemPagamento = 0 then  // Ainda nao imprimiu no ECF ?
+        TotalPagoENaoImpresso := TotalPagoENaoImpresso + TACBrTEFDResp(Items[I]).ValorTotal ;
+
+  TotalPagoENaoImpresso := RoundTo( TotalPagoENaoImpresso, -2);
+
+  Result := RoundTo( SaldoAPagar - TotalPagoENaoImpresso, -2) ;
 end;
 
 function TACBrTEFDRespostasPendentes.GetTotalPago : Double;
@@ -2489,7 +2500,7 @@ var
 begin
   Result := 0 ;
   For I := 0 to Count-1 do
-    Result := Result + TACBrTEFDResp(Items[I]).ValorTotal;
+     Result := Result + TACBrTEFDResp(Items[I]).ValorTotal ;
 
   Result := RoundTo( Result, -2);
 end;

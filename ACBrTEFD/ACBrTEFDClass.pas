@@ -1624,7 +1624,6 @@ begin
      Req.Rede                         := OldResp.Rede;
      Req.NSU                          := OldResp.NSU;
      Req.DataHoraTransacaoComprovante := OldResp.DataHoraTransacaoComprovante;
-     Req.Finalizacao                  := OldResp.Finalizacao;
      Req.Banco                        := OldResp.Banco;
      Req.Agencia                      := OldResp.Agencia;
      Req.AgenciaDC                    := OldResp.AgenciaDC;
@@ -2292,7 +2291,7 @@ begin
                                { Ja tem RespostasPendentes ? }
        if UltimaTransacao and ( RespostasPendentes.Count > 0 ) then
        begin
-          if DoExibeMsg( opmYesNo, 'Gostaria de continuar a transação com outra(s)' +
+          if DoExibeMsg( opmYesNo, 'Gostaria de continuar a transação com outra(s) ' +
                                    'forma(s) de pagamento ?' ) <> mrYes then
           begin
              ComandarECF( opeCancelaCupom );

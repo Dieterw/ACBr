@@ -107,6 +107,7 @@ type
      fEsperaSTS    : Integer;
      fTEFList      : TACBrTEFDClassList ;
      fpRespostasPendentes : TACBrTEFDRespostasPendentes;
+     fArqLOG: string;
      function GetAbout : String;
      function GetAguardandoResposta: Boolean;
      function GetArqReq : String;
@@ -129,6 +130,7 @@ type
      procedure SetPathBackup(const AValue : String);
      procedure SetGPAtual(const AValue : TACBrTEFDTipo);
      procedure SetAbout(const Value: String);{%h-}
+     procedure SetArqLOG(const AValue : String);
 
    public
      Function EstadoECF : AnsiChar ;
@@ -222,6 +224,7 @@ type
      property EsperaSleep : Integer read fEsperaSleep write SetEsperaSleep
         default CACBrTEFD_EsperaSleep ;
      property PathBackup : String read GetPathBackup write SetPathBackup ;
+     property ArqLOG : String read fArqLOG write SetArqLOG ;
 
      property TEFDial    : TACBrTEFDDial     read fTefDial ;
      property TEFDisc    : TACBrTEFDDisc     read fTefDisc ;
@@ -343,6 +346,7 @@ begin
   fEsperaSTS            := CACBrTEFD_EsperaSTS ;
   fEsperaSleep          := CACBrTEFD_EsperaSleep ;
   fTecladoBloqueado     := False ;
+  fArqLOG               := '' ;
 
   fOnAguardaResp              := nil ;
   fOnAntesFinalizarRequisicao := nil ;
@@ -1340,6 +1344,23 @@ end;
 procedure TACBrTEFD.SetAbout(const Value: String);
 begin
   {}
+end;
+
+procedure TACBrTEFD.SetArqLOG(const AValue: String);
+var
+   I : Integer;
+begin
+  { Ajustando o mesmo valor nas Classes de TEF, caso elas usem o valor default }
+  For I := 0 to fTEFList.Count-1 do
+  begin
+    with TACBrTEFDClassTXT( fTEFList[I] ) do
+    begin
+       if ArqLOG = fArqLOG then
+          ArqLOG := AValue;
+    end;
+  end;
+
+  fArqLOG := AValue;
 end;
 
 function TACBrTEFD.getArqResp : String;

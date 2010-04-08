@@ -48,29 +48,35 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 Versão 1.16b   08/04/10
-- Corrigido Bug na Verificação de SaldoRestante quando a propriedade
-  AutoEfetuarPagamento := True  (reportado por:  Dassayev Barbosa)
+[-] Corrigido Bug na Verificação de SaldoRestante quando a propriedade
+    AutoEfetuarPagamento := True  (reportado por:  Dassayev Barbosa)
+[+] Adicionada a propriedade (published) ArqLog : String. Se definida, irá
+    ajustar o ArqLOG de todas as classes de TEF que não tenham ArqLOG definido.
+[-] Corrigido bug no Cancelamento (CNC). Arquivo de Requisição estava sendo
+    criado contendo o campo 017 (Finalização) que NAO deve ser enviado no CNC.
+    Isso causava problemas em alguns módulos de TEF para localizar a transação
+    a ser cancelada (como por exemplo no RedeCard)
 
 Versão 1.15b   07/04/10
 (modificações efetuadas por Fernando Gutierres Damaceno )
 
-- Adicionada propriedades em TACBrTEFDResp:
-     property Instituicao    : String read fpInstituicao;
-     property ModalidadePagto :String read fpModalidadePagto;
-     property ModalidadePagtoDescrita:String read fpModalidadePagtoDescrita;
-     property ModalidadeExtenso:String read fpModalidadePagtoExtenso;
-     property CodigoRedeAutorizada:String read fpCodigoRedeAutorizada;
+[+] Adicionada propriedades em TACBrTEFDResp:
+    property Instituicao    : String read fpInstituicao;
+    property ModalidadePagto :String read fpModalidadePagto;
+    property ModalidadePagtoDescrita:String read fpModalidadePagtoDescrita;
+    property ModalidadeExtenso:String read fpModalidadePagtoExtenso;
+    property CodigoRedeAutorizada:String read fpCodigoRedeAutorizada;
 
 --- ACBrTEFDCliSi---
-- Adicionado tratamento para preenchimento das propriedades novas do resp em
-  ConteudoToProperty;
-- Modificação da procedure "ConfirmarEReimprimirTransacoesPendentes" para
-  atender o roteiro, que diz apenas para confirmar transacao e mostrar mensagem:
-  "Transação TEF efetuada, por favor re-imprimir ultimo cupom"
-- Modificação da pergunta "Impressora não responde Tentar novamente?"
-  para "Impressora não responde. Deseja Imprimir novamente?"
-  Detalhe, essa pergunta deve ser feita mesmo que durante a impressão do cupom
-  fiscal como no roteiro de teste Seq.47.
+[+] Adicionado tratamento para preenchimento das propriedades novas do resp em
+    ConteudoToProperty;
+[*] Modificação da procedure "ConfirmarEReimprimirTransacoesPendentes" para
+    atender o roteiro, que diz apenas para confirmar transacao e mostrar mensagem:
+    "Transação TEF efetuada, por favor re-imprimir ultimo cupom"
+[*] Modificação da pergunta "Impressora não responde Tentar novamente?"
+    para "Impressora não responde. Deseja Imprimir novamente?"
+    Detalhe, essa pergunta deve ser feita mesmo que durante a impressão do cupom
+    fiscal como no roteiro de teste Seq.47.
 
 Versão 1.14b   12/03/10
 [-] Verificação de Teclado Bloqueado antes de processar comandos diferentes de

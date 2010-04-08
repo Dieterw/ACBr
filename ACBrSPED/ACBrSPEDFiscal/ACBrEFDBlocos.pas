@@ -93,20 +93,23 @@ type
   /// Indicador do tipo de pagamento
   TACBrTipoPagamento = (tpVista,             // 0 - À Vista
                         tpPrazo,             // 1 - A Prazo
-                        tpSemPagamento       // 9 - Sem pagamento
+                        tpSemPagamento,      // 9 - Sem pagamento
+                        tpNenhum             // Preencher vazio
                         );
   /// Indicador do tipo do frete
   TACBrTipoFrete = (tfPorContaTerceiros,     // 0 - Por conta de terceiros
                     tfPorContaEmitente,      // 1 - Por conta do emitente
                     tfPorContaDestinatario,  // 2 - Por conta do destinatário
-                    tfSemCobrancaFrete       // 9 - Sem cobrança de frete
+                    tfSemCobrancaFrete,      // 9 - Sem cobrança de frete
+                    tfNenhum                 // Preencher vazio
                     );
 
   /// Indicador do tipo do frete da operação de redespacho
   TACBrTipoFreteRedespacho = (frSemRedespacho,         // 0 – Sem redespacho
                               frPorContaEmitente,      // 1 - Por conta do emitente
                               frPorContaDestinatario,  // 2 - Por conta do destinatário
-                              frOutros                 // 9 – Outros
+                              frOutros,                // 9 – Outros
+                              frNenhum                 // Preencher vazio
                               );
   /// Indicador da origem do processo
   TACBrOrigemProcesso = (opSefaz,            // 0 - Sefaz

@@ -820,8 +820,8 @@ end;
 function TBloco_C.WriteRegistroC100(RegC001: TRegistroC001): String;
 var
 intFor: integer;
-intIND_FRT: integer;
-intIND_PGTO: integer;
+strIND_FRT: string;
+strIND_PGTO: string;
 strCOD_SIT: String;
 strRegistroC100: String;
 booNFCancelada: Boolean; /// Variavél p/ tratamento de NFs canceladas, denegadas ou inutilizada - Jean Barreiros 25Nov2009
@@ -848,23 +848,27 @@ begin
           /// Tratamento NFs canceladas 02/03, denegada 04 ou inutilizada 05 - Jean Barreiros 25Nov2009
           if Pos(strCOD_SIT,'02, 03, 04, 05') > 0 then
           begin
-            DT_DOC := 0;
-            DT_E_S := 0;
+            DT_DOC   := 0;
+            DT_E_S   := 0;
+            IND_FRT  := tfNenhum;
+            IND_PGTO := tpNenhum;
             booNFCancelada := true
           end
           else
             booNFCancelada := false;
           //
           case IND_FRT of
-           tfPorContaTerceiros:    intIND_FRT := 0;
-           tfPorContaEmitente:     intIND_FRT := 1;
-           tfPorContaDestinatario: intIND_FRT := 2;
-           tfSemCobrancaFrete:     intIND_FRT := 9;
+           tfPorContaTerceiros:    strIND_FRT := '0';
+           tfPorContaEmitente:     strIND_FRT := '1';
+           tfPorContaDestinatario: strIND_FRT := '2';
+           tfSemCobrancaFrete:     strIND_FRT := '9';
+           tfNenhum:               strIND_FRT := '';
           end;
           case IND_PGTO of
-           tpVista:        intIND_PGTO := 0;
-           tpPrazo:        intIND_PGTO := 1;
-           tpSemPagamento: intIND_PGTO := 9;
+           tpVista:        strIND_PGTO := '0';
+           tpPrazo:        strIND_PGTO := '1';
+           tpSemPagamento: strIND_PGTO := '9';
+           tpNenhum:       strIND_PGTO := '';
           end;
           strRegistroC100 := strRegistroC100 + LFill('C100') +
                                                LFill( Integer(IND_OPER), 0 ) +
@@ -878,11 +882,11 @@ begin
                                                LFill( DT_DOC, 'ddmmyyyy' ) +
                                                LFill( DT_E_S, 'ddmmyyyy' ) +
                                                LFill( VL_DOC , 0 , 2 , booNFCancelada ) +
-                                               LFill( intIND_PGTO, 0 ) +
+                                               LFill( strIND_PGTO ) +
                                                LFill( VL_DESC,0,2, booNFCancelada ) +
                                                LFill( VL_ABAT_NT,0,2, booNFCancelada ) +
                                                LFill( VL_MERC,0,2, booNFCancelada ) +
-                                               LFill( intIND_FRT, 0 ) +
+                                               LFill( strIND_FRT ) +
                                                LFill( VL_FRT,0,2, booNFCancelada ) +
                                                LFill( VL_SEG,0,2, booNFCancelada ) +
                                                LFill( VL_OUT_DA,0,2, booNFCancelada ) +

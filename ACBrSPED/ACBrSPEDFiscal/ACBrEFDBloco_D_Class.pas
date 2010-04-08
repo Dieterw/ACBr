@@ -551,9 +551,9 @@ end;
 function TBloco_D.WriteRegistroD100(RegD001: TRegistroD001): String;
 var
 intFor: integer;
-intIND_FRT: integer;
-strCOD_SIT: String;
-strRegistroD100: String;
+strIND_FRT: string;
+strCOD_SIT: string;
+strRegistroD100: string;
 begin
   strRegistroD100 := '';
 
@@ -564,10 +564,11 @@ begin
         with RegD001.RegistroD100.Items[intFor] do
         begin
           case IND_FRT of
-           tfPorContaTerceiros:    intIND_FRT := 0;
-           tfPorContaEmitente:     intIND_FRT := 1;
-           tfPorContaDestinatario: intIND_FRT := 2;
-           tfSemCobrancaFrete:     intIND_FRT := 9;
+           tfPorContaTerceiros:    strIND_FRT := '0';
+           tfPorContaEmitente:     strIND_FRT := '1';
+           tfPorContaDestinatario: strIND_FRT := '2';
+           tfSemCobrancaFrete:     strIND_FRT := '9';
+           tfNenhum:               strIND_FRT := '';
           end;
           case COD_SIT of
            sdRegular:               strCOD_SIT := '00';
@@ -596,7 +597,7 @@ begin
                                                LFill( CHV_CTE_REF ) +
                                                LFill( VL_DOC,0,2 ) +
                                                LFill( VL_DESC,0,2 ) +
-                                               LFill( intIND_FRT, 0 ) +
+                                               LFill( strIND_FRT ) +
                                                LFill( VL_SERV,0,2 ) +
                                                LFill( VL_BC_ICMS,0,2 ) +
                                                LFill( VL_ICMS,0,2 ) +
@@ -694,7 +695,7 @@ end;
 function TBloco_D.WriteRegistroD130(RegD100: TRegistroD100): String;
 var
 intFor: integer;
-intIND_FRT_RED: integer;
+strIND_FRT_RED: string;
 strRegistroD130: String;
 begin
   strRegistroD130 := '';
@@ -706,15 +707,16 @@ begin
         with RegD100.RegistroD130.Items[intFor] do
         begin
           case IND_FRT_RED of
-           frSemRedespacho:        intIND_FRT_RED := 0;
-           frPorContaEmitente:     intIND_FRT_RED := 1;
-           frPorContaDestinatario: intIND_FRT_RED := 2;
-           frOutros:               intIND_FRT_RED := 9;
+           frSemRedespacho:        strIND_FRT_RED := '0';
+           frPorContaEmitente:     strIND_FRT_RED := '1';
+           frPorContaDestinatario: strIND_FRT_RED := '2';
+           frOutros:               strIND_FRT_RED := '9';
+           frNenhum:               strIND_FRT_RED := '';
           end;
           strRegistroD130 := strRegistroD130 + LFill('D130') +
                                                LFill( COD_PART_CONSG ) +
                                                LFill( COD_PART_RED ) +
-                                               LFill( intIND_FRT_RED, 0 ) +
+                                               LFill( strIND_FRT_RED ) +
                                                LFill( COD_MUN_ORIG ) +
                                                LFill( COD_MUN_DEST ) +
                                                LFill( VEIC_ID ) +

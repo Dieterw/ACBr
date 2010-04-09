@@ -25,7 +25,8 @@ type
     const
       wArquivoINI: string =
 '[DANFe]'+#13+
-'#Rave, RaveCB ou Fortes'+#13+
+'# DANFe                          = Rave'+#13+
+'# DANFe                          = Fortes'+#13+
 'DANFe                          = RaveCB'+#13+
 'Somente_PDF                    = 0'+#13+
 #13+
@@ -59,7 +60,7 @@ type
 'Sistema                        ='+#13+
 'Site                           ='+#13+
 'TamanhoFonte_DemaisCampos      = 10'+#13+
-'#tiRetraro ou tiPaisagem'+#13+
+'# TipoDANFE                      = tiPaisagem'+#13+
 'TipoDANFE                      = tiRetrato'+#13+
 'Usuario                        ='+#13+
 #13+
@@ -68,17 +69,18 @@ type
 #13+
 '[PROPRIEDADEs_DANFe_RAVECB]'+#13+
 'EspessuraBorda                 = 2'+#13+
-'#ftTimes ou ftCourier'+#13+
+'# Fonte                          = ftCourier'+#13+
 'Fonte                          = ftTimes'+#13+
 'ImprimirDetalhamentoEspecifico = 1'+#13+
 'TamanhoCampoCodigo             = 0'+#13+
 #13+
 '[PROPRIEDADEs_DANFe_FORTES]'+#13+
-'#fdArial, fdCourierNew ou fdTimesNewRoman'+#13+
+'# FonteDANFE                     = fdArial'+#13+
+'# FonteDANFE                     = fdCourierNew'+#13+
 'FonteDANFE                     = fdTimesNewRoman'+#13+
 'LarguraCodProd                 = 0'+#13+
 'MarcadAgua                     ='+#13+
-'#pcCabecalho ou pcRodape'+#13+
+'# PosCanhoto                     = pcRodape'+#13+
 'PosCanhoto                     = pcCabecalho';
 
   public

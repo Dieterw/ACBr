@@ -51,7 +51,7 @@ uses
   ACBrEFDBloco_G_Class, ACBrEFDBloco_H_Class;
 
 const
-   CACBrSpedFiscal_Versao = '0.07b' ;
+   CACBrSpedFiscal_Versao = '0.08a' ;
 
 type
   /// ACBrSpedFiscal - Sitema Publico de Escrituração Digital Fiscal
@@ -406,18 +406,19 @@ begin
     Write(txtFile, WriteRegistroE001);
     Write(txtFile, WriteRegistroE990);
 
-    /// CÓDIGO ABAIXO COMENTADO ATÉ QUE ENTRE EM VIGOR O ARTIGO 3o DO AC 38/09.
-    /// QUE DIZ:
-    ///
     /// Este ato entra em vigor na data de sua publicação, produzindo efeitos
     /// para as escriturações referentes aos períodos a partir de 1º de janeiro de 2010,
     /// --> exceto quanto ao BLOCO G e registros pertinentes ao Livro de
     /// Controle de Crédito de ICMS do Ativo Permanente cujos efeitos serão
     /// a partir de 1º de julho de 2010 <--.
 
-    /// BLOCO G
-//    Write(txtFile, WriteRegistroG001);
-//    Write(txtFile, WriteRegistroG990);
+    /// Exigência do Art. 3º do AC 09/08
+    if DT_INI >= StrToDate('01/07/2010') then
+    begin
+       /// BLOCO G
+       Write(txtFile, WriteRegistroG001);
+       Write(txtFile, WriteRegistroG990);
+    end;
 
     /// BLOCO H
     Write(txtFile, WriteRegistroH001);
@@ -516,16 +517,20 @@ begin
          REG_BLC := '0220';
          QTD_REG_BLC := Bloco_0.Registro0220Count;
       end;
-      with New do
+      /// Exigência do Art. 3º do AC 09/08
+      if DT_INI >= StrToDate('01/07/2010') then
       begin
-         REG_BLC := '0300';
-         QTD_REG_BLC := Bloco_0.Registro0300Count;
-      end;
-      with New do
-      begin
-         REG_BLC := '0305';
-         QTD_REG_BLC := Bloco_0.Registro0305Count;
-      end;
+         with New do
+         begin
+            REG_BLC := '0300';
+            QTD_REG_BLC := Bloco_0.Registro0300Count;
+         end;
+         with New do
+         begin
+            REG_BLC := '0305';
+            QTD_REG_BLC := Bloco_0.Registro0305Count;
+         end;
+         end;
       with New do
       begin
          REG_BLC := '0400';
@@ -541,15 +546,19 @@ begin
          REG_BLC := '0460';
          QTD_REG_BLC := Bloco_0.Registro0460Count;
       end;
-      with New do
+      /// Exigência do Art. 3º do AC 09/08
+      if DT_INI >= StrToDate('01/07/2010') then
       begin
-         REG_BLC := '0500';
-         QTD_REG_BLC := Bloco_0.Registro0500Count;
-      end;
-      with New do
-      begin
-         REG_BLC := '0600';
-         QTD_REG_BLC := Bloco_0.Registro0600Count;
+         with New do
+         begin
+            REG_BLC := '0500';
+            QTD_REG_BLC := Bloco_0.Registro0500Count;
+         end;
+         with New do
+         begin
+            REG_BLC := '0600';
+            QTD_REG_BLC := Bloco_0.Registro0600Count;
+         end;
       end;
    end;
 end;
@@ -1393,7 +1402,7 @@ begin
                                                                   Bloco_C.RegistroC990.QTD_LIN_C +
                                                                   Bloco_D.RegistroD990.QTD_LIN_D +
                                                                   Bloco_E.RegistroE990.QTD_LIN_E +
-//                                                                  Bloco_G.RegistroG990.QTD_LIN_G +
+                                                                  ifThen(Bloco_G.DT_INI >= StrToDate('01/07/2010'), Bloco_G.RegistroG990.QTD_LIN_G, 0) +
                                                                   Bloco_H.RegistroH990.QTD_LIN_H +
                                                                   Bloco_9.Registro9990.QTD_LIN_9;
    Result := Bloco_9.WriteRegistro9999;

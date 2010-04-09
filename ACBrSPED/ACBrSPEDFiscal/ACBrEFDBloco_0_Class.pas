@@ -731,32 +731,35 @@ intFor: integer;
 strRegistro0300: String;
 begin
   strRegistro0300 := '';
-
-  if Assigned(Reg0001.Registro0300) then
+  /// Exigência do Art. 3º do AC 09/08
+  if DT_INI >= StrToDate('01/07/2010') then
   begin
-     for intFor := 0 to Reg0001.Registro0300.Count - 1 do
+     if Assigned(Reg0001.Registro0300) then
      begin
-        with Reg0001.Registro0300.Items[intFor] do
+        for intFor := 0 to Reg0001.Registro0300.Count - 1 do
         begin
-          ///
-          strRegistro0300 := strRegistro0300 + LFill('0300') +
-                                               LFill( COD_IND_BEM ) +
-                                               LFill( IDENT_MERC ) +
-                                               LFill( DESCR_ITEM ) +
-                                               LFill( COD_PRNC ) +
-                                               LFill( COD_CTA ) +
-                                               DFill( NR_PARC, 0 ) +
-                                               Delimitador +
-                                               #13#10;
-        end;
-        /// Registros FILHOS
-        strRegistro0300 := strRegistro0300 +
-                           WriteRegistro0305( Reg0001.Registro0300.Items[intFor] );
+           with Reg0001.Registro0300.Items[intFor] do
+           begin
+             ///
+             strRegistro0300 := strRegistro0300 + LFill('0300') +
+                                                  LFill( COD_IND_BEM ) +
+                                                  LFill( IDENT_MERC ) +
+                                                  LFill( DESCR_ITEM ) +
+                                                  LFill( COD_PRNC ) +
+                                                  LFill( COD_CTA ) +
+                                                  DFill( NR_PARC, 0 ) +
+                                                  Delimitador +
+                                                  #13#10;
+           end;
+           /// Registros FILHOS
+           strRegistro0300 := strRegistro0300 +
+                              WriteRegistro0305( Reg0001.Registro0300.Items[intFor] );
 
-        Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
+           Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
+        end;
+        /// Variavél para armazenar a quantidade de registro do tipo.
+        FRegistro0300Count := FRegistro0300Count  + Reg0001.Registro0300.Count;
      end;
-     /// Variavél para armazenar a quantidade de registro do tipo.
-     FRegistro0300Count := FRegistro0300Count  + Reg0001.Registro0300.Count;
   end;
   Result := strRegistro0300;
 end;
@@ -764,23 +767,26 @@ end;
 function TBloco_0.WriteRegistro0305(Reg0300: TRegistro0300): String;
 begin
   Result := '';
-
-  if Assigned(Reg0300.Registro0305) then
+  /// Exigência do Art. 3º do AC 09/08
+  if DT_INI >= StrToDate('01/07/2010') then
   begin
-     with Reg0300.Registro0305 do
+     if Assigned(Reg0300.Registro0305) then
      begin
-       Result := LFill('0305') +
-                 LFill(COD_CTA_DEPR) +
-                 LFill(DT_DEPR_INI, 'ddmmyyyy') +
-                 LFill(COD_CCUS) +
-                 DFill(VIDA_UTIL, 0) +
-                 Delimitador +
-                 #13#10;
-       ///
-       Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
+        with Reg0300.Registro0305 do
+        begin
+          Result := LFill('0305') +
+                    LFill(COD_CTA_DEPR) +
+                    LFill(DT_DEPR_INI, 'ddmmyyyy') +
+                    LFill(COD_CCUS) +
+                    DFill(VIDA_UTIL, 0) +
+                    Delimitador +
+                    #13#10;
+          ///
+          Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
+        end;
+        /// Variavél para armazenar a quantidade de registro do tipo.
+        FRegistro0305Count := FRegistro0305Count + 1;
      end;
-     /// Variavél para armazenar a quantidade de registro do tipo.
-     FRegistro0305Count := FRegistro0305Count + 1;
   end;
 end;
 
@@ -872,30 +878,33 @@ intFor: integer;
 strRegistro0500: String;
 begin
   strRegistro0500 := '';
-
-  if Assigned( Reg0001.Registro0500 ) then
+  /// Exigência do Art. 3º do AC 09/08
+  if DT_INI >= StrToDate('01/07/2010') then
   begin
-     for intFor := 0 to Reg0001.Registro0500.Count - 1 do
+     if Assigned( Reg0001.Registro0500 ) then
      begin
-        with Reg0001.Registro0500.Items[intFor] do
+        for intFor := 0 to Reg0001.Registro0500.Count - 1 do
         begin
-           Check(Pos(COD_NAT_CC, '01,02,03,04,05,09,10,99') > 0, '(0-0500) O código da natureza da conta/grupo de contas "%s" digitado é inválido!', [COD_NAT_CC]);
-           Check(((IND_CTA = 'S') or (IND_CTA = 'A')), '(0-0500) O indicador "%s" do tipo de conta, deve ser informado  S ou A!', [IND_CTA]);
+           with Reg0001.Registro0500.Items[intFor] do
+           begin
+              Check(Pos(COD_NAT_CC, '01,02,03,04,05,09,10,99') > 0, '(0-0500) O código da natureza da conta/grupo de contas "%s" digitado é inválido!', [COD_NAT_CC]);
+              Check(((IND_CTA = 'S') or (IND_CTA = 'A')), '(0-0500) O indicador "%s" do tipo de conta, deve ser informado  S ou A!', [IND_CTA]);
 
-           strRegistro0500 := strRegistro0500 + LFill('0500') +
-                                                LFill( DT_ALT ) +
-                                                LFill( COD_NAT_CC, 2) +
-                                                LFill( IND_CTA, 1) +
-                                                LFill( NIVEL ) +
-                                                LFill( COD_CTA ) +
-                                                LFill( NOME_CTA ) +
-                                                Delimitador +
-                                                #13#10;
+              strRegistro0500 := strRegistro0500 + LFill('0500') +
+                                                   LFill( DT_ALT ) +
+                                                   LFill( COD_NAT_CC, 2) +
+                                                   LFill( IND_CTA, 1) +
+                                                   LFill( NIVEL ) +
+                                                   LFill( COD_CTA ) +
+                                                   LFill( NOME_CTA ) +
+                                                   Delimitador +
+                                                   #13#10;
+           end;
+           Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
         end;
-        Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
+        /// Variavél para armazenar a quantidade de registro do tipo.
+        FRegistro0500Count := FRegistro0500Count + Reg0001.Registro0500.Count;
      end;
-     /// Variavél para armazenar a quantidade de registro do tipo.
-     FRegistro0500Count := FRegistro0500Count + Reg0001.Registro0500.Count;
   end;
   Result := strRegistro0500;
 end;

@@ -45,7 +45,7 @@ unit ACBrSpedFiscal;
 interface
 
 uses
-  SysUtils, Classes, DateUtils, ACBrSped, ACBrTXTClass,
+  SysUtils, Math, Classes, DateUtils, ACBrSped, ACBrTXTClass,
   ACBrEFDBloco_0_Class, ACBrEFDBloco_1_Class, ACBrEFDBloco_9_Class,
   ACBrEFDBloco_C_Class, ACBrEFDBloco_D_Class, ACBrEFDBloco_E_Class,
   ACBrEFDBloco_G_Class, ACBrEFDBloco_H_Class;

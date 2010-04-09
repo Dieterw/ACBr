@@ -386,7 +386,7 @@ begin
          CertStoreMem.Add(Cert);
        end;    
 
-      if FSenhaCert <> '' then
+      if (FSenhaCert <> '') and PrivateKey.IsHardwareDevice then
        begin
          PrivateKey := Cert.PrivateKey;
 

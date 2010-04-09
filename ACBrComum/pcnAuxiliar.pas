@@ -64,7 +64,7 @@ function FiltrarTextoXML(const RetirarEspacos: boolean; aTexto: AnsiString): Ans
 function IIf(const condicao: Boolean; const Verdadeiro, Falso: Variant): Variant;
 function IntToStrZero(const Numero: integer; const tamanho: integer): string;
 function GerarCodigoNumerico(numero: integer): integer;
-function GerarChave(var chave: string; const codigoUF: integer; codigoNumerico: integer; const modelo, serie, numero: integer; const emissao: TDateTime; const CNPJ: string): boolean;
+function GerarChave(var chave: AnsiString; const codigoUF: integer; codigoNumerico: integer; const modelo, serie, numero: integer; const emissao: TDateTime; const CNPJ: string): boolean;
 function GerarDigito(var Digito: integer; chave: string): boolean;
 function SomenteNumeros(const s: string): string;
 function RetornarCodigoNumerico(Chave: string): integer;
@@ -188,7 +188,7 @@ begin
   Result := StrToInt(copy(s, 1, 9));
 end;
 
-function GerarChave(var chave: string; const codigoUF: integer; codigoNumerico: integer;
+function GerarChave(var chave: AnsiString; const codigoUF: integer; codigoNumerico: integer;
   const modelo, serie, numero: integer; const emissao: TDateTime; const CNPJ: string): boolean;
 var
   digito: integer;

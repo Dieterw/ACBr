@@ -5147,7 +5147,7 @@ object frmAcbrNfeMonitor: TfrmAcbrNfeMonitor
               Width = 98
               Height = 21
               TabOrder = 5
-              Text = '1'
+              Text = '0'
               OnKeyPress = edtNumCopiaKeyPress
             end
             object edtEspBorda: TEdit

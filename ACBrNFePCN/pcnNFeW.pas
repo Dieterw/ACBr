@@ -185,12 +185,12 @@ end;
 
 function TNFeW.GerarXml: boolean;
 var
-  chave: string;
+  chave: AnsiString;
   Gerar: boolean;
   xProtNFe : String;
 begin
   chave := '';
-  if not GerarChave(Chave, nfe.ide.cUF, nfe.ide.cNF, nfe.ide.modelo, nfe.ide.serie,
+  if not GerarChave(chave, nfe.ide.cUF, nfe.ide.cNF, nfe.ide.modelo, nfe.ide.serie,
     nfe.ide.nNF, nfe.ide.dEmi, nfe.emit.CNPJCPF) then
     Gerador.wAlerta('A01', 'infNFe', DSC_CHAVE, ERR_MSG_GERAR_CHAVE);
   nfe.infNFe.ID := chave;

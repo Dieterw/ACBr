@@ -785,7 +785,7 @@ begin
            {$ENDIF}
          end
 
-        else if Cmd.Metodo = 'LerIni' then // Recarrega configurações do arquivo INI
+        else if Cmd.Metodo = 'lerini' then // Recarrega configurações do arquivo INI
            frmAcbrNfeMonitor.LerIni
 
         else if Cmd.Metodo = 'restaurar' then
@@ -1092,8 +1092,8 @@ begin
                            with adi.Add do
                             begin
                               nAdicao     := StrToInt(sNumeroADI);
-                              nSeqAdi     := K;
-                              cFabricante := INIRec.ReadString( sSecao,'CodigoFrabricante','');
+                              nSeqAdi     := INIRec.ReadInteger( sSecao,'nSeqAdi',K);
+                              cFabricante := INIRec.ReadString(  sSecao,'CodigoFabricante','');
                               vDescDI     := StringToFloatDef( INIRec.ReadString(sSecao,'DescontoADI','') ,0);
                             end;
                            Inc(K)

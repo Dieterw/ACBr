@@ -1218,6 +1218,7 @@ begin
   try
      AThread.Connection.Capture( SL );
      NewLines:= SL.Text;
+     Conexao := AThread ;
      AThread.Synchronize( Processar );
   finally
      SL.Free ;

@@ -1,7 +1,7 @@
 {******************************************************************************}
-{ Projeto: Componente ACBrNFe                                                  }
-{  Biblioteca multiplataforma de componentes Delphi para emissão de Nota Fiscal}
-{ eletrônica - NFe - http://www.nfe.fazenda.gov.br                          }
+{ Projeto: Componente ACBrCTe                                                  }
+{  Biblioteca multiplataforma de componentes Delphi para emissão de Conhecimen-}
+{ to de Transporte eletrônico - CTe - http://www.cte.fazenda.gov.br            }
 {                                                                              }
 { Direitos Autorais Reservados (c) 2008 Wemerson Souto                         }
 {                                       Daniel Simoes de Almeida               }
@@ -40,7 +40,13 @@
 |* 16/12/2008: Wemerson Souto
 |*  - Doação do componente para o Projeto ACBr
 |* 20/08/2009: Caique Rodrigues
-|*  - Doação units para geração do DANFe via QuickReport
+|*  - Doação units para geração do DACTe via QuickReport
+|* 06/04/2010: Italo Jurisato Junior
+|*  - Acréscimo dos parâmetros "FEmail", "FResumoCanhoto", "FFax", "FNumCopias",
+|*    "FSistema", "FUsuario", "FImprimeHoraSaida", "FHoraSaida",
+|*    "FMargemSuperior", "FMargemInferior", "FMargemEsquerda", "FMargemDireita",
+|*    nas Class procedures "Imprimir" e "SavePDF"
+|*  - Habilitada a funcionalidade da procedure "SavePDF";
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrCTeDACTeQR;
@@ -50,7 +56,8 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, QuickRpt,
-  QRCtrls, ACBrCTeQRCodeBar, pcteCTe;
+  QRCtrls, ACBrCTeQRCodeBar, pcteCTe, ACBrCTe
+  {, QRPDFFilt Decomentar para usar PDF};
 
 type
   TfrmDACTeQR = class(TForm)
@@ -59,17 +66,61 @@ type
 
   protected
     //BarCode : TBarCode128c ;
-    FCTe: TCTe;
-    FLogo: string;
-    FUrl: string;
-    AfterPreview: boolean;
-    ChangedPos: boolean;
-    FSemValorFiscal: boolean;
+    FACBrCTe            : TACBrCTe;
+    FCTe                : TCTe;
+    FLogo               : String;
+    FEmail              : String;
+    FImprimeHoraSaida   : Boolean;
+    FHoraSaida          : String;
+    FResumoCanhoto      : Boolean;
+    FFax                : String;
+    FNumCopias          : Integer;
+    FSistema            : String;
+    FUrl                : String;
+    FUsuario            : String;
+    AfterPreview        : Boolean ;
+    ChangedPos          : Boolean ;
+    FSemValorFiscal     : Boolean ;
+    FMargemSuperior     : double;
+    FMargemInferior     : double;
+    FMargemEsquerda     : double;
+    FMargemDireita      : double;
     procedure qrlSemValorFiscalPrint(sender: TObject; var Value: string);
     procedure SetBarCodeImage(ACode: string; QRImage: TQRImage);
   public
-    class procedure Imprimir(ACTe: TCTe; ALogo: string = ''; AUrl: string = ''; APreview: Boolean = True);
-    class procedure SavePDF(AFile: string; ACTe: TCTe; ALogo, AUrl: string);
+    class procedure Imprimir(ACTe                : TCTe;
+                             ALogo               : String    = '';
+                             AEmail              : String    = '';
+                             AImprimeHoraSaida   : Boolean   = False;
+                             AHoraSaida          : String    = '';
+                             AResumoCanhoto      : Boolean   = False;
+                             AFax                : String    = '';
+                             ANumCopias          : Integer   = 1;
+                             ASistema            : String    = '';
+                             AUrl                : String    = '';
+                             AUsuario            : String    = '' ;
+                             APreview            : Boolean   = True;
+                             AMargemSuperior     : Double    = 0.8;
+                             AMargemInferior     : Double    = 0.8;
+                             AMargemEsquerda     : Double    = 0.6;
+                             AMargemDireita      : Double    = 0.51);
+
+    class procedure SavePDF(AFile: String;
+                            ACTe                : TCTe;
+                            ALogo               : String    = '';
+                            AEmail              : String    = '';
+                            AImprimeHoraSaida   : Boolean   = False;
+                            AHoraSaida          : String    = '';
+                            AResumoCanhoto      : Boolean   = False;
+                            AFax                : String    = '';
+                            ANumCopias          : Integer   = 1;
+                            ASistema            : String    = '';
+                            AUrl                : String    = '';
+                            AUsuario            : String    = '';
+                            AMargemSuperior     : Double    = 0.8;
+                            AMargemInferior     : Double    = 0.8;
+                            AMargemEsquerda     : Double    = 0.6;
+                            AMargemDireita      : Double    = 0.51);
 
   end;
 
@@ -79,57 +130,113 @@ uses MaskUtils;
 
 {$R *.dfm}
 
-class procedure TfrmDACTeQR.Imprimir(ACTe: TCTe; ALogo: string = ''; AUrl: string = ''; APreview: Boolean = True);
+class procedure TfrmDACTeQR.Imprimir(ACTe               : TCTe;
+                                    ALogo               : String    = '';
+                                    AEmail              : String    = '';
+                                    AImprimeHoraSaida   : Boolean   = False;
+                                    AHoraSaida          : String    = '';
+                                    AResumoCanhoto      : Boolean   = False;
+                                    AFax                : String    = '';
+                                    ANumCopias          : Integer   = 1;
+                                    ASistema            : String    = '';
+                                    AUrl                : String    = '';
+                                    AUsuario            : String    = '' ;
+                                    APreview            : Boolean   = True;
+                                    AMargemSuperior     : Double    = 0.8;
+                                    AMargemInferior     : Double    = 0.8;
+                                    AMargemEsquerda     : Double    = 0.6;
+                                    AMargemDireita      : Double    = 0.51);
 begin
-  with Create(nil) do
-  try
-    FCTe := ACTe;
-    FLogo := ALogo;
-    FUrl := AUrl;
+  with Create ( nil ) do
+     try
+        FCTe                := ACTe;
+        FLogo               := ALogo;
+        FEmail              := AEmail;
+        FImprimeHoraSaida   := AImprimeHoraSaida;
+        FHoraSaida          := AHoraSaida;
+        FResumoCanhoto      := AResumoCanhoto;
+        FFax                := AFax;
+        FNumCopias          := ANumCopias;
+        FSistema            := ASistema;
+        FUrl                := AUrl;
+        FUsuario            := AUsuario;
+        FMargemSuperior     := AMargemSuperior;
+        FMargemInferior     := AMargemInferior;
+        FMargemEsquerda     := AMargemEsquerda;
+        FMargemDireita      := AMargemDireita;
 
-    if APreview then
-      QRCTe.Preview
-    else
-    begin
-      AfterPreview := True;
-      QRCTe.Print;
-    end;
-  finally
-    Free;
-  end;
+        if APreview then
+        begin
+            QRCTe.Prepare;
+            QRCTe.Preview;
+        end else
+           begin
+              AfterPreview := True ;
+              QRCTe.Prepare;
+              QRCTe.Print ;
+           end ;
+     finally
+        Free ;
+     end ;
 end;
 
-class procedure TfrmDACTeQR.SavePDF(AFile: string; ACTe: TCTe; ALogo, AUrl: string);
-var
-  i                 : Integer;
-  //  qf : TQRPDFDocumentFilter ;
+class procedure TfrmDACTeQR.SavePDF(AFile               : String;
+                                    ACTe                : TCTe;
+                                    ALogo               : String    = '';
+                                    AEmail              : String    = '';
+                                    AImprimeHoraSaida   : Boolean   = False;
+                                    AHoraSaida          : String    = '';
+                                    AResumoCanhoto      : Boolean   = False;
+                                    AFax                : String    = '';
+                                    ANumCopias          : Integer   = 1;
+                                    ASistema            : String    = '';
+                                    AUrl                : String    = '';
+                                    AUsuario            : String    = '';
+                                    AMargemSuperior     : Double    = 0.8;
+                                    AMargemInferior     : Double    = 0.8;
+                                    AMargemEsquerda     : Double    = 0.6;
+                                    AMargemDireita      : Double    = 0.51);
+Var
+  i : Integer;
+  // qf : TQRPDFDocumentFilter;
 begin
-  {  with Create ( nil ) do
-       try
-          FCTe  := ACTe;
-          FLogo := ALogo;
-          FUrl  := AUrl;
+  {Descomentar para usar PDF}
+{  with Create ( nil ) do
+     try
+        FCTe                := ACTe;
+        FLogo               := ALogo;
+        FEmail              := AEmail;
+        FImprimeHoraSaida   := AImprimeHoraSaida;
+        FHoraSaida          := AHoraSaida;
+        FResumoCanhoto      := AResumoCanhoto;
+        FFax                := AFax;
+        FNumCopias          := ANumCopias;
+        FSistema            := ASistema;
+        FUrl                := AUrl;
+        FUsuario            := AUsuario;
+        FMargemSuperior     := AMargemSuperior;
+        FMargemInferior     := AMargemInferior;
+        FMargemEsquerda     := AMargemEsquerda;
+        FMargemDireita      := AMargemDireita;
 
-          For i := 0 to ComponentCount -1 do
-            begin
-              if (Components[i] is TQRShape) and (TQRShape(Components[i]).Shape = qrsRoundRect) then
-                begin
-                  TQRShape(Components[i]).Shape := qrsRectangle;
-                  TQRShape(Components[i]).Pen.Width := 1;
-                end;
-            end;
-
-          AfterPreview := True ;
-          QRCTe.Prepare;
-
-          qf := TQRPDFDocumentFilter.Create(AFile) ;
-          qf.CompressionOn := False;
-          qf.SetDocumentInfo( 'TurboCode CTe/CTe Integrator', 'www.turbocode.com.br', 'CTe', 'DACTe'  );
-          QRCTe.QRPrinter.ExportToFilter( qf );
-          qf.Free ;
-       finally
-          Free ;
-       end ;}
+        For i := 0 to ComponentCount -1 do
+          begin
+            if (Components[i] is TQRShape) and (TQRShape(Components[i]).Shape = qrsRoundRect) then
+              begin
+                TQRShape(Components[i]).Shape := qrsRectangle;
+                TQRShape(Components[i]).Pen.Width := 1;
+              end;
+          end;
+        AfterPreview := True ;
+        QRCTe.Prepare;
+        qf := TQRPDFDocumentFilter.Create(AFile) ;
+        qf.CompressionOn := False;
+        qf.SetDocumentInfo( 'TurboCode CTe/CTe Integrator', 'www.turbocode.com.br', 'CTe', 'DACTe'  );
+        QRCTe.QRPrinter.ExportToFilter( qf );
+        qf.Free;
+     finally
+        Free;
+     end ;}
 end;
 
 procedure TfrmDACTeQR.qrlSemValorFiscalPrint(sender: TObject;  var Value: string);
@@ -142,7 +249,7 @@ end;
 
 procedure TfrmDACTeQR.SetBarCodeImage(ACode: string; QRImage: TQRImage);
 var
-  b                 : TBarCode128c;
+  b : TBarCode128c;
 begin
   b := TBarCode128c.Create;
   //      Width  := QRImage.Width ;

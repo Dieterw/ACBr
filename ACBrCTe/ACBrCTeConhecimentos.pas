@@ -57,7 +57,7 @@ uses
   {$ENDIF}
   smtpsend, ssl_openssl, mimemess, mimepart, // units para enviar email
   pcteCTe, pcteCTeR, pcteCTeW,
-  pcnConversao;
+  pcnConversao, pcnAuxiliar, pcnLeitor;
 
 type
 
@@ -68,6 +68,8 @@ type
     FConfirmada : Boolean;
     FMsg : AnsiString ;
     FAlertas: AnsiString;
+    FNomeArq: String;
+    function GetCTeXML: AnsiString;
   public
     constructor Create(Collection2: TCollection); override;
     destructor Destroy; override;
@@ -75,12 +77,24 @@ type
     procedure ImprimirPDF;
     function SaveToFile(CaminhoArquivo: string = ''): boolean;
     function SaveToStream(Stream: TStringStream): boolean;
-    procedure EnviarEmail(const sSmtpHost, sSmtpPort, sSmtpUser, sSmtpPasswd, sFrom, sTo, sAssunto: String; sMensagem : TStrings; SSL : Boolean; EnviaPDF: Boolean = true);
+    procedure EnviarEmail(const sSmtpHost,
+                                sSmtpPort,
+                                sSmtpUser,
+                                sSmtpPasswd,
+                                sFrom,
+                                sTo,
+                                sAssunto: String;
+                                sMensagem : TStrings;
+                                SSL : Boolean;
+                                EnviaPDF: Boolean = true;
+                                sCC: TStrings = nil;
+                                Anexos:TStrings=nil);
     property CTe: TCTe  read FCTe write FCTe;
     property XML: AnsiString  read FXML write FXML;
     property Confirmada: Boolean  read FConfirmada write FConfirmada;
     property Msg: AnsiString  read FMsg write FMsg;
     property Alertas: AnsiString read FAlertas write FAlertas;
+    property NomeArq: String read FNomeArq write FNomeArq;
   end;
 
   TConhecimentos = class(TOwnedCollection)
@@ -119,8 +133,10 @@ type
     smtp : TSMTPSend;
     sFrom : String;
     sTo : String;
+    sCC : TStrings;
     slmsg_Lines : TStrings;
-    constructor Enviar;
+    constructor Create;
+    destructor Destroy ; override ;
   protected
     procedure Execute; override;
     procedure HandleException;
@@ -202,57 +218,96 @@ begin
   end;
 end;
 
-procedure Conhecimento.EnviarEmail(const sSmtpHost, sSmtpPort, sSmtpUser, sSmtpPasswd, sFrom, sTo, sAssunto: String; sMensagem : TStrings; SSL : Boolean; EnviaPDF: Boolean = true);
+procedure Conhecimento.EnviarEmail(const sSmtpHost,
+                                      sSmtpPort,
+                                      sSmtpUser,
+                                      sSmtpPasswd,
+                                      sFrom,
+                                      sTo,
+                                      sAssunto: String;
+                                      sMensagem : TStrings;
+                                      SSL : Boolean;
+                                      EnviaPDF: Boolean = true;
+                                      sCC: TStrings=nil;
+                                      Anexos:TStrings=nil);
 var
-  ThreadSMTP : TSendMailThread;
-  m:TMimemess;
-  p: TMimepart;
-  StreamCTe : TStringStream;
-  NomeArq : String;
+ ThreadSMTP : TSendMailThread;
+ m:TMimemess;
+ p: TMimepart;
+ StreamCTe : TStringStream;
+ NomeArq : String;
+ i: Integer;
 begin
-  m:=TMimemess.create;
-  ThreadSMTP := TSendMailThread.Enviar;
-  try
-     p := m.AddPartMultipart('mixed', nil);
-     if sMensagem <> nil then
-        m.AddPartText(sMensagem, p);
-     StreamCTe := TStringStream.Create('');
-     SaveToStream(StreamCTe) ;
-     m.AddPartBinary(StreamCTe,copy(CTe.inFCTe.ID, (length(CTe.inFCTe.ID)-44)+1, 44)+'-CTe.xml', p);
-     if (EnviaPDF) then
-     begin
-        TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).DACTe.ImprimirDACTEPDF(CTe);
-        if NotaUtil.EstaVazio(TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).DACTe.PathPDF) then
-           NomeArq := TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).Configuracoes.Geral.PathSalvar
-        else
-           NomeArq := TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).DACTe.PathPDF;
-        m.AddPartBinaryFromFile(PathWithDelim(NomeArq)+CTe.inFCTe.ID+'.pdf', p);
-     end;
-     m.header.tolist.add(sTo);
-     m.header.From := sFrom;
-     m.header.subject:=sAssunto;
-     m.EncodeMessage;
+ m:=TMimemess.create;
+ ThreadSMTP := TSendMailThread.Create ;  // Não Libera, pois usa FreeOnTerminate := True ;
+ StreamCTe  := TStringStream.Create('');
+ try
+    p := m.AddPartMultipart('mixed', nil);
+    if sMensagem <> nil then
+       m.AddPartText(sMensagem, p);
+    SaveToStream(StreamCTe) ;
+    m.AddPartBinary(StreamCTe,copy(CTe.infCTe.ID, (length(CTe.infCTe.ID)-44)+1, 44)+'-CTe.xml', p);
+    if (EnviaPDF) then
+    begin
+       if TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).DACTe <> nil then
+       begin
+          TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).DACTe.ImprimirDACTePDF(CTe);
+          NomeArq :=  StringReplace(CTe.infCTe.ID,'CTe', '', [rfIgnoreCase]);
+          NomeArq := PathWithDelim(TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).DACTe.PathPDF)+NomeArq+'.pdf';
+          m.AddPartBinaryFromFile(NomeArq, p);
+       end;
+    end;
 
-     ThreadSMTP.sFrom := sFrom;
-     ThreadSMTP.sTo := sTo;
-     ThreadSMTP.slmsg_Lines.Add(m.Lines.Text);
+    if assigned(Anexos) then
+      for i := 0 to Anexos.Count - 1 do
+      begin
+        m.AddPartBinaryFromFile(Anexos[i], p);
+      end;
 
-     ThreadSMTP.smtp.UserName := sSmtpUser;
-     ThreadSMTP.smtp.Password := sSmtpPasswd;
+    m.header.tolist.add(sTo);
+    m.header.From := sFrom;
+    m.header.subject:=sAssunto;
+    m.EncodeMessage;
 
-     ThreadSMTP.smtp.TargetHost := sSmtpHost;
-     ThreadSMTP.smtp.TargetPort := sSmtpPort;
+    ThreadSMTP.sFrom := sFrom;
+    ThreadSMTP.sTo   := sTo;
+    if sCC <> nil then
+       ThreadSMTP.sCC.AddStrings(sCC);
+    ThreadSMTP.slmsg_Lines.AddStrings(m.Lines);
 
-     ThreadSMTP.smtp.FullSSL := SSL;
-     ThreadSMTP.smtp.AutoTLS := SSL;
-     TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).SetStatus( stCTeEmail );
+    ThreadSMTP.smtp.UserName := sSmtpUser;
+    ThreadSMTP.smtp.Password := sSmtpPasswd;
 
-     ThreadSMTP.Resume; // inicia a thread
+    ThreadSMTP.smtp.TargetHost := sSmtpHost;
+    if not NotaUtil.EstaVazio( sSmtpPort ) then     // Usa default
+       ThreadSMTP.smtp.TargetPort := sSmtpPort;
 
-     TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).SetStatus( stCTeIdle );
-  finally
-     m.free;
-  end;
+    ThreadSMTP.smtp.FullSSL := SSL;
+    ThreadSMTP.smtp.AutoTLS := SSL;
+    TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).SetStatus( stCTeEmail );
+
+    ThreadSMTP.Resume; // inicia a thread
+
+    TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).SetStatus( stCTeIdle );
+ finally
+    m.free;
+    StreamCTe.Free ;
+ end;
+end;
+
+function Conhecimento.GetCTeXML: AnsiString;
+var
+ LocCTeW : TCTeW;
+begin
+ LocCTeW := TCTeW.Create(Self.CTe);
+ try
+    LocCTeW.schema := TsPL005c;
+    LocCTeW.GerarXml;
+    Result := LocCTeW.Gerador.ArquivoFormatoXML;
+ finally
+    LocCTeW.Free;
+ end;
+// Result := FXML;
 end;
 
 { TConhecimentos }
@@ -280,6 +335,7 @@ var
   i: Integer;
   vAssinada : AnsiString;
   LocCTeW : TCTeW;
+  Leitor: TLeitor;
   FMsg : AnsiString;
 begin
   for i:= 0 to Self.Count-1 do
@@ -301,9 +357,20 @@ begin
         vAssinada := StringReplace( vAssinada, '<'+ENCODING_UTF8_STD+'>', '', [rfReplaceAll] ) ;
         vAssinada := StringReplace( vAssinada, '<?xml version="1.0"?>', '', [rfReplaceAll] ) ;
         Self.Items[i].XML := vAssinada;
-        if FConfiguracoes.Geral.Salvar then
-           FConfiguracoes.Geral.Save(StringReplace(Self.Items[i].CTe.inFCTe.ID, 'CTe', '', [rfIgnoreCase])+'-cte.xml', vAssinada);
 
+        Leitor := TLeitor.Create;
+        leitor.Grupo := vAssinada;
+        Self.Items[i].CTe.signature.URI := Leitor.rAtributo('Reference URI=');
+        Self.Items[i].CTe.signature.DigestValue := Leitor.rCampo(tcStr, 'DigestValue');
+        Self.Items[i].CTe.signature.SignatureValue := Leitor.rCampo(tcStr, 'SignatureValue');
+        Self.Items[i].CTe.signature.X509Certificate := Leitor.rCampo(tcStr, 'X509Certificate');
+        Leitor.Free;
+
+        if FConfiguracoes.Geral.Salvar then
+           FConfiguracoes.Geral.Save(StringReplace(Self.Items[i].CTe.infCTe.ID, 'CTe', '', [rfIgnoreCase])+'-cte.xml', vAssinada);
+
+        if NotaUtil.NaoEstaVazio(Self.Items[i].NomeArq) then
+           FConfiguracoes.Geral.Save(ExtractFileName(Self.Items[i].NomeArq), vAssinada, ExtractFilePath(Self.Items[i].NomeArq));
      finally
         LocCTeW.Free;
      end;
@@ -422,8 +489,10 @@ begin
     for i:= 0 to TACBrCTe( FACBrCTe ).Conhecimentos.Count-1 do
      begin
         if NotaUtil.EstaVazio(PathArquivo) then
-           PathArquivo := TACBrCTe( FACBrCTe ).Configuracoes.Geral.PathSalvar;
-        CaminhoArquivo := PathWithDelim(PathArquivo)+copy(TACBrCTe( FACBrCTe ).Conhecimentos.Items[0].CTe.inFCTe.ID, (length(TACBrCTe( FACBrCTe ).Conhecimentos.Items[0].CTe.inFCTe.ID)-44)+1, 44)+'-CTe.xml';
+           PathArquivo := TACBrCTe( FACBrCTe ).Configuracoes.Geral.PathSalvar
+        else
+           PathArquivo := ExtractFilePath(PathArquivo);
+        CaminhoArquivo := PathWithDelim(PathArquivo)+copy(TACBrCTe( FACBrCTe ).Conhecimentos.Items[i].CTe.inFCTe.ID, (length(TACBrCTe( FACBrCTe ).Conhecimentos.Items[i].CTe.inFCTe.ID)-44)+1, 44)+'-CTe.xml';
         TACBrCTe( FACBrCTe ).Conhecimentos.Items[i].SaveToFile(CaminhoArquivo)
      end;
  except
@@ -438,32 +507,62 @@ begin
   Sysutils.ShowException(FException, nil );
 end;
 
-constructor TSendMailThread.Enviar;
+constructor TSendMailThread.Create ;
 begin
-  Create(True);
-  FreeOnTerminate := True;
-  smtp := TSMTPSend.Create;
+  smtp        := TSMTPSend.Create;
   slmsg_Lines := TStringList.Create;
+  sCC         := TStringList.Create;
+
   sFrom := '';
-  sTo := '';
+  sTo   := '';
+
+  FreeOnTerminate := True;
+
+  inherited Create(True);
+end;
+
+destructor TSendMailThread.Destroy;
+begin
+  slmsg_Lines.Free ;
+  sCC.Free ;
+  smtp.Free ;
+
+  inherited;
 end;
 
 procedure TSendMailThread.Execute;
+var
+ i: integer;
 begin
    inherited;
    try
       try
          if not smtp.Login() then
-            raise Exception.Create('SMTP ERROR: Login:' + smtp.EnhCodeString);
+            raise Exception.Create('SMTP ERROR: Login:' + smtp.EnhCodeString+
+            sLineBreak+smtp.FullResult.Text);
          if not smtp.MailFrom( sFrom, Length(sFrom)) then
-            raise Exception.Create('SMTP ERROR: MailFrom:' + smtp.EnhCodeString);
+            raise Exception.Create('SMTP ERROR: MailFrom:' + smtp.EnhCodeString+
+            sLineBreak+smtp.FullResult.Text);
          if not smtp.MailTo(sTo) then
-            raise Exception.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString);
+            raise Exception.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString+
+            sLineBreak+smtp.FullResult.Text);
+         if (sCC <> nil) then
+          begin
+            for I := 0 to sCC.Count - 1 do
+             begin
+               if not smtp.MailTo(sCC.Strings[i]) then
+                 raise Exception.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString+
+                 sLineBreak+smtp.FullResult.Text);
+             end;
+          end;
          if not smtp.MailData(slmsg_Lines) then
-            raise Exception.Create('SMTP ERROR: MailData:' + smtp.EnhCodeString);
+            raise Exception.Create('SMTP ERROR: MailData:' + smtp.EnhCodeString+
+                 sLineBreak+smtp.FullResult.Text);
          if not smtp.Logout() then
-            raise Exception.Create('SMTP ERROR: Logout:' + smtp.EnhCodeString);
+            raise Exception.Create('SMTP ERROR: Logout:' + smtp.EnhCodeString+
+                 sLineBreak+smtp.FullResult.Text);
       except
+         try smtp.Sock.CloseSocket ; except end ;
          HandleException;
       end;
    finally

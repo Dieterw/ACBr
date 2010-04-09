@@ -57,6 +57,7 @@ type
    private
     procedure SetCTE(const Value: TComponent);
     procedure ErroAbstract( NomeProcedure : String ) ;
+    function GetPathArquivos: String;
   protected
     FACBrCTE : TComponent;
     FLogo: String;
@@ -65,15 +66,21 @@ type
     FPathArquivos : String;
     FImpressora : String;
     FImprimirHoraSaida : Boolean;
+    FImprimirHoraSaida_Hora : string;
     FMostrarPreview : Boolean;
+    FMostrarStatus: Boolean;
     FTipoDACTE : TpcnTipoImpressao;
     FNumCopias : Integer;
+    FExpandirLogoMarca:Boolean;
     FFax  : String;
     FSite : String;
     FEmail: String;
     FImprimeDescPorc : Boolean;
 	  FProtocoloCTE: string;
     FMargemInferior: Double;
+    FMargemSuperior: Double;
+    FMargemEsquerda: Double;
+    FMargemDireita: Double;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
   public
     constructor Create(AOwner: TComponent); override;
@@ -88,7 +95,9 @@ type
     property PathPDF: String read FPathArquivos write FPathArquivos ;
     property Impressora: String read FImpressora write FImpressora ;
     property ImprimirHoraSaida: Boolean read FImprimirHoraSaida write FImprimirHoraSaida ;
+    property ImprimirHoraSaida_Hora: string read FImprimirHoraSaida_Hora write FImprimirHoraSaida_Hora ;
     property MostrarPreview: Boolean read FMostrarPreview write FMostrarPreview ;
+    property MostrarStatus: Boolean read FMostrarStatus write FMostrarStatus ;
     property TipoDACTE: TpcnTipoImpressao read FTipoDACTE write FTipoDACTE ;
     property NumCopias: Integer read FNumCopias write FNumCopias ;
     property Fax  : String read FFax   write FFax ;
@@ -97,11 +106,15 @@ type
     property ImprimirDescPorc: Boolean read FImprimeDescPorc write FImprimeDescPorc ;
     property ProtocoloCTE: String read FProtocoloCTE write FProtocoloCTE ;
     property MargemInferior: Double read FMargemInferior write FMargemInferior ;
+    property MargemSuperior: Double read FMargemSuperior write FMargemSuperior ;
+    property MargemEsquerda: Double read FMargemEsquerda write FMargemEsquerda ;
+    property MargemDireita: Double read FMargemDireita write FMargemDireita ;
+    property ExpandirLogoMarca: Boolean read FExpandirLogoMarca write FExpandirLogoMarca default false ;
   end;
 
 implementation
 
-uses ACBrCTE ;
+uses ACBrCTE, ACBrNFeUtil, ACBrUtil ;
 
 constructor TACBrCteDACTEClass.Create(AOwner: TComponent);
 begin
@@ -113,8 +126,10 @@ begin
   FUsuario      := '' ;
   FPathArquivos := '' ;
   FImpressora   := '' ;
-  FImprimirHoraSaida    := False;
-  FMostrarPreview       := True;
+  FImprimirHoraSaida := False;
+  FImprimirHoraSaida_Hora := '';
+  FMostrarPreview := True;
+  FMostrarStatus := True;
   FNumCopias := 1;
   FFax   := '' ;
   FSite  := '' ;
@@ -122,6 +137,9 @@ begin
   FImprimeDescPorc := False;
   FProtocoloCTE := '';
   FMargemInferior := 0.8;
+  FMargemSuperior := 0.8;
+  FMargemEsquerda := 0.6;
+  FMargemDireita  := 0.51;
 end;
 
 destructor TACBrCteDACTEClass.Destroy;
@@ -156,7 +174,7 @@ begin
   begin
      if Value <> nil then
         if not (Value is TACBrCTE) then
-           raise Exception.Create('ACBrDACTERave.CTE deve ser do tipo TACBrCTE') ;
+           raise Exception.Create('ACBrDACTE.CTE deve ser do tipo TACBrCTE') ;
 
      if Assigned(FACBrCTE) then
         FACBrCTE.RemoveFreeNotification(Self);
@@ -179,6 +197,19 @@ end;
 procedure TACBrCteDACTEClass.ErroAbstract(NomeProcedure: String);
 begin
   raise Exception.Create( NomeProcedure ) ;
+end;
+
+function TACBrCTeDACTEClass.GetPathArquivos: String;
+begin
+  if NotaUtil.EstaVazio(FPathArquivos) then
+     if Assigned(FACBrCTe) then
+        FPathArquivos := TACBrCTe(FACBrCTe).Configuracoes.Geral.PathSalvar;
+
+  if NotaUtil.NaoEstaVazio(FPathArquivos) then
+     if not DirectoryExists(FPathArquivos) then
+        ForceDirectories(FPathArquivos);
+
+  Result := PathWithDelim(FPathArquivos);
 end;
 
 end.

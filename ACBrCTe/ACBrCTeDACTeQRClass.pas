@@ -65,7 +65,7 @@ type
 
 implementation
 
-uses ACBrCTe, StrUtils, Dialogs;
+uses ACBrCTe, ACBrNFeUtil, ACBrUtil, StrUtils, Dialogs;
 
 constructor TACBrCTeDACTeQR.Create(AOwner: TComponent);
 begin
@@ -90,10 +90,40 @@ begin
   if CTe = nil then
   begin
     for i := 0 to TACBrCTe(ACBrCTe).Conhecimentos.Count - 1 do
-      frmDACTeQRRetrato.Imprimir(TACBrCTe(ACBrCTe).Conhecimentos.Items[i].CTe);
+      frmDACTeQRRetrato.Imprimir(TACBrCTe(ACBrCTe).Conhecimentos.Items[i].CTe
+                                    , Logo
+                                    , Email
+                                    , ImprimirHoraSaida
+                                    , ImprimirHoraSaida_Hora
+                                    , false
+                                    , Fax
+                                    , NumCopias
+                                    , Sistema
+                                    , Site
+                                    , Usuario
+                                    , MostrarPreview
+                                    , MargemSuperior
+                                    , MargemInferior
+                                    , MargemEsquerda
+                                    , MargemDireita);
   end
   else
-    frmDACTeQRRetrato.Imprimir(CTe);
+    frmDACTeQRRetrato.Imprimir(CTe
+                                , Logo
+                                , Email
+                                , ImprimirHoraSaida
+                                , ImprimirHoraSaida_Hora
+                                , False
+                                , Fax
+                                , NumCopias
+                                , Sistema
+                                , Site
+                                , Usuario
+                                , MostrarPreview
+                                , MargemSuperior
+                                , MargemInferior
+                                , MargemEsquerda
+                                , MargemDireita);
 
   frmDACTeQRRetrato.Free;
 end;
@@ -101,8 +131,63 @@ end;
 procedure TACBrCTeDACTeQR.ImprimirDACTePDF(CTe: TCTe = nil);
 var
   NomeArq: string;
+  i : Integer;
+  frmDACTeQRRetrato : TfrmDACTeQRRetrato;
+  sProt     : String ;
 begin
-  MessageDlg('Metodo não implementado!', mtWarning, [mbOk], 0);
+    frmDACTeQRRetrato := TfrmDACTeQRRetrato.Create(Self);
+
+    sProt := TACBrCTe(ACBrCTe).DACTe.ProtocoloCTe ;
+    frmDACTeQRRetrato.ProtocoloCTe( sProt ) ;
+  if CTe = nil then
+   begin
+     for i:= 0 to TACBrCTe(ACBrCTe).Conhecimentos.Count-1 do
+      begin
+        NomeArq := StringReplace(TACBrCTe(ACBrCTe).Conhecimentos.Items[i].CTe.infCTe.ID,'CTe', '', [rfIgnoreCase]);
+        NomeArq := PathWithDelim(Self.PathPDF)+NomeArq+'.pdf';
+
+        frmDACTeQRRetrato.SavePDF(  NomeArq
+                                    ,TACBrCTe(ACBrCTe).Conhecimentos.Items[i].CTe
+                                    , Logo
+                                    , Email
+                                    , ImprimirHoraSaida
+                                    , ImprimirHoraSaida_Hora
+                                    , false
+                                    , Fax
+                                    , NumCopias
+                                    , Sistema
+                                    , Site
+                                    , Usuario
+                                    , MargemSuperior
+                                    , MargemInferior
+                                    , MargemEsquerda
+                                    , MargemDireita);
+      end;
+   end
+  else
+  begin
+     NomeArq := StringReplace(CTe.infCTe.ID,'CTe', '', [rfIgnoreCase]);
+     NomeArq := PathWithDelim(Self.PathPDF)+NomeArq+'.pdf';
+     frmDACTeQRRetrato.SavePDF( NomeArq
+                                , CTe
+                                , Logo
+                                , Email
+                                , ImprimirHoraSaida
+                                , ImprimirHoraSaida_Hora
+                                , False
+                                , Fax
+                                , NumCopias
+                                , Sistema
+                                , Site
+                                , Usuario
+                                , MargemSuperior
+                                , MargemInferior
+                                , MargemEsquerda
+                                , MargemDireita);
+  end;
+
+  frmDACTeQRRetrato.Free;
+
 end;
 
 end.

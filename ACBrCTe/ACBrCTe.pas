@@ -69,6 +69,9 @@ const
 type
  TACBrCTeAboutInfo = (ACBrCTeAbout);
 
+ { Evento para gerar log das mensagens do Componente }
+ TACBrCTeLog = procedure(const Mensagem : String) of object ;
+
   TACBrCTe = class(TComponent)
   private
     fsAbout: TACBrCTeAboutInfo;
@@ -78,6 +81,7 @@ type
     FConfiguracoes: TConfiguracoes;
     FStatus : TStatusACBrCTe;
     FOnStatusChange: TNotifyEvent;
+    FOnGerarLog : TACBrCTeLog;
   	procedure SetDACTe(const Value: TACBrCTeDACTeClass);
   protected
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
@@ -97,6 +101,7 @@ type
   	property DACTe: TACBrCTeDACTeClass read FDACTe write SetDACTe ;
     property AboutACBrCTe : TACBrCTeAboutInfo read fsAbout write fsAbout
                           stored false ;
+    property OnGerarLog : TACBrCTeLog read FOnGerarLog write FOnGerarLog ;
   end;
 
 procedure ACBrAboutDialog ;
@@ -130,9 +135,13 @@ begin
   FConhecimentos      := TConhecimentos.Create(Self,Conhecimento);
   FConhecimentos.Configuracoes := FConfiguracoes;
   FWebServices       := TWebServices.Create(Self);
+
+  if FConfiguracoes.WebServices.Tentativas <= 0 then
+     FConfiguracoes.WebServices.Tentativas := 5;
   {$IFDEF ACBrCTeOpenSSL}
      CteUtil.InitXmlSec ;
   {$ENDIF}
+  FOnGerarLog := nil ;
 end;
 
 destructor TACBrCTe.Destroy;
@@ -193,14 +202,19 @@ var
   i : Integer;
 begin
   if Self.Conhecimentos.Count = 0 then
-    raise Exception.Create('Nenhum Conhecimento de Transporte Eletrônico Informado!');
+   begin
+      if Assigned(Self.OnGerarLog) then
+         Self.OnGerarLog('ERRO: Nenhum Conhecimento de Transporte Eletrônico Informado!');
+      raise Exception.Create('Nenhum Conhecimento de Transporte Eletrônico Informado!');
+   end;
 
 //  for i:= 0 to self.Conhecimentos.Count-1 do
 //    self.Conhecimentos.Items[i].XML.CTeChave := self.Conhecimentos.Items[i].CTe.infCTe.ID;
 
   for i:= 0 to self.Conhecimentos.Count-1 do
   begin
-    WebServices.Cancelamento.CTeChave := copy(self.Conhecimentos.Items[0].CTe.infCTe.ID, (length(self.Conhecimentos.Items[0].CTe.infCTe.ID)-44)+1, 44);
+    WebServices.Cancelamento.CTeChave := copy(self.Conhecimentos.Items[i].CTe.infCTe.ID,
+     (length(self.Conhecimentos.Items[i].CTe.infCTe.ID)-44)+1, 44);
     WebServices.Consulta.CTeChave := WebServices.Cancelamento.CTeChave;
     WebServices.Cancela(AJustificativa);
   end;
@@ -213,11 +227,16 @@ var
   i : Integer;
 begin
   if Self.Conhecimentos.Count = 0 then
-    raise Exception.Create('Nenhum Conhecimento de Transporte Eletrônico Informado!');
+   begin
+      if Assigned(Self.OnGerarLog) then
+         Self.OnGerarLog('ERRO: Nenhum Conhecimento de Transporte Eletrônico Informado!');
+      raise Exception.Create('Nenhum Conhecimento de Transporte Eletrônico Informado!');
+   end;
 
   for i := 0 to Self.Conhecimentos.Count-1 do
   begin
-    WebServices.Consulta.CTeChave := copy(self.Conhecimentos.Items[0].CTe.infCTe.ID, (length(self.Conhecimentos.Items[0].CTe.infCTe.ID)-44)+1, 44);
+    WebServices.Consulta.CTeChave := copy(self.Conhecimentos.Items[i].CTe.infCTe.ID,
+     (length(self.Conhecimentos.Items[i].CTe.infCTe.ID)-44)+1, 44);
     WebServices.Consulta.Executar;
   end;
   Result := True;

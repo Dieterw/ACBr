@@ -1414,6 +1414,7 @@ begin
         AProcCTe.PathRetConsReciCTe:=FConfiguracoes.Geral.PathSalvar+'\'+FCTeRetorno.nRec+'-pro-rec.xml';
         AProcCTe.GerarXML;
         AProcCTe.Gerador.SalvarArquivo(FConfiguracoes.Geral.PathSalvar+'\'+FCTeRetorno.ProtCTe.Items[j].chCTe+'-CTe.xml');
+        FCTes.Items[j].XML := AProcCTe.Gerador.ArquivoFormatoXML;
         AProcCTe.Free;
         break;
       end;

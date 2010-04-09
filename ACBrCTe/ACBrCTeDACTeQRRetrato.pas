@@ -66,11 +66,6 @@ type
     cdsDocumentosDOCUMENTO_2: TStringField;
     QRShape29: TQRShape;
     qrbCabecalho: TQRBand;
-    QRRoundRect5: TQRShape;
-    QRRoundRect4: TQRShape;
-    QRRoundRect3: TQRShape;
-    QRRoundRect2: TQRShape;
-    QRRoundRect1: TQRShape;
     QRShape11: TQRShape;
     qrmEmitente: TQRMemo;
     qrmDadosEmitente: TQRMemo;
@@ -99,7 +94,6 @@ type
     qrlModelo: TQRLabel;
     qrlEmissao: TQRLabel;
     qrlModal: TQRLabel;
-    QRRoundRect6: TQRShape;
     qrlProtocolo: TQRLabel;
     qrlTipoCte: TQRLabel;
     QRShape68: TQRShape;
@@ -118,7 +112,6 @@ type
     qrlFormaPagamento: TQRLabel;
     qrlInscSuframa: TQRLabel;
     qrbHeaderItens: TQRBand;
-    QRRoundRect24: TQRShape;
     QRLabel20: TQRLabel;
     QRShape32: TQRShape;
     QRLabel91: TQRLabel;
@@ -133,17 +126,12 @@ type
     qrsFimItens: TQRShape;
     qrbDadosExcEmitente: TQRBand;
     qrbDadosDACTe: TQRChildBand;
-    QRRoundRect8: TQRShape;
-    QRRoundRect7: TQRShape;
-    QRRoundRect10: TQRShape;
     QRLabel29: TQRLabel;
     qrlNatOperacao: TQRLabel;
     QRLabel12: TQRLabel;
     qrlOrigPrestacao: TQRLabel;
     QRLabel14: TQRLabel;
     qrlDestPrestacao: TQRLabel;
-    QRRoundRect11: TQRShape;
-    QRRoundRect12: TQRShape;
     QRLabel13: TQRLabel;
     QRLabel16: TQRLabel;
     QRLabel22: TQRLabel;
@@ -178,8 +166,6 @@ type
     qrlFoneDest: TQRLabel;
     qrlCEPDest: TQRLabel;
     QRLabel119: TQRLabel;
-    QRRoundRect13: TQRShape;
-    QRRoundRect14: TQRShape;
     QRLabel86: TQRLabel;
     QRLabel87: TQRLabel;
     QRLabel88: TQRLabel;
@@ -214,7 +200,6 @@ type
     qrlFoneReceb: TQRLabel;
     qrlCEPReceb: TQRLabel;
     QRLabel128: TQRLabel;
-    QRRoundRect15: TQRShape;
     QRLabel80: TQRLabel;
     QRLabel81: TQRLabel;
     QRLabel94: TQRLabel;
@@ -231,12 +216,8 @@ type
     QRLabel113: TQRLabel;
     qrlPaisToma: TQRLabel;
     qrlMunToma: TQRLabel;
-    QRRoundRect16: TQRShape;
-    QRRoundRect9: TQRShape;
     QRLabel1: TQRLabel;
     qrlProdPredominante: TQRLabel;
-    QRRoundRect17: TQRShape;
-    QRRoundRect18: TQRShape;
     QRShape4: TQRShape;
     QRShape6: TQRShape;
     QRShape7: TQRShape;
@@ -287,7 +268,6 @@ type
     QRLabel50: TQRLabel;
     qrlVlrTotServico: TQRLabel;
     qrlVlrTotReceber: TQRLabel;
-    QRRoundRect19: TQRShape;
     QRShape20: TQRShape;
     QRLabel51: TQRLabel;
     QRShape21: TQRShape;
@@ -309,11 +289,9 @@ type
     qrlAliqICMS: TQRLabel;
     qrbObs: TQRChildBand;
     qrbModRodFracionado: TQRChildBand;
-    QRRoundRect23: TQRShape;
     QRLabel10: TQRLabel;
     QRShape1: TQRShape;
     qrmObs: TQRMemo;
-    QRRoundRect21: TQRShape;
     QRLabel3: TQRLabel;
     QRShape24: TQRShape;
     QRLabel11: TQRLabel;
@@ -344,7 +322,6 @@ type
     qrlblSistema: TQRLabel;
     QRSysData1: TQRSysData;
     QRLabel15: TQRLabel;
-    QRRoundRect22: TQRShape;
     qrmObsExcEmitente: TQRMemo;
     qrlMsgTeste: TQRLabel;
     QRLabel7: TQRLabel;
@@ -353,7 +330,6 @@ type
     procedure qrbModRodFracionadoBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
     procedure qrbObsBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
     procedure qrbDadosDACTeBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
-    procedure qrbObs1BeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
     procedure qrbCabecalhoBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
     procedure QRCTeBeforePrint(Sender: TCustomQuickRep; var PrintReport: Boolean);
     procedure qrbItensBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
@@ -454,14 +430,6 @@ begin
   end;
 end;
 
-procedure TfrmDACTeQRRetrato.qrbObs1BeforePrint(Sender: TQRCustomBand;
-  var PrintBand: Boolean);
-begin
-  inherited;
-  qrmObs.Lines.Clear;
-  qrmObs.Lines.Text := FCTe.Compl.xObs;
-end;
-
 procedure TfrmDACTeQRRetrato.qrbObsBeforePrint(Sender: TQRCustomBand;
   var PrintBand: Boolean);
 begin
@@ -533,8 +501,8 @@ begin
   qrlFormaPagamento.Caption := tpforPagToStrText(FCTe.Ide.forPag);
 
   if FProtocoloCTe <> '' then
-    qrlProtocolo.Caption := FProtocoloCTe
-  else
+    qrlProtocolo.Caption := FProtocoloCTe;
+//  else
 //    qrlProtocolo.Caption := FProtocoloCTe ;
 //dando pau aqui =) thiago
 //    qrlProtocolo.Caption := FCTe.procCTe.nProt + CTeUtil.SeSenao(FCTe.procCTe.dhRecbto <> 0, DateTimeToStr(FCTe.procCTe.dhRecbto), '');
@@ -632,13 +600,13 @@ begin
     tmRemetente:
       begin
         qrlRazaoToma.Caption := FCTe.Rem.xNome;
-        qrlEnderecoToma.Caption := FCTe.Receb.EnderReceb.xLgr + ', ' + FCTe.Receb.EnderReceb.nro + ' - ' + FCTe.Receb.EnderReceb.xCpl;
-        qrlCEPToma.Caption := CTeUtil.FormatarCEP(IntToStr(FCTe.Receb.EnderReceb.CEP));
-        qrlMunToma.Caption := FCTe.Receb.EnderReceb.xMun;
-        qrlCnpjToma.Caption := CTeUtil.FormatarCNPJ(FCTe.Receb.CNPJCPF);
-        qrlPaisToma.Caption := FCTe.Receb.EnderReceb.xPais;
-        qrlInscEstToma.Caption := FCTe.Receb.IE;
-        qrlFoneToma.Caption := CTeUtil.FormatarFone(FCTe.Receb.fone);
+        qrlEnderecoToma.Caption := FCTe.Rem.EnderReme.xLgr + ', ' + FCTe.Rem.EnderReme.nro + ' - ' + FCTe.Rem.EnderReme.xCpl;
+        qrlCEPToma.Caption := CTeUtil.FormatarCEP(IntToStr(FCTe.Rem.EnderReme.CEP));
+        qrlMunToma.Caption := FCTe.Rem.EnderReme.xMun;
+        qrlCnpjToma.Caption := CTeUtil.FormatarCNPJ(FCTe.Rem.CNPJCPF);
+        qrlPaisToma.Caption := FCTe.Rem.EnderReme.xPais;
+        qrlInscEstToma.Caption := FCTe.Rem.IE;
+        qrlFoneToma.Caption := CTeUtil.FormatarFone(FCTe.Rem.fone);
       end;
     tmExpedidor:
       begin
@@ -800,7 +768,7 @@ begin
   inherited;
   qrlMsgTeste.Enabled := FCTe.Ide.tpAmb = taHomologacao;
   qrmObsExcEmitente.Lines.Clear;
-  qrmObsExcEmitente.Lines.Text := FCTe.Compl.xObs;
+//  qrmObsExcEmitente.Lines.Text := FCTe.Compl.xObs;
 end;
 
 end.

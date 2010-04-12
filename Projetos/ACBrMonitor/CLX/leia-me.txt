@@ -1,0 +1,223 @@
+***********************************************************
+
+  ACBrMonitor  Versao 0.7b
+
+  Direitos Autorais Reservados (c)
+                   2006 Daniel Simoes de Almeida
+
+  http://acbr.sourceforge.net
+
+***********************************************************
+
+INDICE
+
+1. Descrição
+2. Licença
+3. Instalação
+4. Como usar o ACBrMonitor
+5. Compatibilidade
+6. Como posso ajudar no projeto
+7. Vantagens
+8. Tarefas que ainda precisam ser iniciadas, melhoradas ou completadas
+9. Histórico do desenvolvimento
+10. Licença
+
+--------------------------------------------------------------------------------
+
+1. DESCRIÇÃO
+
+  O ACBrMonitor é um programa executável desenvolvido usando os componentes do
+ACBr. A finalidade do ACBrMonitor é permitir que qualquer linguagem capaz de ler
+e criar arquivos TXT ou utilizar Sockets (TCP/IP) consiga usar todos os recursos
+dos componentes ACBr.
+  Ou seja, com o ACBrMonitor sua aplicação poderá facilmente falar com vários
+modelos / marcas de ECF, Impressoras de Cheque, Gavetas de Dinheiro, Displays de
+Mensagem e Leitores de Cod.Barras serial
+
+--------------------------------------------------------------------------------
+
+2. COMO FUNCIONA ?
+
+   O ACBrMonitor após executado será minimizado para o SysTray da máquina (ao
+lado do relogio), e ficará aguardando comandos na sintaxe dos componentes ACBr
+(veja item 4). Você pode abrir o ACBrMonitor, clicando no Icone do SysTray
+
+   Os comandos podem ser enviados para o ACBrMonitor por arquivo texto ou
+sockets, a sintaxe dos comandos é identica em ambos os casos. A resposta dos
+equipamentos de automação controlados pelo ACBrMonitor (Ex: ECF) será devolvida
+a Aplicação pelo ACBrMonitor também usando um arquivo texto de saida ou sockets,
+(conforme a configuração)
+
+   O Instalador do ACBrMonitor irá adiciona-lo na pasta de Inicialização do seu
+micro, portanto, sempre que o Sistema operacional for iniciado o ACBrMonitor
+entrará em execução
+
+   Antes de iniciar o uso do ACBrMonitor, é necessário configura-lo corretamente,
+informando o método de monitoramento (TXT ou TCP). Também e necessário 
+configurar os equipamentos de automação controlados pelo ACBrMonitor, informando
+o Modelo e a porta dos equipamentos. Na interface do ACBrMonitor é possível
+testar se a configuração do equipamento está correta...
+
+--------------------------------------------------------------------------------
+
+3. INSTALAÇÃO
+
+   O ACBrMonitor possui Instaladores automatizados para Windows e Linux...
+Portanto, apenas inicie o instalador e leia as instruções na tela :)
+
+
+   NOTAS INSTALADOR LINUX:
+
+- Para instalar / desinstalar o ACBrMonitor é necessário ter prévilégios de
+  Super Usuário (root)...
+  
+- O programa instalador Linux precisa ter os flags de Leitura (r) e Execução (x)
+  Caso você não consiga executar o instalador é porque os flags não estão 
+  corretos. Para corrigir, digite o comando abaixo como Super Usuário:
+
+  chmod 755 ACBrMonitor-0.7b-linux-installer.bin
+  ./ACBrMonitor-0.7b-linux-installer.bin
+
+- Geralmente o icone de auto-inicialização, será criado no diretório
+  /usr/share/autostart  
+  (podendo mudar, dependendo do valor da variavel $XDG_CONFIG_HOME)
+
+- Para garantir a comunicação com as portas seriais o instalador irá dar
+  permissão de Super Usuário ao programa ACBrmonitor ( chmod u+s ACBrMonitor ),
+  e abrir o diretório /var/lock para todos os usuários (777)
+
+    Se você não deseja isso, por favor remova o Flag de Super usuário digitando:
+  chmod u-s ACBrMonitor
+  
+    Nesse caso configure manualmente as permissões para cada usuário que
+    necessita usar o ACBrMonitor ou acessar as portas seriais:
+    Exemplo: Para liberar a serial 1 para todos os usuários digite:
+  chmod 777 /dev/ttyS0
+  chmod 777 /var/lock
+
+--------------------------------------------------------------------------------
+
+4. COMO USAR O ACBRMONITOR
+
+  ( Leia o arquivo ManualACBrMonitor.html )
+
+  Para duvidas, suporte e sugestões ao ACBrMonitor por favor acessar:
+  http://www.forumweb.com.br/foruns/index.php?showforum=465
+
+4.1 COMO USAR O ACBrMonitorConsole no Linux
+
+  O ACBrMonitorConsole, é muito útil para aplicações que trabalham apenas em
+  modo Texto no Linux (não precisa do Servido X)... Com ele você pode conectar
+  a um servidor SSH e controlar um ECF (ou outro equipamento) na estação local.
+
+  Carregue-o com:
+
+  /opt/ACBrMonitor/ACBrMonitorConsole > /dev/null &
+  ssh IP_do_seu_servidor
+  .....
+
+  "> /dev/null" - Desvia as saidas de tela do ACBrMonitorConsole para /dev/null,
+                  ou seja, ignora as mensagens do ACBrMonitorConsole. Também é
+                  possível desviar as mesagens para um arquivo texto e criar um
+                  Log..
+  "&"             Faz o ACBrMonitorConsole rodar em segundo plano
+
+--------------------------------------------------------------------------------
+
+5. COMPATIBILIDADE
+
+  Acredito que o ACBrMonitor seja compatível com todas as versões de Windows e
+com a maioria das distribuições Linux.
+
+  O ACBrMonitor foi compilado usando:
+- Delphi 7 Professional  em  Windows XP Home SP2   
+- Kylix 3 Professional	 em  Mandriva 2006         
+
+--------------------------------------------------------------------------------
+
+6. COMO POSSO AJUDAR NO PROJETO
+
+  Se você possui experiencia em Automação comercial e deseja ajudar, junte-se a
+nós... ficaremos muito contente com a sua ajuda.
+
+  * Testando os Componentes:
+  Fizemos o possível para eliminar os bugs mais óbvios... mas em ambientes
+diferente bugs novos podem aparecer. Por favor nós envie-nos um e-mail com os
+seus testes. Mesmo que tudo dê certo ainda sim gostariamos da sua opnião...
+
+  * Divulgando o ACBr:
+  Quanto maior o uso da biblioteca mais usuários podem ajudar. Se a biblioteca
+for bem conhecida e utilizada os Fabricantes de equipamentos de Automação
+Comercial terão maior interesse em ajudar no desenvolvimento.
+
+  * Desenvolvendo Componentes:
+  Alguns componentes como o ACBrECF deverão ser implementados para vários
+modelos de equipamento. Se o equipamento que você deseja não consta na relação
+de Equipamentos a compatíveis você pode estudar os Fontes e tentar implementar
+uma nova Classe para o seu Equipamento (Por favor, entre em contato antes)
+
+  * Emprestando Equipamentos:
+  Nem sempre temos acesso aos Equipamentos para testes e melhorias. Se você é um
+fabricante ou possui um equipamento disponível para emprestimo, entre em contato
+Em breve estarei relacionando os equipamentos que necessitam de testes...
+
+  * Efetuando Doaçoes:
+  Atualmente a Biblioteca é desenvolvida no tempo livre disponível dos
+Desenvolvedores.... Doações podem motivar os desenvolvedores a destinar mais
+tempo para o andamento do projeto.... pois é... até mesmo os programadores
+precisam comer.... ;-)
+
+--------------------------------------------------------------------------------
+
+7. VANTAGENS
+
+- Multiplataforma: Linux / Windows
+- Praticamente qualquer linguagem pode interagir com o ACBrMonitor
+- Permite a comunicação remota com equipamentos de Automação. Útil para
+  topologias de Terminal Remoto (ou terminal Burro).  Ex: SSH, Telnet, WTS, etc
+- Programação Limpa e Clara: Uma vez que o seu programa estaja apto a interagir
+  com o ACBrMonitor, ele poderá interagir com qualquer ECF ou equipamento
+  suportado pelo ACBrMonitor
+- Facil distribuição (Apenas 1 arquivo instalador)
+
+--------------------------------------------------------------------------------
+
+8. TAREFAS QUE AINDA PRECISAM SER INICIADAS, MELHORADAS OU COMPLETADAS
+
+- CRIAR PROGRAMAS DE DEMONSTRAÇÃO EM VARIAS LINGUAGENS Ex: xHarbour,Clipper,etc
+- Sinalizar de forma mais eficiente, quando o ACBrMonitor está ativo, ou ocupado
+- Comunicação TCP/IP com controle de Erro (checksum) e mecanismo para re-envio
+  da ultima resposta
+
+--------------------------------------------------------------------------------
+
+9. HISTÓRICO DO DESENVOLVIMENTO
+
+  Por favor leia o arquivo:  " ACBrMonitor-change-log.TXT "
+
+--------------------------------------------------------------------------------
+
+10. LICENÇA
+
+  Este programa é software livre; você pode redistribuí-lo e/ou modificá-lo
+ sob os termos da Licença Pública Geral GNU, conforme publicada pela Free
+ Software Foundation; tanto a versão 2 da Licença como (a seu critério)
+ qualquer versão mais nova.
+
+  Este programa é distribuído na expectativa de ser útil, mas SEM NENHUMA
+ GARANTIA; nem mesmo a garantia implícita de COMERCIALIZAÇÃO OU DE ADEQUAÇÃO A
+ QUALQUER PROPÓSITO EM PARTICULAR. Consulte a Licença Pública Geral GNU para
+ obter mais detalhes. (Arquivo LICENCA.TXT ou LICENSE.TXT)
+
+  Por favor leia pelo menos a Introdução do arquivo LICENCA.TXT, se você deseja
+distribuir este programa em algum Programa Comercial, ou ainda criar uma
+modificação desse Programa.
+
+  Porque o projeto é OpenSource ? É realmente muito difícil fazer um projeto
+desse tamanho sozinho. Conseguir acesso a diversos equipamentos para testes, em
+diferentes sistemas operacionais e configurações de máquinas. Por isso acho que
+compartilhando minhas informações com a comunidade, também serei beneficiado...
+seja com sugestões, ajuda nos testes, e até mesmo com a colaboração de outros
+desenvolvedores.
+
+

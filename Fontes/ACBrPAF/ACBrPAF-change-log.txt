@@ -1,0 +1,120 @@
+{******************************************************************************}
+{ Projeto: Componentes ACBr                                                    }
+{ Biblioteca multi plataforma de componentes Delphi para interação com equipa- }
+{ mentos de Automação Comercial utilizados no Brasil                           }
+{                                                                              }
+{  Você pode obter a última versão desse arquivo na página do Projeto ACBr     }
+{ Componentes localizado em      http://www.sourceforge.net/projects/acbr      }
+{                                                                              }
+{  Esta biblioteca é software livre; você pode redistribuí-la e/ou modificá-la }
+{ sob os termos da Licença Pública Geral Menor do GNU conforme publicada pela  }
+{ Free Software Foundation; tanto a versão 2.1 da Licença, ou (a seu critério) }
+{ qualquer versão posterior.                                                   }
+{                                                                              }
+{  Esta biblioteca é distribuída na expectativa de que seja útil, porém, SEM   }
+{ NENHUMA GARANTIA; nem mesmo a garantia implícita de COMERCIABILIDADE OU      }
+{ ADEQUAÇÃO A UMA FINALIDADE ESPECÍFICA. Consulte a Licença Pública Geral Menor}
+{ do GNU para mais detalhes. (Arquivo LICENÇA.TXT ou LICENSE.TXT)              }
+{                                                                              }
+{  Você deve ter recebido uma cópia da Licença Pública Geral Menor do GNU junto}
+{ com esta biblioteca; se não, escreva para a Free Software Foundation, Inc.,  }
+{ no endereço 59 Temple Street, Suite 330, Boston, MA 02111-1307 USA.          }
+{ Você também pode obter uma copia da licença em:                              }
+{ http://www.opensource.org/licenses/lgpl-license.php                          }
+{                                                                              }
+{ Daniel Simões de Almeida  -  daniel@djsystem.com.br  -  www.djsystem.com.br  }
+{              Praça Anita Costa, 34 - Tatuí - SP - 18270-410                  }
+{                                                                              }
+{******************************************************************************}
+Agradecimentos:
+
+* Administradores:
+- Daniel Simões de Almeida
+- André Ferreira de Moraes
+
+* Desenvolvedores:
+- Isaque Pinheiro - Doação do componente ao projeto ACBr
+
+{******************************************************************************
+|* ACBrSPEDContabil
+|*
+|* PROPÓSITO: Registro de Alterações
+******************************************************************************}
+
+Símbolo : Significado
+
+[+]     : Novo recurso
+[*]     : Recurso modificado/melhorado
+[-]     : Correção de Bug (assim esperamos)
+
+Versão 0.03b   19/03/10
+---------------
+[-] Corrigido BUG que ao tentar assinar digitalmente o arquivo, que não mostrava
+    a mensagem correta relatada por (EMBarbosa)
+    Removido a propriedade "NUM_CONT", que não estava sendo utilizada.
+
+Versão 0.03b   12/03/10
+---------------
+[-] Corrigido a totalização de registros nos arquivos D, E, P e T estava sendo
+    somado ao totalizador geral de cada registro o tipo "1", e no AC pede para
+    somar somente o tipo "2". 
+
+Todos os registros tipo "9" devem totalizar somente os registros tipo "2"
+    e o ACBrPAF estava somando os tipo "1" na totalização geral
+
+Versão 0.03b   12/03/10
+---------------
+[+] Compatibilizado com Lazarus/FPC, novo Package para Lazarus criado (Por: DSA)
+
+Versão 0.02b   11/03/10
+---------------
+[+] Implementado a procedure "ReordenarRegistroR", para colocar os registros "R"
+    em ordem ascendente, devido a hierarquia, os registros "R" não sairem na 
+    ordem exigida para homologação do PAF-ECF.
+
+Versão 0.02b   02/03/10
+---------------
+[*] Foi implementado o Registro R07 como filho do R04 também, pois na Lei do
+    AC 06/08 diz que o R07 deve ser gerado tanto para o registro R04 quanto para
+    o R06.
+
+Versão 0.02b   25/02/10
+---------------
+[-] No evento OnPAFCalcEAD e no método WriteRegistroEAD, o parametro passado 
+    tava sendo só o arquivo e tem que ser passado "Path + Arquivo". 
+
+Versão 0.02b   22/02/10
+---------------
+[*] Melhorado o recurso de assinatura dos arquivos "R" com openssl 
+    por (wagnerra) 
+    Nota: Para que o Demo assine os arquivos, é preciso ter o openssl.exe e suas
+          DLLs no memo diretório do EXE.
+[+] Adicionado o evento "OnCalcEAD" para quem não queira assinar os arquivos
+    com openssl.
+[+] Foi implementado hierarquia PAI-FLIHO nos registros R03, R05 e R07, sendo
+    o R03 Filho do R02, R05 Filho do R04 e R07 Filho do R06.
+[*] Foi modificado o Demo, para demostrar como usar as novas implementações 
+    PAI-FILHO.
+
+Versão 0.01b   21/02/10
+---------------
+[+] Agora temos o Demo, desenvolvido por (emsoft)
+
+Versão 0.01b   20/02/10
+---------------
+[-] Correções ao gerar os registros D, P e R, na homologação por (emsoft)
+
+Versão 0.01a   25/01/10
+---------------
+[+] Implementado no RegistroD2 a propriedade "CCF" conforme AC 
+    http://www.fazenda.gov.br/confaz/confaz/atos/atos_cotepe/2009/ac036_09.htm
+
+Versão 0.01a   23/01/10
+---------------
+[+] Início do Projeto
+[+] Primeira Versao lançada baseado no componente fornecido por Isaque Pinheiro 
+    e colaboração de (Wagnerra).
+
+
+
+

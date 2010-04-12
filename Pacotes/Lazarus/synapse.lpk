@@ -1,0 +1,178 @@
+<?xml version="1.0"?>
+<CONFIG>
+  <Package Version="3">
+    <PathDelim Value="\"/>
+    <Name Value="synapse"/>
+    <Author Value="Lukas Gebauer"/>
+    <CompilerOptions>
+      <Version Value="8"/>
+      <PathDelim Value="\"/>
+      <SearchPaths>
+        <IncludeFiles Value="..\..\Fontes\synalist\"/>
+        <OtherUnitFiles Value="..\..\Fontes\synalist\"/>
+        <UnitOutputDirectory Value="..\..\lib\$(TargetCPU)-$(TargetOS)"/>
+        <SrcPath Value="..\..\Fontes\synalist\"/>
+      </SearchPaths>
+      <Parsing>
+        <SyntaxOptions>
+          <CStyleOperator Value="False"/>
+        </SyntaxOptions>
+      </Parsing>
+      <Other>
+        <CompilerPath Value="$(CompPath)"/>
+      </Other>
+    </CompilerOptions>
+    <Description Value="This project deals with network communication by means of blocking (synchronous) sockets or with limited non-blocking mode. This project not using asynchronous sockets! The Project contains simple low level non-visual objects for easiest programming without problems. (no required multithread synchronisation, no need for windows message processing,…) Great for command line utilities, visual projects, NT services,…
+"/>
+    <License Value="
+"/>
+    <Version Minor="39"/>
+    <Files Count="33">
+      <Item1>
+        <Filename Value="..\..\Fontes\synalist\synaser.pas"/>
+        <UnitName Value="synaser"/>
+      </Item1>
+      <Item2>
+        <Filename Value="..\..\Fontes\synalist\asn1util.pas"/>
+        <UnitName Value="asn1util"/>
+      </Item2>
+      <Item3>
+        <Filename Value="..\..\Fontes\synalist\blcksock.pas"/>
+        <UnitName Value="blcksock"/>
+      </Item3>
+      <Item4>
+        <Filename Value="..\..\Fontes\synalist\clamsend.pas"/>
+        <UnitName Value="clamsend"/>
+      </Item4>
+      <Item5>
+        <Filename Value="..\..\Fontes\synalist\dnssend.pas"/>
+        <UnitName Value="dnssend"/>
+      </Item5>
+      <Item6>
+        <Filename Value="..\..\Fontes\synalist\ftpsend.pas"/>
+        <UnitName Value="ftpsend"/>
+      </Item6>
+      <Item7>
+        <Filename Value="..\..\Fontes\synalist\ftptsend.pas"/>
+        <UnitName Value="ftptsend"/>
+      </Item7>
+      <Item8>
+        <Filename Value="..\..\Fontes\synalist\httpsend.pas"/>
+        <UnitName Value="httpsend"/>
+      </Item8>
+      <Item9>
+        <Filename Value="..\..\Fontes\synalist\imapsend.pas"/>
+        <UnitName Value="imapsend"/>
+      </Item9>
+      <Item10>
+        <Filename Value="..\..\Fontes\synalist\ldapsend.pas"/>
+        <UnitName Value="ldapsend"/>
+      </Item10>
+      <Item11>
+        <Filename Value="..\..\Fontes\synalist\mimeinln.pas"/>
+        <UnitName Value="mimeinln"/>
+      </Item11>
+      <Item12>
+        <Filename Value="..\..\Fontes\synalist\mimemess.pas"/>
+        <UnitName Value="mimemess"/>
+      </Item12>
+      <Item13>
+        <Filename Value="..\..\Fontes\synalist\mimepart.pas"/>
+        <UnitName Value="mimepart"/>
+      </Item13>
+      <Item14>
+        <Filename Value="..\..\Fontes\synalist\nntpsend.pas"/>
+        <UnitName Value="nntpsend"/>
+      </Item14>
+      <Item15>
+        <Filename Value="..\..\Fontes\synalist\pingsend.pas"/>
+        <UnitName Value="pingsend"/>
+      </Item15>
+      <Item16>
+        <Filename Value="..\..\Fontes\synalist\pop3send.pas"/>
+        <UnitName Value="pop3send"/>
+      </Item16>
+      <Item17>
+        <Filename Value="..\..\Fontes\synalist\slogsend.pas"/>
+        <UnitName Value="slogsend"/>
+      </Item17>
+      <Item18>
+        <Filename Value="..\..\Fontes\synalist\smtpsend.pas"/>
+        <UnitName Value="smtpsend"/>
+      </Item18>
+      <Item19>
+        <Filename Value="..\..\Fontes\synalist\snmpsend.pas"/>
+        <UnitName Value="snmpsend"/>
+      </Item19>
+      <Item20>
+        <Filename Value="..\..\Fontes\synalist\sntpsend.pas"/>
+        <UnitName Value="sntpsend"/>
+      </Item20>
+      <Item21>
+        <Filename Value="..\..\Fontes\synalist\ssl_openssl.pas"/>
+        <UnitName Value="ssl_openssl"/>
+      </Item21>
+      <Item22>
+        <Filename Value="..\..\Fontes\synalist\ssl_openssl_lib.pas"/>
+        <UnitName Value="ssl_openssl_lib"/>
+      </Item22>
+      <Item23>
+        <Filename Value="..\..\Fontes\synalist\synachar.pas"/>
+        <UnitName Value="synachar"/>
+      </Item23>
+      <Item24>
+        <Filename Value="..\..\Fontes\synalist\synacode.pas"/>
+        <UnitName Value="synacode"/>
+      </Item24>
+      <Item25>
+        <Filename Value="..\..\Fontes\synalist\synacrypt.pas"/>
+        <UnitName Value="synacrypt"/>
+      </Item25>
+      <Item26>
+        <Filename Value="..\..\Fontes\synalist\synadbg.pas"/>
+        <UnitName Value="synadbg"/>
+      </Item26>
+      <Item27>
+        <Filename Value="..\..\Fontes\synalist\synafpc.pas"/>
+        <UnitName Value="synafpc"/>
+      </Item27>
+      <Item28>
+        <Filename Value="..\..\Fontes\synalist\synaicnv.pas"/>
+        <UnitName Value="synaicnv"/>
+      </Item28>
+      <Item29>
+        <Filename Value="..\..\Fontes\synalist\synaip.pas"/>
+        <UnitName Value="synaip"/>
+      </Item29>
+      <Item30>
+        <Filename Value="..\..\Fontes\synalist\synamisc.pas"/>
+        <UnitName Value="synamisc"/>
+      </Item30>
+      <Item31>
+        <Filename Value="..\..\Fontes\synalist\synautil.pas"/>
+        <UnitName Value="synautil"/>
+      </Item31>
+      <Item32>
+        <Filename Value="..\..\Fontes\synalist\synsock.pas"/>
+        <UnitName Value="synsock"/>
+      </Item32>
+      <Item33>
+        <Filename Value="..\..\Fontes\synalist\tlntsend.pas"/>
+        <UnitName Value="tlntsend"/>
+      </Item33>
+    </Files>
+    <RequiredPkgs Count="1">
+      <Item1>
+        <PackageName Value="FCL"/>
+        <MinVersion Major="1" Valid="True"/>
+      </Item1>
+    </RequiredPkgs>
+    <UsageOptions>
+      <UnitPath Value="$(PkgOutDir)\"/>
+    </UsageOptions>
+    <PublishOptions>
+      <Version Value="2"/>
+      <IgnoreBinaries Value="False"/>
+    </PublishOptions>
+  </Package>
+</CONFIG>

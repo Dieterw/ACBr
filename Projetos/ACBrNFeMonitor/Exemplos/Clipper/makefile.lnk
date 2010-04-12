@@ -1,0 +1,6 @@
+-Lc:\bcc55\lib\obj;c:\bcc55\lib;c:\xharbour\xHarbour\lib -Gn -M -m -s -Tpe -x -ap +
+c0x32.obj obj\TEST_NFe.obj obj\ACBr_MON.obj obj\ACBr_ARQ.obj obj\ACBr_FUN.obj obj\ACBr_ECF.obj obj\ACBr_NFe.obj obj\ACBr_XML.obj, +
+test_nfe.exe,, +
+rtl.lib vm.lib common.lib macro.lib pcrepos.lib lang.lib ct.lib rdd.lib dbfcdx.lib dbfntx.lib dbffpt.lib gtwin.lib hbsix.lib codepage.lib tip.lib debug.lib hbcomm.lib import32.lib cw32.lib, +
+, +
+

@@ -1,0 +1,194 @@
+object frPagamento: TfrPagamento
+  Left = 309
+  Top = 213
+  Width = 345
+  Height = 282
+  VertScrollBar.Range = 273
+  HorzScrollBar.Range = 327
+  ActiveControl = edCod
+  BorderStyle = fbsSingle
+  Caption = 'Efetuar Pagamento'
+  Color = clBackground
+  Font.Color = clBlack
+  Font.Height = 12
+  Font.Name = 'Sans'
+  Font.Pitch = fpVariable
+  Font.Style = []
+  Font.Weight = 0
+  KeyPreview = True
+  ParentFont = False
+  Position = poDefault
+  Scaled = False
+  OnShow = FormShow
+  PixelsPerInch = 96
+  object SpeedButton1: TSpeedButton
+    Left = 80
+    Top = 98
+    Width = 23
+    Height = 22
+    Glyph.Data = {
+      7A010000424D7601000000000000760000002800000020000000100000000100
+      04000000000000010000120B0000120B00001000000010000000000000000000
+      80000080000000808000800000008000800080800000C0C0C000808080000000
+      FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
+      33033333333333333F8F3333333333333000333333333333F888333333333333
+      000333333333333F888333333333333000333333333333F88833333333333300
+      033333333FFF3F888333333000003B803333333F8883F8883333330EEEEE00B3
+      3333338833388883333330EEEEEEE033333338F3333338F333330EEEEEEEEE03
+      33333833F333383F33330EFEEEEEEE0333338F33F333338F33330EFEEEEEEE03
+      33338F333F33338F33330EEFEEEEEE03333383F333FF338333330EEEFFEEEE03
+      333338F3333338F3333330EEEEEEE0333333383FF333F8333333330EEEEE0333
+      333333883FF88333333333300000333333333333888333333333}
+    NumGlyphs = 2
+    OnClick = SpeedButton1Click
+  end
+  object mFormas: TMemo
+    Left = 160
+    Top = 100
+    Width = 167
+    Height = 125
+    ReadOnly = True
+    ScrollBars = ssVertical
+    TabOrder = 5
+  end
+  object Label1: TLabel
+    Left = 8
+    Top = 106
+    Width = 26
+    Height = 15
+    Caption = '&Cod.'
+    FocusControl = edCod
+  end
+  object edCod: TEdit
+    Left = 40
+    Top = 98
+    Width = 33
+    Height = 23
+    Cursor = crIBeam
+    TabOrder = 0
+  end
+  object Label2: TLabel
+    Left = 8
+    Top = 138
+    Width = 28
+    Height = 15
+    Caption = '&Valor'
+    FocusControl = edValor
+  end
+  object edValor: TEdit
+    Left = 40
+    Top = 130
+    Width = 101
+    Height = 23
+    Cursor = crIBeam
+    TabOrder = 1
+    OnKeyPress = edValorKeyPress
+  end
+  object btImprimir: TButton
+    Left = 32
+    Top = 242
+    Width = 75
+    Height = 25
+    Caption = '&Imprimir'
+    TabOrder = 4
+    OnClick = btImprimirClick
+  end
+  object Label3: TLabel
+    Left = 160
+    Top = 85
+    Width = 127
+    Height = 15
+    Caption = 'Formas de Pagamento'
+  end
+  object Label4: TLabel
+    Left = 136
+    Top = 234
+    Width = 108
+    Height = 15
+    Caption = 'TOTAL DO CUPOM:'
+  end
+  object Label5: TLabel
+    Left = 160
+    Top = 258
+    Width = 73
+    Height = 15
+    Caption = 'TOTAL PAGO'
+  end
+  object lTotalAPAGAR: TLabel
+    Left = 280
+    Top = 234
+    Width = 39
+    Height = 13
+    Alignment = taRightJustify
+    Caption = '1000.00'
+    Color = clBackground
+    Font.Color = clBlack
+    Font.Height = 11
+    Font.Name = 'MS Sans Serif'
+    Font.Pitch = fpVariable
+    Font.Style = []
+    Font.Weight = 0
+    ParentColor = False
+    ParentFont = False
+  end
+  object lTotalPago: TLabel
+    Left = 280
+    Top = 258
+    Width = 39
+    Height = 13
+    Alignment = taRightJustify
+    Caption = '1000.00'
+    Color = clBackground
+    Font.Color = clBlack
+    Font.Height = 11
+    Font.Name = 'MS Sans Serif'
+    Font.Pitch = fpVariable
+    Font.Style = []
+    Font.Weight = 0
+    ParentColor = False
+    ParentFont = False
+  end
+  object Label6: TLabel
+    Left = 8
+    Top = 7
+    Width = 310
+    Height = 30
+    Caption = '- Entre com um ou v'#225'rios pagamentos at'#233' atingir o Total do Cupom'
+    WordWrap = True
+  end
+  object Label7: TLabel
+    Left = 8
+    Top = 42
+    Width = 313
+    Height = 39
+    AutoSize = False
+    Caption = 
+      '- Se o valor pago for superior ao Total do Cupom ser'#225' calculado ' +
+      'o    TROCO'
+    WordWrap = True
+  end
+  object cbVinc: TCheckBox
+    Left = 16
+    Top = 186
+    Width = 129
+    Height = 31
+    Caption = 'Cupom &Vinculado'
+    TabOrder = 3
+  end
+  object Label8: TLabel
+    Left = 8
+    Top = 170
+    Width = 26
+    Height = 15
+    Caption = '&Obs:'
+    FocusControl = edObs
+  end
+  object edObs: TEdit
+    Left = 40
+    Top = 162
+    Width = 101
+    Height = 23
+    Cursor = crIBeam
+    TabOrder = 2
+  end
+end

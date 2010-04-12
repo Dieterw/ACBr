@@ -1,0 +1,179 @@
+object frValidador: TfrValidador
+  Left = 282
+  Height = 251
+  Top = 156
+  Width = 336
+  HorzScrollBar.Page = 335
+  HorzScrollBar.Range = 329
+  VertScrollBar.Page = 250
+  VertScrollBar.Range = 243
+  ActiveControl = edDocto
+  Caption = 'Validador de Documentos'
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  OnCreate = FormCreate
+  Position = poScreenCenter
+  object Label1: TLabel
+    Left = 8
+    Height = 14
+    Top = 8
+    Width = 55
+    Caption = 'Documento'
+    Color = clNone
+    ParentColor = False
+  end
+  object Label2: TLabel
+    Left = 232
+    Height = 14
+    Top = 8
+    Width = 21
+    Caption = 'Tipo'
+    Color = clNone
+    ParentColor = False
+  end
+  object Label3: TLabel
+    Left = 8
+    Height = 14
+    Top = 144
+    Width = 90
+    Caption = 'Mensagem de Erro'
+    Color = clNone
+    ParentColor = False
+  end
+  object Label4: TLabel
+    Left = 144
+    Height = 14
+    Top = 8
+    Width = 66
+    Caption = 'Complemento'
+    Color = clNone
+    ParentColor = False
+  end
+  object Label5: TLabel
+    Left = 8
+    Height = 14
+    Top = 56
+    Width = 63
+    Caption = 'Ignorar Char'
+    Color = clNone
+    ParentColor = False
+  end
+  object edDocto: TEdit
+    Cursor = crIBeam
+    Left = 8
+    Height = 21
+    Top = 24
+    Width = 121
+    OnChange = edDoctoChange
+    TabOrder = 0
+  end
+  object cbTipoDocto: TComboBox
+    Left = 232
+    Height = 21
+    Top = 24
+    Width = 97
+    AutoCompleteText = [cbactEndOfLineComplete, cbactSearchAscending]
+    ItemHeight = 13
+    Items.Strings = (
+      'docCPF'
+      'docCNPJ'
+      'docUF'
+      'docInscEst'
+      'docNumCheque'
+      'docPIS'
+      'docCEP'
+      'docCartaoCredito'
+    )
+    MaxLength = 0
+    OnChange = cbTipoDoctoChange
+    Style = csDropDownList
+    TabOrder = 2
+  end
+  object mMsgErro: TMemo
+    Left = 8
+    Height = 49
+    Top = 160
+    Width = 321
+    ReadOnly = True
+    TabOrder = 8
+  end
+  object bValidar: TButton
+    Left = 72
+    Height = 25
+    Top = 218
+    Width = 75
+    BorderSpacing.InnerBorder = 4
+    Caption = '&Validar'
+    Default = True
+    OnClick = bValidarClick
+    TabOrder = 9
+  end
+  object edComple: TEdit
+    Cursor = crIBeam
+    Left = 144
+    Height = 21
+    Top = 24
+    Width = 73
+    TabOrder = 1
+  end
+  object edIgnorar: TEdit
+    Cursor = crIBeam
+    Left = 8
+    Height = 21
+    Top = 72
+    Width = 57
+    TabOrder = 3
+  end
+  object cbPermiteVazio: TCheckBox
+    Left = 144
+    Height = 13
+    Top = 56
+    Width = 84
+    Caption = 'Permite Vazio'
+    OnClick = cbPermiteVazioClick
+    TabOrder = 4
+  end
+  object cbAjustarTam: TCheckBox
+    Left = 144
+    Height = 13
+    Top = 80
+    Width = 100
+    Caption = 'Ajustar Tamanho'
+    OnClick = cbAjustarTamClick
+    TabOrder = 5
+  end
+  object bFormatar: TButton
+    Left = 192
+    Height = 25
+    Top = 218
+    Width = 75
+    BorderSpacing.InnerBorder = 4
+    Caption = 'Formatar'
+    OnClick = bFormatarClick
+    TabOrder = 10
+  end
+  object cbException: TCheckBox
+    Left = 144
+    Height = 13
+    Top = 128
+    Width = 91
+    Caption = 'Gerar Exceção'
+    OnClick = cbExceptionClick
+    TabOrder = 7
+  end
+  object cbExibeDigCorreto: TCheckBox
+    Left = 144
+    Height = 13
+    Top = 104
+    Width = 126
+    Caption = 'Exibe Digito Calculado'
+    OnClick = cbExibeDigCorretoClick
+    TabOrder = 6
+  end
+  object ACBrValidador1: TACBrValidador
+    IgnorarChar = './-'
+    OnMsgErro = ACBrValidador1MsgErro
+    left = 16
+    top = 216
+  end
+end

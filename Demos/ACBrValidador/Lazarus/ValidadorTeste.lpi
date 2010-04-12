@@ -1,0 +1,197 @@
+<?xml version="1.0"?>
+<CONFIG>
+  <ProjectOptions>
+    <PathDelim Value="\"/>
+    <Version Value="6"/>
+    <General>
+      <MainUnit Value="0"/>
+      <IconPath Value="./"/>
+      <TargetFileExt Value=".exe"/>
+      <ActiveEditorIndexAtStart Value="2"/>
+    </General>
+    <VersionInfo>
+      <ProjectVersion Value=""/>
+      <Language Value=""/>
+      <CharSet Value=""/>
+    </VersionInfo>
+    <PublishOptions>
+      <Version Value="2"/>
+      <IgnoreBinaries Value="False"/>
+      <IncludeFileFilter Value="*.(pas|pp|inc|lfm|lpr|lrs|lpi|lpk|sh|xml)"/>
+      <ExcludeFileFilter Value="*.(bak|ppu|ppw|o|so);*~;backup"/>
+    </PublishOptions>
+    <RunParams>
+      <local>
+        <FormatVersion Value="1"/>
+        <LaunchingApplication PathPlusParams="/usr/X11R6/bin/xterm -T 'Lazarus Run Output' -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
+      </local>
+    </RunParams>
+    <RequiredPackages Count="2">
+      <Item1>
+        <PackageName Value="ACBr_LCL"/>
+        <MinVersion Minor="8" Release="5" Valid="True"/>
+      </Item1>
+      <Item2>
+        <PackageName Value="LCL"/>
+      </Item2>
+    </RequiredPackages>
+    <Units Count="9">
+      <Unit0>
+        <Filename Value="ValidadorTeste.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="ValidadorTeste"/>
+        <CursorPos X="53" Y="15"/>
+        <TopLine Value="1"/>
+        <UsageCount Value="20"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="validadorteste1.pas"/>
+        <ComponentName Value="frValidador"/>
+        <IsPartOfProject Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <ResourceFilename Value="validadorteste1.lrs"/>
+        <UnitName Value="ValidadorTeste1"/>
+        <CursorPos X="36" Y="16"/>
+        <TopLine Value="9"/>
+        <EditorIndex Value="0"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="validadorteste1.lfm"/>
+        <CursorPos X="4" Y="171"/>
+        <TopLine Value="144"/>
+        <UsageCount Value="10"/>
+        <SyntaxHighlighter Value="LFM"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="..\..\..\ACBrValidador.pas"/>
+        <UnitName Value="ACBrValidador"/>
+        <CursorPos X="20" Y="261"/>
+        <TopLine Value="240"/>
+        <EditorIndex Value="1"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="C:\lazarus\fpc\2.2.0\source\rtl\objpas\sysutils\sysutilh.inc"/>
+        <CursorPos X="34" Y="228"/>
+        <TopLine Value="198"/>
+        <UsageCount Value="10"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="C:\lazarus\fpc\2.2.0\source\rtl\inc\objpash.inc"/>
+        <CursorPos X="18" Y="135"/>
+        <TopLine Value="126"/>
+        <UsageCount Value="10"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="..\..\..\ACBrGIF.pas"/>
+        <UnitName Value="ACBrGIF"/>
+        <CursorPos X="31" Y="264"/>
+        <TopLine Value="243"/>
+        <EditorIndex Value="2"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="..\..\..\Gif3.pas"/>
+        <UnitName Value="Gif3"/>
+        <CursorPos X="1" Y="1"/>
+        <TopLine Value="1"/>
+        <EditorIndex Value="4"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="..\..\..\Gif1.pas"/>
+        <UnitName Value="Gif1"/>
+        <CursorPos X="7" Y="53"/>
+        <TopLine Value="36"/>
+        <EditorIndex Value="3"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit8>
+    </Units>
+    <JumpHistory Count="12" HistoryIndex="11">
+      <Position1>
+        <Filename Value="..\..\..\ACBrGIF.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
+      </Position1>
+      <Position2>
+        <Filename Value="..\..\..\ACBrGIF.pas"/>
+        <Caret Line="50" Column="12" TopLine="34"/>
+      </Position2>
+      <Position3>
+        <Filename Value="..\..\..\ACBrGIF.pas"/>
+        <Caret Line="67" Column="40" TopLine="48"/>
+      </Position3>
+      <Position4>
+        <Filename Value="..\..\..\ACBrGIF.pas"/>
+        <Caret Line="68" Column="1" TopLine="48"/>
+      </Position4>
+      <Position5>
+        <Filename Value="..\..\..\ACBrGIF.pas"/>
+        <Caret Line="67" Column="41" TopLine="48"/>
+      </Position5>
+      <Position6>
+        <Filename Value="..\..\..\Gif1.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
+      </Position6>
+      <Position7>
+        <Filename Value="..\..\..\Gif1.pas"/>
+        <Caret Line="55" Column="1" TopLine="30"/>
+      </Position7>
+      <Position8>
+        <Filename Value="..\..\..\Gif1.pas"/>
+        <Caret Line="56" Column="13" TopLine="39"/>
+      </Position8>
+      <Position9>
+        <Filename Value="..\..\..\ACBrGIF.pas"/>
+        <Caret Line="65" Column="38" TopLine="48"/>
+      </Position9>
+      <Position10>
+        <Filename Value="..\..\..\ACBrGIF.pas"/>
+        <Caret Line="264" Column="76" TopLine="243"/>
+      </Position10>
+      <Position11>
+        <Filename Value="..\..\..\ACBrGIF.pas"/>
+        <Caret Line="266" Column="62" TopLine="238"/>
+      </Position11>
+      <Position12>
+        <Filename Value="..\..\..\ACBrGIF.pas"/>
+        <Caret Line="264" Column="57" TopLine="241"/>
+      </Position12>
+    </JumpHistory>
+  </ProjectOptions>
+  <CompilerOptions>
+    <Version Value="8"/>
+    <PathDelim Value="\"/>
+    <SearchPaths>
+      <SrcPath Value="$(LazarusDir)\lcl\;$(LazarusDir)\lcl\interfaces\$(LCLWidgetType)\"/>
+    </SearchPaths>
+    <Linking>
+      <Options>
+        <Win32>
+          <GraphicApplication Value="True"/>
+        </Win32>
+      </Options>
+    </Linking>
+    <Other>
+      <CompilerPath Value="$(CompPath)"/>
+    </Other>
+  </CompilerOptions>
+  <Debugging>
+    <Exceptions Count="3">
+      <Item1>
+        <Name Value="ECodetoolError"/>
+      </Item1>
+      <Item2>
+        <Name Value="EFOpenError"/>
+      </Item2>
+      <Item3>
+        <Name Value="Exception"/>
+      </Item3>
+    </Exceptions>
+  </Debugging>
+</CONFIG>

@@ -1,0 +1,49 @@
+{ This is an automatically generated lazarus resource file }
+
+LazarusResources.Add('TfrValidador','FORMDATA',[
+  'TPF0'#12'TfrValidador'#11'frValidador'#4'Left'#3#26#1#6'Height'#3#251#0#3'To'
+  +'p'#3#156#0#5'Width'#3'P'#1#18'HorzScrollBar.Page'#3'O'#1#19'HorzScrollBar.R'
+  +'ange'#3'I'#1#18'VertScrollBar.Page'#3#250#0#19'VertScrollBar.Range'#3#243#0
+  +#13'ActiveControl'#7#7'edDocto'#7'Caption'#6#23'Validador de Documentos'#11
+  +'Font.Height'#2#245#9'Font.Name'#6#13'MS Sans Serif'#8'OnCreate'#7#10'FormCr'
+  +'eate'#8'Position'#7#14'poScreenCenter'#0#6'TLabel'#6'Label1'#4'Left'#2#8#6
+  +'Height'#2#14#3'Top'#2#8#5'Width'#2'7'#7'Caption'#6#9'Documento'#5'Color'#7#6
+  +'clNone'#11'ParentColor'#8#0#0#6'TLabel'#6'Label2'#4'Left'#3#232#0#6'Height'
+  +#2#14#3'Top'#2#8#5'Width'#2#21#7'Caption'#6#4'Tipo'#5'Color'#7#6'clNone'#11
+  +'ParentColor'#8#0#0#6'TLabel'#6'Label3'#4'Left'#2#8#6'Height'#2#14#3'Top'#3
+  +#144#0#5'Width'#2'Z'#7'Caption'#6#16'Mensagem de Erro'#5'Color'#7#6'clNone'
+  +#11'ParentColor'#8#0#0#6'TLabel'#6'Label4'#4'Left'#3#144#0#6'Height'#2#14#3
+  +'Top'#2#8#5'Width'#2'B'#7'Caption'#6#11'Complemento'#5'Color'#7#6'clNone'#11
+  +'ParentColor'#8#0#0#6'TLabel'#6'Label5'#4'Left'#2#8#6'Height'#2#14#3'Top'#2
+  +'8'#5'Width'#2'?'#7'Caption'#6#12'Ignorar Char'#5'Color'#7#6'clNone'#11'Pare'
+  +'ntColor'#8#0#0#5'TEdit'#7'edDocto'#6'Cursor'#7#7'crIBeam'#4'Left'#2#8#6'Hei'
+  +'ght'#2#21#3'Top'#2#24#5'Width'#2'y'#8'OnChange'#7#13'edDoctoChange'#8'TabOr'
+  +'der'#2#0#0#0#9'TComboBox'#11'cbTipoDocto'#4'Left'#3#232#0#6'Height'#2#21#3
+  +'Top'#2#24#5'Width'#2'a'#16'AutoCompleteText'#11#22'cbactEndOfLineComplete'
+  +#20'cbactSearchAscending'#0#10'ItemHeight'#2#13#13'Items.Strings'#1#6#6'docC'
+  +'PF'#6#7'docCNPJ'#6#5'docUF'#6#10'docInscEst'#6#12'docNumCheque'#6#6'docPIS'
+  +#6#6'docCEP'#6#16'docCartaoCredito'#0#9'MaxLength'#2#0#8'OnChange'#7#17'cbTi'
+  +'poDoctoChange'#5'Style'#7#14'csDropDownList'#8'TabOrder'#2#2#0#0#5'TMemo'#8
+  +'mMsgErro'#4'Left'#2#8#6'Height'#2'1'#3'Top'#3#160#0#5'Width'#3'A'#1#8'ReadO'
+  +'nly'#9#8'TabOrder'#2#8#0#0#7'TButton'#8'bValidar'#4'Left'#2'H'#6'Height'#2
+  +#25#3'Top'#3#218#0#5'Width'#2'K'#25'BorderSpacing.InnerBorder'#2#4#7'Caption'
+  +#6#8'&Validar'#7'Default'#9#7'OnClick'#7#13'bValidarClick'#8'TabOrder'#2#9#0
+  +#0#5'TEdit'#8'edComple'#6'Cursor'#7#7'crIBeam'#4'Left'#3#144#0#6'Height'#2#21
+  +#3'Top'#2#24#5'Width'#2'I'#8'TabOrder'#2#1#0#0#5'TEdit'#9'edIgnorar'#6'Curso'
+  +'r'#7#7'crIBeam'#4'Left'#2#8#6'Height'#2#21#3'Top'#2'H'#5'Width'#2'9'#8'TabO'
+  +'rder'#2#3#0#0#9'TCheckBox'#14'cbPermiteVazio'#4'Left'#3#144#0#6'Height'#2#13
+  +#3'Top'#2'8'#5'Width'#2'T'#7'Caption'#6#13'Permite Vazio'#7'OnClick'#7#19'cb'
+  +'PermiteVazioClick'#8'TabOrder'#2#4#0#0#9'TCheckBox'#12'cbAjustarTam'#4'Left'
+  +#3#144#0#6'Height'#2#13#3'Top'#2'P'#5'Width'#2'd'#7'Caption'#6#15'Ajustar Ta'
+  +'manho'#7'OnClick'#7#17'cbAjustarTamClick'#8'TabOrder'#2#5#0#0#7'TButton'#9
+  +'bFormatar'#4'Left'#3#192#0#6'Height'#2#25#3'Top'#3#218#0#5'Width'#2'K'#25'B'
+  +'orderSpacing.InnerBorder'#2#4#7'Caption'#6#8'Formatar'#7'OnClick'#7#14'bFor'
+  +'matarClick'#8'TabOrder'#2#10#0#0#9'TCheckBox'#11'cbException'#4'Left'#3#144
+  +#0#6'Height'#2#13#3'Top'#3#128#0#5'Width'#2'['#7'Caption'#6#13'Gerar Exce'
+  +#231#227'o'#7'OnClick'#7#16'cbExceptionClick'#8'TabOrder'#2#7#0#0#9'TCheckBo'
+  +'x'#17'cbExibeDigCorreto'#4'Left'#3#144#0#6'Height'#2#13#3'Top'#2'h'#5'Width'
+  +#2'~'#7'Caption'#6#22'Exibe Digito Calculado'#7'OnClick'#7#22'cbExibeDigCorr'
+  +'etoClick'#8'TabOrder'#2#6#0#0#14'TACBrValidador'#14'ACBrValidador1'#11'Igno'
+  +'rarChar'#6#3'./-'#9'OnMsgErro'#7#21'ACBrValidador1MsgErro'#4'left'#2#16#3't'
+  +'op'#3#216#0#0#0#0
+]);

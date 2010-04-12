@@ -42,7 +42,7 @@
 |* 25/06/2009: André Ferreira de Moraes
 |*  - Componente convertido para utilizar units do PCN
 ******************************************************************************}
-package ACBrNFePCN;
+package ACBr_NFe;
 
 {$R *.res}
 {$ALIGN 8}
@@ -89,9 +89,6 @@ contains
   ACBrNFeNotasFiscais in '..\..\Fontes\ACBrNFe\ACBrNFeNotasFiscais.pas',
   ACBrNFeReg in '..\..\Fontes\ACBrNFe\ACBrNFeReg.pas',
   ACBrNFeUtil in '..\..\Fontes\ACBrNFe\ACBrNFeUtil.pas',
-  ACBrNFeWebServices in '..\..\Fontes\ACBrNFe\ACBrNFeWebServices.pas',
-  libxml2 in '..\..\Fontes\ACBrNFe\libxml2.pas',
-  libxmlsec in '..\..\Fontes\ACBrNFe\libxmlsec.pas',
-  libxslt in '..\..\Fontes\ACBrNFe\libxslt.pas';
+  ACBrNFeWebServices in '..\..\Fontes\ACBrNFe\ACBrNFeWebServices.pas';
 
 end.

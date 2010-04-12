@@ -384,7 +384,9 @@ begin
          CertStoreMem := CoStore.Create;
          CertStoreMem.Open(CAPICOM_MEMORY_STORE, 'Memoria', CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED);
          CertStoreMem.Add(Cert);
-       end;    
+       end;
+
+      PrivateKey := Cert.PrivateKey;
 
       if (FSenhaCert <> '') and PrivateKey.IsHardwareDevice then
        begin

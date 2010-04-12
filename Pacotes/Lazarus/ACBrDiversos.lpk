@@ -26,7 +26,7 @@
 ACBrCalculadora, ACBrExtenso, ACBrValidador, ACBrFala, ACBrCMC7, ACBrGIF, ACBrBarCode, ACBrEnterTab"/>
     <License Value="LGPL"/>
     <Version Minor="9"/>
-    <Files Count="14">
+    <Files Count="15">
       <Item1>
         <Filename Value="..\..\Fontes\ACBrDiversos\ACBrBarCode.pas"/>
         <UnitName Value="ACBrBarCode"/>
@@ -84,6 +84,10 @@ ACBrCalculadora, ACBrExtenso, ACBrValidador, ACBrFala, ACBrCMC7, ACBrGIF, ACBrBa
         <Filename Value="..\..\Fontes\ACBrDiversos\LCalculadora.pas"/>
         <UnitName Value="LCalculadora"/>
       </Item14>
+      <Item15>
+        <Filename Value="..\..\Fontes\ACBrDiversos\ACBrSintegra.pas"/>
+        <UnitName Value="ACBrSintegra"/>
+      </Item15>
     </Files>
     <Type Value="RunAndDesignTime"/>
     <RequiredPkgs Count="4">

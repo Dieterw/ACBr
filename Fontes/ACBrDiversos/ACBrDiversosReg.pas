@@ -81,7 +81,8 @@ implementation
 Uses ACBrEnterTab, ACBrUtil, 
      {$IFDEF AnimGIF}ACBrGIF, {$ENDIF}
      ACBrCalculadora, ACBrExtenso, ACBrTroco, ACBrValidador, ACBrReg,
-     ACBrCMC7, ACBrFala, ACBrBarCode, SysUtils;
+     ACBrCMC7, ACBrFala, ACBrBarCode, ACBrSintegra,
+	 SysUtils;
 
 {$IFNDEF FPC}
    {$R ACBrDiversos.dcr}
@@ -91,7 +92,7 @@ procedure Register;
 begin
   RegisterComponents('ACBr', [TACBrCalculadora, TACBrCMC7, TACBrExtenso, TACBrTroco,
      TACBrValidador, TACBrFala, TACBrEnterTab
-     {$IFDEF AnimGIF}, TACBrGIF {$ENDIF}, TACBrBarCode ]);
+     {$IFDEF AnimGIF}, TACBrGIF {$ENDIF}, TACBrBarCode, TACBrSintegra ]);
 
   { Registrando os Editores de Propriedade }
   RegisterPropertyEditor(TypeInfo(String), TACBrFala, 'OrigemArquivos',

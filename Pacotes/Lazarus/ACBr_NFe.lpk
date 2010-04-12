@@ -3,102 +3,86 @@
   <Package Version="3">
     <PathDelim Value="\"/>
     <Name Value="ACBr_NFe"/>
+    <Author Value="André Ferreira de Moraes"/>
     <CompilerOptions>
       <Version Value="8"/>
       <PathDelim Value="\"/>
       <SearchPaths>
-        <IncludeFiles Value="..\ACBrComum\"/>
-        <OtherUnitFiles Value="..\ACBrComum\"/>
-        <UnitOutputDirectory Value="..\ACBr\lib\$(TargetCPU)-$(TargetOS)"/>
-        <SrcPath Value="..\ACBrComum\"/>
+        <IncludeFiles Value="..\..\Fontes\ACBrNFe\;..\..\Fontes\ACBrComum\"/>
+        <OtherUnitFiles Value="..\..\Fontes\ACBrNFe\;..\..\Fontes\ACBrComum\"/>
+        <UnitOutputDirectory Value="..\..\lib\$(TargetCPU)-$(TargetOS)"/>
+        <SrcPath Value="..\..\Fontes\ACBrNFe\;..\..\Fontes\ACBrComum\"/>
       </SearchPaths>
       <Other>
         <CompilerPath Value="$(CompPath)"/>
       </Other>
     </CompilerOptions>
-    <Version Minor="3"/>
-    <Files Count="16">
+    <Description Value="ACBrNFe"/>
+    <Version Major="1"/>
+    <Files Count="10">
       <Item1>
-        <Filename Value="ACBrNFe.pas"/>
-        <UnitName Value="ACBrNFe"/>
+        <Filename Value="..\..\Fontes\ACBrNFe\libxml2.pas"/>
+        <UnitName Value="libxml2"/>
       </Item1>
       <Item2>
-        <Filename Value="ACBrNFeConfiguracoes.pas"/>
-        <UnitName Value="ACBrNFeConfiguracoes"/>
+        <Filename Value="..\..\Fontes\ACBrNFe\libxmlsec.pas"/>
+        <UnitName Value="libxmlsec"/>
       </Item2>
       <Item3>
-        <Filename Value="..\ACBrComum\pcnAuxiliar.pas"/>
-        <UnitName Value="pcnAuxiliar"/>
+        <Filename Value="..\..\Fontes\ACBrNFe\libxslt.pas"/>
+        <UnitName Value="libxslt"/>
       </Item3>
       <Item4>
-        <Filename Value="..\ACBrComum\pcnCabecalho.pas"/>
-        <UnitName Value="pcnCabecalho"/>
+        <Filename Value="..\..\Fontes\ACBrNFe\ACBrNFe.pas"/>
+        <UnitName Value="ACBrNFe"/>
       </Item4>
       <Item5>
-        <Filename Value="..\ACBrComum\pcnConversao.pas"/>
-        <UnitName Value="pcnConversao"/>
+        <Filename Value="..\..\Fontes\ACBrNFe\ACBrNFeConfiguracoes.pas"/>
+        <UnitName Value="ACBrNFeConfiguracoes"/>
       </Item5>
       <Item6>
-        <Filename Value="..\ACBrComum\pcnGerador.pas"/>
-        <UnitName Value="pcnGerador"/>
+        <Filename Value="..\..\Fontes\ACBrNFe\ACBrNFeNotasFiscais.pas"/>
+        <UnitName Value="ACBrNFeNotasFiscais"/>
       </Item6>
       <Item7>
-        <Filename Value="..\ACBrComum\pcnLeitor.pas"/>
-        <UnitName Value="pcnLeitor"/>
-      </Item7>
-      <Item8>
-        <Filename Value="..\ACBrComum\pcnSignature.pas"/>
-        <UnitName Value="pcnSignature"/>
-      </Item8>
-      <Item9>
-        <Filename Value="ACBrNFeUtil.pas"/>
-        <UnitName Value="ACBrNFeUtil"/>
-      </Item9>
-      <Item10>
-        <Filename Value="ACBrNFeWebServices.pas"/>
-        <UnitName Value="ACBrNFeWebServices"/>
-      </Item10>
-      <Item11>
-        <Filename Value="ACBrNFeReg.pas"/>
+        <Filename Value="..\..\Fontes\ACBrNFe\ACBrNFeReg.pas"/>
         <HasRegisterProc Value="True"/>
         <UnitName Value="ACBrNFeReg"/>
-      </Item11>
-      <Item12>
-        <Filename Value="ACBrNFeNotasFiscais.pas"/>
-        <UnitName Value="ACBrNFeNotasFiscais"/>
-      </Item12>
-      <Item13>
-        <Filename Value="libxslt.pas"/>
-        <UnitName Value="libxslt"/>
-      </Item13>
-      <Item14>
-        <Filename Value="libxml2.pas"/>
-        <UnitName Value="libxml2"/>
-      </Item14>
-      <Item15>
-        <Filename Value="libxmlsec.pas"/>
-        <UnitName Value="libxmlsec"/>
-      </Item15>
-      <Item16>
-        <Filename Value="ACBrNFeDMLaz.pas"/>
-        <UnitName Value="ACBrNFeDMLaz"/>
-      </Item16>
+      </Item7>
+      <Item8>
+        <Filename Value="..\..\Fontes\ACBrNFe\ACBrNFeUtil.pas"/>
+        <UnitName Value="ACBrNFeUtil"/>
+      </Item8>
+      <Item9>
+        <Filename Value="..\..\Fontes\ACBrNFe\ACBrNFeWebServices.pas"/>
+        <UnitName Value="ACBrNFeWebServices"/>
+      </Item9>
+      <Item10>
+        <Filename Value="..\..\Fontes\ACBrNFe\ACBrNFeDANFEClass.pas"/>
+        <UnitName Value="ACBrNFeDANFEClass"/>
+      </Item10>
     </Files>
     <Type Value="RunAndDesignTime"/>
-    <RequiredPkgs Count="4">
+    <RequiredPkgs Count="6">
       <Item1>
-        <PackageName Value="lazreport"/>
+        <PackageName Value="ACBrComum"/>
       </Item1>
       <Item2>
-        <PackageName Value="LCL"/>
+        <PackageName Value="synapse"/>
       </Item2>
       <Item3>
-        <PackageName Value="IDEIntf"/>
+        <PackageName Value="PCN"/>
       </Item3>
       <Item4>
+        <PackageName Value="LCL"/>
+      </Item4>
+      <Item5>
+        <PackageName Value="IDEIntf"/>
+      </Item5>
+      <Item6>
         <PackageName Value="FCL"/>
         <MinVersion Major="1" Valid="True"/>
-      </Item4>
+      </Item6>
     </RequiredPkgs>
     <UsageOptions>
       <UnitPath Value="$(PkgOutDir)\"/>

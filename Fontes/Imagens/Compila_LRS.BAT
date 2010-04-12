@@ -72,6 +72,15 @@ echo "* Arquivo   ACBrBoleto.lrs   gerado    *"
 echo "****************************************"
 echo.
 
+:Boleto
+%1\tools\lazres.exe ACBrNFe.lrs TACBrNFe.bmp
+move ACBrNFe.lrs ..\ACBrNFe
+echo.
+echo "****************************************"
+echo "* Arquivo    ACBrNFe.lrs     gerado    *"
+echo "****************************************"
+echo.
+
 
 GOTO fim
 

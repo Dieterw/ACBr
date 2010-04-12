@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<CONFIG>
+  <Package Version="3">
+    <PathDelim Value="\"/>
+    <Name Value="ACBr_Boleto"/>
+    <Author Value="Daniel Simoes de Almeida"/>
+    <CompilerOptions>
+      <Version Value="8"/>
+      <PathDelim Value="\"/>
+      <SearchPaths>
+        <IncludeFiles Value="..\..\Fontes\ACBrBoleto\;..\..\Fontes\ACBrComum\"/>
+        <OtherUnitFiles Value="..\..\Fontes\ACBrBoleto\;..\..\Fontes\ACBrComum\"/>
+        <UnitOutputDirectory Value="..\..\lib\$(TargetCPU)-$(TargetOS)"/>
+        <SrcPath Value="..\..\Fontes\ACBrBoleto\;..\..\Fontes\ACBrComum\"/>
+      </SearchPaths>
+      <Parsing>
+        <SyntaxOptions>
+          <UseAnsiStrings Value="True"/>
+        </SyntaxOptions>
+      </Parsing>
+      <Other>
+        <CompilerPath Value="$(CompPath)"/>
+      </Other>
+    </CompilerOptions>
+    <Description Value="ACBrBoleto"/>
+    <License Value="LGPL"/>
+    <Version Minor="1"/>
+    <Files Count="2">
+      <Item1>
+        <Filename Value="..\..\Fontes\ACBrBoleto\ACBrBancoBradesco.pas"/>
+        <UnitName Value="ACBrBancoBradesco"/>
+      </Item1>
+      <Item2>
+        <Filename Value="..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
+        <HasRegisterProc Value="True"/>
+        <UnitName Value="ACBrBoleto"/>
+      </Item2>
+    </Files>
+    <Type Value="RunAndDesignTime"/>
+    <RequiredPkgs Count="2">
+      <Item1>
+        <PackageName Value="ACBrComum"/>
+      </Item1>
+      <Item2>
+        <PackageName Value="FCL"/>
+        <MinVersion Major="1" Valid="True"/>
+      </Item2>
+    </RequiredPkgs>
+    <UsageOptions>
+      <UnitPath Value="$(PkgOutDir)\"/>
+    </UsageOptions>
+    <PublishOptions>
+      <Version Value="2"/>
+      <IgnoreBinaries Value="False"/>
+    </PublishOptions>
+  </Package>
+</CONFIG>

@@ -88,14 +88,14 @@ RemoteSymbols=0
 MinStackSize=16384
 MaxStackSize=1048576
 ImageBase=4194304
-ExeDescription=Projeto Cooperar (http://br.groups.yahoo.com/group/projeto_cooperar_nfe/)
+ExeDescription=ACBrNFePCN - (http://acbr.sourceforge.net/)
 [Directories]
 OutputDir=
 UnitOutputDir=
 PackageDLLOutputDir=
 PackageDCPOutputDir=
-SearchPath=..\..\Fontes\PCN
-Packages=vcl;rtl;vclx;indy;vclie;xmlrtl;inetdbbde;inet;inetdbxpress;dbrtl;soaprtl;dsnap;VclSmp;dbexpress;vcldb;dbxcds;inetdb;bdertl;vcldbx;adortl;teeui;teedb;tee;ibxpress;visualclx;visualdbclx;vclactnband;vclshlctrls;IntrawebDB_50_70;Intraweb_50_70;dclOfficeXP;Rave50CLX;Rave50VCL;qrpt;teeqr
+SearchPath=
+Packages=vcl;rtl;vclx;indy;vclie;xmlrtl;inetdbbde;inet;inetdbxpress;dbrtl;soaprtl;dsnap;VclSmp;dbexpress;vcldb;dbxcds;inetdb;bdertl;vcldbx;adortl;teeui;teedb;tee;ibxpress;visualclx;visualdbclx;vclactnband;vclshlctrls;IntrawebDB_50_70;Intraweb_50_70;dclOfficeXP;Rave50CLX;Rave50VCL;qrpt;teeqr;ACBrDiversos;ACBrSerial
 Conditionals=
 DebugSourceDirs=
 UsePackages=0
@@ -110,7 +110,7 @@ ActiveLang=
 ProjectLang=
 RootDir=C:\Program Files (x86)\Borland\Delphi7\Bin\
 [Version Info]
-IncludeVerInfo=1
+IncludeVerInfo=0
 AutoIncBuild=0
 MajorVer=1
 MinorVer=0
@@ -135,7 +135,7 @@ ProductName=
 ProductVersion=1.0.0.0
 Comments=
 [Excluded Packages]
-C:\Program Files (x86)\Borland\Delphi7\Projects\Bpl\synapse.bpl=Synapse TCP/IP / Serial library (http://www.synapse.ararat.cz)
+C:\Pascal\Comp\ACBr\branches\ACBrNovo\lib\synapse.bpl=Synapse TCP/IP / Serial library (http://www.synapse.ararat.cz)
 [HistoryLists\hlUnitAliases]
 Count=1
 Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;

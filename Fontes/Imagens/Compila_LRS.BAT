@@ -63,6 +63,15 @@ echo "* Arquivo   ACBrPAF.lrs   gerado       *"
 echo "****************************************"
 echo.
 
+:Boleto
+%1\tools\lazres.exe ACBrBoleto.lrs TACBrBoleto.bmp
+move ACBrBoleto.lrs ..\ACBrBoleto
+echo.
+echo "****************************************"
+echo "* Arquivo   ACBrBoleto.lrs   gerado    *"
+echo "****************************************"
+echo.
+
 
 GOTO fim
 

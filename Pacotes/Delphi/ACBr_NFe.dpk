@@ -72,8 +72,13 @@ package ACBr_NFe;
 requires
   vcl,
   rtl,
-  ACBrComum,
   designide,
+  xmlrtl,
+  dbrtl,
+  inet,
+  soaprtl,
+  ACBrComum,
+  ACBrCapicom,
   synapse,
   PCN;
 
@@ -89,6 +94,8 @@ contains
   ACBrNFeNotasFiscais in '..\..\Fontes\ACBrNFe\ACBrNFeNotasFiscais.pas',
   ACBrNFeReg in '..\..\Fontes\ACBrNFe\ACBrNFeReg.pas',
   ACBrNFeUtil in '..\..\Fontes\ACBrNFe\ACBrNFeUtil.pas',
-  ACBrNFeWebServices in '..\..\Fontes\ACBrNFe\ACBrNFeWebServices.pas';
+  ACBrNFeWebServices in '..\..\Fontes\ACBrNFe\ACBrNFeWebServices.pas',
+  ACBrNFeDANFEClass in '..\..\Fontes\ACBrNFe\ACBrNFeDANFEClass.pas',
+  ACBrNFe in '..\..\Fontes\ACBrNFe\ACBrNFe.pas';
 
 end.

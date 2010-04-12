@@ -42,7 +42,7 @@
 |* 25/06/2009: André Ferreira de Moraes
 |*  - Componente convertido para utilizar units do PCN
 ******************************************************************************}
-package ACBrNFeDanfeQR;
+package ACBrNFeDanfeQRpkg;
 
 {$R *.res}
 {$ALIGN 8}
@@ -71,15 +71,14 @@ package ACBrNFeDanfeQR;
 
 requires
   rtl,
-  designide,
-  xmlrtl,
-  ACBrNFePCN;
+  ACBr_NFe,
+  designide;
 
 contains
-  ACBrNFeDANFeQR in 'ACBrNFeDANFeQR.pas',
-  ACBrNFeQRCodeBar in 'ACBrNFeQRCodeBar.pas',
-  ACBrNFeDANFeQRRetrato in 'ACBrNFeDANFeQRRetrato.pas',
-  ACBrNFeDANFeQRClass in 'ACBrNFeDANFeQRClass.pas',
-  ACBrNFeDANFeQRReg in 'ACBrNFeDANFeQRReg.pas';
+  ACBrNFeDANFeQRClass in '..\..\Fontes\ACBrNFe\ACBrNFeDANFeQRClass.pas',
+  ACBrNFeDANFeQRReg in '..\..\Fontes\ACBrNFe\ACBrNFeDANFeQRReg.pas',
+  ACBrNFeDANFeQRRetrato in '..\..\Fontes\ACBrNFe\ACBrNFeDANFeQRRetrato.pas' {fqrDANFeQRRetrato},
+  ACBrNFeQRCodeBar in '..\..\Fontes\ACBrNFe\ACBrNFeQRCodeBar.pas',
+  ACBrNFeDANFeQR in '..\..\Fontes\ACBrNFe\ACBrNFeDANFeQR.pas' {fqrDANFeQR};
 
 end.

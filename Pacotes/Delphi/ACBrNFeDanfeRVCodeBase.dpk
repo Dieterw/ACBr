@@ -72,14 +72,14 @@ package ACBrNFeDanfeRVCodeBase;
 requires
   rtl,
   designide,
-  xmlrtl,
-  ACBrNFePCN;
+  ACBrComum,
+  ACBr_NFe;
 
 contains
-  ACBrNFeDANFERaveCB in 'ACBrNFeDANFERaveCB.pas',
-  ACBrNFeDANFECBRVReg in 'ACBrNFeDANFECBRVReg.pas',
-  ACBrDANFeCBRave in 'ACBrDANFeCBRave.pas',
-  ACBrDANFeCBRaveRetrato in 'ACBrDANFeCBRaveRetrato.pas',
-  ACBrDANFeCBRavePaisagem in 'ACBrDANFeCBRavePaisagem.pas';
+  ACBrDANFeCBRave in '..\..\Fontes\ACBrNFe\ACBrDANFeCBRave.pas',
+  ACBrDANFeCBRavePaisagem in '..\..\Fontes\ACBrNFe\ACBrDANFeCBRavePaisagem.pas',
+  ACBrDANFeCBRaveRetrato in '..\..\Fontes\ACBrNFe\ACBrDANFeCBRaveRetrato.pas',
+  ACBrNFeDANFECBRVReg in '..\..\Fontes\ACBrNFe\ACBrNFeDANFECBRVReg.pas',
+  ACBrNFeDANFERaveCB in '..\..\Fontes\ACBrNFe\ACBrNFeDANFERaveCB.pas';
 
 end.

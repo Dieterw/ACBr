@@ -71,13 +71,12 @@ package ACBrNFeDanfeRV;
 
 requires
   rtl,
-  designide,
-  xmlrtl,
-  ACBrNFePCN;
+  ACBr_NFe,
+  designide;
 
 contains
-  ACBrNFeDANFERave in 'ACBrNFeDANFERave.pas',
-  ACBrNFeDANFERaveDM in 'ACBrNFeDANFERaveDM.pas' {dmACBrNFeRave: TDataModule},
-  ACBrNFeDANFERVReg in 'ACBrNFeDANFERVReg.pas';
+  ACBrNFeDANFERVReg in '..\..\Fontes\ACBrNFe\ACBrNFeDANFERVReg.pas',
+  ACBrNFeDANFERave in '..\..\Fontes\ACBrNFe\ACBrNFeDANFERave.pas',
+  ACBrNFeDANFERaveDM in '..\..\Fontes\ACBrNFe\ACBrNFeDANFERaveDM.pas' {dmACBrNFeRave: TDataModule};
 
 end.

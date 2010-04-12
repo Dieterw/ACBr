@@ -42,7 +42,7 @@
 |* 25/06/2009: André Ferreira de Moraes
 |*  - Componente convertido para utilizar units do PCN
 ******************************************************************************}
-package ACBrNFeDanfeRL;
+package ACBrNFeDanfeRLpkg;
 
 {$R *.res}
 {$ALIGN 8}
@@ -72,13 +72,12 @@ package ACBrNFeDanfeRL;
 requires
   rtl,
   designide,
-  xmlrtl,
-  ACBrNFePCN;
+  ACBr_NFe;
 
 contains
-  ACBrNFeDANFeRLReg in 'ACBrNFeDANFeRLReg.pas',
-  ACBrNFeDANFeRLClass in 'ACBrNFeDANFeRLClass.pas',
-  ACBrNFeDANFeRL in 'ACBrNFeDANFeRL.pas',
-  ACBrNFeDANFeRLRetrato in 'ACBrNFeDANFeRLRetrato.pas';
+  ACBrNFeDANFeRL in '..\..\Fontes\ACBrNFe\ACBrNFeDANFeRL.pas' {frlDANFeRL},
+  ACBrNFeDANFeRLClass in '..\..\Fontes\ACBrNFe\ACBrNFeDANFeRLClass.pas',
+  ACBrNFeDANFeRLReg in '..\..\Fontes\ACBrNFe\ACBrNFeDANFeRLReg.pas',
+  ACBrNFeDANFeRLRetrato in '..\..\Fontes\ACBrNFe\ACBrNFeDANFeRLRetrato.pas' {frlDANFeRLRetrato};
 
 end.

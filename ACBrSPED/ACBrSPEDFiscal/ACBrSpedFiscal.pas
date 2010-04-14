@@ -45,7 +45,11 @@ unit ACBrSpedFiscal;
 interface
 
 uses
-  SysUtils, Math, Classes, DateUtils, ACBrSped, ACBrTXTClass,
+  SysUtils, Math, Classes, 
+  {$IFDEF FPC}
+    LResources,
+  {$ENDIF}  
+  DateUtils, ACBrSped, ACBrTXTClass,
   ACBrEFDBloco_0_Class, ACBrEFDBloco_1_Class, ACBrEFDBloco_9_Class,
   ACBrEFDBloco_C_Class, ACBrEFDBloco_D_Class, ACBrEFDBloco_E_Class,
   ACBrEFDBloco_G_Class, ACBrEFDBloco_H_Class;
@@ -1407,5 +1411,11 @@ begin
                                                                   Bloco_9.Registro9990.QTD_LIN_9;
    Result := Bloco_9.WriteRegistro9999;
 end;
+
+
+{$ifdef FPC}
+initialization
+   {$I ACBrSpedFiscal.lrs}
+{$endif}
 
 end.

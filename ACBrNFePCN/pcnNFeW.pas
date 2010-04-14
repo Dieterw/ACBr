@@ -43,12 +43,16 @@
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
+{$IFDEF FPC}
+  {$MODE DELPHI}
+{$ENDIF}
+
 unit pcnNFeW;
 
 interface uses
 
-  SysUtils, Classes,
-  pcnAuxiliar, pcnConversao, pcnGerador, pcnNfe, pcnLayoutTXT, ACBrNFeUtil, ACBrUtil;
+  SysUtils, Classes, StrUtils,
+  pcnAuxiliar, pcnConversao, pcnGerador, pcnNfe, pcnLayoutTXT, ACBrUtil;
 
 type
 
@@ -467,7 +471,7 @@ begin
     Gerador.wAlerta('E12', 'UF', DSC_UF, ERR_MSG_INVALIDO);
   Gerador.wCampo(tcInt, 'E13', 'CEP    ', 08, 08, 0, nfe.Dest.enderDest.CEP, DSC_CEP);
   //Gerador.wCampo(tcStr, 'E14', 'cPais  ', 01, 04, 0, IntToStrZero(nfe.Dest.enderDest.cPais,4), DSC_CPAIS);
-  Gerador.wCampo(tcStr, 'E14', 'cPais ', 01, 04, 0, NotaUtil.SeSenao(nfe.Dest.enderDest.cPais <> 0, IntToStrZero(nfe.Dest.enderDest.cPais,4), ''), DSC_CPAIS);
+  Gerador.wCampo(tcStr, 'E14', 'cPais ', 01, 04, 0, ifthen(nfe.Dest.enderDest.cPais <> 0, IntToStrZero(nfe.Dest.enderDest.cPais,4), ''), DSC_CPAIS);
   if not ValidarCodigoPais(nfe.Dest.enderDest.cPais) = -1 then
     Gerador.wAlerta('E14', 'cPais', DSC_CPAIS, ERR_MSG_INVALIDO);
   Gerador.wCampo(tcStr, 'E15', 'xPais  ', 02, 60, 0, nfe.Dest.enderDest.xPais, DSC_XPAIS);

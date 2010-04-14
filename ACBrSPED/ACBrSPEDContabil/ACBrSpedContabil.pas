@@ -43,7 +43,11 @@ unit ACBrSpedContabil;
 interface
 
 uses
-  SysUtils, Classes, DateUtils, ACBrSped, ACBrTXTClass,
+  SysUtils, Classes, DateUtils,
+  {$IFDEF FPC}
+    LResources,
+  {$ENDIF}
+  ACBrSped, ACBrTXTClass,
   ACBrECDBloco_0_Class, ACBrECDBloco_9_Class, ACBrECDBloco_I_Class,
   ACBrECDBloco_J_Class;
 
@@ -856,5 +860,10 @@ begin
      objFile.Free;
    end;
 end;
+
+{$ifdef FPC}
+initialization
+   {$I ACBrSpedContabil.lrs}
+{$endif}
 
 end.

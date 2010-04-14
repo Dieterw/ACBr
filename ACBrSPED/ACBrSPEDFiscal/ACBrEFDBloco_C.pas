@@ -3267,8 +3267,8 @@ end;
 
 constructor TRegistroC300.Create;
 begin
-  fRegistroC310 := RegistroC310.Create;
-  fRegistroC320 := RegistroC320.Create;
+  fRegistroC310 := TRegistroC310List.Create;
+  fRegistroC320 := TRegistroC320List.Create;
 end;
 
 destructor TRegistroC300.Destroy;

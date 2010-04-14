@@ -44,6 +44,9 @@ interface
 
 uses
    SysUtils, Classes, DateUtils,
+   {$IFDEF FPC}
+      LResources,
+   {$ENDIF}
    ACBrTXTClass, ACBrUtil, Forms,
    ACBrPAF_D, ACBrPAF_D_Class,
    ACBrPAF_E, ACBrPAF_E_Class,
@@ -638,5 +641,10 @@ begin
      objFile.Free;
    end;
 end;
+
+{$ifdef FPC}
+initialization
+   {$I ACBrPAF.lrs}
+{$endif}
 
 end.

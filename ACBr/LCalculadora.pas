@@ -117,9 +117,8 @@ implementation
 
 uses ACBrUtil, Math;
 
-{$I incCalculadora.pas}
+{$R *.lfm}
 
-initialization
-   {$I LCalculadora.lrs}
+{$I incCalculadora.pas}
 
 end.

@@ -43,7 +43,7 @@
 unit ACBrECFSCU ;
 
 interface
-uses ACBrECFClass, ACBrUtil,
+uses ACBrECFClass, ACBrUtil, ACBrDevice,
      Classes ;
 
 const  SOH = #01  ;

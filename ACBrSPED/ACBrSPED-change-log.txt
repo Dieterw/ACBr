@@ -47,6 +47,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.08a   14/04/10
+-- ACBrSPEDFiscal --
+[-] corrigido BUG encontrado na geração do registro C300.
+
 Versão 0.08a   09/04/10
 -- ACBrSPEDFiscal --
 [*] Foi feito um tratamento, para que os Registro 0300, 0305, 0500, 0600 e todos

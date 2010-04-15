@@ -333,7 +333,7 @@ TACBrECFDadosRZ = class
   public
     constructor Create;
     destructor Destroy; override ;
-    procedure Zera;
+    procedure Clear;
     //
     property DataDaImpressora: TDateTime read FDataDaImpressora write FDataDaImpressora;
     property NumeroDeSerie: AnsiString read FNumeroDeSerie write FNumeroDeSerie;
@@ -3633,10 +3633,10 @@ begin
    FICMS                    := TACBrECFAliquotas.Create;
    FISSQN                   := TACBrECFAliquotas.Create;
    
-   Zera ;
+   Clear ;
 end;
 
-procedure TACBrECFDadosRZ.Zera;
+procedure TACBrECFDadosRZ.Clear;
 begin
    FTotalizadoresNaoFiscais.Clear ;
    FRelatorioGerencial.Clear ;

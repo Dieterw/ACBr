@@ -4,9 +4,8 @@
 { mentos de Automação Comercial utilizados no Brasil                           }
 {                                                                              }
 { Direitos Autorais Reservados (c) 2009 Daniel Simoes de Almeida               }
-{                                       André Ferreira de Moraes               }
 {                                                                              }
-{ Colaboradores nesse arquivo:                                                 }
+{ Colaboradores nesse arquivo:   Juliana Rodrigues Prado                       }
 {                                                                              }
 {  Você pode obter a última versão desse arquivo na pagina do  Projeto ACBr    }
 { Componentes localizado em      http://www.sourceforge.net/projects/acbr      }
@@ -35,8 +34,10 @@
 {******************************************************************************
 |* Historico
 |*
-|* 02/10/2009:André Ferreira de Moraes
-|* 01/04/2010:Juliana Rodrigues Prado Tamizou
+|* 02/10/2009: André Ferreira de Moraes,  Daniel Simões de Almeida
+|*  - Esboço das Classes
+|*
+|* 01/04/2010: Juliana Rodrigues Prado Tamizou,  Daniel Simões de Almeida
 |*  - Primeira Versao ACBrBoleto
 |*  Componente desenvolvido usando como base os projetos GBBoleto, RLBoleto,
 |*  FreeBoleto, OpenBoleto, JFMBoleto e outras dicas encontradas na internet

@@ -73,7 +73,9 @@ requires
   rtl,
   designide,
   xmlrtl,
-  ACBrNFePCN;
+  vcljpg,
+  bdertl,
+  dsnap;
 
 contains
   ACBrNFeDANFeQR in 'ACBrNFeDANFeQR.pas',

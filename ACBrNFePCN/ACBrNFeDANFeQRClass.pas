@@ -79,6 +79,8 @@ end;
 procedure TACBrNFeDANFEQR.ImprimirDANFE(NFE : TNFe = nil);
 var
   i : Integer;
+  CasasDecimais_Mask_vUnCom : integer;
+  CasasDecimais_Mask_qCom   : integer;
   fqrDANFeQRRetrato : TfqrDANFeQRRetrato;
   sProt     : String ;
 begin
@@ -86,6 +88,36 @@ begin
 
   sProt := TACBrNFe(ACBrNFe).DANFE.ProtocoloNFe ;
   fqrDANFeQRRetrato.ProtocoloNFE( sProt ) ;
+
+  if CasasDecimais._Mask_vUnCom = '' then
+  begin
+    CasasDecimais_Mask_vUnCom:= 2;
+  end else
+  begin
+    try
+        CasasDecimais_Mask_vUnCom:= strtoint(CasasDecimais._Mask_vUnCom)
+    except
+    on E:Exception do
+        begin
+            CasasDecimais_Mask_vUnCom:= 2;
+        end;
+    end;
+  end;
+
+  if CasasDecimais._Mask_qCom = '' then
+  begin
+    CasasDecimais_Mask_qCom:= 2;
+  end else
+  begin
+    try
+        CasasDecimais_Mask_qCom:= strtoint(CasasDecimais._Mask_qCom)
+    except
+    on E:Exception do
+        begin
+            CasasDecimais_Mask_qCom:= 2;
+        end;
+    end;
+  end;
 
   if NFE = nil then
    begin
@@ -106,7 +138,9 @@ begin
                                     , MargemSuperior
                                     , MargemInferior
                                     , MargemEsquerda
-                                    , MargemDireita);
+                                    , MargemDireita
+                                    , CasasDecimais_Mask_vUnCom
+                                    , CasasDecimais_Mask_qCom);
       end;
    end
   else
@@ -125,7 +159,9 @@ begin
                                 , MargemSuperior
                                 , MargemInferior
                                 , MargemEsquerda
-                                , MargemDireita);
+                                , MargemDireita
+                                , strtoint(CasasDecimais._Mask_vUnCom)
+                                , strtoint(CasasDecimais._Mask_qCom));
   fqrDANFeQRRetrato.Free;
 end;
 
@@ -133,6 +169,8 @@ procedure TACBrNFeDANFEQR.ImprimirDANFEPDF(NFE : TNFe = nil);
 var
     NomeArq : String;
     i : Integer;
+    CasasDecimais_Mask_vUnCom : integer;
+    CasasDecimais_Mask_qCom   : integer;
     fqrDANFeQRRetrato : TfqrDANFeQRRetrato;
     sProt     : String ;
 begin
@@ -140,7 +178,39 @@ begin
 
     sProt := TACBrNFe(ACBrNFe).DANFE.ProtocoloNFe ;
     fqrDANFeQRRetrato.ProtocoloNFE( sProt ) ;
-      if NFE = nil then
+
+
+    if CasasDecimais._Mask_vUnCom = '' then
+    begin
+        CasasDecimais_Mask_vUnCom:= 2;
+    end else
+    begin
+        try
+            CasasDecimais_Mask_vUnCom:= strtoint(CasasDecimais._Mask_vUnCom)
+        except
+        on E:Exception do
+            begin
+                CasasDecimais_Mask_vUnCom:= 2;
+            end;
+        end;
+    end;
+
+    if CasasDecimais._Mask_qCom = '' then
+    begin
+        CasasDecimais_Mask_qCom:= 2;
+    end else
+    begin
+        try
+            CasasDecimais_Mask_qCom:= strtoint(CasasDecimais._Mask_qCom)
+        except
+        on E:Exception do
+            begin
+                CasasDecimais_Mask_qCom:= 2;
+            end;
+        end;
+    end;
+
+    if NFE = nil then
    begin
      for i:= 0 to TACBrNFe(ACBrNFe).NotasFiscais.Count-1 do
       begin
@@ -162,7 +232,9 @@ begin
                                     , MargemSuperior
                                     , MargemInferior
                                     , MargemEsquerda
-                                    , MargemDireita);
+                                    , MargemDireita
+                                    , CasasDecimais_Mask_vUnCom
+                                    , CasasDecimais_Mask_qCom);
       end;
    end
   else
@@ -184,7 +256,9 @@ begin
                                 , MargemSuperior
                                 , MargemInferior
                                 , MargemEsquerda
-                                , MargemDireita);
+                                , MargemDireita
+                                , CasasDecimais_Mask_vUnCom
+                                , CasasDecimais_Mask_qCom);
   end;
 
   fqrDANFeQRRetrato.Free;

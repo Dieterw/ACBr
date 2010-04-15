@@ -50,6 +50,8 @@ Símbolo : Significado
 
 Alterações   15/04/10
 ---------------
+[-] DANFe com Quick Report (Créditos: André Langner)
+    - Correções diversas
 [*] DANFE em Fortes Reports (Créditos: Peterson de Cerqueira Matos)
     - Adequação à NF-e 2.0, Manual de Integração do Contribuinte 4.0.1NT2009.006
     - Tratamento das propriedades "_vUnCom" e "_qCom"

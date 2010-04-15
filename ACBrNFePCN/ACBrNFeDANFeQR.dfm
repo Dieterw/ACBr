@@ -1,8 +1,8 @@
 object fqrDANFeQR: TfqrDANFeQR
   Left = 94
   Top = 88
-  Width = 880
-  Height = 742
+  Width = 889
+  Height = 738
   Caption = 'fqrDANFeQR'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -12,6 +12,7 @@ object fqrDANFeQR: TfqrDANFeQR
   Font.Style = []
   OldCreateOrder = False
   Scaled = False
+  WindowState = wsMaximized
   PixelsPerInch = 96
   TextHeight = 13
   object QRNFe: TQuickRep

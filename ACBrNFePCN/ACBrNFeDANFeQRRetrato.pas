@@ -86,8 +86,8 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, QuickRpt, QRCtrls,  XMLIntf, XMLDoc, MidasLib,
-  JPEG, ACBrNFeDANFeQR, ACBrNFeQRCodeBar, pcnConversao, DB,
-  DBClient, ACBrNFeDANFEClass, ACBrNFeDANFeQRClass{, QRPDFFilt {Descomentar para usar PDF};
+  JPEG,  pcnConversao, DB, DBClient, pcnNFe,
+  ACBrNFeDANFEClass,ACBrNFeDANFeQR, ACBrNFeQRCodeBar, ACBrNFeDANFeQRClass {$IFNDEF ver150}, QRPDFFilt {$ENDIF};
 
 type
 
@@ -447,7 +447,7 @@ type
 
 implementation
 
-uses StrUtils, ACBrNFeUtil, pcnNFe, pcnSignature, DateUtils, ACBrNFe, ACBrUtil;
+uses StrUtils, ACBrNFeUtil, pcnSignature, DateUtils, ACBrNFe, ACBrUtil;
 
 {$R *.dfm}
 
@@ -478,7 +478,7 @@ begin
     end else
     begin
         intTamanhoLinha:= (11 * intDivisao);
-    end;                            
+    end;
 
 
     if (intTamanhoDescricao <= 35) AND (cdsItens.FieldByName('INFADIPROD').AsString = '') then
@@ -652,8 +652,6 @@ begin
             cdsItens.FieldByName( 'NCM'       ).AsString := NCM ;
             cdsItens.FieldByName( 'CFOP'      ).AsString := CFOP ;
             cdsItens.FieldByName( 'UNIDADE'   ).AsString := UCom ;
-            cdsItens.FieldByName( 'QTDE'      ).AsString := NotaUtil.FormatFloat( QCom ) ;
-            cdsItens.FieldByName( 'VALOR'     ).AsString := NotaUtil.FormatFloat( VUnCom ) ;
             cdsItens.FieldByName( 'TOTAL'     ).AsString := NotaUtil.FormatFloat( VProd ) ;
             cdsItens.FieldByName( 'CST'       ).AsString := sCST ;
             cdsItens.FieldByName( 'BICMS'     ).AsString := sBCICMS ;
@@ -661,9 +659,39 @@ begin
             cdsItens.FieldByName( 'VALORICMS' ).AsString := sVALORICMS ;
             cdsItens.FieldByName( 'ALIQIPI'   ).AsString := sALIQIPI ;
             cdsItens.FieldByName( 'VALORIPI'  ).AsString := sVALORIPI ;
-
             cdsItens.FieldByName( 'XPROD'     ).AsString := xProd ;
             cdsItens.FieldByName( 'INFADIPROD').AsString := infAdProd ;
+
+            if FCasasDecimais_Qcom <= 2 then
+            begin
+                cdsItens.FieldByName( 'QTDE'      ).AsString := FormatFloat('###,###,###,##0.00', QCom ) ;
+            end;
+
+            if FCasasDecimais_Qcom = 3 then
+            begin
+                cdsItens.FieldByName( 'QTDE'      ).AsString := FormatFloat('###,###,###,##0.000', QCom ) ;
+            end;
+
+            if FCasasDecimais_Qcom >= 4 then
+            begin
+                cdsItens.FieldByName( 'QTDE'      ).AsString := FormatFloat('###,###,###,##0.0000', QCom ) ;
+            end;
+
+            if FCasasDecimais_Vcom <= 2 then
+            begin
+                cdsItens.FieldByName( 'VALOR'      ).AsString := FormatFloat('###,###,###,##0.00', Vuncom ) ;
+            end;
+
+            if FCasasDecimais_Vcom = 3 then
+            begin
+                cdsItens.FieldByName( 'VALOR'      ).AsString := FormatFloat('###,###,###,##0.000', Vuncom ) ;
+            end;
+
+            if FCasasDecimais_Vcom >= 4 then
+            begin
+                cdsItens.FieldByName( 'VALOR'      ).AsString := FormatFloat('###,###,###,##0.0000', Vuncom ) ;
+            end;
+
             cdsItens.Post ;
 
          end;
@@ -1075,7 +1103,7 @@ begin
       qrlSERIE1.Caption       := IntToStr( FNFe.Ide.serie ) ;
       qrlChave.Caption        := NotaUtil.FormatarChaveAcesso( Copy ( FNFe.InfNFe.Id, 4, 44 ) ) ;
       qrlNatOperacao.Caption  := FNFe.Ide.natOp ;
-       SetBarCodeImage( Copy ( FNFe.InfNFe.Id, 4, 44 ), qriBarCode ) ;
+      SetBarCodeImage( Copy ( FNFe.InfNFe.Id, 4, 44 ), qriBarCode ) ;
 
         // Normal **************************************************************
         if FNFe.Ide.tpEmis in [teNormal, teSCAN] then

@@ -1,6 +1,6 @@
 object frlDANFeRL: TfrlDANFeRL
-  Left = 197
-  Top = 113
+  Left = 209
+  Top = 108
   Width = 810
   Height = 634
   VertScrollBar.Position = 540

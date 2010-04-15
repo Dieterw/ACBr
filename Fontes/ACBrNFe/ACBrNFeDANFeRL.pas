@@ -68,6 +68,9 @@
 |*  - Tratamento das margens em "ACBrNFeDANFeClass"
 |*  - Acréscimo dos parâmetros "AMargemSuperior, AMargemInferior,
 |*    AMargemEsqurda, AMargemDireita" e "AFonteDANFE"
+|* 13/04/2010: Peterson de Cerqueira Matos
+|*  - Tratamento das casas decimais em "ACBrNFeDANFeClass"
+|*  - Acréscimo dos parâmetros "FCasasDecimaisqCom" e "FCasasDecimaisvUnCom"
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeRL;
@@ -86,7 +89,6 @@ uses
 type
   TPosCanhoto = (pcCabecalho, pcRodape);
   TFonteDANFE = (fdTimesNewRoman, fdCourierNew, fdArial);
-
 type
   TfrlDANFeRL = class(TForm)
     RLNFe: TRLReport;
@@ -115,11 +117,13 @@ type
     FMargemInferior: Double;
     FMargemEsquerda: Double;
     FMargemDireita: Double;
+    FCasasDecimaisqCom: Integer;
+    FCasasDecimaisvUnCom: Integer;
 
   public
     { Public declarations }
     class procedure Imprimir(ANFe: TNFe; ALogo: String = '';
-                    AMarcaDagua: String = ''; ALarguraCodProd: Integer = 52;
+                    AMarcaDagua: String = ''; ALarguraCodProd: Integer = 54;
                     AEmail: String = ''; AResumoCanhoto: Boolean = False;
                     AFax: String = ''; ANumCopias: Integer = 1;
                     ASistema: String = ''; ASite: String = '';
@@ -132,10 +136,12 @@ type
                     AMargemSuperior: Double = 0.7;
                     AMargemInferior: Double = 0.7;
                     AMargemEsquerda: Double = 0.7;
-                    AMargemDireita: Double = 0.7);
+                    AMargemDireita: Double = 0.7;
+                    ACasasDecimaisqCom: Integer = 4;
+                    ACasasDecimaisvUncCom: Integer = 4);
 
     class procedure SavePDF(ANFe: TNFe; ALogo: String = '';
-                    AMarcaDagua: String = ''; ALarguraCodProd: Integer = 52;
+                    AMarcaDagua: String = ''; ALarguraCodProd: Integer = 54;
                     AEmail: String = ''; AResumoCanhoto: Boolean = False;
                     AFax: String = ''; ANumCopias: Integer = 1;
                     ASistema: String = ''; ASite: String = '';
@@ -147,8 +153,9 @@ type
                     AMargemSuperior: Double = 0.7;
                     AMargemInferior: Double = 0.7;
                     AMargemEsquerda: Double = 0.7;
-                    AMargemDireita: Double = 0.7);
-
+                    AMargemDireita: Double = 0.7;
+                    ACasasDecimaisqCom: Integer = 4;
+                    ACasasDecimaisvUncCom: Integer = 4);
   end;
 
 implementation
@@ -158,21 +165,22 @@ var iCopias: Integer;
 {$R *.dfm}
 
 class procedure TfrlDANFeRL.Imprimir(ANFe: TNFe; ALogo: String = '';
-                    AMarcaDagua: String = ''; ALarguraCodProd: Integer = 52;
-                    AEmail: String = ''; AResumoCanhoto: Boolean = False;
-                    AFax: String = ''; ANumCopias: Integer = 1;
-                    ASistema: String = ''; ASite: String = '';
-                    AUsuario: String = '';
-                    APosCanhoto: TPosCanhoto = pcCabecalho;
-                    AFormularioContinuo: Boolean = False;
-                    AExpandirLogoMarca: Boolean = False;
-                    AMostrarPreview: Boolean = True;
-                    AFonteDANFE: TFonteDANFE = fdTimesNewRoman;
-                    AMargemSuperior: Double = 0.7;
-                    AMargemInferior: Double = 0.7;
-                    AMargemEsquerda: Double = 0.7;
-                    AMargemDireita: Double = 0.7);
-
+                AMarcaDagua: String = ''; ALarguraCodProd: Integer = 54;
+                AEmail: String = ''; AResumoCanhoto: Boolean = False;
+                AFax: String = ''; ANumCopias: Integer = 1;
+                ASistema: String = ''; ASite: String = '';
+                AUsuario: String = '';
+                APosCanhoto: TPosCanhoto = pcCabecalho;
+                AFormularioContinuo: Boolean = False;
+                AExpandirLogoMarca: Boolean = False;
+                AMostrarPreview: Boolean = True;
+                AFonteDANFE: TFonteDANFE = fdTimesNewRoman;
+                AMargemSuperior: Double = 0.7;
+                AMargemInferior: Double = 0.7;
+                AMargemEsquerda: Double = 0.7;
+                AMargemDireita: Double = 0.7;
+                ACasasDecimaisqCom: Integer = 4;
+                ACasasDecimaisvUncCom: Integer = 4);
 begin
   with Create ( nil ) do
     try
@@ -196,6 +204,8 @@ begin
       FMargemInferior := AMargemInferior;
       FMargemEsquerda := AMargemEsquerda;
       FMargemDireita := AMargemDireita;
+      FCasasDecimaisqCom := ACasasDecimaisqCom;
+      FCasasDecimaisvUnCom := ACasasDecimaisvUncCom;
 
       for iCopias := 1 to FNumCopias do
         if FMostrarPreview = True then
@@ -209,7 +219,7 @@ begin
 end;
 
 class procedure TfrlDANFeRL.SavePDF(ANFe: TNFe; ALogo: String = '';
-                    AMarcaDagua: String = ''; ALarguraCodProd: Integer = 52;
+                    AMarcaDagua: String = ''; ALarguraCodProd: Integer = 54;
                     AEmail: String = ''; AResumoCanhoto: Boolean = False;
                     AFax: String = ''; ANumCopias: Integer = 1;
                     ASistema: String = ''; ASite: String = '';
@@ -221,7 +231,9 @@ class procedure TfrlDANFeRL.SavePDF(ANFe: TNFe; ALogo: String = '';
                     AMargemSuperior: Double = 0.7;
                     AMargemInferior: Double = 0.7;
                     AMargemEsquerda: Double = 0.7;
-                    AMargemDireita: Double = 0.7);
+                    AMargemDireita: Double = 0.7;
+                    ACasasDecimaisqCom: Integer = 4;
+                    ACasasDecimaisvUncCom: Integer = 4);
 
 begin
   with Create ( nil ) do
@@ -245,6 +257,8 @@ begin
       FMargemInferior := AMargemInferior;
       FMargemEsquerda := AMargemEsquerda;
       FMargemDireita := AMargemDireita;
+      FCasasDecimaisqCom := ACasasDecimaisqCom;
+      FCasasDecimaisvUnCom := ACasasDecimaisvUncCom;
       RLNFe.SaveToFile(AFile);
     finally
       Free ;

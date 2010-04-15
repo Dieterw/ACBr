@@ -65,10 +65,13 @@ echo.
 
 :Boleto
 %1\tools\lazres.exe ACBrBoleto.lrs TACBrBoleto.bmp
+%1\tools\lazres.exe ACBrBoletoFCFortes.lrs TACBrBoletoFCFortes.bmp
 move ACBrBoleto.lrs ..\ACBrBoleto
+move ACBrBoletoFCFortes.lrs ..\ACBrBoleto
 echo.
 echo "****************************************"
 echo "* Arquivo   ACBrBoleto.lrs   gerado    *"
+echo "*    ACBrBoletoFCFortes.lrs  gerado    *"
 echo "****************************************"
 echo.
 

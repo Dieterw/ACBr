@@ -57,40 +57,67 @@ uses ACBrBase,  {Units da ACBr}
 type
   TACBrTitulo = class;
   TACBrBoletoFCClass = class;
+  TACBrCedente = class;
+  TACBrBanco  = class;
+  TACBrBoleto = class;
 
-  { TBancoClass }
+  { TACBrBancoClass }
 
   TACBrBancoClass = class
   private
 
   protected
     fpNumero: Integer;
+    fpDigito: Integer;
     fpNome:   String;
     fpModulo: TACBrCalcDigito;
+    fpAOwner: TACBrBanco;
+    fpTamanhoMaximoNossoNum: Integer;
+    function CalcularFatorVencimento(const DataVencimento: TDateTime): String; virtual;
+    function CalcularDigitoCodigoBarras(const CodigoBarras: String): String; virtual;
   public
-    Constructor create;
+    Constructor create(AOwner: TACBrBanco);
     Destructor Destroy;
-    property Numero: Integer read fpNumero;
-    property Nome: String read fpNome;
-    Property Modulo  : TACBrCalcDigito read fpModulo;
+
+    property ACBrBanco : TACBrBanco      read fpAOwner;
+    property Numero    : Integer         read fpNumero;
+    property Digito    : Integer         read fpDigito;
+    property Nome      : String          read fpNome;
+    Property Modulo    : TACBrCalcDigito read fpModulo;
+    property TamanhoMaximoNossoNum: Integer    read fpTamanhoMaximoNossoNum;
     function CalcularDigitoVerificador(const ACBrTitulo : TACBrTitulo): String; virtual;
+    function MontarCodigoBarras(const ACBrTitulo : TACBrTitulo): String; virtual;
+    function MontarLinhaDigitavel(const CodigoBarras: String): String; virtual;
   end;
 
   TACBrTipoBanco = (banNaoDefinido,banBradesco,banItau);
 
-  { TBanco }
+  { TACBrBanco }
+
   TACBrBanco = class(TComponent)
   private
+    fACBrBoleto        : TACBrBoleto;
     fTipoBanco         : TACBrTipoBanco;
     fBancoClass        : TACBrBancoClass;
     function GetNome   : String;
     function GetNumero : Integer;
-    procedure SetTipoBanco ( const AValue: TACBrTipoBanco ) ;
+    function GetDigito : Integer;
+    function GetTamanhoMaximoNossoNum : Integer;
+    procedure SetTipoBanco ( const AValue: TACBrTipoBanco );
   public
-    constructor Create( AOwner : TComponent ) ; override;
-    property Banco : TACBrBancoClass read fBancoClass ;
-    property Numero    : Integer    read GetNumero;
-    property Nome      : String     read  GetNome;
+    constructor Create( AOwner : TComponent); override;
+
+    property ACBrBoleto : TACBrBoleto     read fACBrBoleto;
+    property BancoClass : TACBrBancoClass read fBancoClass ;
+    property Numero     : Integer         read GetNumero;
+    property Digito     : Integer         read GetDigito;
+    property Nome       : String          read GetNome;
+    property TamanhoMaximoNossoNum :Integer read GetTamanhoMaximoNossoNum;
+
+    function CalcularDigitoVerificador(const ACBrTitulo : TACBrTitulo): String;
+    function MontarCodigoBarras(const ACBrTitulo : TACBrTitulo): String;
+    function MontarLinhaDigitavel(const CodigoBarras: String): String;
+  published
     property TipoBanco : TACBrTipoBanco read fTipoBanco write SetTipoBanco default banNaoDefinido;
   end;
 
@@ -232,6 +259,8 @@ type
     toRetornoOutrasOcorrencias
   );
 
+  { TACBrTitulo }
+
   TACBrTitulo = class
   private
     fLocalPagamento    : String;
@@ -273,9 +302,14 @@ type
     fValorRecebido        : Currency;
     fReferencia           : String;
     fVersao               : String;
+    fACBrBoleto           : TACBrBoleto;
+
+    procedure SetNossoNumero ( const AValue: String ) ;
    public
-     constructor Create;
+     constructor Create(ACBrBoleto:TACBrBoleto);
      destructor Destroy; override;
+
+     property ACBrBoleto        : TACBrBoleto read fACBrBoleto;
      property LocalPagamento    : String    read fLocalPagamento  write fLocalPagamento;
      property Vencimento        : TDateTime read fVencimento  write fVencimento;
      property DataDocumento     : TDateTime read fDataDocumento  write fDataDocumento;
@@ -283,7 +317,7 @@ type
      property EspecieDoc        : String    read fEspecieDoc  write fEspecieDoc;
      property Aceite            : String    read fAceite write fAceite;
      property DataProcessamento : TDateTime read fDataProcessamento  write fDataProcessamento;
-     property NossoNumero       : String    read fNossoNumero  write fNossoNumero;
+     property NossoNumero       : String    read fNossoNumero  write SetNossoNumero;
      property UsoBanco          : String    read fUsoBanco  write fUsoBanco;
      property Carteira          : String    read fCarteira  write fCarteira;
      property EspecieMod        : String    read fEspecieMod  write fEspecieMod;
@@ -348,8 +382,8 @@ TACBrBoleto = class( TACBrComponent )
 
     function CriarTituloNaLista: TACBrTitulo;
   published
-    property Cedente  : TACBrCedente        read fCedente write fCedente ;
-    property Banco    : TACBrBanco      read fBanco   write fBanco;
+    property Cedente  : TACBrCedente          read fCedente      write fCedente ;
+    property Banco    : TACBrBanco            read fBanco        write fBanco;
     property ACBrBoletoFC :TACBrBoletoFCClass read fACBrBoletoFC write SetACBrBoletoFC;
   end;
 
@@ -361,17 +395,23 @@ TACBrBoletoFCClass = class(TACBrComponent)
     fLayOut         : TACBrBolLayOut;
     fMostrarPreview : Boolean;
     fNumCopias      : Integer;
-    fSistemaEmissor : String;
+    fSoftwareHouse  : String;
     procedure SetACBrBoleto(const Value: TACBrBoleto);
+    procedure ErroAbstract( NomeProcedure : String ) ;
   protected
     fACBrBoleto : TACBrBoleto;
+    procedure SetNumCopias(AValue: Integer);
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
   public
     Constructor Create(AOwner: TComponent); override;
+    procedure Imprimir; virtual;
   published
-    property ACBrBoleto :TACBrBoleto     read fACBrBoleto write SetACBrBoleto ;
-    property LayOut     :TACBrBolLayOut  read fLayOut     write fLayOut  default lPadrao;
-    property DirLogo    :String          read fDirLogo    write fDirLogo;
+    property ACBrBoleto     :TACBrBoleto     read fACBrBoleto     write SetACBrBoleto ;
+    property LayOut         :TACBrBolLayOut  read fLayOut         write fLayOut  default lPadrao;
+    property DirLogo        :String          read fDirLogo        write fDirLogo;
+    property MostrarPreview :Boolean         read fMostrarPreview write fMostrarPreview;
+    property NumCopias      :Integer         read fNumCopias      write SetNumCopias default 1;
+    property SoftwareHouse  :String          read fSoftwareHouse  write fSoftwareHouse;
   end;
 
 procedure Register;
@@ -390,7 +430,6 @@ procedure Register;
 begin
    RegisterComponents('ACBr', [TACBrBoleto]);
 end;
-
 
 { TACBrCedente }
 
@@ -413,50 +452,62 @@ begin
   inherited;
 end;
 
+procedure TACBrTitulo.SetNossoNumero ( const AValue: String ) ;
+var
+   Tam: Integer;
+begin
+   Tam := ACBrBoleto.Banco.TamanhoMaximoNossoNum;
+   if Length(trim(AValue)) > Tam then
+      raise Exception.Create('Tamanho Máximo do Nosso Número é '+ IntToStr(Tam)+ '.');
+
+   fNossoNumero := padR(trim(AValue),Tam,'0');
+end;
+
 { TACBrTitulo }
 
-constructor TACBrTitulo.Create;
+constructor TACBrTitulo.Create(ACBrBoleto:TACBrBoleto);
 begin
-  inherited;
-    fLocalPagamento    := '';
-    fVencimento        := 0;
-    fDataDocumento     := 0;
-    fNumeroDocumento   := '';
-    fEspecieDoc        := '';
-    fAceite            := '';
-    fDataProcessamento := 0;
-    fNossoNumero       := '';
-    fUsoBanco          := '';
-    fCarteira          := '';
-    fEspecieMod        := '';
-    fValorDocumento    := 0;
-    fMensagem          := TStringList.Create;
-    fInstrucoes        := TStringList.Create;
-    fSacado            := TACBrSacado.Create;
+  inherited Create;
 
-    fTipoOcorrencia                 := toRemessaRegistrar;
-    fOcorrenciaOriginal             := '';
-    fDescricaoOcorrenciaOriginal    := '';
-    fMotivoRejeicaoComando          := '';
-    fDescricaoMotivoRejeicaoComando := '';
+  fACBrBoleto        := ACBrBoleto;
+  fLocalPagamento    := '';
+  fVencimento        := 0;
+  fDataDocumento     := 0;
+  fNumeroDocumento   := '';
+  fEspecieDoc        := '';
+  fAceite            := '';
+  fDataProcessamento := 0;
+  fNossoNumero       := '';
+  fUsoBanco          := '';
+  fCarteira          := '';
+  fEspecieMod        := '';
+  fValorDocumento    := 0;
+  fMensagem          := TStringList.Create;
+  fInstrucoes        := TStringList.Create;
+  fSacado            := TACBrSacado.Create;
+  fTipoOcorrencia                 := toRemessaRegistrar;
+  fOcorrenciaOriginal             := '';
+  fDescricaoOcorrenciaOriginal    := '';
+  fMotivoRejeicaoComando          := '';
+  fDescricaoMotivoRejeicaoComando := '';
 
-    fDataOcorrencia       := 0;
-    fDataCredito          := 0;
-    fDataAbatimento       := 0;
-    fDataDesconto         := 0;
-    fDataMoraJuros        := 0;
-    fDataProtesto         := 0;
-    fDataBaixa            := 0;
-    fValorDespesaCobranca := 0;
-    fValorAbatimento      := 0;
-    fValorDesconto        := 0;
-    fValorMoraJuros       := 0;
-    fValorIOF             := 0;
-    fValorOutrasDespesas  := 0;
-    fValorOutrosCreditos  := 0;
-    fValorRecebido        := 0;
-    fReferencia           := '';
-    fVersao               := '';
+  fDataOcorrencia       := 0;
+  fDataCredito          := 0;
+  fDataAbatimento       := 0;
+  fDataDesconto         := 0;
+  fDataMoraJuros        := 0;
+  fDataProtesto         := 0;
+  fDataBaixa            := 0;
+  fValorDespesaCobranca := 0;
+  fValorAbatimento      := 0;
+  fValorDesconto        := 0;
+  fValorMoraJuros       := 0;
+  fValorIOF             := 0;
+  fValorOutrasDespesas  := 0;
+  fValorOutrosCreditos  := 0;
+  fValorRecebido        := 0;
+  fReferencia           := '';
+  fVersao               := '';
 end;
 
 destructor TACBrTitulo.Destroy;
@@ -534,8 +585,8 @@ end;
 function TACBrBoleto.CriarTituloNaLista: TACBrTitulo;
 var I: Integer;
 begin
-   I:= fListadeBoletos.Add(TACBrTitulo.Create);
-   Result:= fListadeBoletos[I];
+   I      := fListadeBoletos.Add(TACBrTitulo.Create(self));
+   Result := fListadeBoletos[I];
 end;
 
 { TListadeBoletos }
@@ -568,10 +619,10 @@ begin
    fBancoClass.Free;
 
    case AValue of
-      banBradesco: fBancoClass:= TACBrBancoBradesco.create;
-      banItau: fBancoClass:= TACBrBancoClass.Create;
+      banBradesco : fBancoClass := TACBrBancoBradesco.create(Self);
+      banItau     : fBancoClass := TACBrBancoClass.create(Self);
    else
-      fBancoClass:= TACBrBancoClass.Create;
+      fBancoClass := TACBrBancoClass.create(Self);
    end;
    fTipoBanco := AValue;
 end;
@@ -586,14 +637,45 @@ begin
    Result:= fBancoClass.Numero;
 end;
 
+function TACBrBanco.GetDigito: Integer;
+begin
+   Result := fBancoClass.Digito;
+end;
+
+function TACBrBanco.GetTamanhoMaximoNossoNum: Integer;
+begin
+   Result := BancoClass.TamanhoMaximoNossoNum;
+end;
+
 { TACBrBanco }
 
 constructor TACBrBanco.Create ( AOwner: TComponent ) ;
 begin
    inherited Create ( AOwner ) ;
-   fTipoBanco   := banNaoDefinido;
 
-   fBancoClass := TACBrBancoClass.Create;
+   if not (AOwner is TACBrBoleto) then
+      raise Exception.Create('Aowner deve ser do tipo TACBrBoleto');
+
+   fACBrBoleto := TACBrBoleto(AOwner);
+   fTipoBanco  := banNaoDefinido;
+
+   fBancoClass := TACBrBancoClass.create(Self);
+end;
+
+function TACBrBanco.CalcularDigitoVerificador ( const ACBrTitulo: TACBrTitulo
+   ) : String;
+begin
+   Result:=  BancoClass.CalcularDigitoVerificador(ACBrTitulo);
+end;
+
+function TACBrBanco.MontarCodigoBarras ( const ACBrTitulo: TACBrTitulo) : String;
+begin
+   Result:= BancoClass.MontarCodigoBarras(ACBrTitulo);
+end;
+
+function TACBrBanco.MontarLinhaDigitavel ( const CodigoBarras:String) : String;
+begin
+   Result:= BancoClass.MontarLinhaDigitavel(CodigoBarras);
 end;
 
 function TACBrBancoClass.CalcularDigitoVerificador(const ACBrTitulo :TACBrTitulo ): String;
@@ -601,13 +683,76 @@ begin
    Result:= '';
 end;
 
+function TACBrBancoClass.CalcularFatorVencimento(const DataVencimento: TDatetime) : String;
+begin
+   Result := IntToStr( Trunc(DataVencimento - EncodeDate(1997,10,07)));
+end;
+
+function TACBrBancoClass.CalcularDigitoCodigoBarras (
+   const CodigoBarras: String ) : String;
+begin
+   Modulo.CalculoPadrao;
+   Modulo.Calcular;
+
+   Result:= IntToStr(Modulo.DigitoFinal);
+end;
+
+function TACBrBancoClass.MontarCodigoBarras ( const ACBrTitulo: TACBrTitulo) : String;
+begin
+   Result:= '';
+end;
+
+function TACBrBancoClass.MontarLinhaDigitavel (const CodigoBarras: String): String;
+var
+  Campo1,Campo2,Campo3,Campo4,Campo5: String;
+begin
+   fpModulo.FormulaDigito := frModulo10;
+   fpModulo.MultiplicadorInicial := 1;
+   fpModulo.MultiplicadorFinal   := 2;
+   fpModulo.MultiplicadorAtual   := 2;
+
+
+  {Campo 1(Código Banco,Tipo de Moeda,5 primeiro digitos do Campo Livre) }
+   fpModulo.Documento := IntToStr(fpNumero)+'9'+Copy(CodigoBarras,20,5);
+   fpModulo.Calcular;
+
+   Campo1 := copy(fpModulo.Documento,1,5)+'.'+copy(fpModulo.Documento,6,4)+
+             inttostr(fpModulo.DigitoFinal);
+
+  {Campo 2(6ª a 15ª posições do campo Livre)}
+   fpModulo.Documento := copy(CodigoBarras,25,10);
+   fpModulo.Calcular;
+
+   Campo2 := Copy(fpModulo.Documento,1,5)+'.'+Copy(fpModulo.Documento,6,5)+
+             inttostr(fpModulo.DigitoFinal);
+
+  {Campo 3 (16ª a 25ª posições do campo Livre)}
+   fpModulo.Documento := copy(CodigoBarras,35,10);
+   fpModulo.Calcular;
+
+   Campo3 := Copy(fpModulo.Documento,1,5)+'.'+Copy(fpModulo.Documento,6,5)+
+             inttostr(fpModulo.DigitoFinal);
+
+  {Campo 4 (Digito Verificador Nosso Numero)}
+   Campo4 := Copy(CodigoBarras,5,1);
+
+  {Campo 5 (Fator de Vencimento e Valor do Documento)}
+   Campo5 := Copy(CodigoBarras,6,14);
+
+   Result := Campo1+' '+Campo2+' '+Campo3+' '+Campo4+' '+Campo5;
+end;
+
 { TACBrBancoClass }
 
-constructor TACBrBancoClass.create;
+constructor TACBrBancoClass.create(AOwner: TACBrBanco);
 begin
    inherited create;
+
+   fpAOwner := AOwner;
    fpNumero := 0;
+   fpDigito := 0;
    fpNome   := 'Não definido';
+   fpTamanhoMaximoNossoNum := 10;
    fpModulo := TACBrCalcDigito.Create;
 end;
 
@@ -643,6 +788,16 @@ begin
 
 end;
 
+procedure TACBrBoletoFCClass.ErroAbstract ( NomeProcedure: String ) ;
+begin
+   raise Exception.Create( ACBrStr('Procedure: '+NomeProcedure+' não implementada' ) ) ;
+end;
+
+procedure TACBrBoletoFCClass.SetNumCopias ( AValue: Integer ) ;
+begin
+  fNumCopias := max(1,Avalue);
+end;
+
 procedure TACBrBoletoFCClass.Notification ( AComponent: TComponent;
    Operation: TOperation ) ;
 begin
@@ -656,7 +811,13 @@ constructor TACBrBoletoFCClass.Create ( AOwner: TComponent ) ;
 begin
    inherited Create ( AOwner ) ;
    fACBrBoleto:= nil;
-   fLayOut := lPadrao;
+   fLayOut    := lPadrao;
+   fNumCopias := 1;
+end;
+
+procedure TACBrBoletoFCClass.Imprimir;
+begin
+   ErroAbstract('Imprimir');
 end;
 
 {$ifdef FPC}

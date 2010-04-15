@@ -74,13 +74,14 @@ type
                        docPIS, docCEP, docCartaoCredito  ) ;
 
 type
-  TACBrCalcDigFormula = (frModulo11, frModulo10) ;
+  TACBrCalcDigFormula = (frModulo11, frModulo10PIS, frModulo10) ;
 
 type
 TACBrCalcDigito = class
    private
       fsMultIni: Integer;
       fsMultFim: Integer;
+      fsMultAtu: Integer;
       fsFormulaDigito: TACBrCalcDigFormula;
       fsDocto: AnsiString;
       fsDigitoFinal: Integer;
@@ -94,6 +95,7 @@ TACBrCalcDigito = class
       Property Documento : AnsiString read fsDocto write fsDocto ;
       Property MultiplicadorInicial : Integer read fsMultIni write fsMultIni ;
       Property MultiplicadorFinal   : Integer read fsMultFim write fsMultFim ;
+      property MultiplicadorAtual   : Integer read fsMultAtu write fsMultAtu;
       Property DigitoFinal : Integer read fsDigitoFinal ;
       Property SomaDigitos : Integer read fsSomaDigitos ;
       Property FormulaDigito :  TACBrCalcDigFormula read fsFormulaDigito
@@ -1051,7 +1053,7 @@ begin
   end ;
 
   Modulo.CalculoPadrao ;
-  Modulo.FormulaDigito := frModulo10 ;
+  Modulo.FormulaDigito := frModulo10PIS ;
   Modulo.Documento     := copy(fsDocto, 1, 10) ;
   Modulo.Calcular ;
   fsDigitoCalculado := IntToStr( Modulo.DigitoFinal ) ;
@@ -1117,19 +1119,32 @@ begin
 end;
 
 procedure TACBrCalcDigito.Calcular;
-Var A,N,Base,Tamanho : Integer ;
+Var A,N,Base,Tamanho,ValorCalc : Integer ;
+    ValorCalcSTR: String;
 begin
   fsDocto       := Trim(fsDocto) ;
   fsSomaDigitos := 0 ;
   fsDigitoFinal := 0 ;
-  Base          := fsMultIni ;
-  Tamanho       := Length(fsDocto) ;
+
+  if (fsMultAtu >= fsMultIni) and (fsMultAtu <= fsMultFim) then
+     Base:= fsMultAtu
+  else
+     Base:= fsMultIni ;
+  Tamanho := Length(fsDocto) ;
 
   { Calculando a Soma dos digitos de traz para diante, multiplicadas por BASE }
   For A := 1 to Tamanho do
   begin
      N := StrToIntDef( fsDocto[ Tamanho - A + 1 ], 0 ) ;
-     fsSomaDigitos := fsSomaDigitos + (N * Base) ;
+     ValorCalc := (N * Base);
+
+     if (fsFormulaDigito = frModulo10) and ( ValorCalc > 9) then
+     begin
+       ValorCalcSTR := IntToStr(ValorCalc);
+       ValorCalc    := StrToInt(ValorCalcSTR[1])+StrToInt(ValorCalcSTR[2]);
+     end;
+
+     fsSomaDigitos := fsSomaDigitos + ValorCalc ;
 
      Inc( Base ) ;
      if Base > fsMultFim then
@@ -1147,9 +1162,17 @@ begin
            fsDigitoFinal := 11 - fsDigitoFinal ;
       end ;
 
-    frModulo10 :
+    frModulo10PIS :
       begin
         fsDigitoFinal := 11 - (fsSomaDigitos mod 11);
+
+        if (fsDigitoFinal >= 10) then
+           fsDigitoFinal := 0;
+      end ;
+
+    frModulo10 :
+      begin
+        fsDigitoFinal := 10 - (fsSomaDigitos mod 10);
 
         if (fsDigitoFinal >= 10) then
            fsDigitoFinal := 0;
@@ -1161,6 +1184,7 @@ procedure TACBrCalcDigito.CalculoPadrao;
 begin
   fsMultIni       := 2 ;
   fsMultFim       := 9 ;
+  fsMultAtu       := 0;
   fsFormulaDigito := frModulo11 ;
 end;
 

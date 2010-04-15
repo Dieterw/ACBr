@@ -75,6 +75,12 @@
 |* 22/03/2010: Peterson de Cerqueira Matos
 |*  - Tratamento das margens em "ACBrNFeDANFeClass"
 |*  - Tratamento da propriedade "FonteDANFE" de "ACBrNFeDANFeRLClass"
+|* 13/04/2010: Peterson de Cerqueira Matos
+|*  - Tratamento das propriedades "_vUnCom" e "_qCom"
+|*  - Correção na exibição das informações complementares
+|*  - Correção na exibição do tipo de frete
+|*  - Acréscimo da coluna "Valor Desconto"
+|*  - Alteração no layout do quadro "IDENTIFICAÇÃO DO EMITENTE"
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeRLRetrato;
@@ -145,7 +151,7 @@ type
     RLLabel77: TRLLabel;
     RLLabel78: TRLLabel;
     RLLabel82: TRLLabel;
-    RLLabel83: TRLLabel;
+    lblCST: TRLLabel;
     RLLabel84: TRLLabel;
     RLLabel85: TRLLabel;
     RLLabel86: TRLLabel;
@@ -301,14 +307,11 @@ type
     RLLabel69: TRLLabel;
     rllTransMarca: TRLLabel;
     RLLabel56: TRLLabel;
-    RLLabel57: TRLLabel;
-    RLLabel58: TRLLabel;
     RLLabel64: TRLLabel;
     rllTransCidade: TRLLabel;
     RLLabel70: TRLLabel;
     rllTransNumeracao: TRLLabel;
     rllTransModFrete: TRLLabel;
-    RLDraw55: TRLDraw;
     RLLabel59: TRLLabel;
     rllTransCodigoANTT: TRLLabel;
     RLLabel60: TRLLabel;
@@ -336,7 +339,6 @@ type
     RLDraw49: TRLDraw;
     RLDraw42: TRLDraw;
     RLDraw40: TRLDraw;
-    rllTipoVenda: TRLLabel;
     RLLabel25: TRLLabel;
     RLLabel26: TRLLabel;
     cdsItens: TClientDataSet;
@@ -348,7 +350,7 @@ type
     cdsItensQTDE: TStringField;
     cdsItensVALOR: TStringField;
     cdsItensTOTAL: TStringField;
-    cdsItensCST: TStringField;
+    cdsItensCSOSN: TStringField;
     cdsItensBICMS: TStringField;
     cdsItensALIQICMS: TStringField;
     cdsItensVALORICMS: TStringField;
@@ -455,6 +457,12 @@ type
     RLLabel7: TRLLabel;
     RLLabel8: TRLLabel;
     RLLabel9: TRLLabel;
+    cdsItensVALORDESC: TStringField;
+    RLLabel10: TRLLabel;
+    RLLabel11: TRLLabel;
+    RLDraw1: TRLDraw;
+    txtValorDesconto: TRLDBText;
+    RLDraw2: TRLDraw;
     procedure RLNFeBeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure rlbEmitenteBeforePrint(Sender: TObject;
       var PrintIt: Boolean);
@@ -477,6 +485,9 @@ type
     procedure ISSQN;
     procedure AddFatura;
     function BuscaDireita(Busca, Text: String): Integer;
+    function FormatarCEP(AValue: String): String;
+    function FormatarFone(AValue: String): String;
+    procedure InsereLinhas(sTexto: String; iLimCaracteres: Integer; rMemo: TRLMemo);
   public
 
   end;
@@ -487,10 +498,10 @@ uses ACBrNFeUtil, pcnNFe, DateUtils;
 
 var iLimiteLinhas: Integer = 10;
 iLinhasUtilizadas: Integer = 0;
-iLimiteCaracteresLinha: Integer = 79;
-iLimiteCaracteres: Integer = 790;
-q, iQuantItens, iCaracteres: Integer;
-sTexto, sRetirada, sEntrega: WideString;
+iLimiteCaracteresLinha: Integer = 80;
+iLimiteCaracteresContinuacao: Integer = 129;
+q, iQuantItens: Integer;
+sRetirada, sEntrega: WideString;
 
 {$R *.dfm}
 
@@ -510,6 +521,77 @@ begin
   Result := retorno;
 end;
 
+{Função original de ACBrNFeUtil modificada para exibir em outro formato}
+function TfrlDANFeRLRetrato.FormatarCEP(AValue: String): String;
+var i, iZeros: Integer;
+sCep: String;
+begin
+  if Length(AValue) <= 8 then
+    begin
+      iZeros := 8 - Length(AValue);
+      sCep := AValue;
+      For i := 1 to iZeros do
+        begin
+          sCep := '0' + sCep;
+        end;
+      Result := copy(sCep,1,5) + '-' + copy(sCep,6,3);
+    end
+  else
+    Result := copy(AValue,1,5) + '-' + copy(AValue,6,3);
+end;
+
+{Função original de ACBrNFeUtil modificada para exibir em outro formato}
+function TfrlDANFeRLRetrato.FormatarFone(AValue: String): String;
+begin
+  Result := AValue;
+  if NotaUtil.NaoEstaVazio(AValue) then
+  begin
+    AValue := NotaUtil.Poem_Zeros(NotaUtil.LimpaNumero(AValue), 10);
+    Result := '('+copy(AValue,1,2) + ') ' + copy(AValue,3,4) + '-' + copy(AValue,7,4);
+  end;
+end;
+
+procedure TfrlDANFeRLRetrato.InsereLinhas(sTexto: String; iLimCaracteres: Integer;
+                                                                 rMemo: TRLMemo);
+var iTotalLinhas, iUltimoEspacoLinha, iPosAtual, iQuantCaracteres, i: Integer;
+    sLinhaProvisoria, sLinha: String;
+begin
+  iPosAtual := 1;
+  iQuantCaracteres := Length(sTexto);
+  if iQuantCaracteres <= iLimiteLinhas then
+    iTotalLinhas := 1
+  else
+    begin
+      if (iQuantCaracteres mod iLimCaracteres) > 0 then
+        iTotalLinhas := (iQuantCaracteres div iLimCaracteres) + 1
+      else
+        iTotalLinhas := iQuantCaracteres div iLimCaracteres;
+    end;
+
+  for i := 1 to (iTotalLinhas) do
+    begin
+      sLinhaProvisoria := Copy(sTexto, iPosAtual, iLimCaracteres);
+      iUltimoEspacoLinha := BuscaDireita(' ', sLinhaProvisoria);
+
+      if (BuscaDireita(' ', sLinhaProvisoria) = iLimCaracteres)  or
+         (BuscaDireita(' ', sLinhaProvisoria) = (iLimCaracteres + 1)) then
+        sLinha := sLinhaProvisoria
+      else
+        begin
+          if (iQuantCaracteres - iPosAtual) > iLimCaracteres then
+            sLinha := Copy(sLinhaProvisoria, 1, iUltimoEspacoLinha)
+          else
+            begin
+              //iPosAtual := iPosAtual + Length(sLinha);
+              sLinha := sLinhaProvisoria;
+            end;
+        end;
+
+      iPosAtual := iPosAtual + Length(sLinha);
+      rMemo.Lines.Add(sLinha);
+    end;
+end;
+
 procedure TfrlDANFeRLRetrato.RLNFeBeforePrint(Sender: TObject;
   var PrintIt: Boolean);
 begin
@@ -522,6 +604,12 @@ begin
       RightMargin := FMargemDireita * 10;
     end;
   InitDados;
+
+  if FNFe.Cobr.Dup.Count > 0 then
+    rlbFatura.Visible := True
+  else
+    rlbFatura.Visible := False;
+
   RLNFe.Title := Copy (FNFe.InfNFe.Id, 4, 44);
 end;
 
@@ -642,7 +730,8 @@ begin
           rllDadosVariaveis3_Descricao.Caption := 'PROTOCOLO DE DENEGAÇÃO DE USO';
           rllDadosVariaveis3_Descricao.Visible := True;
         end;
-      if not FNFe.procNFe.cStat in [100, 101, 103] then
+      if (FNFe.procNFe.cStat <> 100) and (FNFe.procNFe.cStat <> 101) and
+                                               (FNFe.procNFe.cStat <> 103) then
         begin
           rlbCodigoBarras.Visible := False;
           rllXmotivo.Caption := FNFe.procNFe.xMotivo;
@@ -653,7 +742,7 @@ begin
     end
   else
     begin
-      if FNFe.Ide.tpEmis in [teNormal, teSCAN] then
+      if (FNFe.Ide.tpEmis in [teNormal, teSCAN]) then
         begin
           rlbCodigoBarras.Visible := False;
           rllXmotivo.Caption := 'NF-E NÃO ENVIADA PARA SEFAZ';
@@ -807,6 +896,9 @@ begin
                                                                      <> 20 then
               TRLLabel((TRLBand(RLNFe.Controls[b])).Controls[i]).Font.Name :=
                                                                       'Arial';
+              if TRLLabel((TRLBand(RLNFe.Controls[b])).Controls[i]).Tag = 3 then
+                TRLLabel((TRLBand(RLNFe.Controls[b])).Controls[i]).Font.Size :=
+               (TRLLabel((TRLBand(RLNFe.Controls[b])).Controls[i]).Font.Size) - 1;
           end;
 
     fdCourierNew:
@@ -816,7 +908,8 @@ begin
             begin
               TRLLabel((TRLBand(RLNFe.Controls[b])).Controls[i]).Font.Name :=
                                                                 'Courier New';
-              if TRLLabel((TRLBand(RLNFe.Controls[b])).Controls[i]).Tag = 0 then
+              if (TRLLabel((TRLBand(RLNFe.Controls[b])).Controls[i]).Tag = 0) or
+                (TRLLabel((TRLBand(RLNFe.Controls[b])).Controls[i]).Tag = 3) then
                 TRLLabel((TRLBand(RLNFe.Controls[b])).Controls[i]).Font.Size :=
                (TRLLabel((TRLBand(RLNFe.Controls[b])).Controls[i]).Font.Size) - 1;
 
@@ -839,15 +932,18 @@ begin
                                                                      <> 20 then
               TRLLabel((TRLBand(RLNFe.Controls[b])).Controls[i]).Font.Name :=
                                                              'Times New Roman';
+              if TRLLabel((TRLBand(RLNFe.Controls[b])).Controls[i]).Tag = 3 then
+                TRLLabel((TRLBand(RLNFe.Controls[b])).Controls[i]).Font.Size :=
+               (TRLLabel((TRLBand(RLNFe.Controls[b])).Controls[i]).Font.Size) - 1;
           end;
   end;
 
   // Verifica se será exibida a 'continuação das informações complementares'
-  if iCaracteres > iLimiteCaracteres then
+  if rlmDadosAdicionaisAuxiliar.Lines.Count > iLimiteLinhas then
     begin
       rlbContinuacaoInformacoesComplementares.Visible := True;
-      h := (rlmContinuacaoDadosAdicionais.Top - LinhaDCSuperior.Top) +
-            rlmContinuacaoDadosAdicionais.Height;
+      h := (rlmContinuacaoDadosAdicionais.Top +
+            rlmContinuacaoDadosAdicionais.Height) + 2;
       LinhaDCInferior.Top := h;
       h := (h - LinhaDCSuperior.Top) + 1;
       LinhaDCEsquerda.Height := h;
@@ -879,7 +975,7 @@ begin
     rllEmissao.Caption   := NotaUtil.FormatDate(DateToStr(dEmi));
     rllSaida.Caption     := IfThen(DSaiEnt <> 0,
                                       NotaUtil.FormatDate(DateToStr(dSaiEnt)));
-    rllHoraSaida.Caption := ''; // nao tem campo ;
+    rllHoraSaida.Caption := ''; //Não tem campo
 
     if FNFe.Ide.tpEmis in [teNormal, teSCAN] then
       begin
@@ -948,18 +1044,18 @@ begin
             rlmEndereco.Lines.add (XLgr + IfThen (Nro = '0', '', ', ' + Nro) +
                                                               ' - ' + XBairro);
 
-          rlmEndereco.Lines.add ('CEP: ' + NotaUtil.FormatarCEP(IntToStr(CEP)) +
+          rlmEndereco.Lines.add ('CEP: ' + FormatarCEP(IntToStr(CEP)) +
                                                     ' - ' + XMun + ' - ' + UF);
 
         if FFax <> '' then
           begin
-            rllFone.Caption := 'TEL: ' + NotaUtil.FormatarFone(Fone) +
-                                      ' - FAX: ' + NotaUtil.FormatarFone(FFax);
+            rllFone.Caption := 'TEL: ' + FormatarFone(Fone) +
+                                      ' - FAX: ' + FormatarFone(FFax);
             rllFone.Font.Size := 7;
           end
         else
           begin
-            rllFone.Caption := 'TEL: ' + NotaUtil.FormatarFone(Fone);
+            rllFone.Caption := 'TEL: ' + FormatarFone(Fone);
             rllFone.Font.Size := 8;
           end;
       end;
@@ -976,7 +1072,7 @@ begin
         rlmSiteEmail.Lines.EndUpdate;
         rlmSiteEmail.Visible := True;
         rlmEndereco.Top := 48;
-        rllFone.Top := 80;
+        rllFone.Top := 82;
         rlmSiteEmail.Top := 92;
       end
     else
@@ -1012,8 +1108,8 @@ begin
           rllDestBairro.Caption := XBairro;
           rllDestCidade.Caption := XMun;
           rllDestUF.Caption := UF;
-          rllDestCEP.Caption := NotaUtil.FormatarCEP(IntToStr(CEP));
-          rllDestFONE.Caption := NotaUtil.FormatarFone(Fone);
+          rllDestCEP.Caption := FormatarCEP(IntToStr(CEP));
+          rllDestFONE.Caption := FormatarFone(Fone);
         end;
     end;
 end;
@@ -1060,7 +1156,7 @@ begin
           else
             sEndereco := XLgr + IfThen (Nro = '0', '', ', ' + Nro);
 
-          sEntrega := 'LOCAL DE RETIRADA: ' + sEndereco + ' - ' + xBairro +
+          sRetirada := 'LOCAL DE RETIRADA: ' + sEndereco + ' - ' + xBairro +
                       ' - ' + xMun + '-' + UF + '  CNPJ: ' + sCNPJ;
         end;
     end;
@@ -1088,7 +1184,10 @@ procedure TfrlDANFeRLRetrato.Transporte;
 begin
   with FNFe.Transp do
   begin
-    rllTransModFrete.Caption := modFreteToStr(ModFrete);
+    case modFrete of
+      mfContaEmitente: rllTransModFrete.Caption := '0 - EMITENTE';
+      mfContaDestinatario: rllTransModFrete.Caption := '1 - DESTINATÁRIO';
+    end;
 
     rllTransCodigoANTT.Caption := '';
     rllTransPlaca.Caption := '';
@@ -1141,44 +1240,39 @@ begin
 end;
 
 procedure TfrlDANFeRLRetrato.DadosAdicionais;
-var sInfCompl, sInfAdFisco, sProtocolo : WideString;
+var sInfCompl, sInfAdFisco, sInfInteira, sProtocolo, sSuframa : WideString;
+    sLinhaProvisoria, sLinha: String;
+iTotalCaracteres, iTotalLinhas, iUltimoEspacoLinha, iPosAtual, i: Integer;
 begin
-  iLinhasUtilizadas := 0;
-
   rlmDadosAdicionaisAuxiliar.Lines.BeginUpdate;
   rlmDadosAdicionaisAuxiliar.Lines.Clear;
-
-  rlmDadosAdicionais.Lines.BeginUpdate;
-  rlmDadosAdicionais.Lines.Clear;
 
   if (FNFe.Ide.tpEmis in [teContingencia, teFSDA, teDPEC]) and
                                               (FNFe.procNFe.cStat = 100) then
     begin
       sProtocolo := 'PROTOCOLO DE AUTORIZAÇÃO DE USO: ' +
-              FNFe.procNFe.nProt + ' ' + DateTimeToStr(FNFe.procNFe.dhRecbto);
-      rlmDadosAdicionais.Lines.Add(sProtocolo);
-      iLinhasUtilizadas := iLinhasUtilizadas + 1;
+                     FNFe.procNFe.nProt + ' ' + DateTimeToStr(FNFe.procNFe.dhRecbto);
+      InsereLinhas(sProtocolo, iLimiteCaracteresLinha, rlmDadosAdicionaisAuxiliar);
     end;
 
   if FNFe.Dest.ISUF > '' then
     begin
-      rlmDadosAdicionais.Lines.Add('INSCRIÇÃO SUFRAMA: ' +
-                                           FNFe.Dest.ISUF);
-      iLinhasUtilizadas := iLinhasUtilizadas + 1;
+      sSuframa := 'INSCRIÇÃO SUFRAMA: ' + FNFe.Dest.ISUF;
+      InsereLinhas(sSuframa, iLimiteCaracteresLinha, rlmDadosAdicionaisAuxiliar);
     end;
 
   if FNFe.Retirada.xLgr > '' then
     begin
       EnderecoRetirada;
-      rlmDadosAdicionais.Lines.Add(sRetirada);
-      iLinhasUtilizadas := iLinhasUtilizadas + 2;
+      sRetirada := sRetirada;
+      InsereLinhas(sRetirada, iLimiteCaracteresLinha, rlmDadosAdicionaisAuxiliar);
     end;
 
   if FNFe.Entrega.xLgr > '' then
     begin
       EnderecoEntrega;
-      rlmDadosAdicionais.Lines.Add(sEntrega);
-      iLinhasUtilizadas := iLinhasUtilizadas + 2;
+      sEntrega := sEntrega;
+      InsereLinhas(sEntrega, iLimiteCaracteresLinha, rlmDadosAdicionaisAuxiliar);
     end;
 
   if FNFe.InfAdic.infAdFisco > '' then
@@ -1196,35 +1290,40 @@ begin
   else
     sInfCompl := '';
 
-  rlmDadosAdicionaisAuxiliar.Lines.Add(sInfAdFisco + sInfCompl);
+  sInfInteira := sInfAdFisco + sInfCompl;
+  InsereLinhas(sInfInteira, iLimiteCaracteresLinha, rlmDadosAdicionaisAuxiliar);
   rlmDadosAdicionaisAuxiliar.Lines.EndUpdate;
 end;
 
 procedure TfrlDANFeRLRetrato.Observacoes;
-var sTextoProvisorio: String;
-iUltimoEspaco: Integer;
+var i, iMaximoLinhas, iRestanteLinhas: Integer;
+sTexto: WideString;
 begin
-  iLimiteCaracteres := 775;
-  sTexto := rlmDadosAdicionaisAuxiliar.Lines.Text;
-  iCaracteres := Length(sTexto) - 2;
-  // O '-2' refere-se aos caracteres de quebra de linha
-  iLimiteCaracteres := iLimiteCaracteres - (iLinhasUtilizadas *
-                                                        iLimiteCaracteresLinha);
-  sTextoProvisorio := Copy(sTexto, 1, iLimiteCaracteres);
-  iUltimoEspaco := BuscaDireita(' ', sTextoProvisorio);
+  rlmDadosAdicionais.Lines.BeginUpdate;
+  rlmDadosAdicionais.Lines.Clear;
 
-  if iCaracteres > iLimiteCaracteres then
-    iLimiteCaracteres := (iUltimoEspaco - 1);
-
-  rlmDadosAdicionais.Lines.Add(Copy(sTexto, 1, iLimiteCaracteres));
-
-  if iCaracteres > iLimiteCaracteres then
+  if rlmDadosAdicionaisAuxiliar.Lines.Count > iLimiteLinhas then
     begin
+      iMaximoLinhas := iLimiteLinhas;
+      iRestanteLinhas := rlmDadosAdicionaisAuxiliar.Lines.Count - iLimiteLinhas;
       rlmContinuacaoDadosAdicionais.Lines.BeginUpdate;
-      rlmContinuacaoDadosAdicionais.Lines.Add(Copy(sTexto,
-                  (iUltimoEspaco + 1), (iCaracteres - iLimiteCaracteres)));
+      sTexto := '';
+      for i := 0 to (iRestanteLinhas - 1) do
+        begin
+          sTexto := sTexto +
+          StringReplace(rlmDadosAdicionaisAuxiliar.Lines.Strings[(iMaximoLinhas + i) ],
+                        #13#10, '', [rfReplaceAll,rfIgnoreCase]) + ' ';
+        end;
+
+      InsereLinhas(sTexto, iLimiteCaracteresContinuacao, rlmContinuacaoDadosAdicionais);
       rlmContinuacaoDadosAdicionais.Lines.EndUpdate;
-    end;
+    end
+  else
+    iMaximoLinhas := rlmDadosAdicionaisAuxiliar.Lines.Count;
+
+  for i := 0 to (iMaximoLinhas - 1) do
+    rlmDadosAdicionais.Lines.Add(rlmDadosAdicionaisAuxiliar.Lines.Strings[i]);
+
   rlmDadosAdicionais.Lines.EndUpdate;
 end;
 
@@ -1244,64 +1343,109 @@ begin
             begin
               with Imposto.ICMS do
                 begin
-                  sCST       := OrigToStr( orig ) + CSTICMSToStr( CST ) ;
-                  sBCICMS    := '0.00' ;
-                  sALIQICMS  := '0.00' ;
-                  sVALORICMS := '0.00' ;
-                  sALIQIPI   := '0.00' ;
-                  sVALORIPI  := '0.00' ;
+                  sALIQIPI   := '0,00' ;
+                  sVALORIPI  := '0,00' ;
 
-                  if (CST = cst00) then
-                    begin
-                      sBCICMS    := NotaUtil.FormatFloat( VBC   ) ;
-                      sALIQICMS  := NotaUtil.FormatFloat( PICMS ) ;
-                      sVALORICMS := NotaUtil.FormatFloat( VICMS ) ;
-                    end
-                  else if (CST = cst10) then
-                    begin
-                      sBCICMS    := NotaUtil.FormatFloat( VBC   ) ;
-                      sALIQICMS  := NotaUtil.FormatFloat( PICMS ) ;
-                      sVALORICMS := NotaUtil.FormatFloat( VICMS ) ;
-                    end
-                  else if (CST = cst20) then
-                    begin
-                      sBCICMS    := NotaUtil.FormatFloat( VBC   ) ;
-                      sALIQICMS  := NotaUtil.FormatFloat( PICMS ) ;
-                      sVALORICMS := NotaUtil.FormatFloat( VICMS ) ;
-                    end
-                  else if (CST = cst30) then
-                    begin
-                      sBCICMS    := NotaUtil.FormatFloat( VBCST   ) ;
-                      sALIQICMS  := NotaUtil.FormatFloat( PICMSST ) ;
-                      sVALORICMS := NotaUtil.FormatFloat( VICMSST ) ;
-                    end
-                  else if (CST = cst40) or (CST = cst41) or (CST = cst50) then
-                    begin
-                      // Campos vazios
-                    end
-                  else if (CST = cst51) then
-                    begin
-                      sBCICMS    := NotaUtil.FormatFloat( VBC   ) ;
-                      sALIQICMS  := NotaUtil.FormatFloat( PICMS ) ;
-                      sVALORICMS := NotaUtil.FormatFloat( VICMS ) ;
-                    end
-                  else if (CST = cst60) then
-                    begin
-                      sBCICMS    := NotaUtil.FormatFloat( VBCST ) ;
-                      sVALORICMS := NotaUtil.FormatFloat( VICMSST ) ;
-                    end
-                  else if (CST = cst70) then
-                    begin
-                      sBCICMS    := NotaUtil.FormatFloat( VBC   ) ;
-                      sALIQICMS  := NotaUtil.FormatFloat( PICMS ) ;
-                      sVALORICMS := NotaUtil.FormatFloat( VICMS ) ;
-                    end
-                  else if (CST = cst90) then
-                    begin
-                      sBCICMS    := NotaUtil.FormatFloat( VBC   ) ;
-                      sALIQICMS  := NotaUtil.FormatFloat( PICMS ) ;
-                      sVALORICMS := NotaUtil.FormatFloat( VICMS ) ;
-                   end;
+                  cdsItens.Append ;
+                  cdsItens.FieldByName('CODIGO').AsString := CProd;
+                  cdsItens.FieldByName('DESCRICAO').AsString := XProd;
+                  cdsItens.FieldByName('NCM').AsString := NCM;
+                  cdsItens.FieldByName('CFOP').AsString := CFOP;
+
+                  case FCasasDecimaisqCom of
+                    1: cdsItens.FieldByName('QTDE').AsString := FormatFloat('###,###,###,##0.0', QCom);
+                    2: cdsItens.FieldByName('QTDE').AsString := FormatFloat('###,###,###,##0.00', QCom);
+                    3: cdsItens.FieldByName('QTDE').AsString := FormatFloat('###,###,###,##0.000', QCom);
+                    4: cdsItens.FieldByName('QTDE').AsString := FormatFloat('###,###,###,##0.0000', QCom);
+                    5: cdsItens.FieldByName('QTDE').AsString := FormatFloat('###,###,###,##0.00000', QCom);
+                    6: cdsItens.FieldByName('QTDE').AsString := FormatFloat('###,###,###,##0.000000', QCom);
+                    7: cdsItens.FieldByName('QTDE').AsString := FormatFloat('###,###,###,##0.0000000', QCom);
+                    8: cdsItens.FieldByName('QTDE').AsString := FormatFloat('###,###,###,##0.00000000', QCom);
+                    9: cdsItens.FieldByName('QTDE').AsString := FormatFloat('###,###,###,##0.000000000', QCom);
+                   10: cdsItens.FieldByName('QTDE').AsString := FormatFloat('###,###,###,##0.0000000000', QCom);
+                  end;
+
+                  case FCasasDecimaisvUnCom of
+                    1: cdsItens.FieldByName('VALOR').AsString := FormatFloat('###,###,###,##0.0', vUnCom);
+                    2: cdsItens.FieldByName('VALOR').AsString := FormatFloat('###,###,###,##0.00', vUnCom);
+                    3: cdsItens.FieldByName('VALOR').AsString := FormatFloat('###,###,###,##0.000', vUnCom);
+                    4: cdsItens.FieldByName('VALOR').AsString := FormatFloat('###,###,###,##0.0000', vUnCom);
+                    5: cdsItens.FieldByName('VALOR').AsString := FormatFloat('###,###,###,##0.00000', vUnCom);
+                    6: cdsItens.FieldByName('VALOR').AsString := FormatFloat('###,###,###,##0.000000', vUnCom);
+                    7: cdsItens.FieldByName('VALOR').AsString := FormatFloat('###,###,###,##0.0000000', vUnCom);
+                    8: cdsItens.FieldByName('VALOR').AsString := FormatFloat('###,###,###,##0.00000000', vUnCom);
+                    9: cdsItens.FieldByName('VALOR').AsString := FormatFloat('###,###,###,##0.000000000', vUnCom);
+                   10: cdsItens.FieldByName('VALOR').AsString := FormatFloat('###,###,###,##0.0000000000', vUnCom);
+                  end;
+
+                  cdsItens.FieldByName('UNIDADE').AsString := UCom;
+                  cdsItens.FieldByName('TOTAL').AsString :=
+                                      FormatFloat('###,###,###,##0.00', VProd);
+                  cdsItens.FieldByName('VALORDESC').AsString :=
+                                      FormatFloat('###,###,###,##0.00', vDesc);
+
+                      sCST       := OrigToStr( orig ) + CSTICMSToStr( CST ) ;
+                      sBCICMS    := '0.00' ;
+                      sALIQICMS  := '0.00' ;
+                      sVALORICMS := '0.00' ;
+
+                      if (CST = cst00) then
+                        begin
+                          sBCICMS    := NotaUtil.FormatFloat( VBC   ) ;
+                          sALIQICMS  := NotaUtil.FormatFloat( PICMS ) ;
+                          sVALORICMS := NotaUtil.FormatFloat( VICMS ) ;
+                        end
+                      else if (CST = cst10) then
+                        begin
+                          sBCICMS    := NotaUtil.FormatFloat( VBC   ) ;
+                          sALIQICMS  := NotaUtil.FormatFloat( PICMS ) ;
+                          sVALORICMS := NotaUtil.FormatFloat( VICMS ) ;
+                        end
+                      else if (CST = cst20) then
+                        begin
+                          sBCICMS    := NotaUtil.FormatFloat( VBC   ) ;
+                          sALIQICMS  := NotaUtil.FormatFloat( PICMS ) ;
+                          sVALORICMS := NotaUtil.FormatFloat( VICMS ) ;
+                        end
+                      else if (CST = cst30) then
+                        begin
+                          sBCICMS    := NotaUtil.FormatFloat( VBCST   ) ;
+                          sALIQICMS  := NotaUtil.FormatFloat( PICMSST ) ;
+                          sVALORICMS := NotaUtil.FormatFloat( VICMSST ) ;
+                        end
+                      else if (CST = cst40) or (CST = cst41) or (CST = cst50) then
+                        begin
+                          // Campos vazios
+                        end
+                      else if (CST = cst51) then
+                        begin
+                          sBCICMS    := NotaUtil.FormatFloat( VBC   ) ;
+                          sALIQICMS  := NotaUtil.FormatFloat( PICMS ) ;
+                          sVALORICMS := NotaUtil.FormatFloat( VICMS ) ;
+                        end
+                      else if (CST = cst60) then
+                        begin
+                          sBCICMS    := NotaUtil.FormatFloat( VBCST ) ;
+                          sVALORICMS := NotaUtil.FormatFloat( VICMSST ) ;
+                        end
+                      else if (CST = cst70) then
+                        begin
+                          sBCICMS    := NotaUtil.FormatFloat( VBC   ) ;
+                          sALIQICMS  := NotaUtil.FormatFloat( PICMS ) ;
+                          sVALORICMS := NotaUtil.FormatFloat( VICMS ) ;
+                        end
+                      else if (CST = cst90) then
+                        begin
+                          sBCICMS    := NotaUtil.FormatFloat( VBC   ) ;
+                          sALIQICMS  := NotaUtil.FormatFloat( PICMS ) ;
+                          sVALORICMS := NotaUtil.FormatFloat( VICMS ) ;
+                       end;
+
+                      cdsItens.FieldByName('CST').AsString := sCST;
+                      cdsItens.FieldByName('BICMS').AsString := sBCICMS;
+                      cdsItens.FieldByName('ALIQICMS').AsString := sALIQICMS;
+                      cdsItens.FieldByName('VALORICMS').AsString := sVALORICMS;
+
                 end; // with Imposto.ICMS do
 
               with Imposto.IPI do
@@ -1309,29 +1453,13 @@ begin
                   if (CST = ipi00) or (CST = ipi49) or
                      (CST = ipi50) or (CST = ipi99) then
                     begin
-                      sALIQIPI  := NotaUtil.FormatFloat( PIPI ) ;
-                      sVALORIPI := NotaUtil.FormatFloat( VIPI ) ;
+                      sALIQIPI  := FormatFloat('##0.00', PIPI) ;
+                      sVALORIPI := FormatFloat('##0.00', VIPI) ;
                     end
                 end;
 
-              cdsItens.Append ;
-              cdsItens.FieldByName('CODIGO').AsString := CProd ;
-              cdsItens.FieldByName('DESCRICAO').AsString := XProd ;
-              cdsItens.FieldByName('NCM').AsString := NCM ;
-              cdsItens.FieldByName('CFOP').AsString := CFOP ;
-              cdsItens.FieldByName('UNIDADE').AsString := UCom ;
-              cdsItens.FieldByName('QTDE').AsString :=
-                                      FormatFloat('###,###,###,##0.0000', QCom);
-              cdsItens.FieldByName('VALOR').AsString :=
-                                      FormatFloat('###,###,###,##0.0000', VUnCom);
-              cdsItens.FieldByName('TOTAL').AsString :=
-                                      FormatFloat('###,###,###,##0.00', VProd);
-              cdsItens.FieldByName('CST').AsString := sCST ;
-              cdsItens.FieldByName('BICMS').AsString := sBCICMS ;
-              cdsItens.FieldByName('ALIQICMS').AsString := sALIQICMS ;
-              cdsItens.FieldByName('VALORICMS').AsString := sVALORICMS ;
-              cdsItens.FieldByName('ALIQIPI').AsString := sALIQIPI ;
-              cdsItens.FieldByName('VALORIPI').AsString := sVALORIPI ;
+              cdsItens.FieldByName('ALIQIPI').AsString := sALIQIPI;
+              cdsItens.FieldByName('VALORIPI').AsString := sVALORIPI;
               cdsItens.Post ;
             end; // with Prod do
         end; //  with FNFe.Det.Items[nItem] do
@@ -1362,7 +1490,6 @@ end;
 
 procedure TfrlDANFeRLRetrato.AddFatura;
 var x : integer;
-sTipoVenda: String;
 begin
 
   //zera
@@ -1375,7 +1502,6 @@ begin
 
   if FNFe.Cobr.Dup.Count > 0 then
     begin
-      rllTipoVenda.Visible := False;
      //adiciona
      for x := 0 to FNFe.Cobr.Dup.Count - 1 do
         with FNFe.Cobr.Dup[ x ] do
@@ -1387,16 +1513,6 @@ begin
            TRLLabel (FindComponent ('rllFatValor' + intToStr (x + 1))).Caption :=
                                                     NotaUtil.FormatFloat(VDup);
          end;
-    end
-  else
-    begin
-      case FNFe.Ide.indPag of
-        ipVista: sTipoVenda := 'VENDA A VISTA';
-        ipPrazo: sTipoVenda := 'VENDA A PRAZO';
-        ipOutras: sTipoVenda := '';
-      end;
-      rllTipoVenda.Caption := sTipoVenda;
-      rllTipoVenda.Visible := True;
     end;
 end;
 

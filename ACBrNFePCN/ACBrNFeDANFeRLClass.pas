@@ -59,6 +59,8 @@
 |*  - Tratamento das margens em "ACBrNFeDANFeClass"
 |*  - Acréscimo da propriedade "FonteDANFE", que permite ao usuário escolher
 |*    entre "fdArial", "fdTimesNewRoman" e "fdCourierNew"
+|* 13/04/2010: Peterson de Cerqueira Matos
+|*  - Tratamento das casas decimais em "ACBrNFeDANFeClass"
 ******************************************************************************}
 {$I ACBr.inc}
 unit ACBrNFeDANFeRLClass;
@@ -108,10 +110,12 @@ var
 constructor TACBrNFeDANFeRL.Create(AOwner: TComponent);
 begin
   inherited create( AOwner );
+  FLarguraCodProd := 54;
   FMargemSuperior := 0.70;
   FMargemInferior := 0.70;
   FMargemEsquerda := 0.70;
   FMargemDireita := 0.70;
+  
 end;
 
 destructor TACBrNFeDANFeRL.Destroy;
@@ -129,18 +133,20 @@ begin
      for i:= 0 to TACBrNFe(ACBrNFe).NotasFiscais.Count-1 do
       begin
         frlDANFeRLRetrato.Imprimir(TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe,
-        TACBrNFe(ACBrNFe).DANFE.Logo, MarcaDagua, LarguraCodProd, Email,
-        ExibirResumoCanhoto, Fax, NumCopias, Sistema, Site, Usuario, PosCanhoto,
-        FormularioContinuo, ExpandirLogoMarca, MostrarPreview, FonteDANFE,
-        MargemSuperior, MargemInferior, MargemEsquerda, MargemDireita);
+        Logo, MarcaDagua, LarguraCodProd, Email, ExibirResumoCanhoto, Fax,
+        NumCopias, Sistema, Site, Usuario, PosCanhoto, FormularioContinuo,
+        ExpandirLogoMarca, MostrarPreview, FonteDANFE, MargemSuperior,
+        MargemInferior, MargemEsquerda, MargemDireita, CasasDecimais._qCom,
+        CasasDecimais._vUnCom);
       end;
    end
   else
     frlDANFeRLRetrato.Imprimir(TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe,
-    TACBrNFe(ACBrNFe).DANFE.Logo, MarcaDagua, LarguraCodProd, Email,
-    ExibirResumoCanhoto, Fax, NumCopias, Sistema, Site, Usuario, PosCanhoto,
-    FormularioContinuo, ExpandirLogoMarca, MostrarPreview, FonteDANFE,
-    MargemSuperior, MargemInferior, MargemEsquerda, MargemDireita);
+    Logo, MarcaDagua, LarguraCodProd, Email, ExibirResumoCanhoto, Fax,
+    NumCopias, Sistema, Site, Usuario, PosCanhoto, FormularioContinuo,
+    ExpandirLogoMarca, MostrarPreview, FonteDANFE, MargemSuperior,
+    MargemInferior, MargemEsquerda, MargemDireita, CasasDecimais._qCom,
+    CasasDecimais._vUnCom);
 
   frlDANFeRLRetrato.Free;
 end;
@@ -158,10 +164,11 @@ begin
                  Copy(TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe.infNFe.ID,
                  4, 44) + '-nfe.pdf';
         frlDANFeRLRetrato.SavePDF(TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe,
-        TACBrNFe(ACBrNFe).DANFE.Logo, MarcaDagua, LarguraCodProd, Email,
+        Logo, MarcaDagua, LarguraCodProd, Email,
         ExibirResumoCanhoto, Fax, NumCopias, Sistema, Site, Usuario, sFile,
         PosCanhoto, FormularioContinuo, ExpandirLogoMarca, FonteDANFE,
-        MargemSuperior, MargemInferior, MargemEsquerda, MargemDireita);
+        MargemSuperior, MargemInferior, MargemEsquerda, MargemDireita,
+        CasasDecimais._qCom, CasasDecimais._vUnCom);
       end;
    end;
 

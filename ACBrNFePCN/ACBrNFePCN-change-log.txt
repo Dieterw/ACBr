@@ -61,6 +61,10 @@ Alterações   15/04/10
     - Correção na exibição da coluna CST. Quando o emitente for "Simples
       Nacional - CRT=1", será exibida a informação CSOSN ao invés do CST
     - Alteração no layout do quadro "IDENTIFICAÇÃO DO EMITENTE"
+[*] DANFe com RAVE CB
+    - Enviado correção do caso #562 do Mantis
+[*] ACBrDANFe
+    - Liberado nova compilação
 
 Alterações   08/04/10
 ---------------

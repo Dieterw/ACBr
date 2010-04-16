@@ -8,7 +8,7 @@ uses
   cthreads,
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, Unit1, ConfiguraSerial, ACBr_LCL, ACBr_TEFD, Unit2, Unit3, Unit4, Unit5;
+  Forms, Unit1, ConfiguraSerial, ACBr_TEFD, Unit2, Unit3, Unit4, Unit5;
 
 {$R TEFDDemo.res}
 

@@ -1580,12 +1580,17 @@ begin
         else
          begin
            { Verifica se ficou algum relatorio aberto, e fecha }
-           try
-              FechaRelatorio ;
-           except
-              { Se não conseguiu Fechar Relatorio, dispara Msg de exceção original }
-              raise Exception.Create( Erro );
-           end ;
+           if Estado = estRelatorio then
+            begin
+              try
+                 FechaRelatorio ;
+              except
+                 { Se não conseguiu Fechar Relatorio, dispara Msg de exceção original }
+                 raise Exception.Create( Erro );
+              end ;
+            end
+           else
+              raise ;
          end ;
      end ;
   end ;

@@ -118,6 +118,7 @@ TACBrECFFiscNET = class( TACBrECFClass )
     fsNumVersao : String ;
     fsNumECF    : String ;
     fsNumLoja   : String ;
+    fsPAF       : String ;
     fsArredonda : Integer ;
     fsFiscNETComando: TACBrECFFiscNETComando;
     fsFiscNETResposta: TACBrECFFiscNETResposta;
@@ -185,6 +186,8 @@ TACBrECFFiscNET = class( TACBrECFClass )
 
     function GetNumCOOInicial: String; override ;
     function GetNumUltimoItem: Integer; override ;
+
+    function GetPAF: String; override ;
 
     Function VerificaFimLeitura(var Retorno: AnsiString;
        var TempoLimite: TDateTime) : Boolean ; override ;
@@ -282,6 +285,8 @@ TACBrECFFiscNET = class( TACBrECFClass )
     Procedure ProgramaComprovanteNaoFiscal( var Descricao: String;
        Tipo : String = ''; Posicao : String = '') ; override ;
 
+    procedure IdentificaPAF( Linha1, Linha2 : String) ; override ;
+
  end ;
 
 //Constantes usada para DLL do Ato Cotepe 1704
@@ -308,8 +313,8 @@ CONST
 
 implementation
 Uses ACBrECF,
-     {$IFDEF COMPILER6_UP} DateUtils, StrUtils {$ELSE} ACBrD5, SysUtils, SysUtils, Windows{$ENDIF},
-     SysUtils,  Math ;
+     {$IFDEF COMPILER6_UP} DateUtils, StrUtils{$ELSE} ACBrD5, SysUtils, Windows{$ENDIF},
+     SysUtils, Math ;
 
 { -------------------------  TACBrECFFiscNETComando -------------------------- }
 constructor TACBrECFFiscNETComando.create;
@@ -543,6 +548,7 @@ begin
   fsNumVersao := '' ;
   fsNumECF    := '' ;
   fsNumLoja   := '' ;
+  fsPAF       := '' ;
   fsArredonda := -1 ;
   fsComandoVendeItem := '' ;
   fsEmPagamento := false ;
@@ -587,6 +593,8 @@ begin
   fsNumLoja   := '' ;
   fsArredonda := -1 ;
   fsComandoVendeItem := '' ;
+
+  GetPAF ;
 
   { FiscNET sempre aceita até 3 decimais na QTD e PrecoUnit }
   fpDecimaisQtd   := 3 ;
@@ -1134,6 +1142,7 @@ var
   Obs: AnsiString;
 begin
   Obs := Observacao ;
+
   if not Consumidor.Enviado then
   begin
      { Removendo o Consumidor da Observação, pois vai usar comando próprio }
@@ -1162,6 +1171,13 @@ begin
 //        Obs := Observacao ;
      end ;
   end ;
+
+     { Tem PAF ? }     { PAF ainda não está na Obs ?}
+  if (fsPAF <> '') and (pos(fsPAF,Obs) = 0) then
+     if Obs = '' then
+        Obs := fsPAF
+     else 
+        Obs := fsPAF + #10 + Obs ;
 
   FiscNETComando.NomeComando := 'EncerraDocumento' ;
   FiscNETComando.TimeOut     := 5 ;
@@ -2428,6 +2444,25 @@ begin
   if not FileExists( NomeArquivo ) then
      raise Exception.Create( ACBrStr( 'Erro na execução de Gera_AtoCotepe1704.'+sLineBreak+
                             'Arquivo: "'+NomeArquivo + '" não gerado' ))
+end;
+
+procedure TACBrECFFiscNET.IdentificaPAF(Linha1, Linha2: String);  // Por: rodrigosd
+begin
+   fsPAF := Linha1 + #10 + Linha2 ;
+   FiscNETComando.NomeComando := 'EscreveTexto' ;
+   FiscNETComando.AddParamString('NomeTexto' ,'TextoLivre') ;
+   FiscNETComando.AddParamString('ValorTexto', fsPAF ) ;
+   EnviaComando ;
+end;
+
+function TACBrECFFiscNET.GetPAF: String;   // Por: rodrigosd
+begin
+  
+  FiscNETComando.NomeComando := 'LeTexto' ;
+  FiscNETComando.AddParamString('NomeTexto','TextoLivre') ;
+  EnviaComando ;
+  fsPAF  := FiscNETResposta.Params.Values['ValorTexto'] ;
+  Result := fsPAf ;
 end;
 
 end.

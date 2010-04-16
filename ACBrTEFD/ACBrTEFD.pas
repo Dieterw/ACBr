@@ -715,7 +715,7 @@ procedure TACBrTEFD.ImprimirTransacoesPendentes;
 var
    I, J, K, NVias, Ordem : Integer;
    GrupoVinc : TACBrTEFDArrayGrupoRespostasPendentes ;
-   ImpressaoOk, Gerencial, RemoverMsg : Boolean ;
+   ImpressaoOk, Gerencial, RemoverMsg, GerencialAberto : Boolean ;
    TempoInicio : Double;
    Est : AnsiChar ;
 begin
@@ -738,8 +738,9 @@ begin
         raise EACBrTEFDECF.Create( ACBrStr('ECF não está LIVRE') ) ;
   end;
 
-  ImpressaoOk := False ;
-  Gerencial   := False ;
+  ImpressaoOk     := False ;
+  Gerencial       := False ;
+  GerencialAberto := False ;
 
   GrupoVinc := nil ;
   AgruparRespostasPendentes( GrupoVinc );
@@ -792,8 +793,11 @@ begin
                        if ImagemComprovante1aVia.Text = '' then   // Tem alguma via ?
                           NVias := 0 ;
 
-                       if NVias > 0 then
+                       if (not GerencialAberto) and (NVias > 0) then
+                       begin
                           ComandarECF( opeAbreGerencial ) ;
+                          GerencialAberto := True ;
+                       end;
 
                        I := 1 ;
                        while I <= NVias do
@@ -812,9 +816,6 @@ begin
                           Inc( I ) ;
                        end;
 
-                       if NVias > 0 then
-                          ComandarECF( opeFechaGerencial );
-
                        { Removendo a mensagem do Operador }
                        if RemoverMsg then
                        begin
@@ -830,11 +831,30 @@ begin
                           RemoverMsg := False ;
                        end;
 
-                       if ExibirMsgAutenticacao and (Autenticacao <> '') then
+
+                       if ExibirMsgAutenticacao and
+                          (J < RespostasPendentes.Count-1) and // Nao é o ultimo ? (se for a última é preferivel fechar o comprovante antes)
+                          (Autenticacao <> '') then            // Tem autenticação ?
+                       begin
                           DoExibeMsg( opmOK, 'Favor anotar no verso do Cheque:'+sLineBreak+
                                              Autenticacao ) ;
+                       end;
                     end;
                  end ;
+
+                 if GerencialAberto then
+                    ComandarECF( opeFechaGerencial );
+
+                 if ExibirMsgAutenticacao and (RespostasPendentes.Count > 0) then
+                 with RespostasPendentes[RespostasPendentes.Count-1] do
+                 begin
+                    if (Autenticacao <> '') then            // Tem autenticação ?
+                    begin
+                       DoExibeMsg( opmOK, 'Favor anotar no verso do Cheque:'+sLineBreak+
+                                          Autenticacao ) ;
+                    end;
+                 end ;
+
                end
               else                 //// Impressão em Vinculado ////
                begin

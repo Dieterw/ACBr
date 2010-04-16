@@ -7,7 +7,7 @@ uses
   QRelatorio in 'QRelatorio.pas' {frRelatorio},
   QEfetuaPagamento in 'QEfetuaPagamento.pas' {frPagamento},
   Sobre in 'Sobre.pas' {frmSobre},
-  UtilUnit in '../../../../ACBrMonitor/CLX/UtilUnit.pas',
+  UtilUnit in '../../../Projetos/ACBrMonitor/CLX/UtilUnit.pas',
   ConfiguraSerial in 'ConfiguraSerial.pas' {frConfiguraSerial};
 
 {$R *.res}

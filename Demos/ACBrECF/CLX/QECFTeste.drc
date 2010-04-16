@@ -8,175 +8,305 @@
   resources were bound to the produced executable.
 */
 
-#define QConsts_SClear 65264
-#define QConsts_SSelectAll 65265
-#define QConsts_SLoadingEllipsis 65266
-#define QConsts_SNoAppInLib 65267
-#define QConsts_SDuplicateApp 65268
-#define HelpIntfs_hNoTableOfContents 65269
-#define HelpIntfs_hNothingFound 65270
-#define HelpIntfs_hNoContext 65271
-#define HelpIntfs_hNoTopics 65272
-#define QConsts_SOverwriteText 65280
-#define QConsts_SFileMustExist 65281
-#define QConsts_SPathMustExist 65282
-#define QConsts_SDriveNotFound 65283
-#define QConsts_SUnknownImageFormat 65284
-#define QConsts_SInvalidHandle 65285
-#define QConsts_SUnableToWrite 65286
-#define QConsts_sPageIndexError 65287
-#define QConsts_sListRadioItemBadParent 65288
-#define QConsts_sOwnerNotCustomHeaderSections 65289
-#define QConsts_SUndo 65290
-#define QConsts_SRedo 65291
-#define QConsts_SLine 65292
-#define QConsts_SCut 65293
-#define QConsts_SCopy 65294
-#define QConsts_SPaste 65295
-#define QConsts_SVolume 65296
-#define QConsts_SFreeSpace 65297
-#define QConsts_SMegs 65298
-#define QConsts_SDirectory 65299
-#define QConsts_SFile 65300
-#define QConsts_SDuplicateMenus 65301
-#define QConsts_SNoPreview 65302
-#define QConsts_SImageIndexError 65303
-#define QConsts_SInvalidImageDimensions 65304
-#define QConsts_SInvalidImageDimension 65305
-#define QConsts_SInvalidRangeError 65306
-#define QConsts_SInvalidMimeSourceStream 65307
-#define QConsts_SMimeNotSupportedForIcon 65308
-#define QConsts_SOpen 65309
-#define QConsts_SSave 65310
-#define QConsts_SOverwriteCaption 65311
-#define QConsts_SAccessDeniedTo 65312
-#define QConsts_SCannotReadDirectory 65313
-#define QConsts_SDirectoryNotEmpty 65314
-#define QConsts_SNewFolder 65315
-#define QConsts_SFileNameNotFound 65316
-#define QConsts_SAlreadyExists 65317
-#define QConsts_SConfirmDeleteTitle 65318
-#define QConsts_SConfirmDeleteMany 65319
-#define QConsts_SConfirmDeleteOne 65320
-#define QConsts_SContinueDelete 65321
-#define QConsts_SName 65322
-#define QConsts_SSize 65323
-#define QConsts_SType 65324
-#define QConsts_SDate 65325
-#define QConsts_SAttributes 65326
-#define QConsts_SDefaultFilter 65327
-#define QConsts_SVPNGs 65328
-#define QConsts_SDrawings 65329
-#define QConsts_SVJpegs 65330
-#define QConsts_SMsgDlgWarning 65331
-#define QConsts_SMsgDlgError 65332
-#define QConsts_SMsgDlgInformation 65333
-#define QConsts_SMsgDlgConfirm 65334
-#define QConsts_SMsgDlgYes 65335
-#define QConsts_SMsgDlgNo 65336
-#define QConsts_SMsgDlgOK 65337
-#define QConsts_SMsgDlgCancel 65338
-#define QConsts_SMsgDlgAbort 65339
-#define QConsts_SMsgDlgRetry 65340
-#define QConsts_SMsgDlgIgnore 65341
-#define QConsts_SUnnamed 65342
-#define QConsts_SCannotCreateDirName 65343
-#define QConsts_SMDIChildNotVisible 65344
-#define QConsts_SControlParentSetToSelf 65345
-#define QConsts_SOKButton 65346
-#define QConsts_SCancelButton 65347
-#define QConsts_SYesButton 65348
-#define QConsts_SNoButton 65349
-#define QConsts_SHelpButton 65350
-#define QConsts_SCloseButton 65351
-#define QConsts_SIgnoreButton 65352
-#define QConsts_SRetryButton 65353
-#define QConsts_SAbortButton 65354
-#define QConsts_SAllButton 65355
-#define QConsts_SCannotDragForm 65356
-#define QConsts_SVIcons 65357
-#define QConsts_SVBitmaps 65358
-#define QConsts_SVPixmaps 65359
-#define QConsts_SInvalidCanvasState 65360
-#define QConsts_SInvalidImageSize 65361
-#define QConsts_SInvalidColorDepth 65362
-#define QConsts_SCannotFocus 65363
-#define QConsts_SParentRequired 65364
-#define QConsts_SVisibleChanged 65365
-#define QConsts_SCannotShowModal 65366
-#define QConsts_SPropertyOutOfRange 65367
-#define QConsts_SMenuIndexError 65368
-#define QConsts_SMenuReinserted 65369
-#define QConsts_SNoMenuRecursion 65370
-#define QConsts_SMenuNotFound 65371
-#define QConsts_SMenuSetFormError 65372
-#define QConsts_SGroupIndexTooLow 65373
-#define QConsts_SNoMDIForm 65374
-#define QConsts_SNotAnMDIForm 65375
-#define QConsts_SmkcSpace 65376
-#define QConsts_SmkcPgUp 65377
-#define QConsts_SmkcPgDn 65378
-#define QConsts_SmkcEnd 65379
-#define QConsts_SmkcHome 65380
-#define QConsts_SmkcLeft 65381
-#define QConsts_SmkcUp 65382
-#define QConsts_SmkcRight 65383
-#define QConsts_SmkcDown 65384
-#define QConsts_SmkcIns 65385
-#define QConsts_SmkcDel 65386
-#define QConsts_SmkcShift 65387
-#define QConsts_SmkcCtrl 65388
-#define QConsts_SmkcAlt 65389
-#define QConsts_SInvalidPixelFormat 65390
-#define QConsts_SNoCanvasHandle 65391
-#define RTLConsts_SSortedListError 65392
-#define RTLConsts_SUnknownGroup 65393
-#define RTLConsts_SUnknownProperty 65394
-#define RTLConsts_SWriteError 65395
-#define RTLConsts_SThreadCreateError 65396
-#define RTLConsts_SThreadError 65397
-#define RTLConsts_SMissingDateTimeField 65398
-#define RTLConsts_SInvalidDateTime 65399
-#define QConsts_SInvalidCreateWidget 65400
-#define QConsts_STooManyMessageBoxButtons 65401
-#define QConsts_SmkcBkSp 65402
-#define QConsts_SmkcTab 65403
-#define QConsts_SmkcBackTab 65404
-#define QConsts_SmkcEsc 65405
-#define QConsts_SmkcReturn 65406
-#define QConsts_SmkcEnter 65407
-#define RTLConsts_SInvalidImage 65408
-#define RTLConsts_SInvalidName 65409
-#define RTLConsts_SInvalidProperty 65410
-#define RTLConsts_SInvalidPropertyPath 65411
-#define RTLConsts_SInvalidPropertyValue 65412
-#define RTLConsts_SInvalidRegType 65413
-#define RTLConsts_SListCapacityError 65414
-#define RTLConsts_SListCountError 65415
-#define RTLConsts_SListIndexError 65416
-#define RTLConsts_SMemoryStreamError 65417
-#define RTLConsts_SPropertyException 65418
-#define RTLConsts_SReadError 65419
-#define RTLConsts_SReadOnlyProperty 65420
-#define RTLConsts_SRegGetDataFailed 65421
-#define RTLConsts_SResNotFound 65422
-#define RTLConsts_SSeekNotImplemented 65423
+#define ExtCtrls_clNameInfoText 65136
+#define ExtCtrls_clNameMenu 65137
+#define ExtCtrls_clNameMenuText 65138
+#define ExtCtrls_clNameNone 65139
+#define ExtCtrls_clNameScrollBar 65140
+#define ExtCtrls_clName3DDkShadow 65141
+#define ExtCtrls_clName3DLight 65142
+#define ExtCtrls_clNameWindow 65143
+#define ExtCtrls_clNameWindowFrame 65144
+#define ExtCtrls_clNameWindowText 65145
+#define WinHelpViewer_hNoKeyword 65146
+#define ExtCtrls_clNameActiveCaption 65152
+#define ExtCtrls_clNameAppWorkSpace 65153
+#define ExtCtrls_clNameBackground 65154
+#define ExtCtrls_clNameBtnFace 65155
+#define ExtCtrls_clNameBtnHighlight 65156
+#define ExtCtrls_clNameBtnShadow 65157
+#define ExtCtrls_clNameBtnText 65158
+#define ExtCtrls_clNameCaptionText 65159
+#define ExtCtrls_clNameDefault 65160
+#define ExtCtrls_clNameGrayText 65161
+#define ExtCtrls_clNameHighlight 65162
+#define ExtCtrls_clNameHighlightText 65163
+#define ExtCtrls_clNameInactiveBorder 65164
+#define ExtCtrls_clNameInactiveCaption 65165
+#define ExtCtrls_clNameInactiveCaptionText 65166
+#define ExtCtrls_clNameInfoBk 65167
+#define ExtCtrls_clNamePurple 65168
+#define ExtCtrls_clNameTeal 65169
+#define ExtCtrls_clNameGray 65170
+#define ExtCtrls_clNameSilver 65171
+#define ExtCtrls_clNameRed 65172
+#define ExtCtrls_clNameLime 65173
+#define ExtCtrls_clNameYellow 65174
+#define ExtCtrls_clNameBlue 65175
+#define ExtCtrls_clNameFuchsia 65176
+#define ExtCtrls_clNameAqua 65177
+#define ExtCtrls_clNameWhite 65178
+#define ExtCtrls_clNameMoneyGreen 65179
+#define ExtCtrls_clNameSkyBlue 65180
+#define ExtCtrls_clNameCream 65181
+#define ExtCtrls_clNameMedGray 65182
+#define ExtCtrls_clNameActiveBorder 65183
+#define Consts_SmkcDel 65184
+#define Consts_SmkcShift 65185
+#define Consts_SmkcCtrl 65186
+#define Consts_SmkcAlt 65187
+#define Consts_SIconToClipboard 65188
+#define Consts_SCannotOpenClipboard 65189
+#define Consts_SDuplicateMenus 65190
+#define Consts_SDockedCtlNeedsName 65191
+#define Consts_SDockTreeRemoveError 65192
+#define Consts_SDockZoneNotFound 65193
+#define Consts_SDockZoneHasNoCtl 65194
+#define ExtCtrls_clNameBlack 65195
+#define ExtCtrls_clNameMaroon 65196
+#define ExtCtrls_clNameGreen 65197
+#define ExtCtrls_clNameOlive 65198
+#define ExtCtrls_clNameNavy 65199
+#define Consts_SMsgDlgNoToAll 65200
+#define Consts_SMsgDlgYesToAll 65201
+#define Consts_SmkcBkSp 65202
+#define Consts_SmkcTab 65203
+#define Consts_SmkcEsc 65204
+#define Consts_SmkcEnter 65205
+#define Consts_SmkcSpace 65206
+#define Consts_SmkcPgUp 65207
+#define Consts_SmkcPgDn 65208
+#define Consts_SmkcEnd 65209
+#define Consts_SmkcHome 65210
+#define Consts_SmkcLeft 65211
+#define Consts_SmkcUp 65212
+#define Consts_SmkcRight 65213
+#define Consts_SmkcDown 65214
+#define Consts_SmkcIns 65215
+#define Consts_SVEnhMetafiles 65216
+#define Consts_SVIcons 65217
+#define Consts_SVBitmaps 65218
+#define Consts_SMsgDlgWarning 65219
+#define Consts_SMsgDlgError 65220
+#define Consts_SMsgDlgInformation 65221
+#define Consts_SMsgDlgConfirm 65222
+#define Consts_SMsgDlgYes 65223
+#define Consts_SMsgDlgNo 65224
+#define Consts_SMsgDlgOK 65225
+#define Consts_SMsgDlgCancel 65226
+#define Consts_SMsgDlgHelp 65227
+#define Consts_SMsgDlgAbort 65228
+#define Consts_SMsgDlgRetry 65229
+#define Consts_SMsgDlgIgnore 65230
+#define Consts_SMsgDlgAll 65231
+#define Consts_SNoTimers 65232
+#define Consts_SGroupIndexTooLow 65233
+#define Consts_SNoMDIForm 65234
+#define Consts_SControlParentSetToSelf 65235
+#define Consts_SOKButton 65236
+#define Consts_SCancelButton 65237
+#define Consts_SYesButton 65238
+#define Consts_SNoButton 65239
+#define Consts_SHelpButton 65240
+#define Consts_SCloseButton 65241
+#define Consts_SIgnoreButton 65242
+#define Consts_SRetryButton 65243
+#define Consts_SAbortButton 65244
+#define Consts_SAllButton 65245
+#define Consts_SCannotDragForm 65246
+#define Consts_SVMetafiles 65247
+#define Consts_SNoCanvasHandle 65248
+#define Consts_SInvalidImageSize 65249
+#define Consts_SInvalidImageList 65250
+#define Consts_SImageIndexError 65251
+#define Consts_SImageReadFail 65252
+#define Consts_SImageWriteFail 65253
+#define Consts_SWindowDCError 65254
+#define Consts_SWindowClass 65255
+#define Consts_SCannotFocus 65256
+#define Consts_SParentRequired 65257
+#define Consts_SMDIChildNotVisible 65258
+#define Consts_SVisibleChanged 65259
+#define Consts_SCannotShowModal 65260
+#define Consts_SMenuIndexError 65261
+#define Consts_SMenuReinserted 65262
+#define Consts_SMenuNotFound 65263
+#define QConsts_SPaste 65264
+#define QConsts_SClear 65265
+#define QConsts_SSelectAll 65266
+#define QConsts_SLoadingEllipsis 65267
+#define QConsts_SNoAppInLib 65268
+#define QConsts_SDuplicateApp 65269
+#define HelpIntfs_hNoTableOfContents 65270
+#define HelpIntfs_hNothingFound 65271
+#define HelpIntfs_hNoContext 65272
+#define HelpIntfs_hNoTopics 65273
+#define Consts_SInvalidBitmap 65274
+#define Consts_SInvalidIcon 65275
+#define Consts_SInvalidMetafile 65276
+#define Consts_SChangeIconSize 65277
+#define Consts_SUnknownClipboardFormat 65278
+#define Consts_SOutOfResources 65279
+#define QConsts_SOverwriteCaption 65280
+#define QConsts_SOverwriteText 65281
+#define QConsts_SFileMustExist 65282
+#define QConsts_SPathMustExist 65283
+#define QConsts_SDriveNotFound 65284
+#define QConsts_SUnknownImageFormat 65285
+#define QConsts_SInvalidHandle 65286
+#define QConsts_SUnableToWrite 65287
+#define QConsts_sPageIndexError 65288
+#define QConsts_sListRadioItemBadParent 65289
+#define QConsts_sOwnerNotCustomHeaderSections 65290
+#define QConsts_SUndo 65291
+#define QConsts_SRedo 65292
+#define QConsts_SLine 65293
+#define QConsts_SCut 65294
+#define QConsts_SCopy 65295
+#define QConsts_SDefaultFilter 65296
+#define QConsts_SVolume 65297
+#define QConsts_SFreeSpace 65298
+#define QConsts_SMegs 65299
+#define QConsts_SDirectory 65300
+#define QConsts_SFile 65301
+#define QConsts_SDuplicateMenus 65302
+#define QConsts_SNoPreview 65303
+#define QConsts_SImageIndexError 65304
+#define QConsts_SInvalidImageDimensions 65305
+#define QConsts_SInvalidImageDimension 65306
+#define QConsts_SInvalidRangeError 65307
+#define QConsts_SInvalidMimeSourceStream 65308
+#define QConsts_SMimeNotSupportedForIcon 65309
+#define QConsts_SOpen 65310
+#define QConsts_SSave 65311
+#define QConsts_SCannotCreateDirName 65312
+#define QConsts_SAccessDeniedTo 65313
+#define QConsts_SCannotReadDirectory 65314
+#define QConsts_SDirectoryNotEmpty 65315
+#define QConsts_SNewFolder 65316
+#define QConsts_SFileNameNotFound 65317
+#define QConsts_SAlreadyExists 65318
+#define QConsts_SConfirmDeleteTitle 65319
+#define QConsts_SConfirmDeleteMany 65320
+#define QConsts_SConfirmDeleteOne 65321
+#define QConsts_SContinueDelete 65322
+#define QConsts_SName 65323
+#define QConsts_SSize 65324
+#define QConsts_SType 65325
+#define QConsts_SDate 65326
+#define QConsts_SAttributes 65327
+#define QConsts_SVPixmaps 65328
+#define QConsts_SVPNGs 65329
+#define QConsts_SDrawings 65330
+#define QConsts_SVJpegs 65331
+#define QConsts_SMsgDlgWarning 65332
+#define QConsts_SMsgDlgError 65333
+#define QConsts_SMsgDlgInformation 65334
+#define QConsts_SMsgDlgConfirm 65335
+#define QConsts_SMsgDlgYes 65336
+#define QConsts_SMsgDlgNo 65337
+#define QConsts_SMsgDlgOK 65338
+#define QConsts_SMsgDlgCancel 65339
+#define QConsts_SMsgDlgAbort 65340
+#define QConsts_SMsgDlgRetry 65341
+#define QConsts_SMsgDlgIgnore 65342
+#define QConsts_SUnnamed 65343
+#define QConsts_SNotAnMDIForm 65344
+#define QConsts_SMDIChildNotVisible 65345
+#define QConsts_SControlParentSetToSelf 65346
+#define QConsts_SOKButton 65347
+#define QConsts_SCancelButton 65348
+#define QConsts_SYesButton 65349
+#define QConsts_SNoButton 65350
+#define QConsts_SHelpButton 65351
+#define QConsts_SCloseButton 65352
+#define QConsts_SIgnoreButton 65353
+#define QConsts_SRetryButton 65354
+#define QConsts_SAbortButton 65355
+#define QConsts_SAllButton 65356
+#define QConsts_SCannotDragForm 65357
+#define QConsts_SVIcons 65358
+#define QConsts_SVBitmaps 65359
+#define QConsts_SNoCanvasHandle 65360
+#define QConsts_SInvalidCanvasState 65361
+#define QConsts_SInvalidImageSize 65362
+#define QConsts_SInvalidColorDepth 65363
+#define QConsts_SCannotFocus 65364
+#define QConsts_SParentRequired 65365
+#define QConsts_SVisibleChanged 65366
+#define QConsts_SCannotShowModal 65367
+#define QConsts_SPropertyOutOfRange 65368
+#define QConsts_SMenuIndexError 65369
+#define QConsts_SMenuReinserted 65370
+#define QConsts_SNoMenuRecursion 65371
+#define QConsts_SMenuNotFound 65372
+#define QConsts_SMenuSetFormError 65373
+#define QConsts_SGroupIndexTooLow 65374
+#define QConsts_SNoMDIForm 65375
+#define QConsts_SmkcEnter 65376
+#define QConsts_SmkcSpace 65377
+#define QConsts_SmkcPgUp 65378
+#define QConsts_SmkcPgDn 65379
+#define QConsts_SmkcEnd 65380
+#define QConsts_SmkcHome 65381
+#define QConsts_SmkcLeft 65382
+#define QConsts_SmkcUp 65383
+#define QConsts_SmkcRight 65384
+#define QConsts_SmkcDown 65385
+#define QConsts_SmkcIns 65386
+#define QConsts_SmkcDel 65387
+#define QConsts_SmkcShift 65388
+#define QConsts_SmkcCtrl 65389
+#define QConsts_SmkcAlt 65390
+#define QConsts_SInvalidPixelFormat 65391
+#define RTLConsts_SSeekNotImplemented 65392
+#define RTLConsts_SSortedListError 65393
+#define RTLConsts_SUnknownGroup 65394
+#define RTLConsts_SUnknownProperty 65395
+#define RTLConsts_SWriteError 65396
+#define RTLConsts_SThreadCreateError 65397
+#define RTLConsts_SThreadError 65398
+#define RTLConsts_SMissingDateTimeField 65399
+#define RTLConsts_SInvalidDateTime 65400
+#define QConsts_SInvalidCreateWidget 65401
+#define QConsts_STooManyMessageBoxButtons 65402
+#define QConsts_SmkcBkSp 65403
+#define QConsts_SmkcTab 65404
+#define QConsts_SmkcBackTab 65405
+#define QConsts_SmkcEsc 65406
+#define QConsts_SmkcReturn 65407
+#define RTLConsts_SIniFileWriteError 65408
+#define RTLConsts_SInvalidImage 65409
+#define RTLConsts_SInvalidName 65410
+#define RTLConsts_SInvalidProperty 65411
+#define RTLConsts_SInvalidPropertyPath 65412
+#define RTLConsts_SInvalidPropertyValue 65413
+#define RTLConsts_SInvalidRegType 65414
+#define RTLConsts_SListCapacityError 65415
+#define RTLConsts_SListCountError 65416
+#define RTLConsts_SListIndexError 65417
+#define RTLConsts_SMemoryStreamError 65418
+#define RTLConsts_SPropertyException 65419
+#define RTLConsts_SReadError 65420
+#define RTLConsts_SReadOnlyProperty 65421
+#define RTLConsts_SRegGetDataFailed 65422
+#define RTLConsts_SResNotFound 65423
 #define SysConst_SLongDayNameThu 65424
 #define SysConst_SLongDayNameFri 65425
 #define SysConst_SLongDayNameSat 65426
 #define RTLConsts_SAncestorNotFound 65427
 #define RTLConsts_SAssignError 65428
-#define RTLConsts_SBucketListLocked 65429
-#define RTLConsts_SCantWriteResourceStreamError 65430
-#define RTLConsts_SCheckSynchronizeError 65431
-#define RTLConsts_SClassNotFound 65432
-#define RTLConsts_SDuplicateClass 65433
-#define RTLConsts_SDuplicateItem 65434
-#define RTLConsts_SDuplicateName 65435
-#define RTLConsts_SDuplicateString 65436
-#define RTLConsts_SFCreateErrorEx 65437
-#define RTLConsts_SFOpenErrorEx 65438
-#define RTLConsts_SIniFileWriteError 65439
+#define RTLConsts_SBitsIndexError 65429
+#define RTLConsts_SBucketListLocked 65430
+#define RTLConsts_SCantWriteResourceStreamError 65431
+#define RTLConsts_SCheckSynchronizeError 65432
+#define RTLConsts_SClassNotFound 65433
+#define RTLConsts_SDuplicateClass 65434
+#define RTLConsts_SDuplicateItem 65435
+#define RTLConsts_SDuplicateName 65436
+#define RTLConsts_SDuplicateString 65437
+#define RTLConsts_SFCreateErrorEx 65438
+#define RTLConsts_SFOpenErrorEx 65439
 #define SysConst_SLongMonthNameAug 65440
 #define SysConst_SLongMonthNameSep 65441
 #define SysConst_SLongMonthNameOct 65442
@@ -275,6 +405,130 @@
 #define SysConst_SInvalidInput 65535
 STRINGTABLE
 BEGIN
+	ExtCtrls_clNameInfoText,	"Info Text"
+	ExtCtrls_clNameMenu,	"Menu Background"
+	ExtCtrls_clNameMenuText,	"Menu Text"
+	ExtCtrls_clNameNone,	"None"
+	ExtCtrls_clNameScrollBar,	"Scroll Bar"
+	ExtCtrls_clName3DDkShadow,	"3D Dark Shadow"
+	ExtCtrls_clName3DLight,	"3D Light"
+	ExtCtrls_clNameWindow,	"Window Background"
+	ExtCtrls_clNameWindowFrame,	"Window Frame"
+	ExtCtrls_clNameWindowText,	"Window Text"
+	WinHelpViewer_hNoKeyword,	"No help keyword specified."
+	ExtCtrls_clNameActiveCaption,	"Active Caption"
+	ExtCtrls_clNameAppWorkSpace,	"Application Workspace"
+	ExtCtrls_clNameBackground,	"Background"
+	ExtCtrls_clNameBtnFace,	"Button Face"
+	ExtCtrls_clNameBtnHighlight,	"Button Highlight"
+	ExtCtrls_clNameBtnShadow,	"Button Shadow"
+	ExtCtrls_clNameBtnText,	"Button Text"
+	ExtCtrls_clNameCaptionText,	"Caption Text"
+	ExtCtrls_clNameDefault,	"Default"
+	ExtCtrls_clNameGrayText,	"Gray Text"
+	ExtCtrls_clNameHighlight,	"Highlight Background"
+	ExtCtrls_clNameHighlightText,	"Highlight Text"
+	ExtCtrls_clNameInactiveBorder,	"Inactive Border"
+	ExtCtrls_clNameInactiveCaption,	"Inactive Caption"
+	ExtCtrls_clNameInactiveCaptionText,	"Inactive Caption Text"
+	ExtCtrls_clNameInfoBk,	"Info Background"
+	ExtCtrls_clNamePurple,	"Purple"
+	ExtCtrls_clNameTeal,	"Teal"
+	ExtCtrls_clNameGray,	"Gray"
+	ExtCtrls_clNameSilver,	"Silver"
+	ExtCtrls_clNameRed,	"Red"
+	ExtCtrls_clNameLime,	"Lime"
+	ExtCtrls_clNameYellow,	"Yellow"
+	ExtCtrls_clNameBlue,	"Blue"
+	ExtCtrls_clNameFuchsia,	"Fuchsia"
+	ExtCtrls_clNameAqua,	"Aqua"
+	ExtCtrls_clNameWhite,	"White"
+	ExtCtrls_clNameMoneyGreen,	"Money Green"
+	ExtCtrls_clNameSkyBlue,	"Sky Blue"
+	ExtCtrls_clNameCream,	"Cream"
+	ExtCtrls_clNameMedGray,	"Medium Gray"
+	ExtCtrls_clNameActiveBorder,	"Active Border"
+	Consts_SmkcDel,	"Del"
+	Consts_SmkcShift,	"Shift+"
+	Consts_SmkcCtrl,	"Ctrl+"
+	Consts_SmkcAlt,	"Alt+"
+	Consts_SIconToClipboard,	"Clipboard does not support Icons"
+	Consts_SCannotOpenClipboard,	"Cannot open clipboard"
+	Consts_SDuplicateMenus,	"Menu '%s' is already being used by another form"
+	Consts_SDockedCtlNeedsName,	"Docked control must have a name"
+	Consts_SDockTreeRemoveError,	"Error removing control from dock tree"
+	Consts_SDockZoneNotFound,	" - Dock zone not found"
+	Consts_SDockZoneHasNoCtl,	" - Dock zone has no control"
+	ExtCtrls_clNameBlack,	"Black"
+	ExtCtrls_clNameMaroon,	"Maroon"
+	ExtCtrls_clNameGreen,	"Green"
+	ExtCtrls_clNameOlive,	"Olive"
+	ExtCtrls_clNameNavy,	"Navy"
+	Consts_SMsgDlgNoToAll,	"N&o to All"
+	Consts_SMsgDlgYesToAll,	"Yes to &All"
+	Consts_SmkcBkSp,	"BkSp"
+	Consts_SmkcTab,	"Tab"
+	Consts_SmkcEsc,	"Esc"
+	Consts_SmkcEnter,	"Enter"
+	Consts_SmkcSpace,	"Space"
+	Consts_SmkcPgUp,	"PgUp"
+	Consts_SmkcPgDn,	"PgDn"
+	Consts_SmkcEnd,	"End"
+	Consts_SmkcHome,	"Home"
+	Consts_SmkcLeft,	"Left"
+	Consts_SmkcUp,	"Up"
+	Consts_SmkcRight,	"Right"
+	Consts_SmkcDown,	"Down"
+	Consts_SmkcIns,	"Ins"
+	Consts_SVEnhMetafiles,	"Enhanced Metafiles"
+	Consts_SVIcons,	"Icons"
+	Consts_SVBitmaps,	"Bitmaps"
+	Consts_SMsgDlgWarning,	"Warning"
+	Consts_SMsgDlgError,	"Error"
+	Consts_SMsgDlgInformation,	"Information"
+	Consts_SMsgDlgConfirm,	"Confirm"
+	Consts_SMsgDlgYes,	"&Yes"
+	Consts_SMsgDlgNo,	"&No"
+	Consts_SMsgDlgOK,	"OK"
+	Consts_SMsgDlgCancel,	"Cancel"
+	Consts_SMsgDlgHelp,	"&Help"
+	Consts_SMsgDlgAbort,	"&Abort"
+	Consts_SMsgDlgRetry,	"&Retry"
+	Consts_SMsgDlgIgnore,	"&Ignore"
+	Consts_SMsgDlgAll,	"&All"
+	Consts_SNoTimers,	"Not enough timers available"
+	Consts_SGroupIndexTooLow,	"GroupIndex cannot be less than a previous menu item's GroupIndex"
+	Consts_SNoMDIForm,	"Cannot create form. No MDI forms are currently active"
+	Consts_SControlParentSetToSelf,	"A control cannot have itself as its parent"
+	Consts_SOKButton,	"OK"
+	Consts_SCancelButton,	"Cancel"
+	Consts_SYesButton,	"&Yes"
+	Consts_SNoButton,	"&No"
+	Consts_SHelpButton,	"&Help"
+	Consts_SCloseButton,	"&Close"
+	Consts_SIgnoreButton,	"&Ignore"
+	Consts_SRetryButton,	"&Retry"
+	Consts_SAbortButton,	"Abort"
+	Consts_SAllButton,	"&All"
+	Consts_SCannotDragForm,	"Cannot drag a form"
+	Consts_SVMetafiles,	"Metafiles"
+	Consts_SNoCanvasHandle,	"Canvas does not allow drawing"
+	Consts_SInvalidImageSize,	"Invalid image size"
+	Consts_SInvalidImageList,	"Invalid ImageList"
+	Consts_SImageIndexError,	"Invalid ImageList Index"
+	Consts_SImageReadFail,	"Failed to read ImageList data from stream"
+	Consts_SImageWriteFail,	"Failed to write ImageList data to stream"
+	Consts_SWindowDCError,	"Error creating window device context"
+	Consts_SWindowClass,	"Error creating window class"
+	Consts_SCannotFocus,	"Cannot focus a disabled or invisible window"
+	Consts_SParentRequired,	"Control '%s' has no parent window"
+	Consts_SMDIChildNotVisible,	"Cannot hide an MDI Child Form"
+	Consts_SVisibleChanged,	"Cannot change Visible in OnShow or OnHide"
+	Consts_SCannotShowModal,	"Cannot make a visible window modal"
+	Consts_SMenuIndexError,	"Menu index out of range"
+	Consts_SMenuReinserted,	"Menu inserted twice"
+	Consts_SMenuNotFound,	"Sub-menu is not in menu"
+	QConsts_SPaste,	"Colar"
 	QConsts_SClear,	"Limpar"
 	QConsts_SSelectAll,	"Selecionar Todos"
 	QConsts_SLoadingEllipsis,	"Carregando..."
@@ -284,6 +538,13 @@ BEGIN
 	HelpIntfs_hNothingFound,	"No help found for %s"
 	HelpIntfs_hNoContext,	"No context-sensitive help installed"
 	HelpIntfs_hNoTopics,	"No topic-based help system installed"
+	Consts_SInvalidBitmap,	"Bitmap image is not valid"
+	Consts_SInvalidIcon,	"Icon image is not valid"
+	Consts_SInvalidMetafile,	"Metafile is not valid"
+	Consts_SChangeIconSize,	"Cannot change the size of an icon"
+	Consts_SUnknownClipboardFormat,	"Unsupported clipboard format"
+	Consts_SOutOfResources,	"Out of system resources"
+	QConsts_SOverwriteCaption,	"Gravar %s como"
 	QConsts_SOverwriteText,	"\"%s\" já existe.\r\nDeseja substitu-lo ?"
 	QConsts_SFileMustExist,	"\"%s\"\r\nArquivo não existe.\r\nPor favor verique se o nome está correto."
 	QConsts_SPathMustExist,	"\"%s\"\r\nCaminho não encontrado.\r\nPor favor verique se o caminho está correto."
@@ -299,7 +560,7 @@ BEGIN
 	QConsts_SLine,	"-"
 	QConsts_SCut,	"Cortar"
 	QConsts_SCopy,	"Copiar"
-	QConsts_SPaste,	"Colar"
+	QConsts_SDefaultFilter,	"Todos Arquivos (*.*)|*.*|"
 	QConsts_SVolume,	"Volume"
 	QConsts_SFreeSpace,	"Espaço Livre"
 	QConsts_SMegs,	"%d MB"
@@ -315,7 +576,7 @@ BEGIN
 	QConsts_SMimeNotSupportedForIcon,	"Mime format not supported for TIcon"
 	QConsts_SOpen,	"Abrir"
 	QConsts_SSave,	"Gravar"
-	QConsts_SOverwriteCaption,	"Gravar %s como"
+	QConsts_SCannotCreateDirName,	"Não foi possível criar o diretório \"%s\"."
 	QConsts_SAccessDeniedTo,	"Acesso não permitido para \"%s\""
 	QConsts_SCannotReadDirectory,	"Não foi possível ler o diretório:\r\n\"%s\""
 	QConsts_SDirectoryNotEmpty,	"Diretório \"%s\" não é vazio."
@@ -331,7 +592,7 @@ BEGIN
 	QConsts_SType,	"Tipo"
 	QConsts_SDate,	"Data Modificado"
 	QConsts_SAttributes,	"Atributos"
-	QConsts_SDefaultFilter,	"Todos Arquivos (*.*)|*.*|"
+	QConsts_SVPixmaps,	"Pixmaps"
 	QConsts_SVPNGs,	"PNGs"
 	QConsts_SDrawings,	"Drawings"
 	QConsts_SVJpegs,	"Jpegs"
@@ -347,7 +608,7 @@ BEGIN
 	QConsts_SMsgDlgRetry,	"&ReTentar"
 	QConsts_SMsgDlgIgnore,	"&Ignorar"
 	QConsts_SUnnamed,	"Sem Nome"
-	QConsts_SCannotCreateDirName,	"Não foi possível criar o diretório \"%s\"."
+	QConsts_SNotAnMDIForm,	"Invalid MDIParent for class %s"
 	QConsts_SMDIChildNotVisible,	"Cannot hide an MDI Child Form"
 	QConsts_SControlParentSetToSelf,	"A control cannot have itself as its parent"
 	QConsts_SOKButton,	"OK"
@@ -363,7 +624,7 @@ BEGIN
 	QConsts_SCannotDragForm,	"Cannot drag a form"
 	QConsts_SVIcons,	"Icons"
 	QConsts_SVBitmaps,	"Bitmaps"
-	QConsts_SVPixmaps,	"Pixmaps"
+	QConsts_SNoCanvasHandle,	"Canvas does not allow drawing"
 	QConsts_SInvalidCanvasState,	"Invalid canvas state request"
 	QConsts_SInvalidImageSize,	"Invalid image size"
 	QConsts_SInvalidColorDepth,	"Color depth must be 1, 8 or 32 bpp"
@@ -379,7 +640,7 @@ BEGIN
 	QConsts_SMenuSetFormError,	"TMenu.SetForm: argument must be TCustomForm"
 	QConsts_SGroupIndexTooLow,	"GroupIndex cannot be less than a previous menu item's GroupIndex"
 	QConsts_SNoMDIForm,	"Cannot create form. No MDI forms are currently active"
-	QConsts_SNotAnMDIForm,	"Invalid MDIParent for class %s"
+	QConsts_SmkcEnter,	"Enter"
 	QConsts_SmkcSpace,	"Space"
 	QConsts_SmkcPgUp,	"PgUp"
 	QConsts_SmkcPgDn,	"PgDn"
@@ -395,7 +656,7 @@ BEGIN
 	QConsts_SmkcCtrl,	"Ctrl+"
 	QConsts_SmkcAlt,	"Alt+"
 	QConsts_SInvalidPixelFormat,	"Invalid pixel format"
-	QConsts_SNoCanvasHandle,	"Canvas does not allow drawing"
+	RTLConsts_SSeekNotImplemented,	"%s.Seek not implemented"
 	RTLConsts_SSortedListError,	"Operation not allowed on sorted list"
 	RTLConsts_SUnknownGroup,	"%s not in a class registration group"
 	RTLConsts_SUnknownProperty,	"Property %s does not exist"
@@ -411,7 +672,7 @@ BEGIN
 	QConsts_SmkcBackTab,	"BackTab"
 	QConsts_SmkcEsc,	"Esc"
 	QConsts_SmkcReturn,	"Return"
-	QConsts_SmkcEnter,	"Enter"
+	RTLConsts_SIniFileWriteError,	"Unable to write to %s"
 	RTLConsts_SInvalidImage,	"Invalid stream format"
 	RTLConsts_SInvalidName,	"''%s'' is not a valid component name"
 	RTLConsts_SInvalidProperty,	"Invalid property value"
@@ -427,12 +688,12 @@ BEGIN
 	RTLConsts_SReadOnlyProperty,	"Property is read-only"
 	RTLConsts_SRegGetDataFailed,	"Failed to get data for '%s'"
 	RTLConsts_SResNotFound,	"Resource %s not found"
-	RTLConsts_SSeekNotImplemented,	"%s.Seek not implemented"
 	SysConst_SLongDayNameThu,	"Thursday"
 	SysConst_SLongDayNameFri,	"Friday"
 	SysConst_SLongDayNameSat,	"Saturday"
 	RTLConsts_SAncestorNotFound,	"Ancestor for '%s' not found"
 	RTLConsts_SAssignError,	"Cannot assign a %s to a %s"
+	RTLConsts_SBitsIndexError,	"Bits index out of range"
 	RTLConsts_SBucketListLocked,	"List is locked during an active ForEach"
 	RTLConsts_SCantWriteResourceStreamError,	"Can't write to a read-only resource stream"
 	RTLConsts_SCheckSynchronizeError,	"CheckSynchronize called from thread $%x, which is NOT the main thread"
@@ -443,7 +704,6 @@ BEGIN
 	RTLConsts_SDuplicateString,	"String list does not allow duplicates"
 	RTLConsts_SFCreateErrorEx,	"Cannot create file \"%s\". %s"
 	RTLConsts_SFOpenErrorEx,	"Cannot open file \"%s\". %s"
-	RTLConsts_SIniFileWriteError,	"Unable to write to %s"
 	SysConst_SLongMonthNameAug,	"August"
 	SysConst_SLongMonthNameSep,	"September"
 	SysConst_SLongMonthNameOct,	"October"

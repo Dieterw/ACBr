@@ -8,7 +8,7 @@ uses ACBrECF, ACBrRFD, ACBrBase, ACBrDevice, ACBrECFClass, ACBrConsts,
   {$IFDEF Delphi6_UP} StrUtils, DateUtils, Types, {$ELSE} ACBrD5, FileCtrl,{$ENDIF}
   SysUtils, Classes, Graphics,
   Controls, Forms, Dialogs, StdCtrls,  ComCtrls, Buttons, ExtCtrls,
-  Menus, Spin, jpeg, OleCtrls, SHDocVw, ACBrTEF
+  Menus, Spin, jpeg, OleCtrls, SHDocVw
   {$IFDEF Delphi7},XPMan{$ENDIF};
 
 type
@@ -238,15 +238,6 @@ type
     N29: TMenuItem;
     edMsgTrabalhando: TEdit;
     Label21: TLabel;
-    TabSheet7: TTabSheet;
-    Label22: TLabel;
-    CbxTipoTEF: TComboBox;
-    GroupBox1: TGroupBox;
-    Label24: TLabel;
-    BtnAtivarTEF: TBitBtn;
-    BtnVerificaGPAtivo: TBitBtn;
-    BtnChamaADM: TBitBtn;
-    ACBrTEF1: TACBrTEF;
     ProgramaRelatrioGerencial1: TMenuItem;
     RelatriosGerenciais1: TMenuItem;
     CarregaRelatriosGerenciais1: TMenuItem;
@@ -290,28 +281,6 @@ type
     N38: TMenuItem;
     PorCOO2: TMenuItem;
     PorDatadeMovimento1: TMenuItem;
-    GroupBox2: TGroupBox;
-    Label26: TLabel;
-    EdtValorItensTEF: TEdit;
-    EdtFormaPgtoTEF: TEdit;
-    Label25: TLabel;
-    BtnEfetuaVendaItensTEF: TBitBtn;
-    Label30: TLabel;
-    BtnFechaVendaTEFCompleta: TBitBtn;
-    Label31: TLabel;
-    GroupBox3: TGroupBox;
-    BtnEfetuaPagtoTEFMult: TBitBtn;
-    Label32: TLabel;
-    EdtValorItensTEFMult: TEdit;
-    BtnCancelaCupomTEF: TBitBtn;
-    BtnEfetuaVendaItensTEFMult: TBitBtn;
-    Label34: TLabel;
-    EdtFormaPgtoTEFMult: TEdit;
-    Label35: TLabel;
-    EdtValorPagtoTEF: TEdit;
-    Label33: TLabel;
-    BtnFechaVendaTEFMult: TButton;
-    Label36: TLabel;
     LeituraSerialMFD1: TMenuItem;
     PorCOO3: TMenuItem;
     PorPeriodo2: TMenuItem;
@@ -473,13 +442,6 @@ type
     procedure Sangria1Click(Sender: TObject);
     procedure Suprimento1Click(Sender: TObject);
     procedure TestedeVinculado1Click(Sender: TObject);
-    procedure BtnAtivarTEFClick(Sender: TObject);
-    procedure CbxTipoTEFChange(Sender: TObject);
-    procedure BtnVerificaGPAtivoClick(Sender: TObject);
-    procedure BtnEfetuaVendaItensTEFClick(Sender: TObject);
-    procedure BtnFechaVendaTEFCompletaClick(Sender: TObject);
-    procedure BtnChamaADMClick(Sender: TObject);
-    procedure BitBtn5Click(Sender: TObject);
     procedure ProgramaRelatrioGerencial1Click(Sender: TObject);
     procedure CarregaRelatriosGerenciais1Click(Sender: TObject);
     procedure LegendaInmetroproximoItem1Click(Sender: TObject);
@@ -503,10 +465,6 @@ type
     procedure AchaRGporDescrio1Click(Sender: TObject);
     procedure PorCOO2Click(Sender: TObject);
     procedure PorDatadeMovimento1Click(Sender: TObject);
-    procedure BtnEfetuaVendaItensTEFMultClick(Sender: TObject);
-    procedure BtnEfetuaPagtoTEFMultClick(Sender: TObject);
-    procedure BtnFechaVendaTEFMultClick(Sender: TObject);
-    procedure BtnCancelaCupomTEFClick(Sender: TObject);
     procedure PorCOO3Click(Sender: TObject);
     procedure PorPeriodo2Click(Sender: TObject);
     procedure UsuarioAual1Click(Sender: TObject);
@@ -2885,79 +2843,6 @@ begin
   ACBrECF1.MsgTrabalhando := edMsgTrabalhando.Text ;
 end;
 
-procedure TForm1.BtnAtivarTEFClick(Sender: TObject);
-begin
- //  ACBrECF1.Ativar;
-
-   If ACBrTEF1.Ativo then
-      ACBrTEF1.Desativar
-   else
-      ACBrTEF1.Ativar;
-
-   If ACBrTEF1.Ativo then
-      BtnAtivarTEF.Caption := 'Desativar TEF'
-   else
-      BtnAtivarTEF.Caption := 'Ativar TEF';
-end;
-
-procedure TForm1.CbxTipoTEFChange(Sender: TObject);
-begin
-   try
-     ACBrTEF1.Tipo := TACBrTEFTipo(CbxTipoTEF.ItemIndex ) ;
-  except
-     CbxTipoTEF.ItemIndex := Integer( ACBrTEF1.Tipo ) ;
-     raise ;
-  end ;
-end;
-
-procedure TForm1.BtnVerificaGPAtivoClick(Sender: TObject);
-begin
-   If ACBrTEF1.GPAtivo then
-      ShowMessage('Ativo: SIM ! - Tipo -> ' + ACBrTEF1.TipoStr)
-   else
-      ShowMessage('Ativo: NÃO ! - Tipo -> ' + ACBrTEF1.TipoStr);
-end;
-
-procedure TForm1.BtnEfetuaVendaItensTEFClick(Sender: TObject);
-begin
-   If ACBrECF1.Ativo then
-   begin
-      ACBrECF1.AbreCupom();
-      ACBrECF1.VendeItem('0123456789123','Teste TEF', 'FF', 1, StrToFloatDef(EdtValorItensTEF.Text, 1), 0, 'Test', '%');
-      ACBrECF1.SubtotalizaCupom();
-   end
-   else
-      ShowMessage('ECF não esta ativo !');
-end;
-
-procedure TForm1.BtnFechaVendaTEFCompletaClick(Sender: TObject);
-begin
-   If ACBrTEF1.FechaVendaTEF(EdtFormaPgtoTEF.Text, '', StrToFloatDef(EdtValorItensTEF.Text, 1), Form1.Handle, 'Teste TEF!!!') then
-   begin
-      If ACBrTEF1.ImpressoesPendentes then
-         ACBrTEF1.CancelaCupomTEF;
-   end
-   else
-   begin
-      //Realiza o tratamento do pagamento alternativo
-      //---
-      If ACBrTEF1.ImpressoesPendentes then
-         ACBrTEF1.CancelaCupomTEF;
-   end;
-end;
-
-procedure TForm1.BtnChamaADMClick(Sender: TObject);
-begin
-   ACBrTEF1.Handle   := Form1.Handle;
-   ACBrTEF1.ADM;
-   ACBrTEF1.ImprimeCuponsPendentes;
-end;
-
-procedure TForm1.BitBtn5Click(Sender: TObject);
-begin
-   ACBrTEF1.CancelaCupomTEF;
-end;
-
 procedure TForm1.ConsultaRegistradorECF1Click(Sender: TObject);
 var
    Indice : String;
@@ -3301,44 +3186,6 @@ begin
   end ;
   mResp.Lines.Add('---------------------------------');
 
-end;
-
-procedure TForm1.BtnEfetuaVendaItensTEFMultClick(Sender: TObject);
-begin
-   If ACBrECF1.Ativo then
-   begin
-      ACBrECF1.AbreCupom();
-      ACBrECF1.VendeItem('0123456789123','Teste TEF', 'FF', 1, StrToFloatDef(EdtValorItensTEFMult.Text, 1), 0, 'Test', '%');
-      ACBrECF1.SubtotalizaCupom();
-   end
-   else
-      ShowMessage('ECF não esta ativo !');
-end;
-
-procedure TForm1.BtnEfetuaPagtoTEFMultClick(Sender: TObject);
-begin
-   ACBrTEF1.VendaTEF(EdtFormaPgtoTEFMult.Text, StrToFloatDef(EdtValorPagtoTEF.Text, 1), Form1.Handle);
-
-   (*begin
-      If ACBrTEF1.ImpressoesPendentes then
-         ACBrTEF1.CancelaCupomTEF;
-   end;  *)
-end;
-
-procedure TForm1.BtnFechaVendaTEFMultClick(Sender: TObject);
-begin
-   ACBrECF1.EfetuaPagamento(EdtFormaPgtoTEFMult.Text, StrToFloatDef(EdtValorPagtoTEF.Text, 1), '',True); // Efetua o Pagamento do Cupom Fiscal
-   ACBrECF1.FechaCupom('');
-   if ACBrTEF1.ImpressoesPendentes then
-      ACBrTEF1.ImprimeCuponsPendentes;
-
-   if ACBrTEF1.ImpressoesPendentes then
-      ACBrTEF1.CancelaCupomTEF;
-end;
-
-procedure TForm1.BtnCancelaCupomTEFClick(Sender: TObject);
-begin
-   ACBrTEF1.NCN;
 end;
 
 procedure TForm1.PorCOO3Click(Sender: TObject);

@@ -55,7 +55,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, QuickRpt, QRCtrls,
-  ACBrNFeQRCodeBar, pcnNFe, ACBrNFe, ACBrNFeUtil, pcnConversao{, QRPDFFilt {Descomentar para usar PDF};
+  ACBrNFeQRCodeBar, pcnNFe, ACBrNFe, ACBrNFeUtil, pcnConversao{$IFNDEF ver150}, QRPDFFilt {$ENDIF};
 
 type
   TfqrDANFeQR = class(TForm)
@@ -83,27 +83,31 @@ type
     FMargemInferior     : double;
     FMargemEsquerda     : double;
     FMargemDireita      : double;
+    FCasasDecimais_VCom : Integer;
+    FCasasDecimais_Qcom : Integer;
 
     procedure qrlSemValorFiscalPrint(sender: TObject; var Value: String);
     procedure SetBarCodeImage ( ACode : String ; QRImage : TQRImage ) ;
   public
     { Public declarations }
     class procedure Imprimir(ANFe                : TNFe;
-                             ALogo               : String    = '';
-                             AEmail              : String    = '';
-                             AImprimeHoraSaida   : Boolean   = False;
-                             AHoraSaida          : String    = '';
-                             AResumoCanhoto      : Boolean   = False;
-                             AFax                : String    = '';
-                             ANumCopias          : Integer   = 1;
-                             ASistema            : String    = '';
-                             ASite               : String    = '';
-                             AUsuario            : String    = '' ;
-                             APreview            : Boolean   = True;
-                             AMargemSuperior     : Double    = 0.8;
-                             AMargemInferior     : Double    = 0.8;
-                             AMargemEsquerda     : Double    = 0.6;
-                             AMargemDireita      : Double    = 0.51);
+                             ALogo               : String       = '';
+                             AEmail              : String       = '';
+                             AImprimeHoraSaida   : Boolean      = False;
+                             AHoraSaida          : String       = '';
+                             AResumoCanhoto      : Boolean      = False;
+                             AFax                : String       = '';
+                             ANumCopias          : Integer      = 1;
+                             ASistema            : String       = '';
+                             ASite               : String       = '';
+                             AUsuario            : String       = '' ;
+                             APreview            : Boolean      = True;
+                             AMargemSuperior     : Double       = 0.8;
+                             AMargemInferior     : Double       = 0.8;
+                             AMargemEsquerda     : Double       = 0.6;
+                             AMargemDireita      : Double       = 0.51;
+                             ACasasDecimais_VCom : integer       = 2;
+                             ACasasDecimais_Qcom : integer       = 2);
 
     class procedure SavePDF(AFile: String;
                             ANFe                : TNFe;
@@ -120,7 +124,9 @@ type
                             AMargemSuperior     : Double    = 0.8;
                             AMargemInferior     : Double    = 0.8;
                             AMargemEsquerda     : Double    = 0.6;
-                            AMargemDireita      : Double    = 0.51);
+                            AMargemDireita      : Double    = 0.51;
+                            ACasasDecimais_VCom : integer    = 2;
+                            ACasasDecimais_Qcom : integer    = 2);
 
   end;
 
@@ -146,7 +152,9 @@ class procedure TfqrDANFeQR.Imprimir(ANFe               : TNFe;
                                     AMargemSuperior     : Double    = 0.8;
                                     AMargemInferior     : Double    = 0.8;
                                     AMargemEsquerda     : Double    = 0.6;
-                                    AMargemDireita      : Double    = 0.51);
+                                    AMargemDireita      : Double    = 0.51;
+                                    ACasasDecimais_VCom : integer    = 2;
+                                    ACasasDecimais_Qcom : integer    = 2);
 begin
   with Create ( nil ) do
      try
@@ -165,6 +173,8 @@ begin
         FMargemInferior     := AMargemInferior;
         FMargemEsquerda     := AMargemEsquerda;
         FMargemDireita      := AMargemDireita;
+        FCasasDecimais_VCom := ACasasDecimais_VCom;
+        FCasasDecimais_Qcom := ACasasDecimais_Qcom;
 
         if APreview then
         begin
@@ -196,13 +206,17 @@ class procedure TfqrDANFeQR.SavePDF(AFile               : String;
                                     AMargemSuperior     : Double    = 0.8;
                                     AMargemInferior     : Double    = 0.8;
                                     AMargemEsquerda     : Double    = 0.6;
-                                    AMargemDireita      : Double    = 0.51);
-{Var
+                                    AMargemDireita      : Double    = 0.51;
+                                    ACasasDecimais_VCom : integer    = 2;
+                                    ACasasDecimais_Qcom : integer    = 2);
+Var
   i: Integer;
-  qf : TQRPDFDocumentFilter ;}
+{$IFNDEF ver150}
+  qf : TQRPDFDocumentFilter ;
+{$ENDIF}
 begin
-  {Descomentar para usar PDF}
-{  with Create ( nil ) do
+{$IFNDEF ver150}
+  with Create ( nil ) do
      try
         FNFe                := ANFe;
         FLogo               := ALogo;
@@ -219,6 +233,8 @@ begin
         FMargemInferior     := AMargemInferior;
         FMargemEsquerda     := AMargemEsquerda;
         FMargemDireita      := AMargemDireita;
+        FCasasDecimais_VCom := ACasasDecimais_VCom;
+        FCasasDecimais_Qcom := ACasasDecimais_Qcom;
 
         For i := 0 to ComponentCount -1 do
           begin
@@ -236,7 +252,8 @@ begin
         qf.Free;
      finally
         Free;
-     end ;}
+     end ;
+{$ENDIF}
 end;
 
 procedure TfqrDANFeQR.qrlSemValorFiscalPrint(sender: TObject;

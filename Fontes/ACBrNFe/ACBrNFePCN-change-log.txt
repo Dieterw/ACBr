@@ -48,6 +48,26 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   15/04/10
+---------------
+[-] DANFe com Quick Report (Créditos: André Langner)
+    - Correções diversas
+[*] DANFE em Fortes Reports (Créditos: Peterson de Cerqueira Matos)
+    - Adequação à NF-e 2.0, Manual de Integração do Contribuinte 4.0.1NT2009.006
+    - Tratamento das propriedades "_vUnCom" e "_qCom"
+    - Exibição da "hora de saída"
+    - Ocultação do quadro "FATURA" quando não houver duplicatas
+    - Correção na exibição das informações complementares
+    - Adequação na exibição do tipo de frete
+    - Acréscimo da coluna "Valor Desconto"
+    - Correção na exibição da coluna CST. Quando o emitente for "Simples
+      Nacional - CRT=1", será exibida a informação CSOSN ao invés do CST
+    - Alteração no layout do quadro "IDENTIFICAÇÃO DO EMITENTE"
+[*] DANFe com RAVE CB
+    - Enviado correção do caso #562 do Mantis
+[*] ACBrDANFe
+    - Liberado nova compilação
+
 Alterações   08/04/10
 ---------------
 [+] DANFE em RAVE Arquivo e CB

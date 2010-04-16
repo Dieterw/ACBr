@@ -1128,7 +1128,7 @@ begin
            begin
              aDescProduto:=aDescProduto+#13+StringReplace(infAdProd,';',#13,[rfReplaceAll]);
              Inc(QtdeMin);
-             for j:=0 to Length(infAdProd) do
+             for j:=1 to Length(infAdProd) do
                 if infAdProd[j]=';' then
                    Inc(QtdeMin);
            end;

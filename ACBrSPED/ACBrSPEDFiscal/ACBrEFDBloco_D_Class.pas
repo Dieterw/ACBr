@@ -42,12 +42,15 @@ unit ACBrEFDBloco_D_Class;
 
 interface
 
-uses SysUtils, Classes, DateUtils, ACBrSped, ACBrEFDBloco_D, ACBrEFDBlocos;
+uses SysUtils, Classes, DateUtils, ACBrSped, ACBrEFDBloco_D,
+     ACBrEFDBloco_0_Class, ACBrEFDBlocos;
 
 type
   /// TBLOCO_D -
   TBloco_D = class(TACBrSPED)
   private
+    FBloco_0: TBloco_0;
+
     FRegistroD001: TRegistroD001;      /// BLOCO D - RegistroD001
     FRegistroD990: TRegistroD990;      /// BLOCO D - RegistroD990
 
@@ -170,6 +173,7 @@ type
     function WriteRegistroD001: String;
     function WriteRegistroD990: String;
 
+    property Bloco_0: TBloco_0 read FBloco_0 write FBloco_0;
     property RegistroD001: TRegistroD001 read FRegistroD001 write FRegistroD001;
     property RegistroD990: TRegistroD990 read FRegistroD990 write FRegistroD990;
 
@@ -1686,6 +1690,11 @@ begin
 
   if Assigned( RegD001.RegistroD600 ) then
   begin
+     if RegD001.RegistroD600.Count > 0 then
+     begin
+        if FBloco_0.Registro0000.IND_PERFIL in [pfPerfilA] then
+           raise Exception.Create('O RegistroD600, não deve ser gerado em movimentações de entrada nem saída, no PerfilA');
+     end;
      for intFor := 0 to RegD001.RegistroD600.Count - 1 do
      begin
         with RegD001.RegistroD600.Items[intFor] do
@@ -1716,6 +1725,11 @@ begin
 
   if Assigned( RegD600.RegistroD610 ) then
   begin
+     if RegD600.RegistroD610.Count > 0 then
+     begin
+        if FBloco_0.Registro0000.IND_PERFIL in [pfPerfilA] then
+           raise Exception.Create('O RegistroD610, não deve ser gerado em movimentações de entrada nem saída, no PerfilA');
+     end;
      for intFor := 0 to RegD600.RegistroD610.Count - 1 do
      begin
         with RegD600.RegistroD610.Items[intFor] do
@@ -1741,6 +1755,11 @@ begin
 
   if Assigned( RegD600.RegistroD690 ) then
   begin
+     if RegD600.RegistroD690.Count > 0 then
+     begin
+        if FBloco_0.Registro0000.IND_PERFIL in [pfPerfilA] then
+           raise Exception.Create('O RegistroD690, não deve ser gerado em movimentações de entrada nem saída, no PerfilA');
+     end;
      for intFor := 0 to RegD600.RegistroD690.Count - 1 do
      begin
         with RegD600.RegistroD690.Items[intFor] do

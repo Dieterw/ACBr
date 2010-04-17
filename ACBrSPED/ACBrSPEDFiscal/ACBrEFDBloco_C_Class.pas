@@ -50,6 +50,7 @@ type
   TBloco_C = class(TACBrSPED)
   private
     FBloco_0: TBloco_0;
+
     FRegistroC001: TRegistroC001;      /// BLOCO C - RegistroC001
     FRegistroC990: TRegistroC990;      /// BLOCO C - RegistroC990
 
@@ -1138,6 +1139,11 @@ begin
 
   if Assigned( RegC100.RegistroC120 ) then
   begin
+     if RegC100.RegistroC120.Count > 0 then
+     begin
+        if (RegC100.IND_OPER in [tpSaidaPrestacao]) then
+           raise Exception.Create('O RegistroC120, não deve ser gerado em movimentações de saída, tanto para PerfilA quanto PerfilB');
+     end;
      for intFor := 0 to RegC100.RegistroC120.Count - 1 do
      begin
         with RegC100.RegistroC120.Items[intFor] do
@@ -1167,6 +1173,11 @@ begin
 
   if Assigned( RegC100.RegistroC130 ) then
   begin
+     if RegC100.RegistroC130.Count > 0 then
+     begin
+        if (RegC100.IND_OPER in [tpEntradaAquisicao]) then
+           raise Exception.Create('O RegistroC130, não deve ser gerado em movimentações de entrada, tanto para PerfilA quanto PerfilB');
+     end;
      for intFor := 0 to RegC100.RegistroC130.Count - 1 do
      begin
         with RegC100.RegistroC130.Items[intFor] do
@@ -1270,6 +1281,11 @@ begin
 
   if Assigned( RegC100.RegistroC160 ) then
   begin
+     if RegC100.RegistroC160.Count > 0 then
+     begin
+        if (RegC100.IND_OPER in [tpEntradaAquisicao]) then
+           raise Exception.Create('O RegistroC160, não deve ser gerado em movimentações de entrada, tanto para PerfilA quanto PerfilB');
+     end;
      for intFor := 0 to RegC100.RegistroC160.Count - 1 do
      begin
         with RegC100.RegistroC160.Items[intFor] do
@@ -1301,6 +1317,11 @@ begin
 
   if Assigned( RegC100.RegistroC165 ) then
   begin
+     if RegC100.RegistroC165.Count > 0 then
+     begin
+        if (RegC100.IND_OPER in [tpEntradaAquisicao]) then
+           raise Exception.Create('O RegistroC165, não deve ser gerado em movimentações de entrada, tanto para PerfilA quanto PerfilB');
+     end;
      for intFor := 0 to RegC100.RegistroC165.Count - 1 do
      begin
         with RegC100.RegistroC165.Items[intFor] do
@@ -1821,6 +1842,11 @@ begin
 
   if Assigned( RegC001.RegistroC300 ) then
   begin
+     if RegC001.RegistroC300.Count > 0 then
+     begin
+        if FBloco_0.Registro0000.IND_PERFIL in [pfPerfilA] then
+           raise Exception.Create('O RegistroC300, não deve ser gerado em movimentações de saída, no PerfilA');
+     end;
      for intFor := 0 to RegC001.RegistroC300.Count - 1 do
      begin
         with RegC001.RegistroC300.Items[intFor] do
@@ -1861,6 +1887,11 @@ begin
 
   if Assigned( RegC300.RegistroC310 ) then
   begin
+     if RegC300.RegistroC310.Count > 0 then
+     begin
+        if FBloco_0.Registro0000.IND_PERFIL in [pfPerfilA] then
+           raise Exception.Create('O RegistroC310, não deve ser gerado em movimentações de saída, no PerfilA');
+     end;
      for intFor := 0 to RegC300.RegistroC310.Count - 1 do
      begin
         with RegC300.RegistroC310.Items[intFor] do
@@ -1887,6 +1918,11 @@ begin
 
   if Assigned( RegC300.RegistroC320 ) then
   begin
+     if RegC300.RegistroC320.Count > 0 then
+     begin
+        if FBloco_0.Registro0000.IND_PERFIL in [pfPerfilA] then
+           raise Exception.Create('O RegistroC320, não deve ser gerado em movimentações de saída, no PerfilA');
+     end;
      for intFor := 0 to RegC300.RegistroC320.Count - 1 do
      begin
         with RegC300.RegistroC320.Items[intFor] do
@@ -1924,6 +1960,11 @@ begin
 
   if Assigned( RegC320.RegistroC321 ) then
   begin
+     if RegC320.RegistroC321.Count > 0 then
+     begin
+        if FBloco_0.Registro0000.IND_PERFIL in [pfPerfilA] then
+           raise Exception.Create('O RegistroC321, não deve ser gerado em movimentações de saída, no PerfilA');
+     end;
      for intFor := 0 to RegC320.RegistroC321.Count - 1 do
      begin
         with RegC320.RegistroC321.Items[intFor] do
@@ -1958,6 +1999,11 @@ begin
 
   if Assigned( RegC001.RegistroC350 ) then
   begin
+     if RegC001.RegistroC350.Count > 0 then
+     begin
+        if FBloco_0.Registro0000.IND_PERFIL in [pfPerfilB] then
+           raise Exception.Create('O RegistroC350, não deve ser gerado em movimentações de saída, no PerfilB');
+     end;
      for intFor := 0 to RegC001.RegistroC350.Count - 1 do
      begin
         with RegC001.RegistroC350.Items[intFor] do
@@ -1999,6 +2045,11 @@ begin
 
   if Assigned( RegC350.RegistroC370 ) then
   begin
+     if RegC350.RegistroC370.Count> 0 then
+     begin
+        if FBloco_0.Registro0000.IND_PERFIL in [pfPerfilB] then
+           raise Exception.Create('O RegistroC370, não deve ser gerado em movimentações de saída, no PerfilB');
+     end;
      for intFor := 0 to RegC350.RegistroC370.Count - 1 do
      begin
         with RegC350.RegistroC370.Items[intFor] do
@@ -2030,6 +2081,11 @@ begin
 
   if Assigned( RegC350.RegistroC390 ) then
   begin
+     if RegC350.RegistroC390.Count > 0 then
+     begin
+        if FBloco_0.Registro0000.IND_PERFIL in [pfPerfilB] then
+           raise Exception.Create('O RegistroC390, não deve ser gerado em movimentações de saída, no PerfilB');
+     end;
      for intFor := 0 to RegC350.RegistroC390.Count - 1 do
      begin
         with RegC350.RegistroC390.Items[intFor] do
@@ -2193,6 +2249,11 @@ begin
 
   if Assigned( RegC420.RegistroC425 ) then
   begin
+     if RegC420.RegistroC425.Count > 0 then
+     begin
+        if FBloco_0.Registro0000.IND_PERFIL in [pfPerfilA] then
+           raise Exception.Create('O RegistroC425, não deve ser gerado em movimentações de saída, no PerfilA');
+     end;
      for intFor := 0 to RegC420.RegistroC425.Count - 1 do
      begin
         with RegC420.RegistroC425.Items[intFor] do
@@ -2227,6 +2288,11 @@ begin
 
   if Assigned( RegC405.RegistroC460 ) then
   begin
+     if RegC405.RegistroC460.Count > 0 then
+     begin
+        if FBloco_0.Registro0000.IND_PERFIL in [pfPerfilB] then
+           raise Exception.Create('O RegistroC60, não deve ser gerado em movimentações de saída, no PerfilB');
+     end;
      for intFor := 0 to RegC405.RegistroC460.Count - 1 do
      begin
         with RegC405.RegistroC460.Items[intFor] do
@@ -2276,6 +2342,11 @@ begin
 
   if Assigned( RegC460.RegistroC470 ) then
   begin
+     if RegC460.RegistroC470.Count > 0 then
+     begin
+        if FBloco_0.Registro0000.IND_PERFIL in [pfPerfilB] then
+           raise Exception.Create('O RegistroC470, não deve ser gerado em movimentações de saída, no PerfilB');
+     end;
      for intFor := 0 to RegC460.RegistroC470.Count - 1 do
      begin
         with RegC460.RegistroC470.Items[intFor] do
@@ -2484,6 +2555,11 @@ begin
 
   if Assigned( RegC500.RegistroC510 ) then
   begin
+     if RegC500.RegistroC510.Count > 0 then
+     begin
+        if FBloco_0.Registro0000.IND_PERFIL in [pfPerfilB] then
+           raise Exception.Create('O RegistroC510, não deve ser gerado em movimentações de entrada nem saída, no PerfilB');
+     end;
      for intFor := 0 to RegC500.RegistroC510.Count - 1 do
      begin
         with RegC500.RegistroC510.Items[intFor] do
@@ -2564,6 +2640,11 @@ begin
 
   if Assigned( RegC001.RegistroC600 ) then
   begin
+     if RegC001.RegistroC600.Count > 0 then
+     begin
+        if FBloco_0.Registro0000.IND_PERFIL in [pfPerfilA] then
+           raise Exception.Create('O RegistroC600, não deve ser gerado em movimentações de entrada nem saída, no PerfilA');
+     end;
      for intFor := 0 to RegC001.RegistroC600.Count - 1 do
      begin
         with RegC001.RegistroC600.Items[intFor] do
@@ -2616,6 +2697,11 @@ begin
 
   if Assigned( RegC600.RegistroC601 ) then
   begin
+     if RegC600.RegistroC601.Count > 0 then
+     begin
+        if FBloco_0.Registro0000.IND_PERFIL in [pfPerfilA] then
+           raise Exception.Create('O RegistroC601, não deve ser gerado em movimentações de entrada nem saída, no PerfilA');
+     end;
      for intFor := 0 to RegC600.RegistroC601.Count - 1 do
      begin
         with RegC600.RegistroC601.Items[intFor] do
@@ -2642,6 +2728,11 @@ begin
 
   if Assigned( RegC600.RegistroC610 ) then
   begin
+     if RegC600.RegistroC610.Count > 0 then
+     begin
+        if FBloco_0.Registro0000.IND_PERFIL in [pfPerfilA] then
+           raise Exception.Create('O RegistroC610, não deve ser gerado em movimentações de entrada nem saída, no PerfilA');
+     end;
      for intFor := 0 to RegC600.RegistroC610.Count - 1 do
      begin
         with RegC600.RegistroC610.Items[intFor] do
@@ -2683,6 +2774,11 @@ begin
 
   if Assigned( RegC600.RegistroC690 ) then
   begin
+     if RegC600.RegistroC690.Count > 0 then
+     begin
+        if FBloco_0.Registro0000.IND_PERFIL in [pfPerfilA] then
+           raise Exception.Create('O RegistroC690, não deve ser gerado em movimentações de entrada nem saída, no PerfilA');
+     end;
      for intFor := 0 to RegC600.RegistroC690.Count - 1 do
      begin
         with RegC600.RegistroC690.Items[intFor] do

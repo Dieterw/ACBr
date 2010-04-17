@@ -55,7 +55,7 @@ uses
   ACBrEFDBloco_G_Class, ACBrEFDBloco_H_Class;
 
 const
-   CACBrSpedFiscal_Versao = '0.08a' ;
+   CACBrSpedFiscal_Versao = '0.08b' ;
 
 type
   /// ACBrSpedFiscal - Sitema Publico de Escrituração Digital Fiscal
@@ -187,6 +187,7 @@ begin
   /// em seus registros.
   /// Ex: Do Bloco_C registro C425, pesquisar o Bloco_0 registro 0200.
   FBloco_C.Bloco_0 := FBloco_0;
+  FBloco_D.Bloco_0 := FBloco_0;
   FBloco_G.Bloco_0 := FBloco_0;
 
   FPath := ExtractFilePath( ParamStr(0) );

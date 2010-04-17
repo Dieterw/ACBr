@@ -263,7 +263,7 @@ type
                           spOutros                    // 9- Outros
                           );
   /// Indicador de movimento
-  TACBRMovimentoST = (mstSemOperacaoST,   // 0 - Sem operações com ST
+  TACBrMovimentoST = (mstSemOperacaoST,   // 0 - Sem operações com ST
                       mstComOperacaoST    // 1 - Com operações de ST
                       );
   /// Indicador do tipo de ajuste
@@ -375,6 +375,8 @@ type
                         assSemiPublico,            // 5 - Semi-Público
                         assOutros                  // 6 - Outros
                         );
+
+
 
   TOpenBlocos = class
   private

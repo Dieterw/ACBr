@@ -49,7 +49,7 @@ Símbolo : Significado
 
 Versão 0.08b   16/04/10
 -- ACBrSPEDFiscal --
-[*] Criado novo recurso no ACBrSPEDFiscal, nos blocos C e D a verificação se o
+[*] Criado novo recurso no ACBrSPEDFiscal, nos blocos C e D para verificar se o
     registro deve ser gerado ou não, conforme perfil selecionado no Registro0000
     do bloco 0. (por Isaque Pinheiro)
 

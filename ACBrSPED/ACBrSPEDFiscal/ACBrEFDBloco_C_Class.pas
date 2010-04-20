@@ -1353,9 +1353,9 @@ end;
 function TBloco_C.WriteRegistroC170(RegC100: TRegistroC100): String;
 var
 intFor: integer;
-strCST_IPI: String;
-strCST_PIS: String;
-strCST_COFINS: String;
+//strCST_IPI: String;
+//strCST_PIS: String;
+//strCST_COFINS: String;
 strRegistroC170: String;
 begin
   strRegistroC170 := '';
@@ -1366,6 +1366,7 @@ begin
      begin
         with RegC100.RegistroC170.Items[intFor] do
         begin
+{
           case CST_IPI of
            ipiEntradaRecuperacaoCredito: strCST_IPI := '00';
            ipiEntradaTributradaZero:     strCST_IPI := '01';
@@ -1404,6 +1405,7 @@ begin
            cofinsSuspensaoContribuicao:     strCST_COFINS := '09';
            cofinsOutrasOperacoes:           strCST_COFINS := '99';
           end;
+}
           strRegistroC170 := strRegistroC170 + LFill('C170') +
                                                LFill( NUM_ITEM ) +
                                                LFill( COD_ITEM ) +
@@ -1423,18 +1425,21 @@ begin
                                                LFill( ALIQ_ST,0,2 ) +
                                                LFill( VL_ICMS_ST,0,2 ) +
                                                LFill( Integer(IND_APUR), 0 ) +
-                                               LFill( strCST_IPI ) +
+//                                               LFill( strCST_IPI ) +
+                                               LFill( CST_IPI ) +
                                                LFill( COD_ENQ ) +
                                                LFill( VL_BC_IPI,0,2 ) +
                                                LFill( ALIQ_IPI,0,2 ) +
                                                LFill( VL_IPI,0,2 ) +
-                                               LFill( strCST_PIS ) +
+//                                               LFill( strCST_PIS ) +
+                                               LFill( CST_PIS ) +
                                                LFill( VL_BC_PIS,0,2 ) +
                                                LFill( ALIQ_PIS_PERC,0,2 ) +
                                                DFill( QUANT_BC_PIS,3 ) +
                                                DFill( ALIQ_PIS_R,4 ) +
                                                LFill( VL_PIS,0,2 ) +
-                                               LFill( strCST_COFINS ) +
+//                                               LFill( strCST_COFINS ) +
+                                               LFill( CST_COFINS ) +
                                                LFill( VL_BC_COFINS,0,2 ) +
                                                LFill( ALIQ_COFINS_PERC,0,2 ) +
                                                DFill( QUANT_BC_COFINS,3 ) +

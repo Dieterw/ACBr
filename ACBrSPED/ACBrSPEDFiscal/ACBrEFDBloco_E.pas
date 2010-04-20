@@ -552,13 +552,15 @@ type
   TRegistroE510 = class
   private
     fCFOP: String;                  /// Código Fiscal de Operação e Prestação do agrupamento de itens
-    fCST_IPI: TACBrSituacaoTribIPI; /// Código da Situação Tributária referente ao IPI, conforme a Tabela indicada no item 4.3.2.
+//    fCST_IPI: TACBrSituacaoTribIPI; /// Código da Situação Tributária referente ao IPI, conforme a Tabela indicada no item 4.3.2.
+    fCST_IPI: string;               /// Código da Situação Tributária referente ao IPI, conforme a Tabela indicada no item 4.3.2.
     fVL_CONT_IPI: currency;         /// Parcela correspondente ao "Valor Contábil" referente ao CFOP e ao Código de Tributação do IPI
     fVL_BC_IPI: currency;           /// Parcela correspondente ao "Valor da base de cálculo do IPI" referente ao CFOP e ao Código de Tributação do IPI, para operações tributadas
     fVL_IPI: currency;              /// Parcela correspondente ao "Valor do IPI" referente ao CFOP e ao Código de Tributação do IPI, para operações tributadas
   public
     property CFOP: String                  read fCFOP        write fCFOP;
-    property CST_IPI: TACBrSituacaoTribIPI read fCST_IPI     write fCST_IPI;
+//    property CST_IPI: TACBrSituacaoTribIPI read fCST_IPI     write fCST_IPI;
+    property CST_IPI: string               read fCST_IPI     write fCST_IPI;
     property VL_CONT_IPI: currency         read fVL_CONT_IPI write fVL_CONT_IPI;
     property VL_BC_IPI: currency           read fVL_BC_IPI   write fVL_BC_IPI;
     property VL_IPI: currency              read fVL_IPI      write fVL_IPI;

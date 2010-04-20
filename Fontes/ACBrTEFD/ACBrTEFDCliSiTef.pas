@@ -268,7 +268,11 @@ begin
          end;
        121 : fpImagemComprovante1aVia.Text := StringReplace( LinStr, #10, sLineBreak, [rfReplaceAll] );
        122 : fpImagemComprovante2aVia.Text := StringReplace( LinStr, #10, sLineBreak, [rfReplaceAll] );
-       130 : fpValorTotal                  := fpValorTotal + Linha.Informacao.AsFloat ;
+       130 :
+         begin
+           fpSaque      := Linha.Informacao.AsFloat ;
+           fpValorTotal := fpValorTotal + fpSaque ;
+         end;
        131 : fpInstituicao                 := LinStr;
        133 : fpCodigoAutorizacaoTransacao  := Linha.Informacao.AsInteger;
        134 : fpNSU                         := LinStr;
@@ -501,7 +505,8 @@ procedure TACBrTEFDCliSiTef.ConfirmarEReimprimirTransacoesPendentes;
 Var
   ArquivosVerficar : TStringList ;
 //I, Sts           : Integer;
-  ArqMask          : AnsiString;
+  ArqMask, NSUs    : AnsiString;
+  ExibeMsg         : Boolean ;
 begin
   ArquivosVerficar := TStringList.Create;
 
@@ -511,6 +516,8 @@ begin
      { Achando Arquivos de Backup deste GP }
      ArqMask := TACBrTEFD(Owner).PathBackup + PathDelim + 'ACBr_' + Self.Name + '_*.tef' ;
      FindFiles( ArqMask, ArquivosVerficar, True );
+     NSUs := '' ;
+     ExibeMsg := (ArquivosVerficar.Count > 0) ;
 
      { Enviando NCN ou CNC para todos os arquivos encontrados }
      while ArquivosVerficar.Count > 0 do
@@ -525,35 +532,22 @@ begin
 
         try
            if pos(Resp.DocumentoVinculado, fDocumentosProcessados) = 0 then
-           begin
               CNF;   {Confirma}
-              
-              {Modificado - Fernando 19-03-2010, para atender roteiro }
-              TACBrTEFD(Owner).DoExibeMsg( opmOK,
-                                      'Transação TEF efetuada.'+sLineBreak+
-                                      'Favor Re-Imprimir Ultimo Cupom ' ) ;
 
-(*
-              if TACBrTEFD(Owner).DoExibeMsg( opmYesNo,
-                                      'Transação TEF efetuada.'+sLineBreak+
-                                      'Favor Re-Imprimir Ultimo Cupom ' ) = mrYes then
-              begin
-                 Sts := FazerRequisicao( fOperacaoReImpressao, 'ADM' ) ;
-
-                 if Sts = 10000 then
-                    Sts := ContinuarRequisicao( True ) ;  { True = Imprimir Comprovantes agora }
-
-                 if not ( Sts = 0 ) then
-                    AvaliaErro( Sts );
-              end;
-*)
-           end;
+           if Resp.NSU <> '' then
+              NSUs := NSUs + sLineBreak + 'NSU: '+Resp.NSU ;
 
            DeleteFile( ArquivosVerficar[ 0 ] );
            ArquivosVerficar.Delete( 0 );
         except
         end;
      end;
+
+     if ExibeMsg then
+        TACBrTEFD(Owner).DoExibeMsg( opmOK,
+                               'Transação TEF efetuada.'+sLineBreak+
+                               'Favor Re-Imprimir Ultimo Cupom ' + NSUs ) ;
+
   finally
      ArquivosVerficar.Free;
   end;
@@ -802,10 +796,9 @@ begin
    with TACBrTEFD(Owner) do
    begin
       try
-         repeat
-            if not TecladoBloqueado then
-               BloquearMouseTeclado( True );
+         BloquearMouseTeclado( True );
 
+         repeat
             GravaLog( 'ContinuaFuncaoSiTefInterativo, Chamando: Contina = '+
                       IntToStr(Continua)+' Buffer = '+Resposta ) ;
 
@@ -990,10 +983,9 @@ begin
                         ItemSelecionado := -1 ;
                         SL.Text := StringReplace( Mensagem, ';',
                                                          sLineBreak, [rfReplaceAll] ) ;
-                        if TecladoBloqueado then
-                           BloquearMouseTeclado(False);
-
+                        BloquearMouseTeclado(False);
                         OnExibeMenu( CaptionMenu, SL, ItemSelecionado, Voltar ) ;
+                        BloquearMouseTeclado(True);
 
                         if (not Voltar) then
                         begin
@@ -1020,36 +1012,33 @@ begin
                  23 :
                    begin
                      Interromper := False ;
-                     OnAguardaResp( '', 0, Interromper ) ;
+                     OnAguardaResp( '23', 0, Interromper ) ;
                      if Interromper then
                         Continua := -1 ;
                    end;
 
                  30 :
                    begin
-                     if TecladoBloqueado then
-                        BloquearMouseTeclado(False);
-
+                     BloquearMouseTeclado(False);
                      OnObtemCampo( Mensagem, TamanhoMinimo, TamanhoMaximo,
                                    TipoCampo, tcString, Resposta, Digitado, Voltar) ;
+                     BloquearMouseTeclado(True);
                    end;
 
                  31 :
                    begin
-                     if TecladoBloqueado then
-                        BloquearMouseTeclado(False);
-
+                     BloquearMouseTeclado(False);
                      OnObtemCampo( Mensagem, TamanhoMinimo, TamanhoMaximo,
                                    TipoCampo, tcCMC7, Resposta, Digitado, Voltar ) ;
+                     BloquearMouseTeclado(True);
                    end;
 
                  34 :
                    begin
-                     if TecladoBloqueado then
-                        BloquearMouseTeclado(False);
-
+                     BloquearMouseTeclado(False);
                      OnObtemCampo( Mensagem, TamanhoMinimo, TamanhoMaximo,
                                    TipoCampo, tcDouble, Resposta, Digitado, Voltar ) ;
+                     BloquearMouseTeclado(True);
 
                      // Garantindo que a Resposta é Float //
                      Resposta := FormatFloat('0.00', StringToFloatDef(Resposta, 0));
@@ -1060,11 +1049,10 @@ begin
 
                  35 :
                    begin
-                     if TecladoBloqueado then
-                        BloquearMouseTeclado(False);
-
+                     BloquearMouseTeclado(False);
                      OnObtemCampo( Mensagem, TamanhoMinimo, TamanhoMaximo,
                                    TipoCampo, tcBarCode, Resposta, Digitado, Voltar ) ;
+                     BloquearMouseTeclado(True);
                    end;
 
               end;
@@ -1094,8 +1082,7 @@ begin
         if HouveImpressao then
            FinalizarTransacao( ImpressaoOk, Resp.DocumentoVinculado );
 
-        if TecladoBloqueado then
-           BloquearMouseTeclado( False );
+        BloquearMouseTeclado( False );
 
         { Transfere valore de "Conteudo" para as propriedades }
         TACBrTEFDRespCliSiTef( Self.Resp ).ConteudoToProperty ;
@@ -1139,6 +1126,7 @@ procedure TACBrTEFDCliSiTef.AvaliaErro( Sts : Integer );
 var
    Erro : String;
 begin
+(*
    Erro := '' ;
    Case Sts of
         -1 : Erro := 'Módulo não inicializado' ;
@@ -1154,9 +1142,10 @@ begin
          Erro := 'Negada pelo autorizador ('+IntToStr(Sts)+')' ;
    end;
 
+
    if Erro <> '' then
       TACBrTEFD(Owner).DoExibeMsg( opmOK, Erro );
-
+*)
 end ;
 
 Function TACBrTEFDCliSiTef.ProcessarRespostaPagamento(

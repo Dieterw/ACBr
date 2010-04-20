@@ -47,6 +47,16 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.08b   16/04/10
+-- ACBrSPEDFiscal --
+[*] Criado novo recurso no ACBrSPEDFiscal, nos blocos C e D para verificar se o
+    registro deve ser gerado ou não, conforme perfil selecionado no Registro0000
+    do bloco 0. (por Isaque Pinheiro)
+
+Versão 0.08a   14/04/10
+-- ACBrSPEDFiscal --
+[-] corrigido BUG encontrado na geração do registro C300.
+
 Versão 0.08a   09/04/10
 -- ACBrSPEDFiscal --
 [*] Foi feito um tratamento, para que os Registro 0300, 0305, 0500, 0600 e todos

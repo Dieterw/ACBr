@@ -47,6 +47,31 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 1.17b   19/04/10
+[+] Adicionada a propriedade em TACBrTEFD.NumeroMaximoCartoes : Integer
+    Que permite limitar o número máximo de Cartões em transações com múltiplos-
+    cartões. Necessário para evitar estouro de Tempo de Impressão no Vinculado
+    ou Gerencial.  (exigência homologação SoftwareExpress)
+[+] Adicionada a propriedade em TACBrTEFDResp.Saque : Double ;
+    Que contem o Valor do Saque quando usado Saque de Dinheiro Visa ou RedeCard
+[*] RespostasPendentes.SaldoRestante e RespostasPendentes.TotalPago foram
+    modificados para subtrair o Valor do Saque no Valor Calculado
+[-] ACBrTEFD.ImprimirTransacoesPendentes modificaa para Confirmar a transação
+    antes de exibir a Mensagem de autenticação de Cheque
+    (exigência homologação SoftwareExpress)
+
+-- ACBrTEFDCliSiTEF --
+[*] Metodo "ConfirmarEReimprimirTransacoesPendentes" modificado segundo
+    orientações do homologador da SoftwareExpress, para exibir o NSU (campo 134)
+    de Todas as transações confirmadas.
+[-] Bloqueio e Desbloqueio de Mouse/Teclado revisto dentro do loop de
+    "ContinuarRequisicao" para permitir o Desbloqueio dentro do evento
+    ACBrTEFD.OnAguardaResp, que é chamado quando o comando é "23"
+    Isso permite a aplicação, Cancelar a Espera do SiTEF na espera de Leitura de
+    Cartão e Senha (exigência homologação SoftwareExpress)
+[-] Código do método "ACBrTEFDCliSiTEF.AvaliaErro" inteiro removido pois não é
+    necessário (exigência homologação SoftwareExpress)
+
 Versão 1.16b   08/04/10
 [-] Corrigido Bug na Verificação de SaldoRestante quando a propriedade
     AutoEfetuarPagamento := True  (reportado por:  Dassayev Barbosa)

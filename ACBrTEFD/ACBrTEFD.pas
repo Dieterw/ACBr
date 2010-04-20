@@ -76,6 +76,7 @@ type
      fEstadoResp : TACBrTEFDRespEstado;
      fExibirMsgAutenticacao: Boolean;
      fMultiplosCartoes : Boolean;
+     fNumeroMaximoCartoes: Integer;
      fNumVias : Integer;
      fOnAguardaResp : TACBrTEFDAguardaRespEvent;
      fOnAntesCancelarTransacao: TACBrTEFDAntesCancelarTransacao;
@@ -126,6 +127,7 @@ type
      procedure SetEstadoReq(const AValue : TACBrTEFDReqEstado);
      procedure SetEstadoResp(const AValue : TACBrTEFDRespEstado);
      procedure SetMultiplosCartoes(const AValue : Boolean);
+     procedure SetNumeroMaximoCartoes(const AValue: Integer);
      procedure SetNumVias(const AValue : Integer);
      procedure SetPathBackup(const AValue : String);
      procedure SetGPAtual(const AValue : TACBrTEFDTipo);
@@ -209,6 +211,8 @@ type
      property About : String read GetAbout write SetAbout stored False ;
      property MultiplosCartoes : Boolean read fMultiplosCartoes
        write SetMultiplosCartoes default False ;
+     property NumeroMaximoCartoes : Integer read fNumeroMaximoCartoes
+       write SetNumeroMaximoCartoes default 0;
      property AutoAtivarGP : Boolean read fAutoAtivarGP write fAutoAtivarGP
        default True ;
      property ExibirMsgAutenticacao : Boolean read fExibirMsgAutenticacao
@@ -341,6 +345,7 @@ begin
   fExibirMsgAutenticacao:= True ;
   fAutoFinalizarCupom   := True ;
   fMultiplosCartoes     := False ;
+  fNumeroMaximoCartoes  := 0 ;
   fGPAtual              := gpNenhum ;
   fNumVias              := CACBrTEFD_NumVias ;
   fEsperaSTS            := CACBrTEFD_EsperaSTS ;
@@ -718,6 +723,7 @@ var
    ImpressaoOk, Gerencial, RemoverMsg, GerencialAberto : Boolean ;
    TempoInicio : Double;
    Est : AnsiChar ;
+   MsgAutenticacaoAExibir : String ;
 begin
   if RespostasPendentes.Count <= 0 then
      exit ;
@@ -741,6 +747,7 @@ begin
   ImpressaoOk     := False ;
   Gerencial       := False ;
   GerencialAberto := False ;
+  MsgAutenticacaoAExibir := '' ;
 
   GrupoVinc := nil ;
   AgruparRespostasPendentes( GrupoVinc );
@@ -831,30 +838,21 @@ begin
                           RemoverMsg := False ;
                        end;
 
+                       if ExibirMsgAutenticacao and (Autenticacao <> '') then
+                          MsgAutenticacaoAExibir := 'Favor anotar no verso do Cheque:'+sLineBreak+
+                                                    Autenticacao ;
 
-                       if ExibirMsgAutenticacao and
-                          (J < RespostasPendentes.Count-1) and // Nao é o ultimo ? (se for a última é preferivel fechar o comprovante antes)
-                          (Autenticacao <> '') then            // Tem autenticação ?
+                       if (J < RespostasPendentes.Count-1) and // Nao é o ultimo ? (se for a última é preferivel fechar o comprovante antes)
+                          (MsgAutenticacaoAExibir <> '') then  // Tem autenticação ?
                        begin
-                          DoExibeMsg( opmOK, 'Favor anotar no verso do Cheque:'+sLineBreak+
-                                             Autenticacao ) ;
+                          DoExibeMsg( opmOK, MsgAutenticacaoAExibir ) ;
+                          MsgAutenticacaoAExibir := '' ;
                        end;
                     end;
                  end ;
 
                  if GerencialAberto then
                     ComandarECF( opeFechaGerencial );
-
-                 if ExibirMsgAutenticacao and (RespostasPendentes.Count > 0) then
-                 with RespostasPendentes[RespostasPendentes.Count-1] do
-                 begin
-                    if (Autenticacao <> '') then            // Tem autenticação ?
-                    begin
-                       DoExibeMsg( opmOK, 'Favor anotar no verso do Cheque:'+sLineBreak+
-                                          Autenticacao ) ;
-                    end;
-                 end ;
-
                end
               else                 //// Impressão em Vinculado ////
                begin
@@ -930,28 +928,21 @@ begin
                              RemoverMsg := False ;
                           end;
 
-                          if ExibirMsgAutenticacao and
-                             (J < RespostasPendentes.Count-1) and // Nao é o ultimo ? (se for a última é preferivel fechar o comprovante antes)
-                             (Autenticacao <> '') then            // Tem autenticação ?
+                          if ExibirMsgAutenticacao and (Autenticacao <> '') then
+                             MsgAutenticacaoAExibir := 'Favor anotar no verso do Cheque:'+sLineBreak+
+                                                       Autenticacao ;
+
+                          if (J < RespostasPendentes.Count-1) and // Nao é o ultimo ? (se for a última é preferivel fechar o comprovante antes)
+                             (MsgAutenticacaoAExibir <> '') then  // Tem autenticação ?
                           begin
-                             DoExibeMsg( opmOK, 'Favor anotar no verso do Cheque:'+sLineBreak+
-                                                Autenticacao ) ;
+                             DoExibeMsg( opmOK, MsgAutenticacaoAExibir ) ;
+                             MsgAutenticacaoAExibir := '' ;
                           end;
                        end;
                     end ;
 
                     if Ordem > -1 then
                        ComandarECF( opeFechaVinculado ) ;
-
-                    if ExibirMsgAutenticacao and (RespostasPendentes.Count > 0) then
-                    with RespostasPendentes[RespostasPendentes.Count-1] do
-                    begin
-                       if (Autenticacao <> '') then            // Tem autenticação ?
-                       begin
-                          DoExibeMsg( opmOK, 'Favor anotar no verso do Cheque:'+sLineBreak+
-                                             Autenticacao ) ;
-                       end;
-                    end ;
                  end;
                end;
 
@@ -989,6 +980,9 @@ begin
         ConfirmarTransacoesPendentes ;
 
      BloquearMouseTeclado( False );
+
+     if (MsgAutenticacaoAExibir <> '') then  // Tem autenticação ?
+        DoExibeMsg( opmOK, MsgAutenticacaoAExibir ) ;
   end;
 
   RespostasPendentes.Clear;
@@ -1295,6 +1289,11 @@ begin
       raise Exception.Create( ACBrStr( 'Existem Respostas Pendentes. '+
                               'Não é possível alterar "MultiplosCartoes"') ) ;
    fMultiplosCartoes := AValue;
+end;
+
+procedure TACBrTEFD.SetNumeroMaximoCartoes(const AValue: Integer);
+begin
+   fNumeroMaximoCartoes := max(AValue,0);
 end;
 
 procedure TACBrTEFD.SetAutoEfetuarPagamento(const AValue : Boolean);

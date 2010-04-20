@@ -55,7 +55,7 @@ uses
   {$ENDIF} ;
 
 const
-   CACBrTEFD_Versao      = '1.16b' ;
+   CACBrTEFD_Versao      = '1.17b' ;
    CACBrTEFD_EsperaSTS   = 7 ;
    CACBrTEFD_EsperaSleep = 250 ;
    CACBrTEFD_NumVias     = 2 ;
@@ -392,6 +392,7 @@ type
      fpTipoTransacao : Integer;
      fpTrailer : String;
      fpValorTotal : Double;
+     fpSaque: Double;
      fpDocumentoVinculado : String;
      fpTipoParcelamento : Integer;
      fpParcelas : TACBrTEFDRespParcelas ;
@@ -431,6 +432,7 @@ type
      property ID                          : Integer   read fpID ;
      property DocumentoVinculado          : String    read fpDocumentoVinculado ;
      property ValorTotal                  : Double    read fpValorTotal ;
+     property Saque                       : Double    read fpSaque ;
      property Moeda                       : Integer   read fpMoeda ;
      property CMC7                        : String    read fpCMC7 ;
      property TipoPessoa                  : AnsiChar  read fpTipoPessoa ;
@@ -1232,6 +1234,7 @@ begin
    fpTipoTransacao                := 0 ;
    fpTrailer                      := '' ;
    fpValorTotal                   := 0 ;
+   fpSaque                        := 0 ;
    fpDocumentoVinculado           := '' ;
    fpTipoParcelamento             := 0 ;
 
@@ -2407,6 +2410,13 @@ begin
        raise Exception.Create(
               ACBrStr( 'Multiplos Cartões não habilitado.' + sLineBreak +
                        'Valor da Operação TEF deve ser igual ao Saldo a Pagar' ) );
+
+    if MultiplosCartoes and (NumeroMaximoCartoes > 0) and   // Tem multiplos Cartoes ?
+       (Valor <> RespostasPendentes.SaldoRestante) and      // Valor é diferente do Saldo Restante a Pagar ?
+       ((NumeroMaximoCartoes - RespostasPendentes.Count) <= 1) then  // Está no último cartão ?
+       raise Exception.Create( ACBrStr( 'Multiplos Cartões Limitado a '+
+             IntToStr(NumeroMaximoCartoes)+' operações.'+sLineBreak+
+             'Esta Operação TEF deve ser igual ao Saldo a Pagar' ) );
   end;
 
   VerificaAtivo;              { VisaNET exige um ATV antes de cada transação }
@@ -2486,8 +2496,13 @@ var
 begin
   TotalPagoENaoImpresso := 0 ;
   For I := 0 to Count-1 do
-     if TACBrTEFDResp(Items[I]).OrdemPagamento = 0 then  // Ainda nao imprimiu no ECF ?
-        TotalPagoENaoImpresso := TotalPagoENaoImpresso + TACBrTEFDResp(Items[I]).ValorTotal ;
+  begin
+     with TACBrTEFDResp(Items[I]) do
+     begin
+        if OrdemPagamento = 0 then  // Ainda nao imprimiu no ECF ?
+           TotalPagoENaoImpresso := TotalPagoENaoImpresso + (ValorTotal - Saque) ;
+     end ;
+  end;
 
   TotalPagoENaoImpresso := RoundTo( TotalPagoENaoImpresso, -2);
 
@@ -2500,7 +2515,12 @@ var
 begin
   Result := 0 ;
   For I := 0 to Count-1 do
-     Result := Result + TACBrTEFDResp(Items[I]).ValorTotal ;
+  begin
+     with TACBrTEFDResp(Items[I]) do
+     begin
+        Result := Result + (ValorTotal - Saque);
+     end;
+  end;
 
   Result := RoundTo( Result, -2);
 end;

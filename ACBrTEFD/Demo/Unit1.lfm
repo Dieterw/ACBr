@@ -3,7 +3,6 @@ object Form1: TForm1
   Height = 452
   Top = 104
   Width = 725
-  ActiveControl = PageControl1
   Caption = 'TEFDDemo'
   ClientHeight = 452
   ClientWidth = 725

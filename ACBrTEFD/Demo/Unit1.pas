@@ -170,7 +170,7 @@ type
      procedure Memo1Change(Sender : TObject);
     procedure ACBrTEFD1CliSiTefObtemCampo(Titulo: String; TamanhoMinimo,
       TamanhoMaximo, TipoCampo: Integer;
-      Operacao: TACBrTEFDCliSiTefOperacaoCampo; var Resposta: String;
+      Operacao: TACBrTEFDCliSiTefOperacaoCampo; var Resposta: AnsiString;
       var Digitado, VoltarMenu: Boolean);
     procedure ACBrTEFD1CliSiTefExibeMenu(Titulo: String;
       Opcoes: TStringList; var ItemSelecionado: Integer;
@@ -1023,7 +1023,7 @@ end;
 
 procedure TForm1.ACBrTEFD1CliSiTefObtemCampo(Titulo: String; TamanhoMinimo,
   TamanhoMaximo, TipoCampo: Integer;
-  Operacao: TACBrTEFDCliSiTefOperacaoCampo; var Resposta: String;
+  Operacao: TACBrTEFDCliSiTefOperacaoCampo; var Resposta: AnsiString;
   var Digitado, VoltarMenu: Boolean);
 Var
   AForm : TForm5 ;

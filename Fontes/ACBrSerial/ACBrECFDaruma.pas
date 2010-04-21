@@ -1743,9 +1743,11 @@ Procedure TACBrECFDaruma.VendeItem( Codigo, Descricao : String;
   AliquotaECF : String; Qtd : Double ; ValorUnitario : Double;
   ValorDescontoAcrescimo : Double; Unidade : String;
   TipoDescontoAcrescimo : String; DescontoAcrescimo : String) ;
-Var QtdStr, ValorStr, DescontoStr, SepDec, FlagDesc : String;
-    LenQtd : Integer ;
-    Cmd : AnsiChar ;
+Var
+  QtdStr, ValorStr, DescontoStr, SepDec, FlagDesc, NumItem : String;
+  LenQtd : Integer ;
+  RetCmd : AnsiString ;
+  Cmd : AnsiChar ;
 begin
   if Qtd > 99999 then
      raise EACBrECFCMDInvalido.Create( ACBrStr(
@@ -1765,6 +1767,9 @@ begin
      ValorStr    := IntToStrZero( Round( ValorUnitario * power(10,fpDecimaisPreco)),8 ) ;
      DescontoStr := StringOfChar('0',12) ;
      
+     RetCmd := EnviaComando(FS + 'F' + #201 + AliquotaECF + QtdStr + ValorStr +
+                  DescontoStr + FlagDesc + Codigo + Unidade + Descricao ) ;
+
      if ValorDescontoAcrescimo > 0 then
      begin
         if TipoDescontoAcrescimo = '%' then
@@ -1786,10 +1791,10 @@ begin
            DescontoStr := DescontoStr +
                           IntToStrZero( Round(ValorDescontoAcrescimo * 100), 11) ;
          end ;
-     end ;
 
-     EnviaComando(FS + 'F' + #201 + AliquotaECF + QtdStr + ValorStr +
-                  DescontoStr + FlagDesc + Codigo + Unidade + Descricao ) ;
+        NumItem := copy(RetCmd,10,3) ;
+        EnviaComando(FS + 'F' + #202 + NumItem + DescontoStr ) ;
+     end ;
    end
   else if fsNumVersao = '2000' then
    begin

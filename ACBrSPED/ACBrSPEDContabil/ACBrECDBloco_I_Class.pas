@@ -352,7 +352,7 @@ begin
        Result := LFill('I030') +
                  LFill('TERMO DE ABERTURA') +
                  LFill(NUM_ORD) +
-                 RFill(NAT_LIVR, 80) +
+                 LFill(NAT_LIVR, 80) +
 //                 LFill(QTD_LIN, 9, false) +
                  LFill('[*******]') +
                  LFill(NOME) +

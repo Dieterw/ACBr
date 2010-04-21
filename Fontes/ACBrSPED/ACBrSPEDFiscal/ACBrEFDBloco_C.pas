@@ -624,18 +624,21 @@ type
     fALIQ_ST: currency;                   /// Alíquota do ICMS da substituição tributária na unidade da federação de destino
     fVL_ICMS_ST: currency;                /// Valor do ICMS referente à substituição tributária
     fIND_APUR: TACBrApuracaoIPI;          /// Indicador de período de apuração do IPI: 0 - Mensal; 1 - Decendial
-    fCST_IPI: TACBrSituacaoTribIPI;       /// Código da Situação Tributária referente ao IPI, conforme a Tabela indicada no item 4.3.2.
+//    fCST_IPI: TACBrSituacaoTribIPI;       /// Código da Situação Tributária referente ao IPI, conforme a Tabela indicada no item 4.3.2.
+    fCST_IPI: string;                     /// Código da Situação Tributária referente ao IPI, conforme a Tabela indicada no item 4.3.2.
     fCOD_ENQ: String;                     /// Código de enquadramento legal do IPI, conforme tabela indicada no item 4.5.3.
     fVL_BC_IPI: currency;                 /// Valor da base de cálculo do IPI
     fALIQ_IPI: currency;                  /// Alíquota do IPI
     fVL_IPI: currency;                    /// Valor do IPI creditado/debitado
-    fCST_PIS: TACBrSituacaoTribPIS;       /// Código da Situação Tributária referente ao PIS.
+//    fCST_PIS: TACBrSituacaoTribPIS;       /// Código da Situação Tributária referente ao PIS.
+    fCST_PIS: string;                     /// Código da Situação Tributária referente ao PIS.
     fVL_BC_PIS: currency;                 /// Valor da base de cálculo do PIS
     fALIQ_PIS_PERC: currency;             /// Alíquota do PIS (em percentual)
     fQUANT_BC_PIS: Double;                /// Quantidade - Base de cálculo PIS
     fALIQ_PIS_R: Double;                  /// Alíquota do PIS (em reais)
     fVL_PIS: currency;                    /// Valor do PIS
-    fCST_COFINS: TACBrSituacaoTribCOFINS; /// Código da Situação Tributária referente ao COFINS.
+//    fCST_COFINS: TACBrSituacaoTribCOFINS; /// Código da Situação Tributária referente ao COFINS.
+    fCST_COFINS: string;                  /// Código da Situação Tributária referente ao COFINS.
     fVL_BC_COFINS: currency;              /// Valor da base de cálculo da COFINS
     fALIQ_COFINS_PERC: currency;          /// Alíquota do COFINS (em percentual)
     fQUANT_BC_COFINS: Double;             /// Quantidade - Base de cálculo COFINS
@@ -674,18 +677,21 @@ type
     property ALIQ_ST: currency                   read FALIQ_ST          write FALIQ_ST;
     property VL_ICMS_ST: currency                read FVL_ICMS_ST       write FVL_ICMS_ST;
     property IND_APUR: TACBrApuracaoIPI          read FIND_APUR         write FIND_APUR;
-    property CST_IPI: TACBrSituacaoTribIPI       read FCST_IPI          write FCST_IPI;
+//    property CST_IPI: TACBrSituacaoTribIPI       read FCST_IPI          write FCST_IPI;
+    property CST_IPI: string                     read FCST_IPI          write FCST_IPI;
     property COD_ENQ: String                     read FCOD_ENQ          write FCOD_ENQ;
     property VL_BC_IPI: currency                 read FVL_BC_IPI        write FVL_BC_IPI;
     property ALIQ_IPI: currency                  read FALIQ_IPI         write FALIQ_IPI;
     property VL_IPI: currency                    read FVL_IPI           write FVL_IPI;
-    property CST_PIS: TACBrSituacaoTribPIS       read FCST_PIS          write FCST_PIS;
+//    property CST_PIS: TACBrSituacaoTribPIS       read FCST_PIS          write FCST_PIS;
+    property CST_PIS: string                     read FCST_PIS          write FCST_PIS;
     property VL_BC_PIS: currency                 read FVL_BC_PIS        write FVL_BC_PIS;
     property ALIQ_PIS_PERC: currency             read FALIQ_PIS_PERC    write FALIQ_PIS_PERC;
     property QUANT_BC_PIS: Double                read FQUANT_BC_PIS     write FQUANT_BC_PIS;
     property ALIQ_PIS_R: Double                  read FALIQ_PIS_R       write FALIQ_PIS_R;
     property VL_PIS: currency                    read FVL_PIS           write FVL_PIS;
-    property CST_COFINS: TACBrSituacaoTribCOFINS read FCST_COFINS       write FCST_COFINS;
+//    property CST_COFINS: TACBrSituacaoTribCOFINS read FCST_COFINS       write FCST_COFINS;
+    property CST_COFINS: string                  read FCST_COFINS       write FCST_COFINS;
     property VL_BC_COFINS: currency              read FVL_BC_COFINS     write FVL_BC_COFINS;
     property ALIQ_COFINS_PERC: currency          read FALIQ_COFINS_PERC write FALIQ_COFINS_PERC;
     property QUANT_BC_COFINS: Double             read FQUANT_BC_COFINS  write FQUANT_BC_COFINS;

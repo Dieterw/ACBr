@@ -845,7 +845,7 @@ end;
 function TBloco_E.WriteRegistroE510(RegE500: TRegistroE500): String;
 var
 intFor: integer;
-strCST_IPI: String;
+//strCST_IPI: String;
 strRegistroE510: String;
 begin
   strRegistroE510 := '';
@@ -856,6 +856,7 @@ begin
      begin
         with RegE500.RegistroE510.Items[intFor] do
         begin
+{
           case CST_IPI of
            ipiEntradaRecuperacaoCredito: strCST_IPI := '00';
            ipiEntradaTributradaZero:     strCST_IPI := '01';
@@ -872,9 +873,11 @@ begin
            ipiSaidaComSuspensao:         strCST_IPI := '55';
            ipiOutrasSaidas:              strCST_IPI := '99';
           end;
+}
           strRegistroE510 := strRegistroE510 + LFill('E510') +
                                                LFill( CFOP,4 ) +
-                                               LFill( strCST_IPI ) +
+//                                               LFill( strCST_IPI ) +
+                                               LFill( CST_IPI ) +
                                                LFill( VL_CONT_IPI,0 ) +
                                                LFill( VL_BC_IPI,0 ) +
                                                LFill( VL_IPI,0 ) +

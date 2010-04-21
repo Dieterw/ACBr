@@ -47,6 +47,17 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.08b   20/04/10
+-- ACBrSPEDFiscal --
+[*] Devido uma quantidade muito grande de códigos disponíveis, as propriedades que
+    eram dos tipos: TACBrSituacaoTribIPI, TACBrSituacaoTribPIS e 
+    TACBrSituacaoTribCOFINS, passaram a ser do tipo "STRING"
+
+Versão 0.08b   19/04/10
+-- ACBrSPEDFiscal --
+[*] Foi feita uma verificação resgistro a geristro, para que o mesmo não seja gerado
+    caso não tenho informações.
+
 Versão 0.08b   16/04/10
 -- ACBrSPEDFiscal --
 [*] Criado novo recurso no ACBrSPEDFiscal, nos blocos C e D para verificar se o

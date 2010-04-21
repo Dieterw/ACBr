@@ -151,6 +151,7 @@ type
   TACBrApuracaoIPI = (iaMensal,               // 0 - Mensal
                       iaDecendial             // 1 - Decendial
                       );
+{
   /// Código da Situação Tributária referente ao IPI.
   TACBrSituacaoTribIPI = (ipiEntradaRecuperacaoCredito,   // 00 Entrada com recuperação de crédito
                           ipiEntradaTributradaZero,       // 01 Entrada tributada com alíquota zero
@@ -189,6 +190,7 @@ type
                              cofinsSuspensaoContribuicao,       // 09 Operação com Suspensão da Contribuição.
                              cofinsOutrasOperacoes              // 99 Outras Operações,
                              );
+}
   /// Indicador de tipo de referência da base de cálculo do ICMS (ST) do produto farmacêutico
   TACBrTipoBaseMedicamento = (bmCalcTabeladoSugerido,           // 0 - Base de cálculo referente ao preço tabelado ou preço máximo sugerido;
                               bmCalMargemAgregado,              // 1 - Base cálculo – Margem de valor agregado;

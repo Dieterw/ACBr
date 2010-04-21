@@ -47,6 +47,14 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.04a   20/04/10
+-- ACBrSPEDContabil --
+[-] Corrigido BUG do qual o camponente não aparecia no IDE.
+[-] Corrigido BUG onde o componente tava gerando o registros "0180" como "0175", 
+    no Registro9900.
+[-] Corrigido BUG onde o componente estava retirando o pipe no procedimento
+    "TotalizaTermos" dos registros "I030" e "J900".
+
 Versão 0.08b   20/04/10
 -- ACBrSPEDFiscal --
 [*] Devido uma quantidade muito grande de códigos disponíveis, as propriedades que

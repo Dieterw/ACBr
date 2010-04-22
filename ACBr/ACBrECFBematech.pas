@@ -147,6 +147,9 @@ const ETX = #03 ;
 type
 
 { Classe filha de TACBrECFClass com implementaçao para Bematech }
+
+{ TACBrECFBematech }
+
 TACBrECFBematech = class( TACBrECFClass )
  private
     fsACK, fsST1, fsST2 : Integer ; { Status da Bematech }
@@ -242,6 +245,7 @@ TACBrECFBematech = class( TACBrECFClass )
     function GetTotalAcrescimos: Double; override ;
     function GetTotalCancelamentos: Double; override ;
     function GetTotalDescontos: Double; override ;
+    function GetTotalTroco: Double; override ;
     function GetTotalSubstituicaoTributaria: Double; override ;
     function GetTotalNaoTributado: Double; override ;
     function GetTotalIsencao: Double; override ;
@@ -2172,6 +2176,11 @@ function TACBrECFBematech.GetTotalDescontos: Double;
 begin
   Result := StrToFloatDef( RetornaInfoECF( '05' ) ,0 ) / 100 ;
   Result := RoundTo( Result, -2) ;
+end;
+
+function TACBrECFBematech.GetTotalTroco: Double;
+begin
+   Result:= 0 ; // Alguem sabe como a Bematech Retorna essa informação ???
 end;
 
 function TACBrECFBematech.GetTotalDescontosISSQN: Double;

@@ -131,6 +131,9 @@ TACBrECFEpsonResposta = class
  end ;
 
 { Classe filha de TACBrECFClass com implementaçao para Epson }
+
+{ TACBrECFEpson }
+
 TACBrECFEpson = class( TACBrECFClass )
  private
     fsNumVersao : String ;
@@ -208,6 +211,7 @@ TACBrECFEpson = class( TACBrECFClass )
     function GetTotalAcrescimos: Double; override ;
     function GetTotalCancelamentos: Double; override ;
     function GetTotalDescontos: Double; override ;
+    function GetTotalTroco: Double; override ;
     function GetTotalSubstituicaoTributaria: Double; override ;
     function GetTotalNaoTributado: Double; override ;
     function GetTotalIsencao: Double; override ;
@@ -2365,6 +2369,12 @@ function TACBrECFEpson.GetTotalDescontos: Double;
 begin
   EpsonResposta.Resposta := Ret0906 ;
   Result := RoundTo( StrToFloatDef(EpsonResposta.Params[3],0) /100, -2) ;
+end;
+
+function TACBrECFEpson.GetTotalTroco: Double;
+begin
+  EpsonResposta.Resposta := Ret0906 ;
+  Result := RoundTo( StrToFloatDef(EpsonResposta.Params[14],0) /100, -2) ;
 end;
 
 function TACBrECFEpson.GetTotalSubstituicaoTributaria: Double;

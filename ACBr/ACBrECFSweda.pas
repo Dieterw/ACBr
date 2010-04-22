@@ -245,6 +245,7 @@ TACBrECFSweda = class( TACBrECFClass )
     function GetTotalAcrescimos: Double; override ;
     function GetTotalCancelamentos: Double; override ;
     function GetTotalDescontos: Double; override ;
+    function GetTotalTroco: Double; override ;
     function GetTotalSubstituicaoTributaria: Double; override ;
     function GetTotalNaoTributado: Double; override ;
     function GetTotalIsencao: Double; override ;
@@ -2960,6 +2961,16 @@ begin
   wretorno := EnviaComando('27'+'1');
   if copy(wretorno,1,3) = '.+C' then
      Result := StrToFloatDef(copy(wretorno,93,12),0)/100;
+end;
+
+function TACBrECFSweda.GetTotalTroco: Double;
+var
+  wretorno: AnsiString;
+begin
+  Result   := 0;
+  wretorno := EnviaComando('27'+'7');
+  if copy(wretorno,1,3) = '.+C' then
+     Result := StrToFloatDef(copy(wretorno,56,12),0)/100;
 end;
 
 function TACBrECFSweda.GetTotalDescontosISSQN: Double;

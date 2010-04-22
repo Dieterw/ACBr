@@ -138,6 +138,9 @@ TACBrECFModelo = (ecfNenhum, ecfNaoFiscal, ecfBematech, ecfSweda, ecfDaruma,
                   ecfSwedaSTX );
 
 { Componente ACBrECF }
+
+{ TACBrECF }
+
 TACBrECF = class( TACBrComponent )
   private
     fsDevice  : TACBrDevice ;   { SubComponente ACBrDevice }
@@ -301,6 +304,7 @@ TACBrECF = class( TACBrComponent )
     function GetTotalAcrescimosClass: Double;
     function GetTotalCancelamentosClass: Double;
     function GetTotalDescontosClass: Double;
+    function GetTotalTrocoClass: Double;
     function GetTotalSubstituicaoTributariaClass: Double;
     function GetTotalNaoTributadoClass: Double;
     function GetTotalIsencaoClass: Double;
@@ -385,6 +389,7 @@ TACBrECF = class( TACBrComponent )
     Property TotalCancelamentos : Double     read GetTotalCancelamentosClass ;
     Property TotalDescontos     : Double     read GetTotalDescontosClass ;
     Property TotalAcrescimos    : Double     read GetTotalAcrescimosClass ;
+    Property TotalTroco         : Double     read GetTotalTrocoClass ;
     Property TotalSubstituicaoTributaria : Double
        read GetTotalSubstituicaoTributariaClass ;
     Property TotalNaoTributado  : Double     read GetTotalNaoTributadoClass ;
@@ -1548,6 +1553,12 @@ begin
   Result := RoundTo( fsECF.TotalDescontos, -2) ;
 end;
 
+function TACBrECF.GetTotalTrocoClass: Double;
+begin
+  ComandoLOG := 'TotalTroco' ;
+  Result := RoundTo( fsECF.TotalTroco, -2) ;
+end;
+
 function TACBrECF.GetTotalSubstituicaoTributariaClass: Double;
 begin
   ComandoLOG := 'TotalSubstituicaoTributaria' ;
@@ -2156,7 +2167,10 @@ begin
         if TipoDescontoAcrescimo = '%' then
          begin
            PorcDesc := -ValorDescontoAcrescimo ;
-           ValDesc  := -RoundTo(Total * (ValorDescontoAcrescimo / 100), -3) ;
+           if self.Arredonda then
+              ValDesc  := -RoundTo(Total * (ValorDescontoAcrescimo / 100), -2)
+           else
+              ValDesc  := TruncFix(Total * ValorDescontoAcrescimo) / -100 ;
          end
         else
          begin

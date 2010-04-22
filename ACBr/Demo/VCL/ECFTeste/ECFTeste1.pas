@@ -330,7 +330,6 @@ type
     Button2: TButton;
     mRZ: TMemo;
     Label37: TLabel;
-    Button1: TButton;
     N41: TMenuItem;
     LerTroco1: TMenuItem;
     procedure cbxModeloChange(Sender: TObject);
@@ -519,7 +518,6 @@ type
     procedure otalNaoTributadoISSQN1Click(Sender: TObject);
     procedure otalIsencao1Click(Sender: TObject);
     procedure NumGNF1Click(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure LerTroco1Click(Sender: TObject);
   private
@@ -2639,17 +2637,6 @@ begin
   end ;
 end;
 
-procedure TForm1.Button1Click(Sender: TObject);
-begin
-  ACBrECF1.AbreRelatorioGerencial;
-  ACBRECF1.LinhaRelatorioGerencial('LINHA NORMAL 1');
-  ACBRECF1.LinhaRelatorioGerencial(#14+'EXPANDIDO 1 LINHA');
-  ACBRECF1.LinhaRelatorioGerencial('LINHA NORMAL 1');
-  ACBRECF1.LinhaRelatorioGerencial(#15+'ON/OFF MODO CONDENSADO'+#18);
-  ACBRECF1.LinhaRelatorioGerencial(#27+'W1'+'ON/OFF MODO EXPANDIDO'+#27+'W0');
-  ACBRECF1.FechaRelatorio;
-end;
-
 procedure TForm1.Button2Click(Sender: TObject);
 var
   I: integer;
@@ -2746,6 +2733,7 @@ begin
          mRZ.Lines.Add( 'Descrição  : ' + MeiosDePagamento[I].Descricao );
          mRZ.Lines.Add( 'Total      : ' + FormatFloat('###,##0.00', MeiosDePagamento[I].Total) );
      end;
+     mRZ.Lines.Add( 'Total Troco : ' + FormatFloat('###,##0.00', TotalTroco) );
   end;
 end;
 

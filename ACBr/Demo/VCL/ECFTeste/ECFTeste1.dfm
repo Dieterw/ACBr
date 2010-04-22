@@ -333,15 +333,6 @@ object Form1: TForm1
         Text = 'Impressora est'#225' trabalhando'
         OnClick = edMsgTrabalhandoChange
       end
-      object Button1: TButton
-        Left = 269
-        Top = 254
-        Width = 101
-        Height = 25
-        Caption = 'Fontes do ECF'
-        TabOrder = 15
-        OnClick = Button1Click
-      end
     end
     object TabSheet1: TTabSheet
       Caption = 'Cmd/Resp'
@@ -1254,7 +1245,7 @@ object Form1: TForm1
       end
       object Button2: TButton
         Left = 19
-        Top = 253
+        Top = 233
         Width = 108
         Height = 25
         Anchors = [akLeft, akBottom]
@@ -1266,7 +1257,7 @@ object Form1: TForm1
         Left = 0
         Top = 17
         Width = 586
-        Height = 229
+        Height = 209
         Anchors = [akLeft, akTop, akRight, akBottom]
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack

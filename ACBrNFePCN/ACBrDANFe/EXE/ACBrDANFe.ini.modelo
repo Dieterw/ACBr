@@ -17,6 +17,7 @@ Fax                            =
 FormularioContinuo             = 0
 Impressora                     =
 ImprimirDescPorc               = 0
+ImprimirDetalhamentoEspecifico = 1
 ImprimirHoraSaida              = 0
 ImprimirHoraSaida_Hora         =
 ImprimirTotalLiquido           = 0
@@ -38,17 +39,16 @@ TamanhoFonte_DemaisCampos      = 10
 TipoDANFE                      = tiRetrato
 Usuario                        =
 
-[PROPRIEDADEs_DANFe_RAVE]
+[PROPRIEDADES_DANFe_RAVE]
 EspessuraBorda                 = 1
 
-[PROPRIEDADEs_DANFe_RAVECB]
+[PROPRIEDADES_DANFe_RAVECB]
 EspessuraBorda                 = 2
 # Fonte                          = ftCourier
 Fonte                          = ftTimes
-ImprimirDetalhamentoEspecifico = 1
 TamanhoCampoCodigo             = 0
 
-[PROPRIEDADEs_DANFe_FORTES]
+[PROPRIEDADES_DANFe_FORTES]
 # FonteDANFE                     = fdArial
 # FonteDANFE                     = fdCourierNew
 FonteDANFE                     = fdTimesNewRoman

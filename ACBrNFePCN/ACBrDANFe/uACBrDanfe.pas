@@ -43,6 +43,7 @@ type
 'FormularioContinuo             = 0'+#13+
 'Impressora                     ='+#13+
 'ImprimirDescPorc               = 0'+#13+
+'ImprimirDetalhamentoEspecifico = 1'+#13+
 'ImprimirHoraSaida              = 0'+#13+
 'ImprimirHoraSaida_Hora         ='+#13+
 'ImprimirTotalLiquido           = 0'+#13+
@@ -64,17 +65,16 @@ type
 'TipoDANFE                      = tiRetrato'+#13+
 'Usuario                        ='+#13+
 #13+
-'[PROPRIEDADEs_DANFe_RAVE]'+#13+
+'[PROPRIEDADES_DANFe_RAVE]'+#13+
 'EspessuraBorda                 = 1'+#13+
 #13+
-'[PROPRIEDADEs_DANFe_RAVECB]'+#13+
+'[PROPRIEDADES_DANFe_RAVECB]'+#13+
 'EspessuraBorda                 = 2'+#13+
 '# Fonte                          = ftCourier'+#13+
 'Fonte                          = ftTimes'+#13+
-'ImprimirDetalhamentoEspecifico = 1'+#13+
 'TamanhoCampoCodigo             = 0'+#13+
 #13+
-'[PROPRIEDADEs_DANFe_FORTES]'+#13+
+'[PROPRIEDADES_DANFe_FORTES]'+#13+
 '# FonteDANFE                     = fdArial'+#13+
 '# FonteDANFE                     = fdCourierNew'+#13+
 'FonteDANFE                     = fdTimesNewRoman'+#13+
@@ -148,6 +148,7 @@ begin
             FormularioContinuo             := Ini.ReadBool('PROPRIEDADES_DANFe','FormularioContinuo' ,false);
             Impressora                     := Trim(Ini.ReadString('PROPRIEDADES_DANFe','Impressora' ,''));
             ImprimirDescPorc               := Ini.ReadBool('PROPRIEDADES_DANFe','ImprimirDescPorc' ,false);
+            ImprimirDetalhamentoEspecifico := Ini.ReadBool('PROPRIEDADES_DANFe','ImprimirDetalhamentoEspecifico' ,true);
             ImprimirHoraSaida              := Ini.ReadBool('PROPRIEDADES_DANFe','ImprimirHoraSaida' ,false);
             ImprimirHoraSaida_Hora         := Trim(Ini.ReadString('PROPRIEDADES_DANFe','ImprimirHoraSaida_Hora' ,''));
             ImprimirTotalLiquido           := Ini.ReadBool('PROPRIEDADES_DANFe','ImprimirTotalLiquido' ,false);
@@ -171,26 +172,25 @@ begin
 
          with ACBrNFeDANFeRave1 do
          begin
-            EspessuraBorda                 := Ini.ReadInteger('PROPRIEDADEs_DANFe_RAVE','EspessuraBorda' ,2);
+            EspessuraBorda                 := Ini.ReadInteger('PROPRIEDADES_DANFe_RAVE','EspessuraBorda' ,2);
             RavFile                        := ExtractFilePath(Application.ExeName)+'DANFE_Rave513.rav';
          end;
 
          with ACBrNFeDANFeRaveCB1 do
          begin
-            EspessuraBorda                 := Ini.ReadInteger('PROPRIEDADEs_DANFe_RAVECB','EspessuraBorda' ,2);
-            Fonte                          := NotaUtil.SeSenao(Trim(Ini.ReadString('PROPRIEDADEs_DANFe_RAVECB','Fonte' ,'ftTimes'))='ftTimes',ftTimes, ftCourier);
-            ImprimirDetalhamentoEspecifico := Ini.ReadBool('PROPRIEDADEs_DANFe_RAVECB','ImprimirDetalhamentoEspecifico' ,true);
-            TamanhoCampoCodigo             := Ini.ReadInteger('PROPRIEDADEs_DANFe_RAVECB','TamanhoCampoCodigo' ,10);
+            EspessuraBorda                 := Ini.ReadInteger('PROPRIEDADES_DANFe_RAVECB','EspessuraBorda' ,2);
+            Fonte                          := NotaUtil.SeSenao(Trim(Ini.ReadString('PROPRIEDADES_DANFe_RAVECB','Fonte' ,'ftTimes'))='ftTimes',ftTimes, ftCourier);
+            TamanhoCampoCodigo             := Ini.ReadInteger('PROPRIEDADES_DANFe_RAVECB','TamanhoCampoCodigo' ,10);
          end;
 
          with ACBrNFeDANFeRL1 do
          begin
-            FonteDANFE                     := NotaUtil.SeSenao(Trim(Ini.ReadString('PROPRIEDADEs_DANFe_FORTES','FonteDANFE' ,'fdTimesNewRoman'))='fdTimesNewRoman',fdTimesNewRoman,
-                                                               NotaUtil.SeSenao(Trim(Ini.ReadString('PROPRIEDADEs_DANFe_FORTES','FonteDANFE' ,'fdCourierNew'))='fdCourierNew',fdCourierNew,
+            FonteDANFE                     := NotaUtil.SeSenao(Trim(Ini.ReadString('PROPRIEDADES_DANFe_FORTES','FonteDANFE' ,'fdTimesNewRoman'))='fdTimesNewRoman',fdTimesNewRoman,
+                                                               NotaUtil.SeSenao(Trim(Ini.ReadString('PROPRIEDADES_DANFe_FORTES','FonteDANFE' ,'fdCourierNew'))='fdCourierNew',fdCourierNew,
                                                                fdArial));
-            LarguraCodProd                 := Ini.ReadInteger('PROPRIEDADEs_DANFe_FORTES','LarguraCodProd' ,0);
+            LarguraCodProd                 := Ini.ReadInteger('PROPRIEDADES_DANFe_FORTES','LarguraCodProd' ,0);
             MarcadAgua                     := Trim(Ini.ReadString('PROPRIEDADES_DANFe_FORTES','MarcadAgua' ,''));
-            PosCanhoto                     := NotaUtil.SeSenao(Trim(Ini.ReadString('PROPRIEDADEs_DANFe_FORTES','PosCanhoto' ,'pcCabecalho'))='pcCabecalho',pcCabecalho,pcRodape);
+            PosCanhoto                     := NotaUtil.SeSenao(Trim(Ini.ReadString('PROPRIEDADES_DANFe_FORTES','PosCanhoto' ,'pcCabecalho'))='pcCabecalho',pcCabecalho,pcRodape);
          end;
 
          Result:=True;

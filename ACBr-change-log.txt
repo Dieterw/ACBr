@@ -96,6 +96,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.9.0b  21/04/10
+-- ACBrECF --
+[+]    Implementado propriedade "TotalTroco" para buscar e guadar o total do 
+       troco nos ECFs.
+[+]    Implementado propriedade "TotalTroco" na class "TACBrECFDadosRZ"
+
 Versão 0.8.9b  03/04/10
 -- ACBrECFDaruma --
 [-]    Corrigido Bug no método "UsuarioAtual", não carregava o numero do usuário 

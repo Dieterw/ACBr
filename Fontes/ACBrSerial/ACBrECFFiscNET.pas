@@ -113,6 +113,9 @@ TACBrECFFiscNETResposta = class
  end ;
 
 { Classe filha de TACBrECFClass com implementaçao para FiscNET }
+
+{ TACBrECFFiscNET }
+
 TACBrECFFiscNET = class( TACBrECFClass )
  private
     fsNumVersao : String ;
@@ -171,6 +174,7 @@ TACBrECFFiscNET = class( TACBrECFClass )
     function GetTotalAcrescimos: Double; override ;
     function GetTotalCancelamentos: Double; override ;
     function GetTotalDescontos: Double; override ;
+    function GetTotalTroco: Double; override ;
     function GetTotalSubstituicaoTributaria: Double; override ;
     function GetTotalNaoTributado: Double; override ;
     function GetTotalIsencao: Double; override ;
@@ -2168,6 +2172,16 @@ function TACBrECFFiscNET.GetTotalDescontos: Double;
 begin
   FiscNETComando.NomeComando := 'LeMoeda' ;
   FiscNETComando.AddParamString('NomeDadoMonetario','TotalDiaDescontos') ;
+  EnviaComando ;
+
+  Result := StringToFloatDef(
+     RemoveString('.', FiscNETResposta.Params.Values['ValorMoeda'] ), 0) ;
+end;
+
+function TACBrECFFiscNET.GetTotalTroco: Double;
+begin
+  FiscNETComando.NomeComando := 'LeMoeda' ;
+  FiscNETComando.AddParamString('NomeDadoMonetario','TotalDiaTroco') ;
   EnviaComando ;
 
   Result := StringToFloatDef(

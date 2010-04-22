@@ -413,6 +413,8 @@ TACBrFormMsgEstado = (fmsNenhum, fmsProcessando, fmsConcluido, fmsAbortado) ;
   forem implementadas nas classes filhas, a funçao/procedimento definida aqui
   nessa classe (TACBrECFClass) e que será execuada }
 
+{ TACBrECFClass }
+
 TACBrECFClass = class
  private
     fsRetentar     : Boolean;
@@ -561,6 +563,7 @@ TACBrECFClass = class
     function GetTotalAcrescimos: Double; virtual ;
     function GetTotalCancelamentos: Double; virtual ;
     function GetTotalDescontos: Double; virtual ;
+    function GetTotalTroco: Double; virtual ;
     function GetTotalSubstituicaoTributaria: Double; virtual ;
     function GetTotalNaoTributado: Double; virtual ;
     function GetTotalIsencao: Double; virtual ;
@@ -716,6 +719,7 @@ TACBrECFClass = class
     Property TotalCancelamentos : Double     read GetTotalCancelamentos ;
     Property TotalDescontos     : Double     read GetTotalDescontos ;
     Property TotalAcrescimos    : Double     read GetTotalAcrescimos ;
+    Property TotalTroco         : Double     read GetTotalTroco ;
     Property TotalSubstituicaoTributaria : Double
        read GetTotalSubstituicaoTributaria ;
     Property TotalNaoTributado  : Double     read GetTotalNaoTributado ;
@@ -2226,6 +2230,11 @@ begin
 end;
 
 function TACBrECFClass.GetTotalDescontos: Double;
+begin
+  Result := 0 ;
+end;
+
+function TACBrECFClass.GetTotalTroco: Double;
 begin
   Result := 0 ;
 end;

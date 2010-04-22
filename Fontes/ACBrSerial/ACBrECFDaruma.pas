@@ -180,6 +180,9 @@ TACBrModelosDaruma = (fs315, fs345, fs2000, fs600, fs2100T, fs600USB, fs700L, fs
                       fs700M, MACH1, MACH2, MACH3, fsIndefinido);
 
 { Classe filha de TACBrECFClass com implementaçao para Daruma }
+
+{ TACBrECFDaruma }
+
 TACBrECFDaruma = class( TACBrECFClass )
  private
     fsNumVersao   : String ;
@@ -262,6 +265,7 @@ TACBrECFDaruma = class( TACBrECFClass )
     function GetTotalAcrescimos: Double; override ;
     function GetTotalCancelamentos: Double; override ;
     function GetTotalDescontos: Double; override ;
+    function GetTotalTroco: Double; override ;
     function GetTotalSubstituicaoTributaria: Double; override ;
     function GetTotalNaoTributado: Double; override ;
     function GetTotalIsencao: Double; override ;
@@ -3184,6 +3188,17 @@ begin
   Result := RoundTo( Result, -2);
 end;
 
+function TACBrECFDaruma.GetTotalTroco: Double;
+begin
+  Result := 0;
+
+  if fpMFD then
+     Result := StrToFloatDef(RetornaInfoECF('007'),0)/100
+  else
+     Result := StrToFloatDef(copy(Ret244,274,14),0)/100 ;
+
+  Result := RoundTo( Result, -2);
+end;
 
 //ISS---------------------------------------
 function TACBrECFDaruma.GetTotalAcrescimosISSQN: Double;
@@ -3191,7 +3206,7 @@ begin
   Result := 0;
 
   if fpMFD then
-    Result := (StrToFloatDef(RetornaInfoECF('015'),0)/100) ;
+    Result := StrToFloatDef(RetornaInfoECF('015'),0)/100 ;
 
   Result := RoundTo( Result, -2);
 end;
@@ -3201,7 +3216,7 @@ begin
   Result := 0;
 
   if fpMFD then
-    Result := (StrToFloatDef(RetornaInfoECF('016'),0)/100) ;
+    Result := StrToFloatDef(RetornaInfoECF('016'),0)/100 ;
 
   Result := RoundTo( Result, -2);
 end;
@@ -3211,7 +3226,7 @@ begin
   Result := 0;
 
   if fpMFD then
-    Result := (StrToFloatDef(RetornaInfoECF('014'),0)/100) ;
+    Result := StrToFloatDef(RetornaInfoECF('014'),0)/100 ;
 
   Result := RoundTo( Result, -2);
 end;
@@ -3222,7 +3237,7 @@ begin
   Result := 0;
 
   if fpMFD then
-    Result := (StrToFloatDef(Copy(RetornaInfoECF('003'), 286, 13),0)/100) ;
+    Result := StrToFloatDef(Copy(RetornaInfoECF('003'), 286, 13),0)/100 ;
 
   Result := RoundTo( Result, -2);
 end;
@@ -3232,7 +3247,7 @@ begin
   Result := 0;
 
   if fpMFD then
-    Result := (StrToFloatDef(Copy(RetornaInfoECF('003'), 312, 13),0)/100) ;
+    Result := StrToFloatDef(Copy(RetornaInfoECF('003'), 312, 13),0)/100 ;
 
   Result := RoundTo( Result, -2);
 end;
@@ -3243,7 +3258,7 @@ begin
   Result := 0;
 
   if fpMFD then
-    Result := (StrToFloatDef(Copy(RetornaInfoECF('003'), 338, 13),0)/100) ;
+    Result := StrToFloatDef(Copy(RetornaInfoECF('003'), 338, 13),0)/100 ;
 
   Result := RoundTo( Result, -2);
 end;

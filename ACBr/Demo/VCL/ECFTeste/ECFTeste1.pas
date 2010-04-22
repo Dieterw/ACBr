@@ -331,6 +331,8 @@ type
     mRZ: TMemo;
     Label37: TLabel;
     Button1: TButton;
+    N41: TMenuItem;
+    LerTroco1: TMenuItem;
     procedure cbxModeloChange(Sender: TObject);
     procedure Sair1Click(Sender: TObject);
     procedure bAtivarClick(Sender: TObject);
@@ -519,6 +521,7 @@ type
     procedure NumGNF1Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
+    procedure LerTroco1Click(Sender: TObject);
   private
     { Private declarations }
     Function Converte( cmd : String) : String;
@@ -875,6 +878,12 @@ begin
            FormatFloat('###,##0.00',ACBrECF1.FormasPagamento[A].Total)) ;
   end ;
   mResp.Lines.Add('---------------------------------');
+end;
+
+procedure TForm1.LerTroco1Click(Sender: TObject);
+begin
+  mResp.Lines.Add( 'Total do Troco: '+ FormatFloat('#,###,##0.00', ACBrECF1.TotalTroco) ) ;
+  AtualizaMemos ;
 end;
 
 procedure TForm1.CarregaComprovantesNAOFiscais1Click(Sender: TObject);

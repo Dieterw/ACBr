@@ -48,6 +48,13 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   22/04/10
+---------------
+[*] DANFe RAVE Arquivo
+    - Incluida propriedade ImprimirDetalhamentoEspecifico. Se true imprime informações de VEICULOS ou MEDICAMENTOS
+[*] ACBrDANFe
+    - Liberado nova compilação
+
 Alterações   15/04/10
 ---------------
 [-] DANFe com Quick Report (Créditos: André Langner)

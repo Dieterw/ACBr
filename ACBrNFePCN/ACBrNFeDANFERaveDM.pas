@@ -493,6 +493,9 @@ var
    BufferXProd, BufferXInfProd : PAnsiChar;
    size:integer;
    TmpStr : String;
+
+   j: integer;
+   wInfAdProd: string;
 begin
    with FNFe.Det.Items[Connection.DataIndex] do
    begin
@@ -518,11 +521,52 @@ begin
             vTemp.Free;
          end;
 
+         wInfAdProd:=infAdProd;
          vTemp2 := TStringList.Create;
          try
-            if (Trim(infAdProd) <> '') then
+            if (FDANFEClassOwner.ImprimirDetalhamentoEspecifico) then
             begin
-               Campos2 := explode(';',infAdProd);
+               //detalhamento especifico de veículos
+               if (trim(Prod.veicProd.chassi)<>'') then
+               begin
+                  vTemp2.Add(' CHASSI: '+Prod.veicProd.chassi);
+                  vTemp2.Add(' COMBUSTÍVEL: '+Prod.veicProd.tpComb);
+                  vTemp2.Add(' COR: '+Prod.veicProd.xCor);
+                  vTemp2.Add(' FAB./MOD.: '+IntToStr(Prod.veicProd.anoFab)+'/'+IntToStr(Prod.veicProd.anoMod));
+                  vTemp2.Add(' RENAVAM: '+Prod.veicProd.RENAVAM);
+                  vTemp2.Add(' Nº DO MOTOR: '+Prod.veicProd.nMotor);
+
+                  if (trim(wInfAdProd) <> '') then
+                     wInfAdProd:=wInfAdProd+';';//insere quebra de linha antes do detalhamento
+                  wInfAdProd:=wInfAdProd+vTemp2.Text;
+                  vTemp2.Clear;
+               end;
+
+               //detalhamento específico de medicamentos
+               if (Prod.med.Count > 0) then
+               begin
+                  for j:=0 to Prod.med.Count-1 do
+                  begin
+                     with Prod.med.Items[j] do
+                     begin
+                        vTemp2.Add('-LOTE: '+nLote);
+                        vTemp2.Add(' QTDADE: '+NotaUtil.FormatFloat(qLote));
+                        vTemp2.Add(' FABR.: '+NotaUtil.FormatDate(DateToStr(dFab)));
+                        vTemp2.Add(' VAL.: '+NotaUtil.FormatDate(DateToStr(dVal)));
+                        vTemp2.Add(NotaUtil.SeSenao(vPMC>0,' PMC: '+NotaUtil.FormatFloat(vPMC),''));
+                    end;
+                 end;
+
+                 if (trim(wInfAdProd) <> '') then
+                    wInfAdProd:=wInfAdProd+';';//insere quebra de linha antes do detalhamento
+                 wInfAdProd:=wInfAdProd+vTemp2.Text;
+                 vTemp2.Clear;
+              end;
+            end;
+
+            if (Trim(winfAdProd) <> '') then
+            begin
+               Campos2 := explode(';',winfAdProd);
                for IndexCampo2:=0 to Length(Campos2)-1 do
                   vTemp2.Add(Trim(Campos2[IndexCampo2]));
                TmpStr := vTemp2.Text;

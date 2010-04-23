@@ -1848,6 +1848,8 @@ begin
            FPG.Assign( Self.FormasPagamento[I] );
            MeiosDePagamento.Add( FPG ) ;
         end ;
+
+        TotalTroco := Self.TotalTroco;
      except
      end ;
   end;

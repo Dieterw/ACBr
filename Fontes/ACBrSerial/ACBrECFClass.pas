@@ -330,6 +330,7 @@ TACBrECFDadosRZ = class
     FNumeroDoECF: AnsiString;
     FNumeroDeSerie: AnsiString;
     FNumeroDaLoja: AnsiString;
+    fTotalTroco: Double;
   public
     constructor Create;
     destructor Destroy; override ;
@@ -381,6 +382,7 @@ TACBrECFDadosRZ = class
     property RelatorioGerencial: TACBrECFRelatoriosGerenciais read FRelatorioGerencial;
     // MEIOS DE PAGAMENTO
     property MeiosDePagamento: TACBrECFFormasPagamento read FMeiosDePagamento;
+    property TotalTroco: double read FTotalTroco write FTotalTroco;
   end;
 
 { Evento para o usuário exibir os erros encontrados pela classe TACBrECFClass.

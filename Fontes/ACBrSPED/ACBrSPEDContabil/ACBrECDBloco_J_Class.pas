@@ -271,7 +271,7 @@ begin
        Result := LFill('J900') +
                  LFill('TERMO DE ENCERRAMENTO') +
                  LFill(NUM_ORD) +
-                 RFill(NAT_LIVRO, 80) +
+                 LFill(NAT_LIVRO, 80) +
                  LFill(NOME) +
 //                 LFill(QTD_LIN, 9, false) +
                  LFill('[*******]') +

@@ -266,8 +266,8 @@ begin
            fpDataHoraTransacaoComprovante  := Linha.Informacao.AsTimeStampSQL;
            fpDataHoraTransacaoHost         := fpDataHoraTransacaoComprovante ;
          end;
-       121 : fpImagemComprovante1aVia.Text := StringReplace( LinStr, #10, sLineBreak, [rfReplaceAll] );
-       122 : fpImagemComprovante2aVia.Text := StringReplace( LinStr, #10, sLineBreak, [rfReplaceAll] );
+       121 : fpImagemComprovante1aVia.Text := StringReplace( StringToBinaryString( Linha.Informacao.AsAnsiString ), #10, sLineBreak, [rfReplaceAll] );
+       122 : fpImagemComprovante2aVia.Text := StringReplace( StringToBinaryString( Linha.Informacao.AsAnsiString ), #10, sLineBreak, [rfReplaceAll] );
        130 :
          begin
            fpSaque      := Linha.Informacao.AsFloat ;
@@ -808,7 +808,7 @@ begin
                                                       Buffer, sizeof(Buffer),
                                                       Continua );
             Continua := 0;
-            Mensagem := Trim( Buffer ) ;
+            Mensagem := TrimRight( Buffer ) ;
             Resposta := '' ;
             Voltar   := False;
             Digitado := True ;
@@ -868,7 +868,7 @@ begin
                                            raise EACBrTEFDECF.Create( ACBrStr('ECF não está LIVRE') ) ;
                                        end;
 
-                                       Mensagem := Self.Resp.LeInformacao(I).AsString ;
+                                       Mensagem := Self.Resp.LeInformacao(I).AsAnsiString ;
                                        Mensagem := StringToBinaryString( Mensagem ) ;
                                        if Mensagem <> '' then
                                        begin

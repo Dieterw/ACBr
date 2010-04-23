@@ -1136,7 +1136,10 @@ begin
                           end;
                        end;
 
-                       ComandarECF( opeFechaCupom );
+                       if SubTotalECF <= 0 then
+                          ComandarECF( opeFechaCupom )
+                       else
+                          break ;
                      end ;
                  else
                    raise Exception.Create(

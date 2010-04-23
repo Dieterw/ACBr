@@ -151,6 +151,7 @@ type
   private
     fInformacao : AnsiString;
 
+    function GetAsAnsiString: AnsiString;
     function GetAsDate : TDateTime;
     function GetAsFloat : Double;
     function GetAsInteger : Integer;
@@ -158,6 +159,7 @@ type
     function GetAsTime : TDateTime;
     function GetAsTimeStamp : TDateTime;
     function GetAsTimeStampSQL : TDateTime;
+    procedure SetAsAnsiString(const AValue: AnsiString);
     procedure SetAsDate(const AValue : TDateTime);
     procedure SetAsFloat(const AValue : Double);
     procedure SetAsInteger(const AValue : Integer);
@@ -166,6 +168,7 @@ type
     procedure SetAsTimeStamp(const AValue : TDateTime);
     procedure SetAsTimeStampSQL(const AValue : TDateTime);
   public
+    property AsAnsiString : AnsiString read GetAsAnsiString write SetAsAnsiString ;
     property AsString   : AnsiString read GetAsString    write SetAsString ;
     property AsDate     : TDateTime  read GetAsDate      write SetAsDate ;
     property AsTime     : TDateTime  read GetAsTime      write SetAsTime ;
@@ -699,11 +702,16 @@ begin
   end;
 end;
 
+function TACBrTEFDLinhaInformacao.GetAsAnsiString: AnsiString;
+begin
+  Result := fInformacao;
+end;
+
 function TACBrTEFDLinhaInformacao.GetAsFloat : Double;
 Var
   Info : String ;
 begin
-  Info := StringReplace( fInformacao, ',','',[rfReplaceAll] );
+  Info := StringReplace( Trim(fInformacao), ',','',[rfReplaceAll] );
   Info := StringReplace( Info       , '.','',[rfReplaceAll] );
 
   Result := StrToIntDef( Info ,0) / 100 ;
@@ -711,12 +719,12 @@ end;
 
 function TACBrTEFDLinhaInformacao.GetAsInteger : Integer;
 begin
-  Result := StrToIntDef(fInformacao,0);
+  Result := StrToIntDef(Trim(fInformacao),0);
 end;
 
 function TACBrTEFDLinhaInformacao.GetAsString: AnsiString;
 begin
-   Result := fInformacao;
+   Result := Trim(fInformacao);
 end;
 
 function TACBrTEFDLinhaInformacao.GetAsTime : TDateTime;
@@ -768,6 +776,11 @@ begin
   except
      Result := 0 ;
   end;
+end;
+
+procedure TACBrTEFDLinhaInformacao.SetAsAnsiString(const AValue: AnsiString);
+begin
+   fInformacao := AValue;
 end;
 
 procedure TACBrTEFDLinhaInformacao.SetAsDate(const AValue : TDateTime);
@@ -854,12 +867,12 @@ procedure TACBrTEFDLinha.SetLinha(const AValue : AnsiString);
 begin
    if fLinha = AValue then exit;
 
-   fLinha := Trim(AValue);
+   fLinha := TrimRight(AValue);
 
    try
      fIdentificacao := StrToInt(copy(fLinha,1,3));
      fSequencia     := StrToInt(copy(fLinha,5,3));
-     Informacao.AsString := Trim(copy( fLinha, pos('=',fLinha) + 1, Length(fLinha) )) ;
+     Informacao.AsString := TrimRight(copy( fLinha, pos('=',fLinha) + 1, Length(fLinha) )) ;
    except
      fIdentificacao := 0 ;
      fSequencia     := 0 ;

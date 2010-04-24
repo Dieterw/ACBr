@@ -120,7 +120,7 @@ begin
   i := Random(999999999);
   NomeArquivoRetorno := PathValidador + 'R' + IntToStr(i) + '.TXT';
   try
-    WinExec(pchar(PathValidador + 'pcnValidadorNFe.exe ' +
+    WinExec(pAnsiChar(PathValidador + 'pcnValidadorNFe.exe ' +
       PathArquivoXML + ' ' +
       PathValidador + SchemaToStr(Schema) + '\ ' +
       NomeArquivoRetorno + ' ' +

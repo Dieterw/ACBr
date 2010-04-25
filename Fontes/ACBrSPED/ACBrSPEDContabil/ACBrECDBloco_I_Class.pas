@@ -271,7 +271,7 @@ begin
            ///
            strRegistroI012 :=  strRegistroI012 + LFill('I012') +
                                                  LFill(NUM_ORD) +
-                                                 RFill(NAT_LIVR, 80) +
+                                                 LFill(NAT_LIVR) +
                                                  LFill(TIPO, 1) +
                                                  RFill(COD_HASH_AUX,40) +
                                                  Delimitador +

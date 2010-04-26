@@ -1,14 +1,15 @@
 object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
-  Left = 290
+  Left = 307
   Height = 867
   Top = 0
-  Width = 966
+  Width = 896
   VertScrollBar.Position = 538
   Caption = 'ACBRBoletoFCFortesFr'
   ClientHeight = 867
-  ClientWidth = 966
+  ClientWidth = 896
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
+  OnCreate = FormCreate
   LCLVersion = '0.9.29'
   object LayoutBoleto: TRLReport
     Left = 16
@@ -28,16 +29,19 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
     RealBounds.Width = 0
     RealBounds.Height = 0
     ShowProgress = False
-    object RLBand2: TRLBand
+    BeforePrint = LayoutBoletoBeforePrint
+    OnDataCount = LayoutBoletoDataCount
+    OnDataRecord = LayoutBoletoDataRecord
+    object RLBand1: TRLBand
       Left = 11
       Height = 408
       Top = 19
       Width = 764
-      BandType = btSummary
       RealBounds.Left = 0
       RealBounds.Top = 0
       RealBounds.Width = 0
       RealBounds.Height = 0
+      BeforePrint = RLBand1BeforePrint
       object RLDraw29: TRLDraw
         Left = 0
         Height = 16
@@ -1195,16 +1199,16 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Visible = False
       end
     end
-    object RLBand3: TRLBand
+    object RLBand2: TRLBand
       Left = 11
       Height = 420
       Top = 427
       Width = 764
-      BandType = btSummary
       RealBounds.Left = 0
       RealBounds.Top = 0
       RealBounds.Width = 0
       RealBounds.Height = 0
+      BeforePrint = RLBand2BeforePrint
       object RLDraw50: TRLDraw
         Left = -2
         Height = 17
@@ -2311,11 +2315,11 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 4
         Height = 66
         Top = 350
-        Width = 467
+        Width = 465
         AutoSize = False
-        Caption = '12345678901234567890123456789012345678901234'
+        Caption = '23790-3571000000100120'
         CheckSumMethod = cmNone
-        HoldStyle = hsCopyWidth
+        InvalidCode = icDrawAnyway
         Margins.LeftMargin = 1
         Margins.RightMargin = 1
         Ratio = 3

@@ -71,7 +71,7 @@ type
   TACBRBoletoFCFortesFr = class(TForm)
     imgCodigoBarra: TRLBarcode;
     LayoutBoleto: TRLReport;
-    RLBand2: TRLBand;
+    RLBand1: TRLBand;
     RLDraw29: TRLDraw;
     RLDraw39: TRLDraw;
     RLDraw38: TRLDraw;
@@ -148,7 +148,7 @@ type
     RLLabel102: TRLLabel;
     txtSacadorAvalista2: TRLLabel;
     txtReferencia2: TRLLabel;
-    RLBand3: TRLBand;
+    RLBand2: TRLBand;
     RLDraw50: TRLDraw;
     RLDraw49: TRLDraw;
     RLDraw48: TRLDraw;
@@ -222,10 +222,23 @@ type
     RLLabel175: TRLLabel;
     txtSacadorAvalista3: TRLLabel;
     txtReferencia3: TRLLabel;
+    procedure FormCreate(Sender: TObject);
+    procedure LayoutBoletoBeforePrint(Sender: TObject; var PrintIt: boolean);
+    procedure LayoutBoletoDataCount(Sender: TObject; var DataCount: integer);
+    procedure LayoutBoletoDataRecord(Sender: TObject; RecNo: integer;
+       CopyNo: integer; var Eof: boolean; var RecordAction: TRLRecordAction);
+    procedure RLBand1BeforePrint(Sender: TObject; var PrintIt: boolean);
+    procedure RLBand2BeforePrint(Sender: TObject; var PrintIt: boolean);
   private
+     fBoletoFC: TACBrBoletoFCFortes;
+     fIndice: Integer;
+     function GetACBrTitulo: TACBrTitulo;
     { Private declarations }
   public
     { Public declarations }
+    property Indice   : Integer read fIndice ;
+    property BoletoFC : TACBrBoletoFCFortes read fBoletoFC ;
+    property Titulo   : TACBrTitulo read GetACBrTitulo ;
   end;
 
 var
@@ -247,59 +260,108 @@ end;
 procedure TACBrBoletoFCFortes.Imprimir;
 var
  frACBrBoletoFortes : TACBRBoletoFCFortesFr;
- DigNossoNum, CodBarras, LinhaDigitavel : String;
 begin
+  inherited Imprimir;    // Executa verificações padroes
+
   frACBrBoletoFortes:= TACBRBoletoFCFortesFr.Create(Self);
-
-  DigNossoNum    := ACBrBoleto.Banco.CalcularDigitoVerificador(ACBrBoleto.ListadeBoletos[0]);
-  CodBarras      := ACBRBoleto.Banco.MontarCodigoBarras(ACBrBoleto.ListadeBoletos[0]);
-  LinhaDigitavel := ACBrBoleto.Banco.MontarLinhaDigitavel(CodBarras);
-
-  with frACBrBoletoFortes do
-  begin
-    txtNumeroBanco2.Caption         := inttostr(ACBrBoleto.Banco.Numero)+ '-' +
-                                       inttostr(ACBrBoleto.Banco.Digito);
-    lblLocalPagto.Caption           := 'Pagar em qualquer agência até o vencimento.';
-    txtDataVencimento2.Caption      := FormatDateTime('dd/mm/yyyy', ACBrBoleto.ListadeBoletos[0].Vencimento);
-    txtNomeCedente2.Caption         := ACBrBoleto.Cedente.Nome;
-    txtCodigoCedente2.Caption       := ACBrBoleto.Cedente.Agencia+'/'+ ACBrBoleto.Cedente.Conta;
-    txtDataDocumento2.Caption       := FormatDateTime('dd/mm/yyyy', ACBrBoleto.ListadeBoletos[0].DataDocumento);
-    txtNumeroDocumento2.Caption     := ACBrBoleto.ListadeBoletos[0].NumeroDocumento;
-    txtEspecieDoc2.Caption          := ACBrBoleto.ListadeBoletos[0].EspecieDoc;
-    txtAceite2.Caption              := ACBrBoleto.ListadeBoletos[0].Aceite;
-    txtDataProcessamento2.Caption   := txtDataDocumento2.Caption;
-    txtNossoNumero2.Caption         := ACBrBoleto.ListadeBoletos[0].NossoNumero +
-                                       DigNossoNum;
-    txtUsoBanco2.Caption            := ACBrBoleto.ListadeBoletos[0].UsoBanco;
-    txtCarteira2.Caption            := ACBrBoleto.ListadeBoletos[0].Carteira;
-    txtEspecie2.Caption             := 'R$';
-    txtValorDocumento2.Caption      := FloatToStr(ACBrBoleto.ListadeBoletos[0].ValorDocumento);
-
-
-    txtLocalPagamento3.Caption      := lblLocalPagto.Caption;
-    txtDataVencimento3.Caption      := txtDataVencimento2.Caption;
-    txtNomeCedente3.Caption         := txtNomeCedente2.Caption;
-    txtCodigoCedente3.Caption       := txtCodigoCedente2.Caption;
-    txtDataDocumento3.Caption       := txtDataDocumento2.Caption;
-    txtNumeroDocumento3.Caption     := txtNumeroDocumento2.Caption;
-    txtEspecie3.Caption             := txtEspecie2.Caption;
-    txtAceite3.Caption              := txtAceite2.Caption;
-    txtDataProcessamento3.Caption   := txtDataProcessamento2.Caption;
-    txtNossoNumero3.Caption         := txtNossoNumero2.Caption;
-    txtUsoBanco3.Caption            := txtUsoBanco2.Caption;
-    txtCarteira3.Caption            := txtCarteira2.Caption;
-    txtValorDocumento3.Caption      := txtValorDocumento2.Caption;
-
-    imgCodigoBarra.Caption          := CodBarras;
-    txtLinhaDigitavel.Caption       := LinhaDigitavel;
-
-    LayoutBoleto.PreviewModal;
+  try
+     frACBrBoletoFortes.LayoutBoleto.PreviewModal;
+  finally
+     frACBrBoletoFortes.Free ;
   end;
 end;
 
-{$ifdef FPC}
-initialization
-   {$I ACBrBoletoFCFortes.lrs}
-{$endif}
+{ TACBRBoletoFCFortesFr }
+
+procedure TACBRBoletoFCFortesFr.FormCreate(Sender: TObject);
+begin
+   fIndice := 0 ;
+   fBoletoFC := TACBrBoletoFCFortes(Owner) ;  // Link para o Pai
+end;
+
+function TACBRBoletoFCFortesFr.GetACBrTitulo: TACBrTitulo;
+begin
+   Result := fBoletoFC.ACBrBoleto.ListadeBoletos[ fIndice ] ;
+end;
+
+procedure TACBRBoletoFCFortesFr.LayoutBoletoBeforePrint(Sender: TObject;
+   var PrintIt: boolean);
+begin
+   fIndice := 0 ;
+end;
+
+procedure TACBRBoletoFCFortesFr.LayoutBoletoDataCount(Sender: TObject;
+   var DataCount: integer);
+begin
+   DataCount := fBoletoFC.ACBrBoleto.ListadeBoletos.Count ;
+end;
+
+procedure TACBRBoletoFCFortesFr.LayoutBoletoDataRecord(Sender: TObject;
+   RecNo: integer; CopyNo: integer; var Eof: boolean;
+   var RecordAction: TRLRecordAction);
+begin
+   fIndice := RecNo-1 ;
+
+   Eof := (RecNo > fBoletoFC.ACBrBoleto.ListadeBoletos.Count) ;
+   RecordAction := raUseIt ;
+end;
+
+procedure TACBRBoletoFCFortesFr.RLBand1BeforePrint(Sender: TObject;
+   var PrintIt: boolean);
+Var
+   DigNossoNum : String;
+begin
+   with fBoletoFC.ACBrBoleto do
+   begin
+      DigNossoNum    := Banco.CalcularDigitoVerificador( Titulo );
+
+      txtNumeroBanco2.Caption         := FormatFloat('000', Banco.Numero)+ '-' +
+                                         FormatFloat('0'  , Banco.Digito);
+      lblLocalPagto.Caption           := 'Pagar em qualquer agência até o vencimento.';
+      txtDataVencimento2.Caption      := FormatDateTime('dd/mm/yyyy', Titulo.Vencimento);
+      txtNomeCedente2.Caption         := Cedente.Nome;
+      txtCodigoCedente2.Caption       := Cedente.Agencia+'/'+ Cedente.Conta;
+      txtDataDocumento2.Caption       := FormatDateTime('dd/mm/yyyy', Titulo.DataDocumento);
+      txtNumeroDocumento2.Caption     := Titulo.NumeroDocumento;
+      txtEspecieDoc2.Caption          := Titulo.EspecieDoc;
+      txtAceite2.Caption              := Titulo.Aceite;
+      txtDataProcessamento2.Caption   := txtDataDocumento2.Caption;
+      txtNossoNumero2.Caption         := Titulo.NossoNumero + DigNossoNum;
+      txtUsoBanco2.Caption            := Titulo.UsoBanco;
+      txtCarteira2.Caption            := Titulo.Carteira;
+      txtEspecie2.Caption             := 'R$';
+      txtValorDocumento2.Caption      := FormatFloat('###,###,##0.00',Titulo.ValorDocumento);
+   end;
+end;
+
+procedure TACBRBoletoFCFortesFr.RLBand2BeforePrint(Sender: TObject;
+   var PrintIt: boolean);
+Var
+  CodBarras, LinhaDigitavel : String;
+begin
+  with fBoletoFC.ACBrBoleto do
+  begin
+     CodBarras      := Banco.MontarCodigoBarras( Titulo );
+     LinhaDigitavel := Banco.MontarLinhaDigitavel( CodBarras );
+
+     txtLocalPagamento3.Caption      := lblLocalPagto.Caption;
+     txtDataVencimento3.Caption      := txtDataVencimento2.Caption;
+     txtNomeCedente3.Caption         := txtNomeCedente2.Caption;
+     txtCodigoCedente3.Caption       := txtCodigoCedente2.Caption;
+     txtDataDocumento3.Caption       := txtDataDocumento2.Caption;
+     txtNumeroDocumento3.Caption     := txtNumeroDocumento2.Caption;
+     txtEspecie3.Caption             := txtEspecie2.Caption;
+     txtAceite3.Caption              := txtAceite2.Caption;
+     txtDataProcessamento3.Caption   := txtDataProcessamento2.Caption;
+     txtNossoNumero3.Caption         := txtNossoNumero2.Caption;
+     txtUsoBanco3.Caption            := txtUsoBanco2.Caption;
+     txtCarteira3.Caption            := txtCarteira2.Caption;
+     txtValorDocumento3.Caption      := txtValorDocumento2.Caption;
+
+     imgCodigoBarra.Caption          := CodBarras;
+     txtLinhaDigitavel.Caption       := LinhaDigitavel;
+   end;
+end;
 
 end.
+

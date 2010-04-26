@@ -818,7 +818,11 @@ end;
 
 procedure TACBrBoletoFCClass.Imprimir;
 begin
-   ErroAbstract('Imprimir');
+   if not Assigned(fACBrBoleto) then
+      raise Exception.Create(ACBrStr('Componente não está associado a ACBrBoleto'));
+
+   if fACBrBoleto.ListadeBoletos.Count < 1 then
+      raise Exception.Create(ACBrStr('Lista de Boletos está vazia'));
 end;
 
 {$ifdef FPC}

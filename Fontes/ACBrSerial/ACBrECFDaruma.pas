@@ -3190,8 +3190,6 @@ end;
 
 function TACBrECFDaruma.GetTotalTroco: Double;
 begin
-  Result := 0;
-
   if fpMFD then
      Result := StrToFloatDef(RetornaInfoECF('007'),0)/100
   else

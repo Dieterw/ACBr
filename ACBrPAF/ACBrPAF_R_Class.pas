@@ -156,8 +156,8 @@ begin
                   LFill(IE_SH, 14) +
                   LFill(IM_SH, 14) +
                   RFill(NOME_SH, 40) +
-                  RFill(VER_PAF, 10) +
                   RFill(NOME_PAF, 40) +  // emsoft
+                  RFill(VER_PAF, 10) +
                   RFill(COD_MD5, 32) +
                   LFill(DT_INI, 'yyyymmdd') +
                   LFill(DT_FIN, 'yyyymmdd') +

@@ -58,7 +58,7 @@ unit ACBrCTeUtil;
 
 interface
 
-uses{$IFNDEF ACBrCTeOpenSSL}ACBrCAPICOM_TLB, ACBrMSXML2_TLB, {$ENDIF}
+uses{$IFNDEF ACBrCTeOpenSSL}ACBrCAPICOM_TLB, ACBrMSXML2_TLB, JwaWinCrypt, {$ENDIF}
   Classes, Forms,
 {$IFDEF FPC}
   LResources, Controls, Graphics, Dialogs,
@@ -69,20 +69,20 @@ uses{$IFNDEF ACBrCTeOpenSSL}ACBrCAPICOM_TLB, ACBrMSXML2_TLB, {$ENDIF}
 
 {$IFDEF ACBrCTeOpenSSL}
 const
-  cDTD              = '<!DOCTYPE test [<!ATTLIST infCTe Id ID #IMPLIED>]>';
-  cDTDCanc          = '<!DOCTYPE test [<!ATTLIST infCanc Id ID #IMPLIED>]>';
-  cDTDInut          = '<!DOCTYPE test [<!ATTLIST infInut Id ID #IMPLIED>]>';
+  cDTD         = '<!DOCTYPE test [<!ATTLIST infCTe Id ID #IMPLIED>]>';
+  cDTDCanc     = '<!DOCTYPE test [<!ATTLIST infCanc Id ID #IMPLIED>]>';
+  cDTDInut     = '<!DOCTYPE test [<!ATTLIST infInut Id ID #IMPLIED>]>';
 {$ELSE}
 const
-  DSIGNS            = 'xmlns:ds="http://www.w3.org/2000/09/xmldsig#"';
+  DSIGNS       = 'xmlns:ds="http://www.w3.org/2000/09/xmldsig#"';
 {$ENDIF}
 {$IFNDEF ACBrCTeOpenSSL}
 var
-  CertStore         : IStore3;
-  CertStoreMem      : IStore3;
-  PrivateKey        : IPrivateKey;
-  Certs             : ICertificates2;
-  Cert              : ICertificate2;
+  CertStore    : IStore3;
+  CertStoreMem : IStore3;
+  PrivateKey   : IPrivateKey;
+  Certs        : ICertificates2;
+  Cert         : ICertificate2;
 {$ENDIF}
 
 type
@@ -101,7 +101,7 @@ type
 {$ENDIF}
     class function GetURL(const AUF, AAmbiente, FormaEmissao: Integer; ALayOut: TLayOut): WideString;
     class function SeparaDados(Texto: AnsiString; Chave: string): AnsiString;
-    class function Valida(const AXML: AnsiString; var AMsg: AnsiString): Boolean;
+    class function Valida(const AXML: AnsiString; var AMsg: AnsiString; const APathSchemas: string = ''): Boolean;
 
     class function LimpaNumero(AValue: string): string;
     class function FormatarCPF(AValue: string): string;
@@ -156,8 +156,8 @@ type
 
 implementation
 
-uses{$IFDEF ACBrCTeOpenSSL}libxml2, libxmlsec, libxslt, {$ELSE}ComObj, {$ENDIF}Sysutils,
-  Variants;
+uses{$IFDEF ACBrCTeOpenSSL}libxml2, libxmlsec, libxslt, {$ELSE}ComObj, {$ENDIF}
+ Sysutils, Variants, ACBrUtil;
 
 { CTeUtil }
 {$IFDEF ACBrCTeOpenSSL}
@@ -265,21 +265,19 @@ class function CTeUtil.GetURLMT(AAmbiente: Integer;
   ALayOut: TLayOut): WideString;
 begin
   case ALayOut of
-
-    LayCTeRecepcao: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://sefaz.mt.gov.br/ctews/services/CteRecepcao', ' https://homologacao.sefaz.mt.gov.br/ctews/services/CteRecepcao?WSDL');
-    LayCTeRetRecepcao: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://sefaz.mt.gov.br/ctews/services/CteRetRecepcao', 'https://homologacao.sefaz.mt.gov.br/ctews/services/CteRetRecepcao?WSDL');
+    LayCTeStatusServico: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://sefaz.mt.gov.br/ctews/services/CteStatusServico', 'https://homologacao.sefaz.mt.gov.br/ctews/services/CteStatusServico?WSDL');
+    LayCTeCadastro: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://sefaz.mt.gov.br/ctews/services/cadConsultaCadastro', 'https://homologacao.sefaz.mt.gov.br/ctews/services/cadConsultaCadastro');
+    LayCTeConsultaCT: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://sefaz.mt.gov.br/ctews/services/CteConsulta', 'https://homologacao.sefaz.mt.gov.br/ctews/services/CteConsulta');
     LayCTeCancelamento: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://sefaz.mt.gov.br/ctews/services/CteCancelamento', 'https://homologacao.sefaz.mt.gov.br/ctews/services/CteCancelamento');
     LayCTeInutilizacao: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://sefaz.mt.gov.br/ctews/services/CteInutilizacao', 'https://homologacao.sefaz.mt.gov.br/ctews/services/CteInutilizacao ');
-    LayCTeConsultaCT: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://sefaz.mt.gov.br/ctews/services/CteConsulta', 'https://homologacao.sefaz.mt.gov.br/ctews/services/CteConsulta');
-    LayCTeStatusServico: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://sefaz.mt.gov.br/ctews/services/CteStatusServico', 'https://homologacao.sefaz.mt.gov.br/ctews/services/CteStatusServico?WSDL');
-
-    LayCTeCadastro: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://sefaz.mt.gov.br/ctews/services/cadConsultaCadastro', 'https://homologacao.sefaz.mt.gov.br/ctews/services/cadConsultaCadastro');
+    LayCTeRecepcao: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://sefaz.mt.gov.br/ctews/services/CteRecepcao', ' https://homologacao.sefaz.mt.gov.br/ctews/services/CteRecepcao?WSDL');
+    LayCTeRetRecepcao: Result := CTeUtil.SeSenao(AAmbiente = 1, 'https://sefaz.mt.gov.br/ctews/services/CteRetRecepcao', 'https://homologacao.sefaz.mt.gov.br/ctews/services/CteRetRecepcao?WSDL');
   end;
 end;
 
 class function CTeUtil.LimpaNumero(AValue: string): string;
 var
-  A                 : Integer;
+  A : Integer;
 begin
   Result := '';
   for A := 1 to length(AValue) do
@@ -318,8 +316,8 @@ end;
 
 class function CTeUtil.FormatarCEP(AValue: string): string;
 var
-  I: integer;
-  sAux: string;
+  I    : integer;
+  sAux : string;
 begin
   sAux := AValue;
 
@@ -412,8 +410,9 @@ end;
 
 class function CTeUtil.padC(const AString: string; const nLen: Integer;
   const Caracter: Char): string;
-var nCharLeft       : Integer;
-  D                 : Double;
+var
+  nCharLeft : Integer;
+  D         : Double;
 begin
   Result := copy(AString, 1, nLen);
   D := (nLen - Length(Result)) / 2;
@@ -431,14 +430,14 @@ end;
 
 class function CTeUtil.FormatDate(const AString: string): string;
 var
-  vTemp             : TDateTime;
-{$IFDEF VER140}                                                                 //delphi6
+  vTemp : TDateTime;
+{$IFDEF VER140}  //delphi6
 {$ELSE}
-  FFormato          : TFormatSettings;
+  FFormato : TFormatSettings;
 {$ENDIF}
 begin
   try
-{$IFDEF VER140}                                                                 //delphi6
+{$IFDEF VER140} //delphi6
     DateSeparator := '/';
     ShortDateFormat := 'dd/mm/yyyy';
 {$ELSE}
@@ -466,14 +465,14 @@ end;
 
 class function CTeUtil.FormatDateTime(const AString: string): string;
 var
-  vTemp             : TDateTime;
-{$IFDEF VER140}                                                                 //delphi6
+  vTemp : TDateTime;
+{$IFDEF VER140} //delphi6
 {$ELSE}
-  FFormato          : TFormatSettings;
+  FFormato : TFormatSettings;
 {$ENDIF}
 begin
   try
-{$IFDEF VER140}                                                                 //delphi6
+{$IFDEF VER140} //delphi6
     DateSeparator := '/';
     ShortDateFormat := 'dd/mm/yyyy';
     ShortTimeFormat := 'hh:nn:ss';
@@ -533,15 +532,6 @@ end;
 class function CTeUtil.FormatarChaveAcesso(AValue: String): String;
 begin
   AValue := CTeUtil.LimpaNumero(AValue);
-{  Result := copy(AValue,1,2)  + '-' + copy(AValue,3,2) + '/' +
-            copy(AValue,5,2)  + '-' + copy(AValue,7,2) + '.' +
-            copy(AValue,9,3)  + '.' + copy(AValue,12,3)+ '/' +
-            copy(AValue,15,4) + '-' + copy(AValue,19,2)+ '-' +
-            copy(AValue,21,2) + '-' + copy(AValue,23,3)+ '-' +
-            copy(AValue,26,3) + '.' + copy(AValue,29,3)+ '.' +
-            copy(AValue,32,3) + '-' + copy(AValue,35,3)+ '.' +
-            copy(AValue,38,3) + '.' + copy(AValue,41,3)+ '-' +
-            copy(AValue,44,2);}
   Result := copy(AValue,1,4)  + ' ' + copy(AValue,5,4)  + ' ' +
             copy(AValue,9,4)  + ' ' + copy(AValue,13,4) + ' ' +
             copy(AValue,17,4) + ' ' + copy(AValue,21,4) + ' ' +
@@ -629,8 +619,8 @@ end;
 
 class function CTeUtil.PosEx(const SubStr, S: AnsiString; Offset: Cardinal = 1): Integer;
 var
-  I, X              : Integer;
-  Len, LenSubStr    : Integer;
+  I, X           : Integer;
+  Len, LenSubStr : Integer;
 begin
   if Offset = 1 then
     Result := Pos(SubStr, S)
@@ -660,7 +650,7 @@ end;
 
 class function CTeUtil.PosLast(const SubStr, S: AnsiString): Integer;
 var
-  P                 : Integer;
+  P : Integer;
 begin
   Result := 0;
   P := Pos(SubStr, S);
@@ -674,7 +664,7 @@ end;
 
 class function CTeUtil.SeparaDados(Texto: AnsiString; Chave: string): AnsiString;
 var
-  PosIni, PosFim    : Integer;
+  PosIni, PosFim : Integer;
 begin
   PosIni := Pos(Chave, Texto) - 1;
   PosFim := Pos('/' + Chave, Texto) + length(Chave) + 3;
@@ -691,7 +681,7 @@ end;
 {$IFDEF ACBrCTeOpenSSL}
 
 function ValidaLibXML(const AXML: AnsiString;
-  var AMsg: AnsiString): Boolean;
+  var AMsg: AnsiString; const APathSchemas: string = ''): Boolean;
 var
   doc, schema_doc   : xmlDocPtr;
   parser_ctxt       : xmlSchemaParserCtxtPtr;
@@ -699,33 +689,77 @@ var
   valid_ctxt        : xmlSchemaValidCtxtPtr;
   schemError        : xmlErrorPtr;
   schema_filename   : PChar;
-
   Tipo, I           : Integer;
 begin
   I := pos('<infCTe', AXML);
   Tipo := 1;
   if I = 0 then
   begin
-    I := pos('<infCanc', AXML);
-    Tipo := 2;
-    if I = 0 then
-      Tipo := 3;
+    I := pos('<infCanc',AXML) ;
+    if I > 0 then
+       Tipo := 2
+    else
+     begin
+       I := pos('<infInut',AXML) ;
+       if I > 0 then
+          Tipo := 3
+       else
+          Tipo := 4;
+     end;
   end;
 
+ if not DirectoryExists(CTeUtil.SeSenao(CTeUtil.EstaVazio(APathSchemas),
+                 PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas',
+                 PathWithDelim(APathSchemas))) then
+    raise Exception.Create('Diretório de Schemas não encontrado'+sLineBreak+
+                           CTeUtil.SeSenao(CTeUtil.EstaVazio(APathSchemas),
+                           PathWithDelim(ExtractFileDir(application.ExeName))+
+                           'Schemas',PathWithDelim(APathSchemas)));
+
+ case Tipo of
+  1: begin
+      if CTeUtil.EstaVazio(APathSchemas) then
+        schema_filename := pchar(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\cte_v1.03.xsd')
+       else
+        schema_filename := pchar(PathWithDelim(APathSchemas)+'cte_v1.03.xsd');
+     end;
+  2: begin
+      if CTeUtil.EstaVazio(APathSchemas) then
+        schema_filename := pchar(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\canccte_v1.03.xsd')
+       else
+        schema_filename := pchar(PathWithDelim(APathSchemas)+'canccte_v1.03.xsd');
+     end;
+  3: begin
+      if CTeUtil.EstaVazio(APathSchemas) then
+        schema_filename := pchar(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\inutcte_v1.03.xsd')
+       else
+        schema_filename := pchar(PathWithDelim(APathSchemas)+'inutcte_v1.03.xsd');
+     end;
+  4: begin
+      {
+      if CTeUtil.EstaVazio(APathSchemas) then
+        schema_filename := pchar(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\envDPEC_v1.03.xsd')
+       else
+        schema_filename := pchar(PathWithDelim(APathSchemas)+'envDPEC_v1.03.xsd');
+      }
+     end;
+ end;
+  {
   if Tipo = 1 then
     schema_filename := pchar(ExtractFileDir(application.ExeName) + '\Schemas\cte_v1.03.xsd') //cte_v1.02.xsd
   else if Tipo = 2 then
     schema_filename := pchar(ExtractFileDir(application.ExeName) + '\Schemas\cancCte_v1.03.xsd') //cancCte_v1.01.xsd
   else if Tipo = 3 then
     schema_filename := pchar(ExtractFileDir(application.ExeName) + '\Schemas\inutCte_v1.03.xsd'); //inutCte_v1.01.xsd
+  }
 
-  doc := nil;
-  schema_doc := nil;
+  doc         := nil;
+  schema_doc  := nil;
   parser_ctxt := nil;
-  schema := nil;
-  valid_ctxt := nil;
+  schema      := nil;
+  valid_ctxt  := nil;
+  doc         := xmlParseDoc(PAnsiChar(Axml));
 
-  doc := xmlParseDoc(PAnsiChar(Axml));
   if ((doc = nil) or (xmlDocGetRootElement(doc) = nil)) then
   begin
     AMsg := 'Erro: unable to parse';
@@ -791,54 +825,102 @@ begin
 end;
 {$ELSE}
 
-function ValidaMSXML(XML: AnsiString; out Msg: AnsiString): Boolean;
+function ValidaMSXML(XML: AnsiString; out Msg: AnsiString;
+ const APathSchemas: string = ''): Boolean;
 var
-  DOMDocument       : IXMLDOMDocument2;
-  ParseError        : IXMLDOMParseError;
-  Schema            : XMLSchemaCache;
-  Tipo, I           : Integer;
+  DOMDocument : IXMLDOMDocument2;
+  ParseError  : IXMLDOMParseError;
+  Schema      : XMLSchemaCache;
+  Tipo, I     : Integer;
 begin
-  I := pos('<infCTe', XML);
+  I := pos('<infCTe',XML) ;
   Tipo := 1;
-  if I = 0 then
-  begin
-    I := pos('<infCanc', XML);
-    Tipo := 2;
-    if I = 0 then
-      Tipo := 3;
-  end;
+  if I = 0  then
+   begin
+     I := pos('<infCanc',XML) ;
+     if I > 0 then
+        Tipo := 2
+     else
+      begin
+        I := pos('<infInut',XML) ;
+        if I > 0 then
+           Tipo := 3
+        else
+           Tipo := 4;
+      end;
+   end;
 
-  DOMDocument := CoDOMDocument50.Create;
-  DOMDocument.async := False;
+  DOMDocument                  := CoDOMDocument50.Create;
+  DOMDocument.async            := False;
   DOMDocument.resolveExternals := False;
-  DOMDocument.validateOnParse := True;
+  DOMDocument.validateOnParse  := True;
   DOMDocument.loadXML(XML);
 
   Schema := CoXMLSchemaCache50.Create;
+
+ if not DirectoryExists(CTeUtil.SeSenao(CTeUtil.EstaVazio(APathSchemas),
+                  PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas',
+                  PathWithDelim(APathSchemas))) then
+    raise Exception.Create('Diretório de Schemas não encontrado'+sLineBreak+
+                            CTeUtil.SeSenao(CTeUtil.EstaVazio(APathSchemas),
+                            PathWithDelim(ExtractFileDir(application.ExeName))+
+                            'Schemas',PathWithDelim(APathSchemas)));
+
+  case Tipo of
+   1: begin
+       Schema.add( 'http://www.portalfiscal.inf.br/cte',
+        CTeUtil.SeSenao(CTeUtil.EstaVazio(APathSchemas),
+        PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',
+        PathWithDelim(APathSchemas))+'cte_v1.03.xsd')
+      end;
+   2: begin
+       Schema.add( 'http://www.portalfiscal.inf.br/cte',
+        CTeUtil.SeSenao(CTeUtil.EstaVazio(APathSchemas),
+        PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',
+        PathWithDelim(APathSchemas))+'canccte_v1.01.xsd')
+      end;
+   3: begin
+       Schema.add( 'http://www.portalfiscal.inf.br/cte',
+        CTeUtil.SeSenao(CTeUtil.EstaVazio(APathSchemas),
+        PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',
+        PathWithDelim(APathSchemas))+'inutcte_v1.01.xsd')
+      end;
+   4: begin
+       {
+       Schema.add( 'http://www.portalfiscal.inf.br/cte',
+        CTeUtil.SeSenao(CTeUtil.EstaVazio(APathSchemas),
+        PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',
+        PathWithDelim(APathSchemas))+'envDPEC_v1.01.xsd')
+       }
+      end;
+  end;
+
+  {
   if Tipo = 1 then
     Schema.add('http://www.portalfiscal.inf.br/cte', ExtractFileDir(application.ExeName) + '\Schemas\cte_v1.03.xsd')//2.xsd')
   else if Tipo = 2 then
     Schema.add('http://www.portalfiscal.inf.br/cte', ExtractFileDir(application.ExeName) + '\Schemas\cancCte_v1.01.xsd')
   else if Tipo = 3 then
     Schema.add('http://www.portalfiscal.inf.br/cte', ExtractFileDir(application.ExeName) + '\Schemas\inutCte_v1.01.xsd');
-  DOMDocument.schemas := Schema;
-  ParseError := DOMDocument.validate;
-  Result := (ParseError.errorCode = 0);
-  Msg := ParseError.reason;
+  }
 
-  DOMDocument := nil;
-  ParseError := nil;
-  Schema := nil;
+  DOMDocument.schemas := Schema;
+  ParseError          := DOMDocument.validate;
+  Result              := (ParseError.errorCode = 0);
+  Msg                 := ParseError.reason;
+  DOMDocument         := nil;
+  ParseError          := nil;
+  Schema              := nil;
 end;
 {$ENDIF}
 
 class function CTeUtil.Valida(const AXML: AnsiString;
-  var AMsg: AnsiString): Boolean;
+  var AMsg: AnsiString; const APathSchemas: string = ''): Boolean;
 begin
 {$IFDEF ACBrCTeOpenSSL}
-  Result := ValidaLibXML(AXML, AMsg);
+  Result := ValidaLibXML(AXML, AMsg, APathSchemas);
 {$ELSE}
-  Result := ValidaMSXML(AXML, AMsg);
+  Result := ValidaMSXML(AXML, AMsg, APathSchemas);
 {$ENDIF}
 end;
 
@@ -846,9 +928,10 @@ end;
 
 function AssinarLibXML(const AXML, ArqPFX, PFXSenha: AnsiString;
   out AXMLAssinado, FMensagem: AnsiString): Boolean;
-var I, J, PosIni, PosFim: Integer;
-  URI, AStr, XmlAss : AnsiString;
-  Tipo              : Integer;                                                  // 1 - NFE 2 - Cancelamento 3 - Inutilizacao
+var
+  I, J, PosIni, PosFim : Integer;
+  URI, AStr, XmlAss    : AnsiString;
+  Tipo                 : Integer;  // 1 - CTe 2 - Cancelamento 3 - Inutilizacao
 begin
   AStr := AXML;
 
@@ -856,16 +939,20 @@ begin
   I := pos('<infCte', AStr);
   Tipo := 1;
 
-  if I = 0 then
-  begin
-    I := pos('<infCanc', AStr);
-    Tipo := 2;
-    if I = 0 then
-    begin
-      I := pos('<infInut', AStr);
-      Tipo := 3;
-    end;
-  end;
+  if I = 0  then
+   begin
+     I := pos('<infCanc',AStr) ;
+     if I > 0 then
+        Tipo := 2
+     else
+      begin
+        I := pos('<infInut',AStr) ;
+        if I > 0 then
+           Tipo := 3
+        else
+           Tipo := 4;
+      end;
+   end;
 
   if I = 0 then
     raise Exception.Create('Não encontrei inicio do URI: <infNFe');
@@ -894,12 +981,31 @@ begin
     else if Tipo = 3 then
        AStr := cDTDInut + Copy(AStr,I+2,Length(AStr));}
 
+  case Tipo of
+   1: AStr := copy(AStr, 1, StrToInt(VarToStr(CTeUtil.SeSenao(I > 0, I + 1, I))))
+         + cDTD + Copy(AStr, StrToInt(VarToStr(CTeUtil.SeSenao(I > 0, I + 2, I))),
+          Length(AStr));
+   2: AStr := copy(AStr, 1, StrToInt(VarToStr(CTeUtil.SeSenao(I > 0, I + 1, I))))
+         + cDTDCanc + Copy(AStr, StrToInt(VarToStr(CTeUtil.SeSenao(I > 0, I + 2, I))),
+          Length(AStr))
+   3: AStr := copy(AStr, 1, StrToInt(VarToStr(CTeUtil.SeSenao(I > 0, I + 1, I))))
+         + cDTDInut + Copy(AStr, StrToInt(VarToStr(CTeUtil.SeSenao(I > 0, I + 2, I))),
+          Length(AStr));
+   {
+   4: AStr := copy(AStr,1,StrToInt(VarToStr(CTeUtil.SeSenao(I>0,I+1,I))))
+         + cDTDDpec + Copy(AStr,StrToInt(VarToStr(CTeUtil.SeSenao(I>0,I+2,I))),
+          Length(AStr));
+   }
+  end;
+
+  {
   if Tipo = 1 then
     AStr := copy(AStr, 1, StrToInt(VarToStr(CTeUtil.SeSenao(I > 0, I + 1, I)))) + cDTD + Copy(AStr, StrToInt(VarToStr(CTeUtil.SeSenao(I > 0, I + 2, I))), Length(AStr))
   else if Tipo = 2 then
     AStr := copy(AStr, 1, StrToInt(VarToStr(CTeUtil.SeSenao(I > 0, I + 1, I)))) + cDTDCanc + Copy(AStr, StrToInt(VarToStr(CTeUtil.SeSenao(I > 0, I + 2, I))), Length(AStr))
   else if Tipo = 3 then
     AStr := copy(AStr, 1, StrToInt(VarToStr(CTeUtil.SeSenao(I > 0, I + 1, I)))) + cDTDInut + Copy(AStr, StrToInt(VarToStr(CTeUtil.SeSenao(I > 0, I + 2, I))), Length(AStr));
+  }
 
   //// Inserindo Template da Assinatura digital ////
   if Tipo = 1 then

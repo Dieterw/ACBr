@@ -422,7 +422,7 @@ end;
 procedure TWebServicesBase.DoCTeConsultaCadastro;
 var
   Cabecalho: TCabecalho;
-  ConCadNFe: TConsCad;
+  ConCadCTe: TConsCad;
 begin
   Cabecalho := TCabecalho.Create;
   Cabecalho.Versao       := NFecabMsg;
@@ -432,17 +432,17 @@ begin
   FCabMsg := Cabecalho.Gerador.ArquivoFormatoXML;
   Cabecalho.Free;
 
-  ConCadNFe := TConsCad.Create;
-  ConCadNFe.schema := TsPL005c;
-  ConCadNFe.UF     := TCTeConsultaCadastro(Self).UF;
-  ConCadNFe.IE     := TCTeConsultaCadastro(Self).IE;
-  ConCadNFe.CNPJ   := TCTeConsultaCadastro(Self).CNPJ;
-  ConCadNFe.CPF    := TCTeConsultaCadastro(Self).CPF;
-  ConCadNFe.GerarXML;
+  ConCadCTe := TConsCad.Create;
+  ConCadCTe.schema := TsPL005c;
+  ConCadCTe.UF     := TCTeConsultaCadastro(Self).UF;
+  ConCadCTe.IE     := TCTeConsultaCadastro(Self).IE;
+  ConCadCTe.CNPJ   := TCTeConsultaCadastro(Self).CNPJ;
+  ConCadCTe.CPF    := TCTeConsultaCadastro(Self).CPF;
+  ConCadCTe.GerarXML;
 
-  FDadosMsg := ConCadNFe.Gerador.ArquivoFormatoXML;
+  FDadosMsg := ConCadCTe.Gerador.ArquivoFormatoXML;
 
-  ConCadNFe.Free
+  ConCadCTe.Free
 end;
 
 procedure TWebServicesBase.DoCTeConsulta;
@@ -502,7 +502,7 @@ begin
   InutCTe.xJust   := TCTeInutilizacao(Self).Justificativa;
   InutCTe.GerarXML;
 
-{$IFDEF ACBrNFeOpenSSL}
+{$IFDEF ACBrCTeOpenSSL}
   if not(CTeUtil.Assinar(InutCTe.Gerador.ArquivoFormatoXML, TConfiguracoes(FConfiguracoes).Certificados.Certificado , TConfiguracoes(FConfiguracoes).Certificados.Senha, FDadosMsg, FMsg)) then
     raise Exception.Create('Falha ao assinar Inutilização do CT-e'+LineBreak+FMsg);
 {$ELSE}
@@ -1034,7 +1034,7 @@ var
   Acao  : TStringList ;
   Stream: TMemoryStream;
   StrStream: TStringStream;
-  {$IFDEF ACBrNFeOpenSSL}
+  {$IFDEF ACBrCTeOpenSSL}
      HTTP: THTTPSend;
   {$ELSE}
      ReqResp: THTTPReqResp;
@@ -1062,7 +1062,7 @@ begin
 
   Acao.Text := Texto;
   Acao.SaveToStream(Stream);
-  {$IFDEF ACBrNFeOpenSSL}
+  {$IFDEF ACBrCTeOpenSSL}
      HTTP := THTTPSend.Create;
   {$ELSE}
      ReqResp := THTTPReqResp.Create(nil);
@@ -1076,7 +1076,7 @@ begin
     if FConfiguracoes.Geral.Salvar then
       FConfiguracoes.Geral.Save(FCTeChave+'-ped-can.xml', FDadosMsg);
 
-    {$IFDEF ACBrNFeOpenSSL}
+    {$IFDEF ACBrCTeOpenSSL}
        HTTP.Document.LoadFromStream(Stream);
        ConfiguraHTTP(HTTP,'SOAPAction: "http://www.portalfiscal.inf.br/cte/wsdl/CteCancelamento/cteCancelamentoCT"');
        HTTP.HTTPMethod('POST', FURL);
@@ -1126,7 +1126,7 @@ begin
     if FConfiguracoes.Geral.Salvar then
       FConfiguracoes.Geral.Save(FCTeChave+'-can.xml', FRetWS);
   finally
-    {$IFDEF ACBrNFeOpenSSL}
+    {$IFDEF ACBrCTeOpenSSL}
        HTTP.Free;
     {$ENDIF}
     Acao.Free;
@@ -1157,7 +1157,7 @@ var
   Acao  : TStringList ;
   Stream: TMemoryStream;
   StrStream: TStringStream;
-  {$IFDEF ACBrNFeOpenSSL}
+  {$IFDEF ACBrCTeOpenSSL}
      HTTP: THTTPSend;
   {$ELSE}
      ReqResp: THTTPReqResp;
@@ -1185,7 +1185,7 @@ begin
   Acao.Text := Texto;
   Acao.SaveToStream(Stream);
 
-  {$IFDEF ACBrNFeOpenSSL}
+  {$IFDEF ACBrCTeOpenSSL}
      HTTP := THTTPSend.Create;
   {$ELSE}
      ReqResp := THTTPReqResp.Create(nil);
@@ -1199,7 +1199,7 @@ begin
     if FConfiguracoes.Geral.Salvar then
       FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+FCTeChave+'-ped-inu.xml', FDadosMsg);
 
-    {$IFDEF ACBrNFeOpenSSL}
+    {$IFDEF ACBrCTeOpenSSL}
        HTTP.Document.LoadFromStream(Stream);
        ConfiguraHTTP(HTTP,'SOAPAction: "http://www.portalfiscal.inf.br/cte/wsdl/CteInutilizacao/cteInutilizacaoCT"');
        HTTP.HTTPMethod('POST', FURL);
@@ -1245,7 +1245,7 @@ begin
     if FConfiguracoes.Geral.Salvar then
       FConfiguracoes.Geral.Save(FormatDateTime('yyyymmddhhnnss',Now)+FCTeChave+'-inu.xml', FRetWS);
   finally
-    {$IFDEF ACBrNFeOpenSSL}
+    {$IFDEF ACBrCTeOpenSSL}
        HTTP.Free;
     {$ENDIF}
     Acao.Free;
@@ -1600,7 +1600,7 @@ begin
     fcStat     := FCTeRetorno.ProtCTe.Items[0].cStat;
   end;
 
-//  FNFeRetorno.Free;
+//  FCTeRetorno.Free;
 end;
 
 { TCteRecibo }

@@ -48,16 +48,15 @@ unit ACBrCTeConhecimentos;
 interface
 
 uses
-  Classes, Sysutils, Dialogs,
+  Classes, Sysutils, Dialogs, Forms,
   ACBrNFeUtil, ACBrCTeUtil, ACBrCTeConfiguracoes,
   {$IFDEF FPC}
      ACBrCTeDMLaz,
   {$ELSE}
-//     ACBrCTeDACTEClass,
+     ACBrCTeDACTEClass,
   {$ENDIF}
   smtpsend, ssl_openssl, mimemess, mimepart, // units para enviar email
-  pcteCTe, pcteCTeR, pcteCTeW,
-  pcnConversao, pcnAuxiliar, pcnLeitor;
+  pcteCTe, pcteCTeR, pcteCTeW, pcnConversao, pcnAuxiliar, pcnLeitor;
 
 type
 
@@ -436,10 +435,17 @@ begin
    begin
      if pos('<Signature',Self.Items[i].XML) = 0 then
         Assinar;
-
+     {
      if not(CTeUtil.Valida(Self.Items[i].XML, FMsg)) then
        raise Exception.Create('Falha na validação dos dados do conhecimento '+
                                IntToStr(Self.Items[i].CTe.Ide.cCT)+sLineBreak+Self.Items[i].Alertas+FMsg);
+     }
+     if not(CTeUtil.Valida(('<CTe xmlns' +
+        RetornarConteudoEntre(Self.Items[i].XML, '<CTe xmlns', '</CTe>')+ '</CTe>'),
+         FMsg, Self.FConfiguracoes.Geral.PathSchemas)) then
+       raise Exception.Create('Falha na validação dos dados doa Conhecimento '+
+                    IntToStr(Self.Items[i].CTe.Ide.nCT) +
+                    sLineBreak + Self.Items[i].Alertas + FMsg);
   end;
 end;
 
@@ -534,41 +540,31 @@ procedure TSendMailThread.Execute;
 var
  i: integer;
 begin
-   inherited;
-   try
-      try
-         if not smtp.Login() then
-            raise Exception.Create('SMTP ERROR: Login:' + smtp.EnhCodeString+
-            sLineBreak+smtp.FullResult.Text);
-         if not smtp.MailFrom( sFrom, Length(sFrom)) then
-            raise Exception.Create('SMTP ERROR: MailFrom:' + smtp.EnhCodeString+
-            sLineBreak+smtp.FullResult.Text);
-         if not smtp.MailTo(sTo) then
-            raise Exception.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString+
-            sLineBreak+smtp.FullResult.Text);
-         if (sCC <> nil) then
-          begin
-            for I := 0 to sCC.Count - 1 do
-             begin
-               if not smtp.MailTo(sCC.Strings[i]) then
-                 raise Exception.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString+
-                 sLineBreak+smtp.FullResult.Text);
-             end;
-          end;
-         if not smtp.MailData(slmsg_Lines) then
-            raise Exception.Create('SMTP ERROR: MailData:' + smtp.EnhCodeString+
-                 sLineBreak+smtp.FullResult.Text);
-         if not smtp.Logout() then
-            raise Exception.Create('SMTP ERROR: Logout:' + smtp.EnhCodeString+
-                 sLineBreak+smtp.FullResult.Text);
-      except
-         try smtp.Sock.CloseSocket ; except end ;
-         HandleException;
-      end;
-   finally
-      if Assigned(slmsg_lines) then
-         slmsg_lines.free;
-   end;
+  inherited;
+
+  try
+     if not smtp.Login() then
+        raise Exception.Create('SMTP ERROR: Login:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+     if not smtp.MailFrom( sFrom, Length(sFrom)) then
+        raise Exception.Create('SMTP ERROR: MailFrom:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+     if not smtp.MailTo(sTo) then
+        raise Exception.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+     if (sCC <> nil) then
+     begin
+        for I := 0 to sCC.Count - 1 do
+        begin
+           if not smtp.MailTo(sCC.Strings[i]) then
+              raise Exception.Create('SMTP ERROR: MailTo:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+        end;
+     end;
+     if not smtp.MailData(slmsg_Lines) then
+        raise Exception.Create('SMTP ERROR: MailData:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+     if not smtp.Logout() then
+        raise Exception.Create('SMTP ERROR: Logout:' + smtp.EnhCodeString+sLineBreak+smtp.FullResult.Text);
+  except
+     try smtp.Sock.CloseSocket ; except end ;
+     HandleException;
+  end;
 end;
 
 procedure TSendMailThread.HandleException;

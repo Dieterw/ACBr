@@ -518,14 +518,18 @@ end;
 
 procedure TCTeW.GerarExped;
 begin
-  Gerador.wGrupo('exped', 'F01');
-  Gerador.wCampoCNPJCPF('F02', 'F03', Cte.Exped.CNPJCPF, CODIGO_BRASIL);
-  Gerador.wCampo(tcStr, 'F04', 'IE     ', 02, 14, 0, SomenteNumeros(CTe.Exped.IE), DSC_IE);
-  Gerador.wCampo(tcStr, 'F05', 'xNome  ', 01, 60, 1, CTe.Exped.xNome, DSC_XNOME);
-  Gerador.wCampo(tcStr, 'F06', 'fone   ', 01, 10, 0, somenteNumeros(CTe.Exped.fone), DSC_FONE);
+  if (Cte.Exped.CNPJCPF <> '') or
+     (CTe.Exped.xNome <> '') then
+  begin
+    Gerador.wGrupo('exped', 'F01');
+    Gerador.wCampoCNPJCPF('F02', 'F03', Cte.Exped.CNPJCPF, CODIGO_BRASIL);
+    Gerador.wCampo(tcStr, 'F04', 'IE     ', 02, 14, 0, SomenteNumeros(CTe.Exped.IE), DSC_IE);
+    Gerador.wCampo(tcStr, 'F05', 'xNome  ', 01, 60, 1, CTe.Exped.xNome, DSC_XNOME);
+    Gerador.wCampo(tcStr, 'F06', 'fone   ', 01, 10, 0, somenteNumeros(CTe.Exped.fone), DSC_FONE);
 
-  (**)GerarEnderExped;
-  Gerador.wGrupo('/exped');
+    (**)GerarEnderExped;
+    Gerador.wGrupo('/exped');
+  end;
 end;
 
 procedure TCTeW.GerarEnderReceb;

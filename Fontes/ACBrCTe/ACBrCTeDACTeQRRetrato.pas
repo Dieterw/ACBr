@@ -45,7 +45,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, QuickRpt, QRCtrls, XMLIntf, XMLDoc, MidasLib,
   JPEG, ACBrCTeQRCodeBar, pcnConversao, DB,
-  DBClient, ACBrCTeDACTeQR;
+  DBClient, ACBrCTeDACTeQR, qrRRect;
 
 type
   TfrmDACTeQRRetrato = class(TfrmDACTeQR)
@@ -73,7 +73,6 @@ type
     qriBarCode: TQRImage;
     qrlNumCte: TQRLabel;
     QRLabel17: TQRLabel;
-    QRLabel19: TQRLabel;
     QRLabel18: TQRLabel;
     QRLabel6: TQRLabel;
     QRLabel8: TQRLabel;
@@ -85,10 +84,6 @@ type
     QRLabel74: TQRLabel;
     QRLabel75: TQRLabel;
     qrlChave: TQRLabel;
-    QRShape73: TQRShape;
-    QRShape74: TQRShape;
-    QRShape75: TQRShape;
-    QRShape76: TQRShape;
     qrlPageNumber: TQRLabel;
     qrlSerie: TQRLabel;
     qrlModelo: TQRLabel;
@@ -96,13 +91,8 @@ type
     qrlModal: TQRLabel;
     qrlProtocolo: TQRLabel;
     qrlTipoCte: TQRLabel;
-    QRShape68: TQRShape;
-    QRShape78: TQRShape;
     QRLabel76: TQRLabel;
     QRLabel77: TQRLabel;
-    QRShape5: TQRShape;
-    QRShape71: TQRShape;
-    QRShape72: TQRShape;
     QRLabel2: TQRLabel;
     QRLabel9: TQRLabel;
     qrlTipoServico: TQRLabel;
@@ -218,8 +208,6 @@ type
     qrlMunToma: TQRLabel;
     QRLabel1: TQRLabel;
     qrlProdPredominante: TQRLabel;
-    QRShape4: TQRShape;
-    QRShape6: TQRShape;
     QRShape7: TQRShape;
     QRShape8: TQRShape;
     QRLabel5: TQRLabel;
@@ -236,9 +224,6 @@ type
     QRLabel40: TQRLabel;
     qrlNroAverbacao: TQRLabel;
     qrlQtdUndMedida1: TQRLabel;
-    QRShape12: TQRShape;
-    QRShape13: TQRShape;
-    QRShape14: TQRShape;
     qrlQtdUndMedida2: TQRLabel;
     qrlQtdUndMedida3: TQRLabel;
     qrlQtdUndMedida4: TQRLabel;
@@ -295,8 +280,6 @@ type
     QRLabel3: TQRLabel;
     QRShape24: TQRShape;
     QRLabel11: TQRLabel;
-    QRShape31: TQRShape;
-    QRShape33: TQRShape;
     QRShape36: TQRShape;
     QRShape37: TQRShape;
     QRShape38: TQRShape;
@@ -317,7 +300,6 @@ type
     QRLabel69: TQRLabel;
     QRLabel68: TQRLabel;
     qrlDHChegada: TQRLabel;
-    QRLabel71: TQRLabel;
     QRLabel72: TQRLabel;
     qrlblSistema: TQRLabel;
     QRSysData1: TQRSysData;
@@ -326,6 +308,49 @@ type
     qrlMsgTeste: TQRLabel;
     QRLabel7: TQRLabel;
     QRShape27: TQRShape;
+    QRRoundRect1: TQRRoundRect;
+    QRRoundRect2: TQRRoundRect;
+    QRRoundRect3: TQRRoundRect;
+    QRRoundRect4: TQRRoundRect;
+    QRRoundRect5: TQRRoundRect;
+    QRRoundRect6: TQRRoundRect;
+    QRRoundRect7: TQRRoundRect;
+    QRRoundRect8: TQRRoundRect;
+    QRRoundRect9: TQRRoundRect;
+    QRRoundRect10: TQRRoundRect;
+    QRRoundRect11: TQRRoundRect;
+    QRRoundRect12: TQRRoundRect;
+    QRRoundRect13: TQRRoundRect;
+    QRRoundRect14: TQRRoundRect;
+    QRRoundRect15: TQRRoundRect;
+    QRRoundRect16: TQRRoundRect;
+    QRRoundRect17: TQRRoundRect;
+    QRRoundRect18: TQRRoundRect;
+    QRRoundRect19: TQRRoundRect;
+    QRRoundRect20: TQRRoundRect;
+    QRRoundRect21: TQRRoundRect;
+    QRRoundRect22: TQRRoundRect;
+    QRRoundRect23: TQRRoundRect;
+    QRRoundRect24: TQRRoundRect;
+    QRRoundRect25: TQRRoundRect;
+    QRRoundRect26: TQRRoundRect;
+    QRRoundRect27: TQRRoundRect;
+    QRRoundRect28: TQRRoundRect;
+    QRRoundRect29: TQRRoundRect;
+    QRRoundRect30: TQRRoundRect;
+    QRRoundRect31: TQRRoundRect;
+    QRRoundRect32: TQRRoundRect;
+    QRRoundRect33: TQRRoundRect;
+    QRShape4: TQRShape;
+    QRRoundRect34: TQRRoundRect;
+    QRLabel19: TQRLabel;
+    QRLabel57: TQRLabel;
+    qrlNumCte1: TQRLabel;
+    QRLabel60: TQRLabel;
+    qrlSerie1: TQRLabel;
+    QRRoundRect35: TQRRoundRect;
+    QRRoundRect36: TQRRoundRect;
+    QRRoundRect37: TQRRoundRect;
     procedure qrbDadosExcEmitenteBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
     procedure qrbModRodFracionadoBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
     procedure qrbObsBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
@@ -471,11 +496,14 @@ begin
   qrlModal.Caption := TpModalToStrText(FCTe.Ide.modal);
   qrlModelo.Caption := FCTe.Ide.modelo;
   qrlSerie.Caption := IntToStr(FCTe.Ide.serie);
+  qrlSerie1.Caption := IntToStr(FCTe.Ide.serie);
   qrlNumCte.Caption := CTeUtil.FormatarNumCTe(FCTe.Ide.nCT);
+  qrlNumCte1.Caption := CTeUtil.FormatarNumCTe(FCTe.Ide.nCT);
   qrlPageNumber.Caption := format('%2.2d', [QRCTe.PageNumber]) + '/' + format('%2.2d', [FTotalPages]);
   qrlEmissao.Caption := CTeUtil.FormatDateTime(DateTimeToStr(FCTe.Ide.dhEmi));
   SetBarCodeImage(Copy(FCTe.InfCTe.Id, 4, 44), qriBarCode);
   qrlChave.Caption := CTeUtil.FormatarChaveAcesso(Copy(FCTe.InfCTe.Id, 4, 44));
+
 
   // Emitente
   with FCTe.Emit do
@@ -557,7 +585,7 @@ begin
   qrlEnderecoRemet1.Caption := FCTe.Rem.EnderReme.xLgr + ', ' + FCTe.Rem.EnderReme.nro;
   qrlEnderecoRemet2.Caption := FCTe.Rem.EnderReme.xCpl;
   qrlCEPRemet.Caption := CTeUtil.FormatarCEP(IntToStr(FCTe.Rem.EnderReme.CEP));
-  qrlMunRemet.Caption := FCTe.Rem.EnderReme.xMun;
+  qrlMunRemet.Caption := FCTe.Rem.EnderReme.xMun+' - '+FCTe.Rem.EnderReme.UF;
   qrlCnpjRemet.Caption := CTeUtil.FormatarCNPJ(FCTe.Rem.CNPJCPF);
   qrlPaisRemet.Caption := FCTe.Rem.EnderReme.xPais;
   qrlInscEstRemet.Caption := FCTe.Rem.IE;
@@ -568,7 +596,7 @@ begin
   qrlEnderecoDest1.Caption := FCTe.Dest.EnderDest.xLgr + ', ' + FCTe.Dest.EnderDest.nro;
   qrlEnderecoDest2.Caption := FCTe.Dest.EnderDest.xCpl;
   qrlCEPDest.Caption := CTeUtil.FormatarCEP(IntToStr(FCTe.Dest.EnderDest.CEP));
-  qrlMunDest.Caption := FCTe.Dest.EnderDest.xMun;
+  qrlMunDest.Caption := FCTe.Dest.EnderDest.xMun+' - '+FCTe.Dest.EnderDest.UF;
   qrlCnpjDest.Caption := CTeUtil.FormatarCNPJ(FCTe.Dest.CNPJCPF);
   qrlPaisDest.Caption := FCTe.Dest.EnderDest.xPais;
   qrlInscEstDest.Caption := FCTe.Dest.IE;
@@ -579,7 +607,7 @@ begin
   qrlEnderecoExped1.Caption := FCTe.Exped.EnderExped.xLgr + ', ' + FCTe.Exped.EnderExped.nro;
   qrlEnderecoExped2.Caption := FCTe.Exped.EnderExped.xCpl;
   qrlCEPExped.Caption := CTeUtil.FormatarCEP(IntToStr(FCTe.Exped.EnderExped.CEP));
-  qrlMunExped.Caption := FCTe.Exped.EnderExped.xMun;
+  qrlMunExped.Caption := FCTe.Exped.EnderExped.xMun+' - '+FCTe.Exped.EnderExped.UF;
   qrlCnpjExped.Caption := CTeUtil.FormatarCNPJ(FCTe.Exped.CNPJCPF);
   qrlPaisExped.Caption := FCTe.Exped.EnderExped.xPais;
   qrlInscEstExped.Caption := FCTe.Exped.IE;
@@ -590,7 +618,7 @@ begin
   qrlEnderecoReceb1.Caption := FCTe.Receb.EnderReceb.xLgr + ', ' + FCTe.Receb.EnderReceb.nro;
   qrlEnderecoReceb2.Caption := FCTe.Receb.EnderReceb.xCpl;
   qrlCEPReceb.Caption := CTeUtil.FormatarCEP(IntToStr(FCTe.Receb.EnderReceb.CEP));
-  qrlMunReceb.Caption := FCTe.Receb.EnderReceb.xMun;
+  qrlMunReceb.Caption := FCTe.Receb.EnderReceb.xMun+' - '+FCTe.Receb.EnderReceb.UF;
   qrlCnpjReceb.Caption := CTeUtil.FormatarCNPJ(FCTe.Receb.CNPJCPF);
   qrlPaisReceb.Caption := FCTe.Receb.EnderReceb.xPais;
   qrlInscEstReceb.Caption := FCTe.Receb.IE;
@@ -602,7 +630,7 @@ begin
         qrlRazaoToma.Caption := FCTe.Rem.xNome;
         qrlEnderecoToma.Caption := FCTe.Rem.EnderReme.xLgr + ', ' + FCTe.Rem.EnderReme.nro + ' - ' + FCTe.Rem.EnderReme.xCpl;
         qrlCEPToma.Caption := CTeUtil.FormatarCEP(IntToStr(FCTe.Rem.EnderReme.CEP));
-        qrlMunToma.Caption := FCTe.Rem.EnderReme.xMun;
+        qrlMunToma.Caption := FCTe.Rem.EnderReme.xMun+' - '+FCTe.Rem.EnderReme.UF;
         qrlCnpjToma.Caption := CTeUtil.FormatarCNPJ(FCTe.Rem.CNPJCPF);
         qrlPaisToma.Caption := FCTe.Rem.EnderReme.xPais;
         qrlInscEstToma.Caption := FCTe.Rem.IE;
@@ -613,7 +641,7 @@ begin
         qrlRazaoToma.Caption := FCTe.Exped.xNome;
         qrlEnderecoToma.Caption := FCTe.Exped.EnderExped.xLgr + ', ' + FCTe.Exped.EnderExped.nro + ' - ' + FCTe.Exped.EnderExped.xCpl;
         qrlCEPToma.Caption := CTeUtil.FormatarCEP(IntToStr(FCTe.Exped.EnderExped.CEP));
-        qrlMunToma.Caption := FCTe.Exped.EnderExped.xMun;
+        qrlMunToma.Caption := FCTe.Exped.EnderExped.xMun+' - '+FCTe.Exped.EnderExped.UF;
         qrlCnpjToma.Caption := CTeUtil.FormatarCNPJ(FCTe.Exped.CNPJCPF);
         qrlPaisToma.Caption := FCTe.Exped.EnderExped.xPais;
         qrlInscEstToma.Caption := FCTe.Exped.IE;
@@ -624,7 +652,7 @@ begin
         qrlRazaoToma.Caption := FCTe.Receb.xNome;
         qrlEnderecoToma.Caption := FCTe.Receb.EnderReceb.xLgr + ', ' + FCTe.Receb.EnderReceb.nro + ' - ' + FCTe.Receb.EnderReceb.xCpl;
         qrlCEPToma.Caption := CTeUtil.FormatarCEP(IntToStr(FCTe.Receb.EnderReceb.CEP));
-        qrlMunToma.Caption := FCTe.Receb.EnderReceb.xMun;
+        qrlMunToma.Caption := FCTe.Receb.EnderReceb.xMun+' - '+FCTe.Receb.EnderReceb.UF;
         qrlCnpjToma.Caption := CTeUtil.FormatarCNPJ(FCTe.Receb.CNPJCPF);
         qrlPaisToma.Caption := FCTe.Receb.EnderReceb.xPais;
         qrlInscEstToma.Caption := FCTe.Receb.IE;
@@ -635,7 +663,7 @@ begin
         qrlRazaoToma.Caption := FCTe.Dest.xNome;
         qrlEnderecoToma.Caption := FCTe.Dest.EnderDest.xLgr + ', ' + FCTe.Dest.EnderDest.nro + ' - ' + FCTe.Dest.EnderDest.xCpl;
         qrlCEPToma.Caption := CTeUtil.FormatarCEP(IntToStr(FCTe.Dest.EnderDest.CEP));
-        qrlMunToma.Caption := FCTe.Dest.EnderDest.xMun;
+        qrlMunToma.Caption := FCTe.Dest.EnderDest.xMun+' - '+FCTe.Dest.EnderDest.UF;
         qrlCnpjToma.Caption := CTeUtil.FormatarCNPJ(FCTe.Dest.CNPJCPF);
         qrlPaisToma.Caption := FCTe.Dest.EnderDest.xPais;
         qrlInscEstToma.Caption := FCTe.Dest.IE;
@@ -646,7 +674,7 @@ begin
         qrlRazaoToma.Caption := FCTe.Ide.Toma4.xNome;
         qrlEnderecoToma.Caption := FCTe.Ide.Toma4.EnderToma.xLgr + ', ' + FCTe.Ide.Toma4.EnderToma.xNum + ' - ' + FCTe.Ide.Toma4.EnderToma.xCpl;
         qrlCEPToma.Caption := CTeUtil.FormatarCEP(IntToStr(FCTe.Ide.Toma4.EnderToma.CEP));
-        qrlMunToma.Caption := FCTe.Ide.Toma4.EnderToma.xMun;
+        qrlMunToma.Caption := FCTe.Ide.Toma4.EnderToma.xMun+' - '+FCTe.Ide.Toma4.EnderToma.UF;
         qrlCnpjToma.Caption := CTeUtil.FormatarCNPJ(FCTe.Ide.Toma4.CNPJCPF);
         qrlPaisToma.Caption := FCTe.Ide.Toma4.EnderToma.xPais;
         qrlInscEstToma.Caption := FCTe.Ide.Toma4.IE;

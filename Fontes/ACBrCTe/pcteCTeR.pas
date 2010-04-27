@@ -214,7 +214,7 @@ begin
   (* Grupo da TAG <rem> *******************************************************)
   if Leitor.rExtrai(1, 'rem') <> '' then
   begin
-      CTe.Rem.CNPJCPF := Leitor.rCampo(tcstr,'CNPJ');
+      CTe.Rem.CNPJCPF := Leitor.rCampoCNPJCPF;
       CTe.Rem.IE    := Leitor.rCampo(tcStr, 'IE');
       CTe.Rem.xNome := Leitor.rCampo(tcStr, 'xNome');
       CTe.Rem.xFant := Leitor.rCampo(tcStr, 'xFant');
@@ -276,7 +276,7 @@ begin
   (* Grupo da TAG <exped> *****************************************************)
   if Leitor.rExtrai(1, 'exped') <> '' then
   begin
-      CTe.Exped.CNPJCPF := Leitor.rCampo(tcstr,'CNPJ');
+      CTe.Exped.CNPJCPF := Leitor.rCampoCNPJCPF;
       CTe.Exped.IE    := Leitor.rCampo(tcStr, 'IE');
       CTe.Exped.xNome := Leitor.rCampo(tcStr, 'xNome');
       CTe.Exped.fone  := Leitor.rCampo(tcStr, 'fone');
@@ -298,7 +298,7 @@ begin
   (* Grupo da TAG <receb> *****************************************************)
   if Leitor.rExtrai(1, 'receb') <> '' then
   begin
-      CTe.receb.CNPJCPF := Leitor.rCampo(tcstr,'CNPJ');
+      CTe.receb.CNPJCPF := Leitor.rCampoCNPJCPF;
       CTe.receb.IE    := Leitor.rCampo(tcStr, 'IE');
       CTe.receb.xNome := Leitor.rCampo(tcStr, 'xNome');
       CTe.receb.fone  := Leitor.rCampo(tcStr, 'fone');
@@ -320,7 +320,7 @@ begin
   (* Grupo da TAG <dest> ******************************************************)
   if Leitor.rExtrai(1, 'dest') <> '' then
   begin
-      CTe.Dest.CNPJCPF := Leitor.rCampo(tcstr,'CNPJ');
+      CTe.Dest.CNPJCPF := Leitor.rCampoCNPJCPF;
       CTe.Dest.IE    := Leitor.rCampo(tcStr, 'IE');
       CTe.Dest.xNome := Leitor.rCampo(tcStr, 'xNome');
       CTe.Dest.fone  := Leitor.rCampo(tcStr, 'fone');

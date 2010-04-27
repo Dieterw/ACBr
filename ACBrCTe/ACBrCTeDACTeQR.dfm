@@ -1,6 +1,6 @@
 object frmDACTeQR: TfrmDACTeQR
-  Left = 217
-  Top = 134
+  Left = 235
+  Top = 155
   Width = 995
   Height = 708
   Caption = 'frmDACTeQR'

@@ -50,6 +50,11 @@ Símbolo : Significado
 
 Alterações   27/04/10
 ---------------
+[-] Corrigido o problema da não imprimir o Logo da empresa.
+
+
+Alterações   27/04/10
+---------------
 [-] Código de Barras estava sendo impresso faltando pedaço, falha apontada por Doni Delphi.
 [-] Ao ler o arquivo xml ficava em branco quando tem somente o CPF informado.
 [*] Incluido o UF após a descrição do município do remetente, destinatário, etc, falha apontada por Doni Delphi.

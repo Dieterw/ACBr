@@ -358,6 +358,8 @@ type
     procedure qrbCabecalhoBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
     procedure QRCTeBeforePrint(Sender: TCustomQuickRep; var PrintReport: Boolean);
     procedure qrbItensBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
+    procedure qrbSistemaBeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
   private
     FTotalPages: integer;
     procedure Itens;
@@ -488,11 +490,14 @@ end;
 
 procedure TfrmDACTeQRRetrato.qrbCabecalhoBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
 var
-  i                 : integer;
+  i : integer;
 begin
   inherited;
   PrintBand := QRCTe.PageNumber = 1 ;
-  
+
+  if Trim(FLogo) <> '' then
+   qriLogo.Picture.LoadFromFile(FLogo);
+
   qrlModal.Caption := TpModalToStrText(FCTe.Ide.modal);
   qrlModelo.Caption := FCTe.Ide.modelo;
   qrlSerie.Caption := IntToStr(FCTe.Ide.serie);
@@ -528,7 +533,7 @@ begin
   qrlTomaServico.Caption := TpTomadorToStrText(FCTe.Ide.Toma03.Toma);
   qrlFormaPagamento.Caption := tpforPagToStrText(FCTe.Ide.forPag);
 
-  if FProtocoloCTe <> '' then
+//  if FProtocoloCTe <> '' then
     qrlProtocolo.Caption := FProtocoloCTe;
 //  else
 //    qrlProtocolo.Caption := FProtocoloCTe ;
@@ -537,9 +542,7 @@ begin
 
   qrlInscSuframa.Caption := FCTe.Dest.ISUF;
 
-
-
-  //    TQRLabel(FindComponent('qrlQtdUndMedida' + intToStr(i+ 1))).Caption := CteUtil.FormatarValor(msk6x3, FCTe.InfCarga.InfQ.Items[i].qCarga);
+ //    TQRLabel(FindComponent('qrlQtdUndMedida' + intToStr(i+ 1))).Caption := CteUtil.FormatarValor(msk6x3, FCTe.InfCarga.InfQ.Items[i].qCarga);
 end;
 
 procedure TfrmDACTeQRRetrato.qrbItensBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
@@ -797,6 +800,13 @@ begin
   qrlMsgTeste.Enabled := FCTe.Ide.tpAmb = taHomologacao;
   qrmObsExcEmitente.Lines.Clear;
 //  qrmObsExcEmitente.Lines.Text := FCTe.Compl.xObs;
+end;
+
+procedure TfrmDACTeQRRetrato.qrbSistemaBeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+  inherited;
+  qrlblSistema.Caption:=FSistema + ' - ' + FUsuario;
 end;
 
 end.

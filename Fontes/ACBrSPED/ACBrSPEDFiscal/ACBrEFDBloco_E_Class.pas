@@ -69,23 +69,23 @@ type
     FRegistroE520Count: Integer;
     FRegistroE530Count: Integer;
 
-    function WriteRegistroE100(RegE001: TRegistroE001): String;
-    function WriteRegistroE110(RegE100: TRegistroE100): String;
-    function WriteRegistroE111(RegE110: TRegistroE110): String;
-    function WriteRegistroE112(RegE111: TRegistroE111): String;
-    function WriteRegistroE113(RegE111: TRegistroE111): String;
-    function WriteRegistroE115(RegE110: TRegistroE110): String;
-    function WriteRegistroE116(RegE110: TRegistroE110): String;
-    function WriteRegistroE200(RegE001: TRegistroE001): String;
-    function WriteRegistroE210(RegE200: TRegistroE200): String;
-    function WriteRegistroE220(RegE210: TRegistroE210): String;
-    function WriteRegistroE230(RegE220: TRegistroE220): String;
-    function WriteRegistroE240(RegE220: TRegistroE220): String;
-    function WriteRegistroE250(RegE210: TRegistroE210): String;
-    function WriteRegistroE500(RegE001: TRegistroE001): String;
-    function WriteRegistroE510(RegE500: TRegistroE500): String;
-    function WriteRegistroE520(RegE500: TRegistroE500): String;
-    function WriteRegistroE530(RegE520: TRegistroE520): String;
+    procedure WriteRegistroE100(RegE001: TRegistroE001);
+    procedure WriteRegistroE110(RegE100: TRegistroE100);
+    procedure WriteRegistroE111(RegE110: TRegistroE110);
+    procedure WriteRegistroE112(RegE111: TRegistroE111);
+    procedure WriteRegistroE113(RegE111: TRegistroE111);
+    procedure WriteRegistroE115(RegE110: TRegistroE110);
+    procedure WriteRegistroE116(RegE110: TRegistroE110);
+    procedure WriteRegistroE200(RegE001: TRegistroE001);
+    procedure WriteRegistroE210(RegE200: TRegistroE200);
+    procedure WriteRegistroE220(RegE210: TRegistroE210);
+    procedure WriteRegistroE230(RegE220: TRegistroE220);
+    procedure WriteRegistroE240(RegE220: TRegistroE220);
+    procedure WriteRegistroE250(RegE210: TRegistroE210);
+    procedure WriteRegistroE500(RegE001: TRegistroE001);
+    procedure WriteRegistroE510(RegE500: TRegistroE500);
+    procedure WriteRegistroE520(RegE500: TRegistroE500);
+    procedure WriteRegistroE530(RegE520: TRegistroE520);
 
     procedure CriaRegistros;
     procedure LiberaRegistros;
@@ -113,8 +113,8 @@ type
     function RegistroE520New: TRegistroE520;
     function RegistroE530New: TRegistroE530;
 
-    function WriteRegistroE001: String;
-    function WriteRegistroE990: String;
+    procedure WriteRegistroE001 ;
+    procedure WriteRegistroE990 ;
 
     property RegistroE001: TRegistroE001 read FRegistroE001 write FRegistroE001;
     property RegistroE990: TRegistroE990 read FRegistroE990 write FRegistroE990;
@@ -144,6 +144,7 @@ implementation
 
 constructor TBloco_E.Create;
 begin
+  inherited ;
   CriaRegistros;
 end;
 
@@ -189,6 +190,8 @@ procedure TBloco_E.LimpaRegistros;
 begin
   /// Limpa os Registros
   LiberaRegistros;
+  Conteudo.Clear;
+
   /// Recriar os Registros Limpos
   CriaRegistros;
 end;
@@ -323,135 +326,99 @@ begin
    Result := FRegistroE001.RegistroE500.Items[E500Count].RegistroE520.Items[E520Count].RegistroE530.New;
 end;
 
-function TBloco_E.WriteRegistroE001: String;
-var
-strRegistroE001: String;
+procedure TBloco_E.WriteRegistroE001 ;
 begin
-  Result := '';
-
   if Assigned(FRegistroE001) then
   begin
      with FRegistroE001 do
      begin
-       strRegistroE001 := strRegistroE001 + LFill( 'E001' ) +
-                                            LFill( Integer(IND_MOV), 0 ) +
-                                            Delimitador +
-                                            #13#10;
+       Add( LFill( 'E001' ) +
+            LFill( Integer(IND_MOV), 0 ) ) ;
      end;
-     strRegistroE001 := strRegistroE001 +
-                        WriteRegistroE100(FRegistroE001) +
-                        WriteRegistroE200(FRegistroE001) +
-                        WriteRegistroE500(FRegistroE001);
+     WriteRegistroE100(FRegistroE001) ;
+     WriteRegistroE200(FRegistroE001) ;
+     WriteRegistroE500(FRegistroE001) ;
      ///
      RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
   end;
-  Result := strRegistroE001;
 end;
 
-function TBloco_E.WriteRegistroE100(RegE001: TRegistroE001): String;
-var
-strRegistroE100: String;
+procedure TBloco_E.WriteRegistroE100(RegE001: TRegistroE001);
 begin
-  Result := '';
-
   if Assigned(RegE001.RegistroE100) then
   begin
      with RegE001.RegistroE100 do
      begin
-       strRegistroE100 := strRegistroE100 +
-                          LFill('E100') +
-                          LFill(DT_INI) +
-                          LFill(DT_FIN) +
-                          Delimitador +
-                          #13#10;
+       Add( LFill('E100') +
+            LFill(DT_INI) +
+            LFill(DT_FIN) ) ;
      end;
-     strRegistroE100 := strRegistroE100 +
-                        WriteRegistroE110(RegE001.RegistroE100);
+     WriteRegistroE110(RegE001.RegistroE100);
      ///
      RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
   end;
-  Result := strRegistroE100;
 end;
 
-function TBloco_E.WriteRegistroE110(RegE100: TRegistroE100): String;
-var
-strRegistroE110: String;
+procedure TBloco_E.WriteRegistroE110(RegE100: TRegistroE100) ;
 begin
-  Result := '';
-
   if Assigned(RegE100.RegistroE110) then
   begin
      with RegE100.RegistroE110 do
      begin
-       strRegistroE110 :=  strRegistroE110 +
-                           LFill('E110') +
-                           LFill(VL_TOT_DEBITOS,0) +
-                           LFill(VL_AJ_DEBITOS,0) +
-                           LFill(VL_TOT_AJ_DEBITOS,0) +
-                           LFill(VL_ESTORNOS_CRED,0) +
-                           LFill(VL_TOT_CREDITOS,0) +
-                           LFill(VL_AJ_CREDITOS,0) +
-                           LFill(VL_TOT_AJ_CREDITOS,0) +
-                           LFill(VL_ESTORNOS_DEB,0) +
-                           LFill(VL_SLD_CREDOR_ANT,0) +
-                           LFill(VL_SLD_APURADO,0) +
-                           LFill(VL_TOT_DED,0) +
-                           LFill(VL_ICMS_RECOLHER,0) +
-                           LFill(VL_SLD_CREDOR_TRANSPORTAR,0) +
-                           LFill(DEB_ESP,0) +
-                           Delimitador +
-                           #13#10;
+       Add( LFill('E110') +
+            LFill(VL_TOT_DEBITOS,0) +
+            LFill(VL_AJ_DEBITOS,0) +
+            LFill(VL_TOT_AJ_DEBITOS,0) +
+            LFill(VL_ESTORNOS_CRED,0) +
+            LFill(VL_TOT_CREDITOS,0) +
+            LFill(VL_AJ_CREDITOS,0) +
+            LFill(VL_TOT_AJ_CREDITOS,0) +
+            LFill(VL_ESTORNOS_DEB,0) +
+            LFill(VL_SLD_CREDOR_ANT,0) +
+            LFill(VL_SLD_APURADO,0) +
+            LFill(VL_TOT_DED,0) +
+            LFill(VL_ICMS_RECOLHER,0) +
+            LFill(VL_SLD_CREDOR_TRANSPORTAR,0) +
+            LFill(DEB_ESP,0) ) ;
      end;
-     strRegistroE110 := strRegistroE110 +
-                        WriteRegistroE111(RegE100.RegistroE110) +
-                        WriteRegistroE115(RegE100.RegistroE110) +
-                        WriteRegistroE116(RegE100.RegistroE110);
+     WriteRegistroE111(RegE100.RegistroE110) ;
+     WriteRegistroE115(RegE100.RegistroE110) ;
+     WriteRegistroE116(RegE100.RegistroE110) ;
      ///
      RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
   end;
-  Result := strRegistroE110;
 end;
 
-function TBloco_E.WriteRegistroE111(RegE110: TRegistroE110): String;
+procedure TBloco_E.WriteRegistroE111(RegE110: TRegistroE110) ;
 var
-intFor: integer;
-strRegistroE111: String;
+  intFor: integer;
 begin
-  strRegistroE111 := '';
-
   if Assigned( RegE110.RegistroE111 ) then
   begin
      for intFor := 0 to RegE110.RegistroE111.Count - 1 do
      begin
         with RegE110.RegistroE111.Items[intFor] do
         begin
-          strRegistroE111 := strRegistroE111 + LFill('E111') +
-                                               LFill( COD_AJ_APUR ) +
-                                               LFill( DESCR_COMPL_AJ ) +
-                                               LFill( VL_AJ_APUR,0 ) +
-                                               Delimitador +
-                                               #13#10;
+          Add( LFill('E111') +
+               LFill( COD_AJ_APUR ) +
+               LFill( DESCR_COMPL_AJ ) +
+               LFill( VL_AJ_APUR,0 ) ) ;
         end;
-        strRegistroE111 := strRegistroE111 +
-                           WriteRegistroE112(RegE110.RegistroE111.Items[intFor]) +
-                           WriteRegistroE113(RegE110.RegistroE111.Items[intFor]);
+        WriteRegistroE112(RegE110.RegistroE111.Items[intFor]) ;
+        WriteRegistroE113(RegE110.RegistroE111.Items[intFor]) ;
         ///
         RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
      end;
      /// Variavél para armazenar a quantidade de registro do tipo.
      FRegistroE111Count := FRegistroE111Count + RegE110.RegistroE111.Count;
   end;
-  Result := strRegistroE111;
 end;
 
-function TBloco_E.WriteRegistroE112(RegE111: TRegistroE111): String;
+procedure TBloco_E.WriteRegistroE112(RegE111: TRegistroE111) ;
 var
-intFor: integer;
-intIND_PROC: integer;
-strRegistroE112: String;
+  intFor: integer;
+  intIND_PROC: integer;
 begin
-  strRegistroE112 := '';
-
   if Assigned( RegE111.RegistroE112 ) then
   begin
      for intFor := 0 to RegE111.RegistroE112.Count - 1 do
@@ -465,93 +432,75 @@ begin
            opSecexRFB:        intIND_PROC := 3;
            opOutros:          intIND_PROC := 9;
           end;
-          strRegistroE112 := strRegistroE112 + LFill('E112') +
-                                               LFill( NUM_DA ) +
-                                               LFill( NUM_PROC ) +
-                                               LFill( intIND_PROC, 0 ) +
-                                               LFill( PROC ) +
-                                               LFill( TXT_COMPL ) +
-                                               Delimitador +
-                                               #13#10;
+          Add( LFill('E112') +
+               LFill( NUM_DA ) +
+               LFill( NUM_PROC ) +
+               LFill( intIND_PROC, 0 ) +
+               LFill( PROC ) +
+               LFill( TXT_COMPL ) ) ;
         end;
         RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
      end;
      /// Variavél para armazenar a quantidade de registro do tipo.
      FRegistroE112Count := FRegistroE112Count + RegE111.RegistroE112.Count;
   end;
-  Result := strRegistroE112;
 end;
 
-function TBloco_E.WriteRegistroE113(RegE111: TRegistroE111): String;
+procedure TBloco_E.WriteRegistroE113(RegE111: TRegistroE111) ;
 var
-intFor: integer;
-strRegistroE113: String;
+  intFor: integer;
 begin
-  strRegistroE113 := '';
-
   if Assigned( RegE111.RegistroE113 ) then
   begin
      for intFor := 0 to RegE111.RegistroE113.Count - 1 do
      begin
         with RegE111.RegistroE113.Items[intFor] do
         begin
-          strRegistroE113 := strRegistroE113 + LFill('E113') +
-                                               LFill( COD_PART ) +
-                                               LFill( COD_MOD ) +
-                                               LFill( SER ) +
-                                               LFill( SUB ) +
-                                               LFill( NUM_DOC ) +
-                                               LFill( DT_DOC ) +
-                                               LFill( CHV_NFE ) +
-                                               LFill( COD_ITEM ) +
-                                               LFill( VL_AJ_ITEM,0 ) +
-                                               Delimitador +
-                                               #13#10;
+          Add( LFill('E113') +
+               LFill( COD_PART ) +
+               LFill( COD_MOD ) +
+               LFill( SER ) +
+               LFill( SUB ) +
+               LFill( NUM_DOC ) +
+               LFill( DT_DOC ) +
+               LFill( CHV_NFE ) +
+               LFill( COD_ITEM ) +
+               LFill( VL_AJ_ITEM,0 )) ;
         end;
         RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
      end;
      /// Variavél para armazenar a quantidade de registro do tipo.
      FRegistroE113Count := FRegistroE113Count + RegE111.RegistroE113.Count;
   end;
-  Result := strRegistroE113;
 end;
 
-function TBloco_E.WriteRegistroE115(RegE110: TRegistroE110): String;
+procedure TBloco_E.WriteRegistroE115(RegE110: TRegistroE110) ;
 var
-intFor: integer;
-strRegistroE115: String;
+  intFor: integer;
 begin
-  strRegistroE115 := '';
-
   if Assigned( RegE110.RegistroE115 ) then
   begin
      for intFor := 0 to RegE110.RegistroE115.Count - 1 do
      begin
         with RegE110.RegistroE115.Items[intFor] do
         begin
-          strRegistroE115 := strRegistroE115 + LFill('E115') +
-                                               LFill( COD_INF_ADIC ) +
-                                               LFill( VL_INF_ADIC,0 ) +
-                                               LFill( DESCR_COMPL_AJ ) +
-                                               Delimitador +
-                                               #13#10;
+          Add( LFill('E115') +
+               LFill( COD_INF_ADIC ) +
+               LFill( VL_INF_ADIC,0 ) +
+               LFill( DESCR_COMPL_AJ ) ) ;
         end;
         RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
      end;
      /// Variavél para armazenar a quantidade de registro do tipo.
      FRegistroE115Count := FRegistroE115Count + RegE110.RegistroE115.Count;
   end;
-  Result := strRegistroE115;
 end;
 
-function TBloco_E.WriteRegistroE116(RegE110: TRegistroE110): String;
+procedure TBloco_E.WriteRegistroE116(RegE110: TRegistroE110) ;
 var
-intFor: integer;
-strIND_PROC: string;
-strRegistroE116: string;
+  intFor: integer;
+  strIND_PROC: AnsiString;
 begin
-  strRegistroE116 := '';
-
   if Assigned( RegE110.RegistroE116 ) then
   begin
      for intFor := 0 to RegE110.RegistroE116.Count - 1 do
@@ -566,143 +515,116 @@ begin
            opOutros:          strIND_PROC := '9';
            opNenhum:          strIND_PROC := '';
           end;
-          strRegistroE116 := strRegistroE116 + LFill('E116') +
-                                               LFill( COD_OR ) +
-                                               LFill( VL_OR,0 ) +
-                                               LFill( DT_VCTO ) +
-                                               LFill( COD_REC ) +
-                                               LFill( NUM_PROC ) +
-                                               LFill( strIND_PROC ) +
-                                               LFill( PROC ) +
-                                               LFill( TXT_COMPL ) +
-                                               Delimitador +
-                                               #13#10;
+          Add( LFill('E116') +
+               LFill( COD_OR ) +
+               LFill( VL_OR,0 ) +
+               LFill( DT_VCTO ) +
+               LFill( COD_REC ) +
+               LFill( NUM_PROC ) +
+               LFill( strIND_PROC ) +
+               LFill( PROC ) +
+               LFill( TXT_COMPL ) ) ;
         end;
         RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
      end;
      /// Variavél para armazenar a quantidade de registro do tipo.
      FRegistroE116Count := FRegistroE116Count + RegE110.RegistroE116.Count;
   end;
-  Result := strRegistroE116;
 end;
 
-function TBloco_E.WriteRegistroE200(RegE001: TRegistroE001): String;
+procedure TBloco_E.WriteRegistroE200(RegE001: TRegistroE001) ;
 var
-intFor: integer;
-strRegistroE200: String;
+  intFor: integer;
 begin
-  strRegistroE200 := '';
-
   if Assigned( RegE001.RegistroE200 ) then
   begin
      for intFor := 0 to RegE001.RegistroE200.Count - 1 do
      begin
         with RegE001.RegistroE200.Items[intFor] do
         begin
-          strRegistroE200 := strRegistroE200 + LFill('E200') +
-                                               LFill( UF ) +
-                                               LFill( DT_INI ) +
-                                               LFill( DT_FIN ) +
-                                               Delimitador +
-                                               #13#10;
+          Add( LFill('E200') +
+               LFill( UF ) +
+               LFill( DT_INI ) +
+               LFill( DT_FIN ) ) ;
         end;
         /// Registros FILHOS
-        strRegistroE200 := strRegistroE200 +
-                           WriteRegistroE210(RegE001.RegistroE200.Items[intFor]);
+        WriteRegistroE210(RegE001.RegistroE200.Items[intFor]);
         //
         RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
      end;
      /// Variavél para armazenar a quantidade de registro do tipo.
      FRegistroE200Count := FRegistroE200Count + RegE001.RegistroE200.Count;
   end;
-  Result := strRegistroE200;
 end;
 
-function TBloco_E.WriteRegistroE210(RegE200: TRegistroE200): String;
+procedure TBloco_E.WriteRegistroE210(RegE200: TRegistroE200) ;
 var
-intFor: integer;
-strRegistroE210: String;
+  intFor: integer;
 begin
-  strRegistroE210 := '';
-
   if Assigned( RegE200.RegistroE210 ) then
   begin
      for intFor := 0 to RegE200.RegistroE210.Count - 1 do
      begin
         with RegE200.RegistroE210.Items[intFor] do
         begin
-          strRegistroE210 := strRegistroE210 + LFill('E210') +
-                                               LFill( Integer(IND_MOV_ST), 0 ) +
-                                               LFill( VL_SLD_CRED_ANT_ST,0 ) +
-                                               LFill( VL_DEVOL_ST, 0 ) +
-                                               LFill( VL_RESSARC_ST, 0 ) +
-                                               LFill( VL_OUT_CRED_ST, 0 ) +
-                                               LFill( VL_AJ_CREDITOS_ST, 0 ) +
-                                               LFill( VL_RETENCAO_ST, 0 ) +
-                                               LFill( VL_OUT_DEB_ST, 0 ) +
-                                               LFill( VL_AJ_DEBITOS_ST, 0 ) +
-                                               LFill( VL_SLD_DEV_ANT_ST, 0 ) +
-                                               LFill( VL_DEDUCOES_ST, 0 ) +
-                                               LFill( VL_ICMS_RECOL_ST, 0 ) +
-                                               LFill( VL_SLD_CRED_ST_TRANSPORTAR, 0 ) +
-                                               LFill( DEB_ESP_ST, 0 ) +
-                                               Delimitador +
-                                               #13#10;
+          Add( LFill('E210') +
+               LFill( Integer(IND_MOV_ST), 0 ) +
+               LFill( VL_SLD_CRED_ANT_ST,0 ) +
+               LFill( VL_DEVOL_ST, 0 ) +
+               LFill( VL_RESSARC_ST, 0 ) +
+               LFill( VL_OUT_CRED_ST, 0 ) +
+               LFill( VL_AJ_CREDITOS_ST, 0 ) +
+               LFill( VL_RETENCAO_ST, 0 ) +
+               LFill( VL_OUT_DEB_ST, 0 ) +
+               LFill( VL_AJ_DEBITOS_ST, 0 ) +
+               LFill( VL_SLD_DEV_ANT_ST, 0 ) +
+               LFill( VL_DEDUCOES_ST, 0 ) +
+               LFill( VL_ICMS_RECOL_ST, 0 ) +
+               LFill( VL_SLD_CRED_ST_TRANSPORTAR, 0 ) +
+               LFill( DEB_ESP_ST, 0 ) ) ;
         end;
         /// Registros FILHOS
-        strRegistroE210 := strRegistroE210 +
-                           WriteRegistroE220(RegE200.RegistroE210.Items[intFor]) +
-                           WriteRegistroE250(RegE200.RegistroE210.Items[intFor]);
+        WriteRegistroE220(RegE200.RegistroE210.Items[intFor]) ;
+        WriteRegistroE250(RegE200.RegistroE210.Items[intFor]) ;
         ///
         RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
      end;
      /// Variavél para armazenar a quantidade de registro do tipo.
      FRegistroE210Count := FRegistroE210Count + RegE200.RegistroE210.Count;
   end;
-  Result := strRegistroE210;
 end;
 
-function TBloco_E.WriteRegistroE220(RegE210: TRegistroE210): String;
+procedure TBloco_E.WriteRegistroE220(RegE210: TRegistroE210) ;
 var
-intFor: integer;
-strRegistroE220: String;
+  intFor: integer;
 begin
-  strRegistroE220 := '';
-
   if Assigned( RegE210.RegistroE220 ) then
   begin
      for intFor := 0 to RegE210.RegistroE220.Count - 1 do
      begin
         with RegE210.RegistroE220.Items[intFor] do
         begin
-          strRegistroE220 := strRegistroE220 + LFill('E220') +
-                                               LFill( COD_AJ_APUR ) +
-                                               LFill( DESCR_COMPL_AJ ) +
-                                               LFill( VL_AJ_APUR,0 ) +
-                                               Delimitador +
-                                               #13#10;
+          Add( LFill('E220') +
+               LFill( COD_AJ_APUR ) +
+               LFill( DESCR_COMPL_AJ ) +
+               LFill( VL_AJ_APUR,0 )) ;
         end;
         /// Registros FILHOS
-        strRegistroE220 := strRegistroE220 +
-                           WriteRegistroE230(RegE210.RegistroE220.Items[intFor]) +
-                           WriteRegistroE240(RegE210.RegistroE220.Items[intFor]);
+        WriteRegistroE230(RegE210.RegistroE220.Items[intFor]) ;
+        WriteRegistroE240(RegE210.RegistroE220.Items[intFor]) ;
         //
         RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
      end;
      /// Variavél para armazenar a quantidade de registro do tipo.
      FRegistroE220Count := FRegistroE220Count + RegE210.RegistroE220.Count;
   end;
-  Result := strRegistroE220;
 end;
 
-function TBloco_E.WriteRegistroE230(RegE220: TRegistroE220): String;
+procedure TBloco_E.WriteRegistroE230(RegE220: TRegistroE220) ;
 var
-intFor: integer;
-intIND_PROC: integer;
-strRegistroE230: String;
+  intFor: integer;
+  intIND_PROC: integer;
 begin
-  strRegistroE230 := '';
-
   if Assigned( RegE220.RegistroE230 ) then
   begin
      for intFor := 0 to RegE220.RegistroE230.Count - 1 do
@@ -716,65 +638,54 @@ begin
            opSecexRFB:        intIND_PROC := 3;
            opOutros:          intIND_PROC := 9;
           end;
-          strRegistroE230 := strRegistroE230 + LFill('E230') +
-                                               LFill( NUM_DA ) +
-                                               LFill( NUM_PROC ) +
-                                               LFill( intIND_PROC, 0 ) +
-                                               LFill( PROC ) +
-                                               LFill( TXT_COMPL ) +
-                                               Delimitador +
-                                               #13#10;
+
+          Add( LFill('E230') +
+               LFill( NUM_DA ) +
+               LFill( NUM_PROC ) +
+               LFill( intIND_PROC, 0 ) +
+               LFill( PROC ) +
+               LFill( TXT_COMPL ) ) ;
         end;
         RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
      end;
      /// Variavél para armazenar a quantidade de registro do tipo.
      FRegistroE230Count := FRegistroE230Count + RegE220.RegistroE230.Count;
   end;
-  Result := strRegistroE230;
 end;
 
-function TBloco_E.WriteRegistroE240(RegE220: TRegistroE220): String;
+procedure TBloco_E.WriteRegistroE240(RegE220: TRegistroE220) ;
 var
-intFor: integer;
-strRegistroE240: String;
+  intFor: integer;
 begin
-  strRegistroE240 := '';
-
   if Assigned( RegE220.RegistroE240 ) then
   begin
      for intFor := 0 to RegE220.RegistroE240.Count - 1 do
      begin
         with RegE220.RegistroE240.Items[intFor] do
         begin
-          strRegistroE240 := strRegistroE240 + LFill('E240') +
-                                               LFill( COD_PART ) +
-                                               LFill( COD_MOD ) +
-                                               LFill( SER ) +
-                                               LFill( SUB ) +
-                                               LFill( NUM_DOC ) +
-                                               LFill( DT_DOC ) +
-                                               LFill( CHV_NFE ) +
-                                               LFill( COD_ITEM ) +
-                                               LFill( VL_AJ_ITEM,0 ) +
-                                               Delimitador +
-                                               #13#10;
+          Add( LFill('E240') +
+               LFill( COD_PART ) +
+               LFill( COD_MOD ) +
+               LFill( SER ) +
+               LFill( SUB ) +
+               LFill( NUM_DOC ) +
+               LFill( DT_DOC ) +
+               LFill( CHV_NFE ) +
+               LFill( COD_ITEM ) +
+               LFill( VL_AJ_ITEM,0 ) ) ;
         end;
         RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
      end;
      /// Variavél para armazenar a quantidade de registro do tipo.
      FRegistroE240Count := FRegistroE240Count + RegE220.RegistroE240.Count;
   end;
-  Result := strRegistroE240;
 end;
 
-function TBloco_E.WriteRegistroE250(RegE210: TRegistroE210): String;
+procedure TBloco_E.WriteRegistroE250(RegE210: TRegistroE210) ;
 var
-intFor: integer;
-strIND_PROC: string;
-strRegistroE250: string;
+  intFor: integer;
+  strIND_PROC: AnsiString;
 begin
-  strRegistroE250 := '';
-
   if Assigned( RegE210.RegistroE250 ) then
   begin
      for intFor := 0 to RegE210.RegistroE250.Count - 1 do
@@ -789,67 +700,55 @@ begin
            opOutros:          strIND_PROC := '9';
            opNenhum:          strIND_PROC := '';
           end;
-          strRegistroE250 := strRegistroE250 + LFill('E250') +
-                                               LFill( COD_OR ) +
-                                               LFill( VL_OR,0 ) +
-                                               LFill( DT_VCTO ) +
-                                               LFill( COD_REC ) +
-                                               LFill( NUM_PROC ) +
-                                               LFill( strIND_PROC ) +
-                                               LFill( PROC ) +
-                                               LFill( TXT_COMPL ) +
-                                               Delimitador +
-                                               #13#10;
+
+          Add( LFill('E250') +
+               LFill( COD_OR ) +
+               LFill( VL_OR,0 ) +
+               LFill( DT_VCTO ) +
+               LFill( COD_REC ) +
+               LFill( NUM_PROC ) +
+               LFill( strIND_PROC ) +
+               LFill( PROC ) +
+               LFill( TXT_COMPL ) ) ;
         end;
         RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
      end;
      /// Variavél para armazenar a quantidade de registro do tipo.
      FRegistroE250Count := FRegistroE250Count + RegE210.RegistroE250.Count;
   end;
-  Result := strRegistroE250;
 end;
 
-function TBloco_E.WriteRegistroE500(RegE001: TRegistroE001): String;
+procedure TBloco_E.WriteRegistroE500(RegE001: TRegistroE001) ;
 var
-intFor: integer;
-strRegistroE500: String;
+  intFor: integer;
 begin
-  strRegistroE500 := '';
-
   if Assigned( RegE001.RegistroE500 ) then
   begin
      for intFor := 0 to RegE001.RegistroE500.Count - 1 do
      begin
         with RegE001.RegistroE500.Items[intFor] do
         begin
-          strRegistroE500 := strRegistroE500 + LFill('E500') +
-                                               LFill( Integer(IND_APUR), 0 ) +
-                                               LFill( DT_INI ) +
-                                               LFill( DT_FIN ) +
-                                               Delimitador +
-                                               #13#10;
+          Add( LFill('E500') +
+               LFill( Integer(IND_APUR), 0 ) +
+               LFill( DT_INI ) +
+               LFill( DT_FIN ) ) ;
         end;
         /// Registros FILHOS
-        strRegistroE500 := strRegistroE500 +
-                           WriteRegistroE510(RegE001.RegistroE500.Items[intFor]) +
-                           WriteRegistroE520(RegE001.RegistroE500.Items[intFor]);
+        WriteRegistroE510(RegE001.RegistroE500.Items[intFor]) ;
+        WriteRegistroE520(RegE001.RegistroE500.Items[intFor]) ;
         ///
         RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
      end;
      /// Variavél para armazenar a quantidade de registro do tipo.
      FRegistroE500Count := FRegistroE500Count + RegE001.RegistroE500.Count;
   end;
-  Result := strRegistroE500;
 end;
 
-function TBloco_E.WriteRegistroE510(RegE500: TRegistroE500): String;
+procedure TBloco_E.WriteRegistroE510(RegE500: TRegistroE500) ;
 var
-intFor: integer;
-//strCST_IPI: String;
-strRegistroE510: String;
+  intFor: integer;
+  //strCST_IPI: AnsiString;
 begin
-  strRegistroE510 := '';
-
   if Assigned( RegE500.RegistroE510 ) then
   begin
      for intFor := 0 to RegE500.RegistroE510.Count - 1 do
@@ -874,68 +773,55 @@ begin
            ipiOutrasSaidas:              strCST_IPI := '99';
           end;
 }
-          strRegistroE510 := strRegistroE510 + LFill('E510') +
-                                               LFill( CFOP,4 ) +
-//                                               LFill( strCST_IPI ) +
-                                               LFill( CST_IPI ) +
-                                               LFill( VL_CONT_IPI,0 ) +
-                                               LFill( VL_BC_IPI,0 ) +
-                                               LFill( VL_IPI,0 ) +
-                                               Delimitador +
-                                               #13#10;
+          Add( LFill('E510') +
+               LFill( CFOP,4 ) +
+               // LFill( strCST_IPI ) +
+               LFill( CST_IPI ) +
+               LFill( VL_CONT_IPI,0 ) +
+               LFill( VL_BC_IPI,0 ) +
+               LFill( VL_IPI,0 ) ) ;
         end;
         RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
      end;
      /// Variavél para armazenar a quantidade de registro do tipo.
      FRegistroE510Count := FRegistroE510Count + RegE500.RegistroE510.Count;
   end;
-  Result := strRegistroE510;
 end;
 
-function TBloco_E.WriteRegistroE520(RegE500: TRegistroE500): String;
+procedure TBloco_E.WriteRegistroE520(RegE500: TRegistroE500) ;
 var
-intFor: integer;
-strRegistroE520: String;
+  intFor: integer;
 begin
-  strRegistroE520 := '';
-
   if Assigned( RegE500.RegistroE520 ) then
   begin
      for intFor := 0 to RegE500.RegistroE520.Count - 1 do
      begin
         with RegE500.RegistroE520.Items[intFor] do
         begin
-          strRegistroE520 := strRegistroE520 + LFill('E520') +
-                                               LFill( VL_SD_ANT_IPI,0 ) +
-                                               LFill( VL_DEB_IPI,0 ) +
-                                               LFill( VL_CRED_IPI,0 ) +
-                                               LFill( VL_OD_IPI,0 ) +
-                                               LFill( VL_OC_IPI,0 ) +
-                                               LFill( VL_SC_IPI,0 ) +
-                                               LFill( VL_SD_IPI,0 ) +
-                                               Delimitador +
-                                               #13#10;
+          Add( LFill('E520') +
+               LFill( VL_SD_ANT_IPI,0 ) +
+               LFill( VL_DEB_IPI,0 ) +
+               LFill( VL_CRED_IPI,0 ) +
+               LFill( VL_OD_IPI,0 ) +
+               LFill( VL_OC_IPI,0 ) +
+               LFill( VL_SC_IPI,0 ) +
+               LFill( VL_SD_IPI,0 ) ) ;
         end;
         /// Registros FILHOS
-        strRegistroE520 := strRegistroE520;
-                           WriteRegistroE530(RegE500.RegistroE520.Items[intFor]);
+        WriteRegistroE530(RegE500.RegistroE520.Items[intFor]);
         //
         RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
      end;
      /// Variavél para armazenar a quantidade de registro do tipo.
      FRegistroE520Count := FRegistroE520Count + RegE500.RegistroE520.Count;
   end;
-  Result := strRegistroE520;
 end;
 
-function TBloco_E.WriteRegistroE530(RegE520: TRegistroE520): String;
+procedure TBloco_E.WriteRegistroE530(RegE520: TRegistroE520) ;
 var
-intFor: integer;
-intIND_DOC: integer;
-strRegistroE530: String;
+  intFor: integer;
+  intIND_DOC: integer;
 begin
-  strRegistroE530 := '';
-
   if Assigned( RegE520.RegistroE530 ) then
   begin
      for intFor := 0 to RegE520.RegistroE530.Count - 1 do
@@ -948,38 +834,32 @@ begin
            odPerDcomp:         intIND_DOC := 2;
            odOutros:           intIND_DOC := 9;
           end;
-          strRegistroE530 := strRegistroE530 + LFill('E530') +
-                                               LFill( Integer(IND_AJ), 0 ) +
-                                               LFill( VL_AJ,0 ) +
-                                               LFill( COD_AJ ) +
-                                               LFill( intIND_DOC, 0 ) +
-                                               LFill( NUM_DOC ) +
-                                               LFill( DESCR_AJ ) +
-                                               Delimitador +
-                                               #13#10;
+
+          Add( LFill('E530') +
+               LFill( Integer(IND_AJ), 0 ) +
+               LFill( VL_AJ,0 ) +
+               LFill( COD_AJ ) +
+               LFill( intIND_DOC, 0 ) +
+               LFill( NUM_DOC ) +
+               LFill( DESCR_AJ ) ) ;
         end;
         RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
      end;
      /// Variavél para armazenar a quantidade de registro do tipo.
      FRegistroE530Count := FRegistroE530Count + RegE520.RegistroE530.Count;
   end;
-  Result := strRegistroE530;
 end;
 
-function TBloco_E.WriteRegistroE990: String;
+procedure TBloco_E.WriteRegistroE990 ;
 begin
-  Result := '';
-
   if Assigned(RegistroE990) then
   begin
      with RegistroE990 do
      begin
        QTD_LIN_E := QTD_LIN_E + 1;
        ///
-       Result := LFill('E990') +
-                 LFill(QTD_LIN_E,0) +
-                 Delimitador +
-                 #13#10;
+       Add( LFill('E990') +
+            LFill(QTD_LIN_E,0) ) ;
      end;
   end;
 end;

@@ -61,14 +61,14 @@ type
     destructor Destroy; override; /// Destroy
     procedure LimpaRegistros;
 
-    function WriteRegistroJ001: String;
-    function WriteRegistroJ005: String;
-    function WriteRegistroJ100: String;
-    function WriteRegistroJ150: String;
-    function WriteRegistroJ800: String;
-    function WriteRegistroJ900: String;
-    function WriteRegistroJ930: String;
-    function WriteRegistroJ990: String;
+    function WriteRegistroJ001: AnsiString;
+    function WriteRegistroJ005: AnsiString;
+    function WriteRegistroJ100: AnsiString;
+    function WriteRegistroJ150: AnsiString;
+    function WriteRegistroJ800: AnsiString;
+    function WriteRegistroJ900: AnsiString;
+    function WriteRegistroJ930: AnsiString;
+    function WriteRegistroJ990: AnsiString;
 
     property RegistroJ001: TRegistroJ001     read fRegistroJ001 write fRegistroJ001;
     property RegistroJ005: TRegistroJ005List read fRegistroJ005 write fRegistroJ005;
@@ -122,7 +122,7 @@ begin
   FRegistroJ990.QTD_LIN_J := 0;
 end;
 
-function TBloco_J.WriteRegistroJ001: String;
+function TBloco_J.WriteRegistroJ001: AnsiString;
 begin
   Result := '';
 
@@ -142,10 +142,10 @@ begin
   end;
 end;
 
-function TBloco_J.WriteRegistroJ005: String;
+function TBloco_J.WriteRegistroJ005: AnsiString;
 var
 intFor: integer;
-strRegistroJ005: String;
+strRegistroJ005: AnsiString;
 begin
   strRegistroJ005 := '';
 
@@ -171,10 +171,10 @@ begin
   Result := strRegistroJ005;
 end;
 
-function TBloco_J.WriteRegistroJ100: String;
+function TBloco_J.WriteRegistroJ100: AnsiString;
 var
 intFor: integer;
-strRegistroJ100: String;
+strRegistroJ100: AnsiString;
 begin
   strRegistroJ100 := '';
 
@@ -203,10 +203,10 @@ begin
   Result := strRegistroJ100;
 end;
 
-function TBloco_J.WriteRegistroJ150: String;
+function TBloco_J.WriteRegistroJ150: AnsiString;
 var
 intFor: integer;
-strRegistroJ150: String;
+strRegistroJ150: AnsiString;
 begin
   strRegistroJ150 := '';
 
@@ -233,10 +233,10 @@ begin
   Result := strRegistroJ150;
 end;
 
-function TBloco_J.WriteRegistroJ800: String;
+function TBloco_J.WriteRegistroJ800: AnsiString;
 var
 intFor: integer;
-strRegistroJ800: String;
+strRegistroJ800: AnsiString;
 begin
   strRegistroJ800 := '';
 
@@ -259,7 +259,7 @@ begin
   Result := strRegistroJ800;
 end;
 
-function TBloco_J.WriteRegistroJ900: String;
+function TBloco_J.WriteRegistroJ900: AnsiString;
 begin
   Result := '';
 
@@ -285,10 +285,10 @@ begin
   end;
 end;
 
-function TBloco_J.WriteRegistroJ930: String;
+function TBloco_J.WriteRegistroJ930: AnsiString;
 var
 intFor: integer;
-strRegistroJ930: String;
+strRegistroJ930: AnsiString;
 begin
   strRegistroJ930 := '';
 
@@ -314,7 +314,7 @@ begin
   Result := strRegistroJ930;
 end;
 
-function TBloco_J.WriteRegistroJ990: String;
+function TBloco_J.WriteRegistroJ990: AnsiString;
 begin
   Result := '';
 

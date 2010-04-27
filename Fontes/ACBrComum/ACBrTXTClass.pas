@@ -47,6 +47,8 @@ uses SysUtils, Classes, DateUtils, Math;
 type
   TErrorEvent = procedure(const MsnError: AnsiString) of object;
 
+  { TACBrTXTClass }
+
   TACBrTXTClass = class
   private
     FOnError: TErrorEvent;
@@ -54,10 +56,17 @@ type
     FTrimString: boolean;     /// Retorna a string sem espaços em branco iniciais e finais
     FCurMascara: String;      /// Mascara para valores tipo currency
 
-    FListaMUN: TStringList;
+    FConteudo : TStringList;
 
     procedure AssignError(MsnError: String);
   public
+    constructor create ;
+    destructor destroy ; override ;
+
+    procedure SaveToFile( const AFileName : AnsiString ) ;
+    procedure LoadFromFile( const AFileName : AnsiString ) ;
+    Function Add( const AString : AnsiString; AddDelimiter : Boolean = True ) : Integer;
+
     function RFill(Value: String; Size: Integer = 0; Caracter: Char = ' '): String; overload;
     function LFill(Value: String; Size: Integer = 0; Caracter: Char = '0'): String; overload;
     function DFill(Value: Double;
@@ -78,11 +87,52 @@ type
     property TrimString: boolean read FTrimString write FTrimString;
     property CurMascara: String read FCurMascara write FCurMascara;
     property OnError: TErrorEvent read FOnError write FOnError;
+
+    property Conteudo : TStringList read FConteudo ;
   end;
 
 implementation
 
+Uses ACBrUtil ;
+
 (* TACBrTXTClass *)
+
+constructor TACBrTXTClass.create;
+begin
+   FConteudo := TStringList.Create ;
+end;
+
+destructor TACBrTXTClass.destroy;
+begin
+  FConteudo.Free;
+
+  inherited destroy;
+end;
+
+procedure TACBrTXTClass.SaveToFile(const AFileName: AnsiString);
+begin
+   FConteudo.SaveToFile(AFileName);
+end;
+
+procedure TACBrTXTClass.LoadFromFile(const AFileName: AnsiString);
+begin
+   FConteudo.LoadFromFile( AFileName );
+end;
+
+function TACBrTXTClass.Add(const AString: AnsiString; AddDelimiter: Boolean
+   ): Integer;
+Var
+  S : AnsiString ;
+begin
+   S      := Trim( AString ) ;
+   Result := -1 ;
+   if S = '' then exit ;
+
+   if AddDelimiter then
+      S := S + Delimitador;
+
+   Result := FConteudo.Add( S );
+end;
 
 procedure TACBrTXTClass.Check(Condicao: Boolean; const Msg: String);
 begin
@@ -186,7 +236,7 @@ end;
 
 procedure TACBrTXTClass.AssignError(MsnError: String);
 begin
-  if Assigned(FOnError) then FOnError(MsnError);
+  if Assigned(FOnError) then FOnError( ACBrStr(MsnError) );
 end;
 
 end.

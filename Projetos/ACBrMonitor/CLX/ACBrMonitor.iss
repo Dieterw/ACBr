@@ -8,6 +8,7 @@
 #define MyAppUrlName "ACBrMonitor.url"
 #define MyAppExeName "ACBrMonitor.exe"
 #define QTDLL "qtintf70.dll"
+#define DLLsDIR "..\DLLs"
 
 [Setup]
 AppName={#MyAppName}
@@ -53,12 +54,12 @@ Source: LICENCA.TXT; DestDir: {app}; Flags: ignoreversion; Components: programa
 Source: LICENSE.TXT; DestDir: {app}; Flags: ignoreversion; Components: programa
 Source: ACBrMonitor.chm; DestDir: {app}; Flags: ignoreversion; Components: help
 Source: ACBrMonitor-change-log.txt; DestDir: {app}; Flags: ignoreversion; Components: help
-Source: DLLs\{#QTDLL}; DestDir: {sys}; Flags: ; Components: programa
-Source: DLLs\inpout32.dll; DestDir: {sys}; Flags: ; Components: programa
-Source: OpenSSL\openssl.exe; DestDir: {app}; Flags: ; Components: programa
-Source: OpenSSL\libeay32.dll; DestDir: {app}; Flags: ; Components: programa
-Source: OpenSSL\ssleay32.dll; DestDir: {app}; Flags: ; Components: programa
-Source: OpenSSL\msvcr71.dll; DestDir: {app}; Flags: ; Components: programa
+Source: {#DLLsDIR}\CLX\{#QTDLL}; DestDir: {sys}; Flags: ; Components: programa
+Source: {#DLLsDIR}\Diversos\inpout32.dll; DestDir: {sys}; Flags: ; Components: programa
+Source: {#DLLsDIR}\OpenSSL\openssl.exe; DestDir: {app}; Flags: ; Components: programa
+Source: {#DLLsDIR}\OpenSSL\libeay32.dll; DestDir: {app}; Flags: ; Components: programa
+Source: {#DLLsDIR}\OpenSSL\ssleay32.dll; DestDir: {app}; Flags: ; Components: programa
+Source: {#DLLsDIR}\MSVCR\msvcr71.dll; DestDir: {app}; Flags: ; Components: programa
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [INI]

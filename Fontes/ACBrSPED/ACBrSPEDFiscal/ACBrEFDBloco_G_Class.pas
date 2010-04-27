@@ -58,10 +58,10 @@ type
     FRegistroG130Count: Integer;
     FRegistroG140Count: Integer;
 
-    function WriteRegistroG110(RegG001: TRegistroG001): String;
-    function WriteRegistroG125(RegG110: TRegistroG110): String;
-    function WriteRegistroG130(RegG125: TRegistroG125): String;
-    function WriteRegistroG140(RegG130: TRegistroG130): String;
+    procedure WriteRegistroG110(RegG001: TRegistroG001);
+    procedure WriteRegistroG125(RegG110: TRegistroG110);
+    procedure WriteRegistroG130(RegG125: TRegistroG125);
+    procedure WriteRegistroG140(RegG130: TRegistroG130);
 
     procedure CriaRegistros;
     procedure LiberaRegistros;
@@ -76,8 +76,8 @@ type
     function RegistroG130New: TRegistroG130;
     function RegistroG140New: TRegistroG140;
 
-    function WriteRegistroG001: String;
-    function WriteRegistroG990: String;
+    procedure WriteRegistroG001;
+    procedure WriteRegistroG990;
 
     property Bloco_0: TBloco_0 read FBloco_0 write FBloco_0;
     property RegistroG001: TRegistroG001 read FRegistroG001 write FRegistroG001;
@@ -96,6 +96,7 @@ implementation
 
 constructor TBloco_G.Create;
 begin
+  inherited ;
   CriaRegistros;
 end;
 
@@ -126,7 +127,12 @@ end;
 
 procedure TBloco_G.LimpaRegistros;
 begin
-  FRegistroG990.QTD_LIN_G := 0;
+  /// Limpa os Registros
+  LiberaRegistros;
+  Conteudo.Clear;
+
+  /// Recriar os Registros Limpos
+  CriaRegistros;
 end;
 
 function TBloco_G.RegistroG001New: TRegistroG001;
@@ -172,76 +178,58 @@ begin
    Result := FRegistroG001.RegistroG110.Items[G110Count].RegistroG125.Items[G125Count].RegistroG130.Items[G130Count].RegistroG140.New;
 end;
 
-function TBloco_G.WriteRegistroG001: String;
-var
-strRegistroG001: String;
+procedure TBloco_G.WriteRegistroG001;
 begin
-  Result := '';
-
   if Assigned(RegistroG001) then
   begin
      with RegistroG001 do
      begin
-       strRegistroG001 :=  strRegistroG001 + LFill( 'G001' ) +
-                                             LFill( Integer(IND_MOV), 0 ) +
-                                             Delimitador +
-                                             #13#10;
+       Add( LFill( 'G001' ) +
+            LFill( Integer(IND_MOV), 0 ) ) ;
        ///
-       strRegistroG001 := strRegistroG001 +
-                          WriteRegistroG110(FRegistroG001);
+       WriteRegistroG110(FRegistroG001);
        ///
        RegistroG990.QTD_LIN_G := RegistroG990.QTD_LIN_G + 1;
      end;
   end;
-  Result := strRegistroG001;
 end;
 
-function TBloco_G.WriteRegistroG110(RegG001: TRegistroG001): String;
+procedure TBloco_G.WriteRegistroG110(RegG001: TRegistroG001);
 var
-intFor: integer;
-strRegistroG110: String;
+  intFor: integer;
 begin
-  Result := '';
-
   if Assigned(RegG001.RegistroG110) then
   begin
      for intFor := 0 to RegG001.RegistroG110.Count - 1 do
      begin
         with RegG001.RegistroG110.Items[intFor] do
         begin
-           strRegistroG110 := strRegistroG110 +  LFill('G110') +
-                                                 LFill( DT_INI) +
-                                                 LFill( DT_FIN) +
-                                                 LFill( MODO_CIAP ) +
-                                                 LFill( SALDO_IN_ICMS, 0, 2 ) +
-                                                 LFill( SALDO_FN_ICMS, 0, 2 ) +
-                                                 LFill( SOM_PARC, 0, 2 ) +
-                                                 LFill( VL_TRIB_EXP, 0, 2 ) +
-                                                 LFill( VL_TOTAL, 0, 2 ) +
-                                                 DFill( PER_SAI_TRIB, 4 ) +
-                                                 LFill( ICMS_APROP, 0, 2 ) +
-                                                 Delimitador +
-                                                 #13#10;
+           Add( LFill('G110') +
+                LFill( DT_INI) +
+                LFill( DT_FIN) +
+                LFill( MODO_CIAP ) +
+                LFill( SALDO_IN_ICMS, 0, 2 ) +
+                LFill( SALDO_FN_ICMS, 0, 2 ) +
+                LFill( SOM_PARC, 0, 2 ) +
+                LFill( VL_TRIB_EXP, 0, 2 ) +
+                LFill( VL_TOTAL, 0, 2 ) +
+                DFill( PER_SAI_TRIB, 4 ) +
+                LFill( ICMS_APROP, 0, 2 ) ) ;
            ///
-           strRegistroG110 := strRegistroG110 +
-                              WriteRegistroG125( RegG001.RegistroG110.Items[intFor] );
+           WriteRegistroG125( RegG001.RegistroG110.Items[intFor] );
          end;
         RegistroG990.QTD_LIN_G := RegistroG990.QTD_LIN_G + 1;
      end;
      /// Variavél para armazenar a quantidade de registro do tipo.
      FRegistroG110Count := FRegistroG110Count + RegG001.RegistroG110.Count;
   end;
-  Result := strRegistroG110;
 end;
 
-function TBloco_G.WriteRegistroG125(RegG110: TRegistroG110): String;
+procedure TBloco_G.WriteRegistroG125(RegG110: TRegistroG110);
 var
-intFor: integer;
-strTIPO_MOV: String;
-strRegistroG125: String;
+  intFor: integer;
+  strTIPO_MOV: String;
 begin
-  strRegistroG125 := '';
-
   if Assigned( RegG110.RegistroG125 ) then
   begin
      for intFor := 0 to RegG110.RegistroG125.Count - 1 do
@@ -259,74 +247,59 @@ begin
            mbcPE: strTIPO_MOV := 'PE';
            mbcOT: strTIPO_MOV := 'OT';
           end;
-          strRegistroG125 := strRegistroG125 + LFill('E111') +
-                                               LFill( COD_IND_BEM ) +
-                                               LFill( DT_MOV ) +
-                                               LFill( strTIPO_MOV ) +
-                                               LFill( VL_IMOB_ICMS_OP, 0, 2 ) +
-                                               LFill( VL_IMOB_ICMS_ST, 0, 2 ) +
-                                               LFill( VL_IMOB_ICMS_FRT, 0, 2 ) +
-                                               LFill( VL_IMOB_ICMS_DIF, 0, 2 ) +
-                                               LFill( NUM_PARC ,0 ) +
-                                               LFill( VL_PARC_PASS, 0, 2 ) +
-                                               LFill( VL_PARC_APROP, 0, 2 ) +
-                                               Delimitador +
-                                               #13#10;
+          Add( LFill('E111') +
+               LFill( COD_IND_BEM ) +
+               LFill( DT_MOV ) +
+               LFill( strTIPO_MOV ) +
+               LFill( VL_IMOB_ICMS_OP, 0, 2 ) +
+               LFill( VL_IMOB_ICMS_ST, 0, 2 ) +
+               LFill( VL_IMOB_ICMS_FRT, 0, 2 ) +
+               LFill( VL_IMOB_ICMS_DIF, 0, 2 ) +
+               LFill( NUM_PARC ,0 ) +
+               LFill( VL_PARC_PASS, 0, 2 ) +
+               LFill( VL_PARC_APROP, 0, 2 ) ) ;
         end;
         /// Registro FILHOS do FILHO
-        strRegistroG125 := strRegistroG125 +
-                           WriteRegistroG130( RegG110.RegistroG125.Items[intFor]);
+        WriteRegistroG130( RegG110.RegistroG125.Items[intFor]);
 
         RegistroG990.QTD_LIN_G := RegistroG990.QTD_LIN_G + 1;
      end;
      /// Variavél para armazenar a quantidade de registro do tipo.
      FRegistroG125Count := FRegistroG125Count + RegG110.RegistroG125.Count;
   end;
-  Result := strRegistroG125;
 end;
 
-function TBloco_G.WriteRegistroG130(RegG125: TRegistroG125): String;
+procedure TBloco_G.WriteRegistroG130(RegG125: TRegistroG125);
 var
-intFor: integer;
-strRegistroG130: String;
+  intFor: integer;
 begin
-  strRegistroG130 := '';
-
   if Assigned( RegG125.RegistroG130 ) then
   begin
      for intFor := 0 to RegG125.RegistroG130.Count - 1 do
      begin
         with RegG125.RegistroG130.Items[intFor] do
         begin
-          strRegistroG130 := strRegistroG130 + LFill('E111') +
-                                               LFill( Integer(IND_EMIT), 0 ) +
-                                               LFill( COD_PART ) +
-                                               LFill( COD_MOD ) +
-                                               LFill( SERIE ) +
-                                               LFill( NUM_DOC ) +
-                                               LFill( CHV_NFE_CTE ) +
-                                               LFill( DT_DOC ) +
-                                               Delimitador +
-                                               #13#10;
+          Add( LFill('E111') +
+               LFill( Integer(IND_EMIT), 0 ) +
+               LFill( COD_PART ) +
+               LFill( COD_MOD ) +
+               LFill( SERIE ) +
+               LFill( NUM_DOC ) +
+               LFill( CHV_NFE_CTE ) +
+               LFill( DT_DOC ) ) ;
         end;
-        strRegistroG130 := strRegistroG130 +
-                           WriteRegistroG140( RegG125.RegistroG130.Items[intFor]);
+        WriteRegistroG140( RegG125.RegistroG130.Items[intFor]);
         RegistroG990.QTD_LIN_G := RegistroG990.QTD_LIN_G + 1;
      end;
      /// Variavél para armazenar a quantidade de registro do tipo.
      FRegistroG130Count := FRegistroG130Count + RegG125.RegistroG130.Count;
   end;
-  Result := strRegistroG130;
-
 end;
 
-function TBloco_G.WriteRegistroG140(RegG130: TRegistroG130): String;
+procedure TBloco_G.WriteRegistroG140(RegG130: TRegistroG130);
 var
-intFor: integer;
-strRegistroG140: String;
+  intFor: integer;
 begin
-  strRegistroG140 := '';
-
   if Assigned( RegG130.RegistroG140 ) then
   begin
      for intFor := 0 to RegG130.RegistroG140.Count - 1 do
@@ -335,33 +308,26 @@ begin
         begin
           Check(FBloco_0.Registro0001.Registro0200.LocalizaRegistro(COD_ITEM), '(G-G140) ITENS: O código do item "%s" não existe no registro 0200!', [COD_ITEM]);
 
-          strRegistroG140 := strRegistroG140 + LFill('E111') +
-                                               LFill( NUM_ITEM, 3) +
-                                               LFill( COD_ITEM ) +
-                                               Delimitador +
-                                               #13#10;
+          Add( LFill('E111') +
+               LFill( NUM_ITEM, 3) +
+               LFill( COD_ITEM ) ) ;
         end;
         RegistroG990.QTD_LIN_G := RegistroG990.QTD_LIN_G + 1;
      end;
      FRegistroG140Count := FRegistroG140Count + RegG130.RegistroG140.Count;
   end;
-  Result := strRegistroG140;
 end;
 
-function TBloco_G.WriteRegistroG990: String;
+procedure TBloco_G.WriteRegistroG990 ;
 begin
-  Result := '';
-
   if Assigned(RegistroG990) then
   begin
      with RegistroG990 do
      begin
        QTD_LIN_G := QTD_LIN_G + 1;
        ///
-       Result := LFill('G990') +
-                 LFill(QTD_LIN_G,0) +
-                 Delimitador +
-                 #13#10;
+       Add( LFill('G990') +
+            LFill(QTD_LIN_G,0) ) ;
      end;
   end;
 end;

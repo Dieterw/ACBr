@@ -1,9 +1,9 @@
 object FrmSPEDFiscal: TFrmSPEDFiscal
-  Left = 299
-  Top = 193
+  Left = 319
+  Top = 204
+  Width = 656
+  Height = 480
   Caption = 'ACBrSpedFiscal - Demo'
-  ClientHeight = 442
-  ClientWidth = 623
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -13,7 +13,7 @@ object FrmSPEDFiscal: TFrmSPEDFiscal
   OldCreateOrder = False
   Position = poScreenCenter
   DesignSize = (
-    623
+    640
     442)
   PixelsPerInch = 96
   TextHeight = 13
@@ -41,7 +41,7 @@ object FrmSPEDFiscal: TFrmSPEDFiscal
   object Label4: TLabel
     Left = 0
     Top = 0
-    Width = 623
+    Width = 640
     Height = 16
     Align = alTop
     Alignment = taCenter
@@ -52,7 +52,6 @@ object FrmSPEDFiscal: TFrmSPEDFiscal
     Font.Name = 'Tahoma'
     Font.Style = [fsBold]
     ParentFont = False
-    ExplicitWidth = 428
   end
   object btnB_0: TButton
     Left = 7
@@ -165,7 +164,7 @@ object FrmSPEDFiscal: TFrmSPEDFiscal
     TrimString = True
     CurMascara = '#0.00'
     OnError = ACBrSPEDFiscal1Error
-    Left = 272
+    Left = 280
     Top = 274
   end
 end

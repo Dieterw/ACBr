@@ -60,10 +60,10 @@ type
     destructor Destroy; override; /// Destroy
     procedure LimpaRegistros;
 
-    function WriteRegistro9001: String;
-    function WriteRegistro9900: String;
-    function WriteRegistro9990: String;
-    function WriteRegistro9999: String;
+    procedure WriteRegistro9001;
+    procedure WriteRegistro9900;
+    procedure WriteRegistro9990;
+    procedure WriteRegistro9999;
 
     property Registro9001: TRegistro9001 read FRegistro9001 write FRegistro9001;
     property Registro9900: TRegistro9900List read FRegistro9900 write FRegistro9900;
@@ -75,6 +75,7 @@ implementation
 
 constructor TBloco_9.Create;
 begin
+  inherited ;
   CriaRegistros;
 end;
 
@@ -107,79 +108,65 @@ procedure TBloco_9.LimpaRegistros;
 begin
   /// Limpa os Registros
   LiberaRegistros;
+  Conteudo.Clear;
+
   /// Recriar os Registros Limpos
   CriaRegistros;
 end;
 
-function TBloco_9.WriteRegistro9001: String;
+procedure TBloco_9.WriteRegistro9001;
 begin
-  Result := '';
-
   if Assigned(Registro9001) then
   begin
      with Registro9001 do
      begin
-       Result := LFill( '9001' ) +
-                 LFill( Integer(IND_MOV), 0) +
-                 Delimitador +
-                 #13#10;
+       Add( LFill( '9001' ) +
+            LFill( Integer(IND_MOV), 0) ) ;
        ///
        Registro9990.QTD_LIN_9 := Registro9990.QTD_LIN_9 + 1;
      end;
   end;
 end;
 
-function TBloco_9.WriteRegistro9900: String;
+procedure TBloco_9.WriteRegistro9900;
 var
-intFor: integer;
-strRegistro9900: String;
+  intFor: integer;
 begin
-  strRegistro9900 := '';
-
   if Assigned(Registro9900) then
   begin
      for intFor := 0 to Registro9900.Count - 1 do
      begin
         with Registro9900.Items[intFor] do
         begin
-           strRegistro9900 := strRegistro9900 + LFill('9900') +
-                                                LFill(REG_BLC) +
-                                                LFill(QTD_REG_BLC,0) +
-                                                Delimitador +
-                                                #13#10;
+           Add( LFill('9900') +
+                LFill(REG_BLC) +
+                LFill(QTD_REG_BLC,0) ) ;
         end;
      end;
      Registro9990.QTD_LIN_9 := Registro9990.QTD_LIN_9 + Registro9900.Count + 2;
   end;
-  Result := strRegistro9900;
 end;
 
-function TBloco_9.WriteRegistro9990: String;
+procedure TBloco_9.WriteRegistro9990;
 begin
-  Result := '';
-
   if Assigned(Registro9990) then
   begin
      with Registro9990 do
      begin
-        Result := LFill('9990') +
-                  LFill(QTD_LIN_9,0) +
-                  Delimitador +
-                  #13#10;
+        Add( LFill('9990') +
+             LFill(QTD_LIN_9,0) ) ;
      end;
   end;
 end;
 
-function TBloco_9.WriteRegistro9999: String;
+procedure TBloco_9.WriteRegistro9999;
 begin
   if Assigned(Registro9999) then
   begin
      with Registro9999 do
      begin
-        Result := LFill('9999') +
-                  LFill(QTD_LIN,0) +
-                  Delimitador +
-                  #13#10;
+        Add( LFill('9999') +
+             LFill(QTD_LIN,0) ) ;
      end;
   end;
 end;

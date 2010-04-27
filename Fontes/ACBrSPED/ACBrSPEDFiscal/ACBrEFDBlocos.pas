@@ -45,6 +45,45 @@ interface
 uses
   SysUtils, Classes, DateUtils, ACBrTXTClass;
 
+Const
+  /// Código da Situação Tributária referente ao IPI.
+  ipiEntradaRecuperacaoCredito = '00' ; // Entrada com recuperação de crédito
+  ipiEntradaTributradaZero     = '01' ; // Entrada tributada com alíquota zero
+  ipiEntradaIsenta             = '02' ; // Entrada isenta
+  ipiEntradaNaoTributada       = '03' ; // Entrada não-tributada
+  ipiEntradaImune              = '04' ; // Entrada imune
+  ipiEntradaComSuspensao       = '05' ; // Entrada com suspensão
+  ipiOutrasEntradas            = '49' ; // Outras entradas
+  ipiSaidaTributada            = '50' ; // Saída tributada
+  ipiSaidaTributadaZero        = '51' ; // Saída tributada com alíquota zero
+  ipiSaidaIsenta               = '52' ; // Saída isenta
+  ipiSaidaNaoTributada         = '53' ; // Saída não-tributada
+  ipiSaidaImune                = '54' ; // Saída imune
+  ipiSaidaComSuspensao         = '55' ; // Saída com suspensão
+  ipiOutrasSaidas              = '99' ; // Outras saídas
+
+  /// Código da Situação Tributária referente ao PIS.
+  pisValorAliquotaNormal        = '01' ; // Operação Tributável (base de cálculo = valor da operação alíquota normal (cumulativo/não cumulativo)).
+  pisValorAliquotaDiferenciada  = '02' ; // Operação Tributável (base de cálculo = valor da operação (alíquota diferenciada)).
+  pisQtdeAliquotaUnidade        = '03' ; // Operação Tributável (base de cálculo = quantidade vendida x alíquota por unidade de produto).
+  pisMonofaticaAliquotaZero     = '04' ; // Operação Tributável (tributação monofásica (alíquota zero)).
+  pisAliquotaZero               = '06' ; // Operação Tributável (alíquota zero).
+  pisIsentaContribuicao         = '07' ; // Operação Isenta da Contribuição.
+  pisSemIncidenciaContribuicao  = '08' ; // Operação Sem Incidência da Contribuição.
+  pisSuspensaoContribuicao      = '09' ; // Operação com Suspensão da Contribuição.
+  pisOutrasOperacoes            = '99' ; // Outras Operações,
+
+  /// Código da Situação Tributária referente ao COFINS.
+  cofinsValorAliquotaNormal       = '01' ; // Operação Tributável (base de cálculo = valor da operação alíquota normal (cumulativo/não cumulativo)).
+  cofinsValorAliquotaDiferenciada = '02' ; // Operação Tributável (base de cálculo = valor da operação (alíquota diferenciada)).
+  cofinsQtdeAliquotaUnidade       = '03' ; // Operação Tributável (base de cálculo = quantidade vendida x alíquota por unidade de produto).
+  cofinsMonofaticaAliquotaZero    = '04' ; // Operação Tributável (tributação monofásica (alíquota zero)).
+  cofinsAliquotaZero              = '06' ; // Operação Tributável (alíquota zero).
+  cofinsIsentaContribuicao        = '07' ; // Operação Isenta da Contribuição.
+  cofinsSemIncidenciaContribuicao = '08' ; // Operação Sem Incidência da Contribuição.
+  cofinsSuspensaoContribuicao     = '09' ; // Operação com Suspensão da Contribuição.
+  cofinsOutrasOperacoes           = '99' ; // Outras Operações,
+
 type
   /// Indicador de movimento - TOpenBlocos
   TACBrIndicadorMovimento = (imComDados, // 0- Bloco com dados informados;
@@ -143,6 +182,7 @@ type
                      tcRecibo,                // 03- Recibo
                      tcOutros                 // 99- Outros (descrever)
                      );
+
   /// Movimentação física do ITEM/PRODUTO:
   TACBrMovimentacaoFisica = (mfSim,           // 0 - Sim
                              mfNao            // 1 - Não
@@ -151,46 +191,6 @@ type
   TACBrApuracaoIPI = (iaMensal,               // 0 - Mensal
                       iaDecendial             // 1 - Decendial
                       );
-{
-  /// Código da Situação Tributária referente ao IPI.
-  TACBrSituacaoTribIPI = (ipiEntradaRecuperacaoCredito,   // 00 Entrada com recuperação de crédito
-                          ipiEntradaTributradaZero,       // 01 Entrada tributada com alíquota zero
-                          ipiEntradaIsenta,               // 02 Entrada isenta
-                          ipiEntradaNaoTributada,         // 03 Entrada não-tributada
-                          ipiEntradaImune,                // 04 Entrada imune
-                          ipiEntradaComSuspensao,         // 05 Entrada com suspensão
-                          ipiOutrasEntradas,              // 49 Outras entradas
-                          ipiSaidaTributada,              // 50 Saída tributada
-                          ipiSaidaTributadaZero,          // 51 Saída tributada com alíquota zero
-                          ipiSaidaIsenta,                 // 52 Saída isenta
-                          ipiSaidaNaoTributada,           // 53 Saída não-tributada
-                          ipiSaidaImune,                  // 54 Saída imune
-                          ipiSaidaComSuspensao,           // 55 Saída com suspensão
-                          ipiOutrasSaidas                 // 99 Outras saídas
-                          );
-  /// Código da Situação Tributária referente ao PIS.
-  TACBrSituacaoTribPIS = (pisValorAliquotaNormal,         // 01 Operação Tributável (base de cálculo = valor da operação alíquota normal (cumulativo/não cumulativo)).
-                          pisValorAliquotaDiferenciada,   // 02 Operação Tributável (base de cálculo = valor da operação (alíquota diferenciada)).
-                          pisQtdeAliquotaUnidade,         // 03 Operação Tributável (base de cálculo = quantidade vendida x alíquota por unidade de produto).
-                          pisMonofaticaAliquotaZero,      // 04 Operação Tributável (tributação monofásica (alíquota zero)).
-                          pisAliquotaZero,                // 06 Operação Tributável (alíquota zero).
-                          pisIsentaContribuicao,          // 07 Operação Isenta da Contribuição.
-                          pisSemIncidenciaContribuicao,   // 08 Operação Sem Incidência da Contribuição.
-                          pisSuspensaoContribuicao,       // 09 Operação com Suspensão da Contribuição.
-                          pisOutrasOperacoes              // 99 Outras Operações,
-                          );
-  /// Código da Situação Tributária referente ao COFINS.
-  TACBrSituacaoTribCOFINS = (cofinsValorAliquotaNormal,         // 01 Operação Tributável (base de cálculo = valor da operação alíquota normal (cumulativo/não cumulativo)).
-                             cofinsValorAliquotaDiferenciada,   // 02 Operação Tributável (base de cálculo = valor da operação (alíquota diferenciada)).
-                             cofinsQtdeAliquotaUnidade,         // 03 Operação Tributável (base de cálculo = quantidade vendida x alíquota por unidade de produto).
-                             cofinsMonofaticaAliquotaZero,      // 04 Operação Tributável (tributação monofásica (alíquota zero)).
-                             cofinsAliquotaZero,                // 06 Operação Tributável (alíquota zero).
-                             cofinsIsentaContribuicao,          // 07 Operação Isenta da Contribuição.
-                             cofinsSemIncidenciaContribuicao,   // 08 Operação Sem Incidência da Contribuição.
-                             cofinsSuspensaoContribuicao,       // 09 Operação com Suspensão da Contribuição.
-                             cofinsOutrasOperacoes              // 99 Outras Operações,
-                             );
-}
   /// Indicador de tipo de referência da base de cálculo do ICMS (ST) do produto farmacêutico
   TACBrTipoBaseMedicamento = (bmCalcTabeladoSugerido,           // 0 - Base de cálculo referente ao preço tabelado ou preço máximo sugerido;
                               bmCalMargemAgregado,              // 1 - Base cálculo – Margem de valor agregado;

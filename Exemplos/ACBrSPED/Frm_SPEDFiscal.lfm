@@ -150,8 +150,11 @@ object FrmSPEDFiscal: TFrmSPEDFiscal
     TabOrder = 10
   end
   object ACBrSPEDFiscal1: TACBrSPEDFiscal
-    Delimitador = '|'
     Path = '.\'
+    Delimitador = '|'
+    TrimString = True
+    CurMascara = '#0.00'
+    OnError = ACBrSPEDFiscal1Error
     left = 256
     top = 278
   end

@@ -55,10 +55,13 @@ uses
   ACBrEFDBloco_G_Class, ACBrEFDBloco_H_Class;
 
 const
-   CACBrSpedFiscal_Versao = '0.08b' ;
+   CACBrSpedFiscal_Versao = '0.10b' ;
 
 type
   /// ACBrSpedFiscal - Sitema Publico de Escrituração Digital Fiscal
+
+  { TACBrSPEDFiscal }
+
   TACBrSPEDFiscal = class(TComponent)
   private
     FACBrTXT: TACBrTXTClass;
@@ -67,10 +70,10 @@ type
     FDT_INI: TDateTime;           /// Data inicial das informações contidas no arquivo
     FDT_FIN: TDateTime;           /// Data final das informações contidas no arquivo
 
-    FPath: String;                /// Path do arquivo a ser gerado
-    FDelimitador: String;         /// Caracter delimitador de campos
+    FPath: AnsiString;            /// Path do arquivo a ser gerado
+    FDelimitador: AnsiString;     /// Caracter delimitador de campos
     FTrimString: boolean;         /// Retorna a string sem espaços em branco iniciais e finais
-    FCurMascara: String;          /// Mascara para valores tipo currency
+    FCurMascara: AnsiString;      /// Mascara para valores tipo currency
 
     FBloco_0: TBloco_0;
     FBloco_1: TBloco_1;
@@ -81,16 +84,16 @@ type
     FBloco_G: TBloco_G;
     FBloco_H: TBloco_H;
 
-    function GetAbout: String;
-    function GetDelimitador: String;
+    function GetAbout: AnsiString;
+    function GetConteudo: TStringList;
+    function GetDelimitador: AnsiString;
     function GetTrimString: boolean;
-    function GetCurMascara: String;
+    function GetCurMascara: AnsiString;
     function GetDT_FIN: TDateTime;
     function GetDT_INI: TDateTime;
-    procedure SetAbout(const Value: String);
-    procedure SetDelimitador(const Value: String);
+    procedure SetDelimitador(const Value: AnsiString);
     procedure SetTrimString(const Value: boolean);
-    procedure SetCurMascara(const Value: String);
+    procedure SetCurMascara(const Value: AnsiString);
     procedure SetDT_FIN(const Value: TDateTime);
     procedure SetDT_INI(const Value: TDateTime);
 
@@ -100,37 +103,41 @@ type
     procedure LimpaRegistros;
   protected
     /// BLOCO 0
-    function WriteRegistro0000: String;
-    function WriteRegistro0001: String;
-    function WriteRegistro0990: String;
+    procedure WriteRegistro0000 ;
+    procedure WriteRegistro0001 ;
+    procedure WriteRegistro0990 ;
     /// BLOCO 1
-    function WriteRegistro1001: String;
-    function WriteRegistro1990: String;
+    procedure WriteRegistro1001 ;
+    procedure WriteRegistro1990 ;
     /// BLOCO C
-    function WriteRegistroC001: String;
-    function WriteRegistroC990: String;
+    procedure WriteRegistroC001 ;
+    procedure WriteRegistroC990 ;
     /// BLOCO D
-    function WriteRegistroD001: String;
-    function WriteRegistroD990: String;
+    procedure WriteRegistroD001;
+    procedure WriteRegistroD990;
     /// BLOCO E
-    function WriteRegistroE001: String;
-    function WriteRegistroE990: String;
+    procedure WriteRegistroE001;
+    procedure WriteRegistroE990;
     /// BLOCO G
-    function WriteRegistroG001: String;
-    function WriteRegistroG990: String;
+    procedure WriteRegistroG001;
+    procedure WriteRegistroG990;
     /// BLOCO H
-    function WriteRegistroH001: String;
-    function WriteRegistroH990: String;
+    procedure WriteRegistroH001;
+    procedure WriteRegistroH990;
     /// BLOCO 9
-    function WriteRegistro9001: String;
-    function WriteRegistro9900: String;
-    function WriteRegistro9990: String;
-    function WriteRegistro9999: String;
+    procedure WriteRegistro9001;
+    procedure WriteRegistro9900;
+    procedure WriteRegistro9990;
+    procedure WriteRegistro9999;
   public
     constructor Create(AOwner: TComponent); override; /// Create
     destructor Destroy; override; /// Destroy
 
-    function SaveFileTXT(Arquivo: String): Boolean; /// Método que escreve o arquivo texto no caminho passado como parâmetro
+    procedure WriteRegistros ;
+
+    function SaveFileTXT(Arquivo: AnsiString): Boolean; /// Método que escreve o arquivo texto no caminho passado como parâmetro
+
+    property Conteudo : TStringList read GetConteudo ;
 
     property DT_INI: TDateTime read GetDT_INI write SetDT_INI;
     property DT_FIN: TDateTime read GetDT_FIN write SetDT_FIN;
@@ -144,12 +151,12 @@ type
     property Bloco_G: TBloco_G read FBloco_G write FBloco_G;
     property Bloco_H: TBloco_H read FBloco_H write FBloco_H;
   published
-    property About: String read GetAbout write SetAbout stored False ;
-    property Path: String read FPath write FPath;
+    property About: AnsiString read GetAbout stored False ;
+    property Path: AnsiString read FPath write FPath;
     ///
-    property Delimitador: String read GetDelimitador write SetDelimitador;
+    property Delimitador: AnsiString read GetDelimitador write SetDelimitador;
     property TrimString: boolean read GetTrimString write SetTrimString;
-    property CurMascara: String read GetCurMascara write SetCurMascara;
+    property CurMascara: AnsiString read GetCurMascara write SetCurMascara;
 
     property OnError: TErrorEvent  read GetOnError write SetOnError;
   end;
@@ -157,6 +164,8 @@ type
 procedure Register;
 
 implementation
+
+Uses ACBrUtil ;
 
 {$IFNDEF FPC}
  {$R ACBr_SPEDFiscal.dcr}
@@ -223,22 +232,22 @@ begin
   FBloco_9.LimpaRegistros;
 end;
 
-function TACBrSPEDFiscal.GetAbout: String;
+function TACBrSPEDFiscal.GetAbout: AnsiString;
 begin
    Result := 'ACBrSpedFiscal Ver: ' + CACBrSpedFiscal_Versao;
 end;
 
-procedure TACBrSPEDFiscal.SetAbout(const Value: String);
+function TACBrSPEDFiscal.GetConteudo: TStringList;
 begin
- {}
+   Result := FACBrTXT.Conteudo ;
 end;
 
-function TACBrSPEDFiscal.GetDelimitador: String;
+function TACBrSPEDFiscal.GetDelimitador: AnsiString;
 begin
    Result := FDelimitador;
 end;
 
-procedure TACBrSPEDFiscal.SetDelimitador(const Value: String);
+procedure TACBrSPEDFiscal.SetDelimitador(const Value: AnsiString);
 begin
   FDelimitador := Value;
   //
@@ -252,12 +261,12 @@ begin
   FBloco_9.Delimitador := Value;
 end;
 
-function TACBrSPEDFiscal.GetCurMascara: String;
+function TACBrSPEDFiscal.GetCurMascara: AnsiString;
 begin
    Result := FCurMascara;
 end;
 
-procedure TACBrSPEDFiscal.SetCurMascara(const Value: String);
+procedure TACBrSPEDFiscal.SetCurMascara(const Value: AnsiString);
 begin
   FCurMascara := Value;
   //
@@ -359,15 +368,32 @@ begin
   FBloco_9.OnError := Value;
 end;
 
-function TACBrSPEDFiscal.SaveFileTXT(Arquivo: String): Boolean;
-var
-txtFile: TextFile;
-intFor: integer;
+function TACBrSPEDFiscal.SaveFileTXT(Arquivo: AnsiString): Boolean;
 begin
-  Result := True;
-  ///
   if (Trim(Arquivo) = '') or (Trim(fPath) = '') then
-     raise Exception.Create('Caminho ou nome do arquivo não informado!');
+     raise Exception.Create(ACBrStr('Caminho ou nome do arquivo não informado!'));
+
+  try
+     WriteRegistros ;
+     FACBrTXT.SaveToFile( fPath + Arquivo );
+  finally
+     FACBrTXT.Conteudo.Clear;   // Libera memória
+  end;
+end;
+
+procedure TACBrSPEDFiscal.WriteRegistros;
+var
+  intFor: integer;
+begin
+  FACBrTXT.Conteudo.Clear;    // Limpa conteudo da Memoria
+  Bloco_0.Conteudo.Clear;
+  Bloco_C.Conteudo.Clear;
+  Bloco_D.Conteudo.Clear;
+  Bloco_E.Conteudo.Clear;
+  Bloco_G.Conteudo.Clear;
+  Bloco_H.Conteudo.Clear;
+  Bloco_1.Conteudo.Clear;
+  Bloco_9.Conteudo.Clear;
 
   ///
   FACBrTXT.Check(FDT_INI > 0,        'CHECAGEM INICIAL: Informe a data inicial das informações contidas no arquivo!');
@@ -391,25 +417,30 @@ begin
   /// Limpa a lista
   Bloco_9.Registro9900.Clear;
   try
-    AssignFile(txtFile, fPath + Arquivo);
-    Rewrite(txtFile);
-
     /// BLOCO 0
-    Write(txtFile, WriteRegistro0000);
-    Write(txtFile, WriteRegistro0001);
-    Write(txtFile, WriteRegistro0990);
+    WriteRegistro0000 ;
+    WriteRegistro0001 ;
+    WriteRegistro0990 ;
+    FACBrTXT.Conteudo.AddStrings( Bloco_0.Conteudo );
+    Bloco_0.Conteudo.Clear;
 
     /// BLOCO C
-    Write(txtFile, WriteRegistroC001);
-    Write(txtFile, WriteRegistroC990);
+    WriteRegistroC001 ;
+    WriteRegistroC990 ;
+    FACBrTXT.Conteudo.AddStrings( Bloco_C.Conteudo );
+    Bloco_C.Conteudo.Clear;
 
    /// BLOCO D
-    Write(txtFile, WriteRegistroD001);
-    Write(txtFile, WriteRegistroD990);
+    WriteRegistroD001 ;
+    WriteRegistroD990 ;
+    FACBrTXT.Conteudo.AddStrings( Bloco_D.Conteudo );
+    Bloco_D.Conteudo.Clear;
 
     /// BLOCO E
-    Write(txtFile, WriteRegistroE001);
-    Write(txtFile, WriteRegistroE990);
+    WriteRegistroE001;
+    WriteRegistroE990;
+    FACBrTXT.Conteudo.AddStrings( Bloco_E.Conteudo );
+    Bloco_E.Conteudo.Clear;
 
     /// Este ato entra em vigor na data de sua publicação, produzindo efeitos
     /// para as escriturações referentes aos períodos a partir de 1º de janeiro de 2010,
@@ -421,37 +452,39 @@ begin
     if DT_INI >= StrToDate('01/07/2010') then
     begin
        /// BLOCO G
-       Write(txtFile, WriteRegistroG001);
-       Write(txtFile, WriteRegistroG990);
+       WriteRegistroG001 ;
+       WriteRegistroG990 ;
+       FACBrTXT.Conteudo.AddStrings( Bloco_G.Conteudo );
+       Bloco_G.Conteudo.Clear;
     end;
 
     /// BLOCO H
-    Write(txtFile, WriteRegistroH001);
-    Write(txtFile, WriteRegistroH990);
+    WriteRegistroH001 ;
+    WriteRegistroH990 ;
+    FACBrTXT.Conteudo.AddStrings( Bloco_H.Conteudo );
+    Bloco_H.Conteudo.Clear;
 
     /// BLOCO 1
-    Write(txtFile, WriteRegistro1001);
-    Write(txtFile, WriteRegistro1990);
+    WriteRegistro1001 ;
+    WriteRegistro1990 ;
+    FACBrTXT.Conteudo.AddStrings( Bloco_1.Conteudo );
+    Bloco_1.Conteudo.Clear;
 
     /// BLOCO 9
-    Write(txtFile, WriteRegistro9001);
-    Write(txtFile, WriteRegistro9900);
-    Write(txtFile, WriteRegistro9990);
-    Write(txtFile, WriteRegistro9999);
-    ///
-    CloseFile(txtFile);
+    WriteRegistro9001;
+    WriteRegistro9900;
+    WriteRegistro9990;
+    WriteRegistro9999;
+    FACBrTXT.Conteudo.AddStrings( Bloco_9.Conteudo );
+    Bloco_9.Conteudo.Clear;
+
+  finally
     /// Limpa de todos os Blocos as listas de todos os registros.
     LimpaRegistros;
-  except
-    on E: Exception do
-    begin
-      CloseFile(txtFile);
-      raise Exception.Create(E.Message);
-    end;
   end;
 end;
 
-function TACBrSPEDFiscal.WriteRegistro0000: String;
+procedure TACBrSPEDFiscal.WriteRegistro0000 ;
 begin
    if Bloco_0.Registro0001.IND_MOV = imComDados then
    begin
@@ -460,15 +493,15 @@ begin
          REG_BLC := '0000';
          QTD_REG_BLC := 1;
       end;
-      Result := Bloco_0.WriteRegistro0000;
+      Bloco_0.WriteRegistro0000;
    end;
 end;
 
-function TACBrSPEDFiscal.WriteRegistro0001: String;
+procedure TACBrSPEDFiscal.WriteRegistro0001 ;
 begin
    if Bloco_0.Registro0001.IND_MOV = imComDados then
    begin
-      Result := Bloco_0.WriteRegistro0001;
+      Bloco_0.WriteRegistro0001;
 
       with Bloco_9.Registro9900 do
       begin
@@ -622,7 +655,7 @@ begin
    end;
 end;
 
-function TACBrSPEDFiscal.WriteRegistro0990: String;
+procedure TACBrSPEDFiscal.WriteRegistro0990 ;
 begin
    if Bloco_0.Registro0001.IND_MOV = imComDados then
    begin
@@ -631,15 +664,15 @@ begin
          REG_BLC := '0990';
          QTD_REG_BLC := 1;
       end;
-      Result := Bloco_0.WriteRegistro0990;
+      Bloco_0.WriteRegistro0990;
    end;
 end;
 
-function TACBrSPEDFiscal.WriteRegistro1001: String;
+procedure TACBrSPEDFiscal.WriteRegistro1001 ;
 begin
    if Bloco_1.Registro1001.IND_MOV = imComDados then
    begin
-      Result := Bloco_1.WriteRegistro1001;
+      Bloco_1.WriteRegistro1001;
 
       with Bloco_9.Registro9900 do
       begin
@@ -796,7 +829,7 @@ begin
    end;
 end;
 
-function TACBrSPEDFiscal.WriteRegistro1990: String;
+procedure TACBrSPEDFiscal.WriteRegistro1990 ;
 begin
    if Bloco_1.Registro1001.IND_MOV = imComDados then
    begin
@@ -805,15 +838,15 @@ begin
          REG_BLC := '1990';
          QTD_REG_BLC := 1;
       end;
-      Result := Bloco_1.WriteRegistro1990;
+      Bloco_1.WriteRegistro1990;
    end;
 end;
 
-function TACBrSPEDFiscal.WriteRegistroC001: String;
+procedure TACBrSPEDFiscal.WriteRegistroC001;
 begin
    if Bloco_C.RegistroC001.IND_MOV = imComDados then
    begin
-      Result := Bloco_C.WriteRegistroC001;
+      Bloco_C.WriteRegistroC001;
 
       with Bloco_9.Registro9900 do
       begin
@@ -1242,7 +1275,7 @@ begin
    end;
 end;
 
-function TACBrSPEDFiscal.WriteRegistroC990: String;
+procedure TACBrSPEDFiscal.WriteRegistroC990;
 begin
    if Bloco_C.RegistroC001.IND_MOV = imComDados then
    begin
@@ -1251,15 +1284,15 @@ begin
          REG_BLC := 'C990';
          QTD_REG_BLC := 1;
       end;
-      Result := Bloco_C.WriteRegistroC990;
+      Bloco_C.WriteRegistroC990;
    end;
 end;
 
-function TACBrSPEDFiscal.WriteRegistroD001: String;
+procedure TACBrSPEDFiscal.WriteRegistroD001;
 begin
    if Bloco_D.RegistroD001.IND_MOV = imComDados then
    begin
-      Result := Bloco_D.WriteRegistroD001;
+      Bloco_D.WriteRegistroD001;
 
       with Bloco_9.Registro9900 do
       begin
@@ -1552,7 +1585,7 @@ begin
    end;
 end;
 
-function TACBrSPEDFiscal.WriteRegistroD990: String;
+procedure TACBrSPEDFiscal.WriteRegistroD990;
 begin
    if Bloco_D.RegistroD001.IND_MOV = imComDados then
    begin
@@ -1561,15 +1594,15 @@ begin
          REG_BLC := 'D990';
          QTD_REG_BLC := 1;
       end;
-      Result := Bloco_D.WriteRegistroD990;
+      Bloco_D.WriteRegistroD990;
    end;
 end;
 
-function TACBrSPEDFiscal.WriteRegistroE001: String;
+procedure TACBrSPEDFiscal.WriteRegistroE001;
 begin
    if Bloco_E.RegistroE001.IND_MOV = imComDados then
    begin
-      Result := Bloco_E.WriteRegistroE001;
+      Bloco_E.WriteRegistroE001;
 
       with Bloco_9.Registro9900 do
       begin
@@ -1712,7 +1745,7 @@ begin
    end;
 end;
 
-function TACBrSPEDFiscal.WriteRegistroE990: String;
+procedure TACBrSPEDFiscal.WriteRegistroE990;
 begin
    if Bloco_E.RegistroE001.IND_MOV = imComDados then
    begin
@@ -1721,15 +1754,15 @@ begin
          REG_BLC := 'E990';
          QTD_REG_BLC := 1;
       end;
-      Result := Bloco_E.WriteRegistroE990;
+      Bloco_E.WriteRegistroE990;
    end;
 end;
 
-function TACBrSPEDFiscal.WriteRegistroG001: String;
+procedure TACBrSPEDFiscal.WriteRegistroG001;
 begin
    if Bloco_G.RegistroG001.IND_MOV = imComDados then
    begin
-      Result := Bloco_G.WriteRegistroG001;
+      Bloco_G.WriteRegistroG001;
 
       with Bloco_9.Registro9900 do
       begin
@@ -1774,7 +1807,7 @@ begin
    end;
 end;
 
-function TACBrSPEDFiscal.WriteRegistroG990: String;
+procedure TACBrSPEDFiscal.WriteRegistroG990;
 begin
    if Bloco_G.RegistroG001.IND_MOV = imComDados then
    begin
@@ -1783,15 +1816,15 @@ begin
          REG_BLC := 'G990';
          QTD_REG_BLC := 1;
       end;
-      Result := Bloco_G.WriteRegistroG990;
+      Bloco_G.WriteRegistroG990;
    end;
 end;
 
-function TACBrSPEDFiscal.WriteRegistroH001: String;
+procedure TACBrSPEDFiscal.WriteRegistroH001;
 begin
    if Bloco_H.RegistroH001.IND_MOV = imComDados then
    begin
-      Result := Bloco_H.WriteRegistroH001;
+      Bloco_H.WriteRegistroH001;
 
       with Bloco_9.Registro9900 do
       begin
@@ -1820,7 +1853,7 @@ begin
    end;
 end;
 
-function TACBrSPEDFiscal.WriteRegistroH990: String;
+procedure TACBrSPEDFiscal.WriteRegistroH990;
 begin
    if Bloco_H.RegistroH001.IND_MOV = imComDados then
    begin
@@ -1829,21 +1862,21 @@ begin
          REG_BLC := 'H990';
          QTD_REG_BLC := 1;
       end;
-      Result := Bloco_H.WriteRegistroH990;
+      Bloco_H.WriteRegistroH990;
    end;
 end;
 
-function TACBrSPEDFiscal.WriteRegistro9001: String;
+procedure TACBrSPEDFiscal.WriteRegistro9001;
 begin
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := '9001';
       QTD_REG_BLC := 1;
    end;
-   Result := Bloco_9.WriteRegistro9001;
+   Bloco_9.WriteRegistro9001;
 end;
 
-function TACBrSPEDFiscal.WriteRegistro9900: String;
+procedure TACBrSPEDFiscal.WriteRegistro9900;
 begin
    with Bloco_9.Registro9900 do
    begin
@@ -1863,15 +1896,15 @@ begin
          QTD_REG_BLC := 1;
       end;
    end;
-   Result := Bloco_9.WriteRegistro9900;
+   Bloco_9.WriteRegistro9900;
 end;
 
-function TACBrSPEDFiscal.WriteRegistro9990: String;
+procedure TACBrSPEDFiscal.WriteRegistro9990;
 begin
-   Result := Bloco_9.WriteRegistro9990;
+   Bloco_9.WriteRegistro9990;
 end;
 
-function TACBrSPEDFiscal.WriteRegistro9999: String;
+procedure TACBrSPEDFiscal.WriteRegistro9999;
 begin
    Bloco_9.Registro9999.QTD_LIN := Bloco_9.Registro9999.QTD_LIN + Bloco_0.Registro0990.QTD_LIN_0 +
                                                                   Bloco_1.Registro1990.QTD_LIN_1 +
@@ -1881,7 +1914,7 @@ begin
                                                                   ifThen(Bloco_G.DT_INI >= StrToDate('01/07/2010'), Bloco_G.RegistroG990.QTD_LIN_G, 0) +
                                                                   Bloco_H.RegistroH990.QTD_LIN_H +
                                                                   Bloco_9.Registro9990.QTD_LIN_9;
-   Result := Bloco_9.WriteRegistro9999;
+   Bloco_9.WriteRegistro9999;
 end;
 
 

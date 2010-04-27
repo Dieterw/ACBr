@@ -14,7 +14,7 @@ uses
    ACBrEFDBlocos, ACBrSpedFiscal, ACBrECDBloco_0, ACBrECDBloco_0_Class, 
    ACBrECDBloco_9, ACBrECDBloco_9_Class, ACBrECDBloco_I, ACBrECDBloco_I_Class, 
    ACBrECDBloco_J, ACBrECDBloco_J_Class, ACBrECDBlocos, ACBrSpedContabil, 
-   LazarusPackageIntf;
+   ACBrEFDBloco_G_Class, ACBrEFDBloco_G, LazarusPackageIntf;
 
 implementation
 

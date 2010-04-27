@@ -7,10 +7,10 @@
       <MainUnit Value="0"/>
       <TargetFileExt Value=".exe"/>
       <UseXPManifest Value="True"/>
-      <ActiveEditorIndexAtStart Value="0"/>
+      <ActiveWindowIndexAtStart Value="0"/>
     </General>
     <VersionInfo>
-      <ProjectVersion Value=""/>
+      <StringTable Comments="" CompanyName="" FileDescription="" FileVersion="0.0.0.0" InternalName="" LegalCopyright="" LegalTrademarks="" OriginalFilename="" ProductName="" ProductVersion=""/>
     </VersionInfo>
     <PublishOptions>
       <Version Value="2"/>
@@ -32,21 +32,24 @@
         <PackageName Value="LCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="6">
+    <Units Count="39">
       <Unit0>
         <Filename Value="SPEDFiscal.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="SPEDFiscal"/>
-        <UsageCount Value="20"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="31" Y="11"/>
+        <UsageCount Value="48"/>
       </Unit0>
       <Unit1>
         <Filename Value="Unit1.pas"/>
         <ComponentName Value="Form1"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Unit1"/>
-        <CursorPos X="42" Y="8"/>
         <TopLine Value="5"/>
-        <UsageCount Value="20"/>
+        <CursorPos X="42" Y="8"/>
+        <UsageCount Value="18"/>
       </Unit1>
       <Unit2>
         <Filename Value="Frm_SPEDFiscal.pas"/>
@@ -55,55 +58,490 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Frm_SPEDFiscal"/>
-        <CursorPos X="31" Y="7"/>
-        <TopLine Value="2"/>
         <EditorIndex Value="0"/>
-        <UsageCount Value="20"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="170"/>
+        <CursorPos X="57" Y="197"/>
+        <UsageCount Value="48"/>
         <Loaded Value="True"/>
       </Unit2>
       <Unit3>
         <Filename Value="Frm_SPEDFiscal.lfm"/>
         <IsPartOfProject Value="True"/>
-        <CursorPos X="35" Y="12"/>
         <TopLine Value="1"/>
-        <UsageCount Value="20"/>
+        <CursorPos X="35" Y="12"/>
         <SyntaxHighlighter Value="LFM"/>
+        <UsageCount Value="48"/>
       </Unit3>
       <Unit4>
         <Filename Value="lib\i386-win32\Frm_SPEDFiscal.lrs"/>
-        <CursorPos X="17" Y="1"/>
         <TopLine Value="1"/>
-        <UsageCount Value="10"/>
+        <CursorPos X="17" Y="1"/>
+        <UsageCount Value="8"/>
       </Unit4>
       <Unit5>
         <Filename Value="..\ACBrBloco_9.pas"/>
         <UnitName Value="ACBrBloco_9"/>
-        <CursorPos X="50" Y="113"/>
         <TopLine Value="102"/>
-        <UsageCount Value="10"/>
+        <CursorPos X="50" Y="113"/>
+        <UsageCount Value="8"/>
       </Unit5>
+      <Unit6>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrEFDBlocos.pas"/>
+        <UnitName Value="ACBrEFDBlocos"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="367"/>
+        <CursorPos X="66" Y="387"/>
+        <SyntaxHighlighter Value="FreePascal"/>
+        <UsageCount Value="13"/>
+        <DefaultSyntaxHighlighter Value="Text"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrSpedFiscal.pas"/>
+        <UnitName Value="ACBrSpedFiscal"/>
+        <EditorIndex Value="1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="140"/>
+        <CursorPos X="50" Y="152"/>
+        <SyntaxHighlighter Value="FreePascal"/>
+        <UsageCount Value="23"/>
+        <Bookmarks Count="1">
+          <Item0 X="12" Y="479" ID="1"/>
+        </Bookmarks>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Text"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrEFDBloco_0_Class.pas"/>
+        <UnitName Value="ACBrEFDBloco_0_Class"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="200"/>
+        <CursorPos X="3" Y="202"/>
+        <SyntaxHighlighter Value="FreePascal"/>
+        <UsageCount Value="15"/>
+        <DefaultSyntaxHighlighter Value="Text"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrEFDBloco_C_Class.pas"/>
+        <UnitName Value="ACBrEFDBloco_C_Class"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="371"/>
+        <CursorPos X="1" Y="377"/>
+        <SyntaxHighlighter Value="FreePascal"/>
+        <UsageCount Value="19"/>
+        <DefaultSyntaxHighlighter Value="Text"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrEFDBloco_C.pas"/>
+        <UnitName Value="ACBrEFDBloco_C"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="120"/>
+        <CursorPos X="34" Y="125"/>
+        <SyntaxHighlighter Value="FreePascal"/>
+        <UsageCount Value="17"/>
+        <DefaultSyntaxHighlighter Value="Text"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrEFDBloco_9.pas"/>
+        <UnitName Value="ACBrEFDBloco_9"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="46"/>
+        <CursorPos X="20" Y="60"/>
+        <SyntaxHighlighter Value="FreePascal"/>
+        <UsageCount Value="12"/>
+        <DefaultSyntaxHighlighter Value="Text"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="..\..\Fontes\ACBrComum\ACBrTXTClass.pas"/>
+        <UnitName Value="ACBrTXTClass"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="88"/>
+        <CursorPos X="36" Y="102"/>
+        <SyntaxHighlighter Value="FreePascal"/>
+        <UsageCount Value="14"/>
+        <DefaultSyntaxHighlighter Value="Text"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="..\..\Fontes\ACBrComum\ACBrUtil.pas"/>
+        <UnitName Value="ACBrUtil"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1678"/>
+        <CursorPos X="29" Y="1685"/>
+        <SyntaxHighlighter Value="FreePascal"/>
+        <UsageCount Value="12"/>
+        <DefaultSyntaxHighlighter Value="Text"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="C:\lazarus\fpc\2.4.0\source\rtl\objpas\sysutils\sysstrh.inc"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="116"/>
+        <CursorPos X="10" Y="130"/>
+        <SyntaxHighlighter Value="FreePascal"/>
+        <UsageCount Value="8"/>
+        <DefaultSyntaxHighlighter Value="Text"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSped.pas"/>
+        <UnitName Value="ACBrSped"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="29"/>
+        <CursorPos X="16" Y="47"/>
+        <SyntaxHighlighter Value="FreePascal"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Text"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSpedUtils.pas"/>
+        <UnitName Value="ACBrSpedUtils"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="399"/>
+        <CursorPos X="19" Y="423"/>
+        <SyntaxHighlighter Value="FreePascal"/>
+        <UsageCount Value="17"/>
+        <DefaultSyntaxHighlighter Value="Text"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrEFDBloco_0.pas"/>
+        <UnitName Value="ACBrEFDBloco_0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="141"/>
+        <CursorPos X="16" Y="140"/>
+        <SyntaxHighlighter Value="FreePascal"/>
+        <UsageCount Value="14"/>
+        <DefaultSyntaxHighlighter Value="Text"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDContabil\ACBrECDBloco_0_Class.pas"/>
+        <UnitName Value="ACBrECDBloco_0_Class"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="117"/>
+        <CursorPos X="48" Y="122"/>
+        <SyntaxHighlighter Value="FreePascal"/>
+        <UsageCount Value="9"/>
+        <DefaultSyntaxHighlighter Value="Text"/>
+      </Unit18>
+      <Unit19>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrEFDBloco_1.pas"/>
+        <UnitName Value="ACBrEFDBloco_1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="87"/>
+        <CursorPos X="20" Y="101"/>
+        <SyntaxHighlighter Value="FreePascal"/>
+        <UsageCount Value="9"/>
+        <DefaultSyntaxHighlighter Value="Text"/>
+      </Unit19>
+      <Unit20>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrEFDBloco_1_Class.pas"/>
+        <UnitName Value="ACBrEFDBloco_1_Class"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="194"/>
+        <CursorPos X="1" Y="199"/>
+        <SyntaxHighlighter Value="FreePascal"/>
+        <UsageCount Value="16"/>
+        <DefaultSyntaxHighlighter Value="Text"/>
+      </Unit20>
+      <Unit21>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrEFDBloco_9_Class.pas"/>
+        <UnitName Value="ACBrEFDBloco_9_Class"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="107"/>
+        <CursorPos X="1" Y="115"/>
+        <SyntaxHighlighter Value="FreePascal"/>
+        <UsageCount Value="14"/>
+        <DefaultSyntaxHighlighter Value="Text"/>
+      </Unit21>
+      <Unit22>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrEFDBloco_D.pas"/>
+        <UnitName Value="ACBrEFDBloco_D"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="101"/>
+        <CursorPos X="22" Y="115"/>
+        <SyntaxHighlighter Value="FreePascal"/>
+        <UsageCount Value="9"/>
+        <DefaultSyntaxHighlighter Value="Text"/>
+      </Unit22>
+      <Unit23>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrEFDBloco_D_Class.pas"/>
+        <UnitName Value="ACBrEFDBloco_D_Class"/>
+        <EditorIndex Value="3"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="160"/>
+        <CursorPos X="15" Y="174"/>
+        <SyntaxHighlighter Value="FreePascal"/>
+        <UsageCount Value="18"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Text"/>
+      </Unit23>
+      <Unit24>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrEFDBloco_E.pas"/>
+        <UnitName Value="ACBrEFDBloco_E"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="137"/>
+        <CursorPos X="25" Y="151"/>
+        <SyntaxHighlighter Value="FreePascal"/>
+        <UsageCount Value="9"/>
+        <DefaultSyntaxHighlighter Value="Text"/>
+      </Unit24>
+      <Unit25>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrEFDBloco_E_Class.pas"/>
+        <UnitName Value="ACBrEFDBloco_E_Class"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="189"/>
+        <CursorPos X="1" Y="194"/>
+        <SyntaxHighlighter Value="FreePascal"/>
+        <UsageCount Value="16"/>
+        <DefaultSyntaxHighlighter Value="Text"/>
+      </Unit25>
+      <Unit26>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrEFDBloco_H.pas"/>
+        <UnitName Value="ACBrEFDBloco_H"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="85"/>
+        <CursorPos X="22" Y="99"/>
+        <SyntaxHighlighter Value="FreePascal"/>
+        <UsageCount Value="9"/>
+        <DefaultSyntaxHighlighter Value="Text"/>
+      </Unit26>
+      <Unit27>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrEFDBloco_H_Class.pas"/>
+        <UnitName Value="ACBrEFDBloco_H_Class"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="114"/>
+        <CursorPos X="3" Y="120"/>
+        <SyntaxHighlighter Value="FreePascal"/>
+        <UsageCount Value="15"/>
+        <DefaultSyntaxHighlighter Value="Text"/>
+      </Unit27>
+      <Unit28>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDContabil\ACBrECDBloco_0.pas"/>
+        <UnitName Value="ACBrECDBloco_0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="42"/>
+        <CursorPos X="18" Y="56"/>
+        <SyntaxHighlighter Value="FreePascal"/>
+        <UsageCount Value="9"/>
+        <DefaultSyntaxHighlighter Value="Text"/>
+      </Unit28>
+      <Unit29>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDContabil\ACBrECDBloco_9.pas"/>
+        <UnitName Value="ACBrECDBloco_9"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="46"/>
+        <CursorPos X="20" Y="60"/>
+        <SyntaxHighlighter Value="FreePascal"/>
+        <UsageCount Value="9"/>
+        <DefaultSyntaxHighlighter Value="Text"/>
+      </Unit29>
+      <Unit30>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDContabil\ACBrECDBloco_9_Class.pas"/>
+        <UnitName Value="ACBrECDBloco_9_Class"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="146"/>
+        <CursorPos X="48" Y="160"/>
+        <SyntaxHighlighter Value="FreePascal"/>
+        <UsageCount Value="9"/>
+        <DefaultSyntaxHighlighter Value="Text"/>
+      </Unit30>
+      <Unit31>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDContabil\ACBrECDBloco_I.pas"/>
+        <UnitName Value="ACBrECDBloco_I"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="55"/>
+        <CursorPos X="21" Y="69"/>
+        <SyntaxHighlighter Value="FreePascal"/>
+        <UsageCount Value="9"/>
+        <DefaultSyntaxHighlighter Value="Text"/>
+      </Unit31>
+      <Unit32>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDContabil\ACBrECDBloco_I_Class.pas"/>
+        <UnitName Value="ACBrECDBloco_I_Class"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="896"/>
+        <CursorPos X="48" Y="906"/>
+        <SyntaxHighlighter Value="FreePascal"/>
+        <UsageCount Value="9"/>
+        <DefaultSyntaxHighlighter Value="Text"/>
+      </Unit32>
+      <Unit33>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDContabil\ACBrECDBloco_J.pas"/>
+        <UnitName Value="ACBrECDBloco_J"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="49"/>
+        <CursorPos X="21" Y="63"/>
+        <SyntaxHighlighter Value="FreePascal"/>
+        <UsageCount Value="9"/>
+        <DefaultSyntaxHighlighter Value="Text"/>
+      </Unit33>
+      <Unit34>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDContabil\ACBrECDBloco_J_Class.pas"/>
+        <UnitName Value="ACBrECDBloco_J_Class"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="303"/>
+        <CursorPos X="48" Y="317"/>
+        <SyntaxHighlighter Value="FreePascal"/>
+        <UsageCount Value="9"/>
+        <DefaultSyntaxHighlighter Value="Text"/>
+      </Unit34>
+      <Unit35>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDContabil\ACBrECDBlocos.pas"/>
+        <UnitName Value="ACBrECDBlocos"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="1"/>
+        <CursorPos X="30" Y="13"/>
+        <SyntaxHighlighter Value="FreePascal"/>
+        <UsageCount Value="9"/>
+        <DefaultSyntaxHighlighter Value="Text"/>
+      </Unit35>
+      <Unit36>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDContabil\ACBrSpedContabil.pas"/>
+        <UnitName Value="ACBrSpedContabil"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="870"/>
+        <CursorPos X="41" Y="882"/>
+        <SyntaxHighlighter Value="FreePascal"/>
+        <UsageCount Value="18"/>
+        <DefaultSyntaxHighlighter Value="Text"/>
+      </Unit36>
+      <Unit37>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrEFDBloco_G_Class.pas"/>
+        <UnitName Value="ACBrEFDBloco_G_Class"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="122"/>
+        <CursorPos X="1" Y="136"/>
+        <SyntaxHighlighter Value="FreePascal"/>
+        <UsageCount Value="15"/>
+        <DefaultSyntaxHighlighter Value="Text"/>
+      </Unit37>
+      <Unit38>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPED-change-log.txt"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="2"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="40"/>
+        <CursorPos X="40" Y="50"/>
+        <SyntaxHighlighter Value="None"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Text"/>
+      </Unit38>
     </Units>
-    <JumpHistory Count="5" HistoryIndex="4">
+    <JumpHistory Count="29" HistoryIndex="28">
       <Position1>
-        <Filename Value="Frm_SPEDFiscal.pas"/>
-        <Caret Line="55" Column="1" TopLine="51"/>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrSpedFiscal.pas"/>
+        <Caret Line="1279" Column="36" TopLine="1275"/>
       </Position1>
       <Position2>
-        <Filename Value="Frm_SPEDFiscal.pas"/>
-        <Caret Line="263" Column="1" TopLine="241"/>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrSpedFiscal.pas"/>
+        <Caret Line="477" Column="14" TopLine="453"/>
       </Position2>
       <Position3>
-        <Filename Value="Frm_SPEDFiscal.pas"/>
-        <Caret Line="1" Column="1" TopLine="1"/>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrSpedFiscal.pas"/>
+        <Caret Line="223" Column="23" TopLine="221"/>
       </Position3>
       <Position4>
-        <Filename Value="Frm_SPEDFiscal.pas"/>
-        <Caret Line="264" Column="1" TopLine="242"/>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrSpedFiscal.pas"/>
+        <Caret Line="224" Column="17" TopLine="221"/>
       </Position4>
       <Position5>
-        <Filename Value="Frm_SPEDFiscal.pas"/>
-        <Caret Line="7" Column="31" TopLine="2"/>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrSpedFiscal.pas"/>
+        <Caret Line="223" Column="19" TopLine="221"/>
       </Position5>
+      <Position6>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrSpedFiscal.pas"/>
+        <Caret Line="224" Column="19" TopLine="221"/>
+      </Position6>
+      <Position7>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrSpedFiscal.pas"/>
+        <Caret Line="225" Column="20" TopLine="221"/>
+      </Position7>
+      <Position8>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrSpedFiscal.pas"/>
+        <Caret Line="226" Column="20" TopLine="221"/>
+      </Position8>
+      <Position9>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrSpedFiscal.pas"/>
+        <Caret Line="227" Column="20" TopLine="221"/>
+      </Position9>
+      <Position10>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrSpedFiscal.pas"/>
+        <Caret Line="228" Column="19" TopLine="221"/>
+      </Position10>
+      <Position11>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrSpedFiscal.pas"/>
+        <Caret Line="227" Column="21" TopLine="221"/>
+      </Position11>
+      <Position12>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrSpedFiscal.pas"/>
+        <Caret Line="229" Column="19" TopLine="221"/>
+      </Position12>
+      <Position13>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrSpedFiscal.pas"/>
+        <Caret Line="230" Column="19" TopLine="221"/>
+      </Position13>
+      <Position14>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrSpedFiscal.pas"/>
+        <Caret Line="477" Column="12" TopLine="456"/>
+      </Position14>
+      <Position15>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrSpedFiscal.pas"/>
+        <Caret Line="381" Column="43" TopLine="366"/>
+      </Position15>
+      <Position16>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrSpedFiscal.pas"/>
+        <Caret Line="1324" Column="7" TopLine="1567"/>
+      </Position16>
+      <Position17>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrSpedFiscal.pas"/>
+        <Caret Line="1595" Column="29" TopLine="1581"/>
+      </Position17>
+      <Position18>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrSpedFiscal.pas"/>
+        <Caret Line="1600" Column="21" TopLine="1593"/>
+      </Position18>
+      <Position19>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrSpedFiscal.pas"/>
+        <Caret Line="67" Column="6" TopLine="61"/>
+      </Position19>
+      <Position20>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrSpedFiscal.pas"/>
+        <Caret Line="65" Column="23" TopLine="61"/>
+      </Position20>
+      <Position21>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrSpedFiscal.pas"/>
+        <Caret Line="67" Column="23" TopLine="61"/>
+      </Position21>
+      <Position22>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrSpedFiscal.pas"/>
+        <Caret Line="182" Column="11" TopLine="168"/>
+      </Position22>
+      <Position23>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrSpedFiscal.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
+      </Position23>
+      <Position24>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrSpedFiscal.pas"/>
+        <Caret Line="52" Column="31" TopLine="38"/>
+      </Position24>
+      <Position25>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrSpedFiscal.pas"/>
+        <Caret Line="58" Column="30" TopLine="53"/>
+      </Position25>
+      <Position26>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrSpedFiscal.pas"/>
+        <Caret Line="141" Column="5" TopLine="126"/>
+      </Position26>
+      <Position27>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrSpedFiscal.pas"/>
+        <Caret Line="87" Column="22" TopLine="73"/>
+      </Position27>
+      <Position28>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrSpedFiscal.pas"/>
+        <Caret Line="155" Column="58" TopLine="141"/>
+      </Position28>
+      <Position29>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrSpedFiscal.pas"/>
+        <Caret Line="114" Column="1" TopLine="91"/>
+      </Position29>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

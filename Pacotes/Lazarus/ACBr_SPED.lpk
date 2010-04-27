@@ -22,7 +22,7 @@
 Componentes para geração do TXT"/>
     <License Value="LGPL"/>
     <Version Release="1"/>
-    <Files Count="28">
+    <Files Count="30">
       <Item1>
         <Filename Value="..\..\Fontes\ACBrSPED\ACBrSped.pas"/>
         <UnitName Value="ACBrSped"/>
@@ -137,16 +137,27 @@ Componentes para geração do TXT"/>
         <HasRegisterProc Value="True"/>
         <UnitName Value="ACBrSpedContabil"/>
       </Item28>
+      <Item29>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrEFDBloco_G_Class.pas"/>
+        <UnitName Value="ACBrEFDBloco_G_Class"/>
+      </Item29>
+      <Item30>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrEFDBloco_G.pas"/>
+        <UnitName Value="ACBrEFDBloco_G"/>
+      </Item30>
     </Files>
     <Type Value="RunAndDesignTime"/>
-    <RequiredPkgs Count="2">
+    <RequiredPkgs Count="3">
       <Item1>
-        <PackageName Value="LCL"/>
+        <PackageName Value="ACBrComum"/>
       </Item1>
       <Item2>
+        <PackageName Value="LCL"/>
+      </Item2>
+      <Item3>
         <PackageName Value="FCL"/>
         <MinVersion Major="1" Valid="True"/>
-      </Item2>
+      </Item3>
     </RequiredPkgs>
     <UsageOptions>
       <UnitPath Value="$(PkgOutDir)\"/>

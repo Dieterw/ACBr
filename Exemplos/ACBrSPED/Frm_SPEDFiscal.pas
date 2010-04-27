@@ -1,7 +1,7 @@
 unit Frm_SPEDFiscal;
 
 {$IFDEF FPC}
-{$mode objfpc}{$H+}
+  {$mode objfpc}{$H+}
 {$ENDIF}
 
 interface
@@ -9,13 +9,14 @@ interface
 uses
 {$IFNDEF FPC}
   Windows, Messages,
-{$ELSE}
-  LResources,
 {$ENDIF}
   SysUtils, Variants, Classes, Graphics, Controls, Forms, ACBrEFDBlocos,
-  Dialogs, StdCtrls, ACBrSpedFiscal, ExtCtrls, ACBrSped, ACBrUtilTXT;
+  Dialogs, StdCtrls, ACBrSpedFiscal, ExtCtrls, ACBrUtil, ACBrTXTClass;
 
 type
+  
+  { TFrmSPEDFiscal }
+
   TFrmSPEDFiscal = class(TForm)
     btnB_0: TButton;
     edtError: TMemo;
@@ -53,14 +54,11 @@ var
 
 implementation
 
-{$IFNDEF FPC}
-{$R *.dfm}
+{$IFDEF FPC}
+ {$R *.lfm}
+{$ELSE}
+ {$R *.dfm}
 {$ENDIF}
-
-procedure TFrmSPEDFiscal.ACBrSPEDFiscal1Error(const MsnError: AnsiString);
-begin
-   edtError.Lines.Add(MsnError);
-end;
 
 procedure TFrmSPEDFiscal.btnB_0Click(Sender: TObject);
 var
@@ -445,9 +443,9 @@ begin
    btnB_H.Enabled := false;
 end;
 
-initialization
-{$IFDEF FPC}
-   {$I Frm_SPEDFiscal.lrs}
-{$ENDIF}
+procedure TFrmSPEDFiscal.ACBrSPEDFiscal1Error(const MsnError: AnsiString);
+begin
+   edtError.Lines.Add(MsnError);
+end;
 
 end.

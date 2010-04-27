@@ -54,8 +54,8 @@ type
     FRegistroH005Count: Integer;
     FRegistroH010Count: Integer;
 
-    function WriteRegistroH005(RegH001: TRegistroH001): String;
-    function WriteRegistroH010(RegH005: TRegistroH005): String;
+    procedure WriteRegistroH005(RegH001: TRegistroH001);
+    procedure WriteRegistroH010(RegH005: TRegistroH005);
 
     procedure CriaRegistros;
     procedure LiberaRegistros;
@@ -68,8 +68,8 @@ type
     function RegistroH005New: TRegistroH005;
     function RegistroH010New: TRegistroH010;
 
-    function WriteRegistroH001: String;
-    function WriteRegistroH990: String;
+    procedure WriteRegistroH001;
+    procedure WriteRegistroH990;
 
     property RegistroH001: TRegistroH001 read FRegistroH001 write FRegistroH001;
     property RegistroH990: TRegistroH990 read FRegistroH990 write FRegistroH990;
@@ -84,6 +84,7 @@ implementation
 
 constructor TBloco_H.Create;
 begin
+  inherited ;
   CriaRegistros;
 end;
 
@@ -114,6 +115,8 @@ procedure TBloco_H.LimpaRegistros;
 begin
   /// Limpa os Registros
   LiberaRegistros;
+  Conteudo.Clear;
+
   /// Recriar os Registros Limpos
   CriaRegistros;
 end;
@@ -133,109 +136,84 @@ begin
    Result := FRegistroH001.RegistroH005.Items[FRegistroH001.RegistroH005.Count -1].RegistroH010.New;
 end;
 
-function TBloco_H.WriteRegistroH001: String;
-var
-strRegistroH001: string;
+procedure TBloco_H.WriteRegistroH001;
 begin
-  Result := '';
-
   if Assigned(RegistroH001) then
   begin
      with RegistroH001 do
      begin
-       strRegistroH001 := strRegistroH001 + LFill( 'H001' ) +
-                                            LFill( Integer(IND_MOV), 0 ) +
-                                            Delimitador +
-                                            #13#10;
+       Add( LFill( 'H001' ) +
+            LFill( Integer(IND_MOV), 0 ) ) ;
        ///
-       strRegistroH001 := strRegistroH001 +
-                          WriteRegistroH005(FRegistroH001);
+       WriteRegistroH005(FRegistroH001);
        ///
        RegistroH990.QTD_LIN_H := RegistroH990.QTD_LIN_H + 1;
      end;
   end;
-  Result := strRegistroH001;
 end;
 
-function TBloco_H.WriteRegistroH005(RegH001: TRegistroH001): String;
+procedure TBloco_H.WriteRegistroH005(RegH001: TRegistroH001);
 var
-intFor: integer;
-strRegistroH005: String;
+  intFor: integer;
 begin
-  strRegistroH005 := '';
-
   if Assigned( RegH001.RegistroH005 ) then
   begin
      for intFor := 0 to RegH001.RegistroH005.Count - 1 do
      begin
         with RegH001.RegistroH005.Items[intFor] do
         begin
-          strRegistroH005 := strRegistroH005 + LFill('H005') +
-                                               LFill( DT_INV ) +
-                                               LFill( VL_INV, 0) +
-                                               Delimitador +
-                                               #13#10;
+          Add( LFill('H005') +
+               LFill( DT_INV ) +
+               LFill( VL_INV, 0) ) ;
         end;
         /// Registros FILHOS
-        strRegistroH005 := strRegistroH005 +
-                           WriteRegistroH010( RegH001.RegistroH005.Items[intFor] );
+        WriteRegistroH010( RegH001.RegistroH005.Items[intFor] );
 
         RegistroH990.QTD_LIN_H := RegistroH990.QTD_LIN_H + 1;
      end;
      /// Variavél para armazenar a quantidade de registro do tipo.
      FRegistroH005Count := FRegistroH005Count + RegH001.RegistroH005.Count;
   end;
-  Result := strRegistroH005;
 end;
 
-function TBloco_H.WriteRegistroH010(RegH005: TRegistroH005): String;
+procedure TBloco_H.WriteRegistroH010(RegH005: TRegistroH005);
 var
-intFor: integer;
-strRegistroH010: String;
+  intFor: integer;
 begin
-  strRegistroH010 := '';
-
   if Assigned( RegH005.RegistroH010 ) then
   begin
      for intFor := 0 to RegH005.RegistroH010.Count - 1 do
      begin
         with RegH005.RegistroH010.Items[intFor] do
         begin
-          strRegistroH010 := strRegistroH010 + LFill('H010') +
-                                               LFill( COD_ITEM ) +
-                                               LFill( UNID ) +
-                                               LFill( QTD, 0, 3 ) +
-                                               LFill( VL_UNIT, 0, 6 ) +
-                                               LFill( VL_ITEM, 0, 2 ) +
-                                               LFill( Integer(IND_PROP), 0 ) +
-                                               LFill( COD_PART ) +
-                                               LFill( TXT_COMPL ) +
-                                               LFill( COD_CTA ) +
-                                               Delimitador +
-                                               #13#10;
+          Add( LFill('H010') +
+               LFill( COD_ITEM ) +
+               LFill( UNID ) +
+               LFill( QTD, 0, 3 ) +
+               LFill( VL_UNIT, 0, 6 ) +
+               LFill( VL_ITEM, 0, 2 ) +
+               LFill( Integer(IND_PROP), 0 ) +
+               LFill( COD_PART ) +
+               LFill( TXT_COMPL ) +
+               LFill( COD_CTA ) ) ;
         end;
         RegistroH990.QTD_LIN_H := RegistroH990.QTD_LIN_H + 1;
      end;
      /// Variavél para armazenar a quantidade de registro do tipo.
      FRegistroH010Count := FRegistroH010Count + RegH005.RegistroH010.Count;
   end;
-  Result := strRegistroH010;
 end;
 
-function TBloco_H.WriteRegistroH990: String;
+procedure TBloco_H.WriteRegistroH990;
 begin
-  Result := '';
-
   if Assigned(RegistroH990) then
   begin
      with RegistroH990 do
      begin
        QTD_LIN_H := QTD_LIN_H + 1;
        ///
-       Result := LFill('H990') +
-                 LFill(QTD_LIN_H,0) +
-                 Delimitador +
-                 #13#10;
+       Add( LFill('H990') +
+            LFill(QTD_LIN_H,0) ) ;
      end;
   end;
 end;

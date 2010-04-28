@@ -333,16 +333,19 @@ begin
   begin
      with FRegistroE001 do
      begin
-       strRegistroE001 := strRegistroE001 + LFill( 'E001' ) +
-                                            LFill( Integer(IND_MOV), 0 ) +
-                                            Delimitador +
-                                            #13#10;
+        strRegistroE001 := strRegistroE001 + LFill( 'E001' ) +
+                                             LFill( Integer(IND_MOV), 0 ) +
+                                             Delimitador +
+                                             #13#10;
+        ///
+        if IND_MOV = imComDados then
+        begin
+           strRegistroE001 := strRegistroE001 +
+                              WriteRegistroE100(FRegistroE001) +
+                              WriteRegistroE200(FRegistroE001) +
+                              WriteRegistroE500(FRegistroE001);
+        end;
      end;
-     strRegistroE001 := strRegistroE001 +
-                        WriteRegistroE100(FRegistroE001) +
-                        WriteRegistroE200(FRegistroE001) +
-                        WriteRegistroE500(FRegistroE001);
-     ///
      RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
   end;
   Result := strRegistroE001;

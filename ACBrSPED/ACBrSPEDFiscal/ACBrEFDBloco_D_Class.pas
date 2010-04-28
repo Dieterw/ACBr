@@ -537,16 +537,19 @@ begin
                                             LFill( Integer(IND_MOV), 0 ) +
                                             Delimitador +
                                             #13#10;
+        //
+        if IND_MOV = imComDados then
+        begin
+           strRegistroD001 := strRegistroD001 +
+                              WriteRegistroD100 ( FRegistroD001 ) +
+                              WriteRegistroD300 ( FRegistroD001 ) +
+                              WriteRegistroD350 ( FRegistroD001 ) +
+                              WriteRegistroD400 ( FRegistroD001 ) +
+                              WriteRegistroD500 ( FRegistroD001 ) +
+                              WriteRegistroD600 ( FRegistroD001 ) +
+                              WriteRegistroD695 ( FRegistroD001 );
+        end;
      end;
-     strRegistroD001 := strRegistroD001 +
-                        WriteRegistroD100 ( FRegistroD001 ) +
-                        WriteRegistroD300 ( FRegistroD001 ) +
-                        WriteRegistroD350 ( FRegistroD001 ) +
-                        WriteRegistroD400 ( FRegistroD001 ) +
-                        WriteRegistroD500 ( FRegistroD001 ) +
-                        WriteRegistroD600 ( FRegistroD001 ) +
-                        WriteRegistroD695 ( FRegistroD001 );
-
      RegistroD990.QTD_LIN_D := RegistroD990.QTD_LIN_D + 1;
   end;
   Result := strRegistroD001;

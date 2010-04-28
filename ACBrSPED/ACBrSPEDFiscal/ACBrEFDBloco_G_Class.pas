@@ -182,16 +182,18 @@ begin
   begin
      with RegistroG001 do
      begin
-       strRegistroG001 :=  strRegistroG001 + LFill( 'G001' ) +
-                                             LFill( Integer(IND_MOV), 0 ) +
-                                             Delimitador +
-                                             #13#10;
-       ///
-       strRegistroG001 := strRegistroG001 +
-                          WriteRegistroG110(FRegistroG001);
-       ///
-       RegistroG990.QTD_LIN_G := RegistroG990.QTD_LIN_G + 1;
+        strRegistroG001 :=  strRegistroG001 + LFill( 'G001' ) +
+                                              LFill( Integer(IND_MOV), 0 ) +
+                                              Delimitador +
+                                              #13#10;
+        ///
+        if IND_MOV = imComDados then
+        begin
+           strRegistroG001 := strRegistroG001 +
+                              WriteRegistroG110(FRegistroG001);
+        end;
      end;
+     RegistroG990.QTD_LIN_G := RegistroG990.QTD_LIN_G + 1;
   end;
   Result := strRegistroG001;
 end;

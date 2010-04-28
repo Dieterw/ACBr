@@ -42,7 +42,7 @@ unit ACBrEFDBloco_H_Class;
 
 interface
 
-uses SysUtils, Classes, DateUtils, ACBrSped, ACBrEFDBloco_H;
+uses SysUtils, Classes, DateUtils, ACBrSped, ACBrEFDBlocos, ACBrEFDBloco_H;
 
 type
   /// TBLOCO_H -
@@ -143,16 +143,19 @@ begin
   begin
      with RegistroH001 do
      begin
-       strRegistroH001 := strRegistroH001 + LFill( 'H001' ) +
-                                            LFill( Integer(IND_MOV), 0 ) +
-                                            Delimitador +
-                                            #13#10;
-       ///
-       strRegistroH001 := strRegistroH001 +
-                          WriteRegistroH005(FRegistroH001);
-       ///
-       RegistroH990.QTD_LIN_H := RegistroH990.QTD_LIN_H + 1;
+        strRegistroH001 := strRegistroH001 + LFill( 'H001' ) +
+                                             LFill( Integer(IND_MOV), 0 ) +
+                                             Delimitador +
+                                             #13#10;
+        ///
+        if IND_MOV = imComDados then
+        begin
+           strRegistroH001 := strRegistroH001 +
+                              WriteRegistroH005(FRegistroH001);
+        end;
      end;
+     ///
+     RegistroH990.QTD_LIN_H := RegistroH990.QTD_LIN_H + 1;
   end;
   Result := strRegistroH001;
 end;

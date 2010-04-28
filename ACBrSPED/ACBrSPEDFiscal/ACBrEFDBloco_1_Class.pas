@@ -315,25 +315,27 @@ begin
   begin
      with Registro1001 do
      begin
-       strRegistro1001 := strRegistro1001 +
-                          LFill( '1001' ) +
-                          LFill( Integer(IND_MOV), 0 ) +
-                          Delimitador +
-                          #13#10;
-       ///
-       strRegistro1001 := strRegistro1001 +
-                          WriteRegistro1100(Registro1001) +
-                          WriteRegistro1200(Registro1001) +
-                          WriteRegistro1300(Registro1001) +
-                          WriteRegistro1350(Registro1001) +
-                          WriteRegistro1400(Registro1001) +
-                          WriteRegistro1500(Registro1001) +
-                          WriteRegistro1600(Registro1001) +
-                          WriteRegistro1700(Registro1001) +
-                          WriteRegistro1800(Registro1001);
-       ///
-       Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
+        strRegistro1001 := strRegistro1001 +
+                           LFill( '1001' ) +
+                           LFill( Integer(IND_MOV), 0 ) +
+                           Delimitador +
+                           #13#10;
+        ///
+        if IND_MOV = imComDados then
+        begin
+           strRegistro1001 := strRegistro1001 +
+                              WriteRegistro1100(Registro1001) +
+                              WriteRegistro1200(Registro1001) +
+                              WriteRegistro1300(Registro1001) +
+                              WriteRegistro1350(Registro1001) +
+                              WriteRegistro1400(Registro1001) +
+                              WriteRegistro1500(Registro1001) +
+                              WriteRegistro1600(Registro1001) +
+                              WriteRegistro1700(Registro1001) +
+                              WriteRegistro1800(Registro1001);
+        end;
      end;
+     Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
   end;
   Result := strRegistro1001;
 end;

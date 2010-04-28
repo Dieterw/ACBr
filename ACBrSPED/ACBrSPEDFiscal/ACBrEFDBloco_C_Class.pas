@@ -798,21 +798,23 @@ begin
   begin
      with FRegistroC001 do
      begin
-       strRegistroC001 := strRegistroC001 + LFill( 'C001' ) +
-                                            LFill( Integer(IND_MOV), 0 ) +
-                                            Delimitador +
-                                            #13#10;
+        strRegistroC001 := strRegistroC001 + LFill( 'C001' ) +
+                                             LFill( Integer(IND_MOV), 0 ) +
+                                             Delimitador +
+                                             #13#10;
+        if IND_MOV = imComDados then
+        begin
+           strRegistroC001 := strRegistroC001 +
+                              WriteRegistroC100( FRegistroC001 ) +
+                              WriteRegistroC300( FRegistroC001 ) +
+                              WriteRegistroC350( FRegistroC001 ) +
+                              WriteRegistroC400( FRegistroC001 ) +
+                              WriteRegistroC495( FRegistroC001 ) +
+                              WriteRegistroC500( FRegistroC001 ) +
+                              WriteRegistroC600( FRegistroC001 ) +
+                              WriteRegistroC700( FRegistroC001 );
+        end;
      end;
-     strRegistroC001 := strRegistroC001 +
-                        WriteRegistroC100( FRegistroC001 ) +
-                        WriteRegistroC300( FRegistroC001 ) +
-                        WriteRegistroC350( FRegistroC001 ) +
-                        WriteRegistroC400( FRegistroC001 ) +
-                        WriteRegistroC495( FRegistroC001 ) +
-                        WriteRegistroC500( FRegistroC001 ) +
-                        WriteRegistroC600( FRegistroC001 ) +
-                        WriteRegistroC700( FRegistroC001 );
-
      RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
   end;
   Result := strRegistroC001;
@@ -2129,10 +2131,10 @@ begin
         with RegC001.RegistroC400.Items[intFor] do
         begin
           strRegistroC400 := strRegistroC400 + LFill('C400') +
-                                               LFill(COD_MOD ) +
+                                               LFill(COD_MOD) +
                                                LFill(ECF_MOD) +
                                                LFill(ECF_FAB) +
-                                               LFill(ECF_CX ) +
+                                               LFill(ECF_CX) +
                                                Delimitador +
                                                #13#10;
         end;

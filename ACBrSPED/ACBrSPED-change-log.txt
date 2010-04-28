@@ -47,6 +47,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.04a   28/04/10
+-- ACBrSPEDContabil --
+[-] Correção, do recurso que os registros sem informações não sejam gerados no 
+    arquivo.
+
 Versão 0.04a   20/04/10
 -- ACBrSPEDContabil --
 [-] Corrigido BUG do qual o camponente não aparecia no IDE.

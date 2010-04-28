@@ -504,7 +504,9 @@ end;
 
 procedure TDANFeRave.SetFontText;
 begin
-  BaseReport.SetFont(FontNameUsed,FontSizeText)
+  if FontSizeText = 0 then
+     FontSizeText := TamanhoFonte_DemaisCampos;
+  BaseReport.SetFont(FontNameUsed,FontSizeText);
 end;
 
 procedure TDANFeRave.SetFontTitle;

@@ -693,7 +693,9 @@ begin
     TQRLabel(FindComponent('qrlQtdUndMedida' + intToStr(i))).Caption := '';
 
   for i := 0 to FCTe.InfCarga.InfQ.Count - 1 do
-    TQRLabel(FindComponent('qrlQtdUndMedida' + intToStr(i + 1))).Caption := CteUtil.FormatarValor(msk6x3, FCTe.InfCarga.InfQ.Items[i].qCarga);
+    TQRLabel(FindComponent('qrlQtdUndMedida' + intToStr(i + 1))).Caption :=
+      CteUtil.FormatarValor(msk6x3, FCTe.InfCarga.InfQ.Items[i].qCarga) + '/' +
+      FCTe.InfCarga.InfQ.Items[i].tpMed;
 
   qrlNomeSeguradora.Caption := '';
   qrlRespSeguroMerc.Caption := '';

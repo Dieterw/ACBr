@@ -48,10 +48,13 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   28/04/10
+---------------
+[*] Incluido a descrição da unidade de medida junto com a quantidade nos 4 quadros do DACTe.
+
 Alterações   27/04/10
 ---------------
 [-] Corrigido o problema da não imprimir o Logo da empresa.
-
 
 Alterações   27/04/10
 ---------------
@@ -59,7 +62,6 @@ Alterações   27/04/10
 [-] Ao ler o arquivo xml ficava em branco quando tem somente o CPF informado.
 [*] Incluido o UF após a descrição do município do remetente, destinatário, etc, falha apontada por Doni Delphi.
 [*] Novo DACTe muito mais elegante e dentro do padrão (Créditos: Mario Araujo).
-
 
 Alterações   26/04/10
 ---------------

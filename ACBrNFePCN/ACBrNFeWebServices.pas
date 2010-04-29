@@ -477,6 +477,15 @@ begin
         TACBrNFe( FACBrNFe ).OnGerarLog('ERRO: Erro OnBeforePost: ' + IntToStr(GetLastError));
      raise Exception.Create( 'Erro OnBeforePost: ' + IntToStr(GetLastError) );
    end;
+
+   if trim(FConfiguracoes.WebServices.ProxyUser) <> '' then begin
+     if not InternetSetOption(Data, INTERNET_OPTION_PROXY_USERNAME, PChar(FConfiguracoes.WebServices.ProxyUser), Length(FConfiguracoes.WebServices.ProxyUser)) then
+       raise Exception.Create( 'Erro OnBeforePost: ' + IntToStr(GetLastError) );
+   end;
+   if trim(FConfiguracoes.WebServices.ProxyPass) <> '' then begin
+     if not InternetSetOption(Data, INTERNET_OPTION_PROXY_PASSWORD, PChar(FConfiguracoes.WebServices.ProxyPass),Length (FConfiguracoes.WebServices.ProxyPass)) then
+       raise Exception.Create( 'Erro OnBeforePost: ' + IntToStr(GetLastError) );
+   end;
 end;
 {$ENDIF}
 

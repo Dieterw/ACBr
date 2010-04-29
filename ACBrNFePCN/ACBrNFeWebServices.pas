@@ -300,6 +300,7 @@ type
     procedure SetIE(const Value: String);
   public
     function Executar: Boolean;override;
+    destructor destroy; override;
     property verAplic: String read FverAplic;
     property cStat: Integer read FcStat;
     property xMotivo: String read FxMotivo;
@@ -2081,6 +2082,13 @@ begin
 end;
 
 { TNFeConsultaCadastro }
+destructor TNFeConsultaCadastro.destroy;
+begin
+  FRetConsCad.Free;
+  
+  inherited;
+end;
+
 function TNFeConsultaCadastro.Executar: Boolean;
 var
   aMsg : String;

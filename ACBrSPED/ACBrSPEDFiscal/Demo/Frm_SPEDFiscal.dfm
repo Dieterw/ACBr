@@ -165,7 +165,7 @@ object FrmSPEDFiscal: TFrmSPEDFiscal
     TrimString = True
     CurMascara = '#0.00'
     OnError = ACBrSPEDFiscal1Error
-    Left = 272
-    Top = 274
+    Left = 274
+    Top = 276
   end
 end

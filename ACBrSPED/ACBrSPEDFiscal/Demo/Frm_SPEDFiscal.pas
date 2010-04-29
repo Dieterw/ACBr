@@ -13,7 +13,7 @@ uses
   LResources,
 {$ENDIF}
   SysUtils, Variants, Classes, Graphics, Controls, Forms, ACBrEFDBlocos,
-  Dialogs, StdCtrls, ACBrSpedFiscal, ExtCtrls, ACBrSped, ACBrUtilTXT;
+  Dialogs, StdCtrls, ACBrSpedFiscal, ExtCtrls, ACBrSped;
 
 type
   TFrmSPEDFiscal = class(TForm)
@@ -85,12 +85,12 @@ begin
          COD_MUN    := 3200607;
          IM         := '';
          SUFRAMA    := '';
-         IND_PERFIL := pfPerfilA;
+         IND_PERFIL := pfPerfilA; //pfPerfilB;
          IND_ATIV   := atOutros;
       end;
       with Registro0001New do
       begin
-         IND_MOV := imComDados;
+//         IND_MOV := imComDados;
 
          // FILHO - Dados complementares da Empresa
          with Registro0005New do
@@ -238,13 +238,13 @@ procedure TFrmSPEDFiscal.btnB_1Click(Sender: TObject);
 begin
    // Alimenta o componente com informações para gerar todos os registros do
    // Bloco 1.
-//   with ACBrSpedFiscal1.Bloco_1 do
-//   begin
-//      with Registro1001New do
-//      begin
-//        IND_MOV := 1;
-//      end;
-//   end;
+   with ACBrSpedFiscal1.Bloco_1 do
+   begin
+      with Registro1001New do
+      begin
+        IND_MOV := imSemDados;
+      end;
+   end;
    btnB_1.Enabled := false;
 end;
 
@@ -315,18 +315,18 @@ begin
                   ALIQ_ST       := 0;
                   VL_ICMS_ST    := 0;
                   IND_APUR      := iaMensal;
-                  CST_IPI       := ipiEntradaIsenta;
+                  CST_IPI       := '';
                   COD_ENQ       := '';
                   VL_BC_IPI     := 0;
                   ALIQ_IPI      := 0;
                   VL_IPI        := 0;
-                  CST_PIS       := pisOutrasOperacoes;
+                  CST_PIS       := '';
                   VL_BC_PIS     := 0;
                   ALIQ_PIS_PERC := 0;
                   QUANT_BC_PIS  := 0;
                   ALIQ_PIS_R    := 0;
                   VL_PIS        := 0;
-                  CST_COFINS    := cofinsOutrasOperacoes;
+                  CST_COFINS    := '';
                   VL_BC_COFINS  := 0;
                   ALIQ_COFINS_PERC := 0;
                   QUANT_BC_COFINS  := 0;
@@ -353,6 +353,10 @@ begin
                   COD_OBS       := '000';
                end;//Fim dos Itens;
              end;
+           end;
+           with RegistroC300New do
+           begin
+
            end;
          end;
       end;
@@ -383,7 +387,7 @@ begin
       // Abertura do Bloco E
       with RegistroE001New do
       begin
-         IND_MOV := imComDados;
+//         IND_MOV := imComDados;
          ///
          with RegistroE110New do
          begin
@@ -417,7 +421,7 @@ begin
    begin
       with RegistroH001New do
       begin
-         IND_MOV := imComDados;
+//         IND_MOV := imComDados;
          //
          with RegistroH005New do
          begin

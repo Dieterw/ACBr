@@ -48,6 +48,10 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   29/04/10
+---------------
+[*] Alterado a descrição da forma de pagamento do DACTe de A Vista e A Prazo para Pago e A Pagar.
+
 Alterações   28/04/10
 ---------------
 [*] Incluido a descrição da unidade de medida junto com a quantidade nos 4 quadros do DACTe.

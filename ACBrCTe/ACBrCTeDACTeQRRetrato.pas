@@ -432,6 +432,28 @@ begin
       end;
     end;
   end;
+  //Varrendo Outros
+  for I := 0 to (FCTe.Rem.InfOutros.Count - 1) do
+  begin
+    with FCTe.Rem.InfOutros.Items[I] do
+    begin
+      if (I mod 2) = 0 then
+      begin
+        cdsDocumentos.Append;
+        cdsDocumentosTIPO_1.AsString := descOutros;
+        cdsDocumentosCNPJCPF_1.AsString := CTeUtil.FormatarCNPJ(FCTe.Rem.CNPJCPF);
+        cdsDocumentosDOCUMENTO_1.AsString := nDoc;
+      end
+      else
+      begin
+        cdsDocumentosTIPO_2.AsString := descOutros;
+        cdsDocumentosCNPJCPF_2.AsString := CTeUtil.FormatarCNPJ(FCTe.Rem.CNPJCPF);
+        cdsDocumentosDOCUMENTO_2.AsString := nDoc;
+        cdsDocumentos.Post;
+      end;
+    end;
+  end;
+
   cdsDocumentos.First;
 end;
 

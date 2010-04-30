@@ -1139,7 +1139,7 @@ end;
 procedure TCTeCancelamento.SetJustificativa(AValue: WideString);
 begin
   if NotaUtil.EstaVazio(AValue) then
-    raise Exception.Create('Informar uma Justificativa para cancelar a Nota Fiscal Eletronica')
+    raise Exception.Create('Informar uma Justificativa para cancelar o Conhecimento')
   else
     AValue := NotaUtil.TrataString(AValue);
 
@@ -1258,12 +1258,12 @@ end;
 procedure TCTeInutilizacao.SetJustificativa(AValue: WideString);
 begin
   if NotaUtil.EstaVazio(AValue) then
-    raise Exception.Create('Informar uma Justificativa para Inutilização de numeração da Nota Fiscal Eletronica')
+    raise Exception.Create('Informar uma Justificativa para Inutilização de numeração do Conhecimento')
   else
     AValue := NotaUtil.TrataString(AValue);
 
   if Length(Trim(AValue)) < 15 then
-   raise Exception.Create('A Justificativa para Inutilização de numeração da Nota Fiscal Eletronica deve ter no minimo 15 caracteres')
+   raise Exception.Create('A Justificativa para Inutilização de numeração do Conhecimento deve ter no minimo 15 caracteres')
   else
     FJustificativa := Trim(AValue);
 end;
@@ -1374,7 +1374,7 @@ begin
 
     except on E: Exception do
       begin
-        raise Exception.Create('WebService CRetorno de Recepção:'+LineBreak+
+        raise Exception.Create('WebService Retorno de Recepção:'+LineBreak+
                                '- Inativo ou Inoperante tente novamente.'+LineBreak+
                                '- '+E.Message);
       end;
@@ -1421,7 +1421,7 @@ begin
     end;
   end;
 
-  //Verificando se existe alguma nota confirmada
+  //Verificando se existe algum Conhecimento confirmada
   for i:= 0 to FCTes.Count-1 do
   begin
     if FCTes.Items[i].Confirmada then
@@ -1431,17 +1431,17 @@ begin
     end;
   end;
 
-  //Verificando se existe alguma nota nao confirmada
+  //Verificando se existe algum Conhecimento nao confirmada
   for i:= 0 to FCTes.Count-1 do
   begin
     if not(FCTes.Items[i].Confirmada) then
     begin
-      FMsg   := 'Conhecimento(s) não confirmados:'+LineBreak;
+      FMsg   := 'Conhecimento(s) não confirmado(s):'+LineBreak;
       break;
     end;
   end;
 
-  //Montando a mensagem de retorno para as notas nao confirmadas
+  //Montando a mensagem de retorno para os Conhecimento nao confirmadas
   for i:= 0 to FCTes.Count-1 do
   begin
     if not(FCTes.Items[i].Confirmada) then

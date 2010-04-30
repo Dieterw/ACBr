@@ -47,6 +47,51 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 1.00b   27/04/10     (por: DSA)
+-- ACBrSPEDFiscal --
+[+] Nova propriedade  "Arquivo: String" , que deve ser informada com o Nome do
+    Arquivo a ser gerado. Se ela contiver o Path, o mesmo será extraido e movido
+    para a propriedade "Path".
+[+] Nova propriedade "LinhasBuffer : Integer" que permite informar o máximo
+    de linhas que o StringList pode conter, antes de "descarrega-lo" para o
+    disco (valor default 1000)
+[*] Médodo "SaveFileTXT" modificado para Procedure, e removido o parâmetro que
+    recebia o nome do arquivo (ajuste a propriedade "Arquivo" antes de chama-lo)
+[+] Implementado novo mecanismo que permite fazer a geração dos Registros com
+    Concomitância. Isso resolve o problema de falta de memória (veja no Demo
+    como usa-lo)
+    Novos métodos criados para permitir a geração com concomitância:
+    IniciaGeracao -> Deve ser chamado antes de alimentar o Bloco_0, apaga o
+                     arquivo e zera as variaveis de trabalho e Buffers
+
+    WriteBloco_0 -> Grava em disco os dados do Bloco 0 (chame-o somente após
+                    informar todos os dados deste Bloco)
+    WriteBloco_C( FechaBloco: Boolean )    -> True = Fecha o Bloco.
+                    Pode ser executado dentro do Loop de "alimentação" das Notas
+                    , com o parâmetro = False, Isso irá gravar todas as Notas
+                    em memória no Disco, e irá Zerar a memoria das Listas do
+                    Bloco_C. Por motivo de performance, não é aconselhado
+                    chama-lo a cada Nota informada, mas a cada multiplo de Notas
+                    (a cada 100 notas por exemplo, veja o Demo...)
+                    Após concluir todas as Notas chame-o com o parâmetro = True
+                    para fechar o bloco em definitivo
+
+    WriteBloco_D -> Grava em disco os dados do Bloco D
+    WriteBloco_E -> Grava em disco os dados do Bloco E
+    WriteBloco_G -> Grava em disco os dados do Bloco G
+    WriteBloco_H -> Grava em disco os dados do Bloco H
+    WriteBloco_1 -> Grava em disco os dados do Bloco 1
+    WriteBloco_9 -> Grava em disco os dados do Bloco 9, finalizando o ARQUIVO
+
+    PS: O método sem Concomitância continua funcional... Nesse caso não é neces-
+        sário ajustes nos fontes, apenas "alimente" todos registros e chame o
+        método "SaveFileTXT"
+
+Versão 0.04a   28/04/10
+-- ACBrSPEDContabil --
+[-] Correção, do recurso que os registros sem informações não sejam gerados no 
+    arquivo.
+
 Versão 0.10b   27/04/10     (por: DSA)
 [*] Metodo de geração modificado para usar TStringList ao invez de longas
     cadeias de Strings. Isso provavelmente aumentará a performace e corrigirá os

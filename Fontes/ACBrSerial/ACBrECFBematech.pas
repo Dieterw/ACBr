@@ -554,18 +554,21 @@ begin
      LeResposta ;
 
      { Separando o Retorno }
-     if BytesResp >= 0 then
-      begin
-        fsST1  := ord( fpRespostaComando[ BytesResp+1 ] ) ;
-        fsST2  := ord( fpRespostaComando[ BytesResp+2 ] ) ;
-        Result := copy(fpRespostaComando, 1, BytesResp) ;
-      end
-     else  { Quando BytesResp < 0 espera por ETX no final }
-      begin
-        fsST1  := ord( fpRespostaComando[ 1 ] ) ;
-        fsST2  := ord( fpRespostaComando[ 2 ] ) ;
-        Result := copy(fpRespostaComando, 3, Length(fpRespostaComando)-3 ) ;
-      end ;
+     try
+        if BytesResp >= 0 then
+         begin
+           fsST1  := ord( fpRespostaComando[ BytesResp+1 ] ) ;
+           fsST2  := ord( fpRespostaComando[ BytesResp+2 ] ) ;
+           Result := copy(fpRespostaComando, 1, BytesResp) ;
+         end
+        else  { Quando BytesResp < 0 espera por ETX no final }
+         begin
+           fsST1  := ord( fpRespostaComando[ 1 ] ) ;
+           fsST2  := ord( fpRespostaComando[ 2 ] ) ;
+           Result := copy(fpRespostaComando, 3, Length(fpRespostaComando)-3 ) ;
+         end ;
+     except
+     end ;
 
      { Verificando por erros em ST1 e ST2 }
      ErroMsg := '' ;

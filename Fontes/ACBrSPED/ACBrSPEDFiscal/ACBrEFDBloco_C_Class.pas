@@ -795,22 +795,28 @@ procedure TBloco_C.WriteRegistroC001;
 begin
   if Assigned(FRegistroC001) then
   begin
-     with FRegistroC001 do
+     if (RegistroC990.QTD_LIN_C = 0) then   // Já gravou o C001 ?
      begin
-       Add( LFill( 'C001' ) +
-            LFill( Integer(IND_MOV), 0 ) ) ;
+        with FRegistroC001 do
+        begin
+          Add( LFill( 'C001' ) +
+               LFill( Integer(IND_MOV), 0 ) ) ;
+        end;
+
+        RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
      end;
 
-     WriteRegistroC100( FRegistroC001 ) ;
-     WriteRegistroC300( FRegistroC001 ) ;
-     WriteRegistroC350( FRegistroC001 ) ;
-     WriteRegistroC400( FRegistroC001 ) ;
-     WriteRegistroC495( FRegistroC001 ) ;
-     WriteRegistroC500( FRegistroC001 ) ;
-     WriteRegistroC600( FRegistroC001 ) ;
-     WriteRegistroC700( FRegistroC001 ) ;
-
-     RegistroC990.QTD_LIN_C := RegistroC990.QTD_LIN_C + 1;
+     if FRegistroC001.IND_MOV = imComDados then
+     begin
+       WriteRegistroC100( FRegistroC001 ) ;
+       WriteRegistroC300( FRegistroC001 ) ;
+       WriteRegistroC350( FRegistroC001 ) ;
+       WriteRegistroC400( FRegistroC001 ) ;
+       WriteRegistroC495( FRegistroC001 ) ;
+       WriteRegistroC500( FRegistroC001 ) ;
+       WriteRegistroC600( FRegistroC001 ) ;
+       WriteRegistroC700( FRegistroC001 ) ;
+     end;
   end;
 end;
 
@@ -910,6 +916,8 @@ begin
      end;
      /// Variavél para armazenar a quantidade de registro do tipo.
      FRegistroC100Count := FRegistroC100Count + RegC001.RegistroC100.Count;
+
+     RegC001.RegistroC100.Clear;
   end;
 end;
 
@@ -1714,6 +1722,8 @@ begin
      end;
      /// Variavél para armazenar a quantidade de registro do tipo.
      FRegistroC300Count := FRegistroC300Count + RegC001.RegistroC300.Count;
+
+     RegC001.RegistroC300.Clear;
   end;
 end;
 
@@ -1846,6 +1856,8 @@ begin
      end;
      /// Variavél para armazenar a quantidade de registro do tipo.
      FRegistroC350Count := FRegistroC350Count + RegC001.RegistroC350.Count;
+
+     RegC001.RegistroC350.Clear;
   end;
 end;
 
@@ -1934,6 +1946,8 @@ begin
      end;
      /// Variavél para armazenar a quantidade de registro do tipo.
      FRegistroC400Count := FRegistroC400Count + RegC001.RegistroC400.Count;
+
+     RegC001.RegistroC400.Clear;
   end;
 end;
 
@@ -2186,6 +2200,8 @@ begin
      end;
      /// Variavél para armazenar a quantidade de registro do tipo.
      FRegistroC495Count := FRegistroC495Count + RegC001.RegistroC495.Count;
+
+     RegC001.RegistroC495.Clear;
   end;
 end;
 
@@ -2282,6 +2298,8 @@ begin
      end;
      /// Variavél para armazenar a quantidade de registro do tipo.
      FRegistroC500Count := FRegistroC500Count + RegC001.RegistroC500.Count;
+
+     RegC001.RegistroC500.Clear;
   end;
 end;
 
@@ -2405,6 +2423,8 @@ begin
      end;
      /// Variavél para armazenar a quantidade de registro do tipo.
      FRegistroC600Count := FRegistroC600Count + RegC001.RegistroC600.Count;
+
+     RegC001.RegistroC600.Clear;
   end;
 end;
 
@@ -2534,6 +2554,8 @@ begin
      end;
      /// Variavél para armazenar a quantidade de registro do tipo.
      FRegistroC700Count := FRegistroC700Count + RegC001.RegistroC700.Count;
+
+     RegC001.RegistroC700.Clear;
   end;
 end;
 

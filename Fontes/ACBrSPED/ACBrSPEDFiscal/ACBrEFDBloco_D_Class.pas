@@ -536,15 +536,18 @@ begin
      begin
        Add( LFill( 'D001' ) +
             LFill( Integer(IND_MOV), 0 ) ) ;
-     end;
 
-     WriteRegistroD100 ( FRegistroD001 ) ;
-     WriteRegistroD300 ( FRegistroD001 ) ;
-     WriteRegistroD350 ( FRegistroD001 ) ;
-     WriteRegistroD400 ( FRegistroD001 ) ;
-     WriteRegistroD500 ( FRegistroD001 ) ;
-     WriteRegistroD600 ( FRegistroD001 ) ;
-     WriteRegistroD695 ( FRegistroD001 ) ;
+       if IND_MOV = imComDados then
+       begin
+         WriteRegistroD100 ( FRegistroD001 ) ;
+         WriteRegistroD300 ( FRegistroD001 ) ;
+         WriteRegistroD350 ( FRegistroD001 ) ;
+         WriteRegistroD400 ( FRegistroD001 ) ;
+         WriteRegistroD500 ( FRegistroD001 ) ;
+         WriteRegistroD600 ( FRegistroD001 ) ;
+         WriteRegistroD695 ( FRegistroD001 ) ;
+       end;
+     end;
 
      RegistroD990.QTD_LIN_D := RegistroD990.QTD_LIN_D + 1;
   end;

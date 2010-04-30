@@ -2089,7 +2089,7 @@ begin
                  end;
               end;
 
-              if Resp.CNFEnviado then
+              if Resp.CNFEnviado and (Resp.Header <> 'CHQ') then
                begin
                  if not CNC then
                     raise EACBrTEFDErro.Create('CNC nao efetuado') ;

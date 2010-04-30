@@ -186,11 +186,14 @@ begin
      begin
        Add( LFill( 'G001' ) +
             LFill( Integer(IND_MOV), 0 ) ) ;
-       ///
-       WriteRegistroG110(FRegistroG001);
-       ///
-       RegistroG990.QTD_LIN_G := RegistroG990.QTD_LIN_G + 1;
+
+       if IND_MOV = imComDados then
+       begin
+          WriteRegistroG110(FRegistroG001);
+       end;
      end;
+
+     RegistroG990.QTD_LIN_G := RegistroG990.QTD_LIN_G + 1;
   end;
 end;
 

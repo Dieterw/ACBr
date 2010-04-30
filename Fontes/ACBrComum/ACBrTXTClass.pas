@@ -51,6 +51,8 @@ type
 
   TACBrTXTClass = class
   private
+    FLinhasBuffer: Integer;
+    FNomeArquivo: String;
     FOnError: TErrorEvent;
     FDelimitador: String;     /// Caracter delimitador de campos
     FTrimString: boolean;     /// Retorna a string sem espaços em branco iniciais e finais
@@ -59,12 +61,21 @@ type
     FConteudo : TStringList;
 
     procedure AssignError(MsnError: String);
+    procedure SetLinhasBuffer(const AValue: Integer);
+    procedure SetNomeArquivo(const AValue: String);
   public
     constructor create ;
     destructor destroy ; override ;
 
-    procedure SaveToFile( const AFileName : AnsiString ) ;
-    procedure LoadFromFile( const AFileName : AnsiString ) ;
+    property NomeArquivo : String read FNomeArquivo write SetNomeArquivo ;
+    property LinhasBuffer : Integer read FLinhasBuffer write SetLinhasBuffer ;
+
+    procedure WriteBuffer ;
+
+    procedure SaveToFile ;
+    procedure LoadFromFile ;
+    procedure Reset ;
+
     Function Add( const AString : AnsiString; AddDelimiter : Boolean = True ) : Integer;
 
     function RFill(Value: String; Size: Integer = 0; Caracter: Char = ' '): String; overload;
@@ -99,7 +110,8 @@ Uses ACBrUtil ;
 
 constructor TACBrTXTClass.create;
 begin
-   FConteudo := TStringList.Create ;
+   FConteudo     := TStringList.Create ;
+   FLinhasBuffer := 0 ; // 0 = Sem tratamento de buffer
 end;
 
 destructor TACBrTXTClass.destroy;
@@ -109,14 +121,50 @@ begin
   inherited destroy;
 end;
 
-procedure TACBrTXTClass.SaveToFile(const AFileName: AnsiString);
+procedure TACBrTXTClass.WriteBuffer;
+var
+  FS : TFileStream ;
 begin
-   FConteudo.SaveToFile(AFileName);
+  if NomeArquivo = '' then
+     raise Exception.Create( ACBrStr('"NomeArquivo" não especificado') ) ;
+
+  if (not FileExists( NomeArquivo )) then
+     FConteudo.SaveToFile( NomeArquivo )
+  else
+   begin
+      FS := TFileStream.Create( NomeArquivo, fmOpenReadWrite or fmShareExclusive );
+      try
+         FS.Seek(0, soFromEnd);  // vai para EOF
+         FConteudo.SaveToStream( FS );
+      finally
+         FS.Free ;
+      end;
+   end;
+
+  if (FLinhasBuffer > 0) then
+     FConteudo.Clear;
 end;
 
-procedure TACBrTXTClass.LoadFromFile(const AFileName: AnsiString);
+procedure TACBrTXTClass.SaveToFile ;
 begin
-   FConteudo.LoadFromFile( AFileName );
+  WriteBuffer;
+end;
+
+procedure TACBrTXTClass.LoadFromFile ;
+begin
+   if NomeArquivo = '' then
+      raise Exception.Create( ACBrStr('"NomeArquivo" não especificado') ) ;
+
+   FConteudo.LoadFromFile( NomeArquivo );
+end;
+
+procedure TACBrTXTClass.Reset;
+begin
+   FConteudo.Clear;
+
+   if FNomeArquivo <> '' then
+      if FileExists( FNomeArquivo ) then
+         DeleteFile( FNomeArquivo );
 end;
 
 function TACBrTXTClass.Add(const AString: AnsiString; AddDelimiter: Boolean
@@ -132,6 +180,10 @@ begin
       S := S + Delimitador;
 
    Result := FConteudo.Add( S );
+
+   if FLinhasBuffer > 0 then
+      if FConteudo.Count >= FLinhasBuffer then
+         WriteBuffer ;
 end;
 
 procedure TACBrTXTClass.Check(Condicao: Boolean; const Msg: String);
@@ -237,6 +289,18 @@ end;
 procedure TACBrTXTClass.AssignError(MsnError: String);
 begin
   if Assigned(FOnError) then FOnError( ACBrStr(MsnError) );
+end;
+
+procedure TACBrTXTClass.SetLinhasBuffer(const AValue: Integer);
+begin
+   if FLinhasBuffer = AValue then exit;
+   FLinhasBuffer := max(AValue,0);   // Sem valores negativos
+end;
+
+procedure TACBrTXTClass.SetNomeArquivo(const AValue: String);
+begin
+   if FNomeArquivo = AValue then exit;
+   FNomeArquivo := AValue;
 end;
 
 end.

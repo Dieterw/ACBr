@@ -334,11 +334,15 @@ begin
      begin
        Add( LFill( 'E001' ) +
             LFill( Integer(IND_MOV), 0 ) ) ;
+
+       if IND_MOV = imComDados then
+       begin
+          WriteRegistroE100(FRegistroE001) ;
+          WriteRegistroE200(FRegistroE001) ;
+          WriteRegistroE500(FRegistroE001) ;
+       end;
      end;
-     WriteRegistroE100(FRegistroE001) ;
-     WriteRegistroE200(FRegistroE001) ;
-     WriteRegistroE500(FRegistroE001) ;
-     ///
+
      RegistroE990.QTD_LIN_E := RegistroE990.QTD_LIN_E + 1;
   end;
 end;

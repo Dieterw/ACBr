@@ -45,13 +45,18 @@ interface
 uses SysUtils, Classes, DateUtils, ACBrTXTClass;
 
 type
+
+  { TACBrSPED }
+
   TACBrSPED = class(TACBrTXTClass)
   private
     FDT_INI: TDateTime;  /// Data inicial das informações contidas no arquivo
     FDT_FIN: TDateTime;  /// Data final das informações contidas no arquivo
+    FGravado: Boolean;
   public
-    property DT_INI: TDateTime read FDT_INI write FDT_INI;
-    property DT_FIN: TDateTime read FDT_FIN write FDT_FIN;
+    property DT_INI : TDateTime read FDT_INI  write FDT_INI;
+    property DT_FIN : TDateTime read FDT_FIN  write FDT_FIN;
+    property Gravado: Boolean   read FGravado write FGravado ;
   end;
 
 implementation

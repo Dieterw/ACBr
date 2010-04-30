@@ -148,7 +148,7 @@ type
 
 implementation
 
-uses ACBrSpedUtils, ACBrSpedFiscal ;
+uses ACBrSpedUtils;
 
 { TBloco_0 }
 
@@ -356,22 +356,25 @@ begin
      begin
         Add( LFill( '0001' ) +
              LFill( Integer(IND_MOV), 0 ) ) ;
-        ///
-        WriteRegistro0005(FRegistro0001) ;
-        WriteRegistro0015(FRegistro0001) ;
-        WriteRegistro0100(FRegistro0001) ;
-        WriteRegistro0150(FRegistro0001) ;
-        WriteRegistro0190(FRegistro0001) ;
-        WriteRegistro0200(FRegistro0001) ;
-        WriteRegistro0300(FRegistro0001) ;
-        WriteRegistro0400(FRegistro0001) ;
-        WriteRegistro0450(FRegistro0001) ;
-        WriteRegistro0460(FRegistro0001) ;
-        WriteRegistro0500(FRegistro0001) ;
-        WriteRegistro0600(FRegistro0001);
-        ///
-        Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
+
+        if IND_MOV = imComDados then
+        begin
+          WriteRegistro0005(FRegistro0001) ;
+          WriteRegistro0015(FRegistro0001) ;
+          WriteRegistro0100(FRegistro0001) ;
+          WriteRegistro0150(FRegistro0001) ;
+          WriteRegistro0190(FRegistro0001) ;
+          WriteRegistro0200(FRegistro0001) ;
+          WriteRegistro0300(FRegistro0001) ;
+          WriteRegistro0400(FRegistro0001) ;
+          WriteRegistro0450(FRegistro0001) ;
+          WriteRegistro0460(FRegistro0001) ;
+          WriteRegistro0500(FRegistro0001) ;
+          WriteRegistro0600(FRegistro0001) ;
+        end;
      end;
+
+     Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
   end;
 end;
 

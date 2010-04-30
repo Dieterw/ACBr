@@ -316,19 +316,22 @@ begin
      begin
        Add( LFill( '1001' ) +
             LFill( Integer(IND_MOV), 0 ) ) ;
-       ///
-       WriteRegistro1100(Registro1001) ;
-       WriteRegistro1200(Registro1001) ;
-       WriteRegistro1300(Registro1001) ;
-       WriteRegistro1350(Registro1001) ;
-       WriteRegistro1400(Registro1001) ;
-       WriteRegistro1500(Registro1001) ;
-       WriteRegistro1600(Registro1001) ;
-       WriteRegistro1700(Registro1001) ;
-       WriteRegistro1800(Registro1001) ;
-       ///
-       Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
+
+       if IND_MOV = imComDados then
+       begin
+         WriteRegistro1100(Registro1001) ;
+         WriteRegistro1200(Registro1001) ;
+         WriteRegistro1300(Registro1001) ;
+         WriteRegistro1350(Registro1001) ;
+         WriteRegistro1400(Registro1001) ;
+         WriteRegistro1500(Registro1001) ;
+         WriteRegistro1600(Registro1001) ;
+         WriteRegistro1700(Registro1001) ;
+         WriteRegistro1800(Registro1001) ;
+       end;
      end;
+
+     Registro1990.QTD_LIN_1 := Registro1990.QTD_LIN_1 + 1;
   end;
 end;
 

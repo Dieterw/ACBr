@@ -325,6 +325,7 @@ begin
   try
      SaveStringList( SL );
      SL.SaveToFile( fPath + Arquivo );
+     Result := True ;
   finally
      SL.Free;
   end;

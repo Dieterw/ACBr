@@ -143,12 +143,12 @@ begin
       XMLCTe.LoadFromFile(FPathCTe);
     FchCTe := RetornarConteudoEntre(XMLCTe.Text, 'Id="CTe', '"');
     if trim(FchCTe) = '' then
-      Gerador.wAlerta('XR01', 'ID/CTe', 'Numero da chave da CTe', ERR_MSG_VAZIO);
+      Gerador.wAlerta('XR01', 'ID/CTe', 'Numero da chave do CTe', ERR_MSG_VAZIO);
 
     if (FPathRetConsReciCTe = '') and (FPathRetConsSitCTe = '') then
       Gerador.wAlerta('XR06', 'RECIBO/SITUAÇÃO', 'RECIBO/SITUAÇÃO', ERR_MSG_ARQUIVO_NAO_ENCONTRADO);
 
-    // Gerar arquivo pelo Recibo da CTe                                       //
+    // Gerar arquivo pelo Recibo do CTe                                       //
     if (FPathRetConsReciCTe <> '') and (FPathRetConsSitCTe = '') then
     begin
       if not FileExists(FPathRetConsReciCTe) then
@@ -177,7 +177,7 @@ begin
       end;
     end;
 
-    // Gerar arquivo pelo arquivo de consulta da situação da CTe              //
+    // Gerar arquivo pelo arquivo de consulta da situação do CTe              //
     if (FPathRetConsReciCTe = '') and (FPathRetConsSitCTe <> '') then
     begin
       if not FileExists(FPathRetConsSitCTe) then

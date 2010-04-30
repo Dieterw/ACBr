@@ -48,6 +48,12 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   30/04/10
+---------------
+[-] Foram corrigidos algumas mensagens de erro que mostrava 'nota fiscal' em vez de 'conhecimento'.
+[-] Corrigido o Componente ACBrCTeDACTeQRRetrato para imprimir no DACTe outros tipos de Documentos.
+    no quadro Documentos Originários.
+
 Alterações   29/04/10
 ---------------
 [*] Alterado a descrição da forma de pagamento do DACTe de A Vista e A Prazo para Pago e A Pagar.

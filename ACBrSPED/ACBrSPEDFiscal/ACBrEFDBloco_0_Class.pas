@@ -663,6 +663,7 @@ begin
                                                LFill( DESCR_ANT_ITEM ) +
                                                LFill( DT_INI ) +
                                                LFill( DT_FIN ) +
+                                               LFill( COD_ANT_ITEM ) +
                                                Delimitador +
                                                #13#10;
         end;

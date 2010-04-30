@@ -369,12 +369,14 @@ type
   TRegistro0205 = class
   private
     fDESCR_ANT_ITEM: String;    /// Descrição anterior do item:
-    fDT_INI: TDateTime;             /// Data inicial de utilização do código:
-    fDT_FIN: TDateTime;             /// Data final de utilização do código:
+    fDT_INI: TDateTime;         /// Data inicial de utilização do código:
+    fDT_FIN: TDateTime;         /// Data final de utilização do código:
+    fCOD_ANT_ITEM: string;      /// Código anterior do item com relação à última informação apresentada.
   public
     property DESCR_ANT_ITEM: String read FDESCR_ANT_ITEM write FDESCR_ANT_ITEM;
     property DT_INI: TDateTime read FDT_INI write FDT_INI;
     property DT_FIN: TDateTime read FDT_FIN write FDT_FIN;
+    property COD_ANT_ITEM: String read FCOD_ANT_ITEM write FCOD_ANT_ITEM;
   end;
 
   /// Registro 0205 - Lista

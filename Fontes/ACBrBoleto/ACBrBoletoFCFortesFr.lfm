@@ -1,28 +1,26 @@
 object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
-  Left = 307
-  Height = 867
-  Top = 0
-  Width = 896
+  Left = 376
+  Height = 841
+  Top = 79
+  Width = 917
   VertScrollBar.Position = 538
   Caption = 'ACBRBoletoFCFortesFr'
-  ClientHeight = 867
-  ClientWidth = 896
+  ClientHeight = 841
+  ClientWidth = 917
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   OnCreate = FormCreate
   LCLVersion = '0.9.29'
   object LayoutBoleto: TRLReport
-    Left = 16
+    Left = 8
     Height = 1123
     Top = 544
     Width = 794
-    Font.Color = clBlack
-    Font.Height = -13
-    Font.Name = 'Arial'
     Margins.LeftMargin = 3
     Margins.TopMargin = 5
     Margins.RightMargin = 5
     Margins.BottomMargin = 5
+    ParentFont = True
     PreviewOptions.ShowModal = True
     RealBounds.Left = 0
     RealBounds.Top = 0
@@ -645,7 +643,6 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Width = 140
         Alignment = taCenter
         AutoSize = False
-        Caption = 'Quantidade'
         Font.Color = clBlack
         Font.Height = -12
         Font.Name = 'Arial'
@@ -677,7 +674,6 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Width = 124
         Alignment = taCenter
         AutoSize = False
-        Caption = 'Valor'
         Font.Color = clBlack
         Font.Height = -12
         Font.Name = 'Arial'
@@ -877,7 +873,6 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Width = 172
         Alignment = taRightJustify
         AutoSize = False
-        Caption = 'Desconto / Abatimento'
         Font.Color = clBlack
         Font.Height = -12
         Font.Name = 'Arial'
@@ -909,7 +904,6 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Width = 172
         Alignment = taRightJustify
         AutoSize = False
-        Caption = 'Mora / Multa'
         Font.Color = clBlack
         Font.Height = -12
         Font.Name = 'Arial'
@@ -941,7 +935,6 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Width = 172
         Alignment = taRightJustify
         AutoSize = False
-        Caption = 'Valor Cobrado'
         Font.Color = clBlack
         Font.Height = -12
         Font.Name = 'Arial'
@@ -1070,7 +1063,6 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Top = 313
         Width = 181
         AutoSize = False
-        Caption = 'Código de Baixa'
         Font.Color = clBlack
         Font.Height = -12
         Font.Name = 'Arial'
@@ -1170,7 +1162,6 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Top = 316
         Width = 482
         AutoSize = False
-        Caption = 'Sacador/Avalista'
         Font.CharSet = ANSI_CHARSET
         Font.Color = clBlack
         Font.Height = -11
@@ -1187,7 +1178,6 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Top = 297
         Width = 181
         AutoSize = False
-        Caption = 'REFERENCIA'
         Font.Color = clBlack
         Font.Height = -12
         Font.Name = 'Arial'
@@ -1896,7 +1886,6 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Width = 140
         Alignment = taCenter
         AutoSize = False
-        Caption = 'Quantidade'
         Font.Color = clBlack
         Font.Height = -12
         Font.Name = 'Arial'
@@ -1928,7 +1917,6 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Width = 124
         Alignment = taCenter
         AutoSize = False
-        Caption = 'Valor'
         Font.Color = clBlack
         Font.Height = -12
         Font.Name = 'Arial'
@@ -2031,7 +2019,6 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Width = 172
         Alignment = taRightJustify
         AutoSize = False
-        Caption = 'Desconto / Abatimento'
         Font.Color = clBlack
         Font.Height = -12
         Font.Name = 'Arial'
@@ -2063,7 +2050,6 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Width = 172
         Alignment = taRightJustify
         AutoSize = False
-        Caption = 'Mora / Multa'
         Font.Color = clBlack
         Font.Height = -12
         Font.Name = 'Arial'
@@ -2095,7 +2081,6 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Width = 172
         Alignment = taRightJustify
         AutoSize = False
-        Caption = 'Valor Cobrado'
         Font.Color = clBlack
         Font.Height = -12
         Font.Name = 'Arial'
@@ -2220,7 +2205,6 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Top = 327
         Width = 204
         AutoSize = False
-        Caption = 'Código de Baixa'
         Font.Color = clBlack
         Font.Height = -12
         Font.Name = 'Arial'
@@ -2300,7 +2284,6 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Top = 311
         Width = 204
         AutoSize = False
-        Caption = 'REFERENCIA'
         Font.Color = clBlack
         Font.Height = -12
         Font.Name = 'Arial'
@@ -2329,5 +2312,30 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         RealBounds.Height = 0
       end
     end
+  end
+  object RLHTMLFilter1: TRLHTMLFilter
+    DocumentStyle = dsCSS2
+    DisplayName = 'ACBrBoleto - http://acbr.sf.net'
+    left = 822
+    top = 624
+  end
+  object RLRichFilter1: TRLRichFilter
+    DisplayName = 'RichText Format'
+    left = 824
+    top = 688
+  end
+  object RLPDFFilter1: TRLPDFFilter
+    DocumentInfo.Creator = 'FortesReport (Open Source) v3.24(B14)  \251 Copyright © 1999-2008 Fortes Informática'
+    DocumentInfo.ModDate = 0
+    ViewerOptions = []
+    FontEncoding = feNoEncoding
+    DisplayName = 'ACBrBoleto - http://acbr.sf.net'
+    left = 824
+    top = 568
+  end
+  object RLPrintDialogSetup1: TRLPrintDialogSetup
+    Copies = 0
+    left = 823
+    top = 752
   end
 end

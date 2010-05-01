@@ -44,8 +44,8 @@ unit ACBRBoletoFCFortesFr;
 interface
 
 uses
-  SysUtils, Classes, Graphics, Controls, Forms,
-  Dialogs, RLReport, RLBarcode, ACBrBoleto
+  SysUtils, Classes, Graphics, Controls, Forms, Dialogs, RLReport, RLBarcode,
+  RLPDFFilter, RLHTMLFilter, RLRichFilter, RLPrintDialog, RLMetaFile, ACBrBoleto
   {$IFDEF FPC}
     ,LResources
   {$ENDIF}
@@ -91,6 +91,10 @@ type
     RLDraw17: TRLDraw;
     RLDraw16: TRLDraw;
     imgBanco2: TRLImage;
+    RLHTMLFilter1: TRLHTMLFilter;
+    RLPDFFilter1: TRLPDFFilter;
+    RLPrintDialogSetup1: TRLPrintDialogSetup;
+    RLRichFilter1: TRLRichFilter;
     txtNumeroBanco2: TRLLabel;
     RLLabel67: TRLLabel;
     RLLabel68: TRLLabel;
@@ -248,6 +252,8 @@ procedure Register;
 
 implementation
 
+Uses RLFilters, RLConsts ;
+
 {$R *.lfm}
 
 procedure Register;
@@ -258,14 +264,50 @@ end;
 { TACBrBoletoFCFortes }
 
 procedure TACBrBoletoFCFortes.Imprimir;
+
 var
- frACBrBoletoFortes : TACBRBoletoFCFortesFr;
+  frACBrBoletoFortes : TACBRBoletoFCFortesFr;
+  RLFiltro : TRLCustomSaveFilter;
 begin
   inherited Imprimir;    // Executa verificações padroes
 
-  frACBrBoletoFortes:= TACBRBoletoFCFortesFr.Create(Self);
+  frACBrBoletoFortes := TACBRBoletoFCFortesFr.Create(Self);
   try
-     frACBrBoletoFortes.LayoutBoleto.PreviewModal;
+     with frACBrBoletoFortes do
+     begin
+        LoadPortugueseStrings;
+        RLPrintDialogSetup1.Copies := NumCopias ;
+        LayoutBoleto.PrintDialog   := MostrarSetup;
+
+        if Filtro = fiNenhum then
+         begin
+           if MostrarPreview then
+              LayoutBoleto.PreviewModal
+           else
+              LayoutBoleto.Print;
+         end
+        else
+         begin
+            if LayoutBoleto.Prepare then
+            begin
+               case Filtro of
+                 fiPDF  : RLFiltro := RLPDFFilter1;
+                 fiHTML : RLFiltro := RLHTMLFilter1;
+                 fiRich : RLFiltro := RLRichFilter1;
+               end ;
+
+               try
+                 RLFiltro.Copies   := NumCopias ;
+                 RLFiltro.FileName := NomeArquivo ;
+                 RLFiltro.Pages    := LayoutBoleto.Pages ;
+
+                 RLFiltro.Run;
+               finally
+                 RLFiltro := nil ;
+               end;
+            end;
+         end;
+     end;
   finally
      frACBrBoletoFortes.Free ;
   end;
@@ -275,7 +317,7 @@ end;
 
 procedure TACBRBoletoFCFortesFr.FormCreate(Sender: TObject);
 begin
-   fIndice := 0 ;
+   fIndice   := 0 ;
    fBoletoFC := TACBrBoletoFCFortes(Owner) ;  // Link para o Pai
 end;
 
@@ -300,7 +342,7 @@ procedure TACBRBoletoFCFortesFr.LayoutBoletoDataRecord(Sender: TObject;
    RecNo: integer; CopyNo: integer; var Eof: boolean;
    var RecordAction: TRLRecordAction);
 begin
-   fIndice := RecNo-1 ;
+   fIndice := RecNo - 1 ;
 
    Eof := (RecNo > fBoletoFC.ACBrBoleto.ListadeBoletos.Count) ;
    RecordAction := raUseIt ;
@@ -317,7 +359,7 @@ begin
 
       txtNumeroBanco2.Caption         := FormatFloat('000', Banco.Numero)+ '-' +
                                          FormatFloat('0'  , Banco.Digito);
-      lblLocalPagto.Caption           := 'Pagar em qualquer agência até o vencimento.';
+      lblLocalPagto.Caption           := Titulo.LocalPagamento;
       txtDataVencimento2.Caption      := FormatDateTime('dd/mm/yyyy', Titulo.Vencimento);
       txtNomeCedente2.Caption         := Cedente.Nome;
       txtCodigoCedente2.Caption       := Cedente.Agencia+'/'+ Cedente.Conta;
@@ -325,12 +367,19 @@ begin
       txtNumeroDocumento2.Caption     := Titulo.NumeroDocumento;
       txtEspecieDoc2.Caption          := Titulo.EspecieDoc;
       txtAceite2.Caption              := Titulo.Aceite;
-      txtDataProcessamento2.Caption   := txtDataDocumento2.Caption;
+      txtDataProcessamento2.Caption   := FormatDateTime('dd/mm/yyyy',Now);
       txtNossoNumero2.Caption         := Titulo.NossoNumero + DigNossoNum;
       txtUsoBanco2.Caption            := Titulo.UsoBanco;
       txtCarteira2.Caption            := Titulo.Carteira;
       txtEspecie2.Caption             := 'R$';
       txtValorDocumento2.Caption      := FormatFloat('###,###,##0.00',Titulo.ValorDocumento);
+      txtNomeSacado2.Caption          := Titulo.Sacado.NomeSacado;
+      txtEnderecoSacado2.Caption      := Titulo.Sacado.Logradouro + ' '+
+                                         Titulo.Sacado.Numero + Titulo.Sacado.Complemento;
+      txtCidadeSacado2.Caption        := Titulo.Sacado.CEP + ' '+Titulo.Sacado.Cidade +
+                                         ' '+Titulo.Sacado.UF;
+      txtCpfCnpjSacado2.Caption       := Titulo.Sacado.CNPJCPF;
+
    end;
 end;
 
@@ -344,6 +393,7 @@ begin
      CodBarras      := Banco.MontarCodigoBarras( Titulo );
      LinhaDigitavel := Banco.MontarLinhaDigitavel( CodBarras );
 
+     txtNumeroBanco3.Caption         := txtNumeroBanco2.Caption;
      txtLocalPagamento3.Caption      := lblLocalPagto.Caption;
      txtDataVencimento3.Caption      := txtDataVencimento2.Caption;
      txtNomeCedente3.Caption         := txtNomeCedente2.Caption;
@@ -356,12 +406,21 @@ begin
      txtNossoNumero3.Caption         := txtNossoNumero2.Caption;
      txtUsoBanco3.Caption            := txtUsoBanco2.Caption;
      txtCarteira3.Caption            := txtCarteira2.Caption;
+     txtEspecieDoc3.Caption          := txtEspecieDoc2.Caption;
      txtValorDocumento3.Caption      := txtValorDocumento2.Caption;
+     txtEnderecoSacado3.Caption      := txtEnderecoSacado2.Caption;
+     txtCidadeSacado3.Caption        := txtCidadeSacado2.Caption;
+     txtCpfCnpjSacado3.Caption       := txtCpfCnpjSacado2.Caption;
 
      imgCodigoBarra.Caption          := CodBarras;
      txtLinhaDigitavel.Caption       := LinhaDigitavel;
    end;
 end;
+
+{$ifdef FPC}
+initialization
+   {$I ACBrBoletoFCFortes.lrs}
+{$endif}
 
 end.
 

@@ -1,7 +1,7 @@
 object frmDemo: TfrmDemo
-  Left = 455
+  Left = 346
   Height = 559
-  Top = 150
+  Top = 149
   Width = 816
   Caption = 'Demo ACBrBoleto'
   ClientHeight = 559
@@ -872,15 +872,15 @@ object frmDemo: TfrmDemo
     NomeArqRemessa = 'cb00001.rem'
     DirArqRemessa = '.\remessa\'
     ACBrBoletoFC = ACBrBoletoFCFortes1
-    left = 136
+    left = 176
     top = 256
   end
   object ACBrBoletoFCFortes1: TACBrBoletoFCFortes
     ACBrBoleto = ACBrBoleto1
-    DirLogo = 'C:\lazarus\logos\'
-    NumCopias = 3
-    Filtro = fiHTML
-    NomeArquivo = '.\teste.html'
+    DirLogo = '..\..\..\Fontes\ACBrBoleto\Logos\Colorido\'
+    Filtro = fiPDF
+    NomeArquivo = '.\teste.pdf'
+    SoftwareHouse = 'Projeto ACBr - http://acbr.sf.net'
     left = 72
     top = 256
   end

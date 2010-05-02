@@ -113,11 +113,11 @@ var
   titulo: TACBrTitulo;
   I: Integer;
 begin
-   for i:= 0 to 10 do
+   for i:= 1 to 10 do
    begin
      titulo:= ACBrBoleto1.CriarTituloNaLista;
 
-     with ACBrBoleto1.ListadeBoletos[I] do
+     with titulo do
      begin
         Vencimento        := StrToDateTime('10/05/2010');
         DataDocumento     := StrToDateTime('10/04/2010');

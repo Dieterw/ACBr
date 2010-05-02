@@ -430,6 +430,7 @@ TACBrBoletoFCClass = class(TACBrComponent)
     function GetArqLogo: String;
     function GetDirLogo: String;
     procedure SetACBrBoleto(const Value: TACBrBoleto);
+    procedure SetDirLogo(const AValue: String);
   protected
     fACBrBoleto : TACBrBoleto;
     procedure SetNumCopias(AValue: Integer);
@@ -442,7 +443,7 @@ TACBrBoletoFCClass = class(TACBrComponent)
   published
     property ACBrBoleto     : TACBrBoleto     read fACBrBoleto     write SetACBrBoleto ;
     property LayOut         : TACBrBolLayOut  read fLayOut         write fLayOut         default lPadrao;
-    property DirLogo        : String          read GetDirLogo      write fDirLogo;
+    property DirLogo        : String          read GetDirLogo      write SetDirLogo;
     property MostrarPreview : Boolean         read fMostrarPreview write fMostrarPreview default True ;
     property MostrarSetup   : Boolean         read fMostrarSetup   write fMostrarSetup   default True ;
     property NumCopias      : Integer         read fNumCopias      write SetNumCopias    default 1;
@@ -455,7 +456,7 @@ procedure Register;
 
 implementation
 
-Uses ACBrUtil,ACBrBancoBradesco,Forms,
+Uses ACBrUtil, ACBrBancoBradesco, Forms,
      {$IFDEF COMPILER6_UP} StrUtils {$ELSE} ACBrD5{$ENDIF},
      Math;
 
@@ -973,6 +974,11 @@ begin
      end ;
   end ;
 
+end;
+
+procedure TACBrBoletoFCClass.SetDirLogo(const AValue: String);
+begin
+  fDirLogo := PathWithDelim( AValue );
 end;
 
 function TACBrBoletoFCClass.GetArqLogo: String;

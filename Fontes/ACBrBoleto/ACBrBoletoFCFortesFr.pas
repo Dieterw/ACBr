@@ -47,7 +47,7 @@ uses
   SysUtils, Classes, Graphics, Controls, Forms, Dialogs, RLReport, RLBarcode,
   RLPDFFilter, RLHTMLFilter, RLRichFilter, RLPrintDialog, RLMetaFile, ACBrBoleto
   {$IFDEF FPC}
-    ,LResources
+    ,LResources, StdCtrls
   {$ENDIF}
  {$IFDEF VER150}
    ,Variants
@@ -226,6 +226,7 @@ type
     RLLabel175: TRLLabel;
     txtSacadorAvalista3: TRLLabel;
     txtReferencia3: TRLLabel;
+    txtSwHouse: TRLAngleLabel;
     procedure FormCreate(Sender: TObject);
     procedure LayoutBoletoBeforePrint(Sender: TObject; var PrintIt: boolean);
     procedure LayoutBoletoDataCount(Sender: TObject; var DataCount: integer);
@@ -252,7 +253,7 @@ procedure Register;
 
 implementation
 
-Uses RLFilters, RLConsts ;
+Uses RLFilters, RLConsts, ACBrUtil ;
 
 {$ifdef FPC}
   {$R *.lfm}
@@ -339,6 +340,7 @@ procedure TACBRBoletoFCFortesFr.LayoutBoletoBeforePrint(Sender: TObject;
    var PrintIt: boolean);
 begin
    fIndice := 0 ;
+   txtSwHouse.Caption := BoletoFC.SoftwareHouse ;
 end;
 
 procedure TACBRBoletoFCFortesFr.LayoutBoletoDataCount(Sender: TObject;
@@ -366,8 +368,9 @@ begin
    begin
       DigNossoNum    := Banco.CalcularDigitoVerificador( Titulo );
 
-      txtNumeroBanco2.Caption         := FormatFloat('000', Banco.Numero)+ '-' +
-                                         FormatFloat('0'  , Banco.Digito);
+      imgBanco2.Picture.LoadFromFile( ACBrBoletoFC.DirLogo + IntToStrZero(Banco.Numero,3)+'.jpg' );
+      txtNumeroBanco2.Caption         := IntToStrZero(Banco.Numero, 3)+ '-' +
+                                         IntToStrZero(Banco.Digito, 1);
       lblLocalPagto.Caption           := Titulo.LocalPagamento;
       txtDataVencimento2.Caption      := FormatDateTime('dd/mm/yyyy', Titulo.Vencimento);
       txtNomeCedente2.Caption         := Cedente.Nome;
@@ -402,6 +405,7 @@ begin
      CodBarras      := Banco.MontarCodigoBarras( Titulo );
      LinhaDigitavel := Banco.MontarLinhaDigitavel( CodBarras );
 
+     imgBanco3.Picture.Assign(imgBanco2.Picture);
      txtNumeroBanco3.Caption         := txtNumeroBanco2.Caption;
      txtLocalPagamento3.Caption      := lblLocalPagto.Caption;
      txtDataVencimento3.Caption      := txtDataVencimento2.Caption;

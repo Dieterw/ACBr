@@ -76,7 +76,6 @@ type
     fpTamanhoMaximoNossoNum: Integer;
     function CalcularFatorVencimento(const DataVencimento: TDateTime): String; virtual;
     function CalcularDigitoCodigoBarras(const CodigoBarras: String): String; virtual;
-    function CalcularNomeArquivoRemessa(const DirArquivo: String): String; Virtual;
   public
     Constructor create(AOwner: TACBrBanco);
     Destructor Destroy;
@@ -87,13 +86,17 @@ type
     property Nome      : String          read fpNome;
     Property Modulo    : TACBrCalcDigito read fpModulo;
     property TamanhoMaximoNossoNum: Integer    read fpTamanhoMaximoNossoNum;
+
     function CalcularDigitoVerificador(const ACBrTitulo : TACBrTitulo): String; virtual;
+
     function MontarCodigoBarras(const ACBrTitulo : TACBrTitulo): String; virtual;
     function MontarLinhaDigitavel(const CodigoBarras: String): String; virtual;
 
     function GerarRegistroHeader(NumeroRemessa : Integer): String;    Virtual; abstract;
     function GerarRegistroTransacao(ACBrTitulo : TACBrTitulo): String; Virtual; abstract;
     function GerarRegistroTrailler(ARemessa:TStringList): String;  Virtual; abstract;
+
+    function CalcularNomeArquivoRemessa(const DirArquivo: String): String; Virtual;
   end;
 
   TACBrTipoBanco = (banNaoDefinido,banBradesco,banItau);
@@ -121,8 +124,15 @@ type
     property TamanhoMaximoNossoNum :Integer read GetTamanhoMaximoNossoNum;
 
     function CalcularDigitoVerificador(const ACBrTitulo : TACBrTitulo): String;
+
     function MontarCodigoBarras(const ACBrTitulo : TACBrTitulo): String;
     function MontarLinhaDigitavel(const CodigoBarras: String): String;
+
+    function GerarRegistroHeader(NumeroRemessa : Integer): String;
+    function GerarRegistroTransacao(ACBrTitulo : TACBrTitulo): String;
+    function GerarRegistroTrailler(ARemessa:TStringList): String;
+
+    function CalcularNomeArquivoRemessa(const DirArquivo: String): String;
   published
     property TipoBanco : TACBrTipoBanco read fTipoBanco write SetTipoBanco default banNaoDefinido;
   end;
@@ -402,8 +412,11 @@ TACBrBoleto = class( TACBrComponent )
     property ListadeBoletos : TListadeBoletos read fListadeBoletos write fListadeBoletos ;
 
     function CriarTituloNaLista: TACBrTitulo;
+
     procedure Imprimir;
+
     procedure AdicionarMensagensPadroes(Titulo : TACBrTitulo; AStringList: TStrings);
+
     procedure GerarRemessa(NumeroRemessa : Integer);
   published
     property Cedente        : TACBrCedente     read fCedente                write fCedente ;
@@ -778,6 +791,27 @@ begin
    Result:= BancoClass.MontarLinhaDigitavel(CodigoBarras);
 end;
 
+function TACBrBanco.GerarRegistroHeader(NumeroRemessa: Integer): String;
+begin
+  Result :=  BancoClass.GerarRegistroHeader( NumeroRemessa );
+end;
+
+function TACBrBanco.GerarRegistroTransacao(ACBrTitulo: TACBrTitulo): String;
+begin
+  Result := BancoClass.GerarRegistroTransacao( ACBrTitulo );
+end;
+
+function TACBrBanco.GerarRegistroTrailler(ARemessa: TStringList): String;
+begin
+  Result := GerarRegistroTrailler( ARemessa );
+end;
+
+function TACBrBanco.CalcularNomeArquivoRemessa(const DirArquivo: String ): String;
+begin
+  BancoClass.CalcularNomeArquivoRemessa( DirArquivo );
+end;
+
+
 function TACBrBancoClass.CalcularDigitoVerificador(const ACBrTitulo :TACBrTitulo ): String;
 begin
    Result:= '';
@@ -843,9 +877,9 @@ end;
 
 function TACBrBancoClass.MontarLinhaDigitavel (const CodigoBarras: String): String;
 var
-  Campo1,Campo2,Campo3,Campo4,Campo5: String;
+  Campo1, Campo2, Campo3, Campo4, Campo5: String;
 begin
-   fpModulo.FormulaDigito := frModulo10;
+   fpModulo.FormulaDigito        := frModulo10;
    fpModulo.MultiplicadorInicial := 1;
    fpModulo.MultiplicadorFinal   := 2;
    fpModulo.MultiplicadorAtual   := 2;
@@ -855,57 +889,61 @@ begin
    fpModulo.Documento := IntToStr(fpNumero)+'9'+Copy(CodigoBarras,20,5);
    fpModulo.Calcular;
 
-   Campo1 := copy(fpModulo.Documento,1,5)+'.'+copy(fpModulo.Documento,6,4)+
-             inttostr(fpModulo.DigitoFinal);
+   Campo1 := copy( fpModulo.Documento, 1, 5) + '.' +
+             copy( fpModulo.Documento, 6, 4) +
+             IntToStr( fpModulo.DigitoFinal );
 
   {Campo 2(6ª a 15ª posições do campo Livre)}
-   fpModulo.Documento := copy(CodigoBarras,25,10);
+   fpModulo.Documento := copy( CodigoBarras, 25, 10);
    fpModulo.Calcular;
 
-   Campo2 := Copy(fpModulo.Documento,1,5)+'.'+Copy(fpModulo.Documento,6,5)+
-             inttostr(fpModulo.DigitoFinal);
+   Campo2 := Copy( fpModulo.Documento, 1, 5) + '.' +
+             Copy( fpModulo.Documento, 6, 5) +
+             IntToStr( fpModulo.DigitoFinal );
 
   {Campo 3 (16ª a 25ª posições do campo Livre)}
-   fpModulo.Documento := copy(CodigoBarras,35,10);
+   fpModulo.Documento := copy( CodigoBarras, 35, 10);
    fpModulo.Calcular;
 
-   Campo3 := Copy(fpModulo.Documento,1,5)+'.'+Copy(fpModulo.Documento,6,5)+
-             inttostr(fpModulo.DigitoFinal);
+   Campo3 := Copy( fpModulo.Documento, 1, 5) + '.' +
+             Copy( fpModulo.Documento, 6, 5) +
+             IntToStr( fpModulo.DigitoFinal );
 
   {Campo 4 (Digito Verificador Nosso Numero)}
-   Campo4 := Copy(CodigoBarras,5,1);
+   Campo4 := Copy( CodigoBarras, 5, 1);
 
   {Campo 5 (Fator de Vencimento e Valor do Documento)}
-   Campo5 := Copy(CodigoBarras,6,14);
+   Campo5 := Copy( CodigoBarras, 6, 14);
 
    Result := Campo1+' '+Campo2+' '+Campo3+' '+Campo4+' '+Campo5;
 end;
 
-procedure TACBrBoleto.GerarRemessa(NumeroRemessa : Integer);
+procedure TACBrBoleto.GerarRemessa( NumeroRemessa : Integer );
 var
-   SLRemessa: TStringList;
-   ContTitulos: Integer;
+   SLRemessa   : TStringList;
+   ContTitulos : Integer;
 begin
+   if ListadeBoletos.Count < 1 then
+      raise Exception.Create(ACBrStr('Lista de Boletos está vazia'));
 
-   if ListadeBoletos.Count <= 0 then
-      raise Exception.Create('Não existem Titulos para gerar a Remessa,' +
-                             'a Lista está vazia');
-
-   if trim(NomeArqRemessa) = '' then
-      NomeArqRemessa:= Banco.BancoClass.CalcularNomeArquivoRemessa(DirArqRemessa)
+   if Trim( NomeArqRemessa ) = '' then
+      NomeArqRemessa := Banco.CalcularNomeArquivoRemessa( DirArqRemessa )
    else
-      NomeArqRemessa := DirArqRemessa+NomeArqRemessa;
+      NomeArqRemessa := DirArqRemessa + NomeArqRemessa;
 
-   SLRemessa:= TStringList.Create;
+   SLRemessa := TStringList.Create;
+   try
+      SLRemessa.Add( Banco.GerarRegistroHeader( NumeroRemessa ) );
 
-   SLRemessa.Add(Banco.BancoClass.GerarRegistroHeader(NumeroRemessa));
+      for ContTitulos:= 0 to ListadeBoletos.Count-1 do
+          SLRemessa.Add( Banco.GerarRegistroTransacao( ListadeBoletos[ContTitulos] ) );
 
-   for ContTitulos:= 0 to ListadeBoletos.Count-1 do
-       SLRemessa.Add(Banco.BancoClass.GerarRegistroTransacao(ListadeBoletos[ContTitulos]));
+      SLRemessa.Add( Banco.GerarRegistroTrailler( SLRemessa ) );
 
-   SLRemessa.Add(Banco.BancoClass.GerarRegistroTrailler(SLRemessa));
-   UpperCase(SLRemessa.Text);
-   SLRemessa.SaveToFile(NomeArqRemessa);
+      SLRemessa.SaveToFile( NomeArqRemessa );
+   finally
+      SLRemessa.Free;
+   end;
 end;
 
 { TACBrBancoClass }

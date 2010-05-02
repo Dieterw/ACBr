@@ -49,7 +49,7 @@
         <Filename Value="AcbrBoletoDemo.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="AcbrBoletoDemo"/>
-        <UsageCount Value="36"/>
+        <UsageCount Value="38"/>
       </Unit0>
       <Unit1>
         <Filename Value="uDemo.pas"/>
@@ -59,9 +59,9 @@
         <UnitName Value="uDemo"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="124"/>
-        <CursorPos X="90" Y="144"/>
-        <UsageCount Value="36"/>
+        <TopLine Value="167"/>
+        <CursorPos X="24" Y="190"/>
+        <UsageCount Value="38"/>
         <Loaded Value="True"/>
       </Unit1>
       <Unit2>
@@ -261,12 +261,13 @@
       <Unit21>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
         <UnitName Value="ACBrBoleto"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="686"/>
-        <CursorPos X="30" Y="697"/>
+        <TopLine Value="898"/>
+        <CursorPos X="20" Y="918"/>
         <SyntaxHighlighter Value="FreePascal"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="11"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Text"/>
       </Unit21>
@@ -286,18 +287,17 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ACBRBoletoFCFortesFr"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
         <CursorPos X="117" Y="14"/>
         <SyntaxHighlighter Value="FreePascal"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="11"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Text"/>
       </Unit23>
     </Units>
-    <JumpHistory Count="2" HistoryIndex="1">
+    <JumpHistory Count="27" HistoryIndex="26">
       <Position1>
         <Filename Value="uDemo.pas"/>
         <Caret Line="182" Column="80" TopLine="169"/>
@@ -306,6 +306,106 @@
         <Filename Value="uDemo.pas"/>
         <Caret Line="116" Column="18" TopLine="115"/>
       </Position2>
+      <Position3>
+        <Filename Value="uDemo.pas"/>
+        <Caret Line="173" Column="14" TopLine="146"/>
+      </Position3>
+      <Position4>
+        <Filename Value="uDemo.pas"/>
+        <Caret Line="190" Column="20" TopLine="167"/>
+      </Position4>
+      <Position5>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
+        <Caret Line="895" Column="27" TopLine="885"/>
+      </Position5>
+      <Position6>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
+        <Caret Line="410" Column="39" TopLine="396"/>
+      </Position6>
+      <Position7>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
+        <Caret Line="895" Column="63" TopLine="879"/>
+      </Position7>
+      <Position8>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
+        <Caret Line="132" Column="66" TopLine="111"/>
+      </Position8>
+      <Position9>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
+        <Caret Line="808" Column="1" TopLine="782"/>
+      </Position9>
+      <Position10>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
+        <Caret Line="806" Column="19" TopLine="780"/>
+      </Position10>
+      <Position11>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
+        <Caret Line="808" Column="51" TopLine="792"/>
+      </Position11>
+      <Position12>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
+      </Position12>
+      <Position13>
+        <Filename Value="uDemo.pas"/>
+        <Caret Line="190" Column="24" TopLine="167"/>
+      </Position13>
+      <Position14>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
+        <Caret Line="647" Column="19" TopLine="642"/>
+      </Position14>
+      <Position15>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
+        <Caret Line="533" Column="15" TopLine="506"/>
+      </Position15>
+      <Position16>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
+      </Position16>
+      <Position17>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
+        <Caret Line="98" Column="21" TopLine="82"/>
+      </Position17>
+      <Position18>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
+        <Caret Line="130" Column="21" TopLine="116"/>
+      </Position18>
+      <Position19>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
+        <Caret Line="131" Column="21" TopLine="116"/>
+      </Position19>
+      <Position20>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
+        <Caret Line="133" Column="21" TopLine="116"/>
+      </Position20>
+      <Position21>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
+        <Caret Line="918" Column="58" TopLine="909"/>
+      </Position21>
+      <Position22>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
+        <Caret Line="135" Column="57" TopLine="114"/>
+      </Position22>
+      <Position23>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
+        <Caret Line="810" Column="17" TopLine="805"/>
+      </Position23>
+      <Position24>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
+        <Caret Line="1" Column="1" TopLine="1"/>
+      </Position24>
+      <Position25>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
+        <Caret Line="98" Column="21" TopLine="81"/>
+      </Position25>
+      <Position26>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
+        <Caret Line="132" Column="21" TopLine="117"/>
+      </Position26>
+      <Position27>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
+        <Caret Line="135" Column="21" TopLine="117"/>
+      </Position27>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

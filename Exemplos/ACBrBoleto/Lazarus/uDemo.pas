@@ -110,14 +110,14 @@ implementation
 
 procedure TfrmDemo.btnIncluir10BoletosClick ( Sender: TObject ) ;
 var
-  titulo: TACBrTitulo;
-  I: Integer;
+  Titulo : TACBrTitulo;
+  I      : Integer;
 begin
-   for i:= 1 to 10 do
+   for I := 1 to 10 do
    begin
-     titulo:= ACBrBoleto1.CriarTituloNaLista;
+     Titulo:= ACBrBoleto1.CriarTituloNaLista;
 
-     with titulo do
+     with Titulo do
      begin
         Vencimento        := StrToDateTime('10/05/2010');
         DataDocumento     := StrToDateTime('10/04/2010');
@@ -148,13 +148,11 @@ end;
 
 procedure TfrmDemo.btnIncluiBoletoClick ( Sender: TObject ) ;
 var
-  titulo: TACBrTitulo;
-  Indice: Integer;
+  Titulo : TACBrTitulo;
 begin
-     titulo := ACBrBoleto1.CriarTituloNaLista;
-    // Indice := ACBrBoleto1.ListadeBoletos.IndexOf(titulo);
+     Titulo := ACBrBoleto1.CriarTituloNaLista;
 
-     with titulo do
+     with Titulo do
      begin
         Vencimento        := edtVencimento.Date;
         DataDocumento     := edtDataDoc.Date;
@@ -189,7 +187,7 @@ end;
 
 procedure TfrmDemo.Button1Click ( Sender: TObject ) ;
 begin
-   ACBrBoleto1.GerarRemessa(1);
+   ACBrBoleto1.GerarRemessa( 1 );
 end;
 
 end.

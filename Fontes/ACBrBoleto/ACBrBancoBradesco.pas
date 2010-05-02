@@ -26,7 +26,7 @@ type
 
 implementation
 
-uses ACBrUtil;
+uses ACBrUtil, StrUtils;
 
 { TACBrBancoBradesco }
 

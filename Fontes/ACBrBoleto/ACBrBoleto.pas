@@ -404,6 +404,8 @@ TACBrBoleto = class( TACBrComponent )
     fCedente        : TACBrCedente;
     fNomeArqRemessa: String;
     procedure SetACBrBoletoFC(const Value: TACBrBoletoFCClass);
+    procedure SetDirArqRemessa(const AValue: String);
+    procedure SetNomeArqRemessa(const AValue: String);
   protected
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
   public
@@ -421,8 +423,8 @@ TACBrBoleto = class( TACBrComponent )
   published
     property Cedente        : TACBrCedente     read fCedente                write fCedente ;
     property Banco          : TACBrBanco       read fBanco                  write fBanco;
-    property NomeArqRemessa : String           read fNomeArqRemessa         write fNomeArqRemessa;
-    property DirArqRemessa  : String           read fDirArqRemessa          write fDirArqRemessa;
+    property NomeArqRemessa : String           read fNomeArqRemessa         write SetNomeArqRemessa;
+    property DirArqRemessa  : String           read fDirArqRemessa          write SetDirArqRemessa;
     property ImprimirMensagemPadrao : Boolean  read fImprimirMensagemPadrao write fImprimirMensagemPadrao default True;
     property ACBrBoletoFC : TACBrBoletoFCClass read fACBrBoletoFC           write SetACBrBoletoFC;
   end;
@@ -452,7 +454,7 @@ TACBrBoletoFCClass = class(TACBrComponent)
     Constructor Create(AOwner: TComponent); override;
     procedure Imprimir; virtual;
 
-    property ArquivoLogo :String read GetArqLogo;
+    property ArquivoLogo    : String read GetArqLogo;
   published
     property ACBrBoleto     : TACBrBoleto     read fACBrBoleto     write SetACBrBoleto ;
     property LayOut         : TACBrBolLayOut  read fLayOut         write fLayOut         default lPadrao;
@@ -591,6 +593,25 @@ begin
      end ;
   end ;
 
+end;
+
+procedure TACBrBoleto.SetDirArqRemessa(const AValue: String);
+begin
+  fDirArqRemessa := PathWithDelim( AValue );
+end;
+
+procedure TACBrBoleto.SetNomeArqRemessa(const AValue: String);
+var
+  APath : AnsiString;
+begin
+  if fNomeArqRemessa = AValue then
+     exit;
+
+  fNomeArqRemessa := ExtractFileName( AValue );
+  APath           := ExtractFilePath( AValue );
+
+  if APath <> '' then
+     DirArqRemessa := APath;
 end;
 
 procedure TACBrBoleto.Notification ( AComponent: TComponent;
@@ -803,7 +824,7 @@ end;
 
 function TACBrBanco.GerarRegistroTrailler(ARemessa: TStringList): String;
 begin
-  Result := GerarRegistroTrailler( ARemessa );
+  Result := BancoClass.GerarRegistroTrailler( ARemessa );
 end;
 
 function TACBrBanco.CalcularNomeArquivoRemessa(const DirArquivo: String ): String;
@@ -811,6 +832,8 @@ begin
   BancoClass.CalcularNomeArquivoRemessa( DirArquivo );
 end;
 
+
+{ TACBrBancoClass }
 
 function TACBrBancoClass.CalcularDigitoVerificador(const ACBrTitulo :TACBrTitulo ): String;
 begin
@@ -833,41 +856,37 @@ end;
 
 function TACBrBancoClass.CalcularNomeArquivoRemessa ( const DirArquivo: String) : String;
 var
-Sequencia:Integer;
-NumSequencial    : String;
-Diretorio,NomeArq: String;
-CaminhoCompleto: String;
+  Sequencia :Integer;
+  Diretorio, NomeFixo, NomeArq: String;
 begin
-   Sequencia     := 1;
-   NumSequencial := '1';
+   Sequencia := 0;
 
-   if ACBrBanco.ACBrBoleto.DirArqRemessa = '' then
+   with ACBrBanco.ACBrBoleto do
    begin
-      Diretorio := ExtractFilePath(Application.ExeName)+'remessa'+PathDelim;
-
-      if not DirectoryExists(Diretorio) then
-         CreateDir(Diretorio);
-
-      ACBrBanco.ACBrBoleto.DirArqRemessa:= Diretorio;
-   end;
-
-   Diretorio := ACBrBanco.ACBrBoleto.DirArqRemessa;
-
-   if ACBrBanco.ACBrBoleto.NomeArqRemessa = '' then
-   begin
-      NomeArq   := 'cb'+ FormatDateTime('ddmm',Now);
-
-      CaminhoCompleto:= Diretorio+NomeArq;
-
-      while FilesExists(CaminhoCompleto+NumSequencial+'.rem') do
+      if DirArqRemessa = '' then
       begin
-        Inc(Sequencia);
-        NumSequencial:= IntToStrZero(Sequencia,2);
+         Diretorio := ExtractFilePath(Application.ExeName)+'remessa'+PathDelim;
+
+         if not DirectoryExists(Diretorio) then
+            CreateDir(Diretorio);
+
+         DirArqRemessa := Diretorio;
       end;
-      Result:= CaminhoCompleto+NumSequencial+'.rem';
-   end
-   else
-     Result:= Diretorio+ACBrBanco.ACBrBoleto.NomeArqRemessa+NumSequencial+'.rem';
+
+      if NomeArqRemessa = '' then
+       begin
+         NomeFixo := DirArqRemessa + 'cb' + FormatDateTime( 'ddmm', Now );
+
+         repeat
+            Inc( Sequencia );
+            NomeArq := NomeFixo + IntToStrZero( Sequencia, 2 ) + '.rem'
+         until not FileExists( NomeArq ) ;
+
+         Result := NomeArq;
+       end
+      else
+         Result := DirArqRemessa + NomeArqRemessa ;
+   end;
 end;
 
 function TACBrBancoClass.MontarCodigoBarras ( const ACBrTitulo: TACBrTitulo) : String;
@@ -922,14 +941,15 @@ procedure TACBrBoleto.GerarRemessa( NumeroRemessa : Integer );
 var
    SLRemessa   : TStringList;
    ContTitulos : Integer;
+   NomeArq     : String ;
 begin
    if ListadeBoletos.Count < 1 then
       raise Exception.Create(ACBrStr('Lista de Boletos está vazia'));
 
    if Trim( NomeArqRemessa ) = '' then
-      NomeArqRemessa := Banco.CalcularNomeArquivoRemessa( DirArqRemessa )
+      NomeArq := Banco.CalcularNomeArquivoRemessa( DirArqRemessa )
    else
-      NomeArqRemessa := DirArqRemessa + NomeArqRemessa;
+      NomeArq := DirArqRemessa + NomeArqRemessa;
 
    SLRemessa := TStringList.Create;
    try
@@ -940,7 +960,7 @@ begin
 
       SLRemessa.Add( Banco.GerarRegistroTrailler( SLRemessa ) );
 
-      SLRemessa.SaveToFile( NomeArqRemessa );
+      SLRemessa.SaveToFile( NomeArq );
    finally
       SLRemessa.Free;
    end;
@@ -1021,7 +1041,7 @@ end;
 
 function TACBrBoletoFCClass.GetArqLogo: String;
 begin
-   Result := DirLogo+IntToStrZero(ACBrBoleto.Banco.Numero,3)+'.jpg';
+   Result := DirLogo + IntToStrZero( ACBrBoleto.Banco.Numero, 3)+'.jpg';
 end;
 
 function TACBrBoletoFCClass.GetDirLogo: String;

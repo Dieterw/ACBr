@@ -398,16 +398,16 @@ end;
 
 procedure TACBrSPEDFiscal.SetArquivo(const AValue: ansistring);
 var
-  APath: ansistring;
+  APath : AnsiString;
 begin
   if FArquivo = AValue then
-    exit;
+     exit;
 
-  FArquivo := ExtractFileName(AValue);
-  APath := ExtractFilePath(APath);
+  FArquivo := ExtractFileName( AValue );
+  APath    := ExtractFilePath( AValue );
 
   if APath <> '' then
-    Path := APath;
+     Path := APath;
 end;
 
 procedure TACBrSPEDFiscal.SetDT_INI(const Value: TDateTime);

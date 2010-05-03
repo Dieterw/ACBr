@@ -707,30 +707,34 @@ begin
   Gerador.wCampo(tcDe2, 'J41', 'vBC     ', 01, 15, 1, CTe.Imp.ICMS.CST80.vBC, DSC_VBC);
   Gerador.wCampo(tcDe2, 'J42', 'pICMS   ', 01, 05, 1, CTe.Imp.ICMS.CST80.pICMS, DSC_PICMS);
   Gerador.wCampo(tcDe2, 'J43', 'vICMS   ', 01, 15, 1, CTe.Imp.ICMS.CST80.vICMS, DSC_VICMS);
-  Gerador.wCampo(tcDe2, 'J44', 'vCred   ', 01, 15, 0, CTe.Imp.ICMS.CST80.vCred, DSC_VCRED);
+  if CTe.Imp.ICMS.CST80.vCred > 0 then
+   Gerador.wCampo(tcDe2, 'J44', 'vCred   ', 01, 15, 0, CTe.Imp.ICMS.CST80.vCred, DSC_VCRED);
   Gerador.wGrupo('/CST80');
 end;
 
 procedure TCTeW.GerarCST81;
 begin
   Gerador.wGrupo('CST81', 'J15');
-  Gerador.wCampo(tcStr, 'J30', 'CST     ', 02, 02, 1, CSTICMSTOStr(CTe.Imp.ICMS.CST20.CST), DSC_CST);
-  Gerador.wCampo(tcDe2, 'J51', 'pRedBC   ', 01, 05, 1, CTe.Imp.ICMS.CST20.pRedBC, DSC_PREDBC);
-  Gerador.wCampo(tcDe2, 'J52', 'vBC     ', 01, 15, 1, CTe.Imp.ICMS.CST20.vBC, DSC_VBC);
-  Gerador.wCampo(tcDe2, 'J53', 'pICMS   ', 01, 05, 1, CTe.Imp.ICMS.CST20.pICMS, DSC_PICMS);
-  Gerador.wCampo(tcDe2, 'J54', 'vICMS   ', 01, 15, 1, CTe.Imp.ICMS.CST20.vICMS, DSC_VICMS);
+  Gerador.wCampo(tcStr, 'J30', 'CST     ', 02, 02, 1, CSTICMSTOStr(CTe.Imp.ICMS.CST81.CST), DSC_CST);
+  if CTe.Imp.ICMS.CST81.pRedBC > 0 then
+   Gerador.wCampo(tcDe2, 'J51', 'pRedBC   ', 01, 05, 1, CTe.Imp.ICMS.CST81.pRedBC, DSC_PREDBC);
+  Gerador.wCampo(tcDe2, 'J52', 'vBC     ', 01, 15, 1, CTe.Imp.ICMS.CST81.vBC, DSC_VBC);
+  Gerador.wCampo(tcDe2, 'J53', 'pICMS   ', 01, 05, 1, CTe.Imp.ICMS.CST81.pICMS, DSC_PICMS);
+  Gerador.wCampo(tcDe2, 'J54', 'vICMS   ', 01, 15, 1, CTe.Imp.ICMS.CST81.vICMS, DSC_VICMS);
   Gerador.wGrupo('/CST81');
 end;
 
 procedure TCTeW.GerarCST90;
 begin
   Gerador.wGrupo('CST90', 'J16');
-  Gerador.wCampo(tcStr, 'J30', 'CST     ', 02, 02, 1, CSTICMSTOStr(CTe.Imp.ICMS.CST20.CST), DSC_CST);
-  Gerador.wCampo(tcDe2, 'J31', 'pRedBC   ', 01, 05, 1, CTe.Imp.ICMS.CST20.pRedBC, DSC_PREDBC);
-  Gerador.wCampo(tcDe2, 'J32', 'vBC     ', 01, 15, 1, CTe.Imp.ICMS.CST20.vBC, DSC_VBC);
-  Gerador.wCampo(tcDe2, 'J33', 'pICMS   ', 01, 05, 1, CTe.Imp.ICMS.CST20.pICMS, DSC_PICMS);
-  Gerador.wCampo(tcDe2, 'J34', 'vICMS   ', 01, 15, 1, CTe.Imp.ICMS.CST20.vICMS, DSC_VICMS);
-  Gerador.wCampo(tcDe2, 'J35', 'vCred   ', 01, 15, 0, CTe.Imp.ICMS.CST80.vCred, DSC_VCRED);
+  Gerador.wCampo(tcStr, 'J30', 'CST     ', 02, 02, 1, CSTICMSTOStr(CTe.Imp.ICMS.CST90.CST), DSC_CST);
+  if CTe.Imp.ICMS.CST90.pRedBC > 0 then
+    Gerador.wCampo(tcDe2, 'J31', 'pRedBC   ', 01, 05, 1, CTe.Imp.ICMS.CST90.pRedBC, DSC_PREDBC);
+  Gerador.wCampo(tcDe2, 'J32', 'vBC     ', 01, 15, 1, CTe.Imp.ICMS.CST90.vBC, DSC_VBC);
+  Gerador.wCampo(tcDe2, 'J33', 'pICMS   ', 01, 05, 1, CTe.Imp.ICMS.CST90.pICMS, DSC_PICMS);
+  Gerador.wCampo(tcDe2, 'J34', 'vICMS   ', 01, 15, 1, CTe.Imp.ICMS.CST90.vICMS, DSC_VICMS);
+  if CTe.Imp.ICMS.CST90.vCred > 0 then
+    Gerador.wCampo(tcDe2, 'J35', 'vCred   ', 01, 15, 0, CTe.Imp.ICMS.CST90.vCred, DSC_VCRED);
   Gerador.wGrupo('/CST90');
 end;
 
@@ -745,7 +749,7 @@ begin
     Gerador.wCampo(tcStr, 'N03', 'xSeg    ', 01, 30, 0, CTe.InfSeg[i].xSeg, DSC_XSEG);
     Gerador.wCampo(tcStr, 'N04', 'nApol   ', 01, 20, 0, SomenteNumeros(CTe.InfSeg[i].nApol), DSC_NAPOL);
     Gerador.wCampo(tcStr, 'N05', 'nAver   ', 20, 20, 0, SomenteNumeros(CTe.InfSeg[i].nAver), DSC_NAVER);
-    Gerador.wCampo(tcDe2, 'N06', 'vMerc   ', 01, 15, 0, CTe.InfSeg[i].vMerc, DSC_VMERC);
+    Gerador.wCampo(tcDe3, 'N06', 'vMerc   ', 01, 15, 1, CTe.InfSeg[i].vMerc, DSC_VMERC);
     Gerador.wGrupo('/seg');
   end;
   if CTe.InfSeg.Count > 990 then

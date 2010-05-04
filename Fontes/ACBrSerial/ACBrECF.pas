@@ -531,7 +531,7 @@ TACBrECF = class( TACBrComponent )
     Procedure ReducaoZ( DataHora : TDateTime = 0 ) ;
     Procedure RelatorioGerencial(Relatorio : TStrings; Vias : Integer = 1; Indice: Integer = 0) ;
     Procedure AbreRelatorioGerencial(Indice: Integer = 0) ;
-    Procedure LinhaRelatorioGerencial( Linha : AnsiString; IndiceBMP: Integer = 0 ) ;
+    Procedure LinhaRelatorioGerencial( const Linha : AnsiString; const IndiceBMP: Integer = 0 ) ;
     Procedure CupomVinculado(COO, CodFormaPagto : String; Valor : Double;
               Relatorio : TStrings; Vias : Integer = 1) ; overload ;
     Procedure CupomVinculado(COO, CodFormaPagto, CodComprovanteNaoFiscal :
@@ -541,7 +541,7 @@ TACBrECF = class( TACBrComponent )
        Valor : Double) ; overload ;
     Procedure AbreCupomVinculado(COO, CodFormaPagto, CodComprovanteNaoFiscal :
        String; Valor : Double) ; overload ;
-    Procedure LinhaCupomVinculado( Linha : AnsiString ) ;
+    Procedure LinhaCupomVinculado( const Linha : AnsiString ) ;
     Procedure FechaRelatorio ;
     Procedure PulaLinhas( const NumLinhas : Integer = 0 ) ;
     Procedure CortaPapel( const CorteParcial : Boolean = false) ;
@@ -3283,17 +3283,52 @@ begin
      fsRFD.Documento('RG') ;
 end;
 
-procedure TACBrECF.LinhaRelatorioGerencial(Linha: AnsiString; IndiceBMP: Integer);
+procedure TACBrECF.LinhaRelatorioGerencial(const Linha: AnsiString; const IndiceBMP: Integer);
+Var
+  Texto, Buffer : String ;
+  Lin   : Integer ;
+  SL    : TStringList ;
 begin
-  ComandoLOG := 'LinhaRelatorioGerencial( '+Linha+' )';
-  fsECF.LinhaRelatorioGerencial( Linha, IndiceBMP );
+  if MaxLinhasBuffer < 1 then
+   begin
+     ComandoLOG := 'LinhaRelatorioGerencial( '+Linha+' )';
+     fsECF.LinhaRelatorioGerencial( Linha, IndiceBMP );
+   end
+  else
+   begin
+     Texto  := '' ;
+     Buffer := AjustaLinhas(Linha, Colunas) ;
+     SL     := TStringList.Create ;
+     try
+        SL.Text := Buffer ;
+
+        For Lin := 0 to SL.Count - 1 do
+        begin
+           Texto := Texto + SL[Lin] + sLineBreak;
+           if (Lin mod MaxLinhasBuffer) = 0 then
+           begin
+              ComandoLOG := 'LinhaRelatorioGerencial( '+Texto+' )';
+              fsECF.LinhaRelatorioGerencial( Texto ) ;
+              Texto := '' ;
+           end ;
+        end ;
+
+        if Texto <> '' then
+        begin
+           ComandoLOG := 'LinhaRelatorioGerencial( '+Texto+' )';
+           fsECF.LinhaRelatorioGerencial( Texto, IndiceBMP ) ;
+        end ;
+     finally
+        SL.Free ;
+     end ;
+   end ;
 
   {$IFNDEF CONSOLE}
    if MemoAssigned then
    begin
       fsMemoOperacao := 'linharelatoriogerencial' ;
-      Linha := AjustaLinhas( Linha, fsMemoColunas) ;
-      MemoAdicionaLinha( Linha );
+      Buffer := AjustaLinhas( Linha, fsMemoColunas) ;
+      MemoAdicionaLinha( Buffer );
    end ;
   {$ENDIF}
 end;
@@ -3367,17 +3402,52 @@ begin
      fsRFD.Documento('CC') ;
 end;
 
-procedure TACBrECF.LinhaCupomVinculado(Linha: AnsiString);
+procedure TACBrECF.LinhaCupomVinculado(const Linha: AnsiString);
+Var
+  Texto, Buffer : String ;
+  Lin   : Integer ;
+  SL    : TStringList ;
 begin
-  ComandoLOG := 'LinhaCupomVinculado( '+Linha+' )';
-  fsECF.LinhaCupomVinculado( Linha );
+  if MaxLinhasBuffer < 1 then
+   begin
+     ComandoLOG := 'LinhaCupomVinculado( '+Linha+' )';
+     fsECF.LinhaCupomVinculado( Linha )
+   end
+  else
+   begin
+     Texto  := '' ;
+     Buffer := AjustaLinhas(Linha, Colunas) ;
+     SL     := TStringList.Create ;
+     try
+        SL.Text := Buffer ;
+
+        For Lin := 0 to SL.Count - 1 do
+        begin
+           Texto := Texto + SL[Lin] + sLineBreak;
+           if (Lin mod MaxLinhasBuffer) = 0 then
+           begin
+              ComandoLOG := 'LinhaCupomVinculado( '+Texto+' )';
+              fsECF.LinhaCupomVinculado( Texto ) ;
+              Texto := '' ;
+           end ;
+        end ;
+
+        if Texto <> '' then
+        begin
+           ComandoLOG := 'LinhaCupomVinculado( '+Texto+' )';
+           fsECF.LinhaCupomVinculado( Texto ) ;
+        end ;
+     finally
+        SL.Free ;
+     end ;
+   end ;
 
   {$IFNDEF CONSOLE}
    if MemoAssigned then
    begin
       fsMemoOperacao := 'linhacupomvinculado' ;
-      Linha := AjustaLinhas( Linha, fsMemoColunas) ;
-      MemoAdicionaLinha( Linha );
+      Buffer := AjustaLinhas( Linha, fsMemoColunas) ;
+      MemoAdicionaLinha( Buffer );
    end ;
   {$ENDIF}
 end;

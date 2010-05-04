@@ -1,5 +1,5 @@
 object frmDemo: TfrmDemo
-  Left = 142
+  Left = 590
   Height = 559
   Top = 125
   Width = 816
@@ -883,7 +883,6 @@ object frmDemo: TfrmDemo
     Cedente.ContaDigito = '1'
     Banco.TipoBanco = banBradesco
     NomeArqRemessa = 'cb00001.rem'
-    DirArqRemessa = '.\remessa\'
     ACBrBoletoFC = ACBrBoletoFCFortes1
     left = 176
     top = 256

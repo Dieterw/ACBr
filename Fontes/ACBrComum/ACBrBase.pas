@@ -134,8 +134,7 @@ begin
   {$IFDEF CONSOLE}
       Msg := 'Componentes ACBr CONSOLE'+sLineBreak+
              'Automação Comercial Brasil'+sLineBreak+
-             'http://acbr.sourceforge.net'+sLineBreak+
-             'Versão: '+ACBR_VERSAO ;
+             'http://acbr.sourceforge.net' ;
       Msg := ACBrStr(Msg) ;
       writeln( Msg )
   {$ELSE}
@@ -143,13 +142,11 @@ begin
       Msg := 'Componentes <b>ACBr CLX</b><BR>'+
               'Automação Comercial Brasil<BR><BR>'+
               '<A HREF="http://acbr.sourceforge.net">'+
-              'http://acbr.sourceforge.net</A><BR><BR>'+
-              'Versão: <b>'+ACBR_VERSAO+'</b>' ;
+              'http://acbr.sourceforge.net</A><BR><BR>' ;
     {$ELSE}
-      Msg := 'Componentes ACBr VCL'+#10+
+      Msg := 'Componentes ACBr '+{$IFDEF FPC}'Lazarus/FPC'{$ELSE}'VCL'{$ENDIF}+#10+
              'Automação Comercial Brasil'+#10+#10+
-             'http://acbr.sourceforge.net'+#10+#10+
-             'Versão: '+ACBR_VERSAO ;
+             'http://acbr.sourceforge.net' ;
       Msg := ACBrStr(Msg) ;
     {$ENDIF}
 

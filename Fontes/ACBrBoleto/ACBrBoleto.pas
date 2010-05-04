@@ -55,6 +55,9 @@ uses ACBrBase,  {Units da ACBr}
      {$IFDEF COMPILER6_UP} Types {$ELSE} Windows {$ENDIF}
      ,Contnrs, Classes;
 
+const
+  CACBrBoleto_Versao = '0.0.5a' ;
+
 type
   TACBrTitulo = class;
   TACBrBoletoFCClass = class;
@@ -112,15 +115,15 @@ type
     function GetNumero : Integer;
     function GetDigito : Integer;
     function GetTamanhoMaximoNossoNum : Integer;
+    procedure SetDigito(const AValue: Integer);
+    procedure SetNome(const AValue: String);
+    procedure SetNumero(const AValue: Integer);
     procedure SetTipoBanco ( const AValue: TACBrTipoBanco );
   public
     constructor Create( AOwner : TComponent); override;
 
     property ACBrBoleto : TACBrBoleto     read fACBrBoleto;
     property BancoClass : TACBrBancoClass read fBancoClass ;
-    property Numero     : Integer         read GetNumero;
-    property Digito     : Integer         read GetDigito;
-    property Nome       : String          read GetNome;
     property TamanhoMaximoNossoNum :Integer read GetTamanhoMaximoNossoNum;
 
     function CalcularDigitoVerificador(const ACBrTitulo : TACBrTitulo): String;
@@ -135,6 +138,9 @@ type
     function CalcularNomeArquivoRemessa(const DirArquivo: String): String;
   published
     property TipoBanco : TACBrTipoBanco read fTipoBanco write SetTipoBanco default banNaoDefinido;
+    property Numero    : Integer        read GetNumero  write SetNumero stored false;
+    property Digito    : Integer        read GetDigito  write SetDigito stored false;
+    property Nome      : String         read GetNome    write SetNome   stored false;
   end;
 
   TACBrTipoBoleto = (tbCliEmite,tbBancoEmite,tbBancoReemite,tbBancoNaoReemite);
@@ -403,6 +409,8 @@ TACBrBoleto = class( TACBrComponent )
     fListadeBoletos : TListadeBoletos;
     fCedente        : TACBrCedente;
     fNomeArqRemessa: String;
+    function GetAbout: String;
+    procedure SetAbout(const AValue: String);
     procedure SetACBrBoletoFC(const Value: TACBrBoletoFCClass);
     procedure SetDirArqRemessa(const AValue: String);
     procedure SetNomeArqRemessa(const AValue: String);
@@ -421,6 +429,8 @@ TACBrBoleto = class( TACBrComponent )
 
     procedure GerarRemessa(NumeroRemessa : Integer);
   published
+    property About : String read GetAbout write SetAbout stored False ;
+
     property Cedente        : TACBrCedente     read fCedente                write fCedente ;
     property Banco          : TACBrBanco       read fBanco                  write fBanco;
     property NomeArqRemessa : String           read fNomeArqRemessa         write SetNomeArqRemessa;
@@ -430,7 +440,7 @@ TACBrBoleto = class( TACBrComponent )
   end;
 
 {TACBrBoletoFCClass}
-TACBrBoletoFCFiltro = (fiNenhum, fiPDF, fiHTML, fiRich ) ;
+TACBrBoletoFCFiltro = (fiNenhum, fiPDF, fiHTML ) ;
 
 TACBrBoletoFCClass = class(TACBrComponent)
   private
@@ -442,20 +452,26 @@ TACBrBoletoFCClass = class(TACBrComponent)
     fNomeArquivo: String;
     fNumCopias      : Integer;
     fSoftwareHouse  : String;
+    function GetAbout: String;
     function GetArqLogo: String;
     function GetDirLogo: String;
+    procedure SetAbout(const AValue: String);
     procedure SetACBrBoleto(const Value: TACBrBoleto);
     procedure SetDirLogo(const AValue: String);
   protected
+    fpAbout : String ;
     fACBrBoleto : TACBrBoleto;
     procedure SetNumCopias(AValue: Integer);
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
   public
     Constructor Create(AOwner: TComponent); override;
+
     procedure Imprimir; virtual;
 
     property ArquivoLogo    : String read GetArqLogo;
   published
+    property About : String read GetAbout write SetAbout stored False ;
+
     property ACBrBoleto     : TACBrBoleto     read fACBrBoleto     write SetACBrBoleto ;
     property LayOut         : TACBrBolLayOut  read fLayOut         write fLayOut         default lPadrao;
     property DirLogo        : String          read GetDirLogo      write SetDirLogo;
@@ -595,11 +611,19 @@ begin
 
 end;
 
+function TACBrBoleto.GetAbout: String;
+begin
+  Result := 'ACBrBoleto Ver: '+CACBrBoleto_Versao;
+end;
+
+procedure TACBrBoleto.SetAbout(const AValue: String);
+begin
+  {}
+end;
+
 procedure TACBrBoleto.SetDirArqRemessa(const AValue: String);
 begin
   fDirArqRemessa := PathWithDelim( AValue );
-  if not DirectoryExists(fDirArqRemessa) then
-     CreateDir(fDirArqRemessa);
 end;
 
 procedure TACBrBoleto.SetNomeArqRemessa(const AValue: String);
@@ -783,6 +807,21 @@ begin
    Result := BancoClass.TamanhoMaximoNossoNum;
 end;
 
+procedure TACBrBanco.SetDigito(const AValue: Integer);
+begin
+  {Apenas para aparecer no ObjectInspector do D7}
+end;
+
+procedure TACBrBanco.SetNome(const AValue: String);
+begin
+  {Apenas para aparecer no ObjectInspector do D7}
+end;
+
+procedure TACBrBanco.SetNumero(const AValue: Integer);
+begin
+  {Apenas para aparecer no ObjectInspector do D7}
+end;
+
 { TACBrBanco }
 
 constructor TACBrBanco.Create ( AOwner: TComponent ) ;
@@ -948,6 +987,12 @@ begin
    if ListadeBoletos.Count < 1 then
       raise Exception.Create(ACBrStr('Lista de Boletos está vazia'));
 
+   if not DirectoryExists(fDirArqRemessa) then
+      ForceDirectories( fDirArqRemessa );
+
+   if not DirectoryExists(fDirArqRemessa) then
+      raise Exception.Create( ACBrStr('Diretório inválido '+fDirArqRemessa) );
+
    if Trim( NomeArqRemessa ) = '' then
       NomeArq := Banco.CalcularNomeArquivoRemessa( DirArqRemessa )
    else
@@ -994,6 +1039,7 @@ constructor TACBrBoletoFCClass.Create ( AOwner: TComponent ) ;
 begin
    inherited Create ( AOwner ) ;
 
+   fpAbout         := 'ACBrBoletoFCClass' ;
    fACBrBoleto     := nil;
    fLayOut         := lPadrao;
    fNumCopias      := 1;
@@ -1046,12 +1092,22 @@ begin
    Result := DirLogo + IntToStrZero( ACBrBoleto.Banco.Numero, 3)+'.jpg';
 end;
 
+function TACBrBoletoFCClass.GetAbout: String;
+begin
+  Result := fpAbout ;
+end;
+
 function TACBrBoletoFCClass.GetDirLogo: String;
 begin
   if fDirLogo = '' then
      Result := '.' + PathDelim + 'logos' + PathDelim
   else
      Result := fDirLogo;
+end;
+
+procedure TACBrBoletoFCClass.SetAbout(const AValue: String);
+begin
+  {}
 end;
 
 procedure TACBrBoletoFCClass.SetNumCopias ( AValue: Integer ) ;

@@ -302,6 +302,8 @@ type
     Button1: TButton;
     N41: TMenuItem;
     LerTroco1: TMenuItem;
+    Label22: TLabel;
+    speLinBuf: TSpinEdit;
     procedure cbxModeloChange(Sender: TObject);
     procedure Sair1Click(Sender: TObject);
     procedure bAtivarClick(Sender: TObject);
@@ -480,6 +482,7 @@ type
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure LerTroco1Click(Sender: TObject);
+    procedure speLinBufChange(Sender: TObject);
   private
     { Private declarations }
     Function Converte( cmd : String) : String;
@@ -3352,6 +3355,11 @@ procedure TForm1.NumGNF1Click(Sender: TObject);
 begin
   mResp.Lines.Add( 'Num.GNF: ('+ ACBrECF1.NumGNF +')' );
   AtualizaMemos ;
+end;
+
+procedure TForm1.speLinBufChange(Sender: TObject);
+begin
+  ACBrECF1.MaxLinhasBuffer := speLinBuf.Value ;
 end;
 
 END.

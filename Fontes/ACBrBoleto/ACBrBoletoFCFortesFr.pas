@@ -57,6 +57,10 @@ uses
   {$ENDIF}
  {$ENDIF}
   ;
+
+const
+  CACBrBoletoFCFortes_Versao = '0.0.6a' ;
+
 type
 
   { TACBRBoletoFCFortesFr }
@@ -65,6 +69,8 @@ type
     { Private declarations }
   public
     { Public declarations }
+    Constructor Create(AOwner: TComponent); override;
+
     procedure Imprimir; override;
   end;
 
@@ -94,7 +100,6 @@ type
     RLHTMLFilter1: TRLHTMLFilter;
     RLPDFFilter1: TRLPDFFilter;
     RLPrintDialogSetup1: TRLPrintDialogSetup;
-    RLRichFilter1: TRLRichFilter;
     txtNumeroBanco2: TRLLabel;
     RLLabel67: TRLLabel;
     RLLabel68: TRLLabel;
@@ -269,6 +274,13 @@ end;
 
 { TACBrBoletoFCFortes }
 
+constructor TACBrBoletoFCFortes.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+
+  fpAbout := 'ACBRBoletoFCFortes ver: '+CACBrBoletoFCFortes_Versao;
+end;
+
 procedure TACBrBoletoFCFortes.Imprimir;
 
 var
@@ -299,7 +311,6 @@ begin
                case Filtro of
                  fiPDF  : RLFiltro := RLPDFFilter1;
                  fiHTML : RLFiltro := RLHTMLFilter1;
-                 fiRich : RLFiltro := RLRichFilter1;
                end ;
 
                try
@@ -368,7 +379,7 @@ begin
    begin
       DigNossoNum    := Banco.CalcularDigitoVerificador( Titulo );
 
-      imgBanco2.Picture.LoadFromFile( ACBrBoletoFC.DirLogo + IntToStrZero(Banco.Numero,3)+'.jpg' );
+      imgBanco2.Picture.LoadFromFile( ACBrBoletoFC.DirLogo + IntToStrZero(Banco.Numero,3)+'.bmp' );
       txtNumeroBanco2.Caption         := IntToStrZero(Banco.Numero, 3)+ '-' +
                                          IntToStrZero(Banco.Digito, 1);
       lblLocalPagto.Caption           := Titulo.LocalPagamento;
@@ -391,7 +402,7 @@ begin
       txtCidadeSacado2.Caption        := Titulo.Sacado.CEP + ' '+Titulo.Sacado.Cidade +
                                          ' '+Titulo.Sacado.UF;
       txtCpfCnpjSacado2.Caption       := Titulo.Sacado.CNPJCPF;
-      txtInstrucoes2.Lines            := Titulo.Mensagem;
+      txtInstrucoes2.Lines.Text       := Titulo.Mensagem.Text;
    end;
 end;
 
@@ -427,7 +438,7 @@ begin
 
      imgCodigoBarra.Caption          := CodBarras;
      txtLinhaDigitavel.Caption       := LinhaDigitavel;
-     txtInstrucoes3.Lines            := txtInstrucoes2.Lines;
+     txtInstrucoes3.Lines.Text       := txtInstrucoes2.Lines.Text;
    end;
 end;
 

@@ -1916,13 +1916,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
   object RLHTMLFilter1: TRLHTMLFilter
     DocumentStyle = dsCSS2
     DisplayName = 'ACBrBoleto - http://acbr.sf.net'
+    ShowProgress = False
     Left = 854
     Top = 82
-  end
-  object RLRichFilter1: TRLRichFilter
-    DisplayName = 'RichText Format'
-    Left = 856
-    Top = 146
   end
   object RLPDFFilter1: TRLPDFFilter
     DocumentInfo.Creator = 
@@ -1931,12 +1927,13 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
     ViewerOptions = []
     FontEncoding = feNoEncoding
     DisplayName = 'ACBrBoleto - http://acbr.sf.net'
+    ShowProgress = False
     Left = 856
     Top = 26
   end
   object RLPrintDialogSetup1: TRLPrintDialogSetup
     Copies = 0
     Left = 855
-    Top = 210
+    Top = 138
   end
 end

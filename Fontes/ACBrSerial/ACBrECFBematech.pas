@@ -1172,7 +1172,6 @@ end;
 
 procedure TACBrECFBematech.FechaCupom(Observacao: AnsiString; IndiceBMP : Integer);
 begin
-  Observacao := TrimRight( Observacao ) ;
   if Copy( Observacao, length( Observacao ), 1) <> #10 then
      Observacao := Observacao + #10 ;
 

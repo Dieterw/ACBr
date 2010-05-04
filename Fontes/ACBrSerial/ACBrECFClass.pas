@@ -3063,24 +3063,7 @@ begin
        FormMsgPinta( Texto );
      {$ENDIF}
 
-     if MaxLinhasBuffer < 1 then
-        TACBrECF(fpOwner).LinhaCupomVinculado( Relatorio.Text )
-     else
-      begin
-        Texto := '' ;
-        For Lin := 0 to Relatorio.Count - 1 do
-        begin
-           Texto := Texto + Relatorio[Lin] + sLineBreak;
-           if (Lin mod MaxLinhasBuffer) = 0 then
-           begin
-              TACBrECF(fpOwner).LinhaCupomVinculado( Texto ) ;
-              Texto := '' ;
-           end ;
-        end ;
-
-        if Texto <> '' then
-           TACBrECF(fpOwner).LinhaCupomVinculado( Texto ) ;
-      end ;
+     TACBrECF(fpOwner).LinhaCupomVinculado( Relatorio.Text ) ;
 
      Inc(Imp) ;
      if Imp < Vias then
@@ -3251,24 +3234,7 @@ begin
        FormMsgPinta( Texto );
      {$ENDIF}
 
-     if MaxLinhasBuffer < 1 then
-        TACBrECF(fpOwner).LinhaRelatorioGerencial( Relatorio.Text )
-     else
-      begin
-        Texto := '' ;
-        For Lin := 0 to Relatorio.Count - 1 do
-        begin
-           Texto := Texto + Relatorio[Lin] + sLineBreak;
-           if (Lin mod MaxLinhasBuffer) = 0 then
-           begin
-              TACBrECF(fpOwner).LinhaRelatorioGerencial( Texto ) ;
-              Texto := '' ;
-           end ;
-        end ;
-
-        if Texto <> '' then
-           TACBrECF(fpOwner).LinhaRelatorioGerencial( Texto ) ;
-      end ;
+     TACBrECF(fpOwner).LinhaRelatorioGerencial( Relatorio.Text ) ;
 
      Inc(Imp) ;
      if Imp < Vias then

@@ -41,7 +41,7 @@ object Form1: TForm1
     Top = 0
     Width = 594
     Height = 330
-    ActivePage = TabSheet9
+    ActivePage = TabSheet4
     Align = alClient
     TabOrder = 1
     object TabSheet4: TTabSheet
@@ -117,6 +117,13 @@ object Form1: TForm1
         Height = 13
         Anchors = [akTop, akRight]
         Caption = 'Mensagem Trabalhando...'
+      end
+      object Label22: TLabel
+        Left = 403
+        Top = 8
+        Width = 62
+        Height = 13
+        Caption = 'Linhas Buffer'
       end
       object cbxModelo: TComboBox
         Left = 20
@@ -326,7 +333,7 @@ object Form1: TForm1
       object edMsgTrabalhando: TEdit
         Left = 394
         Top = 160
-        Width = 193
+        Width = 175
         Height = 21
         Cursor = crIBeam
         Anchors = [akTop, akRight]
@@ -342,6 +349,18 @@ object Form1: TForm1
         Caption = 'Fontes do ECF'
         TabOrder = 15
         OnClick = Button1Click
+      end
+      object speLinBuf: TSpinEdit
+        Left = 403
+        Top = 24
+        Width = 54
+        Height = 22
+        AutoSize = False
+        MaxValue = 1000
+        MinValue = 0
+        TabOrder = 16
+        Value = 0
+        OnChange = speLinBufChange
       end
     end
     object TabSheet1: TTabSheet

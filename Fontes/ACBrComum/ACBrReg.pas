@@ -101,7 +101,7 @@ end;
 
 function TACBrAboutDialogProperty.GetValue: string;
 begin
-  Result := ACBrStr( 'Versão: ' + ACBR_VERSAO ) ;
+  Result := 'http://acbr.sf.net' ;  //ACBrStr( 'Versão: ' + ACBR_VERSAO ) ;
 end;
 
 { TACBrFileNameProperty }

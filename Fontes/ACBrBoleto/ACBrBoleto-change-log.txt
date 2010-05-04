@@ -52,7 +52,8 @@ Versão 0.5.0a   03/05/09
 [+] Início do Projeto
 [+] Primeira Versao lançada baseado no componente fornecido por:
     Daniel Simões de Almeida
-
+[+] Componente desenvolvido usando como base os projetos GBBoleto, RLBoleto,
+    FreeBoleto, OpenBoleto, JFMBoleto.
 
 
 

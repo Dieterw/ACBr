@@ -391,7 +391,7 @@ begin
       txtCidadeSacado2.Caption        := Titulo.Sacado.CEP + ' '+Titulo.Sacado.Cidade +
                                          ' '+Titulo.Sacado.UF;
       txtCpfCnpjSacado2.Caption       := Titulo.Sacado.CNPJCPF;
-
+      txtInstrucoes2.Lines            := Titulo.Mensagem;
    end;
 end;
 
@@ -427,6 +427,7 @@ begin
 
      imgCodigoBarra.Caption          := CodBarras;
      txtLinhaDigitavel.Caption       := LinhaDigitavel;
+     txtInstrucoes3.Lines            := txtInstrucoes2.Lines;
    end;
 end;
 

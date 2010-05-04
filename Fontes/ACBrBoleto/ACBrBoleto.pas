@@ -598,6 +598,8 @@ end;
 procedure TACBrBoleto.SetDirArqRemessa(const AValue: String);
 begin
   fDirArqRemessa := PathWithDelim( AValue );
+  if not DirectoryExists(fDirArqRemessa) then
+     CreateDir(fDirArqRemessa);
 end;
 
 procedure TACBrBoleto.SetNomeArqRemessa(const AValue: String);

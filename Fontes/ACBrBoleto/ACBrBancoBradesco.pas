@@ -130,7 +130,7 @@ begin
       else if Ocorrencia = '31' then
          Protesto := '9999'
       else
-         Protesto := '0000' ;
+         Protesto := Instrucao1+Instrucao2;
 
       {Pegando Tipo de Sacado}
       case Sacado.Pessoa of

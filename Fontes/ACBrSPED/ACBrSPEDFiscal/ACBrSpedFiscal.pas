@@ -99,6 +99,7 @@ type
     procedure SetArquivo(const AValue: ansistring);
     procedure SetDelimitador(const Value: ansistring);
     procedure SetLinhasBuffer(const AValue: Integer);
+    procedure SetPath(const AValue: ansistring);
     procedure SetTrimString(const Value: boolean);
     procedure SetCurMascara(const Value: ansistring);
     procedure SetDT_FIN(const Value: TDateTime);
@@ -167,7 +168,7 @@ type
     property Bloco_H: TBloco_H read FBloco_H write FBloco_H;
   published
     property About: ansistring read GetAbout stored False;
-    property Path: ansistring read FPath write FPath;
+    property Path: ansistring read FPath write SetPath;
     property Arquivo: ansistring read FArquivo write SetArquivo;
     property LinhasBuffer : Integer read GetLinhasBuffer write SetLinhasBuffer
       default 1000 ;
@@ -291,6 +292,11 @@ end;
 procedure TACBrSPEDFiscal.SetLinhasBuffer(const AValue: Integer);
 begin
    FACBrTXT.LinhasBuffer := AValue ;
+end;
+
+procedure TACBrSPEDFiscal.SetPath(const AValue: ansistring);
+begin
+  FPath := PathWithDelim( AValue );
 end;
 
 function TACBrSPEDFiscal.GetCurMascara: ansistring;

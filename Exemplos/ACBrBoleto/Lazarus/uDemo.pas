@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
-  StdCtrls, EditBtn, ACBrBoleto, ACBrBoletoFCFortesFr, ExtCtrls, MaskEdit;
+  StdCtrls, EditBtn, ACBrBoleto, ACBrBoletoFCFortesFr, ExtCtrls, MaskEdit,ACBrUtil;
 
 type
 
@@ -21,8 +21,8 @@ type
      btnImprimir: TButton;
      btnZerar: TButton;
      cbxAceite: TComboBox;
-     Edit1: TEdit;
-     Edit2: TEdit;
+     edtInstrucoes1: TEdit;
+     edtInstrucoes2: TEdit;
      edtMulta: TEdit;
      edtCEP: TMaskEdit;
      edtCPFCNPJ: TEdit;
@@ -61,7 +61,6 @@ type
      Label12: TLabel;
      Label13: TLabel;
      Label14: TLabel;
-     Label15: TLabel;
      Label16: TLabel;
      Label17: TLabel;
      Label18: TLabel;
@@ -89,9 +88,11 @@ type
      memMensagem: TMemo;
      Panel1: TPanel;
      Panel2: TPanel;
+     procedure btnGerarRemessaClick ( Sender: TObject ) ;
      procedure btnIncluiBoletoClick ( Sender: TObject ) ;
      procedure btnIncluir10BoletosClick ( Sender: TObject ) ;
      procedure btnImprimirClick ( Sender: TObject ) ;
+     procedure FormCreate ( Sender: TObject ) ;
   private
      procedure Button1Click ( Sender: TObject ) ;
     { private declarations }
@@ -136,6 +137,8 @@ begin
         Sacado.Cidade     := 'Tatui';
         Sacado.UF         := 'SP';
         ValorAbatimento   := 10;
+        Instrucao1        := '00';
+        Instrucao2        := '00';
 
      end;
    end;
@@ -144,6 +147,13 @@ end;
 procedure TfrmDemo.btnImprimirClick ( Sender: TObject ) ;
 begin
    ACBrBoleto1.Imprimir;
+end;
+
+procedure TfrmDemo.FormCreate ( Sender: TObject ) ;
+begin
+   edtDataDoc.Date    := Now;
+   edtVencimento.Date := IncMonth(edtDataDoc.Date,1);
+   edtDataMora.Date   := edtVencimento.Date+1;
 end;
 
 procedure TfrmDemo.btnIncluiBoletoClick ( Sender: TObject ) ;
@@ -182,12 +192,19 @@ begin
         PercentualMulta   := StrToCurrDef(edtMulta.Text,0);
         Mensagem.Text     := memMensagem.Text;
         TipoOcorrencia    := toRemessaBaixar;
+        Instrucao1        := padL(trim(edtInstrucoes1.Text),2,'0');
+        Instrucao2        := padL(trim(edtInstrucoes2.Text),2,'0');
      end;
+end;
+
+procedure TfrmDemo.btnGerarRemessaClick ( Sender: TObject ) ;
+begin
+   ACBrBoleto1.GerarRemessa( 1 );
 end;
 
 procedure TfrmDemo.Button1Click ( Sender: TObject ) ;
 begin
-   ACBrBoleto1.GerarRemessa( 1 );
+
 end;
 
 end.

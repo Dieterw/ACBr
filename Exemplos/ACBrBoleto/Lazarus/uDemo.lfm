@@ -1,11 +1,12 @@
 object frmDemo: TfrmDemo
-  Left = 346
+  Left = 142
   Height = 559
-  Top = 149
+  Top = 125
   Width = 816
   Caption = 'Demo ACBrBoleto'
   ClientHeight = 559
   ClientWidth = 816
+  OnCreate = FormCreate
   LCLVersion = '0.9.29'
   object GroupBox2: TGroupBox
     Left = 6
@@ -30,6 +31,7 @@ object frmDemo: TfrmDemo
       Top = 24
       Width = 260
       TabOrder = 0
+      Text = 'Pagar em qualquer banco até o vencimento'
     end
     object edtEspecieDoc: TEdit
       Left = 280
@@ -37,6 +39,7 @@ object frmDemo: TfrmDemo
       Top = 24
       Width = 88
       TabOrder = 1
+      Text = 'DM'
     end
     object Label5: TLabel
       Left = 280
@@ -68,6 +71,7 @@ object frmDemo: TfrmDemo
       Top = 24
       Width = 83
       TabOrder = 2
+      Text = '$'
     end
     object edtCarteira: TEdit
       Left = 568
@@ -75,6 +79,7 @@ object frmDemo: TfrmDemo
       Top = 24
       Width = 80
       TabOrder = 4
+      Text = '19'
     end
     object Label6: TLabel
       Left = 483
@@ -112,6 +117,7 @@ object frmDemo: TfrmDemo
       Top = 24
       Width = 112
       TabOrder = 5
+      Text = '00000000'
     end
   end
   object GroupBox3: TGroupBox
@@ -138,14 +144,14 @@ object frmDemo: TfrmDemo
       Caption = 'Instrução 2'
       ParentColor = False
     end
-    object Edit2: TEdit
+    object edtInstrucoes2: TEdit
       Left = 459
       Height = 23
       Top = 24
       Width = 107
       TabOrder = 1
     end
-    object Edit1: TEdit
+    object edtInstrucoes1: TEdit
       Left = 334
       Height = 23
       Top = 24
@@ -205,6 +211,7 @@ object frmDemo: TfrmDemo
       Top = 7
       Width = 103
       Caption = 'Gerar Remessa'
+      OnClick = btnGerarRemessaClick
       TabOrder = 2
     end
     object btnImprimir: TButton
@@ -240,6 +247,7 @@ object frmDemo: TfrmDemo
       Top = 24
       Width = 176
       TabOrder = 0
+      Text = '0000000001'
     end
     object Label4: TLabel
       Left = 6
@@ -381,6 +389,7 @@ object frmDemo: TfrmDemo
       Top = 80
       Width = 176
       TabOrder = 1
+      Text = '100'
     end
   end
   object GroupBox4: TGroupBox
@@ -406,6 +415,7 @@ object frmDemo: TfrmDemo
       Top = 24
       Width = 316
       TabOrder = 0
+      Text = 'João Roberto Pirea'
     end
     object Label14: TLabel
       Left = 336
@@ -429,6 +439,7 @@ object frmDemo: TfrmDemo
       Top = 72
       Width = 317
       TabOrder = 3
+      Text = 'Rua XI de Agosto'
     end
     object Label17: TLabel
       Left = 336
@@ -444,6 +455,7 @@ object frmDemo: TfrmDemo
       Top = 72
       Width = 72
       TabOrder = 4
+      Text = '100'
     end
     object Label18: TLabel
       Left = 424
@@ -474,6 +486,7 @@ object frmDemo: TfrmDemo
       Top = 72
       Width = 205
       TabOrder = 6
+      Text = 'Centro'
     end
     object Label20: TLabel
       Left = 6
@@ -489,6 +502,7 @@ object frmDemo: TfrmDemo
       Top = 114
       Width = 216
       TabOrder = 7
+      Text = 'Tatui'
     end
     object Label21: TLabel
       Left = 244
@@ -512,6 +526,7 @@ object frmDemo: TfrmDemo
       Top = 114
       Width = 55
       TabOrder = 9
+      Text = 'SP'
     end
     object Label23: TLabel
       Left = 508
@@ -527,6 +542,7 @@ object frmDemo: TfrmDemo
       Top = 24
       Width = 277
       TabOrder = 2
+      Text = 'joao@gmail.com'
     end
     object edtCEP: TMaskEdit
       Left = 244
@@ -537,7 +553,7 @@ object frmDemo: TfrmDemo
       MaxLength = 9
       TabOrder = 8
       EditMask = '99999-999;1;_'
-      Text = '     -   '
+      Text = '18277-500'
       SpaceChar = '_'
     end
     object edtCPFCNPJ: TEdit
@@ -546,15 +562,8 @@ object frmDemo: TfrmDemo
       Top = 24
       Width = 152
       TabOrder = 1
+      Text = '87.854.233-78'
     end
-  end
-  object Label15: TLabel
-    Left = 84
-    Height = 16
-    Top = 468
-    Width = 34
-    Caption = 'Nome'
-    ParentColor = False
   end
   object GroupBox5: TGroupBox
     Left = 6
@@ -815,6 +824,7 @@ object frmDemo: TfrmDemo
       Top = 20
       Width = 115
       TabOrder = 0
+      Text = '5'
     end
     object Label29: TLabel
       Left = 292
@@ -830,6 +840,7 @@ object frmDemo: TfrmDemo
       Top = 20
       Width = 124
       TabOrder = 2
+      Text = '0'
     end
     object Label30: TLabel
       Left = 144
@@ -845,6 +856,7 @@ object frmDemo: TfrmDemo
       Top = 20
       Width = 124
       TabOrder = 1
+      Text = '0'
     end
     object Label31: TLabel
       Left = 440
@@ -860,6 +872,7 @@ object frmDemo: TfrmDemo
       Top = 20
       Width = 104
       TabOrder = 3
+      Text = '5'
     end
   end
   object ACBrBoleto1: TACBrBoleto

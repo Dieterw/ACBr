@@ -1883,13 +1883,13 @@ begin
   with fsDadosReducaoZClass do
   begin
      For I := 0 to ICMS.Count-1 do
-        Result := Result + padL(ICMS[I].Indice,2) +
+        Result := Result + FormatFloat('00',(Aliquotas[I].Sequencia))+    {padL(ICMS[I].Indice,2)}
                            ICMS[I].Tipo +
                            IntToStrZero(Round(ICMS[I].Aliquota*100),4) + ' = '+
                            FloatToStr(ICMS[I].Total) + sLineBreak ;
 
      For I := 0 to ISSQN.Count-1 do
-        Result := Result + padL(ISSQN[I].Indice,2) +
+        Result := Result + FormatFloat('00',(Aliquotas[I].Sequencia))+
                            ISSQN[I].Tipo +
                            IntToStrZero(Round(ISSQN[I].Aliquota*100),4) + ' = '+
                            FloatToStr(ISSQN[I].Total) + sLineBreak ;

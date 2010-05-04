@@ -75,6 +75,7 @@ Agradecimentos:
 - Diogo Augusto Pereira          ACBrCMC7
 - Marcos Agostini                ECFBugFix (NaoFiscal)
 - João Carvalho                  ACBrConsts
+- Fernando Gutierres Damaceno    ECF, TEFD
 
 * Testadores / BugReport:
 - Rildecy de Queiroz Borba       ECFBugReport (Mecaf)
@@ -97,6 +98,9 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 Versão 0.9.1b  03/05/10
+-- ACBrECF --
+[-]    DadosReducaoZ: Corrigido Retorno dos Indices de Aliquotas de ICMS e ISS
+        (por: Fernando Gutierres Damaceno) 
 [*]    Metodos "LinhaRelatorioGerencial" e "LinhaCupomVinculado" modificados
        para respeitar corretamente a propriedade "MaxLinhasBuffer"
         

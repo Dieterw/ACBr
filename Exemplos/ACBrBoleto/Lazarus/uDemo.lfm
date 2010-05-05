@@ -877,11 +877,9 @@ object frmDemo: TfrmDemo
   end
   object ACBrBoleto1: TACBrBoleto
     Cedente.CodigoCedente = '1'
-    Cedente.Agencia = '0212'
-    Cedente.AgenciaDigito = '1'
     Cedente.Conta = '12345'
     Cedente.ContaDigito = '1'
-    Banco.TipoBanco = banItau
+    Banco.TipoBanco = banBradesco
     NomeArqRemessa = 'cb00001.rem'
     DirArqRemessa = '.\remessa\'
     ACBrBoletoFC = ACBrBoletoFCFortes1

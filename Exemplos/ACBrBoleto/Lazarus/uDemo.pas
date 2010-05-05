@@ -111,10 +111,26 @@ implementation
 
 procedure TfrmDemo.btnIncluir10BoletosClick ( Sender: TObject ) ;
 var
-  Titulo : TACBrTitulo;
-  I      : Integer;
+  Titulo    : TACBrTitulo;
+  I         : Integer;
+  NrTitulos : Integer;
+  NrTitulosStr :String;
+  Convertido: Boolean;
 begin
-   for I := 1 to 10 do
+   NrTitulos    := 10;
+   NrTitulosStr := '10';
+   Convertido   := true;
+
+   repeat
+     InputQuery('Número de Boletos a incluir','',False,NrTitulosStr);
+     try
+       NrTitulos := StrToInt(NrTitulosStr);
+     except
+       Convertido:= false;
+     end;
+   until  Convertido;
+
+   for I := 1 to NrTitulos do
    begin
      Titulo:= ACBrBoleto1.CriarTituloNaLista;
 
@@ -126,7 +142,7 @@ begin
         EspecieDoc        := 'DM';
         Aceite            := 'S';
         DataProcessamento := Now;
-        NossoNumero       := '0000000001';
+        NossoNumero       := IntToStrZero(I,10);
         Carteira          := '19';
         ValorDocumento    := 100.35 * (I+0.5);
         Sacado.NomeSacado := 'Jose Luiz Pedroso';

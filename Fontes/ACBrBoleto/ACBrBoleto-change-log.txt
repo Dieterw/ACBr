@@ -47,7 +47,7 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
-Versão 0.5.0a   03/05/09
+Versão 0.0.5a   03/05/09
 ---------------
 [+] Início do Projeto
 [+] Primeira Versao lançada baseado no componente fornecido por:
@@ -56,7 +56,7 @@ Versão 0.5.0a   03/05/09
     FreeBoleto, OpenBoleto, JFMBoleto.
 
 
-Versão 0.5.1a 04/05/10
+Versão 0.0.6a 04/05/10
 [-] Adicionado Logos dos bancos no formato '.BMP', corrigindo o problema 
     ao imprimir o boleto, onde o logo não era encontrado, mesmo sendo informado
     o diretório dos arquivos. EMBarbosa 

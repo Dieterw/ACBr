@@ -56,4 +56,9 @@ Versão 0.5.0a   03/05/09
     FreeBoleto, OpenBoleto, JFMBoleto.
 
 
-
+Versão 0.5.1a 04/05/10
+[-] Adicionado Logos dos bancos no formato '.BMP', corrigindo o problema 
+    ao imprimir o boleto, onde o logo não era encontrado, mesmo sendo informado
+    o diretório dos arquivos. EMBarbosa 
+[+] Adicionado verificação das propriedades obrigatórias do componente ACBrBoleto,
+    para evitar erros devido a falta de preenchimento destas propriedades. Juliana Tamizou

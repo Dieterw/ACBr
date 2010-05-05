@@ -437,6 +437,7 @@ TACBrBoleto = class( TACBrComponent )
     property DirArqRemessa  : String           read fDirArqRemessa          write SetDirArqRemessa;
     property ImprimirMensagemPadrao : Boolean  read fImprimirMensagemPadrao write fImprimirMensagemPadrao default True;
     property ACBrBoletoFC : TACBrBoletoFCClass read fACBrBoletoFC           write SetACBrBoletoFC;
+    procedure ChecarDadosObrigatorios;
   end;
 
 {TACBrBoletoFCClass}
@@ -694,6 +695,8 @@ Procedure TACBrBoleto.Imprimir;
 begin
   if not Assigned(ACBrBoletoFC) then
      raise Exception.Create( 'Nenhum componente "ACBrBoletoFC" associado' ) ;
+
+  ChecarDadosObrigatorios;
 
   ACBrBoletoFC.Imprimir;
 end;
@@ -987,6 +990,8 @@ begin
    if ListadeBoletos.Count < 1 then
       raise Exception.Create(ACBrStr('Lista de Boletos está vazia'));
 
+   ChecarDadosObrigatorios;
+
    if not DirectoryExists(fDirArqRemessa) then
       ForceDirectories( fDirArqRemessa );
 
@@ -1011,6 +1016,13 @@ begin
    finally
       SLRemessa.Free;
    end;
+end;
+
+procedure TACBrBoleto.ChecarDadosObrigatorios;
+begin
+   if (Cedente.Nome= '') or (cedente.Conta = '') or (Cedente.ContaDigito ='') or
+      (Cedente.Agencia = '') or (Cedente.AgenciaDigito = '') then
+     raise Exception.Create('Informações do Cedente Imcompletas');
 end;
 
 { TACBrBancoClass }

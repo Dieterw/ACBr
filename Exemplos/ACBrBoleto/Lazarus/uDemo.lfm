@@ -188,7 +188,7 @@ object frmDemo: TfrmDemo
     ClientWidth = 816
     TabOrder = 5
     object btnIncluiBoleto: TButton
-      Left = 368
+      Left = 360
       Height = 33
       Top = 7
       Width = 99
@@ -197,11 +197,11 @@ object frmDemo: TfrmDemo
       TabOrder = 0
     end
     object btnIncluir10Boletos: TButton
-      Left = 480
+      Left = 472
       Height = 33
       Top = 7
-      Width = 112
-      Caption = 'Incluir 10 Boletos'
+      Width = 128
+      Caption = 'Incluir Vários Boletos'
       OnClick = btnIncluir10BoletosClick
       TabOrder = 1
     end
@@ -224,7 +224,7 @@ object frmDemo: TfrmDemo
       TabOrder = 3
     end
     object btnZerar: TButton
-      Left = 232
+      Left = 224
       Height = 33
       Top = 7
       Width = 123

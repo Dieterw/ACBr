@@ -615,7 +615,8 @@ begin
           Add( LFill('0205') +
                LFill( DESCR_ANT_ITEM ) +
                LFill( DT_INI ) +
-               LFill( DT_FIN ) ) ;
+               LFill( DT_FIN ) +
+               LFill( COD_ANT_ITEM) ) ;
         end;
         Registro0990.QTD_LIN_0 := Registro0990.QTD_LIN_0 + 1;
      end;

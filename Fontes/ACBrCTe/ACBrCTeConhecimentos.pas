@@ -366,7 +366,7 @@ begin
         Leitor.Free;
 
         if FConfiguracoes.Geral.Salvar then
-           FConfiguracoes.Geral.Save(StringReplace(Self.Items[i].CTe.infCTe.ID, 'CTe', '', [rfIgnoreCase])+'-cte.xml', vAssinada);
+           FConfiguracoes.Geral.Save(StringReplace(Self.Items[i].CTe.infCTe.ID, 'CTe', '', [rfIgnoreCase])+'-CTe.xml', vAssinada);
 
         if NotaUtil.NaoEstaVazio(Self.Items[i].NomeArq) then
            FConfiguracoes.Geral.Save(ExtractFileName(Self.Items[i].NomeArq), vAssinada, ExtractFilePath(Self.Items[i].NomeArq));
@@ -443,7 +443,7 @@ begin
      if not(CTeUtil.Valida(('<CTe xmlns' +
         RetornarConteudoEntre(Self.Items[i].XML, '<CTe xmlns', '</CTe>')+ '</CTe>'),
          FMsg, Self.FConfiguracoes.Geral.PathSchemas)) then
-       raise Exception.Create('Falha na validação dos dados doa Conhecimento '+
+       raise Exception.Create('Falha na validação dos dados do Conhecimento '+
                     IntToStr(Self.Items[i].CTe.Ide.nCT) +
                     sLineBreak + Self.Items[i].Alertas + FMsg);
   end;

@@ -48,6 +48,13 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   07/05/10
+---------------
+[*] Foram Incluidos todos os campos que faltavam entre o campo #1 e Campo #276.
+    Campos referentes aos dados complementares do CT-e para fins operacionais ou comerciais,
+    Campos referentes ao Local de retirada constante na NF e
+    Campos referentes ao Local de Entrega constante na NF.
+
 Alterações   03/05/10
 ---------------
 [-] Correção dos procedimentos: GerarCST81, GerarCST90 e GerarInfSeg (Créditos: Doni Delphi).

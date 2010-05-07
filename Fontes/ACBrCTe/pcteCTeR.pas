@@ -167,7 +167,7 @@ begin
        if Leitor.rExtrai(3, 'enderToma') <> '' then
         begin
           (*B37*)CTe.Ide.Toma4.EnderToma.xLgr  := Leitor.rCampo(tcStr, 'xLgr');
-          (*B37*)CTe.Ide.Toma4.EnderToma.xNum  := Leitor.rCampo(tcStr, 'xNum');
+          (*B37*)CTe.Ide.Toma4.EnderToma.xNum  := Leitor.rCampo(tcStr, 'nro');
           (*B37*)CTe.Ide.Toma4.EnderToma.xCpl  := Leitor.rCampo(tcStr, 'xCpl');
           (*B37*)CTe.Ide.Toma4.EnderToma.xBairro := Leitor.rCampo(tcStr, 'xBairro');
           (*B37*)CTe.Ide.Toma4.EnderToma.cMun  := Leitor.rCampo(tcInt, 'cMun');
@@ -183,9 +183,85 @@ begin
   (* Grupo da TAG <compl> *****************************************************)
   if Leitor.rExtrai(1, 'compl') <> '' then
   begin
+      CTe.Compl.xCaracAd := Leitor.rCampo(tcstr,'xCaracAd');
+      CTe.Compl.xCaracSer:= Leitor.rCampo(tcstr,'xCaracSer');
+      CTe.Compl.xEmi     := Leitor.rCampo(tcstr,'xEmi');
+
+      if Leitor.rExtrai(2, 'fluxo') <> '' then
+       begin
+        CTe.Compl.fluxo.xOrig     := Leitor.rCampo(tcstr,'xOrig');
+        i01 := 0;
+        while Leitor.rExtrai(3, 'pass', '', i01 + 1) <> '' do
+        begin
+          CTe.Compl.fluxo.pass.Add;
+          CTe.Compl.fluxo.pass[i01].xPass  := Leitor.rCampo(tcStr, 'xPass');
+          inc(i01);
+        end;
+        CTe.Compl.fluxo.xDest     := Leitor.rCampo(tcstr,'xDest');
+        CTe.Compl.fluxo.xRota     := Leitor.rCampo(tcstr,'xRota');
+       end;
+
+      if Leitor.rExtrai(2, 'Entrega') <> '' then
+       begin
+        if Leitor.rExtrai(3, 'semData') <> '' then
+         begin
+          CTe.Compl.Entrega.semData.tpPer := Leitor.rCampo(tcInt, 'tpPer');
+         end;
+        if Leitor.rExtrai(3, 'comData') <> '' then
+         begin
+          CTe.Compl.Entrega.comData.tpPer := Leitor.rCampo(tcInt, 'tpPer');
+          CTe.Compl.Entrega.comData.dProg := Leitor.rCampo(tcDat, 'dProg');
+         end;
+        if Leitor.rExtrai(3, 'noPeriodo') <> '' then
+         begin
+          CTe.Compl.Entrega.noPeriodo.tpPer := Leitor.rCampo(tcInt, 'tpPer');
+          CTe.Compl.Entrega.noPeriodo.dIni  := Leitor.rCampo(tcDat, 'dIni');
+          CTe.Compl.Entrega.noPeriodo.dFim  := Leitor.rCampo(tcDat, 'dFim');
+         end;
+        if Leitor.rExtrai(3, 'semHora') <> '' then
+         begin
+          CTe.Compl.Entrega.semHora.tpHor := Leitor.rCampo(tcInt, 'tpHor');
+         end;
+        if Leitor.rExtrai(3, 'comHora') <> '' then
+         begin
+          CTe.Compl.Entrega.comHora.tpHor := Leitor.rCampo(tcInt, 'tpHor');
+          CTe.Compl.Entrega.comHora.hProg := StrToTime(Leitor.rCampo(tcStr, 'hProg'));
+         end;
+        if Leitor.rExtrai(3, 'noInter') <> '' then
+         begin
+          CTe.Compl.Entrega.noInter.tpHor := Leitor.rCampo(tcInt, 'tpHor');
+          CTe.Compl.Entrega.noInter.hIni  := StrToTime(Leitor.rCampo(tcStr, 'hIni'));
+          CTe.Compl.Entrega.noInter.hFim  := StrToTime(Leitor.rCampo(tcStr, 'hFim'));
+         end;
+       end;
+
       CTe.Compl.origCalc := Leitor.rCampo(tcstr,'origCalc');
       CTe.Compl.destCalc := Leitor.rCampo(tcstr,'destCalc');
       CTe.Compl.xObs     := Leitor.rCampo(tcstr,'xObs');
+
+      i01 := 0;
+      while Leitor.rExtrai(2, 'ObsCont', '', i01 + 1) <> '' do
+      begin
+       I := 0;
+       I := RetornarPosEx('ObsCont xCampo=', Leitor.Arquivo, I + 15);
+       J := RetornarPosEx('"', Leitor.Arquivo, I + 1);
+       CTe.Compl.ObsCont.Add;
+       CTe.Compl.ObsCont[i01].xCampo := copy(Leitor.Arquivo, I + 1, J - I -1);
+       CTe.Compl.ObsCont[i01].xTexto := Leitor.rCampo(tcstr,'xTexto');
+       inc(i01);
+      end;
+
+      i01 := 0;
+      while Leitor.rExtrai(2, 'ObsFisco', '', i01 + 1) <> '' do
+      begin
+       I := 0;
+       I := RetornarPosEx('ObsFisco xCampo=', Leitor.Arquivo, I + 15);
+       J := RetornarPosEx('"', Leitor.Arquivo, I + 1);
+       CTe.Compl.ObsFisco.Add;
+       CTe.Compl.ObsFisco[i01].xCampo := copy(Leitor.Arquivo, I + 1, J - I -1);
+       CTe.Compl.ObsFisco[i01].xTexto := Leitor.rCampo(tcstr,'xTexto');
+       inc(i01);
+      end;
   end;
 
   (* Grupo da TAG <emit> ******************************************************)
@@ -236,7 +312,9 @@ begin
        i01 := 0;
        while Leitor.rExtrai(2, 'infNF', '', i01 + 1) <> '' do
        begin
-          Cte.Rem.InfNF.Add;
+          CTe.Rem.InfNF.Add;
+          CTe.Rem.InfNF[i01].nRoma  := Leitor.rCampo(tcStr, 'nRoma');
+          CTe.Rem.InfNF[i01].nPed   := Leitor.rCampo(tcStr, 'nPed');
           CTe.Rem.InfNF[i01].serie  := Leitor.rCampo(tcStr, 'serie');
           CTe.Rem.InfNF[i01].nDoc   := Leitor.rCampo(tcEsp, 'nDoc');
           CTe.Rem.InfNF[i01].dEmi   := Leitor.rCampo(tcDat, 'dEmi');
@@ -248,13 +326,26 @@ begin
           CTe.Rem.InfNF[i01].vNF    := Leitor.rCampo(tcDe2, 'vNF');
           CTe.Rem.InfNF[i01].nCFOP  := Leitor.rCampo(tcInt, 'nCFOP');
           CTe.Rem.InfNF[i01].nPeso  := Leitor.rCampo(tcDe3, 'nPeso');
+          CTe.Rem.InfNF[i01].PIN   := Leitor.rCampo(tcStr, 'PIN');
+          if Leitor.rExtrai(3, 'locRet') <> '' then
+           begin
+            CTe.Rem.InfNF[i01].locRet.CNPJCPF := Leitor.rCampoCNPJCPF;
+            CTe.Rem.InfNF[i01].locRet.xNome   := Leitor.rCampo(tcStr, 'xNome');
+            CTe.Rem.InfNF[i01].locRet.xLgr    := Leitor.rCampo(tcStr, 'xLgr');
+            CTe.Rem.InfNF[i01].locRet.Nro     := Leitor.rCampo(tcStr, 'nro');
+            CTe.Rem.InfNF[i01].locRet.xCpl    := Leitor.rCampo(tcStr, 'xCpl');
+            CTe.Rem.InfNF[i01].locRet.xBairro := Leitor.rCampo(tcStr, 'xBairro');
+            CTe.Rem.InfNF[i01].locRet.cMun    := Leitor.rCampo(tcInt, 'cMun');
+            CTe.Rem.InfNF[i01].locRet.xMun    := Leitor.rCampo(tcStr, 'xMun');
+            CTe.Rem.InfNF[i01].locRet.UF      := Leitor.rCampo(tcStr, 'UF');
+           end;
           inc(i01);
        end;
 
        i01 := 0;
        while Leitor.rExtrai(2, 'infNFe', '', i01 + 1) <> '' do
        begin
-          Cte.Rem.InfNFE.Add;
+          CTe.Rem.InfNFE.Add;
           CTe.Rem.InfNFE[i01].chave := Leitor.rCampo(tcStr, 'chave');
           CTe.Rem.InfNFE[i01].PIN   := Leitor.rCampo(tcStr, 'PIN');
           inc(i01);
@@ -263,7 +354,7 @@ begin
        i01 := 0;
        while Leitor.rExtrai(2, 'infOutros', '', i01 + 1) <> '' do
        begin
-          Cte.Rem.InfOutros.Add;
+          CTe.Rem.InfOutros.Add;
           CTe.Rem.InfOutros[i01].tpDoc      := Leitor.rCampo(tcStr, 'tpDoc');
           CTe.Rem.InfOutros[i01].descOutros := Leitor.rCampo(tcStr, 'descOutros');
           CTe.Rem.InfOutros[i01].nDoc       := Leitor.rCampo(tcStr, 'nDoc');
@@ -337,6 +428,18 @@ begin
           CTe.Dest.EnderDest.cPais := Leitor.rCampo(tcInt, 'cPais');
           CTe.Dest.EnderDest.xPais := Leitor.rCampo(tcStr, 'xPais');
         end;
+       if Leitor.rExtrai(2, 'locEnt') <> '' then
+        begin
+          CTe.Dest.locEnt.CNPJCPF := Leitor.rCampoCNPJCPF;
+          CTe.Dest.locEnt.xNome   := Leitor.rCampo(tcStr, 'xNome');
+          CTe.Dest.locEnt.xLgr    := Leitor.rCampo(tcStr, 'xLgr');
+          CTe.Dest.locEnt.Nro     := Leitor.rCampo(tcStr, 'nro');
+          CTe.Dest.locEnt.xCpl    := Leitor.rCampo(tcStr, 'xCpl');
+          CTe.Dest.locEnt.xBairro := Leitor.rCampo(tcStr, 'xBairro');
+          CTe.Dest.locEnt.cMun    := Leitor.rCampo(tcInt, 'cMun');
+          CTe.Dest.locEnt.xMun    := Leitor.rCampo(tcStr, 'xMun');
+          CTe.Dest.locEnt.UF      := Leitor.rCampo(tcStr, 'UF');
+        end;
   end;
 
   (* Grupo da TAG <vPrest> ****************************************************)
@@ -348,7 +451,7 @@ begin
     i01 := 0;
     while Leitor.rExtrai(2, 'Comp', '', i01 + 1) <> '' do
     begin
-      Cte.vPrest.Comp.Add;
+      CTe.vPrest.Comp.Add;
       CTe.vPrest.Comp[i01].xNome  := Leitor.rCampo(tcStr, 'xNome');
       CTe.vPrest.Comp[i01].vComp  := Leitor.rCampo(tcDe2, 'vComp');
       inc(i01);
@@ -425,7 +528,7 @@ begin
     i01 := 0;
     while Leitor.rExtrai(3, 'infQ', '', i01 + 1) <> '' do
     begin
-      Cte.InfCarga.infQ.Add;
+      CTe.InfCarga.infQ.Add;
       CTe.InfCarga.infQ[i01].cUnid  := Leitor.rCampo(tcStr, 'cUnid');
       CTe.InfCarga.infQ[i01].tpMed  := Leitor.rCampo(tcStr, 'tpMed');
       CTe.InfCarga.infQ[i01].qCarga := Leitor.rCampo(tcDe4, 'qCarga');
@@ -435,7 +538,7 @@ begin
     i01 := 0;
     while Leitor.rExtrai(2, 'seg', '', i01 + 1) <> '' do
     begin
-      Cte.infSeg.Add;
+      CTe.infSeg.Add;
       CTe.InfSeg[i01].respSeg  := StrToTpRspSeguro(ok, Leitor.rCampo(tcStr, 'respSeg'));
       CTe.InfSeg[i01].xSeg     := Leitor.rCampo(tcStr, 'xSeg');
       CTe.InfSeg[i01].nApol    := Leitor.rCampo(tcStr, 'nApol');
@@ -454,7 +557,7 @@ begin
 
   (* Grupo da TAG <signature> *************************************************)
 
-  leitor.Grupo := Leitor.Arquivo;
+  Leitor.Grupo := Leitor.Arquivo;
 
   CTe.signature.URI := Leitor.rAtributo('Reference URI=');
   CTe.signature.DigestValue := Leitor.rCampo(tcStr, 'DigestValue');

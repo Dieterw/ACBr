@@ -162,13 +162,13 @@ begin
                   FormatDateTime( 'ddmmyy', DataDocumento )               +  // Data de Emissão
                   Protesto                                                +
                   IntToStrZero( round(ValorMoraJuros * 100 ), 13)         +
-                  IfThen(DataDesconto < StrToDate('01/01/2000'),'000000',FormatDateTime( 'ddmmyy', DataDesconto)) +
+                  IfThen(DataDesconto < EncodeDate(2000,01,01),'000000',FormatDateTime( 'ddmmyy', DataDesconto)) +
                   IntToStrZero( round( ValorDesconto * 100 ), 13)         +
                   IntToStrZero( round( ValorIOF * 100 ), 13)              +
                   IntToStrZero( round( ValorAbatimento * 100 ), 13)       +
                   TipoSacado + padR(Sacado.CNPJCPF,14,'0')                +
                   padL( Sacado.NomeSacado, 40, ' ')                       +
-                  LeftStr( Sacado.Logradouro + Sacado.Numero              +
+                  padL( Sacado.Logradouro + Sacado.Numero              +
                            Sacado.Bairro + Sacado.Cidade + Sacado.UF, 40) +
                   space(12) + padL( Sacado.CEP, 8 )                       +
                   padl( Mensagem.Text, 60 )                               +

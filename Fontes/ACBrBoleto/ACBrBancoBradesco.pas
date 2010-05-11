@@ -120,8 +120,8 @@ begin
 
       {Pegando Tipo de Boleto}
       case ACBrBoleto.Cedente.TipoBoleto of
-         tbCliEmite   : TipoBoleto := '1';
-         tbBancoEmite : TipoBoleto := '2';
+         tbCliEmite   : TipoBoleto := '2';
+         tbBancoEmite : TipoBoleto := '1';
       end;
 
       {Pegando campo Intruções}
@@ -162,7 +162,7 @@ begin
                   FormatDateTime( 'ddmmyy', DataDocumento )               +  // Data de Emissão
                   Protesto                                                +
                   IntToStrZero( round(ValorMoraJuros * 100 ), 13)         +
-                  FormatDateTime( 'ddmmyy', DataDesconto)                 +
+                  IfThen(DataDesconto < StrToDate('01/01/2000'),'000000',FormatDateTime( 'ddmmyy', DataDesconto)) +
                   IntToStrZero( round( ValorDesconto * 100 ), 13)         +
                   IntToStrZero( round( ValorIOF * 100 ), 13)              +
                   IntToStrZero( round( ValorAbatimento * 100 ), 13)       +

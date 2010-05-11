@@ -1,7 +1,7 @@
 object frmDemo: TfrmDemo
-  Left = 257
+  Left = 113
   Height = 559
-  Top = 107
+  Top = 99
   Width = 816
   Caption = 'Demo ACBrBoleto'
   ClientHeight = 559
@@ -40,7 +40,7 @@ object frmDemo: TfrmDemo
       Top = 24
       Width = 88
       TabOrder = 1
-      Text = 'DM'
+      Text = '01'
     end
     object Label5: TLabel
       Left = 280
@@ -877,9 +877,12 @@ object frmDemo: TfrmDemo
     end
   end
   object ACBrBoleto1: TACBrBoleto
+    Cedente.Nome = 'Caetano Materias p/ Construcao'
     Cedente.CodigoCedente = '1'
-    Cedente.Conta = '12345'
-    Cedente.ContaDigito = '1'
+    Cedente.Agencia = '284'
+    Cedente.AgenciaDigito = '5'
+    Cedente.Conta = '079489'
+    Cedente.ContaDigito = '9'
     Banco.TipoBanco = banBradesco
     NomeArqRemessa = 'cb00001.rem'
     DirArqRemessa = '.\remessa\'

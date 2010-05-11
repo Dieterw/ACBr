@@ -136,10 +136,10 @@ begin
 
      with Titulo do
      begin
-        Vencimento        := StrToDateTime('10/05/2010');
+        Vencimento        := IncMonth(StrToDateTime('10/05/2010'),I);
         DataDocumento     := StrToDateTime('10/04/2010');
         NumeroDocumento   := '100001';
-        EspecieDoc        := 'DM';
+        EspecieDoc        := '01';
         Aceite            := 'S';
         DataProcessamento := Now;
         NossoNumero       := IntToStrZero(I,10);
@@ -152,6 +152,7 @@ begin
         Sacado.Bairro     := 'Vila Esperanca';
         Sacado.Cidade     := 'Tatui';
         Sacado.UF         := 'SP';
+        Sacado.CEP        := '18270000';
         ValorAbatimento   := 10;
         Instrucao1        := '00';
         Instrucao2        := '00';

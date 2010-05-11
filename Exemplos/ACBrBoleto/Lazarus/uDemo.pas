@@ -10,6 +10,7 @@ uses
 
 type
 
+
   { TfrmDemo }
 
   TfrmDemo = class ( TForm )
@@ -94,6 +95,7 @@ type
      procedure btnImprimirClick ( Sender: TObject ) ;
      procedure FormCreate ( Sender: TObject ) ;
   private
+     AString: Array[0..5] of AnsiString;
      procedure Button1Click ( Sender: TObject ) ;
     { private declarations }
   public
@@ -136,9 +138,9 @@ begin
 
      with Titulo do
      begin
-        Vencimento        := IncMonth(StrToDateTime('10/05/2010'),I);
-        DataDocumento     := StrToDateTime('10/04/2010');
-        NumeroDocumento   := '100001';
+        Vencimento        := IncMonth(EncodeDate(2010,05,10),I);
+        DataDocumento     := EncodeDate(2010,04,10);
+        NumeroDocumento   := padL(IntToStr(I),6,'0');
         EspecieDoc        := '01';
         Aceite            := 'S';
         DataProcessamento := Now;
@@ -171,6 +173,13 @@ begin
    edtDataDoc.Date    := Now;
    edtVencimento.Date := IncMonth(edtDataDoc.Date,1);
    edtDataMora.Date   := edtVencimento.Date+1;
+
+   AString[0] := '.';
+   AString[1] := '-';
+   AString[2] := '/';
+   AString[3] := '(';
+   AString[4] := ')';
+   AString[5] := ' ';
 end;
 
 procedure TfrmDemo.btnIncluiBoletoClick ( Sender: TObject ) ;
@@ -191,12 +200,13 @@ begin
         Carteira          := edtCarteira.Text;
         ValorDocumento    := StrToCurr(edtValorDoc.Text);
         Sacado.NomeSacado := edtNome.Text;
-        Sacado.CNPJCPF    := edtCPFCNPJ.Text;
+        Sacado.CNPJCPF    := RemoveStrings(edtCPFCNPJ.Text,AString);
         Sacado.Logradouro := edtEndereco.Text;
         Sacado.Numero     := edtNumero.Text;
         Sacado.Bairro     := edtBairro.Text;
         Sacado.Cidade     := edtCidade.Text;
         Sacado.UF         := edtUF.Text;
+        Sacado.CEP        := RemoveStrings(edtCEP.Text,AString);
         ValorAbatimento   := StrToCurrDef(edtMoraJuros.Text,0);
         LocalPagamento    := edtLocalPag.Text;
         ValorMoraJuros    := StrToCurrDef(edtMoraJuros.Text,0);

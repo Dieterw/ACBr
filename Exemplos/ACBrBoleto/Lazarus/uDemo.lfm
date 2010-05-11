@@ -411,12 +411,12 @@ object frmDemo: TfrmDemo
       ParentColor = False
     end
     object edtNome: TEdit
-      Left = 6
+      Left = 7
       Height = 23
       Top = 24
       Width = 316
       TabOrder = 0
-      Text = 'João Roberto Pirea'
+      Text = 'Joao Roberto Pirea'
     end
     object Label14: TLabel
       Left = 336
@@ -878,7 +878,7 @@ object frmDemo: TfrmDemo
   end
   object ACBrBoleto1: TACBrBoleto
     Cedente.Nome = 'Caetano Materias p/ Construcao'
-    Cedente.CodigoCedente = '1'
+    Cedente.CodigoCedente = '4266443'
     Cedente.Agencia = '284'
     Cedente.AgenciaDigito = '5'
     Cedente.Conta = '079489'
@@ -893,6 +893,7 @@ object frmDemo: TfrmDemo
   object ACBrBoletoFCFortes1: TACBrBoletoFCFortes
     ACBrBoleto = ACBrBoleto1
     DirLogo = '..\..\..\Fontes\ACBrBoleto\Logos\Colorido\'
+    MostrarPreview = False
     NomeArquivo = '.\teste.pdf'
     SoftwareHouse = 'Projeto ACBr - http://acbr.sf.net'
     left = 72

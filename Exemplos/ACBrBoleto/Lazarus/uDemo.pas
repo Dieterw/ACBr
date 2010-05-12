@@ -145,7 +145,7 @@ begin
         Aceite            := 'S';
         DataProcessamento := Now;
         NossoNumero       := IntToStrZero(I,10);
-        Carteira          := '19';
+        Carteira          := '09';
         ValorDocumento    := 100.35 * (I+0.5);
         Sacado.NomeSacado := 'Jose Luiz Pedroso';
         Sacado.CNPJCPF    := '12345678901';
@@ -207,7 +207,7 @@ begin
         Sacado.Cidade     := edtCidade.Text;
         Sacado.UF         := edtUF.Text;
         Sacado.CEP        := RemoveStrings(edtCEP.Text,AString);
-        ValorAbatimento   := StrToCurrDef(edtMoraJuros.Text,0);
+        ValorAbatimento   := StrToCurrDef(edtValorAbatimento.Text,0);
         LocalPagamento    := edtLocalPag.Text;
         ValorMoraJuros    := StrToCurrDef(edtMoraJuros.Text,0);
         ValorDesconto     := StrToCurrDef(edtValorDesconto.Text,0);

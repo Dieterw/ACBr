@@ -80,7 +80,7 @@ object frmDemo: TfrmDemo
       Top = 24
       Width = 80
       TabOrder = 4
-      Text = '19'
+      Text = '09'
     end
     object Label6: TLabel
       Left = 483

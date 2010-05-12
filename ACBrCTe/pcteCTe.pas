@@ -15,7 +15,7 @@
 //      Equipe: Vide o arquivo leiame.txt na pasta raiz do projeto            //
 //                                                                            //
 // Desenvolvimento                                                            //
-//         de Cte: Wiliam Zacarias da Silva Rosa                              //
+//         de CTe: Wiliam Zacarias da Silva Rosa                              //
 //                                                                            //
 //      Versão: Vide o arquivo leiame.txt na pasta raiz do projeto            //
 //                                                                            //
@@ -64,12 +64,27 @@ type
   TToma4 = class;
   TEnderToma = class;
   TCompl = class;
+  TFluxo = class;
+  TPassCollection = class;
+  TPassCollectionItem = class;
+  TEntrega = class;
+  TSemData = class;
+  TComData = class;
+  TNoPeriodo = class;
+  TSemHora = class;
+  TComHora = class;
+  TNoInter = class;
+  TObsContCollection = class;
+  TObsContCollectionItem = class;
+  TObsFiscoCollection = class;
+  TObsFiscoCollectionItem = class;
   TEmit = class;
   TEnderEmit = class;
   TRem = class;
   TEnderReme = class;
   TInfNFCollection = class;
   TInfNFCollectionItem = class;
+  TLocRet = class;
   TInfNFECollection = class;
   TInfNFECollectionItem = class;
   TInfOutrosCollection  = class;
@@ -80,8 +95,11 @@ type
   TEnderReceb = class;
   TDest = class;
   TEnderDest = class;
+  TLocEnt = class;
   TvPrest = class;
   TCompCollection = class;
+  TCompCollectionItem = class;
+
   TImp = class;
   TICMS = class;
   TCST00 = class;
@@ -90,19 +108,44 @@ type
   TCST80 = class;
   TCST81 = class;
   TCST90 = class;
-  TInfSegCollection = class;
-  TInfSegCollectionItem = class;
+
+  TInfCTeNorm = class;
+
   TInfCarga = class;
   TInfQCollection = class;
   TInfQCollectionItem = class;
+
+  TInfcontQtCollection = class;
+  TInfcontQtCollectionItem = class;
+  TlacContQtCollection = class;
+  TlacContQtCollectionItem = class;
+  TemiDocAntCollection = class;
+  TemiDocAntCollectionItem = class;
+  TidDocAntCollection = class;
+  TidDocAntCollectionItem = class;
+  TidDocAntPapCollection = class;
+  TidDocAntPapCollectionItem = class;
+  TidDocAntEleCollection = class;
+  TidDocAntEleCollectionItem = class;
+
+
+  TInfSegCollection = class;
+  TInfSegCollectionItem = class;
   TRodo = class;
-  TMoto = class;
+  TCTRB = class;
+  TOccCollection = class;
+  TOccCollectionItem = class;
   TEmiOCC = class;
+
+
+  Tprop = class;
   TLacresCollection = class;
   TLacresCollectionItem = class;
-  Tprop = class;
-  TInfCteAnuEnt = class;
-  TinfCteComp = class;
+  TMoto = class;
+
+
+  TInfCTeAnuEnt = class;
+  TinfCTeComp = class;
   TvPresComp = class;
 
   TCTe = class(TPersistent)
@@ -118,11 +161,15 @@ type
     FDest       : TDest;
     FvPrest     : TvPrest;
     FImp        : TImp;
+
+    FInfCTeNorm : TInfCteNorm;
+
     FInfCarga   : TInfCarga;
+
     FInfSeg     : TInfSegCollection;
     FRodo       : TRodo;
-    FinfCteComp : TinfCteComp;
-    FInfCteAnuEnt : TInfCteAnuEnt;
+    FinfCTeComp : TinfCTeComp;
+    FInfCTeAnuEnt : TInfCTeAnuEnt;
     FProcCTe: TProcCTe;
     FSignature: TSignature;
     procedure SetInfSeg(Value: TInfSegCollection);
@@ -141,11 +188,12 @@ type
     property Dest: TDest read FDest write FDest;
     property vPrest: TvPrest read FvPrest write FvPrest;
     property Imp: TImp read FImp write FImp;
+    property infCTeNorm: TInfCTeNorm read FInfCteNorm write FInfCTeNorm;
     property InfCarga: TInfCarga read FInfCarga write FInfCarga;
     property InfSeg: TInfSegCollection read FInfSeg write SetInfSeg;
     property Rodo: TRodo read FRodo write FRodo;
-    property InfCteAnuEnt: TInfCteAnuEnt read FInfCteAnuEnt write FInfCteAnuEnt;
-    property infCteComp: TinfCteComp read FinfCteComp write FinfCteComp;
+    property InfCTeAnuEnt: TInfCTeAnuEnt read FInfCTeAnuEnt write FInfCTeAnuEnt;
+    property infCTeComp: TinfCTeComp read FinfCTeComp write FinfCTeComp;
     property procCTe: TProcCTe read FProcCTe write FProcCTe;
     property signature: Tsignature read Fsignature write Fsignature;
   end;
@@ -163,7 +211,7 @@ type
     FcCT: integer;
     FCFOP: integer;
     FnatOp : String;
-    FforPag : TpcteFormaPagamento;
+    FforPag : TpCTeFormaPagamento;
     Fmod: String;
     Fserie: integer;
     FnCT: integer;
@@ -175,7 +223,7 @@ type
     FtpCTe: TpcteTipoCTe;
     FprocEmi: TpcnProcessoEmissao;
     FverProc: String;
-    FrefCTE: String;
+    FrefCTe: String;
     FcMunEmi: integer;
     FxMunEmi: String;
     FUFEmi: String;
@@ -211,7 +259,7 @@ type
     property tpCTe: TpcteTipoCTe read FtpCTe write FtpCTe;
     property procEmi: TpcnProcessoEmissao read FprocEmi write FprocEmi;
     property verProc: String read FverProc write FverProc;
-    property refCTE: String read FrefCTE write FrefCTE;
+    property refCTe: String read FrefCTe write FrefCTe;
     property cMunEmi: integer read FcMunEmi write FcMunEmi;
     property xMunEmi: String read FxMunEmi write FxMunEmi;
     property UFEmi: String read FUFEmi write FUFEmi;
@@ -285,16 +333,193 @@ type
 
   TCompl = class(TPersistent)
   private
-    ForigCalc : String;
-    FdestCalc : String;
-    FxObs     : String;
+    FxCaracAd  : String;
+    FxCaracSer : String;
+    FxEmi      : String;
+    Ffluxo     : TFluxo;
+    FEntrega   : TEntrega;
+    ForigCalc  : String;
+    FdestCalc  : String;
+    FxObs      : String;
+    FObsCont   : TObsContCollection;
+    FObsFisco  : TObsFiscoCollection;
+    procedure SetObsCont(Value: TObsContCollection);
+    procedure SetObsFisco(Value: TObsFiscoCollection);
   public
     constructor Create(AOwner: TCTe);
     destructor Destroy; override;
   published
+    property xCaracAd : String read FxCaracAd write FxCaracAd;
+    property xCaracSer : String read FxCaracSer write FxCaracSer;
+    property xEmi : String read FxEmi write FxEmi;
+    property fluxo : TFluxo read Ffluxo write Ffluxo;
+    property Entrega : TEntrega read FEntrega write FEntrega;
     property origCalc : String read ForigCalc write ForigCalc;
     property destCalc : String read FdestCalc write FdestCalc;
     property xObs : String read FxObs write FxObs;
+    property ObsCont: TObsContCollection read FObsCont write SetObsCont;
+    property ObsFisco: TObsFiscoCollection read FObsFisco write SetObsFisco;
+  end;
+
+  TFluxo = class(TPersistent)
+  private
+    FxOrig  : String;
+    Fpass      : TPassCollection;
+    FxDest     : String;
+    FxRota     : String;
+    procedure SetPass(Value: TPassCollection);
+  public
+    constructor Create(AOwner: TCompl);
+    destructor Destroy; override;
+  published
+    property xOrig : String read FxOrig write FxOrig;
+    property pass: TPassCollection read Fpass write SetPass;
+    property xDest : String read FxDest write FxDest;
+    property xRota : String read FxRota write FxRota;
+  end;
+
+  TPassCollection = class(TCollection)
+  private
+    function GetItem(Index: Integer): TPassCollectionItem;
+    procedure SetItem(Index: Integer; Value: TPassCollectionItem);
+  public
+    constructor Create(AOwner: TFluxo);
+    function Add: TPassCollectionItem;
+    property Items[Index: Integer]: TPassCollectionItem read GetItem write SetItem; default;
+  end;
+
+  TPassCollectionItem = class(TCollectionItem)
+  private
+    FxPass : String;
+  public
+    constructor Create; reintroduce;
+    destructor Destroy; override;
+  published
+    property xPass: string read FxPass write FxPass;
+  end;
+
+  TEntrega = class(TPersistent)
+  private
+    FTipoData  : Integer;
+    FTipoHora  : Integer;
+
+    FsemData   : TSemData;
+    FcomData   : TComData;
+    FnoPeriodo : TNoPeriodo;
+    FsemHora   : TSemHora;
+    FcomHora   : TComHora;
+    FnoInter   : TNoInter;
+  public
+    constructor Create(AOwner: TCompl);
+    destructor Destroy; override;
+  published
+    property TipoData : Integer read FTipoData write FTipoData;
+    property TipoHora : Integer read FTipoHora write FTipoHora;
+
+    property semData : TSemData read FsemData write FsemData;
+    property comData : TComData read FcomData write FcomData;
+    property noPeriodo : TNoPeriodo read FnoPeriodo write FnoPeriodo;
+    property semHora : TSemHora read FsemHora write FsemHora;
+    property comHora : TComHora read FcomHora write FcomHora;
+    property noInter : TNoInter read FnoInter write FnoInter;
+  end;
+
+  TSemData = class(TPersistent)
+  private
+   FtpPer : integer;
+  published
+    property tpPer : integer read FtpPer write FtpPer;
+  end;
+
+  TComData = class(TPersistent)
+  private
+   FtpPer : integer;
+   FdProg : TDateTime;
+  published
+    property tpPer : integer read FtpPer write FtpPer;
+    property dProg : TDateTime read FdProg write FdProg;
+  end;
+
+  TNoPeriodo = class(TPersistent)
+  private
+   FtpPer : integer;
+   FdIni : TDateTime;
+   FdFim : TDateTime;
+  published
+    property tpPer : integer read FtpPer write FtpPer;
+    property dIni : TDateTime read FdIni write FdIni;
+    property dFim : TDateTime read FdFim write FdFim;
+  end;
+
+  TSemHora = class(TPersistent)
+  private
+   FtpHor : integer;
+  published
+    property tpHor : integer read FtpHor write FtpHor;
+  end;
+
+  TComHora = class(TPersistent)
+  private
+   FtpHor : integer;
+   FhProg : TDateTime;
+  published
+    property tpHor : integer read FtpHor write FtpHor;
+    property hProg : TDateTime read FhProg write FhProg;
+  end;
+
+  TNoInter = class(TPersistent)
+  private
+   FtpHor : integer;
+   FhIni : TDateTime;
+   FhFim : TDateTime;
+  published
+    property tpHor : integer read FtpHor write FtpHor;
+    property hIni : TDateTime read FhIni write FhIni;
+    property hFim : TDateTime read FhFim write FhFim;
+  end;
+
+  TObsContCollection = class(TCollection)
+  private
+    function GetItem(Index: Integer): TObsContCollectionItem;
+    procedure SetItem(Index: Integer; Value: TObsContCollectionItem);
+  public
+    constructor Create(AOwner: TCompl);
+    function Add: TObsContCollectionItem;
+    property Items[Index: Integer]: TObsContCollectionItem read GetItem write SetItem; default;
+  end;
+
+  TObsContCollectionItem = class(TCollectionItem)
+  private
+    FxCampo : String;
+    FxTexto : String;
+  public
+    constructor Create; reintroduce;
+    destructor Destroy; override;
+  published
+    property xCampo: string read FxCampo write FxCampo;
+    property xTexto: string read FxTexto write FxTexto;
+  end;
+
+  TObsFiscoCollection = class(TCollection)
+  private
+    function GetItem(Index: Integer): TObsFiscoCollectionItem;
+    procedure SetItem(Index: Integer; Value: TObsFiscoCollectionItem);
+  public
+    constructor Create(AOwner: TCompl);
+    function Add: TObsFiscoCollectionItem;
+    property Items[Index: Integer]: TObsFiscoCollectionItem read GetItem write SetItem; default;
+  end;
+
+  TObsFiscoCollectionItem = class(TCollectionItem)
+  private
+    FxCampo : String;
+    FxTexto : String;
+  public
+    constructor Create; reintroduce;
+    destructor Destroy; override;
+  published
+    property xCampo: string read FxCampo write FxCampo;
+    property xTexto: string read FxTexto write FxTexto;
   end;
 
   TEmit = class(TPersistent)
@@ -408,21 +633,27 @@ type
 
   TInfNFCollectionItem = class(TCollectionItem)
   private
-    Fserie : String;
-    FnDoc  : String;
-    FdEmi  : TDateTime;
-    FvBC   : Currency;
-    FvICMS : Currency;
-    FvBCST : Currency;
-    FvST   : Currency;
-    FvProd : Currency;
-    FvNF   : Currency;
-    FnCFOP : integer;
-    FnPeso : Currency;
+    FnRoma  : String;
+    FnPed   : String;
+    Fserie  : String;
+    FnDoc   : String;
+    FdEmi   : TDateTime;
+    FvBC    : Currency;
+    FvICMS  : Currency;
+    FvBCST  : Currency;
+    FvST    : Currency;
+    FvProd  : Currency;
+    FvNF    : Currency;
+    FnCFOP  : integer;
+    FnPeso  : Currency;
+    FPIN    : String;
+    FlocRet : TLocRet;
   public
     constructor Create; reintroduce;
     destructor Destroy; override;
   published
+    property nRoma: string read FnRoma write FnRoma;
+    property nPed: string read FnPed write FnPed;
     property serie: string read Fserie write Fserie;
     property nDoc: string read FnDoc write FnDoc;
     property dEmi: TDateTime read FdEmi write FdEmi;
@@ -434,6 +665,31 @@ type
     property vNF: Currency read FvNF write FvNF;
     property nCFOP: integer read FnCFOP write FnCFOP;
     property nPeso: Currency read FnPeso write FnPeso;
+    property PIN: string read FPIN write FPIN;
+    property locRet: TLocRet read FlocRet write FlocRet;
+  end;
+
+  TLocRet = class(TPersistent)
+  private
+    FCNPJCPF: String;
+    FxNome : String;
+    FxLgr: string;
+    Fnro: string;
+    FxCpl: string;
+    FxBairro: string;
+    FcMun: integer;
+    FxMun: string;
+    FUF: string;
+  published
+    property CNPJCPF: String read FCNPJCPF write FCNPJCPF;
+    property xNome: string read FxNome write FxNome;
+    property xLgr: string read FxLgr write FxLgr;
+    property nro: string read Fnro write Fnro;
+    property xCpl: string read FxCpl write FxCpl;
+    property xBairro: string read FxBairro write FxBairro;
+    property cMun: integer read FcMun write FcMun;
+    property xMun: string read FxMun write FxMun;
+    property UF: string read FUF write FUF;
   end;
 
   TInfNFECollection = class(TCollection)
@@ -580,6 +836,7 @@ type
     Ffone      : String;
     FISUF      : String;
     FEnderDest : TEnderDest;
+    FlocEnt    : TLocEnt;
   public
     constructor Create(AOwner: TCTe);
     destructor Destroy; override;
@@ -590,6 +847,7 @@ type
     property fone : String read Ffone write Ffone;
     property ISUF : String read FISUF write FISUF;
     property EnderDest: TEnderDest read FEnderDest write FEnderDest;
+    property locEnt: TLocEnt read FlocEnt write FlocEnt;
   end;
 
   TEnderDest = class(TPersistent)
@@ -617,6 +875,29 @@ type
     property xPais: string read FxPais write FxPais;
   end;
 
+  TLocEnt = class(TPersistent)
+  private
+    FCNPJCPF: String;
+    FxNome : String;
+    FxLgr: string;
+    Fnro: string;
+    FxCpl: string;
+    FxBairro: string;
+    FcMun: integer;
+    FxMun: string;
+    FUF: string;
+  published
+    property CNPJCPF: String read FCNPJCPF write FCNPJCPF;
+    property xNome: string read FxNome write FxNome;
+    property xLgr: string read FxLgr write FxLgr;
+    property nro: string read Fnro write Fnro;
+    property xCpl: string read FxCpl write FxCpl;
+    property xBairro: string read FxBairro write FxBairro;
+    property cMun: integer read FcMun write FcMun;
+    property xMun: string read FxMun write FxMun;
+    property UF: string read FUF write FUF;
+  end;
+
   TvPrest = class(TPersistent)
   private
     FvTPrest : Currency;
@@ -632,6 +913,16 @@ type
     property comp: TCompCollection read Fcomp write SetCompItem;
   end;
 
+  TCompCollection = class(TCollection)
+  private
+    function GetItem(Index: Integer): TCompCollectionItem;
+    procedure SetItem(Index: Integer; Value: TCompCollectionItem);
+  public
+    constructor Create(AOwner: TCTe);
+    function Add: TCompCollectionItem;
+    property Items[Index: Integer]: TCompCollectionItem read GetItem write SetItem; default;
+  end;
+
   TCompCollectionItem = class(TCollectionItem)
   private
     FvComp: Currency;
@@ -642,16 +933,6 @@ type
   published
     property xNome: string read FxNome write FxNome;
     property vComp: Currency read FvComp write FvComp;
-  end;
-
-  TCompCollection = class(TCollection)
-  private
-    function GetItem(Index: Integer): TCompCollectionItem;
-    procedure SetItem(Index: Integer; Value: TCompCollectionItem);
-  public
-    constructor Create(AOwner: TCte);
-    function Add: TCompCollectionItem;
-    property Items[Index: Integer]: TCompCollectionItem read GetItem write SetItem; default;
   end;
 
   TImp = class(TPersistent)
@@ -802,10 +1083,173 @@ type
     FcUnid  : UnidMed;
     FtpMed  : string;
     FqCarga : currency;
+  public
+    constructor Create; reintroduce;
+    destructor Destroy; override;
   published
     property cUnid: UnidMed read FcUnid write FcUnid;
     property tpMed: string read FtpMed write FtpMed;
     property qCarga: currency read FqCarga write FqCarga;
+  end;
+
+  TInfCTeNorm = class(TPersistent)
+  private
+    FcontQt     : TInfcontQtCollection;
+    FemiDocAnt  : TemiDocAntCollection;
+    procedure SetcontQt(const Value: TInfcontQtCollection);
+    procedure SetemiDocAnt(const Value: TemiDocAntCollection);
+  public
+    constructor Create(AOwner: TCTe);
+    destructor Destroy; override;
+  published
+    property contQt: TInfcontQtCollection read FcontQt write SetcontQt;
+    property emiDocAnt: TemiDocAntCollection read FemiDocAnt write SetemiDocAnt;
+  end;
+
+  TInfcontQtCollection = class(TCollection)
+  private
+    function GetItem(Index: Integer): TInfcontQtCollectionItem;
+    procedure SetItem(Index: Integer; Value: TInfcontQtCollectionItem);
+  public
+    constructor Create(AOwner: TInfCTeNorm);
+    function Add: TInfcontQtCollectionItem;
+    property Items[Index: Integer]: TInfcontQtCollectionItem read GetItem write SetItem; default;
+  end;
+
+  TInfcontQtCollectionItem = class(TCollectionItem)
+  private
+    FnCont     : Integer;
+    FlacContQt : TlacContQtCollection;
+    FdPrev : TDateTime;
+    procedure SetlacContQt(const Value: TlacContQtCollection);
+  public
+    constructor Create; reintroduce;
+    destructor Destroy; override;
+  published
+    property nCont: Integer read FnCont write FnCont;
+    property lacContQt: TlacContQtCollection read FlacContQt write SetlacContQt;
+    property dPrev: TDateTime read FdPrev write FdPrev;
+  end;
+
+  TlacContQtCollection = class(TCollection)
+  private
+    function GetItem(Index: Integer): TlacContQtCollectionItem;
+    procedure SetItem(Index: Integer; Value: TlacContQtCollectionItem);
+  public
+    constructor Create(AOwner: TInfcontQtCollectionItem);
+    function Add: TlacContQtCollectionItem;
+    property Items[Index: Integer]: TlacContQtCollectionItem read GetItem write SetItem; default;
+  end;
+
+  TlacContQtCollectionItem = class(TCollectionItem)
+  private
+    FnLacre     : String;
+  public
+    constructor Create; reintroduce;
+    destructor Destroy; override;
+  published
+    property nLacre: String read FnLacre write FnLacre;
+  end;
+
+  TemiDocAntCollection = class(TCollection)
+  private
+    function GetItem(Index: Integer): TemiDocAntCollectionItem;
+    procedure SetItem(Index: Integer; Value: TemiDocAntCollectionItem);
+  public
+    constructor Create(AOwner: TInfCTeNorm);
+    function Add: TemiDocAntCollectionItem;
+    property Items[Index: Integer]: TemiDocAntCollectionItem read GetItem write SetItem; default;
+  end;
+
+  TemiDocAntCollectionItem = class(TCollectionItem)
+  private
+    FCNPJCPF    : String;
+    FIE         : String;
+    FUF         : String;
+    FxNome      : String;
+    FidDocAnt   : TidDocAntCollection;
+    procedure SetidDocAnt(const Value: TidDocAntCollection);
+  public
+    constructor Create; reintroduce;
+    destructor Destroy; override;
+  published
+    property CNPJCPF: String read FCNPJCPF write FCNPJCPF;
+    property IE: String read FIE write FIE;
+    property UF: String read FUF write FUF;
+    property xNome: String read FxNome write FxNome;
+    property idDocAnt: TidDocAntCollection read FidDocAnt write SetidDocAnt;
+  end;
+
+  TidDocAntCollection = class(TCollection)
+  private
+    function GetItem(Index: Integer): TidDocAntCollectionItem;
+    procedure SetItem(Index: Integer; Value: TidDocAntCollectionItem);
+  public
+    constructor Create(AOwner: TemiDocAntCollectionItem);
+    function Add: TidDocAntCollectionItem;
+    property Items[Index: Integer]: TidDocAntCollectionItem read GetItem write SetItem; default;
+  end;
+
+  TidDocAntCollectionItem = class(TCollectionItem)
+  private
+    FidDocAntPap : TidDocAntPapCollection;
+    FidDocAntEle: TidDocAntEleCollection;
+    procedure SetidDocAntPap(const Value: TidDocAntPapCollection);
+    procedure SetidDocAntEle(const Value: TidDocAntEleCollection);
+  public
+    constructor Create; reintroduce;
+    destructor Destroy; override;
+  published
+    property idDocAntPap: TidDocAntPapCollection read FidDocAntPap write SetidDocAntPap;
+    property idDocAntEle: TidDocAntEleCollection read FidDocAntEle write SetidDocAntEle;
+  end;
+
+  TidDocAntPapCollection = class(TCollection)
+  private
+    function GetItem(Index: Integer): TidDocAntPapCollectionItem;
+    procedure SetItem(Index: Integer; Value: TidDocAntPapCollectionItem);
+  public
+    constructor Create(AOwner: TidDocAntCollectionItem);
+    function Add: TidDocAntPapCollectionItem;
+    property Items[Index: Integer]: TidDocAntPapCollectionItem read GetItem write SetItem; default;
+  end;
+
+  TidDocAntPapCollectionItem = class(TCollectionItem)
+  private
+    FtpDoc    : Integer;
+    Fserie    : String;
+    Fsubser   : String;
+    FnDoc     : Integer;
+    FdEmi     : TDateTime;
+  public
+    constructor Create; reintroduce;
+    destructor Destroy; override;
+  published
+    property tpDoc: Integer read FtpDoc write FtpDoc;
+    property serie: String read Fserie write Fserie;
+    property subser: String read Fsubser write Fsubser;
+    property nDoc: Integer read FnDoc write FnDoc;
+    property dEmi: TDateTime read FdEmi write FdEmi;
+  end;
+
+  TidDocAntEleCollection = class(TCollection)
+  private
+    function GetItem(Index: Integer): TidDocAntEleCollectionItem;
+    procedure SetItem(Index: Integer; Value: TidDocAntEleCollectionItem);
+  public
+    constructor Create(AOwner: TidDocAntCollectionItem);
+    function Add: TidDocAntEleCollectionItem;
+    property Items[Index: Integer]: TidDocAntEleCollectionItem read GetItem write SetItem; default;
+  end;
+
+  TidDocAntEleCollectionItem = class(TCollectionItem)
+  private
+    Fchave    : String;
+  public
+    constructor Create; reintroduce;
+    destructor Destroy; override;
+  published
+    property chave: String read Fchave write Fchave;
   end;
 
   TInfSegCollection = class(TCollection)
@@ -813,7 +1257,7 @@ type
     function GetItem(Index: Integer): TInfSegCollectionItem;
     procedure SetItem(Index: Integer; Value: TInfSegCollectionItem);
   public
-    constructor Create(AOwner: TCte);
+    constructor Create(AOwner: TCTe);
     function Add: TInfSegCollectionItem;
     property Items[Index: Integer]: TInfSegCollectionItem read GetItem write SetItem; default;
   end;
@@ -838,13 +1282,16 @@ type
 
   TRodo = class(TPersistent)
   private
-    FRNTRC : String;
-    FdPrev : tDateTime;
-    FLota  : TpcteLocacao;
-    FEmiOCC : TEmiOCC;
-    FLacres : TLacresCollection;
+    FRNTRC  : String;
+    FdPrev  : tDateTime;
+    FLota   : TpcteLocacao;
+    FCTRB   : TCTRB;
+    FOcc    : TOccCollection;
+
     FProp   : Tprop;
-    fmoto: TMoto;
+    FLacres : TLacresCollection;
+    Fmoto: TMoto;
+    procedure SetOcc(const Value: TOccCollection);
     procedure SetLacres(const Value: TLacresCollection);
   public
     constructor Create(AOwner: TCTe);
@@ -853,21 +1300,48 @@ type
     property RNTRC: String read FRNTRC write FRNTRC;
     property dPrev: TDateTime read FdPrev write FdPrev;
     property Lota: TpcteLocacao read FLota write FLota;
-    property EmiOCC: TEmiOCC read FEmiOCC write FEmiOCC;
-    property Lacres: TLacresCollection read FLacres write SetLacres;
+    property CTRB: TCTRB read FCTRB write FCTRB;
+    property Occ: TOccCollection read FOcc write SetOcc;
+
     property Prop: Tprop read FProp write FProp;
-    property moto: TMoto read fmoto write fmoto;
+    property Lacres: TLacresCollection read FLacres write SetLacres;
+    property moto: TMoto read Fmoto write Fmoto;
   end;
 
-  TMoto = class(TPersistent)
+  TCTRB = class(TPersistent)
   private
-    fxNome: string;
-    fCPF: string;
+    Fserie: Integer;
+    FnCTRB: Integer;
   public
-    property xNome: string read fxNome write fxNome;
-    property CPF: string read fCPF write fCPF;
+    property serie: Integer read Fserie write Fserie;
+    property nCTRB: Integer read FnCTRB write FnCTRB;
   end;
 
+  TOccCollection = class(TCollection)
+  private
+    function GetItem(Index: Integer): TOccCollectionItem;
+    procedure SetItem(Index: Integer; Value: TOccCollectionItem);
+  public
+    constructor Create(AOwner: TRodo);
+    function Add: TOccCollectionItem;
+    property Items[Index: Integer]: TOccCollectionItem read GetItem write SetItem; default;
+  end;
+
+  TOccCollectionItem = class(TCollectionItem)
+  private
+    Fserie  : String;
+    FnOcc   : Integer;
+    FdEmi   : TDateTime;
+    FEmiOCC : TEmiOCC;
+  public
+    constructor Create; reintroduce;
+    destructor Destroy; override;
+  published
+    property serie: String read Fserie write Fserie;
+    property nOcc: Integer read FnOcc write FnOcc;
+    property dEmi: TDateTime read FdEmi write FdEmi;
+    property EmiOCC: TEmiOCC read FEmiOCC write FEmiOCC;
+  end;
 
   TEmiOCC = class(TPersistent)
   private
@@ -884,22 +1358,7 @@ type
     property fone: String read Ffone write Ffone;
   end;
 
-  TLacresCollection = class(TCollection)
-  private
-    function GetItem(Index: Integer): TLacresCollectionItem;
-    procedure SetItem(Index: Integer; Value: TLacresCollectionItem);
-  public
-    constructor Create(AOwner: TRodo);
-    function Add: TLacresCollectionItem;
-    property Items[Index: Integer]: TLacresCollectionItem read GetItem write SetItem; default;
-  end;
 
-  TLacresCollectionItem = class(TCollectionItem)
-  private
-    FnLacre: string;
-  published
-    property nLacre: string read FnLacre write FnLacre;
-  end;
 
   Tprop = class(TPersistent)
   private
@@ -918,7 +1377,37 @@ type
     property tpProp: TpcteProp read FtpProp write FtpProp;
   end;
 
-  TInfCteAnuEnt = class(TPersistent)
+  TLacresCollection = class(TCollection)
+  private
+    function GetItem(Index: Integer): TLacresCollectionItem;
+    procedure SetItem(Index: Integer; Value: TLacresCollectionItem);
+  public
+    constructor Create(AOwner: TRodo);
+    function Add: TLacresCollectionItem;
+    property Items[Index: Integer]: TLacresCollectionItem read GetItem write SetItem; default;
+  end;
+
+  TLacresCollectionItem = class(TCollectionItem)
+  private
+    FnLacre: string;
+  public
+    constructor Create; reintroduce;
+    destructor Destroy; override;
+  published
+    property nLacre: string read FnLacre write FnLacre;
+  end;
+
+  TMoto = class(TPersistent)
+  private
+    FxNome: string;
+    FCPF: string;
+  public
+    property xNome: string read FxNome write FxNome;
+    property CPF: string read FCPF write FCPF;
+  end;
+
+
+  TInfCTeAnuEnt = class(TPersistent)
   private
     FchCTe : String;
     FdEmi : TDateTime;
@@ -930,7 +1419,7 @@ type
     property dEmi : TDateTime read FdEmi write FdEmi;
   end;
 
-  TinfCteComp = class(TPersistent)
+  TinfCTeComp = class(TPersistent)
   private
     FChave     : String;
     FvPresComp : TvPresComp;
@@ -948,6 +1437,7 @@ type
   published
     property vTPrest: Currency read FvTPrest write FvTPrest;
   end;
+
 const
   CMUN_EXTERIOR: integer = 9999999;
   XMUN_EXTERIOR: string = 'EXTERIOR';
@@ -968,11 +1458,15 @@ begin
   FDest         := TDest.Create(Self);
   FvPrest       := TvPrest.Create(Self);
   FImp          := TImp.Create(Self);
+  FInfCTeNorm   := TInfCTeNorm.Create(Self);
+
   FInfCarga     := TInfCarga.Create(Self);
+
   FInfSeg       := TInfSegCollection.Create(Self);
   FRodo         := TRodo.Create(Self);
-  FInfCteAnuEnt := TInfCteAnuEnt.Create(Self);
-  FinfCteComp   := TinfCteComp.Create(Self);
+  FinfCTeComp   := TinfCTeComp.Create(Self);
+  FInfCTeAnuEnt := TInfCTeAnuEnt.Create(Self);
+
   Fsignature := Tsignature.create;
 end;
 
@@ -988,10 +1482,13 @@ begin
   FDest.Free;
   FvPrest.Free;
   FImp.Free;
+  FInfCTeNorm.Free;
   FInfCarga.Free;
+
   FInfSeg.Free;
   FRodo.Free;
-  FInfCteAnuEnt.Free;
+  FInfCTeComp.Free;
+  FInfCTeAnuEnt.Free;
 
   Fsignature.Free;
   inherited Destroy;
@@ -1025,7 +1522,6 @@ begin
   inherited;
 end;
 
-
 procedure TCTe.SetInfSeg(Value: TInfSegCollection);
 begin
   FInfSeg.Assign(Value);
@@ -1036,10 +1532,180 @@ end;
 constructor TCompl.Create(AOwner: TCTe);
 begin
   inherited Create;
+  Ffluxo    := TFluxo.Create(Self);
+  FEntrega  := TEntrega.Create(Self);
+  FObsCont  := TObsContCollection.Create(Self);
+  FObsFisco := TObsFiscoCollection.Create(Self);
 end;
 
 destructor TCompl.Destroy;
 begin
+  Ffluxo.Free;
+  FEntrega.Free;
+  FObsCont.Free;
+  FObsFisco.Free;
+  inherited;
+end;
+
+procedure TCompl.SetObsCont(Value: TObsContCollection);
+begin
+ FObsCont.Assign(Value);
+end;
+
+procedure TCompl.SetObsFisco(Value: TObsFiscoCollection);
+begin
+ FObsFisco.Assign(Value);
+end;
+
+constructor TFluxo.Create(AOwner: TCompl);
+begin
+  inherited Create;
+  Fpass := TPassCollection.Create(Self);
+end;
+
+destructor TFluxo.Destroy;
+begin
+  Fpass.Free;
+  inherited;
+end;
+
+procedure TFluxo.SetPass(Value: TPassCollection);
+begin
+  Fpass.Assign(Value);
+end;
+
+{ TPassCollection }
+
+function TPassCollection.Add: TPassCollectionItem;
+begin
+  Result := TPassCollectionItem(inherited Add);
+  Result.create;
+end;
+
+constructor TPassCollection.Create(AOwner: TFluxo);
+begin
+  inherited Create(TPassCollectionItem);
+end;
+
+function TPassCollection.GetItem(Index: Integer): TPassCollectionItem;
+begin
+  Result := TPassCollectionItem(inherited GetItem(Index));
+end;
+
+procedure TPassCollection.SetItem(Index: Integer;
+  Value: TPassCollectionItem);
+begin
+  inherited SetItem(Index, Value);
+end;
+
+{ TPassCollectionItem }
+
+constructor TPassCollectionItem.Create;
+begin
+
+end;
+
+destructor TPassCollectionItem.Destroy;
+begin
+
+  inherited;
+end;
+
+{ TEntrega }
+
+constructor TEntrega.Create(AOwner: TCompl);
+begin
+  inherited Create;
+  FsemData := TSemData.Create;
+  FcomData := TComData.Create;
+  FnoPeriodo := TNoPeriodo.Create;
+  FsemHora := TSemHora.Create;
+  FcomHora := TComHora.Create;
+  FnoInter := TNoInter.Create;
+end;
+
+destructor TEntrega.Destroy;
+begin
+  FsemData.Free;
+  FcomData.Free;
+  FnoPeriodo.Free;
+  FsemHora.Free;
+  FcomHora.Free;
+  FnoInter.Free;
+  inherited;
+end;
+
+{ TObsContCollection }
+
+function TObsContCollection.Add: TObsContCollectionItem;
+begin
+  Result := TObsContCollectionItem(inherited Add);
+  Result.create;
+end;
+
+constructor TObsContCollection.Create(AOwner: TCompl);
+begin
+  inherited Create(TObsContCollectionItem);
+end;
+
+function TObsContCollection.GetItem(Index: Integer): TObsContCollectionItem;
+begin
+  Result := TObsContCollectionItem(inherited GetItem(Index));
+end;
+
+procedure TObsContCollection.SetItem(Index: Integer;
+  Value: TObsContCollectionItem);
+begin
+  inherited SetItem(Index, Value);
+end;
+
+{ TObsContCollectionItem }
+
+constructor TObsContCollectionItem.Create;
+begin
+
+end;
+
+destructor TObsContCollectionItem.Destroy;
+begin
+
+  inherited;
+end;
+
+{ TObsFiscoCollection }
+
+function TObsFiscoCollection.Add: TObsFiscoCollectionItem;
+begin
+  Result := TObsFiscoCollectionItem(inherited Add);
+  Result.create;
+end;
+
+constructor TObsFiscoCollection.Create(AOwner: TCompl);
+begin
+  inherited Create(TObsFiscoCollectionItem);
+end;
+
+function TObsFiscoCollection.GetItem(Index: Integer): TObsFiscoCollectionItem;
+begin
+  Result := TObsFiscoCollectionItem(inherited GetItem(Index));
+end;
+
+procedure TObsFiscoCollection.SetItem(Index: Integer;
+  Value: TObsFiscoCollectionItem);
+begin
+  inherited SetItem(Index, Value);
+end;
+
+{ TObsFiscoCollectionItem }
+
+constructor TObsFiscoCollectionItem.Create;
+begin
+
+end;
+
+destructor TObsFiscoCollectionItem.Destroy;
+begin
+
   inherited;
 end;
 
@@ -1121,12 +1787,12 @@ end;
 
 constructor TInfNFCollectionItem.Create;
 begin
-
+  FlocRet := TLocRet.Create;
 end;
 
 destructor TInfNFCollectionItem.Destroy;
 begin
-
+  FlocRet.Free;
   inherited;
 end;
 
@@ -1201,11 +1867,13 @@ constructor TDest.Create(AOwner: TCTe);
 begin
   inherited Create;
   FEnderDest := TEnderDest.Create;
+  FlocEnt    := TLocEnt.Create;
 end;
 
 destructor TDest.Destroy;
 begin
-  FEnderDest.Free;          
+  FEnderDest.Free;
+  FlocEnt.Free;
   inherited;
 end;
 
@@ -1273,7 +1941,7 @@ begin
   Result.create;
 end;
 
-constructor TInfSegCollection.Create(AOwner: TCte);
+constructor TInfSegCollection.Create(AOwner: TCTe);
 begin
   inherited Create(TInfSegCollectionItem);
 end;
@@ -1305,22 +1973,66 @@ end;
 
 constructor TRodo.Create(AOwner: TCTe);
 begin
-  FEmiOCC := TEmiOCC.Create;
-  FLacres := TLacresCollection.Create(self);
+  FCTRB := TCTRB.Create;
+  FOcc  := TOccCollection.Create(Self);
   FProp   := TProp.Create;
+  FLacres := TLacresCollection.Create(self);
 end;
 
 destructor TRodo.Destroy;
 begin
-  FEmiOCC.Free;
-  FLacres.Free;
+  FCTRB.Free;
+  FOcc.Free;
   FProp.Free;
+  FLacres.Free;
   inherited;
 end;
 
 procedure TRodo.SetLacres(const Value: TLacresCollection);
 begin
-  FLacres := Value;
+  FLacres.Assign(Value);
+end;
+
+procedure TRodo.SetOcc(const Value: TOccCollection);
+begin
+ FOcc.Assign(Value);
+end;
+
+{ TOccCollection }
+
+function TOccCollection.Add: TOccCollectionItem;
+begin
+  Result := TOccCollectionItem(inherited Add);
+  Result.create;
+end;
+
+constructor TOccCollection.Create(AOwner: TRodo);
+begin
+  inherited Create(TOccCollectionItem);
+end;
+
+function TOccCollection.GetItem(Index: Integer): TOccCollectionItem;
+begin
+  Result := TOccCollectionItem(inherited GetItem(Index));
+end;
+
+procedure TOccCollection.SetItem(Index: Integer;
+  Value: TOccCollectionItem);
+begin
+  inherited SetItem(Index, Value);
+end;
+
+{ TOccCollectionItem }
+
+constructor TOccCollectionItem.Create;
+begin
+  FEmiOCC := TEmiOCC.Create;
+end;
+
+destructor TOccCollectionItem.Destroy;
+begin
+  FEmiOCC.Free;
+  inherited;
 end;
 
 { TLacresCollection }
@@ -1328,6 +2040,7 @@ end;
 function TLacresCollection.Add: TLacresCollectionItem;
 begin
   Result := TLacresCollectionItem(inherited Add);
+  Result.create;
 end;
 
 constructor TLacresCollection.Create(AOwner: TRodo);
@@ -1346,27 +2059,40 @@ begin
   inherited SetItem(Index, Value);
 end;
 
-{ TInfCteAnuEnt }
+{ TLacresCollectionItem }
 
-constructor TInfCteAnuEnt.Create(AOwner: TCTe);
+constructor TLacresCollectionItem.Create;
+begin
+
+end;
+
+destructor TLacresCollectionItem.Destroy;
+begin
+
+  inherited;
+end;
+
+{ TInfCTeAnuEnt }
+
+constructor TInfCTeAnuEnt.Create(AOwner: TCTe);
 begin
   inherited Create;
 end;
 
-destructor TInfCteAnuEnt.Destroy;
+destructor TInfCTeAnuEnt.Destroy;
 begin
   inherited;
 end;
 
-{ TinfCteComp }
+{ TinfCTeComp }
 
-constructor TinfCteComp.Create(AOwner: TCTe);
+constructor TinfCTeComp.Create(AOwner: TCTe);
 begin
   inherited Create;
   FvPresComp := TvPresComp.Create;
 end;
 
-destructor TinfCteComp.Destroy;
+destructor TinfCTeComp.Destroy;
 begin
   FvPresComp.Free;
   inherited;
@@ -1424,7 +2150,7 @@ end;
 
 procedure TInfCarga.SetInfQ(const Value: TInfQCollection);
 begin
-  FInfQ := Value;
+  FInfQ.Assign(Value);
 end;
 
 { TInfQCollection }
@@ -1432,6 +2158,7 @@ end;
 function TInfQCollection.Add: TInfQCollectionItem;
 begin
   Result := TInfQCollectionItem(inherited Add);
+  Result.create;
 end;
 
 constructor TInfQCollection.Create(AOwner: TInfCarga);
@@ -1449,6 +2176,302 @@ procedure TInfQCollection.SetItem(Index: Integer;
 begin
   inherited SetItem(Index, Value);
 end;
+
+{ TInfQCollectionItem }
+
+constructor TInfQCollectionItem.Create;
+begin
+
+end;
+
+destructor TInfQCollectionItem.Destroy;
+begin
+
+  inherited;
+end;
+
+{ TInfCTeNorm }
+
+constructor TInfCTeNorm.Create(AOwner: TCTe);
+begin
+ FcontQt    := TInfcontQtCollection.Create(Self);
+ FemiDocAnt := TemiDocAntCollection.Create(Self);
+end;
+
+destructor TInfCTeNorm.Destroy;
+begin
+  FcontQt.Free;
+  FemiDocAnt.Free;
+  inherited;
+end;
+
+procedure TInfCTeNorm.SetcontQt(const Value: TInfcontQtCollection);
+begin
+  FcontQt.Assign(Value);
+end;
+
+procedure TInfCTeNorm.SetemiDocAnt(const Value: TemiDocAntCollection);
+begin
+ FemiDocAnt.Assign(Value);
+end;
+
+{ TInfcontQtCollection }
+
+function TInfcontQtCollection.Add: TInfcontQtCollectionItem;
+begin
+  Result := TInfcontQtCollectionItem(inherited Add);
+  Result.create;
+end;
+
+constructor TInfcontQtCollection.Create(AOwner: TInfCTeNorm);
+begin
+  inherited Create(TInfcontQtCollectionItem);
+end;
+
+function TInfcontQtCollection.GetItem(
+  Index: Integer): TInfcontQtCollectionItem;
+begin
+  Result := TInfcontQtCollectionItem(inherited GetItem(Index));
+end;
+
+procedure TInfcontQtCollection.SetItem(Index: Integer;
+  Value: TInfcontQtCollectionItem);
+begin
+  inherited SetItem(Index, Value);
+end;
+
+{ TInfcontQtCollectionItem }
+
+constructor TInfcontQtCollectionItem.Create;
+begin
+  FlacContQt := TlacContQtCollection.Create(Self);
+end;
+
+destructor TInfcontQtCollectionItem.Destroy;
+begin
+  FlacContQt.Free;
+  inherited;
+end;
+
+procedure TInfcontQtCollectionItem.SetlacContQt(
+  const Value: TlacContQtCollection);
+begin
+  FlacContQt.Assign(Value);
+end;
+
+{ TInflacContQtCollection }
+
+function TlacContQtCollection.Add: TlacContQtCollectionItem;
+begin
+  Result := TlacContQtCollectionItem(inherited Add);
+  Result.create;
+end;
+
+constructor TlacContQtCollection.Create(AOwner: TInfcontQtCollectionItem);
+begin
+  inherited Create(TlacContQtCollectionItem);
+end;
+
+function TlacContQtCollection.GetItem(
+  Index: Integer): TlacContQtCollectionItem;
+begin
+  Result := TlacContQtCollectionItem(inherited GetItem(Index));
+end;
+
+procedure TlacContQtCollection.SetItem(Index: Integer;
+  Value: TlacContQtCollectionItem);
+begin
+  inherited SetItem(Index, Value);
+end;
+
+{ TInflacContQtCollectionItem }
+
+constructor TlacContQtCollectionItem.Create;
+begin
+
+end;
+
+destructor TlacContQtCollectionItem.Destroy;
+begin
+
+  inherited;
+end;
+
+{ TemiDocAntCollection }
+
+function TemiDocAntCollection.Add: TemiDocAntCollectionItem;
+begin
+  Result := TemiDocAntCollectionItem(inherited Add);
+  Result.create;
+end;
+
+constructor TemiDocAntCollection.Create(AOwner: TInfCTeNorm);
+begin
+  inherited Create(TemiDocAntCollectionItem);
+end;
+
+function TemiDocAntCollection.GetItem(
+  Index: Integer): TemiDocAntCollectionItem;
+begin
+  Result := TemiDocAntCollectionItem(inherited GetItem(Index));
+end;
+
+procedure TemiDocAntCollection.SetItem(Index: Integer;
+  Value: TemiDocAntCollectionItem);
+begin
+  inherited SetItem(Index, Value);
+end;
+
+{ TemiDocAntCollectionItem }
+
+procedure TemiDocAntCollectionItem.SetidDocAnt(
+  const Value: TidDocAntCollection);
+begin
+  FidDocAnt.Assign(Value);
+end;
+
+constructor TemiDocAntCollectionItem.Create;
+begin
+ FidDocAnt := TidDocAntCollection.Create(Self);
+end;
+
+destructor TemiDocAntCollectionItem.Destroy;
+begin
+  FidDocAnt.Free;
+  inherited;
+end;
+
+{ TidDocAntCollection }  
+
+function TidDocAntCollection.Add: TidDocAntCollectionItem;
+begin
+  Result := TidDocAntCollectionItem(inherited Add);
+  Result.create;
+end;
+
+constructor TidDocAntCollection.Create(AOwner: TemiDocAntCollectionItem);
+begin
+  inherited Create(TidDocAntCollectionItem);
+end;
+
+function TidDocAntCollection.GetItem(
+  Index: Integer): TidDocAntCollectionItem;
+begin
+  Result := TidDocAntCollectionItem(inherited GetItem(Index));
+end;
+
+procedure TidDocAntCollection.SetItem(Index: Integer;
+  Value: TidDocAntCollectionItem);
+begin
+  inherited SetItem(Index, Value);
+end;
+
+{ TidDocAntCollectionItem }
+
+constructor TidDocAntCollectionItem.Create;
+begin
+ FidDocAntPap := TidDocAntPapCollection.Create(Self);
+ FidDocAntEle := TidDocAntEleCollection.Create(Self);
+end;
+
+destructor TidDocAntCollectionItem.Destroy;
+begin
+  FidDocAntPap.Free;
+  FidDocAntEle.Free;
+  inherited;
+end;
+
+procedure TidDocAntCollectionItem.SetidDocAntPap(
+  const Value: TidDocAntPapCollection);
+begin
+ FidDocAntPap.Assign(Value);
+end;
+
+procedure TidDocAntCollectionItem.SetidDocAntEle(
+  const Value: TidDocAntEleCollection);
+begin
+ FidDocAntEle.Assign(Value);
+end;
+
+{ TidDocAntPapCollection }
+
+function TidDocAntPapCollection.Add: TidDocAntPapCollectionItem;
+begin
+  Result := TidDocAntPapCollectionItem(inherited Add);
+  Result.create;
+end;
+
+constructor TidDocAntPapCollection.Create(AOwner: TidDocAntCollectionItem);
+begin
+  inherited Create(TidDocAntPapCollectionItem);
+end;
+
+function TidDocAntPapCollection.GetItem(
+  Index: Integer): TidDocAntPapCollectionItem;
+begin
+  Result := TidDocAntPapCollectionItem(inherited GetItem(Index));
+end;
+
+procedure TidDocAntPapCollection.SetItem(Index: Integer;
+  Value: TidDocAntPapCollectionItem);
+begin
+  inherited SetItem(Index, Value);
+end;
+
+{ TidDocAntPapCollectionItem }
+
+constructor TidDocAntPapCollectionItem.Create;
+begin
+
+end;
+
+destructor TidDocAntPapCollectionItem.Destroy;
+begin
+
+  inherited;
+end;
+
+{ TidDocAntEleCollection }
+
+function TidDocAntEleCollection.Add: TidDocAntEleCollectionItem;
+begin
+  Result := TidDocAntEleCollectionItem(inherited Add);
+  Result.create;
+end;
+
+constructor TidDocAntEleCollection.Create(AOwner: TidDocAntCollectionItem);
+begin
+  inherited Create(TidDocAntEleCollectionItem);
+end;
+
+function TidDocAntEleCollection.GetItem(
+  Index: Integer): TidDocAntEleCollectionItem;
+begin
+  Result := TidDocAntEleCollectionItem(inherited GetItem(Index));
+end;
+
+procedure TidDocAntEleCollection.SetItem(Index: Integer;
+  Value: TidDocAntEleCollectionItem);
+begin
+  inherited SetItem(Index, Value);
+end;
+
+{ TidDocAntEleCollectionItem }
+
+constructor TidDocAntEleCollectionItem.Create;
+begin
+
+end;
+
+destructor TidDocAntEleCollectionItem.Destroy;
+begin
+
+  inherited;
+end;
+
+
+
+//////////////////////////////////////////////////////////////////////////////
 
 { TCompCollectionItem }
 
@@ -1471,7 +2494,7 @@ begin
   Result.create;
 end;
 
-constructor TCompCollection.Create(AOwner: TCte);
+constructor TCompCollection.Create(AOwner: TCTe);
 begin
   inherited Create(TCompCollectionItem);
 end;

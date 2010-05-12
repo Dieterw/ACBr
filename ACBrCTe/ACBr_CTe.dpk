@@ -41,8 +41,10 @@
 |*  - Doação do componente para o Projeto ACBr
 |* 25/06/2009: André Ferreira de Moraes
 |*  - Componente convertido para utilizar units do PCN
+|* 18/08/2009: Wiliam Zacarias da Silva Rosa
+|*  - Componente convertido para utilizar CT-e
 ******************************************************************************}
-package ACBrCTeDacteQRpkg;
+package ACBr_CTe;
 
 {$R *.res}
 {$ALIGN 8}
@@ -66,40 +68,54 @@ package ACBrCTeDacteQRpkg;
 {$WRITEABLECONST OFF}
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
-{$DESCRIPTION 'ACBrCTeDACTeQR - (http://acbr.sourceforge.net/)'}
+{$DESCRIPTION 'ACBrCTePCN - (http://acbr.sourceforge.net/)'}
 {$IMPLICITBUILD ON}
 
 requires
   rtl,
-  vcl,
-  qrpt,
-  vclx,
-  bdertl,
-  dbrtl,
-  ACBr_CTe,
-  dsnap,
-  inet,
-  xmlrtl,
-  soaprtl,
-  ACBrCapicom,
-  synapse,
-  ACBr_NFe,
   PCN,
   ACBrComum,
   designide,
   vclactnband,
+  vclx,
+  vcl,
  {$IFNDEF VER210}
   visualclx,
  {$ENDIF}
-  vcljpg,
-  ACBrNFeDanfeQRpkg;
+  ACBr_NFe,
+  synapse,
+  ACBrCapicom,
+  soaprtl,
+  xmlrtl,
+  inet,
+  dbrtl,
+  dsnap;
 
 contains
-  ACBrCTeDACTeQR in '..\..\Fontes\ACBrCTe\ACBrCTeDACTeQR.pas' {frmDACTeQR},
-  ACBrCTeQRCodeBar in '..\..\Fontes\ACBrCTe\ACBrCTeQRCodeBar.pas',
-  ACBrCTeDACTeQRRetrato in '..\..\Fontes\ACBrCTe\ACBrCTeDACTeQRRetrato.pas' {frmDACTeQRRetrato},
-  ACBrCTeDACTeQRClass in '..\..\Fontes\ACBrCTe\ACBrCTeDACTeQRClass.pas',
-  ACBrCTeDACTeQRReg in '..\..\Fontes\ACBrCTe\ACBrCTeDACTeQRReg.pas',
-  qrRRect in '..\..\Fontes\ACBrCTe\qrRRect.pas';
+  pcteRetInutCTe in '..\..\Fontes\ACBrCTe\pcteRetInutCTe.pas',
+  ACBrCTe in '..\..\Fontes\ACBrCTe\ACBrCTe.pas',
+  ACBrCTeConfiguracoes in '..\..\Fontes\ACBrCTe\ACBrCTeConfiguracoes.pas',
+  ACBrCTeConhecimentos in '..\..\Fontes\ACBrCTe\ACBrCTeConhecimentos.pas',
+  ACBrCTeReg in '..\..\Fontes\ACBrCTe\ACBrCTeReg.pas',
+  ACbrCteStatusServico in '..\..\Fontes\ACBrCTe\ACBrCTeStatusServico.pas',
+  ACBrCTeUtil in '..\..\Fontes\ACBrCTe\ACBrCTeUtil.pas',
+  ACBrCTeWebServices in '..\..\Fontes\ACBrCTe\ACBrCTeWebServices.pas',
+  pcteCancCTe in '..\..\Fontes\ACBrCTe\pcteCancCTe.pas',
+  pcteConsCad in '..\..\Fontes\ACBrCTe\pcteConsCad.pas',
+  pcteConsSitCTe in '..\..\Fontes\ACBrCTe\pcteConsSitCTe.pas',
+  pcteConsStatServ in '..\..\Fontes\ACBrCTe\pcteConsStatServ.pas',
+  pcteCTe in '..\..\Fontes\ACBrCTe\pcteCTe.pas',
+  pcteCTeR in '..\..\Fontes\ACBrCTe\pcteCTeR.pas',
+  pcteCTeW in '..\..\Fontes\ACBrCTe\pcteCTeW.pas',
+  pcteInutCTe in '..\..\Fontes\ACBrCTe\pcteInutCTe.pas',
+  pcteRetCancCTe in '..\..\Fontes\ACBrCTe\pcteRetCancCTe.pas',
+  pcteRetConsCad in '..\..\Fontes\ACBrCTe\pcteRetConsCad.pas',
+  pcteRetConsSitCTe in '..\..\Fontes\ACBrCTe\pcteRetConsSitCTe.pas',
+  pcteRetConsStatServ in '..\..\Fontes\ACBrCTe\pcteRetConsStatServ.pas',
+  pcteRetEnvCTe in '..\..\Fontes\ACBrCTe\pcteRetEnvCTe.pas',
+  pcteRetConsReciCTe in '..\..\Fontes\ACBrCTe\pcteRetConsReciCTe.pas',
+  pcteProcCTe in '..\..\Fontes\ACBrCTe\pcteProcCTe.pas',
+  pcteConsReciCTe in '..\..\Fontes\ACBrCTe\pcteConsReciCTe.pas',
+  ACBrCTeDACTEClass in '..\..\Fontes\ACBrCTe\ACBrCTeDACTEClass.pas';
 
 end.

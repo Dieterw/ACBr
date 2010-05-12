@@ -48,6 +48,23 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   12/05/10
+---------------
+[*] Foram Incluidos todos os campos que faltavam entre o campo #277 e o Campo #320.
+[*] Os pacotes de instalação ACBr_CTe e ACBrCTeDacteQRpkg agora possuiem uma diretiva de 
+    compilação para o Delphi 2010 para ignorar a DCP: visualclx (Créditos: Isaque Pinheiro e Vanderlei Silva).
+[*] Na função function TCTeW.GerarXml: boolean;, possuiem uma diretiva de 
+    compilação para o Delphi 2010 para substituir o tipo String por AnsiString na
+    variável chave (Créditos: Isaque Pinheiro e Vanderlei Silva).
+[-] Alterações feita ao ler o xml, não estava lendo a tag xObs (Créditos: Reginaldo Trindade). 
+
+Alterações   07/05/10
+---------------
+[*] Foram Incluidos todos os campos que faltavam entre o campo #1 e o Campo #276.
+    Campos referentes aos dados complementares do CT-e para fins operacionais ou comerciais,
+    Campos referentes ao Local de retirada constante na NF e
+    Campos referentes ao Local de Entrega constante na NF.
+
 Alterações   03/05/10
 ---------------
 [-] Correção dos procedimentos: GerarCST81, GerarCST90 e GerarInfSeg (Créditos: Doni Delphi).

@@ -72,7 +72,10 @@ package ACBrNFeDanfeQRpkg;
 requires
   rtl,
   ACBr_NFe,
-  designide;
+  designide,
+  vcljpg,
+  bdertl,
+  qrpt;
 
 contains
   ACBrNFeDANFeQRClass in '..\..\Fontes\ACBrNFe\ACBrNFeDANFeQRClass.pas',

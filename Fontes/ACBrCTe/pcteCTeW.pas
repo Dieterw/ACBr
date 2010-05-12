@@ -115,7 +115,6 @@ type
     procedure GerarRodo;       // Nivel 2
     procedure GerarCTRB;       // Nivel 3
     procedure GerarOCC;        // Nivel 3
-    procedure GerarEmiOCC;     // Nivel 4
     procedure GerarValePed;    // Nivel 3
     procedure GerarVeic;       // Nivel 3
     procedure GerarProp;       // Nivel 4
@@ -202,7 +201,11 @@ end;
 
 function TCTeW.GerarXml: boolean;
 var
+{$IFNDEF VER210}
+  chave: AnsiString;
+{$ELSE}
   chave: string;
+{$ENDIF}
   Gerar: boolean;
 begin
   chave := '';
@@ -927,7 +930,8 @@ begin
   Gerador.wGrupo('infCTeNorm', 'K01');
   (**)GerarinfCarga;
   (**)GerarContQt;
-  (**)GerarDocAnt;
+  if CTe.infCTeNorm.emiDocAnt.Count>0
+   then (**)GerarDocAnt;
   (**)GerarInfSeg;
   (**)GerarRodo;
   Gerador.wGrupo('/infCTeNorm');
@@ -965,13 +969,82 @@ begin
 end;
 
 procedure TCTeW.GerarContQt;
+var
+  i, i01: integer;
 begin
- {a}
+  for i := 0 to CTe.infCTeNorm.contQt.Count - 1 do
+  begin
+    Gerador.wGrupo('contQt', 'K09');
+    Gerador.wCampo(tcInt, 'K10', 'nCont  ', 01, 20, 1, CTe.infCTeNorm.contQt[i].nCont, '');
+
+    for i01 := 0 to CTe.infCTeNorm.contQt[i].lacContQt.Count - 1 do
+    begin
+      Gerador.wGrupo('lacContQt', 'K11');
+      Gerador.wCampo(tcStr, 'K12', 'nLacre  ', 01, 20, 1, CTe.infCTeNorm.contQt[i].lacContQt[i01].nLacre, '');
+      Gerador.wGrupo('/lacContQt');
+    end;
+    if CTe.infCTeNorm.contQt[i].lacContQt.Count > 990 then
+      Gerador.wAlerta('K11', 'lacContQt', '', ERR_MSG_MAIOR_MAXIMO + '990');
+
+    Gerador.wCampo(tcDat, 'K13', 'dPrev  ', 10, 10, 0, CTe.infCTeNorm.contQt[i].dPrev, '');
+    Gerador.wGrupo('/contQt');
+  end;
+  if CTe.infCTeNorm.contQt.Count > 990 then
+    Gerador.wAlerta('K09', 'contQt', '', ERR_MSG_MAIOR_MAXIMO + '990');
 end;
 
 procedure TCTeW.GerarDocAnt;
+var
+  i, i01, i02: integer;
 begin
- {a}
+  Gerador.wGrupo('docAnt', 'K14');
+
+  for i := 0 to CTe.infCTeNorm.emiDocAnt.Count - 1 do
+  begin
+    Gerador.wGrupo('emiDocAnt', 'K15');
+    Gerador.wCampoCNPJCPF('K16', 'K17', CTe.infCTeNorm.emiDocAnt[i].CNPJCPF, CODIGO_BRASIL);
+    Gerador.wCampo(tcStr, 'K18', 'IE     ', 02, 14, 1, CTe.infCTeNorm.emiDocAnt[i].IE, '');
+    Gerador.wCampo(tcStr, 'K19', 'UF     ', 02, 02, 1, CTe.infCTeNorm.emiDocAnt[i].UF, '');
+    Gerador.wCampo(tcStr, 'K20', 'xNome  ', 01, 60, 1, CTe.infCTeNorm.emiDocAnt[i].xNome, '');
+
+    for i01 := 0 to CTe.infCTeNorm.emiDocAnt[i].idDocAnt.Count - 1 do
+    begin
+      Gerador.wGrupo('idDocAnt', 'K21');
+
+      for i02 := 0 to CTe.infCTeNorm.emiDocAnt[i].idDocAnt[i01].idDocAntPap.Count - 1 do
+      begin
+        Gerador.wGrupo('idDocAntPap', 'K22');
+        Gerador.wCampo(tcInt, 'K23', 'tpDoc  ', 02, 02, 1, CTe.infCTeNorm.emiDocAnt[i].idDocAnt[i01].idDocAntPap[i02].tpDoc, '');
+        Gerador.wCampo(tcStr, 'K24', 'serie  ', 01, 03, 1, CTe.infCTeNorm.emiDocAnt[i].idDocAnt[i01].idDocAntPap[i02].serie, '');
+        Gerador.wCampo(tcStr, 'K25', 'subser ', 01, 02, 0, CTe.infCTeNorm.emiDocAnt[i].idDocAnt[i01].idDocAntPap[i02].subser, '');
+        Gerador.wCampo(tcInt, 'K26', 'nDoc   ', 01, 20, 1, CTe.infCTeNorm.emiDocAnt[i].idDocAnt[i01].idDocAntPap[i02].nDoc, '');
+        Gerador.wCampo(tcDat, 'K27', 'dEmi   ', 10, 10, 1, CTe.infCTeNorm.emiDocAnt[i].idDocAnt[i01].idDocAntPap[i02].dEmi, '');
+        Gerador.wGrupo('/idDocAntPap');
+      end;
+      if CTe.infCTeNorm.emiDocAnt[i].idDocAnt[i01].idDocAntPap.Count > 990 then
+        Gerador.wAlerta('K22', 'idDocAntPap', '', ERR_MSG_MAIOR_MAXIMO + '990');
+
+      for i02 := 0 to CTe.infCTeNorm.emiDocAnt[i].idDocAnt[i01].idDocAntEle.Count - 1 do
+      begin
+        Gerador.wGrupo('idDocAntEle', 'K28');
+        Gerador.wCampo(tcStr, 'K29', 'chave  ', 44, 44, 1, CTe.infCTeNorm.emiDocAnt[i].idDocAnt[i01].idDocAntEle[i02].chave, '');
+        Gerador.wGrupo('/idDocAntEle');
+      end;
+      if CTe.infCTeNorm.emiDocAnt[i].idDocAnt[i01].idDocAntEle.Count > 990 then
+        Gerador.wAlerta('K28', 'idDocAntEle', '', ERR_MSG_MAIOR_MAXIMO + '990');
+
+      Gerador.wGrupo('/idDocAnt');
+    end;
+    if CTe.infCTeNorm.emiDocAnt[i].idDocAnt.Count > 2 then
+      Gerador.wAlerta('K21', 'idDocAnt', '', ERR_MSG_MAIOR_MAXIMO + '02');
+
+    Gerador.wCampo(tcDat, 'K13', 'dPrev  ', 10, 10, 0, CTe.infCTeNorm.contQt[i].dPrev, '');
+    Gerador.wGrupo('/contQt');
+  end;
+  if CTe.infCTeNorm.emiDocAnt.Count > 990 then
+    Gerador.wAlerta('K15', 'emiDocAnt', '', ERR_MSG_MAIOR_MAXIMO + '990');
+
+  Gerador.wGrupo('/docAnt');
 end;
 
 procedure TCTeW.GerarInfSeg;
@@ -1018,24 +1091,38 @@ end;
 
 procedure TCTeW.GerarCTRB;
 begin
- {a}
+  if (CTe.Rodo.CTRB.serie<>0) or (CTe.Rodo.CTRB.nCTRB<>0)
+   then begin
+    Gerador.wGrupo('CTRB', 'O07');
+    Gerador.wCampo(tcInt, 'O08', 'serie   ', 01, 3, 1, CTe.Rodo.CTRB.serie, '');
+    Gerador.wCampo(tcInt, 'O09', 'nCTRB   ', 01, 6, 1, CTe.Rodo.CTRB.nCTRB, '');
+    Gerador.wGrupo('/CTRB');
+   end; 
 end;
 
 procedure TCTeW.GerarOCC;
+var
+ i: Integer;
 begin
- {a}
-//  (**)GerarEmiOCC;
-end;
+  for i := 0 to CTe.Rodo.Occ.Count - 1 do
+  begin
+    Gerador.wGrupo('occ', 'O10');
+    Gerador.wCampo(tcStr, 'O11', 'serie ', 01, 03, 1, CTe.Rodo.Occ[i].serie, '');
+    Gerador.wCampo(tcInt, 'O12', 'nOcc  ', 01, 06, 1, CTe.Rodo.Occ[i].nOcc, '');
+    Gerador.wCampo(tcDat, 'O13', 'dEmi  ', 10, 10, 1, CTe.Rodo.Occ[i].dEmi, '');
 
-procedure TCTeW.GerarEmiOCC;
-begin
-  Gerador.wGrupo('emiOcc', 'O14');
-  Gerador.wCampoCNPJ('O15', CTe.Rodo.EmiOCC.CNPJ, CODIGO_BRASIL, True);
-  Gerador.wCampo(tcStr, 'O16', 'cInt   ', 01, 10, 0, CTe.Rodo.EmiOCC.cInt, DSC_CINT);
-  Gerador.wCampo(tcStr, 'O20', 'IE     ', 02, 14, 0, SomenteNumeros(CTe.Rodo.EmiOCC.IE), DSC_IE);
-  Gerador.wCampo(tcStr, 'O21', 'UF    ', 02, 02, 0, CTe.Rodo.EmiOCC.UF, DSC_CUF);
-  Gerador.wCampo(tcStr, 'O22', 'fone   ', 07, 12, 0, somenteNumeros(CTe.Rodo.EmiOCC.fone), DSC_FONE);
-  Gerador.wGrupo('/emiOcc');
+    Gerador.wGrupo('emiOcc', 'O14');
+    Gerador.wCampoCNPJ('O15', CTe.Rodo.Occ[i].EmiOCC.CNPJ, CODIGO_BRASIL, True);
+    Gerador.wCampo(tcStr, 'O16', 'cInt   ', 01, 10, 0, CTe.Rodo.Occ[i].EmiOCC.cInt, DSC_CINT);
+    Gerador.wCampo(tcStr, 'O20', 'IE     ', 02, 14, 0, SomenteNumeros(CTe.Rodo.Occ[i].EmiOCC.IE), DSC_IE);
+    Gerador.wCampo(tcStr, 'O21', 'UF    ', 02, 02, 0, CTe.Rodo.Occ[i].EmiOCC.UF, DSC_CUF);
+    Gerador.wCampo(tcStr, 'O22', 'fone   ', 07, 12, 0, somenteNumeros(CTe.Rodo.Occ[i].EmiOCC.fone), DSC_FONE);
+    Gerador.wGrupo('/emiOcc');
+
+    Gerador.wGrupo('/occ');
+  end;
+  if CTe.Rodo.Occ.Count > 10 then
+    Gerador.wAlerta('O10', 'occ', '', ERR_MSG_MAIOR_MAXIMO + '10');
 end;
 
 procedure TCTeW.GerarValePed;

@@ -1,0 +1,103 @@
+package ACBr_CLX;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'ACBr Automação Comercial Brasil CLX (http://acbr.sourceforge.net/)'}
+{$IMPLICITBUILD ON}
+{$DEFINE VisualCLX}
+
+requires
+  rtl,
+  designide,
+  visualclx;
+
+contains
+  ACBrEnterTab in 'ACBrEnterTab.pas',
+  ACBrBase in 'ACBrBase.pas',
+  ACBrCalculadora in 'ACBrCalculadora.pas',
+  ACBrCHQ in 'ACBrCHQ.pas',
+  ACBrCHQBematech in 'ACBrCHQBematech.pas',
+  ACBrCHQChronos in 'ACBrCHQChronos.pas',
+  ACBrCHQClass in 'ACBrCHQClass.pas',
+  ACBrCHQImpressoraComum in 'ACBrCHQImpressoraComum.pas',
+  ACBrCHQImpressoraECF in 'ACBrCHQImpressoraECF.pas',
+  ACBrCHQPerto in 'ACBrCHQPerto.pas',
+  ACBrCHQSchalter in 'ACBrCHQSchalter.pas',
+  ACBrCHQSotomaq in 'ACBrCHQSotomaq.pas',
+  ACBrCHQUrano in 'ACBrCHQUrano.pas',
+  ACBrDIS in 'ACBrDIS.pas',
+  ACBrDISClass in 'ACBrDISClass.pas',
+  ACBrDISGertecSerial in 'ACBrDISGertecSerial.pas',
+  ACBrDISGertecTeclado in 'ACBrDISGertecTeclado.pas',
+  ACBrECF in 'ACBrECF.pas',
+  ACBrECFBematech in 'ACBrECFBematech.pas',
+  ACBrECFClass in 'ACBrECFClass.pas',
+  ACBrECFDaruma in 'ACBrECFDaruma.pas',
+  ACBrECFMecaf in 'ACBrECFMecaf.pas',
+  ACBrECFNaoFiscal in 'ACBrECFNaoFiscal.pas',
+  ACBrECFSchalter in 'ACBrECFSchalter.pas',
+  ACBrECFSweda in 'ACBrECFSweda.pas',
+  ACBrECFYanco in 'ACBrECFYanco.pas',
+  ACBrECFEpson in 'ACBrECFEpson.pas',
+  ACBrECFNCR in 'ACBrECFNCR.pas',
+  ACBrExtenso in 'ACBrExtenso.pas',
+  ACBrGAV in 'ACBrGAV.pas',
+  ACBrGAVClass in 'ACBrGAVClass.pas',
+  ACBrGAVImpressoraComum in 'ACBrGAVImpressoraComum.pas',
+  ACBrGAVImpressoraECF in 'ACBrGAVImpressoraECF.pas',
+  ACBrGAVSerialGerbo in 'ACBrGAVSerialGerbo.pas',
+  ACBrGAVSerialMenno in 'ACBrGAVSerialMenno.pas',
+  ACBrLCB in 'ACBrLCB.pas',
+  ACBrValidador in 'ACBrValidador.pas',
+  QCalculadora in 'QCalculadora.pas' {FrCalculadora},
+  ACBrReg in 'ACBrReg.pas',
+  ACBrECFDataRegis in 'ACBrECFDataRegis.pas',
+  ACBrECFUrano in 'ACBrECFUrano.pas',
+  ACBrECFFiscNET in 'ACBrECFFiscNET.pas',
+  ACBrBALToledo in 'ACBrBALToledo.pas',
+  ACBrBAL in 'ACBrBAL.pas',
+  ACBrBALClass in 'ACBrBALClass.pas',
+  ACBrBALFilizola in 'ACBrBALFilizola.pas',
+  ACBrTroco in 'ACBrTroco.pas',
+  ACBrTERWilbor in 'ACBrTERWilbor.pas',
+  ACBrTER in 'ACBrTER.pas',
+  ACBrTERClass in 'ACBrTERClass.pas',
+  ACBrECFICash in 'ACBrECFICash.pas',
+  ACBrCMC7 in 'ACBrCMC7.pas',
+  ACBrFala in 'ACBrFala.pas',
+  ACBrECFQuattro in 'ACBrECFQuattro.pas',
+  ACBrDISKeytecTeclado in 'ACBrDISKeytecTeclado.pas',
+  ACBrETQ in 'ACBrETQ.pas',
+  ACBrETQClass in 'ACBrETQClass.pas',
+  ACBrETQPpla in 'ACBrETQPpla.pas',
+  ACBrETQPplb in 'ACBrETQPplb.pas',
+  ACBrRFD in 'ACBrRFD.pas',
+  ACBrGIF in 'ACBrGIF.pas',
+  Gif1 in 'Gif1.pas',
+  Gif3 in 'Gif3.pas',
+  ACBrConsts in 'ACBrConsts.pas',
+  ACBrBarCode in 'ACBrBarCode.pas',
+  ACBrSocket in 'ACBrSocket.pas',
+  ACBrDevice in 'ACBrDevice.pas';
+
+end.

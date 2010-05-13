@@ -1,0 +1,188 @@
+<?xml version="1.0"?>
+<CONFIG>
+  <Package Version="3">
+    <PathDelim Value="\"/>
+    <Name Value="PCN"/>
+    <Author Value="Paulo Casagrande"/>
+    <CompilerOptions>
+      <Version Value="8"/>
+      <PathDelim Value="\"/>
+      <SearchPaths>
+        <IncludeFiles Value="..\..\Fontes\PCN\"/>
+        <OtherUnitFiles Value="..\..\Fontes\PCN\"/>
+        <UnitOutputDirectory Value="..\..\lib\$(TargetCPU)-$(TargetOS)"/>
+        <SrcPath Value="..\..\Fontes\PCN\"/>
+      </SearchPaths>
+      <Parsing>
+        <SyntaxOptions>
+          <CStyleOperator Value="False"/>
+        </SyntaxOptions>
+      </Parsing>
+      <Other>
+        <CompilerPath Value="$(CompPath)"/>
+      </Other>
+    </CompilerOptions>
+    <Description Value="Este é um projeto que tem por objetivo desenvolver um conjunto de classes para a leitura e gravação dos arquivos XML referentes ao Projeto da Nota Fiscal Eletrônica.
+
+PROPOSTA
+- Manipular o arquivo XML com sendo um arquivo texto.
+- Manter a compatibilidade com as versões antigas do Delphi.
+- Liberar os códigos sob os termos da GNU - Lesser General Public License.
+- A linguagem de programação que será utilizada é o Pascal/Delphi.
+
+Site do projeto: www.projetocooperar.org/nfe"/>
+    <License Value="LGPL
+"/>
+    <Version Minor="2"/>
+    <Files Count="33">
+      <Item1>
+        <Filename Value="..\..\Fontes\PCN\pcnAtuCadEmiDFe.pas"/>
+        <UnitName Value="pcnAtuCadEmiDFe"/>
+      </Item1>
+      <Item2>
+        <Filename Value="..\..\Fontes\PCN\pcnAuxiliar.pas"/>
+        <UnitName Value="pcnAuxiliar"/>
+      </Item2>
+      <Item3>
+        <Filename Value="..\..\Fontes\PCN\pcnCabecalho.pas"/>
+        <UnitName Value="pcnCabecalho"/>
+      </Item3>
+      <Item4>
+        <Filename Value="..\..\Fontes\PCN\pcnCadEmiDFe.pas"/>
+        <UnitName Value="pcnCadEmiDFe"/>
+      </Item4>
+      <Item5>
+        <Filename Value="..\..\Fontes\PCN\pcnCancNFe.pas"/>
+        <UnitName Value="pcnCancNFe"/>
+      </Item5>
+      <Item6>
+        <Filename Value="..\..\Fontes\PCN\pcnConsCad.pas"/>
+        <UnitName Value="pcnConsCad"/>
+      </Item6>
+      <Item7>
+        <Filename Value="..\..\Fontes\PCN\pcnConsDPEC.pas"/>
+        <UnitName Value="pcnConsDPEC"/>
+      </Item7>
+      <Item8>
+        <Filename Value="..\..\Fontes\PCN\pcnConsReciNFe.pas"/>
+        <UnitName Value="pcnConsReciNFe"/>
+      </Item8>
+      <Item9>
+        <Filename Value="..\..\Fontes\PCN\pcnConsSitNFe.pas"/>
+        <UnitName Value="pcnConsSitNFe"/>
+      </Item9>
+      <Item10>
+        <Filename Value="..\..\Fontes\PCN\pcnConsStatServ.pas"/>
+        <UnitName Value="pcnConsStatServ"/>
+      </Item10>
+      <Item11>
+        <Filename Value="..\..\Fontes\PCN\pcnConversao.pas"/>
+        <UnitName Value="pcnConversao"/>
+      </Item11>
+      <Item12>
+        <Filename Value="..\..\Fontes\PCN\pcnEnvDPEC.pas"/>
+        <UnitName Value="pcnEnvDPEC"/>
+      </Item12>
+      <Item13>
+        <Filename Value="..\..\Fontes\PCN\pcnEnvNFe.pas"/>
+        <UnitName Value="pcnEnvNFe"/>
+      </Item13>
+      <Item14>
+        <Filename Value="..\..\Fontes\PCN\pcnGerador.pas"/>
+        <UnitName Value="pcnGerador"/>
+      </Item14>
+      <Item15>
+        <Filename Value="..\..\Fontes\PCN\pcnInutNFe.pas"/>
+        <UnitName Value="pcnInutNFe"/>
+      </Item15>
+      <Item16>
+        <Filename Value="..\..\Fontes\PCN\pcnLayoutTXT.pas"/>
+        <UnitName Value="pcnLayoutTXT"/>
+      </Item16>
+      <Item17>
+        <Filename Value="..\..\Fontes\PCN\pcnLeitor.pas"/>
+        <UnitName Value="pcnLeitor"/>
+      </Item17>
+      <Item18>
+        <Filename Value="..\..\Fontes\PCN\pcnModeloNFe.pas"/>
+        <UnitName Value="pcnModeloNFe"/>
+      </Item18>
+      <Item19>
+        <Filename Value="..\..\Fontes\PCN\pcnNFe.pas"/>
+        <UnitName Value="pcnNFe"/>
+      </Item19>
+      <Item20>
+        <Filename Value="..\..\Fontes\PCN\pcnNFeR.pas"/>
+        <UnitName Value="pcnNFeR"/>
+      </Item20>
+      <Item21>
+        <Filename Value="..\..\Fontes\PCN\pcnNFeRTXT.pas"/>
+        <UnitName Value="pcnNFeRTXT"/>
+      </Item21>
+      <Item22>
+        <Filename Value="..\..\Fontes\PCN\pcnNFeW.pas"/>
+        <UnitName Value="pcnNFeW"/>
+      </Item22>
+      <Item23>
+        <Filename Value="..\..\Fontes\PCN\pcnProcNFe.pas"/>
+        <UnitName Value="pcnProcNFe"/>
+      </Item23>
+      <Item24>
+        <Filename Value="..\..\Fontes\PCN\pcnRetAtuCadEmiDFe.pas"/>
+        <UnitName Value="pcnRetAtuCadEmiDFe"/>
+      </Item24>
+      <Item25>
+        <Filename Value="..\..\Fontes\PCN\pcnRetCancNFe.pas"/>
+        <UnitName Value="pcnRetCancNFe"/>
+      </Item25>
+      <Item26>
+        <Filename Value="..\..\Fontes\PCN\pcnRetConsCad.pas"/>
+        <UnitName Value="pcnRetConsCad"/>
+      </Item26>
+      <Item27>
+        <Filename Value="..\..\Fontes\PCN\pcnRetConsReciNFe.pas"/>
+        <UnitName Value="pcnRetConsReciNFe"/>
+      </Item27>
+      <Item28>
+        <Filename Value="..\..\Fontes\PCN\pcnRetConsSitNFe.pas"/>
+        <UnitName Value="pcnRetConsSitNFe"/>
+      </Item28>
+      <Item29>
+        <Filename Value="..\..\Fontes\PCN\pcnRetConsStatServ.pas"/>
+        <UnitName Value="pcnRetConsStatServ"/>
+      </Item29>
+      <Item30>
+        <Filename Value="..\..\Fontes\PCN\pcnRetDPEC.pas"/>
+        <UnitName Value="pcnRetDPEC"/>
+      </Item30>
+      <Item31>
+        <Filename Value="..\..\Fontes\PCN\pcnRetEnvNFe.pas"/>
+        <UnitName Value="pcnRetEnvNFe"/>
+      </Item31>
+      <Item32>
+        <Filename Value="..\..\Fontes\PCN\pcnRetInutNFe.pas"/>
+        <UnitName Value="pcnRetInutNFe"/>
+      </Item32>
+      <Item33>
+        <Filename Value="..\..\Fontes\PCN\pcnSignature.pas"/>
+        <UnitName Value="pcnSignature"/>
+      </Item33>
+    </Files>
+    <RequiredPkgs Count="2">
+      <Item1>
+        <PackageName Value="ACBrComum"/>
+      </Item1>
+      <Item2>
+        <PackageName Value="FCL"/>
+        <MinVersion Major="1" Valid="True"/>
+      </Item2>
+    </RequiredPkgs>
+    <UsageOptions>
+      <UnitPath Value="$(PkgOutDir)\"/>
+    </UsageOptions>
+    <PublishOptions>
+      <Version Value="2"/>
+      <IgnoreBinaries Value="False"/>
+    </PublishOptions>
+  </Package>
+</CONFIG>

@@ -1,0 +1,2354 @@
+object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
+  Left = 59
+  Height = 744
+  Top = 27
+  Width = 917
+  VertScrollBar.Position = 538
+  Caption = 'ACBRBoletoFCFortesFr'
+  ClientHeight = 744
+  ClientWidth = 917
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  OnCreate = FormCreate
+  LCLVersion = '0.9.29'
+  object LayoutBoleto: TRLReport
+    Left = 8
+    Height = 1123
+    Top = 544
+    Width = 794
+    Margins.LeftMargin = 3
+    Margins.TopMargin = 5
+    Margins.RightMargin = 5
+    Margins.BottomMargin = 5
+    ParentFont = True
+    PreviewOptions.ShowModal = True
+    RealBounds.Left = 0
+    RealBounds.Top = 0
+    RealBounds.Width = 0
+    RealBounds.Height = 0
+    ShowProgress = False
+    BeforePrint = LayoutBoletoBeforePrint
+    OnDataCount = LayoutBoletoDataCount
+    OnDataRecord = LayoutBoletoDataRecord
+    object RLBand1: TRLBand
+      Left = 11
+      Height = 408
+      Top = 19
+      Width = 764
+      RealBounds.Left = 0
+      RealBounds.Top = 0
+      RealBounds.Width = 0
+      RealBounds.Height = 0
+      BeforePrint = RLBand1BeforePrint
+      object RLDraw29: TRLDraw
+        Left = 0
+        Height = 16
+        Top = 388
+        Width = 756
+        Angle = 0
+        DrawKind = dkLine
+        Pen.Style = psDot
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLDraw39: TRLDraw
+        Left = 2
+        Height = 17
+        Top = 323
+        Width = 754
+        Angle = 0
+        DrawKind = dkLine
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLDraw38: TRLDraw
+        Left = 2
+        Height = 17
+        Top = 260
+        Width = 754
+        Angle = 0
+        DrawKind = dkLine
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLDraw37: TRLDraw
+        Left = 571
+        Height = 17
+        Top = 228
+        Width = 185
+        Angle = 0
+        DrawKind = dkLine
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLDraw34: TRLDraw
+        Left = 571
+        Height = 17
+        Top = 196
+        Width = 185
+        Angle = 0
+        DrawKind = dkLine
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLDraw28: TRLDraw
+        Left = 562
+        Height = 226
+        Top = 43
+        Width = 17
+        Angle = 90
+        DrawKind = dkLine
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLDraw27: TRLDraw
+        Left = 312
+        Height = 33
+        Top = 108
+        Width = 17
+        Angle = 90
+        DrawKind = dkLine
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLDraw26: TRLDraw
+        Left = 179
+        Height = 33
+        Top = 140
+        Width = 17
+        Angle = 90
+        DrawKind = dkLine
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLDraw25: TRLDraw
+        Left = 387
+        Height = 65
+        Top = 108
+        Width = 17
+        Angle = 90
+        DrawKind = dkLine
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLDraw24: TRLDraw
+        Left = 241
+        Height = 65
+        Top = 108
+        Width = 17
+        Angle = 90
+        DrawKind = dkLine
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLDraw21: TRLDraw
+        Left = 117
+        Height = 65
+        Top = 108
+        Width = 17
+        Angle = 90
+        DrawKind = dkLine
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLDraw23: TRLDraw
+        Left = -2
+        Height = 17
+        Top = 164
+        Width = 759
+        Angle = 0
+        DrawKind = dkLine
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLDraw22: TRLDraw
+        Left = -2
+        Height = 17
+        Top = 132
+        Width = 757
+        Angle = 0
+        DrawKind = dkLine
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLDraw20: TRLDraw
+        Left = -3
+        Height = 17
+        Top = 69
+        Width = 757
+        Angle = 0
+        DrawKind = dkLine
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLDraw19: TRLDraw
+        Left = -5
+        Height = 17
+        Top = 101
+        Width = 757
+        Angle = 0
+        DrawKind = dkLine
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLDraw18: TRLDraw
+        Left = 0
+        Height = 16
+        Top = 36
+        Width = 756
+        Angle = 0
+        DrawKind = dkLine
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLDraw17: TRLDraw
+        Left = 278
+        Height = 41
+        Top = 3
+        Width = 17
+        Angle = 90
+        DrawKind = dkLine
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLDraw16: TRLDraw
+        Left = 173
+        Height = 41
+        Top = 3
+        Width = 17
+        Angle = 90
+        DrawKind = dkLine
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object imgBanco2: TRLImage
+        Left = 0
+        Height = 42
+        Top = -1
+        Width = 179
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtNumeroBanco2: TRLLabel
+        Left = 184
+        Height = 27
+        Top = 12
+        Width = 102
+        Alignment = taCenter
+        AutoSize = False
+        Caption = '000-0'
+        Font.Color = clBlack
+        Font.Height = -24
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel67: TRLLabel
+        Left = 289
+        Height = 18
+        Top = 21
+        Width = 465
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'Recibo do Sacado'
+        Font.Color = clBlack
+        Font.Height = -16
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel68: TRLLabel
+        Left = 0
+        Height = 10
+        Top = 45
+        Width = 70
+        Caption = 'Local de Pagamento'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object lblLocalPagto: TRLLabel
+        Left = 0
+        Height = 16
+        Top = 59
+        Width = 529
+        AutoSize = False
+        Caption = 'Local de Pagamento'
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel69: TRLLabel
+        Left = 0
+        Height = 10
+        Top = 78
+        Width = 30
+        Caption = 'Cedente'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtNomeCedente2: TRLLabel
+        Left = 0
+        Height = 16
+        Top = 91
+        Width = 529
+        AutoSize = False
+        Caption = 'Nome do Cedente'
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel70: TRLLabel
+        Left = 0
+        Height = 10
+        Top = 110
+        Width = 68
+        Caption = 'Data do Documento'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtDataDocumento2: TRLLabel
+        Left = 0
+        Height = 16
+        Top = 122
+        Width = 124
+        Alignment = taCenter
+        AutoSize = False
+        Caption = 'Data do Documento'
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel71: TRLLabel
+        Left = 127
+        Height = 10
+        Top = 110
+        Width = 79
+        Caption = 'Número do Documento'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtNumeroDocumento2: TRLLabel
+        Left = 127
+        Height = 16
+        Top = 122
+        Width = 122
+        Alignment = taCenter
+        AutoSize = False
+        Caption = 'Número do Documento'
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel72: TRLLabel
+        Left = 252
+        Height = 10
+        Top = 110
+        Width = 47
+        Caption = 'Espécie Doc.'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtEspecieDoc2: TRLLabel
+        Left = 252
+        Height = 14
+        Top = 122
+        Width = 68
+        Alignment = taCenter
+        AutoSize = False
+        Caption = 'Espécie Doc.'
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel73: TRLLabel
+        Left = 322
+        Height = 10
+        Top = 110
+        Width = 23
+        Caption = 'Aceite'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtAceite2: TRLLabel
+        Left = 322
+        Height = 16
+        Top = 122
+        Width = 66
+        Alignment = taCenter
+        AutoSize = False
+        Caption = 'Aceite'
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel74: TRLLabel
+        Left = 399
+        Height = 10
+        Top = 110
+        Width = 82
+        Caption = 'Data do Processamento'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtDataProcessamento2: TRLLabel
+        Left = 399
+        Height = 16
+        Top = 122
+        Width = 124
+        Alignment = taCenter
+        AutoSize = False
+        Caption = 'Data do Processamento'
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtUsoBanco2: TRLLabel
+        Left = 0
+        Height = 16
+        Top = 154
+        Width = 124
+        Alignment = taCenter
+        AutoSize = False
+        Caption = 'Uso do Banco'
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+        Visible = False
+      end
+      object RLLabel75: TRLLabel
+        Left = 0
+        Height = 10
+        Top = 142
+        Width = 49
+        Caption = 'Uso do Banco'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtCarteira2: TRLLabel
+        Left = 127
+        Height = 16
+        Top = 154
+        Width = 58
+        Alignment = taCenter
+        AutoSize = False
+        Caption = 'Carteira'
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel76: TRLLabel
+        Left = 127
+        Height = 10
+        Top = 142
+        Width = 30
+        Caption = 'Carteira'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel77: TRLLabel
+        Left = 190
+        Height = 10
+        Top = 142
+        Width = 29
+        Caption = 'Espécie'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtEspecie2: TRLLabel
+        Left = 190
+        Height = 16
+        Top = 154
+        Width = 58
+        Alignment = taCenter
+        AutoSize = False
+        Caption = 'Espécie'
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel78: TRLLabel
+        Left = 252
+        Height = 10
+        Top = 142
+        Width = 40
+        Caption = 'Quantidade'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtQuantidade2: TRLLabel
+        Left = 252
+        Height = 16
+        Top = 154
+        Width = 140
+        Alignment = taCenter
+        AutoSize = False
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel79: TRLLabel
+        Left = 399
+        Height = 10
+        Top = 142
+        Width = 20
+        Caption = 'Valor'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtValorMoeda2: TRLLabel
+        Left = 399
+        Height = 16
+        Top = 154
+        Width = 124
+        Alignment = taCenter
+        AutoSize = False
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel80: TRLLabel
+        Left = 0
+        Height = 10
+        Top = 173
+        Width = 325
+        Caption = 'Instruções (Todas as informações deste bloqueto são de exclusiva responsabilidade do cedente.)'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtInstrucoes2: TRLMemo
+        Left = 4
+        Height = 83
+        Top = 184
+        Width = 529
+        AutoSize = False
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Courier New'
+        Lines.Strings = (
+          'Linha 1'
+          'Linha 2'
+          'Linha 3'
+          'Linha 4'
+          'Linha 5'
+          'Linha 6'
+        )
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel81: TRLLabel
+        Left = 574
+        Height = 10
+        Top = 45
+        Width = 41
+        Caption = 'Vencimento'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtDataVencimento2: TRLLabel
+        Left = 574
+        Height = 16
+        Top = 59
+        Width = 172
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'Vencimento'
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel82: TRLLabel
+        Left = 574
+        Height = 10
+        Top = 78
+        Width = 91
+        Caption = 'Agência / Código Cedente'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtCodigoCedente2: TRLLabel
+        Left = 573
+        Height = 16
+        Top = 91
+        Width = 172
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'Agência / Código Cedente'
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel83: TRLLabel
+        Left = 574
+        Height = 10
+        Top = 110
+        Width = 53
+        Caption = 'Nosso Número'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtNossoNumero2: TRLLabel
+        Left = 574
+        Height = 16
+        Top = 122
+        Width = 172
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'Nosso Número'
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel84: TRLLabel
+        Left = 574
+        Height = 10
+        Top = 142
+        Width = 87
+        Caption = '( = ) Valor do Documento'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtValorDocumento2: TRLLabel
+        Left = 574
+        Height = 16
+        Top = 154
+        Width = 172
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'Valor do Documento'
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel85: TRLLabel
+        Left = 574
+        Height = 10
+        Top = 174
+        Width = 92
+        Caption = '( - ) Desconto / Abatimento'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtDesconto2: TRLLabel
+        Left = 574
+        Height = 16
+        Top = 186
+        Width = 172
+        Alignment = taRightJustify
+        AutoSize = False
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel86: TRLLabel
+        Left = 574
+        Height = 10
+        Top = 206
+        Width = 62
+        Caption = '( + ) Mora / Multa'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtMoraMulta2: TRLLabel
+        Left = 574
+        Height = 16
+        Top = 218
+        Width = 172
+        Alignment = taRightJustify
+        AutoSize = False
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel87: TRLLabel
+        Left = 574
+        Height = 10
+        Top = 238
+        Width = 68
+        Caption = '( = ) Valor Cobrado'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtValorCobrado2: TRLLabel
+        Left = 574
+        Height = 16
+        Top = 250
+        Width = 172
+        Alignment = taRightJustify
+        AutoSize = False
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel88: TRLLabel
+        Left = 4
+        Height = 14
+        Top = 270
+        Width = 43
+        Caption = 'Sacado:'
+        Font.CharSet = ANSI_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtNomeSacado2: TRLLabel
+        Left = 53
+        Height = 14
+        Top = 269
+        Width = 512
+        AutoSize = False
+        Caption = 'Nome do Sacado'
+        Font.CharSet = ANSI_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtEnderecoSacado2: TRLLabel
+        Left = 53
+        Height = 14
+        Top = 285
+        Width = 512
+        AutoSize = False
+        Caption = 'Rua / Numero / Complemento'
+        Font.CharSet = ANSI_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtCidadeSacado2: TRLLabel
+        Left = 53
+        Height = 14
+        Top = 301
+        Width = 512
+        AutoSize = False
+        Caption = 'Cep / Bairro / Cidade / Estado'
+        Font.CharSet = ANSI_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel89: TRLLabel
+        Left = 574
+        Height = 10
+        Top = 270
+        Width = 45
+        Caption = 'CPF / CNPJ'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtCpfCnpjSacado2: TRLLabel
+        Left = 574
+        Height = 16
+        Top = 281
+        Width = 181
+        AutoSize = False
+        Caption = 'CPF / CNPJ'
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel90: TRLLabel
+        Left = 574
+        Height = 10
+        Top = 299
+        Width = 57
+        Caption = 'Código de Baixa'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtCodigoBaixa2: TRLLabel
+        Left = 574
+        Height = 16
+        Top = 313
+        Width = 181
+        AutoSize = False
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLMemo2: TRLMemo
+        Left = 2
+        Height = 39
+        Top = 334
+        Width = 321
+        Alignment = taJustify
+        AutoSize = False
+        Font.Color = clBlack
+        Font.Height = -9
+        Font.Name = 'Arial'
+        Lines.Strings = (
+          'Recebimento através do cheque número                         do banco'
+          'Esta quitação só terá validade após o pagamento do cheque pelo'
+          'banco sacado.'
+        )
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel91: TRLLabel
+        Left = 499
+        Height = 10
+        Top = 334
+        Width = 80
+        Caption = 'Autenticação Mecânica'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel93: TRLLabel
+        Left = 392
+        Height = 10
+        Top = 153
+        Width = 5
+        Caption = 'x'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+        Transparent = False
+      end
+      object RLLabel98: TRLLabel
+        Left = 0
+        Height = 14
+        Top = 388
+        Width = 26
+        Caption = '"'
+        Font.CharSet = SYMBOL_CHARSET
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Wingdings'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel102: TRLLabel
+        Left = 4
+        Height = 14
+        Top = 316
+        Width = 89
+        Caption = 'Sacador/Avalista:'
+        Font.CharSet = ANSI_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtSacadorAvalista2: TRLLabel
+        Left = 105
+        Height = 14
+        Top = 316
+        Width = 460
+        AutoSize = False
+        Font.CharSet = ANSI_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtReferencia2: TRLLabel
+        Left = 638
+        Height = 16
+        Top = 297
+        Width = 181
+        AutoSize = False
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+        Visible = False
+      end
+    end
+    object RLBand2: TRLBand
+      Left = 11
+      Height = 419
+      Top = 427
+      Width = 764
+      RealBounds.Left = 0
+      RealBounds.Top = 0
+      RealBounds.Width = 0
+      RealBounds.Height = 0
+      BeforePrint = RLBand2BeforePrint
+      object RLDraw50: TRLDraw
+        Left = -2
+        Height = 17
+        Top = 337
+        Width = 754
+        Angle = 0
+        DrawKind = dkLine
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLDraw49: TRLDraw
+        Left = 6
+        Height = 17
+        Top = 274
+        Width = 754
+        Angle = 0
+        DrawKind = dkLine
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLDraw48: TRLDraw
+        Left = 540
+        Height = 17
+        Top = 242
+        Width = 220
+        Angle = 0
+        DrawKind = dkLine
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLDraw47: TRLDraw
+        Left = 540
+        Height = 17
+        Top = 210
+        Width = 220
+        Angle = 0
+        DrawKind = dkLine
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLDraw46: TRLDraw
+        Left = 1
+        Height = 17
+        Top = 178
+        Width = 759
+        Angle = 0
+        DrawKind = dkLine
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLDraw45: TRLDraw
+        Left = 183
+        Height = 33
+        Top = 154
+        Width = 17
+        Angle = 90
+        DrawKind = dkLine
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLDraw44: TRLDraw
+        Left = 3
+        Height = 17
+        Top = 146
+        Width = 757
+        Angle = 0
+        DrawKind = dkLine
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLDraw43: TRLDraw
+        Left = 391
+        Height = 65
+        Top = 122
+        Width = 17
+        Angle = 90
+        DrawKind = dkLine
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLDraw42: TRLDraw
+        Left = 316
+        Height = 35
+        Top = 121
+        Width = 17
+        Angle = 90
+        DrawKind = dkLine
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLDraw41: TRLDraw
+        Left = 245
+        Height = 65
+        Top = 122
+        Width = 17
+        Angle = 90
+        DrawKind = dkLine
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLDraw40: TRLDraw
+        Left = 121
+        Height = 65
+        Top = 122
+        Width = 17
+        Angle = 90
+        DrawKind = dkLine
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLDraw36: TRLDraw
+        Left = 3
+        Height = 17
+        Top = 114
+        Width = 757
+        Angle = 0
+        DrawKind = dkLine
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLDraw35: TRLDraw
+        Left = 4
+        Height = 16
+        Top = 50
+        Width = 756
+        Angle = 0
+        DrawKind = dkLine
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLDraw33: TRLDraw
+        Left = 3
+        Height = 17
+        Top = 82
+        Width = 757
+        Angle = 0
+        DrawKind = dkLine
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object imgBanco3: TRLImage
+        Left = 4
+        Height = 42
+        Top = 15
+        Width = 179
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLDraw81: TRLDraw
+        Left = 177
+        Height = 41
+        Top = 17
+        Width = 17
+        Angle = 90
+        DrawKind = dkLine
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtLinhaDigitavel: TRLLabel
+        Left = 294
+        Height = 18
+        Top = 35
+        Width = 466
+        Alignment = taCenter
+        AutoSize = False
+        Caption = '00000.0000 00000.000000 00000.000000 0 00000000000000'
+        Font.Color = clBlack
+        Font.Height = -16
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLDraw82: TRLDraw
+        Left = 282
+        Height = 41
+        Top = 17
+        Width = 17
+        Angle = 90
+        DrawKind = dkLine
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtNumeroBanco3: TRLLabel
+        Left = 188
+        Height = 27
+        Top = 26
+        Width = 102
+        Alignment = taCenter
+        AutoSize = False
+        Caption = '000-0'
+        Font.Color = clBlack
+        Font.Height = -24
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel145: TRLLabel
+        Left = 4
+        Height = 10
+        Top = 59
+        Width = 70
+        Caption = 'Local de Pagamento'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtLocalPagamento3: TRLLabel
+        Left = 4
+        Height = 16
+        Top = 73
+        Width = 529
+        AutoSize = False
+        Caption = 'Local de Pagamento'
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtDataVencimento3: TRLLabel
+        Left = 552
+        Height = 16
+        Top = 73
+        Width = 172
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'Vencimento'
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel146: TRLLabel
+        Left = 552
+        Height = 10
+        Top = 59
+        Width = 41
+        Caption = 'Vencimento'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLDraw83: TRLDraw
+        Left = 530
+        Height = 226
+        Top = 57
+        Width = 17
+        Angle = 90
+        DrawKind = dkLine
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel147: TRLLabel
+        Left = 4
+        Height = 10
+        Top = 92
+        Width = 30
+        Caption = 'Cedente'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtNomeCedente3: TRLLabel
+        Left = 4
+        Height = 16
+        Top = 105
+        Width = 529
+        AutoSize = False
+        Caption = 'Nome do Cedente'
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel148: TRLLabel
+        Left = 552
+        Height = 10
+        Top = 92
+        Width = 91
+        Caption = 'Agência / Código Cedente'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtCodigoCedente3: TRLLabel
+        Left = 552
+        Height = 16
+        Top = 105
+        Width = 172
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'Agência / Código Cedente'
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel149: TRLLabel
+        Left = 4
+        Height = 10
+        Top = 124
+        Width = 68
+        Caption = 'Data do Documento'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtDataDocumento3: TRLLabel
+        Left = 4
+        Height = 16
+        Top = 137
+        Width = 124
+        Alignment = taCenter
+        AutoSize = False
+        Caption = 'Data do Documento'
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel150: TRLLabel
+        Left = 131
+        Height = 10
+        Top = 124
+        Width = 79
+        Caption = 'Número do Documento'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtNumeroDocumento3: TRLLabel
+        Left = 131
+        Height = 16
+        Top = 137
+        Width = 122
+        Alignment = taCenter
+        AutoSize = False
+        Caption = 'Número do Documento'
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel151: TRLLabel
+        Left = 256
+        Height = 10
+        Top = 124
+        Width = 47
+        Caption = 'Espécie Doc.'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtEspecieDoc3: TRLLabel
+        Left = 256
+        Height = 14
+        Top = 137
+        Width = 68
+        Alignment = taCenter
+        AutoSize = False
+        Caption = 'Espécie Doc.'
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel152: TRLLabel
+        Left = 326
+        Height = 10
+        Top = 124
+        Width = 23
+        Caption = 'Aceite'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtAceite3: TRLLabel
+        Left = 326
+        Height = 16
+        Top = 137
+        Width = 66
+        Alignment = taCenter
+        AutoSize = False
+        Caption = 'Aceite'
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel153: TRLLabel
+        Left = 403
+        Height = 10
+        Top = 124
+        Width = 82
+        Caption = 'Data do Processamento'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtDataProcessamento3: TRLLabel
+        Left = 403
+        Height = 16
+        Top = 137
+        Width = 124
+        Alignment = taCenter
+        AutoSize = False
+        Caption = 'Data do Processamento'
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel154: TRLLabel
+        Left = 552
+        Height = 10
+        Top = 124
+        Width = 53
+        Caption = 'Nosso Número'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtNossoNumero3: TRLLabel
+        Left = 552
+        Height = 16
+        Top = 137
+        Width = 172
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'Nosso Número'
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel155: TRLLabel
+        Left = 4
+        Height = 10
+        Top = 156
+        Width = 49
+        Caption = 'Uso do Banco'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtUsoBanco3: TRLLabel
+        Left = 4
+        Height = 16
+        Top = 169
+        Width = 124
+        Alignment = taCenter
+        AutoSize = False
+        Caption = 'Uso do Banco'
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+        Visible = False
+      end
+      object RLLabel156: TRLLabel
+        Left = 131
+        Height = 10
+        Top = 156
+        Width = 30
+        Caption = 'Carteira'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtCarteira3: TRLLabel
+        Left = 131
+        Height = 16
+        Top = 169
+        Width = 58
+        Alignment = taCenter
+        AutoSize = False
+        Caption = 'Carteira'
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel157: TRLLabel
+        Left = 194
+        Height = 10
+        Top = 156
+        Width = 29
+        Caption = 'Espécie'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtEspecie3: TRLLabel
+        Left = 194
+        Height = 16
+        Top = 169
+        Width = 58
+        Alignment = taCenter
+        AutoSize = False
+        Caption = 'Espécie'
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel158: TRLLabel
+        Left = 256
+        Height = 10
+        Top = 156
+        Width = 40
+        Caption = 'Quantidade'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtQuantidade3: TRLLabel
+        Left = 256
+        Height = 16
+        Top = 169
+        Width = 140
+        Alignment = taCenter
+        AutoSize = False
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel159: TRLLabel
+        Left = 403
+        Height = 10
+        Top = 156
+        Width = 20
+        Caption = 'Valor'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtValorMoeda3: TRLLabel
+        Left = 403
+        Height = 16
+        Top = 169
+        Width = 124
+        Alignment = taCenter
+        AutoSize = False
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel160: TRLLabel
+        Left = 552
+        Height = 10
+        Top = 156
+        Width = 87
+        Caption = '( = ) Valor do Documento'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtValorDocumento3: TRLLabel
+        Left = 552
+        Height = 16
+        Top = 169
+        Width = 172
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = 'Valor do Documento'
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel161: TRLLabel
+        Left = 4
+        Height = 10
+        Top = 187
+        Width = 325
+        Caption = 'Instruções (Todas as informações deste bloqueto são de exclusiva responsabilidade do cedente.)'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtInstrucoes3: TRLMemo
+        Left = 4
+        Height = 82
+        Top = 198
+        Width = 529
+        AutoSize = False
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Courier New'
+        Lines.Strings = (
+          'Linha 1'
+          'Linha 2'
+          'Linha 3'
+          'Linha 4'
+          'Linha 5'
+          'Linha 6'
+        )
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel162: TRLLabel
+        Left = 552
+        Height = 10
+        Top = 188
+        Width = 92
+        Caption = '( - ) Desconto / Abatimento'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtDesconto3: TRLLabel
+        Left = 552
+        Height = 16
+        Top = 200
+        Width = 172
+        Alignment = taRightJustify
+        AutoSize = False
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel163: TRLLabel
+        Left = 552
+        Height = 10
+        Top = 220
+        Width = 62
+        Caption = '( + ) Mora / Multa'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtMoraMulta3: TRLLabel
+        Left = 552
+        Height = 16
+        Top = 232
+        Width = 172
+        Alignment = taRightJustify
+        AutoSize = False
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel164: TRLLabel
+        Left = 552
+        Height = 10
+        Top = 252
+        Width = 68
+        Caption = '( = ) Valor Cobrado'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtValorCobrado3: TRLLabel
+        Left = 552
+        Height = 16
+        Top = 264
+        Width = 172
+        Alignment = taRightJustify
+        AutoSize = False
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel165: TRLLabel
+        Left = 4
+        Height = 14
+        Top = 284
+        Width = 43
+        Caption = 'Sacado:'
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtNomeSacado3: TRLLabel
+        Left = 53
+        Height = 14
+        Top = 284
+        Width = 488
+        AutoSize = False
+        Caption = 'Nome do Sacado'
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel166: TRLLabel
+        Left = 551
+        Height = 10
+        Top = 284
+        Width = 45
+        Caption = 'CPF / CNPJ'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtCpfCnpjSacado3: TRLLabel
+        Left = 550
+        Height = 16
+        Top = 295
+        Width = 204
+        AutoSize = False
+        Caption = 'CPF / CNPJ'
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtEnderecoSacado3: TRLLabel
+        Left = 53
+        Height = 14
+        Top = 300
+        Width = 488
+        AutoSize = False
+        Caption = 'Rua / Numero / Complemento'
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel167: TRLLabel
+        Left = 551
+        Height = 10
+        Top = 315
+        Width = 57
+        Caption = 'Código de Baixa'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtCidadeSacado3: TRLLabel
+        Left = 53
+        Height = 14
+        Top = 316
+        Width = 488
+        AutoSize = False
+        Caption = 'Cep / Bairro / Cidade / Estado'
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtCodigoBaixa3: TRLLabel
+        Left = 550
+        Height = 16
+        Top = 327
+        Width = 204
+        AutoSize = False
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel168: TRLLabel
+        Left = 503
+        Height = 10
+        Top = 349
+        Width = 166
+        Caption = 'Autenticação Mecânica - Ficha de Compensação'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object RLLabel170: TRLLabel
+        Left = 396
+        Height = 10
+        Top = 167
+        Width = 5
+        Caption = 'x'
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+        Transparent = False
+      end
+      object RLLabel175: TRLLabel
+        Left = 4
+        Height = 14
+        Top = 330
+        Width = 89
+        Caption = 'Sacador/Avalista:'
+        Font.CharSet = ANSI_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtSacadorAvalista3: TRLLabel
+        Left = 105
+        Height = 14
+        Top = 330
+        Width = 436
+        AutoSize = False
+        Caption = 'Sacador/Avalista'
+        Font.CharSet = ANSI_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+      object txtReferencia3: TRLLabel
+        Left = 615
+        Height = 16
+        Top = 311
+        Width = 204
+        AutoSize = False
+        Font.Color = clBlack
+        Font.Height = -12
+        Font.Name = 'Arial'
+        ParentFont = False
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+        Visible = False
+      end
+      object imgCodigoBarra: TRLBarcode
+        Left = 4
+        Height = 66
+        Top = 350
+        Width = 465
+        AutoSize = False
+        Caption = '23790-3571000000100120'
+        CheckSumMethod = cmNone
+        InvalidCode = icDrawAnyway
+        Margins.LeftMargin = 1
+        Margins.RightMargin = 1
+        Ratio = 3
+        RealBounds.Left = 0
+        RealBounds.Top = 0
+        RealBounds.Width = 0
+        RealBounds.Height = 0
+      end
+    end
+    object txtSwHouse: TRLAngleLabel
+      Left = 3
+      Height = 53
+      Top = 653
+      Width = 12
+      Alignment = taCenter
+      Angle = 90
+      Font.Height = -9
+      Font.Name = 'Arial'
+      Font.Pitch = fpFixed
+      Layout = tlCenter
+      ParentFont = False
+      RealBounds.Left = 0
+      RealBounds.Top = 0
+      RealBounds.Width = 0
+      RealBounds.Height = 0
+    end
+  end
+  object RLHTMLFilter1: TRLHTMLFilter
+    DocumentStyle = dsCSS2
+    DisplayName = 'ACBrBoleto - http://acbr.sf.net'
+    left = 822
+    top = 624
+  end
+  object RLPDFFilter1: TRLPDFFilter
+    DocumentInfo.Creator = 'FortesReport (Open Source) v3.24(B14)  \251 Copyright © 1999-2008 Fortes Informática'
+    DocumentInfo.ModDate = 0
+    ViewerOptions = []
+    FontEncoding = feNoEncoding
+    DisplayName = 'ACBrBoleto - http://acbr.sf.net'
+    ShowProgress = False
+    left = 824
+    top = 568
+  end
+  object RLPrintDialogSetup1: TRLPrintDialogSetup
+    Copies = 0
+    left = 823
+    top = 752
+  end
+end

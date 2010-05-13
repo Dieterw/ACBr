@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<CONFIG>
+  <Package Version="3">
+    <PathDelim Value="\"/>
+    <Name Value="ACBr_PAF"/>
+    <Author Value="Isaque Pinheiro"/>
+    <CompilerOptions>
+      <Version Value="8"/>
+      <PathDelim Value="\"/>
+      <SearchPaths>
+        <IncludeFiles Value="..\..\Fontes\ACBrPAF\;..\..\Fontes\ACBrComum\"/>
+        <OtherUnitFiles Value="..\..\Fontes\ACBrPAF\;..\..\Fontes\ACBrComum\"/>
+        <UnitOutputDirectory Value="..\..\lib\$(TargetCPU)-$(TargetOS)"/>
+        <SrcPath Value="..\..\Fontes\ACBrPAF\;..\..\Fontes\ACBrComum\"/>
+      </SearchPaths>
+      <Parsing>
+        <SyntaxOptions>
+          <UseAnsiStrings Value="True"/>
+        </SyntaxOptions>
+      </Parsing>
+      <Other>
+        <CompilerPath Value="$(CompPath)"/>
+      </Other>
+    </CompilerOptions>
+    <Description Value="Componentes para geração de arquivos exigidos pelo PAF-ECF"/>
+    <Files Count="12">
+      <Item1>
+        <Filename Value="..\..\Fontes\ACBrPAF\ACBrPAFRegistros.pas"/>
+        <UnitName Value="ACBrPAFRegistros"/>
+      </Item1>
+      <Item2>
+        <Filename Value="..\..\Fontes\ACBrPAF\ACBrPAF.pas"/>
+        <HasRegisterProc Value="True"/>
+        <UnitName Value="ACBrPAF"/>
+      </Item2>
+      <Item3>
+        <Filename Value="..\..\Fontes\ACBrPAF\ACBrPAF_D.pas"/>
+        <UnitName Value="ACBrPAF_D"/>
+      </Item3>
+      <Item4>
+        <Filename Value="..\..\Fontes\ACBrPAF\ACBrPAF_D_Class.pas"/>
+        <UnitName Value="ACBrPAF_D_Class"/>
+      </Item4>
+      <Item5>
+        <Filename Value="..\..\Fontes\ACBrPAF\ACBrPAF_E.pas"/>
+        <UnitName Value="ACBrPAF_E"/>
+      </Item5>
+      <Item6>
+        <Filename Value="..\..\Fontes\ACBrPAF\ACBrPAF_E_Class.pas"/>
+        <UnitName Value="ACBrPAF_E_Class"/>
+      </Item6>
+      <Item7>
+        <Filename Value="..\..\Fontes\ACBrPAF\ACBrPAF_P.pas"/>
+        <UnitName Value="ACBrPAF_P"/>
+      </Item7>
+      <Item8>
+        <Filename Value="..\..\Fontes\ACBrPAF\ACBrPAF_P_Class.pas"/>
+        <UnitName Value="ACBrPAF_P_Class"/>
+      </Item8>
+      <Item9>
+        <Filename Value="..\..\Fontes\ACBrPAF\ACBrPAF_R.pas"/>
+        <UnitName Value="ACBrPAF_R"/>
+      </Item9>
+      <Item10>
+        <Filename Value="..\..\Fontes\ACBrPAF\ACBrPAF_R_Class.pas"/>
+        <UnitName Value="ACBrPAF_R_Class"/>
+      </Item10>
+      <Item11>
+        <Filename Value="..\..\Fontes\ACBrPAF\ACBrPAF_T.pas"/>
+        <UnitName Value="ACBrPAF_T"/>
+      </Item11>
+      <Item12>
+        <Filename Value="..\..\Fontes\ACBrPAF\ACBrPAF_T_Class.pas"/>
+        <UnitName Value="ACBrPAF_T_Class"/>
+      </Item12>
+    </Files>
+    <Type Value="RunAndDesignTime"/>
+    <RequiredPkgs Count="2">
+      <Item1>
+        <PackageName Value="LCL"/>
+      </Item1>
+      <Item2>
+        <PackageName Value="FCL"/>
+        <MinVersion Major="1" Valid="True"/>
+      </Item2>
+    </RequiredPkgs>
+    <UsageOptions>
+      <UnitPath Value="$(PkgOutDir)\"/>
+    </UsageOptions>
+    <PublishOptions>
+      <Version Value="2"/>
+      <IgnoreBinaries Value="False"/>
+    </PublishOptions>
+  </Package>
+</CONFIG>

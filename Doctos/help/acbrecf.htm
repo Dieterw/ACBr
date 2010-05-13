@@ -1,0 +1,133 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>ACBrECF</title>
+</head>
+
+<body>
+
+<font face="Arial">
+<P Align="left"><font size="6"><b><font face="Verdana, Arial, Helvetica, sans-serif">ACBr</font></b><font face="Verdana, Arial, Helvetica, sans-serif"><strong>ECF</strong></font></font></P>
+<p>Unit com as funções para comunicação com ECF's</p>
+<p class="MsoNormal"><b> Modelos de ECF Suportados pelo
+Componente TACBrECF atualmente<span style="mso-spacerun: yes">:</span></b></p>
+<p class="MsoNormal">Bematech, Sweda, Daruma, Schalter&nbsp; e Mecaf.</p>
+<p class="MsoNormal">Diversos
+fabricantes usam o chipset da Mecaf como por exemplo:<span style="mso-spacerun: yes">&nbsp;
+</span><span lang="EN-US" style="mso-ansi-language:EN-US">Elgin, Digiarte,
+Zanthus, Acr, Aoki, Chronos, Promcomp, TrendsSTS, Unigraph.</span><span style="mso-spacerun: yes; mso-ansi-language: EN-US" lang="EN-US">&nbsp;
+</span>Isso pode ser indentificado por alguma indicação no corpo do
+equipamento.<span style="mso-spacerun: yes">&nbsp; </span>Entretanto não há
+garantia de plena compatibilidade entre os diferentes<span style="mso-spacerun: yes">
+</span>equipamentos. (Favor reportar possiveis BUGS).</p>
+<p class="MsoNormal"><b>Principais Métodos</b></p>
+<p class="MsoNormal"><span lang="EN-US" style="mso-ansi-language:EN-US"><span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;
+</span><b>procedure</b>  <a href="ativar.htm"> Ativar</a> ;<o:p>
+</o:p>
+</span></p>
+<p class="MsoNormal"><span lang="EN-US" style="mso-ansi-language:EN-US"><span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;
+</span><b>procedure</b>  <a href="desativar.htm"> Desativar</a> ;<o:p>
+</o:p>
+</span></p>
+<p class="MsoNormal"><span lang="EN-US" style="mso-ansi-language:EN-US">&nbsp;<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;
+</span><b>function</b> TestarDialog : Boolean ;<o:p>
+</o:p>
+</span></p>
+<p class="MsoNormal">&nbsp;<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; 
+  </span><b>procedure</b> <a href="carrega_aliquotas.htm">CarregaAliquotas</a> 
+  ;</p>
+<p class="MsoNormal"><span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp; 
+  </span><b>function</b> <a href="acha_icms_aliq.htm">AchaICMSAliquota</a>( Aliquota 
+  : Double ) : TACBrECFAliquota ;</p>
+<p class="MsoNormal"><span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp; </span><b>function</b>
+AchaICMSIndice( Indice : <b>String</b> ) : TACBrECFAliquota ;</p>
+<p class="MsoNormal">&nbsp;<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; 
+  </span><b>procedure</b> <a href="carrega_formas_pag.htm">CarregaFormasPagamento</a> 
+  ; virtual ;</p>
+<p class="MsoNormal"><span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp; </span><b>function</b>
+AchaFPGDescricao( Descricao : <b>String</b> ) : TACBrECFFormaPagamento ;</p>
+<p class="MsoNormal"><span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp; </span><b>function</b>
+AchaFPGIndice( Indice : <b>String</b> ) : TACBrECFFormaPagamento ;</p>
+<p class="MsoNormal">&nbsp;<span lang="EN-US" style="mso-ansi-language:EN-US"><span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; 
+  </span><b>Function</b> <a href="emlinha.htm">EmLinha</a>( lTimeOut : Integer 
+  = 1) : Boolean ;<o:p> </o:p> </span></p>
+<p class="MsoNormal"><span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp; </span><b>Procedure</b>
+ <a href="abre_cupom.htm"> AbreCupom</a>(
+CPF_CNPJ : <b>String</b> = '') ;</p>
+<p class="MsoNormal"><span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp; </span><b>Procedure</b>
+<a href="vende_item.htm"> VendeItem</a>(
+Codigo, Descricao : String; AliqotaICMS : <b>String</b>;<span style="mso-spacerun: yes">
+</span>Qtd : Double ; ValorUnitario : Double; DescontoPorc : Double = 0;<span style="mso-spacerun: yes">
+</span>Unidade : <b>String</b> = '') ;</p>
+<p class="MsoNormal"><span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </span><b>Procedure</b>
+<a href="subtotaliza_cupom.htm">SubtotalizaCupom</a>(
+DescontoAcrescimo : Double = 0 ) ;</p>
+<p class="MsoNormal"><span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </span><b>Procedure</b> 
+  <a href="efetua_pagamento.htm"> EfetuaPagamento</a>( CodFormaPagto : <b>String</b>; 
+  Valor : Double; Observacao : <b>String</b> = ''; ImprimeVinculado : Boolean 
+  = false) ;</p>
+<p class="MsoNormal"><span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </span><span lang="EN-US" style="mso-ansi-language:EN-US"><b>Procedure</b>
+</span><a href="fechar_cupom.htm"> FechaCupom</a><span lang="EN-US" style="mso-ansi-language:EN-US">(
+Observacao : <b>String</b> = '') ;<o:p>
+</o:p>
+</span></p>
+<p class="MsoNormal"><span lang="EN-US" style="mso-ansi-language:EN-US"><span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;
+</span><b>Procedure</b> </span><a href="cancela_cupom.htm"> CancelaCupom</a><span lang="EN-US" style="mso-ansi-language:EN-US">;<o:p>
+</o:p>
+</span></p>
+<p class="MsoNormal"><span style="mso-spacerun: yes; mso-ansi-language: EN-US" lang="EN-US">&nbsp;&nbsp;&nbsp;
+</span><b>Procedure</b> <a href="cancela_item_vendido.htm"> CancelaItemVendido</a>(
+NumItem : Integer ) ;</p>
+<p class="MsoNormal"><span lang="EN-US" style="mso-ansi-language:EN-US">&nbsp;</span><span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;
+</span><span lang="EN-US" style="mso-ansi-language:EN-US"><b>Procedure</b>
+AbreGaveta<span style="mso-spacerun:
+yes">&nbsp; </span>;<o:p>
+</o:p>
+</span></p>
+<p class="MsoNormal"><span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </span><b>Procedure</b>
+<a href="leitura_x.htm"> LeituraX</a>;</p>
+<p class="MsoNormal"><span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </span><b>Procedure</b>
+<a href="redução_z.htm"> ReducaoZ</a>(
+DataHora : TDateTime ) ;</p>
+<p class="MsoNormal"><span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </span><b>Procedure</b>
+RelatorioGerencial(Relatorio : TStrings; Vias : Integer = 1) ;</p>
+<p class="MsoNormal"><span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </span><b>Procedure</b>
+CupomVinculado(COO, CodFormaPagto : <b>String</b>; Valor : Double;<span style="mso-spacerun: yes">&nbsp;
+</span>Relatorio : TStrings; Vias : Integer = 1) ;</p>
+<p class="MsoNormal"><span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </span><span lang="EN-US" style="mso-ansi-language:EN-US"><b>Procedure</b>
+FechaRelatorio ;<o:p>
+</o:p>
+</span></p>
+<p class="MsoNormal"><span lang="EN-US" style="mso-ansi-language:EN-US"><span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;
+</span><b>Procedure</b> ImprimeCheque(Banco : <b>String</b>; Valor : Double ;
+Favorecido,<span style="mso-spacerun: yes">&nbsp; </span>Cidade : <b>String</b>;
+Data : TDateTime ;Observacao : <b>String</b>) ;<o:p>
+</o:p>
+</span></p>
+<p class="MsoNormal"><span lang="EN-US" style="mso-ansi-language:EN-US"><span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;
+</span><b>Procedure</b> </span><a href="cancela_impressão_de_cheque.htm"> CancelaImpressaoCheque</a><span lang="EN-US" style="mso-ansi-language:EN-US">;
+<o:p>
+</o:p>
+</span></p>
+<p class="MsoNormal"><span lang="EN-US" style="mso-ansi-language:EN-US">&nbsp;</span><span style="mso-spacerun: yes">&nbsp;&nbsp;
+</span><b>Procedure</b> <a href="muda_horário_de_verao.htm"> MudaHorarioVerao</a>;</p>
+<p class="MsoNormal"><span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </span><b>Procedure</b>
+PreparaTEF ;&nbsp;</p>
+<p class="MsoNormal"><span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </span><b>Procedure</b>
+CorrigeEstadoErro ;</p>
+<p class="MsoNormal"><span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </span><span lang="EN-US" style="mso-ansi-language:EN-US"><b>Procedure</b>
+ImpactoAgulhas ;<o:p>
+</o:p>
+</span></p>
+<p class="MsoNormal"><span lang="EN-US" style="mso-ansi-language:EN-US">&nbsp;<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;</span><b>Function</b> </span> <a href="envia_comando.htm">EnviaComando</a><span lang="EN-US" style="mso-ansi-language:EN-US">(
+cmd : <b>String</b>): String; overload;<o:p>
+</o:p>
+</span></p>
+<p class="MsoNormal">&nbsp;<span style="mso-spacerun: yes">&nbsp;&nbsp; </span><b>Procedure</b>
+TestaPodeAbrirCupom ;</p>
+</body>
+
+</html>

@@ -1,0 +1,63 @@
+object frmStatus: TfrmStatus
+  Left = 251
+  Height = 45
+  Top = 175
+  Width = 494
+  BorderIcons = []
+  BorderStyle = bsNone
+  Caption = 'frmStatus'
+  ClientHeight = 45
+  ClientWidth = 494
+  Color = clWhite
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Position = poMainFormCenter
+  LCLVersion = '0.9.29'
+  object Panel1: TPanel
+    Left = 0
+    Height = 45
+    Top = 0
+    Width = 494
+    Align = alClient
+    BevelOuter = bvNone
+    BorderWidth = 2
+    ClientHeight = 45
+    ClientWidth = 494
+    Color = clBlack
+    ParentColor = False
+    TabOrder = 0
+    object lbl1: TLabel
+      Left = 2
+      Height = 17
+      Top = 2
+      Width = 490
+      Align = alTop
+      AutoSize = False
+      Caption = 'Status do componente ACBrNFe'
+      Color = clSilver
+      Font.Color = clWhite
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Layout = tlCenter
+      ParentColor = False
+      ParentFont = False
+      Transparent = False
+    end
+    object lblStatus: TLabel
+      Left = 2
+      Height = 24
+      Top = 19
+      Width = 490
+      Align = alClient
+      Color = clGray
+      Font.Color = clWhite
+      Font.Height = -15
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      Layout = tlCenter
+      ParentColor = False
+      ParentFont = False
+      Transparent = False
+    end
+  end
+end

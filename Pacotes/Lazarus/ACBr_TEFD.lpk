@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<CONFIG>
+  <Package Version="3">
+    <PathDelim Value="\"/>
+    <Name Value="ACBr_TEFD"/>
+    <Author Value="Daniel Simões de Almeida"/>
+    <CompilerOptions>
+      <Version Value="8"/>
+      <PathDelim Value="\"/>
+      <SearchPaths>
+        <IncludeFiles Value="..\..\Fontes\ACBrTEFD\;..\..\Fontes\ACBrComum\"/>
+        <OtherUnitFiles Value="..\..\Fontes\ACBrTEFD\;..\..\Fontes\ACBrComum\"/>
+        <UnitOutputDirectory Value="..\..\lib\$(TargetCPU)-$(TargetOS)"/>
+        <SrcPath Value="..\..\Fontes\ACBrTEFD\;..\..\Fontes\ACBrComum\"/>
+      </SearchPaths>
+      <Other>
+        <CompilerPath Value="$(CompPath)"/>
+      </Other>
+    </CompilerOptions>
+    <Description Value="Componente para TEF Discado e Dedicado com suporte a Multiplos Cartões"/>
+    <License Value="LGPL"/>
+    <Version Major="1" Minor="17"/>
+    <Files Count="6">
+      <Item1>
+        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFDClass.pas"/>
+        <UnitName Value="ACBrTEFDClass"/>
+      </Item1>
+      <Item2>
+        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFD.pas"/>
+        <HasRegisterProc Value="True"/>
+        <UnitName Value="ACBrTEFD"/>
+      </Item2>
+      <Item3>
+        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFDHiper.pas"/>
+        <UnitName Value="ACBrTEFDHiper"/>
+      </Item3>
+      <Item4>
+        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFDCliSiTef.pas"/>
+        <UnitName Value="ACBrTEFDCliSiTef"/>
+      </Item4>
+      <Item5>
+        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFDDial.pas"/>
+        <UnitName Value="ACBrTEFDDial"/>
+      </Item5>
+      <Item6>
+        <Filename Value="..\..\Fontes\ACBrTEFD\ACBrTEFDDisc.pas"/>
+        <UnitName Value="ACBrTEFDDisc"/>
+      </Item6>
+    </Files>
+    <Type Value="RunAndDesignTime"/>
+    <RequiredPkgs Count="2">
+      <Item1>
+        <PackageName Value="ACBrComum"/>
+      </Item1>
+      <Item2>
+        <PackageName Value="FCL"/>
+        <MinVersion Major="1" Valid="True"/>
+      </Item2>
+    </RequiredPkgs>
+    <UsageOptions>
+      <UnitPath Value="$(PkgOutDir)\"/>
+    </UsageOptions>
+    <PublishOptions>
+      <Version Value="2"/>
+      <IgnoreBinaries Value="False"/>
+    </PublishOptions>
+  </Package>
+</CONFIG>

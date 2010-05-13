@@ -1,0 +1,170 @@
+<?xml version="1.0"?>
+<CONFIG>
+  <Package Version="3">
+    <PathDelim Value="\"/>
+    <Name Value="ACBr_SPED"/>
+    <Author Value="Isaque Pinheiro"/>
+    <CompilerOptions>
+      <Version Value="8"/>
+      <PathDelim Value="\"/>
+      <SearchPaths>
+        <IncludeFiles Value="..\..\Fontes\ACBrSPED\;..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\;..\..\Fontes\ACBrSPED\ACBrSPEDContabil\;..\..\Fontes\ACBrComum\"/>
+        <OtherUnitFiles Value="..\..\Fontes\ACBrSPED\;..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\;..\..\Fontes\ACBrSPED\ACBrSPEDContabil\;..\..\Fontes\ACBrComum\"/>
+        <UnitOutputDirectory Value="..\..\lib\$(TargetCPU)-$(TargetOS)"/>
+        <SrcPath Value="..\..\Fontes\ACBrSPED\;..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\;..\..\Fontes\ACBrSPED\ACBrSPEDContabil\;..\..\Fontes\ACBrComum\"/>
+      </SearchPaths>
+      <Other>
+        <CompilerPath Value="$(CompPath)"/>
+      </Other>
+    </CompilerOptions>
+    <Description Value="SPED Fiscal e SPED Contábil
+
+Componentes para geração do TXT"/>
+    <License Value="LGPL"/>
+    <Version Release="1"/>
+    <Files Count="30">
+      <Item1>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSped.pas"/>
+        <UnitName Value="ACBrSped"/>
+      </Item1>
+      <Item2>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSpedUtils.pas"/>
+        <UnitName Value="ACBrSpedUtils"/>
+      </Item2>
+      <Item3>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrEFDBloco_0.pas"/>
+        <UnitName Value="ACBrEFDBloco_0"/>
+      </Item3>
+      <Item4>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrEFDBloco_0_Class.pas"/>
+        <UnitName Value="ACBrEFDBloco_0_Class"/>
+      </Item4>
+      <Item5>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrEFDBloco_1.pas"/>
+        <UnitName Value="ACBrEFDBloco_1"/>
+      </Item5>
+      <Item6>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrEFDBloco_1_Class.pas"/>
+        <UnitName Value="ACBrEFDBloco_1_Class"/>
+      </Item6>
+      <Item7>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrEFDBloco_9.pas"/>
+        <UnitName Value="ACBrEFDBloco_9"/>
+      </Item7>
+      <Item8>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrEFDBloco_9_Class.pas"/>
+        <UnitName Value="ACBrEFDBloco_9_Class"/>
+      </Item8>
+      <Item9>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrEFDBloco_C.pas"/>
+        <UnitName Value="ACBrEFDBloco_C"/>
+      </Item9>
+      <Item10>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrEFDBloco_C_Class.pas"/>
+        <UnitName Value="ACBrEFDBloco_C_Class"/>
+      </Item10>
+      <Item11>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrEFDBloco_D.pas"/>
+        <UnitName Value="ACBrEFDBloco_D"/>
+      </Item11>
+      <Item12>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrEFDBloco_D_Class.pas"/>
+        <UnitName Value="ACBrEFDBloco_D_Class"/>
+      </Item12>
+      <Item13>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrEFDBloco_E.pas"/>
+        <UnitName Value="ACBrEFDBloco_E"/>
+      </Item13>
+      <Item14>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrEFDBloco_E_Class.pas"/>
+        <UnitName Value="ACBrEFDBloco_E_Class"/>
+      </Item14>
+      <Item15>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrEFDBloco_H.pas"/>
+        <UnitName Value="ACBrEFDBloco_H"/>
+      </Item15>
+      <Item16>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrEFDBloco_H_Class.pas"/>
+        <UnitName Value="ACBrEFDBloco_H_Class"/>
+      </Item16>
+      <Item17>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrEFDBlocos.pas"/>
+        <UnitName Value="ACBrEFDBlocos"/>
+      </Item17>
+      <Item18>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrSpedFiscal.pas"/>
+        <HasRegisterProc Value="True"/>
+        <UnitName Value="ACBrSpedFiscal"/>
+      </Item18>
+      <Item19>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDContabil\ACBrECDBloco_0.pas"/>
+        <UnitName Value="ACBrECDBloco_0"/>
+      </Item19>
+      <Item20>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDContabil\ACBrECDBloco_0_Class.pas"/>
+        <UnitName Value="ACBrECDBloco_0_Class"/>
+      </Item20>
+      <Item21>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDContabil\ACBrECDBloco_9.pas"/>
+        <UnitName Value="ACBrECDBloco_9"/>
+      </Item21>
+      <Item22>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDContabil\ACBrECDBloco_9_Class.pas"/>
+        <UnitName Value="ACBrECDBloco_9_Class"/>
+      </Item22>
+      <Item23>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDContabil\ACBrECDBloco_I.pas"/>
+        <UnitName Value="ACBrECDBloco_I"/>
+      </Item23>
+      <Item24>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDContabil\ACBrECDBloco_I_Class.pas"/>
+        <UnitName Value="ACBrECDBloco_I_Class"/>
+      </Item24>
+      <Item25>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDContabil\ACBrECDBloco_J.pas"/>
+        <UnitName Value="ACBrECDBloco_J"/>
+      </Item25>
+      <Item26>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDContabil\ACBrECDBloco_J_Class.pas"/>
+        <UnitName Value="ACBrECDBloco_J_Class"/>
+      </Item26>
+      <Item27>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDContabil\ACBrECDBlocos.pas"/>
+        <UnitName Value="ACBrECDBlocos"/>
+      </Item27>
+      <Item28>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDContabil\ACBrSpedContabil.pas"/>
+        <HasRegisterProc Value="True"/>
+        <UnitName Value="ACBrSpedContabil"/>
+      </Item28>
+      <Item29>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrEFDBloco_G_Class.pas"/>
+        <UnitName Value="ACBrEFDBloco_G_Class"/>
+      </Item29>
+      <Item30>
+        <Filename Value="..\..\Fontes\ACBrSPED\ACBrSPEDFiscal\ACBrEFDBloco_G.pas"/>
+        <UnitName Value="ACBrEFDBloco_G"/>
+      </Item30>
+    </Files>
+    <Type Value="RunAndDesignTime"/>
+    <RequiredPkgs Count="3">
+      <Item1>
+        <PackageName Value="ACBrComum"/>
+      </Item1>
+      <Item2>
+        <PackageName Value="LCL"/>
+      </Item2>
+      <Item3>
+        <PackageName Value="FCL"/>
+        <MinVersion Major="1" Valid="True"/>
+      </Item3>
+    </RequiredPkgs>
+    <UsageOptions>
+      <UnitPath Value="$(PkgOutDir)\"/>
+    </UsageOptions>
+    <PublishOptions>
+      <Version Value="2"/>
+      <IgnoreBinaries Value="False"/>
+    </PublishOptions>
+  </Package>
+</CONFIG>

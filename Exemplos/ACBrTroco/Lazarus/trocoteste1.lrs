@@ -1,0 +1,47 @@
+{ This is an automatically generated lazarus resource file }
+
+LazarusResources.Add('TFrmTroco','FORMDATA',[
+  'TPF0'#9'TFrmTroco'#8'FrmTroco'#4'Left'#3#211#0#6'Height'#3'Q'#1#3'Top'#3#223
+  +#0#5'Width'#3'0'#2#18'HorzScrollBar.Page'#3'/'#2#18'VertScrollBar.Page'#3'P'
+  +#1#13'ActiveControl'#7#10'eDescricao'#7'Caption'#6#5'Troco'#11'Font.Height'#2
+  +#245#9'Font.Name'#6#13'MS Sans Serif'#6'OnShow'#7#8'FormShow'#8'Position'#7
+  +#14'poScreenCenter'#0#6'TLabel'#6'Label2'#4'Left'#2#8#6'Height'#2#14#3'Top'#2
+  +'P'#5'Width'#2'/'#7'Caption'#6#9'Descricao'#5'Color'#7#6'clNone'#11'ParentCo'
+  +'lor'#8#0#0#6'TLabel'#6'Label3'#4'Left'#3#136#0#6'Height'#2#14#3'Top'#2'P'#5
+  +'Width'#2#25#7'Caption'#6#5'Valor'#5'Color'#7#6'clNone'#11'ParentColor'#8#0#0
+  +#6'TBevel'#6'Bevel1'#4'Left'#3#4#1#6'Height'#3'A'#1#3'Top'#2#8#5'Width'#2#1#5
+  +'Shape'#7#10'bsLeftLine'#0#0#6'TLabel'#6'Label1'#4'Left'#2#24#6'Height'#2#21
+  +#3'Top'#2#16#5'Width'#3#219#0#7'Caption'#6#25'Lista de C'#233'dulas e Moedas'
+  +#5'Color'#7#6'clNone'#11'Font.Height'#2#240#9'Font.Name'#6#13'MS Sans Serif'
+  +#10'Font.Style'#11#6'fsBold'#0#11'ParentColor'#8#0#0#6'TLabel'#6'Label4'#4'L'
+  +'eft'#3'H'#1#6'Height'#2#17#3'Top'#2#16#5'Width'#2'/'#7'Caption'#6#6'Troco:'
+  +#5'Color'#7#6'clNone'#11'Font.Height'#2#243#9'Font.Name'#6#13'MS Sans Serif'
+  +#10'Font.Style'#11#6'fsBold'#0#11'ParentColor'#8#0#0#5'TEdit'#10'eDescricao'
+  +#4'Left'#2#8#6'Height'#2#21#3'Top'#2'`'#5'Width'#2'y'#8'TabOrder'#2#0#0#0#5
+  +'TEdit'#6'eValor'#4'Left'#3#136#0#6'Height'#2#21#3'Top'#2'`'#5'Width'#2'q'#8
+  +'TabOrder'#2#1#0#0#5'TMemo'#5'Memo1'#4'Left'#2#8#6'Height'#3#201#0#3'Top'#3
+  +#128#0#5'Width'#3#241#0#12'Font.CharSet'#7#12'ANSI_CHARSET'#11'Font.Height'#2
+  +#245#9'Font.Name'#6#11'Courier New'#10'ScrollBars'#7#6'ssBoth'#8'TabOrder'#2
+  +#2#0#0#7'TButton'#7'Button3'#4'Left'#3#136#0#6'Height'#2#25#3'Top'#2'0'#5'Wi'
+  +'dth'#2'1'#25'BorderSpacing.InnerBorder'#2#4#7'Caption'#6#6'Listar'#7'OnClic'
+  +'k'#7#12'Button3Click'#8'TabOrder'#2#3#0#0#7'TButton'#7'Button4'#4'Left'#2#8
+  +#6'Height'#2#25#3'Top'#2'0'#5'Width'#2'9'#25'BorderSpacing.InnerBorder'#2#4#7
+  +'Caption'#6#9'Adicionar'#7'OnClick'#7#12'Button4Click'#8'TabOrder'#2#4#0#0#7
+  +'TButton'#7'Button5'#4'Left'#3#192#0#6'Height'#2#25#3'Top'#2'0'#5'Width'#2'9'
+  +#25'BorderSpacing.InnerBorder'#2#4#7'Caption'#6#6'Limpar'#7'OnClick'#7#12'Bu'
+  +'tton5Click'#8'TabOrder'#2#5#0#0#5'TMemo'#5'Memo2'#4'Left'#3#16#1#6'Height'#3
+  +#209#0#3'Top'#2'x'#5'Width'#3#25#1#12'Font.CharSet'#7#12'ANSI_CHARSET'#11'Fo'
+  +'nt.Height'#2#245#9'Font.Name'#6#11'Courier New'#10'ScrollBars'#7#6'ssBoth'#8
+  +'TabOrder'#2#6#0#0#7'TButton'#6'bTroco'#4'Left'#3'+'#1#6'Height'#2#25#3'Top'
+  +#2'0'#5'Width'#3#225#0#25'BorderSpacing.InnerBorder'#2#4#7'Caption'#6#23'Cal'
+  +'cular Troco Completo'#7'OnClick'#7#11'bTrocoClick'#8'TabOrder'#2#7#0#0#7'TB'
+  +'utton'#15'bTrocoDetalhado'#4'Left'#3'+'#1#6'Height'#2#25#3'Top'#2'P'#5'Widt'
+  +'h'#3#225#0#25'BorderSpacing.InnerBorder'#2#4#7'Caption'#6#25'Caclcular Troc'
+  +'o Detalhado'#7'OnClick'#7#20'bTrocoDetalhadoClick'#8'TabOrder'#2#8#0#0#7'TB'
+  +'utton'#7'Button2'#4'Left'#2'H'#6'Height'#2#25#3'Top'#2'0'#5'Width'#2'9'#25
+  +'BorderSpacing.InnerBorder'#2#4#7'Caption'#6#7'Remover'#7'OnClick'#7#12'Butt'
+  +'on2Click'#8'TabOrder'#2#9#0#0#5'TEdit'#7'edTroco'#4'Left'#3#128#1#6'Height'
+  +#2#21#3'Top'#2#8#5'Width'#2'y'#8'TabOrder'#2#10#4'Text'#6#6'165,23'#0#0#10'T'
+  +'ACBrTroco'#10'ACBrTroco1'#9'StrCedula'#6#6'C'#233'dula'#8'StrMoeda'#6#5'Moe'
+  +'da'#4'left'#3#136#1#3'top'#3#184#0#0#0#0
+]);

@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<BorlandProject>
-	<Transactions>
-    <Transaction>2010/04/08 11:06:39.931.pas,C:\Documents and Settings\KIKO\Meus documentos\RAD Studio\Projects\Unit1.pas=C:\Documents and Settings\KIKO\Desktop\ACBrDANFe\uACBrDanfe.pas</Transaction>
-    <Transaction>2010/04/08 11:06:39.951.dfm,C:\Documents and Settings\KIKO\Meus documentos\RAD Studio\Projects\Unit1.dfm=C:\Documents and Settings\KIKO\Desktop\ACBrDANFe\uACBrDanfe.dfm</Transaction>
-    <Transaction>2010/04/08 11:06:52.509.dproj,C:\Documents and Settings\KIKO\Meus documentos\RAD Studio\Projects\Project1.dproj=C:\Documents and Settings\KIKO\Desktop\ACBrDANFe\ACBrDANFe.dproj</Transaction>
-  </Transactions>
-</BorlandProject>

@@ -474,18 +474,26 @@ begin
     [cst00, cst10, cst20, cst30, cst40, cst41, cst50, cst51, cst60, cst70, cst80, cst81, cst90]);
 end;
 
+// A função abaixo foi alterada em 13/05/2010 por: Italo Jurisato Junior
+// Foi incluido '80', '81', e cst80, cst81,
+// Para ficar compativel com a função: CSTICMSToStr, logo acima
 function StrToCSTICMS(var ok: boolean; const s: string): TpcnCSTIcms;
 begin
-  result := StrToEnumerado(ok, s, ['00', '10', '20', '30', '40', '41', '50', '51', '60', '70', '90'],
-    [cst00, cst10, cst20, cst30, cst40, cst41, cst50, cst51, cst60, cst70, cst90]);
+  result := StrToEnumerado(ok, s, ['00', '10', '20', '30', '40', '41', '50', '51', '60', '70', '80', '81', '90'],
+    [cst00, cst10, cst20, cst30, cst40, cst41, cst50, cst51, cst60, cst70, cst80, cst81, cst90]);
 end;
 
+// A função abaixo foi alterada em 13/05/2010 por: Italo Jurisato Junior
+// Foi incluido '11', '12', e cst80, cst81,
+// Para ficar compativel com a função: CSTICMSToStr, logo acima
 function CSTICMSToStrTagPos(const t: TpcnCSTIcms): string;
 begin
-  result := EnumeradoToStr(t, ['02', '03', '04', '05', '06', '06', '06', '07', '08', '09', '10'],
-    [cst00, cst10, cst20, cst30, cst40, cst41, cst50, cst51, cst60, cst70, cst90]);
+  result := EnumeradoToStr(t, ['02', '03', '04', '05', '06', '06', '06', '07', '08', '09', '10', '11', '12'],
+    [cst00, cst10, cst20, cst30, cst40, cst41, cst50, cst51, cst60, cst70, cst80, cst81, cst90]);
 end;
 
+// A função abaixo foi alterada em 13/05/2010 por: Italo Jurisato Junior
+// As linhas alteradas estão comentadas
 function CSTICMSToStrTagPosText(const t: TpcnCSTIcms): string;
 begin
   result := EnumeradoToStr(t, ['PRESTAÇÃO SUJEITO À TRIBUTAÇÃO NORMAL ICMS',
@@ -495,7 +503,10 @@ begin
     'ICMS ISENTO, NÃO TRIBUTADO OU DEFERIDO',
     'ICMS ISENTO, NÃO TRIBUTADO OU DEFERIDO',
     'ICMS ISENTO, NÃO TRIBUTADO OU DEFERIDO',
-    '50', '51', '70',
+    '50',
+    'ICMS ISENTO, NÃO TRIBUTADO OU DEFERIDO', // '51' alterado para o CT-e
+    '60',                                     // foi incluido pois esta faltando
+    '70',
     'RESPONSABILIDADE DO RECOLHIMENTO DO ICMS ATRIBUÍDO AO TOMADOR OU 3° POR ST',
     'ICMS DEVICO À OUTRA UF',
     'ICMS OUTROS'],

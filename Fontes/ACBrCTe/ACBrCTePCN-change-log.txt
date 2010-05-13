@@ -48,6 +48,11 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   13/05/10 (Italo Jurisato Junior)
+---------------
+[*] No fonte pcnConversao, as funções: StrToCSTICMS, CSTICMSToStrTagPos e CSTICMSToStrTagPosText
+    Foram alteradas para ficarem compativeis com a função CSTICMSToStr.
+
 Alterações   12/05/10
 ---------------
 [*] Foram Incluidos todos os campos que faltavam entre o campo #277 e o Campo #320.

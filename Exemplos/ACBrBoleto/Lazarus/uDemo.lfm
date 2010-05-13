@@ -232,6 +232,15 @@ object frmDemo: TfrmDemo
       Caption = 'Zerar Lista de Boletos'
       TabOrder = 4
     end
+    object Button1: TButton
+      Left = 138
+      Height = 33
+      Top = 7
+      Width = 75
+      Caption = 'Gerar PDF'
+      OnClick = Button1Click
+      TabOrder = 5
+    end
   end
   object GroupBox1: TGroupBox
     Left = 592

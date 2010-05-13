@@ -6,7 +6,8 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs,
-  StdCtrls, EditBtn, ACBrBoleto, ACBrBoletoFCFortesFr, ExtCtrls, MaskEdit,ACBrUtil;
+  StdCtrls, EditBtn, ACBrBoleto, ACBrBoletoFCFortesFr, ExtCtrls, MaskEdit,
+  Buttons, ACBrUtil;
 
 type
 
@@ -21,6 +22,7 @@ type
      btnGerarRemessa: TButton;
      btnImprimir: TButton;
      btnZerar: TButton;
+     Button1: TButton;
      cbxAceite: TComboBox;
      edtInstrucoes1: TEdit;
      edtInstrucoes2: TEdit;
@@ -93,10 +95,10 @@ type
      procedure btnIncluiBoletoClick ( Sender: TObject ) ;
      procedure btnIncluir10BoletosClick ( Sender: TObject ) ;
      procedure btnImprimirClick ( Sender: TObject ) ;
+     procedure Button1Click ( Sender: TObject ) ;
      procedure FormCreate ( Sender: TObject ) ;
   private
      AString: Array[0..5] of AnsiString;
-     procedure Button1Click ( Sender: TObject ) ;
     { private declarations }
   public
     { public declarations }
@@ -156,9 +158,11 @@ begin
         Sacado.UF         := 'SP';
         Sacado.CEP        := '18270000';
         ValorAbatimento   := 10;
+        DataAbatimento    := Vencimento-5;
         Instrucao1        := '00';
         Instrucao2        := '00';
 
+        ACBrBoleto1.AdicionarMensagensPadroes(Titulo,Mensagem);
      end;
    end;
 end;
@@ -221,6 +225,8 @@ begin
         TipoOcorrencia    := toRemessaBaixar;
         Instrucao1        := padL(trim(edtInstrucoes1.Text),2,'0');
         Instrucao2        := padL(trim(edtInstrucoes2.Text),2,'0');
+
+        ACBrBoleto1.AdicionarMensagensPadroes(Titulo,Mensagem);
      end;
 end;
 
@@ -231,7 +237,7 @@ end;
 
 procedure TfrmDemo.Button1Click ( Sender: TObject ) ;
 begin
-
+   ACBrBoleto1.GerarPDF;
 end;
 
 end.

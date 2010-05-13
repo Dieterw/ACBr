@@ -72,6 +72,7 @@ type
     Constructor Create(AOwner: TComponent); override;
 
     procedure Imprimir; override;
+    procedure GerarPDF; override;
   end;
 
   TACBRBoletoFCFortesFr = class(TForm)
@@ -332,6 +333,30 @@ begin
   finally
      frACBrBoletoFortes.Free ;
   end;
+end;
+
+procedure TACBrBoletoFCFortes.GerarPDF;
+var
+   frACBrBoletoFortes   : TACBRBoletoFCFortesFr;
+   FiltroAntigo         : TACBrBoletoFCFiltro;
+   MostrarPreviewAntigo : Boolean;
+   MostrarSetupAntigo   : Boolean;
+begin
+   inherited GerarPDF;
+
+   FiltroAntigo         := Filtro;
+   MostrarPreviewAntigo := MostrarPreview;
+   MostrarSetupAntigo   := MostrarSetup;
+
+   Filtro:= fiPDF;
+   MostrarPreview := false;
+   MostrarSetup   := false;
+
+   Imprimir;
+
+   Filtro := FiltroAntigo;
+   MostrarPreview := MostrarSetupAntigo;
+   MostrarSetup   := MostrarSetupAntigo;
 end;
 
 { TACBRBoletoFCFortesFr }

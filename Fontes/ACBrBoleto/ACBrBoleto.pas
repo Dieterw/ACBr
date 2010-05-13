@@ -425,6 +425,8 @@ TACBrBoleto = class( TACBrComponent )
 
     procedure Imprimir;
 
+    procedure GerarPDF;
+
     procedure AdicionarMensagensPadroes(Titulo : TACBrTitulo; AStringList: TStrings);
 
     procedure GerarRemessa(NumeroRemessa : Integer);
@@ -468,6 +470,7 @@ TACBrBoletoFCClass = class(TACBrComponent)
     Constructor Create(AOwner: TComponent); override;
 
     procedure Imprimir; virtual;
+    procedure GerarPDF; virtual;
 
     property ArquivoLogo    : String read GetArqLogo;
   published
@@ -701,6 +704,16 @@ begin
   ACBrBoletoFC.Imprimir;
 end;
 
+procedure TACBrBoleto.GerarPDF;
+begin
+   if not Assigned(ACBrBoletoFC) then
+     raise Exception.Create( 'Nenhum componente "ACBrBoletoFC" associado' ) ;
+
+  ChecarDadosObrigatorios;
+
+  ACBrBoletoFC.GerarPDF;
+end;
+
 Procedure TACBrBoleto.AdicionarMensagensPadroes( Titulo : TACBrTitulo; AStringList: TStrings );
 begin
    if not ImprimirMensagemPadrao  then
@@ -748,6 +761,11 @@ begin
                              FormatCurr('R$ #,##0.00',ValorMoraJuros) +
                              ' por dia de atraso');
       end;
+
+      if PercentualMulta <> 0 then
+         AStringList.Add('Cobrar Multa de ' +
+                         FormatCurr('R$ #,##0.00',ValorDocumento*( 1+ PercentualMulta/100)-ValorDocumento) +
+                         ' após o vencimento.');
    end;
 end;
 
@@ -1013,6 +1031,7 @@ begin
       SLRemessa.Add( Banco.GerarRegistroTrailler( SLRemessa ) );
 
       SLRemessa.SaveToFile( NomeArq );
+
    finally
       SLRemessa.Free;
    end;
@@ -1128,6 +1147,15 @@ begin
 end;
 
 procedure TACBrBoletoFCClass.Imprimir;
+begin
+   if not Assigned(fACBrBoleto) then
+      raise Exception.Create(ACBrStr('Componente não está associado a ACBrBoleto'));
+
+   if fACBrBoleto.ListadeBoletos.Count < 1 then
+      raise Exception.Create(ACBrStr('Lista de Boletos está vazia'));
+end;
+
+procedure TACBrBoletoFCClass.GerarPDF;
 begin
    if not Assigned(fACBrBoleto) then
       raise Exception.Create(ACBrStr('Componente não está associado a ACBrBoleto'));

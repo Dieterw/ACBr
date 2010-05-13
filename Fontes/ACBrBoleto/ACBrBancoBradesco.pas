@@ -84,11 +84,13 @@ begin
                '01'                                       + // Código do Tipo de Serviço
                padL( 'COBRANCA', 15 )                     + // Descrição do tipo de serviço
                padR( CodigoCedente, 20, '0')              + // Codigo da Empresa no Banco
-               padL( Nome, 30)                            + // Nome da Empresa
-               IntToStr( Numero )+ padL( Nome, 15)        + // Código e Nome do Banco(237 - Bradesco)
-               FormatDateTime('ddmmyy',Now)  + Space(10)  + // Data de geração do arquivo + brancos
+               padL( Nome, 30)                                 + // Nome da Empresa
+               IntToStr( Numero )+ padL('BRADESCO', 15)        + // Código e Nome do Banco(237 - Bradesco)
+               FormatDateTime('ddmmyy',Now)  + Space(08)+'MX'  + // Data de geração do arquivo + brancos
                IntToStrZero(NumeroRemessa,7) + Space(277) + // Nr. Sequencial de Remessa + brancos
                IntToStrZero(1,6);                           // Nr. Sequencial de Remessa + brancos + Contador
+
+      Result:= UpperCase(Result);
    end;
 end;
 
@@ -148,7 +150,7 @@ begin
                   padR( Cedente.Agencia, 5, '0')                          +
                   padR( Cedente.Conta, 7, '0')                            +
                   Cedente.ContaDigito                                     +
-                  padL( SeuNumero,25,' ') +'237'                          +  // Numero de Controle do Participante
+                  padL( SeuNumero,25,' ') +'000'                          +  // Numero de Controle do Participante
                   IfThen( PercentualMulta > 0, '2', '0')                  +  // Indica se exite Multa ou não
                   IntToStrZero( round( PercentualMulta * 100 ), 4)        +  // Percentual de Multa formatado com 2 casas decimais
                   NossoNumero + DigitoNossoNumero                         +
@@ -173,6 +175,8 @@ begin
                   space(12) + padL( Sacado.CEP, 8 )                       +
                   padl( Mensagem.Text, 60 )                               +
                   IntToStrZero( ListadeBoletos.IndexOf(ACBrTitulo)+2, 6 );
+
+         Result:= UpperCase(Result);
       end;
    end;
 end;
@@ -181,6 +185,7 @@ function TACBrBancoBradesco.GerarRegistroTrailler( ARemessa:TStringList ): Strin
 begin
    Result:= '9' + Space(393)                     + // ID Registro
             IntToStrZero( ARemessa.Count + 1, 6);  // Contador de Registros
+   Result:= UpperCase(Result);
 end;
 
 

@@ -746,7 +746,6 @@ begin
 
   ImpressaoOk     := False ;
   Gerencial       := False ;
-  GerencialAberto := False ;
   MsgAutenticacaoAExibir := '' ;
 
   GrupoVinc := nil ;
@@ -774,6 +773,8 @@ begin
                     if EstadoECF <> 'L' then
                        raise EACBrTEFDECF.Create( ACBrStr('ECF não está LIVRE') ) ;
                  end;
+
+                 GerencialAberto := False ;
 
                  For J := 0 to RespostasPendentes.Count-1 do
                  begin

@@ -64,7 +64,7 @@ uses
   ACBrCTeDACTeClass;
 
 const
-  ACBRCTE_VERSAO = '0.3.3a';
+  ACBRCTE_VERSAO = '0.3.4a';
 
 type
  TACBrCTeAboutInfo = (ACBrCTeAbout);

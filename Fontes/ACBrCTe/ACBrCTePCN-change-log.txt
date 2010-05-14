@@ -50,6 +50,8 @@ Símbolo : Significado
 
 Alterações   14/05/10 (Italo Jurisato Junior)
 ---------------
+[*] Alterado o tipo do campo chave de String para AnsiString na function TCTeW.GerarXml: boolean;
+    (Créditos: EMBarbosa, Daniel Simões, Paulo Gurgel)
 [-] Correções feitas nos fontes: pcteCTeR, pcteCTeW e ACBrCTeDACTeQRRetrato,
     com relação aos campos do ICMS (Créditos: Doni Delphi).
 

@@ -201,11 +201,11 @@ end;
 
 function TCTeW.GerarXml: boolean;
 var
-{$IFNDEF VER210}
+// {$IFDEF VER210}
   chave: AnsiString;
-{$ELSE}
-  chave: string;
-{$ENDIF}
+// {$ELSE}
+//  chave: string;
+// {$ENDIF}
   Gerar: boolean;
 begin
   chave := '';

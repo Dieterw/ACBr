@@ -32,7 +32,7 @@ object frmDemo: TfrmDemo
       Top = 24
       Width = 260
       TabOrder = 0
-      Text = 'Pagar em qualquer banco até o vencimento'
+      Text = 'Pagar preferêncialmente nas agências do Bradesco'
     end
     object edtEspecieDoc: TEdit
       Left = 280
@@ -40,7 +40,7 @@ object frmDemo: TfrmDemo
       Top = 24
       Width = 88
       TabOrder = 1
-      Text = '01'
+      Text = 'DM'
     end
     object Label5: TLabel
       Left = 280
@@ -118,7 +118,7 @@ object frmDemo: TfrmDemo
       Top = 24
       Width = 112
       TabOrder = 5
-      Text = '00000000'
+      Text = '00000000000'
     end
   end
   object GroupBox3: TGroupBox
@@ -233,13 +233,22 @@ object frmDemo: TfrmDemo
       TabOrder = 4
     end
     object Button1: TButton
-      Left = 138
+      Left = 111
       Height = 33
       Top = 7
       Width = 75
       Caption = 'Gerar PDF'
       OnClick = Button1Click
       TabOrder = 5
+    end
+    object Button2: TButton
+      Left = 12
+      Height = 33
+      Top = 7
+      Width = 82
+      Caption = 'Gerar HTML'
+      OnClick = Button2Click
+      TabOrder = 6
     end
   end
   object GroupBox1: TGroupBox

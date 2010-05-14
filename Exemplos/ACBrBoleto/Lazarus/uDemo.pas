@@ -23,6 +23,7 @@ type
      btnImprimir: TButton;
      btnZerar: TButton;
      Button1: TButton;
+     Button2: TButton;
      cbxAceite: TComboBox;
      edtInstrucoes1: TEdit;
      edtInstrucoes2: TEdit;
@@ -96,6 +97,7 @@ type
      procedure btnIncluir10BoletosClick ( Sender: TObject ) ;
      procedure btnImprimirClick ( Sender: TObject ) ;
      procedure Button1Click ( Sender: TObject ) ;
+     procedure Button2Click ( Sender: TObject ) ;
      procedure FormCreate ( Sender: TObject ) ;
   private
      AString: Array[0..5] of AnsiString;
@@ -140,13 +142,14 @@ begin
 
      with Titulo do
      begin
+        LocalPagamento    := 'Pagar preferêncialmente nas agências do Bradesco'; //MEnsagem exigida pelo bradesco
         Vencimento        := IncMonth(EncodeDate(2010,05,10),I);
         DataDocumento     := EncodeDate(2010,04,10);
         NumeroDocumento   := padL(IntToStr(I),6,'0');
-        EspecieDoc        := '01';
+        EspecieDoc        := 'DM';
         Aceite            := 'S';
         DataProcessamento := Now;
-        NossoNumero       := IntToStrZero(I,10);
+        NossoNumero       := IntToStrZero(I,11);
         Carteira          := '09';
         ValorDocumento    := 100.35 * (I+0.5);
         Sacado.NomeSacado := 'Jose Luiz Pedroso';
@@ -238,6 +241,11 @@ end;
 procedure TfrmDemo.Button1Click ( Sender: TObject ) ;
 begin
    ACBrBoleto1.GerarPDF;
+end;
+
+procedure TfrmDemo.Button2Click ( Sender: TObject ) ;
+begin
+   ACBrBoleto1.GerarHTML;
 end;
 
 end.

@@ -477,57 +477,85 @@ begin
   (* Grupo da TAG <imp> *******************************************************)
   if Leitor.rExtrai(1, 'imp') <> '' then
   begin
-    if Leitor.rCampo(tcStr,'CST')='00'
-    then begin
-      CTe.Imp.ICMS.CST00.CST   := Leitor.rCampo(tcStr,'CST');
-      CTe.Imp.ICMS.CST00.vBC   := Leitor.rCampo(tcDe2,'vBC');
-      CTe.Imp.ICMS.CST00.pICMS := Leitor.rCampo(tcDe2,'pICMS');
-      CTe.Imp.ICMS.CST00.vICMS := Leitor.rCampo(tcDe2,'vICMS');
-    end;
+    if Leitor.rExtrai(2, 'ICMS') <> '' then
+    begin
+      if Leitor.rExtrai(3, 'CST00') <> '' then
+      begin
+        if Leitor.rCampo(tcStr,'CST')='00'
+        then begin
+          CTe.Imp.ICMS.SituTrib    := cst00;
+          CTe.Imp.ICMS.CST00.CST   := Leitor.rCampo(tcStr,'CST');
+          CTe.Imp.ICMS.CST00.vBC   := Leitor.rCampo(tcDe2,'vBC');
+          CTe.Imp.ICMS.CST00.pICMS := Leitor.rCampo(tcDe2,'pICMS');
+          CTe.Imp.ICMS.CST00.vICMS := Leitor.rCampo(tcDe2,'vICMS');
+        end;
+      end;
 
-    if Leitor.rCampo(tcStr,'CST')='20'
-    then begin
-      CTe.Imp.ICMS.CST20.CST    := Leitor.rCampo(tcStr,'CST');
-      CTe.Imp.ICMS.CST20.pRedBC := Leitor.rCampo(tcDe2,'pRedBC');
-      CTe.Imp.ICMS.CST20.vBC    := Leitor.rCampo(tcDe2,'vBC');
-      CTe.Imp.ICMS.CST20.pICMS  := Leitor.rCampo(tcDe2,'pICMS');
-      CTe.Imp.ICMS.CST20.vICMS  := Leitor.rCampo(tcDe2,'vICMS');
-    end;
+      if Leitor.rExtrai(3, 'CST20') <> '' then
+      begin
+        if Leitor.rCampo(tcStr,'CST')='20'
+        then begin
+          CTe.Imp.ICMS.SituTrib     := cst20;
+          CTe.Imp.ICMS.CST20.CST    := Leitor.rCampo(tcStr,'CST');
+          CTe.Imp.ICMS.CST20.pRedBC := Leitor.rCampo(tcDe2,'pRedBC');
+          CTe.Imp.ICMS.CST20.vBC    := Leitor.rCampo(tcDe2,'vBC');
+          CTe.Imp.ICMS.CST20.pICMS  := Leitor.rCampo(tcDe2,'pICMS');
+          CTe.Imp.ICMS.CST20.vICMS  := Leitor.rCampo(tcDe2,'vICMS');
+        end;
+      end;
 
-    if (Leitor.rCampo(tcStr,'CST')='40') or
-       (Leitor.rCampo(tcStr,'CST')='41') or
-       (Leitor.rCampo(tcStr,'CST')='51')
-    then CTe.Imp.ICMS.CST45.CST := Leitor.rCampo(tcStr,'CST');
+      if Leitor.rExtrai(3, 'CST45') <> '' then
+      begin
+        if (Leitor.rCampo(tcStr,'CST')='40') or
+           (Leitor.rCampo(tcStr,'CST')='41') or
+           (Leitor.rCampo(tcStr,'CST')='51')
+        then begin
+          CTe.Imp.ICMS.SituTrib  := Leitor.rCampo(tcStr,'CST');
+          CTe.Imp.ICMS.CST45.CST := Leitor.rCampo(tcStr,'CST');
+        end;
+      end;
 
-    if Leitor.rCampo(tcStr,'CST')='90'
-    then begin
-      // como detectar quando usa o 80 ou 81 ??????
+      if Leitor.rExtrai(3, 'CST80') <> '' then
+      begin
+        if Leitor.rCampo(tcStr,'CST')='90'
+        then begin
+          // Responsabilidade do recolhimento do ICMS atribuído ao tomador ou 3o por ST
+          CTe.Imp.ICMS.SituTrib    := cst80;
+          CTe.Imp.ICMS.CST80.CST   := Leitor.rCampo(tcStr,'CST');
+          CTe.Imp.ICMS.CST80.vBC   := Leitor.rCampo(tcDe2,'vBC');
+          CTe.Imp.ICMS.CST80.pICMS := Leitor.rCampo(tcDe2,'pICMS');
+          CTe.Imp.ICMS.CST80.vICMS := Leitor.rCampo(tcDe2,'vICMS');
+          CTe.Imp.ICMS.CST80.vCred := Leitor.rCampo(tcDe2,'vCred');
+        end;
+      end;
 
-      // Responsabilidade do recolhimento do ICMS atribuído ao tomador ou 3o por ST
-      CTe.Imp.ICMS.CST80.CST   := Leitor.rCampo(tcStr,'CST');
-      CTe.Imp.ICMS.CST80.vBC   := Leitor.rCampo(tcDe2,'vBC');
-      CTe.Imp.ICMS.CST80.pICMS := Leitor.rCampo(tcDe2,'pICMS');
-      CTe.Imp.ICMS.CST80.vICMS := Leitor.rCampo(tcDe2,'vICMS');
-      CTe.Imp.ICMS.CST80.vCred := Leitor.rCampo(tcDe2,'vCred');
+      if Leitor.rExtrai(3, 'CST81') <> '' then
+      begin
+        if Leitor.rCampo(tcStr,'CST')='90'
+        then begin
+          // ICMS devido à Outra UF
+          CTe.Imp.ICMS.SituTrib     := cst81;
+          CTe.Imp.ICMS.CST81.CST    := Leitor.rCampo(tcStr,'CST');
+          CTe.Imp.ICMS.CST81.pRedBC := Leitor.rCampo(tcDe2,'pRedBC');
+          CTe.Imp.ICMS.CST81.vBC    := Leitor.rCampo(tcDe2,'vBC');
+          CTe.Imp.ICMS.CST81.pICMS  := Leitor.rCampo(tcDe2,'pICMS');
+          CTe.Imp.ICMS.CST81.vICMS  := Leitor.rCampo(tcDe2,'vICMS');
+        end;
+      end;
 
-      // ICMS devido à Outra UF
-      {
-      CTe.Imp.ICMS.CST81.CST    := Leitor.rCampo(tcStr,'CST');
-      CTe.Imp.ICMS.CST81.pRedBC := Leitor.rCampo(tcDe2,'pRedBC');
-      CTe.Imp.ICMS.CST81.vBC    := Leitor.rCampo(tcDe2,'vBC');
-      CTe.Imp.ICMS.CST81.pICMS  := Leitor.rCampo(tcDe2,'pICMS');
-      CTe.Imp.ICMS.CST81.vICMS  := Leitor.rCampo(tcDe2,'vICMS');
-      }
-    end;
-
-    if Leitor.rCampo(tcStr,'CST')='90'
-    then begin
-      CTe.Imp.ICMS.CST90.CST    := Leitor.rCampo(tcStr,'CST');
-      CTe.Imp.ICMS.CST90.pRedBC := Leitor.rCampo(tcDe2,'pRedBC');
-      CTe.Imp.ICMS.CST90.vBC    := Leitor.rCampo(tcDe2,'vBC');
-      CTe.Imp.ICMS.CST90.pICMS  := Leitor.rCampo(tcDe2,'pICMS');
-      CTe.Imp.ICMS.CST90.vICMS  := Leitor.rCampo(tcDe2,'vICMS');
-      CTe.Imp.ICMS.CST90.vCred  := Leitor.rCampo(tcDe2,'vCred');
+      if Leitor.rExtrai(3, 'CST90') <> '' then
+      begin
+        if Leitor.rCampo(tcStr,'CST')='90'
+        then begin
+          CTe.Imp.ICMS.SituTrib     := cst90;
+          CTe.Imp.ICMS.CST90.CST    := Leitor.rCampo(tcStr,'CST');
+          CTe.Imp.ICMS.CST90.pRedBC := Leitor.rCampo(tcDe2,'pRedBC');
+          CTe.Imp.ICMS.CST90.vBC    := Leitor.rCampo(tcDe2,'vBC');
+          CTe.Imp.ICMS.CST90.pICMS  := Leitor.rCampo(tcDe2,'pICMS');
+          CTe.Imp.ICMS.CST90.vICMS  := Leitor.rCampo(tcDe2,'vICMS');
+          CTe.Imp.ICMS.CST90.vCred  := Leitor.rCampo(tcDe2,'vCred');
+        end;
+      end;
     end;
   end;
 

@@ -843,7 +843,7 @@ begin
 
   if CTe.Imp.ICMS.SituTrib = cst00 then
     (**)GerarCST00
-  else if CTe.Imp.ICMS.SituTrib = cst00 then
+  else if CTe.Imp.ICMS.SituTrib = cst20 then
     (**)GerarCST20
   else if ((CTe.Imp.ICMS.SituTrib = cst40) or
            (CTe.Imp.ICMS.SituTrib = cst41) or

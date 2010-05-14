@@ -48,6 +48,11 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   14/05/10 (Italo Jurisato Junior)
+---------------
+[-] Correções feitas nos fontes: pcteCTeR, pcteCTeW e ACBrCTeDACTeQRRetrato,
+    com relação aos campos do ICMS (Créditos: Doni Delphi).
+
 Alterações   13/05/10 (Italo Jurisato Junior)
 ---------------
 [*] No fonte pcnConversao, as funções: StrToCSTICMS, CSTICMSToStrTagPos e CSTICMSToStrTagPosText

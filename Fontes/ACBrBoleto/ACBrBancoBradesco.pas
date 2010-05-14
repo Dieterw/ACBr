@@ -46,7 +46,7 @@ begin
    Modulo.Documento := ACBrTitulo.Carteira + ACBrTitulo.NossoNumero;
    Modulo.Calcular;
 
-   if Modulo.DigitoFinal = 0 then
+   if Modulo.DigitoFinal = 1 then
       Result:= 'P'
    else
       Result:= IntToStr(Modulo.DigitoFinal);
@@ -60,18 +60,17 @@ begin
    begin
       FatorVencimento := CalcularFatorVencimento(ACBrTitulo.Vencimento);
 
-      CodigoBarras := IntToStr( fpNumero ) + '9' +
-                      FatorVencimento +
+      CodigoBarras := IntToStr( fpNumero )+'9'+ FatorVencimento +
                       IntToStrZero(Round(ACBrTitulo.ValorDocumento*100),10) +
-                      Cedente.Agencia +
+                      padR(Cedente.Agencia,4,'0') +
                       ACBrTitulo.Carteira +
                       ACBrTitulo.NossoNumero +
-                      Cedente.Conta + '0';
+                      padR(Cedente.Conta,7,'0') + '0';
 
       DigitoCodBarras := CalcularDigitoCodigoBarras(CodigoBarras);
    end;
 
-   Result:= IntToStr(fpNumero) + '9' + DigitoCodBarras + Copy(CodigoBarras,5,43);
+   Result:= IntToStr(fpNumero) + '9'+ DigitoCodBarras + Copy(CodigoBarras,5,39);
 end;
 
 function TACBrBancoBradesco.GerarRegistroHeader(NumeroRemessa : Integer): String;

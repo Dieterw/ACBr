@@ -426,6 +426,7 @@ TACBrBoleto = class( TACBrComponent )
     procedure Imprimir;
 
     procedure GerarPDF;
+    procedure GerarHTML;
 
     procedure AdicionarMensagensPadroes(Titulo : TACBrTitulo; AStringList: TStrings);
 
@@ -474,6 +475,7 @@ TACBrBoletoFCClass = class(TACBrComponent)
 
     procedure Imprimir; virtual;
     procedure GerarPDF; virtual;
+    procedure GerarHTML; virtual;
 
     procedure CarregaLogo( const PictureLogo : TPicture; const NumeroBanco: Integer ) ;
 
@@ -718,6 +720,16 @@ begin
   ChecarDadosObrigatorios;
 
   ACBrBoletoFC.GerarPDF;
+end;
+
+procedure TACBrBoleto.GerarHTML;
+begin
+   if not Assigned(ACBrBoletoFC) then
+     raise Exception.Create( 'Nenhum componente "ACBrBoletoFC" associado' ) ;
+
+   ChecarDadosObrigatorios;
+
+   ACBrBoletoFC.GerarHTML;
 end;
 
 Procedure TACBrBoleto.AdicionarMensagensPadroes( Titulo : TACBrTitulo; AStringList: TStrings );
@@ -1173,12 +1185,57 @@ begin
 end;
 
 procedure TACBrBoletoFCClass.GerarPDF;
+var
+   FiltroAntigo         : TACBrBoletoFCFiltro;
+   MostrarPreviewAntigo : Boolean;
+   MostrarSetupAntigo   : Boolean;
+   NomeArquivoAntigo    : String;
 begin
-   if not Assigned(fACBrBoleto) then
-      raise Exception.Create(ACBrStr('Componente não está associado a ACBrBoleto'));
+   try
+     FiltroAntigo         := Filtro;
+     MostrarPreviewAntigo := MostrarPreview;
+     MostrarSetupAntigo   := MostrarSetup;
+     NomeArquivoAntigo    := NomeArquivo;
 
-   if fACBrBoleto.ListadeBoletos.Count < 1 then
-      raise Exception.Create(ACBrStr('Lista de Boletos está vazia'));
+     Filtro      := fiPDF;
+     NomeArquivo := 'boleto.pdf';
+     MostrarPreview := false;
+     MostrarSetup   := false;
+
+     Imprimir;
+   finally
+     Filtro      := FiltroAntigo;
+     NomeArquivo := NomeArquivoAntigo;
+     MostrarPreview := MostrarSetupAntigo;
+     MostrarSetup   := MostrarSetupAntigo;
+   end;
+end;
+
+procedure TACBrBoletoFCClass.GerarHTML;
+var
+   FiltroAntigo         : TACBrBoletoFCFiltro;
+   MostrarPreviewAntigo : Boolean;
+   MostrarSetupAntigo   : Boolean;
+   NomeArquivoAntigo    : String;
+begin
+   try
+     FiltroAntigo         := Filtro;
+     NomeArquivoAntigo    := NomeArquivo;
+     MostrarPreviewAntigo := MostrarPreview;
+     MostrarSetupAntigo   := MostrarSetup;
+
+     Filtro         := fiHTML;
+     NomeArquivo    := 'boleto.html';
+     MostrarPreview := false;
+     MostrarSetup   := false;
+
+     Imprimir;
+   finally
+     Filtro         := FiltroAntigo;
+     NomeArquivo    := NomeArquivoAntigo;
+     MostrarPreview := MostrarSetupAntigo;
+     MostrarSetup   := MostrarSetupAntigo;
+   end;
 end;
 
 {$ifdef FPC}

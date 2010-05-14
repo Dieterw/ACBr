@@ -72,7 +72,6 @@ type
     Constructor Create(AOwner: TComponent); override;
 
     procedure Imprimir; override;
-    procedure GerarPDF; override;
   end;
 
   TACBRBoletoFCFortesFr = class(TForm)
@@ -335,29 +334,6 @@ begin
   end;
 end;
 
-procedure TACBrBoletoFCFortes.GerarPDF;
-var
-   frACBrBoletoFortes   : TACBRBoletoFCFortesFr;
-   FiltroAntigo         : TACBrBoletoFCFiltro;
-   MostrarPreviewAntigo : Boolean;
-   MostrarSetupAntigo   : Boolean;
-begin
-   inherited GerarPDF;
-
-   FiltroAntigo         := Filtro;
-   MostrarPreviewAntigo := MostrarPreview;
-   MostrarSetupAntigo   := MostrarSetup;
-
-   Filtro:= fiPDF;
-   MostrarPreview := false;
-   MostrarSetup   := false;
-
-   Imprimir;
-
-   Filtro := FiltroAntigo;
-   MostrarPreview := MostrarSetupAntigo;
-   MostrarSetup   := MostrarSetupAntigo;
-end;
 
 { TACBRBoletoFCFortesFr }
 
@@ -410,13 +386,13 @@ begin
       lblLocalPagto.Caption           := Titulo.LocalPagamento;
       txtDataVencimento2.Caption      := FormatDateTime('dd/mm/yyyy', Titulo.Vencimento);
       txtNomeCedente2.Caption         := Cedente.Nome;
-      txtCodigoCedente2.Caption       := Cedente.Agencia+'/'+ Cedente.Conta;
+      txtCodigoCedente2.Caption       := Cedente.Agencia+'-'+Cedente.AgenciaDigito+'/'+ Cedente.Conta+'-'+Cedente.ContaDigito;
       txtDataDocumento2.Caption       := FormatDateTime('dd/mm/yyyy', Titulo.DataDocumento);
       txtNumeroDocumento2.Caption     := Titulo.NumeroDocumento;
       txtEspecieDoc2.Caption          := Titulo.EspecieDoc;
       txtAceite2.Caption              := Titulo.Aceite;
       txtDataProcessamento2.Caption   := FormatDateTime('dd/mm/yyyy',Now);
-      txtNossoNumero2.Caption         := Titulo.NossoNumero + DigNossoNum;
+      txtNossoNumero2.Caption         := Titulo.Carteira+'/'+ Titulo.NossoNumero+ '-' + DigNossoNum;
       txtUsoBanco2.Caption            := Titulo.UsoBanco;
       txtCarteira2.Caption            := Titulo.Carteira;
       txtEspecie2.Caption             := 'R$';

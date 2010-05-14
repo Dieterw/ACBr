@@ -52,8 +52,8 @@ uses ACBrBase,  {Units da ACBr}
        LResources,
      {$ENDIF}
      SysUtils, ACBrValidador,
-     {$IFDEF COMPILER6_UP} Types {$ELSE} Windows {$ENDIF}
-     ,Contnrs, Classes;
+     {$IFDEF COMPILER6_UP} Types, {$ELSE} Windows, {$ENDIF}
+     Graphics, Contnrs, Classes;
 
 const
   CACBrBoleto_Versao = '0.0.6a' ;
@@ -445,6 +445,8 @@ TACBrBoleto = class( TACBrComponent )
 {TACBrBoletoFCClass}
 TACBrBoletoFCFiltro = (fiNenhum, fiPDF, fiHTML ) ;
 
+TACBrBoletoFCOnObterLogo = procedure( const PictureLogo : TPicture; const NumeroBanco: Integer ) of object ;
+
 TACBrBoletoFCClass = class(TACBrComponent)
   private
     fDirLogo        : String;
@@ -454,6 +456,7 @@ TACBrBoletoFCClass = class(TACBrComponent)
     fMostrarSetup: Boolean;
     fNomeArquivo: String;
     fNumCopias      : Integer;
+    fOnObterLogo : TACBrBoletoFCOnObterLogo ;
     fSoftwareHouse  : String;
     function GetAbout: String;
     function GetArqLogo: String;
@@ -472,10 +475,13 @@ TACBrBoletoFCClass = class(TACBrComponent)
     procedure Imprimir; virtual;
     procedure GerarPDF; virtual;
 
-    property ArquivoLogo    : String read GetArqLogo;
+    procedure CarregaLogo( const PictureLogo : TPicture; const NumeroBanco: Integer ) ;
+
+    property ArquivoLogo : String read GetArqLogo;
   published
     property About : String read GetAbout write SetAbout stored False ;
 
+    property OnObterLogo    : TACBrBoletoFCOnObterLogo read fOnObterLogo write fOnObterLogo ;
     property ACBrBoleto     : TACBrBoleto     read fACBrBoleto     write SetACBrBoleto ;
     property LayOut         : TACBrBolLayOut  read fLayOut         write fLayOut         default lPadrao;
     property DirLogo        : String          read GetDirLogo      write SetDirLogo;
@@ -1088,6 +1094,17 @@ begin
    if (Operation = opRemove) and (fACBrBoleto <> nil) and (AComponent is TACBrBoleto) then
       fACBrBoleto := nil ;
 end;
+
+procedure TACBrBoletoFCClass.CarregaLogo(const PictureLogo : TPicture; const NumeroBanco: Integer ) ;
+begin
+  if Assigned( fOnObterLogo ) then
+     fOnObterLogo( PictureLogo, NumeroBanco)
+  else
+   begin
+     if FileExists( ArquivoLogo ) then
+        PictureLogo.LoadFromFile( ArquivoLogo );
+   end ;
+end ;
 
 procedure TACBrBoletoFCClass.SetACBrBoleto ( const Value: TACBrBoleto ) ;
   Var OldValue : TACBrBoleto ;

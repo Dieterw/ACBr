@@ -404,7 +404,7 @@ begin
    begin
       DigNossoNum    := Banco.CalcularDigitoVerificador( Titulo );
 
-      imgBanco2.Picture.LoadFromFile( ACBrBoletoFC.DirLogo + IntToStrZero(Banco.Numero,3)+'.bmp' );
+      fBoletoFC.CarregaLogo( imgBanco2.Picture, Banco.Numero );
       txtNumeroBanco2.Caption         := IntToStrZero(Banco.Numero, 3)+ '-' +
                                          IntToStrZero(Banco.Digito, 1);
       lblLocalPagto.Caption           := Titulo.LocalPagamento;

@@ -1,4 +1,4 @@
-package ACBrDiversos;
+package ACBrTCP;
 
 {$R *.res}
 {$ALIGN 8}

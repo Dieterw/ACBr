@@ -95,6 +95,7 @@ TACBrExtenso = class( TACBrComponent )
   public
     constructor Create(AOwner: TComponent); override;
     Destructor Destroy  ; override ;
+    function ValorToTexto( AValor : Double; AFormato : TACBrExtensoFormato = extPadrao  ) : string;
 
   published
     property StrMoeda      : String read fsMoeda    write fsMoeda   ;
@@ -292,6 +293,14 @@ procedure TACBrExtenso.SetFormato(const Value: TACBrExtensoFormato);
 begin
   fsFormato := Value;
   fsValor   := 0 ;  { Reseta Valor para recalcular o extenso }
+end;
+
+function TACBrExtenso.ValorToTexto(AValor: Double;
+  AFormato: TACBrExtensoFormato): string;
+begin
+  Formato := AFormato;
+  Valor   := AValor;
+  Result  := Texto;
 end;
 
 end.

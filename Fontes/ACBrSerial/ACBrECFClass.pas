@@ -2719,13 +2719,18 @@ begin
   result := nil ;
   with fpFormasPagamentos do
   begin
-     Descricao := Trim(UpperCase( Descricao )) ;
-     Tamanho   := Length( Descricao ) ;
+     if not BuscaExata then
+        Descricao := Trim(UpperCase( Descricao )) ;
+     Tamanho := Length( Descricao ) ;
      For A := 0 to Count -1 do
      begin
-        DescrECF := TrimRight( UpperCase(Objects[A].Descricao) ) ;
         if not BuscaExata then
+         begin
+           DescrECF := TrimRight( UpperCase(Objects[A].Descricao) ) ;
            DescrECF := LeftStr( DescrECF, Tamanho) ;
+         end
+        else
+           DescrECF := TrimRight( Objects[A].Descricao ) ;
 
         if DescrECF = Descricao then
         begin
@@ -2791,13 +2796,18 @@ begin
   result := nil ;
   with fpRelatoriosGerenciais do
   begin
-     Descricao := Trim(UpperCase( Descricao )) ;
-     Tamanho   := Length( Descricao ) ;
+     if not BuscaExata then
+        Descricao := Trim(UpperCase( Descricao )) ;
+     Tamanho := Length( Descricao ) ;
      For A := 0 to Count -1 do
      begin
-        DescrECF := TrimRight( UpperCase(Objects[A].Descricao) ) ;
         if not BuscaExata then
+         begin
+           DescrECF := TrimRight( UpperCase(Objects[A].Descricao) ) ;
            DescrECF := LeftStr( DescrECF, Tamanho) ;
+         end
+        else
+           DescrECF := TrimRight( Objects[A].Descricao ) ;
 
         if DescrECF = Descricao then
         begin
@@ -2870,13 +2880,18 @@ begin
   result := nil ;
   with fpComprovantesNaoFiscais do
   begin
-     Descricao := Trim(UpperCase( Descricao )) ;
+     if not BuscaExata then
+        Descricao := Trim(UpperCase( Descricao )) ;
      Tamanho   := Length( Descricao ) ;
      For A := 0 to Count -1 do
      begin
-        DescrECF := TrimRight( UpperCase(Objects[A].Descricao) ) ;
         if not BuscaExata then
+         begin
+           DescrECF := TrimRight( UpperCase(Objects[A].Descricao) ) ;
            DescrECF := LeftStr( DescrECF, Tamanho) ;
+         end
+        else
+           DescrECF := TrimRight( Objects[A].Descricao ) ;
 
         if DescrECF = Descricao then
         begin

@@ -3902,7 +3902,7 @@ begin
      Code := copy( Buffer, P1+6, P2-P1-6) ;
 
      if Code = 'data' then
-        Code := FormatDateTime('dd:mm:yy',now)
+        Code := FormatDateTime('dd/mm/yyyy',now)
      else if Code = 'hora' then
         Code := FormatDateTime('hh:nn:ss',now)
      else if Code = 'numcupom' then

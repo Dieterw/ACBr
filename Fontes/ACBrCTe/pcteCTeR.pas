@@ -683,43 +683,212 @@ begin
 
       if Leitor.rExtrai(3, 'valePed') <> '' then
       begin
-        //
+        CTe.Rodo.valePed.nroRE     := Leitor.rCampo(tcStr, 'nroRE');
+        CTe.Rodo.valePed.vTValePed := Leitor.rCampo(tcDe2,'vTValePed');
+        CTe.Rodo.valePed.respPg    := Leitor.rCampo(tcInt, 'respPg');
+
         i01 := 0;
         while Leitor.rExtrai(4, 'disp', '', i01 + 1) <> '' do
         begin
-          //
+          CTe.Rodo.valePed.disp.Add;
+          CTe.Rodo.valePed.disp[i01].tpDisp := Leitor.rCampo(tcInt, 'tpDisp');
+          CTe.Rodo.valePed.disp[i01].xEmp   := Leitor.rCampo(tcStr, 'xEmp');
+          CTe.Rodo.valePed.disp[i01].dVig   := Leitor.rCampo(tcDat, 'dVig');
+          CTe.Rodo.valePed.disp[i01].nDisp  := Leitor.rCampo(tcStr, 'nDisp');
+          CTe.Rodo.valePed.disp[i01].nCompC := Leitor.rCampo(tcStr, 'nCompC');
           inc(i01);
         end;
-
-
-
       end;
 
       i01 := 0;
       while Leitor.rExtrai(3, 'veic', '', i01 + 1) <> '' do
       begin
-        //
+        CTe.Rodo.veic.Add;
+        CTe.Rodo.veic[i01].cInt    := Leitor.rCampo(tcStr, 'cInt');
+        CTe.Rodo.veic[i01].RENAVAM := Leitor.rCampo(tcStr, 'RENAVAM');
+        CTe.Rodo.veic[i01].placa   := Leitor.rCampo(tcStr, 'placa');
+        CTe.Rodo.veic[i01].tara    := Leitor.rCampo(tcInt, 'tara');
+        CTe.Rodo.veic[i01].capKG   := Leitor.rCampo(tcInt, 'capKG');
+        CTe.Rodo.veic[i01].capM3   := Leitor.rCampo(tcInt, 'capM3');
+        CTe.Rodo.veic[i01].tpProp  := Leitor.rCampo(tcStr, 'tpProp');
+        CTe.Rodo.veic[i01].tpVeic  := Leitor.rCampo(tcInt, 'tpVeic');
+        CTe.Rodo.veic[i01].tpRod   := Leitor.rCampo(tcInt, 'tpRod');
+        CTe.Rodo.veic[i01].tpCar   := Leitor.rCampo(tcInt, 'tpCar');
+        CTe.Rodo.veic[i01].UF      := Leitor.rCampo(tcStr, 'UF');
+
+        if Leitor.rExtrai(4, 'prop') <> '' then
+        begin
+          CTe.Rodo.veic[i01].Prop.CNPJCPF := Leitor.rCampoCNPJCPF;
+          CTe.Rodo.veic[i01].Prop.RNTRC   := Leitor.rCampo(tcStr, 'RNTRC');
+          CTe.Rodo.veic[i01].Prop.xNome   := Leitor.rCampo(tcStr, 'xNome');
+          CTe.Rodo.veic[i01].Prop.IE      := Leitor.rCampo(tcStr, 'IE');
+          CTe.Rodo.veic[i01].Prop.UF      := Leitor.rCampo(tcStr, 'UF');
+          CTe.Rodo.veic[i01].Prop.tpProp  := StrToTpProp(ok, Leitor.rCampo(tcStr, 'tpProp'));
+        end;
         inc(i01);
       end;
 
+      i01 := 0;
+      while Leitor.rExtrai(3, 'lacRodo', '', i01 + 1) <> '' do
+      begin
+        CTe.Rodo.Lacres.Add;
+        CTe.Rodo.Lacres[i01].nLacre := Leitor.rCampo(tcStr, 'nLacre');
+        inc(i01);
+      end;
 
+      i01 := 0;
+      while Leitor.rExtrai(3, 'moto', '', i01 + 1) <> '' do
+      begin
+        CTe.Rodo.moto.Add;
+        CTe.Rodo.moto[i01].xNome := Leitor.rCampo(tcStr, 'xNome');
+        CTe.Rodo.moto[i01].CPF   := Leitor.rCampo(tcStr, 'CPF');
+        inc(i01);
+      end;
+
+    end; // fim das informações do modal Rodoviário
+
+    if Leitor.rExtrai(2, 'aereo') <> '' then
+    begin
+     //
     end;
 
+    if Leitor.rExtrai(2, 'aquav') <> '' then
+    begin
+     //
+    end;
 
+    if Leitor.rExtrai(2, 'ferrov') <> '' then
+    begin
+     //
+    end;
+
+    if Leitor.rExtrai(2, 'duto') <> '' then
+    begin
+     //
+    end;
+
+    if Leitor.rExtrai(2, 'peri') <> '' then
+    begin
+     //
+    end;
+
+    if Leitor.rExtrai(2, 'veicNovos') <> '' then
+    begin
+     //
+    end;
+
+    if Leitor.rExtrai(2, 'infCteSub') <> '' then
+    begin
+     //
+    end;
   end;
 
   (* Grupo da TAG <infCTeComp> ************************************************)
-  if Leitor.rExtrai(1, 'infCTeComp') <> '' then
+  i01 := 0;
+  while Leitor.rExtrai(1, 'infCTeComp', '', i01 + 1) <> '' do
   begin
-    CTe.infCTeComp.Chave := Leitor.rCampo(tcStr,'chave');
+    CTe.InfCTeComp.Add;
+    CTe.InfCTeComp[i01].Chave := Leitor.rCampo(tcStr, 'chave');
 
     if Leitor.rExtrai(2, 'vPresComp') <> ''
     then begin
-      CTe.infCTeComp.vPresComp.vTPrest := Leitor.rCampo(tcDe2,'vTPrest');
+      CTe.infCTeComp[i01].vPresComp.vTPrest := Leitor.rCampo(tcDe2,'vTPrest');
 
+      i02 := 0;
+      while Leitor.rExtrai(3, 'compComp', '', i02 + 1) <> '' do
+      begin
+        CTe.InfCTeComp[i01].vPresComp.compComp.Add;
+        CTe.InfCTeComp[i01].vPresComp.compComp[i02].xNome := Leitor.rCampo(tcStr, 'xNome');
+        CTe.InfCTeComp[i01].vPresComp.compComp[i02].vComp := Leitor.rCampo(tcDe2, 'vComp');
+        inc(i02);
+      end;
     end;
 
+    if Leitor.rExtrai(2, 'impComp') <> '' then
+    begin
+      if Leitor.rExtrai(3, 'ICMSComp') <> '' then
+      begin
+        if Leitor.rExtrai(4, 'CST00') <> '' then
+        begin
+          if Leitor.rCampo(tcStr,'CST')='00'
+          then begin
+            CTe.InfCTeComp[i01].impComp.ICMSComp.SituTrib    := cst00;
+            CTe.InfCTeComp[i01].impComp.ICMSComp.CST00.CST   := Leitor.rCampo(tcStr,'CST');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.CST00.vBC   := Leitor.rCampo(tcDe2,'vBC');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.CST00.pICMS := Leitor.rCampo(tcDe2,'pICMS');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.CST00.vICMS := Leitor.rCampo(tcDe2,'vICMS');
+          end;
+        end;
 
+        if Leitor.rExtrai(4, 'CST20') <> '' then
+        begin
+          if Leitor.rCampo(tcStr,'CST')='20'
+          then begin
+            CTe.InfCTeComp[i01].impComp.ICMSComp.SituTrib     := cst20;
+            CTe.InfCTeComp[i01].impComp.ICMSComp.CST20.CST    := Leitor.rCampo(tcStr,'CST');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.CST20.pRedBC := Leitor.rCampo(tcDe2,'pRedBC');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.CST20.vBC    := Leitor.rCampo(tcDe2,'vBC');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.CST20.pICMS  := Leitor.rCampo(tcDe2,'pICMS');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.CST20.vICMS  := Leitor.rCampo(tcDe2,'vICMS');
+          end;
+        end;
+
+        if Leitor.rExtrai(4, 'CST45') <> '' then
+        begin
+          if (Leitor.rCampo(tcStr,'CST')='40') or
+             (Leitor.rCampo(tcStr,'CST')='41') or
+             (Leitor.rCampo(tcStr,'CST')='51')
+          then begin
+            CTe.InfCTeComp[i01].impComp.ICMSComp.SituTrib  := Leitor.rCampo(tcStr,'CST');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.CST45.CST := Leitor.rCampo(tcStr,'CST');
+          end;
+        end;
+
+        if Leitor.rExtrai(4, 'CST80') <> '' then
+        begin
+          if Leitor.rCampo(tcStr,'CST')='90'
+          then begin
+            // Responsabilidade do recolhimento do ICMS atribuído ao tomador ou 3o por ST
+            CTe.InfCTeComp[i01].impComp.ICMSComp.SituTrib    := cst80;
+            CTe.InfCTeComp[i01].impComp.ICMSComp.CST80.CST   := Leitor.rCampo(tcStr,'CST');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.CST80.vBC   := Leitor.rCampo(tcDe2,'vBC');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.CST80.pICMS := Leitor.rCampo(tcDe2,'pICMS');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.CST80.vICMS := Leitor.rCampo(tcDe2,'vICMS');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.CST80.vCred := Leitor.rCampo(tcDe2,'vCred');
+          end;
+        end;
+
+        if Leitor.rExtrai(4, 'CST81') <> '' then
+        begin
+          if Leitor.rCampo(tcStr,'CST')='90'
+          then begin
+            // ICMS devido à Outra UF
+            CTe.InfCTeComp[i01].impComp.ICMSComp.SituTrib     := cst81;
+            CTe.InfCTeComp[i01].impComp.ICMSComp.CST81.CST    := Leitor.rCampo(tcStr,'CST');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.CST81.pRedBC := Leitor.rCampo(tcDe2,'pRedBC');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.CST81.vBC    := Leitor.rCampo(tcDe2,'vBC');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.CST81.pICMS  := Leitor.rCampo(tcDe2,'pICMS');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.CST81.vICMS  := Leitor.rCampo(tcDe2,'vICMS');
+          end;
+        end;
+
+        if Leitor.rExtrai(4, 'CST90') <> '' then
+        begin
+          if Leitor.rCampo(tcStr,'CST')='90'
+          then begin
+            CTe.InfCTeComp[i01].impComp.ICMSComp.SituTrib     := cst90;
+            CTe.InfCTeComp[i01].impComp.ICMSComp.CST90.CST    := Leitor.rCampo(tcStr,'CST');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.CST90.pRedBC := Leitor.rCampo(tcDe2,'pRedBC');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.CST90.vBC    := Leitor.rCampo(tcDe2,'vBC');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.CST90.pICMS  := Leitor.rCampo(tcDe2,'pICMS');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.CST90.vICMS  := Leitor.rCampo(tcDe2,'vICMS');
+            CTe.InfCTeComp[i01].impComp.ICMSComp.CST90.vCred  := Leitor.rCampo(tcDe2,'vCred');
+          end;
+        end;
+      end;
+    end;
+
+    inc(i01);
   end;
 
   (* Grupo da TAG <infCTeAnu> ************************************************)

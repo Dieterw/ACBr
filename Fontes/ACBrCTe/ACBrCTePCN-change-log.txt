@@ -48,6 +48,13 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   17/05/10 (Italo Jurisato Junior)
+---------------
+[*] Foram Incluídos todos os campos que faltavam entre o campo #321 e o Campo #355 e
+    entre o campo #466 e o campo #510.
+[*] No Componente ACBrCTeDACTeQRRetrato, foi incluido o código da Situação Tributária antes da
+    descrição (Exemplo: 00-Prestação Sujeito a Tributação Normal ICMS).
+
 Alterações   14/05/10 (Italo Jurisato Junior)
 ---------------
 [*] Alterado o tipo do campo chave de String para AnsiString na function TCTeW.GerarXml: boolean;
@@ -62,7 +69,7 @@ Alterações   13/05/10 (Italo Jurisato Junior)
 
 Alterações   12/05/10
 ---------------
-[*] Foram Incluidos todos os campos que faltavam entre o campo #277 e o Campo #320.
+[*] Foram Incluídos todos os campos que faltavam entre o campo #277 e o Campo #320.
 [*] Os pacotes de instalação ACBr_CTe e ACBrCTeDacteQRpkg agora possuiem uma diretiva de 
     compilação para o Delphi 2010 para ignorar a DCP: visualclx (Créditos: Isaque Pinheiro e Vanderlei Silva).
 [*] Na função function TCTeW.GerarXml: boolean;, possuiem uma diretiva de 
@@ -72,7 +79,7 @@ Alterações   12/05/10
 
 Alterações   07/05/10
 ---------------
-[*] Foram Incluidos todos os campos que faltavam entre o campo #1 e o Campo #276.
+[*] Foram Incluídos todos os campos que faltavam entre o campo #1 e o Campo #276.
     Campos referentes aos dados complementares do CT-e para fins operacionais ou comerciais,
     Campos referentes ao Local de retirada constante na NF e
     Campos referentes ao Local de Entrega constante na NF.

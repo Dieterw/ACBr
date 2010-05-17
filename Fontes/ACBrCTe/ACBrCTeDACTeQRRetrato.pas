@@ -763,7 +763,8 @@ begin
   qrlVlrTotServico.Caption := CteUtil.FormatarValor(msk13x2, FCTe.vPrest.vTPrest);
   qrlVlrTotReceber.Caption := CteUtil.FormatarValor(msk13x2, FCTe.vPrest.vRec);
 
-  qrlSitTrib.Caption := CSTICMSToStrTagPosText(FCTe.Imp.ICMS.SituTrib);
+  qrlSitTrib.Caption := CSTICMSToStr(FCTe.Imp.ICMS.SituTrib)+'-'+
+                        CSTICMSToStrTagPosText(FCTe.Imp.ICMS.SituTrib);
 
   case FCTe.Imp.ICMS.SituTrib of
     cst00:

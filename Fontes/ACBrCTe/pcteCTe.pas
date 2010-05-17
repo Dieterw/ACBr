@@ -99,7 +99,6 @@ type
   TvPrest = class;
   TCompCollection = class;
   TCompCollectionItem = class;
-
   TImp = class;
   TICMS = class;
   TCST00 = class;
@@ -110,11 +109,9 @@ type
   TCST90 = class;
 
   TInfCTeNorm = class;
-
   TInfCarga = class;
   TInfQCollection = class;
   TInfQCollectionItem = class;
-
   TInfcontQtCollection = class;
   TInfcontQtCollectionItem = class;
   TlacContQtCollection = class;
@@ -127,26 +124,42 @@ type
   TidDocAntPapCollectionItem = class;
   TidDocAntEleCollection = class;
   TidDocAntEleCollectionItem = class;
-
-
   TInfSegCollection = class;
   TInfSegCollectionItem = class;
-  TRodo = class;
+
+  TRodo = class; // Informações do modal Rodoviário
   TCTRB = class;
   TOccCollection = class;
   TOccCollectionItem = class;
   TEmiOCC = class;
-
-
+  TValePed = class;
+  TDispCollection = class;
+  TDispCollectionItem = class;
+  TVeicCollection = class;
+  TVeicCollectionItem = class;
   Tprop = class;
   TLacresCollection = class;
   TLacresCollectionItem = class;
-  TMoto = class;
+  TMotoCollection = class;
+  TMotoCollectionItem = class;
 
+  // Taereo = class; // Informações do modal Aéreo
+  // Taquav = class; // Informações do modal Aquaviário
+  // Tferrov = class; // Informações do modal Ferroviário
+  // Tduto = class; // Informações do modal Dutoviário
+  // Tperi = class; // Informações de produtos classificados pela ONU como perigosos
+  // TveicNovos = class; // Informações dos veículos transportados
+  // TinfCTeSub = class; // Informações do CT-e de substituição
+
+  TinfCTeCompCollection = class;
+  TinfCTeCompCollectionItem = class;
+  TvPresComp = class;
+  TcompCompCollection = class;
+  TcompCompCollectionItem = class;
+  TImpComp = class;
+  TICMSComp = class;
 
   TInfCTeAnuEnt = class;
-  TinfCTeComp = class;
-  TvPresComp = class;
 
   TCTe = class(TPersistent)
   private
@@ -161,18 +174,18 @@ type
     FDest       : TDest;
     FvPrest     : TvPrest;
     FImp        : TImp;
-
     FInfCTeNorm : TInfCteNorm;
 
     FInfCarga   : TInfCarga;
-
     FInfSeg     : TInfSegCollection;
     FRodo       : TRodo;
-    FinfCTeComp : TinfCTeComp;
+
+    FinfCTeComp : TinfCTeCompCollection;
     FInfCTeAnuEnt : TInfCTeAnuEnt;
     FProcCTe: TProcCTe;
     FSignature: TSignature;
     procedure SetInfSeg(Value: TInfSegCollection);
+    procedure SetInfCTeComp(Value: TInfCTeCompCollection);
   public
     constructor Create;
     destructor Destroy; override;
@@ -192,8 +205,8 @@ type
     property InfCarga: TInfCarga read FInfCarga write FInfCarga;
     property InfSeg: TInfSegCollection read FInfSeg write SetInfSeg;
     property Rodo: TRodo read FRodo write FRodo;
+    property InfCTeComp: TInfCTeCompCollection read FInfCTeComp write SetInfCTeComp;
     property InfCTeAnuEnt: TInfCTeAnuEnt read FInfCTeAnuEnt write FInfCTeAnuEnt;
-    property infCTeComp: TinfCTeComp read FinfCTeComp write FinfCTeComp;
     property procCTe: TProcCTe read FProcCTe write FProcCTe;
     property signature: Tsignature read Fsignature write Fsignature;
   end;
@@ -925,8 +938,8 @@ type
 
   TCompCollectionItem = class(TCollectionItem)
   private
-    FvComp: Currency;
     FxNome: string;
+    FvComp: Currency;
   public
     constructor Create; reintroduce;
     destructor Destroy; override;
@@ -1282,17 +1295,19 @@ type
 
   TRodo = class(TPersistent)
   private
-    FRNTRC  : String;
-    FdPrev  : tDateTime;
-    FLota   : TpcteLocacao;
-    FCTRB   : TCTRB;
-    FOcc    : TOccCollection;
-
-    FProp   : Tprop;
-    FLacres : TLacresCollection;
-    Fmoto: TMoto;
+    FRNTRC   : String;
+    FdPrev   : tDateTime;
+    FLota    : TpcteLocacao;
+    FCTRB    : TCTRB;
+    FOcc     : TOccCollection;
+    FvalePed : TValePed;
+    Fveic    : TVeicCollection;
+    FLacres  : TLacresCollection;
+    Fmoto    : TMotoCollection;
     procedure SetOcc(const Value: TOccCollection);
+    procedure SetVeic(const Value: TVeicCollection);
     procedure SetLacres(const Value: TLacresCollection);
+    procedure SetMoto(const Value: TMotoCollection);
   public
     constructor Create(AOwner: TCTe);
     destructor Destroy; override;
@@ -1302,10 +1317,10 @@ type
     property Lota: TpcteLocacao read FLota write FLota;
     property CTRB: TCTRB read FCTRB write FCTRB;
     property Occ: TOccCollection read FOcc write SetOcc;
-
-    property Prop: Tprop read FProp write FProp;
+    property valePed: TValePed read FvalePed write FvalePed;
+    property veic: TVeicCollection read Fveic write SetVeic;
     property Lacres: TLacresCollection read FLacres write SetLacres;
-    property moto: TMoto read Fmoto write Fmoto;
+    property moto: TMotoCollection read Fmoto write SetMoto;
   end;
 
   TCTRB = class(TPersistent)
@@ -1358,7 +1373,92 @@ type
     property fone: String read Ffone write Ffone;
   end;
 
+  TValePed = class(TPersistent)
+  private
+    FnroRE     : String;
+    FvTValePed : Currency;
+    FrespPg    : Integer;
+    Fdisp      : TDispCollection;
+    procedure SetDisp(const Value: TDispCollection);
+  public
+    constructor Create(AOwner: TRodo);
+    destructor Destroy; override;
+  published
+    property nroRE: String read FnroRE write FnroRE;
+    property vTValePed: Currency read FvTValePed write FvTValePed;
+    property respPg: Integer read FrespPg write FrespPg;
+    property disp: TDispCollection read Fdisp write SetDisp;
+  end;
 
+  TDispCollection = class(TCollection)
+  private
+    function GetItem(Index: Integer): TDispCollectionItem;
+    procedure SetItem(Index: Integer; Value: TDispCollectionItem);
+  public
+    constructor Create(AOwner: TValePed);
+    function Add: TDispCollectionItem;
+    property Items[Index: Integer]: TDispCollectionItem read GetItem write SetItem; default;
+  end;
+
+  TDispCollectionItem = class(TCollectionItem)
+  private
+    FtpDisp : Integer;
+    FxEmp   : String;
+    FdVig   : TDateTime;
+    FnDisp  : String;
+    FnCompC : String;
+  public
+    constructor Create; reintroduce;
+    destructor Destroy; override;
+  published
+    property tpDisp: Integer read FtpDisp write FtpDisp;
+    property xEmp: String read FxEmp write FxEmp;
+    property dVig: TDateTime read FdVig write FdVig;
+    property nDisp: String read FnDisp write FnDisp;
+    property nCompC: String read FnCompC write FnCompC;
+  end;
+
+  TVeicCollection = class(TCollection)
+  private
+    function GetItem(Index: Integer): TVeicCollectionItem;
+    procedure SetItem(Index: Integer; Value: TVeicCollectionItem);
+  public
+    constructor Create(AOwner: TRodo);
+    function Add: TVeicCollectionItem;
+    property Items[Index: Integer]: TVeicCollectionItem read GetItem write SetItem; default;
+  end;
+
+  TVeicCollectionItem = class(TCollectionItem)
+  private
+    FcInt    : String;
+    FRENAVAM : String;
+    Fplaca   : String;
+    Ftara    : Integer;
+    FcapKG   : Integer;
+    FcapM3   : Integer;
+    FtpProp  : String;
+    FtpVeic  : Integer;
+    FtpRod   : Integer;
+    FtpCar   : Integer;
+    FUF      : String;
+    FProp    : Tprop;
+  public
+    constructor Create; reintroduce;
+    destructor Destroy; override;
+  published
+    property cInt: String read FcInt write FcInt;
+    property RENAVAM: String read FRENAVAM write FRENAVAM;
+    property placa: String read Fplaca write Fplaca;
+    property tara: Integer read Ftara write Ftara;
+    property capKG: Integer read FcapKG write FcapKG;
+    property capM3: Integer read FcapM3 write FcapM3;
+    property tpProp: String read FtpProp write FtpProp;
+    property tpVeic: Integer read FtpVeic write FtpVeic;
+    property tpRod: Integer read FtpRod write FtpRod;
+    property tpCar: Integer read FtpCar write FtpCar;
+    property UF: String read FUF write FUF;
+    property Prop: Tprop read FProp write FProp;
+  end;
 
   Tprop = class(TPersistent)
   private
@@ -1397,15 +1497,120 @@ type
     property nLacre: string read FnLacre write FnLacre;
   end;
 
-  TMoto = class(TPersistent)
+  TMotoCollection = class(TCollection)
+  private
+    function GetItem(Index: Integer): TMotoCollectionItem;
+    procedure SetItem(Index: Integer; Value: TMotoCollectionItem);
+  public
+    constructor Create(AOwner: TRodo);
+    function Add: TMotoCollectionItem;
+    property Items[Index: Integer]: TMotoCollectionItem read GetItem write SetItem; default;
+  end;
+
+  TMotoCollectionItem = class(TCollectionItem)
   private
     FxNome: string;
     FCPF: string;
   public
+    constructor Create; reintroduce;
+    destructor Destroy; override;
+  published
     property xNome: string read FxNome write FxNome;
     property CPF: string read FCPF write FCPF;
   end;
 
+  TinfCTeCompCollection = class(TCollection)
+  private
+    function GetItem(Index: Integer): TinfCTeCompCollectionItem;
+    procedure SetItem(Index: Integer; Value: TinfCTeCompCollectionItem);
+  public
+    constructor Create(AOwner: TCTe);
+    function Add: TinfCTeCompCollectionItem;
+    property Items[Index: Integer]: TinfCTeCompCollectionItem read GetItem write SetItem; default;
+  end;
+
+  TinfCTeCompCollectionItem = class(TCollectionItem)
+  private
+    FChave     : String;
+    FvPresComp : TvPresComp;
+    FimpComp   : TimpComp;
+  public
+    constructor Create; reintroduce;
+    destructor Destroy; override;
+  published
+    property Chave : String read FChave write FChave;
+    property vPresComp: TvPresComp read FvPresComp write FvPresComp;
+    property impComp: TimpComp read FimpComp write FimpComp;
+  end;
+
+  TvPresComp = class(TPersistent)
+  private
+    FvTPrest  : Currency;
+    FcompComp : TcompCompCollection;
+    procedure SetcompCompItem(const Value: TcompCompCollection);
+  public
+    constructor Create(AOwner: TinfCTeCompCollectionItem);
+    destructor Destroy; override;
+  published
+    property vTPrest: Currency read FvTPrest write FvTPrest;
+    property compComp: TcompCompCollection read FcompComp write SetcompCompItem;
+  end;
+
+  TcompCompCollection = class(TCollection)
+  private
+    function GetItem(Index: Integer): TcompCompCollectionItem;
+    procedure SetItem(Index: Integer; Value: TcompCompCollectionItem);
+  public
+    constructor Create(AOwner: TvPresComp);
+    function Add: TcompCompCollectionItem;
+    property Items[Index: Integer]: TcompCompCollectionItem read GetItem write SetItem; default;
+  end;
+
+  TcompCompCollectionItem = class(TCollectionItem)
+  private
+    FxNome: string;
+    FvComp: Currency;
+  public
+    constructor Create; reintroduce;
+    destructor Destroy; override;
+  published
+    property xNome: string read FxNome write FxNome;
+    property vComp: Currency read FvComp write FvComp;
+  end;
+
+  TImpComp = class(TPersistent)
+  private
+    FICMSComp : TICMSComp;
+    FInfAdFisco : String;
+  public
+    constructor Create(AOwner: TinfCTeCompCollectionItem);
+    destructor Destroy; override;
+  published
+    property ICMSComp: TICMSComp read FICMSComp write FICMSComp;
+    property InfAdFisco : String read FInfAdFisco write FInfAdFisco;
+  end;
+
+  TICMSComp = class(TPersistent)
+  private
+    FSituTrib   : TpcnCSTIcms;
+    FCST00 : TCST00;
+    FCST20 : TCST20;
+    FCST45 : TCST45;
+    FCST80 : TCST80;
+    FCST81 : TCST81;
+    FCST90 : TCST90;
+  public
+    constructor Create(AOwner: TImpComp);
+    destructor Destroy; override;
+  published
+    property SituTrib: TpcnCSTIcms read FSituTrib write FSituTrib;
+    property CST00 : TCST00 read FCST00 write FCST00;
+    property CST20 : TCST20 read FCST20 write FCST20;
+    property CST45 : TCST45 read FCST45 write FCST45;
+    property CST80 : TCST80 read FCST80 write FCST80;
+    property CST81 : TCST81 read FCST81 write FCST81;
+    property CST90 : TCST90 read FCST90 write FCST90;
+  end;
 
   TInfCTeAnuEnt = class(TPersistent)
   private
@@ -1417,25 +1622,6 @@ type
   published
     property chCTe : String read FchCTe write FchCTe;
     property dEmi : TDateTime read FdEmi write FdEmi;
-  end;
-
-  TinfCTeComp = class(TPersistent)
-  private
-    FChave     : String;
-    FvPresComp : TvPresComp;
-  public
-    constructor Create(AOwner: TCTe);
-    destructor Destroy; override;
-  published
-    property Chave : String read FChave write FChave;
-    property vPresComp: TvPresComp read FvPresComp write FvPresComp;
-  end;
-
-  TvPresComp = class(TPersistent)
-  private
-    FvTPrest: Currency;
-  published
-    property vTPrest: Currency read FvTPrest write FvTPrest;
   end;
 
 const
@@ -1459,12 +1645,11 @@ begin
   FvPrest       := TvPrest.Create(Self);
   FImp          := TImp.Create(Self);
   FInfCTeNorm   := TInfCTeNorm.Create(Self);
-
   FInfCarga     := TInfCarga.Create(Self);
-
   FInfSeg       := TInfSegCollection.Create(Self);
   FRodo         := TRodo.Create(Self);
-  FinfCTeComp   := TinfCTeComp.Create(Self);
+
+  FinfCTeComp   := TinfCTeCompCollection.Create(Self);
   FInfCTeAnuEnt := TInfCTeAnuEnt.Create(Self);
 
   Fsignature := Tsignature.create;
@@ -1484,9 +1669,9 @@ begin
   FImp.Free;
   FInfCTeNorm.Free;
   FInfCarga.Free;
-
   FInfSeg.Free;
   FRodo.Free;
+
   FInfCTeComp.Free;
   FInfCTeAnuEnt.Free;
 
@@ -1510,6 +1695,18 @@ begin
   inherited;
 end;
 
+procedure TCTe.SetInfSeg(Value: TInfSegCollection);
+begin
+  FInfSeg.Assign(Value);
+end;
+
+procedure TCTe.SetInfCTeComp(Value: TInfCTeCompCollection);
+begin
+  FInfCTeComp.Assign(Value);
+end;
+
+{TToma4}
+
 constructor TToma4.Create(AOwner: TCTe);
 begin
   inherited Create;
@@ -1520,11 +1717,6 @@ destructor TToma4.Destroy;
 begin
   FEnderToma.Free;
   inherited;
-end;
-
-procedure TCTe.SetInfSeg(Value: TInfSegCollection);
-begin
-  FInfSeg.Assign(Value);
 end;
 
 { TCompl }
@@ -1556,6 +1748,8 @@ procedure TCompl.SetObsFisco(Value: TObsFiscoCollection);
 begin
  FObsFisco.Assign(Value);
 end;
+
+{TFluxo}
 
 constructor TFluxo.Create(AOwner: TCompl);
 begin
@@ -1740,7 +1934,6 @@ begin
   FInfNF.Free;
   FInfNFe.Free;
   FInfOutros.Free;
-
   inherited;
 end;
 
@@ -1796,19 +1989,6 @@ begin
   inherited;
 end;
 
-{ TInfNFECollectionItem }
-
-constructor TInfNFECollectionItem.Create;
-begin
-
-end;
-
-destructor TInfNFECollectionItem.Destroy;
-begin
-
-  inherited;
-end;
-
 { TInfNFECollection }
 
 function TInfNFECollection.Add: TInfNFECollectionItem;
@@ -1831,6 +2011,57 @@ procedure TInfNFECollection.SetItem(Index: Integer;
   Value: TInfNFECollectionItem);
 begin
   inherited SetItem(Index, Value);
+end;
+
+{ TInfNFECollectionItem }
+
+constructor TInfNFECollectionItem.Create;
+begin
+
+end;
+
+destructor TInfNFECollectionItem.Destroy;
+begin
+
+  inherited;
+end;
+
+{ TInfOutrosCollection }
+
+function TInfOutrosCollection.Add: TInfOutrosCollectionItem;
+begin
+  Result := TInfOutrosCollectionItem(inherited Add);
+  Result.create;
+end;
+
+constructor TInfOutrosCollection.Create(AOwner: TRem);
+begin
+  inherited Create(TInfOutrosCollectionItem);
+end;
+
+function TInfOutrosCollection.GetItem(
+  Index: Integer): TInfOutrosCollectionItem;
+begin
+  Result := TInfOutrosCollectionItem(inherited GetItem(Index));
+end;
+
+procedure TInfOutrosCollection.SetItem(Index: Integer;
+  Value: TInfOutrosCollectionItem);
+begin
+  inherited SetItem(Index, Value);
+end;
+
+{ TInfOutrosCollectionItem }
+
+constructor TInfOutrosCollectionItem.Create;
+begin
+
+end;
+
+destructor TInfOutrosCollectionItem.Destroy;
+begin
+
+  inherited;
 end;
 
 { TExped }
@@ -1896,6 +2127,42 @@ begin
   Fcomp.Assign(Value);
 end;
 
+{ TCompCollection }
+
+function TCompCollection.Add: TCompCollectionItem;
+begin
+  Result := TCompCollectionItem(inherited Add);
+  Result.create;
+end;
+
+constructor TCompCollection.Create(AOwner: TCTe);
+begin
+  inherited Create(TCompCollectionItem);
+end;
+
+function TCompCollection.GetItem(Index: Integer): TCompCollectionItem;
+begin
+  Result := TCompCollectionItem(inherited GetItem(Index));
+end;
+
+procedure TCompCollection.SetItem(Index: Integer; Value: TCompCollectionItem);
+begin
+  inherited SetItem(Index, Value);
+end;
+
+{ TCompCollectionItem }
+
+constructor TCompCollectionItem.Create;
+begin
+
+end;
+
+destructor TCompCollectionItem.Destroy;
+begin
+
+  inherited;
+end;
+
 { TImp }
 
 constructor TImp.Create(AOwner: TCTe);
@@ -1933,207 +2200,29 @@ begin
   inherited;
 end;
 
-{ TInfSegCollection }
+{ TInfCTeNorm }
 
-function TInfSegCollection.Add: TInfSegCollectionItem;
+constructor TInfCTeNorm.Create(AOwner: TCTe);
 begin
-  Result := TInfSegCollectionItem(inherited Add);
-  Result.create;
+ FcontQt    := TInfcontQtCollection.Create(Self);
+ FemiDocAnt := TemiDocAntCollection.Create(Self);
 end;
 
-constructor TInfSegCollection.Create(AOwner: TCTe);
+destructor TInfCTeNorm.Destroy;
 begin
-  inherited Create(TInfSegCollectionItem);
-end;
-
-function TInfSegCollection.GetItem(Index: Integer): TInfSegCollectionItem;
-begin
-  Result := TInfSegCollectionItem(inherited GetItem(Index));
-end;
-
-procedure TInfSegCollection.SetItem(Index: Integer; Value: TInfSegCollectionItem);
-begin
-  inherited SetItem(Index, Value);
-end;
-
-{ TInfSegCollectionItem }
-
-constructor TInfSegCollectionItem.Create;
-begin
-
-end;
-
-destructor TInfSegCollectionItem.Destroy;
-begin
-
+  FcontQt.Free;
+  FemiDocAnt.Free;
   inherited;
 end;
 
-{ TRodo }
-
-constructor TRodo.Create(AOwner: TCTe);
+procedure TInfCTeNorm.SetcontQt(const Value: TInfcontQtCollection);
 begin
-  FCTRB := TCTRB.Create;
-  FOcc  := TOccCollection.Create(Self);
-  FProp   := TProp.Create;
-  FLacres := TLacresCollection.Create(self);
+  FcontQt.Assign(Value);
 end;
 
-destructor TRodo.Destroy;
+procedure TInfCTeNorm.SetemiDocAnt(const Value: TemiDocAntCollection);
 begin
-  FCTRB.Free;
-  FOcc.Free;
-  FProp.Free;
-  FLacres.Free;
-  inherited;
-end;
-
-procedure TRodo.SetLacres(const Value: TLacresCollection);
-begin
-  FLacres.Assign(Value);
-end;
-
-procedure TRodo.SetOcc(const Value: TOccCollection);
-begin
- FOcc.Assign(Value);
-end;
-
-{ TOccCollection }
-
-function TOccCollection.Add: TOccCollectionItem;
-begin
-  Result := TOccCollectionItem(inherited Add);
-  Result.create;
-end;
-
-constructor TOccCollection.Create(AOwner: TRodo);
-begin
-  inherited Create(TOccCollectionItem);
-end;
-
-function TOccCollection.GetItem(Index: Integer): TOccCollectionItem;
-begin
-  Result := TOccCollectionItem(inherited GetItem(Index));
-end;
-
-procedure TOccCollection.SetItem(Index: Integer;
-  Value: TOccCollectionItem);
-begin
-  inherited SetItem(Index, Value);
-end;
-
-{ TOccCollectionItem }
-
-constructor TOccCollectionItem.Create;
-begin
-  FEmiOCC := TEmiOCC.Create;
-end;
-
-destructor TOccCollectionItem.Destroy;
-begin
-  FEmiOCC.Free;
-  inherited;
-end;
-
-{ TLacresCollection }
-
-function TLacresCollection.Add: TLacresCollectionItem;
-begin
-  Result := TLacresCollectionItem(inherited Add);
-  Result.create;
-end;
-
-constructor TLacresCollection.Create(AOwner: TRodo);
-begin
-  inherited Create(TLacresCollectionItem);
-end;
-
-function TLacresCollection.GetItem(Index: Integer): TLacresCollectionItem;
-begin
-  Result := TLacresCollectionItem(inherited GetItem(Index));
-end;
-
-procedure TLacresCollection.SetItem(Index: Integer;
-  Value: TLacresCollectionItem);
-begin
-  inherited SetItem(Index, Value);
-end;
-
-{ TLacresCollectionItem }
-
-constructor TLacresCollectionItem.Create;
-begin
-
-end;
-
-destructor TLacresCollectionItem.Destroy;
-begin
-
-  inherited;
-end;
-
-{ TInfCTeAnuEnt }
-
-constructor TInfCTeAnuEnt.Create(AOwner: TCTe);
-begin
-  inherited Create;
-end;
-
-destructor TInfCTeAnuEnt.Destroy;
-begin
-  inherited;
-end;
-
-{ TinfCTeComp }
-
-constructor TinfCTeComp.Create(AOwner: TCTe);
-begin
-  inherited Create;
-  FvPresComp := TvPresComp.Create;
-end;
-
-destructor TinfCTeComp.Destroy;
-begin
-  FvPresComp.Free;
-  inherited;
-end;
-
-{ TInfOutrosCollection }
-
-function TInfOutrosCollection.Add: TInfOutrosCollectionItem;
-begin
-  Result := TInfOutrosCollectionItem(inherited Add);
-  Result.create;
-end;
-
-constructor TInfOutrosCollection.Create(AOwner: TRem);
-begin
-  inherited Create(TInfOutrosCollectionItem);
-end;
-
-function TInfOutrosCollection.GetItem(
-  Index: Integer): TInfOutrosCollectionItem;
-begin
-  Result := TInfOutrosCollectionItem(inherited GetItem(Index));
-end;
-
-procedure TInfOutrosCollection.SetItem(Index: Integer;
-  Value: TInfOutrosCollectionItem);
-begin
-  inherited SetItem(Index, Value);
-end;
-
-{ TInfOutrosCollectionItem }
-
-constructor TInfOutrosCollectionItem.Create;
-begin
-
-end;
-
-destructor TInfOutrosCollectionItem.Destroy;
-begin
-
-  inherited;
+ FemiDocAnt.Assign(Value);
 end;
 
 { TInfCarga }
@@ -2188,31 +2277,6 @@ destructor TInfQCollectionItem.Destroy;
 begin
 
   inherited;
-end;
-
-{ TInfCTeNorm }
-
-constructor TInfCTeNorm.Create(AOwner: TCTe);
-begin
- FcontQt    := TInfcontQtCollection.Create(Self);
- FemiDocAnt := TemiDocAntCollection.Create(Self);
-end;
-
-destructor TInfCTeNorm.Destroy;
-begin
-  FcontQt.Free;
-  FemiDocAnt.Free;
-  inherited;
-end;
-
-procedure TInfCTeNorm.SetcontQt(const Value: TInfcontQtCollection);
-begin
-  FcontQt.Assign(Value);
-end;
-
-procedure TInfCTeNorm.SetemiDocAnt(const Value: TemiDocAntCollection);
-begin
- FemiDocAnt.Assign(Value);
 end;
 
 { TInfcontQtCollection }
@@ -2341,7 +2405,7 @@ begin
   inherited;
 end;
 
-{ TidDocAntCollection }  
+{ TidDocAntCollection }
 
 function TidDocAntCollection.Add: TidDocAntCollectionItem;
 begin
@@ -2469,44 +2533,431 @@ begin
   inherited;
 end;
 
+{ TInfSegCollection }
 
+function TInfSegCollection.Add: TInfSegCollectionItem;
+begin
+  Result := TInfSegCollectionItem(inherited Add);
+  Result.create;
+end;
 
-//////////////////////////////////////////////////////////////////////////////
+constructor TInfSegCollection.Create(AOwner: TCTe);
+begin
+  inherited Create(TInfSegCollectionItem);
+end;
 
-{ TCompCollectionItem }
+function TInfSegCollection.GetItem(Index: Integer): TInfSegCollectionItem;
+begin
+  Result := TInfSegCollectionItem(inherited GetItem(Index));
+end;
 
-constructor TCompCollectionItem.Create;
+procedure TInfSegCollection.SetItem(Index: Integer; Value: TInfSegCollectionItem);
+begin
+  inherited SetItem(Index, Value);
+end;
+
+{ TInfSegCollectionItem }
+
+constructor TInfSegCollectionItem.Create;
 begin
 
 end;
 
-destructor TCompCollectionItem.Destroy;
+destructor TInfSegCollectionItem.Destroy;
 begin
 
   inherited;
 end;
 
-{ TCompCollection }
+{ TRodo }
 
-function TCompCollection.Add: TCompCollectionItem;
+constructor TRodo.Create(AOwner: TCTe);
 begin
-  Result := TCompCollectionItem(inherited Add);
+  FCTRB    := TCTRB.Create;
+  FOcc     := TOccCollection.Create(Self);
+  FvalePed := TValePed.Create(Self);
+  Fveic    := TVeicCollection.Create(Self);
+  FLacres  := TLacresCollection.Create(Self);
+  Fmoto    := TMotoCollection.Create(Self);
+end;
+
+destructor TRodo.Destroy;
+begin
+  FCTRB.Free;
+  FOcc.Free;
+  FvalePed.Free;
+  Fveic.Free;
+  FLacres.Free;
+  Fmoto.Free;
+  inherited;
+end;
+
+procedure TRodo.SetOcc(const Value: TOccCollection);
+begin
+ FOcc.Assign(Value);
+end;
+
+procedure TRodo.SetVeic(const Value: TVeicCollection);
+begin
+ Fveic.Assign(Value);
+end;
+
+procedure TRodo.SetLacres(const Value: TLacresCollection);
+begin
+  FLacres.Assign(Value);
+end;
+
+procedure TRodo.SetMoto(const Value: TMotoCollection);
+begin
+ Fmoto.Assign(Value);
+end;
+
+{ TOccCollection }
+
+function TOccCollection.Add: TOccCollectionItem;
+begin
+  Result := TOccCollectionItem(inherited Add);
   Result.create;
 end;
 
-constructor TCompCollection.Create(AOwner: TCTe);
+constructor TOccCollection.Create(AOwner: TRodo);
 begin
-  inherited Create(TCompCollectionItem);
+  inherited Create(TOccCollectionItem);
 end;
 
-function TCompCollection.GetItem(Index: Integer): TCompCollectionItem;
+function TOccCollection.GetItem(Index: Integer): TOccCollectionItem;
 begin
-  Result := TCompCollectionItem(inherited GetItem(Index));
+  Result := TOccCollectionItem(inherited GetItem(Index));
 end;
 
-procedure TCompCollection.SetItem(Index: Integer; Value: TCompCollectionItem);
+procedure TOccCollection.SetItem(Index: Integer;
+  Value: TOccCollectionItem);
 begin
   inherited SetItem(Index, Value);
+end;
+
+{ TOccCollectionItem }
+
+constructor TOccCollectionItem.Create;
+begin
+  FEmiOCC := TEmiOCC.Create;
+end;
+
+destructor TOccCollectionItem.Destroy;
+begin
+  FEmiOCC.Free;
+  inherited;
+end;
+
+{ TValePed }
+
+constructor TValePed.Create(AOwner: TRodo);
+begin
+  Fdisp := TDispCollection.Create(Self);
+end;
+
+destructor TValePed.Destroy;
+begin
+  Fdisp.Free;
+  inherited;
+end;
+
+procedure TValePed.SetDisp(const Value: TDispCollection);
+begin
+  Fdisp.Assign(Value);
+end;
+
+{ TDispCollection }
+
+function TDispCollection.Add: TDispCollectionItem;
+begin
+  Result := TDispCollectionItem(inherited Add);
+  Result.create;
+end;
+
+constructor TDispCollection.Create(AOwner: TValePed);
+begin
+  inherited Create(TDispCollectionItem);
+end;
+
+function TDispCollection.GetItem(Index: Integer): TDispCollectionItem;
+begin
+  Result := TDispCollectionItem(inherited GetItem(Index));
+end;
+
+procedure TDispCollection.SetItem(Index: Integer;
+  Value: TDispCollectionItem);
+begin
+  inherited SetItem(Index, Value);
+end;
+
+{ TDispCollectionItem }
+
+constructor TDispCollectionItem.Create;
+begin
+
+end;
+
+destructor TDispCollectionItem.Destroy;
+begin
+
+  inherited;
+end;
+
+{ TVeicCollection }
+
+function TVeicCollection.Add: TVeicCollectionItem;
+begin
+  Result := TVeicCollectionItem(inherited Add);
+  Result.create;
+end;
+
+constructor TVeicCollection.Create(AOwner: TRodo);
+begin
+  inherited Create(TVeicCollectionItem);
+end;
+
+function TVeicCollection.GetItem(Index: Integer): TVeicCollectionItem;
+begin
+  Result := TVeicCollectionItem(inherited GetItem(Index));
+end;
+
+procedure TVeicCollection.SetItem(Index: Integer;
+  Value: TVeicCollectionItem);
+begin
+  inherited SetItem(Index, Value);
+end;
+
+{ TVeicCollectionItem }
+
+constructor TVeicCollectionItem.Create;
+begin
+  FProp    := TProp.Create;
+end;
+
+destructor TVeicCollectionItem.Destroy;
+begin
+  FProp.Free;
+  inherited;
+end;
+
+{ TLacresCollection }
+
+function TLacresCollection.Add: TLacresCollectionItem;
+begin
+  Result := TLacresCollectionItem(inherited Add);
+  Result.create;
+end;
+
+constructor TLacresCollection.Create(AOwner: TRodo);
+begin
+  inherited Create(TLacresCollectionItem);
+end;
+
+function TLacresCollection.GetItem(Index: Integer): TLacresCollectionItem;
+begin
+  Result := TLacresCollectionItem(inherited GetItem(Index));
+end;
+
+procedure TLacresCollection.SetItem(Index: Integer;
+  Value: TLacresCollectionItem);
+begin
+  inherited SetItem(Index, Value);
+end;
+
+{ TLacresCollectionItem }
+
+constructor TLacresCollectionItem.Create;
+begin
+
+end;
+
+destructor TLacresCollectionItem.Destroy;
+begin
+
+  inherited;
+end;
+
+{ TMotoCollection }
+
+function TMotoCollection.Add: TMotoCollectionItem;
+begin
+  Result := TMotoCollectionItem(inherited Add);
+  Result.create;
+end;
+
+constructor TMotoCollection.Create(AOwner: TRodo);
+begin
+  inherited Create(TMotoCollectionItem);
+end;
+
+function TMotoCollection.GetItem(Index: Integer): TMotoCollectionItem;
+begin
+  Result := TMotoCollectionItem(inherited GetItem(Index));
+end;
+
+procedure TMotoCollection.SetItem(Index: Integer;
+  Value: TMotoCollectionItem);
+begin
+  inherited SetItem(Index, Value);
+end;
+
+{ TMotoCollectionItem }
+
+constructor TMotoCollectionItem.Create;
+begin
+
+end;
+
+destructor TMotoCollectionItem.Destroy;
+begin
+
+  inherited;
+end;
+
+{ TinfCTeCompCollection }
+
+function TinfCTeCompCollection.Add: TinfCTeCompCollectionItem;
+begin
+  Result := TinfCTeCompCollectionItem(inherited Add);
+  Result.create;
+end;
+
+constructor TinfCTeCompCollection.Create(AOwner: TCTe);
+begin
+  inherited Create(TinfCTeCompCollectionItem);
+end;
+
+function TinfCTeCompCollection.GetItem(
+  Index: Integer): TinfCTeCompCollectionItem;
+begin
+  Result := TinfCTeCompCollectionItem(inherited GetItem(Index));
+end;
+
+procedure TinfCTeCompCollection.SetItem(Index: Integer;
+  Value: TinfCTeCompCollectionItem);
+begin
+  inherited SetItem(Index, Value);
+end;
+
+{ TinfCTeCompCollectionItem }
+
+constructor TinfCTeCompCollectionItem.Create;
+begin
+  FvPresComp := TvPresComp.Create(Self);
+  FimpComp   := TimpComp.Create(Self);
+end;
+
+destructor TinfCTeCompCollectionItem.Destroy;
+begin
+  FvPresComp.Free;
+  FimpComp.Free;
+  inherited;
+end;
+
+{ TvPresComp }
+
+procedure TvPresComp.SetcompCompItem(const Value: TcompCompCollection);
+begin
+  FcompComp.Assign(Value);
+end;
+
+constructor TvPresComp.Create(AOwner: TinfCTeCompCollectionItem);
+begin
+ FcompComp := TcompCompCollection.Create(Self);
+end;
+
+destructor TvPresComp.Destroy;
+begin
+  FcompComp.Free;
+  inherited;
+end;
+
+{ TcompCompCollection }
+
+function TcompCompCollection.Add: TcompCompCollectionItem;
+begin
+  Result := TcompCompCollectionItem(inherited Add);
+  Result.create;
+end;
+
+constructor TcompCompCollection.Create(AOwner: TvPresComp);
+begin
+  inherited Create(TcompCompCollectionItem);
+end;
+
+function TcompCompCollection.GetItem(
+  Index: Integer): TcompCompCollectionItem;
+begin
+  Result := TcompCompCollectionItem(inherited GetItem(Index));
+end;
+
+procedure TcompCompCollection.SetItem(Index: Integer;
+  Value: TcompCompCollectionItem);
+begin
+  inherited SetItem(Index, Value);
+end;
+
+{ TcompCompCollectionItem }
+
+constructor TcompCompCollectionItem.Create;
+begin
+
+end;
+
+destructor TcompCompCollectionItem.Destroy;
+begin
+
+  inherited;
+end;
+
+{ TImpComp }
+
+constructor TImpComp.Create(AOwner: TinfCTeCompCollectionItem);
+begin
+  FICMSComp := TICMSComp.Create(Self);
+end;
+
+destructor TImpComp.Destroy;
+begin
+  FICMSComp.Free;
+  inherited;
+end;
+
+{ TICMSComp }
+
+constructor TICMSComp.Create(AOwner: TImpComp);
+begin
+  inherited Create;
+  FCST00 := TCST00.create;
+  FCST20 := TCST20.create;
+  FCST45 := TCST45.create;
+  FCST80 := TCST80.create;
+  FCST81 := TCST81.create;
+  FCST90 := TCST90.create;
+end;
+
+destructor TICMSComp.Destroy;
+begin
+  FCST00.Free;
+  FCST20.Free;
+  FCST45.Free;
+  FCST80.Free;
+  FCST81.Free;
+  FCST90.Free;
+  inherited;
+end;
+
+{ TInfCTeAnuEnt }
+
+constructor TInfCTeAnuEnt.Create(AOwner: TCTe);
+begin
+  inherited Create;
+end;
+
+destructor TInfCTeAnuEnt.Destroy;
+begin
+  inherited;
 end;
 
 end.

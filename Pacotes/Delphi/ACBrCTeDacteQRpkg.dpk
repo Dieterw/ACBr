@@ -88,9 +88,6 @@ requires
   ACBrComum,
   designide,
   vclactnband,
- {$IFNDEF VER210}
-  visualclx,
- {$ENDIF}
   vcljpg,
   ACBrNFeDanfeQRpkg;
 

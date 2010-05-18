@@ -79,9 +79,6 @@ requires
   vclactnband,
   vclx,
   vcl,
- {$IFNDEF VER210}
-  visualclx,
- {$ENDIF}
   ACBr_NFe,
   synapse,
   ACBrCapicom,

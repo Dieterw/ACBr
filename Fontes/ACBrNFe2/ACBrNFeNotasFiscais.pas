@@ -403,7 +403,7 @@ begin
   begin
     LocNFeW := TNFeW.Create(Self.Items[i].NFe);
     try
-       LocNFeW.schema := TsPL005c;
+       LocNFeW.schema := TsPL006;
        LocNFeW.GerarXml;
        Self.Items[i].XML := LocNFeW.Gerador.ArquivoFormatoXML;
        Self.Items[i].Alertas := LocNFeW.Gerador.ListaDeAlertas.Text;

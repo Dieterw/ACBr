@@ -56,7 +56,7 @@ uses
   ACBrNFeDANFEClass;
 
 const
-  ACBRNFE_VERSAO = '0.3.1a';
+  ACBRNFE_VERSAO = '0.4.0a';
   
 type
  TACBrNFeAboutInfo = (ACBrNFeAbout);

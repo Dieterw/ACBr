@@ -42,7 +42,6 @@ contains
   ACBrFala in '..\..\Fontes\ACBrDiversos\ACBrFala.pas',
   ACBrBarCode in '..\..\Fontes\ACBrDiversos\ACBrBarCode.pas',
   ACBrEnterTab in '..\..\Fontes\ACBrDiversos\ACBrEnterTab.pas',
-  AJBarcode in '..\..\Fontes\ACBrDiversos\AJBarcode.pas',
-  ACBrSintegra in '..\..\Fontes\ACBrDiversos\ACBrSintegra.pas';
+  AJBarcode in '..\..\Fontes\ACBrDiversos\AJBarcode.pas';
 
 end.

@@ -31,7 +31,6 @@ requires
   ACBrComum;
 
 contains
-  pcnAtuCadEmiDFe in '..\..\..\Fontes\PCN\pcnAtuCadEmiDFe.pas',
   pcnAuxiliar in '..\..\..\Fontes\PCN\pcnAuxiliar.pas',
   pcnCabecalho in '..\..\..\Fontes\PCN\pcnCabecalho.pas',
   pcnCadEmiDFe in '..\..\..\Fontes\PCN\pcnCadEmiDFe.pas',

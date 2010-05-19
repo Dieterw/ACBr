@@ -39,49 +39,17 @@
 |*    Criaçao de um arquivo unico para registro dos Componentes
 ******************************************************************************}
 
-{$I ACBr.inc}
-unit ACBrDiversosReg;
-
-{$IFDEF VisualCLX}
-  {$DEFINE AnimGIF}
-{$ENDIF}
-{$IFDEF FPC}
-  {$DEFINE AnimGIF}
-{$ENDIF}
+unit ACBrSintegraReg;
 
 interface
-Uses Classes ,
-    {$IFDEF FPC}
-       LResources, LazarusPackageIntf, PropEdits, componenteditors
-    {$ELSE}
-       {$IFNDEF COMPILER6_UP}
-          DsgnIntf
-       {$ELSE}
-          DesignIntf,
-          DesignEditors
-       {$ENDIF}
-    {$ENDIF} ;
 
-type
-  { Editor de Componente para mostrar a Calculadora}
-  TACBrCalculadoraEditor = class( TComponentEditor )
-  public
-    procedure Edit; override;
-  end;
-
-  { Editor de Componente para ACBrFala falar em Design }
-  TACBrFalaEditor = class( TComponentEditor )
-  public
-    procedure Edit; override;
-  end;
+Uses Classes;
 
 procedure Register;
 
 implementation
-Uses ACBrEnterTab, ACBrUtil, 
-     {$IFDEF AnimGIF}ACBrGIF, {$ENDIF}
-     ACBrCalculadora, ACBrExtenso, ACBrTroco, ACBrValidador, ACBrReg,
-     ACBrCMC7, ACBrFala, ACBrBarCode, SysUtils;
+
+Uses ACBrSintegra, SysUtils;
 
 {$IFNDEF FPC}
    {$R ACBrDiversos.dcr}
@@ -89,34 +57,7 @@ Uses ACBrEnterTab, ACBrUtil,
 
 procedure Register;
 begin
-  RegisterComponents('ACBr', [TACBrCalculadora, TACBrCMC7, TACBrExtenso, TACBrTroco,
-     TACBrValidador, TACBrFala, TACBrEnterTab
-     {$IFDEF AnimGIF}, TACBrGIF {$ENDIF}, TACBrBarCode]);
-
-  { Registrando os Editores de Propriedade }
-  RegisterPropertyEditor(TypeInfo(String), TACBrFala, 'OrigemArquivos',
-     TACBrDirProperty);
-
-  { Registrando os Editores de Componente }
-  RegisterComponentEditor(TACBrCalculadora, TACBrCalculadoraEditor);
-  RegisterComponentEditor(TACBrFala, TACBrFalaEditor);
-end;
-
-
-{ TACBrCalculadoraEditor }
-
-procedure TACBrCalculadoraEditor.Edit;
-begin
-  with Component as TACBrCalculadora do
-     Execute ;
-end;
-
-{ TACBrFalaEditor }
-
-procedure TACBrFalaEditor.Edit;
-begin
-  with Component as TACBrFala do
-     Falar ;
+  RegisterComponents('ACBr', [TACBrSintegra]);
 end;
 
 {$IFDEF FPC}

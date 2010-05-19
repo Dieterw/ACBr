@@ -756,8 +756,8 @@ TACBrECFClass = class
     procedure LerTotaisFormaPagamento ; virtual ;
     Property FormasPagamento : TACBrECFFormasPagamento read GetFormasPagamentos;
     function AchaFPGDescricao( Descricao : String;
-       BuscaExata : Boolean = False ) : TACBrECFFormaPagamento ;
-       virtual ;
+       BuscaExata : Boolean = False; IgnorarCase : Boolean = True ) :
+       TACBrECFFormaPagamento ; virtual ;
     function AchaFPGIndice( Indice : String ) : TACBrECFFormaPagamento ;
        virtual ;
     Procedure ProgramaFormaPagamento( var Descricao: String;
@@ -768,7 +768,8 @@ TACBrECFClass = class
     Property RelatoriosGerenciais : TACBrECFRelatoriosGerenciais
        read GetRelatoriosGerenciais ;
     function AchaRGDescricao( Descricao : String;
-       BuscaExata : Boolean = False ) : TACBrECFRelatorioGerencial ; virtual ;
+       BuscaExata : Boolean = False; IgnorarCase : Boolean = True ) :
+       TACBrECFRelatorioGerencial ; virtual ;
     function AchaRGIndice( Indice : String ) : TACBrECFRelatorioGerencial ;
        virtual ;
     Procedure ProgramaRelatorioGerencial( var Descricao: String;
@@ -780,7 +781,8 @@ TACBrECFClass = class
     Property ComprovantesNaoFiscais : TACBrECFComprovantesNaoFiscais
        read GetComprovantesNaoFiscais ;
     function AchaCNFDescricao( Descricao : String;
-       BuscaExata : Boolean = False ) : TACBrECFComprovanteNaoFiscal ; virtual ;
+       BuscaExata : Boolean = False; IgnorarCase : Boolean = True ) :
+       TACBrECFComprovanteNaoFiscal ; virtual ;
     function AchaCNFIndice( Indice : String ) : TACBrECFComprovanteNaoFiscal ;
        virtual ;
     function AchaCNFFormaPagamento( CodFPG : String ) :
@@ -2709,7 +2711,7 @@ begin
 end;
 
 function TACBrECFClass.AchaFPGDescricao(Descricao: String;
- BuscaExata : Boolean ) : TACBrECFFormaPagamento;
+ BuscaExata : Boolean; IgnorarCase : Boolean ) : TACBrECFFormaPagamento;
  var Tamanho, A : Integer ;
      DescrECF : String ;
 begin
@@ -2719,18 +2721,17 @@ begin
   result := nil ;
   with fpFormasPagamentos do
   begin
-     if not BuscaExata then
-        Descricao := Trim(UpperCase( Descricao )) ;
+     Descricao := TrimRight( Descricao ) ;
+     if IgnorarCase then
+        Descricao := UpperCase( Descricao ) ;
      Tamanho := Length( Descricao ) ;
      For A := 0 to Count -1 do
      begin
+        DescrECF := TrimRight( Objects[A].Descricao ) ;
         if not BuscaExata then
-         begin
-           DescrECF := TrimRight( UpperCase(Objects[A].Descricao) ) ;
            DescrECF := LeftStr( DescrECF, Tamanho) ;
-         end
-        else
-           DescrECF := TrimRight( Objects[A].Descricao ) ;
+        if IgnorarCase then
+           DescrECF := UpperCase(DescrECF) ;
 
         if DescrECF = Descricao then
         begin
@@ -2786,7 +2787,7 @@ begin
 end;
 
 function TACBrECFClass.AchaRGDescricao(Descricao: String;
-  BuscaExata: Boolean): TACBrECFRelatorioGerencial;
+  BuscaExata: Boolean; IgnorarCase : Boolean): TACBrECFRelatorioGerencial;
 var Tamanho, A : Integer ;
      DescrECF : String ;
 begin
@@ -2796,18 +2797,17 @@ begin
   result := nil ;
   with fpRelatoriosGerenciais do
   begin
-     if not BuscaExata then
-        Descricao := Trim(UpperCase( Descricao )) ;
+     Descricao := TrimRight( Descricao ) ;
+     if IgnorarCase then
+        Descricao := UpperCase( Descricao ) ;
      Tamanho := Length( Descricao ) ;
      For A := 0 to Count -1 do
      begin
+        DescrECF := TrimRight( Objects[A].Descricao ) ;
         if not BuscaExata then
-         begin
-           DescrECF := TrimRight( UpperCase(Objects[A].Descricao) ) ;
            DescrECF := LeftStr( DescrECF, Tamanho) ;
-         end
-        else
-           DescrECF := TrimRight( Objects[A].Descricao ) ;
+        if IgnorarCase then
+           DescrECF := UpperCase(DescrECF) ;
 
         if DescrECF = Descricao then
         begin
@@ -2870,7 +2870,7 @@ begin
 end;
 
 function TACBrECFClass.AchaCNFDescricao( Descricao: String;
-       BuscaExata : Boolean ): TACBrECFComprovanteNaoFiscal;
+       BuscaExata : Boolean; IgnorarCase : Boolean ): TACBrECFComprovanteNaoFiscal;
  var Tamanho, A : Integer ;
      DescrECF : String ;
 begin
@@ -2880,18 +2880,17 @@ begin
   result := nil ;
   with fpComprovantesNaoFiscais do
   begin
-     if not BuscaExata then
-        Descricao := Trim(UpperCase( Descricao )) ;
-     Tamanho   := Length( Descricao ) ;
+     Descricao := TrimRight( Descricao ) ;
+     if IgnorarCase then
+        Descricao := UpperCase( Descricao ) ;
+     Tamanho := Length( Descricao ) ;
      For A := 0 to Count -1 do
      begin
+        DescrECF := TrimRight( Objects[A].Descricao ) ;
         if not BuscaExata then
-         begin
-           DescrECF := TrimRight( UpperCase(Objects[A].Descricao) ) ;
            DescrECF := LeftStr( DescrECF, Tamanho) ;
-         end
-        else
-           DescrECF := TrimRight( Objects[A].Descricao ) ;
+        if IgnorarCase then
+           DescrECF := UpperCase(DescrECF) ;
 
         if DescrECF = Descricao then
         begin

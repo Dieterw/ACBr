@@ -96,7 +96,7 @@ unit ACBrUtil;
 interface
 Uses SysUtils, Math, Classes, 
     {$IFDEF COMPILER6_UP} StrUtils, DateUtils, {$ELSE} ACBrD5, FileCtrl, {$ENDIF}
-    {$IFDEF FPC} dynlibs, {$ENDIF}
+    {$IFDEF FPC} dynlibs, LCLIntf, {$ENDIF}
     {$ifdef MSWINDOWS}
       Windows, ShellAPI
     {$else}
@@ -1584,15 +1584,19 @@ procedure OpenURL( const URL : String ) ;
   Var BrowserName : String ;
 {$ENDIF}
 begin
- {$IFDEF MSWINDOWS}
-   RunCommand(URL);
- {$ENDIF}
- {$IFDEF LINUX}
-   BrowserName := GetEnvironmentVariable('BROWSER') ;
-   if BrowserName = '' then
-      BrowserName := 'konqueror' ;
+ {$IFDEF FPC}
+   LCLIntf.OpenURL( URL ) ;
+ {$ELSE}
+   {$IFDEF MSWINDOWS}
+     RunCommand(URL);
+   {$ENDIF}
+   {$IFDEF LINUX}
+     BrowserName := GetEnvironmentVariable('BROWSER') ;
+     if BrowserName = '' then
+        BrowserName := 'konqueror' ;
 
-   RunCommand(BrowserName, URL);
+     RunCommand(BrowserName, URL);
+   {$ENDIF}
  {$ENDIF}
 end ;
 

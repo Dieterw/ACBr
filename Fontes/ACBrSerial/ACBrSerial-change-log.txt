@@ -60,6 +60,7 @@ Agradecimentos:
 - Ivan Moreira                   ECFs
 - Isaque Pinheiro		 TACBrSPEDFiscal, TACBrSPEDContabil, TACBrPAF
 - Luiz Arlindo                   ECFs
+- Fernando Gutierres Damaceno    ECF, TEFD
 
 * Colaboradores:
 - Alexandre Rocha L.Marcondes    Administração
@@ -75,7 +76,6 @@ Agradecimentos:
 - Diogo Augusto Pereira          ACBrCMC7
 - Marcos Agostini                ECFBugFix (NaoFiscal)
 - João Carvalho                  ACBrConsts
-- Fernando Gutierres Damaceno    ECF, TEFD
 
 * Testadores / BugReport:
 - Rildecy de Queiroz Borba       ECFBugReport (Mecaf)
@@ -96,6 +96,20 @@ Símbolo : Significado
 [+]     : Novo recurso
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
+
+Versão 0.9.2b  19/05/10
+-- ACBrECFSwedaSTX --
+[+]    Implementado o restante dos métodos da Classe SwedaSTX, agora é possível
+       usar as Swedas MFD com este novo protocolo, muito mais rápido e otimizado.
+       (por: Fernando Gutierres Damaceno)
+-- ACBrECFBematech --
+[*]    Corrigido bug em ArquivoMFD_DLL, durante a captura da Data de Inicio
+       (Por: Magno System)
+-- ACBrECF --
+[*]    Metodos: AchaCNFDescricao, AchaFPGDescricao, AchaRGDescricao modificados
+       com a inclusão do Parametro: IgnorarCase : Boolean = True
+       Se nao for especificado, assume True como Default. Se For True, não faz
+       distinção de Maiusculas e Minusculas na Busca
 
 Versão 0.9.1b  03/05/10
 -- ACBrECF --

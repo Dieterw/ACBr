@@ -384,14 +384,16 @@ TACBrECFNaoFiscal = class( TACBrECFClass )
     procedure CarregaFormasPagamento ; override ;
     procedure LerTotaisFormaPagamento ; override ;
     function AchaFPGDescricao( Descricao : String;
-       BuscaExata : Boolean = False ) : TACBrECFFormaPagamento ; override ;
+       BuscaExata : Boolean = False; IgnorarCase : Boolean = True  ) :
+       TACBrECFFormaPagamento ; override ;
     Procedure ProgramaFormaPagamento( var Descricao: String;
        PermiteVinculado : Boolean = true; Posicao : String = '' ) ; override ;
 
     procedure CarregaComprovantesNaoFiscais ; override ;
     procedure LerTotaisComprovanteNaoFiscal ; override ;
     function AchaCNFDescricao( Descricao : String;
-       BuscaExata : Boolean = False ) : TACBrECFComprovanteNaoFiscal ; override ;
+       BuscaExata : Boolean = False; IgnorarCase : Boolean = True  ) :
+       TACBrECFComprovanteNaoFiscal ; override ;
     Procedure ProgramaComprovanteNaoFiscal( var Descricao: String;
        Tipo : String = ''; Posicao : String = '') ; override ;
  end ;
@@ -2539,16 +2541,16 @@ begin
 end;
 
 function TACBrECFNaoFiscal.AchaFPGDescricao(Descricao: String;
-       BuscaExata : Boolean ) : TACBrECFFormaPagamento;
+       BuscaExata : Boolean; IgnorarCase : Boolean ) : TACBrECFFormaPagamento;
 begin
-  result := inherited AchaFPGDescricao(Descricao, BuscaExata) ;
+  result := inherited AchaFPGDescricao(Descricao, BuscaExata, IgnorarCase) ;
 
   { Na impressora Nao Fiscal podemos programas as Formas de Pagamento
     dinamicamente. }
   if (Result = nil) then
   begin
      ProgramaFormaPagamento( Descricao ) ;
-     result := inherited AchaFPGDescricao(Descricao, BuscaExata) ;
+     result := inherited AchaFPGDescricao(Descricao, BuscaExata, IgnorarCase) ;
   end ;
 end;
 
@@ -2717,15 +2719,15 @@ begin
 end;
 
 function TACBrECFNaoFiscal.AchaCNFDescricao(Descricao: String;
-       BuscaExata : Boolean ) : TACBrECFComprovanteNaoFiscal;
+   BuscaExata : Boolean; IgnorarCase : Boolean ) : TACBrECFComprovanteNaoFiscal;
 begin
-  result := inherited AchaCNFDescricao( Descricao, BuscaExata ) ;
+  result := inherited AchaCNFDescricao( Descricao, BuscaExata, IgnorarCase ) ;
 
   { Na impressora Nao Fiscal podemos programas os CNFs dinamicamente. }
   if (Result = nil) then
   begin
      ProgramaComprovanteNaoFiscal( Descricao, 'V' ) ;
-     result := inherited AchaCNFDescricao( Descricao, BuscaExata ) ;
+     result := inherited AchaCNFDescricao( Descricao, BuscaExata, IgnorarCase ) ;
   end ;
 end;
 

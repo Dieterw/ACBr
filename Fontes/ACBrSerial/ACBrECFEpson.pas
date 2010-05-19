@@ -336,7 +336,8 @@ TACBrECFEpson = class( TACBrECFClass )
     procedure ProgramaRelatorioGerencial(var Descricao: string;
        Posicao: string=''); override;
     function AchaCNFDescricao( Descricao: String;
-       BuscaExata : Boolean ): TACBrECFComprovanteNaoFiscal; override;
+       BuscaExata : Boolean; IgnorarCase : Boolean = True  ):
+       TACBrECFComprovanteNaoFiscal; override;
 
  end ;
 
@@ -3103,12 +3104,13 @@ end;
 
 
 function TACBrECFEpson.AchaCNFDescricao( Descricao: String;
-       BuscaExata : Boolean ): TACBrECFComprovanteNaoFiscal;   // Por: WagnerPV
+       BuscaExata : Boolean; IgnorarCase : Boolean  ):
+  TACBrECFComprovanteNaoFiscal;   // Por: WagnerPV
 begin
   if UpperCase(Trim(Descricao)) = 'SUPRIMENTO' then
      Descricao := 'FUNDO DE TROCO' ;
 
-  Result := inherited AchaCNFDescricao( Descricao, BuscaExata );
+  Result := inherited AchaCNFDescricao( Descricao, BuscaExata, IgnorarCase );
 end;
 
 end.

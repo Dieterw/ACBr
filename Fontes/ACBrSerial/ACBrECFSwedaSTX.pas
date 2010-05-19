@@ -54,7 +54,23 @@ const
    CFALHAS = 3 ;
 
 type
-
+{Dados Fiscais}
+TACBrECFSwedaInfo34A1 = class
+   private
+    FVendaBrutaDiaria: String;
+    FTotalizadorGeral: String;
+    FVendaLiquida: String;
+    procedure SetTotalizadorGeral(const Value: String);
+    procedure SetVendaBrutaDiaria(const Value: String);
+    procedure SetVendaLiquida(const Value: String);
+   public
+      {GT}
+      property TotalizadorGeral:String read FTotalizadorGeral write SetTotalizadorGeral;
+      {VL}
+      property VendaLiquida:String read FVendaLiquida write SetVendaLiquida;
+      {VB}
+      property VendaBrutaDiaria:String read FVendaBrutaDiaria write SetVendaBrutaDiaria;
+end;
 { Classe para armazenar Cache de Informações do 34 }
 TACBrECFSwedaInfo34 = class
   private
@@ -67,27 +83,32 @@ end ;
 
 { Lista de Objetos do tipo TACBrECFSwedaCache }
 TACBrECFSwedaCache = class(TObjectList)
-  protected
-    procedure SetObject (Index: Integer; Item: TACBrECFSwedaInfo34);
-    function GetObject (Index: Integer): TACBrECFSwedaInfo34;
-    procedure Insert (Index: Integer; Obj: TACBrECFSwedaInfo34);
-  public
-    function AchaSecao( Secao : String ) : Integer ;
-    function Add (Obj: TACBrECFSwedaInfo34): Integer;
-    property Objects [Index: Integer]: TACBrECFSwedaInfo34
-      read GetObject write SetObject; default;
-  end;
+protected
+  procedure SetObject (Index: Integer; Item: TACBrECFSwedaInfo34);
+  function GetObject (Index: Integer): TACBrECFSwedaInfo34;
+  procedure Insert (Index: Integer; Obj: TACBrECFSwedaInfo34);
+public
+  function AchaSecao( Secao : String ) : Integer ;
+  function Add (Obj: TACBrECFSwedaInfo34): Integer;
+  property Objects [Index: Integer]: TACBrECFSwedaInfo34
+    read GetObject write SetObject; default;
+end;
 
 
 { Classe filha de TACBrECFClass com implementaçao para SwedaSTX }
 TACBrECFSwedaSTX = class( TACBrECFClass )
  private
+
     fsSEQ       : Byte ;
     fsVerProtocolo : String ;
     fsCache34   : TACBrECFSwedaCache ;
     fsRespostasComando : String ;
     fsFalhasRX : Byte ;
 
+    function AchaCNFIndice(Indice: String):TACBrECFComprovanteNaoFiscal;
+
+    function AchaRGIndice(Indice: String): TACBrECFRelatorioGerencial;
+    function RemoveNulos(Str:AnsiString):AnsiString;
     Function PreparaCmd( cmd : AnsiString ) : AnsiString ;
     function CalcCheckSum(cmd: AnsiString): AnsiChar;
     procedure ChangeHandShake(Value: Boolean);
@@ -96,6 +117,10 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
     function AjustaRetorno(Retorno: AnsiString): AnsiString;
     function AjustaValor( ADouble : Double; Decimais : Integer = 2 ) : String ;
     function ExtraiRetornoLeituras(Retorno: AnsiString): AnsiString;
+    Procedure LeituraMFDSerial(DataInicial, DataFinal : TDateTime;
+       Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
+    Procedure LeituraMFDSerial( COOInicial, COOFinal : Integer;
+       Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
  protected
     function GetDataHora: TDateTime; override ;
     function GetNumCupom: String; override ;
@@ -180,7 +205,7 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
     Procedure LeituraX ; override ;
     Procedure LeituraXSerial( Linhas : TStringList) ; override ;
     Procedure ReducaoZ(DataHora : TDateTime = 0 ) ; override ;
-    Procedure AbreRelatorioGerencial(Indice: Integer = 0) ; override ;
+    Procedure AbreRelatorioGerencial(Indice: Integer = 2) ; override ;
     Procedure LinhaRelatorioGerencial( Linha : AnsiString; IndiceBMP: Integer = 0 ) ; override ;
     Procedure AbreCupomVinculado(COO, CodFormaPagto, CodComprovanteNaoFiscal :
        String; Valor : Double) ; override ;
@@ -227,6 +252,8 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
        Tipo : String = ''; Posicao : String = '') ; override ;
 
     Procedure CortaPapel( const CorteParcial : Boolean = false) ; override ;
+    procedure NaoFiscalCompleto(CodCNF: String; Valor: Double;
+          CodFormaPagto: String; Obs: AnsiString; IndiceBMP : Integer);override;
  end ;
 
 implementation
@@ -371,15 +398,17 @@ begin
    begin
       fpDevice.Serial.DeadlockTimeout := 2000 ; { Timeout p/ Envio }
       fpDevice.Serial.Purge ;                   { Limpa a Porta }
-      ChangeHandShake(False);            { Desliga o DTR ou RTS para enviar }
+      {Se desligar o HandShake, não consigo pegar a resposta}
+      //ChangeHandShake(False);            { Desliga o DTR ou RTS para enviar }
+
 
       if not TransmiteComando( cmd ) then
-         continue ;
+         continue;
 
       try
          { espera ACK chegar na Porta por 7s }
          try
-            ACK_ECF := fpDevice.Serial.RecvByte( TimeOut * 1000 ) ;
+            ACK_ECF := fpDevice.Serial.RecvByte(TimeOut * 1000 ) ;
          except
          end ;
 
@@ -417,7 +446,7 @@ begin
 
    fpComandoEnviado := cmd ;
 
-   ChangeHandShake(True);     { Liga o DTR ou RTS para ler a Resposta }
+//   ChangeHandShake(True);     { Liga o DTR ou RTS para ler a Resposta }
 
    { Chama Rotina da Classe mãe TACBrClass para ler Resposta. Se houver
      falha na leitura LeResposta dispara Exceçao.
@@ -499,14 +528,90 @@ begin
     050 : Result := 'Campo de Descrição não informado' ;
     058 : Result := 'Comando ou operação inválida!' ;
     060 : Result := 'É necessária a emissão do documento de Redução Z!' ;
-
-  // TODO: completar DEscrição dos Erros
-
+    061 : Result := 'O ECF está em Modo de Intervenção Técnica!';
+    062 : Result := 'O ECF está inativo!';
+    067 : Result := 'Permitida uma única reimpressão!';
+    068 : Result := 'Erro físico de gravação na memória fiscal!';
+    074 : Result := 'Ejetando folha solta...';
+    080 : Result := 'Esgotamento de Dispositivo: Memória Fiscal';
+    087 : Result := 'Leiaute de cheque não programado!';
+    092 : Result := 'Já emitida a 2ª via!';
+    093 : Result := 'Excede o limite de 24 parcelas!';
+    094 : Result := 'Informado número incorreto da parcela!';
+    095 : Result := 'Informado valor unitário inválido!';
+    096 : Result := 'Não foram estornados os Comprovantes de Crédito ou Débito emitidos!';
+    098 : Result := 'Processando...';
+    099 : Result := 'Confirme';
+    103 : Result := 'Inserir a frente para preenchimento!';
+    104 : Result := 'Inserir o verso para preenchimento!';
+    105 : Result := 'Inserir o cheque para preenchimento!';
+    109 : Result := 'Inserir cheque.';
+    110 : Result := 'Resultado de leitura MICR-CMC7';
+    111 : Result := 'Resultado de leitura MICR-E13B';
+    112 : Result := 'Não foi detectado nenhum caracter!';
+    113 : Result := 'Um dos caracteres não foi reconhecido!';
+    114 : Result := 'As dimensões do cheque estão fora das especificações! ';
+    115 : Result := 'Erro na impressora durante o processamento!';
+    116 : Result := 'A tampa foi aberta durante a leitura!';
+    117 : Result := 'Fonte inválida!';
+    120 : Result := 'Erro de gravação no dispositivo de memória de fita-detalhe!';
+    121 : Result := 'Erro mecânico na impressora!';
+    122 : Result := 'Erro na guilhotina!';
+    123 : Result := 'Erro recuperável!';
     124 : Result := 'Tampa Aberta' ;
     125 : Result := 'Sem Papel' ;
     126 : Result := 'Avançando Papel' ;
     127 : Result := 'Substituir Bobina' ;
+    128 : Result := 'Falha de comunicação com o mecanismo de impressão!';
+    130 : Result := 'Não emitida redução Z!';
+    131 : Result := 'Totalizador desabilitado!';
+    132 : Result := 'Esgotamento de Dispositivo: Memória de Fita-Detalhe';
+    133 : Result := 'O ECF está emitindo a Redução Z para entrada em Intervenção Técnica...';
+    134 : Result := 'Transmissão de leitura via porta de comunicação serial abortada';
+    135 : Result := 'Já emitido o Cupom Adicional!';
+    136 : Result := 'Indicado CDC Inválido';
+    139 : Result := 'A cabeça de impressão térmica está levantada!';
+    140 : Result := 'Status da cabeça de impressão térmica: Temperatura elevada!';
+    141 : Result := 'Status da cabeça de impressão térmica: Tensão inadequada!';
+    142 : Result := 'Informado código de barras Inválido!';
+    148 : Result := 'Quantidade inválida!';
+    149 : Result := 'Desconto sobre serviço desabilitado';
+    151 : Result := 'Divergência de relógio!';
+    156 : Result := 'Função MICR não disponível!';
+    157 : Result := 'Função de preenchimento de cheques não disponível!';
+    159 : Result := 'Preenchendo...';
+    160 : Result := 'Não há acréscimo ou desconto aplicado sobre o item';
+    161 : Result := 'Não há acréscimo ou desconto aplicado sobre o subtotal';
+    162 : Result := 'Não cancelado a operação de acréscimo aplicada sobre o item após o desconto';
+    163 : Result := 'Não cancelado a operação de desconto aplicada sobre o item após o acréscimo';
+    164 : Result := 'Não cancelado a operação de acréscimo aplicada sobre o subotal após o desconto';
+    165 : Result := 'Não cancelado a operação de desconto aplicada sobre o subotal após o acréscimo';
+    166 : Result := 'O mecanismo de impressão detectado não pertence a este modelo de ECF';
+    170 : Result := 'Código de barras não disponível!';
+    171 : Result := 'Erro MICR: Falha de acionamento do leitor!';
+    172 : Result := 'Mensagem: preenchimento de cheque concluído!';
+    187 : Result := 'Identificar-se!';
     193 : Result := 'Falha de comunicação na transmissão das informações' ;
+    195 : Result := 'Enviar imagem';
+    196 : Result := 'Dimensões inválidas!';
+    197 : Result := 'Falha no envio da imagem!';
+    198 : Result := 'Processando....';
+    200 : Result := 'Efetuando leitura MICR...';
+    201 : Result := 'Preço unitário inválido!';
+    202 : Result := 'Já foi impressa a identificação do consumidor!';
+    203 : Result := 'Erro no formato do logotipo!';
+    204 : Result := 'Função de autenticação não disponível!';
+    205 : Result := 'Autenticação cancelada!';
+    206 : Result := 'Inserir documento!';
+    207 : Result := 'Autenticando...';
+    208 : Result := 'Limitado a 5 autenticações!';
+    209 : Result := 'Erro nos parâmetros do comando de repetição';
+    215 : Result := 'Centavos não habilitados!';
+    216 : Result := 'A data está avançada em mais de 30 dias em relação ao '+
+                    'último documento emitido pelo '+
+                    'ECF. Envie o comando de programação do relógio para verificação.';
+    217 : Result := 'Preparando a impressão da fita-detalhe...';
+    220 : Result := 'Mensagem de progressão durante a emissão da Redução Z!';
     24,38,39,45..47,65,66,69..73,75..79,81..86,88..91,97,100..102,106,118,119,
     129,137,138,145..147,150,152..155,158,173..183,185,186,188..191,199,210,
     219,221,225,230,235..237,241,242,244..248
@@ -581,7 +686,7 @@ begin
        Result := False ;
      end ;
 
-     ChangeHandShake(False);            { Desliga o DTR ou RTS para enviar }
+//     ChangeHandShake(False);            { Desliga o DTR ou RTS para enviar }
      fpDevice.Serial.SendByte(ACK_PC);
 
      if Result then
@@ -634,10 +739,10 @@ begin
         GravaLog('SwedaSTX VerificaFimImpressao: Pedindo o Status. Seq:'+IntToStr(fsSEQ)) ;
 
         fpDevice.Serial.Purge ;          // Limpa buffer de Entrada e Saida //
-        ChangeHandShake(False);          // DesLiga o DTR para enviar //
+//        ChangeHandShake(False);          // DesLiga o DTR para enviar //
         fpDevice.EnviaString( Cmd );     // Envia comando //
 
-        ChangeHandShake(True);           // Liga o DTR para receber //
+//        ChangeHandShake(True);           // Liga o DTR para receber //
         wACK := fpDevice.Serial.RecvByte( TimeOut * 1000 ) ; // espera ACK chegar na Porta  //
 
         if wACK = 6 then   // ECF Respondeu corretamente, portanto está trabalhando //
@@ -682,7 +787,9 @@ begin
   if fsSEQ = 255 then
      fsSEQ := 43 ;
 
-  cmd := STX + AnsiChar(chr( fsSEQ )) + cmd + ETX ;   { Prefixo ESC }
+ cmd := STX + AnsiChar(chr( fsSEQ ))+  cmd + ETX ;   { Prefixo ESC }
+ //cmd := #02+chr( fsSEQ )+'15'#03;
+// cmd := #02+chr( fsSEQ )+'34I1'#03;
 
   Result := cmd + CalcCheckSum( cmd ) ;
 end ;
@@ -693,7 +800,7 @@ begin
   { Calculando a Soma dos caracteres ASC }
   LenCmd := Length( cmd ) ;
   iSoma := 0 ;
-  For A := 1 to LenCmd do
+  For A := 1 to LenCmd  do
      iSoma := iSoma + ord( cmd[A] ) ;
 
   { Calculando o digito verificado }
@@ -815,7 +922,7 @@ end;
 
 function TACBrECFSwedaSTX.GetNumCupom: String;
 begin
-  Result := Trim(copy( RetornaInfoECF( 'A4' ), 33, 6)) ;
+   Result := Trim(copy( RetornaInfoECF( 'A4' ), 33, 6)) ;
 end;
 
 function TACBrECFSwedaSTX.GetNumCRO: String;
@@ -983,19 +1090,50 @@ begin
                   '|' + FormatDateTime('hh":"nn":"ss',DataHora) ;
 
   AguardaImpressao := True ;
-  EnviaComando( Cmd ) ;
+  EnviaComando(Cmd,30) ;
 end;
 
 Procedure TACBrECFSwedaSTX.MudaHorarioVerao ;
 begin
+   MudaHorarioVerao(not HorarioVerao)
 end;
 
 procedure TACBrECFSwedaSTX.MudaHorarioVerao(EHorarioVerao: Boolean);
+var
+   cmd:String;
 begin
-  if EHorarioVerao <> HorarioVerao then
-     MudaHorarioVerao ;
+   if EHorarioVerao then
+      cmd := 'S'
+   else cmd := 'N';
+   EnviaComando('35|'+cmd);
 end;
 
+
+procedure TACBrECFSwedaSTX.NaoFiscalCompleto(CodCNF: String; Valor: Double;
+  CodFormaPagto: String; Obs: AnsiString; IndiceBMP: Integer);
+begin
+   { Chama rotinas da classe Pai (fpOwner) para atualizar os Memos }
+   with TACBrECF(fpOwner) do
+   begin
+      AbreNaoFiscal ;
+      try
+         RegistraItemNaoFiscal(CodCNF, Valor);
+         try
+            SubtotalizaNaoFiscal(0);
+            EfetuaPagamentoNaoFiscal(CodFormaPagto, Valor );
+         except
+         end ;
+         FechaNaoFiscal( Obs, IndiceBMP );
+      except
+         try
+            CancelaNaoFiscal
+         except
+         end;
+
+         raise ;
+      end ;
+   end ;
+end;
 
 procedure TACBrECFSwedaSTX.AbreCupom  ;
 begin
@@ -1013,15 +1151,35 @@ begin
 end;
 
 procedure TACBrECFSwedaSTX.CancelaCupom;
+var
+   sVinculado:String;
+   RetCMD:String;
+   iVinculados:Integer;
+   I:Integer;
 begin
-  // TODO: Procurar por CCDs em aberto e Estorna-los
-
-  EnviaComando('08') ;
-
   try
     FechaRelatorio ;   { Fecha relatorio se ficou algum aberto (só por garantia)}
   except   // Exceçao silenciosa, pois a Impressora pode nao estar em Estado
   end ;    // de Relatorio.
+  //Procurar por CCDs em aberto para Estorna-los
+  sVinculado :=  RetornaInfoECF('L8');
+  {Verifica se tem vinculado}
+  iVinculados := StrToIntDef(Copy(sVinculado,3,2),0);
+   if iVinculados > 0 then
+  begin
+     {Extorna todos comprovantes}
+     for I := 1 to iVinculados do
+     begin
+        try
+           {garante o fechamento do cdc}
+           FechaCupom;
+        except
+        end;
+        EnviaComando('52',30);
+        FechaCupom();
+     end;
+  end;
+  EnviaComando('08') ;
 end;
 
 procedure TACBrECFSwedaSTX.CancelaItemVendido(NumItem: Integer);
@@ -1041,6 +1199,7 @@ begin
   AguardaImpressao := True ;
   EnviaComando( '07|' + LeftStr( Observacao,800) ) ;
 end;
+
 
 procedure TACBrECFSwedaSTX.SubtotalizaCupom(DescontoAcrescimo: Double;
        MensagemRodape : AnsiString);
@@ -1062,25 +1221,24 @@ Procedure TACBrECFSwedaSTX.VendeItem( Codigo, Descricao : String;
   AliquotaECF : String; Qtd : Double ; ValorUnitario : Double;
   ValorDescontoAcrescimo : Double; Unidade : String;
   TipoDescontoAcrescimo : String; DescontoAcrescimo : String) ;
-Var
-  FlagArr, Cmd : String ;
+var
+   CMD:String;
 begin
   if Qtd > 9999 then
      raise EACBrECFCMDInvalido.Create( ACBrStr(
            'Quantidade deve ser inferior a 9999.'));
 
-  if fsVerProtocolo > 'D' then
-     FlagArr := '|A'
-  else
-     FlagArr := '' ;
-
+  {O indicador de arredondamento ou trucamento é opcional e só existe em algumas
+   impressoras, para manter compatibilidade esta sendo enviado sempre o padrão(T)
+   omitindo o indicador no comando.
+   }
   EnviaComando('02|' + AjustaValor(Qtd,fpDecimaisQtd)              +'|'+
                        Trim(LeftStr(Codigo,14))                    +'|'+
                        AjustaValor(ValorUnitario, fpDecimaisPreco) +'|'+
                        Trim(LeftStr(Unidade,2))                    +'|'+
                        AliquotaECF                                 +'|'+
-                       Trim(LeftStr(Descricao,33))                 +
-                       FlagArr  ) ;
+                       Trim(LeftStr(Descricao,33)));
+
 
   if ValorDescontoAcrescimo > 0 then
   begin
@@ -1099,233 +1257,946 @@ begin
 end;
 
 procedure TACBrECFSwedaSTX.CarregaAliquotas;
+var
+   RetCMD:String;
+   Aliquota : TACBrECFAliquota ;
+   iAliquotas:Integer;
+   I:Integer;
 begin
+
+   RetCMD := RetornaInfoECF('D4');
+   inherited CarregaAliquotas;
+   {ICMS}
+   RetCMD := RemoveNulos(RetCMD);
+   iAliquotas := Trunc(Length(RetCMD)/4);
+   for I := 1 to iAliquotas do
+   begin
+      Aliquota := TACBrECFAliquota.create;
+      Aliquota.Sequencia := I;
+      Aliquota.Indice := FormatFloat('00',I);
+      Aliquota.Aliquota := StrToFloatDef(Copy(RetCMD,(I*4)-3,4),0)/100;
+      fpAliquotas.Add(Aliquota);
+   end;
+   {ISS}
+   RetCMD := RetornaInfoECF('E4');
+   RetCMD := RemoveNulos(RetCMD);
+   iAliquotas := Trunc(Length(RetCMD)/4);
+   for I := 1 to iAliquotas do
+   begin
+      Aliquota := TACBrECFAliquota.create;
+      Aliquota.Sequencia := I;
+      Aliquota.Indice := FormatFloat('00',I);
+      Aliquota.Tipo := 'S';
+      Aliquota.Aliquota := StrToFloatDef(Copy(RetCMD,(I*4)-3,4),0)/100;
+      fpAliquotas.Add(Aliquota);
+   end;
+
 end;
 
 procedure TACBrECFSwedaSTX.LerTotaisAliquota;
+var
+   I:Integer;
+   RetCMD:String;
 begin
+    if not Assigned(fpAliquotas) then
+    begin
+       CarregaAliquotas;
+    end;
+
+    RetCMD := RetornaInfoECF('E2');
+
+    for I := 0 to fpAliquotas.Count - 1 do
+    begin
+       fpAliquotas[I].Total:=StrToFloatDef(Copy(RetCMD,((I+1)*13)-12,13),0)/100;
+    end;
+
 end;
 
 
 procedure TACBrECFSwedaSTX.ProgramaAliquota(Aliquota: Double; Tipo: Char;
    Posicao : String);
+var
+   sAliquota:String;
 begin
+   sAliquota := FormatFloat(Tipo+'00.00',Aliquota);
+   {Nesse protocolo não é necessário a posição :) }
+   EnviaComando('32|'+sAliquota);
+end;
+
+function TACBrECFSwedaSTX.AchaCNFIndice(
+  Indice: String): TACBrECFComprovanteNaoFiscal;
+var A : Integer ;
+begin
+  if not Assigned( fpComprovantesNaoFiscais ) then
+     CarregaComprovantesNaoFiscais ;
+  result := nil ;
+  with fpComprovantesNaoFiscais do
+  begin
+     For A := 0 to Count -1 do
+     begin
+        if Objects[A].Indice = Indice then
+        begin
+           result := Objects[A] ;
+           Break ;
+        end ;
+     end ;
+  end ;
 end;
 
 function TACBrECFSwedaSTX.AchaICMSAliquota( var AliquotaICMS: String):
    TACBrECFAliquota;
+Var AliquotaStr : String ;
 begin
+   Result      := nil ;
+   AliquotaStr := '';
+
+   if copy(AliquotaICMS,1,2) = 'SF' then
+      AliquotaStr := 'SF'
+   else if copy(AliquotaICMS,1,2) = 'SN' then
+      AliquotaStr := 'S1'
+   else if copy(AliquotaICMS,1,2) = 'SI' then
+      AliquotaStr := 'S1'
+   else
+   begin
+      case AliquotaICMS[1] of
+        'I' : AliquotaStr := 'I1' ;
+        'N' : AliquotaStr := 'N1' ;
+        'F' : AliquotaStr := 'F1' ;
+        'T' : AliquotaICMS := 'TT'+PadL(copy(AliquotaICMS,2,2),2) ; {Indice}
+        'S' : AliquotaICMS := 'TS'+PadL(copy(AliquotaICMS,2,2),2) ; {Indice}
+        else AliquotaStr :='T'+AliquotaICMS;
+     end
+   end;
+   if AliquotaStr = '' then
+      Result := inherited AchaICMSAliquota( AliquotaICMS )
+   else
+     AliquotaICMS := AliquotaStr ;
 end;
 
 
-procedure TACBrECFSwedaSTX.CarregaFormasPagamento;  { funçao Lenta +- 3 sec. }
+function TACBrECFSwedaSTX.AchaRGIndice(
+  Indice: String): TACBrECFRelatorioGerencial;
+var A : Integer ;
 begin
+   if not Assigned( fpRelatoriosGerenciais ) then
+      CarregaRelatoriosGerenciais ;
+   result := nil ;
+   with fpRelatoriosGerenciais do
+   begin
+      For A := 0 to Count -1 do
+      begin
+         if Objects[A].Indice = Indice then
+         begin
+            result := Objects[A] ;
+            Break ;
+         end ;
+      end ;
+   end ;
+end;
+
+procedure TACBrECFSwedaSTX.CarregaFormasPagamento;  { funçao Lenta +- 3 sec. }
+var
+   sDenominador :String;
+   Tamanho,I:Integer;
+   FPagto : TACBrECFFormaPagamento ;
+   iFormasPagto:integer;
+   sVinculados:String;
+begin
+   {Inicializa o objeto FpFormasPagamento}
+   inherited CarregaFormasPagamento;
+   sDenominador := RetornaInfoECF('B4');
+   sVinculados := RetornaInfoECF('B2');
+
+   {Retirar os #0, o stringReplace não funciona nesse caso }
+   sDenominador := RemoveNulos(sDenominador);
+   {São 20 formas de pagamento no máximo de 21 caracteres}
+   iFormasPagto := Trunc(Length(sDenominador)/21);
+   for I := 1 to iFormasPagto do
+   begin
+      FPagto := TACBrECFFormaPagamento.create;
+      FPagto.Indice := FormatFloat('00',I);
+      FPagto.Descricao := Copy(sDenominador,(I*21)-20,21);
+      {Se for vinculado, o valor vai ser igual a 2}
+      FPagto.PermiteVinculado := sVinculados[I] = '2';
+      fpFormasPagamentos.Add(FPagto);
+   end;
 end;
 
 procedure TACBrECFSwedaSTX.CarregaRelatoriosGerenciais;
+var
+   sDenominacoes:String;
+   sCRE:String;
+   iRelGerenciais:Integer;
+   I:integer;
+   RG  : TACBrECFRelatorioGerencial ;
 begin
+   inherited CarregaRelatoriosGerenciais ;
+   sDenominacoes := RetornaInfoECF('F1');
+   sDenominacoes := RemoveNulos(sDenominacoes);
+
+   sCRE := RetornaInfoECF('F2');
+   sCRE := RemoveNulos(sCRE);
+
+   iRelGerenciais := Trunc(Length(sDenominacoes)/26);
+   for I := 1 to iRelGerenciais do
+   begin
+      RG := TACBrECFRelatorioGerencial.create;
+      RG.Indice := FormatFloat('00',I);
+      RG.Descricao := Copy(sDenominacoes,(I*26)-25,25);
+      RG.Contador := StrToIntDef(Copy(sCRE,(I*4)-3,4),0);
+      fpRelatoriosGerenciais.Add(RG);
+   end;
+
 end;
 
 procedure TACBrECFSwedaSTX.LerTotaisFormaPagamento;
+var
+   sTotalizador:String;
+   I:Integer;
 begin
+   if not Assigned(fpFormasPagamentos) then
+      CarregaFormasPagamento;
+
+   sTotalizador := RetornaInfoECF('B8');
+  {Retirar os #0, o stringReplace não funciona nesse caso }
+   sTotalizador := RemoveNulos(sTotalizador);
+
+   for I := 0 to fpFormasPagamentos.Count -1 do
+   begin
+      fpFormasPagamentos[I].Total := StrToFloatDef(
+                                     Copy(sTotalizador,((I+1)*13)-12,13),0)/100;
+   end;
 end;
 
 
 procedure TACBrECFSwedaSTX.ProgramaFormaPagamento( var Descricao: String;
   PermiteVinculado : Boolean; Posicao : String) ;
+var
+   sClassificacao:String;
 begin
+   { Parametros possíveis:
+     0 - Não classificada
+     1 - Moeda
+     2 - Cartão de crédito ou débito
+     3 - Ticket - Contra Vale
+     4 - Cheque
+   }
+   sClassificacao := '0';
+   if PermiteVinculado then
+      sClassificacao := '2';
+   EnviaComando('36|'+sClassificacao+'|'+Descricao);
 end;
 
 procedure TACBrECFSwedaSTX.ProgramaRelatorioGerencial( var Descricao: String; Posicao: String);
 begin
+   EnviaComando('42|'+Descricao);
 end;
 
 procedure TACBrECFSwedaSTX.CarregaComprovantesNaoFiscais;
+var
+   sDenominadores:String;
+   iDenominadores:Integer;{Quantos CNFs existem}
+   I:Integer;
+   CNF:TACBrECFComprovanteNaoFiscal;
 begin
+   sDenominadores := RetornaInfoECF('C4');
+   sDenominadores := RemoveNulos(sDenominadores);
+   iDenominadores := Trunc(Length(sDenominadores)/20);
+
+   inherited CarregaComprovantesNaoFiscais;
+   for I := 1 to iDenominadores do
+   begin
+      CNF := TACBrECFComprovanteNaoFiscal.create;
+      CNF.Indice := FormatFloat('00',I);
+      CNF.Descricao :=Copy(sDenominadores,(I*20)-18,19);
+      fpComprovantesNaoFiscais.Add(CNF);
+   end;
 end;
 
 procedure TACBrECFSwedaSTX.LerTotaisComprovanteNaoFiscal;
+var
+   sTotais:String;
+   sCon:String;
+   I:Integer;
 begin
+   if not Assigned(fpComprovantesNaoFiscais) then
+      CarregaComprovantesNaoFiscais;
+   sTotais := RetornaInfoECF('C2');
+   sCon := RetornaInfoECF('C8');
+   for I := 0 to fpComprovantesNaoFiscais.Count - 1 do
+   begin
+      fpComprovantesNaoFiscais[i].Total := StrToFloatDef(
+                                           Copy(sTotais,((I+1)*13)-12,13),0)/100;
+      fpComprovantesNaoFiscais[I].Contador:= StrToIntDef(
+                                            Copy(sCon,((I+1)*4)-3,4),0);
+   end;
 end;
 
 procedure TACBrECFSwedaSTX.ProgramaComprovanteNaoFiscal(var Descricao : String;
    Tipo: String; Posicao : String);
 begin
+{
+Argumento(s): sinal:
+Ascii Dec Sinal
+  +   43   Positivo
+  -   45   Negativo
+Opcional, se omitido é assumido o valor padrão do sinal: +
+operação Denominação da operação não-fiscal.
+Alfanumérico - Extensão máxima: 15 caracteres
+Poderão ser cadastradas, em um único comando, um conjunto de até 30 operações.
+
+   Nota(s): Operações com sinal negativo não admitem os seguintes registros:
+   - Pagamento;
+   - Identificação do consumidor;
+   - Acréscimo;
+   - Desconto.
+}
+   EnviaComando('37|'+Tipo+Descricao);
 end;
 
 
 procedure TACBrECFSwedaSTX.ImprimeCheque(Banco: String; Valor: Double;
   Favorecido, Cidade: String; Data: TDateTime; Observacao: String);
+var
+   Espera:integer;
+   Moeda,Moedas:String;
+   sValor:String;
+   sData:String;
 begin
+  {Apesar de implementadao, não foi possível testar essa rotina por falta de
+   equipamento que tivesse o recurso}
+   Espera     := 25 ;
+   Banco      := IntToStrZero(StrToIntDef(Banco,1),3) ;
+   Favorecido := padL(Favorecido,80) ;
+   Cidade     := padL(Cidade,30) ;
+   Moeda      := padL('Real',20) ;
+   Moedas     := padL('Reais',20) ;
+   sValor     := FormatFloat('#.00',Valor);
+   sData      := FormatDateTime('MM-DD-yyyy',Data);
+   EnviaComando('14|'+Banco+'|'+sValor+'|'+Moeda+'|'+Moedas+'|'+Favorecido+
+                '|'+Cidade+'|'+sData);
+
 end;
 
 procedure TACBrECFSwedaSTX.CancelaImpressaoCheque;
 begin
+   EnviaComando('47');
 end;
 
 function TACBrECFSwedaSTX.GetChequePronto: Boolean;
 begin
+   {Não existe comando que implemente esse método}
+   Result := True;
 end;
 
-procedure TACBrECFSwedaSTX.AbreRelatorioGerencial(Indice: Integer = 0);
+procedure TACBrECFSwedaSTX.AbreRelatorioGerencial(Indice: Integer = 2 );
+var
+   sDescricao:String;
+   RG:TACBrECFRelatorioGerencial;
 begin
+   { Não existe indice 0 nessa impressora usando esse protocolo}
+   { O indice 1 é reservado }
+   if ( Indice = 0 ) or ( Indice = 1 ) then
+      Indice := 2;
+
+   RG := AchaRGIndice(FormatFloat('00',Indice));
+   if RG = nil then
+     raise Exception.create( ACBrStr('Relatório Gerencial: '+IntToStr(Indice)+
+                                 ' não foi cadastrado.' ));
+   sDescricao := PadL(RG.Descricao,15);
+   EnviaComando('43|'+sDescricao);
 end;
 
 procedure TACBrECFSwedaSTX.LinhaRelatorioGerencial(Linha: AnsiString; IndiceBMP: Integer);
 begin
+   EnviaComando('25|'+Linha);
 end;
 
 procedure TACBrECFSwedaSTX.AbreCupomVinculado(COO, CodFormaPagto,
    CodComprovanteNaoFiscal :  String; Valor : Double ) ;
+var
+   sValor:String;
 begin
+   sValor := FormatFloat('#.00',Valor);
+   EnviaComando('50|'+CodFormaPagto+'|'+sValor);
 end;
 
 procedure TACBrECFSwedaSTX.LinhaCupomVinculado(Linha: AnsiString);
 begin
+   EnviaComando('25|'+Linha);
 end;
 
 procedure TACBrECFSwedaSTX.FechaRelatorio;
 begin
+   if Estado = estRelatorio then
+      FechaCupom();
 end;
 
 procedure TACBrECFSwedaSTX.LeituraMemoriaFiscal(ReducaoInicial,
    ReducaoFinal : Integer; Simplificada : Boolean);
+var
+   sSimplificada:String ;
 begin
+   sSimplificada := 'C';
+   if Simplificada then
+      sSimplificada := 'S';
+
+   EnviaComando('17|'+IntToStr(ReducaoInicial)+'|'
+                     +IntToStr(ReducaoFinal)
+                     +'|'+sSimplificada);
 end;
 
 procedure TACBrECFSwedaSTX.LeituraMemoriaFiscal(DataInicial,
    DataFinal: TDateTime; Simplificada : Boolean);
+var
+   sDataInicial:String;
+   sDataFinal:String;
+   sSimplificada:String;
 begin
+   sSimplificada := 'C';
+   if Simplificada then
+      sSimplificada := 'S';
+   sDataInicial := FormatDateTime('dd"/"mm"/"yyyy',DataInicial);
+   sDataFinal := FormatDateTime('dd"/"mm"/"yyyy',DataFinal);
+   AguardaImpressao := True ;
+   EnviaComando('18|'+sDataInicial+'|'+sDataFinal+'|'+sSimplificada);
 end;
 
 procedure TACBrECFSwedaSTX.LeituraMemoriaFiscalSerial(ReducaoInicial,
    ReducaoFinal: Integer; Linhas : TStringList; Simplificada : Boolean);
+var
+   sSimplificada:String;
+   Espera:Integer;
 begin
+   Espera := Trunc(30 + ((ReducaoFinal - ReducaoInicial)/2) );
+   sSimplificada := 'C';
+   if Simplificada then
+      sSimplificada := 'S';
+   Linhas.Add(
+      EnviaComando('17|'+IntToStr(ReducaoInicial)+'|'+IntToStr(ReducaoFinal)+'|'
+      +sSimplificada+'|TXT|'+'CPWIN',Espera));
+end;
+
+procedure TACBrECFSwedaSTX.LeituraMFDSerial(DataInicial, DataFinal: TDateTime;
+  Linhas: TStringList; Documentos: TACBrECFTipoDocumentoSet);
+var
+   sDataInicial:String;
+   sDataFinal:String;
+   Espera:Integer;
+begin
+    Espera := Trunc(30 + (DaysBetween(DataInicial,DataFinal)/2) ) ;
+   sDataInicial := FormatDateTime('dd"/"mm"/"yyyy',DataInicial);
+   sDataFinal   := FormatDateTime('dd"/"mm"/"yyyy',DataFinal);
+   Linhas.Text  :=  EnviaComando('45|'+sDataInicial+'|'+sDataFinal+'|TXT|'
+                                 +'CPWIN',Espera);
+end;
+
+procedure TACBrECFSwedaSTX.LeituraMFDSerial(COOInicial, COOFinal: Integer;
+  Linhas: TStringList; Documentos: TACBrECFTipoDocumentoSet);
+var
+   Espera:Integer;
+begin
+   Espera := Trunc(30 + ((COOFinal - COOInicial)/2) );
+   Linhas.Text := EnviaComando('44|'+IntToStr(COOInicial)+'|'
+                  +IntToStr(COOFinal)+'||TXT|'+'CPWIN',Espera);
 end;
 
 procedure TACBrECFSwedaSTX.LeituraMemoriaFiscalSerial(DataInicial,
    DataFinal: TDateTime; Linhas : TStringList; Simplificada : Boolean);
+var
+   I:Integer;
+   Espera:Integer;
+   sDataInicial:String;
+   sDataFinal:String;
+   sSimplificada:String;
 begin
+   sSimplificada := 'C';
+   if Simplificada then
+      sSimplificada := 'S';
+
+   Espera := Trunc(30 + (DaysBetween(DataInicial,DataFinal)/2) );
+   sDataInicial := FormatDateTime('dd"/"mm"/"yyyy',DataInicial);
+   sDataFinal := FormatDateTime('dd"/"mm"/"yyyy',DataFinal);
+   Linhas.Text:=
+      EnviaComando('18|'+sDataInicial+'|'+sDataFinal+'|'+sSimplificada+
+      '|TXT|'+'|CPWIN',Espera);
 end;
 
 function TACBrECFSwedaSTX.GetCNPJ: String;
+var
+   RetCMD:String;
 begin
+   RetCMD := RetornaInfoECF('G64');
+   Result := Copy(RemoveNulos(RetCMD),3,21);
 end;
 
 function TACBrECFSwedaSTX.GetIE: String;
+var
+   RetCMD:String;
 begin
+   RetCMD := RetornaInfoECF('G64');
+   RetCMD := RemoveNulos(RetCMD);
+   Result := Copy(RetCMD,21,21);
 end;
 
 //IMS
 function TACBrECFSwedaSTX.GetIM: String;
+var
+   RetCMD:String;
 begin
+   RetCMD := RetornaInfoECF('G64');
+   Result := Copy(RemoveNulos(RetCMD),42,21);
 end;
 function TACBrECFSwedaSTX.GetCliche: String;
+var
+   RetCMD:String;
 begin
+   RetCMD := RetornaInfoECF('H4');
+   RetCMD := RemoveNulos(RetCMD);
 end;
 //IMS
 
 function TACBrECFSwedaSTX.GetDataMovimento: TDateTime;
+ Var
+  RetCmd : AnsiString ;
+  OldShortDateFormat: AnsiString;
+  sData:String;
 begin
+   Result := Date;
+   RetCmd :=  Trim(RetornaInfoECF('I8'));
+   OldShortDateFormat := ShortDateFormat ;
+   try
+      sData := Copy(RetCmd,1,10);
+      ShortDateFormat := 'dd/mm/yy' ;
+      Result := StrToDate(sData);
+   finally
+      ShortDateFormat := OldShortDateFormat ;
+   end ;
 end;
 
 function TACBrECFSwedaSTX.GetGrandeTotal: Double;
+var
+   RetCMD : AnsiString;
+   sGT:AnsiString;
 begin
+   RetCMD := Trim(RetornaInfoECF('A1'));
+   sGT := Copy(RetCMD,1,18);
+   Result := StrToFloatDef(Copy(RetCMD,1,18),0)/100;
 end;
 
 function TACBrECFSwedaSTX.GetNumCRZ: String;
+var
+   RetCMD:String;
 begin
+   RetCMD := Trim(RetornaInfoECF('A4'));
+   Result := Copy(RetCMD,5,4);
 end;
 
 function TACBrECFSwedaSTX.GetTotalAcrescimos: Double;
+var
+   RetCMD:String;
 begin
+   RetCMD := Trim(RetornaInfoECF('D1'));
+   Result := StrToFloatDef(Copy(RetCMD,1,13),0)/100;
 end;
 
 function TACBrECFSwedaSTX.GetTotalCancelamentos: Double;
+var
+   RetCMD:String;
 begin
+   RetCMD := Trim(RetornaInfoECF('D1'));
+   Result := StrToFloatDef(Copy(RetCMD,27,13),0)/100;
 end;
 
 function TACBrECFSwedaSTX.GetTotalDescontos: Double;
+var
+   RetCMD:String;
 begin
+   RetCMD := Trim(RetornaInfoECF('D1'));
+   Result := StrToFloatDef(Copy(RetCMD,14,13),0)/100;
 end;
 
 function TACBrECFSwedaSTX.GetTotalIsencao: Double;
+var
+   I1:Double;
+   I2:Double;
+   I3:Double;
+   RetCMD:String;
 begin
+   RetCMD := Trim(RetornaInfoECF('D1'));
+   I1:= StrToFloatDef(Copy(RetCMD,118,13),0)/100;
+   I2:= StrToFloatDef(Copy(RetCMD,131,13),0)/100;
+   I3:= StrToFloatDef(Copy(RetCMD,144,13),0)/100;
+   Result := I1+I2+I3;
 end;
 
 function TACBrECFSwedaSTX.GetTotalNaoTributado: Double;
+var
+   RetCMD :String;
+   N1:Double;
+   N2:Double;
+   N3:Double;
 begin
+   RetCMD := Trim(RetornaInfoECF('D1'));
+   N1 := StrToFloatDef(Copy(RetCMD,79,13),0)/100;
+   N2 := StrToFloatDef(Copy(RetCMD,92,13),0)/100;
+   N3 := StrToFloatDef(Copy(RetCMD,105,13),0)/100;
+   Result := N1+N2+N3;
 end;
 
 function TACBrECFSwedaSTX.GetTotalSubstituicaoTributaria: Double;
+var
+   RetCMD :String;
+   F1:Double;
+   F2:Double;
+   F3:Double;
 begin
+   RetCMD := Trim(RetornaInfoECF('D1'));
+   F1 := StrToFloatDef(Copy(RetCMD,40,13),0)/100;
+   F2 := StrToFloatDef(Copy(RetCMD,53,13),0)/100;
+   F3 := StrToFloatDef(Copy(RetCMD,66,13),0)/100;
+   Result := F1+F2+F3;
+
 end;
 
 function TACBrECFSwedaSTX.GetNumUltimoItem: Integer;
+var
+   RetCMD :String;
 begin
+   RetCMD := Trim(RetornaInfoECF('L2'));
+   Result := StrToIntDef(Copy(RetCMD,1,4),0);
 end;
 
 function TACBrECFSwedaSTX.GetVendaBruta: Double;
+var
+   RetCMD :String;
 begin
+   RetCMD := Trim(RetornaInfoECF('A1'));
+   Result := StrToFloatDef(Copy(RetCMD,33,14),0)/100;
 end;
 
 function TACBrECFSwedaSTX.GetNumCOOInicial: String;
+var
+   RetCMD :String;
+   Tamanho,I:Integer;
 begin
+   {Comando suportado apenas a partir da versão 01.00.04}
+   RetCMD := RemoveNulos(EnviaComando('65|0000'));//retorna dados do movimento atual
+   {Remove a primeira parte da string (#2'265+0000AA˜€’€€)}
+   RetCMD := Copy(RetCMD,17,length(RetCMD));
+   Result := Copy(RetCMD,210,6);
 end ;
 
 procedure TACBrECFSwedaSTX.AbreNaoFiscal(CPF_CNPJ: String);
 begin
+   EnviaComando('20');
 end;
 
 procedure TACBrECFSwedaSTX.RegistraItemNaoFiscal(CodCNF: String;
   Valor: Double; Obs: AnsiString = '');
+var
+   CNF : TACBrECFComprovanteNaoFiscal ;
+   P:Integer;
+   sDescricao:String;
 begin
+   P := StrToInt(CodCNF);
+   CNF := AchaCNFIndice(IntToStrZero(P,2));
+   if CNF = nil then
+      raise Exception.Create('Indice não encontrado!');
+   sDescricao :=CNF.Descricao;
+//   {Remove o sinal da descrição}
+//   sDescricao[1]:= ' ';
+   EnviaComando('21|'+Trim(sDescricao)+'|'+FormatFloat('#.00',Valor));
+end;
+
+
+function TACBrECFSwedaSTX.RemoveNulos(Str: AnsiString): AnsiString;
+var
+   I:Integer;
+begin
+   for I := 1 to Length(Str) do
+   begin
+      if Str[I]= #0 then
+      begin
+         Str[I] := ' ';
+      end;
+   end;
+   {Remove o ETX e o checksum da resposta}
+   Result := Copy(Str,1,Pos(ETX,Str)-1);
 end;
 
 procedure TACBrECFSwedaSTX.EfetuaPagamentoNaoFiscal(CodFormaPagto: String;
   Valor: Double; Observacao: AnsiString; ImprimeVinculado: Boolean);
 begin
+   EfetuaPagamento(CodFormaPagto,Valor,Observacao,ImprimeVinculado);
 end;
 
 procedure TACBrECFSwedaSTX.SubtotalizaNaoFiscal(DescontoAcrescimo: Double;
    MensagemRodape: AnsiString);
+ Var Cmd : String ;
 begin
+   SubtotalizaCupom(DescontoAcrescimo,MensagemRodape);
 end;
 
 procedure TACBrECFSwedaSTX.FechaNaoFiscal(Observacao: AnsiString; IndiceBMP : Integer);
 begin
+   FechaCupom(Observacao,IndiceBMP);
 end;
 
 procedure TACBrECFSwedaSTX.CancelaNaoFiscal;
 begin
+   CancelaCupom;
 end;
 
 function TACBrECFSwedaSTX.GetDadosUltimaReducaoZ: AnsiString;
+var
+   RetCMD,sAliquota:String;
+   I:Integer;
+   V:Double;
+   PosI:Integer;
 begin
+   {Comando suportado apenas a partir da versão 01.00.04}
+   RetCMD := RemoveNulos(EnviaComando('65|9999' ));//retorna dados do movimento atual
+   {Remove a primeira parte da string (#2'265+0000AA˜€’€€)}
+   RetCMD := Copy(RetCMD,17,length(RetCMD));
+
+   Result := '[ECF]'+sLineBreak;
+   Result := Result + 'DataMovimento = '+Copy(RetCMD,199,11) +sLineBreak ;
+   Result := Result + 'NumSerie = ' + Copy(RetCMD,51,22) + sLineBreak;
+   Result := Result + 'NumLoja = '+ NumLoja +sLineBreak;
+   Result := Result + 'NumECF = '+ Copy(RetCMD,73,3) + sLineBreak;
+   Result := Result + 'NumCOOInicial = '+ Copy(RetCMD,210,06) + sLineBreak ;
+   Result := Result + 'NumCOO = '+ Copy(RetCMD,193,06) + sLineBreak ;
+   Result := Result + 'NumCRZ = '+ Copy(RetCMD,168,04) + sLineBreak;
+   Result := Result + 'NumCRO = '+ Copy(RetCMD,216,04) + sLineBreak;
+
+
+   {Aliquotas}
+   {As aliquotas são retornadas nesse comando, mas apenas se tiver valor }
+   {Por isso percorro as aliquotas cadastradas no ECF para pegar todas}
+   Result := Result + sLineBreak + '[Aliquotas]'+sLineBreak ;
+    if not Assigned( fpAliquotas ) then
+      LerTotaisAliquota ;
+
+    for I := 0 to Aliquotas.Count - 1 do
+    begin
+       V:= 0;
+       {Procura pela aliquota no formato Tnnnn na string}
+       sAliquota := Aliquotas[I].Tipo+FormatFloat('00.00',Aliquotas[I].Aliquota);
+       sAliquota := StringReplace(sAliquota,',','',[rfReplaceAll]);
+       PosI := Pos(sAliquota,RetCMD);
+       if PosI > 0 then
+       begin
+          V := StrToFloatDef(Copy(RetCMD,PosI+5,18),0)/100;
+          Result := Result + padL(Aliquotas[I].Indice,2) +
+                             sAliquota + ' = '+
+                             FormatFloat('#0.00',V) + sLineBreak ;
+       end
+       else
+       begin
+          {Envia o valor zerado, pois não foi feito venda nessa aliquota}
+          Result := Result + padL(Aliquotas[I].Indice,2) +
+                             sAliquota + ' = '+
+                             '0,00' + sLineBreak ;
+       end;
+    end;
+
+    Result  := Result + sLineBreak + '[OutrasICMS]'+sLineBreak ;
+    {Verifica se existe F1}
+    PosI := Pos('F1',RetCMD);
+    V := 0;
+    if PosI > 0 then
+    begin
+       PosI := PosI + 5 ; {F1     }
+       V  := StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
+    end;
+    {Verifica se existe F2}
+    PosI := Pos('F2',RetCMD);
+    if PosI > 0 then
+    begin
+       PosI := PosI + 5 ; {F2     }
+       V  := V + StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
+    end;
+    {Verifica se existe F3}
+    PosI := Pos('F3',RetCMD);
+    if PosI > 0 then
+    begin
+       PosI := PosI + 5 ; {F3     }
+       V  := V + StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
+    end;
+    Result  := Result + 'TotalSubstituicaoTributaria = '+FormatFloat('#0.00',V)+sLineBreak;
+    V := 0;
+
+    {Verifica se existe não tributado}
+    PosI := Pos('N1',RetCMD);
+    if PosI > 0 then
+    begin
+       PosI := PosI + 5 ; {N1     }
+       V  :=  StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
+    end;
+
+    PosI := Pos('N2',RetCMD);
+    if PosI > 0 then
+    begin
+       PosI := PosI + 5 ; {N2     }
+       V  := V + StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
+    end;
+
+    PosI := Pos('N3',RetCMD);
+    if PosI > 0 then
+    begin
+       PosI := PosI + 5 ; {N3     }
+       V  := V + StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
+    end;
+    Result := Result + 'TotalNaoTributado = '+FormatFloat('#0.00',V)+ sLineBreak;
+    V:= 0;
+   {Isentos}
+    PosI := Pos('I1',RetCMD);
+    if PosI > 0 then
+    begin
+       PosI := PosI + 5 ; {N1     }
+       V  := StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
+    end;
+
+    PosI := Pos('I2',RetCMD);
+    if PosI > 0 then
+    begin
+       PosI := PosI + 5 ; {N1     }
+       V  := V + StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
+    end;
+
+    PosI := Pos('N3',RetCMD);
+    if PosI > 0 then
+    begin
+       PosI := PosI + 5 ; {N1     }
+       V  := V + StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
+    end;
+    Result := Result + 'TotalIsencao = '+FormatFloat('#0.00',V)+ sLineBreak;
+
+    { A impressora não retorna as informações descriminadas }
+    Result := Result + sLineBreak + '[Totalizadores]'+sLineBreak;
+
+    {Descontos ICMS}
+    PosI := Pos('DT',RetCMD);
+    if PosI > 0 then
+    begin
+       PosI := PosI + 5 ; {DT     }
+       V  := StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
+    end;
+
+    {Descontos ISS}
+    PosI := Pos('DT',RetCMD);
+    if PosI > 0 then
+    begin
+       PosI := PosI + 5 ; {DS    }
+       V  := V + StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
+    end;
+    Result := Result +'TotalDescontos = '+FormatFloat('#0.00',V)+ sLineBreak;
+
+    {Cancelamento  ISS}
+    PosI := Pos('CS',RetCMD);
+    if PosI > 0 then
+    begin
+       PosI := PosI + 5 ;
+       V  := StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
+    end;
+
+    {Cancelamento  ICMS}
+    PosI := Pos('CT',RetCMD);
+    if PosI > 0 then
+    begin
+       PosI := PosI + 5 ;
+       V  := V + StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
+    end;
+    Result := Result + 'TotalCancelamentos = '+FormatFloat('#0.00',V)+ sLineBreak;
+    V := 0;
+
+    {Acrescimo  ICMS}
+    PosI := Pos('AT',RetCMD);
+    if PosI > 0 then
+    begin
+       PosI := PosI + 5 ;
+       V  := StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
+    end;
+
+    {Acrescimo  ISS}
+    PosI := Pos('AS',RetCMD);
+    if PosI > 0 then
+    begin
+       PosI := PosI + 5 ;
+       V  := V + StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
+    end;
+    Result := Result + 'TotalAcrescimos = '+FormatFloat('#0.00',V)+ sLineBreak;
+    v := 0;
+    {Venda Bruta não fiscal}
+    PosI := Pos('ON',RetCMD);
+    if PosI > 0 then
+    begin
+       PosI := PosI + 5 ;
+       V  := StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
+    end;
+    Result := Result + 'TotalNaoFiscal = ' + FormatFloat('#0.00',V)+ sLineBreak;
+    v := 0;
+    {Venda Bruta Diaria}
+    PosI := Pos('VB',RetCMD);
+    if PosI > 0 then
+    begin
+       PosI := PosI + 5 ;
+       V  := StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
+    end;
+    Result := Result + 'VendaBruta = ' + FormatFloat('#0.00',V)+ sLineBreak;
+    v := 0;
+    {GT}
+    PosI := Pos('GT',RetCMD);
+    if PosI > 0 then
+    begin
+       PosI := PosI + 5 ;
+       V  := StrToFloatDef(Trim(Copy(RetCMD,PosI,18)),0)/100;
+    end;
+    Result := Result + 'GrandeTotal = '+FormatFloat('#0.00',V)+ sLineBreak;
+
 end;
 
 procedure TACBrECFSwedaSTX.CortaPapel(const CorteParcial: Boolean);
 begin
+   EnviaComando('62|0');
 end;
 
 procedure TACBrECFSwedaSTX.IdentificaPAF(Linha1, Linha2: String);
 begin
+   EnviaComando('39|D|'+padL(Linha1,42) + padL(Linha2,42));
 end;
 
 function TACBrECFSwedaSTX.GetPAF: String;
+var
+   RetCMD:String;
 begin
+   RetCMD :=  RetornaInfoECF('N2');
+   Result := RemoveNulos(RetCMD);
 end;
 
 function TACBrECFSwedaSTX.GetNumCDC: String;
+var
+   RetCMD:String;
 begin
+   RetCMD:= RetornaInfoECF('A4');
+   Result := Copy(RetCMD,39,4);
 end;
 
 function TACBrECFSwedaSTX.GetNumGNF: String;
+var
+   RetCMD:String;
 begin
+   RetCMD := RetornaInfoECF('A4');
+   Result := Copy(RetCMD,9,6);
 end;
 
 function TACBrECFSwedaSTX.GetNumGRG: String;
+var
+   RetCMD:String;
 begin
+   RetCMD := RetornaInfoECF('A4');
+   Result := Copy(RetCMD,15,6);
 end;
 
 function TACBrECFSwedaSTX.RetornaInfoECF(Registrador: String): AnsiString;
@@ -1355,6 +2226,22 @@ begin
   Info.Secao := Registrador ;
   Info.Dados := Result ;
   fsCache34.Add( Info ) ;
+end;
+
+{ TACBrECFSwedaInfo34A1 }
+procedure TACBrECFSwedaInfo34A1.SetTotalizadorGeral(const Value: String);
+begin
+  FTotalizadorGeral := Value;
+end;
+
+procedure TACBrECFSwedaInfo34A1.SetVendaBrutaDiaria(const Value: String);
+begin
+  FVendaBrutaDiaria := Value;
+end;
+
+procedure TACBrECFSwedaInfo34A1.SetVendaLiquida(const Value: String);
+begin
+  FVendaLiquida := Value;
 end;
 
 end.

@@ -356,8 +356,8 @@ TACBrECFBematech = class( TACBrECFClass )
     procedure CarregaFormasPagamento ; override ;
     procedure LerTotaisFormaPagamento ; override ;
     function AchaFPGDescricao( Descricao : String;
-       BuscaExata : Boolean = False ) : TACBrECFFormaPagamento ;
-       override ;
+       BuscaExata : Boolean = False; IgnorarCase : Boolean = True ) :
+       TACBrECFFormaPagamento ; override ;
     Procedure ProgramaFormaPagamento( var Descricao: String;
        PermiteVinculado : Boolean = true; Posicao : String = '' ) ; override ;
     procedure CarregaRelatoriosGerenciais ; override ;
@@ -1512,7 +1512,7 @@ end;
 
 
 function TACBrECFBematech.AchaFPGDescricao( Descricao: String;
-  BuscaExata : Boolean ): TACBrECFFormaPagamento;
+  BuscaExata : Boolean; IgnorarCase : Boolean ): TACBrECFFormaPagamento;
 begin
   { A Bematech permite programas as Formas de Pagamento dinâmicamente.
     Na MP20 A cada Reduçao Z as Formas programadas dinâmicamente sao zeradas.
@@ -1526,7 +1526,7 @@ begin
   if (not fs25MFD) then
      ProgramaFormaPagamento( Descricao ) ;
 
-  result := inherited AchaFPGDescricao(Descricao,BuscaExata) ;
+  result := inherited AchaFPGDescricao(Descricao,BuscaExata,IgnorarCase) ;
 end;
 
 procedure TACBrECFBematech.ProgramaFormaPagamento( var Descricao: String;
@@ -3038,6 +3038,7 @@ Var
   cArqTemp, cArqTempTXT : TextFile;
   cLinha : string;
   Texto : TStringList;
+  TestaData : TDateTime ;
 
   {$IFDEF LINUX} Cmd : String ; {$ENDIF}
 begin
@@ -3144,8 +3145,12 @@ begin
      try
        Texto.LoadFromFile( ArqTmp+'_ESP_TMP' + '.txt' );
 
-//     DiaIni := copy( Texto.Strings[ 6 ], 1, 10 );
-       DiaIni := copy( Texto.Strings[ 7 ], 1, 10 );
+       Try
+          DiaIni := copy( Texto.Strings[ 6 ], 1, 10 );
+          TestaData := StrtoDate(DiaIni);
+       Except
+          DiaIni := copy( Texto.Strings[ 7 ], 1, 10 );
+       end;
        DiaFim := copy( Texto.Strings[ Texto.Count - 2 ], 20, 10 );
 
        //Para modelos MP-2000 / MP-6000 TH FI, com a DLL BemaMFD;

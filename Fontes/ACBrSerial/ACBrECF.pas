@@ -423,7 +423,8 @@ TACBrECF = class( TACBrComponent )
     procedure CarregaFormasPagamento ;
     procedure LerTotaisFormaPagamento ;
     function AchaFPGDescricao( Descricao : String;
-       BuscaExata : Boolean = False ) : TACBrECFFormaPagamento ;
+       BuscaExata : Boolean = False; IgnorarCase : Boolean = True ) :
+       TACBrECFFormaPagamento ;
     function AchaFPGIndice( Indice : String ) : TACBrECFFormaPagamento ;
     Procedure ProgramaFormaPagamento( var Descricao: String;
        PermiteVinculado : Boolean = true; Posicao : String = '') ;
@@ -434,7 +435,8 @@ TACBrECF = class( TACBrComponent )
     procedure CarregaComprovantesNaoFiscais ;
     procedure LerTotaisComprovanteNaoFiscal ;
     function AchaCNFDescricao( Descricao : String;
-       BuscaExata : Boolean = False  ) : TACBrECFComprovanteNaoFiscal ;
+       BuscaExata : Boolean = False; IgnorarCase : Boolean = True  ) :
+       TACBrECFComprovanteNaoFiscal ;
     function AchaCNFIndice( Indice : String ) : TACBrECFComprovanteNaoFiscal ;
     function AchaCNFFormaPagamento( CodFPG : String ) :
        TACBrECFComprovanteNaoFiscal ;
@@ -446,7 +448,8 @@ TACBrECF = class( TACBrComponent )
                                read GetRelatoriosGerenciaisClass;
     procedure CarregaRelatoriosGerenciais ;
     function AchaRGDescricao( Descricao : String;
-       BuscaExata : Boolean = False  ) : TACBrECFRelatorioGerencial ;
+       BuscaExata : Boolean = False; IgnorarCase : Boolean = True  ) :
+       TACBrECFRelatorioGerencial ;
     function AchaRGIndice( Indice : String ) : TACBrECFRelatorioGerencial ;
     Procedure ProgramaRelatoriosGerenciais( var Descricao: String;
        Posicao : String = '') ;
@@ -3120,11 +3123,12 @@ begin
   fsECF.LerTotaisFormaPagamento ;
 end;
 
-function TACBrECF.AchaFPGDescricao(Descricao: String; BuscaExata : Boolean ):
-  TACBrECFFormaPagamento;
+function TACBrECF.AchaFPGDescricao(Descricao: String; BuscaExata : Boolean;
+   IgnorarCase : Boolean ): TACBrECFFormaPagamento;
 begin
-  ComandoLOG := 'AchaFPGDescricao( '+Descricao+', '+BoolToStr(BuscaExata)+' )' ;
-  Result := fsECF.AchaFPGDescricao( Descricao, BuscaExata ) ;
+  ComandoLOG := 'AchaFPGDescricao( '+Descricao+', '+BoolToStr(BuscaExata)+', '+
+                                                    BoolToStr(IgnorarCase)+' )' ;
+  Result := fsECF.AchaFPGDescricao( Descricao, BuscaExata, IgnorarCase ) ;
 end;
 
 function TACBrECF.AchaFPGIndice(Indice: String): TACBrECFFormaPagamento;
@@ -3153,11 +3157,12 @@ begin
   fsECF.CarregaRelatoriosGerenciais ;
 end;
 
-function TACBrECF.AchaRGDescricao(Descricao: String;
-  BuscaExata: Boolean): TACBrECFRelatorioGerencial;
+function TACBrECF.AchaRGDescricao(Descricao: String; BuscaExata: Boolean;
+   IgnorarCase : Boolean ): TACBrECFRelatorioGerencial;
 begin
-  ComandoLOG := 'AchaRGDescricao( '+Descricao+', '+BoolToStr(BuscaExata)+' )' ;
-  Result := fsECF.AchaRGDescricao( Descricao, BuscaExata ) ;
+  ComandoLOG := 'AchaRGDescricao( '+Descricao+', '+BoolToStr(BuscaExata)+', '+
+                                                   BoolToStr(IgnorarCase)+' )' ;
+  Result := fsECF.AchaRGDescricao( Descricao, BuscaExata, IgnorarCase ) ;
 end;
 
 function TACBrECF.AchaRGIndice(
@@ -3194,11 +3199,12 @@ begin
   fsECF.LerTotaisComprovanteNaoFiscal ;
 end;
 
-function TACBrECF.AchaCNFDescricao( Descricao: String; BuscaExata : Boolean ):
-   TACBrECFComprovanteNaoFiscal;
+function TACBrECF.AchaCNFDescricao( Descricao: String; BuscaExata : Boolean;
+   IgnorarCase : Boolean ): TACBrECFComprovanteNaoFiscal;
 begin
-  ComandoLOG := 'AchaCNFDescricao( '+Descricao+', '+BoolToStr(BuscaExata)+' )' ;
-  Result := fsECF.AchaCNFDescricao( Descricao, BuscaExata ) ;
+  ComandoLOG := 'AchaCNFDescricao( '+Descricao+', '+BoolToStr(BuscaExata)+', '+
+                                                    BoolToStr(IgnorarCase)+' )' ;
+  Result := fsECF.AchaCNFDescricao( Descricao, BuscaExata, IgnorarCase ) ;
 end;
 
 function TACBrECF.AchaCNFIndice(

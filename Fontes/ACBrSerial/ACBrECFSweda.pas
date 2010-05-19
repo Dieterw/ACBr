@@ -295,7 +295,8 @@ TACBrECFSweda = class( TACBrECFClass )
 
     { Procedimentos de Cupom Não Fiscal }
     function AchaCNFDescricao( Descricao : String;
-       BuscaExata : Boolean = False  ) : TACBrECFComprovanteNaoFiscal ; override ;
+       BuscaExata : Boolean = False; IgnorarCase : Boolean = True ) :
+       TACBrECFComprovanteNaoFiscal ; override ;
     Procedure NaoFiscalCompleto( CodCNF : String; Valor : Double;
        CodFormaPagto  : String; Obs : AnsiString; IndiceBMP : Integer = 0 ) ; override ;
     Procedure AbreNaoFiscal( CPF_CNPJ : String = '') ; override ;
@@ -3237,7 +3238,7 @@ begin
 end;
 
 function TACBrECFSweda.AchaCNFDescricao( Descricao: String;
-       BuscaExata : Boolean ): TACBrECFComprovanteNaoFiscal;
+   BuscaExata : Boolean; IgnorarCase : Boolean ): TACBrECFComprovanteNaoFiscal;
  var A, P : Integer ;
      DescECF : String ;
 begin
@@ -3247,10 +3248,14 @@ begin
   result := nil ;
   with fpComprovantesNaoFiscais do
   begin
-     Descricao := Trim(UpperCase( Descricao )) ;
+     Descricao := Trim(Descricao) ;
+     if IgnorarCase then
+        Descricao := UpperCase(Descricao) ;
      For A := 0 to Count -1 do
      begin
-        DescECF := UpperCase(Objects[A].Descricao) ;
+        DescECF := Objects[A].Descricao ;
+        if IgnorarCase then
+           DescECF := UpperCase(DescECF) ;
         P := pos( Descricao, DescECF ) ;
         if (P > 0) and (P < 3) and
            (( not BuscaExata) or (copy(DescECF,P,Length(DescECF)) = Descricao))  then

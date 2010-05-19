@@ -193,8 +193,6 @@ begin
 end;
 
 initialization
-{$IFDEF FPC}
-   {$i ACBrNFe.lrs}
-{$ENDIF}
+
 
 end.

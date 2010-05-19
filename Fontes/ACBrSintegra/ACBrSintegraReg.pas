@@ -52,7 +52,7 @@ implementation
 Uses ACBrSintegra, SysUtils;
 
 {$IFNDEF FPC}
-   {$R ACBrDiversos.dcr}
+   {$R ACBrSintegra.dcr}
 {$ENDIF}
 
 procedure Register;
@@ -62,7 +62,7 @@ end;
 
 {$IFDEF FPC}
 initialization
-   {$i ACBrDiversos.lrs}
+   {$i ACBrSintegra.lrs}
 {$ENDIF}
 
 end.

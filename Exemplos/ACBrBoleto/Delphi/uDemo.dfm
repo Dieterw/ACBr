@@ -621,7 +621,14 @@ object frmDemo: TfrmDemo
     Banco.TipoBanco = banBradesco
     NomeArqRemessa = 'cb00001.rem'
     DirArqRemessa = '.\remessa\'
+    ACBrBoletoFC = ACBrBoletoFCFortes1
     Left = 64
+    Top = 231
+  end
+  object ACBrBoletoFCFortes1: TACBrBoletoFCFortes
+    ACBrBoleto = ACBrBoleto1
+    DirLogo = '.\logos\'
+    Left = 128
     Top = 231
   end
 end

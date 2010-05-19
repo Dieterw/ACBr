@@ -85,6 +85,7 @@ type
     Label30: TLabel;
     edtUF: TEdit;
     ACBrBoleto1: TACBrBoleto;
+    ACBrBoletoFCFortes1: TACBrBoletoFCFortes;
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);

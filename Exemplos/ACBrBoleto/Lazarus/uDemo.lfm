@@ -1,7 +1,7 @@
 object frmDemo: TfrmDemo
-  Left = 113
+  Left = 312
   Height = 559
-  Top = 99
+  Top = 71
   Width = 816
   Caption = 'Demo ACBrBoleto'
   ClientHeight = 559

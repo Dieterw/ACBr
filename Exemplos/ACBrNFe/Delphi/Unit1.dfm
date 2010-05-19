@@ -1043,7 +1043,6 @@ object Form1: TForm1
   end
   object ACBrNFeDANFERave1: TACBrNFeDANFERave
     PathPDF = 'C:\Program Files\Borland\Delphi7\Bin\'
-    ImprimirHoraSaida = False
     MostrarPreview = True
     MostrarStatus = True
     TipoDANFE = tiRetrato
@@ -1060,9 +1059,12 @@ object Form1: TForm1
     FormularioContinuo = False
     TamanhoFonte_DemaisCampos = 10
     ProdutosPorPagina = 0
+    ImprimirDetalhamentoEspecifico = True
+    NFeCancelada = False
     RavFile = 
       'D:\delphi\ACBr\trunk\ACBrNFePCN\Demo\Report\NotaFiscalEletronica' +
       '.rav'
+    EspessuraBorda = 1
     Left = 742
     Top = 153
   end

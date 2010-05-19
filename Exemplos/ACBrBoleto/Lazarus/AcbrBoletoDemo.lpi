@@ -49,10 +49,12 @@
         <Filename Value="AcbrBoletoDemo.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="AcbrBoletoDemo"/>
+        <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="2"/>
-        <CursorPos X="1" Y="14"/>
-        <UsageCount Value="57"/>
+        <TopLine Value="1"/>
+        <CursorPos X="90" Y="16"/>
+        <UsageCount Value="58"/>
+        <Loaded Value="True"/>
       </Unit0>
       <Unit1>
         <Filename Value="uDemo.pas"/>
@@ -60,11 +62,12 @@
         <ComponentName Value="frmDemo"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uDemo"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
         <TopLine Value="166"/>
         <CursorPos X="23" Y="167"/>
-        <UsageCount Value="57"/>
+        <UsageCount Value="58"/>
         <Loaded Value="True"/>
       </Unit1>
       <Unit2>
@@ -73,8 +76,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ACBRBoletoFCFortesFr"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="3"/>
         <WindowIndex Value="0"/>
         <TopLine Value="382"/>
         <CursorPos X="120" Y="389"/>
@@ -84,7 +86,7 @@
       <Unit3>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
         <UnitName Value="ACBrBoleto"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1038"/>
         <CursorPos X="38" Y="1044"/>
@@ -159,7 +161,7 @@
         <UsageCount Value="13"/>
       </Unit11>
       <Unit12>
-        <Filename Value="..\..\..\..\..\..\Lazarus\Comp\fortes4lazarus\trunk\rlreport.pas"/>
+        <Filename Value="D:\Lazarus\Comp\fortes4lazarus\trunk\rlreport.pas"/>
         <UnitName Value="RLReport"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
@@ -167,7 +169,7 @@
         <UsageCount Value="11"/>
       </Unit12>
       <Unit13>
-        <Filename Value="..\..\..\..\..\..\Lazarus\Comp\fortes4lazarus\trunk\rlpdffilter.pas"/>
+        <Filename Value="D:\Lazarus\Comp\fortes4lazarus\trunk\rlpdffilter.pas"/>
         <UnitName Value="RLPDFFilter"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1027"/>
@@ -178,7 +180,7 @@
         </Bookmarks>
       </Unit13>
       <Unit14>
-        <Filename Value="..\..\..\..\..\..\Lazarus\Comp\fortes4lazarus\trunk\rlfilters.pas"/>
+        <Filename Value="D:\Lazarus\Comp\fortes4lazarus\trunk\rlfilters.pas"/>
         <UnitName Value="RLFilters"/>
         <WindowIndex Value="0"/>
         <TopLine Value="195"/>
@@ -186,7 +188,7 @@
         <UsageCount Value="10"/>
       </Unit14>
       <Unit15>
-        <Filename Value="..\..\..\..\..\..\Lazarus\Comp\fortes4lazarus\trunk\rlprinters.pas"/>
+        <Filename Value="D:\Lazarus\Comp\fortes4lazarus\trunk\rlprinters.pas"/>
         <UnitName Value="RLPrinters"/>
         <WindowIndex Value="0"/>
         <TopLine Value="144"/>
@@ -194,7 +196,7 @@
         <UsageCount Value="10"/>
       </Unit15>
       <Unit16>
-        <Filename Value="..\..\..\..\..\..\Lazarus\Comp\fortes4lazarus\trunk\rlconsts.pas"/>
+        <Filename Value="D:\Lazarus\Comp\fortes4lazarus\trunk\rlconsts.pas"/>
         <UnitName Value="RLConsts"/>
         <WindowIndex Value="0"/>
         <TopLine Value="262"/>
@@ -224,7 +226,7 @@
         <UsageCount Value="10"/>
       </Unit19>
       <Unit20>
-        <Filename Value="..\..\..\..\..\..\Lazarus\Comp\fortes4lazarus\trunk\rlsavedialog.pas"/>
+        <Filename Value="D:\Lazarus\Comp\fortes4lazarus\trunk\rlsavedialog.pas"/>
         <ComponentName Value="RLSaveDialog"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
@@ -310,7 +312,7 @@
         <UsageCount Value="11"/>
       </Unit30>
       <Unit31>
-        <Filename Value="..\..\..\..\..\..\lazarus\Comp\ZVDateTimeCtrls\zvdatetimepicker.pas"/>
+        <Filename Value="D:\lazarus\Comp\ZVDateTimeCtrls\zvdatetimepicker.pas"/>
         <UnitName Value="ZVDateTimePicker"/>
         <TopLine Value="458"/>
         <CursorPos X="38" Y="460"/>
@@ -325,7 +327,7 @@
         <UsageCount Value="10"/>
       </Unit32>
       <Unit33>
-        <Filename Value="..\..\..\..\..\..\lazarus\TOOLS\DJ_Perfil.pas"/>
+        <Filename Value="D:\lazarus\TOOLS\DJ_Perfil.pas"/>
         <HasResources Value="True"/>
         <UnitName Value="DJ_Perfil"/>
         <WindowIndex Value="0"/>
@@ -334,7 +336,7 @@
         <UsageCount Value="10"/>
       </Unit33>
       <Unit34>
-        <Filename Value="..\..\..\..\..\..\lazarus\TOOLS\DJ_Registro.pas"/>
+        <Filename Value="D:\lazarus\TOOLS\DJ_Registro.pas"/>
         <UnitName Value="DJ_Registro"/>
         <WindowIndex Value="0"/>
         <TopLine Value="3"/>
@@ -357,7 +359,7 @@
         <UsageCount Value="11"/>
       </Unit36>
       <Unit37>
-        <Filename Value="..\..\..\..\..\..\lazarus\djpdv\djmonitor\Rfd.pas"/>
+        <Filename Value="D:\lazarus\djpdv\djmonitor\Rfd.pas"/>
         <ComponentName Value="frRFD"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
@@ -368,7 +370,7 @@
         <UsageCount Value="10"/>
       </Unit37>
       <Unit38>
-        <Filename Value="..\..\..\..\..\..\lazarus\Comp\CCR\virtualtreeview-new\trunk\VirtualTrees.pas"/>
+        <Filename Value="D:\lazarus\Comp\CCR\virtualtreeview-new\trunk\VirtualTrees.pas"/>
         <UnitName Value="VirtualTrees"/>
         <TopLine Value="15397"/>
         <CursorPos X="5" Y="15404"/>
@@ -376,32 +378,26 @@
       </Unit38>
       <Unit39>
         <Filename Value="C:\lazarus\fpc\2.4.1\source\rtl\objpas\sysutils\sysstrh.inc"/>
-        <EditorIndex Value="5"/>
         <WindowIndex Value="0"/>
         <TopLine Value="196"/>
         <CursorPos X="10" Y="203"/>
         <UsageCount Value="13"/>
-        <Loaded Value="True"/>
       </Unit39>
       <Unit40>
         <Filename Value="C:\lazarus\fpc\2.4.1\source\rtl\objpas\sysutils\sysstr.inc"/>
-        <EditorIndex Value="6"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1727"/>
         <CursorPos X="3" Y="1730"/>
         <UsageCount Value="13"/>
-        <Loaded Value="True"/>
       </Unit40>
       <Unit41>
-        <Filename Value="..\..\..\..\..\..\lazarus\Comp\Fortes\rlpdffilter.pas"/>
+        <Filename Value="D:\lazarus\Comp\Fortes\rlpdffilter.pas"/>
         <UnitName Value="RLPDFFilter"/>
-        <EditorIndex Value="3"/>
         <WindowIndex Value="0"/>
         <TopLine Value="186"/>
         <CursorPos X="4" Y="186"/>
         <SyntaxHighlighter Value="FreePascal"/>
         <UsageCount Value="12"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Text"/>
       </Unit41>
     </Units>

@@ -333,8 +333,8 @@ end;
 
 procedure TForm1.LoadXML(MyMemo: TMemo; MyWebBrowser: TWebBrowser);
 begin
-  MyMemo.Lines.SaveToFile(ExtractFileDir(application.ExeName)+'temp.xml');
-  MyWebBrowser.Navigate(ExtractFileDir(application.ExeName)+'temp.xml');
+  MyMemo.Lines.SaveToFile(ExtractFileDir(application.ExeName)+'\temp.xml');
+  MyWebBrowser.Navigate(ExtractFileDir(application.ExeName)+'\temp.xml');
 end;
 
 procedure TForm1.sbtnCaminhoCertClick(Sender: TObject);

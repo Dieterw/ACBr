@@ -378,12 +378,12 @@ const
   _NUM_ITEMS_OTHERPAGES = 50;
 
 var
-  FProtocoloCTe     : string;
-  nItemControle     : Integer;
+  FProtocoloCTe : string;
+  nItemControle : Integer;
 
 procedure TfrmDACTeQRRetrato.Itens;
 var
-  I: Integer;
+  I : Integer;
 begin
   if QRCTe.PageNumber > 0 then
     exit;
@@ -489,7 +489,7 @@ end;
 
 procedure TfrmDACTeQRRetrato.QRCTeBeforePrint(Sender: TCustomQuickRep; var PrintReport: Boolean);
 var
-  nRestItens        : Integer;
+  nRestItens : Integer;
 begin
   inherited;
   Itens;
@@ -555,21 +555,18 @@ begin
   qrlTomaServico.Caption := TpTomadorToStrText(FCTe.Ide.Toma03.Toma);
   qrlFormaPagamento.Caption := tpforPagToStrText(FCTe.Ide.forPag);
 
-//  if FProtocoloCTe <> '' then
-    qrlProtocolo.Caption := FProtocoloCTe;
-//  else
-//    qrlProtocolo.Caption := FProtocoloCTe ;
-//dando pau aqui =) thiago
-//    qrlProtocolo.Caption := FCTe.procCTe.nProt + CTeUtil.SeSenao(FCTe.procCTe.dhRecbto <> 0, DateTimeToStr(FCTe.procCTe.dhRecbto), '');
+  if FProtocoloCTE <> ''
+   then qrlProtocolo.Caption := FProtocoloCTE
+   else qrlProtocolo.Caption :=  FCTe.procCTe.nProt + ' ' +
+                                 CTeUtil.SeSenao(FCTe.procCTe.dhRecbto <> 0,
+                                      DateTimeToStr(FCTe.procCTe.dhRecbto), '');
 
   qrlInscSuframa.Caption := FCTe.Dest.ISUF;
-
- //    TQRLabel(FindComponent('qrlQtdUndMedida' + intToStr(i+ 1))).Caption := CteUtil.FormatarValor(msk6x3, FCTe.InfCarga.InfQ.Items[i].qCarga);
 end;
 
 procedure TfrmDACTeQRRetrato.qrbItensBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
 var
-  i                 : integer;
+  i : integer;
 begin
   inherited;
 
@@ -598,7 +595,7 @@ end;
 
 procedure TfrmDACTeQRRetrato.qrbDadosDACTeBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
 var
-  i: integer;
+  i : integer;
 begin
   inherited;
   qrlNatOperacao.Caption := FormatFloat('0000', FCTe.Ide.CFOP) + ' - ' + FCTe.Ide.natOp;
@@ -833,7 +830,7 @@ procedure TfrmDACTeQRRetrato.qrbSistemaBeforePrint(Sender: TQRCustomBand;
   var PrintBand: Boolean);
 begin
   inherited;
-  qrlblSistema.Caption:=FSistema + ' - ' + FUsuario;
+  qrlblSistema.Caption := FSistema + ' - ' + FUsuario;
 end;
 
 end.

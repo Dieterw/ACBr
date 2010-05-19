@@ -907,8 +907,20 @@ begin
   CTe.signature.SignatureValue  := Leitor.rCampo(tcStr, 'SignatureValue');
   CTe.signature.X509Certificate := Leitor.rCampo(tcStr, 'X509Certificate');
 
-  Result := true;
+  (* Grupo da TAG <protCTe> ****************************************************)
+  if Leitor.rExtrai(1, 'protCTe') <> '' then
+  begin
+    CTe.procCTe.tpAmb    := StrToTpAmb(ok, Leitor.rCampo(tcStr, 'tpAmb'));
+    CTe.procCTe.verAplic := Leitor.rCampo(tcStr, 'verAplic');
+    CTe.procCTe.chCTe    := Leitor.rCampo(tcStr, 'chCTe');
+    CTe.procCTe.dhRecbto := Leitor.rCampo(tcDatHor, 'dhRecbto');
+    CTe.procCTe.nProt    := Leitor.rCampo(tcStr, 'nProt');
+    CTe.procCTe.digVal   := Leitor.rCampo(tcStr, 'digVal');
+    CTe.procCTe.cStat    := Leitor.rCampo(tcInt, 'cStat');
+    CTe.procCTe.xMotivo  := Leitor.rCampo(tcStr, 'xMotivo');
+  end;
 
+  Result := true;
 end;
 
 end.

@@ -1651,8 +1651,8 @@ begin
 
   FinfCTeComp   := TinfCTeCompCollection.Create(Self);
   FInfCTeAnuEnt := TInfCTeAnuEnt.Create(Self);
-
-  Fsignature := Tsignature.create;
+  FProcCTe      := TProcCTe.create;
+  Fsignature    := Tsignature.create;
 end;
 
 destructor TCTe.Destroy;
@@ -1674,7 +1674,7 @@ begin
 
   FInfCTeComp.Free;
   FInfCTeAnuEnt.Free;
-
+  FProcCTe.Free;
   Fsignature.Free;
   inherited Destroy;
 end;

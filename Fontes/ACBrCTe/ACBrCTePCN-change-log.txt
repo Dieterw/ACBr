@@ -48,6 +48,14 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   19/05/10 (Italo Jurisato Junior)
+---------------
+[*] No fonte pcteCTeR foi incluido a leitura da tag protCTe.
+[-] No fonte pcteCTe foi incluido no constructor/destructor da classe TCTe, a criação
+    e a liberação do FprocCTe.
+[*] No Componente ACBrCTeDACTeQRRetrato, foi descomentado o código que ocasionava erro
+    ao imprimir o DACTe (o problema era a inexistencia do FprocCTe).
+
 Alterações   17/05/10 (Italo Jurisato Junior)
 ---------------
 [*] Foram Incluídos todos os campos que faltavam entre o campo #321 e o Campo #355 e

@@ -1,11 +1,11 @@
 object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
-  Left = 285
-  Height = 744
-  Top = 21
+  Left = 91
+  Height = 702
+  Top = 0
   Width = 917
   VertScrollBar.Position = 538
   Caption = 'ACBRBoletoFCFortesFr'
-  ClientHeight = 744
+  ClientHeight = 702
   ClientWidth = 917
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
@@ -1975,9 +1975,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         RealBounds.Height = 0
       end
       object txtInstrucoes3: TRLMemo
-        Left = 4
+        Left = 5
         Height = 82
-        Top = 198
+        Top = 201
         Width = 529
         AutoSize = False
         Font.Color = clBlack

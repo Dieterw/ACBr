@@ -69,9 +69,9 @@ type
 
   TACBrBancoClass = class
   private
+     function GetNumero: Integer;
 
   protected
-    fpNumero: Integer;
     fpDigito: Integer;
     fpNome:   String;
     fpModulo: TACBrCalcDigito;
@@ -84,7 +84,7 @@ type
     Destructor Destroy;
 
     property ACBrBanco : TACBrBanco      read fpAOwner;
-    property Numero    : Integer         read fpNumero;
+    property Numero    : Integer         read GetNumero;
     property Digito    : Integer         read fpDigito;
     property Nome      : String          read fpNome;
     Property Modulo    : TACBrCalcDigito read fpModulo;
@@ -102,23 +102,20 @@ type
     function CalcularNomeArquivoRemessa(const DirArquivo: String): String; Virtual;
   end;
 
-  TACBrTipoBanco = (banNaoDefinido,banBradesco,banItau);
 
   { TACBrBanco }
 
   TACBrBanco = class(TComponent)
   private
     fACBrBoleto        : TACBrBoleto;
-    fTipoBanco         : TACBrTipoBanco;
+    fNumeroBanco       : Integer;
     fBancoClass        : TACBrBancoClass;
     function GetNome   : String;
-    function GetNumero : Integer;
     function GetDigito : Integer;
     function GetTamanhoMaximoNossoNum : Integer;
     procedure SetDigito(const AValue: Integer);
     procedure SetNome(const AValue: String);
     procedure SetNumero(const AValue: Integer);
-    procedure SetTipoBanco ( const AValue: TACBrTipoBanco );
   public
     constructor Create( AOwner : TComponent); override;
 
@@ -137,13 +134,13 @@ type
 
     function CalcularNomeArquivoRemessa(const DirArquivo: String): String;
   published
-    property TipoBanco : TACBrTipoBanco read fTipoBanco write SetTipoBanco default banNaoDefinido;
-    property Numero    : Integer        read GetNumero  write SetNumero stored false;
+    property Numero    : Integer        read fNumeroBanco    write SetNumero default 0;
     property Digito    : Integer        read GetDigito  write SetDigito stored false;
     property Nome      : String         read GetNome    write SetNome   stored false;
   end;
 
   TACBrTipoBoleto = (tbCliEmite,tbBancoEmite,tbBancoReemite,tbBancoNaoReemite);
+  TACBrTipoInscricao = (tiPessoaFisica, tiPessoaJuridica, tiOutro);
 
   { TACBrCedente }
 
@@ -158,6 +155,8 @@ type
     fModalidade    : String;
     fConvenio      : String;
     fTipoBoleto    : TACBrTipoBoleto;
+    fCNPJCPF       : String;
+    fTipoInscricao : TACBrTipoInscricao;
   public
     constructor Create( AOwner : TComponent ) ; override ;
     destructor Destroy; override;
@@ -171,6 +170,9 @@ type
     property Modalidade   : String read fModalidade    write fModalidade;
     property Convenio     : String read fConvenio      write fConvenio;
     property TipoBoleto   : TACBrTipoBoleto read fTipoBoleto    write fTipoBoleto default tbCliEmite ;
+    {Todo: Validar CNPJCPF - SetCNPJCPF}
+    property CNPJCPF      : String  read fCNPJCPF     write fCNPJCPF; 
+    property TipoInscricao: TACBrTipoInscricao  read fTipoInscricao write fTipoInscricao default tiPessoaJuridica;
   end;
 
   TACBrPessoa = (pFisica,pJuridica,pOutras);
@@ -499,7 +501,7 @@ procedure Register;
 
 implementation
 
-Uses ACBrUtil, ACBrBancoBradesco, Forms,
+Uses ACBrUtil, ACBrBancoBradesco, ACBrBancoBrasil, Forms,
      {$IFDEF COMPILER6_UP} StrUtils {$ELSE} ACBrD5{$ENDIF},
      Math;
 
@@ -699,6 +701,13 @@ var
    I : Integer;
 begin
    I      := fListadeBoletos.Add(TACBrTitulo.Create(self));
+   with fListadeBoletos[I] do
+   begin
+      Aceite            := 'N';
+      EspecieDoc        := 'DM';
+      DataProcessamento := Now;
+      LocalPagamento    := 'Pagar preferencialmente nas agencias do '+ Banco.Nome;
+   end;
    Result := fListadeBoletos[I];
 end;
 
@@ -809,31 +818,9 @@ begin
    Result := inherited Add(Obj) ;
 end;
 
-procedure TACBrBanco.SetTipoBanco ( const AValue: TACBrTipoBanco ) ;
-begin
-   if fTipoBanco = AValue then
-      exit;
-
-   fBancoClass.Free;
-
-   case AValue of
-      banBradesco : fBancoClass := TACBrBancoBradesco.create(Self);
-      banItau     : fBancoClass := TACBrBancoClass.create(Self);
-   else
-      fBancoClass := TACBrBancoClass.create(Self);
-   end;
-
-   fTipoBanco := AValue;
-end;
-
 function TACBrBanco.GetNome: String;
 begin
    Result := ACBrStr(fBancoClass.Nome);
-end;
-
-function TACBrBanco.GetNumero: Integer;
-begin
-   Result := fBancoClass.Numero;
 end;
 
 function TACBrBanco.GetDigito: Integer;
@@ -858,7 +845,19 @@ end;
 
 procedure TACBrBanco.SetNumero(const AValue: Integer);
 begin
-  {Apenas para aparecer no ObjectInspector do D7}
+   if fNumeroBanco = AValue then
+      exit;
+
+   fBancoClass.Free;
+
+   case AValue of
+      001 : fBancoClass := TACBrBancoBrasil.create(Self);
+      237 : fBancoClass := TACBrBancoBradesco.create(Self);
+   else
+      fBancoClass := TACBrBancoClass.create(Self);
+   end;
+
+   fNumeroBanco := AValue;
 end;
 
 { TACBrBanco }
@@ -870,8 +869,8 @@ begin
    if not (AOwner is TACBrBoleto) then
       raise Exception.Create('Aowner deve ser do tipo TACBrBoleto');
 
-   fACBrBoleto := TACBrBoleto(AOwner);
-   fTipoBanco  := banNaoDefinido;
+   fACBrBoleto  := TACBrBoleto(AOwner);
+   fNumeroBanco := 0;
 
    fBancoClass := TACBrBancoClass.create(Self);
 end;
@@ -919,6 +918,10 @@ function TACBrBancoClass.CalcularDigitoVerificador(const ACBrTitulo :TACBrTitulo
 begin
    Result:= '';
 end;
+ function TACBrBancoClass.GetNumero: Integer;
+begin
+   Result:= ACBrBanco.Numero;
+end;
 
 function TACBrBancoClass.CalcularFatorVencimento(const DataVencimento: TDatetime) : String;
 begin
@@ -929,6 +932,7 @@ function TACBrBancoClass.CalcularDigitoCodigoBarras (
    const CodigoBarras: String ) : String;
 begin
    Modulo.CalculoPadrao;
+   Modulo.Documento := CodigoBarras;
    Modulo.Calcular;
 
    Result:= IntToStr(Modulo.DigitoFinal);
@@ -985,7 +989,7 @@ begin
 
 
   {Campo 1(Código Banco,Tipo de Moeda,5 primeiro digitos do Campo Livre) }
-   fpModulo.Documento := IntToStr(fpNumero)+'9'+Copy(CodigoBarras,20,5);
+   fpModulo.Documento := IntToStr(Numero)+'9'+Copy(CodigoBarras,20,5);
    fpModulo.Calcular;
 
    Campo1 := copy( fpModulo.Documento, 1, 5) + '.' +
@@ -993,7 +997,7 @@ begin
              IntToStr( fpModulo.DigitoFinal );
 
   {Campo 2(6ª a 15ª posições do campo Livre)}
-   fpModulo.Documento := copy( CodigoBarras, 25, 10);
+   fpModulo.Documento:= copy( CodigoBarras, 25, 10);
    fpModulo.Calcular;
 
    Campo2 := Copy( fpModulo.Documento, 1, 5) + '.' +
@@ -1001,7 +1005,7 @@ begin
              IntToStr( fpModulo.DigitoFinal );
 
   {Campo 3 (16ª a 25ª posições do campo Livre)}
-   fpModulo.Documento := copy( CodigoBarras, 35, 10);
+   fpModulo.Documento:= copy( CodigoBarras, 35, 10);
    fpModulo.Calcular;
 
    Campo3 := Copy( fpModulo.Documento, 1, 5) + '.' +
@@ -1069,7 +1073,6 @@ begin
    inherited create;
 
    fpAOwner := AOwner;
-   fpNumero := 0;
    fpDigito := 0;
    fpNome   := 'Não definido';
    fpTamanhoMaximoNossoNum := 10;
@@ -1108,13 +1111,16 @@ begin
 end;
 
 procedure TACBrBoletoFCClass.CarregaLogo(const PictureLogo : TPicture; const NumeroBanco: Integer ) ;
+var
+   teste: String;
 begin
   if Assigned( fOnObterLogo ) then
      fOnObterLogo( PictureLogo, NumeroBanco)
   else
    begin
-     if FileExists( ArquivoLogo ) then
-        PictureLogo.LoadFromFile( ArquivoLogo );
+     teste:= ArquivoLogo;
+     if FileExists(ArquivoLogo ) then
+        PictureLogo.LoadFromFile(ArquivoLogo );
    end ;
 end ;
 
@@ -1149,7 +1155,7 @@ end;
 
 function TACBrBoletoFCClass.GetArqLogo: String;
 begin
-   Result := DirLogo + IntToStrZero( ACBrBoleto.Banco.Numero, 3)+'.jpg';
+   Result := DirLogo + IntToStrZero( ACBrBoleto.Banco.Numero, 3)+'.bmp';
 end;
 
 function TACBrBoletoFCClass.GetAbout: String;
@@ -1191,21 +1197,18 @@ var
    MostrarSetupAntigo   : Boolean;
    NomeArquivoAntigo    : String;
 begin
+   FiltroAntigo         := Filtro;
+   MostrarPreviewAntigo := MostrarPreview;
+   MostrarSetupAntigo   := MostrarSetup;
+   NomeArquivoAntigo    := NomeArquivo;
    try
-     FiltroAntigo         := Filtro;
-     MostrarPreviewAntigo := MostrarPreview;
-     MostrarSetupAntigo   := MostrarSetup;
-     NomeArquivoAntigo    := NomeArquivo;
-
-     Filtro      := fiPDF;
-     NomeArquivo := 'boleto.pdf';
+     Filtro         := fiPDF;
      MostrarPreview := false;
      MostrarSetup   := false;
 
      Imprimir;
    finally
-     Filtro      := FiltroAntigo;
-     NomeArquivo := NomeArquivoAntigo;
+     Filtro         := FiltroAntigo;
      MostrarPreview := MostrarSetupAntigo;
      MostrarSetup   := MostrarSetupAntigo;
    end;
@@ -1218,21 +1221,19 @@ var
    MostrarSetupAntigo   : Boolean;
    NomeArquivoAntigo    : String;
 begin
-   try
-     FiltroAntigo         := Filtro;
-     NomeArquivoAntigo    := NomeArquivo;
-     MostrarPreviewAntigo := MostrarPreview;
-     MostrarSetupAntigo   := MostrarSetup;
+   FiltroAntigo         := Filtro;
+   NomeArquivoAntigo    := NomeArquivo;
+   MostrarPreviewAntigo := MostrarPreview;
+   MostrarSetupAntigo   := MostrarSetup;
 
+   try
      Filtro         := fiHTML;
-     NomeArquivo    := 'boleto.html';
      MostrarPreview := false;
      MostrarSetup   := false;
 
      Imprimir;
    finally
      Filtro         := FiltroAntigo;
-     NomeArquivo    := NomeArquivoAntigo;
      MostrarPreview := MostrarSetupAntigo;
      MostrarSetup   := MostrarSetupAntigo;
    end;

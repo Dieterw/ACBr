@@ -1,13 +1,45 @@
-unit ACBrBancoBradesco;
+{******************************************************************************}
+{ Projeto: Componentes ACBr                                                    }
+{  Biblioteca multiplataforma de componentes Delphi para interação com equipa- }
+{ mentos de Automação Comercial utilizados no Brasil                           }
+{                                                                              }
+{ Direitos Autorais Reservados (c) 2009 Daniel Simoes de Almeida               }
+{                                                                              }
+{ Colaboradores nesse arquivo:   Juliana Rodrigues Prado                       }
+{                                                                              }
+{  Você pode obter a última versão desse arquivo na pagina do  Projeto ACBr    }
+{ Componentes localizado em      http://www.sourceforge.net/projects/acbr      }
+{                                                                              }
+{  Esta biblioteca é software livre; você pode redistribuí-la e/ou modificá-la }
+{ sob os termos da Licença Pública Geral Menor do GNU conforme publicada pela  }
+{ Free Software Foundation; tanto a versão 2.1 da Licença, ou (a seu critério) }
+{ qualquer versão posterior.                                                   }
+{                                                                              }
+{  Esta biblioteca é distribuída na expectativa de que seja útil, porém, SEM   }
+{ NENHUMA GARANTIA; nem mesmo a garantia implícita de COMERCIABILIDADE OU      }
+{ ADEQUAÇÃO A UMA FINALIDADE ESPECÍFICA. Consulte a Licença Pública Geral Menor}
+{ do GNU para mais detalhes. (Arquivo LICENÇA.TXT ou LICENSE.TXT)              }
+{                                                                              }
+{  Você deve ter recebido uma cópia da Licença Pública Geral Menor do GNU junto}
+{ com esta biblioteca; se não, escreva para a Free Software Foundation, Inc.,  }
+{ no endereço 59 Temple Street, Suite 330, Boston, MA 02111-1307 USA.          }
+{ Você também pode obter uma copia da licença em:                              }
+{ http://www.opensource.org/licenses/lgpl-license.php                          }
+{                                                                              }
+{ Daniel Simões de Almeida  -  daniel@djsystem.com.br  -  www.djsystem.com.br  }
+{              Praça Anita Costa, 34 - Tatuí - SP - 18270-410                  }
+{                                                                              }
+{******************************************************************************}
 
-{$IFDEF FPC}
-  {$mode objfpc}{$H+}
-{$ENDIF}
+{$I ACBr.inc}
+
+unit ACBrBancoBradesco;
 
 interface
 
 uses
-  Classes, SysUtils,ACBrBoleto;
+  Classes, SysUtils,ACBrBoleto,
+  {$IFDEF COMPILER6_UP} dateutils {$ELSE} ACBrD5 {$ENDIF};
 
 type
 
@@ -33,20 +65,24 @@ uses ACBrUtil, StrUtils;
 constructor TACBrBancoBradesco.create(AOwner: TACBrBanco);
 begin
    inherited create(AOwner);
-   fpNumero := 237;
    fpDigito := 2;
    fpNome   := 'Bradesco';
    fpTamanhoMaximoNossoNum := 11;
 end;
 
 function TACBrBancoBradesco.CalcularDigitoVerificador(const ACBrTitulo: TACBrTitulo ): String;
+var
+   A,Tamanho,Base,ValorCalc,SomaDigitos,MultFim,MultIni,N: Integer;
+   DigitoFinal: Integer;
+   Docto: String;
+
 begin
    Modulo.CalculoPadrao;
    Modulo.MultiplicadorFinal := 7;
    Modulo.Documento := ACBrTitulo.Carteira + ACBrTitulo.NossoNumero;
    Modulo.Calcular;
 
-   if Modulo.DigitoFinal = 1 then
+   if Modulo.ModuloFinal = 10 then
       Result:= 'P'
    else
       Result:= IntToStr(Modulo.DigitoFinal);
@@ -60,7 +96,7 @@ begin
    begin
       FatorVencimento := CalcularFatorVencimento(ACBrTitulo.Vencimento);
 
-      CodigoBarras := IntToStr( fpNumero )+'9'+ FatorVencimento +
+      CodigoBarras := IntToStr( Numero )+'9'+ FatorVencimento +
                       IntToStrZero(Round(ACBrTitulo.ValorDocumento*100),10) +
                       padR(Cedente.Agencia,4,'0') +
                       ACBrTitulo.Carteira +
@@ -70,7 +106,7 @@ begin
       DigitoCodBarras := CalcularDigitoCodigoBarras(CodigoBarras);
    end;
 
-   Result:= IntToStr(fpNumero) + '9'+ DigitoCodBarras + Copy(CodigoBarras,5,39);
+   Result:= IntToStr(Numero) + '9'+ DigitoCodBarras + Copy(CodigoBarras,5,39);
 end;
 
 function TACBrBancoBradesco.GerarRegistroHeader(NumeroRemessa : Integer): String;
@@ -127,7 +163,7 @@ begin
 
       {Pegando campo Intruções}
       if (DataProtesto > 0) and (DataProtesto > Vencimento) then
-          Protesto := '06' + FloatToStr(DataProtesto - Vencimento)
+          Protesto := '06' + IntToStrZero(DaysBetween(DataProtesto,Vencimento),2)
       else if Ocorrencia = '31' then
          Protesto := '9999'
       else

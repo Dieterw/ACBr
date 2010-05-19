@@ -12,8 +12,6 @@ Funciona apenas com certificados do tipo A1.
 - Se vc pretende desenvolver apenas para Windows e não pretende usar o Lazarus, de preferência a 
 versão CAPICOM
 
-- ATENÇÃO!! SE VOCE JA UTILIZAVA A VERSAO DO ACBrNFe SEM pcn, RETIRE DO LIBRARY PATH DO DELPHI A PASTA ACBr\ACBrNFe
-
 - IMPORTANTE: USUÁRIOS DO DELPHI 6 DEVEM USAR A VERSÃO OPENSSL (somente certificados A1)
 
 -Caso tenha o pacote ACBr_CLX ou ACBr_VCL já instalado no Delphi, remova todos os componentes do ACBr e todas as pastas
@@ -34,7 +32,7 @@ descomente esta linha e salve o arquivo.
    clique no botão elíptico (...) à frente da caixa de texto, localize a pasta
    " Fontes\ACBrComum " no diretório de instalação da Biblioteca, clique em
    "OK", e em "Add". Repita o mesmo processo com as demais pastas.
-   Click em "OK" para finalizar.
+   Clique em "OK" para finalizar.
 
 -Na IDE do Delphi, clique em "File - Close All"
 
@@ -58,7 +56,7 @@ Versão CAPICOM
    clique no botão elíptico (...) à frente da caixa de texto, localize a pasta
    " Fontes\ACBrComum " no diretório de instalação da Biblioteca, clique em
    "OK", e em "Add". Repita o mesmo processo com as demais pastas.
-   Click em "OK" para finalizar.
+   Clique em "OK" para finalizar.
 
 -Na IDE do Delphi, clique em "File - Close All"
 
@@ -104,8 +102,8 @@ ATENÇÃO - O pacote ACBrNFeDanfeRVCodeBase.dpk só funciona com a versão 5.0.8 ou 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-ATENÇÃO - Para envio de email com conexão segura é necessário as DLLs do OpenSSL na máquina (no diretório do EXE ou na System32)
-libeay32.dll, ssleay32.dll
+ATENÇÃO - Para envio de email com conexão segura é necessário que as DLLs do OpenSSL estejam máquina (no diretório do EXE ou na System32)
+libeay32.dll e ssleay32.dll
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 PARA TIRAR DÚVIDAS SOBRE O COMPONENTE UTILIZE O FÓRUMWEB - http://www.forumweb.com.br/foruns/index.php?/forum/465-projeto-acbr/

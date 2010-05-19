@@ -104,11 +104,7 @@ simultaneamente.
 mentação. A melhor maneira de aprender como usar os componentes ACBr é observar
 o código dos Programas de demonstração...
 
-  Se você instalou a versão CLX da ACBr abra apenas os programas de demos
-da pasta ACBr\ACBr\Demo\CLX.
-
-  Se você instalou a versao VCL da ACBr, use os demos da pasta
-ACBr\ACBr\Demo\VCL
+  Veja o exemplo de uso dos componentes na pasta Exemplos\
 
   Os Demos Linux precisam da biblioteca QT/Borland (libborqt-6.9-qt2.3.so)
 disponivel no Kylix (/usr/local/kylix/bin). Para rodar os demos em uma máquina
@@ -122,26 +118,29 @@ achadas em: http://kylixlibs.sourceforge.net
 5. INSTALAÇÃO no DELPHI / KYLIX
 ===============================
 
-  1. Descompacte o arquivo .ZIP na pasta de sua preferência.
+ATENÇAO - Caso tenha o pacote ACBr_CLX ou ACBr_VCL já instalado no Delphi, remova todos os componentes do ACBr e todas as pastas
+do Library Path, pois a partir de Maio de 2010 a estrutura de pastas do componente mudou e os pacotes ACBr_CLX e ACBr_VCL
+deixaram de existir sendo dividos em pacotes com os nomes ACBrDiversos, ACBrSerial, ACBrTCP, etc.
 
-  2. Abra o arquivo .DPK para a versão desejada.
-   Na IDE do Delphi acione  "File, Open"
-   Localize o arquivo ACBr\trunk\ACBr_CLX.DPK   (para versão CLX)   ou
-                      ACBr\trunk\ACBr_VCL.DPK   (para versão VCL)
-                      ACBr\trunk\ACBr_D5.DPK    (para Delphi 5)
 
-  3. Compile e Instale a Biblioteca.
-   Clique em "Compile" e em seguida em "Install". Feche o arquivo DPK
-  (não há necessidade de salvar).
+  1. Descompacte o arquivo .ZIP na pasta de sua preferência ou faça o checkout via SVN - http://acbr.sourceforge.net/drupal/?q=node/37
 
-  4. Adcione o diretório " ACBr\ACBr " e o diretório 
-   " ACBr\ACBrComum "  no  "Library Path".
+  2. Adcione os diretórios " Fontes\ACBrComum ", " Fontes\ACBrSerial " e os demais subdiretorios da pasta Fontes dos componentes que deseja 
+   utilizar no  "Library Path".
    Na IDE do Delphi acione  "Tools, Enviroment Options" selecione a guia
    "Library",  clique no botão elíptico (...) de "Library Path",
    clique no botão elíptico (...) à frente da caixa de texto, localize a pasta
-   " ACBr\trunk\ACBr " no diretório de instalação da Biblioteca, clique em
-   "OK", e em "Add". Repita o mesmo processo com a pasta " ACBr\ACBrComum ".
+   " Fontes\ACBrComum " no diretório de instalação da Biblioteca, clique em
+   "OK", e em "Add". Repita o mesmo processo com as demais pastas.
    Click em "OK" para finalizar.
+
+
+  3.1 Procure pela pasta Pacotes\Delphi e abra o arquivo synapse.dpk e clique em compile.
+  3.2 Procure pela pasta Pacotes\Delphi e abra o arquivo ACBrComum.dpk e clique em compile.
+  3.3 Procure pela pasta Pacotes\Delphi e abra o arquivo ACBrSerial.dpk e clique em compile e depois em instal.
+  3.4 Repita o passo 3.3 para os demais componentes que deseja instalar.    	
+
+  4. Na IDE do Delphi, clique em "File - Close All"
 
   5. A paleta ACBr será criada com os componentes da Biblioteca ACBr.
 
@@ -157,7 +156,7 @@ achadas em: http://kylixlibs.sourceforge.net
   Nota para o uso das versões VCL / CLX. Se você já instalou uma versão
 (VCL ou CLX) e pretende instalar a outra versão... É necessário clicar em
 "Project,  Build ACBr...", antes de "Compile" e "Install".  Isso irá gerar
-corretamente os arquivos DCU para a nova versão, pois algums arquivos são
+corretamente os arquivos DCU para a nova versão, pois alguns arquivos são
 compartilhados entre as duas versões...
 
 
@@ -288,6 +287,7 @@ Em breve estarei relacionando os equipamentos que necessitam de testes...
 Desenvolvedores.... Doações podem motivar os desenvolvedores a destinar mais
 tempo para o andamento do projeto.... pois é... até mesmo os programadores
 precisam comer.... ;-)
+  Para efetuar doações veja http://acbr.sourceforge.net/drupal/?q=node/14 
 
 --------------------------------------------------------------------------------
 

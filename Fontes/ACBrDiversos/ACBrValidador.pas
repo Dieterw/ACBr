@@ -86,6 +86,7 @@ TACBrCalcDigito = class
       fsDocto: AnsiString;
       fsDigitoFinal: Integer;
       fsSomaDigitos: Integer;
+      fsModuloFinal: Integer;
 
    public
       constructor Create;
@@ -97,6 +98,7 @@ TACBrCalcDigito = class
       Property MultiplicadorFinal   : Integer read fsMultFim write fsMultFim ;
       property MultiplicadorAtual   : Integer read fsMultAtu write fsMultAtu;
       Property DigitoFinal : Integer read fsDigitoFinal ;
+      property ModuloFinal : Integer read fsModuloFinal ;
       Property SomaDigitos : Integer read fsSomaDigitos ;
       Property FormulaDigito :  TACBrCalcDigFormula read fsFormulaDigito
          write fsFormulaDigito ;
@@ -1125,6 +1127,7 @@ begin
   fsDocto       := Trim(fsDocto) ;
   fsSomaDigitos := 0 ;
   fsDigitoFinal := 0 ;
+  fsModuloFinal := 0 ;
 
   if (fsMultAtu >= fsMultIni) and (fsMultAtu <= fsMultFim) then
      Base:= fsMultAtu
@@ -1154,12 +1157,12 @@ begin
   case fsFormulaDigito of
     frModulo11 :
       begin
-        fsDigitoFinal := fsSomaDigitos mod 11 ;
+        fsModuloFinal := fsSomaDigitos mod 11 ;
 
-        if fsDigitoFinal < 2 then
-           fsDigitoFinal := 0
+        if fsModuloFinal >= 2 then
+           fsDigitoFinal := 11 - fsModuloFinal
         else
-           fsDigitoFinal := 11 - fsDigitoFinal ;
+           fsDigitoFinal := fsModuloFinal;
       end ;
 
     frModulo10PIS :

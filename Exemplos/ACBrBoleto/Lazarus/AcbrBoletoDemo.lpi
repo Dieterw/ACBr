@@ -60,7 +60,6 @@
         <ComponentName Value="frmDemo"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="uDemo"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="0"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1"/>
@@ -74,15 +73,18 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ACBRBoletoFCFortesFr"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
-        <TopLine Value="369"/>
-        <CursorPos X="1" Y="382"/>
+        <TopLine Value="309"/>
+        <CursorPos X="65" Y="311"/>
         <UsageCount Value="15"/>
+        <Loaded Value="True"/>
       </Unit2>
       <Unit3>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoleto.pas"/>
         <UnitName Value="ACBrBoleto"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="2"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1180"/>
         <CursorPos X="24" Y="1189"/>
@@ -92,7 +94,7 @@
       <Unit4>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBancoBradesco.pas"/>
         <UnitName Value="ACBrBancoBradesco"/>
-        <EditorIndex Value="4"/>
+        <EditorIndex Value="5"/>
         <WindowIndex Value="0"/>
         <TopLine Value="67"/>
         <CursorPos X="14" Y="80"/>
@@ -397,7 +399,7 @@
       <Unit42>
         <Filename Value="..\..\..\Fontes\ACBrSintegra\ACBrSintegraReg.pas"/>
         <UnitName Value="ACBrSintegraReg"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="3"/>
         <WindowIndex Value="0"/>
         <TopLine Value="33"/>
         <CursorPos X="1" Y="1"/>
@@ -407,7 +409,7 @@
       <Unit43>
         <Filename Value="..\..\..\Fontes\ACBrSintegra\ACBrSintegra.pas"/>
         <UnitName Value="ACBrSintegra"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="4"/>
         <WindowIndex Value="0"/>
         <TopLine Value="46"/>
         <CursorPos X="56" Y="55"/>
@@ -415,7 +417,7 @@
         <Loaded Value="True"/>
       </Unit43>
     </Units>
-    <JumpHistory Count="29" HistoryIndex="28">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBancoBradesco.pas"/>
         <Caret Line="69" Column="41" TopLine="62"/>
@@ -532,6 +534,10 @@
         <Filename Value="uDemo.pas"/>
         <Caret Line="234" Column="27" TopLine="226"/>
       </Position29>
+      <Position30>
+        <Filename Value="..\..\..\Fontes\ACBrBoleto\ACBrBoletoFCFortesFr.pas"/>
+        <Caret Line="385" Column="68" TopLine="309"/>
+      </Position30>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>

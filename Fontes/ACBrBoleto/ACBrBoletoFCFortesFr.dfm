@@ -178,7 +178,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       end
       object txtNumeroBanco2: TRLLabel
         Left = 184
-        Top = 16
+        Top = 13
         Width = 102
         Height = 27
         Alignment = taCenter
@@ -221,10 +221,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       end
       object lblLocalPagto: TRLLabel
         Left = 0
-        Top = 59
-        Width = 529
-        Height = 16
-        AutoSize = False
+        Top = 56
+        Width = 569
+        Height = 17
         Caption = 'Local de Pagamento'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -248,7 +247,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       end
       object txtNomeCedente2: TRLLabel
         Left = 0
-        Top = 91
+        Top = 90
         Width = 529
         Height = 16
         AutoSize = False
@@ -589,7 +588,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       end
       object txtDataVencimento2: TRLLabel
         Left = 574
-        Top = 59
+        Top = 57
         Width = 172
         Height = 16
         Alignment = taRightJustify
@@ -1101,7 +1100,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       end
       object txtLinhaDigitavel: TRLLabel
         Left = 294
-        Top = 37
+        Top = 35
         Width = 466
         Height = 18
         Alignment = taCenter
@@ -1124,7 +1123,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       end
       object txtNumeroBanco3: TRLLabel
         Left = 188
-        Top = 30
+        Top = 27
         Width = 102
         Height = 27
         Alignment = taCenter
@@ -1152,9 +1151,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       end
       object txtLocalPagamento3: TRLLabel
         Left = 4
-        Top = 73
-        Width = 529
-        Height = 16
+        Top = 69
+        Width = 525
+        Height = 17
         AutoSize = False
         Caption = 'Local de Pagamento'
         Font.Charset = DEFAULT_CHARSET
@@ -1166,7 +1165,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       end
       object txtDataVencimento3: TRLLabel
         Left = 552
-        Top = 73
+        Top = 71
         Width = 172
         Height = 16
         Alignment = taRightJustify
@@ -1215,7 +1214,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       end
       object txtNomeCedente3: TRLLabel
         Left = 4
-        Top = 105
+        Top = 104
         Width = 529
         Height = 16
         AutoSize = False
@@ -1761,7 +1760,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         ParentFont = False
       end
       object txtEnderecoSacado3: TRLLabel
-        Left = 57
+        Left = 49
         Top = 300
         Width = 476
         Height = 14

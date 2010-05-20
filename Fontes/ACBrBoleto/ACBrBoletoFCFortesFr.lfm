@@ -1,7 +1,7 @@
 object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
-  Left = 91
+  Left = 330
   Height = 702
-  Top = 0
+  Top = 47
   Width = 917
   VertScrollBar.Position = 538
   Caption = 'ACBRBoletoFCFortesFr'
@@ -319,8 +319,8 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       end
       object lblLocalPagto: TRLLabel
         Left = 0
-        Height = 16
-        Top = 59
+        Height = 17
+        Top = 57
         Width = 529
         AutoSize = False
         Caption = 'Local de Pagamento'
@@ -350,7 +350,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       end
       object txtNomeCedente2: TRLLabel
         Left = 0
-        Height = 16
+        Height = 17
         Top = 91
         Width = 529
         AutoSize = False
@@ -739,7 +739,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       object txtDataVencimento2: TRLLabel
         Left = 574
         Height = 16
-        Top = 59
+        Top = 57
         Width = 172
         Alignment = taRightJustify
         AutoSize = False
@@ -1453,8 +1453,8 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       end
       object txtLocalPagamento3: TRLLabel
         Left = 4
-        Height = 16
-        Top = 73
+        Height = 17
+        Top = 72
         Width = 529
         AutoSize = False
         Caption = 'Local de Pagamento'
@@ -1470,7 +1470,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       object txtDataVencimento3: TRLLabel
         Left = 552
         Height = 16
-        Top = 73
+        Top = 72
         Width = 172
         Alignment = taRightJustify
         AutoSize = False

@@ -318,10 +318,12 @@ begin
                   RLFiltro.Copies   := NumCopias ;
                  {$ENDIF}
                  RLFiltro.FileName := NomeArquivo ;
-                 RLFiltro.Pages    := LayoutBoleto.Pages ;
 
                  {$IFDEF FPC}
+                  RLFiltro.Pages := LayoutBoleto.Pages ;
                   RLFiltro.Run;
+                 {$ELSE}
+                  RLFiltro.FilterPages( LayoutBoleto.Pages );
                  {$ENDIF}
               finally
                  RLFiltro := nil ;

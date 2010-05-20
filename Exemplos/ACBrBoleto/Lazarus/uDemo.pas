@@ -151,7 +151,7 @@ begin
         DataProcessamento := Now;
         NossoNumero       := IntToStrZero(I,11);
         Carteira          := '09';
-        ValorDocumento    := 100.35 * (I+0.5);
+        ValorDocumento    := 100.10 * (I+0.5);
         Sacado.NomeSacado := 'Jose Luiz Pedroso';
         Sacado.CNPJCPF    := '12345678901';
         Sacado.Logradouro := 'Rua da Consolacao';

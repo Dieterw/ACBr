@@ -566,11 +566,12 @@ procedure TACBrTitulo.SetNossoNumero ( const AValue: String ) ;
 var
    Tam: Integer;
 begin
-   Tam := ACBrBoleto.Banco.TamanhoMaximoNossoNum;
-   if Length(trim(AValue)) > Tam then
-      raise Exception.Create('Tamanho Máximo do Nosso Número é '+ IntToStr(Tam)+ '.');
+   with ACBrBoleto.Banco do
+   begin
+      if Length(trim(AValue)) > TamanhoMaximoNossoNum then
+         raise Exception.Create('Tamanho Máximo do Nosso Número é '+ IntToStr(Tam)+ '.');
 
-   fNossoNumero := padR(trim(AValue),Tam,'0');
+   fNossoNumero := padR(trim(AValue),TamanhoMaximoNossoNum,'0');
 end;
 
 { TACBrTitulo }

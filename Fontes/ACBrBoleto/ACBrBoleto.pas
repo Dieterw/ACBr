@@ -93,6 +93,7 @@ type
     function CalcularDigitoVerificador(const ACBrTitulo : TACBrTitulo): String; virtual;
 
     function MontarCodigoBarras(const ACBrTitulo : TACBrTitulo): String; virtual;
+    function MontarCampoNossoNumero(const ACBrTitulo : TACBrTitulo): String; virtual;
     function MontarLinhaDigitavel(const CodigoBarras: String): String; virtual;
 
     function GerarRegistroHeader(NumeroRemessa : Integer): String;    Virtual; abstract;
@@ -125,6 +126,7 @@ type
 
     function CalcularDigitoVerificador(const ACBrTitulo : TACBrTitulo): String;
 
+    function MontarCampoNossoNumero(const ACBrTitulo :TACBrTitulo): String;
     function MontarCodigoBarras(const ACBrTitulo : TACBrTitulo): String;
     function MontarLinhaDigitavel(const CodigoBarras: String): String;
 
@@ -146,7 +148,7 @@ type
 
   TACBrCedente = class(TComponent)
   private
-     fCodigoCedente: String;
+    fCodigoCedente: String;
     fNomeCedente   : String;
     fAgencia       : String;
     fAgenciaDigito : String;
@@ -157,6 +159,7 @@ type
     fTipoBoleto    : TACBrTipoBoleto;
     fCNPJCPF       : String;
     fTipoInscricao : TACBrTipoInscricao;
+    procedure SetCNPJCPF ( const AValue: String ) ;
   public
     constructor Create( AOwner : TComponent ) ; override ;
     destructor Destroy; override;
@@ -171,7 +174,7 @@ type
     property Convenio     : String read fConvenio      write fConvenio;
     property TipoBoleto   : TACBrTipoBoleto read fTipoBoleto    write fTipoBoleto default tbCliEmite ;
     {Todo: Validar CNPJCPF - SetCNPJCPF}
-    property CNPJCPF      : String  read fCNPJCPF     write fCNPJCPF; 
+    property CNPJCPF      : String  read fCNPJCPF  write SetCNPJCPF;
     property TipoInscricao: TACBrTipoInscricao  read fTipoInscricao write fTipoInscricao default tiPessoaJuridica;
   end;
 
@@ -515,6 +518,30 @@ begin
 end;
 
 { TACBrCedente }
+procedure TACBrCedente.SetCNPJCPF ( const AValue: String ) ;
+var
+   ACbrValidador: TACBrValidador;
+begin
+   if CNPJCPF = AValue then
+      exit;
+
+   if TipoInscricao <> tiOutro then
+   begin
+      ACbrValidador := TACBrValidador.Create(Self);
+      try
+       with ACbrValidador do
+       begin
+          IgnorarChar := './-';
+          RaiseExcept := true;
+          Documento := AValue;
+          Validar;
+          fCNPJCPF := AValue;
+       end;
+      finally
+         ACbrValidador.Free;
+      end;
+   end;
+end;
 
 constructor TACBrCedente.Create( AOwner : TComponent );
 begin
@@ -874,6 +901,12 @@ begin
    Result:=  BancoClass.CalcularDigitoVerificador(ACBrTitulo);
 end;
 
+function TACBrBanco.MontarCampoNossoNumero ( const ACBrTitulo: TACBrTitulo
+   ) : String;
+begin
+   Result:= BancoClass.MontarCampoNossoNumero(ACBrTitulo);
+end;
+
 function TACBrBanco.MontarCodigoBarras ( const ACBrTitulo: TACBrTitulo) : String;
 begin
    Result:= BancoClass.MontarCodigoBarras(ACBrTitulo);
@@ -967,6 +1000,12 @@ begin
 end;
 
 function TACBrBancoClass.MontarCodigoBarras ( const ACBrTitulo: TACBrTitulo) : String;
+begin
+   Result:= '';
+end;
+
+function TACBrBancoClass.MontarCampoNossoNumero ( const ACBrTitulo: TACBrTitulo
+   ) : String;
 begin
    Result:= '';
 end;

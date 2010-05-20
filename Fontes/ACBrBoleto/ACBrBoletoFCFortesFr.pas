@@ -376,11 +376,11 @@ end;
 procedure TACBRBoletoFCFortesFr.RLBand1BeforePrint(Sender: TObject;
    var PrintIt: boolean);
 Var
-   DigNossoNum : String;
+   NossoNum : String;
 begin
    with fBoletoFC.ACBrBoleto do
    begin
-      DigNossoNum    := Banco.CalcularDigitoVerificador( Titulo );
+      NossoNum    := Banco.MontarCampoNossoNumero( Titulo );
 
       fBoletoFC.CarregaLogo( imgBanco2.Picture, Banco.Numero );
       txtNumeroBanco2.Caption         := IntToStrZero(Banco.Numero, 3)+ '-' +
@@ -394,7 +394,7 @@ begin
       txtEspecieDoc2.Caption          := Titulo.EspecieDoc;
       txtAceite2.Caption              := Titulo.Aceite;
       txtDataProcessamento2.Caption   := FormatDateTime('dd/mm/yyyy',Now);
-      txtNossoNumero2.Caption         := Titulo.Carteira+'/'+ Titulo.NossoNumero+ '-' + DigNossoNum;
+      txtNossoNumero2.Caption         := NossoNum;
       txtUsoBanco2.Caption            := Titulo.UsoBanco;
       txtCarteira2.Caption            := Titulo.Carteira;
       txtEspecie2.Caption             := 'R$';

@@ -51,6 +51,7 @@ type
     Constructor create(AOwner: TACBrBanco);
     function CalcularDigitoVerificador(const ACBrTitulo:TACBrTitulo): String; override;
     function MontarCodigoBarras(const ACBrTitulo : TACBrTitulo): String; override;
+    function MontarCampoNossoNumero(const ACBrTitulo :TACBrTitulo): String; override;
     function GerarRegistroHeader(NumeroRemessa : Integer): String; override;
     function GerarRegistroTransacao(ACBrTitulo : TACBrTitulo): String; override;
     function GerarRegistroTrailler(ARemessa:TStringList): String;  override;
@@ -77,7 +78,7 @@ begin
    Modulo.Documento := ACBrTitulo.Carteira + ACBrTitulo.NossoNumero;
    Modulo.Calcular;
 
-   if Modulo.ModuloFinal = 10 then
+   if Modulo.ModuloFinal = 1 then
       Result:= 'P'
    else
       Result:= IntToStr(Modulo.DigitoFinal);
@@ -102,6 +103,15 @@ begin
    end;
 
    Result:= IntToStr(Numero) + '9'+ DigitoCodBarras + Copy(CodigoBarras,5,39);
+end;
+
+function TACBrBancoBradesco.MontarCampoNossoNumero (
+   const ACBrTitulo: TACBrTitulo ) : String;
+var
+  DigNossoNumero: String;
+begin
+   DigNossoNumero := CalcularDigitoVerificador(ACBrTitulo);
+   Result:= ACBrTitulo.Carteira+'/'+ACBrTitulo.NossoNumero+'-'+DigNossoNumero;
 end;
 
 function TACBrBancoBradesco.GerarRegistroHeader(NumeroRemessa : Integer): String;

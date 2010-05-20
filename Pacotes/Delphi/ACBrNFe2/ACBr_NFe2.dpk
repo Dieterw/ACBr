@@ -42,6 +42,7 @@
 |* 25/06/2009: André Ferreira de Moraes
 |*  - Componente convertido para utilizar units do PCN
 ******************************************************************************}
+{$I ACBr.inc}
 package ACBr_NFe2;
 
 {$R *.res}

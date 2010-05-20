@@ -194,7 +194,6 @@ var
   Titulo : TACBrTitulo;
 begin
      Titulo := ACBrBoleto1.CriarTituloNaLista;
-
      with Titulo do
      begin
         Vencimento        := edtVencimento.Date;

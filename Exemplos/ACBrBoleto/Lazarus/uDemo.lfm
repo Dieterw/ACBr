@@ -131,7 +131,7 @@ object frmDemo: TfrmDemo
     ClientWidth = 574
     TabOrder = 3
     object memMensagem: TMemo
-      Left = 6
+      Left = 8
       Height = 84
       Top = 7
       Width = 312
@@ -838,7 +838,7 @@ object frmDemo: TfrmDemo
       ParentColor = False
     end
     object edtMoraJuros: TEdit
-      Left = 4
+      Left = 6
       Height = 23
       Top = 20
       Width = 115
@@ -901,7 +901,13 @@ object frmDemo: TfrmDemo
     Cedente.AgenciaDigito = '5'
     Cedente.Conta = '079489'
     Cedente.ContaDigito = '9'
+<<<<<<< .mine
+    Cedente.CNPJCPF = '360.542.308-67'
+    Cedente.TipoInscricao = tiPessoaFisica
     Banco.Numero = 237
+=======
+    Banco.Numero = 237
+>>>>>>> .r1204
     NomeArqRemessa = 'cb00001.rem'
     DirArqRemessa = '.\remessa\'
     ACBrBoletoFC = ACBrBoletoFCFortes1
@@ -911,6 +917,11 @@ object frmDemo: TfrmDemo
   object ACBrBoletoFCFortes1: TACBrBoletoFCFortes
     ACBrBoleto = ACBrBoleto1
     DirLogo = '..\..\..\Fontes\ACBrBoleto\Logos\Colorido\'
+<<<<<<< .mine
+    MostrarPreview = False
+    NomeArquivo = '.\boleto.pdf'
+=======
+>>>>>>> .r1204
     SoftwareHouse = 'Projeto ACBr - http://acbr.sf.net'
     left = 72
     top = 256

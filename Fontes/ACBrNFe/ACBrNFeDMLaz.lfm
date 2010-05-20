@@ -11,7 +11,7 @@ object dmACBrNFe: TdmACBrNFe
     left = 28
     top = 16
     ReportForm = {
-      18000000
+      19000000
     }
   end
   object CustomIdentificacaoCXN: TfrUserDataset

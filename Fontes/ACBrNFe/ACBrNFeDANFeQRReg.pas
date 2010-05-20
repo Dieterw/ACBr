@@ -67,6 +67,10 @@ procedure Register;
 
 implementation
 
+{$IFNDEF FPC}
+   {$R ACBrNFe.dcr}
+{$ENDIF}
+
 procedure Register;
 begin
   RegisterComponents('ACBr', [TACBrNFeDANFEQR]);

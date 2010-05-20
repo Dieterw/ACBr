@@ -78,7 +78,9 @@ requires
   inet,
   soaprtl,
   ACBrComum,
+  {$IFNDEF ACBrNFeOpenSSL}
   ACBrCapicom,
+  {$ENDIF}
   synapse,
   PCN;
 

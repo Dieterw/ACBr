@@ -5,15 +5,15 @@ unit ACBrNFeDMLaz;
 interface
 
 uses
-  Classes, SysUtils, FileUtil, LResources, Forms, Controls, Dialogs, LR_Class,
-  LR_DSet, pcnNFe, pcnConversao;
+  Classes, SysUtils, FileUtil, LResources, Forms, Controls, Dialogs,
+  pcnNFe, pcnConversao;
 
 type
 
   { TdmACBrNFe }
 
   TdmACBrNFe = class(TDataModule)
-    frReport1: TfrReport;
+//    frReport1: TfrReport;
     CustomIdentificacaoCXN: TfrUserDataset;
     CustomVeiculoCXN: TfrUserDataset;
     CustomVolumesCXN: TfrUserDataset;
@@ -47,8 +47,8 @@ procedure TdmACBrNFe.Imprimir(ANFe: TNFe; ALogo: String);
 begin
   FNFe  := ANFe;
   FLogo := ALogo;
-  frReport1.LoadFromFile(ExtractFileDir(application.ExeName)+'\Report\NotaFiscalEletronica.lrf');
-  frReport1.ShowReport
+//  frReport1.LoadFromFile(ExtractFileDir(application.ExeName)+'\Report\NotaFiscalEletronica.lrf');
+//  frReport1.ShowReport
 end;
 
 initialization

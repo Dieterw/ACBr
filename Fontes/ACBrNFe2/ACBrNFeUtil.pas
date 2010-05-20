@@ -169,6 +169,7 @@ type
     class function PreparaCasasDecimais(AValue: Integer): String;
     class function CollateBr(Str: String): String;
     class function UpperCase2(Str: String): String;
+    class function UFtoCUF(UF : String): Integer;
 
   published
 
@@ -1859,6 +1860,23 @@ begin
       Result:=Result+wResultado;
    end;
    Result:=UpperCase(Result);
+end;
+
+class function NotaUtil.UFtoCUF(UF : String): Integer;
+var
+  Codigo, i: Integer;
+begin
+  Codigo := -1 ;
+  for i:= 0 to High(NFeUF) do
+  begin
+    if NFeUF[I] = UF then
+      Codigo := NFeUFCodigo[I];
+  end;
+
+  if Codigo < 0 then
+     Result := -1
+  else
+     Result := Codigo;
 end;
 
 end.

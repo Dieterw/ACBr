@@ -2,7 +2,7 @@
   This source is only used to compile and install the package.
  }
 
-unit ACBrDiversos ; 
+unit ACBrDiversos; 
 
 interface
 
@@ -13,11 +13,11 @@ uses
 
 implementation
 
-procedure Register ; 
+procedure Register; 
 begin
-  RegisterUnit('ACBrDiversosReg', @ACBrDiversosReg.Register) ; 
-end ; 
+  RegisterUnit('ACBrDiversosReg', @ACBrDiversosReg.Register); 
+end; 
 
 initialization
-  RegisterPackage('ACBrDiversos', @Register) ; 
+  RegisterPackage('ACBrDiversos', @Register); 
 end.

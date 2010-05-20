@@ -202,6 +202,10 @@ begin
         LocNFeW.GerarXml;
         if NotaUtil.EstaVazio(CaminhoArquivo) then
            CaminhoArquivo := PathWithDelim(TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).Configuracoes.Geral.PathSalvar)+copy(NFe.infNFe.ID, (length(NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml';
+
+        if NotaUtil.EstaVazio(CaminhoArquivo) or not DirectoryExists(ExtractFilePath(CaminhoArquivo)) then
+           raise Exception.Create('Caminho Inválido: ' + CaminhoArquivo);
+
         LocNFeW.Gerador.SalvarArquivo(CaminhoArquivo);
         if SalvaTXT then
            LocNFeW.Gerador.SalvarArquivo(ChangeFileExt(CaminhoArquivo,'.txt'),fgTXT);
@@ -210,6 +214,7 @@ begin
         LocNFeW.Free;
      end;
   except
+     raise;
      Result := False;
   end;
 end;

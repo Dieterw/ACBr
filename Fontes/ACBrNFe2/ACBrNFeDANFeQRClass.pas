@@ -94,8 +94,6 @@ begin
         fqrDANFeQRRetrato.Imprimir(   TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe
                                     , Logo
                                     , Email
-                                    , ImprimirHoraSaida
-                                    , ImprimirHoraSaida_Hora
                                     , false
                                     , Fax
                                     , NumCopias
@@ -113,8 +111,6 @@ begin
      fqrDANFeQRRetrato.Imprimir(  NFe
                                 , Logo
                                 , Email
-                                , ImprimirHoraSaida
-                                , ImprimirHoraSaida_Hora
                                 , False
                                 , Fax
                                 , NumCopias
@@ -151,8 +147,6 @@ begin
                                     ,TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe
                                     , Logo
                                     , Email
-                                    , ImprimirHoraSaida
-                                    , ImprimirHoraSaida_Hora
                                     , false
                                     , Fax
                                     , NumCopias
@@ -173,8 +167,6 @@ begin
                                 , NFe
                                 , Logo
                                 , Email
-                                , ImprimirHoraSaida
-                                , ImprimirHoraSaida_Hora
                                 , False
                                 , Fax
                                 , NumCopias

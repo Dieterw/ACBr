@@ -758,7 +758,7 @@ begin
    qrlEmissao.Caption   := NotaUtil.FormatDate(DateToStr(FNFe.Ide.dEmi)) ;
    qrlSaida.Caption     := IfThen( FNFe.Ide.DSaiEnt <> 0, NotaUtil.FormatDate(DateToStr(FNFe.Ide.dSaiEnt))) ;
 
-    if FImprimeHoraSaida then
+{    if FImprimeHoraSaida then
     begin
         if FHoraSaida = '' then
         begin
@@ -771,7 +771,7 @@ begin
     begin
         qrlHoraSaida.Caption := '';
     end;
-    
+ }   
    // Faturas
 
    // Zera

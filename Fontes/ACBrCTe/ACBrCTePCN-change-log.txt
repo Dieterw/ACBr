@@ -48,6 +48,10 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   20/05/10 (Italo Jurisato Junior)
+---------------
+[*] Alterada a classe TProcCTe para prever a condição do Protocolo lido do Arquivo.
+
 Alterações   19/05/10 (Italo Jurisato Junior)
 ---------------
 [*] No fonte pcteCTeR foi incluido a leitura da tag protCTe.

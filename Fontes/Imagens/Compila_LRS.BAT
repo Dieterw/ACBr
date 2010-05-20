@@ -75,8 +75,8 @@ echo "*    ACBrBoletoFCFortes.lrs  gerado    *"
 echo "****************************************"
 echo.
 
-:Boleto
-%1\tools\lazres.exe ACBrNFe.lrs TACBrNFe.bmp
+:NFe
+%1\tools\lazres.exe ACBrNFe.lrs TACBrNFe.bmp TACBrDANFeQR.bmp TACBrDANFeRave.bmp TACBrDANFeRaveCB.bmp
 move ACBrNFe.lrs ..\ACBrNFe
 echo.
 echo "****************************************"

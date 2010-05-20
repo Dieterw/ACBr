@@ -531,6 +531,11 @@ begin
       try
        with ACbrValidador do
        begin
+          if TipoInscricao = tiPessoaFisica then
+             TipoDocto:= docCPF
+          else
+             TipoDocto := docCNPJ;
+
           IgnorarChar := './-';
           RaiseExcept := true;
           Documento := AValue;

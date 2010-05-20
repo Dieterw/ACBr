@@ -43,7 +43,7 @@ unit ACBrSintegraReg;
 
 interface
 
-Uses Classes;
+Uses Classes {$IFDEF FPC}, LResources {$ENDIF} ;
 
 procedure Register;
 

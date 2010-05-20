@@ -7,7 +7,7 @@ if NOT EXIST %1\lazarus.exe goto erro_param
 if NOT EXIST %1\tools\lazres.exe GOTO erro_lazres
 
 :Diversos
-%1\tools\lazres.exe ACBrDiversos.lrs TACBrCalculadora.bmp TACBrExtenso.bmp TACBrValidador.bmp TACBrTroco.bmp TACBrCMC7.bmp TACBrFala.bmp TACBrGIF.bmp TACBrBarCode.bmp TACBrSintegra.bmp TACBrEnterTab.bmp
+%1\tools\lazres.exe ACBrDiversos.lrs TACBrCalculadora.bmp TACBrExtenso.bmp TACBrValidador.bmp TACBrTroco.bmp TACBrCMC7.bmp TACBrFala.bmp TACBrGIF.bmp TACBrBarCode.bmp TACBrEnterTab.bmp
 move ACBrDiversos.lrs ..\ACBrDiversos
 echo.
 echo "****************************************"
@@ -81,6 +81,15 @@ move ACBrNFe.lrs ..\ACBrNFe
 echo.
 echo "****************************************"
 echo "* Arquivo    ACBrNFe.lrs     gerado    *"
+echo "****************************************"
+echo.
+
+:Sintegra
+%1\tools\lazres.exe ACBrSintegra.lrs TACBrSintegra.bmp
+move ACBrSintegra.lrs ..\ACBrSintegra
+echo.
+echo "****************************************"
+echo "* Arquivo   ACBrSintegra.lrs   gerado  *"
 echo "****************************************"
 echo.
 

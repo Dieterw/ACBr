@@ -379,7 +379,6 @@ begin
    with fBoletoFC.ACBrBoleto do
    begin
       DigNossoNum    := Banco.CalcularDigitoVerificador( Titulo );
-      ShowMessage(Banco.Nome);
 
       fBoletoFC.CarregaLogo( imgBanco2.Picture, Banco.Numero );
       txtNumeroBanco2.Caption         := IntToStrZero(Banco.Numero, 3)+ '-' +

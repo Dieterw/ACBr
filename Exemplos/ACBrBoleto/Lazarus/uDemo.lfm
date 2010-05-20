@@ -1,7 +1,7 @@
 object frmDemo: TfrmDemo
-  Left = 312
+  Left = 319
   Height = 559
-  Top = 71
+  Top = 74
   Width = 816
   Caption = 'Demo ACBrBoleto'
   ClientHeight = 559
@@ -895,13 +895,13 @@ object frmDemo: TfrmDemo
     end
   end
   object ACBrBoleto1: TACBrBoleto
-    Cedente.Nome = 'Caetano Materias p/ Construcao'
+    Cedente.Nome = 'TodaObra Materias p/ Construcao'
     Cedente.CodigoCedente = '4266443'
     Cedente.Agencia = '284'
     Cedente.AgenciaDigito = '5'
     Cedente.Conta = '079489'
     Cedente.ContaDigito = '9'
-    Banco.TipoBanco = banBradesco
+    Banco.Numero = 237
     NomeArqRemessa = 'cb00001.rem'
     DirArqRemessa = '.\remessa\'
     ACBrBoletoFC = ACBrBoletoFCFortes1
@@ -911,8 +911,6 @@ object frmDemo: TfrmDemo
   object ACBrBoletoFCFortes1: TACBrBoletoFCFortes
     ACBrBoleto = ACBrBoleto1
     DirLogo = '..\..\..\Fontes\ACBrBoleto\Logos\Colorido\'
-    MostrarPreview = False
-    NomeArquivo = '.\teste.pdf'
     SoftwareHouse = 'Projeto ACBr - http://acbr.sf.net'
     left = 72
     top = 256

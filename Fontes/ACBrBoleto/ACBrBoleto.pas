@@ -553,13 +553,13 @@ begin
   inherited Create;
 
   fACBrBoleto        := ACBrBoleto;
-  fLocalPagamento    := '';
+  fLocalPagamento    := 'Pagar preferencialmente nas agencias do '+ ACBrBoleto.Banco.Nome;
   fVencimento        := 0;
   fDataDocumento     := 0;
   fNumeroDocumento   := '';
-  fEspecieDoc        := '';
-  fAceite            := '';
-  fDataProcessamento := 0;
+  fEspecieDoc        := 'DM';
+  fAceite            := 'N';
+  fDataProcessamento := now;
   fNossoNumero       := '';
   fUsoBanco          := '';
   fCarteira          := '';
@@ -700,15 +700,8 @@ function TACBrBoleto.CriarTituloNaLista: TACBrTitulo;
 var
    I : Integer;
 begin
-   I      := fListadeBoletos.Add(TACBrTitulo.Create(self));
-   with fListadeBoletos[I] do
-   begin
-      Aceite            := 'N';
-      EspecieDoc        := 'DM';
-      DataProcessamento := Now;
-      LocalPagamento    := 'Pagar preferencialmente nas agencias do '+ Banco.Nome;
-   end;
-   Result := fListadeBoletos[I];
+  I      := fListadeBoletos.Add(TACBrTitulo.Create(self));
+  Result := fListadeBoletos[I];
 end;
 
 Procedure TACBrBoleto.Imprimir;
@@ -1111,16 +1104,13 @@ begin
 end;
 
 procedure TACBrBoletoFCClass.CarregaLogo(const PictureLogo : TPicture; const NumeroBanco: Integer ) ;
-var
-   teste: String;
 begin
   if Assigned( fOnObterLogo ) then
      fOnObterLogo( PictureLogo, NumeroBanco)
   else
    begin
-     teste:= ArquivoLogo;
-     if FileExists(ArquivoLogo ) then
-        PictureLogo.LoadFromFile(ArquivoLogo );
+     if FileExists( ArquivoLogo ) then
+        PictureLogo.LoadFromFile( ArquivoLogo );
    end ;
 end ;
 
@@ -1195,12 +1185,13 @@ var
    FiltroAntigo         : TACBrBoletoFCFiltro;
    MostrarPreviewAntigo : Boolean;
    MostrarSetupAntigo   : Boolean;
-   NomeArquivoAntigo    : String;
 begin
+   if NomeArquivo = '' then
+      raise Exception.Create( ACBrStr('NomeArquivo não especificado')) ;
+
    FiltroAntigo         := Filtro;
    MostrarPreviewAntigo := MostrarPreview;
    MostrarSetupAntigo   := MostrarSetup;
-   NomeArquivoAntigo    := NomeArquivo;
    try
      Filtro         := fiPDF;
      MostrarPreview := false;
@@ -1219,10 +1210,11 @@ var
    FiltroAntigo         : TACBrBoletoFCFiltro;
    MostrarPreviewAntigo : Boolean;
    MostrarSetupAntigo   : Boolean;
-   NomeArquivoAntigo    : String;
 begin
+   if NomeArquivo = '' then
+      raise Exception.Create( ACBrStr('NomeArquivo não especificado')) ;
+
    FiltroAntigo         := Filtro;
-   NomeArquivoAntigo    := NomeArquivo;
    MostrarPreviewAntigo := MostrarPreview;
    MostrarSetupAntigo   := MostrarSetup;
 

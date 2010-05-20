@@ -240,11 +240,13 @@ end;
 
 procedure TfrmDemo.Button1Click ( Sender: TObject ) ;
 begin
+   ACBrBoletoFCFortes1.NomeArquivo := './teste.pdf' ;
    ACBrBoleto1.GerarPDF;
 end;
 
 procedure TfrmDemo.Button2Click ( Sender: TObject ) ;
 begin
+   ACBrBoletoFCFortes1.NomeArquivo := './teste.html' ;
    ACBrBoleto1.GerarHTML;
 end;
 

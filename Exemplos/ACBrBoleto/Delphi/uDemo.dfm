@@ -1,8 +1,8 @@
 object frmDemo: TfrmDemo
-  Left = 238
-  Top = 124
-  Width = 818
-  Height = 550
+  Left = 243
+  Top = 125
+  Width = 817
+  Height = 560
   Caption = 'Demo ACBrBoleto'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -543,8 +543,8 @@ object frmDemo: TfrmDemo
   end
   object Panel1: TPanel
     Left = 0
-    Top = 464
-    Width = 802
+    Top = 472
+    Width = 801
     Height = 50
     Align = alBottom
     TabOrder = 5
@@ -612,13 +612,13 @@ object frmDemo: TfrmDemo
     end
   end
   object ACBrBoleto1: TACBrBoleto
-    Cedente.Nome = 'Caetano Materias p/ Construcao'
+    Cedente.Nome = 'TodaObra Materias p/ Construcao'
     Cedente.CodigoCedente = '4266443'
     Cedente.Agencia = '284'
     Cedente.AgenciaDigito = '5'
     Cedente.Conta = '079489'
     Cedente.ContaDigito = '9'
-    Banco.TipoBanco = banBradesco
+    Banco.Numero = 237
     NomeArqRemessa = 'cb00001.rem'
     DirArqRemessa = '.\remessa\'
     ACBrBoletoFC = ACBrBoletoFCFortes1
@@ -627,7 +627,7 @@ object frmDemo: TfrmDemo
   end
   object ACBrBoletoFCFortes1: TACBrBoletoFCFortes
     ACBrBoleto = ACBrBoleto1
-    DirLogo = '.\logos\'
+    DirLogo = '..\..\..\Fontes\ACBrBoleto\Logos\Colorido\'
     Left = 128
     Top = 231
   end

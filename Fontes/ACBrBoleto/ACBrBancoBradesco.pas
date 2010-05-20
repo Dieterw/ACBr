@@ -71,11 +71,6 @@ begin
 end;
 
 function TACBrBancoBradesco.CalcularDigitoVerificador(const ACBrTitulo: TACBrTitulo ): String;
-var
-   A,Tamanho,Base,ValorCalc,SomaDigitos,MultFim,MultIni,N: Integer;
-   DigitoFinal: Integer;
-   Docto: String;
-
 begin
    Modulo.CalculoPadrao;
    Modulo.MultiplicadorFinal := 7;

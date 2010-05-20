@@ -33,6 +33,7 @@ requires
 
 contains
   ACBrBancoBradesco in '..\..\Fontes\ACBrBoleto\ACBrBancoBradesco.pas',
+  ACBrBancoBrasil in '..\..\Fontes\ACBrBoleto\ACBrBancoBrasil.pas',
   ACBrBoleto in '..\..\Fontes\ACBrBoleto\ACBrBoleto.pas';
 
 end.

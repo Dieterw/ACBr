@@ -109,12 +109,14 @@ implementation
 
 procedure TfrmDemo.Button1Click(Sender: TObject);
 begin
+   ACBrBoletoFCFortes1.NomeArquivo := ExtractFilePath(Application.ExeName)+'teste.html';
    ACBrBoleto1.GerarHTML;
 end;
 
 procedure TfrmDemo.Button2Click(Sender: TObject);
 begin
-   ACBrBoleto1.GerarPDF; 
+   ACBrBoletoFCFortes1.NomeArquivo := ExtractFilePath(Application.ExeName)+'teste.pdf';
+   ACBrBoleto1.GerarPDF;
 end;
 
 procedure TfrmDemo.Button4Click(Sender: TObject);

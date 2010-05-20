@@ -107,11 +107,8 @@ end;
 
 function TACBrBancoBradesco.MontarCampoNossoNumero (
    const ACBrTitulo: TACBrTitulo ) : String;
-var
-  DigNossoNumero: String;
 begin
-   DigNossoNumero := CalcularDigitoVerificador(ACBrTitulo);
-   Result:= ACBrTitulo.Carteira+'/'+ACBrTitulo.NossoNumero+'-'+DigNossoNumero;
+   Result:= ACBrTitulo.Carteira+'/'+ACBrTitulo.NossoNumero+'-'+CalcularDigitoVerificador(ACBrTitulo);
 end;
 
 function TACBrBancoBradesco.GerarRegistroHeader(NumeroRemessa : Integer): String;

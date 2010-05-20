@@ -76,7 +76,7 @@ echo "****************************************"
 echo.
 
 :NFe
-%1\tools\lazres.exe ACBrNFe.lrs TACBrNFe.bmp TACBrDANFeQR.bmp TACBrDANFeRave.bmp TACBrDANFeRaveCB.bmp
+%1\tools\lazres.exe ACBrNFe.lrs TACBrNFe.bmp TACBrDANFeQR.bmp TACBrDANFeRave.bmp TACBrDANFeRaveCB.bmp TACBrDANFeRL.bmp
 move ACBrNFe.lrs ..\ACBrNFe
 echo.
 echo "****************************************"

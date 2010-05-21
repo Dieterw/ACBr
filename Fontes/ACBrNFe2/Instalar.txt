@@ -44,6 +44,7 @@ descomente esta linha e salve o arquivo.
 
 -Procure pela pasta Pacotes\Delphi e abra o arquivo synapse.dpk e clique em compile.
  Procure pela pasta Pacotes\Delphi e abra o arquivo ACBrComum.dpk e clique em compile. 
+ Procure pela pasta Pacotes\Delphi e abra o arquivo ACBrOpenSSL.dpk e clique em compile.
  Procure pela pasta Pacotes\Delphi\ACBrNFe2 e abra o arquivo PCN2.dpk e clique em compile.
  Procure pela pasta Pacotes\Delphi\ACBrNFe2 e abra o arquivo ACBr_NFe2.dpk e clique em compile e depois clique em Install.
 

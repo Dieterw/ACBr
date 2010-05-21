@@ -75,6 +75,7 @@ requires
   ACBrComum,
   synapse,
   ACBrCapicom,
+  ACBrOpenSSL,  
   PCN2,  
   xmlrtl,
   dbrtl,

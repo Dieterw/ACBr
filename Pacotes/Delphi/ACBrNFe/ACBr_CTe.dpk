@@ -74,6 +74,7 @@ package ACBr_CTe;
 requires
   ACBrComum,
   ACBrCapicom,
+  ACBrOpenSSL,
   PCN,
   xmlrtl,
   dbrtl,

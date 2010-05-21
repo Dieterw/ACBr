@@ -70,12 +70,9 @@ package ACBrNFeDanfeQRpkg;
 {$IMPLICITBUILD ON}
 
 requires
-  rtl,
   ACBr_NFe2,
-  designide,
   vcljpg,
-  bdertl,
-  qrpt;
+  bdertl;
 
 contains
   ACBrNFeDANFeQRClass in '..\..\..\Fontes\ACBrNFe2\ACBrNFeDANFeQRClass.pas',

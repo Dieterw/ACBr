@@ -74,8 +74,7 @@ requires
   PCN,
   ACBrComum,
   vcljpg,
-  bdertl,
-  qrpt;
+  bdertl;
 
 contains
   ACBrCTeDACTeQR in '..\..\..\Fontes\ACBrCTe\ACBrCTeDACTeQR.pas' {frmDACTeQR},

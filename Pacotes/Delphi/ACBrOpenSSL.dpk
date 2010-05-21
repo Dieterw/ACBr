@@ -31,8 +31,8 @@ requires
   vcl;
 
 contains
-  libxmlsec in '..\..\..\Fontes\ACBrNFe2\libxmlsec.pas',
-  libxslt in '..\..\..\Fontes\ACBrNFe2\libxslt.pas',
-  libxml2 in '..\..\..\Fontes\ACBrNFe2\libxml2.pas';  
+  libxmlsec in '..\..\Fontes\ACBrNFe2\libxmlsec.pas',
+  libxslt in '..\..\Fontes\ACBrNFe2\libxslt.pas',
+  libxml2 in '..\..\Fontes\ACBrNFe2\libxml2.pas';  
 
 end.

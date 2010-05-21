@@ -965,7 +965,6 @@ end;
 
 procedure TfrlDANFeRLRetrato.Header;
 var sChaveContingencia: String;
-setFormato: TFormatSettings;
 begin
   with FNFe.InfNFe, FNFe.Ide do
   begin
@@ -984,9 +983,7 @@ begin
     rllEmissao.Caption   := NotaUtil.FormatDate(DateToStr(dEmi));
     rllSaida.Caption     := IfThen(DSaiEnt <> 0,
                                       NotaUtil.FormatDate(DateToStr(dSaiEnt)));
-    setFormato.TimeSeparator := ':';
-    setFormato.ShortTimeFormat := 'hh:nn:ss';
-    rllHoraSaida.Caption := IfThen(hSaiEnt <> 0, DateTimeToStr(hSaiEnt, setFormato));
+    rllHoraSaida.Caption := IfThen(hSaiEnt <> 0, TimeToStr(hSaiEnt));
 
     if FNFe.Ide.tpEmis in [teNormal, teSCAN] then
       begin

@@ -72,20 +72,14 @@ package ACBr_CTe;
 {$IMPLICITBUILD ON}
 
 requires
-  rtl,
   ACBrComum,
-  designide,
-  vclactnband,
-  vclx,
-  vcl,
-  synapse,
   ACBrCapicom,
-  soaprtl,
+  PCN,
   xmlrtl,
-  inet,
   dbrtl,
-  dsnap,
-  PCN;
+  inet,
+  soaprtl,
+  synapse;
 
 contains
   pcteRetInutCTe in '..\..\..\Fontes\ACBrCTe\pcteRetInutCTe.pas',

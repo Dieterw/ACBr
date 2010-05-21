@@ -70,24 +70,12 @@ package ACBrCTeDacteQRpkg;
 {$IMPLICITBUILD ON}
 
 requires
-  rtl,
-  vcl,
-  qrpt,
-  vclx,
-  bdertl,
-  dbrtl,
   ACBr_CTe,
-  dsnap,
-  inet,
-  xmlrtl,
-  soaprtl,
-  ACBrCapicom,
-  synapse,
   PCN,
   ACBrComum,
-  designide,
-  vclactnband,
-  vcljpg;
+  vcljpg,
+  bdertl,
+  qrpt;
 
 contains
   ACBrCTeDACTeQR in '..\..\..\Fontes\ACBrCTe\ACBrCTeDACTeQR.pas' {frmDACTeQR},

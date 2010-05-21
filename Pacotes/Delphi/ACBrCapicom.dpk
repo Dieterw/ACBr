@@ -35,6 +35,7 @@ contains
   ACBrMSXML2_TLB in '..\..\Fontes\ACBrCapicom\ACBrMSXML2_TLB.pas',
   JwaWinCrypt in '..\..\Fontes\ACBrCapicom\JwaWinCrypt.pas',
   JwaWinDLLNames in '..\..\Fontes\ACBrCapicom\JwaWinDLLNames.pas',
-  JwaWindows in '..\..\Fontes\ACBrCapicom\JwaWindows.pas';
+  JwaWindows in '..\..\Fontes\ACBrCapicom\JwaWindows.pas',
+  JwaWinType in '..\..\Fontes\ACBrCapicom\JwaWinType.pas';
 
 end.

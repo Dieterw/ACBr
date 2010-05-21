@@ -72,10 +72,10 @@ package ACBr_CTe;
 {$IMPLICITBUILD ON}
 
 requires
-  PCN2,
   ACBrComum,
   synapse,
   ACBrCapicom,
+  PCN2,  
   xmlrtl,
   dbrtl,
   inet,

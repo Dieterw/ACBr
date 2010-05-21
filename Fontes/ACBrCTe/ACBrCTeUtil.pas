@@ -987,7 +987,7 @@ begin
           Length(AStr));
    2: AStr := copy(AStr, 1, StrToInt(VarToStr(CTeUtil.SeSenao(I > 0, I + 1, I))))
          + cDTDCanc + Copy(AStr, StrToInt(VarToStr(CTeUtil.SeSenao(I > 0, I + 2, I))),
-          Length(AStr))
+          Length(AStr));
    3: AStr := copy(AStr, 1, StrToInt(VarToStr(CTeUtil.SeSenao(I > 0, I + 1, I))))
          + cDTDInut + Copy(AStr, StrToInt(VarToStr(CTeUtil.SeSenao(I > 0, I + 2, I))),
           Length(AStr));

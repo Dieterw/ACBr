@@ -742,7 +742,7 @@ begin
          HTTP.HTTPMethod('POST', FURL);
          StrStream := TStringStream.Create('');
          StrStream.CopyFrom(HTTP.Document, 0);
-         FRetWS := CTeUtil.SeparaDados( NotaUtil.ParseText(StrStream.DataString, True),'cteStatusServicoCTResult');
+         FRetWS := CTeUtil.SeparaDados( CTeUtil.ParseText(StrStream.DataString, True),'cteStatusServicoCTResult');
          StrStream.Free;
       {$ELSE}
          ReqResp.Execute(Acao.Text, Stream);

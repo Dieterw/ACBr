@@ -529,19 +529,20 @@ begin
    begin
       ACbrValidador := TACBrValidador.Create(Self);
       try
-       with ACbrValidador do
-       begin
+        with ACbrValidador do
+        begin
           if TipoInscricao = tiPessoaFisica then
-             TipoDocto:= docCPF
+             TipoDocto := docCPF
           else
              TipoDocto := docCNPJ;
 
           IgnorarChar := './-';
-          RaiseExcept := true;
-          Documento := AValue;
-          Validar;
+          RaiseExcept := True;
+          Documento   := AValue;
+          Validar;    // Dispara Exception se Documento estiver errado
+		  
           fCNPJCPF := AValue;
-       end;
+        end;
       finally
          ACbrValidador.Free;
       end;

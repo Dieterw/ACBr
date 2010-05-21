@@ -1497,7 +1497,7 @@ begin
            13  : Ch := '[CR]' ;
            27  : Ch := '[ESC]' ;
            255 : Ch := '[FF]' ;
-           32..127 : Ch := AString[I] ;
+           32..126 : Ch := AString[I] ;
         else ;
           Ch := '['+IntToStr(ASC)+']'
         end;

@@ -6,7 +6,7 @@ Compatível com NFe 2.0
 
 
 1- INSTALAÇÃO
-Copie a pasta ACBrDANFe/EXE para um diretorio qualquer.
+Copie a pasta ACBrDANFe/Compilado para um diretorio qualquer.
 
 
 2- CONFIGURAÇÃO DO DANFE

@@ -230,7 +230,7 @@ begin
   while P <> 0 do
   begin
      Result := P ;
-     P := PosEx( SubStr, S, P+1) ;
+     P := RetornarPosEx( SubStr, S, P+1) ;
   end ;
 end ;
 

@@ -51,7 +51,7 @@ unit ACBrCTeDACTeQRClass;
 interface
 
 uses Forms, SysUtils, Classes,
-  ACBrCTeDACTeClass, ACBrCTeDACTeQRRetrato, pcteCTe, pcnConversao;
+  ACBrCTeDACTeClass, ACBrCTeDACTeQRRetrato, pcteCTe;
 
 type
   TACBrCTeDACTeQR = class(TACBrCTeDACTeClass)

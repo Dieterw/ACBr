@@ -55,7 +55,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, QuickRpt, QRCtrls,
-  ACBrNFeQRCodeBar, pcnNFe, ACBrNFe, ACBrNFeUtil, pcnConversao{, QRPDFFilt {Descomentar para usar PDF};
+  ACBrNFeQRCodeBar, pcnNFe, ACBrNFe, ACBrNFeUtil{, QRPDFFilt {Descomentar para usar PDF};
 
 type
   TfqrDANFeQR = class(TForm)

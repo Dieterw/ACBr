@@ -43,7 +43,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, QuickRpt, QRCtrls, XMLIntf, XMLDoc, MidasLib,
+  Dialogs, ExtCtrls, QuickRpt, QRCtrls, XMLIntf, XMLDoc, 
   JPEG, ACBrCTeQRCodeBar, pcnConversao, DB,
   DBClient, ACBrCTeDACTeQR, qrRRect;
 
@@ -369,7 +369,7 @@ type
 
 implementation
 
-uses StrUtils, ACBrCTeUtil, pcteCTe, pcnSignature, DateUtils;
+uses StrUtils, ACBrCTeUtil, DateUtils;
 
 {$R *.dfm}
 
@@ -511,8 +511,6 @@ begin
 end;
 
 procedure TfrmDACTeQRRetrato.qrbCabecalhoBeforePrint(Sender: TQRCustomBand; var PrintBand: Boolean);
-var
-  i : integer;
 begin
   inherited;
   PrintBand := QRCTe.PageNumber = 1 ;

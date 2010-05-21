@@ -85,7 +85,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, QuickRpt, QRCtrls,  XMLIntf, XMLDoc, MidasLib,
+  Dialogs, ExtCtrls, QuickRpt, QRCtrls,  XMLIntf, XMLDoc, 
   JPEG, ACBrNFeDANFeQR, ACBrNFeQRCodeBar, pcnConversao, DB,
   DBClient, ACBrNFeDANFEClass, ACBrNFeDANFeQRClass{, QRPDFFilt {Descomentar para usar PDF};
 
@@ -452,7 +452,7 @@ type
 
 implementation
 
-uses StrUtils, ACBrNFeUtil, pcnNFe, pcnSignature, DateUtils, ACBrNFe, ACBrUtil;
+uses StrUtils, ACBrNFeUtil, DateUtils, ACBrUtil;
 
 {$R *.dfm}
 

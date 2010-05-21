@@ -49,7 +49,7 @@ unit ACBrNFeDANFeQRClass;
 interface
 
 uses Forms, SysUtils, Classes,
-     ACBrNFeDANFEClass, pcnNFe, pcnConversao;
+     ACBrNFeDANFEClass, pcnNFe;
 
 type
   TACBrNFeDANFEQR = class( TACBrNFeDANFEClass )

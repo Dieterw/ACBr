@@ -503,6 +503,7 @@ begin
 
     inc(i);
   end;
+  Leitor.Arquivo := Arquivo;
 
   (* Grupo da TAG <total> *****************************************************)
   if Leitor.rExtrai(1, 'total') <> '' then

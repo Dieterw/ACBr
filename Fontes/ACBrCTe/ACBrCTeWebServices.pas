@@ -346,7 +346,7 @@ implementation
 uses {$IFDEF ACBrCTeOpenSSL}
         ssl_openssl,
      {$ENDIF}
-     ACBrNFeUtil, ACBrCTeUtil, ACBrCTe,
+     ACBrCTeUtil, ACBrCTe,
      pcnGerador, pcnCabecalho, pcnLeitor,
      pcteConsStatServ, pcteRetConsStatServ,
      pcteConsCad,
@@ -748,7 +748,7 @@ begin
          ReqResp.Execute(Acao.Text, Stream);
          StrStream := TStringStream.Create('');
          StrStream.CopyFrom(Stream, 0);
-         FRetWS := CTeUtil.SeparaDados( NotaUtil.ParseText(StrStream.DataString, True),'cteStatusServicoCTResult');
+         FRetWS := CTeUtil.SeparaDados( CTeUtil.ParseText(StrStream.DataString, True),'cteStatusServicoCTResult');
          StrStream.Free;
       {$ENDIF}
       CTeRetorno := TRetConsStatServ.Create;
@@ -799,7 +799,7 @@ begin
     {$ENDIF}
     Acao.Free;
     Stream.Free;
-    NotaUtil.ConfAmbiente;
+    CTeUtil.ConfAmbiente;
     TACBrCTe( FACBrCTe ).SetStatus( stCTeIdle );
   end;
 end;
@@ -828,12 +828,12 @@ begin
   Texto := Texto + '    <consultaCadastro xmlns="http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro">';
   Texto := Texto + '      <nfeCabecMsg>';
 
-  Texto := Texto + NotaUtil.ParseText(FCabMsg,False);
+  Texto := Texto + CTeUtil.ParseText(FCabMsg,False);
 
   Texto := Texto + '      </nfeCabecMsg>';
   Texto := Texto + '      <nfeDadosMsg>';
 
-  Texto := Texto + NotaUtil.ParseText(FDadosMsg,False);
+  Texto := Texto + CTeUtil.ParseText(FDadosMsg,False);
 
   Texto := Texto + '      </nfeDadosMsg>';
   Texto := Texto + '    </consultaCadastro>';
@@ -865,13 +865,13 @@ begin
 
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(HTTP.Document, 0);
-       FRetWS := CTeUtil.SeparaDados( NotaUtil.ParseText(StrStream.DataString, True),'consultaCadastroResult');
+       FRetWS := CTeUtil.SeparaDados( CTeUtil.ParseText(StrStream.DataString, True),'consultaCadastroResult');
        StrStream.Free;
     {$ELSE}
        ReqResp.Execute(Acao.Text, Stream);
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(Stream, 0);
-       FRetWS := CTeUtil.SeparaDados( NotaUtil.ParseText(StrStream.DataString, True),'consultaCadastroResult');
+       FRetWS := CTeUtil.SeparaDados( CTeUtil.ParseText(StrStream.DataString, True),'consultaCadastroResult');
        StrStream.Free;
     {$ENDIF}
 
@@ -913,7 +913,7 @@ begin
     {$ENDIF}
     Acao.Free;
     Stream.Free;
-    NotaUtil.ConfAmbiente;
+    CTeUtil.ConfAmbiente;
     TACBrCTe( FACBrCTe ).SetStatus( stCTeIdle );
   end;
 end;
@@ -977,13 +977,13 @@ begin
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(HTTP.Document, 0);
 
-       FRetWS := CTeUtil.SeparaDados( NotaUtil.ParseText(StrStream.DataString, True),'cteConsultaCTResult');
+       FRetWS := CTeUtil.SeparaDados( CTeUtil.ParseText(StrStream.DataString, True),'cteConsultaCTResult');
        StrStream.Free;
     {$ELSE}
        ReqResp.Execute(Acao.Text, Stream);
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(Stream, 0);
-       FRetWS := CTeUtil.SeparaDados( NotaUtil.ParseText(StrStream.DataString, True),'cteConsultaCTResult');
+       FRetWS := CTeUtil.SeparaDados( CTeUtil.ParseText(StrStream.DataString, True),'cteConsultaCTResult');
        StrStream.Free;
     {$ENDIF}
     CTeRetorno := TRetConsSitCTe.Create;
@@ -1020,7 +1020,7 @@ begin
     {$ENDIF}
     Acao.Free;
     Stream.Free;
-    NotaUtil.ConfAmbiente;
+    CTeUtil.ConfAmbiente;
     TACBrCTe( FACBrCTe ).SetStatus( stCTeIdle );
   end;
 end;
@@ -1083,13 +1083,13 @@ begin
 
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(HTTP.Document, 0);
-       FRetWS := CTeUtil.SeparaDados( NotaUtil.ParseText(StrStream.DataString, True),'cteCancelamentoCTResult');
+       FRetWS := CTeUtil.SeparaDados( CTeUtil.ParseText(StrStream.DataString, True),'cteCancelamentoCTResult');
        StrStream.Free;
     {$ELSE}
        ReqResp.Execute(Acao.Text, Stream);
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(Stream, 0);
-       FRetWS := CTeUtil.SeparaDados( NotaUtil.ParseText(StrStream.DataString, True),'cteCancelamentoCTResult');
+       FRetWS := CTeUtil.SeparaDados( CTeUtil.ParseText(StrStream.DataString, True),'cteCancelamentoCTResult');
        StrStream.Free;
     {$ENDIF}
 
@@ -1131,20 +1131,20 @@ begin
     {$ENDIF}
     Acao.Free;
     Stream.Free;
-    NotaUtil.ConfAmbiente;
+    CTeUtil.ConfAmbiente;
     TACBrCTe( FACBrCTe ).SetStatus( stCTeIdle );
   end;
 end;
 
 procedure TCTeCancelamento.SetJustificativa(AValue: WideString);
 begin
-  if NotaUtil.EstaVazio(AValue) then
+  if CTeUtil.EstaVazio(AValue) then
     raise Exception.Create('Informar uma Justificativa para cancelar o Conhecimento')
   else
-    AValue := NotaUtil.TrataString(AValue);
+    AValue := CTeUtil.TrataString(AValue);
 
   if Length(AValue) < 15 then
-    FJustificativa := NotaUtil.PadE(AValue, 15,'-')
+    FJustificativa := CTeUtil.PadE(AValue, 15,'-')
   else
     FJustificativa := AValue;
 end;
@@ -1206,13 +1206,13 @@ begin
 
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(HTTP.Document, 0);
-       FRetWS := CTeUtil.SeparaDados( NotaUtil.ParseText(StrStream.DataString, True),'cteInutilizacaoCTResult');
+       FRetWS := CTeUtil.SeparaDados( CTeUtil.ParseText(StrStream.DataString, True),'cteInutilizacaoCTResult');
        StrStream.Free;
     {$ELSE}
        ReqResp.Execute(Acao.Text, Stream);
        StrStream := TStringStream.Create('');
        StrStream.CopyFrom(Stream, 0);
-       FRetWS := CTeUtil.SeparaDados( NotaUtil.ParseText(StrStream.DataString, True),'cteInutilizacaoCTResult');
+       FRetWS := CTeUtil.SeparaDados( CTeUtil.ParseText(StrStream.DataString, True),'cteInutilizacaoCTResult');
        StrStream.Free;
     {$ENDIF}
 
@@ -1250,17 +1250,17 @@ begin
     {$ENDIF}
     Acao.Free;
     Stream.Free;
-    NotaUtil.ConfAmbiente;
+    CTeUtil.ConfAmbiente;
     TACBrCTe( FACBrCTe ).SetStatus( stCTeIdle );
   end;
 end;
 
 procedure TCTeInutilizacao.SetJustificativa(AValue: WideString);
 begin
-  if NotaUtil.EstaVazio(AValue) then
+  if CTeUtil.EstaVazio(AValue) then
     raise Exception.Create('Informar uma Justificativa para Inutilização de numeração do Conhecimento')
   else
-    AValue := NotaUtil.TrataString(AValue);
+    AValue := CTeUtil.TrataString(AValue);
 
   if Length(Trim(AValue)) < 15 then
    raise Exception.Create('A Justificativa para Inutilização de numeração do Conhecimento deve ter no minimo 15 caracteres')
@@ -1330,13 +1330,13 @@ begin
          HTTP.HTTPMethod('POST', FURL);
          StrStream := TStringStream.Create('');
          StrStream.CopyFrom(HTTP.Document, 0);
-         FRetWS := CTeUtil.SeparaDados( NotaUtil.ParseText(StrStream.DataString, True),'cteRecepcaoLoteResult');
+         FRetWS := CTeUtil.SeparaDados( CTeUtil.ParseText(StrStream.DataString, True),'cteRecepcaoLoteResult');
          StrStream.Free;
       {$ELSE}
          ReqResp.Execute(Acao.Text, Stream);
          StrStream := TStringStream.Create('');
          StrStream.CopyFrom(Stream, 0);
-         FRetWS := CTeUtil.SeparaDados( NotaUtil.ParseText(StrStream.DataString, True),'cteRecepcaoLoteResult');
+         FRetWS := CTeUtil.SeparaDados( CTeUtil.ParseText(StrStream.DataString, True),'cteRecepcaoLoteResult');
          StrStream.Free;
       {$ENDIF}
       CTeRetorno := TretEnvCTe.Create;
@@ -1386,7 +1386,7 @@ begin
     {$ENDIF}
     Acao.Free;
     Stream.Free;
-    NotaUtil.ConfAmbiente;
+    CTeUtil.ConfAmbiente;
     TACBrCTe( FACBrCTe ).SetStatus( stCTeIdle );
   end;
 end;
@@ -1520,13 +1520,13 @@ function TCteRetRecepcao.Executar: Boolean;
          StrStream := TStringStream.Create('');
          StrStream.CopyFrom(HTTP.Document, 0);
 
-         FRetWS := CTeUtil.SeparaDados( NotaUtil.ParseText(StrStream.DataString, True),'cteRetRecepcaoResult');
+         FRetWS := CTeUtil.SeparaDados( CTeUtil.ParseText(StrStream.DataString, True),'cteRetRecepcaoResult');
          StrStream.Free;
       {$ELSE}
          ReqResp.Execute(Acao.Text, Stream);
          StrStream := TStringStream.Create('');
          StrStream.CopyFrom(Stream, 0);
-         FRetWS := CTeUtil.SeparaDados( NotaUtil.ParseText(StrStream.DataString, True),'cteRetRecepcaoResult');
+         FRetWS := CTeUtil.SeparaDados( CTeUtil.ParseText(StrStream.DataString, True),'cteRetRecepcaoResult');
 
          StrStream.Free;
       {$ENDIF}
@@ -1571,7 +1571,7 @@ function TCteRetRecepcao.Executar: Boolean;
       {$ENDIF}
       Acao.Free;
       Stream.Free;
-      NotaUtil.ConfAmbiente;
+      CTeUtil.ConfAmbiente;
       TACBrCTe( FACBrCTe ).SetStatus( stCTeIdle );
     end;
   end;
@@ -1675,13 +1675,13 @@ begin
       StrStream := TStringStream.Create('');
       StrStream.CopyFrom(HTTP.Document, 0);
 
-      FRetWS := CTeUtil.SeparaDados( NotaUtil.ParseText(StrStream.DataString, True),'cteRetRecepcaoResult');
+      FRetWS := CTeUtil.SeparaDados( CTeUtil.ParseText(StrStream.DataString, True),'cteRetRecepcaoResult');
       StrStream.Free;
    {$ELSE}
       ReqResp.Execute(Acao.Text, Stream);
       StrStream := TStringStream.Create('');
       StrStream.CopyFrom(Stream, 0);
-      FRetWS := CTeUtil.SeparaDados( NotaUtil.ParseText(StrStream.DataString, True),'cteRetRecepcaoResult');
+      FRetWS := CTeUtil.SeparaDados( CTeUtil.ParseText(StrStream.DataString, True),'cteRetRecepcaoResult');
       StrStream.Free;
    {$ENDIF}
    if assigned(FCTeRetorno) then
@@ -1721,7 +1721,7 @@ begin
    {$ENDIF}
    Acao.Free;
    Stream.Free;
-   NotaUtil.ConfAmbiente;
+   CTeUtil.ConfAmbiente;
    TACBrCTe( FACBrCTe ).SetStatus( stCTeIdle );
  end;
 end;

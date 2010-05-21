@@ -206,15 +206,12 @@ end;
 
 function TCTeW.GerarXml: boolean;
 var
-// {$IFDEF VER210}
   chave: AnsiString;
-// {$ELSE}
-//  chave: string;
-// {$ENDIF}
   Gerar: boolean;
 begin
   chave := '';
-  if not GerarChave(Chave, CTe.ide.cUF, CTe.ide.cCT, StrToInt(CTe.ide.modelo), CTe.ide.serie,
+  //Verificar Chave do CTe quando tiver instalado NFe 2.0
+  if not GerarChaveCTe(Chave, CTe.ide.cUF, CTe.ide.cCT, StrToInt(CTe.ide.modelo), CTe.ide.serie,
     CTe.ide.nCT, CTe.ide.dhEmi, CTe.Emit.CNPJ) then
     Gerador.wAlerta('A01', 'infCte', DSC_CHAVE, ERR_MSG_GERAR_CHAVE);
   chave := StringReplace(chave,'NFe','CTe',[rfReplaceAll]);

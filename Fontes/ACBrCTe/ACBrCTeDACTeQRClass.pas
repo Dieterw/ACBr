@@ -65,7 +65,7 @@ type
 
 implementation
 
-uses ACBrCTe, ACBrNFeUtil, ACBrUtil, StrUtils, Dialogs;
+uses ACBrCTe, ACBrCteUtil, ACBrUtil, StrUtils, Dialogs;
 
 constructor TACBrCTeDACTeQR.Create(AOwner: TComponent);
 begin

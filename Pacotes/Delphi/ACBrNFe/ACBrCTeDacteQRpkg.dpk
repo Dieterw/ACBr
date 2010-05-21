@@ -83,13 +83,11 @@ requires
   soaprtl,
   ACBrCapicom,
   synapse,
-  ACBr_NFe,
   PCN,
   ACBrComum,
   designide,
   vclactnband,
-  vcljpg,
-  ACBrNFeDanfeQRpkg;
+  vcljpg;
 
 contains
   ACBrCTeDACTeQR in '..\..\..\Fontes\ACBrCTe\ACBrCTeDACTeQR.pas' {frmDACTeQR},

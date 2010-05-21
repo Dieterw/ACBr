@@ -65,6 +65,7 @@ function IIf(const condicao: Boolean; const Verdadeiro, Falso: Variant): Variant
 function IntToStrZero(const Numero: integer; const tamanho: integer): string;
 function GerarCodigoNumerico(numero: integer): integer;
 function GerarChave(var chave: AnsiString; const codigoUF: integer; codigoNumerico: integer; const modelo, serie, numero, tpemi: integer; const emissao: TDateTime; const CNPJ: string): boolean;
+function GerarChaveCTe(var chave: AnsiString; const codigoUF: integer; codigoNumerico: integer; const modelo, serie, numero: integer; const emissao: TDateTime; const CNPJ: string): boolean;
 function GerarDigito(var Digito: integer; chave: string): boolean;
 function SomenteNumeros(const s: string): string;
 function RetornarCodigoNumerico(Chave: string): integer;
@@ -226,6 +227,45 @@ begin
     exit;
   end;
 end;
+
+function GerarChaveCTe(var chave: AnsiString; const codigoUF: integer; codigoNumerico: integer;
+  const modelo, serie, numero: integer; const emissao: TDateTime; const CNPJ: string): boolean;
+var
+  digito: integer;
+  wAno, wMes, wDia: Word;
+begin
+  result := true;
+  try
+    // Se o usuario informar 0; o código numerico sera gerado de maneira aleatória //
+    while codigoNumerico = 0 do
+    begin
+      Randomize;
+      codigoNumerico := Random(999999999);
+    end;
+    // se o usuario informar -1 o código numerico será gerado atravéz da função
+    // GerarCódigoNumerico baseado no numero do documento fiscal.
+    if codigoNumerico = -1 then
+      codigoNumerico := GerarCodigoNumerico(Numero);
+    //
+    DecodeDate(emissao, wAno, wMes, wDia);
+    chave := 'NFe' +
+      IntToStrZero(codigoUF, 2) +
+      Copy(FormatFloat('0000', wAno), 3, 2) +
+      FormatFloat('00', wMes) +
+      copy(SomenteNumeros(CNPJ) + '00000000000000', 1, 14) +
+      IntToStrZero(modelo, 2) +
+      IntToStrZero(serie, 3) +
+      IntToStrZero(Numero, 9) +
+      IntToStrZero(codigoNumerico, 9);
+    GerarDigito(digito, chave);
+    chave := chave + IntToStr(digito);
+  except
+    chave := '';
+    result := false;
+    exit;
+  end;
+end;
+
 
 function GerarDigito(var Digito: integer; chave: string): boolean;
 var

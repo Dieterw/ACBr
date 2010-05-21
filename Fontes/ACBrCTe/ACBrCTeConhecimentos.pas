@@ -49,7 +49,7 @@ interface
 
 uses
   Classes, Sysutils, Dialogs, Forms,
-  ACBrNFeUtil, ACBrCTeUtil, ACBrCTeConfiguracoes,
+  ACBrCTeUtil, ACBrCTeConfiguracoes,
   {$IFDEF FPC}
      ACBrCTeDMLaz,
   {$ELSE}
@@ -187,7 +187,7 @@ begin
      try
         LocCTeW.schema := TsPL005c;
         LocCTeW.GerarXml;
-        if NotaUtil.EstaVazio(CaminhoArquivo) then
+        if CTeUtil.EstaVazio(CaminhoArquivo) then
            CaminhoArquivo := PathWithDelim(TACBrCTe( TConhecimentos( Collection ).ACBrCTe ).Configuracoes.Geral.PathSalvar)+copy(CTe.inFCTe.ID, (length(CTe.inFCTe.ID)-44)+1, 44)+'-CTe.xml';
         LocCTeW.Gerador.SalvarArquivo(CaminhoArquivo);
      finally
@@ -278,7 +278,7 @@ begin
     ThreadSMTP.smtp.Password := sSmtpPasswd;
 
     ThreadSMTP.smtp.TargetHost := sSmtpHost;
-    if not NotaUtil.EstaVazio( sSmtpPort ) then     // Usa default
+    if not CTeUtil.EstaVazio( sSmtpPort ) then     // Usa default
        ThreadSMTP.smtp.TargetPort := sSmtpPort;
 
     ThreadSMTP.smtp.FullSSL := SSL;
@@ -368,7 +368,7 @@ begin
         if FConfiguracoes.Geral.Salvar then
            FConfiguracoes.Geral.Save(StringReplace(Self.Items[i].CTe.infCTe.ID, 'CTe', '', [rfIgnoreCase])+'-CTe.xml', vAssinada);
 
-        if NotaUtil.NaoEstaVazio(Self.Items[i].NomeArq) then
+        if CTeUtil.NaoEstaVazio(Self.Items[i].NomeArq) then
            FConfiguracoes.Geral.Save(ExtractFileName(Self.Items[i].NomeArq), vAssinada, ExtractFilePath(Self.Items[i].NomeArq));
      finally
         LocCTeW.Free;
@@ -494,7 +494,7 @@ begin
  try
     for i:= 0 to TACBrCTe( FACBrCTe ).Conhecimentos.Count-1 do
      begin
-        if NotaUtil.EstaVazio(PathArquivo) then
+        if CTeUtil.EstaVazio(PathArquivo) then
            PathArquivo := TACBrCTe( FACBrCTe ).Configuracoes.Geral.PathSalvar
         else
            PathArquivo := ExtractFilePath(PathArquivo);

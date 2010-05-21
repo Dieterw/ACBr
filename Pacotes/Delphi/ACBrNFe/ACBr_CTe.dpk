@@ -73,20 +73,19 @@ package ACBr_CTe;
 
 requires
   rtl,
-  PCN,
   ACBrComum,
   designide,
   vclactnband,
   vclx,
   vcl,
-  ACBr_NFe,
   synapse,
   ACBrCapicom,
   soaprtl,
   xmlrtl,
   inet,
   dbrtl,
-  dsnap;
+  dsnap,
+  PCN;
 
 contains
   pcteRetInutCTe in '..\..\..\Fontes\ACBrCTe\pcteRetInutCTe.pas',

@@ -1,34 +1,51 @@
-ACBrDANFe
---------------------------------
+ACBrDANFe 
+----------------------------------
 Programa para impressão de DANFE
 Compilado com Delphi 2007
+Compatível com NFe 2.0
 
 
 1- INSTALAÇÃO
 Copie a pasta ACBrDANFe/EXE para um diretorio qualquer.
 
+
 2- CONFIGURAÇÃO DO DANFE
 Abra o arquivo ACBrDANFe.ini e especifique as propriedades desejadas.
 Se a propriedade for Booleana, especifique 0 para FALSE e 1 para TRUE
+
 
 3- UTILIZANDO O PROGRAMA
 Arraste um XML de uma NFe para cima do EXECUTAVEL ACBrDANFe, que o mesmo será impresso 
 de acordo com as configurações do arquivo .INI
 
-Voce pode acessar do seu sistema em qualquer linguagem. Basta passar os passando parametros.
+Voce pode acessar do seu sistema em qualquer linguagem. Basta passar os parametros.
 
-Exemplo com Delphi:
+
+4-PARÂMETROS DISPONÍVEIS
+ACBrDanfe.exe [parametro_obrigatorio 1] [parametro_opcional 1] [parametro_opcional 2]
+-parametro_obrigatorio 1: deverá ser sempre o arquivo XML que vc deseja imprimir o DANFE
+-parametro_opcional 1 e 2: pode conter a informacao PDF ou C
+
+Se o parâmetro for PDF o DANFe será gerado em PDF no diretorio especificado na propriedade PathPDF 
+do arquivo .INI
+Se o parâmetro for C será impresso a informação NFe Cancelada no DANFe
+
+
+5-EXEMPLO COM DELPHI
 ...
 var
   CaminhoXML, Comando : string;
 begin
   CaminhoXML := 'C:\ACBrDANFe2\procNFe.xml';
-  Comando := 'C:\ACBrDANFe2\ACBrDANFe.exe ' + CaminhoXML;
+  Comando := 'C:\ACBrDANFe2\ACBrDANFe.exe ' + CaminhoXML + ' pdf';
   Winexec(PAnsiChar(Comando),SW_SHOWNORMAL);
 end;
 ...
+No exemplo acima será criado um DANFe em formato PDF no diretorio PathPDF especificado 
+no arquivo .INI
 
-4-DUVIDAS SUGESTOES
+
+6-DUVIDAS SUGESTOES
 Utilize o fórum do ACBr:
 http://www.forumweb.com.br/foruns/index.php?/forum/549-acbrnfepcn-acbrnfemonitor/
 

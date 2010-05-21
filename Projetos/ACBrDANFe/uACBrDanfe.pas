@@ -28,7 +28,6 @@ type
 '# DANFe                          = Rave'+#13+
 '# DANFe                          = Fortes'+#13+
 'DANFe                          = RaveCB'+#13+
-'Somente_PDF                    = 0'+#13+
 #13+
 '[PROPRIEDADES_DANFe]'+#13+
 'CasasDecimais_Qtde             = 2'+#13+
@@ -43,8 +42,6 @@ type
 'FormularioContinuo             = 0'+#13+
 'Impressora                     ='+#13+
 'ImprimirDescPorc               = 0'+#13+
-'ImprimirHoraSaida              = 0'+#13+
-'ImprimirHoraSaida_Hora         ='+#13+
 'ImprimirTotalLiquido           = 0'+#13+
 'Logo                           ='+#13+
 'MargemDireita                  = 0,51'+#13+
@@ -66,6 +63,7 @@ type
 #13+
 '[PROPRIEDADEs_DANFe_RAVE]'+#13+
 'EspessuraBorda                 = 1'+#13+
+'ImprimirDetalhamentoEspecifico = 1'+#13+
 #13+
 '[PROPRIEDADEs_DANFe_RAVECB]'+#13+
 'EspessuraBorda                 = 2'+#13+
@@ -86,6 +84,7 @@ type
   public
     { Public declarations }
     wPDF: boolean;
+    wNFeCancelada: boolean;
   end;
 
 var
@@ -132,7 +131,6 @@ begin
             ACBrNFe1.DANFE := ACBrNFeDANFeRaveCB1
          else if wDanfe='Fortes' then
             ACBrNFe1.DANFE := ACBrNFeDANFeRL1;
-         wPDF   := Ini.ReadBool('DANFe','Somente_PDF' ,false);            
 
          with ACBrNFe1.DANFE do
          begin
@@ -148,8 +146,6 @@ begin
             FormularioContinuo             := Ini.ReadBool('PROPRIEDADES_DANFe','FormularioContinuo' ,false);
             Impressora                     := Trim(Ini.ReadString('PROPRIEDADES_DANFe','Impressora' ,''));
             ImprimirDescPorc               := Ini.ReadBool('PROPRIEDADES_DANFe','ImprimirDescPorc' ,false);
-            ImprimirHoraSaida              := Ini.ReadBool('PROPRIEDADES_DANFe','ImprimirHoraSaida' ,false);
-            ImprimirHoraSaida_Hora         := Trim(Ini.ReadString('PROPRIEDADES_DANFe','ImprimirHoraSaida_Hora' ,''));
             ImprimirTotalLiquido           := Ini.ReadBool('PROPRIEDADES_DANFe','ImprimirTotalLiquido' ,false);
             Logo                           := Trim(Ini.ReadString('PROPRIEDADES_DANFe','Logo' ,''));
             MargemDireita                  := Ini.ReadFloat('PROPRIEDADES_DANFe','MargemDireita' ,0.51);
@@ -172,6 +168,7 @@ begin
          with ACBrNFeDANFeRave1 do
          begin
             EspessuraBorda                 := Ini.ReadInteger('PROPRIEDADEs_DANFe_RAVE','EspessuraBorda' ,2);
+            ImprimirDetalhamentoEspecifico := Ini.ReadBool('PROPRIEDADEs_DANFe_RAVE','ImprimirDetalhamentoEspecifico' ,true);
             RavFile                        := ExtractFilePath(Application.ExeName)+'DANFE_Rave513.rav';
          end;
 
@@ -209,6 +206,7 @@ end;
 procedure Tfrm_danfe.FormCreate(Sender: TObject);
 var
    wArquivo: string;
+   wTemp: string;
 begin
    if ParamCount <= 0 then
       MessageDlg('Informe um arquivo XML para impressão',mtError,[mbOk],0)
@@ -219,10 +217,29 @@ begin
          MessageDlg('Arquivo '+wArquivo+' não Encontrado',mtError,[mbOk],0)
       else
       begin
-         wPDF:=false;
+         wPDF:=False;
+         wNfeCancelada:=False;
+         if (ParamCount > 1) then
+         begin
+            wtemp:=UpperCase(ParamStr(2));
+            if wtemp='PDF' then
+               wPDF:=true
+            else if wtemp='C' then
+               wNFeCancelada:=true;
+            if (ParamCount > 2) then
+            begin
+               wtemp:=UpperCase(ParamStr(3));
+               if wtemp='PDF' then
+                  wPDF:=true
+               else if wtemp='C' then
+                  wNFeCancelada:=true;
+            end;
+         end;
+
          if Configuracao then
          begin
             try
+               ACBrNFe1.DANFE.NFeCancelada := wNFeCancelada;
                ACBrNFe1.NotasFiscais.Clear;
                ACBrNFe1.NotasFiscais.LoadFromFile(wArquivo);
 

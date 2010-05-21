@@ -1037,12 +1037,15 @@ object Form1: TForm1
     Configuracoes.Arquivos.PathInu = 'D:\delphi\ACBr\trunk\ACBrNFePCN\ACBrNFeMonitor\Arqs'
     Configuracoes.Arquivos.PathDPEC = 'D:\delphi\ACBr\trunk\ACBrNFePCN\ACBrNFeMonitor\Arqs'
     OnStatusChange = ACBrNFe1StatusChange
+    DANFE = ACBrNFeDANFERave1
     OnGerarLog = ACBrNFe1GerarLog
     Left = 707
     Top = 153
   end
   object ACBrNFeDANFERave1: TACBrNFeDANFERave
+    ACBrNFe = ACBrNFe1
     PathPDF = 'C:\Program Files\Borland\Delphi7\Bin\'
+    ImprimirHoraSaida = False
     MostrarPreview = True
     MostrarStatus = True
     TipoDANFE = tiRetrato
@@ -1059,11 +1062,9 @@ object Form1: TForm1
     FormularioContinuo = False
     TamanhoFonte_DemaisCampos = 10
     ProdutosPorPagina = 0
-    ImprimirDetalhamentoEspecifico = True
-    NFeCancelada = False
     RavFile = 
-      'D:\delphi\ACBr\trunk\ACBrNFePCN\Demo\Report\NotaFiscalEletronica' +
-      '.rav'
+      'D:\delphi\ACBr\trunk\Exemplos\ACBrNFe\Delphi\Report\NotaFiscalEl' +
+      'etronica.rav'
     EspessuraBorda = 1
     Left = 742
     Top = 153

@@ -74,6 +74,8 @@ type
 
 implementation
 
+uses StrUtils;
+
 { TNFeR }
 
 constructor TNFeR.Create(AOwner: TNFe);
@@ -93,7 +95,8 @@ end;
 function TNFeR.LerXml: boolean;
 var
   ok: boolean;
-  i, j, k: integer;
+  i, j, k, nItem: integer;
+  Arquivo, Itens, ItensTemp : AnsiString;
   Function VerificaParSt(const t: TpcnCSTIcms): TpcnCSTIcms;
   // 	Verifica se existe Partilha ou St
   begin
@@ -290,8 +293,18 @@ begin
 
   (* Grupo da TAG <det> *******************************************************)
   i := 0;
-  while Leitor.rExtrai(1, 'det nItem="' + IntToStr(i + 1) + '"', 'det', i + 1) <> '' do
+  Arquivo   := Leitor.Arquivo;
+  Itens     := copy(Arquivo,Pos('<det nItem=',Arquivo),Leitor.PosLast('<total>',Arquivo)-Pos('<det nItem=',Arquivo));
+  ItensTemp := copy(Itens,Pos('<det nItem=',Itens),(Pos('</det>',Itens)+6)-Pos('<det nItem=',Itens));
+  while ItensTemp <> '' do
   begin
+    Leitor.Arquivo := 'Item '+ItensTemp;
+
+    nItem := StrToInt(copy(ItensTemp,Pos('nItem=',ItensTemp)+7,Pos('">',ItensTemp)-(Pos('nItem=',ItensTemp)+7)));
+    Itens     := StringReplace(Itens, ItensTemp, '',[]);
+    ItensTemp := copy(Itens,Pos('<det nItem=',Itens),(Pos('</det>',Itens)+6)-Pos('<det nItem=',Itens));
+
+    Leitor.rExtrai(1, 'det nItem="' + IntToStr(nItem) + '"', 'det');
     NFe.Det.Add;
     (*   *)NFe.Det[i].prod.nItem := i + 1;
     (*V01*)NFe.Det[i].infAdProd := Leitor.rCampo(tcStr, 'infAdProd');
@@ -556,6 +569,8 @@ begin
 
     inc(i);
   end;
+
+  Leitor.Arquivo := Arquivo;
 
   (* Grupo da TAG <total> *****************************************************)
   if Leitor.rExtrai(1, 'total') <> '' then

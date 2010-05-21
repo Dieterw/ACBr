@@ -47,7 +47,7 @@ unit pcnLeitor;
 
 interface uses
 
-  SysUtils, Classes, 
+  SysUtils, Classes, StrUtils, 
 {$IFNDEF VER130}
   Variants,
 {$ENDIF}
@@ -69,6 +69,7 @@ type
     function rAtributo(Atributo: string): variant;
     function CarregarArquivo(const CaminhoArquivo: string): boolean; overload;
     function CarregarArquivo(const Stream: TStringStream): boolean; overload;
+    function PosLast(const SubStr, S: AnsiString ): Integer;
   published
     property Arquivo: AnsiString read FArquivo write FArquivo;
     property Grupo: AnsiString read FGrupo write FGrupo;
@@ -218,6 +219,18 @@ begin
   ConteudoTag := copy(ConteudoTag, 1, fim);
   result := ReverterFiltroTextoXML(ConteudoTag)
 end;
+
+function TLeitor.PosLast(const SubStr, S: AnsiString ): Integer;
+Var P : Integer ;
+begin
+  Result := 0 ;
+  P := Pos( SubStr, S) ;
+  while P <> 0 do
+  begin
+     Result := P ;
+     P := PosEx( SubStr, S, P+1) ;
+  end ;
+end ;
 
 end.
 

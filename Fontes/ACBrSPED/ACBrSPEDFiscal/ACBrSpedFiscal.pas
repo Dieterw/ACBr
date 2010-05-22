@@ -522,6 +522,8 @@ end;
 
 procedure TACBrSPEDFiscal.WriteBloco_C( FechaBloco : Boolean );
 begin
+   if Bloco_C.Gravado then exit ;
+
    if not Bloco_0.Gravado then
       WriteBloco_0 ;
 

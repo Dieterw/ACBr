@@ -98,11 +98,11 @@ function TcancCTe.GerarXML: boolean;
 begin
   //PENDENTE// revisar e inserir as regras de geração e validação
   Result := False;
-  if RetornarVersaoLayout(FSchema, tlCancCTe) = '1.07' then
+  if RetornarVersaoLayout(FSchema, tlCancCTe) = '1.03' then
   begin
     Gerador.ArquivoFormatoXML := '';
 //    Gerador.wGrupo(ENCODING_UTF8, '', False);
-    Gerador.wGrupo('cancCTe ' + NAME_SPACE_CTE + ' ' + V1_01);
+    Gerador.wGrupo('cancCTe ' + NAME_SPACE_CTE + ' ' + V1_03);
     Gerador.wGrupo('infCanc Id="ID' + SomenteNumeros(FchCTe) + '"');
     Gerador.wCampo(tcStr, 'CP05', 'tpAmb', 001, 001, 1, tpAmbToStr(FtpAmb), DSC_TPAMB);
     Gerador.wCampo(tcStr, 'CP06', 'xServ', 008, 008, 1, 'CANCELAR', DSC_XSERV);

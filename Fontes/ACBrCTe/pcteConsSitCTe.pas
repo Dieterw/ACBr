@@ -97,11 +97,11 @@ end;
 function TConsSitCTe.GerarXML: boolean;
 begin
   Result := False;
-  if retornarVersaoLayout(Fschema, tlConsSitCTe) = '1.01' then
+  if retornarVersaoLayout(Fschema, tlConsSitCTe) = '1.03' then
   begin
     Gerador.ArquivoFormatoXML := '';
 //    Gerador.wGrupo(ENCODING_UTF8, '', False);
-    Gerador.wGrupo('consSitCTe ' + NAME_SPACE_CTE + ' ' + V1_01);
+    Gerador.wGrupo('consSitCTe ' + NAME_SPACE_CTE + ' ' + V1_03);
 //    Gerador.wCampo(tcStr, 'EP02', 'versao', 001, 001, 1, CTeconsSitCTe, DSC_VERAPLIC);
     Gerador.wCampo(tcStr, 'EP03', 'tpAmb', 001, 001, 1, tpAmbToStr(FtpAmb), DSC_TPAMB);
     Gerador.wCampo(tcStr, 'EP04', 'xServ', 009, 009, 1, 'CONSULTAR', DSC_XSERV);

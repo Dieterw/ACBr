@@ -111,7 +111,7 @@ end;
 function TinutCTe.GerarXML: boolean;
 begin
   Result := False;
-  if RetornarVersaoLayout(FSchema, tlInutCTe) = '1.07' then
+  if RetornarVersaoLayout(FSchema, tlInutCTe) = '1.03' then
   begin
 
     FIDInutilizacao := 'ID' + IntToStrZero(FcUF, 2) +
@@ -120,7 +120,7 @@ begin
 
     Gerador.ArquivoFormatoXML := '';
 //    Gerador.wGrupo(ENCODING_UTF8, '', False);
-    Gerador.wGrupo('inutCTe ' + NAME_SPACE_CTE + ' ' + V1_01);
+    Gerador.wGrupo('inutCTe ' + NAME_SPACE_CTE + ' ' + V1_03);
     Gerador.wGrupo('infInut Id="' + FIDInutilizacao + '"');
     if length(FIDInutilizacao) < 39 then
       Gerador.wAlerta('DP04', 'ID', '', 'ID de inutilização inválido');

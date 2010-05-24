@@ -1162,16 +1162,12 @@ function TACBrECFDaruma.GetTotalPago: Double;
 Var RetCmd : AnsiString ;
 begin
   if fpMFD then
-  begin
-    RetCmd  :=  RetornaInfoECF('48') ;
-    Result  := RoundTo( StrToFloatDef(RetCmd,0) / 100,-2) ;
-  end
+   begin
+     RetCmd :=  RetornaInfoECF('48') ;
+     Result := RoundTo( StrToFloatDef(RetCmd,0) / 100,-2) ;
+   end
   else
-  begin
-    Result := 0;
-    if fsTotalAPagar <> 0 then
-      Result := Subtotal - fsTotalAPagar ;
-  end ;
+     Result := Subtotal - fsTotalAPagar ;
 end;
 
 function TACBrECFDaruma.GetSubTotal: Double;

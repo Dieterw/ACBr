@@ -264,8 +264,9 @@ begin
       end;
 
     m.header.tolist.add(sTo);
-    m.header.From := sFrom;
-    m.header.subject:=sAssunto;
+    m.header.From    := sFrom;
+    m.header.subject := sAssunto;
+    m.Header.ReplyTo := sFrom; // Solicita Confirmação de Recebimento (em Teste)
     m.EncodeMessage;
 
     ThreadSMTP.sFrom := sFrom;

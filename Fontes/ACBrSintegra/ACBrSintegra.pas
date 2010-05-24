@@ -62,7 +62,9 @@
 |* 03/11/2009: Ederson Selvati
 |   - Adição dos registros 88SME e 88SMS
 |* 03/11/2009: Douglas Uesato
-	- Adição dos registros 88EC e 88SF
+|   - Adição dos registros 88EC e 88SF
+|* 24/05/2010: Ederson Selvati
+|   - Adição dos registros 76 e 77  
 *******************************************************************************}
 
 {$I ACBr.inc}
@@ -1801,6 +1803,11 @@ if Registros74.Count>0 then
   wregistro:=wregistro+'74'+TBStrZero(IntToStr(Registros74.Count),8);
 if Registros75.Count>0 then
   wregistro:=wregistro+'75'+TBStrZero(IntToStr(Registros75.Count),8);
+if Registros76.Count>0 then
+  wregistro:=wregistro+'76'+TBStrZero(IntToStr(Registros76.Count),8);
+if Registros77.Count>0 then
+  wregistro:=wregistro+'77'+TBStrZero(IntToStr(Registros77.Count),8);
+
 if Registros85.Count>0 then
   wregistro:=wregistro+'85'+TBStrZero(IntToStr(Registros85.Count),8);
 if Registros86.Count>0 then
@@ -1833,7 +1840,8 @@ wregistro:=wregistro+'99'+TBStrZero(IntToStr(Registros50.Count+Registros51.Count
   Registros53.Count+Registros54.Count+Registros55.Count+
   (Registros60M.Count+Registros60A.Count+Registros60D.Count+Registros60I.Count+Registros60R.Count)+
   (Registros61.Count+Registros61R.Count)+Registros70.Count+Registros71.Count+
-  Registros74.Count+Registros75.Count+Registros85.Count+Registros86.Count+wtotal88+4),8);
+  Registros74.Count+Registros75.Count+Registros76.Count+Registros77.Count+
+  Registros85.Count+Registros86.Count+wtotal88+4),8);
 
 wregistro:=wregistro+Space(125-length(wregistro))+'2';
 WriteRecord(wregistro);

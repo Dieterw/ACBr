@@ -105,9 +105,6 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
     fsRespostasComando : String ;
     fsFalhasRX : Byte ;
 
-    function AchaCNFIndice(Indice: String):TACBrECFComprovanteNaoFiscal;
-
-    function AchaRGIndice(Indice: String): TACBrECFRelatorioGerencial;
     function RemoveNulos(Str:AnsiString):AnsiString;
     Function PreparaCmd( cmd : AnsiString ) : AnsiString ;
     function CalcCheckSum(cmd: AnsiString): AnsiChar;
@@ -117,10 +114,6 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
     function AjustaRetorno(Retorno: AnsiString): AnsiString;
     function AjustaValor( ADouble : Double; Decimais : Integer = 2 ) : String ;
     function ExtraiRetornoLeituras(Retorno: AnsiString): AnsiString;
-    Procedure LeituraMFDSerial(DataInicial, DataFinal : TDateTime;
-       Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
-    Procedure LeituraMFDSerial( COOInicial, COOFinal : Integer;
-       Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
  protected
     function GetDataHora: TDateTime; override ;
     function GetNumCupom: String; override ;
@@ -168,7 +161,6 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
     Function VerificaFimLeitura(var Retorno: AnsiString;
        var TempoLimite: TDateTime) : Boolean ; override ;
     function VerificaFimImpressao(var TempoLimite: TDateTime) : Boolean ; override ;
-
  public
     Constructor create( AOwner : TComponent  )  ;
     Destructor Destroy  ; override ;
@@ -254,6 +246,11 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
     Procedure CortaPapel( const CorteParcial : Boolean = false) ; override ;
     procedure NaoFiscalCompleto(CodCNF: String; Valor: Double;
           CodFormaPagto: String; Obs: AnsiString; IndiceBMP : Integer);override;
+
+    Procedure LeituraMFDSerial(DataInicial, DataFinal : TDateTime;
+       Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
+    Procedure LeituraMFDSerial( COOInicial, COOFinal : Integer;
+       Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
  end ;
 
 implementation
@@ -262,7 +259,7 @@ Uses ACBrECF,
    {$IFDEF COMPILER6_UP} DateUtils, StrUtils, {$ELSE} ACBrD5, Windows,{$ENDIF}
      Math , synaser;
 
-{ --------------------------- TACBrECFSwedaCache ---------------------------- } 
+{ --------------------------- TACBrECFSwedaCache ---------------------------- }
 function TACBrECFSwedaCache.AchaSecao(Secao: String): Integer;
 Var I : Integer ;
 begin
@@ -1153,7 +1150,6 @@ end;
 procedure TACBrECFSwedaSTX.CancelaCupom;
 var
    sVinculado:String;
-   RetCMD:String;
    iVinculados:Integer;
    I:Integer;
 begin
@@ -1323,26 +1319,6 @@ begin
    EnviaComando('32|'+sAliquota);
 end;
 
-function TACBrECFSwedaSTX.AchaCNFIndice(
-  Indice: String): TACBrECFComprovanteNaoFiscal;
-var A : Integer ;
-begin
-  if not Assigned( fpComprovantesNaoFiscais ) then
-     CarregaComprovantesNaoFiscais ;
-  result := nil ;
-  with fpComprovantesNaoFiscais do
-  begin
-     For A := 0 to Count -1 do
-     begin
-        if Objects[A].Indice = Indice then
-        begin
-           result := Objects[A] ;
-           Break ;
-        end ;
-     end ;
-  end ;
-end;
-
 function TACBrECFSwedaSTX.AchaICMSAliquota( var AliquotaICMS: String):
    TACBrECFAliquota;
 Var AliquotaStr : String ;
@@ -1374,30 +1350,10 @@ begin
 end;
 
 
-function TACBrECFSwedaSTX.AchaRGIndice(
-  Indice: String): TACBrECFRelatorioGerencial;
-var A : Integer ;
-begin
-   if not Assigned( fpRelatoriosGerenciais ) then
-      CarregaRelatoriosGerenciais ;
-   result := nil ;
-   with fpRelatoriosGerenciais do
-   begin
-      For A := 0 to Count -1 do
-      begin
-         if Objects[A].Indice = Indice then
-         begin
-            result := Objects[A] ;
-            Break ;
-         end ;
-      end ;
-   end ;
-end;
-
 procedure TACBrECFSwedaSTX.CarregaFormasPagamento;  { funçao Lenta +- 3 sec. }
 var
    sDenominador :String;
-   Tamanho,I:Integer;
+   I:Integer;
    FPagto : TACBrECFFormaPagamento ;
    iFormasPagto:integer;
    sVinculados:String;
@@ -1558,14 +1514,12 @@ end;
 procedure TACBrECFSwedaSTX.ImprimeCheque(Banco: String; Valor: Double;
   Favorecido, Cidade: String; Data: TDateTime; Observacao: String);
 var
-   Espera:integer;
    Moeda,Moedas:String;
    sValor:String;
    sData:String;
 begin
   {Apesar de implementadao, não foi possível testar essa rotina por falta de
    equipamento que tivesse o recurso}
-   Espera     := 25 ;
    Banco      := IntToStrZero(StrToIntDef(Banco,1),3) ;
    Favorecido := padL(Favorecido,80) ;
    Cidade     := padL(Cidade,30) ;
@@ -1704,7 +1658,6 @@ end;
 procedure TACBrECFSwedaSTX.LeituraMemoriaFiscalSerial(DataInicial,
    DataFinal: TDateTime; Linhas : TStringList; Simplificada : Boolean);
 var
-   I:Integer;
    Espera:Integer;
    sDataInicial:String;
    sDataFinal:String;
@@ -1878,7 +1831,6 @@ end;
 function TACBrECFSwedaSTX.GetNumCOOInicial: String;
 var
    RetCMD :String;
-   Tamanho,I:Integer;
 begin
    {Comando suportado apenas a partir da versão 01.00.04}
    RetCMD := RemoveNulos(EnviaComando('65|0000'));//retorna dados do movimento atual
@@ -1933,7 +1885,6 @@ end;
 
 procedure TACBrECFSwedaSTX.SubtotalizaNaoFiscal(DescontoAcrescimo: Double;
    MensagemRodape: AnsiString);
- Var Cmd : String ;
 begin
    SubtotalizaCupom(DescontoAcrescimo,MensagemRodape);
 end;
@@ -1980,7 +1931,6 @@ begin
 
     for I := 0 to Aliquotas.Count - 1 do
     begin
-       V:= 0;
        {Procura pela aliquota no formato Tnnnn na string}
        sAliquota := Aliquotas[I].Tipo+FormatFloat('00.00',Aliquotas[I].Aliquota);
        sAliquota := StringReplace(sAliquota,',','',[rfReplaceAll]);

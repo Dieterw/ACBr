@@ -124,6 +124,9 @@ uses ACBrBase, ACBrDevice, ACBrECFClass, ACBrRFD, {Units da ACBr}
         {$IFDEF VCL}, Controls, Forms, Dialogs, Graphics, StdCtrls {$ENDIF}
      {$ENDIF} ;
 
+const
+   CACBrECF_Versao = '0.9.3' ;
+
 type
 
 { Modelos de ECF Suportados pelo Componente TACBrECF atualmente
@@ -320,6 +323,8 @@ TACBrECF = class( TACBrComponent )
     function GetCodBarrasClass: TACBrECFCodBarras;
     procedure SetRFD(const Value: TACBrRFD);
     Function RFDAtivo : Boolean ;
+    function GetAbout: String;
+    procedure SetAbout(const Value: String);
   protected
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
 
@@ -633,6 +638,7 @@ TACBrECF = class( TACBrComponent )
      Property MemoItens : Integer read fsMemoItens write fsMemoItens ;
     {$ENDIF}
   published
+     property About : String read GetAbout write SetAbout stored False ;
      property Modelo : TACBrECFModelo read fsModelo write SetModelo
                  default ecfNenhum ;
      property Porta : String read GetPorta write SetPorta ;
@@ -4076,6 +4082,16 @@ Número do CDC relativo ao respectivo documento
 - TotalNaoTributadoISS
 - TotalIsencaoISS
  *)
+
+function TACBrECF.GetAbout: String;
+begin
+   Result := 'ACBrECF Ver: '+CACBrECF_Versao;
+end;
+
+procedure TACBrECF.SetAbout(const Value: String);
+begin
+   {}
+end;
 
 end.
 

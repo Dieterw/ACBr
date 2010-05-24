@@ -1602,7 +1602,8 @@ begin
         RetCmd := EnviaComando( ESC + #242 + CodFormaPagto +
                     IntToStrZero( Round( Valor * 100),12) + Observacao, 2) ;
 
-     fsTotalAPagar := RoundTo( StrToFloatDef( copy(RetCmd,2,12),0 ) / 100, -2) ;
+     //fsTotalAPagar := RoundTo( StrToFloatDef( copy(RetCmd,2,12),0 ) / 100, -2) ;
+     fsTotalAPagar := RoundTo( fsTotalAPagar - Valor, -2) ;
    end ;
 
   fsEmPagamento := true ;
@@ -1719,7 +1720,8 @@ begin
                             Round( DescontoAcrescimo * 100 ), 12), 5) ;
 
   fsEmPagamento := true ;
-  fsTotalAPagar := RoundTo( StrToFloatDef( copy(RetCmd,2,12),0 ) / 100, -2) ;
+  // fsTotalAPagar := RoundTo( StrToFloatDef( copy(RetCmd,2,12),0 ) / 100, -2) ;
+  fsTotalAPagar := RoundTo( fsTotalAPagar, -2) ;
   fsRet244      := '' ;
 end;
 

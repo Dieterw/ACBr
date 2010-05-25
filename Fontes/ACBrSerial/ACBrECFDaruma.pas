@@ -1717,7 +1717,7 @@ begin
 
   fsEmPagamento := true ;
   // fsTotalAPagar := RoundTo( StrToFloatDef( copy(RetCmd,2,12),0 ) / 100, -2) ;
-  fsTotalAPagar := RoundTo( fsTotalAPagar, -2) ;
+  fsTotalAPagar := Subtotal ;
   fsRet244      := '' ;
 end;
 

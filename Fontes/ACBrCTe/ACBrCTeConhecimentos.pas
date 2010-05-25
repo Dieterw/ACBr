@@ -87,7 +87,8 @@ type
                                 SSL : Boolean;
                                 EnviaPDF: Boolean = true;
                                 sCC: TStrings = nil;
-                                Anexos:TStrings=nil);
+                                Anexos:TStrings=nil;
+                                PedeConfirma: Boolean = False);
     property CTe: TCTe  read FCTe write FCTe;
     property XML: AnsiString  read FXML write FXML;
     property Confirmada: Boolean  read FConfirmada write FConfirmada;
@@ -228,7 +229,8 @@ procedure Conhecimento.EnviarEmail(const sSmtpHost,
                                       SSL : Boolean;
                                       EnviaPDF: Boolean = true;
                                       sCC: TStrings=nil;
-                                      Anexos:TStrings=nil);
+                                      Anexos:TStrings=nil;
+                                      PedeConfirma: Boolean = False);
 var
  ThreadSMTP : TSendMailThread;
  m:TMimemess;
@@ -267,7 +269,8 @@ begin
     m.header.From    := sFrom;
     m.header.subject := sAssunto;
     m.Header.ReplyTo := sFrom;
-    m.Header.CustomHeaders.Add('Disposition-Notification-To: '+sFrom); // Solicita Confirmação de Recebimento (em Teste)
+    if PedeConfirma then
+       m.Header.CustomHeaders.Add('Disposition-Notification-To: '+sFrom);
     m.EncodeMessage;
 
     ThreadSMTP.sFrom := sFrom;

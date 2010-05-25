@@ -257,7 +257,7 @@ begin
   Arquivo   := Leitor.Arquivo;
   Itens     := copy(Arquivo,Pos('<det nItem=',Arquivo),Leitor.PosLast('<total>',Arquivo)-Pos('<det nItem=',Arquivo));
   ItensTemp := copy(Itens,Pos('<det nItem=',Itens),(Pos('</det>',Itens)+6)-Pos('<det nItem=',Itens));
-  while ItensTemp <> '' do
+  while Trim(ItensTemp) <> '' do
   begin
     Leitor.Arquivo := 'Item '+ItensTemp;
 

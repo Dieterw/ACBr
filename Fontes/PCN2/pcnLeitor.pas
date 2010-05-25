@@ -148,7 +148,7 @@ begin
   if i = 0 then
     exit;
   Texto := copy(Texto, i, maxInt);
-  Result := copy(Texto, 1, pos('</' + Trim(TagFim) + '>', Texto) - 1);
+  Result := TrimRight(copy(Texto, 1, pos('</' + Trim(TagFim) + '>', Texto) - 1));
   FNivel.strings[nivel] := Result;
   FGrupo := result;
 end;

@@ -181,7 +181,7 @@ end;
 
 procedure NotaFiscal.Imprimir;
 begin
-  if not Assigned( TNotasFiscais( Collection ).ACBrNFe ).DANFE ) then
+  if not Assigned( TACBrNFe(TNotasFiscais( Collection ).ACBrNFe ).DANFE ) then
      raise Exception.Create('Componente DANFE não associado.')
   else
      TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.ImprimirDANFE(NFe);
@@ -189,7 +189,7 @@ end;
 
 procedure NotaFiscal.ImprimirPDF;
 begin
-  if not Assigned( TNotasFiscais( Collection ).ACBrNFe ).DANFE ) then
+  if not Assigned( TACBrNFe(TNotasFiscais( Collection ).ACBrNFe ).DANFE ) then
      raise Exception.Create('Componente DANFE não associado.')
   else
      TACBrNFe( TNotasFiscais( Collection ).ACBrNFe ).DANFE.ImprimirDANFEPDF(NFe);

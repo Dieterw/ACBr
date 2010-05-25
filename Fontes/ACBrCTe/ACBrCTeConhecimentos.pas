@@ -266,7 +266,8 @@ begin
     m.header.tolist.add(sTo);
     m.header.From    := sFrom;
     m.header.subject := sAssunto;
-    m.Header.ReplyTo := sFrom; // Solicita Confirmação de Recebimento (em Teste)
+    m.Header.ReplyTo := sFrom;
+    m.Header.CustomHeaders.Add('Disposition-Notification-To: '+sFrom); // Solicita Confirmação de Recebimento (em Teste)
     m.EncodeMessage;
 
     ThreadSMTP.sFrom := sFrom;

@@ -813,10 +813,10 @@ object Form1: TForm1
       TabOrder = 0
       object btnImprimir: TButton
         Left = 192
-        Top = 36
+        Top = 156
         Width = 177
         Height = 25
-        Caption = 'Imprimir'
+        Caption = 'Imprimir DANFE'
         TabOrder = 3
         OnClick = btnImprimirClick
       end
@@ -825,13 +825,13 @@ object Form1: TForm1
         Top = 66
         Width = 177
         Height = 25
-        Caption = 'Consultar'
+        Caption = 'Consultar carregando XML'
         TabOrder = 4
         OnClick = btnConsultarClick
       end
       object btnValidarXML: TButton
-        Left = 193
-        Top = 6
+        Left = 377
+        Top = 126
         Width = 177
         Height = 25
         Caption = 'Validar XML'
@@ -849,10 +849,10 @@ object Form1: TForm1
       end
       object btnCancNF: TButton
         Left = 9
-        Top = 96
+        Top = 126
         Width = 177
         Height = 25
-        Caption = 'Cancelamento NF'
+        Caption = 'Cancelamento NFe com XML'
         TabOrder = 6
         OnClick = btnCancNFClick
       end
@@ -867,10 +867,10 @@ object Form1: TForm1
       end
       object btnInutilizar: TButton
         Left = 192
-        Top = 66
+        Top = 6
         Width = 177
         Height = 25
-        Caption = 'Inutilizar NFe'
+        Caption = 'Inutilizar Numera'#231#227'o'
         TabOrder = 5
         OnClick = btnInutilizarClick
       end
@@ -884,8 +884,8 @@ object Form1: TForm1
         OnClick = btnGerarNFEClick
       end
       object btnConsCad: TButton
-        Left = 9
-        Top = 126
+        Left = 193
+        Top = 66
         Width = 177
         Height = 25
         Caption = 'Consulta Cadastro'
@@ -902,7 +902,7 @@ object Form1: TForm1
         OnClick = btnGerarPDFClick
       end
       object btnEnviarEmail: TButton
-        Left = 9
+        Left = 377
         Top = 156
         Width = 177
         Height = 25
@@ -912,7 +912,7 @@ object Form1: TForm1
       end
       object btnConsultarRecibo: TButton
         Left = 192
-        Top = 156
+        Top = 36
         Width = 177
         Height = 25
         Caption = 'Consultar Recibo Lote'
@@ -939,12 +939,29 @@ object Form1: TForm1
       end
       object btnImportarXML: TButton
         Left = 377
-        Top = 66
+        Top = 96
         Width = 177
         Height = 25
         Caption = 'Importar XML'
         TabOrder = 14
         OnClick = btnImportarXMLClick
+      end
+      object btnConsultarChave: TButton
+        Left = 8
+        Top = 96
+        Width = 177
+        Height = 25
+        Caption = 'Consultar pela Chave'
+        TabOrder = 15
+      end
+      object btnCancelarChave: TButton
+        Left = 9
+        Top = 156
+        Width = 177
+        Height = 25
+        Caption = 'Cancelamento NFe pela Chave'
+        TabOrder = 16
+        OnClick = btnCancNFClick
       end
     end
     object PageControl2: TPageControl
@@ -952,7 +969,7 @@ object Form1: TForm1
       Top = 193
       Width = 564
       Height = 362
-      ActivePage = TabSheet10
+      ActivePage = Dados
       Align = alClient
       TabOrder = 1
       object TabSheet5: TTabSheet
@@ -1022,6 +1039,18 @@ object Form1: TForm1
           TabOrder = 0
         end
       end
+      object Dados: TTabSheet
+        Caption = 'Dados'
+        ImageIndex = 5
+        object MemoDados: TMemo
+          Left = 0
+          Top = 0
+          Width = 556
+          Height = 334
+          Align = alClient
+          TabOrder = 0
+        end
+      end
     end
   end
   object OpenDialog1: TOpenDialog
@@ -1030,8 +1059,8 @@ object Form1: TForm1
       'Arquivos NFE (*-nfe.XML)|*-nfe.XML|Arquivos XML (*.XML)|*.XML|To' +
       'dos os Arquivos (*.*)|*.*'
     Title = 'Selecione a NFe'
-    Left = 672
-    Top = 152
+    Left = 688
+    Top = 376
   end
   object ACBrNFe1: TACBrNFe
     Configuracoes.Geral.FormaEmissao = teContingencia
@@ -1051,8 +1080,8 @@ object Form1: TForm1
     OnStatusChange = ACBrNFe1StatusChange
     DANFE = ACBrNFeDANFERave1
     OnGerarLog = ACBrNFe1GerarLog
-    Left = 707
-    Top = 153
+    Left = 723
+    Top = 377
   end
   object ACBrNFeDANFERave1: TACBrNFeDANFERave
     ACBrNFe = ACBrNFe1
@@ -1076,10 +1105,10 @@ object Form1: TForm1
     ImprimirDetalhamentoEspecifico = True
     NFeCancelada = False
     RavFile = 
-      'D:\delphi\ACBr\trunk\ACBrNFePCN\Demo\Report\NotaFiscalEletronica' +
-      '.rav'
+      'D:\delphi\ACBr\trunk\Exemplos\ACBrNFe2\Delphi\Report\NotaFiscalE' +
+      'letronica.rav'
     EspessuraBorda = 1
-    Left = 742
-    Top = 153
+    Left = 758
+    Top = 377
   end
 end

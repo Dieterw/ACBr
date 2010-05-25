@@ -127,6 +127,10 @@ type
     lblDoar2: TLabel;
     TabSheet10: TTabSheet;
     memoRespWS: TMemo;
+    btnConsultarChave: TButton;
+    btnCancelarChave: TButton;
+    Dados: TTabSheet;
+    MemoDados: TMemo;
     procedure sbtnCaminhoCertClick(Sender: TObject);
     procedure sbtnLogoMarcaClick(Sender: TObject);
     procedure sbtnPathSalvarClick(Sender: TObject);
@@ -160,6 +164,7 @@ type
     { Private declarations }
     procedure GravarConfiguracao ;
     procedure LerConfiguracao ;
+    procedure GerarNFe(NumNFe : String);
     procedure LoadXML(MyMemo: TMemo; MyWebBrowser: TWebBrowser);
 
   public
@@ -333,8 +338,8 @@ end;
 
 procedure TForm1.LoadXML(MyMemo: TMemo; MyWebBrowser: TWebBrowser);
 begin
-  MyMemo.Lines.SaveToFile(ExtractFileDir(application.ExeName)+'\temp.xml');
-  MyWebBrowser.Navigate(ExtractFileDir(application.ExeName)+'\temp.xml');
+  MyMemo.Lines.SaveToFile(ExtractFileDir(application.ExeName)+'temp.xml');
+  MyWebBrowser.Navigate(ExtractFileDir(application.ExeName)+'temp.xml');
 end;
 
 procedure TForm1.sbtnCaminhoCertClick(Sender: TObject);
@@ -391,6 +396,18 @@ begin
  MemoResp.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.StatusServico.RetWS);
  memoRespWS.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.StatusServico.RetornoWS);
  LoadXML(MemoResp, WBResposta);
+ PageControl2.ActivePageIndex := 1;
+ MemoDados.Lines.Add('');
+ MemoDados.Lines.Add('Status Serviço');
+ MemoDados.Lines.Add('tpAmb: '    +TpAmbToStr(ACBrNFe1.WebServices.StatusServico.tpAmb));
+ MemoDados.Lines.Add('verAplic: ' +ACBrNFe1.WebServices.StatusServico.verAplic);
+ MemoDados.Lines.Add('cStat: '    +IntToStr(ACBrNFe1.WebServices.StatusServico.cStat));
+ MemoDados.Lines.Add('xMotivo: '  +ACBrNFe1.WebServices.StatusServico.xMotivo);
+ MemoDados.Lines.Add('cUF: '      +IntToStr(ACBrNFe1.WebServices.StatusServico.cUF));
+ MemoDados.Lines.Add('dhRecbto: ' +DateTimeToStr(ACBrNFe1.WebServices.StatusServico.dhRecbto));
+ MemoDados.Lines.Add('tMed: '     +IntToStr(ACBrNFe1.WebServices.StatusServico.TMed));
+ MemoDados.Lines.Add('dhRetorno: '+DateTimeToStr(ACBrNFe1.WebServices.StatusServico.dhRetorno));
+ MemoDados.Lines.Add('xObs: '     +ACBrNFe1.WebServices.StatusServico.xObs);
 end;
 
 procedure TForm1.btnConsultarClick(Sender: TObject);
@@ -481,95 +498,26 @@ begin
 
   ACBrNFe1.NotasFiscais.Clear;
 
-  with ACBrNFe1.NotasFiscais.Add.NFe do
-  begin
-    Ide.natOp     := 'VENDA PRODUCAO DO ESTAB.';
-    Ide.nNF       := StrToInt(vAux);
-    Ide.cNF       := StrToInt(vAux);
-    Ide.modelo    := 55;
-    Ide.serie     := 1;
-    Ide.dEmi      := Date;
-    Ide.dSaiEnt   := Date;
-    Ide.tpAmb     := taHomologacao;
-    Ide.tpNF      := tnSaida;
-    Ide.indPag    := ipVista;
-    Ide.verProc   := '1.0.0.0';
-    Ide.cUF       := 35;
-    Ide.cMunFG    := 3554003;
-
-    Emit.CNPJCPF           := edtEmitCNPJ.Text;
-    Emit.IE                := edtEmitIE.Text;
-    Emit.xNome             := edtEmitRazao.Text;
-    Emit.xFant             := edtEmitFantasia.Text;
-    Emit.EnderEmit.fone    := edtEmitFone.Text;
-    Emit.EnderEmit.CEP     := StrToInt(edtEmitCEP.Text);
-    Emit.EnderEmit.xLgr    := edtEmitLogradouro.Text;
-    Emit.EnderEmit.nro     := edtEmitNumero.Text;
-    Emit.EnderEmit.xCpl    := edtEmitComp.Text;
-    Emit.EnderEmit.xBairro := edtEmitBairro.Text;
-    Emit.EnderEmit.cMun    := StrToInt(edtEmitCodCidade.Text);
-    Emit.EnderEmit.xMun    := edtEmitCidade.Text;
-    Emit.EnderEmit.UF      := edtEmitUF.Text;
-    Emit.enderEmit.cPais   := 1058;
-    Emit.enderEmit.xPais   := 'BRASIL';
-    Emit.CRT               := crtRegimeNormal;
-
-    Dest.CNPJCPF           := '05481336000137';
-    Dest.EnderDest.CEP     := 18270410;
-    Dest.EnderDest.xLgr    := 'Praça Anita Costa';
-    Dest.EnderDest.nro     := '0034';
-    Dest.EnderDest.xCpl    := '';
-    Dest.EnderDest.xBairro := 'Centro';
-    Dest.EnderDest.cMun    := 3554003;
-    Dest.EnderDest.xMun    := 'Tatuí';
-    Dest.EnderDest.UF      := 'SP';
-    Dest.EnderDest.Fone    := '1532599600';
-    Dest.IE                := '687138770110';
-    Dest.xNome             := 'D.J. COM. E LOCAÇÃO DE SOFTWARES LTDA - ME';
-    Dest.EnderDest.cPais   := 1058;
-    Dest.EnderDest.xPais   := 'BRASIL';
-
-    with Det.Add do
-    begin
-      infAdProd     := 'Teste de informacao adicional;Teste de Segunda Linha';
-      Prod.nItem    := 1;
-      Prod.CFOP     := '5102';
-      Prod.cProd    := '67';
-      Prod.xProd    := 'TESTE DE PRODUTO';
-      Prod.qCom     := 1;
-      Prod.uCom     := 'KG';
-      Prod.vUnCom   := 1.45;
-      Prod.vProd    := 1;
-      Prod.qTrib    := 1;
-      Prod.uTrib    := 'KG';
-      Prod.vUnTrib  := 1.45;
-      Prod.NCM      := '12345678';
-      Prod.IndTot   := itSomaTotalNFe;
-      with Imposto do
-      begin
-        with ICMS do
-        begin
-          orig := oeEstrangeiraAdquiridaBrasil;
-          CST := cst00;
-          ICMS.modBC  := dbiPrecoTabelado;
-          ICMS.pICMS  := 18;
-          ICMS.vICMS  := 0.23;
-          ICMS.vBC    := 1.45;
-        end;
-      end;
-    end;
-
-    Total.ICMSTot.vBC   := 1.45;
-    Total.ICMSTot.vICMS := 0.23;
-    Total.ICMSTot.vProd := 1.45;
-    Total.ICMSTot.vNF   := 1.45;
-  end;
+  GerarNFe(vAux);
 
   ACBrNFe1.Enviar(StrToInt(vNumLote));
 
   MemoResp.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.Retorno.RetWS);
   memoRespWS.Lines.Text := UTF8Encode(ACBrNFe1.WebServices.Retorno.RetornoWS);
   LoadXML(MemoResp, WBResposta);
+
+ MemoDados.Lines.Add('');
+ MemoDados.Lines.Add('Envio NFe');
+ MemoDados.Lines.Add('tpAmb: '+ TpAmbToStr(ACBrNFe1.WebServices.Retorno.TpAmb));
+ MemoDados.Lines.Add('verAplic: '+ ACBrNFe1.WebServices.Retorno.verAplic);
+ MemoDados.Lines.Add('cStat: '+ IntToStr(ACBrNFe1.WebServices.Retorno.cStat));
+ MemoDados.Lines.Add('cUF: '+ IntToStr(ACBrNFe1.WebServices.Retorno.cUF));
+ MemoDados.Lines.Add('xMotivo: '+ ACBrNFe1.WebServices.Retorno.xMotivo);
+ MemoDados.Lines.Add('cMsg: '+ IntToStr(ACBrNFe1.WebServices.Retorno.cMsg));
+ MemoDados.Lines.Add('xMsg: '+ ACBrNFe1.WebServices.Retorno.xMsg);
+ MemoDados.Lines.Add('Recibo: '+ ACBrNFe1.WebServices.Retorno.Recibo);
+ MemoDados.Lines.Add('Protocolo: '+ ACBrNFe1.WebServices.Retorno.Protocolo);
+// MemoDados.Lines.Add('cStat: '+ ACBrNFe1.WebServices.Retorno.NFeRetorno;
 
   ACBrNFe1.NotasFiscais.Clear;
 end;
@@ -710,188 +658,16 @@ begin
 if not(InputQuery('WebServices Enviar', 'Numero da Nota', vAux)) then
     exit;
 
-  ACBrNFe1.Configuracoes.Geral.FormaEmissao := teSCAN;  
   ACBrNFe1.NotasFiscais.Clear;
 
-  with ACBrNFe1.NotasFiscais.Add.NFe do
-  begin
-    Ide.natOp     := 'VENDA PRODUCAO DO ESTAB.';
-    Ide.nNF       := StrToInt(vAux);
-    Ide.cNF       := StrToInt(vAux);
-    Ide.modelo    := 55;
-    Ide.serie     := 1;
-    Ide.dEmi      := Date;
-    Ide.dSaiEnt   := Date;
-    Ide.tpNF      := tnSaida;
-    Ide.indPag    := ipVista;
-    Ide.verProc   := '1.0.0.0';
-    Ide.cUF       := 35;
-    Ide.cMunFG    := 3554003;
-    Ide.tpEmis    := teSCAN;
-
-    Emit.CNPJCPF           := edtEmitCNPJ.Text;
-    Emit.IE                := edtEmitIE.Text;
-    Emit.xNome             := edtEmitRazao.Text;
-    Emit.xFant             := edtEmitFantasia.Text;
-    Emit.EnderEmit.fone    := edtEmitFone.Text;
-    Emit.EnderEmit.CEP     := StrToInt(edtEmitCEP.Text);
-    Emit.EnderEmit.xLgr    := edtEmitLogradouro.Text;
-    Emit.EnderEmit.nro     := edtEmitNumero.Text;
-    Emit.EnderEmit.xCpl    := edtEmitComp.Text;
-    Emit.EnderEmit.xBairro := edtEmitBairro.Text;
-    Emit.EnderEmit.cMun    := StrToInt(edtEmitCodCidade.Text);
-    Emit.EnderEmit.xMun    := edtEmitCidade.Text;
-    Emit.EnderEmit.UF      := edtEmitUF.Text;
-    Emit.enderEmit.cPais   := 1058;
-    Emit.enderEmit.xPais   := 'BRASIL';
-
-    Dest.CNPJCPF           := '05481336000137';
-    Dest.EnderDest.CEP     := 18270410;
-    Dest.EnderDest.xLgr    := 'Praça Anita Costa';
-    Dest.EnderDest.nro     := '0034';
-    Dest.EnderDest.xCpl    := '';
-    Dest.EnderDest.xBairro := 'Centro';
-    Dest.EnderDest.cMun    := 3554003;
-    Dest.EnderDest.xMun    := 'Tatuí';
-    Dest.EnderDest.UF      := 'SP';
-    Dest.EnderDest.Fone    := '1532599600';
-    Dest.IE                := '687138770110';
-    Dest.xNome             := 'D.J. COM. E LOCAÇÃO DE SOFTWARES LTDA - ME';
-    Dest.EnderDest.cPais   := 1058;
-    Dest.EnderDest.xPais   := 'BRASIL';
-
-    with Det.Add do
-    begin
-      Prod.nItem    := 1;
-      Prod.cProd    := '67';
-      Prod.xProd    := 'PRODUTO VENDIDO POR QUILO';
-      Prod.CFOP     := '5101';
-      Prod.uCom     := 'KG';
-      Prod.qCom     := 10;
-      Prod.vUnCom   := 10;
-      Prod.vProd    := 100;
-      Prod.qTrib    := 10;
-      Prod.vUnTrib  := 10;
-      Prod.uTrib    := 'KG';
-      infAdProd := 'Teste informacao adicional';
-
-      with Imposto do
-      begin
-        with ICMS do
-        begin
-          CST := cst00;
-          ICMS.modBC  := dbiPrecoTabelado;
-          ICMS.pICMS  := 18;
-          ICMS.vICMS  := 18;
-          ICMS.vBC    := 100;
-        end;
-        IPI.CST := ipi01;
-      end;
-    end;
-
-    with Det.Add do
-    begin
-      Prod.nItem    := 2;
-      Prod.CFOP     := '5101';
-      Prod.cProd    := '68';
-      Prod.xProd    := 'CARRO NOVO';
-      Prod.qCom     := 1;
-      Prod.uCom     := 'PC';
-      Prod.vProd    := 25000;
-      Prod.vUnCom   := 25000;
-      Prod.qTrib    := 1;
-      Prod.uTrib    := 'PC';
-      Prod.vUnTrib  := 1;
-
-      with Prod.veicProd do
-       begin
-          tpOP   := toVendaConcessionaria;
-          chassi := '';
-          cCor   := '1234';
-          xCor   := 'Descricao da Cor';
-          pot    := '1000';
-          Cilin  := '1000';
-          pesoL  := '1000';
-          pesoB  := '1000';
-          nSerie := '123456789';
-          tpComb := 'Gasolina';
-          nMotor := '1234567890A';
-          CMT    := '123456789';
-          dist   := '1234';
-          RENAVAM := '123456789';
-          anoMod := 2009;
-          anoFab := 2009;
-          tpPint := 'A';
-          tpVeic := 1;
-          espVeic:= 1;
-          VIN    := 'A';
-          condVeic := cvAcabado;
-          cMod   := '1';
-       end;
-
-      with Imposto do
-      begin
-        with ICMS do
-        begin
-          CST := cst00;
-          ICMS.modBC  := dbiPrecoTabelado;
-          ICMS.pICMS  := 12;
-          ICMS.vICMS  := 3000;
-          ICMS.vBC    := 25000;
-        end;
-        IPI.CST := ipi01;
-      end;
-
-    with Det.Add do
-    begin
-      Prod.nItem    := 3;
-      Prod.cProd    := '69';
-      Prod.xProd    := 'ARMAMENTO';
-      Prod.CFOP     := '5101';
-      Prod.uCom     := 'PC';
-      Prod.qCom     := 1;
-      Prod.vUnCom   := 500;
-      Prod.vProd    := 500;
-      Prod.qTrib    := 1;
-      Prod.vUnTrib  := 500;
-      Prod.uTrib    := 'PC';
-
-      with Prod.arma.Add do
-       begin
-          tpArma := taUsoPermitido;
-          nSerie := 1234;
-          nCano  := 1234;
-          descr  := 'Calibre Marca Capacidade Tipo de Funcionamento';
-       end;
-
-      with Imposto do
-      begin
-        with ICMS do
-        begin
-          CST := cst00;
-          ICMS.modBC  := dbiPrecoTabelado;
-          ICMS.pICMS  := 18;
-          ICMS.vICMS  := 90;
-          ICMS.vBC    := 500;
-        end;
-        IPI.CST := ipi01;
-      end;
-    end;
-    end;
-
-    Total.ICMSTot.vBC   := 25680;
-    Total.ICMSTot.vICMS := 3108;
-    Total.ICMSTot.vNF   := 25680;
-    Total.ICMSTot.vProd := 25680;
-    Total.retTrib.vRetPrev := 100;
-
-    InfAdic.infCpl := 'Seu Texto Aqui. Use ; (ponto e vírgula) para quebra de Linha.'
-  end;
+  GerarNFe(vAux);
 
   ACBrNFe1.NotasFiscais.Items[0].SaveToFile;
   ShowMessage('Arquivo gerado em: '+ACBrNFe1.NotasFiscais.Items[0].NomeArq);
-  MemoResp.Lines.LoadFromFile(PathWithDelim(ACBrNFe1.Configuracoes.Geral.PathSalvar)+copy(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID, (length(ACBrNFe1.NotasFiscais.Items[0].NFe.infNFe.ID)-44)+1, 44)+'-NFe.xml');
+  MemoDados.Lines.Add('Arquivo gerado em: '+ACBrNFe1.NotasFiscais.Items[0].NomeArq);
+  MemoResp.Lines.LoadFromFile(ACBrNFe1.NotasFiscais.Items[0].NomeArq);
   LoadXML(MemoResp, WBResposta);
+  PageControl2.ActivePageIndex := 1;
 end;
 
 procedure TForm1.btnConsCadClick(Sender: TObject);
@@ -961,8 +737,9 @@ begin
                                              , mmEmailMsg.Lines
                                              , cbEmailSSL.Checked
                                              , True //Enviar PDF junto
-                                             //, CC //com copia
-                                               );
+                                             , nil //Lista com emails que serão enviado cópias - TStrings
+                                             , nil // Lista de anexos - TStrings
+                                             , False ); //Pede confirmação de leitura do email
     CC.Free;
   end;
 end;
@@ -990,227 +767,7 @@ if not(InputQuery('WebServices DPEC', 'Numero da Nota', vAux)) then
 
   ACBrNFe1.NotasFiscais.Clear;
 
-  with ACBrNFe1.NotasFiscais.Add.NFe do
-  begin
-    infNFe.ID := vAux;
-
-    Ide.natOp     := 'VENDA PRODUCAO DO ESTAB.';
-    Ide.nNF       := StrToInt(vAux);
-    Ide.cNF       := StrToInt(vAux);
-    Ide.modelo    := 55;
-    Ide.serie     := 1;
-    Ide.dEmi      := Date;
-    Ide.dSaiEnt   := Date;
-    Ide.tpAmb     := taHomologacao;
-    Ide.tpNF      := tnSaida;
-    Ide.indPag    := ipVista;
-    Ide.verProc   := '1.0.0.0';
-    Ide.cUF       := 35;
-    Ide.cMunFG    := 3554003;
-    Ide.tpEmis    := teDPEC;
-
-    Emit.CNPJCPF           := edtEmitCNPJ.Text;
-    Emit.IE                := edtEmitIE.Text;
-    Emit.xNome             := edtEmitRazao.Text;
-    Emit.xFant             := edtEmitFantasia.Text;
-    Emit.EnderEmit.fone    := edtEmitFone.Text;
-    Emit.EnderEmit.CEP     := StrToInt(edtEmitCEP.Text);
-    Emit.EnderEmit.xLgr    := edtEmitLogradouro.Text;
-    Emit.EnderEmit.nro     := edtEmitNumero.Text;
-    Emit.EnderEmit.xCpl    := edtEmitComp.Text;
-    Emit.EnderEmit.xBairro := edtEmitBairro.Text;
-    Emit.EnderEmit.cMun    := StrToInt(edtEmitCodCidade.Text);
-    Emit.EnderEmit.xMun    := edtEmitCidade.Text;
-    Emit.EnderEmit.UF      := edtEmitUF.Text;
-    Emit.enderEmit.cPais   := 1058;
-    Emit.enderEmit.xPais   := 'BRASIL';
-
-    Dest.CNPJCPF           := '05481336000137';
-    Dest.EnderDest.CEP     := 18270410;
-    Dest.EnderDest.xLgr    := 'Praça Anita Costa';
-    Dest.EnderDest.nro     := '0034';
-    Dest.EnderDest.xCpl    := '';
-    Dest.EnderDest.xBairro := 'Centro';
-    Dest.EnderDest.cMun    := 3554003;
-    Dest.EnderDest.xMun    := 'Tatuí';
-    Dest.EnderDest.UF      := 'SP';
-    Dest.EnderDest.Fone    := '1532599600';
-    Dest.IE                := '687138770110';
-    Dest.xNome             := 'D.J. COM. E LOCAÇÃO DE SOFTWARES LTDA - ME';
-    Dest.EnderDest.cPais   := 1058;
-    Dest.EnderDest.xPais   := 'BRASIL';
-
-    with Det.Add do
-    begin
-      infAdProd     := 'Teste de informacao adicional;Teste de Segunda Linha';
-      Prod.nItem    := 1;
-      Prod.CFOP     := '5101';
-      Prod.cProd    := '67';
-      Prod.xProd    := 'ALHO 400 G';
-      Prod.qCom     := 100;
-      Prod.uCom     := 'KG';
-      Prod.vProd    := 100;
-      Prod.vUnCom   := 10;
-      Prod.qTrib    := 100;
-      Prod.uTrib    := 'KG';
-      Prod.vUnTrib  := 10;
-      with Imposto do
-      begin
-        with ICMS do
-        begin
-          CST := cst00;
-          ICMS.modBC  := dbiPrecoTabelado;
-          ICMS.pICMS  := 18;
-          ICMS.vICMS  := 180;
-          ICMS.vBC    := 1000;
-        end;
-        IPI.CST := ipi01;
-      end;
-    end;
-
-    with Det.Add do
-    begin
-      Prod.nItem    := 2;
-      Prod.CFOP     := '5101';
-      Prod.cProd    := '68';
-      Prod.xProd    := 'CEBOLA 400 G';
-      Prod.qCom     := 100;
-      Prod.uCom     := 'KG';
-      Prod.vProd    := 100;
-      Prod.vUnCom   := 10;
-      Prod.qTrib    := 100;
-      Prod.uTrib    := 'KG';
-      Prod.vUnTrib  := 10;
-      with Imposto do
-      begin
-        with ICMS do
-        begin
-          CST := cst00;
-          ICMS.modBC  := dbiPrecoTabelado;
-          ICMS.orig   := oeNacional;
-          ICMS.pICMS  := 18;
-          ICMS.vICMS  := 180;
-          ICMS.vBC    := 1000;
-        end;
-        IPI.CST := ipi01;
-      end;
-    end;
-
-    Total.ICMSTot.vBC   := 1000;
-    Total.ICMSTot.vICMS := 180;
-    Total.ICMSTot.vNF   := 1000;
-    Total.ICMSTot.vProd := 1000;
-  end;
-
-{  with ACBrNFe1.NotasFiscais.Add.NFe do
-  begin
-    infNFe.ID := vAux;
-
-    Ide.natOp     := 'VENDA PRODUCAO DO ESTAB.';
-    Ide.nNF       := StrToInt(vAux)+1;
-    Ide.cNF       := StrToInt(vAux)+1;
-    Ide.modelo    := 55;
-    Ide.serie     := 1;
-    Ide.dEmi      := Date;
-    Ide.dSaiEnt   := Date;
-    Ide.tpAmb     := taHomologacao;
-    Ide.tpNF      := tnSaida;
-    Ide.indPag    := ipVista;
-    Ide.verProc   := '1.0.0.0';
-    Ide.cUF       := 35;
-    Ide.cMunFG    := 3554003;
-
-    Emit.CNPJCPF           := edtEmitCNPJ.Text;
-    Emit.IE                := edtEmitIE.Text;
-    Emit.xNome             := edtEmitRazao.Text;
-    Emit.xFant             := edtEmitFantasia.Text;
-    Emit.EnderEmit.fone    := edtEmitFone.Text;
-    Emit.EnderEmit.CEP     := StrToInt(edtEmitCEP.Text);
-    Emit.EnderEmit.xLgr    := edtEmitLogradouro.Text;
-    Emit.EnderEmit.nro     := edtEmitNumero.Text;
-    Emit.EnderEmit.xCpl    := edtEmitComp.Text;
-    Emit.EnderEmit.xBairro := edtEmitBairro.Text;
-    Emit.EnderEmit.cMun    := StrToInt(edtEmitCodCidade.Text);
-    Emit.EnderEmit.xMun    := edtEmitCidade.Text;
-    Emit.EnderEmit.UF      := edtEmitUF.Text;
-    Emit.enderEmit.cPais   := 1058;
-    Emit.enderEmit.xPais   := 'BRASIL';
-
-    Dest.CNPJCPF           := '05481336000137';
-    Dest.EnderDest.CEP     := 18270410;
-    Dest.EnderDest.xLgr    := 'Praça Anita Costa';
-    Dest.EnderDest.nro     := '0034';
-    Dest.EnderDest.xCpl    := '';
-    Dest.EnderDest.xBairro := 'Centro';
-    Dest.EnderDest.cMun    := 3554003;
-    Dest.EnderDest.xMun    := 'Tatuí';
-    Dest.EnderDest.UF      := 'SP';
-    Dest.EnderDest.Fone    := '1532599600';
-    Dest.IE                := '687138770110';
-    Dest.xNome             := 'D.J. COM. E LOCAÇÃO DE SOFTWARES LTDA - ME';
-    Dest.EnderDest.cPais   := 1058;
-    Dest.EnderDest.xPais   := 'BRASIL';
-
-    with Det.Add do
-    begin
-      infAdProd     := 'Teste de informacao adicional;Teste de Segunda Linha';
-      Prod.nItem    := 1;
-      Prod.CFOP     := '5101';
-      Prod.cProd    := '67';
-      Prod.xProd    := 'ALHO 400 G';
-      Prod.qCom     := 100;
-      Prod.uCom     := 'KG';
-      Prod.vProd    := 100;
-      Prod.vUnCom   := 10;
-      Prod.qTrib    := 100;
-      Prod.uTrib    := 'KG';
-      Prod.vUnTrib  := 10;
-      with Imposto do
-      begin
-        with ICMS do
-        begin
-          CST := cst00;
-          ICMS.modBC  := dbiPrecoTabelado;
-          ICMS.pICMS  := 18;
-          ICMS.vICMS  := 180;
-          ICMS.vBC    := 1000;
-        end;
-        IPI.CST := ipi01;
-      end;
-    end;
-
-    with Det.Add do
-    begin
-      Prod.nItem    := 2;
-      Prod.CFOP     := '5101';
-      Prod.cProd    := '68';
-      Prod.xProd    := 'CEBOLA 400 G';
-      Prod.qCom     := 100;
-      Prod.uCom     := 'KG';
-      Prod.vProd    := 100;
-      Prod.vUnCom   := 10;
-      Prod.qTrib    := 100;
-      Prod.uTrib    := 'KG';
-      Prod.vUnTrib  := 10;
-      with Imposto do
-      begin
-        with ICMS do
-        begin
-          CST := cst00;
-          ICMS.modBC  := dbiPrecoTabelado;
-          ICMS.pICMS  := 18;
-          ICMS.vICMS  := 180;
-          ICMS.vBC    := 1000;
-        end;
-        IPI.CST := ipi01;
-      end;
-    end;
-
-    Total.ICMSTot.vBC   := 1000;
-    Total.ICMSTot.vICMS := 180;
-    Total.ICMSTot.vNF   := 1000;
-    Total.ICMSTot.vProd := 1000;
-  end;}
+  GerarNFe(vAux);
 
   ACBrNFe1.NotasFiscais.SaveToFile();
   ACBrNFe1.WebServices.EnviarDPEC.Executar;
@@ -1971,6 +1528,444 @@ end;
 procedure TForm1.lblDoar1Click(Sender: TObject);
 begin
   ShellExecute(0, Nil, 'http://acbr.sourceforge.net/drupal/?q=node/14', Nil, Nil, SW_NORMAL);
+end;
+
+procedure TForm1.GerarNFe(NumNFe : String);
+begin
+  with ACBrNFe1.NotasFiscais.Add.NFe do
+   begin
+     Ide.cNF       := StrToInt(NumNFe); //Caso não seja preenchido será gerado um número aleatório pelo componente
+     Ide.natOp     := 'VENDA PRODUCAO DO ESTAB.';
+     Ide.indPag    := ipVista;
+     Ide.modelo    := 55;
+     Ide.serie     := 1;
+     Ide.nNF       := StrToInt(NumNFe);
+     Ide.dEmi      := Date;
+     Ide.dSaiEnt   := Date;
+     Ide.tpNF      := tnSaida;
+     Ide.tpEmis    := teNormal;
+     Ide.tpAmb     := taHomologacao;  //Lembre-se de trocar esta variável quando for para ambiente de produção
+     Ide.verProc   := '1.0.0.0'; //Versão do seu sistema
+     Ide.cUF       := NotaUtil.UFtoCUF(edtEmitUF.Text);
+     Ide.cMunFG    := StrToInt(edtEmitCodCidade.Text);
+     Ide.finNFe    := fnNormal;
+
+//Para NFe referenciada use os campos abaixo
+{     with Ide.NFref.Add do
+      begin
+        refNFe       := ''; //NFe Eletronica
+
+        RefNF.cUF    := 0;  // |
+        RefNF.AAMM   := ''; // |
+        RefNF.CNPJ   := ''; // |
+        RefNF.modelo := 1;  // |- NFe Modelo 1/1A
+        RefNF.serie  := 1;  // |
+        RefNF.nNF    := 0;  // |
+
+        RefNFP.cUF     := 0;  // |
+        RefNFP.AAMM    := ''; // |
+        RefNFP.CNPJCPF := ''; // |
+        RefNFP.IE      := ''; // |- NF produtor Rural
+        RefNFP.modelo  := ''; // |
+        RefNFP.serie   := 1;  // |
+        RefNFP.nNF     := 0;  // |
+
+        RefECF.modelo  := ECFModRef2B; // |
+        RefECF.nECF    := '';          // |- Cupom Fiscal
+        RefECF.nCOO    := '';          // |
+      end;
+}
+      Emit.CNPJCPF           := edtEmitCNPJ.Text;
+      Emit.IE                := edtEmitIE.Text;
+      Emit.xNome             := edtEmitRazao.Text;
+      Emit.xFant             := edtEmitFantasia.Text;
+
+      Emit.EnderEmit.fone    := edtEmitFone.Text;
+      Emit.EnderEmit.CEP     := StrToInt(edtEmitCEP.Text);
+      Emit.EnderEmit.xLgr    := edtEmitLogradouro.Text;
+      Emit.EnderEmit.nro     := edtEmitNumero.Text;
+      Emit.EnderEmit.xCpl    := edtEmitComp.Text;
+      Emit.EnderEmit.xBairro := edtEmitBairro.Text;
+      Emit.EnderEmit.cMun    := StrToInt(edtEmitCodCidade.Text);
+      Emit.EnderEmit.xMun    := edtEmitCidade.Text;
+      Emit.EnderEmit.UF      := edtEmitUF.Text;
+      Emit.enderEmit.cPais   := 1058;
+      Emit.enderEmit.xPais   := 'BRASIL';
+
+      Emit.IEST              := '';
+      Emit.IM                := ''; // Preencher no caso de existir serviços na nota
+      Emit.CNAE              := ''; // Verifique na cidade do emissor da NFe se é permitido
+                                    // a inclusão de serviços na NFe
+      Emit.CRT               := crtRegimeNormal;
+
+//Para NFe Avulsa preencha os campos abaixo
+{      Avulsa.CNPJ    := '';
+      Avulsa.xOrgao  := '';
+      Avulsa.matr    := '';
+      Avulsa.xAgente := '';
+      Avulsa.fone    := '';
+      Avulsa.UF      := '';
+      Avulsa.nDAR    := '';
+      Avulsa.dEmi    := now;
+      Avulsa.vDAR    := 0;
+      Avulsa.repEmi  := '';
+      Avulsa.dPag    := now;             }
+
+      Dest.CNPJCPF           := '05481336000137';
+      Dest.IE                := '687138770110';
+      Dest.ISUF              := '';
+      Dest.xNome             := 'D.J. COM. E LOCAÇÃO DE SOFTWARES LTDA - ME';
+
+      Dest.EnderDest.Fone    := '1532599600';
+      Dest.EnderDest.CEP     := 18270410;
+      Dest.EnderDest.xLgr    := 'Praça Anita Costa';
+      Dest.EnderDest.nro     := '0034';
+      Dest.EnderDest.xCpl    := '';
+      Dest.EnderDest.xBairro := 'Centro';
+      Dest.EnderDest.cMun    := 3554003;
+      Dest.EnderDest.xMun    := 'Tatuí';
+      Dest.EnderDest.UF      := 'SP';
+      Dest.EnderDest.cPais   := 1058;
+      Dest.EnderDest.xPais   := 'BRASIL';
+
+//Use os campos abaixo para informar o endereço de retirada quando for diferente do Remetente/Destinatário
+{      Retirada.CNPJCPF := '';
+      Retirada.xLgr    := '';
+      Retirada.nro     := '';
+      Retirada.xCpl    := '';
+      Retirada.xBairro := '';
+      Retirada.cMun    := 0;
+      Retirada.xMun    := '';
+      Retirada.UF      := '';}
+
+//Use os campos abaixo para informar o endereço de entrega quando for diferente do Remetente/Destinatário
+{      Entrega.CNPJCPF := '';
+      Entrega.xLgr    := '';
+      Entrega.nro     := '';
+      Entrega.xCpl    := '';
+      Entrega.xBairro := '';
+      Entrega.cMun    := 0;
+      Entrega.xMun    := '';
+      Entrega.UF      := '';}
+
+//Adicionando Produtos
+      with Det.Add do
+       begin
+         Prod.nItem    := 1; // Número sequencial, para cada item deve ser incrementado
+         Prod.cProd    := '123456';
+         Prod.cEAN     := '1234567890123';
+         Prod.xProd    := 'Descrição do Produto';
+         Prod.NCM      := '12345678'; // Tabela NCM disponível em 
+         Prod.EXTIPI   := '';
+         Prod.CFOP     := '5101';
+         Prod.uCom     := 'UN';
+         Prod.qCom     := 1 ;
+         Prod.vUnCom   := 100;
+         Prod.vProd    := 100 ;
+
+         Prod.cEANTrib  := '';
+         Prod.uTrib     := 'UN';
+         Prod.qTrib     := 1;
+         Prod.vUnTrib   := 100;
+
+         Prod.vFrete    := 0;
+         Prod.vSeg      := 0;
+         Prod.vDesc     := 0;
+
+         infAdProd      := 'Informação Adicional do Produto';
+
+//Declaração de Importação. Pode ser adicionada várias através do comando Prod.DI.Add
+{         with Prod.DI.Add do
+          begin
+            nDi         := '';
+            dDi         := now;
+            xLocDesemb  := '';
+            UFDesemb    := '';
+            dDesemb     := now;
+            cExportador := '';
+
+            with adi.Add do
+             begin
+               nAdicao     := 1;
+               nSeqAdi     := 1;
+               cFabricante := '';
+               vDescDI     := 0;
+             end;
+          end;
+}
+//Campos para venda de veículos novos
+{         with Prod.veicProd do
+          begin
+            tpOP    := toVendaConcessionaria;
+            chassi  := '';
+            cCor    := '';
+            xCor    := '';
+            pot     := '';
+            Cilin   := '';
+            pesoL   := '';
+            pesoB   := '';
+            nSerie  := '';
+            tpComb  := '';
+            nMotor  := '';
+            CMT     := '';
+            dist    := '';
+            RENAVAM := '';
+            anoMod  := 0;
+            anoFab  := 0;
+            tpPint  := '';
+            tpVeic  := 0;
+            espVeic := 0;
+            VIN     := '';
+            condVeic := cvAcabado;
+            cMod    := '';
+          end;
+}
+//Campos específicos para venda de medicamentos
+{         with Prod.med.Add do
+          begin
+            nLote := '';
+            qLote := 0 ;
+            dFab  := now ;
+            dVal  := now ;
+            vPMC  := 0 ;
+          end;  }
+//Campos específicos para venda de armamento
+{         with Prod.arma.Add do
+          begin
+            nSerie := 0;
+            tpArma := taUsoPermitido ;
+            nCano  := 0 ;
+            descr  := '' ;
+          end;      }
+//Campos específicos para venda de combustível(distribuidoras)
+{         with Prod.comb do
+          begin
+            cProdANP := 0;
+            CODIF    := '';
+            qTemp    := 0;
+
+            CIDE.qBCprod   := 0 ;
+            CIDE.vAliqProd := 0 ;
+            CIDE.vCIDE     := 0 ;
+
+            ICMS.vBCICMS   := 0 ;
+            ICMS.vICMS     := 0 ;
+            ICMS.vBCICMSST := 0 ;
+            ICMS.vICMSST   := 0 ;
+
+            ICMSInter.vBCICMSSTDest := 0 ;
+            ICMSInter.vICMSSTDest   := 0 ;
+
+            ICMSCons.vBCICMSSTCons := 0 ;
+            ICMSCons.vICMSSTCons   := 0 ;
+            ICMSCons.UFcons        := '' ;
+          end;}
+
+         with Imposto do
+          begin
+            with ICMS do
+             begin
+               CST          := cst00;
+               ICMS.orig    := oeNacional;
+               ICMS.modBC   := dbiValorOperacao;
+               ICMS.vBC     := 100;
+               ICMS.pICMS   := 18;
+               ICMS.vICMS   := 18;
+               ICMS.modBCST := dbisMargemValorAgregado;
+               ICMS.pMVAST  := 0;
+               ICMS.pRedBCST:= 0;
+               ICMS.vBCST   := 0;
+               ICMS.pICMSST := 0;
+               ICMS.vICMSST := 0;
+               ICMS.pRedBC  := 0;
+             end;
+
+            with IPI do
+             begin
+               CST      := ipi99 ;
+               clEnq    := '';
+               CNPJProd := '';
+               cSelo    := '';
+               qSelo    := 0;
+               cEnq     := '';
+
+               vBC    := 0;
+               qUnid  := 0;
+               vUnid  := 0;
+               pIPI   := 0;
+               vIPI   := 0;
+             end;
+
+            with II do
+             begin
+               vBc      := 0;
+               vDespAdu := 0;
+               vII      := 0;
+               vIOF     := 0;
+             end;
+
+            with PIS do
+             begin
+               CST      := pis99;
+               PIS.vBC  := 0;
+               PIS.pPIS := 0;
+               PIS.vPIS := 0;
+
+               PIS.qBCProd   := 0;
+               PIS.vAliqProd := 0;
+               PIS.vPIS      := 0;
+             end;
+
+            with PISST do
+             begin
+               vBc       := 0;
+               pPis      := 0;
+               qBCProd   := 0;
+               vAliqProd := 0;
+               vPIS      := 0;
+             end;
+
+            with COFINS do
+             begin
+               CST            := cof99;
+               COFINS.vBC     := 0;
+               COFINS.pCOFINS := 0;
+               COFINS.vCOFINS := 0;
+
+               COFINS.qBCProd   := 0;
+               COFINS.vAliqProd := 0;
+             end;
+
+            with COFINSST do
+             begin
+               vBC       := 0;
+               pCOFINS   := 0;
+               qBCProd   := 0;
+               vAliqProd := 0;
+               vCOFINS   := 0;
+             end;
+//Grupo para serviços
+{            with ISSQN do
+             begin
+               vBC       := 0;
+               vAliq     := 0;
+               vISSQN    := 0;
+               cMunFG    := 0;
+               cListServ := 0; // Preencha este campo usando a tabela disponível
+                               // em http://www.planalto.gov.br/Ccivil_03/LEIS/LCP/Lcp116.htm
+             end;}
+          end;
+       end ;
+
+      Total.ICMSTot.vBC     := 100;
+      Total.ICMSTot.vICMS   := 18;
+      Total.ICMSTot.vBCST   := 0;
+      Total.ICMSTot.vST     := 0;
+      Total.ICMSTot.vProd   := 100;
+      Total.ICMSTot.vFrete  := 0;
+      Total.ICMSTot.vSeg    := 0;
+      Total.ICMSTot.vDesc   := 0;
+      Total.ICMSTot.vII     := 0;
+      Total.ICMSTot.vIPI    := 0;
+      Total.ICMSTot.vPIS    := 0;
+      Total.ICMSTot.vCOFINS := 0;
+      Total.ICMSTot.vOutro  := 0;
+      Total.ICMSTot.vNF     := 100;
+
+      Total.ISSQNtot.vServ   := 0;
+      Total.ISSQNTot.vBC     := 0;
+      Total.ISSQNTot.vISS    := 0;
+      Total.ISSQNTot.vPIS    := 0;
+      Total.ISSQNTot.vCOFINS := 0;
+
+      Total.retTrib.vRetPIS    := 0;
+      Total.retTrib.vRetCOFINS := 0;
+      Total.retTrib.vRetCSLL   := 0;
+      Total.retTrib.vBCIRRF    := 0;
+      Total.retTrib.vIRRF      := 0;
+      Total.retTrib.vBCRetPrev := 0;
+      Total.retTrib.vRetPrev   := 0;
+
+      Transp.modFrete := mfContaEmitente;
+      Transp.Transporta.CNPJCPF  := '';
+      Transp.Transporta.xNome    := '';
+      Transp.Transporta.IE       := '';
+      Transp.Transporta.xEnder   := '';
+      Transp.Transporta.xMun     := '';
+      Transp.Transporta.UF       := '';
+
+      Transp.retTransp.vServ    := 0;
+      Transp.retTransp.vBCRet   := 0;
+      Transp.retTransp.pICMSRet := 0;
+      Transp.retTransp.vICMSRet := 0;
+      Transp.retTransp.CFOP     := '';
+      Transp.retTransp.cMunFG   := 0;
+
+      Transp.veicTransp.placa := '';
+      Transp.veicTransp.UF    := '';
+      Transp.veicTransp.RNTC  := '';
+//Dados do Reboque
+{      with Transp.Reboque.Add do
+       begin
+         placa := '';
+         UF    := '';
+         RNTC  := '';
+       end;}
+
+      with Transp.Vol.Add do
+       begin
+         qVol  := 1;
+         esp   := '';
+         marca := '';
+         nVol  := '';
+         pesoL := 0;
+         pesoB := 0;
+
+         //Lacres do volume. Pode ser adicionado vários
+         //Lacres.Add.nLacre := '';
+       end;
+
+      Cobr.Fat.nFat  := '';
+      Cobr.Fat.vOrig := 0 ;
+      Cobr.Fat.vDesc := 0 ;
+      Cobr.Fat.vLiq  := 0 ;
+
+      with Cobr.Dup.Add do
+       begin
+         nDup  := '';
+         dVenc := now;
+         vDup  := 0;
+       end;
+
+      InfAdic.infCpl     :=  '';
+      InfAdic.infAdFisco :=  '';
+
+      with InfAdic.obsCont.Add do
+       begin
+         xCampo := 'ObsCont';
+         xTexto := 'Texto';
+       end;
+
+      with InfAdic.obsFisco.Add do
+       begin
+         xCampo := 'ObsFisco';
+         xTexto := 'Texto';
+       end;
+//Processo referenciado
+{     with InfAdic.procRef.Add do
+       begin
+         nProc := '';
+         indProc := ipSEFAZ;
+       end;                 }
+
+      exporta.UFembarq   := '';;
+      exporta.xLocEmbarq := '';
+
+      compra.xNEmp := '';
+      compra.xPed  := '';
+      compra.xCont := '';
+   end;
+
 end;
 
 end.

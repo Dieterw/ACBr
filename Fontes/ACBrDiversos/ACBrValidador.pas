@@ -1159,15 +1159,16 @@ begin
       begin
         fsModuloFinal := fsSomaDigitos mod 11 ;
 
-        if fsModuloFinal >= 2 then
-           fsDigitoFinal := 11 - fsModuloFinal
+        if fsModuloFinal < 2 then
+           fsDigitoFinal := 0
         else
-           fsDigitoFinal := fsModuloFinal;
+           fsDigitoFinal := 11 - fsModuloFinal;
       end ;
 
     frModulo10PIS :
       begin
-        fsDigitoFinal := 11 - (fsSomaDigitos mod 11);
+        fsModuloFinal := (fsSomaDigitos mod 11);
+        fsDigitoFinal := 11 - fsModuloFinal;
 
         if (fsDigitoFinal >= 10) then
            fsDigitoFinal := 0;
@@ -1175,7 +1176,8 @@ begin
 
     frModulo10 :
       begin
-        fsDigitoFinal := 10 - (fsSomaDigitos mod 10);
+        fsModuloFinal := (fsSomaDigitos mod 10);
+        fsDigitoFinal := 10 - fsModuloFinal;
 
         if (fsDigitoFinal >= 10) then
            fsDigitoFinal := 0;

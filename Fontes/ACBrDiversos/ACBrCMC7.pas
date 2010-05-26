@@ -215,6 +215,7 @@ begin
    104: Result := 0;    /// 104 - CEF. Utiliza apenas 7, mas os 3 primeiros são necessários para calcular o dv
 // 237: Result := 3;    /// 237 - Bradesco
    341: Result := 4;    /// 341 - Itau
+   389: Result := 1;    /// 389 - Mercantil   
 // 409: Result := 3;    /// 409 - Unibanco
    479: Result := 2;    /// 479 - Bank of Boston
   else

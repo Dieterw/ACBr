@@ -97,6 +97,11 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.9.3b  26/05/10
+-- ACBrECF --
+[-]    Corrigido método AchaICMSAliquota( Aliquota: Double; Tipo : Char ) em
+       D2010  (por: Eduardo Martins)
+        
 Versão 0.9.3b  24/05/10
 -- ACBrECF --
 [+]    Adicionada propriedade com numero de versão específico

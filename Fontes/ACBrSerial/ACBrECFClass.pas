@@ -2635,7 +2635,10 @@ end;
 
 function TACBrECFClass.AchaICMSAliquota( Aliquota: Double; Tipo : Char ) :
    TACBrECFAliquota;
-var A : Integer ;
+var
+  A : Integer ;
+  ftAliq : Double ;
+  cTipo  : Char ;
 begin
   if not Assigned( fpAliquotas ) then
      CarregaAliquotas ;
@@ -2643,15 +2646,16 @@ begin
   if not (Tipo in ['S','T']) then
      Tipo := ' ' ;
 
-  Aliquota := SimpleRoundTo(Aliquota,-2) ; 
+  Aliquota := SimpleRoundTo(Aliquota,-2) ;
   Result   := nil ;
-  
+
   with fpAliquotas do
   begin
      For A := 0 to Count -1 do
      begin
-        if ( SimpleRoundTo(Objects[A].Aliquota,-2) = Aliquota) and
-           ((Tipo = ' ') or (Tipo = Objects[A].Tipo) ) then
+        ftAliq := SimpleRoundTo(Objects[A].Aliquota,-2) ;
+        cTipo  := Objects[A].Tipo ;
+        if ( ftAliq = Aliquota) and (Tipo in [' ',cTipo]) then
         begin
            result := Objects[A] ;
            Break ;

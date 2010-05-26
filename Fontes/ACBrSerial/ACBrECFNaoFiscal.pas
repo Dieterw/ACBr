@@ -1182,7 +1182,10 @@ begin
 end;
 
 procedure TACBrECFNaoFiscal.FechaCupom(Observacao: AnsiString; IndiceBMP : Integer);
-var wEstado : TACBrECFEstado ;
+var
+  wEstado    : TACBrECFEstado ;
+  wSubTotal  : Double;
+  wTotalPago : Double;
 begin
   if Estado <> estPagamento then
      raise Exception.create(ACBrStr('O Estado da Impressora nao é "PAGAMENTO"'+
@@ -1197,15 +1200,21 @@ begin
   AddBufferRodape ;
 
   ImprimeBuffer ;
-  wEstado := Estado ;
+  wEstado    := Estado ;
+  wSubTotal  := fsSubTotal;
+  wTotalPago := fsTotalPago;
   Consumidor.Enviado := True ;
 
   try
-     fpEstado := estLivre ;
+     fpEstado    := estLivre ;
+     fsSubTotal  := 0.0;
+     fsTotalPago := 0.0;
 
      GravaArqINI ;
   except
-     fpEstado := wEstado ;
+     fpEstado    := wEstado ;
+     fsSubTotal  := wSubTotal;
+     fsTotalPago := wTotalPago;
   end ;
 end;
 

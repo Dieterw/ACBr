@@ -56,7 +56,7 @@ Versão 1.17b   19/04/10
     Que contem o Valor do Saque quando usado Saque de Dinheiro Visa ou RedeCard
 [*] RespostasPendentes.SaldoRestante e RespostasPendentes.TotalPago foram
     modificados para subtrair o Valor do Saque no Valor Calculado
-[-] ACBrTEFD.ImprimirTransacoesPendentes modificaa para Confirmar a transação
+[-] ACBrTEFD.ImprimirTransacoesPendentes modificaçao para Confirmar a transação
     antes de exibir a Mensagem de autenticação de Cheque
     (exigência homologação SoftwareExpress)
 

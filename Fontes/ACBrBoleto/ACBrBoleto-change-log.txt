@@ -47,6 +47,20 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.0.7.a 25/05/2010
+[+] Adicionado classe para o Banco do Brasil. Edney Barros
+[+] Adicionado propriedade Tipo de Inscrição e CNPJ\CPF do Cedente, com validação do documento. Edney Barros\Juliana Tamizou
+[+] Adicionado função para Gerar boleto no formato PDF e HTML. Daniel Simões
+[-] Corrigido Cálculo do Nosso Numero e Montagem da Linha Digitavel para o Bradesco. Juliana Tamizou
+[-] Adicionado função para montar o campo nosso numero a ser impresso no boleto(varia para cada banco). Juliana Tamizou
+
+Versão 0.0.6a 04/05/10
+[-] Adicionado Logos dos bancos no formato '.BMP', corrigindo o problema 
+    ao imprimir o boleto, onde o logo não era encontrado, mesmo sendo informado
+    o diretório dos arquivos. EMBarbosa 
+[+] Adicionado verificação das propriedades obrigatórias do componente ACBrBoleto,
+    para evitar erros devido a falta de preenchimento destas propriedades. Juliana Tamizou
+
 Versão 0.0.5a   03/05/09
 ---------------
 [+] Início do Projeto
@@ -56,9 +70,4 @@ Versão 0.0.5a   03/05/09
     FreeBoleto, OpenBoleto, JFMBoleto.
 
 
-Versão 0.0.6a 04/05/10
-[-] Adicionado Logos dos bancos no formato '.BMP', corrigindo o problema 
-    ao imprimir o boleto, onde o logo não era encontrado, mesmo sendo informado
-    o diretório dos arquivos. EMBarbosa 
-[+] Adicionado verificação das propriedades obrigatórias do componente ACBrBoleto,
-    para evitar erros devido a falta de preenchimento destas propriedades. Juliana Tamizou
+

@@ -86,7 +86,8 @@ end;
 
 function TACBrBancoBradesco.MontarCodigoBarras ( const ACBrTitulo: TACBrTitulo) : String;
 var
-  CodigoBarras, FatorVencimento, DigitoCodBarras :String;
+  CodigoBarras, FatorVencimento, DigitoCodBarras:String;
+  DigitoNum: Integer;
 begin
    with ACBrTitulo.ACBrBoleto do
    begin
@@ -100,6 +101,10 @@ begin
                       padR(Cedente.Conta,7,'0') + '0';
 
       DigitoCodBarras := CalcularDigitoCodigoBarras(CodigoBarras);
+      DigitoNum := StrToIntDef(DigitoCodBarras,0);
+
+      if (DigitoNum = 0) or (DigitoNum > 9) then
+          DigitoCodBarras:= '1';
    end;
 
    Result:= IntToStr(Numero) + '9'+ DigitoCodBarras + Copy(CodigoBarras,5,39);

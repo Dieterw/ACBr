@@ -2,20 +2,20 @@
   This source is only used to compile and install the package.
  }
 
-unit ACBr_Boleto ; 
+unit ACBr_Boleto; 
 
 interface
 
 uses
-  ACBrBoleto, ACBrBancoBradesco, ACBrBancoBrasil, LazarusPackageIntf;
+   ACBrBoleto, ACBrBancoBradesco, ACBrBancoBrasil, LazarusPackageIntf;
 
 implementation
 
-procedure Register ; 
+procedure Register; 
 begin
-  RegisterUnit('ACBrBoleto', @ACBrBoleto.Register) ; 
-end ; 
+  RegisterUnit ( 'ACBrBoleto', @ACBrBoleto.Register ) ; 
+end; 
 
 initialization
-  RegisterPackage('ACBr_Boleto', @Register) ; 
+  RegisterPackage ( 'ACBr_Boleto', @Register ) ; 
 end.

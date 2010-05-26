@@ -218,6 +218,8 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
        Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
     Procedure LeituraMemoriaFiscalSerial( ReducaoInicial, ReducaoFinal : Integer;
        Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
+
+    Procedure IdentificaOperador ( Nome: String); override;
     Procedure IdentificaPAF( Linha1, Linha2 : String) ; override ;
     Function RetornaInfoECF( Registrador: String) : AnsiString; override ;
 
@@ -2110,6 +2112,11 @@ end;
 procedure TACBrECFSwedaSTX.CortaPapel(const CorteParcial: Boolean);
 begin
    EnviaComando('62|0');
+end;
+
+procedure TACBrECFSwedaSTX.IdentificaOperador(Nome: String);
+begin
+   EnviaComando_ECF('56|'+Copy(Nome,1,20));
 end;
 
 procedure TACBrECFSwedaSTX.IdentificaPAF(Linha1, Linha2: String);

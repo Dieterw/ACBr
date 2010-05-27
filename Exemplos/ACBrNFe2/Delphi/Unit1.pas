@@ -1542,6 +1542,7 @@ begin
      Ide.nNF       := StrToInt(NumNFe);
      Ide.dEmi      := Date;
      Ide.dSaiEnt   := Date;
+     Ide.hSaiEnt   := Now;
      Ide.tpNF      := tnSaida;
      Ide.tpEmis    := teNormal;
      Ide.tpAmb     := taHomologacao;  //Lembre-se de trocar esta variável quando for para ambiente de produção

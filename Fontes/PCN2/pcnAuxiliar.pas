@@ -363,34 +363,25 @@ begin
       Result := '1.01';
     if Layout = tlConsDPEC then
       Result := '1.01';
-    if Layout = tlCancCTe then
-      Result := '1.07';
-    if Layout = tlConsReciCTe then
-      Result := '1.01';
-    if Layout = tlConsSitCTe then
-      Result := '1.01';
-    if Layout = tlInutCTe then
-      Result := '1.07';
-    if Layout = tlCTe then
-      Result := '1.10';
-    if Layout = tlProcCTe then
-      Result := '1.10';
-    if Layout = tlProcInutCTe then
-      Result := '1.07';
-    if Layout = tlRetCancCTe then
-      Result := '1.07';
-    if Layout = tlRetConsReciCTe then
-      Result := '1.10';
-    if Layout = tlRetConsSitCTe then
-      Result := '1.07';
-    if Layout = tlRetEnvCTe then
-      Result := '1.10';
-    if Layout = tlRetInutCTe then
-      Result := '1.07';
-    if Layout = tlEnvCTe then
-      Result := '1.10';
-    if Layout = tlProcCancCTe then
-      Result := '1.07';
+
+    // Tipos de LayOut para CT-e
+
+    if Layout = tlConsStatServCTe then Result := '1.03';
+    if Layout = tlCTe             then Result := '1.03';
+    if Layout = tlEnvCTe          then Result := '1.03';
+    if Layout = tlRetEnvCTe       then Result := '1.03';
+    if Layout = tlProcCTe         then Result := '1.03';
+    if Layout = tlConsReciCTe     then Result := '1.03';
+    if Layout = tlRetConsReciCTe  then Result := '1.03';
+    if Layout = tlConsSitCTe      then Result := '1.03';
+    if Layout = tlRetConsSitCTe   then Result := '1.03';
+    if Layout = tlCancCTe         then Result := '1.03';
+    if Layout = tlProcCancCTe     then Result := '1.03';
+    if Layout = tlRetCancCTe      then Result := '1.03';
+    if Layout = tlInutCTe         then Result := '1.03';
+    if Layout = tlProcInutCTe     then Result := '1.03';
+    if Layout = tlRetInutCTe      then Result := '1.03';
+
   end
  else if schema = TsPL006 then
   begin

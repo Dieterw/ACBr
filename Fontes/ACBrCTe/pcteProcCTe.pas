@@ -133,7 +133,7 @@ begin
   Result := False;
   ProtLido := False;
 
-  if retornarVersaoLayout(FSchema, tlProcCTe) = '1.10'
+  if retornarVersaoLayout(FSchema, tlProcCTe) = '1.03'
    then begin
     XMLCTe := TStringList.Create;
     XMLinfProt := TStringList.Create;

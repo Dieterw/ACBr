@@ -714,7 +714,15 @@ begin
         inscricao := inscricao + copy(IE, C1, 1);
     mascara := copy(MASCARAS_, pos(copy(MASCARA_, posicao, 1), ALFA_) * 15 - 14, 14);
     if length(inscricao) <> length(trim(mascara)) then
-      continue;
+     begin
+      if length(inscricao) < length(trim(mascara)) then
+       begin
+         while length(inscricao) < length(trim(mascara)) do
+           inscricao := '0'+inscricao;
+       end
+      else
+         continue;
+     end;
     inscricao := copy('00000000000000' + inscricao, length(inscricao) + 1, 14);
     erros := 0;
     alternativa := 0;

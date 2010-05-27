@@ -47,6 +47,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.0.8.a 27/05/2010
+[*] Correção de vários Warnings e Hints de compilação  (por: DSA)
+[-] GerarPDF e GerarHTML não restauravam corretamente a propriedade "MostrarPreview" (por: DSA)
+
 Versão 0.0.7.a 25/05/2010
 [+] Adicionado classe para o Banco do Brasil. Edney Barros
 [+] Adicionado propriedade Tipo de Inscrição e CNPJ\CPF do Cedente, com validação do documento. Edney Barros\Juliana Tamizou

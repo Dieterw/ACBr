@@ -47,7 +47,7 @@ type
    protected
    public
     Constructor create(AOwner: TACBrBanco);
-    function CalcularDigitoVerificador(const ACBrTitulo: TACBrTitulo ): String;
+    function CalcularDigitoVerificador(const ACBrTitulo: TACBrTitulo ): String; override ;
     function MontarCodigoBarras(const ACBrTitulo : TACBrTitulo): String; override;
     function GerarRegistroHeader(NumeroRemessa : Integer): String; override;
     function GerarRegistroTransacao(ACBrTitulo : TACBrTitulo): String; override;
@@ -198,8 +198,8 @@ begin
 end;
 
 function TACBrBancoBrasil.GerarRegistroTransacao(ACBrTitulo : TACBrTitulo): String;
-var ATipoInscricao, ATipoOcorrencia, ATipoBoleto, ADataMoraJuros, AValorMoraJuros,
-    ADataDesconto, AValorDesconto  : string;
+var ATipoInscricao, ATipoOcorrencia, ATipoBoleto, ADataMoraJuros,
+    ADataDesconto  : string;
 begin
    with ACBrTitulo do
    begin

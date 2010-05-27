@@ -56,7 +56,7 @@ uses ACBrBase,  {Units da ACBr}
      Graphics, Contnrs, Classes;
 
 const
-  CACBrBoleto_Versao = '0.0.7a' ;
+  CACBrBoleto_Versao = '0.0.8a' ;
 
 type
   TACBrTitulo = class;
@@ -81,7 +81,7 @@ type
     function CalcularDigitoCodigoBarras(const CodigoBarras: String): String; virtual;
   public
     Constructor create(AOwner: TACBrBanco);
-    Destructor Destroy;
+    Destructor Destroy; override ;
 
     property ACBrBanco : TACBrBanco      read fpAOwner;
     property Numero    : Integer         read GetNumero;
@@ -96,9 +96,9 @@ type
     function MontarCampoNossoNumero(const ACBrTitulo : TACBrTitulo): String; virtual;
     function MontarLinhaDigitavel(const CodigoBarras: String): String; virtual;
 
-    function GerarRegistroHeader(NumeroRemessa : Integer): String;    Virtual; abstract;
-    function GerarRegistroTransacao(ACBrTitulo : TACBrTitulo): String; Virtual; abstract;
-    function GerarRegistroTrailler(ARemessa:TStringList): String;  Virtual; abstract;
+    function GerarRegistroHeader(NumeroRemessa : Integer): String;    Virtual;
+    function GerarRegistroTransacao(ACBrTitulo : TACBrTitulo): String; Virtual;
+    function GerarRegistroTrailler(ARemessa:TStringList): String;  Virtual; 
 
     function CalcularNomeArquivoRemessa(const DirArquivo: String): String; Virtual;
   end;
@@ -1123,6 +1123,27 @@ begin
    Inherited Destroy;
 end;
 
+function TACBrBancoClass.GerarRegistroHeader( NumeroRemessa: Integer): String;
+begin
+  { Método implementado apenas para evitar Warnings de compilação (poderia ser abstrato)
+    Você de fazer "override" desse método em todas as classes filhas de TACBrBancoClass }
+  Result := '' ;
+end;
+
+function TACBrBancoClass.GerarRegistroTrailler( ARemessa: TStringList): String;
+begin
+  { Método implementado apenas para evitar Warnings de compilação (poderia ser abstrato)
+    Você de fazer "override" desse método em todas as classes filhas de TACBrBancoClass }
+  Result := '' ;
+end;
+
+function TACBrBancoClass.GerarRegistroTransacao(  ACBrTitulo: TACBrTitulo): String;
+begin
+  { Método implementado apenas para evitar Warnings de compilação (poderia ser abstrato)
+    Você de fazer "override" desse método em todas as classes filhas de TACBrBancoClass }
+  Result := '' ;
+end;
+
 { TACBrBoletoFCClass }
 
 constructor TACBrBoletoFCClass.Create ( AOwner: TComponent ) ;
@@ -1245,7 +1266,7 @@ begin
      Imprimir;
    finally
      Filtro         := FiltroAntigo;
-     MostrarPreview := MostrarSetupAntigo;
+     MostrarPreview := MostrarPreviewAntigo;
      MostrarSetup   := MostrarSetupAntigo;
    end;
 end;
@@ -1271,7 +1292,7 @@ begin
      Imprimir;
    finally
      Filtro         := FiltroAntigo;
-     MostrarPreview := MostrarSetupAntigo;
+     MostrarPreview := MostrarPreviewAntigo;
      MostrarSetup   := MostrarSetupAntigo;
    end;
 end;

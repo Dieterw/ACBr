@@ -164,8 +164,9 @@ begin
 
       {Pegando Tipo de Boleto}
       case ACBrBoleto.Cedente.TipoBoleto of
-         tbCliEmite   : TipoBoleto := '2';
-         tbBancoEmite : TipoBoleto := '1';
+         tbCliEmite : TipoBoleto := '2';
+      else
+         TipoBoleto := '1';
       end;
 
       {Pegando campo Intruções}

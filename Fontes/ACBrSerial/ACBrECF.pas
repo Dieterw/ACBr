@@ -949,7 +949,9 @@ begin
   //Se o ecf foi desligado durante o cupom, continua do ultimo
   if (Estado in [estVenda, estPagamento]) then
   begin
+     {$IFNDEF CONSOLE}
      fsMemoItens     := NumUltItem;
+     {$ENDIF}
      fsSubTotalPagto := Subtotal;
   end;
 

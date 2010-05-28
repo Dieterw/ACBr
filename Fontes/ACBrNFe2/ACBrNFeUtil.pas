@@ -88,19 +88,19 @@ type
 //AC,AL,AP,MA,PA,PB,PI,RJ,RN,RR,SC,SE,TO - Estados sem WebServices próprios
 //Estados Emissores pela Sefaz Virtual RS (Rio Grande do Sul): AC, AL, AM, AP, MS, PB, RJ, RR, SC, SE e TO.
 //Estados Emissores pela Sefaz Virtual AN (Ambiente Nacional): CE, ES, MA, PA, PI, PR e RN.
-    class function GetURLSVRS(AAmbiente: Integer; ALayOut: TLayOut): WideString; //atualizado 2.0
-    class function GetURLSVAN(AAmbiente: Integer; ALayOut: TLayOut): WideString; //atualizado 2.0
+    class function GetURLSVRS(AAmbiente: Integer; ALayOut: TLayOut): WideString; //atualizado 2.0 Homologação e Produção
+    class function GetURLSVAN(AAmbiente: Integer; ALayOut: TLayOut): WideString; //atualizado 2.0 Homologação e Produção
     class function GetURLAM(AAmbiente: Integer; ALayOut: TLayOut): WideString;
     class function GetURLBA(AAmbiente: Integer; ALayOut: TLayOut): WideString;
     class function GetURLCE(AAmbiente: Integer; ALayOut: TLayOut): WideString;
-    class function GetURLGO(AAmbiente: Integer; ALayOut: TLayOut): WideString;   //atualizado 2.0
+    class function GetURLGO(AAmbiente: Integer; ALayOut: TLayOut): WideString;   //atualizado 2.0 Homologação e Produção
     class function GetURLMT(AAmbiente: Integer; ALayOut: TLayOut): WideString;
-    class function GetURLMS(AAmbiente: Integer; ALayOut: TLayOut): WideString;   //atualizado 2.0
-    class function GetURLMG(AAmbiente: Integer; ALayOut: TLayOut): WideString;   //atualizado 2.0
+    class function GetURLMS(AAmbiente: Integer; ALayOut: TLayOut): WideString;   //atualizado 2.0 Homologação
+    class function GetURLMG(AAmbiente: Integer; ALayOut: TLayOut): WideString;   //atualizado 2.0 Homologação
     class function GetURLPR(AAmbiente: Integer; ALayOut: TLayOut): WideString;
     class function GetURLPE(AAmbiente: Integer; ALayOut: TLayOut): WideString;
-    class function GetURLRS(AAmbiente: Integer; ALayOut: TLayOut): WideString;   //atualizado 2.0
-    class function GetURLSP(AAmbiente: Integer; ALayOut: TLayOut): WideString;   //atualizado 2.0
+    class function GetURLRS(AAmbiente: Integer; ALayOut: TLayOut): WideString;   //atualizado 2.0 Homologação e Produção
+    class function GetURLSP(AAmbiente: Integer; ALayOut: TLayOut): WideString;   //atualizado 2.0 Homologação e Produção
   protected
 
   public
@@ -913,12 +913,12 @@ class function NotaUtil.GetURLGO(AAmbiente: Integer;
   ALayOut: TLayOut): WideString;
 begin
   case ALayOut of
-    LayNfeRecepcao      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.go.gov.br/nfe/services/NfeRecepcao', 'https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeRecepcao');
-    LayNfeRetRecepcao   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.go.gov.br/nfe/services/NfeRetRecepcao', 'https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeRetRecepcao');
-    LayNfeCancelamento  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.go.gov.br/nfe/services/NfeCancelamento', 'https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeCancelamento');
-    LayNfeInutilizacao  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.go.gov.br/nfe/services/NfeInutilizacao', 'https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeInutilizacao');
-    LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.go.gov.br/nfe/services/NfeConsulta', 'https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeConsulta');
-    LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.go.gov.br/nfe/services/NfeStatusServico', 'https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeStatusServico');
+    LayNfeRecepcao      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeRecepcao2', 'https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeRecepcao');
+    LayNfeRetRecepcao   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeRetRecepcao2', 'https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeRetRecepcao');
+    LayNfeCancelamento  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeCancelamento2', 'https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeCancelamento');
+    LayNfeInutilizacao  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeInutilizacao2', 'https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeInutilizacao');
+    LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeConsulta2', 'https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeConsulta');
+    LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeStatusServico2', 'https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeStatusServico');
     LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.go.gov.br/nfe/services/CadConsultaCadastro', 'https://homolog.sefaz.go.gov.br/nfe/services/CadConsultaCadastro');
   end;
 end;

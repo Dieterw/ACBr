@@ -1757,12 +1757,15 @@ end;
 function TiraPontos(Str: string): string;
 var
   i: Integer;
+  xStr : String;
 begin
-for i:=1 to Length(Trim(str)) do
-  if (Pos(Copy(str,i,1),'/-.)(,')>0) then Delete(str,i,1);
-for i:=1 to Length(Trim(str)) do
-  if (Pos(Copy(str,i,1),' ')>0) then Delete(str,i,1);
-Result:=str;
+ xStr := '';
+ for i:=1 to Length(Trim(str)) do
+   if (Pos(Copy(str,i,1),'/-.)(,')=0) then xStr := xStr + str[i];
+
+ xStr := StringReplace(xStr,' ','',[rfReplaceAll]);
+
+ Result:=xStr;
 end;
 
 function Space(Tamanho: Integer): string;

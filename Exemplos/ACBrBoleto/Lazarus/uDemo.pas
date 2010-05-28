@@ -142,14 +142,14 @@ begin
 
      with Titulo do
      begin
-        LocalPagamento    := 'Pagar preferêncialmente nas agências do Bradesco'; //MEnsagem exigida pelo bradesco
+        LocalPagamento    := 'Pagar preferêncialmente nas agências do '+ ACBrBoleto1.Banco.Nome; //MEnsagem exigida pelo bradesco
         Vencimento        := IncMonth(EncodeDate(2010,05,10),I);
         DataDocumento     := EncodeDate(2010,04,10);
         NumeroDocumento   := padL(IntToStr(I),6,'0');
         EspecieDoc        := 'DM';
         Aceite            := 'S';
         DataProcessamento := Now;
-        NossoNumero       := IntToStrZero(I,11);
+        NossoNumero       := IntToStrZero(I,ACBrBoleto1.Banco.TamanhoMaximoNossoNum);
         Carteira          := '09';
         ValorDocumento    := 100.10 * (I+0.5);
         Sacado.NomeSacado := 'Jose Luiz Pedroso';
@@ -203,7 +203,7 @@ begin
         EspecieDoc        := edtEspecieDoc.Text;
         Aceite            := 'S';
         DataProcessamento := Now;
-        NossoNumero       := edtNossoNro.Text;
+        NossoNumero       := padR(edtNossoNro.Text,ACBrBoleto.Banco.TamanhoMaximoNossoNum);
         Carteira          := edtCarteira.Text;
         ValorDocumento    := StrToCurr(edtValorDoc.Text);
         Sacado.NomeSacado := edtNome.Text;
@@ -215,7 +215,7 @@ begin
         Sacado.UF         := edtUF.Text;
         Sacado.CEP        := RemoveStrings(edtCEP.Text,AString);
         ValorAbatimento   := StrToCurrDef(edtValorAbatimento.Text,0);
-        LocalPagamento    := edtLocalPag.Text;
+        LocalPagamento    := edtLocalPag.Text+ ' '+ ACBrBoleto1.Banco.Nome;
         ValorMoraJuros    := StrToCurrDef(edtMoraJuros.Text,0);
         ValorDesconto     := StrToCurrDef(edtValorDesconto.Text,0);
         ValorAbatimento   := StrToCurrDef(edtValorAbatimento.Text,0);

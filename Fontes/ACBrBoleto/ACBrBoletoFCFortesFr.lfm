@@ -1,12 +1,12 @@
 object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
-  Left = 330
-  Height = 702
-  Top = 47
-  Width = 917
+  Left = 70
+  Height = 768
+  Top = 19
+  Width = 949
   VertScrollBar.Position = 538
   Caption = 'ACBRBoletoFCFortesFr'
-  ClientHeight = 702
-  ClientWidth = 917
+  ClientHeight = 768
+  ClientWidth = 949
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   OnCreate = FormCreate

@@ -56,7 +56,7 @@ uses ACBrBase,  {Units da ACBr}
      Graphics, Contnrs, Classes;
 
 const
-  CACBrBoleto_Versao = '0.0.8a' ;
+  CACBrBoleto_Versao = '0.0.9a' ;
 
 type
   TACBrTitulo = class;
@@ -224,6 +224,7 @@ type
     toRemessaCancelarDesconto,
     toRemessaAlterarVencimento,
     toRemessaProtestar,
+    toRemessaSustarProtesto,
     toRemessaCancelarIntrucaoProtestoBaixa,
     toRemessaCancelarInstrucaoProtesto,
     toRemessaDispensarJuros,
@@ -504,7 +505,7 @@ procedure Register;
 
 implementation
 
-Uses ACBrUtil, ACBrBancoBradesco, ACBrBancoBrasil, Forms,
+Uses ACBrUtil, ACBrBancoBradesco, ACBrBancoBrasil, ACBrBancoItau, Forms,
      {$IFDEF COMPILER6_UP} StrUtils {$ELSE} ACBrD5{$ENDIF},
      Math;
 
@@ -879,6 +880,7 @@ begin
    case AValue of
       001 : fBancoClass := TACBrBancoBrasil.create(Self);
       237 : fBancoClass := TACBrBancoBradesco.create(Self);
+      341 : fBancoClass := TACBrBancoItau.Create(self);
    else
       fBancoClass := TACBrBancoClass.create(Self);
    end;
@@ -1013,7 +1015,7 @@ end;
 function TACBrBancoClass.MontarCampoNossoNumero ( const ACBrTitulo: TACBrTitulo
    ) : String;
 begin
-   Result:= '';
+   Result:= ACBrTitulo.NossoNumero;
 end;
 
 function TACBrBancoClass.MontarLinhaDigitavel (const CodigoBarras: String): String;
@@ -1027,7 +1029,7 @@ begin
 
 
   {Campo 1(Código Banco,Tipo de Moeda,5 primeiro digitos do Campo Livre) }
-   fpModulo.Documento := IntToStr(Numero)+'9'+Copy(CodigoBarras,20,5);
+   fpModulo.Documento := IntToStrZero(Numero,3)+'9'+Copy(CodigoBarras,20,5);
    fpModulo.Calcular;
 
    Campo1 := copy( fpModulo.Documento, 1, 5) + '.' +

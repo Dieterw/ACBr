@@ -47,6 +47,17 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.0.9.a 29/05/2010
+[+] Adicionado classe para o Banco Itaú. (por SandroJoca)
+[*] Alterado rotina MontarLinhaDigitável para formatar com 3 digitos o número do banco,no caso do
+    Banco do Brasil, esse campo ficava com "1" ao invés de "001", fazendo com que a linha digitável
+    seja montada errada. (por Juliana Tamizou)  
+    
+[*] Concluida homologação do arquivo Remessa e impressão do boleto junto ao Bradesco.(Mesmo
+    assim é necessário efetuar a homologação para cada cliente que for ser implementando a impressão
+    do boleto pelo sistema próprio, conforme orientação do suporte Bradesco.)
+
+
 Versão 0.0.8.a 27/05/2010
 [*] Correção de vários Warnings e Hints de compilação  (por: DSA)
 [-] GerarPDF e GerarHTML não restauravam corretamente a propriedade "MostrarPreview" (por: DSA)

@@ -435,6 +435,7 @@ begin
      txtCarteira3.Caption            := txtCarteira2.Caption;
      txtEspecieDoc3.Caption          := txtEspecieDoc2.Caption;
      txtValorDocumento3.Caption      := txtValorDocumento2.Caption;
+     txtNomeSacado3.Caption          := txtNomeSacado2.Caption;
      txtEnderecoSacado3.Caption      := txtEnderecoSacado2.Caption;
      txtCidadeSacado3.Caption        := txtCidadeSacado2.Caption;
      txtCpfCnpjSacado3.Caption       := txtCpfCnpjSacado2.Caption;

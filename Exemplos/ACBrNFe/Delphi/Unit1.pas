@@ -484,8 +484,8 @@ begin
     Ide.tpNF      := tnSaida;
     Ide.indPag    := ipVista;
     Ide.verProc   := '1.0.0.0';
-    Ide.cUF       := 35;
-    Ide.cMunFG    := 3554003;
+    Ide.cUF := StrToIntDef(Copy(edtEmitCodCidade.Text, 1, 2), 0);
+    Ide.cMunFG := StrToIntDef(edtEmitCodCidade.Text, 0);
 
     {Notas Referenciadas
     with Ide.NFref.Add do
@@ -609,8 +609,8 @@ begin
     Ide.tpNF      := tnSaida;
     Ide.indPag    := ipVista;
     Ide.verProc   := '1.0.0.0';
-    Ide.cUF       := 35;
-    Ide.cMunFG    := 3554003;
+    Ide.cUF := StrToIntDef(Copy(edtEmitCodCidade.Text, 1, 2), 0);
+    Ide.cMunFG := StrToIntDef(edtEmitCodCidade.Text, 0);
 
     Emit.CNPJCPF           := edtEmitCNPJ.Text;
     Emit.IE                := edtEmitIE.Text;
@@ -867,8 +867,8 @@ if not(InputQuery('WebServices Enviar', 'Numero da Nota', vAux)) then
     Ide.tpNF      := tnSaida;
     Ide.indPag    := ipVista;
     Ide.verProc   := '1.0.0.0';
-    Ide.cUF       := 35;
-    Ide.cMunFG    := 3554003;
+    Ide.cUF := StrToIntDef(Copy(edtEmitCodCidade.Text, 1, 2), 0);
+    Ide.cMunFG := StrToIntDef(edtEmitCodCidade.Text, 0);
     Ide.tpEmis    := teSCAN;
 
     Emit.CNPJCPF           := edtEmitCNPJ.Text;
@@ -1151,8 +1151,8 @@ if not(InputQuery('WebServices DPEC', 'Numero da Nota', vAux)) then
     Ide.tpNF      := tnSaida;
     Ide.indPag    := ipVista;
     Ide.verProc   := '1.0.0.0';
-    Ide.cUF       := 35;
-    Ide.cMunFG    := 3554003;
+    Ide.cUF := StrToIntDef(Copy(edtEmitCodCidade.Text, 1, 2), 0);
+    Ide.cMunFG := StrToIntDef(edtEmitCodCidade.Text, 0);
     Ide.tpEmis    := teDPEC;
 
     Emit.CNPJCPF           := edtEmitCNPJ.Text;
@@ -1263,8 +1263,8 @@ if not(InputQuery('WebServices DPEC', 'Numero da Nota', vAux)) then
     Ide.tpNF      := tnSaida;
     Ide.indPag    := ipVista;
     Ide.verProc   := '1.0.0.0';
-    Ide.cUF       := 35;
-    Ide.cMunFG    := 3554003;
+    Ide.cUF := StrToIntDef(Copy(edtEmitCodCidade.Text, 1, 2), 0);
+    Ide.cMunFG := StrToIntDef(edtEmitCodCidade.Text, 0);
 
     Emit.CNPJCPF           := edtEmitCNPJ.Text;
     Emit.IE                := edtEmitIE.Text;

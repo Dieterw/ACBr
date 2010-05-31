@@ -48,6 +48,15 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   31/05/10 (Paulo Ronaldo Vilela de Lima Junior)
+---------------
+[-] Correções nos fontes: ACBrCTeConfiguracoes, ACBrCTeUtil e ACBrCTeWebServices
+    Adicionado os comandos "coInitialize(nil)" e "coUninitilize" nas funções de chamada
+    do certificado (GetCertificado e SelecionarCertificado) para possibilitar o uso TRHEAD
+    ao fazer as requisições;
+    Retirado espações em branco no inicio e fim de algumas URLs de MT;
+    Inserido a função TRIM nos comandos de chamada da variavel FURL.
+
 Alterações   22/05/10 (Italo Jurisato Junior)
 ---------------
 [-] Correção da versão (1.03) do xml nos fontes pcteInutCTe, pcteConsStatServ,

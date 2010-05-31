@@ -62,7 +62,7 @@ uses Classes, SysUtils,
   {$ENDIF}
   pcnAuxiliar, pcnConversao, pcteRetConsCad,
   ACBrCTeConfiguracoes, ACBrCteConhecimentos,
-  pcteRetConsReciCTe, pcteProcCte, pcteConsReciCTe, pcteRetEnvCTe;
+  pcteRetConsReciCTe, pcteProcCte, pcteConsReciCTe, pcteRetEnvCTe, ActiveX;
 
 type
 
@@ -725,7 +725,7 @@ begin
   {$ELSE}
      ReqResp := THTTPReqResp.Create(nil);
      ReqResp.OnBeforePost := OnBeforePost;
-     ReqResp.URL := FURL;
+     ReqResp.URL := Trim(FURL); //LIMPA ESPAÇOS EM BRANCO
      ReqResp.UseUTF8InHeader := True;
      ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/cte/wsdl/CteStatusServico/cteStatusServicoCT';
   {$ENDIF}
@@ -749,6 +749,7 @@ begin
          StrStream := TStringStream.Create('');
          StrStream.CopyFrom(Stream, 0);
          FRetWS := CTeUtil.SeparaDados( CTeUtil.ParseText(StrStream.DataString, True),'cteStatusServicoCTResult');
+         //FRetWS := CTeUtil.ParseText(StrStream.DataString, True);
          StrStream.Free;
       {$ENDIF}
       CTeRetorno := TRetConsStatServ.Create;
@@ -849,7 +850,7 @@ begin
   {$ELSE}
      ReqResp := THTTPReqResp.Create(nil);
      ReqResp.OnBeforePost := OnBeforePost;
-     ReqResp.URL := FURL;
+     ReqResp.URL := Trim(FURL); //LIMPA ESPAÇOS EM BRANCO
      ReqResp.UseUTF8InHeader := True;
      ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/nfe/wsdl/CadConsultaCadastro/consultaCadastro';
   {$ENDIF}
@@ -960,7 +961,7 @@ begin
   {$ELSE}
      ReqResp := THTTPReqResp.Create(nil);
      ReqResp.OnBeforePost := OnBeforePost;
-     ReqResp.URL := FURL;
+     ReqResp.URL := Trim(FURL); //LIMPA ESPAÇOS EM BRANCO
      ReqResp.UseUTF8InHeader := True;
      ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/cte/wsdl/CteConsulta/cteConsultaCT';
   {$ENDIF}
@@ -1067,7 +1068,7 @@ begin
   {$ELSE}
      ReqResp := THTTPReqResp.Create(nil);
      ReqResp.OnBeforePost := OnBeforePost;
-     ReqResp.URL := FURL;
+     ReqResp.URL := Trim(FURL); //LIMPA ESPAÇOS EM BRANCO
      ReqResp.UseUTF8InHeader := True;
      ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/cte/wsdl/CteCancelamento/cteCancelamentoCT';
   {$ENDIF}
@@ -1190,7 +1191,7 @@ begin
   {$ELSE}
      ReqResp := THTTPReqResp.Create(nil);
      ReqResp.OnBeforePost := OnBeforePost;
-     ReqResp.URL := FURL;
+     ReqResp.URL := Trim(FURL); //LIMPA ESPAÇOS EM BRANCO
      ReqResp.UseUTF8InHeader := True;
      ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/cte/wsdl/CteInutilizacao/cteInutilizacaoCT';
   {$ENDIF}
@@ -1313,7 +1314,7 @@ begin
   {$ELSE}
      ReqResp := THTTPReqResp.Create(nil);
      ReqResp.OnBeforePost := OnBeforePost;
-     ReqResp.URL := FURL;
+     ReqResp.URL := Trim(FURL); //LIMPA ESPAÇOS EM BRANCO
      ReqResp.UseUTF8InHeader := True;
      ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/cte/wsdl/CteRecepcao/cteRecepcaoLote';
   {$ENDIF}
@@ -1503,7 +1504,7 @@ function TCteRetRecepcao.Executar: Boolean;
     {$ELSE}
        ReqResp := THTTPReqResp.Create(nil);
        ReqResp.OnBeforePost := OnBeforePost;
-       ReqResp.URL := FURL;
+       ReqResp.URL := Trim(FURL);  //LIMPA ESPAÇOS EM BRANCO
        ReqResp.UseUTF8InHeader := True;
        ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/cte/wsdl/CteRetRecepcao/cteRetRecepcao';
     {$ENDIF}
@@ -1658,7 +1659,7 @@ begin
  {$ELSE}
        ReqResp := THTTPReqResp.Create(nil);
        ReqResp.OnBeforePost := OnBeforePost;
-       ReqResp.URL := FURL;
+       ReqResp.URL := Trim(FURL); //LIMPA ESPAÇOS EM BRANCO
        ReqResp.UseUTF8InHeader := True;
        ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/cte/wsdl/CteRetRecepcao/cteRetRecepcao';
  {$ENDIF}

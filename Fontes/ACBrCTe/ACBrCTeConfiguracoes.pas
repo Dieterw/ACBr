@@ -48,7 +48,7 @@ unit ACBrCTeConfiguracoes;
 interface
 
 uses {$IFNDEF ACBrCTeOpenSSL} ACBrCAPICOM_TLB, JwaWinCrypt, JwaWinType, ACBrMSXML2_TLB,  {$ENDIF}
-  Classes, Sysutils, pcnConversao;
+  Classes, Sysutils, pcnConversao, ActiveX;
 
 {$IFNDEF ACBrCTeOpenSSL}
   const CAPICOM_STORE_NAME = 'My'; //My CA Root AddressBook
@@ -357,6 +357,7 @@ var
   Cert         : ICertificate2;
   i            : Integer;
 begin
+  CoInitialize(nil); // PERMITE O USO DE THREAD
   if CTeUtil.EstaVazio( FNumeroSerie ) then
     raise Exception.Create('Número de Série do Certificado Digital não especificado !');
 
@@ -378,7 +379,7 @@ begin
 
   if not(Assigned(Result)) then
     raise Exception.Create('Certificado Digital não encontrado!');
-
+   CoUninitialize;
 end;
 
 function TCertificadosConf.GetNumeroSerie: AnsiString;
@@ -398,6 +399,7 @@ var
   Certs2       : ICertificates2;
   Cert         : ICertificate2;
 begin
+  CoInitialize(nil); // PERMITE O USO DE THREAD
   Store := CoStore.Create;
   Store.Open(CAPICOM_CURRENT_USER_STORE, CAPICOM_STORE_NAME, CAPICOM_STORE_OPEN_MAXIMUM_ALLOWED);
 
@@ -412,6 +414,7 @@ begin
   end;
 
   Result := FNumeroSerie;
+  CoUninitialize;
 end;
 
 function TCertificadosConf.GetDataVenc: TDateTime;

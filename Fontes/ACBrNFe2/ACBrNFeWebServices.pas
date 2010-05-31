@@ -51,7 +51,7 @@ uses Classes, SysUtils,
   {$IFDEF ACBrNFeOpenSSL}
     HTTPSend,
   {$ELSE}
-     SoapHTTPClient, SOAPHTTPTrans, JwaWinCrypt, WinInet, ACBrCAPICOM_TLB,
+     SoapHTTPClient, SOAPHTTPTrans, SOAPConst, JwaWinCrypt, WinInet, ACBrCAPICOM_TLB,
   {$ENDIF}
   pcnNFe, pcnNFeW,
   pcnRetConsReciNFe, pcnRetConsCad, pcnAuxiliar, pcnConversao, pcnRetDPEC, pcnProcNFe, pcnRetCancNFe,
@@ -480,6 +480,7 @@ var
   Cert         : ICertificate2;
   CertContext  : ICertContext;
   PCertContext : Pointer;
+  ContentHeader: string;
 begin
   Cert := FConfiguracoes.Certificados.GetCertificado;
   CertContext :=  Cert as ICertContext;
@@ -499,7 +500,10 @@ begin
    if trim(FConfiguracoes.WebServices.ProxyPass) <> '' then begin
      if not InternetSetOption(Data, INTERNET_OPTION_PROXY_PASSWORD, PChar(FConfiguracoes.WebServices.ProxyPass),Length (FConfiguracoes.WebServices.ProxyPass)) then
        raise Exception.Create( 'Erro OnBeforePost: ' + IntToStr(GetLastError) );
-   end;   
+   end;
+
+  ContentHeader := Format(ContentTypeTemplate, ['application/soap+xml; charset=utf-8']);
+  HttpAddRequestHeaders(Data, PChar(ContentHeader), Length(ContentHeader), HTTP_ADDREQ_FLAG_REPLACE);
 end;
 {$ENDIF}
 
@@ -1001,6 +1005,7 @@ begin
      ConfiguraReqResp( ReqResp );
      ReqResp.URL := FURL;
      ReqResp.UseUTF8InHeader := True;
+
 {     if FConfiguracoes.WebServices.UFCodigo = 29 then //Bahia está usando SOAP ACTION diferente
         ReqResp.SoapAction := 'http://www.portalfiscal.inf.br/nfe/wsdl/NfeStatusServico2/nfeStatusServicoNF2'
      else}

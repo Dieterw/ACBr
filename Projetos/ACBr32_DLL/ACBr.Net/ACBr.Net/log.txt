@@ -1,0 +1,17 @@
+1. Criado registro TAliquotaRec contendo os dados da class TACBrECFAliquota, mas de forma "plana", permitindo o retorno binários para outras linguagens.
+
+As funções "Aliquotas" e "LerTotaisAliquota" que retornavam String foram renomeada pata GetAliquotasStr() e LerTotaisAliquotaStr() respectivamente.
+Essas funções de retorno string devem ser utilizadas apenas para as linguagens que não consigam ler o retorno binário implementado nas outras funções.
+
+Criada a função CarregaAliquotas() que chama o mesmo método do componente e retorna a quantidade de alíquotas carregadas.
+Criada a função GetAliquota(ref aliquotaRec : TAliquotaRec, const index : integer) que copia a alíquota na posição "index" para o registro passado.
+
+
+[TODO ] As Funções AchaIcmsAliquota precisam ser implementadas? Já que apenas itera entre as alíquotas, isso deveria ser feito pela linguagem
+
+Esta abordagem vai ser utilizada em todos os métodos que retornem estruturas de dados, permitindo a comunicação binária com a DLL.
+
+
+Porque o método ProgramaFormaPagamento do ACBrECF tem o parâmetro Descricao como var? Ele modifica o valor do parâmetro?
+
+

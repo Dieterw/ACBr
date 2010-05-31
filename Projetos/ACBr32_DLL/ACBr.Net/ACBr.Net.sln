@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACBr.Net", "ACBr.Net\ACBr.Net.csproj", "{C66AC69F-8537-46AD-A6DB-576A61670FA4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACBr.Net.ECFTeste", "ACBr.Net.ECFTeste\ACBr.Net.ECFTeste.csproj", "{7D3D0596-A97E-4E91-9EF9-AAC50A5DB9B2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C66AC69F-8537-46AD-A6DB-576A61670FA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C66AC69F-8537-46AD-A6DB-576A61670FA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C66AC69F-8537-46AD-A6DB-576A61670FA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C66AC69F-8537-46AD-A6DB-576A61670FA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D3D0596-A97E-4E91-9EF9-AAC50A5DB9B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D3D0596-A97E-4E91-9EF9-AAC50A5DB9B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D3D0596-A97E-4E91-9EF9-AAC50A5DB9B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D3D0596-A97E-4E91-9EF9-AAC50A5DB9B2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -125,7 +125,7 @@ uses ACBrBase, ACBrDevice, ACBrECFClass, ACBrRFD, {Units da ACBr}
      {$ENDIF} ;
 
 const
-   CACBrECF_Versao = '0.9.4' ;
+   CACBrECF_Versao = '0.9.5' ;
 
 type
 

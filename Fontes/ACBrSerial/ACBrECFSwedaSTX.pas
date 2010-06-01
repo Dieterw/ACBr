@@ -1718,7 +1718,7 @@ function TACBrECFSwedaSTX.GetDataMovimento: TDateTime;
   sData:String;
 begin
    Result := Date;
-   RetCmd :=  Trim(RetornaInfoECF('I8'));
+   RetCmd := Trim(RetornaInfoECF('A2'));
    OldShortDateFormat := ShortDateFormat ;
    try
       sData := Copy(RetCmd,1,10);

@@ -70,6 +70,7 @@ type
    public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
+    procedure OnPrintRaveSystem(Sender: TObject);
     procedure ImprimirDANFE(NFE : TNFe = nil); override ;
     procedure ImprimirDANFEPDF(NFE : TNFe = nil); override ;
   published
@@ -720,9 +721,30 @@ begin
    end;
 end;
 
+procedure TACBrNFeDANFERave.OnPrintRaveSystem(Sender: TObject);
+var
+  i: Integer;
+begin
+  with Sender as TBaseReport do
+    for i:= 0 to TACBrNFe(ACBrNFe).NotasFiscais.Count-1 do
+    begin
+      if ( i > 0 ) then
+        NewPage;
+      dmDanfe.NFe := TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe;
+      dmDanfe.RvSystem1.SystemPrinter.Title := TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe.infNFe.ID;
+      // processo para nao exibir o quadro ISSQN no DANFE_Rave513
+      if (  ( dmDanfe.NFe.Total.ISSQNtot.VServ = 0 )
+        and ( dmDanfe.NFe.Total.ISSQNtot.VBC   = 0 )
+        and ( dmDanfe.NFe.Total.ISSQNtot.VISS  = 0 ) ) then
+        dmDanfe.RvProject.SetParam('wISSQN','N')
+      else
+        dmDanfe.RvProject.SetParam('wISSQN','S');
+      ExecutaReport;
+    end;
+end;
+
 procedure TACBrNFeDANFERave.ImprimirDANFE(NFE : TNFe = nil);
 var
- i : Integer;
  wProjectStream: TStringStream;
 begin
   {$IFDEF RAVE50VCL}
@@ -767,7 +789,7 @@ begin
   dmDanfe.RvSystem1.TitleStatus:='Status da Impressão';
   dmDanfe.RvSystem1.SystemFiler.StatusFormat:='Gerando página %p';
   dmDanfe.RvSystem1.SystemFiler.StreamMode:=smMemory;
-  dmDanfe.RvSystem1.SystemOptions:=[soShowStatus,soAllowPrintFromPreview,{soAllowSaveFromPreview,}soPreviewModal];
+  dmDanfe.RvSystem1.SystemOptions:=[soShowStatus,soAllowPrintFromPreview,soPreviewModal];
   if not MostrarStatus then
      dmDanfe.RvSystem1.SystemOptions:=dmDanfe.RvSystem1.SystemOptions - [soShowStatus];
   dmDanfe.RvSystem1.SystemPreview.FormState:=wsMaximized;
@@ -781,21 +803,25 @@ begin
 
   if Length(Impressora) > 0 then
      RpDev.SelectPrinter(Impressora, false);
-//     dmDanfe.RvSystem1.BaseReport.SelectPrinter(Impressora);
+  //dmDanfe.RvSystem1.BaseReport.SelectPrinter(Impressora);
   if NFE = nil then
-   begin
-     for i:= 0 to TACBrNFe(ACBrNFe).NotasFiscais.Count-1 do
-      begin
-        dmDanfe.NFe := TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe;
-        dmDanfe.RvSystem1.SystemPrinter.Title:=   TACBrNFe(ACBrNFe).NotasFiscais.Items[i].NFe.infNFe.ID;
-        ExecutaReport;
-      end;
-   end
+  begin
+    try
+      dmDanfe.RvSystem1.OnBeforePrint := nil;
+      dmDanfe.RvSystem1.OnPrint := OnPrintRaveSystem;
+      dmDanfe.RvSystem1.SystemPrinter.Units := unInch;
+      dmDanfe.RvSystem1.SystemPrinter.UnitsFactor := 1;
+      dmDanfe.RvSystem1.Execute;
+    finally
+      dmDanfe.RvSystem1.OnBeforePrint := dmDanfe.RvSystem1BeforePrint;
+      dmDanfe.RvSystem1.OnPrint := nil;
+    end;  
+  end
   else
-   begin
-     dmDanfe.NFe := NFE;
-     ExecutaReport;
-   end;
+  begin
+    dmDanfe.NFe := NFE;
+    ExecutaReport;
+  end;
 end;
 
 procedure TACBrNFeDANFERave.ImprimirDANFEPDF(NFE : TNFe = nil);

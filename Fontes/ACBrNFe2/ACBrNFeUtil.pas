@@ -87,11 +87,11 @@ type
 //(AC,AL,AP,AM,BA,CE,DF,ES,GO,MA,MT,MS,MG,PA,PB,PR,PE,PI,RJ,RN,RS,RO,RR,SC,SP,SE,TO);
 //AC,AL,AP,MA,PA,PB,PI,RJ,RN,RR,SC,SE,TO - Estados sem WebServices próprios
 //Estados Emissores pela Sefaz Virtual RS (Rio Grande do Sul): AC, AL, AM, AP, MS, PB, RJ, RR, SC, SE e TO.
-//Estados Emissores pela Sefaz Virtual AN (Ambiente Nacional): CE, ES, MA, PA, PI, PR e RN.
+//Estados Emissores pela Sefaz Virtual AN (Ambiente Nacional): ES, MA, PA, PI e RN.
     class function GetURLSVRS(AAmbiente: Integer; ALayOut: TLayOut): WideString; //atualizado 2.0 Homologação e Produção
     class function GetURLSVAN(AAmbiente: Integer; ALayOut: TLayOut): WideString; //atualizado 2.0 Homologação e Produção
     class function GetURLAM(AAmbiente: Integer; ALayOut: TLayOut): WideString;
-    class function GetURLBA(AAmbiente: Integer; ALayOut: TLayOut): WideString;
+    class function GetURLBA(AAmbiente: Integer; ALayOut: TLayOut): WideString;   //atualizado 2.0 Homologação
     class function GetURLCE(AAmbiente: Integer; ALayOut: TLayOut): WideString;
     class function GetURLGO(AAmbiente: Integer; ALayOut: TLayOut): WideString;   //atualizado 2.0 Homologação e Produção
     class function GetURLMT(AAmbiente: Integer; ALayOut: TLayOut): WideString;
@@ -837,7 +837,7 @@ end;
 
 //AC,AL,AP,MA,PA,PB,PI,RJ,RN,RR,SC,SE,TO - Estados sem WebServices próprios
 //Estados Emissores pela Sefaz Virtual RS (Rio Grande do Sul): AC, AL, AM, AP, MS, PB, RJ, RR, SC, SE e TO.
-//Estados Emissores pela Sefaz Virtual AN (Ambiente Nacional): CE, ES, MA, PA, PI, PR e RN.
+//Estados Emissores pela Sefaz Virtual AN (Ambiente Nacional): ES, MA, PA, PI, PR e RN.
 
 class function NotaUtil.GetURLSVRS(AAmbiente: Integer;
   ALayOut: TLayOut): WideString;
@@ -870,6 +870,7 @@ end;
 class function NotaUtil.GetURLAM(AAmbiente: Integer;
   ALayOut: TLayOut): WideString;
 begin
+  raise Exception.Create('WebServices 2.0 não liberados pelo estado');
   case ALayOut of
     LayNfeRecepcao      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.am.gov.br/ws/services/NfeRecepcao', 'https://homnfe.sefaz.am.gov.br/ws/services/NfeRecepcao');
     LayNfeRetRecepcao   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.am.gov.br/ws/services/NfeRetRecepcao', 'https://homnfe.sefaz.am.gov.br/ws/services/NfeRetRecepcao');
@@ -884,6 +885,8 @@ end;
 class function NotaUtil.GetURLBA(AAmbiente: Integer;
   ALayOut: TLayOut): WideString;
 begin
+  if AAmbiente = 1 then
+     raise Exception.Create('WebServices 2.0 apenas do ambiente de homologação já foram liberados pelo estado');
   case ALayOut of
     LayNfeRecepcao      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.ba.gov.br/webservices/nfe/NfeRecepcao.asmx', 'https://hnfe.sefaz.ba.gov.br/webservices/nfenw/NfeRecepcao2.asmx');
     LayNfeRetRecepcao   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.ba.gov.br/webservices/nfe/NfeRetRecepcao.asmx', 'https://hnfe.sefaz.ba.gov.br/webservices/nfenw/NfeRetRecepcao2.asmx');
@@ -898,6 +901,7 @@ end;
 class function NotaUtil.GetURLCE(AAmbiente: Integer;
   ALayOut: TLayOut): WideString;
 begin
+  raise Exception.Create('WebServices 2.0 não liberados pelo estado');
   case ALayOut of
     LayNfeRecepcao      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.ce.gov.br/nfe/services/NfeRecepcao', 'https://nfeh.sefaz.ce.gov.br/nfe/services/NfeRecepcao');
     LayNfeRetRecepcao   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.ce.gov.br/nfe/services/NfeRetRecepcao', 'https://nfeh.sefaz.ce.gov.br/nfe/services/NfeRetRecepcao');
@@ -926,6 +930,7 @@ end;
 class function NotaUtil.GetURLMT(AAmbiente: Integer;
   ALayOut: TLayOut): WideString;
 begin
+  raise Exception.Create('WebServices 2.0 não liberados pelo estado');
   case ALayOut of
     LayNfeRecepcao      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.mt.gov.br/nfews/NfeRecepcao', 'https://homologacao.sefaz.mt.gov.br/nfews/NfeRecepcao');
     LayNfeRetRecepcao   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.mt.gov.br/nfews/NfeRetRecepcao', 'https://homologacao.sefaz.mt.gov.br/nfews/NfeRetRecepcao');
@@ -940,6 +945,8 @@ end;
 class function NotaUtil.GetURLMS(AAmbiente: Integer;
   ALayOut: TLayOut): WideString;
 begin
+  if AAmbiente = 1 then
+     raise Exception.Create('WebServices 2.0 apenas do ambiente de homologação já foram liberados pelo estado');
   case ALayOut of
     LayNfeRecepcao      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://producao.nfe.ms.gov.br/producao/services/NfeRecepcao', 'https://homologacao.nfe.ms.gov.br/homologacao/services2/NfeRecepcao2');
     LayNfeRetRecepcao   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://producao.nfe.ms.gov.br/producao/services/NfeRetRecepcao', 'https://homologacao.nfe.ms.gov.br/homologacao/services2/NfeRetRecepcao2');
@@ -954,6 +961,8 @@ end;
 class function NotaUtil.GetURLMG(AAmbiente: Integer;
   ALayOut: TLayOut): WideString;
 begin
+  if AAmbiente = 1 then
+     raise Exception.Create('WebServices 2.0 apenas do ambiente de homologação já foram liberados pelo estado');
   case ALayOut of
     LayNfeRecepcao      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.mg.gov.br/nfe/services/NfeRecepcao', 'https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeRecepcao2');
     LayNfeRetRecepcao   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.mg.gov.br/nfe/services/NfeRetRecepcao', 'https://hnfe.fazenda.mg.gov.br/nfe2/services/NfeRetRecepcao2');
@@ -968,6 +977,7 @@ end;
 class function NotaUtil.GetURLPR(AAmbiente: Integer;
   ALayOut: TLayOut): WideString;
 begin
+  raise Exception.Create('WebServices 2.0 não liberados pelo estado');
   case ALayOut of
     LayNfeRecepcao      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.pr.gov.br/NFENWebServices/services/nfeRecepcao', 'https://homologacao.nfe.fazenda.pr.gov.br/NFENWebServices/services/nfeRecepcao');
     LayNfeRetRecepcao   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.fazenda.pr.gov.br/NFENWebServices/services/nfeRetRecepcao', 'https://homologacao.nfe.fazenda.pr.gov.br/NFENWebServices/services/nfeRetRecepcao');
@@ -982,6 +992,7 @@ end;
 class function NotaUtil.GetURLPE(AAmbiente: Integer;
   ALayOut: TLayOut): WideString;
 begin
+  raise Exception.Create('WebServices 2.0 não liberados pelo estado');
   case ALayOut of
     LayNfeRecepcao      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeRecepcao', 'https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeRecepcao');
     LayNfeRetRecepcao   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.pe.gov.br/nfe-service/services/NfeRetRecepcao', 'https://nfehomolog.sefaz.pe.gov.br/nfe-service/services/NfeRetRecepcao');
@@ -1051,15 +1062,11 @@ begin
       end;
    end;
 
-// if not DirectoryExists(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas') then
-//    raise Exception.Create('Diretório de Schemas não encontrado'+sLineBreak+
-//                           PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas');
  if not DirectoryExists(NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas',PathWithDelim(APathSchemas))) then
     raise Exception.Create('Diretório de Schemas não encontrado'+sLineBreak+
                            NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas',PathWithDelim(APathSchemas)));
 
  if Tipo = 1 then
-    //schema_filename := pchar(ExtractFileDir(application.ExeName)+'\Schemas\nfe_v2.00.xsd')
  begin
     if NotaUtil.EstaVazio(APathSchemas) then
        schema_filename := pchar(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\nfe_v2.00.xsd')
@@ -1067,7 +1074,6 @@ begin
        schema_filename := pchar(PathWithDelim(APathSchemas)+'nfe_v2.00.xsd');
  end
  else if Tipo = 2 then
-    //schema_filename := pchar(ExtractFileDir(application.ExeName)+'\Schemas\cancNFe_v1.07.xsd')
  begin
     if NotaUtil.EstaVazio(APathSchemas) then
        schema_filename := pchar(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\cancNFe_v2.00.xsd')
@@ -1075,7 +1081,6 @@ begin
        schema_filename := pchar(PathWithDelim(APathSchemas)+'cancNFe_v2.00.xsd');
  end
  else if Tipo = 3 then
-    //schema_filename := pchar(ExtractFileDir(application.ExeName)+'\Schemas\inutNFe_v2.00.xsd')
  begin
     if NotaUtil.EstaVazio(APathSchemas) then
        schema_filename := pchar(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\inutNFe_v2.00.xsd')
@@ -1083,13 +1088,15 @@ begin
        schema_filename := pchar(PathWithDelim(APathSchemas)+'inutNFe_v2.00.xsd');
  end
  else if Tipo = 4 then
-    //schema_filename := pchar(ExtractFileDir(application.ExeName)+'\Schemas\envDPEC_v1.01.xsd');
  begin
     if NotaUtil.EstaVazio(APathSchemas) then
        schema_filename := pchar(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\envDPEC_v1.01.xsd')
     else
        schema_filename := pchar(PathWithDelim(APathSchemas)+'envDPEC_v1.01.xsd');
  end;
+
+ if not FilesExists(schema_filename) then
+    raise Exception.Create('Arquivo '+schema_filename+' não encontrado');
 
  doc         := nil;
  schema_doc  := nil;
@@ -1168,6 +1175,7 @@ var
   ParseError: IXMLDOMParseError;
   Schema: XMLSchemaCache;
   Tipo, I : Integer;
+  schema_filename : String;
 begin
   I := pos('<infNFe',XML) ;
   Tipo := 1;
@@ -1194,20 +1202,22 @@ begin
 
   Schema := CoXMLSchemaCache50.Create;
 
-// if not DirectoryExists(PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas') then
-//    raise Exception.Create('Diretório de Schemas não encontrado'+sLineBreak+
-//                            PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas');
  if not DirectoryExists(NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas',PathWithDelim(APathSchemas))) then
     raise Exception.Create('Diretório de Schemas não encontrado'+sLineBreak+
                            NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas',PathWithDelim(APathSchemas)));
   if Tipo = 1 then
-     Schema.add( 'http://www.portalfiscal.inf.br/nfe', NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',PathWithDelim(APathSchemas))+'nfe_v2.00.xsd')
+     schema_filename := NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',PathWithDelim(APathSchemas))+'nfe_v2.00.xsd'
   else if Tipo = 2 then
-     Schema.add( 'http://www.portalfiscal.inf.br/nfe', NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',PathWithDelim(APathSchemas))+'cancNFe_v2.00.xsd')
+     schema_filename := NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',PathWithDelim(APathSchemas))+'cancNFe_v2.00.xsd'
   else if Tipo = 3 then
-     Schema.add( 'http://www.portalfiscal.inf.br/nfe', NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',PathWithDelim(APathSchemas))+'inutNFe_v2.00.xsd')
+     schema_filename := NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',PathWithDelim(APathSchemas))+'inutNFe_v2.00.xsd'
   else if Tipo = 4 then
-     Schema.add( 'http://www.portalfiscal.inf.br/nfe', NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',PathWithDelim(APathSchemas))+'envDPEC_v1.01.xsd');
+     schema_filename := NotaUtil.SeSenao(NotaUtil.EstaVazio(APathSchemas),PathWithDelim(ExtractFileDir(application.ExeName))+'Schemas\',PathWithDelim(APathSchemas))+'envDPEC_v1.01.xsd';
+
+ if not FilesExists(schema_filename) then
+    raise Exception.Create('Arquivo '+schema_filename+' não encontrado');
+
+  Schema.add( 'http://www.portalfiscal.inf.br/nfe', schema_filename );
 
   DOMDocument.schemas := Schema;
   ParseError := DOMDocument.validate;

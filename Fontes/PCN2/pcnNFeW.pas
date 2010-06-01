@@ -201,13 +201,15 @@ begin
   if not GerarChave(Chave, nfe.ide.cUF, nfe.ide.cNF, nfe.ide.modelo, nfe.ide.serie,
     nfe.ide.nNF, StrToInt(TpEmisToStr(nfe.ide.tpEmis)), nfe.ide.dEmi, nfe.emit.CNPJCPF) then
     Gerador.wAlerta('A01', 'infNFe', DSC_CHAVE, ERR_MSG_GERAR_CHAVE);
-  if Trim(nfe.infNFe.ID) = '' then
+
+  if (Trim(nfe.infNFe.ID) = '') or (not ValidarChave(nfe.infNFe.ID)) then
      nfe.infNFe.ID := chave
   else
    begin
      NFe.infNFe.ID := StringReplace( UpperCase(NFe.infNFe.ID), 'NFE', '', [rfReplaceAll] ) ;;
      NFe.infNFe.ID := 'NFe'+NFe.infNFe.ID;
    end;
+   
   nfe.ide.cDV := RetornarDigito(nfe.infNFe.ID);
   nfe.Ide.cNF := RetornarCodigoNumerico(nfe.infNFe.ID);
   // Carrega Layout que sera utilizado para gera o txt

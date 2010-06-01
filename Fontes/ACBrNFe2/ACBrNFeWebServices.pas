@@ -851,12 +851,15 @@ end;
 
 procedure TWebServices.Cancela(AJustificativa: String);
 begin
-  if not(Self.StatusServico.Executar) then
-     begin
-       if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
-          TACBrNFe( FACBrNFe ).OnGerarLog(Self.StatusServico.Msg);
-       raise Exception.Create(Self.StatusServico.Msg);
-     end;
+  if TACBrNFe( FACBrNFe ).Configuracoes.Geral.FormaEmissao = teNormal then
+   begin
+     if not(Self.StatusServico.Executar) then
+      begin
+        if Assigned(TACBrNFe( FACBrNFe ).OnGerarLog) then
+           TACBrNFe( FACBrNFe ).OnGerarLog(Self.StatusServico.Msg);
+        raise Exception.Create(Self.StatusServico.Msg);
+      end;
+   end;
 
   if not(Self.Consulta.Executar) then
      begin

@@ -398,7 +398,7 @@ type
   TRegistroI200 = class
   private
     fNUM_LCTO: String;        // Número de identificação do lançamento
-    fDT_LCTO: String;         // Data do lançamento
+    fDT_LCTO: TDateTime;         // Data do lançamento
     fVL_LCTO: Currency;           // Valor do Lançamento
     fIND_LCTO: String;        // Indicador do tipo do lançamento
 
@@ -408,7 +408,7 @@ type
     destructor Destroy; override; /// Destroy
 
     property NUM_LCTO: String read fNUM_LCTO write fNUM_LCTO;
-    property DT_LCTO: String read fDT_LCTO write fDT_LCTO;
+    property DT_LCTO: TDateTime read fDT_LCTO write fDT_LCTO;
     property VL_LCTO: Currency read fVL_LCTO write fVL_LCTO;
     property IND_LCTO: String read fIND_LCTO write fIND_LCTO;
     property RegistroI250: TRegistroI250List read fRegistroI250 write fRegistroI250;

@@ -917,13 +917,13 @@ class function NotaUtil.GetURLGO(AAmbiente: Integer;
   ALayOut: TLayOut): WideString;
 begin
   case ALayOut of
-    LayNfeRecepcao      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeRecepcao2', 'https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeRecepcao');
-    LayNfeRetRecepcao   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeRetRecepcao2', 'https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeRetRecepcao');
-    LayNfeCancelamento  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeCancelamento2', 'https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeCancelamento');
-    LayNfeInutilizacao  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeInutilizacao2', 'https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeInutilizacao');
-    LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeConsulta2', 'https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeConsulta');
-    LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeStatusServico2', 'https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeStatusServico');
-    LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.go.gov.br/nfe/services/CadConsultaCadastro', 'https://homolog.sefaz.go.gov.br/nfe/services/CadConsultaCadastro');
+    LayNfeRecepcao      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeRecepcao2', 'https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeRecepcao2');
+    LayNfeRetRecepcao   : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeRetRecepcao2', 'https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeRetRecepcao2');
+    LayNfeCancelamento  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeCancelamento2', 'https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeCancelamento2');
+    LayNfeInutilizacao  : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeInutilizacao2', 'https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeInutilizacao2');
+    LayNfeConsulta      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeConsulta2', 'https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeConsulta2');
+    LayNfeStatusServico : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.go.gov.br/nfe/services/v2/NfeStatusServico2', 'https://homolog.sefaz.go.gov.br/nfe/services/v2/NfeStatusServico2');
+    LayNfeCadastro      : Result := NotaUtil.SeSenao(AAmbiente=1, 'https://nfe.sefaz.go.gov.br/nfe/services/CadConsultaCadastro', 'https://homolog.sefaz.go.gov.br/nfe/services/CadConsultaCadastro2');
   end;
 end;
 

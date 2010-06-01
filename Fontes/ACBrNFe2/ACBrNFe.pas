@@ -200,9 +200,6 @@ begin
       raise Exception.Create('Nenhuma Nota Fiscal Eletrônica Informada!');
    end;
 
-//  for i:= 0 to self.NotasFiscais.Count-1 do
-//    self.NotasFiscais.Items[i].XML.NFeChave := self.NotasFiscais.Items[i].NFe.infNFe.ID;;
-
   for i:= 0 to self.NotasFiscais.Count-1 do
   begin
     WebServices.Cancelamento.NFeChave := copy(self.NotasFiscais.Items[i].NFe.infNFe.ID, (length(self.NotasFiscais.Items[i].NFe.infNFe.ID)-44)+1, 44);

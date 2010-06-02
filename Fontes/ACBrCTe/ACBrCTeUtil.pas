@@ -220,17 +220,41 @@ begin
   //  (AC,AL,AP,AM,BA,CE,DF,ES,GO,MA,MT,MS,MG,PA,PB,PR,PE,PI,RJ,RN,RS,RO,RR,SC,SP,SE,TO);
   //  (12,27,16,13,29,23,53,32,52,21,51,50,31,15,25,41,26,22,33,24,43,11,14,42,35,28,17);
 
-  case FormaEmissao of
-    1:
-      begin
-        case AUF of
-          33: Result := CTeUtil.GetURLRS(AAmbiente, ALayOut);                   //RJ  
-          43: Result := CTeUtil.GetURLRS(AAmbiente, ALayOut);                   //RS
-          35: Result := CTeUtil.GetURLSP(AAmbiente, ALayOut);                   //SP
-          51: Result := CTeUtil.GetURLMT(AAmbiente, ALayOut);                   //MT
-        end;
-      end;
-  end;
+ case FormaEmissao of
+  1,2,4,5 : begin
+             {
+             case ALayOut of
+              LayCTeEnvDPEC      : Result := CTeUtil.SeSenao(AAmbiente=1,
+               'https://www.nfe.fazenda.gov.br/SCERecepcaoRFB/SCERecepcaoRFB.asmx',
+               'https://hom.nfe.fazenda.gov.br/SCERecepcaoRFB/SCERecepcaoRFB.asmx');
+              LayCTeConsultaDPEC : Result := CTeUtil.SeSenao(AAmbiente=1,
+               'https://www.nfe.fazenda.gov.br/SCEConsultaRFB/SCEConsultaRFB.asmx',
+               'https://hom.nfe.fazenda.gov.br/SCEConsultaRFB/SCEConsultaRFB.asmx');
+             end;
+             }
+             case AUF of
+              33: Result := CTeUtil.GetURLRS(AAmbiente, ALayOut);               //RJ
+              43: Result := CTeUtil.GetURLRS(AAmbiente, ALayOut);               //RS
+              35: Result := CTeUtil.GetURLSP(AAmbiente, ALayOut);               //SP
+              51: Result := CTeUtil.GetURLMT(AAmbiente, ALayOut);               //MT
+             end;
+            end;
+        3 : begin
+             {
+             case ALayOut of
+              LayCTeStatusServico : Result := CTeUtil.SeSenao(AAmbiente=1, 'https://www.scan.fazenda.gov.br/NfeStatusServico/NfeStatusServico.asmx', 'https://hom.nfe.fazenda.gov.br/SCAN/nfestatusservico/NfeStatusServico.asmx');
+              LayCTeConsultaCT    : Result := CTeUtil.SeSenao(AAmbiente=1, 'https://www.scan.fazenda.gov.br/NfeConsulta/NfeConsulta.asmx'          , 'https://hom.nfe.fazenda.gov.br/SCAN/nfeconsulta/NfeConsulta.asmx');
+              LayCTeCancelamento  : Result := CTeUtil.SeSenao(AAmbiente=1, 'https://www.scan.fazenda.gov.br/NfeCancelamento/NfeCancelamento.asmx'  , 'https://hom.nfe.fazenda.gov.br/SCAN/nfecancelamento/NfeCancelamento.asmx');
+              LayCTeInutilizacao  : Result := CTeUtil.SeSenao(AAmbiente=1, 'https://www.scan.fazenda.gov.br/NfeInutilizacao/NfeInutilizacao.asmx'  , 'https://hom.nfe.fazenda.gov.br/SCAN/nfeinutilizacao/NfeInutilizacao.asmx');
+              LayCTeRecepcao      : Result := CTeUtil.SeSenao(AAmbiente=1, 'https://www.scan.fazenda.gov.br/NfeRecepcao/NfeRecepcao.asmx'          , 'https://hom.nfe.fazenda.gov.br/SCAN/nferecepcao/NfeRecepcao.asmx');
+              LayCTeRetRecepcao   : Result := CTeUtil.SeSenao(AAmbiente=1, 'https://www.scan.fazenda.gov.br/NfeRetRecepcao/NfeRetRecepcao.asmx'    , 'https://hom.nfe.fazenda.gov.br/SCAN/nferetrecepcao/NfeRetRecepcao.asmx');
+             end;
+             }
+            end;
+
+ end;
+ if Result = '' then
+     raise Exception.Create('URL não disponível para o estado solicitado.');
 end;
 
 class function CTeUtil.GetURLRS(AAmbiente: Integer;

@@ -1,15 +1,15 @@
 inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
-  Left = 226
-  Top = 128
+  Left = 195
+  Top = 107
   Width = 821
   Height = 655
-  VertScrollBar.Position = 0
+  VertScrollBar.Position = 397
   Caption = 'frlDANFeRLRetrato'
   OldCreateOrder = True
   PixelsPerInch = 96
   TextHeight = 13
   inherited RLNFe: TRLReport
-    Top = 0
+    Top = -397
     Background.Arrange = baDistributed
     Background.Height = 96
     Background.Width = 175
@@ -33,7 +33,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
     end
     object rlbContinuacaoInformacoesComplementares: TRLBand
       Left = 26
-      Top = 738
+      Top = 748
       Width = 742
       Height = 41
       AutoSize = True
@@ -104,7 +104,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
     end
     object rlbCabecalhoItens: TRLBand
       Left = 26
-      Top = 674
+      Top = 684
       Width = 742
       Height = 31
       AutoSize = True
@@ -1177,7 +1177,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
     end
     object rlbDadosAdicionais: TRLBand
       Left = 26
-      Top = 837
+      Top = 847
       Width = 742
       Height = 169
       AlignToBottom = True
@@ -1251,7 +1251,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         Left = 8
         Top = 34
         Width = 402
-        Height = 111
+        Height = 119
         AutoSize = False
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -3536,7 +3536,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
     end
     object rlbItens: TRLBand
       Left = 26
-      Top = 705
+      Top = 715
       Width = 742
       Height = 13
       Background.Height = 487
@@ -3954,7 +3954,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
     end
     object rlbISSQN: TRLBand
       Left = 26
-      Top = 779
+      Top = 789
       Width = 742
       Height = 58
       BandType = btFooter
@@ -4128,14 +4128,30 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       Left = 26
       Top = 648
       Width = 742
-      Height = 26
+      Height = 36
       BandType = btColumnHeader
+      object rllContingencia: TRLLabel
+        Left = -1
+        Top = 22
+        Width = 738
+        Height = 10
+        Alignment = taCenter
+        AutoSize = False
+        Caption = 
+          'Data / Hora da entrada em conting'#234'ncia: 00/00/0000 00:00:00  Mot' +
+          'ivo: '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -8
+        Font.Name = 'Arial'
+        Font.Style = []
+        ParentFont = False
+      end
       object rllAvisoContingencia: TRLLabel
-        Left = 289
+        Left = 273
         Top = 3
         Width = 164
         Height = 19
-        Align = faCenter
         Alignment = taCenter
         Color = clGray
         Font.Charset = DEFAULT_CHARSET
@@ -4150,7 +4166,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
     end
     object rlbObsItem: TRLBand
       Left = 26
-      Top = 718
+      Top = 728
       Width = 742
       Height = 20
       object LinhaFimObsItem: TRLDraw

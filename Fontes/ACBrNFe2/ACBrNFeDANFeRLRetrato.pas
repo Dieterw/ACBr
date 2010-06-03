@@ -471,6 +471,7 @@ type
     txtValorDesconto: TRLDBText;
     RLDraw2: TRLDraw;
     cdsItensCST2: TStringField;
+    rllContingencia: TRLLabel;
     procedure RLNFeBeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure rlbEmitenteBeforePrint(Sender: TObject;
       var PrintIt: Boolean);
@@ -576,7 +577,7 @@ begin
         iTotalLinhas := iQuantCaracteres div iLimCaracteres;
     end;
 
-  for i := 1 to (iTotalLinhas) do
+  for i := 1 to (iTotalLinhas + 3) do
     begin
       sLinhaProvisoria := Copy(sTexto, iPosAtual, iLimCaracteres);
       iUltimoEspacoLinha := BuscaDireita(' ', sLinhaProvisoria);
@@ -590,13 +591,13 @@ begin
             sLinha := Copy(sLinhaProvisoria, 1, iUltimoEspacoLinha)
           else
             begin
-              //iPosAtual := iPosAtual + Length(sLinha);
               sLinha := sLinhaProvisoria;
             end;
         end;
 
       iPosAtual := iPosAtual + Length(sLinha);
-      rMemo.Lines.Add(sLinha);
+      if sLinha > '' then
+        rMemo.Lines.Add(sLinha);
     end;
 end;
 
@@ -965,6 +966,7 @@ end;
 
 procedure TfrlDANFeRLRetrato.Header;
 var sChaveContingencia: String;
+setFormato: TFormatSettings;
 begin
   with FNFe.InfNFe, FNFe.Ide do
   begin
@@ -975,7 +977,7 @@ begin
      rllSERIE0.Caption := 'SÉRIE ' + IntToStr(Serie);
      rllSERIE1.Caption := 'SÉRIE ' + IntToStr(Serie);
      rllNatOperacao.Caption :=  NatOp;
-     if tpNF = tnEntrada  then // = entrada
+     if tpNF = tnEntrada then // = entrada
         rllEntradaSaida.Caption := '0'
      else
         rllEntradaSaida.Caption := '1';
@@ -983,7 +985,9 @@ begin
     rllEmissao.Caption   := NotaUtil.FormatDate(DateToStr(dEmi));
     rllSaida.Caption     := IfThen(DSaiEnt <> 0,
                                       NotaUtil.FormatDate(DateToStr(dSaiEnt)));
-    rllHoraSaida.Caption := IfThen(hSaiEnt <> 0, TimeToStr(hSaiEnt));
+    setFormato.TimeSeparator := ':';
+    setFormato.ShortTimeFormat := 'hh:nn:ss';
+    rllHoraSaida.Caption := IfThen(hSaiEnt <> 0, DateTimeToStr(hSaiEnt, setFormato));
 
     if FNFe.Ide.tpEmis in [teNormal, teSCAN] then
       begin
@@ -1009,6 +1013,11 @@ begin
                           NotaUtil.FormatarChaveContigencia(sChaveContingencia);
         rllAvisoContingencia.Caption := 'DANFE em Contingência - ' +
                                 'Impresso em decorrência de problemas técnicos';
+        if (dhCont > 0) and (xJust > '') then
+          rllContingencia.Caption :=
+                    'Data / Hora da entrada em contingência: ' +
+                    FormatDateTime('dd/mm/yyyy hh:nn:ss', dhCont) +
+                    '   Motivo: ' + xJust;
         rllAvisoContingencia.Visible := True;
         rlbAvisoContingencia.Visible := True;
       end
@@ -1322,7 +1331,7 @@ begin
         begin
           sTexto := sTexto +
           StringReplace(rlmDadosAdicionaisAuxiliar.Lines.Strings[(iMaximoLinhas + i) ],
-                        #13#10, '', [rfReplaceAll,rfIgnoreCase]);
+                        #13#10, '', [rfReplaceAll, rfIgnoreCase]);
         end;
 
       InsereLinhas(sTexto, iLimiteCaracteresContinuacao, rlmContinuacaoDadosAdicionais);

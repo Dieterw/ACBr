@@ -47,6 +47,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+
+
+Versão 0.0.10a 05/06/2010
+[*] Corrigido montagem do Código de Barras da unit do Banco do Brasil, e por consequencia
+    corrigido também impressão da linha digitável.(por Edney Barros)
+
 Versão 0.0.9.a 29/05/2010
 [+] Adicionado classe para o Banco Itaú. (por SandroJoca)
 [*] Alterado rotina MontarLinhaDigitável para formatar com 3 digitos o número do banco,no caso do

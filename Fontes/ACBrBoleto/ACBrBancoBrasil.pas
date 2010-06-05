@@ -38,16 +38,18 @@ interface
 
 uses
   Classes, SysUtils, ACBrBoleto,
-  {$IFDEF COMPILER6_UP} dateutils {$ELSE} ACBrD5 {$ENDIF};
+  {$IFDEF COMPILER6_UP} DateUtils {$ELSE} ACBrD5, FileCtrl {$ENDIF};
 
 type
   { TACBrBancoBrasil}
 
   TACBrBancoBrasil = class(TACBrBancoClass)
    protected
+   private
+    function FormataNossoNumero(const ACBrTitulo :TACBrTitulo): String;
    public
     Constructor create(AOwner: TACBrBanco);
-    function CalcularDigitoVerificador(const ACBrTitulo: TACBrTitulo ): String; override ;
+    function CalcularDigitoVerificador(const ACBrTitulo: TACBrTitulo ): String;
     function MontarCodigoBarras(const ACBrTitulo : TACBrTitulo): String; override;
     function MontarCampoNossoNumero(const ACBrTitulo :TACBrTitulo): String; override;
     function GerarRegistroHeader(NumeroRemessa : Integer): String; override;
@@ -64,7 +66,7 @@ begin
    inherited create(AOwner);
    fpDigito := 9;
    fpNome   := 'Banco Brasil';
-   fpTamanhoMaximoNossoNum := 11;
+   fpTamanhoMaximoNossoNum := 10;
 end;
 
 function TACBrBancoBrasil.CalcularDigitoVerificador(const ACBrTitulo: TACBrTitulo ): String;
@@ -72,26 +74,25 @@ begin
    Result := '0';
 
    Modulo.CalculoPadrao;
-   Modulo.MultiplicadorFinal := 7;
-   Modulo.Documento := ACBrTitulo.Carteira + ACBrTitulo.NossoNumero;
+   Modulo.MultiplicadorFinal := 9;
+   Modulo.Documento := ACBrTitulo.NossoNumero;
    Modulo.Calcular;
 
    if Modulo.DigitoFinal = 0 then
-      Result:= 'P'
-   else
-      Result:= IntToStr(Modulo.DigitoFinal);
+            Result:= '0'
+   else if  Modulo.DigitoFinal = 10 then
+            Result:= 'X'
+   else     Result:= IntToStr(Modulo.DigitoFinal);
 end;
 
-function TACBrBancoBrasil.MontarCodigoBarras(const ACBrTitulo : TACBrTitulo): String;
+function TACBrBancoBrasil.FormataNossoNumero(const ACBrTitulo :TACBrTitulo): String;
 var
-  CodigoBarras, FatorVencimento, DigitoCodBarras :String;
   ANossoNumero, AConvenio : string;
 begin
-    AConvenio := ACBrTitulo.ACBrBoleto.Cedente.Convenio;
     with ACBrTitulo do
     begin
-
-        if (ACBrTitulo.Carteira = '16') or (ACBrTitulo.Carteira = '17') or (ACBrTitulo.Carteira = '18') then
+        AConvenio := ACBrBoleto.Cedente.Convenio;
+        if  (Carteira = '16') or (Carteira = '17') or (Carteira = '18') then
         begin
           if     Length(AConvenio) <= 4 then
                  ANossoNumero := padL(AConvenio, 4, '0') + padL(NossoNumero, 7, '0')
@@ -103,32 +104,46 @@ begin
                  ANossoNumero := padL(AConvenio, 7, '0') + padL(NossoNumero, 10, '0');
         end else ANossoNumero := padL(NossoNumero, 11, '0');
     end;
+    Result := ANossoNumero;
+end;
+
+
+function TACBrBancoBrasil.MontarCodigoBarras(const ACBrTitulo : TACBrTitulo): String;
+var
+  CodigoBarras, FatorVencimento, DigitoCodBarras :String;
+  ANossoNumero, AConvenio : string;
+begin
+    AConvenio := ACBrTitulo.ACBrBoleto.Cedente.Convenio;
+    ANossoNumero := FormataNossoNumero(ACBrTitulo);
 
     {Codigo de Barras}
     with ACBrTitulo.ACBrBoleto do
     begin
       FatorVencimento := CalcularFatorVencimento(ACBrTitulo.Vencimento);
 
-      CodigoBarras := IntToStr( Numero ) +
+      CodigoBarras := IntToStrZero(Banco.Numero, 3) +
                       '9' +
                       FatorVencimento +
                       IntToStrZero(Round(ACBrTitulo.ValorDocumento * 100), 10) +
+                      IfThen((Length(AConvenio) = 7), '000000', '') +
                       ANossoNumero +
-                      padL(Cedente.Agencia, 4, '0') +
-                      padL(Cedente.Conta, 8, '0') +
+                      IfThen((Length(AConvenio) < 7), padL(Cedente.Agencia, 4, '0'), '') +
+                      IfThen((Length(AConvenio) < 7), padL(Cedente.Conta, 8, '0'), '') +
                       copy(ACBrTitulo.Carteira, 1, 2);
 
       DigitoCodBarras := CalcularDigitoCodigoBarras(CodigoBarras);
     end;
 
 
-    Result:= copy( CodigoBarras, 1, 4) + DigitoCodBarras + copy( CodigoBarras, 6, 44) ;
+    Result:= copy( CodigoBarras, 1, 4) + DigitoCodBarras + copy( CodigoBarras, 5, 44) ;
 end;
 
-function TACBrBancoBrasil.MontarCampoNossoNumero (
-   const ACBrTitulo: TACBrTitulo ) : String;
+function TACBrBancoBrasil.MontarCampoNossoNumero (const ACBrTitulo: TACBrTitulo ) : String;
+var ANossoNumero : string;
 begin
-   Result:= ACBrTitulo.Carteira+'/'+ACBrTitulo.NossoNumero+'-'+CalcularDigitoVerificador(ACBrTitulo);
+    ANossoNumero := FormataNossoNumero(ACBrTitulo);
+
+    Result := ANossoNumero + '-' + CalcularDigitoCodigoBarras(ANossoNumero);
 end;
 
 function TACBrBancoBrasil.GerarRegistroHeader(NumeroRemessa : Integer): String;
@@ -205,11 +220,13 @@ begin
 end;
 
 function TACBrBancoBrasil.GerarRegistroTransacao(ACBrTitulo : TACBrTitulo): String;
-var ATipoInscricao, ATipoOcorrencia, ATipoBoleto, ADataMoraJuros,
-    ADataDesconto  : string;
+var ATipoInscricao, ATipoOcorrencia, ATipoBoleto,
+    ADataMoraJuros, ADataDesconto, ANossoNumero  : string;
 begin
    with ACBrTitulo do
    begin
+         ANossoNumero := FormataNossoNumero(ACBrTitulo);
+
          {SEGMENTO P}
 
          {Pegando tipo de pessoa do Cendente}
@@ -271,7 +288,7 @@ begin
                padL(ACBrBoleto.Cedente.Conta, 12, '0')                    + //24 a 35 - Número da conta corrente
                padL(ACBrBoleto.Cedente.ContaDigito, 1, '0')               + //36 - Dígito verificador da conta
                ' '                                                        + //37 - Dígito verificador da agência / conta
-               padR(NossoNumero, 20, '0')                                 + //38 a 57 - Nosso número - identificação do título no banco
+               padR(ANossoNumero, 20, '0')                                + //38 a 57 - Nosso número - identificação do título no banco
                '1'                                                        + //58 - Cobrança Simples
                '1'                                                        + //59 - Forma de cadastramento do título no banco: com cadastramento
                '1'                                                        + //60 - Tipo de documento: Tradicional

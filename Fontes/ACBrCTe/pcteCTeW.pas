@@ -327,7 +327,7 @@ begin
     Gerador.wGrupo('toma4', 'B30');
     Gerador.wCampo(tcStr, 'B29', 'toma   ', 01, 01, 1, TpTomadorToStr(CTe.ide.Toma4.Toma), DSC_TOMA);
     Gerador.wCampoCNPJCPF('B31', 'B32', CTe.ide.Toma4.CNPJCPF, CTe.Ide.Toma4.EnderToma.cPais);
-    Gerador.wCampo(tcStr, 'B33', 'IE     ', 02, 14, 1, SomenteNumeros(CTe.Ide.Toma4.IE), DSC_IE);
+    Gerador.wCampo(tcStr, 'B33', 'IE     ', 00, 14, 0, SomenteNumeros(CTe.Ide.Toma4.IE), DSC_IE);
     Gerador.wCampo(tcStr, 'B34', 'xNome  ', 01, 60, 1, CTe.Ide.Toma4.xNome, DSC_XNOME);
     Gerador.wCampo(tcStr, 'B35', 'xFant  ', 01, 60, 0, CTe.Ide.Toma4.xFant, DSC_XFANT);
     Gerador.wCampo(tcStr, 'B35a', 'fone  ', 07, 12, 0, CTe.Ide.Toma4.fone, DSC_FONE);
@@ -529,7 +529,7 @@ procedure TCTeW.GerarRem;
 begin
   Gerador.wGrupo('rem', 'E01');
   Gerador.wCampoCNPJCPF('E02', 'E03', CTe.Rem.CNPJCPF, CODIGO_BRASIL);
-  Gerador.wCampo(tcStr, 'E04', 'IE     ', 02, 14, 0, SomenteNumeros(CTe.Rem.IE), DSC_IE);
+  Gerador.wCampo(tcStr, 'E04', 'IE     ', 00, 14, 1, SomenteNumeros(CTe.Rem.IE), DSC_IE);
   Gerador.wCampo(tcStr, 'E05', 'xNome  ', 01, 60, 1, CTe.Rem.xNome, DSC_XNOME);
   Gerador.wCampo(tcStr, 'E06', 'xFant  ', 01, 60, 0, CTe.Rem.xFant, DSC_XFANT);
   Gerador.wCampo(tcStr, 'E06', 'fone   ', 07, 12, 0, somenteNumeros(CTe.Rem.fone), DSC_FONE);
@@ -664,7 +664,7 @@ begin
   begin
     Gerador.wGrupo('exped', 'F01');
     Gerador.wCampoCNPJCPF('F02', 'F03', CTe.Exped.CNPJCPF, CODIGO_BRASIL);
-    Gerador.wCampo(tcStr, 'F04', 'IE     ', 02, 14, 0, SomenteNumeros(CTe.Exped.IE), DSC_IE);
+    Gerador.wCampo(tcStr, 'F04', 'IE     ', 00, 14, 1, SomenteNumeros(CTe.Exped.IE), DSC_IE);
     Gerador.wCampo(tcStr, 'F05', 'xNome  ', 01, 60, 1, CTe.Exped.xNome, DSC_XNOME);
     Gerador.wCampo(tcStr, 'F06', 'fone   ', 07, 12, 0, somenteNumeros(CTe.Exped.fone), DSC_FONE);
 
@@ -705,7 +705,7 @@ begin
   Begin
     Gerador.wGrupo('receb', 'G01');
     Gerador.wCampoCNPJCPF('G02', 'G03', CTe.Receb.CNPJCPF, CODIGO_BRASIL);
-    Gerador.wCampo(tcStr, 'G04', 'IE     ', 02, 14, 0, SomenteNumeros(CTe.Receb.IE), DSC_IE);
+    Gerador.wCampo(tcStr, 'G04', 'IE     ', 00, 14, 1, SomenteNumeros(CTe.Receb.IE), DSC_IE);
     Gerador.wCampo(tcStr, 'G05', 'xNome  ', 01, 60, 1, CTe.Receb.xNome, DSC_XNOME);
     Gerador.wCampo(tcStr, 'G06', 'fone   ', 07, 12, 0, somenteNumeros(CTe.Receb.fone), DSC_FONE);
 
@@ -743,7 +743,7 @@ procedure TCTeW.GerarDest;
 begin
   Gerador.wGrupo('dest', 'H01');
   Gerador.wCampoCNPJCPF('H02', 'H03', CTe.Dest.CNPJCPF, CODIGO_BRASIL);
-  Gerador.wCampo(tcStr, 'H04', 'IE     ', 02, 14, 0, SomenteNumeros(CTe.Dest.IE), DSC_IE);
+  Gerador.wCampo(tcStr, 'H04', 'IE     ', 00, 14, 0, SomenteNumeros(CTe.Dest.IE), DSC_IE);
   Gerador.wCampo(tcStr, 'H05', 'xNome  ', 01, 60, 1, CTe.Dest.xNome, DSC_XNOME);
   Gerador.wCampo(tcStr, 'H06', 'fone   ', 07, 12, 0, somenteNumeros(CTe.Dest.fone), DSC_FONE);
   Gerador.wCampo(tcStr, 'H07', 'ISUF   ', 08, 09, 0, CTe.Dest.ISUF, DSC_ISUF);
@@ -1017,7 +1017,7 @@ begin
   begin
     Gerador.wGrupo('emiDocAnt', 'K16');
     Gerador.wCampoCNPJCPF('K17', 'K18', CTe.infCTeNorm.emiDocAnt[i].CNPJCPF, CODIGO_BRASIL);
-    Gerador.wCampo(tcStr, 'K19', 'IE     ', 02, 14, 1, CTe.infCTeNorm.emiDocAnt[i].IE, '');
+    Gerador.wCampo(tcStr, 'K19', 'IE     ', 02, 14, 1, CTe.infCTeNorm.emiDocAnt[i].IE, DSC_IE);
     Gerador.wCampo(tcStr, 'K20', 'UF     ', 02, 02, 1, CTe.infCTeNorm.emiDocAnt[i].UF, '');
     Gerador.wCampo(tcStr, 'K21', 'xNome  ', 01, 60, 1, CTe.infCTeNorm.emiDocAnt[i].xNome, '');
 

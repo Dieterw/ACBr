@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!--  PL_006f versao com correcoes no xServ para tornar a literal CONSULTAR obrigatoria 21/05/2010 -->
 <!--  PL_006c versao com correcoes 24/12/2009 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.portalfiscal.inf.br/nfe" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" targetNamespace="http://www.portalfiscal.inf.br/nfe" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xs:include schemaLocation="nfe_v2.00.xsd"/>
@@ -15,10 +16,15 @@
 2 - Homologação</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="xServ" type="TServ" fixed="CONSULTAR">
+			<xs:element name="xServ">
 				<xs:annotation>
 					<xs:documentation>Serviço Solicitado</xs:documentation>
 				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="TServ">
+						<xs:enumeration value="CONSULTAR"/>
+					</xs:restriction>
+				</xs:simpleType>
 			</xs:element>
 			<xs:element name="chNFe" type="TChNFe">
 				<xs:annotation>

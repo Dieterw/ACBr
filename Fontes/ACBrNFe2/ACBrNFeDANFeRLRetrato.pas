@@ -966,7 +966,6 @@ end;
 
 procedure TfrlDANFeRLRetrato.Header;
 var sChaveContingencia: String;
-setFormato: TFormatSettings;
 begin
   with FNFe.InfNFe, FNFe.Ide do
   begin
@@ -985,15 +984,22 @@ begin
     rllEmissao.Caption   := NotaUtil.FormatDate(DateToStr(dEmi));
     rllSaida.Caption     := IfThen(DSaiEnt <> 0,
                                       NotaUtil.FormatDate(DateToStr(dSaiEnt)));
-    setFormato.TimeSeparator := ':';
-    setFormato.ShortTimeFormat := 'hh:nn:ss';
-    rllHoraSaida.Caption := IfThen(hSaiEnt <> 0, DateTimeToStr(hSaiEnt, setFormato));
+    rllHoraSaida.Caption := IfThen(hSaiEnt <> 0, FormatDateTime('hh:nn:ss', hSaiEnt));
 
     if FNFe.Ide.tpEmis in [teNormal, teSCAN] then
       begin
-        rllDadosVariaveis1a.Visible := True;
-        rllDadosVariaveis1b.Visible := True;
-        rllDadosVariaveis1c.Visible := True;
+        if FNFe.procNFe.cStat > 0 then
+          begin
+            rllDadosVariaveis1a.Visible := True;
+            rllDadosVariaveis1b.Visible := True;
+            rllDadosVariaveis1c.Visible := True;
+          end
+        else
+          begin
+            rllDadosVariaveis1a.Visible := False;
+            rllDadosVariaveis1b.Visible := False;
+            rllDadosVariaveis1c.Visible := False;
+          end;
         rlbCodigoBarrasFS.Visible := False;
         rllDadosVariaveis3.Caption := FNFe.procNFe.nProt + ' ' +
                                           DateTimeToStr(FNFe.procNFe.dhRecbto);
@@ -1309,7 +1315,9 @@ begin
   else
     sInfCompl := '';
 
-  sInfInteira := sInfAdFisco + sInfCompl;
+  sInfInteira := StringReplace((sInfAdFisco + sInfCompl), #13#10, ' ',
+                                                [rfReplaceAll, rfIgnoreCase]);
+
   InsereLinhas(sInfInteira, iLimiteCaracteresLinha, rlmDadosAdicionaisAuxiliar);
   rlmDadosAdicionaisAuxiliar.Lines.EndUpdate;
 end;
@@ -1330,7 +1338,7 @@ begin
       for i := 0 to (iRestanteLinhas - 1) do
         begin
           sTexto := sTexto +
-          StringReplace(rlmDadosAdicionaisAuxiliar.Lines.Strings[(iMaximoLinhas + i) ],
+          StringReplace(rlmDadosAdicionaisAuxiliar.Lines.Strings[(iMaximoLinhas + i)],
                         #13#10, '', [rfReplaceAll, rfIgnoreCase]);
         end;
 
@@ -1341,7 +1349,9 @@ begin
     iMaximoLinhas := rlmDadosAdicionaisAuxiliar.Lines.Count;
 
   for i := 0 to (iMaximoLinhas - 1) do
-    rlmDadosAdicionais.Lines.Add(rlmDadosAdicionaisAuxiliar.Lines.Strings[i]);
+    begin
+      rlmDadosAdicionais.Lines.Add(rlmDadosAdicionaisAuxiliar.Lines.Strings[i]);
+    end;
 
   rlmDadosAdicionais.Lines.EndUpdate;
 end;

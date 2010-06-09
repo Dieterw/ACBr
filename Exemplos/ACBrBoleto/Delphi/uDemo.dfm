@@ -618,6 +618,7 @@ object frmDemo: TfrmDemo
     Cedente.AgenciaDigito = '5'
     Cedente.Conta = '079489'
     Cedente.ContaDigito = '9'
+    Cedente.TipoInscricao = tiPessoaFisica
     Banco.Numero = 237
     NomeArqRemessa = 'cb00001.rem'
     DirArqRemessa = '.\remessa\'

@@ -62,8 +62,8 @@
         <Filename Value="validadorteste1.lfm"/>
         <TopLine Value="144"/>
         <CursorPos X="4" Y="171"/>
-        <SyntaxHighlighter Value="LFM"/>
         <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit2>
       <Unit3>
         <Filename Value="..\..\..\ACBrValidador.pas"/>
@@ -116,11 +116,9 @@
         <EditorIndex Value="1"/>
         <WindowIndex Value="0"/>
         <TopLine Value="1155"/>
-        <CursorPos X="29" Y="1165"/>
-        <SyntaxHighlighter Value="FreePascal"/>
+        <CursorPos X="49" Y="1163"/>
         <UsageCount Value="10"/>
         <Loaded Value="True"/>
-        <DefaultSyntaxHighlighter Value="Text"/>
       </Unit9>
     </Units>
     <JumpHistory Count="9" HistoryIndex="8">

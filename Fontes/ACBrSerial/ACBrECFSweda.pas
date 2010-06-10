@@ -194,11 +194,11 @@ TACBrECFSweda = class( TACBrECFClass )
     fsEmVinculado  : Boolean;
 
     xECF_AbrePortaSerial : Function: Integer; stdcall;
-    xECF_DownloadMFD : Function (Arquivo: Pchar; TipoDownload: Pchar;
-      ParametroInicial: Pchar; ParametroFinal: Pchar; UsuarioECF: Pchar ):
+    xECF_DownloadMFD : Function (Arquivo: PAnsichar; TipoDownload: PAnsichar;
+      ParametroInicial: PAnsichar; ParametroFinal: PAnsichar; UsuarioECF: PAnsichar ):
       Integer; stdcall;
-    xECF_ReproduzirMemoriaFiscalMFD : Function (tipo: Pchar; fxai: Pchar;
-      fxaf:  Pchar; asc: Pchar; bin: Pchar): Integer; stdcall;
+    xECF_ReproduzirMemoriaFiscalMFD : Function (tipo: PAnsichar; fxai: PAnsichar;
+      fxaf:  PAnsichar; asc: PAnsichar; bin: PAnsichar): Integer; stdcall;
     xECF_FechaPortaSerial : Function: Integer; stdcall;
 
     procedure LoadDLLFunctions;
@@ -362,13 +362,13 @@ TACBrECFSweda = class( TACBrECFClass )
        Tipo : String = ''; Posicao : String = '') ; override ;
 
     Procedure EspelhoMFD_DLL( DataInicial, DataFinal : TDateTime;
-       NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
+       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
     Procedure EspelhoMFD_DLL( COOInicial, COOFinal : Integer;
-       NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
+       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
     Procedure ArquivoMFD_DLL( DataInicial, DataFinal : TDateTime;
-       NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
+       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
     Procedure ArquivoMFD_DLL( COOInicial, COOFinal : Integer;
-       NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
+       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
 
 
  end ;
@@ -3390,11 +3390,11 @@ begin
 end ;
 
 procedure TACBrECFSweda.EspelhoMFD_DLL(DataInicial,
-  DataFinal: TDateTime; NomeArquivo: String;
+  DataFinal: TDateTime; NomeArquivo: AnsiString;
   Documentos: TACBrECFTipoDocumentoSet);
 Var
   Resp : Integer ;
-  DiaIni, DiaFim : String ;
+  DiaIni, DiaFim : AnsiString ;
   OldAtivo : Boolean ;
 begin
   // Por: Magno System
@@ -3409,7 +3409,7 @@ begin
     DiaIni := FormatDateTime('DD/MM/YY',DataInicial) ;
     DiaFim := FormatDateTime('DD/MM/YY',DataFinal) ;
 
-    Resp := xECF_DownloadMFD( Pchar( NomeArquivo ), '1', PChar(DiaIni), PChar(DiaFim), '0');
+    Resp := xECF_DownloadMFD( PAnsichar( NomeArquivo ), '1', PAnsiChar(DiaIni), PAnsiChar(DiaFim), '0');
     if (Resp <> 1) then
       raise Exception.Create( ACBrStr( 'Erro ao executar ECF_DownloadMFD.'+sLineBreak+
                                        'Cod.: '+IntToStr(Resp) ))
@@ -3425,7 +3425,7 @@ end;
 
 
 procedure TACBrECFSweda.EspelhoMFD_DLL(COOInicial,
-  COOFinal: Integer; NomeArquivo: String;
+  COOFinal: Integer; NomeArquivo: AnsiString;
   Documentos: TACBrECFTipoDocumentoSet);
 Var
   Resp : Integer ;
@@ -3444,7 +3444,7 @@ begin
     CooIni := IntToStrZero( COOInicial, 6 ) ;
     CooFim := IntToStrZero( COOFinal, 6 ) ;
 
-    Resp := xECF_DownloadMFD( Pchar( NomeArquivo ), '2', PChar(CooIni), PChar(CooFim), '0');
+    Resp := xECF_DownloadMFD( PAnsichar( NomeArquivo ), '2', PAnsiChar(CooIni), PAnsiChar(CooFim), '0');
     if (Resp <> 1) then
       raise Exception.Create( ACBrStr( 'Erro ao executar ECF_DownloadMFD.'+sLineBreak+
                                        'Cod.: '+IntToStr(Resp) ))
@@ -3460,11 +3460,11 @@ end;
 
 
 procedure TACBrECFSweda.ArquivoMFD_DLL(DataInicial,
-  DataFinal: TDateTime; NomeArquivo: String;
+  DataFinal: TDateTime; NomeArquivo: AnsiString;
   Documentos: TACBrECFTipoDocumentoSet);
 Var
   Resp : Integer ;
-  DiaIni, DiaFim : String ;
+  DiaIni, DiaFim : AnsiString ;
   OldAtivo : Boolean ;
 begin
   // Por: Magno System
@@ -3479,7 +3479,7 @@ begin
     DiaIni := FormatDateTime('DD/MM/YY',DataInicial) ;
     DiaFim := FormatDateTime('DD/MM/YY',DataFinal) ;
 
-    Resp := xECF_ReproduzirMemoriaFiscalMFD('2', PChar(DiaIni), PChar(DiaFim), Pchar( NomeArquivo ), '');
+    Resp := xECF_ReproduzirMemoriaFiscalMFD('2', PAnsiChar(DiaIni), PAnsiChar(DiaFim), PAnsichar( NomeArquivo ), '');
     if (Resp <> 1) then
       raise Exception.Create( ACBrStr( 'Erro ao executar ECF_DownloadMFD.'+sLineBreak+
                                        'Cod.: '+IntToStr(Resp) ))
@@ -3495,11 +3495,11 @@ end;
 
 
 procedure TACBrECFSweda.ArquivoMFD_DLL(COOInicial,
-  COOFinal: Integer; NomeArquivo: String;
+  COOFinal: Integer; NomeArquivo: AnsiString;
   Documentos: TACBrECFTipoDocumentoSet);
 Var
   Resp : Integer ;
-  CooIni, CooFim : String ;
+  CooIni, CooFim : AnsiString ;
   OldAtivo : Boolean ;
 begin
   // Por: Magno System
@@ -3514,7 +3514,7 @@ begin
     CooIni := IntToStrZero( COOInicial, 7 ) ;
     CooFim := IntToStrZero( COOFinal, 7 ) ;
 
-    Resp := xECF_ReproduzirMemoriaFiscalMFD('2', PChar(CooIni), PChar(CooFim), Pchar( NomeArquivo), '');
+    Resp := xECF_ReproduzirMemoriaFiscalMFD('2', PAnsiChar(CooIni), PAnsiChar(CooFim), PAnsichar( NomeArquivo), '');
     if (Resp <> 1) then
       raise Exception.Create( ACBrStr( 'Erro ao executar xECF_ReproduzirMemoriaFiscalMFD.'+sLineBreak+
                                        'Cod.: '+IntToStr(Resp) ))

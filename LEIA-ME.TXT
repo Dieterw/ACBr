@@ -80,25 +80,25 @@ desenvolvedores.
 3. COMPATIBILIDADE
 ==================
 
-  Compatível com Delphi 5, 6, 7; Kylix 3; Lazarus (FreePascal) e C++ Builder 6
+  Atualmente os componentes ACBr são Compatíveis com as seguintes versões:
+Delphi 6, 7, 2007, 2009, 2010; Kylix 3; Lazarus (FreePascal) e C++ Builder 6
 
-  Pode haver compatibilidade com versões inferiores ao Delphi 5, porém ainda não
+  Pode haver compatibilidade com versões do Delphi 5 e inferiores, porém não
 foi testado...
 
-  Por enquanto não é possível intalar a versão VCL e CLX da Biblioteca
-simultaneamente.
+  A versão CLX da Biblioteca está sendo descontinuada simultaneamente ao maior uso
+do Lazarus que permite que os códigos sejam utilizados no Linux.
 
-  Durante o desenvolvimento foi usada a seguinte Plataforma:
-- Windows 98 SE       Delphi 7 Professional
-- Windows XP Home SP2 Delphi 7 Professional
-- Conectiva 10        Kylix 3
-
-  Patchs não oficiais para CLX DEVEM SER APLICADOS ( http://unvclx.sf.net )
+  Durante o desenvolvimento em geral é usada a seguinte Plataforma:
+- Windows 98 SE       	Delphi 7 Professional
+- Windows XP Home SP2 	Delphi 7 Professional
+- Linux					Lazarus (FreePascal) (versões mais recentes)
+- Conectiva 10        	Kylix 3 (Patchs não oficiais para CLX DEVEM SER APLICADOS ( http://unvclx.sf.net )
 
 --------------------------------------------------------------------------------
 
-4. COMO EXECUTAR OS DEMOS
-=========================
+4. COMO EXECUTAR OS EXEMPLOS (DEMOS)
+====================================
 
   Atualmente o ACBr ainda não possui um Manual de Ajuda ou qualquer outra docu-
 mentação. A melhor maneira de aprender como usar os componentes ACBr é observar
@@ -118,27 +118,27 @@ achadas em: http://kylixlibs.sourceforge.net
 5. INSTALAÇÃO no DELPHI / KYLIX
 ===============================
 
-ATENÇAO - Caso tenha o pacote ACBr_CLX ou ACBr_VCL já instalado no Delphi, remova todos os componentes do ACBr e todas as pastas
-do Library Path, pois a partir de Maio de 2010 a estrutura de pastas do componente mudou e os pacotes ACBr_CLX e ACBr_VCL
-deixaram de existir sendo dividos em pacotes com os nomes ACBrDiversos, ACBrSerial, ACBrTCP, etc.
-
+ATENÇAO - Caso tenha o pacote ACBr_CLX ou ACBr_VCL já instalado no Delphi, REMOVA TODOS 
+os componentes do ACBr e TODAS as pastas do ACBr do Library Path, pois a partir de Maio 
+de 2010 a estrutura de pastas do componente mudou e os pacotes ACBr_CLX e ACBr_VCL deixaram 
+de existir sendo dividos em pacotes com os nomes ACBrDiversos, ACBrSerial, ACBrTCP, etc.
 
   1. Descompacte o arquivo .ZIP na pasta de sua preferência ou faça o checkout via SVN - http://acbr.sourceforge.net/drupal/?q=node/37
 
-  2. Adcione os diretórios " Fontes\ACBrComum ", " Fontes\ACBrSerial " e os demais subdiretorios da pasta Fontes dos componentes que deseja 
-   utilizar no  "Library Path".
-   Na IDE do Delphi acione  "Tools, Enviroment Options" selecione a guia
-   "Library",  clique no botão elíptico (...) de "Library Path",
-   clique no botão elíptico (...) à frente da caixa de texto, localize a pasta
-   " Fontes\ACBrComum " no diretório de instalação da Biblioteca, clique em
-   "OK", e em "Add". Repita o mesmo processo com as demais pastas.
+  2. Adcione os diretórios " Fontes\ACBrComum ", " Fontes\ACBrSerial " e os demais subdiretorios 
+   da pasta Fontes dos componentes que deseja utilizar no  "Library Path".
+   Na IDE do Delphi acione  "Tools, Enviroment Options" selecione a guia "Library",
+   clique no botão elíptico (...) de "Library Path", clique no botão elíptico (...) 
+   à frente da caixa de texto, localize a pasta " Fontes\ACBrComum " no diretório 
+   de instalação da Biblioteca, clique em "OK", e em "Add". Repita o mesmo processo 
+   com as demais pastas.
    Click em "OK" para finalizar.
 
 
   3.1 Procure pela pasta Pacotes\Delphi e abra o arquivo synapse.dpk e clique em compile.
   3.2 Procure pela pasta Pacotes\Delphi e abra o arquivo ACBrComum.dpk e clique em compile.
   3.3 Procure pela pasta Pacotes\Delphi e abra o arquivo ACBrSerial.dpk e clique em compile e depois em instal.
-  3.4 Repita o passo 3.3 para os demais componentes que deseja instalar.    	
+  3.4 Repita o passo 3.3 para os demais componentes que deseja instalar.
 
   4. Na IDE do Delphi, clique em "File - Close All"
 
@@ -197,55 +197,155 @@ maior esforço possível para testar o maior número de modelos, contactando Cola-
 boradores ou Fabricantes. Muitos fabricantes gentilmente nos ajudaram nos testes,
 outros nem tanto...  Se você possui acesso a algum equipamento que é do escopo
 do projeto ACBr,  SEJA VOCÊ TAMBÉM UM COLABORADOR..... Ficaremos muito gratos
-com a sua participação no projeto.
+com a sua participação no projeto. Mesmo que você não possua um equipamento, você pode ajudar!!
+Veja os Itens 8 e 10 no fim desse arquivo.
+
+  As descrições foram agrupadas em pacotes para que você saiba quais pacotes precisa 
+instalar no seu caso. Fazemos uma breve descrição do pacote, e logo depois, dos seus 
+componentes.
 
 
-  Inicialmente imaginamos desenvolver os seguintes componentes
+-----------
+6.1 PACOTES PRINCIPAIS
+======================
 
-ACBrECF - Para se comunicar com Impressoras Fiscais (ECF). A idéia é substituir
-  os comandos da DLL por chamadas aos métodos do componente ACBrECF, com a
-  vantagem imediata de tornar o seu código compatível a todas os Modelos de
-  Impressoras suportadas pelo ACBrECF, apenas escolha o modelo e pronto...
-  Inicialmente suportando os seguintes modelos:
-  Bematech, Daruma, Schalter, Sweda, Mecaf (e compatíveis)
+Synapse.dpk - Contém os componentes e units do Synapse que é usado para comunicação
+  com portas seriais. Esse pacote não é instalado, apenas Compilado (Build).
 
-ACBrGaveta - Para acionamento de Gavetas de dinheiro. Com suporte a gavetas
-  ligadas a Porta Serial, ou diretamente ao ECF ou ainda ligadas a Impressoras
-  não Fiscais (paralela ou serial). Inicialmente suportando os seguintes
-  modelos: Menno, Gerbô.
+ACBrComum.dpk - Contém Units com comandos básicos usados por praticamente todos os 
+  componentes ACBr. Units ACBrUtil, ACBrBase, ACBrConsts, ACBrReg, etc... estão 
+  presentes nesse pacote.  Esse pacote não é instalado, apenas Compilado (Build).
 
-ACBrCheque - Para impressão de Cheques. A impressora de cheques pode ser avulsa
-  ou conjugada ao ECF (ECF 2 estações). Inicialmente com suporte as Impressoras
-  de Cheque Chronos, Bematech, e todos ECF's 2 estações suportados por ACBrECF
+ACBrCapicom.dpk - ??? Descrição ???. Esse pacote não é instalado, apenas Compilado (Build).
 
-ACBrDisplayCliente - Display de Mensagens de 2 linhas para o Cliente (fica
-  voltado para o Cliente e exibe informações sobre a venda...). Inicialmente
-  suportando o Gertec
+ACBrOpenSSL.dpk - ??? Descrição ???. Esse pacote não é instalado, apenas Compilado (Build).
 
-ACBrDisplayOperador - Display de Mensagens de 2 linhas acoplado a teclados
-  reduzidos, comunicando pela porta AT. Modelos: Gertec
+ACBrDiversos.dpk - Contém os mais variados componentes ACBr que em geral não se encaixaram
+  em outros pacotes. 
+   Componentes e Units: 
+      * ACBrBarCode -  ??? Descrição ???
+      * ACBrCalculadora - Mais uma calculadora... mas com algumas frescuras a mais, como
+          por exemplo, um Memo simulando a fita (permitindo salvar)
+      * ACBrLeCMC7 - Leitor de código CMC7 de Cheques. (Nenhuma experiência do autor).
+	  * ACBrCMC7 -  ??? Descrição ???
+      * ACBrExtenso -  ??? Descrição ???
+      * ACBrFala -  ??? Descrição ???
+      * ACBrTroco -  ??? Descrição ???
+      * ACBrValidador - ACBrValidador - Componente com várias funções para validar dados 
+          como CPF, CNPJ, Inscrição Estadual, etc...
+	  * ACBrUtil - Unit contendo diversos procedimentos e funções úteis para aplicações
+		  comerciais: ValidaCNPJ, ValidaCPF, ValidaINSCEST, Extenso, etc
+ 
+  
+ACBrSerial.dpk - Contém os componentes ACBr que fazem comunicação Serial. 
+  Requer pacotes: ACBrDiversos, Synapse.
+   Componentes:
+	  * ACBrBal -  ??? Descrição ???
+	  
+      * ACBrECF - Para se comunicar com Impressoras Fiscais (ECF). A idéia é substituir
+		  os comandos da DLL por chamadas aos métodos do componente ACBrECF, com a
+		  vantagem imediata de tornar o seu código compatível a todas os Modelos de
+		  Impressoras suportadas pelo ACBrECF, apenas escolha o modelo e pronto...
+		  Inicialmente suportando os seguintes modelos:
+		  Bematech, Daruma, Schalter, Sweda, Mecaf (e compatíveis), FiscNet (Urano, Elgin, TermoPrinter,...)
 
-ACBrBombas - Monitor de Bombas de Combustível, lendo os abastecimentos gerados,
-  alterando os preços das Bombas. Modelo suportado: CompanyTec
+	  * ACBrETQ - Para se comunicar com impressoras de Etiquetas. Essas impressoras são 
+		  normalmente usadas para impressão de códigos de barras e preços para os produtos.
+      
+	  * ACBrGAV - Para acionamento de Gavetas de dinheiro. Com suporte a gavetas
+		  ligadas a Porta Serial, ou diretamente ao ECF ou ainda ligadas a Impressoras
+		  não Fiscais (paralela ou serial). Inicialmente suportando os seguintes
+		  modelos: Menno, Gerbô.
 
-ACBrLeBarras - Permitindo acesso a informação lida por Leitores de código de
-  Barra ligados a porta serial.
+      * ACBrCHQ - Para impressão de Cheques. A impressora de cheques pode ser avulsa
+		  ou conjugada ao ECF (ECF 2 estações). Inicialmente com suporte as Impressoras
+		  de Cheque Chronos, Bematech, e todos ECF's 2 estações suportados por ACBrECF
 
-ACBrLeCMC7 - Leitor de código CMC7 de Cheques. (Nenhuma experiência do autor).
+      * ACBrDIS - Display de Mensagens de 2 linhas para o Cliente (fica  voltado
+		  para o Cliente e exibe informações sobre a venda...). E Display de Mensagens de 
+		  2 linhas acoplado a teclados reduzidos, comunicando pela porta AT. 
+		  Modelos: Gertec, Keytec
 
-ACBrSintegra - Componente para formatar informações no LayOut do Sintegra,
-  suportando os registros da serie 50 e 60
+	  * ACBrLCB - Componente que permite acesso a informação lida por Leitores de código de
+		  Barra ligados a porta serial.
+
+ACBr_TEFD.dpk - Contém o componente ACBrTEFD e as Units necessárias para seu uso. 
+   Componente:
+      * ACBrTEFD - Componente para facilitar a comunicação de TEF Discado e Dedicado (SITEF),
+		  suportando o pagamento com múltiplos cartões. Este compoentes faz a criação dos 
+		  arquivos de troca entre a Aplicação Comercial e os programas das Operadoras.
+
+
+ACBr_SPED.dpk - Contém os compoentes para geração do arquivo SPED (fiscal e contábil)
+  conforme Lei vigente. 
+   Componentes:
+      * ACBrSPEDContabil - ???Descrição ???
+
+      * ACBrSPEDFiscal - ???Descrição ???
+
+
+ACBr_PAF.dpk - Contém componentes para facilitar o cumprimento de requisitos para 
+  Programa Aplicativo Fiscal (PAF), conforme Leis vigentes. 
+    Componente: 
+      * ACBrPAF - Componente que gera arquivos necessários para homologação
+	  
+ACBr_Sintegra.dpk -  Contém os compoentes para geração do arquivo SINTEGRA conforme 
+  lei vigente. Componentes: ACBrSINTEGRA
+      * ACBrSintegra - Componente para formatar informações no LayOut do Sintegra
+		  conforme leis vigentes. Suporta os registros 50, 60, 70, 90 etc...
+
+ACBrTCP.dpk - ??? Descrição ???. 
+      * 
+	  
+ACBr_Boleto.dpk - ??? Descrição ???. 
+      * ACBrBoletos -  ???Descrição ???
+	  
+ACBr_BoletoFC_Fortes.dpk - ??? Descrição ???. 
+      * 
+	  
+--------
+6.2 OUTROS PACOTES
+==================
+  Alem dos pacotes principais há ainda outros pacotes com objetivos diferentes ou que 
+  exigem um cuidado especial.
+
+Na pasta \pacotes\ :
+ACBr_D5.dpk - ??? Descrição ???. 
+
+
+Também existem os componentes para NFe. Para a NFe2 estão localizados na pasta 
+ \pacotes\ACBrNFe2. Caso você não for utilizar a NFe2, use os pacotes na pasta
+ \pacotes\ACBrNFe
+
+Os mesmos são:
+ACBrCTe.dpk -  ??? Descrição ???
+ACBr_NFe.dpk - ??? Descrição ???
+ACBrCTeDacteQRpkg.dpk - ??? Descrição ???
+ACBrNFeDanfeQRpkg.dpk - ??? Descrição ???
+ACBrNFeDanfeRLpkg.dpk - ??? Descrição ???
+ACBrNFeDanfeRV.dpk - ??? Descrição ???
+ACBrNFeDanfeRVCodeBase.dpk - ??? Descrição ???
+ACBrNFePCN.dpk -  ??? Descrição ???
+
+-------------------
+6.2 COMPONENTES EM DESENVOLVIMENTO OU DESCONTINUADOS
+====================================================
+
+ Os seguintes componentes estão em desenvolvimento ou ainda não foram totalmente 
+implementados e/ou testados. Precisamos sua ajuda nesse sentido.
+
+ACBrBombas - Para trabalhar como monitor de bombas de Combustível, se comunicando com 
+  concentradores, lendo os abastecimentos gerados, alterando os preços das Bombas, etc...
+  A comunicação pode ser feita por meio de porta Serial, TCP ou Dll dependendo do modelo.
+  Modelos suportados: CompanyTec (dll).
+  **ATENÇÃO*** Este componente está em fase de Construção e Testes e assim NÃO está 
+  em nenhum pacote atualmente.
 
 ACBrTEF - Componente para facilitar a criação dos arquivos de troca entre a
   Aplicação Comercial e os programas das Operadoras. (Experiência apenas com
-  TEF Discado)
+  TEF Discado) **** DESCONTINUADO!!! USE O COMPONENTE ACBrTEFD *****
 
-ACBrCalculadora - Mais uma calculadora... mas com algumas frescuras a mais, como
-  por exemplo, um Memo simulando a fita (permitindo salvar)
-
-ACBrUtil - Unit contendo diversos procedimentos e funções úteis para aplicações
-  comerciais: ValidaCNPJ, ValidaCPF, ValidaINSCEST, Extenso, etc
-
+  
 --------------------------------------------------------------------------------
 
 7. AUTORES E COLABORADORES
@@ -258,13 +358,13 @@ Por favor leia: "ACBr-change-log.txt"
 8. COMO POSSO AJUDAR NO PROJETO
 ===============================
 
-  Se você possui experiencia em Automação comercial e deseja ajudar, junte-se a
-nós... ficaremos muito contente com a sua ajuda.
+  Se você possui experiência em Automação comercial e deseja ajudar, junte-se a
+nós... ficaremos muito contentes com a sua ajuda.
 
   * Testando os Componentes:
   Fizemos o possível para eliminar os bugs mais óbvios... mas em ambientes
-diferente bugs novos podem aparecer. Por favor nós envie-nos um e-mail com os
-seus testes. Mesmo que tudo dê certo ainda sim gostariamos da sua opnião...
+diferente bugs novos podem aparecer. Ao encontrar um bug, oor favor envie-nos um e-mail 
+com os seus testes. Mesmo que tudo dê certo ainda assim gostaríamos da sua opnião...
 
   * Divulgando o ACBr:
   Quanto maior o uso da biblioteca mais usuários podem ajudar. Se a biblioteca
@@ -302,7 +402,7 @@ precisam comer.... ;-)
 - Total controle da Aplicação: Já vi DLL's que simplesmente param o proces-
   samento do programa (Quem já homologou TEF discado, sabe o que eu quero
   dizer...)
-- Facil distribuição: Não precisa distribuir e instalar nenhuma DLL
+- Fácil distribuição: Não precisa distribuir e instalar nenhuma DLL
 - Livre-se do Inferno das DLL's. (Quando o usuário instala outro programa que
   usa a mesma DLL que você usa, porém em uma versão antiga (causando Bugs no seu
   programa) )

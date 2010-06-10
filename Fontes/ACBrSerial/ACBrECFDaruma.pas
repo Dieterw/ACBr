@@ -350,13 +350,13 @@ TACBrECFDaruma = class( TACBrECFClass )
        Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
 
     Procedure EspelhoMFD_DLL( DataInicial, DataFinal : TDateTime;
-       NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
+       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
     Procedure EspelhoMFD_DLL( COOInicial, COOFinal : Integer;
-       NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
+       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
     Procedure ArquivoMFD_DLL( DataInicial, DataFinal : TDateTime;
-       NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
+       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
     Procedure ArquivoMFD_DLL( COOInicial, COOFinal : Integer;
-       NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
+       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
 
     Procedure IdentificaOperador ( Nome: String); override;
     Procedure IdentificaPAF( Linha1, Linha2 : String) ; override ;
@@ -4095,10 +4095,10 @@ begin
 end;
 
 procedure TACBrECFDaruma.EspelhoMFD_DLL(COOInicial, COOFinal: Integer;
-  NomeArquivo: String; Documentos: TACBrECFTipoDocumentoSet);
+  NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet);
 var
   Resp  : Integer ;
-  CooIni, CooFim, PathDest : String ;
+  CooIni, CooFim, PathDest : AnsiString ;
   OldAtivo : Boolean ;
 begin
   PathDest := ExtractFilePath( NomeArquivo ) ;
@@ -4114,7 +4114,7 @@ begin
 
      AbrePortaSerialDLL( PathDest ) ;
 
-     Resp := xDaruma_FIMFD_DownloadDaMFD( PChar( CooIni ), PChar( CooFim )) ;
+     Resp := xDaruma_FIMFD_DownloadDaMFD( PAnsiChar( CooIni ), PAnsiChar( CooFim )) ;
      if (Resp <> 1) then
         raise Exception.Create( ACBrStr( 'Erro ao executar Daruma_FIMFD_DownloadDaMFD.'+sLineBreak+
                                          'Cod.: '+IntToStr(Resp) )) ;
@@ -4132,10 +4132,10 @@ begin
 end;
 
 procedure TACBrECFDaruma.EspelhoMFD_DLL(DataInicial, DataFinal: TDateTime;
-  NomeArquivo: String; Documentos: TACBrECFTipoDocumentoSet);
+  NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet);
 var
   Resp : Integer ;
-  DiaIni, DiaFim, PathDest : String ;
+  DiaIni, DiaFim, PathDest : AnsiString ;
   OldAtivo : Boolean ;
 begin
   PathDest := ExtractFilePath( NomeArquivo ) ;
@@ -4151,7 +4151,7 @@ begin
 
      AbrePortaSerialDLL( PathDest ) ;
 
-     Resp := xDaruma_FIMFD_DownloadDaMFD(  PChar( DiaIni ), PChar( DiaFim )) ;
+     Resp := xDaruma_FIMFD_DownloadDaMFD(  PAnsiChar( DiaIni ), PAnsiChar( DiaFim )) ;
      if (Resp <> 1) then
         raise Exception.Create( ACBrStr( 'Erro ao executar Daruma_FIMFD_DownloadDaMFD.'+sLineBreak+
                                          'Cod.: '+IntToStr(Resp) )) ;
@@ -4169,10 +4169,10 @@ begin
 end;
 
 procedure TACBrECFDaruma.ArquivoMFD_DLL(COOInicial, COOFinal: Integer;
-  NomeArquivo: String; Documentos: TACBrECFTipoDocumentoSet);
+  NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet);
 var
   Resp : Integer ;
-  CooIni, CooFim, PathDest : String ;
+  CooIni, CooFim, PathDest : AnsiString ;
   OldAtivo : Boolean ;
 begin
   PathDest := ExtractFilePath( NomeArquivo ) ;
@@ -4205,10 +4205,10 @@ begin
 end;
 
 procedure TACBrECFDaruma.ArquivoMFD_DLL(DataInicial, DataFinal: TDateTime;
-  NomeArquivo: String; Documentos: TACBrECFTipoDocumentoSet);
+  NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet);
 var
   Resp : Integer ;
-  DiaIni, DiaFim, PathDest : String ;
+  DiaIni, DiaFim, PathDest : AnsiString ;
   OldAtivo : Boolean ;
 begin
   PathDest := ExtractFilePath( NomeArquivo );
@@ -4224,7 +4224,7 @@ begin
 
      AbrePortaSerialDLL( PathDest ) ;
 
-     Resp := xDaruma_FIMFD_GerarAtoCotepePAFData( PChar( DiaIni ), PChar( DiaFim )) ;
+     Resp := xDaruma_FIMFD_GerarAtoCotepePAFData( PAnsiChar( DiaIni ), PAnsiChar( DiaFim )) ;
      if (Resp <> 1) then
         raise Exception.Create( ACBrStr( 'Erro ao executar Daruma_FIMFD_GerarAtoCotepeData.'+sLineBreak+
                                          'Cod.: '+IntToStr(Resp) )) ;

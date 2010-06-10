@@ -595,13 +595,13 @@ TACBrECF = class( TACBrComponent )
        NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ;
 
     Procedure EspelhoMFD_DLL( DataInicial, DataFinal : TDateTime;
-       NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ;
+       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ;
     Procedure EspelhoMFD_DLL( COOInicial, COOFinal : Integer;
-       NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ;
+       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ;
     Procedure ArquivoMFD_DLL( DataInicial, DataFinal : TDateTime;
-       NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ;
+       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ;
     Procedure ArquivoMFD_DLL( COOInicial, COOFinal : Integer;
-       NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ;
+       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; overload ;
 
     Procedure IdentificaOperador( Nome : String) ;
     Procedure IdentificaPAF( Linha1, Linha2 : String) ;
@@ -2901,7 +2901,7 @@ begin
 end;
 
 procedure TACBrECF.EspelhoMFD_DLL(DataInicial, DataFinal: TDateTime;
-  NomeArquivo: String; Documentos: TACBrECFTipoDocumentoSet);
+  NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet);
 begin
   TestaSeE_MFD ;
 
@@ -2911,7 +2911,7 @@ begin
 end;
 
 procedure TACBrECF.EspelhoMFD_DLL(COOInicial, COOFinal: Integer;
-  NomeArquivo: String; Documentos: TACBrECFTipoDocumentoSet);
+  NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet);
 begin
   TestaSeE_MFD ;
 
@@ -2921,7 +2921,7 @@ begin
 end;
 
 procedure TACBrECF.ArquivoMFD_DLL(DataInicial, DataFinal: TDateTime;
-  NomeArquivo: String; Documentos: TACBrECFTipoDocumentoSet);
+  NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet);
 begin
   TestaSeE_MFD ;
 
@@ -2931,7 +2931,7 @@ begin
 end;
 
 procedure TACBrECF.ArquivoMFD_DLL(COOInicial, COOFinal: Integer;
-  NomeArquivo: String; Documentos: TACBrECFTipoDocumentoSet);
+  NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet);
 begin
   TestaSeE_MFD ;
 

@@ -43,7 +43,11 @@
 unit ACBrECFSwedaSTX ;
 
 interface
-uses ACBrECFClass, ACBrBase, ACBrDevice, ACBrUtil, Classes, Contnrs ;
+uses ACBrECFClass, ACBrBase, ACBrDevice, ACBrUtil, Classes, Contnrs
+     {$IFNDEF CONSOLE}
+     {$IFDEF VCL}, Dialogs , Controls , Forms {$ENDIF}
+     {$IFDEF VisualCLX}, QDialogs, QControls, QForms {$ENDIF}
+     {$ENDIF};
 
 const
    STX  = #02 ;
@@ -52,6 +56,12 @@ const
    NACK = 21 ;
    ESC  = #27 ;
    CFALHAS = 3 ;
+  {$IFDEF LINUX}
+   cLIB_Sweda = 'CONVECF.SO';
+  {$ELSE}
+   cLIB_Sweda = 'CONVECF.DLL';
+  {$ENDIF}
+
 
 type
 {Dados Fiscais}
@@ -104,6 +114,18 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
     fsCache34   : TACBrECFSwedaCache ;
     fsRespostasComando : String ;
     fsFalhasRX : Byte ;
+
+    xECF_AbrePortaSerial : Function: Integer; stdcall;
+    xECF_DownloadMFD : Function (Arquivo: PAnsichar; TipoDownload: PAnsichar;
+      ParametroInicial: PAnsichar; ParametroFinal: PAnsichar; UsuarioECF: PAnsichar ):
+      Integer; stdcall;
+    xECF_ReproduzirMemoriaFiscalMFD : Function (tipo: PAnsichar; fxai: PAnsichar;
+      fxaf:  PAnsichar; asc: PAnsichar; bin: PAnsichar): Integer; stdcall;
+    xECF_FechaPortaSerial : Function: Integer; stdcall;
+
+
+    procedure AbrePortaSerialDLL;
+    procedure LoadDLLFunctions;
 
     function RemoveNulos(Str:AnsiString):AnsiString;
     Function PreparaCmd( cmd : AnsiString ) : AnsiString ;
@@ -164,11 +186,9 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
  public
     Constructor create( AOwner : TComponent  )  ;
     Destructor Destroy  ; override ;
-
     procedure Ativar ; override ;
-
     Function EnviaComando_ECF( cmd : AnsiString ) : AnsiString ; override ;
-
+    Procedure IdentificaOperador ( Nome: String); override;
     Procedure AbreCupom ; override ;
     Procedure VendeItem( Codigo, Descricao : String; AliquotaECF : String;
        Qtd : Double ; ValorUnitario : Double; ValorDescontoAcrescimo : Double = 0;
@@ -218,8 +238,6 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
        Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
     Procedure LeituraMemoriaFiscalSerial( ReducaoInicial, ReducaoFinal : Integer;
        Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
-
-    Procedure IdentificaOperador ( Nome: String); override;
     Procedure IdentificaPAF( Linha1, Linha2 : String) ; override ;
     Function RetornaInfoECF( Registrador: String) : AnsiString; override ;
 
@@ -253,6 +271,16 @@ TACBrECFSwedaSTX = class( TACBrECFClass )
        Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
     Procedure LeituraMFDSerial( COOInicial, COOFinal : Integer;
        Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
+
+    Procedure EspelhoMFD_DLL( DataInicial, DataFinal : TDateTime;
+       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
+    Procedure EspelhoMFD_DLL( COOInicial, COOFinal : Integer;
+       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
+    Procedure ArquivoMFD_DLL( DataInicial, DataFinal : TDateTime;
+       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
+    Procedure ArquivoMFD_DLL( COOInicial, COOFinal : Integer;
+       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
+
  end ;
 
 implementation
@@ -474,6 +502,69 @@ begin
 
    { Descompactando Strings dentro do Retorno }
    Result := DescompactaRetorno( fpRespostaComando ) ;
+end;
+
+procedure TACBrECFSwedaSTX.EspelhoMFD_DLL(COOInicial, COOFinal: Integer;
+  NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet);
+Var
+  Resp : Integer ;
+  CooIni, CooFim : AnsiString ;
+  OldAtivo : Boolean ;
+begin
+  // Por: Magno System
+  LoadDLLFunctions ;
+
+  OldAtivo := Ativo ;
+  try
+    Ativo := False ;
+    AbrePortaSerialDLL ;
+
+    CooIni := IntToStrZero( COOInicial, 6 ) ;
+    CooFim := IntToStrZero( COOFinal, 6 ) ;
+    Resp := xECF_DownloadMFD( PAnsichar( NomeArquivo ), '2', PAnsiChar(CooIni), PAnsiChar(CooFim), '0');
+    if (Resp <> 1) then
+      raise Exception.Create( ACBrStr( 'Erro ao executar ECF_DownloadMFD.'+sLineBreak+
+                                       'Cod.: '+IntToStr(Resp) ))
+  finally
+    xECF_FechaPortaSerial ;
+    Ativo := OldAtivo ;
+  end ;
+
+  if not FileExists( NomeArquivo ) then
+     raise Exception.Create( ACBrStr( 'Erro na execução de ECF_DownloadMFD.'+sLineBreak+
+                            'Arquivo: "'+NomeArquivo + '" não gerado' ))
+end;
+
+procedure TACBrECFSwedaSTX.EspelhoMFD_DLL(DataInicial, DataFinal: TDateTime;
+  NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet);
+Var
+  Resp : Integer ;
+  DiaIni, DiaFim : AnsiString ;
+  OldAtivo : Boolean ;
+begin
+  // Por: Magno System
+  LoadDLLFunctions ;
+  OldAtivo := Ativo ;
+  try
+    Ativo := False ;
+
+    AbrePortaSerialDLL ;
+
+    DiaIni := FormatDateTime('DD/MM/YY',DataInicial) ;
+    DiaFim := FormatDateTime('DD/MM/YY',DataFinal) ;
+
+    Resp := xECF_DownloadMFD( PAnsichar( NomeArquivo ), '1', PAnsiChar(DiaIni), PAnsiChar(DiaFim), '0');
+    if (Resp <> 1) then
+      raise Exception.Create( ACBrStr( 'Erro ao executar ECF_DownloadMFD.'+sLineBreak+
+                                       'Cod.: '+IntToStr(Resp) ))
+  finally
+    xECF_FechaPortaSerial ;
+    Ativo := OldAtivo ;
+  end ;
+
+  if not FileExists( NomeArquivo ) then
+     raise Exception.Create( ACBrStr( 'Erro na execução de ECF_DownloadMFD.'+sLineBreak+
+                            'Arquivo: "'+NomeArquivo+'" não gerado' ))
 end;
 
 function TACBrECFSwedaSTX.DescreveErro( Erro : Integer ) : String ;
@@ -899,8 +990,71 @@ begin
   Result := Trim(StringReplace(Result,DecimalSeparator,',',[])) ;
 end;
 
+procedure TACBrECFSwedaSTX.ArquivoMFD_DLL(COOInicial, COOFinal: Integer;
+  NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet);
+Var
+  Resp : Integer ;
+  CooIni, CooFim : AnsiString ;
+  OldAtivo : Boolean ;
+begin
+  // Por: Magno System
+  LoadDLLFunctions ;
 
+  OldAtivo := Ativo ;
+  try
+    Ativo := False ;
 
+    AbrePortaSerialDLL ;
+
+    CooIni := IntToStrZero( COOInicial, 7 ) ;
+    CooFim := IntToStrZero( COOFinal, 7 ) ;
+
+    Resp := xECF_ReproduzirMemoriaFiscalMFD('2', PAnsiChar(CooIni), PAnsiChar(CooFim), PAnsichar( NomeArquivo), '');
+    if (Resp <> 1) then
+      raise Exception.Create( ACBrStr( 'Erro ao executar xECF_ReproduzirMemoriaFiscalMFD.'+sLineBreak+
+                                       'Cod.: '+IntToStr(Resp) ))
+  finally
+    xECF_FechaPortaSerial ;
+    Ativo := OldAtivo ;
+  end ;
+
+  if not FileExists( NomeArquivo ) then
+     raise Exception.Create( ACBrStr( 'Erro na execução de ECF_DownloadMFD.'+sLineBreak+
+                            'Arquivo: "'+NomeArquivo + '" não gerado' ))
+end;
+
+procedure TACBrECFSwedaSTX.ArquivoMFD_DLL(DataInicial, DataFinal: TDateTime;
+  NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet);
+Var
+  Resp : Integer ;
+  DiaIni, DiaFim : AnsiString ;
+  OldAtivo : Boolean ;
+begin
+  // Por: Magno System
+  LoadDLLFunctions ;
+
+  OldAtivo := Ativo ;
+  try
+    Ativo := False ;
+
+    AbrePortaSerialDLL ;
+
+    DiaIni := FormatDateTime('DD/MM/YY',DataInicial) ;
+    DiaFim := FormatDateTime('DD/MM/YY',DataFinal) ;
+
+    Resp := xECF_ReproduzirMemoriaFiscalMFD('2', PAnsiChar(DiaIni), PAnsiChar(DiaFim), PAnsichar( NomeArquivo ), '');
+    if (Resp <> 1) then
+      raise Exception.Create( ACBrStr( 'Erro ao executar ECF_DownloadMFD.'+sLineBreak+
+                                       'Cod.: '+IntToStr(Resp) ))
+  finally
+    xECF_FechaPortaSerial ;
+    Ativo := OldAtivo ;
+  end ;
+
+  if not FileExists( NomeArquivo ) then
+     raise Exception.Create( ACBrStr( 'Erro na execução de ECF_DownloadMFD.'+sLineBreak+
+                            'Arquivo: "'+NomeArquivo+'" não gerado' ))
+end;
 
 function TACBrECFSwedaSTX.GetDataHora: TDateTime;
 Var RetCmd : AnsiString ;
@@ -1221,6 +1375,7 @@ Procedure TACBrECFSwedaSTX.VendeItem( Codigo, Descricao : String;
   TipoDescontoAcrescimo : String; DescontoAcrescimo : String) ;
 var
    CMD:String;
+   Aliquota : TACBrECFAliquota;
 begin
   if Qtd > 9999 then
      raise EACBrECFCMDInvalido.Create( ACBrStr(
@@ -1230,6 +1385,17 @@ begin
    impressoras, para manter compatibilidade esta sendo enviado sempre o padrão(T)
    omitindo o indicador no comando.
    }
+ {Vai vir o indice, tem que transformar em aliquota no formato Tipo + Aliquota}
+  if (AliquotaECF[1] <> 'I') and
+     (AliquotaECF[1] <> 'F') and
+     (AliquotaECF[1] <> 'N') and
+     (AliquotaECF[1] <> 'S') then
+  begin
+     {Formato tem que ser T18,00% por exemplo}
+     Aliquota := AchaICMSIndice(AliquotaECF);
+     AliquotaECF := FormatFloat(Aliquota.Tipo+'00.00%',Aliquota.Aliquota);
+  end;
+
   EnviaComando('02|' + AjustaValor(Qtd,fpDecimaisQtd)              +'|'+
                        Trim(LeftStr(Codigo,14))                    +'|'+
                        AjustaValor(ValorUnitario, fpDecimaisPreco) +'|'+
@@ -1328,27 +1494,28 @@ begin
    Result      := nil ;
    AliquotaStr := '';
 
-   if copy(AliquotaICMS,1,2) = 'SF' then
-      AliquotaStr := 'SF'
-   else if copy(AliquotaICMS,1,2) = 'SN' then
-      AliquotaStr := 'S1'
-   else if copy(AliquotaICMS,1,2) = 'SI' then
-      AliquotaStr := 'S1'
-   else
-   begin
-      case AliquotaICMS[1] of
-        'I' : AliquotaStr := 'I1' ;
-        'N' : AliquotaStr := 'N1' ;
-        'F' : AliquotaStr := 'F1' ;
-        'T' : AliquotaICMS := 'TT'+PadL(copy(AliquotaICMS,2,2),2) ; {Indice}
-        'S' : AliquotaICMS := 'TS'+PadL(copy(AliquotaICMS,2,2),2) ; {Indice}
-        else AliquotaStr :='T'+AliquotaICMS;
-     end
-   end;
-   if AliquotaStr = '' then
-      Result := inherited AchaICMSAliquota( AliquotaICMS )
-   else
+  AliquotaICMS := UpperCase( Trim( AliquotaICMS ) ) ;
+  case AliquotaICMS[1] of
+    'I' : AliquotaStr  := 'I1' ;
+    'N' : AliquotaStr  := 'N1' ;
+    'F' : AliquotaStr  := 'F1' ;
+    'T' : AliquotaICMS := 'T'+padR(copy(AliquotaICMS,2,2),2,'0') ; {Indice}
+    'S' :{ISSQN}
+        begin
+           case AliquotaICMS[2] of
+              'I':AliquotaStr := 'IS1';
+              'N':AliquotaStr := 'NS1';
+              'F':AliquotaStr := 'FS1';
+              else AliquotaStr  := AliquotaICMS;
+           end
+        end;
+  end;
+
+  if AliquotaStr = '' then
+     Result := inherited AchaICMSAliquota( AliquotaICMS )
+  else
      AliquotaICMS := AliquotaStr ;
+
 end;
 
 
@@ -1567,6 +1734,33 @@ procedure TACBrECFSwedaSTX.LinhaRelatorioGerencial(Linha: AnsiString; IndiceBMP:
 begin
    EnviaComando('25|'+Linha);
 end;
+
+procedure TACBrECFSwedaSTX.LoadDLLFunctions;
+ procedure SwedaFunctionDetect( FuncName: String; var LibPointer: Pointer ) ;
+ begin
+   if not Assigned( LibPointer )  then
+   begin
+     if not FunctionDetect( cLIB_Sweda, FuncName, LibPointer) then
+     begin
+        LibPointer := NIL ;
+        raise Exception.Create( ACBrStr( 'Erro ao carregar a função:'+FuncName+' de: '+cLIB_Sweda ) ) ;
+     end ;
+   end ;
+ end ;
+begin
+   {$IFDEF MSWINDOWS}
+    if not fileexists(IncludeTrailingPathDelimiter(ExtractFilePath(
+      {$IFNDEF CONSOLE} Application.ExeName {$ELSE} ParamStr(0) {$ENDIF})) + 'Swmfd.dll') then
+       raise Exception.Create( ACBrStr( 'Não foi encontrada a dll auxiliar Swmfd.dll.' ) ) ;
+   {$ENDIF}
+   DeleteFile(IncludeTrailingPathDelimiter(ExtractFilePath(
+      {$IFNDEF CONSOLE} Application.ExeName {$ELSE} ParamStr(0) {$ENDIF})) + 'SWC.INI');
+   SwedaFunctionDetect('ECF_AbrePortaSerial', @xECF_AbrePortaSerial);
+   SwedaFunctionDetect('ECF_DownloadMFD', @xECF_DownloadMFD);
+   SwedaFunctionDetect('ECF_ReproduzirMemoriaFiscalMFD', @xECF_ReproduzirMemoriaFiscalMFD);
+   SwedaFunctionDetect('ECF_FechaPortaSerial', @xECF_FechaPortaSerial);
+end ;
+
 
 procedure TACBrECFSwedaSTX.AbreCupomVinculado(COO, CodFormaPagto,
    CodComprovanteNaoFiscal :  String; Valor : Double ) ;
@@ -1844,6 +2038,32 @@ end ;
 procedure TACBrECFSwedaSTX.AbreNaoFiscal(CPF_CNPJ: String);
 begin
    EnviaComando('20');
+end;
+
+procedure TACBrECFSwedaSTX.AbrePortaSerialDLL;
+ procedure SwedaFunctionDetect( FuncName: String; var LibPointer: Pointer ) ;
+ begin
+   if not Assigned( LibPointer )  then
+   begin
+     if not FunctionDetect( cLIB_Sweda, FuncName, LibPointer) then
+     begin
+        LibPointer := NIL ;
+        raise Exception.Create( ACBrStr( 'Erro ao carregar a função:'+FuncName+' de: '+cLIB_Sweda ) ) ;
+     end ;
+   end ;
+ end ;
+begin
+   {$IFDEF MSWINDOWS}
+    if not fileexists(IncludeTrailingPathDelimiter(ExtractFilePath(
+      {$IFNDEF CONSOLE} Application.ExeName {$ELSE} ParamStr(0) {$ENDIF})) + 'Swmfd.dll') then
+       raise Exception.Create( ACBrStr( 'Não foi encontrada a dll auxiliar Swmfd.dll.' ) ) ;
+   {$ENDIF}
+   DeleteFile(IncludeTrailingPathDelimiter(ExtractFilePath(
+      {$IFNDEF CONSOLE} Application.ExeName {$ELSE} ParamStr(0) {$ENDIF})) + 'SWC.INI');
+   SwedaFunctionDetect('ECF_AbrePortaSerial', @xECF_AbrePortaSerial);
+   SwedaFunctionDetect('ECF_DownloadMFD', @xECF_DownloadMFD);
+   SwedaFunctionDetect('ECF_ReproduzirMemoriaFiscalMFD', @xECF_ReproduzirMemoriaFiscalMFD);
+   SwedaFunctionDetect('ECF_FechaPortaSerial', @xECF_FechaPortaSerial);
 end;
 
 procedure TACBrECFSwedaSTX.RegistraItemNaoFiscal(CodCNF: String;

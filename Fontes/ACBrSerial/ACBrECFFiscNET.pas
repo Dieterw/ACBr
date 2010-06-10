@@ -259,7 +259,7 @@ TACBrECFFiscNET = class( TACBrECFClass )
        Linhas : TStringList; Documentos : TACBrECFTipoDocumentoSet = [docTodos] ) ; overload ; override ;
 
     Procedure ArquivoMFD_DLL( DataInicial, DataFinal : TDateTime;
-       NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
+       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
 
     Procedure ImprimeCheque(Banco : String; Valor : Double ; Favorecido,
        Cidade : String; Data : TDateTime ;Observacao : String = '') ; override ;
@@ -2421,10 +2421,10 @@ begin
 end;
 
 procedure TACBrECFFiscNET.ArquivoMFD_DLL(DataInicial, DataFinal: TDateTime;
-  NomeArquivo: String; Documentos: TACBrECFTipoDocumentoSet);
+  NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet);
 Var
   iRet: Integer;
-  PortaSerial, Modelo, DataStr, Erro: String;
+  PortaSerial, Modelo, DataStr, Erro: AnsiString;
   OldAtivo : Boolean ;
 begin
   LoadDLLFunctions;

@@ -159,9 +159,9 @@ TACBrECFEpson = class( TACBrECFClass )
     xEPSON_Serial_Abrir_Porta : function (dwVelocidade:Integer; wPorta:Integer):Integer; StdCall;
     xEPSON_Serial_Fechar_Porta : function : Integer; StdCall;
     xEPSON_Serial_Obter_Estado_Com : function : Integer; StdCall;
-    xEPSON_Obter_Dados_MF_MFD : function (pszInicio:PChar; pszFinal:PChar;
+    xEPSON_Obter_Dados_MF_MFD : function (pszInicio:PAnsiChar; pszFinal:PAnsiChar;
        dwTipoEntrada:Integer; dwEspelhos:Integer; dwAtoCotepe:Integer;
-       dwSintegra:Integer; pszArquivoSaida:PChar) : Integer; StdCall;
+       dwSintegra:Integer; pszArquivoSaida:PAnsiChar) : Integer; StdCall;
 
     procedure LoadDLLFunctions;
     procedure AbrePortaSerialDLL;
@@ -283,13 +283,13 @@ TACBrECFEpson = class( TACBrECFClass )
        Linhas : TStringList; Simplificada : Boolean = False ) ; override ;
 
     Procedure EspelhoMFD_DLL( DataInicial, DataFinal : TDateTime;
-       NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
+       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
     Procedure EspelhoMFD_DLL( COOInicial, COOFinal : Integer;
-       NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
+       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
     Procedure ArquivoMFD_DLL( DataInicial, DataFinal : TDateTime;
-       NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
+       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
     Procedure ArquivoMFD_DLL( COOInicial, COOFinal : Integer;
-       NomeArquivo : String; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ; 
+       NomeArquivo : AnsiString; Documentos : TACBrECFTipoDocumentoSet = [docTodos]  ) ; override ;
 
     Procedure AbreGaveta ; override ;
 
@@ -2803,11 +2803,11 @@ begin
 end ;
 
 procedure TACBrECFEpson.EspelhoMFD_DLL(DataInicial,
-  DataFinal: TDateTime; NomeArquivo: String;
+  DataFinal: TDateTime; NomeArquivo: AnsiString;
   Documentos: TACBrECFTipoDocumentoSet);
 Var
   Resp : Integer ;
-  ArqTmp, DiaIni, DiaFim : String ;
+  ArqTmp, DiaIni, DiaFim : AnsiString ;
   OldAtivo : Boolean ;
 begin
   LoadDLLFunctions ;
@@ -2824,12 +2824,12 @@ begin
     DiaIni := FormatDateTime('ddmmyyyy',DataInicial) ;
     DiaFim := FormatDateTime('ddmmyyyy',DataFinal) ;
 
-    Resp := xEPSON_Obter_Dados_MF_MFD(  PChar(DiaIni), PChar(DiaFim),
+    Resp := xEPSON_Obter_Dados_MF_MFD(  PAnsiChar(DiaIni), PAnsiChar(DiaFim),
                                         0,                // Faixa em Datas
                                         DocumentosToNum(Documentos),
                                         0,                // Não Gera Ato Cotepe
                                         0,                // Nao Gera Sintegra
-                                        PChar( ArqTmp ) );
+                                        PAnsiChar( ArqTmp ) );
     if (Resp <> 0) then
       raise Exception.Create( ACBrStr( 'Erro ao executar EPSON_Obter_Dados_MF_MFD.'+sLineBreak+
                                        'Cod.: '+IntToStr(Resp) ))
@@ -2851,10 +2851,10 @@ begin
 end;
 
 procedure TACBrECFEpson.EspelhoMFD_DLL(COOInicial, COOFinal: Integer;
-  NomeArquivo: String; Documentos: TACBrECFTipoDocumentoSet);
+  NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet);
 Var
   Resp : Integer ;
-  ArqTmp, CooIni, CooFim : String ;
+  ArqTmp, CooIni, CooFim : AnsiString ;
   OldAtivo : Boolean ;
 begin
   LoadDLLFunctions ;
@@ -2871,12 +2871,12 @@ begin
     CooIni := IntToStr( COOInicial ) ;
     CooFim := IntToStr( COOFinal ) ;
 
-    Resp := xEPSON_Obter_Dados_MF_MFD(  PChar(COOIni), PChar(CooFim),
+    Resp := xEPSON_Obter_Dados_MF_MFD(  PAnsiChar(COOIni), PAnsiChar(CooFim),
                                         2,                // Faixa em COO
                                         DocumentosToNum(Documentos),
                                         0,                // Não Gera Ato Cotepe
                                         0,                // Nao Gera Sintegra
-                                        PChar( ArqTmp ) );
+                                        PAnsiChar( ArqTmp ) );
     if (Resp <> 0) then
       raise Exception.Create( ACBrStr( 'Erro ao executar EPSON_Obter_Dados_MF_MFD.'+sLineBreak+
                                        'Cod.: '+IntToStr(Resp) ))
@@ -2898,10 +2898,10 @@ begin
 end;
 
 procedure TACBrECFEpson.ArquivoMFD_DLL(DataInicial, DataFinal: TDateTime;
-  NomeArquivo: String; Documentos: TACBrECFTipoDocumentoSet);
+  NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet);
 Var
   Resp : Integer ;
-  ArqTmp, DiaIni, DiaFim : String ;
+  ArqTmp, DiaIni, DiaFim : AnsiString ;
   OldAtivo : Boolean ;
 begin
   LoadDLLFunctions ;
@@ -2918,12 +2918,12 @@ begin
     DiaIni := FormatDateTime('ddmmyyyy',DataInicial) ;
     DiaFim := FormatDateTime('ddmmyyyy',DataFinal) ;
 
-    Resp := xEPSON_Obter_Dados_MF_MFD(  PChar(DiaIni), PChar(DiaFim),
+    Resp := xEPSON_Obter_Dados_MF_MFD(  PAnsiChar(DiaIni), PAnsiChar(DiaFim),
                                         0,                // Faixa em Datas
                                         DocumentosToNum(Documentos),
                                         3,                // Ato Cotepe - MFD
                                         0,                // Nao Gera Sintegra
-                                        PChar( ArqTmp ) );
+                                        PAnsiChar( ArqTmp ) );
     if (Resp <> 0) then
       raise Exception.Create( ACBrStr( 'Erro ao executar EPSON_Obter_Dados_MF_MFD.'+sLineBreak+
                                        'Cod.: '+IntToStr(Resp) ))
@@ -2945,10 +2945,10 @@ begin
 end;
 
 procedure TACBrECFEpson.ArquivoMFD_DLL(COOInicial, COOFinal: Integer;
-  NomeArquivo: String; Documentos: TACBrECFTipoDocumentoSet);
+  NomeArquivo: AnsiString; Documentos: TACBrECFTipoDocumentoSet);
 Var
   Resp : Integer ;
-  ArqTmp, CooIni, CooFim : String ;
+  ArqTmp, CooIni, CooFim : AnsiString ;
   OldAtivo : Boolean ;
 begin
   LoadDLLFunctions ;
@@ -2965,12 +2965,12 @@ begin
     CooIni := IntToStr( COOInicial ) ;
     CooFim := IntToStr( COOFinal ) ;
 
-    Resp := xEPSON_Obter_Dados_MF_MFD(  PChar(COOIni), PChar(CooFim),
+    Resp := xEPSON_Obter_Dados_MF_MFD(  PAnsiChar(COOIni), PAnsiChar(CooFim),
                                         2,                // Faixa em COO
                                         DocumentosToNum(Documentos),
                                         3,                // Ato Cotepe - TDM
                                         0,                // Nao Gera Sintegra
-                                        PChar( ArqTmp ) );
+                                        PAnsiChar( ArqTmp ) );
     if (Resp <> 0) then
       raise Exception.Create( ACBrStr( 'Erro ao executar EPSON_Obter_Dados_MF_MFD.'+sLineBreak+
                                        'Cod.: '+IntToStr(Resp) ))

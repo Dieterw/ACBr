@@ -1,0 +1,50 @@
+package ACBr_PAF;
+
+{$R *.res}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO ON}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DESCRIPTION 'ACBr Automação Comercial Brasil - PAF-ECF (http://acbr.sourceforge.net/)'}
+{$IMPLICITBUILD ON}
+{$DEFINE VisualCLX}
+
+requires
+  rtl,
+  designide,
+  visualclx,
+  ACBr_SPED;
+
+contains
+  ACBrPAF in '..\..\Fontes\ACBrPAF\ACBrPAF.pas',
+  ACBrPAF_D in '..\..\Fontes\ACBrPAF\ACBrPAF_D.pas',
+  ACBrPAF_D_Class in '..\..\Fontes\ACBrPAF\ACBrPAF_D_Class.pas',
+  ACBrPAF_E in '..\..\Fontes\ACBrPAF\ACBrPAF_E.pas',
+  ACBrPAF_E_Class in '..\..\Fontes\ACBrPAF\ACBrPAF_E_Class.pas',
+  ACBrPAF_P in '..\..\Fontes\ACBrPAF\ACBrPAF_P.pas',
+  ACBrPAF_P_Class in '..\..\Fontes\ACBrPAF\ACBrPAF_P_Class.pas',
+  ACBrPAF_R in '..\..\Fontes\ACBrPAF\ACBrPAF_R.pas',
+  ACBrPAF_R_Class in '..\..\Fontes\ACBrPAF\ACBrPAF_R_Class.pas',
+  ACBrPAF_T in '..\..\Fontes\ACBrPAF\ACBrPAF_T.pas',
+  ACBrPAF_T_Class in '..\..\Fontes\ACBrPAF\ACBrPAF_T_Class.pas',
+  ACBrPAFRegistros in '..\..\Fontes\ACBrPAF\ACBrPAFRegistros.pas';
+
+end.
+

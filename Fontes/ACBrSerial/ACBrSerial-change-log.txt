@@ -97,6 +97,58 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.9.6  10/06/2010
+-- ACBrECF --
+[*] Modificado parâmetros dos métodos EspelhoMFD_DLL e ArquivoMFD_DLL de String
+    para AnsiString para compatibilidade com o delphi2010
+    (por:Fernando Gutierres Damaceno)
+
+-- ACBrECFBematech --
+[*] Modificado parâmetros dos métodos EspelhoMFD_DLL e ArquivoMFD_DLL de String
+    para AnsiString para compatibilidade com o delphi2010
+    (por:Fernando Gutierres Damaceno)
+
+-- ACBrECFClass --
+[*] Modificado parâmetros dos métodos EspelhoMFD_DLL e ArquivoMFD_DLL de String
+    para AnsiString para compatibilidade com o delphi2010
+    (por:Fernando Gutierres Damaceno)
+
+-- ACBrECFDaruma --
+[*] Modificado parâmetros dos métodos EspelhoMFD_DLL e ArquivoMFD_DLL de String
+    para AnsiString para compatibilidade com o delphi2010
+    (por:Fernando Gutierres Damaceno)
+
+-- ACBrECFEpson --
+[*] Modificado parâmetros dos métodos EspelhoMFD_DLL e ArquivoMFD_DLL de String
+    para AnsiString para compatibilidade com o delphi2010
+    (por:Fernando Gutierres Damaceno)
+
+-- ACBrECFFiscNet --
+[*] Modificado parâmetros dos métodos EspelhoMFD_DLL e ArquivoMFD_DLL de String
+    para AnsiString para compatibilidade com o delphi2010
+    (por:Fernando Gutierres Damaceno)
+
+-- ACBrECFSweda --
+[*] Modificado parâmetros dos métodos EspelhoMFD_DLL e ArquivoMFD_DLL de String
+    para AnsiString para compatibilidade com o delphi2010
+    (por:Fernando Gutierres Damaceno)
+
+-- ACBrECFSwedaSTX --
+[+] Implementado método EspelhoMFD_DLL
+    (Implementado por Magno System na Sweda e replicado para SwedaSTX por 
+     Fernando Gutierres Damaceno)
+
+[+] Implementado método ArquivoMFD_DLL
+    (Implementado por Magno System na Sweda e replicado para SwedaSTX por 
+     Fernando Gutierres Damaceno)
+
+[-] Corrigido método AchaICMSAliquota  
+    (por:Fernando Gutierres Damaceno)
+
+[-] Corrigido método VendeItem.
+    (por:Fernando Gutierres Damaceno)
+
+
 Versão 0.9.5  01/06/10
 -- ACBrECFSwedaSTX --
 [-]    Corrigida leitura do método GetDataMovimemto

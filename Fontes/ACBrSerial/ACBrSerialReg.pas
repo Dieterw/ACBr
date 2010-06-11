@@ -73,9 +73,9 @@ type
 procedure Register;
 
 implementation
-Uses ACBrUtil,
+Uses ACBrUtil, ACBrBase, 
      ACBrECF, ACBrGAV, ACBrCHQ, ACBrLCB, ACBrDIS, ACBrTER, ACBrBAL, ACBrETQ,
-     ACBrRFD, ACBrReg, 
+     ACBrRFD,
      SysUtils;
 
 {$IFNDEF FPC}

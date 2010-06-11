@@ -29,7 +29,6 @@ requires
   rtl,
   vcl,
   designide,
-  ACBrComum,
   ACBr_SPED;
 
 contains

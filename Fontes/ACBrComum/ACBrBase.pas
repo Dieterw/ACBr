@@ -79,17 +79,23 @@ Unit ACBrBase ;
 interface
 uses Classes, SysUtils, ACBrConsts,
      {$IFDEF COMPILER6_UP}
-        Types, 
+        Types,
      {$ELSE}
         Windows, ACBrD5,
      {$ENDIF}
      {$IFNDEF CONSOLE}
-       {$IFDEF VisualCLX}
-          QDialogs 
-       {$ELSE}
-          Dialogs
-       {$ENDIF}
-     {$ENDIF};
+        {$IFDEF VisualCLX} QDialogs, {$ELSE} Dialogs, FileCtrl, {$ENDIF}
+     {$ENDIF} 
+     {$IFDEF FPC}
+        LResources, LazarusPackageIntf, PropEdits, componenteditors
+     {$ELSE}
+        {$IFNDEF COMPILER6_UP}
+           DsgnIntf
+        {$ELSE}
+           DesignIntf,
+           DesignEditors
+        {$ENDIF}
+     {$ENDIF} ;
 type
 
 TACBrAboutInfo = (ACBrAbout);
@@ -122,6 +128,20 @@ TACBrThreadTimer = class(TThread)
     property Interval : Integer read fsInterval write SetInterval ;
     property Enabled : Boolean read fsEnabled write SetEnabled ;
   end;
+
+{ Editor de Proriedades de Componente para chamar OpenDialog }
+TACBrDirProperty = class( TStringProperty )
+public
+  procedure Edit; override;
+  function GetAttributes: TPropertyAttributes; override;
+end;
+
+{ Editor de Proriedades de Componente para chamar OpenDialog }
+TACBrFileNameProperty = class( TStringProperty )
+public
+  procedure Edit; override;
+  function GetAttributes: TPropertyAttributes; override;
+end;
 
 procedure ACBrAboutDialog ;
 
@@ -208,6 +228,51 @@ begin
   fsInterval := Value;
   if Value = 0 then
      Enabled := false ;
+end;
+
+{ TACBrDirProperty }
+
+procedure TACBrDirProperty.Edit;
+Var
+{$IFNDEF VisualCLX} Dir : String ; {$ELSE} Dir : WideString ; {$ENDIF}
+begin
+  {$IFNDEF VisualCLX}
+  Dir := GetValue ;
+  if SelectDirectory(Dir,[],0) then
+     SetValue( Dir ) ;
+  {$ELSE}
+  Dir := '' ;
+  if SelectDirectory('Selecione o Diretório','',Dir) then
+     SetValue( Dir ) ;
+  {$ENDIF}
+end;
+
+function TACBrDirProperty.GetAttributes: TPropertyAttributes;
+begin
+  Result := [paDialog];
+end;
+
+{ TACBrFileNameProperty }
+
+procedure TACBrFileNameProperty.Edit;
+var Dlg : TOpenDialog ;
+begin
+  Dlg := TOpenDialog.Create( nil );
+  try
+     Dlg.FileName   := GetValue ;
+     Dlg.InitialDir := ExtractFilePath( GetValue ) ;
+     Dlg.Filter     := 'Arquivos INI|*.ini' ;
+
+     if Dlg.Execute then
+        SetValue( Dlg.FileName );
+  finally
+     Dlg.Free ;
+  end ;
+end;
+
+function TACBrFileNameProperty.GetAttributes: TPropertyAttributes;
+begin
+  Result := [paDialog];
 end;
 
 end.

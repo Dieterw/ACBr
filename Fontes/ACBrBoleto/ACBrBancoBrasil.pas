@@ -49,7 +49,7 @@ type
     function FormataNossoNumero(const ACBrTitulo :TACBrTitulo): String;
    public
     Constructor create(AOwner: TACBrBanco);
-    function CalcularDigitoVerificador(const ACBrTitulo: TACBrTitulo ): String;
+    function CalcularDigitoVerificador(const ACBrTitulo: TACBrTitulo ): String; override;
     function MontarCodigoBarras(const ACBrTitulo : TACBrTitulo): String; override;
     function MontarCampoNossoNumero(const ACBrTitulo :TACBrTitulo): String; override;
     function GerarRegistroHeader(NumeroRemessa : Integer): String; override;

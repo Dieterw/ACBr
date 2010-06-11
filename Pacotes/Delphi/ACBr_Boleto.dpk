@@ -28,12 +28,13 @@ package ACBr_Boleto;
 requires
   rtl,
   vcl,
-  ACBrComum,
-  ACBrDiversos;
+  ACBrDiversos,
+  designide;
 
 contains
   ACBrBancoBradesco in '..\..\Fontes\ACBrBoleto\ACBrBancoBradesco.pas',
   ACBrBancoBrasil in '..\..\Fontes\ACBrBoleto\ACBrBancoBrasil.pas',
-  ACBrBoleto in '..\..\Fontes\ACBrBoleto\ACBrBoleto.pas';
+  ACBrBoleto in '..\..\Fontes\ACBrBoleto\ACBrBoleto.pas',
+  ACBrBancoItau in '..\..\Fontes\ACBrBoleto\ACBrBancoItau.pas';
 
 end.

@@ -222,8 +222,8 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       object lblLocalPagto: TRLLabel
         Left = 0
         Top = 56
-        Width = 569
-        Height = 17
+        Width = 117
+        Height = 15
         Caption = 'Local de Pagamento'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack

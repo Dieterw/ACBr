@@ -27,8 +27,7 @@ package ACBrOpenSSL;
 {$IMPLICITBUILD ON}
 
 requires
-  rtl,
-  vcl;
+  rtl;
 
 contains
   libxmlsec in '..\..\Fontes\ACBrNFe2\libxmlsec.pas',

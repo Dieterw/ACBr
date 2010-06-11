@@ -311,23 +311,21 @@ begin
                case Filtro of
                  fiPDF  : RLFiltro := RLPDFFilter1;
                  fiHTML : RLFiltro := RLHTMLFilter1;
+               else
+                 exit ;
                end ;
 
-               try
-                 {$IFDEF FPC}
-                  RLFiltro.Copies   := NumCopias ;
-                 {$ENDIF}
-                 RLFiltro.FileName := NomeArquivo ;
+              {$IFDEF FPC}
+                RLFiltro.Copies := NumCopias ;
+              {$ENDIF}
+              RLFiltro.FileName := NomeArquivo ;
 
-                 {$IFDEF FPC}
-                  RLFiltro.Pages := LayoutBoleto.Pages ;
-                  RLFiltro.Run;
-                 {$ELSE}
-                  RLFiltro.FilterPages( LayoutBoleto.Pages );
-                 {$ENDIF}
-              finally
-                 RLFiltro := nil ;
-               end;
+              {$IFDEF FPC}
+                RLFiltro.Pages := LayoutBoleto.Pages ;
+                RLFiltro.Run;
+              {$ELSE}
+                RLFiltro.FilterPages( LayoutBoleto.Pages );
+              {$ENDIF}
             end;
          end;
      end;

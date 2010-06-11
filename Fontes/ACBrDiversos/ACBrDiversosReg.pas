@@ -78,9 +78,9 @@ type
 procedure Register;
 
 implementation
-Uses ACBrEnterTab, ACBrUtil, 
+Uses ACBrEnterTab, ACBrBase, ACBrUtil, 
      {$IFDEF AnimGIF}ACBrGIF, {$ENDIF}
-     ACBrCalculadora, ACBrExtenso, ACBrTroco, ACBrValidador, ACBrReg,
+     ACBrCalculadora, ACBrExtenso, ACBrTroco, ACBrValidador,
      ACBrCMC7, ACBrFala, ACBrBarCode, SysUtils;
 
 {$IFNDEF FPC}

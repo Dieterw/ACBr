@@ -62,20 +62,6 @@ public
   function GetValue: string; override;
 end;
 
-{ Editor de Proriedades de Componente para chamar OpenDialog }
-TACBrFileNameProperty = class( TStringProperty )
-public
-  procedure Edit; override;
-  function GetAttributes: TPropertyAttributes; override;
-end;
-
-{ Editor de Proriedades de Componente para chamar OpenDialog }
-TACBrDirProperty = class( TStringProperty )
-public
-  procedure Edit; override;
-  function GetAttributes: TPropertyAttributes; override;
-end;
-
 procedure Register ;
 
 implementation
@@ -102,52 +88,6 @@ end;
 function TACBrAboutDialogProperty.GetValue: string;
 begin
   Result := 'http://acbr.sf.net' ;  //ACBrStr( 'Versão: ' + ACBR_VERSAO ) ;
-end;
-
-{ TACBrFileNameProperty }
-
-procedure TACBrFileNameProperty.Edit;
-var Dlg : TOpenDialog ;
-begin
-  Dlg := TOpenDialog.Create( nil );
-  try
-     Dlg.FileName   := GetValue ;
-     Dlg.InitialDir := ExtractFilePath( GetValue ) ;
-     Dlg.Filter     := 'Arquivos INI|*.ini' ;
-
-     if Dlg.Execute then
-        SetValue( Dlg.FileName );
-  finally
-     Dlg.Free ;
-  end ;
-end;
-
-function TACBrFileNameProperty.GetAttributes: TPropertyAttributes;
-begin
-  Result := [paDialog];
-end;
-
-
-{ TACBrDirProperty }
-
-procedure TACBrDirProperty.Edit;
-Var
-{$IFNDEF VisualCLX} Dir : String ; {$ELSE} Dir : WideString ; {$ENDIF}
-begin
-  {$IFNDEF VisualCLX}
-  Dir := GetValue ;
-  if SelectDirectory(Dir,[],0) then
-     SetValue( Dir ) ;
-  {$ELSE}
-  Dir := '' ;
-  if SelectDirectory('Selecione o Diretório','',Dir) then
-     SetValue( Dir ) ;
-  {$ENDIF}
-end;
-
-function TACBrDirProperty.GetAttributes: TPropertyAttributes;
-begin
-  Result := [paDialog];
 end;
 
 end.

@@ -28,7 +28,6 @@ package ACBr_BoletoFC_Fortes;
 requires
   rtl,
   vcl,
-  ACBrComum,
   ACBr_Boleto;
 
 contains

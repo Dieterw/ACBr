@@ -47,6 +47,12 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 0.03b   11/06/10
+---------------
+[*] Definido as propriedades "CurMascara" e "Delimitador" para vazio, para 
+    atenderem as exigencias de formato do arquivo do PAF, essas propriedades
+    não podem ser alimentadas. Sugestão de (lampada)
+
 Versão 0.03b   19/03/10
 ---------------
 [-] Corrigido BUG que ao tentar assinar digitalmente o arquivo, que não mostrava

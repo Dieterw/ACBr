@@ -205,8 +205,8 @@ begin
   FPAF_T := TPAF_T.Create;
   //
   FPath := ExtractFilePath( ParamStr(0) );
-  FDelimitador := '|';
-  FCurMascara  := '#0.00';
+  FDelimitador := '';
+  FCurMascara  := '';
   FTrimString  := True;
 end;
 

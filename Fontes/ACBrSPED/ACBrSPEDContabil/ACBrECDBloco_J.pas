@@ -53,6 +53,9 @@ type
   public
   end;
 
+  TRegistroJ100List = class;
+  TRegistroJ150List = class;
+
   /// Rregistro J005 – DEMONSTRAÇÕES CONTÁBEIS
 
   TRegistroJ005 = class
@@ -60,12 +63,20 @@ type
     fDT_INI: TDateTime;    /// Data inicial das demonstrações contábeis.
     fDT_FIN: TDateTime;    /// Data final das demonstrações contábeis.
     fID_DEM: Integer;      /// Identificação das demonstrações: 1 - demonstrações contábeis do empresário ou sociedade empresária a que se refere a escrituração; 2 - demonstrações consolidadas ou de outros empresários ou sociedades empresárias.
-    fCAB_DEM: String;  /// Cabeçalho das demonstrações.
+    fCAB_DEM: String;      /// Cabeçalho das demonstrações.
+
+    FRegistroJ100: TRegistroJ100List;  /// BLOCO J - Lista de RegistroJ100 (FILHO)
+    FRegistroJ150: TRegistroJ150List;  /// BLOCO J - Lista de RegistroJ150 (FILHO)
   public
+    constructor Create; virtual; /// Create
+    destructor Destroy; override; /// Destroy
     property DT_INI: TDateTime read fDT_INI write fDT_INI;
     property DT_FIN: TDateTime read fDT_FIN write fDT_FIN;
     property ID_DEM: Integer read fID_DEM write fID_DEM;
     property CAB_DEM: String read fCAB_DEM write fCAB_DEM;
+    /// Registros FILHOS
+    property RegistroJ100: TRegistroJ100List read FRegistroJ100 write FRegistroJ100;
+    property RegistroJ150: TRegistroJ150List read FRegistroJ150 write FRegistroJ150;
   end;
 
   /// Registro J005 - Lista
@@ -335,6 +346,21 @@ end;
 procedure TRegistroJ930List.SetItem(Index: Integer; const Value: TRegistroJ930);
 begin
   Put(Index, Value);
+end;
+
+{ TRegistroJ005 }
+
+constructor TRegistroJ005.Create;
+begin
+   FRegistroJ100 := TRegistroJ100List.Create;
+   FRegistroJ150 := TRegistroJ150List.Create;
+end;
+
+destructor TRegistroJ005.Destroy;
+begin
+  FRegistroJ100.Free;
+  FRegistroJ150.Free;
+  inherited;
 end;
 
 end.

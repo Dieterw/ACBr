@@ -50,12 +50,16 @@ type
   private
     FRegistroJ001: TRegistroJ001;      /// BLOCO J - RegistroJ001
     FRegistroJ005: TRegistroJ005List;  /// BLOCO J - Lista de RegistroJ005
-    FRegistroJ100: TRegistroJ100List;  /// BLOCO J - Lista de RegistroJ100
-    FRegistroJ150: TRegistroJ150List;  /// BLOCO J - Lista de RegistroJ150
     FRegistroJ800: TRegistroJ800List;  /// BLOCO J - Lista de RegistroJ800
     FRegistroJ900: TRegistroJ900;      /// BLOCO J - RegistroJ900
     FRegistroJ930: TRegistroJ930List;  /// BLOCO J - Lista de RegistroJ930
     FRegistroJ990: TRegistroJ990;      /// BLOCO J - FRegistroJ990
+
+    FRegistroJ100Count: Integer;
+    FRegistroJ150Count: Integer;
+
+    function WriteRegistroJ100(RegJ005: TRegistroJ005): AnsiString;
+    function WriteRegistroJ150(RegJ005: TRegistroJ005): AnsiString;
   public
     constructor Create; /// Create
     destructor Destroy; override; /// Destroy
@@ -63,8 +67,6 @@ type
 
     function WriteRegistroJ001: AnsiString;
     function WriteRegistroJ005: AnsiString;
-    function WriteRegistroJ100: AnsiString;
-    function WriteRegistroJ150: AnsiString;
     function WriteRegistroJ800: AnsiString;
     function WriteRegistroJ900: AnsiString;
     function WriteRegistroJ930: AnsiString;
@@ -72,12 +74,12 @@ type
 
     property RegistroJ001: TRegistroJ001     read fRegistroJ001 write fRegistroJ001;
     property RegistroJ005: TRegistroJ005List read fRegistroJ005 write fRegistroJ005;
-    property RegistroJ100: TRegistroJ100List read fRegistroJ100 write fRegistroJ100;
-    property RegistroJ150: TRegistroJ150List read fRegistroJ150 write fRegistroJ150;
     property RegistroJ800: TRegistroJ800List read fRegistroJ800 write fRegistroJ800;
     property RegistroJ900: TRegistroJ900     read fRegistroJ900 write fRegistroJ900;
     property RegistroJ930: TRegistroJ930List read fRegistroJ930 write fRegistroJ930;
     property RegistroJ990: TRegistroJ990     read fRegistroJ990 write fRegistroJ990;
+    property RegistroJ100Count: Integer read FRegistroJ100Count write FRegistroJ100Count;
+    property RegistroJ150Count: Integer read FRegistroJ150Count write FRegistroJ150Count;
   end;
 
 implementation
@@ -88,12 +90,12 @@ constructor TBloco_J.Create;
 begin
   FRegistroJ001 := TRegistroJ001.Create;
   FRegistroJ005 := TRegistroJ005List.Create;
-  FRegistroJ100 := TRegistroJ100List.Create;
-  FRegistroJ150 := TRegistroJ150List.Create;
   FRegistroJ800 := TRegistroJ800List.Create;
   FRegistroJ900 := TRegistroJ900.Create;
   FRegistroJ930 := TRegistroJ930List.Create;
   FRegistroJ990 := TRegistroJ990.Create;
+  FRegistroJ100Count := 0;
+  FRegistroJ150Count := 0;
 
   FRegistroJ990.QTD_LIN_J := 0;
 end;
@@ -102,8 +104,6 @@ destructor TBloco_J.Destroy;
 begin
   FRegistroJ001.Free;
   FRegistroJ005.Free;
-  FRegistroJ100.Free;
-  FRegistroJ150.Free;
   FRegistroJ800.Free;
   FRegistroJ900.Free;
   FRegistroJ930.Free;
@@ -114,8 +114,6 @@ end;
 procedure TBloco_J.LimpaRegistros;
 begin
   FRegistroJ005.Clear;
-  FRegistroJ100.Clear;
-  FRegistroJ150.Clear;
   FRegistroJ800.Clear;
   FRegistroJ930.Clear;
 
@@ -165,25 +163,31 @@ begin
                                                  Delimitador +
                                                  #13#10;
         end;
+        // Registros Filhos
+        strRegistroJ005 := strRegistroJ005 +
+                           WriteRegistroJ100(FRegistroJ005.Items[intFor] ) +
+                           WriteRegistroJ150(FRegistroJ005.Items[intFor] );
+
         FRegistroJ990.QTD_LIN_J := FRegistroJ990.QTD_LIN_J + 1;
      end;
   end;
   Result := strRegistroJ005;
 end;
 
-function TBloco_J.WriteRegistroJ100: AnsiString;
+function TBloco_J.WriteRegistroJ100(RegJ005: TRegistroJ005): AnsiString;
 var
 intFor: integer;
 strRegistroJ100: AnsiString;
 begin
   strRegistroJ100 := '';
 
-  if Assigned(FRegistroJ100) then
+  if Assigned(RegJ005.RegistroJ100) then
   begin
-     for intFor := 0 to FRegistroJ100.Count - 1 do
+     for intFor := 0 to RegJ005.RegistroJ100.Count - 1 do
      begin
-        with FRegistroJ100.Items[intFor] do
+        with RegJ005.RegistroJ100.Items[intFor] do
         begin
+           ///
            Check(((IND_GRP_BAL = '1') or (IND_GRP_BAL = '2')), '(J-J100) No Indicador de grupo do balanço, deve ser informado o número 1 ou 2!');
            Check(((IND_DC_BAL = 'D') or (IND_DC_BAL = 'C')), '(J-J100) No Indicador da situação do saldo, deve ser informado: D ou C!');
            ///
@@ -196,25 +200,28 @@ begin
                                                  LFill(IND_DC_BAL, 1) +
                                                  Delimitador +
                                                  #13#10;
+
         end;
         FRegistroJ990.QTD_LIN_J := FRegistroJ990.QTD_LIN_J + 1;
      end;
+     FRegistroJ100Count := FRegistroJ100Count + RegJ005.RegistroJ100.Count;
   end;
+
   Result := strRegistroJ100;
 end;
 
-function TBloco_J.WriteRegistroJ150: AnsiString;
+function TBloco_J.WriteRegistroJ150(RegJ005: TRegistroJ005): AnsiString;
 var
 intFor: integer;
 strRegistroJ150: AnsiString;
 begin
   strRegistroJ150 := '';
 
-  if Assigned(FRegistroJ150) then
+  if Assigned(RegJ005.RegistroJ150) then
   begin
-     for intFor := 0 to FRegistroJ150.Count - 1 do
+     for intFor := 0 to RegJ005.RegistroJ150.Count - 1 do
      begin
-        with FRegistroJ150.Items[intFor] do
+        with RegJ005.RegistroJ150.Items[intFor] do
         begin
            Check(((IND_VL = 'D') or (IND_VL = 'R') or (IND_VL = 'P') or (IND_VL = 'N')), '(J-J150) No Indicador da situação do valor, deve ser informado: D ou R ou P ou N!');
            ///
@@ -226,10 +233,13 @@ begin
                                                  LFill(IND_VL, 1) +
                                                  Delimitador +
                                                  #13#10;
+
         end;
         FRegistroJ990.QTD_LIN_J := FRegistroJ990.QTD_LIN_J + 1;
      end;
+     FRegistroJ150Count := FRegistroJ150Count + RegJ005.RegistroJ150.Count;
   end;
+
   Result := strRegistroJ150;
 end;
 

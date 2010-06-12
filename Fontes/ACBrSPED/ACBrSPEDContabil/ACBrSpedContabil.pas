@@ -126,8 +126,6 @@ type
     /// BLOCO J
     function WriteRegistroJ001: AnsiString;
     function WriteRegistroJ005: AnsiString;
-    function WriteRegistroJ100: AnsiString;
-    function WriteRegistroJ150: AnsiString;
     function WriteRegistroJ800: AnsiString;
     function WriteRegistroJ900: AnsiString;
     function WriteRegistroJ930: AnsiString;
@@ -390,8 +388,6 @@ begin
    /// BLOCO J
     AStringList.Add(Trim(WriteRegistroJ001));
     if Bloco_J.RegistroJ005.Count > 0 then AStringList.Add(Trim(WriteRegistroJ005));
-    if Bloco_J.RegistroJ100.Count > 0 then AStringList.Add(Trim(WriteRegistroJ100));
-    if Bloco_J.RegistroJ150.Count > 0 then AStringList.Add(Trim(WriteRegistroJ150));
     if Bloco_J.RegistroJ800.Count > 0 then AStringList.Add(Trim(WriteRegistroJ800));
     AStringList.Add(Trim(WriteRegistroJ900));
     if Bloco_J.RegistroJ930.Count > 0 then AStringList.Add(Trim(WriteRegistroJ930));
@@ -743,27 +739,15 @@ begin
       REG_BLC := 'J005';
       QTD_REG_BLC := Bloco_J.RegistroJ005.Count;
    end;
-end;
-
-function TACBrSPEDContabil.WriteRegistroJ100: AnsiString;
-begin
-   Result := Bloco_J.WriteRegistroJ100;
-
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'J100';
-      QTD_REG_BLC := Bloco_J.RegistroJ100.Count;
+      QTD_REG_BLC := Bloco_J.RegistroJ100Count;
    end;
-end;
-
-function TACBrSPEDContabil.WriteRegistroJ150: AnsiString;
-begin
-   Result := Bloco_J.WriteRegistroJ150;
-
    with Bloco_9.Registro9900.New do
    begin
       REG_BLC := 'J150';
-      QTD_REG_BLC := Bloco_J.RegistroJ150.Count;
+      QTD_REG_BLC := Bloco_J.RegistroJ150Count;
    end;
 end;
 

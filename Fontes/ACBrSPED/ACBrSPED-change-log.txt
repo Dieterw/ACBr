@@ -47,6 +47,10 @@ Símbolo : Significado
 [*]     : Recurso modificado/melhorado
 [-]     : Correção de Bug (assim esperamos)
 
+Versão 1.00b   12/06/10
+-- ACBrSPEDContabil --
+[+] Adicionado hierarquia no bloco J, dos registros J100 e J150 por (luis.varanti)
+
 Versão 1.00b   27/04/10     (por: DSA)
 -- ACBrSPEDFiscal --
 [+] Nova propriedade  "Arquivo: String" , que deve ser informada com o Nome do

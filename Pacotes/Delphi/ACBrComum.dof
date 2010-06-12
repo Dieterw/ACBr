@@ -135,7 +135,10 @@ ProductName=
 ProductVersion=1.0.0.0
 Comments=
 [Excluded Packages]
-C:\Pascal\Comp\ACBr\branches\ACBrNovo\lib\synapse.bpl=Synapse TCP/IP / Serial library (http://www.synapse.ararat.cz)
+C:\Program Files (x86)\Borland\Delphi7\Projects\Bpl\ACBrDiversos.bpl=ACBr Automação Comercial Brasil - ACBrDiversos (http://acbr.sf.net/)
+c:\program files (x86)\borland\delphi7\Projects\Bpl\ACBrSerial.bpl=ACBr Automação Comercial Brasil - ACBrSerial (http://acbr.sf.net/)
+c:\program files (x86)\borland\delphi7\Projects\Bpl\ACBr_Boleto.bpl=ACBr Automação Comercial Brasil - ACBrBoleto - (http://acbr.sourceforge.net/)
+c:\program files (x86)\borland\delphi7\Projects\Bpl\ACBr_BoletoFC_Fortes.bpl=ACBr AutomaÃ§Ã£o Comercial Brasil - ACBrBoletoFC Fortes
 [HistoryLists\hlDebugSourcePath]
 Count=1
 Item0=..\..\Fontes\ACBrComum

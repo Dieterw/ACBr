@@ -135,9 +135,9 @@ de existir sendo dividos em pacotes com os nomes ACBrDiversos, ACBrSerial, ACBrT
    Click em "OK" para finalizar.
 
 
-  3.1 Procure pela pasta Pacotes\Delphi e abra o arquivo synapse.dpk e clique em compile.
-  3.2 Procure pela pasta Pacotes\Delphi e abra o arquivo ACBrComum.dpk e clique em compile.
-  3.3 Procure pela pasta Pacotes\Delphi e abra o arquivo ACBrSerial.dpk e clique em compile e depois em instal.
+  3.1 Procure pela pasta Pacotes\Delphi e abra o arquivo synapse.dpk e clique em Compile.
+  3.2 Procure pela pasta Pacotes\Delphi e abra o arquivo ACBrComum.dpk e clique em Compile e depois em Install.
+  3.3 Procure pela pasta Pacotes\Delphi e abra o arquivo ACBrSerial.dpk e clique em Compile e depois em Install.
   3.4 Repita o passo 3.3 para os demais componentes que deseja instalar.
 
   4. Na IDE do Delphi, clique em "File - Close All"

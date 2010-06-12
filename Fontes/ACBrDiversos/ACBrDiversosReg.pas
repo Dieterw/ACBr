@@ -51,6 +51,7 @@ unit ACBrDiversosReg;
 
 interface
 Uses Classes ,
+    {$IFDEF VisualCLX} QDialogs {$ELSE} Dialogs, FileCtrl {$ENDIF},
     {$IFDEF FPC}
        LResources, LazarusPackageIntf, PropEdits, componenteditors
     {$ELSE}
@@ -73,6 +74,13 @@ type
   TACBrFalaEditor = class( TComponentEditor )
   public
     procedure Edit; override;
+  end;
+
+  { Editor de Proriedades de Componente para chamar OpenDialog }
+  TACBrDirProperty = class( TStringProperty )
+  public
+    procedure Edit; override;
+    function GetAttributes: TPropertyAttributes; override;
   end;
 
 procedure Register;
@@ -117,6 +125,28 @@ procedure TACBrFalaEditor.Edit;
 begin
   with Component as TACBrFala do
      Falar ;
+end;
+
+{ TACBrDirProperty }
+
+procedure TACBrDirProperty.Edit;
+Var
+{$IFNDEF VisualCLX} Dir : String ; {$ELSE} Dir : WideString ; {$ENDIF}
+begin
+  {$IFNDEF VisualCLX}
+  Dir := GetValue ;
+  if SelectDirectory(Dir,[],0) then
+     SetValue( Dir ) ;
+  {$ELSE}
+  Dir := '' ;
+  if SelectDirectory('Selecione o Diretório','',Dir) then
+     SetValue( Dir ) ;
+  {$ENDIF}
+end;
+
+function TACBrDirProperty.GetAttributes: TPropertyAttributes;
+begin
+  Result := [paDialog];
 end;
 
 {$IFDEF FPC}

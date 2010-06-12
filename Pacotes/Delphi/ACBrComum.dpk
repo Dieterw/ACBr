@@ -23,7 +23,6 @@ package ACBrComum;
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
 {$DESCRIPTION 'ACBr Automação Comercial Brasil  ACBrComum   (http://acbr.sf.ne)'}
-{$RUNONLY}
 {$IMPLICITBUILD ON}
 
 requires

@@ -40,7 +40,6 @@ Unit ACBrReg ;
 
 interface
 uses Classes, SysUtils, ACBrConsts, ACBrBase,
-    {$IFDEF VisualCLX} QDialogs {$ELSE} Dialogs, FileCtrl {$ENDIF},
     {$IFDEF FPC}
         LResources, LazarusPackageIntf, PropEdits, componenteditors
      {$ELSE}

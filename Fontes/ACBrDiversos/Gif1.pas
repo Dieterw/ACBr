@@ -45,15 +45,16 @@ interface
 uses
   SysUtils, Classes,
   {$ifdef VisualCLX}
-     Types, QGraphics, QControls, QForms, QDialogs, QStdCtrls
+     QGraphics, QControls, QForms, QDialogs, QStdCtrls
   {$else}
-     Messages, Graphics, Controls, StdCtrls, ExtCtrls, Forms
     {$ifndef FPC}
-     , Windows, WinProcs, WinTypes
+      Windows, Messages, WinProcs, WinTypes
     {$else}
-     , LCLType
+      LCLType
     {$endif}
-  {$endif} ;
+     , Graphics, Controls, Dialogs, StdCtrls, ExtCtrls, Forms
+  {$endif}
+   , Types ;
 
 
 // LZW encode table sizes

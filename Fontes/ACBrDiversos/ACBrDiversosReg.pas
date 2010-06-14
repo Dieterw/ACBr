@@ -42,13 +42,6 @@
 {$I ACBr.inc}
 unit ACBrDiversosReg;
 
-{$IFDEF VisualCLX}
-  {$DEFINE AnimGIF}
-{$ENDIF}
-{$IFDEF FPC}
-  {$DEFINE AnimGIF}
-{$ENDIF}
-
 interface
 Uses Classes ,
     {$IFDEF VisualCLX} QDialogs {$ELSE} Dialogs, FileCtrl {$ENDIF},
@@ -86,8 +79,7 @@ type
 procedure Register;
 
 implementation
-Uses ACBrEnterTab, ACBrBase, ACBrUtil, 
-     {$IFDEF AnimGIF}ACBrGIF, {$ENDIF}
+Uses ACBrEnterTab, ACBrBase, ACBrUtil, ACBrGIF,
      ACBrCalculadora, ACBrExtenso, ACBrTroco, ACBrValidador,
      ACBrCMC7, ACBrFala, ACBrBarCode, SysUtils;
 
@@ -98,8 +90,7 @@ Uses ACBrEnterTab, ACBrBase, ACBrUtil,
 procedure Register;
 begin
   RegisterComponents('ACBr', [TACBrCalculadora, TACBrCMC7, TACBrExtenso, TACBrTroco,
-     TACBrValidador, TACBrFala, TACBrEnterTab
-     {$IFDEF AnimGIF}, TACBrGIF {$ENDIF}, TACBrBarCode]);
+     TACBrValidador, TACBrFala, TACBrEnterTab, TACBrGIF, TACBrBarCode]);
 
   { Registrando os Editores de Propriedade }
   RegisterPropertyEditor(TypeInfo(String), TACBrFala, 'OrigemArquivos',

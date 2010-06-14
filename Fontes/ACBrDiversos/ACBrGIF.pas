@@ -45,18 +45,10 @@ unit ACBrGIF;
 interface
 
 {$IFDEF VisualCLX}
-  {$DEFINE OK}
+  {$DEFINE FPC_CLX}
 {$ENDIF}
 {$IFDEF FPC}
-  {$DEFINE OK}
-{$ENDIF}
-
-{$IFNDEF OK}
-  - ERRO ACBrGIF é compativel apenas com CLX ou Lazarus-FreePascal
-
-  - Se vc iniciou uma nova aplicação CLX, certifique-se está declarado em:
-    Project -> Options -> Diretorios/Conditional -> Conditional Defines
-    "VisualCLX" ou "CLX"
+  {$DEFINE FPC_CLX}
 {$ENDIF}
 
 uses
@@ -94,7 +86,7 @@ type
     function GetCurrentFrame: Integer;
     procedure SetFilename(const Value: TFilename);
     function GetIsAnimated: Boolean;
-    procedure SetAutoSize(const Value: Boolean);
+    procedure SetAutoSize(const Value: Boolean); 
     procedure SetTransparent(const Value: Boolean);
     procedure SetCurrentFrame(const Value: Integer);
     procedure SetPaused(const Value: Boolean);
@@ -139,8 +131,10 @@ type
     property OnDragOver;
     property OnEndDrag;
     property OnMouseDown;
-    property OnMouseEnter;
-    property OnMouseLeave;
+    {$IFDEF FPC_CLX}
+     property OnMouseEnter;
+     property OnMouseLeave;
+    {$ENDIF} 
     property OnMouseMove;
     property OnMouseUp;
     property OnStartDrag;

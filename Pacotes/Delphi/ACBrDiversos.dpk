@@ -42,6 +42,9 @@ contains
   ACBrFala in '..\..\Fontes\ACBrDiversos\ACBrFala.pas',
   ACBrBarCode in '..\..\Fontes\ACBrDiversos\ACBrBarCode.pas',
   ACBrEnterTab in '..\..\Fontes\ACBrDiversos\ACBrEnterTab.pas',
-  AJBarcode in '..\..\Fontes\ACBrDiversos\AJBarcode.pas';
+  AJBarcode in '..\..\Fontes\ACBrDiversos\AJBarcode.pas',
+  ACBrGIF in '..\..\Fontes\ACBrDiversos\ACBrGIF.pas',
+  Gif1 in '..\..\Fontes\ACBrDiversos\Gif1.pas',
+  Gif3 in '..\..\Fontes\ACBrDiversos\Gif3.pas';
 
 end.

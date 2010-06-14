@@ -318,7 +318,15 @@ Também existem os componentes para NFe. Para a NFe2 estão localizados na pasta
  \pacotes\ACBrNFe
 
 Os mesmos são:
-ACBrCTe.dpk -  ??? Descrição ???
+ACBr_CTe.dpk - Conhecimento de Transporte de Carga Eletrônico.
+    * ACBrCTe - Componente que gera, assina, valida e envia para o SEFAZ o
+                arquivo xml contendo dados pertinentes ao conhecimento de
+                transporte de carga eletrônico.
+
+ACBrCTeDacteQRpkg.dpk - DACTe em Quick Reporter
+    * ACBrCTeDACTeQR - Componente para emissão do DACTe, Documento Auxiliar do
+                       Conhecimento de Transporte Eletrônico.
+
 ACBr_NFe.dpk - ??? Descrição ???
 ACBrCTeDacteQRpkg.dpk - ??? Descrição ???
 ACBrNFeDanfeQRpkg.dpk - ??? Descrição ???
@@ -431,4 +439,4 @@ precisam comer.... ;-)
 11. HISTÓRICO DO DESENVOLVIMENTO
 ================================
 
-  Por favor leia o arquivo:  " ACBr-change-log.TXT "
+  Por favor leia o arquivo:  " ACBr-change-log.TXT "

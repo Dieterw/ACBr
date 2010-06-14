@@ -33,7 +33,7 @@
       <Item2>
         <Filename Value="..\..\Fontes\ACBrBoleto\ACBrBoletoFCFortesFr.pas"/>
         <HasRegisterProc Value="True"/>
-        <UnitName Value="ACBRBoletoFCFortesFr"/>
+        <UnitName Value="ACBrBoletoFCFortesFr"/>
       </Item2>
     </Files>
     <Type Value="RunAndDesignTime"/>
@@ -57,4 +57,4 @@
       <IgnoreBinaries Value="False"/>
     </PublishOptions>
   </Package>
-</CONFIG>
+</CONFIG>

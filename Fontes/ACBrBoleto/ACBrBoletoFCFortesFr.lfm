@@ -1,20 +1,21 @@
 object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
-  Left = 70
-  Height = 768
-  Top = 19
-  Width = 949
+  Left = 312
+  Height = 834
+  Top = 52
+  Width = 937
   VertScrollBar.Position = 538
+  ActiveControl = LayoutBoleto
   Caption = 'ACBRBoletoFCFortesFr'
-  ClientHeight = 768
-  ClientWidth = 949
+  ClientHeight = 834
+  ClientWidth = 937
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   OnCreate = FormCreate
   LCLVersion = '0.9.29'
   object LayoutBoleto: TRLReport
-    Left = 8
+    Left = 0
     Height = 1123
-    Top = 544
+    Top = 8
     Width = 794
     Margins.LeftMargin = 3
     Margins.TopMargin = 5
@@ -306,7 +307,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 0
         Height = 10
         Top = 45
-        Width = 70
+        Width = 72
         Caption = 'Local de Pagamento'
         Font.Color = clBlack
         Font.Height = -8
@@ -337,7 +338,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 0
         Height = 10
         Top = 78
-        Width = 30
+        Width = 29
         Caption = 'Cedente'
         Font.Color = clBlack
         Font.Height = -8
@@ -368,7 +369,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 0
         Height = 10
         Top = 110
-        Width = 68
+        Width = 69
         Caption = 'Data do Documento'
         Font.Color = clBlack
         Font.Height = -8
@@ -400,7 +401,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 127
         Height = 10
         Top = 110
-        Width = 79
+        Width = 77
         Caption = 'Número do Documento'
         Font.Color = clBlack
         Font.Height = -8
@@ -464,7 +465,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 322
         Height = 10
         Top = 110
-        Width = 23
+        Width = 22
         Caption = 'Aceite'
         Font.Color = clBlack
         Font.Height = -8
@@ -496,7 +497,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 399
         Height = 10
         Top = 110
-        Width = 82
+        Width = 84
         Caption = 'Data do Processamento'
         Font.Color = clBlack
         Font.Height = -8
@@ -546,7 +547,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 0
         Height = 10
         Top = 142
-        Width = 49
+        Width = 51
         Caption = 'Uso do Banco'
         Font.Color = clBlack
         Font.Height = -8
@@ -578,7 +579,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 127
         Height = 10
         Top = 142
-        Width = 30
+        Width = 28
         Caption = 'Carteira'
         Font.Color = clBlack
         Font.Height = -8
@@ -625,7 +626,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 252
         Height = 10
         Top = 142
-        Width = 40
+        Width = 41
         Caption = 'Quantidade'
         Font.Color = clBlack
         Font.Height = -8
@@ -656,7 +657,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 399
         Height = 10
         Top = 142
-        Width = 20
+        Width = 18
         Caption = 'Valor'
         Font.Color = clBlack
         Font.Height = -8
@@ -687,7 +688,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 0
         Height = 10
         Top = 173
-        Width = 325
+        Width = 321
         Caption = 'Instruções (Todas as informações deste bloqueto são de exclusiva responsabilidade do cedente.)'
         Font.Color = clBlack
         Font.Height = -8
@@ -725,7 +726,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 574
         Height = 10
         Top = 45
-        Width = 41
+        Width = 39
         Caption = 'Vencimento'
         Font.Color = clBlack
         Font.Height = -8
@@ -758,7 +759,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 574
         Height = 10
         Top = 78
-        Width = 91
+        Width = 86
         Caption = 'Agência / Código Cedente'
         Font.Color = clBlack
         Font.Height = -8
@@ -822,7 +823,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 574
         Height = 10
         Top = 142
-        Width = 87
+        Width = 82
         Caption = '( = ) Valor do Documento'
         Font.Color = clBlack
         Font.Height = -8
@@ -855,7 +856,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 574
         Height = 10
         Top = 174
-        Width = 92
+        Width = 89
         Caption = '( - ) Desconto / Abatimento'
         Font.Color = clBlack
         Font.Height = -8
@@ -917,7 +918,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 574
         Height = 10
         Top = 238
-        Width = 68
+        Width = 63
         Caption = '( = ) Valor Cobrado'
         Font.Color = clBlack
         Font.Height = -8
@@ -946,9 +947,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       end
       object RLLabel88: TRLLabel
         Left = 4
-        Height = 14
+        Height = 13
         Top = 270
-        Width = 43
+        Width = 41
         Caption = 'Sacado:'
         Font.CharSet = ANSI_CHARSET
         Font.Color = clBlack
@@ -1015,7 +1016,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 574
         Height = 10
         Top = 270
-        Width = 45
+        Width = 46
         Caption = 'CPF / CNPJ'
         Font.Color = clBlack
         Font.Height = -8
@@ -1097,7 +1098,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 499
         Height = 10
         Top = 334
-        Width = 80
+        Width = 83
         Caption = 'Autenticação Mecânica'
         Font.Color = clBlack
         Font.Height = -8
@@ -1112,7 +1113,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 392
         Height = 10
         Top = 153
-        Width = 5
+        Width = 6
         Caption = 'x'
         Font.Color = clBlack
         Font.Height = -8
@@ -1126,9 +1127,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       end
       object RLLabel98: TRLLabel
         Left = 0
-        Height = 14
+        Height = 13
         Top = 388
-        Width = 26
+        Width = 8
         Caption = '"'
         Font.CharSet = SYMBOL_CHARSET
         Font.Color = clBlack
@@ -1142,9 +1143,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       end
       object RLLabel102: TRLLabel
         Left = 4
-        Height = 14
+        Height = 13
         Top = 316
-        Width = 89
+        Width = 86
         Caption = 'Sacador/Avalista:'
         Font.CharSet = ANSI_CHARSET
         Font.Color = clBlack
@@ -1440,7 +1441,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 4
         Height = 10
         Top = 59
-        Width = 70
+        Width = 72
         Caption = 'Local de Pagamento'
         Font.Color = clBlack
         Font.Height = -8
@@ -1489,7 +1490,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 552
         Height = 10
         Top = 59
-        Width = 41
+        Width = 39
         Caption = 'Vencimento'
         Font.Color = clBlack
         Font.Height = -8
@@ -1516,7 +1517,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 4
         Height = 10
         Top = 92
-        Width = 30
+        Width = 29
         Caption = 'Cedente'
         Font.Color = clBlack
         Font.Height = -8
@@ -1547,7 +1548,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 552
         Height = 10
         Top = 92
-        Width = 91
+        Width = 86
         Caption = 'Agência / Código Cedente'
         Font.Color = clBlack
         Font.Height = -8
@@ -1579,7 +1580,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 4
         Height = 10
         Top = 124
-        Width = 68
+        Width = 69
         Caption = 'Data do Documento'
         Font.Color = clBlack
         Font.Height = -8
@@ -1611,7 +1612,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 131
         Height = 10
         Top = 124
-        Width = 79
+        Width = 77
         Caption = 'Número do Documento'
         Font.Color = clBlack
         Font.Height = -8
@@ -1675,7 +1676,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 326
         Height = 10
         Top = 124
-        Width = 23
+        Width = 22
         Caption = 'Aceite'
         Font.Color = clBlack
         Font.Height = -8
@@ -1707,7 +1708,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 403
         Height = 10
         Top = 124
-        Width = 82
+        Width = 84
         Caption = 'Data do Processamento'
         Font.Color = clBlack
         Font.Height = -8
@@ -1771,7 +1772,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 4
         Height = 10
         Top = 156
-        Width = 49
+        Width = 51
         Caption = 'Uso do Banco'
         Font.Color = clBlack
         Font.Height = -8
@@ -1804,7 +1805,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 131
         Height = 10
         Top = 156
-        Width = 30
+        Width = 28
         Caption = 'Carteira'
         Font.Color = clBlack
         Font.Height = -8
@@ -1868,7 +1869,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 256
         Height = 10
         Top = 156
-        Width = 40
+        Width = 41
         Caption = 'Quantidade'
         Font.Color = clBlack
         Font.Height = -8
@@ -1899,7 +1900,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 403
         Height = 10
         Top = 156
-        Width = 20
+        Width = 18
         Caption = 'Valor'
         Font.Color = clBlack
         Font.Height = -8
@@ -1930,7 +1931,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 552
         Height = 10
         Top = 156
-        Width = 87
+        Width = 82
         Caption = '( = ) Valor do Documento'
         Font.Color = clBlack
         Font.Height = -8
@@ -1963,7 +1964,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 4
         Height = 10
         Top = 187
-        Width = 325
+        Width = 321
         Caption = 'Instruções (Todas as informações deste bloqueto são de exclusiva responsabilidade do cedente.)'
         Font.Color = clBlack
         Font.Height = -8
@@ -2001,7 +2002,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 552
         Height = 10
         Top = 188
-        Width = 92
+        Width = 89
         Caption = '( - ) Desconto / Abatimento'
         Font.Color = clBlack
         Font.Height = -8
@@ -2063,7 +2064,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 552
         Height = 10
         Top = 252
-        Width = 68
+        Width = 63
         Caption = '( = ) Valor Cobrado'
         Font.Color = clBlack
         Font.Height = -8
@@ -2092,9 +2093,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       end
       object RLLabel165: TRLLabel
         Left = 4
-        Height = 14
+        Height = 13
         Top = 284
-        Width = 43
+        Width = 41
         Caption = 'Sacado:'
         Font.Color = clBlack
         Font.Height = -11
@@ -2125,7 +2126,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 551
         Height = 10
         Top = 284
-        Width = 45
+        Width = 46
         Caption = 'CPF / CNPJ'
         Font.Color = clBlack
         Font.Height = -8
@@ -2218,7 +2219,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 503
         Height = 10
         Top = 349
-        Width = 166
+        Width = 169
         Caption = 'Autenticação Mecânica - Ficha de Compensação'
         Font.Color = clBlack
         Font.Height = -8
@@ -2233,7 +2234,7 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
         Left = 396
         Height = 10
         Top = 167
-        Width = 5
+        Width = 6
         Caption = 'x'
         Font.Color = clBlack
         Font.Height = -8
@@ -2247,9 +2248,9 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       end
       object RLLabel175: TRLLabel
         Left = 4
-        Height = 14
+        Height = 13
         Top = 330
-        Width = 89
+        Width = 86
         Caption = 'Sacador/Avalista:'
         Font.CharSet = ANSI_CHARSET
         Font.Color = clBlack
@@ -2313,10 +2314,10 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
       end
     end
     object txtSwHouse: TRLAngleLabel
-      Left = 3
-      Height = 53
+      Left = 4
+      Height = 45
       Top = 653
-      Width = 12
+      Width = 10
       Alignment = taCenter
       Angle = 90
       Font.Height = -9
@@ -2351,4 +2352,4 @@ object ACBRBoletoFCFortesFr: TACBRBoletoFCFortesFr
     left = 823
     top = 752
   end
-end
+end

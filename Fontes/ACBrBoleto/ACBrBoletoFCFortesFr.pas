@@ -39,7 +39,7 @@
 ******************************************************************************}
 {$I ACBr.inc}
 
-unit ACBRBoletoFCFortesFr;
+unit ACBrBoletoFCFortesFr;
 
 interface
 
@@ -63,7 +63,7 @@ const
 
 type
 
-  { TACBRBoletoFCFortesFr }
+  { TACBrBoletoFCFortesFr }
   TACBrBoletoFCFortes = class(TACBrBoletoFCClass)
   private
     { Private declarations }
@@ -74,7 +74,7 @@ type
     procedure Imprimir; override;
   end;
 
-  TACBRBoletoFCFortesFr = class(TForm)
+  TACBrBoletoFCFortesFr = class(TForm)
     imgCodigoBarra: TRLBarcode;
     LayoutBoleto: TRLReport;
     RLBand1: TRLBand;
@@ -252,7 +252,7 @@ type
   end;
 
 var
-  ACBRBoletoFCFortesForm: TACBRBoletoFCFortesFr;
+  ACBrBoletoFCFortesForm: TACBrBoletoFCFortesFr;
 
 procedure Register;
 
@@ -289,7 +289,7 @@ var
 begin
   inherited Imprimir;    // Executa verificações padroes
 
-  frACBrBoletoFortes := TACBRBoletoFCFortesFr.Create(Self);
+  frACBrBoletoFortes := TACBrBoletoFCFortesFr.Create(Self);
   try
      with frACBrBoletoFortes do
      begin
@@ -335,33 +335,33 @@ begin
 end;
 
 
-{ TACBRBoletoFCFortesFr }
+{ TACBrBoletoFCFortesFr }
 
-procedure TACBRBoletoFCFortesFr.FormCreate(Sender: TObject);
+procedure TACBrBoletoFCFortesFr.FormCreate(Sender: TObject);
 begin
    fIndice   := 0 ;
    fBoletoFC := TACBrBoletoFCFortes(Owner) ;  // Link para o Pai
 end;
 
-function TACBRBoletoFCFortesFr.GetACBrTitulo: TACBrTitulo;
+function TACBrBoletoFCFortesFr.GetACBrTitulo: TACBrTitulo;
 begin
    Result := fBoletoFC.ACBrBoleto.ListadeBoletos[ fIndice ] ;
 end;
 
-procedure TACBRBoletoFCFortesFr.LayoutBoletoBeforePrint(Sender: TObject;
+procedure TACBrBoletoFCFortesFr.LayoutBoletoBeforePrint(Sender: TObject;
    var PrintIt: boolean);
 begin
    fIndice := 0 ;
    txtSwHouse.Caption := BoletoFC.SoftwareHouse ;
 end;
 
-procedure TACBRBoletoFCFortesFr.LayoutBoletoDataCount(Sender: TObject;
+procedure TACBrBoletoFCFortesFr.LayoutBoletoDataCount(Sender: TObject;
    var DataCount: integer);
 begin
    DataCount := fBoletoFC.ACBrBoleto.ListadeBoletos.Count ;
 end;
 
-procedure TACBRBoletoFCFortesFr.LayoutBoletoDataRecord(Sender: TObject;
+procedure TACBrBoletoFCFortesFr.LayoutBoletoDataRecord(Sender: TObject;
    RecNo: integer; CopyNo: integer; var Eof: boolean;
    var RecordAction: TRLRecordAction);
 begin
@@ -371,7 +371,7 @@ begin
    RecordAction := raUseIt ;
 end;
 
-procedure TACBRBoletoFCFortesFr.RLBand1BeforePrint(Sender: TObject;
+procedure TACBrBoletoFCFortesFr.RLBand1BeforePrint(Sender: TObject;
    var PrintIt: boolean);
 Var
    NossoNum : String;
@@ -407,7 +407,7 @@ begin
    end;
 end;
 
-procedure TACBRBoletoFCFortesFr.RLBand2BeforePrint(Sender: TObject;
+procedure TACBrBoletoFCFortesFr.RLBand2BeforePrint(Sender: TObject;
    var PrintIt: boolean);
 Var
   CodBarras, LinhaDigitavel : String;
@@ -450,4 +450,4 @@ initialization
 {$endif}
 
 end.
-
+

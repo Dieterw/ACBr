@@ -67,7 +67,7 @@ type
 
 implementation
 
-uses ACBrSPEDUtils;
+uses ACBrSpedUtils;
 
 { TPAF_D }
 
@@ -162,4 +162,4 @@ begin
    end;
 end;
 
-end.
+end.

@@ -457,19 +457,55 @@ end;
 function TConhecimentos.LoadFromFile(CaminhoArquivo: string): boolean;
 var
  LocCTeR : TCTeR;
+ ArquivoXML: TStringList;
+ XML : AnsiString;
 begin
+ try
+    ArquivoXML := TStringList.Create;
+    ArquivoXML.LoadFromFile(CaminhoArquivo);
+    Result := True;
+    while pos('</CTe>',ArquivoXML.Text) > 0 do
+     begin
+       if pos('</cteProc>',ArquivoXML.Text) > 0  then
+        begin
+          XML := copy(ArquivoXML.Text,1,pos('</cteProc>',ArquivoXML.Text)+5);
+          ArquivoXML.Text := Trim(copy(ArquivoXML.Text,pos('</cteProc>',ArquivoXML.Text)+10,length(ArquivoXML.Text)));
+        end
+       else
+        begin
+          XML := copy(ArquivoXML.Text,1,pos('</CTe>',ArquivoXML.Text)+5);
+          ArquivoXML.Text := Trim(copy(ArquivoXML.Text,pos('</CTe>',ArquivoXML.Text)+6,length(ArquivoXML.Text)));
+        end;
+       LocCTeR := TCTeR.Create(Self.Add.CTe);
+       try
+          LocCTeR.Leitor.Arquivo := XML;
+          LocCTeR.LerXml;
+          Items[Self.Count-1].XML := LocCTeR.Leitor.Arquivo;
+          Items[Self.Count-1].NomeArq := CaminhoArquivo;
+          GerarCTe;
+       finally
+          LocCTeR.Free;
+       end;
+     end;
+    ArquivoXML.Free;
+ except
+    raise;
+    Result := False;
+ end;
+{
  try
     Result := True;
     LocCTeR := TCTeR.Create(Self.Add.CTe);
     try
        LocCTeR.Leitor.CarregarArquivo(CaminhoArquivo);
-       LocCTeR.LerXml;   
+       LocCTeR.LerXml;
     finally
        LocCTeR.Free;
     end;
  except
     Result := False;
  end;
+ }
 end;
 
 function TConhecimentos.LoadFromStream(Stream: TStringStream): boolean;
@@ -482,6 +518,8 @@ begin
     try
        LocCTeR.Leitor.CarregarArquivo(Stream);
        LocCTeR.LerXml;
+       Items[Self.Count-1].XML := LocCTeR.Leitor.Arquivo;
+       GerarCTe;
     finally
        LocCTeR.Free
     end;

@@ -215,23 +215,19 @@ begin
   if not GerarChaveCTe(Chave, CTe.ide.cUF, CTe.ide.cCT, StrToInt(CTe.ide.modelo), CTe.ide.serie,
     CTe.ide.nCT, CTe.ide.dhEmi, CTe.Emit.CNPJ) then
     Gerador.wAlerta('A01', 'infCte', DSC_CHAVE, ERR_MSG_GERAR_CHAVE);
+{
+  if (Trim(CTe.infCTe.ID) = '') or (not ValidarChave(CTe.infCTe.ID))
+   then CTe.infCTe.ID := StringReplace( UpperCase(chave), 'NFE', '', [rfReplaceAll] )
+   else CTe.infCTe.ID := StringReplace( UpperCase(CTe.infCTe.ID), 'NFE', '', [rfReplaceAll] );
 
-  if (Trim(CTe.infCTe.ID) = '') or (not ValidarChave(CTe.infCTe.ID)) then
-     CTe.infCTe.ID := chave
-  else
-   begin
-     CTe.infCTe.ID := StringReplace( UpperCase(CTe.infCTe.ID), 'NFE', '', [rfReplaceAll] );
-     CTe.infCTe.ID := 'CTe'+CTe.infCTe.ID;
-   end;
-
+  CTe.infCTe.ID := 'CTe'+CTe.infCTe.ID;
   CTe.ide.cDV := RetornarDigito(CTe.infCTe.ID);
   CTe.Ide.cCT := RetornarCodigoNumerico(CTe.infCTe.ID);
+}
 
-  {
   chave := StringReplace(chave,'NFe','CTe',[rfReplaceAll]);
   CTe.infCTe.ID := chave;
   CTe.ide.cDV := RetornarDigito(CTe.infCTe.ID);
-  }
 
   // Carrega Layout que sera utilizado para gera o txt
   Gerador.LayoutArquivoTXT.Clear;

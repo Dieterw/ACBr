@@ -201,7 +201,7 @@ end;
 
 function TCTeW.ObterNomeArquivo: string;
 begin
-  Result := SomenteNumeros(CTe.infCTe.ID) + '-CTe.xml';
+  Result := SomenteNumeros(CTe.infCTe.ID) + '-cte.xml';
 end;
 
 function TCTeW.GerarXml: boolean;
@@ -220,7 +220,7 @@ begin
      CTe.infCTe.ID := chave
   else
    begin
-     CTe.infCTe.ID := StringReplace( UpperCase(CTe.infCTe.ID), 'CTE', '', [rfReplaceAll] );
+     CTe.infCTe.ID := StringReplace( UpperCase(CTe.infCTe.ID), 'NFE', '', [rfReplaceAll] );
      CTe.infCTe.ID := 'CTe'+CTe.infCTe.ID;
    end;
 

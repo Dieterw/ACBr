@@ -251,7 +251,7 @@ begin
     begin
       FCTe.signature.URI := somenteNumeros(CTe.infCTe.ID);
       FCTe.signature.Gerador.Opcoes.IdentarXML := Gerador.Opcoes.IdentarXML;
-      FCTe.signature.GerarXML;
+      FCTe.signature.GerarXMLCTe;
       Gerador.ArquivoFormatoXML := Gerador.ArquivoFormatoXML + FCTe.signature.Gerador.ArquivoFormatoXML;
     end;
   end;

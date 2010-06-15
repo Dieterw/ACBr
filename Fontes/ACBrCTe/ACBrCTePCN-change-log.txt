@@ -48,6 +48,11 @@ Símbolo : Significado
 [-]     : Correção de Bug (assim esperamos)
 
 
+Alterações   15/06/10 (Italo Jurisato Junior)
+---------------
+[+] Foi incluido uma nova função (GerarXMLCTe) na classe TSignature e alterado a
+    chamada no fonte pcteCTeW de GerarXML para GerarXMLCTe.
+
 Alterações   31/05/10 (Paulo Ronaldo Vilela de Lima Junior)
 ---------------
 [-] Correções nos fontes: ACBrCTeConfiguracoes, ACBrCTeUtil e ACBrCTeWebServices

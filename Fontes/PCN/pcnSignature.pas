@@ -61,6 +61,7 @@ type
     constructor Create;
     destructor Destroy; override;
     function GerarXML: boolean;
+    function GerarXMLCTe: boolean;
   published
     property Gerador: TGerador read FGerador write FGerador;
     property URI: string read FURI write FURI;
@@ -94,6 +95,36 @@ begin
   (******)Gerador.wGrupo('CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/', 'XS03');
   (******)Gerador.wGrupo('SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/', 'XS05');
   (******)Gerador.wGrupo('Reference URI="#NFe' + FURI + '"', 'XS07');
+  (********)Gerador.wGrupo('Transforms', 'XS10');
+  (**********)Gerador.wGrupo('Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/', 'SX12');
+  (**********)Gerador.wGrupo('Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/', 'SX12');
+  (********)Gerador.wGrupo('/Transforms');
+  (********)Gerador.wGrupo('DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/', 'XS15');
+  (********)Gerador.wCampo(tcStr, 'XS17', 'DigestValue', 000, 999, 1, FDigestValue, DSC_DigestValue);
+  (******)Gerador.wGrupo('/Reference');
+  (****)Gerador.wGrupo('/SignedInfo');
+  (****)Gerador.wCampo(tcStr, 'XS18', 'SignatureValue', 000, 999, 1, FSignatureValue, DSC_SignatureValue);
+  (****)Gerador.wGrupo('KeyInfo', 'XS19');
+  (******)Gerador.wGrupo('X509Data', 'XS20');
+  (********)Gerador.wCampo(tcStr, 'XS21', 'X509Certificate', 000, 999, 1, FX509Certificate, DSC_X509Certificate);
+  (******)Gerador.wGrupo('/X509Data');
+  (****)Gerador.wGrupo('/KeyInfo');
+  (**)Gerador.wGrupo('/Signature');
+  Result := (Gerador.ListaDeAlertas.Count = 0);
+end;
+
+// Função criada especialmente para gerar os campos da assinatura do CT-e
+// 15/06/2010 - por: Italo Jurisato Junior
+function TSignature.GerarXMLCTe: boolean;
+begin
+  FGerador.ArquivoFormatoXML := '';
+  FGerador.Opcoes.TagVaziaNoFormatoResumido := false;
+  FGerador.FIgnorarTagIdentacao := '|Reference URI|SignatureMethod|Transform Algorithm="http://www.w3.org/TR|/Transforms|/Reference|';
+  (**)Gerador.wGrupo('Signature xmlns="http://www.w3.org/2000/09/xmldsig#"', 'XS01');
+  (****)Gerador.wGrupo('SignedInfo', 'XS02');
+  (******)Gerador.wGrupo('CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/', 'XS03');
+  (******)Gerador.wGrupo('SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/', 'XS05');
+  (******)Gerador.wGrupo('Reference URI="#CTe' + FURI + '"', 'XS07');
   (********)Gerador.wGrupo('Transforms', 'XS10');
   (**********)Gerador.wGrupo('Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/', 'SX12');
   (**********)Gerador.wGrupo('Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/', 'SX12');

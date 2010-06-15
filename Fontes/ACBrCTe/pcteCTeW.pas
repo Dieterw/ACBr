@@ -208,15 +208,31 @@ function TCTeW.GerarXml: boolean;
 var
   chave: AnsiString;
   Gerar: boolean;
+  xProtCTe : String;
 begin
   chave := '';
   //Verificar Chave do CTe quando tiver instalado NFe 2.0
   if not GerarChaveCTe(Chave, CTe.ide.cUF, CTe.ide.cCT, StrToInt(CTe.ide.modelo), CTe.ide.serie,
     CTe.ide.nCT, CTe.ide.dhEmi, CTe.Emit.CNPJ) then
     Gerador.wAlerta('A01', 'infCte', DSC_CHAVE, ERR_MSG_GERAR_CHAVE);
+
+  if (Trim(CTe.infCTe.ID) = '') or (not ValidarChave(CTe.infCTe.ID)) then
+     CTe.infCTe.ID := chave
+  else
+   begin
+     CTe.infCTe.ID := StringReplace( UpperCase(CTe.infCTe.ID), 'CTE', '', [rfReplaceAll] );
+     CTe.infCTe.ID := 'CTe'+CTe.infCTe.ID;
+   end;
+
+  CTe.ide.cDV := RetornarDigito(CTe.infCTe.ID);
+  CTe.Ide.cCT := RetornarCodigoNumerico(CTe.infCTe.ID);
+
+  {
   chave := StringReplace(chave,'NFe','CTe',[rfReplaceAll]);
   CTe.infCTe.ID := chave;
   CTe.ide.cDV := RetornarDigito(CTe.infCTe.ID);
+  }
+
   // Carrega Layout que sera utilizado para gera o txt
   Gerador.LayoutArquivoTXT.Clear;
   Gerador.ArquivoFormatoXML := '';
@@ -244,6 +260,27 @@ begin
     end;
   end;
   Gerador.wGrupo('/CTe');
+
+  if CTe.procCTe.nProt <> '' then
+   begin
+     xProtCTe :=
+       (**)'<protCTe versao="1.03">' +
+     (******)'<infProt>'+
+     (*********)'<tpAmb>'+TpAmbToStr(CTe.procCTe.tpAmb)+'</tpAmb>'+
+     (*********)'<verAplic>'+CTe.procCTe.verAplic+'</verAplic>'+
+     (*********)'<chCTe>'+CTe.procCTe.chCTe+'</chCTe>'+
+     (*********)'<dhRecbto>'+FormatDateTime('yyyy-mm-dd"T"hh:nn:ss',CTe.procCTe.dhRecbto)+'</dhRecbto>'+
+     (*********)'<nProt>'+CTe.procCTe.nProt+'</nProt>'+
+     (*********)'<digVal>'+CTe.procCTe.digVal+'</digVal>'+
+     (*********)'<cStat>'+IntToStr(CTe.procCTe.cStat)+'</cStat>'+
+     (*********)'<xMotivo>'+CTe.procCTe.xMotivo+'</xMotivo>'+
+     (******)'</infProt>'+
+     {****}'</protCTe>';
+
+     (**)Gerador.wTexto(xProtCTe);
+     Gerador.wGrupo('/cteProc');
+   end;
+
   Gerador.gtAjustarRegistros(CTe.infCTe.ID);
   Result := (Gerador.ListaDeAlertas.Count = 0);
 end;

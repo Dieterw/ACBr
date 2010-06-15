@@ -1014,7 +1014,7 @@ begin
    end;
 
   if I = 0 then
-    raise Exception.Create('Não encontrei inicio do URI: <infNFe');
+    raise Exception.Create('Não encontrei inicio do URI: <infCTe');
   I := CTeUtil.PosEx('Id=', AStr, I + 6);
   if I = 0 then
     raise Exception.Create('Não encontrei inicio do URI: Id=');
@@ -1288,7 +1288,7 @@ begin
 end;
 {$ENDIF}
 
-{$IFDEF ACBrNFeOpenSSL}
+{$IFDEF ACBrCTeOpenSSL}
 
 class function CTeUtil.sign_file(const Axml: PAnsiChar; const key_file: PChar; const senha: PChar): AnsiString;
 var

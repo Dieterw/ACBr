@@ -248,7 +248,7 @@ begin
       codigoNumerico := GerarCodigoNumerico(Numero);
     //
     DecodeDate(emissao, wAno, wMes, wDia);
-    chave := 'NFe' +
+    chave := 'CTe' +
       IntToStrZero(codigoUF, 2) +
       Copy(FormatFloat('0000', wAno), 3, 2) +
       FormatFloat('00', wMes) +

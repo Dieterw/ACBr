@@ -1062,7 +1062,7 @@ begin
           rlmEndereco.Lines.Clear;
           if xCpl > '' then
             rlmEndereco.Lines.add (XLgr + IfThen (Nro = '0', '', ', ' + Nro) +
-                                                ' - ' + XCpl + ' - ' + XBairro)
+                                                ' ' + XCpl + ' - ' + XBairro)
           else
             rlmEndereco.Lines.add (XLgr + IfThen (Nro = '0', '', ', ' + Nro) +
                                                               ' - ' + XBairro);
@@ -1125,7 +1125,7 @@ begin
         begin
           if xCpl > '' then
             rllDestEndereco.Caption := XLgr + IfThen (Nro = '0', '', ', ' + Nro)
-                                                                  + ' - ' + xCpl
+                                                                  + ' ' + xCpl
           else
             rllDestEndereco.Caption := XLgr + IfThen (Nro = '0', '', ', ' + Nro);
           rllDestBairro.Caption := XBairro;
@@ -1220,7 +1220,7 @@ begin
 
     with Transporta do
     begin
-      if Trim (CNPJCPF) <> '' then
+      if CNPJCPF > '' then
         rllTransCNPJ.Caption := NotaUtil.FormatarCNPJ(CNPJCPF)
       else
         rllTransCNPJ.Caption := '';
@@ -1409,7 +1409,7 @@ begin
 
                   cdsItens.FieldByName('UNIDADE').AsString := UCom;
                   cdsItens.FieldByName('TOTAL').AsString :=
-                                      FormatFloat('###,###,###,##0.00', VProd);
+                                      FormatFloat('###,###,###,##0.00', vProd);
                   cdsItens.FieldByName('VALORDESC').AsString :=
                                       FormatFloat('###,###,###,##0.00', vDesc);
 

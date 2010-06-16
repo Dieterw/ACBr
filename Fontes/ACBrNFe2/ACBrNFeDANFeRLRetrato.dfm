@@ -1,15 +1,15 @@
 inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
-  Left = 195
+  Left = 200
   Top = 107
   Width = 821
   Height = 655
-  VertScrollBar.Position = 397
+  VertScrollBar.Position = 320
   Caption = 'frlDANFeRLRetrato'
   OldCreateOrder = True
   PixelsPerInch = 96
   TextHeight = 13
   inherited RLNFe: TRLReport
-    Top = -397
+    Top = -320
     Background.Arrange = baDistributed
     Background.Height = 96
     Background.Width = 175
@@ -1782,8 +1782,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatNum1: TRLLabel
-        Left = 4
-        Top = 25
+        Left = 3
+        Top = 26
         Width = 60
         Height = 10
         AutoSize = False
@@ -1796,8 +1796,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatNum2: TRLLabel
-        Left = 4
-        Top = 38
+        Left = 3
+        Top = 39
         Width = 60
         Height = 10
         AutoSize = False
@@ -1810,8 +1810,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatNum3: TRLLabel
-        Left = 4
-        Top = 51
+        Left = 3
+        Top = 52
         Width = 60
         Height = 10
         AutoSize = False
@@ -1824,11 +1824,13 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatData1: TRLLabel
-        Left = 66
-        Top = 25
-        Width = 49
-        Height = 12
-        Caption = 'XX/XX/XXXX'
+        Left = 70
+        Top = 26
+        Width = 53
+        Height = 10
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = '99/99/9999'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -9
@@ -1837,10 +1839,12 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatData2: TRLLabel
-        Left = 66
-        Top = 38
-        Width = 49
-        Height = 12
+        Left = 70
+        Top = 39
+        Width = 53
+        Height = 10
+        Alignment = taRightJustify
+        AutoSize = False
         Caption = 'XX/XX/XXXX'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -1850,10 +1854,12 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatData3: TRLLabel
-        Left = 66
-        Top = 51
-        Width = 49
-        Height = 12
+        Left = 70
+        Top = 52
+        Width = 53
+        Height = 10
+        Alignment = taRightJustify
+        AutoSize = False
         Caption = 'XX/XX/XXXX'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -1863,13 +1869,13 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatValor1: TRLLabel
-        Left = 117
-        Top = 25
-        Width = 66
+        Left = 125
+        Top = 26
+        Width = 58
         Height = 10
         Alignment = taRightJustify
         AutoSize = False
-        Caption = '99.999.999,99'
+        Caption = '9.999.999,99'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -9
@@ -1878,13 +1884,13 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatValor2: TRLLabel
-        Left = 117
-        Top = 38
-        Width = 66
+        Left = 125
+        Top = 39
+        Width = 58
         Height = 10
         Alignment = taRightJustify
         AutoSize = False
-        Caption = '99.999.999,99'
+        Caption = '9.999.999,99'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -9
@@ -1893,13 +1899,13 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatValor3: TRLLabel
-        Left = 117
-        Top = 51
-        Width = 66
+        Left = 125
+        Top = 52
+        Width = 58
         Height = 10
         Alignment = taRightJustify
         AutoSize = False
-        Caption = '99.999.999,99'
+        Caption = '9.999.999,99'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -9
@@ -1908,8 +1914,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatNum4: TRLLabel
-        Left = 189
-        Top = 25
+        Left = 188
+        Top = 26
         Width = 60
         Height = 10
         AutoSize = False
@@ -1922,8 +1928,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatNum5: TRLLabel
-        Left = 189
-        Top = 38
+        Left = 188
+        Top = 39
         Width = 60
         Height = 10
         AutoSize = False
@@ -1936,8 +1942,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatNum6: TRLLabel
-        Left = 189
-        Top = 51
+        Left = 188
+        Top = 52
         Width = 60
         Height = 10
         AutoSize = False
@@ -1950,10 +1956,12 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatData4: TRLLabel
-        Left = 251
-        Top = 25
-        Width = 49
-        Height = 12
+        Left = 255
+        Top = 26
+        Width = 53
+        Height = 10
+        Alignment = taRightJustify
+        AutoSize = False
         Caption = 'XX/XX/XXXX'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -1963,10 +1971,12 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatData5: TRLLabel
-        Left = 251
-        Top = 38
-        Width = 49
-        Height = 12
+        Left = 255
+        Top = 39
+        Width = 53
+        Height = 10
+        Alignment = taRightJustify
+        AutoSize = False
         Caption = 'XX/XX/XXXX'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -1976,10 +1986,12 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatData6: TRLLabel
-        Left = 251
-        Top = 51
-        Width = 49
-        Height = 12
+        Left = 255
+        Top = 52
+        Width = 53
+        Height = 10
+        Alignment = taRightJustify
+        AutoSize = False
         Caption = 'XX/XX/XXXX'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -1989,13 +2001,13 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatValor4: TRLLabel
-        Left = 302
-        Top = 25
-        Width = 66
+        Left = 310
+        Top = 26
+        Width = 58
         Height = 10
         Alignment = taRightJustify
         AutoSize = False
-        Caption = '99.999.999,99'
+        Caption = '9.999.999,99'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -9
@@ -2004,13 +2016,13 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatValor5: TRLLabel
-        Left = 302
-        Top = 38
-        Width = 66
+        Left = 310
+        Top = 39
+        Width = 58
         Height = 10
         Alignment = taRightJustify
         AutoSize = False
-        Caption = '99.999.999,99'
+        Caption = '9.999.999,99'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -9
@@ -2019,13 +2031,13 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatValor6: TRLLabel
-        Left = 302
-        Top = 51
-        Width = 66
+        Left = 310
+        Top = 52
+        Width = 58
         Height = 10
         Alignment = taRightJustify
         AutoSize = False
-        Caption = '99.999.999,99'
+        Caption = '9.999.999,99'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -9
@@ -2034,8 +2046,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatNum7: TRLLabel
-        Left = 374
-        Top = 25
+        Left = 373
+        Top = 26
         Width = 60
         Height = 10
         AutoSize = False
@@ -2048,8 +2060,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatNum8: TRLLabel
-        Left = 374
-        Top = 38
+        Left = 373
+        Top = 39
         Width = 60
         Height = 10
         AutoSize = False
@@ -2062,8 +2074,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatNum9: TRLLabel
-        Left = 374
-        Top = 51
+        Left = 373
+        Top = 52
         Width = 60
         Height = 10
         AutoSize = False
@@ -2076,10 +2088,12 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatData7: TRLLabel
-        Left = 436
-        Top = 25
-        Width = 49
-        Height = 12
+        Left = 440
+        Top = 26
+        Width = 53
+        Height = 10
+        Alignment = taRightJustify
+        AutoSize = False
         Caption = 'XX/XX/XXXX'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -2089,10 +2103,12 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatData8: TRLLabel
-        Left = 436
-        Top = 38
-        Width = 49
-        Height = 12
+        Left = 440
+        Top = 39
+        Width = 53
+        Height = 10
+        Alignment = taRightJustify
+        AutoSize = False
         Caption = 'XX/XX/XXXX'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -2102,10 +2118,12 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatData9: TRLLabel
-        Left = 436
-        Top = 51
-        Width = 49
-        Height = 12
+        Left = 440
+        Top = 52
+        Width = 53
+        Height = 10
+        Alignment = taRightJustify
+        AutoSize = False
         Caption = 'XX/XX/XXXX'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -2115,13 +2133,13 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatValor7: TRLLabel
-        Left = 487
-        Top = 25
-        Width = 66
+        Left = 495
+        Top = 26
+        Width = 58
         Height = 10
         Alignment = taRightJustify
         AutoSize = False
-        Caption = '99.999.999,99'
+        Caption = '9.999.999,99'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -9
@@ -2130,13 +2148,13 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatValor8: TRLLabel
-        Left = 487
-        Top = 38
-        Width = 66
+        Left = 495
+        Top = 39
+        Width = 58
         Height = 10
         Alignment = taRightJustify
         AutoSize = False
-        Caption = '99.999.999,99'
+        Caption = '9.999.999,99'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -9
@@ -2145,13 +2163,13 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatValor9: TRLLabel
-        Left = 487
-        Top = 51
-        Width = 66
+        Left = 495
+        Top = 52
+        Width = 58
         Height = 10
         Alignment = taRightJustify
         AutoSize = False
-        Caption = '99.999.999,99'
+        Caption = '9.999.999,99'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -9
@@ -2160,8 +2178,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatNum10: TRLLabel
-        Left = 559
-        Top = 25
+        Left = 558
+        Top = 26
         Width = 60
         Height = 10
         AutoSize = False
@@ -2174,8 +2192,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatNum11: TRLLabel
-        Left = 559
-        Top = 38
+        Left = 558
+        Top = 39
         Width = 60
         Height = 10
         AutoSize = False
@@ -2188,8 +2206,8 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatNum12: TRLLabel
-        Left = 559
-        Top = 51
+        Left = 558
+        Top = 52
         Width = 60
         Height = 10
         AutoSize = False
@@ -2202,10 +2220,12 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatData10: TRLLabel
-        Left = 621
-        Top = 25
-        Width = 49
-        Height = 12
+        Left = 624
+        Top = 26
+        Width = 53
+        Height = 10
+        Alignment = taRightJustify
+        AutoSize = False
         Caption = 'XX/XX/XXXX'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -2215,10 +2235,12 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatData11: TRLLabel
-        Left = 621
-        Top = 38
-        Width = 49
-        Height = 12
+        Left = 624
+        Top = 39
+        Width = 53
+        Height = 10
+        Alignment = taRightJustify
+        AutoSize = False
         Caption = 'XX/XX/XXXX'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -2228,10 +2250,12 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatData12: TRLLabel
-        Left = 621
-        Top = 51
-        Width = 49
-        Height = 12
+        Left = 624
+        Top = 52
+        Width = 53
+        Height = 10
+        Alignment = taRightJustify
+        AutoSize = False
         Caption = 'XX/XX/XXXX'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
@@ -2241,13 +2265,13 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatValor10: TRLLabel
-        Left = 671
-        Top = 25
-        Width = 66
+        Left = 679
+        Top = 26
+        Width = 58
         Height = 10
         Alignment = taRightJustify
         AutoSize = False
-        Caption = '99.999.999,99'
+        Caption = '9.999.999,99'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -9
@@ -2256,13 +2280,13 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatValor11: TRLLabel
-        Left = 671
-        Top = 38
-        Width = 66
+        Left = 679
+        Top = 39
+        Width = 58
         Height = 10
         Alignment = taRightJustify
         AutoSize = False
-        Caption = '99.999.999,99'
+        Caption = '9.999.999,99'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -9
@@ -2271,13 +2295,13 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
         ParentFont = False
       end
       object rllFatValor12: TRLLabel
-        Left = 671
-        Top = 51
-        Width = 66
+        Left = 679
+        Top = 52
+        Width = 58
         Height = 10
         Alignment = taRightJustify
         AutoSize = False
-        Caption = '99.999.999,99'
+        Caption = '9.999.999,99'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clBlack
         Font.Height = -9
@@ -2329,7 +2353,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       end
       object rllCabFatura2: TRLLabel
         Tag = 10
-        Left = 78
+        Left = 84
         Top = 14
         Width = 24
         Height = 7
@@ -2344,7 +2368,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       end
       object rllCabFatura3: TRLLabel
         Tag = 10
-        Left = 137
+        Left = 147
         Top = 14
         Width = 26
         Height = 7
@@ -2382,7 +2406,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       end
       object RLLabel2: TRLLabel
         Tag = 10
-        Left = 262
+        Left = 268
         Top = 14
         Width = 24
         Height = 7
@@ -2397,7 +2421,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       end
       object RLLabel3: TRLLabel
         Tag = 10
-        Left = 321
+        Left = 331
         Top = 14
         Width = 26
         Height = 7
@@ -2427,7 +2451,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       end
       object RLLabel5: TRLLabel
         Tag = 10
-        Left = 446
+        Left = 452
         Top = 14
         Width = 24
         Height = 7
@@ -2442,7 +2466,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       end
       object RLLabel6: TRLLabel
         Tag = 10
-        Left = 505
+        Left = 515
         Top = 14
         Width = 26
         Height = 7
@@ -2472,7 +2496,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       end
       object RLLabel8: TRLLabel
         Tag = 10
-        Left = 630
+        Left = 636
         Top = 14
         Width = 24
         Height = 7
@@ -2487,7 +2511,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       end
       object RLLabel9: TRLLabel
         Tag = 10
-        Left = 689
+        Left = 699
         Top = 14
         Width = 26
         Height = 7
@@ -3867,7 +3891,7 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
       object rlmDescricao: TRLDBMemo
         Left = 56
         Top = 1
-        Width = 173
+        Width = 177
         Height = 10
         DataField = 'DESCRICAO'
         DataSource = DataSource1
@@ -4388,13 +4412,13 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
     DisplayName = 'Documento PDF'
     ShowProgress = False
     Left = 531
-    Top = 54
+    Top = 55
   end
   object cdsItens: TClientDataSet
     Aggregates = <>
     Params = <>
     Left = 560
-    Top = 54
+    Top = 55
     object cdsItensCODIGO: TStringField
       FieldName = 'CODIGO'
       Size = 60
@@ -4464,6 +4488,6 @@ inherited frlDANFeRLRetrato: TfrlDANFeRLRetrato
   object DataSource1: TDataSource
     DataSet = cdsItens
     Left = 595
-    Top = 53
+    Top = 54
   end
 end
